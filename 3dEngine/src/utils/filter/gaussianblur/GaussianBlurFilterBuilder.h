@@ -6,30 +6,30 @@
 namespace urchin
 {
 
-	class GaussianBlurFilterBuilder : public TextureFilterBuilder<GaussianBlurFilterBuilder>
-	{
-		public:
-			enum BlurDirection
-			{
-				HORIZONTAL_BLUR,
-				VERTICAL_BLUR
-			};
+    class GaussianBlurFilterBuilder : public TextureFilterBuilder<GaussianBlurFilterBuilder>
+    {
+        public:
+            enum BlurDirection
+            {
+                HORIZONTAL_BLUR,
+                VERTICAL_BLUR
+            };
 
-			GaussianBlurFilterBuilder();
-			~GaussianBlurFilterBuilder() override = default;
+            GaussianBlurFilterBuilder();
+            ~GaussianBlurFilterBuilder() override = default;
 
-			GaussianBlurFilterBuilder *blurDirection(BlurDirection);
+            GaussianBlurFilterBuilder *blurDirection(BlurDirection);
 
-			GaussianBlurFilterBuilder *blurSize(unsigned int);
-			unsigned int getBlurSize() const;
+            GaussianBlurFilterBuilder *blurSize(unsigned int);
+            unsigned int getBlurSize() const;
 
-			std::shared_ptr<TextureFilter> build() override;
-			std::shared_ptr<GaussianBlurFilter> buildGaussianBlur();
+            std::shared_ptr<TextureFilter> build() override;
+            std::shared_ptr<GaussianBlurFilter> buildGaussianBlur();
 
-		private:
-			BlurDirection pBlurDirection;
-			unsigned int pBlurSize;
-	};
+        private:
+            BlurDirection pBlurDirection;
+            unsigned int pBlurSize;
+    };
 
 }
 

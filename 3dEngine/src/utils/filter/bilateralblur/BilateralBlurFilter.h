@@ -9,39 +9,39 @@
 namespace urchin
 {
 
-	class BilateralBlurFilterBuilder;
+    class BilateralBlurFilterBuilder;
 
-	class BilateralBlurFilter : public TextureFilter
-	{
-		public:
-			enum BlurDirection
-			{
-				VERTICAL,
-				HORIZONTAL
-			};
+    class BilateralBlurFilter : public TextureFilter
+    {
+        public:
+            enum BlurDirection
+            {
+                VERTICAL,
+                HORIZONTAL
+            };
 
-			BilateralBlurFilter(const BilateralBlurFilterBuilder *, BlurDirection);
+            BilateralBlurFilter(const BilateralBlurFilterBuilder *, BlurDirection);
 
-			void onCameraProjectionUpdate(float, float);
+            void onCameraProjectionUpdate(float, float);
 
-		private:
-			std::string getShaderName() const override;
-			void initializeAdditionalUniforms(unsigned int) override;
-			void bindAdditionalTextures() const override;
-			void completeShaderTokens(std::map<std::string, std::string> &) const override;
+        private:
+            std::string getShaderName() const override;
+            void initializeAdditionalUniforms(unsigned int) override;
+            void bindAdditionalTextures() const override;
+            void completeShaderTokens(std::map<std::string, std::string> &) const override;
 
-			std::vector<float> computeOffsets() const;
+            std::vector<float> computeOffsets() const;
 
-			BlurDirection blurDirection;
-			unsigned int blurSize;
-			float blurSharpness;
-			unsigned int depthTextureID;
+            BlurDirection blurDirection;
+            unsigned int blurSize;
+            float blurSharpness;
+            unsigned int depthTextureID;
 
-			unsigned int textureSize;
-			int cameraPlanesLoc;
+            unsigned int textureSize;
+            int cameraPlanesLoc;
 
-			std::string offsetsTab;
-	};
+            std::string offsetsTab;
+    };
 
 }
 

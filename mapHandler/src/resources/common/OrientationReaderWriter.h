@@ -9,17 +9,17 @@
 namespace urchin
 {
 
-	class OrientationReaderWriter
-	{
-		//XML tags
-		#define ORIENTATION_TAG "orientation"
-		#define AXIS_TAG "axis"
-		#define ANGLE_TAG "angle"
+    class OrientationReaderWriter
+    {
+        //XML tags
+        #define ORIENTATION_TAG "orientation"
+        #define AXIS_TAG "axis"
+        #define ANGLE_TAG "angle"
 
-		public:
-			Quaternion<float> loadOrientation(const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
-			void writeOrientation(const std::shared_ptr<XmlChunk> &, const Quaternion<float> &, XmlWriter &) const;
-	};
+        public:
+            Quaternion<float> loadOrientation(const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
+            void writeOrientation(const std::shared_ptr<XmlChunk> &, const Quaternion<float> &, XmlWriter &) const;
+    };
 
 }
 

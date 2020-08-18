@@ -7,114 +7,114 @@
 namespace urchin
 {
 
-	CollisionBoxShape::CollisionBoxShape(const Vector3<float> &halfSizes) :
-			CollisionShape3D(),
-			boxShape(new BoxShape<float>(halfSizes))
-	{
-		computeSafeMargin();
-	}
-
-	CollisionBoxShape::CollisionBoxShape(CollisionBoxShape &&collisionBoxShape) noexcept :
-            CollisionShape3D(collisionBoxShape),
-			boxShape(std::exchange(collisionBoxShape.boxShape, nullptr))
-	{
-	}
-
-	CollisionBoxShape::~CollisionBoxShape()
+    CollisionBoxShape::CollisionBoxShape(const Vector3<float> &halfSizes) :
+            CollisionShape3D(),
+            boxShape(new BoxShape<float>(halfSizes))
     {
-		delete boxShape;
+        computeSafeMargin();
     }
 
-	void CollisionBoxShape::computeSafeMargin()
-	{
-		float maximumMarginPercentage = ConfigService::instance()->getFloatValue("collisionShape.maximumMarginPercentage");
-		float maximumSafeMargin = boxShape->getMinHalfSize() * maximumMarginPercentage;
+    CollisionBoxShape::CollisionBoxShape(CollisionBoxShape &&collisionBoxShape) noexcept :
+            CollisionShape3D(collisionBoxShape),
+            boxShape(std::exchange(collisionBoxShape.boxShape, nullptr))
+    {
+    }
 
-		refreshInnerMargin(maximumSafeMargin);
-	}
+    CollisionBoxShape::~CollisionBoxShape()
+    {
+        delete boxShape;
+    }
 
-	CollisionShape3D::ShapeType CollisionBoxShape::getShapeType() const
-	{
-		return CollisionShape3D::BOX_SHAPE;
-	}
+    void CollisionBoxShape::computeSafeMargin()
+    {
+        float maximumMarginPercentage = ConfigService::instance()->getFloatValue("collisionShape.maximumMarginPercentage");
+        float maximumSafeMargin = boxShape->getMinHalfSize() * maximumMarginPercentage;
 
-	const ConvexShape3D<float> *CollisionBoxShape::getSingleShape() const
-	{
-		return boxShape;
-	}
+        refreshInnerMargin(maximumSafeMargin);
+    }
 
-	float CollisionBoxShape::getHalfSize(unsigned int index) const
-	{
-		return boxShape->getHalfSize(index);
-	}
+    CollisionShape3D::ShapeType CollisionBoxShape::getShapeType() const
+    {
+        return CollisionShape3D::BOX_SHAPE;
+    }
 
-	const Vector3<float> &CollisionBoxShape::getHalfSizes() const
-	{
-		return boxShape->getHalfSizes();
-	}
+    const ConvexShape3D<float> *CollisionBoxShape::getSingleShape() const
+    {
+        return boxShape;
+    }
 
-	std::shared_ptr<CollisionShape3D> CollisionBoxShape::scale(float scale) const
-	{
-		return std::make_shared<CollisionBoxShape>(boxShape->getHalfSizes() * scale);
-	}
+    float CollisionBoxShape::getHalfSize(unsigned int index) const
+    {
+        return boxShape->getHalfSize(index);
+    }
 
-	AABBox<float> CollisionBoxShape::toAABBox(const PhysicsTransform &physicsTransform) const
-	{
-		if(!lastTransform.equals(physicsTransform))
-		{
-			const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
-			Point3<float> extend(
-					boxShape->getHalfSize(0) * std::abs(orientation(0)) + boxShape->getHalfSize(1) * std::abs(orientation(3)) + boxShape->getHalfSize(2) * std::abs(orientation(6)),
-					boxShape->getHalfSize(0) * std::abs(orientation(1)) + boxShape->getHalfSize(1) * std::abs(orientation(4)) + boxShape->getHalfSize(2) * std::abs(orientation(7)),
-					boxShape->getHalfSize(0) * std::abs(orientation(2)) + boxShape->getHalfSize(1) * std::abs(orientation(5)) + boxShape->getHalfSize(2) * std::abs(orientation(8))
-			);
+    const Vector3<float> &CollisionBoxShape::getHalfSizes() const
+    {
+        return boxShape->getHalfSizes();
+    }
 
-			const Point3<float> &position = physicsTransform.getPosition();
+    std::shared_ptr<CollisionShape3D> CollisionBoxShape::scale(float scale) const
+    {
+        return std::make_shared<CollisionBoxShape>(boxShape->getHalfSizes() * scale);
+    }
 
-			lastAABBox = AABBox<float>(position - extend, position + extend);
-			lastTransform = physicsTransform;
-		}
+    AABBox<float> CollisionBoxShape::toAABBox(const PhysicsTransform &physicsTransform) const
+    {
+        if(!lastTransform.equals(physicsTransform))
+        {
+            const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
+            Point3<float> extend(
+                    boxShape->getHalfSize(0) * std::abs(orientation(0)) + boxShape->getHalfSize(1) * std::abs(orientation(3)) + boxShape->getHalfSize(2) * std::abs(orientation(6)),
+                    boxShape->getHalfSize(0) * std::abs(orientation(1)) + boxShape->getHalfSize(1) * std::abs(orientation(4)) + boxShape->getHalfSize(2) * std::abs(orientation(7)),
+                    boxShape->getHalfSize(0) * std::abs(orientation(2)) + boxShape->getHalfSize(1) * std::abs(orientation(5)) + boxShape->getHalfSize(2) * std::abs(orientation(8))
+            );
 
-		return lastAABBox;
-	}
+            const Point3<float> &position = physicsTransform.getPosition();
 
-	std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionBoxShape::toConvexObject(const PhysicsTransform &physicsTransform) const
-	{
-		const Point3<float> &position = physicsTransform.getPosition();
-		const Quaternion<float> &orientation = physicsTransform.getOrientation();
+            lastAABBox = AABBox<float>(position - extend, position + extend);
+            lastTransform = physicsTransform;
+        }
 
-		Vector3<float> halfSizeSubtractMargin = boxShape->getHalfSizes() - Vector3<float>(getInnerMargin(), getInnerMargin(), getInnerMargin());
+        return lastAABBox;
+    }
 
-		void *memPtr = getObjectsPool()->allocate(sizeof(CollisionBoxObject));
+    std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionBoxShape::toConvexObject(const PhysicsTransform &physicsTransform) const
+    {
+        const Point3<float> &position = physicsTransform.getPosition();
+        const Quaternion<float> &orientation = physicsTransform.getOrientation();
+
+        Vector3<float> halfSizeSubtractMargin = boxShape->getHalfSizes() - Vector3<float>(getInnerMargin(), getInnerMargin(), getInnerMargin());
+
+        void *memPtr = getObjectsPool()->allocate(sizeof(CollisionBoxObject));
         auto *collisionObjectPtr = new (memPtr) CollisionBoxObject(getInnerMargin(), halfSizeSubtractMargin, position, orientation);
-		return std::unique_ptr<CollisionBoxObject, ObjectDeleter>(collisionObjectPtr);
-	}
+        return std::unique_ptr<CollisionBoxObject, ObjectDeleter>(collisionObjectPtr);
+    }
 
-	Vector3<float> CollisionBoxShape::computeLocalInertia(float mass) const
-	{
-		float width = 2.0f * boxShape->getHalfSize(0);
-		float height = 2.0f * boxShape->getHalfSize(1);
-		float depth = 2.0f * boxShape->getHalfSize(2);
+    Vector3<float> CollisionBoxShape::computeLocalInertia(float mass) const
+    {
+        float width = 2.0f * boxShape->getHalfSize(0);
+        float height = 2.0f * boxShape->getHalfSize(1);
+        float depth = 2.0f * boxShape->getHalfSize(2);
 
-		float localInertia1 = (1.0f/12.0f) * mass * (height*height + depth*depth);
-		float localInertia2 = (1.0f/12.0f) * mass * (width*width + depth*depth);
-		float localInertia3 = (1.0f/12.0f) * mass * (width*width + height*height);
-		return Vector3<float>(localInertia1, localInertia2, localInertia3);
-	}
+        float localInertia1 = (1.0f/12.0f) * mass * (height*height + depth*depth);
+        float localInertia2 = (1.0f/12.0f) * mass * (width*width + depth*depth);
+        float localInertia3 = (1.0f/12.0f) * mass * (width*width + height*height);
+        return Vector3<float>(localInertia1, localInertia2, localInertia3);
+    }
 
-	float CollisionBoxShape::getMaxDistanceToCenter() const
-	{
-		return boxShape->getMaxHalfSize();
-	}
+    float CollisionBoxShape::getMaxDistanceToCenter() const
+    {
+        return boxShape->getMaxHalfSize();
+    }
 
-	float CollisionBoxShape::getMinDistanceToCenter() const
-	{
-		return boxShape->getMinHalfSize();
-	}
+    float CollisionBoxShape::getMinDistanceToCenter() const
+    {
+        return boxShape->getMinHalfSize();
+    }
 
-	CollisionShape3D *CollisionBoxShape::clone() const
-	{
-		return new CollisionBoxShape(boxShape->getHalfSizes());
-	}
+    CollisionShape3D *CollisionBoxShape::clone() const
+    {
+        return new CollisionBoxShape(boxShape->getHalfSizes());
+    }
 
 }

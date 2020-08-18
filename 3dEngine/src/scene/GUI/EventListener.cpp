@@ -4,24 +4,24 @@
 namespace urchin
 {
 
-	void EventListener::onClick(Widget *)
-	{
+    void EventListener::onClick(Widget *)
+    {
 
-	}
+    }
 
-	void EventListener::onClickRelease(Widget *)
-	{
+    void EventListener::onClickRelease(Widget *)
+    {
 
-	}
+    }
 
-	void EventListener::onFocus(Widget *)
-	{
+    void EventListener::onFocus(Widget *)
+    {
 
-	}
+    }
 
-	void EventListener::onFocusLost(Widget *)
-	{
+    void EventListener::onFocusLost(Widget *)
+    {
 
-	}
+    }
 
 }

@@ -10,44 +10,44 @@
 namespace urchin
 {
 
-	/**
-	* Thread which refresh Open AL buffers for sounds play in streaming
-	*/
-	class StreamUpdateWorker
-	{
-		public:
-			StreamUpdateWorker();
-			~StreamUpdateWorker();
+    /**
+    * Thread which refresh Open AL buffers for sounds play in streaming
+    */
+    class StreamUpdateWorker
+    {
+        public:
+            StreamUpdateWorker();
+            ~StreamUpdateWorker();
 
-			void addTask(const Sound *, bool);
-			void removeTask(const Sound *);
-			bool isTaskExist(const Sound *) const;
+            void addTask(const Sound *, bool);
+            void removeTask(const Sound *);
+            bool isTaskExist(const Sound *) const;
 
-			void start();
-			void interrupt();
-			void controlExecution();
+            void start();
+            void interrupt();
+            void controlExecution();
 
-		private:
-			bool continueExecution();
+        private:
+            bool continueExecution();
 
-			bool processTask(StreamUpdateTask *);
-			void deleteTask(StreamUpdateTask *);
+            bool processTask(StreamUpdateTask *);
+            void deleteTask(StreamUpdateTask *);
 
-			void fillAndPushChunk(StreamUpdateTask *, unsigned int);
-			void fillChunk(StreamUpdateTask *, unsigned int);
-			unsigned int retrieveChunkId(StreamUpdateTask *, ALuint);
-			void clearQueue(StreamUpdateTask *);
+            void fillAndPushChunk(StreamUpdateTask *, unsigned int);
+            void fillChunk(StreamUpdateTask *, unsigned int);
+            unsigned int retrieveChunkId(StreamUpdateTask *, ALuint);
+            void clearQueue(StreamUpdateTask *);
 
-			const unsigned int nbChunkBuffer;
-			const unsigned int nbSecondByChunk;
-			const unsigned int updateStreamBufferPauseTime;
+            const unsigned int nbChunkBuffer;
+            const unsigned int nbSecondByChunk;
+            const unsigned int updateStreamBufferPauseTime;
 
-			std::atomic_bool streamUpdateWorkerStopper;
-			static std::exception_ptr soundThreadExceptionPtr;
-			mutable std::mutex tasksMutex;
+            std::atomic_bool streamUpdateWorkerStopper;
+            static std::exception_ptr soundThreadExceptionPtr;
+            mutable std::mutex tasksMutex;
 
-			std::vector<StreamUpdateTask *> tasks;
-	};
+            std::vector<StreamUpdateTask *> tasks;
+    };
 
 }
 

@@ -9,28 +9,28 @@
 namespace urchin
 {
 
-	class SmoothStopAction
-	{
-		public:
-			explicit SmoothStopAction(const SoundBehavior &);
+    class SmoothStopAction
+    {
+        public:
+            explicit SmoothStopAction(const SoundBehavior &);
 
-			void startSmoothStop();
-			void endSmoothStop();
-			bool isSmoothStopStarted() const;
+            void startSmoothStop();
+            void endSmoothStop();
+            bool isSmoothStopStarted() const;
 
-			float computeChangeVolumePercentage();
-			float getTotalChangeVolumePercentage() const;
-			bool isSmoothStopProcessing() const;
+            float computeChangeVolumePercentage();
+            float getTotalChangeVolumePercentage() const;
+            bool isSmoothStopProcessing() const;
 
-		private:
-			SoundBehavior soundBehavior;
+        private:
+            SoundBehavior soundBehavior;
 
-			std::chrono::high_resolution_clock::time_point startingTime;
-			std::chrono::high_resolution_clock::time_point previousTime;
+            std::chrono::high_resolution_clock::time_point startingTime;
+            std::chrono::high_resolution_clock::time_point previousTime;
 
-			bool bIsSmoothStopStarted;
-			float totalChangeVolumePercentage;
-	};
+            bool bIsSmoothStopStarted;
+            float totalChangeVolumePercentage;
+    };
 
 }
 

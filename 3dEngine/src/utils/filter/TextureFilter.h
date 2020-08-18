@@ -12,57 +12,57 @@
 namespace urchin
 {
 
-	template<class T> class TextureFilterBuilder;
+    template<class T> class TextureFilterBuilder;
 
-	class TextureFilter
-	{
-		public:
-			template<class BUILDER> explicit TextureFilter(const TextureFilterBuilder<BUILDER> *);
-			virtual ~TextureFilter();
+    class TextureFilter
+    {
+        public:
+            template<class BUILDER> explicit TextureFilter(const TextureFilterBuilder<BUILDER> *);
+            virtual ~TextureFilter();
 
-			void initialize();
+            void initialize();
 
-			unsigned int getFboId() const;
-			unsigned int getTextureID() const;
+            unsigned int getFboId() const;
+            unsigned int getTextureID() const;
 
-			void applyOn(unsigned int, unsigned int layersToUpdate = std::numeric_limits<unsigned int>::max()) const;
+            void applyOn(unsigned int, unsigned int layersToUpdate = std::numeric_limits<unsigned int>::max()) const;
 
-		protected:
-			virtual std::string getShaderName() const = 0;
-			virtual void initializeAdditionalUniforms(unsigned int);
-			virtual void bindAdditionalTextures() const;
-			virtual void completeShaderTokens(std::map<std::string, std::string> &) const = 0;
+        protected:
+            virtual std::string getShaderName() const = 0;
+            virtual void initializeAdditionalUniforms(unsigned int);
+            virtual void bindAdditionalTextures() const;
+            virtual void completeShaderTokens(std::map<std::string, std::string> &) const = 0;
 
-			unsigned int getTextureWidth() const;
-			unsigned int getTextureHeight() const;
+            unsigned int getTextureWidth() const;
+            unsigned int getTextureHeight() const;
 
-			unsigned int getTextureFilterShader() const;
+            unsigned int getTextureFilterShader() const;
 
-			std::string toShaderVectorValues(std::vector<float> &) const;
+            std::string toShaderVectorValues(std::vector<float> &) const;
 
-		private:
-			void initializeDisplay();
-			void initializeTexture();
+        private:
+            void initializeDisplay();
+            void initializeTexture();
 
-			bool isInitialized;
+            bool isInitialized;
 
-			unsigned int textureWidth, textureHeight;
-			unsigned int textureType;
-			unsigned int textureAccessFilter;
-			float textureAnisotropy;
-			unsigned int textureNumberLayer;
-			int textureInternalFormat;
-			unsigned int textureFormat;
+            unsigned int textureWidth, textureHeight;
+            unsigned int textureType;
+            unsigned int textureAccessFilter;
+            float textureAnisotropy;
+            unsigned int textureNumberLayer;
+            int textureInternalFormat;
+            unsigned int textureFormat;
 
-			std::shared_ptr<QuadDisplayer> texQuadDisplayer;
-			unsigned int textureFilterShader;
-			int layersToUpdateLoc;
+            std::shared_ptr<QuadDisplayer> texQuadDisplayer;
+            unsigned int textureFilterShader;
+            int layersToUpdateLoc;
 
-			unsigned int fboID;
-			unsigned int textureID;
-	};
+            unsigned int fboID;
+            unsigned int textureID;
+    };
 
-	#include "TextureFilter.inl"
+    #include "TextureFilter.inl"
 
 }
 

@@ -6,11 +6,11 @@
 
 class EPASphereTest : public CppUnit::TestFixture
 {
-	public:
-		static CppUnit::Test *suite();
+    public:
+        static CppUnit::Test *suite();
 
-		void identicalSphere();
-		void overlapSphere();
+        void identicalSphere();
+        void overlapSphere();
 };
 
 #endif

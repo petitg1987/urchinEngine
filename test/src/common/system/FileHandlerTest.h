@@ -6,14 +6,14 @@
 
 class FileHandlerTest : public CppUnit::TestFixture
 {
-	public:
-		static CppUnit::Test *suite();
+    public:
+        static CppUnit::Test *suite();
 
-		void simplifyDirectoryPathUnix();
-		void simplifyDirectoryPathWindow();
+        void simplifyDirectoryPathUnix();
+        void simplifyDirectoryPathWindow();
 
-		void relativePath();
-		void relativePathEqual();
+        void relativePath();
+        void relativePathEqual();
 };
 
 #endif

@@ -7,36 +7,36 @@
 namespace urchin
 {
 
-	class Sound
-	{
-		public:
-			enum SoundType
-			{
-				POINT,
-				AMBIENT
-			};
+    class Sound
+    {
+        public:
+            enum SoundType
+            {
+                POINT,
+                AMBIENT
+            };
 
-			explicit Sound(std::string );
-			virtual ~Sound();
+            explicit Sound(std::string );
+            virtual ~Sound();
 
-			virtual SoundType getSoundType() const = 0;
-			ALuint getSourceId() const;
-			const std::string &getFilename() const;
+            virtual SoundType getSoundType() const = 0;
+            ALuint getSourceId() const;
+            const std::string &getFilename() const;
 
-			bool isStopped() const;
-			bool isPaused() const;
-			bool isPlaying() const;
+            bool isStopped() const;
+            bool isPaused() const;
+            bool isPlaying() const;
 
-			void setVolume(float);
-			void setVolumeChange(float);
-			float getVolume() const;
+            void setVolume(float);
+            void setVolumeChange(float);
+            float getVolume() const;
 
-		private:
-			ALuint sourceId;
+        private:
+            ALuint sourceId;
 
-			std::string filename;
-			float volume;
-	};
+            std::string filename;
+            float volume;
+    };
 
 }
 

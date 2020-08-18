@@ -12,40 +12,40 @@
 namespace urchin
 {
 
-	class Polytope
-	{
-		public:
-			Polytope(std::string, std::vector<std::shared_ptr<PolytopeSurface>> &);
+    class Polytope
+    {
+        public:
+            Polytope(std::string, std::vector<std::shared_ptr<PolytopeSurface>> &);
 
-			const std::string &getName() const;
+            const std::string &getName() const;
 
-			const std::vector<std::shared_ptr<PolytopeSurface>> &getSurfaces() const;
-			const std::shared_ptr<PolytopeSurface> &getSurface(unsigned int) const;
+            const std::vector<std::shared_ptr<PolytopeSurface>> &getSurfaces() const;
+            const std::shared_ptr<PolytopeSurface> &getSurface(unsigned int) const;
 
-			const Rectangle<float> &getXZRectangle() const;
-			const AABBox<float> &getAABBox() const;
+            const Rectangle<float> &getXZRectangle() const;
+            const AABBox<float> &getAABBox() const;
 
-			void setWalkableCandidate(bool);
-			bool isWalkableCandidate() const;
+            void setWalkableCandidate(bool);
+            bool isWalkableCandidate() const;
 
-			void setObstacleCandidate(bool);
-			bool isObstacleCandidate() const;
+            void setObstacleCandidate(bool);
+            bool isObstacleCandidate() const;
 
-		private:
-			void buildXZRectangle();
-			void buildAABBox();
+        private:
+            void buildXZRectangle();
+            void buildAABBox();
 
-			std::string name;
-			std::vector<std::shared_ptr<PolytopeSurface>> surfaces;
+            std::string name;
+            std::vector<std::shared_ptr<PolytopeSurface>> surfaces;
 
-			Rectangle<float> xzRectangle;
-			AABBox<float> aabbox;
+            Rectangle<float> xzRectangle;
+            AABBox<float> aabbox;
 
-			bool walkableCandidate;
-			bool obstacleCandidate;
-	};
+            bool walkableCandidate;
+            bool obstacleCandidate;
+    };
 
-	std::ostream& operator <<(std::ostream &, const Polytope &);
+    std::ostream& operator <<(std::ostream &, const Polytope &);
 
 }
 

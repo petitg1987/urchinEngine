@@ -25,131 +25,131 @@
 namespace urchin
 {
 
-	class Renderer3d : public Renderer, public Observer
-	{
-		public:
-			Renderer3d();
-			~Renderer3d() override;
+    class Renderer3d : public Renderer, public Observer
+    {
+        public:
+            Renderer3d();
+            ~Renderer3d() override;
 
-			//scene properties
-			void onResize(unsigned int, unsigned int) override;
-			void notify(Observable *, int) override;
+            //scene properties
+            void onResize(unsigned int, unsigned int) override;
+            void notify(Observable *, int) override;
 
-			//managers
-			OctreeManager<Model> *getModelOctreeManager() const;
+            //managers
+            OctreeManager<Model> *getModelOctreeManager() const;
 
-			FogManager *getFogManager() const;
+            FogManager *getFogManager() const;
 
             TerrainManager *getTerrainManager() const;
 
-			WaterManager *getWaterManager() const;
+            WaterManager *getWaterManager() const;
 
-			SkyManager *getSkyManager() const;
+            SkyManager *getSkyManager() const;
 
-			GeometryManager *getGeometryManager() const;
+            GeometryManager *getGeometryManager() const;
 
-			LightManager *getLightManager() const;
+            LightManager *getLightManager() const;
 
-			ShadowManager *getShadowManager() const;
-			void activateShadow(bool);
+            ShadowManager *getShadowManager() const;
+            void activateShadow(bool);
 
-			AmbientOcclusionManager *getAmbientOcclusionManager() const;
-			void activateAmbientOcclusion(bool);
+            AmbientOcclusionManager *getAmbientOcclusionManager() const;
+            void activateAmbientOcclusion(bool);
 
-			AntiAliasingManager *getAntiAliasingManager() const;
-			void activateAntiAliasing(bool);
+            AntiAliasingManager *getAntiAliasingManager() const;
+            void activateAntiAliasing(bool);
 
-			//camera
-			void setCamera(Camera *);
-			Camera *getCamera() const;
+            //camera
+            void setCamera(Camera *);
+            Camera *getCamera() const;
 
-			//models
-			void addModel(Model *);
-			void removeModel(Model *);
-			bool isModelExist(Model *);
+            //models
+            void addModel(Model *);
+            void removeModel(Model *);
+            bool isModelExist(Model *);
 
-			//events
+            //events
             bool isPaused() const;
-			bool onKeyDown(unsigned int) override;
-			bool onKeyUp(unsigned int) override;
-			bool onChar(unsigned int) override;
-			bool onMouseMove(int, int) override;
-			void onDisable() override;
+            bool onKeyDown(unsigned int) override;
+            bool onKeyUp(unsigned int) override;
+            bool onChar(unsigned int) override;
+            bool onMouseMove(int, int) override;
+            void onDisable() override;
 
-			//scene
+            //scene
             void pause();
             void unpause();
-			void display(float) override;
+            void display(float) override;
 
-		private:
-			void createOrUpdateDeferredShadingShader();
-			void onCameraProjectionUpdate();
+        private:
+            void createOrUpdateDeferredShadingShader();
+            void onCameraProjectionUpdate();
 
-			//model
+            //model
             void updateModelsInFrustum();
 
-			//scene
-			void displayBuffers();
-			void updateScene(float);
-			void deferredGeometryRendering(float);
-			void displayGeometryDetails();
-			void lightingPassRendering();
-			void postUpdateScene();
+            //scene
+            void displayBuffers();
+            void updateScene(float);
+            void deferredGeometryRendering(float);
+            void displayGeometryDetails();
+            void lightingPassRendering();
+            void postUpdateScene();
 
-			//scene properties
-			unsigned int sceneWidth, sceneHeight;
+            //scene properties
+            unsigned int sceneWidth, sceneHeight;
             bool paused;
 
-			//managers
-			ModelDisplayer *modelDisplayer;
-			OctreeManager<Model> *modelOctreeManager;
-			std::vector<Model *> modelsInFrustum;
+            //managers
+            ModelDisplayer *modelDisplayer;
+            OctreeManager<Model> *modelOctreeManager;
+            std::vector<Model *> modelsInFrustum;
 
-			FogManager *fogManager;
+            FogManager *fogManager;
 
             TerrainManager *terrainManager;
 
-			WaterManager *waterManager;
+            WaterManager *waterManager;
 
-			SkyManager *skyManager;
+            SkyManager *skyManager;
 
             GeometryManager *geometryManager;
 
-			LightManager *lightManager;
+            LightManager *lightManager;
 
-			ShadowManager *shadowManager;
-			bool isShadowActivated;
+            ShadowManager *shadowManager;
+            bool isShadowActivated;
 
-			AmbientOcclusionManager *ambientOcclusionManager;
-			bool isAmbientOcclusionActivated;
+            AmbientOcclusionManager *ambientOcclusionManager;
+            bool isAmbientOcclusionActivated;
 
-			AntiAliasingManager *antiAliasingManager;
-			bool isAntiAliasingActivated;
+            AntiAliasingManager *antiAliasingManager;
+            bool isAntiAliasingActivated;
 
-			//camera
-			Camera *camera;
+            //camera
+            Camera *camera;
 
-			//visual
-			unsigned int *fboIDs;
-			enum //FBO IDs indices
-			{
-				FBO_SCENE = 0
-			};
+            //visual
+            unsigned int *fboIDs;
+            enum //FBO IDs indices
+            {
+                FBO_SCENE = 0
+            };
 
-			unsigned int fboAttachments[3];
-			unsigned int *textureIDs;
-			enum //texture IDs indices
-			{
-				TEX_DEPTH = 0,
-				TEX_DIFFUSE,
-				TEX_NORMAL_AND_AMBIENT,
-				TEX_LIGHTING_PASS
-			};
+            unsigned int fboAttachments[3];
+            unsigned int *textureIDs;
+            enum //texture IDs indices
+            {
+                TEX_DEPTH = 0,
+                TEX_DIFFUSE,
+                TEX_NORMAL_AND_AMBIENT,
+                TEX_LIGHTING_PASS
+            };
 
-			std::shared_ptr<QuadDisplayer> lightingPassQuadDisplayer;
-			unsigned int deferredShadingShader;
-			int mInverseViewProjectionLoc, viewPositionLoc;
-	};
+            std::shared_ptr<QuadDisplayer> lightingPassQuadDisplayer;
+            unsigned int deferredShadingShader;
+            int mInverseViewProjectionLoc, viewPositionLoc;
+    };
 
 }
 

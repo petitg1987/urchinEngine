@@ -12,28 +12,28 @@
 namespace urchin
 {
 
-	class SpinBoxDelegate : public QItemDelegate
-	{
-		Q_OBJECT
+    class SpinBoxDelegate : public QItemDelegate
+    {
+        Q_OBJECT
 
-		public:
-			SpinBoxDelegate(QObject *, BodyShapeWidget *, QTableView *, QStandardItemModel *);
+        public:
+            SpinBoxDelegate(QObject *, BodyShapeWidget *, QTableView *, QStandardItemModel *);
 
-			QWidget *createEditor(QWidget *, const QStyleOptionViewItem &, const QModelIndex &) const override;
+            QWidget *createEditor(QWidget *, const QStyleOptionViewItem &, const QModelIndex &) const override;
 
-			void setEditorData(QWidget *, const QModelIndex &) const override;
-			void setModelData(QWidget *, QAbstractItemModel *, const QModelIndex &) const override;
+            void setEditorData(QWidget *, const QModelIndex &) const override;
+            void setModelData(QWidget *, QAbstractItemModel *, const QModelIndex &) const override;
 
-			void updateEditorGeometry(QWidget *, const QStyleOptionViewItem &, const QModelIndex &) const override;
+            void updateEditorGeometry(QWidget *, const QStyleOptionViewItem &, const QModelIndex &) const override;
 
-		private:
-			BodyShapeWidget *bodyShapeWidget;
-			QTableView *tableView;
-			QStandardItemModel *model;
+        private:
+            BodyShapeWidget *bodyShapeWidget;
+            QTableView *tableView;
+            QStandardItemModel *model;
 
-		private slots:
-			void onChange(double);
-	};
+        private slots:
+            void onChange(double);
+    };
 
 }
 

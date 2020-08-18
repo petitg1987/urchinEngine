@@ -11,94 +11,94 @@
 
 namespace urchin
 {
-	
-	class Widget : public Observable
-	{
-		public:
-			Widget(Position, Size);
-			~Widget() override;
 
-			enum NotificationType
-			{
-				SET_IN_FOREGROUND //Widget should be set in the foreground
-			};
+    class Widget : public Observable
+    {
+        public:
+            Widget(Position, Size);
+            ~Widget() override;
 
-			enum WidgetStates
-			{
-				DEFAULT,
-				CLICKING,
-				FOCUS
-			};
-		
-			void onResize(unsigned int, unsigned int);
-			virtual void createOrUpdateWidget() = 0;
+            enum NotificationType
+            {
+                SET_IN_FOREGROUND //Widget should be set in the foreground
+            };
 
-			virtual void addChild(Widget *);
-			virtual void removeChild(Widget *);
+            enum WidgetStates
+            {
+                DEFAULT,
+                CLICKING,
+                FOCUS
+            };
 
-			void setParent(Widget *);
-			Widget *getParent() const;
+            void onResize(unsigned int, unsigned int);
+            virtual void createOrUpdateWidget() = 0;
 
-			void addEventListener(const std::shared_ptr<EventListener> &);
-			const std::vector<std::shared_ptr<EventListener>> &getEventListeners() const;
-			WidgetStates getWidgetState() const;
-		
-			void setPosition(Position);
-			Position getPosition() const;
-			int getPositionX() const;
-			int getPositionY() const;
-			int getGlobalPositionX() const;
-			int getGlobalPositionY() const;
+            virtual void addChild(Widget *);
+            virtual void removeChild(Widget *);
 
-			void setSize(Size);
-			Size getSize() const;
-			unsigned int getWidth() const;
-			unsigned int getHeight() const;
-		
-			void setIsVisible(bool);
-			bool isVisible() const;
+            void setParent(Widget *);
+            Widget *getParent() const;
 
-			bool onKeyDown(unsigned int);
-			virtual bool onKeyDownEvent(unsigned int);
-			bool onKeyUp(unsigned int);
-			virtual bool onKeyUpEvent(unsigned int);
-			bool onChar(unsigned int);
-			virtual bool onCharEvent(unsigned int);
-			bool onMouseMove(int, int);
-			virtual bool onMouseMoveEvent(int, int);
-			int getMouseX() const;
-			int getMouseY() const;
-			virtual void reset();
-			void onDisable();
+            void addEventListener(const std::shared_ptr<EventListener> &);
+            const std::vector<std::shared_ptr<EventListener>> &getEventListeners() const;
+            WidgetStates getWidgetState() const;
 
-			virtual void display(int, float);
+            void setPosition(Position);
+            Position getPosition() const;
+            int getPositionX() const;
+            int getPositionY() const;
+            int getGlobalPositionX() const;
+            int getGlobalPositionY() const;
 
-		protected:
-			unsigned int getSceneWidth() const;
-			unsigned int getSceneHeight() const;
+            void setSize(Size);
+            Size getSize() const;
+            unsigned int getWidth() const;
+            unsigned int getHeight() const;
 
-			const std::vector<Widget *> &getChildren() const;
+            void setIsVisible(bool);
+            bool isVisible() const;
 
-		private:
-			void handleWidgetKeyDown(unsigned int);
-			void handleWidgetKeyUp(unsigned int);
-			void handleWidgetMouseMove(int, int);
-			void handleDisable();
+            bool onKeyDown(unsigned int);
+            virtual bool onKeyDownEvent(unsigned int);
+            bool onKeyUp(unsigned int);
+            virtual bool onKeyUpEvent(unsigned int);
+            bool onChar(unsigned int);
+            virtual bool onCharEvent(unsigned int);
+            bool onMouseMove(int, int);
+            virtual bool onMouseMoveEvent(int, int);
+            int getMouseX() const;
+            int getMouseY() const;
+            virtual void reset();
+            void onDisable();
 
-			unsigned int sceneWidth, sceneHeight;
+            virtual void display(int, float);
 
-			Widget *parent;
-			std::vector<Widget *> children;
+        protected:
+            unsigned int getSceneWidth() const;
+            unsigned int getSceneHeight() const;
 
-			std::vector<std::shared_ptr<EventListener>> eventListeners;
-			WidgetStates widgetState;
+            const std::vector<Widget *> &getChildren() const;
 
-			Position position;
-			Size size;
-			bool bIsVisible;
+        private:
+            void handleWidgetKeyDown(unsigned int);
+            void handleWidgetKeyUp(unsigned int);
+            void handleWidgetMouseMove(int, int);
+            void handleDisable();
 
-			int mouseX, mouseY;
-	};
+            unsigned int sceneWidth, sceneHeight;
+
+            Widget *parent;
+            std::vector<Widget *> children;
+
+            std::vector<std::shared_ptr<EventListener>> eventListeners;
+            WidgetStates widgetState;
+
+            Position position;
+            Size size;
+            bool bIsVisible;
+
+            int mouseX, mouseY;
+    };
 
 }
 

@@ -10,18 +10,18 @@
 namespace urchin
 {
 
-	class CollisionConvexHullReaderWriter : public CollisionShapeReaderWriter
-	{
-		//XML tags
-		#define POINTS_TAG "points"
-		#define POINT_TAG "point"
+    class CollisionConvexHullReaderWriter : public CollisionShapeReaderWriter
+    {
+        //XML tags
+        #define POINTS_TAG "points"
+        #define POINT_TAG "point"
 
-		public:
-			~CollisionConvexHullReaderWriter() override = default;
+        public:
+            ~CollisionConvexHullReaderWriter() override = default;
 
-			CollisionShape3D *loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &) const override;
-			void writeOn(const std::shared_ptr<XmlChunk> &, const CollisionShape3D *, XmlWriter &) const override;
-	};
+            CollisionShape3D *loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &) const override;
+            void writeOn(const std::shared_ptr<XmlChunk> &, const CollisionShape3D *, XmlWriter &) const override;
+    };
 
 }
 

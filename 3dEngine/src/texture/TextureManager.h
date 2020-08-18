@@ -7,26 +7,26 @@
 namespace urchin
 {
 
-	/**
-	* A texture manager global to all renderer
-	*/
-	class TextureManager : public Singleton<TextureManager>
-	{
-		public:
-			friend class Singleton<TextureManager>;
+    /**
+    * A texture manager global to all renderer
+    */
+    class TextureManager : public Singleton<TextureManager>
+    {
+        public:
+            friend class Singleton<TextureManager>;
 
-			float getAnisotropy() const;
-			void setAnisotropy(float);
-			float getMaxSupportedAnisotropy() const;
-		
-		private:
-			TextureManager();
-			~TextureManager() override = default;
+            float getAnisotropy() const;
+            void setAnisotropy(float);
+            float getMaxSupportedAnisotropy() const;
 
-			void clampToMaxAnisotropy();
+        private:
+            TextureManager();
+            ~TextureManager() override = default;
 
-			float anisotropy;
-	};
+            void clampToMaxAnisotropy();
+
+            float anisotropy;
+    };
 
 }
 

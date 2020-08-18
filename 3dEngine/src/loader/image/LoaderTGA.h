@@ -8,59 +8,59 @@
 
 namespace urchin
 {
-	
-	#pragma pack(push, 1)
-	struct TgaHeader
-	{
-		unsigned char idLenght; //size of image id
-		unsigned char colormapType; //1 is has a color map
-		unsigned char imageType; //compression type
 
-		short cmFirstEntry; //color map origin
-		short cmLength; //color map length
-		unsigned char cmSize; //color map size
+    #pragma pack(push, 1)
+    struct TgaHeader
+    {
+        unsigned char idLenght; //size of image id
+        unsigned char colormapType; //1 is has a color map
+        unsigned char imageType; //compression type
 
-		short xOrigin; //bottom left x coordinate origin
-		short yOrigin; //bottom left y coordinate origin
+        short cmFirstEntry; //color map origin
+        short cmLength; //color map length
+        unsigned char cmSize; //color map size
 
-		short width; //picture width (in pixels)
-		short height; //picture height (in pixels)
+        short xOrigin; //bottom left x coordinate origin
+        short yOrigin; //bottom left y coordinate origin
 
-		unsigned char pixelDepth; //bits per pixel: 8, 16, 24 or 32
-		unsigned char imageDescriptor; //24 bits = 0x00; 32 bits = 0x80
-	};
-	#pragma pack(pop)
+        short width; //picture width (in pixels)
+        short height; //picture height (in pixels)
 
-	class LoaderTGA : public Loader<Image>
-	{
-		public:
-			LoaderTGA();
-			~LoaderTGA() override = default;
+        unsigned char pixelDepth; //bits per pixel: 8, 16, 24 or 32
+        unsigned char imageDescriptor; //24 bits = 0x00; 32 bits = 0x80
+    };
+    #pragma pack(pop)
 
-			Image *loadFromFile(const std::string &) override;
+    class LoaderTGA : public Loader<Image>
+    {
+        public:
+            LoaderTGA();
+            ~LoaderTGA() override = default;
 
-		private:
-			void getImageInfo(const TgaHeader &);
-			void readTGA8bits();
-			void readTGA16bits();
-			void readTGA24bits();
-			void readTGA32bits();
-			void readTGAgray8bits();
-			void readTGA8bitsRLE();
-			void readTGA16bitsRLE();
-			void readTGA24bitsRLE();
-			void readTGA32bitsRLE();
-			void readTGAgray8bitsRLE();
+            Image *loadFromFile(const std::string &) override;
 
-			//temporary attributes
-			unsigned char *colorMap, *data;
-		
-			//attributes for Image
-			unsigned int width, height;
-			unsigned int componentsCount;
-			Image::ImageFormat format;
-			std::vector<unsigned char> texels;
-	};
+        private:
+            void getImageInfo(const TgaHeader &);
+            void readTGA8bits();
+            void readTGA16bits();
+            void readTGA24bits();
+            void readTGA32bits();
+            void readTGAgray8bits();
+            void readTGA8bitsRLE();
+            void readTGA16bitsRLE();
+            void readTGA24bitsRLE();
+            void readTGA32bitsRLE();
+            void readTGAgray8bitsRLE();
+
+            //temporary attributes
+            unsigned char *colorMap, *data;
+
+            //attributes for Image
+            unsigned int width, height;
+            unsigned int componentsCount;
+            Image::ImageFormat format;
+            std::vector<unsigned char> texels;
+    };
 
 }
 

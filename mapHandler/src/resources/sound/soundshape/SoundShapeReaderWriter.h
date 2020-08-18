@@ -9,21 +9,21 @@
 namespace urchin
 {
 
-	class SoundShapeReaderWriter
-	{
-		//XML attributes
-		#define TYPE_ATTR "type"
+    class SoundShapeReaderWriter
+    {
+        //XML attributes
+        #define TYPE_ATTR "type"
 
-		//XML value
-		#define SPHERE_VALUE "SPHERE"
-		#define BOX_VALUE "BOX"
+        //XML value
+        #define SPHERE_VALUE "SPHERE"
+        #define BOX_VALUE "BOX"
 
-		public:
-			virtual ~SoundShapeReaderWriter() = default;
+        public:
+            virtual ~SoundShapeReaderWriter() = default;
 
-			virtual SoundShape *loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &) const = 0;
-			virtual void writeOn(const std::shared_ptr<XmlChunk> &, const SoundShape *, XmlWriter &) const = 0;
-	};
+            virtual SoundShape *loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &) const = 0;
+            virtual void writeOn(const std::shared_ptr<XmlChunk> &, const SoundShape *, XmlWriter &) const = 0;
+    };
 
 }
 

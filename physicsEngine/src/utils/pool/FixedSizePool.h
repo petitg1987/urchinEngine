@@ -9,34 +9,34 @@
 namespace urchin
 {
 
-	/**
-	* Pool which allocate a fixed size of memory defined in constructor argument. This pool offers high performance until the maximum
-	* elements defined in constructor is not reached. Once maximum number of element reached, the performance strongly decrease.
-	*/
-	template<class BaseType> class FixedSizePool
-	{
-		public:
-			FixedSizePool(const std::string &, unsigned int, unsigned int);
-			virtual ~FixedSizePool();
+    /**
+    * Pool which allocate a fixed size of memory defined in constructor argument. This pool offers high performance until the maximum
+    * elements defined in constructor is not reached. Once maximum number of element reached, the performance strongly decrease.
+    */
+    template<class BaseType> class FixedSizePool
+    {
+        public:
+            FixedSizePool(const std::string &, unsigned int, unsigned int);
+            virtual ~FixedSizePool();
 
-			virtual void* allocate(unsigned int);
-			virtual void free(BaseType *ptr);
+            virtual void* allocate(unsigned int);
+            virtual void free(BaseType *ptr);
 
-		private:
-			void logPoolIsFull();
+        private:
+            void logPoolIsFull();
 
-			std::string poolName;
-			unsigned int maxElementSize;
-			unsigned int maxElements;
-			unsigned int freeCount; //number of free locations
+            std::string poolName;
+            unsigned int maxElementSize;
+            unsigned int maxElements;
+            unsigned int freeCount; //number of free locations
 
-			unsigned char* pool;
-			void* firstFree;
+            unsigned char* pool;
+            void* firstFree;
 
-			bool fullPoolLogged;
-	};
+            bool fullPoolLogged;
+    };
 
-	#include "FixedSizePool.inl"
+    #include "FixedSizePool.inl"
 
 }
 

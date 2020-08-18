@@ -10,24 +10,24 @@
 namespace urchin
 {
 
-	class ResourceManager : public Singleton<ResourceManager>
-	{
-		public:
-			friend class Singleton<ResourceManager>;
-			
-			template<class T> T* getResource(const std::string &) const;
-			void addResource(const std::string &, Resource *);
-			void removeResource(const std::string &);
-			
-		private:
-			ResourceManager();
-			~ResourceManager() override;
+    class ResourceManager : public Singleton<ResourceManager>
+    {
+        public:
+            friend class Singleton<ResourceManager>;
 
-			std::map<std::string, Resource *> mResources;
-	};
+            template<class T> T* getResource(const std::string &) const;
+            void addResource(const std::string &, Resource *);
+            void removeResource(const std::string &);
 
-	#include "ResourceManager.inl"
-	
+        private:
+            ResourceManager();
+            ~ResourceManager() override;
+
+            std::map<std::string, Resource *> mResources;
+    };
+
+    #include "ResourceManager.inl"
+
 }
 
 #endif

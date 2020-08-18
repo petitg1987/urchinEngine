@@ -18,62 +18,62 @@
 namespace urchin
 {
 
-	class PhysicsWorld
-	{
-		public:
-			PhysicsWorld();
-			~PhysicsWorld();
+    class PhysicsWorld
+    {
+        public:
+            PhysicsWorld();
+            ~PhysicsWorld();
 
-			BodyManager *getBodyManager() const;
-			CollisionWorld *getCollisionWorld() const;
+            BodyManager *getBodyManager() const;
+            CollisionWorld *getCollisionWorld() const;
 
-			void addBody(AbstractBody *);
-			void removeBody(AbstractBody *);
+            void addBody(AbstractBody *);
+            void removeBody(AbstractBody *);
 
-			void addProcessable(const std::shared_ptr<Processable> &);
-			void removeProcessable(const std::shared_ptr<Processable> &);
+            void addProcessable(const std::shared_ptr<Processable> &);
+            void removeProcessable(const std::shared_ptr<Processable> &);
 
-			std::shared_ptr<const RayTestResult> rayTest(const Ray<float> &);
+            std::shared_ptr<const RayTestResult> rayTest(const Ray<float> &);
 
-			void setGravity(const Vector3<float> &);
-			Vector3<float> getGravity() const;
+            void setGravity(const Vector3<float> &);
+            Vector3<float> getGravity() const;
 
-			void setUp(float);
-			void pause();
-			void unpause();
-			bool isPaused() const;
-			void interrupt();
-			void controlExecution();
+            void setUp(float);
+            void pause();
+            void unpause();
+            bool isPaused() const;
+            void interrupt();
+            void controlExecution();
 
-			void createCollisionVisualizer();
-			const CollisionVisualizer *getCollisionVisualizer() const;
+            void createCollisionVisualizer();
+            const CollisionVisualizer *getCollisionVisualizer() const;
 
-		private:
-			void startPhysicsUpdate();
-			bool continueExecution();
-			void processPhysicsUpdate(float);
+        private:
+            void startPhysicsUpdate();
+            bool continueExecution();
+            void processPhysicsUpdate(float);
 
-			void setupProcessables(const std::vector<std::shared_ptr<Processable>> &, float, const Vector3<float> &);
-			void executeProcessables(const std::vector<std::shared_ptr<Processable>> &, float, const Vector3<float> &);
+            void setupProcessables(const std::vector<std::shared_ptr<Processable>> &, float, const Vector3<float> &);
+            void executeProcessables(const std::vector<std::shared_ptr<Processable>> &, float, const Vector3<float> &);
 
-			std::thread *physicsSimulationThread;
-			std::atomic_bool physicsSimulationStopper;
-			static std::exception_ptr physicsThreadExceptionPtr;
+            std::thread *physicsSimulationThread;
+            std::atomic_bool physicsSimulationStopper;
+            static std::exception_ptr physicsThreadExceptionPtr;
 
-			mutable std::mutex mutex;
-			Vector3<float> gravity;
-			float timeStep;
-			bool paused;
+            mutable std::mutex mutex;
+            Vector3<float> gravity;
+            float timeStep;
+            bool paused;
 
-			BodyManager *bodyManager;
-			CollisionWorld *collisionWorld;
+            BodyManager *bodyManager;
+            CollisionWorld *collisionWorld;
 
-			std::vector<std::shared_ptr<Processable>> processables;
-			std::vector<std::shared_ptr<Processable>> oneShotProcessables;
-			std::vector<std::shared_ptr<Processable>> copiedProcessables;
+            std::vector<std::shared_ptr<Processable>> processables;
+            std::vector<std::shared_ptr<Processable>> oneShotProcessables;
+            std::vector<std::shared_ptr<Processable>> copiedProcessables;
 
-			CollisionVisualizer *collisionVisualizer;
-	};
+            CollisionVisualizer *collisionVisualizer;
+    };
 
 }
 

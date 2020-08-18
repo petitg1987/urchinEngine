@@ -6,23 +6,23 @@
 namespace urchin
 {
 
-	/**
-	 * Represents a XML attribute
-	 */
-	class XmlAttribute
-	{
-		public:
-			XmlAttribute();
-			XmlAttribute(std::string , std::string );
+    /**
+     * Represents a XML attribute
+     */
+    class XmlAttribute
+    {
+        public:
+            XmlAttribute();
+            XmlAttribute(std::string , std::string );
 
-			const std::string &getAttributeName() const;
-			const std::string &getAttributeValue() const;
+            const std::string &getAttributeName() const;
+            const std::string &getAttributeValue() const;
 
-		private:
-			std::string attributeName;
-			std::string attributeValue;
+        private:
+            std::string attributeName;
+            std::string attributeValue;
 
-	};
+    };
 
 }
 

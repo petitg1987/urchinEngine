@@ -3,38 +3,38 @@
 namespace urchin
 {
 
-	Light::Light() :
-			ambientColor(Point3<float>(0.0f, 0.0f, 0.0f)),
-			produceShadow(false)
-	{
+    Light::Light() :
+            ambientColor(Point3<float>(0.0f, 0.0f, 0.0f)),
+            produceShadow(false)
+    {
 
-	}
+    }
 
-	const Transform<float> &Light::getTransform() const
-	{
-		return noTransform;
-	}
+    const Transform<float> &Light::getTransform() const
+    {
+        return noTransform;
+    }
 
-	void Light::setProduceShadow(bool produceShadow)
-	{
-		this->produceShadow = produceShadow;
+    void Light::setProduceShadow(bool produceShadow)
+    {
+        this->produceShadow = produceShadow;
 
-		notifyObservers(this, Light::PRODUCE_SHADOW);
-	}
+        notifyObservers(this, Light::PRODUCE_SHADOW);
+    }
 
-	bool Light::isProduceShadow() const
-	{
-		return produceShadow;
-	}
+    bool Light::isProduceShadow() const
+    {
+        return produceShadow;
+    }
 
-	void Light::setAmbientColor(const Point3<float> &ambientColor)
-	{
-		this->ambientColor = ambientColor;
-	}
+    void Light::setAmbientColor(const Point3<float> &ambientColor)
+    {
+        this->ambientColor = ambientColor;
+    }
 
-	const Point3<float> &Light::getAmbientColor() const
-	{
-		return ambientColor;
-	}
+    const Point3<float> &Light::getAmbientColor() const
+    {
+        return ambientColor;
+    }
 
 }

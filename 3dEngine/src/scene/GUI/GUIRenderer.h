@@ -9,36 +9,36 @@
 
 namespace urchin
 {
-	
-	class GUIRenderer : public Renderer, public Observer
-	{
-		public:
-			GUIRenderer();
-			~GUIRenderer() override;
 
-			void onResize(unsigned int, unsigned  int) override;
-			void notify(Observable *, int) override;
-			void setupSkin(const std::string &);
+    class GUIRenderer : public Renderer, public Observer
+    {
+        public:
+            GUIRenderer();
+            ~GUIRenderer() override;
 
-			bool onKeyDown(unsigned int) override;
-			bool onKeyUp(unsigned int) override;
-			bool onChar(unsigned int) override;
-			bool onMouseMove(int, int) override;
-			void onDisable() override;
-			
-			void addWidget(Widget *);
-			void removeWidget(Widget *);
+            void onResize(unsigned int, unsigned  int) override;
+            void notify(Observable *, int) override;
+            void setupSkin(const std::string &);
 
-			void display(float) override;
-			
-		private:
-			std::vector<Widget *> widgets;
+            bool onKeyDown(unsigned int) override;
+            bool onKeyUp(unsigned int) override;
+            bool onChar(unsigned int) override;
+            bool onMouseMove(int, int) override;
+            void onDisable() override;
 
-			Matrix3<float> mProjection, mModelView;
-			unsigned int GUIShader;
-			int mProjectionLoc, translateDistanceLoc, diffuseTexSamplerLoc;
-	};
-	
+            void addWidget(Widget *);
+            void removeWidget(Widget *);
+
+            void display(float) override;
+
+        private:
+            std::vector<Widget *> widgets;
+
+            Matrix3<float> mProjection, mModelView;
+            unsigned int GUIShader;
+            int mProjectionLoc, translateDistanceLoc, diffuseTexSamplerLoc;
+    };
+
 }
 
 #endif

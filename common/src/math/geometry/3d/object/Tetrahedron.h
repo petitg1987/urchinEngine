@@ -10,24 +10,24 @@
 namespace urchin
 {
 
-	/**
-	* Represents a tetrahedron
-	*/
-	template<class T> class Tetrahedron : public ConvexObject3D<T>
-	{
-		public:
-			Tetrahedron(const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &);
+    /**
+    * Represents a tetrahedron
+    */
+    template<class T> class Tetrahedron : public ConvexObject3D<T>
+    {
+        public:
+            Tetrahedron(const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &);
 
-			Point3<T> getSupportPoint(const Vector3<T> &) const;
-			Point3<T> closestPoint(const Point3<T> &, T [4], unsigned short voronoiRegionMask = 15u) const;
+            Point3<T> getSupportPoint(const Vector3<T> &) const;
+            Point3<T> closestPoint(const Point3<T> &, T [4], unsigned short voronoiRegionMask = 15u) const;
 
-			bool collideWithPoint(const Point3<T> &) const;
+            bool collideWithPoint(const Point3<T> &) const;
 
-		private:
-			bool pointOutsidePlane(const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, bool) const;
+        private:
+            bool pointOutsidePlane(const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, bool) const;
 
-			Point3<T> a, b, c, d;
-	};
+            Point3<T> a, b, c, d;
+    };
 
 }
 

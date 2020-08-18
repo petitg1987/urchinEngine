@@ -10,30 +10,30 @@
 namespace urchin
 {
 
-	/**
-	* Allow to read a sound file to get stream data and sound information
-	*/
-	class SoundFileReader
-	{
-		public:
-			explicit SoundFileReader(const std::string &);
-			~SoundFileReader();
+    /**
+    * Allow to read a sound file to get stream data and sound information
+    */
+    class SoundFileReader
+    {
+        public:
+            explicit SoundFileReader(const std::string &);
+            ~SoundFileReader();
 
-			void readNextChunk(std::vector<ALshort> &, unsigned int &, bool);
+            void readNextChunk(std::vector<ALshort> &, unsigned int &, bool);
 
-			ALenum getFormat() const;
-			ALsizei getNumberOfSamples() const;
-			ALsizei getNumberOfChannels() const;
-			ALsizei getSampleRate() const;
-			float getSoundDuration() const;
+            ALenum getFormat() const;
+            ALsizei getNumberOfSamples() const;
+            ALsizei getNumberOfChannels() const;
+            ALsizei getSampleRate() const;
+            float getSoundDuration() const;
 
-		private:
-			SNDFILE *file;
-			bool bEndOfFileReached;
+        private:
+            SNDFILE *file;
+            bool bEndOfFileReached;
 
-			SF_INFO fileInfos;
-			ALenum format;
-	};
+            SF_INFO fileInfos;
+            ALenum format;
+    };
 
 }
 

@@ -6,36 +6,36 @@
 namespace urchin
 {
 
-	MeshService::MeshService() : Singleton<MeshService>()
-	{
+    MeshService::MeshService() : Singleton<MeshService>()
+    {
 
-	}
+    }
 
-	void MeshService::computeVertices(const ConstMesh *const constMesh, const std::vector<Bone> &skeleton, Point3<float> *const vertices)
-	{
-		//setup vertices
-		for(unsigned int i=0;i<constMesh->getNumberVertices();++i)
-		{
-			vertices[i].setNull();
+    void MeshService::computeVertices(const ConstMesh *const constMesh, const std::vector<Bone> &skeleton, Point3<float> *const vertices)
+    {
+        //setup vertices
+        for(unsigned int i=0;i<constMesh->getNumberVertices();++i)
+        {
+            vertices[i].setNull();
 
-			//calculate final vertex to draw with weights
-			for(int j=0;j<constMesh->getStructVertex(i).weightCount;++j)
-			{
-				const Weight *weight = &constMesh->getWeight(static_cast<unsigned int>(constMesh->getStructVertex(i).weightStart + j));
-				const Bone &bone = skeleton[weight->bone];
+            //calculate final vertex to draw with weights
+            for(int j=0;j<constMesh->getStructVertex(i).weightCount;++j)
+            {
+                const Weight *weight = &constMesh->getWeight(static_cast<unsigned int>(constMesh->getStructVertex(i).weightStart + j));
+                const Bone &bone = skeleton[weight->bone];
 
-				//calculate transformed vertex for this weight
-				Point3<float> wv = bone.orient.rotatePoint(weight->pos);
+                //calculate transformed vertex for this weight
+                Point3<float> wv = bone.orient.rotatePoint(weight->pos);
 
-				//the sum of all weight->bias should be 1.0
-				vertices[i].X += (bone.pos.X + wv.X) * weight->bias;
-				vertices[i].Y += (bone.pos.Y + wv.Y) * weight->bias;
-				vertices[i].Z += (bone.pos.Z + wv.Z) * weight->bias;
-			}
-		}
-	}
+                //the sum of all weight->bias should be 1.0
+                vertices[i].X += (bone.pos.X + wv.X) * weight->bias;
+                vertices[i].Y += (bone.pos.Y + wv.Y) * weight->bias;
+                vertices[i].Z += (bone.pos.Z + wv.Z) * weight->bias;
+            }
+        }
+    }
 
-	void MeshService::computeNormals(const ConstMesh *const constMesh, const Point3<float> *const vertices, DataVertex *const dataVertices)
+    void MeshService::computeNormals(const ConstMesh *const constMesh, const Point3<float> *const vertices, DataVertex *const dataVertices)
     {
         //compute weighted normals
         static std::vector<Vector3<float>> vertexNormals;
@@ -80,7 +80,7 @@ namespace urchin
                 dataVertices[vertexIndex].tangent = c2.normalize();
             }
         }
-	}
+    }
 
     int MeshService::indexOfVertexInTriangle(const Triangle &triangle, unsigned int vertexIndex, const ConstMesh *const constMesh)
     {

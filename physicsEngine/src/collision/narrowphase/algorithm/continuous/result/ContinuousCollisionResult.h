@@ -12,32 +12,32 @@
 namespace urchin
 {
 
-	template<class T> class ContinuousCollisionResult : public AlgorithmResult
-	{
-		public:
-			ContinuousCollisionResult(AbstractWorkBody *, const Vector3<T> &, const Point3<T> &, T);
-			ContinuousCollisionResult(const ContinuousCollisionResult &);
+    template<class T> class ContinuousCollisionResult : public AlgorithmResult
+    {
+        public:
+            ContinuousCollisionResult(AbstractWorkBody *, const Vector3<T> &, const Point3<T> &, T);
+            ContinuousCollisionResult(const ContinuousCollisionResult &);
 
-			AbstractWorkBody *getBody2() const;
+            AbstractWorkBody *getBody2() const;
 
-			const Vector3<T> &getNormalFromObject2() const;
-			const Point3<T> &getHitPointOnObject2() const;
-			T getTimeToHit() const;
+            const Vector3<T> &getNormalFromObject2() const;
+            const Point3<T> &getHitPointOnObject2() const;
+            T getTimeToHit() const;
 
-		private:
-			AbstractWorkBody *body2;
+        private:
+            AbstractWorkBody *body2;
 
-			Vector3<T> normalFromObject2;
-			Point3<T> hitPointOnObject2;
-			T timeToHit;
-	};
+            Vector3<T> normalFromObject2;
+            Point3<T> hitPointOnObject2;
+            T timeToHit;
+    };
 
-	template<class T> struct ContinuousCollisionResultComparator
-	{
-		bool operator()(const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter> &, const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter> &) const;
-	};
+    template<class T> struct ContinuousCollisionResultComparator
+    {
+        bool operator()(const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter> &, const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter> &) const;
+    };
 
-	typedef std::set<std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter>, ContinuousCollisionResultComparator<float>> ccd_set;
+    typedef std::set<std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter>, ContinuousCollisionResultComparator<float>> ccd_set;
 
 }
 

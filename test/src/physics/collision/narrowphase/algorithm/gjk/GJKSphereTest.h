@@ -6,12 +6,12 @@
 
 class GJKSphereTest : public CppUnit::TestFixture
 {
-	public:
-		static CppUnit::Test *suite();
+    public:
+        static CppUnit::Test *suite();
 
-		void identicalSphere();
-		void separateSphere();
-		void overlapSphere();
+        void identicalSphere();
+        void separateSphere();
+        void overlapSphere();
 };
 
 #endif

@@ -8,24 +8,24 @@
 namespace urchin
 {
 
-	class FileSystem : public Singleton<FileSystem>
-	{
-		public:
-			friend class Singleton<FileSystem>;
+    class FileSystem : public Singleton<FileSystem>
+    {
+        public:
+            friend class Singleton<FileSystem>;
 
-			void setupResourcesDirectory(const std::string &);
-			const std::string &getResourcesDirectory() const;
+            void setupResourcesDirectory(const std::string &);
+            const std::string &getResourcesDirectory() const;
 
-			void setupSaveDirectory(const std::string &);
-			const std::string &getSaveDirectory() const;
+            void setupSaveDirectory(const std::string &);
+            const std::string &getSaveDirectory() const;
 
-		private:
-			FileSystem();
-			~FileSystem() override = default;
+        private:
+            FileSystem();
+            ~FileSystem() override = default;
 
-			std::string resourcesDirectory;
-			std::string saveDirectory;
-	};
+            std::string resourcesDirectory;
+            std::string saveDirectory;
+    };
 
 }
 

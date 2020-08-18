@@ -6,11 +6,11 @@
 
 class GJKConvexObjectTest : public CppUnit::TestFixture
 {
-	public:
-		static CppUnit::Test *suite();
+    public:
+        static CppUnit::Test *suite();
 
-		void separateSphereAndBox();
-		void overlapSphereAndBox();
+        void separateSphereAndBox();
+        void overlapSphereAndBox();
 };
 
 #endif

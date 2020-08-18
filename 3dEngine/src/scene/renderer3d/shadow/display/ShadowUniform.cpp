@@ -5,44 +5,44 @@
 namespace urchin
 {
 
-	ShadowUniform::ShadowUniform() :
-			CustomUniform(),
-			mModelProjectionMatrixLoc(0),
-			shadowData(nullptr)
-	{
+    ShadowUniform::ShadowUniform() :
+            CustomUniform(),
+            mModelProjectionMatrixLoc(0),
+            shadowData(nullptr)
+    {
 
-	}
+    }
 
-	void ShadowUniform::setProjectionMatricesLocation(int mModelProjectionMatrixLoc)
-	{
-		this->mModelProjectionMatrixLoc = mModelProjectionMatrixLoc;
+    void ShadowUniform::setProjectionMatricesLocation(int mModelProjectionMatrixLoc)
+    {
+        this->mModelProjectionMatrixLoc = mModelProjectionMatrixLoc;
 
-		updateProjectionMatrices();
-	}
+        updateProjectionMatrices();
+    }
 
-	void ShadowUniform::setUniformData(const ShadowData *shadowData)
-	{
-		this->shadowData = shadowData;
+    void ShadowUniform::setUniformData(const ShadowData *shadowData)
+    {
+        this->shadowData = shadowData;
 
-		updateProjectionMatrices();
-	}
+        updateProjectionMatrices();
+    }
 
-	void ShadowUniform::loadCustomUniforms()
-	{
-		glUniformMatrix4fv(mModelProjectionMatrixLoc, projectionMatrices.size(), GL_FALSE, (const float*)projectionMatrices[0]);
-	}
+    void ShadowUniform::loadCustomUniforms()
+    {
+        glUniformMatrix4fv(mModelProjectionMatrixLoc, projectionMatrices.size(), GL_FALSE, (const float*)projectionMatrices[0]);
+    }
 
-	void ShadowUniform::updateProjectionMatrices()
-	{
-		projectionMatrices.clear();
+    void ShadowUniform::updateProjectionMatrices()
+    {
+        projectionMatrices.clear();
 
-		if(shadowData!=nullptr)
+        if(shadowData!=nullptr)
         {
             for (std::size_t i = 0; i < shadowData->getNbFrustumShadowData(); ++i)
             {
                 projectionMatrices.push_back(shadowData->getFrustumShadowData(i)->getLightProjectionMatrix());
             }
         }
-	}
+    }
 
 }

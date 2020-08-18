@@ -9,17 +9,17 @@ namespace urchin
     //static
     const char SceneFreeCamera::DATA_DELIMITER = '@';
 
-	SceneFreeCamera::SceneFreeCamera(float angle, float nearPlane, float farPlane, const MouseController &mouseController) :
-		FreeCamera(angle, nearPlane, farPlane),
+    SceneFreeCamera::SceneFreeCamera(float angle, float nearPlane, float farPlane, const MouseController &mouseController) :
+        FreeCamera(angle, nearPlane, farPlane),
         mouseController(mouseController)
-	{
+    {
 
-	}
+    }
 
-	void SceneFreeCamera::moveMouse(unsigned int x, unsigned int y)
-	{
+    void SceneFreeCamera::moveMouse(unsigned int x, unsigned int y)
+    {
         mouseController.moveMouse(x, y);
-	}
+    }
 
     void SceneFreeCamera::loadCameraState(const std::string &mapFilename)
     {

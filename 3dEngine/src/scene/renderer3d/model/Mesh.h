@@ -9,41 +9,41 @@
 namespace urchin
 {
 
-	class Mesh
-	{
-		public:
-			explicit Mesh(const ConstMesh *);
-			~Mesh();
+    class Mesh
+    {
+        public:
+            explicit Mesh(const ConstMesh *);
+            ~Mesh();
 
-			void update(const std::vector<Bone> &);
+            void update(const std::vector<Bone> &);
 
-			void display(const MeshParameter &) const;
+            void display(const MeshParameter &) const;
 
-			void drawBaseBones(const Matrix4<float> &, const Matrix4<float> &) const;
+            void drawBaseBones(const Matrix4<float> &, const Matrix4<float> &) const;
 
-		private:
-			const ConstMesh *const constMesh;
+        private:
+            const ConstMesh *const constMesh;
 
-			Point3<float> *const vertices;
-			DataVertex *const dataVertices; //additional information for the vertex
+            Point3<float> *const vertices;
+            DataVertex *const dataVertices; //additional information for the vertex
 
-			unsigned int bufferIDs[4], vertexArrayObject;
-			enum //buffer IDs indices
-			{
-				VAO_VERTEX_POSITION = 0,
-				VAO_TEX_COORD,
-				VAO_NORMAL_TANGENT,
-				VAO_INDEX
-			};
-			enum //shader input
-			{
-				SHADER_VERTEX_POSITION = 0,
-				SHADER_TEX_COORD,
-				SHADER_NORMAL,
-				SHADER_TANGENT
-			};
+            unsigned int bufferIDs[4], vertexArrayObject;
+            enum //buffer IDs indices
+            {
+                VAO_VERTEX_POSITION = 0,
+                VAO_TEX_COORD,
+                VAO_NORMAL_TANGENT,
+                VAO_INDEX
+            };
+            enum //shader input
+            {
+                SHADER_VERTEX_POSITION = 0,
+                SHADER_TEX_COORD,
+                SHADER_NORMAL,
+                SHADER_TANGENT
+            };
 
-	};
+    };
 
 }
 

@@ -24,25 +24,25 @@ namespace urchin
     NavMeshGenerator::NavMeshGenerator() :
             polygonMinDotProductThreshold(std::cos(AngleConverter<float>::toRadian(ConfigService::instance()->getFloatValue("navMesh.polygonRemoveAngleThresholdInDegree")))),
             polygonMergePointsDistanceThreshold(ConfigService::instance()->getFloatValue("navMesh.polygonMergePointsDistanceThreshold")),
-			navMeshAgent(std::make_shared<NavMeshAgent>()),
-			navMesh(std::make_shared<NavMesh>()),
-			needFullRefresh(false),
+            navMeshAgent(std::make_shared<NavMeshAgent>()),
+            navMesh(std::make_shared<NavMesh>()),
+            needFullRefresh(false),
             navigationObjects(AABBTree<std::shared_ptr<NavObject>>(ConfigService::instance()->getFloatValue("navMesh.polytopeAabbTreeFatMargin")))
     {
 
-	}
+    }
 
-	void NavMeshGenerator::setNavMeshAgent(std::shared_ptr<NavMeshAgent> navMeshAgent)
-	{
-		std::lock_guard<std::mutex> lock(navMeshMutex);
+    void NavMeshGenerator::setNavMeshAgent(std::shared_ptr<NavMeshAgent> navMeshAgent)
+    {
+        std::lock_guard<std::mutex> lock(navMeshMutex);
 
-		this->navMeshAgent = std::move(navMeshAgent);
+        this->navMeshAgent = std::move(navMeshAgent);
         this->needFullRefresh.store(true, std::memory_order_relaxed);
 
         float navigationObjectsJumpMargin = this->navMeshAgent->getJumpDistance() / 2.0f;
         float navigationObjectsMargin = std::max(navigationObjectsJumpMargin, ConfigService::instance()->getFloatValue("navMesh.polytopeAabbTreeFatMargin"));
         this->navigationObjects.updateFatMargin(navigationObjectsMargin);
-	}
+    }
 
     const std::shared_ptr<NavMeshAgent> &NavMeshGenerator::getNavMeshAgent() const
     {
@@ -59,15 +59,15 @@ namespace urchin
     /**
      * See '_doc' for an algorithm overview
      */
-	std::shared_ptr<NavMesh> NavMeshGenerator::generate(AIWorld &aiWorld)
-	{
-		ScopeProfiler scopeProfiler("ai", "navMeshGenerate");
+    std::shared_ptr<NavMesh> NavMeshGenerator::generate(AIWorld &aiWorld)
+    {
+        ScopeProfiler scopeProfiler("ai", "navMeshGenerate");
 
-		updateExpandedPolytopes(aiWorld);
+        updateExpandedPolytopes(aiWorld);
         prepareNavObjectsToUpdate();
         deleteNavLinks();
-		updateNavPolygons();
-		createNavLinks();
+        updateNavPolygons();
+        createNavLinks();
         updateNavMesh();
 
         if(DEBUG_EXPORT_NAV_MESH)
@@ -75,26 +75,26 @@ namespace urchin
             navMesh->svgMeshExport(std::string(std::getenv("HOME")) + "/navMesh/navMesh" + std::to_string(navMesh->getUpdateId()) + ".html");
         }
 
-		return navMesh;
-	}
+        return navMesh;
+    }
 
-	void NavMeshGenerator::updateExpandedPolytopes(AIWorld &aiWorld)
-	{
+    void NavMeshGenerator::updateExpandedPolytopes(AIWorld &aiWorld)
+    {
         ScopeProfiler scopeProfiler("ai", "upExpandPoly");
 
         newOrMovingNavObjectsToRefresh.clear();
         affectedNavObjectsToRefresh.clear();
 
-		for(auto &aiObjectToRemove : aiWorld.getEntitiesToRemoveAndReset())
-		{
+        for(auto &aiObjectToRemove : aiWorld.getEntitiesToRemoveAndReset())
+        {
             removeNavObject(aiObjectToRemove);
-		}
+        }
 
         bool refreshAllEntities = needFullRefresh.exchange(false, std::memory_order_relaxed);
-		for(auto &aiEntity : aiWorld.getEntities())
-		{
-			if(aiEntity->isToRebuild() || refreshAllEntities)
-			{
+        for(auto &aiEntity : aiWorld.getEntities())
+        {
+            if(aiEntity->isToRebuild() || refreshAllEntities)
+            {
                 removeNavObject(aiEntity);
                 aiEntity->removeAllNavObjects();
 
@@ -108,7 +108,7 @@ namespace urchin
                     }
                 }else if(aiEntity->getType()==AIEntity::TERRAIN)
                 {
-					auto aiTerrain = std::dynamic_pointer_cast<AITerrain>(aiEntity);
+                    auto aiTerrain = std::dynamic_pointer_cast<AITerrain>(aiEntity);
                     std::vector<std::unique_ptr<Polytope>> terrainExpandedPolytopes = PolytopeBuilder::instance()->buildExpandedPolytope(aiTerrain, navMeshAgent);
                     for (auto &terrainExpandedPolytope : terrainExpandedPolytopes)
                     {
@@ -117,11 +117,11 @@ namespace urchin
                 }
 
                 aiEntity->markRebuilt();
-			}
-		}
-	}
+            }
+        }
+    }
 
-	void NavMeshGenerator::addNavObject(const std::shared_ptr<AIEntity> &aiEntity, const std::shared_ptr<Polytope>& expandedPolytope)
+    void NavMeshGenerator::addNavObject(const std::shared_ptr<AIEntity> &aiEntity, const std::shared_ptr<Polytope>& expandedPolytope)
     {
         auto navObject = std::make_shared<NavObject>(expandedPolytope);
         newOrMovingNavObjectsToRefresh.insert(navObject);
@@ -229,10 +229,10 @@ namespace urchin
         }
     }
 
-	std::vector<std::shared_ptr<NavPolygon>> NavMeshGenerator::createNavigationPolygons(const std::shared_ptr<NavObject> &navObject,
-	        const std::shared_ptr<PolytopeSurface> &walkableSurface)
-	{
-		ScopeProfiler scopeProfiler("ai", "createNavPolys");
+    std::vector<std::shared_ptr<NavPolygon>> NavMeshGenerator::createNavigationPolygons(const std::shared_ptr<NavObject> &navObject,
+            const std::shared_ptr<PolytopeSurface> &walkableSurface)
+    {
+        ScopeProfiler scopeProfiler("ai", "createNavPolys");
 
         std::string walkableName = walkableSurface->getPolytope()->getName() + "[" + std::to_string(walkableSurface->getSurfacePosition()) + "]";
         walkablePolygons.clear();
@@ -242,28 +242,28 @@ namespace urchin
         applyObstaclesOnWalkablePolygon(obstaclePolygons);
 
         bool uniqueWalkableSurface = walkablePolygons.size() == 1;
-		std::vector<std::shared_ptr<NavPolygon>> navPolygons;
-		navPolygons.reserve(walkablePolygons.size());
-		for(auto &walkablePolygon : walkablePolygons)
-		{
+        std::vector<std::shared_ptr<NavPolygon>> navPolygons;
+        navPolygons.reserve(walkablePolygons.size());
+        for(auto &walkablePolygon : walkablePolygons)
+        {
             //simplify polygon to improve performance and avoid degenerated walkable face
-			walkablePolygon.simplify(polygonMinDotProductThreshold, polygonMergePointsDistanceThreshold);
+            walkablePolygon.simplify(polygonMinDotProductThreshold, polygonMergePointsDistanceThreshold);
             if(walkablePolygon.getCwPoints().size() > 2)
             {
                 std::shared_ptr<NavPolygon> navPolygon = createNavigationPolygon(walkablePolygon, walkableSurface, uniqueWalkableSurface);
                 navPolygons.push_back(navPolygon);
             }
-		}
+        }
 
-		return navPolygons;
-	}
+        return navPolygons;
+    }
 
-	std::vector<CSGPolygon<float>> &NavMeshGenerator::determineObstacles(const std::shared_ptr<NavObject> &navObject,
-	        const std::shared_ptr<PolytopeSurface> &walkableSurface) const
-	{
-		ScopeProfiler scopeProfiler("ai", "getObstacles");
+    std::vector<CSGPolygon<float>> &NavMeshGenerator::determineObstacles(const std::shared_ptr<NavObject> &navObject,
+            const std::shared_ptr<PolytopeSurface> &walkableSurface) const
+    {
+        ScopeProfiler scopeProfiler("ai", "getObstacles");
 
-		const std::vector<CSGPolygon<float>> &selfObstaclePolygons = walkableSurface->getSelfObstacles();
+        const std::vector<CSGPolygon<float>> &selfObstaclePolygons = walkableSurface->getSelfObstacles();
 
         holePolygons.clear();
         for(const auto &selfObstaclePolygon : selfObstaclePolygons)
@@ -284,18 +284,18 @@ namespace urchin
                     holePolygons.push_back(std::move(footprintPolygon));
                 }
             }
-		}
+        }
 
-		return PolygonsUnion<float>::instance()->unionPolygons(holePolygons);
-	}
+        return PolygonsUnion<float>::instance()->unionPolygons(holePolygons);
+    }
 
-	CSGPolygon<float> NavMeshGenerator::computePolytopeFootprint(const std::shared_ptr<Polytope> &polytopeObstacle, const std::shared_ptr<PolytopeSurface> &walkableSurface) const
-	{
-		footprintPoints.clear();
+    CSGPolygon<float> NavMeshGenerator::computePolytopeFootprint(const std::shared_ptr<Polytope> &polytopeObstacle, const std::shared_ptr<PolytopeSurface> &walkableSurface) const
+    {
+        footprintPoints.clear();
         Plane<float> walkablePlane = walkableSurface->getPlane(polytopeObstacle->getXZRectangle());
 
-		for(const auto &polytopeSurface : polytopeObstacle->getSurfaces())
-		{
+        for(const auto &polytopeSurface : polytopeObstacle->getSurfaces())
+        {
             if(auto *polytopePlaneSurface = dynamic_cast<PolytopePlaneSurface *>(polytopeSurface.get()))
             {
                 for (std::size_t i = 0, previousI = polytopePlaneSurface->getCcwPoints().size() - 1; i < polytopePlaneSurface->getCcwPoints().size(); previousI = i++)
@@ -313,20 +313,20 @@ namespace urchin
             {
                 throw std::runtime_error("Unsupported type of surface as obstacle: " + std::string(typeid(polytopeSurface.get()).name()));
             }
-		}
-
-		if(footprintPoints.size() < 3)
-        { //no footprint: return empty polygon
-		    return CSGPolygon<float>("", {});
         }
 
-		ConvexHull2D<float> footprintConvexHull(footprintPoints);
-		std::vector<Point2<float>> cwPoints(footprintConvexHull.getPoints());
-		std::reverse(cwPoints.begin(), cwPoints.end());
-		return CSGPolygon<float>(polytopeObstacle->getName(), std::move(cwPoints));
-	}
+        if(footprintPoints.size() < 3)
+        { //no footprint: return empty polygon
+            return CSGPolygon<float>("", {});
+        }
 
-	void NavMeshGenerator::applyObstaclesOnWalkablePolygon(std::vector<CSGPolygon<float>> &obstaclePolygons)
+        ConvexHull2D<float> footprintConvexHull(footprintPoints);
+        std::vector<Point2<float>> cwPoints(footprintConvexHull.getPoints());
+        std::reverse(cwPoints.begin(), cwPoints.end());
+        return CSGPolygon<float>(polytopeObstacle->getName(), std::move(cwPoints));
+    }
+
+    void NavMeshGenerator::applyObstaclesOnWalkablePolygon(std::vector<CSGPolygon<float>> &obstaclePolygons)
     {
         ScopeProfiler scopeProfiler("ai", "subObstacles");
 
@@ -391,29 +391,29 @@ namespace urchin
         return navPolygon;
     }
 
-	std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const TriangulationAlgorithm &triangulation, const std::shared_ptr<PolytopeSurface> &walkableSurface) const
-	{
-		ScopeProfiler scopeProfiler("ai", "elevateTriPoint");
+    std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const TriangulationAlgorithm &triangulation, const std::shared_ptr<PolytopeSurface> &walkableSurface) const
+    {
+        ScopeProfiler scopeProfiler("ai", "elevateTriPoint");
 
-		std::vector<Point3<float>> elevatedPoints;
-		elevatedPoints.reserve(triangulation.getAllPointsSize());
+        std::vector<Point3<float>> elevatedPoints;
+        elevatedPoints.reserve(triangulation.getAllPointsSize());
 
         for(const auto &walkablePoint : triangulation.getPolygonPoints())
         {
             elevatedPoints.push_back(walkableSurface->computeRealPoint(walkablePoint, navMeshAgent));
         }
 
-		for(std::size_t holeIndex=0; holeIndex<triangulation.getHolesSize(); ++holeIndex)
-		{
-			const std::vector<Point2<float>> &holePoints = triangulation.getHolePoints(holeIndex);
-			for(const auto &holePoint : holePoints)
-			{
-				elevatedPoints.push_back(walkableSurface->computeRealPoint(holePoint, navMeshAgent));
-			}
-		}
+        for(std::size_t holeIndex=0; holeIndex<triangulation.getHolesSize(); ++holeIndex)
+        {
+            const std::vector<Point2<float>> &holePoints = triangulation.getHolePoints(holeIndex);
+            for(const auto &holePoint : holePoints)
+            {
+                elevatedPoints.push_back(walkableSurface->computeRealPoint(holePoint, navMeshAgent));
+            }
+        }
 
-		return elevatedPoints;
-	}
+        return elevatedPoints;
+    }
 
     void NavMeshGenerator::deleteNavLinks()
     {
@@ -431,7 +431,7 @@ namespace urchin
         }
     }
 
-	void NavMeshGenerator::createNavLinks()
+    void NavMeshGenerator::createNavLinks()
     {
         ScopeProfiler scopeProfiler("ai", "creNavLinks");
 

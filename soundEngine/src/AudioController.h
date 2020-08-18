@@ -13,37 +13,37 @@
 namespace urchin
 {
 
-	/**
-	* Allow to make the link between sound, sound trigger and the player
-	*/
-	class AudioController
-	{
-		public:
-			AudioController(Sound *, SoundTrigger *, StreamUpdateWorker *);
-			~AudioController();
+    /**
+    * Allow to make the link between sound, sound trigger and the player
+    */
+    class AudioController
+    {
+        public:
+            AudioController(Sound *, SoundTrigger *, StreamUpdateWorker *);
+            ~AudioController();
 
-			const Sound *getSound() const;
-			SoundTrigger *getSoundTrigger() const;
-			void changeSoundTrigger(SoundTrigger *);
+            const Sound *getSound() const;
+            SoundTrigger *getSoundTrigger() const;
+            void changeSoundTrigger(SoundTrigger *);
 
-			void pause();
-			void unpause();
+            void pause();
+            void unpause();
 
-			void process(const Point3<float> &);
+            void process(const Point3<float> &);
 
-		private:
-			void processTriggerValue(SoundTrigger::TriggerResultValue);
-			void processSmoothStopTriggerValue(SoundTrigger::TriggerResultValue);
+        private:
+            void processTriggerValue(SoundTrigger::TriggerResultValue);
+            void processSmoothStopTriggerValue(SoundTrigger::TriggerResultValue);
 
-			Sound *sound;
-			SoundTrigger *soundTrigger;
-			SmoothStopAction *smoothStopAction;
+            Sound *sound;
+            SoundTrigger *soundTrigger;
+            SmoothStopAction *smoothStopAction;
 
-			SoundTrigger::TriggerResultValue triggerValue;
+            SoundTrigger::TriggerResultValue triggerValue;
 
-			AudioPlayer *audioPlayer;
-			bool isPaused;
-	};
+            AudioPlayer *audioPlayer;
+            bool isPaused;
+    };
 
 }
 

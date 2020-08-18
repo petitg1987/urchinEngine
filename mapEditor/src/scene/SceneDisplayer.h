@@ -21,81 +21,81 @@
 namespace urchin
 {
 
-	class SceneDisplayer
-	{
-		public:
-			enum ViewProperties
-			{
-				MODEL_PHYSICS = 0,
-				LIGHT_SCOPE,
-				SOUND_TRIGGER,
-				NAV_MESH,
+    class SceneDisplayer
+    {
+        public:
+            enum ViewProperties
+            {
+                MODEL_PHYSICS = 0,
+                LIGHT_SCOPE,
+                SOUND_TRIGGER,
+                NAV_MESH,
 
-				LAST_VIEW_PROPERTIES
-			};
+                LAST_VIEW_PROPERTIES
+            };
 
-			SceneDisplayer(SceneController *, const MouseController &, const StatusBarController &);
-			~SceneDisplayer();
+            SceneDisplayer(SceneController *, const MouseController &, const StatusBarController &);
+            ~SceneDisplayer();
 
             void loadMap(const std::string &, const std::string &, const std::string &);
 
-			void setViewProperties(SceneDisplayer::ViewProperties, bool);
-			void setHighlightSceneObject(const SceneObject *);
-			void setHighlightSceneLight(const SceneLight *);
-			void setHighlightSceneSound(const SceneSound *);
+            void setViewProperties(SceneDisplayer::ViewProperties, bool);
+            void setHighlightSceneObject(const SceneObject *);
+            void setHighlightSceneLight(const SceneLight *);
+            void setHighlightSceneSound(const SceneSound *);
 
-			void paint();
-			void resize(unsigned int, unsigned int);
+            void paint();
+            void resize(unsigned int, unsigned int);
 
-			SceneManager *getSceneManager() const;
+            SceneManager *getSceneManager() const;
             SceneFreeCamera *getCamera() const;
-			PhysicsWorld *getPhysicsWorld() const;
-			MapHandler *getMapHandler() const;
+            PhysicsWorld *getPhysicsWorld() const;
+            MapHandler *getMapHandler() const;
 
             BodyShapeDisplayer *getBodyShapeDisplayer() const;
             ObjectMoveController *getObjectMoveController() const;
 
-		private:
-			void initializeEngineResources(const std::string &);
-			void initializeScene(const std::string &);
+        private:
+            void initializeEngineResources(const std::string &);
+            void initializeScene(const std::string &);
 
-			void refreshObjectsModel();
-			void refreshLightScopeModel();
-			void refreshSoundTriggerModel();
-			void refreshNavMeshModel();
+            void refreshObjectsModel();
+            void refreshLightScopeModel();
+            void refreshSoundTriggerModel();
+            void refreshNavMeshModel();
 
-			bool isInitialized;
-			SceneController *sceneController;
+            bool isInitialized;
+            SceneController *sceneController;
             MouseController mouseController;
             StatusBarController statusBarController;
 
-			//3d
-			SceneManager *sceneManager;
-			SceneFreeCamera *camera;
-			BodyShapeDisplayer *bodyShapeDisplayer;
+            //3d
+            SceneManager *sceneManager;
+            SceneFreeCamera *camera;
+            BodyShapeDisplayer *bodyShapeDisplayer;
             ObjectMoveController *objectMoveController;
-			LightScopeDisplayer *lightScopeDisplayer;
-			SoundTriggerDisplayer *soundTriggerDisplayer;
+            LightScopeDisplayer *lightScopeDisplayer;
+            SoundTriggerDisplayer *soundTriggerDisplayer;
 
-			//physics
-			PhysicsWorld *physicsWorld;
+            //physics
+            PhysicsWorld *physicsWorld;
 
-			//AI
-			AIManager *aiManager;
+            //AI
+            AIManager *aiManager;
             NavMeshDisplayer *navMeshDisplayer;
 
-			//sound
-			SoundManager *soundManager;
+            //sound
+            SoundManager *soundManager;
 
-			//map handler
-			MapHandler *mapHandler;
+            //map handler
+            MapHandler *mapHandler;
 
-			//scene specifics
-			bool viewProperties[LAST_VIEW_PROPERTIES];
-			const SceneObject *highlightSceneObject;
-			const SceneLight *highlightSceneLight;
-			const SceneSound *highlightSceneSound;
-	};
+            //scene specifics
+            bool viewProperties[LAST_VIEW_PROPERTIES];
+            const SceneObject *highlightSceneObject;
+            const SceneLight *highlightSceneLight;
+            const SceneSound *highlightSceneSound;
+    };
 
 }
 

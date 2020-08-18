@@ -6,15 +6,15 @@
 
 class SortPointsTest : public CppUnit::TestFixture
 {
-	public:
-		static CppUnit::Test *suite();
+    public:
+        static CppUnit::Test *suite();
 
-		void threePointsClockwise();
-		void threePointsCounterClockwise();
+        void threePointsClockwise();
+        void threePointsCounterClockwise();
 
-		void fourPointsClockwise();
-		void fourPointsCounterClockwiseZNormal();
-		void fourPointsCounterClockwiseYNormal();
+        void fourPointsClockwise();
+        void fourPointsCounterClockwiseZNormal();
+        void fourPointsCounterClockwiseYNormal();
 };
 
 #endif

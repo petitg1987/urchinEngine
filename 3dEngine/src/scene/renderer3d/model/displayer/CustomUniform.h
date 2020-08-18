@@ -6,17 +6,17 @@
 namespace urchin
 {
 
-	/**
-	* Allow to load custom uniform for model displayer
-	*/
-	class CustomUniform
-	{
-		public:
-			virtual ~CustomUniform() = default;
+    /**
+    * Allow to load custom uniform for model displayer
+    */
+    class CustomUniform
+    {
+        public:
+            virtual ~CustomUniform() = default;
 
-			virtual void loadCustomUniforms() = 0;
+            virtual void loadCustomUniforms() = 0;
 
-	};
+    };
 
 }
 

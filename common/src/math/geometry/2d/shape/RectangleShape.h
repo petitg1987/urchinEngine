@@ -7,19 +7,19 @@
 namespace urchin
 {
 
-	/**
-	* Represents a rectangle aligned on axis
-	*/
-	template<class T> class RectangleShape : public ConvexShape2D
-	{
-		public:
-			explicit RectangleShape(const Vector2<T> &);
+    /**
+    * Represents a rectangle aligned on axis
+    */
+    template<class T> class RectangleShape : public ConvexShape2D
+    {
+        public:
+            explicit RectangleShape(const Vector2<T> &);
 
-			const Vector2<T> &getDiagonal() const;
+            const Vector2<T> &getDiagonal() const;
 
-		private:
-			Vector2<T> diagonal; //diagonal from minimum to maximum point
-	};
+        private:
+            Vector2<T> diagonal; //diagonal from minimum to maximum point
+    };
 
 }
 

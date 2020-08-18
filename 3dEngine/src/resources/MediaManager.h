@@ -17,24 +17,24 @@
 namespace urchin
 {
 
-	/**
-	 * Find the appropriate loader according to the extension of the file and load the resource
-	 */
-	class MediaManager : public Singleton<MediaManager>
-	{
-		public:
-			friend class Singleton<MediaManager>;
-			
-			template<class T> T* getMedia(const std::string &);
-			
-		private:
-			MediaManager();
-			~MediaManager() override;
+    /**
+     * Find the appropriate loader according to the extension of the file and load the resource
+     */
+    class MediaManager : public Singleton<MediaManager>
+    {
+        public:
+            friend class Singleton<MediaManager>;
 
-			std::map<std::string, LoaderInterface *> loadersRegistry;
-	};
+            template<class T> T* getMedia(const std::string &);
 
-	#include "MediaManager.inl"
+        private:
+            MediaManager();
+            ~MediaManager() override;
+
+            std::map<std::string, LoaderInterface *> loadersRegistry;
+    };
+
+    #include "MediaManager.inl"
 
 }
 

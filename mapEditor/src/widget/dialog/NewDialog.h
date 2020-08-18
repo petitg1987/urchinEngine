@@ -9,43 +9,43 @@
 namespace urchin
 {
 
-	class NewDialog : public QDialog
-	{
-		Q_OBJECT
+    class NewDialog : public QDialog
+    {
+        Q_OBJECT
 
-		public:
-			explicit NewDialog(QWidget *parent = nullptr);
+        public:
+            explicit NewDialog(QWidget *parent = nullptr);
 
-			std::string getFilename() const;
-			std::string getRelativeWorkingDirectory() const;
+            std::string getFilename() const;
+            std::string getRelativeWorkingDirectory() const;
 
-		private:
-			void setupNameFields(QGridLayout *);
-			void setupDirectoryFields(QGridLayout *);
-			void setupWorkingDirectoryFields(QGridLayout *);
+        private:
+            void setupNameFields(QGridLayout *);
+            void setupDirectoryFields(QGridLayout *);
+            void setupWorkingDirectoryFields(QGridLayout *);
 
-			void updateMapFilename();
-			void updateRelativeWorkingDirectory();
+            void updateMapFilename();
+            void updateRelativeWorkingDirectory();
 
-			void done(int) override;
+            void done(int) override;
 
-			QLabel *mapNameLabel;
-			QLineEdit *mapNameText;
-			QLabel *mapDirectoryLabel;
-			QLineEdit *mapDirectoryText;
-			QLabel *mapWorkingDirectoryLabel;
-			QLineEdit *mapWorkingDirectoryText;
-			QLabel *mapRelWorkingDirectoryText;
+            QLabel *mapNameLabel;
+            QLineEdit *mapNameText;
+            QLabel *mapDirectoryLabel;
+            QLineEdit *mapDirectoryText;
+            QLabel *mapWorkingDirectoryLabel;
+            QLineEdit *mapWorkingDirectoryText;
+            QLabel *mapRelWorkingDirectoryText;
 
-			std::string mapFilename;
-			std::string mapDirectory;
-			std::string mapWorkingDirectory;
-			std::string mapRelWorkingDirectory;
+            std::string mapFilename;
+            std::string mapDirectory;
+            std::string mapWorkingDirectory;
+            std::string mapRelWorkingDirectory;
 
-		private slots:
-			void showMapDirectoryDialog();
-			void showMapWorkingDirectoryDialog();
-	};
+        private slots:
+            void showMapDirectoryDialog();
+            void showMapWorkingDirectoryDialog();
+    };
 
 }
 

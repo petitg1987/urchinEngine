@@ -6,15 +6,15 @@
 
 class EPAConvexHullTest : public CppUnit::TestFixture
 {
-	public:
-		static CppUnit::Test *suite();
+    public:
+        static CppUnit::Test *suite();
 
-		void identicalBox();
-		void cornerInsideBox();
+        void identicalBox();
+        void cornerInsideBox();
 
-		void faceInsideTrapeze();
+        void faceInsideTrapeze();
 
-		void cornerInsideHexagon();
+        void cornerInsideHexagon();
 };
 
 #endif

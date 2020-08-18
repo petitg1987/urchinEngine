@@ -8,14 +8,14 @@
 
 namespace urchin
 {
-	
-	class LoaderUrchinMesh : public Loader<ConstMeshes>
-	{
-		public:
-			~LoaderUrchinMesh() override = default;
 
-			ConstMeshes *loadFromFile(const std::string &) override;
-	};
+    class LoaderUrchinMesh : public Loader<ConstMeshes>
+    {
+        public:
+            ~LoaderUrchinMesh() override = default;
+
+            ConstMeshes *loadFromFile(const std::string &) override;
+    };
 
 }
 

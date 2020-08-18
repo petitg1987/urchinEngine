@@ -9,21 +9,21 @@
 namespace urchin
 {
 
-	/**
-	* Wrapper for object used in collision algorithms
-	*/
-	class CollisionObjectWrapper
-	{
-		public:
-			CollisionObjectWrapper(const CollisionShape3D &, const PhysicsTransform &);
+    /**
+    * Wrapper for object used in collision algorithms
+    */
+    class CollisionObjectWrapper
+    {
+        public:
+            CollisionObjectWrapper(const CollisionShape3D &, const PhysicsTransform &);
 
-			const CollisionShape3D &getShape() const;
-			const PhysicsTransform &getShapeWorldTransform() const;
+            const CollisionShape3D &getShape() const;
+            const PhysicsTransform &getShapeWorldTransform() const;
 
-		private:
-			const CollisionShape3D &shape;
-			const PhysicsTransform &shapeWorldTransform;
-	};
+        private:
+            const CollisionShape3D &shape;
+            const PhysicsTransform &shapeWorldTransform;
+    };
 
 }
 

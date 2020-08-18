@@ -8,48 +8,48 @@
 
 namespace urchin
 {
-	
-	/**
-	* Virtual class that can be inserted into an octree
-	*/
-	template<class TOctreeable> class Octreeable : public Observable
-	{
-		public:
-			Octreeable();
-			Octreeable(const Octreeable &);
-			~Octreeable() override;
 
-			enum NotificationType
-			{
-				MOVE
-			};
-		
-			void notifyOctreeableMove();
-			void onMoveDone();
-			bool isMovingInOctree() const;
+    /**
+    * Virtual class that can be inserted into an octree
+    */
+    template<class TOctreeable> class Octreeable : public Observable
+    {
+        public:
+            Octreeable();
+            Octreeable(const Octreeable &);
+            ~Octreeable() override;
 
-			void setVisible(bool);
-			bool isVisible() const;
+            enum NotificationType
+            {
+                MOVE
+            };
 
-			void setProcessed(bool);
-			bool isProcessed() const;
-		
-			const std::vector<Octree<TOctreeable> *> &getRefOctree() const;
-			void addRefOctree(Octree<TOctreeable> *);
-			void removeRefOctree(Octree<TOctreeable> *);
+            void notifyOctreeableMove();
+            void onMoveDone();
+            bool isMovingInOctree() const;
 
-			virtual const AABBox<float> &getAABBox() const = 0;
-			virtual const Transform<float> &getTransform() const = 0;
+            void setVisible(bool);
+            bool isVisible() const;
 
-		private:
-			std::vector<Octree<TOctreeable> *> refOctree;
+            void setProcessed(bool);
+            bool isProcessed() const;
 
-			bool bIsMovingInOctree;
-			bool bIsVisible;
-			bool bIsProcessed;
-	};
+            const std::vector<Octree<TOctreeable> *> &getRefOctree() const;
+            void addRefOctree(Octree<TOctreeable> *);
+            void removeRefOctree(Octree<TOctreeable> *);
 
-	#include "Octreeable.inl"
+            virtual const AABBox<float> &getAABBox() const = 0;
+            virtual const Transform<float> &getTransform() const = 0;
+
+        private:
+            std::vector<Octree<TOctreeable> *> refOctree;
+
+            bool bIsMovingInOctree;
+            bool bIsVisible;
+            bool bIsProcessed;
+    };
+
+    #include "Octreeable.inl"
 
 }
 

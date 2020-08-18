@@ -8,31 +8,31 @@
 namespace urchin
 {
 
-	/**
-	* Sphere used to delimit the sound
-	*/
-	class SoundSphere : public SoundShape
-	{
-		public:
-			SoundSphere(float, const Point3<float> &, float);
+    /**
+    * Sphere used to delimit the sound
+    */
+    class SoundSphere : public SoundShape
+    {
+        public:
+            SoundSphere(float, const Point3<float> &, float);
 
-			SoundShape::ShapeType getShapeType() const override;
+            SoundShape::ShapeType getShapeType() const override;
 
-			const Sphere<float> &getPlayTriggerSphere() const;
-			const Sphere<float> &getStopTriggerSphere() const;
+            const Sphere<float> &getPlayTriggerSphere() const;
+            const Sphere<float> &getStopTriggerSphere() const;
 
-			float getRadius() const;
-			Point3<float> getPosition() const;
+            float getRadius() const;
+            Point3<float> getPosition() const;
 
-			bool pointInsidePlayShape(const Point3<float> &) const override;
-			bool pointInsideStopShape(const Point3<float> &) const override;
+            bool pointInsidePlayShape(const Point3<float> &) const override;
+            bool pointInsideStopShape(const Point3<float> &) const override;
 
-			SoundShape *clone() const override;
+            SoundShape *clone() const override;
 
-		private:
-			const Sphere<float> playTriggerSphere;
-			const Sphere<float> stopTriggerSphere;
-	};
+        private:
+            const Sphere<float> playTriggerSphere;
+            const Sphere<float> stopTriggerSphere;
+    };
 
 }
 

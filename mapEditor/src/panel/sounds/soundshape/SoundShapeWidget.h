@@ -13,44 +13,44 @@
 namespace urchin
 {
 
-	class SoundShapeWidget : public QWidget
-	{
-		Q_OBJECT
+    class SoundShapeWidget : public QWidget
+    {
+        Q_OBJECT
 
-		#define SPHERE_SHAPE_LABEL "Sphere"
-		#define BOX_SHAPE_LABEL "Box"
+        #define SPHERE_SHAPE_LABEL "Sphere"
+        #define BOX_SHAPE_LABEL "Box"
 
-		public:
-			explicit SoundShapeWidget(const SceneSound *);
-			~SoundShapeWidget() override = default;
+        public:
+            explicit SoundShapeWidget(const SceneSound *);
+            ~SoundShapeWidget() override = default;
 
-			const SceneSound *getSceneSound() const;
-			virtual std::string getSoundShapeName() const = 0;
-			const SoundShape *retrieveShape();
+            const SceneSound *getSceneSound() const;
+            virtual std::string getSoundShapeName() const = 0;
+            const SoundShape *retrieveShape();
 
-			void setupShapePropertiesFrom(const SoundShape *);
+            void setupShapePropertiesFrom(const SoundShape *);
 
-		signals:
-			void soundShapeChange(const SoundShape *);
+        signals:
+            void soundShapeChange(const SoundShape *);
 
-		public slots:
-			void updateSoundShape();
+        public slots:
+            void updateSoundShape();
 
-		protected:
-			QGridLayout *mainLayout;
-			bool disableShapeEvent;
+        protected:
+            QGridLayout *mainLayout;
+            bool disableShapeEvent;
 
-			float getMarginValue() const;
+            float getMarginValue() const;
 
-			virtual void doSetupShapePropertiesFrom(const SoundShape *) = 0;
-			virtual const SoundShape *createSoundShape() const = 0;
+            virtual void doSetupShapePropertiesFrom(const SoundShape *) = 0;
+            virtual const SoundShape *createSoundShape() const = 0;
 
-		private:
-			QDoubleSpinBox *margin;
+        private:
+            QDoubleSpinBox *margin;
 
-			const SceneSound *sceneSound;
-			const SoundShape *shape;
-	};
+            const SceneSound *sceneSound;
+            const SoundShape *shape;
+    };
 
 }
 

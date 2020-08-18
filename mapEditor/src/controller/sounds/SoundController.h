@@ -11,26 +11,26 @@
 namespace urchin
 {
 
-	class SoundController : public AbstractController
-	{
-		public:
-			SoundController();
+    class SoundController : public AbstractController
+    {
+        public:
+            SoundController();
 
-			std::list<const SceneSound *> getSceneSounds() const;
-			void addSceneSound(SceneSound *);
-			void removeSceneSound(const SceneSound *);
+            std::list<const SceneSound *> getSceneSounds() const;
+            void addSceneSound(SceneSound *);
+            void removeSceneSound(const SceneSound *);
 
-			void changeSoundTrigger(const SceneSound *, SoundTrigger::TriggerType);
-			void changeSoundShape(const SceneSound *, SoundShape::ShapeType);
+            void changeSoundTrigger(const SceneSound *, SoundTrigger::TriggerType);
+            void changeSoundShape(const SceneSound *, SoundShape::ShapeType);
 
-			const SceneSound *updateSceneSoundGeneralProperties(const SceneSound *, float);
-			const SceneSound *updateScenePointSoundProperties(const SceneSound *, const Point3<float> &, float);
-			const SceneSound *updateSceneSoundBehaviorProperties(const SceneSound *, SoundBehavior::PlayBehavior, SoundBehavior::StopBehavior, float);
-			const SceneSound *updateSceneSoundShape(const SceneSound *, const SoundShape *);
+            const SceneSound *updateSceneSoundGeneralProperties(const SceneSound *, float);
+            const SceneSound *updateScenePointSoundProperties(const SceneSound *, const Point3<float> &, float);
+            const SceneSound *updateSceneSoundBehaviorProperties(const SceneSound *, SoundBehavior::PlayBehavior, SoundBehavior::StopBehavior, float);
+            const SceneSound *updateSceneSoundShape(const SceneSound *, const SoundShape *);
 
-		private:
-			SceneSound *findSceneSound(const SceneSound *);
-	};
+        private:
+            SceneSound *findSceneSound(const SceneSound *);
+    };
 
 }
 

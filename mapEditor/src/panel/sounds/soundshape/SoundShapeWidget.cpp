@@ -7,64 +7,64 @@
 namespace urchin
 {
 
-	SoundShapeWidget::SoundShapeWidget(const SceneSound *sceneSound) :
-			disableShapeEvent(false),
-			sceneSound(sceneSound),
-			shape(nullptr)
-	{
-		setContentsMargins(0, 0, 0, 0);
+    SoundShapeWidget::SoundShapeWidget(const SceneSound *sceneSound) :
+            disableShapeEvent(false),
+            sceneSound(sceneSound),
+            shape(nullptr)
+    {
+        setContentsMargins(0, 0, 0, 0);
 
-		mainLayout = new QGridLayout(this);
-		mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft | Qt::AlignmentFlag::AlignTop);
-		mainLayout->setContentsMargins(0, 0, 0, 0);
+        mainLayout = new QGridLayout(this);
+        mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft | Qt::AlignmentFlag::AlignTop);
+        mainLayout->setContentsMargins(0, 0, 0, 0);
 
         auto *marginLabel = new QLabel("Margin:");
-		mainLayout->addWidget(marginLabel, 0, 0);
+        mainLayout->addWidget(marginLabel, 0, 0);
 
-		margin = new QDoubleSpinBox();
-		mainLayout->addWidget(margin, 0, 1);
-		SpinBoxStyleHelper::applyDefaultStyleOn(margin);
-		margin->setMinimum(0.0);
-		connect(margin, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
-	}
+        margin = new QDoubleSpinBox();
+        mainLayout->addWidget(margin, 0, 1);
+        SpinBoxStyleHelper::applyDefaultStyleOn(margin);
+        margin->setMinimum(0.0);
+        connect(margin, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
+    }
 
-	const SceneSound *SoundShapeWidget::getSceneSound() const
-	{
-		return sceneSound;
-	}
+    const SceneSound *SoundShapeWidget::getSceneSound() const
+    {
+        return sceneSound;
+    }
 
-	const SoundShape *SoundShapeWidget::retrieveShape()
-	{
-		if(!shape)
-		{
-			shape = createSoundShape();
-		}
-		return shape;
-	}
+    const SoundShape *SoundShapeWidget::retrieveShape()
+    {
+        if(!shape)
+        {
+            shape = createSoundShape();
+        }
+        return shape;
+    }
 
-	void SoundShapeWidget::setupShapePropertiesFrom(const SoundShape *shape)
-	{
-		disableShapeEvent = true;
+    void SoundShapeWidget::setupShapePropertiesFrom(const SoundShape *shape)
+    {
+        disableShapeEvent = true;
 
-		margin->setValue(shape->getMargin());
+        margin->setValue(shape->getMargin());
 
-		doSetupShapePropertiesFrom(shape);
+        doSetupShapePropertiesFrom(shape);
 
-		disableShapeEvent = false;
-	}
+        disableShapeEvent = false;
+    }
 
-	void SoundShapeWidget::updateSoundShape()
-	{
-		if(!disableShapeEvent)
-		{
-			shape = createSoundShape();
+    void SoundShapeWidget::updateSoundShape()
+    {
+        if(!disableShapeEvent)
+        {
+            shape = createSoundShape();
 
-			emit soundShapeChange(shape);
-		}
-	}
+            emit soundShapeChange(shape);
+        }
+    }
 
-	float SoundShapeWidget::getMarginValue() const
-	{
-		return (float)margin->value();
-	}
+    float SoundShapeWidget::getMarginValue() const
+    {
+        return (float)margin->value();
+    }
 }

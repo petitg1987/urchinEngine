@@ -9,42 +9,42 @@
 namespace urchin
 {
 
-	class Logger
-	{
-		public:
+    class Logger
+    {
+        public:
             Logger();
-			virtual ~Logger() = default;
+            virtual ~Logger() = default;
 
-			enum CriticalityLevel
-			{
-				INFO,
-				WARNING,
-				ERROR
-			};
+            enum CriticalityLevel
+            {
+                INFO,
+                WARNING,
+                ERROR
+            };
 
             static std::unique_ptr<Logger> defineLogger(std::unique_ptr<Logger>);
-			static Logger& logger();
+            static Logger& logger();
 
-			void logInfo(const std::string &);
-			void logWarning(const std::string &);
-			void logError(const std::string &);
-			void log(CriticalityLevel, const std::string &);
+            void logInfo(const std::string &);
+            void logWarning(const std::string &);
+            void logError(const std::string &);
+            void log(CriticalityLevel, const std::string &);
 
-			virtual std::string retrieveContent(unsigned long) const = 0;
-			virtual void purge() const = 0;
-			virtual void archive() const = 0;
+            virtual std::string retrieveContent(unsigned long) const = 0;
+            virtual void purge() const = 0;
+            virtual void archive() const = 0;
 
-			bool hasFailure();
+            bool hasFailure();
 
-		private:
-			std::string prefix(CriticalityLevel);
-			std::string getCriticalityString(CriticalityLevel);
+        private:
+            std::string prefix(CriticalityLevel);
+            std::string getCriticalityString(CriticalityLevel);
 
-			virtual void write(const std::string &) = 0;
+            virtual void write(const std::string &) = 0;
 
             bool bHasFailure;
-			static std::unique_ptr<Logger> instance;
-	};
+            static std::unique_ptr<Logger> instance;
+    };
 
 }
 

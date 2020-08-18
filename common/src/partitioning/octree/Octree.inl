@@ -1,5 +1,5 @@
 template<class TOctreeable> Octree<TOctreeable>::Octree(const Point3<float> &position, const Vector3<float> &size, float minSize) :
-	bbox(AABBox<float>(position, size))
+    bbox(AABBox<float>(position, size))
 {
     Vector3<float> sizeChild = size;
     std::vector<float> splitX = {position.X};
@@ -44,26 +44,26 @@ template<class TOctreeable> Octree<TOctreeable>::Octree(const Point3<float> &pos
 
 template<class TOctreeable> Octree<TOctreeable>::~Octree()
 {
-	if(bIsLeaf)
-	{
-		//remove references to this octree
-		for(auto &octreeable : octreeables)
-		{
+    if(bIsLeaf)
+    {
+        //remove references to this octree
+        for(auto &octreeable : octreeables)
+        {
             octreeable->removeRefOctree(this);
-		}
-	}else
-	{
-		//delete children
-		for(auto &child : children)
-		{
-			delete child;
-		}
-	}
+        }
+    }else
+    {
+        //delete children
+        for(auto &child : children)
+        {
+            delete child;
+        }
+    }
 }
 
 template<class TOctreeable> const AABBox<float> &Octree<TOctreeable>::getAABBox() const
 {
-	return bbox;
+    return bbox;
 }
 
 template<class TOctreeable> bool Octree<TOctreeable>::isLeaf() const
@@ -73,12 +73,12 @@ template<class TOctreeable> bool Octree<TOctreeable>::isLeaf() const
 
 template<class TOctreeable> const std::vector<Octree<TOctreeable> *> &Octree<TOctreeable>::getChildren() const
 {
-	return children;
+    return children;
 }
 
 template<class TOctreeable> const std::vector<TOctreeable *> &Octree<TOctreeable>::getOctreeables() const
 {
-	return octreeables;
+    return octreeables;
 }
 
 template<class TOctreeable> void Octree<TOctreeable>::addOctreeable(TOctreeable *octreeable, bool addRef)

@@ -10,22 +10,22 @@
 namespace urchin
 {
 
-	class GeometryManager
-	{
-		public:
-			virtual ~GeometryManager() = default;
+    class GeometryManager
+    {
+        public:
+            virtual ~GeometryManager() = default;
 
-			void addGeometry(GeometryModel *);
-			void removeGeometry(GeometryModel *);
+            void addGeometry(GeometryModel *);
+            void removeGeometry(GeometryModel *);
 
-			void onCameraProjectionUpdate(const Camera *);
+            void onCameraProjectionUpdate(const Camera *);
 
-			void display(const Matrix4<float> &viewMatrix) const;
+            void display(const Matrix4<float> &viewMatrix) const;
 
-		private:
-			std::vector<GeometryModel *> geometryModels;
-			Matrix4<float> projectionMatrix;
-	};
+        private:
+            std::vector<GeometryModel *> geometryModels;
+            Matrix4<float> projectionMatrix;
+    };
 
 }
 

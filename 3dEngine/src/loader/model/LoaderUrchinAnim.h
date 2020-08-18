@@ -9,27 +9,27 @@
 namespace urchin
 {
 
-	struct BoneInfo
-	{
-		std::string name;
-		int parent;
-		unsigned int flags;
-		int startIndex;
-	};
+    struct BoneInfo
+    {
+        std::string name;
+        int parent;
+        unsigned int flags;
+        int startIndex;
+    };
 
-	struct BaseFrameBone
-	{
-		Point3<float> pos;
-		Quaternion<float> orient;
-	};
+    struct BaseFrameBone
+    {
+        Point3<float> pos;
+        Quaternion<float> orient;
+    };
 
-	class LoaderUrchinAnim : public Loader<ConstAnimation>
-	{
-		public:
-			~LoaderUrchinAnim() override = default;
+    class LoaderUrchinAnim : public Loader<ConstAnimation>
+    {
+        public:
+            ~LoaderUrchinAnim() override = default;
 
-			ConstAnimation *loadFromFile(const std::string &) override;
-	};
+            ConstAnimation *loadFromFile(const std::string &) override;
+    };
 
 }
 

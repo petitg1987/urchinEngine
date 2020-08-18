@@ -6,47 +6,47 @@
 namespace urchin
 {
 
-	BodyShapeWidget::BodyShapeWidget(const SceneObject *sceneObject) :
-			disableShapeEvent(false),
-			sceneObject(sceneObject)
-	{
-		setContentsMargins(0, 0, 0, 0);
+    BodyShapeWidget::BodyShapeWidget(const SceneObject *sceneObject) :
+            disableShapeEvent(false),
+            sceneObject(sceneObject)
+    {
+        setContentsMargins(0, 0, 0, 0);
 
-		mainLayout = new QGridLayout(this);
-		mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft | Qt::AlignmentFlag::AlignTop);
-		mainLayout->setContentsMargins(0, 0, 0, 0);
-	}
+        mainLayout = new QGridLayout(this);
+        mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft | Qt::AlignmentFlag::AlignTop);
+        mainLayout->setContentsMargins(0, 0, 0, 0);
+    }
 
-	const SceneObject *BodyShapeWidget::getSceneObject() const
-	{
-		return sceneObject;
-	}
+    const SceneObject *BodyShapeWidget::getSceneObject() const
+    {
+        return sceneObject;
+    }
 
-	std::shared_ptr<const CollisionShape3D> BodyShapeWidget::retrieveShape()
-	{
-		if(!shape)
-		{
-			shape = createBodyShape();
-		}
-		return shape;
-	}
+    std::shared_ptr<const CollisionShape3D> BodyShapeWidget::retrieveShape()
+    {
+        if(!shape)
+        {
+            shape = createBodyShape();
+        }
+        return shape;
+    }
 
-	void BodyShapeWidget::setupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape)
-	{
-		disableShapeEvent = true;
+    void BodyShapeWidget::setupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape)
+    {
+        disableShapeEvent = true;
 
-		doSetupShapePropertiesFrom(std::move(shape));
+        doSetupShapePropertiesFrom(std::move(shape));
 
-		disableShapeEvent = false;
-	}
+        disableShapeEvent = false;
+    }
 
-	void BodyShapeWidget::updateBodyShape()
-	{
-		if(!disableShapeEvent)
-		{
-			shape = createBodyShape();
+    void BodyShapeWidget::updateBodyShape()
+    {
+        if(!disableShapeEvent)
+        {
+            shape = createBodyShape();
 
-			emit bodyShapeChange(shape);
-		}
-	}
+            emit bodyShapeChange(shape);
+        }
+    }
 }

@@ -3,8 +3,8 @@
 namespace urchin
 {
 
-	//explicit template
-	template class GJKResult<float>;
-	template class GJKResult<double>;
+    //explicit template
+    template class GJKResult<float>;
+    template class GJKResult<double>;
 
 }

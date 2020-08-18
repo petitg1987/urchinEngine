@@ -23,7 +23,7 @@ namespace urchin
     //static
     const std::string MapEditorWindow::WINDOW_TITLE = "Urchin - Map Editor";
 
-	MapEditorWindow::MapEditorWindow(std::string mapEditorPath) :
+    MapEditorWindow::MapEditorWindow(std::string mapEditorPath) :
             statusBarController(StatusBarController(this)),
             saveAction(nullptr),
             saveAsAction(nullptr),
@@ -32,141 +32,141 @@ namespace urchin
             sceneController(nullptr),
             sceneDisplayerWidget(nullptr),
             scenePanelWidget(nullptr)
-	{
-		this->setAttribute(Qt::WA_DeleteOnClose);
-		this->setWindowTitle(QString::fromStdString(WINDOW_TITLE));
-		this->resize(1200, 675);
-		auto *centralWidget = new QWidget(this);
+    {
+        this->setAttribute(Qt::WA_DeleteOnClose);
+        this->setWindowTitle(QString::fromStdString(WINDOW_TITLE));
+        this->resize(1200, 675);
+        auto *centralWidget = new QWidget(this);
 
-		auto *horizontalLayout = new QHBoxLayout(centralWidget);
-		horizontalLayout->setSpacing(6);
-		horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        auto *horizontalLayout = new QHBoxLayout(centralWidget);
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
 
-		setupMenu();
+        setupMenu();
         statusBarController.clearState();
 
-		setupSceneDisplayerWidget(centralWidget, horizontalLayout);
-		setupSceneControllerWidget(centralWidget, horizontalLayout);
+        setupSceneDisplayerWidget(centralWidget, horizontalLayout);
+        setupSceneControllerWidget(centralWidget, horizontalLayout);
 
-		this->setCentralWidget(centralWidget);
-	}
+        this->setCentralWidget(centralWidget);
+    }
 
     MapEditorWindow::~MapEditorWindow()
     {
-	    delete sceneController;
+        delete sceneController;
     }
 
-	void MapEditorWindow::setupMenu()
-	{
-		auto *menu = new QMenuBar(this);
+    void MapEditorWindow::setupMenu()
+    {
+        auto *menu = new QMenuBar(this);
 
-		auto *fileMenu = new QMenu("File");
+        auto *fileMenu = new QMenu("File");
 
         auto *newAction = new QAction("New...", this);
-		newAction->setShortcut(QKeySequence("Ctrl+N"));
-		fileMenu->addAction(newAction);
-		connect(newAction, SIGNAL(triggered()), this, SLOT(showNewDialog()));
+        newAction->setShortcut(QKeySequence("Ctrl+N"));
+        fileMenu->addAction(newAction);
+        connect(newAction, SIGNAL(triggered()), this, SLOT(showNewDialog()));
 
         auto *openAction = new QAction("Open...", this);
-		openAction->setShortcut(QKeySequence("Ctrl+O"));
-		fileMenu->addAction(openAction);
-		connect(openAction, SIGNAL(triggered()), this, SLOT(showOpenDialog()));
+        openAction->setShortcut(QKeySequence("Ctrl+O"));
+        fileMenu->addAction(openAction);
+        connect(openAction, SIGNAL(triggered()), this, SLOT(showOpenDialog()));
 
-		saveAction = new QAction("Save", this);
-		saveAction->setEnabled(false);
-		saveAction->setShortcut(QKeySequence("Ctrl+S"));
-		fileMenu->addAction(saveAction);
-		connect(saveAction, SIGNAL(triggered()), this, SLOT(executeSaveAction()));
+        saveAction = new QAction("Save", this);
+        saveAction->setEnabled(false);
+        saveAction->setShortcut(QKeySequence("Ctrl+S"));
+        fileMenu->addAction(saveAction);
+        connect(saveAction, SIGNAL(triggered()), this, SLOT(executeSaveAction()));
 
-		saveAsAction = new QAction("Save as...", this);
-		saveAsAction->setEnabled(false);
-		saveAsAction->setShortcut(QKeySequence("Ctrl+Shift+S"));
-		fileMenu->addAction(saveAsAction);
-		connect(saveAsAction, SIGNAL(triggered()), this, SLOT(showSaveAsDialog()));
+        saveAsAction = new QAction("Save as...", this);
+        saveAsAction->setEnabled(false);
+        saveAsAction->setShortcut(QKeySequence("Ctrl+Shift+S"));
+        fileMenu->addAction(saveAsAction);
+        connect(saveAsAction, SIGNAL(triggered()), this, SLOT(showSaveAsDialog()));
 
-		closeAction = new QAction("Close", this);
-		closeAction->setEnabled(false);
-		closeAction->setShortcut(QKeySequence("Ctrl+W"));
-		fileMenu->addAction(closeAction);
-		connect(closeAction, SIGNAL(triggered()), this, SLOT(executeCloseAction()));
+        closeAction = new QAction("Close", this);
+        closeAction->setEnabled(false);
+        closeAction->setShortcut(QKeySequence("Ctrl+W"));
+        fileMenu->addAction(closeAction);
+        connect(closeAction, SIGNAL(triggered()), this, SLOT(executeCloseAction()));
 
-		fileMenu->addSeparator();
+        fileMenu->addSeparator();
 
         auto *exitAction = new QAction("Exit", this);
-		fileMenu->addAction(exitAction);
-		connect(exitAction, SIGNAL(triggered()), this, SLOT(executeExitAction()));
+        fileMenu->addAction(exitAction);
+        connect(exitAction, SIGNAL(triggered()), this, SLOT(executeExitAction()));
 
         auto *viewMenu = new QMenu("View");
 
         auto *viewObjectMenu = new QMenu("Object");
-		viewMenu->addMenu(viewObjectMenu);
+        viewMenu->addMenu(viewObjectMenu);
         auto *viewPhysicsShapeAction = new QAction("Physics Shape", this);
-		viewPhysicsShapeAction->setEnabled(false);
-		viewPhysicsShapeAction->setCheckable(true);
-		viewPhysicsShapeAction->setChecked(true);
-		viewObjectMenu->addAction(viewPhysicsShapeAction);
-		viewActions[SceneDisplayer::MODEL_PHYSICS] = viewPhysicsShapeAction;
-		connect(viewPhysicsShapeAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
+        viewPhysicsShapeAction->setEnabled(false);
+        viewPhysicsShapeAction->setCheckable(true);
+        viewPhysicsShapeAction->setChecked(true);
+        viewObjectMenu->addAction(viewPhysicsShapeAction);
+        viewActions[SceneDisplayer::MODEL_PHYSICS] = viewPhysicsShapeAction;
+        connect(viewPhysicsShapeAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
         auto *viewLightMenu = new QMenu("Light");
-		viewMenu->addMenu(viewLightMenu);
+        viewMenu->addMenu(viewLightMenu);
         auto *viewLightScopeAction = new QAction("Light Scope", this);
-		viewLightScopeAction->setEnabled(false);
-		viewLightScopeAction->setCheckable(true);
-		viewLightScopeAction->setChecked(true);
-		viewLightMenu->addAction(viewLightScopeAction);
-		viewActions[SceneDisplayer::LIGHT_SCOPE] = viewLightScopeAction;
-		connect(viewLightScopeAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
+        viewLightScopeAction->setEnabled(false);
+        viewLightScopeAction->setCheckable(true);
+        viewLightScopeAction->setChecked(true);
+        viewLightMenu->addAction(viewLightScopeAction);
+        viewActions[SceneDisplayer::LIGHT_SCOPE] = viewLightScopeAction;
+        connect(viewLightScopeAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
         auto *viewSoundMenu = new QMenu("Sound");
-		viewMenu->addMenu(viewSoundMenu);
+        viewMenu->addMenu(viewSoundMenu);
         auto *viewSoundTriggerAction = new QAction("Sound Trigger", this);
-		viewSoundTriggerAction->setEnabled(false);
-		viewSoundTriggerAction->setCheckable(true);
-		viewSoundTriggerAction->setChecked(true);
-		viewSoundMenu->addAction(viewSoundTriggerAction);
-		viewActions[SceneDisplayer::SOUND_TRIGGER] = viewSoundTriggerAction;
-		connect(viewSoundTriggerAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
+        viewSoundTriggerAction->setEnabled(false);
+        viewSoundTriggerAction->setCheckable(true);
+        viewSoundTriggerAction->setChecked(true);
+        viewSoundMenu->addAction(viewSoundTriggerAction);
+        viewActions[SceneDisplayer::SOUND_TRIGGER] = viewSoundTriggerAction;
+        connect(viewSoundTriggerAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
         auto *viewAIMenu = new QMenu("AI");
-		viewMenu->addMenu(viewAIMenu);
+        viewMenu->addMenu(viewAIMenu);
         auto *viewNavMeshAction = new QAction("Navigation Mesh", this);
-		viewNavMeshAction->setEnabled(false);
-		viewNavMeshAction->setCheckable(true);
-		viewNavMeshAction->setChecked(true);
-		viewAIMenu->addAction(viewNavMeshAction);
-		viewActions[SceneDisplayer::NAV_MESH] = viewNavMeshAction;
-		connect(viewNavMeshAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
+        viewNavMeshAction->setEnabled(false);
+        viewNavMeshAction->setCheckable(true);
+        viewNavMeshAction->setChecked(true);
+        viewAIMenu->addAction(viewNavMeshAction);
+        viewActions[SceneDisplayer::NAV_MESH] = viewNavMeshAction;
+        connect(viewNavMeshAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
-		menu->addMenu(fileMenu);
-		menu->addMenu(viewMenu);
-		this->setMenuBar(menu);
-	}
+        menu->addMenu(fileMenu);
+        menu->addMenu(viewMenu);
+        this->setMenuBar(menu);
+    }
 
-	void MapEditorWindow::setupSceneDisplayerWidget(QWidget *centralWidget, QHBoxLayout *horizontalLayout)
-	{
-		sceneDisplayerWidget = new SceneDisplayerWidget(centralWidget, statusBarController, mapEditorPath);
-		sceneDisplayerWidget->setMouseTracking(true);
-		sceneDisplayerWidget->setFocusPolicy(Qt::FocusPolicy::ClickFocus);
-		QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-		sizePolicy.setHorizontalStretch(0);
-		sizePolicy.setVerticalStretch(0);
-		sizePolicy.setHeightForWidth(sceneDisplayerWidget->sizePolicy().hasHeightForWidth());
-		sceneDisplayerWidget->setSizePolicy(sizePolicy);
+    void MapEditorWindow::setupSceneDisplayerWidget(QWidget *centralWidget, QHBoxLayout *horizontalLayout)
+    {
+        sceneDisplayerWidget = new SceneDisplayerWidget(centralWidget, statusBarController, mapEditorPath);
+        sceneDisplayerWidget->setMouseTracking(true);
+        sceneDisplayerWidget->setFocusPolicy(Qt::FocusPolicy::ClickFocus);
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(sceneDisplayerWidget->sizePolicy().hasHeightForWidth());
+        sceneDisplayerWidget->setSizePolicy(sizePolicy);
         sceneDisplayerWidget->show();
 
-		executeViewPropertiesChangeAction();
+        executeViewPropertiesChangeAction();
 
-		horizontalLayout->addWidget(sceneDisplayerWidget);
-	}
+        horizontalLayout->addWidget(sceneDisplayerWidget);
+    }
 
-	void MapEditorWindow::setupSceneControllerWidget(QWidget *centralWidget, QHBoxLayout *horizontalLayout)
-	{
+    void MapEditorWindow::setupSceneControllerWidget(QWidget *centralWidget, QHBoxLayout *horizontalLayout)
+    {
         scenePanelWidget = new ScenePanelWidget(centralWidget);
-		QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-		sizePolicy.setHorizontalStretch(0);
-		sizePolicy.setVerticalStretch(0);
-		sizePolicy.setHeightForWidth(scenePanelWidget->sizePolicy().hasHeightForWidth());
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(scenePanelWidget->sizePolicy().hasHeightForWidth());
         scenePanelWidget->setSizePolicy(sizePolicy);
         scenePanelWidget->setMaximumSize(QSize(380, 16777215));
         scenePanelWidget->getObjectPanelWidget()->addObserver(this, ObjectPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED);
@@ -174,10 +174,10 @@ namespace urchin
         scenePanelWidget->getLightPanelWidget()->getLightTableView()->addObserver(this, LightTableView::LIGHT_SELECTION_CHANGED);
         scenePanelWidget->getSoundPanelWidget()->getSoundTableView()->addObserver(this, SoundTableView::SOUND_SELECTION_CHANGED);
         scenePanelWidget->addObserver(this, ScenePanelWidget::TAB_SELECTED);
-		horizontalLayout->addWidget(scenePanelWidget);
+        horizontalLayout->addWidget(scenePanelWidget);
 
-		sceneDisplayerWidget->addObserver(scenePanelWidget->getObjectPanelWidget(), SceneDisplayerWidget::BODY_PICKED);
-	}
+        sceneDisplayerWidget->addObserver(scenePanelWidget->getObjectPanelWidget(), SceneDisplayerWidget::BODY_PICKED);
+    }
 
     QString MapEditorWindow::getPreferredMapPath()
     {
@@ -190,35 +190,35 @@ namespace urchin
         StateSaveHelper::instance()->saveState("preferred.map.path", preferredMapPath);
     }
 
-	void MapEditorWindow::notify(Observable *observable, int notificationType)
-	{
-		if(dynamic_cast<ScenePanelWidget *>(observable))
-		{
-		    if(notificationType == ScenePanelWidget::TAB_SELECTED)
+    void MapEditorWindow::notify(Observable *observable, int notificationType)
+    {
+        if(dynamic_cast<ScenePanelWidget *>(observable))
+        {
+            if(notificationType == ScenePanelWidget::TAB_SELECTED)
             {
                 executeViewPropertiesChangeAction();
             }
-		}else if(auto *objectTableView = dynamic_cast<ObjectTableView *>(observable))
-		{
-		    if(notificationType==ObjectTableView::OBJECT_SELECTION_CHANGED)
+        }else if(auto *objectTableView = dynamic_cast<ObjectTableView *>(observable))
+        {
+            if(notificationType==ObjectTableView::OBJECT_SELECTION_CHANGED)
             {
                 sceneDisplayerWidget->setHighlightSceneObject(objectTableView->getSelectedSceneObject());
             }
-		}else if(auto *lightTableView = dynamic_cast<LightTableView *>(observable))
-		{
-		    if(notificationType==LightTableView::LIGHT_SELECTION_CHANGED)
+        }else if(auto *lightTableView = dynamic_cast<LightTableView *>(observable))
+        {
+            if(notificationType==LightTableView::LIGHT_SELECTION_CHANGED)
             {
                 sceneDisplayerWidget->setHighlightSceneLight(lightTableView->getSelectedSceneLight());
             }
-		}else if(auto *soundTableView = dynamic_cast<SoundTableView *>(observable))
-		{
-		    if(notificationType==SoundTableView::SOUND_SELECTION_CHANGED)
+        }else if(auto *soundTableView = dynamic_cast<SoundTableView *>(observable))
+        {
+            if(notificationType==SoundTableView::SOUND_SELECTION_CHANGED)
             {
                 sceneDisplayerWidget->setHighlightSceneSound(soundTableView->getSelectedSceneSound());
             }
-		}else if(dynamic_cast<AbstractController *>(observable))
+        }else if(dynamic_cast<AbstractController *>(observable))
         {
-		    if(notificationType==AbstractController::CHANGES_DONE)
+            if(notificationType==AbstractController::CHANGES_DONE)
             {
                 refreshWindowTitle();
 
@@ -227,13 +227,13 @@ namespace urchin
         {
             handleCompoundShapeSelectionChange(observable, notificationType);
         }
-	}
+    }
 
-	void MapEditorWindow::handleCompoundShapeSelectionChange(Observable *observable, int notificationType)
-	{
-		if(auto *objectControllerWidget = dynamic_cast<ObjectPanelWidget *>(observable))
-		{
-		    if(notificationType == ObjectPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED)
+    void MapEditorWindow::handleCompoundShapeSelectionChange(Observable *observable, int notificationType)
+    {
+        if(auto *objectControllerWidget = dynamic_cast<ObjectPanelWidget *>(observable))
+        {
+            if(notificationType == ObjectPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED)
             {
                 BodyShapeWidget *bodyShapeWidget = objectControllerWidget->getBodyShapeWidget();
                 if (auto *bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget *>(bodyShapeWidget))
@@ -241,45 +241,45 @@ namespace urchin
                     bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
                 }
             }
-		}else if(auto *localizedShapeTableView = dynamic_cast<LocalizedShapeTableView *>(observable))
-		{
-		    if(notificationType==LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED)
+        }else if(auto *localizedShapeTableView = dynamic_cast<LocalizedShapeTableView *>(observable))
+        {
+            if(notificationType==LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED)
             {
                 sceneDisplayerWidget->setHighlightCompoundShapeComponent(localizedShapeTableView->getSelectedLocalizedShape());
             }
-		}
-	}
+        }
+    }
 
-	void MapEditorWindow::showNewDialog()
-	{
-		if(checkCurrentMapSaved())
-		{
-			NewDialog newDialog(this);
-			newDialog.exec();
+    void MapEditorWindow::showNewDialog()
+    {
+        if(checkCurrentMapSaved())
+        {
+            NewDialog newDialog(this);
+            newDialog.exec();
 
-			if(newDialog.result()==QDialog::Accepted)
-			{
+            if(newDialog.result()==QDialog::Accepted)
+            {
                 loadMap(newDialog.getFilename(), newDialog.getRelativeWorkingDirectory());
                 sceneController->forceModified();
-			}
-		}
-	}
+            }
+        }
+    }
 
-	void MapEditorWindow::showOpenDialog()
-	{
-		if(checkCurrentMapSaved())
-		{
-			QString filename = QFileDialog::getOpenFileName(this, tr("Open file"), getPreferredMapPath(), "XML file (*.xml)", nullptr, QFileDialog::DontUseNativeDialog);
-			if(!filename.isNull())
-			{
-			    std::string mapFilename = filename.toUtf8().constData();
+    void MapEditorWindow::showOpenDialog()
+    {
+        if(checkCurrentMapSaved())
+        {
+            QString filename = QFileDialog::getOpenFileName(this, tr("Open file"), getPreferredMapPath(), "XML file (*.xml)", nullptr, QFileDialog::DontUseNativeDialog);
+            if(!filename.isNull())
+            {
+                std::string mapFilename = filename.toUtf8().constData();
                 std::string relativeWorkingDirectory = MapHandler::getRelativeWorkingDirectory(mapFilename);
                 loadMap(mapFilename, relativeWorkingDirectory);
-			}
-		}
-	}
+            }
+        }
+    }
 
-	void MapEditorWindow::loadMap(const std::string &mapFilename, const std::string &relativeWorkingDirectory)
+    void MapEditorWindow::loadMap(const std::string &mapFilename, const std::string &relativeWorkingDirectory)
     {
         sceneController = new SceneController();
 
@@ -293,127 +293,127 @@ namespace urchin
         updateInterfaceState();
     }
 
-	void MapEditorWindow::executeSaveAction()
-	{
-		sceneDisplayerWidget->saveState(mapFilename);
+    void MapEditorWindow::executeSaveAction()
+    {
+        sceneDisplayerWidget->saveState(mapFilename);
         if(sceneController)
         {
             sceneController->saveMapOnFile(mapFilename);
         }
 
-		updateInterfaceState();
-	}
+        updateInterfaceState();
+    }
 
-	void MapEditorWindow::showSaveAsDialog()
-	{
-		QString filename = QFileDialog::getSaveFileName(this, tr("Save file"), getPreferredMapPath(), "XML file (*.xml)", nullptr, QFileDialog::DontUseNativeDialog);
-		if(!filename.isNull())
-		{
-			std::string filenameString = filename.toUtf8().constData();
-			std::string fileExtension = FileHandler::getFileExtension(filenameString);
-			if(!StringUtil::insensitiveEquals(fileExtension, ".xml"))
-			{
-				filenameString += ".xml";
-			}
+    void MapEditorWindow::showSaveAsDialog()
+    {
+        QString filename = QFileDialog::getSaveFileName(this, tr("Save file"), getPreferredMapPath(), "XML file (*.xml)", nullptr, QFileDialog::DontUseNativeDialog);
+        if(!filename.isNull())
+        {
+            std::string filenameString = filename.toUtf8().constData();
+            std::string fileExtension = FileHandler::getFileExtension(filenameString);
+            if(!StringUtil::insensitiveEquals(fileExtension, ".xml"))
+            {
+                filenameString += ".xml";
+            }
 
-			sceneDisplayerWidget->saveState(filenameString);
+            sceneDisplayerWidget->saveState(filenameString);
             if(sceneController)
             {
                 sceneController->saveMapOnFile(filenameString);
             }
 
-			updateMapFilename(filenameString);
+            updateMapFilename(filenameString);
             updateInterfaceState();
-		}
-	}
+        }
+    }
 
-	bool MapEditorWindow::executeCloseAction()
-	{
-		bool canProceed = false;
-		if(checkCurrentMapSaved())
-		{
-			sceneDisplayerWidget->closeMap();
+    bool MapEditorWindow::executeCloseAction()
+    {
+        bool canProceed = false;
+        if(checkCurrentMapSaved())
+        {
+            sceneDisplayerWidget->closeMap();
             scenePanelWidget->closeMap();
 
-			updateMapFilename("");
+            updateMapFilename("");
             updateInterfaceState();
 
             delete sceneController;
             sceneController = nullptr;
 
-			canProceed = true;
-		}
+            canProceed = true;
+        }
 
-		return canProceed;
-	}
+        return canProceed;
+    }
 
-	void MapEditorWindow::executeExitAction()
-	{
-		if(executeCloseAction())
-		{
-			QApplication::quit();
-		}
-	}
+    void MapEditorWindow::executeExitAction()
+    {
+        if(executeCloseAction())
+        {
+            QApplication::quit();
+        }
+    }
 
-	void MapEditorWindow::closeEvent(QCloseEvent *event)
-	{
-		if(executeCloseAction())
-		{
-			close();
-			QApplication::quit();
-		}else
-		{
-			event->ignore();
-		}
-	}
+    void MapEditorWindow::closeEvent(QCloseEvent *event)
+    {
+        if(executeCloseAction())
+        {
+            close();
+            QApplication::quit();
+        }else
+        {
+            event->ignore();
+        }
+    }
 
-	bool MapEditorWindow::checkCurrentMapSaved()
-	{
-		bool canProceed = true;
-		if(sceneController != nullptr && sceneController->isModified())
-		{
-			NotSavedDialog notSavedDialog(this);
-			notSavedDialog.exec();
+    bool MapEditorWindow::checkCurrentMapSaved()
+    {
+        bool canProceed = true;
+        if(sceneController != nullptr && sceneController->isModified())
+        {
+            NotSavedDialog notSavedDialog(this);
+            notSavedDialog.exec();
 
-			if(notSavedDialog.result()==QDialog::Accepted && notSavedDialog.needSave())
-			{
-				executeSaveAction();
-			}else if(notSavedDialog.result()==QDialog::Rejected)
-			{
-				canProceed = false;
-			}
-		}
+            if(notSavedDialog.result()==QDialog::Accepted && notSavedDialog.needSave())
+            {
+                executeSaveAction();
+            }else if(notSavedDialog.result()==QDialog::Rejected)
+            {
+                canProceed = false;
+            }
+        }
 
-		return canProceed;
-	}
+        return canProceed;
+    }
 
-	void MapEditorWindow::updateInterfaceState()
-	{
-		bool hasMapOpen = sceneController != nullptr;
+    void MapEditorWindow::updateInterfaceState()
+    {
+        bool hasMapOpen = sceneController != nullptr;
 
-		saveAction->setEnabled(hasMapOpen);
-		saveAsAction->setEnabled(hasMapOpen);
-		closeAction->setEnabled(hasMapOpen);
-		for(auto &viewAction : viewActions)
-		{
-			viewAction.second->setEnabled(hasMapOpen);
-		}
+        saveAction->setEnabled(hasMapOpen);
+        saveAsAction->setEnabled(hasMapOpen);
+        closeAction->setEnabled(hasMapOpen);
+        for(auto &viewAction : viewActions)
+        {
+            viewAction.second->setEnabled(hasMapOpen);
+        }
 
         refreshWindowTitle();
-	}
+    }
 
-	void MapEditorWindow::updateMapFilename(const std::string &mapFilename)
-	{
-		this->mapFilename = mapFilename;
+    void MapEditorWindow::updateMapFilename(const std::string &mapFilename)
+    {
+        this->mapFilename = mapFilename;
 
         if(!mapFilename.empty())
-		{
-			std::string preferredMapPathString = FileHandler::getDirectoryFrom(mapFilename);
-			savePreferredMapPath(preferredMapPathString);
-		}
-	}
+        {
+            std::string preferredMapPathString = FileHandler::getDirectoryFrom(mapFilename);
+            savePreferredMapPath(preferredMapPathString);
+        }
+    }
 
-	void MapEditorWindow::refreshWindowTitle()
+    void MapEditorWindow::refreshWindowTitle()
     {
         if(mapFilename.empty())
         {
@@ -430,40 +430,40 @@ namespace urchin
         }
     }
 
-	void MapEditorWindow::executeViewPropertiesChangeAction()
-	{
-		for(int i=0; i<SceneDisplayer::LAST_VIEW_PROPERTIES; ++i)
-		{
-			auto viewProperties = static_cast<SceneDisplayer::ViewProperties>(i);
+    void MapEditorWindow::executeViewPropertiesChangeAction()
+    {
+        for(int i=0; i<SceneDisplayer::LAST_VIEW_PROPERTIES; ++i)
+        {
+            auto viewProperties = static_cast<SceneDisplayer::ViewProperties>(i);
 
-			bool isViewChecked = viewActions[viewProperties]->isChecked();
-			bool isCorrespondingTabSelected = (scenePanelWidget==nullptr && i==0)
-					|| (scenePanelWidget!=nullptr && getConcernedTabFor(viewProperties)==scenePanelWidget->getTabSelected());
+            bool isViewChecked = viewActions[viewProperties]->isChecked();
+            bool isCorrespondingTabSelected = (scenePanelWidget==nullptr && i==0)
+                    || (scenePanelWidget!=nullptr && getConcernedTabFor(viewProperties)==scenePanelWidget->getTabSelected());
 
-			sceneDisplayerWidget->setViewProperties(viewProperties, isViewChecked && isCorrespondingTabSelected);
-		}
-	}
+            sceneDisplayerWidget->setViewProperties(viewProperties, isViewChecked && isCorrespondingTabSelected);
+        }
+    }
 
-	ScenePanelWidget::TabName MapEditorWindow::getConcernedTabFor(SceneDisplayer::ViewProperties viewProperties)
-	{
-		if(SceneDisplayer::MODEL_PHYSICS==viewProperties)
-		{
-			return ScenePanelWidget::OBJECTS;
-		}
-		if(SceneDisplayer::LIGHT_SCOPE==viewProperties)
-		{
-			return ScenePanelWidget::LIGHTS;
-		}
-		if(SceneDisplayer::SOUND_TRIGGER==viewProperties)
-		{
-			return ScenePanelWidget::SOUNDS;
-		}
-		if(SceneDisplayer::NAV_MESH==viewProperties)
-		{
-			return ScenePanelWidget::AI;
-		}
+    ScenePanelWidget::TabName MapEditorWindow::getConcernedTabFor(SceneDisplayer::ViewProperties viewProperties)
+    {
+        if(SceneDisplayer::MODEL_PHYSICS==viewProperties)
+        {
+            return ScenePanelWidget::OBJECTS;
+        }
+        if(SceneDisplayer::LIGHT_SCOPE==viewProperties)
+        {
+            return ScenePanelWidget::LIGHTS;
+        }
+        if(SceneDisplayer::SOUND_TRIGGER==viewProperties)
+        {
+            return ScenePanelWidget::SOUNDS;
+        }
+        if(SceneDisplayer::NAV_MESH==viewProperties)
+        {
+            return ScenePanelWidget::AI;
+        }
 
-		throw std::runtime_error("Impossible to find concerned tab for properties: " + std::to_string(viewProperties));
-	}
+        throw std::runtime_error("Impossible to find concerned tab for properties: " + std::to_string(viewProperties));
+    }
 
 }

@@ -5,31 +5,31 @@
 
 namespace urchin
 {
-	
-	/**
-	 * A FPS camera:
-	 * - mouse allow to rotate camera based on mouse movements
-	 * - directional keys allow to move camera forward/backward/left/right
-	 */
-	class FpsCamera : public Camera
-	{
-		public:
-			FpsCamera(float, float, float);
-			~FpsCamera() override = default;
-		
-			void setKeys(unsigned int, unsigned int, unsigned int, unsigned int);
-			void setSpeed(float);
 
-			bool onKeyDown(unsigned int) override;
-			bool onKeyUp(unsigned int) override;
-		
-			void updateCameraView(float) override;
-			
-		private:
-			unsigned int keyFront, keyBack, keyLeft, keyRight;
-			bool isKeyFrontPressed, isKeyBackPressed, isKeyLeftPressed, isKeyRightPressed;
-			float speed;
-	};
+    /**
+     * A FPS camera:
+     * - mouse allow to rotate camera based on mouse movements
+     * - directional keys allow to move camera forward/backward/left/right
+     */
+    class FpsCamera : public Camera
+    {
+        public:
+            FpsCamera(float, float, float);
+            ~FpsCamera() override = default;
+
+            void setKeys(unsigned int, unsigned int, unsigned int, unsigned int);
+            void setSpeed(float);
+
+            bool onKeyDown(unsigned int) override;
+            bool onKeyUp(unsigned int) override;
+
+            void updateCameraView(float) override;
+
+        private:
+            unsigned int keyFront, keyBack, keyLeft, keyRight;
+            bool isKeyFrontPressed, isKeyBackPressed, isKeyLeftPressed, isKeyRightPressed;
+            float speed;
+    };
 
 }
 

@@ -10,23 +10,23 @@
 namespace urchin
 {
 
-	/**
-	* Allows to create a singleton class (no thread-safe)
-	*/
-	template<class T> class Singleton : public SingletonInterface
-	{
-		public:
-			static T *instance();
-			~Singleton() override;
+    /**
+    * Allows to create a singleton class (no thread-safe)
+    */
+    template<class T> class Singleton : public SingletonInterface
+    {
+        public:
+            static T *instance();
+            ~Singleton() override;
 
-		protected:
-			Singleton();
+        protected:
+            Singleton();
 
-		private:
-			static T *objectT;
-	};
+        private:
+            static T *objectT;
+    };
 
-	#include "Singleton.inl"
+    #include "Singleton.inl"
 
 }
 

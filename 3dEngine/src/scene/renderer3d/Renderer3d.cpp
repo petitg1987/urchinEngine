@@ -26,327 +26,327 @@ namespace urchin
     bool DEBUG_DISPLAY_LIGHTS_OCTREE = false;
     bool DEBUG_DISPLAY_LIGHTS_SCENE_BOUNDING_BOX = false;
 
-	Renderer3d::Renderer3d() :
-			sceneWidth(0),
-			sceneHeight(0),
+    Renderer3d::Renderer3d() :
+            sceneWidth(0),
+            sceneHeight(0),
             paused(true),
-			modelDisplayer(nullptr),
-			fogManager(nullptr),
-			terrainManager(nullptr),
-			waterManager(nullptr),
-			skyManager(nullptr),
-			geometryManager(nullptr),
-			camera(nullptr),
-			fboIDs(nullptr),
+            modelDisplayer(nullptr),
+            fogManager(nullptr),
+            terrainManager(nullptr),
+            waterManager(nullptr),
+            skyManager(nullptr),
+            geometryManager(nullptr),
+            camera(nullptr),
+            fboIDs(nullptr),
             fboAttachments{GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2},
-			textureIDs(nullptr),
-			deferredShadingShader(0),
-			mInverseViewProjectionLoc(0),
-			viewPositionLoc(0)
-	{
-		//deferred shading (pass 1)
-		fboIDs = new unsigned int[1];
-		textureIDs = new unsigned int[4];
-		modelDisplayer = new ModelDisplayer(ModelDisplayer::DEFAULT_MODE);
-		modelDisplayer->initialize();
-		glGenFramebuffers(1, fboIDs);
-		glGenTextures(4, textureIDs);
+            textureIDs(nullptr),
+            deferredShadingShader(0),
+            mInverseViewProjectionLoc(0),
+            viewPositionLoc(0)
+    {
+        //deferred shading (pass 1)
+        fboIDs = new unsigned int[1];
+        textureIDs = new unsigned int[4];
+        modelDisplayer = new ModelDisplayer(ModelDisplayer::DEFAULT_MODE);
+        modelDisplayer->initialize();
+        glGenFramebuffers(1, fboIDs);
+        glGenTextures(4, textureIDs);
 
-		modelOctreeManager = new OctreeManager<Model>(DEFAULT_OCTREE_MIN_SIZE);
+        modelOctreeManager = new OctreeManager<Model>(DEFAULT_OCTREE_MIN_SIZE);
 
-		fogManager = new FogManager();
+        fogManager = new FogManager();
 
-		terrainManager = new TerrainManager();
+        terrainManager = new TerrainManager();
 
-		waterManager = new WaterManager();
+        waterManager = new WaterManager();
 
-		skyManager = new SkyManager();
+        skyManager = new SkyManager();
 
-		geometryManager = new GeometryManager();
+        geometryManager = new GeometryManager();
 
-		lightManager = new LightManager();
+        lightManager = new LightManager();
 
-		shadowManager = new ShadowManager(lightManager, modelOctreeManager);
-		shadowManager->addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
-		isShadowActivated = true;
+        shadowManager = new ShadowManager(lightManager, modelOctreeManager);
+        shadowManager->addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
+        isShadowActivated = true;
 
-		ambientOcclusionManager = new AmbientOcclusionManager(textureIDs[TEX_DEPTH], textureIDs[TEX_NORMAL_AND_AMBIENT]);
-		isAmbientOcclusionActivated = true;
+        ambientOcclusionManager = new AmbientOcclusionManager(textureIDs[TEX_DEPTH], textureIDs[TEX_NORMAL_AND_AMBIENT]);
+        isAmbientOcclusionActivated = true;
 
-		//deferred shading (pass 2)
-		createOrUpdateDeferredShadingShader();
-		lightingPassQuadDisplayer = std::make_unique<QuadDisplayerBuilder>()->build();
+        //deferred shading (pass 2)
+        createOrUpdateDeferredShadingShader();
+        lightingPassQuadDisplayer = std::make_unique<QuadDisplayerBuilder>()->build();
 
-		antiAliasingManager = new AntiAliasingManager();
-		isAntiAliasingActivated = true;
-	}
+        antiAliasingManager = new AntiAliasingManager();
+        isAntiAliasingActivated = true;
+    }
 
-	Renderer3d::~Renderer3d()
-	{
-		//models
-		for (auto *allOctreeableModel : modelOctreeManager->getAllOctreeables())
-		{
-			delete allOctreeableModel;
-		}
+    Renderer3d::~Renderer3d()
+    {
+        //models
+        for (auto *allOctreeableModel : modelOctreeManager->getAllOctreeables())
+        {
+            delete allOctreeableModel;
+        }
 
-		//managers
-		delete modelDisplayer;
-		delete skyManager;
-		delete waterManager;
-		delete terrainManager;
-		delete fogManager;
-		delete geometryManager;
-		delete shadowManager;
-		delete modelOctreeManager;
-		delete lightManager;
-		delete ambientOcclusionManager;
-		delete antiAliasingManager;
+        //managers
+        delete modelDisplayer;
+        delete skyManager;
+        delete waterManager;
+        delete terrainManager;
+        delete fogManager;
+        delete geometryManager;
+        delete shadowManager;
+        delete modelOctreeManager;
+        delete lightManager;
+        delete ambientOcclusionManager;
+        delete antiAliasingManager;
 
-		//deferred shading (pass 1)
-		if(fboIDs)
-		{
-			glDeleteFramebuffers(1, fboIDs);
-			delete [] fboIDs;
-		}
-		if(textureIDs)
-		{
-			glDeleteTextures(4, textureIDs);
-			delete [] textureIDs;
-		}
+        //deferred shading (pass 1)
+        if(fboIDs)
+        {
+            glDeleteFramebuffers(1, fboIDs);
+            delete [] fboIDs;
+        }
+        if(textureIDs)
+        {
+            glDeleteTextures(4, textureIDs);
+            delete [] textureIDs;
+        }
 
-		//deferred shading (pass 2)
-		ShaderManager::instance()->removeProgram(deferredShadingShader);
-	}
+        //deferred shading (pass 2)
+        ShaderManager::instance()->removeProgram(deferredShadingShader);
+    }
 
-	void Renderer3d::createOrUpdateDeferredShadingShader()
-	{
-		std::locale::global(std::locale("C")); //for float
+    void Renderer3d::createOrUpdateDeferredShadingShader()
+    {
+        std::locale::global(std::locale("C")); //for float
 
-		std::map<std::string, std::string> tokens;
-		tokens["MAX_LIGHTS"] = std::to_string(lightManager->getMaxLights());
-		tokens["NUMBER_SHADOW_MAPS"] = std::to_string(shadowManager->getNumberShadowMaps());
-		tokens["SHADOW_MAP_BIAS"] = std::to_string(shadowManager->getShadowMapBias());
-		tokens["OUTPUT_LOCATION"] = "0"; // isAntiAliasingActivated ? "0" /*TEX_LIGHTING_PASS*/ : "0" /*Screen*/;
-		ShaderManager::instance()->removeProgram(deferredShadingShader);
-		deferredShadingShader = ShaderManager::instance()->createProgram("deferredShading.vert", "", "deferredShading.frag", tokens);
-		ShaderManager::instance()->bind(deferredShadingShader);
+        std::map<std::string, std::string> tokens;
+        tokens["MAX_LIGHTS"] = std::to_string(lightManager->getMaxLights());
+        tokens["NUMBER_SHADOW_MAPS"] = std::to_string(shadowManager->getNumberShadowMaps());
+        tokens["SHADOW_MAP_BIAS"] = std::to_string(shadowManager->getShadowMapBias());
+        tokens["OUTPUT_LOCATION"] = "0"; // isAntiAliasingActivated ? "0" /*TEX_LIGHTING_PASS*/ : "0" /*Screen*/;
+        ShaderManager::instance()->removeProgram(deferredShadingShader);
+        deferredShadingShader = ShaderManager::instance()->createProgram("deferredShading.vert", "", "deferredShading.frag", tokens);
+        ShaderManager::instance()->bind(deferredShadingShader);
 
-		int depthTexLoc = glGetUniformLocation(deferredShadingShader, "depthTex");
-		glUniform1i(depthTexLoc, GL_TEXTURE0-GL_TEXTURE0);
-		int diffuseTexLoc = glGetUniformLocation(deferredShadingShader, "colorTex");
-		glUniform1i(diffuseTexLoc, GL_TEXTURE1-GL_TEXTURE0);
-		int normalAndAmbientTexLoc = glGetUniformLocation(deferredShadingShader, "normalAndAmbientTex");
-		glUniform1i(normalAndAmbientTexLoc, GL_TEXTURE2-GL_TEXTURE0);
-		int hasShadowLoc = glGetUniformLocation(deferredShadingShader, "hasShadow");
-		glUniform1i(hasShadowLoc, isShadowActivated);
-		int hasAmbientOcclusionLoc = glGetUniformLocation(deferredShadingShader, "hasAmbientOcclusion");
-		glUniform1i(hasAmbientOcclusionLoc, isAmbientOcclusionActivated);
-		mInverseViewProjectionLoc = glGetUniformLocation(deferredShadingShader, "mInverseViewProjection");
-		viewPositionLoc = glGetUniformLocation(deferredShadingShader, "viewPosition");
+        int depthTexLoc = glGetUniformLocation(deferredShadingShader, "depthTex");
+        glUniform1i(depthTexLoc, GL_TEXTURE0-GL_TEXTURE0);
+        int diffuseTexLoc = glGetUniformLocation(deferredShadingShader, "colorTex");
+        glUniform1i(diffuseTexLoc, GL_TEXTURE1-GL_TEXTURE0);
+        int normalAndAmbientTexLoc = glGetUniformLocation(deferredShadingShader, "normalAndAmbientTex");
+        glUniform1i(normalAndAmbientTexLoc, GL_TEXTURE2-GL_TEXTURE0);
+        int hasShadowLoc = glGetUniformLocation(deferredShadingShader, "hasShadow");
+        glUniform1i(hasShadowLoc, isShadowActivated);
+        int hasAmbientOcclusionLoc = glGetUniformLocation(deferredShadingShader, "hasAmbientOcclusion");
+        glUniform1i(hasAmbientOcclusionLoc, isAmbientOcclusionActivated);
+        mInverseViewProjectionLoc = glGetUniformLocation(deferredShadingShader, "mInverseViewProjection");
+        viewPositionLoc = glGetUniformLocation(deferredShadingShader, "viewPosition");
 
-		//managers
-		fogManager->loadUniformLocationFor(deferredShadingShader);
-		lightManager->loadUniformLocationFor(deferredShadingShader);
-		shadowManager->loadUniformLocationFor(deferredShadingShader);
-		ambientOcclusionManager->loadUniformLocationFor(deferredShadingShader);
-	}
+        //managers
+        fogManager->loadUniformLocationFor(deferredShadingShader);
+        lightManager->loadUniformLocationFor(deferredShadingShader);
+        shadowManager->loadUniformLocationFor(deferredShadingShader);
+        ambientOcclusionManager->loadUniformLocationFor(deferredShadingShader);
+    }
 
-	void Renderer3d::onResize(unsigned int sceneWidth, unsigned int sceneHeight)
-	{
-		//scene properties
-		this->sceneWidth = sceneWidth;
-		this->sceneHeight = sceneHeight;
+    void Renderer3d::onResize(unsigned int sceneWidth, unsigned int sceneHeight)
+    {
+        //scene properties
+        this->sceneWidth = sceneWidth;
+        this->sceneHeight = sceneHeight;
 
-		//camera
-		if(camera)
-		{
-			camera->onResize(sceneWidth, sceneHeight);
-			onCameraProjectionUpdate();
-		}
+        //camera
+        if(camera)
+        {
+            camera->onResize(sceneWidth, sceneHeight);
+            onCameraProjectionUpdate();
+        }
 
-		//deferred shading
-		glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_SCENE]);
+        //deferred shading
+        glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_SCENE]);
 
-		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_DEPTH]); //depth buffer
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, sceneWidth, sceneHeight, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, nullptr);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, textureIDs[TEX_DEPTH], 0);
+        glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_DEPTH]); //depth buffer
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, sceneWidth, sceneHeight, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, nullptr);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, textureIDs[TEX_DEPTH], 0);
 
-		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_DIFFUSE]); //diffuse buffer
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sceneWidth, sceneHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[0], GL_TEXTURE_2D, textureIDs[TEX_DIFFUSE], 0);
+        glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_DIFFUSE]); //diffuse buffer
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sceneWidth, sceneHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[0], GL_TEXTURE_2D, textureIDs[TEX_DIFFUSE], 0);
 
-		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_NORMAL_AND_AMBIENT]); //normal and ambient factor buffer
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sceneWidth, sceneHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[1], GL_TEXTURE_2D, textureIDs[TEX_NORMAL_AND_AMBIENT], 0);
+        glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_NORMAL_AND_AMBIENT]); //normal and ambient factor buffer
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sceneWidth, sceneHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[1], GL_TEXTURE_2D, textureIDs[TEX_NORMAL_AND_AMBIENT], 0);
 
-		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_LIGHTING_PASS]); //illuminated scene buffer
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sceneWidth, sceneHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[2], GL_TEXTURE_2D, textureIDs[TEX_LIGHTING_PASS], 0);
+        glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_LIGHTING_PASS]); //illuminated scene buffer
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sceneWidth, sceneHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[2], GL_TEXTURE_2D, textureIDs[TEX_LIGHTING_PASS], 0);
 
-		glReadBuffer(GL_NONE);
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glReadBuffer(GL_NONE);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		//manager
-		shadowManager->onResize(sceneWidth, sceneHeight);
-		ambientOcclusionManager->onResize(sceneWidth, sceneHeight);
-		antiAliasingManager->onResize(sceneWidth, sceneHeight);
-	}
+        //manager
+        shadowManager->onResize(sceneWidth, sceneHeight);
+        ambientOcclusionManager->onResize(sceneWidth, sceneHeight);
+        antiAliasingManager->onResize(sceneWidth, sceneHeight);
+    }
 
-	void Renderer3d::notify(Observable *observable, int notificationType)
-	{
-		if(dynamic_cast<ShadowManager *>(observable))
-		{
-		    if(notificationType==ShadowManager::NUMBER_SHADOW_MAPS_UPDATE)
+    void Renderer3d::notify(Observable *observable, int notificationType)
+    {
+        if(dynamic_cast<ShadowManager *>(observable))
+        {
+            if(notificationType==ShadowManager::NUMBER_SHADOW_MAPS_UPDATE)
             {
                 createOrUpdateDeferredShadingShader();
             }
-		}
-	}
+        }
+    }
 
-	OctreeManager<Model> *Renderer3d::getModelOctreeManager() const
-	{
-		return modelOctreeManager;
-	}
+    OctreeManager<Model> *Renderer3d::getModelOctreeManager() const
+    {
+        return modelOctreeManager;
+    }
 
-	FogManager *Renderer3d::getFogManager() const
-	{
-		return fogManager;
-	}
+    FogManager *Renderer3d::getFogManager() const
+    {
+        return fogManager;
+    }
 
-	TerrainManager *Renderer3d::getTerrainManager() const
-	{
-		return terrainManager;
-	}
+    TerrainManager *Renderer3d::getTerrainManager() const
+    {
+        return terrainManager;
+    }
 
-	WaterManager *Renderer3d::getWaterManager() const
-	{
-		return waterManager;
-	}
+    WaterManager *Renderer3d::getWaterManager() const
+    {
+        return waterManager;
+    }
 
     SkyManager *Renderer3d::getSkyManager() const
     {
-	    return skyManager;
+        return skyManager;
     }
 
-	GeometryManager *Renderer3d::getGeometryManager() const
-	{
-		return geometryManager;
-	}
+    GeometryManager *Renderer3d::getGeometryManager() const
+    {
+        return geometryManager;
+    }
 
-	LightManager *Renderer3d::getLightManager() const
-	{
-		return lightManager;
-	}
+    LightManager *Renderer3d::getLightManager() const
+    {
+        return lightManager;
+    }
 
-	ShadowManager *Renderer3d::getShadowManager() const
-	{
-		return shadowManager;
-	}
+    ShadowManager *Renderer3d::getShadowManager() const
+    {
+        return shadowManager;
+    }
 
-	void Renderer3d::activateShadow(bool isShadowActivated)
-	{
-		this->isShadowActivated = isShadowActivated;
+    void Renderer3d::activateShadow(bool isShadowActivated)
+    {
+        this->isShadowActivated = isShadowActivated;
 
-		createOrUpdateDeferredShadingShader();
-		shadowManager->forceUpdateAllShadowMaps();
-	}
+        createOrUpdateDeferredShadingShader();
+        shadowManager->forceUpdateAllShadowMaps();
+    }
 
-	AmbientOcclusionManager *Renderer3d::getAmbientOcclusionManager() const
-	{
-		return ambientOcclusionManager;
-	}
+    AmbientOcclusionManager *Renderer3d::getAmbientOcclusionManager() const
+    {
+        return ambientOcclusionManager;
+    }
 
-	void Renderer3d::activateAmbientOcclusion(bool isAmbientOcclusionActivated)
-	{
-		this->isAmbientOcclusionActivated = isAmbientOcclusionActivated;
+    void Renderer3d::activateAmbientOcclusion(bool isAmbientOcclusionActivated)
+    {
+        this->isAmbientOcclusionActivated = isAmbientOcclusionActivated;
 
-		createOrUpdateDeferredShadingShader();
-	}
+        createOrUpdateDeferredShadingShader();
+    }
 
-	AntiAliasingManager *Renderer3d::getAntiAliasingManager() const
-	{
-		return antiAliasingManager;
-	}
+    AntiAliasingManager *Renderer3d::getAntiAliasingManager() const
+    {
+        return antiAliasingManager;
+    }
 
-	void Renderer3d::activateAntiAliasing(bool isAntiAliasingActivated)
-	{
-		this->isAntiAliasingActivated = isAntiAliasingActivated;
-	}
+    void Renderer3d::activateAntiAliasing(bool isAntiAliasingActivated)
+    {
+        this->isAntiAliasingActivated = isAntiAliasingActivated;
+    }
 
-	void Renderer3d::setCamera(Camera *camera)
-	{
-	    if(this->camera != nullptr)
+    void Renderer3d::setCamera(Camera *camera)
+    {
+        if(this->camera != nullptr)
         {
-	       throw std::runtime_error("Redefine a camera is currently not supported");
+           throw std::runtime_error("Redefine a camera is currently not supported");
         }
 
-		this->camera = camera;
-		if(camera)
-		{
-			onCameraProjectionUpdate();
-		}
-	}
+        this->camera = camera;
+        if(camera)
+        {
+            onCameraProjectionUpdate();
+        }
+    }
 
-	void Renderer3d::onCameraProjectionUpdate()
-	{
-		modelDisplayer->onCameraProjectionUpdate(camera);
-		terrainManager->onCameraProjectionUpdate(camera);
-		waterManager->onCameraProjectionUpdate(camera);
+    void Renderer3d::onCameraProjectionUpdate()
+    {
+        modelDisplayer->onCameraProjectionUpdate(camera);
+        terrainManager->onCameraProjectionUpdate(camera);
+        waterManager->onCameraProjectionUpdate(camera);
         skyManager->onCameraProjectionUpdate(camera);
-		geometryManager->onCameraProjectionUpdate(camera);
-		shadowManager->onCameraProjectionUpdate(camera);
-		ambientOcclusionManager->onCameraProjectionUpdate(camera);
-	}
+        geometryManager->onCameraProjectionUpdate(camera);
+        shadowManager->onCameraProjectionUpdate(camera);
+        ambientOcclusionManager->onCameraProjectionUpdate(camera);
+    }
 
-	void Renderer3d::updateModelsInFrustum()
+    void Renderer3d::updateModelsInFrustum()
     {
         modelsInFrustum.clear();
         modelOctreeManager->getOctreeablesIn(getCamera()->getFrustum(), modelsInFrustum);
     }
 
-	Camera *Renderer3d::getCamera() const
-	{
-		return camera;
-	}
+    Camera *Renderer3d::getCamera() const
+    {
+        return camera;
+    }
 
-	void Renderer3d::addModel(Model *model)
-	{
-		if(model)
-		{
-			modelOctreeManager->addOctreeable(model);
-		}
-	}
+    void Renderer3d::addModel(Model *model)
+    {
+        if(model)
+        {
+            modelOctreeManager->addOctreeable(model);
+        }
+    }
 
-	void Renderer3d::removeModel(Model *model)
-	{
-		if(model)
-		{
-			modelOctreeManager->removeOctreeable(model);
-		}
-		delete model;
-	}
+    void Renderer3d::removeModel(Model *model)
+    {
+        if(model)
+        {
+            modelOctreeManager->removeOctreeable(model);
+        }
+        delete model;
+    }
 
-	bool Renderer3d::isModelExist(Model *model)
-	{
-		std::vector<Model *> allOctreeables = modelOctreeManager->getAllOctreeables();
-		return std::find(allOctreeables.begin(), allOctreeables.end(), model) != allOctreeables.end();
-	}
+    bool Renderer3d::isModelExist(Model *model)
+    {
+        std::vector<Model *> allOctreeables = modelOctreeManager->getAllOctreeables();
+        return std::find(allOctreeables.begin(), allOctreeables.end(), model) != allOctreeables.end();
+    }
 
     void Renderer3d::pause()
     {
@@ -368,77 +368,77 @@ namespace urchin
         return paused;
     }
 
-	bool Renderer3d::onKeyDown(unsigned int key)
-	{
-		if(!paused && camera && key < 260)
-		{
-			return camera->onKeyDown(key);
-		}
-		return true;
-	}
+    bool Renderer3d::onKeyDown(unsigned int key)
+    {
+        if(!paused && camera && key < 260)
+        {
+            return camera->onKeyDown(key);
+        }
+        return true;
+    }
 
-	bool Renderer3d::onKeyUp(unsigned int key)
-	{
-		if(!paused && camera && key < 260)
-		{
-			return camera->onKeyUp(key);
-		}
-		return true;
-	}
+    bool Renderer3d::onKeyUp(unsigned int key)
+    {
+        if(!paused && camera && key < 260)
+        {
+            return camera->onKeyUp(key);
+        }
+        return true;
+    }
 
-	bool Renderer3d::onChar(unsigned int)
-	{
-		//nothing to do
-		return true;
-	}
+    bool Renderer3d::onChar(unsigned int)
+    {
+        //nothing to do
+        return true;
+    }
 
-	bool Renderer3d::onMouseMove(int mouseX, int mouseY)
-	{
-		if(!paused && camera)
-		{
-			return camera->onMouseMove(mouseX, mouseY);
-		}
-		return true;
-	}
+    bool Renderer3d::onMouseMove(int mouseX, int mouseY)
+    {
+        if(!paused && camera)
+        {
+            return camera->onMouseMove(mouseX, mouseY);
+        }
+        return true;
+    }
 
-	void Renderer3d::onDisable()
-	{
-		//nothing to do
-	}
+    void Renderer3d::onDisable()
+    {
+        //nothing to do
+    }
 
-	void Renderer3d::display(float dt)
-	{
-		ScopeProfiler profiler("3d", "rendererDisplay");
+    void Renderer3d::display(float dt)
+    {
+        ScopeProfiler profiler("3d", "rendererDisplay");
 
-		if(!camera)
-		{ //nothing to display if camera doesn't exist
-			return;
-		}
+        if(!camera)
+        { //nothing to display if camera doesn't exist
+            return;
+        }
 
-		updateScene(dt);
+        updateScene(dt);
 
-		glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_SCENE]);
-		glDrawBuffers(2, &fboAttachments[0]);
-		deferredGeometryRendering(dt);
+        glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_SCENE]);
+        glDrawBuffers(2, &fboAttachments[0]);
+        deferredGeometryRendering(dt);
 
-		if(isAntiAliasingActivated)
-		{
-			glDrawBuffers(1, &fboAttachments[2]);
-			lightingPassRendering();
+        if(isAntiAliasingActivated)
+        {
+            glDrawBuffers(1, &fboAttachments[2]);
+            lightingPassRendering();
 
-			glBindFramebuffer(GL_FRAMEBUFFER, 0);
-			antiAliasingManager->applyOn(textureIDs[TEX_LIGHTING_PASS]);
-		}else
-		{
-			glBindFramebuffer(GL_FRAMEBUFFER, 0);
-			lightingPassRendering();
-		}
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            antiAliasingManager->applyOn(textureIDs[TEX_LIGHTING_PASS]);
+        }else
+        {
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            lightingPassRendering();
+        }
 
-		postUpdateScene();
+        postUpdateScene();
         displayBuffers();
-	}
+    }
 
-	void Renderer3d::displayBuffers()
+    void Renderer3d::displayBuffers()
     {
         if(DEBUG_DISPLAY_DEPTH_BUFFER)
         {
@@ -494,73 +494,73 @@ namespace urchin
         }
     }
 
-	void Renderer3d::updateScene(float dt)
-	{
-		ScopeProfiler profiler("3d", "updateScene");
+    void Renderer3d::updateScene(float dt)
+    {
+        ScopeProfiler profiler("3d", "updateScene");
 
-		//move the camera
-		camera->updateCameraView(dt);
+        //move the camera
+        camera->updateCameraView(dt);
 
-		//refresh models in octree
-		modelOctreeManager->refreshOctreeables();
+        //refresh models in octree
+        modelOctreeManager->refreshOctreeables();
 
-		//determine visible lights on scene
-		lightManager->updateLights(camera->getFrustum());
+        //determine visible lights on scene
+        lightManager->updateLights(camera->getFrustum());
 
-		//determine models producing shadow on scene
-		if(isShadowActivated)
-		{
-			shadowManager->updateVisibleModels(camera->getFrustum());
-		}
+        //determine models producing shadow on scene
+        if(isShadowActivated)
+        {
+            shadowManager->updateVisibleModels(camera->getFrustum());
+        }
 
-		//animate models (only those visible to scene OR producing shadow on scene)
-		if(isShadowActivated)
-		{
-			modelDisplayer->setModels(shadowManager->computeVisibleModels());
-		}else
-		{
+        //animate models (only those visible to scene OR producing shadow on scene)
+        if(isShadowActivated)
+        {
+            modelDisplayer->setModels(shadowManager->computeVisibleModels());
+        }else
+        {
             updateModelsInFrustum();
-			modelDisplayer->setModels(modelsInFrustum);
-		}
-		modelDisplayer->updateAnimation(dt);
+            modelDisplayer->setModels(modelsInFrustum);
+        }
+        modelDisplayer->updateAnimation(dt);
 
-		//update shadow maps
-		if(isShadowActivated)
-		{
-			shadowManager->updateShadowMaps();
-		}
-	}
+        //update shadow maps
+        if(isShadowActivated)
+        {
+            shadowManager->updateShadowMaps();
+        }
+    }
 
-	/**
-	 * First pass of deferred shading algorithm.
-	 * Render depth, color, normal, etc. into buffers.
-	 */
-	void Renderer3d::deferredGeometryRendering(float dt)
-	{
-		ScopeProfiler profiler("3d", "defGeoRender");
+    /**
+     * First pass of deferred shading algorithm.
+     * Render depth, color, normal, etc. into buffers.
+     */
+    void Renderer3d::deferredGeometryRendering(float dt)
+    {
+        ScopeProfiler profiler("3d", "defGeoRender");
 
-		glClear((unsigned int)GL_DEPTH_BUFFER_BIT | (unsigned int)GL_COLOR_BUFFER_BIT);
+        glClear((unsigned int)GL_DEPTH_BUFFER_BIT | (unsigned int)GL_COLOR_BUFFER_BIT);
 
         skyManager->display(camera->getViewMatrix(), camera->getPosition());
 
         updateModelsInFrustum();
         modelDisplayer->setModels(modelsInFrustum);
 
-		modelDisplayer->display(camera->getViewMatrix());
+        modelDisplayer->display(camera->getViewMatrix());
 
-		terrainManager->display(camera, dt);
+        terrainManager->display(camera, dt);
 
-		waterManager->display(camera, fogManager, dt);
+        waterManager->display(camera, fogManager, dt);
 
-		geometryManager->display(camera->getViewMatrix());
+        geometryManager->display(camera->getViewMatrix());
 
-		if(isAmbientOcclusionActivated)
-		{
-			ambientOcclusionManager->updateAOTexture(camera);
-		}
+        if(isAmbientOcclusionActivated)
+        {
+            ambientOcclusionManager->updateAOTexture(camera);
+        }
 
         displayGeometryDetails();
-	}
+    }
 
     void Renderer3d::displayGeometryDetails()
     {
@@ -595,53 +595,53 @@ namespace urchin
         }
     }
 
-	/**
-	 * Second pass of deferred shading algorithm.
-	 * Compute lighting in pixel shader and render the scene to screen.
-	 */
-	void Renderer3d::lightingPassRendering()
-	{
+    /**
+     * Second pass of deferred shading algorithm.
+     * Compute lighting in pixel shader and render the scene to screen.
+     */
+    void Renderer3d::lightingPassRendering()
+    {
         ScopeProfiler profiler("3d", "lightPassRender");
 
-		ShaderManager::instance()->bind(deferredShadingShader);
-		unsigned int nextTextureUnit = 0;
+        ShaderManager::instance()->bind(deferredShadingShader);
+        unsigned int nextTextureUnit = 0;
 
-		glActiveTexture(GL_TEXTURE0 + nextTextureUnit++);
-		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_DEPTH]);
+        glActiveTexture(GL_TEXTURE0 + nextTextureUnit++);
+        glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_DEPTH]);
 
-		glActiveTexture(GL_TEXTURE0 + nextTextureUnit++);
-		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_DIFFUSE]);
+        glActiveTexture(GL_TEXTURE0 + nextTextureUnit++);
+        glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_DIFFUSE]);
 
-		glActiveTexture(GL_TEXTURE0 + nextTextureUnit++);
-		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_NORMAL_AND_AMBIENT]);
+        glActiveTexture(GL_TEXTURE0 + nextTextureUnit++);
+        glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_NORMAL_AND_AMBIENT]);
 
-		glUniformMatrix4fv(mInverseViewProjectionLoc, 1, GL_FALSE, (const float*) (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse());
-		glUniform3fv(viewPositionLoc, 1, (const float *)camera->getPosition());
+        glUniformMatrix4fv(mInverseViewProjectionLoc, 1, GL_FALSE, (const float*) (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse());
+        glUniform3fv(viewPositionLoc, 1, (const float *)camera->getPosition());
 
         lightManager->loadLights();
 
-		if(isShadowActivated)
-		{
-			shadowManager->loadShadowMaps(nextTextureUnit);
-			nextTextureUnit += shadowManager->getNumberShadowMaps();
-		}
+        if(isShadowActivated)
+        {
+            shadowManager->loadShadowMaps(nextTextureUnit);
+            nextTextureUnit += shadowManager->getNumberShadowMaps();
+        }
 
-		if(isAmbientOcclusionActivated)
-		{
-			ambientOcclusionManager->loadAOTexture(nextTextureUnit);
+        if(isAmbientOcclusionActivated)
+        {
+            ambientOcclusionManager->loadAOTexture(nextTextureUnit);
             //nextTextureUnit++;
-		}
+        }
 
-		lightingPassQuadDisplayer->display();
-	}
+        lightingPassQuadDisplayer->display();
+    }
 
-	void Renderer3d::postUpdateScene()
-	{
+    void Renderer3d::postUpdateScene()
+    {
         ScopeProfiler profiler("3d", "postUpdateScene");
 
-		modelOctreeManager->postRefreshOctreeables();
+        modelOctreeManager->postRefreshOctreeables();
 
-		lightManager->postUpdateLights();
-	}
+        lightManager->postUpdateLights();
+    }
 
 }

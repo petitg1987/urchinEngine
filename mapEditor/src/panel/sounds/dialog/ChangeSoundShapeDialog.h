@@ -13,25 +13,25 @@
 namespace urchin
 {
 
-	class ChangeSoundShapeDialog : public QDialog
-	{
-		Q_OBJECT
+    class ChangeSoundShapeDialog : public QDialog
+    {
+        Q_OBJECT
 
-		public:
-			explicit ChangeSoundShapeDialog(QWidget *parent);
+        public:
+            explicit ChangeSoundShapeDialog(QWidget *parent);
 
-			SoundShape::ShapeType getShapeType() const;
+            SoundShape::ShapeType getShapeType() const;
 
-		private:
-			void setupSoundShapeTypeFields(QGridLayout *);
+        private:
+            void setupSoundShapeTypeFields(QGridLayout *);
 
-			void done(int) override;
+            void done(int) override;
 
-			QLabel *soundShapeTypeLabel;
-			QComboBox *soundShapeTypeComboBox;
+            QLabel *soundShapeTypeLabel;
+            QComboBox *soundShapeTypeComboBox;
 
-			SoundShape::ShapeType shapeType;
-	};
+            SoundShape::ShapeType shapeType;
+    };
 
 }
 

@@ -5,173 +5,173 @@
 namespace urchin
 {
 
-	/**
-	* @param angle Angle of the field of view (fovy)
-	*/
-	Camera::Camera(float angle, float nearPlane, float farPlane) :
-			mView(Matrix4<float>()),
-			mProjection(Matrix4<float>()),
-			angle(angle),
-			nearPlane(nearPlane),
-			farPlane(farPlane),
-			baseFrustum(Frustum<float>(angle, 1.0f, nearPlane, farPlane)),
-			frustum(Frustum<float>(angle, 1.0f, nearPlane, farPlane)),
-			position(Point3<float>(0.0f, 0.0f, 0.0f)),
-			view(Vector3<float>(0.0f, 0.0f, -1.0f)),
-			up(Vector3<float>(0.0f, 1.0f, 0.0f)),
-			maxRotationX(DEFAULT_MAX_ROTATION_X),
-			distance(0.0f),
-			bUseMouse(false),
-			mouseSensitivity(DEFAULT_MOUSE_SENSITIVITY),
+    /**
+    * @param angle Angle of the field of view (fovy)
+    */
+    Camera::Camera(float angle, float nearPlane, float farPlane) :
+            mView(Matrix4<float>()),
+            mProjection(Matrix4<float>()),
+            angle(angle),
+            nearPlane(nearPlane),
+            farPlane(farPlane),
+            baseFrustum(Frustum<float>(angle, 1.0f, nearPlane, farPlane)),
+            frustum(Frustum<float>(angle, 1.0f, nearPlane, farPlane)),
+            position(Point3<float>(0.0f, 0.0f, 0.0f)),
+            view(Vector3<float>(0.0f, 0.0f, -1.0f)),
+            up(Vector3<float>(0.0f, 1.0f, 0.0f)),
+            maxRotationX(DEFAULT_MAX_ROTATION_X),
+            distance(0.0f),
+            bUseMouse(false),
+            mouseSensitivity(DEFAULT_MOUSE_SENSITIVITY),
             sceneWidth(0),
-			sceneHeight(0),
-			middleScreenX(0),
-			middleScreenY(0),
-			oldMouseX(0),
-			oldMouseY(0)
-	{
+            sceneHeight(0),
+            middleScreenX(0),
+            middleScreenY(0),
+            oldMouseX(0),
+            oldMouseY(0)
+    {
 
-	}
+    }
 
-	void Camera::onResize(unsigned int sceneWidth, unsigned int sceneHeight)
-	{
+    void Camera::onResize(unsigned int sceneWidth, unsigned int sceneHeight)
+    {
         this->sceneWidth = sceneWidth;
-	    this->sceneHeight = sceneHeight;
+        this->sceneHeight = sceneHeight;
         this->middleScreenX = sceneWidth / 2;
         this->middleScreenY = sceneHeight / 2;
 
         resetMousePosition();
 
-		//projection matrix
-		float fov = 1.0f / (float)std::tan((angle * PI_VALUE) / 360.0f);
-		float ratio = (float)sceneWidth/(float)sceneHeight;
-		mProjection.setValues(
-			fov/ratio, 	0, 		0, 		0,
-			0, 				fov, 	0, 		0,
-			0, 				0, 		(farPlane+nearPlane)/(nearPlane-farPlane),  (2.0*farPlane*nearPlane)/(nearPlane-farPlane),
-			0, 				0, 		-1,		0);
+        //projection matrix
+        float fov = 1.0f / (float)std::tan((angle * PI_VALUE) / 360.0f);
+        float ratio = (float)sceneWidth/(float)sceneHeight;
+        mProjection.setValues(
+            fov/ratio,     0,         0,         0,
+            0,                 fov,     0,         0,
+            0,                 0,         (farPlane+nearPlane)/(nearPlane-farPlane),  (2.0*farPlane*nearPlane)/(nearPlane-farPlane),
+            0,                 0,         -1,        0);
 
-		//frustum
-		baseFrustum.buildFrustum(angle, ratio, nearPlane, farPlane);
-		frustum = baseFrustum * mView.inverse();
-	}
+        //frustum
+        baseFrustum.buildFrustum(angle, ratio, nearPlane, farPlane);
+        frustum = baseFrustum * mView.inverse();
+    }
 
     void Camera::resetMousePosition()
     {
-	    if(bUseMouse)
+        if(bUseMouse)
         {
             moveMouse(middleScreenX, middleScreenY);
         }
     }
 
-	void Camera::useMouseToMoveCamera(bool use)
-	{
+    void Camera::useMouseToMoveCamera(bool use)
+    {
         bUseMouse = use;
 
-		if(use)
-		{
+        if(use)
+        {
             if(middleScreenX!=0 || middleScreenY!=0)
             {
                 resetMousePosition();
             }
-		}else
-		{
-			moveMouse(oldMouseX, oldMouseY);
-		}
-	}
+        }else
+        {
+            moveMouse(oldMouseX, oldMouseY);
+        }
+    }
 
-	bool Camera::isUseMouseToMoveCamera() const
-	{
-		return bUseMouse;
-	}
+    bool Camera::isUseMouseToMoveCamera() const
+    {
+        return bUseMouse;
+    }
 
-	void Camera::setMouseSensitivity(float mouseSensitivity)
-	{
-		this->mouseSensitivity = mouseSensitivity;
-	}
+    void Camera::setMouseSensitivity(float mouseSensitivity)
+    {
+        this->mouseSensitivity = mouseSensitivity;
+    }
 
-	/**
-	* @param distance Distance between the camera and the rotation point (0 : first person camera | >0 : third person camera)
-	*/
-	void  Camera::setDistance(float distance)
-	{
-		this->distance = distance;
-	}
+    /**
+    * @param distance Distance between the camera and the rotation point (0 : first person camera | >0 : third person camera)
+    */
+    void  Camera::setDistance(float distance)
+    {
+        this->distance = distance;
+    }
 
-	void  Camera::setMaxRotationX(float maxRotationX)
-	{
-		this->maxRotationX = maxRotationX;
-	}
+    void  Camera::setMaxRotationX(float maxRotationX)
+    {
+        this->maxRotationX = maxRotationX;
+    }
 
-	const Matrix4<float> &Camera::getViewMatrix() const
-	{
-		return mView;
-	}
+    const Matrix4<float> &Camera::getViewMatrix() const
+    {
+        return mView;
+    }
 
-	const Matrix4<float> &Camera::getProjectionMatrix() const
-	{
-		return mProjection;
-	}
+    const Matrix4<float> &Camera::getProjectionMatrix() const
+    {
+        return mProjection;
+    }
 
-	const Frustum<float> &Camera::getFrustum() const
-	{
-		return frustum;
-	}
+    const Frustum<float> &Camera::getFrustum() const
+    {
+        return frustum;
+    }
 
-	const Point3<float> &Camera::getPosition() const
-	{	
-		return position;
-	}
+    const Point3<float> &Camera::getPosition() const
+    {
+        return position;
+    }
 
-	const Vector3<float> &Camera::getView() const
-	{
-		return view;
-	}
+    const Vector3<float> &Camera::getView() const
+    {
+        return view;
+    }
 
-	const Vector3<float> &Camera::getUp() const
-	{
-		return up;
-	}
+    const Vector3<float> &Camera::getUp() const
+    {
+        return up;
+    }
 
     unsigned int Camera::getSceneWidth() const
     {
-	    return sceneWidth;
+        return sceneWidth;
     }
 
     unsigned int Camera::getSceneHeight() const
     {
-	    return sceneHeight;
+        return sceneHeight;
     }
 
-	float Camera::getAngle() const
-	{
-		return angle;
-	}
+    float Camera::getAngle() const
+    {
+        return angle;
+    }
 
-	float Camera::getNearPlane() const
-	{
-		return nearPlane;
-	}
+    float Camera::getNearPlane() const
+    {
+        return nearPlane;
+    }
 
-	float Camera::getFarPlane() const
-	{
-		return farPlane;
-	}
+    float Camera::getFarPlane() const
+    {
+        return farPlane;
+    }
 
-	void Camera::moveTo(const Point3<float> &position)
-	{
+    void Camera::moveTo(const Point3<float> &position)
+    {
         this->position = position;
 
         updateViewMatrix();
-	}
+    }
 
-	void Camera::moveOnLocalXAxis(float distance)
-	{
+    void Camera::moveOnLocalXAxis(float distance)
+    {
         Vector3<float> localXAxis = up.crossProduct(view).normalize();
         position = position.translate(localXAxis * distance);
 
         updateViewMatrix();
-	}
+    }
 
     void Camera::moveOnLocalZAxis(float distance)
     {
@@ -181,15 +181,15 @@ namespace urchin
         updateViewMatrix();
     }
 
-	void Camera::lookAt(const Vector3<float> &view)
+    void Camera::lookAt(const Vector3<float> &view)
     {
-	    this->view = view.normalize();
+        this->view = view.normalize();
 
         updateViewMatrix();
     }
 
-	void Camera::rotate(const Quaternion<float> &quatRotation)
-	{
+    void Camera::rotate(const Quaternion<float> &quatRotation)
+    {
         Point3<float> pivot;
         if (std::fabs(distance) > std::numeric_limits<float>::epsilon())
         {
@@ -225,22 +225,22 @@ namespace urchin
         }
 
         updateViewMatrix();
-	}
+    }
 
-	bool Camera::onKeyDown(unsigned int)
-	{
-		//do nothing
-		return true;
-	}
+    bool Camera::onKeyDown(unsigned int)
+    {
+        //do nothing
+        return true;
+    }
 
-	bool Camera::onKeyUp(unsigned int)
-	{
-		//do nothing
-		return true;
-	}
+    bool Camera::onKeyUp(unsigned int)
+    {
+        //do nothing
+        return true;
+    }
 
-	bool Camera::onMouseMove(int mouseX, int mouseY)
-	{
+    bool Camera::onMouseMove(int mouseX, int mouseY)
+    {
         if(mouseX > 0 || mouseY > 0)
         {
             if (!bUseMouse)
@@ -283,26 +283,26 @@ namespace urchin
         }
 
         return true;
-	}
+    }
 
-	void Camera::updateViewMatrix()
-	{
-		//gluLookAt:
-		const Vector3<float> &f = view;
-		const Vector3<float> &s = f.crossProduct(up).normalize();
-		const Vector3<float> &u = s.crossProduct(f).normalize();
+    void Camera::updateViewMatrix()
+    {
+        //gluLookAt:
+        const Vector3<float> &f = view;
+        const Vector3<float> &s = f.crossProduct(up).normalize();
+        const Vector3<float> &u = s.crossProduct(f).normalize();
 
-		Matrix4<float> M(
-				s[0], s[1], s[2], 0,
-				u[0], u[1], u[2], 0,
-				-f[0], -f[1], -f[2], 0,
-				0, 0, 0, 1);
+        Matrix4<float> M(
+                s[0], s[1], s[2], 0,
+                u[0], u[1], u[2], 0,
+                -f[0], -f[1], -f[2], 0,
+                0, 0, 0, 1);
 
-		Matrix4<float> eye;
-		eye.buildTranslation(-position.X, -position.Y, -position.Z);
-		mView = M * eye;
+        Matrix4<float> eye;
+        eye.buildTranslation(-position.X, -position.Y, -position.Z);
+        mView = M * eye;
 
-		frustum = baseFrustum * mView.inverse();
-	}
+        frustum = baseFrustum * mView.inverse();
+    }
 
 }

@@ -12,45 +12,45 @@
 
 namespace urchin
 {
-	
-	/**
-	* @param angle Angle of the field of view (fovy)
-	*/
-	FreeCamera::FreeCamera(float angle, float nearPlane, float farPlane) :
-			Camera(angle, nearPlane, farPlane),
-			keyFront(DEFAULT_KEY_FRONT),
-			keyBack(DEFAULT_KEY_BACK),
-			keyLeft(DEFAULT_KEY_LEFT),
-			keyRight(DEFAULT_KEY_RIGHT),
-			isKeyFrontPressed(false),
-			isKeyBackPressed(false),
-			isKeyLeftPressed(false),
-			isKeyRightPressed(false),
-			speed(DEFAULT_SPEED),
-			rotateSpeed(DEFAULT_ROTATE_SPEED)
-	{
 
-	}
+    /**
+    * @param angle Angle of the field of view (fovy)
+    */
+    FreeCamera::FreeCamera(float angle, float nearPlane, float farPlane) :
+            Camera(angle, nearPlane, farPlane),
+            keyFront(DEFAULT_KEY_FRONT),
+            keyBack(DEFAULT_KEY_BACK),
+            keyLeft(DEFAULT_KEY_LEFT),
+            keyRight(DEFAULT_KEY_RIGHT),
+            isKeyFrontPressed(false),
+            isKeyBackPressed(false),
+            isKeyLeftPressed(false),
+            isKeyRightPressed(false),
+            speed(DEFAULT_SPEED),
+            rotateSpeed(DEFAULT_ROTATE_SPEED)
+    {
 
-	/**
-	* Specifies the keys to move the camera
-	*/
-	void FreeCamera::setKeys(unsigned int keyFront, unsigned int keyBack, unsigned int keyLeft, unsigned int keyRight)
-	{
-		this->keyFront = keyFront;
-		this->keyBack = keyBack;
-		this->keyLeft = keyLeft;
-		this->keyRight = keyRight;
-	}
+    }
 
-	void FreeCamera::setSpeed(float speed, float rotateSpeed)
-	{
-		this->speed = speed;
-		this->rotateSpeed = rotateSpeed;
-	}
+    /**
+    * Specifies the keys to move the camera
+    */
+    void FreeCamera::setKeys(unsigned int keyFront, unsigned int keyBack, unsigned int keyLeft, unsigned int keyRight)
+    {
+        this->keyFront = keyFront;
+        this->keyBack = keyBack;
+        this->keyLeft = keyLeft;
+        this->keyRight = keyRight;
+    }
 
-	bool FreeCamera::onKeyDown(unsigned int key)
-	{
+    void FreeCamera::setSpeed(float speed, float rotateSpeed)
+    {
+        this->speed = speed;
+        this->rotateSpeed = rotateSpeed;
+    }
+
+    bool FreeCamera::onKeyDown(unsigned int key)
+    {
         if (key == InputDevice::Key::MOUSE_RIGHT)
         {
             useMouseToMoveCamera(true);
@@ -73,10 +73,10 @@ namespace urchin
             return false;
         }
         return true;
-	}
+    }
 
-	bool FreeCamera::onKeyUp(unsigned int key)
-	{
+    bool FreeCamera::onKeyUp(unsigned int key)
+    {
         if (key == InputDevice::Key::MOUSE_RIGHT)
         {
             useMouseToMoveCamera(false);
@@ -99,41 +99,41 @@ namespace urchin
             return false;
         }
         return true;
-	}
+    }
 
-	void FreeCamera::updateCameraView(float dt)
-	{
-		if(isKeyLeftPressed)
-		{
-			if(isUseMouseToMoveCamera())
-			{
+    void FreeCamera::updateCameraView(float dt)
+    {
+        if(isKeyLeftPressed)
+        {
+            if(isUseMouseToMoveCamera())
+            {
                 moveOnLocalXAxis(dt * speed);
-			}else
-			{
-				rotate(Quaternion<float>(Vector3<float>(0.0, 1.0f, 0.0), dt * rotateSpeed));
-			}
-		}
-		
-		if(isKeyRightPressed)
-		{
-			if(isUseMouseToMoveCamera())
-			{
+            }else
+            {
+                rotate(Quaternion<float>(Vector3<float>(0.0, 1.0f, 0.0), dt * rotateSpeed));
+            }
+        }
+
+        if(isKeyRightPressed)
+        {
+            if(isUseMouseToMoveCamera())
+            {
                 moveOnLocalXAxis(-dt * speed);
-			}else
-			{
-				rotate(Quaternion<float>(Vector3<float>(0.0, 1.0f, 0.0), -dt * rotateSpeed));
-			}
-		}
-		
-		if(isKeyFrontPressed)
-		{
+            }else
+            {
+                rotate(Quaternion<float>(Vector3<float>(0.0, 1.0f, 0.0), -dt * rotateSpeed));
+            }
+        }
+
+        if(isKeyFrontPressed)
+        {
             moveOnLocalZAxis(dt * speed);
-		}
-		
-		if(isKeyBackPressed)
-		{
+        }
+
+        if(isKeyBackPressed)
+        {
             moveOnLocalZAxis(-dt * speed);
-		}
-	}
+        }
+    }
 
 }

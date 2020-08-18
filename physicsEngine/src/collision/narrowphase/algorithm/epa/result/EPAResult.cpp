@@ -3,8 +3,8 @@
 namespace urchin
 {
 
-	//explicit template
-	template class EPAResult<float>;
-	template class EPAResult<double>;
+    //explicit template
+    template class EPAResult<float>;
+    template class EPAResult<double>;
 
 }

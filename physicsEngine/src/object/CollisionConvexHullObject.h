@@ -12,24 +12,24 @@
 namespace urchin
 {
 
-	class CollisionConvexHullObject : public CollisionConvexObject3D
-	{
-		public:
-			CollisionConvexHullObject(float, const std::vector<Point3<float>> &, const std::vector<Point3<float>> &);
-			CollisionConvexHullObject(float, std::shared_ptr<ConvexHull3D<float>>, std::shared_ptr<ConvexHull3D<float>>);
+    class CollisionConvexHullObject : public CollisionConvexObject3D
+    {
+        public:
+            CollisionConvexHullObject(float, const std::vector<Point3<float>> &, const std::vector<Point3<float>> &);
+            CollisionConvexHullObject(float, std::shared_ptr<ConvexHull3D<float>>, std::shared_ptr<ConvexHull3D<float>>);
 
-			std::vector<Point3<float>> getPointsWithoutMargin() const;
+            std::vector<Point3<float>> getPointsWithoutMargin() const;
             std::vector<Point3<float>> getPointsWithMargin() const;
 
-			CollisionConvexObject3D::ObjectType getObjectType() const override;
-			Point3<float> getSupportPoint(const Vector3<float> &, bool) const override;
+            CollisionConvexObject3D::ObjectType getObjectType() const override;
+            Point3<float> getSupportPoint(const Vector3<float> &, bool) const override;
 
-			std::string toString() const override;
+            std::string toString() const override;
 
-		private:
-			std::shared_ptr<ConvexHull3D<float>> convexHullObjectWithMargin;
-			std::shared_ptr<ConvexHull3D<float>> convexHullObjectWithoutMargin;
-	};
+        private:
+            std::shared_ptr<ConvexHull3D<float>> convexHullObjectWithMargin;
+            std::shared_ptr<ConvexHull3D<float>> convexHullObjectWithoutMargin;
+    };
 
 }
 

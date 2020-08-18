@@ -112,14 +112,14 @@ void aiTests(CppUnit::TextUi::TestRunner &runner)
 
 int main()
 {
-	urchin::ConfigService::instance()->loadProperties("resources/engine.properties");
+    urchin::ConfigService::instance()->loadProperties("resources/engine.properties");
 
     CppUnit::TextUi::TestRunner runner;
     commonTests(runner);
     physicsTests(runner);
     aiTests(runner);
-	runner.run();
+    runner.run();
 
-	urchin::SingletonManager::destroyAllSingletons();
-	return 0;
+    urchin::SingletonManager::destroyAllSingletons();
+    return 0;
 }

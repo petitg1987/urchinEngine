@@ -3,8 +3,8 @@
  */
 template<class T> void VectorEraser::erase(std::vector<T> &v, unsigned int eraseIndex)
 {
-	std::swap(v[eraseIndex], v.back());
-	v.pop_back();
+    std::swap(v[eraseIndex], v.back());
+    v.pop_back();
 }
 
 /**
@@ -12,6 +12,6 @@ template<class T> void VectorEraser::erase(std::vector<T> &v, unsigned int erase
  */
 template<class T> void VectorEraser::erase(std::vector<T> &v, typename std::vector<T>::iterator it)
 {
-	std::swap(*it, v.back());
-	v.pop_back();
+    std::swap(*it, v.back());
+    v.pop_back();
 }

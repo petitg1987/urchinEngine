@@ -9,28 +9,28 @@
 namespace urchin
 {
 
-	/**
-	 * Result of a ray test. The result is fill asynchronously to ray test.
-	 * Method "isResultReady" returns true when ray test result is correctly completed.
-	 */
-	class RayTestResult
-	{
-		public:
-			RayTestResult();
+    /**
+     * Result of a ray test. The result is fill asynchronously to ray test.
+     * Method "isResultReady" returns true when ray test result is correctly completed.
+     */
+    class RayTestResult
+    {
+        public:
+            RayTestResult();
 
-			void addResults(ccd_set &rayTestResults);
+            void addResults(ccd_set &rayTestResults);
 
-			bool isResultReady() const;
+            bool isResultReady() const;
 
-			bool hasHit() const;
-			const std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter> &getNearestResult() const;
-			const ccd_set &getResults() const;
+            bool hasHit() const;
+            const std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter> &getNearestResult() const;
+            const ccd_set &getResults() const;
 
-		private:
-			std::atomic_bool resultReady;
+        private:
+            std::atomic_bool resultReady;
 
-			ccd_set rayTestResults;
-	};
+            ccd_set rayTestResults;
+    };
 
 }
 

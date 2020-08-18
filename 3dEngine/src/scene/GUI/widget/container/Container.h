@@ -7,17 +7,17 @@
 namespace urchin
 {
 
-	/**
-	 * Container of widgets
-	 */
-	class Container : public Widget
-	{
-		public:
-			explicit Container(Position);
-			~Container() override = default;
+    /**
+     * Container of widgets
+     */
+    class Container : public Widget
+    {
+        public:
+            explicit Container(Position);
+            ~Container() override = default;
 
-			void createOrUpdateWidget() override;
-	};
+            void createOrUpdateWidget() override;
+    };
 
 }
 

@@ -10,34 +10,34 @@
 namespace urchin
 {
 
-	class AIPanelWidget : public QWidget
-	{
-		Q_OBJECT
+    class AIPanelWidget : public QWidget
+    {
+        Q_OBJECT
 
-		public:
-			AIPanelWidget();
-			~AIPanelWidget() override = default;
+        public:
+            AIPanelWidget();
+            ~AIPanelWidget() override = default;
 
-			void load(AIController *);
-			void unload();
+            void load(AIController *);
+            void unload();
 
-		private:
-			void setupNavMeshAgentBox(QVBoxLayout *);
+        private:
+            void setupNavMeshAgentBox(QVBoxLayout *);
 
-			void setupNavMeshAgentDataFrom(const std::shared_ptr<NavMeshAgent> &);
+            void setupNavMeshAgentDataFrom(const std::shared_ptr<NavMeshAgent> &);
 
-			AIController *aiController;
+            AIController *aiController;
 
-			QDoubleSpinBox *agentHeight;
-			QDoubleSpinBox *agentRadius;
-			QDoubleSpinBox *maxSlope;
-			QDoubleSpinBox *jumpDistance;
+            QDoubleSpinBox *agentHeight;
+            QDoubleSpinBox *agentRadius;
+            QDoubleSpinBox *maxSlope;
+            QDoubleSpinBox *jumpDistance;
 
-			bool disableAIEvent;
+            bool disableAIEvent;
 
-		private slots:
-			void aiChanged();
-	};
+        private slots:
+            void aiChanged();
+    };
 
 }
 

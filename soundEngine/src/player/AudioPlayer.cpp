@@ -3,15 +3,15 @@
 namespace urchin
 {
 
-	AudioPlayer::AudioPlayer(const Sound *sound) :
-		sound(sound)
-	{
+    AudioPlayer::AudioPlayer(const Sound *sound) :
+        sound(sound)
+    {
 
-	}
+    }
 
-	const Sound *AudioPlayer::getSound() const
-	{
-		return sound;
-	}
+    const Sound *AudioPlayer::getSound() const
+    {
+        return sound;
+    }
 
 }

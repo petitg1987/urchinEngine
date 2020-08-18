@@ -6,13 +6,13 @@
 namespace urchin
 {
 
-	struct AccumulatedSolvingData
-	{
-		AccumulatedSolvingData();
+    struct AccumulatedSolvingData
+    {
+        AccumulatedSolvingData();
 
-		float accNormalImpulse;
-		float accTangentImpulse;
-	};
+        float accNormalImpulse;
+        float accTangentImpulse;
+    };
 
 }
 

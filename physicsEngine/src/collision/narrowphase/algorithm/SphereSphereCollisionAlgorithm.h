@@ -9,22 +9,22 @@
 namespace urchin
 {
 
-	class SphereSphereCollisionAlgorithm : public CollisionAlgorithm
-	{
-		public:
-			SphereSphereCollisionAlgorithm(bool, ManifoldResult &&);
-			~SphereSphereCollisionAlgorithm() override = default;
+    class SphereSphereCollisionAlgorithm : public CollisionAlgorithm
+    {
+        public:
+            SphereSphereCollisionAlgorithm(bool, ManifoldResult &&);
+            ~SphereSphereCollisionAlgorithm() override = default;
 
-			void doProcessCollisionAlgorithm(const CollisionObjectWrapper &, const CollisionObjectWrapper &) override;
+            void doProcessCollisionAlgorithm(const CollisionObjectWrapper &, const CollisionObjectWrapper &) override;
 
-			struct Builder : public CollisionAlgorithmBuilder
-			{
-				CollisionAlgorithm *createCollisionAlgorithm(bool, ManifoldResult &&, FixedSizePool<CollisionAlgorithm> *) const override;
+            struct Builder : public CollisionAlgorithmBuilder
+            {
+                CollisionAlgorithm *createCollisionAlgorithm(bool, ManifoldResult &&, FixedSizePool<CollisionAlgorithm> *) const override;
 
-				const std::vector<CollisionShape3D::ShapeType> &getFirstExpectedShapeType() const override;
-				unsigned int getAlgorithmSize() const override;
-			};
-	};
+                const std::vector<CollisionShape3D::ShapeType> &getFirstExpectedShapeType() const override;
+                unsigned int getAlgorithmSize() const override;
+            };
+    };
 
 }
 

@@ -6,11 +6,11 @@
 
 class ConvexHullShape2DTest : public CppUnit::TestFixture
 {
-	public:
-		static CppUnit::Test *suite();
+    public:
+        static CppUnit::Test *suite();
 
-		void convexHullBox();
-		void identicalPoints();
+        void convexHullBox();
+        void identicalPoints();
 };
 
 #endif

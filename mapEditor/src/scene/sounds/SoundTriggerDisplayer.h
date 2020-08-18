@@ -8,25 +8,25 @@
 namespace urchin
 {
 
-	class SoundTriggerDisplayer
-	{
-		public:
-			explicit SoundTriggerDisplayer(SceneManager *);
-			~SoundTriggerDisplayer();
+    class SoundTriggerDisplayer
+    {
+        public:
+            explicit SoundTriggerDisplayer(SceneManager *);
+            ~SoundTriggerDisplayer();
 
-			void displaySoundTriggerFor(const SceneSound *);
+            void displaySoundTriggerFor(const SceneSound *);
 
-		private:
-			GeometryModel *retrieveGeometry(const SoundShape *);
+        private:
+            GeometryModel *retrieveGeometry(const SoundShape *);
 
-			GeometryModel *retrieveSphereGeometry(const SoundShape *) const;
-			GeometryModel *retrieveBoxGeometry(const SoundShape *) const;
+            GeometryModel *retrieveSphereGeometry(const SoundShape *) const;
+            GeometryModel *retrieveBoxGeometry(const SoundShape *) const;
 
-			void cleanCurrentDisplay();
+            void cleanCurrentDisplay();
 
-			SceneManager *sceneManager;
-			std::vector<GeometryModel *> soundTriggerModels;
-	};
+            SceneManager *sceneManager;
+            std::vector<GeometryModel *> soundTriggerModels;
+    };
 
 }
 

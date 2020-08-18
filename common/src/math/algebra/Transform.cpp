@@ -2,103 +2,103 @@
 
 namespace urchin
 {
-	
-	template<class T> Transform<T>::Transform()
-	{
-		pPosition.setNull();
-		qOrientation.setIdentity();
-		fScale=1.0;
 
-		//not need to compute transform matrix: it's the identity matrix
-	}
+    template<class T> Transform<T>::Transform()
+    {
+        pPosition.setNull();
+        qOrientation.setIdentity();
+        fScale=1.0;
 
-	template<class T> Transform<T>::Transform(const Point3<T> &position, const Quaternion<T> &orientation, T scale) :
-		pPosition(position),
-		qOrientation(orientation),
-		fScale(scale)
-	{
-		mPosition.buildTranslation(pPosition.X, pPosition.Y, pPosition.Z);
-		mOrientation = qOrientation.toMatrix4();
-		mScale.buildScale(fScale, fScale, fScale);
-		mTransform = mPosition * mScale * mOrientation;
-	}
+        //not need to compute transform matrix: it's the identity matrix
+    }
 
-	template<class T> void Transform<T>::setPosition(const Point3<T> &position)
-	{
-		pPosition = position;
+    template<class T> Transform<T>::Transform(const Point3<T> &position, const Quaternion<T> &orientation, T scale) :
+        pPosition(position),
+        qOrientation(orientation),
+        fScale(scale)
+    {
+        mPosition.buildTranslation(pPosition.X, pPosition.Y, pPosition.Z);
+        mOrientation = qOrientation.toMatrix4();
+        mScale.buildScale(fScale, fScale, fScale);
+        mTransform = mPosition * mScale * mOrientation;
+    }
 
-		mPosition.buildTranslation(pPosition.X, pPosition.Y, pPosition.Z);
-		mTransform = mPosition * mScale * mOrientation;
-	}
+    template<class T> void Transform<T>::setPosition(const Point3<T> &position)
+    {
+        pPosition = position;
 
-	template<class T> const Point3<T> &Transform<T>::getPosition() const
-	{
-		return pPosition;
-	}
+        mPosition.buildTranslation(pPosition.X, pPosition.Y, pPosition.Z);
+        mTransform = mPosition * mScale * mOrientation;
+    }
 
-	template<class T> void Transform<T>::setOrientation(const Quaternion<T> &orientation)
-	{
-		qOrientation = orientation;
+    template<class T> const Point3<T> &Transform<T>::getPosition() const
+    {
+        return pPosition;
+    }
 
-		mOrientation = qOrientation.toMatrix4();
-		mTransform =  mPosition * mScale * mOrientation;
-	}
+    template<class T> void Transform<T>::setOrientation(const Quaternion<T> &orientation)
+    {
+        qOrientation = orientation;
 
-	template<class T> const Quaternion<T> &Transform<T>::getOrientation() const
-	{
-		return qOrientation;
-	}
+        mOrientation = qOrientation.toMatrix4();
+        mTransform =  mPosition * mScale * mOrientation;
+    }
 
-	template<class T> void Transform<T>::setScale(T scale)
-	{
-		fScale = scale;
+    template<class T> const Quaternion<T> &Transform<T>::getOrientation() const
+    {
+        return qOrientation;
+    }
 
-		mScale.buildScale(fScale, fScale, fScale);
-		mTransform = mPosition * mScale * mOrientation;
-	}
+    template<class T> void Transform<T>::setScale(T scale)
+    {
+        fScale = scale;
 
-	template<class T> T Transform<T>::getScale() const
-	{
-		return fScale;
-	}
+        mScale.buildScale(fScale, fScale, fScale);
+        mTransform = mPosition * mScale * mOrientation;
+    }
 
-	template<class T> const Matrix4<T> &Transform<T>::getPositionMatrix() const
-	{
-		return mPosition;
-	}
+    template<class T> T Transform<T>::getScale() const
+    {
+        return fScale;
+    }
 
-	template<class T> const Matrix4<T> &Transform<T>::getOrientationMatrix() const
-	{
-		return mOrientation;
-	}
+    template<class T> const Matrix4<T> &Transform<T>::getPositionMatrix() const
+    {
+        return mPosition;
+    }
 
-	template<class T> const Matrix4<T> &Transform<T>::getScaleMatrix() const
-	{
-		return mScale;
-	}
+    template<class T> const Matrix4<T> &Transform<T>::getOrientationMatrix() const
+    {
+        return mOrientation;
+    }
 
-	template<class T> const Matrix4<T> &Transform<T>::getTransformMatrix() const
-	{
-		return mTransform;
-	}
+    template<class T> const Matrix4<T> &Transform<T>::getScaleMatrix() const
+    {
+        return mScale;
+    }
 
-	template<class T> Transform<T> Transform<T>::operator *(const Transform<T> &transform) const
-	{
-		return Transform<T>(pPosition + qOrientation.rotatePoint(transform.getPosition()),
-						 qOrientation * transform.getOrientation(),
-						 fScale * transform.getScale());
-	}
+    template<class T> const Matrix4<T> &Transform<T>::getTransformMatrix() const
+    {
+        return mTransform;
+    }
 
-	template<class T> const Transform<T>& Transform<T>::operator *=(const Transform<T> &transform)
-	{
-		*this = *this * transform;
+    template<class T> Transform<T> Transform<T>::operator *(const Transform<T> &transform) const
+    {
+        return Transform<T>(pPosition + qOrientation.rotatePoint(transform.getPosition()),
+                         qOrientation * transform.getOrientation(),
+                         fScale * transform.getScale());
+    }
 
-		return *this;
-	}
+    template<class T> const Transform<T>& Transform<T>::operator *=(const Transform<T> &transform)
+    {
+        *this = *this * transform;
 
-	//explicit template
-	template class Transform<float>;
+        return *this;
+    }
 
-	template class Transform<double>;
+    //explicit template
+    template class Transform<float>;
+
+    template class Transform<double>;
 
 }

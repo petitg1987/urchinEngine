@@ -10,23 +10,23 @@
 namespace urchin
 {
 
-	/**
-	* Load custom model uniform for shadow model displayer
-	*/
-	class ShadowModelUniform : public CustomModelUniform
-	{
-		public:
-			ShadowModelUniform();
+    /**
+    * Load custom model uniform for shadow model displayer
+    */
+    class ShadowModelUniform : public CustomModelUniform
+    {
+        public:
+            ShadowModelUniform();
 
-			void setLayersToUpdateLocation(int);
-			void setModelUniformData(const ShadowData *);
+            void setLayersToUpdateLocation(int);
+            void setModelUniformData(const ShadowData *);
 
-			void loadCustomUniforms(const Model *) override;
+            void loadCustomUniforms(const Model *) override;
 
-		private:
-			int layersToUpdateLoc;
-			const ShadowData *shadowData;
-	};
+        private:
+            int layersToUpdateLoc;
+            const ShadowData *shadowData;
+    };
 
 }
 

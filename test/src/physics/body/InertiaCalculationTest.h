@@ -6,10 +6,10 @@
 
 class InertiaCalculationTest : public CppUnit::TestFixture
 {
-	public:
-		static CppUnit::Test *suite();
+    public:
+        static CppUnit::Test *suite();
 
-		void boxInertiaCalculation();
+        void boxInertiaCalculation();
 };
 
 #endif

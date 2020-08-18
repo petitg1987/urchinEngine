@@ -6,40 +6,40 @@
 
 class PolygonsUnionTest : public CppUnit::TestFixture
 {
-	public:
-		static CppUnit::Test *suite();
+    public:
+        static CppUnit::Test *suite();
 
-		void onePolygonUnion();
+        void onePolygonUnion();
 
-		void twoPolygonsNoUnion();
-		void polygonInsideAnother();
-		void polygonInsideAnotherTouchInOnePoint();
+        void twoPolygonsNoUnion();
+        void polygonInsideAnother();
+        void polygonInsideAnotherTouchInOnePoint();
 
-		void twoPolygonsWithHoleInside();
+        void twoPolygonsWithHoleInside();
 
-		void twoPolygonsUnion();
-		void twoPolygonsUnionXAligned();
-		void twoPolygonsUnionYAligned();
-		void twoPolygonsUnionYAlmostAligned();
-		void twoPolygonsUnionAlmostSameEdge1();
+        void twoPolygonsUnion();
+        void twoPolygonsUnionXAligned();
+        void twoPolygonsUnionYAligned();
+        void twoPolygonsUnionYAlmostAligned();
+        void twoPolygonsUnionAlmostSameEdge1();
         void twoPolygonsUnionAlmostSameEdge2();
-		void twoPolygonsUnionAlmostSameEdge3();
-		void twoPolygonsUnionAlmostSameEdge4();
-		void twoPolygonsUnionAlmostSameEdge5();
-		void twoPolygonsUnionAlmostSameEdge6();
-		void twoPolygonsTouchInOnePoint1();
-		void twoPolygonsTouchInOnePoint2();
-		void twoPolygonsNestedTouchInOnePoint();
+        void twoPolygonsUnionAlmostSameEdge3();
+        void twoPolygonsUnionAlmostSameEdge4();
+        void twoPolygonsUnionAlmostSameEdge5();
+        void twoPolygonsUnionAlmostSameEdge6();
+        void twoPolygonsTouchInOnePoint1();
+        void twoPolygonsTouchInOnePoint2();
+        void twoPolygonsNestedTouchInOnePoint();
 
-		void twoIdenticalTriangles();
-		void twoIdenticalSquares();
-		void twoAlmostIdenticalSquares1();
-		void twoAlmostIdenticalSquares2();
-		void twoAlmostIdenticalSquares3();
-		void twoAlmostIdenticalTrapeze();
+        void twoIdenticalTriangles();
+        void twoIdenticalSquares();
+        void twoAlmostIdenticalSquares1();
+        void twoAlmostIdenticalSquares2();
+        void twoAlmostIdenticalSquares3();
+        void twoAlmostIdenticalTrapeze();
 
-		void threePolygonsUnion();
-		void twoPolygonsUnionAndSeparatePolygon();
+        void threePolygonsUnion();
+        void twoPolygonsUnionAndSeparatePolygon();
 };
 
 #endif

@@ -9,17 +9,17 @@
 namespace urchin
 {
 
-	class DownSampleFilterBuilder;
+    class DownSampleFilterBuilder;
 
-	class DownSampleFilter : public TextureFilter
-	{
-		public:
-			explicit DownSampleFilter(const DownSampleFilterBuilder *);
+    class DownSampleFilter : public TextureFilter
+    {
+        public:
+            explicit DownSampleFilter(const DownSampleFilterBuilder *);
 
-		private:
-			std::string getShaderName() const override;
-			void completeShaderTokens(std::map<std::string, std::string> &) const override;
-	};
+        private:
+            std::string getShaderName() const override;
+            void completeShaderTokens(std::map<std::string, std::string> &) const override;
+    };
 
 }
 

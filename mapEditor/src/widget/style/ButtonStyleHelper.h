@@ -6,11 +6,11 @@
 namespace urchin
 {
 
-	class ButtonStyleHelper
-	{
-		public:
-			static void applyNormalStyle(QPushButton *);
-	};
+    class ButtonStyleHelper
+    {
+        public:
+            static void applyNormalStyle(QPushButton *);
+    };
 
 }
 

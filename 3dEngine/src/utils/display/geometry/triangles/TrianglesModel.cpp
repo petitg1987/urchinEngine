@@ -13,19 +13,19 @@ namespace urchin
         initialize();
     }
 
-	Matrix4<float> TrianglesModel::retrieveModelMatrix() const
-	{
-		return {};
-	}
+    Matrix4<float> TrianglesModel::retrieveModelMatrix() const
+    {
+        return {};
+    }
 
-	std::vector<Point3<float>> TrianglesModel::retrieveVertexArray() const
-	{
-	    return trianglesPoints;
-	}
+    std::vector<Point3<float>> TrianglesModel::retrieveVertexArray() const
+    {
+        return trianglesPoints;
+    }
 
-	void TrianglesModel::drawGeometry() const
-	{
-		glDrawArrays(GL_TRIANGLES, 0, trianglesPoints.size());
-	}
+    void TrianglesModel::drawGeometry() const
+    {
+        glDrawArrays(GL_TRIANGLES, 0, trianglesPoints.size());
+    }
 
 }

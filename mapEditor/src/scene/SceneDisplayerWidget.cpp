@@ -10,39 +10,39 @@
 namespace urchin
 {
 
-	SceneDisplayerWidget::SceneDisplayerWidget(QWidget *parent, const StatusBarController &statusBarController, std::string mapEditorPath) :
-			QGLWidget(parent),
+    SceneDisplayerWidget::SceneDisplayerWidget(QWidget *parent, const StatusBarController &statusBarController, std::string mapEditorPath) :
+            QGLWidget(parent),
             statusBarController(statusBarController),
-			mapEditorPath(std::move(mapEditorPath)),
-			sceneDisplayer(nullptr),
+            mapEditorPath(std::move(mapEditorPath)),
+            sceneDisplayer(nullptr),
             viewProperties(),
             mouseX(0),
             mouseY(0)
-	{
-		QGLFormat glFormat;
-		glFormat.setVersion(4, 4);
-		glFormat.setProfile(QGLFormat::CompatibilityProfile);
-		glFormat.setSampleBuffers(true);
-		glFormat.setDoubleBuffer(true);
-		glFormat.setSwapInterval(1); //vertical sync
-		setFormat(glFormat);
+    {
+        QGLFormat glFormat;
+        glFormat.setVersion(4, 4);
+        glFormat.setProfile(QGLFormat::CompatibilityProfile);
+        glFormat.setSampleBuffers(true);
+        glFormat.setDoubleBuffer(true);
+        glFormat.setSwapInterval(1); //vertical sync
+        setFormat(glFormat);
 
-		context()->makeCurrent();
+        context()->makeCurrent();
 
         QObject::connect(new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_X), parent), SIGNAL(activated()), this, SLOT(onCtrlXPressed()));
         QObject::connect(new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Y), parent), SIGNAL(activated()), this, SLOT(onCtrlYPressed()));
         QObject::connect(new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z), parent), SIGNAL(activated()), this, SLOT(onCtrlZPressed()));
-	}
+    }
 
-	SceneDisplayerWidget::~SceneDisplayerWidget()
-	{
-	    if(context()->isValid())
+    SceneDisplayerWidget::~SceneDisplayerWidget()
+    {
+        if(context()->isValid())
         {
             context()->doneCurrent();
         }
 
-		delete sceneDisplayer;
-	}
+        delete sceneDisplayer;
+    }
 
     void SceneDisplayerWidget::loadMap(SceneController *sceneController, const std::string &mapFilename, const std::string &relativeWorkingDirectory)
     {
@@ -56,102 +56,102 @@ namespace urchin
         updateSceneDisplayerViewProperties();
     }
 
-	void SceneDisplayerWidget::saveState(const std::string &mapFilename) const
-	{
-		if(sceneDisplayer)
+    void SceneDisplayerWidget::saveState(const std::string &mapFilename) const
+    {
+        if(sceneDisplayer)
         {
-		    sceneDisplayer->getCamera()->saveCameraState(mapFilename);
+            sceneDisplayer->getCamera()->saveCameraState(mapFilename);
         }
-	}
+    }
 
-	void SceneDisplayerWidget::closeMap()
-	{
-	    statusBarController.clearState();
+    void SceneDisplayerWidget::closeMap()
+    {
+        statusBarController.clearState();
 
-		delete sceneDisplayer;
-		sceneDisplayer = nullptr;
-	}
+        delete sceneDisplayer;
+        sceneDisplayer = nullptr;
+    }
 
-	void SceneDisplayerWidget::setViewProperties(SceneDisplayer::ViewProperties viewProperty, bool value)
-	{
-		viewProperties[viewProperty] = value;
-		updateSceneDisplayerViewProperties();
-	}
+    void SceneDisplayerWidget::setViewProperties(SceneDisplayer::ViewProperties viewProperty, bool value)
+    {
+        viewProperties[viewProperty] = value;
+        updateSceneDisplayerViewProperties();
+    }
 
-	void SceneDisplayerWidget::setHighlightSceneObject(const SceneObject *highlightSceneObject)
-	{
-		if(sceneDisplayer)
-		{
-			sceneDisplayer->setHighlightSceneObject(highlightSceneObject);
-		}
-	}
+    void SceneDisplayerWidget::setHighlightSceneObject(const SceneObject *highlightSceneObject)
+    {
+        if(sceneDisplayer)
+        {
+            sceneDisplayer->setHighlightSceneObject(highlightSceneObject);
+        }
+    }
 
-	void SceneDisplayerWidget::setHighlightCompoundShapeComponent(std::shared_ptr<const LocalizedCollisionShape> selectedCompoundShapeComponent)
-	{
-		if(sceneDisplayer)
-		{
-			sceneDisplayer->getBodyShapeDisplayer()->setSelectedCompoundShapeComponent(std::move(selectedCompoundShapeComponent));
-		}
-	}
+    void SceneDisplayerWidget::setHighlightCompoundShapeComponent(std::shared_ptr<const LocalizedCollisionShape> selectedCompoundShapeComponent)
+    {
+        if(sceneDisplayer)
+        {
+            sceneDisplayer->getBodyShapeDisplayer()->setSelectedCompoundShapeComponent(std::move(selectedCompoundShapeComponent));
+        }
+    }
 
-	void SceneDisplayerWidget::setHighlightSceneLight(const SceneLight *highlightSceneLight)
-	{
-		if(sceneDisplayer)
-		{
-			sceneDisplayer->setHighlightSceneLight(highlightSceneLight);
-		}
-	}
+    void SceneDisplayerWidget::setHighlightSceneLight(const SceneLight *highlightSceneLight)
+    {
+        if(sceneDisplayer)
+        {
+            sceneDisplayer->setHighlightSceneLight(highlightSceneLight);
+        }
+    }
 
-	void SceneDisplayerWidget::setHighlightSceneSound(const SceneSound *highlightSceneSound)
-	{
-		if(sceneDisplayer)
-		{
-			sceneDisplayer->setHighlightSceneSound(highlightSceneSound);
-		}
-	}
+    void SceneDisplayerWidget::setHighlightSceneSound(const SceneSound *highlightSceneSound)
+    {
+        if(sceneDisplayer)
+        {
+            sceneDisplayer->setHighlightSceneSound(highlightSceneSound);
+        }
+    }
 
-	void SceneDisplayerWidget::updateSceneDisplayerViewProperties()
-	{
-		if(sceneDisplayer)
-		{
-			for(unsigned int i=0; i<SceneDisplayer::LAST_VIEW_PROPERTIES; ++i)
-			{
-				sceneDisplayer->setViewProperties(static_cast<SceneDisplayer::ViewProperties>(i), viewProperties[i]);
-			}
-		}
-	}
+    void SceneDisplayerWidget::updateSceneDisplayerViewProperties()
+    {
+        if(sceneDisplayer)
+        {
+            for(unsigned int i=0; i<SceneDisplayer::LAST_VIEW_PROPERTIES; ++i)
+            {
+                sceneDisplayer->setViewProperties(static_cast<SceneDisplayer::ViewProperties>(i), viewProperties[i]);
+            }
+        }
+    }
 
-	void SceneDisplayerWidget::initializeGL()
-	{
-		//do nothing
-	}
+    void SceneDisplayerWidget::initializeGL()
+    {
+        //do nothing
+    }
 
-	void SceneDisplayerWidget::paintGL()
-	{
-		if(sceneDisplayer)
-		{
-			sceneDisplayer->paint();
-		}else
-		{
-			glClear(GL_COLOR_BUFFER_BIT);
-			glClearColor(0.1f, 0.05f, 0.1f, 1.0f);
-		}
+    void SceneDisplayerWidget::paintGL()
+    {
+        if(sceneDisplayer)
+        {
+            sceneDisplayer->paint();
+        }else
+        {
+            glClear(GL_COLOR_BUFFER_BIT);
+            glClearColor(0.1f, 0.05f, 0.1f, 1.0f);
+        }
 
-		swapBuffers();
-		update();
-	}
+        swapBuffers();
+        update();
+    }
 
-	void SceneDisplayerWidget::resizeGL(int width, int height)
-	{
-		if(sceneDisplayer)
-		{
-			sceneDisplayer->resize(static_cast<unsigned int>(width), static_cast<unsigned int>(height));
-		}
-	}
+    void SceneDisplayerWidget::resizeGL(int width, int height)
+    {
+        if(sceneDisplayer)
+        {
+            sceneDisplayer->resize(static_cast<unsigned int>(width), static_cast<unsigned int>(height));
+        }
+    }
 
-	void SceneDisplayerWidget::keyPressEvent(QKeyEvent *event)
-	{
-		if(sceneDisplayer)
+    void SceneDisplayerWidget::keyPressEvent(QKeyEvent *event)
+    {
+        if(sceneDisplayer)
         {
             if (event->key() < 256)
             {
@@ -171,12 +171,12 @@ namespace urchin
                 sceneDisplayer->getSceneManager()->onChar(127);
             }
         }
-	}
+    }
 
-	void SceneDisplayerWidget::keyReleaseEvent(QKeyEvent *event)
-	{
-		if(sceneDisplayer)
-		{
+    void SceneDisplayerWidget::keyReleaseEvent(QKeyEvent *event)
+    {
+        if(sceneDisplayer)
+        {
             if(event->key() < 256)
             {
                 sceneDisplayer->getSceneManager()->onKeyUp(static_cast<unsigned int>(event->key()));
@@ -190,13 +190,13 @@ namespace urchin
             {
                 sceneDisplayer->getObjectMoveController()->onEscapeKey();
             }
-		}
-	}
+        }
+    }
 
-	void SceneDisplayerWidget::mousePressEvent(QMouseEvent *event)
-	{
-		if(sceneDisplayer)
-		{
+    void SceneDisplayerWidget::mousePressEvent(QMouseEvent *event)
+    {
+        if(sceneDisplayer)
+        {
             if(event->buttons() == Qt::LeftButton)
             {
                 sceneDisplayer->getSceneManager()->onKeyDown(InputDevice::Key::MOUSE_LEFT);
@@ -204,13 +204,13 @@ namespace urchin
             {
                 sceneDisplayer->getSceneManager()->onKeyDown(InputDevice::Key::MOUSE_RIGHT);
             }
-		}
-	}
+        }
+    }
 
-	void SceneDisplayerWidget::mouseReleaseEvent(QMouseEvent *event)
-	{
-		if(sceneDisplayer)
-		{
+    void SceneDisplayerWidget::mouseReleaseEvent(QMouseEvent *event)
+    {
+        if(sceneDisplayer)
+        {
             if(event->button() == Qt::LeftButton)
             {
                 bool propagateEvent = sceneDisplayer->getObjectMoveController()->onMouseLeftButton();
@@ -226,27 +226,27 @@ namespace urchin
             {
                 sceneDisplayer->getSceneManager()->onKeyUp(InputDevice::Key::MOUSE_RIGHT);
             }
-		}
-	}
+        }
+    }
 
-	void SceneDisplayerWidget::mouseMoveEvent(QMouseEvent *event)
-	{
+    void SceneDisplayerWidget::mouseMoveEvent(QMouseEvent *event)
+    {
         this->mouseX = event->x();
         this->mouseY = event->y();
 
-		if(sceneDisplayer)
-		{
+        if(sceneDisplayer)
+        {
             bool propagateEvent = sceneDisplayer->getSceneManager()->onMouseMove(mouseX, mouseY);
-		    if(propagateEvent)
+            if(propagateEvent)
             {
                 sceneDisplayer->getObjectMoveController()->onMouseMove(mouseX, mouseY);
             }
-		}
-	}
+        }
+    }
 
     void SceneDisplayerWidget::leaveEvent(QEvent *)
     {
-	    if(sceneDisplayer && !rect().contains(mapFromGlobal(QCursor::pos())))
+        if(sceneDisplayer && !rect().contains(mapFromGlobal(QCursor::pos())))
         {
             sceneDisplayer->getObjectMoveController()->onMouseOut();
         }
@@ -279,10 +279,10 @@ namespace urchin
         return propagateEvent;
     }
 
-	const std::string &SceneDisplayerWidget::getLastPickedBodyId() const
-	{
-		return lastPickedBodyId;
-	}
+    const std::string &SceneDisplayerWidget::getLastPickedBodyId() const
+    {
+        return lastPickedBodyId;
+    }
 
     void SceneDisplayerWidget::addObserverObjectMoveController(Observer *observer, int notificationType)
     {
@@ -296,7 +296,7 @@ namespace urchin
         {
             sceneDisplayer->getObjectMoveController()->onCtrlXYZ(0);
         }
-	}
+    }
 
     void SceneDisplayerWidget::onCtrlYPressed()
     {

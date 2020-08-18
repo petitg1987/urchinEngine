@@ -13,36 +13,36 @@
 namespace urchin
 {
 
-	/**
-	* Broad phase manager allowing to determine pairs of bodies potentially colliding
-	*/
-	class BroadPhaseManager : public Observer
-	{
-		public:
-			explicit BroadPhaseManager(BodyManager *);
-			~BroadPhaseManager() override;
+    /**
+    * Broad phase manager allowing to determine pairs of bodies potentially colliding
+    */
+    class BroadPhaseManager : public Observer
+    {
+        public:
+            explicit BroadPhaseManager(BodyManager *);
+            ~BroadPhaseManager() override;
 
-			void notify(Observable *, int) override;
+            void notify(Observable *, int) override;
 
-			void addBodyAsync(AbstractWorkBody *);
-			void removeBodyAsync(AbstractWorkBody *);
+            void addBodyAsync(AbstractWorkBody *);
+            void removeBodyAsync(AbstractWorkBody *);
 
-			const std::vector<OverlappingPair *> &computeOverlappingPairs();
+            const std::vector<OverlappingPair *> &computeOverlappingPairs();
 
-			std::vector<AbstractWorkBody *> rayTest(const Ray<float> &) const;
-			std::vector<AbstractWorkBody *> bodyTest(AbstractWorkBody *, const PhysicsTransform &, const PhysicsTransform &) const;
+            std::vector<AbstractWorkBody *> rayTest(const Ray<float> &) const;
+            std::vector<AbstractWorkBody *> bodyTest(AbstractWorkBody *, const PhysicsTransform &, const PhysicsTransform &) const;
 
-		private:
+        private:
             void addBody(AbstractWorkBody *);
-			void removeBody(AbstractWorkBody *);
-			void synchronizeBodies();
+            void removeBody(AbstractWorkBody *);
+            void synchronizeBodies();
 
-			BroadPhaseAlgorithm *broadPhaseAlgorithm;
+            BroadPhaseAlgorithm *broadPhaseAlgorithm;
 
-			std::mutex mutex;
+            std::mutex mutex;
             std::vector<AbstractWorkBody *> bodiesToAdd;
-			std::vector<AbstractWorkBody *> bodiesToRemove;
-	};
+            std::vector<AbstractWorkBody *> bodiesToRemove;
+    };
 
 }
 

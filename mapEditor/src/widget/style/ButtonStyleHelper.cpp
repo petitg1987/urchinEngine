@@ -3,9 +3,9 @@
 namespace urchin
 {
 
-	void ButtonStyleHelper::applyNormalStyle(QPushButton *button)
-	{
-		button->setFixedSize(QSize(90, 22));
-	}
+    void ButtonStyleHelper::applyNormalStyle(QPushButton *button)
+    {
+        button->setFixedSize(QSize(90, 22));
+    }
 
 }

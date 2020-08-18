@@ -7,24 +7,24 @@
 
 class TriangulationTest : public CppUnit::TestFixture
 {
-	public:
-		static CppUnit::Test *suite();
+    public:
+        static CppUnit::Test *suite();
 
-		void triangleTriangulation();
-		void cubeTriangulation();
-		void twoNearPoints();
-		void threeAlignedPoints();
-		void alternationPoints();
+        void triangleTriangulation();
+        void cubeTriangulation();
+        void twoNearPoints();
+        void threeAlignedPoints();
+        void alternationPoints();
 
-		void cavityTriangulation1();
-		void cavityTriangulation2();
+        void cavityTriangulation1();
+        void cavityTriangulation2();
 
-		void twoMonotonePolygons();
-		void threeMonotonePolygons();
+        void twoMonotonePolygons();
+        void threeMonotonePolygons();
 
-	private:
-		void assertUniqueLink(const std::shared_ptr<urchin::NavTriangle> &, unsigned int, const std::shared_ptr<urchin::NavTriangle> &);
-		void assertLink(const std::shared_ptr<urchin::NavLink> &, unsigned int, const std::shared_ptr<urchin::NavTriangle> &);
+    private:
+        void assertUniqueLink(const std::shared_ptr<urchin::NavTriangle> &, unsigned int, const std::shared_ptr<urchin::NavTriangle> &);
+        void assertLink(const std::shared_ptr<urchin::NavLink> &, unsigned int, const std::shared_ptr<urchin::NavTriangle> &);
 };
 
 #endif

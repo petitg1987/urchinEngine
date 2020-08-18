@@ -3,11 +3,11 @@
 namespace urchin
 {
 
-	StreamChunk::StreamChunk() :
-			numberOfSamples(0),
-			bufferId(0)
-	{
+    StreamChunk::StreamChunk() :
+            numberOfSamples(0),
+            bufferId(0)
+    {
 
-	}
+    }
 
 }

@@ -7,87 +7,87 @@
 namespace urchin
 {
 
-	template<class T> LineSegment2D<T>::LineSegment2D(const Point2<T> &a, const Point2<T> &b) :
-		a(a), b(b)
-	{
+    template<class T> LineSegment2D<T>::LineSegment2D(const Point2<T> &a, const Point2<T> &b) :
+        a(a), b(b)
+    {
 
-	}
+    }
 
-	template<class T> const Point2<T> &LineSegment2D<T>::getA() const
-	{
-		return a;
-	}
+    template<class T> const Point2<T> &LineSegment2D<T>::getA() const
+    {
+        return a;
+    }
 
-	template<class T> const Point2<T> &LineSegment2D<T>::getB() const
-	{
-		return b;
-	}
+    template<class T> const Point2<T> &LineSegment2D<T>::getB() const
+    {
+        return b;
+    }
 
-	template<class T> Point2<T> LineSegment2D<T>::getSupportPoint(const Vector2<T> &direction) const
-	{
-		const T pointADotDirection = Point2<T>(0.0, 0.0).vector(a).dotProduct(direction);
-		const T pointBDotDirection = Point2<T>(0.0, 0.0).vector(b).dotProduct(direction);
+    template<class T> Point2<T> LineSegment2D<T>::getSupportPoint(const Vector2<T> &direction) const
+    {
+        const T pointADotDirection = Point2<T>(0.0, 0.0).vector(a).dotProduct(direction);
+        const T pointBDotDirection = Point2<T>(0.0, 0.0).vector(b).dotProduct(direction);
 
-		if(pointADotDirection > pointBDotDirection)
-		{
-			return a;
-		}
+        if(pointADotDirection > pointBDotDirection)
+        {
+            return a;
+        }
 
-		return b;
-	}
+        return b;
+    }
 
-	/**
-	 * @param barycentrics [out] Returns barycentric coordinates for closest point
-	 * @return Point on segment AB closest to point p
-	 */
-	template<class T> Point2<T> LineSegment2D<T>::closestPoint(const Point2<T> &p, T barycentrics[2]) const
-	{
-		Vector2<T> ab = a.vector(b);
+    /**
+     * @param barycentrics [out] Returns barycentric coordinates for closest point
+     * @return Point on segment AB closest to point p
+     */
+    template<class T> Point2<T> LineSegment2D<T>::closestPoint(const Point2<T> &p, T barycentrics[2]) const
+    {
+        Vector2<T> ab = a.vector(b);
 
-		T abSquareLength = ab.squareLength();
-		if(abSquareLength==(T)0.0)
-		{
-			barycentrics[0] = 1.0;
-			barycentrics[1] = 0.0;
-			return a;
-		}
+        T abSquareLength = ab.squareLength();
+        if(abSquareLength==(T)0.0)
+        {
+            barycentrics[0] = 1.0;
+            barycentrics[1] = 0.0;
+            return a;
+        }
 
-		Vector2<T> ap = a.vector(p);
-		T t = ap.dotProduct(ab) / abSquareLength;
-		t = std::min((T)1.0, std::max((T)0.0, t));
+        Vector2<T> ap = a.vector(p);
+        T t = ap.dotProduct(ab) / abSquareLength;
+        t = std::min((T)1.0, std::max((T)0.0, t));
 
-		barycentrics[0] = 1.0-t;
-		barycentrics[1] = t;
-		return ((b-a)*t) + a;
-	}
+        barycentrics[0] = 1.0-t;
+        barycentrics[1] = t;
+        return ((b-a)*t) + a;
+    }
 
-	/**
-	 * @return Minimum square distance between segment AB and point p
-	 */
-	template<class T> T LineSegment2D<T>::squareDistance(const Point2<T> &p) const
-	{
-		Vector2<T> ab = a.vector(b);
-		Vector2<T> ap = a.vector(p);
+    /**
+     * @return Minimum square distance between segment AB and point p
+     */
+    template<class T> T LineSegment2D<T>::squareDistance(const Point2<T> &p) const
+    {
+        Vector2<T> ab = a.vector(b);
+        Vector2<T> ap = a.vector(p);
 
-		T apDotAb = ap.dotProduct(ab);
-		if (apDotAb <= 0.0f)
-		{
-			return ap.dotProduct(ap);
-		}
+        T apDotAb = ap.dotProduct(ab);
+        if (apDotAb <= 0.0f)
+        {
+            return ap.dotProduct(ap);
+        }
 
-		T abSquareLength = ab.squareLength();
-		if (apDotAb >= abSquareLength)
-		{
-			Vector2<T> bp = b.vector(p);
-			return bp.squareLength();
-		}
+        T abSquareLength = ab.squareLength();
+        if (apDotAb >= abSquareLength)
+        {
+            Vector2<T> bp = b.vector(p);
+            return bp.squareLength();
+        }
 
         if(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T))
         {
             return ap.squareLength() - MathAlgorithm::roundDivision<T>(apDotAb * apDotAb, abSquareLength);
         }
-		return ap.squareLength() - ((apDotAb * apDotAb) / abSquareLength);
-	}
+        return ap.squareLength() - ((apDotAb * apDotAb) / abSquareLength);
+    }
 
     template<class T> bool LineSegment2D<T>::onSegment(const Point2<T> &p) const
     {
@@ -101,26 +101,26 @@ namespace urchin
         return false;
     }
 
-	template<class T> Vector2<T> LineSegment2D<T>::toVector() const
-	{
-		return a.vector(b);
-	}
+    template<class T> Vector2<T> LineSegment2D<T>::toVector() const
+    {
+        return a.vector(b);
+    }
 
     template<class T> Line2D<T> LineSegment2D<T>::toLine() const
     {
         return Line2D<T>(a, b);
     }
 
-	/**
-	 * Returns the intersection point of the two lines segment.
-	 * When line segments are collinear and intersect: returns the nearest intersection point between this->getA() and this->getB().
-	 */
-	template<class T> Point2<T> LineSegment2D<T>::intersectPoint(const LineSegment2D<T> &other, bool &hasIntersection) const
-	{
+    /**
+     * Returns the intersection point of the two lines segment.
+     * When line segments are collinear and intersect: returns the nearest intersection point between this->getA() and this->getB().
+     */
+    template<class T> Point2<T> LineSegment2D<T>::intersectPoint(const LineSegment2D<T> &other, bool &hasIntersection) const
+    {
         Point2<T> farthestIntersection;
         bool hasFarthestIntersection;
         return intersectPoint(other, hasIntersection, farthestIntersection, hasFarthestIntersection);
-	}
+    }
 
     /**
      * Returns the intersection point of the two lines segment.
@@ -206,54 +206,54 @@ namespace urchin
      * Returns proper intersection boolean of the two lines segment.
      * Touch cases and collinear are not considered as proper intersection.
      */
-	template<class T> bool LineSegment2D<T>::hasProperIntersection(const LineSegment2D<T> &other) const
-	{
-		return (ccw(a, b, other.getA()) * ccw(a, b, other.getB())) < 0.0
-			&& ccw(other.getA(), other.getB(), a) * ccw(other.getA(), other.getB(), b) < 0.0;
-	}
+    template<class T> bool LineSegment2D<T>::hasProperIntersection(const LineSegment2D<T> &other) const
+    {
+        return (ccw(a, b, other.getA()) * ccw(a, b, other.getB())) < 0.0
+            && ccw(other.getA(), other.getB(), a) * ccw(other.getA(), other.getB(), b) < 0.0;
+    }
 
-	template<class T> T LineSegment2D<T>::ccw(const Point2<T> &a, const Point2<T> &b, const Point2<T> &c) const
-	{
-		return (b.X - a.X) * (c.Y - a.Y) - ((b.Y - a.Y) * (c.X - a.X));
-	}
+    template<class T> T LineSegment2D<T>::ccw(const Point2<T> &a, const Point2<T> &b, const Point2<T> &c) const
+    {
+        return (b.X - a.X) * (c.Y - a.Y) - ((b.Y - a.Y) * (c.X - a.X));
+    }
 
-	template<class T> template<class NEW_TYPE> LineSegment2D<NEW_TYPE> LineSegment2D<T>::cast() const
-	{
-		return LineSegment2D<NEW_TYPE>(a.template cast<NEW_TYPE>(), b.template cast<NEW_TYPE>());
-	}
+    template<class T> template<class NEW_TYPE> LineSegment2D<NEW_TYPE> LineSegment2D<T>::cast() const
+    {
+        return LineSegment2D<NEW_TYPE>(a.template cast<NEW_TYPE>(), b.template cast<NEW_TYPE>());
+    }
 
-	template<class T> std::ostream& operator <<(std::ostream &stream, const LineSegment2D<T> &l)
-	{
-		return stream << l.getA().X << " " << l.getA().Y << " - " << l.getB().X << " " << l.getB().Y;
-	}
+    template<class T> std::ostream& operator <<(std::ostream &stream, const LineSegment2D<T> &l)
+    {
+        return stream << l.getA().X << " " << l.getA().Y << " - " << l.getB().X << " " << l.getB().Y;
+    }
 
-	//explicit template
-	template class LineSegment2D<float>;
-	template LineSegment2D<float> LineSegment2D<float>::cast() const;
-	template LineSegment2D<double> LineSegment2D<float>::cast() const;
-	template LineSegment2D<int> LineSegment2D<float>::cast() const;
-	template LineSegment2D<long long> LineSegment2D<float>::cast() const;
-	template std::ostream& operator <<<float>(std::ostream & , const LineSegment2D<float> &);
+    //explicit template
+    template class LineSegment2D<float>;
+    template LineSegment2D<float> LineSegment2D<float>::cast() const;
+    template LineSegment2D<double> LineSegment2D<float>::cast() const;
+    template LineSegment2D<int> LineSegment2D<float>::cast() const;
+    template LineSegment2D<long long> LineSegment2D<float>::cast() const;
+    template std::ostream& operator <<<float>(std::ostream & , const LineSegment2D<float> &);
 
-	template class LineSegment2D<double>;
-	template LineSegment2D<float> LineSegment2D<double>::cast() const;
-	template LineSegment2D<double> LineSegment2D<double>::cast() const;
-	template LineSegment2D<int> LineSegment2D<double>::cast() const;
-	template LineSegment2D<long long> LineSegment2D<double>::cast() const;
-	template std::ostream& operator <<<double>(std::ostream & , const LineSegment2D<double> &);
+    template class LineSegment2D<double>;
+    template LineSegment2D<float> LineSegment2D<double>::cast() const;
+    template LineSegment2D<double> LineSegment2D<double>::cast() const;
+    template LineSegment2D<int> LineSegment2D<double>::cast() const;
+    template LineSegment2D<long long> LineSegment2D<double>::cast() const;
+    template std::ostream& operator <<<double>(std::ostream & , const LineSegment2D<double> &);
 
-	template class LineSegment2D<int>;
-	template LineSegment2D<float> LineSegment2D<int>::cast() const;
-	template LineSegment2D<double> LineSegment2D<int>::cast() const;
-	template LineSegment2D<int> LineSegment2D<int>::cast() const;
-	template LineSegment2D<long long> LineSegment2D<int>::cast() const;
-	template std::ostream& operator <<<int>(std::ostream & , const LineSegment2D<int> &);
+    template class LineSegment2D<int>;
+    template LineSegment2D<float> LineSegment2D<int>::cast() const;
+    template LineSegment2D<double> LineSegment2D<int>::cast() const;
+    template LineSegment2D<int> LineSegment2D<int>::cast() const;
+    template LineSegment2D<long long> LineSegment2D<int>::cast() const;
+    template std::ostream& operator <<<int>(std::ostream & , const LineSegment2D<int> &);
 
-	template class LineSegment2D<long long>;
-	template LineSegment2D<float> LineSegment2D<long long>::cast() const;
-	template LineSegment2D<double> LineSegment2D<long long>::cast() const;
-	template LineSegment2D<int> LineSegment2D<long long>::cast() const;
-	template LineSegment2D<long long> LineSegment2D<long long>::cast() const;
-	template std::ostream& operator <<<long long>(std::ostream & , const LineSegment2D<long long> &);
+    template class LineSegment2D<long long>;
+    template LineSegment2D<float> LineSegment2D<long long>::cast() const;
+    template LineSegment2D<double> LineSegment2D<long long>::cast() const;
+    template LineSegment2D<int> LineSegment2D<long long>::cast() const;
+    template LineSegment2D<long long> LineSegment2D<long long>::cast() const;
+    template std::ostream& operator <<<long long>(std::ostream & , const LineSegment2D<long long> &);
 
 }

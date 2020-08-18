@@ -9,40 +9,40 @@
 namespace urchin
 {
 
-	class OmnidirectionalLight : public Light
-	{
-		public:
-			explicit OmnidirectionalLight(const Point3<float> &);
-			~OmnidirectionalLight() override;
+    class OmnidirectionalLight : public Light
+    {
+        public:
+            explicit OmnidirectionalLight(const Point3<float> &);
+            ~OmnidirectionalLight() override;
 
-			//general methods
-			void setPosition(const Point3<float> &);
-			const Point3<float> &getPosition() const override;
-			const std::vector<Vector3<float>> &getDirections() const override;
-			LightType getLightType() const override;
-			bool hasParallelBeams() const override;
-			const AABBox<float> &getAABBox() const override;
+            //general methods
+            void setPosition(const Point3<float> &);
+            const Point3<float> &getPosition() const override;
+            const std::vector<Vector3<float>> &getDirections() const override;
+            LightType getLightType() const override;
+            bool hasParallelBeams() const override;
+            const AABBox<float> &getAABBox() const override;
 
-			//attenuation methods
-			void setAttenuation(float);
-			float getExponentialAttenuation() const;
-			const AABBox<float> &getAABBoxScope() const;
-			const Sphere<float> &getSphereScope() const;
+            //attenuation methods
+            void setAttenuation(float);
+            float getExponentialAttenuation() const;
+            const AABBox<float> &getAABBoxScope() const;
+            const Sphere<float> &getSphereScope() const;
 
-		private:
-			void computeScope();
+        private:
+            void computeScope();
 
-			//general properties
-			Point3<float> position;
-			std::vector<Vector3<float>> directions;
+            //general properties
+            Point3<float> position;
+            std::vector<Vector3<float>> directions;
 
-			//attenuation properties
-			const float attenuationNoEffect; //defines when the attenuation of a light has no light effect on objects
-			float exponentialAttenuation;
-			Sphere<float> *sphereScope;
-			AABBox<float> *bboxScope;
+            //attenuation properties
+            const float attenuationNoEffect; //defines when the attenuation of a light has no light effect on objects
+            float exponentialAttenuation;
+            Sphere<float> *sphereScope;
+            AABBox<float> *bboxScope;
 
-	};
+    };
 
 }
 

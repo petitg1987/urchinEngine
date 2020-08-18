@@ -8,14 +8,14 @@
 
 namespace urchin
 {
-	
-	class LoaderMTR : public Loader<Material>
-	{
-		public:
-			~LoaderMTR() override = default;
 
-			Material *loadFromFile(const std::string &) override;
-	};
+    class LoaderMTR : public Loader<Material>
+    {
+        public:
+            ~LoaderMTR() override = default;
+
+            Material *loadFromFile(const std::string &) override;
+    };
 
 }
 

@@ -6,13 +6,13 @@
 
 class ResizeConvexHull3DTest : public CppUnit::TestFixture
 {
-	public:
-		static CppUnit::Test *suite();
+    public:
+        static CppUnit::Test *suite();
 
-		void reduceBox();
+        void reduceBox();
 
-		void nullExpandTetrahedron();
-		void expandTetrahedron();
+        void nullExpandTetrahedron();
+        void expandTetrahedron();
 };
 
 #endif

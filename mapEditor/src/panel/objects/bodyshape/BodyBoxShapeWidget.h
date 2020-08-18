@@ -12,23 +12,23 @@
 namespace urchin
 {
 
-	class BodyBoxShapeWidget : public BodyShapeWidget
-	{
-		Q_OBJECT
+    class BodyBoxShapeWidget : public BodyShapeWidget
+    {
+        Q_OBJECT
 
-		public:
-			explicit BodyBoxShapeWidget(const SceneObject *);
-			~BodyBoxShapeWidget() override = default;
+        public:
+            explicit BodyBoxShapeWidget(const SceneObject *);
+            ~BodyBoxShapeWidget() override = default;
 
-			std::string getBodyShapeName() const override;
+            std::string getBodyShapeName() const override;
 
-		protected:
-			void doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>) override;
-			std::shared_ptr<const CollisionShape3D> createBodyShape() const override;
+        protected:
+            void doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>) override;
+            std::shared_ptr<const CollisionShape3D> createBodyShape() const override;
 
-		private:
-			QDoubleSpinBox *halfSizeX, *halfSizeY, *halfSizeZ;
-	};
+        private:
+            QDoubleSpinBox *halfSizeX, *halfSizeY, *halfSizeZ;
+    };
 
 }
 

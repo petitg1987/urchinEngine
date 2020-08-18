@@ -13,27 +13,27 @@
 namespace urchin
 {
 
-	class ChangeBodyShapeDialog : public QDialog
-	{
-		Q_OBJECT
+    class ChangeBodyShapeDialog : public QDialog
+    {
+        Q_OBJECT
 
-		public:
-			ChangeBodyShapeDialog(QWidget *parent, bool);
+        public:
+            ChangeBodyShapeDialog(QWidget *parent, bool);
 
-			CollisionShape3D::ShapeType getShapeType() const;
+            CollisionShape3D::ShapeType getShapeType() const;
 
-		private:
-			void setupBodyShapeTypeFields(QGridLayout *);
+        private:
+            void setupBodyShapeTypeFields(QGridLayout *);
 
-			void done(int) override;
+            void done(int) override;
 
-			bool excludeCompoundShape;
+            bool excludeCompoundShape;
 
-			QLabel *bodyShapeTypeLabel;
-			QComboBox *bodyShapeTypeComboBox;
+            QLabel *bodyShapeTypeLabel;
+            QComboBox *bodyShapeTypeComboBox;
 
-			CollisionShape3D::ShapeType shapeType;
-	};
+            CollisionShape3D::ShapeType shapeType;
+    };
 
 }
 

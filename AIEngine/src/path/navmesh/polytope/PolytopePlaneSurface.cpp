@@ -33,40 +33,40 @@ namespace urchin
         buildAABBox();
     }
 
-	void PolytopePlaneSurface::buildOutlineCwPoints()
-	{
-		outlineCwPoints.reserve(ccwPoints.size());
+    void PolytopePlaneSurface::buildOutlineCwPoints()
+    {
+        outlineCwPoints.reserve(ccwPoints.size());
 
-		for(auto it = ccwPoints.rbegin(); it!=ccwPoints.rend(); ++it)
-		{
-			outlineCwPoints.emplace_back(Point2<float>(it->X, -it->Z));
-		}
-	}
+        for(auto it = ccwPoints.rbegin(); it!=ccwPoints.rend(); ++it)
+        {
+            outlineCwPoints.emplace_back(Point2<float>(it->X, -it->Z));
+        }
+    }
 
     void PolytopePlaneSurface::buildAABBox()
     {
         aabbox = AABBox<float>(ccwPoints);
     }
 
-	bool PolytopePlaneSurface::isWalkable() const
-	{
-		return isWalkableCandidate() && isSlopeWalkable;
-	}
+    bool PolytopePlaneSurface::isWalkable() const
+    {
+        return isWalkableCandidate() && isSlopeWalkable;
+    }
 
-	Rectangle<float> PolytopePlaneSurface::computeXZRectangle() const
-	{
-		Point2<float> minPoint(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
-		Point2<float> maxPoint(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
-		for(const auto &point : ccwPoints)
-		{
-			minPoint.X = minPoint.X > point.X ? point.X : minPoint.X;
-			minPoint.Y = minPoint.Y > -point.Z ? -point.Z : minPoint.Y;
+    Rectangle<float> PolytopePlaneSurface::computeXZRectangle() const
+    {
+        Point2<float> minPoint(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+        Point2<float> maxPoint(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
+        for(const auto &point : ccwPoints)
+        {
+            minPoint.X = minPoint.X > point.X ? point.X : minPoint.X;
+            minPoint.Y = minPoint.Y > -point.Z ? -point.Z : minPoint.Y;
 
-			maxPoint.X = maxPoint.X < point.X ? point.X : minPoint.X;
-			maxPoint.Y = maxPoint.Y < -point.Z ? -point.Z : minPoint.Y;
-		}
-		return Rectangle<float>(minPoint, maxPoint);
-	}
+            maxPoint.X = maxPoint.X < point.X ? point.X : minPoint.X;
+            maxPoint.Y = maxPoint.Y < -point.Z ? -point.Z : minPoint.Y;
+        }
+        return Rectangle<float>(minPoint, maxPoint);
+    }
 
     const AABBox<float> &PolytopePlaneSurface::getAABBox() const
     {
@@ -78,42 +78,42 @@ namespace urchin
         return outlineCwPoints;
     }
 
-	Plane<float> PolytopePlaneSurface::getPlane(const Rectangle<float> &) const
-	{
-		return Plane<float>(ccwPoints[0], ccwPoints[1], ccwPoints[2]);
-	}
+    Plane<float> PolytopePlaneSurface::getPlane(const Rectangle<float> &) const
+    {
+        return Plane<float>(ccwPoints[0], ccwPoints[1], ccwPoints[2]);
+    }
 
-	const std::vector<CSGPolygon<float>> &PolytopePlaneSurface::getSelfObstacles() const
-	{
-		return selfObstacles;
-	}
+    const std::vector<CSGPolygon<float>> &PolytopePlaneSurface::getSelfObstacles() const
+    {
+        return selfObstacles;
+    }
 
-	/**
- 	 * Return point on un-expanded surface
- 	 */
-	Point3<float> PolytopePlaneSurface::computeRealPoint(const Point2<float> &point, const std::shared_ptr<NavMeshAgent> &agent) const
-	{
+    /**
+      * Return point on un-expanded surface
+      */
+    Point3<float> PolytopePlaneSurface::computeRealPoint(const Point2<float> &point, const std::shared_ptr<NavMeshAgent> &agent) const
+    {
         Point3<float> pointOnExpandedSurface(point.X, 0.0, -point.Y);
         float shortestFaceDistance = normal.dotProduct(pointOnExpandedSurface.vector(ccwPoints[0]));
         pointOnExpandedSurface.Y += shortestFaceDistance / normal.Y;
 
         float reduceDistance = - agent->computeExpandDistance(normal);
         return pointOnExpandedSurface.translate(normal * reduceDistance);
-	}
+    }
 
-	const std::shared_ptr<const NavTopography> &PolytopePlaneSurface::getNavTopography() const
-	{
-		return nullNavTopography; //no topography for flat surface
-	}
+    const std::shared_ptr<const NavTopography> &PolytopePlaneSurface::getNavTopography() const
+    {
+        return nullNavTopography; //no topography for flat surface
+    }
 
-	const std::vector<Point3<float>> &PolytopePlaneSurface::getCcwPoints() const
-	{
-		return ccwPoints;
-	}
+    const std::vector<Point3<float>> &PolytopePlaneSurface::getCcwPoints() const
+    {
+        return ccwPoints;
+    }
 
-	const Vector3<float> &PolytopePlaneSurface::getNormal() const
-	{
-		return normal;
-	}
+    const Vector3<float> &PolytopePlaneSurface::getNormal() const
+    {
+        return normal;
+    }
 
 }

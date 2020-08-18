@@ -1,12 +1,12 @@
 template<class T> TextureFilterBuilder<T>::TextureFilterBuilder() :
-	textureWidth(1024),
-	textureHeight(1024),
-	pTextureType(GL_TEXTURE_2D),
-	pTextureAccessFilter(GL_LINEAR),
-	pTextureAnisotropy(1.0f),
-	pTextureNumberLayer(1),
-	pTextureInternalFormat(GL_RGB),
-	pTextureFormat(GL_RGB)
+    textureWidth(1024),
+    textureHeight(1024),
+    pTextureType(GL_TEXTURE_2D),
+    pTextureAccessFilter(GL_LINEAR),
+    pTextureAnisotropy(1.0f),
+    pTextureNumberLayer(1),
+    pTextureInternalFormat(GL_RGB),
+    pTextureFormat(GL_RGB)
 {
 
 }
@@ -18,88 +18,88 @@ template<class T> TextureFilterBuilder<T>::~TextureFilterBuilder()
 
 template<class T> T *TextureFilterBuilder<T>::textureSize(unsigned int textureWidth, unsigned int textureHeight)
 {
-	this->textureWidth = textureWidth;
-	this->textureHeight = textureHeight;
-	return _this();
+    this->textureWidth = textureWidth;
+    this->textureHeight = textureHeight;
+    return _this();
 }
 
 template<class T> unsigned int TextureFilterBuilder<T>::getTextureWidth() const
 {
-	return textureWidth;
+    return textureWidth;
 }
 
 template<class T> unsigned int TextureFilterBuilder<T>::getTextureHeight() const
 {
-	return textureHeight;
+    return textureHeight;
 }
 
 template<class T> T *TextureFilterBuilder<T>::textureType(unsigned int textureType)
 {
-	this->pTextureType = textureType;
-	return _this();
+    this->pTextureType = textureType;
+    return _this();
 }
 
 template<class T> unsigned int TextureFilterBuilder<T>::getTextureType() const
 {
-	return pTextureType;
+    return pTextureType;
 }
 
 template<class T> T *TextureFilterBuilder<T>::textureAccessFilter(unsigned int)
 {
-	this->pTextureAccessFilter = pTextureAccessFilter;
-	return _this();
+    this->pTextureAccessFilter = pTextureAccessFilter;
+    return _this();
 }
 
 template<class T> unsigned int TextureFilterBuilder<T>::getTextureAccessFilter() const
 {
-	return pTextureAccessFilter;
+    return pTextureAccessFilter;
 }
 
 template<class T> T *TextureFilterBuilder<T>::textureAnisotropy(float pTextureAnisotropy)
 {
-	this->pTextureAnisotropy = pTextureAnisotropy;
-	return _this();
+    this->pTextureAnisotropy = pTextureAnisotropy;
+    return _this();
 }
 
 template<class T> float TextureFilterBuilder<T>::getTextureAnisotropy() const
 {
-	return pTextureAnisotropy;
+    return pTextureAnisotropy;
 }
 
 template<class T> T *TextureFilterBuilder<T>::textureNumberLayer(unsigned int textureNumberLayer)
 {
-	this->pTextureNumberLayer = textureNumberLayer;
-	return _this();
+    this->pTextureNumberLayer = textureNumberLayer;
+    return _this();
 }
 
 template<class T> unsigned int TextureFilterBuilder<T>::getTextureNumberLayer() const
 {
-	return pTextureNumberLayer;
+    return pTextureNumberLayer;
 }
 
 template<class T> T *TextureFilterBuilder<T>::textureInternalFormat(int textureInternalFormat)
 {
-	this->pTextureInternalFormat = textureInternalFormat;
-	return _this();
+    this->pTextureInternalFormat = textureInternalFormat;
+    return _this();
 }
 
 template<class T> int TextureFilterBuilder<T>::getTextureInternalFormat() const
 {
-	return pTextureInternalFormat;
+    return pTextureInternalFormat;
 }
 
 template<class T> T *TextureFilterBuilder<T>::textureFormat(unsigned int textureFormat)
 {
-	this->pTextureFormat = textureFormat;
-	return _this();
+    this->pTextureFormat = textureFormat;
+    return _this();
 }
 
 template<class T> unsigned int TextureFilterBuilder<T>::getTextureFormat() const
 {
-	return pTextureFormat;
+    return pTextureFormat;
 }
 
 template<class T> T* TextureFilterBuilder<T>::_this()
 {
-	return static_cast<T*>(this);
+    return static_cast<T*>(this);
 }

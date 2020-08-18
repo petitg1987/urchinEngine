@@ -6,73 +6,73 @@
 namespace urchin
 {
 
-	class GeometryModel
-	{
-		public:
-			GeometryModel();
-			virtual ~GeometryModel();
+    class GeometryModel
+    {
+        public:
+            GeometryModel();
+            virtual ~GeometryModel();
 
-			enum PolygonMode
-			{
-				WIREFRAME,
-				FILL
-			};
+            enum PolygonMode
+            {
+                WIREFRAME,
+                FILL
+            };
 
-			enum BlendMode
-			{
-				NONE,
-				ONE_MINUS_SRC_ALPHA
-			};
+            enum BlendMode
+            {
+                NONE,
+                ONE_MINUS_SRC_ALPHA
+            };
 
-			void onCameraProjectionUpdate(const Matrix4<float> &);
+            void onCameraProjectionUpdate(const Matrix4<float> &);
 
-			Vector4<float> getColor() const;
-			void setColor(float, float, float, float alpha = 1.0f);
+            Vector4<float> getColor() const;
+            void setColor(float, float, float, float alpha = 1.0f);
 
-			PolygonMode getPolygonMode() const;
-			void setPolygonMode(PolygonMode);
-			void setLineSize(float);
+            PolygonMode getPolygonMode() const;
+            void setPolygonMode(PolygonMode);
+            void setLineSize(float);
 
-			BlendMode getBlendMode() const;
-			void setBlendMode(BlendMode);
+            BlendMode getBlendMode() const;
+            void setBlendMode(BlendMode);
 
-			bool isAlwaysVisible() const;
-			void setAlwaysVisible(bool);
+            bool isAlwaysVisible() const;
+            void setAlwaysVisible(bool);
 
-			void display(const Matrix4<float> &) const;
+            void display(const Matrix4<float> &) const;
 
-		protected:
-			virtual Matrix4<float> retrieveModelMatrix() const = 0;
-			virtual std::vector<Point3<float>> retrieveVertexArray() const = 0;
+        protected:
+            virtual Matrix4<float> retrieveModelMatrix() const = 0;
+            virtual std::vector<Point3<float>> retrieveVertexArray() const = 0;
 
-			void initialize();
+            void initialize();
 
-			virtual void drawGeometry() const = 0;
+            virtual void drawGeometry() const = 0;
 
-		private:
-			unsigned int bufferIDs[1], vertexArrayObject;
-			enum //buffer IDs indices
-			{
-				VAO_VERTEX_POSITION = 0,
-			};
-			enum //shader input
-			{
-				SHADER_VERTEX_POSITION = 0,
-			};
-			unsigned int shader;
-			int mProjectionLoc, mViewLoc, colorLoc;
+        private:
+            unsigned int bufferIDs[1], vertexArrayObject;
+            enum //buffer IDs indices
+            {
+                VAO_VERTEX_POSITION = 0,
+            };
+            enum //shader input
+            {
+                SHADER_VERTEX_POSITION = 0,
+            };
+            unsigned int shader;
+            int mProjectionLoc, mViewLoc, colorLoc;
 
-			Matrix4<float> projectionMatrix;
-			Matrix4<float> modelMatrix;
+            Matrix4<float> projectionMatrix;
+            Matrix4<float> modelMatrix;
 
-			Vector4<float> color;
+            Vector4<float> color;
 
-			PolygonMode polygonMode;
-			float lineSize;
+            PolygonMode polygonMode;
+            float lineSize;
 
-			BlendMode blendMode;
-			bool alwaysVisible;
-	};
+            BlendMode blendMode;
+            bool alwaysVisible;
+    };
 
 }
 

@@ -11,25 +11,25 @@
 namespace urchin
 {
 
-	class AABBTreeAlgorithm : public BroadPhaseAlgorithm
-	{
-		public:
-			AABBTreeAlgorithm();
-			~AABBTreeAlgorithm() override;
+    class AABBTreeAlgorithm : public BroadPhaseAlgorithm
+    {
+        public:
+            AABBTreeAlgorithm();
+            ~AABBTreeAlgorithm() override;
 
-			void addBody(AbstractWorkBody *, PairContainer *) override;
-			void removeBody(AbstractWorkBody *) override;
-			void updateBodies() override;
+            void addBody(AbstractWorkBody *, PairContainer *) override;
+            void removeBody(AbstractWorkBody *) override;
+            void updateBodies() override;
 
-			const std::vector<OverlappingPair *> &getOverlappingPairs() const override;
+            const std::vector<OverlappingPair *> &getOverlappingPairs() const override;
 
-			std::vector<AbstractWorkBody *> rayTest(const Ray<float> &) const override;
-			std::vector<AbstractWorkBody *> bodyTest(AbstractWorkBody *, const PhysicsTransform &, const PhysicsTransform &) const override;
+            std::vector<AbstractWorkBody *> rayTest(const Ray<float> &) const override;
+            std::vector<AbstractWorkBody *> bodyTest(AbstractWorkBody *, const PhysicsTransform &, const PhysicsTransform &) const override;
 
-		private:
+        private:
             BodyAABBTree *tree;
 
-	};
+    };
 
 }
 

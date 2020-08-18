@@ -7,15 +7,15 @@
 namespace urchin
 {
 
-	AbstractBody::AbstractBody(std::string id, Transform<float> transform, std::shared_ptr<const CollisionShape3D> shape) :
-			ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
+    AbstractBody::AbstractBody(std::string id, Transform<float> transform, std::shared_ptr<const CollisionShape3D> shape) :
+            ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
             bIsNew(false),
             bIsDeleted(false),
             bNeedFullRefresh(false),
-			workBody(nullptr),
-			transform(std::move(transform)),
-			isManuallyMoved(false),
-			id(std::move(id)),
+            workBody(nullptr),
+            transform(std::move(transform)),
+            isManuallyMoved(false),
+            id(std::move(id)),
             originalShape(std::move(shape)),
             restitution(0.0f),
             friction(0.0f),
@@ -23,309 +23,309 @@ namespace urchin
             ccdMotionThreshold(0.0f),
             bIsStatic(true),
             bIsActive(false)
-	{
-		initialize(0.2f, 0.5f, 0.0f);
-	}
+    {
+        initialize(0.2f, 0.5f, 0.0f);
+    }
 
-	AbstractBody::AbstractBody(const AbstractBody &abstractBody) :
-			ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
+    AbstractBody::AbstractBody(const AbstractBody &abstractBody) :
+            ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
             bIsNew(false),
             bIsDeleted(false),
             bNeedFullRefresh(false),
-			workBody(nullptr),
-			transform(abstractBody.getTransform()),
-			isManuallyMoved(false),
-			id(abstractBody.getId()),
-			originalShape(std::shared_ptr<const CollisionShape3D>(abstractBody.getOriginalShape()->clone())),
+            workBody(nullptr),
+            transform(abstractBody.getTransform()),
+            isManuallyMoved(false),
+            id(abstractBody.getId()),
+            originalShape(std::shared_ptr<const CollisionShape3D>(abstractBody.getOriginalShape()->clone())),
             restitution(0.0f),
             friction(0.0f),
             rollingFriction(0.0f),
             ccdMotionThreshold(0.0f),
             bIsStatic(true),
             bIsActive(false)
-	{
-		initialize(abstractBody.getRestitution(), abstractBody.getFriction(), abstractBody.getRollingFriction());
-		setCcdMotionThreshold(abstractBody.getCcdMotionThreshold());
-	}
+    {
+        initialize(abstractBody.getRestitution(), abstractBody.getFriction(), abstractBody.getRollingFriction());
+        setCcdMotionThreshold(abstractBody.getCcdMotionThreshold());
+    }
 
-	void AbstractBody::initialize(float restitution, float friction, float rollingFriction)
-	{
-		//technical data
-		bIsNew.store(false, std::memory_order_relaxed);
-		bIsDeleted.store(false, std::memory_order_relaxed);
-		bNeedFullRefresh.store(false, std::memory_order_relaxed);
-		bIsStatic.store(true, std::memory_order_relaxed);
-		bIsActive.store(false, std::memory_order_relaxed);
+    void AbstractBody::initialize(float restitution, float friction, float rollingFriction)
+    {
+        //technical data
+        bIsNew.store(false, std::memory_order_relaxed);
+        bIsDeleted.store(false, std::memory_order_relaxed);
+        bNeedFullRefresh.store(false, std::memory_order_relaxed);
+        bIsStatic.store(true, std::memory_order_relaxed);
+        bIsActive.store(false, std::memory_order_relaxed);
 
-		//body description data
-		refreshScaledShape();
-		this->restitution = restitution;
-		this->friction = friction;
-		this->rollingFriction = rollingFriction;
-	}
+        //body description data
+        refreshScaledShape();
+        this->restitution = restitution;
+        this->friction = friction;
+        this->rollingFriction = rollingFriction;
+    }
 
-	void AbstractBody::refreshScaledShape()
-	{
-		scaledShape = originalShape->scale(transform.getScale());
-		scaledShape->checkInnerMarginQuality(id);
+    void AbstractBody::refreshScaledShape()
+    {
+        scaledShape = originalShape->scale(transform.getScale());
+        scaledShape->checkInnerMarginQuality(id);
 
-		ccdMotionThreshold = (scaledShape->getMinDistanceToCenter() * 2.0f) * ccdMotionThresholdFactor;
-	}
+        ccdMotionThreshold = (scaledShape->getMinDistanceToCenter() * 2.0f) * ccdMotionThresholdFactor;
+    }
 
-	void AbstractBody::setIsNew(bool isNew)
-	{
-		this->bIsNew.store(isNew, std::memory_order_relaxed);
-	}
+    void AbstractBody::setIsNew(bool isNew)
+    {
+        this->bIsNew.store(isNew, std::memory_order_relaxed);
+    }
 
-	bool AbstractBody::isNew() const
-	{
-		return bIsNew.load(std::memory_order_relaxed);
-	}
+    bool AbstractBody::isNew() const
+    {
+        return bIsNew.load(std::memory_order_relaxed);
+    }
 
-	void AbstractBody::markAsDeleted()
-	{
-		this->bIsDeleted.store(true, std::memory_order_relaxed);
-	}
+    void AbstractBody::markAsDeleted()
+    {
+        this->bIsDeleted.store(true, std::memory_order_relaxed);
+    }
 
-	bool AbstractBody::isDeleted() const
-	{
-		return bIsDeleted.load(std::memory_order_relaxed);
-	}
+    bool AbstractBody::isDeleted() const
+    {
+        return bIsDeleted.load(std::memory_order_relaxed);
+    }
 
-	void AbstractBody::setNeedFullRefresh(bool needFullRefresh)
-	{
-		this->bNeedFullRefresh.store(needFullRefresh, std::memory_order_relaxed);
-	}
+    void AbstractBody::setNeedFullRefresh(bool needFullRefresh)
+    {
+        this->bNeedFullRefresh.store(needFullRefresh, std::memory_order_relaxed);
+    }
 
-	bool AbstractBody::needFullRefresh() const
-	{
-		return bNeedFullRefresh.load(std::memory_order_relaxed);
-	}
+    bool AbstractBody::needFullRefresh() const
+    {
+        return bNeedFullRefresh.load(std::memory_order_relaxed);
+    }
 
-	void AbstractBody::setWorkBody(AbstractWorkBody *workBody)
-	{
-		this->workBody = workBody;
-	}
+    void AbstractBody::setWorkBody(AbstractWorkBody *workBody)
+    {
+        this->workBody = workBody;
+    }
 
-	AbstractWorkBody *AbstractBody::getWorkBody() const
-	{
-		return workBody;
-	}
+    AbstractWorkBody *AbstractBody::getWorkBody() const
+    {
+        return workBody;
+    }
 
-	void AbstractBody::updateTo(AbstractWorkBody *workBody)
-	{
-		#ifndef NDEBUG
-	        assert(!bodyMutex.try_lock()); //body mutex should be locked before call this method
-		#endif
-
-		workBody->setRestitution(restitution);
-		workBody->setFriction(friction);
-		workBody->setRollingFriction(rollingFriction);
-		workBody->setCcdMotionThreshold(ccdMotionThreshold);
-	}
-
-	bool AbstractBody::applyFrom(const AbstractWorkBody *workBody)
-	{
+    void AbstractBody::updateTo(AbstractWorkBody *workBody)
+    {
         #ifndef NDEBUG
             assert(!bodyMutex.try_lock()); //body mutex should be locked before call this method
         #endif
 
-		bool fullRefreshRequested = bNeedFullRefresh.load(std::memory_order_relaxed);
-		if(!fullRefreshRequested)
-		{
-			bIsActive.store(workBody->isActive(), std::memory_order_relaxed);
+        workBody->setRestitution(restitution);
+        workBody->setFriction(friction);
+        workBody->setRollingFriction(rollingFriction);
+        workBody->setCcdMotionThreshold(ccdMotionThreshold);
+    }
 
-			transform.setPosition(workBody->getPosition());
-			transform.setOrientation(workBody->getOrientation());
-		}
+    bool AbstractBody::applyFrom(const AbstractWorkBody *workBody)
+    {
+        #ifndef NDEBUG
+            assert(!bodyMutex.try_lock()); //body mutex should be locked before call this method
+        #endif
 
-		return fullRefreshRequested;
-	}
+        bool fullRefreshRequested = bNeedFullRefresh.load(std::memory_order_relaxed);
+        if(!fullRefreshRequested)
+        {
+            bIsActive.store(workBody->isActive(), std::memory_order_relaxed);
 
-	void AbstractBody::setTransform(const Transform<float> &transform)
-	{
-		std::lock_guard<std::mutex> lock(bodyMutex);
+            transform.setPosition(workBody->getPosition());
+            transform.setOrientation(workBody->getOrientation());
+        }
 
-		if(std::abs(transform.getScale()-this->transform.getScale()) > std::numeric_limits<float>::epsilon())
-		{
-			this->transform = transform;
-			refreshScaledShape();
-		}else
-		{
-			this->transform = transform;
-		}
+        return fullRefreshRequested;
+    }
 
-		this->setNeedFullRefresh(true);
-		this->isManuallyMoved = true;
-	}
+    void AbstractBody::setTransform(const Transform<float> &transform)
+    {
+        std::lock_guard<std::mutex> lock(bodyMutex);
 
-	Transform<float> AbstractBody::getTransform() const
-	{
-		std::lock_guard<std::mutex> lock(bodyMutex);
+        if(std::abs(transform.getScale()-this->transform.getScale()) > std::numeric_limits<float>::epsilon())
+        {
+            this->transform = transform;
+            refreshScaledShape();
+        }else
+        {
+            this->transform = transform;
+        }
 
-		return transform;
-	}
+        this->setNeedFullRefresh(true);
+        this->isManuallyMoved = true;
+    }
 
-	bool AbstractBody::isManuallyMovedAndResetFlag()
-	{
-		if(isManuallyMoved)
-		{
-			isManuallyMoved = false;
-			return true;
-		}
-		return false;
-	}
+    Transform<float> AbstractBody::getTransform() const
+    {
+        std::lock_guard<std::mutex> lock(bodyMutex);
 
-	void AbstractBody::setShape(const std::shared_ptr<const CollisionShape3D> &shape)
-	{
-		std::lock_guard<std::mutex> lock(bodyMutex);
+        return transform;
+    }
 
-		this->originalShape = shape;
-		refreshScaledShape();
-		this->setNeedFullRefresh(true);
-	}
+    bool AbstractBody::isManuallyMovedAndResetFlag()
+    {
+        if(isManuallyMoved)
+        {
+            isManuallyMoved = false;
+            return true;
+        }
+        return false;
+    }
 
-	std::shared_ptr<const CollisionShape3D> AbstractBody::getOriginalShape() const
-	{
-		std::lock_guard<std::mutex> lock(bodyMutex);
+    void AbstractBody::setShape(const std::shared_ptr<const CollisionShape3D> &shape)
+    {
+        std::lock_guard<std::mutex> lock(bodyMutex);
 
-		return originalShape;
-	}
+        this->originalShape = shape;
+        refreshScaledShape();
+        this->setNeedFullRefresh(true);
+    }
 
-	/**
-	 * @return Scaled shape representing the form of the body. The shape is
-	 * scaled according to scale define in 'transform' attribute.
-	 */
-	std::shared_ptr<const CollisionShape3D> AbstractBody::getScaledShape() const
-	{
-		std::lock_guard<std::mutex> lock(bodyMutex);
+    std::shared_ptr<const CollisionShape3D> AbstractBody::getOriginalShape() const
+    {
+        std::lock_guard<std::mutex> lock(bodyMutex);
 
-		return scaledShape;
-	}
+        return originalShape;
+    }
 
-	Vector3<float> AbstractBody::computeScaledShapeLocalInertia(float mass) const
-	{
-		return scaledShape->computeLocalInertia(mass);
-	}
+    /**
+     * @return Scaled shape representing the form of the body. The shape is
+     * scaled according to scale define in 'transform' attribute.
+     */
+    std::shared_ptr<const CollisionShape3D> AbstractBody::getScaledShape() const
+    {
+        std::lock_guard<std::mutex> lock(bodyMutex);
 
-	void AbstractBody::setId(const std::string &id)
-	{
-		std::lock_guard<std::mutex> lock(bodyMutex);
+        return scaledShape;
+    }
 
-		this->id = id;
-	}
+    Vector3<float> AbstractBody::computeScaledShapeLocalInertia(float mass) const
+    {
+        return scaledShape->computeLocalInertia(mass);
+    }
 
-	const std::string &AbstractBody::getId() const
-	{
-		std::lock_guard<std::mutex> lock(bodyMutex);
+    void AbstractBody::setId(const std::string &id)
+    {
+        std::lock_guard<std::mutex> lock(bodyMutex);
 
-		return id;
-	}
+        this->id = id;
+    }
 
-	/**
-	 * @param restitution Restitution (0=stop, 1=100% elastic)
-	 */
-	void AbstractBody::setRestitution(float restitution)
-	{
-		std::lock_guard<std::mutex> lock(bodyMutex);
+    const std::string &AbstractBody::getId() const
+    {
+        std::lock_guard<std::mutex> lock(bodyMutex);
 
-		this->restitution = restitution;
-	}
+        return id;
+    }
 
-	/**
-	 * @return Restitution (0=stop, 1=100% elastic)
-	 */
-	float AbstractBody::getRestitution() const
-	{
-		std::lock_guard<std::mutex> lock(bodyMutex);
+    /**
+     * @param restitution Restitution (0=stop, 1=100% elastic)
+     */
+    void AbstractBody::setRestitution(float restitution)
+    {
+        std::lock_guard<std::mutex> lock(bodyMutex);
 
-		return restitution;
-	}
+        this->restitution = restitution;
+    }
 
-	/**
-	 * @param friction Friction (0=no friction, 1=total friction)
-	 */
-	void AbstractBody::setFriction(float friction)
-	{
-		std::lock_guard<std::mutex> lock(bodyMutex);
+    /**
+     * @return Restitution (0=stop, 1=100% elastic)
+     */
+    float AbstractBody::getRestitution() const
+    {
+        std::lock_guard<std::mutex> lock(bodyMutex);
 
-		this->friction = friction;
-	}
+        return restitution;
+    }
 
-	/**
-	 * @return Friction (0=no friction, 1=total friction)
-	 */
-	float AbstractBody::getFriction() const
-	{
-		std::lock_guard<std::mutex> lock(bodyMutex);
+    /**
+     * @param friction Friction (0=no friction, 1=total friction)
+     */
+    void AbstractBody::setFriction(float friction)
+    {
+        std::lock_guard<std::mutex> lock(bodyMutex);
 
-		return friction;
-	}
+        this->friction = friction;
+    }
 
-	/**
-	 * @param rollingFriction Rolling friction (0=no friction, 1=total friction)
-	 */
-	void AbstractBody::setRollingFriction(float rollingFriction)
-	{
-		std::lock_guard<std::mutex> lock(bodyMutex);
+    /**
+     * @return Friction (0=no friction, 1=total friction)
+     */
+    float AbstractBody::getFriction() const
+    {
+        std::lock_guard<std::mutex> lock(bodyMutex);
 
-		this->rollingFriction = rollingFriction;
-	}
+        return friction;
+    }
 
-	/**
-	 * @return Rolling friction (0=no friction, 1=total friction)
-	 */
-	float AbstractBody::getRollingFriction() const
-	{
-		std::lock_guard<std::mutex> lock(bodyMutex);
+    /**
+     * @param rollingFriction Rolling friction (0=no friction, 1=total friction)
+     */
+    void AbstractBody::setRollingFriction(float rollingFriction)
+    {
+        std::lock_guard<std::mutex> lock(bodyMutex);
 
-		return rollingFriction;
-	}
+        this->rollingFriction = rollingFriction;
+    }
 
-	/**
-	 * @return Threshold for continuous collision detection in distance unit. A default value is determinate automatically
-	 * for each body thanks to properties 'collisionShape.ccdMotionThresholdFactor'.
-	 */
-	float AbstractBody::getCcdMotionThreshold() const
-	{
-		std::lock_guard<std::mutex> lock(bodyMutex);
+    /**
+     * @return Rolling friction (0=no friction, 1=total friction)
+     */
+    float AbstractBody::getRollingFriction() const
+    {
+        std::lock_guard<std::mutex> lock(bodyMutex);
 
-		return ccdMotionThreshold;
-	}
+        return rollingFriction;
+    }
 
-	/**
-	 * Process continuous collision detection if the motion in one step is more then threshold.
-	 * @param ccdMotionThreshold Threshold for continuous collision detection in distance unit.
-	 */
-	void AbstractBody::setCcdMotionThreshold(float ccdMotionThreshold)
-	{
-		std::lock_guard<std::mutex> lock(bodyMutex);
+    /**
+     * @return Threshold for continuous collision detection in distance unit. A default value is determinate automatically
+     * for each body thanks to properties 'collisionShape.ccdMotionThresholdFactor'.
+     */
+    float AbstractBody::getCcdMotionThreshold() const
+    {
+        std::lock_guard<std::mutex> lock(bodyMutex);
 
-		this->ccdMotionThreshold = ccdMotionThreshold;
-	}
+        return ccdMotionThreshold;
+    }
 
-	/**
-	 * @return True when body is static (cannot be affected by physics world)
-	 */
-	bool AbstractBody::isStatic() const
-	{
-		return bIsStatic.load(std::memory_order_relaxed);
-	}
+    /**
+     * Process continuous collision detection if the motion in one step is more then threshold.
+     * @param ccdMotionThreshold Threshold for continuous collision detection in distance unit.
+     */
+    void AbstractBody::setCcdMotionThreshold(float ccdMotionThreshold)
+    {
+        std::lock_guard<std::mutex> lock(bodyMutex);
 
-	/**
-	 * @param bIsStatic Indicate whether body is static (cannot be affected by physics world)
-	 */
-	void AbstractBody::setIsStatic(bool bIsStatic)
-	{
-		this->bIsStatic.store(bIsStatic, std::memory_order_relaxed);
-	}
+        this->ccdMotionThreshold = ccdMotionThreshold;
+    }
 
-	/**
-	 * @return True when body is active (body has velocity and/or one of body in same island is active)
-	 */
-	bool AbstractBody::isActive() const
-	{
-		return bIsActive.load(std::memory_order_relaxed);
-	}
+    /**
+     * @return True when body is static (cannot be affected by physics world)
+     */
+    bool AbstractBody::isStatic() const
+    {
+        return bIsStatic.load(std::memory_order_relaxed);
+    }
+
+    /**
+     * @param bIsStatic Indicate whether body is static (cannot be affected by physics world)
+     */
+    void AbstractBody::setIsStatic(bool bIsStatic)
+    {
+        this->bIsStatic.store(bIsStatic, std::memory_order_relaxed);
+    }
+
+    /**
+     * @return True when body is active (body has velocity and/or one of body in same island is active)
+     */
+    bool AbstractBody::isActive() const
+    {
+        return bIsActive.load(std::memory_order_relaxed);
+    }
 
 }

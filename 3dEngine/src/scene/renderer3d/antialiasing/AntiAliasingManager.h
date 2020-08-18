@@ -8,38 +8,38 @@
 namespace urchin
 {
 
-	class AntiAliasingManager
-	{
-		public:
-			enum Quality
-			{
-				LOW = 0,
-				MEDIUM,
-				HIGH,
-				VERY_HIGH
-			};
+    class AntiAliasingManager
+    {
+        public:
+            enum Quality
+            {
+                LOW = 0,
+                MEDIUM,
+                HIGH,
+                VERY_HIGH
+            };
 
-			AntiAliasingManager();
-			~AntiAliasingManager();
+            AntiAliasingManager();
+            ~AntiAliasingManager();
 
-			void onResize(unsigned int, unsigned int);
+            void onResize(unsigned int, unsigned int);
 
-			void setQuality(Quality quality);
+            void setQuality(Quality quality);
 
-			void applyOn(unsigned int);
-		private:
-			void loadFxaaShader();
+            void applyOn(unsigned int);
+        private:
+            void loadFxaaShader();
 
-			//properties
-			Quality quality;
-			unsigned int sceneWidth, sceneHeight;
+            //properties
+            Quality quality;
+            unsigned int sceneWidth, sceneHeight;
 
-			//shader
-			unsigned int fxaaShader;
-			int texLoc, invSceneSizeLoc;
+            //shader
+            unsigned int fxaaShader;
+            int texLoc, invSceneSizeLoc;
 
-			std::shared_ptr<QuadDisplayer> quadDisplayer;
-	};
+            std::shared_ptr<QuadDisplayer> quadDisplayer;
+    };
 
 }
 

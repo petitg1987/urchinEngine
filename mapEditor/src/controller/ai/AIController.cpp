@@ -6,23 +6,23 @@
 namespace urchin
 {
 
-	AIController::AIController() :
-			AbstractController()
-	{
+    AIController::AIController() :
+            AbstractController()
+    {
 
-	}
+    }
 
-	const SceneAI *AIController::getSceneAI() const
-	{
-		return getMapHandler()->getMap()->getSceneAI();
-	}
+    const SceneAI *AIController::getSceneAI() const
+    {
+        return getMapHandler()->getMap()->getSceneAI();
+    }
 
-	const SceneAI *AIController::updateSceneAI(const std::shared_ptr<NavMeshAgent> &navMeshAgent)
-	{
-		getMapHandler()->getMap()->updateSceneAI(navMeshAgent);
+    const SceneAI *AIController::updateSceneAI(const std::shared_ptr<NavMeshAgent> &navMeshAgent)
+    {
+        getMapHandler()->getMap()->updateSceneAI(navMeshAgent);
 
-		markModified();
-		return getMapHandler()->getMap()->getSceneAI();
-	}
+        markModified();
+        return getMapHandler()->getMap()->getSceneAI();
+    }
 
 }

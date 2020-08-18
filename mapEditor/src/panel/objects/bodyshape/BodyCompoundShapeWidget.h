@@ -18,46 +18,46 @@
 namespace urchin
 {
 
-	class BodyCompoundShapeWidget : public BodyShapeWidget, public Observer
-	{
-		Q_OBJECT
+    class BodyCompoundShapeWidget : public BodyShapeWidget, public Observer
+    {
+        Q_OBJECT
 
-		public:
-			explicit BodyCompoundShapeWidget(const SceneObject *);
-			~BodyCompoundShapeWidget() override = default;
+        public:
+            explicit BodyCompoundShapeWidget(const SceneObject *);
+            ~BodyCompoundShapeWidget() override = default;
 
-			std::string getBodyShapeName() const override;
-			LocalizedShapeTableView *getLocalizedShapeTableView() const;
+            std::string getBodyShapeName() const override;
+            LocalizedShapeTableView *getLocalizedShapeTableView() const;
 
-		protected:
-			void doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>) override;
-			std::shared_ptr<const CollisionShape3D> createBodyShape() const override;
+        protected:
+            void doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>) override;
+            std::shared_ptr<const CollisionShape3D> createBodyShape() const override;
 
-		private:
-			void notify(Observable *, int) override;
+        private:
+            void notify(Observable *, int) override;
 
-			void setupTransformBox(QVBoxLayout *, const std::shared_ptr<const LocalizedCollisionShape> &);
-			void setupPosition(QGridLayout *, const Point3<float> &);
-			void setupOrientation(QGridLayout *, const Quaternion<float> &);
-			void setupShapeBox(QVBoxLayout *, const std::shared_ptr<const LocalizedCollisionShape> &);
+            void setupTransformBox(QVBoxLayout *, const std::shared_ptr<const LocalizedCollisionShape> &);
+            void setupPosition(QGridLayout *, const Point3<float> &);
+            void setupOrientation(QGridLayout *, const Quaternion<float> &);
+            void setupShapeBox(QVBoxLayout *, const std::shared_ptr<const LocalizedCollisionShape> &);
 
-			QLabel *shapesLabel;
-			LocalizedShapeTableView *localizedShapeTableView;
-			QPushButton *addShapeButton, *removeShapeButton;
+            QLabel *shapesLabel;
+            LocalizedShapeTableView *localizedShapeTableView;
+            QPushButton *addShapeButton, *removeShapeButton;
 
-			QWidget *localizedShapeDetails;
-			QDoubleSpinBox *positionX, *positionY, *positionZ;
-			QComboBox *orientationType;
-			QDoubleSpinBox *eulerAxis0, *eulerAxis1, *eulerAxis2;
-			BodyShapeWidget *bodyShapeWidget;
+            QWidget *localizedShapeDetails;
+            QDoubleSpinBox *positionX, *positionY, *positionZ;
+            QComboBox *orientationType;
+            QDoubleSpinBox *eulerAxis0, *eulerAxis1, *eulerAxis2;
+            BodyShapeWidget *bodyShapeWidget;
 
-		private slots:
-			void addNewLocalizedShape();
-			void removeSelectedLocalizedShape();
-			void updateLocalizedShapeOrientationType();
-			void updateSelectedLocalizedShape();
+        private slots:
+            void addNewLocalizedShape();
+            void removeSelectedLocalizedShape();
+            void updateLocalizedShapeOrientationType();
+            void updateSelectedLocalizedShape();
 
-	};
+    };
 
 }
 

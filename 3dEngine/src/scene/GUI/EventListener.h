@@ -4,18 +4,18 @@
 namespace urchin
 {
 
-	class Widget;
+    class Widget;
 
-	class EventListener
-	{
-		public:
-			virtual ~EventListener() = default;
+    class EventListener
+    {
+        public:
+            virtual ~EventListener() = default;
 
-			virtual void onClick(Widget *);
-			virtual void onClickRelease(Widget *);
-			virtual void onFocus(Widget *);
-			virtual void onFocusLost(Widget *);
-	};
+            virtual void onClick(Widget *);
+            virtual void onClickRelease(Widget *);
+            virtual void onFocus(Widget *);
+            virtual void onFocusLost(Widget *);
+    };
 
 }
 

@@ -9,15 +9,15 @@
 namespace urchin
 {
 
-	class AIController : public AbstractController
-	{
-		public:
-			AIController();
+    class AIController : public AbstractController
+    {
+        public:
+            AIController();
 
-			const SceneAI *getSceneAI() const;
+            const SceneAI *getSceneAI() const;
 
-			const SceneAI *updateSceneAI(const std::shared_ptr<NavMeshAgent> &);
-	};
+            const SceneAI *updateSceneAI(const std::shared_ptr<NavMeshAgent> &);
+    };
 
 }
 

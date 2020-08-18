@@ -11,17 +11,17 @@
 namespace urchin
 {
 
-	class SoundShapeWidgetRetriever
-	{
-		public:
-			explicit SoundShapeWidgetRetriever(const SceneSound *);
+    class SoundShapeWidgetRetriever
+    {
+        public:
+            explicit SoundShapeWidgetRetriever(const SceneSound *);
 
-			SoundShapeWidget *retrieveShapeWidget(const SoundShape *);
-			SoundShapeWidget *retrieveShapeWidget(SoundShape::ShapeType);
+            SoundShapeWidget *retrieveShapeWidget(const SoundShape *);
+            SoundShapeWidget *retrieveShapeWidget(SoundShape::ShapeType);
 
-		private:
-			const SceneSound *sceneSound;
-	};
+        private:
+            const SceneSound *sceneSound;
+    };
 
 }
 

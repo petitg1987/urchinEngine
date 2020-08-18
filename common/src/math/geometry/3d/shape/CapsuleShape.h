@@ -8,32 +8,32 @@
 namespace urchin
 {
 
-	template<class T> class CapsuleShape : public ConvexShape3D<T>
-	{
-		public:
-			enum CapsuleOrientation
-			{
-				CAPSULE_X,
-				CAPSULE_Y,
-				CAPSULE_Z
-			};
+    template<class T> class CapsuleShape : public ConvexShape3D<T>
+    {
+        public:
+            enum CapsuleOrientation
+            {
+                CAPSULE_X,
+                CAPSULE_Y,
+                CAPSULE_Z
+            };
 
-			CapsuleShape(T, T, CapsuleOrientation);
+            CapsuleShape(T, T, CapsuleOrientation);
 
-			T getRadius() const;
-			T getCylinderHeight() const;
-			CapsuleOrientation getCapsuleOrientation() const;
+            T getRadius() const;
+            T getCylinderHeight() const;
+            CapsuleOrientation getCapsuleOrientation() const;
 
-			T computeHeight() const;
+            T computeHeight() const;
 
-			ConvexShape3D<T> *clone() const override;
-			std::unique_ptr<ConvexObject3D<T>> toConvexObject(const Transform<T> &) const override;
+            ConvexShape3D<T> *clone() const override;
+            std::unique_ptr<ConvexObject3D<T>> toConvexObject(const Transform<T> &) const override;
 
-		private:
-			T radius;
-			T cylinderHeight;
-			CapsuleOrientation capsuleOrientation;
-	};
+        private:
+            T radius;
+            T cylinderHeight;
+            CapsuleOrientation capsuleOrientation;
+    };
 
 }
 

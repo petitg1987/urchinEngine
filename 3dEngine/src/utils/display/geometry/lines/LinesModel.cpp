@@ -6,22 +6,22 @@
 namespace urchin
 {
 
-	LinesModel::LinesModel(std::vector<Point3<float>> stripLinesPoints, float linesSize) :
-			linesPoints(std::move(stripLinesPoints)),
+    LinesModel::LinesModel(std::vector<Point3<float>> stripLinesPoints, float linesSize) :
+            linesPoints(std::move(stripLinesPoints)),
             stripLines(true),
-			linesSize(linesSize)
-	{
-		initialize();
-	}
+            linesSize(linesSize)
+    {
+        initialize();
+    }
 
     LinesModel::LinesModel(const std::vector<LineSegment3D<float>> &lineSegments, float linesSize) :
             stripLines(false),
             linesSize(linesSize)
     {
         linesPoints.reserve(lineSegments.size() * 2);
-	    for(const auto &lineSegment : lineSegments)
+        for(const auto &lineSegment : lineSegments)
         {
-	        linesPoints.emplace_back(lineSegment.getA());
+            linesPoints.emplace_back(lineSegment.getA());
             linesPoints.emplace_back(lineSegment.getB());
         }
 
@@ -38,24 +38,24 @@ namespace urchin
         initialize();
     }
 
-	Matrix4<float> LinesModel::retrieveModelMatrix() const
-	{
-		return {};
-	}
+    Matrix4<float> LinesModel::retrieveModelMatrix() const
+    {
+        return {};
+    }
 
-	std::vector<Point3<float>> LinesModel::retrieveVertexArray() const
-	{
-		return linesPoints;
-	}
+    std::vector<Point3<float>> LinesModel::retrieveVertexArray() const
+    {
+        return linesPoints;
+    }
 
-	void LinesModel::drawGeometry() const
-	{
-		GLfloat savedLineWidth;
-		glGetFloatv(GL_LINE_WIDTH, &savedLineWidth);
-		glLineWidth(linesSize);
+    void LinesModel::drawGeometry() const
+    {
+        GLfloat savedLineWidth;
+        glGetFloatv(GL_LINE_WIDTH, &savedLineWidth);
+        glLineWidth(linesSize);
 
         glDrawArrays(stripLines ? GL_LINE_STRIP : GL_LINES, 0, linesPoints.size());
 
-		glLineWidth(savedLineWidth);
-	}
+        glLineWidth(savedLineWidth);
+    }
 }

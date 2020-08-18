@@ -8,19 +8,19 @@
 namespace urchin
 {
 
-	template<class T> class SphereShape : public ConvexShape3D<T>
-	{
-		public:
-			explicit SphereShape(T);
+    template<class T> class SphereShape : public ConvexShape3D<T>
+    {
+        public:
+            explicit SphereShape(T);
 
-			T getRadius() const;
+            T getRadius() const;
 
-			ConvexShape3D<T> *clone() const override;
-			std::unique_ptr<ConvexObject3D<T>> toConvexObject(const Transform<T> &) const override;
+            ConvexShape3D<T> *clone() const override;
+            std::unique_ptr<ConvexObject3D<T>> toConvexObject(const Transform<T> &) const override;
 
-		private:
-			T radius;
-	};
+        private:
+            T radius;
+    };
 
 }
 

@@ -14,36 +14,36 @@
 namespace urchin
 {
 
-	class SoundManager
-	{
-		public:
-			SoundManager();
-			~SoundManager();
+    class SoundManager
+    {
+        public:
+            SoundManager();
+            ~SoundManager();
 
-			void addSound(Sound *, SoundTrigger *);
-			void removeSound(const Sound *);
-			void changeSoundTrigger(const Sound *, SoundTrigger *);
+            void addSound(Sound *, SoundTrigger *);
+            void removeSound(const Sound *);
+            void changeSoundTrigger(const Sound *, SoundTrigger *);
 
-			std::vector<const SoundTrigger *> getSoundTriggers() const;
-			SoundTrigger *retrieveSoundTriggerFor(const Sound *) const;
+            std::vector<const SoundTrigger *> getSoundTriggers() const;
+            SoundTrigger *retrieveSoundTriggerFor(const Sound *) const;
 
             void pause();
             void unpause();
 
-			void controlExecution();
+            void controlExecution();
 
-			void process(const Point3<float> &);
-			void process();
+            void process(const Point3<float> &);
+            void process();
 
-		private:
-			void deleteAudioController(AudioController *);
+        private:
+            void deleteAudioController(AudioController *);
 
-			std::vector<AudioController *> audioControllers;
+            std::vector<AudioController *> audioControllers;
 
-			//stream chunk updater thread
-			StreamUpdateWorker *streamUpdateWorker;
-			std::thread *streamUpdateWorkerThread;
-	};
+            //stream chunk updater thread
+            StreamUpdateWorker *streamUpdateWorker;
+            std::thread *streamUpdateWorkerThread;
+    };
 
 }
 

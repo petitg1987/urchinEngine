@@ -3,15 +3,15 @@
 
 namespace urchin
 {
-	class Observable;
+    class Observable;
 
-	class Observer
-	{
-		public:
-			virtual ~Observer() = default;
+    class Observer
+    {
+        public:
+            virtual ~Observer() = default;
 
-			virtual void notify(Observable *, int) = 0;
-	};
+            virtual void notify(Observable *, int) = 0;
+    };
 
 }
 

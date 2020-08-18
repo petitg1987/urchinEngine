@@ -14,64 +14,64 @@
 
 namespace urchin
 {
-	class SceneManager
-	{
-		public:
-			SceneManager();
-			virtual ~SceneManager();
+    class SceneManager
+    {
+        public:
+            SceneManager();
+            virtual ~SceneManager();
 
-			//scene properties
-			void onResize(unsigned int, unsigned int);
-			unsigned int getSceneWidth() const;
-			unsigned int getSceneHeight() const;
+            //scene properties
+            void onResize(unsigned int, unsigned int);
+            unsigned int getSceneWidth() const;
+            unsigned int getSceneHeight() const;
 
-			//Fps
-			float getFps() const;
-			unsigned int getFpsForDisplay();
-			float getDeltaTime() const;
+            //Fps
+            float getFps() const;
+            unsigned int getFpsForDisplay();
+            float getDeltaTime() const;
 
-			//renderer
-			Renderer3d *newRenderer3d(bool);
-			void enableRenderer3d(Renderer3d *);
-			void removeRenderer3d(Renderer3d *);
-			Renderer3d *getActiveRenderer3d() const;
+            //renderer
+            Renderer3d *newRenderer3d(bool);
+            void enableRenderer3d(Renderer3d *);
+            void removeRenderer3d(Renderer3d *);
+            Renderer3d *getActiveRenderer3d() const;
 
-			GUIRenderer *newGUIRenderer(bool);
-			void enableGUIRenderer(GUIRenderer *);
-			void removeGUIRenderer(GUIRenderer *);
-			GUIRenderer *getActiveGUIRenderer() const;
+            GUIRenderer *newGUIRenderer(bool);
+            void enableGUIRenderer(GUIRenderer *);
+            void removeGUIRenderer(GUIRenderer *);
+            GUIRenderer *getActiveGUIRenderer() const;
 
-			//texture manager
-			TextureManager *getTextureManager() const;
+            //texture manager
+            TextureManager *getTextureManager() const;
 
-			//events
-			bool onKeyDown(unsigned int);
-			bool onKeyUp(unsigned int);
-			bool onChar(unsigned int);
-			bool onMouseMove(int, int);
-			
-			//scene
-			void display();
+            //events
+            bool onKeyDown(unsigned int);
+            bool onKeyUp(unsigned int);
+            bool onChar(unsigned int);
+            bool onMouseMove(int, int);
 
-		private:
-			void initializeGl();
-			void computeFps();
-		
-			//scene properties
-			unsigned int sceneWidth, sceneHeight;
+            //scene
+            void display();
 
-			//renderer
-			std::vector<Renderer3d *> renderers3d;
-			std::vector<GUIRenderer *> guiRenderers;
-			Renderer *activeRenderers[NUM_RENDERER];
-		
-			//fps
-			std::chrono::high_resolution_clock::time_point previousTime;
-			unsigned int indexFps;
-			std::array<float, 3> previousFps;
-			float fps;
-			unsigned int fpsForDisplay;
-	};
+        private:
+            void initializeGl();
+            void computeFps();
+
+            //scene properties
+            unsigned int sceneWidth, sceneHeight;
+
+            //renderer
+            std::vector<Renderer3d *> renderers3d;
+            std::vector<GUIRenderer *> guiRenderers;
+            Renderer *activeRenderers[NUM_RENDERER];
+
+            //fps
+            std::chrono::high_resolution_clock::time_point previousTime;
+            unsigned int indexFps;
+            std::array<float, 3> previousFps;
+            float fps;
+            unsigned int fpsForDisplay;
+    };
 
 }
 

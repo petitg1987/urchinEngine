@@ -11,35 +11,35 @@
 namespace urchin
 {
 
-	class CollisionAlgorithmSelector
-	{
-		public:
-			CollisionAlgorithmSelector();
-			~CollisionAlgorithmSelector();
+    class CollisionAlgorithmSelector
+    {
+        public:
+            CollisionAlgorithmSelector();
+            ~CollisionAlgorithmSelector();
 
-			std::shared_ptr<CollisionAlgorithm> createCollisionAlgorithm(AbstractWorkBody *, const CollisionShape3D *, AbstractWorkBody *, const CollisionShape3D *) const;
+            std::shared_ptr<CollisionAlgorithm> createCollisionAlgorithm(AbstractWorkBody *, const CollisionShape3D *, AbstractWorkBody *, const CollisionShape3D *) const;
 
-		private:
-			void initializeCollisionAlgorithmBuilderMatrix();
-			void initializeConcaveAlgorithm();
-			void initializeCompoundAlgorithm();
-			void deleteCollisionAlgorithmBuilderMatrix();
+        private:
+            void initializeCollisionAlgorithmBuilderMatrix();
+            void initializeConcaveAlgorithm();
+            void initializeCompoundAlgorithm();
+            void deleteCollisionAlgorithmBuilderMatrix();
 
-			void initializeAlgorithmPool();
+            void initializeAlgorithmPool();
 
-			class AlgorithmDeleter
-			{
-				public:
-					explicit AlgorithmDeleter(FixedSizePool<CollisionAlgorithm> *);
-					void operator()(CollisionAlgorithm *);
+            class AlgorithmDeleter
+            {
+                public:
+                    explicit AlgorithmDeleter(FixedSizePool<CollisionAlgorithm> *);
+                    void operator()(CollisionAlgorithm *);
 
-				private:
-					FixedSizePool<CollisionAlgorithm> *const algorithmPool;
-			};
+                private:
+                    FixedSizePool<CollisionAlgorithm> *const algorithmPool;
+            };
 
-			SyncFixedSizePool<CollisionAlgorithm> *algorithmPool;
-			CollisionAlgorithmBuilder *collisionAlgorithmBuilderMatrix[CollisionShape3D::SHAPE_MAX][CollisionShape3D::SHAPE_MAX];
-	};
+            SyncFixedSizePool<CollisionAlgorithm> *algorithmPool;
+            CollisionAlgorithmBuilder *collisionAlgorithmBuilderMatrix[CollisionShape3D::SHAPE_MAX][CollisionShape3D::SHAPE_MAX];
+    };
 
 }
 

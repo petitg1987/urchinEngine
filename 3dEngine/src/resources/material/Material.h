@@ -9,34 +9,34 @@
 namespace urchin
 {
 
-	class Material : public Resource
-	{
-		public:
-			Material(Image *, Image *, float);
-			~Material() override;
+    class Material : public Resource
+    {
+        public:
+            Material(Image *, Image *, float);
+            ~Material() override;
 
-			bool hasDiffuseTexture() const;
-			const Image *getDiffuseTexture() const;
+            bool hasDiffuseTexture() const;
+            const Image *getDiffuseTexture() const;
 
-			bool hasNormalTexture() const;
-			const Image *getNormalTexture() const;
+            bool hasNormalTexture() const;
+            const Image *getNormalTexture() const;
 
-			float getAmbientFactor() const;
+            float getAmbientFactor() const;
 
-			std::vector<const Image *> getTextures() const;
+            std::vector<const Image *> getTextures() const;
 
-		private:
-			void buildDefaultTextures();
+        private:
+            void buildDefaultTextures();
 
-			bool bHasDiffuseTexture;
-			Image *diffuseTexture;
+            bool bHasDiffuseTexture;
+            Image *diffuseTexture;
 
-			bool bHasNormalTexture;
-			Image *normalTexture;
+            bool bHasNormalTexture;
+            Image *normalTexture;
 
-			float ambientFactor;
-	};
+            float ambientFactor;
+    };
 
 }
-	
+
 #endif

@@ -6,17 +6,17 @@
 
 class GJKConvexHullTest : public CppUnit::TestFixture
 {
-	public:
-		static CppUnit::Test *suite();
+    public:
+        static CppUnit::Test *suite();
 
-		void identicalBox();
-		void separateBox();
-		void cornerInsideBox();
+        void identicalBox();
+        void separateBox();
+        void cornerInsideBox();
 
-		void faceInsideTrapeze();
+        void faceInsideTrapeze();
 
-		void separateHexagon();
-		void cornerInsideHexagon();
+        void separateHexagon();
+        void cornerInsideHexagon();
 };
 
 #endif

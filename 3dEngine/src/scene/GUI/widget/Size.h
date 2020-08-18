@@ -4,27 +4,27 @@
 namespace urchin
 {
 
-	class Size
-	{
-		public:
-			enum SizeType{
-				PIXEL,
-				PERCENTAGE
-			};
+    class Size
+    {
+        public:
+            enum SizeType{
+                PIXEL,
+                PERCENTAGE
+            };
 
-			Size(float, SizeType, float, SizeType);
-			Size(float, float, SizeType);
+            Size(float, SizeType, float, SizeType);
+            Size(float, float, SizeType);
 
-			float getWidth() const;
-			SizeType getWidthSizeType() const;
+            float getWidth() const;
+            SizeType getWidthSizeType() const;
 
-			float getHeight() const;
-			SizeType getHeightSizeType() const;
+            float getHeight() const;
+            SizeType getHeightSizeType() const;
 
-		private:
-			float width, height;
-			SizeType widthSizeType, heightSizeType;
-	};
+        private:
+            float width, height;
+            SizeType widthSizeType, heightSizeType;
+    };
 
 }
 

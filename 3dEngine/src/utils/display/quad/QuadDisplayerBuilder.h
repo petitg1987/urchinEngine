@@ -8,46 +8,46 @@
 namespace urchin
 {
 
-	class QuadDisplayerBuilder
-	{
-		public:
-			QuadDisplayerBuilder();
+    class QuadDisplayerBuilder
+    {
+        public:
+            QuadDisplayerBuilder();
 
-			QuadDisplayerBuilder *numberOfQuad(unsigned int);
-			unsigned int getNumberOfQuad() const;
+            QuadDisplayerBuilder *numberOfQuad(unsigned int);
+            unsigned int getNumberOfQuad() const;
 
-			QuadDisplayerBuilder *dimension(unsigned int);
-			unsigned int getDimension() const;
+            QuadDisplayerBuilder *dimension(unsigned int);
+            unsigned int getDimension() const;
 
-			QuadDisplayerBuilder *bufferUsage(unsigned int);
-			unsigned int getBufferUsage() const;
+            QuadDisplayerBuilder *bufferUsage(unsigned int);
+            unsigned int getBufferUsage() const;
 
-			QuadDisplayerBuilder *vertexData(unsigned int, void *, bool);
-			unsigned int getVertexDataType() const;
-			void *getVertexCoord() const;
-			bool isDeleteVertexCoord() const;
+            QuadDisplayerBuilder *vertexData(unsigned int, void *, bool);
+            unsigned int getVertexDataType() const;
+            void *getVertexCoord() const;
+            bool isDeleteVertexCoord() const;
 
-			QuadDisplayerBuilder *textureData(unsigned int, void *, bool);
-			unsigned int getTextureDataType() const;
-			void *getTextureCoord() const;
-			bool isDeleteTextureCoord() const;
+            QuadDisplayerBuilder *textureData(unsigned int, void *, bool);
+            unsigned int getTextureDataType() const;
+            void *getTextureCoord() const;
+            bool isDeleteTextureCoord() const;
 
-			std::shared_ptr<QuadDisplayer> build();
+            std::shared_ptr<QuadDisplayer> build();
 
-		private:
-			unsigned int pNumberOfQuad;
-			unsigned int pDimension;
+        private:
+            unsigned int pNumberOfQuad;
+            unsigned int pDimension;
 
-			unsigned int pBufferUsage;
+            unsigned int pBufferUsage;
 
-			unsigned int vertexDataType;
-			void *vertexCoord;
-			bool deleteVertexCoord;
+            unsigned int vertexDataType;
+            void *vertexCoord;
+            bool deleteVertexCoord;
 
-			unsigned int textureDataType;
-			void *textureCoord;
-			bool deleteTextureCoord;
-	};
+            unsigned int textureDataType;
+            void *textureCoord;
+            bool deleteTextureCoord;
+    };
 
 }
 

@@ -6,21 +6,21 @@
 
 class MonotonePolygonTest : public CppUnit::TestFixture
 {
-	public:
-		static CppUnit::Test *suite();
+    public:
+        static CppUnit::Test *suite();
 
-		void singleTriangle();
+        void singleTriangle();
 
-		void oneSplitVertex();
-		void twoSplitVertex();
-		void oneMergeVertex();
-		void twoRegularVertex();
-		void splitAndMergeVertex();
+        void oneSplitVertex();
+        void twoSplitVertex();
+        void oneMergeVertex();
+        void twoRegularVertex();
+        void splitAndMergeVertex();
 
-		void polygonOneHole();
-		void polygonTwoHoles1();
-		void polygonTwoHoles2();
-		void polygonTwoHoles3();
+        void polygonOneHole();
+        void polygonTwoHoles1();
+        void polygonTwoHoles2();
+        void polygonTwoHoles3();
 };
 
 #endif

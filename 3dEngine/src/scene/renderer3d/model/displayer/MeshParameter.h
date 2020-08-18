@@ -6,25 +6,25 @@
 namespace urchin
 {
 
-	class MeshParameter
-	{
-		public:
-			MeshParameter();
+    class MeshParameter
+    {
+        public:
+            MeshParameter();
 
-			void setDiffuseTextureUnit(int);
-			int getDiffuseTextureUnit() const;
+            void setDiffuseTextureUnit(int);
+            int getDiffuseTextureUnit() const;
 
-			void setNormalTextureUnit(int);
-			int getNormalTextureUnit() const;
+            void setNormalTextureUnit(int);
+            int getNormalTextureUnit() const;
 
-			void setAmbientFactorLoc(int);
-			int getAmbientFactorLoc() const;
+            void setAmbientFactorLoc(int);
+            int getAmbientFactorLoc() const;
 
-		private:
-			int diffuseTextureUnit;
-			int normalTextureUnit;
-			int ambientFactorLoc;
-	};
+        private:
+            int diffuseTextureUnit;
+            int normalTextureUnit;
+            int ambientFactorLoc;
+    };
 
 }
 

@@ -11,33 +11,33 @@
 namespace urchin
 {
 
-	/**
-	* Constraint data container
-	*/
-	class ConstraintSolving
-	{
-		public:
-			ConstraintSolving(WorkRigidBody *, WorkRigidBody *, ManifoldContactPoint &);
+    /**
+    * Constraint data container
+    */
+    class ConstraintSolving
+    {
+        public:
+            ConstraintSolving(WorkRigidBody *, WorkRigidBody *, ManifoldContactPoint &);
 
-			WorkRigidBody *getBody1();
-			WorkRigidBody *getBody2();
+            WorkRigidBody *getBody1();
+            WorkRigidBody *getBody2();
 
-			const CommonSolvingData &getCommonData();
-			void setCommonData(const CommonSolvingData &);
+            const CommonSolvingData &getCommonData();
+            void setCommonData(const CommonSolvingData &);
 
-			const ImpulseSolvingData &getImpulseData();
-			void setImpulseData(const ImpulseSolvingData &);
+            const ImpulseSolvingData &getImpulseData();
+            void setImpulseData(const ImpulseSolvingData &);
 
-			AccumulatedSolvingData &getAccumulatedData();
+            AccumulatedSolvingData &getAccumulatedData();
 
-		private:
-			WorkRigidBody *body1;
-			WorkRigidBody *body2;
-			ManifoldContactPoint &manifoldContactPoint;
+        private:
+            WorkRigidBody *body1;
+            WorkRigidBody *body2;
+            ManifoldContactPoint &manifoldContactPoint;
 
-			CommonSolvingData commonData;
-			ImpulseSolvingData impulseData;
-	};
+            CommonSolvingData commonData;
+            ImpulseSolvingData impulseData;
+    };
 
 }
 

@@ -14,61 +14,61 @@
 namespace urchin
 {
 
-	class Model : public Octreeable<Model>
-	{
-		public:
-			explicit Model(const std::string &);
-			Model(const Model &);
-			~Model() override;
-		
-			void loadAnimation(const std::string &, const std::string &);
-			void animate(const std::string &);
-			void stopAnimation(bool);
-			bool isAnimate() const;
-		
-			const ConstMeshes *getMeshes() const;
-			std::map<std::string, const ConstAnimation *> getAnimations() const;
+    class Model : public Octreeable<Model>
+    {
+        public:
+            explicit Model(const std::string &);
+            Model(const Model &);
+            ~Model() override;
 
-			const AABBox<float> &getAABBox() const override;
-			const std::vector<AABBox<float>> &getSplitAABBoxes() const;
-			const AABBox<float> &getLocalAABBox() const;
-			
-			void setPosition(const Point3<float> &);
-			void setOrientation(const Quaternion<float> &);
-			void setScale(float);
-			void setTransform(const Transform<float> &);
-			const Transform<float> &getTransform() const override;
+            void loadAnimation(const std::string &, const std::string &);
+            void animate(const std::string &);
+            void stopAnimation(bool);
+            bool isAnimate() const;
 
-			void setProduceShadow(bool);
-			bool isProduceShadow() const;
+            const ConstMeshes *getMeshes() const;
+            std::map<std::string, const ConstAnimation *> getAnimations() const;
 
-			void updateAnimation(float);
-			void display(const MeshParameter &) const;
+            const AABBox<float> &getAABBox() const override;
+            const std::vector<AABBox<float>> &getSplitAABBoxes() const;
+            const AABBox<float> &getLocalAABBox() const;
 
-			void drawBBox(const Matrix4<float> &, const Matrix4<float> &) const;
-			void drawBaseBones(const Matrix4<float> &, const Matrix4<float> &) const;
+            void setPosition(const Point3<float> &);
+            void setOrientation(const Quaternion<float> &);
+            void setScale(float);
+            void setTransform(const Transform<float> &);
+            const Transform<float> &getTransform() const override;
 
-		private:
-			void initialize(const std::string &);
-			void onMoving(const Transform<float> &);
+            void setProduceShadow(bool);
+            bool isProduceShadow() const;
 
-			static AABBox<float> defaultModelLocalAABBox;
+            void updateAnimation(float);
+            void display(const MeshParameter &) const;
+
+            void drawBBox(const Matrix4<float> &, const Matrix4<float> &) const;
+            void drawBaseBones(const Matrix4<float> &, const Matrix4<float> &) const;
+
+        private:
+            void initialize(const std::string &);
+            void onMoving(const Transform<float> &);
+
+            static AABBox<float> defaultModelLocalAABBox;
             std::vector<AABBox<float>> defaultModelAABBoxes;
 
-			//meshes
-			Meshes *meshes;
+            //meshes
+            Meshes *meshes;
 
             //animations
-			std::map<std::string, Animation *> animations;
-			Animation *currAnimation;
-			bool stopAnimationAtLastFrame;
-		
-			//transform
-			Transform<float> transform;
+            std::map<std::string, Animation *> animations;
+            Animation *currAnimation;
+            bool stopAnimationAtLastFrame;
 
-			//properties
-			bool bIsProduceShadow;
-	};
+            //transform
+            Transform<float> transform;
+
+            //properties
+            bool bIsProduceShadow;
+    };
 
 }
 

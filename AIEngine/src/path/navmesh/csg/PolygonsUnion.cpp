@@ -5,12 +5,12 @@
 namespace urchin
 {
 
-	/**
-  	 * Perform an union of polygons.
-  	 * When polygons cannot be put together because there is no contact: there are returned apart.
-  	 */
+    /**
+       * Perform an union of polygons.
+       * When polygons cannot be put together because there is no contact: there are returned apart.
+       */
     template<class T> std::vector<CSGPolygon<T>> &PolygonsUnion<T>::unionPolygons(const std::vector<CSGPolygon<T>> &polygons) const
-	{
+    {
         mergedPolygons.clear();
 
         allPolygonPaths.clear();
@@ -50,7 +50,7 @@ namespace urchin
         }
 
         return mergedPolygons;
-	}
+    }
 
     template<class T> const std::vector<CSGPolygonPath> &PolygonsUnion<T>::unionTwoPolygonPaths(const CSGPolygonPath &polygon1, const CSGPolygonPath &polygon2) const
     {
@@ -105,5 +105,5 @@ namespace urchin
     //explicit template
     template class PolygonsUnion<float>;
 
-	template class PolygonsUnion<long long>;
+    template class PolygonsUnion<long long>;
 }

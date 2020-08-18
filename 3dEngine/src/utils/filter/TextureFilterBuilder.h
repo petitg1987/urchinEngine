@@ -14,50 +14,50 @@
 namespace urchin
 {
 
-	template<typename T> class TextureFilterBuilder
-	{
-		public:
-			TextureFilterBuilder();
-			virtual ~TextureFilterBuilder();
+    template<typename T> class TextureFilterBuilder
+    {
+        public:
+            TextureFilterBuilder();
+            virtual ~TextureFilterBuilder();
 
-			T *textureSize(unsigned int, unsigned int);
-			unsigned int getTextureWidth() const;
-			unsigned int getTextureHeight() const;
+            T *textureSize(unsigned int, unsigned int);
+            unsigned int getTextureWidth() const;
+            unsigned int getTextureHeight() const;
 
-			T *textureType(unsigned int);
-			unsigned int getTextureType() const;
+            T *textureType(unsigned int);
+            unsigned int getTextureType() const;
 
-			T *textureAccessFilter(unsigned int);
-			unsigned int getTextureAccessFilter() const;
+            T *textureAccessFilter(unsigned int);
+            unsigned int getTextureAccessFilter() const;
 
-			T *textureAnisotropy(float);
-			float getTextureAnisotropy() const;
+            T *textureAnisotropy(float);
+            float getTextureAnisotropy() const;
 
-			T *textureNumberLayer(unsigned int);
-			unsigned int getTextureNumberLayer() const;
+            T *textureNumberLayer(unsigned int);
+            unsigned int getTextureNumberLayer() const;
 
-			T *textureInternalFormat(int);
-			int getTextureInternalFormat() const;
+            T *textureInternalFormat(int);
+            int getTextureInternalFormat() const;
 
-			T *textureFormat(unsigned int);
-			unsigned int getTextureFormat() const;
+            T *textureFormat(unsigned int);
+            unsigned int getTextureFormat() const;
 
-			virtual std::shared_ptr<TextureFilter> build() = 0;
+            virtual std::shared_ptr<TextureFilter> build() = 0;
 
-		private:
-			T* _this();
+        private:
+            T* _this();
 
-			unsigned int textureWidth, textureHeight;
+            unsigned int textureWidth, textureHeight;
 
-			unsigned int pTextureType;
-			unsigned int pTextureAccessFilter;
-			float pTextureAnisotropy;
-			unsigned int pTextureNumberLayer;
-			int pTextureInternalFormat;
-			unsigned int pTextureFormat;
-	};
+            unsigned int pTextureType;
+            unsigned int pTextureAccessFilter;
+            float pTextureAnisotropy;
+            unsigned int pTextureNumberLayer;
+            int pTextureInternalFormat;
+            unsigned int pTextureFormat;
+    };
 
-	#include "TextureFilterBuilder.inl"
+    #include "TextureFilterBuilder.inl"
 
 }
 

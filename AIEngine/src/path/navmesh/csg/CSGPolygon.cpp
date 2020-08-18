@@ -3,125 +3,125 @@
 namespace urchin
 {
 
-	template<class T> CSGPolygon<T>::CSGPolygon(std::string name, const std::vector<Point2<T>> &cwPoints) :
-			name(std::move(name)),
-			cwPoints(cwPoints)
-	{
-		#ifndef NDEBUG
-			assert(isCwPoints());
-        #endif
-	}
-
-	template<class T> CSGPolygon<T>::CSGPolygon(std::string name, std::vector<Point2<T>> &&cwPoints) :
-			name(std::move(name)),
-			cwPoints(std::move(cwPoints))
-	{
+    template<class T> CSGPolygon<T>::CSGPolygon(std::string name, const std::vector<Point2<T>> &cwPoints) :
+            name(std::move(name)),
+            cwPoints(cwPoints)
+    {
         #ifndef NDEBUG
             assert(isCwPoints());
         #endif
-	}
+    }
 
-	template<class T> CSGPolygon<T>::CSGPolygon(const CSGPolygon &polygon) :
-		name(polygon.name),
-		cwPoints(polygon.cwPoints)
-	{
+    template<class T> CSGPolygon<T>::CSGPolygon(std::string name, std::vector<Point2<T>> &&cwPoints) :
+            name(std::move(name)),
+            cwPoints(std::move(cwPoints))
+    {
+        #ifndef NDEBUG
+            assert(isCwPoints());
+        #endif
+    }
 
-	}
+    template<class T> CSGPolygon<T>::CSGPolygon(const CSGPolygon &polygon) :
+        name(polygon.name),
+        cwPoints(polygon.cwPoints)
+    {
 
-	template<class T> CSGPolygon<T>::CSGPolygon(CSGPolygon &&polygon) noexcept :
-		name(std::move(polygon.name)),
-		cwPoints(std::move(polygon.cwPoints))
-	{
+    }
 
-	}
+    template<class T> CSGPolygon<T>::CSGPolygon(CSGPolygon &&polygon) noexcept :
+        name(std::move(polygon.name)),
+        cwPoints(std::move(polygon.cwPoints))
+    {
 
-	template<class T> CSGPolygon<T>& CSGPolygon<T>::operator=(CSGPolygon<T> &&polygon) noexcept
-	{
-		this->name = std::move(polygon.name);
-		this->cwPoints = std::move(polygon.cwPoints);
-		return *this;
-	}
+    }
 
-	template<class T> const std::string &CSGPolygon<T>::getName() const
-	{
-		return name;
-	}
+    template<class T> CSGPolygon<T>& CSGPolygon<T>::operator=(CSGPolygon<T> &&polygon) noexcept
+    {
+        this->name = std::move(polygon.name);
+        this->cwPoints = std::move(polygon.cwPoints);
+        return *this;
+    }
 
-	template<class T> const std::vector<Point2<T>> &CSGPolygon<T>::getCwPoints() const
-	{
-		return cwPoints;
-	}
+    template<class T> const std::string &CSGPolygon<T>::getName() const
+    {
+        return name;
+    }
 
-	template<class T> T CSGPolygon<T>::computeArea() const
-	{
-		unsigned int n = cwPoints.size();
-		cwPoints.reserve(n+2);
-		cwPoints.push_back(cwPoints[0]);
-		cwPoints.push_back(cwPoints[1]);
+    template<class T> const std::vector<Point2<T>> &CSGPolygon<T>::getCwPoints() const
+    {
+        return cwPoints;
+    }
 
-		auto area = (T)0;
-	    for (unsigned int i=1; i<=n; i++)
-	    {
-	        area -= cwPoints[i].X * (cwPoints[i+1].Y - cwPoints[i-1].Y);
-	    }
+    template<class T> T CSGPolygon<T>::computeArea() const
+    {
+        unsigned int n = cwPoints.size();
+        cwPoints.reserve(n+2);
+        cwPoints.push_back(cwPoints[0]);
+        cwPoints.push_back(cwPoints[1]);
 
-		cwPoints.pop_back();
-	    cwPoints.pop_back();
+        auto area = (T)0;
+        for (unsigned int i=1; i<=n; i++)
+        {
+            area -= cwPoints[i].X * (cwPoints[i+1].Y - cwPoints[i-1].Y);
+        }
 
-	    return area / (T)2;
-	}
+        cwPoints.pop_back();
+        cwPoints.pop_back();
 
-	template<class T> bool CSGPolygon<T>::pointInsidePolygon(const Point2<T> &point) const
-	{
-		return pointInsidePolygon(point, false);
-	}
+        return area / (T)2;
+    }
 
-	template<class T> bool CSGPolygon<T>::pointInsideOrOnPolygon(const Point2<T> &point) const
-	{
-		return pointInsidePolygon(point, true);
-	}
+    template<class T> bool CSGPolygon<T>::pointInsidePolygon(const Point2<T> &point) const
+    {
+        return pointInsidePolygon(point, false);
+    }
 
-	template<class T> bool CSGPolygon<T>::pointInsidePolygon(const Point2<T> &point, bool onEdgeIsInside) const
-	{//see http://web.archive.org/web/20120323102807/http://local.wasp.uwa.edu.au/~pbourke/geometry/insidepoly/
-		bool inside = false;
+    template<class T> bool CSGPolygon<T>::pointInsideOrOnPolygon(const Point2<T> &point) const
+    {
+        return pointInsidePolygon(point, true);
+    }
 
-		for(std::size_t i=0, previousI=cwPoints.size()-1; i<cwPoints.size(); previousI=i++)
-		{
-			Point2<T> point1 = cwPoints[previousI];
-			Point2<T> point2 = cwPoints[i];
+    template<class T> bool CSGPolygon<T>::pointInsidePolygon(const Point2<T> &point, bool onEdgeIsInside) const
+    {//see http://web.archive.org/web/20120323102807/http://local.wasp.uwa.edu.au/~pbourke/geometry/insidepoly/
+        bool inside = false;
 
-			if (((point1.Y<=point.Y && point.Y<point2.Y) || (point2.Y<=point.Y && point.Y<point1.Y))
-				//same but without division: ((point.X-point1.X) < (point2.X-point1.X) * (point.Y-point1.Y) / (point2.Y-point1.Y))
-				&& ((point.X-point1.X)*std::abs(point2.Y-point1.Y) < (point2.X-point1.X) * (point.Y-point1.Y) * MathAlgorithm::sign<T>(point2.Y-point1.Y)))
-			{
-				inside = !inside;
-			}else if(onEdgeIsInside && LineSegment2D<T>(point1, point2).onSegment(point))
-			{
-				return true;
-			}
-		}
+        for(std::size_t i=0, previousI=cwPoints.size()-1; i<cwPoints.size(); previousI=i++)
+        {
+            Point2<T> point1 = cwPoints[previousI];
+            Point2<T> point2 = cwPoints[i];
 
-		return inside;
-	}
+            if (((point1.Y<=point.Y && point.Y<point2.Y) || (point2.Y<=point.Y && point.Y<point1.Y))
+                //same but without division: ((point.X-point1.X) < (point2.X-point1.X) * (point.Y-point1.Y) / (point2.Y-point1.Y))
+                && ((point.X-point1.X)*std::abs(point2.Y-point1.Y) < (point2.X-point1.X) * (point.Y-point1.Y) * MathAlgorithm::sign<T>(point2.Y-point1.Y)))
+            {
+                inside = !inside;
+            }else if(onEdgeIsInside && LineSegment2D<T>(point1, point2).onSegment(point))
+            {
+                return true;
+            }
+        }
 
-	template<class T> void CSGPolygon<T>::expand(T distance)
-	{
+        return inside;
+    }
+
+    template<class T> void CSGPolygon<T>::expand(T distance)
+    {
         std::unique_ptr<CSGPolygon<T>> originalPolygon(nullptr);
         if(Check::instance()->additionalChecksEnable())
         {
             originalPolygon = std::make_unique<CSGPolygon<T>>(*this);
         }
 
-		ResizePolygon2DService<T>::instance()->resizePolygon(cwPoints, -distance);
+        ResizePolygon2DService<T>::instance()->resizePolygon(cwPoints, -distance);
 
         if(Check::instance()->additionalChecksEnable() && !isCwPoints())
         {
             logInputData("Impossible to expand polygon (distance: " + std::to_string(distance) + ")", Logger::ERROR, *originalPolygon);
         }
-	}
+    }
 
-	template<class T> void CSGPolygon<T>::simplify(T polygonMinDotProductThreshold, T polygonMergePointsDistanceThreshold)
-	{
+    template<class T> void CSGPolygon<T>::simplify(T polygonMinDotProductThreshold, T polygonMergePointsDistanceThreshold)
+    {
         std::unique_ptr<CSGPolygon<T>> originalPolygon(nullptr);
         if(Check::instance()->additionalChecksEnable())
         {
@@ -195,7 +195,7 @@ namespace urchin
         {
             logInputData("Impossible to simplify polygon (dot: " + std::to_string(polygonMinDotProductThreshold) + ", distance: " + std::to_string(polygonMergePointsDistanceThreshold) + ")", Logger::ERROR, *originalPolygon);
         }
-	}
+    }
 
     template<class T> bool CSGPolygon<T>::isCwPoints() const
     {
@@ -278,21 +278,21 @@ namespace urchin
         Logger::logger().log(logLevel, logStream.str());
     }
 
-	template<class T> std::ostream& operator <<(std::ostream &stream, const CSGPolygon<T> &polygon)
-	{
-		stream << "Name: " << polygon.getName() << std::endl;
-		stream << "Points (CW): " << std::endl;
-		for(const auto &point : polygon.getCwPoints())
-		{
-			stream << "\t" << point << std::endl;
-		}
-		return stream;
-	}
+    template<class T> std::ostream& operator <<(std::ostream &stream, const CSGPolygon<T> &polygon)
+    {
+        stream << "Name: " << polygon.getName() << std::endl;
+        stream << "Points (CW): " << std::endl;
+        for(const auto &point : polygon.getCwPoints())
+        {
+            stream << "\t" << point << std::endl;
+        }
+        return stream;
+    }
 
-	//explicit template
-	template class CSGPolygon<float>;
-	template std::ostream& operator <<<float>(std::ostream &, const CSGPolygon<float> &);
+    //explicit template
+    template class CSGPolygon<float>;
+    template std::ostream& operator <<<float>(std::ostream &, const CSGPolygon<float> &);
 
-	template class CSGPolygon<long long>;
-	template std::ostream& operator <<<long long>(std::ostream &, const CSGPolygon<long long> &);
+    template class CSGPolygon<long long>;
+    template std::ostream& operator <<<long long>(std::ostream &, const CSGPolygon<long long> &);
 }

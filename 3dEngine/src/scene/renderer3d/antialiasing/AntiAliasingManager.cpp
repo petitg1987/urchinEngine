@@ -11,69 +11,69 @@
 namespace urchin
 {
 
-	AntiAliasingManager::AntiAliasingManager() :
-		quality(DEFAULT_AA_QUALITY),
-		sceneWidth(0),
-		sceneHeight(0),
-		fxaaShader(0),
-		texLoc(0),
-		invSceneSizeLoc(0)
-	{
-		loadFxaaShader();
+    AntiAliasingManager::AntiAliasingManager() :
+        quality(DEFAULT_AA_QUALITY),
+        sceneWidth(0),
+        sceneHeight(0),
+        fxaaShader(0),
+        texLoc(0),
+        invSceneSizeLoc(0)
+    {
+        loadFxaaShader();
 
-		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()->build();
-	}
-	
-	AntiAliasingManager::~AntiAliasingManager()
-	{
-		ShaderManager::instance()->removeProgram(fxaaShader);
-	}
+        quadDisplayer = std::make_unique<QuadDisplayerBuilder>()->build();
+    }
 
-	void AntiAliasingManager::loadFxaaShader()
-	{
-		std::map<std::string, std::string> fxaaTokens;
-		fxaaTokens["FXAA_QUALITY"] = std::to_string(static_cast<int>(quality));
+    AntiAliasingManager::~AntiAliasingManager()
+    {
+        ShaderManager::instance()->removeProgram(fxaaShader);
+    }
 
-		ShaderManager::instance()->removeProgram(fxaaShader);
-		fxaaShader = ShaderManager::instance()->createProgram("fxaa.vert", "", "fxaa.frag", fxaaTokens);
+    void AntiAliasingManager::loadFxaaShader()
+    {
+        std::map<std::string, std::string> fxaaTokens;
+        fxaaTokens["FXAA_QUALITY"] = std::to_string(static_cast<int>(quality));
 
-		ShaderManager::instance()->bind(fxaaShader);
-		texLoc = glGetUniformLocation(fxaaShader, "tex");
-		invSceneSizeLoc = glGetUniformLocation(fxaaShader, "invSceneSize");
-		glUniform2f(invSceneSizeLoc, 1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight);
-	}
+        ShaderManager::instance()->removeProgram(fxaaShader);
+        fxaaShader = ShaderManager::instance()->createProgram("fxaa.vert", "", "fxaa.frag", fxaaTokens);
 
-	void AntiAliasingManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight)
-	{
-		ShaderManager::instance()->bind(fxaaShader);
+        ShaderManager::instance()->bind(fxaaShader);
+        texLoc = glGetUniformLocation(fxaaShader, "tex");
+        invSceneSizeLoc = glGetUniformLocation(fxaaShader, "invSceneSize");
+        glUniform2f(invSceneSizeLoc, 1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight);
+    }
 
-		this->sceneWidth = sceneWidth;
-		this->sceneHeight = sceneHeight;
+    void AntiAliasingManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight)
+    {
+        ShaderManager::instance()->bind(fxaaShader);
 
-		glUniform2f(invSceneSizeLoc, 1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight);
-	}
+        this->sceneWidth = sceneWidth;
+        this->sceneHeight = sceneHeight;
 
-	void AntiAliasingManager::setQuality(Quality quality)
-	{
-		this->quality = quality;
+        glUniform2f(invSceneSizeLoc, 1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight);
+    }
 
-		loadFxaaShader();
-	}
+    void AntiAliasingManager::setQuality(Quality quality)
+    {
+        this->quality = quality;
 
-	void AntiAliasingManager::applyOn(unsigned int textureId)
-	{
-		ShaderManager::instance()->bind(fxaaShader);
+        loadFxaaShader();
+    }
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, textureId);
+    void AntiAliasingManager::applyOn(unsigned int textureId)
+    {
+        ShaderManager::instance()->bind(fxaaShader);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glUniform1i(texLoc, 0);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureId);
 
-		quadDisplayer->display();
-	}
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glUniform1i(texLoc, 0);
+
+        quadDisplayer->display();
+    }
 
 }

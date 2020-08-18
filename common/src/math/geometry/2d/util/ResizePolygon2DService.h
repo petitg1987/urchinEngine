@@ -9,17 +9,17 @@
 namespace urchin
 {
 
-	template<class T> class ResizePolygon2DService : public Singleton<ResizePolygon2DService<T>>
-	{
-		public:
-			friend class Singleton<ResizePolygon2DService<T>>;
+    template<class T> class ResizePolygon2DService : public Singleton<ResizePolygon2DService<T>>
+    {
+        public:
+            friend class Singleton<ResizePolygon2DService<T>>;
 
-			void resizePolygon(std::vector<Point2<T>> &, T) const;
+            void resizePolygon(std::vector<Point2<T>> &, T) const;
 
-		private:
-			ResizePolygon2DService();
-			virtual ~ResizePolygon2DService() = default;
-	};
+        private:
+            ResizePolygon2DService();
+            virtual ~ResizePolygon2DService() = default;
+    };
 
 }
 

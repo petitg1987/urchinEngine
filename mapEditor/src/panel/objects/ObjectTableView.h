@@ -13,32 +13,32 @@ Q_DECLARE_METATYPE(const urchin::SceneObject *)
 namespace urchin
 {
 
-	class ObjectTableView : public QTableView, public Observable
-	{
-		Q_OBJECT
+    class ObjectTableView : public QTableView, public Observable
+    {
+        Q_OBJECT
 
-		public:
-			explicit ObjectTableView(QWidget *parent = nullptr);
+        public:
+            explicit ObjectTableView(QWidget *parent = nullptr);
 
-			enum NotificationType
-			{
-				OBJECT_SELECTION_CHANGED
-			};
+            enum NotificationType
+            {
+                OBJECT_SELECTION_CHANGED
+            };
 
-			bool hasSceneObjectSelected() const;
-			const SceneObject *getSelectedSceneObject() const;
+            bool hasSceneObjectSelected() const;
+            const SceneObject *getSelectedSceneObject() const;
 
-			int getSceneObjectRow(const SceneObject *) const;
+            int getSceneObjectRow(const SceneObject *) const;
 
-			int addObject(const SceneObject *);
-			bool removeSelectedObject();
-			void removeAllObjects();
+            int addObject(const SceneObject *);
+            bool removeSelectedObject();
+            void removeAllObjects();
 
-		private:
-			QStandardItemModel *objectsListModel;
+        private:
+            QStandardItemModel *objectsListModel;
 
-			void selectionChanged(const QItemSelection &, const QItemSelection &) override;
-	};
+            void selectionChanged(const QItemSelection &, const QItemSelection &) override;
+    };
 
 }
 

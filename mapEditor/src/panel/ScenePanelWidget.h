@@ -18,56 +18,56 @@
 namespace urchin
 {
 
-	class ScenePanelWidget : public QTabWidget, public Observable
-	{
-		Q_OBJECT
+    class ScenePanelWidget : public QTabWidget, public Observable
+    {
+        Q_OBJECT
 
-		public:
-			explicit ScenePanelWidget(QWidget *parent);
+        public:
+            explicit ScenePanelWidget(QWidget *parent);
 
-			enum NotificationType
-			{
-				TAB_SELECTED
-			};
+            enum NotificationType
+            {
+                TAB_SELECTED
+            };
 
-			enum TabName
-			{
-				OBJECTS,
-				LIGHTS,
-				TERRAINS,
-				WATERS,
-				SKY,
-				SOUNDS,
-				AI
-			};
+            enum TabName
+            {
+                OBJECTS,
+                LIGHTS,
+                TERRAINS,
+                WATERS,
+                SKY,
+                SOUNDS,
+                AI
+            };
 
-			ObjectPanelWidget *getObjectPanelWidget() const;
-			LightPanelWidget *getLightPanelWidget() const;
-			TerrainPanelWidget *getTerrainPanelWidget() const;
-			WaterPanelWidget *getWaterPanelWidget() const;
+            ObjectPanelWidget *getObjectPanelWidget() const;
+            LightPanelWidget *getLightPanelWidget() const;
+            TerrainPanelWidget *getTerrainPanelWidget() const;
+            WaterPanelWidget *getWaterPanelWidget() const;
             SkyPanelWidget *getSkyPanelWidget() const;
-			SoundPanelWidget *getSoundPanelWidget() const;
-			AIPanelWidget *getAIPanelWidget() const;
+            SoundPanelWidget *getSoundPanelWidget() const;
+            AIPanelWidget *getAIPanelWidget() const;
 
             SceneController *loadMap(SceneController *);
-			void closeMap();
+            void closeMap();
 
-			TabName getTabSelected() const;
+            TabName getTabSelected() const;
 
-		private:
-			SceneController *sceneController;
+        private:
+            SceneController *sceneController;
 
-			ObjectPanelWidget *tabObjects;
-			LightPanelWidget *tabLights;
-			TerrainPanelWidget *tabTerrains;
-			WaterPanelWidget *tabWaters;
-			SkyPanelWidget *tabSky;
-			SoundPanelWidget *tabSounds;
-			AIPanelWidget *tabAI;
+            ObjectPanelWidget *tabObjects;
+            LightPanelWidget *tabLights;
+            TerrainPanelWidget *tabTerrains;
+            WaterPanelWidget *tabWaters;
+            SkyPanelWidget *tabSky;
+            SoundPanelWidget *tabSounds;
+            AIPanelWidget *tabAI;
 
-		private slots:
-			void tabSelected();
-	};
+        private slots:
+            void tabSelected();
+    };
 
 }
 

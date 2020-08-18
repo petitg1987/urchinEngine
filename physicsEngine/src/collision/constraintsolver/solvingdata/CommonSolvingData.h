@@ -8,24 +8,24 @@
 namespace urchin
 {
 
-	/**
-	* Constraint common data container
-	*/
-	struct CommonSolvingData
-	{
-		CommonSolvingData();
+    /**
+    * Constraint common data container
+    */
+    struct CommonSolvingData
+    {
+        CommonSolvingData();
 
-		const WorkRigidBody *body1, *body2;
+        const WorkRigidBody *body1, *body2;
 
-		Vector3<float> contactNormal;
-		Vector3<float> contactTangent;
+        Vector3<float> contactNormal;
+        Vector3<float> contactTangent;
 
-		Matrix3<float> invInertia1, invInertia2;
+        Matrix3<float> invInertia1, invInertia2;
 
-		Vector3<float> r1, r2; //vector from center of mass of body to contact point
+        Vector3<float> r1, r2; //vector from center of mass of body to contact point
 
-		float depth; //penetration depth (negative when collision exist)
-	};
+        float depth; //penetration depth (negative when collision exist)
+    };
 
 }
 

@@ -9,23 +9,23 @@
 namespace urchin
 {
 
-	/**
-	* Manager allowing to perform integration on bodies transformation
-	*/
-	class IntegrateTransformManager
-	{
-		public:
-			IntegrateTransformManager(const BodyManager *, const BroadPhaseManager *, const NarrowPhaseManager *);
+    /**
+    * Manager allowing to perform integration on bodies transformation
+    */
+    class IntegrateTransformManager
+    {
+        public:
+            IntegrateTransformManager(const BodyManager *, const BroadPhaseManager *, const NarrowPhaseManager *);
 
-			void integrateTransform(float);
+            void integrateTransform(float);
 
-		private:
-			void handleContinuousCollision(WorkRigidBody *, const PhysicsTransform &, const PhysicsTransform &, float);
+        private:
+            void handleContinuousCollision(WorkRigidBody *, const PhysicsTransform &, const PhysicsTransform &, float);
 
-			const BodyManager *bodyManager;
-			const BroadPhaseManager *broadPhaseManager;
-			const NarrowPhaseManager *narrowPhaseManager;
-	};
+            const BodyManager *bodyManager;
+            const BroadPhaseManager *broadPhaseManager;
+            const NarrowPhaseManager *narrowPhaseManager;
+    };
 
 }
 

@@ -7,20 +7,20 @@
 namespace urchin
 {
 
-	class LightScopeDisplayer
-	{
-		public:
-			explicit LightScopeDisplayer(SceneManager *);
-			~LightScopeDisplayer();
+    class LightScopeDisplayer
+    {
+        public:
+            explicit LightScopeDisplayer(SceneManager *);
+            ~LightScopeDisplayer();
 
-			void displayLightScopeFor(const SceneLight *);
+            void displayLightScopeFor(const SceneLight *);
 
-		private:
-			void cleanCurrentDisplay();
+        private:
+            void cleanCurrentDisplay();
 
-			SceneManager *sceneManager;
-			std::vector<GeometryModel *> lightScopeModels;
-	};
+            SceneManager *sceneManager;
+            std::vector<GeometryModel *> lightScopeModels;
+    };
 
 }
 

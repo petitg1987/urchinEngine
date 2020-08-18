@@ -120,15 +120,15 @@ namespace urchin
     }
 
     /**
-	 * Check if thread has been stopped by an exception and rethrow exception on main thread
-	 */
-	void AIManager::controlExecution()
-	{
-		if(aiThreadExceptionPtr)
-		{
-			std::rethrow_exception(aiThreadExceptionPtr);
-		}
-	}
+     * Check if thread has been stopped by an exception and rethrow exception on main thread
+     */
+    void AIManager::controlExecution()
+    {
+        if(aiThreadExceptionPtr)
+        {
+            std::rethrow_exception(aiThreadExceptionPtr);
+        }
+    }
 
     void AIManager::startAIUpdate()
     {

@@ -14,22 +14,22 @@
 namespace urchin
 {
 
-	/**
-	* Implementation of GJK algorithm (see http://mollyrocket.com/849)
-	*/
-	template<class T> class GJKAlgorithm
-	{
-		public:
-			GJKAlgorithm();
+    /**
+    * Implementation of GJK algorithm (see http://mollyrocket.com/849)
+    */
+    template<class T> class GJKAlgorithm
+    {
+        public:
+            GJKAlgorithm();
 
-			std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> processGJK(const CollisionConvexObject3D &, const CollisionConvexObject3D &, bool) const;
+            std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> processGJK(const CollisionConvexObject3D &, const CollisionConvexObject3D &, bool) const;
 
-		private:
-			void logMaximumIterationReach(const CollisionConvexObject3D &, const CollisionConvexObject3D &, bool) const;
+        private:
+            void logMaximumIterationReach(const CollisionConvexObject3D &, const CollisionConvexObject3D &, bool) const;
 
-			const unsigned int maxIteration;
-			const float terminationTolerance;
-	};
+            const unsigned int maxIteration;
+            const float terminationTolerance;
+    };
 
 }
 

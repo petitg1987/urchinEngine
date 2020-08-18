@@ -9,14 +9,14 @@
 namespace urchin
 {
 
-	class LoaderFNT : public Loader<Font>
-	{
-		public:
-			~LoaderFNT() override = default;
+    class LoaderFNT : public Loader<Font>
+    {
+        public:
+            ~LoaderFNT() override = default;
 
-			Font *loadFromFile(const std::string &) override;
-	};
-	
+            Font *loadFromFile(const std::string &) override;
+    };
+
 }
 
 #endif

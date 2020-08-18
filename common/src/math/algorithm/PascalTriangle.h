@@ -6,11 +6,11 @@
 namespace urchin
 {
 
-	class PascalTriangle
-	{
-		public:
-			static std::vector<unsigned int> lineValues(unsigned int);
-	};
+    class PascalTriangle
+    {
+        public:
+            static std::vector<unsigned int> lineValues(unsigned int);
+    };
 
 }
 

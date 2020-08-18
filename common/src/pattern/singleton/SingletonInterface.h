@@ -4,11 +4,11 @@
 namespace urchin
 {
 
-	class SingletonInterface
-	{
-		public:
-			virtual ~SingletonInterface() = default;
-	};
+    class SingletonInterface
+    {
+        public:
+            virtual ~SingletonInterface() = default;
+    };
 
 }
 

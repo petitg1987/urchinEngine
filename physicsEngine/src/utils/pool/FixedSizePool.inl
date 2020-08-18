@@ -5,35 +5,35 @@
  *  (new/delete) will be performed.
  */
 template<class BaseType> FixedSizePool<BaseType>::FixedSizePool(const std::string &poolName, unsigned int maxElementSize, unsigned int maxElements) :
-		poolName(poolName),
-		maxElementSize(maxElementSize),
-		maxElements(maxElements),
-		freeCount(maxElements),
-		fullPoolLogged(false)
+        poolName(poolName),
+        maxElementSize(maxElementSize),
+        maxElements(maxElements),
+        freeCount(maxElements),
+        fullPoolLogged(false)
 {
-	//create pool
-	pool = static_cast<unsigned char *>(operator new(this->maxElementSize * this->maxElements));
-	firstFree = pool;
+    //create pool
+    pool = static_cast<unsigned char *>(operator new(this->maxElementSize * this->maxElements));
+    firstFree = pool;
 
-	//initialize pool: each element contains address of next element and last one contains 0
-	unsigned char *p = pool;
-	int count = this->maxElements;
-	while (--count)
-	{
-		*(void**)p = (p + this->maxElementSize);
-		p += this->maxElementSize;
-	}
-	*(void**)p = 0;
+    //initialize pool: each element contains address of next element and last one contains 0
+    unsigned char *p = pool;
+    int count = this->maxElements;
+    while (--count)
+    {
+        *(void**)p = (p + this->maxElementSize);
+        p += this->maxElementSize;
+    }
+    *(void**)p = 0;
 }
 
 template<class BaseType> FixedSizePool<BaseType>::~FixedSizePool()
 {
-	if(freeCount != maxElements) //ensure that 'free' method has been called
-	{
-		Logger::logger().logError("Fixed size pool '" + poolName + "' not correctly cleared. Free count: " + std::to_string(freeCount) + ", max elements: " + std::to_string(maxElements) + ".");
-	}
+    if(freeCount != maxElements) //ensure that 'free' method has been called
+    {
+        Logger::logger().logError("Fixed size pool '" + poolName + "' not correctly cleared. Free count: " + std::to_string(freeCount) + ", max elements: " + std::to_string(maxElements) + ".");
+    }
 
-	delete pool;
+    delete pool;
 }
 
 /**
@@ -41,23 +41,23 @@ template<class BaseType> FixedSizePool<BaseType>::~FixedSizePool()
  */
 template<class BaseType> void* FixedSizePool<BaseType>::allocate(unsigned int size)
 {
-	if(size > maxElementSize)
-	{
-		throw std::runtime_error("Fixed size pool '" + poolName + "' cannot allocate " + std::to_string(size) + " bytes because max allowed allocation is " + std::to_string(maxElementSize) + " bytes");
-	}
+    if(size > maxElementSize)
+    {
+        throw std::runtime_error("Fixed size pool '" + poolName + "' cannot allocate " + std::to_string(size) + " bytes because max allowed allocation is " + std::to_string(maxElementSize) + " bytes");
+    }
 
-	if(freeCount!=0)
-	{ //pool is not full
-		void* result = firstFree;
-		firstFree = *(void**)firstFree;
-		--freeCount;
+    if(freeCount!=0)
+    { //pool is not full
+        void* result = firstFree;
+        firstFree = *(void**)firstFree;
+        --freeCount;
 
-		return result;
-	}
-	
-	//pool is full: allocate new memory location
-	logPoolIsFull();
-	return operator new(maxElementSize);
+        return result;
+    }
+
+    //pool is full: allocate new memory location
+    logPoolIsFull();
+    return operator new(maxElementSize);
 }
 
 /**
@@ -66,31 +66,31 @@ template<class BaseType> void* FixedSizePool<BaseType>::allocate(unsigned int si
  */
 template<class BaseType> void FixedSizePool<BaseType>::free(BaseType *ptr)
 {
-	if (((unsigned char*)ptr >= pool && (unsigned char*)ptr < pool + maxElementSize*maxElements))
-	{ //ptr is in the pool
-		ptr->~BaseType();
-		
-		*(void**)ptr = firstFree;
-		firstFree = ptr;
-		++freeCount;
-	}else
-	{
-		delete ptr;
-	}
+    if (((unsigned char*)ptr >= pool && (unsigned char*)ptr < pool + maxElementSize*maxElements))
+    { //ptr is in the pool
+        ptr->~BaseType();
+
+        *(void**)ptr = firstFree;
+        firstFree = ptr;
+        ++freeCount;
+    }else
+    {
+        delete ptr;
+    }
 }
 
 template<class BaseType> void FixedSizePool<BaseType>::logPoolIsFull()
 {
-	if(!fullPoolLogged)
-	{
-		std::stringstream logStream;
-		logStream << "Pool is full of elements." << std::endl;
+    if(!fullPoolLogged)
+    {
+        std::stringstream logStream;
+        logStream << "Pool is full of elements." << std::endl;
         logStream << " - Pool name: " << poolName << std::endl;
-		logStream << " - Element size: " << maxElementSize << std::endl;
-		logStream << " - Maximum elements: " << maxElements;
-		Logger::logger().logWarning(logStream.str());
+        logStream << " - Element size: " << maxElementSize << std::endl;
+        logStream << " - Maximum elements: " << maxElements;
+        Logger::logger().logWarning(logStream.str());
 
-		fullPoolLogged = true;
-	}
+        fullPoolLogged = true;
+    }
 }
 

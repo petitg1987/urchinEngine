@@ -10,16 +10,16 @@
 namespace urchin
 {
 
-	class CollisionAlgorithmBuilder
-	{
-		public:
-			virtual ~CollisionAlgorithmBuilder() = default;
+    class CollisionAlgorithmBuilder
+    {
+        public:
+            virtual ~CollisionAlgorithmBuilder() = default;
 
-			virtual CollisionAlgorithm *createCollisionAlgorithm(bool, ManifoldResult &&, FixedSizePool<CollisionAlgorithm> *) const = 0;
+            virtual CollisionAlgorithm *createCollisionAlgorithm(bool, ManifoldResult &&, FixedSizePool<CollisionAlgorithm> *) const = 0;
 
-			virtual const std::vector<CollisionShape3D::ShapeType> &getFirstExpectedShapeType() const = 0;
-			virtual unsigned int getAlgorithmSize() const = 0;
-	};
+            virtual const std::vector<CollisionShape3D::ShapeType> &getFirstExpectedShapeType() const = 0;
+            virtual unsigned int getAlgorithmSize() const = 0;
+    };
 
 }
 

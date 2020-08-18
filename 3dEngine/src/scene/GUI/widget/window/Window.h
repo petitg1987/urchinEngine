@@ -14,44 +14,44 @@
 
 namespace urchin
 {
-	
-	class Window : public Widget
-	{
-		public:
-			Window(Position, Size, std::string , std::string stringTitle = "");
 
-			~Window() override;
-		
-			void createOrUpdateWidget() override;
+    class Window : public Widget
+    {
+        public:
+            Window(Position, Size, std::string , std::string stringTitle = "");
 
-			void addChild(Widget *) override;
+            ~Window() override;
 
-			void display(int, float) override;
-		
-		private:
-			bool onKeyDownEvent(unsigned int) override;
-			bool onKeyUpEvent(unsigned int) override;
-			bool onMouseMoveEvent(int, int) override;
+            void createOrUpdateWidget() override;
 
-			//properties
-			const std::string nameSkin;
-			const std::string stringTitle;
+            void addChild(Widget *) override;
 
-			//state
-			int mousePositionX, mousePositionY;
-			enum windowStates
-			{
-				DEFAULT,
-				MOVING,
-				CLOSING
-			} state;
-			
-			//visual
-			Text *title;
-			std::shared_ptr<Image> texWindow;
-			WidgetOutline *widgetOutline;
-			std::shared_ptr<QuadDisplayer> quadDisplayer;
-	};
+            void display(int, float) override;
+
+        private:
+            bool onKeyDownEvent(unsigned int) override;
+            bool onKeyUpEvent(unsigned int) override;
+            bool onMouseMoveEvent(int, int) override;
+
+            //properties
+            const std::string nameSkin;
+            const std::string stringTitle;
+
+            //state
+            int mousePositionX, mousePositionY;
+            enum windowStates
+            {
+                DEFAULT,
+                MOVING,
+                CLOSING
+            } state;
+
+            //visual
+            Text *title;
+            std::shared_ptr<Image> texWindow;
+            WidgetOutline *widgetOutline;
+            std::shared_ptr<QuadDisplayer> quadDisplayer;
+    };
 
 }
 

@@ -6,15 +6,15 @@
 namespace urchin
 {
 
-	class SpinBoxStyleHelper
-	{
-		public:
-			static void applyDefaultStyleOn(QDoubleSpinBox *);
-			static void applyAngleStyleOn(QDoubleSpinBox *);
-			static void applyPercentageStyleOn(QDoubleSpinBox *);
+    class SpinBoxStyleHelper
+    {
+        public:
+            static void applyDefaultStyleOn(QDoubleSpinBox *);
+            static void applyAngleStyleOn(QDoubleSpinBox *);
+            static void applyPercentageStyleOn(QDoubleSpinBox *);
 
-			static void applyDefaultStyleOn(QSpinBox *);
-	};
+            static void applyDefaultStyleOn(QSpinBox *);
+    };
 
 }
 

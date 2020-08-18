@@ -6,15 +6,15 @@
 
 class ClosestPointTest : public CppUnit::TestFixture
 {
-	public:
-		static CppUnit::Test *suite();
+    public:
+        static CppUnit::Test *suite();
 
-		void closestPointLineSegment2D();
-		void closestPointLineSegment3D();
+        void closestPointLineSegment2D();
+        void closestPointLineSegment3D();
 
-		void closestPointTriangle3D();
+        void closestPointTriangle3D();
 
-		void closestPointTetrahedron();
+        void closestPointTetrahedron();
 };
 
 #endif

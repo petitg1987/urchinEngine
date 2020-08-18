@@ -6,33 +6,33 @@
 namespace urchin
 {
 
-	/**
-	* Shape used to delimit the sound
-	*/
-	class SoundShape
-	{
-		public:
-			enum ShapeType
-			{
-				SPHERE_SHAPE,
-				BOX_SHAPE
-			};
+    /**
+    * Shape used to delimit the sound
+    */
+    class SoundShape
+    {
+        public:
+            enum ShapeType
+            {
+                SPHERE_SHAPE,
+                BOX_SHAPE
+            };
 
-			explicit SoundShape(float);
-			virtual ~SoundShape() = default;
+            explicit SoundShape(float);
+            virtual ~SoundShape() = default;
 
-			float getMargin() const;
+            float getMargin() const;
 
-			virtual ShapeType getShapeType() const = 0;
+            virtual ShapeType getShapeType() const = 0;
 
-			virtual bool pointInsidePlayShape(const Point3<float> &) const = 0;
-			virtual bool pointInsideStopShape(const Point3<float> &) const = 0;
+            virtual bool pointInsidePlayShape(const Point3<float> &) const = 0;
+            virtual bool pointInsideStopShape(const Point3<float> &) const = 0;
 
-			virtual SoundShape *clone() const = 0;
+            virtual SoundShape *clone() const = 0;
 
-		private:
-			const float margin;
-	};
+        private:
+            const float margin;
+    };
 
 }
 

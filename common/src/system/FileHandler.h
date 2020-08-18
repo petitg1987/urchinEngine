@@ -6,22 +6,22 @@
 namespace urchin
 {
 
-	class FileHandler
-	{
-		public:
-			static std::string getFileExtension(const std::string &);
-			static std::string getFileName(const std::string &);
-			static std::string getFileNameNoExtension(const std::string &);
-			static std::string getDirectoryFrom(const std::string &);
-			static std::string getRelativePath(const std::string &, const std::string &);
-			static std::string simplifyDirectoryPath(const std::string &);
+    class FileHandler
+    {
+        public:
+            static std::string getFileExtension(const std::string &);
+            static std::string getFileName(const std::string &);
+            static std::string getFileNameNoExtension(const std::string &);
+            static std::string getDirectoryFrom(const std::string &);
+            static std::string getRelativePath(const std::string &, const std::string &);
+            static std::string simplifyDirectoryPath(const std::string &);
 
-		private:
-			FileHandler() = default;
-			~FileHandler() = default;
+        private:
+            FileHandler() = default;
+            ~FileHandler() = default;
 
-			static void checkDirectory(const std::string &);
-	};
+            static void checkDirectory(const std::string &);
+    };
 
 }
 

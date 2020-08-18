@@ -12,30 +12,30 @@
 namespace urchin
 {
 
-	template<class T> class Cone : public ConvexObject3D<T>
-	{
-		public:
-			Cone();
-			Cone(T, T, typename ConeShape<T>::ConeOrientation, const Point3<T> &, const Quaternion<T> &);
+    template<class T> class Cone : public ConvexObject3D<T>
+    {
+        public:
+            Cone();
+            Cone(T, T, typename ConeShape<T>::ConeOrientation, const Point3<T> &, const Quaternion<T> &);
 
-			T getRadius() const;
-			T getHeight() const;
-			typename ConeShape<T>::ConeOrientation getConeOrientation() const;
-			const Point3<T> &getCenterOfMass() const;
-			const Quaternion<T> &getOrientation() const;
-			const Vector3<T> &getAxis(unsigned int) const;
+            T getRadius() const;
+            T getHeight() const;
+            typename ConeShape<T>::ConeOrientation getConeOrientation() const;
+            const Point3<T> &getCenterOfMass() const;
+            const Quaternion<T> &getOrientation() const;
+            const Vector3<T> &getAxis(unsigned int) const;
 
-			Point3<T> getCenter() const;
-			Point3<T> getSupportPoint(const Vector3<T> &) const;
+            Point3<T> getCenter() const;
+            Point3<T> getSupportPoint(const Vector3<T> &) const;
 
-		private:
-			ConeShape<T> coneShape;
-			Point3<T> centerOfMass;
-			Quaternion<T> orientation;
+        private:
+            ConeShape<T> coneShape;
+            Point3<T> centerOfMass;
+            Quaternion<T> orientation;
 
-			Vector3<T> axis[3]; //3 vectors of normalized axis
-			T baseSideCosAngle;
-	};
+            Vector3<T> axis[3]; //3 vectors of normalized axis
+            T baseSideCosAngle;
+    };
 
 }
 

@@ -8,21 +8,21 @@
 namespace urchin
 {
 
-	class CylinderModel : public GeometryModel
-	{
-		public:
-			CylinderModel(Cylinder<float> , int);
+    class CylinderModel : public GeometryModel
+    {
+        public:
+            CylinderModel(Cylinder<float> , int);
 
-		protected:
-			Matrix4<float> retrieveModelMatrix() const override;
-			std::vector<Point3<float>> retrieveVertexArray() const override;
+        protected:
+            Matrix4<float> retrieveModelMatrix() const override;
+            std::vector<Point3<float>> retrieveVertexArray() const override;
 
-			void drawGeometry() const override;
+            void drawGeometry() const override;
 
-		private:
-			Cylinder<float> cylinder;
-			int sides;
-	};
+        private:
+            Cylinder<float> cylinder;
+            int sides;
+    };
 
 }
 

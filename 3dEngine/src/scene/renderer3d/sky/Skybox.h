@@ -12,37 +12,37 @@
 
 namespace urchin
 {
-	
-	class Skybox
-	{
-		public:
-			explicit Skybox(const std::vector<std::string> &);
-			~Skybox();
 
-			void onCameraProjectionUpdate(const Matrix4<float> &);
+    class Skybox
+    {
+        public:
+            explicit Skybox(const std::vector<std::string> &);
+            ~Skybox();
 
-			float getOffsetY() const;
-			void setOffsetY(float);
-			const std::vector<std::string> &getFilenames() const;
+            void onCameraProjectionUpdate(const Matrix4<float> &);
 
-			void display(const Matrix4<float> &, const Point3<float> &);
-		private:
-			void initialize();
-			void clearTexSkybox();
+            float getOffsetY() const;
+            void setOffsetY(float);
+            const std::vector<std::string> &getFilenames() const;
+
+            void display(const Matrix4<float> &, const Point3<float> &);
+        private:
+            void initialize();
+            void clearTexSkybox();
 
             std::vector<std::string> filenames;
-			Image **texSkybox;
-			unsigned int textureID;
-			
-			float offsetY;
-			Matrix4<float> translationMatrix;
+            Image **texSkybox;
+            unsigned int textureID;
 
-			//visual
-			std::shared_ptr<QuadDisplayer> quadDisplayer;
+            float offsetY;
+            Matrix4<float> translationMatrix;
 
-			unsigned int skyboxShader;
-			int mProjectionLoc, mViewLoc;
-	};
+            //visual
+            std::shared_ptr<QuadDisplayer> quadDisplayer;
+
+            unsigned int skyboxShader;
+            int mProjectionLoc, mViewLoc;
+    };
 
 }
 

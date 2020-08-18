@@ -9,42 +9,42 @@ namespace urchin
 
     template<class OBJ> class AABBTree;
 
-	template<class OBJ> class AABBNode
-	{
-		public:
+    template<class OBJ> class AABBNode
+    {
+        public:
             friend class AABBTree<OBJ>;
 
-			explicit AABBNode(AABBNodeData<OBJ> *);
-			~AABBNode();
+            explicit AABBNode(AABBNodeData<OBJ> *);
+            ~AABBNode();
 
             AABBNodeData<OBJ> *getNodeData() const;
 
-			bool isLeaf() const;
-			bool isRoot() const;
+            bool isLeaf() const;
+            bool isRoot() const;
 
-			void setParent(AABBNode *);
-			AABBNode *getParent() const;
+            void setParent(AABBNode *);
+            AABBNode *getParent() const;
 
-			void setLeftChild(AABBNode *);
-			AABBNode *getLeftChild() const;
-			void setRightChild(AABBNode *);
-			AABBNode *getRightChild() const;
+            void setLeftChild(AABBNode *);
+            AABBNode *getLeftChild() const;
+            void setRightChild(AABBNode *);
+            AABBNode *getRightChild() const;
 
-			AABBNode *getSibling() const;
+            AABBNode *getSibling() const;
 
-			const AABBox<float> &getAABBox() const;
-			void updateAABBox(float);
+            const AABBox<float> &getAABBox() const;
+            void updateAABBox(float);
 
-	    protected:
+        protected:
             void clearNodeData();
 
-		private:
+        private:
             AABBNodeData<OBJ> *nodeData;
-			AABBox<float> aabbox;
+            AABBox<float> aabbox;
 
-			AABBNode<OBJ> *parentNode;
-			AABBNode<OBJ> *children[2];
-	};
+            AABBNode<OBJ> *parentNode;
+            AABBNode<OBJ> *children[2];
+    };
 
     #include "AABBNode.inl"
 

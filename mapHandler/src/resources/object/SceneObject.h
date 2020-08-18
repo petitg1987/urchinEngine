@@ -11,58 +11,58 @@
 namespace urchin
 {
 
-	/**
-	* Represent an object on the scene (3d model and physics)
-	*/
-	class SceneObject : public SceneEntity
-	{
-		//XML tags
-		#define MODEL_TAG "model"
-		#define PHYSICS_TAG "physics"
+    /**
+    * Represent an object on the scene (3d model and physics)
+    */
+    class SceneObject : public SceneEntity
+    {
+        //XML tags
+        #define MODEL_TAG "model"
+        #define PHYSICS_TAG "physics"
 
-		//XML attributes
-		#define NAME_ATTR "name"
+        //XML attributes
+        #define NAME_ATTR "name"
 
-		public:
-			friend class Map;
+        public:
+            friend class Map;
 
-			SceneObject();
-			~SceneObject() override;
+            SceneObject();
+            ~SceneObject() override;
 
-			void setObjectManagers(Renderer3d *, PhysicsWorld *, AIManager *);
+            void setObjectManagers(Renderer3d *, PhysicsWorld *, AIManager *);
 
-			const std::string &getName() const;
-			void setName(const std::string &);
+            const std::string &getName() const;
+            void setName(const std::string &);
 
-			Model *getModel() const;
-			void setModel(Model *);
+            Model *getModel() const;
+            void setModel(Model *);
 
-			void setupInteractiveBody(RigidBody *);
+            void setupInteractiveBody(RigidBody *);
 
-			RigidBody *getRigidBody() const override;
+            RigidBody *getRigidBody() const override;
 
-		protected:
-			void moveTo(const Transform<float> &) override;
+        protected:
+            void moveTo(const Transform<float> &) override;
 
-		private:
-			void loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
-			void writeOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
+        private:
+            void loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
+            void writeOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
 
-			void setupRigidBody(RigidBody *);
-			void setupAIObject();
+            void setupRigidBody(RigidBody *);
+            void setupAIObject();
 
-			void deleteRigidBody();
-			void deleteAIObjects();
+            void deleteRigidBody();
+            void deleteAIObjects();
 
-			Renderer3d *renderer3d;
-			PhysicsWorld *physicsWorld;
-			AIManager *aiManager;
+            Renderer3d *renderer3d;
+            PhysicsWorld *physicsWorld;
+            AIManager *aiManager;
 
-			std::string name;
-			Model *model;
-			RigidBody *rigidBody;
-			std::shared_ptr<AIObject> aiObject;
-	};
+            std::string name;
+            Model *model;
+            RigidBody *rigidBody;
+            std::shared_ptr<AIObject> aiObject;
+    };
 
 }
 

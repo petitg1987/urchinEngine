@@ -13,25 +13,25 @@
 namespace urchin
 {
 
-	class StaticBitmap : public Widget
-	{
-		public:
-			StaticBitmap(Position, Size, std::string );
-			~StaticBitmap() override;
-			
-			void createOrUpdateWidget() override;
+    class StaticBitmap : public Widget
+    {
+        public:
+            StaticBitmap(Position, Size, std::string );
+            ~StaticBitmap() override;
 
-			void display(int, float) override;
-			
-		private:
-			//properties
-			const std::string filename;
+            void createOrUpdateWidget() override;
 
-			//visual
-			Image *tex;
-			std::shared_ptr<QuadDisplayer> quadDisplayer;
-	};
-	
+            void display(int, float) override;
+
+        private:
+            //properties
+            const std::string filename;
+
+            //visual
+            Image *tex;
+            std::shared_ptr<QuadDisplayer> quadDisplayer;
+    };
+
 }
 
 #endif

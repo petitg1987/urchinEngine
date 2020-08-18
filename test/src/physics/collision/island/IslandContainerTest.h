@@ -9,34 +9,34 @@
 
 class IslandContainerTest : public CppUnit::TestFixture
 {
-	public:
-		static CppUnit::Test *suite();
+    public:
+        static CppUnit::Test *suite();
 
-		void cascadeMergeIslands();
-		void mergeAllIslands();
-		void createTwoSeparateIslands();
+        void cascadeMergeIslands();
+        void mergeAllIslands();
+        void createTwoSeparateIslands();
 };
 
 class TestBody : public urchin::IslandElement
 {
-	public:
-		void setIslandElementId(unsigned int id) override
-		{
-			this->id = id;
-		}
+    public:
+        void setIslandElementId(unsigned int id) override
+        {
+            this->id = id;
+        }
 
-		unsigned int getIslandElementId() const override
-		{
-			return id;
-		}
+        unsigned int getIslandElementId() const override
+        {
+            return id;
+        }
 
-		bool isActive() const override
-		{
-			return true;
-		}
+        bool isActive() const override
+        {
+            return true;
+        }
 
-	private:
-		unsigned int id;
+    private:
+        unsigned int id;
 };
 
 #endif

@@ -10,28 +10,28 @@
 namespace urchin
 {
 
-	template<class T> class Cylinder : public ConvexObject3D<T>
-	{
-		public:
-			Cylinder();
-			Cylinder(T, T, typename CylinderShape<T>::CylinderOrientation, const Point3<T> &, const Quaternion<T> &);
+    template<class T> class Cylinder : public ConvexObject3D<T>
+    {
+        public:
+            Cylinder();
+            Cylinder(T, T, typename CylinderShape<T>::CylinderOrientation, const Point3<T> &, const Quaternion<T> &);
 
-			T getRadius() const;
-			T getHeight() const;
-			typename CylinderShape<T>::CylinderOrientation getCylinderOrientation() const;
-			const Point3<T> &getCenterOfMass() const;
-			const Quaternion<T> &getOrientation() const;
-			const Vector3<T> &getAxis(unsigned int) const;
+            T getRadius() const;
+            T getHeight() const;
+            typename CylinderShape<T>::CylinderOrientation getCylinderOrientation() const;
+            const Point3<T> &getCenterOfMass() const;
+            const Quaternion<T> &getOrientation() const;
+            const Vector3<T> &getAxis(unsigned int) const;
 
-			Point3<T> getSupportPoint(const Vector3<T> &) const;
+            Point3<T> getSupportPoint(const Vector3<T> &) const;
 
-		private:
-			CylinderShape<T> cylinderShape;
-			Point3<T> centerOfMass;
-			Quaternion<T> orientation;
+        private:
+            CylinderShape<T> cylinderShape;
+            Point3<T> centerOfMass;
+            Quaternion<T> orientation;
 
-			Vector3<T> axis[3]; //3 vectors of normalized axis
-	};
+            Vector3<T> axis[3]; //3 vectors of normalized axis
+    };
 
 }
 

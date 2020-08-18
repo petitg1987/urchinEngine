@@ -7,20 +7,20 @@
 
 class AABBoxCollisionTest : public CppUnit::TestFixture
 {
-	public:
-		static CppUnit::Test *suite();
+    public:
+        static CppUnit::Test *suite();
 
-		void rayRightToBox();
-		void rayRightTopToBox();
+        void rayRightToBox();
+        void rayRightTopToBox();
 
-		void rayInsideBox();
+        void rayInsideBox();
 
-		void rayThroughXPlanes();
-		void rayThroughYPlanes();
-		void rayThroughZPlanes();
-		void rayThroughXYPlanes();
+        void rayThroughXPlanes();
+        void rayThroughYPlanes();
+        void rayThroughZPlanes();
+        void rayThroughXYPlanes();
 
-		void rayInsideToXPlane();
+        void rayInsideToXPlane();
 };
 
 #endif

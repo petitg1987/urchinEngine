@@ -7,29 +7,29 @@
 namespace urchin
 {
 
-	/**
-	* Trigger performed when inside a shape
-	*/
-	class ShapeTrigger : public SoundTrigger
-	{
-		public:
-			ShapeTrigger(const SoundBehavior &, const SoundShape *);
-			~ShapeTrigger() override;
+    /**
+    * Trigger performed when inside a shape
+    */
+    class ShapeTrigger : public SoundTrigger
+    {
+        public:
+            ShapeTrigger(const SoundBehavior &, const SoundShape *);
+            ~ShapeTrigger() override;
 
-			SoundTrigger::TriggerType getTriggerType() const override;
+            SoundTrigger::TriggerType getTriggerType() const override;
 
-			SoundTrigger::TriggerResultValue evaluateTrigger(const Point3<float> &) override;
+            SoundTrigger::TriggerResultValue evaluateTrigger(const Point3<float> &) override;
 
-			const SoundShape *getSoundShape() const;
+            const SoundShape *getSoundShape() const;
 
-		private:
-			SoundTrigger::TriggerResultValue getPlayTriggerValue();
-			SoundTrigger::TriggerResultValue getStopTriggerValue();
+        private:
+            SoundTrigger::TriggerResultValue getPlayTriggerValue();
+            SoundTrigger::TriggerResultValue getStopTriggerValue();
 
-			const SoundShape *soundShape;
+            const SoundShape *soundShape;
 
-			bool isPlaying;
-	};
+            bool isPlaying;
+    };
 
 }
 

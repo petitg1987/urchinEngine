@@ -3,12 +3,12 @@
 namespace urchin
 {
 
-	IslandElementLink::IslandElementLink() :
-		element(nullptr),
-		islandIdRef(0),
-		linkedToStaticElement(false)
-	{
+    IslandElementLink::IslandElementLink() :
+        element(nullptr),
+        islandIdRef(0),
+        linkedToStaticElement(false)
+    {
 
-	}
+    }
 
 }

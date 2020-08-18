@@ -3,15 +3,15 @@
 namespace urchin
 {
 
-	SoundTrigger::SoundTrigger(const SoundBehavior &soundBehavior) :
-		soundBehavior(soundBehavior)
-	{
+    SoundTrigger::SoundTrigger(const SoundBehavior &soundBehavior) :
+        soundBehavior(soundBehavior)
+    {
 
-	}
+    }
 
-	const SoundBehavior &SoundTrigger::getSoundBehavior() const
-	{
-		return soundBehavior;
-	}
+    const SoundBehavior &SoundTrigger::getSoundBehavior() const
+    {
+        return soundBehavior;
+    }
 
 }

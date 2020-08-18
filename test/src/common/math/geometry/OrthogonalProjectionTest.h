@@ -7,13 +7,13 @@
 
 class OrthogonalProjectionTest : public CppUnit::TestFixture
 {
-	public:
-		static CppUnit::Test *suite();
+    public:
+        static CppUnit::Test *suite();
 
-		void orthogonalProjectionLine2D();
-		void orthogonalProjectionLine3D();
+        void orthogonalProjectionLine2D();
+        void orthogonalProjectionLine3D();
 
-		void orthogonalProjectionPlane();
+        void orthogonalProjectionPlane();
 };
 
 #endif

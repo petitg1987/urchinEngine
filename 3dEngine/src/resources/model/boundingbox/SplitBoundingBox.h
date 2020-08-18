@@ -7,16 +7,16 @@
 namespace urchin
 {
 
-	class SplitBoundingBox
-	{
-		public:
-			SplitBoundingBox();
+    class SplitBoundingBox
+    {
+        public:
+            SplitBoundingBox();
 
-			std::vector<AABBox<float>> split(const AABBox<float> &) const;
+            std::vector<AABBox<float>> split(const AABBox<float> &) const;
 
-		private:
-			const float limitSize;
-	};
+        private:
+            const float limitSize;
+    };
 
 }
 

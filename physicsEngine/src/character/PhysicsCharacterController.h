@@ -17,70 +17,70 @@
 namespace urchin
 {
 
-	struct SignificantContactValues
-	{
-		unsigned int numberOfHit;
+    struct SignificantContactValues
+    {
+        unsigned int numberOfHit;
 
-		float maxDotProductUpNormalAxis;
-		Vector3<float> mostUpVerticalNormal;
+        float maxDotProductUpNormalAxis;
+        Vector3<float> mostUpVerticalNormal;
 
-		float maxDotProductDownNormalAxis;
-		Vector3<float> mostDownVerticalNormal;
-	};
+        float maxDotProductDownNormalAxis;
+        Vector3<float> mostDownVerticalNormal;
+    };
 
-	/**
-	* Character controller: allow to move a character in a world
-	*/
-	class PhysicsCharacterController
-	{
-		public:
-			PhysicsCharacterController(const std::shared_ptr<PhysicsCharacter> &, PhysicsWorld *);
-			~PhysicsCharacterController();
+    /**
+    * Character controller: allow to move a character in a world
+    */
+    class PhysicsCharacterController
+    {
+        public:
+            PhysicsCharacterController(const std::shared_ptr<PhysicsCharacter> &, PhysicsWorld *);
+            ~PhysicsCharacterController();
 
-			void setMomentum(const Vector3<float> &);
-			void jump();
+            void setMomentum(const Vector3<float> &);
+            void jump();
 
-			void update(float);
+            void update(float);
 
-		private:
-			void setup(float);
+        private:
+            void setup(float);
 
-			Vector3<float> getVelocity() const;
-			bool needJumpAndResetFlag();
+            Vector3<float> getVelocity() const;
+            bool needJumpAndResetFlag();
 
-			void recoverFromPenetration(float);
-			SignificantContactValues resetSignificantContactValues();
-			void saveSignificantContactValues(SignificantContactValues &, const Vector3<float> &);
-			void computeSignificantContactValues(SignificantContactValues &, float);
+            void recoverFromPenetration(float);
+            SignificantContactValues resetSignificantContactValues();
+            void saveSignificantContactValues(SignificantContactValues &, const Vector3<float> &);
+            void computeSignificantContactValues(SignificantContactValues &, float);
 
-			float computeSlope();
+            float computeSlope();
 
-			const float recoverFactors[RECOVER_PENETRATION_SUB_STEPS] = {0.4, 0.7, 0.9, 1.0};
-			const float timeKeepMoveInAir;
+            const float recoverFactors[RECOVER_PENETRATION_SUB_STEPS] = {0.4, 0.7, 0.9, 1.0};
+            const float timeKeepMoveInAir;
             const float percentageControlInAir;
-			const float maxDepthToRecover;
-			const float maxVerticalSpeed;
+            const float maxDepthToRecover;
+            const float maxVerticalSpeed;
 
             std::shared_ptr<PhysicsCharacter> physicsCharacter;
-			PhysicsWorld *physicsWorld;
-			std::vector<ManifoldResult> manifoldResults;
-			mutable std::mutex characterMutex;
+            PhysicsWorld *physicsWorld;
+            std::vector<ManifoldResult> manifoldResults;
+            mutable std::mutex characterMutex;
             WorkGhostBody *ghostBody;
-			float verticalSpeed;
+            float verticalSpeed;
 
-			Vector3<float> velocity;
-			std::atomic_bool makeJump;
+            Vector3<float> velocity;
+            std::atomic_bool makeJump;
 
-			Point3<float> previousBodyPosition;
-			Quaternion<float> initialOrientation;
-			Vector3<float> lastVelocity;
-			unsigned int numberOfHit; //number of contact point touching the character
-			bool isOnGround; //character is on the ground
-			bool hitRoof; //character has hit the roof
-			float timeInTheAir; //time (sec.) character is not on the ground
-			bool jumping; //character is jumping
-			float slopeInPercentage; //slope in percentage (a positive value means that character climb)
-	};
+            Point3<float> previousBodyPosition;
+            Quaternion<float> initialOrientation;
+            Vector3<float> lastVelocity;
+            unsigned int numberOfHit; //number of contact point touching the character
+            bool isOnGround; //character is on the ground
+            bool hitRoof; //character has hit the roof
+            float timeInTheAir; //time (sec.) character is not on the ground
+            bool jumping; //character is jumping
+            float slopeInPercentage; //slope in percentage (a positive value means that character climb)
+    };
 
 }
 

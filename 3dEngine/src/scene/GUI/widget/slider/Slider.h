@@ -13,49 +13,49 @@
 namespace urchin
 {
 
-	class Slider : public Widget
-	{
-		public:
-			Slider(Position, Size, const std::vector<std::string> &, const std::string &);
-			~Slider() override = default;
+    class Slider : public Widget
+    {
+        public:
+            Slider(Position, Size, const std::vector<std::string> &, const std::string &);
+            ~Slider() override = default;
 
-			void createOrUpdateWidget() override;
+            void createOrUpdateWidget() override;
 
-			unsigned int getSelectedIndex() const;
-			void setSelectedIndex(unsigned int);
+            unsigned int getSelectedIndex() const;
+            void setSelectedIndex(unsigned int);
 
-			void setLeftButtonEventListener(const std::shared_ptr<EventListener> &);
-			void setRightButtonEventListener(const std::shared_ptr<EventListener> &);
+            void setLeftButtonEventListener(const std::shared_ptr<EventListener> &);
+            void setRightButtonEventListener(const std::shared_ptr<EventListener> &);
 
-			void display(int, float) override;
+            void display(int, float) override;
 
-		private:
-			std::string buttonNameFont, valuesNameFont;
-			std::string leftButtonString, rightButtonString;
-			const std::vector<std::string> values;
-			unsigned int selectedIndex;
+        private:
+            std::string buttonNameFont, valuesNameFont;
+            std::string leftButtonString, rightButtonString;
+            const std::vector<std::string> values;
+            unsigned int selectedIndex;
 
-			//visual
-			Text *leftButton, *rightButton;
-			std::vector<Text *> valuesText;
+            //visual
+            Text *leftButton, *rightButton;
+            std::vector<Text *> valuesText;
 
-			std::shared_ptr<EventListener> leftButtonEventListener;
-			std::shared_ptr<EventListener> rightButtonEventListener;
+            std::shared_ptr<EventListener> leftButtonEventListener;
+            std::shared_ptr<EventListener> rightButtonEventListener;
 
-			float timeInClickingState;
-			float timeSinceLastChange;
+            float timeInClickingState;
+            float timeSinceLastChange;
 
-			class ButtonSliderEventListener : public EventListener
-			{
-				public:
-					ButtonSliderEventListener(Slider *, bool);
-					void onClickRelease(Widget *) override;
+            class ButtonSliderEventListener : public EventListener
+            {
+                public:
+                    ButtonSliderEventListener(Slider *, bool);
+                    void onClickRelease(Widget *) override;
 
-				private:
-					Slider *slider;
-					bool isLeftButton;
-			};
-	};
+                private:
+                    Slider *slider;
+                    bool isLeftButton;
+            };
+    };
 
 }
 

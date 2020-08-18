@@ -6,20 +6,20 @@
 
 class GJKBoxTest : public CppUnit::TestFixture
 {
-	public:
-		static CppUnit::Test *suite();
+    public:
+        static CppUnit::Test *suite();
 
-		void identicalAABBox();
-		void separateAABBox();
-		void overlapAABBox();
+        void identicalAABBox();
+        void separateAABBox();
+        void overlapAABBox();
 
-		void identicalOBBox();
-		void separateEdgeOBBox();
-		void separateCornerOBBox();
-		void overlapOnEdgeOBBox();
+        void identicalOBBox();
+        void separateEdgeOBBox();
+        void separateCornerOBBox();
+        void overlapOnEdgeOBBox();
 
-		void separateOBBoxAABBox();
-		void overlapOBBoxAABBox();
+        void separateOBBoxAABBox();
+        void overlapOBBoxAABBox();
 };
 
 #endif

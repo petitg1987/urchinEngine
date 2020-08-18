@@ -7,32 +7,32 @@
 namespace urchin
 {
 
-	template<class T> class Ray
-	{
-		public:
-			Ray(const Point3<T> &, const Vector3<T> &, T);
-			Ray(const Point3<T> &, const Point3<T> &);
+    template<class T> class Ray
+    {
+        public:
+            Ray(const Point3<T> &, const Vector3<T> &, T);
+            Ray(const Point3<T> &, const Point3<T> &);
 
-			const Point3<T> &getOrigin() const;
-			Point3<T> computeTo() const;
+            const Point3<T> &getOrigin() const;
+            Point3<T> computeTo() const;
 
-			const Vector3<T> &getDirection() const;
-			T getLength() const;
+            const Vector3<T> &getDirection() const;
+            T getLength() const;
 
-			const Vector3<T> &getInverseDirection() const;
-			unsigned int getDirectionSign(unsigned int) const;
+            const Vector3<T> &getInverseDirection() const;
+            unsigned int getDirectionSign(unsigned int) const;
 
-		private:
-			void initializeAdditionalData();
+        private:
+            void initializeAdditionalData();
 
-			Point3<T> origin;
-			Vector3<T> direction; //normalized
-			T length;
+            Point3<T> origin;
+            Vector3<T> direction; //normalized
+            T length;
 
-			//additional data for performance (ray tracing, collision...)
-			Vector3<T> inverseDirection;
-			unsigned int directionSigns[3];
-	};
+            //additional data for performance (ray tracing, collision...)
+            Vector3<T> inverseDirection;
+            unsigned int directionSigns[3];
+    };
 
 }
 

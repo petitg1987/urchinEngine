@@ -10,32 +10,32 @@
 namespace urchin
 {
 
-	/**
-	* Task for the stream worker
-	*/
-	class StreamUpdateTask
-	{
-		public:
-			StreamUpdateTask(const Sound *sound, StreamChunk *, bool);
-			~StreamUpdateTask();
+    /**
+    * Task for the stream worker
+    */
+    class StreamUpdateTask
+    {
+        public:
+            StreamUpdateTask(const Sound *sound, StreamChunk *, bool);
+            ~StreamUpdateTask();
 
-			ALuint getSourceId() const;
-			bool isSourceStopped() const;
-			SoundFileReader *getSoundFileReader();
-			bool isPlayLoop() const;
+            ALuint getSourceId() const;
+            bool isSourceStopped() const;
+            SoundFileReader *getSoundFileReader();
+            bool isPlayLoop() const;
 
-			std::string getSoundFilename() const;
+            std::string getSoundFilename() const;
 
-			StreamChunk &getStreamChunk(unsigned int);
-			StreamChunk *getStreamChunks();
+            StreamChunk &getStreamChunk(unsigned int);
+            StreamChunk *getStreamChunks();
 
-		private:
-			const Sound *sound;
-			SoundFileReader *soundFileReader;
-			bool playLoop;
+        private:
+            const Sound *sound;
+            SoundFileReader *soundFileReader;
+            bool playLoop;
 
-			StreamChunk *streamChunks;
-	};
+            StreamChunk *streamChunks;
+    };
 
 }
 

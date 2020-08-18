@@ -3,8 +3,8 @@
 namespace urchin
 {
 
-	//explicit template
-	template class ConvexShape3D<float>;
-	template class ConvexShape3D<double>;
+    //explicit template
+    template class ConvexShape3D<float>;
+    template class ConvexShape3D<double>;
 
 }

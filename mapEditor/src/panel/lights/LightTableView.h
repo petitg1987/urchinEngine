@@ -13,30 +13,30 @@ Q_DECLARE_METATYPE(const urchin::SceneLight *)
 namespace urchin
 {
 
-	class LightTableView : public QTableView, public Observable
-	{
-		Q_OBJECT
+    class LightTableView : public QTableView, public Observable
+    {
+        Q_OBJECT
 
-		public:
-			explicit LightTableView(QWidget *parent = nullptr);
+        public:
+            explicit LightTableView(QWidget *parent = nullptr);
 
-			enum NotificationType
-			{
-				LIGHT_SELECTION_CHANGED
-			};
+            enum NotificationType
+            {
+                LIGHT_SELECTION_CHANGED
+            };
 
-			bool hasSceneLightSelected() const;
-			const SceneLight *getSelectedSceneLight() const;
+            bool hasSceneLightSelected() const;
+            const SceneLight *getSelectedSceneLight() const;
 
-			void addLight(const SceneLight *);
-			bool removeSelectedLight();
-			void removeAllLights();
+            void addLight(const SceneLight *);
+            bool removeSelectedLight();
+            void removeAllLights();
 
-		private:
-			QStandardItemModel *lightsListModel;
+        private:
+            QStandardItemModel *lightsListModel;
 
-			void selectionChanged(const QItemSelection &, const QItemSelection &) override;
-	};
+            void selectionChanged(const QItemSelection &, const QItemSelection &) override;
+    };
 
 }
 

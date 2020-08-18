@@ -8,43 +8,43 @@
 
 namespace urchin
 {
-	
-	/**
-	* @param angle Angle of the field of view (fovy)
-	*/
-	FpsCamera::FpsCamera(float angle, float nearPlane, float farPlane) :
-			Camera(angle, nearPlane, farPlane),
-			keyFront(DEFAULT_KEY_FRONT),
-			keyBack(DEFAULT_KEY_BACK),
-			keyLeft(DEFAULT_KEY_LEFT),
-			keyRight(DEFAULT_KEY_RIGHT),
-			isKeyFrontPressed(false),
-			isKeyBackPressed(false),
-			isKeyLeftPressed(false),
-			isKeyRightPressed(false),
-			speed(DEFAULT_SPEED)
-	{
-		useMouseToMoveCamera(true);
-	}
 
-	/**
-	* Specifies the keys to move the camera
-	*/
-	void FpsCamera::setKeys(unsigned int keyFront, unsigned int keyBack, unsigned int keyLeft, unsigned int keyRight)
-	{
-		this->keyFront = keyFront;
-		this->keyBack = keyBack;
-		this->keyLeft = keyLeft;
-		this->keyRight = keyRight;
-	}
+    /**
+    * @param angle Angle of the field of view (fovy)
+    */
+    FpsCamera::FpsCamera(float angle, float nearPlane, float farPlane) :
+            Camera(angle, nearPlane, farPlane),
+            keyFront(DEFAULT_KEY_FRONT),
+            keyBack(DEFAULT_KEY_BACK),
+            keyLeft(DEFAULT_KEY_LEFT),
+            keyRight(DEFAULT_KEY_RIGHT),
+            isKeyFrontPressed(false),
+            isKeyBackPressed(false),
+            isKeyLeftPressed(false),
+            isKeyRightPressed(false),
+            speed(DEFAULT_SPEED)
+    {
+        useMouseToMoveCamera(true);
+    }
 
-	void FpsCamera::setSpeed(float speed)
-	{
-		this->speed = speed;
-	}
+    /**
+    * Specifies the keys to move the camera
+    */
+    void FpsCamera::setKeys(unsigned int keyFront, unsigned int keyBack, unsigned int keyLeft, unsigned int keyRight)
+    {
+        this->keyFront = keyFront;
+        this->keyBack = keyBack;
+        this->keyLeft = keyLeft;
+        this->keyRight = keyRight;
+    }
 
-	bool FpsCamera::onKeyDown(unsigned int key)
-	{
+    void FpsCamera::setSpeed(float speed)
+    {
+        this->speed = speed;
+    }
+
+    bool FpsCamera::onKeyDown(unsigned int key)
+    {
         if (key == keyFront)
         {
             isKeyFrontPressed = true;
@@ -63,10 +63,10 @@ namespace urchin
             return false;
         }
         return true;
-	}
+    }
 
-	bool FpsCamera::onKeyUp(unsigned int key)
-	{
+    bool FpsCamera::onKeyUp(unsigned int key)
+    {
         if (key == keyFront)
         {
             isKeyFrontPressed = false;
@@ -85,29 +85,29 @@ namespace urchin
             return false;
         }
         return true;
-	}
+    }
 
-	void FpsCamera::updateCameraView(float dt)
-	{
-		if(isKeyLeftPressed)
-		{
+    void FpsCamera::updateCameraView(float dt)
+    {
+        if(isKeyLeftPressed)
+        {
             moveOnLocalXAxis(dt * speed);
-		}
-		
-		if(isKeyRightPressed)
-		{
+        }
+
+        if(isKeyRightPressed)
+        {
             moveOnLocalXAxis(-dt * speed);
-		}
-		
-		if(isKeyFrontPressed)
-		{
+        }
+
+        if(isKeyFrontPressed)
+        {
             moveOnLocalZAxis(dt * speed);
-		}
-		
-		if(isKeyBackPressed)
-		{
+        }
+
+        if(isKeyBackPressed)
+        {
             moveOnLocalZAxis(-dt * speed);
-		}
-	}
+        }
+    }
 
 }

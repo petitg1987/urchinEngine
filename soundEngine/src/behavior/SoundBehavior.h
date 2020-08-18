@@ -4,35 +4,35 @@
 namespace urchin
 {
 
-	class SoundBehavior
-	{
-		public:
-			enum PlayBehavior
-			{
-				PLAY_ONCE,
-				PLAY_LOOP
-			};
+    class SoundBehavior
+    {
+        public:
+            enum PlayBehavior
+            {
+                PLAY_ONCE,
+                PLAY_LOOP
+            };
 
-			enum StopBehavior
-			{
-				INSTANT_STOP,
-				SMOOTH_STOP
-			};
+            enum StopBehavior
+            {
+                INSTANT_STOP,
+                SMOOTH_STOP
+            };
 
-			SoundBehavior(PlayBehavior, StopBehavior);
-			SoundBehavior(PlayBehavior, StopBehavior, float);
+            SoundBehavior(PlayBehavior, StopBehavior);
+            SoundBehavior(PlayBehavior, StopBehavior, float);
 
-			PlayBehavior getPlayBehavior() const;
-			StopBehavior getStopBehavior() const;
+            PlayBehavior getPlayBehavior() const;
+            StopBehavior getStopBehavior() const;
 
-			float getVolumeDecreasePercentageOnStop() const;
+            float getVolumeDecreasePercentageOnStop() const;
 
-		private:
-			PlayBehavior playBehavior;
-			StopBehavior stopBehavior;
+        private:
+            PlayBehavior playBehavior;
+            StopBehavior stopBehavior;
 
-			float volumeDecreasePercentageOnStop;
-	};
+            float volumeDecreasePercentageOnStop;
+    };
 
 }
 

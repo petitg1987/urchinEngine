@@ -9,30 +9,30 @@
 namespace urchin
 {
 
-	struct WidgetOutline
-	{
-		unsigned int topWidth;
-		unsigned int bottomWidth;
-		unsigned int leftWidth;
-		unsigned int rightWidth;
-	};
+    struct WidgetOutline
+    {
+        unsigned int topWidth;
+        unsigned int bottomWidth;
+        unsigned int leftWidth;
+        unsigned int rightWidth;
+    };
 
-	class GUISkinService : public Singleton<GUISkinService>
-	{
-		public:
-			friend class Singleton<GUISkinService>;
+    class GUISkinService : public Singleton<GUISkinService>
+    {
+        public:
+            friend class Singleton<GUISkinService>;
 
-			void setSkin(const std::string &);
-		
-			std::shared_ptr<Image> createTexWidget(unsigned int, unsigned int, const std::shared_ptr<XmlChunk> &, WidgetOutline *widgetOutline=nullptr) const;
-			XmlParser *getXmlSkin() const;
+            void setSkin(const std::string &);
 
-		private:
-			GUISkinService();
-			~GUISkinService() override;
+            std::shared_ptr<Image> createTexWidget(unsigned int, unsigned int, const std::shared_ptr<XmlChunk> &, WidgetOutline *widgetOutline=nullptr) const;
+            XmlParser *getXmlSkin() const;
 
-			XmlParser *xmlSkin;
-	};
+        private:
+            GUISkinService();
+            ~GUISkinService() override;
+
+            XmlParser *xmlSkin;
+    };
 }
 
 #endif

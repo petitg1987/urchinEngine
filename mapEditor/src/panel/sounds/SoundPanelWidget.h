@@ -19,84 +19,84 @@
 namespace urchin
 {
 
-	class SoundPanelWidget : public QWidget, public Observer
-	{
-		Q_OBJECT
+    class SoundPanelWidget : public QWidget, public Observer
+    {
+        Q_OBJECT
 
-		#define PLAY_ONCE_LABEL "Play once"
-		#define PLAY_LOOP_LABEL "Play loop"
-		#define INSTANT_STOP_LABEL "Instant Stop"
-		#define SMOOTH_STOP_LABEL "Smooth Stop"
+        #define PLAY_ONCE_LABEL "Play once"
+        #define PLAY_LOOP_LABEL "Play loop"
+        #define INSTANT_STOP_LABEL "Instant Stop"
+        #define SMOOTH_STOP_LABEL "Smooth Stop"
 
-		public:
-			SoundPanelWidget();
-			~SoundPanelWidget() override = default;
+        public:
+            SoundPanelWidget();
+            ~SoundPanelWidget() override = default;
 
-			SoundTableView *getSoundTableView() const;
+            SoundTableView *getSoundTableView() const;
 
-			void load(SoundController *);
-			void unload();
+            void load(SoundController *);
+            void unload();
 
-		private:
-			void setupSoundGeneralPropertiesBox(QVBoxLayout *);
-			void setupSpecificPointSoundBox(QVBoxLayout *);
-			void setupSoundBehaviorPropertiesBox(QVBoxLayout *);
-			void setupSpecificTriggerShapeBox(QVBoxLayout *);
+        private:
+            void setupSoundGeneralPropertiesBox(QVBoxLayout *);
+            void setupSpecificPointSoundBox(QVBoxLayout *);
+            void setupSoundBehaviorPropertiesBox(QVBoxLayout *);
+            void setupSpecificTriggerShapeBox(QVBoxLayout *);
 
-			void notify(Observable *, int) override;
-			void setupSoundDataFrom(const SceneSound *);
-			void setupAmbientSoundDataFrom();
-			void setupPointSoundDataFrom(const PointSound *);
-			void setupSoundBehaviorDataFrom(const SoundTrigger *);
-			void setupManualTriggerDataFrom();
-			void setupShapeTriggerDataFrom(const SceneSound *);
+            void notify(Observable *, int) override;
+            void setupSoundDataFrom(const SceneSound *);
+            void setupAmbientSoundDataFrom();
+            void setupPointSoundDataFrom(const PointSound *);
+            void setupSoundBehaviorDataFrom(const SoundTrigger *);
+            void setupManualTriggerDataFrom();
+            void setupShapeTriggerDataFrom(const SceneSound *);
 
-			SoundShapeWidget *retrieveSoundShapeWidget(const SoundShape *, const SceneSound *);
+            SoundShapeWidget *retrieveSoundShapeWidget(const SoundShape *, const SceneSound *);
 
-			SoundController *soundController;
+            SoundController *soundController;
 
-			SoundTableView *soundTableView;
-			QPushButton *addSoundButton;
-			QPushButton *removeSoundButton;
+            SoundTableView *soundTableView;
+            QPushButton *addSoundButton;
+            QPushButton *removeSoundButton;
 
-			QGroupBox *soundPropertiesGroupBox;
-			QGroupBox *soundTriggerGroupBox;
-			QGroupBox *specificTriggerShapeGroupBox;
-			QGroupBox *specificPointSoundGroupBox;
+            QGroupBox *soundPropertiesGroupBox;
+            QGroupBox *soundTriggerGroupBox;
+            QGroupBox *specificTriggerShapeGroupBox;
+            QGroupBox *specificPointSoundGroupBox;
 
-			bool disableSoundEvent;
+            bool disableSoundEvent;
 
-			//sound general properties
-			QDoubleSpinBox *volume;
-			QLabel *soundType;
+            //sound general properties
+            QDoubleSpinBox *volume;
+            QLabel *soundType;
 
-			//sound specific properties
-			QDoubleSpinBox *positionX, *positionY, *positionZ, *inaudibleDistance;
+            //sound specific properties
+            QDoubleSpinBox *positionX, *positionY, *positionZ, *inaudibleDistance;
 
-			//sound behavior
-			QComboBox *playBehavior, *stopBehavior;
-			QDoubleSpinBox *volumeDecreasePercentageOnStop;
-			QLabel *soundTriggerType;
+            //sound behavior
+            QComboBox *playBehavior, *stopBehavior;
+            QDoubleSpinBox *volumeDecreasePercentageOnStop;
+            QLabel *soundTriggerType;
 
-			//sound trigger specific properties
-			QVBoxLayout *triggerShapeLayout;
-			QPushButton *changeSoundTriggerTypeButton;
-			QLabel *soundShapeType;
-			QPushButton *changeSoundShapeTypeButton;
-			SoundShapeWidget *soundShapeWidget;
+            //sound trigger specific properties
+            QVBoxLayout *triggerShapeLayout;
+            QPushButton *changeSoundTriggerTypeButton;
+            QLabel *soundShapeType;
+            QPushButton *changeSoundShapeTypeButton;
+            SoundShapeWidget *soundShapeWidget;
 
-		private slots:
-			void showAddSoundDialog();
-			void removeSelectedSound();
+        private slots:
+            void showAddSoundDialog();
+            void removeSelectedSound();
 
-			void updateSoundGeneralProperties();
-			void updateSoundSpecificProperties();
-			void updateSoundBehaviorProperties();
+            void updateSoundGeneralProperties();
+            void updateSoundSpecificProperties();
+            void updateSoundBehaviorProperties();
 
-			void showChangeSoundTriggerDialog();
-			void showChangeSoundShapeDialog();
-			void soundShapeChanged(const SoundShape *);
-	};
+            void showChangeSoundTriggerDialog();
+            void showChangeSoundShapeDialog();
+            void soundShapeChanged(const SoundShape *);
+    };
 
 }
 

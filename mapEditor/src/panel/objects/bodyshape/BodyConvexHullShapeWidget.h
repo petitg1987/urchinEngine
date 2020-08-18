@@ -14,34 +14,34 @@
 namespace urchin
 {
 
-	class BodyConvexHullShapeWidget : public BodyShapeWidget
-	{
-		Q_OBJECT
+    class BodyConvexHullShapeWidget : public BodyShapeWidget
+    {
+        Q_OBJECT
 
-		public:
-			explicit BodyConvexHullShapeWidget(const SceneObject *);
-			~BodyConvexHullShapeWidget() override = default;
+        public:
+            explicit BodyConvexHullShapeWidget(const SceneObject *);
+            ~BodyConvexHullShapeWidget() override = default;
 
-			std::string getBodyShapeName() const override;
+            std::string getBodyShapeName() const override;
 
-		protected:
-			void doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>) override;
-			std::shared_ptr<const CollisionShape3D> createBodyShape() const override;
+        protected:
+            void doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>) override;
+            std::shared_ptr<const CollisionShape3D> createBodyShape() const override;
 
-		private:
-			void addPoint(const Point3<float> &);
-			std::vector<Point3<float>> getPoints() const;
+        private:
+            void addPoint(const Point3<float> &);
+            std::vector<Point3<float>> getPoints() const;
 
-			QLabel *pointsLabel;
-			QTableView *pointsTable;
-			QStandardItemModel *pointsTableModel;
-			QPushButton *addPointButton, *removePointButton;
+            QLabel *pointsLabel;
+            QTableView *pointsTable;
+            QStandardItemModel *pointsTableModel;
+            QPushButton *addPointButton, *removePointButton;
 
-		private slots:
-			void addNewPoint();
-			void removeSelectedPoint();
+        private slots:
+            void addNewPoint();
+            void removeSelectedPoint();
 
-	};
+    };
 
 }
 

@@ -13,38 +13,38 @@
 namespace urchin
 {
 
-	class NewLightDialog : public QDialog
-	{
-		Q_OBJECT
+    class NewLightDialog : public QDialog
+    {
+        Q_OBJECT
 
-		#define SUN_LIGHT_LABEL "Sun"
-		#define OMNIDIRECTIONAL_LIGHT_LABEL "Omnidirectional"
+        #define SUN_LIGHT_LABEL "Sun"
+        #define OMNIDIRECTIONAL_LIGHT_LABEL "Omnidirectional"
 
-		public:
-			NewLightDialog(QWidget *parent, const LightController *);
+        public:
+            NewLightDialog(QWidget *parent, const LightController *);
 
-			SceneLight *getSceneLight() const;
+            SceneLight *getSceneLight() const;
 
-		private:
-			void setupNameFields(QGridLayout *);
-			void setupLightTypeFields(QGridLayout *);
+        private:
+            void setupNameFields(QGridLayout *);
+            void setupLightTypeFields(QGridLayout *);
 
-			void updateLightName();
-			int buildSceneLight(int);
+            void updateLightName();
+            int buildSceneLight(int);
 
-			void done(int) override;
-			bool isSceneLightExist(const std::string &);
+            void done(int) override;
+            bool isSceneLightExist(const std::string &);
 
-			const LightController *lightController;
+            const LightController *lightController;
 
-			QLabel *lightNameLabel;
-			QLineEdit *lightNameText;
-			QLabel *lightTypeLabel;
-			QComboBox *lightTypeComboBox;
+            QLabel *lightNameLabel;
+            QLineEdit *lightNameText;
+            QLabel *lightTypeLabel;
+            QComboBox *lightTypeComboBox;
 
-			std::string lightName;
-			SceneLight *sceneLight;
-	};
+            std::string lightName;
+            SceneLight *sceneLight;
+    };
 
 }
 

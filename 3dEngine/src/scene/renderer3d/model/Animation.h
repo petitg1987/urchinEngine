@@ -9,35 +9,35 @@
 
 namespace urchin
 {
-	
-	class Animation
-	{
-		public:
-			Animation(ConstAnimation *, Meshes *);
-			~Animation();
 
-			const std::vector<Bone> &getSkeleton() const;
-			const AABBox<float> &getGlobalAABBox() const;
-			const std::vector<AABBox<float>> &getGlobalSplitAABBoxes() const;
-			const AABBox<float> &getGlobalLocalAABBox() const;
+    class Animation
+    {
+        public:
+            Animation(ConstAnimation *, Meshes *);
+            ~Animation();
 
-			const ConstAnimation *getConstAnimation() const;
-			unsigned int getCurrFrame() const;
+            const std::vector<Bone> &getSkeleton() const;
+            const AABBox<float> &getGlobalAABBox() const;
+            const std::vector<AABBox<float>> &getGlobalSplitAABBoxes() const;
+            const AABBox<float> &getGlobalLocalAABBox() const;
 
-			void animate(float);
+            const ConstAnimation *getConstAnimation() const;
+            unsigned int getCurrFrame() const;
 
-			void onMoving(const Transform<float> &);
+            void animate(float);
 
-		private:
-			mutable ConstAnimation *constAnimation;
-			Meshes *meshes;
-			
-			AnimationInformation animationInformation;
-			std::vector<Bone> skeleton;
-			AABBox<float> globalBBox; //bounding box transformed by the transformation of the model
-			std::vector<AABBox<float>> globalSplitBBoxes;
-	};
-	
+            void onMoving(const Transform<float> &);
+
+        private:
+            mutable ConstAnimation *constAnimation;
+            Meshes *meshes;
+
+            AnimationInformation animationInformation;
+            std::vector<Bone> skeleton;
+            AABBox<float> globalBBox; //bounding box transformed by the transformation of the model
+            std::vector<AABBox<float>> globalSplitBBoxes;
+    };
+
 }
 
 #endif

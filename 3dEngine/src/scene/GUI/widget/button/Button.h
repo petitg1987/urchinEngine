@@ -14,35 +14,35 @@
 namespace urchin
 {
 
-	class Button : public Widget
-	{
-		public:
-			Button(Position, Size, std::string , std::string );
-			~Button() override = default;
-			
-			void createOrUpdateWidget() override;
+    class Button : public Widget
+    {
+        public:
+            Button(Position, Size, std::string , std::string );
+            ~Button() override = default;
 
-			void display(int, float) override;
-			
-		private:
-			unsigned int getTextureId();
+            void createOrUpdateWidget() override;
 
-			bool onKeyDownEvent(unsigned int) override;
-			bool onKeyUpEvent(unsigned int) override;
-			bool onMouseMoveEvent(int, int) override;
+            void display(int, float) override;
 
-			//properties
-			const std::string nameSkin;
+        private:
+            unsigned int getTextureId();
 
-			//display information
-			Text *text;
-			const std::string buttonText;
+            bool onKeyDownEvent(unsigned int) override;
+            bool onKeyUpEvent(unsigned int) override;
+            bool onMouseMoveEvent(int, int) override;
 
-			//visual
-			unsigned int textureID;
-			std::shared_ptr<Image> texInfoDefault, texInfoOnFocus, texInfoOnClick;
-			std::shared_ptr<QuadDisplayer> quadDisplayer;
-	};
+            //properties
+            const std::string nameSkin;
+
+            //display information
+            Text *text;
+            const std::string buttonText;
+
+            //visual
+            unsigned int textureID;
+            std::shared_ptr<Image> texInfoDefault, texInfoOnFocus, texInfoOnClick;
+            std::shared_ptr<QuadDisplayer> quadDisplayer;
+    };
 
 }
 

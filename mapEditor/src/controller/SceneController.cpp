@@ -5,40 +5,40 @@
 namespace urchin
 {
 
-	SceneController::SceneController() :
+    SceneController::SceneController() :
             AbstractController()
-	{
-		objectController = new ObjectController();
+    {
+        objectController = new ObjectController();
         subControllers.emplace_back(objectController);
 
-		lightController = new LightController();
+        lightController = new LightController();
         subControllers.emplace_back(lightController);
 
-		terrainController = new TerrainController();
+        terrainController = new TerrainController();
         subControllers.emplace_back(terrainController);
 
-		waterController = new WaterController();
+        waterController = new WaterController();
         subControllers.emplace_back(waterController);
 
-		skyController = new SkyController();
+        skyController = new SkyController();
         subControllers.emplace_back(skyController);
 
-		soundController = new SoundController();
+        soundController = new SoundController();
         subControllers.emplace_back(soundController);
 
-		aiController = new AIController();
+        aiController = new AIController();
         subControllers.emplace_back(aiController);
-	}
+    }
 
-	SceneController::~SceneController()
-	{
-	    for(const auto &subController: subControllers)
+    SceneController::~SceneController()
+    {
+        for(const auto &subController: subControllers)
         {
-	        delete subController;
+            delete subController;
         }
-	}
+    }
 
-	void SceneController::setup(MapHandler *mapHandler)
+    void SceneController::setup(MapHandler *mapHandler)
     {
         AbstractController::setup(mapHandler);
 
@@ -53,7 +53,7 @@ namespace urchin
 
     void SceneController::addObserverOnAllControllers(Observer *observer, int notificationType)
     {
-	    this->addObserver(observer, notificationType);
+        this->addObserver(observer, notificationType);
         for(const auto &subController: subControllers)
         {
             subController->addObserver(observer, notificationType);
@@ -65,11 +65,11 @@ namespace urchin
          AbstractController::markModified();
     }
 
-	bool SceneController::isModified() const
-	{
-	    if(AbstractController::isModified())
+    bool SceneController::isModified() const
+    {
+        if(AbstractController::isModified())
         {
-	        return true;
+            return true;
         }
 
         for(const auto &subController: subControllers)
@@ -81,60 +81,60 @@ namespace urchin
         }
 
         return false;
-	}
+    }
 
-	void SceneController::resetModified()
-	{
+    void SceneController::resetModified()
+    {
         AbstractController::resetModified();
         for(const auto &subController: subControllers)
         {
             subController->resetModified();
         }
-	}
+    }
 
-	void SceneController::saveMapOnFile(const std::string &mapFilename)
-	{
-		std::string tmpResourcesDirectory = FileSystem::instance()->getResourcesDirectory();
-		FileSystem::instance()->setupResourcesDirectory("");
-		getMapHandler()->writeMapOnFile(mapFilename);
-		FileSystem::instance()->setupResourcesDirectory(tmpResourcesDirectory);
+    void SceneController::saveMapOnFile(const std::string &mapFilename)
+    {
+        std::string tmpResourcesDirectory = FileSystem::instance()->getResourcesDirectory();
+        FileSystem::instance()->setupResourcesDirectory("");
+        getMapHandler()->writeMapOnFile(mapFilename);
+        FileSystem::instance()->setupResourcesDirectory(tmpResourcesDirectory);
 
-		resetModified();
-	}
+        resetModified();
+    }
 
-	ObjectController *SceneController::getObjectController()
-	{
-		return objectController;
-	}
+    ObjectController *SceneController::getObjectController()
+    {
+        return objectController;
+    }
 
-	LightController *SceneController::getLightController()
-	{
-		return lightController;
-	}
+    LightController *SceneController::getLightController()
+    {
+        return lightController;
+    }
 
-	TerrainController *SceneController::getTerrainController()
-	{
-		return terrainController;
-	}
+    TerrainController *SceneController::getTerrainController()
+    {
+        return terrainController;
+    }
 
-	WaterController *SceneController::getWaterController()
-	{
-		return waterController;
-	}
+    WaterController *SceneController::getWaterController()
+    {
+        return waterController;
+    }
 
     SkyController *SceneController::getSkyController()
     {
         return skyController;
     }
 
-	SoundController *SceneController::getSoundController()
-	{
-		return soundController;
-	}
+    SoundController *SceneController::getSoundController()
+    {
+        return soundController;
+    }
 
-	AIController *SceneController::getAIController()
-	{
-		return aiController;
-	}
+    AIController *SceneController::getAIController()
+    {
+        return aiController;
+    }
 
 }

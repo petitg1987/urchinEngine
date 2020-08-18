@@ -5,30 +5,30 @@
 
 namespace urchin
 {
-	
-	class Resource
-	{
-		public:
-			Resource();
-			virtual ~Resource();
-		
-			const std::string& getName() const;
-			void setName(const std::string &name);
 
-			unsigned int getRefCount() const;
-			void addRef();
-			void release();
+    class Resource
+    {
+        public:
+            Resource();
+            virtual ~Resource();
 
-			class ResourceDeleter
-			{
-				public:
-					void operator()(Resource *);
-			};
+            const std::string& getName() const;
+            void setName(const std::string &name);
 
-		private:
-			std::string name;
-			unsigned int refCount;
-	};
+            unsigned int getRefCount() const;
+            void addRef();
+            void release();
+
+            class ResourceDeleter
+            {
+                public:
+                    void operator()(Resource *);
+            };
+
+        private:
+            std::string name;
+            unsigned int refCount;
+    };
 
 }
 

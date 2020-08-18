@@ -15,39 +15,39 @@
 namespace urchin
 {
 
-	/**
-	* Collision world: process integration, broad phase and narrow phase
-	*/
-	class CollisionWorld : public Observable
-	{
-		public:
-			explicit CollisionWorld(BodyManager *);
-			~CollisionWorld() override;
+    /**
+    * Collision world: process integration, broad phase and narrow phase
+    */
+    class CollisionWorld : public Observable
+    {
+        public:
+            explicit CollisionWorld(BodyManager *);
+            ~CollisionWorld() override;
 
-			enum NotificationType
-			{
-				COLLISION_RESULT_UPDATED
-			};
+            enum NotificationType
+            {
+                COLLISION_RESULT_UPDATED
+            };
 
-			BroadPhaseManager *getBroadPhaseManager() const;
-			NarrowPhaseManager *getNarrowPhaseManager() const;
+            BroadPhaseManager *getBroadPhaseManager() const;
+            NarrowPhaseManager *getNarrowPhaseManager() const;
 
-			void process(float, const Vector3<float> &);
+            void process(float, const Vector3<float> &);
 
-			const std::vector<ManifoldResult> &getLastUpdatedManifoldResults();
+            const std::vector<ManifoldResult> &getLastUpdatedManifoldResults();
 
-		private:
-			BodyManager *bodyManager;
+        private:
+            BodyManager *bodyManager;
 
-			BroadPhaseManager *broadPhaseManager;
-			NarrowPhaseManager *narrowPhaseManager;
-			IntegrateVelocityManager *integrateVelocityManager;
-			ConstraintSolverManager *constraintSolverManager;
-			IslandManager *islandManager;
-			IntegrateTransformManager *integrateTransformManager;
+            BroadPhaseManager *broadPhaseManager;
+            NarrowPhaseManager *narrowPhaseManager;
+            IntegrateVelocityManager *integrateVelocityManager;
+            ConstraintSolverManager *constraintSolverManager;
+            IslandManager *islandManager;
+            IntegrateTransformManager *integrateTransformManager;
 
-			std::vector<ManifoldResult> manifoldResults;
-	};
+            std::vector<ManifoldResult> manifoldResults;
+    };
 
 }
 

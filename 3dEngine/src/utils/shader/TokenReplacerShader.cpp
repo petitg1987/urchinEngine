@@ -3,9 +3,9 @@
 namespace urchin
 {
 
-	std::string TokenReplacerShader::replaceTokens(const std::string &shaderSource, const std::map<std::string, std::string> &tokens)
-	{
-		std::string result = shaderSource;
+    std::string TokenReplacerShader::replaceTokens(const std::string &shaderSource, const std::map<std::string, std::string> &tokens)
+    {
+        std::string result = shaderSource;
         for (const auto &token : tokens)
         {
             std::ostringstream startLineToken;
@@ -17,6 +17,6 @@ namespace urchin
             StringUtil::replaceLine(result, startLineToken.str(), newLineValue.str());
         }
 
-		return result;
-	}
+        return result;
+    }
 }

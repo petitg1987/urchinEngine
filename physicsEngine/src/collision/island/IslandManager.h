@@ -11,27 +11,27 @@
 namespace urchin
 {
 
-	class IslandManager
-	{
-		public:
-			explicit IslandManager(const BodyManager *);
+    class IslandManager
+    {
+        public:
+            explicit IslandManager(const BodyManager *);
 
-			void refreshBodyActiveState(const std::vector<ManifoldResult> &);
+            void refreshBodyActiveState(const std::vector<ManifoldResult> &);
 
-		private:
-			void buildIslands(const std::vector<ManifoldResult> &);
-			unsigned int computeNumberElements(const std::vector<IslandElementLink> &, unsigned int) const;
-			bool isBodyMoving(const WorkRigidBody *) const;
+        private:
+            void buildIslands(const std::vector<ManifoldResult> &);
+            unsigned int computeNumberElements(const std::vector<IslandElementLink> &, unsigned int) const;
+            bool isBodyMoving(const WorkRigidBody *) const;
 
             void printIslands(const std::vector<IslandElementLink> &);
 
-			const BodyManager *bodyManager;
-			std::vector<IslandElement *> islandElements;
-			IslandContainer islandContainer;
+            const BodyManager *bodyManager;
+            std::vector<IslandElement *> islandElements;
+            IslandContainer islandContainer;
 
-			const float squaredLinearSleepingThreshold;
-			const float squaredAngularSleepingThreshold;
-	};
+            const float squaredLinearSleepingThreshold;
+            const float squaredAngularSleepingThreshold;
+    };
 
 }
 

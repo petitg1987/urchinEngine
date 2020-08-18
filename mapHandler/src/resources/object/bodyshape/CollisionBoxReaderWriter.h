@@ -10,17 +10,17 @@
 namespace urchin
 {
 
-	class CollisionBoxReaderWriter : public CollisionShapeReaderWriter
-	{
-		//XML tags
-		#define HALF_SIZE_TAG "halfSize"
+    class CollisionBoxReaderWriter : public CollisionShapeReaderWriter
+    {
+        //XML tags
+        #define HALF_SIZE_TAG "halfSize"
 
-		public:
-			~CollisionBoxReaderWriter() override = default;
+        public:
+            ~CollisionBoxReaderWriter() override = default;
 
-			CollisionShape3D *loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &) const override;
-			void writeOn(const std::shared_ptr<XmlChunk> &, const CollisionShape3D *, XmlWriter &) const override;
-	};
+            CollisionShape3D *loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &) const override;
+            void writeOn(const std::shared_ptr<XmlChunk> &, const CollisionShape3D *, XmlWriter &) const override;
+    };
 
 }
 

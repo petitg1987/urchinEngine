@@ -14,61 +14,61 @@
 namespace urchin
 {
 
-	class SceneDisplayerWidget : public QGLWidget, public Observable
-	{
-		Q_OBJECT
+    class SceneDisplayerWidget : public QGLWidget, public Observable
+    {
+        Q_OBJECT
 
-		public:
-			SceneDisplayerWidget(QWidget *, const StatusBarController &, std::string);
-			~SceneDisplayerWidget() override;
+        public:
+            SceneDisplayerWidget(QWidget *, const StatusBarController &, std::string);
+            ~SceneDisplayerWidget() override;
 
-			enum NotificationType
-			{
-				BODY_PICKED
-			};
+            enum NotificationType
+            {
+                BODY_PICKED
+            };
 
             void loadMap(SceneController *, const std::string &, const std::string &);
-			void saveState(const std::string &) const;
-			void closeMap();
+            void saveState(const std::string &) const;
+            void closeMap();
 
-			void setViewProperties(SceneDisplayer::ViewProperties, bool);
-			void setHighlightSceneObject(const SceneObject *);
-			void setHighlightCompoundShapeComponent(std::shared_ptr<const LocalizedCollisionShape>);
-			void setHighlightSceneLight(const SceneLight *);
-			void setHighlightSceneSound(const SceneSound *);
+            void setViewProperties(SceneDisplayer::ViewProperties, bool);
+            void setHighlightSceneObject(const SceneObject *);
+            void setHighlightCompoundShapeComponent(std::shared_ptr<const LocalizedCollisionShape>);
+            void setHighlightSceneLight(const SceneLight *);
+            void setHighlightSceneSound(const SceneSound *);
 
-			void initializeGL() override;
-			void paintGL() override;
-			void resizeGL(int, int) override;
+            void initializeGL() override;
+            void paintGL() override;
+            void resizeGL(int, int) override;
 
-			void keyPressEvent(QKeyEvent *) override;
-			void keyReleaseEvent(QKeyEvent *) override;
-			void mousePressEvent(QMouseEvent *) override;
-			void mouseReleaseEvent(QMouseEvent *) override;
-			void mouseMoveEvent(QMouseEvent *) override;
-			void leaveEvent(QEvent *) override;
+            void keyPressEvent(QKeyEvent *) override;
+            void keyReleaseEvent(QKeyEvent *) override;
+            void mousePressEvent(QMouseEvent *) override;
+            void mouseReleaseEvent(QMouseEvent *) override;
+            void mouseMoveEvent(QMouseEvent *) override;
+            void leaveEvent(QEvent *) override;
 
             bool onMouseClickBodyPickup();
-			const std::string &getLastPickedBodyId() const;
-			void addObserverObjectMoveController(Observer *, int);
+            const std::string &getLastPickedBodyId() const;
+            void addObserverObjectMoveController(Observer *, int);
 
-		private:
-			void updateSceneDisplayerViewProperties();
+        private:
+            void updateSceneDisplayerViewProperties();
 
             StatusBarController statusBarController;
-			std::string mapEditorPath;
+            std::string mapEditorPath;
 
-			SceneDisplayer *sceneDisplayer;
-			bool viewProperties[SceneDisplayer::LAST_VIEW_PROPERTIES];
+            SceneDisplayer *sceneDisplayer;
+            bool viewProperties[SceneDisplayer::LAST_VIEW_PROPERTIES];
 
-			int mouseX, mouseY;
-			std::string lastPickedBodyId;
+            int mouseX, mouseY;
+            std::string lastPickedBodyId;
 
         private slots:
-	        void onCtrlXPressed();
+            void onCtrlXPressed();
             void onCtrlYPressed();
             void onCtrlZPressed();
-	};
+    };
 
 }
 

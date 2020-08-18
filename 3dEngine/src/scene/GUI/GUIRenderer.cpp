@@ -15,52 +15,52 @@ namespace urchin
     //Debug parameters
     bool DEBUG_DISPLAY_FONT_TEXTURE = false;
 
-	GUIRenderer::GUIRenderer() :
-		GUIShader(0),
-		mProjectionLoc(0),
-		translateDistanceLoc(0),
-		diffuseTexSamplerLoc(0)
-	{
-		GUIShader = ShaderManager::instance()->createProgram("gui.vert", "", "gui.frag");
+    GUIRenderer::GUIRenderer() :
+        GUIShader(0),
+        mProjectionLoc(0),
+        translateDistanceLoc(0),
+        diffuseTexSamplerLoc(0)
+    {
+        GUIShader = ShaderManager::instance()->createProgram("gui.vert", "", "gui.frag");
 
-		ShaderManager::instance()->bind(GUIShader);
-		mProjectionLoc  = glGetUniformLocation(GUIShader, "mProjection");
-		translateDistanceLoc = glGetUniformLocation(GUIShader, "translateDistance");
-		diffuseTexSamplerLoc = glGetUniformLocation(GUIShader, "diffuseTexture");
-	}
+        ShaderManager::instance()->bind(GUIShader);
+        mProjectionLoc  = glGetUniformLocation(GUIShader, "mProjection");
+        translateDistanceLoc = glGetUniformLocation(GUIShader, "translateDistance");
+        diffuseTexSamplerLoc = glGetUniformLocation(GUIShader, "diffuseTexture");
+    }
 
-	GUIRenderer::~GUIRenderer()
-	{
-		for(long i=(long)widgets.size()-1; i>=0; --i)
-		{
-			delete widgets[i];
-		}
+    GUIRenderer::~GUIRenderer()
+    {
+        for(long i=(long)widgets.size()-1; i>=0; --i)
+        {
+            delete widgets[i];
+        }
 
-		ShaderManager::instance()->removeProgram(GUIShader);
-	}
+        ShaderManager::instance()->removeProgram(GUIShader);
+    }
 
-	void GUIRenderer::onResize(unsigned int sceneWidth, unsigned int sceneHeight)
-	{
-		//orthogonal matrix with origin at top left screen
-		ShaderManager::instance()->bind(GUIShader);
-		mProjection.setValues(2.0f/(float)sceneWidth, 0.0f, -1.0f,
-			0.0f, -2.0f/(float)sceneHeight, 1.0f,
-			0.0f, 0.0f, 1.0f);
-		glUniformMatrix3fv(mProjectionLoc, 1, GL_FALSE, (const float*)mProjection);
+    void GUIRenderer::onResize(unsigned int sceneWidth, unsigned int sceneHeight)
+    {
+        //orthogonal matrix with origin at top left screen
+        ShaderManager::instance()->bind(GUIShader);
+        mProjection.setValues(2.0f/(float)sceneWidth, 0.0f, -1.0f,
+            0.0f, -2.0f/(float)sceneHeight, 1.0f,
+            0.0f, 0.0f, 1.0f);
+        glUniformMatrix3fv(mProjectionLoc, 1, GL_FALSE, (const float*)mProjection);
 
-		//widgets resize
-		for(long i=(long)widgets.size()-1; i>=0; --i)
-		{
-			widgets[i]->onResize(sceneWidth, sceneHeight);
-		}
-	}
+        //widgets resize
+        for(long i=(long)widgets.size()-1; i>=0; --i)
+        {
+            widgets[i]->onResize(sceneWidth, sceneHeight);
+        }
+    }
 
-	void GUIRenderer::notify(Observable *observable, int notificationType)
-	{
-		if(auto *widget = dynamic_cast<Widget *>(observable))
-		{
-			if(notificationType==Widget::SET_IN_FOREGROUND)
-			{
+    void GUIRenderer::notify(Observable *observable, int notificationType)
+    {
+        if(auto *widget = dynamic_cast<Widget *>(observable))
+        {
+            if(notificationType==Widget::SET_IN_FOREGROUND)
+            {
                 auto it = std::find(widgets.begin(), widgets.end(), widget);
                 widgets.erase(it);
                 widgets.push_back(widget);
@@ -73,115 +73,115 @@ namespace urchin
                         widgets[i]->reset();
                     }
                 }
-			}
-		}
-	}
+            }
+        }
+    }
 
-	void GUIRenderer::setupSkin(const std::string &skinFilename)
-	{
-		GUISkinService::instance()->setSkin(skinFilename);
-	}
+    void GUIRenderer::setupSkin(const std::string &skinFilename)
+    {
+        GUISkinService::instance()->setSkin(skinFilename);
+    }
 
-	bool GUIRenderer::onKeyDown(unsigned int key)
-	{
-		if(key < 260)
-		{
-			for(long i=(long)widgets.size()-1; i>=0; --i)
-			{
-				if(widgets[i]->isVisible() && !widgets[i]->onKeyDown(key))
-				{
-					return false;
-				}
-			}
-		}
-		return true;
-	}
+    bool GUIRenderer::onKeyDown(unsigned int key)
+    {
+        if(key < 260)
+        {
+            for(long i=(long)widgets.size()-1; i>=0; --i)
+            {
+                if(widgets[i]->isVisible() && !widgets[i]->onKeyDown(key))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
-	bool GUIRenderer::onKeyUp(unsigned int key)
-	{
-		if(key < 260)
-		{
-			for(long i=(long)widgets.size()-1; i>=0; --i)
-			{
-				if(widgets[i]->isVisible() && !widgets[i]->onKeyUp(key))
-				{
-					return false;
-				}
-			}
-		}
-		return true;
-	}
+    bool GUIRenderer::onKeyUp(unsigned int key)
+    {
+        if(key < 260)
+        {
+            for(long i=(long)widgets.size()-1; i>=0; --i)
+            {
+                if(widgets[i]->isVisible() && !widgets[i]->onKeyUp(key))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
-	bool GUIRenderer::onChar(unsigned int character)
-	{
-		for(long i=(long)widgets.size()-1; i>=0; --i)
-		{
-			if(widgets[i]->isVisible() && !widgets[i]->onChar(character))
-			{
-				return false;
-			}
-		}
-		return true;
-	}
+    bool GUIRenderer::onChar(unsigned int character)
+    {
+        for(long i=(long)widgets.size()-1; i>=0; --i)
+        {
+            if(widgets[i]->isVisible() && !widgets[i]->onChar(character))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
-	bool GUIRenderer::onMouseMove(int mouseX, int mouseY)
-	{
-		for(long i=(long)widgets.size()-1; i>=0; --i)
-		{
-			if(widgets[i]->isVisible() && !widgets[i]->onMouseMove(mouseX, mouseY))
-			{
-				return false;
-			}
-		}
-		return true;
-	}
+    bool GUIRenderer::onMouseMove(int mouseX, int mouseY)
+    {
+        for(long i=(long)widgets.size()-1; i>=0; --i)
+        {
+            if(widgets[i]->isVisible() && !widgets[i]->onMouseMove(mouseX, mouseY))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
-	void GUIRenderer::onDisable()
-	{
-		for(long i=(long)widgets.size()-1; i>=0; --i)
-		{
-			if(widgets[i]->isVisible())
-			{
-				widgets[i]->onDisable();
-			}
-		}
-	}
+    void GUIRenderer::onDisable()
+    {
+        for(long i=(long)widgets.size()-1; i>=0; --i)
+        {
+            if(widgets[i]->isVisible())
+            {
+                widgets[i]->onDisable();
+            }
+        }
+    }
 
-	void GUIRenderer::addWidget(Widget *widget)
-	{
-		widgets.push_back(widget);
+    void GUIRenderer::addWidget(Widget *widget)
+    {
+        widgets.push_back(widget);
 
-		widget->addObserver(this, Widget::SET_IN_FOREGROUND);
-	}
+        widget->addObserver(this, Widget::SET_IN_FOREGROUND);
+    }
 
-	void GUIRenderer::removeWidget(Widget *widget)
-	{
-		auto it = std::find(widgets.begin(), widgets.end(), widget);
-		delete widget;
-		widgets.erase(it);
-	}
+    void GUIRenderer::removeWidget(Widget *widget)
+    {
+        auto it = std::find(widgets.begin(), widgets.end(), widget);
+        delete widget;
+        widgets.erase(it);
+    }
 
-	void GUIRenderer::display(float dt)
-	{
-		ScopeProfiler profiler("3d", "uiRenderDisplay");
+    void GUIRenderer::display(float dt)
+    {
+        ScopeProfiler profiler("3d", "uiRenderDisplay");
 
-		ShaderManager::instance()->bind(GUIShader);
-		glUniform1i(diffuseTexSamplerLoc, 0);
+        ShaderManager::instance()->bind(GUIShader);
+        glUniform1i(diffuseTexSamplerLoc, 0);
 
-		glActiveTexture(GL_TEXTURE0);
+        glActiveTexture(GL_TEXTURE0);
 
-		for (auto &widget : widgets)
-		{
-			if(widget->isVisible())
-			{
-				Vector2<int> translateVector(widget->getGlobalPositionX(), widget->getGlobalPositionY());
-				glUniform2iv(translateDistanceLoc, 1, (const int*)translateVector);
+        for (auto &widget : widgets)
+        {
+            if(widget->isVisible())
+            {
+                Vector2<int> translateVector(widget->getGlobalPositionX(), widget->getGlobalPositionY());
+                glUniform2iv(translateDistanceLoc, 1, (const int*)translateVector);
 
-				widget->display(translateDistanceLoc, dt);
-			}
-		}
+                widget->display(translateDistanceLoc, dt);
+            }
+        }
 
-		if(DEBUG_DISPLAY_FONT_TEXTURE)
+        if(DEBUG_DISPLAY_FONT_TEXTURE)
         {
             Font *font = MediaManager::instance()->getMedia<Font>("font/font.fnt");
 
@@ -192,6 +192,6 @@ namespace urchin
             textureDisplayer.display();
             font->release();
         }
-	}
+    }
 
 }

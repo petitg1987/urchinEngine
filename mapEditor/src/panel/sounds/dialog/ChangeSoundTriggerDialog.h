@@ -13,28 +13,28 @@
 namespace urchin
 {
 
-	class ChangeSoundTriggerDialog : public QDialog
-	{
-		Q_OBJECT
+    class ChangeSoundTriggerDialog : public QDialog
+    {
+        Q_OBJECT
 
-		#define MANUAL_TRIGGER_LABEL "Manual"
-		#define SHAPE_TRIGGER_LABEL "Shape"
+        #define MANUAL_TRIGGER_LABEL "Manual"
+        #define SHAPE_TRIGGER_LABEL "Shape"
 
-		public:
-			explicit ChangeSoundTriggerDialog(QWidget *parent);
+        public:
+            explicit ChangeSoundTriggerDialog(QWidget *parent);
 
-			SoundTrigger::TriggerType getTriggerType() const;
+            SoundTrigger::TriggerType getTriggerType() const;
 
-		private:
-			void setupSoundTriggerTypeFields(QGridLayout *);
+        private:
+            void setupSoundTriggerTypeFields(QGridLayout *);
 
-			void done(int) override;
+            void done(int) override;
 
-			QLabel *soundTriggerTypeLabel;
-			QComboBox *soundTriggerTypeComboBox;
+            QLabel *soundTriggerTypeLabel;
+            QComboBox *soundTriggerTypeComboBox;
 
-			SoundTrigger::TriggerType triggerType;
-	};
+            SoundTrigger::TriggerType triggerType;
+    };
 
 }
 

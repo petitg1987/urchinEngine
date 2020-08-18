@@ -7,37 +7,37 @@
 namespace urchin
 {
 
-	/**
-	* Represent a light on the scene
-	*/
-	class SceneLight
-	{
-		//XML attributes
-		#define NAME_ATTR "name"
+    /**
+    * Represent a light on the scene
+    */
+    class SceneLight
+    {
+        //XML attributes
+        #define NAME_ATTR "name"
 
-		public:
-			friend class Map;
+        public:
+            friend class Map;
 
-			SceneLight();
-			~SceneLight();
+            SceneLight();
+            ~SceneLight();
 
-			void setLightManager(LightManager *);
+            void setLightManager(LightManager *);
 
-			std::string getName() const;
-			void setName(const std::string &);
+            std::string getName() const;
+            void setName(const std::string &);
 
-			Light *getLight() const;
-			void setLight(Light *);
+            Light *getLight() const;
+            void setLight(Light *);
 
-		private:
-			void loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
-			void writeOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
+        private:
+            void loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
+            void writeOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
 
-			LightManager *lightManager;
+            LightManager *lightManager;
 
-			std::string name;
-			Light *light;
-	};
+            std::string name;
+            Light *light;
+    };
 
 }
 

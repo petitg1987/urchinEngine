@@ -8,24 +8,24 @@
 
 namespace urchin
 {
-	
-	class FileLogger : public Logger
-	{
-		public:
-			explicit FileLogger(std::string);
 
-			const std::string &getFilename() const;
+    class FileLogger : public Logger
+    {
+        public:
+            explicit FileLogger(std::string);
 
-			std::string retrieveContent(unsigned long) const override;
-			void purge() const override;
-			void archive() const override;
+            const std::string &getFilename() const;
 
-		private:
-			void write(const std::string &) override;
+            std::string retrieveContent(unsigned long) const override;
+            void purge() const override;
+            void archive() const override;
 
-			std::string filename;
-	};
-	
+        private:
+            void write(const std::string &) override;
+
+            std::string filename;
+    };
+
 }
 
 #endif

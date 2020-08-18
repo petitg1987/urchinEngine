@@ -7,17 +7,17 @@
 namespace urchin
 {
 
-	class PropertyFileHandler
-	{
-		public:
-			explicit PropertyFileHandler(std::string);
+    class PropertyFileHandler
+    {
+        public:
+            explicit PropertyFileHandler(std::string);
 
-			std::map<std::string, std::string> loadPropertyFile() const;
-			void savePropertyFile(const std::map<std::string, std::string> &) const;
+            std::map<std::string, std::string> loadPropertyFile() const;
+            void savePropertyFile(const std::map<std::string, std::string> &) const;
 
-		private:
-			std::string propertiesFilePath;
-	};
+        private:
+            std::string propertiesFilePath;
+    };
 
 }
 

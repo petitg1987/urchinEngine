@@ -15,252 +15,252 @@
 namespace urchin
 {
 
-	TextBox::TextBox(Position position, Size size, std::string nameSkin) :
-		Widget(position, size),
-		nameSkin(std::move(nameSkin)),
-		text(nullptr),
+    TextBox::TextBox(Position position, Size size, std::string nameSkin) :
+        Widget(position, size),
+        nameSkin(std::move(nameSkin)),
+        text(nullptr),
         maxWidthText(0),
-		startTextIndex(0),
-		cursorIndex(0),
+        startTextIndex(0),
+        cursorIndex(0),
         cursorPosition(0),
-		cursorBlink(0.0f),
-		state(UNACTIVE),
+        cursorBlink(0.0f),
+        state(UNACTIVE),
         textureID(0),
-		widgetOutline(new WidgetOutline()),
+        widgetOutline(new WidgetOutline()),
         cursorLineBufferID(0),
         cursorLineVAO(0)
-	{
-		glGenBuffers(1, &cursorLineBufferID);
-		glGenVertexArrays(1, &cursorLineVAO);
+    {
+        glGenBuffers(1, &cursorLineBufferID);
+        glGenVertexArrays(1, &cursorLineVAO);
 
         TextBox::createOrUpdateWidget();
-	}
+    }
 
-	TextBox::~TextBox()
-	{
-		glDeleteVertexArrays(1, &cursorLineVAO);
-		glDeleteBuffers(1, &cursorLineBufferID);
+    TextBox::~TextBox()
+    {
+        glDeleteVertexArrays(1, &cursorLineVAO);
+        glDeleteBuffers(1, &cursorLineBufferID);
 
-		delete widgetOutline;
-	}
+        delete widgetOutline;
+    }
 
-	void TextBox::createOrUpdateWidget()
-	{
-		//skin information
-		std::shared_ptr<XmlChunk> textBoxChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textBox", XmlAttribute("nameSkin", nameSkin));
+    void TextBox::createOrUpdateWidget()
+    {
+        //skin information
+        std::shared_ptr<XmlChunk> textBoxChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textBox", XmlAttribute("nameSkin", nameSkin));
 
-		std::shared_ptr<XmlChunk> skinChunkDefault = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "default"), textBoxChunk);
-		texTextBoxDefault = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinChunkDefault, widgetOutline);
-		
-		std::shared_ptr<XmlChunk> skinChunkFocus = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "focus"), textBoxChunk);
-		texTextBoxFocus = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinChunkFocus);
-		
-		std::shared_ptr<XmlChunk> textFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textFont", XmlAttribute(), textBoxChunk);
-		removeChild(text);
-		text = new Text(Position(0, 0, Position::PIXEL),  textFontChunk->getStringValue());
-		text->setPosition(Position((float)(widgetOutline->leftWidth + ADDITIONAL_LEFT_BORDER), (float)(getHeight() - text->getHeight()) / 2.0f, Position::PIXEL));
-		addChild(text);
-		maxWidthText = getWidth() - (widgetOutline->leftWidth + widgetOutline->rightWidth + ADDITIONAL_LEFT_BORDER);
-		refreshText(cursorIndex);
+        std::shared_ptr<XmlChunk> skinChunkDefault = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "default"), textBoxChunk);
+        texTextBoxDefault = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinChunkDefault, widgetOutline);
 
-		//visual
-		glBindVertexArray(cursorLineVAO);
+        std::shared_ptr<XmlChunk> skinChunkFocus = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "focus"), textBoxChunk);
+        texTextBoxFocus = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinChunkFocus);
 
-		const unsigned int cursorLineVertexData[] = {0, widgetOutline->topWidth, 0, getHeight() - widgetOutline->bottomWidth};
-		glBindBuffer(GL_ARRAY_BUFFER, cursorLineBufferID);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(cursorLineVertexData), cursorLineVertexData, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-		glVertexAttribPointer(SHADER_VERTEX_POSITION, 2, GL_UNSIGNED_INT, GL_FALSE, 0, nullptr);
+        std::shared_ptr<XmlChunk> textFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textFont", XmlAttribute(), textBoxChunk);
+        removeChild(text);
+        text = new Text(Position(0, 0, Position::PIXEL),  textFontChunk->getStringValue());
+        text->setPosition(Position((float)(widgetOutline->leftWidth + ADDITIONAL_LEFT_BORDER), (float)(getHeight() - text->getHeight()) / 2.0f, Position::PIXEL));
+        addChild(text);
+        maxWidthText = getWidth() - (widgetOutline->leftWidth + widgetOutline->rightWidth + ADDITIONAL_LEFT_BORDER);
+        refreshText(cursorIndex);
 
-		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
-				->vertexData(GL_UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()}, true)
-				->textureData(GL_FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}, true)
-				->build();
+        //visual
+        glBindVertexArray(cursorLineVAO);
 
-		textureID = texTextBoxDefault->getTextureID();
-		computeCursorPosition();
-	}
+        const unsigned int cursorLineVertexData[] = {0, widgetOutline->topWidth, 0, getHeight() - widgetOutline->bottomWidth};
+        glBindBuffer(GL_ARRAY_BUFFER, cursorLineBufferID);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(cursorLineVertexData), cursorLineVertexData, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
+        glVertexAttribPointer(SHADER_VERTEX_POSITION, 2, GL_UNSIGNED_INT, GL_FALSE, 0, nullptr);
 
-	std::string TextBox::getText()
-	{
-		return allText;
-	}
+        quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
+                ->vertexData(GL_UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()}, true)
+                ->textureData(GL_FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}, true)
+                ->build();
 
-	bool TextBox::onKeyDownEvent(unsigned int key)
-	{
-		if(key==InputDevice::Key::MOUSE_LEFT)
-		{
-			Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
-			if (widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY())))
-			{
-				state = ACTIVE;
-				textureID = texTextBoxFocus->getTextureID();
+        textureID = texTextBoxDefault->getTextureID();
+        computeCursorPosition();
+    }
 
-				int localMouseX = getMouseX() - text->getGlobalPositionX();
-				computeCursorIndex(localMouseX);
-			}else
-			{
-				state = UNACTIVE;
-				textureID = texTextBoxDefault->getTextureID();
-			}
-		}else if(key==InputDevice::Key::LEFT_ARROW && state==ACTIVE)
-		{
-			refreshText(cursorIndex-1);
-		}else if(key==InputDevice::Key::RIGHT_ARROW && state==ACTIVE)
-		{
-			refreshText(cursorIndex+1);
-		}
+    std::string TextBox::getText()
+    {
+        return allText;
+    }
 
-		return true;
-	}
+    bool TextBox::onKeyDownEvent(unsigned int key)
+    {
+        if(key==InputDevice::Key::MOUSE_LEFT)
+        {
+            Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
+            if (widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY())))
+            {
+                state = ACTIVE;
+                textureID = texTextBoxFocus->getTextureID();
 
-	bool TextBox::onCharEvent(unsigned int character)
-	{
-		if(state==ACTIVE)
-		{
-			if(character == 8 && cursorIndex > 0)
-			{ //key backspace
-				std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex), allText.length()-cursorIndex);
-				allText = allText.substr(0, static_cast<unsigned long>(cursorIndex-1L));
-				allText.append(tmpRight);
+                int localMouseX = getMouseX() - text->getGlobalPositionX();
+                computeCursorIndex(localMouseX);
+            }else
+            {
+                state = UNACTIVE;
+                textureID = texTextBoxDefault->getTextureID();
+            }
+        }else if(key==InputDevice::Key::LEFT_ARROW && state==ACTIVE)
+        {
+            refreshText(cursorIndex-1);
+        }else if(key==InputDevice::Key::RIGHT_ARROW && state==ACTIVE)
+        {
+            refreshText(cursorIndex+1);
+        }
 
-				refreshText(cursorIndex-1);
-			}else if(character == 127 && allText.length() > 0 && cursorIndex < allText.length())
-			{ //key delete
-				std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex+1L), allText.length()-cursorIndex);
-				allText = allText.substr(0, static_cast<unsigned long>(cursorIndex));
-				allText.append(tmpRight);
+        return true;
+    }
 
-				refreshText(cursorIndex);
-			}else if(character < 256 && character > 30 && character != 127)
-			{
-				std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex), allText.length()-cursorIndex);
-				allText = allText.substr(0, static_cast<unsigned long>(cursorIndex));
-				allText.append(1, (char)character);
-				allText.append(tmpRight);
+    bool TextBox::onCharEvent(unsigned int character)
+    {
+        if(state==ACTIVE)
+        {
+            if(character == 8 && cursorIndex > 0)
+            { //key backspace
+                std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex), allText.length()-cursorIndex);
+                allText = allText.substr(0, static_cast<unsigned long>(cursorIndex-1L));
+                allText.append(tmpRight);
 
-				refreshText(cursorIndex+1);
-			}
+                refreshText(cursorIndex-1);
+            }else if(character == 127 && allText.length() > 0 && cursorIndex < allText.length())
+            { //key delete
+                std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex+1L), allText.length()-cursorIndex);
+                allText = allText.substr(0, static_cast<unsigned long>(cursorIndex));
+                allText.append(tmpRight);
 
-			return false;
-		}
-		
-		return true;
-	}
+                refreshText(cursorIndex);
+            }else if(character < 256 && character > 30 && character != 127)
+            {
+                std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex), allText.length()-cursorIndex);
+                allText = allText.substr(0, static_cast<unsigned long>(cursorIndex));
+                allText.append(1, (char)character);
+                allText.append(tmpRight);
 
-	void TextBox::reset()
-	{
-		state = UNACTIVE;
-		textureID = texTextBoxDefault->getTextureID();
+                refreshText(cursorIndex+1);
+            }
 
-		Widget::reset();
-	}
+            return false;
+        }
 
-	void TextBox::refreshText(unsigned int newCursorIndex)
-	{
-		//refresh cursor index
-		if(	(newCursorIndex > cursorIndex && cursorIndex < allText.length()) ||
-				(newCursorIndex < cursorIndex && cursorIndex!=0))
-		{
-			cursorIndex = newCursorIndex;
-		}
+        return true;
+    }
 
-		//refresh start index
-		computeCursorPosition();
-		if(cursorPosition > maxWidthText)
-		{
-			startTextIndex = (startTextIndex <= allText.length()) ? startTextIndex + LETTER_SHIFT : (int)allText.length();
-		}else if(cursorIndex <= startTextIndex)
-		{
-			startTextIndex = (startTextIndex>0) ? startTextIndex-LETTER_SHIFT : 0;
-		}
-		computeCursorPosition();
+    void TextBox::reset()
+    {
+        state = UNACTIVE;
+        textureID = texTextBoxDefault->getTextureID();
 
-		//determine the text to display
-		const Font *font = text->getFont();
-		unsigned int widthText = 0;
-		unsigned int endTextIndex = startTextIndex;
-		for(; endTextIndex < allText.length(); ++endTextIndex)
-		{
-			auto letter = static_cast<unsigned char>(allText[endTextIndex]);
-			widthText += font->getGlyph(letter).width + font->getSpaceBetweenLetters();
-			if(widthText > maxWidthText)
-			{
-				break;
-			}
-		}
-		text->setText(allText.substr(static_cast<unsigned long>(startTextIndex), static_cast<unsigned long>(endTextIndex - startTextIndex)));
-	}
+        Widget::reset();
+    }
 
-	void TextBox::computeCursorPosition()
-	{
-		const Font *font = text->getFont();
-		cursorPosition = ADDITIONAL_LEFT_BORDER;
+    void TextBox::refreshText(unsigned int newCursorIndex)
+    {
+        //refresh cursor index
+        if(    (newCursorIndex > cursorIndex && cursorIndex < allText.length()) ||
+                (newCursorIndex < cursorIndex && cursorIndex!=0))
+        {
+            cursorIndex = newCursorIndex;
+        }
 
-		for(unsigned int i=startTextIndex;i<cursorIndex;++i)
-		{
-			auto letter = static_cast<unsigned char>(allText[i]);
-			cursorPosition += font->getGlyph(letter).width + font->getSpaceBetweenLetters();
-		}
+        //refresh start index
+        computeCursorPosition();
+        if(cursorPosition > maxWidthText)
+        {
+            startTextIndex = (startTextIndex <= allText.length()) ? startTextIndex + LETTER_SHIFT : (int)allText.length();
+        }else if(cursorIndex <= startTextIndex)
+        {
+            startTextIndex = (startTextIndex>0) ? startTextIndex-LETTER_SHIFT : 0;
+        }
+        computeCursorPosition();
 
-		if(cursorPosition > ADDITIONAL_LEFT_BORDER)
-		{
-			cursorPosition -= font->getSpaceBetweenLetters(); //remove last space
-			cursorPosition += LETTER_AND_CURSOR_SHIFT;
-		}
+        //determine the text to display
+        const Font *font = text->getFont();
+        unsigned int widthText = 0;
+        unsigned int endTextIndex = startTextIndex;
+        for(; endTextIndex < allText.length(); ++endTextIndex)
+        {
+            auto letter = static_cast<unsigned char>(allText[endTextIndex]);
+            widthText += font->getGlyph(letter).width + font->getSpaceBetweenLetters();
+            if(widthText > maxWidthText)
+            {
+                break;
+            }
+        }
+        text->setText(allText.substr(static_cast<unsigned long>(startTextIndex), static_cast<unsigned long>(endTextIndex - startTextIndex)));
+    }
 
-		cursorPosition += widgetOutline->leftWidth;
-	}
+    void TextBox::computeCursorPosition()
+    {
+        const Font *font = text->getFont();
+        cursorPosition = ADDITIONAL_LEFT_BORDER;
 
-	void TextBox::computeCursorIndex(int approximateCursorPosition)
-	{
-		const Font *font = text->getFont();
-		float widthText = 0.0f;
+        for(unsigned int i=startTextIndex;i<cursorIndex;++i)
+        {
+            auto letter = static_cast<unsigned char>(allText[i]);
+            cursorPosition += font->getGlyph(letter).width + font->getSpaceBetweenLetters();
+        }
 
-		for(cursorIndex=startTextIndex; cursorIndex < allText.length(); ++cursorIndex)
-		{
-			auto letter = static_cast<unsigned char>(allText[cursorIndex]);
-			widthText += (float)font->getGlyph(letter).width / 2.0f;
-			if(widthText > (float)approximateCursorPosition)
-			{
-				break;
-			}
+        if(cursorPosition > ADDITIONAL_LEFT_BORDER)
+        {
+            cursorPosition -= font->getSpaceBetweenLetters(); //remove last space
+            cursorPosition += LETTER_AND_CURSOR_SHIFT;
+        }
 
-			widthText += (float)font->getGlyph(letter).width / 2.0f + (float)font->getSpaceBetweenLetters();
-		}
+        cursorPosition += widgetOutline->leftWidth;
+    }
 
-		//compute the correct cursor position
-		computeCursorPosition();
-	}
+    void TextBox::computeCursorIndex(int approximateCursorPosition)
+    {
+        const Font *font = text->getFont();
+        float widthText = 0.0f;
 
-	void TextBox::display(int translateDistanceLoc, float dt)
-	{
-		//display the text box
-		glBindTexture(GL_TEXTURE_2D, textureID);
+        for(cursorIndex=startTextIndex; cursorIndex < allText.length(); ++cursorIndex)
+        {
+            auto letter = static_cast<unsigned char>(allText[cursorIndex]);
+            widthText += (float)font->getGlyph(letter).width / 2.0f;
+            if(widthText > (float)approximateCursorPosition)
+            {
+                break;
+            }
 
-		quadDisplayer->display();
+            widthText += (float)font->getGlyph(letter).width / 2.0f + (float)font->getSpaceBetweenLetters();
+        }
 
-		//displays the cursor
-		cursorBlink += dt * CURSOR_BLINK_SPEED;
-		if(state==ACTIVE && ((int)cursorBlink%2)>0)
-		{
-			Vector2<int> widgetPosition(getGlobalPositionX(), getGlobalPositionY());
-			glUniform2iv(translateDistanceLoc, 1, (const int*)(widgetPosition + Vector2<int>(cursorPosition, 0)));
-			glBindTexture(GL_TEXTURE_2D, 0);
+        //compute the correct cursor position
+        computeCursorPosition();
+    }
 
-			glDisable(GL_DEPTH_TEST);
-			glDepthMask(GL_FALSE);
+    void TextBox::display(int translateDistanceLoc, float dt)
+    {
+        //display the text box
+        glBindTexture(GL_TEXTURE_2D, textureID);
 
-			glBindVertexArray(cursorLineVAO);
-			glDrawArrays(GL_LINES, 0, 2);
+        quadDisplayer->display();
 
-			glDepthMask(GL_TRUE);
-			glEnable(GL_DEPTH_TEST);
+        //displays the cursor
+        cursorBlink += dt * CURSOR_BLINK_SPEED;
+        if(state==ACTIVE && ((int)cursorBlink%2)>0)
+        {
+            Vector2<int> widgetPosition(getGlobalPositionX(), getGlobalPositionY());
+            glUniform2iv(translateDistanceLoc, 1, (const int*)(widgetPosition + Vector2<int>(cursorPosition, 0)));
+            glBindTexture(GL_TEXTURE_2D, 0);
 
-			glUniform2iv(translateDistanceLoc, 1, (const int*)widgetPosition);
-		}
+            glDisable(GL_DEPTH_TEST);
+            glDepthMask(GL_FALSE);
 
-		Widget::display(translateDistanceLoc, dt);
-	}
+            glBindVertexArray(cursorLineVAO);
+            glDrawArrays(GL_LINES, 0, 2);
+
+            glDepthMask(GL_TRUE);
+            glEnable(GL_DEPTH_TEST);
+
+            glUniform2iv(translateDistanceLoc, 1, (const int*)widgetPosition);
+        }
+
+        Widget::display(translateDistanceLoc, dt);
+    }
 
 }

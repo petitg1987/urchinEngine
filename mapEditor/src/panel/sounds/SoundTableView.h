@@ -13,30 +13,30 @@ Q_DECLARE_METATYPE(const urchin::SceneSound *)
 namespace urchin
 {
 
-	class SoundTableView : public QTableView, public Observable
-	{
-		Q_OBJECT
+    class SoundTableView : public QTableView, public Observable
+    {
+        Q_OBJECT
 
-		public:
-			explicit SoundTableView(QWidget *parent = nullptr);
+        public:
+            explicit SoundTableView(QWidget *parent = nullptr);
 
-			enum NotificationType
-			{
-				SOUND_SELECTION_CHANGED
-			};
+            enum NotificationType
+            {
+                SOUND_SELECTION_CHANGED
+            };
 
-			bool hasSceneSoundSelected() const;
-			const SceneSound *getSelectedSceneSound() const;
+            bool hasSceneSoundSelected() const;
+            const SceneSound *getSelectedSceneSound() const;
 
-			void addSound(const SceneSound *);
-			bool removeSelectedSound();
-			void removeAllSounds();
+            void addSound(const SceneSound *);
+            bool removeSelectedSound();
+            void removeAllSounds();
 
-		private:
-			QStandardItemModel *soundsListModel;
+        private:
+            QStandardItemModel *soundsListModel;
 
-			void selectionChanged(const QItemSelection &, const QItemSelection &) override;
-	};
+            void selectionChanged(const QItemSelection &, const QItemSelection &) override;
+    };
 
 }
 

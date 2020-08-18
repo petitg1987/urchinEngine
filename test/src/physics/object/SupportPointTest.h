@@ -6,15 +6,15 @@
 
 class SupportPointTest : public CppUnit::TestFixture
 {
-	public:
-		static CppUnit::Test *suite();
+    public:
+        static CppUnit::Test *suite();
 
-		void sphereSupportPoint();
-		void boxSupportPoint();
-		void capsuleSupportPoint();
-		void cylinderSupportPoint();
-		void coneSupportPoint();
-		void convexHullSupportPoint();
+        void sphereSupportPoint();
+        void boxSupportPoint();
+        void capsuleSupportPoint();
+        void cylinderSupportPoint();
+        void coneSupportPoint();
+        void convexHullSupportPoint();
 };
 
 #endif

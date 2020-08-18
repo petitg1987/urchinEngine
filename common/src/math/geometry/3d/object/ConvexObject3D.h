@@ -8,21 +8,21 @@
 
 namespace urchin
 {
-	template<class T> class Point3;
-	template<class T> class AABBox;
-	template<class T> class Sphere;
+    template<class T> class Point3;
+    template<class T> class AABBox;
+    template<class T> class Sphere;
 
-	template<class T> class ConvexObject3D
-	{
-		public:
-			virtual ~ConvexObject3D() = default;
+    template<class T> class ConvexObject3D
+    {
+        public:
+            virtual ~ConvexObject3D() = default;
 
-			virtual bool collideWithPoint(const Point3<T> &) const;
-			virtual bool collideWithAABBox(const AABBox<T> &) const;
-			virtual bool collideWithSphere(const Sphere<T> &) const;
+            virtual bool collideWithPoint(const Point3<T> &) const;
+            virtual bool collideWithAABBox(const AABBox<T> &) const;
+            virtual bool collideWithSphere(const Sphere<T> &) const;
 
-			virtual Point3<T> getSupportPoint(const Vector3<T> &) const = 0;
-	};
+            virtual Point3<T> getSupportPoint(const Vector3<T> &) const = 0;
+    };
 
 }
 

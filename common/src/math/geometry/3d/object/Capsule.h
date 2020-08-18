@@ -12,30 +12,30 @@
 namespace urchin
 {
 
-	template<class T> class Capsule : public ConvexObject3D<T>
-	{
-		public:
-			Capsule();
-			Capsule(T, T, typename CapsuleShape<T>::CapsuleOrientation, const Point3<T> &, const Quaternion<T> &);
+    template<class T> class Capsule : public ConvexObject3D<T>
+    {
+        public:
+            Capsule();
+            Capsule(T, T, typename CapsuleShape<T>::CapsuleOrientation, const Point3<T> &, const Quaternion<T> &);
 
-			T getRadius() const;
-			T getCylinderHeight() const;
-			typename CapsuleShape<T>::CapsuleOrientation getCapsuleOrientation() const;
-			const Point3<T> &getCenterOfMass() const;
-			const Quaternion<T> &getOrientation() const;
-			const Vector3<T> &getAxis(unsigned int) const;
+            T getRadius() const;
+            T getCylinderHeight() const;
+            typename CapsuleShape<T>::CapsuleOrientation getCapsuleOrientation() const;
+            const Point3<T> &getCenterOfMass() const;
+            const Quaternion<T> &getOrientation() const;
+            const Vector3<T> &getAxis(unsigned int) const;
 
-			Point3<T> getSupportPoint(const Vector3<T> &) const;
+            Point3<T> getSupportPoint(const Vector3<T> &) const;
 
-		private:
-			CapsuleShape<T> capsuleShape;
-			Point3<T> centerOfMass;
-			Quaternion<T> orientation;
+        private:
+            CapsuleShape<T> capsuleShape;
+            Point3<T> centerOfMass;
+            Quaternion<T> orientation;
 
-			Vector3<T> axis[3]; //3 vectors of normalized axis
-	};
+            Vector3<T> axis[3]; //3 vectors of normalized axis
+    };
 
-	template<class T> std::ostream& operator <<(std::ostream &, const Capsule<T> &);
+    template<class T> std::ostream& operator <<(std::ostream &, const Capsule<T> &);
 
 }
 

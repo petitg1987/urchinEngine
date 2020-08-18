@@ -13,68 +13,68 @@
 
 namespace urchin
 {
-	
-	/**
-	* Represents a frustum (truncated pyramid) in space
-	*/
-	template<class T> class Frustum : public ConvexObject3D<T>
-	{
-		public:
-			Frustum();
-			Frustum(T, T, T, T);
-			Frustum(const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &);
+
+    /**
+    * Represents a frustum (truncated pyramid) in space
+    */
+    template<class T> class Frustum : public ConvexObject3D<T>
+    {
+        public:
+            Frustum();
+            Frustum(T, T, T, T);
+            Frustum(const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &);
             Frustum(Frustum<T> &&);
-			Frustum<T>& operator=(Frustum<T> &&);
+            Frustum<T>& operator=(Frustum<T> &&);
 
-			enum FrustumPoint
-			{
-				NTL = 0, //Near top left
-				NTR, //Near top right
-				NBL, //Near bottom left
-				NBR, //Near bottom right
-				FTL, //Far top left
-				FTR, //Far top right
-				FBL, //Far bottom left
-				FBR //Far bottom right
-			};
+            enum FrustumPoint
+            {
+                NTL = 0, //Near top left
+                NTR, //Near top right
+                NBL, //Near bottom left
+                NBR, //Near bottom right
+                FTL, //Far top left
+                FTR, //Far top right
+                FBL, //Far bottom left
+                FBR //Far bottom right
+            };
 
-			void buildFrustum(T, T, T, T);
-			void buildFrustum(const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &);
+            void buildFrustum(T, T, T, T);
+            void buildFrustum(const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &);
 
-			const Point3<T> *getFrustumPoints() const;
-			const Point3<T> &getFrustumPoint(FrustumPoint frustumPoint) const;
-			const Point3<T> &getPosition() const;
-			
-			Point3<T> getSupportPoint(const Vector3<T> &) const;
-			T computeNearDistance() const;
-			T computeFarDistance() const;
-			Frustum<T> splitFrustum(T, T) const;
-			Frustum<T> cutFrustum(T) const;
+            const Point3<T> *getFrustumPoints() const;
+            const Point3<T> &getFrustumPoint(FrustumPoint frustumPoint) const;
+            const Point3<T> &getPosition() const;
 
-			bool collideWithPoint(const Point3<T> &) const;
-			bool collideWithAABBox(const AABBox<T> &) const;
-			bool collideWithSphere(const Sphere<T> &) const;
+            Point3<T> getSupportPoint(const Vector3<T> &) const;
+            T computeNearDistance() const;
+            T computeFarDistance() const;
+            Frustum<T> splitFrustum(T, T) const;
+            Frustum<T> cutFrustum(T) const;
 
-		private:
-			void buildData();
+            bool collideWithPoint(const Point3<T> &) const;
+            bool collideWithAABBox(const AABBox<T> &) const;
+            bool collideWithSphere(const Sphere<T> &) const;
 
-			Point3<T> frustumPoints[8];
-			Point3<T> position; //eye/camera position
-			Plane<T> planes[6];
-			enum {
-				TOP = 0,
-				BOTTOM,
-				LEFT,
-				RIGHT,
-				NEARP,
-				FARP
-			};
-	};
+        private:
+            void buildData();
 
-	template<class T> Frustum<T> operator *(const Matrix4<T> &, const Frustum<T> &);
-	template<class T> Frustum<T> operator *(const Frustum<T> &, const Matrix4<T> &);
+            Point3<T> frustumPoints[8];
+            Point3<T> position; //eye/camera position
+            Plane<T> planes[6];
+            enum {
+                TOP = 0,
+                BOTTOM,
+                LEFT,
+                RIGHT,
+                NEARP,
+                FARP
+            };
+    };
 
-	template<class T> std::ostream& operator <<(std::ostream &, const Frustum<T> &);
+    template<class T> Frustum<T> operator *(const Matrix4<T> &, const Frustum<T> &);
+    template<class T> Frustum<T> operator *(const Frustum<T> &, const Matrix4<T> &);
+
+    template<class T> std::ostream& operator <<(std::ostream &, const Frustum<T> &);
 
 }
 

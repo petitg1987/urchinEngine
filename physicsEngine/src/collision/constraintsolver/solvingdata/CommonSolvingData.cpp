@@ -3,12 +3,12 @@
 namespace urchin
 {
 
-	CommonSolvingData::CommonSolvingData() :
-			body1(nullptr),
-			body2(nullptr),
-			depth(0.0)
-	{
+    CommonSolvingData::CommonSolvingData() :
+            body1(nullptr),
+            body2(nullptr),
+            depth(0.0)
+    {
 
-	}
+    }
 
 }
