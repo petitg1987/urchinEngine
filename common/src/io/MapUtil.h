@@ -17,7 +17,7 @@ namespace urchin
             MapUtil() = default;
             ~MapUtil() = default;
 
-            static char DELIMITER;
+            static const char DELIMITER;
 
             static std::string escape(const std::string &);
             static std::string unescape(const std::string &str);

@@ -7,14 +7,14 @@ namespace urchin
 {
 
     //static
-    char MapUtil::DELIMITER = ',';
+    const char MapUtil::DELIMITER = ',';
 
     std::string MapUtil::serialize(const std::map<std::string, std::string> &map)
     {
         std::string mapString;
-        for(const auto &it: map)
+        for(const auto &[key, value] : map)
         {
-            mapString += escape(it.first) + DELIMITER + escape(it.second) + DELIMITER;
+            mapString += escape(key) + DELIMITER + escape(value) + DELIMITER;
         }
         if(!map.empty())
         {
