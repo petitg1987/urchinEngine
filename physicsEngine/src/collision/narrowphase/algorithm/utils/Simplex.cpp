@@ -210,7 +210,7 @@ namespace urchin
     {
         assert(simplexPointsSize > 0);
 
-        for (long i = index; i < simplexPointsSize - 1; ++i)
+        for (unsigned int i = index; i < simplexPointsSize - 1; ++i)
         {
             simplexPoints[i] = simplexPoints[i + 1];
         }

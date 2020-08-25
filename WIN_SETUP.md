@@ -43,6 +43,9 @@
 * Libcurl:
   * Download curl for Windows 64bits (https://curl.haxx.se/windows/dl-7.64.1_1/curl-7.64.1_1-win64-mingw.zip). Note: associate DLL can be also downloaded on this page (OpenSSL 1.1.1)
   * Copy lib & include respectively in C:\MinGW\mingw64\lib & C:\MinGW\mingw64\x86_64-w64-mingw32\include
+* Zip:
+  * Download zip (http://stahlworks.com/dev/zip.exe)
+  * Copy file in C:\MinGW\mingw64\bin
 * Path configuration (only to start app. inside IntelliJ):
   * Add in "Path" Windows env. variable, the DLL directory:
     * `C:\Users\greg\Desktop\Project\greenCity\.build\release\urchinEngine\3dEngine`
