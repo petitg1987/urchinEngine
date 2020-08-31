@@ -121,19 +121,24 @@ namespace urchin
 
     bool PathfindingAStar::isPointInsideTriangle(const Point2<float> &point, const std::shared_ptr<NavPolygon> &polygon, const std::shared_ptr<NavTriangle> &triangle) const
     {
-        Point3<float> p0 = polygon->getPoint(triangle->getIndex(0));
-        Point3<float> p1 = polygon->getPoint(triangle->getIndex(1));
-        Point3<float> p2 = polygon->getPoint(triangle->getIndex(2));
+        Point2<float> p0 = polygon->getPoint(triangle->getIndex(0)).toPoint2XZ();
+        Point2<float> p1 = polygon->getPoint(triangle->getIndex(1)).toPoint2XZ();
+        Point2<float> p2 = polygon->getPoint(triangle->getIndex(2)).toPoint2XZ();
 
-        bool b1 = sign(point, p0.toPoint2XZ(), p1.toPoint2XZ()) < 0.0f;
-        bool b2 = sign(point, p1.toPoint2XZ(), p2.toPoint2XZ()) < 0.0f;
-        bool b3 = sign(point, p2.toPoint2XZ(), p0.toPoint2XZ()) < 0.0f;
+        float crossProduct1 = crossProduct(point, p0, p1);
+        float crossProduct2 = crossProduct(point, p1, p2);
+        if(crossProduct1 * crossProduct2 < 0.0f)
+        { //cross products have different sign
+            return false;
+        }
 
-        return ((b1 == b2) && (b2 == b3));
+        float crossProduct3 = crossProduct(point, p2, p0);
+        return crossProduct2 * crossProduct3 >= 0.0f; //check cross products sign
     }
 
-    float PathfindingAStar::sign(const Point2<float> &p1, const Point2<float> &p2, const Point2<float> &p3) const
+    float PathfindingAStar::crossProduct(const Point2<float> &p1, const Point2<float> &p2, const Point2<float> &p3) const
     {
+        //Same as: p3.vector(p1).crossProduct(p3.vector(p2))
         return (p1.X - p3.X) * (p2.Y - p3.Y) - (p2.X - p3.X) * (p1.Y - p3.Y);
     }
 

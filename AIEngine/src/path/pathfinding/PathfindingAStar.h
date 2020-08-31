@@ -29,7 +29,7 @@ namespace urchin
         private:
             std::shared_ptr<NavTriangle> findTriangle(const Point3<float> &) const;
             bool isPointInsideTriangle(const Point2<float> &, const std::shared_ptr<NavPolygon> &, const std::shared_ptr<NavTriangle> &) const;
-            float sign(const Point2<float> &, const Point2<float> &, const Point2<float> &) const;
+            float crossProduct(const Point2<float> &, const Point2<float> &, const Point2<float> &) const;
 
             std::shared_ptr<PathNode> retrievePathNodeFrom(const std::multiset<std::shared_ptr<PathNode>, PathNodeCompare> &, const std::shared_ptr<NavTriangle> &) const;
             float computeGScore(const std::shared_ptr<PathNode> &, const std::shared_ptr<NavLink> &, const Point3<float> &) const;
