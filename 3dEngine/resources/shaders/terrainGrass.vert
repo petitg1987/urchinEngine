@@ -9,5 +9,5 @@ invariant gl_Position;
 void main(){
     normal = vertexNormal;
 
-	gl_Position = vec4(vertexPosition, 1.0);
+    gl_Position = vec4(vertexPosition, 1.0);
 }

@@ -17,21 +17,21 @@ out int gl_Layer;
 smooth out vec2 vertexTextCoordinates;
 
 void main(){
-	for(int layer=0; layer<NUMBER_LAYER; layer++){
-		if((layersToUpdate & POWER_TWO_TAB[layer]) != uint(0)){
-			gl_Layer = layer;
-	
-			gl_Position = gl_in[0].gl_Position;
-			vertexTextCoordinates = textCoordinates[0]; 
-			EmitVertex();
-			gl_Position = gl_in[1].gl_Position;
-			vertexTextCoordinates = textCoordinates[1]; 
-			EmitVertex();
-			gl_Position = gl_in[2].gl_Position;
-			vertexTextCoordinates = textCoordinates[2]; 
-			EmitVertex();
-	
-			EndPrimitive();
-		}
-	}
+    for(int layer=0; layer<NUMBER_LAYER; layer++){
+        if((layersToUpdate & POWER_TWO_TAB[layer]) != uint(0)){
+            gl_Layer = layer;
+
+            gl_Position = gl_in[0].gl_Position;
+            vertexTextCoordinates = textCoordinates[0];
+            EmitVertex();
+            gl_Position = gl_in[1].gl_Position;
+            vertexTextCoordinates = textCoordinates[1];
+            EmitVertex();
+            gl_Position = gl_in[2].gl_Position;
+            vertexTextCoordinates = textCoordinates[2];
+            EmitVertex();
+
+            EndPrimitive();
+        }
+    }
 }

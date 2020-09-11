@@ -17,5 +17,5 @@ void main(){
 
     normal = vertexNormal;
 
-	gl_Position = mProjection * mView * vec4(vPosition + vertexPosition, 1.0);
+    gl_Position = mProjection * mView * vec4(vPosition + vertexPosition, 1.0);
 }

@@ -29,17 +29,17 @@ uniform vec3 viewPosition;
 
 //lights and shadows:
 struct StructLightInfo{
-	bool isExist;
-	bool produceShadow;
-	bool hasParallelBeams;
-	vec3 positionOrDirection;
-	
-	float exponentialAttenuation;
-	vec3 lightAmbient;
-	
-	sampler2DArray shadowMapTex;
+    bool isExist;
+    bool produceShadow;
+    bool hasParallelBeams;
+    vec3 positionOrDirection;
 
-	mat4 mLightProjectionView[NUMBER_SHADOW_MAPS];
+    float exponentialAttenuation;
+    vec3 lightAmbient;
+
+    sampler2DArray shadowMapTex;
+
+    mat4 mLightProjectionView[NUMBER_SHADOW_MAPS];
 };
 uniform StructLightInfo lightsInfo[MAX_LIGHTS];
 uniform float depthSplitDistance[NUMBER_SHADOW_MAPS];
@@ -55,19 +55,19 @@ uniform float fogMaxHeight;
 layout (location = OUTPUT_LOCATION) out vec4 fragColor;
 
 vec4 fetchPosition(vec2 textCoord, float depthValue){
-	vec4 texPosition = vec4(
-		textCoord.s * 2.0f - 1.0f,
-		textCoord.t * 2.0f - 1.0f,
-		depthValue * 2.0f - 1.0f,
-		1.0
-	);
-	vec4 position = mInverseViewProjection * texPosition;
-	position /= position.w;
-	return position;
+    vec4 texPosition = vec4(
+        textCoord.s * 2.0f - 1.0f,
+        textCoord.t * 2.0f - 1.0f,
+        depthValue * 2.0f - 1.0f,
+        1.0
+    );
+    vec4 position = mInverseViewProjection * texPosition;
+    position /= position.w;
+    return position;
 }
 
 float linearStep(float min, float max, float v){
-  	return clamp((v - min) / (max - min), 0.0f, 1.0f);  
+      return clamp((v - min) / (max - min), 0.0f, 1.0f);
 } 
 
 float computePercentLit(float shadowMapZ, vec2 moments, float NdotL){
@@ -86,26 +86,26 @@ float computePercentLit(float shadowMapZ, vec2 moments, float NdotL){
 }
 
 float computeShadowContribution(int lightIndex, float depthValue, vec4 position, float NdotL){
-	float shadowContribution = 1.0;
-	
-	if(lightsInfo[lightIndex].produceShadow){
-		for(int i=0; i<NUMBER_SHADOW_MAPS; ++i){
-			if(depthValue < depthSplitDistance[i]){
+    float shadowContribution = 1.0;
 
-				vec4 shadowCoord = (((lightsInfo[lightIndex].mLightProjectionView[i] * position) / 2.0) + 0.5);
+    if(lightsInfo[lightIndex].produceShadow){
+        for(int i=0; i<NUMBER_SHADOW_MAPS; ++i){
+            if(depthValue < depthSplitDistance[i]){
 
-				//model has produceShadow flag to true ?
-				if(shadowCoord.s<=1.0 && shadowCoord.s>=0.0 && shadowCoord.t<=1.0 && shadowCoord.t>=0.0){
-					vec2 moments = texture2DArray(lightsInfo[lightIndex].shadowMapTex, vec3(shadowCoord.st, i)).rg;
-					shadowContribution = computePercentLit(shadowCoord.z, moments, NdotL);
-				}
+                vec4 shadowCoord = (((lightsInfo[lightIndex].mLightProjectionView[i] * position) / 2.0) + 0.5);
 
-				break;
-			}
-		}
-	}
-	
-	return shadowContribution;
+                //model has produceShadow flag to true ?
+                if(shadowCoord.s<=1.0 && shadowCoord.s>=0.0 && shadowCoord.t<=1.0 && shadowCoord.t>=0.0){
+                    vec2 moments = texture2DArray(lightsInfo[lightIndex].shadowMapTex, vec3(shadowCoord.st, i)).rg;
+                    shadowContribution = computePercentLit(shadowCoord.z, moments, NdotL);
+                }
+
+                break;
+            }
+        }
+    }
+
+    return shadowContribution;
 }
 
 vec4 addFog(vec4 baseColor, vec4 position){
@@ -125,26 +125,26 @@ vec4 addFog(vec4 baseColor, vec4 position){
     return mix(fogColor, baseColor, visibility);
 }
 
-void main(){	
-	vec4 diffuse = texture2D(colorTex, textCoordinates);
-	vec4 normalAndAmbient = vec4(texture2D(normalAndAmbientTex, textCoordinates));
-	float modelAmbientFactor = normalAndAmbient.a;
-	float depthValue = texture2D(depthTex, textCoordinates).r;
+void main(){
+    vec4 diffuse = texture2D(colorTex, textCoordinates);
+    vec4 normalAndAmbient = vec4(texture2D(normalAndAmbientTex, textCoordinates));
+    float modelAmbientFactor = normalAndAmbient.a;
+    float depthValue = texture2D(depthTex, textCoordinates).r;
     vec4 position = fetchPosition(textCoordinates, depthValue);
 
-	if(modelAmbientFactor >= 0.99999f){ //no lighting
-		fragColor = addFog(diffuse, position);
-		return;
-	}
+    if(modelAmbientFactor >= 0.99999f){ //no lighting
+        fragColor = addFog(diffuse, position);
+        return;
+    }
 
-	vec3 normal = vec3(normalAndAmbient) * 2.0f - 1.0f;
-	vec4 modelAmbient = diffuse * modelAmbientFactor;
-	fragColor = globalAmbient;
-	
-	if(hasAmbientOcclusion){
-		float ambientOcclusionFactor = texture2D(ambientOcclusionTex, textCoordinates).r;
-		fragColor -= vec4(ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor, 0.0f);
-	}
+    vec3 normal = vec3(normalAndAmbient) * 2.0f - 1.0f;
+    vec4 modelAmbient = diffuse * modelAmbientFactor;
+    fragColor = globalAmbient;
+
+    if(hasAmbientOcclusion){
+        float ambientOcclusionFactor = texture2D(ambientOcclusionTex, textCoordinates).r;
+        fragColor -= vec4(ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor, 0.0f);
+    }
 
     for(int i=0; i<MAX_LIGHTS; ++i){
         if(lightsInfo[i].isExist){
@@ -176,17 +176,17 @@ void main(){
         }
     }
 
-	fragColor = addFog(fragColor, position);
+    fragColor = addFog(fragColor, position);
 
-	//DEBUG: add color to shadow map splits
-/*	const float colorValue = 0.25f;
-	vec4 splitColors[5] = vec4[](
-		vec4(colorValue, 0.0, 0.0, 1.0), vec4(0.0, colorValue, 0.0, 1.0), vec4(0.0, 0.0, colorValue, 1.0),
-		vec4(colorValue, 0.0, colorValue, 1.0),	vec4(colorValue, colorValue, 0.0, 1.0));
-	for(int i=0; i<NUMBER_SHADOW_MAPS; ++i){
-		if(depthValue < depthSplitDistance[i]){
-			fragColor += splitColors[i%5];
-			break;
-		}
-	}*/
+    //DEBUG: add color to shadow map splits
+/*    const float colorValue = 0.25f;
+    vec4 splitColors[5] = vec4[](
+        vec4(colorValue, 0.0, 0.0, 1.0), vec4(0.0, colorValue, 0.0, 1.0), vec4(0.0, 0.0, colorValue, 1.0),
+        vec4(colorValue, 0.0, colorValue, 1.0),    vec4(colorValue, colorValue, 0.0, 1.0));
+    for(int i=0; i<NUMBER_SHADOW_MAPS; ++i){
+        if(depthValue < depthSplitDistance[i]){
+            fragColor += splitColors[i%5];
+            break;
+        }
+    }*/
 }

@@ -15,11 +15,11 @@ out vec2 textCoordinates;
 invariant gl_Position;
 
 void main(){
-	textCoordinates = texCoord;
+    textCoordinates = texCoord;
 
-	t = normalize(mNormal * tangent);
-	n = normalize(mNormal * normal);
-	b = normalize(cross(n, t));
+    t = normalize(mNormal * tangent);
+    n = normalize(mNormal * normal);
+    b = normalize(cross(n, t));
 
-	gl_Position = mProjection * (mView * (mModel * vec4(vertexPosition, 1.0)));
+    gl_Position = mProjection * (mView * (mModel * vec4(vertexPosition, 1.0)));
 }
