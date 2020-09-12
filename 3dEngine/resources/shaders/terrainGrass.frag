@@ -1,4 +1,4 @@
-#version 440
+#version 450
 
 //values are replaced at compilation time:
 #define GRASS_ALPHA_TEST 0

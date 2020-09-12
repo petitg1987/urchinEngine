@@ -1,4 +1,4 @@
-#version 440
+#version 450
 
 in vec2 textCoordinates;
 
@@ -22,16 +22,16 @@ vec3 toGlobalNormal(vec3 localNormal){
 
 void main(){
     float speed = sumTimeStep * waveSpeed;
-	vec2 distortedTexCoords = texture(dudvMap, vec2(textCoordinates.x + speed, textCoordinates.y)).rg * 0.1;
+    vec2 distortedTexCoords = texture(dudvMap, vec2(textCoordinates.x + speed, textCoordinates.y)).rg * 0.1;
     distortedTexCoords = textCoordinates + vec2(distortedTexCoords.x, distortedTexCoords.y * speed);
     vec2 totalDistortion = (texture(dudvMap, distortedTexCoords).rg * 2.0 - 1.0) * waveStrength;
 
     //diffuse
-	fragColor = vec4(waterColor, 0.0);
+    fragColor = vec4(waterColor, 0.0);
 
-	//normal and ambient factor
-	vec2 normalTextCoordinates = textCoordinates + totalDistortion;
-	vec3 localNormal = texture2D(normalTex, normalTextCoordinates).xyz * 2.0 - 1.0;
-	vec3 globalNormal = toGlobalNormal(localNormal);
-	fragNormalAndAmbient = vec4((globalNormal + 1.0) / 2.0, 0.3);
+    //normal and ambient factor
+    vec2 normalTextCoordinates = textCoordinates + totalDistortion;
+    vec3 localNormal = texture2D(normalTex, normalTextCoordinates).xyz * 2.0 - 1.0;
+    vec3 globalNormal = toGlobalNormal(localNormal);
+    fragNormalAndAmbient = vec4((globalNormal + 1.0) / 2.0, 0.3);
 }

@@ -1,4 +1,4 @@
-#version 440
+#version 450
 
 //values are replaced at compilation time:
 #define GRASS_ALPHA_TEST 0
@@ -15,9 +15,9 @@ layout (location = 1) out vec4 fragNormalAndAmbient;
 void main(){
     vec4 color = texture2D(grassTex, vertexTextCoordinates);
 
-	if(color.a < GRASS_ALPHA_TEST)
-		discard;
+    if(color.a < GRASS_ALPHA_TEST)
+        discard;
 
-	fragColor = vec4(color.xyz, color.a);
-	fragNormalAndAmbient = vec4(grassNormal, ambient);
+    fragColor = vec4(color.xyz, color.a);
+    fragNormalAndAmbient = vec4(grassNormal, ambient);
 }

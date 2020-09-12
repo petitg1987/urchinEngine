@@ -1,4 +1,4 @@
-#version 440
+#version 450
 
 layout(location=0) in vec3 vertexPosition;
 layout(location=1) in vec2 texCoord;
@@ -17,5 +17,5 @@ void main(){
 
     normal = vertexNormal;
 
-	gl_Position = mProjection * mView * vec4(vPosition + vertexPosition, 1.0);
+    gl_Position = mProjection * mView * vec4(vPosition + vertexPosition, 1.0);
 }

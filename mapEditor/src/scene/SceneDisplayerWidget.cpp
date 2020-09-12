@@ -20,7 +20,7 @@ namespace urchin
             mouseY(0)
     {
         QGLFormat glFormat;
-        glFormat.setVersion(4, 4);
+        glFormat.setVersion(4, 5);
         glFormat.setProfile(QGLFormat::CompatibilityProfile);
         glFormat.setSampleBuffers(true);
         glFormat.setDoubleBuffer(true);

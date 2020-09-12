@@ -1,4 +1,4 @@
-#version 440
+#version 450
 
 //values are replaced at compilation time:
 #define KERNEL_SAMPLES 0
@@ -23,34 +23,34 @@ uniform vec2 resolution;
 layout (location = 0) out float fragColor;
 
 vec3 fetchEyePosition(vec2 textCoord, float depthValue){
-	vec4 texPosition = vec4(
-		textCoord.s * 2.0f - 1.0f,
-		textCoord.t * 2.0f - 1.0f,
-		depthValue * 2.0f - 1.0f,
-		1.0
-	);
-	vec4 position = inverse(mProjection) * texPosition;
-	position /= position.w;
-	return vec3(position);
+    vec4 texPosition = vec4(
+        textCoord.s * 2.0f - 1.0f,
+        textCoord.t * 2.0f - 1.0f,
+        depthValue * 2.0f - 1.0f,
+        1.0
+    );
+    vec4 position = inverse(mProjection) * texPosition;
+    position /= position.w;
+    return vec3(position);
 }
 
 vec3 fetchPosition(vec2 textCoord, float depthValue){
-	vec4 texPosition = vec4(
-		textCoord.s * 2.0f - 1.0f,
-		textCoord.t * 2.0f - 1.0f,
-		depthValue * 2.0f - 1.0f,
-		1.0
-	);
-	vec4 position = mInverseViewProjection * texPosition;
-	position /= position.w;
-	return vec3(position);
+    vec4 texPosition = vec4(
+        textCoord.s * 2.0f - 1.0f,
+        textCoord.t * 2.0f - 1.0f,
+        depthValue * 2.0f - 1.0f,
+        1.0
+    );
+    vec4 position = mInverseViewProjection * texPosition;
+    position /= position.w;
+    return vec3(position);
 }
 
 void main(){
     vec4 normalAndAmbient = vec4(texture2D(normalAndAmbientTex, textCoordinates));
     if(normalAndAmbient.a >= 0.99999f){ //no lighting
-    	fragColor = 0.0;
-    	return;
+        fragColor = 0.0;
+        return;
     }
 
     float depthValue = texture2D(depthTex, textCoordinates).r;
@@ -63,11 +63,11 @@ void main(){
     }
 
     vec3 position = fetchPosition(textCoordinates, depthValue);
-	vec3 normal = normalAndAmbient.xyz * 2.0f - 1.0f;
-	vec2 noiseScale = vec2(resolution.x / NOISE_TEXTURE_SIZE, resolution.y / NOISE_TEXTURE_SIZE);
-	vec3 randomVector = normalize(texture(noiseTex, textCoordinates * noiseScale).xyz * 2.0f - 1.0f);
+    vec3 normal = normalAndAmbient.xyz * 2.0f - 1.0f;
+    vec2 noiseScale = vec2(resolution.x / NOISE_TEXTURE_SIZE, resolution.y / NOISE_TEXTURE_SIZE);
+    vec3 randomVector = normalize(texture(noiseTex, textCoordinates * noiseScale).xyz * 2.0f - 1.0f);
 
-	vec3 tangent = normalize(randomVector - dot(randomVector, normal) * normal);
+    vec3 tangent = normalize(randomVector - dot(randomVector, normal) * normal);
     vec3 bitangent = cross(normal, tangent);
     mat3 kernelMatrix = mat3(tangent, bitangent, normal);
 
@@ -90,6 +90,6 @@ void main(){
 
     fragColor = (occlusion / float(KERNEL_SAMPLES)) * distanceReduceFactor * AO_STRENGTH;
 
-	//DEBUG: display random texture
-/*	fragColor = texture(noiseTex, textCoordinates * noiseScale).x; */
+    //DEBUG: display random texture
+    /* fragColor = texture(noiseTex, textCoordinates * noiseScale).x; */
 }

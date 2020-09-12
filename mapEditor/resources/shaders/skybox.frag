@@ -1,4 +1,4 @@
-#version 440
+#version 450
 
 in vec3 textCoordinates;
 
@@ -8,9 +8,9 @@ layout (location = 0) out vec4 fragColor;
 layout (location = 1) out vec4 fragNormalAndAmbient;
 
 void main(){
-	//diffuse
-	fragColor = texture(diffuseTexture, textCoordinates);
+    //diffuse
+    fragColor = texture(diffuseTexture, textCoordinates);
 
-	//material
-	fragNormalAndAmbient.a = 1.0; //no lighting
+    //material
+    fragNormalAndAmbient.a = 1.0; //no lighting
 }

@@ -1,4 +1,4 @@
-#version 440
+#version 450
 #extension GL_EXT_gpu_shader4 : enable
 
 //values are replaced at compilation time:
@@ -13,5 +13,5 @@ in vec2 vertexTextCoordinates;
 layout (location = 0) out OUTPUT_TYPE fragColor;
 
 void main(){
-	fragColor = texture2DArray(tex, vec3(vertexTextCoordinates.st, gl_Layer)).SOURCE_TEX_COMPONENTS;
+    fragColor = texture2DArray(tex, vec3(vertexTextCoordinates.st, gl_Layer)).SOURCE_TEX_COMPONENTS;
 }

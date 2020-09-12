@@ -1,4 +1,4 @@
-#version 440
+#version 450
 
 layout(points) in;
 layout(triangle_strip) out;
@@ -44,8 +44,8 @@ float randZeroOne(in vec2 seed){
 
 int randomInt(int min, int max, vec3 seed){
     vec2 seed2d = vec2(seed.x, seed.y + seed.z);
-	float fRandomFloat = randZeroOne(seed2d);
-	return int(round(float(min)+fRandomFloat*float(max-min)));
+    float fRandomFloat = randZeroOne(seed2d);
+    return int(round(float(min)+fRandomFloat*float(max-min)));
 }
 
 void main(){
@@ -89,8 +89,8 @@ void main(){
     windPower *= windStrength;
 
     for(int i = 0; i < 3; i++)
-	{
-	    //texture selection
+    {
+        //texture selection
         vec3 seed = grassCenterPosition * float(i);
         float startTextX = float(randomInt(0, numGrassInTex-1, seed)) * (1.0f / numGrassInTex);
         float endTextX = startTextX + 1.0f / numGrassInTex;
@@ -127,5 +127,5 @@ void main(){
         EmitVertex();
 
         EndPrimitive();
-	}
+    }
 }

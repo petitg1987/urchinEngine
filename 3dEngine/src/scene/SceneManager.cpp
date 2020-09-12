@@ -60,9 +60,9 @@ namespace urchin
         }
 
         //check OpenGL version supported
-        if(!glewIsSupported("GL_VERSION_4_4"))
+        if(!glewIsSupported("GL_VERSION_4_5"))
         {
-            throw std::runtime_error("OpenGL version 4.4 is required but it's not supported on this environment.");
+            throw std::runtime_error("OpenGL version 4.5 is required but it's not supported on this environment.");
         }
 
         //check OpenGL context version
@@ -70,7 +70,7 @@ namespace urchin
         glGetIntegerv(GL_MAJOR_VERSION, &majorVersionContext);
         glGetIntegerv(GL_MINOR_VERSION, &minorVersionContext);
 
-        if((majorVersionContext*100 + minorVersionContext*10) < 440)
+        if((majorVersionContext*100 + minorVersionContext*10) < 450)
         {
             std::ostringstream ossMajorVersionContext;
             ossMajorVersionContext << majorVersionContext;
@@ -78,7 +78,7 @@ namespace urchin
             std::ostringstream ossMinorVersionContext;
             ossMinorVersionContext << minorVersionContext;
 
-            throw std::runtime_error("OpenGL context version required: 4.4, current version: " + ossMajorVersionContext.str() + "." + ossMinorVersionContext.str() + ".");
+            throw std::runtime_error("OpenGL context version required: 4.5, current version: " + ossMajorVersionContext.str() + "." + ossMinorVersionContext.str() + ".");
         }
 
         //initialization OpenGl
