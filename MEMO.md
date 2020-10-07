@@ -31,6 +31,7 @@
 - Mesh
 	- Call Of Duty 4: characters of 6000 triangles + normal mapping
 	- Crysis 1: scene with 500 000 to 1 million of triangles displayed
+	- Horizon Zero Dawn: trees of 10 000 triangles in LOD1
 - Texel density
 	- Crysis: average of 512 pixels/m for textures
 - Shadow
