@@ -39,6 +39,7 @@
 	- GTA V: shadow map resolution 1024\*4096 (4 rendering). http://www.adriancourreges.com/blog/2015/11/02/gta-v-graphics-study/
 	- Assassin Creed Syncidate: PCSS Ultra use VRAM > 400Mo
 	- The Division & Watch Dog 2: use Hybrid Frustum Traced Shadows
+	- Horizon Zero Dawn: 1024\*1024 for character + 2048\*2048 for max 8m distant + 2048\*2048 for max 80m distant + 1536\*1536 for 1.5km (use height-field-based system)
 - Anti aliasing
 	- Assassin Creed Syndicate: MSAA4x+FXAA (VRAM=392Mo) or TXAA4x+FXAA (VRAM=410Mo)
 	- Far Cry 5: SMAA or TAA
