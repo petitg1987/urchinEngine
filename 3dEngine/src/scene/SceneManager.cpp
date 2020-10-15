@@ -78,7 +78,7 @@ namespace urchin
             std::ostringstream ossMinorVersionContext;
             ossMinorVersionContext << minorVersionContext;
 
-            throw std::runtime_error("OpenGL context version required: 4.5, current version: " + ossMajorVersionContext.str() + "." + ossMinorVersionContext.str() + ".");
+            throw std::runtime_error("OpenGL context version required: 4.5 or more, current version: " + ossMajorVersionContext.str() + "." + ossMinorVersionContext.str() + ".");
         }
 
         //initialization OpenGl

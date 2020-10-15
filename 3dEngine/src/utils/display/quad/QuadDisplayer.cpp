@@ -102,14 +102,17 @@ namespace urchin
 
     void QuadDisplayer::display() const
     {
-        glDisable(GL_DEPTH_TEST);
-        glDepthMask(GL_FALSE);
+        if(numberOfQuad > 0)
+        {
+            glDisable(GL_DEPTH_TEST);
+            glDepthMask(GL_FALSE);
 
-        glBindVertexArray(vertexArrayObject);
-        glDrawArrays(GL_QUADS, 0, 4*numberOfQuad);
+            glBindVertexArray(vertexArrayObject);
+            glDrawArrays(GL_QUADS, 0, 4 * numberOfQuad);
 
-        glDepthMask(GL_TRUE);
-        glEnable(GL_DEPTH_TEST);
+            glDepthMask(GL_TRUE);
+            glEnable(GL_DEPTH_TEST);
+        }
     }
 
 }
