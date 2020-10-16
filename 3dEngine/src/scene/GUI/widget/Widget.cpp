@@ -2,7 +2,7 @@
 #include <algorithm>
 
 #include "scene/GUI/widget/Widget.h"
-#include "scene/InputDevice.h"
+#include "scene/InputDeviceKey.h"
 
 namespace urchin
 {
@@ -194,15 +194,15 @@ namespace urchin
         return bIsVisible;
     }
 
-    bool Widget::onKeyDown(unsigned int key)
+    bool Widget::onKeyPress(unsigned int key)
     {
         handleWidgetKeyDown(key);
 
-        bool propagateEvent = onKeyDownEvent(key);
+        bool propagateEvent = onKeyPressEvent(key);
 
         for (auto &child : children)
         {
-            if(child->isVisible() && !child->onKeyDown(key))
+            if(child->isVisible() && !child->onKeyPress(key))
             {
                 return false;
             }
@@ -211,14 +211,14 @@ namespace urchin
         return propagateEvent;
     }
 
-    bool Widget::onKeyDownEvent(unsigned int)
+    bool Widget::onKeyPressEvent(unsigned int)
     {
         return true;
     }
 
     void Widget::handleWidgetKeyDown(unsigned int key)
     {
-        if(key==InputDevice::Key::MOUSE_LEFT)
+        if(key == InputDeviceKey::MOUSE_LEFT)
         {
             Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
             if(widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY)))
@@ -232,15 +232,15 @@ namespace urchin
         }
     }
 
-    bool Widget::onKeyUp(unsigned int key)
+    bool Widget::onKeyRelease(unsigned int key)
     {
         handleWidgetKeyUp(key);
 
-        bool propagateEvent = onKeyUpEvent(key);
+        bool propagateEvent = onKeyReleaseEvent(key);
 
         for (auto &child : children)
         {
-            if(child->isVisible() && !child->onKeyUp(key))
+            if(child->isVisible() && !child->onKeyRelease(key))
             {
                 return false;
             }
@@ -248,14 +248,14 @@ namespace urchin
         return propagateEvent;
     }
 
-    bool Widget::onKeyUpEvent(unsigned int)
+    bool Widget::onKeyReleaseEvent(unsigned int)
     {
         return true;
     }
 
     void Widget::handleWidgetKeyUp(unsigned int key)
     {
-        if(key==InputDevice::Key::MOUSE_LEFT)
+        if(key == InputDeviceKey::MOUSE_LEFT)
         {
             Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
             if(widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY)))

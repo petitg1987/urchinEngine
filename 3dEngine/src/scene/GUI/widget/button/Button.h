@@ -27,8 +27,8 @@ namespace urchin
         private:
             unsigned int getTextureId();
 
-            bool onKeyDownEvent(unsigned int) override;
-            bool onKeyUpEvent(unsigned int) override;
+            bool onKeyPressEvent(unsigned int) override;
+            bool onKeyReleaseEvent(unsigned int) override;
             bool onMouseMoveEvent(int, int) override;
 
             //properties

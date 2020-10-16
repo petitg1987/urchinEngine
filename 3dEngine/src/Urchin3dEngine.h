@@ -2,7 +2,7 @@
 #define URCHINENGINE_URCHIN3DENGINE_H
 
 #include "scene/SceneManager.h"
-#include "scene/InputDevice.h"
+#include "scene/InputDeviceKey.h"
 
 #include "scene/renderer3d/light/LightManager.h"
 #include "scene/renderer3d/shadow/ShadowManager.h"

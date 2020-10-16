@@ -227,13 +227,13 @@ namespace urchin
         updateViewMatrix();
     }
 
-    bool Camera::onKeyDown(unsigned int)
+    bool Camera::onKeyPress(unsigned int)
     {
         //do nothing
         return true;
     }
 
-    bool Camera::onKeyUp(unsigned int)
+    bool Camera::onKeyRelease(unsigned int)
     {
         //do nothing
         return true;

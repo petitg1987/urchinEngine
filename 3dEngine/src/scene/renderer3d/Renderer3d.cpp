@@ -368,20 +368,20 @@ namespace urchin
         return paused;
     }
 
-    bool Renderer3d::onKeyDown(unsigned int key)
+    bool Renderer3d::onKeyPress(unsigned int key)
     {
         if(!paused && camera && key < 260)
         {
-            return camera->onKeyDown(key);
+            return camera->onKeyPress(key);
         }
         return true;
     }
 
-    bool Renderer3d::onKeyUp(unsigned int key)
+    bool Renderer3d::onKeyRelease(unsigned int key)
     {
         if(!paused && camera && key < 260)
         {
-            return camera->onKeyUp(key);
+            return camera->onKeyRelease(key);
         }
         return true;
     }

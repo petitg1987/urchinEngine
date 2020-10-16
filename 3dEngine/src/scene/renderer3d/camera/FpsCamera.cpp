@@ -43,7 +43,7 @@ namespace urchin
         this->speed = speed;
     }
 
-    bool FpsCamera::onKeyDown(unsigned int key)
+    bool FpsCamera::onKeyPress(unsigned int key)
     {
         if (key == keyFront)
         {
@@ -65,7 +65,7 @@ namespace urchin
         return true;
     }
 
-    bool FpsCamera::onKeyUp(unsigned int key)
+    bool FpsCamera::onKeyRelease(unsigned int key)
     {
         if (key == keyFront)
         {

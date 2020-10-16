@@ -1,7 +1,7 @@
 #include "UrchinCommon.h"
 
 #include "FreeCamera.h"
-#include "scene/InputDevice.h"
+#include "scene/InputDeviceKey.h"
 
 #define DEFAULT_KEY_FRONT 'Z'
 #define DEFAULT_KEY_BACK 'S'
@@ -49,9 +49,9 @@ namespace urchin
         this->rotateSpeed = rotateSpeed;
     }
 
-    bool FreeCamera::onKeyDown(unsigned int key)
+    bool FreeCamera::onKeyPress(unsigned int key)
     {
-        if (key == InputDevice::Key::MOUSE_RIGHT)
+        if (key == InputDeviceKey::MOUSE_RIGHT)
         {
             useMouseToMoveCamera(true);
             return false;
@@ -75,9 +75,9 @@ namespace urchin
         return true;
     }
 
-    bool FreeCamera::onKeyUp(unsigned int key)
+    bool FreeCamera::onKeyRelease(unsigned int key)
     {
-        if (key == InputDevice::Key::MOUSE_RIGHT)
+        if (key == InputDeviceKey::MOUSE_RIGHT)
         {
             useMouseToMoveCamera(false);
             return false;

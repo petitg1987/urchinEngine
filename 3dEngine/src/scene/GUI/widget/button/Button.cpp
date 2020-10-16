@@ -66,13 +66,13 @@ namespace urchin
         return texInfoDefault->getTextureID();
     }
 
-    bool Button::onKeyDownEvent(unsigned int)
+    bool Button::onKeyPressEvent(unsigned int)
     {
         textureID = getTextureId();
         return true;
     }
 
-    bool Button::onKeyUpEvent(unsigned int)
+    bool Button::onKeyReleaseEvent(unsigned int)
     {
         textureID = getTextureId();
         return true;

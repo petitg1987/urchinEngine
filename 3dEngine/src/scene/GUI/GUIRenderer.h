@@ -20,8 +20,8 @@ namespace urchin
             void notify(Observable *, int) override;
             void setupSkin(const std::string &);
 
-            bool onKeyDown(unsigned int) override;
-            bool onKeyUp(unsigned int) override;
+            bool onKeyPress(unsigned int) override;
+            bool onKeyRelease(unsigned int) override;
             bool onChar(unsigned int) override;
             bool onMouseMove(int, int) override;
             void onDisable() override;

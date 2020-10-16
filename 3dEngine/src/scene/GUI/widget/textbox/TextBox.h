@@ -27,7 +27,7 @@ namespace urchin
             void display(int, float) override;
 
         private:
-            bool onKeyDownEvent(unsigned int) override;
+            bool onKeyPressEvent(unsigned int) override;
             bool onCharEvent(unsigned int) override;
             void reset() override;
 

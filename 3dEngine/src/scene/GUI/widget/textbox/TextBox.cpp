@@ -4,7 +4,7 @@
 #include "UrchinCommon.h"
 
 #include "scene/GUI/widget/textbox/TextBox.h"
-#include "scene/InputDevice.h"
+#include "scene/InputDeviceKey.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 
 #define ADDITIONAL_LEFT_BORDER 1 //Additional border to outline->leftWidth
@@ -86,9 +86,9 @@ namespace urchin
         return allText;
     }
 
-    bool TextBox::onKeyDownEvent(unsigned int key)
+    bool TextBox::onKeyPressEvent(unsigned int key)
     {
-        if(key==InputDevice::Key::MOUSE_LEFT)
+        if(key == InputDeviceKey::MOUSE_LEFT)
         {
             Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
             if (widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY())))
@@ -103,10 +103,10 @@ namespace urchin
                 state = UNACTIVE;
                 textureID = texTextBoxDefault->getTextureID();
             }
-        }else if(key==InputDevice::Key::LEFT_ARROW && state==ACTIVE)
+        }else if(key == InputDeviceKey::LEFT_ARROW && state == ACTIVE)
         {
             refreshText(cursorIndex-1);
-        }else if(key==InputDevice::Key::RIGHT_ARROW && state==ACTIVE)
+        }else if(key == InputDeviceKey::RIGHT_ARROW && state == ACTIVE)
         {
             refreshText(cursorIndex+1);
         }

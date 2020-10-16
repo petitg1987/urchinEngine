@@ -45,8 +45,8 @@ namespace urchin
             TextureManager *getTextureManager() const;
 
             //events
-            bool onKeyDown(unsigned int);
-            bool onKeyUp(unsigned int);
+            bool onKeyPress(unsigned int);
+            bool onKeyRelease(unsigned int);
             bool onChar(unsigned int);
             bool onMouseMove(int, int);
 

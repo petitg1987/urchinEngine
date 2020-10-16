@@ -82,13 +82,13 @@ namespace urchin
         GUISkinService::instance()->setSkin(skinFilename);
     }
 
-    bool GUIRenderer::onKeyDown(unsigned int key)
+    bool GUIRenderer::onKeyPress(unsigned int key)
     {
         if(key < 260)
         {
             for(long i=(long)widgets.size()-1; i>=0; --i)
             {
-                if(widgets[i]->isVisible() && !widgets[i]->onKeyDown(key))
+                if(widgets[i]->isVisible() && !widgets[i]->onKeyPress(key))
                 {
                     return false;
                 }
@@ -97,13 +97,13 @@ namespace urchin
         return true;
     }
 
-    bool GUIRenderer::onKeyUp(unsigned int key)
+    bool GUIRenderer::onKeyRelease(unsigned int key)
     {
         if(key < 260)
         {
             for(long i=(long)widgets.size()-1; i>=0; --i)
             {
-                if(widgets[i]->isVisible() && !widgets[i]->onKeyUp(key))
+                if(widgets[i]->isVisible() && !widgets[i]->onKeyRelease(key))
                 {
                     return false;
                 }

@@ -58,10 +58,10 @@ namespace urchin
             void setIsVisible(bool);
             bool isVisible() const;
 
-            bool onKeyDown(unsigned int);
-            virtual bool onKeyDownEvent(unsigned int);
-            bool onKeyUp(unsigned int);
-            virtual bool onKeyUpEvent(unsigned int);
+            bool onKeyPress(unsigned int);
+            virtual bool onKeyPressEvent(unsigned int);
+            bool onKeyRelease(unsigned int);
+            virtual bool onKeyReleaseEvent(unsigned int);
             bool onChar(unsigned int);
             virtual bool onCharEvent(unsigned int);
             bool onMouseMove(int, int);

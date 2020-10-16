@@ -11,8 +11,8 @@ namespace urchin
 
             virtual void onResize(unsigned int, unsigned int) = 0;
 
-            virtual bool onKeyDown(unsigned int) = 0;
-            virtual bool onKeyUp(unsigned int) = 0;
+            virtual bool onKeyPress(unsigned int) = 0;
+            virtual bool onKeyRelease(unsigned int) = 0;
             virtual bool onChar(unsigned int) = 0;
             virtual bool onMouseMove(int, int) = 0;
             virtual void onDisable() = 0;

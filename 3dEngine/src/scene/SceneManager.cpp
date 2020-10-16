@@ -243,11 +243,11 @@ namespace urchin
         return TextureManager::instance();
     }
 
-    bool SceneManager::onKeyDown(unsigned int key)
+    bool SceneManager::onKeyPress(unsigned int key)
     {
         for(int i=NUM_RENDERER-1; i>=0; --i)
         {
-            if(activeRenderers[i] && !activeRenderers[i]->onKeyDown(key))
+            if(activeRenderers[i] && !activeRenderers[i]->onKeyPress(key))
             {
                 return false;
             }
@@ -255,11 +255,11 @@ namespace urchin
         return true;
     }
 
-    bool SceneManager::onKeyUp(unsigned int key)
+    bool SceneManager::onKeyRelease(unsigned int key)
     {
         for(int i=NUM_RENDERER-1; i>=0; --i)
         {
-            if(activeRenderers[i] && !activeRenderers[i]->onKeyUp(key))
+            if(activeRenderers[i] && !activeRenderers[i]->onKeyRelease(key))
             {
                 return false;
             }

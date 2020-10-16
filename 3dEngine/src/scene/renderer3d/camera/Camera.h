@@ -44,8 +44,8 @@ namespace urchin
             void lookAt(const Vector3<float> &);
             void rotate(const Quaternion<float> &);
 
-            virtual bool onKeyDown(unsigned int);
-            virtual bool onKeyUp(unsigned int);
+            virtual bool onKeyPress(unsigned int);
+            virtual bool onKeyRelease(unsigned int);
             virtual void updateCameraView(float) = 0;
 
             bool onMouseMove(int, int);
