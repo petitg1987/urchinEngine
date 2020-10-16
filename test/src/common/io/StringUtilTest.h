@@ -5,8 +5,7 @@
 #include <cppunit/Test.h>
 #include "UrchinCommon.h"
 
-class StringUtilTest : public CppUnit::TestFixture
-{
+class StringUtilTest : public CppUnit::TestFixture {
     public:
         static CppUnit::Test *suite();
 

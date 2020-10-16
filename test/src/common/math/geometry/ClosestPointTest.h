@@ -4,8 +4,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class ClosestPointTest : public CppUnit::TestFixture
-{
+class ClosestPointTest : public CppUnit::TestFixture {
     public:
         static CppUnit::Test *suite();
 

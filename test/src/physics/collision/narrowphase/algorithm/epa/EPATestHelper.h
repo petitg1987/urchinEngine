@@ -6,8 +6,7 @@
 #include "UrchinPhysicsEngine.h"
 using namespace urchin;
 
-class EPATestHelper
-{
+class EPATestHelper {
     public:
         static std::shared_ptr<EPAResult<float>> executeEPA(const CollisionConvexObject3D &, const CollisionConvexObject3D &);
 

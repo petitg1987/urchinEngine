@@ -5,8 +5,7 @@
 #include <cppunit/Test.h>
 #include "UrchinCommon.h"
 
-class MapUtilTest : public CppUnit::TestFixture
-{
+class MapUtilTest : public CppUnit::TestFixture {
     public:
         static CppUnit::Test *suite();
 

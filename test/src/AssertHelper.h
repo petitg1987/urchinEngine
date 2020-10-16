@@ -4,8 +4,7 @@
 #include "UrchinCommon.h"
 using namespace urchin;
 
-class AssertHelper
-{
+class AssertHelper {
     public:
         static void assertTrue(bool, const std::string &msg = "");
 

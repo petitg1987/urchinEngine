@@ -4,8 +4,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class PolygonsSubtractionTest : public CppUnit::TestFixture
-{
+class PolygonsSubtractionTest : public CppUnit::TestFixture {
     public:
         static CppUnit::Test *suite();
 

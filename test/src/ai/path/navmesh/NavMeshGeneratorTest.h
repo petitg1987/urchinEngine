@@ -7,8 +7,7 @@
 
 #include "UrchinAIEngine.h"
 
-class NavMeshGeneratorTest : public CppUnit::TestFixture
-{
+class NavMeshGeneratorTest : public CppUnit::TestFixture {
     public:
         static CppUnit::Test *suite();
 

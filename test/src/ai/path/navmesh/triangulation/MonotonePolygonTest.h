@@ -4,8 +4,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class MonotonePolygonTest : public CppUnit::TestFixture
-{
+class MonotonePolygonTest : public CppUnit::TestFixture {
     public:
         static CppUnit::Test *suite();
 

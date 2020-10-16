@@ -6,8 +6,7 @@
 #include "UrchinPhysicsEngine.h"
 using namespace urchin;
 
-class GJKTestHelper
-{
+class GJKTestHelper {
     public:
         static std::shared_ptr<GJKResult<float>> executeGJK(const CollisionConvexObject3D &, const CollisionConvexObject3D &);
 

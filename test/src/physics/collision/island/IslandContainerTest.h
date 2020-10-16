@@ -7,8 +7,7 @@
 
 #include "UrchinPhysicsEngine.h"
 
-class IslandContainerTest : public CppUnit::TestFixture
-{
+class IslandContainerTest : public CppUnit::TestFixture {
     public:
         static CppUnit::Test *suite();
 
@@ -17,8 +16,7 @@ class IslandContainerTest : public CppUnit::TestFixture
         void createTwoSeparateIslands();
 };
 
-class TestBody : public urchin::IslandElement
-{
+class TestBody : public urchin::IslandElement {
     public:
         void setIslandElementId(unsigned int id) override
         {

@@ -5,8 +5,7 @@
 #include <cppunit/Test.h>
 #include "UrchinAIEngine.h"
 
-class TriangulationTest : public CppUnit::TestFixture
-{
+class TriangulationTest : public CppUnit::TestFixture {
     public:
         static CppUnit::Test *suite();
 

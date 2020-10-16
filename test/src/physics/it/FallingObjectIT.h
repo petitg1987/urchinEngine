@@ -4,8 +4,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class FallingObjectIT : public CppUnit::TestFixture
-{
+class FallingObjectIT : public CppUnit::TestFixture {
     public:
         static CppUnit::Test *suite();
 

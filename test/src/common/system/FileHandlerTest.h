@@ -4,8 +4,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class FileHandlerTest : public CppUnit::TestFixture
-{
+class FileHandlerTest : public CppUnit::TestFixture {
     public:
         static CppUnit::Test *suite();
 

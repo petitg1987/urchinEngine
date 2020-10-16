@@ -4,8 +4,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class FunnelAlgorithmTest : public CppUnit::TestFixture
-{
+class FunnelAlgorithmTest : public CppUnit::TestFixture {
     public:
         static CppUnit::Test *suite();
 

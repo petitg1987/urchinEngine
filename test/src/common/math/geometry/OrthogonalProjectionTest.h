@@ -5,8 +5,7 @@
 #include <cppunit/Test.h>
 #include "UrchinCommon.h"
 
-class OrthogonalProjectionTest : public CppUnit::TestFixture
-{
+class OrthogonalProjectionTest : public CppUnit::TestFixture {
     public:
         static CppUnit::Test *suite();
 

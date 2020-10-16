@@ -4,8 +4,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class ResizeConvexHull3DTest : public CppUnit::TestFixture
-{
+class ResizeConvexHull3DTest : public CppUnit::TestFixture {
     public:
         static CppUnit::Test *suite();
 

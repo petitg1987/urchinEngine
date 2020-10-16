@@ -4,8 +4,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class EPABoxTest : public CppUnit::TestFixture
-{
+class EPABoxTest : public CppUnit::TestFixture {
     public:
         static CppUnit::Test *suite();
 

@@ -4,8 +4,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class CSGPolygonTest : public CppUnit::TestFixture
-{
+class CSGPolygonTest : public CppUnit::TestFixture {
     public:
         static CppUnit::Test *suite();
 

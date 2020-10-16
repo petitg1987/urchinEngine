@@ -6,8 +6,7 @@
 
 #include "UrchinAIEngine.h"
 
-class EdgeLinkDetectionTest: public CppUnit::TestFixture
-{
+class EdgeLinkDetectionTest: public CppUnit::TestFixture {
     public:
         static CppUnit::Test *suite();
 
