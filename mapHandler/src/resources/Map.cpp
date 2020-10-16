@@ -19,37 +19,37 @@ namespace urchin {
         delete sceneAI;
         delete sceneSky;
 
-        for(SceneObject *sceneObject : sceneObjects) {
+        for (SceneObject *sceneObject : sceneObjects) {
             delete sceneObject;
         }
 
-        for(SceneLight *sceneLight : sceneLights) {
+        for (SceneLight *sceneLight : sceneLights) {
             delete sceneLight;
         }
 
-        for(SceneTerrain *sceneTerrain : sceneTerrains) {
+        for (SceneTerrain *sceneTerrain : sceneTerrains) {
             delete sceneTerrain;
         }
 
-        for(SceneWater *sceneWater : sceneWaters) {
+        for (SceneWater *sceneWater : sceneWaters) {
             delete sceneWater;
         }
 
-        for(SceneSound *sceneSound : sceneSounds) {
+        for (SceneSound *sceneSound : sceneSounds) {
             delete sceneSound;
         }
     }
 
     void Map::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser, LoadCallback &loadCallback) {
-        if(renderer3d && !renderer3d->isPaused()) { //to avoid move camera before being able to see the map
+        if (renderer3d && !renderer3d->isPaused()) { //to avoid move camera before being able to see the map
             throw std::runtime_error("Renderer 3d should be paused while loading map.");
         }
 
-        if(physicsWorld && !physicsWorld->isPaused()) { //to avoid miss of collision between objects just loaded and on objects not loaded yet
+        if (physicsWorld && !physicsWorld->isPaused()) { //to avoid miss of collision between objects just loaded and on objects not loaded yet
             throw std::runtime_error("Physics world should be paused while loading map.");
         }
 
-        if(aiManager && !aiManager->isPaused()) { //to avoid compute path based on a world with missing objects
+        if (aiManager && !aiManager->isPaused()) { //to avoid compute path based on a world with missing objects
             throw std::runtime_error("AI manager should be paused while loading map.");
         }
 
@@ -216,7 +216,7 @@ namespace urchin {
 
     SceneObject *Map::getSceneObject(const std::string &name) const {
         for (auto sceneObject : sceneObjects) {
-            if(sceneObject->getName() == name) {
+            if (sceneObject->getName() == name) {
                 return sceneObject;
             }
         }
@@ -239,8 +239,8 @@ namespace urchin {
     }
 
     SceneLight *Map::getSceneLight(const std::string &name) const {
-        for(auto sceneLight : sceneLights) {
-            if(sceneLight->getName() == name) {
+        for (auto sceneLight : sceneLights) {
+            if (sceneLight->getName() == name) {
                 return sceneLight;
             }
         }
@@ -263,8 +263,8 @@ namespace urchin {
     }
 
     SceneTerrain *Map::getSceneTerrain(const std::string &name) const {
-        for(auto sceneTerrain : sceneTerrains) {
-            if(sceneTerrain->getName() == name) {
+        for (auto sceneTerrain : sceneTerrains) {
+            if (sceneTerrain->getName() == name) {
                 return sceneTerrain;
             }
         }
@@ -287,8 +287,8 @@ namespace urchin {
     }
 
     SceneWater *Map::getSceneWater(const std::string &name) const {
-        for(auto sceneWater : sceneWaters) {
-            if(sceneWater->getName() == name) {
+        for (auto sceneWater : sceneWaters) {
+            if (sceneWater->getName() == name) {
                 return sceneWater;
             }
         }
@@ -320,7 +320,7 @@ namespace urchin {
 
     SceneSound *Map::getSceneSound(const std::string &name) const {
         for (auto sceneSound : sceneSounds) {
-            if(sceneSound->getName() == name) {
+            if (sceneSound->getName() == name) {
                 return sceneSound;
             }
         }
@@ -347,37 +347,37 @@ namespace urchin {
     }
 
     void Map::pause() {
-        if(renderer3d) {
+        if (renderer3d) {
             renderer3d->pause();
         }
 
-        if(physicsWorld) {
+        if (physicsWorld) {
             physicsWorld->pause();
         }
 
-        if(aiManager) {
+        if (aiManager) {
             aiManager->pause();
         }
 
-        if(soundManager) {
+        if (soundManager) {
             soundManager->pause();
         }
     }
 
     void Map::unpause() {
-        if(renderer3d) {
+        if (renderer3d) {
             renderer3d->unpause();
         }
 
-        if(physicsWorld) {
+        if (physicsWorld) {
             physicsWorld->unpause();
         }
 
-        if(aiManager) {
+        if (aiManager) {
             aiManager->unpause();
         }
 
-        if(soundManager) {
+        if (soundManager) {
             soundManager->unpause();
         }
     }
@@ -392,18 +392,18 @@ namespace urchin {
     }
 
     void Map::refreshEntities() {
-        for(SceneObject *sceneObject : sceneObjects) {
+        for (SceneObject *sceneObject : sceneObjects) {
             sceneObject->refresh();
         }
 
-        for(SceneTerrain *sceneTerrain : sceneTerrains) {
+        for (SceneTerrain *sceneTerrain : sceneTerrains) {
             sceneTerrain->refresh();
         }
     }
 
     void Map::refreshSound() {
         //update sound event
-        if(renderer3d && renderer3d->getCamera()) {
+        if (renderer3d && renderer3d->getCamera()) {
             soundManager->process(renderer3d->getCamera()->getPosition());
         } else {
             soundManager->process();

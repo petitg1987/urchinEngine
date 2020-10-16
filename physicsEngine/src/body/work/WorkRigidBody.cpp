@@ -28,8 +28,8 @@ namespace urchin {
      * Refresh body active state. If forces are apply on body: active body
      */
     void WorkRigidBody::refreshBodyActiveState() {
-        if(!isStatic() && !isActive()) {
-            if(totalMomentum.squareLength() > std::numeric_limits<float>::epsilon()
+        if (!isStatic() && !isActive()) {
+            if (totalMomentum.squareLength() > std::numeric_limits<float>::epsilon()
                     || totalMomentum.squareLength() > std::numeric_limits<float>::epsilon()) {
                 setIsActive(true);
             }
@@ -97,12 +97,12 @@ namespace urchin {
     }
 
     void WorkRigidBody::setMassProperties(float mass, const Vector3<float> &localInertia) {
-        if(MathAlgorithm::isZero(mass)) {
+        if (MathAlgorithm::isZero(mass)) {
             setIsStatic(true);
             setIsActive(false);
             this->invMass = 0.0f;
         } else {
-            if(isStatic()) //avoid wake up of body (isActive flag) when static flag is already correct
+            if (isStatic()) //avoid wake up of body (isActive flag) when static flag is already correct
             {
                 setIsStatic(false);
                 setIsActive(true);
@@ -128,7 +128,7 @@ namespace urchin {
      * Refresh inverse world inertia based on body transformation
      */
     void WorkRigidBody::refreshInvWorldInertia() {
-        if(!isStatic()) {
+        if (!isStatic()) {
             invWorldInertia = InertiaCalculation::computeInverseWorldInertia(invLocalInertia, getPhysicsTransform());
         } else {
             invWorldInertia = Matrix3<float>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
@@ -189,7 +189,7 @@ namespace urchin {
     }
 
     void WorkRigidBody::setIsStatic(bool bIsStatic) {
-        if(bIsStatic) {
+        if (bIsStatic) {
             makeBodyStatic();
         } else {
             AbstractWorkBody::setIsStatic(false);

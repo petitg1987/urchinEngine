@@ -10,11 +10,11 @@ namespace urchin {
     }
 
     BodyManager::~BodyManager() {
-        for(auto &body : bodies) {
+        for (auto &body : bodies) {
             delete body;
         }
 
-        for(auto &workBody : workBodies) {
+        for (auto &workBody : workBodies) {
             delete workBody;
         }
     }
@@ -46,15 +46,15 @@ namespace urchin {
         std::lock_guard<std::mutex> lock(bodiesMutex);
 
         auto it = bodies.begin();
-        while(it!=bodies.end()) {
+        while (it!=bodies.end()) {
             AbstractBody *body = *it;
 
-            if(body->isNew()) {
+            if (body->isNew()) {
                 createNewWorkBody(body);
                 ++it;
-            } else if(body->isDeleted()) {
+            } else if (body->isDeleted()) {
                 it = deleteBody(body, it);
-            } else if(body->needFullRefresh()) {
+            } else if (body->needFullRefresh()) {
                 deleteWorkBody(body);
                 createNewWorkBody(body);
                 ++it;
@@ -96,7 +96,7 @@ namespace urchin {
         AbstractWorkBody *workBody = body->getWorkBody();
 
         auto itFind = std::find(workBodies.begin(), workBodies.end(), workBody);
-        if(itFind!=workBodies.end()) {
+        if (itFind!=workBodies.end()) {
             //remove notification
             lastUpdatedWorkBody = workBody;
             notifyObservers(this, REMOVE_WORK_BODY);
@@ -115,7 +115,7 @@ namespace urchin {
 
         for (auto &body : bodies) {
             AbstractWorkBody *workBody = body->getWorkBody();
-            if(!workBody) { //work body is not created yet
+            if (!workBody) { //work body is not created yet
                 continue;
             }
 

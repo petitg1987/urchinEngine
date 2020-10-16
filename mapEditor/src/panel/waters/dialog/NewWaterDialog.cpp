@@ -42,7 +42,7 @@ namespace urchin {
 
     void NewWaterDialog::updateWaterName() {
         QString waterName = waterNameText->text();
-        if(!waterName.isEmpty()) {
+        if (!waterName.isEmpty()) {
             this->waterName = waterName.toUtf8().constData();
         }
     }
@@ -55,7 +55,7 @@ namespace urchin {
             auto *water = new Water();
 
             sceneWater->setWater(water);
-        }catch(std::exception &e) {
+        } catch (std::exception &e) {
             QMessageBox::critical(this, "Error", e.what());
             delete sceneWater;
 
@@ -71,21 +71,21 @@ namespace urchin {
     }
 
     void NewWaterDialog::done(int r) {
-        if(QDialog::Accepted == r) {
+        if (QDialog::Accepted == r) {
             bool hasError = false;
 
             updateWaterName();
             LabelStyleHelper::applyNormalStyle(waterNameLabel);
 
-            if(waterName.empty()) {
+            if (waterName.empty()) {
                 LabelStyleHelper::applyErrorStyle(waterNameLabel, "Water name is mandatory");
                 hasError = true;
-            } else if(isSceneWaterExist(waterName)) {
+            } else if (isSceneWaterExist(waterName)) {
                 LabelStyleHelper::applyErrorStyle(waterNameLabel, "Water name is already used");
                 hasError = true;
             }
 
-            if(!hasError) {
+            if (!hasError) {
                 r = buildSceneWater(r);
                 QDialog::done(r);
             }
@@ -96,8 +96,8 @@ namespace urchin {
 
     bool NewWaterDialog::isSceneWaterExist(const std::string &name) {
         std::list<const SceneWater *> sceneWaters = waterController->getSceneWaters();
-        for(auto &sceneWater : sceneWaters) {
-            if(sceneWater->getName() == name) {
+        for (auto &sceneWater : sceneWaters) {
+            if (sceneWater->getName() == name) {
                 return true;
             }
         }

@@ -33,13 +33,13 @@ namespace urchin {
     }
 
     void NotSavedDialog::buttonClick(QAbstractButton *button) {
-        if(buttonBox->standardButton(button) == QDialogButtonBox::Yes) {
+        if (buttonBox->standardButton(button) == QDialogButtonBox::Yes) {
             bNeedSave = true;
             accept();
-        } else if(buttonBox->standardButton(button) == QDialogButtonBox::No) {
+        } else if (buttonBox->standardButton(button) == QDialogButtonBox::No) {
             bNeedSave = false;
             accept();
-        } else if(buttonBox->standardButton(button) == QDialogButtonBox::Cancel) {
+        } else if (buttonBox->standardButton(button) == QDialogButtonBox::Cancel) {
             bNeedSave = false;
             reject();
         } else {

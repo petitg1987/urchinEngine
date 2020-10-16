@@ -12,13 +12,13 @@ namespace urchin {
 
     void TerrainManager::onCameraProjectionUpdate(const Camera *camera) {
         this->projectionMatrix = camera->getProjectionMatrix();
-        for(const auto terrain : terrains) {
+        for (const auto terrain : terrains) {
             terrain->onCameraProjectionUpdate(projectionMatrix);
         }
     }
 
     void TerrainManager::addTerrain(Terrain *terrain) {
-        if(terrain) {
+        if (terrain) {
             terrains.push_back(terrain);
 
             terrain->onCameraProjectionUpdate(projectionMatrix);
@@ -27,7 +27,7 @@ namespace urchin {
     }
 
     void TerrainManager::removeTerrain(Terrain *terrain) {
-        if(terrain) {
+        if (terrain) {
             terrains.erase(std::remove(terrains.begin(), terrains.end(), terrain), terrains.end());
             delete terrain;
         }
@@ -40,7 +40,7 @@ namespace urchin {
     }
 
     void TerrainManager::updateWithConfig() {
-        for(const auto terrain : terrains) {
+        for (const auto terrain : terrains) {
             terrain->getGrass()->setGrassDisplayDistance(grassDisplayDistance);
         }
     }
@@ -51,7 +51,7 @@ namespace urchin {
         glEnable(GL_PRIMITIVE_RESTART);
         glPrimitiveRestartIndex(RESTART_INDEX);
 
-        for(const auto terrain : terrains) {
+        for (const auto terrain : terrains) {
             terrain->display(camera, dt);
         }
 

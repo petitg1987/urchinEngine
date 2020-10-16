@@ -21,7 +21,7 @@ namespace urchin {
 
     void StaticBitmap::createOrUpdateWidget() {
         //loads the texture
-        if(tex) {
+        if (tex) {
             tex->release();
         }
         tex = MediaManager::instance()->getMedia<Image>(filename);

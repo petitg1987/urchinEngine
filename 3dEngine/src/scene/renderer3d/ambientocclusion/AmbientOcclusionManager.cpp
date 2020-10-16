@@ -111,7 +111,7 @@ namespace urchin {
         generateNoiseTexture();
     }
 
-    void AmbientOcclusionManager::loadUniformLocationFor(unsigned int deferredShaderID) {
+    void AmbientOcclusionManager::loadUniformLocationfor (unsigned int deferredShaderID) {
         ShaderManager::instance()->bind(deferredShaderID);
         ambientOcclusionTexLoc = glGetUniformLocation(deferredShaderID, "ambientOcclusionTex");
     }
@@ -202,7 +202,7 @@ namespace urchin {
         int samplesLoc = glGetUniformLocation(ambientOcclusionShader, "samples");
         glUniform3fv(samplesLoc, ssaoKernel.size(), (const float *)ssaoKernel[0]);
 
-        if(DEBUG_EXPORT_SSAO_KERNEL) {
+        if (DEBUG_EXPORT_SSAO_KERNEL) {
             exportSVG(std::string(std::getenv("HOME")) + "/ssaoKernel.html", ssaoKernel);
         }
     }
@@ -320,10 +320,10 @@ namespace urchin {
     }
 
     int AmbientOcclusionManager::retrieveTextureSizeFactor() {
-        if(textureSize==AOTextureSize::FULL_SIZE) {
+        if (textureSize==AOTextureSize::FULL_SIZE) {
             return 1;
         }
-        if(textureSize==AOTextureSize::HALF_SIZE) {
+        if (textureSize==AOTextureSize::HALF_SIZE) {
             return 2;
         }
 
@@ -331,7 +331,7 @@ namespace urchin {
     }
 
     unsigned int AmbientOcclusionManager::getAmbientOcclusionTextureID() const {
-        if(isBlurActivated) {
+        if (isBlurActivated) {
             return horizontalBlurFilter->getTextureID();
         }
 
@@ -363,7 +363,7 @@ namespace urchin {
 
         quadDisplayer->display();
 
-        if(isBlurActivated) {
+        if (isBlurActivated) {
             verticalBlurFilter->applyOn(ambientOcclusionTexID);
             horizontalBlurFilter->applyOn(verticalBlurFilter->getTextureID());
         }

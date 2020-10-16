@@ -11,7 +11,7 @@ namespace urchin {
     }
 
     void FrustumShadowData::updateShadowCasterReceiverBox(const AABBox<float> &shadowCasterReceiverBox, bool forceUpdateAllShadowMap) {
-        if(areIdenticalAABBox(shadowCasterReceiverBox, this->shadowCasterReceiverBox) && !forceUpdateAllShadowMap) {
+        if (areIdenticalAABBox(shadowCasterReceiverBox, this->shadowCasterReceiverBox) && !forceUpdateAllShadowMap) {
             this->shadowCasterReceiverBoxUpdated = false;
         } else {
             this->shadowCasterReceiverBox = shadowCasterReceiverBox;
@@ -49,11 +49,11 @@ namespace urchin {
     void FrustumShadowData::updateModels(const std::vector<Model *> &models) {
         modelsRequireUpdate = false;
 
-        if(models != this->models) {
+        if (models != this->models) {
             modelsRequireUpdate = true;
         } else {
             for (auto *model : models) {
-                if(model->isMovingInOctree() || model->isAnimate()) {
+                if (model->isMovingInOctree() || model->isAnimate()) {
                     modelsRequireUpdate = true;
                     break;
                 }

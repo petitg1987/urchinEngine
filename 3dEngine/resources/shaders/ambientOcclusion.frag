@@ -48,17 +48,17 @@ vec3 fetchPosition(vec2 textCoord, float depthValue) {
 
 void main() {
     vec4 normalAndAmbient = vec4(texture2D(normalAndAmbientTex, textCoordinates));
-    if(normalAndAmbient.a >= 0.99999f) { //no lighting
+    if (normalAndAmbient.a >= 0.99999f) { //no lighting
         fragColor = 0.0;
         return;
     }
 
     float depthValue = texture2D(depthTex, textCoordinates).r;
     float distanceReduceFactor = 1.0;
-    if(depthValue > DEPTH_END_ATTENUATION) {
+    if (depthValue > DEPTH_END_ATTENUATION) {
         fragColor = 0.0;
         return;
-    }else if(depthValue > DEPTH_START_ATTENUATION) {
+    }else if (depthValue > DEPTH_START_ATTENUATION) {
         distanceReduceFactor = (DEPTH_END_ATTENUATION - depthValue) / (DEPTH_END_ATTENUATION - DEPTH_START_ATTENUATION);
     }
 
@@ -72,7 +72,7 @@ void main() {
     mat3 kernelMatrix = mat3(tangent, bitangent, normal);
 
     float occlusion = 0.0;
-    for(int i = 0; i < KERNEL_SAMPLES; ++i) {
+    for (int i = 0; i < KERNEL_SAMPLES; ++i) {
         vec3 sampleVectorWorldSpace = kernelMatrix * samples[i];
         vec3 samplePointWorldSpace = position + RADIUS * sampleVectorWorldSpace;
         vec4 samplePointEyeSpace = mView * vec4(samplePointWorldSpace, 1.0);

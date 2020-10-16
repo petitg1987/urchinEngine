@@ -83,12 +83,12 @@ namespace urchin {
     }
 
     std::shared_ptr<QuadDisplayer> QuadDisplayerBuilder::build() {
-        if(!vertexCoord) {
+        if (!vertexCoord) {
             vertexCoord = new int[8]{-1, 1, 1, 1, 1, -1, -1, -1};
             deleteVertexCoord = true;
         }
 
-        if(!textureCoord) {
+        if (!textureCoord) {
             textureCoord = new int[8]{0, 1, 1, 1, 1, 0, 0, 0};
             deleteTextureCoord = true;
         }

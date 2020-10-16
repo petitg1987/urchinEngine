@@ -14,7 +14,7 @@ namespace urchin {
     }
 
     SceneSound::~SceneSound() {
-        if(soundManager) {
+        if (soundManager) {
             soundManager->removeSound(sound);
         } else {
             delete this->sound;
@@ -25,7 +25,7 @@ namespace urchin {
     void SceneSound::setSoundManager(SoundManager *soundManager) {
         this->soundManager = soundManager;
 
-        if(soundManager) {
+        if (soundManager) {
             soundManager->addSound(sound, soundTrigger);
         }
     }
@@ -67,13 +67,13 @@ namespace urchin {
     }
 
     void SceneSound::setSoundElements(Sound *sound, SoundTrigger *soundTrigger) {
-        if(!sound) {
+        if (!sound) {
             throw std::invalid_argument("Cannot set a null sound on scene sound.");
-        } else if(!soundTrigger) {
+        } else if (!soundTrigger) {
             throw std::invalid_argument("Cannot set a null sound trigger on scene sound.");
         }
 
-        if(soundManager) {
+        if (soundManager) {
             soundManager->removeSound(this->sound);
             soundManager->addSound(sound, soundTrigger);
         } else {
@@ -86,14 +86,14 @@ namespace urchin {
     }
 
     void SceneSound::changeSoundTrigger(SoundTrigger *newSoundTrigger) {
-        if(!sound) {
+        if (!sound) {
             throw std::invalid_argument("Cannot change sound trigger without having a sound on scene sound.");
         }
-        if(!soundTrigger) {
+        if (!soundTrigger) {
             throw std::invalid_argument("Cannot set a null sound trigger on scene sound.");
         }
 
-        if(soundManager) {
+        if (soundManager) {
             soundManager->changeSoundTrigger(sound, newSoundTrigger);
         } else {
             delete this->soundTrigger;

@@ -73,7 +73,7 @@ namespace urchin {
             scaledShape->scale(invScale);
 
             return scaledShape;
-        }catch(std::invalid_argument &e) {
+        } catch (std::invalid_argument &e) {
             LabelStyleHelper::applyErrorStyle(pointsLabel, std::string(e.what()));
             return DefaultBodyShapeCreator(getSceneObject()).createDefaultBodyShape(CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE, true);
         }
@@ -81,7 +81,7 @@ namespace urchin {
 
     std::vector<Point3<float>> BodyConvexHullShapeWidget::getPoints() const {
         std::vector<Point3<float>> points;
-        for(int row=0; row< pointsTableModel->rowCount(); ++row) {
+        for (int row=0; row< pointsTableModel->rowCount(); ++row) {
             QModelIndex indexX = pointsTableModel->index(row, 0);
             QModelIndex indexY = pointsTableModel->index(row, 1);
             QModelIndex indexZ = pointsTableModel->index(row, 2);
@@ -118,7 +118,7 @@ namespace urchin {
     }
 
     void BodyConvexHullShapeWidget::removeSelectedPoint() {
-        if(pointsTable->currentIndex().row()!=-1) {
+        if (pointsTable->currentIndex().row()!=-1) {
             pointsTableModel->removeRow(pointsTable->currentIndex().row());
             pointsTable->resizeRowsToContents();
 

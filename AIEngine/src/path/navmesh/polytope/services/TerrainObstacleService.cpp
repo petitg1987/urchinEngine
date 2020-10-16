@@ -25,19 +25,19 @@ namespace urchin {
         unsigned int obstacleIndex = 0;
         unsigned int maxSquareIndex = (xLength * (zLength - 1));
         std::vector<bool> squaresProcessed(maxSquareIndex, false);
-        for(unsigned int squareIndex = 0; squareIndex < maxSquareIndex; ++squareIndex) {
-            if((squareIndex + 1) % xLength == 0) { //extreme right point: not a valid square
+        for (unsigned int squareIndex = 0; squareIndex < maxSquareIndex; ++squareIndex) {
+            if ((squareIndex + 1) % xLength == 0) { //extreme right point: not a valid square
                 continue;
             }
-            if(squaresProcessed[squareIndex]) {
+            if (squaresProcessed[squareIndex]) {
                 continue;
             }
 
-            if(!isWalkableSquare(squareIndex, maxSlopeDotProduct)) {
+            if (!isWalkableSquare(squareIndex, maxSlopeDotProduct)) {
                 std::vector<unsigned int> inaccessibleSquares = findAllInaccessibleNeighbors(squareIndex, maxSlopeDotProduct);
                 obstaclePolygons.emplace_back(squaresToPolygon(inaccessibleSquares, obstacleIndex++));
 
-                for(unsigned int inaccessibleSquare : inaccessibleSquares) {
+                for (unsigned int inaccessibleSquare : inaccessibleSquares) {
                     squaresProcessed[inaccessibleSquare] = true;
                 }
             }
@@ -75,16 +75,16 @@ namespace urchin {
         std::stack<unsigned int> squaresToProcess;
         squaresToProcess.push(squareIndex);
 
-        while(!squaresToProcess.empty()) {
+        while (!squaresToProcess.empty()) {
             unsigned int currSquareIndex = squaresToProcess.top();
             squaresToProcess.pop();
 
             inaccessibleNeighbors.push_back(currSquareIndex);
 
             std::vector<unsigned int> neighborSquares = retrieveNeighbors(currSquareIndex);
-            for(unsigned int neighborSquare : neighborSquares) {
+            for (unsigned int neighborSquare : neighborSquares) {
                 bool notProcessed = std::find(inaccessibleNeighbors.begin(), inaccessibleNeighbors.end(), neighborSquare) == inaccessibleNeighbors.end();
-                if(notProcessed && !isWalkableSquare(neighborSquare, maxSlopeDotProduct)) { //inaccessible square
+                if (notProcessed && !isWalkableSquare(neighborSquare, maxSlopeDotProduct)) { //inaccessible square
                     squaresToProcess.push(neighborSquare);
                 }
             }
@@ -100,19 +100,19 @@ namespace urchin {
         std::vector<unsigned int> neighbors;
         neighbors.reserve(4);
 
-        if(squareIndex % xLength != 0) { //left neighbor
+        if (squareIndex % xLength != 0) { //left neighbor
             neighbors.push_back(squareIndex - 1);
         }
 
-        if((squareIndex + 2) % xLength != 0) { //right neighbor
+        if ((squareIndex + 2) % xLength != 0) { //right neighbor
             neighbors.push_back(squareIndex + 1);
         }
 
-        if(squareIndex >= xLength) { //far neighbor
+        if (squareIndex >= xLength) { //far neighbor
             neighbors.push_back(squareIndex - xLength);
         }
 
-        if(squareIndex < xLength * (zLength - 2)) { //near neighbor
+        if (squareIndex < xLength * (zLength - 2)) { //near neighbor
             neighbors.push_back(squareIndex + xLength);
         }
 
@@ -131,20 +131,20 @@ namespace urchin {
         cwPolygonPointIndices.push_back(squares[0] + 1);
         EdgeDirection direction = EdgeDirection::RIGHT;
 
-        while(true) {
+        while (true) {
             unsigned int lastPointIndex = cwPolygonPointIndices[cwPolygonPointIndices.size() - 1];
             std::vector<EdgeDirection> checkDirections = checkDirectionsMap.at(direction);
             EdgeDirection usedDirection;
             unsigned int nextPointIndex = retrieveNextPointIndex(lastPointIndex, checkDirections, squares, usedDirection);
 
-            if(nextPointIndex==cwPolygonPointIndices[0]) { //polygon end reached
-                if(direction==usedDirection) {
+            if (nextPointIndex==cwPolygonPointIndices[0]) { //polygon end reached
+                if (direction==usedDirection) {
                     cwPolygonPointIndices.pop_back();
                 }
                 break;
             }
 
-            if(direction==usedDirection) {
+            if (direction==usedDirection) {
                 cwPolygonPointIndices[cwPolygonPointIndices.size() - 1] = nextPointIndex;
             } else {
                 cwPolygonPointIndices.push_back(nextPointIndex);
@@ -157,9 +157,9 @@ namespace urchin {
 
     unsigned int TerrainObstacleService::retrieveNextPointIndex(unsigned int pointIndex, const std::vector<EdgeDirection> &checkDirections,
                                                                 const std::vector<unsigned int> &squares, EdgeDirection &usedDirection) const {
-        for(EdgeDirection checkDirection : checkDirections) {
+        for (EdgeDirection checkDirection : checkDirections) {
             int nextPointIndex = nextPointInDirection(pointIndex, checkDirection);
-            if(nextPointIndex!=-1 && edgeBelongToOneSquare(pointIndex, static_cast<unsigned int>(nextPointIndex), squares)) {
+            if (nextPointIndex!=-1 && edgeBelongToOneSquare(pointIndex, static_cast<unsigned int>(nextPointIndex), squares)) {
                 usedDirection = checkDirection;
                 return static_cast<unsigned int>(nextPointIndex);
             }
@@ -169,23 +169,23 @@ namespace urchin {
     }
 
     int TerrainObstacleService::nextPointInDirection(unsigned int pointIndex, EdgeDirection direction) const {
-        if(EdgeDirection::RIGHT==direction) {
-            if((pointIndex + 1) % xLength == 0) { //no right point
+        if (EdgeDirection::RIGHT==direction) {
+            if ((pointIndex + 1) % xLength == 0) { //no right point
                 return -1;
             }
             return static_cast<int>(pointIndex) + 1;
-        } else if(EdgeDirection::BOTTOM==direction) {
-            if(pointIndex >= xLength * (zLength - 1)) { //no bottom point
+        } else if (EdgeDirection::BOTTOM==direction) {
+            if (pointIndex >= xLength * (zLength - 1)) { //no bottom point
                 return -1;
             }
             return static_cast<int>(pointIndex + xLength);
-        } else if(EdgeDirection::LEFT==direction) {
-            if(pointIndex % xLength == 0) { //no left point
+        } else if (EdgeDirection::LEFT==direction) {
+            if (pointIndex % xLength == 0) { //no left point
                 return -1;
             }
             return static_cast<int>(pointIndex) - 1;
-        } else if(EdgeDirection::TOP==direction) {
-            if(pointIndex < xLength) { //no top point
+        } else if (EdgeDirection::TOP==direction) {
+            if (pointIndex < xLength) { //no top point
                 return -1;
             }
             return static_cast<int>(pointIndex - xLength);
@@ -195,8 +195,8 @@ namespace urchin {
     }
 
     bool TerrainObstacleService::edgeBelongToOneSquare(unsigned int point1, unsigned int point2, const std::vector<unsigned int> &squares) const {
-        for(unsigned int squareIndex : squares) {
-            if(     ((squareIndex == point1) || (squareIndex + 1 == point1) || (squareIndex + xLength == point1) || (squareIndex + xLength + 1 == point1)) &&
+        for (unsigned int squareIndex : squares) {
+            if (     ((squareIndex == point1) || (squareIndex + 1 == point1) || (squareIndex + xLength == point1) || (squareIndex + xLength + 1 == point1)) &&
                     ((squareIndex == point2) || (squareIndex + 1 == point2) || (squareIndex + xLength == point2) || (squareIndex + xLength + 1 == point2)) ) {
                 return true;
             }
@@ -208,7 +208,7 @@ namespace urchin {
         std::vector<Point2<float>> cwPoints;
         cwPoints.reserve(cwPolygonPointIndices.size());
 
-        for(unsigned int cwPolygonPointIndex : cwPolygonPointIndices) {
+        for (unsigned int cwPolygonPointIndex : cwPolygonPointIndices) {
             Point3<float> vertex = localVertices[cwPolygonPointIndex] + position;
             cwPoints.emplace_back(Point2<float>(vertex.X, -vertex.Z));
         }

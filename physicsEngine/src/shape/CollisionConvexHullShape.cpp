@@ -44,7 +44,7 @@ namespace urchin {
     }
 
     void CollisionConvexHullShape::initializeConvexHullReduced() {
-        if(minDistanceToCenter > getInnerMargin()) {
+        if (minDistanceToCenter > getInnerMargin()) {
             convexHullShapeReduced = convexHullShape->resize(-getInnerMargin());
         } else { //impossible to shrink the convex hull correctly
             refreshInnerMargin(0.0f);
@@ -86,7 +86,7 @@ namespace urchin {
     }
 
     AABBox<float> CollisionConvexHullShape::toAABBox(const PhysicsTransform &physicsTransform) const {
-        if(!lastTransform.equals(physicsTransform)) {
+        if (!lastTransform.equals(physicsTransform)) {
             const Quaternion<float> &orientation = physicsTransform.getOrientation();
             Point3<float> min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
             Point3<float> max(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
@@ -117,7 +117,7 @@ namespace urchin {
 
         void *memPtr = getObjectsPool()->allocate(sizeof(CollisionConvexHullObject));
 
-        if(!convexHullShapeReduced) { //impossible to compute convex hull without margin => use convex hull with margin and set a margin of 0.0
+        if (!convexHullShapeReduced) { //impossible to compute convex hull without margin => use convex hull with margin and set a margin of 0.0
             assert(getInnerMargin()==0.0f);
             const std::shared_ptr<ConvexHull3D<float>> &convexHullWithoutMargin(convexHullWithMargin);
 

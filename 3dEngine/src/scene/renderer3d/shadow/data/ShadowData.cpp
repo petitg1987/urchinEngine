@@ -11,7 +11,7 @@ namespace urchin {
             fboID(0),
             depthTextureID(0),
             shadowMapTextureID(0) {
-        for(unsigned int frustumSplitIndex =0; frustumSplitIndex<nbFrustumSplit; ++frustumSplitIndex) {
+        for (unsigned int frustumSplitIndex =0; frustumSplitIndex<nbFrustumSplit; ++frustumSplitIndex) {
             frustumShadowData.push_back(new FrustumShadowData(frustumSplitIndex));
         }
     }
@@ -62,14 +62,14 @@ namespace urchin {
 
     void ShadowData::applyTextureFilters() {
         unsigned int layersToUpdate = 0;
-        for(std::size_t i=0; i<getNbFrustumShadowData(); ++i) {
-            if(getFrustumShadowData(i)->needShadowMapUpdate()) {
+        for (std::size_t i=0; i<getNbFrustumShadowData(); ++i) {
+            if (getFrustumShadowData(i)->needShadowMapUpdate()) {
                 layersToUpdate = layersToUpdate | MathAlgorithm::powerOfTwo(i);
             }
         }
 
         unsigned int textureId = shadowMapTextureID;
-        for(auto &textureFilter : textureFilters) {
+        for (auto &textureFilter : textureFilters) {
             textureFilter->applyOn(textureId, layersToUpdate);
             textureId = textureFilter->getTextureID();
         }
@@ -77,7 +77,7 @@ namespace urchin {
 
     unsigned int ShadowData::getFilteredShadowMapTextureID() const {
         unsigned int textureFiltersSize = textureFilters.size();
-        if(textureFiltersSize == 0) {
+        if (textureFiltersSize == 0) {
             return shadowMapTextureID;
         }
 
@@ -113,8 +113,8 @@ namespace urchin {
     const std::vector<Model *> &ShadowData::retrieveModels() const {
         models.clear();
 
-        for(std::size_t i=0; i<getNbFrustumShadowData(); ++i) {
-            if(getFrustumShadowData(i)->needShadowMapUpdate()) {
+        for (std::size_t i=0; i<getNbFrustumShadowData(); ++i) {
+            if (getFrustumShadowData(i)->needShadowMapUpdate()) {
                 const std::vector<Model *> &frustumSplitModels = getFrustumShadowData(i)->getModels();
                 OctreeableHelper<Model>::merge(models, frustumSplitModels);
             }

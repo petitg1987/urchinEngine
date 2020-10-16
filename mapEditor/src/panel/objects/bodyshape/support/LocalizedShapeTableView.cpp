@@ -28,7 +28,7 @@ namespace urchin {
     }
 
     std::shared_ptr<const LocalizedCollisionShape> LocalizedShapeTableView::getSelectedLocalizedShape() const {
-        if(hasLocalizedShapeSelected()) {
+        if (hasLocalizedShapeSelected()) {
             QModelIndex selectedIndex = this->currentIndex();
 
             const auto *selectLocalizedShape = selectedIndex.data(Qt::UserRole + 1).value<const LocalizedCollisionShape *>();
@@ -39,7 +39,7 @@ namespace urchin {
 
     std::vector<std::shared_ptr<const LocalizedCollisionShape>> LocalizedShapeTableView::getLocalizedShapes() const {
         std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedCollisionShapes;
-        for(int row=0; row< localizedShapesTableModel->rowCount(); ++row) {
+        for (int row=0; row< localizedShapesTableModel->rowCount(); ++row) {
             QModelIndex shapeIndex = localizedShapesTableModel->index(row, 0);
 
             const auto *localizedCollisionShape = shapeIndex.data(Qt::UserRole + 1).value<const LocalizedCollisionShape *>();
@@ -50,7 +50,7 @@ namespace urchin {
     }
 
     void LocalizedShapeTableView::updateSelectedLocalizedShape(const std::shared_ptr<const LocalizedCollisionShape>& newLocalizedShape) {
-        if(hasLocalizedShapeSelected()) {
+        if (hasLocalizedShapeSelected()) {
             removeSelectedLocalizedShapeFromMap();
 
             QStandardItem *itemShape = localizedShapesTableModel->item(this->currentIndex().row(), 0);
@@ -80,7 +80,7 @@ namespace urchin {
     }
 
     bool LocalizedShapeTableView::removeSelectedLocalizedShape() {
-        if(hasLocalizedShapeSelected()) {
+        if (hasLocalizedShapeSelected()) {
             removeSelectedLocalizedShapeFromMap();
             localizedShapesTableModel->removeRow(this->currentIndex().row());
 
@@ -94,7 +94,7 @@ namespace urchin {
 
     void LocalizedShapeTableView::selectLocalizedShape(int rowId) {
         QModelIndex modelIndexSelection = localizedShapesTableModel->index(rowId, 0);
-        if(modelIndexSelection.row()!=-1) {
+        if (modelIndexSelection.row()!=-1) {
             selectionModel()->setCurrentIndex(modelIndexSelection, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
             selectionModel()->select(modelIndexSelection, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
         }
@@ -106,7 +106,7 @@ namespace urchin {
     }
 
     void LocalizedShapeTableView::removeSelectedLocalizedShapeFromMap() {
-        if(hasLocalizedShapeSelected()) {
+        if (hasLocalizedShapeSelected()) {
             QModelIndex shapeIndex = localizedShapesTableModel->index(this->currentIndex().row(), 0);
             const auto *localizedShape = shapeIndex.data(Qt::UserRole + 1).value<const LocalizedCollisionShape *>();
 

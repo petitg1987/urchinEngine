@@ -36,7 +36,7 @@ namespace urchin {
         Light *light = sceneLight->getLight();
 
         light->setAmbientColor(ambientColor);
-        if(light->isProduceShadow()!=isProduceShadow) {
+        if (light->isProduceShadow()!=isProduceShadow) {
             light->setProduceShadow(isProduceShadow);
         }
 
@@ -70,7 +70,7 @@ namespace urchin {
         const std::list<SceneLight *> &sceneLights = getMapHandler()->getMap()->getSceneLights();
         auto it = std::find(sceneLights.begin(), sceneLights.end(), constSceneLight);
 
-        if(it!=sceneLights.end()) {
+        if (it!=sceneLights.end()) {
             return *it;
         }
 

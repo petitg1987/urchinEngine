@@ -29,7 +29,7 @@ namespace urchin {
     }
 
     SceneController::~SceneController() {
-        for(const auto &subController: subControllers) {
+        for (const auto &subController: subControllers) {
             delete subController;
         }
     }
@@ -48,7 +48,7 @@ namespace urchin {
 
     void SceneController::addObserverOnAllControllers(Observer *observer, int notificationType) {
         this->addObserver(observer, notificationType);
-        for(const auto &subController: subControllers) {
+        for (const auto &subController: subControllers) {
             subController->addObserver(observer, notificationType);
         }
     }
@@ -58,12 +58,12 @@ namespace urchin {
     }
 
     bool SceneController::isModified() const {
-        if(AbstractController::isModified()) {
+        if (AbstractController::isModified()) {
             return true;
         }
 
-        for(const auto &subController: subControllers) {
-            if(subController->isModified()) {
+        for (const auto &subController: subControllers) {
+            if (subController->isModified()) {
                 return true;
             }
         }
@@ -73,7 +73,7 @@ namespace urchin {
 
     void SceneController::resetModified() {
         AbstractController::resetModified();
-        for(const auto &subController: subControllers) {
+        for (const auto &subController: subControllers) {
             subController->resetModified();
         }
     }

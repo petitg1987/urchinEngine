@@ -21,7 +21,7 @@ namespace urchin {
     void SceneFreeCamera::loadCameraState(const std::string &mapFilename) {
         std::map<std::string, std::string> cameraPositionByMap = MapUtil::deserialize(StateSaveHelper::instance()->retrieveState("camera.position", ""));
         auto it = cameraPositionByMap.find(mapFilename);
-        if(it != cameraPositionByMap.end()) {
+        if (it != cameraPositionByMap.end()) {
             std::vector<std::string> serializedCameraElements;
             StringUtil::split(it->second, DATA_DELIMITER, serializedCameraElements);
             assert(serializedCameraElements.size() == 2);

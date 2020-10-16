@@ -39,7 +39,7 @@ namespace urchin {
 
     template<class T> Vector3<T> Vector3<T>::normalize() const {
         const T norm = std::sqrt(X*X + Y*Y + Z*Z);
-        if(norm > 0.0) {
+        if (norm > 0.0) {
             return Vector3<T>(X/norm, Y/norm, Z/norm);
         }
 
@@ -66,7 +66,7 @@ namespace urchin {
 
     template<class T> Vector3<T> Vector3<T>::truncate(T maxLength) const {
         T vLength = length();
-        if(vLength < maxLength) {
+        if (vLength < maxLength) {
             return Vector3<T>(X, Y, Z);
         }
         return Vector3<T>(X, Y, Z) * (maxLength / vLength);

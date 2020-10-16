@@ -63,20 +63,20 @@ namespace urchin {
     template<class T> Point3<T> Cone<T>::getSupportPoint(const Vector3<T> &direction) const {
         Vector3<T> centralAxis = axis[getConeOrientation()/2] * ((getConeOrientation()%2==0) ? (T)1.0 : (T)-1.0); //axis from base to top
         Vector3<T> normalizedDirection;
-        if(direction.X==0.0 && direction.Y==0.0 && direction.Z==0.0) {
+        if (direction.X==0.0 && direction.Y==0.0 && direction.Z==0.0) {
             normalizedDirection = Vector3<T>(1.0, 0.0, 0.0);
         } else {
             normalizedDirection = direction.normalize();
         }
 
         T centralDirectionCosAngle = centralAxis.dotProduct(normalizedDirection);
-        if(centralDirectionCosAngle > baseSideCosAngle) { //support point = top of cone
+        if (centralDirectionCosAngle > baseSideCosAngle) { //support point = top of cone
             T shiftUpHeight = getHeight()* static_cast<T>(3.0/4.0);
             return centerOfMass.translate(centralAxis * shiftUpHeight);
         }
 
         Vector3<T> projectedDirectionOnCircle = normalizedDirection - (normalizedDirection.dotProduct(centralAxis) * centralAxis);
-        if(projectedDirectionOnCircle.squareLength() > std::numeric_limits<T>::epsilon()) {
+        if (projectedDirectionOnCircle.squareLength() > std::numeric_limits<T>::epsilon()) {
             projectedDirectionOnCircle = projectedDirectionOnCircle.normalize();
         }
 

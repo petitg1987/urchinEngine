@@ -152,7 +152,7 @@ namespace urchin {
         std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
         QString directory = preferredSkyboxPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredSkyboxPath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png)", nullptr, QFileDialog::DontUseNativeDialog);
-        if(!filename.isNull()) {
+        if (!filename.isNull()) {
             std::string imageFilenamePath = filename.toUtf8().constData();
             std::string relativeTgaFilenamePath = FileHandler::getRelativePath(resourcesDirectory, imageFilenamePath);
             skyboxFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
@@ -162,7 +162,7 @@ namespace urchin {
 
             try {
                 skyChanged();
-            }catch(std::exception &e) {
+            } catch (std::exception &e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearSkyboxFilename(skyboxFilenameText);
             }
@@ -212,7 +212,7 @@ namespace urchin {
     }
 
     void SkyPanelWidget::skyChanged() {
-        if(!disableSkyEvent) {
+        if (!disableSkyEvent) {
             std::vector<std::string> skyboxFilenames;
             skyboxFilenames.emplace_back(xnSkyboxFilenameText->text().toStdString());
             skyboxFilenames.emplace_back(xpSkyboxFilenameText->text().toStdString());

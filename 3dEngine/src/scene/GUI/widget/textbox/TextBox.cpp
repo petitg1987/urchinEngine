@@ -82,7 +82,7 @@ namespace urchin {
     }
 
     bool TextBox::onKeyPressEvent(unsigned int key) {
-        if(key == InputDeviceKey::MOUSE_LEFT) {
+        if (key == InputDeviceKey::MOUSE_LEFT) {
             Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
             if (widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
@@ -94,9 +94,9 @@ namespace urchin {
                 state = UNACTIVE;
                 textureID = texTextBoxDefault->getTextureID();
             }
-        } else if(key == InputDeviceKey::LEFT_ARROW && state == ACTIVE) {
+        } else if (key == InputDeviceKey::LEFT_ARROW && state == ACTIVE) {
             refreshText(cursorIndex-1);
-        } else if(key == InputDeviceKey::RIGHT_ARROW && state == ACTIVE) {
+        } else if (key == InputDeviceKey::RIGHT_ARROW && state == ACTIVE) {
             refreshText(cursorIndex+1);
         }
 
@@ -104,20 +104,20 @@ namespace urchin {
     }
 
     bool TextBox::onCharEvent(unsigned int character) {
-        if(state==ACTIVE) {
-            if(character == 8 && cursorIndex > 0) { //key backspace
+        if (state==ACTIVE) {
+            if (character == 8 && cursorIndex > 0) { //key backspace
                 std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex), allText.length()-cursorIndex);
                 allText = allText.substr(0, static_cast<unsigned long>(cursorIndex-1L));
                 allText.append(tmpRight);
 
                 refreshText(cursorIndex-1);
-            } else if(character == 127 && allText.length() > 0 && cursorIndex < allText.length()) { //key delete
+            } else if (character == 127 && allText.length() > 0 && cursorIndex < allText.length()) { //key delete
                 std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex+1L), allText.length()-cursorIndex);
                 allText = allText.substr(0, static_cast<unsigned long>(cursorIndex));
                 allText.append(tmpRight);
 
                 refreshText(cursorIndex);
-            } else if(character < 256 && character > 30 && character != 127) {
+            } else if (character < 256 && character > 30 && character != 127) {
                 std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex), allText.length()-cursorIndex);
                 allText = allText.substr(0, static_cast<unsigned long>(cursorIndex));
                 allText.append(1, (char)character);
@@ -141,16 +141,16 @@ namespace urchin {
 
     void TextBox::refreshText(unsigned int newCursorIndex) {
         //refresh cursor index
-        if(    (newCursorIndex > cursorIndex && cursorIndex < allText.length()) ||
+        if (    (newCursorIndex > cursorIndex && cursorIndex < allText.length()) ||
                 (newCursorIndex < cursorIndex && cursorIndex!=0)) {
             cursorIndex = newCursorIndex;
         }
 
         //refresh start index
         computeCursorPosition();
-        if(cursorPosition > maxWidthText) {
+        if (cursorPosition > maxWidthText) {
             startTextIndex = (startTextIndex <= allText.length()) ? startTextIndex + LETTER_SHIFT : (int)allText.length();
-        } else if(cursorIndex <= startTextIndex) {
+        } else if (cursorIndex <= startTextIndex) {
             startTextIndex = (startTextIndex>0) ? startTextIndex-LETTER_SHIFT : 0;
         }
         computeCursorPosition();
@@ -159,10 +159,10 @@ namespace urchin {
         const Font *font = text->getFont();
         unsigned int widthText = 0;
         unsigned int endTextIndex = startTextIndex;
-        for(; endTextIndex < allText.length(); ++endTextIndex) {
+        for (; endTextIndex < allText.length(); ++endTextIndex) {
             auto letter = static_cast<unsigned char>(allText[endTextIndex]);
             widthText += font->getGlyph(letter).width + font->getSpaceBetweenLetters();
-            if(widthText > maxWidthText) {
+            if (widthText > maxWidthText) {
                 break;
             }
         }
@@ -173,12 +173,12 @@ namespace urchin {
         const Font *font = text->getFont();
         cursorPosition = ADDITIONAL_LEFT_BORDER;
 
-        for(unsigned int i=startTextIndex;i<cursorIndex;++i) {
+        for (unsigned int i=startTextIndex;i<cursorIndex;++i) {
             auto letter = static_cast<unsigned char>(allText[i]);
             cursorPosition += font->getGlyph(letter).width + font->getSpaceBetweenLetters();
         }
 
-        if(cursorPosition > ADDITIONAL_LEFT_BORDER) {
+        if (cursorPosition > ADDITIONAL_LEFT_BORDER) {
             cursorPosition -= font->getSpaceBetweenLetters(); //remove last space
             cursorPosition += LETTER_AND_CURSOR_SHIFT;
         }
@@ -190,10 +190,10 @@ namespace urchin {
         const Font *font = text->getFont();
         float widthText = 0.0f;
 
-        for(cursorIndex=startTextIndex; cursorIndex < allText.length(); ++cursorIndex) {
+        for (cursorIndex=startTextIndex; cursorIndex < allText.length(); ++cursorIndex) {
             auto letter = static_cast<unsigned char>(allText[cursorIndex]);
             widthText += (float)font->getGlyph(letter).width / 2.0f;
-            if(widthText > (float)approximateCursorPosition) {
+            if (widthText > (float)approximateCursorPosition) {
                 break;
             }
 
@@ -212,7 +212,7 @@ namespace urchin {
 
         //displays the cursor
         cursorBlink += dt * CURSOR_BLINK_SPEED;
-        if(state==ACTIVE && ((int)cursorBlink%2)>0) {
+        if (state==ACTIVE && ((int)cursorBlink%2)>0) {
             Vector2<int> widgetPosition(getGlobalPositionX(), getGlobalPositionY());
             glUniform2iv(translateDistanceLoc, 1, (const int*)(widgetPosition + Vector2<int>(cursorPosition, 0)));
             glBindTexture(GL_TEXTURE_2D, 0);

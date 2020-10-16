@@ -10,10 +10,10 @@ namespace urchin {
 
     std::string MapUtil::serialize(const std::map<std::string, std::string> &map) {
         std::string mapString;
-        for(const auto &[key, value] : map) {
+        for (const auto &[key, value] : map) {
             mapString += escape(key) + DELIMITER + escape(value) + DELIMITER;
         }
-        if(!map.empty()) {
+        if (!map.empty()) {
             mapString.pop_back();
         }
 
@@ -26,8 +26,8 @@ namespace urchin {
         StringUtil::split(mapString, DELIMITER, splitStrings);
 
         bool appendNextElement = false;
-        for(const auto &elem : splitStrings) {
-            if(appendNextElement) {
+        for (const auto &elem : splitStrings) {
+            if (appendNextElement) {
                 mapListString.back() = mapListString.back() + DELIMITER + elem;
             } else {
                 mapListString.emplace_back(elem);
@@ -41,7 +41,7 @@ namespace urchin {
         std::map<std::string, std::string> outputMap;
         assert(mapListString.size() % 2 == 0);
 
-        for(std::size_t i=0; i<mapListString.size(); i+=2) {
+        for (std::size_t i=0; i<mapListString.size(); i+=2) {
             std::string key = unescape(mapListString[i]);
             std::string value = unescape(mapListString[i + 1]);
             outputMap.insert(std::pair<std::string, std::string>(key, value));

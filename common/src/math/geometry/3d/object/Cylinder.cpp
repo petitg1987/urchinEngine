@@ -49,13 +49,13 @@ namespace urchin {
 
     template<class T> Point3<T> Cylinder<T>::getSupportPoint(const Vector3<T> &direction) const {
         Vector3<T> normalizedDirection;
-        if(direction.X==0.0 && direction.Y==0.0 && direction.Z==0.0) {
+        if (direction.X==0.0 && direction.Y==0.0 && direction.Z==0.0) {
             normalizedDirection = Vector3<T>(1.0, 0.0, 0.0);
         } else {
             normalizedDirection = direction.normalize();
         }
         Vector3<T> projectedDirectionOnCircle = normalizedDirection - (normalizedDirection.dotProduct(axis[getCylinderOrientation()]) * axis[getCylinderOrientation()]);
-        if(projectedDirectionOnCircle.squareLength() > 0.0) {
+        if (projectedDirectionOnCircle.squareLength() > 0.0) {
             projectedDirectionOnCircle = projectedDirectionOnCircle.normalize();
         }
 
@@ -65,7 +65,7 @@ namespace urchin {
         Point3<T> cirlcePosition2 = centerOfMass.translate(axis[getCylinderOrientation()] * (T)(-getHeight() / (T)2.0));
         Point3<T> supportPoint2 = cirlcePosition2.translate(projectedDirectionOnCircle * getRadius());
 
-        if(normalizedDirection.dotProduct(centerOfMass.vector(supportPoint1).normalize()) > normalizedDirection.dotProduct(centerOfMass.vector(supportPoint2).normalize())) {
+        if (normalizedDirection.dotProduct(centerOfMass.vector(supportPoint1).normalize()) > normalizedDirection.dotProduct(centerOfMass.vector(supportPoint2).normalize())) {
             return supportPoint1;
         }
 

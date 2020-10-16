@@ -371,7 +371,7 @@ namespace urchin {
         this->objectController = objectController;
 
         std::list<const SceneObject *> sceneObjects = objectController->getSceneObjects();
-        for(auto &sceneObject : sceneObjects) {
+        for (auto &sceneObject : sceneObjects) {
             objectTableView->addObject(sceneObject);
         }
     }
@@ -383,9 +383,9 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::notify(Observable *observable, int notificationType) {
-        if(auto *objectTableView = dynamic_cast<ObjectTableView *>(observable)) {
-            if(notificationType==ObjectTableView::OBJECT_SELECTION_CHANGED) {
-                if(objectTableView->hasSceneObjectSelected()) {
+        if (auto *objectTableView = dynamic_cast<ObjectTableView *>(observable)) {
+            if (notificationType==ObjectTableView::OBJECT_SELECTION_CHANGED) {
+                if (objectTableView->hasSceneObjectSelected()) {
                     const SceneObject *sceneObject = objectTableView->getSelectedSceneObject();
                     setupObjectDataFrom(sceneObject);
 
@@ -398,21 +398,21 @@ namespace urchin {
                     tabWidget->hide();
                 }
             }
-        } else if(auto *sceneDisplayerWidget = dynamic_cast<SceneDisplayerWidget *>(observable)) {
-            if(notificationType==SceneDisplayerWidget::BODY_PICKED) {
+        } else if (auto *sceneDisplayerWidget = dynamic_cast<SceneDisplayerWidget *>(observable)) {
+            if (notificationType==SceneDisplayerWidget::BODY_PICKED) {
                 const std::string &bodyId = sceneDisplayerWidget->getLastPickedBodyId();
                 const SceneObject *sceneObject = bodyId.empty() ? nullptr : objectController->findSceneObjectByBodyId(bodyId);
-                if(sceneObject) {
+                if (sceneObject) {
                     int row = this->objectTableView->getSceneObjectRow(sceneObject);
-                    if(row >= 0) {
+                    if (row >= 0) {
                         this->objectTableView->selectRow(row);
                     }
                 } else {
                     this->objectTableView->clearSelection();
                 }
             }
-        } else if(auto *objectMoveController = dynamic_cast<ObjectMoveController *>(observable)) {
-            if(notificationType==ObjectMoveController::OBJECT_MOVED) {
+        } else if (auto *objectMoveController = dynamic_cast<ObjectMoveController *>(observable)) {
+            if (notificationType==ObjectMoveController::OBJECT_MOVED) {
                 setupObjectDataFrom(objectMoveController->getSelectedSceneObject());
             }
         }
@@ -444,7 +444,7 @@ namespace urchin {
         disableObjectEvent = true;
         const RigidBody *rigidBody = sceneObject->getRigidBody();
         std::shared_ptr<const CollisionShape3D> bodyScaledShape(nullptr);
-        if(rigidBody) {
+        if (rigidBody) {
             hasRigidBody->setChecked(true);
             tabPhysicsRigidBody->show();
 
@@ -494,7 +494,7 @@ namespace urchin {
         NewObjectDialog newSceneObjectDialog(this, objectController);
         newSceneObjectDialog.exec();
 
-        if(newSceneObjectDialog.result()==QDialog::Accepted) {
+        if (newSceneObjectDialog.result()==QDialog::Accepted) {
             SceneObject *sceneObject = newSceneObjectDialog.getSceneObject();
             objectController->addSceneObject(sceneObject);
             objectController->createDefaultBody(sceneObject);
@@ -505,7 +505,7 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::removeSelectedObject() {
-        if(objectTableView->hasSceneObjectSelected()) {
+        if (objectTableView->hasSceneObjectSelected()) {
             const SceneObject *sceneObject = objectTableView->getSelectedSceneObject();
             objectController->removeSceneObject(sceneObject);
 
@@ -517,7 +517,7 @@ namespace urchin {
         CloneObjectDialog cloneSceneObjectDialog(this, objectController);
         cloneSceneObjectDialog.exec();
 
-        if(cloneSceneObjectDialog.result()==QDialog::Accepted) {
+        if (cloneSceneObjectDialog.result()==QDialog::Accepted) {
             SceneObject *newSceneObject = cloneSceneObjectDialog.getSceneObject();
             const SceneObject *toCloneSceneObject = objectTableView->getSelectedSceneObject();
             objectController->cloneSceneObject(newSceneObject, toCloneSceneObject);
@@ -528,7 +528,7 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::updateObjectOrientationType() {
-        if(!disableObjectEvent) {
+        if (!disableObjectEvent) {
             const SceneObject *sceneObject = objectTableView->getSelectedSceneObject();
 
             QVariant variant = orientationType->currentData();
@@ -546,7 +546,7 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::updateObjectTransform() {
-        if(!disableObjectEvent) {
+        if (!disableObjectEvent) {
             const SceneObject *sceneObject = objectTableView->getSelectedSceneObject();
 
             Vector3<float> eulerAngle(
@@ -568,11 +568,11 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::updateObjectScale() {
-        if(!disableObjectEvent) {
+        if (!disableObjectEvent) {
             updateObjectTransform();
 
             const SceneObject *sceneObject = objectTableView->getSelectedSceneObject();
-            if(sceneObject->getRigidBody()) {
+            if (sceneObject->getRigidBody()) {
                 std::shared_ptr<const CollisionShape3D> originalCollisionShape = sceneObject->getRigidBody()->getOriginalShape();
                 const SceneObject *updatedSceneObject = objectController->updateSceneObjectPhysicsShape(sceneObject, originalCollisionShape);
 
@@ -584,7 +584,7 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::updateObjectFlags() {
-        if(!disableObjectEvent) {
+        if (!disableObjectEvent) {
             const SceneObject *sceneObject = objectTableView->getSelectedSceneObject();
 
             bool produceShadow = produceShadowCheckBox->checkState()==Qt::Checked;
@@ -596,7 +596,7 @@ namespace urchin {
         ChangeBodyShapeDialog changeBodyShapeDialog(this, false);
         changeBodyShapeDialog.exec();
 
-        if(changeBodyShapeDialog.result()==QDialog::Accepted) {
+        if (changeBodyShapeDialog.result()==QDialog::Accepted) {
             const SceneObject *sceneObject = objectTableView->getSelectedSceneObject();
             CollisionShape3D::ShapeType shapeType = changeBodyShapeDialog.getShapeType();
 
@@ -606,12 +606,12 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::rigidBodyToggled(int rigidBodyState) {
-        if(!disableObjectEvent) {
+        if (!disableObjectEvent) {
             const SceneObject *sceneObject = objectTableView->getSelectedSceneObject();
-            if(Qt::CheckState::Checked==rigidBodyState) {
+            if (Qt::CheckState::Checked==rigidBodyState) {
                 tabPhysicsRigidBody->show();
                 objectController->createDefaultBody(sceneObject);
-            } else if(Qt::CheckState::Unchecked==rigidBodyState) {
+            } else if (Qt::CheckState::Unchecked==rigidBodyState) {
                 objectController->removeBody(sceneObject);
                 tabPhysicsRigidBody->hide();
             }
@@ -621,7 +621,7 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::updateObjectPhysicsProperties() {
-        if(!disableObjectEvent) {
+        if (!disableObjectEvent) {
             const SceneObject *sceneObject = objectTableView->getSelectedSceneObject();
 
             Vector3<float> linearFactor(linearFactorX->value(), linearFactorY->value(), linearFactorZ->value());
@@ -634,7 +634,7 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::bodyShapeChanged(const std::shared_ptr<const CollisionShape3D>& scaledShape) {
-        if(!disableObjectEvent) {
+        if (!disableObjectEvent) {
             const SceneObject *sceneObject = objectTableView->getSelectedSceneObject();
 
             float invScale = 1.0f / sceneObject->getModel()->getTransform().getScale();

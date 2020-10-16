@@ -52,7 +52,7 @@ namespace urchin {
     }
 
     void Widget::removeChild(Widget *child) {
-        if(child) {
+        if (child) {
             auto it = std::find(children.begin(), children.end(), child);
             delete child;
             children.erase(it);
@@ -95,7 +95,7 @@ namespace urchin {
     * @return Position X of the widget relative to his parent
     */
     int Widget::getPositionX() const {
-        if(position.getPositionTypeX()==Position::PERCENTAGE) {
+        if (position.getPositionTypeX()==Position::PERCENTAGE) {
             return static_cast<int>(position.getPositionX() * (float)sceneWidth);
         }
 
@@ -106,7 +106,7 @@ namespace urchin {
     * @return Position Y of the widget relative to his parent
     */
     int Widget::getPositionY() const {
-        if(position.getPositionTypeY()==Position::PERCENTAGE) {
+        if (position.getPositionTypeY()==Position::PERCENTAGE) {
             return static_cast<int>(position.getPositionY() * (float)sceneHeight);
         }
 
@@ -114,7 +114,7 @@ namespace urchin {
     }
 
     int Widget::getGlobalPositionX() const {
-        if(!parent) {
+        if (!parent) {
             return getPositionX();
         }
 
@@ -122,7 +122,7 @@ namespace urchin {
     }
 
     int Widget::getGlobalPositionY() const {
-        if(!parent) {
+        if (!parent) {
             return getPositionY();
         }
 
@@ -138,14 +138,14 @@ namespace urchin {
     }
 
     unsigned int Widget::getWidth() const {
-        if(size.getWidthSizeType()==Size::PERCENTAGE) {
+        if (size.getWidthSizeType()==Size::PERCENTAGE) {
             return static_cast<unsigned int>(size.getWidth() * (float)sceneWidth);
         }
         return static_cast<unsigned int>(size.getWidth());
     }
 
     unsigned int Widget::getHeight() const {
-        if(size.getHeightSizeType()==Size::PERCENTAGE) {
+        if (size.getHeightSizeType()==Size::PERCENTAGE) {
             return static_cast<unsigned int>(size.getHeight() * (float)sceneHeight);
         }
         return static_cast<unsigned int>(size.getHeight());
@@ -165,7 +165,7 @@ namespace urchin {
         bool propagateEvent = onKeyPressEvent(key);
 
         for (auto &child : children) {
-            if(child->isVisible() && !child->onKeyPress(key)) {
+            if (child->isVisible() && !child->onKeyPress(key)) {
                 return false;
             }
         }
@@ -178,11 +178,11 @@ namespace urchin {
     }
 
     void Widget::handleWidgetKeyDown(unsigned int key) {
-        if(key == InputDeviceKey::MOUSE_LEFT) {
+        if (key == InputDeviceKey::MOUSE_LEFT) {
             Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
-            if(widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
+            if (widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
                 widgetState=CLICKING;
-                for(std::shared_ptr<EventListener> &eventListener : eventListeners) {
+                for (std::shared_ptr<EventListener> &eventListener : eventListeners) {
                     eventListener->onClick(this);
                 }
             }
@@ -195,7 +195,7 @@ namespace urchin {
         bool propagateEvent = onKeyReleaseEvent(key);
 
         for (auto &child : children) {
-            if(child->isVisible() && !child->onKeyRelease(key)) {
+            if (child->isVisible() && !child->onKeyRelease(key)) {
                 return false;
             }
         }
@@ -207,12 +207,12 @@ namespace urchin {
     }
 
     void Widget::handleWidgetKeyUp(unsigned int key) {
-        if(key == InputDeviceKey::MOUSE_LEFT) {
+        if (key == InputDeviceKey::MOUSE_LEFT) {
             Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
-            if(widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
-                if(widgetState==CLICKING) {
+            if (widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
+                if (widgetState==CLICKING) {
                     widgetState = FOCUS;
-                    for(std::shared_ptr<EventListener> &eventListener : eventListeners) {
+                    for (std::shared_ptr<EventListener> &eventListener : eventListeners) {
                         eventListener->onClickRelease(this);
                     }
                 } else {
@@ -225,12 +225,12 @@ namespace urchin {
     }
 
     bool Widget::onChar(unsigned int character) {
-        if(!onCharEvent(character)) {
+        if (!onCharEvent(character)) {
             return false;
         }
 
         for (auto &child : children) {
-            if(child->isVisible() && !child->onChar(character)) {
+            if (child->isVisible() && !child->onChar(character)) {
                 return false;
             }
         }
@@ -250,8 +250,8 @@ namespace urchin {
         bool propagateEvent = onMouseMoveEvent(mouseX, mouseY);
 
         for (auto &child : children) {
-            if(child->isVisible()) {
-                if(!child->onMouseMove(mouseX, mouseY)) {
+            if (child->isVisible()) {
+                if (!child->onMouseMove(mouseX, mouseY)) {
                     return false;
                 }
             }
@@ -265,16 +265,16 @@ namespace urchin {
 
     void Widget::handleWidgetMouseMove(int mouseX, int mouseY) {
         Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
-        if(widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
-            if(widgetState==DEFAULT) {
+        if (widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
+            if (widgetState==DEFAULT) {
                 widgetState = FOCUS;
-                for(std::shared_ptr<EventListener> &eventListener : eventListeners) {
+                for (std::shared_ptr<EventListener> &eventListener : eventListeners) {
                     eventListener->onFocus(this);
                 }
             }
-        } else if(widgetState==FOCUS) {
+        } else if (widgetState==FOCUS) {
             widgetState = DEFAULT;
-            for(std::shared_ptr<EventListener> &eventListener : eventListeners) {
+            for (std::shared_ptr<EventListener> &eventListener : eventListeners) {
                 eventListener->onFocusLost(this);
             }
         }
@@ -290,7 +290,7 @@ namespace urchin {
 
     void Widget::reset() {
         for (auto &child : children) {
-            if(child->isVisible()) {
+            if (child->isVisible()) {
                 child->reset();
             }
         }
@@ -300,23 +300,23 @@ namespace urchin {
         handleDisable();
 
         for (auto &child : children) {
-            if(child->isVisible()) {
+            if (child->isVisible()) {
                 child->onDisable();
             }
         }
     }
 
     void Widget::handleDisable() {
-        if(widgetState==CLICKING) {
+        if (widgetState==CLICKING) {
             widgetState = FOCUS;
-            for(std::shared_ptr<EventListener> &eventListener : eventListeners) {
+            for (std::shared_ptr<EventListener> &eventListener : eventListeners) {
                 eventListener->onClickRelease(this);
             }
         }
 
-        if(widgetState==FOCUS) {
+        if (widgetState==FOCUS) {
             widgetState = DEFAULT;
-            for(std::shared_ptr<EventListener> &eventListener : eventListeners) {
+            for (std::shared_ptr<EventListener> &eventListener : eventListeners) {
                 eventListener->onFocusLost(this);
             }
         }
@@ -324,7 +324,7 @@ namespace urchin {
 
     void Widget::display(int translateDistanceLoc, float dt) {
         for (auto &child : children) {
-            if(child->isVisible()) {
+            if (child->isVisible()) {
                 Vector2<int> translateVector(child->getGlobalPositionX(), child->getGlobalPositionY());
                 glUniform2iv(translateDistanceLoc, 1, (const int*)translateVector);
 

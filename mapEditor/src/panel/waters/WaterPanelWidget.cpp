@@ -254,7 +254,7 @@ namespace urchin {
         this->waterController = waterController;
 
         std::list<const SceneWater *> sceneWaters = waterController->getSceneWaters();
-        for(auto &sceneWater : sceneWaters) {
+        for (auto &sceneWater : sceneWaters) {
             waterTableView->addWater(sceneWater);
         }
     }
@@ -266,9 +266,9 @@ namespace urchin {
     }
 
     void WaterPanelWidget::notify(Observable *observable, int notificationType) {
-        if(auto *waterTableView = dynamic_cast<WaterTableView *>(observable)) {
-            if(notificationType==WaterTableView::SELECTION_CHANGED) {
-                if(waterTableView->hasSceneWaterSelected()) {
+        if (auto *waterTableView = dynamic_cast<WaterTableView *>(observable)) {
+            if (notificationType==WaterTableView::SELECTION_CHANGED) {
+                if (waterTableView->hasSceneWaterSelected()) {
                     const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
                     setupWaterDataFrom(sceneWater);
 
@@ -320,7 +320,7 @@ namespace urchin {
         NewWaterDialog newSceneWaterDialog(this, waterController);
         newSceneWaterDialog.exec();
 
-        if(newSceneWaterDialog.result()==QDialog::Accepted) {
+        if (newSceneWaterDialog.result()==QDialog::Accepted) {
             SceneWater *sceneWater = newSceneWaterDialog.getSceneWater();
             waterController->addSceneWater(sceneWater);
 
@@ -329,7 +329,7 @@ namespace urchin {
     }
 
     void WaterPanelWidget::removeSelectedWater() {
-        if(waterTableView->hasSceneWaterSelected()) {
+        if (waterTableView->hasSceneWaterSelected()) {
             const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
             waterController->removeSceneWater(sceneWater);
 
@@ -338,7 +338,7 @@ namespace urchin {
     }
 
     void WaterPanelWidget::updateWaterProperties() {
-        if(!disableWaterEvent) {
+        if (!disableWaterEvent) {
             const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
 
             Point3<float> position(positionX->value(), positionY->value(), positionZ->value());
@@ -347,7 +347,7 @@ namespace urchin {
     }
 
     void WaterPanelWidget::updateSurfaceWaterProperties() {
-        if(!disableWaterEvent) {
+        if (!disableWaterEvent) {
             const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
 
             Vector3<float> waterColor(waterColorR->value(), waterColorG->value(), waterColorB->value());
@@ -359,7 +359,7 @@ namespace urchin {
     }
 
     void WaterPanelWidget::updateUnderWaterProperties() {
-        if(!disableWaterEvent) {
+        if (!disableWaterEvent) {
             const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
 
             waterController->updateSceneWaterUnderWater(sceneWater, (float)density->value(), (float)gradient->value());
@@ -370,7 +370,7 @@ namespace urchin {
         std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
         QString directory = preferredNormalTexturePath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredNormalTexturePath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png)", nullptr, QFileDialog::DontUseNativeDialog);
-        if(!filename.isNull()) {
+        if (!filename.isNull()) {
             std::string imageFilenamePath = filename.toUtf8().constData();
             std::string relativeTgaFilenamePath = FileHandler::getRelativePath(resourcesDirectory, imageFilenamePath);
             this->normalTextureFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
@@ -380,7 +380,7 @@ namespace urchin {
 
             try {
                 updateSurfaceWaterProperties();
-            }catch(std::exception &e) {
+            } catch (std::exception &e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearNormalTextureFilename();
             }
@@ -397,7 +397,7 @@ namespace urchin {
         std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
         QString directory = preferredDudvMapPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredDudvMapPath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png)", nullptr, QFileDialog::DontUseNativeDialog);
-        if(!filename.isNull()) {
+        if (!filename.isNull()) {
             std::string tgaFilenamePath = filename.toUtf8().constData();
             std::string relativeTgaFilenamePath = FileHandler::getRelativePath(resourcesDirectory, tgaFilenamePath);
             this->dudvMapFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
@@ -407,7 +407,7 @@ namespace urchin {
 
             try {
                 updateSurfaceWaterProperties();
-            }catch(std::exception &e) {
+            } catch (std::exception &e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearDudvMapFilename();
             }

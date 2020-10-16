@@ -14,8 +14,8 @@ namespace urchin {
         name(polygon.getName()) {
         path.reserve(polygon.getCwPoints().size());
 
-        for(const auto &point : polygon.getCwPoints()) {
-            if(typeid(long long)==typeid(T)) {
+        for (const auto &point : polygon.getCwPoints()) {
+            if (typeid(long long)==typeid(T)) {
                 path.emplace_back(ClipperLib::IntPoint(point.X, point.Y));
             } else {
                 path.emplace_back(ClipperLib::IntPoint(Converter::toLongLong(point.X), Converter::toLongLong(point.Y)));
@@ -28,7 +28,7 @@ namespace urchin {
         cwPoints.reserve(path.size());
 
         for (auto point : path) {
-            if(typeid(long long)==typeid(T)) {
+            if (typeid(long long)==typeid(T)) {
                 cwPoints.emplace_back(Point2<T>(point.X, point.Y));
             } else {
                 cwPoints.emplace_back(Point2<T>(Converter::toFloat(point.X), Converter::toFloat(point.Y)));

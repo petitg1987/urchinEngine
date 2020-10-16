@@ -18,7 +18,7 @@ namespace urchin {
         baseVertices(new Point3<float>[vertices.size()]),
         baseDataVertices(new DataVertex[vertices.size()]) {
         //regroup duplicate vertex due to their different texture coordinates
-        for(std::size_t i=0;i<vertices.size();++i) {
+        for (std::size_t i=0;i<vertices.size();++i) {
             linkedVertices[vertices[i].linkedVerticesGroupId].push_back(i);
         }
 
@@ -59,7 +59,7 @@ namespace urchin {
      */
     const std::vector<unsigned int> &ConstMesh::getLinkedVertices(unsigned int linkedVerticesGroupId) const {
         auto it = linkedVertices.find(linkedVerticesGroupId);
-        if(it!=linkedVertices.end()) {
+        if (it!=linkedVertices.end()) {
             return it->second;
         }
 

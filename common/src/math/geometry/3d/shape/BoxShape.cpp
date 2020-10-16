@@ -34,12 +34,12 @@ namespace urchin {
     }
 
     template<class T> unsigned int BoxShape<T>::getMaxHalfSizeIndex() const {
-        if(halfSizes[0] > halfSizes[1]) {
-            if(halfSizes[0] > halfSizes[2]) {
+        if (halfSizes[0] > halfSizes[1]) {
+            if (halfSizes[0] > halfSizes[2]) {
                 return 0;
             }
             return 1;
-        } else if(halfSizes[1] > halfSizes[2]) {
+        } else if (halfSizes[1] > halfSizes[2]) {
             return 1;
         }
         return 2;
@@ -50,12 +50,12 @@ namespace urchin {
     }
 
     template<class T> unsigned int BoxShape<T>::getMinHalfSizeIndex() const {
-        if(halfSizes[0] < halfSizes[1]) {
-            if(halfSizes[0] < halfSizes[2]) {
+        if (halfSizes[0] < halfSizes[1]) {
+            if (halfSizes[0] < halfSizes[2]) {
                 return 0;
             }
             return 1;
-        } else if(halfSizes[1] < halfSizes[2]) {
+        } else if (halfSizes[1] < halfSizes[2]) {
             return 1;
         }
         return 2;

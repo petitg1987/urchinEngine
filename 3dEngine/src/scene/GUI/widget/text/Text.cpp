@@ -80,7 +80,7 @@ namespace urchin {
             offsetY += font->getSpaceBetweenLines();
         }
 
-        if(cutTextLines.empty()) { //add fake line to compute height
+        if (cutTextLines.empty()) { //add fake line to compute height
             cutTextLines.emplace_back("");
         }
         unsigned int numberOfInterLines = cutTextLines.size() - 1;
@@ -100,19 +100,19 @@ namespace urchin {
         unsigned int indexLastSpace = 0;
         unsigned int lengthFromLastSpace = 0;
 
-        for(unsigned int numLetter=0; text[numLetter]!=0; numLetter++) { //each letters
+        for (unsigned int numLetter=0; text[numLetter]!=0; numLetter++) { //each letters
             auto letter = static_cast<unsigned char>(text[numLetter]);
 
-            if(letter=='\n') {
+            if (letter=='\n') {
                 lineLength = 0;
                 lengthFromLastSpace = 0;
-            } else if(letter==' ') {
+            } else if (letter==' ') {
                 indexLastSpace = numLetter;
                 lengthFromLastSpace = 0;
             }
 
             unsigned int lengthLetter = font->getGlyph(letter).width + font->getSpaceBetweenLetters();
-            if(lineLength + lengthLetter >= maxLength) { //cut line
+            if (lineLength + lengthLetter >= maxLength) { //cut line
                 text[indexLastSpace] = '\n';
                 lineLength = lengthFromLastSpace;
             } else {

@@ -15,9 +15,9 @@ namespace urchin {
         depthTextureID(textureFilterBuilder->getDepthTextureID()),
         textureSize((BlurDirection::VERTICAL==blurDirection) ? getTextureHeight() : getTextureWidth()),
         cameraPlanesLoc(0) {
-        if(blurSize<=1) {
+        if (blurSize<=1) {
             throw std::invalid_argument("Blur size must be greater than one. Value: " + std::to_string(blurSize));
-        } else if(blurSize%2==0) {
+        } else if (blurSize%2==0) {
             throw std::invalid_argument("Blur size must be an odd number. Value: " + std::to_string(blurSize));
         }
 
@@ -59,9 +59,9 @@ namespace urchin {
         unsigned int numOffsets = blurSize / 2;
         std::vector<float> offsets(numOffsets, 0.0f);
 
-        if(textureSize!=0) {
+        if (textureSize!=0) {
             float pixelSize = 1.0f / static_cast<float>(textureSize);
-            for(unsigned int i=1; i<=numOffsets; ++i) {
+            for (unsigned int i=1; i<=numOffsets; ++i) {
                 offsets[i-1] = pixelSize * (float)i;
             }
         }

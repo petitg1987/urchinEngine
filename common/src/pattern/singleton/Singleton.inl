@@ -10,9 +10,9 @@ template<class T> Singleton<T>::~Singleton() {
 }
 
 template<class T> T* Singleton<T>::instance() {
-    if(!objectT) {
+    if (!objectT) {
         objectT = static_cast<T*>(SingletonManager::getSingleton(typeid(T).name()));
-        if(!objectT) {
+        if (!objectT) {
             objectT = new T;
             SingletonManager::addSingleton(typeid(T).name(), objectT);
         }

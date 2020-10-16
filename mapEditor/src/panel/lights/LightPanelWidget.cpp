@@ -173,7 +173,7 @@ namespace urchin {
         this->lightController = lightController;
 
         std::list<const SceneLight *> sceneLights = lightController->getSceneLights();
-        for(auto &sceneLight : sceneLights) {
+        for (auto &sceneLight : sceneLights) {
             lightTableView->addLight(sceneLight);
         }
     }
@@ -185,9 +185,9 @@ namespace urchin {
     }
 
     void LightPanelWidget::notify(Observable *observable, int notificationType) {
-        if(auto *lightTableView = dynamic_cast<LightTableView *>(observable)) {
-            if(notificationType==LightTableView::LIGHT_SELECTION_CHANGED) {
-                if(lightTableView->hasSceneLightSelected()) {
+        if (auto *lightTableView = dynamic_cast<LightTableView *>(observable)) {
+            if (notificationType==LightTableView::LIGHT_SELECTION_CHANGED) {
+                if (lightTableView->hasSceneLightSelected()) {
                     const SceneLight *sceneLight = lightTableView->getSelectedSceneLight();
                     setupLightDataFrom(sceneLight);
 
@@ -211,10 +211,10 @@ namespace urchin {
 
         this->produceShadowCheckBox->setChecked(light->isProduceShadow());
 
-        if(light->getLightType()==Light::LightType::OMNIDIRECTIONAL) {
+        if (light->getLightType()==Light::LightType::OMNIDIRECTIONAL) {
             setupOmnidirectionalLightDataFrom(dynamic_cast<const OmnidirectionalLight *>(light));
             this->produceShadowCheckBox->setDisabled(true);
-        } else if(light->getLightType()==Light::LightType::SUN) {
+        } else if (light->getLightType()==Light::LightType::SUN) {
             setupSunLightDataFrom(dynamic_cast<const SunLight *>(light));
             this->produceShadowCheckBox->setDisabled(false);
         } else {
@@ -252,7 +252,7 @@ namespace urchin {
         NewLightDialog newSceneLightDialog(this, lightController);
         newSceneLightDialog.exec();
 
-        if(newSceneLightDialog.result()==QDialog::Accepted) {
+        if (newSceneLightDialog.result()==QDialog::Accepted) {
             SceneLight *sceneLight = newSceneLightDialog.getSceneLight();
             lightController->addSceneLight(sceneLight);
 
@@ -261,7 +261,7 @@ namespace urchin {
     }
 
     void LightPanelWidget::removeSelectedLight() {
-        if(lightTableView->hasSceneLightSelected()) {
+        if (lightTableView->hasSceneLightSelected()) {
             const SceneLight *sceneLight = lightTableView->getSelectedSceneLight();
             lightController->removeSceneLight(sceneLight);
 
@@ -270,7 +270,7 @@ namespace urchin {
     }
 
     void LightPanelWidget::updateLightGeneralProperties() {
-        if(!disableLightEvent) {
+        if (!disableLightEvent) {
             const SceneLight *sceneLight = lightTableView->getSelectedSceneLight();
 
             Point3<float> ambientColor(ambientR->value(), ambientG->value(), ambientB->value());
@@ -281,14 +281,14 @@ namespace urchin {
     }
 
     void LightPanelWidget::updateLightSpecificProperties() {
-        if(!disableLightEvent) {
+        if (!disableLightEvent) {
             const SceneLight *sceneLight = lightTableView->getSelectedSceneLight();
             const Light *light = sceneLight->getLight();
 
-            if(light->getLightType()==Light::LightType::OMNIDIRECTIONAL) {
+            if (light->getLightType()==Light::LightType::OMNIDIRECTIONAL) {
                 Point3<float> position(positionX->value(), positionY->value(), positionZ->value());
                 lightController->updateSceneOmnidirectionalLightProperties(sceneLight, (float)attenuation->value(), position);
-            } else if(light->getLightType()==Light::LightType::SUN) {
+            } else if (light->getLightType()==Light::LightType::SUN) {
                 Vector3<float> direction(directionX->value(), directionY->value(), directionZ->value());
                 lightController->updateSceneSunLightProperties(sceneLight, direction);
             } else {

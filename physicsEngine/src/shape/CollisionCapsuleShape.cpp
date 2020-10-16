@@ -51,7 +51,7 @@ namespace urchin {
     }
 
     AABBox<float> CollisionCapsuleShape::toAABBox(const PhysicsTransform &physicsTransform) const {
-        if(!lastTransform.equals(physicsTransform)) {
+        if (!lastTransform.equals(physicsTransform)) {
             Vector3<float> boxHalfSizes(getRadius(), getRadius(), getRadius());
             boxHalfSizes[getCapsuleOrientation()] += getCylinderHeight() / 2.0f;
             const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();

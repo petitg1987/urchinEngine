@@ -14,7 +14,7 @@ namespace urchin {
             surfaces(std::move(surfaces)),
             walkableCandidate(true),
             obstacleCandidate(true) {
-        for(auto &surface : this->surfaces) {
+        for (auto &surface : this->surfaces) {
             surface->setPolytope(this);
         }
 
@@ -60,28 +60,28 @@ namespace urchin {
 
     void Polytope::buildXZRectangle() {
         xzRectangle = surfaces[0]->computeXZRectangle();
-        for(std::size_t i=1; i<surfaces.size(); ++i) {
+        for (std::size_t i=1; i<surfaces.size(); ++i) {
             xzRectangle = xzRectangle.merge(surfaces[i]->computeXZRectangle());
         }
     }
 
     void Polytope::buildAABBox() {
         aabbox = surfaces[0]->getAABBox();
-        for(std::size_t i=1; i<surfaces.size(); ++i) {
+        for (std::size_t i=1; i<surfaces.size(); ++i) {
             aabbox = aabbox.merge(surfaces[i]->getAABBox());
         }
     }
 
     std::ostream& operator <<(std::ostream &stream, const Polytope &polytope) {
         unsigned int surfaceIndex = 0;
-        for(const auto &surface : polytope.getSurfaces()) {
+        for (const auto &surface : polytope.getSurfaces()) {
             stream<<"Surface "<<surfaceIndex++<<" ";
-            if(const auto *planeSurface = dynamic_cast<PolytopePlaneSurface *>(surface.get())) {
+            if (const auto *planeSurface = dynamic_cast<PolytopePlaneSurface *>(surface.get())) {
                 for (const auto &point : planeSurface->getCcwPoints()) {
                     stream << "(" << point << ") ";
                 }
                 stream << std::endl;
-            } else if(const auto *terrainSurface = dynamic_cast<PolytopeTerrainSurface *>(surface.get())) {
+            } else if (const auto *terrainSurface = dynamic_cast<PolytopeTerrainSurface *>(surface.get())) {
                 terrainSurface->isWalkableCandidate(); //@IgnoreUnused
                 stream << "(terrain: " << polytope.getName() << ") " << std::endl;
             }

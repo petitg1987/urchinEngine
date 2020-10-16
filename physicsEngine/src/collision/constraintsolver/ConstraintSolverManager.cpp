@@ -31,7 +31,7 @@ namespace urchin {
         setupConstraints(manifoldResults, dt);
 
         //iterative constraint solver
-        for(unsigned int i=0; i<constraintSolverIteration; ++i) {
+        for (unsigned int i=0; i<constraintSolverIteration; ++i) {
             solveConstraints();
         }
     }
@@ -46,9 +46,9 @@ namespace urchin {
 
         //setup constraints solving
         for (auto &manifoldResult : manifoldResults) {
-            for(unsigned int j=0; j< manifoldResult.getNumContactPoints(); ++j) {
+            for (unsigned int j=0; j< manifoldResult.getNumContactPoints(); ++j) {
                 ManifoldContactPoint &contact = manifoldResult.getManifoldContactPoint(j);
-                if(contact.getDepth() > 0.0 && !contact.isPredictive()) {
+                if (contact.getDepth() > 0.0 && !contact.isPredictive()) {
                     continue;
                 }
 
@@ -63,7 +63,7 @@ namespace urchin {
                 const ImpulseSolvingData &impulseSolvingData = fillImpulseSolvingData(commonSolvingData, dt);
                 constraintSolving->setImpulseData(impulseSolvingData);
 
-                if(useWarmStarting) {
+                if (useWarmStarting) {
                     const Vector3<float> normalImpulseVector = contact.getAccumulatedSolvingData().accNormalImpulse * commonSolvingData.contactNormal;
                     applyImpulse(constraintSolving->getBody1(), constraintSolving->getBody2(), commonSolvingData, normalImpulseVector);
 
@@ -121,7 +121,7 @@ namespace urchin {
                 commonData.invInertia2 * (commonData.r2.crossProduct(commonData.contactNormal)).crossProduct(commonData.r2)
                 ).dotProduct(commonData.contactNormal);
 
-        if(impulseSolvingData.normalImpulseDenominator == 0.0) {
+        if (impulseSolvingData.normalImpulseDenominator == 0.0) {
             logCommonData("Invalid normal impulse denominator", commonData);
         }
 
@@ -130,7 +130,7 @@ namespace urchin {
                 commonData.invInertia2 * (commonData.r2.crossProduct(commonData.contactTangent)).crossProduct(commonData.r2)
                 ).dotProduct(commonData.contactTangent);
 
-        if(impulseSolvingData.tangentImpulseDenominator == 0.0) {
+        if (impulseSolvingData.tangentImpulseDenominator == 0.0) {
             logCommonData("Invalid tangent impulse denominator", commonData);
         }
 
@@ -141,7 +141,7 @@ namespace urchin {
         float normalRelativeVelocity = computeRelativeVelocity(commonData).dotProduct(commonData.contactNormal);
         float depthBias = biasFactor * invDeltaTime * commonData.depth;
         float restitutionBias = 0.0f;
-        if(normalRelativeVelocity > restitutionVelocityThreshold) {
+        if (normalRelativeVelocity > restitutionVelocityThreshold) {
             restitutionBias =  -restitution * normalRelativeVelocity;
         }
         impulseSolvingData.bias = std::min(depthBias, restitutionBias);
@@ -218,7 +218,7 @@ namespace urchin {
         Vector3<float> tangentVelocity = relativeVelocity - (relativeVelocity.dotProduct(normal)) * normal;
 
         float tangentVelocityLength = tangentVelocity.length();
-        if(tangentVelocityLength==0.0) {
+        if (tangentVelocityLength==0.0) {
             return Vector3<float>(0.0, 0.0, 0.0);
         }
 

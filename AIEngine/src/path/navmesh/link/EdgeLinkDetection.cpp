@@ -17,17 +17,17 @@ namespace urchin {
         Line3D<float> startLine = startEdge.toLine();
         Line3D<float> endLine = endEdge.toLine();
 
-        if(startLine.minDistance(endLine) > jumpMaxLength) { //no link between edges
+        if (startLine.minDistance(endLine) > jumpMaxLength) { //no link between edges
             return EdgeLinkResult::noEdgeLink();
         }
 
-        if(pointsAreEquals(startEdge.getA(), endEdge.getB()) && pointsAreEquals(startEdge.getB(), endEdge.getA())) { //identical edges and proper link direction
+        if (pointsAreEquals(startEdge.getA(), endEdge.getB()) && pointsAreEquals(startEdge.getB(), endEdge.getA())) { //identical edges and proper link direction
             return EdgeLinkResult::collinearEdgeLink(1.0f, 0.0f);
         }
 
-        if(isCollinearLines(startLine, endLine)) { //collinear edges
+        if (isCollinearLines(startLine, endLine)) { //collinear edges
             float linkStartRange, linkEndRange;
-            if(hasCollinearEdgesLink(startEdge, endEdge, linkStartRange, linkEndRange) && startEdge.toVector().dotProduct(endEdge.toVector()) < 0.0f) { //collinear edges link and proper link direction
+            if (hasCollinearEdgesLink(startEdge, endEdge, linkStartRange, linkEndRange) && startEdge.toVector().dotProduct(endEdge.toVector()) < 0.0f) { //collinear edges link and proper link direction
                 return EdgeLinkResult::collinearEdgeLink(linkStartRange, linkEndRange);
             }
 
@@ -41,26 +41,26 @@ namespace urchin {
         float jumpStartRange = -std::numeric_limits<float>::max();
         float jumpEndRange = std::numeric_limits<float>::max();
 
-        for(unsigned int i=0; i<samplesCount; ++i) {
+        for (unsigned int i=0; i<samplesCount; ++i) {
             float alpha = (float)i / ((float)samplesCount - 1.0f);
             Point3<float> testPoint = alpha * startEdge.getA() + (1.0f - alpha) * startEdge.getB();
             Point3<float> projectedPoint = endEdge.closestPoint(testPoint);
 
-            if(canJumpThatFar(testPoint, projectedPoint) && isProperJumpDirection(startEdge, endEdge, testPoint, projectedPoint)) {
+            if (canJumpThatFar(testPoint, projectedPoint) && isProperJumpDirection(startEdge, endEdge, testPoint, projectedPoint)) {
                 hasJumpPoints = true;
 
-                if(alpha > jumpStartRange) {
+                if (alpha > jumpStartRange) {
                     jumpStartRange = alpha;
                 }
 
-                if(alpha < jumpEndRange) {
+                if (alpha < jumpEndRange) {
                     jumpEndRange = alpha;
                 }
             }
         }
 
-        if(hasJumpPoints) {
-            if(isRangeTooSmall(jumpStartRange, jumpEndRange, startEdge)) {
+        if (hasJumpPoints) {
+            if (isRangeTooSmall(jumpStartRange, jumpEndRange, startEdge)) {
                 return EdgeLinkResult::noEdgeLink();
             }
             return EdgeLinkResult::edgeJump(jumpStartRange, jumpEndRange);
@@ -85,11 +85,11 @@ namespace urchin {
     bool EdgeLinkDetection::hasCollinearEdgesLink(const LineSegment3D<float> &startEdge, const LineSegment3D<float> &endEdge,
                                                      float &touchingStartRange, float &touchingEndRange) const {
         Point3<float> minIntersection(NAN, NAN, NAN), maxIntersection(NAN, NAN, NAN);
-        for(std::size_t i=0; i<3; ++i) {
+        for (std::size_t i=0; i<3; ++i) {
             minIntersection[i] = std::max(std::min(startEdge.getA()[i], startEdge.getB()[i]), std::min(endEdge.getA()[i], endEdge.getB()[i]));
             maxIntersection[i] = std::min(std::max(startEdge.getA()[i], startEdge.getB()[i]), std::max(endEdge.getA()[i], endEdge.getB()[i]));
 
-            if(minIntersection[i] > maxIntersection[i] + equalityDistanceThreshold) { //collinear edges are not touching each other
+            if (minIntersection[i] > maxIntersection[i] + equalityDistanceThreshold) { //collinear edges are not touching each other
                 touchingStartRange = NAN;
                 touchingEndRange = NAN;
                 return false;
@@ -98,13 +98,13 @@ namespace urchin {
 
         touchingStartRange = 1.0f;
         touchingEndRange = 0.0f;
-        for(std::size_t i=0; i<3; ++i) {
+        for (std::size_t i=0; i<3; ++i) {
             float denominator = startEdge.getA()[i] - startEdge.getB()[i];
-            if(!MathAlgorithm::isZero(denominator)) {
+            if (!MathAlgorithm::isZero(denominator)) {
                 touchingStartRange = std::clamp((minIntersection[i] - startEdge.getB()[i]) / denominator, 0.0f, 1.0f);
                 touchingEndRange = std::clamp((maxIntersection[i] - startEdge.getB()[i]) / denominator, 0.0f, 1.0f);
 
-                if(touchingStartRange < touchingEndRange) {
+                if (touchingStartRange < touchingEndRange) {
                     std::swap(touchingStartRange, touchingEndRange);
                 }
 
@@ -129,7 +129,7 @@ namespace urchin {
         Vector2<float> orthogonalStartJumpVectorXZ = startJumpEdgeXZ.getA().vector(startJumpEdgeXZ.getA().translate(startJumpEdgeXZ.computeNormal()));
         bool jumpOutsideOfStartPolygon = orthogonalStartJumpVectorXZ.normalize().dotProduct(normalizedJumpVectorXZ) >= jumpFoV;
 
-        if(jumpOutsideOfStartPolygon) {
+        if (jumpOutsideOfStartPolygon) {
             Line2D<float> endJumpEdgeXZ(endJumpEdge.getA().toPoint2XZ(), endJumpEdge.getB().toPoint2XZ());
             Vector2<float> orthogonalEndJumpVectorXZ = endJumpEdgeXZ.getA().vector(endJumpEdgeXZ.getA().translate(endJumpEdgeXZ.computeNormal()));
             bool jumpInsideOfEndPolygon = orthogonalEndJumpVectorXZ.normalize().dotProduct(normalizedJumpVectorXZ) < -jumpFoV;

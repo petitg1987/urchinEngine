@@ -15,10 +15,10 @@ namespace urchin {
     }
 
     void SceneWater::setWaterManagers(Renderer3d *renderer3d) {
-        if(this->renderer3d) {
+        if (this->renderer3d) {
             throw std::invalid_argument("Cannot add the scene water on two different renderer.");
         }
-        if(!renderer3d) {
+        if (!renderer3d) {
             throw std::invalid_argument("Cannot specify a null renderer manager for a scene water.");
         }
 
@@ -52,11 +52,11 @@ namespace urchin {
     }
 
     void SceneWater::setWater(Water *water) {
-        if(!water) {
+        if (!water) {
             throw std::invalid_argument("Cannot set a null water on scene water.");
         }
 
-        if(renderer3d) {
+        if (renderer3d) {
             renderer3d->getWaterManager()->removeWater(this->water);
             renderer3d->getWaterManager()->addWater(water);
         } else {

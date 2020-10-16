@@ -43,7 +43,7 @@ namespace urchin {
      * @return includeMargin Indicate whether support function need to take into account margin
      */
     Point3<float> CollisionConvexHullObject::getSupportPoint(const Vector3<float> &direction, bool includeMargin) const {
-        if(includeMargin) {
+        if (includeMargin) {
             return convexHullObjectWithMargin->getSupportPoint(direction);
         }
 

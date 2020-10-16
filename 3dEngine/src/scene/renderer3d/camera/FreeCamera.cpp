@@ -86,27 +86,27 @@ namespace urchin {
     }
 
     void FreeCamera::updateCameraView(float dt) {
-        if(isKeyLeftPressed) {
-            if(isUseMouseToMoveCamera()) {
+        if (isKeyLeftPressed) {
+            if (isUseMouseToMoveCamera()) {
                 moveOnLocalXAxis(dt * speed);
             } else {
                 rotate(Quaternion<float>(Vector3<float>(0.0, 1.0f, 0.0), dt * rotateSpeed));
             }
         }
 
-        if(isKeyRightPressed) {
-            if(isUseMouseToMoveCamera()) {
+        if (isKeyRightPressed) {
+            if (isUseMouseToMoveCamera()) {
                 moveOnLocalXAxis(-dt * speed);
             } else {
                 rotate(Quaternion<float>(Vector3<float>(0.0, 1.0f, 0.0), -dt * rotateSpeed));
             }
         }
 
-        if(isKeyFrontPressed) {
+        if (isKeyFrontPressed) {
             moveOnLocalZAxis(dt * speed);
         }
 
-        if(isKeyBackPressed) {
+        if (isKeyBackPressed) {
             moveOnLocalZAxis(-dt * speed);
         }
     }

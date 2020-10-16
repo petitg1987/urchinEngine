@@ -21,11 +21,11 @@ namespace urchin {
     }
 
     SoundTrigger::TriggerResultValue ShapeTrigger::evaluateTrigger(const Point3<float> &listenerPosition) {
-        if(!isPlaying && soundShape->pointInsidePlayShape(listenerPosition)) {
+        if (!isPlaying && soundShape->pointInsidePlayShape(listenerPosition)) {
             isPlaying = true;
             return getPlayTriggerValue();
         }
-        if(isPlaying && !soundShape->pointInsideStopShape(listenerPosition)) {
+        if (isPlaying && !soundShape->pointInsideStopShape(listenerPosition)) {
             isPlaying = false;
             return getStopTriggerValue();
         }
@@ -38,7 +38,7 @@ namespace urchin {
     }
 
     SoundTrigger::TriggerResultValue ShapeTrigger::getPlayTriggerValue() {
-        if(getSoundBehavior().getPlayBehavior() == SoundBehavior::PLAY_LOOP) {
+        if (getSoundBehavior().getPlayBehavior() == SoundBehavior::PLAY_LOOP) {
             return SoundTrigger::PLAY_LOOP;
         }
 
@@ -46,7 +46,7 @@ namespace urchin {
     }
 
     SoundTrigger::TriggerResultValue ShapeTrigger::getStopTriggerValue() {
-        if(getSoundBehavior().getStopBehavior() == SoundBehavior::SMOOTH_STOP) {
+        if (getSoundBehavior().getStopBehavior() == SoundBehavior::SMOOTH_STOP) {
             return SoundTrigger::SMOOTH_STOP;
         }
 

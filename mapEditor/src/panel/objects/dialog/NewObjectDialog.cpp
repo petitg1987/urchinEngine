@@ -67,7 +67,7 @@ namespace urchin {
 
     void NewObjectDialog::updateObjectName() {
         QString objectName = objectNameText->text();
-        if(!objectName.isEmpty()) {
+        if (!objectName.isEmpty()) {
             this->objectName = objectName.toUtf8().constData();
         }
     }
@@ -80,12 +80,12 @@ namespace urchin {
 
             std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
             std::string relativeMeshFilename;
-            if(!meshFilename.empty()) {
+            if (!meshFilename.empty()) {
                 relativeMeshFilename = FileHandler::getRelativePath(resourcesDirectory, meshFilename);
             }
             auto *model = new Model(relativeMeshFilename);
             sceneObject->setModel(model);
-        }catch(std::exception &e) {
+        } catch (std::exception &e) {
             QMessageBox::critical(this, "Error", e.what());
             delete sceneObject;
 
@@ -103,7 +103,7 @@ namespace urchin {
     void NewObjectDialog::showMeshFilenameDialog() {
         QString directory = preferredMeshPath.isEmpty() ? QString::fromStdString(FileSystem::instance()->getResourcesDirectory()) : preferredMeshPath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open mesh file"), directory, "Mesh file (*.urchinMesh)", nullptr, QFileDialog::DontUseNativeDialog);
-        if(!filename.isNull()) {
+        if (!filename.isNull()) {
             this->meshFilename = filename.toUtf8().constData();
             this->meshFilenameText->setText(filename);
 
@@ -113,22 +113,22 @@ namespace urchin {
     }
 
     void NewObjectDialog::done(int r) {
-        if(QDialog::Accepted == r) {
+        if (QDialog::Accepted == r) {
             bool hasError = false;
 
             updateObjectName();
             LabelStyleHelper::applyNormalStyle(objectNameLabel);
             LabelStyleHelper::applyNormalStyle(meshFilenameLabel);
 
-            if(objectName.empty()) {
+            if (objectName.empty()) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is mandatory");
                 hasError = true;
-            } else if(isSceneObjectExist(objectName)) {
+            } else if (isSceneObjectExist(objectName)) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is already used");
                 hasError = true;
             }
 
-            if(!hasError) {
+            if (!hasError) {
                 r = buildSceneObject(r);
                 QDialog::done(r);
             }
@@ -139,8 +139,8 @@ namespace urchin {
 
     bool NewObjectDialog::isSceneObjectExist(const std::string &name) {
         std::list<const SceneObject *> sceneObjects = objectController->getSceneObjects();
-        for(auto &sceneObject : sceneObjects) {
-            if(sceneObject->getName() == name) {
+        for (auto &sceneObject : sceneObjects) {
+            if (sceneObject->getName() == name) {
                 return true;
             }
         }

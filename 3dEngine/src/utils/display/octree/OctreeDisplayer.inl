@@ -10,7 +10,7 @@ template<class T> void OctreeDisplayer<T>::drawOctree(const Matrix4<float> &proj
     std::vector<AABBox<float>> aabboxes;
     aabboxes.reserve(leafOctrees.size());
 
-    for(const auto &leafOctree : leafOctrees) {
+    for (const auto &leafOctree : leafOctrees) {
         aabboxes.push_back(leafOctree->getAABBox());
     }
 

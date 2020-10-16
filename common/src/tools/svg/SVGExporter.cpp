@@ -9,7 +9,7 @@ namespace urchin {
     }
 
     SVGExporter::~SVGExporter() {
-        for(const SVGShape *shape : shapes) {
+        for (const SVGShape *shape : shapes) {
            delete shape;
         }
     }
@@ -37,12 +37,12 @@ namespace urchin {
     }
 
     std::string SVGExporter::retrieveViewBox() const {
-        if(shapes.empty()) {
+        if (shapes.empty()) {
             return "";
         }
 
         Rectangle<float> viewBox = shapes[0]->computeRectangle();
-        for(const auto shape : shapes) {
+        for (const auto shape : shapes) {
             viewBox = viewBox.merge(shape->computeRectangle());
         }
 
@@ -55,7 +55,7 @@ namespace urchin {
     }
 
     void SVGExporter::addShapes(std::ofstream &fileStream) const {
-        for(const auto &shape : shapes) {
+        for (const auto &shape : shapes) {
             fileStream<<"  "<<shape->getShapeTag()<<std::endl;
         }
     }

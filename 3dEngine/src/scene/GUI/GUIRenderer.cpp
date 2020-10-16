@@ -28,7 +28,7 @@ namespace urchin {
     }
 
     GUIRenderer::~GUIRenderer() {
-        for(long i=(long)widgets.size()-1; i>=0; --i) {
+        for (long i=(long)widgets.size()-1; i>=0; --i) {
             delete widgets[i];
         }
 
@@ -44,21 +44,21 @@ namespace urchin {
         glUniformMatrix3fv(mProjectionLoc, 1, GL_FALSE, (const float*)mProjection);
 
         //widgets resize
-        for(long i=(long)widgets.size()-1; i>=0; --i) {
+        for (long i=(long)widgets.size()-1; i>=0; --i) {
             widgets[i]->onResize(sceneWidth, sceneHeight);
         }
     }
 
     void GUIRenderer::notify(Observable *observable, int notificationType) {
-        if(auto *widget = dynamic_cast<Widget *>(observable)) {
-            if(notificationType==Widget::SET_IN_FOREGROUND) {
+        if (auto *widget = dynamic_cast<Widget *>(observable)) {
+            if (notificationType==Widget::SET_IN_FOREGROUND) {
                 auto it = std::find(widgets.begin(), widgets.end(), widget);
                 widgets.erase(it);
                 widgets.push_back(widget);
 
                 //reset the other widgets
-                for(long i=(long)widgets.size()-2; i>=0; --i) {
-                    if(widgets[i]->isVisible()) {
+                for (long i=(long)widgets.size()-2; i>=0; --i) {
+                    if (widgets[i]->isVisible()) {
                         widgets[i]->reset();
                     }
                 }
@@ -71,9 +71,9 @@ namespace urchin {
     }
 
     bool GUIRenderer::onKeyPress(unsigned int key) {
-        if(key < 260) {
-            for(long i=(long)widgets.size()-1; i>=0; --i) {
-                if(widgets[i]->isVisible() && !widgets[i]->onKeyPress(key)) {
+        if (key < 260) {
+            for (long i=(long)widgets.size()-1; i>=0; --i) {
+                if (widgets[i]->isVisible() && !widgets[i]->onKeyPress(key)) {
                     return false;
                 }
             }
@@ -82,9 +82,9 @@ namespace urchin {
     }
 
     bool GUIRenderer::onKeyRelease(unsigned int key) {
-        if(key < 260) {
-            for(long i=(long)widgets.size()-1; i>=0; --i) {
-                if(widgets[i]->isVisible() && !widgets[i]->onKeyRelease(key)) {
+        if (key < 260) {
+            for (long i=(long)widgets.size()-1; i>=0; --i) {
+                if (widgets[i]->isVisible() && !widgets[i]->onKeyRelease(key)) {
                     return false;
                 }
             }
@@ -93,8 +93,8 @@ namespace urchin {
     }
 
     bool GUIRenderer::onChar(unsigned int character) {
-        for(long i=(long)widgets.size()-1; i>=0; --i) {
-            if(widgets[i]->isVisible() && !widgets[i]->onChar(character)) {
+        for (long i=(long)widgets.size()-1; i>=0; --i) {
+            if (widgets[i]->isVisible() && !widgets[i]->onChar(character)) {
                 return false;
             }
         }
@@ -102,8 +102,8 @@ namespace urchin {
     }
 
     bool GUIRenderer::onMouseMove(int mouseX, int mouseY) {
-        for(long i=(long)widgets.size()-1; i>=0; --i) {
-            if(widgets[i]->isVisible() && !widgets[i]->onMouseMove(mouseX, mouseY)) {
+        for (long i=(long)widgets.size()-1; i>=0; --i) {
+            if (widgets[i]->isVisible() && !widgets[i]->onMouseMove(mouseX, mouseY)) {
                 return false;
             }
         }
@@ -111,8 +111,8 @@ namespace urchin {
     }
 
     void GUIRenderer::onDisable() {
-        for(long i=(long)widgets.size()-1; i>=0; --i) {
-            if(widgets[i]->isVisible()) {
+        for (long i=(long)widgets.size()-1; i>=0; --i) {
+            if (widgets[i]->isVisible()) {
                 widgets[i]->onDisable();
             }
         }
@@ -139,7 +139,7 @@ namespace urchin {
         glActiveTexture(GL_TEXTURE0);
 
         for (auto &widget : widgets) {
-            if(widget->isVisible()) {
+            if (widget->isVisible()) {
                 Vector2<int> translateVector(widget->getGlobalPositionX(), widget->getGlobalPositionY());
                 glUniform2iv(translateDistanceLoc, 1, (const int*)translateVector);
 
@@ -147,7 +147,7 @@ namespace urchin {
             }
         }
 
-        if(DEBUG_DISPLAY_FONT_TEXTURE) {
+        if (DEBUG_DISPLAY_FONT_TEXTURE) {
             Font *font = MediaManager::instance()->getMedia<Font>("font/font.fnt");
 
             TextureDisplayer textureDisplayer(font->getTextureID(), TextureDisplayer::DEFAULT_VALUE);

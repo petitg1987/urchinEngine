@@ -58,20 +58,20 @@ namespace urchin {
     void Animation::animate(float dt) {
         //calculate current and next frames
         animationInformation.lastTime += dt;
-        if(animationInformation.lastTime >= animationInformation.maxTime) //move to next frame
+        if (animationInformation.lastTime >= animationInformation.maxTime) //move to next frame
         {
             animationInformation.lastTime = 0.0f;
             animationInformation.currFrame = animationInformation.nextFrame;
             animationInformation.nextFrame++;
 
-            if(animationInformation.nextFrame >= constAnimation->getNumberFrames()) {
+            if (animationInformation.nextFrame >= constAnimation->getNumberFrames()) {
                 animationInformation.nextFrame = 0;
             }
         }
 
         //interpolate skeletons between two frames
         float interp = animationInformation.lastTime * static_cast<float>(constAnimation->getFrameRate());
-        for(std::size_t i = 0; i < constAnimation->getNumberBones(); ++i) {
+        for (std::size_t i = 0; i < constAnimation->getNumberBones(); ++i) {
             //shortcut
             const Bone &currentFrameBone = constAnimation->getBone(animationInformation.currFrame, i);
             const Bone &nextFrameBone = constAnimation->getBone(animationInformation.nextFrame, i);
@@ -89,7 +89,7 @@ namespace urchin {
         }
 
         //update the vertex and normals
-        for(unsigned m=0; m<meshes->getNumberMeshes(); ++m) {
+        for (unsigned m=0; m<meshes->getNumberMeshes(); ++m) {
             meshes->getMesh(m)->update(skeleton);
         }
     }

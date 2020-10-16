@@ -27,7 +27,7 @@ namespace urchin {
         timeInTheAir(0.0f),
         jumping(false),
         slopeInPercentage(0.0f) {
-        if(!physicsWorld) {
+        if (!physicsWorld) {
             throw std::runtime_error("Physics world cannot be null for character controller.");
         }
 
@@ -73,11 +73,11 @@ namespace urchin {
 
         //compute values
         slopeInPercentage = 0.0f;
-        if(isOnGround) {
+        if (isOnGround) {
             verticalSpeed = 0.0f;
             slopeInPercentage = computeSlope();
         }
-        if(hitRoof) {
+        if (hitRoof) {
             verticalSpeed = 0.0f;
         }
 
@@ -92,13 +92,13 @@ namespace urchin {
         //apply user move
         Point3<float> targetPosition = ghostBody->getPosition();
         Vector3<float> velocity = getVelocity();
-        if(isOnGround) {
+        if (isOnGround) {
             float slopeSpeedDecrease = 1.0f - (slopeInPercentage / physicsCharacter->getMaxSlopeInPercentage());
             slopeSpeedDecrease = MathAlgorithm::clamp(slopeSpeedDecrease, MIN_WALK_SPEED_PERCENTAGE, MAX_WALK_SPEED_PERCENTAGE);
             targetPosition = targetPosition.translate(velocity * dt * slopeSpeedDecrease);
 
             lastVelocity = velocity;
-        } else if(timeInTheAir < timeKeepMoveInAir) {
+        } else if (timeInTheAir < timeKeepMoveInAir) {
             float momentumSpeedDecrease = 1.0f - (timeInTheAir / timeKeepMoveInAir);
             Vector3<float> walkDirectionInAir = velocity * (1.0f - percentageControlInAir) + velocity * percentageControlInAir;
             targetPosition = targetPosition.translate(walkDirectionInAir * dt * momentumSpeedDecrease);
@@ -108,24 +108,24 @@ namespace urchin {
 
         //jump
         bool closeToTheGround = timeInTheAir < MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND;
-        if(needJumpAndResetFlag() && closeToTheGround && !jumping) {
+        if (needJumpAndResetFlag() && closeToTheGround && !jumping) {
             verticalSpeed += physicsCharacter->getJumpSpeed();
             isOnGround = false;
             jumping = true;
-        } else if(isOnGround && jumping) {
+        } else if (isOnGround && jumping) {
             jumping = false;
         }
 
         //compute gravity velocity
-        if(!isOnGround || numberOfHit > 1) {
+        if (!isOnGround || numberOfHit > 1) {
             verticalSpeed -= (-physicsWorld->getGravity().Y) * dt;
-            if(verticalSpeed < -maxVerticalSpeed) {
+            if (verticalSpeed < -maxVerticalSpeed) {
                 verticalSpeed = -maxVerticalSpeed;
             }
         }
 
         //compute and apply orientation
-        if(!MathAlgorithm::isZero(velocity.squareLength(), 0.001f)) {
+        if (!MathAlgorithm::isZero(velocity.squareLength(), 0.001f)) {
             Quaternion<float> orientation = Quaternion<float>(velocity.normalize()).normalize();
             ghostBody->setOrientation(orientation * initialOrientation);
         }
@@ -138,23 +138,23 @@ namespace urchin {
     void PhysicsCharacterController::recoverFromPenetration(float dt) {
         SignificantContactValues significantContactValues = resetSignificantContactValues();
 
-        for(unsigned int subStepIndex=0; subStepIndex<RECOVER_PENETRATION_SUB_STEPS; ++subStepIndex) {
+        for (unsigned int subStepIndex=0; subStepIndex<RECOVER_PENETRATION_SUB_STEPS; ++subStepIndex) {
             manifoldResults.clear();
             physicsWorld->getCollisionWorld()->getNarrowPhaseManager()->processGhostBody(ghostBody, manifoldResults);
 
-            for(const auto &manifoldResult : manifoldResults) {
+            for (const auto &manifoldResult : manifoldResults) {
                 float sign = manifoldResult.getBody1()==ghostBody ? -1.0 : 1.0;
-                for(unsigned int i=0; i<manifoldResult.getNumContactPoints(); ++i) {
+                for (unsigned int i=0; i<manifoldResult.getNumContactPoints(); ++i) {
                     const ManifoldContactPoint &manifoldContactPoint = manifoldResult.getManifoldContactPoint(i);
                     float depth = manifoldContactPoint.getDepth();
 
-                    if(depth < maxDepthToRecover) {
+                    if (depth < maxDepthToRecover) {
                         Vector3<float> normal =  manifoldContactPoint.getNormalFromObject2() * sign;
                         Vector3<float> moveVector = normal * depth * recoverFactors[subStepIndex];
 
                         ghostBody->setPosition(ghostBody->getPosition().translate(moveVector));
 
-                        if(subStepIndex==0) {
+                        if (subStepIndex==0) {
                             saveSignificantContactValues(significantContactValues, normal);
                         }
                     }
@@ -179,13 +179,13 @@ namespace urchin {
         significantContactValues.numberOfHit++;
 
         float dotProductUpNormalAxis = (-normal).dotProduct(Vector3<float>(0.0, 1.0, 0.0));
-        if(dotProductUpNormalAxis > significantContactValues.maxDotProductUpNormalAxis) {
+        if (dotProductUpNormalAxis > significantContactValues.maxDotProductUpNormalAxis) {
             significantContactValues.maxDotProductUpNormalAxis = dotProductUpNormalAxis;
             significantContactValues.mostUpVerticalNormal = -normal;
         }
 
         float dotProductDownNormalAxis = (-normal).dotProduct(Vector3<float>(0.0, -1.0, 0.0));
-        if(dotProductDownNormalAxis > significantContactValues.maxDotProductDownNormalAxis) {
+        if (dotProductDownNormalAxis > significantContactValues.maxDotProductDownNormalAxis) {
             significantContactValues.maxDotProductDownNormalAxis = dotProductDownNormalAxis;
             significantContactValues.mostDownVerticalNormal = -normal;
         }
@@ -206,7 +206,7 @@ namespace urchin {
         Point2<float> p1 = Point2<float>(ghostBody->getPosition().X, ghostBody->getPosition().Z);
         Point2<float> p2 = Point2<float>(previousBodyPosition.X, previousBodyPosition.Z);
         float run = p1.vector(p2).length();
-        if(run==0.0f) {
+        if (run==0.0f) {
             return 0.0f;
         }
 

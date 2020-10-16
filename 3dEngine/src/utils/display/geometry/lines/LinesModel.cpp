@@ -16,7 +16,7 @@ namespace urchin {
             stripLines(false),
             linesSize(linesSize) {
         linesPoints.reserve(lineSegments.size() * 2);
-        for(const auto &lineSegment : lineSegments) {
+        for (const auto &lineSegment : lineSegments) {
             linesPoints.emplace_back(lineSegment.getA());
             linesPoints.emplace_back(lineSegment.getB());
         }

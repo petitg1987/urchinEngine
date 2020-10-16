@@ -20,7 +20,7 @@ namespace urchin {
 
     Light *LightReaderWriter::buildLightFrom(const std::shared_ptr<XmlChunk> &lightChunk, const XmlParser &xmlParser) const {
         std::string lightType = lightChunk->getAttributeValue(TYPE_ATTR);
-        if(lightType == OMNIDIRECTIONAL_VALUE) {
+        if (lightType == OMNIDIRECTIONAL_VALUE) {
             std::shared_ptr<XmlChunk> positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), lightChunk);
             auto *omnidirectional = new OmnidirectionalLight(positionChunk->getPoint3Value());
 
@@ -28,7 +28,7 @@ namespace urchin {
             omnidirectional->setAttenuation(exponentialAttenuationChunk->getFloatValue());
 
             return omnidirectional;
-        } else if(lightType == SUN_VALUE) {
+        } else if (lightType == SUN_VALUE) {
             std::shared_ptr<XmlChunk> directionChunk = xmlParser.getUniqueChunk(true, DIRECTION_TAG, XmlAttribute(), lightChunk);
 
             return new SunLight(directionChunk->getVector3Value());
@@ -38,7 +38,7 @@ namespace urchin {
     }
 
     void LightReaderWriter::buildChunkFrom(const std::shared_ptr<XmlChunk> &lightChunk, const Light *light, XmlWriter &xmlWriter) const {
-        if(light->getLightType()==Light::OMNIDIRECTIONAL) {
+        if (light->getLightType()==Light::OMNIDIRECTIONAL) {
             const auto *omnidirectionalLight = dynamic_cast<const OmnidirectionalLight *>(light);
             lightChunk->setAttribute(XmlAttribute(TYPE_ATTR, OMNIDIRECTIONAL_VALUE));
 
@@ -47,7 +47,7 @@ namespace urchin {
 
             std::shared_ptr<XmlChunk> expenentialAttenuationChunk = xmlWriter.createChunk(EXPONENTIAL_ATTENUATION_TAG, XmlAttribute(), lightChunk);
             expenentialAttenuationChunk->setFloatValue(omnidirectionalLight->getExponentialAttenuation());
-        } else if(light->getLightType()==Light::SUN) {
+        } else if (light->getLightType()==Light::SUN) {
             const auto *sunLight = dynamic_cast<const SunLight *>(light);
             lightChunk->setAttribute(XmlAttribute(TYPE_ATTR, SUN_VALUE));
 

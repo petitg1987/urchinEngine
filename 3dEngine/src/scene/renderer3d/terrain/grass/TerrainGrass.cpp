@@ -78,10 +78,10 @@ namespace urchin {
         clearVBO();
         ShaderManager::instance()->removeProgram(terrainGrassShader);
 
-        if(grassTexture) {
+        if (grassTexture) {
             grassTexture->release();
         }
-        if(grassMaskTexture) {
+        if (grassMaskTexture) {
             grassMaskTexture->release();
         }
         delete mainGrassQuadtree;
@@ -110,7 +110,7 @@ namespace urchin {
     void TerrainGrass::generateGrass(const std::shared_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition) {
         const unsigned int NUM_THREADS = std::max(2u, std::thread::hardware_concurrency());
 
-        if(mesh) {
+        if (mesh) {
             this->mesh = mesh;
             this->terrainPosition = terrainPosition;
 
@@ -136,7 +136,7 @@ namespace urchin {
             float startZ = mesh->getVertices()[0].Z;
 
             std::vector<std::thread> threads(NUM_THREADS);
-            for(unsigned int threadI=0; threadI<NUM_THREADS; threadI++) {
+            for (unsigned int threadI=0; threadI<NUM_THREADS; threadI++) {
                 unsigned int beginX = threadI * grassXQuantity / NUM_THREADS;
                 unsigned int endX = (threadI + 1) == NUM_THREADS ? grassXQuantity : (threadI + 1) * grassXQuantity / NUM_THREADS;
 
@@ -188,14 +188,14 @@ namespace urchin {
         unsigned int childrenNbQuadtreeZ = leafQuantityZ;
 
         unsigned int depth = grassQuadtreeDepth;
-        while(depth >= 1) {
+        while (depth >= 1) {
             auto depthNbQuadtreeX = static_cast<unsigned int>(MathAlgorithm::pow(2, depth));
             auto depthNbQuadtreeZ = depthNbQuadtreeX;
             unsigned int depthNbQuadtree = depthNbQuadtreeX * depthNbQuadtreeZ;
-            if(std::sqrt(childrenGrassQuadtree.size()) >= std::sqrt(depthNbQuadtree)*2) {
+            if (std::sqrt(childrenGrassQuadtree.size()) >= std::sqrt(depthNbQuadtree)*2) {
                 std::vector<TerrainGrassQuadtree *> depthGrassQuadtree;
                 depthGrassQuadtree.reserve(depthNbQuadtree);
-                for(unsigned int i=0; i<depthNbQuadtree; ++i) {
+                for (unsigned int i=0; i<depthNbQuadtree; ++i) {
                     depthGrassQuadtree.push_back(new TerrainGrassQuadtree());
                 }
 
@@ -232,7 +232,7 @@ namespace urchin {
         glGenBuffers(leafGrassPatches.size() * 2, &bufferIDs[0][0]);
 
         unsigned int quadtreeId = 0;
-        for(auto *grassQuadtree : leafGrassPatches) {
+        for (auto *grassQuadtree : leafGrassPatches) {
             glBindVertexArray(vertexArrayObjects[quadtreeId]);
 
             glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[quadtreeId][VAO_VERTEX_POSITION]);
@@ -250,12 +250,12 @@ namespace urchin {
     }
 
     void TerrainGrass::clearVBO() {
-        if(!vertexArrayObjects.empty()) {
+        if (!vertexArrayObjects.empty()) {
             glDeleteVertexArrays(vertexArrayObjects.size(), &vertexArrayObjects[0]);
             vertexArrayObjects.clear();
         }
 
-        if(!bufferIDs.empty()) {
+        if (!bufferIDs.empty()) {
             glDeleteBuffers(bufferIDs.size(), &bufferIDs[0][0]);
             bufferIDs.clear();
         }
@@ -268,11 +268,11 @@ namespace urchin {
     void TerrainGrass::setGrassTexture(const std::string &grassTextureFilename) {
         this->grassTextureFilename = grassTextureFilename;
 
-        if(grassTexture) {
+        if (grassTexture) {
             grassTexture->release();
         }
 
-        if(grassTextureFilename.empty()) {
+        if (grassTextureFilename.empty()) {
             grassTexture = nullptr;
         } else {
             grassTexture = MediaManager::instance()->getMedia<Image>(grassTextureFilename);
@@ -287,11 +287,11 @@ namespace urchin {
     void TerrainGrass::setMaskTexture(const std::string &grassMaskFilename) {
         this->grassMaskFilename = grassMaskFilename;
 
-        if(grassMaskTexture) {
+        if (grassMaskTexture) {
             grassMaskTexture->release();
         }
 
-        if(grassMaskFilename.empty()) {
+        if (grassMaskFilename.empty()) {
             grassMaskTexture = new Image(1, 1, Image::IMAGE_GRAYSCALE, std::vector<unsigned char>({0}));
             grassMaskTexture->toTexture(false, false, false);
         } else {
@@ -377,7 +377,7 @@ namespace urchin {
     }
 
     void TerrainGrass::display(const Camera *camera, float dt) {
-        if(grassTexture) {
+        if (grassTexture) {
             ScopeProfiler profiler("3d", "grassDisplay");
 
             assert(grassDisplayDistance!=0.0f);
@@ -400,7 +400,7 @@ namespace urchin {
             grassQuadtrees.clear();
             grassQuadtrees.push_back(mainGrassQuadtree);
 
-            for(std::size_t i=0; i<grassQuadtrees.size(); ++i) {
+            for (std::size_t i=0; i<grassQuadtrees.size(); ++i) {
                 const TerrainGrassQuadtree *grassQuadtree = grassQuadtrees[i];
 
                 if (camera->getFrustum().cutFrustum(grassDisplayDistance).collideWithAABBox(*grassQuadtree->getBox())) {

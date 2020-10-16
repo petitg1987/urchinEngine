@@ -13,18 +13,18 @@ namespace urchin {
         cleanCurrentDisplay();
     }
 
-    void SoundTriggerDisplayer::displaySoundTriggerFor(const SceneSound *sceneSound) {
+    void SoundTriggerDisplayer::displaySoundTriggerfor (const SceneSound *sceneSound) {
         cleanCurrentDisplay();
 
-        if(sceneSound) {
+        if (sceneSound) {
             const SoundTrigger *soundTrigger = sceneSound->getSoundTrigger();
 
-            if(const auto *shapeTrigger = dynamic_cast<const ShapeTrigger *>(soundTrigger)) {
+            if (const auto *shapeTrigger = dynamic_cast<const ShapeTrigger *>(soundTrigger)) {
                 GeometryModel *geometryModel = retrieveGeometry(shapeTrigger->getSoundShape());
                 soundTriggerModels.push_back(geometryModel);
             }
 
-            for(auto &soundTriggerModel : soundTriggerModels) {
+            for (auto &soundTriggerModel : soundTriggerModels) {
                 soundTriggerModel->setColor(0.0, 1.0, 1.0);
                 sceneManager->getActiveRenderer3d()->getGeometryManager()->addGeometry(soundTriggerModel);
             }
@@ -33,9 +33,9 @@ namespace urchin {
 
     GeometryModel *SoundTriggerDisplayer::retrieveGeometry(const SoundShape *soundShape) {
         SoundShape::ShapeType shapeType = soundShape->getShapeType();
-        if(shapeType==SoundShape::ShapeType::SPHERE_SHAPE) {
+        if (shapeType==SoundShape::ShapeType::SPHERE_SHAPE) {
             return retrieveSphereGeometry(soundShape);
-        } else if(shapeType==SoundShape::ShapeType::BOX_SHAPE) {
+        } else if (shapeType==SoundShape::ShapeType::BOX_SHAPE) {
             return retrieveBoxGeometry(soundShape);
         }
 
@@ -53,7 +53,7 @@ namespace urchin {
     }
 
     void SoundTriggerDisplayer::cleanCurrentDisplay() {
-        for(auto &soundTriggerModel : soundTriggerModels) {
+        for (auto &soundTriggerModel : soundTriggerModels) {
             sceneManager->getActiveRenderer3d()->getGeometryManager()->removeGeometry(soundTriggerModel);
             delete soundTriggerModel;
         }

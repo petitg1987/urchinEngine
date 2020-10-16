@@ -7,9 +7,9 @@ namespace urchin {
             std::getline(file, buffer);
 
             //delete '\r'
-            if(buffer.length() > 0 && buffer[buffer.length() - 1] == '\r') {
+            if (buffer.length() > 0 && buffer[buffer.length() - 1] == '\r') {
                 buffer.resize(buffer.length() - 1);
             }
-        }while(buffer.length()==0 && !file.eof());
+        }while (buffer.length()==0 && !file.eof());
     }
 }

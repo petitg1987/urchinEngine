@@ -21,7 +21,7 @@ namespace urchin {
         std::string filename = filenameChunk->getStringValue();
 
         std::string soundType = soundChunk->getAttributeValue(TYPE_ATTR);
-        if(soundType == POINT_VALUE) {
+        if (soundType == POINT_VALUE) {
             std::shared_ptr<XmlChunk> positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), soundChunk);
             auto *pointSound = new PointSound(filename, positionChunk->getPoint3Value());
 
@@ -29,7 +29,7 @@ namespace urchin {
             pointSound->setInaudibleDistance(inaudibleDistanceChunk->getFloatValue());
 
             return pointSound;
-        } else if(soundType == AMBIENT_VALUE) {
+        } else if (soundType == AMBIENT_VALUE) {
             return new AmbientSound(filename);
         }
 
@@ -40,7 +40,7 @@ namespace urchin {
         std::shared_ptr<XmlChunk> filenameChunk = xmlWriter.createChunk(FILENAME_TAG, XmlAttribute(), soundChunk);
         filenameChunk->setStringValue(sound->getFilename());
 
-        if(sound->getSoundType()==Sound::POINT) {
+        if (sound->getSoundType()==Sound::POINT) {
             const auto *pointSound = dynamic_cast<const PointSound *>(sound);
             soundChunk->setAttribute(XmlAttribute(TYPE_ATTR, POINT_VALUE));
 
@@ -49,7 +49,7 @@ namespace urchin {
 
             std::shared_ptr<XmlChunk> inaudibleDistanceChunk = xmlWriter.createChunk(INAUDIBLE_DISTANCE_TAG, XmlAttribute(), soundChunk);
             inaudibleDistanceChunk->setFloatValue(pointSound->getInaudibleDistance());
-        } else if(sound->getSoundType()==Sound::AMBIENT) {
+        } else if (sound->getSoundType()==Sound::AMBIENT) {
             soundChunk->setAttribute(XmlAttribute(TYPE_ATTR, AMBIENT_VALUE));
         } else {
             throw std::invalid_argument("Unknown sound type to write in map: " + std::to_string(sound->getSoundType()));

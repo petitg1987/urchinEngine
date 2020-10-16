@@ -15,7 +15,7 @@ namespace urchin {
             xzScale(xzScale),
             yScale(yScale) {
         auto *imgTerrain = MediaManager::instance()->getMedia<Image>(heightFilename);
-        if(imgTerrain->getImageFormat() != Image::IMAGE_GRAYSCALE) {
+        if (imgTerrain->getImageFormat() != Image::IMAGE_GRAYSCALE) {
             imgTerrain->release();
             throw std::runtime_error("Height map must be grayscale. Image format: " + std::to_string(imgTerrain->getImageFormat()));
         }
@@ -30,7 +30,7 @@ namespace urchin {
         std::ifstream terrainFrlFile;
         terrainFrlFile.open(terrainFrlFilePath, std::ios::in | std::ios::binary);
 
-        if(terrainFrlFile.is_open() && readVersion(terrainFrlFile)==TERRAIN_FRL_FILE_VERSION && readMd5(terrainFrlFile)==terrainMd5Sum) {
+        if (terrainFrlFile.is_open() && readVersion(terrainFrlFile)==TERRAIN_FRL_FILE_VERSION && readMd5(terrainFrlFile)==terrainMd5Sum) {
             loadTerrainMeshFile(terrainFrlFile);
         } else {
             terrainFrlFile.close();
@@ -108,13 +108,13 @@ namespace urchin {
         float xStart = (-((float)xSize * xzScale) / 2.0f) + (xzScale / 2.0f);
         float zStart = (-((float)zSize * xzScale) / 2.0f) + (xzScale / 2.0f);
 
-        for(unsigned int z=0; z<zSize; ++z) {
+        for (unsigned int z=0; z<zSize; ++z) {
             float zFloat = zStart + (float)z * xzScale;
             for (unsigned int x = 0; x < xSize; ++x) {
                 float elevation = 0.0f;
-                if(imgTerrain->getChannelPrecision()==Image::CHANNEL_8) {
+                if (imgTerrain->getChannelPrecision()==Image::CHANNEL_8) {
                     elevation = (float)imgTerrain->getTexels()[x + xSize * z] * yScale;
-                } else if(imgTerrain->getChannelPrecision()==Image::CHANNEL_16) {
+                } else if (imgTerrain->getChannelPrecision()==Image::CHANNEL_16) {
                     constexpr float scale16BitsTo8Bits = 255.0f / 65535.0f;
                     elevation = (float)imgTerrain->getTexels16Bits()[x + xSize * z] * scale16BitsTo8Bits * yScale;
                 }
@@ -130,7 +130,7 @@ namespace urchin {
     std::vector<unsigned int> TerrainMesh::buildIndices() {
         indices.reserve(computeNumberIndices());
 
-        for(unsigned int z = 0; z < zSize - 1; ++z) {
+        for (unsigned int z = 0; z < zSize - 1; ++z) {
             for (unsigned int x = 0; x < xSize; ++x) {
                 indices.push_back(x + xSize * (z + 1));
                 indices.push_back(x + xSize * z);
@@ -151,19 +151,19 @@ namespace urchin {
         normalTriangles.resize(totalTriangles);
         unsigned int numLoopNormalTriangle = indices.size() - 2;
         std::vector<std::thread> threadsNormalTriangle(NUM_THREADS);
-        for(unsigned int threadI=0; threadI<NUM_THREADS; threadI++) {
+        for (unsigned int threadI=0; threadI<NUM_THREADS; threadI++) {
             unsigned int beginI = threadI * numLoopNormalTriangle / NUM_THREADS;
             unsigned int endI = (threadI + 1)==NUM_THREADS ? numLoopNormalTriangle : (threadI + 1) * numLoopNormalTriangle / NUM_THREADS;
             threadsNormalTriangle[threadI] = std::thread(std::bind([&](unsigned int beginI, unsigned int endI) {
-                for(unsigned int i = beginI; i<endI; i++) {
-                    if(indices[i+2] != RESTART_INDEX) {
+                for (unsigned int i = beginI; i<endI; i++) {
+                    if (indices[i+2] != RESTART_INDEX) {
                         Point3<float> point1 = vertices[indices[i]];
                         Point3<float> point2 = vertices[indices[i+1]];
                         Point3<float> point3 = vertices[indices[i+2]];
 
                         bool isCwTriangle = (i % xLineQuantity) % 2 == 0;
                         Vector3<float> normal;
-                        if(isCwTriangle) {
+                        if (isCwTriangle) {
                             normal = (point1.vector(point2).crossProduct(point3.vector(point1)));
                         } else {
                             normal = (point1.vector(point2).crossProduct(point1.vector(point3)));
@@ -184,14 +184,14 @@ namespace urchin {
         normals.resize(computeNumberNormals());
         unsigned int numLoopNormalVertex = vertices.size();
         std::vector<std::thread> threadsNormalVertex(NUM_THREADS);
-        for(unsigned int threadI=0; threadI<NUM_THREADS; threadI++) {
+        for (unsigned int threadI=0; threadI<NUM_THREADS; threadI++) {
             unsigned int beginI = threadI * numLoopNormalVertex / NUM_THREADS;
             unsigned int endI = (threadI + 1)==NUM_THREADS ? numLoopNormalVertex : (threadI + 1) * numLoopNormalVertex / NUM_THREADS;
 
             threadsNormalVertex[threadI] = std::thread(std::bind([&](unsigned int beginI, unsigned int endI) {
-                for(unsigned int i = beginI; i<endI; i++) {
+                for (unsigned int i = beginI; i<endI; i++) {
                     Vector3<float> vertexNormal(0.0, 0.0, 0.0);
-                    for(unsigned int triangleIndex : findTriangleIndices(i)) {
+                    for (unsigned int triangleIndex : findTriangleIndices(i)) {
                         vertexNormal += normalTriangles[triangleIndex];
                     }
                     normals[i] = vertexNormal.normalize();
@@ -216,7 +216,7 @@ namespace urchin {
         bool isLastRowVertex = rowNum == (zSize - 1);
 
         //above triangles to the vertex
-        if(!isFirstRowVertex) {
+        if (!isFirstRowVertex) {
             long firstLeftTopTriangle = (squareIndex * 2) + 1;
 
             //left triangle
@@ -232,7 +232,7 @@ namespace urchin {
         }
 
         //below triangles to the vertex
-        if(!isLastRowVertex) {
+        if (!isLastRowVertex) {
             long firstLeftBottomTriangle = (squareIndex * 2) + (xSize - 1) * 2;
 
             //left triangles

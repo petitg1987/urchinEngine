@@ -10,7 +10,7 @@ namespace urchin {
      */
     std::string FileHandler::getFileExtension(const std::string &filePath) {
         std::size_t found = filePath.find_last_of('.');
-        if(found==std::string::npos) {
+        if (found==std::string::npos) {
             return "";
         }
 
@@ -20,7 +20,7 @@ namespace urchin {
 
     std::string FileHandler::getFileName(const std::string &filePath) {
         std::size_t found = filePath.find_last_of("/\\");
-        if(found==std::string::npos) {
+        if (found==std::string::npos) {
             return filePath;
         }
 
@@ -36,7 +36,7 @@ namespace urchin {
 
     std::string FileHandler::getDirectoryFrom(const std::string &filePath) {
         std::size_t found = filePath.find_last_of("/\\");
-        if(found==std::string::npos) {
+        if (found==std::string::npos) {
             return "./";
         }
 
@@ -54,16 +54,16 @@ namespace urchin {
 
         //remove common directories from path
         unsigned int commonMaxIndex;
-        for(commonMaxIndex=0; commonMaxIndex<simplifiedReferenceDirectory.size() && commonMaxIndex<path.size(); ++commonMaxIndex) {
-            if(simplifiedReferenceDirectory[commonMaxIndex]!=path[commonMaxIndex]) {
+        for (commonMaxIndex=0; commonMaxIndex<simplifiedReferenceDirectory.size() && commonMaxIndex<path.size(); ++commonMaxIndex) {
+            if (simplifiedReferenceDirectory[commonMaxIndex]!=path[commonMaxIndex]) {
                 break;
             }
         }
         std::string relativePath = path.substr(commonMaxIndex);
 
         //add '../' to relative path
-        for(std::size_t i=commonMaxIndex; i<simplifiedReferenceDirectory.size(); ++i) {
-            if(simplifiedReferenceDirectory[i]=='/' || simplifiedReferenceDirectory[i]=='\\') {
+        for (std::size_t i=commonMaxIndex; i<simplifiedReferenceDirectory.size(); ++i) {
+            if (simplifiedReferenceDirectory[i]=='/' || simplifiedReferenceDirectory[i]=='\\') {
                 relativePath = std::string("../").append(relativePath);
             }
         }
@@ -80,9 +80,9 @@ namespace urchin {
 
         std::string simplifiedDirectoryPath = directoryPath;
         std::size_t returnDirFound = simplifiedDirectoryPath.find(parentDirectorySymbol);
-        while(returnDirFound != std::string::npos) {
+        while (returnDirFound != std::string::npos) {
             std::size_t found = simplifiedDirectoryPath.find_last_of("/\\", returnDirFound-2);
-            if(found==std::string::npos) {
+            if (found==std::string::npos) {
                 throw std::domain_error("Invalid directory path: " + directoryPath);
             }
 
@@ -96,11 +96,11 @@ namespace urchin {
     }
 
     void FileHandler::checkDirectory(const std::string &directory) {
-        if(directory.empty()) {
+        if (directory.empty()) {
             throw std::invalid_argument("Specified directory cannot be null.");
         }
 
-        if(directory.find_last_of("/\\")!=directory.size()-1) {
+        if (directory.find_last_of("/\\")!=directory.size()-1) {
             throw std::invalid_argument("A directory must end by a slash character: " + directory);
         }
     }

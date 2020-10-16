@@ -30,7 +30,7 @@ namespace urchin {
         Vector3<float> normalFromObject2 = closestPointOnBox.vector(spherePosLocalBox);
 
         float boxSphereLength = normalFromObject2.length();
-        if(boxSphereLength - getContactBreakingThreshold() < sphere1.getRadius()) { //collision detected
+        if (boxSphereLength - getContactBreakingThreshold() < sphere1.getRadius()) { //collision detected
 
             float depth;
 
@@ -44,9 +44,9 @@ namespace urchin {
                 //find axis closest to sphere position
                 float minDistToAxis = box2.getHalfSize(0) - std::abs(spherePosLocalBox[0]);
                 int minAxis = 0;
-                for(int i=1; i<3; ++i) {
+                for (int i=1; i<3; ++i) {
                     float distToAxis = box2.getHalfSize(i) - std::abs(spherePosLocalBox[i]);
-                    if(distToAxis < minDistToAxis) {
+                    if (distToAxis < minDistToAxis) {
                         minDistToAxis = distToAxis;
                         minAxis = i;
                     }

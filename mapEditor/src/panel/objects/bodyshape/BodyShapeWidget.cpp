@@ -20,7 +20,7 @@ namespace urchin {
     }
 
     std::shared_ptr<const CollisionShape3D> BodyShapeWidget::retrieveShape() {
-        if(!shape) {
+        if (!shape) {
             shape = createBodyShape();
         }
         return shape;
@@ -35,7 +35,7 @@ namespace urchin {
     }
 
     void BodyShapeWidget::updateBodyShape() {
-        if(!disableShapeEvent) {
+        if (!disableShapeEvent) {
             shape = createBodyShape();
 
             emit bodyShapeChange(shape);

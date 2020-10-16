@@ -67,7 +67,7 @@ namespace urchin {
             mapHandler->unpause();
 
             isInitialized = true;
-        }catch(std::exception &e) {
+        } catch (std::exception &e) {
             Logger::logger().logError("Error occurred during map load: " + std::string(e.what()));
             QMessageBox::critical(nullptr, "Error", "Unexpected error occurred. Check log file for more details.");
             this->~SceneDisplayer();
@@ -85,7 +85,7 @@ namespace urchin {
     }
 
     void SceneDisplayer::initializeScene(const std::string &mapFilename) {
-        if(isInitialized) {
+        if (isInitialized) {
             throw std::runtime_error("Scene displayer is already initialized.");
         }
 
@@ -122,7 +122,7 @@ namespace urchin {
     }
 
     void SceneDisplayer::setHighlightSceneObject(const SceneObject *highlightSceneObject) {
-        if(this->highlightSceneObject != highlightSceneObject) {
+        if (this->highlightSceneObject != highlightSceneObject) {
             this->highlightSceneObject = highlightSceneObject;
 
             bodyShapeDisplayer->setSelectedSceneObject(highlightSceneObject);
@@ -139,7 +139,7 @@ namespace urchin {
     }
 
     void SceneDisplayer::refreshObjectsModel() {
-        if(viewProperties[MODEL_PHYSICS]) {
+        if (viewProperties[MODEL_PHYSICS]) {
             bodyShapeDisplayer->displayBodyShape();
         }
 
@@ -147,23 +147,23 @@ namespace urchin {
     }
 
     void SceneDisplayer::refreshLightScopeModel() {
-        if(viewProperties[LIGHT_SCOPE] && highlightSceneLight && highlightSceneLight->getLight()) {
-            lightScopeDisplayer->displayLightScopeFor(highlightSceneLight);
+        if (viewProperties[LIGHT_SCOPE] && highlightSceneLight && highlightSceneLight->getLight()) {
+            lightScopeDisplayer->displayLightScopefor (highlightSceneLight);
         } else {
-            lightScopeDisplayer->displayLightScopeFor(nullptr);
+            lightScopeDisplayer->displayLightScopefor (nullptr);
         }
     }
 
     void SceneDisplayer::refreshSoundTriggerModel() {
-        if(viewProperties[SOUND_TRIGGER] && highlightSceneSound && highlightSceneSound->getSoundTrigger()) {
-            soundTriggerDisplayer->displaySoundTriggerFor(highlightSceneSound);
+        if (viewProperties[SOUND_TRIGGER] && highlightSceneSound && highlightSceneSound->getSoundTrigger()) {
+            soundTriggerDisplayer->displaySoundTriggerfor (highlightSceneSound);
         } else {
-            soundTriggerDisplayer->displaySoundTriggerFor(nullptr);
+            soundTriggerDisplayer->displaySoundTriggerfor (nullptr);
         }
     }
 
     void SceneDisplayer::refreshNavMeshModel() {
-        if(viewProperties[NAV_MESH]) {
+        if (viewProperties[NAV_MESH]) {
             navMeshDisplayer->display();
         } else {
             navMeshDisplayer->clearDisplay();
@@ -172,7 +172,7 @@ namespace urchin {
 
     void SceneDisplayer::paint() {
         try {
-            if(isInitialized) {
+            if (isInitialized) {
                 mapHandler->refreshMap();
 
                 refreshObjectsModel();
@@ -182,7 +182,7 @@ namespace urchin {
 
                 sceneManager->display();
             }
-        }catch(std::exception &e) {
+        } catch (std::exception &e) {
             Logger::logger().logError("Error occurred during paint: " + std::string(e.what()));
             QMessageBox::critical(nullptr, "Error", "Unexpected error occurred. Check log file for more details.");
             this->~SceneDisplayer();
@@ -191,7 +191,7 @@ namespace urchin {
     }
 
     void SceneDisplayer::resize(unsigned int width, unsigned int height) {
-        if(isInitialized) {
+        if (isInitialized) {
             sceneManager->onResize(width, height);
             objectMoveController->onResize(width, height);
         }

@@ -24,7 +24,7 @@ namespace urchin {
         for (auto allOctreeableLight : allOctreeableLights) {
             delete allOctreeableLight;
         }
-        for(auto &parallelBeamsLight : parallelBeamsLights) {
+        for (auto &parallelBeamsLight : parallelBeamsLights) {
             delete parallelBeamsLight;
         }
 
@@ -32,10 +32,10 @@ namespace urchin {
         delete [] lightsInfo;
     }
 
-    void LightManager::loadUniformLocationFor(unsigned int deferredShaderID) {
+    void LightManager::loadUniformLocationfor (unsigned int deferredShaderID) {
         std::ostringstream isExistLocName, produceShadowLocName, hasParallelBeamsName, positionOrDirectionLocName;
         std::ostringstream exponentialAttName, lightAmbientName;
-        for(unsigned int i=0;i<maxLights;++i) {
+        for (unsigned int i=0;i<maxLights;++i) {
             isExistLocName.str("");
             isExistLocName << "lightsInfo[" << i << "].isExist";
 
@@ -91,8 +91,8 @@ namespace urchin {
     }
 
     void LightManager::addLight(Light *light) {
-        if(light) {
-            if(light->hasParallelBeams()) {
+        if (light) {
+            if (light->hasParallelBeams()) {
                 parallelBeamsLights.push_back(light);
             } else {
                 lightOctreeManager->addOctreeable(light);
@@ -103,8 +103,8 @@ namespace urchin {
     }
 
     void LightManager::removeLight(Light *light) {
-        if(light) {
-            if(light->hasParallelBeams()) {
+        if (light) {
+            if (light->hasParallelBeams()) {
                 auto it = std::find(parallelBeamsLights.begin(), parallelBeamsLights.end(), light);
                 parallelBeamsLights.erase(it);
             } else {
@@ -141,18 +141,18 @@ namespace urchin {
         const std::vector<Light *> &lights = getVisibleLights();
         checkMaxLight(lights);
 
-        for(unsigned int i=0; i < maxLights; ++i) {
-            if(lights.size() > i) {
+        for (unsigned int i=0; i < maxLights; ++i) {
+            if (lights.size() > i) {
                 const Light *light = lights[i];
 
                 glUniform1i(lightsInfo[i].isExistLoc, true);
                 glUniform1i(lightsInfo[i].produceShadowLoc, light->isProduceShadow());
                 glUniform1i(lightsInfo[i].hasParallelBeamsLoc, light->hasParallelBeams());
-                if(lights[i]->getLightType()==Light::SUN) {
+                if (lights[i]->getLightType()==Light::SUN) {
                     const auto *sunLight = dynamic_cast<const SunLight *>(light);
 
                     glUniform3fv(lightsInfo[i].positionOrDirectionLoc, 1, (const float *)sunLight->getDirections()[0]);
-                } else if(lights[i]->getLightType()==Light::OMNIDIRECTIONAL) {
+                } else if (lights[i]->getLightType()==Light::OMNIDIRECTIONAL) {
                     const auto *omnidirectionalLight = dynamic_cast<const OmnidirectionalLight *>(light);
 
                     glUniform3fv(lightsInfo[i].positionOrDirectionLoc, 1, (const float *)omnidirectionalLight->getPosition());
@@ -173,7 +173,7 @@ namespace urchin {
 
     void LightManager::checkMaxLight(const std::vector<Light *> &lights) {
         static bool maxLightReachLogged = false;
-        if(lights.size() > maxLights && !maxLightReachLogged) {
+        if (lights.size() > maxLights && !maxLightReachLogged) {
             Logger::logger().logWarning("Light in scene (" + std::to_string(lights.size()) + ") is higher that max light (" + std::to_string(maxLights) + ") authorized");
             maxLightReachLogged = true;
         }

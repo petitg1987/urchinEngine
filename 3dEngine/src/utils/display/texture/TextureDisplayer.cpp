@@ -50,7 +50,7 @@ namespace urchin {
     }
 
     void TextureDisplayer::setPosition(TextureDisplayer::CoordinateX coordinateX, TextureDisplayer::CoordinateY coordinateY) {
-        if(isInitialized) {
+        if (isInitialized) {
             throw std::runtime_error("No position update allowed after initialization.");
         }
 
@@ -65,7 +65,7 @@ namespace urchin {
      * @param maxY Maximum Y (scene height : bottom screen)
      */
     void TextureDisplayer::setSize(float minX, float maxX, float minY, float maxY) {
-        if(isInitialized) {
+        if (isInitialized) {
             throw std::runtime_error("No size update allowed after initialization.");
         }
 
@@ -76,7 +76,7 @@ namespace urchin {
     }
 
     void TextureDisplayer::setFullScreen(bool fullScreen) {
-        if(isInitialized) {
+        if (isInitialized) {
             throw std::runtime_error("No full screen flag update allowed after initialization.");
         }
 
@@ -84,14 +84,14 @@ namespace urchin {
     }
 
     void TextureDisplayer::initialize(unsigned int sceneWidth, unsigned int sceneHeight, float nearPlane, float farPlane) {
-        if(isInitialized) {
+        if (isInitialized) {
             throw std::runtime_error("Texture displayer cannot be initialized twice.");
         }
 
         initializeShader(nearPlane, farPlane);
 
         float minX, maxX, minY, maxY;
-        if(fullScreen) {
+        if (fullScreen) {
             minX = 0.0f;
             maxX = (float)sceneWidth;
             minY = 0.0f;
@@ -176,7 +176,7 @@ namespace urchin {
         auto diffuseTexLoc = glGetUniformLocation(displayTextureShader, "colorTex");
         glUniform1i(diffuseTexLoc, GL_TEXTURE0-GL_TEXTURE0);
 
-        if(layer!=-1) {
+        if (layer!=-1) {
             auto layerLoc = glGetUniformLocation(displayTextureShader, "layer");
             glUniform1i(layerLoc, layer);
         }
@@ -185,7 +185,7 @@ namespace urchin {
     }
 
     void TextureDisplayer::display() {
-        if(!isInitialized) {
+        if (!isInitialized) {
             throw std::runtime_error("Texture displayer must be initialized before display.");
         }
 

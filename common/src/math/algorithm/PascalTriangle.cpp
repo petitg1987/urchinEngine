@@ -12,7 +12,7 @@ namespace urchin {
         std::vector<unsigned int> lineValues(nbColumns);
 
         lineValues[0] = 1;
-        for(unsigned int column=1; column<nbColumns; ++column) {
+        for (unsigned int column=1; column<nbColumns; ++column) {
             auto columnFloat = static_cast<float>(column);
             lineValues[column] = std::lround(lineValues[column-1] * ((static_cast<float>(lineNumber) - (columnFloat-1.0f)) / columnFloat));
         }

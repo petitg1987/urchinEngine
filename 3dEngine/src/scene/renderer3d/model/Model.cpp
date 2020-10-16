@@ -40,7 +40,7 @@ namespace urchin {
     }
 
     void Model::initialize(const std::string &meshFilename) {
-        if(!meshFilename.empty()) {
+        if (!meshFilename.empty()) {
             auto *constMeshes = MediaManager::instance()->getMedia<ConstMeshes>(meshFilename);
             meshes = new Meshes(constMeshes);
             meshes->onMoving(transform);
@@ -49,7 +49,7 @@ namespace urchin {
 
 
     void Model::loadAnimation(const std::string &name, const std::string &filename) {
-        if(!meshes) {
+        if (!meshes) {
             throw std::runtime_error("Cannot add animation on model without mesh");
         }
 
@@ -59,19 +59,19 @@ namespace urchin {
         animations[name]->onMoving(transform);
 
         //both files must have the same number of bones
-        if(meshes->getConstMeshes()->getConstMesh(0)->getNumberBones() != constAnimation->getNumberBones()) {
+        if (meshes->getConstMeshes()->getConstMesh(0)->getNumberBones() != constAnimation->getNumberBones()) {
             throw std::runtime_error("Both files haven't the same number of bones. Meshes filename: " + meshes->getConstMeshes()->getName() + ", Animation filename: " + constAnimation->getName() + ".");
         }
 
         //we just check with mesh[0] && frame[0]
-        for(std::size_t i = 0; i<meshes->getConstMeshes()->getConstMesh(0)->getNumberBones(); ++i) {
+        for (std::size_t i = 0; i<meshes->getConstMeshes()->getConstMesh(0)->getNumberBones(); ++i) {
             //bones must have the same parent index
-            if(meshes->getConstMeshes()->getConstMesh(0)->getBaseBone(i).parent != constAnimation->getBone(0, i).parent) {
+            if (meshes->getConstMeshes()->getConstMesh(0)->getBaseBone(i).parent != constAnimation->getBone(0, i).parent) {
                 throw std::runtime_error("Bones haven't the same parent index. Meshes filename: " + meshes->getConstMeshes()->getName() + ", Animation filename: " + constAnimation->getName() + ".");
             }
 
             //bones must have the same name
-            if(meshes->getConstMeshes()->getConstMesh(0)->getBaseBone(i).name != constAnimation->getBone(0, i).name) {
+            if (meshes->getConstMeshes()->getConstMesh(0)->getBaseBone(i).name != constAnimation->getBone(0, i).name) {
                 throw std::runtime_error("Bones haven't the same name. Meshes filename: " + meshes->getConstMeshes()->getName() + ", Animation filename: " + constAnimation->getName() + ".");
             }
         }
@@ -86,7 +86,7 @@ namespace urchin {
     void Model::stopAnimation(bool immediate) {
         if (immediate) {
             currAnimation = nullptr;
-        } else if(isAnimate()) {
+        } else if (isAnimate()) {
             stopAnimationAtLastFrame = true;
         }
 
@@ -99,9 +99,9 @@ namespace urchin {
 
     void Model::onMoving(const Transform<float> &newTransform) {
         //update the bounding box
-        if(meshes) {
+        if (meshes) {
             meshes->onMoving(newTransform);
-            if(currAnimation) {
+            if (currAnimation) {
                 currAnimation->onMoving(newTransform);
             }
         } else {
@@ -113,7 +113,7 @@ namespace urchin {
     }
 
     const ConstMeshes *Model::getMeshes() const {
-        if(meshes) {
+        if (meshes) {
             return meshes->getConstMeshes();
         }
 
@@ -122,7 +122,7 @@ namespace urchin {
 
     std::map<std::string, const ConstAnimation *> Model::getAnimations() const {
         std::map<std::string, const ConstAnimation *> constConstAnimations;
-        for(const auto &animation : animations) {
+        for (const auto &animation : animations) {
             constConstAnimations.insert(std::pair<std::string, const ConstAnimation *>(animation.first, animation.second->getConstAnimation()));
         }
         return constConstAnimations;
@@ -132,9 +132,9 @@ namespace urchin {
     * @return Merged bounding box for all animations. If not animation exist: return meshes bounding box.
     */
     const AABBox<float> &Model::getAABBox() const {
-        if(isAnimate()) {
+        if (isAnimate()) {
             return currAnimation->getGlobalAABBox();
-        } else if(meshes) {
+        } else if (meshes) {
             return meshes->getGlobalAABBox();
         } else {
             return defaultModelAABBoxes[0];
@@ -145,9 +145,9 @@ namespace urchin {
      * @return identical to getAABBox() method but the bounding box is split to the limit size configured
      */
     const std::vector<AABBox<float>> &Model::getSplitAABBoxes() const {
-        if(isAnimate()) {
+        if (isAnimate()) {
             return currAnimation->getGlobalSplitAABBoxes();
-        } else if(meshes) {
+        } else if (meshes) {
             return meshes->getGlobalSplitAABBoxes();
         } else {
             return defaultModelAABBoxes;
@@ -158,9 +158,9 @@ namespace urchin {
     * @return Local merged bounding box for all animations. If not animation exist: return local meshes bounding box.
     */
     const AABBox<float> &Model::getLocalAABBox() const {
-        if(isAnimate()) {
+        if (isAnimate()) {
             return currAnimation->getGlobalLocalAABBox();
-        } else if(meshes) {
+        } else if (meshes) {
             return meshes->getGlobalLocalAABBox();
         } else {
             return defaultModelLocalAABBox;
@@ -204,8 +204,8 @@ namespace urchin {
 
     void Model::updateAnimation(float dt) {
         //animate model
-        if(isAnimate()) {
-            if(stopAnimationAtLastFrame && currAnimation->getCurrFrame() == 0u) {
+        if (isAnimate()) {
+            if (stopAnimationAtLastFrame && currAnimation->getCurrFrame() == 0u) {
                 stopAnimation(true);
                 stopAnimationAtLastFrame = false;
             } else {
@@ -215,7 +215,7 @@ namespace urchin {
     }
 
     void Model::display(const MeshParameter &meshParameter) const {
-        if(meshes) {
+        if (meshes) {
             for (unsigned int m = 0; m < meshes->getNumberMeshes(); ++m) {
                 meshes->getMesh(m)->display(meshParameter);
             }
@@ -229,7 +229,7 @@ namespace urchin {
     }
 
     void Model::drawBaseBones(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const {
-        if(meshes) {
+        if (meshes) {
             for (unsigned int m = 0; m < meshes->getNumberMeshes(); ++m) {
                 meshes->getMesh(m)->drawBaseBones(projectionMatrix, viewMatrix * getTransform().getTransformMatrix());
             }

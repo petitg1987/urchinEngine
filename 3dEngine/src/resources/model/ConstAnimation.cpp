@@ -15,14 +15,14 @@ namespace urchin {
         bboxes(bboxes) {
         //determines the bounding box
         originalGlobalBBox = AABBox<float>(bboxes[0]->getMin(), bboxes[0]->getMax());
-        for(unsigned int i=0; i<numFrames; ++i) {
+        for (unsigned int i=0; i<numFrames; ++i) {
             originalGlobalBBox = originalGlobalBBox.merge(*bboxes[i]);
         }
         originalGlobalSplitBBoxes = SplitBoundingBox().split(originalGlobalBBox);
     }
 
     ConstAnimation::~ConstAnimation() {
-        for(unsigned int i=0;i<numFrames;i++) {
+        for (unsigned int i=0;i<numFrames;i++) {
             delete [] skeletonFrames[i];
             delete bboxes[i];
         }

@@ -99,11 +99,11 @@ namespace urchin {
         delete antiAliasingManager;
 
         //deferred shading (pass 1)
-        if(fboIDs) {
+        if (fboIDs) {
             glDeleteFramebuffers(1, fboIDs);
             delete [] fboIDs;
         }
-        if(textureIDs) {
+        if (textureIDs) {
             glDeleteTextures(4, textureIDs);
             delete [] textureIDs;
         }
@@ -138,10 +138,10 @@ namespace urchin {
         viewPositionLoc = glGetUniformLocation(deferredShadingShader, "viewPosition");
 
         //managers
-        fogManager->loadUniformLocationFor(deferredShadingShader);
-        lightManager->loadUniformLocationFor(deferredShadingShader);
-        shadowManager->loadUniformLocationFor(deferredShadingShader);
-        ambientOcclusionManager->loadUniformLocationFor(deferredShadingShader);
+        fogManager->loadUniformLocationfor (deferredShadingShader);
+        lightManager->loadUniformLocationfor (deferredShadingShader);
+        shadowManager->loadUniformLocationfor (deferredShadingShader);
+        ambientOcclusionManager->loadUniformLocationfor (deferredShadingShader);
     }
 
     void Renderer3d::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
@@ -150,7 +150,7 @@ namespace urchin {
         this->sceneHeight = sceneHeight;
 
         //camera
-        if(camera) {
+        if (camera) {
             camera->onResize(sceneWidth, sceneHeight);
             onCameraProjectionUpdate();
         }
@@ -200,8 +200,8 @@ namespace urchin {
     }
 
     void Renderer3d::notify(Observable *observable, int notificationType) {
-        if(dynamic_cast<ShadowManager *>(observable)) {
-            if(notificationType==ShadowManager::NUMBER_SHADOW_MAPS_UPDATE) {
+        if (dynamic_cast<ShadowManager *>(observable)) {
+            if (notificationType==ShadowManager::NUMBER_SHADOW_MAPS_UPDATE) {
                 createOrUpdateDeferredShadingShader();
             }
         }
@@ -265,12 +265,12 @@ namespace urchin {
     }
 
     void Renderer3d::setCamera(Camera *camera) {
-        if(this->camera != nullptr) {
+        if (this->camera != nullptr) {
            throw std::runtime_error("Redefine a camera is currently not supported");
         }
 
         this->camera = camera;
-        if(camera) {
+        if (camera) {
             onCameraProjectionUpdate();
         }
     }
@@ -295,13 +295,13 @@ namespace urchin {
     }
 
     void Renderer3d::addModel(Model *model) {
-        if(model) {
+        if (model) {
             modelOctreeManager->addOctreeable(model);
         }
     }
 
     void Renderer3d::removeModel(Model *model) {
-        if(model) {
+        if (model) {
             modelOctreeManager->removeOctreeable(model);
         }
         delete model;
@@ -317,7 +317,7 @@ namespace urchin {
     }
 
     void Renderer3d::unpause() {
-        if(camera) {
+        if (camera) {
             camera->resetMousePosition();
         }
 
@@ -329,14 +329,14 @@ namespace urchin {
     }
 
     bool Renderer3d::onKeyPress(unsigned int key) {
-        if(!paused && camera && key < 260) {
+        if (!paused && camera && key < 260) {
             return camera->onKeyPress(key);
         }
         return true;
     }
 
     bool Renderer3d::onKeyRelease(unsigned int key) {
-        if(!paused && camera && key < 260) {
+        if (!paused && camera && key < 260) {
             return camera->onKeyRelease(key);
         }
         return true;
@@ -348,7 +348,7 @@ namespace urchin {
     }
 
     bool Renderer3d::onMouseMove(int mouseX, int mouseY) {
-        if(!paused && camera) {
+        if (!paused && camera) {
             return camera->onMouseMove(mouseX, mouseY);
         }
         return true;
@@ -361,7 +361,7 @@ namespace urchin {
     void Renderer3d::display(float dt) {
         ScopeProfiler profiler("3d", "rendererDisplay");
 
-        if(!camera) { //nothing to display if camera doesn't exist
+        if (!camera) { //nothing to display if camera doesn't exist
             return;
         }
 
@@ -371,7 +371,7 @@ namespace urchin {
         glDrawBuffers(2, &fboAttachments[0]);
         deferredGeometryRendering(dt);
 
-        if(isAntiAliasingActivated) {
+        if (isAntiAliasingActivated) {
             glDrawBuffers(1, &fboAttachments[2]);
             lightingPassRendering();
 
@@ -387,7 +387,7 @@ namespace urchin {
     }
 
     void Renderer3d::displayBuffers() {
-        if(DEBUG_DISPLAY_DEPTH_BUFFER) {
+        if (DEBUG_DISPLAY_DEPTH_BUFFER) {
             float depthIntensity = 5.0f;
             TextureDisplayer textureDisplayer(textureIDs[TEX_DEPTH], TextureDisplayer::DEPTH_VALUE, depthIntensity);
             textureDisplayer.setPosition(TextureDisplayer::LEFT, TextureDisplayer::TOP);
@@ -395,28 +395,28 @@ namespace urchin {
             textureDisplayer.display();
         }
 
-        if(DEBUG_DISPLAY_COLOR_BUFFER) {
+        if (DEBUG_DISPLAY_COLOR_BUFFER) {
             TextureDisplayer textureDisplayer(textureIDs[TEX_DIFFUSE], TextureDisplayer::DEFAULT_VALUE);
             textureDisplayer.setPosition(TextureDisplayer::CENTER_X, TextureDisplayer::TOP);
             textureDisplayer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureDisplayer.display();
         }
 
-        if(DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER) {
+        if (DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER) {
             TextureDisplayer textureDisplayer(textureIDs[TEX_NORMAL_AND_AMBIENT], TextureDisplayer::DEFAULT_VALUE);
             textureDisplayer.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::TOP);
             textureDisplayer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureDisplayer.display();
         }
 
-        if(DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER) {
+        if (DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER) {
             TextureDisplayer textureDisplayer(textureIDs[TEX_LIGHTING_PASS], TextureDisplayer::DEFAULT_VALUE);
             textureDisplayer.setPosition(TextureDisplayer::LEFT, TextureDisplayer::BOTTOM);
             textureDisplayer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureDisplayer.display();
         }
 
-        if(DEBUG_DISPLAY_SHADOW_MAP) {
+        if (DEBUG_DISPLAY_SHADOW_MAP) {
             const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
             const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps-1]
             unsigned int shadowMapTextureID = shadowManager->getShadowData(firstLight).getShadowMapTextureID();
@@ -426,7 +426,7 @@ namespace urchin {
             textureDisplayer.display();
         }
 
-        if(DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER) {
+        if (DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER) {
             float ambientOcclusionIntensity = 10.0f;
             TextureDisplayer textureDisplayer(ambientOcclusionManager->getAmbientOcclusionTextureID(), TextureDisplayer::INVERSE_GRAYSCALE_VALUE, ambientOcclusionIntensity);
             textureDisplayer.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::BOTTOM);
@@ -448,12 +448,12 @@ namespace urchin {
         lightManager->updateLights(camera->getFrustum());
 
         //determine models producing shadow on scene
-        if(isShadowActivated) {
+        if (isShadowActivated) {
             shadowManager->updateVisibleModels(camera->getFrustum());
         }
 
         //animate models (only those visible to scene OR producing shadow on scene)
-        if(isShadowActivated) {
+        if (isShadowActivated) {
             modelDisplayer->setModels(shadowManager->computeVisibleModels());
         } else {
             updateModelsInFrustum();
@@ -462,7 +462,7 @@ namespace urchin {
         modelDisplayer->updateAnimation(dt);
 
         //update shadow maps
-        if(isShadowActivated) {
+        if (isShadowActivated) {
             shadowManager->updateShadowMaps();
         }
     }
@@ -489,7 +489,7 @@ namespace urchin {
 
         geometryManager->display(camera->getViewMatrix());
 
-        if(isAmbientOcclusionActivated) {
+        if (isAmbientOcclusionActivated) {
             ambientOcclusionManager->updateAOTexture(camera);
         }
 
@@ -497,26 +497,26 @@ namespace urchin {
     }
 
     void Renderer3d::displayGeometryDetails() {
-        if(DEBUG_DISPLAY_MODELS_OCTREE) {
+        if (DEBUG_DISPLAY_MODELS_OCTREE) {
             OctreeDisplayer octreeDisplayer(modelOctreeManager);
             octreeDisplayer.drawOctree(camera->getProjectionMatrix(), camera->getViewMatrix());
         }
 
-        if(DEBUG_DISPLAY_MODELS_BOUNDING_BOX) {
+        if (DEBUG_DISPLAY_MODELS_BOUNDING_BOX) {
             modelDisplayer->drawBBox(camera->getProjectionMatrix(), camera->getViewMatrix());
         }
 
-        if(DEBUG_DISPLAY_MODEL_BASE_BONES) {
+        if (DEBUG_DISPLAY_MODEL_BASE_BONES) {
             modelDisplayer->drawBaseBones(camera->getProjectionMatrix(), camera->getViewMatrix(), "models/character.urchinMesh");
         }
 
-        if(DEBUG_DISPLAY_LIGHTS_OCTREE) {
+        if (DEBUG_DISPLAY_LIGHTS_OCTREE) {
             lightManager->drawLightOctree(camera->getProjectionMatrix(), camera->getViewMatrix());
         }
 
-        if(DEBUG_DISPLAY_LIGHTS_SCENE_BOUNDING_BOX) { //display scene box visible from light based on split frustums
+        if (DEBUG_DISPLAY_LIGHTS_SCENE_BOUNDING_BOX) { //display scene box visible from light based on split frustums
             const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
-            for(const auto &frustum : shadowManager->getSplitFrustums()) {
+            for (const auto &frustum : shadowManager->getSplitFrustums()) {
                 shadowManager->drawLightSceneBox(frustum, firstLight, camera->getViewMatrix());
             }
         }
@@ -546,12 +546,12 @@ namespace urchin {
 
         lightManager->loadLights();
 
-        if(isShadowActivated) {
+        if (isShadowActivated) {
             shadowManager->loadShadowMaps(nextTextureUnit);
             nextTextureUnit += shadowManager->getNumberShadowMaps();
         }
 
-        if(isAmbientOcclusionActivated) {
+        if (isAmbientOcclusionActivated) {
             ambientOcclusionManager->loadAOTexture(nextTextureUnit);
             //nextTextureUnit++;
         }

@@ -21,14 +21,14 @@ namespace urchin {
     template<class T> Quaternion<T>::Quaternion(const Matrix3<T> &matrix) {
         const T trace = matrix(0, 0) + matrix(1, 1) + matrix(2, 2);
 
-        if(trace > 0.0) {
+        if (trace > 0.0) {
             const T s = 0.5f / sqrtf(trace + 1.0f);
             X = (matrix(2, 1) - matrix(1, 2)) * s;
             Y = (matrix(0, 2) - matrix(2, 0)) * s;
             Z = (matrix(1, 0) - matrix(0, 1)) * s;
             W = 0.25f / s;
         } else {
-            if((matrix(0, 0) > matrix(1, 1)) && (matrix(0, 0) > matrix(2, 2))) {
+            if ((matrix(0, 0) > matrix(1, 1)) && (matrix(0, 0) > matrix(2, 2))) {
                 const T s = sqrtf(1.0 + matrix(0, 0) - matrix(1, 1) - matrix(2, 2)) * 2.0;
                 X = 0.25 * s;
                 Y = (matrix(0, 1) + matrix(1, 0)) / s;
@@ -144,7 +144,7 @@ namespace urchin {
         Vector3<T> right = normalizedUp.crossProduct(normalizedLookAt);
         T det = right.X + normalizedUp.Y + normalizedLookAt.Z;
 
-        if(det > 0.0) {
+        if (det > 0.0) {
             T sqrtValue = sqrtf(1.0 + det);
             T halfOverSqrt = 0.5 / sqrtValue;
             X = (normalizedUp.Z - normalizedLookAt.Y) * halfOverSqrt;
@@ -194,7 +194,7 @@ namespace urchin {
         const T normValue = norm();
 
         //checks for bogus norm, to protect against divide by zero
-        if(normValue>0.0f) {
+        if (normValue>0.0f) {
             return Quaternion<T>(X/normValue, Y/normValue, Z/normValue, W/normValue);
         }
 
@@ -242,10 +242,10 @@ namespace urchin {
 
     template<class T> Quaternion<T> Quaternion<T>::slerp(const Quaternion &q, T t) const {
         //check for out-of range parameter and return edge points if so
-        if(t <= 0.0) {
+        if (t <= 0.0) {
             return *this;
         }
-        if(t >= 1.0) {
+        if (t >= 1.0) {
             return q;
         }
 
@@ -255,7 +255,7 @@ namespace urchin {
         T qZ = q.Z;
         T qW = q.W;
 
-        if(cosOmega < 0.0) { //ensure to take shortest path
+        if (cosOmega < 0.0) { //ensure to take shortest path
             cosOmega = -cosOmega;
             qX = -qX;
             qY = -qY;
@@ -269,7 +269,7 @@ namespace urchin {
         //computes interpolation fraction, checking for quaternions almost exactly the same
         T k0, k1;
 
-        if(cosOmega > 0.9999) {
+        if (cosOmega > 0.9999) {
             //very close - just use linear interpolation, which will protect against a divide by zero
             k0 = 1.0 - t;
             k1 = t;
@@ -297,10 +297,10 @@ namespace urchin {
 
     template<class T> Quaternion<T> Quaternion<T>::lerp(const Quaternion &q, T t) const {
         //check for out-of range parameter and return edge points if so
-        if(t <= 0.0) {
+        if (t <= 0.0) {
             return *this;
         }
-        if(t >= 1.0) {
+        if (t >= 1.0) {
             return q;
         }
 
@@ -310,7 +310,7 @@ namespace urchin {
         T qZ = q.Z;
         T qW = q.W;
 
-        if(cosOmega < 0.0) { //ensure to take shortest path
+        if (cosOmega < 0.0) { //ensure to take shortest path
             qX = -qX;
             qY = -qY;
             qZ = -qZ;
@@ -367,7 +367,7 @@ namespace urchin {
         angle = std::acos(W) * 2.0;
 
         T norm = sqrtf(X*X + Y*Y + Z*Z);
-        if(std::fabs(norm) > 0.0) {
+        if (std::fabs(norm) > 0.0) {
             axis.X = X / norm;
             axis.Y = Y / norm;
             axis.Z = Z / norm;
@@ -418,7 +418,7 @@ namespace urchin {
         euler[0] = std::atan2(m(k, j), m(k, k));
         T cosEuler1 = Vector2<T>(m(i, i), m(j, i)).length();
 
-        if((sequenceAxis && euler[0]<0) || ((!sequenceAxis) && euler[0]>0)) {
+        if ((sequenceAxis && euler[0]<0) || ((!sequenceAxis) && euler[0]>0)) {
             euler[0] = (euler[0] > 0) ? euler[0] - PI_VALUE : euler[0] + PI_VALUE;
             euler[1] = std::atan2(-m(k, i), -cosEuler1);
         } else {
@@ -441,7 +441,7 @@ namespace urchin {
         euler[0] = std::atan2(m(i, j), m(i, k));
         T sinEuler1 = Vector2<T>(m(i, j), m(i, k)).length();
 
-        if((sequenceAxis && euler[0]<0) || ((!sequenceAxis) && euler[0]>0)) {
+        if ((sequenceAxis && euler[0]<0) || ((!sequenceAxis) && euler[0]>0)) {
             euler[0] = (euler[0] > 0) ? euler[0] - PI_VALUE : euler[0] + PI_VALUE;
             euler[1] = -std::atan2(sinEuler1, m(i, i));
         } else {

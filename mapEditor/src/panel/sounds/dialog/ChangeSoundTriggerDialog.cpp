@@ -41,7 +41,7 @@ namespace urchin {
     }
 
     void ChangeSoundTriggerDialog::done(int r) {
-        if(QDialog::Accepted == r) {
+        if (QDialog::Accepted == r) {
             QVariant variant = soundTriggerTypeComboBox->currentData();
             triggerType = static_cast<SoundTrigger::TriggerType>(variant.toInt());
             QDialog::done(r);

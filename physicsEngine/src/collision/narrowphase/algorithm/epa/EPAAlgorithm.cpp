@@ -17,13 +17,13 @@ namespace urchin {
 
         //handle sub triangle cases
         std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> subTriangleResult = handleSubTriangle(convexObject1, convexObject2);
-        if(subTriangleResult) {
+        if (subTriangleResult) {
             return subTriangleResult;
         }
 
         //1. check collision exist
         const Simplex<T> &simplex = gjkResult.getSimplex();
-        if(simplex.getSize()==1) { //simplex point is the origin
+        if (simplex.getSize()==1) { //simplex point is the origin
             return AlgorithmResultAllocator::instance()->newEPAResultNoCollide<T>();
         }
 
@@ -36,16 +36,16 @@ namespace urchin {
         std::map<std::size_t, IndexedTriangle3D<T>> indexedTriangles;
 
         determineInitialPoints(simplex, convexObject1, convexObject2, convexHullPoints, supportPointsA, supportPointsB);
-        if(convexHullPoints.size() >= 4) {
+        if (convexHullPoints.size() >= 4) {
             determineInitialTriangles(convexHullPoints, indexedTriangles);
         }
 
-        if(indexedTriangles.size()!=4) {//due to numerical imprecision, it's impossible to create indexed triangles correctly
+        if (indexedTriangles.size()!=4) {//due to numerical imprecision, it's impossible to create indexed triangles correctly
             return AlgorithmResultAllocator::instance()->newEPAResultInvalid<T>();
         }
 
         ConvexHullShape3D<T> convexHullShape(convexHullPoints, indexedTriangles);
-        for(auto it = indexedTriangles.begin(); it!=indexedTriangles.end(); ++it) {
+        for (auto it = indexedTriangles.begin(); it!=indexedTriangles.end(); ++it) {
             trianglesData.insert(std::pair<std::size_t, EPATriangleData<T>>(it->first, createTriangleData(convexHullShape, it->first)));
         }
 
@@ -56,14 +56,14 @@ namespace urchin {
         Vector3<T> normal;
         T distanceToOrigin;
 
-        while(true) {
+        while (true) {
             itClosestTriangleData = getClosestTriangleData(trianglesData);
             const EPATriangleData<T> &closestTriangleData = itClosestTriangleData->second;
 
             normal = closestTriangleData.getNormal();
             distanceToOrigin = closestTriangleData.getDistanceToOrigin();
 
-            if(iterationNumber > maxIteration) { //can happen on spherical forms where EPA algorithm doesn't progress enough fast
+            if (iterationNumber > maxIteration) { //can happen on spherical forms where EPA algorithm doesn't progress enough fast
                 break;
             }
 
@@ -75,10 +75,10 @@ namespace urchin {
             upperBoundPenDepth = std::min(upperBoundPenDepth, std::abs(minkowskiDiffPoint.toVector().dotProduct(normal)));
             bool closeEnough = upperBoundPenDepth <= (1.0+terminationTolerance) * distanceToOrigin;
 
-            if(!closeEnough) { //polytope can be extended in direction of normal: add a new point
+            if (!closeEnough) { //polytope can be extended in direction of normal: add a new point
                 std::vector<std::size_t> removedTriangleIndices;
                 std::size_t index = convexHullShape.addNewPoint(minkowskiDiffPoint, removedTriangleIndices);
-                if(index==0) { //finally, polytope cannot by extended in direction of normal. Cause: numerical imprecision.
+                if (index==0) { //finally, polytope cannot by extended in direction of normal. Cause: numerical imprecision.
                     break;
                 }
 
@@ -114,7 +114,7 @@ namespace urchin {
         const Point3<T> contactPointB = closestTriangleData.getBarycentric(0) * supportPointsB[pointIndex1] + closestTriangleData.getBarycentric(1) * supportPointsB[pointIndex2]
                 + closestTriangleData.getBarycentric(2) * supportPointsB[pointIndex3];
 
-        if(Check::instance()->additionalChecksEnable()) {
+        if (Check::instance()->additionalChecksEnable()) {
             const T distanceDelta = contactPointA.vector(contactPointB).length() - distanceToOrigin;
             if (!MathAlgorithm::isZero(distanceDelta, 0.1f)) {
                 logInputData("Incoherent EPA distances", convexObject1, convexObject2, gjkResult);
@@ -135,11 +135,11 @@ namespace urchin {
         const CollisionTriangleObject *triangleObject;
         const CollisionConvexObject3D *otherObject;
 
-        if(convexObject1.getObjectType()==CollisionConvexObject3D::TRIANGLE_OBJECT) {
+        if (convexObject1.getObjectType()==CollisionConvexObject3D::TRIANGLE_OBJECT) {
             triangleObject = dynamic_cast<const CollisionTriangleObject *>(&convexObject1);
             otherObject = &convexObject2;
             needSwap = false;
-        } else if(convexObject2.getObjectType()==CollisionConvexObject3D::TRIANGLE_OBJECT) {
+        } else if (convexObject2.getObjectType()==CollisionConvexObject3D::TRIANGLE_OBJECT) {
             triangleObject = dynamic_cast<const CollisionTriangleObject *>(&convexObject2);
             otherObject = &convexObject1;
             needSwap = true;
@@ -151,11 +151,11 @@ namespace urchin {
         Point3<float> contactPointOther = otherObject->getSupportPoint(-triangle.computeNormal(), true);
         float triangleBarycentrics[3];
         Point3<float> contactPointTriangle = triangle.closestPoint(contactPointOther, triangleBarycentrics);
-        if(triangle.projectedPointInsideTriangle(contactPointOther)) {
+        if (triangle.projectedPointInsideTriangle(contactPointOther)) {
             float distanceToOrigin = contactPointTriangle.distance(contactPointOther);
             Vector3<T> normal = contactPointOther.vector(contactPointTriangle).normalize().template cast<T>();
 
-            if(needSwap) {
+            if (needSwap) {
                 return AlgorithmResultAllocator::instance()->newEPAResultCollide<T>(contactPointOther.template cast<T>(), contactPointTriangle.template cast<T>(), -normal, distanceToOrigin);
             }
 
@@ -175,7 +175,7 @@ namespace urchin {
     template<class T> void EPAAlgorithm<T>::determineInitialPoints(const Simplex<T> &simplex, const CollisionConvexObject3D &convexObject1,
             const CollisionConvexObject3D &convexObject2, std::map<std::size_t, ConvexHullPoint<T>> &convexHullPoints,
             std::map<std::size_t, Point3<T>> &supportPointsA, std::map<std::size_t, Point3<T>> &supportPointsB) const {
-        if(simplex.getSize()==2) { //simplex is a segment line containing the origin
+        if (simplex.getSize()==2) { //simplex is a segment line containing the origin
             //compute normalized direction vector
             const Vector3<T> lineDirection = simplex.getPoint(0).vector(simplex.getPoint(1)).normalize();
 
@@ -184,8 +184,8 @@ namespace urchin {
             // product has the largest length.
             int minAxis = 0; //0=X, 1=Y, 2=Z
             T minValue = std::abs(lineDirection.X);
-            for(int i=1; i<3; ++i) {
-                if(minValue > std::abs(lineDirection[i])) {
+            for (int i=1; i<3; ++i) {
+                if (minValue > std::abs(lineDirection[i])) {
                     minValue = std::abs(lineDirection[i]);
                     minAxis = i;
                 }
@@ -211,24 +211,24 @@ namespace urchin {
                     convexObject2.getSupportPoint((-v2).template cast<float>(), true).template cast<T>(),
                     convexObject2.getSupportPoint((-v3).template cast<float>(), true).template cast<T>()};
 
-            for(std::size_t i=0; i<2; ++i) {
+            for (std::size_t i=0; i<2; ++i) {
                 convexHullPoints[i].point = simplex.getPoint(i);
                 supportPointsA[i] = simplex.getSupportPointA(i);
                 supportPointsB[i] = simplex.getSupportPointB(i);
             }
-            for(std::size_t i=0; i<3; ++i) {
+            for (std::size_t i=0; i<3; ++i) {
                 convexHullPoints[i+2].point = supportPoints[i] - supportPointsMinus[i];
                 supportPointsA[i+2] = supportPoints[i];
                 supportPointsB[i+2] = supportPointsMinus[i];
             }
 
             //keep only the tetrahedron containing the origin
-            if(Tetrahedron<T>(convexHullPoints[0].point, convexHullPoints[2].point, convexHullPoints[3].point, convexHullPoints[4].point).collideWithPoint(Point3<T>(0.0, 0.0, 0.0))) {
+            if (Tetrahedron<T>(convexHullPoints[0].point, convexHullPoints[2].point, convexHullPoints[3].point, convexHullPoints[4].point).collideWithPoint(Point3<T>(0.0, 0.0, 0.0))) {
                 //we use the point 4 instead of point 1 for the initial tetrahedron
                 convexHullPoints[1].point = convexHullPoints[4].point;
                 supportPointsA[1] = supportPointsA[4];
                 supportPointsB[1] = supportPointsB[4];
-            } else if(Tetrahedron<T>(convexHullPoints[4].point, convexHullPoints[1].point, convexHullPoints[2].point, convexHullPoints[3].point).collideWithPoint(Point3<T>(0.0, 0.0, 0.0))) {
+            } else if (Tetrahedron<T>(convexHullPoints[4].point, convexHullPoints[1].point, convexHullPoints[2].point, convexHullPoints[3].point).collideWithPoint(Point3<T>(0.0, 0.0, 0.0))) {
                 //we use the point 4 instead of point 0 for the initial tetrahedron
                 convexHullPoints[0].point = convexHullPoints[4].point;
                 supportPointsA[0] = supportPointsA[4];
@@ -236,7 +236,7 @@ namespace urchin {
             } else { //no tetrahedron containing the origin due to float imprecision
                 convexHullPoints.clear();
             }
-        } else if(simplex.getSize()==3) { //simplex is a triangle containing the origin
+        } else if (simplex.getSize()==3) { //simplex is a triangle containing the origin
             //create two vectors based on three points
             Triangle3D<T> triangle(simplex.getPoint(0), simplex.getPoint(1), simplex.getPoint(2));
             const Vector3<T> v1 = triangle.computeNormal();
@@ -250,21 +250,21 @@ namespace urchin {
                     convexObject2.getSupportPoint((-v1).template cast<float>(), true).template cast<T>(),
                     convexObject2.getSupportPoint((-v2).template cast<float>(), true).template cast<T>()};
 
-            for(std::size_t i=0; i<3; ++i) {
+            for (std::size_t i=0; i<3; ++i) {
                 convexHullPoints[i].point = simplex.getPoint(i);
                 supportPointsA[i] = simplex.getSupportPointA(i);
                 supportPointsB[i] = simplex.getSupportPointB(i);
             }
-            for(std::size_t i=0; i<2; ++i) {
+            for (std::size_t i=0; i<2; ++i) {
                 convexHullPoints[i+3].point = supportPoints[i] - supportPointsMinus[i];
                 supportPointsA[i+3] = supportPoints[i];
                 supportPointsB[i+3] = supportPointsMinus[i];
             }
 
             //keep only the tetrahedron containing the origin
-            if(Tetrahedron<T>(convexHullPoints[0].point, convexHullPoints[1].point, convexHullPoints[2].point, convexHullPoints[3].point).collideWithPoint(Point3<T>(0.0, 0.0, 0.0))) {
+            if (Tetrahedron<T>(convexHullPoints[0].point, convexHullPoints[1].point, convexHullPoints[2].point, convexHullPoints[3].point).collideWithPoint(Point3<T>(0.0, 0.0, 0.0))) {
                 //we use the 4 first point - nothing to do
-            } else if(Tetrahedron<T>(convexHullPoints[0].point, convexHullPoints[1].point, convexHullPoints[2].point, convexHullPoints[4].point).collideWithPoint(Point3<T>(0.0, 0.0, 0.0))) {
+            } else if (Tetrahedron<T>(convexHullPoints[0].point, convexHullPoints[1].point, convexHullPoints[2].point, convexHullPoints[4].point).collideWithPoint(Point3<T>(0.0, 0.0, 0.0))) {
                 //we use the point 4 instead of point 3 for the initial tetrahedron
                 convexHullPoints[3].point = convexHullPoints[4].point;
                 supportPointsA[3] = supportPointsA[4];
@@ -272,8 +272,8 @@ namespace urchin {
             } else { //no tetrahedron containing the origin due to float imprecision
                 convexHullPoints.clear();
             }
-        } else if(simplex.getSize()==4) { //simplex is a tetrahedron containing the origin
-            for(std::size_t i=0; i<4; ++i) {
+        } else if (simplex.getSize()==4) { //simplex is a tetrahedron containing the origin
+            for (std::size_t i=0; i<4; ++i) {
                 convexHullPoints[i].point = simplex.getPoint(i);
                 supportPointsA[i] = simplex.getSupportPointA(i);
                 supportPointsB[i] = simplex.getSupportPointB(i);
@@ -291,12 +291,12 @@ namespace urchin {
      */
     template<class T> void EPAAlgorithm<T>::determineInitialTriangles(std::map<std::size_t, ConvexHullPoint<T>> &convexHullPoints,
             std::map<std::size_t, IndexedTriangle3D<T>> &indexedTriangles) const {
-        for(std::size_t i=0; i<3; ++i) {
-            for(std::size_t j=i+1; j<4; ++j) {
+        for (std::size_t i=0; i<3; ++i) {
+            for (std::size_t j=i+1; j<4; ++j) {
                 T distance = convexHullPoints.at(i).point.vector(convexHullPoints.at(j).point).length();
                 T minPointsDistance = (std::nextafter(distance, std::numeric_limits<T>::max()) - distance) * 10.0;
 
-                if(distance < minPointsDistance) {
+                if (distance < minPointsDistance) {
                     return;
                 }
             }
@@ -304,7 +304,7 @@ namespace urchin {
 
         constexpr std::size_t indices[4][3] =         {{0, 1, 2}, {0, 3, 1}, {0, 2, 3}, {1, 3, 2}};
         constexpr std::size_t revIndices[4][3] =     {{0, 2, 1}, {0, 1, 3}, {0, 3, 2}, {1, 2, 3}};
-        for(std::size_t i=0; i<4; ++i) {
+        for (std::size_t i=0; i<4; ++i) {
             const std::size_t pointOutsideTriangle = 6 - (indices[i][0] + indices[i][1] + indices[i][2]);
             const Vector3<T> normalTriangle = IndexedTriangle3D<T>(indices[i]).computeNormal(
                     convexHullPoints.at(indices[i][0]).point,
@@ -316,14 +316,14 @@ namespace urchin {
             T trianglePointToOutsidePointLength = trianglePointToOutsidePoint.length();
             T dotProductTolerance = (std::nextafter(trianglePointToOutsidePointLength, std::numeric_limits<T>::max()) - trianglePointToOutsidePointLength);
 
-            if(dotProduct < -dotProductTolerance) {
+            if (dotProduct < -dotProductTolerance) {
                 indexedTriangles.insert(std::pair<std::size_t, IndexedTriangle3D<T>>(i, IndexedTriangle3D<T>(indices[i])));
-                for(std::size_t pointI=0; pointI<3; ++pointI) {
+                for (std::size_t pointI=0; pointI<3; ++pointI) {
                     convexHullPoints.at(indices[i][pointI]).triangleIndices.push_back(i);
                 }
-            } else if(dotProduct > dotProductTolerance) {
+            } else if (dotProduct > dotProductTolerance) {
                 indexedTriangles.insert(std::pair<std::size_t, IndexedTriangle3D<T>>(i, IndexedTriangle3D<T>(revIndices[i])));
-                for(std::size_t pointI=0; pointI<3; ++pointI) {
+                for (std::size_t pointI=0; pointI<3; ++pointI) {
                     convexHullPoints.at(revIndices[i][pointI]).triangleIndices.push_back(i);
                 }
             } else {
@@ -342,11 +342,11 @@ namespace urchin {
         T minDistanceToOrigin = std::numeric_limits<T>::max();
         typename std::map<std::size_t, EPATriangleData<T>>::const_iterator closestTriangleData;
 
-        for(auto it = trianglesData.begin(); it!=trianglesData.end(); ++it) {
+        for (auto it = trianglesData.begin(); it!=trianglesData.end(); ++it) {
             const EPATriangleData<T> &triangleData = it->second;
             T distanceToOrigin = std::abs(triangleData.getDistanceToOrigin());
 
-            if(minDistanceToOrigin > distanceToOrigin) {
+            if (minDistanceToOrigin > distanceToOrigin) {
                 minDistanceToOrigin = distanceToOrigin;
                 closestTriangleData = it;
             }

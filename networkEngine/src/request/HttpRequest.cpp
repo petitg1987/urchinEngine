@@ -13,7 +13,7 @@ namespace urchin {
 
     HttpRequestInitializer::HttpRequestInitializer() {
         static int callNumber = 0;
-        if(++callNumber > 1) {
+        if (++callNumber > 1) {
              throw std::runtime_error("HttpRequestInitializer constructor cannot be called several times");
         }
 
@@ -29,7 +29,7 @@ namespace urchin {
         static HttpRequestInitializer instance;
 
         curl = curl_easy_init();
-        if(!curl) {
+        if (!curl) {
             throw std::runtime_error("Impossible to initialize ");
         }
 
@@ -37,11 +37,11 @@ namespace urchin {
     }
 
     HttpRequest::~HttpRequest() {
-        if(curl) {
+        if (curl) {
             curl_easy_cleanup(curl);
         }
 
-        if(textPlainHttpHeader) {
+        if (textPlainHttpHeader) {
             curl_slist_free_all(textPlainHttpHeader);
         }
     }

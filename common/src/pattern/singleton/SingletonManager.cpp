@@ -7,7 +7,7 @@ namespace urchin {
 
     void *SingletonManager::getSingleton(const std::string &name) {
         auto it = singletons.find(name);
-        if(it==singletons.end()) {
+        if (it==singletons.end()) {
             return nullptr;
         }
         return it->second;

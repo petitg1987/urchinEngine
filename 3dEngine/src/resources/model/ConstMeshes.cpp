@@ -13,24 +13,24 @@ namespace urchin {
         Point3<float> min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
         Point3<float> max(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
         for (auto constMesh : constMeshes) {
-            for(unsigned int i=0; i<constMesh->getNumberVertices(); i++) {
-                if(min.X > constMesh->getBaseVertices()[i].X) {
+            for (unsigned int i=0; i<constMesh->getNumberVertices(); i++) {
+                if (min.X > constMesh->getBaseVertices()[i].X) {
                     min.X = constMesh->getBaseVertices()[i].X;
                 }
-                if(min.Y > constMesh->getBaseVertices()[i].Y) {
+                if (min.Y > constMesh->getBaseVertices()[i].Y) {
                     min.Y = constMesh->getBaseVertices()[i].Y;
                 }
-                if(min.Z > constMesh->getBaseVertices()[i].Z) {
+                if (min.Z > constMesh->getBaseVertices()[i].Z) {
                     min.Z = constMesh->getBaseVertices()[i].Z;
                 }
 
-                if(max.X < constMesh->getBaseVertices()[i].X) {
+                if (max.X < constMesh->getBaseVertices()[i].X) {
                     max.X = constMesh->getBaseVertices()[i].X;
                 }
-                if(max.Y < constMesh->getBaseVertices()[i].Y) {
+                if (max.Y < constMesh->getBaseVertices()[i].Y) {
                     max.Y =constMesh->getBaseVertices()[i].Y;
                 }
-                if(max.Z < constMesh->getBaseVertices()[i].Z) {
+                if (max.Z < constMesh->getBaseVertices()[i].Z) {
                     max.Z = constMesh->getBaseVertices()[i].Z;
                 }
             }

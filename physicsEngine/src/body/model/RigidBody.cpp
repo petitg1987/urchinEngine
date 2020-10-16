@@ -68,7 +68,7 @@ namespace urchin {
         AbstractBody::updateTo(workBody);
 
         WorkRigidBody *workRigidBody = WorkRigidBody::upCast(workBody);
-        if(workRigidBody) {
+        if (workRigidBody) {
             workRigidBody->setTotalMomentum(totalMomentum);
             workRigidBody->setTotalTorqueMomentum(totalTorqueMomentum);
             workRigidBody->setDamping(linearDamping, angularDamping);
@@ -88,7 +88,7 @@ namespace urchin {
         bool fullRefreshRequested = AbstractBody::applyFrom(workBody);
         const WorkRigidBody *workRigidBody = WorkRigidBody::upCast(workBody);
 
-        if(workRigidBody && !fullRefreshRequested) {
+        if (workRigidBody && !fullRefreshRequested) {
             mass = workRigidBody->getMass();
             refreshMassProperties();
 
@@ -173,11 +173,11 @@ namespace urchin {
     void RigidBody::setDamping(float linearDamping, float angularDamping) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
-        if(linearDamping < 0.0 || linearDamping > 1.0) {
+        if (linearDamping < 0.0 || linearDamping > 1.0) {
             throw std::domain_error("Wrong linear damping value.");
         }
 
-        if(angularDamping < 0.0 || angularDamping > 1.0) {
+        if (angularDamping < 0.0 || angularDamping > 1.0) {
             throw std::domain_error("Wrong angular damping value.");
         }
 

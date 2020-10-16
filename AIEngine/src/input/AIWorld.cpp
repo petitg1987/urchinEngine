@@ -26,7 +26,7 @@ namespace urchin {
     std::vector<std::shared_ptr<AIEntity>> AIWorld::getEntitiesToRemoveAndReset() {
         std::lock_guard<std::mutex> lock(mutex);
         std::vector<std::shared_ptr<AIEntity>> result = entitiesToRemove;
-        for(const auto &objectToRemove : entitiesToRemove) {
+        for (const auto &objectToRemove : entitiesToRemove) {
             entities.erase(std::remove(entities.begin(), entities.end(), objectToRemove), entities.end());
         }
         entitiesToRemove.clear();

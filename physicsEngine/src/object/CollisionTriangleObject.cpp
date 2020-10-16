@@ -18,7 +18,7 @@ namespace urchin {
     }
 
     Point3<float> CollisionTriangleObject::getSupportPoint(const Vector3<float> &direction, bool includeMargin) const {
-        if(includeMargin) {
+        if (includeMargin) {
             return retrieveTriangle().getSupportPoint(direction);
         }
 

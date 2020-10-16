@@ -24,7 +24,7 @@ namespace urchin {
         std::vector<Point3<float>> vertexArray;
         vertexArray.reserve(24 * aabboxes.size());
 
-        for(const auto&aabbox : aabboxes) {
+        for (const auto&aabbox : aabboxes) {
             vertexArray.emplace_back(Point3<float>(aabbox.getMin().X, aabbox.getMin().Y, aabbox.getMin().Z));
             vertexArray.emplace_back(Point3<float>(aabbox.getMax().X, aabbox.getMin().Y, aabbox.getMin().Z));
 

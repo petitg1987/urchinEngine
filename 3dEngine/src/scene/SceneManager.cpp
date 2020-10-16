@@ -47,12 +47,12 @@ namespace urchin {
     void SceneManager::initializeGl() {
         //initialization Glew
         GLenum err = glewInit();
-        if(err != GLEW_OK) {
+        if (err != GLEW_OK) {
             throw std::runtime_error((char *)glewGetErrorString(err));
         }
 
         //check OpenGL version supported
-        if(!glewIsSupported("GL_VERSION_4_5")) {
+        if (!glewIsSupported("GL_VERSION_4_5")) {
             throw std::runtime_error("OpenGL version 4.5 is required but it's not supported on this environment.");
         }
 
@@ -61,7 +61,7 @@ namespace urchin {
         glGetIntegerv(GL_MAJOR_VERSION, &majorVersionContext);
         glGetIntegerv(GL_MINOR_VERSION, &minorVersionContext);
 
-        if((majorVersionContext*100 + minorVersionContext*10) < 450) {
+        if ((majorVersionContext*100 + minorVersionContext*10) < 450) {
             std::ostringstream ossMajorVersionContext;
             ossMajorVersionContext << majorVersionContext;
 
@@ -79,7 +79,7 @@ namespace urchin {
     }
 
     void SceneManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
-        if(sceneWidth!=0 && sceneHeight!=0) {
+        if (sceneWidth!=0 && sceneHeight!=0) {
             //scene properties
             this->sceneWidth = sceneWidth;
             this->sceneHeight = sceneHeight;
@@ -87,7 +87,7 @@ namespace urchin {
 
             //renderer
             for (auto &activeRenderer : activeRenderers) {
-                if(activeRenderer) {
+                if (activeRenderer) {
                     activeRenderer->onResize(sceneWidth, sceneHeight);
                 }
             }
@@ -110,7 +110,7 @@ namespace urchin {
         static float timeElapse = 0.0f;
         timeElapse += getDeltaTime();
 
-        if(timeElapse > REFRESH_RATE_FPS) { //refresh fps every REFRESH_RATE_FPS_MS
+        if (timeElapse > REFRESH_RATE_FPS) { //refresh fps every REFRESH_RATE_FPS_MS
             fpsForDisplay = std::lround(fps);
             timeElapse = 0.0f;
         }
@@ -137,25 +137,25 @@ namespace urchin {
         auto *renderer3d = new Renderer3d();
         renderers3d.push_back(renderer3d);
 
-        if(enable) {
+        if (enable) {
             enableRenderer3d(renderer3d);
         }
         return renderer3d;
     }
 
     void SceneManager::enableRenderer3d(Renderer3d *renderer3d) {
-        if(activeRenderers[RENDERER_3D] && activeRenderers[RENDERER_3D]!=renderer3d) {
+        if (activeRenderers[RENDERER_3D] && activeRenderers[RENDERER_3D]!=renderer3d) {
             activeRenderers[RENDERER_3D]->onDisable();
         }
 
         activeRenderers[RENDERER_3D] = renderer3d;
-        if(renderer3d) {
+        if (renderer3d) {
             renderer3d->onResize(sceneWidth, sceneHeight);
         }
     }
 
     void SceneManager::removeRenderer3d(Renderer3d *renderer3d) {
-        if(activeRenderers[RENDERER_3D] == renderer3d) {
+        if (activeRenderers[RENDERER_3D] == renderer3d) {
             activeRenderers[RENDERER_3D] = nullptr;
         }
 
@@ -171,25 +171,25 @@ namespace urchin {
         auto *guiRenderer = new GUIRenderer();
         guiRenderers.push_back(guiRenderer);
 
-        if(enable) {
+        if (enable) {
             enableGUIRenderer(guiRenderer);
         }
         return guiRenderer;
     }
 
     void SceneManager::enableGUIRenderer(GUIRenderer *guiRenderer) {
-        if(activeRenderers[GUI_RENDERER] && activeRenderers[GUI_RENDERER]!=guiRenderer) {
+        if (activeRenderers[GUI_RENDERER] && activeRenderers[GUI_RENDERER]!=guiRenderer) {
             activeRenderers[GUI_RENDERER]->onDisable();
         }
 
         activeRenderers[GUI_RENDERER] = guiRenderer;
-        if(guiRenderer) {
+        if (guiRenderer) {
             guiRenderer->onResize(sceneWidth, sceneHeight);
         }
     }
 
     void SceneManager::removeGUIRenderer(GUIRenderer *guiRenderer) {
-        if(activeRenderers[GUI_RENDERER] == guiRenderer) {
+        if (activeRenderers[GUI_RENDERER] == guiRenderer) {
             activeRenderers[GUI_RENDERER] = nullptr;
         }
 
@@ -206,8 +206,8 @@ namespace urchin {
     }
 
     bool SceneManager::onKeyPress(unsigned int key) {
-        for(int i=NUM_RENDERER-1; i>=0; --i) {
-            if(activeRenderers[i] && !activeRenderers[i]->onKeyPress(key)) {
+        for (int i=NUM_RENDERER-1; i>=0; --i) {
+            if (activeRenderers[i] && !activeRenderers[i]->onKeyPress(key)) {
                 return false;
             }
         }
@@ -215,8 +215,8 @@ namespace urchin {
     }
 
     bool SceneManager::onKeyRelease(unsigned int key) {
-        for(int i=NUM_RENDERER-1; i>=0; --i) {
-            if(activeRenderers[i] && !activeRenderers[i]->onKeyRelease(key)) {
+        for (int i=NUM_RENDERER-1; i>=0; --i) {
+            if (activeRenderers[i] && !activeRenderers[i]->onKeyRelease(key)) {
                 return false;
             }
         }
@@ -224,8 +224,8 @@ namespace urchin {
     }
 
     bool SceneManager::onChar(unsigned int character) {
-        for(int i=NUM_RENDERER-1; i>=0; --i) {
-            if(activeRenderers[i] && !activeRenderers[i]->onChar(character)) {
+        for (int i=NUM_RENDERER-1; i>=0; --i) {
+            if (activeRenderers[i] && !activeRenderers[i]->onChar(character)) {
                 return false;
             }
         }
@@ -233,8 +233,8 @@ namespace urchin {
     }
 
     bool SceneManager::onMouseMove(int mouseX, int mouseY) {
-        for(int i=NUM_RENDERER-1; i>=0; --i) {
-            if(activeRenderers[i] && !activeRenderers[i]->onMouseMove(mouseX, mouseY)) {
+        for (int i=NUM_RENDERER-1; i>=0; --i) {
+            if (activeRenderers[i] && !activeRenderers[i]->onMouseMove(mouseX, mouseY)) {
                 return false;
             }
         }
@@ -250,13 +250,13 @@ namespace urchin {
 
         //renderer
         for (auto &activeRenderer : activeRenderers) {
-            if(activeRenderer) {
+            if (activeRenderer) {
                 activeRenderer->display(dt);
             }
         }
 
         GLenum err;
-        while((err = glGetError()) != GL_NO_ERROR) {
+        while ((err = glGetError()) != GL_NO_ERROR) {
             Logger::logger().logError("OpenGL error detected: " + std::to_string(err));
         }
     }

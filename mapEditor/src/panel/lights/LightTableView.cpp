@@ -32,7 +32,7 @@ namespace urchin {
 
     const SceneLight *LightTableView::getSelectedSceneLight() const {
         QModelIndex selectedIndex = this->currentIndex();
-        if(selectedIndex.row()!=-1) {
+        if (selectedIndex.row()!=-1) {
             return selectedIndex.data(Qt::UserRole + 1).value<const SceneLight *>();
         }
         return nullptr;
@@ -51,7 +51,7 @@ namespace urchin {
     }
 
     bool LightTableView::removeSelectedLight() {
-        if(hasSceneLightSelected()) {
+        if (hasSceneLightSelected()) {
             lightsListModel->removeRow(this->currentIndex().row());
             resizeRowsToContents();
 

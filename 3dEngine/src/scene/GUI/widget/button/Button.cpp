@@ -31,7 +31,7 @@ namespace urchin {
         std::shared_ptr<XmlChunk> skinClickChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "click"), buttonChunk);
         texInfoOnClick = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinClickChunk);
 
-        if(!buttonText.empty()) {
+        if (!buttonText.empty()) {
             std::shared_ptr<XmlChunk> textFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textFont", XmlAttribute(), buttonChunk);
             removeChild(text);
             text = new Text(Position(0, 0, Position::PIXEL), textFontChunk->getStringValue());
@@ -50,9 +50,9 @@ namespace urchin {
     }
 
     unsigned int Button::getTextureId() {
-        if(getWidgetState()==FOCUS) {
+        if (getWidgetState()==FOCUS) {
             return texInfoOnFocus->getTextureID();
-        } else if(getWidgetState()==CLICKING) {
+        } else if (getWidgetState()==CLICKING) {
             textureID = texInfoOnClick->getTextureID();
         }
 

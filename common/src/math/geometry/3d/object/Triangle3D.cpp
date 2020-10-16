@@ -20,9 +20,9 @@ namespace urchin {
         T maxPointDotDirection = getPoints()[0].toVector().dotProduct(direction);
         Point3<T> maxPoint = getPoints()[0];
 
-        for(unsigned int i=1;i<3; ++i) {
+        for (unsigned int i=1;i<3; ++i) {
             T currentPointDotDirection  = getPoints()[i].toVector().dotProduct(direction);
-            if(currentPointDotDirection > maxPointDotDirection) {
+            if (currentPointDotDirection > maxPointDotDirection) {
                 maxPointDotDirection = currentPointDotDirection;
                 maxPoint = getPoints()[i];
             }
@@ -53,7 +53,7 @@ namespace urchin {
         Vector3<T> ap = a.vector(p);
         T abDotAp = ab.dotProduct(ap);
         T acDotAp = ac.dotProduct(ap);
-        if(abDotAp <= (T)0.0 && acDotAp <= (T)0.0) {
+        if (abDotAp <= (T)0.0 && acDotAp <= (T)0.0) {
             barycentrics[0] = 1.0;
             barycentrics[1] = 0.0;
             barycentrics[2] = 0.0;
@@ -64,7 +64,7 @@ namespace urchin {
         Vector3<T> bp = b.vector(p);
         T abDotBp = ab.dotProduct(bp);
         T acDotBp = ac.dotProduct(bp);
-        if(abDotBp >= (T)0.0 && acDotBp <= abDotBp) {
+        if (abDotBp >= (T)0.0 && acDotBp <= abDotBp) {
             barycentrics[0] = 0.0;
             barycentrics[1] = 1.0;
             barycentrics[2] = 0.0;
@@ -73,7 +73,7 @@ namespace urchin {
 
         //check if P is in voronoi region of edge AB
         T vc = abDotAp*acDotBp - abDotBp*acDotAp;
-        if(vc <= (T)0.0 && abDotAp >= (T)0.0 && abDotBp <= (T)0.0) {
+        if (vc <= (T)0.0 && abDotAp >= (T)0.0 && abDotBp <= (T)0.0) {
             T v = abDotAp / (abDotAp - abDotBp);
 
             barycentrics[0] = 1.0-v;
@@ -86,7 +86,7 @@ namespace urchin {
         Vector3<T> cp = c.vector(p);
         T abDotCp = ab.dotProduct(cp);
         T acDotCp = ac.dotProduct(cp);
-        if(acDotCp >= (T)0.0 && abDotCp <= acDotCp) {
+        if (acDotCp >= (T)0.0 && abDotCp <= acDotCp) {
             barycentrics[0] = 0.0;
             barycentrics[1] = 0.0;
             barycentrics[2] = 1.0;
@@ -95,7 +95,7 @@ namespace urchin {
 
         //check if P is in voronoi region of edge AC
         T vb = abDotCp*acDotAp - abDotAp*acDotCp;
-        if(vb <= (T)0.0 && acDotAp >= (T)0.0 && acDotCp <= (T)0.0) {
+        if (vb <= (T)0.0 && acDotAp >= (T)0.0 && acDotCp <= (T)0.0) {
             T w = acDotAp / (acDotAp - acDotCp);
 
             barycentrics[0] = 1.0-w;
@@ -106,7 +106,7 @@ namespace urchin {
 
         //check if P is in voronoi region of BC
         T va = abDotBp*acDotCp - abDotCp*acDotBp;
-        if(va <= (T)0.0 && (acDotBp - abDotBp) >= (T)0.0 && (abDotCp - acDotCp) >= (T)0.0) {
+        if (va <= (T)0.0 && (acDotBp - abDotBp) >= (T)0.0 && (abDotCp - acDotCp) >= (T)0.0) {
             T w = (acDotBp - abDotBp) / ((acDotBp - abDotBp) + (abDotCp - acDotCp));
 
             barycentrics[0] = 0.0;
@@ -132,11 +132,11 @@ namespace urchin {
     template<class T> bool Triangle3D<T>::projectedPointInsideTriangle(const Point3<T> &point) const { //see https://stackoverflow.com/questions/25512037/how-to-determine-if-a-point-lies-over-a-triangle-in-3d
         Vector3<T> normal = computeNormal();
 
-        for(unsigned int i=0; i<3; ++i) {
+        for (unsigned int i=0; i<3; ++i) {
             Vector3<T> triangleVector = triangleShape.getPoints()[(i+1)%3].vector(triangleShape.getPoints()[i]);
             Vector3<T> pointToTriangle = point.vector(triangleShape.getPoints()[i]);
             Vector3<T> tetrahedronFaceNormal = triangleVector.crossProduct(pointToTriangle);
-            if(tetrahedronFaceNormal.dotProduct(normal) < 0.0) {
+            if (tetrahedronFaceNormal.dotProduct(normal) < 0.0) {
                 return false;
             }
         }

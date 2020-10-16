@@ -37,14 +37,14 @@ namespace urchin {
     }
 
     void ModelDisplayer::initialize() {
-        if(isInitialized) {
+        if (isInitialized) {
             throw std::runtime_error("Model displayer is already initialized.");
         }
 
-        if(displayMode==DEFAULT_MODE) {
+        if (displayMode==DEFAULT_MODE) {
             //shader creation
             std::string vertexShaderName = "model.vert";
-            if(fragmentShaderName.empty()) { //use default fragment shader
+            if (fragmentShaderName.empty()) { //use default fragment shader
                 fragmentShaderName = "model.frag";
             }
             createShader(vertexShaderName, geometryShaderName, fragmentShaderName);
@@ -64,10 +64,10 @@ namespace urchin {
             meshParameter.setDiffuseTextureUnit(GL_TEXTURE0);
             meshParameter.setNormalTextureUnit(GL_TEXTURE1);
             meshParameter.setAmbientFactorLoc(ambientFactorLoc);
-        } else if(displayMode==DEPTH_ONLY_MODE) {
+        } else if (displayMode==DEPTH_ONLY_MODE) {
             //shader creation
             std::string vertexShaderName = "modelDepthOnly.vert";
-            if(fragmentShaderName.empty()) { //use default fragment shader
+            if (fragmentShaderName.empty()) { //use default fragment shader
                 fragmentShaderName = "modelDepthOnly.frag";
             }
             createShader(vertexShaderName, geometryShaderName, fragmentShaderName);
@@ -116,7 +116,7 @@ namespace urchin {
     }
 
     void ModelDisplayer::setCustomGeometryShader(const std::string &geometryShaderName, const std::map<std::string, std::string> &geometryTokens) {
-        if(isInitialized) {
+        if (isInitialized) {
             throw std::runtime_error("Impossible to set custom geometry shader once the model displayer initialized.");
         }
 
@@ -125,7 +125,7 @@ namespace urchin {
     }
 
     void ModelDisplayer::setCustomFragmentShader(const std::string &fragmentShaderName, const std::map<std::string, std::string> &fragmentTokens) {
-        if(isInitialized) {
+        if (isInitialized) {
             throw std::runtime_error("Impossible to set custom fragment shader once the model displayer initialized.");
         }
 
@@ -156,22 +156,22 @@ namespace urchin {
     void ModelDisplayer::display(const Matrix4<float> &viewMatrix) {
         ScopeProfiler profiler("3d", "modelDisplay");
 
-        if(!isInitialized) {
+        if (!isInitialized) {
             throw std::runtime_error("Model displayer must be initialized before display");
         }
 
         ShaderManager::instance()->bind(modelShader);
         glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)viewMatrix);
-        if(customUniform) {
+        if (customUniform) {
             customUniform->loadCustomUniforms();
         }
 
         for (const auto &model : models) {
             glUniformMatrix4fv(mModelLoc, 1, GL_FALSE, (const float*) model->getTransform().getTransformMatrix());
-            if(displayMode==DEFAULT_MODE) {
+            if (displayMode==DEFAULT_MODE) {
                 glUniformMatrix3fv(mNormalLoc, 1, GL_TRUE, (const float*) model->getTransform().getTransformMatrix().toMatrix3().inverse());
             }
-            if(customModelUniform) {
+            if (customModelUniform) {
                 customModelUniform->loadCustomUniforms(model);
             }
 
@@ -187,7 +187,7 @@ namespace urchin {
 
     void ModelDisplayer::drawBaseBones(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix, const std::string &meshFilename) const {
         for (auto model : models) {
-            if(model->getMeshes() && model->getMeshes()->getMeshFilename()==meshFilename) {
+            if (model->getMeshes() && model->getMeshes()->getMeshFilename()==meshFilename) {
                 model->drawBaseBones(projectionMatrix, viewMatrix);
             }
         }

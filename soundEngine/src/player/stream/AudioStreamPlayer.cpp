@@ -39,7 +39,7 @@ namespace urchin {
     }
 
     void AudioStreamPlayer::play(bool playLoop) {
-        if(!streamUpdateWorker->isTaskExist(getSound())) {
+        if (!streamUpdateWorker->isTaskExist(getSound())) {
             streamUpdateWorker->addTask(getSound(), playLoop);
         }
 

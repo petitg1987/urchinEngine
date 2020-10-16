@@ -16,7 +16,7 @@ namespace urchin {
     void NavMeshDisplayer::display() {
         NavMesh navMesh = aiManager->getNavMeshGenerator()->copyLastGeneratedNavMesh();
 
-        if(loadedNavMeshId != navMesh.getUpdateId()) {
+        if (loadedNavMeshId != navMesh.getUpdateId()) {
             clearDisplay();
 
             std::vector<Point3<float>> triangleMeshPoints;
@@ -68,7 +68,7 @@ namespace urchin {
         std::vector<Point3<float>> displayPoints;
         displayPoints.reserve(points.size());
 
-        for(const auto &point : points) {
+        for (const auto &point : points) {
             displayPoints.emplace_back(Point3<float>(point.X, point.Y + yElevation, point.Z));
         }
 

@@ -35,7 +35,7 @@ namespace urchin {
 
         Vector3<T> direction = (-initialPoint).toVector();
 
-        for(unsigned int iterationNumber=0; iterationNumber<maxIteration; ++iterationNumber) {
+        for (unsigned int iterationNumber=0; iterationNumber<maxIteration; ++iterationNumber) {
             Point3<T> supportPoint1 = getWorldSupportPoint(object1, direction, interpolatedTransform1);
             Point3<T> supportPoint2 = getWorldSupportPoint(object2, -direction, interpolatedTransform2);
             Point3<T> newPoint = supportPoint1 - supportPoint2;
@@ -62,16 +62,16 @@ namespace urchin {
                 normalFromObject2Defined = true;
             }
 
-            if(!simplex.isPointInSimplex(newPoint)) {
+            if (!simplex.isPointInSimplex(newPoint)) {
                 simplex.addPoint(supportPoint1, supportPoint2);
             }
 
             direction = (-simplex.getClosestPointToOrigin()).toVector();
             T closestPointSquareDistance = direction.squareLength();
 
-            if(closestPointSquareDistance < terminationTolerance) {
-                if(simplex.getSize()==4 && !normalFromObject2Defined) {
-                    if(timeToHit==(T)0.0 && simplex.getClosestPointToOrigin()==Point3<T>((T)0.0, (T)0.0, (T)0.0)) {
+            if (closestPointSquareDistance < terminationTolerance) {
+                if (simplex.getSize()==4 && !normalFromObject2Defined) {
+                    if (timeToHit==(T)0.0 && simplex.getClosestPointToOrigin()==Point3<T>((T)0.0, (T)0.0, (T)0.0)) {
                         Point3<T> hitPointOnObject1, hitPointOnObject2;
                         simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
 
@@ -81,7 +81,7 @@ namespace urchin {
                         logInputData(object1, object2, wrongSituation, Logger::ERROR);
                         return std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter>(nullptr);
                     }
-                } else if(normalFromObject2Defined) {
+                } else if (normalFromObject2Defined) {
                     normalFromObject2 = normalFromObject2.normalize();
 
                     Point3<T> hitPointOnObject1, hitPointOnObject2;

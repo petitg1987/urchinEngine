@@ -94,7 +94,7 @@ namespace urchin {
     }
 
     void SoundBoxShapeWidget::updateShapeOrientationType() {
-        if(!disableShapeEvent) {
+        if (!disableShapeEvent) {
             const auto *boxShape = dynamic_cast<const SoundBox *>(retrieveShape());
 
             QVariant variant = orientationType->currentData();

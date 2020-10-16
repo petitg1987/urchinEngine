@@ -167,9 +167,9 @@ namespace urchin {
         T maxPointDotDirection = frustumPoints[0].toVector().dotProduct(direction);
         Point3<T> maxPoint = frustumPoints[0];
 
-        for(unsigned int i=1;i<8; ++i) {
+        for (unsigned int i=1;i<8; ++i) {
             T currentPointDotDirection  = frustumPoints[i].toVector().dotProduct(direction);
-            if(currentPointDotDirection > maxPointDotDirection) {
+            if (currentPointDotDirection > maxPointDotDirection) {
                 maxPointDotDirection = currentPointDotDirection;
                 maxPoint = frustumPoints[i];
             }
@@ -264,13 +264,13 @@ namespace urchin {
             const Vector3<T> &normal = plane.getNormal();
 
             Point3<T> nVertex(bbox.getMax());
-            if(normal.X >= 0.0) {
+            if (normal.X >= 0.0) {
                 nVertex.X = bbox.getMin().X;
             }
-            if(normal.Y >= 0.0) {
+            if (normal.Y >= 0.0) {
                 nVertex.Y = bbox.getMin().Y;
             }
-            if(normal.Z >= 0.0) {
+            if (normal.Z >= 0.0) {
                 nVertex.Z = bbox.getMin().Z;
             }
 

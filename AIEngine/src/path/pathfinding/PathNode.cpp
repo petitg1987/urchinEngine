@@ -52,7 +52,7 @@ namespace urchin {
 
         PathNodeEdgesLink pathNodeEdgesLink;
 
-        if(navLink->getLinkType() == NavLinkType::STANDARD) {
+        if (navLink->getLinkType() == NavLinkType::STANDARD) {
             LineSegment3D<float> sourceAndTargetEdge = previousNode->getNavTriangle()->computeEdge(navLink->getSourceEdgeIndex());
 
             pathNodeEdgesLink.sourceEdge = sourceAndTargetEdge;
@@ -60,7 +60,7 @@ namespace urchin {
             pathNodeEdgesLink.areIdenticalEdges = true;
 
             return pathNodeEdgesLink;
-        } else if(navLink->getLinkType() == NavLinkType::JOIN_POLYGONS) {
+        } else if (navLink->getLinkType() == NavLinkType::JOIN_POLYGONS) {
             LineSegment3D<float> sourceEdge = previousNode->getNavTriangle()->computeEdge(navLink->getSourceEdgeIndex());
             LineSegment3D<float> polygonJoinEdge = navLink->getLinkConstraint()->computeSourceJumpEdge(sourceEdge);
 
@@ -69,7 +69,7 @@ namespace urchin {
             pathNodeEdgesLink.areIdenticalEdges = true;
 
             return pathNodeEdgesLink;
-        } else if(navLink->getLinkType() == NavLinkType::JUMP) {
+        } else if (navLink->getLinkType() == NavLinkType::JUMP) {
             LineSegment3D<float> sourceEdge = previousNode->getNavTriangle()->computeEdge(navLink->getSourceEdgeIndex());
 
             pathNodeEdgesLink.sourceEdge = navLink->getLinkConstraint()->computeSourceJumpEdge(sourceEdge);

@@ -26,7 +26,7 @@ namespace urchin {
     }
 
     bool RayTestResult::hasHit() const {
-        if(!resultReady.load(std::memory_order_relaxed)) {
+        if (!resultReady.load(std::memory_order_relaxed)) {
             throw std::runtime_error("Ray test callback result is not ready.");
         }
 
@@ -34,7 +34,7 @@ namespace urchin {
     }
 
     const std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter> &RayTestResult::getNearestResult() const {
-        if(!resultReady.load(std::memory_order_relaxed)) {
+        if (!resultReady.load(std::memory_order_relaxed)) {
             throw std::runtime_error("Ray test callback result is not ready.");
         }
 
@@ -44,7 +44,7 @@ namespace urchin {
     }
 
     const ccd_set &RayTestResult::getResults() const {
-        if(!resultReady.load(std::memory_order_relaxed)) {
+        if (!resultReady.load(std::memory_order_relaxed)) {
             throw std::runtime_error("Ray test callback result is not ready.");
         }
 

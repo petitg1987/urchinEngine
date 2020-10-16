@@ -116,7 +116,7 @@ namespace urchin {
         #endif
 
         bool fullRefreshRequested = bNeedFullRefresh.load(std::memory_order_relaxed);
-        if(!fullRefreshRequested) {
+        if (!fullRefreshRequested) {
             bIsActive.store(workBody->isActive(), std::memory_order_relaxed);
 
             transform.setPosition(workBody->getPosition());
@@ -129,7 +129,7 @@ namespace urchin {
     void AbstractBody::setTransform(const Transform<float> &transform) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
-        if(std::abs(transform.getScale()-this->transform.getScale()) > std::numeric_limits<float>::epsilon()) {
+        if (std::abs(transform.getScale()-this->transform.getScale()) > std::numeric_limits<float>::epsilon()) {
             this->transform = transform;
             refreshScaledShape();
         } else {
@@ -147,7 +147,7 @@ namespace urchin {
     }
 
     bool AbstractBody::isManuallyMovedAndResetFlag() {
-        if(isManuallyMoved) {
+        if (isManuallyMoved) {
             isManuallyMoved = false;
             return true;
         }

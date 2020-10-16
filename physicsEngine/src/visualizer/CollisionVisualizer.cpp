@@ -12,8 +12,8 @@ namespace urchin {
     }
 
     void CollisionVisualizer::notify(Observable *observable, int notificationType) {
-        if(auto *collisionWorld = dynamic_cast<CollisionWorld *>(observable)) {
-            if(notificationType==CollisionWorld::COLLISION_RESULT_UPDATED) {
+        if (auto *collisionWorld = dynamic_cast<CollisionWorld *>(observable)) {
+            if (notificationType==CollisionWorld::COLLISION_RESULT_UPDATED) {
                 std::lock_guard<std::mutex> lock(visualizerDataMutex);
 
                 const std::vector<ManifoldResult> &manifoldResults = collisionWorld->getLastUpdatedManifoldResults();

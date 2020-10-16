@@ -30,15 +30,15 @@ namespace urchin {
     }
 
     void SoundManager::addSound(Sound *sound, SoundTrigger *soundTrigger) {
-        if(sound && soundTrigger) {
+        if (sound && soundTrigger) {
             auto *audioController = new AudioController(sound, soundTrigger, streamUpdateWorker);
             audioControllers.push_back(audioController);
         }
     }
 
     void SoundManager::removeSound(const Sound *sound) {
-        for(auto it = audioControllers.begin(); it!=audioControllers.end(); ++it) {
-            if((*it)->getSound() == sound) {
+        for (auto it = audioControllers.begin(); it!=audioControllers.end(); ++it) {
+            if ((*it)->getSound() == sound) {
                 deleteAudioController(*it);
                 audioControllers.erase(it);
 
@@ -49,7 +49,7 @@ namespace urchin {
 
     void SoundManager::changeSoundTrigger(const Sound *sound, SoundTrigger *newSoundTrigger) {
         for (auto &audioController : audioControllers) {
-            if(audioController->getSound() == sound) {
+            if (audioController->getSound() == sound) {
                 audioController->changeSoundTrigger(newSoundTrigger);
 
                 break;
@@ -67,9 +67,9 @@ namespace urchin {
         return triggers;
     }
 
-    SoundTrigger *SoundManager::retrieveSoundTriggerFor(const Sound *sound) const {
+    SoundTrigger *SoundManager::retrieveSoundTriggerfor (const Sound *sound) const {
         for (const auto &audioController : audioControllers) {
-            if(audioController->getSound() == sound) {
+            if (audioController->getSound() == sound) {
                 return audioController->getSoundTrigger();
             }
         }
@@ -78,13 +78,13 @@ namespace urchin {
     }
 
     void SoundManager::pause() {
-        for(auto &audioController : audioControllers) {
+        for (auto &audioController : audioControllers) {
             audioController->pause();
         }
     }
 
     void SoundManager::unpause() {
-        for(auto &audioController : audioControllers) {
+        for (auto &audioController : audioControllers) {
             audioController->unpause();
         }
     }
@@ -101,7 +101,7 @@ namespace urchin {
         }
 
         ALenum err;
-        while((err = alGetError()) != AL_NO_ERROR) {
+        while ((err = alGetError()) != AL_NO_ERROR) {
             Logger::logger().logError("OpenAL error detected: " + std::to_string(err));
         }
     }

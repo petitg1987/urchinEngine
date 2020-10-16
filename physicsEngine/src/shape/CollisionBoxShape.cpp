@@ -49,7 +49,7 @@ namespace urchin {
     }
 
     AABBox<float> CollisionBoxShape::toAABBox(const PhysicsTransform &physicsTransform) const {
-        if(!lastTransform.equals(physicsTransform)) {
+        if (!lastTransform.equals(physicsTransform)) {
             const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
             Point3<float> extend(
                     boxShape->getHalfSize(0) * std::abs(orientation(0)) + boxShape->getHalfSize(1) * std::abs(orientation(3)) + boxShape->getHalfSize(2) * std::abs(orientation(6)),

@@ -13,7 +13,7 @@ namespace urchin {
     }
 
     ShaderManager::~ShaderManager() {
-        for(unsigned int &program : programs) {
+        for (unsigned int &program : programs) {
             clearProgram(program);
         }
     }
@@ -44,7 +44,7 @@ namespace urchin {
         glAttachShader(programID, vertexShader);
 
         //geometry shader
-        if(!geometryShaderFilename.empty()) {
+        if (!geometryShaderFilename.empty()) {
             const std::string &geometryShaderFileSource = readEntireFile(shadersParentDirectory + shadersDirectoryName + geometryShaderFilename);
             const std::string &geometryShaderSource = tokenReplacerShader.replaceTokens(geometryShaderFileSource, tokens);
             const char *geometryShaderSourceChar = geometryShaderSource.c_str();
@@ -74,7 +74,7 @@ namespace urchin {
     }
 
     void ShaderManager::removeProgram(unsigned int programID) {
-        if(programID!=0) {
+        if (programID!=0) {
             clearProgram(programID);
             programs.remove(programID);
         }
@@ -86,7 +86,7 @@ namespace urchin {
 
         std::ifstream file;
         file.open(filename, std::ios::in|std::ios::binary);
-        if(file.fail()) {
+        if (file.fail()) {
             throw std::invalid_argument("Cannot open the file " + filename + ".");
         }
 
@@ -101,7 +101,7 @@ namespace urchin {
     }
 
     void ShaderManager::clearProgram(unsigned int programID) {
-        if(programID==0) {
+        if (programID==0) {
             return;
         }
 
@@ -111,7 +111,7 @@ namespace urchin {
 
         glGetAttachedShaders(programID, maxCount, &countAttachedShaders, attachedShaders);
 
-        for(int i=0; i<countAttachedShaders; ++i) {
+        for (int i=0; i<countAttachedShaders; ++i) {
             glDetachShader(programID, attachedShaders[i]);
             glDeleteShader(attachedShaders[i]);
         }
@@ -124,7 +124,7 @@ namespace urchin {
         int infoLogLength = 0;
         glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength);
 
-        if(infoLogLength > 1) {
+        if (infoLogLength > 1) {
             auto *infoLog = new char[infoLogLength];
             glGetShaderInfoLog(shaderID, infoLogLength, nullptr, infoLog);
 
@@ -140,7 +140,7 @@ namespace urchin {
         int infoLogLength = 0;
         glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &infoLogLength);
 
-        if(infoLogLength > 1) {
+        if (infoLogLength > 1) {
             auto *infoLog = new char[infoLogLength];
             glGetProgramInfoLog(programID, infoLogLength, nullptr, infoLog);
 
@@ -153,7 +153,7 @@ namespace urchin {
     }
 
     void ShaderManager::bind(unsigned int programID) {
-        if(programID!=currentProgramID) {
+        if (programID!=currentProgramID) {
             currentProgramID = programID;
             glUseProgram(currentProgramID);
         }

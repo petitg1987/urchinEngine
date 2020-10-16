@@ -23,7 +23,7 @@ namespace urchin {
             void changeSoundTrigger(const Sound *, SoundTrigger *);
 
             std::vector<const SoundTrigger *> getSoundTriggers() const;
-            SoundTrigger *retrieveSoundTriggerFor(const Sound *) const;
+            SoundTrigger *retrieveSoundTriggerfor (const Sound *) const;
 
             void pause();
             void unpause();

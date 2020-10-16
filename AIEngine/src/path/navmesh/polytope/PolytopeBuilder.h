@@ -26,12 +26,12 @@ namespace urchin {
             PolytopeBuilder();
             ~PolytopeBuilder() override;
 
-            std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string &, OBBox<float> *, const std::shared_ptr<NavMeshAgent> &) const;
-            std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string &, Capsule<float> *, const std::shared_ptr<NavMeshAgent> &) const;
-            std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string &, Cone<float> *, const std::shared_ptr<NavMeshAgent> &) const;
-            std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string &, ConvexHull3D<float> *, const std::shared_ptr<NavMeshAgent> &) const;
-            std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string &, Cylinder<float> *, const std::shared_ptr<NavMeshAgent> &) const;
-            std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string &, Sphere<float> *, const std::shared_ptr<NavMeshAgent> &) const;
+            std::unique_ptr<Polytope> createExpandedPolytopefor (const std::string &, OBBox<float> *, const std::shared_ptr<NavMeshAgent> &) const;
+            std::unique_ptr<Polytope> createExpandedPolytopefor (const std::string &, Capsule<float> *, const std::shared_ptr<NavMeshAgent> &) const;
+            std::unique_ptr<Polytope> createExpandedPolytopefor (const std::string &, Cone<float> *, const std::shared_ptr<NavMeshAgent> &) const;
+            std::unique_ptr<Polytope> createExpandedPolytopefor (const std::string &, ConvexHull3D<float> *, const std::shared_ptr<NavMeshAgent> &) const;
+            std::unique_ptr<Polytope> createExpandedPolytopefor (const std::string &, Cylinder<float> *, const std::shared_ptr<NavMeshAgent> &) const;
+            std::unique_ptr<Polytope> createExpandedPolytopefor (const std::string &, Sphere<float> *, const std::shared_ptr<NavMeshAgent> &) const;
 
             std::vector<Point3<float>> createExpandedPoints(const std::vector<Point3<float>> &, const std::shared_ptr<NavMeshAgent> &) const;
             std::vector<Plane<float>> createExpandedBoxPlanes(const std::vector<Point3<float>> &, const std::shared_ptr<NavMeshAgent> &) const;

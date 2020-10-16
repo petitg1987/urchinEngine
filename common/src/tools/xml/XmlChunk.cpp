@@ -31,9 +31,9 @@ namespace urchin {
     }
 
     std::string XmlChunk::getStringValue() const {
-        if(!chunk->FirstChild()) {
+        if (!chunk->FirstChild()) {
             return "";
-        } else if(chunk->FirstChild()->Type()==TiXmlNode::TEXT) {
+        } else if (chunk->FirstChild()->Type()==TiXmlNode::TEXT) {
             return chunk->FirstChild()->ToText()->Value();
         }
 
@@ -72,9 +72,9 @@ namespace urchin {
 
     bool XmlChunk::getBoolValue() const {
         std::string value = getStringValue();
-        if(value == BOOL_FALSE) {
+        if (value == BOOL_FALSE) {
             return false;
-        } else if(value == BOOL_TRUE) {
+        } else if (value == BOOL_TRUE) {
             return true;
         }
 
@@ -82,7 +82,7 @@ namespace urchin {
     }
 
     void XmlChunk::setBoolValue(bool value) {
-        if(value) {
+        if (value) {
             setStringValue(BOOL_TRUE);
         } else {
             setStringValue(BOOL_FALSE);

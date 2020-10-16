@@ -17,25 +17,25 @@ namespace urchin {
             skyboxShader(0),
             mProjectionLoc(0),
             mViewLoc(0) {
-        if(filenames.size() != 6) {
+        if (filenames.size() != 6) {
             throw std::invalid_argument("There is no 6 skybox filenames.");
         }
 
         //create the textures
         texSkybox = new Image*[6];
         unsigned int skyboxSize = 1;
-        for(std::size_t i=0; i < 6; ++i) {
-            if(!filenames[i].empty()) {
+        for (std::size_t i=0; i < 6; ++i) {
+            if (!filenames[i].empty()) {
                 texSkybox[i] = MediaManager::instance()->getMedia<Image>(filenames[i]);
                 skyboxSize = texSkybox[i]->getWidth();
             }
         }
 
-        for(std::size_t i=0; i < 6; ++i) {
-            if(filenames[i].empty()) {
+        for (std::size_t i=0; i < 6; ++i) {
+            if (filenames[i].empty()) {
                 std::vector<unsigned char> defaultTexPixels;
                 defaultTexPixels.reserve(skyboxSize * skyboxSize);
-                for(std::size_t pixelIndex=0; pixelIndex < skyboxSize * skyboxSize; ++pixelIndex) {
+                for (std::size_t pixelIndex=0; pixelIndex < skyboxSize * skyboxSize; ++pixelIndex) {
                     defaultTexPixels.push_back(150); //R
                     defaultTexPixels.push_back(50); //G
                     defaultTexPixels.push_back(255); //B
@@ -44,15 +44,15 @@ namespace urchin {
             }
         }
 
-        for(std::size_t i=0; i < 6 - 1; ++i) {
+        for (std::size_t i=0; i < 6 - 1; ++i) {
             unsigned int widthSize = texSkybox[i]->getWidth();
             unsigned int heightSize = texSkybox[i]->getHeight();
             unsigned int nextWidthSize = texSkybox[i + 1]->getWidth();
 
-            if(texSkybox[i]->getWidth() != texSkybox[i]->getHeight()) {
+            if (texSkybox[i]->getWidth() != texSkybox[i]->getHeight()) {
                 clearTexSkybox();
                 throw std::runtime_error("Skybox image must be a square. Present image size: " + std::to_string(widthSize) + "x" + std::to_string(heightSize));
-            } else if(widthSize != nextWidthSize) {
+            } else if (widthSize != nextWidthSize) {
                 clearTexSkybox();
                 throw std::runtime_error("All skybox images must have the same size: " + std::to_string(widthSize) + " != " + std::to_string(nextWidthSize));
             }
@@ -139,7 +139,7 @@ namespace urchin {
     }
 
     void Skybox::clearTexSkybox() {
-        if(texSkybox != nullptr) {
+        if (texSkybox != nullptr) {
             for (std::size_t i = 0; i < 6; i++) {
                 texSkybox[i]->release();
             }

@@ -38,7 +38,7 @@ namespace urchin {
         unsigned int right = rightElem->getUnsignedIntValue();
 
         //copy the information into the outline
-        if(widgetOutline) {
+        if (widgetOutline) {
             widgetOutline->topWidth = top;
             widgetOutline->bottomWidth = bottom;
             widgetOutline->leftWidth = left;
@@ -55,64 +55,64 @@ namespace urchin {
         unsigned int topAdjusted = std::min(height, top);
 
         //copy corner top left
-        for(unsigned int i=0;i<topAdjusted;++i) {
-            for(unsigned int j=0;j<leftMultiplyInternalFormat;++j) {
+        for (unsigned int i=0;i<topAdjusted;++i) {
+            for (unsigned int j=0;j<leftMultiplyInternalFormat;++j) {
                 texels[i*width*componentsCount + j] = imgWidget->getTexels()[i*imgWidget->getWidth()*componentsCount + j];
             }
         }
 
         //copy top
-        for(unsigned int i=0;i<topAdjusted;++i) {
-            for(unsigned int j=left*componentsCount, k=0;j<widthMinusRight*componentsCount;++j, ++k) {
+        for (unsigned int i=0;i<topAdjusted;++i) {
+            for (unsigned int j=left*componentsCount, k=0;j<widthMinusRight*componentsCount;++j, ++k) {
                 texels[i*width*componentsCount + j] = imgWidget->getTexels()[i*imgWidget->getWidth()*componentsCount + k%((imgWidget->getWidth()-(right+left))*componentsCount) + left*componentsCount];
             }
         }
 
         //copy corner top right
-        for(unsigned int i=0;i<topAdjusted;++i) {
-            for(unsigned int j=widthMinusRight*componentsCount, k=(imgWidget->getWidth()-right)*componentsCount;j<width*componentsCount;++j, ++k) {
+        for (unsigned int i=0;i<topAdjusted;++i) {
+            for (unsigned int j=widthMinusRight*componentsCount, k=(imgWidget->getWidth()-right)*componentsCount;j<width*componentsCount;++j, ++k) {
                 texels[i*width*componentsCount + j] = imgWidget->getTexels()[i*imgWidget->getWidth()*componentsCount + k];
             }
         }
 
         //copy right
-        for(unsigned int i=top, k=0;i<heightMinusBottom;++i, ++k) {
-            for(unsigned int j=widthMinusRight*componentsCount, l=(imgWidget->getWidth()-right)*componentsCount;j<width*componentsCount;++j, ++l) {
+        for (unsigned int i=top, k=0;i<heightMinusBottom;++i, ++k) {
+            for (unsigned int j=widthMinusRight*componentsCount, l=(imgWidget->getWidth()-right)*componentsCount;j<width*componentsCount;++j, ++l) {
                 texels[i*width*componentsCount + j] = imgWidget->getTexels()[(k%(imgWidget->getHeight()-(top+bottom)) + top)*imgWidget->getWidth()*componentsCount + l];
             }
         }
 
         //copy corner bottom right
-        for(unsigned int i=heightMinusBottom, k=imgWidget->getHeight()-bottom;i<height;++i, ++k) {
-            for(unsigned int j=widthMinusRight*componentsCount, l=(imgWidget->getWidth()-right)*componentsCount;j<width*componentsCount;++j, ++l) {
+        for (unsigned int i=heightMinusBottom, k=imgWidget->getHeight()-bottom;i<height;++i, ++k) {
+            for (unsigned int j=widthMinusRight*componentsCount, l=(imgWidget->getWidth()-right)*componentsCount;j<width*componentsCount;++j, ++l) {
                 texels[i*width*componentsCount + j] = imgWidget->getTexels()[k*imgWidget->getWidth()*componentsCount + l];
             }
         }
 
         //copy bottom
-        for(unsigned int i=heightMinusBottom, k=imgWidget->getHeight()-bottom;i<height;++i, ++k) {
-            for(unsigned int j=left*componentsCount, l=0;j<widthMinusRight*componentsCount;++j, ++l) {
+        for (unsigned int i=heightMinusBottom, k=imgWidget->getHeight()-bottom;i<height;++i, ++k) {
+            for (unsigned int j=left*componentsCount, l=0;j<widthMinusRight*componentsCount;++j, ++l) {
                 texels[i*width*componentsCount + j] = imgWidget->getTexels()[k*imgWidget->getWidth()*componentsCount + l%((imgWidget->getWidth()-(left+right))*componentsCount) + left*componentsCount];
             }
         }
 
         //copy corner bottom left
-        for(unsigned int i=heightMinusBottom, k=0;i<height;++i, ++k) {
-            for(unsigned int j=0;j<leftMultiplyInternalFormat;++j) {
+        for (unsigned int i=heightMinusBottom, k=0;i<height;++i, ++k) {
+            for (unsigned int j=0;j<leftMultiplyInternalFormat;++j) {
                 texels[i*width*componentsCount + j] = imgWidget->getTexels()[(k + imgWidget->getHeight()-bottom)*imgWidget->getWidth()*componentsCount + j];
             }
         }
 
         //copy left
-        for(unsigned int i=top, k=0;i<heightMinusBottom;++i, ++k) {
-            for(unsigned int j=0;j<leftMultiplyInternalFormat;++j) {
+        for (unsigned int i=top, k=0;i<heightMinusBottom;++i, ++k) {
+            for (unsigned int j=0;j<leftMultiplyInternalFormat;++j) {
                 texels[i*width*componentsCount + j] = imgWidget->getTexels()[(k%(imgWidget->getHeight()-(top+bottom)) + top)*imgWidget->getWidth()*componentsCount + j];
             }
         }
 
         //copy middle
-        for(unsigned int i=top, k=0;i<heightMinusBottom;++i, ++k) {
-            for(unsigned int j=leftMultiplyInternalFormat, l=0;j<widthMinusRight*componentsCount;++j, ++l) {
+        for (unsigned int i=top, k=0;i<heightMinusBottom;++i, ++k) {
+            for (unsigned int j=leftMultiplyInternalFormat, l=0;j<widthMinusRight*componentsCount;++j, ++l) {
                 texels[i*width*componentsCount + j] = imgWidget->getTexels()[(k%(imgWidget->getHeight()-(top+bottom)) + top)*imgWidget->getWidth()*componentsCount + l%((imgWidget->getWidth()-(left+right))*componentsCount) + left*componentsCount];
             }
         }
@@ -127,7 +127,7 @@ namespace urchin {
     }
 
     XmlParser *GUISkinService::getXmlSkin() const {
-        if(!xmlSkin) {
+        if (!xmlSkin) {
             throw std::runtime_error("GUI skin is not initialized");
         }
 

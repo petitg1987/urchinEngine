@@ -75,7 +75,7 @@ namespace urchin {
 
         //1. if similar point exist in manifold result: replace it
         int nearestPointIndex = getNearestPointIndex(localPointOnObject2);
-        if(nearestPointIndex >= 0) { //replace existing point
+        if (nearestPointIndex >= 0) { //replace existing point
             contactPoints[nearestPointIndex] = ManifoldContactPoint(normalFromObject2, pointOnObject1, pointOnObject2,
                     localPointOnObject1, localPointOnObject2, depth, isPredictive);
             return;
@@ -83,7 +83,7 @@ namespace urchin {
 
         //2. keep deepest point and four points cover the biggest area
         unsigned int insertionIndex;
-        if(nbContactPoint==MAX_PERSISTENT_POINTS) {
+        if (nbContactPoint==MAX_PERSISTENT_POINTS) {
             insertionIndex = computeBestInsertionIndex(localPointOnObject2);
         } else {
             insertionIndex = nbContactPoint;
@@ -94,7 +94,7 @@ namespace urchin {
     }
 
     void ManifoldResult::refreshContactPoints() {
-        for(unsigned int i=0; i<nbContactPoint; ++i) {
+        for (unsigned int i=0; i<nbContactPoint; ++i) {
             //1. update contact points in world position
             Point3<float> newContactPointOnObject1 = body1->getPhysicsTransform().transform(contactPoints[i].getLocalPointOnObject1());
             Point3<float> newContactPointOnObject2 = body2->getPhysicsTransform().transform(contactPoints[i].getLocalPointOnObject2());
@@ -105,13 +105,13 @@ namespace urchin {
             contactPoints[i].updateDepth(newDepth);
         }
 
-        for(auto i=static_cast<int>(nbContactPoint-1); i>=0; --i) { //loop from last to first in order to be able to remove contact points
-            if(contactPoints[i].getDepth() > contactBreakingThreshold) {
+        for (auto i=static_cast<int>(nbContactPoint-1); i>=0; --i) { //loop from last to first in order to be able to remove contact points
+            if (contactPoints[i].getDepth() > contactBreakingThreshold) {
                 removeContactPoint(static_cast<unsigned int>(i));
             } else {
                 Point3<float> projectedPointOnObject2 = contactPoints[i].getPointOnObject1().translate(-(contactPoints[i].getNormalFromObject2() * contactPoints[i].getDepth()));
                 Vector3<float> projectedDifference = projectedPointOnObject2.vector(contactPoints[i].getPointOnObject2());
-                if(projectedDifference.squareLength() > contactBreakingThreshold * contactBreakingThreshold) {
+                if (projectedDifference.squareLength() > contactBreakingThreshold * contactBreakingThreshold) {
                     removeContactPoint(static_cast<unsigned int>(i));
                 }
             }
@@ -125,10 +125,10 @@ namespace urchin {
     int ManifoldResult::getNearestPointIndex(const Point3<float> &localPointOnObject2) const {
         float shortestDistance = contactBreakingThreshold * contactBreakingThreshold;
         int nearestPointIndex = -1;
-        for(unsigned int i=0; i<nbContactPoint; ++i) {
+        for (unsigned int i=0; i<nbContactPoint; ++i) {
             Vector3<float> diff = localPointOnObject2.vector(contactPoints[i].getLocalPointOnObject2());
             float diffSquareLength = diff.squareLength();
-            if(diffSquareLength < shortestDistance) {
+            if (diffSquareLength < shortestDistance) {
                 shortestDistance = diffSquareLength;
                 nearestPointIndex = static_cast<int>(i);
             }
@@ -148,27 +148,27 @@ namespace urchin {
 
         unsigned int deepestIndex = getDeepestPointIndex();
         float areas[MAX_PERSISTENT_POINTS]; //areas[X] contains area formed by all points except point 'contactPoints[X]'
-        for(float &area : areas) {
+        for (float &area : areas) {
             area = 0.0f;
         }
 
         //compute areas
-        if(deepestIndex != 0) {
+        if (deepestIndex != 0) {
             areas[0] = computeArea(localPointOnObject2, contactPoints[1].getLocalPointOnObject2(),
                     contactPoints[2].getLocalPointOnObject2(), contactPoints[3].getLocalPointOnObject2());
         }
 
-        if(deepestIndex != 1) {
+        if (deepestIndex != 1) {
             areas[1] = computeArea(localPointOnObject2, contactPoints[0].getLocalPointOnObject2(),
                     contactPoints[2].getLocalPointOnObject2(), contactPoints[3].getLocalPointOnObject2());
         }
 
-        if(deepestIndex != 2) {
+        if (deepestIndex != 2) {
             areas[2] = computeArea(localPointOnObject2, contactPoints[0].getLocalPointOnObject2(),
                     contactPoints[1].getLocalPointOnObject2(), contactPoints[3].getLocalPointOnObject2());
         }
 
-        if(deepestIndex != 3) {
+        if (deepestIndex != 3) {
             areas[3] = computeArea(localPointOnObject2, contactPoints[0].getLocalPointOnObject2(),
                     contactPoints[1].getLocalPointOnObject2(), contactPoints[2].getLocalPointOnObject2());
         }
@@ -176,8 +176,8 @@ namespace urchin {
         //find biggest area
         unsigned int insertionIndex = 0;
         float biggestArea = areas[insertionIndex];
-        for(unsigned int i=1; i<MAX_PERSISTENT_POINTS; ++i) {
-            if(areas[i] > biggestArea) {
+        for (unsigned int i=1; i<MAX_PERSISTENT_POINTS; ++i) {
+            if (areas[i] > biggestArea) {
                 biggestArea = areas[i];
                 insertionIndex = i;
             }
@@ -189,8 +189,8 @@ namespace urchin {
     unsigned int ManifoldResult::getDeepestPointIndex() const {
         float deepestValue = contactPoints[0].getDepth();
         unsigned int deepestIndex = 0;
-        for(unsigned int i=1; i<nbContactPoint; ++i) {
-            if(contactPoints[i].getDepth() < deepestValue) {
+        for (unsigned int i=1; i<nbContactPoint; ++i) {
+            if (contactPoints[i].getDepth() < deepestValue) {
                 deepestValue = contactPoints[i].getDepth();
                 deepestIndex = i;
             }
@@ -219,7 +219,7 @@ namespace urchin {
 
     void ManifoldResult::removeContactPoint(unsigned int index) {
         unsigned int lastUsedIndex = getNumContactPoints() - 1;
-        if(index != lastUsedIndex) {//copy the last contact point on the one we remove
+        if (index != lastUsedIndex) {//copy the last contact point on the one we remove
             contactPoints[index] = contactPoints[lastUsedIndex];
         }
 

@@ -30,7 +30,7 @@ namespace urchin {
                 k--;
             }
 
-            if(k==0 || convexHullPoints[k-1]!=sortedPoints[i]) {
+            if (k==0 || convexHullPoints[k-1]!=sortedPoints[i]) {
                 convexHullPoints[k++] = sortedPoints[i];
             }
         }
@@ -42,7 +42,7 @@ namespace urchin {
                 k--;
             }
 
-            if(k==0 || convexHullPoints[k-1]!=sortedPoints[i]) {
+            if (k==0 || convexHullPoints[k-1]!=sortedPoints[i]) {
                 convexHullPoints[k++] = sortedPoints[i];
             }
         }
@@ -68,9 +68,9 @@ namespace urchin {
         T maxPointDotDirection = Point2<T>(0.0, 0.0).vector(convexHullPoints[0]).dotProduct(direction);
         Point2<T> maxPoint = convexHullPoints[0];
 
-        for(std::size_t i=0; i<convexHullPoints.size(); ++i) {
+        for (std::size_t i=0; i<convexHullPoints.size(); ++i) {
             T currentPointDotDirection  = Point2<T>(0.0, 0.0).vector(convexHullPoints[i]).dotProduct(direction);
-            if(currentPointDotDirection > maxPointDotDirection) {
+            if (currentPointDotDirection > maxPointDotDirection) {
                 maxPointDotDirection = currentPointDotDirection;
                 maxPoint = convexHullPoints[i];
             }
@@ -83,7 +83,7 @@ namespace urchin {
         T area = 0.0;
         int j;
 
-        for(std::size_t i=0; i<convexHullPoints.size(); i++) {
+        for (std::size_t i=0; i<convexHullPoints.size(); i++) {
             j = (i + 1) % convexHullPoints.size();
             area += convexHullPoints[i].X * convexHullPoints[j].Y;
             area -= convexHullPoints[i].Y * convexHullPoints[j].X;

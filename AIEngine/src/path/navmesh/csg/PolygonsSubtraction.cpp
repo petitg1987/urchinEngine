@@ -32,7 +32,7 @@ namespace urchin {
 
         subtrahendInside = false;
 
-        if(solution.Childs.size() == 1) {
+        if (solution.Childs.size() == 1) {
             const auto &mainSolution = solution.Childs[0];
 
             if (mainSolution->Childs.empty()) {
@@ -44,8 +44,8 @@ namespace urchin {
                 subtrahendInside = true;
                 subtractedPolygons.emplace_back(minuendPolygon);
             }
-        } else if(solution.Childs.size() > 1) {
-            for(std::size_t i=0; i<solution.Childs.size(); ++i) {
+        } else if (solution.Childs.size() > 1) {
+            for (std::size_t i=0; i<solution.Childs.size(); ++i) {
                 std::string subtractionName = "[" + minuendPolygon.getName() + "] - [" + subtrahendPolygon.getName()+ "]{" + std::to_string(i) + "}";
                 subtractedPolygons.emplace_back(CSGPolygonPath(solution.Childs[i]->Contour, subtractionName).template toCSGPolygon<T>());
             }

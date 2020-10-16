@@ -33,7 +33,7 @@ namespace urchin {
     }
 
     SceneDisplayerWidget::~SceneDisplayerWidget() {
-        if(context()->isValid()) {
+        if (context()->isValid()) {
             context()->doneCurrent();
         }
 
@@ -52,7 +52,7 @@ namespace urchin {
     }
 
     void SceneDisplayerWidget::saveState(const std::string &mapFilename) const {
-        if(sceneDisplayer) {
+        if (sceneDisplayer) {
             sceneDisplayer->getCamera()->saveCameraState(mapFilename);
         }
     }
@@ -70,32 +70,32 @@ namespace urchin {
     }
 
     void SceneDisplayerWidget::setHighlightSceneObject(const SceneObject *highlightSceneObject) {
-        if(sceneDisplayer) {
+        if (sceneDisplayer) {
             sceneDisplayer->setHighlightSceneObject(highlightSceneObject);
         }
     }
 
     void SceneDisplayerWidget::setHighlightCompoundShapeComponent(std::shared_ptr<const LocalizedCollisionShape> selectedCompoundShapeComponent) {
-        if(sceneDisplayer) {
+        if (sceneDisplayer) {
             sceneDisplayer->getBodyShapeDisplayer()->setSelectedCompoundShapeComponent(std::move(selectedCompoundShapeComponent));
         }
     }
 
     void SceneDisplayerWidget::setHighlightSceneLight(const SceneLight *highlightSceneLight) {
-        if(sceneDisplayer) {
+        if (sceneDisplayer) {
             sceneDisplayer->setHighlightSceneLight(highlightSceneLight);
         }
     }
 
     void SceneDisplayerWidget::setHighlightSceneSound(const SceneSound *highlightSceneSound) {
-        if(sceneDisplayer) {
+        if (sceneDisplayer) {
             sceneDisplayer->setHighlightSceneSound(highlightSceneSound);
         }
     }
 
     void SceneDisplayerWidget::updateSceneDisplayerViewProperties() {
-        if(sceneDisplayer) {
-            for(unsigned int i=0; i<SceneDisplayer::LAST_VIEW_PROPERTIES; ++i) {
+        if (sceneDisplayer) {
+            for (unsigned int i=0; i<SceneDisplayer::LAST_VIEW_PROPERTIES; ++i) {
                 sceneDisplayer->setViewProperties(static_cast<SceneDisplayer::ViewProperties>(i), viewProperties[i]);
             }
         }
@@ -106,7 +106,7 @@ namespace urchin {
     }
 
     void SceneDisplayerWidget::paintGL() {
-        if(sceneDisplayer) {
+        if (sceneDisplayer) {
             sceneDisplayer->paint();
         } else {
             glClear(GL_COLOR_BUFFER_BIT);
@@ -118,13 +118,13 @@ namespace urchin {
     }
 
     void SceneDisplayerWidget::resizeGL(int width, int height) {
-        if(sceneDisplayer) {
+        if (sceneDisplayer) {
             sceneDisplayer->resize(static_cast<unsigned int>(width), static_cast<unsigned int>(height));
         }
     }
 
     void SceneDisplayerWidget::keyPressEvent(QKeyEvent *event) {
-        if(sceneDisplayer) {
+        if (sceneDisplayer) {
             if (event->key() < 256) {
                 sceneDisplayer->getSceneManager()->onKeyPress(static_cast<unsigned int>(event->key()));
                 sceneDisplayer->getSceneManager()->onChar(static_cast<unsigned int>(event->text().toLatin1()[0]));
@@ -141,22 +141,22 @@ namespace urchin {
     }
 
     void SceneDisplayerWidget::keyReleaseEvent(QKeyEvent *event) {
-        if(sceneDisplayer) {
-            if(event->key() < 256) {
+        if (sceneDisplayer) {
+            if (event->key() < 256) {
                 sceneDisplayer->getSceneManager()->onKeyRelease(static_cast<unsigned int>(event->key()));
-            } else if(event->key() == Qt::Key_Left) {
+            } else if (event->key() == Qt::Key_Left) {
                 sceneDisplayer->getSceneManager()->onKeyRelease(InputDeviceKey::LEFT_ARROW);
-            } else if(event->key() == Qt::Key_Right) {
+            } else if (event->key() == Qt::Key_Right) {
                 sceneDisplayer->getSceneManager()->onKeyRelease(InputDeviceKey::RIGHT_ARROW);
-            } else if(event->key() == Qt::Key_Escape) {
+            } else if (event->key() == Qt::Key_Escape) {
                 sceneDisplayer->getObjectMoveController()->onEscapeKey();
             }
         }
     }
 
     void SceneDisplayerWidget::mousePressEvent(QMouseEvent *event) {
-        if(sceneDisplayer) {
-            if(event->buttons() == Qt::LeftButton) {
+        if (sceneDisplayer) {
+            if (event->buttons() == Qt::LeftButton) {
                 sceneDisplayer->getSceneManager()->onKeyPress(InputDeviceKey::MOUSE_LEFT);
             } else if (event->button() == Qt::RightButton) {
                 sceneDisplayer->getSceneManager()->onKeyPress(InputDeviceKey::MOUSE_RIGHT);
@@ -165,12 +165,12 @@ namespace urchin {
     }
 
     void SceneDisplayerWidget::mouseReleaseEvent(QMouseEvent *event) {
-        if(sceneDisplayer) {
-            if(event->button() == Qt::LeftButton) {
+        if (sceneDisplayer) {
+            if (event->button() == Qt::LeftButton) {
                 bool propagateEvent = sceneDisplayer->getObjectMoveController()->onMouseLeftButton();
-                if(propagateEvent) {
+                if (propagateEvent) {
                     propagateEvent = onMouseClickBodyPickup();
-                    if(propagateEvent) {
+                    if (propagateEvent) {
                         sceneDisplayer->getSceneManager()->onKeyRelease(InputDeviceKey::MOUSE_LEFT);
                     }
                 }
@@ -184,16 +184,16 @@ namespace urchin {
         this->mouseX = event->x();
         this->mouseY = event->y();
 
-        if(sceneDisplayer) {
+        if (sceneDisplayer) {
             bool propagateEvent = sceneDisplayer->getSceneManager()->onMouseMove(mouseX, mouseY);
-            if(propagateEvent) {
+            if (propagateEvent) {
                 sceneDisplayer->getObjectMoveController()->onMouseMove(mouseX, mouseY);
             }
         }
     }
 
     void SceneDisplayerWidget::leaveEvent(QEvent *) {
-        if(sceneDisplayer && !rect().contains(mapFromGlobal(QCursor::pos()))) {
+        if (sceneDisplayer && !rect().contains(mapFromGlobal(QCursor::pos()))) {
             sceneDisplayer->getObjectMoveController()->onMouseOut();
         }
     }
@@ -205,11 +205,11 @@ namespace urchin {
         Ray<float> pickingRay = CameraSpaceService(camera).screenPointToRay(Point2<float>(mouseX, mouseY), PICKING_RAY_LENGTH);
         std::shared_ptr<const RayTestResult> rayTestResult = sceneDisplayer->getPhysicsWorld()->rayTest(pickingRay);
 
-        while(!rayTestResult->isResultReady()) {
+        while (!rayTestResult->isResultReady()) {
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
         const ccd_set &pickedObjects = rayTestResult->getResults();
-        if(!pickedObjects.empty()) {
+        if (!pickedObjects.empty()) {
             lastPickedBodyId = (*rayTestResult->getResults().begin())->getBody2()->getId();
             notifyObservers(this, BODY_PICKED);
             propagateEvent = false;
@@ -231,19 +231,19 @@ namespace urchin {
     }
 
     void SceneDisplayerWidget::onCtrlXPressed() {
-        if(sceneDisplayer) {
+        if (sceneDisplayer) {
             sceneDisplayer->getObjectMoveController()->onCtrlXYZ(0);
         }
     }
 
     void SceneDisplayerWidget::onCtrlYPressed() {
-        if(sceneDisplayer) {
+        if (sceneDisplayer) {
             sceneDisplayer->getObjectMoveController()->onCtrlXYZ(1);
         }
     }
 
     void SceneDisplayerWidget::onCtrlZPressed() {
-        if(sceneDisplayer) {
+        if (sceneDisplayer) {
             sceneDisplayer->getObjectMoveController()->onCtrlXYZ(2);
         }
     }

@@ -30,7 +30,7 @@ namespace urchin {
     void ShadowUniform::updateProjectionMatrices() {
         projectionMatrices.clear();
 
-        if(shadowData!=nullptr) {
+        if (shadowData!=nullptr) {
             for (std::size_t i = 0; i < shadowData->getNbFrustumShadowData(); ++i) {
                 projectionMatrices.push_back(shadowData->getFrustumShadowData(i)->getLightProjectionMatrix());
             }

@@ -21,7 +21,7 @@ namespace urchin {
     }
 
     void FogManager::popFog() {
-        if(!fogs.empty()) {
+        if (!fogs.empty()) {
             fogs.pop();
         }
 
@@ -29,14 +29,14 @@ namespace urchin {
     }
 
     std::shared_ptr<const Fog> FogManager::getCurrentFog() const {
-        if(fogs.empty()) {
+        if (fogs.empty()) {
             return nullptr;
         }
 
         return fogs.top();
     }
 
-    void FogManager::loadUniformLocationFor(unsigned int deferredShaderID) {
+    void FogManager::loadUniformLocationfor (unsigned int deferredShaderID) {
         this->deferredShaderID = deferredShaderID;
 
         ShaderManager::instance()->bind(deferredShaderID);
@@ -53,7 +53,7 @@ namespace urchin {
         ShaderManager::instance()->bind(deferredShaderID);
         glUniform1i(hasFogLoc, !fogs.empty());
 
-        if(!fogs.empty()) {
+        if (!fogs.empty()) {
             glUniform1f(fogDensityLoc, fogs.top()->getDensity());
             glUniform1f(fogGradientLoc, fogs.top()->getGradient());
             glUniform4fv(fogColorLoc, 1, (const float *)Vector4<float>(fogs.top()->getColor(), 1.0));

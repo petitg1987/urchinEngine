@@ -44,7 +44,7 @@ namespace urchin {
      * Computes an unique key for both bodies
      */
     uint_fast64_t OverlappingPair::computeBodiesId(const AbstractWorkBody *body1, const AbstractWorkBody *body2) {
-        if(body1->getObjectId() > body2->getObjectId()) { //swap bodies
+        if (body1->getObjectId() > body2->getObjectId()) { //swap bodies
             std::swap(body1, body2);
         }
 

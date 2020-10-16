@@ -42,7 +42,7 @@ namespace urchin {
     }
 
     void ChangeSoundShapeDialog::done(int r) {
-        if(QDialog::Accepted == r) {
+        if (QDialog::Accepted == r) {
             QVariant variant = soundShapeTypeComboBox->currentData();
             shapeType = static_cast<SoundShape::ShapeType>(variant.toInt());
             QDialog::done(r);

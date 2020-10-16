@@ -5,7 +5,7 @@ namespace urchin {
         std::unique_ptr<Skybox> skybox(nullptr);
 
         std::shared_ptr<XmlChunk> skyboxChunk = xmlParser.getUniqueChunk(false, SKYBOX_TAG, XmlAttribute(), skyChunk);
-        if(skyboxChunk != nullptr) {
+        if (skyboxChunk != nullptr) {
             std::vector<std::string> filenames;
             filenames.reserve(6);
             std::shared_ptr<XmlChunk> texturesChunk = xmlParser.getUniqueChunk(true, TEXTURES_TAG, XmlAttribute(), skyboxChunk);
@@ -26,7 +26,7 @@ namespace urchin {
     }
 
     void SkyboxReaderWriter::writeOn(const std::shared_ptr<XmlChunk> &skyChunk, const std::unique_ptr<Skybox> &skybox, XmlWriter &xmlWriter) const {
-        if(skybox != nullptr) {
+        if (skybox != nullptr) {
             std::shared_ptr<XmlChunk> skyboxChunk = xmlWriter.createChunk(SKYBOX_TAG, XmlAttribute(), skyChunk);
 
             std::shared_ptr<XmlChunk> texturesChunk = xmlWriter.createChunk(TEXTURES_TAG, XmlAttribute(), skyboxChunk);

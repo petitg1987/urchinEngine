@@ -8,11 +8,11 @@ namespace urchin {
         std::shared_ptr<XmlChunk> orientationChunk = xmlParser.getUniqueChunk(true, ORIENTATION_TAG, XmlAttribute(), shapeChunk);
         std::string orientationValue = orientationChunk->getStringValue();
         CylinderShape<float>::CylinderOrientation orientation;
-        if(orientationValue == X_VALUE) {
+        if (orientationValue == X_VALUE) {
             orientation = CylinderShape<float>::CylinderOrientation::CYLINDER_X;
-        } else if(orientationValue == Y_VALUE) {
+        } else if (orientationValue == Y_VALUE) {
             orientation = CylinderShape<float>::CylinderOrientation::CYLINDER_Y;
-        } else if(orientationValue == Z_VALUE) {
+        } else if (orientationValue == Z_VALUE) {
             orientation = CylinderShape<float>::CylinderOrientation::CYLINDER_Z;
         } else {
             throw std::invalid_argument("Cylinder orientation type unknown: " + orientationValue);
@@ -34,11 +34,11 @@ namespace urchin {
 
         std::shared_ptr<XmlChunk> orientationChunk = xmlWriter.createChunk(ORIENTATION_TAG, XmlAttribute(), shapeChunk);
         CylinderShape<float>::CylinderOrientation orientationValue = cylinderShape->getCylinderOrientation();
-        if(orientationValue==CylinderShape<float>::CylinderOrientation::CYLINDER_X) {
+        if (orientationValue==CylinderShape<float>::CylinderOrientation::CYLINDER_X) {
             orientationChunk->setStringValue(X_VALUE);
-        } else if(orientationValue==CylinderShape<float>::CylinderOrientation::CYLINDER_Y) {
+        } else if (orientationValue==CylinderShape<float>::CylinderOrientation::CYLINDER_Y) {
             orientationChunk->setStringValue(Y_VALUE);
-        } else if(orientationValue==CylinderShape<float>::CylinderOrientation::CYLINDER_Z) {
+        } else if (orientationValue==CylinderShape<float>::CylinderOrientation::CYLINDER_Z) {
             orientationChunk->setStringValue(Z_VALUE);
         } else {
             throw std::invalid_argument("Cylinder orientation type unknown: " + std::to_string(orientationValue));

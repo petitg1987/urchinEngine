@@ -26,7 +26,7 @@ namespace urchin {
         const T pointADotDirection = a.toVector().dotProduct(direction);
         const T pointBDotDirection = b.toVector().dotProduct(direction);
 
-        if(pointADotDirection > pointBDotDirection) {
+        if (pointADotDirection > pointBDotDirection) {
             return a;
         }
 
@@ -40,7 +40,7 @@ namespace urchin {
         Vector3<T> ab = a.vector(b);
 
         T abSquareLength = ab.squareLength();
-        if(abSquareLength==(T)0.0) {
+        if (abSquareLength==(T)0.0) {
             return a;
         }
 
@@ -59,7 +59,7 @@ namespace urchin {
         Vector3<T> ab = a.vector(b);
 
         T abSquareLength = ab.squareLength();
-        if(abSquareLength==(T)0.0) {
+        if (abSquareLength==(T)0.0) {
             barycentrics[0] = 1.0;
             barycentrics[1] = 0.0;
             return a;

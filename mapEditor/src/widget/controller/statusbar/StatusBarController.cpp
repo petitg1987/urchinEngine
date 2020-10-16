@@ -21,7 +21,7 @@ namespace urchin {
 
     void StatusBarController::applyPreviousState() {
         StatusBarState previousState = getStateData(currentState).getPreviousState();
-        if(previousState == currentState) {
+        if (previousState == currentState) {
             throw new std::runtime_error("No previous state for current state: " + std::to_string(currentState));
         }
 
@@ -53,9 +53,9 @@ namespace urchin {
         window->setStatusBar(statusBar);
 
         auto statusLabels = getStateData(currentState).getLabels();
-        for(std::size_t i=0; i<statusLabels.size(); ++i) {
+        for (std::size_t i=0; i<statusLabels.size(); ++i) {
             statusBar->addWidget(new QLabel(QString(statusLabels[i].c_str())));
-            if(i != statusLabels.size() - 1) {
+            if (i != statusLabels.size() - 1) {
                 statusBar->addWidget(createSeparator());
             }
         }

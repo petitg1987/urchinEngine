@@ -36,9 +36,9 @@ namespace urchin {
         SoundTrigger *soundTrigger = sceneSound->getSoundTrigger();
 
         SoundTrigger *newSoundTrigger;
-        if(triggerType == SoundTrigger::MANUAL_TRIGGER) {
+        if (triggerType == SoundTrigger::MANUAL_TRIGGER) {
             newSoundTrigger = new ManualTrigger(soundTrigger->getSoundBehavior());
-        } else if(triggerType == SoundTrigger::SHAPE_TRIGGER) {
+        } else if (triggerType == SoundTrigger::SHAPE_TRIGGER) {
             const SoundShape *newDefaultShape = DefaultSoundShapeCreator(constSceneSound).createDefaultSoundShape(SoundShape::SPHERE_SHAPE);
             newSoundTrigger = new ShapeTrigger(soundTrigger->getSoundBehavior(), newDefaultShape);
         } else {
@@ -91,9 +91,9 @@ namespace urchin {
         SoundBehavior newSoundBehavior(playBehavior, stopBehavior, volumeDecreasePercentageOnStop);
         SoundTrigger *newSoundTrigger;
 
-        if(soundTrigger->getTriggerType() == SoundTrigger::MANUAL_TRIGGER) {
+        if (soundTrigger->getTriggerType() == SoundTrigger::MANUAL_TRIGGER) {
             newSoundTrigger = new ManualTrigger(newSoundBehavior);
-        } else if(soundTrigger->getTriggerType() == SoundTrigger::SHAPE_TRIGGER) {
+        } else if (soundTrigger->getTriggerType() == SoundTrigger::SHAPE_TRIGGER) {
             auto *shapeTrigger = dynamic_cast<ShapeTrigger *>(soundTrigger);
             SoundShape *clonedShape = shapeTrigger->getSoundShape()->clone();
             newSoundTrigger = new ShapeTrigger(newSoundBehavior, clonedShape);
@@ -122,7 +122,7 @@ namespace urchin {
         const std::list<SceneSound *> &sceneSounds = getMapHandler()->getMap()->getSceneSounds();
         auto it = std::find(sceneSounds.begin(), sceneSounds.end(), constSceneSound);
 
-        if(it!=sceneSounds.end()) {
+        if (it!=sceneSounds.end()) {
             return *it;
         }
 

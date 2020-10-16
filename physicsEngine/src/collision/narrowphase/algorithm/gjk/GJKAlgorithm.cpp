@@ -30,7 +30,7 @@ namespace urchin {
         Simplex<T> simplex;
         simplex.addPoint(initialSupportPointA, initialSupportPointB);
 
-        for(unsigned int iterationNumber=0; iterationNumber<maxIteration; ++iterationNumber) {
+        for (unsigned int iterationNumber=0; iterationNumber<maxIteration; ++iterationNumber) {
             Point3<T> supportPointA = convexObject1.getSupportPoint(direction.template cast<float>(), includeMargin).template cast<T>();
             Point3<T> supportPointB = convexObject2.getSupportPoint((-direction).template cast<float>(), includeMargin).template cast<T>();
             Point3<T> newPoint = supportPointA - supportPointB;
@@ -40,8 +40,8 @@ namespace urchin {
             T closestPointDotNewPoint = vClosestPoint.dotProduct(newPoint.toVector());
 
             //check termination conditions: new point is not more extreme that existing ones OR new point already exist in simplex
-            if((closestPointSquareDistance-closestPointDotNewPoint) <= terminationTolerance || simplex.isPointInSimplex(newPoint)) {
-                if(closestPointDotNewPoint <= 0.0) { //collision detected
+            if ((closestPointSquareDistance-closestPointDotNewPoint) <= terminationTolerance || simplex.isPointInSimplex(newPoint)) {
+                if (closestPointDotNewPoint <= 0.0) { //collision detected
                     return AlgorithmResultAllocator::instance()->newGJKResultCollide<T>(simplex);
                 }
 

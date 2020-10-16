@@ -34,7 +34,7 @@ template<class OBJ> AABBNode<OBJ> *AABBNode<OBJ>::getParent() const {
 
 template<class OBJ> void AABBNode<OBJ>::setLeftChild(AABBNode *leftChild) {
     this->children[0] = leftChild;
-    if(leftChild) {
+    if (leftChild) {
         this->children[0]->setParent(this);
     }
 }
@@ -45,7 +45,7 @@ template<class OBJ> AABBNode<OBJ> *AABBNode<OBJ>::getLeftChild() const {
 
 template<class OBJ> void AABBNode<OBJ>::setRightChild(AABBNode *rightChild) {
     this->children[1] = rightChild;
-    if(rightChild) {
+    if (rightChild) {
         this->children[1]->setParent(this);
     }
 }

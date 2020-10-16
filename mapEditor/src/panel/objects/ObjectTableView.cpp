@@ -35,10 +35,10 @@ namespace urchin {
     }
 
     int ObjectTableView::getSceneObjectRow(const SceneObject *expectedSceneObject) const {
-        for(int rowId = 0; rowId < objectsListModel->rowCount(); ++rowId) {
+        for (int rowId = 0; rowId < objectsListModel->rowCount(); ++rowId) {
             QModelIndex index = objectsListModel->index(rowId, 0);
             auto *sceneObject = index.data(Qt::UserRole + 1).value<const SceneObject *>();
-            if(expectedSceneObject->getName() == sceneObject->getName()) {
+            if (expectedSceneObject->getName() == sceneObject->getName()) {
                 return rowId;
             }
         }
@@ -47,7 +47,7 @@ namespace urchin {
     }
 
     const SceneObject *ObjectTableView::getSelectedSceneObject() const {
-        if(hasSceneObjectSelected()) {
+        if (hasSceneObjectSelected()) {
             return this->currentIndex().data(Qt::UserRole + 1).value<const SceneObject *>();
         }
         return nullptr;
@@ -59,7 +59,7 @@ namespace urchin {
         itemObjectName->setEditable(false);
 
         std::string pathFileName;
-        if(sceneObject->getModel()->getMeshes()) {
+        if (sceneObject->getModel()->getMeshes()) {
             pathFileName = sceneObject->getModel()->getMeshes()->getMeshFilename();
         }
         auto *itemMeshFile = new QStandardItem(QString::fromStdString(FileHandler::getFileName(pathFileName)));
@@ -78,7 +78,7 @@ namespace urchin {
     }
 
     bool ObjectTableView::removeSelectedObject() {
-        if(hasSceneObjectSelected()) {
+        if (hasSceneObjectSelected()) {
             objectsListModel->removeRow(this->currentIndex().row());
             resizeRowsToContents();
 

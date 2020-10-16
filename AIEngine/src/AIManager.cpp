@@ -19,7 +19,7 @@ namespace urchin {
     }
 
     AIManager::~AIManager() {
-        if(aiSimulationThread) {
+        if (aiSimulationThread) {
             interrupt();
             aiSimulationThread->join();
 
@@ -55,9 +55,9 @@ namespace urchin {
     void AIManager::removePathRequest(const std::shared_ptr<PathRequest> &pathRequest) {
         std::lock_guard<std::mutex> lock(mutex);
 
-        if(pathRequest) {
+        if (pathRequest) {
             auto itFind = std::find(pathRequests.begin(), pathRequests.end(), pathRequest);
-            if(itFind!=pathRequests.end()) {
+            if (itFind!=pathRequests.end()) {
                 VectorEraser::erase(pathRequests, itFind);
             }
         }
@@ -68,7 +68,7 @@ namespace urchin {
      * @param timeStep Frequency updates expressed in second
      */
     void AIManager::setUp(float timeStep) {
-        if(aiSimulationThread) {
+        if (aiSimulationThread) {
             throw std::runtime_error("AI thread is already started");
         }
 
@@ -106,7 +106,7 @@ namespace urchin {
      * Check if thread has been stopped by an exception and rethrow exception on main thread
      */
     void AIManager::controlExecution() {
-        if(aiThreadExceptionPtr) {
+        if (aiThreadExceptionPtr) {
             std::rethrow_exception(aiThreadExceptionPtr);
         }
     }
@@ -130,7 +130,7 @@ namespace urchin {
                     frameStartTime = frameEndTime;
                 }
             }
-        }catch(std::exception &e) {
+        } catch (std::exception &e) {
             Logger::logger().logError("Error cause AI thread crash: exception reported to main thread");
             aiThreadExceptionPtr = std::current_exception();
         }

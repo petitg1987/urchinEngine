@@ -29,11 +29,11 @@ namespace urchin {
 
         Quaternion<float> qCylinderOrientation;
         CylinderShape<float>::CylinderOrientation cylinderOrientation = cylinder.getCylinderOrientation();
-        if(cylinderOrientation==CylinderShape<float>::CYLINDER_X) {
+        if (cylinderOrientation==CylinderShape<float>::CYLINDER_X) {
             qCylinderOrientation = Quaternion<float>(Vector3<float>(0.0, 1.0, 0.0), PI_VALUE/2.0);
-        } else if(cylinderOrientation==CylinderShape<float>::CYLINDER_Y) {
+        } else if (cylinderOrientation==CylinderShape<float>::CYLINDER_Y) {
             qCylinderOrientation = Quaternion<float>(Vector3<float>(1.0, 0.0, 0.0), PI_VALUE/2.0);
-        } else if(cylinderOrientation==CylinderShape<float>::CYLINDER_Z) {
+        } else if (cylinderOrientation==CylinderShape<float>::CYLINDER_Z) {
             qCylinderOrientation = Quaternion<float>(0.0, 0.0, 0.0, 1.0);
         }
 

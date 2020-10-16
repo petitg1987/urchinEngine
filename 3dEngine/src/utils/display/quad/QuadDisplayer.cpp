@@ -23,7 +23,7 @@ namespace urchin {
     }
 
     QuadDisplayer::~QuadDisplayer() {
-        if(vertexArrayObject!=0) {
+        if (vertexArrayObject!=0) {
             glDeleteVertexArrays(1, &vertexArrayObject);
         }
 
@@ -41,9 +41,9 @@ namespace urchin {
         textureDataType = quadDisplayerBuilder->getTextureDataType();
         textureCoord = quadDisplayerBuilder->getTextureCoord();
 
-        if(vertexDataType!=GL_FLOAT && vertexDataType!=GL_INT && vertexDataType!=GL_UNSIGNED_INT) {
+        if (vertexDataType!=GL_FLOAT && vertexDataType!=GL_INT && vertexDataType!=GL_UNSIGNED_INT) {
             throw std::invalid_argument("Vertex data type not supported: " + std::to_string(vertexDataType));
-        } else if(textureDataType!=GL_FLOAT && textureDataType!=GL_INT && textureDataType!=GL_UNSIGNED_INT) {
+        } else if (textureDataType!=GL_FLOAT && textureDataType!=GL_INT && textureDataType!=GL_UNSIGNED_INT) {
             throw std::invalid_argument("Texture data type not supported: " + std::to_string(textureDataType));
         }
 
@@ -56,7 +56,7 @@ namespace urchin {
         glBufferData(GL_ARRAY_BUFFER, vertexSize, vertexCoord, bufferUsage);
         glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
         glVertexAttribPointer(SHADER_VERTEX_POSITION, dimension, vertexDataType, GL_FALSE, 0, nullptr);
-        if(deleteVertexCoord) {
+        if (deleteVertexCoord) {
             if (vertexDataType == GL_FLOAT) {
                 delete[] static_cast<float *>(vertexCoord);
             } else if (vertexDataType == GL_INT) {
@@ -72,7 +72,7 @@ namespace urchin {
         glBufferData(GL_ARRAY_BUFFER, textureSize, textureCoord, bufferUsage);
         glEnableVertexAttribArray(SHADER_TEX_COORD);
         glVertexAttribPointer(SHADER_TEX_COORD, dimension, textureDataType, GL_FALSE, 0, nullptr);
-        if(deleteTextureCoord) {
+        if (deleteTextureCoord) {
             if (textureDataType == GL_FLOAT) {
                 delete[] static_cast<float *>(textureCoord);
             } else if (textureDataType == GL_INT) {
@@ -85,7 +85,7 @@ namespace urchin {
     }
 
     void QuadDisplayer::display() const {
-        if(numberOfQuad > 0) {
+        if (numberOfQuad > 0) {
             glDisable(GL_DEPTH_TEST);
             glDepthMask(GL_FALSE);
 

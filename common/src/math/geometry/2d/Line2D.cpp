@@ -29,7 +29,7 @@ namespace urchin {
         Vector2<T> ap = a.vector(p);
 
         T apDotAb = ap.dotProduct(ab);
-        if(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T)) {
+        if (typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T)) {
             T abSquareLength = ab.squareLength();
             Vector2<T> vTranslate(MathAlgorithm::roundDivision<T>(ab.X * apDotAb, abSquareLength),
                                   MathAlgorithm::roundDivision<T>(ab.Y * apDotAb, abSquareLength));
@@ -47,7 +47,7 @@ namespace urchin {
 
         T apDotAb = ap.dotProduct(ab);
 
-        if(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T)) {
+        if (typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T)) {
             return ap.squareLength() - MathAlgorithm::roundDivision<T>(apDotAb * apDotAb, ab.squareLength());
         }
         return ap.squareLength() - ((apDotAb * apDotAb) / ab.squareLength());
@@ -96,8 +96,8 @@ namespace urchin {
         T rCrossS = r.crossProduct(s);
         T startPointsCrossR = a.vector(other.getA()).crossProduct(r);
 
-        if(rCrossS==0.0) { //lines are parallel
-            if(startPointsCrossR==0.0) { //lines are collinear
+        if (rCrossS==0.0) { //lines are parallel
+            if (startPointsCrossR==0.0) { //lines are collinear
                 hasIntersection = true;
                 return a;
             }
@@ -108,7 +108,7 @@ namespace urchin {
 
         //lines not parallel
         hasIntersection = true;
-        if(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T)) {
+        if (typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T)) {
             Vector2<T> vTranslate(MathAlgorithm::roundDivision<T>(startPointsCrossR*s.X, rCrossS),
                                   MathAlgorithm::roundDivision<T>(startPointsCrossR*s.Y, rCrossS));
             return other.getA().translate(vTranslate);

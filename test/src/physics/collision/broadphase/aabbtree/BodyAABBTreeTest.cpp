@@ -65,7 +65,7 @@ void BodyAABBTreeTest::oneBodyWithAlternativePairAndRemove(bool removeBodyHaving
     AssertHelper::assertUnsignedInt(bodyBNodeData->getOwnerPairContainers().size(), 0);
 
     //remove a body test:
-    if(removeBodyHavingAlternativePair) {
+    if (removeBodyHavingAlternativePair) {
         bodyAabbTree.removeBody(bodyB.get());
         AssertHelper::assertUnsignedInt(bodyB->getPairContainer()->retrieveCopyOverlappingPairs().size(), 0);
         AssertHelper::assertUnsignedInt(bodyANodeData->getOwnerPairContainers().size(), 0);

@@ -35,7 +35,7 @@ namespace urchin {
         Terrain *terrain = sceneTerrain->getTerrain();
 
         terrain->setPosition(position);
-        if(sceneTerrain->getRigidBody()) {
+        if (sceneTerrain->getRigidBody()) {
             sceneTerrain->getRigidBody()->setTransform(Transform<float>(position));
         }
 
@@ -63,8 +63,8 @@ namespace urchin {
 
         auto terrainMaterial = std::make_unique<TerrainMaterial>(maskMapFilename, sRepeat, tRepeat);
         unsigned int i=0;
-        for(const auto &materialFilename : materialFilenames) {
-            if(!materialFilename.empty()) {
+        for (const auto &materialFilename : materialFilenames) {
+            if (!materialFilename.empty()) {
                 terrainMaterial->addMaterial(i, materialFilename);
             }
             i++;
@@ -85,7 +85,7 @@ namespace urchin {
         terrainGrass->setGrassTexture(grassTextureFilename);
         terrainGrass->setMaskTexture(grassMaskFilename);
         terrainGrass->setNumGrassInTexture(numGrassInTex);
-        if(terrainGrass->getGrassQuantity()!=grassQuantity) {
+        if (terrainGrass->getGrassQuantity()!=grassQuantity) {
             terrainGrass->setGrassQuantity(grassQuantity);
         }
         terrainGrass->setGrassHeight(grassHeight);
@@ -101,7 +101,7 @@ namespace urchin {
         const std::list<SceneTerrain *> &sceneTerrains = getMapHandler()->getMap()->getSceneTerrains();
         auto it = std::find(sceneTerrains.begin(), sceneTerrains.end(), constSceneTerrain);
 
-        if(it!=sceneTerrains.end()) {
+        if (it!=sceneTerrains.end()) {
             return *it;
         }
 

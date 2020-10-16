@@ -34,7 +34,7 @@ namespace urchin {
         texWindow = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinChunk, widgetOutline);
 
         //creates font for title
-        if(!stringTitle.empty()) {
+        if (!stringTitle.empty()) {
             std::shared_ptr<XmlChunk> textFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textFont", XmlAttribute(), windowChunk);
             Widget::removeChild(title);
             title = new Text(Position(0, 0, Position::PIXEL), textFontChunk->getStringValue());
@@ -62,19 +62,19 @@ namespace urchin {
         Rectangle<int> closeZone(Point2<int>(getGlobalPositionX()+(getWidth() - widgetOutline->rightWidth), getGlobalPositionY()),
                 Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+widgetOutline->topWidth));
 
-        if(key == InputDeviceKey::MOUSE_LEFT && titleZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+        if (key == InputDeviceKey::MOUSE_LEFT && titleZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
             mousePositionX = getMouseX() - getPositionX();
             mousePositionY = getMouseY() - getPositionY();
 
             state = MOVING;
-        } else if(key == InputDeviceKey::MOUSE_LEFT && closeZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+        } else if (key == InputDeviceKey::MOUSE_LEFT && closeZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
             state =CLOSING;
         }
 
         Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
                 Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
         bool propagateEvent = true;
-        if(key == InputDeviceKey::MOUSE_LEFT && widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+        if (key == InputDeviceKey::MOUSE_LEFT && widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
             notifyObservers(this, SET_IN_FOREGROUND);
             propagateEvent = false;
         }
@@ -85,7 +85,7 @@ namespace urchin {
     bool Window::onKeyReleaseEvent(unsigned int key) {
         Rectangle<int> closeZone(Point2<int>(getGlobalPositionX()+(getWidth()-widgetOutline->rightWidth), getGlobalPositionY()),
                 Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+widgetOutline->topWidth));
-        if(key == InputDeviceKey::MOUSE_LEFT && state == CLOSING && closeZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+        if (key == InputDeviceKey::MOUSE_LEFT && state == CLOSING && closeZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
             setIsVisible(false);
         }
 
@@ -95,14 +95,14 @@ namespace urchin {
     }
 
     bool Window::onMouseMoveEvent(int mouseX, int mouseY) {
-        if(state==MOVING) {
+        if (state==MOVING) {
             auto positionX = (float)(mouseX - mousePositionX);
-            if(getPosition().getPositionTypeX() == Position::PERCENTAGE) {
+            if (getPosition().getPositionTypeX() == Position::PERCENTAGE) {
                 positionX /= (float)getSceneWidth();
             }
 
             auto positionY = (float)(mouseY - mousePositionY);
-            if(getPosition().getPositionTypeY() == Position::PERCENTAGE) {
+            if (getPosition().getPositionTypeY() == Position::PERCENTAGE) {
                 positionY /= (float)getSceneHeight();
             }
 

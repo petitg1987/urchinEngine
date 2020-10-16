@@ -24,7 +24,7 @@ namespace urchin {
     }
 
     PhysicsWorld::~PhysicsWorld() {
-        if(physicsSimulationThread) {
+        if (physicsSimulationThread) {
             interrupt();
             physicsSimulationThread->join();
 
@@ -52,13 +52,13 @@ namespace urchin {
     }
 
     void PhysicsWorld::addBody(AbstractBody *body) {
-        if(body) {
+        if (body) {
             bodyManager->addBody(body);
         }
     }
 
     void PhysicsWorld::removeBody(AbstractBody *body) {
-        if(body) {
+        if (body) {
             bodyManager->removeBody(body);
         }
     }
@@ -75,7 +75,7 @@ namespace urchin {
         std::lock_guard<std::mutex> lock(mutex);
 
         auto itFind = std::find(processables.begin(), processables.end(), processable);
-        if(itFind!=processables.end()) {
+        if (itFind!=processables.end()) {
             processables.erase(itFind);
         }
     }
@@ -114,7 +114,7 @@ namespace urchin {
      * @param timeStep Frequency updates expressed in second
      */
     void PhysicsWorld::setUp(float timeStep) {
-        if(physicsSimulationThread) {
+        if (physicsSimulationThread) {
             throw std::runtime_error("Physics thread is already started");
         }
 
@@ -152,7 +152,7 @@ namespace urchin {
      * Check if thread has been stopped by an exception and rethrow exception on main thread
      */
     void PhysicsWorld::controlExecution() {
-        if(physicsThreadExceptionPtr) {
+        if (physicsThreadExceptionPtr) {
             std::rethrow_exception(physicsThreadExceptionPtr);
         }
     }
@@ -165,7 +165,7 @@ namespace urchin {
 
             while (continueExecution()) {
                 float additionalTimeStep = std::abs(remainingTime);
-                if(additionalTimeStep > maxAdditionalTimeStep) {
+                if (additionalTimeStep > maxAdditionalTimeStep) {
                     //Cannot process physics update with 'additionalTimeStep'. Value is too big and can lead to physics errors.
                     //Use 'maxAdditionalTimeStep' which lead to slow-down of the physics.
                     additionalTimeStep = maxAdditionalTimeStep;
@@ -186,7 +186,7 @@ namespace urchin {
                     frameStartTime = frameEndTime;
                 }
             }
-        }catch(std::exception &e) {
+        } catch (std::exception &e) {
             Logger::logger().logError("Error cause physics thread crash: exception reported to main thread");
             physicsThreadExceptionPtr = std::current_exception();
         }
@@ -219,7 +219,7 @@ namespace urchin {
         }
 
         //physics execution
-        if(!paused) {
+        if (!paused) {
             setupProcessables(copiedProcessables, frameTimeStep, gravity);
 
             collisionWorld->process(frameTimeStep, gravity);
@@ -253,13 +253,13 @@ namespace urchin {
     }
 
     void PhysicsWorld::createCollisionVisualizer() {
-        if(!collisionVisualizer) {
+        if (!collisionVisualizer) {
             collisionVisualizer = new CollisionVisualizer(collisionWorld);
         }
     }
 
     const CollisionVisualizer *PhysicsWorld::getCollisionVisualizer() const {
-        if(!collisionVisualizer) {
+        if (!collisionVisualizer) {
             throw std::runtime_error("Impossible to get collision visualizer because not created.");
         }
 

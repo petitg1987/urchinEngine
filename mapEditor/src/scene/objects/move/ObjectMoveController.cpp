@@ -23,7 +23,7 @@ namespace urchin {
     }
 
     void ObjectMoveController::onCtrlXYZ(unsigned int axisIndex) {
-        if(selectedAxis == -1) {
+        if (selectedAxis == -1) {
             savedPosition = selectedSceneObject->getModel()->getTransform().getPosition();
         }
 
@@ -34,10 +34,10 @@ namespace urchin {
     bool ObjectMoveController::onMouseMove(int mouseX, int mouseY) {
         bool propagateEvent = true;
         bool mousePositionAdjusted = false;
-        if(selectedAxis != -1) {
-            if(oldMouseX != -1 && oldMouseY != -1 && !isCameraMoved()) {
+        if (selectedAxis != -1) {
+            if (oldMouseX != -1 && oldMouseY != -1 && !isCameraMoved()) {
                 mousePositionAdjusted = adjustMousePosition();
-                if(!mousePositionAdjusted) {
+                if (!mousePositionAdjusted) {
                     moveObject(Point2<float>(oldMouseX, oldMouseY), Point2<float>(mouseX, mouseY));
                 }
             }
@@ -45,7 +45,7 @@ namespace urchin {
             propagateEvent = false;
         }
 
-        if(!mousePositionAdjusted) {
+        if (!mousePositionAdjusted) {
             oldMouseX = mouseX;
             oldMouseY = mouseY;
         }
@@ -55,15 +55,15 @@ namespace urchin {
     }
 
     void ObjectMoveController::onMouseOut() {
-        if(selectedAxis != -1) {
+        if (selectedAxis != -1) {
             adjustMousePosition();
         }
     }
 
     bool ObjectMoveController::isCameraMoved() const {
         Camera *camera = sceneManager->getActiveRenderer3d()->getCamera();
-        for(unsigned int i=0; i<16; ++i) {
-            if(this->oldCameraViewMatrix(i) != camera->getViewMatrix()(i)) {
+        for (unsigned int i=0; i<16; ++i) {
+            if (this->oldCameraViewMatrix(i) != camera->getViewMatrix()(i)) {
                 return true;
             }
         }
@@ -74,19 +74,19 @@ namespace urchin {
         Point2<int> mousePosition = mouseController.getMousePosition();
         Point2<int> newMousePosition = mousePosition;
 
-        if(mousePosition.X >= static_cast<int>(sceneWidth)) {
+        if (mousePosition.X >= static_cast<int>(sceneWidth)) {
             newMousePosition.X = 1;
-        } else if(mousePosition.X <= 0) {
+        } else if (mousePosition.X <= 0) {
             newMousePosition.X = static_cast<int>(sceneWidth) - 1;
         }
 
-        if(mousePosition.Y >= static_cast<int>(sceneHeight)) {
+        if (mousePosition.Y >= static_cast<int>(sceneHeight)) {
             newMousePosition.Y = 1;
-        } else if(mousePosition.Y <= 0) {
+        } else if (mousePosition.Y <= 0) {
             newMousePosition.Y = static_cast<int>(sceneHeight) - 1;
         }
 
-        if(mousePosition != newMousePosition) {
+        if (mousePosition != newMousePosition) {
             oldMouseX = newMousePosition.X;
             oldMouseY = newMousePosition.Y;
 
@@ -132,7 +132,7 @@ namespace urchin {
     bool ObjectMoveController::onMouseLeftButton() {
         bool propagateEvent = true;
 
-        if(selectedAxis != -1) {
+        if (selectedAxis != -1) {
             statusBarController.applyPreviousState();
             selectedAxis = -1;
             propagateEvent = false;
@@ -143,7 +143,7 @@ namespace urchin {
 
     bool ObjectMoveController::onEscapeKey() {
         bool propagateEvent = true;
-        if(selectedAxis != -1) {
+        if (selectedAxis != -1) {
             updateObjectPosition(savedPosition);
 
             statusBarController.applyPreviousState();
@@ -157,7 +157,7 @@ namespace urchin {
         this->selectedSceneObject = selectedSceneObject;
         this->selectedAxis = -1;
 
-        if(selectedSceneObject) {
+        if (selectedSceneObject) {
             statusBarController.applyState(StatusBarState::OBJECT_SELECTED);
         } else {
             statusBarController.applyPreviousState();

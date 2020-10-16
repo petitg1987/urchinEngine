@@ -28,7 +28,7 @@ namespace urchin {
     }
 
     Image::~Image() {
-        if(isTexture) {
+        if (isTexture) {
             glDeleteTextures(1, &textureID);
         }
     }
@@ -50,11 +50,11 @@ namespace urchin {
     }
 
     const std::vector<unsigned char> &Image::getTexels() const {
-        if(isTexture) {
+        if (isTexture) {
             throw std::runtime_error("The image \"" + getName() + "\" was transformed into a texture, you cannot get the texels.");
         }
 
-        if(channelPrecision!=ChannelPrecision::CHANNEL_8) {
+        if (channelPrecision!=ChannelPrecision::CHANNEL_8) {
             throw std::runtime_error("Channel must have 8 bits. Channel type: " + std::to_string(channelPrecision));
         }
 
@@ -62,11 +62,11 @@ namespace urchin {
     }
 
     const std::vector<uint16_t> &Image::getTexels16Bits() const {
-        if(isTexture) {
+        if (isTexture) {
             throw std::runtime_error("The image \"" + getName() + "\" was transformed into a texture, you cannot get the texels.");
         }
 
-        if(channelPrecision!=ChannelPrecision::CHANNEL_16) {
+        if (channelPrecision!=ChannelPrecision::CHANNEL_16) {
             throw std::runtime_error("Channel must have 16 bits. Channel type: " + std::to_string(channelPrecision));
         }
 
@@ -74,11 +74,11 @@ namespace urchin {
     }
 
     unsigned int Image::retrieveComponentsCount() const {
-        if(format==Image::IMAGE_GRAYSCALE) {
+        if (format==Image::IMAGE_GRAYSCALE) {
             return 1;
-        } else if(format==Image::IMAGE_RGB) {
+        } else if (format==Image::IMAGE_RGB) {
             return 3;
-        } else if(format==Image::IMAGE_RGBA) {
+        } else if (format==Image::IMAGE_RGBA) {
             return 4;
         } else {
             throw std::runtime_error("Unknown image format: " + std::to_string(format) + ".");
@@ -86,11 +86,11 @@ namespace urchin {
     }
 
     GLint Image::retrieveInternalFormat() const {
-        if(format==Image::IMAGE_GRAYSCALE) {
+        if (format==Image::IMAGE_GRAYSCALE) {
             return GL_RED;
-        } else if(format==Image::IMAGE_RGB) {
+        } else if (format==Image::IMAGE_RGB) {
             return GL_RGB;
-        } else if(format==Image::IMAGE_RGBA) {
+        } else if (format==Image::IMAGE_RGBA) {
             return GL_RGBA;
         } else {
             throw std::runtime_error("Unknown image format: " + std::to_string(format) + ".");
@@ -98,11 +98,11 @@ namespace urchin {
     }
 
     GLenum Image::retrieveFormat() const {
-        if(format==Image::IMAGE_GRAYSCALE) {
+        if (format==Image::IMAGE_GRAYSCALE) {
             return GL_RED;
-        } else if(format==Image::IMAGE_RGB) {
+        } else if (format==Image::IMAGE_RGB) {
             return GL_RGB;
-        } else if(format==Image::IMAGE_RGBA) {
+        } else if (format==Image::IMAGE_RGBA) {
             return GL_RGBA;
         } else {
             throw std::runtime_error("Unknown image format: " + std::to_string(format) + ".");
@@ -110,19 +110,19 @@ namespace urchin {
     }
 
     unsigned int Image::toTexture(bool needMipMaps, bool needAnisotropy, bool needRepeat) {
-        if(isTexture) {
+        if (isTexture) {
             return textureID;
         }
 
-        if(channelPrecision!=ChannelPrecision::CHANNEL_8) {
+        if (channelPrecision!=ChannelPrecision::CHANNEL_8) {
             throw std::runtime_error("Channel bit not supported to convert into texture: " + std::to_string(channelPrecision));
         }
 
         glGenTextures(1, &textureID);
         glBindTexture (GL_TEXTURE_2D, textureID);
 
-        if(GLEW_EXT_texture_filter_anisotropic) {
-            if(needAnisotropy) {
+        if (GLEW_EXT_texture_filter_anisotropic) {
+            if (needAnisotropy) {
                 glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, TextureManager::instance()->getAnisotropy());
             } else {
                 glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 1.0f);
@@ -136,7 +136,7 @@ namespace urchin {
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glTexImage2D(GL_TEXTURE_2D, 0, retrieveInternalFormat(), width, height, 0, retrieveFormat(), GL_UNSIGNED_BYTE, &texels8[0]);
 
-        if(needMipMaps) {
+        if (needMipMaps) {
             glGenerateMipmap(GL_TEXTURE_2D);
         }
 
@@ -147,7 +147,7 @@ namespace urchin {
     }
 
     unsigned int Image::getTextureID() const {
-        if(!isTexture) {
+        if (!isTexture) {
             throw std::runtime_error("The image \"" + getName() + "\" isn't a texture. Use Image::toTexture() for transform the image into texture.");
         }
         return textureID;

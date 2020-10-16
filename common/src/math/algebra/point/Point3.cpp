@@ -74,7 +74,7 @@ namespace urchin {
     }
 
     template<class T> Point3<T> Point3<T>::divideByZ() const {
-        if(Z!=0.0) {
+        if (Z!=0.0) {
             return Point3<T>(X/Z, Y/Z, 1);
         }
 

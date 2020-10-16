@@ -33,7 +33,7 @@ namespace urchin {
     }
 
     void CollisionShape3D::refreshInnerMargin(float maximumInnerMargin) {
-        if(this->innerMargin > maximumInnerMargin) {
+        if (this->innerMargin > maximumInnerMargin) {
             this->innerMargin = maximumInnerMargin;
         }
     }
@@ -43,13 +43,13 @@ namespace urchin {
     }
 
     void CollisionShape3D::checkInnerMarginQuality(const std::string &shapeId) const {
-        if(initialInnerMargin > innerMargin) {
+        if (initialInnerMargin > innerMargin) {
             constexpr float RELATIVE_MARGIN_FACTOR_BIG_SHAPE = 200.0;
             AABBox<float> aabbox = toAABBox(PhysicsTransform());
             float shapeLength = aabbox.getMin().vector(aabbox.getMax()).length();
             bool isBigShape = shapeLength > initialInnerMargin * RELATIVE_MARGIN_FACTOR_BIG_SHAPE;
 
-            if(isBigShape) {
+            if (isBigShape) {
                 std::stringstream logStream;
                 logStream<<"Not optimal margin on shape id "<<shapeId<<"."<<std::endl;
                 logStream<<" - Current margin: "<<innerMargin<<std::endl;

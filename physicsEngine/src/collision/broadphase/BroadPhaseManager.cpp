@@ -16,10 +16,10 @@ namespace urchin {
     }
 
     void BroadPhaseManager::notify(Observable *observable, int notificationType) {
-        if(auto *bodyManager = dynamic_cast<BodyManager *>(observable)) {
-            if(notificationType==BodyManager::ADD_WORK_BODY) {
+        if (auto *bodyManager = dynamic_cast<BodyManager *>(observable)) {
+            if (notificationType==BodyManager::ADD_WORK_BODY) {
                 addBody(bodyManager->getLastUpdatedWorkBody());
-            } else if(notificationType==BodyManager::REMOVE_WORK_BODY) {
+            } else if (notificationType==BodyManager::REMOVE_WORK_BODY) {
                 removeBody(bodyManager->getLastUpdatedWorkBody());
             }
         }
@@ -54,12 +54,12 @@ namespace urchin {
     void BroadPhaseManager::synchronizeBodies() {
         std::lock_guard<std::mutex> lock(mutex);
 
-        for(auto &bodyToAdd : bodiesToAdd) {
+        for (auto &bodyToAdd : bodiesToAdd) {
             addBody(bodyToAdd);
         }
         bodiesToAdd.clear();
 
-        for(auto &bodyToRemove : bodiesToRemove) {
+        for (auto &bodyToRemove : bodiesToRemove) {
             removeBody(bodyToRemove);
             delete bodyToRemove;
         }

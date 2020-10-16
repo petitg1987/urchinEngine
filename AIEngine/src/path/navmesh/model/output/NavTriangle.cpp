@@ -83,7 +83,7 @@ namespace urchin {
     }
 
     void NavTriangle::removeLinksTo(const std::shared_ptr<NavPolygon> &navPolygon) {
-        links.erase(std::remove_if(links.begin(), links.end(),
+        links.erase(std::remove_if (links.begin(), links.end(),
                 [navPolygon](const std::shared_ptr<NavLink>& link) {
                     return link->getTargetTriangle()->getNavPolygon() == navPolygon;
                 }), links.end());
@@ -94,8 +94,8 @@ namespace urchin {
     }
 
     bool NavTriangle::hasEdgeLinks(std::size_t edgeIndex) const {
-        for(const auto &link : links) {
-            if(link->getSourceEdgeIndex() == edgeIndex) {
+        for (const auto &link : links) {
+            if (link->getSourceEdgeIndex() == edgeIndex) {
                 return true;
             }
         }
@@ -103,8 +103,8 @@ namespace urchin {
     }
 
     bool NavTriangle::isExternalEdge(std::size_t edgeIndex) const {
-        for(const auto &link : links) {
-            if(link->getSourceEdgeIndex() == edgeIndex && link->getLinkType() == NavLinkType::STANDARD) {
+        for (const auto &link : links) {
+            if (link->getSourceEdgeIndex() == edgeIndex && link->getLinkType() == NavLinkType::STANDARD) {
                 return false;
             }
         }
@@ -120,13 +120,13 @@ namespace urchin {
 
     void NavTriangle::assertLinksValidity() {
         #ifndef NDEBUG
-            for(unsigned int edgeIndex=0; edgeIndex <3; ++edgeIndex) {
+            for (unsigned int edgeIndex=0; edgeIndex <3; ++edgeIndex) {
                 unsigned int countStandardLink = 0;
                 unsigned int countJoinPolygonsLink = 0;
                 unsigned int countJumpLink = 0;
-                for(const auto &link : getLinks()) {
+                for (const auto &link : getLinks()) {
                     assert(link->getSourceEdgeIndex() <= 2);
-                    if(link->getSourceEdgeIndex() == edgeIndex) {
+                    if (link->getSourceEdgeIndex() == edgeIndex) {
                         switch(link->getLinkType()) {
                             case NavLinkType::STANDARD: countStandardLink++; break;
                             case NavLinkType::JOIN_POLYGONS: countJoinPolygonsLink++; break;
@@ -136,7 +136,7 @@ namespace urchin {
                 }
 
                 assert(countStandardLink <= 1);
-                if(countStandardLink > 0) {
+                if (countStandardLink > 0) {
                     assert(countJoinPolygonsLink == 0);
                     assert(countJumpLink == 0);
                 }

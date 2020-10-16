@@ -105,7 +105,7 @@ void MonotonePolygonTest::twoRegularVertex() {
     std::vector<MonotonePolygon> monotonePolygons = monotonePolygonAlgorithm.createYMonotonePolygons();
 
     AssertHelper::assertUnsignedInt(monotonePolygons.size(), 1);
-    for(std::size_t i=0; i<ccwPolygonPoints.size(); ++i) {
+    for (std::size_t i=0; i<ccwPolygonPoints.size(); ++i) {
         AssertHelper::assertUnsignedInt(monotonePolygons[0].getCcwPoints()[i], i);
     }
 }
@@ -254,7 +254,7 @@ void MonotonePolygonTest::polygonTwoHoles3() { //see monotonePolygonTwoHoles3.gg
     std::vector<MonotonePolygon> monotonePolygons = monotonePolygonAlgorithm.createYMonotonePolygons();
 
     //check duplicate points:
-    for(const auto &monotonePolygon : monotonePolygons) {
+    for (const auto &monotonePolygon : monotonePolygons) {
         std::set<unsigned int> pointsSet(monotonePolygon.getCcwPoints().begin(), monotonePolygon.getCcwPoints().end());
         AssertHelper::assertUnsignedInt(monotonePolygon.getCcwPoints().size(), pointsSet.size());
     }

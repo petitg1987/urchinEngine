@@ -36,7 +36,7 @@ namespace urchin {
 
     const SceneSound *SoundTableView::getSelectedSceneSound() const {
         QModelIndex selectedIndex = this->currentIndex();
-        if(selectedIndex.row()!=-1) {
+        if (selectedIndex.row()!=-1) {
             return selectedIndex.data(Qt::UserRole + 1).value<const SceneSound *>();
         }
         return nullptr;
@@ -60,7 +60,7 @@ namespace urchin {
     }
 
     bool SoundTableView::removeSelectedSound() {
-        if(hasSceneSoundSelected()) {
+        if (hasSceneSoundSelected()) {
             soundsListModel->removeRow(this->currentIndex().row());
             resizeRowsToContents();
 

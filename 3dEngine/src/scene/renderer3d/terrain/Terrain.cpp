@@ -32,7 +32,7 @@ namespace urchin {
         glActiveTexture(GL_TEXTURE0);
         glUniform1i(maskTexLoc, 0);
 
-        for(unsigned int i=0; i<MAX_MATERIAL; ++i) {
+        for (unsigned int i=0; i<MAX_MATERIAL; ++i) {
             std::string shaderTextureName = "diffuseTex" + std::to_string(i + 1);
             int diffuseTexLoc = glGetUniformLocation(terrainShader, shaderTextureName.c_str());
 
@@ -93,7 +93,7 @@ namespace urchin {
     }
 
     void Terrain::setMaterial(std::unique_ptr<TerrainMaterial> &terrainMaterial) {
-        if(material != terrainMaterial) {
+        if (material != terrainMaterial) {
             material = std::move(terrainMaterial);
         }
 
@@ -101,7 +101,7 @@ namespace urchin {
     }
 
     void Terrain::refreshMaterial() {
-        if(material) {
+        if (material) {
             material->refreshWith(mesh->getXSize(), mesh->getZSize());
 
             ShaderManager::instance()->bind(terrainShader);
@@ -121,13 +121,13 @@ namespace urchin {
     }
 
     void Terrain::refreshGrassMesh() {
-        if(grass) {
+        if (grass) {
             grass->refreshWith(mesh, position);
         }
     }
 
     void Terrain::refreshGrassAmbient() {
-        if(grass) {
+        if (grass) {
             grass->refreshWith(ambient);
         }
     }
@@ -185,7 +185,7 @@ namespace urchin {
         glBindVertexArray(vertexArrayObject);
         glDrawElements(GL_TRIANGLE_STRIP, mesh->getIndices().size(), GL_UNSIGNED_INT, nullptr);
 
-        if(grass) {
+        if (grass) {
             grass->display(camera, dt);
         }
     }

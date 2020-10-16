@@ -24,7 +24,7 @@ namespace urchin {
 
     std::shared_ptr<Profiler> Profiler::getInstance(const std::string &instanceName) {
         auto instanceIt = instances.find(instanceName);
-        if(instanceIt!=instances.end()) {
+        if (instanceIt!=instances.end()) {
             return instanceIt->second;
         }
 
@@ -34,7 +34,7 @@ namespace urchin {
     }
 
     void Profiler::startNewProfile(const std::string &nodeName) {
-        if(isEnable) {
+        if (isEnable) {
             assert(nodeName.length() <= 15); //ensure to use "small string optimization"
 
             if (currentNode->getName() == nodeName) {
@@ -53,7 +53,7 @@ namespace urchin {
     }
 
     void Profiler::stopProfile(const std::string &nodeName) {
-        if(isEnable) {
+        if (isEnable) {
             if (!nodeName.empty() && currentNode->getName() != nodeName) {
                 throw std::runtime_error("Impossible to stop node '" + nodeName + "' because current node is '" + currentNode->getName() + "'");
             }
@@ -71,7 +71,7 @@ namespace urchin {
     }
 
     void Profiler::log() {
-        if(isEnable) {
+        if (isEnable) {
             if (currentNode != profilerRoot) {
                 throw std::runtime_error("Current node must be the root node to perform print. Current node: " + currentNode->getName());
             }

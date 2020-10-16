@@ -15,13 +15,13 @@ namespace urchin {
     }
 
     void CollisionAlgorithm::processCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2, bool refreshContractPoints) {
-        if(objectSwapped) {
+        if (objectSwapped) {
             doProcessCollisionAlgorithm(object2, object1);
         } else {
             doProcessCollisionAlgorithm(object1, object2);
         }
 
-        if(refreshContractPoints) {
+        if (refreshContractPoints) {
             refreshContactPoints();
         }
     }

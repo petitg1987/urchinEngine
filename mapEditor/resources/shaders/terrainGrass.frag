@@ -15,7 +15,7 @@ layout (location = 1) out vec4 fragNormalAndAmbient;
 void main() {
     vec4 color = texture2D(grassTex, vertexTextCoordinates);
 
-    if(color.a < GRASS_ALPHA_TEST)
+    if (color.a < GRASS_ALPHA_TEST)
         discard;
 
     fragColor = vec4(color.xyz, color.a);

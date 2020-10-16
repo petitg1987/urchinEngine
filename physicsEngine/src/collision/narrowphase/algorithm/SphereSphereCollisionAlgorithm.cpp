@@ -21,13 +21,13 @@ namespace urchin {
         float radius1 = sphere1.getRadius();
         float radius2 = sphere2.getRadius();
 
-        if(length - getContactBreakingThreshold() < (radius1 + radius2)) { //collision detected
+        if (length - getContactBreakingThreshold() < (radius1 + radius2)) { //collision detected
             //compute depth penetration
             float depth = length - (radius1+radius2);
 
             //compute normal (if both spheres have same origin: default normal is (1,0,0))
             Vector3<float> normalFromObject2(1.0, 0.0, 0.0);
-            if(length > std::numeric_limits<float>::epsilon()) { //normalize normal (from object2 to object1)
+            if (length > std::numeric_limits<float>::epsilon()) { //normalize normal (from object2 to object1)
                 normalFromObject2 = diff / length;
             }
 

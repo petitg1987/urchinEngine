@@ -57,7 +57,7 @@ namespace urchin {
     }
 
     void OmnidirectionalLight::setAttenuation(float exponentialAttenuation) {
-        if(exponentialAttenuation < std::numeric_limits<float>::epsilon()) {
+        if (exponentialAttenuation < std::numeric_limits<float>::epsilon()) {
             throw std::domain_error("Exponential attenuation must be greater than zero.");
         }
         this->exponentialAttenuation = exponentialAttenuation;

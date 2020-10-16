@@ -28,10 +28,10 @@ namespace urchin {
         Point3<float> max(vertices[xLength-1].X, -std::numeric_limits<float>::max(), vertices[vertices.size()-1].Z);
 
         for (const auto &vertex : vertices) {
-            if(min.Y > vertex.Y) {
+            if (min.Y > vertex.Y) {
                 min.Y = vertex.Y;
             }
-            if(max.Y < vertex.Y) {
+            if (max.Y < vertex.Y) {
                 max.Y = vertex.Y;
             }
         }
@@ -58,7 +58,7 @@ namespace urchin {
     }
 
     std::shared_ptr<CollisionShape3D> CollisionHeightfieldShape::scale(float scale) const {
-        if((scale - std::numeric_limits<float>::min()) > 1.0 || (scale + std::numeric_limits<float>::min()) < 0.0) {
+        if ((scale - std::numeric_limits<float>::min()) > 1.0 || (scale + std::numeric_limits<float>::min()) < 0.0) {
             throw std::runtime_error("Scaling a heightfield shape is currently not supported");
         }
 
@@ -78,7 +78,7 @@ namespace urchin {
     }
 
     AABBox<float> CollisionHeightfieldShape::toAABBox(const PhysicsTransform &physicsTransform) const {
-        if(!lastTransform.equals(physicsTransform)) {
+        if (!lastTransform.equals(physicsTransform)) {
             const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
             Point3<float> extend(
                     localAABBox->getHalfSize(0) * std::abs(orientation(0)) + localAABBox->getHalfSize(1) * std::abs(orientation(3)) + localAABBox->getHalfSize(2) * std::abs(orientation(6)),
@@ -129,7 +129,7 @@ namespace urchin {
         auto vertexXRange = computeStartEndIndices(checkAABBox.getMin().X, checkAABBox.getMax().X, Axis::X);
         auto vertexZRange = computeStartEndIndices(checkAABBox.getMin().Z, checkAABBox.getMax().Z, Axis::Z);
 
-        for(unsigned int z = vertexZRange.first; z < vertexZRange.second; ++z) {
+        for (unsigned int z = vertexZRange.first; z < vertexZRange.second; ++z) {
             for (unsigned int x = vertexXRange.first; x < vertexXRange.second; ++x) {
                 createTrianglesMatchHeight(x, z, checkAABBox.getMin().Y, checkAABBox.getMax().Y);
             }
@@ -156,7 +156,7 @@ namespace urchin {
         float rayMaxZ = std::max(ray.getA().Z, ray.getB().Z);
         auto vertexZRange = computeStartEndIndices(rayMinZ, rayMaxZ, Axis::Z);
 
-        for(unsigned int z = vertexZRange.first; z < vertexZRange.second; ++z) {
+        for (unsigned int z = vertexZRange.first; z < vertexZRange.second; ++z) {
             float zStartValue = vertices[xLength * z].Z;
             float zEndValue = vertices[xLength * (z + 1)].Z;
             float xFirstValue = raySameZValues ? ray.getA().X : slopeLineZX * zStartValue + interceptLineZX;
@@ -216,11 +216,11 @@ namespace urchin {
         bool hasDiagonalPointAbove = point2.Y > minY || point3.Y > minY;
         bool hasDiagonalPointBelow = point2.Y < maxY || point3.Y < maxY;
 
-        if( (point1.Y > minY || hasDiagonalPointAbove) && (point1.Y < maxY || hasDiagonalPointBelow) ) {
+        if ( (point1.Y > minY || hasDiagonalPointAbove) && (point1.Y < maxY || hasDiagonalPointBelow) ) {
             createCollisionTriangleShape(point1, point3, point2);
         }
 
-        if( (point4.Y > minY || hasDiagonalPointAbove) && (point4.Y < maxY || hasDiagonalPointBelow) ) {
+        if ( (point4.Y > minY || hasDiagonalPointAbove) && (point4.Y < maxY || hasDiagonalPointBelow) ) {
             createCollisionTriangleShape(point2, point3, point4);
         }
     }

@@ -60,7 +60,7 @@ namespace urchin {
         const auto *compoundShape = dynamic_cast<const CollisionCompoundShape *>(shape.get());
 
         const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &localizedShapes = compoundShape->getLocalizedShapes();
-        for(const auto &localizedShape : localizedShapes) {
+        for (const auto &localizedShape : localizedShapes) {
             localizedShapeTableView->addLocalizedShape(localizedShape);
         }
         localizedShapeTableView->selectLocalizedShape(0);
@@ -71,16 +71,16 @@ namespace urchin {
             LabelStyleHelper::applyNormalStyle(shapesLabel);
             std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedCollisionShapes = localizedShapeTableView->getLocalizedShapes();
             return std::make_shared<const CollisionCompoundShape>(localizedCollisionShapes);
-        }catch(std::invalid_argument &e) {
+        } catch (std::invalid_argument &e) {
             LabelStyleHelper::applyErrorStyle(shapesLabel, std::string(e.what()));
             return DefaultBodyShapeCreator(getSceneObject()).createDefaultBodyShape(CollisionShape3D::ShapeType::COMPOUND_SHAPE, true);
         }
     }
 
     void BodyCompoundShapeWidget::notify(Observable *observable, int notificationType) {
-        if(auto *localizedShapeTableView = dynamic_cast<LocalizedShapeTableView *>(observable)) {
-            if(notificationType==LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED) {
-                if(localizedShapeTableView->hasLocalizedShapeSelected()) {
+        if (auto *localizedShapeTableView = dynamic_cast<LocalizedShapeTableView *>(observable)) {
+            if (notificationType==LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED) {
+                if (localizedShapeTableView->hasLocalizedShapeSelected()) {
                     std::shared_ptr<const LocalizedCollisionShape> localizedShape = localizedShapeTableView->getSelectedLocalizedShape();
 
                     delete localizedShapeDetails;
@@ -184,7 +184,7 @@ namespace urchin {
     }
 
     void BodyCompoundShapeWidget::updateLocalizedShapeOrientationType() {
-        if(!disableShapeEvent) {
+        if (!disableShapeEvent) {
             std::shared_ptr<const LocalizedCollisionShape> localizedShape = localizedShapeTableView->getSelectedLocalizedShape();
 
             QVariant variant = orientationType->currentData();
@@ -200,8 +200,8 @@ namespace urchin {
     }
 
     void BodyCompoundShapeWidget::updateSelectedLocalizedShape() {
-        if(!disableShapeEvent) {
-            if(!localizedShapeTableView->hasLocalizedShapeSelected()) {
+        if (!disableShapeEvent) {
+            if (!localizedShapeTableView->hasLocalizedShapeSelected()) {
                 throw std::invalid_argument("Localized shape table hasn't localized shaped selected");
             }
 
@@ -231,13 +231,13 @@ namespace urchin {
         ChangeBodyShapeDialog changeBodyShapeDialog(this, true);
         changeBodyShapeDialog.exec();
 
-        if(changeBodyShapeDialog.result()==QDialog::Accepted) {
+        if (changeBodyShapeDialog.result()==QDialog::Accepted) {
             CollisionShape3D::ShapeType shapeType = changeBodyShapeDialog.getShapeType();
             std::shared_ptr<const CollisionShape3D> defaultNewShape = DefaultBodyShapeCreator(getSceneObject()).createDefaultBodyShape(shapeType, true);
 
             std::size_t nextPosition = 0;
-            for(std::size_t i=0; i<localizedShapeTableView->getLocalizedShapes().size(); ++i) {
-                if(nextPosition<=localizedShapeTableView->getLocalizedShapes()[i]->position) {
+            for (std::size_t i=0; i<localizedShapeTableView->getLocalizedShapes().size(); ++i) {
+                if (nextPosition<=localizedShapeTableView->getLocalizedShapes()[i]->position) {
                     nextPosition = localizedShapeTableView->getLocalizedShapes()[i]->position + 1;
                 }
             }
@@ -255,7 +255,7 @@ namespace urchin {
     }
 
     void BodyCompoundShapeWidget::removeSelectedLocalizedShape() {
-        if(localizedShapeTableView->removeSelectedLocalizedShape()) {
+        if (localizedShapeTableView->removeSelectedLocalizedShape()) {
             updateBodyShape();
         }
     }

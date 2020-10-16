@@ -25,7 +25,7 @@ namespace urchin {
     }
 
     void AICharacterController::stopMoving() {
-        if(eventHandler) {
+        if (eventHandler) {
             eventHandler->stopMoving();
         }
 
@@ -39,10 +39,10 @@ namespace urchin {
     }
 
     void AICharacterController::update() {
-        if(pathRequest) {
+        if (pathRequest) {
             if (pathPoints.empty() && pathRequest->isPathReady()) {
                 pathPoints = pathRequest->getPath();
-                if(!pathPoints.empty() && eventHandler) {
+                if (!pathPoints.empty() && eventHandler) {
                     eventHandler->startMoving();
                 }
             }
@@ -58,7 +58,7 @@ namespace urchin {
         if (retrieveCharacterPosition().distance(nextTarget) <= CHANGE_PATH_POINT_DISTANCE) {
             nextPathPointIndex++;
 
-            if(nextPathPointIndex >= pathPoints.size()) { //end of path reached
+            if (nextPathPointIndex >= pathPoints.size()) { //end of path reached
                 stopMoving();
                 return;
             }

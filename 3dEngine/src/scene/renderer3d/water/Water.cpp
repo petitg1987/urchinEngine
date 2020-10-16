@@ -158,15 +158,15 @@ namespace urchin {
     }
 
     void Water::setNormalTexture(const std::string &normalFilename) {
-        if(normalTexture) {
+        if (normalTexture) {
             normalTexture->release();
         }
 
-        if(normalFilename.empty()) {
+        if (normalFilename.empty()) {
             normalTexture = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({0, 255, 0}));
         } else {
             normalTexture = MediaManager::instance()->getMedia<Image>(normalFilename);
-            if(normalTexture->getImageFormat() != Image::IMAGE_RGB) {
+            if (normalTexture->getImageFormat() != Image::IMAGE_RGB) {
                 normalTexture->release();
                 throw std::runtime_error("Water normal texture must have 3 components (RGB). Components: " + std::to_string(normalTexture->retrieveComponentsCount()));
             }
@@ -180,15 +180,15 @@ namespace urchin {
     }
 
     void Water::setDudvMap(const std::string &dudvFilename) {
-        if(dudvMap) {
+        if (dudvMap) {
             dudvMap->release();
         }
 
-        if(dudvFilename.empty()) {
+        if (dudvFilename.empty()) {
             dudvMap = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({255, 0, 255}));
         } else {
             dudvMap = MediaManager::instance()->getMedia<Image>(dudvFilename);
-            if(dudvMap->getImageFormat() != Image::IMAGE_RGB) {
+            if (dudvMap->getImageFormat() != Image::IMAGE_RGB) {
                 dudvMap->release();
                 throw std::runtime_error("Water dudv map must have 3 components (RGB). Components: " + std::to_string(dudvMap->retrieveComponentsCount()));
             }
@@ -271,13 +271,13 @@ namespace urchin {
     }
 
     void Water::display(const Camera *camera, FogManager *fogManager, float dt) {
-        if(camera->getPosition().Y < centerPosition.Y && waterRectangle->collideWithPoint(Point2<float>(camera->getPosition().X, camera->getPosition().Z))) {
-            if(fogManager->getCurrentFog().get() != underwaterFog.get()) {
+        if (camera->getPosition().Y < centerPosition.Y && waterRectangle->collideWithPoint(Point2<float>(camera->getPosition().X, camera->getPosition().Z))) {
+            if (fogManager->getCurrentFog().get() != underwaterFog.get()) {
                 fogManager->pushFog(underwaterFog);
                 notifyObservers(this, NotificationType::MOVE_UNDER_WATER);
             }
         } else {
-            if(fogManager->getCurrentFog().get() == underwaterFog.get()) {
+            if (fogManager->getCurrentFog().get() == underwaterFog.get()) {
                 fogManager->popFog();
                 notifyObservers(this, NotificationType::MOVE_ABOVE_WATER);
             }

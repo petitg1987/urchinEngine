@@ -17,12 +17,12 @@ namespace urchin {
     }
 
     void Material::buildDefaultTextures() {
-        if(!hasDiffuseTexture()) {
+        if (!hasDiffuseTexture()) {
             this->diffuseTexture = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({255, 20, 147}));
             this->diffuseTexture->toTexture(false, false, true);
         }
 
-        if(!hasNormalTexture()) {
+        if (!hasNormalTexture()) {
             this->normalTexture = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({127, 127, 255}));
             this->normalTexture->toTexture(false, false, true);
         }

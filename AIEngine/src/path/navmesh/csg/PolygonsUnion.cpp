@@ -12,20 +12,20 @@ namespace urchin {
         mergedPolygons.clear();
 
         allPolygonPaths.clear();
-        for(const auto &polygon : polygons) {
+        for (const auto &polygon : polygons) {
             allPolygonPaths.emplace_back(CSGPolygonPath(polygon));
         }
 
-        while(!allPolygonPaths.empty()) {
+        while (!allPolygonPaths.empty()) {
             bool isPolygonsMerged = false;
-            for(std::size_t i=1; i<allPolygonPaths.size(); ++i) {
+            for (std::size_t i=1; i<allPolygonPaths.size(); ++i) {
                 const std::vector<CSGPolygonPath> &result = unionTwoPolygonPaths(allPolygonPaths[0], allPolygonPaths[i]);
-                if(result.empty()) {
+                if (result.empty()) {
                     logInputData(polygons, "Empty result returned after two polygons union." , Logger::ERROR);
                     mergedPolygons.clear();
                     return mergedPolygons;
                 }
-                if(result.size()==1) {
+                if (result.size()==1) {
                     isPolygonsMerged = true;
 
                     VectorEraser::erase(allPolygonPaths, i);
@@ -35,7 +35,7 @@ namespace urchin {
                     break;
                 }
             }
-            if(!isPolygonsMerged) {
+            if (!isPolygonsMerged) {
                 mergedPolygons.push_back(allPolygonPaths[0].template toCSGPolygon<T>());
                 VectorEraser::erase(allPolygonPaths, 0);
             }
@@ -56,13 +56,13 @@ namespace urchin {
 
         twoPolygonUnions.clear();
 
-        if(solution.Childs.size()==1) {
+        if (solution.Childs.size()==1) {
             assert(!solution.Childs[0]->IsOpen());
             assert(!solution.Childs[0]->IsHole());
 
             std::string unionName = "{" + polygon1.getName() + "} ∪ {" + polygon2.getName() + "}";
             twoPolygonUnions.emplace_back(CSGPolygonPath(solution.Childs[0]->Contour, unionName));
-        } else if(solution.Childs.size()==2) {
+        } else if (solution.Childs.size()==2) {
             twoPolygonUnions.emplace_back(CSGPolygonPath(solution.Childs[0]->Contour, polygon1.getName()));
             twoPolygonUnions.emplace_back(CSGPolygonPath(solution.Childs[1]->Contour, polygon2.getName()));
         }
@@ -77,9 +77,9 @@ namespace urchin {
 
         logStream<<message<<std::endl;
 
-        for(std::size_t i=0; i<polygons.size(); ++i) {
+        for (std::size_t i=0; i<polygons.size(); ++i) {
             logStream << "Polygon " << i << std::endl << polygons[i];
-            if(i < polygons.size() - 1) {
+            if (i < polygons.size() - 1) {
                 logStream << std::endl;
             }
 

@@ -22,7 +22,7 @@ namespace urchin {
     }
 
     void BodyAABBTree::postAddObjectCallback(AABBNode<AbstractWorkBody *> *newNode) {
-        computeOverlappingPairsFor(newNode);
+        computeOverlappingPairsfor (newNode);
     }
 
     void BodyAABBTree::removeBody(AbstractWorkBody *body) {
@@ -36,7 +36,7 @@ namespace urchin {
     }
 
     void BodyAABBTree::updateBodies() {
-        if(inInitializationPhase) {
+        if (inInitializationPhase) {
             computeWorldBoundary();
             inInitializationPhase = false;
         }
@@ -52,14 +52,14 @@ namespace urchin {
         return defaultPairContainer->getOverlappingPairs();
     }
 
-    void BodyAABBTree::computeOverlappingPairsFor(AABBNode<AbstractWorkBody *> *leafNode) {
+    void BodyAABBTree::computeOverlappingPairsfor (AABBNode<AbstractWorkBody *> *leafNode) {
         browseNodes.clear();
         browseNodes.push_back(AABBTree::getRootNode());
 
-        for(std::size_t i=0; i<browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
+        for (std::size_t i=0; i<browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
             const AABBNode<AbstractWorkBody *> *currentNode = browseNodes[i];
 
-            if(leafNode!=currentNode && leafNode->getAABBox().collideWithAABBox(currentNode->getAABBox())) {
+            if (leafNode!=currentNode && leafNode->getAABBox().collideWithAABBox(currentNode->getAABBox())) {
                 if (currentNode->isLeaf()) {
                     createOverlappingPair(dynamic_cast<BodyAABBNodeData *>(leafNode->getNodeData()), dynamic_cast<BodyAABBNodeData *>(currentNode->getNodeData()));
                 } else {
@@ -71,15 +71,15 @@ namespace urchin {
     }
 
     void BodyAABBTree::createOverlappingPair(BodyAABBNodeData *nodeData1, BodyAABBNodeData *nodeData2) {
-        if(!nodeData1->hasAlternativePairContainer() && !nodeData2->hasAlternativePairContainer()) {
+        if (!nodeData1->hasAlternativePairContainer() && !nodeData2->hasAlternativePairContainer()) {
             defaultPairContainer->addOverlappingPair(nodeData1->getNodeObject(), nodeData2->getNodeObject());
         } else {
-            if(nodeData1->hasAlternativePairContainer()) {
+            if (nodeData1->hasAlternativePairContainer()) {
                 nodeData1->getAlternativePairContainer()->addOverlappingPair(nodeData1->getNodeObject(), nodeData2->getNodeObject());
                 nodeData2->addOwnerPairContainer(nodeData1->getAlternativePairContainer());
             }
 
-            if(nodeData2->hasAlternativePairContainer()) {
+            if (nodeData2->hasAlternativePairContainer()) {
                 nodeData2->getAlternativePairContainer()->addOverlappingPair(nodeData1->getNodeObject(), nodeData2->getNodeObject());
                 nodeData1->addOwnerPairContainer(nodeData2->getAlternativePairContainer());
             }
@@ -87,7 +87,7 @@ namespace urchin {
     }
 
     void BodyAABBTree::removeOverlappingPairs(const BodyAABBNodeData *nodeData) {
-        if(!nodeData->hasAlternativePairContainer()) {
+        if (!nodeData->hasAlternativePairContainer()) {
             defaultPairContainer->removeOverlappingPairs(nodeData->getNodeObject());
         } else {
             PairContainer *alternativePairContainer = nodeData->getAlternativePairContainer();
@@ -96,7 +96,7 @@ namespace urchin {
             alternativePairContainer->removeOverlappingPairs(nodeData->getNodeObject());
         }
 
-        for(auto &ownerPairContainer : nodeData->getOwnerPairContainers()) {
+        for (auto &ownerPairContainer : nodeData->getOwnerPairContainers()) {
             ownerPairContainer->removeOverlappingPairs(nodeData->getNodeObject());
         }
     }
@@ -113,7 +113,7 @@ namespace urchin {
 
     void BodyAABBTree::computeWorldBoundary() {
         float maxYBoundary = -std::numeric_limits<float>::max();
-        for(auto &objectNode : objectsNode) {
+        for (auto &objectNode : objectsNode) {
             const AABBox<float> &nodeAABBox = objectNode.second->getAABBox();
             minYBoundary = std::min(nodeAABBox.getMin().Y, minYBoundary);
             maxYBoundary = std::max(nodeAABBox.getMax().Y, maxYBoundary);
@@ -126,7 +126,7 @@ namespace urchin {
     void BodyAABBTree::controlBoundaries(AABBNode<AbstractWorkBody *> *leafNode) {
         const AABBox<float> &bodyAABBox = leafNode->getNodeData()->retrieveObjectAABBox();
 
-        if(bodyAABBox.getMax().Y < minYBoundary) {
+        if (bodyAABBox.getMax().Y < minYBoundary) {
             AbstractWorkBody *body = leafNode->getNodeData()->getNodeObject();
 
             std::stringstream logStream;

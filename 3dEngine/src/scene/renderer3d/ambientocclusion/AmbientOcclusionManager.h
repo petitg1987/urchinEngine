@@ -21,7 +21,7 @@ namespace urchin {
             AmbientOcclusionManager(unsigned int, unsigned int);
             ~AmbientOcclusionManager();
 
-            void loadUniformLocationFor(unsigned int);
+            void loadUniformLocationfor (unsigned int);
             void onResize(unsigned int, unsigned int);
             void onCameraProjectionUpdate(const Camera *);
 

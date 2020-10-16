@@ -183,24 +183,24 @@ namespace urchin {
     }
 
     void MapEditorWindow::notify(Observable *observable, int notificationType) {
-        if(dynamic_cast<ScenePanelWidget *>(observable)) {
-            if(notificationType == ScenePanelWidget::TAB_SELECTED) {
+        if (dynamic_cast<ScenePanelWidget *>(observable)) {
+            if (notificationType == ScenePanelWidget::TAB_SELECTED) {
                 executeViewPropertiesChangeAction();
             }
-        } else if(auto *objectTableView = dynamic_cast<ObjectTableView *>(observable)) {
-            if(notificationType==ObjectTableView::OBJECT_SELECTION_CHANGED) {
+        } else if (auto *objectTableView = dynamic_cast<ObjectTableView *>(observable)) {
+            if (notificationType==ObjectTableView::OBJECT_SELECTION_CHANGED) {
                 sceneDisplayerWidget->setHighlightSceneObject(objectTableView->getSelectedSceneObject());
             }
-        } else if(auto *lightTableView = dynamic_cast<LightTableView *>(observable)) {
-            if(notificationType==LightTableView::LIGHT_SELECTION_CHANGED) {
+        } else if (auto *lightTableView = dynamic_cast<LightTableView *>(observable)) {
+            if (notificationType==LightTableView::LIGHT_SELECTION_CHANGED) {
                 sceneDisplayerWidget->setHighlightSceneLight(lightTableView->getSelectedSceneLight());
             }
-        } else if(auto *soundTableView = dynamic_cast<SoundTableView *>(observable)) {
-            if(notificationType==SoundTableView::SOUND_SELECTION_CHANGED) {
+        } else if (auto *soundTableView = dynamic_cast<SoundTableView *>(observable)) {
+            if (notificationType==SoundTableView::SOUND_SELECTION_CHANGED) {
                 sceneDisplayerWidget->setHighlightSceneSound(soundTableView->getSelectedSceneSound());
             }
-        } else if(dynamic_cast<AbstractController *>(observable)) {
-            if(notificationType==AbstractController::CHANGES_DONE) {
+        } else if (dynamic_cast<AbstractController *>(observable)) {
+            if (notificationType==AbstractController::CHANGES_DONE) {
                 refreshWindowTitle();
 
             }
@@ -210,26 +210,26 @@ namespace urchin {
     }
 
     void MapEditorWindow::handleCompoundShapeSelectionChange(Observable *observable, int notificationType) {
-        if(auto *objectControllerWidget = dynamic_cast<ObjectPanelWidget *>(observable)) {
-            if(notificationType == ObjectPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED) {
+        if (auto *objectControllerWidget = dynamic_cast<ObjectPanelWidget *>(observable)) {
+            if (notificationType == ObjectPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED) {
                 BodyShapeWidget *bodyShapeWidget = objectControllerWidget->getBodyShapeWidget();
                 if (auto *bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget *>(bodyShapeWidget)) {
                     bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
                 }
             }
-        } else if(auto *localizedShapeTableView = dynamic_cast<LocalizedShapeTableView *>(observable)) {
-            if(notificationType==LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED) {
+        } else if (auto *localizedShapeTableView = dynamic_cast<LocalizedShapeTableView *>(observable)) {
+            if (notificationType==LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED) {
                 sceneDisplayerWidget->setHighlightCompoundShapeComponent(localizedShapeTableView->getSelectedLocalizedShape());
             }
         }
     }
 
     void MapEditorWindow::showNewDialog() {
-        if(checkCurrentMapSaved()) {
+        if (checkCurrentMapSaved()) {
             NewDialog newDialog(this);
             newDialog.exec();
 
-            if(newDialog.result()==QDialog::Accepted) {
+            if (newDialog.result()==QDialog::Accepted) {
                 loadMap(newDialog.getFilename(), newDialog.getRelativeWorkingDirectory());
                 sceneController->forceModified();
             }
@@ -237,9 +237,9 @@ namespace urchin {
     }
 
     void MapEditorWindow::showOpenDialog() {
-        if(checkCurrentMapSaved()) {
+        if (checkCurrentMapSaved()) {
             QString filename = QFileDialog::getOpenFileName(this, tr("Open file"), getPreferredMapPath(), "XML file (*.xml)", nullptr, QFileDialog::DontUseNativeDialog);
-            if(!filename.isNull()) {
+            if (!filename.isNull()) {
                 std::string mapFilename = filename.toUtf8().constData();
                 std::string relativeWorkingDirectory = MapHandler::getRelativeWorkingDirectory(mapFilename);
                 loadMap(mapFilename, relativeWorkingDirectory);
@@ -262,7 +262,7 @@ namespace urchin {
 
     void MapEditorWindow::executeSaveAction() {
         sceneDisplayerWidget->saveState(mapFilename);
-        if(sceneController) {
+        if (sceneController) {
             sceneController->saveMapOnFile(mapFilename);
         }
 
@@ -271,15 +271,15 @@ namespace urchin {
 
     void MapEditorWindow::showSaveAsDialog() {
         QString filename = QFileDialog::getSaveFileName(this, tr("Save file"), getPreferredMapPath(), "XML file (*.xml)", nullptr, QFileDialog::DontUseNativeDialog);
-        if(!filename.isNull()) {
+        if (!filename.isNull()) {
             std::string filenameString = filename.toUtf8().constData();
             std::string fileExtension = FileHandler::getFileExtension(filenameString);
-            if(!StringUtil::insensitiveEquals(fileExtension, ".xml")) {
+            if (!StringUtil::insensitiveEquals(fileExtension, ".xml")) {
                 filenameString += ".xml";
             }
 
             sceneDisplayerWidget->saveState(filenameString);
-            if(sceneController) {
+            if (sceneController) {
                 sceneController->saveMapOnFile(filenameString);
             }
 
@@ -290,7 +290,7 @@ namespace urchin {
 
     bool MapEditorWindow::executeCloseAction() {
         bool canProceed = false;
-        if(checkCurrentMapSaved()) {
+        if (checkCurrentMapSaved()) {
             sceneDisplayerWidget->closeMap();
             scenePanelWidget->closeMap();
 
@@ -307,13 +307,13 @@ namespace urchin {
     }
 
     void MapEditorWindow::executeExitAction() {
-        if(executeCloseAction()) {
+        if (executeCloseAction()) {
             QApplication::quit();
         }
     }
 
     void MapEditorWindow::closeEvent(QCloseEvent *event) {
-        if(executeCloseAction()) {
+        if (executeCloseAction()) {
             close();
             QApplication::quit();
         } else {
@@ -323,13 +323,13 @@ namespace urchin {
 
     bool MapEditorWindow::checkCurrentMapSaved() {
         bool canProceed = true;
-        if(sceneController != nullptr && sceneController->isModified()) {
+        if (sceneController != nullptr && sceneController->isModified()) {
             NotSavedDialog notSavedDialog(this);
             notSavedDialog.exec();
 
-            if(notSavedDialog.result()==QDialog::Accepted && notSavedDialog.needSave()) {
+            if (notSavedDialog.result()==QDialog::Accepted && notSavedDialog.needSave()) {
                 executeSaveAction();
-            } else if(notSavedDialog.result()==QDialog::Rejected) {
+            } else if (notSavedDialog.result()==QDialog::Rejected) {
                 canProceed = false;
             }
         }
@@ -343,7 +343,7 @@ namespace urchin {
         saveAction->setEnabled(hasMapOpen);
         saveAsAction->setEnabled(hasMapOpen);
         closeAction->setEnabled(hasMapOpen);
-        for(auto &viewAction : viewActions) {
+        for (auto &viewAction : viewActions) {
             viewAction.second->setEnabled(hasMapOpen);
         }
 
@@ -353,17 +353,17 @@ namespace urchin {
     void MapEditorWindow::updateMapFilename(const std::string &mapFilename) {
         this->mapFilename = mapFilename;
 
-        if(!mapFilename.empty()) {
+        if (!mapFilename.empty()) {
             std::string preferredMapPathString = FileHandler::getDirectoryFrom(mapFilename);
             savePreferredMapPath(preferredMapPathString);
         }
     }
 
     void MapEditorWindow::refreshWindowTitle() {
-        if(mapFilename.empty()) {
+        if (mapFilename.empty()) {
             this->setWindowTitle(QString::fromStdString(WINDOW_TITLE));
         } else {
-            if(sceneController && sceneController->isModified()) {
+            if (sceneController && sceneController->isModified()) {
                 this->setWindowTitle(QString::fromStdString("*" + WINDOW_TITLE + " (" + mapFilename + ")"));
             } else {
                 this->setWindowTitle(QString::fromStdString(WINDOW_TITLE + " (" + mapFilename + ")"));
@@ -372,28 +372,28 @@ namespace urchin {
     }
 
     void MapEditorWindow::executeViewPropertiesChangeAction() {
-        for(int i=0; i<SceneDisplayer::LAST_VIEW_PROPERTIES; ++i) {
+        for (int i=0; i<SceneDisplayer::LAST_VIEW_PROPERTIES; ++i) {
             auto viewProperties = static_cast<SceneDisplayer::ViewProperties>(i);
 
             bool isViewChecked = viewActions[viewProperties]->isChecked();
             bool isCorrespondingTabSelected = (scenePanelWidget==nullptr && i==0)
-                    || (scenePanelWidget!=nullptr && getConcernedTabFor(viewProperties)==scenePanelWidget->getTabSelected());
+                    || (scenePanelWidget!=nullptr && getConcernedTabfor (viewProperties)==scenePanelWidget->getTabSelected());
 
             sceneDisplayerWidget->setViewProperties(viewProperties, isViewChecked && isCorrespondingTabSelected);
         }
     }
 
-    ScenePanelWidget::TabName MapEditorWindow::getConcernedTabFor(SceneDisplayer::ViewProperties viewProperties) {
-        if(SceneDisplayer::MODEL_PHYSICS==viewProperties) {
+    ScenePanelWidget::TabName MapEditorWindow::getConcernedTabfor (SceneDisplayer::ViewProperties viewProperties) {
+        if (SceneDisplayer::MODEL_PHYSICS==viewProperties) {
             return ScenePanelWidget::OBJECTS;
         }
-        if(SceneDisplayer::LIGHT_SCOPE==viewProperties) {
+        if (SceneDisplayer::LIGHT_SCOPE==viewProperties) {
             return ScenePanelWidget::LIGHTS;
         }
-        if(SceneDisplayer::SOUND_TRIGGER==viewProperties) {
+        if (SceneDisplayer::SOUND_TRIGGER==viewProperties) {
             return ScenePanelWidget::SOUNDS;
         }
-        if(SceneDisplayer::NAV_MESH==viewProperties) {
+        if (SceneDisplayer::NAV_MESH==viewProperties) {
             return ScenePanelWidget::AI;
         }
 

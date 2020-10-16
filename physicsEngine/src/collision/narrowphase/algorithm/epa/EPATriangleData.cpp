@@ -11,7 +11,7 @@ namespace urchin {
         distanceToOrigin(distanceToOrigin),
         normal(normal),
         closestPointToOrigin(closestPointToOrigin) {
-        for(unsigned int i=0; i<3; ++i) {
+        for (unsigned int i=0; i<3; ++i) {
             this->barycentrics[i] = barycentrics[i];
         }
     }

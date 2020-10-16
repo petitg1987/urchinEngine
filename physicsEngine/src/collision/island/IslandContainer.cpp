@@ -19,7 +19,7 @@ namespace urchin {
         islandElementsLink.clear();
         islandElementsLink.resize(islandElements.size());
 
-        for(std::size_t i=0; i<islandElements.size(); ++i) {
+        for (std::size_t i=0; i<islandElements.size(); ++i) {
             islandElements[i]->setIslandElementId(i);
 
             islandElementsLink[i].element = islandElements[i];
@@ -34,7 +34,7 @@ namespace urchin {
         unsigned int islandId1 = findIslandId(element1->getIslandElementId());
         unsigned int islandId2 = findIslandId(element2->getIslandElementId());
 
-        if(islandId1==islandId2) { //elements are already in the same island
+        if (islandId1==islandId2) { //elements are already in the same island
             return;
         }
 
@@ -52,7 +52,7 @@ namespace urchin {
      */
     const std::vector<IslandElementLink> &IslandContainer::retrieveSortedIslandElements() {
         //store directly island ID on islandIdRef instead of reference
-        for(std::size_t i=0; i<islandElementsLink.size(); ++i) {
+        for (std::size_t i=0; i<islandElementsLink.size(); ++i) {
             islandElementsLink[i].islandIdRef = findIslandId(i);
         }
 
@@ -64,7 +64,7 @@ namespace urchin {
     }
 
     unsigned int IslandContainer::findIslandId(unsigned int elementRef) const {
-        while(elementRef!=islandElementsLink[elementRef].islandIdRef) {
+        while (elementRef!=islandElementsLink[elementRef].islandIdRef) {
             elementRef = islandElementsLink[elementRef].islandIdRef;
         }
 

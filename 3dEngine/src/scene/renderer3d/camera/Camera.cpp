@@ -54,7 +54,7 @@ namespace urchin {
     }
 
     void Camera::resetMousePosition() {
-        if(bUseMouse) {
+        if (bUseMouse) {
             moveMouse(middleScreenX, middleScreenY);
         }
     }
@@ -62,8 +62,8 @@ namespace urchin {
     void Camera::useMouseToMoveCamera(bool use) {
         bUseMouse = use;
 
-        if(use) {
-            if(middleScreenX!=0 || middleScreenY!=0) {
+        if (use) {
+            if (middleScreenX!=0 || middleScreenY!=0) {
                 resetMousePosition();
             }
         } else {
@@ -206,7 +206,7 @@ namespace urchin {
     }
 
     bool Camera::onMouseMove(int mouseX, int mouseY) {
-        if(mouseX > 0 || mouseY > 0) {
+        if (mouseX > 0 || mouseY > 0) {
             if (!bUseMouse) {
                 oldMouseX = static_cast<unsigned int>(mouseX);
                 oldMouseY = static_cast<unsigned int>(mouseY);

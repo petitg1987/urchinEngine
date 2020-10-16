@@ -16,7 +16,7 @@ namespace urchin {
 
         std::string filenamePath = FileSystem::instance()->getResourcesDirectory() + filename;
         file.open(filenamePath, std::ios::in);
-        if(file.fail()) {
+        if (file.fail()) {
             throw std::invalid_argument("Cannot open the file " + filenamePath + ".");
         }
 
@@ -47,7 +47,7 @@ namespace urchin {
         //hierarchy
         auto *boneInfos = new BoneInfo[numBones];
         FileReaderUtil::nextLine(file, buffer); //buffer = "hierarchy {"
-        for(unsigned int i=0;i<numBones;i++) {
+        for (unsigned int i=0;i<numBones;i++) {
             FileReaderUtil::nextLine(file, buffer);
             iss.clear(); iss.str(buffer);
             iss >> boneInfos[i].name >> boneInfos[i].parent >> boneInfos[i].flags >>boneInfos[i].startIndex;
@@ -58,7 +58,7 @@ namespace urchin {
         //bounds
         auto **bboxes = new AABBox<float>*[numFrames];
         FileReaderUtil::nextLine(file, buffer); //buffer = "bounds {"
-        for(unsigned int i=0;i<numFrames;i++) {
+        for (unsigned int i=0;i<numFrames;i++) {
             FileReaderUtil::nextLine(file, buffer);
             iss.clear(); iss.str(buffer);
 
@@ -71,7 +71,7 @@ namespace urchin {
         //baseframe
         auto *baseFrame = new BaseFrameBone[numBones];
         FileReaderUtil::nextLine(file, buffer); //buffer = "baseframe {"
-        for(unsigned int i=0;i<numBones;i++) {
+        for (unsigned int i=0;i<numBones;i++) {
             FileReaderUtil::nextLine(file, buffer);
             iss.clear(); iss.str(buffer);
             iss >> sdata >> baseFrame[i].pos.X >> baseFrame[i].pos.Y >> baseFrame[i].pos.Z >> sdata >> sdata >>baseFrame[i].orient.X >> baseFrame[i].orient.Y >> baseFrame[i].orient.Z;
@@ -82,53 +82,53 @@ namespace urchin {
         //frames
         auto **skeletonFrames = new Bone*[numFrames];
         auto *animFrameData = new float[numAnimatedComponents];
-        for(unsigned int frameIndex=0;frameIndex<numFrames;++frameIndex) {
+        for (unsigned int frameIndex=0;frameIndex<numFrames;++frameIndex) {
             skeletonFrames[frameIndex] = new Bone[numBones];
 
             FileReaderUtil::nextLine(file, buffer); // buffer = "frame ? {"
-            for(unsigned int j=0;j<numAnimatedComponents;j++) {
+            for (unsigned int j=0;j<numAnimatedComponents;j++) {
                 file >> animFrameData[j];
             }
 
             //build frame skeleton from the collected data
-            for(unsigned int i=0; i<numBones; ++i) {
+            for (unsigned int i=0; i<numBones; ++i) {
                 const BaseFrameBone *baseBone = &baseFrame[i];
                 int j = 0;
 
                 Point3<float> animatedPos = baseBone->pos;
                 Quaternion<float> animatedOrient = baseBone->orient;
 
-                if((boneInfos[i].flags) & 1u) //Tx
+                if ((boneInfos[i].flags) & 1u) //Tx
                 {
                     animatedPos.X = animFrameData[boneInfos[i].startIndex + j];
                     ++j;
                 }
 
-                if((boneInfos[i].flags) & 2u) //Ty
+                if ((boneInfos[i].flags) & 2u) //Ty
                 {
                     animatedPos.Y = animFrameData[boneInfos[i].startIndex + j];
                     ++j;
                 }
 
-                if((boneInfos[i].flags) & 4u) //Tz
+                if ((boneInfos[i].flags) & 4u) //Tz
                 {
                     animatedPos.Z = animFrameData[boneInfos[i].startIndex + j];
                     ++j;
                 }
 
-                if((boneInfos[i].flags) & 8u) //Qx
+                if ((boneInfos[i].flags) & 8u) //Qx
                 {
                     animatedOrient.X = animFrameData[boneInfos[i].startIndex + j];
                     ++j;
                 }
 
-                if((boneInfos[i].flags) & 16u) //Qy
+                if ((boneInfos[i].flags) & 16u) //Qy
                 {
                     animatedOrient.Y = animFrameData[boneInfos[i].startIndex + j];
                     ++j;
                 }
 
-                if((boneInfos[i].flags) & 32u) //Qz
+                if ((boneInfos[i].flags) & 32u) //Qz
                 {
                     animatedOrient.Z = animFrameData[boneInfos[i].startIndex + j];
                 }
@@ -144,7 +144,7 @@ namespace urchin {
                 thisBone->name = boneInfos[i].name;
 
                 //has parent ?
-                if(thisBone->parent < 0) {
+                if (thisBone->parent < 0) {
                     thisBone->pos = animatedPos;
                     thisBone->orient = animatedOrient;
                 } else {

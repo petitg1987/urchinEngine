@@ -58,7 +58,7 @@ namespace urchin {
 
     void NewLightDialog::updateLightName() {
         QString lightName = lightNameText->text();
-        if(!lightName.isEmpty()) {
+        if (!lightName.isEmpty()) {
             this->lightName = lightName.toUtf8().constData();
         }
     }
@@ -72,9 +72,9 @@ namespace urchin {
         auto lightType = static_cast<Light::LightType>(variant.toInt());
 
         Light *light;
-        if(lightType==Light::OMNIDIRECTIONAL) {
+        if (lightType==Light::OMNIDIRECTIONAL) {
             light = new OmnidirectionalLight(Point3<float>(0.0, 0.0, 0.0));
-        } else if(lightType==Light::SUN) {
+        } else if (lightType==Light::SUN) {
             light = new SunLight(Vector3<float>(1.0, -1.0, 0.0));
         } else {
             throw std::invalid_argument("Unknown the light type to create a new light: " + std::to_string(lightType));
@@ -90,21 +90,21 @@ namespace urchin {
     }
 
     void NewLightDialog::done(int r) {
-        if(QDialog::Accepted == r) {
+        if (QDialog::Accepted == r) {
             bool hasError = false;
 
             updateLightName();
             LabelStyleHelper::applyNormalStyle(lightNameLabel);
 
-            if(lightName.empty()) {
+            if (lightName.empty()) {
                 LabelStyleHelper::applyErrorStyle(lightNameLabel, "Light name is mandatory");
                 hasError = true;
-            } else if(isSceneLightExist(lightName)) {
+            } else if (isSceneLightExist(lightName)) {
                 LabelStyleHelper::applyErrorStyle(lightNameLabel, "Light name is already used");
                 hasError = true;
             }
 
-            if(!hasError) {
+            if (!hasError) {
                 r = buildSceneLight(r);
                 QDialog::done(r);
             }
@@ -116,7 +116,7 @@ namespace urchin {
     bool NewLightDialog::isSceneLightExist(const std::string &name) {
         std::list<const SceneLight *> sceneLights = lightController->getSceneLights();
         for (auto &sceneLight : sceneLights) {
-            if(sceneLight->getName() == name) {
+            if (sceneLight->getName() == name) {
                 return true;
             }
         }

@@ -18,9 +18,9 @@ namespace urchin {
         }
 
         //determine sound format
-        if(fileInfos.channels==1) {
+        if (fileInfos.channels==1) {
             format = AL_FORMAT_MONO16;
-        } else if(fileInfos.channels==2) {
+        } else if (fileInfos.channels==2) {
             format = AL_FORMAT_STEREO16;
         } else {
             sf_close(file);
@@ -47,8 +47,8 @@ namespace urchin {
             numSamplesRead += sf_read_short(file, &buffer[numSamplesRead], itemsToRead);
             bool endOfFileReached = buffer.size() != numSamplesRead;
 
-            if(endOfFileReached) {
-                if(playLoop) { //reset cursor to 0
+            if (endOfFileReached) {
+                if (playLoop) { //reset cursor to 0
                     sf_seek(file, 0, SEEK_SET);
                 } else {
                     break;
@@ -56,7 +56,7 @@ namespace urchin {
             }
 
             bufferFilled = numSamplesRead == buffer.size();
-        }while(!bufferFilled);
+        }while (!bufferFilled);
     }
 
     ALenum SoundFileReader::getFormat() const {

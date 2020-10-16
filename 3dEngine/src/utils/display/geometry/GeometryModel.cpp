@@ -95,7 +95,7 @@ namespace urchin {
         glDisable(GL_CULL_FACE);
         glPolygonMode(GL_FRONT_AND_BACK, polygonMode==WIREFRAME ? GL_LINE : GL_FILL);
         glLineWidth(lineSize);
-        if(blendMode==ONE_MINUS_SRC_ALPHA) {
+        if (blendMode==ONE_MINUS_SRC_ALPHA) {
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         }
@@ -108,7 +108,7 @@ namespace urchin {
         if (isAlwaysVisible()) {
             glEnable(GL_DEPTH_TEST);
         }
-        if(blendMode!=NONE) {
+        if (blendMode!=NONE) {
             glDisable(GL_BLEND);
         }
         glEnable(GL_CULL_FACE);

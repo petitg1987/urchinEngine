@@ -5,7 +5,7 @@
 namespace urchin {
 
     void GeometryManager::addGeometry(GeometryModel *geometry) {
-        if(geometry) {
+        if (geometry) {
             geometryModels.push_back(geometry);
 
             geometry->onCameraProjectionUpdate(projectionMatrix);
@@ -13,7 +13,7 @@ namespace urchin {
     }
 
     void GeometryManager::removeGeometry(GeometryModel *geometry) {
-        if(geometry) {
+        if (geometry) {
             auto it = std::find(geometryModels.begin(), geometryModels.end(), geometry);
             if (it != geometryModels.end()) {
                 geometryModels.erase(it);

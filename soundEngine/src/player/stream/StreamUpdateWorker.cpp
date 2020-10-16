@@ -15,7 +15,7 @@ namespace urchin {
         nbSecondByChunk(ConfigService::instance()->getUnsignedIntValue("player.streamChunkSizeInSecond")),
         updateStreamBufferPauseTime(ConfigService::instance()->getUnsignedIntValue("player.updateStreamBufferPauseTime")),
         streamUpdateWorkerStopper(false) {
-        if(nbChunkBuffer <= 1) {
+        if (nbChunkBuffer <= 1) {
             throw std::domain_error("Number of chunk buffer must be greater than one.");
         }
     }
@@ -37,13 +37,13 @@ namespace urchin {
         //create buffers/chunks
         ALuint *bufferId = new ALuint[nbChunkBuffer];
         alGenBuffers(nbChunkBuffer, bufferId);
-        for(unsigned int i=0; i<nbChunkBuffer; ++i) {
+        for (unsigned int i=0; i<nbChunkBuffer; ++i) {
             task->getStreamChunk(i).bufferId = bufferId[i];
         }
         delete []bufferId;
 
         //initialize buffers/chunks
-        for(unsigned int i=0; i<nbChunkBuffer; ++i) {
+        for (unsigned int i=0; i<nbChunkBuffer; ++i) {
             fillAndPushChunk(task, i);
         }
 
@@ -59,7 +59,7 @@ namespace urchin {
         std::lock_guard<std::mutex> lock(tasksMutex);
 
         for (auto task : tasks) {
-            if(task->getSourceId() == sound->getSourceId()) {
+            if (task->getSourceId() == sound->getSourceId()) {
                 return true;
             }
         }
@@ -70,8 +70,8 @@ namespace urchin {
     void StreamUpdateWorker::removeTask(const Sound *sound) {
         std::lock_guard<std::mutex> lock(tasksMutex);
 
-        for(auto it=tasks.begin(); it!=tasks.end(); ++it) {
-            if((*it)->getSourceId() == sound->getSourceId()) {
+        for (auto it=tasks.begin(); it!=tasks.end(); ++it) {
+            if ((*it)->getSourceId() == sound->getSourceId()) {
                 deleteTask(*it);
                 tasks.erase(it);
 
@@ -88,7 +88,7 @@ namespace urchin {
     }
 
     void StreamUpdateWorker::controlExecution() {
-        if(soundThreadExceptionPtr) {
+        if (soundThreadExceptionPtr) {
             std::rethrow_exception(soundThreadExceptionPtr);
         }
     }
@@ -112,7 +112,7 @@ namespace urchin {
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(updateStreamBufferPauseTime));
             }
-        }catch(std::exception &e) {
+        } catch (std::exception &e) {
             Logger::logger().logError("Error cause sound thread crash: exception reported to main thread");
             soundThreadExceptionPtr = std::current_exception();
         }
@@ -129,7 +129,7 @@ namespace urchin {
         ALint chunkProcessed = 0;
         alGetSourcei(task->getSourceId(), AL_BUFFERS_PROCESSED, &chunkProcessed);
 
-        for(int i=0; i<chunkProcessed; ++i) {
+        for (int i=0; i<chunkProcessed; ++i) {
             //pop the first unused buffer from the queue
             ALuint bufferId;
             alSourceUnqueueBuffers(task->getSourceId(), 1, &bufferId);
@@ -147,7 +147,7 @@ namespace urchin {
         clearQueue(task);
         alSourcei(task->getSourceId(), AL_BUFFER, 0);
 
-        for(unsigned int i=0; i<nbChunkBuffer; ++i) {
+        for (unsigned int i=0; i<nbChunkBuffer; ++i) {
             alDeleteBuffers(1, &task->getStreamChunk(i).bufferId);
         }
 
@@ -164,7 +164,7 @@ namespace urchin {
 
         const StreamChunk &streamChunk = task->getStreamChunk(chunkId);
         ALsizei size = streamChunk.numberOfSamples * sizeof(ALushort);
-        if(size > 0) {
+        if (size > 0) {
             alBufferData(streamChunk.bufferId, task->getSoundFileReader()->getFormat(), &streamChunk.samples[0],
                     size, task->getSoundFileReader()->getSampleRate());
 
@@ -184,8 +184,8 @@ namespace urchin {
     }
 
     unsigned int StreamUpdateWorker::retrieveChunkId(StreamUpdateTask *task, ALuint bufferId) {
-        for(unsigned int i=0; i<nbChunkBuffer; ++i) {
-            if(task->getStreamChunk(i).bufferId == bufferId) {
+        for (unsigned int i=0; i<nbChunkBuffer; ++i) {
+            if (task->getStreamChunk(i).bufferId == bufferId) {
                 return i;
             }
         }

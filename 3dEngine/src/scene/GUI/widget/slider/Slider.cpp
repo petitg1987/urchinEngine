@@ -16,7 +16,7 @@ namespace urchin {
         rightButton(nullptr),
         timeInClickingState(0.0f),
         timeSinceLastChange(0.0f) {
-        if(values.empty()) {
+        if (values.empty()) {
             throw std::runtime_error("At least one value must be provided to slider.");
         }
 
@@ -50,7 +50,7 @@ namespace urchin {
         leftButton = new Text(Position(0, 0, Position::PIXEL), buttonNameFont);
         leftButton->setText(leftButtonString);
         leftButton->addEventListener(std::make_shared<ButtonSliderEventListener>(this, true));
-        if(leftButtonEventListener) {
+        if (leftButtonEventListener) {
             this->leftButton->addEventListener(leftButtonEventListener);
         }
         Widget::addChild(leftButton);
@@ -59,14 +59,14 @@ namespace urchin {
         rightButton->setText(rightButtonString);
         rightButton->setPosition(Position((float)(getWidth()-rightButton->getWidth()), 0, Position::PIXEL));
         rightButton->addEventListener(std::make_shared<ButtonSliderEventListener>(this, false));
-        if(rightButtonEventListener) {
+        if (rightButtonEventListener) {
             this->rightButton->addEventListener(rightButtonEventListener);
         }
         Widget::addChild(rightButton);
 
         //values
         valuesText.resize(values.size());
-        for(std::size_t i=0; i<values.size(); ++i) {
+        for (std::size_t i=0; i<values.size(); ++i) {
             Text *valueText = new Text(Position(0, 0, Position::PIXEL), valuesNameFont);
             valueText->setText(values[i]);
             valueText->setPosition(Position((float)(getWidth()-valueText->getWidth()) / 2.0f, 0, Position::PIXEL));
@@ -83,7 +83,7 @@ namespace urchin {
     }
 
     void Slider::setSelectedIndex(unsigned int index) {
-        if(index >= values.size()) {
+        if (index >= values.size()) {
             throw std::out_of_range("Index is out of range: " + std::to_string(index) + ". Maximum index allowed: " + std::to_string(values.size()-1));
         }
 
@@ -104,20 +104,20 @@ namespace urchin {
     }
 
     void Slider::display(int translateDistanceLoc, float dt) {
-        if(leftButton->getWidgetState()==Widget::WidgetStates::CLICKING) {
+        if (leftButton->getWidgetState()==Widget::WidgetStates::CLICKING) {
             timeInClickingState += dt;
             timeSinceLastChange += dt;
 
-            if(timeInClickingState>TIME_BEFORE_AUTO_CLICK && timeSinceLastChange>TIME_BEFORE_AUTO_NEXT_CLICK
+            if (timeInClickingState>TIME_BEFORE_AUTO_CLICK && timeSinceLastChange>TIME_BEFORE_AUTO_NEXT_CLICK
                     && getSelectedIndex() > 0) {
                 setSelectedIndex(getSelectedIndex()-1);
                 timeSinceLastChange = 0.0f;
             }
-        } else if(rightButton->getWidgetState()==Widget::WidgetStates::CLICKING) {
+        } else if (rightButton->getWidgetState()==Widget::WidgetStates::CLICKING) {
             timeInClickingState += dt;
             timeSinceLastChange += dt;
 
-            if(timeInClickingState>TIME_BEFORE_AUTO_CLICK && timeSinceLastChange>TIME_BEFORE_AUTO_NEXT_CLICK
+            if (timeInClickingState>TIME_BEFORE_AUTO_CLICK && timeSinceLastChange>TIME_BEFORE_AUTO_NEXT_CLICK
                     && getSelectedIndex()+1 < values.size()) {
                 setSelectedIndex(getSelectedIndex()+1);
                 timeSinceLastChange = 0.0f;
@@ -137,14 +137,14 @@ namespace urchin {
     }
 
     void Slider::ButtonSliderEventListener::onClickRelease(Widget *) {
-        if(isLeftButton) {
-            if(slider->selectedIndex > 0) {
+        if (isLeftButton) {
+            if (slider->selectedIndex > 0) {
                 slider->valuesText[slider->selectedIndex]->setIsVisible(false);
                 slider->selectedIndex--;
                 slider->valuesText[slider->selectedIndex]->setIsVisible(true);
             }
         } else {
-            if(slider->selectedIndex+1 < slider->valuesText.size()) {
+            if (slider->selectedIndex+1 < slider->valuesText.size()) {
                 slider->valuesText[slider->selectedIndex]->setIsVisible(false);
                 slider->selectedIndex++;
                 slider->valuesText[slider->selectedIndex]->setIsVisible(true);

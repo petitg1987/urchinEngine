@@ -23,7 +23,7 @@ namespace urchin {
         const auto &concaveShape = dynamic_cast<const CollisionConcaveShape &>(object1.getShape());
 
         const std::vector<CollisionTriangleShape> &triangles = concaveShape.findTrianglesInAABBox(aabboxLocalToObject1);
-        for(const auto &triangle : triangles) {
+        for (const auto &triangle : triangles) {
             std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = getCollisionAlgorithmSelector()->createCollisionAlgorithm(
                     body1, &triangle, body2, &otherShape);
 
@@ -38,9 +38,9 @@ namespace urchin {
     }
 
     void ConcaveAnyCollisionAlgorithm::addContactPointsToManifold(const ManifoldResult &manifoldResult, bool manifoldSwapped) {
-        for(unsigned int i=0; i<manifoldResult.getNumContactPoints(); ++i) {
+        for (unsigned int i=0; i<manifoldResult.getNumContactPoints(); ++i) {
             const ManifoldContactPoint &manifoldContactPoint = manifoldResult.getManifoldContactPoint(i);
-            if(manifoldSwapped) {
+            if (manifoldSwapped) {
                 getManifoldResult().addContactPoint(
                         (-manifoldContactPoint.getNormalFromObject2()),
                         manifoldContactPoint.getPointOnObject2(),

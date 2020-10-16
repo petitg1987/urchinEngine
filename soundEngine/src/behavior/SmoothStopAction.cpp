@@ -34,7 +34,7 @@ namespace urchin {
     float SmoothStopAction::computeChangeVolumePercentage() {
         assert(bIsSmoothStopStarted);
 
-        if(soundBehavior.getStopBehavior()!=SoundBehavior::SMOOTH_STOP) {
+        if (soundBehavior.getStopBehavior()!=SoundBehavior::SMOOTH_STOP) {
             return 0.0;
         }
 

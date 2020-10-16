@@ -21,10 +21,10 @@ namespace urchin {
     }
 
     void SceneTerrain::setTerrainManagers(Renderer3d *renderer3d, PhysicsWorld *physicsWorld, AIManager *aiManager) {
-        if(this->renderer3d) {
+        if (this->renderer3d) {
             throw std::invalid_argument("Cannot add the scene terrain on two different renderer.");
         }
-        if(!renderer3d) {
+        if (!renderer3d) {
             throw std::invalid_argument("Cannot specify a null renderer manager for a scene terrain.");
         }
 
@@ -34,11 +34,11 @@ namespace urchin {
 
         renderer3d->getTerrainManager()->addTerrain(terrain);
 
-        if(physicsWorld) {
+        if (physicsWorld) {
             physicsWorld->addBody(rigidBody);
         }
 
-        if(aiManager && aiTerrain) {
+        if (aiManager && aiTerrain) {
             aiManager->addEntity(aiTerrain);
         }
     }
@@ -74,11 +74,11 @@ namespace urchin {
     }
 
     void SceneTerrain::setTerrain(Terrain *terrain) {
-        if(!terrain) {
+        if (!terrain) {
             throw std::invalid_argument("Cannot set a null terrain on scene terrain.");
         }
 
-        if(renderer3d) {
+        if (renderer3d) {
             renderer3d->getTerrainManager()->removeTerrain(this->terrain);
             renderer3d->getTerrainManager()->addTerrain(terrain);
         } else {
@@ -106,7 +106,7 @@ namespace urchin {
         deleteRigidBody();
 
         this->rigidBody = rigidBody;
-        if(physicsWorld && rigidBody) {
+        if (physicsWorld && rigidBody) {
             physicsWorld->addBody(rigidBody);
         }
     }
@@ -114,19 +114,19 @@ namespace urchin {
     void SceneTerrain::setupAIObject(RigidBody *rigidBody) {
         deleteAIObjects();
 
-        if(!rigidBody) {
+        if (!rigidBody) {
             this->aiTerrain = nullptr;
         } else {
             std::string aiObjectName = "@" + rigidBody->getId(); //prefix to avoid collision name with objects
             this->aiTerrain = AIEntityBuilder::instance()->buildAITerrain(aiObjectName, rigidBody->getScaledShape(), rigidBody->getTransform());
-            if(aiManager) {
+            if (aiManager) {
                 aiManager->addEntity(aiTerrain);
             }
         }
     }
 
     void SceneTerrain::deleteRigidBody() {
-        if(physicsWorld && rigidBody) {
+        if (physicsWorld && rigidBody) {
             physicsWorld->removeBody(rigidBody);
         } else {
             delete rigidBody;
@@ -136,7 +136,7 @@ namespace urchin {
     }
 
     void SceneTerrain::deleteAIObjects() {
-        if(aiManager && aiTerrain) {
+        if (aiManager && aiTerrain) {
             aiManager->removeEntity(aiTerrain);
         }
     }

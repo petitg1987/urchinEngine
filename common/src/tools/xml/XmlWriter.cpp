@@ -34,11 +34,11 @@ namespace urchin {
     std::shared_ptr<XmlChunk> XmlWriter::createChunk(const std::string &chunkName, const XmlAttribute &attribute, const std::shared_ptr<XmlChunk> &parent) {
         auto *chunk = new TiXmlElement(chunkName);
 
-        if(!attribute.getAttributeName().empty()) {
+        if (!attribute.getAttributeName().empty()) {
             chunk->SetAttribute(attribute.getAttributeName(), attribute.getAttributeValue());
         }
 
-        if(parent) {
+        if (parent) {
             parent->getChunk()->LinkEndChild(chunk);
         } else {
             doc->LinkEndChild(chunk);
@@ -51,7 +51,7 @@ namespace urchin {
      * Save chunk in XML file
      */
     void XmlWriter::saveInFile() {
-        if(!doc->SaveFile(filenamePath)) {
+        if (!doc->SaveFile(filenamePath)) {
             throw std::invalid_argument("Cannot save the file " + filenamePath + ".");
         }
     }

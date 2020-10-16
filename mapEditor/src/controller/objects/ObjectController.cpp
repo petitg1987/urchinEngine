@@ -21,8 +21,8 @@ namespace urchin {
     }
 
     const SceneObject *ObjectController::findSceneObjectByBodyId(const std::string &bodyId) const {
-        for(auto sceneObject : getSceneObjects()) {
-            if(sceneObject->getRigidBody() && sceneObject->getRigidBody()->getId()==bodyId) {
+        for (auto sceneObject : getSceneObjects()) {
+            if (sceneObject->getRigidBody() && sceneObject->getRigidBody()->getId()==bodyId) {
                 return sceneObject;
             }
         }
@@ -51,7 +51,7 @@ namespace urchin {
         newSceneObject->setModel(model);
 
         RigidBody *toCloneRigidBody = toCloneSceneObject->getRigidBody();
-        if(toCloneRigidBody) {
+        if (toCloneRigidBody) {
             auto *rigidBody = new RigidBody(*toCloneRigidBody);
             rigidBody->setId(newSceneObject->getName());
             rigidBody->setTransform(model->getTransform());
@@ -92,7 +92,7 @@ namespace urchin {
         Model *model = sceneObject->getModel();
 
         model->setTransform(transform);
-        if(sceneObject->getRigidBody()) {
+        if (sceneObject->getRigidBody()) {
             sceneObject->getRigidBody()->setTransform(transform);
         }
 
@@ -153,7 +153,7 @@ namespace urchin {
         const std::list<SceneObject *> &sceneObjects = getMapHandler()->getMap()->getSceneObjects();
         auto it = std::find(sceneObjects.begin(), sceneObjects.end(), constSceneObject);
 
-        if(it!=sceneObjects.end()) {
+        if (it!=sceneObjects.end()) {
             return *it;
         }
 

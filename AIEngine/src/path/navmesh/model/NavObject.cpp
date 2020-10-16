@@ -28,8 +28,8 @@ namespace urchin {
     }
 
     const std::vector<std::weak_ptr<NavObject>> &NavObject::retrieveNearObjects() {
-        for(auto it = nearObjects.begin(); it != nearObjects.end();) {
-            if(it->expired()) {
+        for (auto it = nearObjects.begin(); it != nearObjects.end();) {
+            if (it->expired()) {
                 it = nearObjects.erase(it);
             }
             else {

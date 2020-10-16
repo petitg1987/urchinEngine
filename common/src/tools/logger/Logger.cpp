@@ -41,12 +41,12 @@ namespace urchin {
         #ifndef NDEBUG
             write(prefix(criticalityLevel) + toLog + "\n");
         #else
-            if(criticalityLevel >= WARNING) {
+            if (criticalityLevel >= WARNING) {
                 write(prefix(criticalityLevel) + toLog + "\n");
             }
         #endif
 
-        if(criticalityLevel >= WARNING) {
+        if (criticalityLevel >= WARNING) {
             bHasFailure = true;
         }
     }
@@ -73,13 +73,13 @@ namespace urchin {
     }
 
     std::string Logger::getCriticalityString(CriticalityLevel criticalityLevel) {
-        if(criticalityLevel == INFO) {
+        if (criticalityLevel == INFO) {
             return "II";
         }
-        if(criticalityLevel == WARNING) {
+        if (criticalityLevel == WARNING) {
             return "WW";
         }
-        if(criticalityLevel == ERROR) {
+        if (criticalityLevel == ERROR) {
             return "EE";
         }
 

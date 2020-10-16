@@ -58,17 +58,17 @@ namespace urchin {
     }
 
     void Mesh::display(const MeshParameter &meshParameter) const {
-        if(meshParameter.getDiffuseTextureUnit()!=-1) {
+        if (meshParameter.getDiffuseTextureUnit()!=-1) {
             glActiveTexture(static_cast<GLenum>(meshParameter.getDiffuseTextureUnit()));
             glBindTexture(GL_TEXTURE_2D, constMesh->getMaterial()->getDiffuseTexture()->getTextureID());
         }
 
-        if(meshParameter.getNormalTextureUnit()!=-1) {
+        if (meshParameter.getNormalTextureUnit()!=-1) {
             glActiveTexture(static_cast<GLenum>(meshParameter.getNormalTextureUnit()));
             glBindTexture(GL_TEXTURE_2D, constMesh->getMaterial()->getNormalTexture()->getTextureID());
         }
 
-        if(meshParameter.getAmbientFactorLoc()!=-1) {
+        if (meshParameter.getAmbientFactorLoc()!=-1) {
             glUniform1f(meshParameter.getAmbientFactorLoc(), constMesh->getMaterial()->getAmbientFactor());
         }
 
@@ -78,7 +78,7 @@ namespace urchin {
 
     void Mesh::drawBaseBones(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const {
         std::vector<Point3<float>> bonePositions;
-        for(const auto &bone : constMesh->getBaseSkeleton()) {
+        for (const auto &bone : constMesh->getBaseSkeleton()) {
             bonePositions.push_back(bone.pos);
         }
 

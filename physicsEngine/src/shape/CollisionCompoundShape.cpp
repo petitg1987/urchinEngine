@@ -10,7 +10,7 @@ namespace urchin {
             localizedShapes(localizedShapes),
             maxDistanceToCenter(0.0f),
             minDistanceToCenter(0.0f) {
-        if(localizedShapes.empty()) {
+        if (localizedShapes.empty()) {
             throw std::invalid_argument("Compound shape must be composed of at least one shape.");
         }
 
@@ -21,8 +21,8 @@ namespace urchin {
         maxDistanceToCenter = toAABBox(PhysicsTransform()).getMaxHalfSize();
 
         minDistanceToCenter = std::numeric_limits<float>::max();
-        for(const auto &localizedShape : localizedShapes) {
-            if(localizedShape->shape->getMinDistanceToCenter() < minDistanceToCenter) {
+        for (const auto &localizedShape : localizedShapes) {
+            if (localizedShape->shape->getMinDistanceToCenter() < minDistanceToCenter) {
                 minDistanceToCenter = localizedShape->shape->getMinDistanceToCenter();
             }
         }
@@ -56,11 +56,11 @@ namespace urchin {
     }
 
     AABBox<float> CollisionCompoundShape::toAABBox(const PhysicsTransform &physicsTransform) const {
-        if(!lastTransform.equals(physicsTransform)) {
+        if (!lastTransform.equals(physicsTransform)) {
             PhysicsTransform shapeWorldTransform = physicsTransform * localizedShapes[0]->transform;
             AABBox<float> globalCompoundBox = localizedShapes[0]->shape->toAABBox(shapeWorldTransform);
 
-            for(std::size_t i = 1; i < localizedShapes.size(); ++i) {
+            for (std::size_t i = 1; i < localizedShapes.size(); ++i) {
                 shapeWorldTransform = physicsTransform * localizedShapes[i]->transform;
                 AABBox<float> compoundBox = localizedShapes[i]->shape->toAABBox(shapeWorldTransform);
 
@@ -100,7 +100,7 @@ namespace urchin {
 
     CollisionShape3D *CollisionCompoundShape::clone() const {
         std::vector<std::shared_ptr<const LocalizedCollisionShape>> clonedLocalizedShapes;
-        for(const auto &localizedShape : localizedShapes) {
+        for (const auto &localizedShape : localizedShapes) {
             auto clonedLocalizedShape = std::make_shared<LocalizedCollisionShape>();
             clonedLocalizedShape->position = localizedShape->position;
             clonedLocalizedShape->shape = std::shared_ptr<const CollisionShape3D>(localizedShape->shape->clone());

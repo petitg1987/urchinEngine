@@ -26,9 +26,9 @@ namespace urchin {
 
     std::shared_ptr<TextureFilter> GaussianBlurFilterBuilder::build() {
         std::shared_ptr<TextureFilter> textureFilter;
-        if(pBlurDirection==BlurDirection::HORIZONTAL_BLUR) {
+        if (pBlurDirection==BlurDirection::HORIZONTAL_BLUR) {
             textureFilter = std::make_shared<GaussianBlurFilter>(this, GaussianBlurFilter::HORIZONTAL);
-        } else if(pBlurDirection==BlurDirection::VERTICAL_BLUR) {
+        } else if (pBlurDirection==BlurDirection::VERTICAL_BLUR) {
             textureFilter = std::make_shared<GaussianBlurFilter>(this, GaussianBlurFilter::VERTICAL);
         } else {
             throw std::invalid_argument("Unknown blur direction type: " + std::to_string(pBlurDirection));

@@ -33,7 +33,7 @@ namespace urchin {
 
         std::vector<OverlappingPair> copiedOverlappingPairs;
         copiedOverlappingPairs.reserve(overlappingPairs.size());
-        for(const auto &overlappingPair : overlappingPairs) {
+        for (const auto &overlappingPair : overlappingPairs) {
             copiedOverlappingPairs.emplace_back(OverlappingPair(*overlappingPair));
         }
         return copiedOverlappingPairs;

@@ -31,7 +31,7 @@ namespace urchin {
     }
 
     const SoundShape *SoundShapeWidget::retrieveShape() {
-        if(!shape) {
+        if (!shape) {
             shape = createSoundShape();
         }
         return shape;
@@ -48,7 +48,7 @@ namespace urchin {
     }
 
     void SoundShapeWidget::updateSoundShape() {
-        if(!disableShapeEvent) {
+        if (!disableShapeEvent) {
             shape = createSoundShape();
 
             emit soundShapeChange(shape);

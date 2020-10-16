@@ -21,7 +21,7 @@ void FallingObjectIT::fallOnPlane() {
     bodyManager->addBody(cubeBody);
     auto *collisionWorld = new CollisionWorld(bodyManager);
 
-    for(std::size_t i=0; i<150; ++i) {
+    for (std::size_t i=0; i<150; ++i) {
         collisionWorld->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
     }
 
@@ -33,7 +33,7 @@ void FallingObjectIT::fallOnPlane() {
 }
 
 void FallingObjectIT::fallForever() {
-    if(!Logger::logger().retrieveContent(std::numeric_limits<unsigned long>::max()).empty()) {
+    if (!Logger::logger().retrieveContent(std::numeric_limits<unsigned long>::max()).empty()) {
         throw std::runtime_error("Log file must be emptied before start this test.");
     }
 
@@ -49,7 +49,7 @@ void FallingObjectIT::fallForever() {
     bodyManager->addBody(planeBody);
     auto *collisionWorld = new CollisionWorld(bodyManager);
 
-    for(std::size_t i=0; i<500; ++i) {
+    for (std::size_t i=0; i<500; ++i) {
         collisionWorld->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
     }
 

@@ -28,18 +28,18 @@ namespace urchin {
     void BodyShapeDisplayer::displayBodyShape() {
         cleanCurrentDisplay();
 
-        if(selectedSceneObject && selectedSceneObject->getRigidBody()) {
+        if (selectedSceneObject && selectedSceneObject->getRigidBody()) {
             const Transform<float> &modelTransform = selectedSceneObject->getModel()->getTransform();
             std::shared_ptr<const CollisionShape3D> bodyShape = selectedSceneObject->getRigidBody()->getScaledShape();
 
-            if(bodyShape->isConcave()) {
+            if (bodyShape->isConcave()) {
                 PhysicsTransform transform(modelTransform.getPosition(), modelTransform.getOrientation());
                 AABBox<float> heightfieldAABBox = bodyShape->toAABBox(transform);
 
                 GeometryModel *geometryModel = new AABBoxModel(heightfieldAABBox);
                 geometryModel->setColor(0.0, 1.0, 0.0);
                 bodyShapeModels.push_back(geometryModel);
-            } else if(bodyShape->isCompound()) {
+            } else if (bodyShape->isCompound()) {
                 const auto *compoundShape = dynamic_cast<const CollisionCompoundShape *>(bodyShape.get());
                 const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &localizedShapes = compoundShape->getLocalizedShapes();
                 for (const auto &localizedShape : localizedShapes) {
@@ -56,7 +56,7 @@ namespace urchin {
 
                     bodyShapeModels.push_back(geometryModel);
                 }
-            } else if(bodyShape->isConvex()) {
+            } else if (bodyShape->isConvex()) {
                 PhysicsTransform transform(modelTransform.getPosition(), modelTransform.getOrientation());
                 std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> bodyObject = bodyShape->toConvexObject(transform);
 
@@ -74,25 +74,25 @@ namespace urchin {
     }
 
     GeometryModel *BodyShapeDisplayer::retrieveSingleGeometry(CollisionShape3D::ShapeType shapeType, const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &bodyObject) {
-        if(shapeType==CollisionShape3D::SPHERE_SHAPE) {
+        if (shapeType==CollisionShape3D::SPHERE_SHAPE) {
             return retrieveSphereGeometry(bodyObject);
         }
-        if(shapeType==CollisionShape3D::BOX_SHAPE) {
+        if (shapeType==CollisionShape3D::BOX_SHAPE) {
             return retrieveBoxGeometry(bodyObject);
         }
-        if(shapeType==CollisionShape3D::CYLINDER_SHAPE) {
+        if (shapeType==CollisionShape3D::CYLINDER_SHAPE) {
             return retrieveCylinderGeometry(bodyObject);
         }
-        if(shapeType==CollisionShape3D::CONE_SHAPE) {
+        if (shapeType==CollisionShape3D::CONE_SHAPE) {
             return retrieveConeGeometry(bodyObject);
         }
-        if(shapeType==CollisionShape3D::CAPSULE_SHAPE) {
+        if (shapeType==CollisionShape3D::CAPSULE_SHAPE) {
             return retrieveCapsuleGeometry(bodyObject);
         }
-        if(shapeType==CollisionShape3D::CONVEX_HULL_SHAPE) {
+        if (shapeType==CollisionShape3D::CONVEX_HULL_SHAPE) {
             return retrieveConvexHullGeometry(bodyObject);
         }
-        if(shapeType==CollisionShape3D::COMPOUND_SHAPE) {
+        if (shapeType==CollisionShape3D::COMPOUND_SHAPE) {
             throw std::invalid_argument("Impossible to return a simple geometry from a compound shape");
         }
 

@@ -48,12 +48,12 @@ void main() {
     fragColor = centerTexValue;
     float totalWeight = 1.0f;
 
-    for(int i=0; i<KERNEL_RADIUS; ++i) {
+    for (int i=0; i<KERNEL_RADIUS; ++i) {
         vec2 uvOffset = (IS_VERTICAL_BLUR) ? vec2(0.0, offsets[i]) : vec2(offsets[i], 0.0);
         fragColor += bilateralBlur(uvOffset, i+1, linearizedDepthCenterValue, totalWeight);
     }
 
-    for(int i=0; i<KERNEL_RADIUS; ++i) {
+    for (int i=0; i<KERNEL_RADIUS; ++i) {
         vec2 uvOffset = (IS_VERTICAL_BLUR) ? vec2(0.0, -offsets[i]) : vec2(-offsets[i], 0.0);
         fragColor += bilateralBlur(uvOffset, i+1, linearizedDepthCenterValue, totalWeight);
     }

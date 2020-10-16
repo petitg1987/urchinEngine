@@ -11,15 +11,15 @@ namespace urchin {
         std::vector<Point3<T>> sortedPoints;
         sortedPoints.reserve(coplanarPoints.size());
 
-        for(std::size_t i=0; i<2 && i<coplanarPoints.size(); i++) {
+        for (std::size_t i=0; i<2 && i<coplanarPoints.size(); i++) {
             sortedPoints.push_back(coplanarPoints[i]);
         }
 
-        for(std::size_t i=2; i<coplanarPoints.size(); ++i) {
+        for (std::size_t i=2; i<coplanarPoints.size(); ++i) {
             std::size_t newPointIndex = sortedPoints.size();
             sortedPoints.push_back(coplanarPoints[i]);
-            while(newPointIndex>1) {
-                if(isNewPointClockwiseSorted(sortedPoints, normal, newPointIndex)) {
+            while (newPointIndex>1) {
+                if (isNewPointClockwiseSorted(sortedPoints, normal, newPointIndex)) {
                     break;
                 }
 
@@ -39,14 +39,14 @@ namespace urchin {
     }
 
     template<class T> bool SortPointsService<T>::isNewPointClockwiseSorted(const std::vector<Point3<T>> &points, const Vector3<T> &normal, unsigned int newPointIndex) {
-        for(unsigned int i=0; i<3; ++i) { //3 (counter-)clockwise tests: previous point, previous point, new point AND previous point, new point, next point AND new point, next point, next point
+        for (unsigned int i=0; i<3; ++i) { //3 (counter-)clockwise tests: previous point, previous point, new point AND previous point, new point, next point AND new point, next point, next point
             unsigned int firstPointIndex = (newPointIndex-2 + i)%points.size();
             unsigned int secondPointIndex = (newPointIndex-1 + i)%points.size();
             unsigned int thirdPointIndex = (newPointIndex-0 + i)%points.size();
 
             Vector3<T> vectorFirstSecond = points[firstPointIndex].vector(points[secondPointIndex]);
             Vector3<T> vectorSecondThird = points[secondPointIndex].vector(points[thirdPointIndex]);
-            if(normal.dotProduct(vectorFirstSecond.crossProduct(vectorSecondThird)) > 0.0f) { //wrong direction
+            if (normal.dotProduct(vectorFirstSecond.crossProduct(vectorSecondThird)) > 0.0f) { //wrong direction
                 return false;
             }
         }

@@ -42,7 +42,7 @@ namespace urchin {
 
     void CloneObjectDialog::updateObjectName() {
         QString objectName = objectNameText->text();
-        if(!objectName.isEmpty()) {
+        if (!objectName.isEmpty()) {
             this->objectName = objectName.toUtf8().constData();
         }
     }
@@ -51,7 +51,7 @@ namespace urchin {
         try {
             sceneObject = new SceneObject();
             sceneObject->setName(objectName);
-        }catch(std::exception &e) {
+        } catch (std::exception &e) {
             QMessageBox::critical(this, "Error", e.what());
             delete sceneObject;
 
@@ -66,21 +66,21 @@ namespace urchin {
     }
 
     void CloneObjectDialog::done(int r) {
-        if(QDialog::Accepted == r) {
+        if (QDialog::Accepted == r) {
             bool hasError = false;
 
             updateObjectName();
             LabelStyleHelper::applyNormalStyle(objectNameLabel);
 
-            if(objectName.empty()) {
+            if (objectName.empty()) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is mandatory");
                 hasError = true;
-            } else if(isSceneObjectExist(objectName)) {
+            } else if (isSceneObjectExist(objectName)) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is already used");
                 hasError = true;
             }
 
-            if(!hasError) {
+            if (!hasError) {
                 r = buildSceneObject(r);
                 QDialog::done(r);
             }
@@ -91,8 +91,8 @@ namespace urchin {
 
     bool CloneObjectDialog::isSceneObjectExist(const std::string &name) {
         std::list<const SceneObject *> sceneObjects = objectController->getSceneObjects();
-        for(auto &sceneObject : sceneObjects) {
-            if(sceneObject->getName() == name) {
+        for (auto &sceneObject : sceneObjects) {
+            if (sceneObject->getName() == name) {
                 return true;
             }
         }

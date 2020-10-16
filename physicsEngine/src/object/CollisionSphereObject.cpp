@@ -26,7 +26,7 @@ namespace urchin {
      * @return includeMargin Indicate whether support function need to take into account margin
      */
     Point3<float> CollisionSphereObject::getSupportPoint(const Vector3<float> &direction, bool includeMargin) const {
-        if(includeMargin) {
+        if (includeMargin) {
             return retrieveSphere().getSupportPoint(direction);
         }
 

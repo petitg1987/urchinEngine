@@ -21,7 +21,7 @@ namespace urchin {
     }
 
     float TextureManager::getMaxSupportedAnisotropy() const {
-        if(GLEW_EXT_texture_filter_anisotropic) {
+        if (GLEW_EXT_texture_filter_anisotropic) {
             float largestAnisotropy = 1.0;
             glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &largestAnisotropy);
             return largestAnisotropy;
@@ -31,7 +31,7 @@ namespace urchin {
     }
 
     void TextureManager::clampToMaxAnisotropy() {
-        if(anisotropy > getMaxSupportedAnisotropy()) {
+        if (anisotropy > getMaxSupportedAnisotropy()) {
             anisotropy = getMaxSupportedAnisotropy();
         }
     }

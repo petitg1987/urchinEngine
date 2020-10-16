@@ -25,7 +25,7 @@ template<class BaseType> FixedSizePool<BaseType>::FixedSizePool(const std::strin
 }
 
 template<class BaseType> FixedSizePool<BaseType>::~FixedSizePool() {
-    if(freeCount != maxElements) //ensure that 'free' method has been called
+    if (freeCount != maxElements) //ensure that 'free' method has been called
     {
         Logger::logger().logError("Fixed size pool '" + poolName + "' not correctly cleared. Free count: " + std::to_string(freeCount) + ", max elements: " + std::to_string(maxElements) + ".");
     }
@@ -37,11 +37,11 @@ template<class BaseType> FixedSizePool<BaseType>::~FixedSizePool() {
  * @return Memory pointer which can be used to instantiate an element.
  */
 template<class BaseType> void* FixedSizePool<BaseType>::allocate(unsigned int size) {
-    if(size > maxElementSize) {
+    if (size > maxElementSize) {
         throw std::runtime_error("Fixed size pool '" + poolName + "' cannot allocate " + std::to_string(size) + " bytes because max allowed allocation is " + std::to_string(maxElementSize) + " bytes");
     }
 
-    if(freeCount!=0) { //pool is not full
+    if (freeCount!=0) { //pool is not full
         void* result = firstFree;
         firstFree = *(void**)firstFree;
         --freeCount;
@@ -71,7 +71,7 @@ template<class BaseType> void FixedSizePool<BaseType>::free(BaseType *ptr) {
 }
 
 template<class BaseType> void FixedSizePool<BaseType>::logPoolIsFull() {
-    if(!fullPoolLogged) {
+    if (!fullPoolLogged) {
         std::stringstream logStream;
         logStream << "Pool is full of elements." << std::endl;
         logStream << " - Pool name: " << poolName << std::endl;

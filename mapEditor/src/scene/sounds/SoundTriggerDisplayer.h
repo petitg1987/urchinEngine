@@ -12,7 +12,7 @@ namespace urchin {
             explicit SoundTriggerDisplayer(SceneManager *);
             ~SoundTriggerDisplayer();
 
-            void displaySoundTriggerFor(const SceneSound *);
+            void displaySoundTriggerfor (const SceneSound *);
 
         private:
             GeometryModel *retrieveGeometry(const SoundShape *);

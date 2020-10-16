@@ -15,7 +15,7 @@ namespace urchin {
         }
 
         ALCcontext *context = alcGetCurrentContext();
-        if(!context) {
+        if (!context) {
             context = alcCreateContext(device, nullptr);
             if (!context) {
                 throw std::runtime_error("Impossible to create sound context.");
