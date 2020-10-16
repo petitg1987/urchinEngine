@@ -4,11 +4,9 @@
 #include "shape/CollisionShape3D.h"
 #include "utils/math/PhysicsTransform.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class TemporalObject
-    {
+    class TemporalObject {
         public:
             TemporalObject(const CollisionShape3D *, const PhysicsTransform &, const PhysicsTransform &);
 

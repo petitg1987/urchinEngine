@@ -5,11 +5,9 @@
 #include "math/geometry/3d/shape/SphereShape.h"
 #include "math/algebra/point/Point3.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class Sphere : public ConvexObject3D<T>
-    {
+    template<class T> class Sphere : public ConvexObject3D<T> {
         public:
             Sphere();
             Sphere(T, const Point3<T> &);

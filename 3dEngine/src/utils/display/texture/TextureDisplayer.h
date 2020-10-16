@@ -6,8 +6,7 @@
 
 #include "utils/display/quad/QuadDisplayer.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Display a frame buffer object
@@ -17,8 +16,7 @@ namespace urchin
     *    displayTexture.setFullscreen(false);
     *    displayTexture.display();
     */
-    class TextureDisplayer
-    {
+    class TextureDisplayer {
         public:
             enum CoordinateX
             {

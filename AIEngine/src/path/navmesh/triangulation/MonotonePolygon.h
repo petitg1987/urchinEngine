@@ -5,11 +5,9 @@
 #include <vector>
 #include <set>
 
-namespace urchin
-{
+namespace urchin {
 
-    class MonotonePolygon
-    {
+    class MonotonePolygon {
         public:
             void setCcwPoints(const std::vector<std::size_t> &);
             const std::vector<std::size_t> &getCcwPoints() const;

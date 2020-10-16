@@ -8,11 +8,9 @@
 #include "math/algebra/matrix/Matrix3.h"
 #include "math/algebra/matrix/Matrix4.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class Quaternion
-    {
+    template<class T> class Quaternion {
         public:
           enum RotationSequence {
                 XYZ,

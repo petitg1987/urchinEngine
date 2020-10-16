@@ -12,14 +12,12 @@
 #include "scene/renderer3d/model/displayer/ModelDisplayer.h"
 #include "scene/renderer3d/camera/Camera.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Manager for shadow mapping (parallel-split shadow maps & variance shadow maps)
     */
-    class ShadowManager : public Observer, public Observable
-    {
+    class ShadowManager : public Observer, public Observable {
         public:
             enum BlurShadow
             {
@@ -117,8 +115,7 @@ namespace urchin
             unsigned int depthSplitDistanceLoc;
 
             //light information
-            struct LightLocation
-            { //reservation of light locations for light producing shadow
+            struct LightLocation { //reservation of light locations for light producing shadow
                 int shadowMapTexLoc;
                 int *mLightProjectionViewLoc;
             };

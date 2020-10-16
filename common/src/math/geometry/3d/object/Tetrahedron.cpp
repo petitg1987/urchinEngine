@@ -2,17 +2,14 @@
 #include "math/geometry/3d/object/Triangle3D.h"
 #include "math/algebra/matrix/Matrix4.h"
 
-namespace urchin
-{
+namespace urchin {
 
     template<class T> Tetrahedron<T>::Tetrahedron(const Point3<T> &a, const Point3<T> &b, const Point3<T> &c, const Point3<T> &d):
-        a(a), b(b), c(c), d(d)
-    {
+        a(a), b(b), c(c), d(d) {
 
     }
 
-    template<class T> Point3<T> Tetrahedron<T>::getSupportPoint(const Vector3<T> &direction) const
-    {
+    template<class T> Point3<T> Tetrahedron<T>::getSupportPoint(const Vector3<T> &direction) const {
         const T pointADotDirection = a.toVector().dotProduct(direction);
         const T pointBDotDirection = b.toVector().dotProduct(direction);
         const T pointCDotDirection = c.toVector().dotProduct(direction);
@@ -20,20 +17,17 @@ namespace urchin
 
         T maxPointDotDirection = pointADotDirection;
         Point3<T> supportPoint = a;
-        if(pointBDotDirection > maxPointDotDirection)
-        {
+        if(pointBDotDirection > maxPointDotDirection) {
             maxPointDotDirection = pointBDotDirection;
             supportPoint = b;
         }
 
-        if(pointCDotDirection > maxPointDotDirection)
-        {
+        if(pointCDotDirection > maxPointDotDirection) {
             maxPointDotDirection = pointCDotDirection;
             supportPoint = c;
         }
 
-        if(pointDDotDirection > maxPointDotDirection)
-        {
+        if(pointDDotDirection > maxPointDotDirection) {
             //maxPointDotDirection = pointDDotDirection;
             supportPoint = d;
         }
@@ -47,8 +41,7 @@ namespace urchin
      * respectively the following voronoi regions: ABC, ACD, ADB, BDC.
      * @return Point on tetrahedron closest to point p
      */
-    template<class T> Point3<T> Tetrahedron<T>::closestPoint(const Point3<T> &p, T barycentrics[4], unsigned short voronoiRegionMask) const
-    {
+    template<class T> Point3<T> Tetrahedron<T>::closestPoint(const Point3<T> &p, T barycentrics[4], unsigned short voronoiRegionMask) const {
         Point3<T> closestPoint;
         T triangleBarycentrics[3];
         T bestSquareDist = std::numeric_limits<T>::max();
@@ -58,14 +51,12 @@ namespace urchin
         bool pointOutsideOrInPlaneADB = pointOutsidePlane(p, a, d, b, c, true);
         bool pointOutsideOrInPlaneBDC = pointOutsidePlane(p, b, d, c, a, true);
 
-        if((voronoiRegionMask & 1u) && pointOutsideOrInPlaneABC)
-        { //point outside face ABC: compute closest point on ABC
+        if((voronoiRegionMask & 1u) && pointOutsideOrInPlaneABC) { //point outside face ABC: compute closest point on ABC
             Point3<T> q = Triangle3D<T>(a, b, c).closestPoint(p, triangleBarycentrics);
 
             Vector3<T> pq = p.vector(q);
             T squareDist = pq.dotProduct(pq);
-            if(squareDist < bestSquareDist)
-            {
+            if(squareDist < bestSquareDist) {
                 bestSquareDist = squareDist;
 
                 closestPoint = q;
@@ -76,14 +67,12 @@ namespace urchin
             }
         }
 
-        if((voronoiRegionMask & 2u) && pointOutsideOrInPlaneACD)
-        { //point outside face ACD: compute closest point on ACD
+        if((voronoiRegionMask & 2u) && pointOutsideOrInPlaneACD) { //point outside face ACD: compute closest point on ACD
             Point3<T> q = Triangle3D<T>(a, c, d).closestPoint(p, triangleBarycentrics);
 
             Vector3<T> pq = p.vector(q);
             T squareDist = pq.dotProduct(pq);
-            if(squareDist < bestSquareDist)
-            {
+            if(squareDist < bestSquareDist) {
                 bestSquareDist = squareDist;
 
                 closestPoint = q;
@@ -94,14 +83,12 @@ namespace urchin
             }
         }
 
-        if((voronoiRegionMask & 4u) && pointOutsideOrInPlaneADB)
-        { //point outside face ADB: compute closest point on ADB
+        if((voronoiRegionMask & 4u) && pointOutsideOrInPlaneADB) { //point outside face ADB: compute closest point on ADB
             Point3<T> q = Triangle3D<T>(a, d, b).closestPoint(p, triangleBarycentrics);
 
             Vector3<T> pq = p.vector(q);
             T squareDist = pq.dotProduct(pq);
-            if(squareDist < bestSquareDist)
-            {
+            if(squareDist < bestSquareDist) {
                 bestSquareDist = squareDist;
 
                 closestPoint = q;
@@ -112,14 +99,12 @@ namespace urchin
             }
         }
 
-        if((voronoiRegionMask & 8u) && pointOutsideOrInPlaneBDC)
-        { //point outside face BDC: compute closest point on BDC
+        if((voronoiRegionMask & 8u) && pointOutsideOrInPlaneBDC) { //point outside face BDC: compute closest point on BDC
             Point3<T> q = Triangle3D<T>(b, d, c).closestPoint(p, triangleBarycentrics);
 
             Vector3<T> pq = p.vector(q);
             T squareDist = pq.dotProduct(pq);
-            if(squareDist < bestSquareDist)
-            {
+            if(squareDist < bestSquareDist) {
                 //bestSquareDist = squareDist;
 
                 closestPoint = q;
@@ -130,8 +115,7 @@ namespace urchin
             }
         }
 
-        if(!pointOutsideOrInPlaneABC && !pointOutsideOrInPlaneACD && !pointOutsideOrInPlaneADB && !pointOutsideOrInPlaneBDC)
-        { //point inside tetrahedron
+        if(!pointOutsideOrInPlaneABC && !pointOutsideOrInPlaneACD && !pointOutsideOrInPlaneADB && !pointOutsideOrInPlaneBDC) { //point inside tetrahedron
             closestPoint = p;
 
             Matrix4<T> d0(a.X, a.Y, a.Z, 1.0,
@@ -164,8 +148,7 @@ namespace urchin
         return closestPoint;
     }
 
-    template<class T> bool Tetrahedron<T>::collideWithPoint(const Point3<T> &p) const
-    {
+    template<class T> bool Tetrahedron<T>::collideWithPoint(const Point3<T> &p) const {
         return !pointOutsidePlane(p, a, b, c, d, false) &&
                 !pointOutsidePlane(p, a, c, d, b, false) &&
                 !pointOutsidePlane(p, a, d, b, c, false) &&
@@ -176,8 +159,7 @@ namespace urchin
      * @return True if point p is outside the plane. Direction of plane normal is determinate by d.
      */
     template<class T> bool Tetrahedron<T>::pointOutsidePlane(const Point3<T> &p, const Point3<T> &planePointA, const Point3<T> &planePointB,
-                                                             const Point3<T> &planePointC, const Point3<T> &d, bool onPlaneIsOutside) const
-    {
+                                                             const Point3<T> &planePointC, const Point3<T> &d, bool onPlaneIsOutside) const {
         Vector3<T> ap = planePointA.vector(p);
         Vector3<T> ad = planePointA.vector(d);
         Vector3<T> ab = planePointA.vector(planePointB);
@@ -186,8 +168,7 @@ namespace urchin
         T signp = ap.dotProduct(ab.crossProduct(ac));
         T signd = ad.dotProduct(ab.crossProduct(ac));
 
-        if(onPlaneIsOutside)
-        {
+        if(onPlaneIsOutside) {
             return (signp * signd) <= (T) 0.0;
         }
         return (signp * signd) < (T) 0.0;

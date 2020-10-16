@@ -7,11 +7,9 @@
 #include "math/algebra/point/Point3.h"
 #include "math/algebra/vector/Vector3.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class IndexedTriangle3D
-    {
+    template<class T> class IndexedTriangle3D {
         public:
             explicit IndexedTriangle3D(const std::size_t *);
             IndexedTriangle3D(std::size_t, std::size_t, std::size_t);

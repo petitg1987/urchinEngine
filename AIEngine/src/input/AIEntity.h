@@ -6,13 +6,11 @@
 #include <atomic>
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
     class NavObject;
 
-    class AIEntity
-    {
+    class AIEntity {
         public:
             enum AIEntityType
             {

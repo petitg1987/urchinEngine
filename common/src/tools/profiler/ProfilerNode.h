@@ -5,11 +5,9 @@
 #include <string>
 #include <vector>
 
-namespace urchin
-{
+namespace urchin {
 
-    class ProfilerNode
-    {
+    class ProfilerNode {
         public:
             ProfilerNode(std::string , ProfilerNode *);
             ~ProfilerNode();

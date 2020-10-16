@@ -8,11 +8,9 @@
 
 #include "CSGPolygon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class PolygonsSubtraction : public Singleton<PolygonsSubtraction<T>>
-    {
+    template<class T> class PolygonsSubtraction : public Singleton<PolygonsSubtraction<T>> {
         public:
             friend class Singleton<PolygonsSubtraction<T>>;
 

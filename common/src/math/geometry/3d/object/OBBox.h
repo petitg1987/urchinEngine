@@ -13,14 +13,12 @@
 #include "math/algebra/vector/Vector3.h"
 #include "math/algebra/Quaternion.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Represents an oriented bounding box in space
     */
-    template<class T> class OBBox : public ConvexObject3D<T>
-    {
+    template<class T> class OBBox : public ConvexObject3D<T> {
         public:
             OBBox();
             explicit OBBox(const Vector3<T> &, const Point3<T> &, const Quaternion<T> &);

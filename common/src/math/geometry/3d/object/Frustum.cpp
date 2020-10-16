@@ -5,11 +5,9 @@
 #include "math/algebra/point/Point4.h"
 #include "math/algebra/MathValue.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> Frustum<T>::Frustum()
-    {
+    template<class T> Frustum<T>::Frustum() {
         buildFrustum(90.0f, 1.0f, 0.01f, 1.0f);
     }
 
@@ -19,8 +17,7 @@ namespace urchin
     * Default frustum view direction: z axis
     * Default frustum up vector: y axis
     */
-    template<class T> Frustum<T>::Frustum(T angle, T ratio, T nearDistance, T farDistance)
-    {
+    template<class T> Frustum<T>::Frustum(T angle, T ratio, T nearDistance, T farDistance) {
         buildFrustum(angle, ratio, nearDistance, farDistance);
     }
 
@@ -35,13 +32,11 @@ namespace urchin
     * @param fbr Far bottom right point
     */
     template<class T> Frustum<T>::Frustum(const Point3<T> &ntl, const Point3<T> &ntr, const Point3<T> &nbl, const Point3<T> &nbr,
-        const Point3<T> &ftl, const Point3<T> &ftr, const Point3<T> &fbl, const Point3<T> &fbr)
-    {
+        const Point3<T> &ftl, const Point3<T> &ftr, const Point3<T> &fbl, const Point3<T> &fbr) {
         buildFrustum(ntl, ntr, nbl, nbr, ftl, ftr, fbl, fbr);
     }
 
-    template<class T> Frustum<T>::Frustum(Frustum<T> &&frustum)
-    {
+    template<class T> Frustum<T>::Frustum(Frustum<T> &&frustum) {
         frustumPoints[0] = frustum.getFrustumPoints()[0];
         frustumPoints[1] = frustum.getFrustumPoints()[1];
         frustumPoints[2] = frustum.getFrustumPoints()[2];
@@ -61,8 +56,7 @@ namespace urchin
         planes[FARP] = frustum.planes[FARP];
     }
 
-    template<class T> Frustum<T>& Frustum<T>::operator=(Frustum<T> &&frustum)
-    {
+    template<class T> Frustum<T>& Frustum<T>::operator=(Frustum<T> &&frustum) {
         frustumPoints[0] = frustum.getFrustumPoints()[0];
         frustumPoints[1] = frustum.getFrustumPoints()[1];
         frustumPoints[2] = frustum.getFrustumPoints()[2];
@@ -90,8 +84,7 @@ namespace urchin
     * Default frustum view direction: z axis
     * Default frustum up vector: y axis
     */
-    template<class T> void Frustum<T>::buildFrustum(T angle, T ratio, T nearDistance, T farDistance)
-    {
+    template<class T> void Frustum<T>::buildFrustum(T angle, T ratio, T nearDistance, T farDistance) {
         //half distance of near and far planes
         T halfFovy = (angle/360.0)*PI_VALUE; //half angle in radian
         auto tang = (T)std::tan(halfFovy);
@@ -125,8 +118,7 @@ namespace urchin
     * @param fbr Far bottom right point
     */
     template<class T> void Frustum<T>::buildFrustum(const Point3<T> &ntl, const Point3<T> &ntr, const Point3<T> &nbl, const Point3<T> &nbr,
-        const Point3<T> &ftl, const Point3<T> &ftr, const Point3<T> &fbl, const Point3<T> &fbr)
-    {
+        const Point3<T> &ftl, const Point3<T> &ftr, const Point3<T> &fbl, const Point3<T> &fbr) {
         //building frustum points
         frustumPoints[0] = ntl;
         frustumPoints[1] = ntr;
@@ -141,8 +133,7 @@ namespace urchin
         buildData();
     }
 
-    template<class T> void Frustum<T>::buildData()
-    {
+    template<class T> void Frustum<T>::buildData() {
         //building planes
         planes[TOP].buildFrom3Points(frustumPoints[FTL], frustumPoints[NTL], frustumPoints[NTR]);
         planes[BOTTOM].buildFrom3Points(frustumPoints[FBR], frustumPoints[NBR], frustumPoints[NBL]);
@@ -160,31 +151,25 @@ namespace urchin
         position = middlePlane.intersectPoint(sideLine);
     }
 
-    template<class T> const Point3<T> *Frustum<T>::getFrustumPoints() const
-    {
+    template<class T> const Point3<T> *Frustum<T>::getFrustumPoints() const {
         return frustumPoints;
     }
 
-    template<class T> const Point3<T> &Frustum<T>::getFrustumPoint(FrustumPoint frustumPoint) const
-    {
+    template<class T> const Point3<T> &Frustum<T>::getFrustumPoint(FrustumPoint frustumPoint) const {
         return frustumPoints[frustumPoint];
     }
 
-    template<class T> const Point3<T> &Frustum<T>::getPosition() const
-    {
+    template<class T> const Point3<T> &Frustum<T>::getPosition() const {
         return position;
     }
 
-    template<class T> Point3<T> Frustum<T>::getSupportPoint(const Vector3<T> &direction) const
-    {
+    template<class T> Point3<T> Frustum<T>::getSupportPoint(const Vector3<T> &direction) const {
         T maxPointDotDirection = frustumPoints[0].toVector().dotProduct(direction);
         Point3<T> maxPoint = frustumPoints[0];
 
-        for(unsigned int i=1;i<8; ++i)
-        {
+        for(unsigned int i=1;i<8; ++i) {
             T currentPointDotDirection  = frustumPoints[i].toVector().dotProduct(direction);
-            if(currentPointDotDirection > maxPointDotDirection)
-            {
+            if(currentPointDotDirection > maxPointDotDirection) {
                 maxPointDotDirection = currentPointDotDirection;
                 maxPoint = frustumPoints[i];
             }
@@ -193,14 +178,12 @@ namespace urchin
         return maxPoint;
     }
 
-    template<class T> T Frustum<T>::computeNearDistance() const
-    {
+    template<class T> T Frustum<T>::computeNearDistance() const {
         Point3<T> nearCenter((frustumPoints[NTL] + frustumPoints[NBR]) / (T)2.0);
         return position.distance(nearCenter);
     }
 
-    template<class T> T Frustum<T>::computeFarDistance() const
-    {
+    template<class T> T Frustum<T>::computeFarDistance() const {
         Point3<T> farCenter((frustumPoints[FTL] + frustumPoints[FBR]) / (T)2.0);
         return position.distance(farCenter);
     }
@@ -210,8 +193,7 @@ namespace urchin
     * @param splitPositionEnd Split position end (distance between original far plane and the asked far plane)
     * @return Split frustum according to the given split positions
     */
-    template<class T> Frustum<T> Frustum<T>::splitFrustum(T splitPositionStart, T splitPositionEnd) const
-    {
+    template<class T> Frustum<T> Frustum<T>::splitFrustum(T splitPositionStart, T splitPositionEnd) const {
         Point3<T> nearCenter((frustumPoints[NTL] + frustumPoints[NBR]) / (T)2.0);
         Vector3<T> positionToCenter = position.vector(nearCenter).normalize();
 
@@ -240,8 +222,7 @@ namespace urchin
         return Frustum<T>(ntl, ntr, nbl, nbr, ftl, ftr, fbl, fbr);
     }
 
-    template<class T> Frustum<T> Frustum<T>::cutFrustum(T newFar) const
-    {
+    template<class T> Frustum<T> Frustum<T>::cutFrustum(T newFar) const {
         Point3<T> nearCenter((frustumPoints[NTL] + frustumPoints[NBR]) / (T)2.0);
         Vector3<T> positionToCenter = position.vector(nearCenter).normalize();
 
@@ -265,12 +246,9 @@ namespace urchin
         return Frustum<T>(frustumPoints[NTL], frustumPoints[NTR], frustumPoints[NBL], frustumPoints[NBR], ftl, ftr, fbl, fbr);
     }
 
-    template<class T> bool Frustum<T>::collideWithPoint(const Point3<T> &point) const
-    {
-        for (auto &plane : planes)
-        {
-            if (plane.distance(point) > 0.0)
-            {
+    template<class T> bool Frustum<T>::collideWithPoint(const Point3<T> &point) const {
+        for (auto &plane : planes) {
+            if (plane.distance(point) > 0.0) {
                 return false;
             }
         }
@@ -281,28 +259,22 @@ namespace urchin
     /**
     * @return True if the bounding box collides or is inside this frustum
     */
-    template<class T> bool Frustum<T>::collideWithAABBox(const AABBox<T> &bbox) const
-    {
-        for (auto &plane : planes)
-        {
+    template<class T> bool Frustum<T>::collideWithAABBox(const AABBox<T> &bbox) const {
+        for (auto &plane : planes) {
             const Vector3<T> &normal = plane.getNormal();
 
             Point3<T> nVertex(bbox.getMax());
-            if(normal.X >= 0.0)
-            {
+            if(normal.X >= 0.0) {
                 nVertex.X = bbox.getMin().X;
             }
-            if(normal.Y >= 0.0)
-            {
+            if(normal.Y >= 0.0) {
                 nVertex.Y = bbox.getMin().Y;
             }
-            if(normal.Z >= 0.0)
-            {
+            if(normal.Z >= 0.0) {
                 nVertex.Z = bbox.getMin().Z;
             }
 
-            if (plane.distance(nVertex) > 0.0)
-            {
+            if (plane.distance(nVertex) > 0.0) {
                 return false;
             }
         }
@@ -313,12 +285,9 @@ namespace urchin
     /**
     * @return True if the sphere collides or is inside this frustum
     */
-    template<class T> bool Frustum<T>::collideWithSphere(const Sphere<T> &sphere) const
-    {
-        for (auto &plane : planes)
-        {
-            if (plane.distance(sphere.getCenterOfMass()) > sphere.getRadius())
-            {
+    template<class T> bool Frustum<T>::collideWithSphere(const Sphere<T> &sphere) const {
+        for (auto &plane : planes) {
+            if (plane.distance(sphere.getCenterOfMass()) > sphere.getRadius()) {
                 return false;
             }
         }
@@ -326,8 +295,7 @@ namespace urchin
         return true;
     }
 
-    template<class T> Frustum<T> operator *(const Matrix4<T> &m, const Frustum<T> &frustum)
-    {
+    template<class T> Frustum<T> operator *(const Matrix4<T> &m, const Frustum<T> &frustum) {
         Point4<T> ntl = m * Point4<T>(frustum.getFrustumPoint(Frustum<T>::NTL));
         Point4<T> ntr = m * Point4<T>(frustum.getFrustumPoint(Frustum<T>::NTR));
         Point4<T> nbl = m * Point4<T>(frustum.getFrustumPoint(Frustum<T>::NBL));
@@ -341,13 +309,11 @@ namespace urchin
             ftl.toPoint3(), ftr.toPoint3(), fbl.toPoint3(), fbr.toPoint3());
     }
 
-    template<class T> Frustum<T> operator *(const Frustum<T> &frustum, const Matrix4<T> &m)
-    {
+    template<class T> Frustum<T> operator *(const Frustum<T> &frustum, const Matrix4<T> &m) {
         return m * frustum;
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Frustum<T> &frustum)
-    {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const Frustum<T> &frustum) {
         stream.setf(std::ios::left);
         stream << "Frustum point NTL: " << frustum.getFrustumPoint(Frustum<T>::NTL) << std::endl;
         stream << "Frustum point NTR: " << frustum.getFrustumPoint(Frustum<T>::NTR) << std::endl;

@@ -3,11 +3,9 @@
 
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class GeometryModel
-    {
+    class GeometryModel {
         public:
             GeometryModel();
             virtual ~GeometryModel();

@@ -3,14 +3,12 @@
 
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Class allow to create transform matrix from a given position and orientation
     */
-    class PhysicsTransform
-    {
+    class PhysicsTransform {
         public:
             PhysicsTransform();
             PhysicsTransform(const PhysicsTransform &);

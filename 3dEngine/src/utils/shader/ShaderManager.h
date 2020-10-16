@@ -8,11 +8,9 @@
 
 #include "utils/shader/TokenReplacerShader.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class ShaderManager : public Singleton<ShaderManager>
-    {
+    class ShaderManager : public Singleton<ShaderManager> {
         public:
             friend class Singleton<ShaderManager>;
 

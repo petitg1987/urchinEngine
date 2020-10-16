@@ -10,11 +10,9 @@
 
 Q_DECLARE_METATYPE(const urchin::SceneSound *)
 
-namespace urchin
-{
+namespace urchin {
 
-    class SoundTableView : public QTableView, public Observable
-    {
+    class SoundTableView : public QTableView, public Observable {
         Q_OBJECT
 
         public:

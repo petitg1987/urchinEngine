@@ -1,8 +1,7 @@
 #ifndef URCHINENGINE_STATUSBARSTATE_H
 #define URCHINENGINE_STATUSBARSTATE_H
 
-namespace urchin
-{
+namespace urchin {
 
     enum StatusBarState
     {

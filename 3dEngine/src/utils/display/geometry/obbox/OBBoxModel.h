@@ -5,11 +5,9 @@
 
 #include "utils/display/geometry/GeometryModel.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class OBBoxModel : public GeometryModel
-    {
+    class OBBoxModel : public GeometryModel {
         public:
             explicit OBBoxModel(OBBox<float> );
 

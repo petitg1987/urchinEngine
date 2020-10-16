@@ -15,11 +15,9 @@
 #include "panel/objects/bodyshape/BodyShapeWidget.h"
 #include "panel/objects/bodyshape/support/LocalizedShapeTableView.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class BodyCompoundShapeWidget : public BodyShapeWidget, public Observer
-    {
+    class BodyCompoundShapeWidget : public BodyShapeWidget, public Observer {
         Q_OBJECT
 
         public:

@@ -6,11 +6,9 @@
 
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class OrientationReaderWriter
-    {
+    class OrientationReaderWriter {
         //XML tags
         #define ORIENTATION_TAG "orientation"
         #define AXIS_TAG "axis"

@@ -5,11 +5,9 @@
 
 #include "path/navmesh/csg/CSGPolygon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class TerrainObstacleService
-    {
+    class TerrainObstacleService {
         public:
             enum EdgeDirection
             {

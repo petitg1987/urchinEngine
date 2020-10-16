@@ -8,14 +8,12 @@
 
 #include "resources/common/SceneEntity.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Represent an object on the scene (3d model and physics)
     */
-    class SceneObject : public SceneEntity
-    {
+    class SceneObject : public SceneEntity {
         //XML tags
         #define MODEL_TAG "model"
         #define PHYSICS_TAG "physics"

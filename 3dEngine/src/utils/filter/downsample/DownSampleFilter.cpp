@@ -1,22 +1,18 @@
 #include "DownSampleFilter.h"
 #include "utils/filter/downsample/DownSampleFilterBuilder.h"
 
-namespace urchin
-{
+namespace urchin {
 
     DownSampleFilter::DownSampleFilter(const DownSampleFilterBuilder *textureFilterBuilder):
-        TextureFilter(textureFilterBuilder)
-    {
+        TextureFilter(textureFilterBuilder) {
 
     }
 
-    std::string DownSampleFilter::getShaderName() const
-    {
+    std::string DownSampleFilter::getShaderName() const {
         return "downSampleTex";
     }
 
-    void DownSampleFilter::completeShaderTokens(std::map<std::string, std::string> &) const
-    {
+    void DownSampleFilter::completeShaderTokens(std::map<std::string, std::string> &) const {
         //nothing to complete
     }
 

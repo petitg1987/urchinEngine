@@ -6,8 +6,7 @@
 #include "BodyAABBTreeTest.h"
 using namespace urchin;
 
-void BodyAABBTreeTest::twoBodiesPairedAndRemove()
-{
+void BodyAABBTreeTest::twoBodiesPairedAndRemove() {
     //add bodies test:
     std::shared_ptr<CollisionBoxShape> cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
     auto bodyA = std::make_unique<WorkRigidBody>("bodyA", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
@@ -27,8 +26,7 @@ void BodyAABBTreeTest::twoBodiesPairedAndRemove()
     AssertHelper::assertUnsignedInt(bodyAabbTree.getOverlappingPairs().size(), 0);
 }
 
-void BodyAABBTreeTest::twoBodiesNotPaired()
-{
+void BodyAABBTreeTest::twoBodiesNotPaired() {
     std::shared_ptr<CollisionBoxShape> cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
     auto bodyA = std::make_unique<WorkRigidBody>("bodyA", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
     auto bodyB = std::make_unique<WorkRigidBody>("bodyB", PhysicsTransform(Point3<float>(10.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
@@ -39,18 +37,15 @@ void BodyAABBTreeTest::twoBodiesNotPaired()
     AssertHelper::assertUnsignedInt(bodyAabbTree.getOverlappingPairs().size(), 0);
 }
 
-void BodyAABBTreeTest::oneBodyWithAlternativePairAndRemoveIt()
-{
+void BodyAABBTreeTest::oneBodyWithAlternativePairAndRemoveIt() {
     oneBodyWithAlternativePairAndRemove(true);
 }
 
-void BodyAABBTreeTest::oneBodyWithAlternativePairAndRemoveOther()
-{
+void BodyAABBTreeTest::oneBodyWithAlternativePairAndRemoveOther() {
     oneBodyWithAlternativePairAndRemove(false);
 }
 
-void BodyAABBTreeTest::oneBodyWithAlternativePairAndRemove(bool removeBodyHavingAlternativePair)
-{
+void BodyAABBTreeTest::oneBodyWithAlternativePairAndRemove(bool removeBodyHavingAlternativePair) {
     //add bodies test:
     std::shared_ptr<CollisionBoxShape> cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
     auto bodyA = std::make_unique<WorkRigidBody>("bodyA", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
@@ -70,20 +65,17 @@ void BodyAABBTreeTest::oneBodyWithAlternativePairAndRemove(bool removeBodyHaving
     AssertHelper::assertUnsignedInt(bodyBNodeData->getOwnerPairContainers().size(), 0);
 
     //remove a body test:
-    if(removeBodyHavingAlternativePair)
-    {
+    if(removeBodyHavingAlternativePair) {
         bodyAabbTree.removeBody(bodyB.get());
         AssertHelper::assertUnsignedInt(bodyB->getPairContainer()->retrieveCopyOverlappingPairs().size(), 0);
         AssertHelper::assertUnsignedInt(bodyANodeData->getOwnerPairContainers().size(), 0);
-    } else
-    {
+    } else {
         bodyAabbTree.removeBody(bodyA.get());
         AssertHelper::assertUnsignedInt(bodyB->getPairContainer()->retrieveCopyOverlappingPairs().size(), 0);
     }
 }
 
-void BodyAABBTreeTest::twoBodiesWithAlternativePair()
-{
+void BodyAABBTreeTest::twoBodiesWithAlternativePair() {
     std::shared_ptr<CollisionBoxShape> cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
     auto bodyA = std::make_unique<WorkGhostBody>("bodyA", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
     auto bodyB = std::make_unique<WorkGhostBody>("bodyB", PhysicsTransform(Point3<float>(1.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
@@ -102,8 +94,7 @@ void BodyAABBTreeTest::twoBodiesWithAlternativePair()
     AssertHelper::assertString(bodyBPairs[0].getBody2()->getId(), "bodyA");
 }
 
-void BodyAABBTreeTest::threeBodiesPairedAndRemove()
-{
+void BodyAABBTreeTest::threeBodiesPairedAndRemove() {
     //add bodies test:
     std::shared_ptr<CollisionBoxShape> cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
     auto bodyA = std::make_unique<WorkRigidBody>("bodyA", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
@@ -130,8 +121,7 @@ void BodyAABBTreeTest::threeBodiesPairedAndRemove()
     AssertHelper::assertUnsignedInt(bodyC->getPairContainer()->retrieveCopyOverlappingPairs().size(), 0);
 }
 
-CppUnit::Test *BodyAABBTreeTest::suite()
-{
+CppUnit::Test *BodyAABBTreeTest::suite() {
     auto *suite = new CppUnit::TestSuite("BodyAABBTreeTest");
 
     suite->addTest(new CppUnit::TestCaller<BodyAABBTreeTest>("twoBodiesPairedAndRemove", &BodyAABBTreeTest::twoBodiesPairedAndRemove));

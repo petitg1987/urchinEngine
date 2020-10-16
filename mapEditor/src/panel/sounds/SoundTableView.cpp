@@ -3,12 +3,10 @@
 
 #include "SoundTableView.h"
 
-namespace urchin
-{
+namespace urchin {
 
     SoundTableView::SoundTableView(QWidget *parent) :
-        QTableView(parent)
-    {
+        QTableView(parent) {
         soundsListModel = new QStandardItemModel(0, 2, this);
         soundsListModel->setHorizontalHeaderItem(0, new QStandardItem("Sound Name"));
         soundsListModel->setHorizontalHeaderItem(1, new QStandardItem("Sound File"));
@@ -24,8 +22,7 @@ namespace urchin
         setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
     }
 
-    void SoundTableView::selectionChanged(const QItemSelection &, const QItemSelection &)
-    {
+    void SoundTableView::selectionChanged(const QItemSelection &, const QItemSelection &) {
         //hack to refresh selection
         horizontalHeader()->resizeSection(0, 91);
         horizontalHeader()->resizeSection(0, 90);
@@ -33,23 +30,19 @@ namespace urchin
         notifyObservers(this, NotificationType::SOUND_SELECTION_CHANGED);
     }
 
-    bool SoundTableView::hasSceneSoundSelected() const
-    {
+    bool SoundTableView::hasSceneSoundSelected() const {
         return this->currentIndex().row()!=-1;
     }
 
-    const SceneSound *SoundTableView::getSelectedSceneSound() const
-    {
+    const SceneSound *SoundTableView::getSelectedSceneSound() const {
         QModelIndex selectedIndex = this->currentIndex();
-        if(selectedIndex.row()!=-1)
-        {
+        if(selectedIndex.row()!=-1) {
             return selectedIndex.data(Qt::UserRole + 1).value<const SceneSound *>();
         }
         return nullptr;
     }
 
-    void SoundTableView::addSound(const SceneSound *sceneSound)
-    {
+    void SoundTableView::addSound(const SceneSound *sceneSound) {
         auto *itemSoundName = new QStandardItem(QString::fromStdString(sceneSound->getName()));
         itemSoundName->setData(qVariantFromValue(sceneSound), Qt::UserRole + 1);
         itemSoundName->setEditable(false);
@@ -66,10 +59,8 @@ namespace urchin
         resizeRowsToContents();
     }
 
-    bool SoundTableView::removeSelectedSound()
-    {
-        if(hasSceneSoundSelected())
-        {
+    bool SoundTableView::removeSelectedSound() {
+        if(hasSceneSoundSelected()) {
             soundsListModel->removeRow(this->currentIndex().row());
             resizeRowsToContents();
 
@@ -79,8 +70,7 @@ namespace urchin
         return false;
     }
 
-    void SoundTableView::removeAllSounds()
-    {
+    void SoundTableView::removeAllSounds() {
         soundsListModel->removeRows(0, soundsListModel->rowCount());
         resizeRowsToContents();
     }

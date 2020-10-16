@@ -4,13 +4,11 @@
 #include "collision/ManifoldResult.h"
 #include "collision/narrowphase/CollisionObjectWrapper.h"
 
-namespace urchin
-{
+namespace urchin {
 
     class CollisionAlgorithmSelector;
 
-    class CollisionAlgorithm
-    {
+    class CollisionAlgorithm {
         public:
             CollisionAlgorithm(bool, ManifoldResult &&);
             virtual ~CollisionAlgorithm() = default;

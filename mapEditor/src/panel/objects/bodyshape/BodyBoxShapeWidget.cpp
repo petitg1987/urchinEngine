@@ -3,12 +3,10 @@
 #include "BodyBoxShapeWidget.h"
 #include "widget/style/SpinBoxStyleHelper.h"
 
-namespace urchin
-{
+namespace urchin {
 
     BodyBoxShapeWidget::BodyBoxShapeWidget(const SceneObject *sceneObject) :
-            BodyShapeWidget(sceneObject)
-    {
+            BodyShapeWidget(sceneObject) {
         auto *halfSizesLabel = new QLabel("Half Sizes:", this);
         mainLayout->addWidget(halfSizesLabel, 0, 0);
 
@@ -31,13 +29,11 @@ namespace urchin
         connect(halfSizeZ, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
     }
 
-    std::string BodyBoxShapeWidget::getBodyShapeName() const
-    {
+    std::string BodyBoxShapeWidget::getBodyShapeName() const {
         return BOX_SHAPE_LABEL;
     }
 
-    void BodyBoxShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape)
-    {
+    void BodyBoxShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape) {
         auto *boxShape = dynamic_cast<const CollisionBoxShape *>(shape.get());
 
         const Vector3<float> &halfSizes = boxShape->getHalfSizes();
@@ -46,8 +42,7 @@ namespace urchin
         halfSizeZ->setValue(halfSizes.Z);
     }
 
-    std::shared_ptr<const CollisionShape3D> BodyBoxShapeWidget::createBodyShape() const
-    {
+    std::shared_ptr<const CollisionShape3D> BodyBoxShapeWidget::createBodyShape() const {
         Vector3<float> halfSizes(halfSizeX->value(), halfSizeY->value(), halfSizeZ->value());
         return std::make_shared<const CollisionBoxShape>(halfSizes);
     }

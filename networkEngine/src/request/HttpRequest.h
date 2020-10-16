@@ -4,17 +4,14 @@
 #include <string>
 #include <curl/curl.h>
 
-namespace urchin
-{
+namespace urchin {
 
-    struct HttpRequestInitializer
-    {
+    struct HttpRequestInitializer {
         HttpRequestInitializer();
         ~HttpRequestInitializer();
     };
 
-    class HttpRequest
-    {
+    class HttpRequest {
         public:
             explicit HttpRequest(std::string );
             ~HttpRequest();

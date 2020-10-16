@@ -11,16 +11,13 @@
 #include "path/pathfinding/PathPortal.h"
 #include "path/PathPoint.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    struct PathNodeCompare
-    {
+    struct PathNodeCompare {
         bool operator()(const std::shared_ptr<PathNode> &, const std::shared_ptr<PathNode> &) const;
     };
 
-    class PathfindingAStar
-    {
+    class PathfindingAStar {
         public:
             explicit PathfindingAStar(std::shared_ptr<NavMesh>);
 

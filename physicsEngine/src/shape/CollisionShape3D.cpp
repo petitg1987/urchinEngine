@@ -5,8 +5,7 @@
 #include "utils/property/EagerPropertyLoader.h"
 #include "object/pool/CollisionConvexObjectPool.h"
 
-namespace urchin
-{
+namespace urchin {
 
     //static
     std::vector<CollisionShape3D::ShapeType> CollisionShape3D::CONVEX_SHAPES = {CollisionShape3D::TRIANGLE_SHAPE, CollisionShape3D::SPHERE_SHAPE,
@@ -19,47 +18,38 @@ namespace urchin
 
     CollisionShape3D::CollisionShape3D() :
             innerMargin(EagerPropertyLoader::instance()->getCollisionShapeInnerMargin()),
-            initialInnerMargin(innerMargin)
-    {
+            initialInnerMargin(innerMargin) {
         lastTransform.setPosition(Point3<float>(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
     }
 
     CollisionShape3D::CollisionShape3D(float innerMargin) :
             innerMargin(innerMargin),
-            initialInnerMargin(innerMargin)
-    {
+            initialInnerMargin(innerMargin) {
         lastTransform.setPosition(Point3<float>(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
     }
 
-    FixedSizePool<CollisionConvexObject3D> *CollisionShape3D::getObjectsPool() const
-    {
+    FixedSizePool<CollisionConvexObject3D> *CollisionShape3D::getObjectsPool() const {
         return CollisionConvexObjectPool::instance()->getObjectsPool();
     }
 
-    void CollisionShape3D::refreshInnerMargin(float maximumInnerMargin)
-    {
-        if(this->innerMargin > maximumInnerMargin)
-        {
+    void CollisionShape3D::refreshInnerMargin(float maximumInnerMargin) {
+        if(this->innerMargin > maximumInnerMargin) {
             this->innerMargin = maximumInnerMargin;
         }
     }
 
-    float CollisionShape3D::getInnerMargin() const
-    {
+    float CollisionShape3D::getInnerMargin() const {
         return innerMargin;
     }
 
-    void CollisionShape3D::checkInnerMarginQuality(const std::string &shapeId) const
-    {
-        if(initialInnerMargin > innerMargin)
-        {
+    void CollisionShape3D::checkInnerMarginQuality(const std::string &shapeId) const {
+        if(initialInnerMargin > innerMargin) {
             constexpr float RELATIVE_MARGIN_FACTOR_BIG_SHAPE = 200.0;
             AABBox<float> aabbox = toAABBox(PhysicsTransform());
             float shapeLength = aabbox.getMin().vector(aabbox.getMax()).length();
             bool isBigShape = shapeLength > initialInnerMargin * RELATIVE_MARGIN_FACTOR_BIG_SHAPE;
 
-            if(isBigShape)
-            {
+            if(isBigShape) {
                 std::stringstream logStream;
                 logStream<<"Not optimal margin on shape id "<<shapeId<<"."<<std::endl;
                 logStream<<" - Current margin: "<<innerMargin<<std::endl;
@@ -70,18 +60,15 @@ namespace urchin
         }
     }
 
-    bool CollisionShape3D::isConvex() const
-    {
+    bool CollisionShape3D::isConvex() const {
         return std::find(CONVEX_SHAPES.begin(), CONVEX_SHAPES.end(), getShapeType()) != CONVEX_SHAPES.end();
     }
 
-    bool CollisionShape3D::isConcave() const
-    {
+    bool CollisionShape3D::isConcave() const {
         return std::find(CONCAVE_SHAPES.begin(), CONCAVE_SHAPES.end(), getShapeType()) != CONCAVE_SHAPES.end();
     }
 
-    bool CollisionShape3D::isCompound() const
-    {
+    bool CollisionShape3D::isCompound() const {
         return std::find(COMPOUND_SHAPES.begin(), COMPOUND_SHAPES.end(), getShapeType()) != COMPOUND_SHAPES.end();
     }
 }

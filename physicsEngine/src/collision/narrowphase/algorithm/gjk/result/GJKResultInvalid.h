@@ -7,14 +7,12 @@
 #include "GJKResult.h"
 #include "collision/narrowphase/algorithm/utils/Simplex.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Invalid result of GJK algorithm. Invalid result is returned by GJK algorithm when no solution is found after reach maximum iteration.
     */
-    template<class T> class GJKResultInvalid : public GJKResult<T>
-    {
+    template<class T> class GJKResultInvalid : public GJKResult<T> {
         public:
             bool isValidResult() const override;
 

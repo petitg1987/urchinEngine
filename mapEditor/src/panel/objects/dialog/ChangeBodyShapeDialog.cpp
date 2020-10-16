@@ -5,16 +5,14 @@
 #include "ChangeBodyShapeDialog.h"
 #include "panel/objects/bodyshape/BodyShapeWidget.h"
 
-namespace urchin
-{
+namespace urchin {
 
     ChangeBodyShapeDialog::ChangeBodyShapeDialog(QWidget *parent, bool excludeCompoundShape) :
         QDialog(parent),
         excludeCompoundShape(excludeCompoundShape),
         bodyShapeTypeLabel(nullptr),
         bodyShapeTypeComboBox(nullptr),
-        shapeType(CollisionShape3D::ShapeType::SHAPE_MAX)
-    {
+        shapeType(CollisionShape3D::ShapeType::SHAPE_MAX) {
         this->setWindowTitle("Select Body Shape");
         this->resize(245, 80);
         this->setFixedSize(this->width(),this->height());
@@ -33,8 +31,7 @@ namespace urchin
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void ChangeBodyShapeDialog::setupBodyShapeTypeFields(QGridLayout *mainLayout)
-    {
+    void ChangeBodyShapeDialog::setupBodyShapeTypeFields(QGridLayout *mainLayout) {
         bodyShapeTypeLabel = new QLabel("Shape Type:");
         mainLayout->addWidget(bodyShapeTypeLabel, 0, 0);
 
@@ -47,27 +44,22 @@ namespace urchin
         bodyShapeTypeComboBox->addItem(CYLINDER_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::CYLINDER_SHAPE));
         bodyShapeTypeComboBox->addItem(CONE_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::CONE_SHAPE));
         bodyShapeTypeComboBox->addItem(CONVEX_HULL_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE));
-        if(!excludeCompoundShape)
-        {
+        if(!excludeCompoundShape) {
             bodyShapeTypeComboBox->addItem(COMPOUND_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::COMPOUND_SHAPE));
         }
     }
 
-    void ChangeBodyShapeDialog::done(int r)
-    {
-        if(QDialog::Accepted == r)
-        {
+    void ChangeBodyShapeDialog::done(int r) {
+        if(QDialog::Accepted == r) {
             QVariant variant = bodyShapeTypeComboBox->currentData();
             shapeType = static_cast<CollisionShape3D::ShapeType>(variant.toInt());
             QDialog::done(r);
-        }else
-        {
+        } else {
             QDialog::done(r);
         }
     }
 
-    CollisionShape3D::ShapeType ChangeBodyShapeDialog::getShapeType() const
-    {
+    CollisionShape3D::ShapeType ChangeBodyShapeDialog::getShapeType() const {
         return shapeType;
     }
 

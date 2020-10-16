@@ -5,13 +5,11 @@
 #include <cmath>
 #include <iomanip>
 
-namespace urchin
-{
+namespace urchin {
     /**
     * Represents a matrix 3x3 in column major
     */
-    template<class T> class Matrix3
-    {
+    template<class T> class Matrix3 {
         public:
             Matrix3();
             explicit Matrix3(T m11, T m12, T m13,

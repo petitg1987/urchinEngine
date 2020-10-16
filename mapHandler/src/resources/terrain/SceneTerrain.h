@@ -8,11 +8,9 @@
 
 #include "resources/common/SceneEntity.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SceneTerrain : public SceneEntity
-    {
+    class SceneTerrain : public SceneEntity {
         //XML attributes
         #define NAME_ATTR "name"
 

@@ -16,11 +16,9 @@
 #include "panel/sounds/SoundTableView.h"
 #include "panel/sounds/soundshape/SoundShapeWidget.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SoundPanelWidget : public QWidget, public Observer
-    {
+    class SoundPanelWidget : public QWidget, public Observer {
         Q_OBJECT
 
         #define PLAY_ONCE_LABEL "Play once"

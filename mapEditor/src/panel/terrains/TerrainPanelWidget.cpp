@@ -10,8 +10,7 @@
 #include "widget/style/ButtonStyleHelper.h"
 #include "panel/terrains/dialog/NewTerrainDialog.h"
 
-namespace urchin
-{
+namespace urchin {
     QString TerrainPanelWidget::preferredMaskMapPath = QString();
     QString TerrainPanelWidget::preferredMaterialPath = QString();
     QString TerrainPanelWidget::preferredGrassTexturePath = QString();
@@ -36,8 +35,7 @@ namespace urchin
             grassMaskFilenameText(nullptr),
             numGrassInTex(nullptr),
             grassQuantity(nullptr), grassHeight(nullptr), grassLength(nullptr),
-            windDirectionX(nullptr), windDirectionY(nullptr), windDirectionZ(nullptr), windStrength(nullptr)
-    {
+            windDirectionX(nullptr), windDirectionY(nullptr), windDirectionZ(nullptr), windStrength(nullptr) {
         auto *mainLayout = new QVBoxLayout(this);
         mainLayout->setAlignment(Qt::AlignTop);
         mainLayout->setContentsMargins(1, 1, 1, 1);
@@ -68,8 +66,7 @@ namespace urchin
         setupGrassBox(mainLayout);
     }
 
-    void TerrainPanelWidget::setupGeneralPropertiesBox(QVBoxLayout *mainLayout)
-    {
+    void TerrainPanelWidget::setupGeneralPropertiesBox(QVBoxLayout *mainLayout) {
         generalPropertiesGroupBox = new QGroupBox("General Properties");
         mainLayout->addWidget(generalPropertiesGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
@@ -107,8 +104,7 @@ namespace urchin
         connect(ambient, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGeneralProperties()));
     }
 
-    void TerrainPanelWidget::setupMeshBox(QVBoxLayout *mainLayout)
-    {
+    void TerrainPanelWidget::setupMeshBox(QVBoxLayout *mainLayout) {
         meshGroupBox = new QGroupBox("Mesh");
         mainLayout->addWidget(meshGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(meshGroupBox);
@@ -138,8 +134,7 @@ namespace urchin
         connect(yScale, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMesh()));
     }
 
-    void TerrainPanelWidget::setupMaterialBox(QVBoxLayout *mainLayout)
-    {
+    void TerrainPanelWidget::setupMaterialBox(QVBoxLayout *mainLayout) {
         materialGroupBox = new QGroupBox("Material");
         mainLayout->addWidget(materialGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(materialGroupBox);
@@ -185,8 +180,7 @@ namespace urchin
         connect(clearMaskFileButton, SIGNAL(clicked()), this, SLOT(clearMaskFilename()));
 
         materialFilenameTexts.resize(MAX_MATERIAL);
-        for(int i=0; i<MAX_MATERIAL; ++i)
-        {
+        for(int i=0; i<MAX_MATERIAL; ++i) {
             std::string materialLabelStr = "Material " + std::to_string(i+1) +":";
             auto *materialLabel= new QLabel(materialLabelStr.c_str());
             materialLayout->addWidget(materialLabel, 2+i, 0);
@@ -215,8 +209,7 @@ namespace urchin
         }
     }
 
-    void TerrainPanelWidget::setupGrassBox(QVBoxLayout *mainLayout)
-    {
+    void TerrainPanelWidget::setupGrassBox(QVBoxLayout *mainLayout) {
         grassGroupBox = new QGroupBox("Grass");
         mainLayout->addWidget(grassGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(grassGroupBox);
@@ -326,37 +319,29 @@ namespace urchin
         connect(windStrength, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
     }
 
-    TerrainTableView *TerrainPanelWidget::getTerrainTableView() const
-    {
+    TerrainTableView *TerrainPanelWidget::getTerrainTableView() const {
         return terrainTableView;
     }
 
-    void TerrainPanelWidget::load(TerrainController *terrainController)
-    {
+    void TerrainPanelWidget::load(TerrainController *terrainController) {
         this->terrainController = terrainController;
 
         std::list<const SceneTerrain *> sceneTerrains = terrainController->getSceneTerrains();
-        for(auto &sceneTerrain : sceneTerrains)
-        {
+        for(auto &sceneTerrain : sceneTerrains) {
             terrainTableView->addTerrain(sceneTerrain);
         }
     }
 
-    void TerrainPanelWidget::unload()
-    {
+    void TerrainPanelWidget::unload() {
         terrainTableView->removeAllTerrains();
 
         terrainController = nullptr;
     }
 
-    void TerrainPanelWidget::notify(Observable *observable, int notificationType)
-    {
-        if(auto *terrainTableView = dynamic_cast<TerrainTableView *>(observable))
-        {
-            if(notificationType==TerrainTableView::SELECTION_CHANGED)
-            {
-                if(terrainTableView->hasSceneTerrainSelected())
-                {
+    void TerrainPanelWidget::notify(Observable *observable, int notificationType) {
+        if(auto *terrainTableView = dynamic_cast<TerrainTableView *>(observable)) {
+            if(notificationType==TerrainTableView::SELECTION_CHANGED) {
+                if(terrainTableView->hasSceneTerrainSelected()) {
                     const SceneTerrain *sceneTerrain = terrainTableView->getSelectedSceneTerrain();
                     setupTerrainDataFrom(sceneTerrain);
 
@@ -365,8 +350,7 @@ namespace urchin
                     meshGroupBox->show();
                     materialGroupBox->show();
                     grassGroupBox->show();
-                }else
-                {
+                } else {
                     removeTerrainButton->setEnabled(false);
                     generalPropertiesGroupBox->hide();
                     meshGroupBox->hide();
@@ -377,8 +361,7 @@ namespace urchin
         }
     }
 
-    void TerrainPanelWidget::setupTerrainDataFrom(const SceneTerrain *sceneTerrain)
-    {
+    void TerrainPanelWidget::setupTerrainDataFrom(const SceneTerrain *sceneTerrain) {
         disableTerrainEvent = true;
         const Terrain *terrain = sceneTerrain->getTerrain();
 
@@ -394,21 +377,17 @@ namespace urchin
         this->tRepeat->setValue(terrain->getMaterial()->getTRepeat());
         this->maskMapFilenameText->setText(QString::fromStdString(terrain->getMaterial()->getMaskMapFilename()));
         this->materialFilenameTexts.resize(MAX_MATERIAL);
-        for(unsigned int i=0; i<MAX_MATERIAL; ++i)
-        {
+        for(unsigned int i=0; i<MAX_MATERIAL; ++i) {
             Material *material = terrain->getMaterial()->getMaterials()[i];
 
-            if(material != nullptr)
-            {
+            if(material != nullptr) {
                 this->materialFilenameTexts[i]->setText(QString::fromStdString(material->getName()));
-            }else
-            {
+            } else {
                 this->materialFilenameTexts[i]->setText("");
             }
         }
 
-        if(terrain->getGrass())
-        {
+        if(terrain->getGrass()) {
             auto *terrainGrass = terrain->getGrass();
 
             this->grassTextureFilenameText->setText(QString::fromStdString(terrainGrass->getGrassTexture()));
@@ -426,13 +405,11 @@ namespace urchin
         disableTerrainEvent = false;
     }
 
-    void TerrainPanelWidget::showAddTerrainDialog()
-    {
+    void TerrainPanelWidget::showAddTerrainDialog() {
         NewTerrainDialog newSceneTerrainDialog(this, terrainController);
         newSceneTerrainDialog.exec();
 
-        if(newSceneTerrainDialog.result()==QDialog::Accepted)
-        {
+        if(newSceneTerrainDialog.result()==QDialog::Accepted) {
             SceneTerrain *sceneTerrain = newSceneTerrainDialog.getSceneTerrain();
             terrainController->addSceneTerrain(sceneTerrain);
 
@@ -440,10 +417,8 @@ namespace urchin
         }
     }
 
-    void TerrainPanelWidget::removeSelectedTerrain()
-    {
-        if(terrainTableView->hasSceneTerrainSelected())
-        {
+    void TerrainPanelWidget::removeSelectedTerrain() {
+        if(terrainTableView->hasSceneTerrainSelected()) {
             const SceneTerrain *sceneTerrain = terrainTableView->getSelectedSceneTerrain();
             terrainController->removeSceneTerrain(sceneTerrain);
 
@@ -451,10 +426,8 @@ namespace urchin
         }
     }
 
-    void TerrainPanelWidget::updateTerrainGeneralProperties()
-    {
-        if(!disableTerrainEvent)
-        {
+    void TerrainPanelWidget::updateTerrainGeneralProperties() {
+        if(!disableTerrainEvent) {
             const SceneTerrain *sceneTerrain = terrainTableView->getSelectedSceneTerrain();
 
             Point3<float> position(positionX->value(), positionY->value(), positionZ->value());
@@ -462,36 +435,29 @@ namespace urchin
         }
     }
 
-    void TerrainPanelWidget::updateTerrainMesh()
-    {
-        if(!disableTerrainEvent)
-        {
+    void TerrainPanelWidget::updateTerrainMesh() {
+        if(!disableTerrainEvent) {
             const SceneTerrain *sceneTerrain = terrainTableView->getSelectedSceneTerrain();
 
             terrainController->updateSceneTerrainMesh(sceneTerrain, (float)xzScale->value(), (float)yScale->value());
         }
     }
 
-    void TerrainPanelWidget::updateTerrainMaterial()
-    {
-        if(!disableTerrainEvent)
-        {
+    void TerrainPanelWidget::updateTerrainMaterial() {
+        if(!disableTerrainEvent) {
             const SceneTerrain *sceneTerrain = terrainTableView->getSelectedSceneTerrain();
 
             std::string maskMapFilename = maskMapFilenameText->text().toStdString();
             std::vector<std::string> materialFilenames;
-            for(unsigned int i=0; i<MAX_MATERIAL; ++i)
-            {
+            for(unsigned int i=0; i<MAX_MATERIAL; ++i) {
                 materialFilenames.push_back(materialFilenameTexts[i]->text().toStdString());
             }
             terrainController->updateSceneTerrainMaterial(sceneTerrain, (float)sRepeat->value(), (float)tRepeat->value(), maskMapFilename, materialFilenames);
         }
     }
 
-    void TerrainPanelWidget::updateTerrainGrass()
-    {
-        if(!disableTerrainEvent)
-        {
+    void TerrainPanelWidget::updateTerrainGrass() {
+        if(!disableTerrainEvent) {
             const SceneTerrain *sceneTerrain = terrainTableView->getSelectedSceneTerrain();
 
             std::string grassTextureFilename = grassTextureFilenameText->text().toStdString();
@@ -503,13 +469,11 @@ namespace urchin
         }
     }
 
-    void TerrainPanelWidget::showMaskFilenameDialog()
-    {
+    void TerrainPanelWidget::showMaskFilenameDialog() {
         std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
         QString directory = preferredMaskMapPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredMaskMapPath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png)", nullptr, QFileDialog::DontUseNativeDialog);
-        if(!filename.isNull())
-        {
+        if(!filename.isNull()) {
             std::string tgaFilenamePath = filename.toUtf8().constData();
             std::string relativeTgaFilenamePath = FileHandler::getRelativePath(resourcesDirectory, tgaFilenamePath);
             this->maskMapFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
@@ -517,33 +481,28 @@ namespace urchin
             std::string preferredPathString = FileHandler::getDirectoryFrom(tgaFilenamePath);
             preferredMaskMapPath = QString::fromStdString(preferredPathString);
 
-            try
-            {
+            try {
                 updateTerrainMaterial();
-            }catch(std::exception &e)
-            {
+            }catch(std::exception &e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearMaskFilename();
             }
         }
     }
 
-    void TerrainPanelWidget::clearMaskFilename()
-    {
+    void TerrainPanelWidget::clearMaskFilename() {
         this->maskMapFilenameText->setText("");
 
         updateTerrainMaterial();
     }
 
-    void TerrainPanelWidget::showMaterialFilenameDialog(const QString &positionIndexStr)
-    {
+    void TerrainPanelWidget::showMaterialFilenameDialog(const QString &positionIndexStr) {
         int i = std::stoi(positionIndexStr.toStdString());
 
         std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
         QString directory = preferredMaterialPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredMaterialPath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open material file"), directory, "Material file (*.mtr)", nullptr, QFileDialog::DontUseNativeDialog);
-        if(!filename.isNull())
-        {
+        if(!filename.isNull()) {
             std::string mtrFilenamePath = filename.toUtf8().constData();
             std::string relativeMtrFilenamePath = FileHandler::getRelativePath(resourcesDirectory, mtrFilenamePath);
             this->materialFilenameTexts[i]->setText(QString::fromStdString(relativeMtrFilenamePath));
@@ -551,32 +510,27 @@ namespace urchin
             std::string preferredPathString = FileHandler::getDirectoryFrom(mtrFilenamePath);
             preferredMaterialPath = QString::fromStdString(preferredPathString);
 
-            try
-            {
+            try {
                 updateTerrainMaterial();
-            }catch(std::exception &e)
-            {
+            }catch(std::exception &e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearMaterialFilename(positionIndexStr);
             }
         }
     }
 
-    void TerrainPanelWidget::clearMaterialFilename(const QString &positionIndexStr)
-    {
+    void TerrainPanelWidget::clearMaterialFilename(const QString &positionIndexStr) {
         int i = std::stoi(positionIndexStr.toStdString());
         this->materialFilenameTexts[i]->setText("");
 
         updateTerrainMaterial();
     }
 
-    void TerrainPanelWidget::showGrassTextureFilenameDialog()
-    {
+    void TerrainPanelWidget::showGrassTextureFilenameDialog() {
         std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
         QString directory = preferredGrassTexturePath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredGrassTexturePath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png)", nullptr, QFileDialog::DontUseNativeDialog);
-        if(!filename.isNull())
-        {
+        if(!filename.isNull()) {
             std::string tgaFilenamePath = filename.toUtf8().constData();
             std::string relativeTgaFilenamePath = FileHandler::getRelativePath(resourcesDirectory, tgaFilenamePath);
             this->grassTextureFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
@@ -584,31 +538,26 @@ namespace urchin
             std::string preferredPathString = FileHandler::getDirectoryFrom(tgaFilenamePath);
             preferredGrassTexturePath = QString::fromStdString(preferredPathString);
 
-            try
-            {
+            try {
                 updateTerrainGrass();
-            }catch(std::exception &e)
-            {
+            }catch(std::exception &e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearMaskFilename();
             }
         }
     }
 
-    void TerrainPanelWidget::clearGrassTextureFilename()
-    {
+    void TerrainPanelWidget::clearGrassTextureFilename() {
         this->grassTextureFilenameText->setText("");
 
         updateTerrainGrass();
     }
 
-    void TerrainPanelWidget::showGrassMaskFilenameDialog()
-    {
+    void TerrainPanelWidget::showGrassMaskFilenameDialog() {
         std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
         QString directory = preferredGrassMaskPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredGrassMaskPath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png)", nullptr, QFileDialog::DontUseNativeDialog);
-        if(!filename.isNull())
-        {
+        if(!filename.isNull()) {
             std::string tgaFilenamePath = filename.toUtf8().constData();
             std::string relativeTgaFilenamePath = FileHandler::getRelativePath(resourcesDirectory, tgaFilenamePath);
             this->grassMaskFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
@@ -616,19 +565,16 @@ namespace urchin
             std::string preferredPathString = FileHandler::getDirectoryFrom(tgaFilenamePath);
             preferredGrassMaskPath = QString::fromStdString(preferredPathString);
 
-            try
-            {
+            try {
                 updateTerrainGrass();
-            }catch(std::exception &e)
-            {
+            }catch(std::exception &e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearMaskFilename();
             }
         }
     }
 
-    void TerrainPanelWidget::clearGrassMaskFilename()
-    {
+    void TerrainPanelWidget::clearGrassMaskFilename() {
         this->grassMaskFilenameText->setText("");
 
         updateTerrainGrass();

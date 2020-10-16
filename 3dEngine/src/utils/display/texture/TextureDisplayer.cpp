@@ -5,8 +5,7 @@
 #include "utils/shader/ShaderManager.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 
-namespace urchin
-{
+namespace urchin {
 
     TextureDisplayer::TextureDisplayer(unsigned int textureID, TextureDisplayer::ColorType colorType, float colorIntensity) :
             isInitialized(false),
@@ -23,8 +22,7 @@ namespace urchin
             displayTextureShader(0),
             layer(-1),
             mProjectionLoc(-1),
-            diffuseTexLoc(-1)
-    {
+            diffuseTexLoc(-1) {
 
     }
 
@@ -43,20 +41,16 @@ namespace urchin
             displayTextureShader(0),
             layer((int)layer),
             mProjectionLoc(-1),
-            diffuseTexLoc(-1)
-    {
+            diffuseTexLoc(-1) {
 
     }
 
-    TextureDisplayer::~TextureDisplayer()
-    {
+    TextureDisplayer::~TextureDisplayer() {
         ShaderManager::instance()->removeProgram(displayTextureShader);
     }
 
-    void TextureDisplayer::setPosition(TextureDisplayer::CoordinateX coordinateX, TextureDisplayer::CoordinateY coordinateY)
-    {
-        if(isInitialized)
-        {
+    void TextureDisplayer::setPosition(TextureDisplayer::CoordinateX coordinateX, TextureDisplayer::CoordinateY coordinateY) {
+        if(isInitialized) {
             throw std::runtime_error("No position update allowed after initialization.");
         }
 
@@ -70,10 +64,8 @@ namespace urchin
      * @param minY Minimum Y (0 : top screen
      * @param maxY Maximum Y (scene height : bottom screen)
      */
-    void TextureDisplayer::setSize(float minX, float maxX, float minY, float maxY)
-    {
-        if(isInitialized)
-        {
+    void TextureDisplayer::setSize(float minX, float maxX, float minY, float maxY) {
+        if(isInitialized) {
             throw std::runtime_error("No size update allowed after initialization.");
         }
 
@@ -83,36 +75,29 @@ namespace urchin
         userMaxY = maxY;
     }
 
-    void TextureDisplayer::setFullScreen(bool fullScreen)
-    {
-        if(isInitialized)
-        {
+    void TextureDisplayer::setFullScreen(bool fullScreen) {
+        if(isInitialized) {
             throw std::runtime_error("No full screen flag update allowed after initialization.");
         }
 
         this->fullScreen = fullScreen;
     }
 
-    void TextureDisplayer::initialize(unsigned int sceneWidth, unsigned int sceneHeight, float nearPlane, float farPlane)
-    {
-        if(isInitialized)
-        {
+    void TextureDisplayer::initialize(unsigned int sceneWidth, unsigned int sceneHeight, float nearPlane, float farPlane) {
+        if(isInitialized) {
             throw std::runtime_error("Texture displayer cannot be initialized twice.");
         }
 
         initializeShader(nearPlane, farPlane);
 
         float minX, maxX, minY, maxY;
-        if(fullScreen)
-        {
+        if(fullScreen) {
             minX = 0.0f;
             maxX = (float)sceneWidth;
             minY = 0.0f;
             maxY = (float)sceneHeight;
-        }else
-        {
-            switch(coordinateX)
-            {
+        } else {
+            switch(coordinateX) {
                 case TextureDisplayer::LEFT:
                     minX = (float)sceneWidth * 0.025f;
                     maxX = (float)sceneWidth * 0.325f;
@@ -133,8 +118,7 @@ namespace urchin
                     throw std::domain_error("Unsupported coordinate X");
             }
 
-            switch(coordinateY)
-            {
+            switch(coordinateY) {
                 case TextureDisplayer::BOTTOM:
                     minY = (float)sceneHeight * 0.675f;
                     maxY = (float)sceneHeight * 0.975f;
@@ -171,8 +155,7 @@ namespace urchin
         isInitialized = true;
     }
 
-    void TextureDisplayer::initializeShader(float nearPlane, float farPlane)
-    {
+    void TextureDisplayer::initializeShader(float nearPlane, float farPlane) {
         std::map<std::string, std::string> textureDisplayTokens;
         textureDisplayTokens["IS_DEFAULT_VALUE"] = colorType==ColorType::DEFAULT_VALUE ? "true" : "false";
         textureDisplayTokens["IS_DEPTH_VALUE"] = colorType==ColorType::DEPTH_VALUE ? "true" : "false";
@@ -193,8 +176,7 @@ namespace urchin
         auto diffuseTexLoc = glGetUniformLocation(displayTextureShader, "colorTex");
         glUniform1i(diffuseTexLoc, GL_TEXTURE0-GL_TEXTURE0);
 
-        if(layer!=-1)
-        {
+        if(layer!=-1) {
             auto layerLoc = glGetUniformLocation(displayTextureShader, "layer");
             glUniform1i(layerLoc, layer);
         }
@@ -202,10 +184,8 @@ namespace urchin
         mProjectionLoc  = glGetUniformLocation(displayTextureShader, "mProjection");
     }
 
-    void TextureDisplayer::display()
-    {
-        if(!isInitialized)
-        {
+    void TextureDisplayer::display() {
+        if(!isInitialized) {
             throw std::runtime_error("Texture displayer must be initialized before display.");
         }
 

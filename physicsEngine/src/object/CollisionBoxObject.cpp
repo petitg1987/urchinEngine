@@ -2,64 +2,51 @@
 
 #include "object/CollisionBoxObject.h"
 
-namespace urchin
-{
+namespace urchin {
 
     CollisionBoxObject::CollisionBoxObject(float outerMargin, const Vector3<float> &halfSize, const Point3<float> &centerOfMass, const Quaternion<float> &orientation) :
             CollisionConvexObject3D(outerMargin),
-            boxObject(OBBox<float>(halfSize, centerOfMass, orientation))
-    {
+            boxObject(OBBox<float>(halfSize, centerOfMass, orientation)) {
 
     }
 
-    float CollisionBoxObject::getHalfSize(unsigned int index) const
-    {
+    float CollisionBoxObject::getHalfSize(unsigned int index) const {
         return boxObject.getHalfSize(index) + getOuterMargin();
     }
 
-    Vector3<float> CollisionBoxObject::getHalfSizes() const
-    {
+    Vector3<float> CollisionBoxObject::getHalfSizes() const {
         return boxObject.getHalfSizes() + Vector3<float>(getOuterMargin(), getOuterMargin(), getOuterMargin());
     }
 
-    const Point3<float> &CollisionBoxObject::getCenterOfMass() const
-    {
+    const Point3<float> &CollisionBoxObject::getCenterOfMass() const {
         return boxObject.getCenterOfMass();
     }
 
-    const Quaternion<float> &CollisionBoxObject::getOrientation() const
-    {
+    const Quaternion<float> &CollisionBoxObject::getOrientation() const {
         return boxObject.getOrientation();
     }
 
-    const Vector3<float> &CollisionBoxObject::getAxis(unsigned int index) const
-    {
+    const Vector3<float> &CollisionBoxObject::getAxis(unsigned int index) const {
         return boxObject.getAxis(index);
     }
 
-    CollisionConvexObject3D::ObjectType CollisionBoxObject::getObjectType() const
-    {
+    CollisionConvexObject3D::ObjectType CollisionBoxObject::getObjectType() const {
         return CollisionConvexObject3D::BOX_OBJECT;
     }
 
     /**
      * @return includeMargin Indicate whether support function need to take into account margin
      */
-    Point3<float> CollisionBoxObject::getSupportPoint(const Vector3<float> &direction, bool includeMargin) const
-    {
-        if(includeMargin)
-        {
+    Point3<float> CollisionBoxObject::getSupportPoint(const Vector3<float> &direction, bool includeMargin) const {
+        if(includeMargin) {
             const Point3<float> &supportPoint = boxObject.getSupportPoint(direction);
             Point3<float> supportPointWithMargin = supportPoint;
 
-            for(unsigned int i=0; i<3; ++i)
-            { //for each axis
+            for(unsigned int i=0; i<3; ++i) { //for each axis
                 const Vector3<float> &axis = boxObject.getAxis(i);
-                if(axis.dotProduct(boxObject.getCenterOfMass().vector(supportPoint)) > 0.0f)
-                {
+                if(axis.dotProduct(boxObject.getCenterOfMass().vector(supportPoint)) > 0.0f) {
                     supportPointWithMargin = supportPointWithMargin.translate(axis * getOuterMargin());
-                }else
-                {
+                } else {
                     supportPointWithMargin = supportPointWithMargin.translate(-(axis * getOuterMargin()));
                 }
             }
@@ -70,13 +57,11 @@ namespace urchin
         return boxObject.getSupportPoint(direction);
     }
 
-    OBBox<float> CollisionBoxObject::retrieveOBBox() const
-    {
+    OBBox<float> CollisionBoxObject::retrieveOBBox() const {
         return OBBox<float>(getHalfSizes(), getCenterOfMass(), getOrientation());
     }
 
-    std::string CollisionBoxObject::toString() const
-    {
+    std::string CollisionBoxObject::toString() const {
         std::stringstream ss;
         ss.precision(std::numeric_limits<float>::max_digits10);
 

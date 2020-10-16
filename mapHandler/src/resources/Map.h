@@ -19,14 +19,12 @@
 #include "resources/ai/SceneAI.h"
 #include "resources/common/SceneEntity.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Represent a map loaded in memory
     */
-    class Map
-    {
+    class Map {
         //XML tags
         #define OBJECTS_TAG "objects"
         #define OBJECT_TAG "object"

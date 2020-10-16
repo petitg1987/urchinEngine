@@ -2,37 +2,30 @@
 
 #include "PolygonsUnion.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
        * Perform an union of polygons.
        * When polygons cannot be put together because there is no contact: there are returned apart.
        */
-    template<class T> std::vector<CSGPolygon<T>> &PolygonsUnion<T>::unionPolygons(const std::vector<CSGPolygon<T>> &polygons) const
-    {
+    template<class T> std::vector<CSGPolygon<T>> &PolygonsUnion<T>::unionPolygons(const std::vector<CSGPolygon<T>> &polygons) const {
         mergedPolygons.clear();
 
         allPolygonPaths.clear();
-        for(const auto &polygon : polygons)
-        {
+        for(const auto &polygon : polygons) {
             allPolygonPaths.emplace_back(CSGPolygonPath(polygon));
         }
 
-        while(!allPolygonPaths.empty())
-        {
+        while(!allPolygonPaths.empty()) {
             bool isPolygonsMerged = false;
-            for(std::size_t i=1; i<allPolygonPaths.size(); ++i)
-            {
+            for(std::size_t i=1; i<allPolygonPaths.size(); ++i) {
                 const std::vector<CSGPolygonPath> &result = unionTwoPolygonPaths(allPolygonPaths[0], allPolygonPaths[i]);
-                if(result.empty())
-                {
+                if(result.empty()) {
                     logInputData(polygons, "Empty result returned after two polygons union." , Logger::ERROR);
                     mergedPolygons.clear();
                     return mergedPolygons;
                 }
-                if(result.size()==1)
-                {
+                if(result.size()==1) {
                     isPolygonsMerged = true;
 
                     VectorEraser::erase(allPolygonPaths, i);
@@ -42,8 +35,7 @@ namespace urchin
                     break;
                 }
             }
-            if(!isPolygonsMerged)
-            {
+            if(!isPolygonsMerged) {
                 mergedPolygons.push_back(allPolygonPaths[0].template toCSGPolygon<T>());
                 VectorEraser::erase(allPolygonPaths, 0);
             }
@@ -52,8 +44,7 @@ namespace urchin
         return mergedPolygons;
     }
 
-    template<class T> const std::vector<CSGPolygonPath> &PolygonsUnion<T>::unionTwoPolygonPaths(const CSGPolygonPath &polygon1, const CSGPolygonPath &polygon2) const
-    {
+    template<class T> const std::vector<CSGPolygonPath> &PolygonsUnion<T>::unionTwoPolygonPaths(const CSGPolygonPath &polygon1, const CSGPolygonPath &polygon2) const {
         ClipperLib::Clipper clipper;
         clipper.ReverseSolution(true);
         clipper.StrictlySimple(true); //slow but avoid duplicate points
@@ -65,15 +56,13 @@ namespace urchin
 
         twoPolygonUnions.clear();
 
-        if(solution.Childs.size()==1)
-        {
+        if(solution.Childs.size()==1) {
             assert(!solution.Childs[0]->IsOpen());
             assert(!solution.Childs[0]->IsHole());
 
             std::string unionName = "{" + polygon1.getName() + "} ∪ {" + polygon2.getName() + "}";
             twoPolygonUnions.emplace_back(CSGPolygonPath(solution.Childs[0]->Contour, unionName));
-        }else if(solution.Childs.size()==2)
-        {
+        } else if(solution.Childs.size()==2) {
             twoPolygonUnions.emplace_back(CSGPolygonPath(solution.Childs[0]->Contour, polygon1.getName()));
             twoPolygonUnions.emplace_back(CSGPolygonPath(solution.Childs[1]->Contour, polygon2.getName()));
         }
@@ -82,18 +71,15 @@ namespace urchin
     }
 
     template<class T> void PolygonsUnion<T>::logInputData(const std::vector<CSGPolygon<T>> &polygons, const std::string &message,
-            Logger::CriticalityLevel logLevel) const
-    {
+            Logger::CriticalityLevel logLevel) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<T>::max_digits10);
 
         logStream<<message<<std::endl;
 
-        for(std::size_t i=0; i<polygons.size(); ++i)
-        {
+        for(std::size_t i=0; i<polygons.size(); ++i) {
             logStream << "Polygon " << i << std::endl << polygons[i];
-            if(i < polygons.size() - 1)
-            {
+            if(i < polygons.size() - 1) {
                 logStream << std::endl;
             }
 

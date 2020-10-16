@@ -1,7 +1,6 @@
 #include "math/geometry/2d/object/ConvexObject2D.h"
 
-namespace urchin
-{
+namespace urchin {
     //explicit template
     template class ConvexObject2D<float>;
 

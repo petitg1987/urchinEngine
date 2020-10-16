@@ -2,8 +2,7 @@
 
 #include "Camera.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * @param angle Angle of the field of view (fovy)
@@ -28,13 +27,11 @@ namespace urchin
             middleScreenX(0),
             middleScreenY(0),
             oldMouseX(0),
-            oldMouseY(0)
-    {
+            oldMouseY(0) {
 
     }
 
-    void Camera::onResize(unsigned int sceneWidth, unsigned int sceneHeight)
-    {
+    void Camera::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         this->sceneWidth = sceneWidth;
         this->sceneHeight = sceneHeight;
         this->middleScreenX = sceneWidth / 2;
@@ -56,146 +53,118 @@ namespace urchin
         frustum = baseFrustum * mView.inverse();
     }
 
-    void Camera::resetMousePosition()
-    {
-        if(bUseMouse)
-        {
+    void Camera::resetMousePosition() {
+        if(bUseMouse) {
             moveMouse(middleScreenX, middleScreenY);
         }
     }
 
-    void Camera::useMouseToMoveCamera(bool use)
-    {
+    void Camera::useMouseToMoveCamera(bool use) {
         bUseMouse = use;
 
-        if(use)
-        {
-            if(middleScreenX!=0 || middleScreenY!=0)
-            {
+        if(use) {
+            if(middleScreenX!=0 || middleScreenY!=0) {
                 resetMousePosition();
             }
-        }else
-        {
+        } else {
             moveMouse(oldMouseX, oldMouseY);
         }
     }
 
-    bool Camera::isUseMouseToMoveCamera() const
-    {
+    bool Camera::isUseMouseToMoveCamera() const {
         return bUseMouse;
     }
 
-    void Camera::setMouseSensitivity(float mouseSensitivity)
-    {
+    void Camera::setMouseSensitivity(float mouseSensitivity) {
         this->mouseSensitivity = mouseSensitivity;
     }
 
     /**
     * @param distance Distance between the camera and the rotation point (0 : first person camera | >0 : third person camera)
     */
-    void  Camera::setDistance(float distance)
-    {
+    void  Camera::setDistance(float distance) {
         this->distance = distance;
     }
 
-    void  Camera::setMaxRotationX(float maxRotationX)
-    {
+    void  Camera::setMaxRotationX(float maxRotationX) {
         this->maxRotationX = maxRotationX;
     }
 
-    const Matrix4<float> &Camera::getViewMatrix() const
-    {
+    const Matrix4<float> &Camera::getViewMatrix() const {
         return mView;
     }
 
-    const Matrix4<float> &Camera::getProjectionMatrix() const
-    {
+    const Matrix4<float> &Camera::getProjectionMatrix() const {
         return mProjection;
     }
 
-    const Frustum<float> &Camera::getFrustum() const
-    {
+    const Frustum<float> &Camera::getFrustum() const {
         return frustum;
     }
 
-    const Point3<float> &Camera::getPosition() const
-    {
+    const Point3<float> &Camera::getPosition() const {
         return position;
     }
 
-    const Vector3<float> &Camera::getView() const
-    {
+    const Vector3<float> &Camera::getView() const {
         return view;
     }
 
-    const Vector3<float> &Camera::getUp() const
-    {
+    const Vector3<float> &Camera::getUp() const {
         return up;
     }
 
-    unsigned int Camera::getSceneWidth() const
-    {
+    unsigned int Camera::getSceneWidth() const {
         return sceneWidth;
     }
 
-    unsigned int Camera::getSceneHeight() const
-    {
+    unsigned int Camera::getSceneHeight() const {
         return sceneHeight;
     }
 
-    float Camera::getAngle() const
-    {
+    float Camera::getAngle() const {
         return angle;
     }
 
-    float Camera::getNearPlane() const
-    {
+    float Camera::getNearPlane() const {
         return nearPlane;
     }
 
-    float Camera::getFarPlane() const
-    {
+    float Camera::getFarPlane() const {
         return farPlane;
     }
 
-    void Camera::moveTo(const Point3<float> &position)
-    {
+    void Camera::moveTo(const Point3<float> &position) {
         this->position = position;
 
         updateViewMatrix();
     }
 
-    void Camera::moveOnLocalXAxis(float distance)
-    {
+    void Camera::moveOnLocalXAxis(float distance) {
         Vector3<float> localXAxis = up.crossProduct(view).normalize();
         position = position.translate(localXAxis * distance);
 
         updateViewMatrix();
     }
 
-    void Camera::moveOnLocalZAxis(float distance)
-    {
+    void Camera::moveOnLocalZAxis(float distance) {
         Vector3<float> localZAxis = view;
         position = position.translate(localZAxis * distance);
 
         updateViewMatrix();
     }
 
-    void Camera::lookAt(const Vector3<float> &view)
-    {
+    void Camera::lookAt(const Vector3<float> &view) {
         this->view = view.normalize();
 
         updateViewMatrix();
     }
 
-    void Camera::rotate(const Quaternion<float> &quatRotation)
-    {
+    void Camera::rotate(const Quaternion<float> &quatRotation) {
         Point3<float> pivot;
-        if (std::fabs(distance) > std::numeric_limits<float>::epsilon())
-        {
+        if (std::fabs(distance) > std::numeric_limits<float>::epsilon()) {
             pivot = position.translate(view * distance);
-        } else
-        {
+        } else {
             pivot = position;
         }
 
@@ -213,8 +182,7 @@ namespace urchin
         up.Z = resultUp.Z;
 
         //moves position point
-        if (std::fabs(distance) > std::numeric_limits<float>::epsilon())
-        {
+        if (std::fabs(distance) > std::numeric_limits<float>::epsilon()) {
             Vector3<float> axis = pivot.vector(position);
             Quaternion<float> quatPosition(axis.X, axis.Y, axis.Z, 0.0f);
             const Quaternion<float> &resultPosition = (quatRotation * quatPosition.normalize()) * quatRotation.conjugate();
@@ -227,30 +195,24 @@ namespace urchin
         updateViewMatrix();
     }
 
-    bool Camera::onKeyPress(unsigned int)
-    {
+    bool Camera::onKeyPress(unsigned int) {
         //do nothing
         return true;
     }
 
-    bool Camera::onKeyRelease(unsigned int)
-    {
+    bool Camera::onKeyRelease(unsigned int) {
         //do nothing
         return true;
     }
 
-    bool Camera::onMouseMove(int mouseX, int mouseY)
-    {
-        if(mouseX > 0 || mouseY > 0)
-        {
-            if (!bUseMouse)
-            {
+    bool Camera::onMouseMove(int mouseX, int mouseY) {
+        if(mouseX > 0 || mouseY > 0) {
+            if (!bUseMouse) {
                 oldMouseX = static_cast<unsigned int>(mouseX);
                 oldMouseY = static_cast<unsigned int>(mouseY);
                 return true;
             }
-            if ((static_cast<unsigned int>(mouseX) == middleScreenX) && (static_cast<unsigned int>(mouseY) == middleScreenY))
-            {
+            if ((static_cast<unsigned int>(mouseX) == middleScreenX) && (static_cast<unsigned int>(mouseY) == middleScreenY)) {
                 return false;
             }
 
@@ -264,11 +226,9 @@ namespace urchin
 
             //do not rotate up/down more than "maxRotationX" percent
             float currentRotationX = view.Y + mouseDirection.Y;
-            if (currentRotationX > 0.0 && currentRotationX > maxRotationX)
-            {
+            if (currentRotationX > 0.0 && currentRotationX > maxRotationX) {
                 mouseDirection.Y -= (currentRotationX - maxRotationX);
-            } else if (currentRotationX < 0.0 && currentRotationX < -maxRotationX)
-            {
+            } else if (currentRotationX < 0.0 && currentRotationX < -maxRotationX) {
                 mouseDirection.Y -= (currentRotationX + maxRotationX);
             }
 
@@ -285,8 +245,7 @@ namespace urchin
         return true;
     }
 
-    void Camera::updateViewMatrix()
-    {
+    void Camera::updateViewMatrix() {
         //gluLookAt:
         const Vector3<float> &f = view;
         const Vector3<float> &s = f.crossProduct(up).normalize();

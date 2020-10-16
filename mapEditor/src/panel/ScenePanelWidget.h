@@ -15,11 +15,9 @@
 #include "panel/sounds/SoundPanelWidget.h"
 #include "panel/ai/AIPanelWidget.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class ScenePanelWidget : public QTabWidget, public Observable
-    {
+    class ScenePanelWidget : public QTabWidget, public Observable {
         Q_OBJECT
 
         public:

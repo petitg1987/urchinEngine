@@ -1,32 +1,26 @@
 #include "math/algebra/vector/Vector4.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> Vector4<T>::Vector4() : X(0), Y(0), Z(0), W(1)
-    {
+    template<class T> Vector4<T>::Vector4() : X(0), Y(0), Z(0), W(1) {
 
     }
 
-    template<class T> Vector4<T>::Vector4(T Xu, T Yu, T Zu, T Wu) : X(Xu), Y(Yu), Z(Zu), W(Wu)
-    {
+    template<class T> Vector4<T>::Vector4(T Xu, T Yu, T Zu, T Wu) : X(Xu), Y(Yu), Z(Zu), W(Wu) {
 
     }
 
     template<class T> Vector4<T>::Vector4(const Vector3<T> &v, T Wu) :
-        X(v.X), Y(v.Y), Z(v.Z), W(Wu)
-    {
+        X(v.X), Y(v.Y), Z(v.Z), W(Wu) {
 
     }
 
     template<class T> Vector4<T>::Vector4(const Vector4<T> &vector) :
-            X(vector.X), Y(vector.Y), Z(vector.Z), W(vector.W)
-    {
+            X(vector.X), Y(vector.Y), Z(vector.Z), W(vector.W) {
 
     }
 
-    template<class T> Vector4<T>& Vector4<T>::operator=(const Vector4<T> &vector)
-    {
+    template<class T> Vector4<T>& Vector4<T>::operator=(const Vector4<T> &vector) {
         X = vector.X;
         Y = vector.Y;
         Z = vector.Z;
@@ -34,95 +28,80 @@ namespace urchin
         return *this;
     }
 
-    template<class T> void Vector4<T>::setValues(T Xu, T Yu, T Zu, T Wu)
-    {
+    template<class T> void Vector4<T>::setValues(T Xu, T Yu, T Zu, T Wu) {
         X = Xu;
         Y = Yu;
         Z = Zu;
         W = Wu;
     }
 
-    template<class T> void Vector4<T>::setNull()
-    {
+    template<class T> void Vector4<T>::setNull() {
         X = Y = Z = W = 0;
     }
 
-    template<class T> Vector4<T> Vector4<T>::normalize() const
-    {
+    template<class T> Vector4<T> Vector4<T>::normalize() const {
         const T norm = std::sqrt(X*X + Y*Y + Z*Z + W*W);
 
-        if(norm > 0.0)
-        {
+        if(norm > 0.0) {
             return Vector4<T>(X/norm, Y/norm, Z/norm, W/norm);
         }
 
         return Vector4<T>(X, Y, Z, W);
     }
 
-    template<class T> T Vector4<T>::length() const
-    {
+    template<class T> T Vector4<T>::length() const {
         return std::sqrt(X*X + Y*Y + Z*Z + W*W);
     }
 
-    template<class T> T Vector4<T>::squareLength() const
-    {
+    template<class T> T Vector4<T>::squareLength() const {
         return (X*X + Y*Y + Z*Z + W*W);
     }
 
-    template<class T> T Vector4<T>::dotProduct(const Vector4<T> &v) const
-    {
+    template<class T> T Vector4<T>::dotProduct(const Vector4<T> &v) const {
         return (X*v.X + Y*v.Y + Z*v.Z + W*v.W);
     }
 
-    template<class T> Vector3<T> Vector4<T>::xyz() const
-    {
+    template<class T> Vector3<T> Vector4<T>::xyz() const {
         return Vector3<T>(X, Y, Z);
     }
 
-    template<class T> Vector4<T> Vector4<T>::operator +() const
-    {
+    template<class T> Vector4<T> Vector4<T>::operator +() const {
         return Vector4<T>(X, Y, Z, W);
     }
 
-    template<class T> Vector4<T> Vector4<T>::operator -() const
-    {
+    template<class T> Vector4<T> Vector4<T>::operator -() const {
         return Vector4<T>(-X, -Y, -Z, -W);
     }
 
-    template<class T> Vector4<T> Vector4<T>::operator +(const Vector4<T> &v) const
-    {
+    template<class T> Vector4<T> Vector4<T>::operator +(const Vector4<T> &v) const {
         return Vector4<T>(    X + v.X,
                     Y + v.Y,
                     Z + v.Z,
                     W + v.W);
     }
 
-    template<class T> Vector4<T> Vector4<T>::operator -(const Vector4<T> &v) const
-    {
+    template<class T> Vector4<T> Vector4<T>::operator -(const Vector4<T> &v) const {
         return Vector4<T>(    X - v.X,
                     Y - v.Y,
                     Z - v.Z,
                     W - v.W);
     }
 
-    template<class T> Vector4<T> Vector4<T>::operator *(const Vector4<T> &v) const
-    {
+    template<class T> Vector4<T> Vector4<T>::operator *(const Vector4<T> &v) const {
         return Vector4<T>(    X * v.X,
                 Y * v.Y,
                 Z * v.Z,
                 W * v.W);
     }
 
-    template<class T> Vector4<T> Vector4<T>::operator /(const Vector4<T> &v) const
-    {
+    template<class T> Vector4<T> Vector4<T>::operator /(const Vector4<T> &v) const {
         return Vector4<T>(    X / v.X,
                 Y / v.Y,
                 Z / v.Z,
                 W / v.W);
     }
 
-    template<class T> const Vector4<T>& Vector4<T>::operator +=(const Vector4<T> &v)
-    {
+    template<class T> const Vector4<T>& Vector4<T>::operator +=(const Vector4<T> &v) {
         X += v.X;
         Y += v.Y;
         Z += v.Z;
@@ -131,8 +110,7 @@ namespace urchin
         return *this;
     }
 
-    template<class T> const Vector4<T>& Vector4<T>::operator -=(const Vector4<T> &v)
-    {
+    template<class T> const Vector4<T>& Vector4<T>::operator -=(const Vector4<T> &v) {
         X -= v.X;
         Y -= v.Y;
         Z -= v.Z;
@@ -141,8 +119,7 @@ namespace urchin
         return *this;
     }
 
-    template<class T> const Vector4<T>& Vector4<T>::operator *=(const Vector4<T> &v)
-    {
+    template<class T> const Vector4<T>& Vector4<T>::operator *=(const Vector4<T> &v) {
         X *= v.X;
         Y *= v.Y;
         Z *= v.Z;
@@ -151,8 +128,7 @@ namespace urchin
         return *this;
     }
 
-    template<class T> const Vector4<T>& Vector4<T>::operator /=(const Vector4<T> &v)
-    {
+    template<class T> const Vector4<T>& Vector4<T>::operator /=(const Vector4<T> &v) {
         X /= v.X;
         Y /= v.Y;
         Z /= v.Z;
@@ -161,8 +137,7 @@ namespace urchin
         return *this;
     }
 
-    template<class T> const Vector4<T>& Vector4<T>::operator *=(T t)
-    {
+    template<class T> const Vector4<T>& Vector4<T>::operator *=(T t) {
         X *= t;
         Y *= t;
         Z *= t;
@@ -171,8 +146,7 @@ namespace urchin
         return *this;
     }
 
-    template<class T> const Vector4<T>& Vector4<T>::operator /=(T t)
-    {
+    template<class T> const Vector4<T>& Vector4<T>::operator /=(T t) {
         X /= t;
         Y /= t;
         Z /= t;
@@ -181,61 +155,50 @@ namespace urchin
         return *this;
     }
 
-    template<class T> T& Vector4<T>::operator [](int i)
-    {
+    template<class T> T& Vector4<T>::operator [](int i) {
         return (&X)[i];
     }
 
-    template<class T> const T& Vector4<T>::operator [](int i) const
-    {
+    template<class T> const T& Vector4<T>::operator [](int i) const {
         return (&X)[i];
     }
 
-    template<class T> Vector4<T>::operator T*()
-    {
+    template<class T> Vector4<T>::operator T*() {
         return &X;
     }
 
-    template<class T> Vector4<T>::operator const T*() const
-    {
+    template<class T> Vector4<T>::operator const T*() const {
         return &X;
     }
 
-    template<class T> template<class NEW_TYPE> Vector4<NEW_TYPE> Vector4<T>::cast() const
-    {
+    template<class T> template<class NEW_TYPE> Vector4<NEW_TYPE> Vector4<T>::cast() const {
         return Vector4<NEW_TYPE>((NEW_TYPE)X, (NEW_TYPE)Y, (NEW_TYPE)Z, (NEW_TYPE)W);
     }
 
-    template<class T> Vector4<T> operator *(const Vector4<T> &v, T t)
-    {
+    template<class T> Vector4<T> operator *(const Vector4<T> &v, T t) {
         return Vector4<T>(v.X * t, v.Y * t, v.Z * t, v.W * t);
     }
 
-    template<class T> Vector4<T> operator *(T t, const Vector4<T> &v)
-    {
+    template<class T> Vector4<T> operator *(T t, const Vector4<T> &v) {
         return v * t;
     }
 
-    template<class T> Vector4<T> operator /(const Vector4<T> &v, T t)
-    {
+    template<class T> Vector4<T> operator /(const Vector4<T> &v, T t) {
         return Vector4<T>(v.X / t, v.Y / t, v.Z / t, v.W / t);
     }
 
-    template<class T> Vector4<T> operator *(const Matrix4<T> &m, const Vector4<T> &v)
-    {
+    template<class T> Vector4<T> operator *(const Matrix4<T> &m, const Vector4<T> &v) {
         return Vector4<T>(    m.a11 * v.X + m.a12 * v.Y + m.a13 * v.Z + m.a14 * v.W,
                     m.a21 * v.X + m.a22 * v.Y + m.a23 * v.Z + m.a24 * v.W,
                     m.a31 * v.X + m.a32 * v.Y + m.a33 * v.Z + m.a34 * v.W,
                     m.a41 * v.X + m.a42 * v.Y + m.a43 * v.Z + m.a44 * v.W);
     }
 
-    template<class T> Vector4<T> operator *(const Vector4<T> &v, const Matrix4<T> &m)
-    {
+    template<class T> Vector4<T> operator *(const Vector4<T> &v, const Matrix4<T> &m) {
         return m * v;
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Vector4<T> &v)
-    {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const Vector4<T> &v) {
         return stream << v.X << ", " << v.Y << ", " << v.Z << ", " << v.W;
     }
 

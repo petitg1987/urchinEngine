@@ -10,11 +10,9 @@
 #include "scene/renderer3d/camera/Camera.h"
 #include "utils/display/quad/QuadDisplayer.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class Skybox
-    {
+    class Skybox {
         public:
             explicit Skybox(const std::vector<std::string> &);
             ~Skybox();

@@ -15,11 +15,9 @@
 #include "processable/raytest/RayTestResult.h"
 #include "visualizer/CollisionVisualizer.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class PhysicsWorld
-    {
+    class PhysicsWorld {
         public:
             PhysicsWorld();
             ~PhysicsWorld();

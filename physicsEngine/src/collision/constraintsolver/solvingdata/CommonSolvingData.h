@@ -5,14 +5,12 @@
 
 #include "body/work/WorkRigidBody.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Constraint common data container
     */
-    struct CommonSolvingData
-    {
+    struct CommonSolvingData {
         CommonSolvingData();
 
         const WorkRigidBody *body1, *body2;

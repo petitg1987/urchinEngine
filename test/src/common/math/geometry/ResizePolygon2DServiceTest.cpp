@@ -7,8 +7,7 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-void ResizePolygon2DServiceTest::reduceTriangle()
-{
+void ResizePolygon2DServiceTest::reduceTriangle() {
     std::vector<Point2<int>> trianglesPoints = {Point2<int>(-188, -6065), Point2<int>(1100, -6065), Point2<int>(1100, -4774)};
 
     ResizePolygon2DService<int>::instance()->resizePolygon(trianglesPoints, -5);
@@ -18,8 +17,7 @@ void ResizePolygon2DServiceTest::reduceTriangle()
     AssertHelper::assertPoint2IntEquals(trianglesPoints[2], Point2<int>(1095, -4786));
 }
 
-CppUnit::Test *ResizePolygon2DServiceTest::suite()
-{
+CppUnit::Test *ResizePolygon2DServiceTest::suite() {
     auto *suite = new CppUnit::TestSuite("ResizePolygon2DServiceTest");
 
     suite->addTest(new CppUnit::TestCaller<ResizePolygon2DServiceTest>("reduceTriangle", &ResizePolygon2DServiceTest::reduceTriangle));

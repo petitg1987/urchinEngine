@@ -4,11 +4,9 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDialogButtonBox>
 
-namespace urchin
-{
+namespace urchin {
 
-    class NotSavedDialog : public QDialog
-    {
+    class NotSavedDialog : public QDialog {
         Q_OBJECT
 
         public:

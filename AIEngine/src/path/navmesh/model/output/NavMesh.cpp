@@ -3,50 +3,41 @@
 #include "NavMesh.h"
 #include "path/navmesh/model/NavModelCopy.h"
 
-namespace urchin
-{
+namespace urchin {
 
     //static
     unsigned int NavMesh::nextUpdateId = 0;
 
     NavMesh::NavMesh() :
-        updateId(0)
-    {
+        updateId(0) {
 
     }
 
     NavMesh::NavMesh(const NavMesh &navMesh) :
-        updateId(navMesh.getUpdateId())
-    {
+        updateId(navMesh.getUpdateId()) {
         NavModelCopy::copyNavPolygons(navMesh.getPolygons(), polygons);
     }
 
-    unsigned int NavMesh::getUpdateId() const
-    {
+    unsigned int NavMesh::getUpdateId() const {
         return updateId;
     }
 
-    void NavMesh::copyAllPolygons(const std::vector<std::shared_ptr<NavPolygon>> &allPolygons)
-    {
+    void NavMesh::copyAllPolygons(const std::vector<std::shared_ptr<NavPolygon>> &allPolygons) {
         changeUpdateId();
 
         polygons.clear();
         NavModelCopy::copyNavPolygons(allPolygons, polygons);
     }
 
-    const std::vector<std::shared_ptr<NavPolygon>> &NavMesh::getPolygons() const
-    {
+    const std::vector<std::shared_ptr<NavPolygon>> &NavMesh::getPolygons() const {
         return polygons;
     }
 
-    void NavMesh::svgMeshExport(const std::string &filename) const
-    {
+    void NavMesh::svgMeshExport(const std::string &filename) const {
         SVGExporter svgExporter(filename);
 
-        for(const auto &polygon : polygons)
-        {
-            for(const auto &triangle : polygon->getTriangles())
-            {
+        for(const auto &polygon : polygons) {
+            for(const auto &triangle : polygon->getTriangles()) {
                 std::vector<Point2<float>> trianglePoints;
                 Point3<float> p1 = polygon->getPoint(triangle->getIndices()[0]);
                 Point3<float> p2 = polygon->getPoint(triangle->getIndices()[1]);
@@ -62,12 +53,9 @@ namespace urchin
             }
         }
 
-        for(const auto &polygon : polygons)
-        {
-            for (const auto &triangle : polygon->getTriangles())
-            {
-                for(const auto &link : triangle->getLinks())
-                {
+        for(const auto &polygon : polygons) {
+            for (const auto &triangle : polygon->getTriangles()) {
+                for(const auto &link : triangle->getLinks()) {
                     Point3<float> lineP1 = triangle->getCenterPoint();
                     Point3<float> lineP2 = link->getTargetTriangle()->getCenterPoint();
                     LineSegment2D<float> line(Point2<float>(lineP1.X, -lineP1.Z), Point2<float>(lineP2.X, -lineP2.Z));
@@ -82,8 +70,7 @@ namespace urchin
         svgExporter.generateSVG(400);
     }
 
-    unsigned int NavMesh::changeUpdateId()
-    {
+    unsigned int NavMesh::changeUpdateId() {
         updateId = ++nextUpdateId;
         return updateId;
     }

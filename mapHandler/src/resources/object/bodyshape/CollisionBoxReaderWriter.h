@@ -7,11 +7,9 @@
 
 #include "CollisionShapeReaderWriter.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class CollisionBoxReaderWriter : public CollisionShapeReaderWriter
-    {
+    class CollisionBoxReaderWriter : public CollisionShapeReaderWriter {
         //XML tags
         #define HALF_SIZE_TAG "halfSize"
 

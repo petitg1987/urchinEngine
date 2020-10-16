@@ -9,8 +9,7 @@
 #include "widget/style/LabelStyleHelper.h"
 #include "widget/style/ButtonStyleHelper.h"
 
-namespace urchin
-{
+namespace urchin {
     QString NewTerrainDialog::preferredHeightPath = QString();
 
     NewTerrainDialog::NewTerrainDialog(QWidget *parent, const TerrainController *terrainController) :
@@ -20,8 +19,7 @@ namespace urchin
             terrainNameText(nullptr),
             heightFilenameLabel(nullptr),
             heightFilenameText(nullptr),
-            sceneTerrain(nullptr)
-    {
+            sceneTerrain(nullptr) {
         this->setWindowTitle("New Terrain");
         this->resize(530, 130);
         this->setFixedSize(this->width(),this->height());
@@ -41,8 +39,7 @@ namespace urchin
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void NewTerrainDialog::setupNameFields(QGridLayout *mainLayout)
-    {
+    void NewTerrainDialog::setupNameFields(QGridLayout *mainLayout) {
         terrainNameLabel = new QLabel("Terrain Name:");
         mainLayout->addWidget(terrainNameLabel, 0, 0);
 
@@ -51,8 +48,7 @@ namespace urchin
         terrainNameText->setFixedWidth(360);
     }
 
-    void NewTerrainDialog::setupHeightFilenameFields(QGridLayout *mainLayout)
-    {
+    void NewTerrainDialog::setupHeightFilenameFields(QGridLayout *mainLayout) {
         heightFilenameLabel = new QLabel("Height File:");
         mainLayout->addWidget(heightFilenameLabel, 1, 0);
 
@@ -68,19 +64,15 @@ namespace urchin
         connect(selectHeightFileButton, SIGNAL(clicked()), this, SLOT(showHeightFilenameDialog()));
     }
 
-    void NewTerrainDialog::updateTerrainName()
-    {
+    void NewTerrainDialog::updateTerrainName() {
         QString terrainName = terrainNameText->text();
-        if(!terrainName.isEmpty())
-        {
+        if(!terrainName.isEmpty()) {
             this->terrainName = terrainName.toUtf8().constData();
         }
     }
 
-    int NewTerrainDialog::buildSceneTerrain(int result)
-    {
-        try
-        {
+    int NewTerrainDialog::buildSceneTerrain(int result) {
+        try {
             sceneTerrain = new SceneTerrain();
 
             sceneTerrain->setName(terrainName);
@@ -93,8 +85,7 @@ namespace urchin
             auto *terrain = new Terrain(terrainMesh, terrainMaterial, Point3<float>(0.0f, 0.0f, 0.0f));
 
             sceneTerrain->setTerrain(terrain);
-        }catch(std::exception &e)
-        {
+        }catch(std::exception &e) {
             QMessageBox::critical(this, "Error", e.what());
             delete sceneTerrain;
 
@@ -105,17 +96,14 @@ namespace urchin
     }
 
 
-    SceneTerrain *NewTerrainDialog::getSceneTerrain() const
-    {
+    SceneTerrain *NewTerrainDialog::getSceneTerrain() const {
         return sceneTerrain;
     }
 
-    void NewTerrainDialog::showHeightFilenameDialog()
-    {
+    void NewTerrainDialog::showHeightFilenameDialog() {
         QString directory = preferredHeightPath.isEmpty() ? QString::fromStdString(FileSystem::instance()->getResourcesDirectory()) : preferredHeightPath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.png *.tga)", nullptr, QFileDialog::DontUseNativeDialog);
-        if(!filename.isNull())
-        {
+        if(!filename.isNull()) {
             this->heightFilename = filename.toUtf8().constData();
             this->heightFilenameText->setText(filename);
 
@@ -124,49 +112,39 @@ namespace urchin
         }
     }
 
-    void NewTerrainDialog::done(int r)
-    {
-        if(QDialog::Accepted == r)
-        {
+    void NewTerrainDialog::done(int r) {
+        if(QDialog::Accepted == r) {
             bool hasError = false;
 
             updateTerrainName();
             LabelStyleHelper::applyNormalStyle(terrainNameLabel);
             LabelStyleHelper::applyNormalStyle(heightFilenameLabel);
 
-            if(terrainName.empty())
-            {
+            if(terrainName.empty()) {
                 LabelStyleHelper::applyErrorStyle(terrainNameLabel, "Terrain name is mandatory");
                 hasError = true;
-            }else if(isSceneTerrainExist(terrainName))
-            {
+            } else if(isSceneTerrainExist(terrainName)) {
                 LabelStyleHelper::applyErrorStyle(terrainNameLabel, "Terrain name is already used");
                 hasError = true;
             }
-            if(heightFilename.empty())
-            {
+            if(heightFilename.empty()) {
                 LabelStyleHelper::applyErrorStyle(heightFilenameLabel, "Height is mandatory");
                 hasError = true;
             }
 
-            if(!hasError)
-            {
+            if(!hasError) {
                 r = buildSceneTerrain(r);
                 QDialog::done(r);
             }
-        }else
-        {
+        } else {
             QDialog::done(r);
         }
     }
 
-    bool NewTerrainDialog::isSceneTerrainExist(const std::string &name)
-    {
+    bool NewTerrainDialog::isSceneTerrainExist(const std::string &name) {
         std::list<const SceneTerrain *> sceneTerrains = terrainController->getSceneTerrains();
-        for(auto &sceneTerrain : sceneTerrains)
-        {
-            if(sceneTerrain->getName() == name)
-            {
+        for(auto &sceneTerrain : sceneTerrains) {
+            if(sceneTerrain->getName() == name) {
                 return true;
             }
         }

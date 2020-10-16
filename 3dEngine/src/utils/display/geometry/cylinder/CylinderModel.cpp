@@ -4,26 +4,22 @@
 
 #include "utils/display/geometry/cylinder/CylinderModel.h"
 
-namespace urchin
-{
+namespace urchin {
 
     CylinderModel::CylinderModel(Cylinder<float> cylinder, int sides):
             cylinder(std::move(cylinder)),
-            sides(sides)
-    {
+            sides(sides) {
         initialize();
     }
 
-    Matrix4<float> CylinderModel::retrieveModelMatrix() const
-    {
+    Matrix4<float> CylinderModel::retrieveModelMatrix() const {
         Matrix4<float> modelMatrix;
         modelMatrix.buildTranslation(cylinder.getCenterOfMass().X, cylinder.getCenterOfMass().Y, cylinder.getCenterOfMass().Z);
 
         return modelMatrix;
     }
 
-    std::vector<Point3<float>> CylinderModel::retrieveVertexArray() const
-    {
+    std::vector<Point3<float>> CylinderModel::retrieveVertexArray() const {
         std::vector<Point3<float>> vertexArray;
         vertexArray.reserve(2*(sides+1));
 
@@ -33,20 +29,16 @@ namespace urchin
 
         Quaternion<float> qCylinderOrientation;
         CylinderShape<float>::CylinderOrientation cylinderOrientation = cylinder.getCylinderOrientation();
-        if(cylinderOrientation==CylinderShape<float>::CYLINDER_X)
-        {
+        if(cylinderOrientation==CylinderShape<float>::CYLINDER_X) {
             qCylinderOrientation = Quaternion<float>(Vector3<float>(0.0, 1.0, 0.0), PI_VALUE/2.0);
-        }else if(cylinderOrientation==CylinderShape<float>::CYLINDER_Y)
-        {
+        } else if(cylinderOrientation==CylinderShape<float>::CYLINDER_Y) {
             qCylinderOrientation = Quaternion<float>(Vector3<float>(1.0, 0.0, 0.0), PI_VALUE/2.0);
-        }else if(cylinderOrientation==CylinderShape<float>::CYLINDER_Z)
-        {
+        } else if(cylinderOrientation==CylinderShape<float>::CYLINDER_Z) {
             qCylinderOrientation = Quaternion<float>(0.0, 0.0, 0.0, 1.0);
         }
 
         Quaternion<float> localOrientation = cylinder.getOrientation() * qCylinderOrientation;
-        for (int i = 0; i <= sides; i++)
-        {
+        for (int i = 0; i <= sides; i++) {
             float x = std::cos((float)i * angle) * radius;
             float y = std::sin((float)i * angle) * radius;
 
@@ -60,8 +52,7 @@ namespace urchin
         return vertexArray;
     }
 
-    void CylinderModel::drawGeometry() const
-    {
+    void CylinderModel::drawGeometry() const {
         glDrawArrays(GL_QUAD_STRIP, 0, 2*(sides+1));
     }
 

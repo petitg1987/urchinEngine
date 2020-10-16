@@ -3,14 +3,12 @@
 
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Allow to load custom uniform for model displayer
     */
-    class CustomUniform
-    {
+    class CustomUniform {
         public:
             virtual ~CustomUniform() = default;
 

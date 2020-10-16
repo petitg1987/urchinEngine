@@ -5,14 +5,12 @@
 #include <AL/alc.h>
 #include <vector>
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Stream chunk buffer
     */
-    struct StreamChunk
-    {
+    struct StreamChunk {
         StreamChunk();
 
         std::vector<ALshort> samples; //samples of the chunk

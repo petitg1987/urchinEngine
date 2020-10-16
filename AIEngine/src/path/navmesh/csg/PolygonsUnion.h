@@ -7,11 +7,9 @@
 #include "CSGPolygon.h"
 #include "path/navmesh/csg/CSGPolygonPath.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class PolygonsUnion : public Singleton<PolygonsUnion<T>>
-    {
+    template<class T> class PolygonsUnion : public Singleton<PolygonsUnion<T>> {
         public:
             friend class Singleton<PolygonsUnion<T>>;
 

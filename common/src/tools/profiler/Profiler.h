@@ -7,11 +7,9 @@
 
 #include "tools/profiler/ProfilerNode.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class Profiler
-    {
+    class Profiler {
         public:
             explicit Profiler(const std::string &);
             ~Profiler();

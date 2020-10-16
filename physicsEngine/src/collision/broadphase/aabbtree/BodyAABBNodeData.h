@@ -7,11 +7,9 @@
 #include "body/work/AbstractWorkBody.h"
 #include "collision/broadphase/PairContainer.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class BodyAABBNodeData : public AABBNodeData<AbstractWorkBody *>
-    {
+    class BodyAABBNodeData : public AABBNodeData<AbstractWorkBody *> {
         public:
             BodyAABBNodeData(AbstractWorkBody *, PairContainer *);
 

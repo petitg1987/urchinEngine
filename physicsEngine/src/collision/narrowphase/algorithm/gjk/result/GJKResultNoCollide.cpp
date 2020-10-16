@@ -1,7 +1,6 @@
 #include "GJKResultNoCollide.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
      * @param separatingDistance Separating distance of two objects. In case of collision, the distance is zero.
@@ -9,61 +8,51 @@ namespace urchin
     template<class T> GJKResultNoCollide<T>::GJKResultNoCollide(T separatingDistance, const Simplex<T> &simplex) :
         GJKResult<T>(),
         separatingDistance(separatingDistance),
-        simplex(simplex)
-    {
+        simplex(simplex) {
         simplex.computeClosestPoints(closestPointA, closestPointB);
 
-        if(Check::instance()->additionalChecksEnable())
-        {
+        if(Check::instance()->additionalChecksEnable()) {
             const float distanceDelta = closestPointA.vector(closestPointB).length() - separatingDistance;
-            if (!MathAlgorithm::isZero(distanceDelta, 0.01f))
-            {
+            if (!MathAlgorithm::isZero(distanceDelta, 0.01f)) {
                 logInputData("Incoherent separating distance (" + std::to_string(separatingDistance) + ") with simplex", simplex);
             }
         }
     }
 
-    template<class T> bool GJKResultNoCollide<T>::isValidResult() const
-    {
+    template<class T> bool GJKResultNoCollide<T>::isValidResult() const {
         return true;
     }
 
-    template<class T> bool GJKResultNoCollide<T>::isCollide() const
-    {
+    template<class T> bool GJKResultNoCollide<T>::isCollide() const {
         return false;
     }
 
     /**
      * @return Separating distance between convex hull (always positive)
      */
-    template<class T> T GJKResultNoCollide<T>::getSeparatingDistance() const
-    {
+    template<class T> T GJKResultNoCollide<T>::getSeparatingDistance() const {
         return separatingDistance;
     }
 
-    template<class T> const Simplex<T> &GJKResultNoCollide<T>::getSimplex() const
-    {
+    template<class T> const Simplex<T> &GJKResultNoCollide<T>::getSimplex() const {
         return simplex;
     }
 
     /**
      * @return Closest point on object A in case of non collision
      */
-    template<class T> const Point3<T> &GJKResultNoCollide<T>::getClosestPointA() const
-    {
+    template<class T> const Point3<T> &GJKResultNoCollide<T>::getClosestPointA() const {
         return closestPointA;
     }
 
     /**
      * @return Closest point on object B in case of non collision
      */
-    template<class T> const Point3<T> &GJKResultNoCollide<T>::getClosestPointB() const
-    {
+    template<class T> const Point3<T> &GJKResultNoCollide<T>::getClosestPointB() const {
         return closestPointB;
     }
 
-    template<class T> void GJKResultNoCollide<T>::logInputData(const std::string &errorMessage, const Simplex<T> &simplex)
-    {
+    template<class T> void GJKResultNoCollide<T>::logInputData(const std::string &errorMessage, const Simplex<T> &simplex) {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<T>::max_digits10);
 

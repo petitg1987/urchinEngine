@@ -9,18 +9,15 @@
 #include "object/CollisionConvexObject3D.h"
 #include "utils/math/PhysicsTransform.h"
 
-namespace urchin
-{
-    struct LocalizedCollisionShape
-    {
+namespace urchin {
+    struct LocalizedCollisionShape {
         std::size_t position;
 
         std::shared_ptr<const CollisionShape3D> shape;
         PhysicsTransform transform;
     };
 
-    class CollisionCompoundShape : public CollisionShape3D
-    {
+    class CollisionCompoundShape : public CollisionShape3D {
         public:
             explicit CollisionCompoundShape(const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &);
 

@@ -7,8 +7,7 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-void TerrainObstacleServiceTest::oneSquare()
-{
+void TerrainObstacleServiceTest::oneSquare() {
     std::vector<Point3<float>> localVertices = {
             Point3<float>(0.0, 0.0, 0.0), Point3<float>(1.0, 0.0, 0.0), Point3<float>(2.0, 100.0, 0.0),
             Point3<float>(0.0, 0.0, 1.0), Point3<float>(1.0, 0.0, 1.0), Point3<float>(2.0, 0.0, 1.0),
@@ -27,8 +26,7 @@ void TerrainObstacleServiceTest::oneSquare()
     AssertHelper::assertPoint2FloatEquals(selfObstacles[0].getCwPoints()[3], Point2<float>(1.0f, -1.0f));
 }
 
-void TerrainObstacleServiceTest::twoAlignedSquares()
-{
+void TerrainObstacleServiceTest::twoAlignedSquares() {
     std::vector<Point3<float>> localVertices = {
             Point3<float>(0.0, 0.0, 0.0), Point3<float>(1.0, 0.0, 0.0), Point3<float>(2.0, 100.0, 0.0),
             Point3<float>(0.0, 0.0, 1.0), Point3<float>(1.0, 0.0, 1.0), Point3<float>(2.0, 100.0, 1.0),
@@ -47,8 +45,7 @@ void TerrainObstacleServiceTest::twoAlignedSquares()
     AssertHelper::assertPoint2FloatEquals(selfObstacles[0].getCwPoints()[3], Point2<float>(1.0f, -2.0f));
 }
 
-void TerrainObstacleServiceTest::twoSquaresSamePoint()
-{
+void TerrainObstacleServiceTest::twoSquaresSamePoint() {
     std::vector<Point3<float>> localVertices = {
             Point3<float>(0.0, 0.0, 0.0), Point3<float>(1.0, 0.0, 0.0), Point3<float>(2.0, 100.0, 0.0),
             Point3<float>(0.0, 0.0, 1.0), Point3<float>(1.0, 0.0, 1.0), Point3<float>(2.0, 0.0, 1.0),
@@ -73,8 +70,7 @@ void TerrainObstacleServiceTest::twoSquaresSamePoint()
     AssertHelper::assertPoint2FloatEquals(selfObstacles[1].getCwPoints()[3], Point2<float>(0.0f, -2.0f));
 }
 
-void TerrainObstacleServiceTest::squaresInUForm()
-{
+void TerrainObstacleServiceTest::squaresInUForm() {
     std::vector<Point3<float>> localVertices = {
             Point3<float>(0.0, 0.0, 0.0), Point3<float>(1.0, 0.0, 0.0), Point3<float>(2.0, 0.0, 0.0), Point3<float>(3.0, 0.0, 0.0),
             Point3<float>(0.0, 100.0, 1.0), Point3<float>(1.0, 0.0, 1.0), Point3<float>(2.0, 0.0, 1.0), Point3<float>(3.0, 100.0, 1.0),
@@ -97,8 +93,7 @@ void TerrainObstacleServiceTest::squaresInUForm()
     AssertHelper::assertPoint2FloatEquals(selfObstacles[0].getCwPoints()[7], Point2<float>(0.0f, -2.0f));
 }
 
-CppUnit::Test *TerrainObstacleServiceTest::suite()
-{
+CppUnit::Test *TerrainObstacleServiceTest::suite() {
     auto *suite = new CppUnit::TestSuite("TerrainObstacleServiceTest");
 
     suite->addTest(new CppUnit::TestCaller<TerrainObstacleServiceTest>("oneSquare", &TerrainObstacleServiceTest::oneSquare));

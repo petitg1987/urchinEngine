@@ -5,11 +5,9 @@
 
 #include "pattern/singleton/Singleton.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class FileSystem : public Singleton<FileSystem>
-    {
+    class FileSystem : public Singleton<FileSystem> {
         public:
             friend class Singleton<FileSystem>;
 

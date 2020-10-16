@@ -5,11 +5,9 @@
 
 #include "constraintsolver/solvingdata/AccumulatedSolvingData.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class ManifoldContactPoint
-    {
+    class ManifoldContactPoint {
         public:
             ManifoldContactPoint();
             ManifoldContactPoint(const Vector3<float> &, const Point3<float> &, const Point3<float> &, const Point3<float> &, const Point3<float> &, float, bool);

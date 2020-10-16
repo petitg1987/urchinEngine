@@ -7,14 +7,12 @@
 
 #include "math/algebra/matrix/Matrix3.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Represents a matrix 4x4 in column major
     */
-    template<class T> class Matrix4
-    {
+    template<class T> class Matrix4 {
         public:
             Matrix4();
             explicit Matrix4(T m11, T m12, T m13, T m14,

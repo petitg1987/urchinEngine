@@ -1,33 +1,27 @@
 #include "StatusBarController.h"
 #include <QtWidgets/QStatusBar>
 
-namespace urchin
-{
+namespace urchin {
 
     StatusBarController::StatusBarController(QMainWindow *window) :
         currentState(StatusBarState::NONE),
-        window(window)
-    {
+        window(window) {
         applyCurrentState();
     }
 
-    void StatusBarController::clearState()
-    {
+    void StatusBarController::clearState() {
         auto *statusBar = new QStatusBar(window);
         window->setStatusBar(statusBar);
     }
 
-    void StatusBarController::applyState(StatusBarState state)
-    {
+    void StatusBarController::applyState(StatusBarState state) {
         currentState = state;
         applyCurrentState();
     }
 
-    void StatusBarController::applyPreviousState()
-    {
+    void StatusBarController::applyPreviousState() {
         StatusBarState previousState = getStateData(currentState).getPreviousState();
-        if(previousState == currentState)
-        {
+        if(previousState == currentState) {
             throw new std::runtime_error("No previous state for current state: " + std::to_string(currentState));
         }
 
@@ -35,10 +29,8 @@ namespace urchin
         applyCurrentState();
     }
 
-    StatusBarStateData StatusBarController::getStateData(StatusBarState state)
-    {
-        switch(state)
-        {
+    StatusBarStateData StatusBarController::getStateData(StatusBarState state) {
+        switch(state) {
             case StatusBarState::NONE:
                 return StatusBarStateData({}, StatusBarState::NONE);
             case StatusBarState::MAP_LOADED:
@@ -56,24 +48,20 @@ namespace urchin
         }
     }
 
-    void StatusBarController::applyCurrentState()
-    {
+    void StatusBarController::applyCurrentState() {
         auto *statusBar = new QStatusBar(window);
         window->setStatusBar(statusBar);
 
         auto statusLabels = getStateData(currentState).getLabels();
-        for(std::size_t i=0; i<statusLabels.size(); ++i)
-        {
+        for(std::size_t i=0; i<statusLabels.size(); ++i) {
             statusBar->addWidget(new QLabel(QString(statusLabels[i].c_str())));
-            if(i != statusLabels.size() - 1)
-            {
+            if(i != statusLabels.size() - 1) {
                 statusBar->addWidget(createSeparator());
             }
         }
     }
 
-    QFrame *StatusBarController::createSeparator()
-    {
+    QFrame *StatusBarController::createSeparator() {
         QFrame *separator = new QFrame();
         separator->setFrameShape(QFrame::VLine);
         separator->setFrameShadow(QFrame::Shadow::Raised);

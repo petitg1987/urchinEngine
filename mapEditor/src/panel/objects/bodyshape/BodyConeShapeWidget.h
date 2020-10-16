@@ -10,11 +10,9 @@
 #include "UrchinPhysicsEngine.h"
 #include "panel/objects/bodyshape/BodyShapeWidget.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class BodyConeShapeWidget : public BodyShapeWidget
-    {
+    class BodyConeShapeWidget : public BodyShapeWidget {
         Q_OBJECT
 
         public:

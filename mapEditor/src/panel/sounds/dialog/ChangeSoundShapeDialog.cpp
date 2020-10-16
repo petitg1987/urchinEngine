@@ -5,15 +5,13 @@
 #include "ChangeSoundShapeDialog.h"
 #include "panel/sounds/soundshape/SoundShapeWidget.h"
 
-namespace urchin
-{
+namespace urchin {
 
     ChangeSoundShapeDialog::ChangeSoundShapeDialog(QWidget *parent) :
         QDialog(parent),
         soundShapeTypeLabel(nullptr),
         soundShapeTypeComboBox(nullptr),
-        shapeType(SoundShape::ShapeType::SPHERE_SHAPE)
-    {
+        shapeType(SoundShape::ShapeType::SPHERE_SHAPE) {
         this->setWindowTitle("Select Sound Trigger Shape");
         this->resize(245, 80);
         this->setFixedSize(this->width(),this->height());
@@ -32,8 +30,7 @@ namespace urchin
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void ChangeSoundShapeDialog::setupSoundShapeTypeFields(QGridLayout *mainLayout)
-    {
+    void ChangeSoundShapeDialog::setupSoundShapeTypeFields(QGridLayout *mainLayout) {
         soundShapeTypeLabel = new QLabel("Shape Type:");
         mainLayout->addWidget(soundShapeTypeLabel, 0, 0);
 
@@ -44,21 +41,17 @@ namespace urchin
         soundShapeTypeComboBox->addItem(BOX_SHAPE_LABEL, QVariant(SoundShape::ShapeType::BOX_SHAPE));
     }
 
-    void ChangeSoundShapeDialog::done(int r)
-    {
-        if(QDialog::Accepted == r)
-        {
+    void ChangeSoundShapeDialog::done(int r) {
+        if(QDialog::Accepted == r) {
             QVariant variant = soundShapeTypeComboBox->currentData();
             shapeType = static_cast<SoundShape::ShapeType>(variant.toInt());
             QDialog::done(r);
-        }else
-        {
+        } else {
             QDialog::done(r);
         }
     }
 
-    SoundShape::ShapeType ChangeSoundShapeDialog::getShapeType() const
-    {
+    SoundShape::ShapeType ChangeSoundShapeDialog::getShapeType() const {
         return shapeType;
     }
 

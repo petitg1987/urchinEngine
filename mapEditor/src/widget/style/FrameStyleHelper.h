@@ -3,11 +3,9 @@
 
 #include <QtWidgets/QFrame>
 
-namespace urchin
-{
+namespace urchin {
 
-    class FrameStyleHelper
-    {
+    class FrameStyleHelper {
         public:
             static void applyLineStyle(QFrame *);
     };

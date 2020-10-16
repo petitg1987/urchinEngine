@@ -3,11 +3,9 @@
 
 #include <limits>
 
-namespace urchin
-{
+namespace urchin {
 
-    class MathAlgorithm
-    {
+    class MathAlgorithm {
         public:
             template<class T> static T clamp(T, T, T);
             template<class T> static T sign(T);

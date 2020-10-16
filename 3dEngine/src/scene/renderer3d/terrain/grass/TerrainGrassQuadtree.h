@@ -5,11 +5,9 @@
 #include <mutex>
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class TerrainGrassQuadtree
-    {
+    class TerrainGrassQuadtree {
         public:
             TerrainGrassQuadtree();
             explicit TerrainGrassQuadtree(std::vector<TerrainGrassQuadtree *> );

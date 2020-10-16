@@ -5,11 +5,9 @@
 
 #include "utils/display/geometry/GeometryModel.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class ConvexHullModel : public GeometryModel
-    {
+    class ConvexHullModel : public GeometryModel {
         public:
             explicit ConvexHullModel(ConvexHull3D<float> );
 

@@ -9,11 +9,9 @@
 #include "UrchinMapHandler.h"
 #include "controller/terrains/TerrainController.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class NewTerrainDialog : public QDialog
-    {
+    class NewTerrainDialog : public QDialog {
         Q_OBJECT
 
         public:

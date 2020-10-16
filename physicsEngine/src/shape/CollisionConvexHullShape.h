@@ -9,11 +9,9 @@
 #include "object/CollisionConvexObject3D.h"
 #include "utils/math/PhysicsTransform.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class CollisionConvexHullShape : public CollisionShape3D
-    {
+    class CollisionConvexHullShape : public CollisionShape3D {
         public:
             explicit CollisionConvexHullShape(const std::vector<Point3<float>> &);
             explicit CollisionConvexHullShape(ConvexHullShape3D<float> *);

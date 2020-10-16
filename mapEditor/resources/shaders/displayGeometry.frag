@@ -5,7 +5,7 @@ layout (location = 1) out vec4 fragNormalAndAmbient;
 
 uniform vec4 color;
 
-void main(){
+void main() {
     //diffuse
     fragColor = vec4(color.r, color.g, color.b, color.a);
 

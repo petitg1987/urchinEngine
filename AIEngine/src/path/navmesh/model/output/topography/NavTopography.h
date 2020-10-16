@@ -4,11 +4,9 @@
 #include <vector>
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-     class NavTopography
-    {
+     class NavTopography {
         public:
             virtual ~NavTopography() = default;
 

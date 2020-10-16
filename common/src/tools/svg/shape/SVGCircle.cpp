@@ -1,17 +1,14 @@
 #include "SVGCircle.h"
 
-namespace urchin
-{
+namespace urchin {
     SVGCircle::SVGCircle(const Point2<float> &center, float radius, SVGColor color, float opacity) :
             SVGShape(color, opacity),
             center(center),
-            radius(radius)
-    {
+            radius(radius) {
         this->center.Y = -this->center.Y;
     }
 
-    std::string SVGCircle::getShapeTag() const
-    {
+    std::string SVGCircle::getShapeTag() const {
         std::stringstream stream;
 
         stream<<"<circle cx=\"";
@@ -29,8 +26,7 @@ namespace urchin
         return stream.str();
     }
 
-    Rectangle<float> SVGCircle::computeRectangle() const
-    {
+    Rectangle<float> SVGCircle::computeRectangle() const {
         Point2<float> minPoint(center - radius);
         Point2<float> maxPoint(center + radius);
 

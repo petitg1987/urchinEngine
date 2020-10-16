@@ -6,15 +6,13 @@
 #include "CloneObjectDialog.h"
 #include "widget/style/LabelStyleHelper.h"
 
-namespace urchin
-{
+namespace urchin {
     CloneObjectDialog::CloneObjectDialog(QWidget *parent, const ObjectController *objectController) :
             QDialog(parent),
             objectController(objectController),
             objectNameLabel(nullptr),
             objectNameText(nullptr),
-            sceneObject(nullptr)
-    {
+            sceneObject(nullptr) {
         this->setWindowTitle("Clone Object");
         this->resize(530, 80);
         this->setFixedSize(this->width(),this->height());
@@ -33,8 +31,7 @@ namespace urchin
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void CloneObjectDialog::setupNameFields(QGridLayout *mainLayout)
-    {
+    void CloneObjectDialog::setupNameFields(QGridLayout *mainLayout) {
         objectNameLabel = new QLabel("Object Name:");
         mainLayout->addWidget(objectNameLabel, 0, 0);
 
@@ -43,23 +40,18 @@ namespace urchin
         objectNameText->setFixedWidth(360);
     }
 
-    void CloneObjectDialog::updateObjectName()
-    {
+    void CloneObjectDialog::updateObjectName() {
         QString objectName = objectNameText->text();
-        if(!objectName.isEmpty())
-        {
+        if(!objectName.isEmpty()) {
             this->objectName = objectName.toUtf8().constData();
         }
     }
 
-    int CloneObjectDialog::buildSceneObject(int result)
-    {
-        try
-        {
+    int CloneObjectDialog::buildSceneObject(int result) {
+        try {
             sceneObject = new SceneObject();
             sceneObject->setName(objectName);
-        }catch(std::exception &e)
-        {
+        }catch(std::exception &e) {
             QMessageBox::critical(this, "Error", e.what());
             delete sceneObject;
 
@@ -69,48 +61,38 @@ namespace urchin
         return result;
     }
 
-    SceneObject *CloneObjectDialog::getSceneObject() const
-    {
+    SceneObject *CloneObjectDialog::getSceneObject() const {
         return sceneObject;
     }
 
-    void CloneObjectDialog::done(int r)
-    {
-        if(QDialog::Accepted == r)
-        {
+    void CloneObjectDialog::done(int r) {
+        if(QDialog::Accepted == r) {
             bool hasError = false;
 
             updateObjectName();
             LabelStyleHelper::applyNormalStyle(objectNameLabel);
 
-            if(objectName.empty())
-            {
+            if(objectName.empty()) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is mandatory");
                 hasError = true;
-            }else if(isSceneObjectExist(objectName))
-            {
+            } else if(isSceneObjectExist(objectName)) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is already used");
                 hasError = true;
             }
 
-            if(!hasError)
-            {
+            if(!hasError) {
                 r = buildSceneObject(r);
                 QDialog::done(r);
             }
-        }else
-        {
+        } else {
             QDialog::done(r);
         }
     }
 
-    bool CloneObjectDialog::isSceneObjectExist(const std::string &name)
-    {
+    bool CloneObjectDialog::isSceneObjectExist(const std::string &name) {
         std::list<const SceneObject *> sceneObjects = objectController->getSceneObjects();
-        for(auto &sceneObject : sceneObjects)
-        {
-            if(sceneObject->getName() == name)
-            {
+        for(auto &sceneObject : sceneObjects) {
+            if(sceneObject->getName() == name) {
                 return true;
             }
         }

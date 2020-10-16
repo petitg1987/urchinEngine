@@ -1,22 +1,18 @@
 #include "collision/narrowphase/CollisionObjectWrapper.h"
 
-namespace urchin
-{
+namespace urchin {
 
     CollisionObjectWrapper::CollisionObjectWrapper(const CollisionShape3D &shape, const PhysicsTransform &shapeWorldTransform) :
                     shape(shape),
-                    shapeWorldTransform(shapeWorldTransform)
-    {
+                    shapeWorldTransform(shapeWorldTransform) {
 
     }
 
-    const CollisionShape3D &CollisionObjectWrapper::getShape() const
-    {
+    const CollisionShape3D &CollisionObjectWrapper::getShape() const {
         return shape;
     }
 
-    const PhysicsTransform &CollisionObjectWrapper::getShapeWorldTransform() const
-    {
+    const PhysicsTransform &CollisionObjectWrapper::getShapeWorldTransform() const {
         return shapeWorldTransform;
     }
 

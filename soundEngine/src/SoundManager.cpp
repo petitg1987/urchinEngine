@@ -5,11 +5,9 @@
 #include "SoundManager.h"
 #include "player/stream/AudioStreamPlayer.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    SoundManager::SoundManager()
-    {
+    SoundManager::SoundManager() {
         DeviceManager::instance();
         streamUpdateWorker = new StreamUpdateWorker();
         streamUpdateWorkerThread = new std::thread(&StreamUpdateWorker::start, streamUpdateWorker);
@@ -18,10 +16,8 @@ namespace urchin
         alListener3f(AL_POSITION, 0.f, 0.f, 0.f);
     }
 
-    SoundManager::~SoundManager()
-    {
-        for (auto *audioController : audioControllers)
-        {
+    SoundManager::~SoundManager() {
+        for (auto *audioController : audioControllers) {
             deleteAudioController(audioController);
         }
 
@@ -33,21 +29,16 @@ namespace urchin
         Profiler::getInstance("sound")->log();
     }
 
-    void SoundManager::addSound(Sound *sound, SoundTrigger *soundTrigger)
-    {
-        if(sound && soundTrigger)
-        {
+    void SoundManager::addSound(Sound *sound, SoundTrigger *soundTrigger) {
+        if(sound && soundTrigger) {
             auto *audioController = new AudioController(sound, soundTrigger, streamUpdateWorker);
             audioControllers.push_back(audioController);
         }
     }
 
-    void SoundManager::removeSound(const Sound *sound)
-    {
-        for(auto it = audioControllers.begin(); it!=audioControllers.end(); ++it)
-        {
-            if((*it)->getSound() == sound)
-            {
+    void SoundManager::removeSound(const Sound *sound) {
+        for(auto it = audioControllers.begin(); it!=audioControllers.end(); ++it) {
+            if((*it)->getSound() == sound) {
                 deleteAudioController(*it);
                 audioControllers.erase(it);
 
@@ -56,12 +47,9 @@ namespace urchin
         }
     }
 
-    void SoundManager::changeSoundTrigger(const Sound *sound, SoundTrigger *newSoundTrigger)
-    {
-        for (auto &audioController : audioControllers)
-        {
-            if(audioController->getSound() == sound)
-            {
+    void SoundManager::changeSoundTrigger(const Sound *sound, SoundTrigger *newSoundTrigger) {
+        for (auto &audioController : audioControllers) {
+            if(audioController->getSound() == sound) {
                 audioController->changeSoundTrigger(newSoundTrigger);
 
                 break;
@@ -69,24 +57,19 @@ namespace urchin
         }
     }
 
-    std::vector<const SoundTrigger *> SoundManager::getSoundTriggers() const
-    {
+    std::vector<const SoundTrigger *> SoundManager::getSoundTriggers() const {
         std::vector<const SoundTrigger *> triggers;
 
-        for (const auto &audioController : audioControllers)
-        {
+        for (const auto &audioController : audioControllers) {
             triggers.push_back(audioController->getSoundTrigger());
         }
 
         return triggers;
     }
 
-    SoundTrigger *SoundManager::retrieveSoundTriggerFor(const Sound *sound) const
-    {
-        for (const auto &audioController : audioControllers)
-        {
-            if(audioController->getSound() == sound)
-            {
+    SoundTrigger *SoundManager::retrieveSoundTriggerFor(const Sound *sound) const {
+        for (const auto &audioController : audioControllers) {
+            if(audioController->getSound() == sound) {
                 return audioController->getSoundTrigger();
             }
         }
@@ -94,52 +77,42 @@ namespace urchin
         throw std::invalid_argument("Impossible to find a sound trigger for the sound.");
     }
 
-    void SoundManager::pause()
-    {
-        for(auto &audioController : audioControllers)
-        {
+    void SoundManager::pause() {
+        for(auto &audioController : audioControllers) {
             audioController->pause();
         }
     }
 
-    void SoundManager::unpause()
-    {
-        for(auto &audioController : audioControllers)
-        {
+    void SoundManager::unpause() {
+        for(auto &audioController : audioControllers) {
             audioController->unpause();
         }
     }
 
-    void SoundManager::controlExecution()
-    {
+    void SoundManager::controlExecution() {
         streamUpdateWorker->controlExecution();
     }
 
-    void SoundManager::process(const Point3<float> &listenerPosition)
-    {
+    void SoundManager::process(const Point3<float> &listenerPosition) {
         alListener3f(AL_POSITION, listenerPosition.X, listenerPosition.Y, listenerPosition.Z);
 
-        for (auto &audioController : audioControllers)
-        {
+        for (auto &audioController : audioControllers) {
             audioController->process(listenerPosition);
         }
 
         ALenum err;
-        while((err = alGetError()) != AL_NO_ERROR)
-        {
+        while((err = alGetError()) != AL_NO_ERROR) {
             Logger::logger().logError("OpenAL error detected: " + std::to_string(err));
         }
     }
 
-    void SoundManager::process()
-    {
+    void SoundManager::process() {
         ScopeProfiler profiler("sound", "soundMgrProc");
 
         process(Point3<float>(0.0, 0.0, 0.0));
     }
 
-    void SoundManager::deleteAudioController(AudioController *audioController)
-    {
+    void SoundManager::deleteAudioController(AudioController *audioController) {
         delete audioController;
     }
 }

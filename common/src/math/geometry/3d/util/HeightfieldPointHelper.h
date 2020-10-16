@@ -7,11 +7,9 @@
 #include "math/algebra/point/Point3.h"
 #include "math/geometry/2d/object/LineSegment2D.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template <class T> class DistanceToStartPointComp
-    {
+    template <class T> class DistanceToStartPointComp {
         public:
             explicit DistanceToStartPointComp(const Point3<T> &startPoint);
             bool operator() (const Point3<T> &, const Point3<T> &) const;
@@ -20,8 +18,7 @@ namespace urchin
             Point3<T> startPoint;
     };
 
-    template<class T> class HeightfieldPointHelper
-    {
+    template<class T> class HeightfieldPointHelper {
         public:
             HeightfieldPointHelper(const std::vector<Point3<T>> &, unsigned int);
 

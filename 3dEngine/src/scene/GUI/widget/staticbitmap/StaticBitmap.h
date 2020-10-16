@@ -10,11 +10,9 @@
 #include "resources/image/Image.h"
 #include "utils/display/quad/QuadDisplayer.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class StaticBitmap : public Widget
-    {
+    class StaticBitmap : public Widget {
         public:
             StaticBitmap(Position, Size, std::string );
             ~StaticBitmap() override;

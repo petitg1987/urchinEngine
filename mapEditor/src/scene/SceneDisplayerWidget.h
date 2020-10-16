@@ -11,11 +11,9 @@
 #include "src/controller/SceneController.h"
 #include "widget/controller/statusbar/StatusBarController.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SceneDisplayerWidget : public QGLWidget, public Observable
-    {
+    class SceneDisplayerWidget : public QGLWidget, public Observable {
         Q_OBJECT
 
         public:

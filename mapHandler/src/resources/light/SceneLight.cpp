@@ -3,29 +3,23 @@
 #include "SceneLight.h"
 #include "resources/light/LightReaderWriter.h"
 
-namespace urchin
-{
+namespace urchin {
 
     SceneLight::SceneLight() :
             lightManager(nullptr),
-            light(nullptr)
-    {
+            light(nullptr) {
 
     }
 
-    SceneLight::~SceneLight()
-    {
+    SceneLight::~SceneLight() {
         lightManager->removeLight(light);
     }
 
-    void SceneLight::setLightManager(LightManager *lightManager)
-    {
-        if(this->lightManager)
-        {
+    void SceneLight::setLightManager(LightManager *lightManager) {
+        if(this->lightManager) {
             throw std::invalid_argument("Cannot add the scene light on two different light managers.");
         }
-        if(!lightManager)
-        {
+        if(!lightManager) {
             throw std::invalid_argument("Cannot specify a null light manager for a scene light.");
         }
 
@@ -34,48 +28,39 @@ namespace urchin
         lightManager->addLight(light);
     }
 
-    void SceneLight::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser)
-    {
+    void SceneLight::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
         setLight(LightReaderWriter().loadFrom(chunk, xmlParser));
     }
 
-    void SceneLight::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const
-    {
+    void SceneLight::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const {
         chunk->setAttribute(XmlAttribute(NAME_ATTR, this->name));
 
         LightReaderWriter().writeOn(chunk, light, xmlWriter);
     }
 
-    std::string SceneLight::getName() const
-    {
+    std::string SceneLight::getName() const {
         return name;
     }
 
-    void SceneLight::setName(const std::string &name)
-    {
+    void SceneLight::setName(const std::string &name) {
         this->name = name;
     }
 
-    Light *SceneLight::getLight() const
-    {
+    Light *SceneLight::getLight() const {
         return light;
     }
 
-    void SceneLight::setLight(Light *light)
-    {
-        if(!light)
-        {
+    void SceneLight::setLight(Light *light) {
+        if(!light) {
             throw std::invalid_argument("Cannot set a null light on scene light.");
         }
 
-        if(lightManager)
-        {
+        if(lightManager) {
             lightManager->removeLight(this->light);
             lightManager->addLight(light);
-        }else
-        {
+        } else {
             delete this->light;
         }
 

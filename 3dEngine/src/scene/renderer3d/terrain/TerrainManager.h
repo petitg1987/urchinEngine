@@ -6,11 +6,9 @@
 #include "scene/renderer3d/camera/Camera.h"
 #include "scene/renderer3d/terrain/Terrain.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class TerrainManager
-    {
+    class TerrainManager {
         public:
             TerrainManager();
 

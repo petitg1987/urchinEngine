@@ -8,11 +8,9 @@
 
 #define RESTART_INDEX 4294967295 //(2^32)-1
 
-namespace urchin
-{
+namespace urchin {
 
-    class TerrainMesh
-    {
+    class TerrainMesh {
         public:
             TerrainMesh(const std::string &, float, float);
 

@@ -7,8 +7,7 @@
 
 #define PICKING_RAY_LENGTH 100.0f
 
-namespace urchin
-{
+namespace urchin {
 
     SceneDisplayerWidget::SceneDisplayerWidget(QWidget *parent, const StatusBarController &statusBarController, std::string mapEditorPath) :
             QGLWidget(parent),
@@ -17,8 +16,7 @@ namespace urchin
             sceneDisplayer(nullptr),
             viewProperties(),
             mouseX(0),
-            mouseY(0)
-    {
+            mouseY(0) {
         QGLFormat glFormat;
         glFormat.setVersion(4, 5);
         glFormat.setProfile(QGLFormat::CompatibilityProfile);
@@ -34,18 +32,15 @@ namespace urchin
         QObject::connect(new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z), parent), SIGNAL(activated()), this, SLOT(onCtrlZPressed()));
     }
 
-    SceneDisplayerWidget::~SceneDisplayerWidget()
-    {
-        if(context()->isValid())
-        {
+    SceneDisplayerWidget::~SceneDisplayerWidget() {
+        if(context()->isValid()) {
             context()->doneCurrent();
         }
 
         delete sceneDisplayer;
     }
 
-    void SceneDisplayerWidget::loadMap(SceneController *sceneController, const std::string &mapFilename, const std::string &relativeWorkingDirectory)
-    {
+    void SceneDisplayerWidget::loadMap(SceneController *sceneController, const std::string &mapFilename, const std::string &relativeWorkingDirectory) {
         closeMap();
         statusBarController.applyState(StatusBarState::MAP_LOADED);
 
@@ -56,83 +51,64 @@ namespace urchin
         updateSceneDisplayerViewProperties();
     }
 
-    void SceneDisplayerWidget::saveState(const std::string &mapFilename) const
-    {
-        if(sceneDisplayer)
-        {
+    void SceneDisplayerWidget::saveState(const std::string &mapFilename) const {
+        if(sceneDisplayer) {
             sceneDisplayer->getCamera()->saveCameraState(mapFilename);
         }
     }
 
-    void SceneDisplayerWidget::closeMap()
-    {
+    void SceneDisplayerWidget::closeMap() {
         statusBarController.clearState();
 
         delete sceneDisplayer;
         sceneDisplayer = nullptr;
     }
 
-    void SceneDisplayerWidget::setViewProperties(SceneDisplayer::ViewProperties viewProperty, bool value)
-    {
+    void SceneDisplayerWidget::setViewProperties(SceneDisplayer::ViewProperties viewProperty, bool value) {
         viewProperties[viewProperty] = value;
         updateSceneDisplayerViewProperties();
     }
 
-    void SceneDisplayerWidget::setHighlightSceneObject(const SceneObject *highlightSceneObject)
-    {
-        if(sceneDisplayer)
-        {
+    void SceneDisplayerWidget::setHighlightSceneObject(const SceneObject *highlightSceneObject) {
+        if(sceneDisplayer) {
             sceneDisplayer->setHighlightSceneObject(highlightSceneObject);
         }
     }
 
-    void SceneDisplayerWidget::setHighlightCompoundShapeComponent(std::shared_ptr<const LocalizedCollisionShape> selectedCompoundShapeComponent)
-    {
-        if(sceneDisplayer)
-        {
+    void SceneDisplayerWidget::setHighlightCompoundShapeComponent(std::shared_ptr<const LocalizedCollisionShape> selectedCompoundShapeComponent) {
+        if(sceneDisplayer) {
             sceneDisplayer->getBodyShapeDisplayer()->setSelectedCompoundShapeComponent(std::move(selectedCompoundShapeComponent));
         }
     }
 
-    void SceneDisplayerWidget::setHighlightSceneLight(const SceneLight *highlightSceneLight)
-    {
-        if(sceneDisplayer)
-        {
+    void SceneDisplayerWidget::setHighlightSceneLight(const SceneLight *highlightSceneLight) {
+        if(sceneDisplayer) {
             sceneDisplayer->setHighlightSceneLight(highlightSceneLight);
         }
     }
 
-    void SceneDisplayerWidget::setHighlightSceneSound(const SceneSound *highlightSceneSound)
-    {
-        if(sceneDisplayer)
-        {
+    void SceneDisplayerWidget::setHighlightSceneSound(const SceneSound *highlightSceneSound) {
+        if(sceneDisplayer) {
             sceneDisplayer->setHighlightSceneSound(highlightSceneSound);
         }
     }
 
-    void SceneDisplayerWidget::updateSceneDisplayerViewProperties()
-    {
-        if(sceneDisplayer)
-        {
-            for(unsigned int i=0; i<SceneDisplayer::LAST_VIEW_PROPERTIES; ++i)
-            {
+    void SceneDisplayerWidget::updateSceneDisplayerViewProperties() {
+        if(sceneDisplayer) {
+            for(unsigned int i=0; i<SceneDisplayer::LAST_VIEW_PROPERTIES; ++i) {
                 sceneDisplayer->setViewProperties(static_cast<SceneDisplayer::ViewProperties>(i), viewProperties[i]);
             }
         }
     }
 
-    void SceneDisplayerWidget::initializeGL()
-    {
+    void SceneDisplayerWidget::initializeGL() {
         //do nothing
     }
 
-    void SceneDisplayerWidget::paintGL()
-    {
-        if(sceneDisplayer)
-        {
+    void SceneDisplayerWidget::paintGL() {
+        if(sceneDisplayer) {
             sceneDisplayer->paint();
-        }else
-        {
+        } else {
             glClear(GL_COLOR_BUFFER_BIT);
             glClearColor(0.1f, 0.05f, 0.1f, 1.0f);
         }
@@ -141,137 +117,103 @@ namespace urchin
         update();
     }
 
-    void SceneDisplayerWidget::resizeGL(int width, int height)
-    {
-        if(sceneDisplayer)
-        {
+    void SceneDisplayerWidget::resizeGL(int width, int height) {
+        if(sceneDisplayer) {
             sceneDisplayer->resize(static_cast<unsigned int>(width), static_cast<unsigned int>(height));
         }
     }
 
-    void SceneDisplayerWidget::keyPressEvent(QKeyEvent *event)
-    {
-        if(sceneDisplayer)
-        {
-            if (event->key() < 256)
-            {
+    void SceneDisplayerWidget::keyPressEvent(QKeyEvent *event) {
+        if(sceneDisplayer) {
+            if (event->key() < 256) {
                 sceneDisplayer->getSceneManager()->onKeyPress(static_cast<unsigned int>(event->key()));
                 sceneDisplayer->getSceneManager()->onChar(static_cast<unsigned int>(event->text().toLatin1()[0]));
-            } else if (event->key() == Qt::Key_Left)
-            {
+            } else if (event->key() == Qt::Key_Left) {
                 sceneDisplayer->getSceneManager()->onKeyPress(InputDeviceKey::LEFT_ARROW);
-            } else if (event->key() == Qt::Key_Right)
-            {
+            } else if (event->key() == Qt::Key_Right) {
                 sceneDisplayer->getSceneManager()->onKeyPress(InputDeviceKey::RIGHT_ARROW);
-            } else if (event->key() == Qt::Key_Backspace)
-            {
+            } else if (event->key() == Qt::Key_Backspace) {
                 sceneDisplayer->getSceneManager()->onChar(8);
-            } else if (event->key() == Qt::Key_Delete)
-            {
+            } else if (event->key() == Qt::Key_Delete) {
                 sceneDisplayer->getSceneManager()->onChar(127);
             }
         }
     }
 
-    void SceneDisplayerWidget::keyReleaseEvent(QKeyEvent *event)
-    {
-        if(sceneDisplayer)
-        {
-            if(event->key() < 256)
-            {
+    void SceneDisplayerWidget::keyReleaseEvent(QKeyEvent *event) {
+        if(sceneDisplayer) {
+            if(event->key() < 256) {
                 sceneDisplayer->getSceneManager()->onKeyRelease(static_cast<unsigned int>(event->key()));
-            }else if(event->key() == Qt::Key_Left)
-            {
+            } else if(event->key() == Qt::Key_Left) {
                 sceneDisplayer->getSceneManager()->onKeyRelease(InputDeviceKey::LEFT_ARROW);
-            }else if(event->key() == Qt::Key_Right)
-            {
+            } else if(event->key() == Qt::Key_Right) {
                 sceneDisplayer->getSceneManager()->onKeyRelease(InputDeviceKey::RIGHT_ARROW);
-            }else if(event->key() == Qt::Key_Escape)
-            {
+            } else if(event->key() == Qt::Key_Escape) {
                 sceneDisplayer->getObjectMoveController()->onEscapeKey();
             }
         }
     }
 
-    void SceneDisplayerWidget::mousePressEvent(QMouseEvent *event)
-    {
-        if(sceneDisplayer)
-        {
-            if(event->buttons() == Qt::LeftButton)
-            {
+    void SceneDisplayerWidget::mousePressEvent(QMouseEvent *event) {
+        if(sceneDisplayer) {
+            if(event->buttons() == Qt::LeftButton) {
                 sceneDisplayer->getSceneManager()->onKeyPress(InputDeviceKey::MOUSE_LEFT);
-            }else if (event->button() == Qt::RightButton)
-            {
+            } else if (event->button() == Qt::RightButton) {
                 sceneDisplayer->getSceneManager()->onKeyPress(InputDeviceKey::MOUSE_RIGHT);
             }
         }
     }
 
-    void SceneDisplayerWidget::mouseReleaseEvent(QMouseEvent *event)
-    {
-        if(sceneDisplayer)
-        {
-            if(event->button() == Qt::LeftButton)
-            {
+    void SceneDisplayerWidget::mouseReleaseEvent(QMouseEvent *event) {
+        if(sceneDisplayer) {
+            if(event->button() == Qt::LeftButton) {
                 bool propagateEvent = sceneDisplayer->getObjectMoveController()->onMouseLeftButton();
-                if(propagateEvent)
-                {
+                if(propagateEvent) {
                     propagateEvent = onMouseClickBodyPickup();
-                    if(propagateEvent)
-                    {
+                    if(propagateEvent) {
                         sceneDisplayer->getSceneManager()->onKeyRelease(InputDeviceKey::MOUSE_LEFT);
                     }
                 }
-            }else if (event->button() == Qt::RightButton)
-            {
+            } else if (event->button() == Qt::RightButton) {
                 sceneDisplayer->getSceneManager()->onKeyRelease(InputDeviceKey::MOUSE_RIGHT);
             }
         }
     }
 
-    void SceneDisplayerWidget::mouseMoveEvent(QMouseEvent *event)
-    {
+    void SceneDisplayerWidget::mouseMoveEvent(QMouseEvent *event) {
         this->mouseX = event->x();
         this->mouseY = event->y();
 
-        if(sceneDisplayer)
-        {
+        if(sceneDisplayer) {
             bool propagateEvent = sceneDisplayer->getSceneManager()->onMouseMove(mouseX, mouseY);
-            if(propagateEvent)
-            {
+            if(propagateEvent) {
                 sceneDisplayer->getObjectMoveController()->onMouseMove(mouseX, mouseY);
             }
         }
     }
 
-    void SceneDisplayerWidget::leaveEvent(QEvent *)
-    {
-        if(sceneDisplayer && !rect().contains(mapFromGlobal(QCursor::pos())))
-        {
+    void SceneDisplayerWidget::leaveEvent(QEvent *) {
+        if(sceneDisplayer && !rect().contains(mapFromGlobal(QCursor::pos()))) {
             sceneDisplayer->getObjectMoveController()->onMouseOut();
         }
     }
 
-    bool SceneDisplayerWidget::onMouseClickBodyPickup()
-    {
+    bool SceneDisplayerWidget::onMouseClickBodyPickup() {
         bool propagateEvent = true;
 
         Camera *camera = sceneDisplayer->getSceneManager()->getActiveRenderer3d()->getCamera();
         Ray<float> pickingRay = CameraSpaceService(camera).screenPointToRay(Point2<float>(mouseX, mouseY), PICKING_RAY_LENGTH);
         std::shared_ptr<const RayTestResult> rayTestResult = sceneDisplayer->getPhysicsWorld()->rayTest(pickingRay);
 
-        while(!rayTestResult->isResultReady())
-        {
+        while(!rayTestResult->isResultReady()) {
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
         const ccd_set &pickedObjects = rayTestResult->getResults();
-        if(!pickedObjects.empty())
-        {
+        if(!pickedObjects.empty()) {
             lastPickedBodyId = (*rayTestResult->getResults().begin())->getBody2()->getId();
             notifyObservers(this, BODY_PICKED);
             propagateEvent = false;
-        } else
-        {
+        } else {
             lastPickedBodyId = "";
             notifyObservers(this, BODY_PICKED);
         }
@@ -279,37 +221,29 @@ namespace urchin
         return propagateEvent;
     }
 
-    const std::string &SceneDisplayerWidget::getLastPickedBodyId() const
-    {
+    const std::string &SceneDisplayerWidget::getLastPickedBodyId() const {
         return lastPickedBodyId;
     }
 
-    void SceneDisplayerWidget::addObserverObjectMoveController(Observer *observer, int notificationType)
-    {
+    void SceneDisplayerWidget::addObserverObjectMoveController(Observer *observer, int notificationType) {
         assert(sceneDisplayer != nullptr);
         sceneDisplayer->getObjectMoveController()->addObserver(observer, notificationType);
     }
 
-    void SceneDisplayerWidget::onCtrlXPressed()
-    {
-        if(sceneDisplayer)
-        {
+    void SceneDisplayerWidget::onCtrlXPressed() {
+        if(sceneDisplayer) {
             sceneDisplayer->getObjectMoveController()->onCtrlXYZ(0);
         }
     }
 
-    void SceneDisplayerWidget::onCtrlYPressed()
-    {
-        if(sceneDisplayer)
-        {
+    void SceneDisplayerWidget::onCtrlYPressed() {
+        if(sceneDisplayer) {
             sceneDisplayer->getObjectMoveController()->onCtrlXYZ(1);
         }
     }
 
-    void SceneDisplayerWidget::onCtrlZPressed()
-    {
-        if(sceneDisplayer)
-        {
+    void SceneDisplayerWidget::onCtrlZPressed() {
+        if(sceneDisplayer) {
             sceneDisplayer->getObjectMoveController()->onCtrlXYZ(2);
         }
     }

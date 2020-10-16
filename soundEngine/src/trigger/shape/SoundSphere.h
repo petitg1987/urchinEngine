@@ -5,14 +5,12 @@
 
 #include "trigger/shape/SoundShape.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Sphere used to delimit the sound
     */
-    class SoundSphere : public SoundShape
-    {
+    class SoundSphere : public SoundShape {
         public:
             SoundSphere(float, const Point3<float> &, float);
 

@@ -10,11 +10,9 @@
 #include "scene/GUI/widget/Size.h"
 #include "scene/GUI/widget/text/Text.h"
 #include "scene/GUI/EventListener.h"
-namespace urchin
-{
+namespace urchin {
 
-    class Slider : public Widget
-    {
+    class Slider : public Widget {
         public:
             Slider(Position, Size, const std::vector<std::string> &, const std::string &);
             ~Slider() override = default;
@@ -45,8 +43,7 @@ namespace urchin
             float timeInClickingState;
             float timeSinceLastChange;
 
-            class ButtonSliderEventListener : public EventListener
-            {
+            class ButtonSliderEventListener : public EventListener {
                 public:
                     ButtonSliderEventListener(Slider *, bool);
                     void onClickRelease(Widget *) override;

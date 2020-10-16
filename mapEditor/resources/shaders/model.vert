@@ -14,7 +14,7 @@ out vec3 t, b, n;
 out vec2 textCoordinates;
 invariant gl_Position;
 
-void main(){
+void main() {
     textCoordinates = texCoord;
 
     t = normalize(mNormal * tangent);

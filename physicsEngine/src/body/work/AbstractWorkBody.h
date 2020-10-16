@@ -10,8 +10,7 @@
 #include "utils/math/PhysicsTransform.h"
 #include "collision/island/IslandElement.h"
 
-namespace urchin
-{
+namespace urchin {
 
     class PairContainer;
 
@@ -19,8 +18,7 @@ namespace urchin
     * A work body is copy of the body. This copy is useful when working on concurrent environment in order to avoid
     * concurrent access each times we want to access to body methods.
     */
-    class AbstractWorkBody : public IslandElement
-    {
+    class AbstractWorkBody : public IslandElement {
         public:
             AbstractWorkBody(std::string , const PhysicsTransform &, std::shared_ptr<const CollisionShape3D> );
             ~AbstractWorkBody() override = default;

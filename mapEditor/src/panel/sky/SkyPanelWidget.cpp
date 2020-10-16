@@ -8,8 +8,7 @@
 #include "widget/style/GroupBoxStyleHelper.h"
 #include "widget/style/SpinBoxStyleHelper.h"
 
-namespace urchin
-{
+namespace urchin {
 
     QString SkyPanelWidget::preferredSkyboxPath = QString();
 
@@ -22,8 +21,7 @@ namespace urchin
             znSkyboxFilenameText(nullptr),
             zpSkyboxFilenameText(nullptr),
             offsetY(nullptr),
-            disableSkyEvent(false)
-    {
+            disableSkyEvent(false) {
         auto *mainLayout = new QVBoxLayout(this);
         mainLayout->setAlignment(Qt::AlignTop);
         mainLayout->setContentsMargins(1, 1, 1, 1);
@@ -31,21 +29,18 @@ namespace urchin
         setupSkyboxBox(mainLayout);
     }
 
-    void SkyPanelWidget::load(SkyController *skyController)
-    {
+    void SkyPanelWidget::load(SkyController *skyController) {
         this->skyController = skyController;
 
         auto &skybox = skyController->getSceneSky()->getSkybox();
         setupSkyDataFrom(skybox);
     }
 
-    void SkyPanelWidget::unload()
-    {
+    void SkyPanelWidget::unload() {
         skyController = nullptr;
     }
 
-    void SkyPanelWidget::setupSkyboxBox(QVBoxLayout *mainLayout)
-    {
+    void SkyPanelWidget::setupSkyboxBox(QVBoxLayout *mainLayout) {
         auto *skyboxGroupBox = new QGroupBox("Skybox");
         mainLayout->addWidget(skyboxGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(skyboxGroupBox);
@@ -98,8 +93,7 @@ namespace urchin
         connect(offsetY, SIGNAL(valueChanged(double)), this, SLOT(skyChanged()));
     }
 
-    QHBoxLayout *SkyPanelWidget::createFilenameInputText(QGridLayout *skyboxLayout, int row, const QString &text, QLineEdit **skyboxFilenameText)
-    {
+    QHBoxLayout *SkyPanelWidget::createFilenameInputText(QGridLayout *skyboxLayout, int row, const QString &text, QLineEdit **skyboxFilenameText) {
         auto *skyboxFilenameLabel= new QLabel(text);
         skyboxLayout->addWidget(skyboxFilenameLabel, row, 0);
 
@@ -112,8 +106,7 @@ namespace urchin
         return skyboxFilenameLayout;
     }
 
-    QPushButton *SkyPanelWidget::createSelectFileButton(QHBoxLayout *skyboxFilenameLayout)
-    {
+    QPushButton *SkyPanelWidget::createSelectFileButton(QHBoxLayout *skyboxFilenameLayout) {
         auto *selectSkyboxFileButton = new QPushButton("...");
         skyboxFilenameLayout->addWidget(selectSkyboxFileButton);
         ButtonStyleHelper::applyNormalStyle(selectSkyboxFileButton);
@@ -122,8 +115,7 @@ namespace urchin
         return selectSkyboxFileButton;
     }
 
-    QPushButton *SkyPanelWidget::createClearFileButton(QHBoxLayout *skyboxFilenameLayout)
-    {
+    QPushButton *SkyPanelWidget::createClearFileButton(QHBoxLayout *skyboxFilenameLayout) {
         auto *clearSkyboxFileButton = new QPushButton("Clr");
         skyboxFilenameLayout->addWidget(clearSkyboxFileButton);
         ButtonStyleHelper::applyNormalStyle(clearSkyboxFileButton);
@@ -132,43 +124,35 @@ namespace urchin
         return clearSkyboxFileButton;
     }
 
-    void SkyPanelWidget::showXnSkyboxFilenameDialog()
-    {
+    void SkyPanelWidget::showXnSkyboxFilenameDialog() {
         showSkyboxFilenameDialog(xnSkyboxFilenameText);
     }
 
-    void SkyPanelWidget::showXpSkyboxFilenameDialog()
-    {
+    void SkyPanelWidget::showXpSkyboxFilenameDialog() {
         showSkyboxFilenameDialog(xpSkyboxFilenameText);
     }
 
-    void SkyPanelWidget::showYnSkyboxFilenameDialog()
-    {
+    void SkyPanelWidget::showYnSkyboxFilenameDialog() {
         showSkyboxFilenameDialog(ynSkyboxFilenameText);
     }
 
-    void SkyPanelWidget::showYpSkyboxFilenameDialog()
-    {
+    void SkyPanelWidget::showYpSkyboxFilenameDialog() {
         showSkyboxFilenameDialog(ypSkyboxFilenameText);
     }
 
-    void SkyPanelWidget::showZnSkyboxFilenameDialog()
-    {
+    void SkyPanelWidget::showZnSkyboxFilenameDialog() {
         showSkyboxFilenameDialog(znSkyboxFilenameText);
     }
 
-    void SkyPanelWidget::showZpSkyboxFilenameDialog()
-    {
+    void SkyPanelWidget::showZpSkyboxFilenameDialog() {
         showSkyboxFilenameDialog(zpSkyboxFilenameText);
     }
 
-    void SkyPanelWidget::showSkyboxFilenameDialog(QLineEdit *skyboxFilenameText)
-    {
+    void SkyPanelWidget::showSkyboxFilenameDialog(QLineEdit *skyboxFilenameText) {
         std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
         QString directory = preferredSkyboxPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredSkyboxPath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png)", nullptr, QFileDialog::DontUseNativeDialog);
-        if(!filename.isNull())
-        {
+        if(!filename.isNull()) {
             std::string imageFilenamePath = filename.toUtf8().constData();
             std::string relativeTgaFilenamePath = FileHandler::getRelativePath(resourcesDirectory, imageFilenamePath);
             skyboxFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
@@ -176,56 +160,46 @@ namespace urchin
             std::string preferredPathString = FileHandler::getDirectoryFrom(imageFilenamePath);
             preferredSkyboxPath = QString::fromStdString(preferredPathString);
 
-            try
-            {
+            try {
                 skyChanged();
-            }catch(std::exception &e)
-            {
+            }catch(std::exception &e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearSkyboxFilename(skyboxFilenameText);
             }
         }
     }
 
-    void SkyPanelWidget::clearXnSkyboxFilename()
-    {
+    void SkyPanelWidget::clearXnSkyboxFilename() {
         clearSkyboxFilename(xnSkyboxFilenameText);
     }
 
-    void SkyPanelWidget::clearXpSkyboxFilename()
-    {
+    void SkyPanelWidget::clearXpSkyboxFilename() {
         clearSkyboxFilename(xpSkyboxFilenameText);
     }
 
-    void SkyPanelWidget::clearYnSkyboxFilename()
-    {
+    void SkyPanelWidget::clearYnSkyboxFilename() {
         clearSkyboxFilename(ynSkyboxFilenameText);
     }
 
-    void SkyPanelWidget::clearYpSkyboxFilename()
-    {
+    void SkyPanelWidget::clearYpSkyboxFilename() {
         clearSkyboxFilename(ypSkyboxFilenameText);
     }
 
-    void SkyPanelWidget::clearZnSkyboxFilename()
-    {
+    void SkyPanelWidget::clearZnSkyboxFilename() {
         clearSkyboxFilename(znSkyboxFilenameText);
     }
 
-    void SkyPanelWidget::clearZpSkyboxFilename()
-    {
+    void SkyPanelWidget::clearZpSkyboxFilename() {
         clearSkyboxFilename(zpSkyboxFilenameText);
     }
 
-    void SkyPanelWidget::clearSkyboxFilename(QLineEdit *skyboxFilenameText)
-    {
+    void SkyPanelWidget::clearSkyboxFilename(QLineEdit *skyboxFilenameText) {
         skyboxFilenameText->setText("");
 
         skyChanged();
     }
 
-    void SkyPanelWidget::setupSkyDataFrom(const std::unique_ptr<Skybox> &skybox)
-    {
+    void SkyPanelWidget::setupSkyDataFrom(const std::unique_ptr<Skybox> &skybox) {
         disableSkyEvent = true;
         xnSkyboxFilenameText->setText(skybox != nullptr ? QString::fromStdString(skybox->getFilenames()[0]) : "");
         xpSkyboxFilenameText->setText(skybox != nullptr ? QString::fromStdString(skybox->getFilenames()[1]) : "");
@@ -237,10 +211,8 @@ namespace urchin
         disableSkyEvent = false;
     }
 
-    void SkyPanelWidget::skyChanged()
-    {
-        if(!disableSkyEvent)
-        {
+    void SkyPanelWidget::skyChanged() {
+        if(!disableSkyEvent) {
             std::vector<std::string> skyboxFilenames;
             skyboxFilenames.emplace_back(xnSkyboxFilenameText->text().toStdString());
             skyboxFilenames.emplace_back(xpSkyboxFilenameText->text().toStdString());

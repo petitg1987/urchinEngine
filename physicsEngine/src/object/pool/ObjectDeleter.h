@@ -1,13 +1,11 @@
 #ifndef URCHINENGINE_OBJECTDELETER_H
 #define URCHINENGINE_OBJECTDELETER_H
 
-namespace urchin
-{
+namespace urchin {
 
     class CollisionConvexObject3D;
 
-    class ObjectDeleter
-    {
+    class ObjectDeleter {
         public:
             void operator()(CollisionConvexObject3D *);
     };

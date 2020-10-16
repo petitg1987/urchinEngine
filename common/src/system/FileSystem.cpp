@@ -1,32 +1,26 @@
 #include "system/FileSystem.h"
 
-namespace urchin
-{
+namespace urchin {
 
     FileSystem::FileSystem() : Singleton<FileSystem>(),
             resourcesDirectory("./"),
-            saveDirectory("./")
-    {
+            saveDirectory("./") {
 
     }
 
-    void FileSystem::setupResourcesDirectory(const std::string &resourcesDirectory)
-    {
+    void FileSystem::setupResourcesDirectory(const std::string &resourcesDirectory) {
         this->resourcesDirectory = resourcesDirectory;
     }
 
-    const std::string &FileSystem::getResourcesDirectory() const
-    {
+    const std::string &FileSystem::getResourcesDirectory() const {
         return resourcesDirectory;
     }
 
-    void FileSystem::setupSaveDirectory(const std::string &saveDirectory)
-    {
+    void FileSystem::setupSaveDirectory(const std::string &saveDirectory) {
         this->saveDirectory = saveDirectory;
     }
 
-    const std::string &FileSystem::getSaveDirectory() const
-    {
+    const std::string &FileSystem::getSaveDirectory() const {
         return saveDirectory;
     }
 

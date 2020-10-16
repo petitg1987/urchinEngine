@@ -10,14 +10,12 @@
 #include "body/work/AbstractWorkBody.h"
 #include "body/BodyManager.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Broad phase manager allowing to determine pairs of bodies potentially colliding
     */
-    class BroadPhaseManager : public Observer
-    {
+    class BroadPhaseManager : public Observer {
         public:
             explicit BroadPhaseManager(BodyManager *);
             ~BroadPhaseManager() override;

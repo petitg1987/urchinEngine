@@ -5,11 +5,9 @@
 #include "UrchinSoundEngine.h"
 #include "UrchinMapHandler.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SoundTriggerDisplayer
-    {
+    class SoundTriggerDisplayer {
         public:
             explicit SoundTriggerDisplayer(SceneManager *);
             ~SoundTriggerDisplayer();

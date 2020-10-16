@@ -2,12 +2,10 @@
 
 #include "LightTableView.h"
 
-namespace urchin
-{
+namespace urchin {
 
     LightTableView::LightTableView(QWidget *parent) :
-        QTableView(parent)
-    {
+        QTableView(parent) {
         lightsListModel = new QStandardItemModel(0, 1, this);
         lightsListModel->setHorizontalHeaderItem(0, new QStandardItem("Light Name"));
         QTableView::setModel(lightsListModel);
@@ -20,8 +18,7 @@ namespace urchin
         setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
     }
 
-    void LightTableView::selectionChanged(const QItemSelection &, const QItemSelection &)
-    {
+    void LightTableView::selectionChanged(const QItemSelection &, const QItemSelection &) {
         //hack to refresh selection
         horizontalHeader()->resizeSection(0, 341);
         horizontalHeader()->resizeSection(0, 340);
@@ -29,23 +26,19 @@ namespace urchin
         notifyObservers(this, NotificationType::LIGHT_SELECTION_CHANGED);
     }
 
-    bool LightTableView::hasSceneLightSelected() const
-    {
+    bool LightTableView::hasSceneLightSelected() const {
         return this->currentIndex().row()!=-1;
     }
 
-    const SceneLight *LightTableView::getSelectedSceneLight() const
-    {
+    const SceneLight *LightTableView::getSelectedSceneLight() const {
         QModelIndex selectedIndex = this->currentIndex();
-        if(selectedIndex.row()!=-1)
-        {
+        if(selectedIndex.row()!=-1) {
             return selectedIndex.data(Qt::UserRole + 1).value<const SceneLight *>();
         }
         return nullptr;
     }
 
-    void LightTableView::addLight(const SceneLight *sceneLight)
-    {
+    void LightTableView::addLight(const SceneLight *sceneLight) {
         auto *itemLightName = new QStandardItem(QString::fromStdString(sceneLight->getName()));
         itemLightName->setData(qVariantFromValue(sceneLight), Qt::UserRole + 1);
         itemLightName->setEditable(false);
@@ -57,10 +50,8 @@ namespace urchin
         resizeRowsToContents();
     }
 
-    bool LightTableView::removeSelectedLight()
-    {
-        if(hasSceneLightSelected())
-        {
+    bool LightTableView::removeSelectedLight() {
+        if(hasSceneLightSelected()) {
             lightsListModel->removeRow(this->currentIndex().row());
             resizeRowsToContents();
 
@@ -70,8 +61,7 @@ namespace urchin
         return false;
     }
 
-    void LightTableView::removeAllLights()
-    {
+    void LightTableView::removeAllLights() {
         lightsListModel->removeRows(0, lightsListModel->rowCount());
         resizeRowsToContents();
     }

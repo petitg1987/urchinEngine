@@ -5,14 +5,12 @@
 
 #include "collision/broadphase/VectorPairContainer.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
      * Thread safe pair container. Pair can be added/removed by physics thread while pairs are read from another thread.
      */
-    class SyncVectorPairContainer : public VectorPairContainer
-    {
+    class SyncVectorPairContainer : public VectorPairContainer {
         public:
             ~SyncVectorPairContainer() override = default;
 

@@ -10,11 +10,9 @@
 
 #define MAX_MATERIAL 4 //maximum 4 materials (RGBA)
 
-namespace urchin
-{
+namespace urchin {
 
-    class TerrainMaterial
-    {
+    class TerrainMaterial {
         public:
             explicit TerrainMaterial(const std::string &, float, float);
             ~TerrainMaterial();

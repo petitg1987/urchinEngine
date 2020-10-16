@@ -8,15 +8,13 @@
 #include "resources/model/ConstMesh.h"
 #include "resources/Resource.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
      * Contains all the constant/common data for meshes.
      * Two identical models can use the instance of this class.
      */
-    class ConstMeshes : public Resource
-    {
+    class ConstMeshes : public Resource {
         public:
             ConstMeshes(std::string , const std::vector<const ConstMesh *> &);
             ~ConstMeshes() override;

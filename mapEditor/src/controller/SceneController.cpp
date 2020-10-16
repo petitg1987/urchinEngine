@@ -2,12 +2,10 @@
 
 #include "SceneController.h"
 
-namespace urchin
-{
+namespace urchin {
 
     SceneController::SceneController() :
-            AbstractController()
-    {
+            AbstractController() {
         objectController = new ObjectController();
         subControllers.emplace_back(objectController);
 
@@ -30,16 +28,13 @@ namespace urchin
         subControllers.emplace_back(aiController);
     }
 
-    SceneController::~SceneController()
-    {
-        for(const auto &subController: subControllers)
-        {
+    SceneController::~SceneController() {
+        for(const auto &subController: subControllers) {
             delete subController;
         }
     }
 
-    void SceneController::setup(MapHandler *mapHandler)
-    {
+    void SceneController::setup(MapHandler *mapHandler) {
         AbstractController::setup(mapHandler);
 
         objectController->setup(mapHandler);
@@ -51,31 +46,24 @@ namespace urchin
         aiController->setup(mapHandler);
     }
 
-    void SceneController::addObserverOnAllControllers(Observer *observer, int notificationType)
-    {
+    void SceneController::addObserverOnAllControllers(Observer *observer, int notificationType) {
         this->addObserver(observer, notificationType);
-        for(const auto &subController: subControllers)
-        {
+        for(const auto &subController: subControllers) {
             subController->addObserver(observer, notificationType);
         }
     }
 
-    void SceneController::forceModified()
-    {
+    void SceneController::forceModified() {
          AbstractController::markModified();
     }
 
-    bool SceneController::isModified() const
-    {
-        if(AbstractController::isModified())
-        {
+    bool SceneController::isModified() const {
+        if(AbstractController::isModified()) {
             return true;
         }
 
-        for(const auto &subController: subControllers)
-        {
-            if(subController->isModified())
-            {
+        for(const auto &subController: subControllers) {
+            if(subController->isModified()) {
                 return true;
             }
         }
@@ -83,17 +71,14 @@ namespace urchin
         return false;
     }
 
-    void SceneController::resetModified()
-    {
+    void SceneController::resetModified() {
         AbstractController::resetModified();
-        for(const auto &subController: subControllers)
-        {
+        for(const auto &subController: subControllers) {
             subController->resetModified();
         }
     }
 
-    void SceneController::saveMapOnFile(const std::string &mapFilename)
-    {
+    void SceneController::saveMapOnFile(const std::string &mapFilename) {
         std::string tmpResourcesDirectory = FileSystem::instance()->getResourcesDirectory();
         FileSystem::instance()->setupResourcesDirectory("");
         getMapHandler()->writeMapOnFile(mapFilename);
@@ -102,38 +87,31 @@ namespace urchin
         resetModified();
     }
 
-    ObjectController *SceneController::getObjectController()
-    {
+    ObjectController *SceneController::getObjectController() {
         return objectController;
     }
 
-    LightController *SceneController::getLightController()
-    {
+    LightController *SceneController::getLightController() {
         return lightController;
     }
 
-    TerrainController *SceneController::getTerrainController()
-    {
+    TerrainController *SceneController::getTerrainController() {
         return terrainController;
     }
 
-    WaterController *SceneController::getWaterController()
-    {
+    WaterController *SceneController::getWaterController() {
         return waterController;
     }
 
-    SkyController *SceneController::getSkyController()
-    {
+    SkyController *SceneController::getSkyController() {
         return skyController;
     }
 
-    SoundController *SceneController::getSoundController()
-    {
+    SoundController *SceneController::getSoundController() {
         return soundController;
     }
 
-    AIController *SceneController::getAIController()
-    {
+    AIController *SceneController::getAIController() {
         return aiController;
     }
 

@@ -8,7 +8,7 @@ uniform mat3 mProjection;
 out vec2 textCoordinates;
 invariant gl_Position;
 
-void main(){
+void main() {
     textCoordinates = texCoord;
 
     vec3 position = mProjection * vec3(vertexPosition, 1.0);

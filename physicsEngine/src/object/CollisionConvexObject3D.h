@@ -4,11 +4,9 @@
 #include <string>
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class CollisionConvexObject3D
-    {
+    class CollisionConvexObject3D {
         public:
             enum ObjectType
             {

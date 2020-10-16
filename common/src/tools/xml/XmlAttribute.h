@@ -3,14 +3,12 @@
 
 #include <string>
 
-namespace urchin
-{
+namespace urchin {
 
     /**
      * Represents a XML attribute
      */
-    class XmlAttribute
-    {
+    class XmlAttribute {
         public:
             XmlAttribute();
             XmlAttribute(std::string , std::string );

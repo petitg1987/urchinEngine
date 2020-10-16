@@ -6,11 +6,9 @@
 
 #include "utils/display/geometry/GeometryModel.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class TrianglesModel : public GeometryModel
-    {
+    class TrianglesModel : public GeometryModel {
         public:
             explicit TrianglesModel(std::vector<Point3<float>>);
 

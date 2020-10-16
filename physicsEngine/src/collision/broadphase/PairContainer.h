@@ -4,14 +4,12 @@
 #include "body/work/AbstractWorkBody.h"
 #include "collision/OverlappingPair.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Broad phase overlapping pairs container interface
     */
-    class PairContainer
-    {
+    class PairContainer {
         public:
             virtual ~PairContainer() = default;
 

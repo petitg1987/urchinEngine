@@ -5,14 +5,12 @@
 #include "math/algebra/point/Point2.h"
 #include "math/geometry/2d/shape/RectangleShape.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Represents a rectangle aligned on axis in space
     */
-    template<class T> class Rectangle : public ConvexObject2D<T>
-    {
+    template<class T> class Rectangle : public ConvexObject2D<T> {
         public:
             Rectangle();
             Rectangle(const Point2<T> &, const Vector2<T> &);

@@ -3,11 +3,9 @@
 
 #include "path/navmesh/model/output/topography/NavTopography.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class NavTerrainTopography : public NavTopography
-    {
+    class NavTerrainTopography : public NavTopography {
         public:
             NavTerrainTopography(std::shared_ptr<const HeightfieldPointHelper<float>> &, const Point3<float> &);
 

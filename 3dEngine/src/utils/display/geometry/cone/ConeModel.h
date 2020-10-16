@@ -5,11 +5,9 @@
 
 #include "utils/display/geometry/GeometryModel.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class ConeModel : public GeometryModel
-    {
+    class ConeModel : public GeometryModel {
         public:
             ConeModel(Cone<float> , int);
 

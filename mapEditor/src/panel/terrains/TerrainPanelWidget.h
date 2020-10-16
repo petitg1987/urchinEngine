@@ -16,11 +16,9 @@
 
 #define MAX_MATERIAL 4 //maximum 4 materials (RGBA)
 
-namespace urchin
-{
+namespace urchin {
 
-    class TerrainPanelWidget : public QWidget, public Observer
-    {
+    class TerrainPanelWidget : public QWidget, public Observer {
         Q_OBJECT
 
         public:

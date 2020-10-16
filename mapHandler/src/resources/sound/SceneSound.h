@@ -4,14 +4,12 @@
 #include <string>
 #include "UrchinSoundEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Represent a sound and sound trigger on the scene
     */
-    class SceneSound
-    {
+    class SceneSound {
         //XML attributes
         #define NAME_ATTR "name"
 

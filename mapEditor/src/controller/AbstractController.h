@@ -4,11 +4,9 @@
 #include "UrchinCommon.h"
 #include "UrchinMapHandler.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class AbstractController : public Observable
-    {
+    class AbstractController : public Observable {
         public:
             explicit AbstractController();
 

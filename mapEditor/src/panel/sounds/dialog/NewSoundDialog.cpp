@@ -9,8 +9,7 @@
 #include "widget/style/LabelStyleHelper.h"
 #include "widget/style/ButtonStyleHelper.h"
 
-namespace urchin
-{
+namespace urchin {
 
     QString NewSoundDialog::preferredSoundPath = QString();
 
@@ -23,8 +22,7 @@ namespace urchin
             soundFilenameText(nullptr),
             soundTypeLabel(nullptr),
             soundTypeComboBox(nullptr),
-            sceneSound(nullptr)
-    {
+            sceneSound(nullptr) {
         this->setWindowTitle("New Sound");
         this->resize(530, 160);
         this->setFixedSize(this->width(),this->height());
@@ -45,8 +43,7 @@ namespace urchin
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void NewSoundDialog::setupNameFields(QGridLayout *mainLayout)
-    {
+    void NewSoundDialog::setupNameFields(QGridLayout *mainLayout) {
         soundNameLabel = new QLabel("Sound Name:");
         mainLayout->addWidget(soundNameLabel, 0, 0);
 
@@ -55,8 +52,7 @@ namespace urchin
         soundNameText->setFixedWidth(360);
     }
 
-    void NewSoundDialog::setupSoundFilenameFields(QGridLayout *mainLayout)
-    {
+    void NewSoundDialog::setupSoundFilenameFields(QGridLayout *mainLayout) {
         soundFilenameLabel = new QLabel("Sound File:");
         mainLayout->addWidget(soundFilenameLabel, 1, 0);
 
@@ -72,8 +68,7 @@ namespace urchin
         connect(selectMeshFileButton, SIGNAL(clicked()), this, SLOT(showSoundFilenameDialog()));
     }
 
-    void NewSoundDialog::setupSoundTypeFields(QGridLayout *mainLayout)
-    {
+    void NewSoundDialog::setupSoundTypeFields(QGridLayout *mainLayout) {
         soundTypeLabel = new QLabel("Sound Type:");
         mainLayout->addWidget(soundTypeLabel, 2, 0);
 
@@ -84,19 +79,15 @@ namespace urchin
         soundTypeComboBox->addItem(POINT_SOUND_LABEL, QVariant(Sound::SoundType::POINT));
     }
 
-    void NewSoundDialog::updateSoundName()
-    {
+    void NewSoundDialog::updateSoundName() {
         QString soundName = soundNameText->text();
-        if(!soundName.isEmpty())
-        {
+        if(!soundName.isEmpty()) {
             this->soundName = soundName.toUtf8().constData();
         }
     }
 
-    int NewSoundDialog::buildSceneSound(int result)
-    {
-        try
-        {
+    int NewSoundDialog::buildSceneSound(int result) {
+        try {
             sceneSound = new SceneSound();
 
             sceneSound->setName(soundName);
@@ -108,22 +99,18 @@ namespace urchin
             auto soundType = static_cast<Sound::SoundType>(variant.toInt());
 
             Sound *sound;
-            if(soundType==Sound::AMBIENT)
-            {
+            if(soundType==Sound::AMBIENT) {
                 sound = new AmbientSound(relativeSoundFilename);
-            }else if(soundType==Sound::POINT)
-            {
+            } else if(soundType==Sound::POINT) {
                 sound = new PointSound(relativeSoundFilename, Point3<float>(0.0, 0.0, 0.0));
-            }else
-            {
+            } else {
                 throw std::invalid_argument("Unknown the sound type to create a new sound: " + std::to_string(soundType));
             }
 
             SoundTrigger *soundTrigger = new ManualTrigger(SoundBehavior(SoundBehavior::PLAY_ONCE, SoundBehavior::INSTANT_STOP));
 
             sceneSound->setSoundElements(sound, soundTrigger);
-        }catch(std::exception &e)
-        {
+        }catch(std::exception &e) {
             QMessageBox::critical(this, "Error", e.what());
             delete sceneSound;
 
@@ -134,17 +121,14 @@ namespace urchin
     }
 
 
-    SceneSound *NewSoundDialog::getSceneSound() const
-    {
+    SceneSound *NewSoundDialog::getSceneSound() const {
         return sceneSound;
     }
 
-    void NewSoundDialog::showSoundFilenameDialog()
-    {
+    void NewSoundDialog::showSoundFilenameDialog() {
         QString directory = preferredSoundPath.isEmpty() ? QString::fromStdString(FileSystem::instance()->getResourcesDirectory()) : preferredSoundPath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open sound file"), directory, "Sound file (*.wav)", nullptr, QFileDialog::DontUseNativeDialog);
-        if(!filename.isNull())
-        {
+        if(!filename.isNull()) {
             this->soundFilename = filename.toUtf8().constData();
             this->soundFilenameText->setText(filename);
 
@@ -153,49 +137,39 @@ namespace urchin
         }
     }
 
-    void NewSoundDialog::done(int r)
-    {
-        if(QDialog::Accepted == r)
-        {
+    void NewSoundDialog::done(int r) {
+        if(QDialog::Accepted == r) {
             bool hasError = false;
 
             updateSoundName();
             LabelStyleHelper::applyNormalStyle(soundNameLabel);
             LabelStyleHelper::applyNormalStyle(soundFilenameLabel);
 
-            if(soundName.empty())
-            {
+            if(soundName.empty()) {
                 LabelStyleHelper::applyErrorStyle(soundNameLabel, "Sound name is mandatory");
                 hasError = true;
-            }else if(isSceneSoundExist(soundName))
-            {
+            } else if(isSceneSoundExist(soundName)) {
                 LabelStyleHelper::applyErrorStyle(soundNameLabel, "Sound name is already used");
                 hasError = true;
             }
-            if(soundFilename.empty())
-            {
+            if(soundFilename.empty()) {
                 LabelStyleHelper::applyErrorStyle(soundFilenameLabel, "Sound file is mandatory");
                 hasError = true;
             }
 
-            if(!hasError)
-            {
+            if(!hasError) {
                 r = buildSceneSound(r);
                 QDialog::done(r);
             }
-        }else
-        {
+        } else {
             QDialog::done(r);
         }
     }
 
-    bool NewSoundDialog::isSceneSoundExist(const std::string &name)
-    {
+    bool NewSoundDialog::isSceneSoundExist(const std::string &name) {
         std::list<const SceneSound *> sceneSounds = soundController->getSceneSounds();
-        for (auto &sceneSound : sceneSounds)
-        {
-            if(sceneSound->getName() == name)
-            {
+        for (auto &sceneSound : sceneSounds) {
+            if(sceneSound->getName() == name) {
                 return true;
             }
         }

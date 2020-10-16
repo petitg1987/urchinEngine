@@ -1,34 +1,28 @@
 #include "SVGShape.h"
 
-namespace urchin
-{
+namespace urchin {
 
     SVGShape::SVGShape(SVGColor color, float opacity) :
         color(color),
         opacity(opacity),
         strokeColor(SVGShape::BLACK),
-        strokeSize(0)
-    {
+        strokeSize(0) {
 
     }
 
-    void SVGShape::setStroke(SVGColor strokeColor, float strokeSize)
-    {
+    void SVGShape::setStroke(SVGColor strokeColor, float strokeSize) {
         this->strokeColor = strokeColor;
         this->strokeSize = strokeSize;
     }
 
-    std::string SVGShape::getStyle() const
-    {
+    std::string SVGShape::getStyle() const {
         return "fill:" + toColorString(color) + ";" +
                "stroke:" + toColorString(strokeColor) + ";stroke-width:"+ std::to_string(strokeSize) +";" +
                "opacity:" + std::to_string(opacity);
     }
 
-    std::string SVGShape::toColorString(SVGColor color) const
-    {
-        switch(color)
-        {
+    std::string SVGShape::toColorString(SVGColor color) const {
+        switch(color) {
             case SVGColor::BLACK:
                 return "black";
             case SVGColor::LIME:

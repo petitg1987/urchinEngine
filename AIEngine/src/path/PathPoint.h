@@ -3,11 +3,9 @@
 
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class PathPoint
-    {
+    class PathPoint {
         public:
             PathPoint(const Point3<float> &, bool);
 

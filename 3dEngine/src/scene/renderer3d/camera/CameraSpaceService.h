@@ -5,11 +5,9 @@
 
 #include "scene/renderer3d/camera/Camera.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class CameraSpaceService
-    {
+    class CameraSpaceService {
         public:
             CameraSpaceService(Camera *);
 

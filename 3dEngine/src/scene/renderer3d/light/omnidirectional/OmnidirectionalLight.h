@@ -6,11 +6,9 @@
 
 #include "scene/renderer3d/light/Light.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class OmnidirectionalLight : public Light
-    {
+    class OmnidirectionalLight : public Light {
         public:
             explicit OmnidirectionalLight(const Point3<float> &);
             ~OmnidirectionalLight() override;

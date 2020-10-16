@@ -8,14 +8,12 @@
 #include "tools/xml/XmlAttribute.h"
 #include "tools/xml/XmlChunk.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * XML writer
     */
-    class XmlWriter
-    {
+    class XmlWriter {
         public:
             explicit XmlWriter(const std::string &);
             ~XmlWriter();

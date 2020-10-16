@@ -7,11 +7,9 @@
 
 #define BOUNDARIES_MARGIN_PERCENTAGE 0.3f
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class OBJ> class AABBTree
-    {
+    template<class OBJ> class AABBTree {
         public:
             explicit AABBTree(float);
             virtual ~AABBTree();

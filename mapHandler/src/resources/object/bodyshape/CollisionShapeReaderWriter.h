@@ -5,11 +5,9 @@
 #include "UrchinCommon.h"
 #include "UrchinPhysicsEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class CollisionShapeReaderWriter
-    {
+    class CollisionShapeReaderWriter {
         //XML attributes
         #define TYPE_ATTR "type"
 

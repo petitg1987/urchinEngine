@@ -10,11 +10,9 @@
 #include "UrchinMapHandler.h"
 #include "controller/objects/ObjectController.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class CloneObjectDialog : public QDialog
-    {
+    class CloneObjectDialog : public QDialog {
             Q_OBJECT
 
         public:

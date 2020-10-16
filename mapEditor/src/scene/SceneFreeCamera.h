@@ -7,11 +7,9 @@
 
 #include "widget/controller/mouse/MouseController.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SceneFreeCamera : public FreeCamera
-    {
+    class SceneFreeCamera : public FreeCamera {
         public:
             SceneFreeCamera(float, float, float, const MouseController &);
             ~SceneFreeCamera() override = default;

@@ -4,15 +4,13 @@
 
 #include "ChangeSoundTriggerDialog.h"
 
-namespace urchin
-{
+namespace urchin {
 
     ChangeSoundTriggerDialog::ChangeSoundTriggerDialog(QWidget *parent) :
         QDialog(parent),
         soundTriggerTypeLabel(nullptr),
         soundTriggerTypeComboBox(nullptr),
-        triggerType(SoundTrigger::TriggerType::MANUAL_TRIGGER)
-    {
+        triggerType(SoundTrigger::TriggerType::MANUAL_TRIGGER) {
         this->setWindowTitle("Select Sound Trigger Type");
         this->resize(245, 80);
         this->setFixedSize(this->width(),this->height());
@@ -31,8 +29,7 @@ namespace urchin
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void ChangeSoundTriggerDialog::setupSoundTriggerTypeFields(QGridLayout *mainLayout)
-    {
+    void ChangeSoundTriggerDialog::setupSoundTriggerTypeFields(QGridLayout *mainLayout) {
         soundTriggerTypeLabel = new QLabel("Trigger Type:");
         mainLayout->addWidget(soundTriggerTypeLabel, 0, 0);
 
@@ -43,21 +40,17 @@ namespace urchin
         soundTriggerTypeComboBox->addItem(SHAPE_TRIGGER_LABEL, QVariant(SoundTrigger::TriggerType::SHAPE_TRIGGER));
     }
 
-    void ChangeSoundTriggerDialog::done(int r)
-    {
-        if(QDialog::Accepted == r)
-        {
+    void ChangeSoundTriggerDialog::done(int r) {
+        if(QDialog::Accepted == r) {
             QVariant variant = soundTriggerTypeComboBox->currentData();
             triggerType = static_cast<SoundTrigger::TriggerType>(variant.toInt());
             QDialog::done(r);
-        }else
-        {
+        } else {
             QDialog::done(r);
         }
     }
 
-    SoundTrigger::TriggerType ChangeSoundTriggerDialog::getTriggerType() const
-    {
+    SoundTrigger::TriggerType ChangeSoundTriggerDialog::getTriggerType() const {
         return triggerType;
     }
 

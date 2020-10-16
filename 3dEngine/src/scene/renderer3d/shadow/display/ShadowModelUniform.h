@@ -7,14 +7,12 @@
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/model/displayer/CustomModelUniform.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Load custom model uniform for shadow model displayer
     */
-    class ShadowModelUniform : public CustomModelUniform
-    {
+    class ShadowModelUniform : public CustomModelUniform {
         public:
             ShadowModelUniform();
 

@@ -11,11 +11,9 @@
 #include "trigger/SoundTrigger.h"
 #include "player/stream/StreamUpdateWorker.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SoundManager
-    {
+    class SoundManager {
         public:
             SoundManager();
             ~SoundManager();

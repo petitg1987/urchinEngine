@@ -6,14 +6,12 @@
 
 #include "pattern/singleton/Singleton.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Service to handle configuration properties files
     */
-    class ConfigService : public Singleton<ConfigService>
-    {
+    class ConfigService : public Singleton<ConfigService> {
         public:
             friend class Singleton<ConfigService>;
 

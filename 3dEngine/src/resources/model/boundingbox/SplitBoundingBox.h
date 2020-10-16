@@ -4,11 +4,9 @@
 #include <vector>
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SplitBoundingBox
-    {
+    class SplitBoundingBox {
         public:
             SplitBoundingBox();
 

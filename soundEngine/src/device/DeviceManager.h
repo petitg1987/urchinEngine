@@ -3,11 +3,9 @@
 
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class DeviceManager : public Singleton<DeviceManager>
-    {
+    class DeviceManager : public Singleton<DeviceManager> {
         public:
             friend class Singleton<DeviceManager>;
 

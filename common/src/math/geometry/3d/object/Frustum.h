@@ -11,14 +11,12 @@
 #include "math/algebra/vector/Vector3.h"
 #include "math/algebra/point/Point3.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Represents a frustum (truncated pyramid) in space
     */
-    template<class T> class Frustum : public ConvexObject3D<T>
-    {
+    template<class T> class Frustum : public ConvexObject3D<T> {
         public:
             Frustum();
             Frustum(T, T, T, T);

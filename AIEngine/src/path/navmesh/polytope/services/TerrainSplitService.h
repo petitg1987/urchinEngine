@@ -6,19 +6,16 @@
 
 #include "input/AITerrain.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    struct TerrainSplit
-    {
+    struct TerrainSplit {
         std::string name;
         Point3<float> position;
         std::vector<Point3<float>> localVertices;
         unsigned int xLength, zLength;
     };
 
-    class TerrainSplitService
-    {
+    class TerrainSplitService {
         public:
             explicit TerrainSplitService(float);
 

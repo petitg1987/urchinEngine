@@ -8,11 +8,9 @@
 #include "character/AICharacterEventHandler.h"
 #include "path/PathRequest.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class AICharacterController
-    {
+    class AICharacterController {
         public:
             AICharacterController(std::shared_ptr<AICharacter> , AIManager *);
 

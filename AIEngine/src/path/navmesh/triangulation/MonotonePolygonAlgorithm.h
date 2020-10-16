@@ -8,8 +8,7 @@
 
 #include "path/navmesh/triangulation/MonotonePolygon.h"
 
-namespace urchin
-{
+namespace urchin {
 
     enum PointType
     {
@@ -21,16 +20,14 @@ namespace urchin
         REGULAR_UP_VERTEX //previous neighbor is lower and next neighbor is upper
     };
 
-    struct TypedPoint
-    {
+    struct TypedPoint {
         TypedPoint(std::size_t, PointType);
 
         std::size_t pointIndex;
         PointType type;
     };
 
-    struct Edge
-    {
+    struct Edge {
         Edge(std::size_t, std::size_t);
 
         std::size_t startIndex;
@@ -39,8 +36,7 @@ namespace urchin
         bool isProcessed;
     };
 
-    struct EdgeHelper
-    {
+    struct EdgeHelper {
         EdgeHelper(Edge, std::size_t, PointType);
 
         Edge edge;
@@ -49,14 +45,12 @@ namespace urchin
         PointType helperPointType;
     };
 
-    class MonotonePolygonError : public std::runtime_error
-    {
+    class MonotonePolygonError : public std::runtime_error {
         public:
             explicit MonotonePolygonError(const std::string &message);
     };
 
-    class MonotonePolygonAlgorithm
-    {
+    class MonotonePolygonAlgorithm {
         public:
             MonotonePolygonAlgorithm(const std::vector<Point2<float>> &, const std::vector<std::size_t> &, const std::vector<std::string> &);
 

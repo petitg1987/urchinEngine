@@ -4,32 +4,26 @@
 #include "math/geometry/2d/object/LineSegment2D.h"
 #include "math/algorithm/MathAlgorithm.h"
 
-namespace urchin
-{
+namespace urchin {
 
     template<class T> LineSegment2D<T>::LineSegment2D(const Point2<T> &a, const Point2<T> &b) :
-        a(a), b(b)
-    {
+        a(a), b(b) {
 
     }
 
-    template<class T> const Point2<T> &LineSegment2D<T>::getA() const
-    {
+    template<class T> const Point2<T> &LineSegment2D<T>::getA() const {
         return a;
     }
 
-    template<class T> const Point2<T> &LineSegment2D<T>::getB() const
-    {
+    template<class T> const Point2<T> &LineSegment2D<T>::getB() const {
         return b;
     }
 
-    template<class T> Point2<T> LineSegment2D<T>::getSupportPoint(const Vector2<T> &direction) const
-    {
+    template<class T> Point2<T> LineSegment2D<T>::getSupportPoint(const Vector2<T> &direction) const {
         const T pointADotDirection = Point2<T>(0.0, 0.0).vector(a).dotProduct(direction);
         const T pointBDotDirection = Point2<T>(0.0, 0.0).vector(b).dotProduct(direction);
 
-        if(pointADotDirection > pointBDotDirection)
-        {
+        if(pointADotDirection > pointBDotDirection) {
             return a;
         }
 
@@ -40,13 +34,11 @@ namespace urchin
      * @param barycentrics [out] Returns barycentric coordinates for closest point
      * @return Point on segment AB closest to point p
      */
-    template<class T> Point2<T> LineSegment2D<T>::closestPoint(const Point2<T> &p, T barycentrics[2]) const
-    {
+    template<class T> Point2<T> LineSegment2D<T>::closestPoint(const Point2<T> &p, T barycentrics[2]) const {
         Vector2<T> ab = a.vector(b);
 
         T abSquareLength = ab.squareLength();
-        if(abSquareLength==(T)0.0)
-        {
+        if(abSquareLength==(T)0.0) {
             barycentrics[0] = 1.0;
             barycentrics[1] = 0.0;
             return a;
@@ -64,36 +56,30 @@ namespace urchin
     /**
      * @return Minimum square distance between segment AB and point p
      */
-    template<class T> T LineSegment2D<T>::squareDistance(const Point2<T> &p) const
-    {
+    template<class T> T LineSegment2D<T>::squareDistance(const Point2<T> &p) const {
         Vector2<T> ab = a.vector(b);
         Vector2<T> ap = a.vector(p);
 
         T apDotAb = ap.dotProduct(ab);
-        if (apDotAb <= 0.0f)
-        {
+        if (apDotAb <= 0.0f) {
             return ap.dotProduct(ap);
         }
 
         T abSquareLength = ab.squareLength();
-        if (apDotAb >= abSquareLength)
-        {
+        if (apDotAb >= abSquareLength) {
             Vector2<T> bp = b.vector(p);
             return bp.squareLength();
         }
 
-        if(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T))
-        {
+        if(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T)) {
             return ap.squareLength() - MathAlgorithm::roundDivision<T>(apDotAb * apDotAb, abSquareLength);
         }
         return ap.squareLength() - ((apDotAb * apDotAb) / abSquareLength);
     }
 
-    template<class T> bool LineSegment2D<T>::onSegment(const Point2<T> &p) const
-    {
+    template<class T> bool LineSegment2D<T>::onSegment(const Point2<T> &p) const {
         T orientation = ((p.Y - a.Y) * (b.X - p.X) - (p.X - a.X) * (b.Y - p.Y));
-        if(orientation==(T)0)
-        {
+        if(orientation==(T)0) {
             return p.X <= std::max(a.X, b.X) && p.X >= std::min(a.X, b.X)
                    && p.Y <= std::max(a.Y, b.Y) && p.Y >= std::min(a.Y, b.Y);
         }
@@ -101,13 +87,11 @@ namespace urchin
         return false;
     }
 
-    template<class T> Vector2<T> LineSegment2D<T>::toVector() const
-    {
+    template<class T> Vector2<T> LineSegment2D<T>::toVector() const {
         return a.vector(b);
     }
 
-    template<class T> Line2D<T> LineSegment2D<T>::toLine() const
-    {
+    template<class T> Line2D<T> LineSegment2D<T>::toLine() const {
         return Line2D<T>(a, b);
     }
 
@@ -115,8 +99,7 @@ namespace urchin
      * Returns the intersection point of the two lines segment.
      * When line segments are collinear and intersect: returns the nearest intersection point between this->getA() and this->getB().
      */
-    template<class T> Point2<T> LineSegment2D<T>::intersectPoint(const LineSegment2D<T> &other, bool &hasIntersection) const
-    {
+    template<class T> Point2<T> LineSegment2D<T>::intersectPoint(const LineSegment2D<T> &other, bool &hasIntersection) const {
         Point2<T> farthestIntersection;
         bool hasFarthestIntersection;
         return intersectPoint(other, hasIntersection, farthestIntersection, hasFarthestIntersection);
@@ -128,8 +111,7 @@ namespace urchin
      * The farthest intersection point is returned in 'farthestIntersection' point.
      */
     template<class T> Point2<T> LineSegment2D<T>::intersectPoint(const LineSegment2D<T> &other, bool &hasIntersection,
-                                                                 Point2<T> &farthestIntersection, bool &hasFarthestIntersection) const
-    { //see http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
+                                                                 Point2<T> &farthestIntersection, bool &hasFarthestIntersection) const { //see http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
         hasFarthestIntersection = false;
 
         Vector2<T> r(b.X - a.X, b.Y - a.Y); //note: a+1.0*r = b;
@@ -139,35 +121,29 @@ namespace urchin
         Vector2<T> thisToOther = a.vector(other.getA());
         T startPointsCrossR = thisToOther.crossProduct(r);
 
-        if(rCrossS==0)
-        { //line segments are parallel
+        if(rCrossS==0) { //line segments are parallel
             auto rDotR = static_cast<double>(r.dotProduct(r));
-            if(startPointsCrossR==0 && rDotR!=0.0)
-            { //line segments are collinear
+            if(startPointsCrossR==0 && rDotR!=0.0) { //line segments are collinear
                 double t0 = thisToOther.dotProduct(r) / rDotR;
                 double t1 = t0 + s.dotProduct(r) / rDotR;
 
-                if(s.dotProduct(r) < 0.0)
-                { //lines in opposite direction
+                if(s.dotProduct(r) < 0.0) { //lines in opposite direction
                     std::swap(t0, t1);
                 }
 
                 assert(t0 <= t1);
 
-                if(t0>=0.0 && t0<=1.0 && t1>=1.0)
-                { //collinear with intersection
+                if(t0>=0.0 && t0<=1.0 && t1>=1.0) { //collinear with intersection
                     hasIntersection = true;
                     hasFarthestIntersection = true;
                     farthestIntersection = b;
                     return a.translate(T(t0)*r);
-                }else if(t0<=0.0 && t1>=0.0 && t1<=1.0)
-                { //collinear with intersection
+                } else if(t0<=0.0 && t1>=0.0 && t1<=1.0) { //collinear with intersection
                     hasIntersection = true;
                     hasFarthestIntersection = true;
                     farthestIntersection = a.translate(T(t1)*r);
                     return a;
-                }else if(t0>=0.0 && t0<=1.0 && t1>=0.0 && t1<=1.0)
-                { //collinear intersection (other is totally covered by this)
+                } else if(t0>=0.0 && t0<=1.0 && t1>=0.0 && t1<=1.0) { //collinear intersection (other is totally covered by this)
                     hasIntersection = true;
                     hasFarthestIntersection = true;
                     farthestIntersection = a.translate(T(t1)*r);
@@ -185,11 +161,9 @@ namespace urchin
                 (thisToOtherCrossR==T(0) || MathAlgorithm::sign<T>(thisToOtherCrossR)==MathAlgorithm::sign<T>(rCrossS))
                 && std::abs(rCrossS) >= std::abs(thisToOtherCrossR)
                 && (startPointsCrossR==T(0) || MathAlgorithm::sign<T>(startPointsCrossR)==MathAlgorithm::sign<T>(rCrossS))
-                && std::abs(rCrossS) >= std::abs(startPointsCrossR))
-        { //intersection
+                && std::abs(rCrossS) >= std::abs(startPointsCrossR)) { //intersection
             hasIntersection = true;
-            if(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T))
-            {
+            if(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T)) {
                 Vector2<T> vTranslate(MathAlgorithm::roundDivision<T>(thisToOtherCrossR*r.X, rCrossS),
                                       MathAlgorithm::roundDivision<T>(thisToOtherCrossR*r.Y, rCrossS));
                 return a.translate(vTranslate);
@@ -206,24 +180,20 @@ namespace urchin
      * Returns proper intersection boolean of the two lines segment.
      * Touch cases and collinear are not considered as proper intersection.
      */
-    template<class T> bool LineSegment2D<T>::hasProperIntersection(const LineSegment2D<T> &other) const
-    {
+    template<class T> bool LineSegment2D<T>::hasProperIntersection(const LineSegment2D<T> &other) const {
         return (ccw(a, b, other.getA()) * ccw(a, b, other.getB())) < 0.0
             && ccw(other.getA(), other.getB(), a) * ccw(other.getA(), other.getB(), b) < 0.0;
     }
 
-    template<class T> T LineSegment2D<T>::ccw(const Point2<T> &a, const Point2<T> &b, const Point2<T> &c) const
-    {
+    template<class T> T LineSegment2D<T>::ccw(const Point2<T> &a, const Point2<T> &b, const Point2<T> &c) const {
         return (b.X - a.X) * (c.Y - a.Y) - ((b.Y - a.Y) * (c.X - a.X));
     }
 
-    template<class T> template<class NEW_TYPE> LineSegment2D<NEW_TYPE> LineSegment2D<T>::cast() const
-    {
+    template<class T> template<class NEW_TYPE> LineSegment2D<NEW_TYPE> LineSegment2D<T>::cast() const {
         return LineSegment2D<NEW_TYPE>(a.template cast<NEW_TYPE>(), b.template cast<NEW_TYPE>());
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const LineSegment2D<T> &l)
-    {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const LineSegment2D<T> &l) {
         return stream << l.getA().X << " " << l.getA().Y << " - " << l.getB().X << " " << l.getB().Y;
     }
 

@@ -1,9 +1,7 @@
 #include "NullLoadCallback.h"
 
-namespace urchin
-{
-    void NullLoadCallback::execute(LoadCallback::LoadedStage)
-    {
+namespace urchin {
+    void NullLoadCallback::execute(LoadCallback::LoadedStage) {
         //do nothing
     }
 }

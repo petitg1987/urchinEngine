@@ -3,8 +3,7 @@
 #include "PolytopeTerrainSurface.h"
 #include "path/navmesh/model/output/topography/NavTerrainTopography.h"
 
-namespace urchin
-{
+namespace urchin {
 
     PolytopeTerrainSurface::PolytopeTerrainSurface(const Point3<float> &position, std::vector<Point3<float>> localVertices, unsigned int xLength, unsigned int zLength,
             const Vector3<float> &approximateNormal, std::vector<CSGPolygon<float>> selfObstacles, std::shared_ptr<const NavTopography> navTopography) :
@@ -15,16 +14,14 @@ namespace urchin
             zLength(zLength),
             approximateNormal(approximateNormal),
             selfObstacles(std::move(selfObstacles)),
-            navTopography(std::move(navTopography))
-    {
+            navTopography(std::move(navTopography)) {
         buildOutlineCwPoints();
         buildAABBox();
 
         heightfieldPointHelper = std::make_shared<HeightfieldPointHelper<float>>(this->localVertices, this->xLength);
     }
 
-    void PolytopeTerrainSurface::buildOutlineCwPoints()
-    {
+    void PolytopeTerrainSurface::buildOutlineCwPoints() {
         outlineCwPoints.reserve(4);
 
         Point3<float> farLeftVertex = position + localVertices[0];
@@ -40,19 +37,16 @@ namespace urchin
         outlineCwPoints.emplace_back(Point2<float>(nearLeftVertex.X, -nearLeftVertex.Z));
     }
 
-    void PolytopeTerrainSurface::buildAABBox()
-    {
+    void PolytopeTerrainSurface::buildAABBox() {
         AABBox<float> localAABBox(localVertices);
         aabbox = AABBox<float>(position + localAABBox.getMin(), position + localAABBox.getMax());
     }
 
-    bool PolytopeTerrainSurface::isWalkable() const
-    {
+    bool PolytopeTerrainSurface::isWalkable() const {
         return isWalkableCandidate();
     }
 
-    Rectangle<float> PolytopeTerrainSurface::computeXZRectangle() const
-    {
+    Rectangle<float> PolytopeTerrainSurface::computeXZRectangle() const {
         Point3<float> farRightVertex = position + localVertices[xLength - 1];
         Point3<float> nearLeftVertex = position + localVertices[(xLength * zLength) - xLength];
 
@@ -62,73 +56,61 @@ namespace urchin
         return Rectangle<float>(minPoint, maxPoint);
     }
 
-    const AABBox<float> &PolytopeTerrainSurface::getAABBox() const
-    {
+    const AABBox<float> &PolytopeTerrainSurface::getAABBox() const {
         return aabbox;
     }
 
-    const std::vector<Point2<float>> &PolytopeTerrainSurface::getOutlineCwPoints() const
-    {
+    const std::vector<Point2<float>> &PolytopeTerrainSurface::getOutlineCwPoints() const {
         return outlineCwPoints;
     }
 
-    Plane<float> PolytopeTerrainSurface::getPlane(const Rectangle<float> &box) const
-    {
+    Plane<float> PolytopeTerrainSurface::getPlane(const Rectangle<float> &box) const {
         Point3<float> point1 = retrieveGlobalVertex(box.getMin());
         Point3<float> point2 = retrieveGlobalVertex(box.getMax());
         Point3<float> point3 = retrieveGlobalVertex(Point2<float>(box.getMin().X, box.getMax().Y));
         return Plane<float>(point1, point2, point3);
     }
 
-    const std::vector<CSGPolygon<float>> &PolytopeTerrainSurface::getSelfObstacles() const
-    {
+    const std::vector<CSGPolygon<float>> &PolytopeTerrainSurface::getSelfObstacles() const {
         return selfObstacles;
     }
 
     /**
      * Return point on un-expanded surface
      */
-    Point3<float> PolytopeTerrainSurface::computeRealPoint(const Point2<float> &point, const std::shared_ptr<NavMeshAgent> &agent) const
-    {
+    Point3<float> PolytopeTerrainSurface::computeRealPoint(const Point2<float> &point, const std::shared_ptr<NavMeshAgent> &agent) const {
         Point3<float> expandedPoint = retrieveGlobalVertex(point);
 
         float reduceDistance = - agent->computeExpandDistance(approximateNormal);
         return expandedPoint.translate(approximateNormal * reduceDistance);
     }
 
-    Point3<float> PolytopeTerrainSurface::retrieveGlobalVertex(const Point2<float> &globalXzCoordinate) const
-    {
+    Point3<float> PolytopeTerrainSurface::retrieveGlobalVertex(const Point2<float> &globalXzCoordinate) const {
         Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - position.X, -globalXzCoordinate.Y - position.Z);
         return Point3<float>(localCoordinate.X, heightfieldPointHelper->findHeightAt(localCoordinate), localCoordinate.Y) + position;
     }
 
-    const std::shared_ptr<const NavTopography> &PolytopeTerrainSurface::getNavTopography() const
-    {
+    const std::shared_ptr<const NavTopography> &PolytopeTerrainSurface::getNavTopography() const {
         return navTopography;
     }
 
-    const Point3<float> &PolytopeTerrainSurface::getPosition() const
-    {
+    const Point3<float> &PolytopeTerrainSurface::getPosition() const {
         return position;
     }
 
-    const std::vector<Point3<float>> &PolytopeTerrainSurface::getLocalVertices() const
-    {
+    const std::vector<Point3<float>> &PolytopeTerrainSurface::getLocalVertices() const {
         return localVertices;
     }
 
-    unsigned int PolytopeTerrainSurface::getXLength() const
-    {
+    unsigned int PolytopeTerrainSurface::getXLength() const {
         return xLength;
     }
 
-    unsigned int PolytopeTerrainSurface::getZLength() const
-    {
+    unsigned int PolytopeTerrainSurface::getZLength() const {
         return zLength;
     }
 
-    const Vector3<float> &PolytopeTerrainSurface::getApproximateNormal() const
-    {
+    const Vector3<float> &PolytopeTerrainSurface::getApproximateNormal() const {
         return approximateNormal;
     }
 

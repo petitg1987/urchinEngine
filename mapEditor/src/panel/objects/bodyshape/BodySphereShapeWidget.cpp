@@ -3,12 +3,10 @@
 #include "BodySphereShapeWidget.h"
 #include "widget/style/SpinBoxStyleHelper.h"
 
-namespace urchin
-{
+namespace urchin {
 
     BodySphereShapeWidget::BodySphereShapeWidget(const SceneObject *sceneObject) :
-            BodyShapeWidget(sceneObject)
-    {
+            BodyShapeWidget(sceneObject) {
         auto *radiusLabel = new QLabel("Radius:");
         mainLayout->addWidget(radiusLabel, 0, 0);
 
@@ -19,20 +17,17 @@ namespace urchin
         connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
     }
 
-    std::string BodySphereShapeWidget::getBodyShapeName() const
-    {
+    std::string BodySphereShapeWidget::getBodyShapeName() const {
         return SPHERE_SHAPE_LABEL;
     }
 
-    void BodySphereShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape)
-    {
+    void BodySphereShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape) {
         const auto *sphereShape = dynamic_cast<const CollisionSphereShape *>(shape.get());
 
         radius->setValue(sphereShape->getRadius());
     }
 
-    std::shared_ptr<const CollisionShape3D> BodySphereShapeWidget::createBodyShape() const
-    {
+    std::shared_ptr<const CollisionShape3D> BodySphereShapeWidget::createBodyShape() const {
         return std::make_shared<const CollisionSphereShape>(radius->value());
     }
 }

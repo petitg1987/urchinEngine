@@ -5,14 +5,12 @@
 #include "math/algebra/point/Point3.h"
 #include "math/algebra/matrix/Matrix4.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Class allow to create transform matrix from a given position, orientation and scale
     */
-    template<class T> class Transform
-    {
+    template<class T> class Transform {
         public:
             Transform();
             explicit Transform(const Point3<T> &, const Quaternion<T> &q = Quaternion<T>(), T scale = (T)1.0);

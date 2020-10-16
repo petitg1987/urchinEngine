@@ -5,11 +5,9 @@
 
 #include "math/geometry/2d/object/Rectangle.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SVGShape
-    {
+    class SVGShape {
         public:
             enum SVGColor
             {

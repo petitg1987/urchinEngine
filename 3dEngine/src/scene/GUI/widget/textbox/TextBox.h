@@ -11,11 +11,9 @@
 #include "scene/GUI/GUISkinService.h"
 #include "utils/display/quad/QuadDisplayer.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class TextBox : public Widget
-    {
+    class TextBox : public Widget {
         public:
             TextBox(Position, Size, std::string );
             ~TextBox() override;

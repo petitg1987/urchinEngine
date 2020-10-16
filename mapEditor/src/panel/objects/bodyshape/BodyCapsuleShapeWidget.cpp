@@ -3,12 +3,10 @@
 #include "BodyCapsuleShapeWidget.h"
 #include "widget/style/SpinBoxStyleHelper.h"
 
-namespace urchin
-{
+namespace urchin {
 
     BodyCapsuleShapeWidget::BodyCapsuleShapeWidget(const SceneObject *sceneObject) :
-            BodyShapeWidget(sceneObject)
-    {
+            BodyShapeWidget(sceneObject) {
         auto *radiusLabel = new QLabel("Radius:");
         mainLayout->addWidget(radiusLabel, 0, 0);
 
@@ -38,27 +36,23 @@ namespace urchin
         connect(orientation, SIGNAL(currentIndexChanged(int)), this, SLOT(updateBodyShape()));
     }
 
-    std::string BodyCapsuleShapeWidget::getBodyShapeName() const
-    {
+    std::string BodyCapsuleShapeWidget::getBodyShapeName() const {
         return CAPSULE_SHAPE_LABEL;
     }
 
-    void BodyCapsuleShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape)
-    {
+    void BodyCapsuleShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape) {
         auto *capsuleShape = dynamic_cast<const CollisionCapsuleShape *>(shape.get());
 
         radius->setValue(capsuleShape->getRadius());
         cylinderHeight->setValue(capsuleShape->getCylinderHeight());
 
         int index = orientation->findData(capsuleShape->getCapsuleOrientation());
-        if(index!=-1)
-        {
+        if(index!=-1) {
             orientation->setCurrentIndex(index);
         }
     }
 
-    std::shared_ptr<const CollisionShape3D> BodyCapsuleShapeWidget::createBodyShape() const
-    {
+    std::shared_ptr<const CollisionShape3D> BodyCapsuleShapeWidget::createBodyShape() const {
         QVariant variant = orientation->currentData();
         auto orientation = static_cast<CapsuleShape<float>::CapsuleOrientation>(variant.toInt());
 

@@ -9,11 +9,9 @@
 #include "math/algebra/vector/Vector3.h"
 #include "math/algebra/Quaternion.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class Capsule : public ConvexObject3D<T>
-    {
+    template<class T> class Capsule : public ConvexObject3D<T> {
         public:
             Capsule();
             Capsule(T, T, typename CapsuleShape<T>::CapsuleOrientation, const Point3<T> &, const Quaternion<T> &);

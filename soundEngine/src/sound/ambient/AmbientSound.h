@@ -5,14 +5,12 @@
 
 #include "sound/Sound.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
      * Ambient sound (unattenuated)
      */
-    class AmbientSound : public Sound
-    {
+    class AmbientSound : public Sound {
         public:
             explicit AmbientSound(const std::string &);
 

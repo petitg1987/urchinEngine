@@ -8,11 +8,9 @@
 
 #include "controller/AbstractController.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class WaterController : public AbstractController
-    {
+    class WaterController : public AbstractController {
         public:
             WaterController();
 

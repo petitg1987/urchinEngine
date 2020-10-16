@@ -6,11 +6,9 @@
 #include "UrchinPhysicsEngine.h"
 #include "UrchinAIEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class AIEntityBuilder : public Singleton<AIEntityBuilder>
-    {
+    class AIEntityBuilder : public Singleton<AIEntityBuilder> {
         public:
             friend class Singleton<AIEntityBuilder>;
 

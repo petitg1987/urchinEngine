@@ -8,11 +8,9 @@
 #include "collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h"
 #include "utils/pool/SyncFixedSizePool.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class CollisionAlgorithmSelector
-    {
+    class CollisionAlgorithmSelector {
         public:
             CollisionAlgorithmSelector();
             ~CollisionAlgorithmSelector();
@@ -27,8 +25,7 @@ namespace urchin
 
             void initializeAlgorithmPool();
 
-            class AlgorithmDeleter
-            {
+            class AlgorithmDeleter {
                 public:
                     explicit AlgorithmDeleter(FixedSizePool<CollisionAlgorithm> *);
                     void operator()(CollisionAlgorithm *);

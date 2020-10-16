@@ -4,16 +4,13 @@
 #include <string>
 #include <stdexcept>
 
-namespace urchin
-{
+namespace urchin {
 
-    class LoaderInterface
-    {
+    class LoaderInterface {
 
     };
 
-    template<class T> class Loader : public LoaderInterface
-    {
+    template<class T> class Loader : public LoaderInterface {
         public:
             virtual ~Loader();
 

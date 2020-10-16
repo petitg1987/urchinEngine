@@ -22,11 +22,9 @@
 #include "utils/display/geometry/GeometryModel.h"
 #include "utils/display/quad/QuadDisplayer.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class Renderer3d : public Renderer, public Observer
-    {
+    class Renderer3d : public Renderer, public Observer {
         public:
             Renderer3d();
             ~Renderer3d() override;

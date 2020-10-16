@@ -6,8 +6,7 @@
 
 #define DEFAULT_GRAVITY Vector3<float>(0.0f, -9.81f, 0.0f)
 
-namespace urchin
-{
+namespace urchin {
 
     //static
     std::exception_ptr PhysicsWorld::physicsThreadExceptionPtr = nullptr;
@@ -20,15 +19,12 @@ namespace urchin
             paused(true),
             bodyManager(new BodyManager()),
             collisionWorld(new CollisionWorld(bodyManager)),
-            collisionVisualizer(nullptr)
-    {
+            collisionVisualizer(nullptr) {
         NumericalCheck::instance()->perform();
     }
 
-    PhysicsWorld::~PhysicsWorld()
-    {
-        if(physicsSimulationThread)
-        {
+    PhysicsWorld::~PhysicsWorld() {
+        if(physicsSimulationThread) {
             interrupt();
             physicsSimulationThread->join();
 
@@ -47,34 +43,27 @@ namespace urchin
         Profiler::getInstance("physics")->log();
     }
 
-    BodyManager *PhysicsWorld::getBodyManager() const
-    {
+    BodyManager *PhysicsWorld::getBodyManager() const {
         return bodyManager;
     }
 
-    CollisionWorld *PhysicsWorld::getCollisionWorld() const
-    {
+    CollisionWorld *PhysicsWorld::getCollisionWorld() const {
         return collisionWorld;
     }
 
-    void PhysicsWorld::addBody(AbstractBody *body)
-    {
-        if(body)
-        {
+    void PhysicsWorld::addBody(AbstractBody *body) {
+        if(body) {
             bodyManager->addBody(body);
         }
     }
 
-    void PhysicsWorld::removeBody(AbstractBody *body)
-    {
-        if(body)
-        {
+    void PhysicsWorld::removeBody(AbstractBody *body) {
+        if(body) {
             bodyManager->removeBody(body);
         }
     }
 
-    void PhysicsWorld::addProcessable(const std::shared_ptr<Processable>& processable)
-    {
+    void PhysicsWorld::addProcessable(const std::shared_ptr<Processable>& processable) {
         std::lock_guard<std::mutex> lock(mutex);
 
         processable->initialize(this);
@@ -82,19 +71,16 @@ namespace urchin
         processables.push_back(processable);
     }
 
-    void PhysicsWorld::removeProcessable(const std::shared_ptr<Processable>& processable)
-    {
+    void PhysicsWorld::removeProcessable(const std::shared_ptr<Processable>& processable) {
         std::lock_guard<std::mutex> lock(mutex);
 
         auto itFind = std::find(processables.begin(), processables.end(), processable);
-        if(itFind!=processables.end())
-        {
+        if(itFind!=processables.end()) {
             processables.erase(itFind);
         }
     }
 
-    std::shared_ptr<const RayTestResult> PhysicsWorld::rayTest(const Ray<float> &ray)
-    {
+    std::shared_ptr<const RayTestResult> PhysicsWorld::rayTest(const Ray<float> &ray) {
         std::lock_guard<std::mutex> lock(mutex);
 
         std::shared_ptr<RayTester> rayTester = std::make_shared<RayTester>(ray);
@@ -108,8 +94,7 @@ namespace urchin
     /**
      * @param gravity Gravity expressed in units/s^2
      */
-    void PhysicsWorld::setGravity(const Vector3<float> &gravity)
-    {
+    void PhysicsWorld::setGravity(const Vector3<float> &gravity) {
         std::lock_guard<std::mutex> lock(mutex);
 
         this->gravity = gravity;
@@ -118,8 +103,7 @@ namespace urchin
     /**
      * @return gravity expressed in units/s^2
      */
-    Vector3<float> PhysicsWorld::getGravity() const
-    {
+    Vector3<float> PhysicsWorld::getGravity() const {
         std::lock_guard<std::mutex> lock(mutex);
 
         return gravity;
@@ -129,10 +113,8 @@ namespace urchin
      * Set up the physics simulation in new thread
      * @param timeStep Frequency updates expressed in second
      */
-    void PhysicsWorld::setUp(float timeStep)
-    {
-        if(physicsSimulationThread)
-        {
+    void PhysicsWorld::setUp(float timeStep) {
+        if(physicsSimulationThread) {
             throw std::runtime_error("Physics thread is already started");
         }
 
@@ -141,22 +123,19 @@ namespace urchin
         physicsSimulationThread = new std::thread(&PhysicsWorld::startPhysicsUpdate, this);
     }
 
-    void PhysicsWorld::pause()
-    {
+    void PhysicsWorld::pause() {
         std::lock_guard<std::mutex> lock(mutex);
 
         paused = true;
     }
 
-    void PhysicsWorld::unpause()
-    {
+    void PhysicsWorld::unpause() {
         std::lock_guard<std::mutex> lock(mutex);
 
         paused = false;
     }
 
-    bool PhysicsWorld::isPaused() const
-    {
+    bool PhysicsWorld::isPaused() const {
         std::lock_guard<std::mutex> lock(mutex);
 
         return paused;
@@ -165,35 +144,28 @@ namespace urchin
     /**
      * Interrupt the thread
      */
-    void PhysicsWorld::interrupt()
-    {
+    void PhysicsWorld::interrupt() {
         physicsSimulationStopper.store(true, std::memory_order_relaxed);
     }
 
     /**
      * Check if thread has been stopped by an exception and rethrow exception on main thread
      */
-    void PhysicsWorld::controlExecution()
-    {
-        if(physicsThreadExceptionPtr)
-        {
+    void PhysicsWorld::controlExecution() {
+        if(physicsThreadExceptionPtr) {
             std::rethrow_exception(physicsThreadExceptionPtr);
         }
     }
 
-    void PhysicsWorld::startPhysicsUpdate()
-    {
-        try
-        {
+    void PhysicsWorld::startPhysicsUpdate() {
+        try {
             float remainingTime = 0.0f;
             float maxAdditionalTimeStep = timeStep * 0.5f;
             auto frameStartTime = std::chrono::high_resolution_clock::now();
 
-            while (continueExecution())
-            {
+            while (continueExecution()) {
                 float additionalTimeStep = std::abs(remainingTime);
-                if(additionalTimeStep > maxAdditionalTimeStep)
-                {
+                if(additionalTimeStep > maxAdditionalTimeStep) {
                     //Cannot process physics update with 'additionalTimeStep'. Value is too big and can lead to physics errors.
                     //Use 'maxAdditionalTimeStep' which lead to slow-down of the physics.
                     additionalTimeStep = maxAdditionalTimeStep;
@@ -205,19 +177,16 @@ namespace urchin
                 auto diffTimeMicroSeconds = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
                 remainingTime = (timeStep + additionalTimeStep) - static_cast<float>(diffTimeMicroSeconds / 1000000.0);
 
-                if (remainingTime >= 0.0f)
-                {
+                if (remainingTime >= 0.0f) {
                     std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(remainingTime * 1000.0f)));
 
                     remainingTime = 0.0f;
                     frameStartTime = std::chrono::high_resolution_clock::now();
-                } else
-                {
+                } else {
                     frameStartTime = frameEndTime;
                 }
             }
-        }catch(std::exception &e)
-        {
+        }catch(std::exception &e) {
             Logger::logger().logError("Error cause physics thread crash: exception reported to main thread");
             physicsThreadExceptionPtr = std::current_exception();
         }
@@ -226,13 +195,11 @@ namespace urchin
     /**
      * @return True if thread execution is not interrupted
      */
-    bool PhysicsWorld::continueExecution()
-    {
+    bool PhysicsWorld::continueExecution() {
         return !physicsSimulationStopper.load(std::memory_order_relaxed);
     }
 
-    void PhysicsWorld::processPhysicsUpdate(float frameTimeStep)
-    {
+    void PhysicsWorld::processPhysicsUpdate(float frameTimeStep) {
         ScopeProfiler profiler("physics", "procPhysicsUp");
 
         //copy for local thread
@@ -252,8 +219,7 @@ namespace urchin
         }
 
         //physics execution
-        if(!paused)
-        {
+        if(!paused) {
             setupProcessables(copiedProcessables, frameTimeStep, gravity);
 
             collisionWorld->process(frameTimeStep, gravity);
@@ -266,12 +232,10 @@ namespace urchin
      * @param dt Delta of time between two simulation steps
      * @param gravity Gravity expressed in units/s^2
      */
-    void PhysicsWorld::setupProcessables(const std::vector<std::shared_ptr<Processable>> &processables, float dt, const Vector3<float> &gravity)
-    {
+    void PhysicsWorld::setupProcessables(const std::vector<std::shared_ptr<Processable>> &processables, float dt, const Vector3<float> &gravity) {
         ScopeProfiler profiler("physics", "stpProcessable");
 
-        for (const auto &processable : processables)
-        {
+        for (const auto &processable : processables) {
             processable->setup(dt, gravity);
         }
     }
@@ -280,28 +244,22 @@ namespace urchin
      * @param dt Delta of time between two simulation steps
      * @param gravity Gravity expressed in units/s^2
      */
-    void PhysicsWorld::executeProcessables(const std::vector<std::shared_ptr<Processable>> &processables, float dt, const Vector3<float> &gravity)
-    {
+    void PhysicsWorld::executeProcessables(const std::vector<std::shared_ptr<Processable>> &processables, float dt, const Vector3<float> &gravity) {
         ScopeProfiler profiler("physics", "execProcessable");
 
-        for (const auto &processable : processables)
-        {
+        for (const auto &processable : processables) {
             processable->execute(dt, gravity);
         }
     }
 
-    void PhysicsWorld::createCollisionVisualizer()
-    {
-        if(!collisionVisualizer)
-        {
+    void PhysicsWorld::createCollisionVisualizer() {
+        if(!collisionVisualizer) {
             collisionVisualizer = new CollisionVisualizer(collisionWorld);
         }
     }
 
-    const CollisionVisualizer *PhysicsWorld::getCollisionVisualizer() const
-    {
-        if(!collisionVisualizer)
-        {
+    const CollisionVisualizer *PhysicsWorld::getCollisionVisualizer() const {
+        if(!collisionVisualizer) {
             throw std::runtime_error("Impossible to get collision visualizer because not created.");
         }
 

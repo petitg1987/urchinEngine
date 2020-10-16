@@ -7,14 +7,12 @@
 #include "scene/renderer3d/shadow/data/ShadowData.h"
 #include "scene/renderer3d/model/displayer/CustomUniform.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Load custom uniform for shadow model displayer
     */
-    class ShadowUniform : public CustomUniform
-    {
+    class ShadowUniform : public CustomUniform {
         public:
             ShadowUniform();
 

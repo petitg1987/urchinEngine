@@ -2,45 +2,35 @@
 
 #include "CSGPolygonPath.h"
 
-namespace urchin
-{
+namespace urchin {
 
     CSGPolygonPath::CSGPolygonPath(ClipperLib::Path path, std::string name) :
         path(std::move(path)),
-        name(std::move(name))
-    {
+        name(std::move(name)) {
 
     }
 
     template<class T> CSGPolygonPath::CSGPolygonPath(const CSGPolygon<T> &polygon) :
-        name(polygon.getName())
-    {
+        name(polygon.getName()) {
         path.reserve(polygon.getCwPoints().size());
 
-        for(const auto &point : polygon.getCwPoints())
-        {
-            if(typeid(long long)==typeid(T))
-            {
+        for(const auto &point : polygon.getCwPoints()) {
+            if(typeid(long long)==typeid(T)) {
                 path.emplace_back(ClipperLib::IntPoint(point.X, point.Y));
-            }else
-            {
+            } else {
                 path.emplace_back(ClipperLib::IntPoint(Converter::toLongLong(point.X), Converter::toLongLong(point.Y)));
             }
         }
     }
 
-    template<class T> CSGPolygon<T> CSGPolygonPath::toCSGPolygon() const
-    {
+    template<class T> CSGPolygon<T> CSGPolygonPath::toCSGPolygon() const {
         std::vector<Point2<T>> cwPoints;
         cwPoints.reserve(path.size());
 
-        for (auto point : path)
-        {
-            if(typeid(long long)==typeid(T))
-            {
+        for (auto point : path) {
+            if(typeid(long long)==typeid(T)) {
                 cwPoints.emplace_back(Point2<T>(point.X, point.Y));
-            }else
-            {
+            } else {
                 cwPoints.emplace_back(Point2<T>(Converter::toFloat(point.X), Converter::toFloat(point.Y)));
             }
         }
@@ -48,13 +38,11 @@ namespace urchin
         return CSGPolygon<T>(name, std::move(cwPoints));
     }
 
-    const ClipperLib::Path &CSGPolygonPath::getPath() const
-    {
+    const ClipperLib::Path &CSGPolygonPath::getPath() const {
         return path;
     }
 
-    const std::string &CSGPolygonPath::getName() const
-    {
+    const std::string &CSGPolygonPath::getName() const {
         return name;
     }
 

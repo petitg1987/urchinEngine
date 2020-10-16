@@ -3,32 +3,26 @@
 
 #include "DeviceManager.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
      * Initialize OpenAL: create context and make it current
      */
-    DeviceManager::DeviceManager()
-    {
+    DeviceManager::DeviceManager() {
         ALCdevice *device = alcOpenDevice(nullptr);
-        if (!device)
-        {
+        if (!device) {
             throw std::runtime_error("Impossible to found sound device.");
         }
 
         ALCcontext *context = alcGetCurrentContext();
-        if(!context)
-        {
+        if(!context) {
             context = alcCreateContext(device, nullptr);
-            if (!context)
-            {
+            if (!context) {
                 throw std::runtime_error("Impossible to create sound context.");
             }
         }
 
-        if (!alcMakeContextCurrent(context))
-        {
+        if (!alcMakeContextCurrent(context)) {
             throw std::runtime_error("Impossible to make context current.");
         }
     }
@@ -36,8 +30,7 @@ namespace urchin
     /**
     * Shutdown OpenAL: destroy context and close device
     */
-    DeviceManager::~DeviceManager()
-    {
+    DeviceManager::~DeviceManager() {
         ALCcontext *context = alcGetCurrentContext();
         ALCdevice *device  = alcGetContextsDevice(context);
 

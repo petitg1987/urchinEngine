@@ -4,13 +4,11 @@
 
 #include "NotSavedDialog.h"
 
-namespace urchin
-{
+namespace urchin {
 
     NotSavedDialog::NotSavedDialog(QWidget *parent) :
         QDialog(parent),
-        bNeedSave(false)
-    {
+        bNeedSave(false) {
         this->setWindowTitle("Save Map");
         this->resize(300, 120);
         this->setFixedSize(this->width(),this->height());
@@ -30,27 +28,21 @@ namespace urchin
         QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClick(QAbstractButton*)));
     }
 
-    bool NotSavedDialog::needSave() const
-    {
+    bool NotSavedDialog::needSave() const {
         return bNeedSave;
     }
 
-    void NotSavedDialog::buttonClick(QAbstractButton *button)
-    {
-        if(buttonBox->standardButton(button) == QDialogButtonBox::Yes)
-        {
+    void NotSavedDialog::buttonClick(QAbstractButton *button) {
+        if(buttonBox->standardButton(button) == QDialogButtonBox::Yes) {
             bNeedSave = true;
             accept();
-        }else if(buttonBox->standardButton(button) == QDialogButtonBox::No)
-        {
+        } else if(buttonBox->standardButton(button) == QDialogButtonBox::No) {
             bNeedSave = false;
             accept();
-        }else if(buttonBox->standardButton(button) == QDialogButtonBox::Cancel)
-        {
+        } else if(buttonBox->standardButton(button) == QDialogButtonBox::Cancel) {
             bNeedSave = false;
             reject();
-        }else
-        {
+        } else {
             reject();
         }
     }

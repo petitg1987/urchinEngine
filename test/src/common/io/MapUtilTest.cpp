@@ -4,8 +4,7 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-void MapUtilTest::emptyMap()
-{
+void MapUtilTest::emptyMap() {
     std::map<std::string, std::string> emptyMap;
     auto serializedMap = MapUtil::serialize(emptyMap);
     auto deserializedMap = MapUtil::deserialize(serializedMap);
@@ -14,8 +13,7 @@ void MapUtilTest::emptyMap()
     AssertHelper::assertTrue(deserializedMap.empty());
 }
 
-void MapUtilTest::simpleMap()
-{
+void MapUtilTest::simpleMap() {
     std::map<std::string, std::string> map;
     map["key1"] = "value1";
     map["key2"] = "value2";
@@ -27,8 +25,7 @@ void MapUtilTest::simpleMap()
     AssertHelper::assertString(deserializedMap["key2"], "value2");
 }
 
-void MapUtilTest::trickyMapValues()
-{
+void MapUtilTest::trickyMapValues() {
     std::map<std::string, std::string> map;
     map["k,ey1"] = "valu\\,ne1";
     map["key2\\,"] = "valu,,e2";
@@ -40,8 +37,7 @@ void MapUtilTest::trickyMapValues()
     AssertHelper::assertString(deserializedMap["key2\\,"], "valu,,e2");
 }
 
-CppUnit::Test *MapUtilTest::suite()
-{
+CppUnit::Test *MapUtilTest::suite() {
     auto *suite = new CppUnit::TestSuite("MapUtilTest");
 
     suite->addTest(new CppUnit::TestCaller<MapUtilTest>("emptyMap", &MapUtilTest::emptyMap));

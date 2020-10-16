@@ -10,11 +10,9 @@
 #include "UrchinMapHandler.h"
 #include "UrchinSoundEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SoundShapeWidget : public QWidget
-    {
+    class SoundShapeWidget : public QWidget {
         Q_OBJECT
 
         #define SPHERE_SHAPE_LABEL "Sphere"

@@ -3,11 +3,9 @@
 
 #include <vector>
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class TOctreeable> class OctreeableHelper
-    {
+    template<class TOctreeable> class OctreeableHelper {
         public:
             OctreeableHelper() = delete;
             ~OctreeableHelper() = delete;

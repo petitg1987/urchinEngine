@@ -10,14 +10,12 @@
 #include "scene/renderer3d/light/Light.h"
 #include "utils/filter/TextureFilter.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Shadow execution data for a light
     */
-    class ShadowData
-    {
+    class ShadowData {
         public:
             ShadowData(const Light *, unsigned int);
             ~ShadowData();

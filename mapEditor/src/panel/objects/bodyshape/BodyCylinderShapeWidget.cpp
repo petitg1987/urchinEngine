@@ -3,12 +3,10 @@
 #include "BodyCylinderShapeWidget.h"
 #include "widget/style/SpinBoxStyleHelper.h"
 
-namespace urchin
-{
+namespace urchin {
 
     BodyCylinderShapeWidget::BodyCylinderShapeWidget(const SceneObject *sceneObject) :
-            BodyShapeWidget(sceneObject)
-    {
+            BodyShapeWidget(sceneObject) {
         auto *radiusLabel = new QLabel("Radius:");
         mainLayout->addWidget(radiusLabel, 0, 0);
 
@@ -38,27 +36,23 @@ namespace urchin
         connect(orientation, SIGNAL(currentIndexChanged(int)), this, SLOT(updateBodyShape()));
     }
 
-    std::string BodyCylinderShapeWidget::getBodyShapeName() const
-    {
+    std::string BodyCylinderShapeWidget::getBodyShapeName() const {
         return CYLINDER_SHAPE_LABEL;
     }
 
-    void BodyCylinderShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape)
-    {
+    void BodyCylinderShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape) {
         const auto *cylinderShape = dynamic_cast<const CollisionCylinderShape *>(shape.get());
 
         radius->setValue(cylinderShape->getRadius());
         height->setValue(cylinderShape->getHeight());
 
         int index = orientation->findData(cylinderShape->getCylinderOrientation());
-        if(index!=-1)
-        {
+        if(index!=-1) {
             orientation->setCurrentIndex(index);
         }
     }
 
-    std::shared_ptr<const CollisionShape3D> BodyCylinderShapeWidget::createBodyShape() const
-    {
+    std::shared_ptr<const CollisionShape3D> BodyCylinderShapeWidget::createBodyShape() const {
         QVariant variant = orientation->currentData();
         auto orientation = static_cast<CylinderShape<float>::CylinderOrientation>(variant.toInt());
 

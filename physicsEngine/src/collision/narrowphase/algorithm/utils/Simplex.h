@@ -4,19 +4,16 @@
 #include <vector>
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> struct SupportMapping
-    {
+    template<class T> struct SupportMapping {
         Point3<T> supportPointA;
         Point3<T> supportPointB;
         Point3<T> point; //supportPointA - supportPointB
         T barycentric; //barycentric/weight of point 'point'. Value undefined when simplex contain the origin.
     };
 
-    template<class T> class Simplex
-    {
+    template<class T> class Simplex {
         public:
             Simplex();
 

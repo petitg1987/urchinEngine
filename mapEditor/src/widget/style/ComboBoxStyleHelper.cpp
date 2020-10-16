@@ -1,16 +1,13 @@
 #include "ComboBoxStyleHelper.h"
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    void ComboBoxStyleHelper::applyDefaultStyleOn(QComboBox *comboBox)
-    {
+    void ComboBoxStyleHelper::applyDefaultStyleOn(QComboBox *comboBox) {
         comboBox->setLocale(QLocale::English);
     }
 
-    void ComboBoxStyleHelper::applyOrientationStyleOn(QComboBox *comboBox)
-    {
+    void ComboBoxStyleHelper::applyOrientationStyleOn(QComboBox *comboBox) {
         comboBox->addItem(EULER_XYZ_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::XYZ));
         comboBox->addItem(EULER_XZY_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::XZY));
         comboBox->addItem(EULER_YXZ_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::YXZ));

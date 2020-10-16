@@ -10,11 +10,9 @@
 #include "body/work/AbstractWorkBody.h"
 #include "shape/CollisionShape3D.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class AbstractBody
-    {
+    class AbstractBody {
         public:
             AbstractBody(std::string , Transform<float> , std::shared_ptr<const CollisionShape3D> );
             AbstractBody(const AbstractBody &);

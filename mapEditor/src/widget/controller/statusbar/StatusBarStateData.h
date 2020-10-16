@@ -5,11 +5,9 @@
 #include <string>
 #include "widget/controller/statusbar/StatusBarState.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class StatusBarStateData
-    {
+    class StatusBarStateData {
         public:
             StatusBarStateData(const std::vector<std::string> &, StatusBarState);
 

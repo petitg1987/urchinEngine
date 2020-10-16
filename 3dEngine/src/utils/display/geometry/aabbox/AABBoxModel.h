@@ -6,11 +6,9 @@
 
 #include "utils/display/geometry/GeometryModel.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class AABBoxModel : public GeometryModel
-    {
+    class AABBoxModel : public GeometryModel {
         public:
             explicit AABBoxModel(const AABBox<float> &);
             explicit AABBoxModel(std::vector<AABBox<float>> );

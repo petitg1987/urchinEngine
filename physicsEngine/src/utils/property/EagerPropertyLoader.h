@@ -3,11 +3,9 @@
 
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class EagerPropertyLoader : public Singleton<EagerPropertyLoader>
-    {
+    class EagerPropertyLoader : public Singleton<EagerPropertyLoader> {
         public:
             friend class Singleton<EagerPropertyLoader>;
 

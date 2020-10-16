@@ -7,8 +7,7 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-void PolygonsSubtractionTest::polygonsSubtractionSubtrahendInside()
-{
+void PolygonsSubtractionTest::polygonsSubtractionSubtrahendInside() {
     std::vector<Point2<float>> minuendPoly = {Point2<float>(0.0, 4.0), Point2<float>(4.0, 4.0),
                                               Point2<float>(4.0, 0.0), Point2<float>(0.0, 0.0)};
 
@@ -25,8 +24,7 @@ void PolygonsSubtractionTest::polygonsSubtractionSubtrahendInside()
                                                                                  Point2<float>(4.0, 0.0), Point2<float>(0.0, 0.0)});
 }
 
-void PolygonsSubtractionTest::polygonsSubtractionSubtrahendInsideContactPoint()
-{
+void PolygonsSubtractionTest::polygonsSubtractionSubtrahendInsideContactPoint() {
     std::vector<Point2<float>> minuendPoly = {Point2<float>(0.0, 4.0), Point2<float>(4.0, 4.0),
                                               Point2<float>(4.0, 0.0), Point2<float>(0.0, 0.0)};
 
@@ -43,8 +41,7 @@ void PolygonsSubtractionTest::polygonsSubtractionSubtrahendInsideContactPoint()
                                                                                  Point2<float>(4.0, 0.0), Point2<float>(0.0, 0.0)});
 }
 
-void PolygonsSubtractionTest::polygonsSubtractionSubtrahendInsideContactEdge()
-{
+void PolygonsSubtractionTest::polygonsSubtractionSubtrahendInsideContactEdge() {
     std::vector<Point2<float>> minuendPoly = {Point2<float>(0.0, 4.0), Point2<float>(4.0, 4.0),
                                               Point2<float>(4.0, 0.0), Point2<float>(0.0, 0.0)};
 
@@ -63,8 +60,7 @@ void PolygonsSubtractionTest::polygonsSubtractionSubtrahendInsideContactEdge()
                                                                                  Point2<float>(4.0, 1.0), Point2<float>(4.0, 0.0)});
 }
 
-void PolygonsSubtractionTest::polygonsSubtractionSubtrahendOutside()
-{
+void PolygonsSubtractionTest::polygonsSubtractionSubtrahendOutside() {
     std::vector<Point2<float>> minuendPoly = {Point2<float>(0.0, 4.0), Point2<float>(4.0, 4.0),
                                               Point2<float>(4.0, 0.0), Point2<float>(0.0, 0.0)};
 
@@ -81,8 +77,7 @@ void PolygonsSubtractionTest::polygonsSubtractionSubtrahendOutside()
                                                                                  Point2<float>(4.0, 0.0), Point2<float>(0.0, 0.0)});
 }
 
-void PolygonsSubtractionTest::polygonsSubtractionMinuendInside()
-{
+void PolygonsSubtractionTest::polygonsSubtractionMinuendInside() {
     std::vector<Point2<float>> minuendPoly = {Point2<float>(1.0, 3.0), Point2<float>(3.0, 3.0),
                                               Point2<float>(3.0, 1.0), Point2<float>(1.0, 1.0)};
 
@@ -97,8 +92,7 @@ void PolygonsSubtractionTest::polygonsSubtractionMinuendInside()
     AssertHelper::assertUnsignedInt(polygonSubtraction.size(), 0);
 }
 
-void PolygonsSubtractionTest::polygonsSubtractionMinuendInsideContactEdge()
-{ //see polygonsSubtractionMinuendInsideContactEdge.ggb
+void PolygonsSubtractionTest::polygonsSubtractionMinuendInsideContactEdge() { //see polygonsSubtractionMinuendInsideContactEdge.ggb
     std::vector<Point2<float>> minuendPoly = {Point2<float>(-5.07582092, 0.225821018), Point2<float>(5.97582006, 0.225821018),
                                               Point2<float>(-5.07582092, -10.8258209)};
 
@@ -115,8 +109,7 @@ void PolygonsSubtractionTest::polygonsSubtractionMinuendInsideContactEdge()
     AssertHelper::assertUnsignedInt(polygonSubtraction.size(), 0);
 }
 
-void PolygonsSubtractionTest::polygonsSubtractionMiddlePoint()
-{
+void PolygonsSubtractionTest::polygonsSubtractionMiddlePoint() {
     std::vector<Point2<float>> minuendPoly = {Point2<float>(1.0, 2.0), Point2<float>(5.0, 2.0), Point2<float>(6.0, 1.0),
                                               Point2<float>(5.0, 0.0), Point2<float>(1.0, 0.0), Point2<float>(0.0, 1.0)};
 
@@ -136,8 +129,7 @@ void PolygonsSubtractionTest::polygonsSubtractionMiddlePoint()
     AssertHelper::assertPolygonFloatEquals(polygonSubtraction[2].getCwPoints(), {Point2<float>(2.5, 0.0), Point2<float>(3.0, 1.0), Point2<float>(3.5, 0.0)});
 }
 
-void PolygonsSubtractionTest::polygonsSubtractionSameEdge1()
-{
+void PolygonsSubtractionTest::polygonsSubtractionSameEdge1() {
     std::vector<Point2<float>> minuendPoly = {Point2<float>(0.0, 4.0), Point2<float>(4.0, 4.0),
                                               Point2<float>(4.0, 0.0), Point2<float>(0.0, 0.0)};
 
@@ -153,8 +145,7 @@ void PolygonsSubtractionTest::polygonsSubtractionSameEdge1()
                                                                                  Point2<float>(4.0, 4.0), Point2<float>(4.0, 0.0)});
 }
 
-void PolygonsSubtractionTest::polygonsSubtractionSameEdge2()
-{
+void PolygonsSubtractionTest::polygonsSubtractionSameEdge2() {
     std::vector<Point2<float>> minuendPoly = {Point2<float>(0.0, 4.0), Point2<float>(4.0, 4.0),
                                               Point2<float>(4.0, 0.0), Point2<float>(0.0, 0.0)};
 
@@ -170,8 +161,7 @@ void PolygonsSubtractionTest::polygonsSubtractionSameEdge2()
                                                                                  Point2<float>(3.0, 3.0), Point2<float>(3.0, 4.0)});
 }
 
-void PolygonsSubtractionTest::polygonsSubtractionSameEdge3()
-{ //see polygonsSubtractionSameEdge3.ggb
+void PolygonsSubtractionTest::polygonsSubtractionSameEdge3() { //see polygonsSubtractionSameEdge3.ggb
     std::vector<Point2<float>> minuendPoly = {Point2<float>(-0.175821006, -4.67417908), Point2<float>(1.07581997, -4.67417908),
                                               Point2<float>(-0.175821006, -5.9258213)};
 
@@ -188,8 +178,7 @@ void PolygonsSubtractionTest::polygonsSubtractionSameEdge3()
     AssertHelper::assertUnsignedInt(polygonSubtraction.size(), 0);
 }
 
-void PolygonsSubtractionTest::polygonsSubtractionSameEdge4()
-{ //see polygonsSubtractionSameEdge4.ggb
+void PolygonsSubtractionTest::polygonsSubtractionSameEdge4() { //see polygonsSubtractionSameEdge4.ggb
     std::vector<Point2<float>> minuendPoly = {Point2<float>(5.76618004, -6.51731586), Point2<float>(-5.76618004, -6.51731586),
                                               Point2<float>(-5.76618004, 1.51731598), Point2<float>(5.76618004, 1.51731598)};
 
@@ -207,8 +196,7 @@ void PolygonsSubtractionTest::polygonsSubtractionSameEdge4()
                                                                                  Point2<float>(5.76618004, -6.51731586)});
 }
 
-void PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge1()
-{
+void PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge1() {
     std::vector<Point2<float>> minuendPoly = {Point2<float>(0.0, 4.0), Point2<float>(1.5, 4.0), Point2<float>(2.0, 3.0),
                                               Point2<float>(2.5, 4.0), Point2<float>(4.0, 4.0), Point2<float>(4.0, 0.0),
                                               Point2<float>(0.0, 0.0)};
@@ -225,8 +213,7 @@ void PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge1()
                                                                                  Point2<float>(4.0, 0.0)});
 }
 
-void PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge2()
-{
+void PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge2() {
     std::vector<Point2<float>> minuendPoly = {Point2<float>(0.0, 4.0), Point2<float>(1.5, 4.0), Point2<float>(2.0, 4.5),
                                               Point2<float>(2.5, 4.0), Point2<float>(4.0, 4.0), Point2<float>(4.0, 0.0),
                                               Point2<float>(0.0, 0.0)};
@@ -242,8 +229,7 @@ void PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge2()
                                                                                  Point2<float>(1.0, 4.0), Point2<float>(3.0, 4.0), Point2<float>(4.0, 4.0)});
 }
 
-void PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge3()
-{
+void PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge3() {
     std::vector<Point2<float>> minuendPoly = {Point2<float>(0.0, 4.0), Point2<float>(4.0, 4.0),
                                               Point2<float>(4.0, 0.0), Point2<float>(0.0, 0.0)};
 
@@ -260,8 +246,7 @@ void PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge3()
                                                                                  Point2<float>(4.0, 0.0)});
 }
 
-void PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge4()
-{
+void PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge4() {
     std::vector<Point2<float>> minuendPoly = {Point2<float>(0.0, 4.0), Point2<float>(4.0, 4.0),
                                               Point2<float>(4.0, 0.0), Point2<float>(0.0, 0.0)};
 
@@ -277,8 +262,7 @@ void PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge4()
                                                                                  Point2<float>(4.0, 4.0), Point2<float>(4.0, 0.0)});
 }
 
-void PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge5()
-{ //see polygonsSubtractionTwoSameEdge5.ggb
+void PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge5() { //see polygonsSubtractionTwoSameEdge5.ggb
     std::vector<Point2<float>> minuendPoly = {Point2<float>(4.76618004, -5.51731586), Point2<float>(-4.76618004, -5.51731586),
                                               Point2<float>(-4.76618004, 0.517315984), Point2<float>(4.76618004, 0.517315984)};
 
@@ -294,8 +278,7 @@ void PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge5()
                                                                                   Point2<float>(4.76618004, -3.86956978), Point2<float>(4.76618004, -5.51731586)});
 }
 
-void PolygonsSubtractionTest::polygonsSubtractionMaxIteration()
-{ //see polygonsSubtractionMaxIteration.ggb
+void PolygonsSubtractionTest::polygonsSubtractionMaxIteration() { //see polygonsSubtractionMaxIteration.ggb
     std::vector<Point2<float>> minuendPoly = {Point2<float>(0.724967539, -6.26921654), Point2<float>(2.0384562, -6.03173637),
                                               Point2<float>(1.0561136, -8.09460735)};
 
@@ -312,8 +295,7 @@ void PolygonsSubtractionTest::polygonsSubtractionMaxIteration()
                                                                                  Point2<float>(0.756835938, -6.38183594), Point2<float>(0.756836, -6.444886)});
 }
 
-void PolygonsSubtractionTest::polygonsSubtractionTwoIntersectionsOnEdge()
-{
+void PolygonsSubtractionTest::polygonsSubtractionTwoIntersectionsOnEdge() {
     std::vector<Point2<float>> minuendPoly = {Point2<float>(-0.00646264944, -6.47982645), Point2<float>(1.59619427, -4.96815157),
                                               Point2<float>(1.53988385, -6.4921689)};
 
@@ -330,8 +312,7 @@ void PolygonsSubtractionTest::polygonsSubtractionTwoIntersectionsOnEdge()
                                                                                  Point2<float>(0.406246, -6.483120)});
 }
 
-void PolygonsSubtractionTest::polygonsSubtractionCorner1()
-{
+void PolygonsSubtractionTest::polygonsSubtractionCorner1() {
     std::vector<Point2<float>> minuendPoly = {Point2<float>(0.0, 4.0), Point2<float>(4.0, 4.0),
                                               Point2<float>(4.0, 0.0), Point2<float>(0.0, 0.0)};
 
@@ -346,8 +327,7 @@ void PolygonsSubtractionTest::polygonsSubtractionCorner1()
                                                                                  Point2<float>(4.0, 0.0), Point2<float>(0.0, 0.0)});
 }
 
-void PolygonsSubtractionTest::polygonsSubtractionCorner2()
-{
+void PolygonsSubtractionTest::polygonsSubtractionCorner2() {
     std::vector<Point2<float>> minuendPoly = {Point2<float>(0.0, 4.0), Point2<float>(4.0, 4.0),
                                               Point2<float>(4.0, 0.0), Point2<float>(0.0, 0.0)};
 
@@ -362,8 +342,7 @@ void PolygonsSubtractionTest::polygonsSubtractionCorner2()
                                                                                  Point2<float>(3.0, 4.0), Point2<float>(4.0, 3.0), Point2<float>(4.0, 0.0)});
 }
 
-void PolygonsSubtractionTest::polygonsSubtractionCorner3()
-{ //see polygonsSubtractionCorner3.ggb
+void PolygonsSubtractionTest::polygonsSubtractionCorner3() { //see polygonsSubtractionCorner3.ggb
     std::vector<Point2<float>> minuendPoly = {Point2<float>(5.8386755, -8.64567757), Point2<float>(4.47754383, -7.34843636),
                                               Point2<float>(5.91046381, -6.30504799), Point2<float>(7.27159405, -7.60229063)};
 
@@ -380,8 +359,7 @@ void PolygonsSubtractionTest::polygonsSubtractionCorner3()
                                                                                  Point2<float>(7.27159405, -7.60229063), Point2<float>(5.8386755, -8.64567757)});
 }
 
-void PolygonsSubtractionTest::polygonsSubtractionCorner4()
-{ //see polygonsSubtractionCorner4.ggb
+void PolygonsSubtractionTest::polygonsSubtractionCorner4() { //see polygonsSubtractionCorner4.ggb
     std::vector<Point2<float>> minuendPoly = {Point2<float>(5.8386755, -8.64567757), Point2<float>(4.47754383, -7.34843636),
                                               Point2<float>(5.91046381, -6.30504799), Point2<float>(7.27159405, -7.60229063)};
 
@@ -398,8 +376,7 @@ void PolygonsSubtractionTest::polygonsSubtractionCorner4()
                                                                                  Point2<float>(7.27159405, -7.60229063)});
 }
 
-CppUnit::Test *PolygonsSubtractionTest::suite()
-{
+CppUnit::Test *PolygonsSubtractionTest::suite() {
     auto *suite = new CppUnit::TestSuite("PolygonsSubtractionTest");
 
     suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionSubtrahendInside", &PolygonsSubtractionTest::polygonsSubtractionSubtrahendInside));

@@ -6,11 +6,9 @@
 #include "UrchinCommon.h"
 #include "Urchin3dEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class TerrainReaderWriter
-    {
+    class TerrainReaderWriter {
         //XML attributes
         #define INDEX_ATTR "index"
 

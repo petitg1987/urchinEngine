@@ -9,8 +9,7 @@
 #include "widget/style/ButtonStyleHelper.h"
 #include "panel/waters/dialog/NewWaterDialog.h"
 
-namespace urchin
-{
+namespace urchin {
     QString WaterPanelWidget::preferredNormalTexturePath = QString();
     QString WaterPanelWidget::preferredDudvMapPath = QString();
 
@@ -28,8 +27,7 @@ namespace urchin
             waterColorR(nullptr), waterColorG(nullptr), waterColorB(nullptr),
             normalTextureFilenameText(nullptr), dudvMapFilenameText(nullptr),
             waveSpeed(nullptr), waveStrength(nullptr), sRepeat(nullptr), tRepeat(nullptr),
-            density(nullptr), gradient(nullptr)
-    {
+            density(nullptr), gradient(nullptr) {
         auto *mainLayout = new QVBoxLayout(this);
         mainLayout->setAlignment(Qt::AlignTop);
         mainLayout->setContentsMargins(1, 1, 1, 1);
@@ -59,8 +57,7 @@ namespace urchin
         setupUnderWaterProperties(mainLayout);
     }
 
-    void WaterPanelWidget::setupGeneralPropertiesBox(QVBoxLayout *mainLayout)
-    {
+    void WaterPanelWidget::setupGeneralPropertiesBox(QVBoxLayout *mainLayout) {
         generalPropertiesGroupBox = new QGroupBox("General Properties");
         mainLayout->addWidget(generalPropertiesGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
@@ -106,8 +103,7 @@ namespace urchin
         connect(zSize, SIGNAL(valueChanged(double)), this, SLOT(updateWaterProperties()));
     }
 
-    void WaterPanelWidget::setupWaterSurfaceProperties(QVBoxLayout *mainLayout)
-    {
+    void WaterPanelWidget::setupWaterSurfaceProperties(QVBoxLayout *mainLayout) {
         waterSurfacePropertiesGroupBox = new QGroupBox("Surface");
         mainLayout->addWidget(waterSurfacePropertiesGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(waterSurfacePropertiesGroupBox);
@@ -222,8 +218,7 @@ namespace urchin
         connect(tRepeat, SIGNAL(valueChanged(double)), this, SLOT(updateSurfaceWaterProperties()));
     }
 
-    void WaterPanelWidget::setupUnderWaterProperties(QVBoxLayout *mainLayout)
-    {
+    void WaterPanelWidget::setupUnderWaterProperties(QVBoxLayout *mainLayout) {
         underWaterPropertiesGroupBox = new QGroupBox("Under Water");
         mainLayout->addWidget(underWaterPropertiesGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(underWaterPropertiesGroupBox);
@@ -251,37 +246,29 @@ namespace urchin
         connect(gradient, SIGNAL(valueChanged(double)), this, SLOT(updateUnderWaterProperties()));
     }
 
-    WaterTableView *WaterPanelWidget::getWaterTableView() const
-    {
+    WaterTableView *WaterPanelWidget::getWaterTableView() const {
         return waterTableView;
     }
 
-    void WaterPanelWidget::load(WaterController *waterController)
-    {
+    void WaterPanelWidget::load(WaterController *waterController) {
         this->waterController = waterController;
 
         std::list<const SceneWater *> sceneWaters = waterController->getSceneWaters();
-        for(auto &sceneWater : sceneWaters)
-        {
+        for(auto &sceneWater : sceneWaters) {
             waterTableView->addWater(sceneWater);
         }
     }
 
-    void WaterPanelWidget::unload()
-    {
+    void WaterPanelWidget::unload() {
         waterTableView->removeAllWaters();
 
         waterController = nullptr;
     }
 
-    void WaterPanelWidget::notify(Observable *observable, int notificationType)
-    {
-        if(auto *waterTableView = dynamic_cast<WaterTableView *>(observable))
-        {
-            if(notificationType==WaterTableView::SELECTION_CHANGED)
-            {
-                if(waterTableView->hasSceneWaterSelected())
-                {
+    void WaterPanelWidget::notify(Observable *observable, int notificationType) {
+        if(auto *waterTableView = dynamic_cast<WaterTableView *>(observable)) {
+            if(notificationType==WaterTableView::SELECTION_CHANGED) {
+                if(waterTableView->hasSceneWaterSelected()) {
                     const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
                     setupWaterDataFrom(sceneWater);
 
@@ -289,8 +276,7 @@ namespace urchin
                     generalPropertiesGroupBox->show();
                     waterSurfacePropertiesGroupBox->show();
                     underWaterPropertiesGroupBox->show();
-                }else
-                {
+                } else {
                     removeWaterButton->setEnabled(false);
                     generalPropertiesGroupBox->hide();
                     waterSurfacePropertiesGroupBox->hide();
@@ -300,8 +286,7 @@ namespace urchin
         }
     }
 
-    void WaterPanelWidget::setupWaterDataFrom(const SceneWater *sceneWater)
-    {
+    void WaterPanelWidget::setupWaterDataFrom(const SceneWater *sceneWater) {
         disableWaterEvent = true;
         const Water *water = sceneWater->getWater();
 
@@ -331,13 +316,11 @@ namespace urchin
         disableWaterEvent = false;
     }
 
-    void WaterPanelWidget::showAddWaterDialog()
-    {
+    void WaterPanelWidget::showAddWaterDialog() {
         NewWaterDialog newSceneWaterDialog(this, waterController);
         newSceneWaterDialog.exec();
 
-        if(newSceneWaterDialog.result()==QDialog::Accepted)
-        {
+        if(newSceneWaterDialog.result()==QDialog::Accepted) {
             SceneWater *sceneWater = newSceneWaterDialog.getSceneWater();
             waterController->addSceneWater(sceneWater);
 
@@ -345,10 +328,8 @@ namespace urchin
         }
     }
 
-    void WaterPanelWidget::removeSelectedWater()
-    {
-        if(waterTableView->hasSceneWaterSelected())
-        {
+    void WaterPanelWidget::removeSelectedWater() {
+        if(waterTableView->hasSceneWaterSelected()) {
             const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
             waterController->removeSceneWater(sceneWater);
 
@@ -356,10 +337,8 @@ namespace urchin
         }
     }
 
-    void WaterPanelWidget::updateWaterProperties()
-    {
-        if(!disableWaterEvent)
-        {
+    void WaterPanelWidget::updateWaterProperties() {
+        if(!disableWaterEvent) {
             const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
 
             Point3<float> position(positionX->value(), positionY->value(), positionZ->value());
@@ -367,10 +346,8 @@ namespace urchin
         }
     }
 
-    void WaterPanelWidget::updateSurfaceWaterProperties()
-    {
-        if(!disableWaterEvent)
-        {
+    void WaterPanelWidget::updateSurfaceWaterProperties() {
+        if(!disableWaterEvent) {
             const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
 
             Vector3<float> waterColor(waterColorR->value(), waterColorG->value(), waterColorB->value());
@@ -381,23 +358,19 @@ namespace urchin
         }
     }
 
-    void WaterPanelWidget::updateUnderWaterProperties()
-    {
-        if(!disableWaterEvent)
-        {
+    void WaterPanelWidget::updateUnderWaterProperties() {
+        if(!disableWaterEvent) {
             const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
 
             waterController->updateSceneWaterUnderWater(sceneWater, (float)density->value(), (float)gradient->value());
         }
     }
 
-    void WaterPanelWidget::showNormalTextureFilenameDialog()
-    {
+    void WaterPanelWidget::showNormalTextureFilenameDialog() {
         std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
         QString directory = preferredNormalTexturePath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredNormalTexturePath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png)", nullptr, QFileDialog::DontUseNativeDialog);
-        if(!filename.isNull())
-        {
+        if(!filename.isNull()) {
             std::string imageFilenamePath = filename.toUtf8().constData();
             std::string relativeTgaFilenamePath = FileHandler::getRelativePath(resourcesDirectory, imageFilenamePath);
             this->normalTextureFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
@@ -405,31 +378,26 @@ namespace urchin
             std::string preferredPathString = FileHandler::getDirectoryFrom(imageFilenamePath);
             preferredNormalTexturePath = QString::fromStdString(preferredPathString);
 
-            try
-            {
+            try {
                 updateSurfaceWaterProperties();
-            }catch(std::exception &e)
-            {
+            }catch(std::exception &e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearNormalTextureFilename();
             }
         }
     }
 
-    void WaterPanelWidget::clearNormalTextureFilename()
-    {
+    void WaterPanelWidget::clearNormalTextureFilename() {
         this->normalTextureFilenameText->setText("");
 
         updateSurfaceWaterProperties();
     }
 
-    void WaterPanelWidget::showDudvMapFilenameDialog()
-    {
+    void WaterPanelWidget::showDudvMapFilenameDialog() {
         std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
         QString directory = preferredDudvMapPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredDudvMapPath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png)", nullptr, QFileDialog::DontUseNativeDialog);
-        if(!filename.isNull())
-        {
+        if(!filename.isNull()) {
             std::string tgaFilenamePath = filename.toUtf8().constData();
             std::string relativeTgaFilenamePath = FileHandler::getRelativePath(resourcesDirectory, tgaFilenamePath);
             this->dudvMapFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
@@ -437,19 +405,16 @@ namespace urchin
             std::string preferredPathString = FileHandler::getDirectoryFrom(tgaFilenamePath);
             preferredDudvMapPath = QString::fromStdString(preferredPathString);
 
-            try
-            {
+            try {
                 updateSurfaceWaterProperties();
-            }catch(std::exception &e)
-            {
+            }catch(std::exception &e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearDudvMapFilename();
             }
         }
     }
 
-    void WaterPanelWidget::clearDudvMapFilename()
-    {
+    void WaterPanelWidget::clearDudvMapFilename() {
         this->dudvMapFilenameText->setText("");
 
         updateSurfaceWaterProperties();

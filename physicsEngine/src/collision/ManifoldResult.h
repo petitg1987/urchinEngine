@@ -8,14 +8,12 @@
 
 #define MAX_PERSISTENT_POINTS 4
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Persistent result of a collision between two shapes
     */
-    class ManifoldResult
-    {
+    class ManifoldResult {
         public:
             ManifoldResult(AbstractWorkBody *, AbstractWorkBody *);
             ManifoldResult(const ManifoldResult &) = default;

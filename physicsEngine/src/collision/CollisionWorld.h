@@ -12,14 +12,12 @@
 #include "collision/island/IslandManager.h"
 #include "collision/integration/IntegrateTransformManager.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Collision world: process integration, broad phase and narrow phase
     */
-    class CollisionWorld : public Observable
-    {
+    class CollisionWorld : public Observable {
         public:
             explicit CollisionWorld(BodyManager *);
             ~CollisionWorld() override;

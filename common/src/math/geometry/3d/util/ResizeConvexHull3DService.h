@@ -11,11 +11,9 @@
 #include "math/geometry/3d/Plane.h"
 #include "math/algebra/point/Point3.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class ResizeConvexHull3DService : public Singleton<ResizeConvexHull3DService<T>>
-    {
+    template<class T> class ResizeConvexHull3DService : public Singleton<ResizeConvexHull3DService<T>> {
         public:
             friend class Singleton<ResizeConvexHull3DService<T>>;
 

@@ -3,11 +3,9 @@
 
 #include <QtWidgets/QPushButton>
 
-namespace urchin
-{
+namespace urchin {
 
-    class ButtonStyleHelper
-    {
+    class ButtonStyleHelper {
         public:
             static void applyNormalStyle(QPushButton *);
     };

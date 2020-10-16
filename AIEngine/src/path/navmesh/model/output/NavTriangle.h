@@ -7,13 +7,11 @@
 #include "path/navmesh/model/output/NavLink.h"
 #include "path/navmesh/model/output/NavLinkConstraint.h"
 
-namespace urchin
-{
+namespace urchin {
 
     class NavPolygon;
 
-    class NavTriangle
-    {
+    class NavTriangle {
         public:
             NavTriangle(std::size_t, std::size_t, std::size_t);
             NavTriangle(const NavTriangle &);

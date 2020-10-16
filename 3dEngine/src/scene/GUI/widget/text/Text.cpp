@@ -6,14 +6,12 @@
 #include "resources/MediaManager.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 
-namespace urchin
-{
+namespace urchin {
 
     Text::Text(Position position, const std::string &fontFilename) :
         Widget(position, Size(0, 0, Size::PIXEL)),
         text(""),
-        maxLength(-1)
-    {
+        maxLength(-1) {
         font = MediaManager::instance()->getMedia<Font>(fontFilename);
         quadDisplayerBuilder = std::make_unique<QuadDisplayerBuilder>();
         quadDisplayer = quadDisplayerBuilder->numberOfQuad(0)->build();
@@ -21,18 +19,15 @@ namespace urchin
         setText(text);
     }
 
-    Text::~Text()
-    {
+    Text::~Text() {
         font->release();
     }
 
-    void Text::createOrUpdateWidget()
-    {
+    void Text::createOrUpdateWidget() {
         //nothing to do: text cannot be defined in percentage (Size::SizeType::PERCENTAGE).
     }
 
-    void Text::setText(const std::string &text, int maxLength)
-    {
+    void Text::setText(const std::string &text, int maxLength) {
         this->text = text;
         this->maxLength = maxLength;
 
@@ -41,8 +36,7 @@ namespace urchin
         std::stringstream cuttedTextStream((maxLength > 0) ? cutText(text, static_cast<unsigned int>(maxLength)) : text);
         std::string item;
         cutTextLines.clear();
-        while (std::getline(cuttedTextStream, item, '\n'))
-        {
+        while (std::getline(cuttedTextStream, item, '\n')) {
             cutTextLines.push_back(item);
             numLetters += item.size();
         }
@@ -53,11 +47,9 @@ namespace urchin
         unsigned int vertexIndex = 0, stIndex = 0;
         unsigned int width = 0;
         unsigned int offsetY = 0;
-        for (auto &cutTextLine : cutTextLines)
-        { //each lines
+        for (auto &cutTextLine : cutTextLines) { //each lines
             unsigned int offsetX = 0;
-            for (char charLetter : cutTextLine)
-            { //each letters
+            for (char charLetter : cutTextLine) { //each letters
                 auto letter = static_cast<unsigned char>(charLetter);
 
                 float t = (float)(letter >> 4u) / 16.0f;
@@ -88,8 +80,7 @@ namespace urchin
             offsetY += font->getSpaceBetweenLines();
         }
 
-        if(cutTextLines.empty())
-        { //add fake line to compute height
+        if(cutTextLines.empty()) { //add fake line to compute height
             cutTextLines.emplace_back("");
         }
         unsigned int numberOfInterLines = cutTextLines.size() - 1;
@@ -102,35 +93,29 @@ namespace urchin
         quadDisplayer->update(quadDisplayerBuilder.get());
     }
 
-    std::string Text::cutText(const std::string &constText, unsigned int maxLength)
-    {
+    std::string Text::cutText(const std::string &constText, unsigned int maxLength) {
         std::string text(constText);
 
         unsigned int lineLength = 0;
         unsigned int indexLastSpace = 0;
         unsigned int lengthFromLastSpace = 0;
 
-        for(unsigned int numLetter=0; text[numLetter]!=0; numLetter++)
-        { //each letters
+        for(unsigned int numLetter=0; text[numLetter]!=0; numLetter++) { //each letters
             auto letter = static_cast<unsigned char>(text[numLetter]);
 
-            if(letter=='\n')
-            {
+            if(letter=='\n') {
                 lineLength = 0;
                 lengthFromLastSpace = 0;
-            }else if(letter==' ')
-            {
+            } else if(letter==' ') {
                 indexLastSpace = numLetter;
                 lengthFromLastSpace = 0;
             }
 
             unsigned int lengthLetter = font->getGlyph(letter).width + font->getSpaceBetweenLetters();
-            if(lineLength + lengthLetter >= maxLength)
-            { //cut line
+            if(lineLength + lengthLetter >= maxLength) { //cut line
                 text[indexLastSpace] = '\n';
                 lineLength = lengthFromLastSpace;
-            }else
-            {
+            } else {
                 lineLength += lengthLetter;
                 lengthFromLastSpace += lengthLetter;
             }
@@ -139,18 +124,15 @@ namespace urchin
         return text;
     }
 
-    const std::string &Text::getText() const
-    {
+    const std::string &Text::getText() const {
         return text;
     }
 
-    const Font *Text::getFont()
-    {
+    const Font *Text::getFont() {
         return font;
     }
 
-    void Text::display(int translateDistanceLoc, float dt)
-    {
+    void Text::display(int translateDistanceLoc, float dt) {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

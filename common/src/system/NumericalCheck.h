@@ -3,11 +3,9 @@
 
 #include "pattern/singleton/Singleton.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class NumericalCheck : public Singleton<NumericalCheck>
-    {
+    class NumericalCheck : public Singleton<NumericalCheck> {
         public:
             friend class Singleton<NumericalCheck>;
 

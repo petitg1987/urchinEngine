@@ -6,11 +6,9 @@
 #include "UrchinCommon.h"
 #include "Urchin3dEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class LightReaderWriter
-    {
+    class LightReaderWriter {
         //XML attributes
         #define TYPE_ATTR "type"
 

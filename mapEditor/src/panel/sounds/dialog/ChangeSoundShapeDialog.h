@@ -10,11 +10,9 @@
 #include "UrchinMapHandler.h"
 #include "UrchinSoundEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class ChangeSoundShapeDialog : public QDialog
-    {
+    class ChangeSoundShapeDialog : public QDialog {
         Q_OBJECT
 
         public:

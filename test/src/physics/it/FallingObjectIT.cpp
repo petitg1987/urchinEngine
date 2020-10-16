@@ -8,8 +8,7 @@
 #include "UrchinPhysicsEngine.h"
 using namespace urchin;
 
-void FallingObjectIT::fallOnPlane()
-{
+void FallingObjectIT::fallOnPlane() {
     std::shared_ptr<CollisionBoxShape> planeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(1000.0f, 0.5f, 1000.0f));
     auto *planeBody = new RigidBody("plane", Transform<float>(Point3<float>(0.0f, -0.5f, 0.0f), Quaternion<float>(), 1.0f), planeShape);
 
@@ -22,8 +21,7 @@ void FallingObjectIT::fallOnPlane()
     bodyManager->addBody(cubeBody);
     auto *collisionWorld = new CollisionWorld(bodyManager);
 
-    for(std::size_t i=0; i<150; ++i)
-    {
+    for(std::size_t i=0; i<150; ++i) {
         collisionWorld->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
     }
 
@@ -34,10 +32,8 @@ void FallingObjectIT::fallOnPlane()
     delete bodyManager;
 }
 
-void FallingObjectIT::fallForever()
-{
-    if(!Logger::logger().retrieveContent(std::numeric_limits<unsigned long>::max()).empty())
-    {
+void FallingObjectIT::fallForever() {
+    if(!Logger::logger().retrieveContent(std::numeric_limits<unsigned long>::max()).empty()) {
         throw std::runtime_error("Log file must be emptied before start this test.");
     }
 
@@ -53,8 +49,7 @@ void FallingObjectIT::fallForever()
     bodyManager->addBody(planeBody);
     auto *collisionWorld = new CollisionWorld(bodyManager);
 
-    for(std::size_t i=0; i<500; ++i)
-    {
+    for(std::size_t i=0; i<500; ++i) {
         collisionWorld->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
     }
 
@@ -68,8 +63,7 @@ void FallingObjectIT::fallForever()
     delete bodyManager;
 }
 
-CppUnit::Test *FallingObjectIT::suite()
-{
+CppUnit::Test *FallingObjectIT::suite() {
     auto *suite = new CppUnit::TestSuite("FallingObjectIT");
 
     suite->addTest(new CppUnit::TestCaller<FallingObjectIT>("fallOnPlane", &FallingObjectIT::fallOnPlane));

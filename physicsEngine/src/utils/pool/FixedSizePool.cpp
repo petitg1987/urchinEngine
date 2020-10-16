@@ -1,5 +1,4 @@
 
-namespace urchin
-{
+namespace urchin {
 
 }

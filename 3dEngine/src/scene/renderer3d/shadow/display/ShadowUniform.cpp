@@ -2,44 +2,36 @@
 
 #include "ShadowUniform.h"
 
-namespace urchin
-{
+namespace urchin {
 
     ShadowUniform::ShadowUniform() :
             CustomUniform(),
             mModelProjectionMatrixLoc(0),
-            shadowData(nullptr)
-    {
+            shadowData(nullptr) {
 
     }
 
-    void ShadowUniform::setProjectionMatricesLocation(int mModelProjectionMatrixLoc)
-    {
+    void ShadowUniform::setProjectionMatricesLocation(int mModelProjectionMatrixLoc) {
         this->mModelProjectionMatrixLoc = mModelProjectionMatrixLoc;
 
         updateProjectionMatrices();
     }
 
-    void ShadowUniform::setUniformData(const ShadowData *shadowData)
-    {
+    void ShadowUniform::setUniformData(const ShadowData *shadowData) {
         this->shadowData = shadowData;
 
         updateProjectionMatrices();
     }
 
-    void ShadowUniform::loadCustomUniforms()
-    {
+    void ShadowUniform::loadCustomUniforms() {
         glUniformMatrix4fv(mModelProjectionMatrixLoc, projectionMatrices.size(), GL_FALSE, (const float*)projectionMatrices[0]);
     }
 
-    void ShadowUniform::updateProjectionMatrices()
-    {
+    void ShadowUniform::updateProjectionMatrices() {
         projectionMatrices.clear();
 
-        if(shadowData!=nullptr)
-        {
-            for (std::size_t i = 0; i < shadowData->getNbFrustumShadowData(); ++i)
-            {
+        if(shadowData!=nullptr) {
+            for (std::size_t i = 0; i < shadowData->getNbFrustumShadowData(); ++i) {
                 projectionMatrices.push_back(shadowData->getFrustumShadowData(i)->getLightProjectionMatrix());
             }
         }

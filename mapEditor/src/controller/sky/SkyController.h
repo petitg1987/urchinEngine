@@ -6,11 +6,9 @@
 
 #include "controller/AbstractController.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SkyController : public AbstractController
-    {
+    class SkyController : public AbstractController {
         public:
             SkyController();
 

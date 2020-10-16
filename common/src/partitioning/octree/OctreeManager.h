@@ -9,11 +9,9 @@
 #include "partitioning/octree/filter/OctreeableFilter.h"
 #include "partitioning/octree/filter/AcceptAllFilter.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class TOctreeable> class OctreeManager : public Observable, public Observer
-    {
+    template<class TOctreeable> class OctreeManager : public Observable, public Observer {
         public:
             explicit OctreeManager(float);
             ~OctreeManager() override;

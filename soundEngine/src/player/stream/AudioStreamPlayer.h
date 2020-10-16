@@ -8,11 +8,9 @@
 #include "player/stream/StreamUpdateWorker.h"
 #include "sound/Sound.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class AudioStreamPlayer : public AudioPlayer
-    {
+    class AudioStreamPlayer : public AudioPlayer {
         public:
             AudioStreamPlayer(const Sound *, StreamUpdateWorker *);
 

@@ -8,8 +8,7 @@
 
 #define DEFAULT_AA_QUALITY AntiAliasingManager::Quality::VERY_HIGH
 
-namespace urchin
-{
+namespace urchin {
 
     AntiAliasingManager::AntiAliasingManager() :
         quality(DEFAULT_AA_QUALITY),
@@ -17,20 +16,17 @@ namespace urchin
         sceneHeight(0),
         fxaaShader(0),
         texLoc(0),
-        invSceneSizeLoc(0)
-    {
+        invSceneSizeLoc(0) {
         loadFxaaShader();
 
         quadDisplayer = std::make_unique<QuadDisplayerBuilder>()->build();
     }
 
-    AntiAliasingManager::~AntiAliasingManager()
-    {
+    AntiAliasingManager::~AntiAliasingManager() {
         ShaderManager::instance()->removeProgram(fxaaShader);
     }
 
-    void AntiAliasingManager::loadFxaaShader()
-    {
+    void AntiAliasingManager::loadFxaaShader() {
         std::map<std::string, std::string> fxaaTokens;
         fxaaTokens["FXAA_QUALITY"] = std::to_string(static_cast<int>(quality));
 
@@ -43,8 +39,7 @@ namespace urchin
         glUniform2f(invSceneSizeLoc, 1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight);
     }
 
-    void AntiAliasingManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight)
-    {
+    void AntiAliasingManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         ShaderManager::instance()->bind(fxaaShader);
 
         this->sceneWidth = sceneWidth;
@@ -53,15 +48,13 @@ namespace urchin
         glUniform2f(invSceneSizeLoc, 1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight);
     }
 
-    void AntiAliasingManager::setQuality(Quality quality)
-    {
+    void AntiAliasingManager::setQuality(Quality quality) {
         this->quality = quality;
 
         loadFxaaShader();
     }
 
-    void AntiAliasingManager::applyOn(unsigned int textureId)
-    {
+    void AntiAliasingManager::applyOn(unsigned int textureId) {
         ShaderManager::instance()->bind(fxaaShader);
 
         glActiveTexture(GL_TEXTURE0);

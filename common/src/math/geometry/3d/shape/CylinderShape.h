@@ -5,11 +5,9 @@
 
 #include "math/geometry/3d/shape/ConvexShape3D.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class CylinderShape : public ConvexShape3D<T>
-    {
+    template<class T> class CylinderShape : public ConvexShape3D<T> {
         public:
             enum CylinderOrientation
             {

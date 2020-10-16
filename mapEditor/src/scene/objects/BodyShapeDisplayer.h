@@ -4,11 +4,9 @@
 #include "Urchin3dEngine.h"
 #include "UrchinMapHandler.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class BodyShapeDisplayer
-    {
+    class BodyShapeDisplayer {
         public:
             explicit BodyShapeDisplayer(SceneManager *);
             ~BodyShapeDisplayer();

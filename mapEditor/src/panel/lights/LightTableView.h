@@ -10,11 +10,9 @@
 
 Q_DECLARE_METATYPE(const urchin::SceneLight *)
 
-namespace urchin
-{
+namespace urchin {
 
-    class LightTableView : public QTableView, public Observable
-    {
+    class LightTableView : public QTableView, public Observable {
         Q_OBJECT
 
         public:

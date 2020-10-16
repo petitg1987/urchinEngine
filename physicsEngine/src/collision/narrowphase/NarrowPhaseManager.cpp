@@ -6,20 +6,17 @@
 #include "body/work/WorkRigidBody.h"
 #include "object/TemporalObject.h"
 
-namespace urchin
-{
+namespace urchin {
 
     NarrowPhaseManager::NarrowPhaseManager(const BodyManager *bodyManager, const BroadPhaseManager *broadPhaseManager) :
             bodyManager(bodyManager),
             broadPhaseManager(broadPhaseManager),
             collisionAlgorithmSelector(new CollisionAlgorithmSelector()),
-            bodiesMutex(LockById::getInstance("narrowPhaseBodyIds"))
-    {
+            bodiesMutex(LockById::getInstance("narrowPhaseBodyIds")) {
 
     }
 
-    NarrowPhaseManager::~NarrowPhaseManager()
-    {
+    NarrowPhaseManager::~NarrowPhaseManager() {
         delete collisionAlgorithmSelector;
     }
 
@@ -28,8 +25,7 @@ namespace urchin
      * @param overlappingPairs Pairs of bodies potentially colliding
      * @param manifoldResults [OUT] Collision constraints
      */
-    void NarrowPhaseManager::process(float dt, const std::vector<OverlappingPair *> &overlappingPairs, std::vector<ManifoldResult> &manifoldResults)
-    {
+    void NarrowPhaseManager::process(float dt, const std::vector<OverlappingPair *> &overlappingPairs, std::vector<ManifoldResult> &manifoldResults) {
         ScopeProfiler profiler("physics", "narrowPhase");
 
         processOverlappingPairs(overlappingPairs, manifoldResults);
@@ -41,33 +37,27 @@ namespace urchin
      * @param ghostBody Ghost body to process
      * @param manifoldResults [OUT] Collision constraints
      */
-    void NarrowPhaseManager::processGhostBody(WorkGhostBody *ghostBody, std::vector<ManifoldResult> &manifoldResults)
-    {
+    void NarrowPhaseManager::processGhostBody(WorkGhostBody *ghostBody, std::vector<ManifoldResult> &manifoldResults) {
         std::vector<OverlappingPair> overlappingPairs = ghostBody->getPairContainer()->retrieveCopyOverlappingPairs();
 
-        for(auto &overlappingPair : overlappingPairs)
-        {
+        for(auto &overlappingPair : overlappingPairs) {
             processOverlappingPair(&overlappingPair, manifoldResults);
         }
     }
 
-    void NarrowPhaseManager::processOverlappingPairs(const std::vector<OverlappingPair *> &overlappingPairs, std::vector<ManifoldResult> &manifoldResults)
-    {
+    void NarrowPhaseManager::processOverlappingPairs(const std::vector<OverlappingPair *> &overlappingPairs, std::vector<ManifoldResult> &manifoldResults) {
         ScopeProfiler profiler("physics", "procOverlapPair");
 
-        for(const auto &overlappingPair : overlappingPairs)
-        {
+        for(const auto &overlappingPair : overlappingPairs) {
             processOverlappingPair(overlappingPair, manifoldResults);
         }
     }
 
-    void NarrowPhaseManager::processOverlappingPair(OverlappingPair *overlappingPair, std::vector<ManifoldResult> &manifoldResults)
-    {
+    void NarrowPhaseManager::processOverlappingPair(OverlappingPair *overlappingPair, std::vector<ManifoldResult> &manifoldResults) {
         AbstractWorkBody *body1 = overlappingPair->getBody1();
         AbstractWorkBody *body2 = overlappingPair->getBody2();
 
-        if(body1->isActive() || body2->isActive())
-        {
+        if(body1->isActive() || body2->isActive()) {
             ScopeLockById lockBody1(bodiesMutex, body1->getObjectId());
             ScopeLockById lockBody2(bodiesMutex, body2->getObjectId());
 
@@ -77,18 +67,15 @@ namespace urchin
             CollisionObjectWrapper collisionObject2(*body2->getShape(), body2->getPhysicsTransform());
             collisionAlgorithm->processCollisionAlgorithm(collisionObject1, collisionObject2, true);
 
-            if(collisionAlgorithm->getConstManifoldResult().getNumContactPoints()!=0)
-            {
+            if(collisionAlgorithm->getConstManifoldResult().getNumContactPoints()!=0) {
                 manifoldResults.push_back(collisionAlgorithm->getConstManifoldResult());
             }
         }
     }
 
-    std::shared_ptr<CollisionAlgorithm> NarrowPhaseManager::retrieveCollisionAlgorithm(OverlappingPair *overlappingPair)
-    {
+    std::shared_ptr<CollisionAlgorithm> NarrowPhaseManager::retrieveCollisionAlgorithm(OverlappingPair *overlappingPair) {
         std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = overlappingPair->getCollisionAlgorithm();
-        if(!collisionAlgorithm)
-        {
+        if(!collisionAlgorithm) {
             AbstractWorkBody *body1 = overlappingPair->getBody1();
             AbstractWorkBody *body2 = overlappingPair->getBody2();
 
@@ -100,15 +87,12 @@ namespace urchin
         return collisionAlgorithm;
     }
 
-    void NarrowPhaseManager::processPredictiveContacts(float dt, std::vector<ManifoldResult> &manifoldResults)
-    {
+    void NarrowPhaseManager::processPredictiveContacts(float dt, std::vector<ManifoldResult> &manifoldResults) {
         ScopeProfiler profiler("physics", "proPrediContact");
 
-        for (auto workBody : bodyManager->getWorkBodies())
-        {
+        for (auto workBody : bodyManager->getWorkBodies()) {
             WorkRigidBody *body = WorkRigidBody::upCast(workBody);
-            if(body && body->isActive())
-            {
+            if(body && body->isActive()) {
                 ScopeLockById lockBody(bodiesMutex, body->getObjectId());
 
                 const PhysicsTransform &currentTransform = body->getPhysicsTransform();
@@ -117,42 +101,34 @@ namespace urchin
                 float ccdMotionThreshold = body->getCcdMotionThreshold();
                 float motion = currentTransform.getPosition().vector(newTransform.getPosition()).length();
 
-                if(motion > ccdMotionThreshold)
-                {
+                if(motion > ccdMotionThreshold) {
                     handleContinuousCollision(body, currentTransform, newTransform, manifoldResults);
                 }
             }
         }
     }
 
-    void NarrowPhaseManager::handleContinuousCollision(AbstractWorkBody *body, const PhysicsTransform &from, const PhysicsTransform &to, std::vector<ManifoldResult> &manifoldResults)
-    {
+    void NarrowPhaseManager::handleContinuousCollision(AbstractWorkBody *body, const PhysicsTransform &from, const PhysicsTransform &to, std::vector<ManifoldResult> &manifoldResults) {
         std::vector<AbstractWorkBody *> bodiesAABBoxHitBody = broadPhaseManager->bodyTest(body, from, to);
-        if(!bodiesAABBoxHitBody.empty())
-        {
+        if(!bodiesAABBoxHitBody.empty()) {
             ccd_set ccdResults;
 
             const CollisionShape3D *bodyShape = body->getShape();
-            if(bodyShape->isCompound())
-            {
+            if(bodyShape->isCompound()) {
                 const auto *compoundShape = dynamic_cast<const CollisionCompoundShape *>(bodyShape);
                 const std::vector<std::shared_ptr<const LocalizedCollisionShape>> & localizedShapes = compoundShape->getLocalizedShapes();
-                for(const auto &localizedShape : localizedShapes)
-                {
+                for(const auto &localizedShape : localizedShapes) {
                     TemporalObject temporalObject(localizedShape->shape.get(), from * localizedShape->transform, to * localizedShape->transform);
                     ccdResults.merge(continuousCollisionTest(temporalObject, bodiesAABBoxHitBody));
                 }
-            }else if(bodyShape->isConvex())
-            {
+            } else if(bodyShape->isConvex()) {
                 TemporalObject temporalObject(body->getShape(), from, to);
                 ccdResults = continuousCollisionTest(temporalObject, bodiesAABBoxHitBody);
-            }else
-            {
+            } else {
                 throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape->getShapeType()));
             }
 
-            if(!ccdResults.empty())
-            {
+            if(!ccdResults.empty()) {
                 const std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter> &firstCCDResult = *ccdResults.begin();
 
                 Vector3<float> distanceVector = from.getPosition().vector(to.getPosition()) * firstCCDResult->getTimeToHit();
@@ -168,55 +144,46 @@ namespace urchin
         }
     }
 
-    ccd_set NarrowPhaseManager::continuousCollisionTest(const TemporalObject &temporalObject1, const std::vector<AbstractWorkBody *> &bodiesAABBoxHit) const
-    {
+    ccd_set NarrowPhaseManager::continuousCollisionTest(const TemporalObject &temporalObject1, const std::vector<AbstractWorkBody *> &bodiesAABBoxHit) const {
         ccd_set continuousCollisionResults;
 
-        for(auto bodyAABBoxHit : bodiesAABBoxHit)
-        {
+        for(auto bodyAABBoxHit : bodiesAABBoxHit) {
             ScopeLockById lockBody(bodiesMutex, bodyAABBoxHit->getObjectId());
 
             const CollisionShape3D *bodyShape = bodyAABBoxHit->getShape();
-            if(bodyShape->isCompound())
-            {
+            if(bodyShape->isCompound()) {
                 const auto *compoundShape = dynamic_cast<const CollisionCompoundShape *>(bodyShape);
                 const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &localizedShapes = compoundShape->getLocalizedShapes();
-                for(const auto &localizedShape : localizedShapes)
-                {
+                for(const auto &localizedShape : localizedShapes) {
                     PhysicsTransform fromToObject2 = bodyAABBoxHit->getPhysicsTransform() * localizedShape->transform;
                     TemporalObject temporalObject2(localizedShape->shape.get(), fromToObject2, fromToObject2);
 
                     continuousCollisionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
                 }
-            }else if(bodyShape->isConvex())
-            {
+            } else if(bodyShape->isConvex()) {
                 const PhysicsTransform &fromToObject2 = bodyAABBoxHit->getPhysicsTransform();
                 TemporalObject temporalObject2(bodyShape, fromToObject2, fromToObject2);
 
                 continuousCollisionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
-            }else if(bodyShape->isConcave())
-            {
+            } else if(bodyShape->isConcave()) {
                 const auto *concaveShape = dynamic_cast<const CollisionConcaveShape *>(bodyShape);
 
                 PhysicsTransform inverseTransformObject2 = bodyAABBoxHit->getPhysicsTransform().inverse();
                 AABBox<float> fromAABBoxLocalToObject1 = temporalObject1.getShape()->toAABBox(inverseTransformObject2 * temporalObject1.getFrom());
                 AABBox<float> toAABBoxLocalToObject1 = temporalObject1.getShape()->toAABBox(inverseTransformObject2 * temporalObject1.getTo());
 
-                if(temporalObject1.isRay())
-                {
+                if(temporalObject1.isRay()) {
                     LineSegment3D<float> ray(fromAABBoxLocalToObject1.getMin(), toAABBoxLocalToObject1.getMin());
                     const std::vector<CollisionTriangleShape> &triangles = concaveShape->findTrianglesHitByRay(ray);
 
                     trianglesContinuousCollisionTest(triangles, temporalObject1, bodyAABBoxHit, continuousCollisionResults);
-                }else
-                {
+                } else {
                     AABBox<float> temporalAABBoxLocalToObject1 = fromAABBoxLocalToObject1.merge(toAABBoxLocalToObject1);
                     const std::vector<CollisionTriangleShape> &triangles = concaveShape->findTrianglesInAABBox(temporalAABBoxLocalToObject1);
 
                     trianglesContinuousCollisionTest(triangles, temporalObject1, bodyAABBoxHit, continuousCollisionResults);
                 }
-            }else
-            {
+            } else {
                 throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape->getShapeType()));
             }
         }
@@ -228,10 +195,8 @@ namespace urchin
      * @param continuousCollisionResults [OUT] In case of collision detected: continuous collision result will be updated with collision details
      */
     void NarrowPhaseManager::trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape> &triangles, const TemporalObject &temporalObject1,
-            AbstractWorkBody *body2, ccd_set &continuousCollisionResults) const
-    {
-        for(const auto &triangle : triangles)
-        {
+            AbstractWorkBody *body2, ccd_set &continuousCollisionResults) const {
+        for(const auto &triangle : triangles) {
             const PhysicsTransform &fromToObject2 = body2->getPhysicsTransform();
             TemporalObject temporalObject2(&triangle, fromToObject2, fromToObject2);
 
@@ -243,19 +208,16 @@ namespace urchin
      * @param continuousCollisionResults [OUT] In case of collision detected: continuous collision result will be updated with collision details
      */
     void NarrowPhaseManager::continuousCollisionTest(const TemporalObject &temporalObject1, const TemporalObject &temporalObject2,
-            AbstractWorkBody *body2, ccd_set &continuousCollisionResults) const
-    {
+            AbstractWorkBody *body2, ccd_set &continuousCollisionResults) const {
         std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter> continuousCollisionResult = gjkContinuousCollisionAlgorithm
                 .calculateTimeOfImpact(temporalObject1, temporalObject2, body2);
 
-        if(continuousCollisionResult)
-        {
+        if(continuousCollisionResult) {
             continuousCollisionResults.insert(std::move(continuousCollisionResult));
         }
     }
 
-    ccd_set NarrowPhaseManager::rayTest(const Ray<float> &ray, const std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay) const
-    {
+    ccd_set NarrowPhaseManager::rayTest(const Ray<float> &ray, const std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay) const {
         CollisionSphereShape pointShape(0.0f);
         PhysicsTransform from = PhysicsTransform(ray.getOrigin());
         PhysicsTransform to = PhysicsTransform(ray.computeTo());

@@ -9,11 +9,9 @@
 #include "resources/font/Font.h"
 #include "utils/display/quad/QuadDisplayer.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class Text : public Widget
-    {
+    class Text : public Widget {
         public:
             Text(Position, const std::string &);
             ~Text() override;

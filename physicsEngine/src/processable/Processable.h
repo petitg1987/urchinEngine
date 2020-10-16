@@ -3,8 +3,7 @@
 
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
     class PhysicsWorld;
 
@@ -12,8 +11,7 @@ namespace urchin
     * A processable will be processed in process loop of a physics world. Note that process execution is
     * done in the physics thread: make sure the concrete class is thread safe.
     */
-    class Processable
-    {
+    class Processable {
         public:
             virtual ~Processable() = default;
 

@@ -5,8 +5,7 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-void ClosestPointTest::closestPointLineSegment2D()
-{
+void ClosestPointTest::closestPointLineSegment2D() {
     float barycentrics[2];
     LineSegment2D<float> lineSegment(Point2<float>(1.0, 1.0), Point2<float>(2.0, 1.0));
 
@@ -29,8 +28,7 @@ void ClosestPointTest::closestPointLineSegment2D()
     AssertHelper::assertFloatEquals(barycentrics[1], 0.0);
 }
 
-void ClosestPointTest::closestPointLineSegment3D()
-{
+void ClosestPointTest::closestPointLineSegment3D() {
     float barycentrics[2];
     LineSegment3D<float> lineSegment(Point3<float>(1.0, 1.0, 0.0), Point3<float>(2.0, 1.0, 0.0));
 
@@ -53,8 +51,7 @@ void ClosestPointTest::closestPointLineSegment3D()
     AssertHelper::assertFloatEquals(barycentrics[1], 0.0);
 }
 
-void ClosestPointTest::closestPointTriangle3D()
-{
+void ClosestPointTest::closestPointTriangle3D() {
     float barycentrics[3];
     Triangle3D<float> triangle(Point3<float>(1.0, 1.0, 0.0), Point3<float>(3.0, 1.0, 0.0), Point3<float>(2.0, 3.0, 0.0));
 
@@ -108,8 +105,7 @@ void ClosestPointTest::closestPointTriangle3D()
     AssertHelper::assertFloatEquals(barycentrics[2], 0.38);
 }
 
-void ClosestPointTest::closestPointTetrahedron()
-{
+void ClosestPointTest::closestPointTetrahedron() {
     float barycentrics[4];
     Tetrahedron<float> tetrahedron(Point3<float>(1.0, 0.0, 1.0), Point3<float>(2.0, 0.0, 0.0), Point3<float>(3.0, 0.0, 1.0), Point3<float>(2.0, 3.0, 0.5));
 
@@ -162,8 +158,7 @@ void ClosestPointTest::closestPointTetrahedron()
     AssertHelper::assertFloatEquals(barycentrics[3], 0.966667);
 }
 
-CppUnit::Test *ClosestPointTest::suite()
-{
+CppUnit::Test *ClosestPointTest::suite() {
     auto *suite = new CppUnit::TestSuite("VoronoiRegionTest");
 
     suite->addTest(new CppUnit::TestCaller<ClosestPointTest>("closestPointLineSegment2D", &ClosestPointTest::closestPointLineSegment2D));

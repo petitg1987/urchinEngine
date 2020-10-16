@@ -8,11 +8,9 @@
 
 #include "controller/AbstractController.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class ObjectController : public AbstractController
-    {
+    class ObjectController : public AbstractController {
         public:
             ObjectController();
 

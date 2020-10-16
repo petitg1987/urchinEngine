@@ -6,11 +6,9 @@
 #include <memory>
 #include <iostream>
 
-namespace urchin
-{
+namespace urchin {
 
-    class Logger
-    {
+    class Logger {
         public:
             Logger();
             virtual ~Logger() = default;

@@ -5,16 +5,14 @@
 
 #include "collision/island/IslandElementLink.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Island container. An island is a set of elements/bodies which are in contact.
     * The island are useful to made sleep elements/bodies. If all elements/bodies of an island doesn't
     * move: there is no need to execute collision detection checks on these island elements/bodies.
     */
-    class IslandContainer
-    {
+    class IslandContainer {
         public:
             IslandContainer();
 

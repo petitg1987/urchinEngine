@@ -3,8 +3,7 @@
 #include "resources/model/ConstAnimation.h"
 #include "resources/model/boundingbox/SplitBoundingBox.h"
 
-namespace urchin
-{
+namespace urchin {
 
     ConstAnimation::ConstAnimation(std::string animationFilename, unsigned int numFrames, unsigned int numBones,
             unsigned int frameRate,    const Bone *const * skeletonFrames, const AABBox<float>*const * bboxes) :
@@ -13,21 +12,17 @@ namespace urchin
         numBones(numBones),
         frameRate(frameRate),
         skeletonFrames(skeletonFrames),
-        bboxes(bboxes)
-    {
+        bboxes(bboxes) {
         //determines the bounding box
         originalGlobalBBox = AABBox<float>(bboxes[0]->getMin(), bboxes[0]->getMax());
-        for(unsigned int i=0; i<numFrames; ++i)
-        {
+        for(unsigned int i=0; i<numFrames; ++i) {
             originalGlobalBBox = originalGlobalBBox.merge(*bboxes[i]);
         }
         originalGlobalSplitBBoxes = SplitBoundingBox().split(originalGlobalBBox);
     }
 
-    ConstAnimation::~ConstAnimation()
-    {
-        for(unsigned int i=0;i<numFrames;i++)
-        {
+    ConstAnimation::~ConstAnimation() {
+        for(unsigned int i=0;i<numFrames;i++) {
             delete [] skeletonFrames[i];
             delete bboxes[i];
         }
@@ -36,38 +31,31 @@ namespace urchin
         delete [] bboxes;
     }
 
-    const std::string &ConstAnimation::getAnimationFilename() const
-    {
+    const std::string &ConstAnimation::getAnimationFilename() const {
         return animationFilename;
     }
 
-    unsigned int ConstAnimation::getNumberFrames() const
-    {
+    unsigned int ConstAnimation::getNumberFrames() const {
         return numFrames;
     }
 
-    unsigned int ConstAnimation::getNumberBones() const
-    {
+    unsigned int ConstAnimation::getNumberBones() const {
         return numBones;
     }
 
-    unsigned int ConstAnimation::getFrameRate() const
-    {
+    unsigned int ConstAnimation::getFrameRate() const {
         return frameRate;
     }
 
-    const Bone &ConstAnimation::getBone(unsigned int frameNumber, unsigned int boneNumber) const
-    {
+    const Bone &ConstAnimation::getBone(unsigned int frameNumber, unsigned int boneNumber) const {
         return skeletonFrames[frameNumber][boneNumber];
     }
 
-    const AABBox<float> &ConstAnimation::getOriginalGlobalAABBox() const
-    {
+    const AABBox<float> &ConstAnimation::getOriginalGlobalAABBox() const {
         return originalGlobalBBox;
     }
 
-    const std::vector<AABBox<float>> &ConstAnimation::getOriginalGlobalSplitAABBoxes() const
-    {
+    const std::vector<AABBox<float>> &ConstAnimation::getOriginalGlobalSplitAABBoxes() const {
         return originalGlobalSplitBBoxes;
     }
 

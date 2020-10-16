@@ -3,11 +3,9 @@
 
 #include <QtWidgets/QDoubleSpinBox>
 
-namespace urchin
-{
+namespace urchin {
 
-    class SpinBoxStyleHelper
-    {
+    class SpinBoxStyleHelper {
         public:
             static void applyDefaultStyleOn(QDoubleSpinBox *);
             static void applyAngleStyleOn(QDoubleSpinBox *);

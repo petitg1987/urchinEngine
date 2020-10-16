@@ -2,12 +2,10 @@
 #include "bodyshape/CollisionShapeReaderWriter.h"
 #include "bodyshape/CollisionShapeReaderWriterRetriever.h"
 
-namespace urchin
-{
+namespace urchin {
 
     RigidBody *RigidBodyReaderWriter::loadFrom(const std::shared_ptr<XmlChunk> &physicsChunk, const std::string &id,
-            const Transform<float> &modelTransform, const XmlParser &xmlParser) const
-    {
+            const Transform<float> &modelTransform, const XmlParser &xmlParser) const {
         std::shared_ptr<XmlChunk> shapeChunk = xmlParser.getUniqueChunk(true, SHAPE_TAG, XmlAttribute(), physicsChunk);
         std::shared_ptr<CollisionShapeReaderWriter> shapeReaderWriter = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeChunk);
         CollisionShape3D *bodyShape = shapeReaderWriter->loadFrom(shapeChunk, xmlParser);
@@ -18,8 +16,7 @@ namespace urchin
         return rigidBody;
     }
 
-    void RigidBodyReaderWriter::writeOn(const std::shared_ptr<XmlChunk> &physicsChunk, const RigidBody *rigidBody, XmlWriter &xmlWriter) const
-    {
+    void RigidBodyReaderWriter::writeOn(const std::shared_ptr<XmlChunk> &physicsChunk, const RigidBody *rigidBody, XmlWriter &xmlWriter) const {
         std::shared_ptr<XmlChunk> shapeChunk = xmlWriter.createChunk(SHAPE_TAG, XmlAttribute(), physicsChunk);
         std::shared_ptr<CollisionShapeReaderWriter> shapeReaderWriter = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(rigidBody->getOriginalShape().get());
 
@@ -27,8 +24,7 @@ namespace urchin
         writeBodyPropertiesOn(physicsChunk, rigidBody, xmlWriter);
     }
 
-    void RigidBodyReaderWriter::loadBodyPropertiesOn(RigidBody *rigidBody, const std::shared_ptr<XmlChunk> &physicsChunk, const XmlParser &xmlParser) const
-    {
+    void RigidBodyReaderWriter::loadBodyPropertiesOn(RigidBody *rigidBody, const std::shared_ptr<XmlChunk> &physicsChunk, const XmlParser &xmlParser) const {
         std::shared_ptr<XmlChunk> massChunk = xmlParser.getUniqueChunk(true, MASS_TAG, XmlAttribute(), physicsChunk);
         float bodyMass = massChunk->getFloatValue();
         rigidBody->setMass(bodyMass);
@@ -53,8 +49,7 @@ namespace urchin
         rigidBody->setAngularFactor(angularFactorChunk->getVector3Value());
     }
 
-    void RigidBodyReaderWriter::writeBodyPropertiesOn(const std::shared_ptr<XmlChunk> &physicsChunk, const RigidBody *rigidBody, XmlWriter &xmlWriter) const
-    {
+    void RigidBodyReaderWriter::writeBodyPropertiesOn(const std::shared_ptr<XmlChunk> &physicsChunk, const RigidBody *rigidBody, XmlWriter &xmlWriter) const {
         std::shared_ptr<XmlChunk> massChunk = xmlWriter.createChunk(MASS_TAG, XmlAttribute(), physicsChunk);
         massChunk->setFloatValue(rigidBody->getMass());
 

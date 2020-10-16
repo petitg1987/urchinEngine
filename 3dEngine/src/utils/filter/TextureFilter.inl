@@ -12,7 +12,6 @@ template<class BUILDER> TextureFilter::TextureFilter(const TextureFilterBuilder<
     textureFilterShader(0),
     layersToUpdateLoc(0),
     fboID(0),
-    textureID(0)
-{
+    textureID(0) {
 
 }

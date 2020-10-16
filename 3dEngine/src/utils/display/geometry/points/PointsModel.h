@@ -6,11 +6,9 @@
 
 #include "utils/display/geometry/GeometryModel.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class PointsModel : public GeometryModel
-    {
+    class PointsModel : public GeometryModel {
         public:
             PointsModel(std::vector<Point3<float>>, float);
             PointsModel(const Point3<float> &, float);

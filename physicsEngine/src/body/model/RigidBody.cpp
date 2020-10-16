@@ -4,15 +4,13 @@
 
 #include "RigidBody.h"
 
-namespace urchin
-{
+namespace urchin {
 
     RigidBody::RigidBody(const std::string &id, const Transform<float> &transform, const std::shared_ptr<const CollisionShape3D> &shape) :
             AbstractBody(id, transform, shape),
             mass(0.0f),
             linearDamping(0.0f),
-            angularDamping(0.0f)
-    {
+            angularDamping(0.0f) {
         initializeRigidBody(0.0f, 0.0f, 0.0f,
                 Vector3<float>(1.0f, 1.0f, 1.0f), Vector3<float>(1.0f, 1.0f, 1.0f));
     }
@@ -21,15 +19,13 @@ namespace urchin
         AbstractBody(rigidBody),
         mass(0.0f),
         linearDamping(0.0f),
-        angularDamping(0.0f)
-    {
+        angularDamping(0.0f) {
         initializeRigidBody(rigidBody.getMass(), rigidBody.getLinearDamping(), rigidBody.getAngularDamping(),
                 rigidBody.getLinearFactor(), rigidBody.getAngularFactor());
     }
 
     void RigidBody::initializeRigidBody(float mass, float linearDamping, float angularDamping,
-            const Vector3<float> &linearFactor, const Vector3<float> &angularFactor)
-    {
+            const Vector3<float> &linearFactor, const Vector3<float> &angularFactor) {
         this->mass = mass;
         refreshMassProperties();
 
@@ -40,26 +36,22 @@ namespace urchin
         this->angularFactor = angularFactor;
     }
 
-    void RigidBody::refreshScaledShape()
-    {
+    void RigidBody::refreshScaledShape() {
         AbstractBody::refreshScaledShape();
 
         refreshLocalInertia();
     }
 
-    void RigidBody::refreshMassProperties()
-    {
+    void RigidBody::refreshMassProperties() {
         refreshLocalInertia();
         setIsStatic(mass > -std::numeric_limits<float>::epsilon() && mass < std::numeric_limits<float>::epsilon());
     }
 
-    void RigidBody::refreshLocalInertia()
-    {
+    void RigidBody::refreshLocalInertia() {
         this->localInertia = computeScaledShapeLocalInertia(mass);
     }
 
-    AbstractWorkBody *RigidBody::createWorkBody() const
-    {
+    AbstractWorkBody *RigidBody::createWorkBody() const {
         const Transform<float> &transform = getTransform();
         PhysicsTransform physicsTransform(transform.getPosition(), transform.getOrientation());
 
@@ -70,15 +62,13 @@ namespace urchin
         return workRigidBody;
     }
 
-    void RigidBody::updateTo(AbstractWorkBody *workBody)
-    {
+    void RigidBody::updateTo(AbstractWorkBody *workBody) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         AbstractBody::updateTo(workBody);
 
         WorkRigidBody *workRigidBody = WorkRigidBody::upCast(workBody);
-        if(workRigidBody)
-        {
+        if(workRigidBody) {
             workRigidBody->setTotalMomentum(totalMomentum);
             workRigidBody->setTotalTorqueMomentum(totalTorqueMomentum);
             workRigidBody->setDamping(linearDamping, angularDamping);
@@ -92,15 +82,13 @@ namespace urchin
         }
     }
 
-    bool RigidBody::applyFrom(const AbstractWorkBody *workBody)
-    {
+    bool RigidBody::applyFrom(const AbstractWorkBody *workBody) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         bool fullRefreshRequested = AbstractBody::applyFrom(workBody);
         const WorkRigidBody *workRigidBody = WorkRigidBody::upCast(workBody);
 
-        if(workRigidBody && !fullRefreshRequested)
-        {
+        if(workRigidBody && !fullRefreshRequested) {
             mass = workRigidBody->getMass();
             refreshMassProperties();
 
@@ -111,36 +99,31 @@ namespace urchin
         return fullRefreshRequested;
     }
 
-    Vector3<float> RigidBody::getLinearVelocity() const
-    {
+    Vector3<float> RigidBody::getLinearVelocity() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         return linearVelocity;
     }
 
-    Vector3<float> RigidBody::getAngularVelocity() const
-    {
+    Vector3<float> RigidBody::getAngularVelocity() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         return angularVelocity;
     }
 
-    Vector3<float> RigidBody::getTotalMomentum() const
-    {
+    Vector3<float> RigidBody::getTotalMomentum() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         return totalMomentum;
     }
 
-    void RigidBody::applyCentralMomentum(const Vector3<float> &momentum)
-    {
+    void RigidBody::applyCentralMomentum(const Vector3<float> &momentum) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         totalMomentum += momentum;
     }
 
-    void RigidBody::applyMomentum(const Vector3<float> &momentum, const Point3<float> &pos)
-    {
+    void RigidBody::applyMomentum(const Vector3<float> &momentum, const Point3<float> &pos) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         //apply central force
@@ -150,22 +133,19 @@ namespace urchin
         totalTorqueMomentum += pos.toVector().crossProduct(momentum);
     }
 
-    Vector3<float> RigidBody::getTotalTorqueMomentum() const
-    {
+    Vector3<float> RigidBody::getTotalTorqueMomentum() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         return totalTorqueMomentum;
     }
 
-    void RigidBody::applyTorqueMomentum(const Vector3<float> &torqueMomentum)
-    {
+    void RigidBody::applyTorqueMomentum(const Vector3<float> &torqueMomentum) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         totalTorqueMomentum += torqueMomentum;
     }
 
-    void RigidBody::setMass(float mass)
-    {
+    void RigidBody::setMass(float mass) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         this->mass = mass;
@@ -173,15 +153,13 @@ namespace urchin
         this->setNeedFullRefresh(true);
     }
 
-    float RigidBody::getMass() const
-    {
+    float RigidBody::getMass() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         return mass;
     }
 
-    Vector3<float> RigidBody::getLocalInertia() const
-    {
+    Vector3<float> RigidBody::getLocalInertia() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         return localInertia;
@@ -192,17 +170,14 @@ namespace urchin
      * Zero value means no resistance at all and value 1 stop directly the objects.
      * Damping can be used to imitate air resistance.
      */
-    void RigidBody::setDamping(float linearDamping, float angularDamping)
-    {
+    void RigidBody::setDamping(float linearDamping, float angularDamping) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
-        if(linearDamping < 0.0 || linearDamping > 1.0)
-        {
+        if(linearDamping < 0.0 || linearDamping > 1.0) {
             throw std::domain_error("Wrong linear damping value.");
         }
 
-        if(angularDamping < 0.0 || angularDamping > 1.0)
-        {
+        if(angularDamping < 0.0 || angularDamping > 1.0) {
             throw std::domain_error("Wrong angular damping value.");
         }
 
@@ -210,15 +185,13 @@ namespace urchin
         this->angularDamping = angularDamping;
     }
 
-    float RigidBody::getLinearDamping() const
-    {
+    float RigidBody::getLinearDamping() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         return linearDamping;
     }
 
-    float RigidBody::getAngularDamping() const
-    {
+    float RigidBody::getAngularDamping() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         return angularDamping;
@@ -227,8 +200,7 @@ namespace urchin
     /**
      * @param linearFactor Linear factor. Linear factor allows to block movement if axis value is 0.
      */
-    void RigidBody::setLinearFactor(const Vector3<float> &linearFactor)
-    {
+    void RigidBody::setLinearFactor(const Vector3<float> &linearFactor) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         this->linearFactor = linearFactor;
@@ -237,8 +209,7 @@ namespace urchin
     /**
      * @return Linear factor. Linear factor allows to block movement if axis value is 0.
      */
-    Vector3<float> RigidBody::getLinearFactor() const
-    {
+    Vector3<float> RigidBody::getLinearFactor() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         return linearFactor;
@@ -247,8 +218,7 @@ namespace urchin
     /**
      * @param angularFactor Angular factor. Angular factor allows to block rotation movement if axis value is 0.
      */
-    void RigidBody::setAngularFactor(const Vector3<float> &angularFactor)
-    {
+    void RigidBody::setAngularFactor(const Vector3<float> &angularFactor) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         this->angularFactor = angularFactor;
@@ -257,8 +227,7 @@ namespace urchin
     /**
      * @return Angular factor. Angular factor allows to block rotation movement if axis value is 0.
      */
-    Vector3<float> RigidBody::getAngularFactor() const
-    {
+    Vector3<float> RigidBody::getAngularFactor() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         return angularFactor;

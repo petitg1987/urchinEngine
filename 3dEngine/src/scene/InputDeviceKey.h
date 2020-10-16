@@ -1,8 +1,7 @@
 #ifndef URCHINENGINE_INPUTDEVICEKEY_H
 #define URCHINENGINE_INPUTDEVICEKEY_H
 
-namespace urchin
-{
+namespace urchin {
 
     enum InputDeviceKey
     {

@@ -7,11 +7,9 @@
 #include "math/algebra/vector/Vector2.h"
 #include "math/algebra/matrix/Matrix2.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class Point2
-    {
+    template<class T> class Point2 {
         public:
             Point2();
             explicit Point2(T Xu, T Yu);

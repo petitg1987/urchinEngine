@@ -3,11 +3,9 @@
 
 #include <vector>
 
-namespace urchin
-{
+namespace urchin {
 
-    class PascalTriangle
-    {
+    class PascalTriangle {
         public:
             static std::vector<unsigned int> lineValues(unsigned int);
     };

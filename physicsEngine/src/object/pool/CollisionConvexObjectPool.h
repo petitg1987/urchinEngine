@@ -4,13 +4,11 @@
 #include "UrchinCommon.h"
 #include "utils/pool/SyncFixedSizePool.h"
 
-namespace urchin
-{
+namespace urchin {
 
     class CollisionConvexObject3D;
 
-    class CollisionConvexObjectPool : public Singleton<CollisionConvexObjectPool>
-    {
+    class CollisionConvexObjectPool : public Singleton<CollisionConvexObjectPool> {
         public:
             friend class Singleton<CollisionConvexObjectPool>;
 

@@ -2,16 +2,13 @@
 
 #include "RequestException.h"
 
-namespace urchin
-{
+namespace urchin {
     RequestException::RequestException(std::string message) :
-        message(std::move(message))
-    {
+        message(std::move(message)) {
 
     }
 
-    const char * RequestException::what() const noexcept
-    {
+    const char * RequestException::what() const noexcept {
         return message.c_str();
     }
 }

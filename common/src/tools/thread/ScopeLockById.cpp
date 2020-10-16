@@ -1,17 +1,14 @@
 #include "ScopeLockById.h"
 
-namespace urchin
-{
+namespace urchin {
 
     ScopeLockById::ScopeLockById(const std::shared_ptr<LockById> &lockById, uint_fast32_t id) :
             lockById(lockById),
-            id(id)
-    {
+            id(id) {
         lockById->lock(id);
     }
 
-    ScopeLockById::~ScopeLockById()
-    {
+    ScopeLockById::~ScopeLockById() {
         lockById->unlock(id);
     }
 

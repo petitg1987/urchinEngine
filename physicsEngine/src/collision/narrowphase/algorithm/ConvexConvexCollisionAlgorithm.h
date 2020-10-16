@@ -8,19 +8,16 @@
 #include "collision/narrowphase/algorithm/gjk/GJKAlgorithm.h"
 #include "collision/narrowphase/algorithm/epa/EPAAlgorithm.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class ConvexConvexCollisionAlgorithm : public CollisionAlgorithm
-    {
+    class ConvexConvexCollisionAlgorithm : public CollisionAlgorithm {
         public:
             ConvexConvexCollisionAlgorithm(bool, ManifoldResult &&);
             ~ConvexConvexCollisionAlgorithm() override = default;
 
             void doProcessCollisionAlgorithm(const CollisionObjectWrapper &, const CollisionObjectWrapper &) override;
 
-            struct Builder : public CollisionAlgorithmBuilder
-            {
+            struct Builder : public CollisionAlgorithmBuilder {
                 CollisionAlgorithm *createCollisionAlgorithm(bool, ManifoldResult &&, FixedSizePool<CollisionAlgorithm> *) const override;
 
                 const std::vector<CollisionShape3D::ShapeType> &getFirstExpectedShapeType() const override;

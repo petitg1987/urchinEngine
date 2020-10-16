@@ -9,11 +9,9 @@
 #include "tools/svg/shape/SVGShape.h"
 #include "tools/svg/shape/SVGPolygon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SVGExporter
-    {
+    class SVGExporter {
         public:
             explicit SVGExporter(std::string);
             ~SVGExporter();

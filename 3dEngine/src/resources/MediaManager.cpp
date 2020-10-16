@@ -6,11 +6,9 @@
 #include "loader/material/LoaderMTR.h"
 #include "loader/font/LoaderFNT.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    MediaManager::MediaManager()
-    {
+    MediaManager::MediaManager() {
         loadersRegistry.insert(std::pair<std::string, LoaderInterface*>("tga", new LoaderTGA));
         loadersRegistry.insert(std::pair<std::string, LoaderInterface*>("png", new LoaderPNG));
 
@@ -22,10 +20,8 @@ namespace urchin
         loadersRegistry.insert(std::pair<std::string, LoaderInterface*>("fnt", new LoaderFNT));
     }
 
-    MediaManager::~MediaManager()
-    {
-        for(const auto &loaderRegistry : loadersRegistry)
-        {
+    MediaManager::~MediaManager() {
+        for(const auto &loaderRegistry : loadersRegistry) {
             delete loaderRegistry.second;
         }
     }

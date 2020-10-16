@@ -6,27 +6,22 @@
 #include "resources/MediaManager.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 
-namespace urchin
-{
+namespace urchin {
 
     StaticBitmap::StaticBitmap(Position position, Size size, std::string filename) :
         Widget(position, size),
         filename(std::move(filename)),
-        tex(nullptr)
-    {
+        tex(nullptr) {
         StaticBitmap::createOrUpdateWidget();
     }
 
-    StaticBitmap::~StaticBitmap()
-    {
+    StaticBitmap::~StaticBitmap() {
         tex->release();
     }
 
-    void StaticBitmap::createOrUpdateWidget()
-    {
+    void StaticBitmap::createOrUpdateWidget() {
         //loads the texture
-        if(tex)
-        {
+        if(tex) {
             tex->release();
         }
         tex = MediaManager::instance()->getMedia<Image>(filename);
@@ -39,8 +34,7 @@ namespace urchin
                 ->build();
     }
 
-    void StaticBitmap::display(int translateDistanceLoc, float dt)
-    {
+    void StaticBitmap::display(int translateDistanceLoc, float dt) {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

@@ -1,39 +1,32 @@
 #include "Light.h"
 
-namespace urchin
-{
+namespace urchin {
 
     Light::Light() :
             ambientColor(Point3<float>(0.0f, 0.0f, 0.0f)),
-            produceShadow(false)
-    {
+            produceShadow(false) {
 
     }
 
-    const Transform<float> &Light::getTransform() const
-    {
+    const Transform<float> &Light::getTransform() const {
         return noTransform;
     }
 
-    void Light::setProduceShadow(bool produceShadow)
-    {
+    void Light::setProduceShadow(bool produceShadow) {
         this->produceShadow = produceShadow;
 
         notifyObservers(this, Light::PRODUCE_SHADOW);
     }
 
-    bool Light::isProduceShadow() const
-    {
+    bool Light::isProduceShadow() const {
         return produceShadow;
     }
 
-    void Light::setAmbientColor(const Point3<float> &ambientColor)
-    {
+    void Light::setAmbientColor(const Point3<float> &ambientColor) {
         this->ambientColor = ambientColor;
     }
 
-    const Point3<float> &Light::getAmbientColor() const
-    {
+    const Point3<float> &Light::getAmbientColor() const {
         return ambientColor;
     }
 

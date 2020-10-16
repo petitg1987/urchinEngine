@@ -6,8 +6,7 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-void EdgeLinkDetectionTest::testNearParallelEdges()
-{
+void EdgeLinkDetectionTest::testNearParallelEdges() {
     LineSegment3D<float> startEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(20.0f, 0.0f, 1.0f), Point3<float>(-20.0f, 0.0f, 1.0f));
 
@@ -20,8 +19,7 @@ void EdgeLinkDetectionTest::testNearParallelEdges()
     AssertHelper::assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.0f);
 }
 
-void EdgeLinkDetectionTest::testFarParallelEdges()
-{
+void EdgeLinkDetectionTest::testFarParallelEdges() {
     LineSegment3D<float> startEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(20.0f, 0.0f, 50.0f), Point3<float>(-20.0f, 0.0f, 50.0f));
 
@@ -31,8 +29,7 @@ void EdgeLinkDetectionTest::testFarParallelEdges()
     AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink());
 }
 
-void EdgeLinkDetectionTest::testIdenticalEdges()
-{
+void EdgeLinkDetectionTest::testIdenticalEdges() {
     LineSegment3D<float> startEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(5.0f, 0.0f, 0.0f), Point3<float>(-5.0f, 0.0f, 0.0f));
 
@@ -46,8 +43,7 @@ void EdgeLinkDetectionTest::testIdenticalEdges()
 
 }
 
-void EdgeLinkDetectionTest::testIdenticalEdgesWrongDirection()
-{
+void EdgeLinkDetectionTest::testIdenticalEdgesWrongDirection() {
     LineSegment3D<float> startEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
 
@@ -57,8 +53,7 @@ void EdgeLinkDetectionTest::testIdenticalEdgesWrongDirection()
     AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink());
 }
 
-void EdgeLinkDetectionTest::testCollinearEdges1()
-{
+void EdgeLinkDetectionTest::testCollinearEdges1() {
     LineSegment3D<float> startEdge(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(3.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(2.0f, 0.0f, 0.0f), Point3<float>(1.0f, 0.0f, 0.0f));
 
@@ -71,8 +66,7 @@ void EdgeLinkDetectionTest::testCollinearEdges1()
     AssertHelper::assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.333333333f);
 }
 
-void EdgeLinkDetectionTest::testCollinearEdges2()
-{
+void EdgeLinkDetectionTest::testCollinearEdges2() {
     LineSegment3D<float> startEdge(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(3.0f, 0.0f, -1.0f));
     LineSegment3D<float> endEdge(Point3<float>(6.0f, 0.0f, -2.0f), Point3<float>(1.5f, 0.0f, -0.5f));
 
@@ -85,8 +79,7 @@ void EdgeLinkDetectionTest::testCollinearEdges2()
     AssertHelper::assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.0f);
 }
 
-void EdgeLinkDetectionTest::testCollinearEdges3()
-{
+void EdgeLinkDetectionTest::testCollinearEdges3() {
     LineSegment3D<float> startEdge(Point3<float>(-50.0f, 0.0f, 0.0f), Point3<float>(-100.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(-150.0f, 0.0f, 0.0f), Point3<float>(-99.0f, 0.0f, 0.0f));
 
@@ -99,8 +92,7 @@ void EdgeLinkDetectionTest::testCollinearEdges3()
     AssertHelper::assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.0f);
 }
 
-void EdgeLinkDetectionTest::testCollinearEdgesNoLink()
-{
+void EdgeLinkDetectionTest::testCollinearEdgesNoLink() {
     LineSegment3D<float> startEdge(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(5.0f, 0.0f, 0.0f), Point3<float>(4.0f, 0.0f, 0.0f));
 
@@ -110,8 +102,7 @@ void EdgeLinkDetectionTest::testCollinearEdgesNoLink()
     AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink());
 }
 
-void EdgeLinkDetectionTest::testCollinearEdgesTouchingInOnePoint()
-{
+void EdgeLinkDetectionTest::testCollinearEdgesTouchingInOnePoint() {
     LineSegment3D<float> startEdge(Point3<float>(-50.0f, 0.0f, 0.0f), Point3<float>(-100.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(-150.0f, 0.0f, 0.0f), Point3<float>(-100.0f, 0.0f, 0.0f));
 
@@ -121,8 +112,7 @@ void EdgeLinkDetectionTest::testCollinearEdgesTouchingInOnePoint()
     AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink());
 }
 
-void EdgeLinkDetectionTest::testCollinearEdgesWrongDirection()
-{
+void EdgeLinkDetectionTest::testCollinearEdgesWrongDirection() {
     LineSegment3D<float> startEdge(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(3.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(1.0f, 0.0f, 0.0f), Point3<float>(2.0f, 0.0f, 0.0f));
 
@@ -132,8 +122,7 @@ void EdgeLinkDetectionTest::testCollinearEdgesWrongDirection()
     AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink());
 }
 
-void EdgeLinkDetectionTest::testWrongStartJumpEdgeDirection()
-{
+void EdgeLinkDetectionTest::testWrongStartJumpEdgeDirection() {
     LineSegment3D<float> startEdge(Point3<float>(5.0f, 0.0f, 0.0f), Point3<float>(-5.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(20.0f, 0.0f, 1.0f), Point3<float>(-20.0f, 0.0f, 1.0f));
 
@@ -143,8 +132,7 @@ void EdgeLinkDetectionTest::testWrongStartJumpEdgeDirection()
     AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink()); //Cannot jump because character will stay inside the polygon represented by startEdge
 }
 
-void EdgeLinkDetectionTest::testWrongEndJumpEdgeDirection()
-{
+void EdgeLinkDetectionTest::testWrongEndJumpEdgeDirection() {
     LineSegment3D<float> startEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(-20.0f, 0.0f, 1.0f), Point3<float>(20.0f, 0.0f, 1.0f));
 
@@ -154,8 +142,7 @@ void EdgeLinkDetectionTest::testWrongEndJumpEdgeDirection()
     AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink()); //Cannot jump because character will be on the edge of the polygon represented by endEdge but in direction of the outside
 }
 
-void EdgeLinkDetectionTest::testWrongJumpEdgesDirection()
-{
+void EdgeLinkDetectionTest::testWrongJumpEdgesDirection() {
     LineSegment3D<float> startEdge(Point3<float>(5.0f, 0.0f, 0.0f), Point3<float>(-5.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(-20.0f, 0.0f, 1.0f), Point3<float>(20.0f, 0.0f, 1.0f));
 
@@ -165,8 +152,7 @@ void EdgeLinkDetectionTest::testWrongJumpEdgesDirection()
     AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink());
 }
 
-void EdgeLinkDetectionTest::testCrossEdges()
-{
+void EdgeLinkDetectionTest::testCrossEdges() {
     LineSegment3D<float> startEdge(Point3<float>(-20.0f, 0.0f, 20.0f), Point3<float>(20.0f, 0.0f, -20.0f));
     LineSegment3D<float> endEdge(Point3<float>(0.0f, 0.0f, -20.0f), Point3<float>(0.0f, 0.0f, 20.0f));
 
@@ -179,8 +165,7 @@ void EdgeLinkDetectionTest::testCrossEdges()
     AssertHelper::assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.5f, 0.009f);
 }
 
-CppUnit::Test *EdgeLinkDetectionTest::suite()
-{
+CppUnit::Test *EdgeLinkDetectionTest::suite() {
     auto *suite = new CppUnit::TestSuite("EdgeJumpDetectionTest");
 
     suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testNearParallelEdges", &EdgeLinkDetectionTest::testNearParallelEdges));

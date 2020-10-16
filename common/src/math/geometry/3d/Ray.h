@@ -4,11 +4,9 @@
 #include "math/algebra/point/Point3.h"
 #include "math/algebra/vector/Vector3.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class Ray
-    {
+    template<class T> class Ray {
         public:
             Ray(const Point3<T> &, const Vector3<T> &, T);
             Ray(const Point3<T> &, const Point3<T> &);

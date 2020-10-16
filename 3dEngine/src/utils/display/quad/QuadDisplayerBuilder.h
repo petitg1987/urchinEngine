@@ -5,11 +5,9 @@
 
 #include "utils/display/quad/QuadDisplayer.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class QuadDisplayerBuilder
-    {
+    class QuadDisplayerBuilder {
         public:
             QuadDisplayerBuilder();
 

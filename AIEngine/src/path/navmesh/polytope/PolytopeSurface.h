@@ -7,13 +7,11 @@
 #include "path/navmesh/model/output/topography/NavTopography.h"
 #include "path/navmesh/csg/CSGPolygon.h"
 
-namespace urchin
-{
+namespace urchin {
 
     class Polytope;
 
-    class PolytopeSurface
-    {
+    class PolytopeSurface {
         public:
             PolytopeSurface();
             virtual ~PolytopeSurface() = default;

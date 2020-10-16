@@ -6,11 +6,9 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QLabel>
 
-namespace urchin
-{
+namespace urchin {
 
-    class NewDialog : public QDialog
-    {
+    class NewDialog : public QDialog {
         Q_OBJECT
 
         public:

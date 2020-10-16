@@ -6,15 +6,13 @@
 #include "NewWaterDialog.h"
 #include "widget/style/LabelStyleHelper.h"
 
-namespace urchin
-{
+namespace urchin {
     NewWaterDialog::NewWaterDialog(QWidget *parent, const WaterController *waterController) :
             QDialog(parent),
             waterController(waterController),
             waterNameLabel(nullptr),
             waterNameText(nullptr),
-            sceneWater(nullptr)
-    {
+            sceneWater(nullptr) {
         this->setWindowTitle("New Water");
         this->resize(530, 130);
         this->setFixedSize(this->width(),this->height());
@@ -33,8 +31,7 @@ namespace urchin
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void NewWaterDialog::setupNameFields(QGridLayout *mainLayout)
-    {
+    void NewWaterDialog::setupNameFields(QGridLayout *mainLayout) {
         waterNameLabel = new QLabel("Water Name:");
         mainLayout->addWidget(waterNameLabel, 0, 0);
 
@@ -43,27 +40,22 @@ namespace urchin
         waterNameText->setFixedWidth(360);
     }
 
-    void NewWaterDialog::updateWaterName()
-    {
+    void NewWaterDialog::updateWaterName() {
         QString waterName = waterNameText->text();
-        if(!waterName.isEmpty())
-        {
+        if(!waterName.isEmpty()) {
             this->waterName = waterName.toUtf8().constData();
         }
     }
 
-    int NewWaterDialog::buildSceneWater(int result)
-    {
-        try
-        {
+    int NewWaterDialog::buildSceneWater(int result) {
+        try {
             sceneWater = new SceneWater();
             sceneWater->setName(waterName);
             
             auto *water = new Water();
 
             sceneWater->setWater(water);
-        }catch(std::exception &e)
-        {
+        }catch(std::exception &e) {
             QMessageBox::critical(this, "Error", e.what());
             delete sceneWater;
 
@@ -74,48 +66,38 @@ namespace urchin
     }
 
 
-    SceneWater *NewWaterDialog::getSceneWater() const
-    {
+    SceneWater *NewWaterDialog::getSceneWater() const {
         return sceneWater;
     }
 
-    void NewWaterDialog::done(int r)
-    {
-        if(QDialog::Accepted == r)
-        {
+    void NewWaterDialog::done(int r) {
+        if(QDialog::Accepted == r) {
             bool hasError = false;
 
             updateWaterName();
             LabelStyleHelper::applyNormalStyle(waterNameLabel);
 
-            if(waterName.empty())
-            {
+            if(waterName.empty()) {
                 LabelStyleHelper::applyErrorStyle(waterNameLabel, "Water name is mandatory");
                 hasError = true;
-            }else if(isSceneWaterExist(waterName))
-            {
+            } else if(isSceneWaterExist(waterName)) {
                 LabelStyleHelper::applyErrorStyle(waterNameLabel, "Water name is already used");
                 hasError = true;
             }
 
-            if(!hasError)
-            {
+            if(!hasError) {
                 r = buildSceneWater(r);
                 QDialog::done(r);
             }
-        }else
-        {
+        } else {
             QDialog::done(r);
         }
     }
 
-    bool NewWaterDialog::isSceneWaterExist(const std::string &name)
-    {
+    bool NewWaterDialog::isSceneWaterExist(const std::string &name) {
         std::list<const SceneWater *> sceneWaters = waterController->getSceneWaters();
-        for(auto &sceneWater : sceneWaters)
-        {
-            if(sceneWater->getName() == name)
-            {
+        for(auto &sceneWater : sceneWaters) {
+            if(sceneWater->getName() == name) {
                 return true;
             }
         }

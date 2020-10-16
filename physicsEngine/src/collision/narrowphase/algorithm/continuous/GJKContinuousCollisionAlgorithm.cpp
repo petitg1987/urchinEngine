@@ -6,20 +6,17 @@
 #include "collision/narrowphase/algorithm/utils/AlgorithmResultAllocator.h"
 #include "collision/narrowphase/algorithm/utils/Simplex.h"
 
-namespace urchin
-{
+namespace urchin {
 
     template<class T, class U> GJKContinuousCollisionAlgorithm<T, U>::GJKContinuousCollisionAlgorithm() :
         squareEpsilon(std::numeric_limits<T>::epsilon() * std::numeric_limits<T>::epsilon()),
         maxIteration(ConfigService::instance()->getUnsignedIntValue("narrowPhase.gjkContinuousCollisionMaxIteration")),
-        terminationTolerance(ConfigService::instance()->getFloatValue("narrowPhase.gjkContinuousCollisionTerminationTolerance"))
-    {
+        terminationTolerance(ConfigService::instance()->getFloatValue("narrowPhase.gjkContinuousCollisionTerminationTolerance")) {
 
     }
 
     template<class T, class U> std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter> GJKContinuousCollisionAlgorithm<T, U>::calculateTimeOfImpact(const TemporalObject &object1, const TemporalObject &object2,
-            AbstractWorkBody *body2) const
-    {
+            AbstractWorkBody *body2) const {
         T timeToHit = 0.0; //0.0 represents initial situation (from transformation), 1.0 represents final situation (to transformation).
         Vector3<T> normalFromObject2;
         bool normalFromObject2Defined = false;
@@ -38,8 +35,7 @@ namespace urchin
 
         Vector3<T> direction = (-initialPoint).toVector();
 
-        for(unsigned int iterationNumber=0; iterationNumber<maxIteration; ++iterationNumber)
-        {
+        for(unsigned int iterationNumber=0; iterationNumber<maxIteration; ++iterationNumber) {
             Point3<T> supportPoint1 = getWorldSupportPoint(object1, direction, interpolatedTransform1);
             Point3<T> supportPoint2 = getWorldSupportPoint(object2, -direction, interpolatedTransform2);
             Point3<T> newPoint = supportPoint1 - supportPoint2;
@@ -47,16 +43,13 @@ namespace urchin
             Vector3<T> vClosestPoint = -direction; //vector from origin to closest point of simplex
             T closestPointDotNewPoint = vClosestPoint.dotProduct(newPoint.toVector());
 
-            if (timeToHit > 1.0)
-            { //no hit detected between from and to transformation
+            if (timeToHit > 1.0) { //no hit detected between from and to transformation
                 return std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter>(nullptr);
             }
 
-            if (closestPointDotNewPoint > 0.0)
-            {
+            if (closestPointDotNewPoint > 0.0) {
                 T closestPointDotRelativeMotion = vClosestPoint.dotProduct(relativeMotion);
-                if (closestPointDotRelativeMotion >= -squareEpsilon)
-                {
+                if (closestPointDotRelativeMotion >= -squareEpsilon) {
                     return std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter>(nullptr);
                 }
 
@@ -69,32 +62,26 @@ namespace urchin
                 normalFromObject2Defined = true;
             }
 
-            if(!simplex.isPointInSimplex(newPoint))
-            {
+            if(!simplex.isPointInSimplex(newPoint)) {
                 simplex.addPoint(supportPoint1, supportPoint2);
             }
 
             direction = (-simplex.getClosestPointToOrigin()).toVector();
             T closestPointSquareDistance = direction.squareLength();
 
-            if(closestPointSquareDistance < terminationTolerance)
-            {
-                if(simplex.getSize()==4 && !normalFromObject2Defined)
-                {
-                    if(timeToHit==(T)0.0 && simplex.getClosestPointToOrigin()==Point3<T>((T)0.0, (T)0.0, (T)0.0))
-                    {
+            if(closestPointSquareDistance < terminationTolerance) {
+                if(simplex.getSize()==4 && !normalFromObject2Defined) {
+                    if(timeToHit==(T)0.0 && simplex.getClosestPointToOrigin()==Point3<T>((T)0.0, (T)0.0, (T)0.0)) {
                         Point3<T> hitPointOnObject1, hitPointOnObject2;
                         simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
 
                         return AlgorithmResultAllocator::instance()->newContinuousCollisionResult<U>(body2, Vector3<U>(1.0, 0.0, 0.0), hitPointOnObject2.template cast<U>(), 0.0);
-                    }else
-                    {
+                    } else {
                         std::string wrongSituation = "Unexpected situation reach on continuous collision algorithm.";
                         logInputData(object1, object2, wrongSituation, Logger::ERROR);
                         return std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter>(nullptr);
                     }
-                }else if(normalFromObject2Defined)
-                {
+                } else if(normalFromObject2Defined) {
                     normalFromObject2 = normalFromObject2.normalize();
 
                     Point3<T> hitPointOnObject1, hitPointOnObject2;
@@ -110,16 +97,14 @@ namespace urchin
         return std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter>(nullptr);
     }
 
-    template<class T, class U> Point3<T> GJKContinuousCollisionAlgorithm<T, U>::getWorldSupportPoint(const TemporalObject &object, const Vector3<T> &globalDirection, const PhysicsTransform &worldTransform) const
-    {
+    template<class T, class U> Point3<T> GJKContinuousCollisionAlgorithm<T, U>::getWorldSupportPoint(const TemporalObject &object, const Vector3<T> &globalDirection, const PhysicsTransform &worldTransform) const {
         Vector3<float> localDirection = worldTransform.retrieveOrientationMatrix().transpose() * globalDirection.template cast<float>();
         Point3<float> localSupportPoint = object.getLocalObject()->getSupportPoint(localDirection, true);
 
         return worldTransform.transform(localSupportPoint).template cast<T>();
     }
 
-    template<class T, class U> Point3<float> GJKContinuousCollisionAlgorithm<T, U>::interpolate(const Point3<float> &from, const Point3<float> &to, T interpolatePercentage) const
-    {
+    template<class T, class U> Point3<float> GJKContinuousCollisionAlgorithm<T, U>::interpolate(const Point3<float> &from, const Point3<float> &to, T interpolatePercentage) const {
         T invertedInterpolatePercentage = 1.0 - interpolatePercentage;
 
         return Point3<float>(
@@ -129,8 +114,7 @@ namespace urchin
     }
 
     template<class T, class U> void GJKContinuousCollisionAlgorithm<T, U>::logInputData(const TemporalObject &object1, const TemporalObject &object2,
-                                                                                            const std::string &message, Logger::CriticalityLevel logLevel) const
-    {
+                                                                                            const std::string &message, Logger::CriticalityLevel logLevel) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 

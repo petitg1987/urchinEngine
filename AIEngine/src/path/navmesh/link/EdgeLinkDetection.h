@@ -5,11 +5,9 @@
 
 #include "path/navmesh/link/EdgeLinkResult.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class EdgeLinkDetection
-    {
+    class EdgeLinkDetection {
         public:
             explicit EdgeLinkDetection(float);
 

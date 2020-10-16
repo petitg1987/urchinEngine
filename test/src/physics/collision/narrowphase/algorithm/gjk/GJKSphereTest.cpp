@@ -9,8 +9,7 @@
 #include "physics/collision/narrowphase/algorithm/gjk/GJKTestHelper.h"
 using namespace urchin;
 
-void GJKSphereTest::identicalSphere()
-{
+void GJKSphereTest::identicalSphere() {
     CollisionSphereObject sphere1(10.0, Point3<float>(1.0, 0.0, 0.0));
     CollisionSphereObject sphere2(10.0, Point3<float>(1.0, 0.0, 0.0));
 
@@ -19,8 +18,7 @@ void GJKSphereTest::identicalSphere()
     AssertHelper::assertTrue(result->isCollide());
 }
 
-void GJKSphereTest::separateSphere()
-{
+void GJKSphereTest::separateSphere() {
     CollisionSphereObject sphere1(10.0, Point3<float>(0.0, 0.0, 0.0));
     CollisionSphereObject sphere2(10.0, Point3<float>(7.0710678118+8.0, 7.0710678118+8.0, 0.0));
 
@@ -33,8 +31,7 @@ void GJKSphereTest::separateSphere()
     AssertHelper::assertPoint3FloatEquals(result->getClosestPointB(), Point3<float>(8.0, 8.0, 0.0), epsilon);
 }
 
-void GJKSphereTest::overlapSphere()
-{
+void GJKSphereTest::overlapSphere() {
     CollisionSphereObject sphere1(10.0, Point3<float>(0.0, 0.0, 0.0));
     CollisionSphereObject sphere2(10.0, Point3<float>(7.0710678118+7.0, 7.0710678118+7.0, 0.0));
 
@@ -43,8 +40,7 @@ void GJKSphereTest::overlapSphere()
     AssertHelper::assertTrue(result->isCollide());
 }
 
-CppUnit::Test *GJKSphereTest::suite()
-{
+CppUnit::Test *GJKSphereTest::suite() {
     auto *suite = new CppUnit::TestSuite("GJKSphereTest");
 
     suite->addTest(new CppUnit::TestCaller<GJKSphereTest>("identicalSphere", &GJKSphereTest::identicalSphere));

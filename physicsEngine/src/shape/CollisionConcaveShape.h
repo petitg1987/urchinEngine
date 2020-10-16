@@ -6,11 +6,9 @@
 #include "utils/math/PhysicsTransform.h"
 #include "shape/CollisionTriangleShape.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class CollisionConcaveShape
-    {
+    class CollisionConcaveShape {
         public:
             virtual ~CollisionConcaveShape() = default;
 

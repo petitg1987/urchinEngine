@@ -7,11 +7,9 @@
 
 #include "path/navmesh/polytope/PolytopeSurface.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class PolytopePlaneSurface : public PolytopeSurface
-    {
+    class PolytopePlaneSurface : public PolytopeSurface {
         public:
             PolytopePlaneSurface(std::vector<Point3<float>>, bool);
             PolytopePlaneSurface(std::vector<Point3<float>>, const Vector3<float> &, bool);

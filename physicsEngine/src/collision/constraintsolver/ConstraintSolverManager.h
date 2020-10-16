@@ -13,11 +13,9 @@
 #include "utils/pool/FixedSizePool.h"
 #include "body/work/WorkRigidBody.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class ConstraintSolverManager
-    {
+    class ConstraintSolverManager {
         public:
             ConstraintSolverManager();
             ~ConstraintSolverManager();

@@ -6,11 +6,9 @@
 
 #include "resources/Resource.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class Image : public Resource
-    {
+    class Image : public Resource {
         public:
             enum ImageFormat
             {

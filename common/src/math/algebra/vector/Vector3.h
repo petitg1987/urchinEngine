@@ -7,11 +7,9 @@
 #include "math/algebra/vector/Vector2.h"
 #include "math/algebra/matrix/Matrix3.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class Vector3
-    {
+    template<class T> class Vector3 {
         public:
             Vector3();
             explicit Vector3(T Xu, T Yu, T Zu);

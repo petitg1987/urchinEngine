@@ -7,11 +7,9 @@
 #include "UrchinCommon.h"
 #include "UrchinSoundEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SoundReaderWriter
-    {
+    class SoundReaderWriter {
         //XML attributes
         #define TYPE_ATTR "type"
 

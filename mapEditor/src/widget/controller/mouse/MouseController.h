@@ -4,11 +4,9 @@
 #include "UrchinCommon.h"
 #include <QtWidgets/QWidget>
 
-namespace urchin
-{
+namespace urchin {
 
-    class MouseController
-    {
+    class MouseController {
         public:
             MouseController(QWidget *);
 

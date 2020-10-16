@@ -3,11 +3,9 @@
 
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    struct AccumulatedSolvingData
-    {
+    struct AccumulatedSolvingData {
         AccumulatedSolvingData();
 
         float accNormalImpulse;

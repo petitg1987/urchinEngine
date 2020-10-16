@@ -6,11 +6,9 @@
 
 #include "Light.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class LightManager : public Observable
-    {
+    class LightManager : public Observable {
         public:
             LightManager();
             ~LightManager() override;
@@ -52,8 +50,7 @@ namespace urchin
             Light *lastUpdatedLight;
 
             const unsigned int maxLights; //maximum of lights authorized to affect the scene in the same time
-            struct LightInfo
-            {
+            struct LightInfo {
                 int isExistLoc;
                 int produceShadowLoc;
                 int hasParallelBeamsLoc;

@@ -3,11 +3,9 @@
 
 #include <string>
 
-namespace urchin
-{
+namespace urchin {
 
-    class FileHandler
-    {
+    class FileHandler {
         public:
             static std::string getFileExtension(const std::string &);
             static std::string getFileName(const std::string &);

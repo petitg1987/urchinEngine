@@ -6,8 +6,7 @@
 #include "resources/object/RigidBodyReaderWriter.h"
 #include "resources/common/AIEntityBuilder.h"
 
-namespace urchin
-{
+namespace urchin {
 
     SceneObject::SceneObject() :
             renderer3d(nullptr),
@@ -15,26 +14,21 @@ namespace urchin
             aiManager(nullptr),
             model(nullptr),
             rigidBody(nullptr),
-            aiObject(nullptr)
-    {
+            aiObject(nullptr) {
 
     }
 
-    SceneObject::~SceneObject()
-    {
+    SceneObject::~SceneObject() {
         renderer3d->removeModel(model);
         deleteRigidBody();
         deleteAIObjects();
     }
 
-    void SceneObject::setObjectManagers(Renderer3d *renderer3d, PhysicsWorld *physicsWorld, AIManager *aiManager)
-    {
-        if(this->renderer3d)
-        {
+    void SceneObject::setObjectManagers(Renderer3d *renderer3d, PhysicsWorld *physicsWorld, AIManager *aiManager) {
+        if(this->renderer3d) {
             throw std::invalid_argument("Cannot add the scene object on two different object managers.");
         }
-        if(!renderer3d)
-        {
+        if(!renderer3d) {
             throw std::invalid_argument("Cannot specify a null renderer 3d for a scene object.");
         }
 
@@ -44,27 +38,23 @@ namespace urchin
 
         renderer3d->addModel(model);
 
-        if(physicsWorld && rigidBody)
-        {
+        if(physicsWorld && rigidBody) {
             physicsWorld->addBody(rigidBody);
         }
 
-        if(aiManager && aiObject)
-        {
+        if(aiManager && aiObject) {
             aiManager->addEntity(aiObject);
         }
     }
 
-    void SceneObject::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser)
-    {
+    void SceneObject::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
         std::shared_ptr<XmlChunk> modelChunk = xmlParser.getUniqueChunk(true, MODEL_TAG, XmlAttribute(), chunk);
         setModel(ModelReaderWriter().loadFrom(modelChunk, xmlParser));
 
         std::shared_ptr<XmlChunk> physicsChunk = xmlParser.getUniqueChunk(false, PHYSICS_TAG, XmlAttribute(), chunk);
-        if(physicsChunk != nullptr)
-        {
+        if(physicsChunk != nullptr) {
             std::string rigidBodyId = this->name;
             const Transform<float> &modelTransform = this->model->getTransform();
 
@@ -72,120 +62,96 @@ namespace urchin
         }
     }
 
-    void SceneObject::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const
-    {
+    void SceneObject::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const {
         chunk->setAttribute(XmlAttribute(NAME_ATTR, this->name));
 
         std::shared_ptr<XmlChunk> modelChunk = xmlWriter.createChunk(MODEL_TAG, XmlAttribute(), chunk);
         ModelReaderWriter().writeOn(modelChunk, model, xmlWriter);
 
-        if(rigidBody)
-        {
+        if(rigidBody) {
             std::shared_ptr<XmlChunk> physicsChunk = xmlWriter.createChunk(PHYSICS_TAG, XmlAttribute(), chunk);
             RigidBodyReaderWriter().writeOn(physicsChunk, rigidBody, xmlWriter);
         }
     }
 
-    const std::string &SceneObject::getName() const
-    {
+    const std::string &SceneObject::getName() const {
         return name;
     }
 
-    void SceneObject::setName(const std::string &name)
-    {
+    void SceneObject::setName(const std::string &name) {
         this->name = name;
     }
 
-    Model *SceneObject::getModel() const
-    {
+    Model *SceneObject::getModel() const {
         return model;
     }
 
-    void SceneObject::setModel(Model *model)
-    {
-        if(!model)
-        {
+    void SceneObject::setModel(Model *model) {
+        if(!model) {
             throw std::invalid_argument("Cannot set a null model on scene object.");
         }
 
-        if(renderer3d)
-        {
+        if(renderer3d) {
             renderer3d->removeModel(this->model);
             renderer3d->addModel(model);
-        }else
-        {
+        } else {
             delete this->model;
         }
 
         this->model = model;
     }
 
-    void SceneObject::setupInteractiveBody(RigidBody *rigidBody)
-    {
+    void SceneObject::setupInteractiveBody(RigidBody *rigidBody) {
         setupRigidBody(rigidBody);
         setupAIObject();
     }
 
-    RigidBody *SceneObject::getRigidBody() const
-    {
+    RigidBody *SceneObject::getRigidBody() const {
         return rigidBody;
     }
 
-    void SceneObject::moveTo(const Transform<float> &newTransform)
-    {
+    void SceneObject::moveTo(const Transform<float> &newTransform) {
         model->setTransform(newTransform);
-        if(aiObject)
-        {
+        if(aiObject) {
             aiObject->updateTransform(newTransform.getPosition(), newTransform.getOrientation());
         }
     }
 
-    void SceneObject::setupRigidBody(RigidBody *rigidBody)
-    {
+    void SceneObject::setupRigidBody(RigidBody *rigidBody) {
         deleteRigidBody();
 
         this->rigidBody = rigidBody;
-        if(physicsWorld && rigidBody)
-        {
+        if(physicsWorld && rigidBody) {
             physicsWorld->addBody(rigidBody);
         }
     }
 
-    void SceneObject::setupAIObject()
-    {
+    void SceneObject::setupAIObject() {
         deleteAIObjects();
 
-        if(!rigidBody || !model->getMeshes())
-        {
+        if(!rigidBody || !model->getMeshes()) {
             this->aiObject = nullptr;
-        } else
-        {
+        } else {
             std::string aiObjectName = "#" + rigidBody->getId(); //prefix to avoid collision name with terrains
             this->aiObject = AIEntityBuilder::instance()->buildAIObject(aiObjectName, rigidBody->getScaledShape(), rigidBody->getTransform());
-            if(aiManager)
-            {
+            if(aiManager) {
                 aiManager->addEntity(aiObject);
             }
         }
     }
 
-    void SceneObject::deleteRigidBody()
-    {
-        if(physicsWorld && rigidBody)
-        {
+    void SceneObject::deleteRigidBody() {
+        if(physicsWorld && rigidBody) {
             physicsWorld->removeBody(rigidBody);
-        }else
-        {
+        } else {
             delete rigidBody;
         }
 
         rigidBody = nullptr;
     }
 
-    void SceneObject::deleteAIObjects()
-    {
-        if(aiManager && aiObject)
-        {
+    void SceneObject::deleteAIObjects() {
+        if(aiManager && aiObject) {
             aiManager->removeEntity(aiObject);
         }
     }

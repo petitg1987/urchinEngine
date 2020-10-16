@@ -6,14 +6,12 @@
 
 #include "EPAResult.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Invalid result of EPA algorithm. Invalid result is returned by EPA algorithm when no solution is found due to numerical imprecision.
     */
-    template<class T> class EPAResultInvalid : public EPAResult<T>
-    {
+    template<class T> class EPAResultInvalid : public EPAResult<T> {
         public:
             bool isValidResult() const override;
 

@@ -1,11 +1,9 @@
 #ifndef URCHINENGINE_WIDGETSIZE_H
 #define URCHINENGINE_WIDGETSIZE_H
 
-namespace urchin
-{
+namespace urchin {
 
-    class Size
-    {
+    class Size {
         public:
             enum SizeType{
                 PIXEL,

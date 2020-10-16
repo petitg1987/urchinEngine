@@ -18,11 +18,9 @@
 #include "path/navmesh/csg/CSGPolygon.h"
 #include "path/navmesh/triangulation/TriangulationAlgorithm.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class NavMeshGenerator
-    {
+    class NavMeshGenerator {
         public:
             NavMeshGenerator();
 

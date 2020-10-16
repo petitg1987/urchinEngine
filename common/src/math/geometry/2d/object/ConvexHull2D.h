@@ -7,14 +7,12 @@
 #include "math/geometry/2d/object/ConvexObject2D.h"
 #include "math/algebra/point/Point2.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Represents a convex hull 2D
     */
-    template<class T> class ConvexHull2D : public ConvexObject2D<T>
-    {
+    template<class T> class ConvexHull2D : public ConvexObject2D<T> {
         public:
             template<class U> friend class ResizeConvexHull2DService;
 

@@ -7,11 +7,9 @@
 #include "math/algebra/point/Point3.h"
 #include "math/algebra/vector/Vector3.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class SortPointsService : public Singleton<SortPointsService<T>>
-    {
+    template<class T> class SortPointsService : public Singleton<SortPointsService<T>> {
         public:
             friend class Singleton<SortPointsService<T>>;
 

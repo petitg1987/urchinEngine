@@ -8,11 +8,9 @@
 
 #include "controller/AbstractController.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class LightController : public AbstractController
-    {
+    class LightController : public AbstractController {
         public:
             LightController();
 

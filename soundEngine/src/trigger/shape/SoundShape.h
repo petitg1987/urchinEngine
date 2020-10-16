@@ -3,14 +3,12 @@
 
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Shape used to delimit the sound
     */
-    class SoundShape
-    {
+    class SoundShape {
         public:
             enum ShapeType
             {

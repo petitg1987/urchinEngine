@@ -12,11 +12,9 @@
 #include "scene/renderer3d/camera/Camera.h"
 #include "resources/image/Image.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class Terrain
-    {
+    class Terrain {
         public:
             Terrain(std::shared_ptr<TerrainMesh> &, std::unique_ptr<TerrainMaterial> &, const Point3<float> &);
             ~Terrain();

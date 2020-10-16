@@ -6,15 +6,13 @@
 #include "body/model/AbstractBody.h"
 #include "body/work/AbstractWorkBody.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * A bodies manager allowing to manage bodies modifications coming from two different thread. Indeed, the user
     * can add/remove/update bodies from thread 1 while physics engine update the same bodies on thread 2.
     */
-    class BodyManager : public Observable
-    {
+    class BodyManager : public Observable {
         public:
             BodyManager();
             ~BodyManager() override;

@@ -5,11 +5,9 @@
 
 #include "utils/display/geometry/GeometryModel.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class FrustumModel : public GeometryModel
-    {
+    class FrustumModel : public GeometryModel {
         public:
             explicit FrustumModel(Frustum<float> );
 

@@ -6,15 +6,13 @@
 
 #include "collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
      * Result of a ray test. The result is fill asynchronously to ray test.
      * Method "isResultReady" returns true when ray test result is correctly completed.
      */
-    class RayTestResult
-    {
+    class RayTestResult {
         public:
             RayTestResult();
 

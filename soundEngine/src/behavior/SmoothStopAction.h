@@ -6,11 +6,9 @@
 
 #include "behavior/SoundBehavior.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SmoothStopAction
-    {
+    class SmoothStopAction {
         public:
             explicit SmoothStopAction(const SoundBehavior &);
 

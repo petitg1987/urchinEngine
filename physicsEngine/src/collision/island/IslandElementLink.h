@@ -3,14 +3,12 @@
 
 #include "collision/island/IslandElement.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Allow to make the link between an island element and the island ID.
     */
-    struct IslandElementLink
-    {
+    struct IslandElementLink {
         IslandElementLink();
 
         IslandElement *element; //reference to the element
@@ -19,12 +17,8 @@ namespace urchin
         bool linkedToStaticElement; //true if 'element' is linked to a static element.
     };
 
-    struct IslandElementLinkSortPredicate
-    {
-        bool operator() (const IslandElementLink &elem1, const IslandElementLink &elem2) const
-        {
-            return elem1.islandIdRef < elem2.islandIdRef;
-        }
+    struct IslandElementLinkSortPredicate {
+        bool operator() (const IslandElementLink &elem1, const IslandElementLink &elem2) const;
     };
 
 }

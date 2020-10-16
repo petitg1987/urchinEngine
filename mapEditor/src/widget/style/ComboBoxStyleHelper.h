@@ -3,11 +3,9 @@
 
 #include <QtWidgets/QComboBox>
 
-namespace urchin
-{
+namespace urchin {
 
-    class ComboBoxStyleHelper
-    {
+    class ComboBoxStyleHelper {
         #define EULER_XYZ_ORIENT_LABEL "Euler XYZ"
         #define EULER_XZY_ORIENT_LABEL "Euler XZY"
         #define EULER_YXZ_ORIENT_LABEL "Euler YXZ"

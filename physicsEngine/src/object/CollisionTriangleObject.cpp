@@ -2,44 +2,36 @@
 
 #include "CollisionTriangleObject.h"
 
-namespace urchin
-{
+namespace urchin {
     CollisionTriangleObject::CollisionTriangleObject(float outerMargin, const Point3<float> &point1, const Point3<float> &point2, const Point3<float> &point3) :
             CollisionConvexObject3D(outerMargin),
-            triangleObject(Triangle3D<float>(point1, point2, point3))
-    {
+            triangleObject(Triangle3D<float>(point1, point2, point3)) {
 
     }
 
-    const Point3<float> &CollisionTriangleObject::getPoint(unsigned int index) const
-    {
+    const Point3<float> &CollisionTriangleObject::getPoint(unsigned int index) const {
         return triangleObject.getPoints()[index];
     }
 
-    CollisionConvexObject3D::ObjectType CollisionTriangleObject::getObjectType() const
-    {
+    CollisionConvexObject3D::ObjectType CollisionTriangleObject::getObjectType() const {
         return CollisionConvexObject3D::TRIANGLE_OBJECT;
     }
 
-    Point3<float> CollisionTriangleObject::getSupportPoint(const Vector3<float> &direction, bool includeMargin) const
-    {
-        if(includeMargin)
-        {
+    Point3<float> CollisionTriangleObject::getSupportPoint(const Vector3<float> &direction, bool includeMargin) const {
+        if(includeMargin) {
             return retrieveTriangle().getSupportPoint(direction);
         }
 
         return triangleObject.getSupportPoint(direction);
     }
 
-    Triangle3D<float> CollisionTriangleObject::retrieveTriangle() const
-    {
+    Triangle3D<float> CollisionTriangleObject::retrieveTriangle() const {
         assert(getOuterMargin()==0.0f);
 
         return triangleObject;
     }
 
-    std::string CollisionTriangleObject::toString() const
-    {
+    std::string CollisionTriangleObject::toString() const {
         std::stringstream ss;
         ss.precision(std::numeric_limits<float>::max_digits10);
 

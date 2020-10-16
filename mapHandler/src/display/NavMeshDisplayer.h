@@ -6,11 +6,9 @@
 #include "Urchin3dEngine.h"
 #include "UrchinAIEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class NavMeshDisplayer
-    {
+    class NavMeshDisplayer {
         public:
             NavMeshDisplayer(AIManager *, Renderer3d *);
             ~NavMeshDisplayer();

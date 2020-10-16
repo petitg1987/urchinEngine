@@ -3,11 +3,9 @@
 
 #include "utils/filter/TextureFilterBuilder.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class DownSampleFilterBuilder : public TextureFilterBuilder<DownSampleFilterBuilder>
-    {
+    class DownSampleFilterBuilder : public TextureFilterBuilder<DownSampleFilterBuilder> {
         public:
             DownSampleFilterBuilder();
             ~DownSampleFilterBuilder() override = default;

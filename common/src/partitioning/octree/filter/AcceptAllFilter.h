@@ -3,11 +3,9 @@
 
 #include "OctreeableFilter.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class TOctreeable> class AcceptAllFilter : public OctreeableFilter<TOctreeable>
-    {
+    template<class TOctreeable> class AcceptAllFilter : public OctreeableFilter<TOctreeable> {
         public:
             ~AcceptAllFilter() override = default;
 

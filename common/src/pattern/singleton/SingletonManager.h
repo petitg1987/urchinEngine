@@ -19,14 +19,12 @@
     #define DLL_EXPORT
 #endif
 
-namespace urchin
-{
+namespace urchin {
 
     /**
      * Map with the singletons
      */
-    class DLL_EXPORT SingletonManager
-    {
+    class DLL_EXPORT SingletonManager {
         public:
             static void *getSingleton(const std::string &);
             static void addSingleton(const std::string &, SingletonInterface *);

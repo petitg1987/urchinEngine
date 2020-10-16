@@ -5,11 +5,9 @@
 
 #include "scene/renderer3d/light/Light.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SunLight : public Light
-    {
+    class SunLight : public Light {
         public:
             explicit SunLight(const Vector3<float> &);
             ~SunLight() override = default;

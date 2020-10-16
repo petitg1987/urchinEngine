@@ -10,14 +10,12 @@
 #include "player/AudioPlayer.h"
 #include "player/stream/StreamUpdateWorker.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Allow to make the link between sound, sound trigger and the player
     */
-    class AudioController
-    {
+    class AudioController {
         public:
             AudioController(Sound *, SoundTrigger *, StreamUpdateWorker *);
             ~AudioController();

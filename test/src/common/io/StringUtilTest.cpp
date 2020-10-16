@@ -4,8 +4,7 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-void StringUtilTest::splitString()
-{
+void StringUtilTest::splitString() {
     std::string str = "str1,str2,str3";
     std::vector<std::string> splitStr;
 
@@ -17,8 +16,7 @@ void StringUtilTest::splitString()
     AssertHelper::assertString(splitStr[2], "str3");
 }
 
-void StringUtilTest::splitEmptyString()
-{
+void StringUtilTest::splitEmptyString() {
     std::string str = "str1,,str2";
     std::vector<std::string> splitStr;
 
@@ -30,8 +28,7 @@ void StringUtilTest::splitEmptyString()
     AssertHelper::assertString(splitStr[2], "str2");
 }
 
-CppUnit::Test *StringUtilTest::suite()
-{
+CppUnit::Test *StringUtilTest::suite() {
     auto *suite = new CppUnit::TestSuite("StringUtilTest");
 
     suite->addTest(new CppUnit::TestCaller<StringUtilTest>("splitString", &StringUtilTest::splitString));

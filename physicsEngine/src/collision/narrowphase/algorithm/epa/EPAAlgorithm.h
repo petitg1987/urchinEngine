@@ -19,11 +19,9 @@
 #include "object/CollisionConvexObject3D.h"
 #include "collision/narrowphase/algorithm/gjk/result/GJKResult.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class EPAAlgorithm
-    {
+    template<class T> class EPAAlgorithm {
         public:
             EPAAlgorithm();
 

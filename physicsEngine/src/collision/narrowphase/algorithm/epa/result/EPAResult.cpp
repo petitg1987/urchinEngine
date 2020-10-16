@@ -1,7 +1,6 @@
 #include "EPAResult.h"
 
-namespace urchin
-{
+namespace urchin {
 
     //explicit template
     template class EPAResult<float>;

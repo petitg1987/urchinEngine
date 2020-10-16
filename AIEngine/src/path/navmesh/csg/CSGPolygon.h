@@ -5,11 +5,9 @@
 #include <vector>
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class CSGPolygon
-    {
+    template<class T> class CSGPolygon {
         public:
             CSGPolygon(std::string name, const std::vector<Point2<T>> &);
             CSGPolygon(std::string name, std::vector<Point2<T>> &&);

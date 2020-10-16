@@ -13,11 +13,9 @@
 #include "path/navmesh/NavMeshGenerator.h"
 #include "path/navmesh/model/output/NavMesh.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class AIManager
-    {
+    class AIManager {
         public:
             AIManager();
             ~AIManager();

@@ -9,11 +9,9 @@
 
 #include "panel/objects/bodyshape/BodyShapeWidget.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SpinBoxDelegate : public QItemDelegate
-    {
+    class SpinBoxDelegate : public QItemDelegate {
         Q_OBJECT
 
         public:

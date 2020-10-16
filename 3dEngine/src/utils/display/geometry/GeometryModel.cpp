@@ -3,8 +3,7 @@
 #include "utils/display/geometry/GeometryModel.h"
 #include "utils/shader/ShaderManager.h"
 
-namespace urchin
-{
+namespace urchin {
 
     GeometryModel::GeometryModel() :
             bufferIDs(),
@@ -13,8 +12,7 @@ namespace urchin
             polygonMode(WIREFRAME),
             lineSize(1.3),
             blendMode(NONE),
-            alwaysVisible(false)
-    {
+            alwaysVisible(false) {
         shader = ShaderManager::instance()->createProgram("displayGeometry.vert", "", "displayGeometry.frag");
 
         mProjectionLoc = glGetUniformLocation(shader, "mProjection");
@@ -25,66 +23,54 @@ namespace urchin
         glGenVertexArrays(1, &vertexArrayObject);
     }
 
-    GeometryModel::~GeometryModel()
-    {
+    GeometryModel::~GeometryModel() {
         glDeleteVertexArrays(1, &vertexArrayObject);
         glDeleteBuffers(1, bufferIDs);
 
         ShaderManager::instance()->removeProgram(shader);
     }
 
-    void GeometryModel::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix)
-    {
+    void GeometryModel::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
     }
 
-    Vector4<float> GeometryModel::getColor() const
-    {
+    Vector4<float> GeometryModel::getColor() const {
         return color;
     }
 
-    void GeometryModel::setColor(float red, float green, float blue, float alpha)
-    {
+    void GeometryModel::setColor(float red, float green, float blue, float alpha) {
         this->color = Vector4<float>(red, green, blue, alpha);
     }
 
-    GeometryModel::PolygonMode GeometryModel::getPolygonMode() const
-    {
+    GeometryModel::PolygonMode GeometryModel::getPolygonMode() const {
         return polygonMode;
     }
 
-    void GeometryModel::setPolygonMode(PolygonMode polygonMode)
-    {
+    void GeometryModel::setPolygonMode(PolygonMode polygonMode) {
         this->polygonMode = polygonMode;
     }
 
-    void GeometryModel::setLineSize(float lineSize)
-    {
+    void GeometryModel::setLineSize(float lineSize) {
         this->lineSize = lineSize;
     }
 
-    GeometryModel::BlendMode GeometryModel::getBlendMode() const
-    {
+    GeometryModel::BlendMode GeometryModel::getBlendMode() const {
         return blendMode;
     }
 
-    void GeometryModel::setBlendMode(BlendMode blendMode)
-    {
+    void GeometryModel::setBlendMode(BlendMode blendMode) {
         this->blendMode = blendMode;
     }
 
-    bool GeometryModel::isAlwaysVisible() const
-    {
+    bool GeometryModel::isAlwaysVisible() const {
         return alwaysVisible;
     }
 
-    void GeometryModel::setAlwaysVisible(bool alwaysVisible)
-    {
+    void GeometryModel::setAlwaysVisible(bool alwaysVisible) {
         this->alwaysVisible = alwaysVisible;
     }
 
-    void GeometryModel::initialize()
-    {
+    void GeometryModel::initialize() {
         modelMatrix = retrieveModelMatrix();
         std::vector<Point3<float>> vertexArray = retrieveVertexArray();
 
@@ -96,8 +82,7 @@ namespace urchin
         glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
     }
 
-    void GeometryModel::display(const Matrix4<float> &viewMatrix) const
-    {
+    void GeometryModel::display(const Matrix4<float> &viewMatrix) const {
         unsigned int shaderSaved = ShaderManager::instance()->getCurrentProgram();
         ShaderManager::instance()->bind(shader);
 
@@ -110,24 +95,20 @@ namespace urchin
         glDisable(GL_CULL_FACE);
         glPolygonMode(GL_FRONT_AND_BACK, polygonMode==WIREFRAME ? GL_LINE : GL_FILL);
         glLineWidth(lineSize);
-        if(blendMode==ONE_MINUS_SRC_ALPHA)
-        {
+        if(blendMode==ONE_MINUS_SRC_ALPHA) {
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         }
-        if (isAlwaysVisible())
-        {
+        if (isAlwaysVisible()) {
             glDisable(GL_DEPTH_TEST);
         }
 
         drawGeometry();
 
-        if (isAlwaysVisible())
-        {
+        if (isAlwaysVisible()) {
             glEnable(GL_DEPTH_TEST);
         }
-        if(blendMode!=NONE)
-        {
+        if(blendMode!=NONE) {
             glDisable(GL_BLEND);
         }
         glEnable(GL_CULL_FACE);

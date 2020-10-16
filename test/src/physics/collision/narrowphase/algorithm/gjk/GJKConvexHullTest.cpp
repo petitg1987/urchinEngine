@@ -9,8 +9,7 @@
 #include "physics/collision/narrowphase/algorithm/gjk/GJKTestHelper.h"
 using namespace urchin;
 
-void GJKConvexHullTest::identicalBox()
-{
+void GJKConvexHullTest::identicalBox() {
     Point3<float> obbPointsTab1[] = {
             Point3<float>(-0.3, 1.0, 0.0), Point3<float>(0.2, 0.0, 0.0), Point3<float>(-0.3, -1.0, 0.0), Point3<float>(-0.8, 0.0, 0.0),
             Point3<float>(-0.3, 1.0, -1.0), Point3<float>(0.2, 0.0, -1.0), Point3<float>(-0.3, -1.0, -1.0), Point3<float>(-0.8, 0.0, -1.0)
@@ -30,8 +29,7 @@ void GJKConvexHullTest::identicalBox()
     AssertHelper::assertTrue(result->isCollide());
 }
 
-void GJKConvexHullTest::separateBox()
-{
+void GJKConvexHullTest::separateBox() {
     Point3<float> aabbPointsTab[] = {
             Point3<float>(0.0, 1.0, 0.0), Point3<float>(1.0, 1.0, 0.0), Point3<float>(1.0, -1.0, 0.0), Point3<float>(0.0, -1.0, 0.0),
             Point3<float>(0.0, 1.0, -1.0), Point3<float>(1.0, 1.0, -1.0), Point3<float>(1.0, -1.0, -1.0), Point3<float>(0.0, -1.0, -1.0)
@@ -57,8 +55,7 @@ void GJKConvexHullTest::separateBox()
     AssertHelper::assertFloatEquals(result->getClosestPointB().vector(result->getClosestPointA()).length(), 0.1);
 }
 
-void GJKConvexHullTest::cornerInsideBox()
-{
+void GJKConvexHullTest::cornerInsideBox() {
     Point3<float> aabbPointsTab[] = {
             Point3<float>(0.0, 1.0, 0.0), Point3<float>(1.0, 1.0, 0.0), Point3<float>(1.0, -1.0, 0.0), Point3<float>(0.0, -1.0, 0.0),
             Point3<float>(0.0, 1.0, -1.0), Point3<float>(1.0, 1.0, -1.0), Point3<float>(1.0, -1.0, -1.0), Point3<float>(0.0, -1.0, -1.0)
@@ -78,8 +75,7 @@ void GJKConvexHullTest::cornerInsideBox()
     AssertHelper::assertTrue(result->isCollide());
 }
 
-void GJKConvexHullTest::faceInsideTrapeze()
-{
+void GJKConvexHullTest::faceInsideTrapeze() {
     Point3<float> trapezePointsTab1[] = {
             Point3<float>(1.0, 0.0, 0.0), Point3<float>(3.0, 0.0, 0.0), Point3<float>(0.0, 3.0, 0.0), Point3<float>(0.0, 1.0, 0.0),
             Point3<float>(1.0, 0.0, -1.0), Point3<float>(3.0, 0.0, -1.0), Point3<float>(0.0, 3.0, -1.0), Point3<float>(0.0, 1.0, -1.0),
@@ -99,8 +95,7 @@ void GJKConvexHullTest::faceInsideTrapeze()
     AssertHelper::assertTrue(result->isCollide());
 }
 
-void GJKConvexHullTest::separateHexagon()
-{
+void GJKConvexHullTest::separateHexagon() {
     Point3<float> hexagonPointsTab1[] = {
             Point3<float>(0.0, 0.0, 0.0), Point3<float>(1.0, 0.0, 0.0), Point3<float>(1.5, 1.0, 0.0), Point3<float>(1.0, 2.0, 0.0), Point3<float>(0.0, 2.0, 0.0), Point3<float>(-0.5, 1.0, 0.0),
             Point3<float>(0.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.5, 1.0, -1.0), Point3<float>(1.0, 2.0, -1.0), Point3<float>(0.0, 2.0, -1.0), Point3<float>(-0.5, 1.0, -1.0),
@@ -126,8 +121,7 @@ void GJKConvexHullTest::separateHexagon()
     AssertHelper::assertFloatEquals(result->getClosestPointB().vector(result->getClosestPointA()).length(), 0.5);
 }
 
-void GJKConvexHullTest::cornerInsideHexagon()
-{
+void GJKConvexHullTest::cornerInsideHexagon() {
     Point3<float> hexagonPointsTab1[] = {
             Point3<float>(0.0, 0.0, 0.0), Point3<float>(1.0, 0.0, 0.0), Point3<float>(1.5, 1.0, 0.0), Point3<float>(1.0, 2.0, 0.0), Point3<float>(0.0, 2.0, 0.0), Point3<float>(-0.5, 1.0, 0.0),
             Point3<float>(0.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.5, 1.0, -1.0), Point3<float>(1.0, 2.0, -1.0), Point3<float>(0.0, 2.0, -1.0), Point3<float>(-0.5, 1.0, -1.0),
@@ -147,8 +141,7 @@ void GJKConvexHullTest::cornerInsideHexagon()
     AssertHelper::assertTrue(result->isCollide());
 }
 
-CppUnit::Test *GJKConvexHullTest::suite()
-{
+CppUnit::Test *GJKConvexHullTest::suite() {
     auto *suite = new CppUnit::TestSuite("GJKConvexHullTest");
 
     suite->addTest(new CppUnit::TestCaller<GJKConvexHullTest>("identicalBox", &GJKConvexHullTest::identicalBox));

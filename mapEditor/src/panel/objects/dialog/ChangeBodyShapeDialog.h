@@ -10,11 +10,9 @@
 #include "UrchinMapHandler.h"
 #include "UrchinPhysicsEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class ChangeBodyShapeDialog : public QDialog
-    {
+    class ChangeBodyShapeDialog : public QDialog {
         Q_OBJECT
 
         public:

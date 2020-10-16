@@ -7,11 +7,9 @@
 #include "utils/display/geometry/GeometryModel.h"
 #include "scene/renderer3d/camera/Camera.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class GeometryManager
-    {
+    class GeometryManager {
         public:
             virtual ~GeometryManager() = default;
 

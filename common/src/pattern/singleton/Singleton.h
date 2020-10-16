@@ -7,14 +7,12 @@
 #include "pattern/singleton/SingletonManager.h"
 #include "pattern/singleton/SingletonInterface.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Allows to create a singleton class (no thread-safe)
     */
-    template<class T> class Singleton : public SingletonInterface
-    {
+    template<class T> class Singleton : public SingletonInterface {
         public:
             static T *instance();
             ~Singleton() override;

@@ -1,34 +1,28 @@
 #include "Fog.h"
 
-namespace urchin
-{
+namespace urchin {
 
     Fog::Fog(float density, float gradient, const Vector3<float> &color, float maxHeight) :
             density(density),
             gradient(gradient),
             color(color),
-            maxHeight(maxHeight)
-    {
+            maxHeight(maxHeight) {
 
     }
 
-    float Fog::getDensity() const
-    {
+    float Fog::getDensity() const {
         return density;
     }
 
-    float Fog::getGradient() const
-    {
+    float Fog::getGradient() const {
         return gradient;
     }
 
-    const Vector3<float> &Fog::getColor()
-    {
+    const Vector3<float> &Fog::getColor() {
         return color;
     }
 
-    float Fog::getMaxHeight() const
-    {
+    float Fog::getMaxHeight() const {
         return maxHeight;
     }
 }

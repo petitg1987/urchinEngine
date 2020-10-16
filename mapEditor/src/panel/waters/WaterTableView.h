@@ -10,11 +10,9 @@
 
 Q_DECLARE_METATYPE(const urchin::SceneWater *)
 
-namespace urchin
-{
+namespace urchin {
 
-    class WaterTableView : public QTableView, public Observable
-    {
+    class WaterTableView : public QTableView, public Observable {
         Q_OBJECT
 
         public:

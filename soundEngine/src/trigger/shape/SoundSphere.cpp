@@ -1,7 +1,6 @@
 #include "trigger/shape/SoundSphere.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
      * @param margin Margin to sphere used to determine stop sound trigger
@@ -9,48 +8,39 @@ namespace urchin
     SoundSphere::SoundSphere(float radius, const Point3<float> &position, float margin) :
         SoundShape(margin),
         playTriggerSphere(Sphere<float>(radius, position)),
-        stopTriggerSphere(Sphere<float>(radius + margin, position))
-    {
+        stopTriggerSphere(Sphere<float>(radius + margin, position)) {
 
     }
 
-    SoundShape::ShapeType SoundSphere::getShapeType() const
-    {
+    SoundShape::ShapeType SoundSphere::getShapeType() const {
         return SoundShape::SPHERE_SHAPE;
     }
 
-    const Sphere<float> &SoundSphere::getPlayTriggerSphere() const
-    {
+    const Sphere<float> &SoundSphere::getPlayTriggerSphere() const {
         return playTriggerSphere;
     }
 
-    const Sphere<float> &SoundSphere::getStopTriggerSphere() const
-    {
+    const Sphere<float> &SoundSphere::getStopTriggerSphere() const {
         return stopTriggerSphere;
     }
 
-    float SoundSphere::getRadius() const
-    {
+    float SoundSphere::getRadius() const {
         return playTriggerSphere.getRadius();
     }
 
-    Point3<float> SoundSphere::getPosition() const
-    {
+    Point3<float> SoundSphere::getPosition() const {
         return playTriggerSphere.getCenterOfMass();
     }
 
-    bool SoundSphere::pointInsidePlayShape(const Point3<float> &point) const
-    {
+    bool SoundSphere::pointInsidePlayShape(const Point3<float> &point) const {
         return playTriggerSphere.collideWithPoint(point);
     }
 
-    bool SoundSphere::pointInsideStopShape(const Point3<float> &point) const
-    {
+    bool SoundSphere::pointInsideStopShape(const Point3<float> &point) const {
         return stopTriggerSphere.collideWithPoint(point);
     }
 
-    SoundShape *SoundSphere::clone() const
-    {
+    SoundShape *SoundSphere::clone() const {
         return new SoundSphere(getRadius(), getPosition(), getMargin());
     }
 

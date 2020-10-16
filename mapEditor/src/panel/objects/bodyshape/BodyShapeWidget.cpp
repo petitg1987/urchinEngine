@@ -3,13 +3,11 @@
 
 #include "BodyShapeWidget.h"
 
-namespace urchin
-{
+namespace urchin {
 
     BodyShapeWidget::BodyShapeWidget(const SceneObject *sceneObject) :
             disableShapeEvent(false),
-            sceneObject(sceneObject)
-    {
+            sceneObject(sceneObject) {
         setContentsMargins(0, 0, 0, 0);
 
         mainLayout = new QGridLayout(this);
@@ -17,22 +15,18 @@ namespace urchin
         mainLayout->setContentsMargins(0, 0, 0, 0);
     }
 
-    const SceneObject *BodyShapeWidget::getSceneObject() const
-    {
+    const SceneObject *BodyShapeWidget::getSceneObject() const {
         return sceneObject;
     }
 
-    std::shared_ptr<const CollisionShape3D> BodyShapeWidget::retrieveShape()
-    {
-        if(!shape)
-        {
+    std::shared_ptr<const CollisionShape3D> BodyShapeWidget::retrieveShape() {
+        if(!shape) {
             shape = createBodyShape();
         }
         return shape;
     }
 
-    void BodyShapeWidget::setupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape)
-    {
+    void BodyShapeWidget::setupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape) {
         disableShapeEvent = true;
 
         doSetupShapePropertiesFrom(std::move(shape));
@@ -40,10 +34,8 @@ namespace urchin
         disableShapeEvent = false;
     }
 
-    void BodyShapeWidget::updateBodyShape()
-    {
-        if(!disableShapeEvent)
-        {
+    void BodyShapeWidget::updateBodyShape() {
+        if(!disableShapeEvent) {
             shape = createBodyShape();
 
             emit bodyShapeChange(shape);

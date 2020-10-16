@@ -5,11 +5,9 @@
 
 #include "input/AIEntity.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class AIWorld
-    {
+    class AIWorld {
         public:
             AIWorld();
 

@@ -8,12 +8,10 @@
 #include "panel/objects/bodyshape/support/SpinBoxDelegate.h"
 #include "panel/objects/bodyshape/support/DefaultBodyShapeCreator.h"
 
-namespace urchin
-{
+namespace urchin {
 
     BodyConvexHullShapeWidget::BodyConvexHullShapeWidget(const SceneObject *sceneObject) :
-            BodyShapeWidget(sceneObject)
-    {
+            BodyShapeWidget(sceneObject) {
         pointsLabel = new QLabel("Points:");
         mainLayout->addWidget(pointsLabel, 0, 0);
 
@@ -52,26 +50,21 @@ namespace urchin
         connect(removePointButton, SIGNAL(clicked()), this, SLOT(removeSelectedPoint()));
     }
 
-    std::string BodyConvexHullShapeWidget::getBodyShapeName() const
-    {
+    std::string BodyConvexHullShapeWidget::getBodyShapeName() const {
         return CONVEX_HULL_SHAPE_LABEL;
     }
 
-    void BodyConvexHullShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape)
-    {
+    void BodyConvexHullShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape) {
         const auto *convexHullShape = dynamic_cast<const CollisionConvexHullShape *>(shape.get());
 
         const std::vector<Point3<float>> &points = convexHullShape->getPoints();
-        for (const auto &point : points)
-        {
+        for (const auto &point : points) {
             addPoint(point);
         }
     }
 
-    std::shared_ptr<const CollisionShape3D> BodyConvexHullShapeWidget::createBodyShape() const
-    {
-        try
-        {
+    std::shared_ptr<const CollisionShape3D> BodyConvexHullShapeWidget::createBodyShape() const {
+        try {
             LabelStyleHelper::applyNormalStyle(pointsLabel);
             auto scaledShape = std::make_shared<const CollisionConvexHullShape>(getPoints());
 
@@ -80,18 +73,15 @@ namespace urchin
             scaledShape->scale(invScale);
 
             return scaledShape;
-        }catch(std::invalid_argument &e)
-        {
+        }catch(std::invalid_argument &e) {
             LabelStyleHelper::applyErrorStyle(pointsLabel, std::string(e.what()));
             return DefaultBodyShapeCreator(getSceneObject()).createDefaultBodyShape(CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE, true);
         }
     }
 
-    std::vector<Point3<float>> BodyConvexHullShapeWidget::getPoints() const
-    {
+    std::vector<Point3<float>> BodyConvexHullShapeWidget::getPoints() const {
         std::vector<Point3<float>> points;
-        for(int row=0; row< pointsTableModel->rowCount(); ++row)
-        {
+        for(int row=0; row< pointsTableModel->rowCount(); ++row) {
             QModelIndex indexX = pointsTableModel->index(row, 0);
             QModelIndex indexY = pointsTableModel->index(row, 1);
             QModelIndex indexZ = pointsTableModel->index(row, 2);
@@ -106,8 +96,7 @@ namespace urchin
         return points;
     }
 
-    void BodyConvexHullShapeWidget::addPoint(const Point3<float> &point)
-    {
+    void BodyConvexHullShapeWidget::addPoint(const Point3<float> &point) {
         pointsTableModel->insertRow(pointsTableModel->rowCount());
 
         QModelIndex indexX = pointsTableModel->index(pointsTableModel->rowCount()-1, 0);
@@ -122,17 +111,14 @@ namespace urchin
         pointsTable->resizeRowsToContents();
     }
 
-    void BodyConvexHullShapeWidget::addNewPoint()
-    {
+    void BodyConvexHullShapeWidget::addNewPoint() {
         addPoint(Point3<float>(0.0, 0.0, 0.0));
 
         updateBodyShape();
     }
 
-    void BodyConvexHullShapeWidget::removeSelectedPoint()
-    {
-        if(pointsTable->currentIndex().row()!=-1)
-        {
+    void BodyConvexHullShapeWidget::removeSelectedPoint() {
+        if(pointsTable->currentIndex().row()!=-1) {
             pointsTableModel->removeRow(pointsTable->currentIndex().row());
             pointsTable->resizeRowsToContents();
 

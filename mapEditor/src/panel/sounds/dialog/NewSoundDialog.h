@@ -10,11 +10,9 @@
 #include "UrchinMapHandler.h"
 #include "controller/sounds/SoundController.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class NewSoundDialog : public QDialog
-    {
+    class NewSoundDialog : public QDialog {
         Q_OBJECT
 
         #define AMBIENT_SOUND_LABEL "Ambient"

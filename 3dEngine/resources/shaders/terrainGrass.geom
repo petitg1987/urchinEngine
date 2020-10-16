@@ -27,7 +27,7 @@ float PHI = 1.61803398874989484820459 * 00000.1; //golden ratio
 float PI  = 3.14159265358979323846264 * 00000.1; //PI
 float SRT = 1.41421356237309504880169 * 10000.0; //square root of two
 
-mat3 rotationMatrix(vec3 axis, float angle){
+mat3 rotationMatrix(vec3 axis, float angle) {
     axis = normalize(axis);
     float s = sin(angle);
     float c = cos(angle);
@@ -38,24 +38,24 @@ mat3 rotationMatrix(vec3 axis, float angle){
                 oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c);
 }
 
-float randZeroOne(in vec2 seed){
+float randZeroOne(in vec2 seed) {
     return fract(sin(dot(seed, vec2(PHI, PI)))*SRT);
 }
 
-int randomInt(int min, int max, vec3 seed){
+int randomInt(int min, int max, vec3 seed) {
     vec2 seed2d = vec2(seed.x, seed.y + seed.z);
     float fRandomFloat = randZeroOne(seed2d);
     return int(round(float(min)+fRandomFloat*float(max-min)));
 }
 
-void main(){
+void main() {
 
     vec3 grassCenterPosition = gl_in[0].gl_Position.xyz;
 
     float s = (grassCenterPosition.x - terrainMinPoint.x) / (terrainMaxPoint.x - terrainMinPoint.x);
     float t = (grassCenterPosition.z - terrainMinPoint.z) / (terrainMaxPoint.z - terrainMinPoint.z);
     vec4 grassMask = texture2D(grassMaskTex, vec2(s, t));
-    if(grassMask.x > 0.5){
+    if(grassMask.x > 0.5) {
         return;
     }
 
@@ -65,11 +65,9 @@ void main(){
     float grassYShift = 0.0f;
     float grassCameraDistance = distance(grassCenterPosition, cameraPosition);
     float startReduceHeightDistance = grassDisplayDistance * 0.9f;
-    if(grassCameraDistance > grassDisplayDistance)
-    {
+    if(grassCameraDistance > grassDisplayDistance) {
         return;
-    }else if(grassCameraDistance > startReduceHeightDistance)
-    {
+    }else if(grassCameraDistance > startReduceHeightDistance) {
         float grassHeightReducePercentage = (grassCameraDistance - startReduceHeightDistance) / (grassDisplayDistance - startReduceHeightDistance);
         grassYShift = - grassHeightReducePercentage * grassHeight;
     }
@@ -81,15 +79,14 @@ void main(){
     baseDir[2] = vec3(float(cos(-45.0f*piOver180)), 0.0f, float(sin(-45.0f*piOver180)));
 
     float windPower = 0.5f + sin(grassCenterPosition.x/30.0f + grassCenterPosition.z/30.0f + sumTimeStep*(1.2f+windStrength/20.0f));
-    if(windPower > 0.0f){
+    if(windPower > 0.0f) {
         windPower = windPower*0.3f;
     }else{
         windPower = windPower*0.2f;
     }
     windPower *= windStrength;
 
-    for(int i = 0; i < 3; i++)
-    {
+    for(int i = 0; i < 3; i++) {
         //texture selection
         vec3 seed = grassCenterPosition * float(i);
         float startTextX = float(randomInt(0, numGrassInTex-1, seed)) * (1.0f / numGrassInTex);

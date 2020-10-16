@@ -7,11 +7,9 @@
 
 #include "CollisionShapeReaderWriter.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class CollisionCompoundShapeReaderWriter : public CollisionShapeReaderWriter
-    {
+    class CollisionCompoundShapeReaderWriter : public CollisionShapeReaderWriter {
         //XML tags
         #define LOCALIZED_SHAPES "localizedShapes"
         #define LOCALIZED_SHAPE "localizedShape"

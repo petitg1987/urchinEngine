@@ -4,11 +4,9 @@
 #include <string>
 #include <AL/al.h>
 
-namespace urchin
-{
+namespace urchin {
 
-    class Sound
-    {
+    class Sound {
         public:
             enum SoundType
             {

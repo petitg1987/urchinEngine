@@ -10,11 +10,9 @@
 #include "UrchinMapHandler.h"
 #include "UrchinSoundEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class ChangeSoundTriggerDialog : public QDialog
-    {
+    class ChangeSoundTriggerDialog : public QDialog {
         Q_OBJECT
 
         #define MANUAL_TRIGGER_LABEL "Manual"

@@ -6,11 +6,9 @@
 #include "resources/model/ConstMesh.h"
 #include "scene/renderer3d/model/displayer/MeshParameter.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class Mesh
-    {
+    class Mesh {
         public:
             explicit Mesh(const ConstMesh *);
             ~Mesh();

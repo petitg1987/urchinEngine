@@ -6,19 +6,16 @@
 #include "resources/image/Image.h"
 #include "tools/xml/XmlParser.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    struct WidgetOutline
-    {
+    struct WidgetOutline {
         unsigned int topWidth;
         unsigned int bottomWidth;
         unsigned int leftWidth;
         unsigned int rightWidth;
     };
 
-    class GUISkinService : public Singleton<GUISkinService>
-    {
+    class GUISkinService : public Singleton<GUISkinService> {
         public:
             friend class Singleton<GUISkinService>;
 

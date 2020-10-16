@@ -18,11 +18,9 @@
 #include "scene/lights/LightScopeDisplayer.h"
 #include "scene/sounds/SoundTriggerDisplayer.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SceneDisplayer
-    {
+    class SceneDisplayer {
         public:
             enum ViewProperties
             {

@@ -8,11 +8,9 @@
 #include "processable/raytest/RayTestResult.h"
 #include "collision/CollisionWorld.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class RayTester : public Processable
-    {
+    class RayTester : public Processable {
         public:
             explicit RayTester(Ray<float> ray);
 

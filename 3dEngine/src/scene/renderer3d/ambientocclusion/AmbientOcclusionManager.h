@@ -8,11 +8,9 @@
 #include "utils/display/quad/QuadDisplayer.h"
 #include "utils/filter/bilateralblur/BilateralBlurFilter.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class AmbientOcclusionManager
-    {
+    class AmbientOcclusionManager {
         public:
             enum AOTextureSize
             {

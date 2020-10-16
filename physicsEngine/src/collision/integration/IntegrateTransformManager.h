@@ -6,14 +6,12 @@
 #include "collision/broadphase/BroadPhaseManager.h"
 #include "collision/narrowphase/NarrowPhaseManager.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Manager allowing to perform integration on bodies transformation
     */
-    class IntegrateTransformManager
-    {
+    class IntegrateTransformManager {
         public:
             IntegrateTransformManager(const BodyManager *, const BroadPhaseManager *, const NarrowPhaseManager *);
 

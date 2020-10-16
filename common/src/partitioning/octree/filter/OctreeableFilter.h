@@ -1,11 +1,9 @@
 #ifndef URCHINENGINE_OCTREEABLEFILTER_H
 #define URCHINENGINE_OCTREEABLEFILTER_H
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class TOctreeable> class OctreeableFilter
-    {
+    template<class TOctreeable> class OctreeableFilter {
         public:
             virtual ~OctreeableFilter() = default;
 

@@ -11,11 +11,9 @@
 #include "utils/filter/gaussianblur/GaussianBlurFilter.h"
 #include "utils/filter/bilateralblur/BilateralBlurFilter.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<typename T> class TextureFilterBuilder
-    {
+    template<typename T> class TextureFilterBuilder {
         public:
             TextureFilterBuilder();
             virtual ~TextureFilterBuilder();

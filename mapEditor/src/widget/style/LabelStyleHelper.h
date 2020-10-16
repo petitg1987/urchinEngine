@@ -4,11 +4,9 @@
 #include <string>
 #include <QtWidgets/QLabel>
 
-namespace urchin
-{
+namespace urchin {
 
-    class LabelStyleHelper
-    {
+    class LabelStyleHelper {
         public:
             static void applyErrorStyle(QLabel *, const std::string &);
             static void applyNormalStyle(QLabel *);

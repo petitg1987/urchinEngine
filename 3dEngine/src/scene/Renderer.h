@@ -1,11 +1,9 @@
 #ifndef URCHINENGINE_RENDERER_H
 #define URCHINENGINE_RENDERER_H
 
-namespace urchin
-{
+namespace urchin {
 
-    class Renderer
-    {
+    class Renderer {
         public:
             virtual ~Renderer() = default;
 

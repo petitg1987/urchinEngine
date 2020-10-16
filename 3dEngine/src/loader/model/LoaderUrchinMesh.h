@@ -6,11 +6,9 @@
 #include "resources/model/ConstMeshes.h"
 #include "loader/Loader.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class LoaderUrchinMesh : public Loader<ConstMeshes>
-    {
+    class LoaderUrchinMesh : public Loader<ConstMeshes> {
         public:
             ~LoaderUrchinMesh() override = default;
 

@@ -1,17 +1,14 @@
 #include "Check.h"
 #include "tools/ConfigService.h"
 
-namespace urchin
-{
+namespace urchin {
 
     Check::Check() :
-            isAdditionalCheckEnable(ConfigService::instance()->getBoolValue("checks.additionalChecksEnable"))
-    {
+            isAdditionalCheckEnable(ConfigService::instance()->getBoolValue("checks.additionalChecksEnable")) {
 
     }
 
-    bool Check::additionalChecksEnable()
-    {
+    bool Check::additionalChecksEnable() {
         return isAdditionalCheckEnable;
     }
 

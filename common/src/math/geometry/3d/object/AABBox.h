@@ -12,14 +12,12 @@
 #include "math/algebra/vector/Vector3.h"
 #include "math/algebra/Transform.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Represents an axis aligned bounding box
     */
-    template<class T> class AABBox : public ConvexObject3D<T>
-    {
+    template<class T> class AABBox : public ConvexObject3D<T> {
         public:
             AABBox();
             AABBox(const Point3<T> &, const Point3<T> &);

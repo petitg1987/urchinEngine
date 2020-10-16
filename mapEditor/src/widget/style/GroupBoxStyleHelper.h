@@ -3,11 +3,9 @@
 
 #include <QtWidgets/QGroupBox>
 
-namespace urchin
-{
+namespace urchin {
 
-    class GroupBoxStyleHelper
-    {
+    class GroupBoxStyleHelper {
         public:
             static void applyNormalStyle(QGroupBox *);
     };

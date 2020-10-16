@@ -3,11 +3,9 @@
 
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class MeshParameter
-    {
+    class MeshParameter {
         public:
             MeshParameter();
 

@@ -1,16 +1,13 @@
 #include "math/geometry/2d/shape/RectangleShape.h"
 
-namespace urchin
-{
+namespace urchin {
 
     template<class T> RectangleShape<T>::RectangleShape(const Vector2<T> &diagonal)    :
-        diagonal(diagonal)
-    {
+        diagonal(diagonal) {
 
     }
 
-    template<class T> const Vector2<T> &RectangleShape<T>::getDiagonal() const
-    {
+    template<class T> const Vector2<T> &RectangleShape<T>::getDiagonal() const {
         return diagonal;
     }
 

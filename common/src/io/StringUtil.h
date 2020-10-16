@@ -4,11 +4,9 @@
 #include <string>
 #include <vector>
 
-namespace urchin
-{
+namespace urchin {
 
-    class StringUtil
-    {
+    class StringUtil {
         public:
             static void replaceAll(std::string &, const std::string &, const std::string &);
             static void replaceLine(std::string &, const std::string &, const std::string &);

@@ -3,16 +3,14 @@
 
 #include "Camera.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
      * A free camera:
      * - mouse right click released: directional keys allow to move camera forward/backward and rotate camera
      * - mouse right click pressed: camera rotate based on mouse movements and directional keys allow to move camera forward/backward/left/right
      */
-    class FreeCamera : public Camera
-    {
+    class FreeCamera : public Camera {
         public:
             FreeCamera(float, float, float);
             ~FreeCamera() override = default;

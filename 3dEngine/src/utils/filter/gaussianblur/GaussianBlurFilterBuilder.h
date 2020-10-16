@@ -3,11 +3,9 @@
 
 #include "utils/filter/TextureFilterBuilder.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class GaussianBlurFilterBuilder : public TextureFilterBuilder<GaussianBlurFilterBuilder>
-    {
+    class GaussianBlurFilterBuilder : public TextureFilterBuilder<GaussianBlurFilterBuilder> {
         public:
             enum BlurDirection
             {

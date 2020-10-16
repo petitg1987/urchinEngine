@@ -4,22 +4,18 @@
 
 #include "utils/display/geometry/obbox/OBBoxModel.h"
 
-namespace urchin
-{
+namespace urchin {
 
     OBBoxModel::OBBoxModel(OBBox<float> obbox):
-            obbox(std::move(obbox))
-    {
+            obbox(std::move(obbox)) {
         initialize();
     }
 
-    Matrix4<float> OBBoxModel::retrieveModelMatrix() const
-    {
+    Matrix4<float> OBBoxModel::retrieveModelMatrix() const {
         return {};
     }
 
-    std::vector<Point3<float>> OBBoxModel::retrieveVertexArray() const
-    {
+    std::vector<Point3<float>> OBBoxModel::retrieveVertexArray() const {
         std::vector<Point3<float>> vertexArray;
         vertexArray.reserve(24);
 
@@ -64,8 +60,7 @@ namespace urchin
         return vertexArray;
     }
 
-    void OBBoxModel::drawGeometry() const
-    {
+    void OBBoxModel::drawGeometry() const {
         glDrawArrays(GL_LINES, 0, 24);
     }
 

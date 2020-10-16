@@ -1,11 +1,9 @@
 #ifndef URCHINENGINE_EDGELINKRESULT_H
 #define URCHINENGINE_EDGELINKRESULT_H
 
-namespace urchin
-{
+namespace urchin {
 
-    class EdgeLinkResult
-    {
+    class EdgeLinkResult {
         public:
             static EdgeLinkResult noEdgeLink();
             static EdgeLinkResult collinearEdgeLink(float, float);

@@ -9,11 +9,9 @@
 #include "UrchinMapHandler.h"
 #include "controller/waters/WaterController.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class NewWaterDialog : public QDialog
-    {
+    class NewWaterDialog : public QDialog {
         Q_OBJECT
 
         public:

@@ -6,11 +6,9 @@
 #include "shape/CollisionShape3D.h"
 #include "body/work/WorkGhostBody.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class PhysicsCharacter
-    {
+    class PhysicsCharacter {
         public:
             PhysicsCharacter(const std::string &, float, const std::shared_ptr<const CollisionShape3D> &, const PhysicsTransform &);
             PhysicsCharacter(std::string , float, std::shared_ptr<const CollisionShape3D> , const PhysicsTransform &, float, float);

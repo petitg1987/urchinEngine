@@ -1,7 +1,6 @@
 #include "player/stream/StreamUpdateTask.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
      * @param streamChunks Stream chunks (uninitialized)
@@ -10,51 +9,42 @@ namespace urchin
         sound(sound),
         soundFileReader(new SoundFileReader(sound->getFilename())),
         playLoop(playLoop),
-        streamChunks(streamChunks)
-    {
+        streamChunks(streamChunks) {
 
     }
 
-    StreamUpdateTask::~StreamUpdateTask()
-    {
+    StreamUpdateTask::~StreamUpdateTask() {
         delete soundFileReader;
     }
 
-    ALuint StreamUpdateTask::getSourceId() const
-    {
+    ALuint StreamUpdateTask::getSourceId() const {
         return sound->getSourceId();
     }
 
     /**
      * @return True if source is stopped (not playing, not in pause)
      */
-    bool StreamUpdateTask::isSourceStopped() const
-    {
+    bool StreamUpdateTask::isSourceStopped() const {
         return sound->isStopped();
     }
 
-    SoundFileReader *StreamUpdateTask::getSoundFileReader()
-    {
+    SoundFileReader *StreamUpdateTask::getSoundFileReader() {
         return soundFileReader;
     }
 
-    bool StreamUpdateTask::isPlayLoop() const
-    {
+    bool StreamUpdateTask::isPlayLoop() const {
         return playLoop;
     }
 
-    std::string StreamUpdateTask::getSoundFilename() const
-    {
+    std::string StreamUpdateTask::getSoundFilename() const {
         return sound->getFilename();
     }
 
-    StreamChunk &StreamUpdateTask::getStreamChunk(unsigned int chunkId)
-    {
+    StreamChunk &StreamUpdateTask::getStreamChunk(unsigned int chunkId) {
         return streamChunks[chunkId];
     }
 
-    StreamChunk *StreamUpdateTask::getStreamChunks()
-    {
+    StreamChunk *StreamUpdateTask::getStreamChunks() {
         return streamChunks;
     }
 

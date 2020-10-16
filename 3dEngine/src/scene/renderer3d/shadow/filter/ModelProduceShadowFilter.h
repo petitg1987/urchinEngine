@@ -5,11 +5,9 @@
 
 #include "scene/renderer3d/model/Model.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class ModelProduceShadowFilter : public OctreeableFilter<Model>
-    {
+    class ModelProduceShadowFilter : public OctreeableFilter<Model> {
         public:
             ~ModelProduceShadowFilter() override = default;
 

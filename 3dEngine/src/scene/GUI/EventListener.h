@@ -1,13 +1,11 @@
 #ifndef URCHINENGINE_EVENTLISTENER_H
 #define URCHINENGINE_EVENTLISTENER_H
 
-namespace urchin
-{
+namespace urchin {
 
     class Widget;
 
-    class EventListener
-    {
+    class EventListener {
         public:
             virtual ~EventListener() = default;
 

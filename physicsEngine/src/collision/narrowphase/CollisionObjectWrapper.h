@@ -6,14 +6,12 @@
 #include "shape/CollisionShape3D.h"
 #include "utils/math/PhysicsTransform.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Wrapper for object used in collision algorithms
     */
-    class CollisionObjectWrapper
-    {
+    class CollisionObjectWrapper {
         public:
             CollisionObjectWrapper(const CollisionShape3D &, const PhysicsTransform &);
 

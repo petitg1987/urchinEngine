@@ -5,11 +5,9 @@
 
 #include <memory>
 
-namespace urchin
-{
+namespace urchin {
 
-    struct NavPolygonEdge
-    {
+    struct NavPolygonEdge {
         std::shared_ptr<NavTriangle> triangle;
         std::size_t edgeIndex;
     };

@@ -4,11 +4,9 @@
 
 #include "loader/model/LoaderUrchinMesh.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    ConstMeshes *LoaderUrchinMesh::loadFromFile(const std::string &filename)
-    {
+    ConstMeshes *LoaderUrchinMesh::loadFromFile(const std::string &filename) {
         std::locale::global(std::locale("C")); //for float
 
         std::ifstream file;
@@ -19,8 +17,7 @@ namespace urchin
 
         std::string filenamePath = FileSystem::instance()->getResourcesDirectory() + filename;
         file.open(filenamePath, std::ios::in);
-        if(file.fail())
-        {
+        if(file.fail()) {
             throw std::invalid_argument("Cannot open the file " + filenamePath + ".");
         }
 
@@ -39,8 +36,7 @@ namespace urchin
         //bones
         std::vector<Bone> baseSkeleton(numBones);
         FileReaderUtil::nextLine(file, buffer); //buffer = "joints {"
-        for(unsigned int i=0;i<numBones;i++)
-        {
+        for(unsigned int i=0;i<numBones;i++) {
             FileReaderUtil::nextLine(file, buffer);
             Bone *bone = &baseSkeleton[i];
             iss.clear(); iss.str(buffer);
@@ -52,8 +48,7 @@ namespace urchin
 
         //mesh
         std::vector<const ConstMesh *> constMeshes;
-        for(unsigned int ii=0; ii<numMeshes; ii++)
-        {
+        for(unsigned int ii=0; ii<numMeshes; ii++) {
             //material
             std::string materialFilename;
             FileReaderUtil::nextLine(file, buffer); //buffer= "mesh {"
@@ -71,8 +66,7 @@ namespace urchin
             //vertices
             std::vector<Vertex> vertices(numVertices);
             std::vector<TextureCoordinate> textureCoordinates(numVertices);
-            for(unsigned int i=0;i<numVertices;i++)
-            {
+            for(unsigned int i=0;i<numVertices;i++) {
                 FileReaderUtil::nextLine(file, buffer);
                 iss.clear(); iss.str(buffer);
                 iss >> sdata >> idata >> vertices[i].linkedVerticesGroupId >> sdata >> textureCoordinates[i].s >> textureCoordinates[i].t
@@ -87,8 +81,7 @@ namespace urchin
 
             //triangles
             std::vector<Triangle> triangles(numTriangles);
-            for(unsigned int i=0;i<numTriangles;i++)
-            {
+            for(unsigned int i=0;i<numTriangles;i++) {
                 FileReaderUtil::nextLine(file, buffer);
                 iss.clear(); iss.str(buffer);
                 iss >> sdata >> idata >> triangles[i].index[0] >> triangles[i].index[1] >> triangles[i].index[2];
@@ -102,8 +95,7 @@ namespace urchin
 
             //weights
             std::vector<Weight> weights(numWeights);
-            for(unsigned int i=0;i<numWeights;i++)
-            {
+            for(unsigned int i=0;i<numWeights;i++) {
                 FileReaderUtil::nextLine(file, buffer);
                 iss.clear(); iss.str(buffer);
                 iss >> sdata >> idata >> weights[i].bone >> weights[i].bias >> sdata >> weights[i].pos.X >> weights[i].pos.Y >> weights[i].pos.Z;

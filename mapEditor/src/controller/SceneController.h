@@ -12,11 +12,9 @@
 #include "controller/sounds/SoundController.h"
 #include "controller/ai/AIController.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SceneController : public AbstractController
-    {
+    class SceneController : public AbstractController {
         public:
             SceneController();
             ~SceneController() override;

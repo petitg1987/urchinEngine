@@ -8,8 +8,7 @@
 #include "NewLightDialog.h"
 #include "widget/style/LabelStyleHelper.h"
 
-namespace urchin
-{
+namespace urchin {
     NewLightDialog::NewLightDialog(QWidget *parent, const LightController *lightController) :
         QDialog(parent),
         lightController(lightController),
@@ -17,8 +16,7 @@ namespace urchin
         lightNameText(nullptr),
         lightTypeLabel(nullptr),
         lightTypeComboBox(nullptr),
-        sceneLight(nullptr)
-    {
+        sceneLight(nullptr) {
         this->setWindowTitle("New Light");
         this->resize(530, 130);
         this->setFixedSize(this->width(),this->height());
@@ -38,8 +36,7 @@ namespace urchin
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void NewLightDialog::setupNameFields(QGridLayout *mainLayout)
-    {
+    void NewLightDialog::setupNameFields(QGridLayout *mainLayout) {
         lightNameLabel = new QLabel("Light Name:");
         mainLayout->addWidget(lightNameLabel, 0, 0);
 
@@ -48,8 +45,7 @@ namespace urchin
         lightNameText->setFixedWidth(405);
     }
 
-    void NewLightDialog::setupLightTypeFields(QGridLayout *mainLayout)
-    {
+    void NewLightDialog::setupLightTypeFields(QGridLayout *mainLayout) {
         lightTypeLabel = new QLabel("Light Type:");
         mainLayout->addWidget(lightTypeLabel, 1, 0);
 
@@ -60,17 +56,14 @@ namespace urchin
         lightTypeComboBox->addItem(SUN_LIGHT_LABEL, QVariant(Light::LightType::SUN));
     }
 
-    void NewLightDialog::updateLightName()
-    {
+    void NewLightDialog::updateLightName() {
         QString lightName = lightNameText->text();
-        if(!lightName.isEmpty())
-        {
+        if(!lightName.isEmpty()) {
             this->lightName = lightName.toUtf8().constData();
         }
     }
 
-    int NewLightDialog::buildSceneLight(int result)
-    {
+    int NewLightDialog::buildSceneLight(int result) {
         sceneLight = new SceneLight();
 
         sceneLight->setName(lightName);
@@ -79,14 +72,11 @@ namespace urchin
         auto lightType = static_cast<Light::LightType>(variant.toInt());
 
         Light *light;
-        if(lightType==Light::OMNIDIRECTIONAL)
-        {
+        if(lightType==Light::OMNIDIRECTIONAL) {
             light = new OmnidirectionalLight(Point3<float>(0.0, 0.0, 0.0));
-        }else if(lightType==Light::SUN)
-        {
+        } else if(lightType==Light::SUN) {
             light = new SunLight(Vector3<float>(1.0, -1.0, 0.0));
-        }else
-        {
+        } else {
             throw std::invalid_argument("Unknown the light type to create a new light: " + std::to_string(lightType));
         }
 
@@ -95,48 +85,38 @@ namespace urchin
         return result;
     }
 
-    SceneLight *NewLightDialog::getSceneLight() const
-    {
+    SceneLight *NewLightDialog::getSceneLight() const {
         return sceneLight;
     }
 
-    void NewLightDialog::done(int r)
-    {
-        if(QDialog::Accepted == r)
-        {
+    void NewLightDialog::done(int r) {
+        if(QDialog::Accepted == r) {
             bool hasError = false;
 
             updateLightName();
             LabelStyleHelper::applyNormalStyle(lightNameLabel);
 
-            if(lightName.empty())
-            {
+            if(lightName.empty()) {
                 LabelStyleHelper::applyErrorStyle(lightNameLabel, "Light name is mandatory");
                 hasError = true;
-            }else if(isSceneLightExist(lightName))
-            {
+            } else if(isSceneLightExist(lightName)) {
                 LabelStyleHelper::applyErrorStyle(lightNameLabel, "Light name is already used");
                 hasError = true;
             }
 
-            if(!hasError)
-            {
+            if(!hasError) {
                 r = buildSceneLight(r);
                 QDialog::done(r);
             }
-        }else
-        {
+        } else {
             QDialog::done(r);
         }
     }
 
-    bool NewLightDialog::isSceneLightExist(const std::string &name)
-    {
+    bool NewLightDialog::isSceneLightExist(const std::string &name) {
         std::list<const SceneLight *> sceneLights = lightController->getSceneLights();
-        for (auto &sceneLight : sceneLights)
-        {
-            if(sceneLight->getName() == name)
-            {
+        for (auto &sceneLight : sceneLights) {
+            if(sceneLight->getName() == name) {
                 return true;
             }
         }

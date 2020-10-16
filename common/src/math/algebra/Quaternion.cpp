@@ -6,50 +6,41 @@
 #include "math/algebra/MathValue.h"
 #include "math/algorithm/MathAlgorithm.h"
 
-namespace urchin
-{
+namespace urchin {
 
     template<class T> Quaternion<T>::Quaternion() :
-        X(0), Y(0), Z(0), W(1)
-    {
+        X(0), Y(0), Z(0), W(1) {
 
     }
 
     template<class T> Quaternion<T>::Quaternion(T Xu, T Yu, T Zu, T Wu) :
-        X(Xu), Y(Yu), Z(Zu), W(Wu)
-    {
+        X(Xu), Y(Yu), Z(Zu), W(Wu) {
 
     }
 
-    template<class T> Quaternion<T>::Quaternion(const Matrix3<T> &matrix)
-    {
+    template<class T> Quaternion<T>::Quaternion(const Matrix3<T> &matrix) {
         const T trace = matrix(0, 0) + matrix(1, 1) + matrix(2, 2);
 
-        if(trace > 0.0)
-        {
+        if(trace > 0.0) {
             const T s = 0.5f / sqrtf(trace + 1.0f);
             X = (matrix(2, 1) - matrix(1, 2)) * s;
             Y = (matrix(0, 2) - matrix(2, 0)) * s;
             Z = (matrix(1, 0) - matrix(0, 1)) * s;
             W = 0.25f / s;
-        }else
-        {
-            if((matrix(0, 0) > matrix(1, 1)) && (matrix(0, 0) > matrix(2, 2)))
-            {
+        } else {
+            if((matrix(0, 0) > matrix(1, 1)) && (matrix(0, 0) > matrix(2, 2))) {
                 const T s = sqrtf(1.0 + matrix(0, 0) - matrix(1, 1) - matrix(2, 2)) * 2.0;
                 X = 0.25 * s;
                 Y = (matrix(0, 1) + matrix(1, 0)) / s;
                 Z = (matrix(0, 2) + matrix(2, 0)) / s;
                 W = (matrix(2, 1) - matrix(1, 2)) / s;
-            }else if (matrix(1, 1) > matrix(2, 2))
-            {
+            } else if (matrix(1, 1) > matrix(2, 2)) {
                 const T s = sqrtf(1.0 - matrix(0, 0) + matrix(1, 1) - matrix(2, 2)) * 2.0;
                 X = (matrix(0, 1) + matrix(1, 0)) / s;
                 Y = 0.25 * s;
                 Z = (matrix(1, 2) + matrix(2, 1)) / s;
                 W = (matrix(0, 2) - matrix(2, 0)) / s;
-            }else
-            {
+            } else {
                 const T s = sqrtf(1.0 - matrix(0, 0) - matrix(1, 1) + matrix(2, 2)) * 2.0;
                 X = (matrix(0, 2) + matrix(2, 0)) / s;
                 Y = (matrix(1, 2) + matrix(2, 1)) / s;
@@ -59,8 +50,7 @@ namespace urchin
         }
     }
 
-    template<class T> Quaternion<T>::Quaternion(const Vector3<T> &axis, T angle)
-    {
+    template<class T> Quaternion<T>::Quaternion(const Vector3<T> &axis, T angle) {
         const T halfAngle = angle / 2.0;
         const T sin = std::sin(halfAngle);
 
@@ -71,12 +61,10 @@ namespace urchin
         W = std::cos(halfAngle);
     }
 
-    template<class T> Quaternion<T>::Quaternion(const Vector3<T> &eulerAngles, RotationSequence rotationSequence)
-    {
+    template<class T> Quaternion<T>::Quaternion(const Vector3<T> &eulerAngles, RotationSequence rotationSequence) {
         Quaternion<T> finalQuaternion;
 
-        switch(rotationSequence)
-        {
+        switch(rotationSequence) {
             case RotationSequence::XYZ:
                 finalQuaternion = Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[2]) *
                         Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[1]) *
@@ -147,8 +135,7 @@ namespace urchin
         W = finalQuaternion.W;
     }
 
-    template<class T> Quaternion<T>::Quaternion(const Vector3<T> &normalizedLookAt, const Vector3<T> &normalizedUp)
-    {
+    template<class T> Quaternion<T>::Quaternion(const Vector3<T> &normalizedLookAt, const Vector3<T> &normalizedUp) {
         #ifndef NDEBUG
             assert(MathAlgorithm::isOne(normalizedLookAt.length(), 0.001));
             assert(MathAlgorithm::isOne(normalizedUp.length(), 0.001));
@@ -157,32 +144,28 @@ namespace urchin
         Vector3<T> right = normalizedUp.crossProduct(normalizedLookAt);
         T det = right.X + normalizedUp.Y + normalizedLookAt.Z;
 
-        if(det > 0.0)
-        {
+        if(det > 0.0) {
             T sqrtValue = sqrtf(1.0 + det);
             T halfOverSqrt = 0.5 / sqrtValue;
             X = (normalizedUp.Z - normalizedLookAt.Y) * halfOverSqrt;
             Y = (normalizedLookAt.X - right.Z) * halfOverSqrt;
             Z = (right.Y - normalizedUp.X) * halfOverSqrt;
             W = sqrtValue * 0.5;
-        }else if ((right.X >= normalizedUp.Y) && (right.X >= normalizedLookAt.Z))
-        {
+        } else if ((right.X >= normalizedUp.Y) && (right.X >= normalizedLookAt.Z)) {
             T sqrtValue = sqrtf(((1.0 + right.X) - normalizedUp.Y) - normalizedLookAt.Z);
             T halfOverSqrt = 0.5 / sqrtValue;
             X = 0.5 * sqrtValue;
             Y = (right.Y + normalizedUp.X) * halfOverSqrt;
             Z = (right.Z + normalizedLookAt.X) * halfOverSqrt;
             W = (normalizedUp.Z - normalizedLookAt.Y) * halfOverSqrt;
-        }else if (normalizedUp.Y > normalizedLookAt.Z)
-        {
+        } else if (normalizedUp.Y > normalizedLookAt.Z) {
             T sqrtValue = sqrtf(((1.0 + normalizedUp.Y) - right.X) - normalizedLookAt.Z);
             T halfOverSqrt = 0.5 / sqrtValue;
             X = (normalizedUp.X+ right.Y) * halfOverSqrt;
             Y = 0.5 * sqrtValue;
             Z = (normalizedLookAt.Y + normalizedUp.Z) * halfOverSqrt;
             W = (normalizedLookAt.X - right.Z) * halfOverSqrt;
-        }else
-        {
+        } else {
             T sqrtValue = sqrtf(((1.0 + normalizedLookAt.Z) - right.X) - normalizedUp.Y);
             T halfOverSqrt = 0.5 / sqrtValue;
             X = (normalizedLookAt.X + right.Z) * halfOverSqrt;
@@ -192,32 +175,26 @@ namespace urchin
         }
     }
 
-    template<class T> void Quaternion<T>::computeW()
-    {
+    template<class T> void Quaternion<T>::computeW() {
         const T t = 1.0f - (X*X) - (Y*Y) - (Z*Z);
 
-        if (t<0.0f)
-        {
+        if (t<0.0f) {
             W = 0.0f;
-        }else
-        {
+        } else {
             W = -sqrt(t);
         }
     }
 
-    template<class T> void Quaternion<T>::setIdentity()
-    {
+    template<class T> void Quaternion<T>::setIdentity() {
         X = Y = Z = 0.0f;
         W = 1.0f;
     }
 
-    template<class T> Quaternion<T> Quaternion<T>::normalize() const
-    {
+    template<class T> Quaternion<T> Quaternion<T>::normalize() const {
         const T normValue = norm();
 
         //checks for bogus norm, to protect against divide by zero
-        if(normValue>0.0f)
-        {
+        if(normValue>0.0f) {
             return Quaternion<T>(X/normValue, Y/normValue, Z/normValue, W/normValue);
         }
 
@@ -227,37 +204,31 @@ namespace urchin
     /**
      * Return conjugate quaternion. In case of normalized quaternion: conjugate quaternion is equals to inverse quaternion. It's a faster alternative.
      */
-    template<class T> Quaternion<T> Quaternion<T>::conjugate() const
-    {
+    template<class T> Quaternion<T> Quaternion<T>::conjugate() const {
         return Quaternion<T>(-X, -Y, -Z, W);
     }
 
     /**
      * Return inverse quaternion. In case of normalized quaternion: use conjugate method to get same result with better performance.
      */
-    template<class T> Quaternion<T> Quaternion<T>::inverse() const
-    {
+    template<class T> Quaternion<T> Quaternion<T>::inverse() const {
         T squaredNorm = squareNorm();
         return Quaternion<T>(-X/squaredNorm, -Y/squaredNorm, -Z/squaredNorm, W/squaredNorm);
     }
 
-    template<class T> T Quaternion<T>::norm() const
-    {
+    template<class T> T Quaternion<T>::norm() const {
         return std::sqrt((X*X) + (Y*Y) + (Z*Z) + (W*W));
     }
 
-    template<class T> T Quaternion<T>::squareNorm() const
-    {
+    template<class T> T Quaternion<T>::squareNorm() const {
         return (X*X) + (Y*Y) + (Z*Z) + (W*W);
     }
 
-    template<class T> T Quaternion<T>::dotProduct(const Quaternion<T> &q) const
-    {
+    template<class T> T Quaternion<T>::dotProduct(const Quaternion<T> &q) const {
         return ((X*q.X) + (Y*q.Y) + (Z*q.Z) + (W*q.W));
     }
 
-    template<class T> Point3<T> Quaternion<T>::rotatePoint(const Point3<T> &point) const
-    {
+    template<class T> Point3<T> Quaternion<T>::rotatePoint(const Point3<T> &point) const {
         //Rotate point only works with normalized quaternion
         #ifndef NDEBUG
             const T normValue = norm();
@@ -269,15 +240,12 @@ namespace urchin
         return Point3<T>(final.X, final.Y, final.Z);
     }
 
-    template<class T> Quaternion<T> Quaternion<T>::slerp(const Quaternion &q, T t) const
-    {
+    template<class T> Quaternion<T> Quaternion<T>::slerp(const Quaternion &q, T t) const {
         //check for out-of range parameter and return edge points if so
-        if(t <= 0.0)
-        {
+        if(t <= 0.0) {
             return *this;
         }
-        if(t >= 1.0)
-        {
+        if(t >= 1.0) {
             return q;
         }
 
@@ -287,8 +255,7 @@ namespace urchin
         T qZ = q.Z;
         T qW = q.W;
 
-        if(cosOmega < 0.0)
-        { //ensure to take shortest path
+        if(cosOmega < 0.0) { //ensure to take shortest path
             cosOmega = -cosOmega;
             qX = -qX;
             qY = -qY;
@@ -302,13 +269,11 @@ namespace urchin
         //computes interpolation fraction, checking for quaternions almost exactly the same
         T k0, k1;
 
-        if(cosOmega > 0.9999)
-        {
+        if(cosOmega > 0.9999) {
             //very close - just use linear interpolation, which will protect against a divide by zero
             k0 = 1.0 - t;
             k1 = t;
-        }else
-        {
+        } else {
             //computes the sin of the angle using the trig identity sin^2(omega) + cos^2(omega) = 1
             T sinOmega = std::sqrt(1.0 - (cosOmega * cosOmega));
 
@@ -330,15 +295,12 @@ namespace urchin
                 (k0 * W) + (k1 * qW));
     }
 
-    template<class T> Quaternion<T> Quaternion<T>::lerp(const Quaternion &q, T t) const
-    {
+    template<class T> Quaternion<T> Quaternion<T>::lerp(const Quaternion &q, T t) const {
         //check for out-of range parameter and return edge points if so
-        if(t <= 0.0)
-        {
+        if(t <= 0.0) {
             return *this;
         }
-        if(t >= 1.0)
-        {
+        if(t >= 1.0) {
             return q;
         }
 
@@ -348,8 +310,7 @@ namespace urchin
         T qZ = q.Z;
         T qW = q.W;
 
-        if(cosOmega < 0.0)
-        { //ensure to take shortest path
+        if(cosOmega < 0.0) { //ensure to take shortest path
             qX = -qX;
             qY = -qY;
             qZ = -qZ;
@@ -365,13 +326,11 @@ namespace urchin
         return lerpResult.normalize();
     }
 
-    template<class T> Vector3<T> Quaternion<T>::getForwardDirection() const
-    {
+    template<class T> Vector3<T> Quaternion<T>::getForwardDirection() const {
         return rotatePoint(Point3<T>(0.0, 0.0, 1.0)).toVector();
     }
 
-    template<class T> Matrix4<T> Quaternion<T>::toMatrix4() const
-    {
+    template<class T> Matrix4<T> Quaternion<T>::toMatrix4() const {
         const T xx = X * X;
         const T xy = X * Y;
         const T xz = X * Z;
@@ -388,8 +347,7 @@ namespace urchin
                 0,                     0,                     0,             1);
     }
 
-    template<class T> Matrix3<T> Quaternion<T>::toMatrix3() const
-    {
+    template<class T> Matrix3<T> Quaternion<T>::toMatrix3() const {
         const T xx = X * X;
         const T xy = X * Y;
         const T xz = X * Z;
@@ -405,28 +363,23 @@ namespace urchin
                 2 * (xz - yw),         2 * (yz + xw),         1 - 2 * (xx + yy));
     }
 
-    template<class T> void Quaternion<T>::toAxisAngle(Vector3<T> &axis, T &angle) const
-    {
+    template<class T> void Quaternion<T>::toAxisAngle(Vector3<T> &axis, T &angle) const {
         angle = std::acos(W) * 2.0;
 
         T norm = sqrtf(X*X + Y*Y + Z*Z);
-        if(std::fabs(norm) > 0.0)
-        {
+        if(std::fabs(norm) > 0.0) {
             axis.X = X / norm;
             axis.Y = Y / norm;
             axis.Z = Z / norm;
-        }else
-        {
+        } else {
             axis.X = 0.0;
             axis.Y = 1.0;
             axis.Z = 0.0;
         }
     }
 
-    template<class T> Vector3<T> Quaternion<T>::toEulerAngle(RotationSequence rotationSequence) const
-    {
-        switch(rotationSequence)
-        {
+    template<class T> Vector3<T> Quaternion<T>::toEulerAngle(RotationSequence rotationSequence) const {
+        switch(rotationSequence) {
             case RotationSequence::XYZ:
                 return threeAxisEulerRotation(0, 1, 2);
             case RotationSequence::XZY:
@@ -456,8 +409,7 @@ namespace urchin
         }
     }
 
-    template<class T> Vector3<T> Quaternion<T>::threeAxisEulerRotation(int i, int j, int k) const
-    { //inspired on Eigen library (EulerAngle.h)
+    template<class T> Vector3<T> Quaternion<T>::threeAxisEulerRotation(int i, int j, int k) const { //inspired on Eigen library (EulerAngle.h)
         Vector3<T> euler;
 
         bool sequenceAxis = (i+1)%3==j;
@@ -466,12 +418,10 @@ namespace urchin
         euler[0] = std::atan2(m(k, j), m(k, k));
         T cosEuler1 = Vector2<T>(m(i, i), m(j, i)).length();
 
-        if((sequenceAxis && euler[0]<0) || ((!sequenceAxis) && euler[0]>0))
-        {
+        if((sequenceAxis && euler[0]<0) || ((!sequenceAxis) && euler[0]>0)) {
             euler[0] = (euler[0] > 0) ? euler[0] - PI_VALUE : euler[0] + PI_VALUE;
             euler[1] = std::atan2(-m(k, i), -cosEuler1);
-        }else
-        {
+        } else {
             euler[1] = std::atan2(-m(k, i), cosEuler1);
         }
 
@@ -482,8 +432,7 @@ namespace urchin
         return sequenceAxis ? euler : -euler;
     }
 
-    template<class T> Vector3<T> Quaternion<T>::twoAxisEulerRotation(int i, int j, int k) const
-    { //inspired on Eigen library (EulerAngle.h)
+    template<class T> Vector3<T> Quaternion<T>::twoAxisEulerRotation(int i, int j, int k) const { //inspired on Eigen library (EulerAngle.h)
         Vector3<T> euler;
 
         bool sequenceAxis = (i+1)%3==j;
@@ -492,12 +441,10 @@ namespace urchin
         euler[0] = std::atan2(m(i, j), m(i, k));
         T sinEuler1 = Vector2<T>(m(i, j), m(i, k)).length();
 
-        if((sequenceAxis && euler[0]<0) || ((!sequenceAxis) && euler[0]>0))
-        {
+        if((sequenceAxis && euler[0]<0) || ((!sequenceAxis) && euler[0]>0)) {
             euler[0] = (euler[0] > 0) ? euler[0] - PI_VALUE : euler[0] + PI_VALUE;
             euler[1] = -std::atan2(sinEuler1, m(i, i));
-        }else
-        {
+        } else {
             euler[1] = std::atan2(sinEuler1, m(i, i));
         }
 
@@ -508,18 +455,15 @@ namespace urchin
         return sequenceAxis ? euler : -euler;
     }
 
-    template<class T> Quaternion<T> Quaternion<T>::operator +(const Quaternion<T> &q) const
-    {
+    template<class T> Quaternion<T> Quaternion<T>::operator +(const Quaternion<T> &q) const {
         return Quaternion<T>(X+q.X, Y+q.Y, Z+q.Z, W+q.W);
     }
 
-    template<class T> Quaternion<T> Quaternion<T>::operator -(const Quaternion<T> &q) const
-    {
+    template<class T> Quaternion<T> Quaternion<T>::operator -(const Quaternion<T> &q) const {
         return Quaternion<T>(X-q.X, Y-q.Y, Z-q.Z, W-q.W);
     }
 
-    template<class T> Quaternion<T> Quaternion<T>::operator *(const Quaternion<T> &q) const
-    {
+    template<class T> Quaternion<T> Quaternion<T>::operator *(const Quaternion<T> &q) const {
         return Quaternion<T>(
                 W*q.X + X*q.W + Y*q.Z - Z*q.Y,
                 W*q.Y - X*q.Z + Y*q.W + Z*q.X,
@@ -527,63 +471,53 @@ namespace urchin
                 W*q.W - X*q.X - Y*q.Y - Z*q.Z);
     }
 
-    template<class T> const Quaternion<T>& Quaternion<T>::operator -=(const Quaternion<T> &q)
-    {
+    template<class T> const Quaternion<T>& Quaternion<T>::operator -=(const Quaternion<T> &q) {
         *this = *this - q;
 
         return *this;
     }
 
-    template<class T> const Quaternion<T>& Quaternion<T>::operator +=(const Quaternion<T> &q)
-    {
+    template<class T> const Quaternion<T>& Quaternion<T>::operator +=(const Quaternion<T> &q) {
         *this = *this + q;
 
         return *this;
     }
 
-    template<class T> const Quaternion<T>& Quaternion<T>::operator *=(const Quaternion<T> &q)
-    {
+    template<class T> const Quaternion<T>& Quaternion<T>::operator *=(const Quaternion<T> &q) {
         *this = *this * q;
 
         return *this;
     }
 
-    template<class T> const Quaternion<T>& Quaternion<T>::operator *=(const Point3<T> &p)
-    {
+    template<class T> const Quaternion<T>& Quaternion<T>::operator *=(const Point3<T> &p) {
         *this = *this * p;
 
         return *this;
     }
 
-    template<class T> const Quaternion<T>& Quaternion<T>::operator *=(T t)
-    {
+    template<class T> const Quaternion<T>& Quaternion<T>::operator *=(T t) {
         *this = *this * t;
 
         return *this;
     }
 
-    template<class T> bool Quaternion<T>::operator ==(const Quaternion<T> &q) const
-    {
+    template<class T> bool Quaternion<T>::operator ==(const Quaternion<T> &q) const {
         return (X==q.X && Y==q.Y && Z==q.Z && W==q.W);
     }
 
-    template<class T> bool Quaternion<T>::operator !=(const Quaternion<T> &q) const
-    {
+    template<class T> bool Quaternion<T>::operator !=(const Quaternion<T> &q) const {
         return !(*this == q);
     }
 
-    template<class T> T& Quaternion<T>::operator [](int i)
-    {
+    template<class T> T& Quaternion<T>::operator [](int i) {
         return (&X)[i];
     }
 
-    template<class T> const T& Quaternion<T>::operator [](int i) const
-    {
+    template<class T> const T& Quaternion<T>::operator [](int i) const {
         return (&X)[i];
     }
 
-    template<class T> Quaternion<T> operator *(const Quaternion<T> &q, const Point3<T> &p)
-    {
+    template<class T> Quaternion<T> operator *(const Quaternion<T> &q, const Point3<T> &p) {
         return Quaternion<T>(
                 (q.W*p.X) + (q.Y*p.Z) - (q.Z*p.Y),
                 (q.W*p.Y) + (q.Z*p.X) - (q.X*p.Z),
@@ -591,18 +525,15 @@ namespace urchin
                 -(q.X*p.X) - (q.Y*p.Y) - (q.Z*p.Z));
     }
 
-    template<class T> Quaternion<T> operator *(const Quaternion<T> &q, T t)
-    {
+    template<class T> Quaternion<T> operator *(const Quaternion<T> &q, T t) {
         return Quaternion<T>(q.X*t, q.Y*t, q.Z*t, q.W*t);
     }
 
-    template<class T> Quaternion<T> operator *(T t, const Quaternion<T> &q)
-    {
+    template<class T> Quaternion<T> operator *(T t, const Quaternion<T> &q) {
         return q * t;
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Quaternion<T> &q)
-    {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const Quaternion<T> &q) {
         return stream << q.X << " " << q.Y << " " << q.Z << " " << q.W;
     }
 

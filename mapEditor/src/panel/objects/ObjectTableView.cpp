@@ -3,12 +3,10 @@
 
 #include "ObjectTableView.h"
 
-namespace urchin
-{
+namespace urchin {
 
     ObjectTableView::ObjectTableView(QWidget *parent) :
-        QTableView(parent)
-    {
+        QTableView(parent) {
         objectsListModel = new QStandardItemModel(0, 2, this);
         objectsListModel->setHorizontalHeaderItem(0, new QStandardItem("Object Name"));
         objectsListModel->setHorizontalHeaderItem(1, new QStandardItem("Mesh File"));
@@ -24,8 +22,7 @@ namespace urchin
         setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
     }
 
-    void ObjectTableView::selectionChanged(const QItemSelection &, const QItemSelection &)
-    {
+    void ObjectTableView::selectionChanged(const QItemSelection &, const QItemSelection &) {
         //hack to refresh selection
         horizontalHeader()->resizeSection(0, 91);
         horizontalHeader()->resizeSection(0, 90);
@@ -33,19 +30,15 @@ namespace urchin
         notifyObservers(this, NotificationType::OBJECT_SELECTION_CHANGED);
     }
 
-    bool ObjectTableView::hasSceneObjectSelected() const
-    {
+    bool ObjectTableView::hasSceneObjectSelected() const {
         return this->currentIndex().row() != -1 && this->selectedIndexes().size() != 0;
     }
 
-    int ObjectTableView::getSceneObjectRow(const SceneObject *expectedSceneObject) const
-    {
-        for(int rowId = 0; rowId < objectsListModel->rowCount(); ++rowId)
-        {
+    int ObjectTableView::getSceneObjectRow(const SceneObject *expectedSceneObject) const {
+        for(int rowId = 0; rowId < objectsListModel->rowCount(); ++rowId) {
             QModelIndex index = objectsListModel->index(rowId, 0);
             auto *sceneObject = index.data(Qt::UserRole + 1).value<const SceneObject *>();
-            if(expectedSceneObject->getName() == sceneObject->getName())
-            {
+            if(expectedSceneObject->getName() == sceneObject->getName()) {
                 return rowId;
             }
         }
@@ -53,24 +46,20 @@ namespace urchin
         return -1;
     }
 
-    const SceneObject *ObjectTableView::getSelectedSceneObject() const
-    {
-        if(hasSceneObjectSelected())
-        {
+    const SceneObject *ObjectTableView::getSelectedSceneObject() const {
+        if(hasSceneObjectSelected()) {
             return this->currentIndex().data(Qt::UserRole + 1).value<const SceneObject *>();
         }
         return nullptr;
     }
 
-    int ObjectTableView::addObject(const SceneObject *sceneObject)
-    {
+    int ObjectTableView::addObject(const SceneObject *sceneObject) {
         auto *itemObjectName = new QStandardItem(QString::fromStdString(sceneObject->getName()));
         itemObjectName->setData(qVariantFromValue(sceneObject), Qt::UserRole + 1);
         itemObjectName->setEditable(false);
 
         std::string pathFileName;
-        if(sceneObject->getModel()->getMeshes())
-        {
+        if(sceneObject->getModel()->getMeshes()) {
             pathFileName = sceneObject->getModel()->getMeshes()->getMeshFilename();
         }
         auto *itemMeshFile = new QStandardItem(QString::fromStdString(FileHandler::getFileName(pathFileName)));
@@ -88,10 +77,8 @@ namespace urchin
         return nextRow;
     }
 
-    bool ObjectTableView::removeSelectedObject()
-    {
-        if(hasSceneObjectSelected())
-        {
+    bool ObjectTableView::removeSelectedObject() {
+        if(hasSceneObjectSelected()) {
             objectsListModel->removeRow(this->currentIndex().row());
             resizeRowsToContents();
 
@@ -101,8 +88,7 @@ namespace urchin
         return false;
     }
 
-    void ObjectTableView::removeAllObjects()
-    {
+    void ObjectTableView::removeAllObjects() {
         objectsListModel->removeRows(0, objectsListModel->rowCount());
         resizeRowsToContents();
     }

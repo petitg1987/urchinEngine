@@ -4,14 +4,12 @@
 #include "SoundShapeWidget.h"
 #include "widget/style/SpinBoxStyleHelper.h"
 
-namespace urchin
-{
+namespace urchin {
 
     SoundShapeWidget::SoundShapeWidget(const SceneSound *sceneSound) :
             disableShapeEvent(false),
             sceneSound(sceneSound),
-            shape(nullptr)
-    {
+            shape(nullptr) {
         setContentsMargins(0, 0, 0, 0);
 
         mainLayout = new QGridLayout(this);
@@ -28,22 +26,18 @@ namespace urchin
         connect(margin, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
     }
 
-    const SceneSound *SoundShapeWidget::getSceneSound() const
-    {
+    const SceneSound *SoundShapeWidget::getSceneSound() const {
         return sceneSound;
     }
 
-    const SoundShape *SoundShapeWidget::retrieveShape()
-    {
-        if(!shape)
-        {
+    const SoundShape *SoundShapeWidget::retrieveShape() {
+        if(!shape) {
             shape = createSoundShape();
         }
         return shape;
     }
 
-    void SoundShapeWidget::setupShapePropertiesFrom(const SoundShape *shape)
-    {
+    void SoundShapeWidget::setupShapePropertiesFrom(const SoundShape *shape) {
         disableShapeEvent = true;
 
         margin->setValue(shape->getMargin());
@@ -53,18 +47,15 @@ namespace urchin
         disableShapeEvent = false;
     }
 
-    void SoundShapeWidget::updateSoundShape()
-    {
-        if(!disableShapeEvent)
-        {
+    void SoundShapeWidget::updateSoundShape() {
+        if(!disableShapeEvent) {
             shape = createSoundShape();
 
             emit soundShapeChange(shape);
         }
     }
 
-    float SoundShapeWidget::getMarginValue() const
-    {
+    float SoundShapeWidget::getMarginValue() const {
         return (float)margin->value();
     }
 }

@@ -11,11 +11,9 @@
 #include <string>
 #include <vector>
 
-namespace urchin
-{
+namespace urchin {
 
-    class Converter
-    {
+    class Converter {
         public:
             static const char FLOAT_DELIMITER;
             static const float FLOAT_INT_SCALE;

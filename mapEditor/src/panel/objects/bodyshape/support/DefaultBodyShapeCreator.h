@@ -6,11 +6,9 @@
 #include "UrchinMapHandler.h"
 #include "UrchinPhysicsEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class DefaultBodyShapeCreator
-    {
+    class DefaultBodyShapeCreator {
 
         public:
             explicit DefaultBodyShapeCreator(const SceneObject *);

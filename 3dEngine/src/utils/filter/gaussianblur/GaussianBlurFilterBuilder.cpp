@@ -1,7 +1,6 @@
 #include "GaussianBlurFilterBuilder.h"
 
-namespace urchin
-{
+namespace urchin {
 
     GaussianBlurFilterBuilder::GaussianBlurFilterBuilder() :
         TextureFilterBuilder(),
@@ -11,34 +10,27 @@ namespace urchin
 
     }
 
-    GaussianBlurFilterBuilder *GaussianBlurFilterBuilder::blurDirection(BlurDirection blurDirection)
-    {
+    GaussianBlurFilterBuilder *GaussianBlurFilterBuilder::blurDirection(BlurDirection blurDirection) {
         this->pBlurDirection = blurDirection;
         return this;
     }
 
-    GaussianBlurFilterBuilder *GaussianBlurFilterBuilder::blurSize(unsigned int blurSize)
-    {
+    GaussianBlurFilterBuilder *GaussianBlurFilterBuilder::blurSize(unsigned int blurSize) {
         this->pBlurSize = blurSize;
         return this;
     }
 
-    unsigned int GaussianBlurFilterBuilder::getBlurSize() const
-    {
+    unsigned int GaussianBlurFilterBuilder::getBlurSize() const {
         return pBlurSize;
     }
 
-    std::shared_ptr<TextureFilter> GaussianBlurFilterBuilder::build()
-    {
+    std::shared_ptr<TextureFilter> GaussianBlurFilterBuilder::build() {
         std::shared_ptr<TextureFilter> textureFilter;
-        if(pBlurDirection==BlurDirection::HORIZONTAL_BLUR)
-        {
+        if(pBlurDirection==BlurDirection::HORIZONTAL_BLUR) {
             textureFilter = std::make_shared<GaussianBlurFilter>(this, GaussianBlurFilter::HORIZONTAL);
-        }else if(pBlurDirection==BlurDirection::VERTICAL_BLUR)
-        {
+        } else if(pBlurDirection==BlurDirection::VERTICAL_BLUR) {
             textureFilter = std::make_shared<GaussianBlurFilter>(this, GaussianBlurFilter::VERTICAL);
-        }else
-        {
+        } else {
             throw std::invalid_argument("Unknown blur direction type: " + std::to_string(pBlurDirection));
         }
 
@@ -47,8 +39,7 @@ namespace urchin
         return textureFilter;
     }
 
-    std::shared_ptr<GaussianBlurFilter> GaussianBlurFilterBuilder::buildGaussianBlur()
-    {
+    std::shared_ptr<GaussianBlurFilter> GaussianBlurFilterBuilder::buildGaussianBlur() {
         return std::dynamic_pointer_cast<GaussianBlurFilter>(build());
     }
 

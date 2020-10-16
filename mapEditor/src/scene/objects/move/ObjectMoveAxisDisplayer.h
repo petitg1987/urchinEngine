@@ -7,11 +7,9 @@
 #include "controller/SceneController.h"
 #include "widget/controller/statusbar/StatusBarController.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class ObjectMoveAxisDisplayer
-    {
+    class ObjectMoveAxisDisplayer {
         public:
             ObjectMoveAxisDisplayer(SceneManager *);
             ~ObjectMoveAxisDisplayer();

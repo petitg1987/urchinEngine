@@ -4,8 +4,7 @@
 #include "AIManager.h"
 #include "path/pathfinding/PathfindingAStar.h"
 
-namespace urchin
-{
+namespace urchin {
 
     //static
     std::exception_ptr AIManager::aiThreadExceptionPtr = nullptr;
@@ -15,15 +14,12 @@ namespace urchin
             aiSimulationStopper(false),
             timeStep(0),
             paused(true),
-            navMeshGenerator(new NavMeshGenerator())
-    {
+            navMeshGenerator(new NavMeshGenerator()) {
         NumericalCheck::instance()->perform();
     }
 
-    AIManager::~AIManager()
-    {
-        if(aiSimulationThread)
-        {
+    AIManager::~AIManager() {
+        if(aiSimulationThread) {
             interrupt();
             aiSimulationThread->join();
 
@@ -38,37 +34,30 @@ namespace urchin
         Profiler::getInstance("ai")->log();
     }
 
-    NavMeshGenerator *AIManager::getNavMeshGenerator() const
-    {
+    NavMeshGenerator *AIManager::getNavMeshGenerator() const {
         return navMeshGenerator;
     }
 
-    void AIManager::addEntity(const std::shared_ptr<AIEntity> &aiEntity)
-    {
+    void AIManager::addEntity(const std::shared_ptr<AIEntity> &aiEntity) {
         aiWorld.addEntity(aiEntity);
     }
 
-    void AIManager::removeEntity(const std::shared_ptr<AIEntity> &aiEntity)
-    {
+    void AIManager::removeEntity(const std::shared_ptr<AIEntity> &aiEntity) {
         aiWorld.removeEntity(aiEntity);
     }
 
-    void AIManager::addPathRequest(const std::shared_ptr<PathRequest> &pathRequest)
-    {
+    void AIManager::addPathRequest(const std::shared_ptr<PathRequest> &pathRequest) {
         std::lock_guard<std::mutex> lock(mutex);
 
         pathRequests.push_back(pathRequest);
     }
 
-    void AIManager::removePathRequest(const std::shared_ptr<PathRequest> &pathRequest)
-    {
+    void AIManager::removePathRequest(const std::shared_ptr<PathRequest> &pathRequest) {
         std::lock_guard<std::mutex> lock(mutex);
 
-        if(pathRequest)
-        {
+        if(pathRequest) {
             auto itFind = std::find(pathRequests.begin(), pathRequests.end(), pathRequest);
-            if(itFind!=pathRequests.end())
-            {
+            if(itFind!=pathRequests.end()) {
                 VectorEraser::erase(pathRequests, itFind);
             }
         }
@@ -78,10 +67,8 @@ namespace urchin
      * Set up the AI simulation in new thread
      * @param timeStep Frequency updates expressed in second
      */
-    void AIManager::setUp(float timeStep)
-    {
-        if(aiSimulationThread)
-        {
+    void AIManager::setUp(float timeStep) {
+        if(aiSimulationThread) {
             throw std::runtime_error("AI thread is already started");
         }
 
@@ -90,22 +77,19 @@ namespace urchin
         aiSimulationThread = new std::thread(&AIManager::startAIUpdate, this);
     }
 
-    void AIManager::pause()
-    {
+    void AIManager::pause() {
         std::lock_guard<std::mutex> lock(mutex);
 
         paused = true;
     }
 
-    void AIManager::unpause()
-    {
+    void AIManager::unpause() {
         std::lock_guard<std::mutex> lock(mutex);
 
         paused = false;
     }
 
-    bool AIManager::isPaused() const
-    {
+    bool AIManager::isPaused() const {
         std::lock_guard<std::mutex> lock(mutex);
 
         return paused;
@@ -114,48 +98,39 @@ namespace urchin
     /**
      * Interrupt the thread
      */
-    void AIManager::interrupt()
-    {
+    void AIManager::interrupt() {
         aiSimulationStopper.store(true, std::memory_order_relaxed);
     }
 
     /**
      * Check if thread has been stopped by an exception and rethrow exception on main thread
      */
-    void AIManager::controlExecution()
-    {
-        if(aiThreadExceptionPtr)
-        {
+    void AIManager::controlExecution() {
+        if(aiThreadExceptionPtr) {
             std::rethrow_exception(aiThreadExceptionPtr);
         }
     }
 
-    void AIManager::startAIUpdate()
-    {
-        try
-        {
+    void AIManager::startAIUpdate() {
+        try {
             auto frameStartTime = std::chrono::high_resolution_clock::now();
 
-            while (continueExecution())
-            {
+            while (continueExecution()) {
                 processAIUpdate();
 
                 auto frameEndTime = std::chrono::high_resolution_clock::now();
                 auto diffTimeMicroSeconds = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
                 float remainingTime = timeStep - (diffTimeMicroSeconds / 1000000.0f);
 
-                if (remainingTime >= 0.0f)
-                {
+                if (remainingTime >= 0.0f) {
                     std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(remainingTime * 1000.0f)));
 
                     frameStartTime = std::chrono::high_resolution_clock::now();
-                } else
-                {
+                } else {
                     frameStartTime = frameEndTime;
                 }
             }
-        }catch(std::exception &e)
-        {
+        }catch(std::exception &e) {
             Logger::logger().logError("Error cause AI thread crash: exception reported to main thread");
             aiThreadExceptionPtr = std::current_exception();
         }
@@ -164,13 +139,11 @@ namespace urchin
     /**
      * @return True if thread execution is not interrupted
     */
-    bool AIManager::continueExecution()
-    {
+    bool AIManager::continueExecution() {
         return !aiSimulationStopper.load(std::memory_order_relaxed);
     }
 
-    void AIManager::processAIUpdate()
-    {
+    void AIManager::processAIUpdate() {
         ScopeProfiler profiler("ai", "procAIUpdate");
 
         //copy for local thread
@@ -184,13 +157,11 @@ namespace urchin
         }
 
         //AI execution
-        if (!paused)
-        {
+        if (!paused) {
             std::shared_ptr<NavMesh> navMesh = navMeshGenerator->generate(aiWorld);
 
             PathfindingAStar pathfindingAStar(navMesh);
-            for (auto &pathRequest : copiedPathRequests)
-            {
+            for (auto &pathRequest : copiedPathRequests) {
                 pathRequest->setPath(pathfindingAStar.findPath(pathRequest->getStartPoint(), pathRequest->getEndPoint()));
             }
         }

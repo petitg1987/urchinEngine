@@ -1,17 +1,14 @@
 #include "ScopeProfiler.h"
 #include "tools/profiler/Profiler.h"
 
-namespace urchin
-{
+namespace urchin {
     ScopeProfiler::ScopeProfiler(const std::string &instanceName, const std::string &nodeName) :
             instanceName(instanceName),
-            nodeName(nodeName)
-    {
+            nodeName(nodeName) {
         Profiler::getInstance(instanceName)->startNewProfile(nodeName);
     }
 
-    ScopeProfiler::~ScopeProfiler()
-    {
+    ScopeProfiler::~ScopeProfiler() {
         Profiler::getInstance(instanceName)->stopProfile(nodeName);
     }
 }

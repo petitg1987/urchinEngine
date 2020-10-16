@@ -4,11 +4,9 @@
 #include "UrchinCommon.h"
 #include "path/pathfinding/PathNode.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class PathPortal
-    {
+    class PathPortal {
         public:
             PathPortal(LineSegment3D<float>, std::shared_ptr<PathNode>, std::shared_ptr<PathNode>, bool);
 

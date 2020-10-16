@@ -7,8 +7,7 @@
 #include "scene/InputDeviceKey.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 
-namespace urchin
-{
+namespace urchin {
 
     Window::Window(Position position, Size size, std::string nameSkin, std::string stringTitle) :
         Widget(position, size),
@@ -18,18 +17,15 @@ namespace urchin
         mousePositionY(0),
         state(DEFAULT),
         title(nullptr),
-        widgetOutline(new WidgetOutline())
-    {
+        widgetOutline(new WidgetOutline()) {
         Window::createOrUpdateWidget();
     }
 
-    Window::~Window()
-    {
+    Window::~Window() {
         delete widgetOutline;
     }
 
-    void Window::createOrUpdateWidget()
-    {
+    void Window::createOrUpdateWidget() {
         //load the skin
         std::shared_ptr<XmlChunk> windowChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "window", XmlAttribute("nameSkin", nameSkin));
 
@@ -38,8 +34,7 @@ namespace urchin
         texWindow = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinChunk, widgetOutline);
 
         //creates font for title
-        if(!stringTitle.empty())
-        {
+        if(!stringTitle.empty()) {
             std::shared_ptr<XmlChunk> textFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textFont", XmlAttribute(), windowChunk);
             Widget::removeChild(title);
             title = new Text(Position(0, 0, Position::PIXEL), textFontChunk->getStringValue());
@@ -55,36 +50,31 @@ namespace urchin
                 ->build();
     }
 
-    void Window::addChild(Widget *child)
-    {
+    void Window::addChild(Widget *child) {
         Position childPosition((float)(child->getPositionX() + widgetOutline->leftWidth), (float)(child->getPositionY() + widgetOutline->topWidth), Position::PIXEL);
         child->setPosition(childPosition);
         Widget::addChild(child);
     }
 
-    bool Window::onKeyPressEvent(unsigned int key)
-    {
+    bool Window::onKeyPressEvent(unsigned int key) {
         Rectangle<int> titleZone(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
                 Point2<int>(getGlobalPositionX()+(getWidth()-widgetOutline->rightWidth), getGlobalPositionY()+widgetOutline->topWidth));
         Rectangle<int> closeZone(Point2<int>(getGlobalPositionX()+(getWidth() - widgetOutline->rightWidth), getGlobalPositionY()),
                 Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+widgetOutline->topWidth));
 
-        if(key == InputDeviceKey::MOUSE_LEFT && titleZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY())))
-        {
+        if(key == InputDeviceKey::MOUSE_LEFT && titleZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
             mousePositionX = getMouseX() - getPositionX();
             mousePositionY = getMouseY() - getPositionY();
 
             state = MOVING;
-        }else if(key == InputDeviceKey::MOUSE_LEFT && closeZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY())))
-        {
+        } else if(key == InputDeviceKey::MOUSE_LEFT && closeZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
             state =CLOSING;
         }
 
         Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
                 Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
         bool propagateEvent = true;
-        if(key == InputDeviceKey::MOUSE_LEFT && widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY())))
-        {
+        if(key == InputDeviceKey::MOUSE_LEFT && widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
             notifyObservers(this, SET_IN_FOREGROUND);
             propagateEvent = false;
         }
@@ -92,12 +82,10 @@ namespace urchin
         return propagateEvent;
     }
 
-    bool Window::onKeyReleaseEvent(unsigned int key)
-    {
+    bool Window::onKeyReleaseEvent(unsigned int key) {
         Rectangle<int> closeZone(Point2<int>(getGlobalPositionX()+(getWidth()-widgetOutline->rightWidth), getGlobalPositionY()),
                 Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+widgetOutline->topWidth));
-        if(key == InputDeviceKey::MOUSE_LEFT && state == CLOSING && closeZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY())))
-        {
+        if(key == InputDeviceKey::MOUSE_LEFT && state == CLOSING && closeZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
             setIsVisible(false);
         }
 
@@ -106,19 +94,15 @@ namespace urchin
         return true;
     }
 
-    bool Window::onMouseMoveEvent(int mouseX, int mouseY)
-    {
-        if(state==MOVING)
-        {
+    bool Window::onMouseMoveEvent(int mouseX, int mouseY) {
+        if(state==MOVING) {
             auto positionX = (float)(mouseX - mousePositionX);
-            if(getPosition().getPositionTypeX() == Position::PERCENTAGE)
-            {
+            if(getPosition().getPositionTypeX() == Position::PERCENTAGE) {
                 positionX /= (float)getSceneWidth();
             }
 
             auto positionY = (float)(mouseY - mousePositionY);
-            if(getPosition().getPositionTypeY() == Position::PERCENTAGE)
-            {
+            if(getPosition().getPositionTypeY() == Position::PERCENTAGE) {
                 positionY /= (float)getSceneHeight();
             }
 
@@ -128,8 +112,7 @@ namespace urchin
         return true;
     }
 
-    void Window::display(int translateDistanceLoc, float dt)
-    {
+    void Window::display(int translateDistanceLoc, float dt) {
         glBindTexture(GL_TEXTURE_2D, texWindow->getTextureID());
 
         quadDisplayer->display();

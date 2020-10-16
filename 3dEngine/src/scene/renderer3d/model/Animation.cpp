@@ -1,13 +1,11 @@
 #include "Animation.h"
 
-namespace urchin
-{
+namespace urchin {
 
     Animation::Animation(ConstAnimation *constAnimation, Meshes *meshes) :
         constAnimation(constAnimation),
         meshes(meshes),
-        animationInformation()
-    {
+        animationInformation() {
         skeleton.resize(constAnimation->getNumberBones());
 
         animationInformation.currFrame = 0;
@@ -16,58 +14,48 @@ namespace urchin
         animationInformation.maxTime = 1.0f / static_cast<float>(constAnimation->getFrameRate());
     }
 
-    Animation::~Animation()
-    {
+    Animation::~Animation() {
         constAnimation->release();
     }
 
-    const std::vector<Bone> &Animation::getSkeleton() const
-    {
+    const std::vector<Bone> &Animation::getSkeleton() const {
         return skeleton;
     }
 
-    const AABBox<float> &Animation::getGlobalAABBox() const
-    {
+    const AABBox<float> &Animation::getGlobalAABBox() const {
         return globalBBox;
     }
 
-    const std::vector<AABBox<float>> &Animation::getGlobalSplitAABBoxes() const
-    {
+    const std::vector<AABBox<float>> &Animation::getGlobalSplitAABBoxes() const {
         return globalSplitBBoxes;
     }
 
     /**
      * @return Return global bounding box for all animations but not transformed
      */
-    const AABBox<float> &Animation::getGlobalLocalAABBox() const
-    {
+    const AABBox<float> &Animation::getGlobalLocalAABBox() const {
         return constAnimation->getOriginalGlobalAABBox();
     }
 
-    const ConstAnimation *Animation::getConstAnimation() const
-    {
+    const ConstAnimation *Animation::getConstAnimation() const {
         return constAnimation;
     }
 
-    unsigned int Animation::getCurrFrame() const
-    {
+    unsigned int Animation::getCurrFrame() const {
         return animationInformation.currFrame;
     }
 
-    void Animation::onMoving(const Transform<float> &newTransform)
-    {
+    void Animation::onMoving(const Transform<float> &newTransform) {
         globalBBox = constAnimation->getOriginalGlobalAABBox().moveAABBox(newTransform);
 
         globalSplitBBoxes.clear();
         const std::vector<AABBox<float>> &originalGlobalSplitAABBoxes = constAnimation->getOriginalGlobalSplitAABBoxes();
-        for (const auto &originalGlobalSplitAABBox : originalGlobalSplitAABBoxes)
-        {
+        for (const auto &originalGlobalSplitAABBox : originalGlobalSplitAABBoxes) {
             globalSplitBBoxes.push_back(originalGlobalSplitAABBox.moveAABBox(newTransform));
         }
     }
 
-    void Animation::animate(float dt)
-    {
+    void Animation::animate(float dt) {
         //calculate current and next frames
         animationInformation.lastTime += dt;
         if(animationInformation.lastTime >= animationInformation.maxTime) //move to next frame
@@ -76,16 +64,14 @@ namespace urchin
             animationInformation.currFrame = animationInformation.nextFrame;
             animationInformation.nextFrame++;
 
-            if(animationInformation.nextFrame >= constAnimation->getNumberFrames())
-            {
+            if(animationInformation.nextFrame >= constAnimation->getNumberFrames()) {
                 animationInformation.nextFrame = 0;
             }
         }
 
         //interpolate skeletons between two frames
         float interp = animationInformation.lastTime * static_cast<float>(constAnimation->getFrameRate());
-        for(std::size_t i = 0; i < constAnimation->getNumberBones(); ++i)
-        {
+        for(std::size_t i = 0; i < constAnimation->getNumberBones(); ++i) {
             //shortcut
             const Bone &currentFrameBone = constAnimation->getBone(animationInformation.currFrame, i);
             const Bone &nextFrameBone = constAnimation->getBone(animationInformation.nextFrame, i);
@@ -103,8 +89,7 @@ namespace urchin
         }
 
         //update the vertex and normals
-        for(unsigned m=0; m<meshes->getNumberMeshes(); ++m)
-        {
+        for(unsigned m=0; m<meshes->getNumberMeshes(); ++m) {
             meshes->getMesh(m)->update(skeleton);
         }
     }

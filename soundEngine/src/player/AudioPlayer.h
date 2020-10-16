@@ -3,11 +3,9 @@
 
 #include "sound/Sound.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class AudioPlayer
-    {
+    class AudioPlayer {
         public:
             explicit AudioPlayer(const Sound *);
             virtual ~AudioPlayer() = default;

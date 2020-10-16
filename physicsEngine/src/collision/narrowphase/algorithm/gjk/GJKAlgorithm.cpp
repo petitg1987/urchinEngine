@@ -6,13 +6,11 @@
 #include "collision/narrowphase/algorithm/gjk/GJKAlgorithm.h"
 #include "utils/property/EagerPropertyLoader.h"
 
-namespace urchin
-{
+namespace urchin {
 
     template<class T> GJKAlgorithm<T>::GJKAlgorithm() :
         maxIteration(EagerPropertyLoader::instance()->getNarrowPhaseGjkMaxIteration()),
-        terminationTolerance(EagerPropertyLoader::instance()->getNarrowPhaseGjkTerminationTolerance())
-    {
+        terminationTolerance(EagerPropertyLoader::instance()->getNarrowPhaseGjkTerminationTolerance()) {
 
     }
 
@@ -20,8 +18,7 @@ namespace urchin
     * @param includeMargin Indicate whether algorithm operates on objects with margin
     */
     template<class T> std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> GJKAlgorithm<T>::processGJK(const CollisionConvexObject3D &convexObject1,
-            const CollisionConvexObject3D &convexObject2, bool includeMargin) const
-    {
+            const CollisionConvexObject3D &convexObject2, bool includeMargin) const {
         //get point which belongs to the outline of the shape (Minkowski difference)
         Vector3<T> initialDirection = Vector3<T>(1.0, 0.0, 0.0);
         Point3<T> initialSupportPointA = convexObject1.getSupportPoint(initialDirection.template cast<float>(), includeMargin).template cast<T>();
@@ -33,8 +30,7 @@ namespace urchin
         Simplex<T> simplex;
         simplex.addPoint(initialSupportPointA, initialSupportPointB);
 
-        for(unsigned int iterationNumber=0; iterationNumber<maxIteration; ++iterationNumber)
-        {
+        for(unsigned int iterationNumber=0; iterationNumber<maxIteration; ++iterationNumber) {
             Point3<T> supportPointA = convexObject1.getSupportPoint(direction.template cast<float>(), includeMargin).template cast<T>();
             Point3<T> supportPointB = convexObject2.getSupportPoint((-direction).template cast<float>(), includeMargin).template cast<T>();
             Point3<T> newPoint = supportPointA - supportPointB;
@@ -44,10 +40,8 @@ namespace urchin
             T closestPointDotNewPoint = vClosestPoint.dotProduct(newPoint.toVector());
 
             //check termination conditions: new point is not more extreme that existing ones OR new point already exist in simplex
-            if((closestPointSquareDistance-closestPointDotNewPoint) <= terminationTolerance || simplex.isPointInSimplex(newPoint))
-            {
-                if(closestPointDotNewPoint <= 0.0)
-                { //collision detected
+            if((closestPointSquareDistance-closestPointDotNewPoint) <= terminationTolerance || simplex.isPointInSimplex(newPoint)) {
+                if(closestPointDotNewPoint <= 0.0) { //collision detected
                     return AlgorithmResultAllocator::instance()->newGJKResultCollide<T>(simplex);
                 }
 
@@ -65,8 +59,7 @@ namespace urchin
     }
 
     template<class T> void GJKAlgorithm<T>::logMaximumIterationReach(const CollisionConvexObject3D &convexObject1,
-            const CollisionConvexObject3D &convexObject2, bool includeMargin) const
-    {
+            const CollisionConvexObject3D &convexObject2, bool includeMargin) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 

@@ -9,11 +9,9 @@
 #include "scene/GUI/widget/Size.h"
 #include "scene/GUI/EventListener.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class Widget : public Observable
-    {
+    class Widget : public Observable {
         public:
             Widget(Position, Size);
             ~Widget() override;

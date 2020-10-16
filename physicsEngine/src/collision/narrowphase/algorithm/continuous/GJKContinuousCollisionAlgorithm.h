@@ -8,14 +8,12 @@
 #include "collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h"
 #include "collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Implementation of GJK Ray Cast algorithm (see http://www.dtecta.com/papers/unpublished04raycast.pdf)
     */
-    template<class T, class U> class GJKContinuousCollisionAlgorithm
-    {
+    template<class T, class U> class GJKContinuousCollisionAlgorithm {
         public:
             GJKContinuousCollisionAlgorithm();
 

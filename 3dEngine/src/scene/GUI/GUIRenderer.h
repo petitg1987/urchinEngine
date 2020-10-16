@@ -7,11 +7,9 @@
 #include "scene/Renderer.h"
 #include "scene/GUI/widget/Widget.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class GUIRenderer : public Renderer, public Observer
-    {
+    class GUIRenderer : public Renderer, public Observer {
         public:
             GUIRenderer();
             ~GUIRenderer() override;

@@ -5,14 +5,12 @@
 #include <cmath>
 #include <iomanip>
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Represents a matrix 2x2 in column major
     */
-    template<class T> class Matrix2
-    {
+    template<class T> class Matrix2 {
         public:
             Matrix2();
             explicit Matrix2(T m11, T m12,

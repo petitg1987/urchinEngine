@@ -3,8 +3,7 @@
 
 #include "SceneDisplayer.h"
 
-namespace urchin
-{
+namespace urchin {
 
     SceneDisplayer::SceneDisplayer(SceneController *sceneController, const MouseController &mouseController, const StatusBarController &statusBarController) :
         isInitialized(false),
@@ -25,13 +24,11 @@ namespace urchin
         viewProperties(),
         highlightSceneObject(nullptr),
         highlightSceneLight(nullptr),
-        highlightSceneSound(nullptr)
-    {
+        highlightSceneSound(nullptr) {
 
     }
 
-    SceneDisplayer::~SceneDisplayer()
-    {
+    SceneDisplayer::~SceneDisplayer() {
         delete mapHandler;
 
         delete soundManager;
@@ -51,10 +48,8 @@ namespace urchin
         SingletonManager::destroyAllSingletons();
     }
 
-    void SceneDisplayer::loadMap(const std::string &mapEditorPath, const std::string &mapFilename, const std::string &relativeWorkingDirectory)
-    {
-        try
-        {
+    void SceneDisplayer::loadMap(const std::string &mapEditorPath, const std::string &mapFilename, const std::string &relativeWorkingDirectory) {
+        try {
             initializeEngineResources(mapEditorPath);
             std::string mapResourcesDirectory = FileHandler::simplifyDirectoryPath(FileHandler::getDirectoryFrom(mapFilename) + relativeWorkingDirectory);
             FileSystem::instance()->setupResourcesDirectory(mapResourcesDirectory);
@@ -65,16 +60,14 @@ namespace urchin
             mapHandler->setRelativeWorkingDirectory(relativeWorkingDirectory);
             std::string relativeMapFilename = FileHandler::getRelativePath(mapResourcesDirectory, mapFilename);
             std::ifstream streamMapFile(FileSystem::instance()->getResourcesDirectory() + relativeMapFilename);
-            if (streamMapFile)
-            { //existing map
+            if (streamMapFile) { //existing map
                 NullLoadCallback nullLoadCallback;
                 mapHandler->loadMapFromFile(relativeMapFilename, nullLoadCallback);
             }
             mapHandler->unpause();
 
             isInitialized = true;
-        }catch(std::exception &e)
-        {
+        }catch(std::exception &e) {
             Logger::logger().logError("Error occurred during map load: " + std::string(e.what()));
             QMessageBox::critical(nullptr, "Error", "Unexpected error occurred. Check log file for more details.");
             this->~SceneDisplayer();
@@ -82,8 +75,7 @@ namespace urchin
         }
     }
 
-    void SceneDisplayer::initializeEngineResources(const std::string &mapEditorPath)
-    {
+    void SceneDisplayer::initializeEngineResources(const std::string &mapEditorPath) {
         std::string mapEditorResourcesDirectory = FileHandler::getDirectoryFrom(mapEditorPath) + "resources/";
         std::string mapEditorSaveDirectory = FileHandler::getDirectoryFrom(mapEditorPath) + "save/";
 
@@ -92,10 +84,8 @@ namespace urchin
         FileSystem::instance()->setupSaveDirectory(mapEditorSaveDirectory);
     }
 
-    void SceneDisplayer::initializeScene(const std::string &mapFilename)
-    {
-        if(isInitialized)
-        {
+    void SceneDisplayer::initializeScene(const std::string &mapFilename) {
+        if(isInitialized) {
             throw std::runtime_error("Scene displayer is already initialized.");
         }
 
@@ -127,15 +117,12 @@ namespace urchin
         soundManager = new SoundManager();
     }
 
-    void SceneDisplayer::setViewProperties(SceneDisplayer::ViewProperties viewProperty, bool value)
-    {
+    void SceneDisplayer::setViewProperties(SceneDisplayer::ViewProperties viewProperty, bool value) {
         viewProperties[viewProperty] = value;
     }
 
-    void SceneDisplayer::setHighlightSceneObject(const SceneObject *highlightSceneObject)
-    {
-        if(this->highlightSceneObject != highlightSceneObject)
-        {
+    void SceneDisplayer::setHighlightSceneObject(const SceneObject *highlightSceneObject) {
+        if(this->highlightSceneObject != highlightSceneObject) {
             this->highlightSceneObject = highlightSceneObject;
 
             bodyShapeDisplayer->setSelectedSceneObject(highlightSceneObject);
@@ -143,65 +130,49 @@ namespace urchin
         }
     }
 
-    void SceneDisplayer::setHighlightSceneLight(const SceneLight *highlightSceneLight)
-    {
+    void SceneDisplayer::setHighlightSceneLight(const SceneLight *highlightSceneLight) {
         this->highlightSceneLight = highlightSceneLight;
     }
 
-    void SceneDisplayer::setHighlightSceneSound(const SceneSound *highlightSceneSound)
-    {
+    void SceneDisplayer::setHighlightSceneSound(const SceneSound *highlightSceneSound) {
         this->highlightSceneSound = highlightSceneSound;
     }
 
-    void SceneDisplayer::refreshObjectsModel()
-    {
-        if(viewProperties[MODEL_PHYSICS])
-        {
+    void SceneDisplayer::refreshObjectsModel() {
+        if(viewProperties[MODEL_PHYSICS]) {
             bodyShapeDisplayer->displayBodyShape();
         }
 
         objectMoveController->displayAxis();
     }
 
-    void SceneDisplayer::refreshLightScopeModel()
-    {
-        if(viewProperties[LIGHT_SCOPE] && highlightSceneLight && highlightSceneLight->getLight())
-        {
+    void SceneDisplayer::refreshLightScopeModel() {
+        if(viewProperties[LIGHT_SCOPE] && highlightSceneLight && highlightSceneLight->getLight()) {
             lightScopeDisplayer->displayLightScopeFor(highlightSceneLight);
-        }else
-        {
+        } else {
             lightScopeDisplayer->displayLightScopeFor(nullptr);
         }
     }
 
-    void SceneDisplayer::refreshSoundTriggerModel()
-    {
-        if(viewProperties[SOUND_TRIGGER] && highlightSceneSound && highlightSceneSound->getSoundTrigger())
-        {
+    void SceneDisplayer::refreshSoundTriggerModel() {
+        if(viewProperties[SOUND_TRIGGER] && highlightSceneSound && highlightSceneSound->getSoundTrigger()) {
             soundTriggerDisplayer->displaySoundTriggerFor(highlightSceneSound);
-        }else
-        {
+        } else {
             soundTriggerDisplayer->displaySoundTriggerFor(nullptr);
         }
     }
 
-    void SceneDisplayer::refreshNavMeshModel()
-    {
-        if(viewProperties[NAV_MESH])
-        {
+    void SceneDisplayer::refreshNavMeshModel() {
+        if(viewProperties[NAV_MESH]) {
             navMeshDisplayer->display();
-        }else
-        {
+        } else {
             navMeshDisplayer->clearDisplay();
         }
     }
 
-    void SceneDisplayer::paint()
-    {
-        try
-        {
-            if(isInitialized)
-            {
+    void SceneDisplayer::paint() {
+        try {
+            if(isInitialized) {
                 mapHandler->refreshMap();
 
                 refreshObjectsModel();
@@ -211,8 +182,7 @@ namespace urchin
 
                 sceneManager->display();
             }
-        }catch(std::exception &e)
-        {
+        }catch(std::exception &e) {
             Logger::logger().logError("Error occurred during paint: " + std::string(e.what()));
             QMessageBox::critical(nullptr, "Error", "Unexpected error occurred. Check log file for more details.");
             this->~SceneDisplayer();
@@ -220,42 +190,34 @@ namespace urchin
         }
     }
 
-    void SceneDisplayer::resize(unsigned int width, unsigned int height)
-    {
-        if(isInitialized)
-        {
+    void SceneDisplayer::resize(unsigned int width, unsigned int height) {
+        if(isInitialized) {
             sceneManager->onResize(width, height);
             objectMoveController->onResize(width, height);
         }
     }
 
-    SceneManager *SceneDisplayer::getSceneManager() const
-    {
+    SceneManager *SceneDisplayer::getSceneManager() const {
         return sceneManager;
     }
 
-    SceneFreeCamera *SceneDisplayer::getCamera() const
-    {
+    SceneFreeCamera *SceneDisplayer::getCamera() const {
         return camera;
     }
 
-    PhysicsWorld *SceneDisplayer::getPhysicsWorld() const
-    {
+    PhysicsWorld *SceneDisplayer::getPhysicsWorld() const {
         return physicsWorld;
     }
 
-    MapHandler *SceneDisplayer::getMapHandler() const
-    {
+    MapHandler *SceneDisplayer::getMapHandler() const {
         return mapHandler;
     }
 
-    BodyShapeDisplayer *SceneDisplayer::getBodyShapeDisplayer() const
-    {
+    BodyShapeDisplayer *SceneDisplayer::getBodyShapeDisplayer() const {
         return bodyShapeDisplayer;
     }
 
-    ObjectMoveController *SceneDisplayer::getObjectMoveController() const
-    {
+    ObjectMoveController *SceneDisplayer::getObjectMoveController() const {
         return objectMoveController;
     }
 

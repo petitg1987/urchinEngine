@@ -5,11 +5,9 @@
 
 #include "EPAResult.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class EPAResultCollide : public EPAResult<T>
-    {
+    template<class T> class EPAResultCollide : public EPAResult<T> {
         public:
             EPAResultCollide(const Point3<T> &, const Point3<T> &, const Vector3<T> &, T);
 

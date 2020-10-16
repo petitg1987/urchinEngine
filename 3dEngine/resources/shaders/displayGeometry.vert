@@ -7,6 +7,6 @@ uniform mat4 mView;
 
 invariant gl_Position;
 
-void main(){
+void main() {
     gl_Position = mProjection * mView * vec4(vertexPosition, 1.0);
 }

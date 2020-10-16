@@ -5,12 +5,10 @@
 #include "widget/style/SpinBoxStyleHelper.h"
 #include "widget/style/ComboBoxStyleHelper.h"
 
-namespace urchin
-{
+namespace urchin {
 
     SoundBoxShapeWidget::SoundBoxShapeWidget(const SceneSound *sceneSound) :
-            SoundShapeWidget(sceneSound)
-    {
+            SoundShapeWidget(sceneSound) {
         auto *positionLabel = new QLabel("Position:");
         mainLayout->addWidget(positionLabel, 1, 0);
 
@@ -74,13 +72,11 @@ namespace urchin
         connect(eulerAxis2, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
     }
 
-    std::string SoundBoxShapeWidget::getSoundShapeName() const
-    {
+    std::string SoundBoxShapeWidget::getSoundShapeName() const {
         return BOX_SHAPE_LABEL;
     }
 
-    void SoundBoxShapeWidget::doSetupShapePropertiesFrom(const SoundShape *shape)
-    {
+    void SoundBoxShapeWidget::doSetupShapePropertiesFrom(const SoundShape *shape) {
         const auto *boxShape = dynamic_cast<const SoundBox *>(shape);
 
         positionX->setValue(boxShape->getCenterPosition().X);
@@ -97,10 +93,8 @@ namespace urchin
         this->eulerAxis2->setValue(AngleConverter<double>::toDegree(eulerAngle[2]));
     }
 
-    void SoundBoxShapeWidget::updateShapeOrientationType()
-    {
-        if(!disableShapeEvent)
-        {
+    void SoundBoxShapeWidget::updateShapeOrientationType() {
+        if(!disableShapeEvent) {
             const auto *boxShape = dynamic_cast<const SoundBox *>(retrieveShape());
 
             QVariant variant = orientationType->currentData();
@@ -115,8 +109,7 @@ namespace urchin
         }
     }
 
-    const SoundShape *SoundBoxShapeWidget::createSoundShape() const
-    {
+    const SoundShape *SoundBoxShapeWidget::createSoundShape() const {
         Point3<float> position(positionX->value(), positionY->value(), positionZ->value());
 
         Vector3<float> halfSizes(halfSizeX->value(), halfSizeY->value(), halfSizeZ->value());

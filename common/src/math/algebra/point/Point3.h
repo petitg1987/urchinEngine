@@ -9,11 +9,9 @@
 #include "math/algebra/vector/Vector3.h"
 #include "math/algebra/matrix/Matrix3.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class Point3
-    {
+    template<class T> class Point3 {
         public:
             Point3();
             explicit Point3(T Xu, T Yu, T Zu);

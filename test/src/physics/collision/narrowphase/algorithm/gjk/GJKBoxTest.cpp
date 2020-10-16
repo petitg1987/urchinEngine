@@ -9,8 +9,7 @@
 #include "physics/collision/narrowphase/algorithm/gjk/GJKTestHelper.h"
 using namespace urchin;
 
-void GJKBoxTest::identicalAABBox()
-{
+void GJKBoxTest::identicalAABBox() {
     CollisionBoxObject aabbox1(0.0, Vector3<float>(0.5, 0.5, 0.5), Point3<float>(0.5, 0.5, 0.5), Quaternion<float>());
     CollisionBoxObject aabbox2(0.0, Vector3<float>(0.5, 0.5, 0.5), Point3<float>(0.5, 0.5, 0.5), Quaternion<float>());
 
@@ -19,8 +18,7 @@ void GJKBoxTest::identicalAABBox()
     AssertHelper::assertTrue(result->isCollide());
 }
 
-void GJKBoxTest::separateAABBox()
-{
+void GJKBoxTest::separateAABBox() {
     CollisionBoxObject aabbox1(0.0, Vector3<float>(0.5, 0.5, 0.5), Point3<float>(0.5, 0.5, 0.5), Quaternion<float>());
     CollisionBoxObject aabbox2(0.0, Vector3<float>(0.5, 0.5, 0.5), Point3<float>(-0.6, 0.5, 0.5), Quaternion<float>());
 
@@ -33,8 +31,7 @@ void GJKBoxTest::separateAABBox()
     AssertHelper::assertFloatEquals(result->getClosestPointB().vector(result->getClosestPointA()).length(), 0.1);
 }
 
-void GJKBoxTest::overlapAABBox()
-{
+void GJKBoxTest::overlapAABBox() {
     CollisionBoxObject aabbox1(0.0, Vector3<float>(0.5, 0.5, 0.5), Point3<float>(0.5, 0.5, 0.5), Quaternion<float>());
     CollisionBoxObject aabbox2(0.0, Vector3<float>(0.5, 0.5, 0.5), Point3<float>(0.0, 0.5, 0.5), Quaternion<float>());
 
@@ -43,8 +40,7 @@ void GJKBoxTest::overlapAABBox()
     AssertHelper::assertTrue(result->isCollide());
 }
 
-void GJKBoxTest::identicalOBBox()
-{
+void GJKBoxTest::identicalOBBox() {
     CollisionBoxObject obbox1(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(0.0, 0.0, 0.0),
             Quaternion<float>(Vector3<float>(0.0, 0.0, 1.0), 2.35619449));
     CollisionBoxObject obbox2(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(0.0, 0.0, 0.0),
@@ -55,8 +51,7 @@ void GJKBoxTest::identicalOBBox()
     AssertHelper::assertTrue(result->isCollide());
 }
 
-void GJKBoxTest::separateEdgeOBBox()
-{
+void GJKBoxTest::separateEdgeOBBox() {
     CollisionBoxObject obbox1(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(0.0, 0.0, 0.0),
             Quaternion<float>(Vector3<float>(0.0, 0.0, 1.0), 2.35619449));
     CollisionBoxObject obbox2(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(3.0, 0.0, 0.0),
@@ -71,8 +66,7 @@ void GJKBoxTest::separateEdgeOBBox()
     AssertHelper::assertFloatEquals(result->getClosestPointB().vector(result->getClosestPointA()).length(), 0.17157287526);
 }
 
-void GJKBoxTest::separateCornerOBBox()
-{
+void GJKBoxTest::separateCornerOBBox() {
     CollisionBoxObject obbox1(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(0.0, 0.0, 0.0),
             Quaternion<float>(Vector3<float>(0.245, 0.769, -0.59), 0.987859));
     CollisionBoxObject obbox2(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(3.0, 0.0, 0.0), Quaternion<float>());
@@ -85,8 +79,7 @@ void GJKBoxTest::separateCornerOBBox()
     AssertHelper::assertPoint3FloatEquals(result->getClosestPointB(), Point3<float>(2.0, 0.0, 0.0));
 }
 
-void GJKBoxTest::overlapOnEdgeOBBox()
-{
+void GJKBoxTest::overlapOnEdgeOBBox() {
     CollisionBoxObject obbox1(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(0.0, 0.0, 0.0),
             Quaternion<float>(Vector3<float>(0.0, 0.0, 1.0), 2.35619449));
     CollisionBoxObject obbox2(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(2.0, 0.0, 0.0),
@@ -97,8 +90,7 @@ void GJKBoxTest::overlapOnEdgeOBBox()
     AssertHelper::assertTrue(result->isCollide());
 }
 
-void GJKBoxTest::separateOBBoxAABBox()
-{
+void GJKBoxTest::separateOBBoxAABBox() {
     CollisionBoxObject obbox(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(0.0, 0.0, 0.0),
             Quaternion<float>(Vector3<float>(0.0, 0.0, 1.0), 2.35619449));
     CollisionBoxObject aabbox(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(3.0, 0.0, 0.0), Quaternion<float>());
@@ -114,8 +106,7 @@ void GJKBoxTest::separateOBBoxAABBox()
     AssertHelper::assertFloatEquals(result->getClosestPointB().vector(result->getClosestPointA()).length(), 0.58578643763);
 }
 
-void GJKBoxTest::overlapOBBoxAABBox()
-{
+void GJKBoxTest::overlapOBBoxAABBox() {
     CollisionBoxObject obbox(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(0.0, 0.0, 0.0),
             Quaternion<float>(Vector3<float>(0.0, 0.0, 1.0), 2.35619449));
     CollisionBoxObject aabbox(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(2.0, 0.0, 0.0), Quaternion<float>());
@@ -125,8 +116,7 @@ void GJKBoxTest::overlapOBBoxAABBox()
     AssertHelper::assertTrue(result->isCollide());
 }
 
-CppUnit::Test *GJKBoxTest::suite()
-{
+CppUnit::Test *GJKBoxTest::suite() {
     auto *suite = new CppUnit::TestSuite("GJKBoxTest");
 
     suite->addTest(new CppUnit::TestCaller<GJKBoxTest>("identicalAABBox", &GJKBoxTest::identicalAABBox));

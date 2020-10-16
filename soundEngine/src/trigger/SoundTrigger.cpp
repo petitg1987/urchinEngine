@@ -1,16 +1,13 @@
 #include "trigger/SoundTrigger.h"
 
-namespace urchin
-{
+namespace urchin {
 
     SoundTrigger::SoundTrigger(const SoundBehavior &soundBehavior) :
-        soundBehavior(soundBehavior)
-    {
+        soundBehavior(soundBehavior) {
 
     }
 
-    const SoundBehavior &SoundTrigger::getSoundBehavior() const
-    {
+    const SoundBehavior &SoundTrigger::getSoundBehavior() const {
         return soundBehavior;
     }
 

@@ -3,8 +3,7 @@
 #include "body/work/AbstractWorkBody.h"
 #include "collision/broadphase/PairContainer.h"
 
-namespace urchin
-{
+namespace urchin {
 
     //static
     uint_fast32_t AbstractWorkBody::nextObjectId = 0;
@@ -21,99 +20,84 @@ namespace urchin
             bIsStatic(true),
             bIsActive(false),
             islandElementId(0),
-            objectId(nextObjectId++)
-    {
+            objectId(nextObjectId++) {
 
     }
 
-    const PhysicsTransform &AbstractWorkBody::getPhysicsTransform() const
-    {
+    const PhysicsTransform &AbstractWorkBody::getPhysicsTransform() const {
         return physicsTransform;
     }
 
-    void AbstractWorkBody::setPosition(const Point3<float> &position)
-    {
+    void AbstractWorkBody::setPosition(const Point3<float> &position) {
         physicsTransform.setPosition(position);
     }
 
-    const Point3<float> &AbstractWorkBody::getPosition() const
-    {
+    const Point3<float> &AbstractWorkBody::getPosition() const {
         return physicsTransform.getPosition();
     }
 
-    void AbstractWorkBody::setOrientation(const Quaternion<float> &orientation)
-    {
+    void AbstractWorkBody::setOrientation(const Quaternion<float> &orientation) {
         physicsTransform.setOrientation(orientation);
     }
 
-    const Quaternion<float> &AbstractWorkBody::getOrientation() const
-    {
+    const Quaternion<float> &AbstractWorkBody::getOrientation() const {
         return physicsTransform.getOrientation();
     }
 
-    const CollisionShape3D *AbstractWorkBody::getShape() const
-    {
+    const CollisionShape3D *AbstractWorkBody::getShape() const {
         return shape.get();
     }
 
-    const std::string &AbstractWorkBody::getId() const
-    {
+    const std::string &AbstractWorkBody::getId() const {
         return id;
     }
 
     /**
      * @param restitution Restitution (0=stop, 1=100% elastic)
      */
-    void AbstractWorkBody::setRestitution(float restitution)
-    {
+    void AbstractWorkBody::setRestitution(float restitution) {
         this->restitution = restitution;
     }
 
     /**
      * @return Restitution (0=stop, 1=100% elastic)
      */
-    float AbstractWorkBody::getRestitution() const
-    {
+    float AbstractWorkBody::getRestitution() const {
         return restitution;
     }
 
     /**
      * @param friction Friction (0=no friction, 1=total friction)
      */
-    void AbstractWorkBody::setFriction(float friction)
-    {
+    void AbstractWorkBody::setFriction(float friction) {
         this->friction = friction;
     }
 
     /**
      * @return Friction (0=no friction, 1=total friction)
      */
-    float AbstractWorkBody::getFriction() const
-    {
+    float AbstractWorkBody::getFriction() const {
         return friction;
     }
 
     /**
      * @param rollingFriction Rolling friction (0=no friction, 1=total friction)
      */
-    void AbstractWorkBody::setRollingFriction(float rollingFriction)
-    {
+    void AbstractWorkBody::setRollingFriction(float rollingFriction) {
         this->rollingFriction = rollingFriction;
     }
 
     /**
      * @return Rolling friction (0=no friction, 1=total friction)
      */
-    float AbstractWorkBody::getRollingFriction() const
-    {
+    float AbstractWorkBody::getRollingFriction() const {
         return rollingFriction;
     }
 
     /**
      * @return Threshold for continuous collision detection in distance unit
      */
-    float AbstractWorkBody::getCcdMotionThreshold() const
-    {
+    float AbstractWorkBody::getCcdMotionThreshold() const {
         return ccdMotionThreshold;
     }
 
@@ -121,67 +105,57 @@ namespace urchin
      * Process continuous collision detection if the motion in one step is more then threshold.
      * @param ccdMotionThreshold Threshold for continuous collision detection in distance unit.
      */
-    void AbstractWorkBody::setCcdMotionThreshold(float ccdMotionThreshold)
-    {
+    void AbstractWorkBody::setCcdMotionThreshold(float ccdMotionThreshold) {
         this->ccdMotionThreshold = ccdMotionThreshold;
     }
 
-    PairContainer *AbstractWorkBody::getPairContainer() const
-    {
+    PairContainer *AbstractWorkBody::getPairContainer() const {
         return nullptr;
     }
 
-    void AbstractWorkBody::disableAllBodies(bool value)
-    {
+    void AbstractWorkBody::disableAllBodies(bool value) {
         bDisableAllBodies = value;
     }
 
     /**
      * @return True when body is static (cannot be affected by physics world)
      */
-    bool AbstractWorkBody::isStatic() const
-    {
+    bool AbstractWorkBody::isStatic() const {
         return bDisableAllBodies || bIsStatic;
     }
 
     /**
      * @param bIsStatic Indicate whether body is static (cannot be affected by physics world)
      */
-    void AbstractWorkBody::setIsStatic(bool bIsStatic)
-    {
+    void AbstractWorkBody::setIsStatic(bool bIsStatic) {
         this->bIsStatic = bIsStatic;
     }
 
     /**
      * @return True when body is active (body has velocity and/or one of body in same island is active)
      */
-    bool AbstractWorkBody::isActive() const
-    {
+    bool AbstractWorkBody::isActive() const {
         return !bDisableAllBodies && bIsActive;
     }
 
     /**
      * @param bIsActive Indicate whether body is active (body has velocity and/or one of body in same island is active)
      */
-    void AbstractWorkBody::setIsActive(bool bIsActive)
-    {
+    void AbstractWorkBody::setIsActive(bool bIsActive) {
         assert(!(bIsActive && bIsStatic)); //an active body cannot be static
 
         this->bIsActive = bIsActive;
     }
 
-    void AbstractWorkBody::setIslandElementId(unsigned int islandElementId)
-    {
+    void AbstractWorkBody::setIslandElementId(unsigned int islandElementId) {
         this->islandElementId = islandElementId;
     }
 
-    unsigned int AbstractWorkBody::getIslandElementId() const
-    {
+    unsigned int AbstractWorkBody::getIslandElementId() const {
         return islandElementId;
     }
 
-    uint_fast32_t AbstractWorkBody::getObjectId() const
-    {
+    uint_fast32_t AbstractWorkBody::getObjectId() const {
         return objectId;
     }
 

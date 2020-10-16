@@ -5,11 +5,9 @@
 
 #include "utils/pool/FixedSizePool.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class BaseType> class SyncFixedSizePool : public FixedSizePool<BaseType>
-    {
+    template<class BaseType> class SyncFixedSizePool : public FixedSizePool<BaseType> {
         public:
             SyncFixedSizePool(const std::string &, unsigned int, unsigned int);
             ~SyncFixedSizePool() = default;

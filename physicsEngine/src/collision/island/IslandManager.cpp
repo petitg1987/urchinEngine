@@ -1,7 +1,6 @@
 #include "collision/island/IslandManager.h"
 
-namespace urchin
-{
+namespace urchin {
 
     //Debug parameters
     bool DEBUG_PRINT_ISLANDS = false;
@@ -9,8 +8,7 @@ namespace urchin
     IslandManager::IslandManager(const BodyManager *bodyManager) :
         bodyManager(bodyManager),
         squaredLinearSleepingThreshold(ConfigService::instance()->getFloatValue("island.linearSleepingThreshold") * ConfigService::instance()->getFloatValue("island.linearSleepingThreshold")),
-        squaredAngularSleepingThreshold(ConfigService::instance()->getFloatValue("island.angularSleepingThreshold") * ConfigService::instance()->getFloatValue("island.angularSleepingThreshold"))
-    {
+        squaredAngularSleepingThreshold(ConfigService::instance()->getFloatValue("island.angularSleepingThreshold") * ConfigService::instance()->getFloatValue("island.angularSleepingThreshold")) {
 
     }
 
@@ -19,31 +17,26 @@ namespace urchin
      * If one body of the island cannot sleep, we set their status to active.
      * @param overlappingPairs Overlapping pairs of broad phase used to determine the islands
      */
-    void IslandManager::refreshBodyActiveState(const std::vector<ManifoldResult> &manifoldResults)
-    {
+    void IslandManager::refreshBodyActiveState(const std::vector<ManifoldResult> &manifoldResults) {
         ScopeProfiler profiler("physics", "refreshBodyStat");
 
         buildIslands(manifoldResults);
         const std::vector<IslandElementLink> &islandElementsLink = islandContainer.retrieveSortedIslandElements();
 
-        if(DEBUG_PRINT_ISLANDS)
-        {
+        if(DEBUG_PRINT_ISLANDS) {
             printIslands(islandElementsLink);
         }
 
         unsigned int i=0;
-        while(islandElementsLink.size()>i)
-        { //loop on islands
+        while(islandElementsLink.size()>i) { //loop on islands
             unsigned int startElementIndex = i;
             unsigned int nbElements = computeNumberElements(islandElementsLink, startElementIndex);
 
             bool islandLinkedToStaticElement = false;
             bool islandBodiesCanSleep = true;
-            for(unsigned int j=0; j<nbElements; ++j)
-            { //loop on elements of the island
+            for(unsigned int j=0; j<nbElements; ++j) { //loop on elements of the island
                 auto *body = dynamic_cast<WorkRigidBody *>(islandElementsLink[startElementIndex+j].element);
-                if(isBodyMoving(body))
-                {
+                if(isBodyMoving(body)) {
                     islandBodiesCanSleep = false;
                     break;
                 }
@@ -52,16 +45,13 @@ namespace urchin
             }
             islandBodiesCanSleep = islandBodiesCanSleep && islandLinkedToStaticElement; //one element of the island must be in contact with a static element to sleep the island
 
-            for(unsigned int j=0; j<nbElements; ++j)
-            { //loop on elements of the island
+            for(unsigned int j=0; j<nbElements; ++j) { //loop on elements of the island
                 auto *body = dynamic_cast<WorkRigidBody *>(islandElementsLink[startElementIndex+j].element);
                 bool bodyActiveState = !islandBodiesCanSleep;
-                if(body->isActive()!=bodyActiveState)
-                {
+                if(body->isActive()!=bodyActiveState) {
                     body->setIsActive(bodyActiveState);
 
-                    if(bodyActiveState)
-                    {
+                    if(bodyActiveState) {
                         body->setLinearVelocity(Vector3<float>(0.0, 0.0, 0.0));
                         body->setAngularVelocity(Vector3<float>(0.0, 0.0, 0.0));
                     }
@@ -72,35 +62,27 @@ namespace urchin
         }
     }
 
-    void IslandManager::buildIslands(const std::vector<ManifoldResult> &manifoldResults)
-    {
+    void IslandManager::buildIslands(const std::vector<ManifoldResult> &manifoldResults) {
         //1. create an island for each body
         islandElements.clear();
-        for (auto body : bodyManager->getWorkBodies())
-        {
-            if(!body->isStatic())
-            {
+        for (auto body : bodyManager->getWorkBodies()) {
+            if(!body->isStatic()) {
                 islandElements.push_back(body);
             }
         }
         islandContainer.reset(islandElements);
 
         //2. merge islands for bodies in contact
-        for(const auto &manifoldResult : manifoldResults)
-        {
-            if(manifoldResult.getNumContactPoints() > 0)
-            {
+        for(const auto &manifoldResult : manifoldResults) {
+            if(manifoldResult.getNumContactPoints() > 0) {
                 AbstractWorkBody *body1 = manifoldResult.getBody1();
                 AbstractWorkBody *body2 = manifoldResult.getBody2();
 
-                if(!body1->isStatic() && !body2->isStatic())
-                {
+                if(!body1->isStatic() && !body2->isStatic()) {
                     islandContainer.mergeIsland(body1, body2);
-                }else if(!body1->isStatic() && body2->isStatic())
-                {
+                } else if(!body1->isStatic() && body2->isStatic()) {
                     islandContainer.linkToStaticElement(body1);
-                }else if(!body2->isStatic() && body1->isStatic())
-                {
+                } else if(!body2->isStatic() && body1->isStatic()) {
                     islandContainer.linkToStaticElement(body2);
                 }
             }
@@ -110,37 +92,31 @@ namespace urchin
     /**
      * @return Number of element for island starting at 'startElementIndex'
      */
-    unsigned int IslandManager::computeNumberElements(const std::vector<IslandElementLink> &islandElementsLink, unsigned int startElementIndex) const
-    {
+    unsigned int IslandManager::computeNumberElements(const std::vector<IslandElementLink> &islandElementsLink, unsigned int startElementIndex) const {
         unsigned int islandId = islandElementsLink[startElementIndex].islandIdRef;
         unsigned int endElementIndex;
 
-        for(endElementIndex = startElementIndex; islandElementsLink.size()>endElementIndex && islandId==islandElementsLink[endElementIndex].islandIdRef; ++endElementIndex)
-        {
+        for(endElementIndex = startElementIndex; islandElementsLink.size()>endElementIndex && islandId==islandElementsLink[endElementIndex].islandIdRef; ++endElementIndex) {
         }
 
         return endElementIndex - startElementIndex;
     }
 
-    bool IslandManager::isBodyMoving(const WorkRigidBody *body) const
-    {
+    bool IslandManager::isBodyMoving(const WorkRigidBody *body) const {
         return !(body->getLinearVelocity().squareLength() < squaredLinearSleepingThreshold
                  && body->getAngularVelocity().squareLength() < squaredAngularSleepingThreshold);
     }
 
-    void IslandManager::printIslands(const std::vector<IslandElementLink> &islandElementsLink)
-    {
+    void IslandManager::printIslands(const std::vector<IslandElementLink> &islandElementsLink) {
         unsigned int islandId = 0;
         unsigned int i=0;
-        while(islandElementsLink.size()>i)
-        { //loop on islands
+        while(islandElementsLink.size()>i) { //loop on islands
             unsigned int startElementIndex = i;
             unsigned int nbElements = computeNumberElements(islandElementsLink, startElementIndex);
 
             std::cout<<"Island "<<islandId<<":"<<std::endl;
 
-            for(unsigned int j=0; j<nbElements; ++j)
-            { //loop on elements of the island
+            for(unsigned int j=0; j<nbElements; ++j) { //loop on elements of the island
                 auto *body = dynamic_cast<WorkRigidBody *>(islandElementsLink[startElementIndex+j].element);
                 std::cout<<"  - Body: "<<body->getId()<<" (moving: "<<isBodyMoving(body)<<", active: "<<body->isActive()<<")"<<std::endl;
             }

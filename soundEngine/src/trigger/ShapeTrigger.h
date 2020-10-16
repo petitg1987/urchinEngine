@@ -4,14 +4,12 @@
 #include "trigger/SoundTrigger.h"
 #include "trigger/shape/SoundShape.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Trigger performed when inside a shape
     */
-    class ShapeTrigger : public SoundTrigger
-    {
+    class ShapeTrigger : public SoundTrigger {
         public:
             ShapeTrigger(const SoundBehavior &, const SoundShape *);
             ~ShapeTrigger() override;

@@ -2,30 +2,25 @@
 
 #include <utility>
 
-namespace urchin
-{
+namespace urchin {
 
     XmlAttribute::XmlAttribute() :
         attributeName(""),
-        attributeValue("")
-    {
+        attributeValue("") {
 
     }
 
     XmlAttribute::XmlAttribute(std::string attributeName, std::string attributeValue) :
         attributeName(std::move(attributeName)),
-        attributeValue(std::move(attributeValue))
-    {
+        attributeValue(std::move(attributeValue)) {
 
     }
 
-    const std::string &XmlAttribute::getAttributeName() const
-    {
+    const std::string &XmlAttribute::getAttributeName() const {
         return attributeName;
     }
 
-    const std::string &XmlAttribute::getAttributeValue() const
-    {
+    const std::string &XmlAttribute::getAttributeValue() const {
         return attributeValue;
     }
 

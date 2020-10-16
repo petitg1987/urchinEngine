@@ -5,11 +5,9 @@
 
 #include "UrchinAIEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SceneAI
-    {
+    class SceneAI {
         //XML tags
         #define NAV_MESH_AGENT_TAG "navMeshAgent"
 

@@ -17,8 +17,7 @@
 #define DEFAULT_WIND_DIRECTION Vector3<float>(1.0f, 0.0f, 0.0f)
 #define DEFAULT_WIND_STRENGTH 1.0
 
-namespace urchin
-{
+namespace urchin {
 
     TerrainGrass::TerrainGrass(const std::string &grassTextureFilename) :
             grassPositionRandomPercentage(ConfigService::instance()->getFloatValue("terrain.grassPositionRandomPercentage")),
@@ -33,8 +32,7 @@ namespace urchin
             grassHeight(0.0f),
             grassLength(0.0f),
             grassQuantity(0.0f),
-            windStrength(0.0f)
-    {
+            windStrength(0.0f) {
         std::map<std::string, std::string> tokens;
         tokens["GRASS_ALPHA_TEST"] = ConfigService::instance()->getStringValue("terrain.grassAlphaTest");
         terrainGrassShader = ShaderManager::instance()->createProgram("terrainGrass.vert", "terrainGrass.geom", "terrainGrass.frag", tokens);
@@ -76,32 +74,27 @@ namespace urchin
         setWindStrength(DEFAULT_WIND_STRENGTH);
     }
 
-    TerrainGrass::~TerrainGrass()
-    {
+    TerrainGrass::~TerrainGrass() {
         clearVBO();
         ShaderManager::instance()->removeProgram(terrainGrassShader);
 
-        if(grassTexture)
-        {
+        if(grassTexture) {
             grassTexture->release();
         }
-        if(grassMaskTexture)
-        {
+        if(grassMaskTexture) {
             grassMaskTexture->release();
         }
         delete mainGrassQuadtree;
     }
 
-    void TerrainGrass::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix)
-    {
+    void TerrainGrass::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
 
         ShaderManager::instance()->bind(terrainGrassShader);
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
     }
 
-    void TerrainGrass::refreshWith(const std::shared_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition)
-    {
+    void TerrainGrass::refreshWith(const std::shared_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition) {
         generateGrass(mesh, terrainPosition);
 
         ShaderManager::instance()->bind(terrainGrassShader);
@@ -109,18 +102,15 @@ namespace urchin
         glUniform3fv(terrainMaxPointLoc, 1, (const float *)mesh->getVertices()[mesh->getXSize()*mesh->getZSize()-1]);
     }
 
-    void TerrainGrass::refreshWith(float ambient)
-    {
+    void TerrainGrass::refreshWith(float ambient) {
         ShaderManager::instance()->bind(terrainGrassShader);
         glUniform1f(terrainAmbientLoc, ambient);
     }
 
-    void TerrainGrass::generateGrass(const std::shared_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition)
-    {
+    void TerrainGrass::generateGrass(const std::shared_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition) {
         const unsigned int NUM_THREADS = std::max(2u, std::thread::hardware_concurrency());
 
-        if(mesh)
-        {
+        if(mesh) {
             this->mesh = mesh;
             this->terrainPosition = terrainPosition;
 
@@ -138,8 +128,7 @@ namespace urchin
 
             std::vector<TerrainGrassQuadtree *> leafGrassPatches;
             leafGrassPatches.reserve(patchQuantityX * patchQuantityZ);
-            for (unsigned int i = 0; i < patchQuantityX * patchQuantityZ; ++i)
-            {
+            for (unsigned int i = 0; i < patchQuantityX * patchQuantityZ; ++i) {
                 leafGrassPatches.push_back(new TerrainGrassQuadtree());
             }
 
@@ -147,19 +136,15 @@ namespace urchin
             float startZ = mesh->getVertices()[0].Z;
 
             std::vector<std::thread> threads(NUM_THREADS);
-            for(unsigned int threadI=0; threadI<NUM_THREADS; threadI++)
-            {
+            for(unsigned int threadI=0; threadI<NUM_THREADS; threadI++) {
                 unsigned int beginX = threadI * grassXQuantity / NUM_THREADS;
                 unsigned int endX = (threadI + 1) == NUM_THREADS ? grassXQuantity : (threadI + 1) * grassXQuantity / NUM_THREADS;
 
-                threads[threadI] = std::thread(std::bind([&](unsigned int beginX, unsigned int endX)
-                {
-                    for (unsigned int xIndex = beginX; xIndex < endX; ++xIndex)
-                    {
+                threads[threadI] = std::thread(std::bind([&](unsigned int beginX, unsigned int endX) {
+                    for (unsigned int xIndex = beginX; xIndex < endX; ++xIndex) {
                         const float xFixedValue = startX + (float)xIndex / grassQuantity;
 
-                        for (unsigned int zIndex = 0; zIndex < grassZQuantity; ++zIndex)
-                        {
+                        for (unsigned int zIndex = 0; zIndex < grassZQuantity; ++zIndex) {
                             float xValue = xFixedValue + distribution(generator);
                             float zValue = (startZ + (float)zIndex / grassQuantity) + distribution(generator);
                             unsigned int vertexIndex = retrieveVertexIndex(Point2<float>(xValue, zValue));
@@ -184,8 +169,7 @@ namespace urchin
         }
     }
 
-    unsigned int TerrainGrass::retrieveVertexIndex(const Point2<float> &localXzCoordinate) const
-    {
+    unsigned int TerrainGrass::retrieveVertexIndex(const Point2<float> &localXzCoordinate) const {
         Point3<float> localCoordinate = Point3<float>(localXzCoordinate.X, 0.0f, localXzCoordinate.Y);
         Point3<float> farLeftCoordinate = localCoordinate - mesh->getVertices()[0];
 
@@ -198,31 +182,25 @@ namespace urchin
         return xIndex + zIndex*mesh->getXSize();
     }
 
-    void TerrainGrass::buildGrassQuadtree(const std::vector<TerrainGrassQuadtree *> &leafGrassPatches, unsigned int leafQuantityX, unsigned int leafQuantityZ)
-    {
+    void TerrainGrass::buildGrassQuadtree(const std::vector<TerrainGrassQuadtree *> &leafGrassPatches, unsigned int leafQuantityX, unsigned int leafQuantityZ) {
         std::vector<TerrainGrassQuadtree *> childrenGrassQuadtree = leafGrassPatches;
         unsigned int childrenNbQuadtreeX = leafQuantityX;
         unsigned int childrenNbQuadtreeZ = leafQuantityZ;
 
         unsigned int depth = grassQuadtreeDepth;
-        while(depth >= 1)
-        {
+        while(depth >= 1) {
             auto depthNbQuadtreeX = static_cast<unsigned int>(MathAlgorithm::pow(2, depth));
             auto depthNbQuadtreeZ = depthNbQuadtreeX;
             unsigned int depthNbQuadtree = depthNbQuadtreeX * depthNbQuadtreeZ;
-            if(std::sqrt(childrenGrassQuadtree.size()) >= std::sqrt(depthNbQuadtree)*2)
-            {
+            if(std::sqrt(childrenGrassQuadtree.size()) >= std::sqrt(depthNbQuadtree)*2) {
                 std::vector<TerrainGrassQuadtree *> depthGrassQuadtree;
                 depthGrassQuadtree.reserve(depthNbQuadtree);
-                for(unsigned int i=0; i<depthNbQuadtree; ++i)
-                {
+                for(unsigned int i=0; i<depthNbQuadtree; ++i) {
                     depthGrassQuadtree.push_back(new TerrainGrassQuadtree());
                 }
 
-                for (unsigned int childZ = 0; childZ < childrenNbQuadtreeZ; ++childZ)
-                {
-                    for (unsigned int childX = 0; childX < childrenNbQuadtreeX; ++childX)
-                    {
+                for (unsigned int childZ = 0; childZ < childrenNbQuadtreeZ; ++childZ) {
+                    for (unsigned int childX = 0; childX < childrenNbQuadtreeX; ++childX) {
                         auto xQuadtreeIndex = static_cast<int>((depthNbQuadtreeX / (float)childrenNbQuadtreeX) * ((float)childX + 0.5f));
                         auto zQuadtreeIndex = static_cast<int>((depthNbQuadtreeZ / (float)childrenNbQuadtreeZ) * ((float)childZ + 0.5f));
 
@@ -245,8 +223,7 @@ namespace urchin
         mainGrassQuadtree = new TerrainGrassQuadtree(childrenGrassQuadtree);
     }
 
-    void TerrainGrass::createVBO(const std::vector<TerrainGrassQuadtree *> &leafGrassPatches)
-    {
+    void TerrainGrass::createVBO(const std::vector<TerrainGrassQuadtree *> &leafGrassPatches) {
         clearVBO();
 
         vertexArrayObjects.resize(leafGrassPatches.size());
@@ -255,8 +232,7 @@ namespace urchin
         glGenBuffers(leafGrassPatches.size() * 2, &bufferIDs[0][0]);
 
         unsigned int quadtreeId = 0;
-        for(auto *grassQuadtree : leafGrassPatches)
-        {
+        for(auto *grassQuadtree : leafGrassPatches) {
             glBindVertexArray(vertexArrayObjects[quadtreeId]);
 
             glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[quadtreeId][VAO_VERTEX_POSITION]);
@@ -273,164 +249,135 @@ namespace urchin
         }
     }
 
-    void TerrainGrass::clearVBO()
-    {
-        if(!vertexArrayObjects.empty())
-        {
+    void TerrainGrass::clearVBO() {
+        if(!vertexArrayObjects.empty()) {
             glDeleteVertexArrays(vertexArrayObjects.size(), &vertexArrayObjects[0]);
             vertexArrayObjects.clear();
         }
 
-        if(!bufferIDs.empty())
-        {
+        if(!bufferIDs.empty()) {
             glDeleteBuffers(bufferIDs.size(), &bufferIDs[0][0]);
             bufferIDs.clear();
         }
     }
 
-    const std::string &TerrainGrass::getGrassTexture() const
-    {
+    const std::string &TerrainGrass::getGrassTexture() const {
         return grassTextureFilename;
     }
 
-    void TerrainGrass::setGrassTexture(const std::string &grassTextureFilename)
-    {
+    void TerrainGrass::setGrassTexture(const std::string &grassTextureFilename) {
         this->grassTextureFilename = grassTextureFilename;
 
-        if(grassTexture)
-        {
+        if(grassTexture) {
             grassTexture->release();
         }
 
-        if(grassTextureFilename.empty())
-        {
+        if(grassTextureFilename.empty()) {
             grassTexture = nullptr;
-        }else
-        {
+        } else {
             grassTexture = MediaManager::instance()->getMedia<Image>(grassTextureFilename);
             grassTexture->toTexture(true, true, false);
         }
     }
 
-    const std::string &TerrainGrass::getMaskTexture() const
-    {
+    const std::string &TerrainGrass::getMaskTexture() const {
         return grassMaskFilename;
     }
 
-    void TerrainGrass::setMaskTexture(const std::string &grassMaskFilename)
-    {
+    void TerrainGrass::setMaskTexture(const std::string &grassMaskFilename) {
         this->grassMaskFilename = grassMaskFilename;
 
-        if(grassMaskTexture)
-        {
+        if(grassMaskTexture) {
             grassMaskTexture->release();
         }
 
-        if(grassMaskFilename.empty())
-        {
+        if(grassMaskFilename.empty()) {
             grassMaskTexture = new Image(1, 1, Image::IMAGE_GRAYSCALE, std::vector<unsigned char>({0}));
             grassMaskTexture->toTexture(false, false, false);
-        } else
-        {
+        } else {
             grassMaskTexture = MediaManager::instance()->getMedia<Image>(grassMaskFilename);
             grassMaskTexture->toTexture(false, false, false);
         }
     }
 
-    float TerrainGrass::getGrassDisplayDistance() const
-    {
+    float TerrainGrass::getGrassDisplayDistance() const {
         return grassDisplayDistance;
     }
 
-    void TerrainGrass::setGrassDisplayDistance(float grassDisplayDistance)
-    {
+    void TerrainGrass::setGrassDisplayDistance(float grassDisplayDistance) {
         this->grassDisplayDistance = grassDisplayDistance;
 
         ShaderManager::instance()->bind(terrainGrassShader);
         glUniform1f(grassDisplayDistanceLoc, grassDisplayDistance);
     }
 
-    float TerrainGrass::getGrassHeight() const
-    {
+    float TerrainGrass::getGrassHeight() const {
         return grassHeight;
     }
 
-    void TerrainGrass::setGrassHeight(float grassHeight)
-    {
+    void TerrainGrass::setGrassHeight(float grassHeight) {
         this->grassHeight = grassHeight;
 
         ShaderManager::instance()->bind(terrainGrassShader);
         glUniform1f(grassHeightLoc, grassHeight);
     }
 
-    float TerrainGrass::getGrassLength() const
-    {
+    float TerrainGrass::getGrassLength() const {
         return grassLength;
     }
 
-    void TerrainGrass::setGrassLength(float grassLength)
-    {
+    void TerrainGrass::setGrassLength(float grassLength) {
         this->grassLength = grassLength;
 
         ShaderManager::instance()->bind(terrainGrassShader);
         glUniform1f(grassHalfLengthLoc, grassLength / 2.0f);
     }
 
-    unsigned int TerrainGrass::getNumGrassInTexture() const
-    {
+    unsigned int TerrainGrass::getNumGrassInTexture() const {
         return numGrassInTex;
     }
 
-    void TerrainGrass::setNumGrassInTexture(unsigned int numGrassInTex)
-    {
+    void TerrainGrass::setNumGrassInTexture(unsigned int numGrassInTex) {
         this->numGrassInTex = numGrassInTex;
 
         ShaderManager::instance()->bind(terrainGrassShader);
         glUniform1i(numGrassInTexLoc, numGrassInTex);
     }
 
-    float TerrainGrass::getGrassQuantity() const
-    {
+    float TerrainGrass::getGrassQuantity() const {
         return grassQuantity;
     }
 
-    void TerrainGrass::setGrassQuantity(float grassQuantity)
-    {
+    void TerrainGrass::setGrassQuantity(float grassQuantity) {
         this->grassQuantity = grassQuantity;
 
         generateGrass(mesh, terrainPosition);
     }
 
-    Vector3<float> TerrainGrass::getWindDirection() const
-    {
+    Vector3<float> TerrainGrass::getWindDirection() const {
         return windDirection;
     }
 
-    void TerrainGrass::setWindDirection(const Vector3<float> &windDirection)
-    {
+    void TerrainGrass::setWindDirection(const Vector3<float> &windDirection) {
         this->windDirection = windDirection.normalize();
 
         ShaderManager::instance()->bind(terrainGrassShader);
         glUniform3fv(windDirectionLoc, 1, (const float *)this->windDirection);
     }
 
-    float TerrainGrass::getWindStrength() const
-    {
+    float TerrainGrass::getWindStrength() const {
         return windStrength;
     }
 
-    void TerrainGrass::setWindStrength(float windStrength)
-    {
+    void TerrainGrass::setWindStrength(float windStrength) {
         this->windStrength = windStrength;
 
         ShaderManager::instance()->bind(terrainGrassShader);
         glUniform1f(windStrengthLoc, windStrength);
     }
 
-    void TerrainGrass::display(const Camera *camera, float dt)
-    {
-        if(grassTexture)
-        {
+    void TerrainGrass::display(const Camera *camera, float dt) {
+        if(grassTexture) {
             ScopeProfiler profiler("3d", "grassDisplay");
 
             assert(grassDisplayDistance!=0.0f);
@@ -453,20 +400,15 @@ namespace urchin
             grassQuadtrees.clear();
             grassQuadtrees.push_back(mainGrassQuadtree);
 
-            for(std::size_t i=0; i<grassQuadtrees.size(); ++i)
-            {
+            for(std::size_t i=0; i<grassQuadtrees.size(); ++i) {
                 const TerrainGrassQuadtree *grassQuadtree = grassQuadtrees[i];
 
-                if (camera->getFrustum().cutFrustum(grassDisplayDistance).collideWithAABBox(*grassQuadtree->getBox()))
-                {
-                    if (grassQuadtree->isLeaf())
-                    {
+                if (camera->getFrustum().cutFrustum(grassDisplayDistance).collideWithAABBox(*grassQuadtree->getBox())) {
+                    if (grassQuadtree->isLeaf()) {
                         glBindVertexArray(vertexArrayObjects[grassQuadtree->getVertexArrayObjectId()]);
                         glDrawArrays(GL_POINTS, 0, grassQuadtree->getGrassVertices().size());
-                    } else
-                    {
-                        for (const auto *child : grassQuadtree->getChildren())
-                        {
+                    } else {
+                        for (const auto *child : grassQuadtree->getChildren()) {
                             grassQuadtrees.push_back(child);
                         }
                     }

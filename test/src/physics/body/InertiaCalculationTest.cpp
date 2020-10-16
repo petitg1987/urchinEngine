@@ -7,8 +7,7 @@
 #include "physics/body/InertiaCalculationTest.h"
 using namespace urchin;
 
-void InertiaCalculationTest::boxInertiaCalculation()
-{
+void InertiaCalculationTest::boxInertiaCalculation() {
     const float mass = 10.0f;
     CollisionBoxShape boxShape(Vector3<float>(1.0, 2.0, 3.0));
     PhysicsTransform transformRotateXAxis90(Point3<float>(0.0, 0.0, 0.0), Quaternion<float>(Vector3<float>(1.0, 0.0, 0.0), -PI_VALUE/2));
@@ -29,8 +28,7 @@ void InertiaCalculationTest::boxInertiaCalculation()
     AssertHelper::assertFloatEquals(invWorldInertia(2, 2), 0.03);
 }
 
-CppUnit::Test *InertiaCalculationTest::suite()
-{
+CppUnit::Test *InertiaCalculationTest::suite() {
     auto *suite = new CppUnit::TestSuite("InertiaCalculationTest");
 
     suite->addTest(new CppUnit::TestCaller<InertiaCalculationTest>("boxInertiaCalculation", &InertiaCalculationTest::boxInertiaCalculation));

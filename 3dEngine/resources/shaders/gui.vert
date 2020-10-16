@@ -9,7 +9,7 @@ uniform ivec2 translateDistance;
 out vec2 textCoordinates;
 invariant gl_Position;
 
-void main(){
+void main() {
     textCoordinates = texCoord;
     vec3 position = mProjection * vec3((vertexPosition + translateDistance), 1.0);
 

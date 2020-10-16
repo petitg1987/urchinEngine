@@ -1,42 +1,34 @@
 #include "collision/broadphase/aabbtree/AABBTreeAlgorithm.h"
 #include "shape/CollisionSphereShape.h"
 
-namespace urchin
-{
+namespace urchin {
 
     AABBTreeAlgorithm::AABBTreeAlgorithm() :
-            tree(new BodyAABBTree())
-    {
+            tree(new BodyAABBTree()) {
 
     }
 
-    AABBTreeAlgorithm::~AABBTreeAlgorithm()
-    {
+    AABBTreeAlgorithm::~AABBTreeAlgorithm() {
         delete tree;
     }
 
-    void AABBTreeAlgorithm::addBody(AbstractWorkBody *body, PairContainer *alternativePairContainer)
-    {
+    void AABBTreeAlgorithm::addBody(AbstractWorkBody *body, PairContainer *alternativePairContainer) {
         tree->addBody(body, alternativePairContainer);
     }
 
-    void AABBTreeAlgorithm::removeBody(AbstractWorkBody *body)
-    {
+    void AABBTreeAlgorithm::removeBody(AbstractWorkBody *body) {
         tree->removeBody(body);
     }
 
-    void AABBTreeAlgorithm::updateBodies()
-    {
+    void AABBTreeAlgorithm::updateBodies() {
         tree->updateBodies();
     }
 
-    const std::vector<OverlappingPair *> &AABBTreeAlgorithm::getOverlappingPairs() const
-    {
+    const std::vector<OverlappingPair *> &AABBTreeAlgorithm::getOverlappingPairs() const {
         return tree->getOverlappingPairs();
     }
 
-    std::vector<AbstractWorkBody *> AABBTreeAlgorithm::rayTest(const Ray<float> &ray) const
-    {
+    std::vector<AbstractWorkBody *> AABBTreeAlgorithm::rayTest(const Ray<float> &ray) const {
         std::vector<AbstractWorkBody *> bodiesAABBoxHitRay;
         bodiesAABBoxHitRay.reserve(10);
 
@@ -45,8 +37,7 @@ namespace urchin
         return bodiesAABBoxHitRay;
     }
 
-    std::vector<AbstractWorkBody *> AABBTreeAlgorithm::bodyTest(AbstractWorkBody *body, const PhysicsTransform &from, const PhysicsTransform &to) const
-    {
+    std::vector<AbstractWorkBody *> AABBTreeAlgorithm::bodyTest(AbstractWorkBody *body, const PhysicsTransform &from, const PhysicsTransform &to) const {
         std::vector<AbstractWorkBody *> bodiesAABBoxHitBody;
         bodiesAABBoxHitBody.reserve(15);
 

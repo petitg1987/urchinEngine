@@ -6,11 +6,9 @@
 
 #include "body/work/AbstractWorkBody.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class WorkRigidBody : public AbstractWorkBody
-    {
+    class WorkRigidBody : public AbstractWorkBody {
         public:
             WorkRigidBody(const std::string &, const PhysicsTransform &, const std::shared_ptr<const CollisionShape3D> &);
 

@@ -38,8 +38,7 @@
 #include "ai/path/pathfinding/FunnelAlgorithmTest.h"
 #include "ai/path/pathfinding/PathfindingAStarTest.h"
 
-void commonTests(CppUnit::TextUi::TestRunner &runner)
-{
+void commonTests(CppUnit::TextUi::TestRunner &runner) {
     //io
     runner.addTest(StringUtilTest::suite());
     runner.addTest(MapUtilTest::suite());
@@ -61,8 +60,7 @@ void commonTests(CppUnit::TextUi::TestRunner &runner)
     runner.addTest(SortPointsTest::suite());
 }
 
-void physicsTests(CppUnit::TextUi::TestRunner &runner)
-{
+void physicsTests(CppUnit::TextUi::TestRunner &runner) {
     //shape
     runner.addTest(ShapeToAABBoxTest::suite());
     runner.addTest(ShapeToConvexObjectTest::suite());
@@ -93,8 +91,7 @@ void physicsTests(CppUnit::TextUi::TestRunner &runner)
     runner.addTest(FallingObjectIT::suite());
 }
 
-void aiTests(CppUnit::TextUi::TestRunner &runner)
-{
+void aiTests(CppUnit::TextUi::TestRunner &runner) {
     //navigation mesh
     runner.addTest(CSGPolygonTest::suite());
     runner.addTest(PolygonsUnionTest::suite());
@@ -110,8 +107,7 @@ void aiTests(CppUnit::TextUi::TestRunner &runner)
     runner.addTest(PathfindingAStarTest::suite());
 }
 
-int main()
-{
+int main() {
     urchin::ConfigService::instance()->loadProperties("resources/engine.properties");
 
     CppUnit::TextUi::TestRunner runner;

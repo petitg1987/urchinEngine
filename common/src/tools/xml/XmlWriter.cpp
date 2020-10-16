@@ -3,15 +3,13 @@
 #include "tools/xml/XmlWriter.h"
 #include "system/FileSystem.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
      * Constructor
      * @param filename XML filename
      */
-    XmlWriter::XmlWriter(const std::string &filename)
-    {
+    XmlWriter::XmlWriter(const std::string &filename) {
         this->filenamePath = FileSystem::instance()->getResourcesDirectory() + filename;
 
         this->doc = new TiXmlDocument();
@@ -22,8 +20,7 @@ namespace urchin
     /**
      * Destructor
      */
-    XmlWriter::~XmlWriter()
-    {
+    XmlWriter::~XmlWriter() {
         delete doc;
     }
 
@@ -34,20 +31,16 @@ namespace urchin
      * @param parent Name of the tag parent of "chunkName"
      * @return XML chunk according to the parameters
      */
-    std::shared_ptr<XmlChunk> XmlWriter::createChunk(const std::string &chunkName, const XmlAttribute &attribute, const std::shared_ptr<XmlChunk> &parent)
-    {
+    std::shared_ptr<XmlChunk> XmlWriter::createChunk(const std::string &chunkName, const XmlAttribute &attribute, const std::shared_ptr<XmlChunk> &parent) {
         auto *chunk = new TiXmlElement(chunkName);
 
-        if(!attribute.getAttributeName().empty())
-        {
+        if(!attribute.getAttributeName().empty()) {
             chunk->SetAttribute(attribute.getAttributeName(), attribute.getAttributeValue());
         }
 
-        if(parent)
-        {
+        if(parent) {
             parent->getChunk()->LinkEndChild(chunk);
-        }else
-        {
+        } else {
             doc->LinkEndChild(chunk);
         }
 
@@ -57,10 +50,8 @@ namespace urchin
     /**
      * Save chunk in XML file
      */
-    void XmlWriter::saveInFile()
-    {
-        if(!doc->SaveFile(filenamePath))
-        {
+    void XmlWriter::saveInFile() {
+        if(!doc->SaveFile(filenamePath)) {
             throw std::invalid_argument("Cannot save the file " + filenamePath + ".");
         }
     }

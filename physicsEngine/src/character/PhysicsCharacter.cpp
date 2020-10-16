@@ -6,12 +6,10 @@
 #define DEFAULT_JUMP_SPEED 5.0f
 #define DEFAULT_MAX_SLOPE (PI_VALUE/4.0f) //45 degrees
 
-namespace urchin
-{
+namespace urchin {
 
     PhysicsCharacter::PhysicsCharacter(const std::string &name, float mass, const std::shared_ptr<const CollisionShape3D> &shape, const PhysicsTransform &transform) :
-        PhysicsCharacter(name, mass, shape, transform, DEFAULT_JUMP_SPEED, DEFAULT_MAX_SLOPE)
-    {
+        PhysicsCharacter(name, mass, shape, transform, DEFAULT_JUMP_SPEED, DEFAULT_MAX_SLOPE) {
 
     }
 
@@ -23,52 +21,43 @@ namespace urchin
             transform(transform),
             jumpSpeed(jumpSpeed),
             maxSlopeInRadian(maxSlopeInRadian),
-            maxSlopeInPercentage(std::tan(maxSlopeInRadian))
-    {
+            maxSlopeInPercentage(std::tan(maxSlopeInRadian)) {
 
     }
 
-    const std::string &PhysicsCharacter::getName() const
-    {
+    const std::string &PhysicsCharacter::getName() const {
         return name;
     }
 
-    float PhysicsCharacter::getMass() const
-    {
+    float PhysicsCharacter::getMass() const {
         return mass;
     }
 
-    const std::shared_ptr<const CollisionShape3D> &PhysicsCharacter::getShape() const
-    {
+    const std::shared_ptr<const CollisionShape3D> &PhysicsCharacter::getShape() const {
         return shape;
     }
 
-    void PhysicsCharacter::updateTransform(const PhysicsTransform &transform)
-    {
+    void PhysicsCharacter::updateTransform(const PhysicsTransform &transform) {
         std::lock_guard<std::mutex> lock(characterMutex);
 
         this->transform = transform;
     }
 
-    const PhysicsTransform &PhysicsCharacter::getTransform() const
-    {
+    const PhysicsTransform &PhysicsCharacter::getTransform() const {
         std::lock_guard<std::mutex> lock(characterMutex);
 
         return transform;
     }
 
-    float PhysicsCharacter::getJumpSpeed() const
-    {
+    float PhysicsCharacter::getJumpSpeed() const {
         return jumpSpeed;
     }
 
-    float PhysicsCharacter::getMaxSlopeInRadian() const
-    {
+    float PhysicsCharacter::getMaxSlopeInRadian() const {
         return maxSlopeInRadian;
     }
 
-    float PhysicsCharacter::getMaxSlopeInPercentage() const
-    {
+    float PhysicsCharacter::getMaxSlopeInPercentage() const {
         return maxSlopeInPercentage;
     }
 

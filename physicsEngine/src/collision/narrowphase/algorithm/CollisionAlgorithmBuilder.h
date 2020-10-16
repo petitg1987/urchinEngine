@@ -7,11 +7,9 @@
 #include "shape/CollisionShape3D.h"
 #include "utils/pool/FixedSizePool.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class CollisionAlgorithmBuilder
-    {
+    class CollisionAlgorithmBuilder {
         public:
             virtual ~CollisionAlgorithmBuilder() = default;
 

@@ -8,20 +8,15 @@
 #include "collision/narrowphase/algorithm/CompoundAnyCollisionAlgorithm.h"
 #include "collision/narrowphase/algorithm/ConcaveAnyCollisionAlgorithm.h"
 
-namespace urchin
-{
+namespace urchin {
 
     CollisionAlgorithmSelector::CollisionAlgorithmSelector() :
             algorithmPool(nullptr),
-            collisionAlgorithmBuilderMatrix()
-    {
+            collisionAlgorithmBuilderMatrix() {
         initializeCollisionAlgorithmBuilderMatrix();
-        for(unsigned int i=0; i<CollisionShape3D::SHAPE_MAX; ++i)
-        {
-            for(unsigned int j=0; j<CollisionShape3D::SHAPE_MAX; ++j)
-            {
-                if(!collisionAlgorithmBuilderMatrix[i][j])
-                {
+        for(unsigned int i=0; i<CollisionShape3D::SHAPE_MAX; ++i) {
+            for(unsigned int j=0; j<CollisionShape3D::SHAPE_MAX; ++j) {
+                if(!collisionAlgorithmBuilderMatrix[i][j]) {
                     deleteCollisionAlgorithmBuilderMatrix();
                     throw std::invalid_argument("Collision algorithm builder not initialized for shape type: " + std::to_string(i) + " and " + std::to_string(j) + ".");
                 }
@@ -31,20 +26,16 @@ namespace urchin
         initializeAlgorithmPool();
     }
 
-    CollisionAlgorithmSelector::~CollisionAlgorithmSelector()
-    {
+    CollisionAlgorithmSelector::~CollisionAlgorithmSelector() {
         delete algorithmPool;
 
         deleteCollisionAlgorithmBuilderMatrix();
     }
 
-    void CollisionAlgorithmSelector::initializeCollisionAlgorithmBuilderMatrix()
-    {
+    void CollisionAlgorithmSelector::initializeCollisionAlgorithmBuilderMatrix() {
         //initialize matrix with nullptr collision algorithm builder
-        for(auto & builderMatrixLine : collisionAlgorithmBuilderMatrix)
-        {
-            for(auto & builderMatrixColumn : builderMatrixLine)
-            {
+        for(auto & builderMatrixLine : collisionAlgorithmBuilderMatrix) {
+            for(auto & builderMatrixColumn : builderMatrixLine) {
                 builderMatrixColumn = nullptr;
             }
         }
@@ -57,66 +48,50 @@ namespace urchin
         initializeCompoundAlgorithm();
 
         //generic algorithm (convex hull vs. convex hull)
-        for(auto & builderMatrixLine : collisionAlgorithmBuilderMatrix)
-        {
-            for(auto & builderMatrixColumn : builderMatrixLine)
-            {
-                if(!builderMatrixColumn)
-                {
+        for(auto & builderMatrixLine : collisionAlgorithmBuilderMatrix) {
+            for(auto & builderMatrixColumn : builderMatrixLine) {
+                if(!builderMatrixColumn) {
                     builderMatrixColumn = new ConvexConvexCollisionAlgorithm::Builder();
                 }
             }
         }
     }
 
-    void CollisionAlgorithmSelector::initializeConcaveAlgorithm()
-    {
+    void CollisionAlgorithmSelector::initializeConcaveAlgorithm() {
         //heightfield shape
-        for(unsigned int shapeId=0; shapeId<CollisionShape3D::SHAPE_MAX; ++shapeId)
-        {
+        for(unsigned int shapeId=0; shapeId<CollisionShape3D::SHAPE_MAX; ++shapeId) {
             collisionAlgorithmBuilderMatrix[CollisionShape3D::HEIGHTFIELD_SHAPE][shapeId] = new ConcaveAnyCollisionAlgorithm::Builder();
 
-            if(shapeId!=CollisionShape3D::HEIGHTFIELD_SHAPE)
-            {
+            if(shapeId!=CollisionShape3D::HEIGHTFIELD_SHAPE) {
                 collisionAlgorithmBuilderMatrix[shapeId][CollisionShape3D::HEIGHTFIELD_SHAPE] = new ConcaveAnyCollisionAlgorithm::Builder();
             }
         }
     }
 
-    void CollisionAlgorithmSelector::initializeCompoundAlgorithm()
-    {
-        for(unsigned int shapeId=0; shapeId<CollisionShape3D::SHAPE_MAX; ++shapeId)
-        {
-            if(!collisionAlgorithmBuilderMatrix[CollisionShape3D::COMPOUND_SHAPE][shapeId])
-            {
+    void CollisionAlgorithmSelector::initializeCompoundAlgorithm() {
+        for(unsigned int shapeId=0; shapeId<CollisionShape3D::SHAPE_MAX; ++shapeId) {
+            if(!collisionAlgorithmBuilderMatrix[CollisionShape3D::COMPOUND_SHAPE][shapeId]) {
                 collisionAlgorithmBuilderMatrix[CollisionShape3D::COMPOUND_SHAPE][shapeId] = new CompoundAnyCollisionAlgorithm::Builder();
             }
 
-            if(shapeId!=CollisionShape3D::COMPOUND_SHAPE && !collisionAlgorithmBuilderMatrix[shapeId][CollisionShape3D::COMPOUND_SHAPE])
-            {
+            if(shapeId!=CollisionShape3D::COMPOUND_SHAPE && !collisionAlgorithmBuilderMatrix[shapeId][CollisionShape3D::COMPOUND_SHAPE]) {
                 collisionAlgorithmBuilderMatrix[shapeId][CollisionShape3D::COMPOUND_SHAPE] = new CompoundAnyCollisionAlgorithm::Builder();
             }
         }
     }
 
-    void CollisionAlgorithmSelector::deleteCollisionAlgorithmBuilderMatrix()
-    {
-        for(auto & builderMatrixLine : collisionAlgorithmBuilderMatrix)
-        {
-            for(auto & builderMatrixColumn : builderMatrixLine)
-            {
+    void CollisionAlgorithmSelector::deleteCollisionAlgorithmBuilderMatrix() {
+        for(auto & builderMatrixLine : collisionAlgorithmBuilderMatrix) {
+            for(auto & builderMatrixColumn : builderMatrixLine) {
                 delete builderMatrixColumn;
             }
         }
     }
 
-    void CollisionAlgorithmSelector::initializeAlgorithmPool()
-    {
+    void CollisionAlgorithmSelector::initializeAlgorithmPool() {
         unsigned int maxElementSize = 0;
-        for(auto & builderMatrixLine : collisionAlgorithmBuilderMatrix)
-        {
-            for(auto & builderMatrixColumn : builderMatrixLine)
-            {
+        for(auto & builderMatrixLine : collisionAlgorithmBuilderMatrix) {
+            for(auto & builderMatrixColumn : builderMatrixLine) {
                 maxElementSize = std::max(maxElementSize, builderMatrixColumn->getAlgorithmSize());
             }
         }
@@ -131,20 +106,16 @@ namespace urchin
      * @param shape2 Shape or partial shape composing the body 2
      */
     std::shared_ptr<CollisionAlgorithm> CollisionAlgorithmSelector::createCollisionAlgorithm(
-            AbstractWorkBody *body1, const CollisionShape3D *shape1, AbstractWorkBody *body2, const CollisionShape3D *shape2) const
-    {
+            AbstractWorkBody *body1, const CollisionShape3D *shape1, AbstractWorkBody *body2, const CollisionShape3D *shape2) const {
         CollisionAlgorithmBuilder *collisionAlgorithmBuilder = collisionAlgorithmBuilderMatrix[shape1->getShapeType()][shape2->getShapeType()];
         const std::vector<CollisionShape3D::ShapeType> &firstExpectedShapeType = collisionAlgorithmBuilder->getFirstExpectedShapeType();
 
         CollisionAlgorithm *collisionAlgorithmPtr;
-        if(std::find(firstExpectedShapeType.begin(), firstExpectedShapeType.end(), shape1->getShapeType())!=firstExpectedShapeType.end())
-        {
+        if(std::find(firstExpectedShapeType.begin(), firstExpectedShapeType.end(), shape1->getShapeType())!=firstExpectedShapeType.end()) {
             collisionAlgorithmPtr = collisionAlgorithmBuilder->createCollisionAlgorithm(false, ManifoldResult(body1, body2), algorithmPool);
-        }else if(std::find(firstExpectedShapeType.begin(), firstExpectedShapeType.end(), shape2->getShapeType())!=firstExpectedShapeType.end())
-        { //objects must be swap to match algorithm shape types
+        } else if(std::find(firstExpectedShapeType.begin(), firstExpectedShapeType.end(), shape2->getShapeType())!=firstExpectedShapeType.end()) { //objects must be swap to match algorithm shape types
             collisionAlgorithmPtr = collisionAlgorithmBuilder->createCollisionAlgorithm(true, ManifoldResult(body2, body1), algorithmPool);
-        }else
-        {
+        } else {
             throw std::runtime_error("Impossible to initialize collision algorithm for shape types: " + std::to_string(shape1->getShapeType())
                                      + " and " + std::to_string(shape2->getShapeType()));
         }
@@ -155,13 +126,11 @@ namespace urchin
     }
 
     CollisionAlgorithmSelector::AlgorithmDeleter::AlgorithmDeleter(FixedSizePool<CollisionAlgorithm> *const algorithmPool) :
-        algorithmPool(algorithmPool)
-    {
+        algorithmPool(algorithmPool) {
 
     }
 
-    void CollisionAlgorithmSelector::AlgorithmDeleter::operator()(CollisionAlgorithm *const collisionAlgorithm)
-    {
+    void CollisionAlgorithmSelector::AlgorithmDeleter::operator()(CollisionAlgorithm *const collisionAlgorithm) {
         algorithmPool->free(collisionAlgorithm);
     }
 

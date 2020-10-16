@@ -12,14 +12,12 @@
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/camera/Camera.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Allow to display models given in parameter depending of a configuration (view matrix, projection matrix, display mode...)
     */
-    class ModelDisplayer
-    {
+    class ModelDisplayer {
         public:
             enum DisplayMode
             {

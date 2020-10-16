@@ -7,8 +7,7 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-void FunnelAlgorithmTest::straightPath()
-{
+void FunnelAlgorithmTest::straightPath() {
     std::vector<std::shared_ptr<PathPortal>> portals;
     portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0)), nullptr, nullptr, false)); //start point
     portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(2.0, 0.0, 0.0), Point3<float>(0.0, 0.0, 0.0)), nullptr, nullptr, false));
@@ -21,8 +20,7 @@ void FunnelAlgorithmTest::straightPath()
     AssertHelper::assertPoint3FloatEquals(pathPortals[2]->getTransitionPoint(), Point3<float>(1.0, 0.0, 1.0));
 }
 
-void FunnelAlgorithmTest::cornerPath1()
-{
+void FunnelAlgorithmTest::cornerPath1() {
     std::vector<std::shared_ptr<PathPortal>> portals;
     portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0)), nullptr, nullptr, false)); //start point
     portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(2.0, 0.0, 0.0), Point3<float>(0.0, 0.0, 0.0)), nullptr, nullptr, false));
@@ -35,8 +33,7 @@ void FunnelAlgorithmTest::cornerPath1()
     AssertHelper::assertPoint3FloatEquals(pathPortals[2]->getTransitionPoint(), Point3<float>(4.0, 0.0, 1.0));
 }
 
-void FunnelAlgorithmTest::cornerPath2()
-{
+void FunnelAlgorithmTest::cornerPath2() {
     std::vector<std::shared_ptr<PathPortal>> portals;
     portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(4.0, 0.0, 1.0), Point3<float>(4.0, 0.0, 1.0)), nullptr, nullptr, false)); //start point
     portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(0.0, 0.0, 0.0), Point3<float>(2.0, 0.0, 0.0)), nullptr, nullptr, false));
@@ -50,8 +47,7 @@ void FunnelAlgorithmTest::cornerPath2()
 }
 
 
-void FunnelAlgorithmTest::cornerPath3()
-{
+void FunnelAlgorithmTest::cornerPath3() {
     std::vector<std::shared_ptr<PathPortal>> portals;
     portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0)), nullptr, nullptr, false)); //start point
     portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(2.0, 0.0, 0.0), Point3<float>(0.0, 0.0, 0.0)), nullptr, nullptr, false));
@@ -64,8 +60,7 @@ void FunnelAlgorithmTest::cornerPath3()
     AssertHelper::assertPoint3FloatEquals(pathPortals[2]->getTransitionPoint(), Point3<float>(-2.0, 0.0, 1.0));
 }
 
-void FunnelAlgorithmTest::cornerPath4()
-{
+void FunnelAlgorithmTest::cornerPath4() {
     std::vector<std::shared_ptr<PathPortal>> portals;
     portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(-2.0, 0.0, 1.0), Point3<float>(-2.0, 0.0, 1.0)), nullptr, nullptr, false)); //end point
     portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(0.0, 0.0, 0.0), Point3<float>(2.0, 0.0, 0.0)), nullptr, nullptr, false));
@@ -78,8 +73,7 @@ void FunnelAlgorithmTest::cornerPath4()
     AssertHelper::assertPoint3FloatEquals(pathPortals[2]->getTransitionPoint(), Point3<float>(1.0, 0.0, -1.0));
 }
 
-CppUnit::Test *FunnelAlgorithmTest::suite()
-{
+CppUnit::Test *FunnelAlgorithmTest::suite() {
     auto *suite = new CppUnit::TestSuite("FunnelAlgorithmTest");
 
     suite->addTest(new CppUnit::TestCaller<FunnelAlgorithmTest>("straightPath", &FunnelAlgorithmTest::straightPath));

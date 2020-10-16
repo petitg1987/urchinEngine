@@ -2,11 +2,9 @@
 
 #include "TerrainTableView.h"
 
-namespace urchin
-{
+namespace urchin {
     TerrainTableView::TerrainTableView(QWidget *parent) :
-            QTableView(parent)
-    {
+            QTableView(parent) {
         terrainsListModel = new QStandardItemModel(0, 2, this);
         terrainsListModel->setHorizontalHeaderItem(0, new QStandardItem("Terrain Name"));
         terrainsListModel->setHorizontalHeaderItem(1, new QStandardItem("Height File"));
@@ -22,8 +20,7 @@ namespace urchin
         setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
     }
 
-    void TerrainTableView::selectionChanged(const QItemSelection &, const QItemSelection &)
-    {
+    void TerrainTableView::selectionChanged(const QItemSelection &, const QItemSelection &) {
         //hack to refresh selection
         horizontalHeader()->resizeSection(0, 91);
         horizontalHeader()->resizeSection(0, 90);
@@ -31,23 +28,19 @@ namespace urchin
         notifyObservers(this, NotificationType::SELECTION_CHANGED);
     }
 
-    bool TerrainTableView::hasSceneTerrainSelected() const
-    {
+    bool TerrainTableView::hasSceneTerrainSelected() const {
         return this->currentIndex().row()!=-1;
     }
 
-    const SceneTerrain *TerrainTableView::getSelectedSceneTerrain() const
-    {
+    const SceneTerrain *TerrainTableView::getSelectedSceneTerrain() const {
         QModelIndex selectedIndex = this->currentIndex();
-        if(selectedIndex.row()!=-1)
-        {
+        if(selectedIndex.row()!=-1) {
             return selectedIndex.data(Qt::UserRole + 1).value<const SceneTerrain *>();
         }
         return nullptr;
     }
 
-    void TerrainTableView::addTerrain(const SceneTerrain *sceneTerrain)
-    {
+    void TerrainTableView::addTerrain(const SceneTerrain *sceneTerrain) {
         auto *itemTerrainName = new QStandardItem(QString::fromStdString(sceneTerrain->getName()));
         itemTerrainName->setData(qVariantFromValue(sceneTerrain), Qt::UserRole + 1);
         itemTerrainName->setEditable(false);
@@ -66,10 +59,8 @@ namespace urchin
         resizeRowsToContents();
     }
 
-    bool TerrainTableView::removeSelectedTerrain()
-    {
-        if(hasSceneTerrainSelected())
-        {
+    bool TerrainTableView::removeSelectedTerrain() {
+        if(hasSceneTerrainSelected()) {
             terrainsListModel->removeRow(this->currentIndex().row());
             resizeRowsToContents();
 
@@ -79,8 +70,7 @@ namespace urchin
         return false;
     }
 
-    void TerrainTableView::removeAllTerrains()
-    {
+    void TerrainTableView::removeAllTerrains() {
         terrainsListModel->removeRows(0, terrainsListModel->rowCount());
         resizeRowsToContents();
     }

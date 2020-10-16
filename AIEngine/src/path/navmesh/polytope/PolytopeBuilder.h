@@ -13,11 +13,9 @@
 #include "path/navmesh/polytope//services/PlaneSurfaceSplitService.h"
 #include "path/navmesh/model/output/NavMeshAgent.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class PolytopeBuilder : public Singleton<PolytopeBuilder>
-    {
+    class PolytopeBuilder : public Singleton<PolytopeBuilder> {
         public:
             friend class Singleton<PolytopeBuilder>;
 

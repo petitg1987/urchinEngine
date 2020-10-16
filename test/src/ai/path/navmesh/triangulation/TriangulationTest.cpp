@@ -6,8 +6,7 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-void TriangulationTest::triangleTriangulation()
-{
+void TriangulationTest::triangleTriangulation() {
     std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 0.0), Point2<float>(2.0, 0.0), Point2<float>(1.0, 1.0)};
 
     TriangulationAlgorithm triangulationAlgorithm(std::move(ccwPolygonPoints), "test");
@@ -18,8 +17,7 @@ void TriangulationTest::triangleTriangulation()
     AssertHelper::assertTrue(triangles[0]->getLinks().empty());
 }
 
-void TriangulationTest::cubeTriangulation()
-{
+void TriangulationTest::cubeTriangulation() {
     std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 0.0), Point2<float>(1.0, 0.0),
                                                    Point2<float>(1.0, 1.0), Point2<float>(0.0, 1.0)};
 
@@ -34,8 +32,7 @@ void TriangulationTest::cubeTriangulation()
     assertUniqueLink(triangles[1], 1, triangles[0]);
 }
 
-void TriangulationTest::twoNearPoints()
-{
+void TriangulationTest::twoNearPoints() {
     std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(500.0, 500.0), Point2<float>(0.0, 3.0), Point2<float>(2.0, 3.0), Point2<float>(2.0, 2.0),
                                                    Point2<float>(2.0000002, 2.0), Point2<float>(3.0, 1.5), Point2<float>(5.0, 1.5), Point2<float>(0.0, 0.0),
                                                    Point2<float>(6.0, 0.0)};
@@ -76,8 +73,7 @@ void TriangulationTest::twoNearPoints()
     assertLink(triangles[6]->getLinks()[1], 1, triangles[4]);
 }
 
-void TriangulationTest::threeAlignedPoints()
-{
+void TriangulationTest::threeAlignedPoints() {
     std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 5.0), Point2<float>(-1.0, 4.0), Point2<float>(0.0, 0.0),
                                                    Point2<float>(1.0, 1.0), Point2<float>(1.0, 2.0), Point2<float>(1.0, 3.0)};
 
@@ -102,8 +98,7 @@ void TriangulationTest::threeAlignedPoints()
     assertUniqueLink(triangles[3], 2, triangles[2]);
 }
 
-void TriangulationTest::alternationPoints()
-{
+void TriangulationTest::alternationPoints() {
     std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 6.0), Point2<float>(-1.0, 4.0), Point2<float>(-1.0, 2.0),
                                                    Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(1.0, 3.0),
                                                    Point2<float>(1.0, 5.0)};
@@ -134,8 +129,7 @@ void TriangulationTest::alternationPoints()
     assertUniqueLink(triangles[4], 2, triangles[3]);
 }
 
-void TriangulationTest::cavityTriangulation1()
-{
+void TriangulationTest::cavityTriangulation1() {
     std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(3.0, 4.0), Point2<float>(0.0, 3.0), Point2<float>(1.0, 2.0),
                                                    Point2<float>(0.0, 1.75), Point2<float>(2.0, 0.0)};
 
@@ -155,8 +149,7 @@ void TriangulationTest::cavityTriangulation1()
     assertLink(triangles[2]->getLinks()[1], 1, triangles[0]);
 }
 
-void TriangulationTest::cavityTriangulation2()
-{
+void TriangulationTest::cavityTriangulation2() {
     std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(2.0, 0.0), Point2<float>(3.0, 5.0), Point2<float>(0.0, 3.0),
                                                    Point2<float>(1.0, 2.5), Point2<float>(0.0, 2.0), Point2<float>(1.0, 1.5),
                                                    Point2<float>(0.0, 1.0)};
@@ -186,8 +179,7 @@ void TriangulationTest::cavityTriangulation2()
     assertLink(triangles[4]->getLinks()[1], 1, triangles[2]);
 }
 
-void TriangulationTest::twoMonotonePolygons()
-{
+void TriangulationTest::twoMonotonePolygons() {
     std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 0.0), Point2<float>(4.0, 0.0), Point2<float>(3.0, 2.0),
                                                    Point2<float>(2.0, 1.0), Point2<float>(1.0, 2.0)};
 
@@ -207,8 +199,7 @@ void TriangulationTest::twoMonotonePolygons()
     assertUniqueLink(triangles[2], 2, triangles[1]);
 }
 
-void TriangulationTest::threeMonotonePolygons()
-{
+void TriangulationTest::threeMonotonePolygons() {
     std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 0.0), Point2<float>(4.0, 0.0), Point2<float>(4.0, 3.0),
                                                    Point2<float>(3.0, 1.0), Point2<float>(2.0, 2.0), Point2<float>(1.0, 1.0),
                                                    Point2<float>(0.0, 2.0)};
@@ -238,8 +229,7 @@ void TriangulationTest::threeMonotonePolygons()
     assertUniqueLink(triangles[4], 2, triangles[0]);
 }
 
-CppUnit::Test *TriangulationTest::suite()
-{
+CppUnit::Test *TriangulationTest::suite() {
     auto *suite = new CppUnit::TestSuite("TriangulationTest");
 
     suite->addTest(new CppUnit::TestCaller<TriangulationTest>("triangleTriangulation", &TriangulationTest::triangleTriangulation));
@@ -257,14 +247,12 @@ CppUnit::Test *TriangulationTest::suite()
     return suite;
 }
 
-void TriangulationTest::assertUniqueLink(const std::shared_ptr<NavTriangle> &sourceTriangle, unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle)
-{
+void TriangulationTest::assertUniqueLink(const std::shared_ptr<NavTriangle> &sourceTriangle, unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle) {
     AssertHelper::assertUnsignedInt(sourceTriangle->getLinks().size(), 1);
     assertLink(sourceTriangle->getLinks()[0], sourceEdgeIndex, targetTriangle);
 }
 
-void TriangulationTest::assertLink(const std::shared_ptr<NavLink> &link, unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle)
-{
+void TriangulationTest::assertLink(const std::shared_ptr<NavLink> &link, unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle) {
     AssertHelper::assertUnsignedInt(link->getSourceEdgeIndex(), sourceEdgeIndex);
     AssertHelper::assertTrue(link->getTargetTriangle() == targetTriangle);
 }

@@ -4,22 +4,18 @@
 
 #include "utils/display/geometry/frustum/FrustumModel.h"
 
-namespace urchin
-{
+namespace urchin {
 
     FrustumModel::FrustumModel(Frustum<float> frustum):
-            frustum(std::move(frustum))
-    {
+            frustum(std::move(frustum)) {
         initialize();
     }
 
-    Matrix4<float> FrustumModel::retrieveModelMatrix() const
-    {
+    Matrix4<float> FrustumModel::retrieveModelMatrix() const {
         return {};
     }
 
-    std::vector<Point3<float>> FrustumModel::retrieveVertexArray() const
-    {
+    std::vector<Point3<float>> FrustumModel::retrieveVertexArray() const {
         const Point3<float> &ntl = frustum.getFrustumPoint(Frustum<float>::NTL);
         const Point3<float> &ntr = frustum.getFrustumPoint(Frustum<float>::NTR);
         const Point3<float> &nbl = frustum.getFrustumPoint(Frustum<float>::NBL);
@@ -74,8 +70,7 @@ namespace urchin
         return vertexArray;
     }
 
-    void FrustumModel::drawGeometry() const
-    {
+    void FrustumModel::drawGeometry() const {
         glDrawArrays(GL_LINES, 0, 24);
     }
 

@@ -10,7 +10,7 @@ uniform float ambientFactor;
 layout (location = 0) out vec4 fragColor;
 layout (location = 1) out vec4 fragNormalAndAmbient;
 
-void main(){
+void main() {
     //diffuse
     fragColor = texture2D(diffuseTex, textCoordinates);
 

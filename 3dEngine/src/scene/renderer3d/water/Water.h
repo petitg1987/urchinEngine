@@ -9,11 +9,9 @@
 #include "scene/renderer3d/fog/FogManager.h"
 #include "scene/renderer3d/fog/Fog.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class Water : public Observable
-    {
+    class Water : public Observable {
         public:
             Water();
             ~Water() override;

@@ -4,36 +4,30 @@
 
 #include "utils/display/geometry/points/PointsModel.h"
 
-namespace urchin
-{
+namespace urchin {
 
     PointsModel::PointsModel(std::vector<Point3<float>> points, float pointsSize):
             points(std::move(points)),
-            pointsSize(pointsSize)
-    {
+            pointsSize(pointsSize) {
         initialize();
     }
 
     PointsModel::PointsModel(const Point3<float> &point, float pointsSize):
-        pointsSize(pointsSize)
-    {
+        pointsSize(pointsSize) {
         points.push_back(point);
 
         initialize();
     }
 
-    Matrix4<float> PointsModel::retrieveModelMatrix() const
-    {
+    Matrix4<float> PointsModel::retrieveModelMatrix() const {
         return {};
     }
 
-    std::vector<Point3<float>> PointsModel::retrieveVertexArray() const
-    {
+    std::vector<Point3<float>> PointsModel::retrieveVertexArray() const {
         return points;
     }
 
-    void PointsModel::drawGeometry() const
-    {
+    void PointsModel::drawGeometry() const {
         GLfloat savedPointSize;
         glGetFloatv(GL_POINT_SIZE, &savedPointSize);
         glPointSize(pointsSize);

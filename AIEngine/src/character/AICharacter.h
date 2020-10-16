@@ -3,11 +3,9 @@
 
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class AICharacter
-    {
+    class AICharacter {
         public:
             AICharacter(float, float, const Point3<float> &);
 

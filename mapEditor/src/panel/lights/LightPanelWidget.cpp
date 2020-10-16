@@ -6,8 +6,7 @@
 #include "widget/style/ButtonStyleHelper.h"
 #include "panel/lights/dialog/NewLightDialog.h"
 
-namespace urchin
-{
+namespace urchin {
 
     LightPanelWidget::LightPanelWidget() :
             lightController(nullptr),
@@ -26,8 +25,7 @@ namespace urchin
             attenuation(nullptr),
             directionX(nullptr),
             directionY(nullptr),
-            directionZ(nullptr)
-    {
+            directionZ(nullptr) {
         auto *mainLayout = new QVBoxLayout(this);
         mainLayout->setAlignment(Qt::AlignTop);
         mainLayout->setContentsMargins(1, 1, 1, 1);
@@ -57,8 +55,7 @@ namespace urchin
         setupSpecificSunLightBox(mainLayout);
     }
 
-    void LightPanelWidget::setupGeneralPropertiesBox(QVBoxLayout *mainLayout)
-    {
+    void LightPanelWidget::setupGeneralPropertiesBox(QVBoxLayout *mainLayout) {
         generalPropertiesGroupBox = new QGroupBox("General Properties");
         mainLayout->addWidget(generalPropertiesGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
@@ -102,8 +99,7 @@ namespace urchin
         generalPropertiesLayout->addWidget(lightType, 2, 1);
     }
 
-    void LightPanelWidget::setupSpecificOmnidirectionalLightBox(QVBoxLayout *mainLayout)
-    {
+    void LightPanelWidget::setupSpecificOmnidirectionalLightBox(QVBoxLayout *mainLayout) {
         specificOmnidirectionalLightGroupBox = new QGroupBox("Omnidirectional Light");
         mainLayout->addWidget(specificOmnidirectionalLightGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(specificOmnidirectionalLightGroupBox);
@@ -141,8 +137,7 @@ namespace urchin
         connect(attenuation, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
     }
 
-    void LightPanelWidget::setupSpecificSunLightBox(QVBoxLayout *mainLayout)
-    {
+    void LightPanelWidget::setupSpecificSunLightBox(QVBoxLayout *mainLayout) {
         specificSunLightGroupBox = new QGroupBox("Sun Light");
         mainLayout->addWidget(specificSunLightGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(specificSunLightGroupBox);
@@ -170,44 +165,35 @@ namespace urchin
         connect(directionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
     }
 
-    LightTableView *LightPanelWidget::getLightTableView() const
-    {
+    LightTableView *LightPanelWidget::getLightTableView() const {
         return lightTableView;
     }
 
-    void LightPanelWidget::load(LightController *lightController)
-    {
+    void LightPanelWidget::load(LightController *lightController) {
         this->lightController = lightController;
 
         std::list<const SceneLight *> sceneLights = lightController->getSceneLights();
-        for(auto &sceneLight : sceneLights)
-        {
+        for(auto &sceneLight : sceneLights) {
             lightTableView->addLight(sceneLight);
         }
     }
 
-    void LightPanelWidget::unload()
-    {
+    void LightPanelWidget::unload() {
         lightTableView->removeAllLights();
 
         lightController = nullptr;
     }
 
-    void LightPanelWidget::notify(Observable *observable, int notificationType)
-    {
-        if(auto *lightTableView = dynamic_cast<LightTableView *>(observable))
-        {
-            if(notificationType==LightTableView::LIGHT_SELECTION_CHANGED)
-            {
-                if(lightTableView->hasSceneLightSelected())
-                {
+    void LightPanelWidget::notify(Observable *observable, int notificationType) {
+        if(auto *lightTableView = dynamic_cast<LightTableView *>(observable)) {
+            if(notificationType==LightTableView::LIGHT_SELECTION_CHANGED) {
+                if(lightTableView->hasSceneLightSelected()) {
                     const SceneLight *sceneLight = lightTableView->getSelectedSceneLight();
                     setupLightDataFrom(sceneLight);
 
                     removeLightButton->setEnabled(true);
                     generalPropertiesGroupBox->show();
-                }else
-                {
+                } else {
                     removeLightButton->setEnabled(false);
                     generalPropertiesGroupBox->hide();
                 }
@@ -215,8 +201,7 @@ namespace urchin
         }
     }
 
-    void LightPanelWidget::setupLightDataFrom(const SceneLight *sceneLight)
-    {
+    void LightPanelWidget::setupLightDataFrom(const SceneLight *sceneLight) {
         disableLightEvent = true;
         const Light *light = sceneLight->getLight();
 
@@ -226,24 +211,20 @@ namespace urchin
 
         this->produceShadowCheckBox->setChecked(light->isProduceShadow());
 
-        if(light->getLightType()==Light::LightType::OMNIDIRECTIONAL)
-        {
+        if(light->getLightType()==Light::LightType::OMNIDIRECTIONAL) {
             setupOmnidirectionalLightDataFrom(dynamic_cast<const OmnidirectionalLight *>(light));
             this->produceShadowCheckBox->setDisabled(true);
-        }else if(light->getLightType()==Light::LightType::SUN)
-        {
+        } else if(light->getLightType()==Light::LightType::SUN) {
             setupSunLightDataFrom(dynamic_cast<const SunLight *>(light));
             this->produceShadowCheckBox->setDisabled(false);
-        }else
-        {
+        } else {
             throw std::invalid_argument("Impossible to setup specific light data for light of type: " + std::to_string(light->getLightType()));
         }
 
         disableLightEvent = false;
     }
 
-    void LightPanelWidget::setupOmnidirectionalLightDataFrom(const OmnidirectionalLight *light)
-    {
+    void LightPanelWidget::setupOmnidirectionalLightDataFrom(const OmnidirectionalLight *light) {
         specificOmnidirectionalLightGroupBox->show();
         specificSunLightGroupBox->hide();
 
@@ -256,8 +237,7 @@ namespace urchin
         this->attenuation->setValue(light->getExponentialAttenuation());
     }
 
-    void LightPanelWidget::setupSunLightDataFrom(const SunLight *light)
-    {
+    void LightPanelWidget::setupSunLightDataFrom(const SunLight *light) {
         specificSunLightGroupBox->show();
         specificOmnidirectionalLightGroupBox->hide();
 
@@ -268,13 +248,11 @@ namespace urchin
         this->directionZ->setValue(light->getDirections()[0].Z);
     }
 
-    void LightPanelWidget::showAddLightDialog()
-    {
+    void LightPanelWidget::showAddLightDialog() {
         NewLightDialog newSceneLightDialog(this, lightController);
         newSceneLightDialog.exec();
 
-        if(newSceneLightDialog.result()==QDialog::Accepted)
-        {
+        if(newSceneLightDialog.result()==QDialog::Accepted) {
             SceneLight *sceneLight = newSceneLightDialog.getSceneLight();
             lightController->addSceneLight(sceneLight);
 
@@ -282,10 +260,8 @@ namespace urchin
         }
     }
 
-    void LightPanelWidget::removeSelectedLight()
-    {
-        if(lightTableView->hasSceneLightSelected())
-        {
+    void LightPanelWidget::removeSelectedLight() {
+        if(lightTableView->hasSceneLightSelected()) {
             const SceneLight *sceneLight = lightTableView->getSelectedSceneLight();
             lightController->removeSceneLight(sceneLight);
 
@@ -293,10 +269,8 @@ namespace urchin
         }
     }
 
-    void LightPanelWidget::updateLightGeneralProperties()
-    {
-        if(!disableLightEvent)
-        {
+    void LightPanelWidget::updateLightGeneralProperties() {
+        if(!disableLightEvent) {
             const SceneLight *sceneLight = lightTableView->getSelectedSceneLight();
 
             Point3<float> ambientColor(ambientR->value(), ambientG->value(), ambientB->value());
@@ -306,23 +280,18 @@ namespace urchin
         }
     }
 
-    void LightPanelWidget::updateLightSpecificProperties()
-    {
-        if(!disableLightEvent)
-        {
+    void LightPanelWidget::updateLightSpecificProperties() {
+        if(!disableLightEvent) {
             const SceneLight *sceneLight = lightTableView->getSelectedSceneLight();
             const Light *light = sceneLight->getLight();
 
-            if(light->getLightType()==Light::LightType::OMNIDIRECTIONAL)
-            {
+            if(light->getLightType()==Light::LightType::OMNIDIRECTIONAL) {
                 Point3<float> position(positionX->value(), positionY->value(), positionZ->value());
                 lightController->updateSceneOmnidirectionalLightProperties(sceneLight, (float)attenuation->value(), position);
-            }else if(light->getLightType()==Light::LightType::SUN)
-            {
+            } else if(light->getLightType()==Light::LightType::SUN) {
                 Vector3<float> direction(directionX->value(), directionY->value(), directionZ->value());
                 lightController->updateSceneSunLightProperties(sceneLight, direction);
-            }else
-            {
+            } else {
                 throw std::invalid_argument("Unknown light type to update specific properties: " + std::to_string(light->getLightType()));
             }
         }

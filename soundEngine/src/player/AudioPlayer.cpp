@@ -1,16 +1,13 @@
 #include "player/AudioPlayer.h"
 
-namespace urchin
-{
+namespace urchin {
 
     AudioPlayer::AudioPlayer(const Sound *sound) :
-        sound(sound)
-    {
+        sound(sound) {
 
     }
 
-    const Sound *AudioPlayer::getSound() const
-    {
+    const Sound *AudioPlayer::getSound() const {
         return sound;
     }
 

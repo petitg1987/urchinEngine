@@ -19,11 +19,9 @@
 #include "panel/objects/ObjectTableView.h"
 #include "panel/objects/bodyshape/BodyShapeWidget.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class ObjectPanelWidget : public QWidget, public Observer, public Observable
-    {
+    class ObjectPanelWidget : public QWidget, public Observer, public Observable {
         Q_OBJECT
 
         public:

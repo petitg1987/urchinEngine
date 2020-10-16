@@ -7,14 +7,12 @@
 #include "player/filereader/SoundFileReader.h"
 #include "player/stream/StreamChunk.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Task for the stream worker
     */
-    class StreamUpdateTask
-    {
+    class StreamUpdateTask {
         public:
             StreamUpdateTask(const Sound *sound, StreamChunk *, bool);
             ~StreamUpdateTask();

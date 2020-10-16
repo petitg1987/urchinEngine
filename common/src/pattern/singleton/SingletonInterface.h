@@ -1,11 +1,9 @@
 #ifndef URCHINENGINE_SINGLETONINTERFACE_H
 #define URCHINENGINE_SINGLETONINTERFACE_H
 
-namespace urchin
-{
+namespace urchin {
 
-    class SingletonInterface
-    {
+    class SingletonInterface {
         public:
             virtual ~SingletonInterface() = default;
     };

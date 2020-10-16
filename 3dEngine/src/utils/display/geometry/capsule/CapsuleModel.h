@@ -5,11 +5,9 @@
 
 #include "utils/display/geometry/GeometryModel.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class CapsuleModel : public GeometryModel
-    {
+    class CapsuleModel : public GeometryModel {
         public:
             CapsuleModel(Capsule<float> , int, int);
 

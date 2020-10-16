@@ -3,27 +3,22 @@
 
 #include "QuadsModel.h"
 
-namespace urchin
-{
+namespace urchin {
 
     QuadsModel::QuadsModel(std::vector<Point3<float>> quadsPoints) :
-            quadsPoints(std::move(quadsPoints))
-    {
+            quadsPoints(std::move(quadsPoints)) {
         initialize();
     }
 
-    Matrix4<float> QuadsModel::retrieveModelMatrix() const
-    {
+    Matrix4<float> QuadsModel::retrieveModelMatrix() const {
         return {};
     }
 
-    std::vector<Point3<float>> QuadsModel::retrieveVertexArray() const
-    {
+    std::vector<Point3<float>> QuadsModel::retrieveVertexArray() const {
         return quadsPoints;
     }
 
-    void QuadsModel::drawGeometry() const
-    {
+    void QuadsModel::drawGeometry() const {
         glDrawArrays(GL_QUADS, 0, quadsPoints.size());
     }
 

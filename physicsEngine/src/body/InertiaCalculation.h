@@ -5,11 +5,9 @@
 
 #include "utils/math/PhysicsTransform.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class InertiaCalculation
-    {
+    class InertiaCalculation {
         public:
             static Matrix3<float> computeInverseWorldInertia(const Vector3<float> &, const PhysicsTransform &);
 

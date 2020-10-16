@@ -9,13 +9,11 @@
 
 #include "utils/display/quad/QuadDisplayer.h"
 
-namespace urchin
-{
+namespace urchin {
 
     template<class T> class TextureFilterBuilder;
 
-    class TextureFilter
-    {
+    class TextureFilter {
         public:
             template<class BUILDER> explicit TextureFilter(const TextureFilterBuilder<BUILDER> *);
             virtual ~TextureFilter();

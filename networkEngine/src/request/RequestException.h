@@ -4,11 +4,9 @@
 #include <exception>
 #include <string>
 
-namespace urchin
-{
+namespace urchin {
 
-    class RequestException : public std::exception
-    {
+    class RequestException : public std::exception {
         public:
             explicit RequestException(std::string  message);
 

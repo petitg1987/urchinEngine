@@ -6,11 +6,9 @@
 #include "resources/material/Material.h"
 #include "loader/Loader.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class LoaderMTR : public Loader<Material>
-    {
+    class LoaderMTR : public Loader<Material> {
         public:
             ~LoaderMTR() override = default;
 

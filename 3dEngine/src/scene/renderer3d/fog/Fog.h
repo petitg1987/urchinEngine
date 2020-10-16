@@ -4,11 +4,9 @@
 #include <limits>
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class Fog
-    {
+    class Fog {
         public:
             Fog(float, float, const Vector3<float> &, float maxHeight = std::numeric_limits<float>::max());
 

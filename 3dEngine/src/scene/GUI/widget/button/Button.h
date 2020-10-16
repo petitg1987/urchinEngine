@@ -11,11 +11,9 @@
 #include "resources/image/Image.h"
 #include "utils/display/quad/QuadDisplayer.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class Button : public Widget
-    {
+    class Button : public Widget {
         public:
             Button(Position, Size, std::string , std::string );
             ~Button() override = default;

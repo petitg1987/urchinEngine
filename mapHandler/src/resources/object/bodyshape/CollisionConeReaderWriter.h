@@ -7,11 +7,9 @@
 
 #include "CollisionShapeReaderWriter.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class CollisionConeReaderWriter : public CollisionShapeReaderWriter
-    {
+    class CollisionConeReaderWriter : public CollisionShapeReaderWriter {
         //XML tags
         #define ORIENTATION_TAG "orientation"
         #define RADIUS_TAG "radius"

@@ -7,11 +7,9 @@
 #include "resources/model/ConstMeshes.h"
 #include "Mesh.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class Meshes
-    {
+    class Meshes {
         public:
             explicit Meshes(ConstMeshes *);
             ~Meshes();

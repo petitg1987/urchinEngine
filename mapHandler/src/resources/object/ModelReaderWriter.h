@@ -7,11 +7,9 @@
 #include "UrchinCommon.h"
 #include "Urchin3dEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class ModelReaderWriter
-    {
+    class ModelReaderWriter {
         //XML tags
         #define MESH_TAG "mesh"
         #define FILENAME_TAG "filename"

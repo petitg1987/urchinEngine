@@ -4,13 +4,11 @@
 #include "partitioning/aabbtree/AABBNodeData.h"
 #include "math/geometry/3d/object/AABBox.h"
 
-namespace urchin
-{
+namespace urchin {
 
     template<class OBJ> class AABBTree;
 
-    template<class OBJ> class AABBNode
-    {
+    template<class OBJ> class AABBNode {
         public:
             friend class AABBTree<OBJ>;
 

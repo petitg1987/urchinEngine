@@ -4,14 +4,12 @@
 #include <list>
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * A texture manager global to all renderer
     */
-    class TextureManager : public Singleton<TextureManager>
-    {
+    class TextureManager : public Singleton<TextureManager> {
         public:
             friend class Singleton<TextureManager>;
 

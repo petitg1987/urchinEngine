@@ -6,11 +6,9 @@
 #include "resources/Resource.h"
 #include "resources/image/Image.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class Material : public Resource
-    {
+    class Material : public Resource {
         public:
             Material(Image *, Image *, float);
             ~Material() override;

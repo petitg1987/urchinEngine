@@ -8,11 +8,9 @@
 #include "AbstractBody.h"
 #include "body/work/WorkRigidBody.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class RigidBody : public AbstractBody
-    {
+    class RigidBody : public AbstractBody {
         public:
             RigidBody(const std::string &, const Transform<float> &, const std::shared_ptr<const CollisionShape3D> &);
             RigidBody(const RigidBody &);

@@ -5,11 +5,9 @@
 
 #include "utils/display/quad/QuadDisplayer.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class AntiAliasingManager
-    {
+    class AntiAliasingManager {
         public:
             enum Quality
             {

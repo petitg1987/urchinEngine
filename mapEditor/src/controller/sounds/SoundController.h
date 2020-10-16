@@ -8,11 +8,9 @@
 
 #include "controller/AbstractController.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SoundController : public AbstractController
-    {
+    class SoundController : public AbstractController {
         public:
             SoundController();
 

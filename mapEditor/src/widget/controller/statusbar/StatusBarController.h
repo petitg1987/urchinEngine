@@ -9,11 +9,9 @@
 #include "widget/controller/statusbar/StatusBarState.h"
 #include "widget/controller/statusbar/StatusBarStateData.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class StatusBarController
-    {
+    class StatusBarController {
         public:
             explicit StatusBarController(QMainWindow *);
 

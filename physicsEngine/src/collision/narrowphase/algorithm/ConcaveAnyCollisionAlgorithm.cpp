@@ -4,17 +4,14 @@
 #include "shape/CollisionTriangleShape.h"
 #include "shape/CollisionConcaveShape.h"
 
-namespace urchin
-{
+namespace urchin {
 
     ConcaveAnyCollisionAlgorithm::ConcaveAnyCollisionAlgorithm(bool objectSwapped, ManifoldResult &&result) :
-            CollisionAlgorithm(objectSwapped, std::move(result))
-    {
+            CollisionAlgorithm(objectSwapped, std::move(result)) {
 
     }
 
-    void ConcaveAnyCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2)
-    {
+    void ConcaveAnyCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2) {
         ScopeProfiler profiler("physics", "algConcaveAny");
 
         const CollisionShape3D &otherShape = object2.getShape();
@@ -26,8 +23,7 @@ namespace urchin
         const auto &concaveShape = dynamic_cast<const CollisionConcaveShape &>(object1.getShape());
 
         const std::vector<CollisionTriangleShape> &triangles = concaveShape.findTrianglesInAABBox(aabboxLocalToObject1);
-        for(const auto &triangle : triangles)
-        {
+        for(const auto &triangle : triangles) {
             std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = getCollisionAlgorithmSelector()->createCollisionAlgorithm(
                     body1, &triangle, body2, &otherShape);
 
@@ -41,13 +37,10 @@ namespace urchin
         }
     }
 
-    void ConcaveAnyCollisionAlgorithm::addContactPointsToManifold(const ManifoldResult &manifoldResult, bool manifoldSwapped)
-    {
-        for(unsigned int i=0; i<manifoldResult.getNumContactPoints(); ++i)
-        {
+    void ConcaveAnyCollisionAlgorithm::addContactPointsToManifold(const ManifoldResult &manifoldResult, bool manifoldSwapped) {
+        for(unsigned int i=0; i<manifoldResult.getNumContactPoints(); ++i) {
             const ManifoldContactPoint &manifoldContactPoint = manifoldResult.getManifoldContactPoint(i);
-            if(manifoldSwapped)
-            {
+            if(manifoldSwapped) {
                 getManifoldResult().addContactPoint(
                         (-manifoldContactPoint.getNormalFromObject2()),
                         manifoldContactPoint.getPointOnObject2(),
@@ -56,8 +49,7 @@ namespace urchin
                         manifoldContactPoint.getLocalPointOnObject1(),
                         manifoldContactPoint.getDepth(),
                         manifoldContactPoint.isPredictive());
-            }else
-            {
+            } else {
                 getManifoldResult().addContactPoint(
                         manifoldContactPoint.getNormalFromObject2(),
                         manifoldContactPoint.getPointOnObject1(),
@@ -70,19 +62,16 @@ namespace urchin
         }
     }
 
-    CollisionAlgorithm *ConcaveAnyCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, ManifoldResult &&result, FixedSizePool<CollisionAlgorithm> *algorithmPool) const
-    {
+    CollisionAlgorithm *ConcaveAnyCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, ManifoldResult &&result, FixedSizePool<CollisionAlgorithm> *algorithmPool) const {
         void *memPtr = algorithmPool->allocate(sizeof(ConcaveAnyCollisionAlgorithm));
         return new(memPtr) ConcaveAnyCollisionAlgorithm(objectSwapped, std::move(result));
     }
 
-    const std::vector<CollisionShape3D::ShapeType> &ConcaveAnyCollisionAlgorithm::Builder::getFirstExpectedShapeType() const
-    {
+    const std::vector<CollisionShape3D::ShapeType> &ConcaveAnyCollisionAlgorithm::Builder::getFirstExpectedShapeType() const {
         return CollisionShape3D::CONCAVE_SHAPES;
     }
 
-    unsigned int ConcaveAnyCollisionAlgorithm::Builder::getAlgorithmSize() const
-    {
+    unsigned int ConcaveAnyCollisionAlgorithm::Builder::getAlgorithmSize() const {
         return sizeof(ConcaveAnyCollisionAlgorithm);
     }
 

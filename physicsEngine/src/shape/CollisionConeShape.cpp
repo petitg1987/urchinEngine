@@ -1,29 +1,24 @@
 #include "shape/CollisionConeShape.h"
 #include "object/CollisionConeObject.h"
 
-namespace urchin
-{
+namespace urchin {
 
     CollisionConeShape::CollisionConeShape(float radius, float height, ConeShape<float>::ConeOrientation coneOrientation) :
             CollisionShape3D(),
-            coneShape(new ConeShape<float>(radius, height, coneOrientation))
-    {
+            coneShape(new ConeShape<float>(radius, height, coneOrientation)) {
         computeSafeMargin();
     }
 
     CollisionConeShape::CollisionConeShape(CollisionConeShape &&collisionConeShape) noexcept :
             CollisionShape3D(collisionConeShape),
-            coneShape(std::exchange(collisionConeShape.coneShape, nullptr))
-    {
+            coneShape(std::exchange(collisionConeShape.coneShape, nullptr)) {
     }
 
-    CollisionConeShape::~CollisionConeShape()
-    {
+    CollisionConeShape::~CollisionConeShape() {
         delete coneShape;
     }
 
-    void CollisionConeShape::computeSafeMargin()
-    {
+    void CollisionConeShape::computeSafeMargin() {
         float minAxis = std::min(getRadius(), getHeight() / 2.0f);
         float maximumMarginPercentage = ConfigService::instance()->getFloatValue("collisionShape.maximumMarginPercentage");
         float maximumSafeMargin = minAxis * maximumMarginPercentage;
@@ -31,41 +26,33 @@ namespace urchin
         refreshInnerMargin(maximumSafeMargin);
     }
 
-    CollisionShape3D::ShapeType CollisionConeShape::getShapeType() const
-    {
+    CollisionShape3D::ShapeType CollisionConeShape::getShapeType() const {
         return CollisionShape3D::CONE_SHAPE;
     }
 
-    const ConvexShape3D<float> *CollisionConeShape::getSingleShape() const
-    {
+    const ConvexShape3D<float> *CollisionConeShape::getSingleShape() const {
         return coneShape;
     }
 
-    float CollisionConeShape::getRadius() const
-    {
+    float CollisionConeShape::getRadius() const {
         return coneShape->getRadius();
     }
 
-    float CollisionConeShape::getHeight() const
-    {
+    float CollisionConeShape::getHeight() const {
         return coneShape->getHeight();
     }
 
-    ConeShape<float>::ConeOrientation CollisionConeShape::getConeOrientation() const
-    {
+    ConeShape<float>::ConeOrientation CollisionConeShape::getConeOrientation() const {
         return coneShape->getConeOrientation();
     }
 
-    std::shared_ptr<CollisionShape3D> CollisionConeShape::scale(float scale) const
-    {
+    std::shared_ptr<CollisionShape3D> CollisionConeShape::scale(float scale) const {
         return std::make_shared<CollisionConeShape>(coneShape->getRadius() * scale,
                 coneShape->getHeight() * scale, coneShape->getConeOrientation());
     }
 
-    AABBox<float> CollisionConeShape::toAABBox(const PhysicsTransform &physicsTransform) const
-    {
-        if(!lastTransform.equals(physicsTransform))
-        {
+    AABBox<float> CollisionConeShape::toAABBox(const PhysicsTransform &physicsTransform) const {
+        if(!lastTransform.equals(physicsTransform)) {
             Vector3<float> boxHalfSizes(getRadius(), getRadius(), getRadius());
             boxHalfSizes[getConeOrientation() / 2] = getHeight() / 2.0f;
             const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
@@ -88,8 +75,7 @@ namespace urchin
         return lastAABBox;
     }
 
-    std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionConeShape::toConvexObject(const PhysicsTransform &physicsTransform) const
-    {
+    std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionConeShape::toConvexObject(const PhysicsTransform &physicsTransform) const {
         const Point3<float> &position = physicsTransform.getPosition();
         const Quaternion<float> &orientation = physicsTransform.getOrientation();
 
@@ -101,8 +87,7 @@ namespace urchin
         return std::unique_ptr<CollisionConeObject, ObjectDeleter>(collisionObjectPtr);
     }
 
-    Vector3<float> CollisionConeShape::computeLocalInertia(float mass) const
-    {
+    Vector3<float> CollisionConeShape::computeLocalInertia(float mass) const {
         float interiaValue = (3.0f/20.0f) * mass * (getRadius()*getRadius() + 4.0f*getHeight()*getHeight());
 
         Vector3<float> inertia(interiaValue, interiaValue, interiaValue);
@@ -111,18 +96,15 @@ namespace urchin
         return inertia;
     }
 
-    float CollisionConeShape::getMaxDistanceToCenter() const
-    {
+    float CollisionConeShape::getMaxDistanceToCenter() const {
         return std::max(coneShape->getHeight()/2.0f, coneShape->getRadius());
     }
 
-    float CollisionConeShape::getMinDistanceToCenter() const
-    {
+    float CollisionConeShape::getMinDistanceToCenter() const {
         return std::min(coneShape->getHeight()/2.0f, coneShape->getRadius());
     }
 
-    CollisionShape3D *CollisionConeShape::clone() const
-    {
+    CollisionShape3D *CollisionConeShape::clone() const {
         return new CollisionConeShape(coneShape->getRadius(), coneShape->getHeight(), coneShape->getConeOrientation());
     }
 

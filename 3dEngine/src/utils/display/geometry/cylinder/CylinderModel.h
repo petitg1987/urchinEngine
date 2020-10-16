@@ -5,11 +5,9 @@
 
 #include "utils/display/geometry/GeometryModel.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class CylinderModel : public GeometryModel
-    {
+    class CylinderModel : public GeometryModel {
         public:
             CylinderModel(Cylinder<float> , int);
 

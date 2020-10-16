@@ -4,11 +4,9 @@
 #include <vector>
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class Light : public Octreeable<Light>
-    {
+    class Light : public Octreeable<Light> {
         public:
             Light();
             ~Light() override = default;

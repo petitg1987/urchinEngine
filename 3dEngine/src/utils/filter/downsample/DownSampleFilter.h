@@ -6,13 +6,11 @@
 
 #include "utils/filter/TextureFilter.h"
 
-namespace urchin
-{
+namespace urchin {
 
     class DownSampleFilterBuilder;
 
-    class DownSampleFilter : public TextureFilter
-    {
+    class DownSampleFilter : public TextureFilter {
         public:
             explicit DownSampleFilter(const DownSampleFilterBuilder *);
 

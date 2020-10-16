@@ -4,23 +4,18 @@
 #include "TerrainMaterial.h"
 #include "resources/MediaManager.h"
 
-namespace urchin
-{
+namespace urchin {
 
     TerrainMaterial::TerrainMaterial(const std::string &maskMapFilename, float sRepeat, float tRepeat) :
             maskMapFilename(maskMapFilename),
             sRepeat(sRepeat),
-            tRepeat(tRepeat)
-    {
-        if(maskMapFilename.empty())
-        {
+            tRepeat(tRepeat) {
+        if(maskMapFilename.empty()) {
             maskTexture = new Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({255, 0, 0, 0}));
             maskTexture->toTexture(false, false, false);
-        }else
-        {
+        } else {
             maskTexture = MediaManager::instance()->getMedia<Image>(maskMapFilename);
-            if(maskTexture->getImageFormat() != Image::IMAGE_RGBA)
-            {
+            if(maskTexture->getImageFormat() != Image::IMAGE_RGBA) {
                 maskTexture->release();
                 throw std::runtime_error("Mask texture must have 4 components (RGBA). Components: " + std::to_string(maskTexture->retrieveComponentsCount()));
             }
@@ -28,8 +23,7 @@ namespace urchin
         }
 
         materials.resize(MAX_MATERIAL);
-        for (auto &material : materials)
-        {
+        for (auto &material : materials) {
             material = nullptr;
         }
 
@@ -37,14 +31,11 @@ namespace urchin
         defaultTexture->toTexture(false, false, false);
     }
 
-    TerrainMaterial::~TerrainMaterial()
-    {
+    TerrainMaterial::~TerrainMaterial() {
         maskTexture->release();
 
-        for (auto &material : materials)
-        {
-            if(material != nullptr)
-            {
+        for (auto &material : materials) {
+            if(material != nullptr) {
                 material->release();
             }
         }
@@ -52,54 +43,43 @@ namespace urchin
         delete defaultTexture;
     }
 
-    void TerrainMaterial::refreshWith(unsigned int xSize, unsigned int zSize)
-    {
+    void TerrainMaterial::refreshWith(unsigned int xSize, unsigned int zSize) {
         buildTexCoordinates(xSize, zSize);
     }
 
-    void TerrainMaterial::addMaterial(unsigned int position, const std::string &materialFilename)
-    {
-        if(position >= materials.size())
-        {
+    void TerrainMaterial::addMaterial(unsigned int position, const std::string &materialFilename) {
+        if(position >= materials.size()) {
             throw std::runtime_error("Material position is incorrect. Value : " + std::to_string(position));
         }
 
-        if(materials[position] != nullptr)
-        {
+        if(materials[position] != nullptr) {
             throw std::runtime_error("Material position " + std::to_string(position) + " is already used.");
         }
 
         materials[position] = MediaManager::instance()->getMedia<Material>(materialFilename);
     }
 
-    const std::string &TerrainMaterial::getMaskMapFilename() const
-    {
+    const std::string &TerrainMaterial::getMaskMapFilename() const {
         return maskMapFilename;
     }
 
-    float TerrainMaterial::getSRepeat() const
-    {
+    float TerrainMaterial::getSRepeat() const {
         return sRepeat;
     }
 
-    float TerrainMaterial::getTRepeat() const
-    {
+    float TerrainMaterial::getTRepeat() const {
         return tRepeat;
     }
 
-    std::vector<Material *> TerrainMaterial::getMaterials() const
-    {
+    std::vector<Material *> TerrainMaterial::getMaterials() const {
         return materials;
     }
 
-    void TerrainMaterial::buildTexCoordinates(unsigned int xSize, unsigned int zSize)
-    {
+    void TerrainMaterial::buildTexCoordinates(unsigned int xSize, unsigned int zSize) {
         texCoordinates.reserve(xSize * zSize);
 
-        for(unsigned int z = 0; z < zSize; ++z)
-        {
-            for (unsigned int x = 0; x < xSize; ++x)
-            {
+        for(unsigned int z = 0; z < zSize; ++z) {
+            for (unsigned int x = 0; x < xSize; ++x) {
                 float s = (float)x / (float)xSize * sRepeat;
                 float t = (float)z / (float)zSize * tRepeat;
 
@@ -108,25 +88,20 @@ namespace urchin
         }
     }
 
-    const std::vector<Point2<float>> &TerrainMaterial::getTexCoordinates() const
-    {
+    const std::vector<Point2<float>> &TerrainMaterial::getTexCoordinates() const {
         return texCoordinates;
     }
 
-    void TerrainMaterial::loadTextures() const
-    {
+    void TerrainMaterial::loadTextures() const {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, maskTexture->getTextureID());
 
-        for(std::size_t i=0; i<materials.size(); ++i)
-        {
+        for(std::size_t i=0; i<materials.size(); ++i) {
             glActiveTexture(GL_TEXTURE0 + i + 1);
 
-            if(materials[i] != nullptr)
-            {
+            if(materials[i] != nullptr) {
                 glBindTexture(GL_TEXTURE_2D, materials[i]->getDiffuseTexture()->getTextureID());
-            }else
-            {
+            } else {
                 glBindTexture(GL_TEXTURE_2D, defaultTexture->getTextureID());
             }
         }

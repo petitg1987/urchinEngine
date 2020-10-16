@@ -4,11 +4,9 @@
 #include "utils/pool/FixedSizePool.h"
 #include "collision/narrowphase/algorithm/utils/AlgorithmResult.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class AlgorithmResultDeleter
-    {
+    class AlgorithmResultDeleter {
         public:
             void operator()(AlgorithmResult *);
     };

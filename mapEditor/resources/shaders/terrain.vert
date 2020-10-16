@@ -12,7 +12,7 @@ out vec3 normal;
 out vec2 textCoordinates;
 invariant gl_Position;
 
-void main(){
+void main() {
     textCoordinates = texCoord;
 
     normal = vertexNormal;

@@ -2,8 +2,7 @@
 
 #define DEFAULT_VOLUME_DECREASE_PERCENTAGE_ON_STOP 0.5
 
-namespace urchin
-{
+namespace urchin {
 
     /**
      * @param playBehavior Behavior of sound during playing
@@ -12,8 +11,7 @@ namespace urchin
     SoundBehavior::SoundBehavior(PlayBehavior playBehavior, StopBehavior stopBehavior) :
         playBehavior(playBehavior),
         stopBehavior(stopBehavior),
-        volumeDecreasePercentageOnStop(DEFAULT_VOLUME_DECREASE_PERCENTAGE_ON_STOP)
-    {
+        volumeDecreasePercentageOnStop(DEFAULT_VOLUME_DECREASE_PERCENTAGE_ON_STOP) {
 
     }
 
@@ -27,26 +25,22 @@ namespace urchin
     SoundBehavior::SoundBehavior(PlayBehavior playBehavior, StopBehavior stopBehavior, float volumeDecreasePercentageOnStop) :
         playBehavior(playBehavior),
         stopBehavior(stopBehavior),
-        volumeDecreasePercentageOnStop(volumeDecreasePercentageOnStop)
-    {
+        volumeDecreasePercentageOnStop(volumeDecreasePercentageOnStop) {
 
     }
 
-    SoundBehavior::PlayBehavior SoundBehavior::getPlayBehavior() const
-    {
+    SoundBehavior::PlayBehavior SoundBehavior::getPlayBehavior() const {
         return playBehavior;
     }
 
-    SoundBehavior::StopBehavior SoundBehavior::getStopBehavior() const
-    {
+    SoundBehavior::StopBehavior SoundBehavior::getStopBehavior() const {
         return stopBehavior;
     }
 
     /**
      * @param Volume decrease percentage (value from 0.0 to 1.0) on stop
      */
-    float SoundBehavior::getVolumeDecreasePercentageOnStop() const
-    {
+    float SoundBehavior::getVolumeDecreasePercentageOnStop() const {
         return volumeDecreasePercentageOnStop;
     }
 

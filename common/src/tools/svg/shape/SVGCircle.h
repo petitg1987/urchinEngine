@@ -5,11 +5,9 @@
 
 #include "tools/svg/shape/SVGShape.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SVGCircle : public SVGShape
-    {
+    class SVGCircle : public SVGShape {
         public:
             SVGCircle(const Point2<float> &, float, SVGColor, float opacity = 1.0f);
 

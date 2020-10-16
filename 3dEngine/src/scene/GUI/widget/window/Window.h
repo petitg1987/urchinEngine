@@ -12,11 +12,9 @@
 #include "resources/image/Image.h"
 #include "utils/display/quad/QuadDisplayer.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class Window : public Widget
-    {
+    class Window : public Widget {
         public:
             Window(Position, Size, std::string , std::string stringTitle = "");
 

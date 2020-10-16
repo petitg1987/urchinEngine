@@ -14,11 +14,9 @@
 #include "collision/narrowphase/algorithm/epa/result/EPAResultNoCollide.h"
 #include "collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class AlgorithmResultAllocator : public Singleton<AlgorithmResultAllocator>
-    {
+    class AlgorithmResultAllocator : public Singleton<AlgorithmResultAllocator> {
         public:
             friend class Singleton<AlgorithmResultAllocator>;
 

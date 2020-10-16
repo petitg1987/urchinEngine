@@ -8,14 +8,12 @@
 #include "collision/constraintsolver/solvingdata/ImpulseSolvingData.h"
 #include "collision/constraintsolver/solvingdata/AccumulatedSolvingData.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Constraint data container
     */
-    class ConstraintSolving
-    {
+    class ConstraintSolving {
         public:
             ConstraintSolving(WorkRigidBody *, WorkRigidBody *, ManifoldContactPoint &);
 

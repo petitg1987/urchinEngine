@@ -1,7 +1,6 @@
 #include "ConvexShape3D.h"
 
-namespace urchin
-{
+namespace urchin {
 
     //explicit template
     template class ConvexShape3D<float>;

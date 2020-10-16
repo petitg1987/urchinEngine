@@ -11,11 +11,9 @@
 #include "utils/math/PhysicsTransform.h"
 #include "utils/pool/FixedSizePool.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class CollisionTriangleShape : public CollisionShape3D
-    {
+    class CollisionTriangleShape : public CollisionShape3D {
         public:
             explicit CollisionTriangleShape(const Point3<float> *);
             CollisionTriangleShape(TriangleShape3D<float> *, FixedSizePool<TriangleShape3D<float>> *);

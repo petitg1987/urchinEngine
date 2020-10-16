@@ -2,29 +2,23 @@
 
 #include <utility>
 
-namespace urchin
-{
+namespace urchin {
     SVGExporter::SVGExporter(std::string filename) :
-        filename(std::move(filename))
-    {
+        filename(std::move(filename)) {
 
     }
 
-    SVGExporter::~SVGExporter()
-    {
-        for(const SVGShape *shape : shapes)
-        {
+    SVGExporter::~SVGExporter() {
+        for(const SVGShape *shape : shapes) {
            delete shape;
         }
     }
 
-    void SVGExporter::addShape(const SVGShape *shape)
-    {
+    void SVGExporter::addShape(const SVGShape *shape) {
         shapes.push_back(shape);
     }
 
-    void SVGExporter::generateSVG(int zoomPercentage) const
-    {
+    void SVGExporter::generateSVG(int zoomPercentage) const {
         std::ofstream fileStream;
         fileStream.open(filename);
 
@@ -42,16 +36,13 @@ namespace urchin
         fileStream.close();
     }
 
-    std::string SVGExporter::retrieveViewBox() const
-    {
-        if(shapes.empty())
-        {
+    std::string SVGExporter::retrieveViewBox() const {
+        if(shapes.empty()) {
             return "";
         }
 
         Rectangle<float> viewBox = shapes[0]->computeRectangle();
-        for(const auto shape : shapes)
-        {
+        for(const auto shape : shapes) {
             viewBox = viewBox.merge(shape->computeRectangle());
         }
 
@@ -63,10 +54,8 @@ namespace urchin
                + std::to_string(viewBox.getMax().Y - viewBox.getMin().Y + (marginY * 2.0f));
     }
 
-    void SVGExporter::addShapes(std::ofstream &fileStream) const
-    {
-        for(const auto &shape : shapes)
-        {
+    void SVGExporter::addShapes(std::ofstream &fileStream) const {
+        for(const auto &shape : shapes) {
             fileStream<<"  "<<shape->getShapeTag()<<std::endl;
         }
     }

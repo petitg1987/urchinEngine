@@ -9,11 +9,9 @@
 #include "path/navmesh/polytope/PolytopeSurface.h"
 #include "path/navmesh/model/output/NavMeshAgent.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class Polytope
-    {
+    class Polytope {
         public:
             Polytope(std::string, std::vector<std::shared_ptr<PolytopeSurface>> &);
 

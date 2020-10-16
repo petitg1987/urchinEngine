@@ -3,30 +3,25 @@
 #include "SceneFreeCamera.h"
 #include "StateSaveHelper.h"
 
-namespace urchin
-{
+namespace urchin {
 
     //static
     const char SceneFreeCamera::DATA_DELIMITER = '@';
 
     SceneFreeCamera::SceneFreeCamera(float angle, float nearPlane, float farPlane, const MouseController &mouseController) :
         FreeCamera(angle, nearPlane, farPlane),
-        mouseController(mouseController)
-    {
+        mouseController(mouseController) {
 
     }
 
-    void SceneFreeCamera::moveMouse(unsigned int x, unsigned int y)
-    {
+    void SceneFreeCamera::moveMouse(unsigned int x, unsigned int y) {
         mouseController.moveMouse(x, y);
     }
 
-    void SceneFreeCamera::loadCameraState(const std::string &mapFilename)
-    {
+    void SceneFreeCamera::loadCameraState(const std::string &mapFilename) {
         std::map<std::string, std::string> cameraPositionByMap = MapUtil::deserialize(StateSaveHelper::instance()->retrieveState("camera.position", ""));
         auto it = cameraPositionByMap.find(mapFilename);
-        if(it != cameraPositionByMap.end())
-        {
+        if(it != cameraPositionByMap.end()) {
             std::vector<std::string> serializedCameraElements;
             StringUtil::split(it->second, DATA_DELIMITER, serializedCameraElements);
             assert(serializedCameraElements.size() == 2);
@@ -36,8 +31,7 @@ namespace urchin
         }
     }
 
-    void SceneFreeCamera::saveCameraState(const std::string &mapFilename) const
-    {
+    void SceneFreeCamera::saveCameraState(const std::string &mapFilename) const {
         std::map<std::string, std::string> cameraPositionByMap = MapUtil::deserialize(StateSaveHelper::instance()->retrieveState("camera.position", ""));
 
         std::string serializedCameraPosition = std::to_string(getPosition().X) + Converter::FLOAT_DELIMITER + std::to_string(getPosition().Y)

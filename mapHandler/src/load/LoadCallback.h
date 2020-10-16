@@ -1,11 +1,9 @@
 #ifndef URCHINENGINE_MLOADCALLBACK_H
 #define URCHINENGINE_MLOADCALLBACK_H
 
-namespace urchin
-{
+namespace urchin {
 
-    class LoadCallback
-    {
+    class LoadCallback {
         public:
             enum LoadedStage
             {

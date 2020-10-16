@@ -3,11 +3,9 @@
 
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class AIShape
-    {
+    class AIShape {
         public:
             explicit AIShape(const ConvexShape3D<float> *);
             AIShape(const ConvexShape3D<float> *, Transform<float> localTransform);

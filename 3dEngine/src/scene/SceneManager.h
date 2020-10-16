@@ -12,10 +12,8 @@
 
 #define NUM_RENDERER 2
 
-namespace urchin
-{
-    class SceneManager
-    {
+namespace urchin {
+    class SceneManager {
         public:
             SceneManager();
             virtual ~SceneManager();

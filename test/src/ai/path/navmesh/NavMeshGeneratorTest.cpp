@@ -7,8 +7,7 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-void NavMeshGeneratorTest::holeOnWalkableFace()
-{
+void NavMeshGeneratorTest::holeOnWalkableFace() {
     auto walkableShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(2.0, 0.01, 2.0)).get());
     auto walkableFaceObject = std::make_shared<AIObject>("walkableFace", Transform<float>(Point3<float>(0.0, 0.0, 0.0)), true, walkableShape);
     auto holeShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(1.0, 0.01, 1.0)).get());
@@ -30,8 +29,7 @@ void NavMeshGeneratorTest::holeOnWalkableFace()
     AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getTriangles().size(), 2); //2 triangles of "hole" polygon
 }
 
-void NavMeshGeneratorTest::holeOnWalkableFaceEdge()
-{
+void NavMeshGeneratorTest::holeOnWalkableFaceEdge() {
     auto walkableShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(2.0, 0.01, 2.0)).get());
     auto walkableFaceObject = std::make_shared<AIObject>("walkableFace", Transform<float>(Point3<float>(0.0, 0.0, 0.0)), true, walkableShape);
     auto holeShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(1.0, 0.01, 1.0)).get());
@@ -53,8 +51,7 @@ void NavMeshGeneratorTest::holeOnWalkableFaceEdge()
     AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getTriangles().size(), 2); //2 triangles of "hole" polygon
 }
 
-void NavMeshGeneratorTest::holeOverlapOnWalkableFace()
-{
+void NavMeshGeneratorTest::holeOverlapOnWalkableFace() {
     auto walkableShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(2.0, 0.01, 2.0)).get());
     auto walkableFaceObject = std::make_shared<AIObject>("walkableFace", Transform<float>(Point3<float>(0.0, 0.0, 0.0)), true, walkableShape);
     auto holeShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(1.0, 0.01, 1.0)).get());
@@ -86,8 +83,7 @@ void NavMeshGeneratorTest::holeOverlapOnWalkableFace()
     AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getTriangles().size(), 2); //2 triangles of "hole" polygon
 }
 
-void NavMeshGeneratorTest::holeAndCrossingHoleOnWalkableFace()
-{
+void NavMeshGeneratorTest::holeAndCrossingHoleOnWalkableFace() {
     auto walkableShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(2.0, 0.01, 2.0)).get());
     auto walkableFaceObject = std::make_shared<AIObject>("walkableFace", Transform<float>(Point3<float>(0.0, 0.0, 0.0)), true, walkableShape);
     auto holeShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(0.5, 0.01, 0.5)).get());
@@ -117,8 +113,7 @@ void NavMeshGeneratorTest::holeAndCrossingHoleOnWalkableFace()
     AssertHelper::assertTrue(navMesh->getPolygons()[3]->getName()=="<crossingHole[2]>");
 }
 
-void NavMeshGeneratorTest::moveHoleOnWalkableFace()
-{
+void NavMeshGeneratorTest::moveHoleOnWalkableFace() {
     auto walkableShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(2.0, 0.01, 2.0)).get());
     auto walkableFaceObjectLeft = std::make_shared<AIObject>("walkableFaceLeft", Transform<float>(Point3<float>(0.0, 0.0, 0.0)), false, walkableShape);
     auto walkableFaceObjectRight = std::make_shared<AIObject>("walkableFaceRight", Transform<float>(Point3<float>(5.0, 0.0, 0.0)), false, walkableShape);
@@ -148,8 +143,7 @@ void NavMeshGeneratorTest::moveHoleOnWalkableFace()
     AssertHelper::assertTrue(navMesh->getPolygons()[2]->getName()=="<hole[2]>");
 }
 
-void NavMeshGeneratorTest::removeHoleFromWalkableFace()
-{
+void NavMeshGeneratorTest::removeHoleFromWalkableFace() {
     auto walkableShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(2.0, 0.01, 2.0)).get());
     auto walkableFaceObject = std::make_shared<AIObject>("walkableFace", Transform<float>(Point3<float>(0.0, 0.0, 0.0)), true, walkableShape);
     auto holeShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(1.0, 0.01, 1.0)).get());
@@ -174,8 +168,7 @@ void NavMeshGeneratorTest::removeHoleFromWalkableFace()
     AssertHelper::assertTrue(navMesh->getPolygons()[0]->getName()=="<walkableFace[2]>");
 }
 
-void NavMeshGeneratorTest::linksRecreatedAfterMove()
-{
+void NavMeshGeneratorTest::linksRecreatedAfterMove() {
     auto cubeShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(0.5, 0.5, 0.5)).get());
     auto cube1Moving = std::make_shared<AIObject>("cube1", Transform<float>(Point3<float>(0.5, 1.5, 0.0)), false, cubeShape);
     auto cube2AffectedByMove = std::make_shared<AIObject>("cube2", Transform<float>(Point3<float>(0.0, 0.0, 0.0)), false, cubeShape);
@@ -214,15 +207,11 @@ void NavMeshGeneratorTest::linksRecreatedAfterMove()
     AssertHelper::assertUnsignedInt(countPolygonLinks(newCube3WitLinkToCube1Polygon, cube2AffectedByMovePolygon), 0);
 }
 
-unsigned int NavMeshGeneratorTest::countPolygonLinks(const std::shared_ptr<NavPolygon> &sourcePolygon, const std::shared_ptr<NavPolygon> &targetPolygon)
-{
+unsigned int NavMeshGeneratorTest::countPolygonLinks(const std::shared_ptr<NavPolygon> &sourcePolygon, const std::shared_ptr<NavPolygon> &targetPolygon) {
     unsigned int countLinks = 0;
-    for(const auto &triangle : sourcePolygon->getTriangles())
-    {
-        for(const auto &link : triangle->getLinks())
-        {
-            if(link->getTargetTriangle()->getNavPolygon() == targetPolygon)
-            {
+    for(const auto &triangle : sourcePolygon->getTriangles()) {
+        for(const auto &link : triangle->getLinks()) {
+            if(link->getTargetTriangle()->getNavPolygon() == targetPolygon) {
                 countLinks++;
             }
         }
@@ -230,15 +219,13 @@ unsigned int NavMeshGeneratorTest::countPolygonLinks(const std::shared_ptr<NavPo
     return countLinks;
 }
 
-std::shared_ptr<NavMeshAgent> NavMeshGeneratorTest::buildNavMeshAgent()
-{
+std::shared_ptr<NavMeshAgent> NavMeshGeneratorTest::buildNavMeshAgent() {
     NavMeshAgent navMeshAgent(2.0, 0.2);
     navMeshAgent.setJumpDistance(1.5);
     return std::make_shared<NavMeshAgent>(navMeshAgent);
 }
 
-CppUnit::Test *NavMeshGeneratorTest::suite()
-{
+CppUnit::Test *NavMeshGeneratorTest::suite() {
     auto *suite = new CppUnit::TestSuite("NavMeshGeneratorTest");
 
     suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("holeOnWalkableFace", &NavMeshGeneratorTest::holeOnWalkableFace));

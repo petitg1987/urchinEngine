@@ -4,16 +4,14 @@
 #include "resources/model/MeshService.h"
 #include "utils/display/geometry/points/PointsModel.h"
 
-namespace urchin
-{
+namespace urchin {
 
     Mesh::Mesh(const ConstMesh *constMesh) :
         constMesh(constMesh),
         vertices(new Point3<float>[constMesh->getNumberVertices()]),
         dataVertices(new DataVertex[constMesh->getNumberVertices()]),
         bufferIDs(),
-        vertexArrayObject(0)
-    {
+        vertexArrayObject(0) {
         //visual
         glGenBuffers(4, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
@@ -40,8 +38,7 @@ namespace urchin
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, constMesh->getNumberTriangles()*3*sizeof(int),  &constMesh->getTriangles()[0], GL_STATIC_DRAW);
     }
 
-    Mesh::~Mesh()
-    {
+    Mesh::~Mesh() {
         delete [] vertices;
         delete [] dataVertices;
 
@@ -49,8 +46,7 @@ namespace urchin
         glDeleteBuffers(4, bufferIDs);
     }
 
-    void Mesh::update(const std::vector<Bone> &skeleton)
-    {
+    void Mesh::update(const std::vector<Bone> &skeleton) {
         //recompute the vertices and normals
         MeshService::instance()->computeVertices(constMesh, skeleton, vertices);
         MeshService::instance()->computeNormals(constMesh, vertices, dataVertices);
@@ -61,22 +57,18 @@ namespace urchin
         glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(DataVertex), dataVertices, GL_DYNAMIC_DRAW);
     }
 
-    void Mesh::display(const MeshParameter &meshParameter) const
-    {
-        if(meshParameter.getDiffuseTextureUnit()!=-1)
-        {
+    void Mesh::display(const MeshParameter &meshParameter) const {
+        if(meshParameter.getDiffuseTextureUnit()!=-1) {
             glActiveTexture(static_cast<GLenum>(meshParameter.getDiffuseTextureUnit()));
             glBindTexture(GL_TEXTURE_2D, constMesh->getMaterial()->getDiffuseTexture()->getTextureID());
         }
 
-        if(meshParameter.getNormalTextureUnit()!=-1)
-        {
+        if(meshParameter.getNormalTextureUnit()!=-1) {
             glActiveTexture(static_cast<GLenum>(meshParameter.getNormalTextureUnit()));
             glBindTexture(GL_TEXTURE_2D, constMesh->getMaterial()->getNormalTexture()->getTextureID());
         }
 
-        if(meshParameter.getAmbientFactorLoc()!=-1)
-        {
+        if(meshParameter.getAmbientFactorLoc()!=-1) {
             glUniform1f(meshParameter.getAmbientFactorLoc(), constMesh->getMaterial()->getAmbientFactor());
         }
 
@@ -84,11 +76,9 @@ namespace urchin
         glDrawElements(GL_TRIANGLES, constMesh->getNumberTriangles()*3, GL_UNSIGNED_INT, nullptr);
     }
 
-    void Mesh::drawBaseBones(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const
-    {
+    void Mesh::drawBaseBones(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const {
         std::vector<Point3<float>> bonePositions;
-        for(const auto &bone : constMesh->getBaseSkeleton())
-        {
+        for(const auto &bone : constMesh->getBaseSkeleton()) {
             bonePositions.push_back(bone.pos);
         }
 

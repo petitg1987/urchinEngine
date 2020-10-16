@@ -5,8 +5,7 @@
 
 #include "path/navmesh/model/output/NavLinkConstraint.h"
 
-namespace urchin
-{
+namespace urchin {
 
     class NavTriangle;
 
@@ -21,8 +20,7 @@ namespace urchin
      * Represent a link between two triangles.
      * Source triangle is the one which contains the NavLink class and the target polygon/triangle is defined in NavLink class.
      */
-    class NavLink
-    {
+    class NavLink {
         public:
             ~NavLink();
             static std::shared_ptr<NavLink> newStandardLink(unsigned int, const std::shared_ptr<NavTriangle> &);

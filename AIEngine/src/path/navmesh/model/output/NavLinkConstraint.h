@@ -3,11 +3,9 @@
 
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class NavLinkConstraint
-    {
+    class NavLinkConstraint {
         public:
             NavLinkConstraint(float, float, float);
             NavLinkConstraint(const NavLinkConstraint &) = default;

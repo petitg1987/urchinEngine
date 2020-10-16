@@ -1,13 +1,11 @@
 #include "collision/constraintsolver/solvingdata/CommonSolvingData.h"
 
-namespace urchin
-{
+namespace urchin {
 
     CommonSolvingData::CommonSolvingData() :
             body1(nullptr),
             body2(nullptr),
-            depth(0.0)
-    {
+            depth(0.0) {
 
     }
 

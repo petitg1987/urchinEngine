@@ -1,35 +1,28 @@
 #include "EPAResultNoCollide.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> bool EPAResultNoCollide<T>::isValidResult() const
-    {
+    template<class T> bool EPAResultNoCollide<T>::isValidResult() const {
         return true;
     }
 
-    template<class T> bool EPAResultNoCollide<T>::isCollide() const
-    {
+    template<class T> bool EPAResultNoCollide<T>::isCollide() const {
         return false;
     }
 
-    template<class T> const Point3<T> &EPAResultNoCollide<T>::getContactPointA() const
-    {
+    template<class T> const Point3<T> &EPAResultNoCollide<T>::getContactPointA() const {
         throw std::domain_error("EPA algorithm doesn't provide contact points when bodies not collide.");
     }
 
-    template<class T> const Point3<T> &EPAResultNoCollide<T>::getContactPointB() const
-    {
+    template<class T> const Point3<T> &EPAResultNoCollide<T>::getContactPointB() const {
         throw std::domain_error("EPA algorithm doesn't provide contact points when bodies not collide.");
     }
 
-    template<class T> const Vector3<T> &EPAResultNoCollide<T>::getNormal() const
-    {
+    template<class T> const Vector3<T> &EPAResultNoCollide<T>::getNormal() const {
         throw std::domain_error("EPA algorithm doesn't provide normal when bodies not collide.");
     }
 
-    template<class T> T EPAResultNoCollide<T>::getPenetrationDepth() const
-    {
+    template<class T> T EPAResultNoCollide<T>::getPenetrationDepth() const {
         throw std::domain_error("EPA algorithm doesn't provide penetration depth when bodies not collide.");
     }
 

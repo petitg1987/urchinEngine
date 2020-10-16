@@ -10,11 +10,9 @@
 #include "UrchinSoundEngine.h"
 #include "panel/sounds/soundshape/SoundShapeWidget.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SoundBoxShapeWidget : public SoundShapeWidget
-    {
+    class SoundBoxShapeWidget : public SoundShapeWidget {
         Q_OBJECT
 
         public:

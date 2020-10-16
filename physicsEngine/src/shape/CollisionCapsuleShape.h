@@ -8,11 +8,9 @@
 #include "object/CollisionConvexObject3D.h"
 #include "utils/math/PhysicsTransform.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class CollisionCapsuleShape : public CollisionShape3D
-    {
+    class CollisionCapsuleShape : public CollisionShape3D {
         public:
             CollisionCapsuleShape(float, float, CapsuleShape<float>::CapsuleOrientation);
             CollisionCapsuleShape(CollisionCapsuleShape &&) noexcept;

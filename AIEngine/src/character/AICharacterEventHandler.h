@@ -1,11 +1,9 @@
 #ifndef URCHINENGINE_AICHARACTEREVENTHANDLER_H
 #define URCHINENGINE_AICHARACTEREVENTHANDLER_H
 
-namespace urchin
-{
+namespace urchin {
 
-    class AICharacterEventHandler
-    {
+    class AICharacterEventHandler {
         public:
             virtual ~AICharacterEventHandler() = default;
 

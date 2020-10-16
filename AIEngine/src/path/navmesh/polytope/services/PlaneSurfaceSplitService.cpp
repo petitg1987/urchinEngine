@@ -1,15 +1,12 @@
 #include "PlaneSurfaceSplitService.h"
 
-namespace urchin
-{
+namespace urchin {
     PlaneSurfaceSplitService::PlaneSurfaceSplitService(float surfaceMaxSize) :
-            surfaceMaxSize(surfaceMaxSize)
-    {
+            surfaceMaxSize(surfaceMaxSize) {
 
     }
 
-    std::vector<PlaneSurfaceSplit> PlaneSurfaceSplitService::splitRectangleSurface(const std::vector<Point3<float>> &planeSurfacePoints)
-    {
+    std::vector<PlaneSurfaceSplit> PlaneSurfaceSplitService::splitRectangleSurface(const std::vector<Point3<float>> &planeSurfacePoints) {
         #ifndef NDEBUG
             assert(planeSurfacePoints.size() == 4);
             assert(MathAlgorithm::isZero(planeSurfacePoints[0].distance(planeSurfacePoints[1]) - planeSurfacePoints[2].distance(planeSurfacePoints[3]), 0.01f));
@@ -21,8 +18,7 @@ namespace urchin
         unsigned int aSamples = static_cast<int>(std::ceil(planeSurfacePoints[0].distance(planeSurfacePoints[1]) / surfaceMaxSize));
         unsigned int bSamples = static_cast<int>(std::ceil(planeSurfacePoints[1].distance(planeSurfacePoints[2]) / surfaceMaxSize));
 
-        if(aSamples == 1 && bSamples == 1)
-        { //no split required
+        if(aSamples == 1 && bSamples == 1) { //no split required
             PlaneSurfaceSplit planeSurfaceSplit;
             planeSurfaceSplit.planeSurfacePoints = planeSurfacePoints;
             planeSurfaceSplits.emplace_back(planeSurfaceSplit);
@@ -30,8 +26,7 @@ namespace urchin
             return planeSurfaceSplits;
         }
 
-        for(unsigned int aSample=0; aSample < aSamples; ++aSample)
-        {
+        for(unsigned int aSample=0; aSample < aSamples; ++aSample) {
             float aPointStartRange = (float)aSample / (float)aSamples;
             LineSegment3D<float> aLine((1.0f - aPointStartRange) * planeSurfacePoints[0] + aPointStartRange * planeSurfacePoints[1],
                                             (1.0f - aPointStartRange) * planeSurfacePoints[3] + aPointStartRange * planeSurfacePoints[2]);
@@ -39,8 +34,7 @@ namespace urchin
             LineSegment3D<float> aNextLine((1.0f - aPointEndRange) * planeSurfacePoints[0] + aPointEndRange * planeSurfacePoints[1],
                                             (1.0f - aPointEndRange) * planeSurfacePoints[3] + aPointEndRange * planeSurfacePoints[2]);
 
-            for (unsigned int bSample = 0; bSample < bSamples; ++bSample)
-            {
+            for (unsigned int bSample = 0; bSample < bSamples; ++bSample) {
                 float bPointStartRange = (float)bSample / (float)bSamples;
                 float bPointEndRange = (float)(bSample + 1) / (float)bSamples;
 

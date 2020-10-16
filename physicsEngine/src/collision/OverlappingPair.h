@@ -6,14 +6,12 @@
 #include "body/work/AbstractWorkBody.h"
 #include "collision/narrowphase/algorithm/CollisionAlgorithm.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Overlapping pair representing two bodies potentially colliding
     */
-    class OverlappingPair
-    {
+    class OverlappingPair {
         public:
             OverlappingPair(AbstractWorkBody *, AbstractWorkBody *);
             OverlappingPair(AbstractWorkBody *, AbstractWorkBody *, uint_fast64_t);

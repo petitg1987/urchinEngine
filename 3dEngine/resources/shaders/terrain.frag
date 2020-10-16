@@ -15,7 +15,7 @@ uniform float ambient;
 layout (location = 0) out vec4 fragColor;
 layout (location = 1) out vec4 fragNormalAndAmbient;
 
-void main(){
+void main() {
     //diffuse
     vec2 maskTextCoordinates = vec2(textCoordinates.x / sRepeat, textCoordinates.y / tRepeat);
     vec4 maskValue = texture2D(maskTex, maskTextCoordinates);

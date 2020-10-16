@@ -6,8 +6,7 @@
 #include "widget/style/GroupBoxStyleHelper.h"
 #include "widget/style/SpinBoxStyleHelper.h"
 
-namespace urchin
-{
+namespace urchin {
 
     AIPanelWidget::AIPanelWidget() :
             aiController(nullptr),
@@ -15,8 +14,7 @@ namespace urchin
             agentRadius(nullptr),
             maxSlope(nullptr),
             jumpDistance(nullptr),
-            disableAIEvent(false)
-    {
+            disableAIEvent(false) {
         auto *mainLayout = new QVBoxLayout(this);
         mainLayout->setAlignment(Qt::AlignTop);
         mainLayout->setContentsMargins(1, 1, 1, 1);
@@ -24,21 +22,18 @@ namespace urchin
         setupNavMeshAgentBox(mainLayout);
     }
 
-    void AIPanelWidget::load(AIController *aiController)
-    {
+    void AIPanelWidget::load(AIController *aiController) {
         this->aiController = aiController;
 
         std::shared_ptr<NavMeshAgent> navMeshAgent = aiController->getSceneAI()->getNavMeshAgent();
         setupNavMeshAgentDataFrom(navMeshAgent);
     }
 
-    void AIPanelWidget::unload()
-    {
+    void AIPanelWidget::unload() {
         aiController = nullptr;
     }
 
-    void AIPanelWidget::setupNavMeshAgentBox(QVBoxLayout *mainLayout)
-    {
+    void AIPanelWidget::setupNavMeshAgentBox(QVBoxLayout *mainLayout) {
         auto *navMeshAgentGroupBox = new QGroupBox("Nav Mesh Agent");
         mainLayout->addWidget(navMeshAgentGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(navMeshAgentGroupBox);
@@ -84,10 +79,8 @@ namespace urchin
         connect(jumpDistance, SIGNAL(valueChanged(double)), this, SLOT(aiChanged()));
     }
 
-    void AIPanelWidget::aiChanged()
-    {
-        if(!disableAIEvent)
-        {
+    void AIPanelWidget::aiChanged() {
+        if(!disableAIEvent) {
             std::shared_ptr<NavMeshAgent> navMeshAgent = std::make_shared<NavMeshAgent>(static_cast<float>(agentHeight->value()), static_cast<float>(agentRadius->value()));
             navMeshAgent->setMaxSlope(AngleConverter<float>::toRadian(maxSlope->value()));
             navMeshAgent->setJumpDistance(static_cast<float>(jumpDistance->value()));
@@ -96,8 +89,7 @@ namespace urchin
         }
     }
 
-    void AIPanelWidget::setupNavMeshAgentDataFrom(const std::shared_ptr<NavMeshAgent> &navMeshAgent)
-    {
+    void AIPanelWidget::setupNavMeshAgentDataFrom(const std::shared_ptr<NavMeshAgent> &navMeshAgent) {
         disableAIEvent = true;
         agentHeight->setValue(navMeshAgent->getAgentHeight());
         agentRadius->setValue(navMeshAgent->getAgentRadius());

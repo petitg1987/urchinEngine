@@ -1,20 +1,16 @@
 #include "ObjectMoveAxisDisplayer.h"
 
-namespace urchin
-{
+namespace urchin {
     ObjectMoveAxisDisplayer::ObjectMoveAxisDisplayer(SceneManager *sceneManager) :
-            sceneManager(sceneManager)
-    {
+            sceneManager(sceneManager) {
 
     }
 
-    ObjectMoveAxisDisplayer::~ObjectMoveAxisDisplayer()
-    {
+    ObjectMoveAxisDisplayer::~ObjectMoveAxisDisplayer() {
         cleanCurrentDisplay();
     }
 
-    void ObjectMoveAxisDisplayer::displayAxis(const Point3<float> &position, unsigned int selectedAxis)
-    {
+    void ObjectMoveAxisDisplayer::displayAxis(const Point3<float> &position, unsigned int selectedAxis) {
         cleanCurrentDisplay();
 
         GeometryModel *xLine = createAxisModel(position, selectedAxis, 0);
@@ -26,16 +22,13 @@ namespace urchin
         GeometryModel *zLine = createAxisModel(position, selectedAxis, 2);
         zLine->setColor(0.0, 0.0, 1.0, selectedAxis==2 ? 1.0f : 0.5f);
 
-        for (auto &objectMoveAxisModel : objectMoveAxisModels)
-        {
+        for (auto &objectMoveAxisModel : objectMoveAxisModels) {
             sceneManager->getActiveRenderer3d()->getGeometryManager()->addGeometry(objectMoveAxisModel);
         }
     }
 
-    void ObjectMoveAxisDisplayer::cleanCurrentDisplay()
-    {
-        for (auto &objectMoveAxisModel : objectMoveAxisModels)
-        {
+    void ObjectMoveAxisDisplayer::cleanCurrentDisplay() {
+        for (auto &objectMoveAxisModel : objectMoveAxisModels) {
             sceneManager->getActiveRenderer3d()->getGeometryManager()->removeGeometry(objectMoveAxisModel);
             delete objectMoveAxisModel;
         }
@@ -43,8 +36,7 @@ namespace urchin
         objectMoveAxisModels.clear();
     }
 
-    GeometryModel *ObjectMoveAxisDisplayer::createAxisModel(const Point3<float> &position, unsigned int selectedAxis, unsigned int axisIndex)
-    {
+    GeometryModel *ObjectMoveAxisDisplayer::createAxisModel(const Point3<float> &position, unsigned int selectedAxis, unsigned int axisIndex) {
         Point3<float> startPoint = position;
         startPoint[axisIndex] -= 500.0f;
 

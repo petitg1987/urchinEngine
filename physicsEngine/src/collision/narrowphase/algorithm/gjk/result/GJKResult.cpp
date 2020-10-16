@@ -1,7 +1,6 @@
 #include "GJKResult.h"
 
-namespace urchin
-{
+namespace urchin {
 
     //explicit template
     template class GJKResult<float>;

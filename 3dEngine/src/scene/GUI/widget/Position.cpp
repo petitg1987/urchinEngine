@@ -1,40 +1,33 @@
 #include "scene/GUI/widget/Position.h"
 
-namespace urchin
-{
+namespace urchin {
 
     Position::Position(float positionX, PositionType positionTypeX, float positionY, PositionType positionTypeY) :
             positionX(positionX),
             positionY(positionY),
             positionTypeX(positionTypeX),
-            positionTypeY(positionTypeY)
-    {
+            positionTypeY(positionTypeY) {
 
     }
 
     Position::Position(float positionX, float positionY, PositionType positionType) :
-        Position(positionX, positionType, positionY, positionType)
-    {
+        Position(positionX, positionType, positionY, positionType) {
 
     }
 
-    float Position::getPositionX() const
-    {
+    float Position::getPositionX() const {
         return positionX;
     }
 
-    Position::PositionType Position::getPositionTypeX() const
-    {
+    Position::PositionType Position::getPositionTypeX() const {
         return positionTypeX;
     }
 
-    float Position::getPositionY() const
-    {
+    float Position::getPositionY() const {
         return positionY;
     }
 
-    Position::PositionType Position::getPositionTypeY() const
-    {
+    Position::PositionType Position::getPositionTypeY() const {
         return positionTypeY;
     }
 

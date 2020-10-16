@@ -7,11 +7,9 @@
 #include "tools/svg/shape/SVGShape.h"
 #include "math/algebra/point/Point2.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SVGPolygon : public SVGShape
-    {
+    class SVGPolygon : public SVGShape {
         public:
             SVGPolygon(std::vector<Point2<float>>, SVGColor, float opacity = 1.0f);
 

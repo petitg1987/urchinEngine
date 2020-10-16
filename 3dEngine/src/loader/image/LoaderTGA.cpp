@@ -4,8 +4,7 @@
 
 #include "loader/image/LoaderTGA.h"
 
-namespace urchin
-{
+namespace urchin {
 
     LoaderTGA::LoaderTGA() : Loader<Image>(),
             colorMap(nullptr),
@@ -13,19 +12,16 @@ namespace urchin
             width(0),
             height(0),
             componentsCount(0),
-            format(Image::IMAGE_RGB)
-    {
+            format(Image::IMAGE_RGB) {
 
     }
 
-    Image *LoaderTGA::loadFromFile(const std::string &filename)
-    {
+    Image *LoaderTGA::loadFromFile(const std::string &filename) {
         //opens file
         std::ifstream file;
         std::string filenamePath = FileSystem::instance()->getResourcesDirectory() + filename;
         file.open(filenamePath, std::ios::in | std::ios::binary);
-        if(file.fail())
-        {
+        if(file.fail()) {
             throw std::invalid_argument("Cannot open the file " + filenamePath + ".");
         }
 
@@ -40,8 +36,7 @@ namespace urchin
         file.seekg(header.idLenght, std::ios::cur);
 
         //extracts color map (color map is stored in BGR format)
-        if(header.colormapType)
-        {
+        if(header.colormapType) {
             colorMap = new unsigned char[header.cmLength*(header.cmSize >> 3u)];
             file.read((char *)colorMap, header.cmLength*(header.cmSize >> 3u));
         }
@@ -56,8 +51,7 @@ namespace urchin
         texels.resize(width*height*componentsCount, 0);
 
         //reads image data
-        switch(header.imageType)
-        {
+        switch(header.imageType) {
             case 1:
                 //uncompressed 8 bits color index
                 readTGA8bits();
@@ -65,8 +59,7 @@ namespace urchin
 
             case 2:
                 //uncompressed 16-24-32 bits
-                switch(header.pixelDepth)
-                {
+                switch(header.pixelDepth) {
                     case 16:
                         readTGA16bits();
                         break;
@@ -85,11 +78,9 @@ namespace urchin
 
             case 3:
                 //uncompressed 8 bits grayscale
-                if(header.pixelDepth==8)
-                {
+                if(header.pixelDepth==8) {
                     readTGAgray8bits();
-                }else
-                {
+                } else {
                     throw std::runtime_error("Wrong number of bits for grayscale: " + std::to_string(header.pixelDepth));
                 }
                 break;
@@ -101,8 +92,7 @@ namespace urchin
 
             case 10:
                 //RLE compressed 16-24-32 bits
-                switch(header.pixelDepth)
-                {
+                switch(header.pixelDepth) {
                     case 16:
                         readTGA16bitsRLE();
                         break;
@@ -121,18 +111,15 @@ namespace urchin
 
             case 11:
                 //RLE compressed 8bits grayscale
-                if(header.pixelDepth == 8)
-                {
+                if(header.pixelDepth == 8) {
                     readTGAgray8bitsRLE();
-                }else
-                {
+                } else {
                     throw std::runtime_error("Wrong number of bits for grayscale: " + std::to_string(header.pixelDepth));
                 }
                 break;
 
             default:
-                if(header.colormapType)
-                {
+                if(header.colormapType) {
                     delete [] colorMap;
                 }
                 delete [] data;
@@ -140,22 +127,18 @@ namespace urchin
                 throw std::runtime_error("Unknown TGA image type, filename: " + filenamePath + ".");
         }
 
-        if(header.colormapType)
-        {
+        if(header.colormapType) {
             delete [] colorMap;
         }
         delete [] data;
 
 
         unsigned int origin = ((unsigned int)header.imageDescriptor & 0x20u) >> 5u; //0:origin bottom, 1:origin top
-        if(origin==0)
-        { //inverses the texels
+        if(origin==0) { //inverses the texels
             std::vector<unsigned char> texelsInverse(width*height*componentsCount, 0);
 
-            for(unsigned int i=0, iInverse=height-1;i<height;i++, iInverse--)
-            {
-                for(unsigned int j=0;j<width*componentsCount;j++)
-                {
+            for(unsigned int i=0, iInverse=height-1;i<height;i++, iInverse--) {
+                for(unsigned int j=0;j<width*componentsCount;j++) {
                     texelsInverse[i*(width*componentsCount) + j] = texels[iInverse*(width*componentsCount) + j];
                 }
             }
@@ -166,40 +149,31 @@ namespace urchin
         return new Image(width, height, format, std::move(texels));
     }
 
-    void LoaderTGA::getImageInfo(const TgaHeader &header)
-    {
+    void LoaderTGA::getImageInfo(const TgaHeader &header) {
         width = static_cast<unsigned int>(header.width);
         height = static_cast<unsigned int>(header.height);
 
-        switch(header.imageType)
-        {
-            case 3:  //grayscale 8 bits
-            case 11: //grayscale 8 bits (RLE)
-            {
-                if(header.pixelDepth==8)
-                {
+        switch(header.imageType) {
+            case 3: //grayscale 8 bits
+            case 11: { //grayscale 8 bits (RLE)
+                if(header.pixelDepth==8) {
                     format = Image::IMAGE_GRAYSCALE;
                     componentsCount = 1;
-                }else
-                {
+                } else {
                     throw std::runtime_error("Wrong number of bits for grayscale: " + std::to_string(header.pixelDepth));
                 }
 
                 break;
             }
-
-            case 1:  //8 bits color index
-            case 2:  //BGR 16-24-32 bits
-            case 9:  //8 bits color index (RLE)
-            case 10: //BGR 16-24-32 bits (RLE)
-            {
+            case 1: //8 bits color index
+            case 2: //BGR 16-24-32 bits
+            case 9: //8 bits color index (RLE)
+            case 10: { //BGR 16-24-32 bits (RLE)
                 //8 bits and 16 bits images will be converted to 24 bits
-                if(header.pixelDepth<=24)
-                {
+                if(header.pixelDepth<=24) {
                     format = Image::IMAGE_RGB;
                     componentsCount = 3;
-                }else //32 bits
-                {
+                } else { //32 bits
                     format = Image::IMAGE_RGBA;
                     componentsCount = 4;
                 }
@@ -211,12 +185,10 @@ namespace urchin
         }
     }
 
-    void LoaderTGA::readTGA8bits()
-    {
+    void LoaderTGA::readTGA8bits() {
         unsigned char color;
 
-        for(unsigned int i=0; i < width*height;++i)
-        {
+        for(unsigned int i=0; i < width*height;++i) {
             //reads index color byte
             color = data[i];
 
@@ -227,12 +199,10 @@ namespace urchin
         }
     }
 
-    void LoaderTGA::readTGA16bits()
-    {
+    void LoaderTGA::readTGA16bits() {
         unsigned short color;
 
-        for(unsigned int i=0, j=0;i<width*height;++i, j+=2)
-        {
+        for(unsigned int i=0, j=0;i<width*height;++i, j+=2) {
             //reads color word
             color = data[j] + (data[j+1] << 8u);
 
@@ -243,10 +213,8 @@ namespace urchin
         }
     }
 
-    void LoaderTGA::readTGA24bits()
-    {
-        for(unsigned int i=0, j=0; i<width*height; ++i, j+=3)
-        {
+    void LoaderTGA::readTGA24bits() {
+        for(unsigned int i=0, j=0; i<width*height; ++i, j+=3) {
             //reads and converts BGR to RGB
             texels[(i*3)+2] = data[j+0];
             texels[(i*3)+1] = data[j+1];
@@ -254,10 +222,8 @@ namespace urchin
         }
     }
 
-    void LoaderTGA::readTGA32bits()
-    {
-        for(unsigned int i=0,j=0;i<width*height;++i, j+=4)
-        {
+    void LoaderTGA::readTGA32bits() {
+        for(unsigned int i=0,j=0;i<width*height;++i, j+=4) {
             //reads and converts BGRA to RGBA
             texels[(i*4)+2] = data[j+0];
             texels[(i*4)+1] = data[j+1];
@@ -266,43 +232,35 @@ namespace urchin
         }
     }
 
-    void LoaderTGA::readTGAgray8bits()
-    {
-        for(unsigned int i=0; i<width*height; ++i)
-        {
+    void LoaderTGA::readTGAgray8bits() {
+        for(unsigned int i=0; i<width*height; ++i) {
             texels[i] = data[i];
         }
     }
 
-    void LoaderTGA::readTGA8bitsRLE()
-    {
+    void LoaderTGA::readTGA8bitsRLE() {
         int j = 0;
         unsigned char color;
         unsigned char packetHeader;
         unsigned int ptrIndex = 0;
 
-        while(ptrIndex < width*height*3)
-        {
+        while(ptrIndex < width*height*3) {
             //reads first byte
             packetHeader = data[j++];
             unsigned int size = 1 + (packetHeader & 0x7fu);
 
-            if(packetHeader & 0x80u)
-            {
+            if(packetHeader & 0x80u) {
                 //run-length packet
                 color = data[j++];
 
-                for(unsigned int i=0; i<size; ++i,ptrIndex+=3)
-                {
+                for(unsigned int i=0; i<size; ++i,ptrIndex+=3) {
                     texels[ptrIndex] = colorMap[(color * 3) + 2];
                     texels[ptrIndex+1] = colorMap[(color * 3) + 1];
                     texels[ptrIndex+2] = colorMap[(color * 3) + 0];
                 }
-            }else
-            {
+            } else {
                 //non run-length packet
-                for(unsigned int i=0; i<size; ++i,ptrIndex+=3)
-                {
+                for(unsigned int i=0; i<size; ++i,ptrIndex+=3) {
                     color = data[j++];
 
                     texels[ptrIndex] = colorMap[(color * 3) + 2];
@@ -313,36 +271,30 @@ namespace urchin
         }
     }
 
-    void LoaderTGA::readTGA16bitsRLE()
-    {
+    void LoaderTGA::readTGA16bitsRLE() {
         int j = 0;
         unsigned short color;
         unsigned char packetHeader;
         unsigned int ptrIndex = 0;
 
-        while(ptrIndex < width*height*3)
-        {
+        while(ptrIndex < width*height*3) {
             //reads first byte
             packetHeader = data[j++];
             unsigned int size = 1 + (packetHeader & 0x7fu);
 
-            if(packetHeader & 0x80u)
-            {
+            if(packetHeader & 0x80u) {
                 //run-length packet
                 color = data[j] + (data[j + 1] << 8u);
                 j+=2;
 
-                for(unsigned int i=0; i<size; ++i,ptrIndex+=3)
-                {
+                for(unsigned int i=0; i<size; ++i,ptrIndex+=3) {
                     texels[ptrIndex] = (unsigned char)(((color & 0x7C00u) >> 10u) << 3u);
                     texels[ptrIndex+1] = (unsigned char)(((color & 0x03E0u) >>  5u) << 3u);
                     texels[ptrIndex+2] = (unsigned char)(((color & 0x001Fu) >>  0u) << 3u);
                 }
-            }else
-            {
+            } else {
                 //non run-length packet
-                for(unsigned int i=0; i<size; ++i,ptrIndex+=3,j+=2)
-                {
+                for(unsigned int i=0; i<size; ++i,ptrIndex+=3,j+=2) {
                     color = data[j] + (data[j + 1] << 8u);
 
                     texels[ptrIndex] = (unsigned char)(((color & 0x7C00u) >> 10u) << 3u);
@@ -353,36 +305,30 @@ namespace urchin
         }
     }
 
-    void LoaderTGA::readTGA24bitsRLE()
-    {
+    void LoaderTGA::readTGA24bitsRLE() {
         int j = 0;
         unsigned char *rgb;
         unsigned char packetHeader;
         unsigned int ptrIndex = 0;
 
-        while(ptrIndex < width*height*3)
-        {
+        while(ptrIndex < width*height*3) {
             //reads first byte
             packetHeader = data[j++];
             unsigned int size = 1 + (packetHeader & 0x7fu);
 
-            if(packetHeader & 0x80u)
-            {
+            if(packetHeader & 0x80u) {
                 //run-length packet
                 rgb = &data[j];
                 j += 3;
 
-                for(unsigned int i=0; i<size; ++i,ptrIndex+=3)
-                {
+                for(unsigned int i=0; i<size; ++i,ptrIndex+=3) {
                     texels[ptrIndex] = rgb[2];
                     texels[ptrIndex+1] = rgb[1];
                     texels[ptrIndex+2] = rgb[0];
                 }
-            }else
-            {
+            } else {
                 //non run-length packet
-                for(unsigned int i=0; i<size; ++i,ptrIndex+=3,j+=3)
-                {
+                for(unsigned int i=0; i<size; ++i,ptrIndex+=3,j+=3) {
                     texels[ptrIndex+2] = data[j + 0];
                     texels[ptrIndex+1] = data[j + 1];
                     texels[ptrIndex] = data[j + 2];
@@ -391,37 +337,31 @@ namespace urchin
         }
     }
 
-    void LoaderTGA::readTGA32bitsRLE()
-    {
+    void LoaderTGA::readTGA32bitsRLE() {
         int j = 0;
         unsigned char *rgba;
         unsigned char packetHeader;
         unsigned int ptrIndex = 0;
 
-        while(ptrIndex < width*height*4)
-        {
+        while(ptrIndex < width*height*4) {
             //reads first byte
             packetHeader = data[j++];
             unsigned int size = 1 + (packetHeader & 0x7fu);
 
-            if(packetHeader & 0x80u)
-            {
+            if(packetHeader & 0x80u) {
                 //run-length packet
                 rgba = &data[j];
                 j += 4;
 
-                for(unsigned int i=0; i<size; ++i,ptrIndex+=4)
-                {
+                for(unsigned int i=0; i<size; ++i,ptrIndex+=4) {
                     texels[ptrIndex] = rgba[2];
                     texels[ptrIndex+1] = rgba[1];
                     texels[ptrIndex+2] = rgba[0];
                     texels[ptrIndex+3] = rgba[3];
                 }
-            }else
-            {
+            } else {
                 //non run-length packet
-                for(unsigned int i=0; i<size; ++i,ptrIndex+=4,j+=4)
-                {
+                for(unsigned int i=0; i<size; ++i,ptrIndex+=4,j+=4) {
                     texels[ptrIndex+2] = data[j + 0];
                     texels[ptrIndex+1] = data[j + 1];
                     texels[ptrIndex] = data[j + 2];
@@ -431,33 +371,27 @@ namespace urchin
         }
     }
 
-    void LoaderTGA::readTGAgray8bitsRLE()
-    {
+    void LoaderTGA::readTGAgray8bitsRLE() {
         unsigned int j = 0;
         unsigned char color;
         unsigned char packetHeader;
         unsigned int ptrIndex = 0;
 
-        while(ptrIndex < width*height)
-        {
+        while(ptrIndex < width*height) {
             //reads first byte
             packetHeader = data[j++];
             unsigned int size = 1 + (packetHeader & 0x7fu);
 
-            if(packetHeader & 0x80u)
-            {
+            if(packetHeader & 0x80u) {
                 //run-length packet
                 color = data[j++];
 
-                for(unsigned int i=0; i<size; ++i,ptrIndex++)
-                {
+                for(unsigned int i=0; i<size; ++i,ptrIndex++) {
                     texels[ptrIndex]=color;
                 }
-            }else
-            {
+            } else {
                 //non run-length packet
-                for(unsigned int i=0; i<size; ++i)
-                {
+                for(unsigned int i=0; i<size; ++i) {
                     texels[ptrIndex+i] = data[j+i];
                 }
 

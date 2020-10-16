@@ -4,41 +4,33 @@
 #include "resources/sound/SoundReaderWriter.h"
 #include "resources/sound/SoundTriggerReaderWriter.h"
 
-namespace urchin
-{
+namespace urchin {
 
     SceneSound::SceneSound() :
             soundManager(nullptr),
             sound(nullptr),
-            soundTrigger(nullptr)
-    {
+            soundTrigger(nullptr) {
 
     }
 
-    SceneSound::~SceneSound()
-    {
-        if(soundManager)
-        {
+    SceneSound::~SceneSound() {
+        if(soundManager) {
             soundManager->removeSound(sound);
-        }else
-        {
+        } else {
             delete this->sound;
             delete this->soundTrigger;
         }
     }
 
-    void SceneSound::setSoundManager(SoundManager *soundManager)
-    {
+    void SceneSound::setSoundManager(SoundManager *soundManager) {
         this->soundManager = soundManager;
 
-        if(soundManager)
-        {
+        if(soundManager) {
             soundManager->addSound(sound, soundTrigger);
         }
     }
 
-    void SceneSound::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser)
-    {
+    void SceneSound::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
         std::shared_ptr<XmlChunk> soundChunk = xmlParser.getUniqueChunk(true, SOUND_TAG, XmlAttribute(), chunk);
@@ -48,8 +40,7 @@ namespace urchin
                 SoundTriggerReaderWriter().loadFrom(soundTriggerChunk, xmlParser));
     }
 
-    void SceneSound::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const
-    {
+    void SceneSound::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const {
         chunk->setAttribute(XmlAttribute(NAME_ATTR, this->name));
 
         std::shared_ptr<XmlChunk> soundChunk = xmlWriter.createChunk(SOUND_TAG, XmlAttribute(), chunk);
@@ -59,42 +50,33 @@ namespace urchin
         SoundTriggerReaderWriter().writeOn(soundTriggerChunk, soundTrigger, xmlWriter);
     }
 
-    std::string SceneSound::getName() const
-    {
+    std::string SceneSound::getName() const {
         return name;
     }
 
-    void SceneSound::setName(const std::string &name)
-    {
+    void SceneSound::setName(const std::string &name) {
         this->name = name;
     }
 
-    Sound *SceneSound::getSound() const
-    {
+    Sound *SceneSound::getSound() const {
         return sound;
     }
 
-    SoundTrigger *SceneSound::getSoundTrigger() const
-    {
+    SoundTrigger *SceneSound::getSoundTrigger() const {
         return soundTrigger;
     }
 
-    void SceneSound::setSoundElements(Sound *sound, SoundTrigger *soundTrigger)
-    {
-        if(!sound)
-        {
+    void SceneSound::setSoundElements(Sound *sound, SoundTrigger *soundTrigger) {
+        if(!sound) {
             throw std::invalid_argument("Cannot set a null sound on scene sound.");
-        }else if(!soundTrigger)
-        {
+        } else if(!soundTrigger) {
             throw std::invalid_argument("Cannot set a null sound trigger on scene sound.");
         }
 
-        if(soundManager)
-        {
+        if(soundManager) {
             soundManager->removeSound(this->sound);
             soundManager->addSound(sound, soundTrigger);
-        }else
-        {
+        } else {
             delete this->sound;
             delete this->soundTrigger;
         }
@@ -103,22 +85,17 @@ namespace urchin
         this->soundTrigger = soundTrigger;
     }
 
-    void SceneSound::changeSoundTrigger(SoundTrigger *newSoundTrigger)
-    {
-        if(!sound)
-        {
+    void SceneSound::changeSoundTrigger(SoundTrigger *newSoundTrigger) {
+        if(!sound) {
             throw std::invalid_argument("Cannot change sound trigger without having a sound on scene sound.");
         }
-        if(!soundTrigger)
-        {
+        if(!soundTrigger) {
             throw std::invalid_argument("Cannot set a null sound trigger on scene sound.");
         }
 
-        if(soundManager)
-        {
+        if(soundManager) {
             soundManager->changeSoundTrigger(sound, newSoundTrigger);
-        }else
-        {
+        } else {
             delete this->soundTrigger;
         }
 

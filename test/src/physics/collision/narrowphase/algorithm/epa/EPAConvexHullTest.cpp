@@ -9,8 +9,7 @@
 #include "physics/collision/narrowphase/algorithm/epa/EPATestHelper.h"
 using namespace urchin;
 
-void EPAConvexHullTest::identicalBox()
-{
+void EPAConvexHullTest::identicalBox() {
     Point3<float> obbPointsTab1[] = {
             Point3<float>(-0.3, 1.0, 0.0), Point3<float>(0.2, 0.0, 0.0), Point3<float>(-0.3, -1.0, 0.0), Point3<float>(-0.8, 0.0, 0.0),
             Point3<float>(-0.3, 1.0, -1.0), Point3<float>(0.2, 0.0, -1.0), Point3<float>(-0.3, -1.0, -1.0), Point3<float>(-0.8, 0.0, -1.0)
@@ -32,8 +31,7 @@ void EPAConvexHullTest::identicalBox()
     AssertHelper::assertFloatEquals(resultEpa->getContactPointA().vector(resultEpa->getContactPointB()).length(), 0.894427191);
 }
 
-void EPAConvexHullTest::cornerInsideBox()
-{
+void EPAConvexHullTest::cornerInsideBox() {
     Point3<float> aabbPointsTab[] = {
             Point3<float>(0.0, 1.0, 0.0), Point3<float>(1.0, 1.0, 0.0), Point3<float>(1.0, -1.0, 0.0), Point3<float>(0.0, -1.0, 0.0),
             Point3<float>(0.0, 1.0, -1.0), Point3<float>(1.0, 1.0, -1.0), Point3<float>(1.0, -1.0, -1.0), Point3<float>(0.0, -1.0, -1.0)
@@ -61,8 +59,7 @@ void EPAConvexHullTest::cornerInsideBox()
     AssertHelper::assertFloatEquals(resultEpa->getContactPointA().Z, resultEpa->getContactPointB().Z);
 }
 
-void EPAConvexHullTest::faceInsideTrapeze()
-{
+void EPAConvexHullTest::faceInsideTrapeze() {
     Point3<float> trapezePointsTab1[] = {
             Point3<float>(1.0, 0.0, 0.0), Point3<float>(3.0, 0.0, 0.0), Point3<float>(0.0, 3.0, 0.0), Point3<float>(0.0, 1.0, 0.0),
             Point3<float>(1.0, 0.0, -1.0), Point3<float>(3.0, 0.0, -1.0), Point3<float>(0.0, 3.0, -1.0), Point3<float>(0.0, 1.0, -1.0),
@@ -90,8 +87,7 @@ void EPAConvexHullTest::faceInsideTrapeze()
     AssertHelper::assertFloatEquals(resultEpa->getContactPointA().Z, resultEpa->getContactPointB().Z);
 }
 
-void EPAConvexHullTest::cornerInsideHexagon()
-{
+void EPAConvexHullTest::cornerInsideHexagon() {
     Point3<float> hexagonPointsTab1[] = {
             Point3<float>(0.0, 0.0, 0.0), Point3<float>(1.0, 0.0, 0.0), Point3<float>(1.5, 1.0, 0.0), Point3<float>(1.0, 2.0, 0.0), Point3<float>(0.0, 2.0, 0.0), Point3<float>(-0.5, 1.0, 0.0),
             Point3<float>(0.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.5, 1.0, -1.0), Point3<float>(1.0, 2.0, -1.0), Point3<float>(0.0, 2.0, -1.0), Point3<float>(-0.5, 1.0, -1.0),
@@ -114,8 +110,7 @@ void EPAConvexHullTest::cornerInsideHexagon()
     AssertHelper::assertFloatEquals(resultEpa->getContactPointA().Z, resultEpa->getContactPointB().Z);
 }
 
-CppUnit::Test *EPAConvexHullTest::suite()
-{
+CppUnit::Test *EPAConvexHullTest::suite() {
     auto *suite = new CppUnit::TestSuite("EPAConvexHullTest");
 
     suite->addTest(new CppUnit::TestCaller<EPAConvexHullTest>("identicalBox", &EPAConvexHullTest::identicalBox));

@@ -6,11 +6,9 @@
 #include "collision/narrowphase/algorithm/utils/Simplex.h"
 #include "collision/narrowphase/algorithm/utils/AlgorithmResult.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class GJKResult : public AlgorithmResult
-    {
+    template<class T> class GJKResult : public AlgorithmResult {
         public:
             virtual ~GJKResult() = default;
 

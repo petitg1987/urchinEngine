@@ -6,11 +6,9 @@
 #include "behavior/SoundBehavior.h"
 #include "behavior/SmoothStopAction.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SoundTrigger
-    {
+    class SoundTrigger {
         public:
             enum TriggerType
             {

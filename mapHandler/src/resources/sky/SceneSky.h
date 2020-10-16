@@ -3,11 +3,9 @@
 
 #include "Urchin3dEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SceneSky
-    {
+    class SceneSky {
         public:
             friend class Map;
 

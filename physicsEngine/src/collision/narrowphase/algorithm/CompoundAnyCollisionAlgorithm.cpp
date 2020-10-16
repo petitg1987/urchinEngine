@@ -2,17 +2,14 @@
 #include "shape/CollisionCompoundShape.h"
 #include "shape/CollisionShape3D.h"
 
-namespace urchin
-{
+namespace urchin {
 
     CompoundAnyCollisionAlgorithm::CompoundAnyCollisionAlgorithm(bool objectSwapped, ManifoldResult &&result) :
-            CollisionAlgorithm(objectSwapped, std::move(result))
-    {
+            CollisionAlgorithm(objectSwapped, std::move(result)) {
 
     }
 
-    void CompoundAnyCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2)
-    {
+    void CompoundAnyCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2) {
         ScopeProfiler profiler("physics", "algCompoundAny");
 
         const auto &compoundShape = dynamic_cast<const CollisionCompoundShape &>(object1.getShape());
@@ -22,8 +19,7 @@ namespace urchin
         AbstractWorkBody *body2 = getManifoldResult().getBody2();
 
         const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &localizedShapes = compoundShape.getLocalizedShapes();
-        for (const auto &localizedShape : localizedShapes)
-        {
+        for (const auto &localizedShape : localizedShapes) {
             std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = getCollisionAlgorithmSelector()->createCollisionAlgorithm(
                     body1, localizedShape->shape.get(), body2, &otherShape);
 
@@ -38,13 +34,10 @@ namespace urchin
         }
     }
 
-    void CompoundAnyCollisionAlgorithm::addContactPointsToManifold(const ManifoldResult &manifoldResult, bool manifoldSwapped)
-    {
-        for(unsigned int i=0; i<manifoldResult.getNumContactPoints(); ++i)
-        {
+    void CompoundAnyCollisionAlgorithm::addContactPointsToManifold(const ManifoldResult &manifoldResult, bool manifoldSwapped) {
+        for(unsigned int i=0; i<manifoldResult.getNumContactPoints(); ++i) {
             const ManifoldContactPoint &manifoldContactPoint = manifoldResult.getManifoldContactPoint(i);
-            if(manifoldSwapped)
-            {
+            if(manifoldSwapped) {
                 getManifoldResult().addContactPoint(
                         (-manifoldContactPoint.getNormalFromObject2()),
                         manifoldContactPoint.getPointOnObject2(),
@@ -53,8 +46,7 @@ namespace urchin
                         manifoldContactPoint.getLocalPointOnObject1(),
                         manifoldContactPoint.getDepth(),
                         manifoldContactPoint.isPredictive());
-            }else
-            {
+            } else {
                 getManifoldResult().addContactPoint(
                         manifoldContactPoint.getNormalFromObject2(),
                         manifoldContactPoint.getPointOnObject1(),
@@ -67,19 +59,16 @@ namespace urchin
         }
     }
 
-    CollisionAlgorithm *CompoundAnyCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, ManifoldResult &&result, FixedSizePool<CollisionAlgorithm> *algorithmPool) const
-    {
+    CollisionAlgorithm *CompoundAnyCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, ManifoldResult &&result, FixedSizePool<CollisionAlgorithm> *algorithmPool) const {
         void *memPtr = algorithmPool->allocate(sizeof(CompoundAnyCollisionAlgorithm));
         return new(memPtr) CompoundAnyCollisionAlgorithm(objectSwapped, std::move(result));
     }
 
-    const std::vector<CollisionShape3D::ShapeType> &CompoundAnyCollisionAlgorithm::Builder::getFirstExpectedShapeType() const
-    {
+    const std::vector<CollisionShape3D::ShapeType> &CompoundAnyCollisionAlgorithm::Builder::getFirstExpectedShapeType() const {
         return CollisionShape3D::COMPOUND_SHAPES;
     }
 
-    unsigned int CompoundAnyCollisionAlgorithm::Builder::getAlgorithmSize() const
-    {
+    unsigned int CompoundAnyCollisionAlgorithm::Builder::getAlgorithmSize() const {
         return sizeof(CompoundAnyCollisionAlgorithm);
     }
 

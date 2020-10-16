@@ -6,14 +6,12 @@
 
 #include "Octree.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Virtual class that can be inserted into an octree
     */
-    template<class TOctreeable> class Octreeable : public Observable
-    {
+    template<class TOctreeable> class Octreeable : public Observable {
         public:
             Octreeable();
             Octreeable(const Octreeable &);

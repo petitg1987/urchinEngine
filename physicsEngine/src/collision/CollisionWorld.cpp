@@ -3,8 +3,7 @@
 #include "collision/CollisionWorld.h"
 #include "collision/OverlappingPair.h"
 
-namespace urchin
-{
+namespace urchin {
 
     CollisionWorld::CollisionWorld(BodyManager *bodyManager) :
             bodyManager(bodyManager),
@@ -13,13 +12,11 @@ namespace urchin
             integrateVelocityManager(new IntegrateVelocityManager(bodyManager)),
             constraintSolverManager(new ConstraintSolverManager()),
             islandManager(new IslandManager(bodyManager)),
-            integrateTransformManager(new IntegrateTransformManager(bodyManager, broadPhaseManager, narrowPhaseManager))
-    {
+            integrateTransformManager(new IntegrateTransformManager(bodyManager, broadPhaseManager, narrowPhaseManager)) {
 
     }
 
-    CollisionWorld::~CollisionWorld()
-    {
+    CollisionWorld::~CollisionWorld() {
         delete broadPhaseManager;
         delete narrowPhaseManager;
         delete integrateVelocityManager;
@@ -28,13 +25,11 @@ namespace urchin
         delete integrateTransformManager;
     }
 
-    BroadPhaseManager *CollisionWorld::getBroadPhaseManager() const
-    {
+    BroadPhaseManager *CollisionWorld::getBroadPhaseManager() const {
         return broadPhaseManager;
     }
 
-    NarrowPhaseManager *CollisionWorld::getNarrowPhaseManager() const
-    {
+    NarrowPhaseManager *CollisionWorld::getNarrowPhaseManager() const {
         return narrowPhaseManager;
     }
 
@@ -43,8 +38,7 @@ namespace urchin
      * @param dt Delta of time (sec.) between two simulation steps
      * @param gravity Gravity expressed in units/s^2
      */
-    void CollisionWorld::process(float dt, const Vector3<float> &gravity)
-    {
+    void CollisionWorld::process(float dt, const Vector3<float> &gravity) {
         ScopeProfiler profiler("physics", "colWorldProc");
 
         //initialize work bodies from bodies
@@ -72,8 +66,7 @@ namespace urchin
         bodyManager->applyWorkBodies();
     }
 
-    const std::vector<ManifoldResult> &CollisionWorld::getLastUpdatedManifoldResults()
-    {
+    const std::vector<ManifoldResult> &CollisionWorld::getLastUpdatedManifoldResults() {
         return manifoldResults;
     }
 

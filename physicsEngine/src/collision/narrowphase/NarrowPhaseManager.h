@@ -19,10 +19,8 @@
 #include "object/TemporalObject.h"
 #include "shape/CollisionTriangleShape.h"
 
-namespace urchin
-{
-    class NarrowPhaseManager
-    {
+namespace urchin {
+    class NarrowPhaseManager {
         public:
             NarrowPhaseManager(const BodyManager *, const BroadPhaseManager *);
             ~NarrowPhaseManager();

@@ -4,64 +4,52 @@
 #include "shape/CollisionBoxShape.h"
 #include "object/CollisionBoxObject.h"
 
-namespace urchin
-{
+namespace urchin {
 
     CollisionBoxShape::CollisionBoxShape(const Vector3<float> &halfSizes) :
             CollisionShape3D(),
-            boxShape(new BoxShape<float>(halfSizes))
-    {
+            boxShape(new BoxShape<float>(halfSizes)) {
         computeSafeMargin();
     }
 
     CollisionBoxShape::CollisionBoxShape(CollisionBoxShape &&collisionBoxShape) noexcept :
             CollisionShape3D(collisionBoxShape),
-            boxShape(std::exchange(collisionBoxShape.boxShape, nullptr))
-    {
+            boxShape(std::exchange(collisionBoxShape.boxShape, nullptr)) {
     }
 
-    CollisionBoxShape::~CollisionBoxShape()
-    {
+    CollisionBoxShape::~CollisionBoxShape() {
         delete boxShape;
     }
 
-    void CollisionBoxShape::computeSafeMargin()
-    {
+    void CollisionBoxShape::computeSafeMargin() {
         float maximumMarginPercentage = ConfigService::instance()->getFloatValue("collisionShape.maximumMarginPercentage");
         float maximumSafeMargin = boxShape->getMinHalfSize() * maximumMarginPercentage;
 
         refreshInnerMargin(maximumSafeMargin);
     }
 
-    CollisionShape3D::ShapeType CollisionBoxShape::getShapeType() const
-    {
+    CollisionShape3D::ShapeType CollisionBoxShape::getShapeType() const {
         return CollisionShape3D::BOX_SHAPE;
     }
 
-    const ConvexShape3D<float> *CollisionBoxShape::getSingleShape() const
-    {
+    const ConvexShape3D<float> *CollisionBoxShape::getSingleShape() const {
         return boxShape;
     }
 
-    float CollisionBoxShape::getHalfSize(unsigned int index) const
-    {
+    float CollisionBoxShape::getHalfSize(unsigned int index) const {
         return boxShape->getHalfSize(index);
     }
 
-    const Vector3<float> &CollisionBoxShape::getHalfSizes() const
-    {
+    const Vector3<float> &CollisionBoxShape::getHalfSizes() const {
         return boxShape->getHalfSizes();
     }
 
-    std::shared_ptr<CollisionShape3D> CollisionBoxShape::scale(float scale) const
-    {
+    std::shared_ptr<CollisionShape3D> CollisionBoxShape::scale(float scale) const {
         return std::make_shared<CollisionBoxShape>(boxShape->getHalfSizes() * scale);
     }
 
-    AABBox<float> CollisionBoxShape::toAABBox(const PhysicsTransform &physicsTransform) const
-    {
-        if(!lastTransform.equals(physicsTransform))
-        {
+    AABBox<float> CollisionBoxShape::toAABBox(const PhysicsTransform &physicsTransform) const {
+        if(!lastTransform.equals(physicsTransform)) {
             const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
             Point3<float> extend(
                     boxShape->getHalfSize(0) * std::abs(orientation(0)) + boxShape->getHalfSize(1) * std::abs(orientation(3)) + boxShape->getHalfSize(2) * std::abs(orientation(6)),
@@ -78,8 +66,7 @@ namespace urchin
         return lastAABBox;
     }
 
-    std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionBoxShape::toConvexObject(const PhysicsTransform &physicsTransform) const
-    {
+    std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionBoxShape::toConvexObject(const PhysicsTransform &physicsTransform) const {
         const Point3<float> &position = physicsTransform.getPosition();
         const Quaternion<float> &orientation = physicsTransform.getOrientation();
 
@@ -90,8 +77,7 @@ namespace urchin
         return std::unique_ptr<CollisionBoxObject, ObjectDeleter>(collisionObjectPtr);
     }
 
-    Vector3<float> CollisionBoxShape::computeLocalInertia(float mass) const
-    {
+    Vector3<float> CollisionBoxShape::computeLocalInertia(float mass) const {
         float width = 2.0f * boxShape->getHalfSize(0);
         float height = 2.0f * boxShape->getHalfSize(1);
         float depth = 2.0f * boxShape->getHalfSize(2);
@@ -102,18 +88,15 @@ namespace urchin
         return Vector3<float>(localInertia1, localInertia2, localInertia3);
     }
 
-    float CollisionBoxShape::getMaxDistanceToCenter() const
-    {
+    float CollisionBoxShape::getMaxDistanceToCenter() const {
         return boxShape->getMaxHalfSize();
     }
 
-    float CollisionBoxShape::getMinDistanceToCenter() const
-    {
+    float CollisionBoxShape::getMinDistanceToCenter() const {
         return boxShape->getMinHalfSize();
     }
 
-    CollisionShape3D *CollisionBoxShape::clone() const
-    {
+    CollisionShape3D *CollisionBoxShape::clone() const {
         return new CollisionBoxShape(boxShape->getHalfSizes());
     }
 

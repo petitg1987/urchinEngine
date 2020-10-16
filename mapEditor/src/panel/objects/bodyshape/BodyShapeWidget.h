@@ -10,11 +10,9 @@
 #include "UrchinMapHandler.h"
 #include "UrchinPhysicsEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class BodyShapeWidget : public QWidget
-    {
+    class BodyShapeWidget : public QWidget {
         Q_OBJECT
 
         #define SPHERE_SHAPE_LABEL "Sphere"

@@ -3,43 +3,35 @@
 
 #include "PathNode.h"
 
-namespace urchin
-{
+namespace urchin {
     PathNode::PathNode(std::shared_ptr<NavTriangle> navTriangle, float gScore, float hScore) :
             navTriangle(std::move(navTriangle)),
             gScore(gScore),
-            hScore(hScore)
-    {
+            hScore(hScore) {
 
     }
 
-    const std::shared_ptr<NavTriangle> &PathNode::getNavTriangle() const
-    {
+    const std::shared_ptr<NavTriangle> &PathNode::getNavTriangle() const {
         return navTriangle;
     }
 
-    void PathNode::setGScore(float gScore)
-    {
+    void PathNode::setGScore(float gScore) {
         this->gScore = gScore;
     }
 
-    float PathNode::getGScore() const
-    {
+    float PathNode::getGScore() const {
         return gScore;
     }
 
-    float PathNode::getHScore() const
-    {
+    float PathNode::getHScore() const {
         return hScore;
     }
 
-    float PathNode::getFScore() const
-    {
+    float PathNode::getFScore() const {
         return gScore + hScore;
     }
 
-    void PathNode::setPreviousNode(const std::shared_ptr<PathNode> &previousNode, const std::shared_ptr<NavLink> &navLink)
-    {
+    void PathNode::setPreviousNode(const std::shared_ptr<PathNode> &previousNode, const std::shared_ptr<NavLink> &navLink) {
         assert(previousNode != nullptr);
         assert(navLink != nullptr);
 
@@ -47,23 +39,20 @@ namespace urchin
         this->navLink = navLink;
     }
 
-    const std::shared_ptr<PathNode> &PathNode::getPreviousNode() const
-    {
+    const std::shared_ptr<PathNode> &PathNode::getPreviousNode() const {
         return previousNode;
     }
 
     /**
      * @return Return crossing portals (edges) between previous PathNode and current PathNode
      */
-    PathNodeEdgesLink PathNode::computePathNodeEdgesLink() const
-    {
+    PathNodeEdgesLink PathNode::computePathNodeEdgesLink() const {
         assert(previousNode != nullptr);
         assert(navLink != nullptr);
 
         PathNodeEdgesLink pathNodeEdgesLink;
 
-        if(navLink->getLinkType() == NavLinkType::STANDARD)
-        {
+        if(navLink->getLinkType() == NavLinkType::STANDARD) {
             LineSegment3D<float> sourceAndTargetEdge = previousNode->getNavTriangle()->computeEdge(navLink->getSourceEdgeIndex());
 
             pathNodeEdgesLink.sourceEdge = sourceAndTargetEdge;
@@ -71,8 +60,7 @@ namespace urchin
             pathNodeEdgesLink.areIdenticalEdges = true;
 
             return pathNodeEdgesLink;
-        }else if(navLink->getLinkType() == NavLinkType::JOIN_POLYGONS)
-        {
+        } else if(navLink->getLinkType() == NavLinkType::JOIN_POLYGONS) {
             LineSegment3D<float> sourceEdge = previousNode->getNavTriangle()->computeEdge(navLink->getSourceEdgeIndex());
             LineSegment3D<float> polygonJoinEdge = navLink->getLinkConstraint()->computeSourceJumpEdge(sourceEdge);
 
@@ -81,8 +69,7 @@ namespace urchin
             pathNodeEdgesLink.areIdenticalEdges = true;
 
             return pathNodeEdgesLink;
-        }else if(navLink->getLinkType() == NavLinkType::JUMP)
-        {
+        } else if(navLink->getLinkType() == NavLinkType::JUMP) {
             LineSegment3D<float> sourceEdge = previousNode->getNavTriangle()->computeEdge(navLink->getSourceEdgeIndex());
 
             pathNodeEdgesLink.sourceEdge = navLink->getLinkConstraint()->computeSourceJumpEdge(sourceEdge);

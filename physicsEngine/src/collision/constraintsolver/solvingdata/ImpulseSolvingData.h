@@ -3,11 +3,9 @@
 
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    struct ImpulseSolvingData
-    {
+    struct ImpulseSolvingData {
         ImpulseSolvingData();
 
         float friction; //friction factor: 0=no friction, 1=total friction

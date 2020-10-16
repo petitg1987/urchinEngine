@@ -6,11 +6,9 @@
 
 #include "math/algebra/matrix/Matrix2.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class Vector2
-    {
+    template<class T> class Vector2 {
         public:
             Vector2();
             explicit Vector2(T Xu, T Yu);

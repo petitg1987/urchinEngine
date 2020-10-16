@@ -2,11 +2,9 @@
 
 #include "WaterTableView.h"
 
-namespace urchin
-{
+namespace urchin {
     WaterTableView::WaterTableView(QWidget *parent) :
-            QTableView(parent)
-    {
+            QTableView(parent) {
         watersListModel = new QStandardItemModel(0, 1, this);
         watersListModel->setHorizontalHeaderItem(0, new QStandardItem("Water Name"));
         QTableView::setModel(watersListModel);
@@ -19,8 +17,7 @@ namespace urchin
         setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
     }
 
-    void WaterTableView::selectionChanged(const QItemSelection &, const QItemSelection &)
-    {
+    void WaterTableView::selectionChanged(const QItemSelection &, const QItemSelection &) {
         //hack to refresh selection
         horizontalHeader()->resizeSection(0, 341);
         horizontalHeader()->resizeSection(0, 340);
@@ -28,23 +25,19 @@ namespace urchin
         notifyObservers(this, NotificationType::SELECTION_CHANGED);
     }
 
-    bool WaterTableView::hasSceneWaterSelected() const
-    {
+    bool WaterTableView::hasSceneWaterSelected() const {
         return this->currentIndex().row()!=-1;
     }
 
-    const SceneWater *WaterTableView::getSelectedSceneWater() const
-    {
+    const SceneWater *WaterTableView::getSelectedSceneWater() const {
         QModelIndex selectedIndex = this->currentIndex();
-        if(selectedIndex.row()!=-1)
-        {
+        if(selectedIndex.row()!=-1) {
             return selectedIndex.data(Qt::UserRole + 1).value<const SceneWater *>();
         }
         return nullptr;
     }
 
-    void WaterTableView::addWater(const SceneWater *sceneWater)
-    {
+    void WaterTableView::addWater(const SceneWater *sceneWater) {
         auto *itemWaterName = new QStandardItem(QString::fromStdString(sceneWater->getName()));
         itemWaterName->setData(qVariantFromValue(sceneWater), Qt::UserRole + 1);
         itemWaterName->setEditable(false);
@@ -56,10 +49,8 @@ namespace urchin
         resizeRowsToContents();
     }
 
-    bool WaterTableView::removeSelectedWater()
-    {
-        if(hasSceneWaterSelected())
-        {
+    bool WaterTableView::removeSelectedWater() {
+        if(hasSceneWaterSelected()) {
             watersListModel->removeRow(this->currentIndex().row());
             resizeRowsToContents();
 
@@ -69,8 +60,7 @@ namespace urchin
         return false;
     }
 
-    void WaterTableView::removeAllWaters()
-    {
+    void WaterTableView::removeAllWaters() {
         watersListModel->removeRows(0, watersListModel->rowCount());
         resizeRowsToContents();
     }

@@ -10,11 +10,9 @@
 
 Q_DECLARE_METATYPE(const urchin::SceneObject *)
 
-namespace urchin
-{
+namespace urchin {
 
-    class ObjectTableView : public QTableView, public Observable
-    {
+    class ObjectTableView : public QTableView, public Observable {
         Q_OBJECT
 
         public:

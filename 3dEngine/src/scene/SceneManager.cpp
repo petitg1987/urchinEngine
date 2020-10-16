@@ -9,8 +9,7 @@
 #define GUI_RENDERER 1
 #define REFRESH_RATE_FPS 0.35f
 
-namespace urchin
-{
+namespace urchin {
 
     SceneManager::SceneManager() :
             sceneWidth(500),
@@ -18,8 +17,7 @@ namespace urchin
             activeRenderers(),
             previousFps(),
             fps(START_FPS),
-            fpsForDisplay(START_FPS)
-    {
+            fpsForDisplay(START_FPS) {
         //initialize GL
         initializeGl();
 
@@ -29,39 +27,32 @@ namespace urchin
         previousTime = std::chrono::high_resolution_clock::now();
 
         //renderer
-        for (auto &activeRenderer : activeRenderers)
-        {
+        for (auto &activeRenderer : activeRenderers) {
             activeRenderer = nullptr;
         }
     }
 
-    SceneManager::~SceneManager()
-    {
-        for (auto &renderer3d : renderers3d)
-        {
+    SceneManager::~SceneManager() {
+        for (auto &renderer3d : renderers3d) {
             delete renderer3d;
         }
 
-        for (auto &guiRenderer : guiRenderers)
-        {
+        for (auto &guiRenderer : guiRenderers) {
             delete guiRenderer;
         }
 
         Profiler::getInstance("3d")->log();
     }
 
-    void SceneManager::initializeGl()
-    {
+    void SceneManager::initializeGl() {
         //initialization Glew
         GLenum err = glewInit();
-        if(err != GLEW_OK)
-        {
+        if(err != GLEW_OK) {
             throw std::runtime_error((char *)glewGetErrorString(err));
         }
 
         //check OpenGL version supported
-        if(!glewIsSupported("GL_VERSION_4_5"))
-        {
+        if(!glewIsSupported("GL_VERSION_4_5")) {
             throw std::runtime_error("OpenGL version 4.5 is required but it's not supported on this environment.");
         }
 
@@ -70,8 +61,7 @@ namespace urchin
         glGetIntegerv(GL_MAJOR_VERSION, &majorVersionContext);
         glGetIntegerv(GL_MINOR_VERSION, &minorVersionContext);
 
-        if((majorVersionContext*100 + minorVersionContext*10) < 450)
-        {
+        if((majorVersionContext*100 + minorVersionContext*10) < 450) {
             std::ostringstream ossMajorVersionContext;
             ossMajorVersionContext << majorVersionContext;
 
@@ -88,48 +78,39 @@ namespace urchin
         glCullFace(GL_FRONT);
     }
 
-    void SceneManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight)
-    {
-        if(sceneWidth!=0 && sceneHeight!=0)
-        {
+    void SceneManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
+        if(sceneWidth!=0 && sceneHeight!=0) {
             //scene properties
             this->sceneWidth = sceneWidth;
             this->sceneHeight = sceneHeight;
             glViewport(0, 0, sceneWidth, sceneHeight);
 
             //renderer
-            for (auto &activeRenderer : activeRenderers)
-            {
-                if(activeRenderer)
-                {
+            for (auto &activeRenderer : activeRenderers) {
+                if(activeRenderer) {
                     activeRenderer->onResize(sceneWidth, sceneHeight);
                 }
             }
         }
     }
 
-    unsigned int SceneManager::getSceneWidth() const
-    {
+    unsigned int SceneManager::getSceneWidth() const {
         return sceneWidth;
     }
 
-    unsigned int SceneManager::getSceneHeight() const
-    {
+    unsigned int SceneManager::getSceneHeight() const {
         return sceneHeight;
     }
 
-    float SceneManager::getFps() const
-    {
+    float SceneManager::getFps() const {
         return (fps==0.0f ? START_FPS : fps);
     }
 
-    unsigned int SceneManager::getFpsForDisplay()
-    {
+    unsigned int SceneManager::getFpsForDisplay() {
         static float timeElapse = 0.0f;
         timeElapse += getDeltaTime();
 
-        if(timeElapse > REFRESH_RATE_FPS)
-        { //refresh fps every REFRESH_RATE_FPS_MS
+        if(timeElapse > REFRESH_RATE_FPS) { //refresh fps every REFRESH_RATE_FPS_MS
             fpsForDisplay = std::lround(fps);
             timeElapse = 0.0f;
         }
@@ -137,13 +118,11 @@ namespace urchin
         return fpsForDisplay;
     }
 
-    float SceneManager::getDeltaTime() const
-    {
+    float SceneManager::getDeltaTime() const {
         return 1.0f / getFps();
     }
 
-    void SceneManager::computeFps()
-    {
+    void SceneManager::computeFps() {
         auto currentTime = std::chrono::high_resolution_clock::now();
         float timeInterval = static_cast<float>(std::chrono::duration_cast<std::chrono::microseconds>(currentTime - previousTime).count());
 
@@ -154,36 +133,29 @@ namespace urchin
         previousTime = currentTime;
     }
 
-    Renderer3d *SceneManager::newRenderer3d(bool enable)
-    {
+    Renderer3d *SceneManager::newRenderer3d(bool enable) {
         auto *renderer3d = new Renderer3d();
         renderers3d.push_back(renderer3d);
 
-        if(enable)
-        {
+        if(enable) {
             enableRenderer3d(renderer3d);
         }
         return renderer3d;
     }
 
-    void SceneManager::enableRenderer3d(Renderer3d *renderer3d)
-    {
-        if(activeRenderers[RENDERER_3D] && activeRenderers[RENDERER_3D]!=renderer3d)
-        {
+    void SceneManager::enableRenderer3d(Renderer3d *renderer3d) {
+        if(activeRenderers[RENDERER_3D] && activeRenderers[RENDERER_3D]!=renderer3d) {
             activeRenderers[RENDERER_3D]->onDisable();
         }
 
         activeRenderers[RENDERER_3D] = renderer3d;
-        if(renderer3d)
-        {
+        if(renderer3d) {
             renderer3d->onResize(sceneWidth, sceneHeight);
         }
     }
 
-    void SceneManager::removeRenderer3d(Renderer3d *renderer3d)
-    {
-        if(activeRenderers[RENDERER_3D] == renderer3d)
-        {
+    void SceneManager::removeRenderer3d(Renderer3d *renderer3d) {
+        if(activeRenderers[RENDERER_3D] == renderer3d) {
             activeRenderers[RENDERER_3D] = nullptr;
         }
 
@@ -191,41 +163,33 @@ namespace urchin
         delete renderer3d;
     }
 
-    Renderer3d *SceneManager::getActiveRenderer3d() const
-    {
+    Renderer3d *SceneManager::getActiveRenderer3d() const {
         return dynamic_cast<Renderer3d *>(activeRenderers[RENDERER_3D]);
     }
 
-    GUIRenderer *SceneManager::newGUIRenderer(bool enable)
-    {
+    GUIRenderer *SceneManager::newGUIRenderer(bool enable) {
         auto *guiRenderer = new GUIRenderer();
         guiRenderers.push_back(guiRenderer);
 
-        if(enable)
-        {
+        if(enable) {
             enableGUIRenderer(guiRenderer);
         }
         return guiRenderer;
     }
 
-    void SceneManager::enableGUIRenderer(GUIRenderer *guiRenderer)
-    {
-        if(activeRenderers[GUI_RENDERER] && activeRenderers[GUI_RENDERER]!=guiRenderer)
-        {
+    void SceneManager::enableGUIRenderer(GUIRenderer *guiRenderer) {
+        if(activeRenderers[GUI_RENDERER] && activeRenderers[GUI_RENDERER]!=guiRenderer) {
             activeRenderers[GUI_RENDERER]->onDisable();
         }
 
         activeRenderers[GUI_RENDERER] = guiRenderer;
-        if(guiRenderer)
-        {
+        if(guiRenderer) {
             guiRenderer->onResize(sceneWidth, sceneHeight);
         }
     }
 
-    void SceneManager::removeGUIRenderer(GUIRenderer *guiRenderer)
-    {
-        if(activeRenderers[GUI_RENDERER] == guiRenderer)
-        {
+    void SceneManager::removeGUIRenderer(GUIRenderer *guiRenderer) {
+        if(activeRenderers[GUI_RENDERER] == guiRenderer) {
             activeRenderers[GUI_RENDERER] = nullptr;
         }
 
@@ -233,66 +197,51 @@ namespace urchin
         delete guiRenderer;
     }
 
-    GUIRenderer *SceneManager::getActiveGUIRenderer() const
-    {
+    GUIRenderer *SceneManager::getActiveGUIRenderer() const {
         return dynamic_cast<GUIRenderer *>(activeRenderers[GUI_RENDERER]);
     }
 
-    TextureManager *SceneManager::getTextureManager() const
-    {
+    TextureManager *SceneManager::getTextureManager() const {
         return TextureManager::instance();
     }
 
-    bool SceneManager::onKeyPress(unsigned int key)
-    {
-        for(int i=NUM_RENDERER-1; i>=0; --i)
-        {
-            if(activeRenderers[i] && !activeRenderers[i]->onKeyPress(key))
-            {
+    bool SceneManager::onKeyPress(unsigned int key) {
+        for(int i=NUM_RENDERER-1; i>=0; --i) {
+            if(activeRenderers[i] && !activeRenderers[i]->onKeyPress(key)) {
                 return false;
             }
         }
         return true;
     }
 
-    bool SceneManager::onKeyRelease(unsigned int key)
-    {
-        for(int i=NUM_RENDERER-1; i>=0; --i)
-        {
-            if(activeRenderers[i] && !activeRenderers[i]->onKeyRelease(key))
-            {
+    bool SceneManager::onKeyRelease(unsigned int key) {
+        for(int i=NUM_RENDERER-1; i>=0; --i) {
+            if(activeRenderers[i] && !activeRenderers[i]->onKeyRelease(key)) {
                 return false;
             }
         }
         return true;
     }
 
-    bool SceneManager::onChar(unsigned int character)
-    {
-        for(int i=NUM_RENDERER-1; i>=0; --i)
-        {
-            if(activeRenderers[i] && !activeRenderers[i]->onChar(character))
-            {
+    bool SceneManager::onChar(unsigned int character) {
+        for(int i=NUM_RENDERER-1; i>=0; --i) {
+            if(activeRenderers[i] && !activeRenderers[i]->onChar(character)) {
                 return false;
             }
         }
         return true;
     }
 
-    bool SceneManager::onMouseMove(int mouseX, int mouseY)
-    {
-        for(int i=NUM_RENDERER-1; i>=0; --i)
-        {
-            if(activeRenderers[i] && !activeRenderers[i]->onMouseMove(mouseX, mouseY))
-            {
+    bool SceneManager::onMouseMove(int mouseX, int mouseY) {
+        for(int i=NUM_RENDERER-1; i>=0; --i) {
+            if(activeRenderers[i] && !activeRenderers[i]->onMouseMove(mouseX, mouseY)) {
                 return false;
             }
         }
         return true;
     }
 
-    void SceneManager::display()
-    {
+    void SceneManager::display() {
         ScopeProfiler profiler("3d", "sceneMgrDisplay");
 
         //fps
@@ -300,17 +249,14 @@ namespace urchin
         float dt = getDeltaTime();
 
         //renderer
-        for (auto &activeRenderer : activeRenderers)
-        {
-            if(activeRenderer)
-            {
+        for (auto &activeRenderer : activeRenderers) {
+            if(activeRenderer) {
                 activeRenderer->display(dt);
             }
         }
 
         GLenum err;
-        while((err = glGetError()) != GL_NO_ERROR)
-        {
+        while((err = glGetError()) != GL_NO_ERROR) {
             Logger::logger().logError("OpenGL error detected: " + std::to_string(err));
         }
     }

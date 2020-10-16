@@ -4,14 +4,12 @@
 #include "scene/GUI/widget/Widget.h"
 #include "scene/GUI/widget/Position.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
      * Container of widgets
      */
-    class Container : public Widget
-    {
+    class Container : public Widget {
         public:
             explicit Container(Position);
             ~Container() override = default;

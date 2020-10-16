@@ -8,11 +8,9 @@
 #include "UrchinMapHandler.h"
 #include "panel/sounds/soundshape/SoundShapeWidget.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SoundShapeWidgetRetriever
-    {
+    class SoundShapeWidgetRetriever {
         public:
             explicit SoundShapeWidgetRetriever(const SceneSound *);
 

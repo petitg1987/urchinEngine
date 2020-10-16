@@ -6,16 +6,14 @@
 #include "collision/OverlappingPair.h"
 #include "PairContainer.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Overlapping pair manager using a std::vector. Vectors have very high performance
     * to looping over. Add and remove operations have also good performance when number
     * of elements are limited (< 1000) due to little cache miss.
     */
-    class VectorPairContainer : public PairContainer
-    {
+    class VectorPairContainer : public PairContainer {
         public:
             ~VectorPairContainer() override;
 

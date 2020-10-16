@@ -8,11 +8,9 @@
 #include "UrchinMapHandler.h"
 #include "panel/objects/bodyshape/BodyShapeWidget.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class BodyShapeWidgetRetriever
-    {
+    class BodyShapeWidgetRetriever {
         public:
             explicit BodyShapeWidgetRetriever(const SceneObject *);
 

@@ -11,14 +11,12 @@
 #include "collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.h"
 #include "object/CollisionConvexObject3D.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Implementation of GJK algorithm (see http://mollyrocket.com/849)
     */
-    template<class T> class GJKAlgorithm
-    {
+    template<class T> class GJKAlgorithm {
         public:
             GJKAlgorithm();
 

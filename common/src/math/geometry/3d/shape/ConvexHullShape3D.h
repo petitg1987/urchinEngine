@@ -12,17 +12,14 @@
 #include "math/geometry/3d/IndexedTriangle3D.h"
 #include "math/algebra/point/Point3.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> struct ConvexHullPoint
-    {
+    template<class T> struct ConvexHullPoint {
         Point3<T> point;
         std::vector<std::size_t> triangleIndices; //indices of triangles attached to this point
     };
 
-    template<class T> class ConvexHullShape3D : public ConvexShape3D<T>
-    {
+    template<class T> class ConvexHullShape3D : public ConvexShape3D<T> {
         public:
             explicit ConvexHullShape3D(const std::vector<Point3<T>> &);
             ConvexHullShape3D(const std::map<std::size_t, ConvexHullPoint<T>> &, const std::map<std::size_t, IndexedTriangle3D<T>> &);

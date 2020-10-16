@@ -3,15 +3,13 @@
 
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
     class ConstMesh;
     struct Bone;
     struct DataVertex;
     struct Triangle;
 
-    class MeshService : public Singleton<MeshService>
-    {
+    class MeshService : public Singleton<MeshService> {
         public:
             friend class Singleton<MeshService>;
 

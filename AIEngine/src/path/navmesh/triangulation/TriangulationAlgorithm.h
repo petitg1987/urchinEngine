@@ -8,27 +8,23 @@
 #include "path/navmesh/model/output/NavTriangle.h"
 #include "path/navmesh/triangulation/MonotonePolygon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    struct SidedPoint
-    {
+    struct SidedPoint {
         SidedPoint(std::size_t, bool);
 
         std::size_t pointIndex;
         bool onLeft; //indicate if point is on left of monotone polygon or right
     };
 
-    struct TriangleEdge
-    {
+    struct TriangleEdge {
         TriangleEdge(std::size_t, std::size_t);
 
         std::size_t triangleIndex;
         std::size_t edgeIndex;
     };
 
-    class TriangulationAlgorithm
-    {
+    class TriangulationAlgorithm {
         public:
             TriangulationAlgorithm(std::vector<Point2<float>> &&, const std::string &);
 

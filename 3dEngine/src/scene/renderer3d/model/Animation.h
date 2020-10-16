@@ -7,11 +7,9 @@
 #include "resources/model/ConstAnimation.h"
 #include "Meshes.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class Animation
-    {
+    class Animation {
         public:
             Animation(ConstAnimation *, Meshes *);
             ~Animation();

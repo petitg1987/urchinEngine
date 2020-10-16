@@ -6,7 +6,7 @@ layout(location=1) in vec3 vertexNormal;
 out vec3 normal;
 invariant gl_Position;
 
-void main(){
+void main() {
     normal = vertexNormal;
 
     gl_Position = vec4(vertexPosition, 1.0);

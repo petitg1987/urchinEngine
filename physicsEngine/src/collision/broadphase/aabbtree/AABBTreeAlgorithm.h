@@ -8,11 +8,9 @@
 #include "collision/broadphase/BroadPhaseAlgorithm.h"
 #include "collision/broadphase/aabbtree/BodyAABBTree.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class AABBTreeAlgorithm : public BroadPhaseAlgorithm
-    {
+    class AABBTreeAlgorithm : public BroadPhaseAlgorithm {
         public:
             AABBTreeAlgorithm();
             ~AABBTreeAlgorithm() override;

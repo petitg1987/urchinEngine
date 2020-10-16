@@ -6,13 +6,11 @@
 
 #include "utils/filter/TextureFilter.h"
 
-namespace urchin
-{
+namespace urchin {
 
     class BilateralBlurFilterBuilder;
 
-    class BilateralBlurFilter : public TextureFilter
-    {
+    class BilateralBlurFilter : public TextureFilter {
         public:
             enum BlurDirection
             {

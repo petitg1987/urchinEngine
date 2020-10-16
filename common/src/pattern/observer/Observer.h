@@ -1,12 +1,10 @@
 #ifndef URCHINENGINE_OBSERVER_H
 #define URCHINENGINE_OBSERVER_H
 
-namespace urchin
-{
+namespace urchin {
     class Observable;
 
-    class Observer
-    {
+    class Observer {
         public:
             virtual ~Observer() = default;
 

@@ -3,11 +3,9 @@
 
 #include "utils/filter/TextureFilterBuilder.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class BilateralBlurFilterBuilder : public TextureFilterBuilder<BilateralBlurFilterBuilder>
-    {
+    class BilateralBlurFilterBuilder : public TextureFilterBuilder<BilateralBlurFilterBuilder> {
         public:
             enum BlurDirection
             {

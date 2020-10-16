@@ -6,11 +6,9 @@
 #include "UrchinCommon.h"
 #include "Urchin3dEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class WaterReaderWriter
-    {
+    class WaterReaderWriter {
             //XML tags
             #define CENTER_POSITION_TAG "centerPosition"
             #define X_SIZE_TAG "xSize"

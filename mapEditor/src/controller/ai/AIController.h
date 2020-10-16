@@ -6,11 +6,9 @@
 
 #include "controller/AbstractController.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class AIController : public AbstractController
-    {
+    class AIController : public AbstractController {
         public:
             AIController();
 

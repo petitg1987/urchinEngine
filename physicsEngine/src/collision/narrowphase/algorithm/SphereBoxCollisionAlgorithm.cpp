@@ -4,17 +4,14 @@
 #include "shape/CollisionSphereShape.h"
 #include "shape/CollisionBoxShape.h"
 
-namespace urchin
-{
+namespace urchin {
 
     SphereBoxCollisionAlgorithm::SphereBoxCollisionAlgorithm(bool objectSwapped, ManifoldResult &&result) :
-            CollisionAlgorithm(objectSwapped, std::move(result))
-    {
+            CollisionAlgorithm(objectSwapped, std::move(result)) {
 
     }
 
-    void SphereBoxCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2)
-    {
+    void SphereBoxCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2) {
         ScopeProfiler profiler("physics", "algSphereBox");
 
         const auto &sphere1 = dynamic_cast<const CollisionSphereShape &>(object1.getShape());
@@ -33,28 +30,23 @@ namespace urchin
         Vector3<float> normalFromObject2 = closestPointOnBox.vector(spherePosLocalBox);
 
         float boxSphereLength = normalFromObject2.length();
-        if(boxSphereLength - getContactBreakingThreshold() < sphere1.getRadius())
-        { //collision detected
+        if(boxSphereLength - getContactBreakingThreshold() < sphere1.getRadius()) { //collision detected
 
             float depth;
 
-            if (boxSphereLength > std::numeric_limits<float>::epsilon())
-            { //sphere position is outside the box
+            if (boxSphereLength > std::numeric_limits<float>::epsilon()) { //sphere position is outside the box
 
                 //compute depth penetration
                 boxSphereLength = normalFromObject2.length();
                 depth = boxSphereLength - sphere1.getRadius();
-            }else
-            { //special case when sphere position is inside the box: closestPointOnBox==spherePosLocalBox
+            } else { //special case when sphere position is inside the box: closestPointOnBox==spherePosLocalBox
 
                 //find axis closest to sphere position
                 float minDistToAxis = box2.getHalfSize(0) - std::abs(spherePosLocalBox[0]);
                 int minAxis = 0;
-                for(int i=1; i<3; ++i)
-                {
+                for(int i=1; i<3; ++i) {
                     float distToAxis = box2.getHalfSize(i) - std::abs(spherePosLocalBox[i]);
-                    if(distToAxis < minDistToAxis)
-                    {
+                    if(distToAxis < minDistToAxis) {
                         minDistToAxis = distToAxis;
                         minAxis = i;
                     }
@@ -83,19 +75,16 @@ namespace urchin
         }
     }
 
-    CollisionAlgorithm *SphereBoxCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, ManifoldResult &&result, FixedSizePool<CollisionAlgorithm> *algorithmPool) const
-    {
+    CollisionAlgorithm *SphereBoxCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, ManifoldResult &&result, FixedSizePool<CollisionAlgorithm> *algorithmPool) const {
         void *memPtr = algorithmPool->allocate(sizeof(SphereBoxCollisionAlgorithm));
         return new(memPtr) SphereBoxCollisionAlgorithm(objectSwapped, std::move(result));
     }
 
-    const std::vector<CollisionShape3D::ShapeType> &SphereBoxCollisionAlgorithm::Builder::getFirstExpectedShapeType() const
-    {
+    const std::vector<CollisionShape3D::ShapeType> &SphereBoxCollisionAlgorithm::Builder::getFirstExpectedShapeType() const {
         return CollisionShape3D::SPHERE_SHAPES;
     }
 
-    unsigned int SphereBoxCollisionAlgorithm::Builder::getAlgorithmSize() const
-    {
+    unsigned int SphereBoxCollisionAlgorithm::Builder::getAlgorithmSize() const {
         return sizeof(SphereBoxCollisionAlgorithm);
     }
 

@@ -6,11 +6,9 @@
 #define DEFAULT_MAX_ROTATION_X 0.995
 #define DEFAULT_MOUSE_SENSITIVITY 0.006
 
-namespace urchin
-{
+namespace urchin {
 
-    class Camera
-    {
+    class Camera {
         public:
             Camera(float, float, float);
             virtual ~Camera() = default;

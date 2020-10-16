@@ -3,11 +3,9 @@
 
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class StateSaveHelper : public Singleton<StateSaveHelper>
-    {
+    class StateSaveHelper : public Singleton<StateSaveHelper> {
         public:
             friend class Singleton<StateSaveHelper>;
 

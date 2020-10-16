@@ -7,11 +7,9 @@
 #include "GJKResult.h"
 #include "collision/narrowphase/algorithm/utils/Simplex.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class GJKResultNoCollide : public GJKResult<T>
-    {
+    template<class T> class GJKResultNoCollide : public GJKResult<T> {
         public:
             GJKResultNoCollide(T, const Simplex<T> &);
 

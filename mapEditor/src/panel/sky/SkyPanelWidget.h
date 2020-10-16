@@ -8,11 +8,9 @@
 
 #include "controller/sky/SkyController.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SkyPanelWidget : public QWidget
-    {
+    class SkyPanelWidget : public QWidget {
         Q_OBJECT
 
         public:

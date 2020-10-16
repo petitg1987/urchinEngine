@@ -4,11 +4,9 @@
 #include "UrchinCommon.h"
 #include "path/navmesh/model/NavObject.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class NavObjectAABBNodeData : public AABBNodeData<std::shared_ptr<NavObject>>
-    {
+    class NavObjectAABBNodeData : public AABBNodeData<std::shared_ptr<NavObject>> {
         public:
             explicit NavObjectAABBNodeData(const std::shared_ptr<NavObject> &);
 

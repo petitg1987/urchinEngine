@@ -6,11 +6,9 @@
 
 #include "tools/logger/Logger.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class FileLogger : public Logger
-    {
+    class FileLogger : public Logger {
         public:
             explicit FileLogger(std::string);
 

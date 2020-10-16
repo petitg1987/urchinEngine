@@ -1,11 +1,9 @@
 #ifndef URCHINENGINE_WIDGETPOSITION_H
 #define URCHINENGINE_WIDGETPOSITION_H
 
-namespace urchin
-{
+namespace urchin {
 
-    class Position
-    {
+    class Position {
         public:
             enum PositionType{
                 PIXEL,

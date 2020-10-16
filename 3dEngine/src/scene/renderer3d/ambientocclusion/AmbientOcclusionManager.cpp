@@ -19,8 +19,7 @@
 #define DEFAULT_BLUR_SIZE 7
 #define DEFAULT_BLUR_SHARPNESS 40.0
 
-namespace urchin
-{
+namespace urchin {
 
     //Debug parameters
     bool DEBUG_EXPORT_SSAO_KERNEL = false;
@@ -60,8 +59,7 @@ namespace urchin
         ambientOcclusionTexLoc(0),
         verticalBlurFilter(nullptr),
         horizontalBlurFilter(nullptr),
-        isBlurActivated(true)
-    {
+        isBlurActivated(true) {
         glBindTexture(GL_TEXTURE_2D, depthTexID);
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -78,16 +76,14 @@ namespace urchin
         createOrUpdateAOShader();
     }
 
-    AmbientOcclusionManager::~AmbientOcclusionManager()
-    {
+    AmbientOcclusionManager::~AmbientOcclusionManager() {
         glDeleteFramebuffers(1, &fboID);
         glDeleteTextures(1, &ambientOcclusionTexID);
 
         glDeleteTextures(1, &noiseTexId);
     }
 
-    void AmbientOcclusionManager::createOrUpdateAOShader()
-    {
+    void AmbientOcclusionManager::createOrUpdateAOShader() {
         std::locale::global(std::locale("C")); //for float
 
         std::map<std::string, std::string> ambientOcclusionTokens;
@@ -115,14 +111,12 @@ namespace urchin
         generateNoiseTexture();
     }
 
-    void AmbientOcclusionManager::loadUniformLocationFor(unsigned int deferredShaderID)
-    {
+    void AmbientOcclusionManager::loadUniformLocationFor(unsigned int deferredShaderID) {
         ShaderManager::instance()->bind(deferredShaderID);
         ambientOcclusionTexLoc = glGetUniformLocation(deferredShaderID, "ambientOcclusionTex");
     }
 
-    void AmbientOcclusionManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight)
-    {
+    void AmbientOcclusionManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         this->sceneWidth = sceneWidth;
         this->sceneHeight = sceneHeight;
 
@@ -134,8 +128,7 @@ namespace urchin
         glUniform2fv(resolutionLoc, 1, (const float *)resolution);
     }
 
-    void AmbientOcclusionManager::createOrUpdateAOTexture()
-    {
+    void AmbientOcclusionManager::createOrUpdateAOTexture() {
         glBindFramebuffer(GL_FRAMEBUFFER, fboID);
 
         GLenum fboAttachments[1] = {GL_COLOR_ATTACHMENT0};
@@ -186,15 +179,13 @@ namespace urchin
         horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
     }
 
-    void AmbientOcclusionManager::generateKernelSamples()
-    {
+    void AmbientOcclusionManager::generateKernelSamples() {
         unsigned int seed = 0; //no need to generate different random numbers at each start
         std::uniform_real_distribution<float> randomFloats(0.0, 1.0);
         std::default_random_engine generator(seed);
 
         std::vector<Vector3<float>> ssaoKernel;
-        for (unsigned int i = 0; i < kernelSamples; ++i)
-        {
+        for (unsigned int i = 0; i < kernelSamples; ++i) {
             Vector3<float> sample(
                     randomFloats(generator) * 2.0f - 1.0f,
                     randomFloats(generator) * 2.0f - 1.0f,
@@ -211,21 +202,18 @@ namespace urchin
         int samplesLoc = glGetUniformLocation(ambientOcclusionShader, "samples");
         glUniform3fv(samplesLoc, ssaoKernel.size(), (const float *)ssaoKernel[0]);
 
-        if(DEBUG_EXPORT_SSAO_KERNEL)
-        {
+        if(DEBUG_EXPORT_SSAO_KERNEL) {
             exportSVG(std::string(std::getenv("HOME")) + "/ssaoKernel.html", ssaoKernel);
         }
     }
 
-    void AmbientOcclusionManager::generateNoiseTexture()
-    {
+    void AmbientOcclusionManager::generateNoiseTexture() {
         unsigned int seed = 0; //no need to generate different random numbers at each start
         std::uniform_real_distribution<float> randomFloats(0.0, 1.0);
         std::default_random_engine generator(seed);
 
         std::vector<Vector3<float>> ssaoNoise;
-        for (unsigned int i = 0; i < 16; i++)
-        {
+        for (unsigned int i = 0; i < 16; i++) {
             Vector3<float> noise(
                     randomFloats(generator) * 2.0f - 1.0f,
                     randomFloats(generator) * 2.0f - 1.0f,
@@ -248,19 +236,16 @@ namespace urchin
         glUniform1i(noiseTexLoc, GL_TEXTURE2-GL_TEXTURE0);
     }
 
-    void AmbientOcclusionManager::exportSVG(const std::string &filename, const std::vector<Vector3<float>> &ssaoKernel) const
-    {
+    void AmbientOcclusionManager::exportSVG(const std::string &filename, const std::vector<Vector3<float>> &ssaoKernel) const {
         SVGExporter svgExporter(filename);
         svgExporter.addShape(new SVGCircle(Point2<float>(0.0, 0.0), radius, SVGPolygon::BLUE));
-        for (const auto &kernel : ssaoKernel)
-        {
+        for (const auto &kernel : ssaoKernel) {
             svgExporter.addShape(new SVGCircle(Point2<float>(kernel.X, kernel.Y), 0.001, SVGPolygon::LIME));
         }
         svgExporter.generateSVG(100);
     }
 
-    void AmbientOcclusionManager::onCameraProjectionUpdate(const Camera *camera)
-    {
+    void AmbientOcclusionManager::onCameraProjectionUpdate(const Camera *camera) {
         nearPlane = camera->getNearPlane();
         farPlane = camera->getFarPlane();
         projectionScale = camera->getProjectionMatrix()(1, 1);
@@ -269,16 +254,14 @@ namespace urchin
         createOrUpdateAOShader();
     }
 
-    void AmbientOcclusionManager::setTextureSize(AOTextureSize textureSize)
-    {
+    void AmbientOcclusionManager::setTextureSize(AOTextureSize textureSize) {
         this->textureSize = textureSize;
 
         createOrUpdateAOTexture();
         createOrUpdateAOShader();
     }
 
-    void AmbientOcclusionManager::setKernelSamples(unsigned int kernelSamples)
-    {
+    void AmbientOcclusionManager::setKernelSamples(unsigned int kernelSamples) {
         this->kernelSamples = kernelSamples;
 
         createOrUpdateAOTexture();
@@ -289,87 +272,73 @@ namespace urchin
      * @param radius Scope radius in units.
      * Example: if 1.0f represents one meter, a radius of 0.5f will represent of radius of 50 centimeters.
      */
-    void AmbientOcclusionManager::setRadius(float radius)
-    {
+    void AmbientOcclusionManager::setRadius(float radius) {
         this->radius = radius;
 
         createOrUpdateAOShader();
     }
 
-    void AmbientOcclusionManager::setAmbientOcclusionStrength(float ambientOcclusionStrength)
-    {
+    void AmbientOcclusionManager::setAmbientOcclusionStrength(float ambientOcclusionStrength) {
         this->ambientOcclusionStrength = ambientOcclusionStrength;
 
         createOrUpdateAOShader();
     }
 
-    void AmbientOcclusionManager::setDistanceAttenuation(float depthStartAttenuation, float depthEndAttenuation)
-    {
+    void AmbientOcclusionManager::setDistanceAttenuation(float depthStartAttenuation, float depthEndAttenuation) {
         this->depthStartAttenuation = depthStartAttenuation;
         this->depthEndAttenuation = depthEndAttenuation;
 
         createOrUpdateAOShader();
     }
 
-    void AmbientOcclusionManager::setNoiseTextureSize(unsigned int noiseTextureSize)
-    {
+    void AmbientOcclusionManager::setNoiseTextureSize(unsigned int noiseTextureSize) {
         this->noiseTextureSize = noiseTextureSize;
 
         createOrUpdateAOShader();
     }
 
-    void AmbientOcclusionManager::setBias(float bias)
-    {
+    void AmbientOcclusionManager::setBias(float bias) {
         this->bias = bias;
 
         createOrUpdateAOShader();
     }
 
-    void AmbientOcclusionManager::setBlurSize(unsigned int blurSize)
-    {
+    void AmbientOcclusionManager::setBlurSize(unsigned int blurSize) {
         this->blurSize = blurSize;
 
         createOrUpdateAOTexture();
     }
 
-    void AmbientOcclusionManager::setBlurSharpness(float blurSharpness)
-    {
+    void AmbientOcclusionManager::setBlurSharpness(float blurSharpness) {
         this->blurSharpness = blurSharpness;
 
         createOrUpdateAOTexture();
     }
 
-    void AmbientOcclusionManager::activateBlur(bool isBlurActivated)
-    {
+    void AmbientOcclusionManager::activateBlur(bool isBlurActivated) {
         this->isBlurActivated = isBlurActivated;
     }
 
-    int AmbientOcclusionManager::retrieveTextureSizeFactor()
-    {
-        if(textureSize==AOTextureSize::FULL_SIZE)
-        {
+    int AmbientOcclusionManager::retrieveTextureSizeFactor() {
+        if(textureSize==AOTextureSize::FULL_SIZE) {
             return 1;
         }
-        if(textureSize==AOTextureSize::HALF_SIZE)
-        {
+        if(textureSize==AOTextureSize::HALF_SIZE) {
             return 2;
         }
 
         throw std::invalid_argument("Unknown texture size value: " + std::to_string(textureSize));
     }
 
-    unsigned int AmbientOcclusionManager::getAmbientOcclusionTextureID() const
-    {
-        if(isBlurActivated)
-        {
+    unsigned int AmbientOcclusionManager::getAmbientOcclusionTextureID() const {
+        if(isBlurActivated) {
             return horizontalBlurFilter->getTextureID();
         }
 
         return ambientOcclusionTexID;
     }
 
-    void AmbientOcclusionManager::updateAOTexture(const Camera *camera)
-    {
+    void AmbientOcclusionManager::updateAOTexture(const Camera *camera) {
         ScopeProfiler profiler("3d", "updateAOTexture");
 
         GLint activeFBO = 0;
@@ -394,8 +363,7 @@ namespace urchin
 
         quadDisplayer->display();
 
-        if(isBlurActivated)
-        {
+        if(isBlurActivated) {
             verticalBlurFilter->applyOn(ambientOcclusionTexID);
             horizontalBlurFilter->applyOn(verticalBlurFilter->getTextureID());
         }
@@ -404,8 +372,7 @@ namespace urchin
         glBindFramebuffer(GL_FRAMEBUFFER, static_cast<GLuint>(activeFBO));
     }
 
-    void AmbientOcclusionManager::loadAOTexture(unsigned int ambientOcclusionTextureUnit) const
-    {
+    void AmbientOcclusionManager::loadAOTexture(unsigned int ambientOcclusionTextureUnit) const {
         glActiveTexture(GL_TEXTURE0 + ambientOcclusionTextureUnit);
         glBindTexture(GL_TEXTURE_2D, getAmbientOcclusionTextureID());
 

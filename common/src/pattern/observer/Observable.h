@@ -6,11 +6,9 @@
 
 #include "pattern/observer/Observer.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class Observable
-    {
+    class Observable {
         public:
             virtual ~Observable();
 

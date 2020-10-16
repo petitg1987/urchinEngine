@@ -7,14 +7,12 @@
 #include "body/BodyManager.h"
 #include "collision/OverlappingPair.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Manager allowing to perform integration on bodies velocity
     */
-    class IntegrateVelocityManager
-    {
+    class IntegrateVelocityManager {
         public:
             explicit IntegrateVelocityManager(const BodyManager *);
 

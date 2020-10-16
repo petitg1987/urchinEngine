@@ -7,17 +7,14 @@
 #include "io/FileReaderUtil.h"
 #include "io/StringUtil.h"
 
-namespace urchin
-{
+namespace urchin {
 
     PropertyFileHandler::PropertyFileHandler(std::string propertiesFilePath) :
-        propertiesFilePath(std::move(propertiesFilePath))
-    {
+        propertiesFilePath(std::move(propertiesFilePath)) {
 
     }
 
-    std::map<std::string, std::string> PropertyFileHandler::loadPropertyFile() const
-    {
+    std::map<std::string, std::string> PropertyFileHandler::loadPropertyFile() const {
         std::map<std::string, std::string> properties;
 
         std::ifstream file;
@@ -27,8 +24,7 @@ namespace urchin
         std::string propertyValue;
 
         file.open(propertiesFilePath, std::ios::in);
-        if(file.fail())
-        {
+        if(file.fail()) {
             throw std::invalid_argument("Cannot open the file " + propertiesFilePath + ".");
         }
 
@@ -40,8 +36,7 @@ namespace urchin
             std::istringstream iss(buffer);
             iss >> propertyName;
 
-            if(buffer.length()==0 || propertyName[0]=='#')
-            { //empty or commented line
+            if(buffer.length()==0 || propertyName[0]=='#') { //empty or commented line
                 continue;
             }
 
@@ -55,17 +50,14 @@ namespace urchin
         return properties;
     }
 
-    void PropertyFileHandler::savePropertyFile(const std::map<std::string, std::string> &properties) const
-    {
+    void PropertyFileHandler::savePropertyFile(const std::map<std::string, std::string> &properties) const {
         std::ofstream file;
         file.open(propertiesFilePath, std::ios::out);
-        if(file.fail())
-        {
+        if(file.fail()) {
             throw std::invalid_argument("Cannot open the file " + propertiesFilePath + ".");
         }
 
-        for (const auto &property : properties)
-        {
+        for (const auto &property : properties) {
             file << property.first << " = " << property.second <<"\n";
         }
 

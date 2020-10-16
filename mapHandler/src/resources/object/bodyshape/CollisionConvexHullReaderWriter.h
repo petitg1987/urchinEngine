@@ -7,11 +7,9 @@
 
 #include "CollisionShapeReaderWriter.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class CollisionConvexHullReaderWriter : public CollisionShapeReaderWriter
-    {
+    class CollisionConvexHullReaderWriter : public CollisionShapeReaderWriter {
         //XML tags
         #define POINTS_TAG "points"
         #define POINT_TAG "point"

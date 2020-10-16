@@ -6,14 +6,12 @@
 
 #include "path/navmesh/model/output/NavPolygon.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
      * Navigation mesh of world which can be used to do path finding, etc.
      */
-    class NavMesh
-    {
+    class NavMesh {
         public:
             NavMesh();
             NavMesh(const NavMesh &);

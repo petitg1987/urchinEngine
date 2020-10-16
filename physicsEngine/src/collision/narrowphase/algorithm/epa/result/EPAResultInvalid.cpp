@@ -1,35 +1,28 @@
 #include "EPAResultInvalid.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> bool EPAResultInvalid<T>::isValidResult() const
-    {
+    template<class T> bool EPAResultInvalid<T>::isValidResult() const {
         return false;
     }
 
-    template<class T> bool EPAResultInvalid<T>::isCollide() const
-    {
+    template<class T> bool EPAResultInvalid<T>::isCollide() const {
         throw std::domain_error("Invalid EPA result: cannot call this method.");
     }
 
-    template<class T> const Point3<T> &EPAResultInvalid<T>::getContactPointA() const
-    {
+    template<class T> const Point3<T> &EPAResultInvalid<T>::getContactPointA() const {
         throw std::domain_error("Invalid EPA result: cannot call this method.");
     }
 
-    template<class T> const Point3<T> &EPAResultInvalid<T>::getContactPointB() const
-    {
+    template<class T> const Point3<T> &EPAResultInvalid<T>::getContactPointB() const {
         throw std::domain_error("Invalid EPA result: cannot call this method.");
     }
 
-    template<class T> const Vector3<T> &EPAResultInvalid<T>::getNormal() const
-    {
+    template<class T> const Vector3<T> &EPAResultInvalid<T>::getNormal() const {
         throw std::domain_error("Invalid EPA result: cannot call this method.");
     }
 
-    template<class T> T EPAResultInvalid<T>::getPenetrationDepth() const
-    {
+    template<class T> T EPAResultInvalid<T>::getPenetrationDepth() const {
         throw std::domain_error("Invalid EPA result: cannot call this method.");
     }
 

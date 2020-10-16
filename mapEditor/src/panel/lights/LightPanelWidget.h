@@ -14,11 +14,9 @@
 #include "controller/lights/LightController.h"
 #include "panel/lights/LightTableView.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class LightPanelWidget : public QWidget, public Observer
-    {
+    class LightPanelWidget : public QWidget, public Observer {
         Q_OBJECT
 
         public:

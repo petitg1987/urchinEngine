@@ -7,11 +7,9 @@
 #include "object/CollisionCylinderObject.h"
 #include "object/CollisionTriangleObject.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    CollisionConvexObjectPool::CollisionConvexObjectPool()
-    {
+    CollisionConvexObjectPool::CollisionConvexObjectPool() {
         unsigned int maxElementSize = maxObjectSize({
             sizeof(CollisionBoxObject),
             sizeof(CollisionCapsuleObject),
@@ -27,21 +25,17 @@ namespace urchin
         objectsPool = new SyncFixedSizePool<CollisionConvexObject3D>("collisionConvexObjectsPool", maxElementSize, objectsPoolSize);
     }
 
-    CollisionConvexObjectPool::~CollisionConvexObjectPool()
-    {
+    CollisionConvexObjectPool::~CollisionConvexObjectPool() {
         delete objectsPool;
     }
 
-    SyncFixedSizePool<CollisionConvexObject3D> *CollisionConvexObjectPool::getObjectsPool()
-    {
+    SyncFixedSizePool<CollisionConvexObject3D> *CollisionConvexObjectPool::getObjectsPool() {
         return objectsPool;
     }
 
-    unsigned int CollisionConvexObjectPool::maxObjectSize(const std::vector<unsigned int> &objectsSize)
-    {
+    unsigned int CollisionConvexObjectPool::maxObjectSize(const std::vector<unsigned int> &objectsSize) {
         unsigned int result = 0;
-        for(unsigned int objectSize : objectsSize)
-        {
+        for(unsigned int objectSize : objectsSize) {
             result = std::max(result, objectSize);
         }
         return result;

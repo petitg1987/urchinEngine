@@ -7,8 +7,7 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-void CSGPolygonTest::simplifySquare()
-{
+void CSGPolygonTest::simplifySquare() {
     CSGPolygon<float> polygon("p1", {Point2<float>(0.0, 0.0), Point2<float>(0.0, 1.0), Point2<float>(1.0, 1.0), Point2<float>(1.0, 0.0)});
 
     polygon.simplify(1.0, 0.1);
@@ -17,8 +16,7 @@ void CSGPolygonTest::simplifySquare()
     AssertHelper::assertPolygonFloatEquals(polygon.getCwPoints(), {Point2<float>(0.0, 0.0), Point2<float>(0.0, 1.0), Point2<float>(1.0, 1.0), Point2<float>(1.0, 0.0)});
 }
 
-void CSGPolygonTest::simplifyMergeTwoNearPoints()
-{
+void CSGPolygonTest::simplifyMergeTwoNearPoints() {
     CSGPolygon<float> polygon("p1", {Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(1.05, 1.0), Point2<float>(1.0, 0.0)});
 
     polygon.simplify(1.0, 0.1);
@@ -27,8 +25,7 @@ void CSGPolygonTest::simplifyMergeTwoNearPoints()
     AssertHelper::assertPolygonFloatEquals(polygon.getCwPoints(), {Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(1.0, 0.0)});
 }
 
-void CSGPolygonTest::simplifyWithThreeNearPoints()
-{
+void CSGPolygonTest::simplifyWithThreeNearPoints() {
     CSGPolygon<float> polygon("p1", {Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(1.06, 1.0), Point2<float>(1.10, 1.0), Point2<float>(1.0, 0.0)});
 
     polygon.simplify(1.0, 0.1);
@@ -37,8 +34,7 @@ void CSGPolygonTest::simplifyWithThreeNearPoints()
     AssertHelper::assertPolygonFloatEquals(polygon.getCwPoints(), {Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(1.10, 1.0), Point2<float>(1.0, 0.0)});
 }
 
-void CSGPolygonTest::simplifyMergeStartEndPoints()
-{
+void CSGPolygonTest::simplifyMergeStartEndPoints() {
     CSGPolygon<float> polygon("p1", {Point2<float>(1.05, 1.0), Point2<float>(1.0, 0.0), Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0)});
 
     polygon.simplify(1.0, 0.1);
@@ -47,8 +43,7 @@ void CSGPolygonTest::simplifyMergeStartEndPoints()
     AssertHelper::assertPolygonFloatEquals(polygon.getCwPoints(), {Point2<float>(1.0, 0.0), Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0)});
 }
 
-void CSGPolygonTest::simplifyFlatTriangle1()
-{
+void CSGPolygonTest::simplifyFlatTriangle1() {
     CSGPolygon<float> polygon("p1", {Point2<float>(0.0, 0.0), Point2<float>(1.0, 0.0), Point2<float>(0.0, -0.02)});
 
     polygon.simplify(0.99619469483 /*5 degrees*/, 0.0);
@@ -56,8 +51,7 @@ void CSGPolygonTest::simplifyFlatTriangle1()
     AssertHelper::assertUnsignedInt(polygon.getCwPoints().size(), 0);
 }
 
-void CSGPolygonTest::simplifyFlatTriangle2()
-{
+void CSGPolygonTest::simplifyFlatTriangle2() {
     CSGPolygon<float> polygon("p1", {Point2<float>(0.0, -0.02), Point2<float>(0.0, 0.0), Point2<float>(1.0, 0.0)});
 
     polygon.simplify(0.99619469483 /*5 degrees*/, 0.0);
@@ -65,8 +59,7 @@ void CSGPolygonTest::simplifyFlatTriangle2()
     AssertHelper::assertUnsignedInt(polygon.getCwPoints().size(), 0);
 }
 
-void CSGPolygonTest::simplifyUselessPoint()
-{
+void CSGPolygonTest::simplifyUselessPoint() {
     CSGPolygon<float> polygon("p1", {Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(1.0, 0.5), Point2<float>(1.0, 0.0)});
 
     polygon.simplify(0.99619469483 /*5 degrees*/, 0.0);
@@ -75,8 +68,7 @@ void CSGPolygonTest::simplifyUselessPoint()
     AssertHelper::assertPolygonFloatEquals(polygon.getCwPoints(), {Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(1.0, 0.0)});
 }
 
-void CSGPolygonTest::simplifyTwoUselessPoints()
-{
+void CSGPolygonTest::simplifyTwoUselessPoints() {
     CSGPolygon<float> polygon("p1", {Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(1.0, 0.5), Point2<float>(1.0, 0.3), Point2<float>(1.0, 0.0)});
 
     polygon.simplify(0.99619469483 /*5 degrees*/, 0.0);
@@ -85,8 +77,7 @@ void CSGPolygonTest::simplifyTwoUselessPoints()
     AssertHelper::assertPolygonFloatEquals(polygon.getCwPoints(), {Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(1.0, 0.0)});
 }
 
-void CSGPolygonTest::simplifyCorridor()
-{ //see csgPolygonSimplifyCorridor.ggb
+void CSGPolygonTest::simplifyCorridor() { //see csgPolygonSimplifyCorridor.ggb
     CSGPolygon<float> polygon("p1", {
         Point2<float>(3.48144531, -8.87060547),
         Point2<float>(2.90893555, -7.67126465), //point 2 is very close to point 5
@@ -102,8 +93,7 @@ void CSGPolygonTest::simplifyCorridor()
     AssertHelper::assertPoint2FloatEquals(polygon.getCwPoints()[1], Point2<float>(2.91324353, -7.68028927), 0.0001);
 }
 
-void CSGPolygonTest::simplifyCorridorWithClosePoints()
-{ //see csgPolygonSimplifyCorridorWithClosePoints.ggb
+void CSGPolygonTest::simplifyCorridorWithClosePoints() { //see csgPolygonSimplifyCorridorWithClosePoints.ggb
     float distanceThreshold = 0.01f;
     CSGPolygon<float> polygon("p1", {
             Point2<float>(3.48144531, -8.87060547),
@@ -123,8 +113,7 @@ void CSGPolygonTest::simplifyCorridorWithClosePoints()
     AssertHelper::assertPoint2FloatEquals(polygon.getCwPoints()[2], Point2<float>(1.94140625, -8.80053711), 0.0001);
 }
 
-void CSGPolygonTest::simplifyFlatAngleAndNearPoints()
-{ //see csgPolygonSimplifyFlatAngleAndNearPoints.ggb
+void CSGPolygonTest::simplifyFlatAngleAndNearPoints() { //see csgPolygonSimplifyFlatAngleAndNearPoints.ggb
     CSGPolygon<float> polygon("p1", {
             Point2<float>(27.8000488, -19.4000244), //close to last point
             Point2<float>(27.8000488, -0.600097656),
@@ -142,8 +131,7 @@ void CSGPolygonTest::simplifyFlatAngleAndNearPoints()
     AssertHelper::assertPoint2FloatEquals(polygon.getCwPoints()[3], Point2<float>(27.8001709, -19.0002441));
 }
 
-CppUnit::Test *CSGPolygonTest::suite()
-{
+CppUnit::Test *CSGPolygonTest::suite() {
     auto *suite = new CppUnit::TestSuite("CSGPolygonTest");
 
     suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifySquare", &CSGPolygonTest::simplifySquare));

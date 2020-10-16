@@ -10,11 +10,9 @@
 #include "math/algebra/vector/Vector4.h"
 #include "math/algebra/matrix/Matrix4.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class Point4
-    {
+    template<class T> class Point4 {
         public:
             Point4();
             explicit Point4(T Xu, T Yu, T Zu, T Wu);

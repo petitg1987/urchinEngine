@@ -8,11 +8,9 @@
 #include "math/geometry/2d/shape/ConvexHullShape2D.h"
 #include "math/geometry/2d/object/ConvexHull2D.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class ResizeConvexHull2DService : public Singleton<ResizeConvexHull2DService<T>>
-    {
+    template<class T> class ResizeConvexHull2DService : public Singleton<ResizeConvexHull2DService<T>> {
         public:
             friend class Singleton<ResizeConvexHull2DService<T>>;
 

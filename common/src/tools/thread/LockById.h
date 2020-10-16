@@ -6,11 +6,9 @@
 #include <memory>
 #include <string>
 
-namespace urchin
-{
+namespace urchin {
 
-    class LockById
-    {
+    class LockById {
         public:
             explicit LockById(std::string );
 

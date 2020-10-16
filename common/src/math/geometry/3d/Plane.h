@@ -6,11 +6,9 @@
 #include "math/algebra/point/Point4.h"
 #include "math/algebra/vector/Vector3.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class Plane
-    {
+    template<class T> class Plane {
         public:
             Plane(const Vector3<T> &, T);
             Plane(const Point3<T> &, const Point3<T> &, const Point3<T> &);

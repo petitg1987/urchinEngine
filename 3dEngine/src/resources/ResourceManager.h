@@ -7,11 +7,9 @@
 
 #include "resources/Resource.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class ResourceManager : public Singleton<ResourceManager>
-    {
+    class ResourceManager : public Singleton<ResourceManager> {
         public:
             friend class Singleton<ResourceManager>;
 

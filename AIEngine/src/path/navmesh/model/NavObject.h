@@ -9,11 +9,9 @@
 #include "path/navmesh/polytope/PolytopeSurface.h"
 #include "path/navmesh/model/output/NavPolygon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class NavObject
-    {
+    class NavObject {
         public:
             explicit NavObject(std::shared_ptr<Polytope>);
 

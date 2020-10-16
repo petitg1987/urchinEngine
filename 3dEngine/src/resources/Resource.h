@@ -3,11 +3,9 @@
 
 #include <string>
 
-namespace urchin
-{
+namespace urchin {
 
-    class Resource
-    {
+    class Resource {
         public:
             Resource();
             virtual ~Resource();
@@ -19,8 +17,7 @@ namespace urchin
             void addRef();
             void release();
 
-            class ResourceDeleter
-            {
+            class ResourceDeleter {
                 public:
                     void operator()(Resource *);
             };

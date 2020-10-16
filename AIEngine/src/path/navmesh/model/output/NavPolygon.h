@@ -8,11 +8,9 @@
 #include "path/navmesh/model/output/NavPolygonEdge.h"
 #include "path/navmesh/model/output/topography/NavTopography.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class NavPolygon
-    {
+    class NavPolygon {
         public:
             NavPolygon(std::string, std::vector<Point3<float>> &&, std::shared_ptr<const NavTopography>);
             NavPolygon(const NavPolygon &);

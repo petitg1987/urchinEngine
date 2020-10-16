@@ -5,8 +5,7 @@
 
 namespace urchin {
 
-    class NavMeshAgent
-    {
+    class NavMeshAgent {
         public:
             NavMeshAgent();
             NavMeshAgent(float, float);

@@ -4,11 +4,9 @@
 #include "Urchin3dEngine.h"
 #include "UrchinPhysicsEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SceneEntity
-    {
+    class SceneEntity {
         public:
             virtual ~SceneEntity() = default;
 

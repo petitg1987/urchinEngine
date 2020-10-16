@@ -5,11 +5,9 @@
 
 #include "utils/display/geometry/GeometryModel.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SphereModel : public GeometryModel
-    {
+    class SphereModel : public GeometryModel {
         public:
             SphereModel(Sphere<float> , int);
 

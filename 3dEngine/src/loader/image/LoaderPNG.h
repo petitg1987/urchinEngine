@@ -6,11 +6,9 @@
 #include "resources/image/Image.h"
 #include "loader/Loader.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class LoaderPNG : public Loader<Image>
-    {
+    class LoaderPNG : public Loader<Image> {
         public:
             LoaderPNG();
             ~LoaderPNG() override = default;

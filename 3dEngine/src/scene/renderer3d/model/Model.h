@@ -11,11 +11,9 @@
 #include "resources/model/ConstMeshes.h"
 #include "resources/model/ConstAnimation.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class Model : public Octreeable<Model>
-    {
+    class Model : public Octreeable<Model> {
         public:
             explicit Model(const std::string &);
             Model(const Model &);

@@ -6,11 +6,9 @@
 
 #include "object/CollisionConvexObject3D.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class CollisionTriangleObject : public CollisionConvexObject3D
-    {
+    class CollisionTriangleObject : public CollisionConvexObject3D {
         public:
             CollisionTriangleObject(float, const Point3<float> &, const Point3<float> &, const Point3<float> &);
 

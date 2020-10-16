@@ -5,11 +5,9 @@
 
 #include "UrchinAIEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class NavMeshAgentReaderWriter
-    {
+    class NavMeshAgentReaderWriter {
         //XML tags
         #define AGENT_HEIGHT_TAG "agentHeight"
         #define AGENT_RADIUS_TAG "agentRadius"

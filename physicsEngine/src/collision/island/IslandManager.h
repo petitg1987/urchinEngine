@@ -8,11 +8,9 @@
 #include "body/BodyManager.h"
 #include "body/work/WorkRigidBody.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class IslandManager
-    {
+    class IslandManager {
         public:
             explicit IslandManager(const BodyManager *);
 

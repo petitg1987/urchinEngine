@@ -3,16 +3,14 @@
 
 #include "Camera.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
      * A FPS camera:
      * - mouse allow to rotate camera based on mouse movements
      * - directional keys allow to move camera forward/backward/left/right
      */
-    class FpsCamera : public Camera
-    {
+    class FpsCamera : public Camera {
         public:
             FpsCamera(float, float, float);
             ~FpsCamera() override = default;

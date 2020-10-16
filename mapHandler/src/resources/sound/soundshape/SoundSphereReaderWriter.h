@@ -7,11 +7,9 @@
 #include "UrchinSoundEngine.h"
 #include "SoundShapeReaderWriter.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SoundSphereReaderWriter : public SoundShapeReaderWriter
-    {
+    class SoundSphereReaderWriter : public SoundShapeReaderWriter {
         //XML tags
         #define POSITION_TAG "position"
         #define RADIUS_TAG "radius"

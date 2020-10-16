@@ -4,11 +4,9 @@
 #include "path/navmesh/csg/CSGPolygon.h"
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class CSGPolygonPath
-    {
+    class CSGPolygonPath {
         public:
             CSGPolygonPath(ClipperLib::Path, std::string);
             template<class T> explicit CSGPolygonPath(const CSGPolygon<T> &);

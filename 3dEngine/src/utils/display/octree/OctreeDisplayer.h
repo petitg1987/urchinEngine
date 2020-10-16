@@ -5,11 +5,9 @@
 
 #include "utils/display/geometry/aabbox/AABBoxModel.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class OctreeDisplayer
-    {
+    template<class T> class OctreeDisplayer {
         public:
             explicit OctreeDisplayer(const OctreeManager<T> *);
 

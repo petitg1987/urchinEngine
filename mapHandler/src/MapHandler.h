@@ -13,14 +13,12 @@
 #include "load/LoadCallback.h"
 #include "load/NullLoadCallback.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * A map handler for 3d objects, physics, sounds...
     */
-    class MapHandler
-    {
+    class MapHandler {
         //XML tags
         #define SCENE_TAG "scene"
 

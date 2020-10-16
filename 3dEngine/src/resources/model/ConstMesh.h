@@ -8,41 +8,34 @@
 
 #include "resources/material/Material.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    struct Vertex
-    {
+    struct Vertex {
         unsigned int linkedVerticesGroupId;
         int weightStart;
         int weightCount;
     };
 
-    struct TextureCoordinate
-    {
+    struct TextureCoordinate {
         float s, t;
     };
 
-    struct Triangle
-    {
+    struct Triangle {
         int index[3]; //indices vertices
     };
 
-    struct Weight
-    {
+    struct Weight {
         int bone; //index of the bone
         float bias; //contribution of the vertex weight
         Point3<float> pos; //coordinates of the vertex weight
     };
 
-    struct DataVertex
-    {
+    struct DataVertex {
         Vector3<float> normal; //vector normal for each vertices
         Vector3<float> tangent; //vector tangent for each vertices
     };
 
-    struct Bone
-    {
+    struct Bone {
         std::string name;
         int parent;
         Point3<float> pos;
@@ -53,8 +46,7 @@ namespace urchin
      * Contains all the constant/common data for a mesh.
      * Two identical models can use the instance of this class.
      */
-    class ConstMesh
-    {
+    class ConstMesh {
         public:
             ConstMesh(const std::string &, const std::vector<Vertex> &, std::vector<TextureCoordinate> ,
                     std::vector<Triangle> , std::vector<Weight> , const std::vector<Bone> &);

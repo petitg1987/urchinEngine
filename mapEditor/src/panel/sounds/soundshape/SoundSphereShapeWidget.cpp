@@ -4,12 +4,10 @@
 #include "SoundSphereShapeWidget.h"
 #include "widget/style/SpinBoxStyleHelper.h"
 
-namespace urchin
-{
+namespace urchin {
 
     SoundSphereShapeWidget::SoundSphereShapeWidget(const SceneSound *sceneSound) :
-            SoundShapeWidget(sceneSound)
-    {
+            SoundShapeWidget(sceneSound) {
         auto *positionLabel = new QLabel("Position:");
         mainLayout->addWidget(positionLabel, 1, 0);
 
@@ -38,13 +36,11 @@ namespace urchin
         connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
     }
 
-    std::string SoundSphereShapeWidget::getSoundShapeName() const
-    {
+    std::string SoundSphereShapeWidget::getSoundShapeName() const {
         return SPHERE_SHAPE_LABEL;
     }
 
-    void SoundSphereShapeWidget::doSetupShapePropertiesFrom(const SoundShape *shape)
-    {
+    void SoundSphereShapeWidget::doSetupShapePropertiesFrom(const SoundShape *shape) {
         const auto *sphereShape = dynamic_cast<const SoundSphere *>(shape);
 
         positionX->setValue(sphereShape->getPosition().X);
@@ -54,8 +50,7 @@ namespace urchin
         radius->setValue(sphereShape->getRadius());
     }
 
-    const SoundShape *SoundSphereShapeWidget::createSoundShape() const
-    {
+    const SoundShape *SoundSphereShapeWidget::createSoundShape() const {
         Point3<float> position(positionX->value(), positionY->value(), positionZ->value());
 
         return new SoundSphere((float)radius->value(), position, getMarginValue());

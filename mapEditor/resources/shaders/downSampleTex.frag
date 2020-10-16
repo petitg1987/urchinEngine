@@ -10,6 +10,6 @@ in vec2 vertexTextCoordinates;
 
 layout (location = 0) out OUTPUT_TYPE fragColor;
 
-void main(){
+void main() {
     fragColor = texture2D(tex, vertexTextCoordinates.st).SOURCE_TEX_COMPONENTS;
 }

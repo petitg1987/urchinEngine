@@ -9,11 +9,9 @@
 #include "math/algebra/point/Point3.h"
 #include "math/algebra/vector/Vector3.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class LineSegment3D : public ConvexObject3D<T>
-    {
+    template<class T> class LineSegment3D : public ConvexObject3D<T> {
         public:
             LineSegment3D();
             LineSegment3D(const Point3<T> &, const Point3<T> &);

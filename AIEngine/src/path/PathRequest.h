@@ -7,11 +7,9 @@
 
 #include "path/PathPoint.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class PathRequest
-    {
+    class PathRequest {
         public:
             PathRequest(const Point3<float> &, const Point3<float> &);
 

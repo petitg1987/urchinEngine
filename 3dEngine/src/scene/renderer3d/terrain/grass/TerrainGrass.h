@@ -9,11 +9,9 @@
 #include "scene/renderer3d/terrain/TerrainMesh.h"
 #include "scene/renderer3d/camera/Camera.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class TerrainGrass
-    {
+    class TerrainGrass {
         public:
             explicit TerrainGrass(const std::string &);
             ~TerrainGrass();

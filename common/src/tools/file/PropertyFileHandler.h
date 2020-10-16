@@ -4,11 +4,9 @@
 #include <string>
 #include <map>
 
-namespace urchin
-{
+namespace urchin {
 
-    class PropertyFileHandler
-    {
+    class PropertyFileHandler {
         public:
             explicit PropertyFileHandler(std::string);
 

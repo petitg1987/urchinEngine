@@ -6,12 +6,10 @@
 #include "resources/image/Image.h"
 #include "loader/Loader.h"
 
-namespace urchin
-{
+namespace urchin {
 
     #pragma pack(push, 1)
-    struct TgaHeader
-    {
+    struct TgaHeader {
         unsigned char idLenght; //size of image id
         unsigned char colormapType; //1 is has a color map
         unsigned char imageType; //compression type
@@ -31,8 +29,7 @@ namespace urchin
     };
     #pragma pack(pop)
 
-    class LoaderTGA : public Loader<Image>
-    {
+    class LoaderTGA : public Loader<Image> {
         public:
             LoaderTGA();
             ~LoaderTGA() override = default;

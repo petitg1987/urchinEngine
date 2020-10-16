@@ -4,16 +4,13 @@
 #include <vector>
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    struct PlaneSurfaceSplit
-    {
+    struct PlaneSurfaceSplit {
         std::vector<Point3<float>> planeSurfacePoints;
     };
 
-    class PlaneSurfaceSplitService
-    {
+    class PlaneSurfaceSplitService {
         public:
             explicit PlaneSurfaceSplitService(float);
 

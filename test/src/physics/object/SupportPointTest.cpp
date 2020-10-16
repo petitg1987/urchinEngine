@@ -7,16 +7,14 @@
 #include "physics/object/SupportPointTest.h"
 using namespace urchin;
 
-void SupportPointTest::sphereSupportPoint()
-{
+void SupportPointTest::sphereSupportPoint() {
     CollisionSphereObject sphereObject(10.0, Point3<float>(0.0, 0.0, 0.0));
 
     AssertHelper::assertPoint3FloatEquals(sphereObject.getSupportPoint(Vector3<float>(1.0, 0.0, 0.0), false), Point3<float>(0.0, 0.0, 0.0));
     AssertHelper::assertPoint3FloatEquals(sphereObject.getSupportPoint(Vector3<float>(1.0, 0.0, 0.0), true), Point3<float>(10.0, 0.0, 0.0));
 }
 
-void SupportPointTest::boxSupportPoint()
-{
+void SupportPointTest::boxSupportPoint() {
     CollisionBoxObject boxObject(0.04f, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(0.0, 0.0, 0.0),
             Quaternion<float>(Vector3<float>(0.0, 0.0, 1.0), 2.35619449));
 
@@ -30,8 +28,7 @@ void SupportPointTest::boxSupportPoint()
     AssertHelper::assertPoint3FloatEquals(boxObject.getSupportPoint(Vector3<float>(-1.0, 0.0, 0.1), true), Point3<float>(-1.47078210487, 0.0, 1.04));
 }
 
-void SupportPointTest::capsuleSupportPoint()
-{
+void SupportPointTest::capsuleSupportPoint() {
     CollisionCapsuleObject capsuleObject(0.04f, 0.5f, 5.0f, CapsuleShape<float>::CAPSULE_Y, Point3<float>(1.0, 1.0, 1.0),
             Quaternion<float>(Vector3<float>(0.0, 0.0, 1.0), 2.35619449));
 
@@ -41,8 +38,7 @@ void SupportPointTest::capsuleSupportPoint()
     AssertHelper::assertPoint3FloatEquals(capsuleObject.getSupportPoint(Vector3<float>(1.0, 1.0, 0.0), true), Point3<float>(3.14960461481, 3.14960461481, 1.0));
 }
 
-void SupportPointTest::cylinderSupportPoint()
-{
+void SupportPointTest::cylinderSupportPoint() {
     CollisionCylinderObject cylinderObject(0.04f, 0.5f, 5.0f, CylinderShape<float>::CYLINDER_Y, Point3<float>(1.0, 1.0, 1.0),
             Quaternion<float>(Vector3<float>(0.0, 0.0, 1.0), 2.35619449));
 
@@ -54,8 +50,7 @@ void SupportPointTest::cylinderSupportPoint()
     AssertHelper::assertPoint3FloatEquals(cylinderObject.getSupportPoint(Vector3<float>(1.0, 1.1, 0.0), true), Point3<float>(2.41421356237, 3.17788888605, 1.0));
 }
 
-void SupportPointTest::coneSupportPoint()
-{
+void SupportPointTest::coneSupportPoint() {
     CollisionConeObject coneObject(0.04f, 1.0f, 3.0f, ConeShape<float>::CONE_Y_POSITIVE, Point3<float>(0.25, 1.0, 0.0),
             Quaternion<float>(Vector3<float>(0.0, 0.0, -1.0), PI_VALUE/2.0f));
 
@@ -69,8 +64,7 @@ void SupportPointTest::coneSupportPoint()
     AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(0.1, 1.0, 0.0), false), Point3<float>(-0.5, 2.0, 0.0));
 }
 
-void SupportPointTest::convexHullSupportPoint()
-{
+void SupportPointTest::convexHullSupportPoint() {
     Point3<float> obbPointsWithMarginTab[] = {
             Point3<float>(-0.34, 1.04, 0.04), Point3<float>(0.24, 0.0, 0.04), Point3<float>(-0.34, -1.04, 0.04), Point3<float>(-0.84, 0.0, 0.04),
             Point3<float>(-0.34, 1.04, -1.04), Point3<float>(0.24, 0.0, -1.04), Point3<float>(-0.34, -1.04, -1.04), Point3<float>(-0.84, 0.0, -1.04)
@@ -90,8 +84,7 @@ void SupportPointTest::convexHullSupportPoint()
     AssertHelper::assertPoint3FloatEquals(convexHullObject.getSupportPoint(Vector3<float>(1.0, 0.0, 0.1), true), Point3<float>(0.24, 0.0, 0.04));
 }
 
-CppUnit::Test *SupportPointTest::suite()
-{
+CppUnit::Test *SupportPointTest::suite() {
     auto *suite = new CppUnit::TestSuite("SupportPointTest");
 
     suite->addTest(new CppUnit::TestCaller<SupportPointTest>("sphereSupportPoint", &SupportPointTest::sphereSupportPoint));

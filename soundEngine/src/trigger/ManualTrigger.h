@@ -3,14 +3,12 @@
 
 #include "trigger/SoundTrigger.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Trigger performed by the user
     */
-    class ManualTrigger : public SoundTrigger
-    {
+    class ManualTrigger : public SoundTrigger {
         public:
             explicit ManualTrigger(const SoundBehavior &);
 

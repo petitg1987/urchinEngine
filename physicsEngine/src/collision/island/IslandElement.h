@@ -1,14 +1,12 @@
 #ifndef URCHINENGINE_ISLANDELEMENT_H
 #define URCHINENGINE_ISLANDELEMENT_H
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * An element which can belong to an island.
     */
-    class IslandElement
-    {
+    class IslandElement {
         public:
             virtual ~IslandElement() = default;
 

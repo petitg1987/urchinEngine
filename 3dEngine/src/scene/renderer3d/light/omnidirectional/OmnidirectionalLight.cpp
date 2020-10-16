@@ -4,8 +4,7 @@
 
 #include "OmnidirectionalLight.h"
 
-namespace urchin
-{
+namespace urchin {
 
     OmnidirectionalLight::OmnidirectionalLight(const Point3<float> &position) :
             Light(),
@@ -13,8 +12,7 @@ namespace urchin
             attenuationNoEffect(ConfigService::instance()->getFloatValue("light.attenuationNoEffect")),
             exponentialAttenuation(0.01),
             sphereScope(nullptr),
-            bboxScope(nullptr)
-    {
+            bboxScope(nullptr) {
         directions.emplace_back(Vector3<float>(1.0, 0.0, 0.0)); //Left
         directions.emplace_back(Vector3<float>(-1.0, 0.0, 0.0)); //Right
         directions.emplace_back(Vector3<float>(0.0, 1.0, 0.0)); //Top
@@ -25,14 +23,12 @@ namespace urchin
         computeScope();
     }
 
-    OmnidirectionalLight::~OmnidirectionalLight()
-    {
+    OmnidirectionalLight::~OmnidirectionalLight() {
         delete sphereScope;
         delete bboxScope;
     }
 
-    void OmnidirectionalLight::setPosition(const Point3<float> &position)
-    {
+    void OmnidirectionalLight::setPosition(const Point3<float> &position) {
         this->position = position;
 
         computeScope();
@@ -40,35 +36,28 @@ namespace urchin
         notifyObservers(this, Light::LIGHT_MOVE);
     }
 
-    const Point3<float> &OmnidirectionalLight::getPosition() const
-    {
+    const Point3<float> &OmnidirectionalLight::getPosition() const {
         return position;
     }
 
-    const std::vector<Vector3<float>> &OmnidirectionalLight::getDirections() const
-    {
+    const std::vector<Vector3<float>> &OmnidirectionalLight::getDirections() const {
         return directions;
     }
 
-    Light::LightType OmnidirectionalLight::getLightType() const
-    {
+    Light::LightType OmnidirectionalLight::getLightType() const {
         return OMNIDIRECTIONAL;
     }
 
-    bool OmnidirectionalLight::hasParallelBeams() const
-    {
+    bool OmnidirectionalLight::hasParallelBeams() const {
         return false;
     }
 
-    const AABBox<float> &OmnidirectionalLight::getAABBox() const
-    {
+    const AABBox<float> &OmnidirectionalLight::getAABBox() const {
         return *bboxScope;
     }
 
-    void OmnidirectionalLight::setAttenuation(float exponentialAttenuation)
-    {
-        if(exponentialAttenuation < std::numeric_limits<float>::epsilon())
-        {
+    void OmnidirectionalLight::setAttenuation(float exponentialAttenuation) {
+        if(exponentialAttenuation < std::numeric_limits<float>::epsilon()) {
             throw std::domain_error("Exponential attenuation must be greater than zero.");
         }
         this->exponentialAttenuation = exponentialAttenuation;
@@ -76,26 +65,22 @@ namespace urchin
         computeScope();
     }
 
-    float OmnidirectionalLight::getExponentialAttenuation() const
-    {
+    float OmnidirectionalLight::getExponentialAttenuation() const {
         return exponentialAttenuation;
     }
 
-    const AABBox<float> &OmnidirectionalLight::getAABBoxScope() const
-    {
+    const AABBox<float> &OmnidirectionalLight::getAABBoxScope() const {
         return *bboxScope;
     }
 
-    const Sphere<float> &OmnidirectionalLight::getSphereScope() const
-    {
+    const Sphere<float> &OmnidirectionalLight::getSphereScope() const {
         return *sphereScope;
     }
 
     /**
      * Computes the sphere scope representing light affectation zone
      */
-    void OmnidirectionalLight::computeScope()
-    {
+    void OmnidirectionalLight::computeScope() {
         delete sphereScope;
         delete bboxScope;
 

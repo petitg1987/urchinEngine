@@ -10,11 +10,9 @@
 #include "widget/controller/statusbar/StatusBarController.h"
 #include "widget/controller/mouse/MouseController.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class ObjectMoveController : public Observable
-    {
+    class ObjectMoveController : public Observable {
         public:
             ObjectMoveController(SceneManager *, SceneController *, MouseController, StatusBarController);
 

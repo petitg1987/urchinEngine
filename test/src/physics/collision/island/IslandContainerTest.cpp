@@ -9,8 +9,7 @@ using namespace urchin;
  * Create 4 bodies. Body n will be in contact with body n+1.
  * All bodies of container should belong to same island.
  */
-void IslandContainerTest::cascadeMergeIslands()
-{
+void IslandContainerTest::cascadeMergeIslands() {
     TestBody* bodies[] = {new TestBody(), new TestBody(), new TestBody(), new TestBody()};
     std::vector<IslandElement *> bodiesVector(bodies, bodies + (sizeof(bodies) / sizeof(TestBody*)));
 
@@ -23,8 +22,7 @@ void IslandContainerTest::cascadeMergeIslands()
 
     AssertHelper::assertUnsignedInt(islandElementsLink.size(), 4);
     unsigned int islandId = islandElementsLink[0].islandIdRef;
-    for(std::size_t i=1; i<islandElementsLink.size(); ++i)
-    {
+    for(std::size_t i=1; i<islandElementsLink.size(); ++i) {
         AssertHelper::assertUnsignedInt(islandElementsLink[i].islandIdRef, islandId);
     }
 
@@ -35,8 +33,7 @@ void IslandContainerTest::cascadeMergeIslands()
  * Create 3 bodies. Each body will be in contact with all others bodies
  * All bodies of container should belong to same island.
  */
-void IslandContainerTest::mergeAllIslands()
-{
+void IslandContainerTest::mergeAllIslands() {
     TestBody* bodies[] = {new TestBody(), new TestBody(), new TestBody()};
     std::vector<IslandElement *> bodiesVector(bodies, bodies + (sizeof(bodies) / sizeof(TestBody*)));
 
@@ -49,8 +46,7 @@ void IslandContainerTest::mergeAllIslands()
 
     AssertHelper::assertUnsignedInt(islandElementsLink.size(), 3);
     unsigned int islandId = islandElementsLink[0].islandIdRef;
-    for(std::size_t i=1; i<islandElementsLink.size(); ++i)
-    {
+    for(std::size_t i=1; i<islandElementsLink.size(); ++i) {
         AssertHelper::assertUnsignedInt(islandElementsLink[i].islandIdRef, islandId);
     }
 
@@ -61,8 +57,7 @@ void IslandContainerTest::mergeAllIslands()
  * Create 4 bodies. Body 0 is in contact with body 3. Body 2 is in contact with body 1.
  * We should have two distinct islands.
  */
-void IslandContainerTest::createTwoSeparateIslands()
-{
+void IslandContainerTest::createTwoSeparateIslands() {
     TestBody* bodies[] = {new TestBody(), new TestBody(), new TestBody(), new TestBody()};
     std::vector<IslandElement *> bodiesVector(bodies, bodies + (sizeof(bodies) / sizeof(TestBody*)));
 
@@ -80,8 +75,7 @@ void IslandContainerTest::createTwoSeparateIslands()
     delete bodies[0]; delete bodies[1]; delete bodies[2]; delete bodies[3];
 }
 
-CppUnit::Test *IslandContainerTest::suite()
-{
+CppUnit::Test *IslandContainerTest::suite() {
     auto *suite = new CppUnit::TestSuite("IslandContainerTest");
 
     suite->addTest(new CppUnit::TestCaller<IslandContainerTest>("cascadeMergeIslands", &IslandContainerTest::cascadeMergeIslands));

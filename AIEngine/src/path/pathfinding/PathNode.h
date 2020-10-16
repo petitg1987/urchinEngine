@@ -5,21 +5,18 @@
 
 #include "path/navmesh/model/output/NavTriangle.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
      * Represent a link between two PathNode.
      */
-    struct PathNodeEdgesLink
-    {
+    struct PathNodeEdgesLink {
         LineSegment3D<float> sourceEdge;
         LineSegment3D<float> targetEdge;
         bool areIdenticalEdges = true;
     };
 
-    class PathNode
-    {
+    class PathNode {
         public:
             PathNode(std::shared_ptr<NavTriangle>, float, float);
 

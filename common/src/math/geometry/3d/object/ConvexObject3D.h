@@ -6,14 +6,12 @@
 #include "math/algebra/point/Point3.h"
 #include "math/algebra/vector/Vector3.h"
 
-namespace urchin
-{
+namespace urchin {
     template<class T> class Point3;
     template<class T> class AABBox;
     template<class T> class Sphere;
 
-    template<class T> class ConvexObject3D
-    {
+    template<class T> class ConvexObject3D {
         public:
             virtual ~ConvexObject3D() = default;
 

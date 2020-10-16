@@ -1,39 +1,32 @@
 #include "AbstractController.h"
 
-namespace urchin
-{
+namespace urchin {
     AbstractController::AbstractController() :
         bIsModified(false),
-        mapHandler(nullptr)
-    {
+        mapHandler(nullptr) {
 
     }
 
 
-    void AbstractController::setup(MapHandler *mapHandler)
-    {
+    void AbstractController::setup(MapHandler *mapHandler) {
         this->mapHandler = mapHandler;
     }
 
-    bool AbstractController::isModified() const
-    {
+    bool AbstractController::isModified() const {
         return bIsModified;
     }
 
-    void AbstractController::resetModified()
-    {
+    void AbstractController::resetModified() {
         bIsModified = false;
     }
 
-    void AbstractController::markModified()
-    {
+    void AbstractController::markModified() {
         bIsModified = true;
 
         notifyObservers(this, AbstractController::CHANGES_DONE);
     }
 
-    MapHandler *AbstractController::getMapHandler() const
-    {
+    MapHandler *AbstractController::getMapHandler() const {
         return mapHandler;
     }
 }

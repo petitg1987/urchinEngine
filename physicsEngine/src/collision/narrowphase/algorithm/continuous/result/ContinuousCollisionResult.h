@@ -9,11 +9,9 @@
 #include "collision/narrowphase/algorithm/utils/AlgorithmResult.h"
 #include "collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class ContinuousCollisionResult : public AlgorithmResult
-    {
+    template<class T> class ContinuousCollisionResult : public AlgorithmResult {
         public:
             ContinuousCollisionResult(AbstractWorkBody *, const Vector3<T> &, const Point3<T> &, T);
             ContinuousCollisionResult(const ContinuousCollisionResult &);
@@ -32,8 +30,7 @@ namespace urchin
             T timeToHit;
     };
 
-    template<class T> struct ContinuousCollisionResultComparator
-    {
+    template<class T> struct ContinuousCollisionResultComparator {
         bool operator()(const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter> &, const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter> &) const;
     };
 

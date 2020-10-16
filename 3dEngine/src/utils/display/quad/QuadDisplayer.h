@@ -1,13 +1,11 @@
 #ifndef URCHINENGINE_QUADDISPLAYER_H
 #define URCHINENGINE_QUADDISPLAYER_H
 
-namespace urchin
-{
+namespace urchin {
 
     class QuadDisplayerBuilder;
 
-    class QuadDisplayer
-    {
+    class QuadDisplayer {
         public:
             explicit QuadDisplayer(const QuadDisplayerBuilder *);
             ~QuadDisplayer();

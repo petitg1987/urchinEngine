@@ -6,11 +6,9 @@
 #include "pattern/singleton/Singleton.h"
 #include "math/algebra/point/Point2.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class ResizePolygon2DService : public Singleton<ResizePolygon2DService<T>>
-    {
+    template<class T> class ResizePolygon2DService : public Singleton<ResizePolygon2DService<T>> {
         public:
             friend class Singleton<ResizePolygon2DService<T>>;
 

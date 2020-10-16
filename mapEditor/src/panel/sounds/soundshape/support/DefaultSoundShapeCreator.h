@@ -6,11 +6,9 @@
 #include "UrchinMapHandler.h"
 #include "UrchinSoundEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class DefaultSoundShapeCreator
-    {
+    class DefaultSoundShapeCreator {
 
         public:
             explicit DefaultSoundShapeCreator(const SceneSound *);

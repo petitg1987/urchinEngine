@@ -5,14 +5,12 @@
 
 #include "scene/renderer3d/model/Model.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Shadow execution data for a light and a split frustum
     */
-    class FrustumShadowData
-    {
+    class FrustumShadowData {
         public:
             explicit FrustumShadowData(unsigned int);
 

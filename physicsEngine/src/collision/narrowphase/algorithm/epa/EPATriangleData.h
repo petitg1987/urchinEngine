@@ -3,11 +3,9 @@
 
 #include "UrchinCommon.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class EPATriangleData
-    {
+    template<class T> class EPATriangleData {
         public:
             EPATriangleData(T, const Vector3<T> &, const Point3<T> &, T [3]);
 

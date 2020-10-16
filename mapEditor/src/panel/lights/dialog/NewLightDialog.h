@@ -10,11 +10,9 @@
 #include "UrchinMapHandler.h"
 #include "controller/lights/LightController.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class NewLightDialog : public QDialog
-    {
+    class NewLightDialog : public QDialog {
         Q_OBJECT
 
         #define SUN_LIGHT_LABEL "Sun"

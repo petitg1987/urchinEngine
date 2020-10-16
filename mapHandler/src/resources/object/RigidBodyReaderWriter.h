@@ -7,11 +7,9 @@
 #include "UrchinCommon.h"
 #include "UrchinPhysicsEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class RigidBodyReaderWriter
-    {
+    class RigidBodyReaderWriter {
         //XML tags
         #define SHAPE_TAG "shape"
         #define MASS_TAG "mass"

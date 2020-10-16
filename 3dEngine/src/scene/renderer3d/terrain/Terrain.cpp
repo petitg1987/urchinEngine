@@ -6,8 +6,7 @@
 
 #define DEFAULT_AMBIENT 0.3f
 
-namespace urchin
-{
+namespace urchin {
 
     /**
      * @param position Terrain position. Position is centered on XZ axis and Y value represents a point without elevation.
@@ -15,8 +14,7 @@ namespace urchin
     Terrain::Terrain(std::shared_ptr<TerrainMesh> &mesh, std::unique_ptr<TerrainMaterial> &material, const Point3<float> &position) :
             bufferIDs(),
             vertexArrayObject(0),
-            ambient(0.0f)
-    {
+            ambient(0.0f) {
         glGenBuffers(4, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
 
@@ -34,8 +32,7 @@ namespace urchin
         glActiveTexture(GL_TEXTURE0);
         glUniform1i(maskTexLoc, 0);
 
-        for(unsigned int i=0; i<MAX_MATERIAL; ++i)
-        {
+        for(unsigned int i=0; i<MAX_MATERIAL; ++i) {
             std::string shaderTextureName = "diffuseTex" + std::to_string(i + 1);
             int diffuseTexLoc = glGetUniformLocation(terrainShader, shaderTextureName.c_str());
 
@@ -53,16 +50,14 @@ namespace urchin
         refreshGrassAmbient();
     }
 
-    Terrain::~Terrain()
-    {
+    Terrain::~Terrain() {
         glDeleteVertexArrays(1, &vertexArrayObject);
         glDeleteBuffers(4, bufferIDs);
 
         ShaderManager::instance()->removeProgram(terrainShader);
     }
 
-    void Terrain::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix)
-    {
+    void Terrain::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
 
         ShaderManager::instance()->bind(terrainShader);
@@ -71,8 +66,7 @@ namespace urchin
         grass->onCameraProjectionUpdate(projectionMatrix);
     }
 
-    void Terrain::setMesh(const std::shared_ptr<TerrainMesh> &mesh)
-    {
+    void Terrain::setMesh(const std::shared_ptr<TerrainMesh> &mesh) {
         this->mesh = mesh;
 
         glBindVertexArray(vertexArrayObject);
@@ -94,25 +88,20 @@ namespace urchin
         refreshGrassMesh(); //grass uses mesh info: refresh is required
     }
 
-    const TerrainMesh *Terrain::getMesh() const
-    {
+    const TerrainMesh *Terrain::getMesh() const {
         return mesh.get();
     }
 
-    void Terrain::setMaterial(std::unique_ptr<TerrainMaterial> &terrainMaterial)
-    {
-        if(material != terrainMaterial)
-        {
+    void Terrain::setMaterial(std::unique_ptr<TerrainMaterial> &terrainMaterial) {
+        if(material != terrainMaterial) {
             material = std::move(terrainMaterial);
         }
 
         refreshMaterial();
     }
 
-    void Terrain::refreshMaterial()
-    {
-        if(material)
-        {
+    void Terrain::refreshMaterial() {
+        if(material) {
             material->refreshWith(mesh->getXSize(), mesh->getZSize());
 
             ShaderManager::instance()->bind(terrainShader);
@@ -127,37 +116,30 @@ namespace urchin
         }
     }
 
-    const TerrainMaterial *Terrain::getMaterial() const
-    {
+    const TerrainMaterial *Terrain::getMaterial() const {
         return material.get();
     }
 
-    void Terrain::refreshGrassMesh()
-    {
-        if(grass)
-        {
+    void Terrain::refreshGrassMesh() {
+        if(grass) {
             grass->refreshWith(mesh, position);
         }
     }
 
-    void Terrain::refreshGrassAmbient()
-    {
-        if(grass)
-        {
+    void Terrain::refreshGrassAmbient() {
+        if(grass) {
             grass->refreshWith(ambient);
         }
     }
 
-    TerrainGrass *Terrain::getGrass() const
-    {
+    TerrainGrass *Terrain::getGrass() const {
         return grass.get();
     }
 
     /**
      * @param position Terrain position. Position is centered on XZ axis and Y value represents a point without elevation.
      */
-    void Terrain::setPosition(const Point3<float> &position)
-    {
+    void Terrain::setPosition(const Point3<float> &position) {
         this->position = position;
 
         ShaderManager::instance()->bind(terrainShader);
@@ -168,18 +150,15 @@ namespace urchin
     /**
      * @return Terrain position. Position is centered on XZ axis and Y value represents a point without elevation.
      */
-    const Point3<float> &Terrain::getPosition() const
-    {
+    const Point3<float> &Terrain::getPosition() const {
         return position;
     }
 
-    float Terrain::getAmbient() const
-    {
+    float Terrain::getAmbient() const {
         return ambient;
     }
 
-    void Terrain::setAmbient(float ambient)
-    {
+    void Terrain::setAmbient(float ambient) {
         this->ambient = ambient;
 
         ShaderManager::instance()->bind(terrainShader);
@@ -187,20 +166,17 @@ namespace urchin
         refreshGrassAmbient(); //grass uses ambient value: refresh is required
     }
 
-    Point3<float> Terrain::findPointAt(const Point2<float> &globalXzCoordinate) const
-    {
+    Point3<float> Terrain::findPointAt(const Point2<float> &globalXzCoordinate) const {
         Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - position.X, globalXzCoordinate.Y - position.Z);
         return mesh->findPointAt(localCoordinate) + position;
     }
 
-    float Terrain::findHeightAt(const Point2<float> &globalXzCoordinate) const
-    {
+    float Terrain::findHeightAt(const Point2<float> &globalXzCoordinate) const {
         Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - position.X, globalXzCoordinate.Y - position.Z);
         return mesh->findHeightAt(localCoordinate) + position.Y;
     }
 
-    void Terrain::display(const Camera *camera, float dt) const
-    {
+    void Terrain::display(const Camera *camera, float dt) const {
         ShaderManager::instance()->bind(terrainShader);
 
         glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)camera->getViewMatrix());
@@ -209,8 +185,7 @@ namespace urchin
         glBindVertexArray(vertexArrayObject);
         glDrawElements(GL_TRIANGLE_STRIP, mesh->getIndices().size(), GL_UNSIGNED_INT, nullptr);
 
-        if(grass)
-        {
+        if(grass) {
             grass->display(camera, dt);
         }
     }

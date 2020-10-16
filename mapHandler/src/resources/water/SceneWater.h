@@ -6,11 +6,9 @@
 
 #include "resources/common/SceneEntity.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SceneWater
-    {
+    class SceneWater {
         //XML attributes
         #define NAME_ATTR "name"
 

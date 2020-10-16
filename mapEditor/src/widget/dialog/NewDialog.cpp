@@ -7,8 +7,7 @@
 #include "widget/style/LabelStyleHelper.h"
 #include "widget/style/ButtonStyleHelper.h"
 
-namespace urchin
-{
+namespace urchin {
 
     NewDialog::NewDialog(QWidget *parent) :
         QDialog(parent),
@@ -18,8 +17,7 @@ namespace urchin
         mapDirectoryText(nullptr),
         mapWorkingDirectoryLabel(nullptr),
         mapWorkingDirectoryText(nullptr),
-        mapRelWorkingDirectoryText(nullptr)
-    {
+        mapRelWorkingDirectoryText(nullptr) {
         this->setWindowTitle("New Map File");
         this->resize(530, 195);
         this->setFixedSize(this->width(),this->height());
@@ -40,8 +38,7 @@ namespace urchin
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void NewDialog::setupNameFields(QGridLayout *mainLayout)
-    {
+    void NewDialog::setupNameFields(QGridLayout *mainLayout) {
         mapNameLabel = new QLabel("Name (*.xml):");
         mainLayout->addWidget(mapNameLabel, 0, 0);
 
@@ -50,8 +47,7 @@ namespace urchin
         mapNameText->setFixedWidth(360);
     }
 
-    void NewDialog::setupDirectoryFields(QGridLayout *mainLayout)
-    {
+    void NewDialog::setupDirectoryFields(QGridLayout *mainLayout) {
         mapDirectoryLabel = new QLabel("Directory:");
         mainLayout->addWidget(mapDirectoryLabel, 1, 0);
 
@@ -67,8 +63,7 @@ namespace urchin
         connect(selectMapDirButton, SIGNAL(clicked()), this, SLOT(showMapDirectoryDialog()));
     }
 
-    void NewDialog::setupWorkingDirectoryFields(QGridLayout *mainLayout)
-    {
+    void NewDialog::setupWorkingDirectoryFields(QGridLayout *mainLayout) {
         mapWorkingDirectoryLabel = new QLabel("Working Directory:");
         mainLayout->addWidget(mapWorkingDirectoryLabel, 2, 0);
 
@@ -92,35 +87,28 @@ namespace urchin
         mapRelWorkingDirectoryText->setFixedWidth(360);
     }
 
-    std::string NewDialog::getFilename() const
-    {
+    std::string NewDialog::getFilename() const {
         return mapDirectory + mapFilename;
     }
 
-    std::string NewDialog::getRelativeWorkingDirectory() const
-    {
+    std::string NewDialog::getRelativeWorkingDirectory() const {
         return mapRelWorkingDirectory;
     }
 
-    void NewDialog::updateMapFilename()
-    {
+    void NewDialog::updateMapFilename() {
         QString mapFilename = mapNameText->text();
-        if(!mapFilename.isEmpty())
-        {
+        if(!mapFilename.isEmpty()) {
             this->mapFilename = mapFilename.toUtf8().constData();
             std::string fileExtension = FileHandler::getFileExtension(this->mapFilename);
-            if(!StringUtil::insensitiveEquals(fileExtension, ".xml"))
-            {
+            if(!StringUtil::insensitiveEquals(fileExtension, ".xml")) {
                 this->mapFilename += ".xml";
             }
         }
     }
 
-    void NewDialog::showMapDirectoryDialog()
-    {
+    void NewDialog::showMapDirectoryDialog() {
         QString mapDirectory = QFileDialog::getExistingDirectory(this, tr("Select Directory"), "./", QFileDialog::DontUseNativeDialog|QFileDialog::ShowDirsOnly);
-        if(!mapDirectory.isEmpty())
-        {
+        if(!mapDirectory.isEmpty()) {
             this->mapDirectory = std::string(mapDirectory.toUtf8().constData()) + "/";
 
             mapDirectoryText->setText(mapDirectory);
@@ -128,11 +116,9 @@ namespace urchin
         }
     }
 
-    void NewDialog::showMapWorkingDirectoryDialog()
-    {
+    void NewDialog::showMapWorkingDirectoryDialog() {
         QString mapWorkingDirectory = QFileDialog::getExistingDirectory(this, tr("Select working Directory"), "./", QFileDialog::DontUseNativeDialog|QFileDialog::ShowDirsOnly);
-        if(!mapWorkingDirectory.isEmpty())
-        {
+        if(!mapWorkingDirectory.isEmpty()) {
             this->mapWorkingDirectory = std::string(mapWorkingDirectory.toUtf8().constData()) + "/";
 
             mapWorkingDirectoryText->setText(mapWorkingDirectory);
@@ -140,19 +126,15 @@ namespace urchin
         }
     }
 
-    void NewDialog::updateRelativeWorkingDirectory()
-    {
-        if(!mapDirectory.empty() && !mapWorkingDirectory.empty())
-        {
+    void NewDialog::updateRelativeWorkingDirectory() {
+        if(!mapDirectory.empty() && !mapWorkingDirectory.empty()) {
             mapRelWorkingDirectory = FileHandler::getRelativePath(mapDirectory, mapWorkingDirectory);
             mapRelWorkingDirectoryText->setText(QString::fromStdString(mapRelWorkingDirectory));
         }
     }
 
-    void NewDialog::done(int r)
-    {
-        if(QDialog::Accepted == r)
-        {
+    void NewDialog::done(int r) {
+        if(QDialog::Accepted == r) {
             bool hasError = false;
 
             updateMapFilename();
@@ -160,32 +142,26 @@ namespace urchin
             LabelStyleHelper::applyNormalStyle(mapDirectoryLabel);
             LabelStyleHelper::applyNormalStyle(mapWorkingDirectoryLabel);
 
-            if(mapFilename.empty())
-            {
+            if(mapFilename.empty()) {
                 LabelStyleHelper::applyErrorStyle(mapNameLabel, "Map name is mandatory");
                 hasError = true;
-            }else if(mapFilename.find_last_of("/\\")!=std::string::npos)
-            {
+            } else if(mapFilename.find_last_of("/\\")!=std::string::npos) {
                 LabelStyleHelper::applyErrorStyle(mapNameLabel, "Map name cannot contains slash character");
                 hasError = true;
             }
-            if(mapDirectory.empty())
-            {
+            if(mapDirectory.empty()) {
                 LabelStyleHelper::applyErrorStyle(mapDirectoryLabel, "Map directory is mandatory");
                 hasError = true;
             }
-            if(mapWorkingDirectory.empty())
-            {
+            if(mapWorkingDirectory.empty()) {
                 LabelStyleHelper::applyErrorStyle(mapWorkingDirectoryLabel, "Map working directory is mandatory");
                 hasError = true;
             }
 
-            if(!hasError)
-            {
+            if(!hasError) {
                 QDialog::done(r);
             }
-        }else
-        {
+        } else {
             QDialog::done(r);
         }
     }

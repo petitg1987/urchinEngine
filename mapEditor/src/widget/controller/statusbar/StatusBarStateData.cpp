@@ -1,21 +1,17 @@
 #include "StatusBarStateData.h"
 
-namespace urchin
-{
+namespace urchin {
     StatusBarStateData::StatusBarStateData(const std::vector<std::string> &labels, StatusBarState previousState) :
             labels(labels),
-            previousState(previousState)
-    {
+            previousState(previousState) {
 
     }
 
-    const std::vector<std::string> &StatusBarStateData::getLabels()
-    {
+    const std::vector<std::string> &StatusBarStateData::getLabels() {
         return labels;
     }
 
-    StatusBarState StatusBarStateData::getPreviousState()
-    {
+    StatusBarState StatusBarStateData::getPreviousState() {
         return previousState;
     }
 }

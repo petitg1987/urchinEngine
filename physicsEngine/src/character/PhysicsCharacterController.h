@@ -14,11 +14,9 @@
 #define MIN_WALK_SPEED_PERCENTAGE 0.75f
 #define MAX_WALK_SPEED_PERCENTAGE 1.25f
 
-namespace urchin
-{
+namespace urchin {
 
-    struct SignificantContactValues
-    {
+    struct SignificantContactValues {
         unsigned int numberOfHit;
 
         float maxDotProductUpNormalAxis;
@@ -31,8 +29,7 @@ namespace urchin
     /**
     * Character controller: allow to move a character in a world
     */
-    class PhysicsCharacterController
-    {
+    class PhysicsCharacterController {
         public:
             PhysicsCharacterController(const std::shared_ptr<PhysicsCharacter> &, PhysicsWorld *);
             ~PhysicsCharacterController();

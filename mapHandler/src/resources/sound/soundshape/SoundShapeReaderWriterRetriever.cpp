@@ -4,31 +4,24 @@
 #include "resources/sound/soundshape/SoundSphereReaderWriter.h"
 #include "resources/sound/soundshape/SoundBoxReaderWriter.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    std::shared_ptr<SoundShapeReaderWriter> SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(const std::shared_ptr<XmlChunk> &shapeChunk)
-    {
+    std::shared_ptr<SoundShapeReaderWriter> SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(const std::shared_ptr<XmlChunk> &shapeChunk) {
         std::string shapeType = shapeChunk->getAttributeValue(TYPE_ATTR);
-        if(shapeType == SPHERE_VALUE)
-        {
+        if(shapeType == SPHERE_VALUE) {
             return std::make_shared<SoundSphereReaderWriter>();
-        }else if(shapeType == BOX_VALUE)
-        {
+        } else if(shapeType == BOX_VALUE) {
             return std::make_shared<SoundBoxReaderWriter>();
         }
 
         throw std::invalid_argument("Unknown shape type: " + shapeType);
     }
 
-    std::shared_ptr<SoundShapeReaderWriter> SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(const SoundShape *soundShape)
-    {
+    std::shared_ptr<SoundShapeReaderWriter> SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(const SoundShape *soundShape) {
         SoundShape::ShapeType shapeType = soundShape->getShapeType();
-        if(shapeType==SoundShape::SPHERE_SHAPE)
-        {
+        if(shapeType==SoundShape::SPHERE_SHAPE) {
             return std::make_shared<SoundSphereReaderWriter>();
-        }else if(shapeType==SoundShape::BOX_SHAPE)
-        {
+        } else if(shapeType==SoundShape::BOX_SHAPE) {
             return std::make_shared<SoundBoxReaderWriter>();
         }
 

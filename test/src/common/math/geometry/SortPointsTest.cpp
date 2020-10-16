@@ -7,8 +7,7 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-void SortPointsTest::threePointsClockwise()
-{
+void SortPointsTest::threePointsClockwise() {
     std::vector<Point3<float>> threePoints({
             Point3<float>(0.0, 0.0, 0.0),
             Point3<float>(0.5, 0.0, -1.0),
@@ -21,8 +20,7 @@ void SortPointsTest::threePointsClockwise()
     AssertHelper::assertPoint3FloatEquals(sortedPoints[2], Point3<float>(0.5, 0.0, -1.0));
 }
 
-void SortPointsTest::threePointsCounterClockwise()
-{
+void SortPointsTest::threePointsCounterClockwise() {
     std::vector<Point3<float>> threePoints({
             Point3<float>(0.0, 0.0, 0.0),
             Point3<float>(1.0, 0.0, 0.0),
@@ -35,8 +33,7 @@ void SortPointsTest::threePointsCounterClockwise()
     AssertHelper::assertPoint3FloatEquals(sortedPoints[2], Point3<float>(1.0, 0.0, 0.0));
 }
 
-void SortPointsTest::fourPointsClockwise()
-{
+void SortPointsTest::fourPointsClockwise() {
     std::vector<Point3<float>> fourPoints({
             Point3<float>(0.0, 0.0, 0.0),
             Point3<float>(1.0, 0.0, -1.0),
@@ -51,8 +48,7 @@ void SortPointsTest::fourPointsClockwise()
     AssertHelper::assertPoint3FloatEquals(sortedPoints[3], Point3<float>(0.0, 0.0, -1.0));
 }
 
-void SortPointsTest::fourPointsCounterClockwiseZNormal()
-{
+void SortPointsTest::fourPointsCounterClockwiseZNormal() {
     std::vector<Point3<float>> fourPoints({
             Point3<float>(-2.0, 0.0, -5.0),
             Point3<float>(1.0, 1.0, -5.0),
@@ -67,8 +63,7 @@ void SortPointsTest::fourPointsCounterClockwiseZNormal()
     AssertHelper::assertPoint3FloatEquals(sortedPoints[3], Point3<float>(1.0, 1.0, -5.0));
 }
 
-void SortPointsTest::fourPointsCounterClockwiseYNormal()
-{
+void SortPointsTest::fourPointsCounterClockwiseYNormal() {
     std::vector<Point3<float>> fourPoints({
             Point3<float>(1.0, 0.0, -1.0),
             Point3<float>(1.0, 0.0, 1.0),
@@ -83,8 +78,7 @@ void SortPointsTest::fourPointsCounterClockwiseYNormal()
     AssertHelper::assertPoint3FloatEquals(sortedPoints[3], Point3<float>(-1.0, 0.0, -1.0));
 }
 
-CppUnit::Test *SortPointsTest::suite()
-{
+CppUnit::Test *SortPointsTest::suite() {
     auto *suite = new CppUnit::TestSuite("SortPointsTest");
 
     suite->addTest(new CppUnit::TestCaller<SortPointsTest>("threePointsClockwise", &SortPointsTest::threePointsClockwise));

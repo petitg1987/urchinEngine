@@ -6,8 +6,7 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-void PathfindingAStarTest::straightPath()
-{
+void PathfindingAStarTest::straightPath() {
     std::vector<Point3<float>> polygonPoints = {Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(0.0f, 0.0f, 4.0f), Point3<float>(4.0f, 0.0f, 4.0f), Point3<float>(4.0f, 0.0f, 0.0f)};
     auto navPolygon = std::make_shared<NavPolygon>("polyTestName", std::move(polygonPoints), nullptr);
     auto navTriangle1 = std::make_shared<NavTriangle>(0, 1, 3);
@@ -28,8 +27,7 @@ void PathfindingAStarTest::straightPath()
     AssertHelper::assertTrue(!pathPoints[1].isJumpPoint());
 }
 
-void PathfindingAStarTest::joinPolygonsPath()
-{
+void PathfindingAStarTest::joinPolygonsPath() {
     std::vector<Point3<float>> polygon1Points = {Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(0.0f, 0.0f, 4.0f), Point3<float>(4.0f, 0.0f, 0.0f)};
     auto navPolygon1 = std::make_shared<NavPolygon>("poly1TestName", std::move(polygon1Points), nullptr);
     auto navPolygon1Triangle1 = std::make_shared<NavTriangle>(0, 1, 2);
@@ -56,8 +54,7 @@ void PathfindingAStarTest::joinPolygonsPath()
     AssertHelper::assertTrue(!pathPoints[2].isJumpPoint());
 }
 
-void PathfindingAStarTest::jumpWithSmallConstraint()
-{
+void PathfindingAStarTest::jumpWithSmallConstraint() {
     std::vector<PathPoint> pathPoints = pathWithJump(new NavLinkConstraint(1.0f, 0.0f, 2));
 
     AssertHelper::assertUnsignedInt(pathPoints.size(), 4);
@@ -71,8 +68,7 @@ void PathfindingAStarTest::jumpWithSmallConstraint()
     AssertHelper::assertTrue(!pathPoints[3].isJumpPoint());
 }
 
-void PathfindingAStarTest::jumpWithBigConstraint()
-{
+void PathfindingAStarTest::jumpWithBigConstraint() {
     std::vector<PathPoint> pathPoints = pathWithJump(new NavLinkConstraint(0.01f, 0.0f, 2));
 
     AssertHelper::assertUnsignedInt(pathPoints.size(), 4);
@@ -86,8 +82,7 @@ void PathfindingAStarTest::jumpWithBigConstraint()
     AssertHelper::assertTrue(!pathPoints[3].isJumpPoint());
 }
 
-std::vector<PathPoint> PathfindingAStarTest::pathWithJump(NavLinkConstraint *navLinkConstraint)
-{
+std::vector<PathPoint> PathfindingAStarTest::pathWithJump(NavLinkConstraint *navLinkConstraint) {
     std::vector<Point3<float>> polygon1Points = {Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(0.0f, 0.0f, 4.0f), Point3<float>(4.0f, 0.0f, 0.0f)};
     auto navPolygon1 = std::make_shared<NavPolygon>("poly1TestName", std::move(polygon1Points), nullptr);
     auto navPolygon1Triangle1 = std::make_shared<NavTriangle>(0, 1, 2);
@@ -106,8 +101,7 @@ std::vector<PathPoint> PathfindingAStarTest::pathWithJump(NavLinkConstraint *nav
     return pathfindingAStar.findPath(Point3<float>(1.0f, 0.0f, 1.0f), Point3<float>(3.0f, 0.0f, 4.0f));
 }
 
-CppUnit::Test *PathfindingAStarTest::suite()
-{
+CppUnit::Test *PathfindingAStarTest::suite() {
     auto *suite = new CppUnit::TestSuite("PathfindingAStarTest");
 
     suite->addTest(new CppUnit::TestCaller<PathfindingAStarTest>("straightPath", &PathfindingAStarTest::straightPath));

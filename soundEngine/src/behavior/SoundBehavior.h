@@ -1,11 +1,9 @@
 #ifndef URCHINENGINE_SOUNDBEHAVIOR_H
 #define URCHINENGINE_SOUNDBEHAVIOR_H
 
-namespace urchin
-{
+namespace urchin {
 
-    class SoundBehavior
-    {
+    class SoundBehavior {
         public:
             enum PlayBehavior
             {

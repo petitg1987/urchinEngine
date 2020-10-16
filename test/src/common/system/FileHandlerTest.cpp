@@ -9,8 +9,7 @@ using namespace urchin;
 /**
  * Simplify path test (Unix version)
  */
-void FileHandlerTest::simplifyDirectoryPathUnix()
-{
+void FileHandlerTest::simplifyDirectoryPathUnix() {
     std::string directoryPath = "xxx/yyy/../zzz/www/../rrr/";
     std::string result = FileHandler::simplifyDirectoryPath(directoryPath);
 
@@ -21,8 +20,7 @@ void FileHandlerTest::simplifyDirectoryPathUnix()
 /**
  * Simplify path test (Window version)
  */
-void FileHandlerTest::simplifyDirectoryPathWindow()
-{
+void FileHandlerTest::simplifyDirectoryPathWindow() {
     std::string directoryPath = R"(xxx\yyy\..\zzz\www\..\rrr\)";
     std::string result = FileHandler::simplifyDirectoryPath(directoryPath);
 
@@ -30,8 +28,7 @@ void FileHandlerTest::simplifyDirectoryPathWindow()
     AssertHelper::assertTrue(result == expectedResult);
 }
 
-void FileHandlerTest::relativePath()
-{
+void FileHandlerTest::relativePath() {
     std::string referenceDirectory = "xxx/yyy/zzz/www/";
     std::string path = "xxx/yyy/aaa/bbb/";
     std::string result = FileHandler::getRelativePath(referenceDirectory, path);
@@ -40,8 +37,7 @@ void FileHandlerTest::relativePath()
     AssertHelper::assertTrue(result == expectedResult);
 }
 
-void FileHandlerTest::relativePathEqual()
-{
+void FileHandlerTest::relativePathEqual() {
     std::string referenceDirectory = "xxx/yyy/";
     std::string path = "xxx/yyy/";
     std::string result = FileHandler::getRelativePath(referenceDirectory, path);
@@ -49,8 +45,7 @@ void FileHandlerTest::relativePathEqual()
     AssertHelper::assertTrue(result.empty());
 }
 
-CppUnit::Test *FileHandlerTest::suite()
-{
+CppUnit::Test *FileHandlerTest::suite() {
     auto *suite = new CppUnit::TestSuite("FileHandlerTest");
 
     suite->addTest(new CppUnit::TestCaller<FileHandlerTest>("simplifyDirectoryPathUnix", &FileHandlerTest::simplifyDirectoryPathUnix));

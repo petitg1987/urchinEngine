@@ -1,12 +1,10 @@
 #include "player/stream/StreamChunk.h"
 
-namespace urchin
-{
+namespace urchin {
 
     StreamChunk::StreamChunk() :
             numberOfSamples(0),
-            bufferId(0)
-    {
+            bufferId(0) {
 
     }
 

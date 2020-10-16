@@ -3,11 +3,9 @@
 
 #include "math/algebra/point/Point3.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class Line3D
-    {
+    template<class T> class Line3D {
         public:
             Line3D(const Point3<T> &,  const Point3<T> &);
 

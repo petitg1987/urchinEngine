@@ -9,14 +9,12 @@
 #include "math/geometry/3d/object/AABBox.h"
 #include "partitioning/octree/filter/OctreeableFilter.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Represents a node of the octree
     */
-    template<class TOctreeable> class Octree
-    {
+    template<class TOctreeable> class Octree {
         public:
             Octree(const Point3<float> &, const Vector3<float> &, float);
             ~Octree();

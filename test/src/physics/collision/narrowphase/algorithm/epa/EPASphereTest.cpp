@@ -9,8 +9,7 @@
 #include "physics/collision/narrowphase/algorithm/epa/EPATestHelper.h"
 using namespace urchin;
 
-void EPASphereTest::identicalSphere()
-{
+void EPASphereTest::identicalSphere() {
     CollisionSphereObject sphere1(1.0, Point3<float>(1.0, 0.0, 0.0));
     CollisionSphereObject sphere2(1.0, Point3<float>(1.0, 0.0, 0.0));
 
@@ -22,8 +21,7 @@ void EPASphereTest::identicalSphere()
     AssertHelper::assertFloatEquals(resultEpa->getContactPointA().vector(resultEpa->getContactPointB()).length(), 2.0, epsilon);
 }
 
-void EPASphereTest::overlapSphere()
-{
+void EPASphereTest::overlapSphere() {
     CollisionSphereObject sphere1(10.0, Point3<float>(0.0, 0.0, 0.0));
     CollisionSphereObject sphere2(10.0, Point3<float>(7.0710678118+7.0, 7.0710678118+7.0, 0.0));
 
@@ -41,8 +39,7 @@ void EPASphereTest::overlapSphere()
     AssertHelper::assertFloatEquals(resultEpa->getContactPointB().Z, 0.0);
 }
 
-CppUnit::Test *EPASphereTest::suite()
-{
+CppUnit::Test *EPASphereTest::suite() {
     auto *suite = new CppUnit::TestSuite("EPASphereTest");
 
     suite->addTest(new CppUnit::TestCaller<EPASphereTest>("identicalSphere", &EPASphereTest::identicalSphere));

@@ -5,11 +5,9 @@
 
 #include "collision/narrowphase/algorithm/utils/AlgorithmResult.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class EPAResult : public AlgorithmResult
-    {
+    template<class T> class EPAResult : public AlgorithmResult {
         public:
             virtual ~EPAResult() = default;
 

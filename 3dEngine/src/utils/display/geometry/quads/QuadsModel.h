@@ -6,11 +6,9 @@
 
 #include "utils/display/geometry/GeometryModel.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class QuadsModel : public GeometryModel
-    {
+    class QuadsModel : public GeometryModel {
         public:
             explicit QuadsModel(std::vector<Point3<float>>);
 

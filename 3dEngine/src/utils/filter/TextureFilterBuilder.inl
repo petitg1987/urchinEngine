@@ -6,100 +6,82 @@ template<class T> TextureFilterBuilder<T>::TextureFilterBuilder() :
     pTextureAnisotropy(1.0f),
     pTextureNumberLayer(1),
     pTextureInternalFormat(GL_RGB),
-    pTextureFormat(GL_RGB)
-{
+    pTextureFormat(GL_RGB) {
 
 }
 
-template<class T> TextureFilterBuilder<T>::~TextureFilterBuilder()
-{
+template<class T> TextureFilterBuilder<T>::~TextureFilterBuilder() {
 
 }
 
-template<class T> T *TextureFilterBuilder<T>::textureSize(unsigned int textureWidth, unsigned int textureHeight)
-{
+template<class T> T *TextureFilterBuilder<T>::textureSize(unsigned int textureWidth, unsigned int textureHeight) {
     this->textureWidth = textureWidth;
     this->textureHeight = textureHeight;
     return _this();
 }
 
-template<class T> unsigned int TextureFilterBuilder<T>::getTextureWidth() const
-{
+template<class T> unsigned int TextureFilterBuilder<T>::getTextureWidth() const {
     return textureWidth;
 }
 
-template<class T> unsigned int TextureFilterBuilder<T>::getTextureHeight() const
-{
+template<class T> unsigned int TextureFilterBuilder<T>::getTextureHeight() const {
     return textureHeight;
 }
 
-template<class T> T *TextureFilterBuilder<T>::textureType(unsigned int textureType)
-{
+template<class T> T *TextureFilterBuilder<T>::textureType(unsigned int textureType) {
     this->pTextureType = textureType;
     return _this();
 }
 
-template<class T> unsigned int TextureFilterBuilder<T>::getTextureType() const
-{
+template<class T> unsigned int TextureFilterBuilder<T>::getTextureType() const {
     return pTextureType;
 }
 
-template<class T> T *TextureFilterBuilder<T>::textureAccessFilter(unsigned int)
-{
+template<class T> T *TextureFilterBuilder<T>::textureAccessFilter(unsigned int) {
     this->pTextureAccessFilter = pTextureAccessFilter;
     return _this();
 }
 
-template<class T> unsigned int TextureFilterBuilder<T>::getTextureAccessFilter() const
-{
+template<class T> unsigned int TextureFilterBuilder<T>::getTextureAccessFilter() const {
     return pTextureAccessFilter;
 }
 
-template<class T> T *TextureFilterBuilder<T>::textureAnisotropy(float pTextureAnisotropy)
-{
+template<class T> T *TextureFilterBuilder<T>::textureAnisotropy(float pTextureAnisotropy) {
     this->pTextureAnisotropy = pTextureAnisotropy;
     return _this();
 }
 
-template<class T> float TextureFilterBuilder<T>::getTextureAnisotropy() const
-{
+template<class T> float TextureFilterBuilder<T>::getTextureAnisotropy() const {
     return pTextureAnisotropy;
 }
 
-template<class T> T *TextureFilterBuilder<T>::textureNumberLayer(unsigned int textureNumberLayer)
-{
+template<class T> T *TextureFilterBuilder<T>::textureNumberLayer(unsigned int textureNumberLayer) {
     this->pTextureNumberLayer = textureNumberLayer;
     return _this();
 }
 
-template<class T> unsigned int TextureFilterBuilder<T>::getTextureNumberLayer() const
-{
+template<class T> unsigned int TextureFilterBuilder<T>::getTextureNumberLayer() const {
     return pTextureNumberLayer;
 }
 
-template<class T> T *TextureFilterBuilder<T>::textureInternalFormat(int textureInternalFormat)
-{
+template<class T> T *TextureFilterBuilder<T>::textureInternalFormat(int textureInternalFormat) {
     this->pTextureInternalFormat = textureInternalFormat;
     return _this();
 }
 
-template<class T> int TextureFilterBuilder<T>::getTextureInternalFormat() const
-{
+template<class T> int TextureFilterBuilder<T>::getTextureInternalFormat() const {
     return pTextureInternalFormat;
 }
 
-template<class T> T *TextureFilterBuilder<T>::textureFormat(unsigned int textureFormat)
-{
+template<class T> T *TextureFilterBuilder<T>::textureFormat(unsigned int textureFormat) {
     this->pTextureFormat = textureFormat;
     return _this();
 }
 
-template<class T> unsigned int TextureFilterBuilder<T>::getTextureFormat() const
-{
+template<class T> unsigned int TextureFilterBuilder<T>::getTextureFormat() const {
     return pTextureFormat;
 }
 
-template<class T> T* TextureFilterBuilder<T>::_this()
-{
+template<class T> T* TextureFilterBuilder<T>::_this() {
     return static_cast<T*>(this);
 }

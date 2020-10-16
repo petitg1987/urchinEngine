@@ -12,11 +12,9 @@
 #include "utils/pool/FixedSizePool.h"
 #include "object/pool/ObjectDeleter.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class CollisionShape3D
-    {
+    class CollisionShape3D {
         public:
             CollisionShape3D();
             explicit CollisionShape3D(float);

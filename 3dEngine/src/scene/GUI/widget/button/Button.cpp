@@ -7,21 +7,18 @@
 #include "scene/GUI/GUISkinService.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 
-namespace urchin
-{
+namespace urchin {
 
     Button::Button(Position position, Size size, std::string nameSkin, std::string buttonText)
         : Widget(position, size),
           nameSkin(std::move(nameSkin)),
           text(nullptr),
           buttonText(std::move(buttonText)),
-          textureID(0)
-    {
+          textureID(0) {
         Button::createOrUpdateWidget();
     }
 
-    void Button::createOrUpdateWidget()
-    {
+    void Button::createOrUpdateWidget() {
         //skin information
         std::shared_ptr<XmlChunk> buttonChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "button", XmlAttribute("nameSkin", nameSkin));
 
@@ -34,8 +31,7 @@ namespace urchin
         std::shared_ptr<XmlChunk> skinClickChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "click"), buttonChunk);
         texInfoOnClick = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinClickChunk);
 
-        if(!buttonText.empty())
-        {
+        if(!buttonText.empty()) {
             std::shared_ptr<XmlChunk> textFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textFont", XmlAttribute(), buttonChunk);
             removeChild(text);
             text = new Text(Position(0, 0, Position::PIXEL), textFontChunk->getStringValue());
@@ -53,39 +49,32 @@ namespace urchin
         textureID = texInfoDefault->getTextureID();
     }
 
-    unsigned int Button::getTextureId()
-    {
-        if(getWidgetState()==FOCUS)
-        {
+    unsigned int Button::getTextureId() {
+        if(getWidgetState()==FOCUS) {
             return texInfoOnFocus->getTextureID();
-        }else if(getWidgetState()==CLICKING)
-        {
+        } else if(getWidgetState()==CLICKING) {
             textureID = texInfoOnClick->getTextureID();
         }
 
         return texInfoDefault->getTextureID();
     }
 
-    bool Button::onKeyPressEvent(unsigned int)
-    {
+    bool Button::onKeyPressEvent(unsigned int) {
         textureID = getTextureId();
         return true;
     }
 
-    bool Button::onKeyReleaseEvent(unsigned int)
-    {
+    bool Button::onKeyReleaseEvent(unsigned int) {
         textureID = getTextureId();
         return true;
     }
 
-    bool Button::onMouseMoveEvent(int, int)
-    {
+    bool Button::onMouseMoveEvent(int, int) {
         textureID = getTextureId();
         return true;
     }
 
-    void Button::display(int translateDistanceLoc, float dt)
-    {
+    void Button::display(int translateDistanceLoc, float dt) {
         glBindTexture(GL_TEXTURE_2D, textureID);
 
         quadDisplayer->display();

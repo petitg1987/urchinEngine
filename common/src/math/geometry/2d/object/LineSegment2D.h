@@ -6,11 +6,9 @@
 #include "math/algebra/point/Point2.h"
 #include "math/algebra/vector/Vector2.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class LineSegment2D : public ConvexObject2D<T>
-    {
+    template<class T> class LineSegment2D : public ConvexObject2D<T> {
         public:
             LineSegment2D(const Point2<T> &, const Point2<T> &);
 

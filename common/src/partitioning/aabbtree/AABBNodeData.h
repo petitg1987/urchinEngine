@@ -5,11 +5,9 @@
 
 #include "math/geometry/3d/object/AABBox.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class OBJ> class AABBNodeData
-    {
+    template<class OBJ> class AABBNodeData {
         public:
             explicit AABBNodeData(OBJ);
             virtual ~AABBNodeData() = default;

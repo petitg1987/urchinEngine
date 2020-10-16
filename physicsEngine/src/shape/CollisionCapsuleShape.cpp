@@ -1,70 +1,57 @@
 #include "shape/CollisionCapsuleShape.h"
 #include "object/CollisionCapsuleObject.h"
 
-namespace urchin
-{
+namespace urchin {
 
     CollisionCapsuleShape::CollisionCapsuleShape(float radius, float cylinderHeight, CapsuleShape<float>::CapsuleOrientation capsuleOrientation) :
             CollisionShape3D(),
-            capsuleShape(new CapsuleShape<float>(radius, cylinderHeight, capsuleOrientation))
-    {
+            capsuleShape(new CapsuleShape<float>(radius, cylinderHeight, capsuleOrientation)) {
         computeSafeMargin();
     }
 
     CollisionCapsuleShape::CollisionCapsuleShape(CollisionCapsuleShape &&collisionCapsuleShape) noexcept :
             CollisionShape3D(collisionCapsuleShape),
-            capsuleShape(std::exchange(collisionCapsuleShape.capsuleShape, nullptr))
-    {
+            capsuleShape(std::exchange(collisionCapsuleShape.capsuleShape, nullptr)) {
     }
 
-    CollisionCapsuleShape::~CollisionCapsuleShape()
-    {
+    CollisionCapsuleShape::~CollisionCapsuleShape() {
         delete capsuleShape;
     }
 
-    void CollisionCapsuleShape::computeSafeMargin()
-    {
+    void CollisionCapsuleShape::computeSafeMargin() {
         float maximumMarginPercentage = ConfigService::instance()->getFloatValue("collisionShape.maximumMarginPercentage");
         float maximumSafeMargin = getRadius() * maximumMarginPercentage;
 
         refreshInnerMargin(maximumSafeMargin);
     }
 
-    CollisionShape3D::ShapeType CollisionCapsuleShape::getShapeType() const
-    {
+    CollisionShape3D::ShapeType CollisionCapsuleShape::getShapeType() const {
         return CollisionShape3D::CAPSULE_SHAPE;
     }
 
-    const ConvexShape3D<float> *CollisionCapsuleShape::getSingleShape() const
-    {
+    const ConvexShape3D<float> *CollisionCapsuleShape::getSingleShape() const {
         return capsuleShape;
     }
 
-    float CollisionCapsuleShape::getRadius() const
-    {
+    float CollisionCapsuleShape::getRadius() const {
         return capsuleShape->getRadius();
     }
 
-    float CollisionCapsuleShape::getCylinderHeight() const
-    {
+    float CollisionCapsuleShape::getCylinderHeight() const {
         return capsuleShape->getCylinderHeight();
     }
 
-    CapsuleShape<float>::CapsuleOrientation CollisionCapsuleShape::getCapsuleOrientation() const
-    {
+    CapsuleShape<float>::CapsuleOrientation CollisionCapsuleShape::getCapsuleOrientation() const {
         return capsuleShape->getCapsuleOrientation();
     }
 
-    std::shared_ptr<CollisionShape3D> CollisionCapsuleShape::scale(float scale) const
-    {
+    std::shared_ptr<CollisionShape3D> CollisionCapsuleShape::scale(float scale) const {
         return std::make_shared<CollisionCapsuleShape>(capsuleShape->getRadius() * scale,
                 capsuleShape->getCylinderHeight() * scale, capsuleShape->getCapsuleOrientation());
     }
 
-    AABBox<float> CollisionCapsuleShape::toAABBox(const PhysicsTransform &physicsTransform) const
-    {
-        if(!lastTransform.equals(physicsTransform))
-        {
+    AABBox<float> CollisionCapsuleShape::toAABBox(const PhysicsTransform &physicsTransform) const {
+        if(!lastTransform.equals(physicsTransform)) {
             Vector3<float> boxHalfSizes(getRadius(), getRadius(), getRadius());
             boxHalfSizes[getCapsuleOrientation()] += getCylinderHeight() / 2.0f;
             const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
@@ -83,8 +70,7 @@ namespace urchin
         return lastAABBox;
     }
 
-    std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionCapsuleShape::toConvexObject(const PhysicsTransform &physicsTransform) const
-    {
+    std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionCapsuleShape::toConvexObject(const PhysicsTransform &physicsTransform) const {
         const Point3<float> &position = physicsTransform.getPosition();
         const Quaternion<float> &orientation = physicsTransform.getOrientation();
 
@@ -95,8 +81,7 @@ namespace urchin
         return std::unique_ptr<CollisionCapsuleObject, ObjectDeleter>(collisionObjectPtr);
     }
 
-    Vector3<float> CollisionCapsuleShape::computeLocalInertia(float mass) const
-    { //rough local inertia computed based on box including capsule.
+    Vector3<float> CollisionCapsuleShape::computeLocalInertia(float mass) const { //rough local inertia computed based on box including capsule.
         Vector3<float> boxSizes(getRadius()*2.0f, getRadius()*2.0f, getRadius()*2.0f);
         boxSizes[getCapsuleOrientation()] += getCylinderHeight();
 
@@ -110,18 +95,15 @@ namespace urchin
         return Vector3<float>(localInertia1, localInertia2, localInertia3);
     }
 
-    float CollisionCapsuleShape::getMaxDistanceToCenter() const
-    {
+    float CollisionCapsuleShape::getMaxDistanceToCenter() const {
         return capsuleShape->getCylinderHeight()/2.0f + capsuleShape->getRadius();
     }
 
-    float CollisionCapsuleShape::getMinDistanceToCenter() const
-    {
+    float CollisionCapsuleShape::getMinDistanceToCenter() const {
         return capsuleShape->getRadius();
     }
 
-    CollisionShape3D *CollisionCapsuleShape::clone() const
-    {
+    CollisionShape3D *CollisionCapsuleShape::clone() const {
         return new CollisionCapsuleShape(capsuleShape->getRadius(), capsuleShape->getCylinderHeight(), capsuleShape->getCapsuleOrientation());
     }
 

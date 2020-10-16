@@ -6,11 +6,9 @@
 
 #include "scene/renderer3d/fog/Fog.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class FogManager
-    {
+    class FogManager {
         public:
             FogManager();
 

@@ -3,11 +3,9 @@
 
 #include <string>
 
-namespace urchin
-{
+namespace urchin {
 
-    class ScopeProfiler
-    {
+    class ScopeProfiler {
         public:
             ScopeProfiler(const std::string &, const std::string &);
             ~ScopeProfiler();

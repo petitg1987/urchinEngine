@@ -8,11 +8,9 @@
 #include "collision/OverlappingPair.h"
 #include "collision/broadphase/PairContainer.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class BroadPhaseAlgorithm
-    {
+    class BroadPhaseAlgorithm {
         public:
             virtual ~BroadPhaseAlgorithm() = default;
 

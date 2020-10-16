@@ -13,14 +13,12 @@
 #include "math/algebra/vector/Vector3.h"
 #include "math/algebra/vector/Vector4.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Represents a XML chunk
     */
-    class XmlChunk
-    {
+    class XmlChunk {
         #define BOOL_FALSE "false"
         #define BOOL_TRUE "true"
 

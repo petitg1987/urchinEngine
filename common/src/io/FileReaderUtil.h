@@ -4,11 +4,9 @@
 #include <string>
 #include <fstream>
 
-namespace urchin
-{
+namespace urchin {
 
-    class FileReaderUtil
-    {
+    class FileReaderUtil {
         public:
             static void nextLine(std::ifstream &, std::string &);
 

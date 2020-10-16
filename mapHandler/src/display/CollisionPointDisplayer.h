@@ -6,11 +6,9 @@
 #include "Urchin3dEngine.h"
 #include "UrchinPhysicsEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class CollisionPointDisplayer
-    {
+    class CollisionPointDisplayer {
         public:
             CollisionPointDisplayer(PhysicsWorld *, Renderer3d *);
             ~CollisionPointDisplayer();

@@ -5,11 +5,9 @@
 
 #include "tools/thread/LockById.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class ScopeLockById
-    {
+    class ScopeLockById {
         public:
             ScopeLockById(const std::shared_ptr<LockById> &, uint_fast32_t);
             ~ScopeLockById();

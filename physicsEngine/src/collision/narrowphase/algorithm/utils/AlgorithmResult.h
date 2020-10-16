@@ -1,11 +1,9 @@
 #ifndef URCHINENGINE_ALGORITHMRESULT_H
 #define URCHINENGINE_ALGORITHMRESULT_H
 
-namespace urchin
-{
+namespace urchin {
 
-    class AlgorithmResult
-    {
+    class AlgorithmResult {
 
     };
 

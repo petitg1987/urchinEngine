@@ -4,11 +4,9 @@
 #include "scene/renderer3d/camera/Camera.h"
 #include "scene/renderer3d/sky/Skybox.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SkyManager
-    {
+    class SkyManager {
         public:
             SkyManager();
 

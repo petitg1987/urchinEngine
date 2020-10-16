@@ -7,11 +7,9 @@
 
 #include "controller/ai/AIController.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class AIPanelWidget : public QWidget
-    {
+    class AIPanelWidget : public QWidget {
         Q_OBJECT
 
         public:

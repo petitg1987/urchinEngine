@@ -9,11 +9,9 @@
 #include "scene/SceneDisplayerWidget.h"
 #include "panel/ScenePanelWidget.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class MapEditorWindow : public QMainWindow, public Observer
-    {
+    class MapEditorWindow : public QMainWindow, public Observer {
         Q_OBJECT
 
         public:

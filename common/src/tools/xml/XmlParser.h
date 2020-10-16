@@ -9,14 +9,12 @@
 #include "tools/xml/XmlAttribute.h"
 #include "tools/xml/XmlChunk.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * XML parser
     */
-    class XmlParser
-    {
+    class XmlParser {
         public:
             explicit XmlParser(const std::string &);
             XmlParser(const std::string &, const std::string &);

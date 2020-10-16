@@ -9,8 +9,7 @@
 #include "physics/collision/narrowphase/algorithm/epa/EPATestHelper.h"
 using namespace urchin;
 
-void EPAConvexObjectTest::overlapSphereAndBox()
-{
+void EPAConvexObjectTest::overlapSphereAndBox() {
     CollisionSphereObject sphere(1.0, Point3<float>(0.0, 0.0, 0.0));
     CollisionBoxObject aabbox(0.0, Vector3<float>(0.5, 0.5, 0.5), Point3<float>(1.4, 0.5, 0.5), Quaternion<float>());
 
@@ -25,8 +24,7 @@ void EPAConvexObjectTest::overlapSphereAndBox()
     AssertHelper::assertPoint3FloatEquals(resultEpa->getContactPointB(), Point3<float>(0.9, 0.0, 0.0), epsilon);
 }
 
-void EPAConvexObjectTest::overlapCapsuleAndTriangle()
-{
+void EPAConvexObjectTest::overlapCapsuleAndTriangle() {
     CollisionCapsuleObject capsule(0.0f, 0.25f, 1.0f, CapsuleShape<float>::CAPSULE_Y, Point3<float>(0.0, 0.2, 0.0), Quaternion<float>());
     CollisionTriangleObject triangle(0.0f, Point3<float>(0.0, 0.0, 0.0), Point3<float>(-2.0, 0.0, -2.0), Point3<float>(-2.0, 0.0, 0.0));
 
@@ -39,8 +37,7 @@ void EPAConvexObjectTest::overlapCapsuleAndTriangle()
     AssertHelper::assertPoint3FloatEquals(resultEpa->getContactPointB(), Point3<float>(0.0, 0.0, 0.0));
 }
 
-void EPAConvexObjectTest::overlapTriangleAndCapsule()
-{
+void EPAConvexObjectTest::overlapTriangleAndCapsule() {
     CollisionTriangleObject triangle(0.0f, Point3<float>(0.0, 0.0, 0.0), Point3<float>(-2.0, 0.0, -2.0), Point3<float>(-2.0, 0.0, 0.0));
     CollisionCapsuleObject capsule(0.0f, 0.25f, 1.0f, CapsuleShape<float>::CAPSULE_Y, Point3<float>(0.0, 0.2, 0.0), Quaternion<float>());
 
@@ -53,8 +50,7 @@ void EPAConvexObjectTest::overlapTriangleAndCapsule()
     AssertHelper::assertPoint3FloatEquals(resultEpa->getContactPointB(), Point3<float>(0.0, -0.55, 0.0));
 }
 
-CppUnit::Test *EPAConvexObjectTest::suite()
-{
+CppUnit::Test *EPAConvexObjectTest::suite() {
     auto *suite = new CppUnit::TestSuite("EPAConvexObjectTest");
 
     suite->addTest(new CppUnit::TestCaller<EPAConvexObjectTest>("overlapSphereAndBox", &EPAConvexObjectTest::overlapSphereAndBox));

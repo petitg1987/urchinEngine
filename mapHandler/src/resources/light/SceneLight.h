@@ -4,14 +4,12 @@
 #include <string>
 #include "Urchin3dEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Represent a light on the scene
     */
-    class SceneLight
-    {
+    class SceneLight {
         //XML attributes
         #define NAME_ATTR "name"
 

@@ -4,11 +4,9 @@
 #include "math/algebra/point/Point2.h"
 #include "math/algebra/vector/Vector2.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class ConvexObject2D
-    {
+    template<class T> class ConvexObject2D {
         public:
             virtual ~ConvexObject2D() = default;
 

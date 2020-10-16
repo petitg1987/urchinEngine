@@ -6,25 +6,21 @@
 #include "resources/model/ConstAnimation.h"
 #include "loader/Loader.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    struct BoneInfo
-    {
+    struct BoneInfo {
         std::string name;
         int parent;
         unsigned int flags;
         int startIndex;
     };
 
-    struct BaseFrameBone
-    {
+    struct BaseFrameBone {
         Point3<float> pos;
         Quaternion<float> orient;
     };
 
-    class LoaderUrchinAnim : public Loader<ConstAnimation>
-    {
+    class LoaderUrchinAnim : public Loader<ConstAnimation> {
         public:
             ~LoaderUrchinAnim() override = default;
 

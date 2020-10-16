@@ -7,14 +7,12 @@
 #include <string>
 #include <vector>
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Allow to read a sound file to get stream data and sound information
     */
-    class SoundFileReader
-    {
+    class SoundFileReader {
         public:
             explicit SoundFileReader(const std::string &);
             ~SoundFileReader();

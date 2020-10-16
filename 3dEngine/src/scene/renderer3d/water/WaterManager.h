@@ -7,11 +7,9 @@
 #include "scene/renderer3d/water/Water.h"
 #include "scene/renderer3d/fog/FogManager.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class WaterManager
-    {
+    class WaterManager {
         public:
             void onCameraProjectionUpdate(const Camera *);
 

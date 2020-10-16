@@ -14,14 +14,12 @@
 #include "resources/font/Font.h"
 #include "loader/Loader.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
      * Find the appropriate loader according to the extension of the file and load the resource
      */
-    class MediaManager : public Singleton<MediaManager>
-    {
+    class MediaManager : public Singleton<MediaManager> {
         public:
             friend class Singleton<MediaManager>;
 

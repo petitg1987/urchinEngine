@@ -7,11 +7,9 @@
 
 #include "path/pathfinding/PathPortal.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class FunnelAlgorithm
-    {
+    class FunnelAlgorithm {
         public:
             explicit FunnelAlgorithm(std::vector<std::shared_ptr<PathPortal>> );
 

@@ -7,14 +7,12 @@
 
 #include "player/stream/StreamUpdateTask.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Thread which refresh Open AL buffers for sounds play in streaming
     */
-    class StreamUpdateWorker
-    {
+    class StreamUpdateWorker {
         public:
             StreamUpdateWorker();
             ~StreamUpdateWorker();

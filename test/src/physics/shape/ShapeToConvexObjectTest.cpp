@@ -7,8 +7,7 @@
 #include "physics/shape/ShapeToConvexObjectTest.h"
 using namespace urchin;
 
-void ShapeToConvexObjectTest::boxConversion()
-{
+void ShapeToConvexObjectTest::boxConversion() {
     CollisionBoxShape collisionBox(Vector3<float>(1.0, 2.0, 1.0)); //box 1x2x1
     PhysicsTransform transform(urchin::Point3<float>(1.0, 1.0, 1.0), //move 1 unit on X, Y and Z axis
             urchin::Quaternion<float>(urchin::Vector3<float>(1.0, 0.0, 0.0), PI_VALUE/2.0f)); //rotate 90° on X axis
@@ -25,8 +24,7 @@ void ShapeToConvexObjectTest::boxConversion()
     AssertHelper::assertVector3FloatEquals(box->getAxis(2), Vector3<float>(0.0, -1.0, 0.0));
 }
 
-void ShapeToConvexObjectTest::capsuleConversion()
-{
+void ShapeToConvexObjectTest::capsuleConversion() {
     CollisionCapsuleShape collisionCapsule(0.5, 5.0, CapsuleShape<float>::CAPSULE_Y);
     PhysicsTransform transform(urchin::Point3<float>(1.0, 1.0, 1.0), //move 1 unit on X, Y and Z axis
             urchin::Quaternion<float>(urchin::Vector3<float>(1.0, 0.0, 0.0), PI_VALUE/2)); //rotate 90° on X axis
@@ -42,8 +40,7 @@ void ShapeToConvexObjectTest::capsuleConversion()
     AssertHelper::assertVector3FloatEquals(capsule->getAxis(2), Vector3<float>(0.0, -1.0, 0.0));
 }
 
-void ShapeToConvexObjectTest::cylinderConversion()
-{
+void ShapeToConvexObjectTest::cylinderConversion() {
     CollisionCylinderShape collisionCylinder(0.5, 5.0, CylinderShape<float>::CYLINDER_Y);
     PhysicsTransform transform(urchin::Point3<float>(1.0, 1.0, 1.0), //move 1 unit on X, Y and Z axis
             urchin::Quaternion<float>(urchin::Vector3<float>(1.0, 0.0, 0.0), PI_VALUE/2)); //rotate 90° on X axis
@@ -59,8 +56,7 @@ void ShapeToConvexObjectTest::cylinderConversion()
     AssertHelper::assertVector3FloatEquals(cylinder->getAxis(2), Vector3<float>(0.0, -1.0, 0.0));
 }
 
-void ShapeToConvexObjectTest::convexHullConversion()
-{
+void ShapeToConvexObjectTest::convexHullConversion() {
     Point3<float> trapezePointsTab[] = {
             Point3<float>(1.0, 0.0, 0.0), Point3<float>(3.0, 0.0, 0.0), Point3<float>(0.0, 3.0, 0.0), Point3<float>(0.0, 1.0, 0.0),
             Point3<float>(1.0, 0.0, -1.0), Point3<float>(3.0, 0.0, -1.0), Point3<float>(0.0, 3.0, -1.0), Point3<float>(0.0, 1.0, -1.0),
@@ -78,8 +74,7 @@ void ShapeToConvexObjectTest::convexHullConversion()
     AssertHelper::assertPoint3FloatEquals(convexHull->getPointsWithoutMargin()[1], Point3<float>(2.08132034356, -2.0247519016, -0.04));
 }
 
-void ShapeToConvexObjectTest::sphereConversion()
-{
+void ShapeToConvexObjectTest::sphereConversion() {
     CollisionSphereShape collisionSphere(20.0); //sphere radius 20 units
     PhysicsTransform transform(urchin::Point3<float>(1.0, 1.0, 1.0), //move 1 unit on X, Y and Z axis
             urchin::Quaternion<float>(urchin::Vector3<float>(1.0, 0.0, 0.0), PI_VALUE/2)); //rotate 90° on X axis
@@ -91,8 +86,7 @@ void ShapeToConvexObjectTest::sphereConversion()
     AssertHelper::assertPoint3FloatEquals(sphere->getCenterOfMass(), Point3<float>(1.0, 1.0, 1.0));
 }
 
-CppUnit::Test *ShapeToConvexObjectTest::suite()
-{
+CppUnit::Test *ShapeToConvexObjectTest::suite() {
     auto *suite = new CppUnit::TestSuite("ShapeToConvexObjectTest");
 
     suite->addTest(new CppUnit::TestCaller<ShapeToConvexObjectTest>("boxConversion", &ShapeToConvexObjectTest::boxConversion));

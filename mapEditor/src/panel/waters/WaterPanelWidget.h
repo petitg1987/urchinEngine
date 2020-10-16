@@ -14,11 +14,9 @@
 #include "controller/waters/WaterController.h"
 #include "panel/waters/WaterTableView.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class WaterPanelWidget : public QWidget, public Observer
-    {
+    class WaterPanelWidget : public QWidget, public Observer {
         Q_OBJECT
 
         public:

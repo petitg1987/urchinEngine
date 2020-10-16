@@ -7,11 +7,9 @@
 #include "math/geometry/2d/shape/ConvexShape2D.h"
 #include "math/algebra/point/Point2.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class ConvexHullShape2D : public ConvexShape2D
-    {
+    template<class T> class ConvexHullShape2D : public ConvexShape2D {
         public:
             ConvexHullShape2D() = default;
             explicit ConvexHullShape2D(const std::vector<Point2<T>> &);

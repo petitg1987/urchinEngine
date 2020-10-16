@@ -6,11 +6,9 @@
 
 #include "EPAResult.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    template<class T> class EPAResultNoCollide : public EPAResult<T>
-    {
+    template<class T> class EPAResultNoCollide : public EPAResult<T> {
         public:
             bool isValidResult() const override;
 

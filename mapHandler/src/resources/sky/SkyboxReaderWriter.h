@@ -6,11 +6,9 @@
 
 #include "Urchin3dEngine.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    class SkyboxReaderWriter
-    {
+    class SkyboxReaderWriter {
         //XML tags
         #define SKYBOX_TAG "skybox"
         #define TEXTURES_TAG "textures"

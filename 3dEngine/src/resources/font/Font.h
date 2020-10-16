@@ -6,19 +6,16 @@
 #include "resources/Resource.h"
 #include "resources/image/Image.h"
 
-namespace urchin
-{
+namespace urchin {
 
-    struct Glyph
-    { //glyph is a letter
+    struct Glyph { //glyph is a letter
         unsigned int width;
         unsigned int height;
         int shift;
         unsigned char *buf;
     };
 
-    class Font : public Resource
-    {
+    class Font : public Resource {
         public:
             Font(Image *, Glyph *, unsigned int, unsigned int, unsigned int);
             ~Font() override;

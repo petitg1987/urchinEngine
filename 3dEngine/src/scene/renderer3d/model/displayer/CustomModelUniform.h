@@ -5,14 +5,12 @@
 
 #include "scene/renderer3d/model/Model.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Allow to load custom model uniform for model displayer
     */
-    class CustomModelUniform
-    {
+    class CustomModelUniform {
         public:
             virtual ~CustomModelUniform() = default;
 

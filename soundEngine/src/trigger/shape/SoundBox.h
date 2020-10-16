@@ -5,14 +5,12 @@
 
 #include "trigger/shape/SoundShape.h"
 
-namespace urchin
-{
+namespace urchin {
 
     /**
     * Box used to delimit the sound
     */
-    class SoundBox : public SoundShape
-    {
+    class SoundBox : public SoundShape {
         public:
             SoundBox(const Vector3<float> &, const Point3<float> &, const Quaternion<float> &, float);
 
