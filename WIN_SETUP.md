@@ -23,23 +23,12 @@
   * Copy lib (Win64) & include respectively in C:\MinGW\mingw64\lib & C:\MinGW\mingw64\x86_64-w64-mingw32\include\AL
   * Note: Necessary to rename .lib file into .a file (prefixed with lib) to match library name.
 * Libsnd:
-  * Donwload and execute windows installer: http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28-w64-setup.exe
+  * Download and execute windows installer: http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28-w64-setup.exe
   * Copy lib & include respectively in C:\MinGW\mingw64\lib & C:\MinGW\mingw64\x86_64-w64-mingw32\include
   * Note: Necessary to rename .lib file into .a file (prefixed with lib) to match library name.
-* SFML:
-  * Donwload CMake (https://github.com/Kitware/CMake/releases/download/v3.14.4/cmake-3.14.4-win64-x64.zip) and install (copy files in C:\msys\1.0)
-  * Donwload SFML source: https://www.sfml-dev.org/files/SFML-2.5.1-sources.zip
-  * Copy in C:\msys\1.0\home\greg\
-  * Execute CMake-gui:
-    * Define source code: C:/msys/1.0/home/greg/SFML-2.5.1
-    * Define build location: C:/msys/1.0/home/greg/SFML-2.5.1/build
-    * Click "configure" and select "MinGW-makefile"
-    * Set SFML_USE_STATIC_STD_LIBS=true and BUILD_SHARED_LIBS=false
-    * Add CMAKE_CXX_STANDARD entry (String) with value: 17
-    * Click "configure"
-    * Click "generate"
-  * Execute mingw32-make in "C:/msys/1.0/home/greg/SFML-2.5.1/build"
-  * Copy lib & include respectively in C:\MinGW\mingw64\lib & C:\MinGW\mingw64\x86_64-w64-mingw32\include
+* GLFW:
+  * Download: https://github.com/glfw/glfw/releases/download/3.3.2/glfw-3.3.2.bin.WIN64.zip
+  * Copy lib (mingw-w64) & include respectively in C:\MinGW\mingw64\lib & C:\MinGW\mingw64\x86_64-w64-mingw32\include
 * Libcurl:
   * Download curl for Windows 64bits (https://curl.haxx.se/windows/dl-7.64.1_1/curl-7.64.1_1-win64-mingw.zip). Note: associate DLL can be also downloaded on this page (OpenSSL 1.1.1)
   * Copy lib & include respectively in C:\MinGW\mingw64\lib & C:\MinGW\mingw64\x86_64-w64-mingw32\include
