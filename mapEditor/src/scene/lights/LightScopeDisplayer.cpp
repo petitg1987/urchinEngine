@@ -13,7 +13,7 @@ namespace urchin {
         cleanCurrentDisplay();
     }
 
-    void LightScopeDisplayer::displayLightScopefor (const SceneLight *sceneLight) {
+    void LightScopeDisplayer::displayLightScopeFor(const SceneLight *sceneLight) {
         cleanCurrentDisplay();
 
         if (sceneLight) {

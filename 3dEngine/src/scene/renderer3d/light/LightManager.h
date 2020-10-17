@@ -19,7 +19,7 @@ namespace urchin {
                 REMOVE_LIGHT, //A light has been removed
             };
 
-            void loadUniformLocationfor (unsigned int);
+            void loadUniformLocationFor(unsigned int);
             OctreeManager<Light> *getLightOctreeManager() const;
             Light *getLastUpdatedLight();
 

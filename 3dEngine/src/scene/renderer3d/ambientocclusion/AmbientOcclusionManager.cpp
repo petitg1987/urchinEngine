@@ -111,7 +111,7 @@ namespace urchin {
         generateNoiseTexture();
     }
 
-    void AmbientOcclusionManager::loadUniformLocationfor (unsigned int deferredShaderID) {
+    void AmbientOcclusionManager::loadUniformLocationFor(unsigned int deferredShaderID) {
         ShaderManager::instance()->bind(deferredShaderID);
         ambientOcclusionTexLoc = glGetUniformLocation(deferredShaderID, "ambientOcclusionTex");
     }

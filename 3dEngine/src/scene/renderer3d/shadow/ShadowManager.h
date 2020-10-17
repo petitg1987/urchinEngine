@@ -35,7 +35,7 @@ namespace urchin {
             ShadowManager(LightManager *, OctreeManager<Model> *);
             ~ShadowManager() override;
 
-            void loadUniformLocationfor (unsigned int);
+            void loadUniformLocationFor(unsigned int);
             void onResize(unsigned int, unsigned int);
             void onCameraProjectionUpdate(const Camera *);
             void notify(Observable *, int) override;

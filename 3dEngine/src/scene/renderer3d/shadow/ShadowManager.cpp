@@ -79,7 +79,7 @@ namespace urchin {
         delete shadowModelUniform;
     }
 
-    void ShadowManager::loadUniformLocationfor (unsigned int deferredShaderID) {
+    void ShadowManager::loadUniformLocationFor(unsigned int deferredShaderID) {
         //shadow information
         ShaderManager::instance()->bind(deferredShaderID);
         depthSplitDistanceLoc = static_cast<unsigned int>(glGetUniformLocation(deferredShaderID, "depthSplitDistance"));

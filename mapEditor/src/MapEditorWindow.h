@@ -63,7 +63,7 @@ namespace urchin {
             void executeExitAction();
 
             void executeViewPropertiesChangeAction();
-            ScenePanelWidget::TabName getConcernedTabfor (SceneDisplayer::ViewProperties);
+            ScenePanelWidget::TabName getConcernedTabFor(SceneDisplayer::ViewProperties);
     };
 
 }

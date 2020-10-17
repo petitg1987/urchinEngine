@@ -138,10 +138,10 @@ namespace urchin {
         viewPositionLoc = glGetUniformLocation(deferredShadingShader, "viewPosition");
 
         //managers
-        fogManager->loadUniformLocationfor (deferredShadingShader);
-        lightManager->loadUniformLocationfor (deferredShadingShader);
-        shadowManager->loadUniformLocationfor (deferredShadingShader);
-        ambientOcclusionManager->loadUniformLocationfor (deferredShadingShader);
+        fogManager->loadUniformLocationFor(deferredShadingShader);
+        lightManager->loadUniformLocationFor(deferredShadingShader);
+        shadowManager->loadUniformLocationFor(deferredShadingShader);
+        ambientOcclusionManager->loadUniformLocationFor(deferredShadingShader);
     }
 
     void Renderer3d::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {

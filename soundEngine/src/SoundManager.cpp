@@ -67,7 +67,7 @@ namespace urchin {
         return triggers;
     }
 
-    SoundTrigger *SoundManager::retrieveSoundTriggerfor (const Sound *sound) const {
+    SoundTrigger *SoundManager::retrieveSoundTriggerFor(const Sound *sound) const {
         for (const auto &audioController : audioControllers) {
             if (audioController->getSound() == sound) {
                 return audioController->getSoundTrigger();

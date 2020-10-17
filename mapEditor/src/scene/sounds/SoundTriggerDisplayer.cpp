@@ -13,7 +13,7 @@ namespace urchin {
         cleanCurrentDisplay();
     }
 
-    void SoundTriggerDisplayer::displaySoundTriggerfor (const SceneSound *sceneSound) {
+    void SoundTriggerDisplayer::displaySoundTriggerFor(const SceneSound *sceneSound) {
         cleanCurrentDisplay();
 
         if (sceneSound) {

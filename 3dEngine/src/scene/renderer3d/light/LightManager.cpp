@@ -32,7 +32,7 @@ namespace urchin {
         delete [] lightsInfo;
     }
 
-    void LightManager::loadUniformLocationfor (unsigned int deferredShaderID) {
+    void LightManager::loadUniformLocationFor(unsigned int deferredShaderID) {
         std::ostringstream isExistLocName, produceShadowLocName, hasParallelBeamsName, positionOrDirectionLocName;
         std::ostringstream exponentialAttName, lightAmbientName;
         for (unsigned int i=0;i<maxLights;++i) {

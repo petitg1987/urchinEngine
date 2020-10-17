@@ -148,17 +148,17 @@ namespace urchin {
 
     void SceneDisplayer::refreshLightScopeModel() {
         if (viewProperties[LIGHT_SCOPE] && highlightSceneLight && highlightSceneLight->getLight()) {
-            lightScopeDisplayer->displayLightScopefor (highlightSceneLight);
+            lightScopeDisplayer->displayLightScopeFor(highlightSceneLight);
         } else {
-            lightScopeDisplayer->displayLightScopefor (nullptr);
+            lightScopeDisplayer->displayLightScopeFor(nullptr);
         }
     }
 
     void SceneDisplayer::refreshSoundTriggerModel() {
         if (viewProperties[SOUND_TRIGGER] && highlightSceneSound && highlightSceneSound->getSoundTrigger()) {
-            soundTriggerDisplayer->displaySoundTriggerfor (highlightSceneSound);
+            soundTriggerDisplayer->displaySoundTriggerFor(highlightSceneSound);
         } else {
-            soundTriggerDisplayer->displaySoundTriggerfor (nullptr);
+            soundTriggerDisplayer->displaySoundTriggerFor(nullptr);
         }
     }
 

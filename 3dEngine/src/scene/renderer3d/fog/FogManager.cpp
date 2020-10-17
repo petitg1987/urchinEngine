@@ -36,7 +36,7 @@ namespace urchin {
         return fogs.top();
     }
 
-    void FogManager::loadUniformLocationfor (unsigned int deferredShaderID) {
+    void FogManager::loadUniformLocationFor(unsigned int deferredShaderID) {
         this->deferredShaderID = deferredShaderID;
 
         ShaderManager::instance()->bind(deferredShaderID);

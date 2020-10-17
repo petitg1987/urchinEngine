@@ -16,7 +16,7 @@ namespace urchin {
             void popFog();
             std::shared_ptr<const Fog> getCurrentFog() const;
 
-            void loadUniformLocationfor (unsigned int);
+            void loadUniformLocationFor(unsigned int);
             void loadFog();
 
         private:

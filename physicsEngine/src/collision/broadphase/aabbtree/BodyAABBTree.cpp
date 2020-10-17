@@ -22,7 +22,7 @@ namespace urchin {
     }
 
     void BodyAABBTree::postAddObjectCallback(AABBNode<AbstractWorkBody *> *newNode) {
-        computeOverlappingPairsfor (newNode);
+        computeOverlappingPairsFor(newNode);
     }
 
     void BodyAABBTree::removeBody(AbstractWorkBody *body) {
@@ -52,7 +52,7 @@ namespace urchin {
         return defaultPairContainer->getOverlappingPairs();
     }
 
-    void BodyAABBTree::computeOverlappingPairsfor (AABBNode<AbstractWorkBody *> *leafNode) {
+    void BodyAABBTree::computeOverlappingPairsFor(AABBNode<AbstractWorkBody *> *leafNode) {
         browseNodes.clear();
         browseNodes.push_back(AABBTree::getRootNode());
 

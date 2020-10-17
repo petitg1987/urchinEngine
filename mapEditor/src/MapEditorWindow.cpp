@@ -377,13 +377,13 @@ namespace urchin {
 
             bool isViewChecked = viewActions[viewProperties]->isChecked();
             bool isCorrespondingTabSelected = (scenePanelWidget==nullptr && i==0)
-                    || (scenePanelWidget!=nullptr && getConcernedTabfor (viewProperties)==scenePanelWidget->getTabSelected());
+                    || (scenePanelWidget!=nullptr && getConcernedTabFor(viewProperties)==scenePanelWidget->getTabSelected());
 
             sceneDisplayerWidget->setViewProperties(viewProperties, isViewChecked && isCorrespondingTabSelected);
         }
     }
 
-    ScenePanelWidget::TabName MapEditorWindow::getConcernedTabfor (SceneDisplayer::ViewProperties viewProperties) {
+    ScenePanelWidget::TabName MapEditorWindow::getConcernedTabFor(SceneDisplayer::ViewProperties viewProperties) {
         if (SceneDisplayer::MODEL_PHYSICS==viewProperties) {
             return ScenePanelWidget::OBJECTS;
         }
