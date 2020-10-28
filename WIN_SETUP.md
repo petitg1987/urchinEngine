@@ -37,18 +37,18 @@
   * Copy file in C:\MinGW\mingw64\bin
 * Path configuration (only to start app. inside IntelliJ):
   * Add in "Path" Windows env. variable, the DLL directory:
-    * `C:\Users\greg\Desktop\Project\greenCity\.build\release\urchinEngine\3dEngine`
-    * `C:\Users\greg\Desktop\Project\greenCity\.build\release\urchinEngine\AIEngine`
-    * `C:\Users\greg\Desktop\Project\greenCity\.build\release\urchinEngine\common`
-    * `C:\Users\greg\Desktop\Project\greenCity\.build\release\urchinEngine\mapHandler`
-    * `C:\Users\greg\Desktop\Project\greenCity\.build\release\urchinEngine\physicsEngine`
-    * `C:\Users\greg\Desktop\Project\greenCity\.build\release\urchinEngine\soundEngine`
-    * `C:\Users\greg\Desktop\Project\greenCity\.build\release\urchinEngine\networkEngine`
-    * `C:\Users\greg\Desktop\Project\greenCity\.build\debug\urchinEngine\3dEngine`
-    * `C:\Users\greg\Desktop\Project\greenCity\.build\debug\urchinEngine\AIEngine`
-    * `C:\Users\greg\Desktop\Project\greenCity\.build\debug\urchinEngine\common`
-    * `C:\Users\greg\Desktop\Project\greenCity\.build\debug\urchinEngine\mapHandler`
-    * `C:\Users\greg\Desktop\Project\greenCity\.build\debug\urchinEngine\physicsEngine`
-    * `C:\Users\greg\Desktop\Project\greenCity\.build\debug\urchinEngine\soundEngine`
-    * `C:\Users\greg\Desktop\Project\greenCity\.build\debug\urchinEngine\networkEngine`
-    * `C:\Users\greg\Desktop\Project\greenCity\release\windows\resources\lib`
+    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\release\urchinEngine\3dEngine`
+    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\release\urchinEngine\AIEngine`
+    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\release\urchinEngine\common`
+    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\release\urchinEngine\mapHandler`
+    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\release\urchinEngine\physicsEngine`
+    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\release\urchinEngine\soundEngine`
+    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\release\urchinEngine\networkEngine`
+    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\debug\urchinEngine\3dEngine`
+    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\debug\urchinEngine\AIEngine`
+    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\debug\urchinEngine\common`
+    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\debug\urchinEngine\mapHandler`
+    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\debug\urchinEngine\physicsEngine`
+    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\debug\urchinEngine\soundEngine`
+    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\debug\urchinEngine\networkEngine`
+    * `C:\Users\greg\Desktop\Project\laserRiddle\release\windows\resources\lib`
