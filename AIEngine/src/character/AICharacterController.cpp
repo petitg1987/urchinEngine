@@ -38,6 +38,10 @@ namespace urchin {
         character->updateMomentum(Vector3<float>(0.0f, 0.0f, 0.0f));
     }
 
+    std::shared_ptr<const PathRequest> AICharacterController::getPathRequest() const {
+        return pathRequest;
+    }
+
     void AICharacterController::update() {
         if (pathRequest) {
             if (pathPoints.empty() && pathRequest->isPathReady()) {

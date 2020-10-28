@@ -19,6 +19,8 @@ namespace urchin {
             void moveTo(const Point3<float> &);
             void stopMoving();
 
+            std::shared_ptr<const PathRequest> getPathRequest() const;
+
             void update();
 
         private:
