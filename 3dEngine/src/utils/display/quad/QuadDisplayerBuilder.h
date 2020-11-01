@@ -17,9 +17,6 @@ namespace urchin {
             QuadDisplayerBuilder *dimension(unsigned int);
             unsigned int getDimension() const;
 
-            QuadDisplayerBuilder *bufferUsage(unsigned int);
-            unsigned int getBufferUsage() const;
-
             QuadDisplayerBuilder *vertexData(unsigned int, void *, bool);
             unsigned int getVertexDataType() const;
             void *getVertexCoord() const;
