@@ -53,7 +53,7 @@ namespace urchin {
         if (getWidgetState()==FOCUS) {
             return texInfoOnFocus->getTextureID();
         } else if (getWidgetState()==CLICKING) {
-            textureID = texInfoOnClick->getTextureID();
+            return texInfoOnClick->getTextureID();
         }
 
         return texInfoDefault->getTextureID();

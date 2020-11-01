@@ -148,7 +148,7 @@ namespace urchin {
         texSkybox = nullptr;
     }
 
-    void Skybox::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) {
+    void Skybox::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) const {
         ShaderManager::instance()->bind(skyboxShader);
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
     }
