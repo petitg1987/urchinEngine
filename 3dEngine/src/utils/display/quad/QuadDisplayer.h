@@ -20,8 +20,6 @@ namespace urchin {
             unsigned int numberOfQuad;
             unsigned int dimension; //2=2D, 3=3D
 
-            unsigned int bufferUsage;
-
             unsigned int vertexDataType;
             void *vertexCoord;
 

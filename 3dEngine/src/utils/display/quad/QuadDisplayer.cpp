@@ -9,7 +9,6 @@ namespace urchin {
     QuadDisplayer::QuadDisplayer(const QuadDisplayerBuilder *quadDisplayerBuilder) :
             numberOfQuad(0),
             dimension(0),
-            bufferUsage(0),
             vertexDataType(0),
             vertexCoord(nullptr),
             textureDataType(0),
@@ -35,7 +34,6 @@ namespace urchin {
 
         numberOfQuad = quadDisplayerBuilder->getNumberOfQuad();
         dimension = quadDisplayerBuilder->getDimension();
-        bufferUsage = quadDisplayerBuilder->getBufferUsage();
         vertexDataType = quadDisplayerBuilder->getVertexDataType();
         vertexCoord = quadDisplayerBuilder->getVertexCoord();
         textureDataType = quadDisplayerBuilder->getTextureDataType();
@@ -53,7 +51,7 @@ namespace urchin {
     void QuadDisplayer::initializeDisplay(bool deleteVertexCoord, bool deleteTextureCoord) {
         glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
         const unsigned int vertexSize = (vertexDataType==GL_FLOAT ? sizeof(float) : sizeof(int)) * 4*dimension*numberOfQuad;
-        glBufferData(GL_ARRAY_BUFFER, vertexSize, vertexCoord, bufferUsage);
+        glBufferData(GL_ARRAY_BUFFER, vertexSize, vertexCoord, GL_STATIC_DRAW);
         glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
         glVertexAttribPointer(SHADER_VERTEX_POSITION, dimension, vertexDataType, GL_FALSE, 0, nullptr);
         if (deleteVertexCoord) {
@@ -69,7 +67,7 @@ namespace urchin {
 
         glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
         const unsigned int textureSize = (textureDataType==GL_FLOAT ? sizeof(float) : sizeof(int)) * 4*dimension*numberOfQuad;
-        glBufferData(GL_ARRAY_BUFFER, textureSize, textureCoord, bufferUsage);
+        glBufferData(GL_ARRAY_BUFFER, textureSize, textureCoord, GL_STATIC_DRAW);
         glEnableVertexAttribArray(SHADER_TEX_COORD);
         glVertexAttribPointer(SHADER_TEX_COORD, dimension, textureDataType, GL_FALSE, 0, nullptr);
         if (deleteTextureCoord) {

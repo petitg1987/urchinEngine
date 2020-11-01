@@ -36,8 +36,6 @@ namespace urchin {
             unsigned int pNumberOfQuad;
             unsigned int pDimension;
 
-            unsigned int pBufferUsage;
-
             unsigned int vertexDataType;
             void *vertexCoord;
             bool deleteVertexCoord;
