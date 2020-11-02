@@ -9,12 +9,9 @@
 namespace urchin {
 
     Text::Text(Position position, const std::string &fontFilename) :
-        Widget(position, Size(0, 0, Size::PIXEL)),
-        text(""),
-        maxLength(-1) {
+            Widget(position, Size(0, 0, Size::PIXEL)),
+            maxLength(-1) {
         font = MediaManager::instance()->getMedia<Font>(fontFilename);
-        quadDisplayerBuilder = std::make_unique<QuadDisplayerBuilder>();
-        quadDisplayer = quadDisplayerBuilder->numberOfQuad(0)->build();
 
         setText(text);
     }
@@ -33,10 +30,10 @@ namespace urchin {
 
         //cut the text if needed
         unsigned int numLetters = 0;
-        std::stringstream cuttedTextStream((maxLength > 0) ? cutText(text, static_cast<unsigned int>(maxLength)) : text);
+        std::stringstream cutTextStream((maxLength > 0) ? cutText(text, static_cast<unsigned int>(maxLength)) : text);
         std::string item;
         cutTextLines.clear();
-        while (std::getline(cuttedTextStream, item, '\n')) {
+        while (std::getline(cutTextStream, item, '\n')) {
             cutTextLines.push_back(item);
             numLetters += item.size();
         }
@@ -86,11 +83,11 @@ namespace urchin {
         unsigned int numberOfInterLines = cutTextLines.size() - 1;
         setSize(Size((float)width, (float)(cutTextLines.size() * font->getHeight() + numberOfInterLines * font->getSpaceBetweenLines()), Size::SizeType::PIXEL));
 
-        quadDisplayerBuilder
+        quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
                 ->numberOfQuad(numLetters)
                 ->vertexData(GL_INT, &vertexData[0], false)
-                ->textureData(GL_FLOAT, &textureData[0], false);
-        quadDisplayer->update(quadDisplayerBuilder.get());
+                ->textureData(GL_FLOAT, &textureData[0], false)
+                ->build();
     }
 
     std::string Text::cutText(const std::string &constText, unsigned int maxLength) {
@@ -133,14 +130,16 @@ namespace urchin {
     }
 
     void Text::display(int translateDistanceLoc, float dt) {
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        if(quadDisplayer) {
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        glBindTexture(GL_TEXTURE_2D, font->getTextureID());
+            glBindTexture(GL_TEXTURE_2D, font->getTextureID());
 
-        quadDisplayer->display();
+            quadDisplayer->display();
 
-        glDisable(GL_BLEND);
+            glDisable(GL_BLEND);
+        }
 
         Widget::display(translateDistanceLoc, dt);
     }

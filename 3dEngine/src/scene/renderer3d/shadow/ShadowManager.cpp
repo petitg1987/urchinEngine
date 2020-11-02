@@ -599,7 +599,7 @@ namespace urchin {
             ++i;
         }
 
-        float *depthSplitDistance = new float[nbShadowMaps];
+        auto *depthSplitDistance = new float[nbShadowMaps];
         for (unsigned int shadowMapIndex=0; shadowMapIndex<nbShadowMaps; ++shadowMapIndex) {
             float currSplitDistance = splitDistances[shadowMapIndex];
             depthSplitDistance[shadowMapIndex] = ((projectionMatrix(2, 2)*-currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance)) / 2.0f + 0.5f;
