@@ -136,8 +136,6 @@ namespace urchin {
         ShaderManager::instance()->bind(GUIShader);
         glUniform1i(diffuseTexSamplerLoc, 0);
 
-        glActiveTexture(GL_TEXTURE0); //TODO remove ? handled by genericDisplayer
-
         for (auto &widget : widgets) {
             if (widget->isVisible()) {
                 Vector2<int> translateVector(widget->getGlobalPositionX(), widget->getGlobalPositionY());

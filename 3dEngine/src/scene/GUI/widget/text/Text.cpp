@@ -83,8 +83,8 @@ namespace urchin {
         unsigned int numberOfInterLines = cutTextLines.size() - 1;
         setSize(Size((float)width, (float)(cutTextLines.size() * font->getHeight() + numberOfInterLines * font->getSpaceBetweenLines()), Size::SizeType::PIXEL));
 
-        textDisplayer = std::make_unique<GenericDisplayerBuilder>()
-                ->numberOfQuad(numLetters)
+        textDisplayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)
+                ->shapeCount(numLetters)
                 ->vertexData(CoordDataType::INT, &vertexData[0], false)
                 ->textureData(CoordDataType::FLOAT, &textureData[0], false)
                 ->addTexture(Texture::build(font->getTextureID()))

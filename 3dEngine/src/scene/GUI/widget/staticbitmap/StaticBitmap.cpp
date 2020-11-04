@@ -28,7 +28,7 @@ namespace urchin {
         tex->toTexture(false, false, false);
 
         //visual
-        bitmapDisplayer = std::make_unique<GenericDisplayerBuilder>()
+        bitmapDisplayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)
                 ->vertexData(CoordDataType::UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()}, true)
                 ->textureData(CoordDataType::FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}, true)
                 ->addTexture(Texture::build(tex->getTextureID()))

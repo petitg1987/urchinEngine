@@ -28,7 +28,7 @@ namespace urchin {
     void TextureFilter::initializeDisplay() {
         std::locale::global(std::locale("C")); //for float
 
-        textureDisplayer = std::make_unique<GenericDisplayerBuilder>()->build();
+        textureDisplayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)->build();
 
         std::map<std::string, std::string> shaderTokens;
         if (textureFormat==GL_RGB) {

@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "graphic/displayer/CoordDataType.h"
+#include "graphic/displayer/ShapeType.h"
 #include "graphic/displayer/Texture.h"
 
 namespace urchin {
@@ -20,12 +21,17 @@ namespace urchin {
             void display() const; //TODO make sure that all caller use all feature of GenericDisplayer
 
         private:
-            void initialize(const GenericDisplayerBuilder *);
             void initializeDisplay(bool, bool);
+
+            unsigned int shapeTypeToVertexCount(ShapeType) const;
+            unsigned int shapeTypeToGlType(ShapeType) const;
             unsigned int dataTypeToSize(CoordDataType) const;
             unsigned int dataTypeToGlType(CoordDataType) const;
 
-            unsigned int numberOfQuad;
+            void bindTextures() const;
+
+            ShapeType shapeType;
+            unsigned int shapeCount;
             unsigned int dimension; //2=2D, 3=3D
 
             CoordDataType vertexDataType;
@@ -33,6 +39,8 @@ namespace urchin {
 
             CoordDataType textureDataType;
             void *textureCoord;
+
+            std::vector<Texture> textures;
 
             unsigned int bufferIDs[2], vertexArrayObject;
             enum //buffer IDs indices
@@ -45,8 +53,6 @@ namespace urchin {
                 SHADER_VERTEX_POSITION = 0,
                 SHADER_TEX_COORD
             };
-
-            std::vector<Texture> textures;
     };
 
 }

@@ -68,7 +68,7 @@ namespace urchin {
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-        displayer = std::make_unique<GenericDisplayerBuilder>()->build();
+        displayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)->build();
 
         //frame buffer object
         glGenFramebuffers(1, &fboID);

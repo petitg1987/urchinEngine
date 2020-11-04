@@ -15,28 +15,20 @@
 namespace urchin {
 
     TextBox::TextBox(Position position, Size size, std::string nameSkin) :
-        Widget(position, size),
-        nameSkin(std::move(nameSkin)),
-        text(nullptr),
-        maxWidthText(0),
-        startTextIndex(0),
-        cursorIndex(0),
-        cursorPosition(0),
-        cursorBlink(0.0f),
-        state(UNACTIVE),
-        widgetOutline(new WidgetOutline()),
-        cursorLineBufferID(0),
-        cursorLineVAO(0) {
-        glGenBuffers(1, &cursorLineBufferID);
-        glGenVertexArrays(1, &cursorLineVAO);
-
+            Widget(position, size),
+            nameSkin(std::move(nameSkin)),
+            text(nullptr),
+            maxWidthText(0),
+            startTextIndex(0),
+            cursorIndex(0),
+            cursorPosition(0),
+            cursorBlink(0.0f),
+            state(UNACTIVE),
+            widgetOutline(new WidgetOutline()){
         TextBox::createOrUpdateWidget();
     }
 
     TextBox::~TextBox() {
-        glDeleteVertexArrays(1, &cursorLineVAO);
-        glDeleteBuffers(1, &cursorLineBufferID);
-
         delete widgetOutline;
     }
 
@@ -59,15 +51,11 @@ namespace urchin {
         refreshText(cursorIndex);
 
         //visual
-        glBindVertexArray(cursorLineVAO);
+        cursorDisplayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::LINE)
+                ->vertexData(CoordDataType::UNSIGNED_INT, new unsigned int[4]{0, widgetOutline->topWidth, 0, getHeight() - widgetOutline->bottomWidth}, true)
+                ->build();
 
-        const unsigned int cursorLineVertexData[] = {0, widgetOutline->topWidth, 0, getHeight() - widgetOutline->bottomWidth};
-        glBindBuffer(GL_ARRAY_BUFFER, cursorLineBufferID);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(cursorLineVertexData), cursorLineVertexData, GL_STATIC_DRAW);
-        glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-        glVertexAttribPointer(SHADER_VERTEX_POSITION, 2, GL_UNSIGNED_INT, GL_FALSE, 0, nullptr);
-
-        textBoxDisplayer = std::make_unique<GenericDisplayerBuilder>()
+        textBoxDisplayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)
                 ->vertexData(CoordDataType::UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()}, true)
                 ->textureData(CoordDataType::FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}, true)
                 ->addTexture(Texture::build(texTextBoxDefault->getTextureID()))
@@ -104,13 +92,13 @@ namespace urchin {
 
     bool TextBox::onCharEvent(unsigned int character) {
         if (state==ACTIVE) {
-            if (character == 8 && cursorIndex > 0) { //key backspace
+            if (character == 8 && cursorIndex > 0) { //key backspace //TODO doesn't work anymore !!!
                 std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex), allText.length()-cursorIndex);
                 allText = allText.substr(0, static_cast<unsigned long>(cursorIndex-1L));
                 allText.append(tmpRight);
 
                 refreshText(cursorIndex-1);
-            } else if (character == 127 && allText.length() > 0 && cursorIndex < allText.length()) { //key delete
+            } else if (character == 127 && allText.length() > 0 && cursorIndex < allText.length()) { //key delete //TODO doesn't work anymore !!!
                 std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex+1L), allText.length()-cursorIndex);
                 allText = allText.substr(0, static_cast<unsigned long>(cursorIndex));
                 allText.append(tmpRight);
@@ -212,16 +200,9 @@ namespace urchin {
         if (state==ACTIVE && ((int)cursorBlink%2)>0) {
             Vector2<int> widgetPosition(getGlobalPositionX(), getGlobalPositionY());
             glUniform2iv(translateDistanceLoc, 1, (const int*)(widgetPosition + Vector2<int>(cursorPosition, 0)));
+
             glBindTexture(GL_TEXTURE_2D, 0);
-
-            glDisable(GL_DEPTH_TEST);
-            glDepthMask(GL_FALSE);
-
-            glBindVertexArray(cursorLineVAO);
-            glDrawArrays(GL_LINES, 0, 2);
-
-            glDepthMask(GL_TRUE);
-            glEnable(GL_DEPTH_TEST);
+            cursorDisplayer->display();
 
             glUniform2iv(translateDistanceLoc, 1, (const int*)widgetPosition);
         }

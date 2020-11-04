@@ -73,7 +73,7 @@ namespace urchin {
 
         //deferred shading (pass 2)
         createOrUpdateDeferredShadingShader();
-        lightingPassDisplayer = std::make_unique<GenericDisplayerBuilder>()->build();
+        lightingPassDisplayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)->build();
 
         antiAliasingManager = new AntiAliasingManager();
         isAntiAliasingActivated = true;

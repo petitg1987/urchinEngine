@@ -6,16 +6,19 @@
 
 #include "graphic/displayer/generic/GenericDisplayer.h"
 #include "graphic/displayer/CoordDataType.h"
+#include "graphic/displayer/ShapeType.h"
 #include "graphic/displayer/Texture.h"
 
 namespace urchin {
 
     class GenericDisplayerBuilder {
         public:
-            GenericDisplayerBuilder();
+            explicit GenericDisplayerBuilder(ShapeType);
 
-            GenericDisplayerBuilder *numberOfQuad(unsigned int);
-            unsigned int getNumberOfQuad() const;
+            ShapeType getShapeType() const;
+
+            GenericDisplayerBuilder *shapeCount(unsigned int);
+            unsigned int getShapeCount() const;
 
             GenericDisplayerBuilder *dimension(unsigned int);
             unsigned int getDimension() const;
@@ -36,7 +39,8 @@ namespace urchin {
             std::shared_ptr<GenericDisplayer> build();
 
         private:
-            unsigned int pNumberOfQuad;
+            ShapeType shapeType;
+            unsigned int pShapeCount;
             unsigned int pDimension;
 
             CoordDataType vertexDataType;

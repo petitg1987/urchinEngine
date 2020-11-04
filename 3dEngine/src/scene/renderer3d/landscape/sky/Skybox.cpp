@@ -130,8 +130,8 @@ namespace urchin {
             SIZE, SIZE, SIZE, SIZE, -SIZE, SIZE, -SIZE, -SIZE, SIZE, -SIZE, SIZE, SIZE,
         };
 
-        skyboxDisplayer = std::make_unique<GenericDisplayerBuilder>()
-                ->numberOfQuad(6)
+        skyboxDisplayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)
+                ->shapeCount(6)
                 ->dimension(3) //3D
                 ->vertexData(CoordDataType::FLOAT, &vertexCoord[0], false)
                 ->textureData(CoordDataType::FLOAT, &textureCoord[0], false)

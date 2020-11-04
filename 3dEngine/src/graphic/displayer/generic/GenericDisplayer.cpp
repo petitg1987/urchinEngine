@@ -7,19 +7,21 @@
 
 namespace urchin {
 
-    GenericDisplayer::GenericDisplayer(const GenericDisplayerBuilder *quadDisplayerBuilder) :
-            numberOfQuad(0), //TODO rename and propose more than quad
-            dimension(0),
-            vertexDataType(CoordDataType::INT),
-            vertexCoord(nullptr),
-            textureDataType(CoordDataType::INT),
-            textureCoord(nullptr),
+    GenericDisplayer::GenericDisplayer(const GenericDisplayerBuilder *displayerBuilder) :
+            shapeType(displayerBuilder->getShapeType()),
+            shapeCount(displayerBuilder->getShapeCount()),
+            dimension(displayerBuilder->getDimension()),
+            vertexDataType(displayerBuilder->getVertexDataType()),
+            vertexCoord(displayerBuilder->getVertexCoord()),
+            textureDataType(displayerBuilder->getTextureDataType()),
+            textureCoord(displayerBuilder->getTextureCoord()),
+            textures(displayerBuilder->getTextures()),
             bufferIDs(),
             vertexArrayObject(0) {
         glGenBuffers(2, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
 
-        initialize(quadDisplayerBuilder);
+        initializeDisplay(displayerBuilder->isDeleteVertexCoord(), displayerBuilder->isDeleteTextureCoord());
     }
 
     GenericDisplayer::~GenericDisplayer() {
@@ -30,26 +32,10 @@ namespace urchin {
         glDeleteBuffers(2, bufferIDs);
     }
 
-    void GenericDisplayer::initialize(const GenericDisplayerBuilder *quadDisplayerBuilder) {
+    void GenericDisplayer::initializeDisplay(bool deleteVertexCoord, bool deleteTextureCoord) {
         glBindVertexArray(vertexArrayObject);
 
-        numberOfQuad = quadDisplayerBuilder->getNumberOfQuad();
-
-        dimension = quadDisplayerBuilder->getDimension();
-
-        vertexDataType = quadDisplayerBuilder->getVertexDataType();
-        vertexCoord = quadDisplayerBuilder->getVertexCoord();
-
-        textureDataType = quadDisplayerBuilder->getTextureDataType();
-        textureCoord = quadDisplayerBuilder->getTextureCoord();
-
-        textures = quadDisplayerBuilder->getTextures();
-
-        initializeDisplay(quadDisplayerBuilder->isDeleteVertexCoord(), quadDisplayerBuilder->isDeleteTextureCoord());
-    }
-
-    void GenericDisplayer::initializeDisplay(bool deleteVertexCoord, bool deleteTextureCoord) {
-        const unsigned int vertexSize = dataTypeToSize(vertexDataType) * dimension * numberOfQuad * 4;
+        const unsigned int vertexSize = dataTypeToSize(vertexDataType) * dimension * shapeCount * shapeTypeToVertexCount(shapeType);
         glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
         glBufferData(GL_ARRAY_BUFFER, vertexSize, vertexCoord, GL_STATIC_DRAW);
         glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
@@ -67,7 +53,7 @@ namespace urchin {
             vertexCoord = nullptr;
         }
 
-        const unsigned int textureSize = dataTypeToSize(textureDataType) * dimension * numberOfQuad * 4;
+        const unsigned int textureSize = dataTypeToSize(textureDataType) * dimension * shapeCount * shapeTypeToVertexCount(shapeType);
         glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
         glBufferData(GL_ARRAY_BUFFER, textureSize, textureCoord, GL_STATIC_DRAW);
         glEnableVertexAttribArray(SHADER_TEX_COORD);
@@ -84,6 +70,26 @@ namespace urchin {
             }
             textureCoord = nullptr;
         }
+    }
+
+    unsigned int GenericDisplayer::shapeTypeToVertexCount(ShapeType shapeType) const {
+        if (shapeType == ShapeType::RECTANGLE) {
+            return 4;
+        }else if(shapeType == ShapeType::LINE) {
+            return 2;
+        }
+
+        throw std::runtime_error("Unknown shape type: " + std::to_string(shapeType));
+    }
+
+    unsigned int GenericDisplayer::shapeTypeToGlType(ShapeType shapeType) const {
+        if (shapeType == ShapeType::RECTANGLE) {
+            return GL_QUADS;
+        }else if(shapeType == ShapeType::LINE) {
+            return GL_LINES;
+        }
+
+        throw std::runtime_error("Unknown shape type: " + std::to_string(shapeType));
     }
 
     unsigned int GenericDisplayer::dataTypeToSize(CoordDataType dataType) const {
@@ -116,28 +122,32 @@ namespace urchin {
     }
 
     void GenericDisplayer::display() const {
-        if(numberOfQuad == 0) {
+        if(shapeCount == 0) {
             return;
         }
 
-        for(std::size_t i=0; i<textures.size(); ++i) {
-            glActiveTexture(GL_TEXTURE0 + i);
-
-            if(textures[i].getType() == Texture::SIMPLE) {
-                glBindTexture(GL_TEXTURE_2D, textures[i].getId());
-            }else if(textures[i].getType() == Texture::ARRAY) {
-                glBindTexture(GL_TEXTURE_2D_ARRAY, textures[i].getId());
-            }
-        }
+        bindTextures();
 
         glDisable(GL_DEPTH_TEST);
         glDepthMask(GL_FALSE);
 
         glBindVertexArray(vertexArrayObject);
-        glDrawArrays(GL_QUADS, 0, 4 * numberOfQuad);
+        glDrawArrays(shapeTypeToGlType(shapeType), 0, shapeTypeToVertexCount(shapeType) * shapeCount);
 
         glDepthMask(GL_TRUE);
         glEnable(GL_DEPTH_TEST);
+    }
+
+    void GenericDisplayer::bindTextures() const {
+        for (std::size_t i = 0; i < textures.size(); ++i) {
+            glActiveTexture(GL_TEXTURE0 + i);
+
+            if (textures[i].getType() == Texture::SIMPLE) {
+                glBindTexture(GL_TEXTURE_2D, textures[i].getId());
+            } else if (textures[i].getType() == Texture::ARRAY) {
+                glBindTexture(GL_TEXTURE_2D_ARRAY, textures[i].getId());
+            }
+        }
     }
 
 }

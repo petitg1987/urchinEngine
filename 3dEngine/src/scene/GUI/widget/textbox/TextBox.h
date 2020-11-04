@@ -36,7 +36,7 @@ namespace urchin {
             //properties
             const std::string nameSkin;
 
-            //display informations
+            //display information
             Text *text; //text of the text box (widget)
             std::string allText; //text of the text box (string)
             unsigned int maxWidthText; //maximum length of text can be displayed
@@ -55,12 +55,7 @@ namespace urchin {
             //visual
             std::shared_ptr<Image> texTextBoxDefault, texTextBoxFocus;
             WidgetOutline *widgetOutline;
-            std::shared_ptr<GenericDisplayer> textBoxDisplayer;
-            unsigned int cursorLineBufferID, cursorLineVAO;
-            enum
-            {
-                SHADER_VERTEX_POSITION = 0,
-            };
+            std::shared_ptr<GenericDisplayer> textBoxDisplayer, cursorDisplayer;
     };
 
 }

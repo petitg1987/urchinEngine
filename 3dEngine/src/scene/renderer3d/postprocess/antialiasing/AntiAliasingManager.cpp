@@ -19,7 +19,7 @@ namespace urchin {
         invSceneSizeLoc(0) {
         loadFxaaShader();
 
-        displayer = std::make_unique<GenericDisplayerBuilder>()->build();
+        displayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)->build();
     }
 
     AntiAliasingManager::~AntiAliasingManager() {

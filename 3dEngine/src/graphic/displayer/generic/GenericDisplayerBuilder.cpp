@@ -2,25 +2,30 @@
 
 namespace urchin {
 
-    GenericDisplayerBuilder::GenericDisplayerBuilder() :
-        pNumberOfQuad(1),
-        pDimension(2), //2D
-        vertexDataType(CoordDataType::INT),
-        vertexCoord(nullptr),
-        deleteVertexCoord(false),
-        textureDataType(CoordDataType::INT),
-        textureCoord(nullptr),
-        deleteTextureCoord(false) {
+    GenericDisplayerBuilder::GenericDisplayerBuilder(ShapeType shapeType) :
+            shapeType(shapeType),
+            pShapeCount(1),
+            pDimension(2), //2D
+            vertexDataType(CoordDataType::INT),
+            vertexCoord(nullptr),
+            deleteVertexCoord(false),
+            textureDataType(CoordDataType::INT),
+            textureCoord(nullptr),
+            deleteTextureCoord(false) {
 
     }
 
-    GenericDisplayerBuilder *GenericDisplayerBuilder::numberOfQuad(unsigned int numberOfQuad) {
-        this->pNumberOfQuad = numberOfQuad;
+    ShapeType GenericDisplayerBuilder::getShapeType() const {
+        return shapeType;
+    }
+
+    GenericDisplayerBuilder *GenericDisplayerBuilder::shapeCount(unsigned int shapeCount) {
+        this->pShapeCount = shapeCount;
         return this;
     }
 
-    unsigned int GenericDisplayerBuilder::getNumberOfQuad() const {
-        return pNumberOfQuad;
+    unsigned int GenericDisplayerBuilder::getShapeCount() const {
+        return pShapeCount;
     }
 
     GenericDisplayerBuilder *GenericDisplayerBuilder::dimension(unsigned int dimension) {
