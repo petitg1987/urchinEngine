@@ -118,7 +118,7 @@ namespace urchin {
         return LineSegment3D<float>(getNavPolygon()->getPoint(indices[edgeStartIndex]), getNavPolygon()->getPoint(indices[edgeEndIndex]));
     }
 
-    void NavTriangle::assertLinksValidity() {
+    void NavTriangle::assertLinksValidity() const {
         #ifndef NDEBUG
             for (unsigned int edgeIndex=0; edgeIndex <3; ++edgeIndex) {
                 unsigned int countStandardLink = 0;

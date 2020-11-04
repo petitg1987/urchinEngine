@@ -36,7 +36,7 @@ namespace urchin {
             LineSegment3D<float> computeEdge(std::size_t) const;
 
         private:
-            void assertLinksValidity();
+            void assertLinksValidity() const;
 
             std::weak_ptr<NavPolygon> navPolygon; //use weak_ptr to avoid cyclic references (=memory leak) between triangle and polygon
 
