@@ -5,7 +5,7 @@
 #include "UrchinCommon.h"
 
 #include "scene/renderer3d/camera/Camera.h"
-#include "utils/display/quad/QuadDisplayer.h"
+#include "utils/display/generic/GenericDisplayer.h"
 #include "utils/filter/bilateralblur/BilateralBlurFilter.h"
 
 namespace urchin {
@@ -84,7 +84,7 @@ namespace urchin {
             unsigned int depthTexID;
             unsigned int normalAndAmbientTexID;
             GLint ambientOcclusionTexLoc;
-            std::shared_ptr<QuadDisplayer> quadDisplayer;
+            std::shared_ptr<GenericDisplayer> displayer;
 
             std::shared_ptr<BilateralBlurFilter> verticalBlurFilter;
             std::shared_ptr<BilateralBlurFilter> horizontalBlurFilter;

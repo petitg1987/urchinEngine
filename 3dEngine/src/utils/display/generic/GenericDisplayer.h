@@ -1,20 +1,23 @@
-#ifndef URCHINENGINE_QUADDISPLAYER_H
-#define URCHINENGINE_QUADDISPLAYER_H
+#ifndef URCHINENGINE_GENERICDISPLAYER_H
+#define URCHINENGINE_GENERICDISPLAYER_H
+
+#include <vector>
 
 namespace urchin {
 
-    class QuadDisplayerBuilder;
+    class GenericDisplayerBuilder;
 
-    class QuadDisplayer {
+    class GenericDisplayer {
         public:
-            explicit QuadDisplayer(const QuadDisplayerBuilder *);
-            ~QuadDisplayer();
+            explicit GenericDisplayer(const GenericDisplayerBuilder *);
+            ~GenericDisplayer();
 
-            void update(const QuadDisplayerBuilder *);
+            void updateTextureId(std::size_t, unsigned int);
 
             void display() const;
 
         private:
+            void initialize(const GenericDisplayerBuilder *);
             void initializeDisplay(bool, bool);
 
             unsigned int numberOfQuad;
@@ -37,6 +40,8 @@ namespace urchin {
                 SHADER_VERTEX_POSITION = 0,
                 SHADER_TEX_COORD
             };
+
+            std::vector<unsigned int> textureIds;
     };
 
 }

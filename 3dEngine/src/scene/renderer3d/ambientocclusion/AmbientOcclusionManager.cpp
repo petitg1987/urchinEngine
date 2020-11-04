@@ -5,7 +5,7 @@
 
 #include "AmbientOcclusionManager.h"
 #include "utils/shader/ShaderManager.h"
-#include "utils/display/quad/QuadDisplayerBuilder.h"
+#include "utils/display/generic/GenericDisplayerBuilder.h"
 #include "utils/filter/bilateralblur/BilateralBlurFilterBuilder.h"
 
 #define DEFAULT_TEXTURE_SIZE AOTextureSize::HALF_SIZE
@@ -68,7 +68,7 @@ namespace urchin {
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-        quadDisplayer = std::make_unique<QuadDisplayerBuilder>()->build();
+        displayer = std::make_unique<GenericDisplayerBuilder>()->build();
 
         //frame buffer object
         glGenFramebuffers(1, &fboID);
@@ -361,7 +361,7 @@ namespace urchin {
 
         glViewport(0, 0, textureSizeX, textureSizeY);
 
-        quadDisplayer->display();
+        displayer->display();
 
         if (isBlurActivated) {
             verticalBlurFilter->applyOn(ambientOcclusionTexID);

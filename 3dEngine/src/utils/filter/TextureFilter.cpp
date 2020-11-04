@@ -3,7 +3,7 @@
 
 #include "TextureFilter.h"
 #include "utils/shader/ShaderManager.h"
-#include "utils/display/quad/QuadDisplayerBuilder.h"
+#include "utils/display/generic/GenericDisplayerBuilder.h"
 
 namespace urchin {
 
@@ -28,8 +28,7 @@ namespace urchin {
     void TextureFilter::initializeDisplay() {
         std::locale::global(std::locale("C")); //for float
 
-        texQuadDisplayer = std::make_unique<QuadDisplayerBuilder>()
-                ->build();
+        textureDisplayer = std::make_unique<GenericDisplayerBuilder>()->build();
 
         std::map<std::string, std::string> shaderTokens;
         if (textureFormat==GL_RGB) {
@@ -154,7 +153,7 @@ namespace urchin {
             glUniform1ui(layersToUpdateLoc, layersToUpdate);
         }
 
-        texQuadDisplayer->display();
+        textureDisplayer->display();
 
         glBindTexture(textureType, 0);
     }

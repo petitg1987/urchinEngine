@@ -9,7 +9,7 @@
 #include "scene/GUI/widget/Size.h"
 #include "scene/GUI/widget/text/Text.h"
 #include "scene/GUI/GUISkinService.h"
-#include "utils/display/quad/QuadDisplayer.h"
+#include "utils/display/generic/GenericDisplayer.h"
 
 namespace urchin {
 
@@ -54,9 +54,8 @@ namespace urchin {
 
             //visual
             std::shared_ptr<Image> texTextBoxDefault, texTextBoxFocus;
-            unsigned int textureID;
             WidgetOutline *widgetOutline;
-            std::shared_ptr<QuadDisplayer> quadDisplayer;
+            std::shared_ptr<GenericDisplayer> textBoxDisplayer;
             unsigned int cursorLineBufferID, cursorLineVAO;
             enum
             {

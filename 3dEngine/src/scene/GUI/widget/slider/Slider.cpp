@@ -104,20 +104,20 @@ namespace urchin {
     }
 
     void Slider::display(int translateDistanceLoc, float dt) {
-        if (leftButton->getWidgetState()==Widget::WidgetStates::CLICKING) {
+        if (leftButton->getWidgetState() == Widget::WidgetStates::CLICKING) {
             timeInClickingState += dt;
             timeSinceLastChange += dt;
 
-            if (timeInClickingState>TIME_BEFORE_AUTO_CLICK && timeSinceLastChange>TIME_BEFORE_AUTO_NEXT_CLICK
+            if (timeInClickingState > TIME_BEFORE_AUTO_CLICK && timeSinceLastChange > TIME_BEFORE_AUTO_NEXT_CLICK
                     && getSelectedIndex() > 0) {
                 setSelectedIndex(getSelectedIndex()-1);
                 timeSinceLastChange = 0.0f;
             }
-        } else if (rightButton->getWidgetState()==Widget::WidgetStates::CLICKING) {
+        } else if (rightButton->getWidgetState() == Widget::WidgetStates::CLICKING) {
             timeInClickingState += dt;
             timeSinceLastChange += dt;
 
-            if (timeInClickingState>TIME_BEFORE_AUTO_CLICK && timeSinceLastChange>TIME_BEFORE_AUTO_NEXT_CLICK
+            if (timeInClickingState > TIME_BEFORE_AUTO_CLICK && timeSinceLastChange > TIME_BEFORE_AUTO_NEXT_CLICK
                     && getSelectedIndex()+1 < values.size()) {
                 setSelectedIndex(getSelectedIndex()+1);
                 timeSinceLastChange = 0.0f;

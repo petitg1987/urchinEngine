@@ -1,33 +1,37 @@
-#ifndef URCHINENGINE_QUADDISPLAYERBUILDER_H
-#define URCHINENGINE_QUADDISPLAYERBUILDER_H
+#ifndef URCHINENGINE_GENERICDISPLAYERBUILDER_H
+#define URCHINENGINE_GENERICDISPLAYERBUILDER_H
 
 #include <memory>
+#include <vector>
 
-#include "utils/display/quad/QuadDisplayer.h"
+#include "utils/display/generic/GenericDisplayer.h"
 
 namespace urchin {
 
-    class QuadDisplayerBuilder {
+    class GenericDisplayerBuilder {
         public:
-            QuadDisplayerBuilder();
+            GenericDisplayerBuilder();
 
-            QuadDisplayerBuilder *numberOfQuad(unsigned int);
+            GenericDisplayerBuilder *numberOfQuad(unsigned int);
             unsigned int getNumberOfQuad() const;
 
-            QuadDisplayerBuilder *dimension(unsigned int);
+            GenericDisplayerBuilder *dimension(unsigned int);
             unsigned int getDimension() const;
 
-            QuadDisplayerBuilder *vertexData(unsigned int, void *, bool);
+            GenericDisplayerBuilder *vertexData(unsigned int, void *, bool);
             unsigned int getVertexDataType() const;
             void *getVertexCoord() const;
             bool isDeleteVertexCoord() const;
 
-            QuadDisplayerBuilder *textureData(unsigned int, void *, bool);
+            GenericDisplayerBuilder *textureData(unsigned int, void *, bool);
             unsigned int getTextureDataType() const;
             void *getTextureCoord() const;
             bool isDeleteTextureCoord() const;
 
-            std::shared_ptr<QuadDisplayer> build();
+            GenericDisplayerBuilder *addTextureId(unsigned int);
+            std::vector<unsigned int> getTextureIds() const;
+
+            std::shared_ptr<GenericDisplayer> build();
 
         private:
             unsigned int pNumberOfQuad;
@@ -40,6 +44,8 @@ namespace urchin {
             unsigned int textureDataType;
             void *textureCoord;
             bool deleteTextureCoord;
+
+            std::vector<unsigned int> textureIds;
     };
 
 }

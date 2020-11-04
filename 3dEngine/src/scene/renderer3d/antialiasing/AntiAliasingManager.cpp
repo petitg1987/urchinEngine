@@ -4,7 +4,7 @@
 
 #include "scene/renderer3d/antialiasing/AntiAliasingManager.h"
 #include "utils/shader/ShaderManager.h"
-#include "utils/display/quad/QuadDisplayerBuilder.h"
+#include "utils/display/generic/GenericDisplayerBuilder.h"
 
 #define DEFAULT_AA_QUALITY AntiAliasingManager::Quality::VERY_HIGH
 
@@ -19,7 +19,7 @@ namespace urchin {
         invSceneSizeLoc(0) {
         loadFxaaShader();
 
-        quadDisplayer = std::make_unique<QuadDisplayerBuilder>()->build();
+        displayer = std::make_unique<GenericDisplayerBuilder>()->build();
     }
 
     AntiAliasingManager::~AntiAliasingManager() {
@@ -66,7 +66,7 @@ namespace urchin {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-        quadDisplayer->display();
+        displayer->display();
     }
 
 }

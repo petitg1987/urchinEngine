@@ -4,7 +4,7 @@
 #include <memory>
 #include "UrchinCommon.h"
 
-#include "utils/display/quad/QuadDisplayer.h"
+#include "utils/display/generic/GenericDisplayer.h"
 
 namespace urchin {
 
@@ -68,7 +68,7 @@ namespace urchin {
             unsigned int textureID;
             TextureDisplayer::ColorType colorType;
             float colorIntensity;
-            std::shared_ptr<QuadDisplayer> quadDisplayer;
+            std::shared_ptr<GenericDisplayer> displayer;
 
             Matrix3<float> mProjection;
             unsigned int displayTextureShader;

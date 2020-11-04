@@ -5,7 +5,7 @@
 
 #include "scene/GUI/widget/textbox/TextBox.h"
 #include "scene/InputDeviceKey.h"
-#include "utils/display/quad/QuadDisplayerBuilder.h"
+#include "utils/display/generic/GenericDisplayerBuilder.h"
 
 #define ADDITIONAL_LEFT_BORDER 1 //Additional border to outline->leftWidth
 #define LETTER_SHIFT 5 //When the text box is full of text, we shift all letters to left
@@ -24,7 +24,6 @@ namespace urchin {
         cursorPosition(0),
         cursorBlink(0.0f),
         state(UNACTIVE),
-        textureID(0),
         widgetOutline(new WidgetOutline()),
         cursorLineBufferID(0),
         cursorLineVAO(0) {
@@ -68,12 +67,12 @@ namespace urchin {
         glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
         glVertexAttribPointer(SHADER_VERTEX_POSITION, 2, GL_UNSIGNED_INT, GL_FALSE, 0, nullptr);
 
-        quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
+        textBoxDisplayer = std::make_unique<GenericDisplayerBuilder>()
                 ->vertexData(GL_UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()}, true)
                 ->textureData(GL_FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}, true)
+                ->addTextureId(texTextBoxDefault->getTextureID())
                 ->build();
 
-        textureID = texTextBoxDefault->getTextureID();
         computeCursorPosition();
     }
 
@@ -86,13 +85,13 @@ namespace urchin {
             Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
             if (widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
-                textureID = texTextBoxFocus->getTextureID();
+                textBoxDisplayer->updateTextureId(0, texTextBoxFocus->getTextureID());
 
                 int localMouseX = getMouseX() - text->getGlobalPositionX();
                 computeCursorIndex(localMouseX);
             } else {
                 state = UNACTIVE;
-                textureID = texTextBoxDefault->getTextureID();
+                textBoxDisplayer->updateTextureId(0, texTextBoxDefault->getTextureID());
             }
         } else if (key == InputDeviceKey::LEFT_ARROW && state == ACTIVE) {
             refreshText(cursorIndex-1);
@@ -134,7 +133,7 @@ namespace urchin {
 
     void TextBox::reset() {
         state = UNACTIVE;
-        textureID = texTextBoxDefault->getTextureID();
+        textBoxDisplayer->updateTextureId(0, texTextBoxDefault->getTextureID());
 
         Widget::reset();
     }
@@ -206,9 +205,7 @@ namespace urchin {
 
     void TextBox::display(int translateDistanceLoc, float dt) {
         //display the text box
-        glBindTexture(GL_TEXTURE_2D, textureID);
-
-        quadDisplayer->display();
+        textBoxDisplayer->display();
 
         //displays the cursor
         cursorBlink += dt * CURSOR_BLINK_SPEED;

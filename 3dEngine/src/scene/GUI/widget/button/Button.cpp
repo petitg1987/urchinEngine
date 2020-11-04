@@ -5,7 +5,7 @@
 
 #include "scene/GUI/widget/button/Button.h"
 #include "scene/GUI/GUISkinService.h"
-#include "utils/display/quad/QuadDisplayerBuilder.h"
+#include "utils/display/generic/GenericDisplayerBuilder.h"
 
 namespace urchin {
 
@@ -13,8 +13,7 @@ namespace urchin {
         : Widget(position, size),
           nameSkin(std::move(nameSkin)),
           text(nullptr),
-          buttonText(std::move(buttonText)),
-          textureID(0) {
+          buttonText(std::move(buttonText)) {
         Button::createOrUpdateWidget();
     }
 
@@ -41,12 +40,11 @@ namespace urchin {
         }
 
         //visual
-        quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
+        buttonDisplayer = std::make_unique<GenericDisplayerBuilder>()
                 ->vertexData(GL_UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()}, true)
                 ->textureData(GL_FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}, true)
+                ->addTextureId(texInfoDefault->getTextureID())
                 ->build();
-
-        textureID = texInfoDefault->getTextureID();
     }
 
     unsigned int Button::getTextureId() {
@@ -60,24 +58,22 @@ namespace urchin {
     }
 
     bool Button::onKeyPressEvent(unsigned int) {
-        textureID = getTextureId();
+        buttonDisplayer->updateTextureId(0, getTextureId());
         return true;
     }
 
     bool Button::onKeyReleaseEvent(unsigned int) {
-        textureID = getTextureId();
+        buttonDisplayer->updateTextureId(0, getTextureId());
         return true;
     }
 
     bool Button::onMouseMoveEvent(int, int) {
-        textureID = getTextureId();
+        buttonDisplayer->updateTextureId(0, getTextureId());
         return true;
     }
 
     void Button::display(int translateDistanceLoc, float dt) {
-        glBindTexture(GL_TEXTURE_2D, textureID);
-
-        quadDisplayer->display();
+        buttonDisplayer->display();
 
         Widget::display(translateDistanceLoc, dt);
     }

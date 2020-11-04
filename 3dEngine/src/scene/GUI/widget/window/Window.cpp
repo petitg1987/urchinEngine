@@ -5,7 +5,7 @@
 
 #include "scene/GUI/widget/window/Window.h"
 #include "scene/InputDeviceKey.h"
-#include "utils/display/quad/QuadDisplayerBuilder.h"
+#include "utils/display/generic/GenericDisplayerBuilder.h"
 
 namespace urchin {
 
@@ -44,9 +44,10 @@ namespace urchin {
         }
 
         //visual
-        quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
+        windowDisplayer = std::make_unique<GenericDisplayerBuilder>()
                 ->vertexData(GL_UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()}, true)
                 ->textureData(GL_FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}, true)
+                ->addTextureId(texWindow->getTextureID())
                 ->build();
     }
 
@@ -113,9 +114,7 @@ namespace urchin {
     }
 
     void Window::display(int translateDistanceLoc, float dt) {
-        glBindTexture(GL_TEXTURE_2D, texWindow->getTextureID());
-
-        quadDisplayer->display();
+        windowDisplayer->display();
 
         Widget::display(translateDistanceLoc, dt);
     }

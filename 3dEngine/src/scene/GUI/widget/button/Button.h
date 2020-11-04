@@ -9,7 +9,7 @@
 #include "scene/GUI/widget/Size.h"
 #include "scene/GUI/widget/text/Text.h"
 #include "resources/image/Image.h"
-#include "utils/display/quad/QuadDisplayer.h"
+#include "utils/display/generic/GenericDisplayer.h"
 
 namespace urchin {
 
@@ -37,9 +37,8 @@ namespace urchin {
             const std::string buttonText;
 
             //visual
-            unsigned int textureID;
             std::shared_ptr<Image> texInfoDefault, texInfoOnFocus, texInfoOnClick;
-            std::shared_ptr<QuadDisplayer> quadDisplayer;
+            std::shared_ptr<GenericDisplayer> buttonDisplayer;
     };
 
 }

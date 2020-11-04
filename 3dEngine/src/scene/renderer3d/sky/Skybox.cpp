@@ -4,7 +4,7 @@
 #include "Skybox.h"
 #include "utils/shader/ShaderManager.h"
 #include "resources/MediaManager.h"
-#include "utils/display/quad/QuadDisplayerBuilder.h"
+#include "utils/display/generic/GenericDisplayerBuilder.h"
 
 namespace urchin {
     /**
@@ -130,7 +130,7 @@ namespace urchin {
             SIZE, SIZE, SIZE, SIZE, -SIZE, SIZE, -SIZE, -SIZE, SIZE, -SIZE, SIZE, SIZE,
         };
 
-        quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
+        skyboxDisplayer = std::make_unique<GenericDisplayerBuilder>()
                 ->numberOfQuad(6)
                 ->dimension(3) //3D
                 ->vertexData(GL_FLOAT, &vertexCoord[0], false)
@@ -174,7 +174,7 @@ namespace urchin {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 
-        quadDisplayer->display();
+        skyboxDisplayer->display();
     }
 
 }

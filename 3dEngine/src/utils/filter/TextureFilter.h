@@ -7,7 +7,7 @@
 #include <map>
 #include <vector>
 
-#include "utils/display/quad/QuadDisplayer.h"
+#include "utils/display/generic/GenericDisplayer.h"
 
 namespace urchin {
 
@@ -52,7 +52,7 @@ namespace urchin {
             int textureInternalFormat;
             unsigned int textureFormat;
 
-            std::shared_ptr<QuadDisplayer> texQuadDisplayer;
+            std::shared_ptr<GenericDisplayer> textureDisplayer;
             unsigned int textureFilterShader;
             int layersToUpdateLoc;
 

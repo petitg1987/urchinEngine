@@ -20,7 +20,7 @@
 #include "scene/renderer3d/sky/SkyManager.h"
 #include "utils/display/geometry/GeometryManager.h"
 #include "utils/display/geometry/GeometryModel.h"
-#include "utils/display/quad/QuadDisplayer.h"
+#include "utils/display/generic/GenericDisplayer.h"
 
 namespace urchin {
 
@@ -144,7 +144,7 @@ namespace urchin {
                 TEX_LIGHTING_PASS
             };
 
-            std::shared_ptr<QuadDisplayer> lightingPassQuadDisplayer;
+            std::shared_ptr<GenericDisplayer> lightingPassDisplayer;
             unsigned int deferredShadingShader;
             int mInverseViewProjectionLoc, viewPositionLoc;
     };

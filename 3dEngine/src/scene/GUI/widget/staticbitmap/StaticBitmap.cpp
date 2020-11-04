@@ -4,7 +4,7 @@
 
 #include "scene/GUI/widget/staticbitmap/StaticBitmap.h"
 #include "resources/MediaManager.h"
-#include "utils/display/quad/QuadDisplayerBuilder.h"
+#include "utils/display/generic/GenericDisplayerBuilder.h"
 
 namespace urchin {
 
@@ -28,9 +28,10 @@ namespace urchin {
         tex->toTexture(false, false, false);
 
         //visual
-        quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
+        bitmapDisplayer = std::make_unique<GenericDisplayerBuilder>()
                 ->vertexData(GL_UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()}, true)
                 ->textureData(GL_FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}, true)
+                ->addTextureId(tex->getTextureID())
                 ->build();
     }
 
@@ -38,9 +39,7 @@ namespace urchin {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        glBindTexture(GL_TEXTURE_2D, tex->getTextureID());
-
-        quadDisplayer->display();
+        bitmapDisplayer->display();
 
         glDisable(GL_BLEND);
 

@@ -8,7 +8,7 @@
 
 #include "resources/image/Image.h"
 #include "scene/renderer3d/camera/Camera.h"
-#include "utils/display/quad/QuadDisplayer.h"
+#include "utils/display/generic/GenericDisplayer.h"
 
 namespace urchin {
 
@@ -36,7 +36,7 @@ namespace urchin {
             Matrix4<float> translationMatrix;
 
             //visual
-            std::shared_ptr<QuadDisplayer> quadDisplayer;
+            std::shared_ptr<GenericDisplayer> skyboxDisplayer;
 
             unsigned int skyboxShader;
             int mProjectionLoc, mViewLoc;

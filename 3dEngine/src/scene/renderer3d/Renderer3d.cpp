@@ -3,7 +3,7 @@
 #include <locale>
 
 #include "Renderer3d.h"
-#include "utils/display/quad/QuadDisplayerBuilder.h"
+#include "utils/display/generic/GenericDisplayerBuilder.h"
 #include "utils/display/texture/TextureDisplayer.h"
 #include "utils/display/octree/OctreeDisplayer.h"
 #include "utils/shader/ShaderManager.h"
@@ -73,7 +73,7 @@ namespace urchin {
 
         //deferred shading (pass 2)
         createOrUpdateDeferredShadingShader();
-        lightingPassQuadDisplayer = std::make_unique<QuadDisplayerBuilder>()->build();
+        lightingPassDisplayer = std::make_unique<GenericDisplayerBuilder>()->build();
 
         antiAliasingManager = new AntiAliasingManager();
         isAntiAliasingActivated = true;
@@ -556,7 +556,7 @@ namespace urchin {
             //nextTextureUnit++;
         }
 
-        lightingPassQuadDisplayer->display();
+        lightingPassDisplayer->display();
     }
 
     void Renderer3d::postUpdateScene() {

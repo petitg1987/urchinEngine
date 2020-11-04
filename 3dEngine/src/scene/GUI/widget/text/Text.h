@@ -7,7 +7,7 @@
 #include "scene/GUI/widget/Widget.h"
 #include "scene/GUI/widget/Position.h"
 #include "resources/font/Font.h"
-#include "utils/display/quad/QuadDisplayer.h"
+#include "utils/display/generic/GenericDisplayer.h"
 
 namespace urchin {
 
@@ -38,7 +38,7 @@ namespace urchin {
 
             //visual
             Font *font;
-            std::shared_ptr<QuadDisplayer> quadDisplayer;
+            std::shared_ptr<GenericDisplayer> textDisplayer;
     };
 
 }

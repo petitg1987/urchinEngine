@@ -4,7 +4,7 @@
 #include "scene/GUI/widget/text/Text.h"
 #include "scene/GUI/widget/Size.h"
 #include "resources/MediaManager.h"
-#include "utils/display/quad/QuadDisplayerBuilder.h"
+#include "utils/display/generic/GenericDisplayerBuilder.h"
 
 namespace urchin {
 
@@ -83,10 +83,11 @@ namespace urchin {
         unsigned int numberOfInterLines = cutTextLines.size() - 1;
         setSize(Size((float)width, (float)(cutTextLines.size() * font->getHeight() + numberOfInterLines * font->getSpaceBetweenLines()), Size::SizeType::PIXEL));
 
-        quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
+        textDisplayer = std::make_unique<GenericDisplayerBuilder>()
                 ->numberOfQuad(numLetters)
                 ->vertexData(GL_INT, &vertexData[0], false)
                 ->textureData(GL_FLOAT, &textureData[0], false)
+                ->addTextureId(font->getTextureID())
                 ->build();
     }
 
@@ -130,13 +131,11 @@ namespace urchin {
     }
 
     void Text::display(int translateDistanceLoc, float dt) {
-        if(quadDisplayer) {
+        if(textDisplayer) {
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-            glBindTexture(GL_TEXTURE_2D, font->getTextureID());
-
-            quadDisplayer->display();
+            textDisplayer->display();
 
             glDisable(GL_BLEND);
         }

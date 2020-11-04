@@ -3,7 +3,7 @@
 
 #include "utils/display/texture/TextureDisplayer.h"
 #include "utils/shader/ShaderManager.h"
-#include "utils/display/quad/QuadDisplayerBuilder.h"
+#include "utils/display/generic/GenericDisplayerBuilder.h"
 
 namespace urchin {
 
@@ -148,7 +148,7 @@ namespace urchin {
         glUniformMatrix3fv(mProjectionLoc, 1, GL_FALSE, (const float*)mProjection);
 
         //update the display
-        quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
+        displayer = std::make_unique<GenericDisplayerBuilder>()
                 ->vertexData(GL_FLOAT, new float[8]{minX, minY, maxX, minY, maxX, maxY, minX, maxY}, true)
                 ->build();
 
@@ -194,7 +194,7 @@ namespace urchin {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture((layer==-1) ? GL_TEXTURE_2D : GL_TEXTURE_2D_ARRAY, textureID);
 
-        quadDisplayer->display();
+        displayer->display();
     }
 
 }

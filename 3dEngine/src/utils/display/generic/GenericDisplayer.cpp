@@ -1,13 +1,14 @@
 #include <GL/glew.h>
 #include <stdexcept>
+#include <cassert>
 
-#include "utils/display/quad/QuadDisplayer.h"
-#include "utils/display/quad/QuadDisplayerBuilder.h"
+#include "utils/display/generic/GenericDisplayer.h"
+#include "utils/display/generic/GenericDisplayerBuilder.h"
 
 namespace urchin {
 
-    QuadDisplayer::QuadDisplayer(const QuadDisplayerBuilder *quadDisplayerBuilder) :
-            numberOfQuad(0),
+    GenericDisplayer::GenericDisplayer(const GenericDisplayerBuilder *quadDisplayerBuilder) :
+            numberOfQuad(0), //TODO rename and propose more than quad
             dimension(0),
             vertexDataType(0),
             vertexCoord(nullptr),
@@ -18,10 +19,10 @@ namespace urchin {
         glGenBuffers(2, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
 
-        update(quadDisplayerBuilder);
+        initialize(quadDisplayerBuilder);
     }
 
-    QuadDisplayer::~QuadDisplayer() {
+    GenericDisplayer::~GenericDisplayer() {
         if (vertexArrayObject!=0) {
             glDeleteVertexArrays(1, &vertexArrayObject);
         }
@@ -29,26 +30,31 @@ namespace urchin {
         glDeleteBuffers(2, bufferIDs);
     }
 
-    void QuadDisplayer::update(const QuadDisplayerBuilder *quadDisplayerBuilder) {
+    void GenericDisplayer::initialize(const GenericDisplayerBuilder *quadDisplayerBuilder) {
         glBindVertexArray(vertexArrayObject);
 
         numberOfQuad = quadDisplayerBuilder->getNumberOfQuad();
-        dimension = quadDisplayerBuilder->getDimension();
-        vertexDataType = quadDisplayerBuilder->getVertexDataType();
-        vertexCoord = quadDisplayerBuilder->getVertexCoord();
-        textureDataType = quadDisplayerBuilder->getTextureDataType();
-        textureCoord = quadDisplayerBuilder->getTextureCoord();
 
+        dimension = quadDisplayerBuilder->getDimension();
+
+        vertexDataType = quadDisplayerBuilder->getVertexDataType();
         if (vertexDataType!=GL_FLOAT && vertexDataType!=GL_INT && vertexDataType!=GL_UNSIGNED_INT) {
             throw std::invalid_argument("Vertex data type not supported: " + std::to_string(vertexDataType));
-        } else if (textureDataType!=GL_FLOAT && textureDataType!=GL_INT && textureDataType!=GL_UNSIGNED_INT) {
+        }
+        vertexCoord = quadDisplayerBuilder->getVertexCoord();
+
+        textureDataType = quadDisplayerBuilder->getTextureDataType();
+        if (textureDataType!=GL_FLOAT && textureDataType!=GL_INT && textureDataType!=GL_UNSIGNED_INT) {
             throw std::invalid_argument("Texture data type not supported: " + std::to_string(textureDataType));
         }
+        textureCoord = quadDisplayerBuilder->getTextureCoord();
+
+        textureIds = quadDisplayerBuilder->getTextureIds();
 
         initializeDisplay(quadDisplayerBuilder->isDeleteVertexCoord(), quadDisplayerBuilder->isDeleteTextureCoord());
     }
 
-    void QuadDisplayer::initializeDisplay(bool deleteVertexCoord, bool deleteTextureCoord) {
+    void GenericDisplayer::initializeDisplay(bool deleteVertexCoord, bool deleteTextureCoord) {
         glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
         const unsigned int vertexSize = (vertexDataType==GL_FLOAT ? sizeof(float) : sizeof(int)) * 4*dimension*numberOfQuad;
         glBufferData(GL_ARRAY_BUFFER, vertexSize, vertexCoord, GL_STATIC_DRAW);
@@ -82,17 +88,29 @@ namespace urchin {
         }
     }
 
-    void QuadDisplayer::display() const {
-        if (numberOfQuad > 0) {
-            glDisable(GL_DEPTH_TEST);
-            glDepthMask(GL_FALSE);
+    void GenericDisplayer::updateTextureId(std::size_t index, unsigned int textureId) {
+        assert(textureIds.size() > index);
+        textureIds[index] = textureId;
+    }
 
-            glBindVertexArray(vertexArrayObject);
-            glDrawArrays(GL_QUADS, 0, 4 * numberOfQuad);
-
-            glDepthMask(GL_TRUE);
-            glEnable(GL_DEPTH_TEST);
+    void GenericDisplayer::display() const {
+        if(numberOfQuad == 0) {
+            return;
         }
+
+        for(std::size_t i=0; i<textureIds.size(); ++i) {
+            glActiveTexture(GL_TEXTURE0 + i);
+            glBindTexture(GL_TEXTURE_2D, textureIds[i]);
+        }
+
+        glDisable(GL_DEPTH_TEST);
+        glDepthMask(GL_FALSE);
+
+        glBindVertexArray(vertexArrayObject);
+        glDrawArrays(GL_QUADS, 0, 4 * numberOfQuad);
+
+        glDepthMask(GL_TRUE);
+        glEnable(GL_DEPTH_TEST);
     }
 
 }
