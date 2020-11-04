@@ -1,5 +1,3 @@
-#include <GL/glew.h>
-
 #include "graphic/displayer/generic/GenericDisplayerBuilder.h"
 
 namespace urchin {
@@ -7,10 +5,10 @@ namespace urchin {
     GenericDisplayerBuilder::GenericDisplayerBuilder() :
         pNumberOfQuad(1),
         pDimension(2), //2D
-        vertexDataType(GL_INT),
+        vertexDataType(CoordDataType::INT),
         vertexCoord(nullptr),
         deleteVertexCoord(false),
-        textureDataType(GL_INT),
+        textureDataType(CoordDataType::INT),
         textureCoord(nullptr),
         deleteTextureCoord(false) {
 
@@ -34,14 +32,14 @@ namespace urchin {
         return pDimension;
     }
 
-    GenericDisplayerBuilder *GenericDisplayerBuilder::vertexData(unsigned int vertexDataType, void *vertexCoord, bool deleteVertexCoord) { //TODO change dataType with urchin enum
+    GenericDisplayerBuilder *GenericDisplayerBuilder::vertexData(CoordDataType vertexDataType, void *vertexCoord, bool deleteVertexCoord) {
         this->vertexDataType = vertexDataType;
         this->vertexCoord = vertexCoord;
         this->deleteVertexCoord = deleteVertexCoord;
         return this;
     }
 
-    unsigned int GenericDisplayerBuilder::getVertexDataType() const {
+    CoordDataType GenericDisplayerBuilder::getVertexDataType() const {
         return vertexDataType;
     }
 
@@ -53,14 +51,14 @@ namespace urchin {
         return deleteVertexCoord;
     }
 
-    GenericDisplayerBuilder *GenericDisplayerBuilder::textureData(unsigned int textureDataType, void *textureCoord, bool deleteTextureCoord) {
+    GenericDisplayerBuilder *GenericDisplayerBuilder::textureData(CoordDataType textureDataType, void *textureCoord, bool deleteTextureCoord) {
         this->textureDataType = textureDataType;
         this->textureCoord = textureCoord;
         this->deleteTextureCoord = deleteTextureCoord;
         return this;
     }
 
-    unsigned int GenericDisplayerBuilder::getTextureDataType() const {
+    CoordDataType GenericDisplayerBuilder::getTextureDataType() const {
         return textureDataType;
     }
 

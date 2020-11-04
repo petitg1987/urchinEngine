@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <memory>
 #include <utility>
 #include "UrchinCommon.h"
@@ -45,8 +44,8 @@ namespace urchin {
 
         //visual
         windowDisplayer = std::make_unique<GenericDisplayerBuilder>()
-                ->vertexData(GL_UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()}, true)
-                ->textureData(GL_FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}, true)
+                ->vertexData(CoordDataType::UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()}, true)
+                ->textureData(CoordDataType::FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}, true)
                 ->addTexture(Texture::build(texWindow->getTextureID()))
                 ->build();
     }

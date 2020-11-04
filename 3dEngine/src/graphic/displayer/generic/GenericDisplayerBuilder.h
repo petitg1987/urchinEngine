@@ -5,7 +5,8 @@
 #include <vector>
 
 #include "graphic/displayer/generic/GenericDisplayer.h"
-#include "graphic/texture/Texture.h"
+#include "graphic/displayer/CoordDataType.h"
+#include "graphic/displayer/Texture.h"
 
 namespace urchin {
 
@@ -19,13 +20,13 @@ namespace urchin {
             GenericDisplayerBuilder *dimension(unsigned int);
             unsigned int getDimension() const;
 
-            GenericDisplayerBuilder *vertexData(unsigned int, void *, bool);
-            unsigned int getVertexDataType() const;
+            GenericDisplayerBuilder *vertexData(CoordDataType, void *, bool);
+            CoordDataType getVertexDataType() const;
             void *getVertexCoord() const;
             bool isDeleteVertexCoord() const;
 
-            GenericDisplayerBuilder *textureData(unsigned int, void *, bool);
-            unsigned int getTextureDataType() const;
+            GenericDisplayerBuilder *textureData(CoordDataType, void *, bool);
+            CoordDataType getTextureDataType() const;
             void *getTextureCoord() const;
             bool isDeleteTextureCoord() const;
 
@@ -38,11 +39,11 @@ namespace urchin {
             unsigned int pNumberOfQuad;
             unsigned int pDimension;
 
-            unsigned int vertexDataType;
+            CoordDataType vertexDataType;
             void *vertexCoord;
             bool deleteVertexCoord;
 
-            unsigned int textureDataType;
+            CoordDataType textureDataType;
             void *textureCoord;
             bool deleteTextureCoord;
 

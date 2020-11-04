@@ -133,8 +133,8 @@ namespace urchin {
         skyboxDisplayer = std::make_unique<GenericDisplayerBuilder>()
                 ->numberOfQuad(6)
                 ->dimension(3) //3D
-                ->vertexData(GL_FLOAT, &vertexCoord[0], false)
-                ->textureData(GL_FLOAT, &textureCoord[0], false)
+                ->vertexData(CoordDataType::FLOAT, &vertexCoord[0], false)
+                ->textureData(CoordDataType::FLOAT, &textureCoord[0], false)
                 ->build();
     }
 

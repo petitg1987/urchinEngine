@@ -85,8 +85,8 @@ namespace urchin {
 
         textDisplayer = std::make_unique<GenericDisplayerBuilder>()
                 ->numberOfQuad(numLetters)
-                ->vertexData(GL_INT, &vertexData[0], false)
-                ->textureData(GL_FLOAT, &textureData[0], false)
+                ->vertexData(CoordDataType::INT, &vertexData[0], false)
+                ->textureData(CoordDataType::FLOAT, &textureData[0], false)
                 ->addTexture(Texture::build(font->getTextureID()))
                 ->build();
     }

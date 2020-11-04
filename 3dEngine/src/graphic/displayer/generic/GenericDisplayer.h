@@ -3,7 +3,8 @@
 
 #include <vector>
 
-#include "graphic/texture/Texture.h"
+#include "graphic/displayer/CoordDataType.h"
+#include "graphic/displayer/Texture.h"
 
 namespace urchin {
 
@@ -21,14 +22,16 @@ namespace urchin {
         private:
             void initialize(const GenericDisplayerBuilder *);
             void initializeDisplay(bool, bool);
+            unsigned int retrieveDataTypeSize(CoordDataType) const;
+            unsigned int dataTypeToGl(CoordDataType) const;
 
             unsigned int numberOfQuad;
             unsigned int dimension; //2=2D, 3=3D
 
-            unsigned int vertexDataType;
+            CoordDataType vertexDataType;
             void *vertexCoord;
 
-            unsigned int textureDataType;
+            CoordDataType textureDataType;
             void *textureCoord;
 
             unsigned int bufferIDs[2], vertexArrayObject;

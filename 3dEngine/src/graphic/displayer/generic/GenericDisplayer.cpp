@@ -10,9 +10,9 @@ namespace urchin {
     GenericDisplayer::GenericDisplayer(const GenericDisplayerBuilder *quadDisplayerBuilder) :
             numberOfQuad(0), //TODO rename and propose more than quad
             dimension(0),
-            vertexDataType(0),
+            vertexDataType(CoordDataType::FLOAT),
             vertexCoord(nullptr),
-            textureDataType(0),
+            textureDataType(CoordDataType::FLOAT),
             textureCoord(nullptr),
             bufferIDs(),
             vertexArrayObject(0) {
@@ -38,15 +38,9 @@ namespace urchin {
         dimension = quadDisplayerBuilder->getDimension();
 
         vertexDataType = quadDisplayerBuilder->getVertexDataType();
-        if (vertexDataType!=GL_FLOAT && vertexDataType!=GL_INT && vertexDataType!=GL_UNSIGNED_INT) {
-            throw std::invalid_argument("Vertex data type not supported: " + std::to_string(vertexDataType));
-        }
         vertexCoord = quadDisplayerBuilder->getVertexCoord();
 
         textureDataType = quadDisplayerBuilder->getTextureDataType();
-        if (textureDataType!=GL_FLOAT && textureDataType!=GL_INT && textureDataType!=GL_UNSIGNED_INT) {
-            throw std::invalid_argument("Texture data type not supported: " + std::to_string(textureDataType));
-        }
         textureCoord = quadDisplayerBuilder->getTextureCoord();
 
         textures = quadDisplayerBuilder->getTextures();
@@ -56,36 +50,64 @@ namespace urchin {
 
     void GenericDisplayer::initializeDisplay(bool deleteVertexCoord, bool deleteTextureCoord) {
         glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-        const unsigned int vertexSize = (vertexDataType==GL_FLOAT ? sizeof(float) : sizeof(int)) * 4*dimension*numberOfQuad;
+        const unsigned int vertexSize = retrieveDataTypeSize(vertexDataType) * dimension * numberOfQuad * 4;
         glBufferData(GL_ARRAY_BUFFER, vertexSize, vertexCoord, GL_STATIC_DRAW);
         glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-        glVertexAttribPointer(SHADER_VERTEX_POSITION, dimension, vertexDataType, GL_FALSE, 0, nullptr);
+        glVertexAttribPointer(SHADER_VERTEX_POSITION, dimension, dataTypeToGl(vertexDataType), GL_FALSE, 0, nullptr);
         if (deleteVertexCoord) {
-            if (vertexDataType == GL_FLOAT) {
+            if (vertexDataType == CoordDataType::FLOAT) {
                 delete[] static_cast<float *>(vertexCoord);
-            } else if (vertexDataType == GL_INT) {
+            } else if (vertexDataType == CoordDataType::INT) {
                 delete[] static_cast<int *>(vertexCoord);
-            } else if (vertexDataType == GL_UNSIGNED_INT) {
+            } else if (vertexDataType == CoordDataType::UNSIGNED_INT) {
                 delete[] static_cast<unsigned int *>(vertexCoord);
+            } else {
+                throw std::runtime_error("Unknown vertex data type: " + std::to_string(vertexDataType));
             }
             vertexCoord = nullptr;
         }
 
         glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
-        const unsigned int textureSize = (textureDataType==GL_FLOAT ? sizeof(float) : sizeof(int)) * 4*dimension*numberOfQuad;
+        const unsigned int textureSize = retrieveDataTypeSize(textureDataType) * dimension * numberOfQuad * 4;
         glBufferData(GL_ARRAY_BUFFER, textureSize, textureCoord, GL_STATIC_DRAW);
         glEnableVertexAttribArray(SHADER_TEX_COORD);
-        glVertexAttribPointer(SHADER_TEX_COORD, dimension, textureDataType, GL_FALSE, 0, nullptr);
+        glVertexAttribPointer(SHADER_TEX_COORD, dimension, dataTypeToGl(textureDataType), GL_FALSE, 0, nullptr);
         if (deleteTextureCoord) {
-            if (textureDataType == GL_FLOAT) {
+            if (textureDataType == CoordDataType::FLOAT) {
                 delete[] static_cast<float *>(textureCoord);
-            } else if (textureDataType == GL_INT) {
+            } else if (textureDataType == CoordDataType::INT) {
                 delete[] static_cast<int *>(textureCoord);
-            } else if (textureDataType == GL_UNSIGNED_INT) {
+            } else if (textureDataType == CoordDataType::UNSIGNED_INT) {
                 delete[] static_cast<unsigned int *>(textureCoord);
+            } else {
+                throw std::runtime_error("Unknown texture data type: " + std::to_string(textureDataType));
             }
             textureCoord = nullptr;
         }
+    }
+
+    unsigned int GenericDisplayer::retrieveDataTypeSize(CoordDataType dataType) const {
+        if (dataType == CoordDataType::FLOAT) {
+            return sizeof(float);
+        } else if (dataType == CoordDataType::INT) {
+            return sizeof(int);
+        } else if (dataType == CoordDataType::UNSIGNED_INT) {
+            return sizeof(unsigned int);
+        }
+
+        throw std::runtime_error("Unknown data type: " + std::to_string(dataType));
+    }
+
+    unsigned int GenericDisplayer::dataTypeToGl(CoordDataType dataType) const {
+        if (dataType == CoordDataType::FLOAT) {
+            return GL_FLOAT;
+        } else if (dataType == CoordDataType::INT) {
+            return GL_INT;
+        } else if (dataType == CoordDataType::UNSIGNED_INT) {
+            return GL_UNSIGNED_INT;
+        }
+
+        throw std::runtime_error("Unknown data type: " + std::to_string(dataType));
     }
 
     void GenericDisplayer::updateTexture(std::size_t index, Texture texture) {
@@ -100,6 +122,7 @@ namespace urchin {
 
         for(std::size_t i=0; i<textures.size(); ++i) {
             glActiveTexture(GL_TEXTURE0 + i);
+
             if(textures[i].getType() == Texture::SIMPLE) {
                 glBindTexture(GL_TEXTURE_2D, textures[i].getId());
             }else if(textures[i].getType() == Texture::ARRAY) {

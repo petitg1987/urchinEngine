@@ -68,8 +68,8 @@ namespace urchin {
         glVertexAttribPointer(SHADER_VERTEX_POSITION, 2, GL_UNSIGNED_INT, GL_FALSE, 0, nullptr);
 
         textBoxDisplayer = std::make_unique<GenericDisplayerBuilder>()
-                ->vertexData(GL_UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()}, true)
-                ->textureData(GL_FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}, true)
+                ->vertexData(CoordDataType::UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()}, true)
+                ->textureData(CoordDataType::FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}, true)
                 ->addTexture(Texture::build(texTextBoxDefault->getTextureID()))
                 ->build();
 
