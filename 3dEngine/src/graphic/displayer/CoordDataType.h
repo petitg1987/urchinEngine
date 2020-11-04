@@ -4,9 +4,9 @@
 namespace urchin {
 
     enum CoordDataType {
-        FLOAT,
         INT,
-        UNSIGNED_INT
+        UNSIGNED_INT,
+        FLOAT
     };
 
 }

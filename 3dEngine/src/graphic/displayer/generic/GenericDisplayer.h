@@ -22,8 +22,8 @@ namespace urchin {
         private:
             void initialize(const GenericDisplayerBuilder *);
             void initializeDisplay(bool, bool);
-            unsigned int retrieveDataTypeSize(CoordDataType) const;
-            unsigned int dataTypeToGl(CoordDataType) const;
+            unsigned int dataTypeToSize(CoordDataType) const;
+            unsigned int dataTypeToGlType(CoordDataType) const;
 
             unsigned int numberOfQuad;
             unsigned int dimension; //2=2D, 3=3D

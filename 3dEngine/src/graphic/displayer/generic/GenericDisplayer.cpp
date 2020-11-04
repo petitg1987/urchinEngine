@@ -10,9 +10,9 @@ namespace urchin {
     GenericDisplayer::GenericDisplayer(const GenericDisplayerBuilder *quadDisplayerBuilder) :
             numberOfQuad(0), //TODO rename and propose more than quad
             dimension(0),
-            vertexDataType(CoordDataType::FLOAT),
+            vertexDataType(CoordDataType::INT),
             vertexCoord(nullptr),
-            textureDataType(CoordDataType::FLOAT),
+            textureDataType(CoordDataType::INT),
             textureCoord(nullptr),
             bufferIDs(),
             vertexArrayObject(0) {
@@ -49,11 +49,11 @@ namespace urchin {
     }
 
     void GenericDisplayer::initializeDisplay(bool deleteVertexCoord, bool deleteTextureCoord) {
+        const unsigned int vertexSize = dataTypeToSize(vertexDataType) * dimension * numberOfQuad * 4;
         glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-        const unsigned int vertexSize = retrieveDataTypeSize(vertexDataType) * dimension * numberOfQuad * 4;
         glBufferData(GL_ARRAY_BUFFER, vertexSize, vertexCoord, GL_STATIC_DRAW);
         glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-        glVertexAttribPointer(SHADER_VERTEX_POSITION, dimension, dataTypeToGl(vertexDataType), GL_FALSE, 0, nullptr);
+        glVertexAttribPointer(SHADER_VERTEX_POSITION, dimension, dataTypeToGlType(vertexDataType), GL_FALSE, 0, nullptr);
         if (deleteVertexCoord) {
             if (vertexDataType == CoordDataType::FLOAT) {
                 delete[] static_cast<float *>(vertexCoord);
@@ -67,11 +67,11 @@ namespace urchin {
             vertexCoord = nullptr;
         }
 
+        const unsigned int textureSize = dataTypeToSize(textureDataType) * dimension * numberOfQuad * 4;
         glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
-        const unsigned int textureSize = retrieveDataTypeSize(textureDataType) * dimension * numberOfQuad * 4;
         glBufferData(GL_ARRAY_BUFFER, textureSize, textureCoord, GL_STATIC_DRAW);
         glEnableVertexAttribArray(SHADER_TEX_COORD);
-        glVertexAttribPointer(SHADER_TEX_COORD, dimension, dataTypeToGl(textureDataType), GL_FALSE, 0, nullptr);
+        glVertexAttribPointer(SHADER_TEX_COORD, dimension, dataTypeToGlType(textureDataType), GL_FALSE, 0, nullptr);
         if (deleteTextureCoord) {
             if (textureDataType == CoordDataType::FLOAT) {
                 delete[] static_cast<float *>(textureCoord);
@@ -86,7 +86,7 @@ namespace urchin {
         }
     }
 
-    unsigned int GenericDisplayer::retrieveDataTypeSize(CoordDataType dataType) const {
+    unsigned int GenericDisplayer::dataTypeToSize(CoordDataType dataType) const {
         if (dataType == CoordDataType::FLOAT) {
             return sizeof(float);
         } else if (dataType == CoordDataType::INT) {
@@ -98,7 +98,7 @@ namespace urchin {
         throw std::runtime_error("Unknown data type: " + std::to_string(dataType));
     }
 
-    unsigned int GenericDisplayer::dataTypeToGl(CoordDataType dataType) const {
+    unsigned int GenericDisplayer::dataTypeToGlType(CoordDataType dataType) const {
         if (dataType == CoordDataType::FLOAT) {
             return GL_FLOAT;
         } else if (dataType == CoordDataType::INT) {

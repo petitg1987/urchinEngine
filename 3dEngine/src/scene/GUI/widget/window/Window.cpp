@@ -9,14 +9,14 @@
 namespace urchin {
 
     Window::Window(Position position, Size size, std::string nameSkin, std::string stringTitle) :
-        Widget(position, size),
-        nameSkin(std::move(nameSkin)),
-        stringTitle(std::move(stringTitle)),
-        mousePositionX(0),
-        mousePositionY(0),
-        state(DEFAULT),
-        title(nullptr),
-        widgetOutline(new WidgetOutline()) {
+            Widget(position, size),
+            nameSkin(std::move(nameSkin)),
+            stringTitle(std::move(stringTitle)),
+            mousePositionX(0),
+            mousePositionY(0),
+            state(DEFAULT),
+            title(nullptr),
+            widgetOutline(new WidgetOutline()) {
         Window::createOrUpdateWidget();
     }
 
