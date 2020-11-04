@@ -9,7 +9,7 @@
 #include "scene/GUI/widget/Size.h"
 #include "scene/GUI/widget/text/Text.h"
 #include "resources/image/Image.h"
-#include "utils/display/generic/GenericDisplayer.h"
+#include "graphic/displayer/generic/GenericDisplayer.h"
 
 namespace urchin {
 

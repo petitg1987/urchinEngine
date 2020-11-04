@@ -1,7 +1,7 @@
 #include <GL/glew.h>
 
 #include "FogManager.h"
-#include "utils/shader/ShaderManager.h"
+#include "graphic/shader/ShaderManager.h"
 
 namespace urchin {
     FogManager::FogManager() :

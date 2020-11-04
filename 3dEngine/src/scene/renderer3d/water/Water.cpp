@@ -2,7 +2,7 @@
 
 #include "Water.h"
 #include "resources/MediaManager.h"
-#include "utils/shader/ShaderManager.h"
+#include "graphic/shader/ShaderManager.h"
 
 #define DEFAULT_CENTER_POSITION Point3<float>(0.0f, 0.0f, 0.0f)
 #define DEFAULT_SIZE 1000.0

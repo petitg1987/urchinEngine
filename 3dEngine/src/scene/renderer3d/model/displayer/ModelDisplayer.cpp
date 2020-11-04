@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 #include "ModelDisplayer.h"
-#include "utils/shader/ShaderManager.h"
+#include "graphic/shader/ShaderManager.h"
 
 namespace urchin {
     /**

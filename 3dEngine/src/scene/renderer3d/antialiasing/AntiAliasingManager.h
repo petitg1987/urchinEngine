@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "utils/display/generic/GenericDisplayer.h"
+#include "graphic/displayer/generic/GenericDisplayer.h"
 
 namespace urchin {
 

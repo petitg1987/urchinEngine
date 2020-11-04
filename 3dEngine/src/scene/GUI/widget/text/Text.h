@@ -7,7 +7,7 @@
 #include "scene/GUI/widget/Widget.h"
 #include "scene/GUI/widget/Position.h"
 #include "resources/font/Font.h"
-#include "utils/display/generic/GenericDisplayer.h"
+#include "graphic/displayer/generic/GenericDisplayer.h"
 
 namespace urchin {
 

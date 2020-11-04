@@ -7,7 +7,7 @@
 
 #include "TerrainGrass.h"
 #include "resources/MediaManager.h"
-#include "utils/shader/ShaderManager.h"
+#include "graphic/shader/ShaderManager.h"
 
 #define DEFAULT_NUM_GRASS_IN_TEX 1
 #define DEFAULT_GRASS_DISPLAY_DISTANCE 100.0

@@ -5,7 +5,7 @@
 
 #include "scene/GUI/widget/window/Window.h"
 #include "scene/InputDeviceKey.h"
-#include "utils/display/generic/GenericDisplayerBuilder.h"
+#include "graphic/displayer/generic/GenericDisplayerBuilder.h"
 
 namespace urchin {
 

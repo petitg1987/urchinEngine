@@ -3,8 +3,8 @@
 #include <string>
 
 #include "scene/renderer3d/antialiasing/AntiAliasingManager.h"
-#include "utils/shader/ShaderManager.h"
-#include "utils/display/generic/GenericDisplayerBuilder.h"
+#include "graphic/shader/ShaderManager.h"
+#include "graphic/displayer/generic/GenericDisplayerBuilder.h"
 
 #define DEFAULT_AA_QUALITY AntiAliasingManager::Quality::VERY_HIGH
 

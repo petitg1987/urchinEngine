@@ -2,9 +2,9 @@
 #include <stdexcept>
 
 #include "Skybox.h"
-#include "utils/shader/ShaderManager.h"
+#include "graphic/shader/ShaderManager.h"
 #include "resources/MediaManager.h"
-#include "utils/display/generic/GenericDisplayerBuilder.h"
+#include "graphic/displayer/generic/GenericDisplayerBuilder.h"
 
 namespace urchin {
     /**

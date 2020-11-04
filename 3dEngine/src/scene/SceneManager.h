@@ -8,7 +8,7 @@
 
 #include "renderer3d/Renderer3d.h"
 #include "GUI/GUIRenderer.h"
-#include "texture/TextureManager.h"
+#include "graphic/texture/TextureManager.h"
 
 #define NUM_RENDERER 2
 

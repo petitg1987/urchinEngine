@@ -6,8 +6,8 @@
 #include "scene/GUI/GUISkinService.h"
 #include "resources/MediaManager.h"
 #include "resources/font/Font.h"
-#include "utils/shader/ShaderManager.h"
-#include "utils/display/texture/TextureDisplayer.h"
+#include "graphic/shader/ShaderManager.h"
+#include "graphic/displayer/texture/TextureDisplayer.h"
 
 namespace urchin {
 

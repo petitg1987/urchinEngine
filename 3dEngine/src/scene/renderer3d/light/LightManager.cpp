@@ -4,7 +4,7 @@
 #include "LightManager.h"
 #include "scene/renderer3d/light/sun/SunLight.h"
 #include "scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h"
-#include "utils/display/octree/OctreeDisplayer.h"
+#include "graphic/displayer/octree/OctreeDisplayer.h"
 
 #define DEFAULT_OCTREE_MIN_SIZE 50.0f
 

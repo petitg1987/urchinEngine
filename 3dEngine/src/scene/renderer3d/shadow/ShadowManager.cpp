@@ -9,11 +9,11 @@
 
 #include "ShadowManager.h"
 #include "scene/renderer3d/shadow/filter/ModelProduceShadowFilter.h"
-#include "utils/filter/TextureFilter.h"
-#include "utils/filter/gaussianblur/GaussianBlurFilterBuilder.h"
-#include "utils/filter/downsample/DownSampleFilterBuilder.h"
-#include "utils/shader/ShaderManager.h"
-#include "utils/display/geometry/obbox/OBBoxModel.h"
+#include "graphic/texture/filter/TextureFilter.h"
+#include "graphic/texture/filter/gaussianblur/GaussianBlurFilterBuilder.h"
+#include "graphic/texture/filter/downsample/DownSampleFilterBuilder.h"
+#include "graphic/shader/ShaderManager.h"
+#include "graphic/displayer/geometry/obbox/OBBoxModel.h"
 
 #define DEFAULT_NUMBER_SHADOW_MAPS 5
 #define DEFAULT_SHADOW_MAP_RESOLUTION 1024

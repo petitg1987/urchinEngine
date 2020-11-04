@@ -3,10 +3,10 @@
 #include <locale>
 
 #include "Renderer3d.h"
-#include "utils/display/generic/GenericDisplayerBuilder.h"
-#include "utils/display/texture/TextureDisplayer.h"
-#include "utils/display/octree/OctreeDisplayer.h"
-#include "utils/shader/ShaderManager.h"
+#include "graphic/displayer/generic/GenericDisplayerBuilder.h"
+#include "graphic/displayer/texture/TextureDisplayer.h"
+#include "graphic/displayer/octree/OctreeDisplayer.h"
+#include "graphic/shader/ShaderManager.h"
 
 #define DEFAULT_OCTREE_MIN_SIZE 20.0f
 

@@ -2,7 +2,7 @@
 #include <stdexcept>
 
 #include "Terrain.h"
-#include "utils/shader/ShaderManager.h"
+#include "graphic/shader/ShaderManager.h"
 
 #define DEFAULT_AMBIENT 0.3f
 

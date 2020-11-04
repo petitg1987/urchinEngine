@@ -5,7 +5,7 @@
 
 #include "scene/GUI/widget/button/Button.h"
 #include "scene/GUI/GUISkinService.h"
-#include "utils/display/generic/GenericDisplayerBuilder.h"
+#include "graphic/displayer/generic/GenericDisplayerBuilder.h"
 
 namespace urchin {
 
