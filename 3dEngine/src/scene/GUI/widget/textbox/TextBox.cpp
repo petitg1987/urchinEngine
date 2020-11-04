@@ -70,7 +70,7 @@ namespace urchin {
         textBoxDisplayer = std::make_unique<GenericDisplayerBuilder>()
                 ->vertexData(GL_UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()}, true)
                 ->textureData(GL_FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}, true)
-                ->addTextureId(texTextBoxDefault->getTextureID())
+                ->addTexture(Texture::build(texTextBoxDefault->getTextureID()))
                 ->build();
 
         computeCursorPosition();
@@ -85,13 +85,13 @@ namespace urchin {
             Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
             if (widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
-                textBoxDisplayer->updateTextureId(0, texTextBoxFocus->getTextureID());
+                textBoxDisplayer->updateTexture(0, Texture::build(texTextBoxFocus->getTextureID()));
 
                 int localMouseX = getMouseX() - text->getGlobalPositionX();
                 computeCursorIndex(localMouseX);
             } else {
                 state = UNACTIVE;
-                textBoxDisplayer->updateTextureId(0, texTextBoxDefault->getTextureID());
+                textBoxDisplayer->updateTexture(0, Texture::build(texTextBoxDefault->getTextureID()));
             }
         } else if (key == InputDeviceKey::LEFT_ARROW && state == ACTIVE) {
             refreshText(cursorIndex-1);
@@ -133,7 +133,7 @@ namespace urchin {
 
     void TextBox::reset() {
         state = UNACTIVE;
-        textBoxDisplayer->updateTextureId(0, texTextBoxDefault->getTextureID());
+        textBoxDisplayer->updateTexture(0, Texture::build(texTextBoxDefault->getTextureID()));
 
         Widget::reset();
     }

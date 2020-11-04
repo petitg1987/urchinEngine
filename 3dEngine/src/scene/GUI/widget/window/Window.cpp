@@ -47,7 +47,7 @@ namespace urchin {
         windowDisplayer = std::make_unique<GenericDisplayerBuilder>()
                 ->vertexData(GL_UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()}, true)
                 ->textureData(GL_FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}, true)
-                ->addTextureId(texWindow->getTextureID())
+                ->addTexture(Texture::build(texWindow->getTextureID()))
                 ->build();
     }
 

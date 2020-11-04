@@ -43,7 +43,7 @@ namespace urchin {
         buttonDisplayer = std::make_unique<GenericDisplayerBuilder>()
                 ->vertexData(GL_UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()}, true)
                 ->textureData(GL_FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}, true)
-                ->addTextureId(texInfoDefault->getTextureID())
+                ->addTexture(Texture::build(texInfoDefault->getTextureID()))
                 ->build();
     }
 
@@ -58,17 +58,17 @@ namespace urchin {
     }
 
     bool Button::onKeyPressEvent(unsigned int) {
-        buttonDisplayer->updateTextureId(0, getTextureId());
+        buttonDisplayer->updateTexture(0, Texture::build(getTextureId()));
         return true;
     }
 
     bool Button::onKeyReleaseEvent(unsigned int) {
-        buttonDisplayer->updateTextureId(0, getTextureId());
+        buttonDisplayer->updateTexture(0, Texture::build(getTextureId()));
         return true;
     }
 
     bool Button::onMouseMoveEvent(int, int) {
-        buttonDisplayer->updateTextureId(0, getTextureId());
+        buttonDisplayer->updateTexture(0, Texture::build(getTextureId()));
         return true;
     }
 

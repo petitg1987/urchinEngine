@@ -49,7 +49,7 @@ namespace urchin {
         }
         textureCoord = quadDisplayerBuilder->getTextureCoord();
 
-        textureIds = quadDisplayerBuilder->getTextureIds();
+        textures = quadDisplayerBuilder->getTextures();
 
         initializeDisplay(quadDisplayerBuilder->isDeleteVertexCoord(), quadDisplayerBuilder->isDeleteTextureCoord());
     }
@@ -88,9 +88,9 @@ namespace urchin {
         }
     }
 
-    void GenericDisplayer::updateTextureId(std::size_t index, unsigned int textureId) {
-        assert(textureIds.size() > index);
-        textureIds[index] = textureId;
+    void GenericDisplayer::updateTexture(std::size_t index, Texture texture) {
+        assert(textures.size() > index);
+        textures[index] = texture;
     }
 
     void GenericDisplayer::display() const {
@@ -98,9 +98,13 @@ namespace urchin {
             return;
         }
 
-        for(std::size_t i=0; i<textureIds.size(); ++i) {
+        for(std::size_t i=0; i<textures.size(); ++i) {
             glActiveTexture(GL_TEXTURE0 + i);
-            glBindTexture(GL_TEXTURE_2D, textureIds[i]);
+            if(textures[i].getType() == Texture::SIMPLE) {
+                glBindTexture(GL_TEXTURE_2D, textures[i].getId());
+            }else if(textures[i].getType() == Texture::ARRAY) {
+                glBindTexture(GL_TEXTURE_2D_ARRAY, textures[i].getId());
+            }
         }
 
         glDisable(GL_DEPTH_TEST);

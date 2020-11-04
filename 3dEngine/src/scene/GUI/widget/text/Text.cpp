@@ -87,7 +87,7 @@ namespace urchin {
                 ->numberOfQuad(numLetters)
                 ->vertexData(GL_INT, &vertexData[0], false)
                 ->textureData(GL_FLOAT, &textureData[0], false)
-                ->addTextureId(font->getTextureID())
+                ->addTexture(Texture::build(font->getTextureID()))
                 ->build();
     }
 

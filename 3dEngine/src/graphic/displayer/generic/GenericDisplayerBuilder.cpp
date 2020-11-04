@@ -34,7 +34,7 @@ namespace urchin {
         return pDimension;
     }
 
-    GenericDisplayerBuilder *GenericDisplayerBuilder::vertexData(unsigned int vertexDataType, void *vertexCoord, bool deleteVertexCoord) {
+    GenericDisplayerBuilder *GenericDisplayerBuilder::vertexData(unsigned int vertexDataType, void *vertexCoord, bool deleteVertexCoord) { //TODO change dataType with urchin enum
         this->vertexDataType = vertexDataType;
         this->vertexCoord = vertexCoord;
         this->deleteVertexCoord = deleteVertexCoord;
@@ -72,13 +72,13 @@ namespace urchin {
         return deleteTextureCoord;
     }
 
-    GenericDisplayerBuilder *GenericDisplayerBuilder::addTextureId(unsigned int textureId) { //TODO improve for textureArray & texture parameter
-        textureIds.push_back(textureId);
+    GenericDisplayerBuilder *GenericDisplayerBuilder::addTexture(Texture texture) {
+        textures.push_back(texture);
         return this;
     }
 
-    std::vector<unsigned int> GenericDisplayerBuilder::getTextureIds() const {
-        return textureIds;
+    std::vector<Texture> GenericDisplayerBuilder::getTextures() const {
+        return textures;
     }
 
     std::shared_ptr<GenericDisplayer> GenericDisplayerBuilder::build() {

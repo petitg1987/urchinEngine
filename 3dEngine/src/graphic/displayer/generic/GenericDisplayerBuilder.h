@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "graphic/displayer/generic/GenericDisplayer.h"
+#include "graphic/texture/Texture.h"
 
 namespace urchin {
 
@@ -28,8 +29,8 @@ namespace urchin {
             void *getTextureCoord() const;
             bool isDeleteTextureCoord() const;
 
-            GenericDisplayerBuilder *addTextureId(unsigned int);
-            std::vector<unsigned int> getTextureIds() const;
+            GenericDisplayerBuilder *addTexture(Texture);
+            std::vector<Texture> getTextures() const;
 
             std::shared_ptr<GenericDisplayer> build();
 
@@ -45,7 +46,7 @@ namespace urchin {
             void *textureCoord;
             bool deleteTextureCoord;
 
-            std::vector<unsigned int> textureIds;
+            std::vector<Texture> textures;
     };
 
 }

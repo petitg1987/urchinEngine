@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include "graphic/texture/Texture.h"
+
 namespace urchin {
 
     class GenericDisplayerBuilder;
@@ -12,9 +14,9 @@ namespace urchin {
             explicit GenericDisplayer(const GenericDisplayerBuilder *);
             ~GenericDisplayer();
 
-            void updateTextureId(std::size_t, unsigned int);
+            void updateTexture(std::size_t, Texture);
 
-            void display() const;
+            void display() const; //TODO make sure that all caller use all feature of GenericDisplayer
 
         private:
             void initialize(const GenericDisplayerBuilder *);
@@ -41,7 +43,7 @@ namespace urchin {
                 SHADER_TEX_COORD
             };
 
-            std::vector<unsigned int> textureIds;
+            std::vector<Texture> textures;
     };
 
 }
