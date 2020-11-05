@@ -135,6 +135,7 @@ namespace urchin {
                 ->dimension(3) //3D
                 ->vertexData(CoordDataType::FLOAT, &vertexCoord[0], false)
                 ->textureData(CoordDataType::FLOAT, &textureCoord[0], false)
+                ->addTexture(Texture::build(textureID, Texture::Type::CUBE_MAP))
                 ->build();
     }
 
@@ -170,9 +171,6 @@ namespace urchin {
 
         translationMatrix.buildTranslation(cameraPosition.X, cameraPosition.Y + offsetY, cameraPosition.Z);
         glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)(viewMatrix * translationMatrix));
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 
         skyboxDisplayer->display();
     }

@@ -146,6 +146,8 @@ namespace urchin {
                 glBindTexture(GL_TEXTURE_2D, textures[i].getId());
             } else if (textures[i].getType() == Texture::ARRAY) {
                 glBindTexture(GL_TEXTURE_2D_ARRAY, textures[i].getId());
+            } else if (textures[i].getType() == Texture::CUBE_MAP) {
+                glBindTexture(GL_TEXTURE_CUBE_MAP, textures[i].getId());
             }
         }
     }

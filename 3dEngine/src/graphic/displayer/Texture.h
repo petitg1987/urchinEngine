@@ -7,7 +7,8 @@ namespace urchin {
         public:
             enum Type {
                 SIMPLE,
-                ARRAY
+                ARRAY,
+                CUBE_MAP
             };
 
             static Texture build(unsigned int);
