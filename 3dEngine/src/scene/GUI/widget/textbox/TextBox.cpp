@@ -81,10 +81,26 @@ namespace urchin {
                 state = UNACTIVE;
                 textBoxDisplayer->updateTexture(0, Texture::build(texTextBoxDefault->getTextureID()));
             }
-        } else if (key == InputDeviceKey::LEFT_ARROW && state == ACTIVE) {
-            refreshText(cursorIndex-1);
-        } else if (key == InputDeviceKey::RIGHT_ARROW && state == ACTIVE) {
-            refreshText(cursorIndex+1);
+        } else if (state == ACTIVE) {
+            if (key == InputDeviceKey::LEFT_ARROW) {
+                refreshText(cursorIndex - 1);
+            } else if (key == InputDeviceKey::RIGHT_ARROW) {
+                refreshText(cursorIndex + 1);
+            } else if (key == InputDeviceKey::BACKSPACE) {
+                if(cursorIndex > 0) {
+                    std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex), allText.length()-cursorIndex);
+                    allText = allText.substr(0, static_cast<unsigned long>(cursorIndex-1L));
+                    allText.append(tmpRight);
+                    refreshText(cursorIndex-1);
+                }
+            } else if (key == InputDeviceKey::DELETE) {
+                if (allText.length() > 0 && cursorIndex < allText.length()) {
+                    std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex+1L), allText.length()-cursorIndex);
+                    allText = allText.substr(0, static_cast<unsigned long>(cursorIndex));
+                    allText.append(tmpRight);
+                    refreshText(cursorIndex);
+                }
+            }
         }
 
         return true;
@@ -92,30 +108,15 @@ namespace urchin {
 
     bool TextBox::onCharEvent(unsigned int character) {
         if (state==ACTIVE) {
-            if (character == 8 && cursorIndex > 0) { //key backspace //TODO doesn't work anymore !!!
-                std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex), allText.length()-cursorIndex);
-                allText = allText.substr(0, static_cast<unsigned long>(cursorIndex-1L));
-                allText.append(tmpRight);
-
-                refreshText(cursorIndex-1);
-            } else if (character == 127 && allText.length() > 0 && cursorIndex < allText.length()) { //key delete //TODO doesn't work anymore !!!
-                std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex+1L), allText.length()-cursorIndex);
-                allText = allText.substr(0, static_cast<unsigned long>(cursorIndex));
-                allText.append(tmpRight);
-
-                refreshText(cursorIndex);
-            } else if (character < 256 && character > 30 && character != 127) {
+            if (character < 256 && character > 30 && character != 127) {
                 std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex), allText.length()-cursorIndex);
                 allText = allText.substr(0, static_cast<unsigned long>(cursorIndex));
                 allText.append(1, (char)character);
                 allText.append(tmpRight);
-
                 refreshText(cursorIndex+1);
             }
-
             return false;
         }
-
         return true;
     }
 

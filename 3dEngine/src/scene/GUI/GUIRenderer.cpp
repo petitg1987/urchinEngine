@@ -71,22 +71,18 @@ namespace urchin {
     }
 
     bool GUIRenderer::onKeyPress(unsigned int key) {
-        if (key < 260) {
-            for (long i=(long)widgets.size()-1; i>=0; --i) {
-                if (widgets[i]->isVisible() && !widgets[i]->onKeyPress(key)) {
-                    return false;
-                }
+        for (long i=(long)widgets.size()-1; i>=0; --i) {
+            if (widgets[i]->isVisible() && !widgets[i]->onKeyPress(key)) {
+                return false;
             }
         }
         return true;
     }
 
     bool GUIRenderer::onKeyRelease(unsigned int key) {
-        if (key < 260) {
-            for (long i=(long)widgets.size()-1; i>=0; --i) {
-                if (widgets[i]->isVisible() && !widgets[i]->onKeyRelease(key)) {
-                    return false;
-                }
+        for (long i=(long)widgets.size()-1; i>=0; --i) {
+            if (widgets[i]->isVisible() && !widgets[i]->onKeyRelease(key)) {
+                return false;
             }
         }
         return true;
