@@ -84,8 +84,8 @@ namespace urchin {
 
         textRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
                 ->shapeCount(numLetters)
-                ->vertexData(CoordType::INT, &vertexData[0], false)
-                ->textureData(CoordType::FLOAT, &textureData[0], false)
+                ->vertexData(CoordType::INT, CoordDimension::_2D, &vertexData[0])
+                ->textureData(CoordType::FLOAT, CoordDimension::_2D, &textureData[0])
                 ->addTexture(Texture::build(font->getTextureID()))
                 ->enableTransparency()
                 ->build();

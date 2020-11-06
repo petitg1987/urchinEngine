@@ -6,6 +6,7 @@
 
 #include "graphic/render/GenericRenderer.h"
 #include "graphic/render/model/CoordType.h"
+#include "graphic/render/model/CoordDimension.h"
 #include "graphic/render/model/ShapeType.h"
 #include "graphic/render/model/Texture.h"
 
@@ -20,21 +21,21 @@ namespace urchin {
             GenericRendererBuilder *shapeCount(unsigned int);
             unsigned int getShapeCount() const;
 
-            GenericRendererBuilder *dimension(unsigned int);
-            unsigned int getDimension() const;
-
-            GenericRendererBuilder *vertexData(CoordType, void *, bool);
-            CoordType getVertexDataType() const;
+            GenericRendererBuilder *vertexData(CoordType, CoordDimension, void *);
+            CoordType getVertexCoordType() const;
+            CoordDimension getVertexCoordDimension() const;
             void *getVertexCoord() const;
-            bool isDeleteVertexCoord() const;
 
-            GenericRendererBuilder *textureData(CoordType, void *, bool);
-            CoordType getTextureDataType() const;
+            GenericRendererBuilder *textureData(CoordType, CoordDimension, void *);
+            CoordType getTextureCoordType() const;
+            CoordDimension getTextureCoordDimension() const;
             void *getTextureCoord() const;
-            bool isDeleteTextureCoord() const;
 
             GenericRendererBuilder *enableTransparency();
             bool isTransparencyEnabled() const;
+
+            GenericRendererBuilder *enableDepthTest();
+            bool isDepthTestEnabled() const;
 
             GenericRendererBuilder *addTexture(Texture);
             std::vector<Texture> getTextures() const;
@@ -44,17 +45,18 @@ namespace urchin {
         private:
             ShapeType shapeType;
             unsigned int pShapeCount;
-            unsigned int pDimension;
 
-            CoordType vertexDataType;
+            CoordType vertexCoordType;
+            CoordDimension vertexCoordDimension;
             void *vertexCoord;
-            bool deleteVertexCoord;
 
-            CoordType textureDataType;
+            CoordType textureCoordType;
+            CoordDimension textureCoordDimension;
             void *textureCoord;
-            bool deleteTextureCoord;
 
             bool transparencyEnabled;
+
+            bool depthTestEnabled;
 
             std::vector<Texture> textures;
     };

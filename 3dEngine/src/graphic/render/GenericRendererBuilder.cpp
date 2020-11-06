@@ -5,14 +5,14 @@ namespace urchin {
     GenericRendererBuilder::GenericRendererBuilder(ShapeType shapeType) :
             shapeType(shapeType),
             pShapeCount(1),
-            pDimension(2), //2D
-            vertexDataType(CoordType::INT),
+            vertexCoordType(CoordType::INT),
+            vertexCoordDimension(CoordDimension::_2D),
             vertexCoord(nullptr),
-            deleteVertexCoord(false),
-            textureDataType(CoordType::INT),
+            textureCoordType(CoordType::INT),
+            textureCoordDimension(CoordDimension::_2D),
             textureCoord(nullptr),
-            deleteTextureCoord(false),
-            transparencyEnabled(false) {
+            transparencyEnabled(false),
+            depthTestEnabled(false) {
 
     }
 
@@ -29,51 +29,42 @@ namespace urchin {
         return pShapeCount;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::dimension(unsigned int dimension) {
-        this->pDimension = dimension;
-        return this;
-    }
-
-    unsigned int GenericRendererBuilder::getDimension() const {
-        return pDimension;
-    }
-
-    GenericRendererBuilder *GenericRendererBuilder::vertexData(CoordType vertexDataType, void *vertexCoord, bool deleteVertexCoord) {
-        this->vertexDataType = vertexDataType;
+    GenericRendererBuilder *GenericRendererBuilder::vertexData(CoordType vertexCoordType, CoordDimension vertexCoordDimension, void *vertexCoord) {
+        this->vertexCoordType = vertexCoordType;
+        this->vertexCoordDimension = vertexCoordDimension;
         this->vertexCoord = vertexCoord;
-        this->deleteVertexCoord = deleteVertexCoord;
         return this;
     }
 
-    CoordType GenericRendererBuilder::getVertexDataType() const {
-        return vertexDataType;
+    CoordType GenericRendererBuilder::getVertexCoordType() const {
+        return vertexCoordType;
+    }
+
+    CoordDimension GenericRendererBuilder::getVertexCoordDimension() const {
+        return vertexCoordDimension;
     }
 
     void *GenericRendererBuilder::getVertexCoord() const {
         return vertexCoord;
     }
 
-    bool GenericRendererBuilder::isDeleteVertexCoord() const {
-        return deleteVertexCoord;
-    }
-
-    GenericRendererBuilder *GenericRendererBuilder::textureData(CoordType textureDataType, void *textureCoord, bool deleteTextureCoord) {
-        this->textureDataType = textureDataType;
+    GenericRendererBuilder *GenericRendererBuilder::textureData(CoordType textureCoordType, CoordDimension textureCoordDimension, void *textureCoord) {
+        this->textureCoordType = textureCoordType;
+        this->textureCoordDimension = textureCoordDimension;
         this->textureCoord = textureCoord;
-        this->deleteTextureCoord = deleteTextureCoord;
         return this;
     }
 
-    CoordType GenericRendererBuilder::getTextureDataType() const {
-        return textureDataType;
+    CoordType GenericRendererBuilder::getTextureCoordType() const {
+        return textureCoordType;
+    }
+
+    CoordDimension GenericRendererBuilder::getTextureCoordDimension() const {
+        return textureCoordDimension;
     }
 
     void *GenericRendererBuilder::getTextureCoord() const {
         return textureCoord;
-    }
-
-    bool GenericRendererBuilder::isDeleteTextureCoord() const {
-        return deleteTextureCoord;
     }
 
     GenericRendererBuilder *GenericRendererBuilder::enableTransparency() {
@@ -83,6 +74,15 @@ namespace urchin {
 
     bool GenericRendererBuilder::isTransparencyEnabled() const {
         return transparencyEnabled;
+    }
+
+    GenericRendererBuilder *GenericRendererBuilder::enableDepthTest() {
+        this->depthTestEnabled = true;
+        return this;
+    }
+
+    bool GenericRendererBuilder::isDepthTestEnabled() const {
+        return depthTestEnabled;
     }
 
     GenericRendererBuilder *GenericRendererBuilder::addTexture(Texture texture) {
@@ -96,13 +96,15 @@ namespace urchin {
 
     std::shared_ptr<GenericRenderer> GenericRendererBuilder::build() {
         if (!vertexCoord) {
-            vertexCoord = new int[8]{-1, 1, 1, 1, 1, -1, -1, -1};
-            deleteVertexCoord = true;
+            vertexCoordType = CoordType::INT;
+            vertexCoordDimension = CoordDimension::_2D;
+            vertexCoord = new int[8]{-1, 1, 1, 1, 1, -1, -1, -1}; //TODO remove ....
         }
 
-        if (!textureCoord) {
-            textureCoord = new int[8]{0, 1, 1, 1, 1, 0, 0, 0};
-            deleteTextureCoord = true;
+        if (!textureCoord) { //TODO keep null if not specified, no ?
+            textureCoordType = CoordType::INT;
+            textureCoordDimension = CoordDimension::_2D;
+            textureCoord = new int[8]{0, 1, 1, 1, 1, 0, 0, 0}; //TODO remove ....
         }
 
         return std::make_shared<GenericRenderer>(this); //TODO build unique ptr

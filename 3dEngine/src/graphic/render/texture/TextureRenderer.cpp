@@ -148,9 +148,10 @@ namespace urchin {
         glUniformMatrix3fv(mProjectionLoc, 1, GL_FALSE, (const float*)mProjection);
 
         //update the display
+        std::vector<float> vertexCoord = {minX, minY, maxX, minY, maxX, maxY, minX, maxY};
         Texture::Type textureType = (layer == -1) ? Texture::Type::DEFAULT : Texture::Type::ARRAY;
         renderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
-                ->vertexData(CoordType::FLOAT, new float[8]{minX, minY, maxX, minY, maxX, maxY, minX, maxY}, true)
+                ->vertexData(CoordType::FLOAT, CoordDimension::_2D, &vertexCoord[0])
                 ->addTexture(Texture::build(textureID, textureType))
                 ->build();
 

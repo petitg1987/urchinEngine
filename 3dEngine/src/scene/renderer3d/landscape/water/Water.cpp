@@ -19,8 +19,6 @@
 namespace urchin {
 
     Water::Water() :
-            bufferIDs(),
-            vertexArrayObject(0),
             sumTimeStep(0.0f),
             xSize(0.0f),
             zSize(0.0f),
@@ -32,9 +30,6 @@ namespace urchin {
             tRepeat(0.0f),
             density(0.0f),
             gradient(0.0f) {
-        glGenBuffers(2, bufferIDs);
-        glGenVertexArrays(1, &vertexArrayObject);
-
         waterShader = ShaderManager::instance()->createProgram("water.vert", "", "water.frag");
         ShaderManager::instance()->bind(waterShader);
 
@@ -74,9 +69,6 @@ namespace urchin {
     }
 
     Water::~Water() {
-        glDeleteVertexArrays(1, &vertexArrayObject);
-        glDeleteBuffers(2, bufferIDs);
-
         normalTexture->release();
         dudvMap->release();
 
@@ -84,35 +76,23 @@ namespace urchin {
     }
 
     void Water::generateVertex() {
-        glBindVertexArray(vertexArrayObject);
-
-        std::vector<Point3<float>> vertices = {
+        std::vector<Point3<float>> vertexCoord = {
                 Point3<float>(-xSize/2.0f, 0.0f, -zSize/2.0f) + centerPosition,
                 Point3<float>(xSize/2.0f, 0.0f, -zSize/2.0f) + centerPosition,
                 Point3<float>(xSize/2.0f, 0.0f, zSize/2.0f) + centerPosition,
                 Point3<float>(-xSize/2.0f, 0.0f, zSize/2.0f) + centerPosition};
 
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-        glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(float)*3, &vertices[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-        glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-
-        std::vector<Point2<float>> texCoord = {
+        std::vector<Point2<float>> textureCoord = {
                 Point2<float>(0.0f*sRepeat, 0.0f*tRepeat),
                 Point2<float>(1.0f*sRepeat, 0.0f*tRepeat),
                 Point2<float>(1.0f*sRepeat, 1.0f*tRepeat),
                 Point2<float>(0.0f*sRepeat, 1.0f*tRepeat)};
 
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
-        glBufferData(GL_ARRAY_BUFFER, texCoord.size()*sizeof(float)*2, &texCoord[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(SHADER_TEX_COORD);
-        glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
-
-        //TODO impl
-//        waterRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
-//                ->dimension()
-//                ->addTexture(Texture::build(textureID, textureType))
-//                ->build();
+        waterRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
+                ->enableDepthTest()
+                ->vertexData(CoordType::FLOAT, CoordDimension::_3D, &vertexCoord[0])
+                ->textureData(CoordType::FLOAT, CoordDimension::_2D, &textureCoord[0])
+                ->build();
 
         Point2<float> leftFarPoint(Point2<float>(-xSize/2.0f + centerPosition.X, -zSize/2.0f + centerPosition.Z));
         Point2<float> rightNearPoint(Point2<float>(xSize/2.0f + centerPosition.X, zSize/2.0f + centerPosition.Z));
@@ -295,17 +275,13 @@ namespace urchin {
             sumTimeStep += dt;
             glUniform1f(sumTimeStepLoc, sumTimeStep);
 
-            glActiveTexture(GL_TEXTURE0);
+            glActiveTexture(GL_TEXTURE0); //TODO add texture to waterRenderer
             glBindTexture(GL_TEXTURE_2D, normalTexture->getTextureID());
 
             glActiveTexture(GL_TEXTURE1);
             glBindTexture(GL_TEXTURE_2D, dudvMap->getTextureID());
 
-            glBindVertexArray(vertexArrayObject);
-            glDrawArrays(GL_QUADS, 0, 4);
-
-            //TODO use genericDisplayer
-            //waterRenderer->draw();
+            waterRenderer->draw();
         }
     }
 }

@@ -10,12 +10,14 @@ namespace urchin {
     GenericRenderer::GenericRenderer(const GenericRendererBuilder *rendererBuilder) :
             shapeType(rendererBuilder->getShapeType()),
             shapeCount(rendererBuilder->getShapeCount()),
-            dimension(rendererBuilder->getDimension()),
-            vertexDataType(rendererBuilder->getVertexDataType()),
+            vertexCoordType(rendererBuilder->getVertexCoordType()),
+            vertexCoordDimension(rendererBuilder->getVertexCoordDimension()),
             vertexCoord(rendererBuilder->getVertexCoord()),
-            textureDataType(rendererBuilder->getTextureDataType()),
+            textureCoordType(rendererBuilder->getTextureCoordType()),
+            textureCoordDimension(rendererBuilder->getTextureCoordDimension()),
             textureCoord(rendererBuilder->getTextureCoord()),
             transparencyEnabled(rendererBuilder->isTransparencyEnabled()),
+            depthTestEnabled(rendererBuilder->isDepthTestEnabled()),
             textures(rendererBuilder->getTextures()),
             bufferIDs(),
             vertexArrayObject(0) {
@@ -27,7 +29,7 @@ namespace urchin {
         }
         additionalTextures.reserve(2); //estimated memory size
 
-        initializeDisplay(rendererBuilder->isDeleteVertexCoord(), rendererBuilder->isDeleteTextureCoord());
+        initializeDisplay();
     }
 
     GenericRenderer::~GenericRenderer() {
@@ -54,44 +56,22 @@ namespace urchin {
         glTexParameteri(textureType, GL_TEXTURE_MAG_FILTER, readQuality);
     }
 
-    void GenericRenderer::initializeDisplay(bool deleteVertexCoord, bool deleteTextureCoord) {
+    void GenericRenderer::initializeDisplay() {
         glBindVertexArray(vertexArrayObject);
 
-        const unsigned int vertexSize = dataTypeToSize(vertexDataType) * dimension * shapeCount * shapeTypeToVertexCount(shapeType);
+        auto vertexCoordDim = coordDimensionToSize(vertexCoordDimension);
+        auto vertexMemorySize = coordTypeToSize(vertexCoordType) * vertexCoordDim * shapeCount * shapeTypeToVertexCount(shapeType);
         glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-        glBufferData(GL_ARRAY_BUFFER, vertexSize, vertexCoord, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, vertexMemorySize, vertexCoord, GL_STATIC_DRAW);
         glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-        glVertexAttribPointer(SHADER_VERTEX_POSITION, dimension, dataTypeToGlType(vertexDataType), GL_FALSE, 0, nullptr);
-        if (deleteVertexCoord) {
-            if (vertexDataType == CoordType::FLOAT) {
-                delete[] static_cast<float *>(vertexCoord);
-            } else if (vertexDataType == CoordType::INT) {
-                delete[] static_cast<int *>(vertexCoord);
-            } else if (vertexDataType == CoordType::UNSIGNED_INT) {
-                delete[] static_cast<unsigned int *>(vertexCoord);
-            } else {
-                throw std::runtime_error("Unknown vertex data type: " + std::to_string(vertexDataType));
-            }
-            vertexCoord = nullptr;
-        }
+        glVertexAttribPointer(SHADER_VERTEX_POSITION, vertexCoordDim, coordTypeToGlType(vertexCoordType), GL_FALSE, 0, nullptr);
 
-        const unsigned int textureSize = dataTypeToSize(textureDataType) * dimension * shapeCount * shapeTypeToVertexCount(shapeType);
+        auto textureCoordDim = coordDimensionToSize(textureCoordDimension);
+        auto textureMemorySize = coordTypeToSize(textureCoordType) * textureCoordDim * shapeCount * shapeTypeToVertexCount(shapeType);
         glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
-        glBufferData(GL_ARRAY_BUFFER, textureSize, textureCoord, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, textureMemorySize, textureCoord, GL_STATIC_DRAW);
         glEnableVertexAttribArray(SHADER_TEX_COORD);
-        glVertexAttribPointer(SHADER_TEX_COORD, dimension, dataTypeToGlType(textureDataType), GL_FALSE, 0, nullptr);
-        if (deleteTextureCoord) {
-            if (textureDataType == CoordType::FLOAT) {
-                delete[] static_cast<float *>(textureCoord);
-            } else if (textureDataType == CoordType::INT) {
-                delete[] static_cast<int *>(textureCoord);
-            } else if (textureDataType == CoordType::UNSIGNED_INT) {
-                delete[] static_cast<unsigned int *>(textureCoord);
-            } else {
-                throw std::runtime_error("Unknown texture data type: " + std::to_string(textureDataType));
-            }
-            textureCoord = nullptr;
-        }
+        glVertexAttribPointer(SHADER_TEX_COORD, textureCoordDim, coordTypeToGlType(textureCoordType), GL_FALSE, 0, nullptr);
     }
 
     unsigned int GenericRenderer::shapeTypeToVertexCount(ShapeType shapeType) const {
@@ -112,26 +92,37 @@ namespace urchin {
         throw std::runtime_error("Unknown shape type: " + std::to_string(shapeType));
     }
 
-    unsigned int GenericRenderer::dataTypeToSize(CoordType dataType) const {
-        if (dataType == CoordType::FLOAT) {
+    unsigned int GenericRenderer::coordTypeToSize(CoordType coordType) const {
+        if (coordType == CoordType::FLOAT) {
             return sizeof(float);
-        } else if (dataType == CoordType::INT) {
+        } else if (coordType == CoordType::INT) {
             return sizeof(int);
-        } else if (dataType == CoordType::UNSIGNED_INT) {
+        } else if (coordType == CoordType::UNSIGNED_INT) {
             return sizeof(unsigned int);
         }
-        throw std::runtime_error("Unknown data type: " + std::to_string(dataType));
+        throw std::runtime_error("Unknown coordinate type: " + std::to_string(coordType));
     }
 
-    unsigned int GenericRenderer::dataTypeToGlType(CoordType dataType) const {
-        if (dataType == CoordType::FLOAT) {
+    unsigned int GenericRenderer::coordTypeToGlType(CoordType coordType) const {
+        if (coordType == CoordType::FLOAT) {
             return GL_FLOAT;
-        } else if (dataType == CoordType::INT) {
+        } else if (coordType == CoordType::INT) {
             return GL_INT;
-        } else if (dataType == CoordType::UNSIGNED_INT) {
+        } else if (coordType == CoordType::UNSIGNED_INT) {
             return GL_UNSIGNED_INT;
         }
-        throw std::runtime_error("Unknown data type: " + std::to_string(dataType));
+        throw std::runtime_error("Unknown coordinate type: " + std::to_string(coordType));
+    }
+
+    unsigned int GenericRenderer::coordDimensionToSize(CoordDimension coordDimension) const {
+        if (coordDimension == CoordDimension::_2D) {
+            return 2;
+        } else if (coordDimension == CoordDimension::_3D) {
+            return 3;
+        } else if (coordDimension == CoordDimension::_4D) {
+            return 4;
+        }
+        throw std::runtime_error("Unknown coordinate dimension: " + std::to_string(coordDimension));
     }
 
     void GenericRenderer::updateTexture(std::size_t textureUnit, Texture texture) {
@@ -173,19 +164,24 @@ namespace urchin {
         if(transparencyEnabled) {
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        } else {
+            glDisable(GL_BLEND);
         }
 
-        glDisable(GL_DEPTH_TEST);
-        glDepthMask(GL_FALSE);
+        if(depthTestEnabled) {
+            glDepthMask(GL_TRUE);
+            glEnable(GL_DEPTH_TEST);
+        } else {
+            glDisable(GL_DEPTH_TEST);
+            glDepthMask(GL_FALSE);
+        }
 
         glBindVertexArray(vertexArrayObject);
         glDrawArrays(shapeTypeToGlType(shapeType), 0, shapeTypeToVertexCount(shapeType) * shapeCount);
 
+        //reset to default values
         glDepthMask(GL_TRUE);
         glEnable(GL_DEPTH_TEST);
-
-        if(transparencyEnabled) {
-            glDisable(GL_BLEND);
-        }
+        glDisable(GL_BLEND);
     }
 }

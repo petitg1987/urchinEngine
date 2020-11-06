@@ -67,17 +67,6 @@ namespace urchin {
             void generateVertex();
             void buildUnderwaterFog();
 
-            unsigned int bufferIDs[3], vertexArrayObject;
-            enum //buffer IDs indices
-            {
-                VAO_VERTEX_POSITION = 0,
-                VAO_TEX_COORD
-            };
-            enum //shader input
-            {
-                SHADER_VERTEX_POSITION = 0,
-                SHADER_TEX_COORD
-            };
             unsigned int waterShader;
             int mProjectionLoc, mViewLoc, sumTimeStepLoc;
             int waterColorLoc, waveSpeedLoc, waveStrengthLoc;

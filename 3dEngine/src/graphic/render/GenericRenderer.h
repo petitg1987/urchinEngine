@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "graphic/render/model/CoordType.h"
+#include "graphic/render/model/CoordDimension.h"
 #include "graphic/render/model/ShapeType.h"
 #include "graphic/render/model/Texture.h"
 
@@ -24,24 +25,27 @@ namespace urchin {
 
         private:
             void initializeTexture(Texture) const;
-            void initializeDisplay(bool, bool);
+            void initializeDisplay();
 
             unsigned int shapeTypeToVertexCount(ShapeType) const;
             unsigned int shapeTypeToGlType(ShapeType) const;
-            unsigned int dataTypeToSize(CoordType) const;
-            unsigned int dataTypeToGlType(CoordType) const;
+            unsigned int coordTypeToSize(CoordType) const;
+            unsigned int coordTypeToGlType(CoordType) const;
+            unsigned int coordDimensionToSize(CoordDimension) const;
 
             ShapeType shapeType;
             unsigned int shapeCount;
-            unsigned int dimension; //2=2D, 3=3D
 
-            CoordType vertexDataType;
-            void *vertexCoord;
+            CoordType vertexCoordType;
+            CoordDimension vertexCoordDimension;
+            void *vertexCoord; //TODO don't save void* as can be destroy
 
-            CoordType textureDataType;
-            void *textureCoord;
+            CoordType textureCoordType;
+            CoordDimension textureCoordDimension;
+            void *textureCoord; //TODO don't save void* as can be destroy
 
             bool transparencyEnabled;
+            bool depthTestEnabled;
 
             std::vector<Texture> textures, additionalTextures;
 
