@@ -20,7 +20,7 @@ namespace urchin {
             unsigned int addAdditionalTexture(Texture);
             void clearAdditionalTextures();
 
-            void display() const; //TODO make sure that all caller use all feature of GenericDisplayer
+            void display() const;
 
         private:
             void initializeTexture(Texture) const;

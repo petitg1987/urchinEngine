@@ -154,7 +154,7 @@ namespace urchin {
         additionalTextures.clear();
     }
 
-    void GenericDisplayer::display() const {
+    void GenericDisplayer::display() const { //TODO rename method: render / apply / process
         if(shapeCount == 0) {
             return;
         }

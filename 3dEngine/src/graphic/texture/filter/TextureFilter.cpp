@@ -137,20 +137,18 @@ namespace urchin {
 
         ShaderManager::instance()->bind(textureFilterShader);
 
-        glViewport(0, 0, textureWidth, textureHeight);
-
-        glBindFramebuffer(GL_FRAMEBUFFER, fboID);
-
-        textureDisplayer->clearAdditionalTextures();
         Texture::Type sourceTextureType = layersToUpdate == -1 ? Texture::Type::DEFAULT : Texture::Type::ARRAY;
+        textureDisplayer->clearAdditionalTextures();
         textureDisplayer->addAdditionalTexture(Texture::build(sourceTextureId, sourceTextureType, TextureParam::buildLinear()));
-
         addFurtherTextures(textureDisplayer);
 
         if (textureType == GL_TEXTURE_2D_ARRAY) {
             assert(layersToUpdate != -1);
             glUniform1ui(layersToUpdateLoc, static_cast<unsigned int>(layersToUpdate));
         }
+
+        glViewport(0, 0, textureWidth, textureHeight);
+        glBindFramebuffer(GL_FRAMEBUFFER, fboID);
 
         textureDisplayer->display();
 
