@@ -80,7 +80,7 @@ namespace urchin {
             if (i * 2 + 1 >= blurSize) {
                 offsetsLinearSampling[i] = firstOffset+i*2;
             } else {
-                int offset1 = firstOffset + i * 2;
+                int offset1 = firstOffset + static_cast<int>(i) * 2;
                 int offset2 = offset1 + 1;
                 offsetsLinearSampling[i] = ((float)offset1 * weights[i * 2] + (float)offset2 * weights[i * 2 + 1]) / weightsLinearSampling[i];
             }

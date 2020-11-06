@@ -40,7 +40,7 @@ namespace urchin {
             unsigned int getAmbientOcclusionTextureID() const;
 
             void updateAOTexture(const Camera *);
-            void loadAOTexture(unsigned int) const;
+            void loadAOTexture(const std::shared_ptr<GenericDisplayer> &) const;
 
         private:
             void createOrUpdateAOTexture();

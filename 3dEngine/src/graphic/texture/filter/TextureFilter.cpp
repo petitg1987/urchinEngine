@@ -74,14 +74,9 @@ namespace urchin {
 
         glGenTextures(1, &textureID);
         glBindTexture(textureType, textureID);
-        glTexParameteri(textureType, GL_TEXTURE_MIN_FILTER, textureAccessFilter);
-        glTexParameteri(textureType, GL_TEXTURE_MAG_FILTER, textureAccessFilter);
-        glTexParameterf(textureType, GL_TEXTURE_MAX_ANISOTROPY_EXT, textureAnisotropy);
-        glTexParameteri(textureType, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(textureType, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        if (textureType==GL_TEXTURE_2D_ARRAY) {
+        if (textureType == GL_TEXTURE_2D_ARRAY) {
             glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, textureInternalFormat, textureWidth, textureHeight, textureNumberLayer, 0, textureFormat, GL_FLOAT, nullptr);
-        } else if (textureType==GL_TEXTURE_2D) {
+        } else if (textureType == GL_TEXTURE_2D) {
             glTexImage2D(GL_TEXTURE_2D, 0, textureInternalFormat, textureWidth, textureHeight, 0, textureFormat, GL_FLOAT, nullptr);
         } else {
             throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
@@ -95,7 +90,7 @@ namespace urchin {
         //do nothing: to override
     }
 
-    void TextureFilter::bindAdditionalTextures() const {
+    void TextureFilter::addFurtherTextures(const std::shared_ptr<GenericDisplayer> &) const {
         //do nothing: to override
     }
 
@@ -135,7 +130,7 @@ namespace urchin {
      * @param layersToUpdate Specify the layers which must be affected by the filter (only for GL_TEXTURE_2D_ARRAY).
      * Lowest bit represent the first layer, the second lowest bit represent the second layer, etc.
      */
-    void TextureFilter::applyOn(unsigned int sourceTextureId, unsigned int layersToUpdate) const {
+    void TextureFilter::applyOn(unsigned int sourceTextureId, int layersToUpdate) const {
         if (!isInitialized) {
             throw std::runtime_error("Texture filter must be initialized before apply.");
         }
@@ -145,12 +140,16 @@ namespace urchin {
         glViewport(0, 0, textureWidth, textureHeight);
 
         glBindFramebuffer(GL_FRAMEBUFFER, fboID);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(textureType, sourceTextureId);
-        bindAdditionalTextures();
 
-        if (textureType==GL_TEXTURE_2D_ARRAY) {
-            glUniform1ui(layersToUpdateLoc, layersToUpdate);
+        textureDisplayer->clearAdditionalTextures();
+        Texture::Type sourceTextureType = layersToUpdate == -1 ? Texture::Type::DEFAULT : Texture::Type::ARRAY;
+        textureDisplayer->addAdditionalTexture(Texture::build(sourceTextureId, sourceTextureType, TextureParam::buildLinear()));
+
+        addFurtherTextures(textureDisplayer);
+
+        if (textureType == GL_TEXTURE_2D_ARRAY) {
+            assert(layersToUpdate != -1);
+            glUniform1ui(layersToUpdateLoc, static_cast<unsigned int>(layersToUpdate));
         }
 
         textureDisplayer->display();

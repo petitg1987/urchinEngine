@@ -17,14 +17,14 @@ namespace urchin {
                 VERY_HIGH
             };
 
-            AntiAliasingManager();
+            explicit AntiAliasingManager(unsigned int);
             ~AntiAliasingManager();
 
             void onResize(unsigned int, unsigned int);
 
             void setQuality(Quality quality);
 
-            void applyOn(unsigned int);
+            void applyAntiAliasing();
         private:
             void loadFxaaShader();
 
@@ -32,10 +32,9 @@ namespace urchin {
             Quality quality;
             unsigned int sceneWidth, sceneHeight;
 
-            //shader
+            //display
             unsigned int fxaaShader;
             int texLoc, invSceneSizeLoc;
-
             std::shared_ptr<GenericDisplayer> displayer;
     };
 

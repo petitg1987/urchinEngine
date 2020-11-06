@@ -25,50 +25,46 @@ namespace urchin {
     bool DEBUG_EXPORT_SSAO_KERNEL = false;
 
     AmbientOcclusionManager::AmbientOcclusionManager(unsigned int depthTexID, unsigned int normalAndAmbientTexID) :
-        sceneWidth(0),
-        sceneHeight(0),
-        nearPlane(0.0f),
-        farPlane(0.0f),
-        projectionScale(0.0f),
+            sceneWidth(0),
+            sceneHeight(0),
+            nearPlane(0.0f),
+            farPlane(0.0f),
+            projectionScale(0.0f),
 
-        textureSize(DEFAULT_TEXTURE_SIZE),
-        textureSizeX(0),
-        textureSizeY(0),
-        kernelSamples(DEFAULT_KERNEL_SAMPLES),
-        radius(DEFAULT_RADIUS),
-        ambientOcclusionStrength(DEFAULT_AO_STRENGTH),
-        depthStartAttenuation(DEFAULT_DEPTH_START_ATTENUATION),
-        depthEndAttenuation(DEFAULT_DEPTH_END_ATTENUATION),
-        noiseTextureSize(DEFAULT_NOISE_TEXTURE_SIZE),
-        bias(DEFAULT_BIAS),
-        blurSize(DEFAULT_BLUR_SIZE),
-        blurSharpness(DEFAULT_BLUR_SHARPNESS),
+            textureSize(DEFAULT_TEXTURE_SIZE),
+            textureSizeX(0),
+            textureSizeY(0),
+            kernelSamples(DEFAULT_KERNEL_SAMPLES),
+            radius(DEFAULT_RADIUS),
+            ambientOcclusionStrength(DEFAULT_AO_STRENGTH),
+            depthStartAttenuation(DEFAULT_DEPTH_START_ATTENUATION),
+            depthEndAttenuation(DEFAULT_DEPTH_END_ATTENUATION),
+            noiseTextureSize(DEFAULT_NOISE_TEXTURE_SIZE),
+            bias(DEFAULT_BIAS),
+            blurSize(DEFAULT_BLUR_SIZE),
+            blurSharpness(DEFAULT_BLUR_SHARPNESS),
 
-        fboID(0),
-        ambientOcclusionTexID(0),
+            fboID(0),
+            ambientOcclusionTexID(0),
 
-        ambientOcclusionShader(0),
-        mInverseViewProjectionLoc(0),
-        mProjectionLoc(0),
-        mViewLoc(0),
-        resolutionLoc(0),
-        noiseTexId(0),
+            ambientOcclusionShader(0),
+            mInverseViewProjectionLoc(0),
+            mProjectionLoc(0),
+            mViewLoc(0),
+            resolutionLoc(0),
+            noiseTexId(0),
 
-        depthTexID(depthTexID),
-        normalAndAmbientTexID(normalAndAmbientTexID),
-        ambientOcclusionTexLoc(0),
-        verticalBlurFilter(nullptr),
-        horizontalBlurFilter(nullptr),
-        isBlurActivated(true) {
-        glBindTexture(GL_TEXTURE_2D, depthTexID);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-        glBindTexture(GL_TEXTURE_2D, normalAndAmbientTexID);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-        displayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)->build();
+            depthTexID(depthTexID),
+            normalAndAmbientTexID(normalAndAmbientTexID),
+            ambientOcclusionTexLoc(0),
+            verticalBlurFilter(nullptr),
+            horizontalBlurFilter(nullptr),
+            isBlurActivated(true) {
+        displayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)
+                ->addTexture(Texture::build(depthTexID, Texture::DEFAULT, TextureParam::buildNearest()))
+                ->addTexture(Texture::build(normalAndAmbientTexID, Texture::DEFAULT, TextureParam::buildNearest()))
+                ->addTexture(Texture::build(noiseTexId))
+                ->build();
 
         //frame buffer object
         glGenFramebuffers(1, &fboID);
@@ -142,10 +138,6 @@ namespace urchin {
         this->textureSizeY = sceneHeight / retrieveTextureSizeFactor();
 
         glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexID);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_R16F, textureSizeX, textureSizeY, 0, GL_RED, GL_FLOAT, nullptr);
         glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], ambientOcclusionTexID, 0);
 
@@ -156,7 +148,6 @@ namespace urchin {
                 ->textureType(GL_TEXTURE_2D)
                 ->textureInternalFormat(GL_R16F)
                 ->textureFormat(GL_RED)
-                ->textureAccessFilter(GL_NEAREST)
                 ->blurDirection(BilateralBlurFilterBuilder::VERTICAL_BLUR)
                 ->blurSize(blurSize)
                 ->blurSharpness(blurSharpness)
@@ -168,7 +159,6 @@ namespace urchin {
                 ->textureType(GL_TEXTURE_2D)
                 ->textureInternalFormat(GL_R16F)
                 ->textureFormat(GL_RED)
-                ->textureAccessFilter(GL_LINEAR)
                 ->blurDirection(BilateralBlurFilterBuilder::HORIZONTAL_BLUR)
                 ->blurSize(blurSize)
                 ->blurSharpness(blurSharpness)
@@ -226,10 +216,7 @@ namespace urchin {
         glBindTexture(GL_TEXTURE_2D, noiseTexId);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, noiseTextureSize, noiseTextureSize, 0, GL_RGB, GL_FLOAT, &ssaoNoise[0]);
 
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        displayer->updateTexture(2, Texture::build(noiseTexId, Texture::DEFAULT, TextureParam::build(TextureParam::REPEAT, TextureParam::NEAREST)));
 
         ShaderManager::instance()->bind(ambientOcclusionShader);
         int noiseTexLoc = glGetUniformLocation(ambientOcclusionShader, "noiseTex");
@@ -345,15 +332,6 @@ namespace urchin {
         glGetIntegerv(GL_FRAMEBUFFER_BINDING, &activeFBO);
         glBindFramebuffer(GL_FRAMEBUFFER, fboID);
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, depthTexID);
-
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, normalAndAmbientTexID);
-
-        glActiveTexture(GL_TEXTURE2);
-        glBindTexture(GL_TEXTURE_2D, noiseTexId);
-
         ShaderManager::instance()->bind(ambientOcclusionShader);
         glUniformMatrix4fv(mInverseViewProjectionLoc, 1, GL_FALSE, (const float*) (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse());
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*) camera->getProjectionMatrix());
@@ -372,10 +350,9 @@ namespace urchin {
         glBindFramebuffer(GL_FRAMEBUFFER, static_cast<GLuint>(activeFBO));
     }
 
-    void AmbientOcclusionManager::loadAOTexture(unsigned int ambientOcclusionTextureUnit) const {
-        glActiveTexture(GL_TEXTURE0 + ambientOcclusionTextureUnit);
-        glBindTexture(GL_TEXTURE_2D, getAmbientOcclusionTextureID());
-
+    void AmbientOcclusionManager::loadAOTexture(const std::shared_ptr<GenericDisplayer> &displayer) const {
+        unsigned int ambientOcclusionTextureUnit = displayer
+                ->addAdditionalTexture(Texture::build(getAmbientOcclusionTextureID(), Texture::DEFAULT, TextureParam::buildLinear()));
         glUniform1i(ambientOcclusionTexLoc, ambientOcclusionTextureUnit);
     }
 

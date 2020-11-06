@@ -3,8 +3,6 @@ template<class BUILDER> TextureFilter::TextureFilter(const TextureFilterBuilder<
     textureWidth(textureFilterBuilder->getTextureWidth()),
     textureHeight(textureFilterBuilder->getTextureHeight()),
     textureType(textureFilterBuilder->getTextureType()),
-    textureAccessFilter(textureFilterBuilder->getTextureAccessFilter()),
-    textureAnisotropy(textureFilterBuilder->getTextureAnisotropy()),
     textureNumberLayer(textureFilterBuilder->getTextureNumberLayer()),
     textureInternalFormat(textureFilterBuilder->getTextureInternalFormat()),
     textureFormat(textureFilterBuilder->getTextureFormat()),

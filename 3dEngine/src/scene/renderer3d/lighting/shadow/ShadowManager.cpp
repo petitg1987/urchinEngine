@@ -470,19 +470,10 @@ namespace urchin {
         glGenTextures(2, &textureIDs[0]);
 
         glBindTexture(GL_TEXTURE_2D_ARRAY, textureIDs[0]);
-        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, depthComponent, shadowMapResolution, shadowMapResolution, nbShadowMaps, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, nullptr);
         glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, textureIDs[0], 0);
 
         glBindTexture(GL_TEXTURE_2D_ARRAY, textureIDs[1]);
-        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAX_ANISOTROPY_EXT, 1.0f);
-        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RG32F, shadowMapResolution, shadowMapResolution, nbShadowMaps, 0, GL_RG, GL_FLOAT, nullptr);
         glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], textureIDs[1], 0);
 
@@ -577,7 +568,7 @@ namespace urchin {
         glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
     }
 
-    void ShadowManager::loadShadowMaps(unsigned int shadowMapTextureUnitStart) {
+    void ShadowManager::loadShadowMaps(const std::shared_ptr<GenericDisplayer> &displayer) {
         int i = 0;
         const std::vector<Light *> &visibleLights = lightManager->getVisibleLights();
         for (auto *visibleLight : visibleLights) {
@@ -585,14 +576,11 @@ namespace urchin {
                 auto it = shadowDatas.find(visibleLight);
                 const ShadowData *shadowData = it->second;
 
-                unsigned int shadowMapTextureUnit = shadowMapTextureUnitStart + i;
-                glActiveTexture(GL_TEXTURE0 + shadowMapTextureUnit);
-                glBindTexture(GL_TEXTURE_2D_ARRAY, shadowData->getFilteredShadowMapTextureID());
-
-                glUniform1i(lightsLocation[i].shadowMapTexLoc, shadowMapTextureUnit);
+                unsigned int texUnit = displayer->addAdditionalTexture(Texture::build(shadowData->getFilteredShadowMapTextureID(), Texture::ARRAY, TextureParam::buildLinear()));
+                glUniform1i(lightsLocation[i].shadowMapTexLoc, texUnit);
 
                 for (std::size_t j=0; j<nbShadowMaps; ++j) {
-                    glUniformMatrix4fv(lightsLocation[i].mLightProjectionViewLoc[j], 1, static_cast<GLboolean>(false),
+                    glUniformMatrix4fv(lightsLocation[i].mLightProjectionViewLoc[j], 1, GL_FALSE,
                                        (float *)(shadowData->getFrustumShadowData(j)->getLightProjectionMatrix() * shadowData->getLightViewMatrix()));
                 }
             }

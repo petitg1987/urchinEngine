@@ -202,7 +202,6 @@ namespace urchin {
             Vector2<int> widgetPosition(getGlobalPositionX(), getGlobalPositionY());
             glUniform2iv(translateDistanceLoc, 1, (const int*)(widgetPosition + Vector2<int>(cursorPosition, 0)));
 
-            glBindTexture(GL_TEXTURE_2D, 0);
             cursorDisplayer->display();
 
             glUniform2iv(translateDistanceLoc, 1, (const int*)widgetPosition);

@@ -11,24 +11,25 @@ namespace urchin {
 
     class GenericDisplayerBuilder;
 
-    class GenericDisplayer {
+    class GenericDisplayer { //TODO rename: GenericRender + package name
         public:
             explicit GenericDisplayer(const GenericDisplayerBuilder *);
             ~GenericDisplayer();
 
             void updateTexture(std::size_t, Texture);
+            unsigned int addAdditionalTexture(Texture);
+            void clearAdditionalTextures();
 
             void display() const; //TODO make sure that all caller use all feature of GenericDisplayer
 
         private:
+            void initializeTexture(Texture) const;
             void initializeDisplay(bool, bool);
 
             unsigned int shapeTypeToVertexCount(ShapeType) const;
             unsigned int shapeTypeToGlType(ShapeType) const;
             unsigned int dataTypeToSize(CoordDataType) const;
             unsigned int dataTypeToGlType(CoordDataType) const;
-
-            void bindTextures() const;
 
             ShapeType shapeType;
             unsigned int shapeCount;
@@ -40,7 +41,7 @@ namespace urchin {
             CoordDataType textureDataType;
             void *textureCoord;
 
-            std::vector<Texture> textures;
+            std::vector<Texture> textures, additionalTextures;
 
             unsigned int bufferIDs[2], vertexArrayObject;
             enum //buffer IDs indices

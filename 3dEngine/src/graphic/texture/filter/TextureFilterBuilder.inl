@@ -2,8 +2,6 @@ template<class T> TextureFilterBuilder<T>::TextureFilterBuilder() :
     textureWidth(1024),
     textureHeight(1024),
     pTextureType(GL_TEXTURE_2D),
-    pTextureAccessFilter(GL_LINEAR),
-    pTextureAnisotropy(1.0f),
     pTextureNumberLayer(1),
     pTextureInternalFormat(GL_RGB),
     pTextureFormat(GL_RGB) {
@@ -35,24 +33,6 @@ template<class T> T *TextureFilterBuilder<T>::textureType(unsigned int textureTy
 
 template<class T> unsigned int TextureFilterBuilder<T>::getTextureType() const {
     return pTextureType;
-}
-
-template<class T> T *TextureFilterBuilder<T>::textureAccessFilter(unsigned int) {
-    this->pTextureAccessFilter = pTextureAccessFilter;
-    return _this();
-}
-
-template<class T> unsigned int TextureFilterBuilder<T>::getTextureAccessFilter() const {
-    return pTextureAccessFilter;
-}
-
-template<class T> T *TextureFilterBuilder<T>::textureAnisotropy(float pTextureAnisotropy) {
-    this->pTextureAnisotropy = pTextureAnisotropy;
-    return _this();
-}
-
-template<class T> float TextureFilterBuilder<T>::getTextureAnisotropy() const {
-    return pTextureAnisotropy;
 }
 
 template<class T> T *TextureFilterBuilder<T>::textureNumberLayer(unsigned int textureNumberLayer) {

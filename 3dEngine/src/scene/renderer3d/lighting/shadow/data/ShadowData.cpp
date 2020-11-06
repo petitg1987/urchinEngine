@@ -70,18 +70,17 @@ namespace urchin {
 
         unsigned int textureId = shadowMapTextureID;
         for (auto &textureFilter : textureFilters) {
-            textureFilter->applyOn(textureId, layersToUpdate);
+            textureFilter->applyOn(textureId, static_cast<int>(layersToUpdate));
             textureId = textureFilter->getTextureID();
         }
     }
 
     unsigned int ShadowData::getFilteredShadowMapTextureID() const {
-        unsigned int textureFiltersSize = textureFilters.size();
-        if (textureFiltersSize == 0) {
+        if (textureFilters.empty()) {
             return shadowMapTextureID;
         }
 
-        return textureFilters[textureFiltersSize-1]->getTextureID();
+        return textureFilters.back()->getTextureID();
     }
 
     void ShadowData::setLightViewMatrix(const Matrix4<float> &lightViewMatrix) {

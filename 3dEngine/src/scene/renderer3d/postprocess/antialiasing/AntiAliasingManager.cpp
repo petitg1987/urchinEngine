@@ -10,16 +10,18 @@
 
 namespace urchin {
 
-    AntiAliasingManager::AntiAliasingManager() :
-        quality(DEFAULT_AA_QUALITY),
-        sceneWidth(0),
-        sceneHeight(0),
-        fxaaShader(0),
-        texLoc(0),
-        invSceneSizeLoc(0) {
+    AntiAliasingManager::AntiAliasingManager(unsigned int textureId) :
+            quality(DEFAULT_AA_QUALITY),
+            sceneWidth(0),
+            sceneHeight(0),
+            fxaaShader(0),
+            texLoc(0),
+            invSceneSizeLoc(0) {
         loadFxaaShader();
 
-        displayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)->build();
+        displayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)
+                ->addTexture(Texture::build(textureId, Texture::DEFAULT, TextureParam::buildLinear()))
+                ->build();
     }
 
     AntiAliasingManager::~AntiAliasingManager() {
@@ -55,17 +57,8 @@ namespace urchin {
         loadFxaaShader();
     }
 
-    void AntiAliasingManager::applyOn(unsigned int textureId) {
+    void AntiAliasingManager::applyAntiAliasing() {
         ShaderManager::instance()->bind(fxaaShader);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureId);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
         displayer->display();
     }
 

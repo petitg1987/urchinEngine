@@ -11,7 +11,7 @@
 
 namespace urchin {
 
-    class GenericDisplayerBuilder {
+    class GenericDisplayerBuilder { //TODO add blend feature
         public:
             explicit GenericDisplayerBuilder(ShapeType);
 

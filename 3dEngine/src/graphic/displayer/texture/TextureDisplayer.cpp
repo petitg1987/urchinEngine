@@ -148,7 +148,7 @@ namespace urchin {
         glUniformMatrix3fv(mProjectionLoc, 1, GL_FALSE, (const float*)mProjection);
 
         //update the display
-        Texture::Type textureType = (layer == -1) ? Texture::Type::SIMPLE : Texture::Type::ARRAY;
+        Texture::Type textureType = (layer == -1) ? Texture::Type::DEFAULT : Texture::Type::ARRAY;
         displayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)
                 ->vertexData(CoordDataType::FLOAT, new float[8]{minX, minY, maxX, minY, maxX, maxY, minX, maxY}, true)
                 ->addTexture(Texture::build(textureID, textureType))
@@ -192,7 +192,6 @@ namespace urchin {
         }
 
         ShaderManager::instance()->bind(displayTextureShader);
-
         displayer->display();
     }
 

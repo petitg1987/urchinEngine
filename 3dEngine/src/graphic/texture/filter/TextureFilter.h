@@ -3,7 +3,6 @@
 
 #include <string>
 #include <memory>
-#include <limits>
 #include <map>
 #include <vector>
 
@@ -23,12 +22,12 @@ namespace urchin {
             unsigned int getFboId() const;
             unsigned int getTextureID() const;
 
-            void applyOn(unsigned int, unsigned int layersToUpdate = std::numeric_limits<unsigned int>::max()) const;
+            void applyOn(unsigned int, int layersToUpdate = -1) const;
 
         protected:
             virtual std::string getShaderName() const = 0;
             virtual void initializeAdditionalUniforms(unsigned int);
-            virtual void bindAdditionalTextures() const;
+            virtual void addFurtherTextures(const std::shared_ptr<GenericDisplayer> &) const;
             virtual void completeShaderTokens(std::map<std::string, std::string> &) const = 0;
 
             unsigned int getTextureWidth() const;
@@ -46,8 +45,6 @@ namespace urchin {
 
             unsigned int textureWidth, textureHeight;
             unsigned int textureType;
-            unsigned int textureAccessFilter;
-            float textureAnisotropy;
             unsigned int textureNumberLayer;
             int textureInternalFormat;
             unsigned int textureFormat;

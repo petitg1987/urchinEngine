@@ -43,9 +43,8 @@ namespace urchin {
         cameraPlanesLoc = glGetUniformLocation(textureFilterShader, "cameraPlanes");
     }
 
-    void BilateralBlurFilter::bindAdditionalTextures() const {
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, depthTextureID);
+    void BilateralBlurFilter::addFurtherTextures(const std::shared_ptr<GenericDisplayer> &displayer) const {
+        displayer->addAdditionalTexture(Texture::build(depthTextureID, Texture::DEFAULT, TextureParam::buildNearest()));
     }
 
     void BilateralBlurFilter::completeShaderTokens(std::map<std::string, std::string> &shaderTokens) const {

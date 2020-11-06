@@ -21,6 +21,11 @@ namespace urchin {
         glGenBuffers(2, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
 
+        for (const auto &texture : textures) {
+            initializeTexture(texture);
+        }
+        additionalTextures.reserve(2); //estimated memory size
+
         initializeDisplay(displayerBuilder->isDeleteVertexCoord(), displayerBuilder->isDeleteTextureCoord());
     }
 
@@ -30,6 +35,22 @@ namespace urchin {
         }
 
         glDeleteBuffers(2, bufferIDs);
+    }
+
+    void GenericDisplayer::initializeTexture(Texture texture) const {
+        unsigned int textureType = texture.getGlType();
+        glBindTexture(textureType, texture.getId());
+
+        unsigned int readMode = texture.getParam().getGlReadMode();
+        glTexParameteri(textureType, GL_TEXTURE_WRAP_S, readMode);
+        glTexParameteri(textureType, GL_TEXTURE_WRAP_T, readMode);
+        if (textureType == GL_TEXTURE_CUBE_MAP) {
+            glTexParameteri(textureType, GL_TEXTURE_WRAP_R, readMode);
+        }
+
+        unsigned int readQuality = texture.getParam().getGlReadQuality();
+        glTexParameteri(textureType, GL_TEXTURE_MIN_FILTER, readQuality);
+        glTexParameteri(textureType, GL_TEXTURE_MAG_FILTER, readQuality);
     }
 
     void GenericDisplayer::initializeDisplay(bool deleteVertexCoord, bool deleteTextureCoord) {
@@ -78,7 +99,6 @@ namespace urchin {
         }else if(shapeType == ShapeType::LINE) {
             return 2;
         }
-
         throw std::runtime_error("Unknown shape type: " + std::to_string(shapeType));
     }
 
@@ -88,7 +108,6 @@ namespace urchin {
         }else if(shapeType == ShapeType::LINE) {
             return GL_LINES;
         }
-
         throw std::runtime_error("Unknown shape type: " + std::to_string(shapeType));
     }
 
@@ -100,7 +119,6 @@ namespace urchin {
         } else if (dataType == CoordDataType::UNSIGNED_INT) {
             return sizeof(unsigned int);
         }
-
         throw std::runtime_error("Unknown data type: " + std::to_string(dataType));
     }
 
@@ -112,13 +130,28 @@ namespace urchin {
         } else if (dataType == CoordDataType::UNSIGNED_INT) {
             return GL_UNSIGNED_INT;
         }
-
         throw std::runtime_error("Unknown data type: " + std::to_string(dataType));
     }
 
-    void GenericDisplayer::updateTexture(std::size_t index, Texture texture) {
-        assert(textures.size() > index);
-        textures[index] = texture;
+    void GenericDisplayer::updateTexture(std::size_t textureUnit, Texture texture) {
+        initializeTexture(texture);
+
+        assert(textures.size() > textureUnit);
+        textures[textureUnit] = texture;
+    }
+
+    /**
+     * @return Texture unit
+     */
+    unsigned int GenericDisplayer::addAdditionalTexture(Texture texture) {
+        initializeTexture(texture);
+
+        additionalTextures.push_back(texture);
+        return textures.size() + additionalTextures.size() - 1;
+    }
+
+    void GenericDisplayer::clearAdditionalTextures() {
+        additionalTextures.clear();
     }
 
     void GenericDisplayer::display() const {
@@ -126,7 +159,15 @@ namespace urchin {
             return;
         }
 
-        bindTextures();
+        unsigned int textureUnit = 0;
+        for (const auto &texture : textures) {
+            glActiveTexture(GL_TEXTURE0 + textureUnit++);
+            glBindTexture(texture.getGlType(), texture.getId());
+        }
+        for (const auto &additionalTexture : additionalTextures) {
+            glActiveTexture(GL_TEXTURE0 + textureUnit++);
+            glBindTexture(additionalTexture.getGlType(), additionalTexture.getId());
+        }
 
         glDisable(GL_DEPTH_TEST);
         glDepthMask(GL_FALSE);
@@ -137,19 +178,4 @@ namespace urchin {
         glDepthMask(GL_TRUE);
         glEnable(GL_DEPTH_TEST);
     }
-
-    void GenericDisplayer::bindTextures() const {
-        for (std::size_t i = 0; i < textures.size(); ++i) {
-            glActiveTexture(GL_TEXTURE0 + i);
-
-            if (textures[i].getType() == Texture::SIMPLE) {
-                glBindTexture(GL_TEXTURE_2D, textures[i].getId());
-            } else if (textures[i].getType() == Texture::ARRAY) {
-                glBindTexture(GL_TEXTURE_2D_ARRAY, textures[i].getId());
-            } else if (textures[i].getType() == Texture::CUBE_MAP) {
-                glBindTexture(GL_TEXTURE_CUBE_MAP, textures[i].getId());
-            }
-        }
-    }
-
 }

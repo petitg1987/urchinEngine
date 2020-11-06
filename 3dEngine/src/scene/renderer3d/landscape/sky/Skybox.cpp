@@ -85,12 +85,6 @@ namespace urchin {
         }
         clearTexSkybox();
 
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
         //visual
         skyboxShader = ShaderManager::instance()->createProgram("skybox.vert", "", "skybox.frag");
 
@@ -135,7 +129,7 @@ namespace urchin {
                 ->dimension(3) //3D
                 ->vertexData(CoordDataType::FLOAT, &vertexCoord[0], false)
                 ->textureData(CoordDataType::FLOAT, &textureCoord[0], false)
-                ->addTexture(Texture::build(textureID, Texture::Type::CUBE_MAP))
+                ->addTexture(Texture::build(textureID, Texture::Type::CUBE_MAP, TextureParam::buildLinear()))
                 ->build();
     }
 
