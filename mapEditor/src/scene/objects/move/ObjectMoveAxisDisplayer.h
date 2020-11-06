@@ -11,14 +11,14 @@ namespace urchin {
 
     class ObjectMoveAxisDisplayer {
         public:
-            ObjectMoveAxisDisplayer(SceneManager *);
+            explicit ObjectMoveAxisDisplayer(SceneManager *);
             ~ObjectMoveAxisDisplayer();
 
             void displayAxis(const Point3<float> &, unsigned int);
             void cleanCurrentDisplay();
 
         private:
-            GeometryModel *createAxisModel(const Point3<float> &, unsigned int, unsigned int);
+            GeometryModel *createAxisModel(const Point3<float> &, unsigned int, std::size_t);
 
             SceneManager *sceneManager;
             std::vector<GeometryModel *> objectMoveAxisModels;

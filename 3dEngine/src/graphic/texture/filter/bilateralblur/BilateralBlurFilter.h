@@ -25,7 +25,7 @@ namespace urchin {
         private:
             std::string getShaderName() const override;
             void initializeAdditionalUniforms(unsigned int) override;
-            void addFurtherTextures(const std::shared_ptr<GenericDisplayer> &) const override;
+            void addFurtherTextures(const std::shared_ptr<GenericRenderer> &) const override;
             void completeShaderTokens(std::map<std::string, std::string> &) const override;
 
             std::vector<float> computeOffsets() const;

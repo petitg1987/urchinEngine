@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "graphic/displayer/generic/GenericDisplayer.h"
+#include "graphic/render/generic/GenericRenderer.h"
 
 namespace urchin {
 
@@ -35,7 +35,7 @@ namespace urchin {
             //display
             unsigned int fxaaShader;
             int texLoc, invSceneSizeLoc;
-            std::shared_ptr<GenericDisplayer> displayer;
+            std::shared_ptr<GenericRenderer> renderer;
     };
 
 }

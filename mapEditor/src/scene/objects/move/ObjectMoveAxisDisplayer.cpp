@@ -36,7 +36,7 @@ namespace urchin {
         objectMoveAxisModels.clear();
     }
 
-    GeometryModel *ObjectMoveAxisDisplayer::createAxisModel(const Point3<float> &position, unsigned int selectedAxis, unsigned int axisIndex) {
+    GeometryModel *ObjectMoveAxisDisplayer::createAxisModel(const Point3<float> &position, unsigned int selectedAxis, std::size_t axisIndex) {
         Point3<float> startPoint = position;
         startPoint[axisIndex] -= 500.0f;
 

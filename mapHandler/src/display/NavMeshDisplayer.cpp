@@ -77,7 +77,7 @@ namespace urchin {
 
     void NavMeshDisplayer::addNavMeshModel(GeometryModel *model, GeometryModel::PolygonMode polygonMode, const Vector3<float> &color) {
         model->setLineSize(4.0);
-        model->setBlendMode(GeometryModel::ONE_MINUS_SRC_ALPHA);
+        model->enableTransparency();
         model->setColor(color.X, color.Y, color.Z, 0.5);
         model->setPolygonMode(polygonMode);
         navMeshModels.push_back(model);

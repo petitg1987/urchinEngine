@@ -2,7 +2,7 @@
 
 #include "Model.h"
 #include "resources/MediaManager.h"
-#include "graphic/displayer/geometry/aabbox/AABBoxModel.h"
+#include "graphic/geometry/aabbox/AABBoxModel.h"
 
 namespace urchin {
 

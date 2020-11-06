@@ -18,9 +18,9 @@
 #include "scene/renderer3d/landscape/fog/FogManager.h"
 #include "scene/renderer3d/landscape/water/WaterManager.h"
 #include "scene/renderer3d/landscape/sky/SkyManager.h"
-#include "graphic/displayer/geometry/GeometryManager.h"
-#include "graphic/displayer/geometry/GeometryModel.h"
-#include "graphic/displayer/generic/GenericDisplayer.h"
+#include "graphic/geometry/GeometryManager.h"
+#include "graphic/geometry/GeometryModel.h"
+#include "graphic/render/generic/GenericRenderer.h"
 
 namespace urchin {
 
@@ -144,7 +144,7 @@ namespace urchin {
                 TEX_LIGHTING_PASS
             };
 
-            std::shared_ptr<GenericDisplayer> lightingPassDisplayer;
+            std::shared_ptr<GenericRenderer> lightingPassRenderer;
             unsigned int deferredShadingShader;
             int mInverseViewProjectionLoc, viewPositionLoc;
     };

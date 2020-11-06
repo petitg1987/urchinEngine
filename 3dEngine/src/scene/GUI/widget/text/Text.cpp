@@ -1,10 +1,9 @@
-#include <GL/glew.h>
 #include <memory>
 
 #include "scene/GUI/widget/text/Text.h"
 #include "scene/GUI/widget/Size.h"
 #include "resources/MediaManager.h"
-#include "graphic/displayer/generic/GenericDisplayerBuilder.h"
+#include "graphic/render/generic/GenericRendererBuilder.h"
 
 namespace urchin {
 
@@ -83,11 +82,12 @@ namespace urchin {
         unsigned int numberOfInterLines = cutTextLines.size() - 1;
         setSize(Size((float)width, (float)(cutTextLines.size() * font->getHeight() + numberOfInterLines * font->getSpaceBetweenLines()), Size::SizeType::PIXEL));
 
-        textDisplayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)
+        textRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
                 ->shapeCount(numLetters)
                 ->vertexData(CoordDataType::INT, &vertexData[0], false)
                 ->textureData(CoordDataType::FLOAT, &textureData[0], false)
                 ->addTexture(Texture::build(font->getTextureID()))
+                ->enableTransparency()
                 ->build();
     }
 
@@ -131,13 +131,8 @@ namespace urchin {
     }
 
     void Text::display(int translateDistanceLoc, float dt) {
-        if(textDisplayer) {
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-            textDisplayer->display();
-
-            glDisable(GL_BLEND);
+        if(textRenderer) {
+            textRenderer->draw();
         }
 
         Widget::display(translateDistanceLoc, dt);

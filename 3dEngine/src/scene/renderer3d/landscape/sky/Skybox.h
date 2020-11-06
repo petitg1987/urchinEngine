@@ -8,7 +8,7 @@
 
 #include "resources/image/Image.h"
 #include "scene/renderer3d/camera/Camera.h"
-#include "graphic/displayer/generic/GenericDisplayer.h"
+#include "graphic/render/generic/GenericRenderer.h"
 
 namespace urchin {
 
@@ -36,7 +36,7 @@ namespace urchin {
             Matrix4<float> translationMatrix;
 
             //visual
-            std::shared_ptr<GenericDisplayer> skyboxDisplayer;
+            std::shared_ptr<GenericRenderer> skyboxRenderer;
 
             unsigned int skyboxShader;
             int mProjectionLoc, mViewLoc;

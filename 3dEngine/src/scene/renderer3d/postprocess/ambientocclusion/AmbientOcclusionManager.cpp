@@ -5,7 +5,7 @@
 
 #include "AmbientOcclusionManager.h"
 #include "graphic/shader/ShaderManager.h"
-#include "graphic/displayer/generic/GenericDisplayerBuilder.h"
+#include "graphic/render/generic/GenericRendererBuilder.h"
 #include "graphic/texture/filter/bilateralblur/BilateralBlurFilterBuilder.h"
 
 #define DEFAULT_TEXTURE_SIZE AOTextureSize::HALF_SIZE
@@ -60,7 +60,7 @@ namespace urchin {
             verticalBlurFilter(nullptr),
             horizontalBlurFilter(nullptr),
             isBlurActivated(true) {
-        displayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)
+        renderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
                 ->addTexture(Texture::build(depthTexID, Texture::DEFAULT, TextureParam::buildNearest()))
                 ->addTexture(Texture::build(normalAndAmbientTexID, Texture::DEFAULT, TextureParam::buildNearest()))
                 ->addTexture(Texture::build(noiseTexId))
@@ -216,7 +216,7 @@ namespace urchin {
         glBindTexture(GL_TEXTURE_2D, noiseTexId);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, noiseTextureSize, noiseTextureSize, 0, GL_RGB, GL_FLOAT, &ssaoNoise[0]);
 
-        displayer->updateTexture(2, Texture::build(noiseTexId, Texture::DEFAULT, TextureParam::build(TextureParam::REPEAT, TextureParam::NEAREST)));
+        renderer->updateTexture(2, Texture::build(noiseTexId, Texture::DEFAULT, TextureParam::build(TextureParam::REPEAT, TextureParam::NEAREST)));
 
         ShaderManager::instance()->bind(ambientOcclusionShader);
         int noiseTexLoc = glGetUniformLocation(ambientOcclusionShader, "noiseTex");
@@ -339,7 +339,7 @@ namespace urchin {
 
         glViewport(0, 0, textureSizeX, textureSizeY);
 
-        displayer->display();
+        renderer->draw();
 
         if (isBlurActivated) {
             verticalBlurFilter->applyOn(ambientOcclusionTexID);
@@ -350,8 +350,8 @@ namespace urchin {
         glBindFramebuffer(GL_FRAMEBUFFER, static_cast<GLuint>(activeFBO));
     }
 
-    void AmbientOcclusionManager::loadAOTexture(const std::shared_ptr<GenericDisplayer> &displayer) const {
-        unsigned int ambientOcclusionTextureUnit = displayer
+    void AmbientOcclusionManager::loadAOTexture(const std::shared_ptr<GenericRenderer> &renderer) const {
+        unsigned int ambientOcclusionTextureUnit = renderer
                 ->addAdditionalTexture(Texture::build(getAmbientOcclusionTextureID(), Texture::DEFAULT, TextureParam::buildLinear()));
         glUniform1i(ambientOcclusionTexLoc, ambientOcclusionTextureUnit);
     }

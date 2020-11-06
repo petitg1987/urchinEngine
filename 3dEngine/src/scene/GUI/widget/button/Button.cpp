@@ -3,7 +3,7 @@
 
 #include "scene/GUI/widget/button/Button.h"
 #include "scene/GUI/GUISkinService.h"
-#include "graphic/displayer/generic/GenericDisplayerBuilder.h"
+#include "graphic/render/generic/GenericRendererBuilder.h"
 
 namespace urchin {
 
@@ -38,7 +38,7 @@ namespace urchin {
         }
 
         //visual
-        buttonDisplayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)
+        buttonRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
                 ->vertexData(CoordDataType::UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()}, true)
                 ->textureData(CoordDataType::FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}, true)
                 ->addTexture(Texture::build(texInfoDefault->getTextureID()))
@@ -56,22 +56,22 @@ namespace urchin {
     }
 
     bool Button::onKeyPressEvent(unsigned int) {
-        buttonDisplayer->updateTexture(0, Texture::build(getTextureId()));
+        buttonRenderer->updateTexture(0, Texture::build(getTextureId()));
         return true;
     }
 
     bool Button::onKeyReleaseEvent(unsigned int) {
-        buttonDisplayer->updateTexture(0, Texture::build(getTextureId()));
+        buttonRenderer->updateTexture(0, Texture::build(getTextureId()));
         return true;
     }
 
     bool Button::onMouseMoveEvent(int, int) {
-        buttonDisplayer->updateTexture(0, Texture::build(getTextureId()));
+        buttonRenderer->updateTexture(0, Texture::build(getTextureId()));
         return true;
     }
 
     void Button::display(int translateDistanceLoc, float dt) {
-        buttonDisplayer->display();
+        buttonRenderer->draw();
 
         Widget::display(translateDistanceLoc, dt);
     }

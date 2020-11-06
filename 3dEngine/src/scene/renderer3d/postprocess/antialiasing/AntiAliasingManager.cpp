@@ -4,7 +4,7 @@
 
 #include "scene/renderer3d/postprocess/antialiasing/AntiAliasingManager.h"
 #include "graphic/shader/ShaderManager.h"
-#include "graphic/displayer/generic/GenericDisplayerBuilder.h"
+#include "graphic/render/generic/GenericRendererBuilder.h"
 
 #define DEFAULT_AA_QUALITY AntiAliasingManager::Quality::VERY_HIGH
 
@@ -19,7 +19,7 @@ namespace urchin {
             invSceneSizeLoc(0) {
         loadFxaaShader();
 
-        displayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)
+        renderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
                 ->addTexture(Texture::build(textureId, Texture::DEFAULT, TextureParam::buildLinear()))
                 ->build();
     }
@@ -59,7 +59,8 @@ namespace urchin {
 
     void AntiAliasingManager::applyAntiAliasing() {
         ShaderManager::instance()->bind(fxaaShader);
-        displayer->display();
+
+        renderer->draw();
     }
 
 }

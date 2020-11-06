@@ -9,7 +9,7 @@
 #include "scene/GUI/widget/Size.h"
 #include "scene/GUI/widget/text/Text.h"
 #include "resources/image/Image.h"
-#include "graphic/displayer/generic/GenericDisplayer.h"
+#include "graphic/render/generic/GenericRenderer.h"
 
 namespace urchin {
 
@@ -38,7 +38,7 @@ namespace urchin {
 
             //visual
             std::shared_ptr<Image> texInfoDefault, texInfoOnFocus, texInfoOnClick;
-            std::shared_ptr<GenericDisplayer> buttonDisplayer;
+            std::shared_ptr<GenericRenderer> buttonRenderer;
     };
 
 }

@@ -295,7 +295,7 @@ namespace urchin {
             glBindTexture(GL_TEXTURE_2D, dudvMap->getTextureID());
 
             glBindVertexArray(vertexArrayObject);
-            glDrawArrays(GL_QUADS, 0, 4);
+            glDrawArrays(GL_QUADS, 0, 4); //TODO use genericDisplayer
         }
     }
 }

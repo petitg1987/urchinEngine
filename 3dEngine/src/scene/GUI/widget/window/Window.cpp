@@ -4,7 +4,7 @@
 
 #include "scene/GUI/widget/window/Window.h"
 #include "scene/InputDeviceKey.h"
-#include "graphic/displayer/generic/GenericDisplayerBuilder.h"
+#include "graphic/render/generic/GenericRendererBuilder.h"
 
 namespace urchin {
 
@@ -43,7 +43,7 @@ namespace urchin {
         }
 
         //visual
-        windowDisplayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)
+        windowRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
                 ->vertexData(CoordDataType::UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()}, true)
                 ->textureData(CoordDataType::FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}, true)
                 ->addTexture(Texture::build(texWindow->getTextureID()))
@@ -113,7 +113,7 @@ namespace urchin {
     }
 
     void Window::display(int translateDistanceLoc, float dt) {
-        windowDisplayer->display();
+        windowRenderer->draw();
 
         Widget::display(translateDistanceLoc, dt);
     }

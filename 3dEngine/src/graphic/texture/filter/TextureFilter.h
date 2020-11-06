@@ -6,7 +6,7 @@
 #include <map>
 #include <vector>
 
-#include "graphic/displayer/generic/GenericDisplayer.h"
+#include "graphic/render/generic/GenericRenderer.h"
 
 namespace urchin {
 
@@ -27,7 +27,7 @@ namespace urchin {
         protected:
             virtual std::string getShaderName() const = 0;
             virtual void initializeAdditionalUniforms(unsigned int);
-            virtual void addFurtherTextures(const std::shared_ptr<GenericDisplayer> &) const;
+            virtual void addFurtherTextures(const std::shared_ptr<GenericRenderer> &) const;
             virtual void completeShaderTokens(std::map<std::string, std::string> &) const = 0;
 
             unsigned int getTextureWidth() const;
@@ -49,7 +49,7 @@ namespace urchin {
             int textureInternalFormat;
             unsigned int textureFormat;
 
-            std::shared_ptr<GenericDisplayer> textureDisplayer;
+            std::shared_ptr<GenericRenderer> textureRenderer;
             unsigned int textureFilterShader;
             int layersToUpdateLoc;
 

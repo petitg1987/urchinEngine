@@ -13,7 +13,7 @@
 #include "graphic/texture/filter/gaussianblur/GaussianBlurFilterBuilder.h"
 #include "graphic/texture/filter/downsample/DownSampleFilterBuilder.h"
 #include "graphic/shader/ShaderManager.h"
-#include "graphic/displayer/geometry/obbox/OBBoxModel.h"
+#include "graphic/geometry/obbox/OBBoxModel.h"
 
 #define DEFAULT_NUMBER_SHADOW_MAPS 5
 #define DEFAULT_SHADOW_MAP_RESOLUTION 1024
@@ -568,7 +568,7 @@ namespace urchin {
         glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
     }
 
-    void ShadowManager::loadShadowMaps(const std::shared_ptr<GenericDisplayer> &displayer) {
+    void ShadowManager::loadShadowMaps(const std::shared_ptr<GenericRenderer> &renderer) {
         int i = 0;
         const std::vector<Light *> &visibleLights = lightManager->getVisibleLights();
         for (auto *visibleLight : visibleLights) {
@@ -576,7 +576,7 @@ namespace urchin {
                 auto it = shadowDatas.find(visibleLight);
                 const ShadowData *shadowData = it->second;
 
-                unsigned int texUnit = displayer->addAdditionalTexture(Texture::build(shadowData->getFilteredShadowMapTextureID(), Texture::ARRAY, TextureParam::buildLinear()));
+                unsigned int texUnit = renderer->addAdditionalTexture(Texture::build(shadowData->getFilteredShadowMapTextureID(), Texture::ARRAY, TextureParam::buildLinear()));
                 glUniform1i(lightsLocation[i].shadowMapTexLoc, texUnit);
 
                 for (std::size_t j=0; j<nbShadowMaps; ++j) {

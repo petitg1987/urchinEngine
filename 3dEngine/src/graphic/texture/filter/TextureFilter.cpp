@@ -3,7 +3,7 @@
 
 #include "TextureFilter.h"
 #include "graphic/shader/ShaderManager.h"
-#include "graphic/displayer/generic/GenericDisplayerBuilder.h"
+#include "graphic/render/generic/GenericRendererBuilder.h"
 
 namespace urchin {
 
@@ -28,7 +28,7 @@ namespace urchin {
     void TextureFilter::initializeDisplay() {
         std::locale::global(std::locale("C")); //for float
 
-        textureDisplayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)->build();
+        textureRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)->build();
 
         std::map<std::string, std::string> shaderTokens;
         if (textureFormat==GL_RGB) {
@@ -90,7 +90,7 @@ namespace urchin {
         //do nothing: to override
     }
 
-    void TextureFilter::addFurtherTextures(const std::shared_ptr<GenericDisplayer> &) const {
+    void TextureFilter::addFurtherTextures(const std::shared_ptr<GenericRenderer> &) const {
         //do nothing: to override
     }
 
@@ -138,9 +138,9 @@ namespace urchin {
         ShaderManager::instance()->bind(textureFilterShader);
 
         Texture::Type sourceTextureType = layersToUpdate == -1 ? Texture::Type::DEFAULT : Texture::Type::ARRAY;
-        textureDisplayer->clearAdditionalTextures();
-        textureDisplayer->addAdditionalTexture(Texture::build(sourceTextureId, sourceTextureType, TextureParam::buildLinear()));
-        addFurtherTextures(textureDisplayer);
+        textureRenderer->clearAdditionalTextures();
+        textureRenderer->addAdditionalTexture(Texture::build(sourceTextureId, sourceTextureType, TextureParam::buildLinear()));
+        addFurtherTextures(textureRenderer);
 
         if (textureType == GL_TEXTURE_2D_ARRAY) {
             assert(layersToUpdate != -1);
@@ -150,7 +150,7 @@ namespace urchin {
         glViewport(0, 0, textureWidth, textureHeight);
         glBindFramebuffer(GL_FRAMEBUFFER, fboID);
 
-        textureDisplayer->display();
+        textureRenderer->draw();
 
         glBindTexture(textureType, 0);
     }

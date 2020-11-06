@@ -10,7 +10,7 @@
 #include "scene/GUI/widget/text/Text.h"
 #include "scene/GUI/GUISkinService.h"
 #include "resources/image/Image.h"
-#include "graphic/displayer/generic/GenericDisplayer.h"
+#include "graphic/render/generic/GenericRenderer.h"
 
 namespace urchin {
 
@@ -48,7 +48,7 @@ namespace urchin {
             Text *title;
             std::shared_ptr<Image> texWindow;
             WidgetOutline *widgetOutline;
-            std::shared_ptr<GenericDisplayer> windowDisplayer;
+            std::shared_ptr<GenericRenderer> windowRenderer;
     };
 
 }

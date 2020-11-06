@@ -7,7 +7,7 @@
 #include "resources/MediaManager.h"
 #include "resources/font/Font.h"
 #include "graphic/shader/ShaderManager.h"
-#include "graphic/displayer/texture/TextureDisplayer.h"
+#include "graphic/render/texture/TextureRenderer.h"
 
 namespace urchin {
 
@@ -144,8 +144,8 @@ namespace urchin {
         if (DEBUG_DISPLAY_FONT_TEXTURE) {
             Font *font = MediaManager::instance()->getMedia<Font>("font/font.fnt");
 
-            TextureDisplayer textureDisplayer(font->getTextureID(), TextureDisplayer::DEFAULT_VALUE);
-            textureDisplayer.setPosition(TextureDisplayer::USER_DEFINED_X, TextureDisplayer::USER_DEFINED_Y);
+            TextureRenderer textureDisplayer(font->getTextureID(), TextureRenderer::DEFAULT_VALUE);
+            textureDisplayer.setPosition(TextureRenderer::USER_DEFINED_X, TextureRenderer::USER_DEFINED_Y);
             textureDisplayer.setSize(20.0f, (float)font->getDimensionTexture() + 20.0f, 20.0f, (float)font->getDimensionTexture() + 20.0f);
             textureDisplayer.initialize(512u, 512u, -1.0f, -1.0f);
             textureDisplayer.display();

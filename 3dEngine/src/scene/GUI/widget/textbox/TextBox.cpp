@@ -5,7 +5,7 @@
 
 #include "scene/GUI/widget/textbox/TextBox.h"
 #include "scene/InputDeviceKey.h"
-#include "graphic/displayer/generic/GenericDisplayerBuilder.h"
+#include "graphic/render/generic/GenericRendererBuilder.h"
 
 #define ADDITIONAL_LEFT_BORDER 1 //Additional border to outline->leftWidth
 #define LETTER_SHIFT 5 //When the text box is full of text, we shift all letters to left
@@ -51,17 +51,16 @@ namespace urchin {
         refreshText(cursorIndex);
 
         //visual
-        cursorDisplayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::LINE)
-                ->vertexData(CoordDataType::UNSIGNED_INT, new unsigned int[4]{0, widgetOutline->topWidth, 0, getHeight() - widgetOutline->bottomWidth}, true)
-                ->build();
-
-        textBoxDisplayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)
+        textBoxRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
                 ->vertexData(CoordDataType::UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()}, true)
                 ->textureData(CoordDataType::FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}, true)
                 ->addTexture(Texture::build(texTextBoxDefault->getTextureID()))
                 ->build();
-
         computeCursorPosition();
+
+        cursorRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::LINE)
+                ->vertexData(CoordDataType::UNSIGNED_INT, new unsigned int[4]{0, widgetOutline->topWidth, 0, getHeight() - widgetOutline->bottomWidth}, true)
+                ->build();
     }
 
     std::string TextBox::getText() {
@@ -73,13 +72,13 @@ namespace urchin {
             Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
             if (widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
-                textBoxDisplayer->updateTexture(0, Texture::build(texTextBoxFocus->getTextureID()));
+                textBoxRenderer->updateTexture(0, Texture::build(texTextBoxFocus->getTextureID()));
 
                 int localMouseX = getMouseX() - text->getGlobalPositionX();
                 computeCursorIndex(localMouseX);
             } else {
                 state = UNACTIVE;
-                textBoxDisplayer->updateTexture(0, Texture::build(texTextBoxDefault->getTextureID()));
+                textBoxRenderer->updateTexture(0, Texture::build(texTextBoxDefault->getTextureID()));
             }
         } else if (state == ACTIVE) {
             if (key == InputDeviceKey::LEFT_ARROW) {
@@ -122,7 +121,7 @@ namespace urchin {
 
     void TextBox::reset() {
         state = UNACTIVE;
-        textBoxDisplayer->updateTexture(0, Texture::build(texTextBoxDefault->getTextureID()));
+        textBoxRenderer->updateTexture(0, Texture::build(texTextBoxDefault->getTextureID()));
 
         Widget::reset();
     }
@@ -194,7 +193,7 @@ namespace urchin {
 
     void TextBox::display(int translateDistanceLoc, float dt) {
         //display the text box
-        textBoxDisplayer->display();
+        textBoxRenderer->draw();
 
         //displays the cursor
         cursorBlink += dt * CURSOR_BLINK_SPEED;
@@ -202,7 +201,7 @@ namespace urchin {
             Vector2<int> widgetPosition(getGlobalPositionX(), getGlobalPositionY());
             glUniform2iv(translateDistanceLoc, 1, (const int*)(widgetPosition + Vector2<int>(cursorPosition, 0)));
 
-            cursorDisplayer->display();
+            cursorRenderer->draw();
 
             glUniform2iv(translateDistanceLoc, 1, (const int*)widgetPosition);
         }

@@ -9,7 +9,7 @@
 #include "scene/GUI/widget/Size.h"
 #include "scene/GUI/widget/text/Text.h"
 #include "scene/GUI/GUISkinService.h"
-#include "graphic/displayer/generic/GenericDisplayer.h"
+#include "graphic/render/generic/GenericRenderer.h"
 
 namespace urchin {
 
@@ -55,7 +55,7 @@ namespace urchin {
             //visual
             std::shared_ptr<Image> texTextBoxDefault, texTextBoxFocus;
             WidgetOutline *widgetOutline;
-            std::shared_ptr<GenericDisplayer> textBoxDisplayer, cursorDisplayer;
+            std::shared_ptr<GenericRenderer> textBoxRenderer, cursorRenderer;
     };
 
 }

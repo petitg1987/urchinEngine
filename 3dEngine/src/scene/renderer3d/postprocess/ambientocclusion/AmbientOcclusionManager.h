@@ -5,7 +5,7 @@
 #include "UrchinCommon.h"
 
 #include "scene/renderer3d/camera/Camera.h"
-#include "graphic/displayer/generic/GenericDisplayer.h"
+#include "graphic/render/generic/GenericRenderer.h"
 #include "graphic/texture/filter/bilateralblur/BilateralBlurFilter.h"
 
 namespace urchin {
@@ -40,7 +40,7 @@ namespace urchin {
             unsigned int getAmbientOcclusionTextureID() const;
 
             void updateAOTexture(const Camera *);
-            void loadAOTexture(const std::shared_ptr<GenericDisplayer> &) const;
+            void loadAOTexture(const std::shared_ptr<GenericRenderer> &) const;
 
         private:
             void createOrUpdateAOTexture();
@@ -84,7 +84,7 @@ namespace urchin {
             unsigned int depthTexID;
             unsigned int normalAndAmbientTexID;
             GLint ambientOcclusionTexLoc;
-            std::shared_ptr<GenericDisplayer> displayer;
+            std::shared_ptr<GenericRenderer> renderer;
 
             std::shared_ptr<BilateralBlurFilter> verticalBlurFilter;
             std::shared_ptr<BilateralBlurFilter> horizontalBlurFilter;

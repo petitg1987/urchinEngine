@@ -1,10 +1,8 @@
-#include <GL/glew.h>
-
 #include <utility>
 
 #include "scene/GUI/widget/staticbitmap/StaticBitmap.h"
 #include "resources/MediaManager.h"
-#include "graphic/displayer/generic/GenericDisplayerBuilder.h"
+#include "graphic/render/generic/GenericRendererBuilder.h"
 
 namespace urchin {
 
@@ -28,20 +26,16 @@ namespace urchin {
         tex->toTexture(false, false, false);
 
         //visual
-        bitmapDisplayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)
+        bitmapRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
                 ->vertexData(CoordDataType::UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()}, true)
                 ->textureData(CoordDataType::FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0}, true)
                 ->addTexture(Texture::build(tex->getTextureID()))
+                ->enableTransparency()
                 ->build();
     }
 
     void StaticBitmap::display(int translateDistanceLoc, float dt) {
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-        bitmapDisplayer->display();
-
-        glDisable(GL_BLEND);
+        bitmapRenderer->draw();
 
         Widget::display(translateDistanceLoc, dt);
     }

@@ -3,8 +3,8 @@
 #include <locale>
 
 #include "Renderer3d.h"
-#include "graphic/displayer/generic/GenericDisplayerBuilder.h"
-#include "graphic/displayer/texture/TextureDisplayer.h"
+#include "graphic/render/generic/GenericRendererBuilder.h"
+#include "graphic/render/texture/TextureRenderer.h"
 #include "graphic/shader/ShaderManager.h"
 #include "scene/renderer3d/utils/OctreeDisplayer.h"
 
@@ -73,7 +73,7 @@ namespace urchin {
 
         //deferred shading (pass 2)
         createOrUpdateDeferredShadingShader();
-        lightingPassDisplayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)
+        lightingPassRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
                 ->addTexture(Texture::build(textureIDs[TEX_DEPTH], Texture::DEFAULT, TextureParam::buildNearest()))
                 ->addTexture(Texture::build(textureIDs[TEX_DIFFUSE], Texture::DEFAULT, TextureParam::buildNearest()))
                 ->addTexture(Texture::build(textureIDs[TEX_NORMAL_AND_AMBIENT], Texture::DEFAULT, TextureParam::buildNearest()))
@@ -377,49 +377,49 @@ namespace urchin {
     void Renderer3d::displayBuffers() {
         if (DEBUG_DISPLAY_DEPTH_BUFFER) {
             float depthIntensity = 5.0f;
-            TextureDisplayer textureDisplayer(textureIDs[TEX_DEPTH], TextureDisplayer::DEPTH_VALUE, depthIntensity);
-            textureDisplayer.setPosition(TextureDisplayer::LEFT, TextureDisplayer::TOP);
-            textureDisplayer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-            textureDisplayer.display();
+            TextureRenderer textureRenderer(textureIDs[TEX_DEPTH], TextureRenderer::DEPTH_VALUE, depthIntensity);
+            textureRenderer.setPosition(TextureRenderer::LEFT, TextureRenderer::TOP);
+            textureRenderer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
+            textureRenderer.display();
         }
 
         if (DEBUG_DISPLAY_COLOR_BUFFER) {
-            TextureDisplayer textureDisplayer(textureIDs[TEX_DIFFUSE], TextureDisplayer::DEFAULT_VALUE);
-            textureDisplayer.setPosition(TextureDisplayer::CENTER_X, TextureDisplayer::TOP);
-            textureDisplayer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-            textureDisplayer.display();
+            TextureRenderer textureRenderer(textureIDs[TEX_DIFFUSE], TextureRenderer::DEFAULT_VALUE);
+            textureRenderer.setPosition(TextureRenderer::CENTER_X, TextureRenderer::TOP);
+            textureRenderer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
+            textureRenderer.display();
         }
 
         if (DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER) {
-            TextureDisplayer textureDisplayer(textureIDs[TEX_NORMAL_AND_AMBIENT], TextureDisplayer::DEFAULT_VALUE);
-            textureDisplayer.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::TOP);
-            textureDisplayer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-            textureDisplayer.display();
+            TextureRenderer textureRenderer(textureIDs[TEX_NORMAL_AND_AMBIENT], TextureRenderer::DEFAULT_VALUE);
+            textureRenderer.setPosition(TextureRenderer::RIGHT, TextureRenderer::TOP);
+            textureRenderer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
+            textureRenderer.display();
         }
 
         if (DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER) {
-            TextureDisplayer textureDisplayer(textureIDs[TEX_LIGHTING_PASS], TextureDisplayer::DEFAULT_VALUE);
-            textureDisplayer.setPosition(TextureDisplayer::LEFT, TextureDisplayer::BOTTOM);
-            textureDisplayer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-            textureDisplayer.display();
+            TextureRenderer textureRenderer(textureIDs[TEX_LIGHTING_PASS], TextureRenderer::DEFAULT_VALUE);
+            textureRenderer.setPosition(TextureRenderer::LEFT, TextureRenderer::BOTTOM);
+            textureRenderer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
+            textureRenderer.display();
         }
 
         if (DEBUG_DISPLAY_SHADOW_MAP) {
             const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
             const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps-1]
             unsigned int shadowMapTextureID = shadowManager->getShadowData(firstLight).getShadowMapTextureID();
-            TextureDisplayer textureDisplayer(shadowMapTextureID, shadowMapNumber, TextureDisplayer::DEFAULT_VALUE);
-            textureDisplayer.setPosition(TextureDisplayer::CENTER_X, TextureDisplayer::BOTTOM);
+            TextureRenderer textureDisplayer(shadowMapTextureID, shadowMapNumber, TextureRenderer::DEFAULT_VALUE);
+            textureDisplayer.setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
             textureDisplayer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureDisplayer.display();
         }
 
         if (DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER) {
             float ambientOcclusionIntensity = 10.0f;
-            TextureDisplayer textureDisplayer(ambientOcclusionManager->getAmbientOcclusionTextureID(), TextureDisplayer::INVERSE_GRAYSCALE_VALUE, ambientOcclusionIntensity);
-            textureDisplayer.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::BOTTOM);
-            textureDisplayer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-            textureDisplayer.display();
+            TextureRenderer textureRenderer(ambientOcclusionManager->getAmbientOcclusionTextureID(), TextureRenderer::INVERSE_GRAYSCALE_VALUE, ambientOcclusionIntensity);
+            textureRenderer.setPosition(TextureRenderer::RIGHT, TextureRenderer::BOTTOM);
+            textureRenderer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
+            textureRenderer.display();
         }
     }
 
@@ -516,7 +516,7 @@ namespace urchin {
     void Renderer3d::lightingPassRendering() {
         ScopeProfiler profiler("3d", "lightPassRender");
 
-        lightingPassDisplayer->clearAdditionalTextures();
+        lightingPassRenderer->clearAdditionalTextures();
         ShaderManager::instance()->bind(deferredShadingShader);
 
         glUniformMatrix4fv(mInverseViewProjectionLoc, 1, GL_FALSE, (const float*) (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse());
@@ -525,14 +525,14 @@ namespace urchin {
         lightManager->loadLights();
 
         if (isAmbientOcclusionActivated) {
-            ambientOcclusionManager->loadAOTexture(lightingPassDisplayer);
+            ambientOcclusionManager->loadAOTexture(lightingPassRenderer);
         }
 
         if (isShadowActivated) {
-            shadowManager->loadShadowMaps(lightingPassDisplayer);
+            shadowManager->loadShadowMaps(lightingPassRenderer);
         }
 
-        lightingPassDisplayer->display();
+        lightingPassRenderer->draw();
     }
 
     void Renderer3d::postUpdateScene() {

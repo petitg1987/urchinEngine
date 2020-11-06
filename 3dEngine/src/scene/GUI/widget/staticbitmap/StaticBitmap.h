@@ -8,7 +8,7 @@
 #include "scene/GUI/widget/Position.h"
 #include "scene/GUI/widget/Size.h"
 #include "resources/image/Image.h"
-#include "graphic/displayer/generic/GenericDisplayer.h"
+#include "graphic/render/generic/GenericRenderer.h"
 
 namespace urchin {
 
@@ -27,7 +27,7 @@ namespace urchin {
 
             //visual
             Image *tex;
-            std::shared_ptr<GenericDisplayer> bitmapDisplayer;
+            std::shared_ptr<GenericRenderer> bitmapRenderer;
     };
 
 }

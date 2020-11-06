@@ -4,7 +4,7 @@
 #include "Skybox.h"
 #include "graphic/shader/ShaderManager.h"
 #include "resources/MediaManager.h"
-#include "graphic/displayer/generic/GenericDisplayerBuilder.h"
+#include "graphic/render/generic/GenericRendererBuilder.h"
 
 namespace urchin {
     /**
@@ -124,7 +124,7 @@ namespace urchin {
             SIZE, SIZE, SIZE, SIZE, -SIZE, SIZE, -SIZE, -SIZE, SIZE, -SIZE, SIZE, SIZE,
         };
 
-        skyboxDisplayer = std::make_unique<GenericDisplayerBuilder>(ShapeType::RECTANGLE)
+        skyboxRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
                 ->shapeCount(6)
                 ->dimension(3) //3D
                 ->vertexData(CoordDataType::FLOAT, &vertexCoord[0], false)
@@ -166,7 +166,7 @@ namespace urchin {
         translationMatrix.buildTranslation(cameraPosition.X, cameraPosition.Y + offsetY, cameraPosition.Z);
         glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)(viewMatrix * translationMatrix));
 
-        skyboxDisplayer->display();
+        skyboxRenderer->draw();
     }
 
 }

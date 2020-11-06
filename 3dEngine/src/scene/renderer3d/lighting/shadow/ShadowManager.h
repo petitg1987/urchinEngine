@@ -58,7 +58,7 @@ namespace urchin {
             void updateVisibleModels(const Frustum<float> &);
             void forceUpdateAllShadowMaps();
             void updateShadowMaps();
-            void loadShadowMaps(const std::shared_ptr<GenericDisplayer> &);
+            void loadShadowMaps(const std::shared_ptr<GenericRenderer> &);
 
             void drawLightSceneBox(const Frustum<float> &, const Light *, const Matrix4<float> &) const;
 
