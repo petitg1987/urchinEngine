@@ -4,6 +4,7 @@
 #include "UrchinCommon.h"
 #include <memory>
 
+#include "graphic/render/GenericRenderer.h"
 #include "resources/image/Image.h"
 #include "scene/renderer3d/camera/Camera.h"
 #include "scene/renderer3d/landscape/fog/FogManager.h"
@@ -96,6 +97,8 @@ namespace urchin {
             float density;
             float gradient;
             std::shared_ptr<Fog> underwaterFog;
+
+            std::shared_ptr<GenericRenderer> waterRenderer;
 
     };
 

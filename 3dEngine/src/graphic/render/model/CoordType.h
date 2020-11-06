@@ -3,7 +3,7 @@
 
 namespace urchin {
 
-    enum CoordDataType {
+    enum CoordType {
         INT,
         UNSIGNED_INT,
         FLOAT

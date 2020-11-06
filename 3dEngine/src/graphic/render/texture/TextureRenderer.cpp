@@ -150,7 +150,7 @@ namespace urchin {
         //update the display
         Texture::Type textureType = (layer == -1) ? Texture::Type::DEFAULT : Texture::Type::ARRAY;
         renderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
-                ->vertexData(CoordDataType::FLOAT, new float[8]{minX, minY, maxX, minY, maxX, maxY, minX, maxY}, true)
+                ->vertexData(CoordType::FLOAT, new float[8]{minX, minY, maxX, minY, maxX, maxY, minX, maxY}, true)
                 ->addTexture(Texture::build(textureID, textureType))
                 ->build();
 

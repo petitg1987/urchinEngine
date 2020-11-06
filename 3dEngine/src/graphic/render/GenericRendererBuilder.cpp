@@ -6,10 +6,10 @@ namespace urchin {
             shapeType(shapeType),
             pShapeCount(1),
             pDimension(2), //2D
-            vertexDataType(CoordDataType::INT),
+            vertexDataType(CoordType::INT),
             vertexCoord(nullptr),
             deleteVertexCoord(false),
-            textureDataType(CoordDataType::INT),
+            textureDataType(CoordType::INT),
             textureCoord(nullptr),
             deleteTextureCoord(false),
             transparencyEnabled(false) {
@@ -38,14 +38,14 @@ namespace urchin {
         return pDimension;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::vertexData(CoordDataType vertexDataType, void *vertexCoord, bool deleteVertexCoord) {
+    GenericRendererBuilder *GenericRendererBuilder::vertexData(CoordType vertexDataType, void *vertexCoord, bool deleteVertexCoord) {
         this->vertexDataType = vertexDataType;
         this->vertexCoord = vertexCoord;
         this->deleteVertexCoord = deleteVertexCoord;
         return this;
     }
 
-    CoordDataType GenericRendererBuilder::getVertexDataType() const {
+    CoordType GenericRendererBuilder::getVertexDataType() const {
         return vertexDataType;
     }
 
@@ -57,14 +57,14 @@ namespace urchin {
         return deleteVertexCoord;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::textureData(CoordDataType textureDataType, void *textureCoord, bool deleteTextureCoord) {
+    GenericRendererBuilder *GenericRendererBuilder::textureData(CoordType textureDataType, void *textureCoord, bool deleteTextureCoord) {
         this->textureDataType = textureDataType;
         this->textureCoord = textureCoord;
         this->deleteTextureCoord = deleteTextureCoord;
         return this;
     }
 
-    CoordDataType GenericRendererBuilder::getTextureDataType() const {
+    CoordType GenericRendererBuilder::getTextureDataType() const {
         return textureDataType;
     }
 

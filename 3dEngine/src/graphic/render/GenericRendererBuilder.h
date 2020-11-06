@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "graphic/render/GenericRenderer.h"
-#include "graphic/render/model/CoordDataType.h"
+#include "graphic/render/model/CoordType.h"
 #include "graphic/render/model/ShapeType.h"
 #include "graphic/render/model/Texture.h"
 
@@ -23,13 +23,13 @@ namespace urchin {
             GenericRendererBuilder *dimension(unsigned int);
             unsigned int getDimension() const;
 
-            GenericRendererBuilder *vertexData(CoordDataType, void *, bool);
-            CoordDataType getVertexDataType() const;
+            GenericRendererBuilder *vertexData(CoordType, void *, bool);
+            CoordType getVertexDataType() const;
             void *getVertexCoord() const;
             bool isDeleteVertexCoord() const;
 
-            GenericRendererBuilder *textureData(CoordDataType, void *, bool);
-            CoordDataType getTextureDataType() const;
+            GenericRendererBuilder *textureData(CoordType, void *, bool);
+            CoordType getTextureDataType() const;
             void *getTextureCoord() const;
             bool isDeleteTextureCoord() const;
 
@@ -46,11 +46,11 @@ namespace urchin {
             unsigned int pShapeCount;
             unsigned int pDimension;
 
-            CoordDataType vertexDataType;
+            CoordType vertexDataType;
             void *vertexCoord;
             bool deleteVertexCoord;
 
-            CoordDataType textureDataType;
+            CoordType textureDataType;
             void *textureCoord;
             bool deleteTextureCoord;
 

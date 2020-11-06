@@ -63,11 +63,11 @@ namespace urchin {
         glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
         glVertexAttribPointer(SHADER_VERTEX_POSITION, dimension, dataTypeToGlType(vertexDataType), GL_FALSE, 0, nullptr);
         if (deleteVertexCoord) {
-            if (vertexDataType == CoordDataType::FLOAT) {
+            if (vertexDataType == CoordType::FLOAT) {
                 delete[] static_cast<float *>(vertexCoord);
-            } else if (vertexDataType == CoordDataType::INT) {
+            } else if (vertexDataType == CoordType::INT) {
                 delete[] static_cast<int *>(vertexCoord);
-            } else if (vertexDataType == CoordDataType::UNSIGNED_INT) {
+            } else if (vertexDataType == CoordType::UNSIGNED_INT) {
                 delete[] static_cast<unsigned int *>(vertexCoord);
             } else {
                 throw std::runtime_error("Unknown vertex data type: " + std::to_string(vertexDataType));
@@ -81,11 +81,11 @@ namespace urchin {
         glEnableVertexAttribArray(SHADER_TEX_COORD);
         glVertexAttribPointer(SHADER_TEX_COORD, dimension, dataTypeToGlType(textureDataType), GL_FALSE, 0, nullptr);
         if (deleteTextureCoord) {
-            if (textureDataType == CoordDataType::FLOAT) {
+            if (textureDataType == CoordType::FLOAT) {
                 delete[] static_cast<float *>(textureCoord);
-            } else if (textureDataType == CoordDataType::INT) {
+            } else if (textureDataType == CoordType::INT) {
                 delete[] static_cast<int *>(textureCoord);
-            } else if (textureDataType == CoordDataType::UNSIGNED_INT) {
+            } else if (textureDataType == CoordType::UNSIGNED_INT) {
                 delete[] static_cast<unsigned int *>(textureCoord);
             } else {
                 throw std::runtime_error("Unknown texture data type: " + std::to_string(textureDataType));
@@ -112,23 +112,23 @@ namespace urchin {
         throw std::runtime_error("Unknown shape type: " + std::to_string(shapeType));
     }
 
-    unsigned int GenericRenderer::dataTypeToSize(CoordDataType dataType) const {
-        if (dataType == CoordDataType::FLOAT) {
+    unsigned int GenericRenderer::dataTypeToSize(CoordType dataType) const {
+        if (dataType == CoordType::FLOAT) {
             return sizeof(float);
-        } else if (dataType == CoordDataType::INT) {
+        } else if (dataType == CoordType::INT) {
             return sizeof(int);
-        } else if (dataType == CoordDataType::UNSIGNED_INT) {
+        } else if (dataType == CoordType::UNSIGNED_INT) {
             return sizeof(unsigned int);
         }
         throw std::runtime_error("Unknown data type: " + std::to_string(dataType));
     }
 
-    unsigned int GenericRenderer::dataTypeToGlType(CoordDataType dataType) const {
-        if (dataType == CoordDataType::FLOAT) {
+    unsigned int GenericRenderer::dataTypeToGlType(CoordType dataType) const {
+        if (dataType == CoordType::FLOAT) {
             return GL_FLOAT;
-        } else if (dataType == CoordDataType::INT) {
+        } else if (dataType == CoordType::INT) {
             return GL_INT;
-        } else if (dataType == CoordDataType::UNSIGNED_INT) {
+        } else if (dataType == CoordType::UNSIGNED_INT) {
             return GL_UNSIGNED_INT;
         }
         throw std::runtime_error("Unknown data type: " + std::to_string(dataType));

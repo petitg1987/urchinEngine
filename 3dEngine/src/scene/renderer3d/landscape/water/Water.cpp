@@ -2,6 +2,7 @@
 
 #include "Water.h"
 #include "resources/MediaManager.h"
+#include "graphic/render/GenericRendererBuilder.h"
 #include "graphic/shader/ShaderManager.h"
 
 #define DEFAULT_CENTER_POSITION Point3<float>(0.0f, 0.0f, 0.0f)
@@ -106,6 +107,12 @@ namespace urchin {
         glBufferData(GL_ARRAY_BUFFER, texCoord.size()*sizeof(float)*2, &texCoord[0], GL_STATIC_DRAW);
         glEnableVertexAttribArray(SHADER_TEX_COORD);
         glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+        //TODO impl
+//        waterRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
+//                ->dimension()
+//                ->addTexture(Texture::build(textureID, textureType))
+//                ->build();
 
         Point2<float> leftFarPoint(Point2<float>(-xSize/2.0f + centerPosition.X, -zSize/2.0f + centerPosition.Z));
         Point2<float> rightNearPoint(Point2<float>(xSize/2.0f + centerPosition.X, zSize/2.0f + centerPosition.Z));
@@ -295,7 +302,10 @@ namespace urchin {
             glBindTexture(GL_TEXTURE_2D, dudvMap->getTextureID());
 
             glBindVertexArray(vertexArrayObject);
-            glDrawArrays(GL_QUADS, 0, 4); //TODO use genericDisplayer
+            glDrawArrays(GL_QUADS, 0, 4);
+
+            //TODO use genericDisplayer
+            //waterRenderer->draw();
         }
     }
 }

@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "graphic/render/model/CoordDataType.h"
+#include "graphic/render/model/CoordType.h"
 #include "graphic/render/model/ShapeType.h"
 #include "graphic/render/model/Texture.h"
 
@@ -28,17 +28,17 @@ namespace urchin {
 
             unsigned int shapeTypeToVertexCount(ShapeType) const;
             unsigned int shapeTypeToGlType(ShapeType) const;
-            unsigned int dataTypeToSize(CoordDataType) const;
-            unsigned int dataTypeToGlType(CoordDataType) const;
+            unsigned int dataTypeToSize(CoordType) const;
+            unsigned int dataTypeToGlType(CoordType) const;
 
             ShapeType shapeType;
             unsigned int shapeCount;
             unsigned int dimension; //2=2D, 3=3D
 
-            CoordDataType vertexDataType;
+            CoordType vertexDataType;
             void *vertexCoord;
 
-            CoordDataType textureDataType;
+            CoordType textureDataType;
             void *textureCoord;
 
             bool transparencyEnabled;
