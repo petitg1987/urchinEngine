@@ -3,10 +3,10 @@
 #include <locale>
 
 #include "Renderer3d.h"
-#include "graphic/render/generic/GenericRendererBuilder.h"
-#include "graphic/render/texture/TextureRenderer.h"
+#include "graphic/render/GenericRendererBuilder.h"
 #include "graphic/shader/ShaderManager.h"
-#include "scene/renderer3d/utils/OctreeDisplayer.h"
+#include "utils/texture/TextureRenderer.h"
+#include "scene/renderer3d/utils/OctreeRenderer.h"
 
 #define DEFAULT_OCTREE_MIN_SIZE 20.0f
 
@@ -486,7 +486,7 @@ namespace urchin {
 
     void Renderer3d::displayGeometryDetails() {
         if (DEBUG_DISPLAY_MODELS_OCTREE) {
-            OctreeDisplayer::drawOctree(modelOctreeManager, camera->getProjectionMatrix(), camera->getViewMatrix());
+            OctreeRenderer::drawOctree(modelOctreeManager, camera->getProjectionMatrix(), camera->getViewMatrix());
         }
 
         if (DEBUG_DISPLAY_MODELS_BOUNDING_BOX) {

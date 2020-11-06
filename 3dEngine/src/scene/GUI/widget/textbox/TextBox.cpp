@@ -5,7 +5,7 @@
 
 #include "scene/GUI/widget/textbox/TextBox.h"
 #include "scene/InputDeviceKey.h"
-#include "graphic/render/generic/GenericRendererBuilder.h"
+#include "graphic/render/GenericRendererBuilder.h"
 
 #define ADDITIONAL_LEFT_BORDER 1 //Additional border to outline->leftWidth
 #define LETTER_SHIFT 5 //When the text box is full of text, we shift all letters to left

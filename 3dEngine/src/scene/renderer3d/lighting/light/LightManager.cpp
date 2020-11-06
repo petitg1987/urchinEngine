@@ -4,7 +4,7 @@
 #include "LightManager.h"
 #include "scene/renderer3d/lighting/light/sun/SunLight.h"
 #include "scene/renderer3d/lighting/light/omnidirectional/OmnidirectionalLight.h"
-#include "scene/renderer3d/utils/OctreeDisplayer.h"
+#include "scene/renderer3d/utils/OctreeRenderer.h"
 
 #define DEFAULT_OCTREE_MIN_SIZE 50.0f
 
@@ -184,7 +184,7 @@ namespace urchin {
     }
 
     void LightManager::drawLightOctree(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const {
-        OctreeDisplayer::drawOctree(lightOctreeManager, projectionMatrix, viewMatrix);
+        OctreeRenderer::drawOctree(lightOctreeManager, projectionMatrix, viewMatrix);
     }
 
 }

@@ -3,7 +3,7 @@
 #include "scene/GUI/widget/text/Text.h"
 #include "scene/GUI/widget/Size.h"
 #include "resources/MediaManager.h"
-#include "graphic/render/generic/GenericRendererBuilder.h"
+#include "graphic/render/GenericRendererBuilder.h"
 
 namespace urchin {
 

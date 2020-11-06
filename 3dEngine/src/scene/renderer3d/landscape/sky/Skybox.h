@@ -8,7 +8,7 @@
 
 #include "resources/image/Image.h"
 #include "scene/renderer3d/camera/Camera.h"
-#include "graphic/render/generic/GenericRenderer.h"
+#include "graphic/render/GenericRenderer.h"
 
 namespace urchin {
 

@@ -3,7 +3,7 @@
 
 #include "scene/GUI/widget/button/Button.h"
 #include "scene/GUI/GUISkinService.h"
-#include "graphic/render/generic/GenericRendererBuilder.h"
+#include "graphic/render/GenericRendererBuilder.h"
 
 namespace urchin {
 

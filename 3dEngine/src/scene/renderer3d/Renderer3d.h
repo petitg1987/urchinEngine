@@ -18,9 +18,9 @@
 #include "scene/renderer3d/landscape/fog/FogManager.h"
 #include "scene/renderer3d/landscape/water/WaterManager.h"
 #include "scene/renderer3d/landscape/sky/SkyManager.h"
-#include "graphic/geometry/GeometryManager.h"
-#include "graphic/geometry/GeometryModel.h"
-#include "graphic/render/generic/GenericRenderer.h"
+#include "utils/geometry/GeometryManager.h"
+#include "utils/geometry/GeometryModel.h"
+#include "graphic/render/GenericRenderer.h"
 
 namespace urchin {
 

@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "graphic/render/generic/GenericRenderer.h"
+#include "graphic/render/GenericRenderer.h"
 
 namespace urchin {
 

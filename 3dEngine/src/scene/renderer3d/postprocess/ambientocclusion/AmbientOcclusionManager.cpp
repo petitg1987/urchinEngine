@@ -5,8 +5,8 @@
 
 #include "AmbientOcclusionManager.h"
 #include "graphic/shader/ShaderManager.h"
-#include "graphic/render/generic/GenericRendererBuilder.h"
-#include "graphic/texture/filter/bilateralblur/BilateralBlurFilterBuilder.h"
+#include "graphic/render/GenericRendererBuilder.h"
+#include "utils/texture/filter/bilateralblur/BilateralBlurFilterBuilder.h"
 
 #define DEFAULT_TEXTURE_SIZE AOTextureSize::HALF_SIZE
 #define DEFAULT_KERNEL_SAMPLES 64

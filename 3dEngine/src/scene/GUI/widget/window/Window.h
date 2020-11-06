@@ -10,7 +10,7 @@
 #include "scene/GUI/widget/text/Text.h"
 #include "scene/GUI/GUISkinService.h"
 #include "resources/image/Image.h"
-#include "graphic/render/generic/GenericRenderer.h"
+#include "graphic/render/GenericRenderer.h"
 
 namespace urchin {
 

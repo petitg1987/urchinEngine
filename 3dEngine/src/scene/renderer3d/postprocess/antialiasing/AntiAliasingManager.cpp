@@ -4,7 +4,7 @@
 
 #include "scene/renderer3d/postprocess/antialiasing/AntiAliasingManager.h"
 #include "graphic/shader/ShaderManager.h"
-#include "graphic/render/generic/GenericRendererBuilder.h"
+#include "graphic/render/GenericRendererBuilder.h"
 
 #define DEFAULT_AA_QUALITY AntiAliasingManager::Quality::VERY_HIGH
 
