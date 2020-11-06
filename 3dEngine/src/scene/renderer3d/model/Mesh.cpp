@@ -2,7 +2,7 @@
 
 #include "Mesh.h"
 #include "resources/model/MeshService.h"
-#include "utils/geometry/points/PointsModel.h"
+#include "resources/geometry/points/PointsModel.h"
 
 namespace urchin {
 

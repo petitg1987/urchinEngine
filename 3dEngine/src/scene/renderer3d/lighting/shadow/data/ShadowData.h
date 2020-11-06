@@ -8,7 +8,7 @@
 
 #include "FrustumShadowData.h"
 #include "scene/renderer3d/lighting/light/Light.h"
-#include "utils/texture/filter/TextureFilter.h"
+#include "texturefilter/TextureFilter.h"
 
 namespace urchin {
 

@@ -6,7 +6,7 @@
 
 #include "scene/renderer3d/camera/Camera.h"
 #include "graphic/render/GenericRenderer.h"
-#include "utils/texture/filter/bilateralblur/BilateralBlurFilter.h"
+#include "texturefilter/bilateralblur/BilateralBlurFilter.h"
 
 namespace urchin {
 
