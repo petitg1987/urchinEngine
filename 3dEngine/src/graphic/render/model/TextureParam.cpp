@@ -12,15 +12,19 @@ namespace urchin {
     }
 
     TextureParam TextureParam::buildNearest() {
-        return build(ReadMode::EDGE_CLAMP, ReadQuality::NEAREST);
+        return TextureParam(ReadMode::EDGE_CLAMP, ReadQuality::NEAREST);
     }
 
     TextureParam TextureParam::buildLinear() {
-        return build(ReadMode::EDGE_CLAMP, ReadQuality::LINEAR);
+        return TextureParam(ReadMode::EDGE_CLAMP, ReadQuality::LINEAR);
     }
 
-    TextureParam TextureParam::build(ReadMode readMode, ReadQuality readQuality) {
-        return TextureParam(readMode, readQuality);
+    TextureParam TextureParam::buildRepeatNearest() {
+        return TextureParam(ReadMode::REPEAT, ReadQuality::NEAREST);
+    }
+
+    TextureParam TextureParam::buildRepeatLinear() {
+        return TextureParam(ReadMode::REPEAT, ReadQuality::LINEAR);
     }
 
     unsigned int TextureParam::getGlReadMode() const {

@@ -145,7 +145,7 @@ namespace urchin {
             glyph[i].buf = nullptr;
         }
 
-        return (new Font(texAlphabet, glyph, spaceBetweenLetters, spaceBetweenLines, height));
+        return new Font(fontSize, fontColor, texAlphabet, glyph, spaceBetweenLetters, spaceBetweenLines, height);
     }
 
 }

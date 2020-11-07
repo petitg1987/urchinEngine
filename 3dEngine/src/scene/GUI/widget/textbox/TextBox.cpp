@@ -48,7 +48,14 @@ namespace urchin {
         text->setPosition(Position((float)(widgetOutline->leftWidth + ADDITIONAL_LEFT_BORDER), (float)(getHeight() - text->getHeight()) / 2.0f, Position::PIXEL));
         addChild(text);
         maxWidthText = getWidth() - (widgetOutline->leftWidth + widgetOutline->rightWidth + ADDITIONAL_LEFT_BORDER);
+
+        Vector3<float> fontColor = text->getFont()->getFontColor();
+        std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255)};
+        auto* texCursorDiffuse = new Image(1, 1, Image::IMAGE_RGB, std::move(cursorColor));
+        texCursorDiffuse->toTexture(false, false, true);
+        //texCursorDiffuse->release(); //TODO no error: why ?!!!! + add in destructor
         refreshText(cursorIndex);
+        computeCursorPosition();
 
         //visual
         std::vector<unsigned int> vertexCoord = {0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()};
@@ -60,10 +67,12 @@ namespace urchin {
                 ->build();
 
         std::vector<unsigned int> cursorVertexCoord = {0, widgetOutline->topWidth, 0, getHeight() - widgetOutline->bottomWidth};
+        std::vector<float> cursorTextureCoord = {0.0, 0.0, 1.0, 1.0};
         cursorRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::LINE)
-                ->vertexData(CoordType::UNSIGNED_INT, CoordDimension::_2D, &cursorVertexCoord[0]) //TODO add black/white texture
+                ->vertexData(CoordType::UNSIGNED_INT, CoordDimension::_2D, &cursorVertexCoord[0])
+                ->textureData(CoordType::FLOAT, CoordDimension::_2D, &cursorTextureCoord[0])
+                ->addTexture(Texture::build(texCursorDiffuse->getTextureID(), Texture::DEFAULT, TextureParam::buildRepeatNearest()))
                 ->build();
-        computeCursorPosition();
     }
 
     std::string TextBox::getText() {
@@ -109,7 +118,7 @@ namespace urchin {
     }
 
     bool TextBox::onCharEvent(unsigned int character) {
-        if (state==ACTIVE) {
+        if (state == ACTIVE) {
             if (character < 256 && character > 30 && character != 127) {
                 std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex), allText.length()-cursorIndex);
                 allText = allText.substr(0, static_cast<unsigned long>(cursorIndex));

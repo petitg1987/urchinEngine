@@ -68,7 +68,7 @@ namespace urchin {
                 ->textureData(CoordType::INT, CoordDimension::_2D, &textureCoord[0])
                 ->addTexture(Texture::build(depthTexID, Texture::DEFAULT, TextureParam::buildNearest()))
                 ->addTexture(Texture::build(normalAndAmbientTexID, Texture::DEFAULT, TextureParam::buildNearest()))
-                ->addTexture(Texture::build(noiseTexId))
+                ->addTexture(Texture::build(noiseTexId, Texture::DEFAULT, TextureParam::buildRepeatNearest()))
                 ->build();
 
         //frame buffer object
@@ -221,7 +221,7 @@ namespace urchin {
         glBindTexture(GL_TEXTURE_2D, noiseTexId);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, noiseTextureSize, noiseTextureSize, 0, GL_RGB, GL_FLOAT, &ssaoNoise[0]);
 
-        renderer->updateTexture(2, Texture::build(noiseTexId, Texture::DEFAULT, TextureParam::build(TextureParam::REPEAT, TextureParam::NEAREST)));
+        renderer->updateTexture(2, Texture::build(noiseTexId, Texture::DEFAULT, TextureParam::buildRepeatNearest()));
 
         ShaderManager::instance()->bind(ambientOcclusionShader);
         int noiseTexLoc = glGetUniformLocation(ambientOcclusionShader, "noiseTex");

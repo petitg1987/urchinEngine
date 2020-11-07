@@ -17,7 +17,8 @@ namespace urchin {
 
             static TextureParam buildNearest();
             static TextureParam buildLinear();
-            static TextureParam build(ReadMode, ReadQuality);
+            static TextureParam buildRepeatNearest();
+            static TextureParam buildRepeatLinear();
 
             unsigned int getGlReadMode() const;
             unsigned int getGlReadQuality() const;

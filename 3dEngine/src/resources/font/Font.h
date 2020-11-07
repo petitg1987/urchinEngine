@@ -17,8 +17,11 @@ namespace urchin {
 
     class Font : public Resource {
         public:
-            Font(Image *, Glyph *, unsigned int, unsigned int, unsigned int);
+            Font(unsigned int, const Vector3<float> &, Image *, Glyph *, unsigned int, unsigned int, unsigned int);
             ~Font() override;
+
+            unsigned int getFontSize() const;
+            Vector3<float> getFontColor() const;
 
             const Glyph &getGlyph(unsigned char i) const;
             unsigned int getTextureID() const;
@@ -28,6 +31,9 @@ namespace urchin {
             unsigned int getHeight() const;
 
         private:
+            unsigned int fontSize;
+            Vector3<float> fontColor;
+
             Image *texAlphabet;
 
             Glyph *glyph;

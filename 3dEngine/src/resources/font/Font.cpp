@@ -2,7 +2,10 @@
 
 namespace urchin {
 
-    Font::Font(Image *texAlphabet, Glyph *glyph, unsigned int spaceBetweenLetters, unsigned int spaceBetweenLines, unsigned int height) :
+    Font::Font(unsigned int fontSize, const Vector3<float> &fontColor, Image *texAlphabet, Glyph *glyph,
+               unsigned int spaceBetweenLetters, unsigned int spaceBetweenLines, unsigned int height) :
+        fontSize(fontSize),
+        fontColor(fontColor),
         texAlphabet(texAlphabet),
         glyph(glyph),
         spaceBetweenLetters(spaceBetweenLetters),
@@ -14,6 +17,14 @@ namespace urchin {
     Font::~Font() {
         delete texAlphabet;
         delete [] glyph;
+    }
+
+    unsigned int Font::getFontSize() const {
+        return fontSize;
+    }
+
+    Vector3<float> Font::getFontColor() const {
+        return fontColor;
     }
 
     const Glyph &Font::getGlyph(unsigned char character) const {
