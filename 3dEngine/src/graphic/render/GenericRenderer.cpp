@@ -4,6 +4,7 @@
 
 #include "graphic/render/GenericRenderer.h"
 #include "graphic/render/GenericRendererBuilder.h"
+#include "graphic/texture/TextureManager.h"
 
 namespace urchin {
 
@@ -49,9 +50,16 @@ namespace urchin {
             glTexParameteri(textureType, GL_TEXTURE_WRAP_R, readMode);
         }
 
-        unsigned int readQuality = texture.getParam().getGlReadQuality();
-        glTexParameteri(textureType, GL_TEXTURE_MIN_FILTER, readQuality);
-        glTexParameteri(textureType, GL_TEXTURE_MAG_FILTER, readQuality);
+        glTexParameteri(textureType, GL_TEXTURE_MIN_FILTER, texture.getParam().getGlReadQualityMinFilter());
+        glTexParameteri(textureType, GL_TEXTURE_MAG_FILTER, texture.getParam().getGlReadQuality());
+
+        if (texture.getParam().needMipMap()) {
+            glGenerateMipmap(textureType); //TODO it must be part of the parameter or texture generation ?
+        }
+
+        if (texture.getParam().needAnisotropy() && GLEW_EXT_texture_filter_anisotropic) {
+            glTexParameterf(textureType, GL_TEXTURE_MAX_ANISOTROPY_EXT, TextureManager::instance()->getAnisotropy());
+        }
     }
 
     void GenericRenderer::initializeDisplay(void *vertexCoord, void *textureCoord) {

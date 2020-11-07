@@ -24,11 +24,13 @@ namespace urchin {
             cursorPosition(0),
             cursorBlink(0.0f),
             state(UNACTIVE),
-            widgetOutline(new WidgetOutline()){
+            widgetOutline(new WidgetOutline()),
+            texCursorDiffuse(nullptr) {
         TextBox::createOrUpdateWidget();
     }
 
     TextBox::~TextBox() {
+        texCursorDiffuse->release();
         delete widgetOutline;
     }
 
@@ -51,9 +53,11 @@ namespace urchin {
 
         Vector3<float> fontColor = text->getFont()->getFontColor();
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255)};
-        auto* texCursorDiffuse = new Image(1, 1, Image::IMAGE_RGB, std::move(cursorColor));
+        if(texCursorDiffuse) {
+            texCursorDiffuse->release();
+        }
+        texCursorDiffuse = new Image(1, 1, Image::IMAGE_RGB, std::move(cursorColor));
         texCursorDiffuse->toTexture(false, false, true);
-        //texCursorDiffuse->release(); //TODO no error: why ?!!!! + add in destructor
         refreshText(cursorIndex);
         computeCursorPosition();
 

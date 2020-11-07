@@ -141,7 +141,7 @@ namespace urchin {
         }
 
         texels8.clear(); //the API has its own copy
-        isTexture=true;
+        isTexture = true;
 
         return textureID;
     }

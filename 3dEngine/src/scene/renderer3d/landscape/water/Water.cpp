@@ -69,8 +69,12 @@ namespace urchin {
     }
 
     Water::~Water() {
-        normalTexture->release();
-        dudvMap->release();
+        if(normalTexture) {
+            normalTexture->release();
+        }
+        if(dudvMap) {
+            dudvMap->release();
+        }
 
         ShaderManager::instance()->removeProgram(waterShader);
     }
@@ -92,6 +96,8 @@ namespace urchin {
                 ->enableDepthTest()
                 ->vertexData(CoordType::FLOAT, CoordDimension::_3D, &vertexCoord[0])
                 ->textureData(CoordType::FLOAT, CoordDimension::_2D, &textureCoord[0])
+                ->addTexture(Texture::build(0))
+                ->addTexture(Texture::build(0))
                 ->build();
 
         Point2<float> leftFarPoint(Point2<float>(-xSize/2.0f + centerPosition.X, -zSize/2.0f + centerPosition.Z));
@@ -159,7 +165,10 @@ namespace urchin {
             }
         }
 
-        normalTexture->toTexture(true, true, true);
+        unsigned int normalTextureId = normalTexture->toTexture(true, true, true);
+
+        TextureParam textureParam = TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY, TextureParam::MIPMAP);
+        waterRenderer->updateTexture(0, Texture::build(normalTextureId, Texture::DEFAULT, textureParam));
     }
 
     const Image *Water::getNormalTexture() const {
@@ -181,7 +190,10 @@ namespace urchin {
             }
         }
 
-        dudvMap->toTexture(true, true, true);
+        unsigned int dudvMapTextureId = dudvMap->toTexture(true, true, true);
+
+        TextureParam textureParam = TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY, TextureParam::MIPMAP);
+        waterRenderer->updateTexture(1, Texture::build(dudvMapTextureId, Texture::DEFAULT, textureParam));
     }
 
     const Image *Water::getDudvMap() const {
@@ -274,12 +286,6 @@ namespace urchin {
 
             sumTimeStep += dt;
             glUniform1f(sumTimeStepLoc, sumTimeStep);
-
-            glActiveTexture(GL_TEXTURE0); //TODO add texture to waterRenderer
-            glBindTexture(GL_TEXTURE_2D, normalTexture->getTextureID());
-
-            glActiveTexture(GL_TEXTURE1);
-            glBindTexture(GL_TEXTURE_2D, dudvMap->getTextureID());
 
             waterRenderer->draw();
         }
