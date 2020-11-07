@@ -95,18 +95,6 @@ namespace urchin {
     }
 
     std::shared_ptr<GenericRenderer> GenericRendererBuilder::build() {
-        if (!vertexCoord) {
-            vertexCoordType = CoordType::INT;
-            vertexCoordDimension = CoordDimension::_2D;
-            vertexCoord = new int[8]{-1, 1, 1, 1, 1, -1, -1, -1}; //TODO remove ....
-        }
-
-        if (!textureCoord) { //TODO keep null if not specified, no ?
-            textureCoordType = CoordType::INT;
-            textureCoordDimension = CoordDimension::_2D;
-            textureCoord = new int[8]{0, 1, 1, 1, 1, 0, 0, 0}; //TODO remove ....
-        }
-
         return std::make_shared<GenericRenderer>(this); //TODO build unique ptr
     }
 

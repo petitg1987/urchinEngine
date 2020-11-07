@@ -73,7 +73,12 @@ namespace urchin {
 
         //deferred shading (pass 2)
         createOrUpdateDeferredShadingShader();
+
+        std::vector<int> vertexCoord = {-1, 1, 1, 1, 1, -1, -1, -1};
+        std::vector<int> textureCoord = {0, 1, 1, 1, 1, 0, 0, 0};
         lightingPassRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
+                ->vertexData(CoordType::INT, CoordDimension::_2D, &vertexCoord[0])
+                ->textureData(CoordType::INT, CoordDimension::_2D, &textureCoord[0])
                 ->addTexture(Texture::build(textureIDs[TEX_DEPTH], Texture::DEFAULT, TextureParam::buildNearest()))
                 ->addTexture(Texture::build(textureIDs[TEX_DIFFUSE], Texture::DEFAULT, TextureParam::buildNearest()))
                 ->addTexture(Texture::build(textureIDs[TEX_NORMAL_AND_AMBIENT], Texture::DEFAULT, TextureParam::buildNearest()))

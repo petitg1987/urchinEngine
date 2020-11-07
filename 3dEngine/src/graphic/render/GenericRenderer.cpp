@@ -12,10 +12,8 @@ namespace urchin {
             shapeCount(rendererBuilder->getShapeCount()),
             vertexCoordType(rendererBuilder->getVertexCoordType()),
             vertexCoordDimension(rendererBuilder->getVertexCoordDimension()),
-            vertexCoord(rendererBuilder->getVertexCoord()),
             textureCoordType(rendererBuilder->getTextureCoordType()),
             textureCoordDimension(rendererBuilder->getTextureCoordDimension()),
-            textureCoord(rendererBuilder->getTextureCoord()),
             transparencyEnabled(rendererBuilder->isTransparencyEnabled()),
             depthTestEnabled(rendererBuilder->isDepthTestEnabled()),
             textures(rendererBuilder->getTextures()),
@@ -29,7 +27,7 @@ namespace urchin {
         }
         additionalTextures.reserve(2); //estimated memory size
 
-        initializeDisplay();
+        initializeDisplay(rendererBuilder->getVertexCoord(), rendererBuilder->getTextureCoord());
     }
 
     GenericRenderer::~GenericRenderer() {
@@ -56,7 +54,7 @@ namespace urchin {
         glTexParameteri(textureType, GL_TEXTURE_MAG_FILTER, readQuality);
     }
 
-    void GenericRenderer::initializeDisplay() {
+    void GenericRenderer::initializeDisplay(void *vertexCoord, void *textureCoord) {
         glBindVertexArray(vertexArrayObject);
 
         auto vertexCoordDim = coordDimensionToSize(vertexCoordDimension);

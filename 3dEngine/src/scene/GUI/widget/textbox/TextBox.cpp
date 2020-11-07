@@ -61,7 +61,7 @@ namespace urchin {
 
         std::vector<unsigned int> cursorVertexCoord = {0, widgetOutline->topWidth, 0, getHeight() - widgetOutline->bottomWidth};
         cursorRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::LINE)
-                ->vertexData(CoordType::UNSIGNED_INT, CoordDimension::_2D, &cursorVertexCoord[0])
+                ->vertexData(CoordType::UNSIGNED_INT, CoordDimension::_2D, &cursorVertexCoord[0]) //TODO add black/white texture
                 ->build();
         computeCursorPosition();
     }

@@ -25,7 +25,7 @@ namespace urchin {
 
         private:
             void initializeTexture(Texture) const;
-            void initializeDisplay();
+            void initializeDisplay(void *, void *);
 
             unsigned int shapeTypeToVertexCount(ShapeType) const;
             unsigned int shapeTypeToGlType(ShapeType) const;
@@ -38,11 +38,9 @@ namespace urchin {
 
             CoordType vertexCoordType;
             CoordDimension vertexCoordDimension;
-            void *vertexCoord; //TODO don't save void* as can be destroy
 
             CoordType textureCoordType;
             CoordDimension textureCoordDimension;
-            void *textureCoord; //TODO don't save void* as can be destroy
 
             bool transparencyEnabled;
             bool depthTestEnabled;

@@ -60,7 +60,12 @@ namespace urchin {
             verticalBlurFilter(nullptr),
             horizontalBlurFilter(nullptr),
             isBlurActivated(true) {
+
+        std::vector<int> vertexCoord = {-1, 1, 1, 1, 1, -1, -1, -1};
+        std::vector<int> textureCoord = {0, 1, 1, 1, 1, 0, 0, 0};
         renderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
+                ->vertexData(CoordType::INT, CoordDimension::_2D, &vertexCoord[0])
+                ->textureData(CoordType::INT, CoordDimension::_2D, &textureCoord[0])
                 ->addTexture(Texture::build(depthTexID, Texture::DEFAULT, TextureParam::buildNearest()))
                 ->addTexture(Texture::build(normalAndAmbientTexID, Texture::DEFAULT, TextureParam::buildNearest()))
                 ->addTexture(Texture::build(noiseTexId))

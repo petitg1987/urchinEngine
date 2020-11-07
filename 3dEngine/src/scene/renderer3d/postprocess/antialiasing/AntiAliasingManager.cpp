@@ -19,7 +19,11 @@ namespace urchin {
             invSceneSizeLoc(0) {
         loadFxaaShader();
 
+        std::vector<int> vertexCoord = {-1, 1, 1, 1, 1, -1, -1, -1};
+        std::vector<int> textureCoord = {0, 1, 1, 1, 1, 0, 0, 0};
         renderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
+                ->vertexData(CoordType::INT, CoordDimension::_2D, &vertexCoord[0])
+                ->textureData(CoordType::INT, CoordDimension::_2D, &textureCoord[0])
                 ->addTexture(Texture::build(textureId, Texture::DEFAULT, TextureParam::buildLinear()))
                 ->build();
     }
