@@ -40,8 +40,8 @@ namespace urchin {
         waveStrengthShaderVar = ShaderVar(waterShader, "waveStrength");
 
         ShaderDataSender(waterShader)
-            .sendData(ShaderVar(waterShader, "normalTex"), 0) //normal texture, index: 0
-            .sendData(ShaderVar(waterShader, "dudvMap"), 1); //dudv map, index: 1
+            .sendData(ShaderVar(waterShader, "normalTex"), 0)
+            .sendData(ShaderVar(waterShader, "dudvMap"), 1);
 
         //general properties
         setCenterPosition(DEFAULT_CENTER_POSITION);

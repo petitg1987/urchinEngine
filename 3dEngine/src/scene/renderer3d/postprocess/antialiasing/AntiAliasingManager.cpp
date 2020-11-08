@@ -1,9 +1,9 @@
-#include <GL/glew.h>
 #include <map>
 #include <string>
 
 #include "scene/renderer3d/postprocess/antialiasing/AntiAliasingManager.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
+#include "graphic/shader/data/ShaderDataSender.h"
 #include "graphic/render/GenericRendererBuilder.h"
 
 #define DEFAULT_AA_QUALITY AntiAliasingManager::Quality::VERY_HIGH
@@ -13,9 +13,7 @@ namespace urchin {
     AntiAliasingManager::AntiAliasingManager(unsigned int textureId) :
             quality(DEFAULT_AA_QUALITY),
             sceneWidth(0),
-            sceneHeight(0),
-            texLoc(0),
-            invSceneSizeLoc(0) {
+            sceneHeight(0) {
         loadFxaaShader();
 
         std::vector<int> vertexCoord = {-1, 1, 1, 1, 1, -1, -1, -1};
@@ -32,20 +30,18 @@ namespace urchin {
         fxaaTokens["FXAA_QUALITY"] = std::to_string(static_cast<int>(quality));
 
         fxaaShader = ShaderBuilder().createShader("fxaa.vert", "", "fxaa.frag", fxaaTokens);
+        invSceneSizeShaderVar = ShaderVar(fxaaShader, "invSceneSize");
 
-        fxaaShader->bind();
-        texLoc = glGetUniformLocation(fxaaShader->getShaderId(), "tex");
-        glUniform1i(texLoc, 0);
-        invSceneSizeLoc = glGetUniformLocation(fxaaShader->getShaderId(), "invSceneSize");
-        glUniform2f(invSceneSizeLoc, 1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight);
+        ShaderDataSender(fxaaShader)
+                .sendData(ShaderVar(fxaaShader, "tex"), 0)
+                .sendData(invSceneSizeShaderVar, Point2<float>(1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight));
     }
 
     void AntiAliasingManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         this->sceneWidth = sceneWidth;
         this->sceneHeight = sceneHeight;
 
-        fxaaShader->bind();
-        glUniform2f(invSceneSizeLoc, 1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight);
+        ShaderDataSender(fxaaShader).sendData(invSceneSizeShaderVar, Point2<float>(1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight));
     }
 
     void AntiAliasingManager::setQuality(Quality quality) {

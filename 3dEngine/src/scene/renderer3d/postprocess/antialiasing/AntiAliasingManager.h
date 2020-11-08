@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "graphic/shader/model/Shader.h"
+#include "graphic/shader/model/ShaderVar.h"
 #include "graphic/render/GenericRenderer.h"
 
 namespace urchin {
@@ -34,7 +35,7 @@ namespace urchin {
 
             //display
             std::unique_ptr<Shader> fxaaShader;
-            int texLoc, invSceneSizeLoc;
+            ShaderVar invSceneSizeShaderVar;
             std::unique_ptr<GenericRenderer> renderer;
     };
 
