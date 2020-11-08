@@ -525,7 +525,7 @@ namespace urchin {
         lightManager->loadLights();
 
         if (isAmbientOcclusionActivated) {
-            ambientOcclusionManager->loadAOTexture(lightingPassRenderer);
+            ambientOcclusionManager->loadAOTexture(lightingPassRenderer, deferredShadingShader);
         }
 
         if (isShadowActivated) {

@@ -6,7 +6,12 @@
 namespace urchin {
 
     ShaderDataSender::ShaderDataSender(const std::unique_ptr<Shader> &shader) :
-            shader(shader){
+            shader(shader.get()){
+
+    }
+
+    ShaderDataSender::ShaderDataSender(const std::shared_ptr<Shader> &shader) :
+            shader(shader.get()){
 
     }
 
@@ -19,6 +24,12 @@ namespace urchin {
     ShaderDataSender &ShaderDataSender::sendData(const ShaderVar &shaderVar, int value) {
         shader->bind();
         glUniform1i(shaderVar.getVariableLocation(), value);
+        return *this;
+    }
+
+    ShaderDataSender &ShaderDataSender::sendData(const ShaderVar &shaderVar, unsigned int value) {
+        shader->bind();
+        glUniform1ui(shaderVar.getVariableLocation(), value);
         return *this;
     }
 

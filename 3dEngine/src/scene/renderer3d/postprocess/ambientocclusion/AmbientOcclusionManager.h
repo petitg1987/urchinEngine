@@ -5,6 +5,7 @@
 #include "UrchinCommon.h"
 
 #include "graphic/shader/model/Shader.h"
+#include "graphic/shader/model/ShaderVar.h"
 #include "scene/renderer3d/camera/Camera.h"
 #include "graphic/render/GenericRenderer.h"
 #include "texturefilter/bilateralblur/BilateralBlurFilter.h"
@@ -41,7 +42,7 @@ namespace urchin {
             unsigned int getAmbientOcclusionTextureID() const;
 
             void updateAOTexture(const Camera *);
-            void loadAOTexture(const std::unique_ptr<GenericRenderer> &) const;
+            void loadAOTexture(const std::unique_ptr<GenericRenderer> &, const std::shared_ptr<Shader> &) const;
 
         private:
             void createOrUpdateAOTexture();
@@ -75,15 +76,13 @@ namespace urchin {
 
             //ambient occlusion shader
             std::unique_ptr<Shader> ambientOcclusionShader;
-            int mInverseViewProjectionLoc;
-            int mProjectionLoc;
-            int mViewLoc;
-            int resolutionLoc;
+            ShaderVar mInverseViewProjectionShaderVar, mProjectionShaderVar, mViewShaderVar;
+            ShaderVar resolutionShaderVar;
             unsigned int noiseTexId;
 
             //visual data
             unsigned int depthTexID;
-            GLint ambientOcclusionTexLoc;
+            ShaderVar ambientOcclusionTexShaderVar;
             std::unique_ptr<GenericRenderer> renderer;
 
             std::unique_ptr<BilateralBlurFilter> verticalBlurFilter;

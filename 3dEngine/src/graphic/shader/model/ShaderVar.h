@@ -12,6 +12,7 @@ namespace urchin {
         public:
             ShaderVar();
             ShaderVar(const std::unique_ptr<Shader> &, std::string &&);
+            ShaderVar(const std::shared_ptr<Shader> &, std::string &&);
 
             int getVariableLocation() const;
 

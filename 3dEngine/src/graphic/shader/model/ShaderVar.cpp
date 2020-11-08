@@ -14,6 +14,11 @@ namespace urchin {
         variableLocation = glGetUniformLocation(shader->getShaderId(), variableName.c_str());
     }
 
+    ShaderVar::ShaderVar(const std::shared_ptr<Shader> &shader, std::string &&variableName) {
+        shader->bind();
+        variableLocation = glGetUniformLocation(shader->getShaderId(), variableName.c_str());
+    }
+
     int ShaderVar::getVariableLocation() const {
         return variableLocation;
     }

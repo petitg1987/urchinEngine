@@ -5,6 +5,7 @@
 
 #include "AmbientOcclusionManager.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
+#include "graphic/shader/data/ShaderDataSender.h"
 #include "graphic/render/GenericRendererBuilder.h"
 #include "texturefilter/bilateralblur/BilateralBlurFilterBuilder.h"
 
@@ -47,14 +48,9 @@ namespace urchin {
             fboID(0),
             ambientOcclusionTexID(0),
 
-            mInverseViewProjectionLoc(0),
-            mProjectionLoc(0),
-            mViewLoc(0),
-            resolutionLoc(0),
             noiseTexId(0),
 
             depthTexID(depthTexID),
-            ambientOcclusionTexLoc(0),
             verticalBlurFilter(nullptr),
             horizontalBlurFilter(nullptr),
             isBlurActivated(true) {
@@ -94,24 +90,22 @@ namespace urchin {
         ambientOcclusionTokens["NOISE_TEXTURE_SIZE"] = std::to_string(noiseTextureSize);
         ambientOcclusionTokens["BIAS"] = std::to_string(bias);
         ambientOcclusionShader = ShaderBuilder().createShader("ambientOcclusion.vert", "", "ambientOcclusion.frag", ambientOcclusionTokens);
-        ambientOcclusionShader->bind();
 
-        mInverseViewProjectionLoc = glGetUniformLocation(ambientOcclusionShader->getShaderId(), "mInverseViewProjection");
-        mProjectionLoc = glGetUniformLocation(ambientOcclusionShader->getShaderId(), "mProjection");
-        mViewLoc = glGetUniformLocation(ambientOcclusionShader->getShaderId(), "mView");
-        int depthTexLoc = glGetUniformLocation(ambientOcclusionShader->getShaderId(), "depthTex");
-        glUniform1i(depthTexLoc, GL_TEXTURE0-GL_TEXTURE0);
-        int normalAndAmbientTexLoc = glGetUniformLocation(ambientOcclusionShader->getShaderId(), "normalAndAmbientTex");
-        glUniform1i(normalAndAmbientTexLoc, GL_TEXTURE1-GL_TEXTURE0);
-        resolutionLoc = glGetUniformLocation(ambientOcclusionShader->getShaderId(), "resolution");
+        mInverseViewProjectionShaderVar = ShaderVar(ambientOcclusionShader, "mInverseViewProjection");
+        mProjectionShaderVar = ShaderVar(ambientOcclusionShader, "mProjection");
+        mViewShaderVar = ShaderVar(ambientOcclusionShader, "mView");
+        resolutionShaderVar = ShaderVar(ambientOcclusionShader, "resolution");
+
+        ShaderDataSender(ambientOcclusionShader)
+                .sendData(ShaderVar(ambientOcclusionShader, "depthTex"), 0)
+                .sendData(ShaderVar(ambientOcclusionShader, "normalAndAmbientTex"), 1);
 
         generateKernelSamples();
         generateNoiseTexture();
     }
 
     void AmbientOcclusionManager::loadUniformLocationFor(const std::shared_ptr<Shader> &deferredShader) {
-        deferredShader->bind();
-        ambientOcclusionTexLoc = glGetUniformLocation(deferredShader->getShaderId(), "ambientOcclusionTex");
+        ambientOcclusionTexShaderVar = ShaderVar(deferredShader, "ambientOcclusionTex");
     }
 
     void AmbientOcclusionManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
@@ -121,9 +115,7 @@ namespace urchin {
         createOrUpdateAOTexture();
         createOrUpdateAOShader();
 
-        ambientOcclusionShader->bind();
-        Vector2<float> resolution(sceneWidth, sceneHeight);
-        glUniform2fv(resolutionLoc, 1, (const float *)resolution);
+        ShaderDataSender(ambientOcclusionShader).sendData(resolutionShaderVar, Vector2<float>(sceneWidth, sceneHeight));
     }
 
     void AmbientOcclusionManager::createOrUpdateAOTexture() {
@@ -334,13 +326,14 @@ namespace urchin {
         glGetIntegerv(GL_FRAMEBUFFER_BINDING, &activeFBO);
         glBindFramebuffer(GL_FRAMEBUFFER, fboID);
 
-        ambientOcclusionShader->bind();
-        glUniformMatrix4fv(mInverseViewProjectionLoc, 1, GL_FALSE, (const float*) (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse());
-        glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*) camera->getProjectionMatrix());
-        glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*) camera->getViewMatrix());
+        ShaderDataSender(ambientOcclusionShader)
+            .sendData(mInverseViewProjectionShaderVar, (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse())
+            .sendData(mProjectionShaderVar, camera->getProjectionMatrix())
+            .sendData(mViewShaderVar, camera->getViewMatrix());
 
         glViewport(0, 0, textureSizeX, textureSizeY);
 
+        ambientOcclusionShader->bind();
         renderer->draw();
 
         if (isBlurActivated) {
@@ -352,10 +345,9 @@ namespace urchin {
         glBindFramebuffer(GL_FRAMEBUFFER, static_cast<GLuint>(activeFBO));
     }
 
-    void AmbientOcclusionManager::loadAOTexture(const std::unique_ptr<GenericRenderer> &renderer) const {
-        unsigned int ambientOcclusionTextureUnit = renderer
-                ->addAdditionalTexture(Texture::build(getAmbientOcclusionTextureID(), Texture::DEFAULT, TextureParam::buildLinear()));
-        glUniform1i(ambientOcclusionTexLoc, ambientOcclusionTextureUnit);
+    void AmbientOcclusionManager::loadAOTexture(const std::unique_ptr<GenericRenderer> &renderer, const std::shared_ptr<Shader> &shader) const {
+        unsigned int aoTextureUnit = renderer->addAdditionalTexture(Texture::build(getAmbientOcclusionTextureID(), Texture::DEFAULT, TextureParam::buildLinear()));
+        ShaderDataSender(shader).sendData(ambientOcclusionTexShaderVar, static_cast<int>(aoTextureUnit));
     }
 
 }
