@@ -65,6 +65,7 @@ namespace urchin {
 
         private:
             void generateVertex();
+            void updateWaterTextures();
             void buildUnderwaterFog();
 
             unsigned int waterShader;

@@ -96,13 +96,26 @@ namespace urchin {
                 ->enableDepthTest()
                 ->vertexData(CoordType::FLOAT, CoordDimension::_3D, &vertexCoord[0])
                 ->textureData(CoordType::FLOAT, CoordDimension::_2D, &textureCoord[0])
-                ->addTexture(Texture::build(0))
-                ->addTexture(Texture::build(0))
+                ->addTexture(Texture::build(0)) //normal texture
+                ->addTexture(Texture::build(0)) //dudv map
                 ->build();
+        updateWaterTextures();
 
         Point2<float> leftFarPoint(Point2<float>(-xSize/2.0f + centerPosition.X, -zSize/2.0f + centerPosition.Z));
         Point2<float> rightNearPoint(Point2<float>(xSize/2.0f + centerPosition.X, zSize/2.0f + centerPosition.Z));
         waterRectangle = std::make_unique<Rectangle<float>>(leftFarPoint, rightNearPoint);
+    }
+
+    void Water::updateWaterTextures() {
+        if(normalTexture) {
+            TextureParam textureParam = TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY);
+            waterRenderer->updateTexture(0, Texture::build(normalTexture->getTextureID(), Texture::DEFAULT, textureParam));
+        }
+
+        if(dudvMap) {
+            TextureParam textureParam = TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY);
+            waterRenderer->updateTexture(1, Texture::build(dudvMap->getTextureID(), Texture::DEFAULT, textureParam));
+        }
     }
 
     void Water::buildUnderwaterFog() {
@@ -165,10 +178,8 @@ namespace urchin {
             }
         }
 
-        unsigned int normalTextureId = normalTexture->toTexture(true, true, true);
-
-        TextureParam textureParam = TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY, TextureParam::MIPMAP);
-        waterRenderer->updateTexture(0, Texture::build(normalTextureId, Texture::DEFAULT, textureParam));
+        normalTexture->toTexture(true, true, true);
+        updateWaterTextures();
     }
 
     const Image *Water::getNormalTexture() const {
@@ -190,10 +201,8 @@ namespace urchin {
             }
         }
 
-        unsigned int dudvMapTextureId = dudvMap->toTexture(true, true, true);
-
-        TextureParam textureParam = TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY, TextureParam::MIPMAP);
-        waterRenderer->updateTexture(1, Texture::build(dudvMapTextureId, Texture::DEFAULT, textureParam));
+        dudvMap->toTexture(true, true, true);
+        updateWaterTextures();
     }
 
     const Image *Water::getDudvMap() const {

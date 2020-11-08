@@ -12,7 +12,9 @@ namespace urchin {
 
             enum ReadQuality {
                 NEAREST,
-                LINEAR
+                LINEAR,
+                NEAREST_MIPMAP,
+                LINEAR_MIPMAP
             };
 
             enum Anisotropy {
@@ -20,33 +22,25 @@ namespace urchin {
                 ANISOTROPY
             };
 
-            enum MipMap {
-                NO_MIPMAP,
-                MIPMAP
-            };
-
             static TextureParam buildNearest();
             static TextureParam buildLinear();
             static TextureParam buildRepeatNearest();
             static TextureParam buildRepeatLinear();
-            static TextureParam build(ReadMode, ReadQuality, Anisotropy, MipMap);
+            static TextureParam build(ReadMode, ReadQuality, Anisotropy);
 
             unsigned int getGlReadMode() const;
 
-            unsigned int getGlReadQualityMinFilter() const;
-            unsigned int getGlReadQuality() const;
+            unsigned int getGlReadQualityMinifyingFilter() const;
+            unsigned int getGlReadQualityMagnificationFilter() const;
 
             bool needAnisotropy() const;
 
-            bool needMipMap() const;
-
         private:
-            TextureParam(ReadMode, ReadQuality, Anisotropy, MipMap);
+            TextureParam(ReadMode, ReadQuality, Anisotropy);
 
             ReadMode readMode;
             ReadQuality readQuality;
             Anisotropy anisotropy;
-            MipMap mipMap;
     };
 
 }
