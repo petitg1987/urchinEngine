@@ -2,14 +2,12 @@
 #include <stdexcept>
 
 #include "TextureFilter.h"
-#include "graphic/shader/ShaderManager.h"
+#include "graphic/shader/builder/ShaderBuilder.h"
 #include "graphic/render/GenericRendererBuilder.h"
 
 namespace urchin {
 
     TextureFilter::~TextureFilter() {
-        ShaderManager::instance()->removeProgram(textureFilterShader);
-
         glDeleteFramebuffers(1, &fboID);
         glDeleteTextures(1, &textureID);
     }
@@ -55,17 +53,17 @@ namespace urchin {
             shaderTokens["MAX_VERTICES"] = std::to_string(3*textureNumberLayer);
             shaderTokens["NUMBER_LAYER"] = std::to_string(textureNumberLayer);
 
-            textureFilterShader = ShaderManager::instance()->createProgram("textureFilter.vert", "textureFilter.geom", getShaderName()+"Array.frag", shaderTokens);
+            textureFilterShader = ShaderBuilder().createShader("textureFilter.vert", "textureFilter.geom", getShaderName() + "Array.frag", shaderTokens);
         } else if (textureType==GL_TEXTURE_2D) {
-            textureFilterShader = ShaderManager::instance()->createProgram("textureFilter.vert", "", getShaderName()+".frag", shaderTokens);
+            textureFilterShader = ShaderBuilder().createShader("textureFilter.vert", "", getShaderName() + ".frag", shaderTokens);
         } else {
             throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
         }
 
-        ShaderManager::instance()->bind(textureFilterShader);
-        int texLoc = glGetUniformLocation(textureFilterShader, "tex");
+        textureFilterShader->bind();
+        int texLoc = glGetUniformLocation(textureFilterShader->getShaderId(), "tex");
         glUniform1i(texLoc, GL_TEXTURE0-GL_TEXTURE0);
-        layersToUpdateLoc = glGetUniformLocation(textureFilterShader, "layersToUpdate");
+        layersToUpdateLoc = glGetUniformLocation(textureFilterShader->getShaderId(), "layersToUpdate");
         initializeAdditionalUniforms(textureFilterShader);
     }
 
@@ -91,7 +89,7 @@ namespace urchin {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    void TextureFilter::initializeAdditionalUniforms(unsigned int) {
+    void TextureFilter::initializeAdditionalUniforms(const std::unique_ptr<Shader> &) {
         //do nothing: to override
     }
 
@@ -115,7 +113,7 @@ namespace urchin {
         return textureHeight;
     }
 
-    unsigned int TextureFilter::getTextureFilterShader() const {
+    const std::unique_ptr<Shader> &TextureFilter::getTextureFilterShader() const {
         return textureFilterShader;
     }
 
@@ -140,7 +138,7 @@ namespace urchin {
             throw std::runtime_error("Texture filter must be initialized before apply.");
         }
 
-        ShaderManager::instance()->bind(textureFilterShader);
+        textureFilterShader->bind();
 
         Texture::Type sourceTextureType = layersToUpdate == -1 ? Texture::Type::DEFAULT : Texture::Type::ARRAY;
         textureRenderer->clearAdditionalTextures();

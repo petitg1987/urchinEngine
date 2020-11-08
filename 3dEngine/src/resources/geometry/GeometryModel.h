@@ -3,6 +3,8 @@
 
 #include "UrchinCommon.h"
 
+#include "graphic/shader/model/Shader.h"
+
 namespace urchin {
 
     class GeometryModel {
@@ -51,7 +53,7 @@ namespace urchin {
             {
                 SHADER_VERTEX_POSITION = 0,
             };
-            unsigned int shader;
+            std::unique_ptr<Shader> shader;
             int mProjectionLoc, mViewLoc, colorLoc;
 
             Matrix4<float> projectionMatrix;

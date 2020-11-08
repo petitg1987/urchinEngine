@@ -4,6 +4,7 @@
 #include <memory>
 #include "UrchinCommon.h"
 
+#include "graphic/shader/model/Shader.h"
 #include "graphic/render/GenericRenderer.h"
 
 namespace urchin {
@@ -44,7 +45,6 @@ namespace urchin {
 
             TextureRenderer(unsigned int, TextureRenderer::ColorType, float colorIntensity = 1.0);
             TextureRenderer(unsigned int, unsigned int, TextureRenderer::ColorType, float colorIntensity = 1.0);
-            ~TextureRenderer();
 
             void setPosition(TextureRenderer::CoordinateX, TextureRenderer::CoordinateY);
             void setSize(float, float, float, float);
@@ -71,7 +71,7 @@ namespace urchin {
             std::unique_ptr<GenericRenderer> renderer;
 
             Matrix3<float> mProjection;
-            unsigned int displayTextureShader;
+            std::unique_ptr<Shader> displayTextureShader;
             int layer;
             int mProjectionLoc, diffuseTexLoc;
     };

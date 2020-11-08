@@ -4,6 +4,7 @@
 #include <set>
 #include "UrchinCommon.h"
 
+#include "graphic/shader/model/Shader.h"
 #include "scene/Renderer.h"
 #include "scene/GUI/widget/Widget.h"
 
@@ -32,8 +33,8 @@ namespace urchin {
         private:
             std::vector<Widget *> widgets;
 
-            Matrix3<float> mProjection, mModelView;
-            unsigned int GUIShader;
+            Matrix3<float> mProjection;
+            std::unique_ptr<Shader> guiShader;
             int mProjectionLoc, translateDistanceLoc, diffuseTexSamplerLoc;
     };
 

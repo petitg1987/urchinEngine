@@ -4,7 +4,7 @@
 #include <random>
 
 #include "AmbientOcclusionManager.h"
-#include "graphic/shader/ShaderManager.h"
+#include "graphic/shader/builder/ShaderBuilder.h"
 #include "graphic/render/GenericRendererBuilder.h"
 #include "texturefilter/bilateralblur/BilateralBlurFilterBuilder.h"
 
@@ -47,7 +47,6 @@ namespace urchin {
             fboID(0),
             ambientOcclusionTexID(0),
 
-            ambientOcclusionShader(0),
             mInverseViewProjectionLoc(0),
             mProjectionLoc(0),
             mViewLoc(0),
@@ -94,26 +93,25 @@ namespace urchin {
         ambientOcclusionTokens["DEPTH_END_ATTENUATION"] = std::to_string(depthEndAttenuation);
         ambientOcclusionTokens["NOISE_TEXTURE_SIZE"] = std::to_string(noiseTextureSize);
         ambientOcclusionTokens["BIAS"] = std::to_string(bias);
-        ShaderManager::instance()->removeProgram(ambientOcclusionShader);
-        ambientOcclusionShader = ShaderManager::instance()->createProgram("ambientOcclusion.vert", "", "ambientOcclusion.frag", ambientOcclusionTokens);
-        ShaderManager::instance()->bind(ambientOcclusionShader);
+        ambientOcclusionShader = ShaderBuilder().createShader("ambientOcclusion.vert", "", "ambientOcclusion.frag", ambientOcclusionTokens);
+        ambientOcclusionShader->bind();
 
-        mInverseViewProjectionLoc = glGetUniformLocation(ambientOcclusionShader, "mInverseViewProjection");
-        mProjectionLoc = glGetUniformLocation(ambientOcclusionShader, "mProjection");
-        mViewLoc = glGetUniformLocation(ambientOcclusionShader, "mView");
-        int depthTexLoc = glGetUniformLocation(ambientOcclusionShader, "depthTex");
+        mInverseViewProjectionLoc = glGetUniformLocation(ambientOcclusionShader->getShaderId(), "mInverseViewProjection");
+        mProjectionLoc = glGetUniformLocation(ambientOcclusionShader->getShaderId(), "mProjection");
+        mViewLoc = glGetUniformLocation(ambientOcclusionShader->getShaderId(), "mView");
+        int depthTexLoc = glGetUniformLocation(ambientOcclusionShader->getShaderId(), "depthTex");
         glUniform1i(depthTexLoc, GL_TEXTURE0-GL_TEXTURE0);
-        int normalAndAmbientTexLoc = glGetUniformLocation(ambientOcclusionShader, "normalAndAmbientTex");
+        int normalAndAmbientTexLoc = glGetUniformLocation(ambientOcclusionShader->getShaderId(), "normalAndAmbientTex");
         glUniform1i(normalAndAmbientTexLoc, GL_TEXTURE1-GL_TEXTURE0);
-        resolutionLoc = glGetUniformLocation(ambientOcclusionShader, "resolution");
+        resolutionLoc = glGetUniformLocation(ambientOcclusionShader->getShaderId(), "resolution");
 
         generateKernelSamples();
         generateNoiseTexture();
     }
 
-    void AmbientOcclusionManager::loadUniformLocationFor(unsigned int deferredShaderID) {
-        ShaderManager::instance()->bind(deferredShaderID);
-        ambientOcclusionTexLoc = glGetUniformLocation(deferredShaderID, "ambientOcclusionTex");
+    void AmbientOcclusionManager::loadUniformLocationFor(const std::shared_ptr<Shader> &deferredShader) {
+        deferredShader->bind();
+        ambientOcclusionTexLoc = glGetUniformLocation(deferredShader->getShaderId(), "ambientOcclusionTex");
     }
 
     void AmbientOcclusionManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
@@ -123,7 +121,7 @@ namespace urchin {
         createOrUpdateAOTexture();
         createOrUpdateAOShader();
 
-        ShaderManager::instance()->bind(ambientOcclusionShader);
+        ambientOcclusionShader->bind();
         Vector2<float> resolution(sceneWidth, sceneHeight);
         glUniform2fv(resolutionLoc, 1, (const float *)resolution);
     }
@@ -192,8 +190,8 @@ namespace urchin {
             ssaoKernel.push_back(sample);
         }
 
-        ShaderManager::instance()->bind(ambientOcclusionShader);
-        int samplesLoc = glGetUniformLocation(ambientOcclusionShader, "samples");
+        ambientOcclusionShader->bind();
+        int samplesLoc = glGetUniformLocation(ambientOcclusionShader->getShaderId(), "samples");
         glUniform3fv(samplesLoc, ssaoKernel.size(), (const float *)ssaoKernel[0]);
 
         if (DEBUG_EXPORT_SSAO_KERNEL) {
@@ -222,8 +220,8 @@ namespace urchin {
 
         renderer->updateTexture(2, Texture::build(noiseTexId, Texture::DEFAULT, TextureParam::buildRepeatNearest()));
 
-        ShaderManager::instance()->bind(ambientOcclusionShader);
-        int noiseTexLoc = glGetUniformLocation(ambientOcclusionShader, "noiseTex");
+        ambientOcclusionShader->bind();
+        int noiseTexLoc = glGetUniformLocation(ambientOcclusionShader->getShaderId(), "noiseTex");
         glUniform1i(noiseTexLoc, GL_TEXTURE2-GL_TEXTURE0);
     }
 
@@ -336,7 +334,7 @@ namespace urchin {
         glGetIntegerv(GL_FRAMEBUFFER_BINDING, &activeFBO);
         glBindFramebuffer(GL_FRAMEBUFFER, fboID);
 
-        ShaderManager::instance()->bind(ambientOcclusionShader);
+        ambientOcclusionShader->bind();
         glUniformMatrix4fv(mInverseViewProjectionLoc, 1, GL_FALSE, (const float*) (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse());
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*) camera->getProjectionMatrix());
         glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*) camera->getViewMatrix());

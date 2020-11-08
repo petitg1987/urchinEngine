@@ -2,7 +2,7 @@
 #include <stdexcept>
 
 #include "Skybox.h"
-#include "graphic/shader/ShaderManager.h"
+#include "graphic/shader/builder/ShaderBuilder.h"
 #include "resources/MediaManager.h"
 #include "graphic/render/GenericRendererBuilder.h"
 
@@ -14,7 +14,6 @@ namespace urchin {
             filenames(filenames),
             textureID(0),
             offsetY(0.0),
-            skyboxShader(0),
             mProjectionLoc(0),
             mViewLoc(0) {
         if (filenames.size() != 6) {
@@ -64,7 +63,6 @@ namespace urchin {
     Skybox::~Skybox() {
         clearTexSkybox();
         glDeleteTextures(1, &textureID);
-        ShaderManager::instance()->removeProgram(skyboxShader);
     }
 
     void Skybox::initialize() {
@@ -86,12 +84,12 @@ namespace urchin {
         clearTexSkybox();
 
         //visual
-        skyboxShader = ShaderManager::instance()->createProgram("skybox.vert", "", "skybox.frag");
+        skyboxShader = ShaderBuilder().createShader("skybox.vert", "", "skybox.frag");
 
-        ShaderManager::instance()->bind(skyboxShader);
-        mProjectionLoc = glGetUniformLocation(skyboxShader, "mProjection");
-        mViewLoc = glGetUniformLocation(skyboxShader, "mView");
-        int diffuseTexSamplerLoc = glGetUniformLocation(skyboxShader, "diffuseTexture");
+        skyboxShader->bind();
+        mProjectionLoc = glGetUniformLocation(skyboxShader->getShaderId(), "mProjection");
+        mViewLoc = glGetUniformLocation(skyboxShader->getShaderId(), "mView");
+        int diffuseTexSamplerLoc = glGetUniformLocation(skyboxShader->getShaderId(), "diffuseTexture");
         glUniform1i(diffuseTexSamplerLoc, GL_TEXTURE0-GL_TEXTURE0);
 
         std::vector<float> vertexCoord = {
@@ -143,7 +141,7 @@ namespace urchin {
     }
 
     void Skybox::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) const {
-        ShaderManager::instance()->bind(skyboxShader);
+        skyboxShader->bind();
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
     }
 
@@ -160,7 +158,7 @@ namespace urchin {
     }
 
     void Skybox::display(const Matrix4<float> &viewMatrix, const Point3<float> &cameraPosition) {
-        ShaderManager::instance()->bind(skyboxShader);
+        skyboxShader->bind();
 
         translationMatrix.buildTranslation(cameraPosition.X, cameraPosition.Y + offsetY, cameraPosition.Z);
         glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)(viewMatrix * translationMatrix));

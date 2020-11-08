@@ -2,7 +2,7 @@
 #include <stdexcept>
 
 #include "graphic/render/texture/TextureRenderer.h"
-#include "graphic/shader/ShaderManager.h"
+#include "graphic/shader/builder/ShaderBuilder.h"
 #include "graphic/render/GenericRendererBuilder.h"
 
 namespace urchin {
@@ -19,7 +19,6 @@ namespace urchin {
             textureID(textureID),
             colorType(colorType),
             colorIntensity(colorIntensity),
-            displayTextureShader(0),
             layer(-1),
             mProjectionLoc(-1),
             diffuseTexLoc(-1) {
@@ -38,15 +37,10 @@ namespace urchin {
             textureID(textureID),
             colorType(colorType),
             colorIntensity(colorIntensity),
-            displayTextureShader(0),
             layer((int)layer),
             mProjectionLoc(-1),
             diffuseTexLoc(-1) {
 
-    }
-
-    TextureRenderer::~TextureRenderer() {
-        ShaderManager::instance()->removeProgram(displayTextureShader);
     }
 
     void TextureRenderer::setPosition(TextureRenderer::CoordinateX coordinateX, TextureRenderer::CoordinateY coordinateY) {
@@ -141,7 +135,7 @@ namespace urchin {
         }
 
         //orthogonal matrix with origin at top left screen
-        ShaderManager::instance()->bind(displayTextureShader);
+        displayTextureShader->bind();
         mProjection.setValues(2.0f/(float)sceneWidth, 0.0f, -1.0f,
                 0.0f, -2.0f/(float)sceneHeight, 1.0f,
                 0.0f, 0.0f, 1.0f);
@@ -168,25 +162,25 @@ namespace urchin {
         textureDisplayTokens["IS_INVERSE_GRAYSCALE_VALUE"] = colorType==ColorType::INVERSE_GRAYSCALE_VALUE ? "true" : "false";
 
         const std::string &fragShaderName = (layer==-1) ? "displayTexture.frag" : "displayTextureArray.frag";
-        displayTextureShader = ShaderManager::instance()->createProgram("displayTexture.vert", "", fragShaderName, textureDisplayTokens);
+        displayTextureShader = ShaderBuilder().createShader("displayTexture.vert", "", fragShaderName, textureDisplayTokens);
 
-        ShaderManager::instance()->bind(displayTextureShader);
-        auto colorIntensityLoc = glGetUniformLocation(displayTextureShader, "colorIntensity");
+        displayTextureShader->bind();
+        auto colorIntensityLoc = glGetUniformLocation(displayTextureShader->getShaderId(), "colorIntensity");
         glUniform1f(colorIntensityLoc, colorIntensity);
 
-        auto cameraPlanesLoc = glGetUniformLocation(displayTextureShader, "cameraPlanes");
+        auto cameraPlanesLoc = glGetUniformLocation(displayTextureShader->getShaderId(), "cameraPlanes");
         float cameraPlanes[2] = {nearPlane, farPlane};
         glUniform1fv(cameraPlanesLoc, 2, cameraPlanes);
 
-        auto diffuseTexLoc = glGetUniformLocation(displayTextureShader, "colorTex");
+        auto diffuseTexLoc = glGetUniformLocation(displayTextureShader->getShaderId(), "colorTex");
         glUniform1i(diffuseTexLoc, GL_TEXTURE0-GL_TEXTURE0);
 
         if (layer!=-1) {
-            auto layerLoc = glGetUniformLocation(displayTextureShader, "layer");
+            auto layerLoc = glGetUniformLocation(displayTextureShader->getShaderId(), "layer");
             glUniform1i(layerLoc, layer);
         }
 
-        mProjectionLoc = glGetUniformLocation(displayTextureShader, "mProjection");
+        mProjectionLoc = glGetUniformLocation(displayTextureShader->getShaderId(), "mProjection");
     }
 
     void TextureRenderer::display() {
@@ -194,7 +188,7 @@ namespace urchin {
             throw std::runtime_error("Texture displayer must be initialized before display.");
         }
 
-        ShaderManager::instance()->bind(displayTextureShader);
+        displayTextureShader->bind();
         renderer->draw();
     }
 

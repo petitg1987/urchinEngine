@@ -45,7 +45,7 @@ namespace urchin {
 
         LineSegment3D<float> axeLineSegment(startPoint, endPoint);
         GeometryModel *axisModel = new LinesModel(axeLineSegment, axisIndex==selectedAxis ? 2.0 : 1.0);
-        axisModel->setBlendMode(GeometryModel::BlendMode::ONE_MINUS_SRC_ALPHA);
+        axisModel->enableTransparency();
         objectMoveAxisModels.push_back(axisModel);
 
         return axisModel;

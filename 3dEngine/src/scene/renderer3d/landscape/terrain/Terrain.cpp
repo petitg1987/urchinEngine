@@ -2,7 +2,7 @@
 #include <stdexcept>
 
 #include "Terrain.h"
-#include "graphic/shader/ShaderManager.h"
+#include "graphic/shader/builder/ShaderBuilder.h"
 
 #define DEFAULT_AMBIENT 0.3f
 
@@ -18,23 +18,23 @@ namespace urchin {
         glGenBuffers(4, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
 
-        terrainShader = ShaderManager::instance()->createProgram("terrain.vert", "", "terrain.frag");
-        ShaderManager::instance()->bind(terrainShader);
+        terrainShader = ShaderBuilder().createShader("terrain.vert", "", "terrain.frag");
 
-        vPositionLoc = glGetUniformLocation(terrainShader, "vPosition");
-        mProjectionLoc = glGetUniformLocation(terrainShader, "mProjection");
-        mViewLoc = glGetUniformLocation(terrainShader, "mView");
-        ambientLoc = glGetUniformLocation(terrainShader, "ambient");
-        sRepeatLoc = glGetUniformLocation(terrainShader, "sRepeat");
-        tRepeatLoc = glGetUniformLocation(terrainShader, "tRepeat");
+        terrainShader->bind();
+        vPositionLoc = glGetUniformLocation(terrainShader->getShaderId(), "vPosition");
+        mProjectionLoc = glGetUniformLocation(terrainShader->getShaderId(), "mProjection");
+        mViewLoc = glGetUniformLocation(terrainShader->getShaderId(), "mView");
+        ambientLoc = glGetUniformLocation(terrainShader->getShaderId(), "ambient");
+        sRepeatLoc = glGetUniformLocation(terrainShader->getShaderId(), "sRepeat");
+        tRepeatLoc = glGetUniformLocation(terrainShader->getShaderId(), "tRepeat");
 
-        int maskTexLoc = glGetUniformLocation(terrainShader, "maskTex");
+        int maskTexLoc = glGetUniformLocation(terrainShader->getShaderId(), "maskTex");
         glActiveTexture(GL_TEXTURE0);
         glUniform1i(maskTexLoc, 0);
 
         for (unsigned int i=0; i<MAX_MATERIAL; ++i) {
             std::string shaderTextureName = "diffuseTex" + std::to_string(i + 1);
-            int diffuseTexLoc = glGetUniformLocation(terrainShader, shaderTextureName.c_str());
+            int diffuseTexLoc = glGetUniformLocation(terrainShader->getShaderId(), shaderTextureName.c_str());
 
             glActiveTexture(GL_TEXTURE0 + i + 1);
             glUniform1i(diffuseTexLoc, i + 1);
@@ -53,14 +53,12 @@ namespace urchin {
     Terrain::~Terrain() {
         glDeleteVertexArrays(1, &vertexArrayObject);
         glDeleteBuffers(4, bufferIDs);
-
-        ShaderManager::instance()->removeProgram(terrainShader);
     }
 
     void Terrain::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
 
-        ShaderManager::instance()->bind(terrainShader);
+        terrainShader->bind();
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
 
         grass->onCameraProjectionUpdate(projectionMatrix);
@@ -104,7 +102,7 @@ namespace urchin {
         if (material) {
             material->refreshWith(mesh->getXSize(), mesh->getZSize());
 
-            ShaderManager::instance()->bind(terrainShader);
+            terrainShader->bind();
             glUniform1f(sRepeatLoc, material->getSRepeat());
             glUniform1f(tRepeatLoc, material->getTRepeat());
 
@@ -142,7 +140,7 @@ namespace urchin {
     void Terrain::setPosition(const Point3<float> &position) {
         this->position = position;
 
-        ShaderManager::instance()->bind(terrainShader);
+        terrainShader->bind();
         glUniform3fv(vPositionLoc, 1, (const float*) position);
         refreshGrassMesh(); //grass uses terrain position: refresh is required
     }
@@ -161,7 +159,7 @@ namespace urchin {
     void Terrain::setAmbient(float ambient) {
         this->ambient = ambient;
 
-        ShaderManager::instance()->bind(terrainShader);
+        terrainShader->bind();
         glUniform1f(ambientLoc, ambient);
         refreshGrassAmbient(); //grass uses ambient value: refresh is required
     }
@@ -177,7 +175,7 @@ namespace urchin {
     }
 
     void Terrain::display(const Camera *camera, float dt) const {
-        ShaderManager::instance()->bind(terrainShader);
+        terrainShader->bind();
 
         glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)camera->getViewMatrix());
         material->loadTextures();

@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "scene/renderer3d/landscape/fog/Fog.h"
+#include "graphic/shader/model/Shader.h"
 
 namespace urchin {
 
@@ -16,13 +17,13 @@ namespace urchin {
             void popFog();
             std::shared_ptr<const Fog> getCurrentFog() const;
 
-            void loadUniformLocationFor(unsigned int);
+            void loadUniformLocationFor(const std::shared_ptr<Shader> &);
             void loadFog();
 
         private:
             std::stack<std::shared_ptr<Fog>> fogs;
 
-            unsigned int deferredShaderID;
+            std::shared_ptr<Shader> deferredShader;
             int hasFogLoc, fogDensityLoc, fogGradientLoc, fogColorLoc, fogMaxHeightLoc;
     };
 

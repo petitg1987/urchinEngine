@@ -1,4 +1,4 @@
-#include "graphic/shader/TokenReplacerShader.h"
+#include "graphic/shader/builder/TokenReplacerShader.h"
 
 namespace urchin {
 

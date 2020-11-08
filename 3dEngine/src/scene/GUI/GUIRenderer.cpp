@@ -7,7 +7,7 @@
 #include "resources/MediaManager.h"
 #include "resources/font/Font.h"
 #include "graphic/render/texture/TextureRenderer.h"
-#include "graphic/shader/ShaderManager.h"
+#include "graphic/shader/builder/ShaderBuilder.h"
 
 namespace urchin {
 
@@ -15,29 +15,26 @@ namespace urchin {
     bool DEBUG_DISPLAY_FONT_TEXTURE = false;
 
     GUIRenderer::GUIRenderer() :
-        GUIShader(0),
         mProjectionLoc(0),
         translateDistanceLoc(0),
         diffuseTexSamplerLoc(0) {
-        GUIShader = ShaderManager::instance()->createProgram("gui.vert", "", "gui.frag");
+        guiShader = ShaderBuilder().createShader("gui.vert", "", "gui.frag");
 
-        ShaderManager::instance()->bind(GUIShader);
-        mProjectionLoc  = glGetUniformLocation(GUIShader, "mProjection");
-        translateDistanceLoc = glGetUniformLocation(GUIShader, "translateDistance");
-        diffuseTexSamplerLoc = glGetUniformLocation(GUIShader, "diffuseTexture");
+        guiShader->bind();
+        mProjectionLoc  = glGetUniformLocation(guiShader->getShaderId(), "mProjection");
+        translateDistanceLoc = glGetUniformLocation(guiShader->getShaderId(), "translateDistance");
+        diffuseTexSamplerLoc = glGetUniformLocation(guiShader->getShaderId(), "diffuseTexture");
     }
 
     GUIRenderer::~GUIRenderer() {
         for (long i=(long)widgets.size()-1; i>=0; --i) {
             delete widgets[i];
         }
-
-        ShaderManager::instance()->removeProgram(GUIShader);
     }
 
     void GUIRenderer::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         //orthogonal matrix with origin at top left screen
-        ShaderManager::instance()->bind(GUIShader);
+        guiShader->bind();
         mProjection.setValues(2.0f/(float)sceneWidth, 0.0f, -1.0f,
             0.0f, -2.0f/(float)sceneHeight, 1.0f,
             0.0f, 0.0f, 1.0f);
@@ -129,7 +126,7 @@ namespace urchin {
     void GUIRenderer::display(float dt) {
         ScopeProfiler profiler("3d", "uiRenderDisplay");
 
-        ShaderManager::instance()->bind(GUIShader);
+        guiShader->bind();
         glUniform1i(diffuseTexSamplerLoc, 0);
 
         for (auto &widget : widgets) {

@@ -7,7 +7,7 @@
 
 #include "TerrainGrass.h"
 #include "resources/MediaManager.h"
-#include "graphic/shader/ShaderManager.h"
+#include "graphic/shader/builder/ShaderBuilder.h"
 
 #define DEFAULT_NUM_GRASS_IN_TEX 1
 #define DEFAULT_GRASS_DISPLAY_DISTANCE 100.0
@@ -35,31 +35,31 @@ namespace urchin {
             windStrength(0.0f) {
         std::map<std::string, std::string> tokens;
         tokens["GRASS_ALPHA_TEST"] = ConfigService::instance()->getStringValue("terrain.grassAlphaTest");
-        terrainGrassShader = ShaderManager::instance()->createProgram("terrainGrass.vert", "terrainGrass.geom", "terrainGrass.frag", tokens);
-        ShaderManager::instance()->bind(terrainGrassShader);
+        terrainGrassShader = ShaderBuilder().createShader("terrainGrass.vert", "terrainGrass.geom", "terrainGrass.frag", tokens);
+        terrainGrassShader->bind();
 
-        mProjectionLoc = glGetUniformLocation(terrainGrassShader, "mProjection");
-        mViewLoc = glGetUniformLocation(terrainGrassShader, "mView");
-        cameraPositionLoc = glGetUniformLocation(terrainGrassShader, "cameraPosition");
-        sumTimeStepLoc = glGetUniformLocation(terrainGrassShader, "sumTimeStep");
+        mProjectionLoc = glGetUniformLocation(terrainGrassShader->getShaderId(), "mProjection");
+        mViewLoc = glGetUniformLocation(terrainGrassShader->getShaderId(), "mView");
+        cameraPositionLoc = glGetUniformLocation(terrainGrassShader->getShaderId(), "cameraPosition");
+        sumTimeStepLoc = glGetUniformLocation(terrainGrassShader->getShaderId(), "sumTimeStep");
 
-        terrainMinPointLoc = glGetUniformLocation(terrainGrassShader, "terrainMinPoint");
-        terrainMaxPointLoc = glGetUniformLocation(terrainGrassShader, "terrainMaxPoint");
-        terrainAmbientLoc = glGetUniformLocation(terrainGrassShader, "ambient");
+        terrainMinPointLoc = glGetUniformLocation(terrainGrassShader->getShaderId(), "terrainMinPoint");
+        terrainMaxPointLoc = glGetUniformLocation(terrainGrassShader->getShaderId(), "terrainMaxPoint");
+        terrainAmbientLoc = glGetUniformLocation(terrainGrassShader->getShaderId(), "ambient");
 
-        grassDisplayDistanceLoc = glGetUniformLocation(terrainGrassShader, "grassDisplayDistance");
-        grassHeightLoc = glGetUniformLocation(terrainGrassShader, "grassHeight");
-        grassHalfLengthLoc = glGetUniformLocation(terrainGrassShader, "grassHalfLength");
-        numGrassInTexLoc = glGetUniformLocation(terrainGrassShader, "numGrassInTex");
+        grassDisplayDistanceLoc = glGetUniformLocation(terrainGrassShader->getShaderId(), "grassDisplayDistance");
+        grassHeightLoc = glGetUniformLocation(terrainGrassShader->getShaderId(), "grassHeight");
+        grassHalfLengthLoc = glGetUniformLocation(terrainGrassShader->getShaderId(), "grassHalfLength");
+        numGrassInTexLoc = glGetUniformLocation(terrainGrassShader->getShaderId(), "numGrassInTex");
 
-        windDirectionLoc = glGetUniformLocation(terrainGrassShader, "windDirection");
-        windStrengthLoc = glGetUniformLocation(terrainGrassShader, "windStrength");
+        windDirectionLoc = glGetUniformLocation(terrainGrassShader->getShaderId(), "windDirection");
+        windStrengthLoc = glGetUniformLocation(terrainGrassShader->getShaderId(), "windStrength");
 
-        int terrainGrassTexLoc = glGetUniformLocation(terrainGrassShader, "grassTex");
+        int terrainGrassTexLoc = glGetUniformLocation(terrainGrassShader->getShaderId(), "grassTex");
         glActiveTexture(GL_TEXTURE0);
         glUniform1i(terrainGrassTexLoc, 0);
 
-        int terrainGrassMaskTexLoc = glGetUniformLocation(terrainGrassShader, "grassMaskTex");
+        int terrainGrassMaskTexLoc = glGetUniformLocation(terrainGrassShader->getShaderId(), "grassMaskTex");
         glActiveTexture(GL_TEXTURE1);
         glUniform1i(terrainGrassMaskTexLoc, 1);
 
@@ -76,7 +76,6 @@ namespace urchin {
 
     TerrainGrass::~TerrainGrass() {
         clearVBO();
-        ShaderManager::instance()->removeProgram(terrainGrassShader);
 
         if (grassTexture) {
             grassTexture->release();
@@ -90,20 +89,20 @@ namespace urchin {
     void TerrainGrass::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
 
-        ShaderManager::instance()->bind(terrainGrassShader);
+        terrainGrassShader->bind();
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
     }
 
     void TerrainGrass::refreshWith(const std::shared_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition) {
         generateGrass(mesh, terrainPosition);
 
-        ShaderManager::instance()->bind(terrainGrassShader);
+        terrainGrassShader->bind();
         glUniform3fv(terrainMinPointLoc, 1, (const float *)mesh->getVertices()[0]);
         glUniform3fv(terrainMaxPointLoc, 1, (const float *)mesh->getVertices()[mesh->getXSize()*mesh->getZSize()-1]);
     }
 
     void TerrainGrass::refreshWith(float ambient) {
-        ShaderManager::instance()->bind(terrainGrassShader);
+        terrainGrassShader->bind();
         glUniform1f(terrainAmbientLoc, ambient);
     }
 
@@ -307,7 +306,7 @@ namespace urchin {
     void TerrainGrass::setGrassDisplayDistance(float grassDisplayDistance) {
         this->grassDisplayDistance = grassDisplayDistance;
 
-        ShaderManager::instance()->bind(terrainGrassShader);
+        terrainGrassShader->bind();
         glUniform1f(grassDisplayDistanceLoc, grassDisplayDistance);
     }
 
@@ -318,7 +317,7 @@ namespace urchin {
     void TerrainGrass::setGrassHeight(float grassHeight) {
         this->grassHeight = grassHeight;
 
-        ShaderManager::instance()->bind(terrainGrassShader);
+        terrainGrassShader->bind();
         glUniform1f(grassHeightLoc, grassHeight);
     }
 
@@ -329,7 +328,7 @@ namespace urchin {
     void TerrainGrass::setGrassLength(float grassLength) {
         this->grassLength = grassLength;
 
-        ShaderManager::instance()->bind(terrainGrassShader);
+        terrainGrassShader->bind();
         glUniform1f(grassHalfLengthLoc, grassLength / 2.0f);
     }
 
@@ -340,7 +339,7 @@ namespace urchin {
     void TerrainGrass::setNumGrassInTexture(unsigned int numGrassInTex) {
         this->numGrassInTex = numGrassInTex;
 
-        ShaderManager::instance()->bind(terrainGrassShader);
+        terrainGrassShader->bind();
         glUniform1i(numGrassInTexLoc, numGrassInTex);
     }
 
@@ -361,7 +360,7 @@ namespace urchin {
     void TerrainGrass::setWindDirection(const Vector3<float> &windDirection) {
         this->windDirection = windDirection.normalize();
 
-        ShaderManager::instance()->bind(terrainGrassShader);
+        terrainGrassShader->bind();
         glUniform3fv(windDirectionLoc, 1, (const float *)this->windDirection);
     }
 
@@ -372,7 +371,7 @@ namespace urchin {
     void TerrainGrass::setWindStrength(float windStrength) {
         this->windStrength = windStrength;
 
-        ShaderManager::instance()->bind(terrainGrassShader);
+        terrainGrassShader->bind();
         glUniform1f(windStrengthLoc, windStrength);
     }
 
@@ -382,7 +381,7 @@ namespace urchin {
 
             assert(grassDisplayDistance!=0.0f);
 
-            ShaderManager::instance()->bind(terrainGrassShader);
+            terrainGrassShader->bind();
 
             glDisable(GL_CULL_FACE);
             glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE);

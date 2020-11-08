@@ -6,9 +6,10 @@
 #include <memory>
 #include "UrchinCommon.h"
 
+#include "graphic/shader/model/Shader.h"
+#include "graphic/render/GenericRenderer.h"
 #include "resources/image/Image.h"
 #include "scene/renderer3d/camera/Camera.h"
-#include "graphic/render/GenericRenderer.h"
 
 namespace urchin {
 
@@ -38,7 +39,7 @@ namespace urchin {
             //visual
             std::unique_ptr<GenericRenderer> skyboxRenderer;
 
-            unsigned int skyboxShader;
+            std::unique_ptr<Shader> skyboxShader;
             int mProjectionLoc, mViewLoc;
     };
 

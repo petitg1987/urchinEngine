@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 #include "ModelDisplayer.h"
-#include "graphic/shader/ShaderManager.h"
+#include "graphic/shader/builder/ShaderBuilder.h"
 
 namespace urchin {
     /**
@@ -18,10 +18,7 @@ namespace urchin {
      */
     ModelDisplayer::ModelDisplayer(DisplayMode displayMode) :
         isInitialized(false),
-        geometryShaderName(""),
-        fragmentShaderName(""),
         displayMode(displayMode),
-        modelShader(0),
         mProjectionLoc(0),
         mModelLoc(0),
         mViewLoc(0),
@@ -30,10 +27,6 @@ namespace urchin {
         customUniform(nullptr),
         customModelUniform(nullptr) {
 
-    }
-
-    ModelDisplayer::~ModelDisplayer() {
-        ShaderManager::instance()->removeProgram(modelShader);
     }
 
     void ModelDisplayer::initialize() {
@@ -49,10 +42,10 @@ namespace urchin {
             }
             createShader(vertexShaderName, geometryShaderName, fragmentShaderName);
 
-            mNormalLoc = glGetUniformLocation(modelShader, "mNormal");
-            ambientFactorLoc = glGetUniformLocation(modelShader, "ambientFactor");
-            int diffuseTexLoc = glGetUniformLocation(modelShader, "diffuseTex");
-            int normalTexLoc = glGetUniformLocation(modelShader, "normalTex");
+            mNormalLoc = glGetUniformLocation(modelShader->getShaderId(), "mNormal");
+            ambientFactorLoc = glGetUniformLocation(modelShader->getShaderId(), "ambientFactor");
+            int diffuseTexLoc = glGetUniformLocation(modelShader->getShaderId(), "diffuseTex");
+            int normalTexLoc = glGetUniformLocation(modelShader->getShaderId(), "normalTex");
 
             //activate texture
             glActiveTexture(GL_TEXTURE0);
@@ -85,7 +78,7 @@ namespace urchin {
 
         //default matrix
         projectionMatrix = Matrix4<float>();
-        ShaderManager::instance()->bind(modelShader);
+        modelShader->bind();
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
 
         isInitialized=true;
@@ -96,23 +89,23 @@ namespace urchin {
         shaderTokens.insert(fragmentTokens.begin(), fragmentTokens.end());
         shaderTokens.insert(geometryTokens.begin(), geometryTokens.end());
 
-        modelShader = ShaderManager::instance()->createProgram(vertexShaderName, geometryShaderName, fragmentShaderName, shaderTokens);
-        ShaderManager::instance()->bind(modelShader);
+        modelShader = ShaderBuilder().createShader(vertexShaderName, geometryShaderName, fragmentShaderName, shaderTokens);
+        modelShader->bind();
 
-        mProjectionLoc = glGetUniformLocation(modelShader, "mProjection");
-        mModelLoc = glGetUniformLocation(modelShader, "mModel");
-        mViewLoc = glGetUniformLocation(modelShader, "mView");
+        mProjectionLoc = glGetUniformLocation(modelShader->getShaderId(), "mProjection");
+        mModelLoc = glGetUniformLocation(modelShader->getShaderId(), "mModel");
+        mViewLoc = glGetUniformLocation(modelShader->getShaderId(), "mView");
     }
 
     void ModelDisplayer::onCameraProjectionUpdate(const Camera *camera) {
         this->projectionMatrix = camera->getProjectionMatrix();
 
-        ShaderManager::instance()->bind(modelShader);
+        modelShader->bind();
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
     }
 
-    int ModelDisplayer::getUniformLocation(const std::string &name) {
-        return glGetUniformLocation(modelShader, name.c_str());
+    int ModelDisplayer::getUniformLocation(const std::string &name) const {
+        return glGetUniformLocation(modelShader->getShaderId(), name.c_str());
     }
 
     void ModelDisplayer::setCustomGeometryShader(const std::string &geometryShaderName, const std::map<std::string, std::string> &geometryTokens) {
@@ -159,8 +152,8 @@ namespace urchin {
         if (!isInitialized) {
             throw std::runtime_error("Model displayer must be initialized before display");
         }
-
-        ShaderManager::instance()->bind(modelShader);
+        
+        modelShader->bind();
         glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)viewMatrix);
         if (customUniform) {
             customUniform->loadCustomUniforms();

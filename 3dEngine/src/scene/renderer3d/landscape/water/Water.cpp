@@ -3,7 +3,7 @@
 #include "Water.h"
 #include "resources/MediaManager.h"
 #include "graphic/render/GenericRendererBuilder.h"
-#include "graphic/shader/ShaderManager.h"
+#include "graphic/shader/builder/ShaderBuilder.h"
 
 #define DEFAULT_CENTER_POSITION Point3<float>(0.0f, 0.0f, 0.0f)
 #define DEFAULT_SIZE 1000.0
@@ -30,22 +30,22 @@ namespace urchin {
             tRepeat(0.0f),
             density(0.0f),
             gradient(0.0f) {
-        waterShader = ShaderManager::instance()->createProgram("water.vert", "", "water.frag");
-        ShaderManager::instance()->bind(waterShader);
+        waterShader = ShaderBuilder().createShader("water.vert", "", "water.frag");
+        waterShader->bind();
 
-        mProjectionLoc = glGetUniformLocation(waterShader, "mProjection");
-        mViewLoc = glGetUniformLocation(waterShader, "mView");
-        sumTimeStepLoc = glGetUniformLocation(waterShader, "sumTimeStep");
+        mProjectionLoc = glGetUniformLocation(waterShader->getShaderId(), "mProjection");
+        mViewLoc = glGetUniformLocation(waterShader->getShaderId(), "mView");
+        sumTimeStepLoc = glGetUniformLocation(waterShader->getShaderId(), "sumTimeStep");
 
-        waterColorLoc = glGetUniformLocation(waterShader, "waterColor");
-        waveSpeedLoc = glGetUniformLocation(waterShader, "waveSpeed");
-        waveStrengthLoc = glGetUniformLocation(waterShader, "waveStrength");
+        waterColorLoc = glGetUniformLocation(waterShader->getShaderId(), "waterColor");
+        waveSpeedLoc = glGetUniformLocation(waterShader->getShaderId(), "waveSpeed");
+        waveStrengthLoc = glGetUniformLocation(waterShader->getShaderId(), "waveStrength");
 
-        int normalTexLoc = glGetUniformLocation(waterShader, "normalTex");
+        int normalTexLoc = glGetUniformLocation(waterShader->getShaderId(), "normalTex");
         glActiveTexture(GL_TEXTURE0);
         glUniform1i(normalTexLoc, 0);
 
-        int dudvTexLoc = glGetUniformLocation(waterShader, "dudvMap");
+        int dudvTexLoc = glGetUniformLocation(waterShader->getShaderId(), "dudvMap");
         glActiveTexture(GL_TEXTURE1);
         glUniform1i(dudvTexLoc, 1);
 
@@ -75,8 +75,6 @@ namespace urchin {
         if(dudvMap) {
             dudvMap->release();
         }
-
-        ShaderManager::instance()->removeProgram(waterShader);
     }
 
     void Water::generateVertex() {
@@ -155,7 +153,7 @@ namespace urchin {
     void Water::setWaterColor(const Vector3<float> &waterColor) {
         this->waterColor = waterColor;
 
-        ShaderManager::instance()->bind(waterShader);
+        waterShader->bind();
         glUniform3fv(waterColorLoc, 1, (const float*) waterColor);
     }
 
@@ -212,7 +210,7 @@ namespace urchin {
     void Water::setWaveSpeed(float waveSpeed) {
         this->waveSpeed = waveSpeed;
 
-        ShaderManager::instance()->bind(waterShader);
+        waterShader->bind();
         glUniform1f(waveSpeedLoc, waveSpeed);
     }
 
@@ -223,7 +221,7 @@ namespace urchin {
     void Water::setWaveStrength(float waveStrength) {
         this->waveStrength = waveStrength;
 
-        ShaderManager::instance()->bind(waterShader);
+        waterShader->bind();
         glUniform1f(waveStrengthLoc, waveStrength);
     }
 
@@ -274,7 +272,7 @@ namespace urchin {
     void Water::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
 
-        ShaderManager::instance()->bind(waterShader);
+        waterShader->bind();
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
     }
 
@@ -290,7 +288,7 @@ namespace urchin {
                 notifyObservers(this, NotificationType::MOVE_ABOVE_WATER);
             }
 
-            ShaderManager::instance()->bind(waterShader);
+            waterShader->bind();
             glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float *) camera->getViewMatrix());
 
             sumTimeStep += dt;

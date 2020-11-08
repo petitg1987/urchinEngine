@@ -4,6 +4,7 @@
 #include <vector>
 #include "UrchinCommon.h"
 
+#include "graphic/shader/model/Shader.h"
 #include "Light.h"
 
 namespace urchin {
@@ -19,7 +20,7 @@ namespace urchin {
                 REMOVE_LIGHT, //A light has been removed
             };
 
-            void loadUniformLocationFor(unsigned int);
+            void loadUniformLocationFor(const std::shared_ptr<Shader> &);
             OctreeManager<Light> *getLightOctreeManager() const;
             Light *getLastUpdatedLight();
 

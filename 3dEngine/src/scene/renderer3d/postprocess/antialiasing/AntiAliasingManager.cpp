@@ -3,7 +3,7 @@
 #include <string>
 
 #include "scene/renderer3d/postprocess/antialiasing/AntiAliasingManager.h"
-#include "graphic/shader/ShaderManager.h"
+#include "graphic/shader/builder/ShaderBuilder.h"
 #include "graphic/render/GenericRendererBuilder.h"
 
 #define DEFAULT_AA_QUALITY AntiAliasingManager::Quality::VERY_HIGH
@@ -14,7 +14,6 @@ namespace urchin {
             quality(DEFAULT_AA_QUALITY),
             sceneWidth(0),
             sceneHeight(0),
-            fxaaShader(0),
             texLoc(0),
             invSceneSizeLoc(0) {
         loadFxaaShader();
@@ -28,30 +27,24 @@ namespace urchin {
                 ->build();
     }
 
-    AntiAliasingManager::~AntiAliasingManager() {
-        ShaderManager::instance()->removeProgram(fxaaShader);
-    }
-
     void AntiAliasingManager::loadFxaaShader() {
         std::map<std::string, std::string> fxaaTokens;
         fxaaTokens["FXAA_QUALITY"] = std::to_string(static_cast<int>(quality));
 
-        ShaderManager::instance()->removeProgram(fxaaShader);
-        fxaaShader = ShaderManager::instance()->createProgram("fxaa.vert", "", "fxaa.frag", fxaaTokens);
+        fxaaShader = ShaderBuilder().createShader("fxaa.vert", "", "fxaa.frag", fxaaTokens);
 
-        ShaderManager::instance()->bind(fxaaShader);
-        texLoc = glGetUniformLocation(fxaaShader, "tex");
+        fxaaShader->bind();
+        texLoc = glGetUniformLocation(fxaaShader->getShaderId(), "tex");
         glUniform1i(texLoc, 0);
-        invSceneSizeLoc = glGetUniformLocation(fxaaShader, "invSceneSize");
+        invSceneSizeLoc = glGetUniformLocation(fxaaShader->getShaderId(), "invSceneSize");
         glUniform2f(invSceneSizeLoc, 1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight);
     }
 
     void AntiAliasingManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
-        ShaderManager::instance()->bind(fxaaShader);
-
         this->sceneWidth = sceneWidth;
         this->sceneHeight = sceneHeight;
 
+        fxaaShader->bind();
         glUniform2f(invSceneSizeLoc, 1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight);
     }
 
@@ -62,8 +55,7 @@ namespace urchin {
     }
 
     void AntiAliasingManager::applyAntiAliasing() {
-        ShaderManager::instance()->bind(fxaaShader);
-
+        fxaaShader->bind();
         renderer->draw();
     }
 

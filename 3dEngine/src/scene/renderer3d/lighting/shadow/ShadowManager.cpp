@@ -12,7 +12,7 @@
 #include "texturefilter/TextureFilter.h"
 #include "texturefilter/gaussianblur/GaussianBlurFilterBuilder.h"
 #include "texturefilter/downsample/DownSampleFilterBuilder.h"
-#include "graphic/shader/ShaderManager.h"
+#include "graphic/shader/builder/ShaderBuilder.h"
 #include "resources/geometry/obbox/OBBoxModel.h"
 
 #define DEFAULT_NUMBER_SHADOW_MAPS 5
@@ -79,10 +79,10 @@ namespace urchin {
         delete shadowModelUniform;
     }
 
-    void ShadowManager::loadUniformLocationFor(unsigned int deferredShaderID) {
+    void ShadowManager::loadUniformLocationFor(const std::shared_ptr<Shader> &deferredShader) {
         //shadow information
-        ShaderManager::instance()->bind(deferredShaderID);
-        depthSplitDistanceLoc = static_cast<unsigned int>(glGetUniformLocation(deferredShaderID, "depthSplitDistance"));
+        deferredShader->bind();
+        depthSplitDistanceLoc = static_cast<unsigned int>(glGetUniformLocation(deferredShader->getShaderId(), "depthSplitDistance"));
 
         //light information
         deleteLightsLocation();
@@ -92,14 +92,14 @@ namespace urchin {
             //depth shadow texture
             shadowMapTextureLocName.str("");
             shadowMapTextureLocName << "lightsInfo[" << i << "].shadowMapTex";
-            lightsLocation[i].shadowMapTexLoc = glGetUniformLocation(deferredShaderID, shadowMapTextureLocName.str().c_str());
+            lightsLocation[i].shadowMapTexLoc = glGetUniformLocation(deferredShader->getShaderId(), shadowMapTextureLocName.str().c_str());
 
             //light projection matrices
             lightsLocation[i].mLightProjectionViewLoc = new int[nbShadowMaps];
             for (unsigned int j=0; j<nbShadowMaps; ++j) {
                 mLightProjectionViewLocName.str("");
                 mLightProjectionViewLocName << "lightsInfo[" << i << "].mLightProjectionView[" << j << "]";
-                lightsLocation[i].mLightProjectionViewLoc[j] = glGetUniformLocation(deferredShaderID, mLightProjectionViewLocName.str().c_str());
+                lightsLocation[i].mLightProjectionViewLoc[j] = glGetUniformLocation(deferredShader->getShaderId(), mLightProjectionViewLocName.str().c_str());
             }
         }
     }

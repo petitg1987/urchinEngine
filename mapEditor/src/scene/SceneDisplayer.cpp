@@ -80,7 +80,7 @@ namespace urchin {
         std::string mapEditorSaveDirectory = FileHandler::getDirectoryFrom(mapEditorPath) + "save/";
 
         ConfigService::instance()->loadProperties("engine.properties", mapEditorResourcesDirectory);
-        ShaderManager::instance()->replaceShadersParentDirectoryBy(mapEditorResourcesDirectory);
+        ShaderConfig::instance()->replaceShadersParentDirectoryBy(mapEditorResourcesDirectory);
         FileSystem::instance()->setupSaveDirectory(mapEditorSaveDirectory);
     }
 

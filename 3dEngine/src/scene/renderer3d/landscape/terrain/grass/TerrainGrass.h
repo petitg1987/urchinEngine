@@ -5,6 +5,7 @@
 #include <vector>
 #include "UrchinCommon.h"
 
+#include "graphic/shader/model/Shader.h"
 #include "scene/renderer3d/landscape/terrain/grass/TerrainGrassQuadtree.h"
 #include "scene/renderer3d/landscape/terrain/TerrainMesh.h"
 #include "scene/renderer3d/camera/Camera.h"
@@ -73,7 +74,7 @@ namespace urchin {
                 SHADER_VERTEX_POSITION = 0,
                 SHADER_NORMAL
             };
-            unsigned int terrainGrassShader;
+            std::unique_ptr<Shader> terrainGrassShader;
             int mProjectionLoc, mViewLoc, cameraPositionLoc, sumTimeStepLoc;
             int terrainMinPointLoc, terrainMaxPointLoc, terrainAmbientLoc;
             int grassDisplayDistanceLoc;

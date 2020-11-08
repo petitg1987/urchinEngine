@@ -4,6 +4,7 @@
 #include "UrchinCommon.h"
 #include <memory>
 
+#include "graphic/shader/model/Shader.h"
 #include "graphic/render/GenericRenderer.h"
 #include "resources/image/Image.h"
 #include "scene/renderer3d/camera/Camera.h"
@@ -68,7 +69,7 @@ namespace urchin {
             void updateWaterTextures();
             void buildUnderwaterFog();
 
-            unsigned int waterShader;
+            std::unique_ptr<Shader> waterShader;
             int mProjectionLoc, mViewLoc, sumTimeStepLoc;
             int waterColorLoc, waveSpeedLoc, waveStrengthLoc;
 

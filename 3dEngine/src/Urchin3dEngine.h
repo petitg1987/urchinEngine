@@ -33,7 +33,7 @@
 
 #include "graphic/texture/TextureManager.h"
 
-#include "graphic/shader/ShaderManager.h"
+#include "graphic/shader/config/ShaderConfig.h"
 
 #include "resources/geometry/GeometryModel.h"
 #include "resources/geometry/aabbox/AABBoxModel.h"

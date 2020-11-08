@@ -1,7 +1,7 @@
 #include <GL/glew.h>
 
 #include "resources/geometry/GeometryModel.h"
-#include "graphic/shader/ShaderManager.h"
+#include "graphic/shader/builder/ShaderBuilder.h"
 
 namespace urchin {
 
@@ -13,11 +13,11 @@ namespace urchin {
             lineSize(1.3),
             transparencyEnabled(false),
             alwaysVisible(false) {
-        shader = ShaderManager::instance()->createProgram("displayGeometry.vert", "", "displayGeometry.frag");
+        shader = ShaderBuilder().createShader("displayGeometry.vert", "", "displayGeometry.frag");
 
-        mProjectionLoc = glGetUniformLocation(shader, "mProjection");
-        mViewLoc = glGetUniformLocation(shader, "mView");
-        colorLoc = glGetUniformLocation(shader, "color");
+        mProjectionLoc = glGetUniformLocation(shader->getShaderId(), "mProjection");
+        mViewLoc = glGetUniformLocation(shader->getShaderId(), "mView");
+        colorLoc = glGetUniformLocation(shader->getShaderId(), "color");
 
         glGenBuffers(1, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
@@ -26,8 +26,6 @@ namespace urchin {
     GeometryModel::~GeometryModel() {
         glDeleteVertexArrays(1, &vertexArrayObject);
         glDeleteBuffers(1, bufferIDs);
-
-        ShaderManager::instance()->removeProgram(shader);
     }
 
     void GeometryModel::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) {
@@ -83,9 +81,7 @@ namespace urchin {
     }
 
     void GeometryModel::display(const Matrix4<float> &viewMatrix) const {
-        unsigned int shaderSaved = ShaderManager::instance()->getCurrentProgram();
-        ShaderManager::instance()->bind(shader);
-
+        shader->bind();
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float *) projectionMatrix);
         glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float *) (viewMatrix * modelMatrix));
         glUniform4fv(colorLoc, 1, (const float *) color);
@@ -113,8 +109,6 @@ namespace urchin {
         }
         glEnable(GL_CULL_FACE);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-        ShaderManager::instance()->bind(shaderSaved);
     }
 
 }

@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include "UrchinCommon.h"
 
+#include "graphic/shader/model/Shader.h"
 #include "scene/renderer3d/camera/Camera.h"
 #include "graphic/render/GenericRenderer.h"
 #include "texturefilter/bilateralblur/BilateralBlurFilter.h"
@@ -21,7 +22,7 @@ namespace urchin {
             AmbientOcclusionManager(unsigned int, unsigned int);
             ~AmbientOcclusionManager();
 
-            void loadUniformLocationFor(unsigned int);
+            void loadUniformLocationFor(const std::shared_ptr<Shader> &);
             void onResize(unsigned int, unsigned int);
             void onCameraProjectionUpdate(const Camera *);
 
@@ -73,7 +74,7 @@ namespace urchin {
             unsigned int ambientOcclusionTexID;
 
             //ambient occlusion shader
-            unsigned int ambientOcclusionShader;
+            std::unique_ptr<Shader> ambientOcclusionShader;
             int mInverseViewProjectionLoc;
             int mProjectionLoc;
             int mViewLoc;

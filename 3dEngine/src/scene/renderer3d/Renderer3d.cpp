@@ -5,7 +5,7 @@
 #include "Renderer3d.h"
 #include "graphic/render/GenericRendererBuilder.h"
 #include "graphic/render/texture/TextureRenderer.h"
-#include "graphic/shader/ShaderManager.h"
+#include "graphic/shader/builder/ShaderBuilder.h"
 #include "scene/renderer3d/utils/OctreeRenderer.h"
 
 #define DEFAULT_OCTREE_MIN_SIZE 20.0f
@@ -39,7 +39,6 @@ namespace urchin {
             fboIDs(nullptr),
             fboAttachments{GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2},
             textureIDs(nullptr),
-            deferredShadingShader(0),
             mInverseViewProjectionLoc(0),
             viewPositionLoc(0) {
         //deferred shading (pass 1)
@@ -116,9 +115,6 @@ namespace urchin {
             glDeleteTextures(4, textureIDs);
             delete [] textureIDs;
         }
-
-        //deferred shading (pass 2)
-        ShaderManager::instance()->removeProgram(deferredShadingShader);
     }
 
     void Renderer3d::createOrUpdateDeferredShadingShader() {
@@ -129,22 +125,21 @@ namespace urchin {
         tokens["NUMBER_SHADOW_MAPS"] = std::to_string(shadowManager->getNumberShadowMaps());
         tokens["SHADOW_MAP_BIAS"] = std::to_string(shadowManager->getShadowMapBias());
         tokens["OUTPUT_LOCATION"] = "0"; // isAntiAliasingActivated ? "0" /*TEX_LIGHTING_PASS*/ : "0" /*Screen*/;
-        ShaderManager::instance()->removeProgram(deferredShadingShader);
-        deferredShadingShader = ShaderManager::instance()->createProgram("deferredShading.vert", "", "deferredShading.frag", tokens);
-        ShaderManager::instance()->bind(deferredShadingShader);
+        deferredShadingShader = ShaderBuilder().createShader("deferredShading.vert", "", "deferredShading.frag", tokens);
+        deferredShadingShader->bind();
 
-        int depthTexLoc = glGetUniformLocation(deferredShadingShader, "depthTex");
+        int depthTexLoc = glGetUniformLocation(deferredShadingShader->getShaderId(), "depthTex");
         glUniform1i(depthTexLoc, GL_TEXTURE0-GL_TEXTURE0);
-        int diffuseTexLoc = glGetUniformLocation(deferredShadingShader, "colorTex");
+        int diffuseTexLoc = glGetUniformLocation(deferredShadingShader->getShaderId(), "colorTex");
         glUniform1i(diffuseTexLoc, GL_TEXTURE1-GL_TEXTURE0);
-        int normalAndAmbientTexLoc = glGetUniformLocation(deferredShadingShader, "normalAndAmbientTex");
+        int normalAndAmbientTexLoc = glGetUniformLocation(deferredShadingShader->getShaderId(), "normalAndAmbientTex");
         glUniform1i(normalAndAmbientTexLoc, GL_TEXTURE2-GL_TEXTURE0);
-        int hasShadowLoc = glGetUniformLocation(deferredShadingShader, "hasShadow");
+        int hasShadowLoc = glGetUniformLocation(deferredShadingShader->getShaderId(), "hasShadow");
         glUniform1i(hasShadowLoc, isShadowActivated);
-        int hasAmbientOcclusionLoc = glGetUniformLocation(deferredShadingShader, "hasAmbientOcclusion");
+        int hasAmbientOcclusionLoc = glGetUniformLocation(deferredShadingShader->getShaderId(), "hasAmbientOcclusion");
         glUniform1i(hasAmbientOcclusionLoc, isAmbientOcclusionActivated);
-        mInverseViewProjectionLoc = glGetUniformLocation(deferredShadingShader, "mInverseViewProjection");
-        viewPositionLoc = glGetUniformLocation(deferredShadingShader, "viewPosition");
+        mInverseViewProjectionLoc = glGetUniformLocation(deferredShadingShader->getShaderId(), "mInverseViewProjection");
+        viewPositionLoc = glGetUniformLocation(deferredShadingShader->getShaderId(), "viewPosition");
 
         //managers
         fogManager->loadUniformLocationFor(deferredShadingShader);
@@ -522,7 +517,7 @@ namespace urchin {
         ScopeProfiler profiler("3d", "lightPassRender");
 
         lightingPassRenderer->clearAdditionalTextures();
-        ShaderManager::instance()->bind(deferredShadingShader);
+        deferredShadingShader->bind();
 
         glUniformMatrix4fv(mInverseViewProjectionLoc, 1, GL_FALSE, (const float*) (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse());
         glUniform3fv(viewPositionLoc, 1, (const float *)camera->getPosition());

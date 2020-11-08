@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 
+#include "graphic/shader/model/Shader.h"
 #include "graphic/render/GenericRenderer.h"
 
 namespace urchin {
@@ -26,14 +27,14 @@ namespace urchin {
 
         protected:
             virtual std::string getShaderName() const = 0;
-            virtual void initializeAdditionalUniforms(unsigned int);
+            virtual void initializeAdditionalUniforms(const std::unique_ptr<Shader> &);
             virtual void addFurtherTextures(const std::unique_ptr<GenericRenderer> &) const;
             virtual void completeShaderTokens(std::map<std::string, std::string> &) const = 0;
 
             unsigned int getTextureWidth() const;
             unsigned int getTextureHeight() const;
 
-            unsigned int getTextureFilterShader() const;
+            const std::unique_ptr<Shader> &getTextureFilterShader() const;
 
             std::string toShaderVectorValues(std::vector<float> &) const;
 
@@ -50,7 +51,7 @@ namespace urchin {
             unsigned int textureFormat;
 
             std::unique_ptr<GenericRenderer> textureRenderer;
-            unsigned int textureFilterShader;
+            std::unique_ptr<Shader> textureFilterShader;
             int layersToUpdateLoc;
 
             unsigned int fboID;

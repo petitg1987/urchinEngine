@@ -3,7 +3,7 @@
 
 #include "BilateralBlurFilter.h"
 #include "texturefilter/bilateralblur/BilateralBlurFilterBuilder.h"
-#include "graphic/shader/ShaderManager.h"
+#include "graphic/shader/builder/ShaderBuilder.h"
 
 namespace urchin {
 
@@ -26,7 +26,7 @@ namespace urchin {
     }
 
     void BilateralBlurFilter::onCameraProjectionUpdate(float nearPlane, float farPlane) {
-        ShaderManager::instance()->bind(getTextureFilterShader());
+        getTextureFilterShader()->bind();
 
         float cameraPlanes[2] = {nearPlane, farPlane};
         glUniform1fv(cameraPlanesLoc, 2, cameraPlanes);
@@ -36,11 +36,11 @@ namespace urchin {
         return "bilateralBlurTex";
     }
 
-    void BilateralBlurFilter::initializeAdditionalUniforms(unsigned int textureFilterShader) {
-        int depthTexLoc = glGetUniformLocation(textureFilterShader, "depthTex");
+    void BilateralBlurFilter::initializeAdditionalUniforms(const std::unique_ptr<Shader> &textureFilterShader) {
+        int depthTexLoc = glGetUniformLocation(textureFilterShader->getShaderId(), "depthTex");
         glUniform1i(depthTexLoc, GL_TEXTURE1-GL_TEXTURE0);
 
-        cameraPlanesLoc = glGetUniformLocation(textureFilterShader, "cameraPlanes");
+        cameraPlanesLoc = glGetUniformLocation(textureFilterShader->getShaderId(), "cameraPlanes");
     }
 
     void BilateralBlurFilter::addFurtherTextures(const std::unique_ptr<GenericRenderer> &renderer) const {

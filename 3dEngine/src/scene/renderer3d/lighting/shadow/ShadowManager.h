@@ -11,6 +11,7 @@
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/model/displayer/ModelDisplayer.h"
 #include "scene/renderer3d/camera/Camera.h"
+#include "graphic/shader/model/Shader.h"
 
 namespace urchin {
 
@@ -35,7 +36,7 @@ namespace urchin {
             ShadowManager(LightManager *, OctreeManager<Model> *);
             ~ShadowManager() override;
 
-            void loadUniformLocationFor(unsigned int);
+            void loadUniformLocationFor(const std::shared_ptr<Shader> &);
             void onResize(unsigned int, unsigned int);
             void onCameraProjectionUpdate(const Camera *);
             void notify(Observable *, int) override;

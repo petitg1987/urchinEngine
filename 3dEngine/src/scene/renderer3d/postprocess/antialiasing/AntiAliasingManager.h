@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "graphic/shader/model/Shader.h"
 #include "graphic/render/GenericRenderer.h"
 
 namespace urchin {
@@ -18,7 +19,6 @@ namespace urchin {
             };
 
             explicit AntiAliasingManager(unsigned int);
-            ~AntiAliasingManager();
 
             void onResize(unsigned int, unsigned int);
 
@@ -33,7 +33,7 @@ namespace urchin {
             unsigned int sceneWidth, sceneHeight;
 
             //display
-            unsigned int fxaaShader;
+            std::unique_ptr<Shader> fxaaShader;
             int texLoc, invSceneSizeLoc;
             std::unique_ptr<GenericRenderer> renderer;
     };

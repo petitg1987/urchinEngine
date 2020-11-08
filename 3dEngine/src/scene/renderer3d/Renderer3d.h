@@ -20,6 +20,7 @@
 #include "scene/renderer3d/landscape/sky/SkyManager.h"
 #include "resources/geometry/GeometryManager.h"
 #include "resources/geometry/GeometryModel.h"
+#include "graphic/shader/model/Shader.h"
 #include "graphic/render/GenericRenderer.h"
 
 namespace urchin {
@@ -145,7 +146,7 @@ namespace urchin {
             };
 
             std::unique_ptr<GenericRenderer> lightingPassRenderer;
-            unsigned int deferredShadingShader;
+            std::shared_ptr<Shader> deferredShadingShader;
             int mInverseViewProjectionLoc, viewPositionLoc;
     };
 
