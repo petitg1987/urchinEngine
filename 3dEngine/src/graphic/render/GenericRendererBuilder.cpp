@@ -94,8 +94,8 @@ namespace urchin {
         return textures;
     }
 
-    std::shared_ptr<GenericRenderer> GenericRendererBuilder::build() {
-        return std::make_shared<GenericRenderer>(this); //TODO build unique ptr
+    std::unique_ptr<GenericRenderer> GenericRendererBuilder::build() {
+        return std::make_unique<GenericRenderer>(this);
     }
 
 }

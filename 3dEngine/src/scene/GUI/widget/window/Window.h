@@ -48,7 +48,7 @@ namespace urchin {
             Text *title;
             std::shared_ptr<Image> texWindow;
             WidgetOutline *widgetOutline;
-            std::shared_ptr<GenericRenderer> windowRenderer;
+            std::unique_ptr<GenericRenderer> windowRenderer;
     };
 
 }

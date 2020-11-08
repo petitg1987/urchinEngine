@@ -144,7 +144,7 @@ namespace urchin {
                 TEX_LIGHTING_PASS
             };
 
-            std::shared_ptr<GenericRenderer> lightingPassRenderer;
+            std::unique_ptr<GenericRenderer> lightingPassRenderer;
             unsigned int deferredShadingShader;
             int mInverseViewProjectionLoc, viewPositionLoc;
     };

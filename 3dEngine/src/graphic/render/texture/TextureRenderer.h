@@ -68,7 +68,7 @@ namespace urchin {
             unsigned int textureID;
             TextureRenderer::ColorType colorType;
             float colorIntensity;
-            std::shared_ptr<GenericRenderer> renderer;
+            std::unique_ptr<GenericRenderer> renderer;
 
             Matrix3<float> mProjection;
             unsigned int displayTextureShader;

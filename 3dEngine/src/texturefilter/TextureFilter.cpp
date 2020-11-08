@@ -95,7 +95,7 @@ namespace urchin {
         //do nothing: to override
     }
 
-    void TextureFilter::addFurtherTextures(const std::shared_ptr<GenericRenderer> &) const {
+    void TextureFilter::addFurtherTextures(const std::unique_ptr<GenericRenderer> &) const {
         //do nothing: to override
     }
 

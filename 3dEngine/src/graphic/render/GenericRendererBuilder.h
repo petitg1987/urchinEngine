@@ -40,7 +40,7 @@ namespace urchin {
             GenericRendererBuilder *addTexture(Texture);
             std::vector<Texture> getTextures() const;
 
-            std::shared_ptr<GenericRenderer> build();
+            std::unique_ptr<GenericRenderer> build();
 
         private:
             ShapeType shapeType;

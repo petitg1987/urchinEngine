@@ -40,7 +40,7 @@ namespace urchin {
             unsigned int getAmbientOcclusionTextureID() const;
 
             void updateAOTexture(const Camera *);
-            void loadAOTexture(const std::shared_ptr<GenericRenderer> &) const;
+            void loadAOTexture(const std::unique_ptr<GenericRenderer> &) const;
 
         private:
             void createOrUpdateAOTexture();
@@ -82,11 +82,10 @@ namespace urchin {
 
             //visual data
             unsigned int depthTexID;
-            unsigned int normalAndAmbientTexID;
             GLint ambientOcclusionTexLoc;
-            std::shared_ptr<GenericRenderer> renderer;
+            std::unique_ptr<GenericRenderer> renderer;
 
-            std::shared_ptr<BilateralBlurFilter> verticalBlurFilter;
+            std::shared_ptr<BilateralBlurFilter> verticalBlurFilter; //TODO unique ?
             std::shared_ptr<BilateralBlurFilter> horizontalBlurFilter;
             bool isBlurActivated;
     };

@@ -568,7 +568,7 @@ namespace urchin {
         glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
     }
 
-    void ShadowManager::loadShadowMaps(const std::shared_ptr<GenericRenderer> &renderer) {
+    void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer> &renderer) {
         int i = 0;
         const std::vector<Light *> &visibleLights = lightManager->getVisibleLights();
         for (auto *visibleLight : visibleLights) {

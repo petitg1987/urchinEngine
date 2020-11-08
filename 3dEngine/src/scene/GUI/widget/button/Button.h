@@ -37,8 +37,8 @@ namespace urchin {
             const std::string buttonText;
 
             //visual
-            std::shared_ptr<Image> texInfoDefault, texInfoOnFocus, texInfoOnClick;
-            std::shared_ptr<GenericRenderer> buttonRenderer;
+            std::shared_ptr<Image> texInfoDefault, texInfoOnFocus, texInfoOnClick; //TODO unique ?
+            std::unique_ptr<GenericRenderer> buttonRenderer;
     };
 
 }

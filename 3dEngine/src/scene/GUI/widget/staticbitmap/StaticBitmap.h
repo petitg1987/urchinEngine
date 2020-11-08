@@ -27,7 +27,7 @@ namespace urchin {
 
             //visual
             Image *tex;
-            std::shared_ptr<GenericRenderer> bitmapRenderer;
+            std::unique_ptr<GenericRenderer> bitmapRenderer;
     };
 
 }

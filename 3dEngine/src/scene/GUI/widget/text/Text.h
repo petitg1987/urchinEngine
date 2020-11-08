@@ -38,7 +38,7 @@ namespace urchin {
 
             //visual
             Font *font;
-            std::shared_ptr<GenericRenderer> textRenderer;
+            std::unique_ptr<GenericRenderer> textRenderer;
     };
 
 }

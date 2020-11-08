@@ -55,7 +55,6 @@ namespace urchin {
             noiseTexId(0),
 
             depthTexID(depthTexID),
-            normalAndAmbientTexID(normalAndAmbientTexID),
             ambientOcclusionTexLoc(0),
             verticalBlurFilter(nullptr),
             horizontalBlurFilter(nullptr),
@@ -355,7 +354,7 @@ namespace urchin {
         glBindFramebuffer(GL_FRAMEBUFFER, static_cast<GLuint>(activeFBO));
     }
 
-    void AmbientOcclusionManager::loadAOTexture(const std::shared_ptr<GenericRenderer> &renderer) const {
+    void AmbientOcclusionManager::loadAOTexture(const std::unique_ptr<GenericRenderer> &renderer) const {
         unsigned int ambientOcclusionTextureUnit = renderer
                 ->addAdditionalTexture(Texture::build(getAmbientOcclusionTextureID(), Texture::DEFAULT, TextureParam::buildLinear()));
         glUniform1i(ambientOcclusionTexLoc, ambientOcclusionTextureUnit);

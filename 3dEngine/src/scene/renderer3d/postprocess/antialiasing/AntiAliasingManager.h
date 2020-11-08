@@ -35,7 +35,7 @@ namespace urchin {
             //display
             unsigned int fxaaShader;
             int texLoc, invSceneSizeLoc;
-            std::shared_ptr<GenericRenderer> renderer;
+            std::unique_ptr<GenericRenderer> renderer;
     };
 
 }
