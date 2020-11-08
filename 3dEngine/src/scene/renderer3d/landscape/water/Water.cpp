@@ -1,9 +1,8 @@
-#include <GL/glew.h>
-
 #include "Water.h"
 #include "resources/MediaManager.h"
 #include "graphic/render/GenericRendererBuilder.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
+#include "graphic/shader/data/ShaderDataSender.h"
 
 #define DEFAULT_CENTER_POSITION Point3<float>(0.0f, 0.0f, 0.0f)
 #define DEFAULT_SIZE 1000.0
@@ -31,23 +30,18 @@ namespace urchin {
             density(0.0f),
             gradient(0.0f) {
         waterShader = ShaderBuilder().createShader("water.vert", "", "water.frag");
-        waterShader->bind();
 
-        mProjectionLoc = glGetUniformLocation(waterShader->getShaderId(), "mProjection");
-        mViewLoc = glGetUniformLocation(waterShader->getShaderId(), "mView");
-        sumTimeStepLoc = glGetUniformLocation(waterShader->getShaderId(), "sumTimeStep");
+        mProjectionShaderVar = ShaderVar(waterShader, "mProjection");
+        mViewShaderVar = ShaderVar(waterShader, "mView");
+        sumTimeStepShaderVar = ShaderVar(waterShader, "sumTimeStep");
 
-        waterColorLoc = glGetUniformLocation(waterShader->getShaderId(), "waterColor");
-        waveSpeedLoc = glGetUniformLocation(waterShader->getShaderId(), "waveSpeed");
-        waveStrengthLoc = glGetUniformLocation(waterShader->getShaderId(), "waveStrength");
+        waterColorShaderVar = ShaderVar(waterShader, "waterColor");
+        waveSpeedShaderVar = ShaderVar(waterShader, "waveSpeed");
+        waveStrengthShaderVar = ShaderVar(waterShader, "waveStrength");
 
-        int normalTexLoc = glGetUniformLocation(waterShader->getShaderId(), "normalTex");
-        glActiveTexture(GL_TEXTURE0);
-        glUniform1i(normalTexLoc, 0);
-
-        int dudvTexLoc = glGetUniformLocation(waterShader->getShaderId(), "dudvMap");
-        glActiveTexture(GL_TEXTURE1);
-        glUniform1i(dudvTexLoc, 1);
+        ShaderDataSender(waterShader)
+            .sendData(ShaderVar(waterShader, "normalTex"), 0) //normal texture, index: 0
+            .sendData(ShaderVar(waterShader, "dudvMap"), 1); //dudv map, index: 1
 
         //general properties
         setCenterPosition(DEFAULT_CENTER_POSITION);
@@ -153,8 +147,7 @@ namespace urchin {
     void Water::setWaterColor(const Vector3<float> &waterColor) {
         this->waterColor = waterColor;
 
-        waterShader->bind();
-        glUniform3fv(waterColorLoc, 1, (const float*) waterColor);
+        ShaderDataSender(waterShader).sendData(waterColorShaderVar, waterColor);
     }
 
     const Vector3<float> &Water::getWaterColor() const {
@@ -210,8 +203,7 @@ namespace urchin {
     void Water::setWaveSpeed(float waveSpeed) {
         this->waveSpeed = waveSpeed;
 
-        waterShader->bind();
-        glUniform1f(waveSpeedLoc, waveSpeed);
+        ShaderDataSender(waterShader).sendData(waveSpeedShaderVar, waveSpeed);
     }
 
     float Water::getWaveSpeed() const {
@@ -221,8 +213,7 @@ namespace urchin {
     void Water::setWaveStrength(float waveStrength) {
         this->waveStrength = waveStrength;
 
-        waterShader->bind();
-        glUniform1f(waveStrengthLoc, waveStrength);
+        ShaderDataSender(waterShader).sendData(waveStrengthShaderVar, waveStrength);
     }
 
     float Water::getWaveStrength() const {
@@ -272,8 +263,7 @@ namespace urchin {
     void Water::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
 
-        waterShader->bind();
-        glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
+        ShaderDataSender(waterShader).sendData(mProjectionShaderVar, projectionMatrix);
     }
 
     void Water::display(const Camera *camera, FogManager *fogManager, float dt) {
@@ -288,12 +278,12 @@ namespace urchin {
                 notifyObservers(this, NotificationType::MOVE_ABOVE_WATER);
             }
 
-            waterShader->bind();
-            glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float *) camera->getViewMatrix());
-
             sumTimeStep += dt;
-            glUniform1f(sumTimeStepLoc, sumTimeStep);
+            ShaderDataSender(waterShader)
+                    .sendData(mViewShaderVar, camera->getViewMatrix())
+                    .sendData(sumTimeStepShaderVar, sumTimeStep);
 
+            waterShader->bind();
             waterRenderer->draw();
         }
     }

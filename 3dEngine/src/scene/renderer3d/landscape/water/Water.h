@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "graphic/shader/model/Shader.h"
+#include "graphic/shader/model/ShaderVar.h"
 #include "graphic/render/GenericRenderer.h"
 #include "resources/image/Image.h"
 #include "scene/renderer3d/camera/Camera.h"
@@ -70,8 +71,8 @@ namespace urchin {
             void buildUnderwaterFog();
 
             std::unique_ptr<Shader> waterShader;
-            int mProjectionLoc, mViewLoc, sumTimeStepLoc;
-            int waterColorLoc, waveSpeedLoc, waveStrengthLoc;
+            ShaderVar mProjectionShaderVar, mViewShaderVar, sumTimeStepShaderVar;
+            ShaderVar waterColorShaderVar, waveSpeedShaderVar, waveStrengthShaderVar;
 
             Matrix4<float> projectionMatrix;
             float sumTimeStep;

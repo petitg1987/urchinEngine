@@ -8,9 +8,10 @@
 
 namespace urchin {
 
-    class ShaderVariable {
+    class ShaderVar {
         public:
-            ShaderVariable(const std::unique_ptr<Shader> &, std::string &);
+            ShaderVar();
+            ShaderVar(const std::unique_ptr<Shader> &, std::string &&);
 
             int getVariableLocation() const;
 
