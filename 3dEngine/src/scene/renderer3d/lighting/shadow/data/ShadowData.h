@@ -28,7 +28,7 @@ namespace urchin {
             void setShadowMapTextureID(unsigned int);
             unsigned int getShadowMapTextureID() const;
 
-            void addTextureFilter(const std::shared_ptr<const TextureFilter> &);
+            void addTextureFilter(std::unique_ptr<TextureFilter>);
             void applyTextureFilters();
             unsigned int getFilteredShadowMapTextureID() const;
 
@@ -48,7 +48,7 @@ namespace urchin {
             unsigned int depthTextureID; //depth texture ID
             unsigned int shadowMapTextureID; //shadow map texture ID (variance shadow map)
 
-            std::vector<std::shared_ptr<const TextureFilter>> textureFilters; //shadow map filters
+            std::vector<std::unique_ptr<const TextureFilter>> textureFilters; //shadow map filters
 
             Matrix4<float> lightViewMatrix;
             std::vector<FrustumShadowData *> frustumShadowData;

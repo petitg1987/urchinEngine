@@ -7,14 +7,15 @@ namespace urchin {
 
     }
 
-    std::shared_ptr<TextureFilter> DownSampleFilterBuilder::build() {
-        std::shared_ptr<TextureFilter> textureFilter = std::make_shared<DownSampleFilter>(this);
+    std::unique_ptr<TextureFilter> DownSampleFilterBuilder::build() {
+        std::unique_ptr<TextureFilter> textureFilter = std::make_unique<DownSampleFilter>(this);
         textureFilter->initialize();
         return textureFilter;
     }
 
-    std::shared_ptr<DownSampleFilter> DownSampleFilterBuilder::buildDownSample() {
-        return std::dynamic_pointer_cast<DownSampleFilter>(build());
+    std::unique_ptr<DownSampleFilter> DownSampleFilterBuilder::buildDownSample() {
+        std::unique_ptr<TextureFilter> downSample = build();
+        return std::unique_ptr<DownSampleFilter>(dynamic_cast<DownSampleFilter*>(downSample.release()));
     }
 
 }

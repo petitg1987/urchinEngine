@@ -56,8 +56,8 @@ namespace urchin {
         return shadowMapTextureID;
     }
 
-    void ShadowData::addTextureFilter(const std::shared_ptr<const TextureFilter> &textureFilter) {
-        textureFilters.push_back(textureFilter);
+    void ShadowData::addTextureFilter(std::unique_ptr<TextureFilter> textureFilter) {
+        textureFilters.push_back(std::move(textureFilter));
     }
 
     void ShadowData::applyTextureFilters() {

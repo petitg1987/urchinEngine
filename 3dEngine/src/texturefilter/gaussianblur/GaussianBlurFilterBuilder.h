@@ -21,8 +21,8 @@ namespace urchin {
             GaussianBlurFilterBuilder *blurSize(unsigned int);
             unsigned int getBlurSize() const;
 
-            std::shared_ptr<TextureFilter> build() override;
-            std::shared_ptr<GaussianBlurFilter> buildGaussianBlur();
+            std::unique_ptr<TextureFilter> build() override;
+            std::unique_ptr<GaussianBlurFilter> buildGaussianBlur();
 
         private:
             BlurDirection pBlurDirection;

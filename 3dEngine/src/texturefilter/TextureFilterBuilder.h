@@ -34,7 +34,7 @@ namespace urchin {
             T *textureFormat(unsigned int);
             unsigned int getTextureFormat() const;
 
-            virtual std::shared_ptr<TextureFilter> build() = 0;
+            virtual std::unique_ptr<TextureFilter> build() = 0;
 
         private:
             T* _this();

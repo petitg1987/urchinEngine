@@ -85,8 +85,8 @@ namespace urchin {
             GLint ambientOcclusionTexLoc;
             std::unique_ptr<GenericRenderer> renderer;
 
-            std::shared_ptr<BilateralBlurFilter> verticalBlurFilter; //TODO unique ?
-            std::shared_ptr<BilateralBlurFilter> horizontalBlurFilter;
+            std::unique_ptr<BilateralBlurFilter> verticalBlurFilter;
+            std::unique_ptr<BilateralBlurFilter> horizontalBlurFilter;
             bool isBlurActivated;
     };
 

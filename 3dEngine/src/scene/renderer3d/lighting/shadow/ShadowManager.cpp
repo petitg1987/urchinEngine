@@ -482,7 +482,7 @@ namespace urchin {
 
         //add shadow map filter
         if (blurShadow!=BlurShadow::NO_BLUR) {
-            std::shared_ptr<TextureFilter> verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>()
+            std::unique_ptr<TextureFilter> verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>()
                     ->textureSize(shadowMapResolution, shadowMapResolution)
                     ->textureType(GL_TEXTURE_2D_ARRAY)
                     ->textureNumberLayer(nbShadowMaps)
@@ -492,7 +492,7 @@ namespace urchin {
                     ->blurSize(static_cast<unsigned int>(blurShadow))
                     ->build();
 
-            std::shared_ptr<TextureFilter> horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>()
+            std::unique_ptr<TextureFilter> horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>()
                     ->textureSize(shadowMapResolution, shadowMapResolution)
                     ->textureType(GL_TEXTURE_2D_ARRAY)
                     ->textureNumberLayer(nbShadowMaps)
@@ -502,10 +502,10 @@ namespace urchin {
                     ->blurSize(static_cast<unsigned int>(blurShadow))
                     ->build();
 
-            shadowDatas[light]->addTextureFilter(verticalBlurFilter);
-            shadowDatas[light]->addTextureFilter(horizontalBlurFilter);
+            shadowDatas[light]->addTextureFilter(std::move(verticalBlurFilter));
+            shadowDatas[light]->addTextureFilter(std::move(horizontalBlurFilter));
         } else { //null filter necessary because it allow to store cached shadow map in a texture which is not cleared with a glClear().
-            std::shared_ptr<TextureFilter> nullFilter = std::make_unique<DownSampleFilterBuilder>()
+            std::unique_ptr<TextureFilter> nullFilter = std::make_unique<DownSampleFilterBuilder>()
                     ->textureSize(shadowMapResolution, shadowMapResolution)
                     ->textureType(GL_TEXTURE_2D_ARRAY)
                     ->textureNumberLayer(nbShadowMaps)
@@ -513,7 +513,7 @@ namespace urchin {
                     ->textureFormat(GL_RG)
                     ->build();
 
-            shadowDatas[light]->addTextureFilter(nullFilter);
+            shadowDatas[light]->addTextureFilter(std::move(nullFilter));
         }
 
         glBindTexture(GL_TEXTURE_2D_ARRAY, 0);

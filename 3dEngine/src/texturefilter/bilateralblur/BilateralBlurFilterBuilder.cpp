@@ -43,18 +43,18 @@ namespace urchin {
         return pDepthTextureID;
     }
 
-    std::shared_ptr<TextureFilter> BilateralBlurFilterBuilder::build() {
+    std::unique_ptr<TextureFilter> BilateralBlurFilterBuilder::build() {
         if (getTextureType()!=GL_TEXTURE_2D) {
             throw std::invalid_argument("Unsupported texture type for bilateral blur filter: " + std::to_string(getTextureType()));
         } else if (getTextureFormat()!=GL_RED) {
             throw std::invalid_argument("Unsupported texture format for bilateral blur filter: " + std::to_string(getTextureType()));
         }
 
-        std::shared_ptr<TextureFilter> textureFilter;
+        std::unique_ptr<TextureFilter> textureFilter;
         if (pBlurDirection==BlurDirection::HORIZONTAL_BLUR) {
-            textureFilter = std::make_shared<BilateralBlurFilter>(this, BilateralBlurFilter::HORIZONTAL);
+            textureFilter = std::make_unique<BilateralBlurFilter>(this, BilateralBlurFilter::HORIZONTAL);
         } else if (pBlurDirection==BlurDirection::VERTICAL_BLUR) {
-            textureFilter = std::make_shared<BilateralBlurFilter>(this, BilateralBlurFilter::VERTICAL);
+            textureFilter = std::make_unique<BilateralBlurFilter>(this, BilateralBlurFilter::VERTICAL);
         } else {
             throw std::invalid_argument("Unknown blur direction type: " + std::to_string(pBlurDirection));
         }
@@ -64,8 +64,9 @@ namespace urchin {
         return textureFilter;
     }
 
-    std::shared_ptr<BilateralBlurFilter> BilateralBlurFilterBuilder::buildBilateralBlur() {
-        return std::dynamic_pointer_cast<BilateralBlurFilter>(build());
+    std::unique_ptr<BilateralBlurFilter> BilateralBlurFilterBuilder::buildBilateralBlur() {
+        std::unique_ptr<TextureFilter> bilateralBlurFilter = build();
+        return std::unique_ptr<BilateralBlurFilter>(dynamic_cast<BilateralBlurFilter*>(bilateralBlurFilter.release()));
     }
 
 }

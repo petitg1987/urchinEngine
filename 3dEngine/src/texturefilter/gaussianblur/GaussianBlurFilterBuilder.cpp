@@ -24,12 +24,12 @@ namespace urchin {
         return pBlurSize;
     }
 
-    std::shared_ptr<TextureFilter> GaussianBlurFilterBuilder::build() {
-        std::shared_ptr<TextureFilter> textureFilter;
+    std::unique_ptr<TextureFilter> GaussianBlurFilterBuilder::build() {
+        std::unique_ptr<TextureFilter> textureFilter;
         if (pBlurDirection==BlurDirection::HORIZONTAL_BLUR) {
-            textureFilter = std::make_shared<GaussianBlurFilter>(this, GaussianBlurFilter::HORIZONTAL);
+            textureFilter = std::make_unique<GaussianBlurFilter>(this, GaussianBlurFilter::HORIZONTAL);
         } else if (pBlurDirection==BlurDirection::VERTICAL_BLUR) {
-            textureFilter = std::make_shared<GaussianBlurFilter>(this, GaussianBlurFilter::VERTICAL);
+            textureFilter = std::make_unique<GaussianBlurFilter>(this, GaussianBlurFilter::VERTICAL);
         } else {
             throw std::invalid_argument("Unknown blur direction type: " + std::to_string(pBlurDirection));
         }
@@ -39,8 +39,9 @@ namespace urchin {
         return textureFilter;
     }
 
-    std::shared_ptr<GaussianBlurFilter> GaussianBlurFilterBuilder::buildGaussianBlur() {
-        return std::dynamic_pointer_cast<GaussianBlurFilter>(build());
+    std::unique_ptr<GaussianBlurFilter> GaussianBlurFilterBuilder::buildGaussianBlur() {
+        std::unique_ptr<TextureFilter> gaussianBlur = build();
+        return std::unique_ptr<GaussianBlurFilter>(dynamic_cast<GaussianBlurFilter*>(gaussianBlur.release()));
     }
 
 }

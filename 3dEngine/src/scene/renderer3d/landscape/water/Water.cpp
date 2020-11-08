@@ -280,12 +280,12 @@ namespace urchin {
 
     void Water::display(const Camera *camera, FogManager *fogManager, float dt) {
         if (camera->getPosition().Y < centerPosition.Y && waterRectangle->collideWithPoint(Point2<float>(camera->getPosition().X, camera->getPosition().Z))) {
-            if (fogManager->getCurrentFog().get() != underwaterFog.get()) {
+            if (fogManager->getCurrentFog() != underwaterFog) {
                 fogManager->pushFog(underwaterFog);
                 notifyObservers(this, NotificationType::MOVE_UNDER_WATER);
             }
         } else {
-            if (fogManager->getCurrentFog().get() == underwaterFog.get()) {
+            if (fogManager->getCurrentFog() == underwaterFog) {
                 fogManager->popFog();
                 notifyObservers(this, NotificationType::MOVE_ABOVE_WATER);
             }
