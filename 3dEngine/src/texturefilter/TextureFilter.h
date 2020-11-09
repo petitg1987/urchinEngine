@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "graphic/shader/model/Shader.h"
+#include "graphic/shader/model/ShaderVar.h"
 #include "graphic/render/GenericRenderer.h"
 
 namespace urchin {
@@ -52,7 +53,7 @@ namespace urchin {
 
             std::unique_ptr<GenericRenderer> textureRenderer;
             std::unique_ptr<Shader> textureFilterShader;
-            int layersToUpdateLoc;
+            ShaderVar layersToUpdateShaderVar;
 
             unsigned int fboID;
             unsigned int textureID;

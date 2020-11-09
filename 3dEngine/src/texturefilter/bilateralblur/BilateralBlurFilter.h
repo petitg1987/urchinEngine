@@ -5,6 +5,7 @@
 #include <map>
 
 #include "texturefilter/TextureFilter.h"
+#include "graphic/shader/model/ShaderVar.h"
 
 namespace urchin {
 
@@ -36,7 +37,7 @@ namespace urchin {
             unsigned int depthTextureID;
 
             unsigned int textureSize;
-            int cameraPlanesLoc;
+            ShaderVar cameraPlanesShaderVar;
 
             std::string offsetsTab;
     };

@@ -184,9 +184,7 @@ namespace urchin {
             ssaoKernel.push_back(sample);
         }
 
-        ambientOcclusionShader->bind();
-        int samplesLoc = glGetUniformLocation(ambientOcclusionShader->getShaderId(), "samples");
-        glUniform3fv(samplesLoc, ssaoKernel.size(), (const float *)ssaoKernel[0]);
+        ShaderDataSender(ambientOcclusionShader).sendData(ShaderVar(ambientOcclusionShader, "samples"), ssaoKernel.size(), &ssaoKernel[0]);
 
         if (DEBUG_EXPORT_SSAO_KERNEL) {
             exportSVG(std::string(std::getenv("HOME")) + "/ssaoKernel.html", ssaoKernel);
@@ -214,9 +212,8 @@ namespace urchin {
 
         renderer->updateTexture(2, Texture::build(noiseTexId, Texture::DEFAULT, TextureParam::buildRepeatNearest()));
 
-        ambientOcclusionShader->bind();
-        int noiseTexLoc = glGetUniformLocation(ambientOcclusionShader->getShaderId(), "noiseTex");
-        glUniform1i(noiseTexLoc, GL_TEXTURE2-GL_TEXTURE0);
+        int noiseTexUnit = 2;
+        ShaderDataSender(ambientOcclusionShader).sendData(ShaderVar(ambientOcclusionShader, "noiseTex"), noiseTexUnit);
     }
 
     void AmbientOcclusionManager::exportSVG(const std::string &filename, const std::vector<Vector3<float>> &ssaoKernel) const {

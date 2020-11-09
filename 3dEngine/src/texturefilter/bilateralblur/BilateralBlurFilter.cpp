@@ -1,23 +1,22 @@
-#include <GL/glew.h>
 #include <stdexcept>
 
 #include "BilateralBlurFilter.h"
 #include "texturefilter/bilateralblur/BilateralBlurFilterBuilder.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
+#include "graphic/shader/data/ShaderDataSender.h"
 
 namespace urchin {
 
     BilateralBlurFilter::BilateralBlurFilter(const BilateralBlurFilterBuilder *textureFilterBuilder, BlurDirection blurDirection):
-        TextureFilter(textureFilterBuilder),
-        blurDirection(blurDirection),
-        blurSize(textureFilterBuilder->getBlurSize()),
-        blurSharpness(textureFilterBuilder->getBlurSharpness()),
-        depthTextureID(textureFilterBuilder->getDepthTextureID()),
-        textureSize((BlurDirection::VERTICAL==blurDirection) ? getTextureHeight() : getTextureWidth()),
-        cameraPlanesLoc(0) {
-        if (blurSize<=1) {
+            TextureFilter(textureFilterBuilder),
+            blurDirection(blurDirection),
+            blurSize(textureFilterBuilder->getBlurSize()),
+            blurSharpness(textureFilterBuilder->getBlurSharpness()),
+            depthTextureID(textureFilterBuilder->getDepthTextureID()),
+            textureSize((BlurDirection::VERTICAL==blurDirection) ? getTextureHeight() : getTextureWidth()) {
+        if (blurSize <= 1) {
             throw std::invalid_argument("Blur size must be greater than one. Value: " + std::to_string(blurSize));
-        } else if (blurSize%2==0) {
+        } else if (blurSize % 2 == 0) {
             throw std::invalid_argument("Blur size must be an odd number. Value: " + std::to_string(blurSize));
         }
 
@@ -26,10 +25,8 @@ namespace urchin {
     }
 
     void BilateralBlurFilter::onCameraProjectionUpdate(float nearPlane, float farPlane) {
-        getTextureFilterShader()->bind();
-
         float cameraPlanes[2] = {nearPlane, farPlane};
-        glUniform1fv(cameraPlanesLoc, 2, cameraPlanes);
+        ShaderDataSender(getTextureFilterShader()).sendData(cameraPlanesShaderVar, 2, cameraPlanes);
     }
 
     std::string BilateralBlurFilter::getShaderName() const {
@@ -37,10 +34,10 @@ namespace urchin {
     }
 
     void BilateralBlurFilter::initializeAdditionalUniforms(const std::unique_ptr<Shader> &textureFilterShader) {
-        int depthTexLoc = glGetUniformLocation(textureFilterShader->getShaderId(), "depthTex");
-        glUniform1i(depthTexLoc, GL_TEXTURE1-GL_TEXTURE0);
+        int depthTexUnit = 1;
+        ShaderDataSender(textureFilterShader).sendData(ShaderVar(textureFilterShader, "depthTex"), depthTexUnit);
 
-        cameraPlanesLoc = glGetUniformLocation(textureFilterShader->getShaderId(), "cameraPlanes");
+        cameraPlanesShaderVar = ShaderVar(textureFilterShader, "cameraPlanes");
     }
 
     void BilateralBlurFilter::addFurtherTextures(const std::unique_ptr<GenericRenderer> &renderer) const {

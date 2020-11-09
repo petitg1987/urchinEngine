@@ -7,7 +7,6 @@ template<class BUILDER> TextureFilter::TextureFilter(const TextureFilterBuilder<
     textureInternalFormat(textureFilterBuilder->getTextureInternalFormat()),
     textureFormat(textureFilterBuilder->getTextureFormat()),
 
-    layersToUpdateLoc(0),
     fboID(0),
     textureID(0) {
 

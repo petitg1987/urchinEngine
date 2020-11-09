@@ -3,6 +3,7 @@
 
 #include "TextureFilter.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
+#include "graphic/shader/data/ShaderDataSender.h"
 #include "graphic/render/GenericRendererBuilder.h"
 
 namespace urchin {
@@ -34,13 +35,13 @@ namespace urchin {
                 ->build();
 
         std::map<std::string, std::string> shaderTokens;
-        if (textureFormat==GL_RGB) {
+        if (textureFormat == GL_RGB) {
             shaderTokens["OUTPUT_TYPE"] = "vec3";
             shaderTokens["SOURCE_TEX_COMPONENTS"] = "rgb";
-        } else if (textureFormat==GL_RG) {
+        } else if (textureFormat == GL_RG) {
             shaderTokens["OUTPUT_TYPE"] = "vec2";
             shaderTokens["SOURCE_TEX_COMPONENTS"] = "rg";
-        } else if (textureFormat==GL_RED) {
+        } else if (textureFormat == GL_RED) {
             shaderTokens["OUTPUT_TYPE"] = "float";
             shaderTokens["SOURCE_TEX_COMPONENTS"] = "r";
         } else {
@@ -49,21 +50,20 @@ namespace urchin {
 
         this->completeShaderTokens(shaderTokens);
 
-        if (textureType==GL_TEXTURE_2D_ARRAY) {
+        if (textureType == GL_TEXTURE_2D_ARRAY) {
             shaderTokens["MAX_VERTICES"] = std::to_string(3*textureNumberLayer);
             shaderTokens["NUMBER_LAYER"] = std::to_string(textureNumberLayer);
 
             textureFilterShader = ShaderBuilder().createShader("textureFilter.vert", "textureFilter.geom", getShaderName() + "Array.frag", shaderTokens);
-        } else if (textureType==GL_TEXTURE_2D) {
+        } else if (textureType == GL_TEXTURE_2D) {
             textureFilterShader = ShaderBuilder().createShader("textureFilter.vert", "", getShaderName() + ".frag", shaderTokens);
         } else {
             throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
         }
 
-        textureFilterShader->bind();
-        int texLoc = glGetUniformLocation(textureFilterShader->getShaderId(), "tex");
-        glUniform1i(texLoc, GL_TEXTURE0-GL_TEXTURE0);
-        layersToUpdateLoc = glGetUniformLocation(textureFilterShader->getShaderId(), "layersToUpdate");
+        int texUnit = 0;
+        ShaderDataSender(textureFilterShader).sendData(ShaderVar(textureFilterShader, "tex"), texUnit);
+        layersToUpdateShaderVar = ShaderVar(textureFilterShader, "layersToUpdate");
         initializeAdditionalUniforms(textureFilterShader);
     }
 
@@ -147,7 +147,7 @@ namespace urchin {
 
         if (textureType == GL_TEXTURE_2D_ARRAY) {
             assert(layersToUpdate != -1);
-            glUniform1ui(layersToUpdateLoc, static_cast<unsigned int>(layersToUpdate));
+            ShaderDataSender(textureFilterShader).sendData(layersToUpdateShaderVar, static_cast<unsigned int>(layersToUpdate));
         }
 
         glViewport(0, 0, textureWidth, textureHeight);

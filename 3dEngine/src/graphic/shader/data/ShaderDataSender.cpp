@@ -33,9 +33,21 @@ namespace urchin {
         return *this;
     }
 
+    ShaderDataSender &ShaderDataSender::sendData(const ShaderVar &shaderVar, unsigned int count, const int *values) {
+        shader->bind();
+        glUniform1iv(shaderVar.getVariableLocation(), count, values);
+        return *this;
+    }
+
     ShaderDataSender &ShaderDataSender::sendData(const ShaderVar &shaderVar, unsigned int value) {
         shader->bind();
         glUniform1ui(shaderVar.getVariableLocation(), value);
+        return *this;
+    }
+
+    ShaderDataSender &ShaderDataSender::sendData(const ShaderVar &shaderVar, unsigned int count, const unsigned int *values) {
+        shader->bind();
+        glUniform1uiv(shaderVar.getVariableLocation(), count, values);
         return *this;
     }
 
@@ -85,15 +97,33 @@ namespace urchin {
         return *this;
     }
 
+    ShaderDataSender &ShaderDataSender::sendData(const ShaderVar &shaderVar, unsigned int count, const Vector2<float> *values) {
+        shader->bind();
+        glUniform2fv(shaderVar.getVariableLocation(), count, (const float*)values);
+        return *this;
+    }
+
     ShaderDataSender &ShaderDataSender::sendData(const ShaderVar &shaderVar, const Vector3<float> &value) {
         shader->bind();
         glUniform3fv(shaderVar.getVariableLocation(), 1, (const float*)value);
         return *this;
     }
 
+    ShaderDataSender &ShaderDataSender::sendData(const ShaderVar &shaderVar, unsigned int count, const Vector3<float> *values) {
+        shader->bind();
+        glUniform3fv(shaderVar.getVariableLocation(), count, (const float*)values);
+        return *this;
+    }
+
     ShaderDataSender &ShaderDataSender::sendData(const ShaderVar &shaderVar, const Vector4<float> &value) {
         shader->bind();
         glUniform4fv(shaderVar.getVariableLocation(), 1, (const float*)value);
+        return *this;
+    }
+
+    ShaderDataSender &ShaderDataSender::sendData(const ShaderVar &shaderVar, unsigned int count, const Vector4<float> *values) {
+        shader->bind();
+        glUniform4fv(shaderVar.getVariableLocation(), count, (const float*)values);
         return *this;
     }
 
