@@ -6,6 +6,7 @@
 #include "UrchinCommon.h"
 
 #include "graphic/shader/model/Shader.h"
+#include "graphic/shader/model/ShaderVar.h"
 #include "scene/renderer3d/landscape/terrain/grass/TerrainGrassQuadtree.h"
 #include "scene/renderer3d/landscape/terrain/TerrainMesh.h"
 #include "scene/renderer3d/camera/Camera.h"
@@ -75,11 +76,11 @@ namespace urchin {
                 SHADER_NORMAL
             };
             std::unique_ptr<Shader> terrainGrassShader;
-            int mProjectionLoc, mViewLoc, cameraPositionLoc, sumTimeStepLoc;
-            int terrainMinPointLoc, terrainMaxPointLoc, terrainAmbientLoc;
-            int grassDisplayDistanceLoc;
-            int grassHeightLoc, grassHalfLengthLoc, numGrassInTexLoc;
-            int windDirectionLoc, windStrengthLoc;
+            ShaderVar mProjectionShaderVar, mViewShaderVar, cameraPositionShaderVar, sumTimeStepShaderVar;
+            ShaderVar terrainMinPointShaderVar, terrainMaxPointShaderVar, terrainAmbientShaderVar;
+            ShaderVar grassDisplayDistanceShaderVar;
+            ShaderVar grassHeightShaderVar, grassHalfLengthShaderVar, numGrassInTexShaderVar;
+            ShaderVar windDirectionShaderVar, windStrengthShaderVar;
 
             std::shared_ptr<TerrainMesh> mesh;
             Point3<float> terrainPosition;
