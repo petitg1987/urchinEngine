@@ -104,8 +104,8 @@ namespace urchin {
         generateNoiseTexture();
     }
 
-    void AmbientOcclusionManager::loadUniformLocationFor(const std::shared_ptr<Shader> &deferredShader) {
-        ambientOcclusionTexShaderVar = ShaderVar(deferredShader, "ambientOcclusionTex");
+    void AmbientOcclusionManager::loadUniformLocationFor(const std::shared_ptr<Shader> &lightingShader) {
+        ambientOcclusionTexShaderVar = ShaderVar(lightingShader, "ambientOcclusionTex");
     }
 
     void AmbientOcclusionManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
@@ -345,9 +345,9 @@ namespace urchin {
         glBindFramebuffer(GL_FRAMEBUFFER, static_cast<GLuint>(activeFBO));
     }
 
-    void AmbientOcclusionManager::loadAOTexture(const std::unique_ptr<GenericRenderer> &renderer, const std::shared_ptr<Shader> &shader) const {
-        unsigned int aoTextureUnit = renderer->addAdditionalTexture(Texture::build(getAmbientOcclusionTextureID(), Texture::DEFAULT, TextureParam::buildLinear()));
-        ShaderDataSender(shader).sendData(ambientOcclusionTexShaderVar, static_cast<int>(aoTextureUnit));
+    void AmbientOcclusionManager::loadAOTexture(const std::unique_ptr<GenericRenderer> &lightingRenderer, const std::shared_ptr<Shader> &lightingShader) const {
+        unsigned int aoTextureUnit = lightingRenderer->addAdditionalTexture(Texture::build(getAmbientOcclusionTextureID(), Texture::DEFAULT, TextureParam::buildLinear()));
+        ShaderDataSender(lightingShader).sendData(ambientOcclusionTexShaderVar, static_cast<int>(aoTextureUnit));
     }
 
 }

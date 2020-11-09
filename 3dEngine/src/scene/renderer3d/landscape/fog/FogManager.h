@@ -23,7 +23,7 @@ namespace urchin {
         private:
             std::stack<std::shared_ptr<Fog>> fogs;
 
-            std::shared_ptr<Shader> deferredShader;
+            std::shared_ptr<Shader> lightingShader;
             int hasFogLoc, fogDensityLoc, fogGradientLoc, fogColorLoc, fogMaxHeightLoc;
     };
 

@@ -12,6 +12,7 @@
 #include "scene/renderer3d/model/displayer/ModelDisplayer.h"
 #include "scene/renderer3d/camera/Camera.h"
 #include "graphic/shader/model/Shader.h"
+#include "graphic/shader/model/ShaderVar.h"
 
 namespace urchin {
 
@@ -59,7 +60,7 @@ namespace urchin {
             void updateVisibleModels(const Frustum<float> &);
             void forceUpdateAllShadowMaps();
             void updateShadowMaps();
-            void loadShadowMaps(const std::unique_ptr<GenericRenderer> &);
+            void loadShadowMaps(const std::unique_ptr<GenericRenderer> &, const std::shared_ptr<Shader> &);
 
             void drawLightSceneBox(const Frustum<float> &, const Light *, const Matrix4<float> &) const;
 
@@ -117,8 +118,8 @@ namespace urchin {
 
             //light information
             struct LightLocation { //reservation of light locations for light producing shadow
-                int shadowMapTexLoc;
-                int *mLightProjectionViewLoc;
+                ShaderVar shadowMapTexShaderVar;
+                ShaderVar *mLightProjectionViewShaderVar = nullptr;
             };
             LightLocation *lightsLocation;
     };

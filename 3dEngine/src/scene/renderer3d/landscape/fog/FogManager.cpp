@@ -1,7 +1,6 @@
 #include <GL/glew.h>
 
 #include "FogManager.h"
-#include "graphic/shader/builder/ShaderBuilder.h"
 
 namespace urchin {
     FogManager::FogManager() :
@@ -35,21 +34,21 @@ namespace urchin {
         return fogs.top();
     }
 
-    void FogManager::loadUniformLocationFor(const std::shared_ptr<Shader> &deferredShader) {
-        this->deferredShader = deferredShader;
+    void FogManager::loadUniformLocationFor(const std::shared_ptr<Shader> &lightingShader) {
+        this->lightingShader = lightingShader;
 
-        deferredShader->bind();
-        hasFogLoc = glGetUniformLocation(deferredShader->getShaderId(), "hasFog");
-        fogDensityLoc = glGetUniformLocation(deferredShader->getShaderId(), "fogDensity");
-        fogGradientLoc = glGetUniformLocation(deferredShader->getShaderId(), "fogGradient");
-        fogColorLoc = glGetUniformLocation(deferredShader->getShaderId(), "fogColor");
-        fogMaxHeightLoc = glGetUniformLocation(deferredShader->getShaderId(), "fogMaxHeight");
+        lightingShader->bind();
+        hasFogLoc = glGetUniformLocation(lightingShader->getShaderId(), "hasFog");
+        fogDensityLoc = glGetUniformLocation(lightingShader->getShaderId(), "fogDensity");
+        fogGradientLoc = glGetUniformLocation(lightingShader->getShaderId(), "fogGradient");
+        fogColorLoc = glGetUniformLocation(lightingShader->getShaderId(), "fogColor");
+        fogMaxHeightLoc = glGetUniformLocation(lightingShader->getShaderId(), "fogMaxHeight");
 
         loadFog();
     }
 
     void FogManager::loadFog() {
-        deferredShader->bind();
+        lightingShader->bind();
         glUniform1i(hasFogLoc, !fogs.empty());
 
         if (!fogs.empty()) {

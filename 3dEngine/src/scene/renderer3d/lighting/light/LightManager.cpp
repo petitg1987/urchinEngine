@@ -32,7 +32,7 @@ namespace urchin {
         delete [] lightsInfo;
     }
 
-    void LightManager::loadUniformLocationFor(const std::shared_ptr<Shader> &deferredShader) {
+    void LightManager::loadUniformLocationFor(const std::shared_ptr<Shader> &lightingShader) {
         std::ostringstream isExistLocName, produceShadowLocName, hasParallelBeamsName, positionOrDirectionLocName;
         std::ostringstream exponentialAttName, lightAmbientName;
         for (unsigned int i=0;i<maxLights;++i) {
@@ -54,16 +54,16 @@ namespace urchin {
             lightAmbientName.str("");
             lightAmbientName << "lightsInfo[" << i << "].lightAmbient";
 
-            lightsInfo[i].isExistLoc = glGetUniformLocation(deferredShader->getShaderId(), isExistLocName.str().c_str());
-            lightsInfo[i].produceShadowLoc = glGetUniformLocation(deferredShader->getShaderId(), produceShadowLocName.str().c_str());
-            lightsInfo[i].hasParallelBeamsLoc = glGetUniformLocation(deferredShader->getShaderId(), hasParallelBeamsName.str().c_str());
-            lightsInfo[i].positionOrDirectionLoc = glGetUniformLocation(deferredShader->getShaderId(), positionOrDirectionLocName.str().c_str());
+            lightsInfo[i].isExistLoc = glGetUniformLocation(lightingShader->getShaderId(), isExistLocName.str().c_str());
+            lightsInfo[i].produceShadowLoc = glGetUniformLocation(lightingShader->getShaderId(), produceShadowLocName.str().c_str());
+            lightsInfo[i].hasParallelBeamsLoc = glGetUniformLocation(lightingShader->getShaderId(), hasParallelBeamsName.str().c_str());
+            lightsInfo[i].positionOrDirectionLoc = glGetUniformLocation(lightingShader->getShaderId(), positionOrDirectionLocName.str().c_str());
 
-            lightsInfo[i].exponentialAttLoc = glGetUniformLocation(deferredShader->getShaderId(), exponentialAttName.str().c_str());
-            lightsInfo[i].lightAmbientLoc = glGetUniformLocation(deferredShader->getShaderId(), lightAmbientName.str().c_str());
+            lightsInfo[i].exponentialAttLoc = glGetUniformLocation(lightingShader->getShaderId(), exponentialAttName.str().c_str());
+            lightsInfo[i].lightAmbientLoc = glGetUniformLocation(lightingShader->getShaderId(), lightAmbientName.str().c_str());
         }
 
-        globalAmbientColorLoc = glGetUniformLocation(deferredShader->getShaderId(), "globalAmbient");
+        globalAmbientColorLoc = glGetUniformLocation(lightingShader->getShaderId(), "globalAmbient");
     }
 
     OctreeManager<Light> *LightManager::getLightOctreeManager() const {

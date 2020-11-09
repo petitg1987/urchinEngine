@@ -13,6 +13,7 @@
 #include "texturefilter/gaussianblur/GaussianBlurFilterBuilder.h"
 #include "texturefilter/downsample/DownSampleFilterBuilder.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
+#include "graphic/shader/data/ShaderDataSender.h"
 #include "resources/geometry/obbox/OBBoxModel.h"
 
 #define DEFAULT_NUMBER_SHADOW_MAPS 5
@@ -79,10 +80,10 @@ namespace urchin {
         delete shadowModelUniform;
     }
 
-    void ShadowManager::loadUniformLocationFor(const std::shared_ptr<Shader> &deferredShader) {
+    void ShadowManager::loadUniformLocationFor(const std::shared_ptr<Shader> &lightingShader) {
         //shadow information
-        deferredShader->bind();
-        depthSplitDistanceLoc = static_cast<unsigned int>(glGetUniformLocation(deferredShader->getShaderId(), "depthSplitDistance"));
+        lightingShader->bind();
+        depthSplitDistanceLoc = static_cast<unsigned int>(glGetUniformLocation(lightingShader->getShaderId(), "depthSplitDistance"));
 
         //light information
         deleteLightsLocation();
@@ -92,14 +93,14 @@ namespace urchin {
             //depth shadow texture
             shadowMapTextureLocName.str("");
             shadowMapTextureLocName << "lightsInfo[" << i << "].shadowMapTex";
-            lightsLocation[i].shadowMapTexLoc = glGetUniformLocation(deferredShader->getShaderId(), shadowMapTextureLocName.str().c_str());
+            lightsLocation[i].shadowMapTexShaderVar = ShaderVar(lightingShader, shadowMapTextureLocName.str());
 
             //light projection matrices
-            lightsLocation[i].mLightProjectionViewLoc = new int[nbShadowMaps];
+            lightsLocation[i].mLightProjectionViewShaderVar = new ShaderVar[nbShadowMaps];
             for (unsigned int j=0; j<nbShadowMaps; ++j) {
                 mLightProjectionViewLocName.str("");
                 mLightProjectionViewLocName << "lightsInfo[" << i << "].mLightProjectionView[" << j << "]";
-                lightsLocation[i].mLightProjectionViewLoc[j] = glGetUniformLocation(deferredShader->getShaderId(), mLightProjectionViewLocName.str().c_str());
+                lightsLocation[i].mLightProjectionViewShaderVar[j] = ShaderVar(lightingShader, mLightProjectionViewLocName.str());
             }
         }
     }
@@ -128,7 +129,7 @@ namespace urchin {
     void ShadowManager::deleteLightsLocation() {
         if (lightsLocation) {
             for (unsigned int i=0;i<lightManager->getMaxLights();++i) {
-                delete [] lightsLocation[i].mLightProjectionViewLoc;
+                delete [] lightsLocation[i].mLightProjectionViewShaderVar;
             }
             delete [] lightsLocation;
         }
@@ -568,7 +569,7 @@ namespace urchin {
         glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
     }
 
-    void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer> &renderer) {
+    void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer> &lightingRenderer, const std::shared_ptr<Shader> &lightingShader) {
         int i = 0;
         const std::vector<Light *> &visibleLights = lightManager->getVisibleLights();
         for (auto *visibleLight : visibleLights) {
@@ -576,12 +577,13 @@ namespace urchin {
                 auto it = shadowDatas.find(visibleLight);
                 const ShadowData *shadowData = it->second;
 
-                unsigned int texUnit = renderer->addAdditionalTexture(Texture::build(shadowData->getFilteredShadowMapTextureID(), Texture::ARRAY, TextureParam::buildLinear()));
-                glUniform1i(lightsLocation[i].shadowMapTexLoc, texUnit);
+                unsigned int texUnit = lightingRenderer
+                        ->addAdditionalTexture(Texture::build(shadowData->getFilteredShadowMapTextureID(), Texture::ARRAY, TextureParam::buildLinear()));
+                ShaderDataSender(lightingShader).sendData(lightsLocation[i].shadowMapTexShaderVar, static_cast<int>(texUnit));
 
                 for (std::size_t j=0; j<nbShadowMaps; ++j) {
-                    glUniformMatrix4fv(lightsLocation[i].mLightProjectionViewLoc[j], 1, GL_FALSE,
-                                       (float *)(shadowData->getFrustumShadowData(j)->getLightProjectionMatrix() * shadowData->getLightViewMatrix()));
+                    Matrix4<float> lightProjectionViewMatrix = shadowData->getFrustumShadowData(j)->getLightProjectionMatrix() * shadowData->getLightViewMatrix();
+                    ShaderDataSender(lightingShader).sendData(lightsLocation[i].mLightProjectionViewShaderVar[j], lightProjectionViewMatrix);
                 }
             }
             ++i;

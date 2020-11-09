@@ -41,6 +41,7 @@ namespace urchin {
             textureIDs(nullptr),
             mInverseViewProjectionLoc(0),
             viewPositionLoc(0) {
+
         //deferred shading (pass 1)
         fboIDs = new unsigned int[1];
         textureIDs = new unsigned int[4];
@@ -71,11 +72,11 @@ namespace urchin {
         isAmbientOcclusionActivated = true;
 
         //deferred shading (pass 2)
-        createOrUpdateDeferredShadingShader();
+        createOrUpdateLightingShader();
 
         std::vector<int> vertexCoord = {-1, 1, 1, 1, 1, -1, -1, -1};
         std::vector<int> textureCoord = {0, 1, 1, 1, 1, 0, 0, 0};
-        lightingPassRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
+        lightingRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
                 ->vertexData(CoordType::INT, CoordDimension::_2D, &vertexCoord[0])
                 ->textureData(CoordType::INT, CoordDimension::_2D, &textureCoord[0])
                 ->addTexture(Texture::build(textureIDs[TEX_DEPTH], Texture::DEFAULT, TextureParam::buildNearest()))
@@ -117,7 +118,7 @@ namespace urchin {
         }
     }
 
-    void Renderer3d::createOrUpdateDeferredShadingShader() {
+    void Renderer3d::createOrUpdateLightingShader() {
         std::locale::global(std::locale("C")); //for float
 
         std::map<std::string, std::string> tokens;
@@ -125,27 +126,27 @@ namespace urchin {
         tokens["NUMBER_SHADOW_MAPS"] = std::to_string(shadowManager->getNumberShadowMaps());
         tokens["SHADOW_MAP_BIAS"] = std::to_string(shadowManager->getShadowMapBias());
         tokens["OUTPUT_LOCATION"] = "0"; // isAntiAliasingActivated ? "0" /*TEX_LIGHTING_PASS*/ : "0" /*Screen*/;
-        deferredShadingShader = ShaderBuilder().createShader("deferredShading.vert", "", "deferredShading.frag", tokens);
-        deferredShadingShader->bind();
+        lightingShader = ShaderBuilder().createShader("lighting.vert", "", "lighting.frag", tokens);
+        lightingShader->bind();
 
-        int depthTexLoc = glGetUniformLocation(deferredShadingShader->getShaderId(), "depthTex");
+        int depthTexLoc = glGetUniformLocation(lightingShader->getShaderId(), "depthTex");
         glUniform1i(depthTexLoc, GL_TEXTURE0-GL_TEXTURE0);
-        int diffuseTexLoc = glGetUniformLocation(deferredShadingShader->getShaderId(), "colorTex");
+        int diffuseTexLoc = glGetUniformLocation(lightingShader->getShaderId(), "colorTex");
         glUniform1i(diffuseTexLoc, GL_TEXTURE1-GL_TEXTURE0);
-        int normalAndAmbientTexLoc = glGetUniformLocation(deferredShadingShader->getShaderId(), "normalAndAmbientTex");
+        int normalAndAmbientTexLoc = glGetUniformLocation(lightingShader->getShaderId(), "normalAndAmbientTex");
         glUniform1i(normalAndAmbientTexLoc, GL_TEXTURE2-GL_TEXTURE0);
-        int hasShadowLoc = glGetUniformLocation(deferredShadingShader->getShaderId(), "hasShadow");
+        int hasShadowLoc = glGetUniformLocation(lightingShader->getShaderId(), "hasShadow");
         glUniform1i(hasShadowLoc, isShadowActivated);
-        int hasAmbientOcclusionLoc = glGetUniformLocation(deferredShadingShader->getShaderId(), "hasAmbientOcclusion");
+        int hasAmbientOcclusionLoc = glGetUniformLocation(lightingShader->getShaderId(), "hasAmbientOcclusion");
         glUniform1i(hasAmbientOcclusionLoc, isAmbientOcclusionActivated);
-        mInverseViewProjectionLoc = glGetUniformLocation(deferredShadingShader->getShaderId(), "mInverseViewProjection");
-        viewPositionLoc = glGetUniformLocation(deferredShadingShader->getShaderId(), "viewPosition");
+        mInverseViewProjectionLoc = glGetUniformLocation(lightingShader->getShaderId(), "mInverseViewProjection");
+        viewPositionLoc = glGetUniformLocation(lightingShader->getShaderId(), "viewPosition");
 
         //managers
-        fogManager->loadUniformLocationFor(deferredShadingShader);
-        lightManager->loadUniformLocationFor(deferredShadingShader);
-        shadowManager->loadUniformLocationFor(deferredShadingShader);
-        ambientOcclusionManager->loadUniformLocationFor(deferredShadingShader);
+        fogManager->loadUniformLocationFor(lightingShader);
+        lightManager->loadUniformLocationFor(lightingShader);
+        shadowManager->loadUniformLocationFor(lightingShader);
+        ambientOcclusionManager->loadUniformLocationFor(lightingShader);
     }
 
     void Renderer3d::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
@@ -190,7 +191,7 @@ namespace urchin {
     void Renderer3d::notify(Observable *observable, int notificationType) {
         if (dynamic_cast<ShadowManager *>(observable)) {
             if (notificationType==ShadowManager::NUMBER_SHADOW_MAPS_UPDATE) {
-                createOrUpdateDeferredShadingShader();
+                createOrUpdateLightingShader();
             }
         }
     }
@@ -230,7 +231,7 @@ namespace urchin {
     void Renderer3d::activateShadow(bool isShadowActivated) {
         this->isShadowActivated = isShadowActivated;
 
-        createOrUpdateDeferredShadingShader();
+        createOrUpdateLightingShader();
         shadowManager->forceUpdateAllShadowMaps();
     }
 
@@ -241,7 +242,7 @@ namespace urchin {
     void Renderer3d::activateAmbientOcclusion(bool isAmbientOcclusionActivated) {
         this->isAmbientOcclusionActivated = isAmbientOcclusionActivated;
 
-        createOrUpdateDeferredShadingShader();
+        createOrUpdateLightingShader();
     }
 
     AntiAliasingManager *Renderer3d::getAntiAliasingManager() const {
@@ -516,8 +517,8 @@ namespace urchin {
     void Renderer3d::lightingPassRendering() {
         ScopeProfiler profiler("3d", "lightPassRender");
 
-        lightingPassRenderer->clearAdditionalTextures();
-        deferredShadingShader->bind();
+        lightingRenderer->clearAdditionalTextures();
+        lightingShader->bind();
 
         glUniformMatrix4fv(mInverseViewProjectionLoc, 1, GL_FALSE, (const float*) (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse());
         glUniform3fv(viewPositionLoc, 1, (const float *)camera->getPosition());
@@ -525,14 +526,14 @@ namespace urchin {
         lightManager->loadLights();
 
         if (isAmbientOcclusionActivated) {
-            ambientOcclusionManager->loadAOTexture(lightingPassRenderer, deferredShadingShader);
+            ambientOcclusionManager->loadAOTexture(lightingRenderer, lightingShader);
         }
 
         if (isShadowActivated) {
-            shadowManager->loadShadowMaps(lightingPassRenderer);
+            shadowManager->loadShadowMaps(lightingRenderer, lightingShader);
         }
 
-        lightingPassRenderer->draw();
+        lightingRenderer->draw();
     }
 
     void Renderer3d::postUpdateScene() {

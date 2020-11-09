@@ -81,7 +81,7 @@ namespace urchin {
             void display(float) override;
 
         private:
-            void createOrUpdateDeferredShadingShader();
+            void createOrUpdateLightingShader();
             void onCameraProjectionUpdate();
 
             //model
@@ -145,8 +145,8 @@ namespace urchin {
                 TEX_LIGHTING_PASS
             };
 
-            std::unique_ptr<GenericRenderer> lightingPassRenderer;
-            std::shared_ptr<Shader> deferredShadingShader;
+            std::unique_ptr<GenericRenderer> lightingRenderer;
+            std::shared_ptr<Shader> lightingShader;
             int mInverseViewProjectionLoc, viewPositionLoc;
     };
 
