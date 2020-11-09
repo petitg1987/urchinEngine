@@ -21,6 +21,12 @@ namespace urchin {
         return *this;
     }
 
+    ShaderDataSender &ShaderDataSender::sendData(const ShaderVar &shaderVar, unsigned int count, const float *values) {
+        shader->bind();
+        glUniform1fv(shaderVar.getVariableLocation(), count, values);
+        return *this;
+    }
+
     ShaderDataSender &ShaderDataSender::sendData(const ShaderVar &shaderVar, int value) {
         shader->bind();
         glUniform1i(shaderVar.getVariableLocation(), value);

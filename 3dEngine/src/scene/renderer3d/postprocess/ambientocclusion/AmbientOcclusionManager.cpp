@@ -96,9 +96,11 @@ namespace urchin {
         mViewShaderVar = ShaderVar(ambientOcclusionShader, "mView");
         resolutionShaderVar = ShaderVar(ambientOcclusionShader, "resolution");
 
+        int depthTexUnit = 0;
+        int normalAndAmbientTexUnit = 1;
         ShaderDataSender(ambientOcclusionShader)
-                .sendData(ShaderVar(ambientOcclusionShader, "depthTex"), 0)
-                .sendData(ShaderVar(ambientOcclusionShader, "normalAndAmbientTex"), 1);
+                .sendData(ShaderVar(ambientOcclusionShader, "depthTex"), depthTexUnit)
+                .sendData(ShaderVar(ambientOcclusionShader, "normalAndAmbientTex"), normalAndAmbientTexUnit);
 
         generateKernelSamples();
         generateNoiseTexture();

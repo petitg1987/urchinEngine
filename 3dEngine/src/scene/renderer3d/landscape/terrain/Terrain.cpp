@@ -3,6 +3,7 @@
 
 #include "Terrain.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
+#include "graphic/shader/data/ShaderDataSender.h"
 
 #define DEFAULT_AMBIENT 0.3f
 
@@ -20,24 +21,20 @@ namespace urchin {
 
         terrainShader = ShaderBuilder().createShader("terrain.vert", "", "terrain.frag");
 
-        terrainShader->bind();
-        vPositionLoc = glGetUniformLocation(terrainShader->getShaderId(), "vPosition");
-        mProjectionLoc = glGetUniformLocation(terrainShader->getShaderId(), "mProjection");
-        mViewLoc = glGetUniformLocation(terrainShader->getShaderId(), "mView");
-        ambientLoc = glGetUniformLocation(terrainShader->getShaderId(), "ambient");
-        sRepeatLoc = glGetUniformLocation(terrainShader->getShaderId(), "sRepeat");
-        tRepeatLoc = glGetUniformLocation(terrainShader->getShaderId(), "tRepeat");
+        vPositionShaderVar = ShaderVar(terrainShader, "vPosition");
+        mProjectionShaderVar = ShaderVar(terrainShader, "mProjection");
+        mViewShaderVar = ShaderVar(terrainShader, "mView");
+        ambientShaderVar = ShaderVar(terrainShader, "ambient");
+        sRepeatShaderVar = ShaderVar(terrainShader, "sRepeat");
+        tRepeatShaderVar = ShaderVar(terrainShader, "tRepeat");
 
-        int maskTexLoc = glGetUniformLocation(terrainShader->getShaderId(), "maskTex");
-        glActiveTexture(GL_TEXTURE0);
-        glUniform1i(maskTexLoc, 0);
+        int maskTexUnit = 0;
+        ShaderDataSender(terrainShader).sendData(ShaderVar(terrainShader, "maskTex"), maskTexUnit);
 
-        for (unsigned int i=0; i<MAX_MATERIAL; ++i) {
+        for (int i=0; i<MAX_MATERIAL; ++i) {
             std::string shaderTextureName = "diffuseTex" + std::to_string(i + 1);
-            int diffuseTexLoc = glGetUniformLocation(terrainShader->getShaderId(), shaderTextureName.c_str());
-
-            glActiveTexture(GL_TEXTURE0 + i + 1);
-            glUniform1i(diffuseTexLoc, i + 1);
+            int diffuseTexUnit = i + 1;
+            ShaderDataSender(terrainShader).sendData(ShaderVar(terrainShader, std::move(shaderTextureName)), diffuseTexUnit);
         }
 
         setPosition(position);
@@ -58,8 +55,7 @@ namespace urchin {
     void Terrain::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
 
-        terrainShader->bind();
-        glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
+        ShaderDataSender(terrainShader).sendData(mProjectionShaderVar, projectionMatrix);
 
         grass->onCameraProjectionUpdate(projectionMatrix);
     }
@@ -102,9 +98,9 @@ namespace urchin {
         if (material) {
             material->refreshWith(mesh->getXSize(), mesh->getZSize());
 
-            terrainShader->bind();
-            glUniform1f(sRepeatLoc, material->getSRepeat());
-            glUniform1f(tRepeatLoc, material->getTRepeat());
+            ShaderDataSender(terrainShader)
+                .sendData(sRepeatShaderVar, material->getSRepeat())
+                .sendData(tRepeatShaderVar, material->getTRepeat());
 
             glBindVertexArray(vertexArrayObject);
             glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
@@ -140,8 +136,7 @@ namespace urchin {
     void Terrain::setPosition(const Point3<float> &position) {
         this->position = position;
 
-        terrainShader->bind();
-        glUniform3fv(vPositionLoc, 1, (const float*) position);
+        ShaderDataSender(terrainShader).sendData(vPositionShaderVar, position);
         refreshGrassMesh(); //grass uses terrain position: refresh is required
     }
 
@@ -159,8 +154,8 @@ namespace urchin {
     void Terrain::setAmbient(float ambient) {
         this->ambient = ambient;
 
-        terrainShader->bind();
-        glUniform1f(ambientLoc, ambient);
+        ShaderDataSender(terrainShader).sendData(ambientShaderVar, ambient);
+
         refreshGrassAmbient(); //grass uses ambient value: refresh is required
     }
 
@@ -175,11 +170,10 @@ namespace urchin {
     }
 
     void Terrain::display(const Camera *camera, float dt) const {
-        terrainShader->bind();
-
-        glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)camera->getViewMatrix());
+        ShaderDataSender(terrainShader).sendData(mViewShaderVar, camera->getViewMatrix());
         material->loadTextures();
 
+        terrainShader->bind();
         glBindVertexArray(vertexArrayObject);
         glDrawElements(GL_TRIANGLE_STRIP, mesh->getIndices().size(), GL_UNSIGNED_INT, nullptr);
 

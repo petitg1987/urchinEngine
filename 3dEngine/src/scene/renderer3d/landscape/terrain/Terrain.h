@@ -7,6 +7,7 @@
 #include "UrchinCommon.h"
 
 #include "graphic/shader/model/Shader.h"
+#include "graphic/shader/model/ShaderVar.h"
 #include "scene/renderer3d/landscape/terrain/TerrainMaterial.h"
 #include "scene/renderer3d/landscape/terrain/TerrainMesh.h"
 #include "scene/renderer3d/landscape/terrain/grass/TerrainGrass.h"
@@ -59,9 +60,9 @@ namespace urchin {
                 SHADER_NORMAL
             };
             std::unique_ptr<Shader> terrainShader;
-            int vPositionLoc, mProjectionLoc, mViewLoc;
-            int ambientLoc;
-            int sRepeatLoc, tRepeatLoc;
+            ShaderVar vPositionShaderVar, mProjectionShaderVar, mViewShaderVar;
+            ShaderVar ambientShaderVar;
+            ShaderVar sRepeatShaderVar, tRepeatShaderVar;
 
             Matrix4<float> projectionMatrix;
 

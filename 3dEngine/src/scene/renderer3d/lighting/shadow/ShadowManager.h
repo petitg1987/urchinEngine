@@ -114,7 +114,7 @@ namespace urchin {
             std::vector<Frustum<float>> splitFrustums;
             std::map<const Light *, ShadowData *> shadowDatas;
             bool bForceUpdateAllShadowMaps;
-            unsigned int depthSplitDistanceLoc;
+            ShaderVar depthSplitDistanceShaderVar;
 
             //light information
             struct LightLocation { //reservation of light locations for light producing shadow

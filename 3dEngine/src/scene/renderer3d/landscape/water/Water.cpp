@@ -39,9 +39,11 @@ namespace urchin {
         waveSpeedShaderVar = ShaderVar(waterShader, "waveSpeed");
         waveStrengthShaderVar = ShaderVar(waterShader, "waveStrength");
 
+        int normalTexUnit = 0;
+        int dudvMapUnit = 1;
         ShaderDataSender(waterShader)
-            .sendData(ShaderVar(waterShader, "normalTex"), 0)
-            .sendData(ShaderVar(waterShader, "dudvMap"), 1);
+            .sendData(ShaderVar(waterShader, "normalTex"), normalTexUnit)
+            .sendData(ShaderVar(waterShader, "dudvMap"), dudvMapUnit);
 
         //general properties
         setCenterPosition(DEFAULT_CENTER_POSITION);

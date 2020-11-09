@@ -15,6 +15,7 @@ namespace urchin {
             explicit ShaderDataSender(const std::shared_ptr<Shader> &);
 
             ShaderDataSender &sendData(const ShaderVar &, float);
+            ShaderDataSender &sendData(const ShaderVar &, unsigned int, const float *);
             ShaderDataSender &sendData(const ShaderVar &, int);
             ShaderDataSender &sendData(const ShaderVar &, unsigned int);
 

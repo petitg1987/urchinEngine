@@ -40,7 +40,6 @@ namespace urchin {
             shadowModelUniform(nullptr),
             frustumDistance(0.0),
             bForceUpdateAllShadowMaps(false),
-            depthSplitDistanceLoc(0),
             lightsLocation(nullptr) {
         switch(ConfigService::instance()->getUnsignedIntValue("shadow.depthComponent")) {
             case 16:
@@ -82,8 +81,7 @@ namespace urchin {
 
     void ShadowManager::loadUniformLocationFor(const std::shared_ptr<Shader> &lightingShader) {
         //shadow information
-        lightingShader->bind();
-        depthSplitDistanceLoc = static_cast<unsigned int>(glGetUniformLocation(lightingShader->getShaderId(), "depthSplitDistance"));
+        depthSplitDistanceShaderVar = ShaderVar(lightingShader, "depthSplitDistance");
 
         //light information
         deleteLightsLocation();
@@ -595,7 +593,7 @@ namespace urchin {
             depthSplitDistance[shadowMapIndex] = ((projectionMatrix(2, 2)*-currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance)) / 2.0f + 0.5f;
         }
 
-        glUniform1fv(depthSplitDistanceLoc, nbShadowMaps, depthSplitDistance);
+        ShaderDataSender(lightingShader).sendData(depthSplitDistanceShaderVar, nbShadowMaps, depthSplitDistance);
         delete []depthSplitDistance;
     }
 
