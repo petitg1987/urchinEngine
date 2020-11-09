@@ -61,15 +61,33 @@ namespace urchin {
         return *this;
     }
 
+    ShaderDataSender &ShaderDataSender::sendData(const ShaderVar &shaderVar, unsigned int count, const Matrix2<float> *values) {
+        shader->bind();
+        glUniformMatrix2fv(shaderVar.getVariableLocation(), count, GL_FALSE, (const float*)values);
+        return *this;
+    }
+
     ShaderDataSender &ShaderDataSender::sendData(const ShaderVar &shaderVar, const Matrix3<float> &value) {
         shader->bind();
         glUniformMatrix3fv(shaderVar.getVariableLocation(), 1, GL_FALSE, (const float*)value);
         return *this;
     }
 
+    ShaderDataSender &ShaderDataSender::sendData(const ShaderVar &shaderVar, unsigned int count, const Matrix3<float> *values) {
+        shader->bind();
+        glUniformMatrix3fv(shaderVar.getVariableLocation(), count, GL_FALSE, (const float*)values);
+        return *this;
+    }
+
     ShaderDataSender &ShaderDataSender::sendData(const ShaderVar &shaderVar, const Matrix4<float> &value) {
         shader->bind();
         glUniformMatrix4fv(shaderVar.getVariableLocation(), 1, GL_FALSE, (const float*)value);
+        return *this;
+    }
+
+    ShaderDataSender &ShaderDataSender::sendData(const ShaderVar &shaderVar, unsigned int count, const Matrix4<float> *values) {
+        shader->bind();
+        glUniformMatrix4fv(shaderVar.getVariableLocation(), count, GL_FALSE, (const float*)values);
         return *this;
     }
 

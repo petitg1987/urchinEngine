@@ -24,8 +24,11 @@ namespace urchin {
             ShaderDataSender &sendData(const ShaderVar &, bool);
 
             ShaderDataSender &sendData(const ShaderVar &, const Matrix2<float> &);
+            ShaderDataSender &sendData(const ShaderVar &, unsigned int, const Matrix2<float> *);
             ShaderDataSender &sendData(const ShaderVar &, const Matrix3<float> &);
+            ShaderDataSender &sendData(const ShaderVar &, unsigned int, const Matrix3<float> *);
             ShaderDataSender &sendData(const ShaderVar &, const Matrix4<float> &);
+            ShaderDataSender &sendData(const ShaderVar &, unsigned int, const Matrix4<float> *);
 
             ShaderDataSender &sendData(const ShaderVar &, const Point2<float> &);
             ShaderDataSender &sendData(const ShaderVar &, const Point3<float> &);

@@ -22,7 +22,7 @@ namespace urchin {
     }
 
     void ShadowUniform::loadCustomUniforms(std::unique_ptr<Shader> &modelShader) { //TODO rename all uniforms methods name & class name
-        ShaderDataSender(modelShader).sendData(mModelProjectionMatrixShaderVar, projectionMatrices[0]);
+        ShaderDataSender(modelShader).sendData(mModelProjectionMatrixShaderVar, projectionMatrices.size(), &projectionMatrices[0]);
     }
 
     void ShadowUniform::updateProjectionMatrices() {
