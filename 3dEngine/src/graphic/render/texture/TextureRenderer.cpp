@@ -1,8 +1,8 @@
-#include <GL/glew.h>
 #include <stdexcept>
 
 #include "graphic/render/texture/TextureRenderer.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
+#include "graphic/shader/data/ShaderDataSender.h"
 #include "graphic/render/GenericRendererBuilder.h"
 
 namespace urchin {
@@ -19,9 +19,7 @@ namespace urchin {
             textureID(textureID),
             colorType(colorType),
             colorIntensity(colorIntensity),
-            layer(-1),
-            mProjectionLoc(-1),
-            diffuseTexLoc(-1) {
+            layer(-1) {
 
     }
 
@@ -37,9 +35,7 @@ namespace urchin {
             textureID(textureID),
             colorType(colorType),
             colorIntensity(colorIntensity),
-            layer((int)layer),
-            mProjectionLoc(-1),
-            diffuseTexLoc(-1) {
+            layer((int)layer) {
 
     }
 
@@ -135,11 +131,10 @@ namespace urchin {
         }
 
         //orthogonal matrix with origin at top left screen
-        displayTextureShader->bind();
         mProjection.setValues(2.0f/(float)sceneWidth, 0.0f, -1.0f,
                 0.0f, -2.0f/(float)sceneHeight, 1.0f,
                 0.0f, 0.0f, 1.0f);
-        glUniformMatrix3fv(mProjectionLoc, 1, GL_FALSE, (const float*)mProjection);
+        ShaderDataSender(displayTextureShader).sendData(mProjectionShaderVar, mProjection);
 
         //update the display
         std::vector<float> vertexCoord = {minX, minY, maxX, minY, maxX, maxY, minX, maxY};
@@ -165,22 +160,18 @@ namespace urchin {
         displayTextureShader = ShaderBuilder().createShader("displayTexture.vert", "", fragShaderName, textureDisplayTokens);
 
         displayTextureShader->bind();
-        auto colorIntensityLoc = glGetUniformLocation(displayTextureShader->getShaderId(), "colorIntensity");
-        glUniform1f(colorIntensityLoc, colorIntensity);
-
-        auto cameraPlanesLoc = glGetUniformLocation(displayTextureShader->getShaderId(), "cameraPlanes");
         float cameraPlanes[2] = {nearPlane, farPlane};
-        glUniform1fv(cameraPlanesLoc, 2, cameraPlanes);
-
-        auto diffuseTexLoc = glGetUniformLocation(displayTextureShader->getShaderId(), "colorTex");
-        glUniform1i(diffuseTexLoc, GL_TEXTURE0-GL_TEXTURE0);
+        int colorTexUnit = 0;
+        ShaderDataSender(displayTextureShader)
+            .sendData(ShaderVar(displayTextureShader, "colorIntensity"), colorIntensity)
+            .sendData(ShaderVar(displayTextureShader, "cameraPlanes"), 2, cameraPlanes)
+            .sendData(ShaderVar(displayTextureShader, "colorTex"), colorTexUnit);
 
         if (layer!=-1) {
-            auto layerLoc = glGetUniformLocation(displayTextureShader->getShaderId(), "layer");
-            glUniform1i(layerLoc, layer);
+            ShaderDataSender(displayTextureShader).sendData(ShaderVar(displayTextureShader, "layer"), layer);
         }
 
-        mProjectionLoc = glGetUniformLocation(displayTextureShader->getShaderId(), "mProjection");
+        mProjectionShaderVar = ShaderVar(displayTextureShader, "mProjection");
     }
 
     void TextureRenderer::display() {

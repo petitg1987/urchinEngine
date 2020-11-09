@@ -5,6 +5,7 @@
 #include "UrchinCommon.h"
 
 #include "graphic/shader/model/Shader.h"
+#include "graphic/shader/model/ShaderVar.h"
 #include "graphic/render/GenericRenderer.h"
 
 namespace urchin {
@@ -73,7 +74,7 @@ namespace urchin {
             Matrix3<float> mProjection;
             std::unique_ptr<Shader> displayTextureShader;
             int layer;
-            int mProjectionLoc, diffuseTexLoc;
+            ShaderVar mProjectionShaderVar, diffuseTexShaderVar;
     };
 
 }
