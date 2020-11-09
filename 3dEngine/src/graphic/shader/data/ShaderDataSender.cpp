@@ -39,6 +39,10 @@ namespace urchin {
         return *this;
     }
 
+    ShaderDataSender &ShaderDataSender::sendData(const ShaderVar &shaderVar, bool value) {
+        return sendData(shaderVar, static_cast<int>(value));
+    }
+
     ShaderDataSender &ShaderDataSender::sendData(const ShaderVar &shaderVar, const Matrix2<float> &value) {
         shader->bind();
         glUniformMatrix2fv(shaderVar.getVariableLocation(), 1, GL_FALSE, (const float*)value);

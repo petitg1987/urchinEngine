@@ -5,6 +5,7 @@
 #include "UrchinCommon.h"
 
 #include "graphic/shader/model/Shader.h"
+#include "graphic/shader/model/ShaderVar.h"
 #include "Light.h"
 
 namespace urchin {
@@ -33,7 +34,7 @@ namespace urchin {
             const Point4<float> &getGlobalAmbientColor() const;
 
             void updateLights(const Frustum<float> &);
-            void loadLights();
+            void loadLights(const std::shared_ptr<Shader> &);
             void postUpdateLights();
 
             void drawLightOctree(const Matrix4<float> &, const Matrix4<float> &) const;
@@ -52,17 +53,17 @@ namespace urchin {
 
             const unsigned int maxLights; //maximum of lights authorized to affect the scene in the same time
             struct LightInfo {
-                int isExistLoc;
-                int produceShadowLoc;
-                int hasParallelBeamsLoc;
-                int positionOrDirectionLoc;
+                ShaderVar isExistShaderVar;
+                ShaderVar produceShadowShaderVar;
+                ShaderVar hasParallelBeamsShaderVar;
+                ShaderVar positionOrDirectionShaderVar;
 
-                int exponentialAttLoc;
-                int lightAmbientLoc;
+                ShaderVar exponentialAttShaderVar;
+                ShaderVar lightAmbientShaderVar;
             };
             LightInfo *lightsInfo;
 
-            int globalAmbientColorLoc;
+            ShaderVar globalAmbientColorShaderVar;
             Point4<float> globalAmbientColor;
     };
 

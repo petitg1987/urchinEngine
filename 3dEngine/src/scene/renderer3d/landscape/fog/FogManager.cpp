@@ -1,16 +1,7 @@
-#include <GL/glew.h>
-
 #include "FogManager.h"
+#include "graphic/shader/data/ShaderDataSender.h"
 
 namespace urchin {
-    FogManager::FogManager() :
-            hasFogLoc(0),
-            fogDensityLoc(0),
-            fogGradientLoc(0),
-            fogColorLoc(0),
-            fogMaxHeightLoc(0) {
-
-    }
 
     void FogManager::pushFog(const std::shared_ptr<Fog> &fog) {
         fogs.push(fog);
@@ -37,25 +28,24 @@ namespace urchin {
     void FogManager::loadUniformLocationFor(const std::shared_ptr<Shader> &lightingShader) {
         this->lightingShader = lightingShader;
 
-        lightingShader->bind();
-        hasFogLoc = glGetUniformLocation(lightingShader->getShaderId(), "hasFog");
-        fogDensityLoc = glGetUniformLocation(lightingShader->getShaderId(), "fogDensity");
-        fogGradientLoc = glGetUniformLocation(lightingShader->getShaderId(), "fogGradient");
-        fogColorLoc = glGetUniformLocation(lightingShader->getShaderId(), "fogColor");
-        fogMaxHeightLoc = glGetUniformLocation(lightingShader->getShaderId(), "fogMaxHeight");
+        hasFogShaderVar = ShaderVar(lightingShader, "hasFog");
+        fogDensityShaderVar = ShaderVar(lightingShader, "fogDensity");
+        fogGradientShaderVar = ShaderVar(lightingShader, "fogGradient");
+        fogColorShaderVar = ShaderVar(lightingShader, "fogColor");
+        fogMaxHeightShaderVar = ShaderVar(lightingShader, "fogMaxHeight");
 
         loadFog();
     }
 
     void FogManager::loadFog() {
-        lightingShader->bind();
-        glUniform1i(hasFogLoc, !fogs.empty());
+        ShaderDataSender(lightingShader).sendData(hasFogShaderVar, !fogs.empty());
 
         if (!fogs.empty()) {
-            glUniform1f(fogDensityLoc, fogs.top()->getDensity());
-            glUniform1f(fogGradientLoc, fogs.top()->getGradient());
-            glUniform4fv(fogColorLoc, 1, (const float *)Vector4<float>(fogs.top()->getColor(), 1.0));
-            glUniform1f(fogMaxHeightLoc, fogs.top()->getMaxHeight());
+            ShaderDataSender(lightingShader)
+                .sendData(fogDensityShaderVar, fogs.top()->getDensity())
+                .sendData(fogGradientShaderVar, fogs.top()->getGradient())
+                .sendData(fogColorShaderVar, Vector4<float>(fogs.top()->getColor(), 1.0))
+                .sendData(fogMaxHeightShaderVar, fogs.top()->getMaxHeight());
         }
     }
 

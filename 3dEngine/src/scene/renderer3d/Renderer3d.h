@@ -21,6 +21,7 @@
 #include "resources/geometry/GeometryManager.h"
 #include "resources/geometry/GeometryModel.h"
 #include "graphic/shader/model/Shader.h"
+#include "graphic/shader/model/ShaderVar.h"
 #include "graphic/render/GenericRenderer.h"
 
 namespace urchin {
@@ -147,7 +148,7 @@ namespace urchin {
 
             std::unique_ptr<GenericRenderer> lightingRenderer;
             std::shared_ptr<Shader> lightingShader;
-            int mInverseViewProjectionLoc, viewPositionLoc;
+            ShaderVar mInverseViewProjectionShaderVar, viewPositionShaderVar;
     };
 
 }

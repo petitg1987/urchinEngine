@@ -6,13 +6,12 @@
 
 #include "scene/renderer3d/landscape/fog/Fog.h"
 #include "graphic/shader/model/Shader.h"
+#include "graphic/shader/model/ShaderVar.h"
 
 namespace urchin {
 
     class FogManager {
         public:
-            FogManager();
-
             void pushFog(const std::shared_ptr<Fog> &);
             void popFog();
             std::shared_ptr<const Fog> getCurrentFog() const;
@@ -24,7 +23,7 @@ namespace urchin {
             std::stack<std::shared_ptr<Fog>> fogs;
 
             std::shared_ptr<Shader> lightingShader;
-            int hasFogLoc, fogDensityLoc, fogGradientLoc, fogColorLoc, fogMaxHeightLoc;
+            ShaderVar hasFogShaderVar, fogDensityShaderVar, fogGradientShaderVar, fogColorShaderVar, fogMaxHeightShaderVar;
     };
 
 }

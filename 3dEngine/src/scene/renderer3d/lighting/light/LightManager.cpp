@@ -1,10 +1,10 @@
-#include <GL/glew.h>
 #include <stdexcept>
 
 #include "LightManager.h"
 #include "scene/renderer3d/lighting/light/sun/SunLight.h"
 #include "scene/renderer3d/lighting/light/omnidirectional/OmnidirectionalLight.h"
 #include "scene/renderer3d/utils/OctreeRenderer.h"
+#include "graphic/shader/data/ShaderDataSender.h"
 
 #define DEFAULT_OCTREE_MIN_SIZE 50.0f
 
@@ -13,7 +13,6 @@ namespace urchin {
     LightManager::LightManager() :
             lastUpdatedLight(nullptr),
             maxLights(ConfigService::instance()->getUnsignedIntValue("light.maxLights")),
-            globalAmbientColorLoc(0),
             globalAmbientColor(Point4<float>(0.0, 0.0, 0.0, 0.0)) {
         lightsInfo = new LightInfo[maxLights];
         lightOctreeManager = new OctreeManager<Light>(DEFAULT_OCTREE_MIN_SIZE);
@@ -38,32 +37,30 @@ namespace urchin {
         for (unsigned int i=0;i<maxLights;++i) {
             isExistLocName.str("");
             isExistLocName << "lightsInfo[" << i << "].isExist";
+            lightsInfo[i].isExistShaderVar = ShaderVar(lightingShader, isExistLocName.str());
 
             produceShadowLocName.str("");
             produceShadowLocName << "lightsInfo[" << i << "].produceShadow";
+            lightsInfo[i].produceShadowShaderVar = ShaderVar(lightingShader, produceShadowLocName.str());
 
             hasParallelBeamsName.str("");
             hasParallelBeamsName << "lightsInfo[" << i << "].hasParallelBeams";
+            lightsInfo[i].hasParallelBeamsShaderVar = ShaderVar(lightingShader, hasParallelBeamsName.str());
 
             positionOrDirectionLocName.str("");
             positionOrDirectionLocName << "lightsInfo[" << i << "].positionOrDirection";
+            lightsInfo[i].positionOrDirectionShaderVar = ShaderVar(lightingShader, positionOrDirectionLocName.str());
 
             exponentialAttName.str("");
             exponentialAttName << "lightsInfo[" << i << "].exponentialAttenuation";
+            lightsInfo[i].exponentialAttShaderVar = ShaderVar(lightingShader, exponentialAttName.str());
 
             lightAmbientName.str("");
             lightAmbientName << "lightsInfo[" << i << "].lightAmbient";
-
-            lightsInfo[i].isExistLoc = glGetUniformLocation(lightingShader->getShaderId(), isExistLocName.str().c_str());
-            lightsInfo[i].produceShadowLoc = glGetUniformLocation(lightingShader->getShaderId(), produceShadowLocName.str().c_str());
-            lightsInfo[i].hasParallelBeamsLoc = glGetUniformLocation(lightingShader->getShaderId(), hasParallelBeamsName.str().c_str());
-            lightsInfo[i].positionOrDirectionLoc = glGetUniformLocation(lightingShader->getShaderId(), positionOrDirectionLocName.str().c_str());
-
-            lightsInfo[i].exponentialAttLoc = glGetUniformLocation(lightingShader->getShaderId(), exponentialAttName.str().c_str());
-            lightsInfo[i].lightAmbientLoc = glGetUniformLocation(lightingShader->getShaderId(), lightAmbientName.str().c_str());
+            lightsInfo[i].lightAmbientShaderVar = ShaderVar(lightingShader, lightAmbientName.str());
         }
 
-        globalAmbientColorLoc = glGetUniformLocation(lightingShader->getShaderId(), "globalAmbient");
+        globalAmbientColorShaderVar = ShaderVar(lightingShader, "globalAmbient");
     }
 
     OctreeManager<Light> *LightManager::getLightOctreeManager() const {
@@ -137,7 +134,7 @@ namespace urchin {
         visibleLights.insert(visibleLights.end(), lightsInFrustum.begin(), lightsInFrustum.end());
     }
 
-    void LightManager::loadLights() {
+    void LightManager::loadLights(const std::shared_ptr<Shader> &lightingShader) {
         const std::vector<Light *> &lights = getVisibleLights();
         checkMaxLight(lights);
 
@@ -145,30 +142,30 @@ namespace urchin {
             if (lights.size() > i) {
                 const Light *light = lights[i];
 
-                glUniform1i(lightsInfo[i].isExistLoc, true);
-                glUniform1i(lightsInfo[i].produceShadowLoc, light->isProduceShadow());
-                glUniform1i(lightsInfo[i].hasParallelBeamsLoc, light->hasParallelBeams());
+                ShaderDataSender(lightingShader)
+                    .sendData(lightsInfo[i].isExistShaderVar, true)
+                    .sendData(lightsInfo[i].produceShadowShaderVar, light->isProduceShadow())
+                    .sendData(lightsInfo[i].hasParallelBeamsShaderVar, light->hasParallelBeams())
+                    .sendData(lightsInfo[i].lightAmbientShaderVar, light->getAmbientColor());
+
                 if (lights[i]->getLightType()==Light::SUN) {
                     const auto *sunLight = dynamic_cast<const SunLight *>(light);
-
-                    glUniform3fv(lightsInfo[i].positionOrDirectionLoc, 1, (const float *)sunLight->getDirections()[0]);
+                    ShaderDataSender(lightingShader).sendData(lightsInfo[i].positionOrDirectionShaderVar, sunLight->getDirections()[0]);
                 } else if (lights[i]->getLightType()==Light::OMNIDIRECTIONAL) {
                     const auto *omnidirectionalLight = dynamic_cast<const OmnidirectionalLight *>(light);
-
-                    glUniform3fv(lightsInfo[i].positionOrDirectionLoc, 1, (const float *)omnidirectionalLight->getPosition());
-                    glUniform1f(lightsInfo[i].exponentialAttLoc, omnidirectionalLight->getExponentialAttenuation());
+                    ShaderDataSender(lightingShader)
+                        .sendData(lightsInfo[i].positionOrDirectionShaderVar, omnidirectionalLight->getPosition())
+                        .sendData(lightsInfo[i].exponentialAttShaderVar, omnidirectionalLight->getExponentialAttenuation());
                 } else {
                     throw std::invalid_argument("Unknown light type to load uniform: " + std::to_string(light->getLightType()));
                 }
-
-                glUniform3fv(lightsInfo[i].lightAmbientLoc, 1, (const float *)light->getAmbientColor());
             } else {
-                glUniform1i(lightsInfo[i].isExistLoc, false);
+                ShaderDataSender(lightingShader).sendData(lightsInfo[i].isExistShaderVar, false);
                 break;
             }
         }
 
-        glUniform4fv(globalAmbientColorLoc, 1, (const float *)getGlobalAmbientColor());
+        ShaderDataSender(lightingShader).sendData(globalAmbientColorShaderVar, getGlobalAmbientColor());
     }
 
     void LightManager::checkMaxLight(const std::vector<Light *> &lights) const {

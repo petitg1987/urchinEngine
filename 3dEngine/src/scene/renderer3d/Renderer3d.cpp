@@ -6,6 +6,7 @@
 #include "graphic/render/GenericRendererBuilder.h"
 #include "graphic/render/texture/TextureRenderer.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
+#include "graphic/shader/data/ShaderDataSender.h"
 #include "scene/renderer3d/utils/OctreeRenderer.h"
 
 #define DEFAULT_OCTREE_MIN_SIZE 20.0f
@@ -38,9 +39,7 @@ namespace urchin {
             camera(nullptr),
             fboIDs(nullptr),
             fboAttachments{GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2},
-            textureIDs(nullptr),
-            mInverseViewProjectionLoc(0),
-            viewPositionLoc(0) {
+            textureIDs(nullptr) {
 
         //deferred shading (pass 1)
         fboIDs = new unsigned int[1];
@@ -127,20 +126,19 @@ namespace urchin {
         tokens["SHADOW_MAP_BIAS"] = std::to_string(shadowManager->getShadowMapBias());
         tokens["OUTPUT_LOCATION"] = "0"; // isAntiAliasingActivated ? "0" /*TEX_LIGHTING_PASS*/ : "0" /*Screen*/;
         lightingShader = ShaderBuilder().createShader("lighting.vert", "", "lighting.frag", tokens);
-        lightingShader->bind();
 
-        int depthTexLoc = glGetUniformLocation(lightingShader->getShaderId(), "depthTex");
-        glUniform1i(depthTexLoc, GL_TEXTURE0-GL_TEXTURE0);
-        int diffuseTexLoc = glGetUniformLocation(lightingShader->getShaderId(), "colorTex");
-        glUniform1i(diffuseTexLoc, GL_TEXTURE1-GL_TEXTURE0);
-        int normalAndAmbientTexLoc = glGetUniformLocation(lightingShader->getShaderId(), "normalAndAmbientTex");
-        glUniform1i(normalAndAmbientTexLoc, GL_TEXTURE2-GL_TEXTURE0);
-        int hasShadowLoc = glGetUniformLocation(lightingShader->getShaderId(), "hasShadow");
-        glUniform1i(hasShadowLoc, isShadowActivated);
-        int hasAmbientOcclusionLoc = glGetUniformLocation(lightingShader->getShaderId(), "hasAmbientOcclusion");
-        glUniform1i(hasAmbientOcclusionLoc, isAmbientOcclusionActivated);
-        mInverseViewProjectionLoc = glGetUniformLocation(lightingShader->getShaderId(), "mInverseViewProjection");
-        viewPositionLoc = glGetUniformLocation(lightingShader->getShaderId(), "viewPosition");
+        int depthTexUnit = 0;
+        int diffuseTexUnit = 1;
+        int normalAndAmbientTexUnit = 2;
+        ShaderDataSender(lightingShader)
+            .sendData(ShaderVar(lightingShader, "depthTex"), depthTexUnit)
+            .sendData(ShaderVar(lightingShader, "colorTex"), diffuseTexUnit)
+            .sendData(ShaderVar(lightingShader, "normalAndAmbientTex"), normalAndAmbientTexUnit)
+            .sendData(ShaderVar(lightingShader, "hasShadow"), isShadowActivated)
+            .sendData(ShaderVar(lightingShader, "hasAmbientOcclusion"), isAmbientOcclusionActivated);
+
+        mInverseViewProjectionShaderVar = ShaderVar(lightingShader, "mInverseViewProjection");
+        viewPositionShaderVar = ShaderVar(lightingShader, "viewPosition");
 
         //managers
         fogManager->loadUniformLocationFor(lightingShader);
@@ -518,12 +516,11 @@ namespace urchin {
         ScopeProfiler profiler("3d", "lightPassRender");
 
         lightingRenderer->clearAdditionalTextures();
-        lightingShader->bind();
+        ShaderDataSender(lightingShader)
+                .sendData(mInverseViewProjectionShaderVar, (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse())
+                .sendData(viewPositionShaderVar, camera->getPosition());
 
-        glUniformMatrix4fv(mInverseViewProjectionLoc, 1, GL_FALSE, (const float*) (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse());
-        glUniform3fv(viewPositionLoc, 1, (const float *)camera->getPosition());
-
-        lightManager->loadLights();
+        lightManager->loadLights(lightingShader);
 
         if (isAmbientOcclusionActivated) {
             ambientOcclusionManager->loadAOTexture(lightingRenderer, lightingShader);
@@ -533,6 +530,7 @@ namespace urchin {
             shadowManager->loadShadowMaps(lightingRenderer, lightingShader);
         }
 
+        lightingShader->bind();
         lightingRenderer->draw();
     }
 
