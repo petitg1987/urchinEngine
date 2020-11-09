@@ -10,6 +10,7 @@
 #include "CustomUniform.h"
 #include "CustomModelUniform.h"
 #include "graphic/shader/model/Shader.h"
+#include "graphic/shader/model/ShaderVar.h"
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/camera/Camera.h"
 
@@ -31,7 +32,7 @@ namespace urchin {
             void initialize();
             void onCameraProjectionUpdate(const Camera *);
 
-            int getUniformLocation(const std::string &name) const;
+            ShaderVar getShaderVar(const std::string &name) const;
             void setCustomGeometryShader(const std::string &, const std::map<std::string, std::string> &);
             void setCustomFragmentShader(const std::string &, const std::map<std::string, std::string> &);
             void setCustomUniform(CustomUniform *);
@@ -56,7 +57,7 @@ namespace urchin {
             MeshParameter meshParameter;
             std::unique_ptr<Shader> modelShader;
             Matrix4<float> projectionMatrix;
-            int mProjectionLoc, mModelLoc, mViewLoc, mNormalLoc, ambientFactorLoc;
+            ShaderVar mProjectionShaderVar, mModelShaderVar, mViewShaderVar, mNormalShaderVar, ambientFactorShaderVar;
 
             CustomUniform *customUniform;
             CustomModelUniform *customModelUniform;

@@ -19,6 +19,10 @@ namespace urchin {
         variableLocation = glGetUniformLocation(shader->getShaderId(), variableName.c_str());
     }
 
+    bool ShaderVar::isValid() const {
+        return variableLocation != -1;
+    }
+
     int ShaderVar::getVariableLocation() const {
         return variableLocation;
     }

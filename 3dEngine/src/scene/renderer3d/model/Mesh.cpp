@@ -3,6 +3,7 @@
 #include "Mesh.h"
 #include "resources/model/MeshService.h"
 #include "resources/geometry/points/PointsModel.h"
+#include "graphic/shader/data/ShaderDataSender.h"
 
 namespace urchin {
 
@@ -57,19 +58,19 @@ namespace urchin {
         glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(DataVertex), dataVertices, GL_DYNAMIC_DRAW);
     }
 
-    void Mesh::display(const MeshParameter &meshParameter) const {
-        if (meshParameter.getDiffuseTextureUnit()!=-1) {
-            glActiveTexture(static_cast<GLenum>(meshParameter.getDiffuseTextureUnit()));
+    void Mesh::display(const MeshParameter &meshParameter, const std::unique_ptr<Shader> &modelShader) const {
+        if (meshParameter.getDiffuseTextureUnit() != -1) {
+            glActiveTexture(GL_TEXTURE0 + meshParameter.getDiffuseTextureUnit());
             glBindTexture(GL_TEXTURE_2D, constMesh->getMaterial()->getDiffuseTexture()->getTextureID());
         }
 
-        if (meshParameter.getNormalTextureUnit()!=-1) {
-            glActiveTexture(static_cast<GLenum>(meshParameter.getNormalTextureUnit()));
+        if (meshParameter.getNormalTextureUnit() != -1) {
+            glActiveTexture(GL_TEXTURE0 + meshParameter.getNormalTextureUnit());
             glBindTexture(GL_TEXTURE_2D, constMesh->getMaterial()->getNormalTexture()->getTextureID());
         }
 
-        if (meshParameter.getAmbientFactorLoc()!=-1) {
-            glUniform1f(meshParameter.getAmbientFactorLoc(), constMesh->getMaterial()->getAmbientFactor());
+        if (meshParameter.getAmbientFactorShaderVar().isValid()) {
+            ShaderDataSender(modelShader).sendData(meshParameter.getAmbientFactorShaderVar(), constMesh->getMaterial()->getAmbientFactor());
         }
 
         glBindVertexArray(vertexArrayObject);

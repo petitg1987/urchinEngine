@@ -6,6 +6,8 @@
 #include "scene/renderer3d/lighting/shadow/data/ShadowData.h"
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/model/displayer/CustomModelUniform.h"
+#include "graphic/shader/model/Shader.h"
+#include "graphic/shader/model/ShaderVar.h"
 
 namespace urchin {
 
@@ -16,13 +18,13 @@ namespace urchin {
         public:
             ShadowModelUniform();
 
-            void setLayersToUpdateLocation(int);
+            void setLayersToUpdateShaderVar(const ShaderVar &);
             void setModelUniformData(const ShadowData *);
 
-            void loadCustomUniforms(const Model *) override;
+            void loadCustomUniforms(const Model *, std::unique_ptr<Shader> &) override;
 
         private:
-            int layersToUpdateLoc;
+            ShaderVar layersToUpdateShaderVar;
             const ShadowData *shadowData;
     };
 

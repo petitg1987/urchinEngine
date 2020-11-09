@@ -3,6 +3,8 @@
 
 #include "UrchinCommon.h"
 
+#include "graphic/shader/model/ShaderVar.h"
+
 namespace urchin {
 
     class MeshParameter {
@@ -15,13 +17,13 @@ namespace urchin {
             void setNormalTextureUnit(int);
             int getNormalTextureUnit() const;
 
-            void setAmbientFactorLoc(int);
-            int getAmbientFactorLoc() const;
+            void setAmbientFactorShaderVar(const ShaderVar &);
+            const ShaderVar &getAmbientFactorShaderVar() const;
 
         private:
             int diffuseTextureUnit;
             int normalTextureUnit;
-            int ambientFactorLoc;
+            ShaderVar ambientFactorShaderVar;
     };
 
 }

@@ -3,6 +3,8 @@
 
 #include "UrchinCommon.h"
 
+#include "graphic/shader/model/Shader.h"
+
 namespace urchin {
 
     /**
@@ -12,7 +14,7 @@ namespace urchin {
         public:
             virtual ~CustomUniform() = default;
 
-            virtual void loadCustomUniforms() = 0;
+            virtual void loadCustomUniforms(std::unique_ptr<Shader> &) = 0;
 
     };
 

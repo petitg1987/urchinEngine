@@ -6,6 +6,7 @@
 
 #include "scene/renderer3d/lighting/shadow/data/ShadowData.h"
 #include "scene/renderer3d/model/displayer/CustomUniform.h"
+#include "graphic/shader/model/ShaderVar.h"
 
 namespace urchin {
 
@@ -16,15 +17,15 @@ namespace urchin {
         public:
             ShadowUniform();
 
-            void setProjectionMatricesLocation(int);
+            void setProjectionMatricesShaderVar(const ShaderVar &);
             void setUniformData(const ShadowData *);
 
-            void loadCustomUniforms() override;
+            void loadCustomUniforms(std::unique_ptr<Shader> &) override;
 
         private:
             void updateProjectionMatrices();
 
-            int mModelProjectionMatrixLoc;
+            ShaderVar mModelProjectionMatrixShaderVar;
             const ShadowData *shadowData;
 
             std::vector<Matrix4<float>> projectionMatrices;

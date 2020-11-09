@@ -1,18 +1,16 @@
-#include <GL/glew.h>
-
 #include "ShadowUniform.h"
+#include "graphic/shader/data/ShaderDataSender.h"
 
 namespace urchin {
 
     ShadowUniform::ShadowUniform() :
             CustomUniform(),
-            mModelProjectionMatrixLoc(0),
             shadowData(nullptr) {
 
     }
 
-    void ShadowUniform::setProjectionMatricesLocation(int mModelProjectionMatrixLoc) {
-        this->mModelProjectionMatrixLoc = mModelProjectionMatrixLoc;
+    void ShadowUniform::setProjectionMatricesShaderVar(const ShaderVar &mModelProjectionMatrixShaderVar) {
+        this->mModelProjectionMatrixShaderVar = mModelProjectionMatrixShaderVar;
 
         updateProjectionMatrices();
     }
@@ -23,8 +21,8 @@ namespace urchin {
         updateProjectionMatrices();
     }
 
-    void ShadowUniform::loadCustomUniforms() {
-        glUniformMatrix4fv(mModelProjectionMatrixLoc, projectionMatrices.size(), GL_FALSE, (const float*)projectionMatrices[0]);
+    void ShadowUniform::loadCustomUniforms(std::unique_ptr<Shader> &modelShader) { //TODO rename all uniforms methods name & class name
+        ShaderDataSender(modelShader).sendData(mModelProjectionMatrixShaderVar, projectionMatrices[0]);
     }
 
     void ShadowUniform::updateProjectionMatrices() {

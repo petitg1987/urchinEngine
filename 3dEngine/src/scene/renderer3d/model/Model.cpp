@@ -214,10 +214,10 @@ namespace urchin {
         }
     }
 
-    void Model::display(const MeshParameter &meshParameter) const {
+    void Model::display(const MeshParameter &meshParameter, const std::unique_ptr<Shader> &modelShader) const {
         if (meshes) {
             for (unsigned int m = 0; m < meshes->getNumberMeshes(); ++m) {
-                meshes->getMesh(m)->display(meshParameter);
+                meshes->getMesh(m)->display(meshParameter, modelShader);
             }
         }
     }

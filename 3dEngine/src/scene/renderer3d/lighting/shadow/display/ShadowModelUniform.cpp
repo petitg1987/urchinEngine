@@ -2,25 +2,25 @@
 #include <algorithm>
 
 #include "ShadowModelUniform.h"
+#include "graphic/shader/data/ShaderDataSender.h"
 
 namespace urchin {
 
     ShadowModelUniform::ShadowModelUniform() :
             CustomModelUniform(),
-            layersToUpdateLoc(0),
             shadowData(nullptr) {
 
     }
 
-    void ShadowModelUniform::setLayersToUpdateLocation(int layersToUpdateLoc) {
-        this->layersToUpdateLoc = layersToUpdateLoc;
+    void ShadowModelUniform::setLayersToUpdateShaderVar(const ShaderVar &layersToUpdateShaderVar) {
+        this->layersToUpdateShaderVar = layersToUpdateShaderVar;
     }
 
     void ShadowModelUniform::setModelUniformData(const ShadowData *shadowData) {
         this->shadowData = shadowData;
     }
 
-    void ShadowModelUniform::loadCustomUniforms(const Model *) {
+    void ShadowModelUniform::loadCustomUniforms(const Model *, std::unique_ptr<Shader> &modelShader) {
         unsigned int layersToUpdate = 0;
 
         for (std::size_t i=0; i<shadowData->getNbFrustumShadowData(); ++i) {
@@ -30,7 +30,7 @@ namespace urchin {
             }
         }
 
-        glUniform1ui(layersToUpdateLoc, layersToUpdate);
+        ShaderDataSender(modelShader).sendData(layersToUpdateShaderVar, layersToUpdate);
     }
 
 }

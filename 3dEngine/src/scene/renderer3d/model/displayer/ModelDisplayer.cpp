@@ -1,9 +1,9 @@
-#include <GL/glew.h>
 #include <algorithm>
 #include <stdexcept>
 
 #include "ModelDisplayer.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
+#include "graphic/shader/data/ShaderDataSender.h"
 
 namespace urchin {
     /**
@@ -11,19 +11,14 @@ namespace urchin {
      * The available display modes are:
      *  - DEFAULT_MODE provide:
      *      * Depth information
-     *      * Diffuse information (output number: 0)
-     *      * Normal information and ambient factor (output number: 1)
+     *      * Diffuse information (output unit: 0)
+     *      * Normal information and ambient factor (output unit: 1)
      *  - DEPTH_ONLY_MODE provide:
      *      * Depth information
      */
     ModelDisplayer::ModelDisplayer(DisplayMode displayMode) :
         isInitialized(false),
         displayMode(displayMode),
-        mProjectionLoc(0),
-        mModelLoc(0),
-        mViewLoc(0),
-        mNormalLoc(0),
-        ambientFactorLoc(0),
         customUniform(nullptr),
         customModelUniform(nullptr) {
 
@@ -34,7 +29,7 @@ namespace urchin {
             throw std::runtime_error("Model displayer is already initialized.");
         }
 
-        if (displayMode==DEFAULT_MODE) {
+        if (displayMode == DEFAULT_MODE) {
             //shader creation
             std::string vertexShaderName = "model.vert";
             if (fragmentShaderName.empty()) { //use default fragment shader
@@ -42,22 +37,20 @@ namespace urchin {
             }
             createShader(vertexShaderName, geometryShaderName, fragmentShaderName);
 
-            mNormalLoc = glGetUniformLocation(modelShader->getShaderId(), "mNormal");
-            ambientFactorLoc = glGetUniformLocation(modelShader->getShaderId(), "ambientFactor");
-            int diffuseTexLoc = glGetUniformLocation(modelShader->getShaderId(), "diffuseTex");
-            int normalTexLoc = glGetUniformLocation(modelShader->getShaderId(), "normalTex");
+            mNormalShaderVar = ShaderVar(modelShader, "mNormal");
+            ambientFactorShaderVar = ShaderVar(modelShader, "ambientFactor");
 
-            //activate texture
-            glActiveTexture(GL_TEXTURE0);
-            glUniform1i(diffuseTexLoc, 0);
-            glActiveTexture(GL_TEXTURE1);
-            glUniform1i(normalTexLoc, 1);
+            int diffuseTexUnit = 0;
+            int normalTexUnit = 1;
+            ShaderDataSender(modelShader)
+                .sendData(ShaderVar(modelShader, "diffuseTex"), diffuseTexUnit)
+                .sendData(ShaderVar(modelShader, "normalTex"), normalTexUnit);
 
             //setup mesh parameters
-            meshParameter.setDiffuseTextureUnit(GL_TEXTURE0);
-            meshParameter.setNormalTextureUnit(GL_TEXTURE1);
-            meshParameter.setAmbientFactorLoc(ambientFactorLoc);
-        } else if (displayMode==DEPTH_ONLY_MODE) {
+            meshParameter.setDiffuseTextureUnit(diffuseTexUnit);
+            meshParameter.setNormalTextureUnit(normalTexUnit);
+            meshParameter.setAmbientFactorShaderVar(ambientFactorShaderVar);
+        } else if (displayMode == DEPTH_ONLY_MODE) {
             //shader creation
             std::string vertexShaderName = "modelDepthOnly.vert";
             if (fragmentShaderName.empty()) { //use default fragment shader
@@ -65,23 +58,22 @@ namespace urchin {
             }
             createShader(vertexShaderName, geometryShaderName, fragmentShaderName);
 
-            mNormalLoc = 0;
-            ambientFactorLoc = 0;
+            mNormalShaderVar = ShaderVar();
+            ambientFactorShaderVar = ShaderVar();
 
             //setup mesh parameters
             meshParameter.setDiffuseTextureUnit(-1);
             meshParameter.setNormalTextureUnit(-1);
-            meshParameter.setAmbientFactorLoc(-1);
+            meshParameter.setAmbientFactorShaderVar(ShaderVar());
         } else {
             throw std::invalid_argument("Unknown display mode.");
         }
 
         //default matrix
         projectionMatrix = Matrix4<float>();
-        modelShader->bind();
-        glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
+        ShaderDataSender(modelShader).sendData(mProjectionShaderVar, projectionMatrix);
 
-        isInitialized=true;
+        isInitialized = true;
     }
 
     void ModelDisplayer::createShader(const std::string &vertexShaderName, const std::string &geometryShaderName, const std::string &fragmentShaderName) {
@@ -92,20 +84,19 @@ namespace urchin {
         modelShader = ShaderBuilder().createShader(vertexShaderName, geometryShaderName, fragmentShaderName, shaderTokens);
         modelShader->bind();
 
-        mProjectionLoc = glGetUniformLocation(modelShader->getShaderId(), "mProjection");
-        mModelLoc = glGetUniformLocation(modelShader->getShaderId(), "mModel");
-        mViewLoc = glGetUniformLocation(modelShader->getShaderId(), "mView");
+        mProjectionShaderVar = ShaderVar(modelShader, "mProjection");
+        mModelShaderVar = ShaderVar(modelShader, "mModel");
+        mViewShaderVar = ShaderVar(modelShader, "mView");
     }
 
     void ModelDisplayer::onCameraProjectionUpdate(const Camera *camera) {
         this->projectionMatrix = camera->getProjectionMatrix();
 
-        modelShader->bind();
-        glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
+        ShaderDataSender(modelShader).sendData(mProjectionShaderVar, projectionMatrix);
     }
 
-    int ModelDisplayer::getUniformLocation(const std::string &name) const {
-        return glGetUniformLocation(modelShader->getShaderId(), name.c_str());
+    ShaderVar ModelDisplayer::getShaderVar(const std::string &name) const {
+        return ShaderVar(modelShader, std::string(name));
     }
 
     void ModelDisplayer::setCustomGeometryShader(const std::string &geometryShaderName, const std::map<std::string, std::string> &geometryTokens) {
@@ -152,23 +143,23 @@ namespace urchin {
         if (!isInitialized) {
             throw std::runtime_error("Model displayer must be initialized before display");
         }
-        
-        modelShader->bind();
-        glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)viewMatrix);
+
+        ShaderDataSender(modelShader).sendData(mViewShaderVar, viewMatrix);
         if (customUniform) {
-            customUniform->loadCustomUniforms();
+            customUniform->loadCustomUniforms(modelShader);
         }
 
+        modelShader->bind();
         for (const auto &model : models) {
-            glUniformMatrix4fv(mModelLoc, 1, GL_FALSE, (const float*) model->getTransform().getTransformMatrix());
+            ShaderDataSender(modelShader).sendData(mModelShaderVar, model->getTransform().getTransformMatrix());
             if (displayMode==DEFAULT_MODE) {
-                glUniformMatrix3fv(mNormalLoc, 1, GL_TRUE, (const float*) model->getTransform().getTransformMatrix().toMatrix3().inverse());
+                ShaderDataSender(modelShader).sendData(mNormalShaderVar, model->getTransform().getTransformMatrix().toMatrix3().inverse().transpose());
             }
             if (customModelUniform) {
-                customModelUniform->loadCustomUniforms(model);
+                customModelUniform->loadCustomUniforms(model, modelShader);
             }
 
-            model->display(meshParameter);
+            model->display(meshParameter, modelShader);
         }
     }
 

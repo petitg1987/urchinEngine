@@ -115,12 +115,12 @@ namespace urchin {
 
         delete shadowUniform;
         shadowUniform = new ShadowUniform();
-        shadowUniform->setProjectionMatricesLocation(shadowModelDisplayer->getUniformLocation("projectionMatrix"));
+        shadowUniform->setProjectionMatricesShaderVar(shadowModelDisplayer->getShaderVar("projectionMatrix"));
         shadowModelDisplayer->setCustomUniform(shadowUniform);
 
         delete shadowModelUniform;
         shadowModelUniform = new ShadowModelUniform();
-        shadowModelUniform->setLayersToUpdateLocation(shadowModelDisplayer->getUniformLocation("layersToUpdate"));
+        shadowModelUniform->setLayersToUpdateShaderVar(shadowModelDisplayer->getShaderVar("layersToUpdate"));
         shadowModelDisplayer->setCustomModelUniform(shadowModelUniform);
     }
 

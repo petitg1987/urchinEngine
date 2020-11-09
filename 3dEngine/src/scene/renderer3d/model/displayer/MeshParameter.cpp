@@ -4,8 +4,7 @@ namespace urchin {
 
     MeshParameter::MeshParameter() :
         diffuseTextureUnit(-1),
-        normalTextureUnit(-1),
-        ambientFactorLoc(-1) {
+        normalTextureUnit(-1) {
 
     }
 
@@ -37,18 +36,12 @@ namespace urchin {
         return normalTextureUnit;
     }
 
-    /**
-     * @param ambientFactorLoc Ambient factor location. If -1, there is no ambient factor.
-     */
-    void MeshParameter::setAmbientFactorLoc(int ambientFactorLoc) {
-        this->ambientFactorLoc = ambientFactorLoc;
+    void MeshParameter::setAmbientFactorShaderVar(const ShaderVar &ambientFactorShaderVar) {
+        this->ambientFactorShaderVar = ambientFactorShaderVar;
     }
 
-    /**
-     * @return Ambient factor location. If -1, there is no ambient factor.
-     */
-    int MeshParameter::getAmbientFactorLoc() const {
-        return ambientFactorLoc;
+    const ShaderVar &MeshParameter::getAmbientFactorShaderVar() const {
+        return ambientFactorShaderVar;
     }
 
 }

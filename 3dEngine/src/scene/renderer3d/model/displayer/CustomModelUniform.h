@@ -4,6 +4,7 @@
 #include "UrchinCommon.h"
 
 #include "scene/renderer3d/model/Model.h"
+#include "graphic/shader/model/Shader.h"
 
 namespace urchin {
 
@@ -14,7 +15,7 @@ namespace urchin {
         public:
             virtual ~CustomModelUniform() = default;
 
-            virtual void loadCustomUniforms(const Model *) = 0;
+            virtual void loadCustomUniforms(const Model *, std::unique_ptr<Shader> &) = 0;
 
     };
 

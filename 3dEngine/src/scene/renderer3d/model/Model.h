@@ -41,7 +41,7 @@ namespace urchin {
             bool isProduceShadow() const;
 
             void updateAnimation(float);
-            void display(const MeshParameter &) const;
+            void display(const MeshParameter &, const std::unique_ptr<Shader> &) const;
 
             void drawBBox(const Matrix4<float> &, const Matrix4<float> &) const;
             void drawBaseBones(const Matrix4<float> &, const Matrix4<float> &) const;
