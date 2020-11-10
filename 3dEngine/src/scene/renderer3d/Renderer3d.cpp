@@ -141,10 +141,10 @@ namespace urchin {
         viewPositionShaderVar = ShaderVar(lightingShader, "viewPosition");
 
         //managers
-        fogManager->loadUniformLocationFor(lightingShader);
-        lightManager->loadUniformLocationFor(lightingShader);
-        shadowManager->loadUniformLocationFor(lightingShader);
-        ambientOcclusionManager->loadUniformLocationFor(lightingShader);
+        fogManager->initiateShaderVariables(lightingShader);
+        lightManager->initiateShaderVariables(lightingShader);
+        shadowManager->initiateShaderVariables(lightingShader);
+        ambientOcclusionManager->initiateShaderVariables(lightingShader);
     }
 
     void Renderer3d::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {

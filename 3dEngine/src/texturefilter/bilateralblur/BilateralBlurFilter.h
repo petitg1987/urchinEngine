@@ -24,7 +24,7 @@ namespace urchin {
 
         private:
             std::string getShaderName() const override;
-            void initializeAdditionalUniforms(const std::unique_ptr<Shader> &) override;
+            void initiateAdditionalShaderVariables(const std::unique_ptr<Shader> &) override;
             void addFurtherTextures(const std::unique_ptr<GenericRenderer> &) const override;
             void completeShaderTokens(std::map<std::string, std::string> &) const override;
 

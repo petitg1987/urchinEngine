@@ -36,8 +36,8 @@ namespace urchin {
             shadowModelDisplayer(nullptr),
             lightManager(lightManager),
             modelOctreeManager(modelOctreeManager),
-            shadowUniform(nullptr),
-            shadowModelUniform(nullptr),
+            shadowShaderVariable(nullptr),
+            shadowModelShaderVariable(nullptr),
             frustumDistance(0.0),
             bForceUpdateAllShadowMaps(false),
             lightsLocation(nullptr) {
@@ -75,11 +75,11 @@ namespace urchin {
         deleteLightsLocation();
 
         delete shadowModelDisplayer;
-        delete shadowUniform;
-        delete shadowModelUniform;
+        delete shadowShaderVariable;
+        delete shadowModelShaderVariable;
     }
 
-    void ShadowManager::loadUniformLocationFor(const std::shared_ptr<Shader> &lightingShader) {
+    void ShadowManager::initiateShaderVariables(const std::shared_ptr<Shader> &lightingShader) {
         //shadow information
         depthSplitDistanceShaderVar = ShaderVar(lightingShader, "depthSplitDistance");
 
@@ -113,15 +113,15 @@ namespace urchin {
         shadowModelDisplayer->setCustomFragmentShader("modelShadowMap.frag", fragmentTokens);
         shadowModelDisplayer->initialize();
 
-        delete shadowUniform;
-        shadowUniform = new ShadowUniform();
-        shadowUniform->setProjectionMatricesShaderVar(shadowModelDisplayer->getShaderVar("projectionMatrix"));
-        shadowModelDisplayer->setCustomUniform(shadowUniform);
+        delete shadowShaderVariable;
+        shadowShaderVariable = new ShadowShaderVariable();
+        shadowShaderVariable->setProjectionMatricesShaderVar(shadowModelDisplayer->getShaderVar("projectionMatrix"));
+        shadowModelDisplayer->setCustomShaderVariable(shadowShaderVariable);
 
-        delete shadowModelUniform;
-        shadowModelUniform = new ShadowModelUniform();
-        shadowModelUniform->setLayersToUpdateShaderVar(shadowModelDisplayer->getShaderVar("layersToUpdate"));
-        shadowModelDisplayer->setCustomModelUniform(shadowModelUniform);
+        delete shadowModelShaderVariable;
+        shadowModelShaderVariable = new ShadowModelShaderVariable();
+        shadowModelShaderVariable->setLayersToUpdateShaderVar(shadowModelDisplayer->getShaderVar("layersToUpdate"));
+        shadowModelDisplayer->setCustomModelShaderVariable(shadowModelShaderVariable);
     }
 
     void ShadowManager::deleteLightsLocation() {
@@ -554,8 +554,8 @@ namespace urchin {
             glBindFramebuffer(GL_FRAMEBUFFER, shadowData.second->getFboID());
             glClear((unsigned int)GL_DEPTH_BUFFER_BIT | (unsigned int)GL_COLOR_BUFFER_BIT);
 
-            shadowUniform->setUniformData(shadowData.second);
-            shadowModelUniform->setModelUniformData(shadowData.second);
+            shadowShaderVariable->setShadowData(shadowData.second);
+            shadowModelShaderVariable->setShadowData(shadowData.second);
 
             shadowModelDisplayer->setModels(shadowData.second->retrieveModels());
             shadowModelDisplayer->display(shadowData.second->getLightViewMatrix());

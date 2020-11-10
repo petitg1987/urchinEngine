@@ -9,13 +9,13 @@
 namespace urchin {
 
     /**
-    * Allow to load custom model uniform for model displayer
+    * Allow to load custom model shader variables for model displayer
     */
-    class CustomModelUniform {
+    class CustomModelShaderVariable {
         public:
-            virtual ~CustomModelUniform() = default;
+            virtual ~CustomModelShaderVariable() = default;
 
-            virtual void loadCustomUniforms(const Model *, std::unique_ptr<Shader> &) = 0;
+            virtual void loadCustomShaderVariables(const Model *, std::unique_ptr<Shader> &) = 0;
 
     };
 

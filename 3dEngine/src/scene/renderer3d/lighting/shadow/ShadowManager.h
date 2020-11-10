@@ -4,8 +4,8 @@
 #include "UrchinCommon.h"
 
 #include "scene/renderer3d/lighting/shadow/data/ShadowData.h"
-#include "scene/renderer3d/lighting/shadow/display/ShadowUniform.h"
-#include "scene/renderer3d/lighting/shadow/display/ShadowModelUniform.h"
+#include "scene/renderer3d/lighting/shadow/display/ShadowShaderVariable.h"
+#include "scene/renderer3d/lighting/shadow/display/ShadowModelShaderVariable.h"
 #include "scene/renderer3d/lighting/light/Light.h"
 #include "scene/renderer3d/lighting/light/LightManager.h"
 #include "scene/renderer3d/model/Model.h"
@@ -35,7 +35,7 @@ namespace urchin {
             ShadowManager(LightManager *, OctreeManager<Model> *);
             ~ShadowManager() override;
 
-            void loadUniformLocationFor(const std::shared_ptr<Shader> &);
+            void initiateShaderVariables(const std::shared_ptr<Shader> &);
             void onResize(unsigned int, unsigned int);
             void onCameraProjectionUpdate(const Camera *);
             void notify(Observable *, int) override;
@@ -101,8 +101,8 @@ namespace urchin {
             OctreeManager<Model> *modelOctreeManager;
             std::vector<Model *> obboxModels;
             Matrix4<float> projectionMatrix;
-            ShadowUniform *shadowUniform;
-            ShadowModelUniform *shadowModelUniform;
+            ShadowShaderVariable *shadowShaderVariable;
+            ShadowModelShaderVariable *shadowModelShaderVariable;
             std::vector<Model *> visibleModels;
 
             //shadow information

@@ -19,8 +19,8 @@ namespace urchin {
     ModelDisplayer::ModelDisplayer(DisplayMode displayMode) :
         isInitialized(false),
         displayMode(displayMode),
-        customUniform(nullptr),
-        customModelUniform(nullptr) {
+        customShaderVariable(nullptr),
+        customModelShaderVariable(nullptr) {
 
     }
 
@@ -117,12 +117,12 @@ namespace urchin {
         this->fragmentTokens = fragmentTokens;
     }
 
-    void ModelDisplayer::setCustomUniform(CustomUniform *customUniform) {
-        this->customUniform = customUniform;
+    void ModelDisplayer::setCustomShaderVariable(CustomShaderVariable *customShaderVariable) {
+        this->customShaderVariable = customShaderVariable;
     }
 
-    void ModelDisplayer::setCustomModelUniform(CustomModelUniform *customModelUniform) {
-        this->customModelUniform = customModelUniform;
+    void ModelDisplayer::setCustomModelShaderVariable(CustomModelShaderVariable *customModelShaderVariable) {
+        this->customModelShaderVariable = customModelShaderVariable;
     }
 
     void ModelDisplayer::setModels(const std::vector<Model *> &models) {
@@ -145,8 +145,8 @@ namespace urchin {
         }
 
         ShaderDataSender(modelShader).sendData(mViewShaderVar, viewMatrix);
-        if (customUniform) {
-            customUniform->loadCustomUniforms(modelShader);
+        if (customShaderVariable) {
+            customShaderVariable->loadCustomShaderVariables(modelShader);
         }
 
         modelShader->bind();
@@ -155,8 +155,8 @@ namespace urchin {
             if (displayMode==DEFAULT_MODE) {
                 ShaderDataSender(modelShader).sendData(mNormalShaderVar, model->getTransform().getTransformMatrix().toMatrix3().inverse().transpose());
             }
-            if (customModelUniform) {
-                customModelUniform->loadCustomUniforms(model, modelShader);
+            if (customModelShaderVariable) {
+                customModelShaderVariable->loadCustomShaderVariables(model, modelShader);
             }
 
             model->display(meshParameter, modelShader);

@@ -1,34 +1,34 @@
-#include "ShadowUniform.h"
+#include "ShadowShaderVariable.h"
 #include "graphic/shader/data/ShaderDataSender.h"
 
 namespace urchin {
 
-    ShadowUniform::ShadowUniform() :
-            CustomUniform(),
+    ShadowShaderVariable::ShadowShaderVariable() :
+            CustomShaderVariable(),
             shadowData(nullptr) {
 
     }
 
-    void ShadowUniform::setProjectionMatricesShaderVar(const ShaderVar &mModelProjectionMatrixShaderVar) {
+    void ShadowShaderVariable::setProjectionMatricesShaderVar(const ShaderVar &mModelProjectionMatrixShaderVar) {
         this->mModelProjectionMatrixShaderVar = mModelProjectionMatrixShaderVar;
 
         updateProjectionMatrices();
     }
 
-    void ShadowUniform::setUniformData(const ShadowData *shadowData) {
+    void ShadowShaderVariable::setShadowData(const ShadowData *shadowData) {
         this->shadowData = shadowData;
 
         updateProjectionMatrices();
     }
 
-    void ShadowUniform::loadCustomUniforms(std::unique_ptr<Shader> &modelShader) { //TODO rename all uniforms methods name & class name
+    void ShadowShaderVariable::loadCustomShaderVariables(std::unique_ptr<Shader> &modelShader) {
         ShaderDataSender(modelShader).sendData(mModelProjectionMatrixShaderVar, projectionMatrices.size(), &projectionMatrices[0]);
     }
 
-    void ShadowUniform::updateProjectionMatrices() {
+    void ShadowShaderVariable::updateProjectionMatrices() {
         projectionMatrices.clear();
 
-        if (shadowData!=nullptr) {
+        if (shadowData != nullptr) {
             for (std::size_t i = 0; i < shadowData->getNbFrustumShadowData(); ++i) {
                 projectionMatrices.push_back(shadowData->getFrustumShadowData(i)->getLightProjectionMatrix());
             }

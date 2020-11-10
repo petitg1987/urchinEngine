@@ -3,7 +3,7 @@
 
 namespace urchin {
 
-    void FogManager::pushFog(const std::shared_ptr<Fog> &fog) {
+    void FogManager::pushFog(const std::shared_ptr<Fog> &fog) { //TODO find better way to manage fog
         fogs.push(fog);
 
         loadFog();
@@ -25,7 +25,7 @@ namespace urchin {
         return fogs.top();
     }
 
-    void FogManager::loadUniformLocationFor(const std::shared_ptr<Shader> &lightingShader) {
+    void FogManager::initiateShaderVariables(const std::shared_ptr<Shader> &lightingShader) {
         this->lightingShader = lightingShader;
 
         hasFogShaderVar = ShaderVar(lightingShader, "hasFog");

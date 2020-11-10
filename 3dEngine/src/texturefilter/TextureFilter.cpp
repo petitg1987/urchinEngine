@@ -64,7 +64,7 @@ namespace urchin {
         int texUnit = 0;
         ShaderDataSender(textureFilterShader).sendData(ShaderVar(textureFilterShader, "tex"), texUnit);
         layersToUpdateShaderVar = ShaderVar(textureFilterShader, "layersToUpdate");
-        initializeAdditionalUniforms(textureFilterShader);
+        initiateAdditionalShaderVariables(textureFilterShader);
     }
 
     void TextureFilter::initializeTexture() {
@@ -89,7 +89,7 @@ namespace urchin {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    void TextureFilter::initializeAdditionalUniforms(const std::unique_ptr<Shader> &) {
+    void TextureFilter::initiateAdditionalShaderVariables(const std::unique_ptr<Shader> &) {
         //do nothing: to override
     }
 

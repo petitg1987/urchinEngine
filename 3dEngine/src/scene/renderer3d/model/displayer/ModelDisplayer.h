@@ -7,8 +7,8 @@
 #include "UrchinCommon.h"
 
 #include "MeshParameter.h"
-#include "CustomUniform.h"
-#include "CustomModelUniform.h"
+#include "CustomShaderVariable.h"
+#include "CustomModelShaderVariable.h"
 #include "graphic/shader/model/Shader.h"
 #include "graphic/shader/model/ShaderVar.h"
 #include "scene/renderer3d/model/Model.h"
@@ -34,8 +34,8 @@ namespace urchin {
             ShaderVar getShaderVar(const std::string &name) const;
             void setCustomGeometryShader(const std::string &, const std::map<std::string, std::string> &);
             void setCustomFragmentShader(const std::string &, const std::map<std::string, std::string> &);
-            void setCustomUniform(CustomUniform *);
-            void setCustomModelUniform(CustomModelUniform *);
+            void setCustomShaderVariable(CustomShaderVariable *);
+            void setCustomModelShaderVariable(CustomModelShaderVariable *);
             void setModels(const std::vector<Model *> &);
 
             void updateAnimation(float);
@@ -58,8 +58,8 @@ namespace urchin {
             Matrix4<float> projectionMatrix;
             ShaderVar mProjectionShaderVar, mModelShaderVar, mViewShaderVar, mNormalShaderVar, ambientFactorShaderVar;
 
-            CustomUniform *customUniform;
-            CustomModelUniform *customModelUniform;
+            CustomShaderVariable *customShaderVariable;
+            CustomModelShaderVariable *customModelShaderVariable;
 
             std::vector<Model *> models;
     };

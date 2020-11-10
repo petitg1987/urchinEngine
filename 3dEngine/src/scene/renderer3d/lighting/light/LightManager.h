@@ -20,7 +20,7 @@ namespace urchin {
                 REMOVE_LIGHT, //A light has been removed
             };
 
-            void loadUniformLocationFor(const std::shared_ptr<Shader> &);
+            void initiateShaderVariables(const std::shared_ptr<Shader> &);
             OctreeManager<Light> *getLightOctreeManager() const;
             Light *getLastUpdatedLight();
 

@@ -106,7 +106,7 @@ namespace urchin {
         generateNoiseTexture();
     }
 
-    void AmbientOcclusionManager::loadUniformLocationFor(const std::shared_ptr<Shader> &lightingShader) {
+    void AmbientOcclusionManager::initiateShaderVariables(const std::shared_ptr<Shader> &lightingShader) {
         ambientOcclusionTexShaderVar = ShaderVar(lightingShader, "ambientOcclusionTex");
     }
 

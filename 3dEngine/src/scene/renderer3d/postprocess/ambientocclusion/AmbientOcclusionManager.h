@@ -22,7 +22,7 @@ namespace urchin {
             AmbientOcclusionManager(unsigned int, unsigned int);
             ~AmbientOcclusionManager();
 
-            void loadUniformLocationFor(const std::shared_ptr<Shader> &);
+            void initiateShaderVariables(const std::shared_ptr<Shader> &);
             void onResize(unsigned int, unsigned int);
             void onCameraProjectionUpdate(const Camera *);
 

@@ -5,23 +5,23 @@
 
 #include "scene/renderer3d/lighting/shadow/data/ShadowData.h"
 #include "scene/renderer3d/model/Model.h"
-#include "scene/renderer3d/model/displayer/CustomModelUniform.h"
+#include "scene/renderer3d/model/displayer/CustomModelShaderVariable.h"
 #include "graphic/shader/model/Shader.h"
 #include "graphic/shader/model/ShaderVar.h"
 
 namespace urchin {
 
     /**
-    * Load custom model uniform for shadow model displayer
+    * Load custom model shader variables for shadow model displayer
     */
-    class ShadowModelUniform : public CustomModelUniform {
+    class ShadowModelShaderVariable : public CustomModelShaderVariable {
         public:
-            ShadowModelUniform();
+            ShadowModelShaderVariable();
 
             void setLayersToUpdateShaderVar(const ShaderVar &);
-            void setModelUniformData(const ShadowData *);
+            void setShadowData(const ShadowData *);
 
-            void loadCustomUniforms(const Model *, std::unique_ptr<Shader> &) override;
+            void loadCustomShaderVariables(const Model *, std::unique_ptr<Shader> &) override;
 
         private:
             ShaderVar layersToUpdateShaderVar;

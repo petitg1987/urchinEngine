@@ -31,7 +31,7 @@ namespace urchin {
         delete [] lightsInfo;
     }
 
-    void LightManager::loadUniformLocationFor(const std::shared_ptr<Shader> &lightingShader) {
+    void LightManager::initiateShaderVariables(const std::shared_ptr<Shader> &lightingShader) {
         std::ostringstream isExistLocName, produceShadowLocName, hasParallelBeamsName, positionOrDirectionLocName;
         std::ostringstream exponentialAttName, lightAmbientName;
         for (unsigned int i=0;i<maxLights;++i) {
@@ -157,7 +157,7 @@ namespace urchin {
                         .sendData(lightsInfo[i].positionOrDirectionShaderVar, omnidirectionalLight->getPosition())
                         .sendData(lightsInfo[i].exponentialAttShaderVar, omnidirectionalLight->getExponentialAttenuation());
                 } else {
-                    throw std::invalid_argument("Unknown light type to load uniform: " + std::to_string(light->getLightType()));
+                    throw std::invalid_argument("Unknown light type to load shader variables: " + std::to_string(light->getLightType()));
                 }
             } else {
                 ShaderDataSender(lightingShader).sendData(lightsInfo[i].isExistShaderVar, false);
