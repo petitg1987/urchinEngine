@@ -5,6 +5,7 @@
 #include "UrchinCommon.h"
 
 #include "graphic/shader/model/Shader.h"
+#include "graphic/shader/model/ShaderVar.h"
 #include "scene/Renderer.h"
 #include "scene/GUI/widget/Widget.h"
 
@@ -35,7 +36,7 @@ namespace urchin {
 
             Matrix3<float> mProjection;
             std::unique_ptr<Shader> guiShader;
-            int mProjectionLoc, translateDistanceLoc, diffuseTexSamplerLoc;
+            ShaderVar mProjectionShaderVar, translateDistanceShaderVar, diffuseTexSamplerShaderVar;
     };
 
 }

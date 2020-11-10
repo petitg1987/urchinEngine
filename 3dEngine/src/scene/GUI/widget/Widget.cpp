@@ -1,8 +1,8 @@
-#include <GL/glew.h>
 #include <algorithm>
 
 #include "scene/GUI/widget/Widget.h"
 #include "scene/InputDeviceKey.h"
+#include "graphic/shader/data/ShaderDataSender.h"
 
 namespace urchin {
 
@@ -322,13 +322,13 @@ namespace urchin {
         }
     }
 
-    void Widget::display(int translateDistanceLoc, float dt) {
+    void Widget::display(const std::unique_ptr<Shader> &guiShader, const ShaderVar &translateDistanceShaderVar, float dt) { //TODO use guiShader from translateDistanceShaderVar ?
         for (auto &child : children) {
             if (child->isVisible()) {
                 Vector2<int> translateVector(child->getGlobalPositionX(), child->getGlobalPositionY());
-                glUniform2iv(translateDistanceLoc, 1, (const int*)translateVector);
+                ShaderDataSender(guiShader).sendData(translateDistanceShaderVar, translateVector);
 
-                child->display(translateDistanceLoc, dt);
+                child->display(guiShader, translateDistanceShaderVar, dt);
             }
         }
     }

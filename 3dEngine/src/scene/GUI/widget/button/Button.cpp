@@ -72,10 +72,10 @@ namespace urchin {
         return true;
     }
 
-    void Button::display(int translateDistanceLoc, float dt) {
+    void Button::display(const std::unique_ptr<Shader> &guiShader, const ShaderVar &translateDistanceShaderVar, float dt) {
         buttonRenderer->draw();
 
-        Widget::display(translateDistanceLoc, dt);
+        Widget::display(guiShader, translateDistanceShaderVar, dt);
     }
 
 }

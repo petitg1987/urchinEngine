@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <memory>
 #include <algorithm>
 
@@ -8,22 +7,19 @@
 #include "resources/font/Font.h"
 #include "graphic/render/texture/TextureRenderer.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
+#include "graphic/shader/data/ShaderDataSender.h"
 
 namespace urchin {
 
     //Debug parameters
     bool DEBUG_DISPLAY_FONT_TEXTURE = false;
 
-    GUIRenderer::GUIRenderer() :
-        mProjectionLoc(0),
-        translateDistanceLoc(0),
-        diffuseTexSamplerLoc(0) {
+    GUIRenderer::GUIRenderer() {
         guiShader = ShaderBuilder().createShader("gui.vert", "", "gui.frag");
 
-        guiShader->bind();
-        mProjectionLoc  = glGetUniformLocation(guiShader->getShaderId(), "mProjection");
-        translateDistanceLoc = glGetUniformLocation(guiShader->getShaderId(), "translateDistance");
-        diffuseTexSamplerLoc = glGetUniformLocation(guiShader->getShaderId(), "diffuseTexture");
+        mProjectionShaderVar = ShaderVar(guiShader, "mProjection");
+        translateDistanceShaderVar = ShaderVar(guiShader, "translateDistance");
+        diffuseTexSamplerShaderVar = ShaderVar(guiShader, "diffuseTexture");
     }
 
     GUIRenderer::~GUIRenderer() {
@@ -34,11 +30,10 @@ namespace urchin {
 
     void GUIRenderer::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         //orthogonal matrix with origin at top left screen
-        guiShader->bind();
         mProjection.setValues(2.0f/(float)sceneWidth, 0.0f, -1.0f,
             0.0f, -2.0f/(float)sceneHeight, 1.0f,
             0.0f, 0.0f, 1.0f);
-        glUniformMatrix3fv(mProjectionLoc, 1, GL_FALSE, (const float*)mProjection);
+        ShaderDataSender(guiShader).sendData(mProjectionShaderVar, mProjection);
 
         //widgets resize
         for (long i=(long)widgets.size()-1; i>=0; --i) {
@@ -126,15 +121,16 @@ namespace urchin {
     void GUIRenderer::display(float dt) {
         ScopeProfiler profiler("3d", "uiRenderDisplay");
 
-        guiShader->bind();
-        glUniform1i(diffuseTexSamplerLoc, 0);
+        int diffuseTexUnit = 0;
+        ShaderDataSender(guiShader).sendData(diffuseTexSamplerShaderVar, diffuseTexUnit); //TODO move outside display method !
 
+        guiShader->bind();
         for (auto &widget : widgets) {
             if (widget->isVisible()) {
                 Vector2<int> translateVector(widget->getGlobalPositionX(), widget->getGlobalPositionY());
-                glUniform2iv(translateDistanceLoc, 1, (const int*)translateVector);
+                ShaderDataSender(guiShader).sendData(translateDistanceShaderVar, translateVector);
 
-                widget->display(translateDistanceLoc, dt);
+                widget->display(guiShader, translateDistanceShaderVar, dt);
             }
         }
 

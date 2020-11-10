@@ -115,6 +115,12 @@ namespace urchin {
         return *this;
     }
 
+    ShaderDataSender &ShaderDataSender::sendData(const ShaderVar &shaderVar, const Vector2<int> &value) {
+        shader->bind();
+        glUniform2iv(shaderVar.getVariableLocation(), 1, (const int*)value);
+        return *this;
+    }
+
     ShaderDataSender &ShaderDataSender::sendData(const ShaderVar &shaderVar, unsigned int count, const Vector2<float> *values) {
         shader->bind();
         glUniform2fv(shaderVar.getVariableLocation(), count, (const float*)values);

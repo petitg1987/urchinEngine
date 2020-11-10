@@ -35,6 +35,7 @@ namespace urchin {
             ShaderDataSender &sendData(const ShaderVar &, const Point4<float> &);
 
             ShaderDataSender &sendData(const ShaderVar &, const Vector2<float> &);
+            ShaderDataSender &sendData(const ShaderVar &, const Vector2<int> &);
             ShaderDataSender &sendData(const ShaderVar &, unsigned int, const Vector2<float> *);
             ShaderDataSender &sendData(const ShaderVar &, const Vector3<float> &);
             ShaderDataSender &sendData(const ShaderVar &, unsigned int, const Vector3<float> *);

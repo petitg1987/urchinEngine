@@ -1,11 +1,10 @@
-#include <GL/glew.h>
-
 #include <utility>
 #include "UrchinCommon.h"
 
 #include "scene/GUI/widget/textbox/TextBox.h"
 #include "scene/InputDeviceKey.h"
 #include "graphic/render/GenericRendererBuilder.h"
+#include "graphic/shader/data/ShaderDataSender.h"
 
 #define ADDITIONAL_LEFT_BORDER 1 //Additional border to outline->leftWidth
 #define LETTER_SHIFT 5 //When the text box is full of text, we shift all letters to left
@@ -207,7 +206,7 @@ namespace urchin {
         computeCursorPosition();
     }
 
-    void TextBox::display(int translateDistanceLoc, float dt) {
+    void TextBox::display(const std::unique_ptr<Shader> &guiShader, const ShaderVar &translateDistanceShaderVar, float dt) {
         //display the text box
         textBoxRenderer->draw();
 
@@ -215,14 +214,14 @@ namespace urchin {
         cursorBlink += dt * CURSOR_BLINK_SPEED;
         if (state==ACTIVE && ((int)cursorBlink%2)>0) {
             Vector2<int> widgetPosition(getGlobalPositionX(), getGlobalPositionY());
-            glUniform2iv(translateDistanceLoc, 1, (const int*)(widgetPosition + Vector2<int>(cursorPosition, 0)));
+            ShaderDataSender(guiShader).sendData(translateDistanceShaderVar, widgetPosition + Vector2<int>(cursorPosition, 0));
 
             cursorRenderer->draw();
 
-            glUniform2iv(translateDistanceLoc, 1, (const int*)widgetPosition);
+            ShaderDataSender(guiShader).sendData(translateDistanceShaderVar, widgetPosition);
         }
 
-        Widget::display(translateDistanceLoc, dt);
+        Widget::display(guiShader, translateDistanceShaderVar, dt);
     }
 
 }

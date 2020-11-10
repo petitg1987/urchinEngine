@@ -7,6 +7,7 @@
 #include "UrchinCommon.h"
 
 #include "graphic/shader/model/Shader.h"
+#include "graphic/shader/model/ShaderVar.h"
 #include "graphic/render/GenericRenderer.h"
 #include "resources/image/Image.h"
 #include "scene/renderer3d/camera/Camera.h"
@@ -40,7 +41,7 @@ namespace urchin {
             std::unique_ptr<GenericRenderer> skyboxRenderer;
 
             std::unique_ptr<Shader> skyboxShader;
-            int mProjectionLoc, mViewLoc;
+            ShaderVar mProjectionShaderVar, mViewShaderVar;
     };
 
 }
