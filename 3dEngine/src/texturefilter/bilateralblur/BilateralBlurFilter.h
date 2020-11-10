@@ -13,8 +13,7 @@ namespace urchin {
 
     class BilateralBlurFilter : public TextureFilter {
         public:
-            enum BlurDirection
-            {
+            enum BlurDirection {
                 VERTICAL,
                 HORIZONTAL
             };

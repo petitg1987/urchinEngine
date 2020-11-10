@@ -10,14 +10,12 @@ namespace urchin {
 
     class Image : public Resource {
         public:
-            enum ImageFormat
-            {
+            enum ImageFormat {
                 IMAGE_RGB,
                 IMAGE_RGBA,
                 IMAGE_GRAYSCALE
             };
-            enum ChannelPrecision
-            {
+            enum ChannelPrecision {
                 CHANNEL_8,
                 CHANNEL_16
             };

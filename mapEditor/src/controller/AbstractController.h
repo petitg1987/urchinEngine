@@ -10,8 +10,7 @@ namespace urchin {
         public:
             explicit AbstractController();
 
-            enum NotificationType
-            {
+            enum NotificationType {
                 CHANGES_DONE
             };
 

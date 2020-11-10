@@ -46,15 +46,13 @@ namespace urchin {
             void refreshGrassAmbient();
 
             unsigned int bufferIDs[4], vertexArrayObject;
-            enum //buffer IDs indices
-            {
+            enum { //buffer IDs indices
                 VAO_VERTEX_POSITION = 0,
                 VAO_TEX_COORD,
                 VAO_NORMAL,
                 VAO_INDEX
             };
-            enum //shader input
-            {
+            enum { //shader input
                 SHADER_VERTEX_POSITION = 0,
                 SHADER_TEX_COORD,
                 SHADER_NORMAL

@@ -28,8 +28,7 @@ namespace urchin {
             ObjectPanelWidget();
             ~ObjectPanelWidget() override = default;
 
-            enum NotificationType
-            {
+            enum NotificationType {
                 OBJECT_BODY_SHAPE_WIDGET_CREATED
             };
 

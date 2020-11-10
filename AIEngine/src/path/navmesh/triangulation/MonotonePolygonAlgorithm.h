@@ -10,8 +10,7 @@
 
 namespace urchin {
 
-    enum PointType
-    {
+    enum PointType {
         START_VERTEX, //neighbor points go down and interior angle <pi
         END_VERTEX, //neighbor points go up and interior angle <pi
         SPLIT_VERTEX, //neighbor points go down and interior angle >=pi

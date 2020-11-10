@@ -18,8 +18,7 @@ namespace urchin {
         public:
             explicit SoundTableView(QWidget *parent = nullptr);
 
-            enum NotificationType
-            {
+            enum NotificationType {
                 SOUND_SELECTION_CHANGED
             };
 

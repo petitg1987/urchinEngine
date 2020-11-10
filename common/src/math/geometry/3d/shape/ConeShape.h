@@ -9,8 +9,7 @@ namespace urchin {
 
     template<class T> class ConeShape : public ConvexShape3D<T> {
         public:
-            enum ConeOrientation
-            { //define direction of top
+            enum ConeOrientation { //define direction of top
                 CONE_X_POSITIVE,
                 CONE_X_NEGATIVE,
 

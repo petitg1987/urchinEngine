@@ -8,8 +8,7 @@ namespace urchin {
 
     class Sound {
         public:
-            enum SoundType
-            {
+            enum SoundType {
                 POINT,
                 AMBIENT
             };

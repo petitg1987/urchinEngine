@@ -17,8 +17,7 @@ namespace urchin {
             BodyManager();
             ~BodyManager() override;
 
-            enum NotificationType
-            {
+            enum NotificationType {
                 ADD_WORK_BODY, //A body has been added to the world
                 REMOVE_WORK_BODY, //A body has been removed from the world
             };

@@ -37,8 +37,7 @@ namespace urchin {
 
             //state
             int mousePositionX, mousePositionY;
-            enum windowStates
-            {
+            enum windowStates {
                 DEFAULT,
                 MOVING,
                 CLOSING

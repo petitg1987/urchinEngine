@@ -18,8 +18,7 @@ namespace urchin {
         public:
             explicit LightTableView(QWidget *parent = nullptr);
 
-            enum NotificationType
-            {
+            enum NotificationType {
                 LIGHT_SELECTION_CHANGED
             };
 

@@ -21,16 +21,14 @@ namespace urchin {
     */
     class ShadowManager : public Observer, public Observable {
         public:
-            enum BlurShadow
-            {
+            enum BlurShadow {
                 NO_BLUR = 0,
                 LOW = 3,
                 MEDIUM = 5,
                 HIGH = 7
             };
 
-            enum NotificationType
-            {
+            enum NotificationType {
                 NUMBER_SHADOW_MAPS_UPDATE
             };
 

@@ -23,13 +23,11 @@ namespace urchin {
         public:
             explicit ScenePanelWidget(QWidget *parent);
 
-            enum NotificationType
-            {
+            enum NotificationType {
                 TAB_SELECTED
             };
 
-            enum TabName
-            {
+            enum TabName {
                 OBJECTS,
                 LIGHTS,
                 TERRAINS,

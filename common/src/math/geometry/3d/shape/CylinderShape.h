@@ -9,8 +9,7 @@ namespace urchin {
 
     template<class T> class CylinderShape : public ConvexShape3D<T> {
         public:
-            enum CylinderOrientation
-            {
+            enum CylinderOrientation {
                 CYLINDER_X,
                 CYLINDER_Y,
                 CYLINDER_Z

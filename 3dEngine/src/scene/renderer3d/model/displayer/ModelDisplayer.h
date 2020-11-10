@@ -21,8 +21,7 @@ namespace urchin {
     */
     class ModelDisplayer {
         public:
-            enum DisplayMode
-            {
+            enum DisplayMode {
                 DEFAULT_MODE = 0,
                 DEPTH_ONLY_MODE
             };

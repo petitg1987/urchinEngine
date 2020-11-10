@@ -2,6 +2,7 @@
 
 #include "resources/geometry/GeometryModel.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
+#include "graphic/shader/data/ShaderDataSender.h"
 
 namespace urchin {
 
@@ -15,9 +16,9 @@ namespace urchin {
             alwaysVisible(false) {
         shader = ShaderBuilder().createShader("displayGeometry.vert", "", "displayGeometry.frag");
 
-        mProjectionLoc = glGetUniformLocation(shader->getShaderId(), "mProjection");
-        mViewLoc = glGetUniformLocation(shader->getShaderId(), "mView");
-        colorLoc = glGetUniformLocation(shader->getShaderId(), "color");
+        mProjectionShaderVar = ShaderVar(shader, "mProjection");
+        mViewShaderVar = ShaderVar(shader, "mView");
+        colorShaderVar = ShaderVar(shader, "color");
 
         glGenBuffers(1, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
@@ -81,11 +82,12 @@ namespace urchin {
     }
 
     void GeometryModel::display(const Matrix4<float> &viewMatrix) const {
-        shader->bind();
-        glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float *) projectionMatrix);
-        glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float *) (viewMatrix * modelMatrix));
-        glUniform4fv(colorLoc, 1, (const float *) color);
+        ShaderDataSender(shader)
+            .sendData(mProjectionShaderVar, projectionMatrix)
+            .sendData(mViewShaderVar, viewMatrix * modelMatrix)
+            .sendData(colorShaderVar, color);
 
+        shader->bind();
         glBindVertexArray(vertexArrayObject);
 
         glDisable(GL_CULL_FACE);

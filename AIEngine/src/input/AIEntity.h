@@ -12,8 +12,7 @@ namespace urchin {
 
     class AIEntity {
         public:
-            enum AIEntityType
-            {
+            enum AIEntityType {
                 OBJECT,
                 TERRAIN
             };

@@ -10,14 +10,12 @@ namespace urchin {
 
     class SoundTrigger {
         public:
-            enum TriggerType
-            {
+            enum TriggerType {
                 MANUAL_TRIGGER,
                 SHAPE_TRIGGER
             };
 
-            enum TriggerResultValue
-            {
+            enum TriggerResultValue {
                 NO_TRIGGER,
 
                 PLAY,

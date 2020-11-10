@@ -5,8 +5,7 @@ namespace urchin {
 
     class LoadCallback {
         public:
-            enum LoadedStage
-            {
+            enum LoadedStage {
                 OBJECTS,
                 LIGHTS,
                 LANDSCAPE,

@@ -18,8 +18,7 @@ namespace urchin {
         public:
             explicit TerrainTableView(QWidget *parent = nullptr);
 
-            enum NotificationType
-            {
+            enum NotificationType {
                 SELECTION_CHANGED
             };
 

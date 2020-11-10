@@ -16,8 +16,7 @@ namespace urchin {
             const std::vector<std::shared_ptr<PathPortal>> &computePivotPoints();
 
         private:
-            enum FunnelSide
-            {
+            enum FunnelSide {
                 LEFT,
                 RIGHT
             };

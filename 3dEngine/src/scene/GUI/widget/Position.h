@@ -5,7 +5,7 @@ namespace urchin {
 
     class Position {
         public:
-            enum PositionType{
+            enum PositionType {
                 PIXEL,
                 PERCENTAGE
             };

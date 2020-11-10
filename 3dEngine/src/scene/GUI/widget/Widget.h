@@ -16,13 +16,11 @@ namespace urchin {
             Widget(Position, Size);
             ~Widget() override;
 
-            enum NotificationType
-            {
+            enum NotificationType {
                 SET_IN_FOREGROUND //Widget should be set in the foreground
             };
 
-            enum WidgetStates
-            {
+            enum WidgetStates {
                 DEFAULT,
                 CLICKING,
                 FOCUS

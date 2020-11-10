@@ -16,8 +16,7 @@ namespace urchin {
             explicit OctreeManager(float);
             ~OctreeManager() override;
 
-            enum NotificationType
-            {
+            enum NotificationType {
                 OCTREE_BUILT,
             };
 

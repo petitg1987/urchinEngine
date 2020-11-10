@@ -5,7 +5,7 @@ namespace urchin {
 
     class Size {
         public:
-            enum SizeType{
+            enum SizeType {
                 PIXEL,
                 PERCENTAGE
             };

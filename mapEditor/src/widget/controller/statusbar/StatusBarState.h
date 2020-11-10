@@ -3,8 +3,7 @@
 
 namespace urchin {
 
-    enum StatusBarState
-    {
+    enum StatusBarState {
         NONE,
         MAP_LOADED,
         OBJECT_SELECTED,

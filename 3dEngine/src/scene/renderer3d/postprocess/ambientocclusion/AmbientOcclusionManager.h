@@ -14,8 +14,7 @@ namespace urchin {
 
     class AmbientOcclusionManager {
         public:
-            enum AOTextureSize
-            {
+            enum AOTextureSize {
                 FULL_SIZE = 0,
                 HALF_SIZE = 1
             };

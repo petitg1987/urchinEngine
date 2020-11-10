@@ -9,8 +9,7 @@ namespace urchin {
 
     template<class T> class CapsuleShape : public ConvexShape3D<T> {
         public:
-            enum CapsuleOrientation
-            {
+            enum CapsuleOrientation {
                 CAPSULE_X,
                 CAPSULE_Y,
                 CAPSULE_Z

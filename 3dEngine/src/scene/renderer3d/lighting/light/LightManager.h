@@ -15,8 +15,7 @@ namespace urchin {
             LightManager();
             ~LightManager() override;
 
-            enum NotificationType
-            {
+            enum NotificationType {
                 ADD_LIGHT, //A light has been added
                 REMOVE_LIGHT, //A light has been removed
             };

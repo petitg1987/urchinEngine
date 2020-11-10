@@ -9,8 +9,7 @@ namespace urchin {
 
     class NavTriangle;
 
-    enum NavLinkType
-    {
+    enum NavLinkType {
         STANDARD, //link between two triangles of the same polygon
         JOIN_POLYGONS, //link between two triangles of different polygons
         JUMP //jump between two triangles

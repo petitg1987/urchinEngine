@@ -46,8 +46,7 @@ namespace urchin {
             float cursorBlink;
 
             //state
-            enum textboxStates
-            {
+            enum textboxStates {
                 ACTIVE,
                 UNACTIVE
             } state;

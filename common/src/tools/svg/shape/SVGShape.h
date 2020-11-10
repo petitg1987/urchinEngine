@@ -9,8 +9,7 @@ namespace urchin {
 
     class SVGShape {
         public:
-            enum SVGColor
-            {
+            enum SVGColor {
                 BLACK,
                 LIME,
                 RED,

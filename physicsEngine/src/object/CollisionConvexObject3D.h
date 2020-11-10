@@ -8,8 +8,7 @@ namespace urchin {
 
     class CollisionConvexObject3D {
         public:
-            enum ObjectType
-            {
+            enum ObjectType {
                 SPHERE_OBJECT = 0,
                 BOX_OBJECT,
                 CAPSULE_OBJECT,

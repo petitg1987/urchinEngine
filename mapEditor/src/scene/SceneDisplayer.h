@@ -22,8 +22,7 @@ namespace urchin {
 
     class SceneDisplayer {
         public:
-            enum ViewProperties
-            {
+            enum ViewProperties {
                 MODEL_PHYSICS = 0,
                 LIGHT_SCOPE,
                 SOUND_TRIGGER,

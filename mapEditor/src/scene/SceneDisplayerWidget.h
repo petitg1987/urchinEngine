@@ -20,8 +20,7 @@ namespace urchin {
             SceneDisplayerWidget(QWidget *, const StatusBarController &, std::string);
             ~SceneDisplayerWidget() override;
 
-            enum NotificationType
-            {
+            enum NotificationType {
                 BODY_PICKED
             };
 

@@ -65,13 +65,11 @@ namespace urchin {
 
             std::vector<unsigned int> vertexArrayObjects;
             std::vector<std::array<unsigned int, 2>> bufferIDs;
-            enum //buffer IDs indices
-            {
+            enum { //buffer IDs indices
                 VAO_VERTEX_POSITION = 0,
                 VAO_NORMAL
             };
-            enum //shader input
-            {
+            enum { //shader input
                 SHADER_VERTEX_POSITION = 0,
                 SHADER_NORMAL
             };

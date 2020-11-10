@@ -10,8 +10,7 @@ namespace urchin {
     */
     class SoundShape {
         public:
-            enum ShapeType
-            {
+            enum ShapeType {
                 SPHERE_SHAPE,
                 BOX_SHAPE
             };

@@ -24,8 +24,7 @@ namespace urchin {
             Frustum(Frustum<T> &&);
             Frustum<T>& operator=(Frustum<T> &&);
 
-            enum FrustumPoint
-            {
+            enum FrustumPoint {
                 NTL = 0, //Near top left
                 NTR, //Near top right
                 NBL, //Near bottom left

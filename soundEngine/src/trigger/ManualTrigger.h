@@ -21,8 +21,7 @@ namespace urchin {
             SoundTrigger::TriggerResultValue evaluateTrigger(const Point3<float> &) override;
 
         private:
-            enum ManualTriggerValue
-            {
+            enum ManualTriggerValue {
                 NO_TRIGGER,
 
                 PLAY,

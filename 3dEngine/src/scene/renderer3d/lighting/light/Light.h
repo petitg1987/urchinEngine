@@ -11,14 +11,12 @@ namespace urchin {
             Light();
             ~Light() override = default;
 
-            enum LightType
-            {
+            enum LightType {
                 OMNIDIRECTIONAL,
                 SUN
             };
 
-            enum NotificationType
-            {
+            enum NotificationType {
                 LIGHT_MOVE, //A light has been moved (position, direction...)
                 PRODUCE_SHADOW, //Produce shadow flag has been updated
             };

@@ -13,8 +13,7 @@ namespace urchin {
             Logger();
             virtual ~Logger() = default;
 
-            enum CriticalityLevel
-            {
+            enum CriticalityLevel {
                 INFO,
                 WARNING,
                 ERROR

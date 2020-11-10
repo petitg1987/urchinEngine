@@ -4,6 +4,7 @@
 #include "UrchinCommon.h"
 
 #include "graphic/shader/model/Shader.h"
+#include "graphic/shader/model/ShaderVar.h"
 
 namespace urchin {
 
@@ -12,8 +13,7 @@ namespace urchin {
             GeometryModel();
             virtual ~GeometryModel();
 
-            enum PolygonMode
-            {
+            enum PolygonMode {
                 WIREFRAME,
                 FILL
             };
@@ -45,16 +45,14 @@ namespace urchin {
 
         private:
             unsigned int bufferIDs[1], vertexArrayObject;
-            enum //buffer IDs indices
-            {
+            enum { //buffer IDs indices
                 VAO_VERTEX_POSITION = 0,
             };
-            enum //shader input
-            {
+            enum { //shader input
                 SHADER_VERTEX_POSITION = 0,
             };
             std::unique_ptr<Shader> shader;
-            int mProjectionLoc, mViewLoc, colorLoc;
+            ShaderVar mProjectionShaderVar, mViewShaderVar, colorShaderVar;
 
             Matrix4<float> projectionMatrix;
             Matrix4<float> modelMatrix;

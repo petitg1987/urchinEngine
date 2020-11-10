@@ -17,8 +17,7 @@ namespace urchin {
             Octreeable(const Octreeable &);
             ~Octreeable() override;
 
-            enum NotificationType
-            {
+            enum NotificationType {
                 MOVE
             };
 

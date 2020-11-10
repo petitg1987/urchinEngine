@@ -22,8 +22,7 @@ namespace urchin {
             explicit CollisionWorld(BodyManager *);
             ~CollisionWorld() override;
 
-            enum NotificationType
-            {
+            enum NotificationType {
                 COLLISION_RESULT_UPDATED
             };
 

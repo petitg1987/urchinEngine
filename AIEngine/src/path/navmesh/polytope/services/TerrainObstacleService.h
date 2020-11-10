@@ -9,8 +9,7 @@ namespace urchin {
 
     class TerrainObstacleService {
         public:
-            enum EdgeDirection
-            {
+            enum EdgeDirection {
                 LEFT,
                 RIGHT,
                 TOP,

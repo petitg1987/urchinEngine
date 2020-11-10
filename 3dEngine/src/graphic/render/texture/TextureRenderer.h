@@ -20,24 +20,21 @@ namespace urchin {
     */
     class TextureRenderer {
         public:
-            enum CoordinateX
-            {
+            enum CoordinateX {
                 LEFT,
                 CENTER_X,
                 RIGHT,
                 USER_DEFINED_X
             };
 
-            enum CoordinateY
-            {
+            enum CoordinateY {
                 TOP,
                 CENTER_Y,
                 BOTTOM,
                 USER_DEFINED_Y
             };
 
-            enum ColorType
-            {
+            enum ColorType {
                 DEFAULT_VALUE,
                 DEPTH_VALUE,
                 GRAYSCALE_VALUE,

@@ -19,10 +19,9 @@ namespace urchin {
             Water();
             ~Water() override;
 
-            enum NotificationType
-            {
+            enum NotificationType {
                 MOVE_UNDER_WATER,
-                MOVE_ABOVE_WATER,
+                MOVE_ABOVE_WATER
             };
 
             void setCenterPosition(const Point3<float> &);

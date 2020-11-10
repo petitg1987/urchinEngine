@@ -11,8 +11,7 @@ namespace urchin {
 
     class AntiAliasingManager {
         public:
-            enum Quality
-            {
+            enum Quality {
                 LOW = 0,
                 MEDIUM,
                 HIGH,

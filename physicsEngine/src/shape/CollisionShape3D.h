@@ -21,8 +21,7 @@ namespace urchin {
             CollisionShape3D(const CollisionShape3D &) = default;
             virtual ~CollisionShape3D() = default;
 
-            enum ShapeType
-            {
+            enum ShapeType {
                 //Convex:
                 SPHERE_SHAPE = 0,
                 BOX_SHAPE,

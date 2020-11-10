@@ -5,14 +5,12 @@ namespace urchin {
 
     class SoundBehavior {
         public:
-            enum PlayBehavior
-            {
+            enum PlayBehavior {
                 PLAY_ONCE,
                 PLAY_LOOP
             };
 
-            enum StopBehavior
-            {
+            enum StopBehavior {
                 INSTANT_STOP,
                 SMOOTH_STOP
             };

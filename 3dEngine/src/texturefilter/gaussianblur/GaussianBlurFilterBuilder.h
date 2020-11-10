@@ -7,8 +7,7 @@ namespace urchin {
 
     class GaussianBlurFilterBuilder : public TextureFilterBuilder<GaussianBlurFilterBuilder> {
         public:
-            enum BlurDirection
-            {
+            enum BlurDirection {
                 HORIZONTAL_BLUR,
                 VERTICAL_BLUR
             };
