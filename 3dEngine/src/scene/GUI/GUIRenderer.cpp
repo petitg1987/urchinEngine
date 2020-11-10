@@ -20,6 +20,9 @@ namespace urchin {
         mProjectionShaderVar = ShaderVar(guiShader, "mProjection");
         translateDistanceShaderVar = ShaderVar(guiShader, "translateDistance");
         diffuseTexSamplerShaderVar = ShaderVar(guiShader, "diffuseTexture");
+
+        int diffuseTexUnit = 0;
+        ShaderDataSender(guiShader).sendData(diffuseTexSamplerShaderVar, diffuseTexUnit);
     }
 
     GUIRenderer::~GUIRenderer() {
@@ -120,9 +123,6 @@ namespace urchin {
 
     void GUIRenderer::display(float dt) {
         ScopeProfiler profiler("3d", "uiRenderDisplay");
-
-        int diffuseTexUnit = 0;
-        ShaderDataSender(guiShader).sendData(diffuseTexSamplerShaderVar, diffuseTexUnit); //TODO move outside display method !
 
         guiShader->bind();
         for (auto &widget : widgets) {
