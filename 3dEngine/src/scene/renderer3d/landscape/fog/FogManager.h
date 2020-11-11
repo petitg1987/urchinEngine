@@ -14,15 +14,14 @@ namespace urchin {
         public:
             void pushFog(const std::shared_ptr<Fog> &);
             void popFog();
-            std::shared_ptr<const Fog> getCurrentFog() const;
+            std::shared_ptr<const Fog> getActiveFog() const;
 
-            void initiateShaderVariables(const std::shared_ptr<Shader> &);
-            void loadFog();
+            void initiateShaderVariables(const std::unique_ptr<Shader> &);
+
+            void loadFog(const std::unique_ptr<Shader> &);
 
         private:
             std::stack<std::shared_ptr<Fog>> fogs;
-
-            std::shared_ptr<Shader> lightingShader;
             ShaderVar hasFogShaderVar, fogDensityShaderVar, fogGradientShaderVar, fogColorShaderVar, fogMaxHeightShaderVar;
     };
 

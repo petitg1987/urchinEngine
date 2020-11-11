@@ -31,7 +31,7 @@ namespace urchin {
         delete [] lightsInfo;
     }
 
-    void LightManager::initiateShaderVariables(const std::shared_ptr<Shader> &lightingShader) {
+    void LightManager::initiateShaderVariables(const std::unique_ptr<Shader> &lightingShader) {
         std::ostringstream isExistLocName, produceShadowLocName, hasParallelBeamsName, positionOrDirectionLocName;
         std::ostringstream exponentialAttName, lightAmbientName;
         for (unsigned int i=0;i<maxLights;++i) {
@@ -134,7 +134,7 @@ namespace urchin {
         visibleLights.insert(visibleLights.end(), lightsInFrustum.begin(), lightsInFrustum.end());
     }
 
-    void LightManager::loadLights(const std::shared_ptr<Shader> &lightingShader) {
+    void LightManager::loadLights(const std::unique_ptr<Shader> &lightingShader) {
         const std::vector<Light *> &lights = getVisibleLights();
         checkMaxLight(lights);
 
@@ -148,10 +148,10 @@ namespace urchin {
                     .sendData(lightsInfo[i].hasParallelBeamsShaderVar, light->hasParallelBeams())
                     .sendData(lightsInfo[i].lightAmbientShaderVar, light->getAmbientColor());
 
-                if (lights[i]->getLightType()==Light::SUN) {
+                if (lights[i]->getLightType() == Light::SUN) {
                     const auto *sunLight = dynamic_cast<const SunLight *>(light);
                     ShaderDataSender(lightingShader).sendData(lightsInfo[i].positionOrDirectionShaderVar, sunLight->getDirections()[0]);
-                } else if (lights[i]->getLightType()==Light::OMNIDIRECTIONAL) {
+                } else if (lights[i]->getLightType() == Light::OMNIDIRECTIONAL) {
                     const auto *omnidirectionalLight = dynamic_cast<const OmnidirectionalLight *>(light);
                     ShaderDataSender(lightingShader)
                         .sendData(lightsInfo[i].positionOrDirectionShaderVar, omnidirectionalLight->getPosition())

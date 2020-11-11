@@ -3,41 +3,32 @@
 
 namespace urchin {
 
-    void FogManager::pushFog(const std::shared_ptr<Fog> &fog) { //TODO find better way to manage fog
+    void FogManager::pushFog(const std::shared_ptr<Fog> &fog) {
         fogs.push(fog);
-
-        loadFog();
     }
 
     void FogManager::popFog() {
         if (!fogs.empty()) {
             fogs.pop();
         }
-
-        loadFog();
     }
 
-    std::shared_ptr<const Fog> FogManager::getCurrentFog() const {
+    std::shared_ptr<const Fog> FogManager::getActiveFog() const {
         if (fogs.empty()) {
             return nullptr;
         }
-
         return fogs.top();
     }
 
-    void FogManager::initiateShaderVariables(const std::shared_ptr<Shader> &lightingShader) {
-        this->lightingShader = lightingShader;
-
+    void FogManager::initiateShaderVariables(const std::unique_ptr<Shader> &lightingShader) {
         hasFogShaderVar = ShaderVar(lightingShader, "hasFog");
         fogDensityShaderVar = ShaderVar(lightingShader, "fogDensity");
         fogGradientShaderVar = ShaderVar(lightingShader, "fogGradient");
         fogColorShaderVar = ShaderVar(lightingShader, "fogColor");
         fogMaxHeightShaderVar = ShaderVar(lightingShader, "fogMaxHeight");
-
-        loadFog();
     }
 
-    void FogManager::loadFog() {
+    void FogManager::loadFog(const std::unique_ptr<Shader> &lightingShader) {
         ShaderDataSender(lightingShader).sendData(hasFogShaderVar, !fogs.empty());
 
         if (!fogs.empty()) {

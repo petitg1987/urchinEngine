@@ -79,7 +79,7 @@ namespace urchin {
         delete shadowModelShaderVariable;
     }
 
-    void ShadowManager::initiateShaderVariables(const std::shared_ptr<Shader> &lightingShader) {
+    void ShadowManager::initiateShaderVariables(const std::unique_ptr<Shader> &lightingShader) {
         //shadow information
         depthSplitDistanceShaderVar = ShaderVar(lightingShader, "depthSplitDistance");
 
@@ -567,7 +567,7 @@ namespace urchin {
         glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
     }
 
-    void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer> &lightingRenderer, const std::shared_ptr<Shader> &lightingShader) {
+    void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer> &lightingRenderer, const std::unique_ptr<Shader> &lightingShader) {
         int i = 0;
         const std::vector<Light *> &visibleLights = lightManager->getVisibleLights();
         for (auto *visibleLight : visibleLights) {

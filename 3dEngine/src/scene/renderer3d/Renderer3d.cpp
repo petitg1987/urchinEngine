@@ -522,6 +522,8 @@ namespace urchin {
 
         lightManager->loadLights(lightingShader);
 
+        fogManager->loadFog(lightingShader);
+
         if (isAmbientOcclusionActivated) {
             ambientOcclusionManager->loadAOTexture(lightingRenderer, lightingShader);
         }

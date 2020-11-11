@@ -35,7 +35,7 @@ namespace urchin {
             ShadowManager(LightManager *, OctreeManager<Model> *);
             ~ShadowManager() override;
 
-            void initiateShaderVariables(const std::shared_ptr<Shader> &);
+            void initiateShaderVariables(const std::unique_ptr<Shader> &);
             void onResize(unsigned int, unsigned int);
             void onCameraProjectionUpdate(const Camera *);
             void notify(Observable *, int) override;
@@ -58,7 +58,7 @@ namespace urchin {
             void updateVisibleModels(const Frustum<float> &);
             void forceUpdateAllShadowMaps();
             void updateShadowMaps();
-            void loadShadowMaps(const std::unique_ptr<GenericRenderer> &, const std::shared_ptr<Shader> &);
+            void loadShadowMaps(const std::unique_ptr<GenericRenderer> &, const std::unique_ptr<Shader> &);
 
             void drawLightSceneBox(const Frustum<float> &, const Light *, const Matrix4<float> &) const;
 

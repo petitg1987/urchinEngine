@@ -20,7 +20,7 @@ namespace urchin {
                 REMOVE_LIGHT, //A light has been removed
             };
 
-            void initiateShaderVariables(const std::shared_ptr<Shader> &);
+            void initiateShaderVariables(const std::unique_ptr<Shader> &);
             OctreeManager<Light> *getLightOctreeManager() const;
             Light *getLastUpdatedLight();
 
@@ -33,7 +33,7 @@ namespace urchin {
             const Point4<float> &getGlobalAmbientColor() const;
 
             void updateLights(const Frustum<float> &);
-            void loadLights(const std::shared_ptr<Shader> &);
+            void loadLights(const std::unique_ptr<Shader> &);
             void postUpdateLights();
 
             void drawLightOctree(const Matrix4<float> &, const Matrix4<float> &) const;

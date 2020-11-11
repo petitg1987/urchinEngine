@@ -22,7 +22,7 @@ namespace urchin {
             AmbientOcclusionManager(unsigned int, unsigned int);
             ~AmbientOcclusionManager();
 
-            void initiateShaderVariables(const std::shared_ptr<Shader> &);
+            void initiateShaderVariables(const std::unique_ptr<Shader> &);
             void onResize(unsigned int, unsigned int);
             void onCameraProjectionUpdate(const Camera *);
 
@@ -41,7 +41,7 @@ namespace urchin {
             unsigned int getAmbientOcclusionTextureID() const;
 
             void updateAOTexture(const Camera *);
-            void loadAOTexture(const std::unique_ptr<GenericRenderer> &, const std::shared_ptr<Shader> &) const;
+            void loadAOTexture(const std::unique_ptr<GenericRenderer> &, const std::unique_ptr<Shader> &) const;
 
         private:
             void createOrUpdateAOTexture();

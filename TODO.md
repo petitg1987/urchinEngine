@@ -1,9 +1,11 @@
 # Global
 - Performance
 	- **OPTIMIZATION** (`minor`): Use PGO in g++
-	- **OPTIMIZATION** (`minor`): Use SSE (3 dot products: Triangle3D<T>::getSupportPoint()...)
+	- **OPTIMIZATION** (`minor`): Use SSE (3 dot products: Triangle3D<T>#getSupportPoint()...)
 
 # 3d Engine
+- Rendering
+    - **OPTIMIZATION** (`minor`): Avoid sending shader variables values at each frame when there is no change in Renderer3d#deferredGeometryRendering()
 - Model
     - **OPTIMIZATION** (`medium`): Group same models in same octree to perform one draw call
     - **QUALITY IMPROVEMENT** (`minor`): Use reverse depth for far distant view (<https://outerra.blogspot.com/2012/11/maximizing-depth-buffer-range-and.html>)
@@ -14,7 +16,7 @@
     - **OPTIMIZATION** (`minor`): Use tiled-based deferred shading (<https://software.intel.com/en-us/articles/deferred-rendering-for-current-and-future-rendering-pipelines>)
 - Shadow
     - **OPTIMIZATION** (`medium`): Improve performance ShadowManager::updateVisibleModels
-        - Tips 1: find solution where models to display could be re-used in Renderer3d::deferredGeometryRendering
+        - Tips 1: find solution where models to display could be re-used in Renderer3d#deferredGeometryRendering()
         - Tips 2: call octree manager one times for all frustum splits and then split the models
 	- **QUALITY IMPROVEMENT** (`medium`): Blur variance shadow map with 'summed area' technique.
         - Note 1: decreased light bleeding to improve quality
@@ -49,7 +51,7 @@
 - Navigation mesh
 	- **BUG** (`medium`): Jump from an edge created by an obstacle should be allowed only if target is this obstacle and vice versa
 	- **NEW FEATURE** (`medium`): Create jump/drop links from an edge to a walkable surface (+ update AABBTree margin accordingly)
-	- **OPTIMIZATION** (`minor`): Reduce memory allocation in NavMeshGenerator::createNavigationPolygon
+	- **OPTIMIZATION** (`minor`): Reduce memory allocation in NavMeshGenerator#createNavigationPolygon()
 	- **OPTIMIZATION** (`minor`): TerrainObstacleService: apply a roughly simplification on self obstacles polygons
 	- **OPTIMIZATION** (`medium`): Exclude small objects from navigation mesh
 	- **OPTIMIZATION** (`minor`): Exclude fast moving objects from walkable face

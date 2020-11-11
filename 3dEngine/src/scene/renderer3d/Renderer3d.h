@@ -145,7 +145,7 @@ namespace urchin {
             };
 
             std::unique_ptr<GenericRenderer> lightingRenderer;
-            std::shared_ptr<Shader> lightingShader;
+            std::unique_ptr<Shader> lightingShader;
             ShaderVar mInverseViewProjectionShaderVar, viewPositionShaderVar;
     };
 

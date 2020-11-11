@@ -6,12 +6,12 @@
 namespace urchin {
 
     ShaderDataSender::ShaderDataSender(const std::unique_ptr<Shader> &shader) :
-            shader(shader.get()){
+            shader(shader.get()) {
 
     }
 
     ShaderDataSender::ShaderDataSender(const std::shared_ptr<Shader> &shader) :
-            shader(shader.get()){
+            shader(shader.get()) {
 
     }
 
