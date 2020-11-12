@@ -18,8 +18,7 @@ namespace urchin {
             void drawGeometry() const override;
 
         private:
-            void fillWithTopCap(std::vector<Point3<float>> &, const Quaternion<float> &) const;
-            void fillWithBottomCap(std::vector<Point3<float>> &, const Quaternion<float> &) const;
+            void fillWithCaps(std::vector<Point3<float>> &, const Quaternion<float> &) const;
 
             Capsule<float> capsule;
             int sides, slices;

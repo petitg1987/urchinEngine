@@ -44,20 +44,23 @@ namespace urchin {
 
         Quaternion<float> localOrientation = cone.getOrientation() * qConeOrientation;
         Point3<float> topPoint = localOrientation.rotatePoint(Point3<float>(0.0, cone.getHeight()*(3.0/4.0), 0.0));
-        vertexArray.push_back(topPoint);
-        for (int i = 0; i <= slices; i++) {
-            float x = std::cos((float)i * angle) * radius;
-            float z = std::sin((float)i * angle) * radius;
 
-            Point3<float> bottomPoint = localOrientation.rotatePoint(Point3<float>(x, -cone.getHeight()*(1.0/4.0), z));
-            vertexArray.push_back(bottomPoint);
+        for (int i = 0; i < slices; i++) {
+            float x1 = std::cos((float)i * angle) * radius;
+            float z1 = std::sin((float)i * angle) * radius;
+            float x2 = std::cos((float)i * angle) * radius;
+            float z2 = std::sin((float)i * angle) * radius;
+
+            vertexArray.push_back(topPoint);
+            vertexArray.push_back(localOrientation.rotatePoint(Point3<float>(x1, -cone.getHeight()*(1.0/4.0), z1)));
+            vertexArray.push_back(localOrientation.rotatePoint(Point3<float>(x2, -cone.getHeight()*(1.0/4.0), z2)));
         }
 
         return vertexArray;
     }
 
     void ConeModel::drawGeometry() const {
-        glDrawArrays(GL_TRIANGLE_FAN, 0, 1 + (slices + 1));
+        glDrawArrays(GL_TRIANGLES, 0, 3*slices);
     }
 
 }
