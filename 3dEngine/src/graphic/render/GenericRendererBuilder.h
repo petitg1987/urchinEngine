@@ -8,6 +8,7 @@
 #include "graphic/render/model/CoordType.h"
 #include "graphic/render/model/CoordDimension.h"
 #include "graphic/render/model/ShapeType.h"
+#include "graphic/render/model/PolygonMode.h"
 #include "graphic/render/model/Texture.h"
 
 namespace urchin {
@@ -37,6 +38,13 @@ namespace urchin {
             GenericRendererBuilder *enableDepthTest();
             bool isDepthTestEnabled() const;
 
+            GenericRendererBuilder *disableCullFace();
+            bool isCullFaceEnabled() const;
+
+            GenericRendererBuilder *polygonMode(PolygonMode, float outlineSize = 1.0f);
+            PolygonMode getPolygonMode() const;
+            float getOutlineSize() const;
+
             GenericRendererBuilder *addTexture(Texture);
             std::vector<Texture> getTextures() const;
 
@@ -57,6 +65,11 @@ namespace urchin {
             bool transparencyEnabled;
 
             bool depthTestEnabled;
+
+            bool cullFaceEnabled;
+
+            PolygonMode pPolygonMode;
+            float outlineSize;
 
             std::vector<Texture> textures;
     };

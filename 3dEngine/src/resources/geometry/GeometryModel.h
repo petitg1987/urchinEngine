@@ -14,8 +14,8 @@ namespace urchin {
             virtual ~GeometryModel();
 
             enum PolygonMode {
-                WIREFRAME,
-                FILL
+                FILL,
+                WIREFRAME
             };
 
             void onCameraProjectionUpdate(const Matrix4<float> &);

@@ -12,7 +12,10 @@ namespace urchin {
             textureCoordDimension(CoordDimension::_2D),
             textureCoord(nullptr),
             transparencyEnabled(false),
-            depthTestEnabled(false) {
+            depthTestEnabled(false),
+            cullFaceEnabled(true),
+            pPolygonMode(PolygonMode::FILL),
+            outlineSize(1.0) {
 
     }
 
@@ -83,6 +86,29 @@ namespace urchin {
 
     bool GenericRendererBuilder::isDepthTestEnabled() const {
         return depthTestEnabled;
+    }
+
+    GenericRendererBuilder *GenericRendererBuilder::disableCullFace() {
+        cullFaceEnabled = false;
+        return this;
+    }
+
+    bool GenericRendererBuilder::isCullFaceEnabled() const {
+        return cullFaceEnabled;
+    }
+
+    GenericRendererBuilder *GenericRendererBuilder::polygonMode(PolygonMode pPolygonMode, float outlineSize) {
+        this->pPolygonMode = pPolygonMode;
+        this->outlineSize = outlineSize;
+        return this;
+    }
+
+    PolygonMode GenericRendererBuilder::getPolygonMode() const {
+        return pPolygonMode;
+    }
+
+    float GenericRendererBuilder::getOutlineSize() const {
+        return outlineSize;
     }
 
     GenericRendererBuilder *GenericRendererBuilder::addTexture(Texture texture) {

@@ -73,6 +73,7 @@ namespace urchin {
 
         //initialization OpenGl
         glEnable(GL_DEPTH_TEST);
+        glDepthMask(GL_TRUE);
         glClearColor(1.0, 1.0, 1.0, 1.0);
         glEnable(GL_CULL_FACE);
         glCullFace(GL_FRONT);

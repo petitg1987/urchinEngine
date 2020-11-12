@@ -17,6 +17,9 @@ namespace urchin {
             textureCoordDimension(rendererBuilder->getTextureCoordDimension()),
             transparencyEnabled(rendererBuilder->isTransparencyEnabled()),
             depthTestEnabled(rendererBuilder->isDepthTestEnabled()),
+            cullFaceEnabled(rendererBuilder->isCullFaceEnabled()),
+            polygonMode(rendererBuilder->getPolygonMode()),
+            outlineSize(rendererBuilder->getOutlineSize()),
             textures(rendererBuilder->getTextures()),
             bufferIDs(),
             vertexArrayObject(0) {
@@ -166,24 +169,47 @@ namespace urchin {
         if(transparencyEnabled) {
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        } else {
-            glDisable(GL_BLEND);
         }
 
-        if(depthTestEnabled) {
-            glDepthMask(GL_TRUE);
-            glEnable(GL_DEPTH_TEST);
-        } else {
+        if(!depthTestEnabled) {
             glDisable(GL_DEPTH_TEST);
             glDepthMask(GL_FALSE);
+        }
+
+        if(!cullFaceEnabled) {
+            glDisable(GL_CULL_FACE);
+        }
+
+        if(polygonMode == PolygonMode::WIREFRAME) {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            glLineWidth(outlineSize);
         }
 
         glBindVertexArray(vertexArrayObject);
         glDrawArrays(shapeTypeToGlType(shapeType), 0, shapeTypeToVertexCount(shapeType) * shapeCount);
 
-        //reset to default values
-        glDepthMask(GL_TRUE);
-        glEnable(GL_DEPTH_TEST);
-        glDisable(GL_BLEND);
+        resetDrawDefaultValues();
+    }
+
+    void GenericRenderer::resetDrawDefaultValues() const {
+        if(transparencyEnabled) {
+            glDisable(GL_BLEND);
+        }
+
+        if(!depthTestEnabled) {
+            glEnable(GL_DEPTH_TEST);
+            glDepthMask(GL_TRUE);
+        }
+
+        if(!cullFaceEnabled) {
+            glEnable(GL_CULL_FACE);
+            glCullFace(GL_FRONT);
+        }
+
+        if(polygonMode != PolygonMode::FILL) {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            glLineWidth(1.0f);
+            glPointSize(1.0f);
+        }
     }
 }

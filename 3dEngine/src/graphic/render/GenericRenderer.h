@@ -6,6 +6,7 @@
 #include "graphic/render/model/CoordType.h"
 #include "graphic/render/model/CoordDimension.h"
 #include "graphic/render/model/ShapeType.h"
+#include "graphic/render/model/PolygonMode.h"
 #include "graphic/render/model/Texture.h"
 
 namespace urchin {
@@ -33,6 +34,8 @@ namespace urchin {
             unsigned int coordTypeToGlType(CoordType) const;
             unsigned int coordDimensionToSize(CoordDimension) const;
 
+            void resetDrawDefaultValues() const;
+
             ShapeType shapeType;
             unsigned int shapeCount;
 
@@ -43,7 +46,13 @@ namespace urchin {
             CoordDimension textureCoordDimension;
 
             bool transparencyEnabled;
+
             bool depthTestEnabled;
+
+            bool cullFaceEnabled;
+
+            PolygonMode polygonMode;
+            float outlineSize;
 
             std::vector<Texture> textures, additionalTextures;
 
