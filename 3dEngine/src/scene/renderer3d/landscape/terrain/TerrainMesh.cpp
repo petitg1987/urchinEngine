@@ -154,7 +154,7 @@ namespace urchin {
         for (unsigned int threadI=0; threadI<NUM_THREADS; threadI++) {
             unsigned int beginI = threadI * numLoopNormalTriangle / NUM_THREADS;
             unsigned int endI = (threadI + 1)==NUM_THREADS ? numLoopNormalTriangle : (threadI + 1) * numLoopNormalTriangle / NUM_THREADS;
-            threadsNormalTriangle[threadI] = std::thread(std::bind([&](unsigned int beginI, unsigned int endI) {
+            threadsNormalTriangle[threadI] = std::thread([&, beginI, endI, xLineQuantity]() {
                 for (unsigned int i = beginI; i<endI; i++) {
                     if (indices[i+2] != RESTART_INDEX) {
                         Point3<float> point1 = vertices[indices[i]];
@@ -175,7 +175,7 @@ namespace urchin {
                         i += 2;
                     }
                 }
-            }, beginI, endI));
+            });
         }
         std::for_each(threadsNormalTriangle.begin(), threadsNormalTriangle.end(), [](std::thread& x){x.join();});
         assert(totalTriangles == normalTriangles.size());
@@ -188,7 +188,7 @@ namespace urchin {
             unsigned int beginI = threadI * numLoopNormalVertex / NUM_THREADS;
             unsigned int endI = (threadI + 1)==NUM_THREADS ? numLoopNormalVertex : (threadI + 1) * numLoopNormalVertex / NUM_THREADS;
 
-            threadsNormalVertex[threadI] = std::thread(std::bind([&](unsigned int beginI, unsigned int endI) {
+            threadsNormalVertex[threadI] = std::thread([&, beginI, endI]() {
                 for (unsigned int i = beginI; i<endI; i++) {
                     Vector3<float> vertexNormal(0.0, 0.0, 0.0);
                     for (unsigned int triangleIndex : findTriangleIndices(i)) {
@@ -196,7 +196,7 @@ namespace urchin {
                     }
                     normals[i] = vertexNormal.normalize();
                 }
-            }, beginI, endI));
+            });
         }
         std::for_each(threadsNormalVertex.begin(), threadsNormalVertex.end(), [](std::thread& x){x.join();});
 

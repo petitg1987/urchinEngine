@@ -135,7 +135,7 @@ namespace urchin {
                 unsigned int beginX = threadI * grassXQuantity / NUM_THREADS;
                 unsigned int endX = (threadI + 1) == NUM_THREADS ? grassXQuantity : (threadI + 1) * grassXQuantity / NUM_THREADS;
 
-                threads[threadI] = std::thread(std::bind([&](unsigned int beginX, unsigned int endX) {
+                threads[threadI] = std::thread([&, beginX, endX]() {
                     for (unsigned int xIndex = beginX; xIndex < endX; ++xIndex) {
                         const float xFixedValue = startX + (float)xIndex / grassQuantity;
 
@@ -155,7 +155,7 @@ namespace urchin {
                             leafGrassPatches[patchIndex]->addVertex(globalGrassVertex, grassNormal);
                         }
                     }
-                }, beginX, endX));
+                });
             }
             std::for_each(threads.begin(), threads.end(), [](std::thread& x){x.join();});
 
