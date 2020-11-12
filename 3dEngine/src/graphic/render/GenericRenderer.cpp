@@ -65,25 +65,31 @@ namespace urchin {
         glBindVertexArray(vertexArrayObject);
 
         auto vertexCoordDim = coordDimensionToSize(vertexCoordDimension);
-        auto vertexMemorySize = coordTypeToSize(vertexCoordType) * vertexCoordDim * shapeCount * shapeTypeToVertexCount(shapeType);
+        auto vertexMemorySize = coordTypeToSize(vertexCoordType) * vertexCoordDim * countVertexNumber(shapeType, shapeCount);
         glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
         glBufferData(GL_ARRAY_BUFFER, vertexMemorySize, vertexCoord, GL_STATIC_DRAW);
         glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
         glVertexAttribPointer(SHADER_VERTEX_POSITION, vertexCoordDim, coordTypeToGlType(vertexCoordType), GL_FALSE, 0, nullptr);
 
         auto textureCoordDim = coordDimensionToSize(textureCoordDimension);
-        auto textureMemorySize = coordTypeToSize(textureCoordType) * textureCoordDim * shapeCount * shapeTypeToVertexCount(shapeType);
+        auto textureMemorySize = coordTypeToSize(textureCoordType) * textureCoordDim * countVertexNumber(shapeType, shapeCount);
         glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
         glBufferData(GL_ARRAY_BUFFER, textureMemorySize, textureCoord, GL_STATIC_DRAW);
         glEnableVertexAttribArray(SHADER_TEX_COORD);
         glVertexAttribPointer(SHADER_TEX_COORD, textureCoordDim, coordTypeToGlType(textureCoordType), GL_FALSE, 0, nullptr);
     }
 
-    unsigned int GenericRenderer::shapeTypeToVertexCount(ShapeType shapeType) const {
+    unsigned int GenericRenderer::countVertexNumber(ShapeType shapeType, unsigned int shapeCount) const {
         if (shapeType == ShapeType::RECTANGLE) {
-            return 4;
-        }else if(shapeType == ShapeType::LINE) {
-            return 2;
+            return shapeCount * 4;
+        } else if (shapeType == ShapeType::LINE) {
+            return shapeCount * 2;
+        } else if (shapeType == ShapeType::LINE_STRIP) {
+            return shapeCount + 1;
+        } else if (shapeType == ShapeType::TRIANGLE) {
+            return shapeCount * 3;
+        } else if (shapeType == ShapeType::TRIANGLE_STRIP) {
+            return shapeCount + 2;
         }
         throw std::runtime_error("Unknown shape type: " + std::to_string(shapeType));
     }
@@ -91,8 +97,14 @@ namespace urchin {
     unsigned int GenericRenderer::shapeTypeToGlType(ShapeType shapeType) const {
         if (shapeType == ShapeType::RECTANGLE) {
             return GL_QUADS;
-        }else if(shapeType == ShapeType::LINE) {
+        } else if (shapeType == ShapeType::LINE) {
             return GL_LINES;
+        } else if (shapeType == ShapeType::LINE_STRIP) {
+            return GL_LINE_STRIP;
+        } else if (shapeType == ShapeType::TRIANGLE) {
+            return GL_TRIANGLES;
+        } else if (shapeType == ShapeType::TRIANGLE_STRIP) {
+            return GL_TRIANGLE_STRIP;
         }
         throw std::runtime_error("Unknown shape type: " + std::to_string(shapeType));
     }
@@ -186,7 +198,7 @@ namespace urchin {
         }
 
         glBindVertexArray(vertexArrayObject);
-        glDrawArrays(shapeTypeToGlType(shapeType), 0, shapeTypeToVertexCount(shapeType) * shapeCount);
+        glDrawArrays(shapeTypeToGlType(shapeType), 0, countVertexNumber(shapeType, shapeCount));
 
         resetDrawDefaultValues();
     }

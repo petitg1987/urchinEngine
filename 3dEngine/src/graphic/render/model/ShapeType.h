@@ -5,7 +5,10 @@ namespace urchin {
 
     enum ShapeType {
         RECTANGLE,
-        LINE
+        LINE,
+        LINE_STRIP,
+        TRIANGLE,
+        TRIANGLE_STRIP
     };
 
 }

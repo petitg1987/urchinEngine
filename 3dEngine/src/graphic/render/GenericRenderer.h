@@ -28,7 +28,7 @@ namespace urchin {
             void initializeTexture(Texture) const;
             void initializeDisplay(void *, void *);
 
-            unsigned int shapeTypeToVertexCount(ShapeType) const;
+            unsigned int countVertexNumber(ShapeType, unsigned int) const;
             unsigned int shapeTypeToGlType(ShapeType) const;
             unsigned int coordTypeToSize(CoordType) const;
             unsigned int coordTypeToGlType(CoordType) const;
