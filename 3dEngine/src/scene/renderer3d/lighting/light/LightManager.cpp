@@ -134,7 +134,7 @@ namespace urchin {
         visibleLights.insert(visibleLights.end(), lightsInFrustum.begin(), lightsInFrustum.end());
     }
 
-    void LightManager::loadLights(const std::unique_ptr<Shader> &lightingShader) {
+    void LightManager::loadLights() {
         const std::vector<Light *> &lights = getVisibleLights();
         checkMaxLight(lights);
 
@@ -142,7 +142,7 @@ namespace urchin {
             if (lights.size() > i) {
                 const Light *light = lights[i];
 
-                ShaderDataSender(lightingShader)
+                ShaderDataSender()
                     .sendData(lightsInfo[i].isExistShaderVar, true)
                     .sendData(lightsInfo[i].produceShadowShaderVar, light->isProduceShadow())
                     .sendData(lightsInfo[i].hasParallelBeamsShaderVar, light->hasParallelBeams())
@@ -150,22 +150,22 @@ namespace urchin {
 
                 if (lights[i]->getLightType() == Light::SUN) {
                     const auto *sunLight = dynamic_cast<const SunLight *>(light);
-                    ShaderDataSender(lightingShader).sendData(lightsInfo[i].positionOrDirectionShaderVar, sunLight->getDirections()[0]);
+                    ShaderDataSender().sendData(lightsInfo[i].positionOrDirectionShaderVar, sunLight->getDirections()[0]);
                 } else if (lights[i]->getLightType() == Light::OMNIDIRECTIONAL) {
                     const auto *omnidirectionalLight = dynamic_cast<const OmnidirectionalLight *>(light);
-                    ShaderDataSender(lightingShader)
+                    ShaderDataSender()
                         .sendData(lightsInfo[i].positionOrDirectionShaderVar, omnidirectionalLight->getPosition())
                         .sendData(lightsInfo[i].exponentialAttShaderVar, omnidirectionalLight->getExponentialAttenuation());
                 } else {
                     throw std::invalid_argument("Unknown light type to load shader variables: " + std::to_string(light->getLightType()));
                 }
             } else {
-                ShaderDataSender(lightingShader).sendData(lightsInfo[i].isExistShaderVar, false);
+                ShaderDataSender().sendData(lightsInfo[i].isExistShaderVar, false);
                 break;
             }
         }
 
-        ShaderDataSender(lightingShader).sendData(globalAmbientColorShaderVar, getGlobalAmbientColor());
+        ShaderDataSender().sendData(globalAmbientColorShaderVar, getGlobalAmbientColor());
     }
 
     void LightManager::checkMaxLight(const std::vector<Light *> &lights) const {

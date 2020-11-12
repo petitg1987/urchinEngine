@@ -14,7 +14,7 @@ namespace urchin {
         public:
             virtual ~CustomShaderVariable() = default;
 
-            virtual void loadCustomShaderVariables(std::unique_ptr<Shader> &) = 0;
+            virtual void loadCustomShaderVariables() = 0;
 
     };
 

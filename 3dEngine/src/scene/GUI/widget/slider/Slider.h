@@ -25,7 +25,7 @@ namespace urchin {
             void setLeftButtonEventListener(const std::shared_ptr<EventListener> &);
             void setRightButtonEventListener(const std::shared_ptr<EventListener> &);
 
-            void display(const std::unique_ptr<Shader> &, const ShaderVar &, float) override;
+            void display(const ShaderVar &, float) override;
 
         private:
             std::string buttonNameFont, valuesNameFont;

@@ -11,9 +11,6 @@ namespace urchin {
 
     class ShaderDataSender {
         public:
-            explicit ShaderDataSender(const std::unique_ptr<Shader> &);
-            explicit ShaderDataSender(const std::shared_ptr<Shader> &);
-
             ShaderDataSender &sendData(const ShaderVar &, float);
             ShaderDataSender &sendData(const ShaderVar &, unsigned int, const float *);
             ShaderDataSender &sendData(const ShaderVar &, int);
@@ -41,9 +38,6 @@ namespace urchin {
             ShaderDataSender &sendData(const ShaderVar &, unsigned int, const Vector3<float> *);
             ShaderDataSender &sendData(const ShaderVar &, const Vector4<float> &);
             ShaderDataSender &sendData(const ShaderVar &, unsigned int, const Vector4<float> *);
-
-        private:
-            const Shader *shader;
     };
 
 }

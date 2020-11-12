@@ -22,7 +22,7 @@ namespace urchin {
         diffuseTexSamplerShaderVar = ShaderVar(guiShader, "diffuseTexture");
 
         int diffuseTexUnit = 0;
-        ShaderDataSender(guiShader).sendData(diffuseTexSamplerShaderVar, diffuseTexUnit);
+        ShaderDataSender().sendData(diffuseTexSamplerShaderVar, diffuseTexUnit);
     }
 
     GUIRenderer::~GUIRenderer() {
@@ -36,7 +36,7 @@ namespace urchin {
         mProjection.setValues(2.0f/(float)sceneWidth, 0.0f, -1.0f,
             0.0f, -2.0f/(float)sceneHeight, 1.0f,
             0.0f, 0.0f, 1.0f);
-        ShaderDataSender(guiShader).sendData(mProjectionShaderVar, mProjection);
+        ShaderDataSender().sendData(mProjectionShaderVar, mProjection);
 
         //widgets resize
         for (long i=(long)widgets.size()-1; i>=0; --i) {
@@ -128,9 +128,9 @@ namespace urchin {
         for (auto &widget : widgets) {
             if (widget->isVisible()) {
                 Vector2<int> translateVector(widget->getGlobalPositionX(), widget->getGlobalPositionY());
-                ShaderDataSender(guiShader).sendData(translateDistanceShaderVar, translateVector);
+                ShaderDataSender().sendData(translateDistanceShaderVar, translateVector);
 
-                widget->display(guiShader, translateDistanceShaderVar, dt);
+                widget->display(translateDistanceShaderVar, dt);
             }
         }
 

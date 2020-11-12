@@ -130,7 +130,7 @@ namespace urchin {
         int depthTexUnit = 0;
         int diffuseTexUnit = 1;
         int normalAndAmbientTexUnit = 2;
-        ShaderDataSender(lightingShader)
+        ShaderDataSender()
             .sendData(ShaderVar(lightingShader, "depthTex"), depthTexUnit)
             .sendData(ShaderVar(lightingShader, "colorTex"), diffuseTexUnit)
             .sendData(ShaderVar(lightingShader, "normalAndAmbientTex"), normalAndAmbientTexUnit)
@@ -516,20 +516,20 @@ namespace urchin {
         ScopeProfiler profiler("3d", "lightPassRender");
 
         lightingRenderer->clearAdditionalTextures();
-        ShaderDataSender(lightingShader)
+        ShaderDataSender()
                 .sendData(mInverseViewProjectionShaderVar, (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse())
                 .sendData(viewPositionShaderVar, camera->getPosition());
 
-        lightManager->loadLights(lightingShader);
+        lightManager->loadLights();
 
-        fogManager->loadFog(lightingShader);
+        fogManager->loadFog();
 
         if (isAmbientOcclusionActivated) {
-            ambientOcclusionManager->loadAOTexture(lightingRenderer, lightingShader);
+            ambientOcclusionManager->loadAOTexture(lightingRenderer);
         }
 
         if (isShadowActivated) {
-            shadowManager->loadShadowMaps(lightingRenderer, lightingShader);
+            shadowManager->loadShadowMaps(lightingRenderer);
         }
 
         lightingShader->bind();

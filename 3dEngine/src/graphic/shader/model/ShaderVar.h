@@ -12,12 +12,14 @@ namespace urchin {
         public:
             ShaderVar();
             ShaderVar(const std::unique_ptr<Shader> &, std::string &&);
-            ShaderVar(const std::shared_ptr<Shader> &, std::string &&);
 
             bool isValid() const;
+
+            Shader *getShader() const;
             int getVariableLocation() const;
 
         private:
+            Shader *shader;
             int variableLocation;
     };
 

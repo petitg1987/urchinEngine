@@ -22,7 +22,7 @@ namespace urchin {
 
             std::string getText();
 
-            void display(const std::unique_ptr<Shader> &, const ShaderVar &, float) override;
+            void display(const ShaderVar &, float) override;
 
         private:
             bool onKeyPressEvent(unsigned int) override;

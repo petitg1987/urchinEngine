@@ -20,7 +20,7 @@ namespace urchin {
         this->shadowData = shadowData;
     }
 
-    void ShadowModelShaderVariable::loadCustomShaderVariables(const Model *, std::unique_ptr<Shader> &modelShader) {
+    void ShadowModelShaderVariable::loadCustomShaderVariables(const Model *) {
         unsigned int layersToUpdate = 0;
 
         for (std::size_t i=0; i<shadowData->getNbFrustumShadowData(); ++i) {
@@ -30,7 +30,7 @@ namespace urchin {
             }
         }
 
-        ShaderDataSender(modelShader).sendData(layersToUpdateShaderVar, layersToUpdate);
+        ShaderDataSender().sendData(layersToUpdateShaderVar, layersToUpdate);
     }
 
 }

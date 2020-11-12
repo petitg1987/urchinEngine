@@ -58,7 +58,7 @@ namespace urchin {
         glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(DataVertex), dataVertices, GL_DYNAMIC_DRAW);
     }
 
-    void Mesh::display(const MeshParameter &meshParameter, const std::unique_ptr<Shader> &modelShader) const {
+    void Mesh::display(const MeshParameter &meshParameter) const {
         if (meshParameter.getDiffuseTextureUnit() != -1) {
             glActiveTexture(GL_TEXTURE0 + meshParameter.getDiffuseTextureUnit());
             glBindTexture(GL_TEXTURE_2D, constMesh->getMaterial()->getDiffuseTexture()->getTextureID());
@@ -70,7 +70,7 @@ namespace urchin {
         }
 
         if (meshParameter.getAmbientFactorShaderVar().isValid()) {
-            ShaderDataSender(modelShader).sendData(meshParameter.getAmbientFactorShaderVar(), constMesh->getMaterial()->getAmbientFactor());
+            ShaderDataSender().sendData(meshParameter.getAmbientFactorShaderVar(), constMesh->getMaterial()->getAmbientFactor());
         }
 
         glBindVertexArray(vertexArrayObject);

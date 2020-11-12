@@ -33,7 +33,7 @@ namespace urchin {
             const Point4<float> &getGlobalAmbientColor() const;
 
             void updateLights(const Frustum<float> &);
-            void loadLights(const std::unique_ptr<Shader> &);
+            void loadLights();
             void postUpdateLights();
 
             void drawLightOctree(const Matrix4<float> &, const Matrix4<float> &) const;

@@ -567,7 +567,7 @@ namespace urchin {
         glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
     }
 
-    void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer> &lightingRenderer, const std::unique_ptr<Shader> &lightingShader) {
+    void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer> &lightingRenderer) {
         int i = 0;
         const std::vector<Light *> &visibleLights = lightManager->getVisibleLights();
         for (auto *visibleLight : visibleLights) {
@@ -577,11 +577,11 @@ namespace urchin {
 
                 unsigned int texUnit = lightingRenderer
                         ->addAdditionalTexture(Texture::build(shadowData->getFilteredShadowMapTextureID(), Texture::ARRAY, TextureParam::buildLinear()));
-                ShaderDataSender(lightingShader).sendData(lightsLocation[i].shadowMapTexShaderVar, static_cast<int>(texUnit));
+                ShaderDataSender().sendData(lightsLocation[i].shadowMapTexShaderVar, static_cast<int>(texUnit));
 
                 for (std::size_t j=0; j<nbShadowMaps; ++j) {
                     Matrix4<float> lightProjectionViewMatrix = shadowData->getFrustumShadowData(j)->getLightProjectionMatrix() * shadowData->getLightViewMatrix();
-                    ShaderDataSender(lightingShader).sendData(lightsLocation[i].mLightProjectionViewShaderVar[j], lightProjectionViewMatrix);
+                    ShaderDataSender().sendData(lightsLocation[i].mLightProjectionViewShaderVar[j], lightProjectionViewMatrix);
                 }
             }
             ++i;
@@ -593,7 +593,7 @@ namespace urchin {
             depthSplitDistance[shadowMapIndex] = ((projectionMatrix(2, 2)*-currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance)) / 2.0f + 0.5f;
         }
 
-        ShaderDataSender(lightingShader).sendData(depthSplitDistanceShaderVar, nbShadowMaps, depthSplitDistance);
+        ShaderDataSender().sendData(depthSplitDistanceShaderVar, nbShadowMaps, depthSplitDistance);
         delete []depthSplitDistance;
     }
 

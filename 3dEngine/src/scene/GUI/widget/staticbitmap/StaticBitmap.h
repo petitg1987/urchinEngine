@@ -19,7 +19,7 @@ namespace urchin {
 
             void createOrUpdateWidget() override;
 
-            void display(const std::unique_ptr<Shader> &, const ShaderVar &, float) override;
+            void display(const ShaderVar &, float) override;
 
         private:
             //properties

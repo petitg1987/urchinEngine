@@ -28,11 +28,11 @@ namespace urchin {
         fogMaxHeightShaderVar = ShaderVar(lightingShader, "fogMaxHeight");
     }
 
-    void FogManager::loadFog(const std::unique_ptr<Shader> &lightingShader) {
-        ShaderDataSender(lightingShader).sendData(hasFogShaderVar, !fogs.empty());
+    void FogManager::loadFog() {
+        ShaderDataSender().sendData(hasFogShaderVar, !fogs.empty());
 
         if (!fogs.empty()) {
-            ShaderDataSender(lightingShader)
+            ShaderDataSender()
                 .sendData(fogDensityShaderVar, fogs.top()->getDensity())
                 .sendData(fogGradientShaderVar, fogs.top()->getGradient())
                 .sendData(fogColorShaderVar, Vector4<float>(fogs.top()->getColor(), 1.0))

@@ -15,7 +15,7 @@ namespace urchin {
 
             void update(const std::vector<Bone> &);
 
-            void display(const MeshParameter &, const std::unique_ptr<Shader> &) const;
+            void display(const MeshParameter &) const;
 
             void drawBaseBones(const Matrix4<float> &, const Matrix4<float> &) const;
 

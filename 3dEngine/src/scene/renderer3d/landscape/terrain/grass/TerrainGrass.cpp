@@ -57,7 +57,7 @@ namespace urchin {
 
         int grassTexUnit = 0;
         int grassMaskTexUnit = 1;
-        ShaderDataSender(terrainGrassShader)
+        ShaderDataSender()
             .sendData(ShaderVar(terrainGrassShader, "grassTex"), grassTexUnit)
             .sendData(ShaderVar(terrainGrassShader, "grassMaskTex"), grassMaskTexUnit);
 
@@ -87,19 +87,19 @@ namespace urchin {
     void TerrainGrass::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
 
-        ShaderDataSender(terrainGrassShader).sendData(mProjectionShaderVar, projectionMatrix);
+        ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix);
     }
 
     void TerrainGrass::refreshWith(const std::shared_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition) {
         generateGrass(mesh, terrainPosition);
 
-        ShaderDataSender(terrainGrassShader)
+        ShaderDataSender()
             .sendData(terrainMinPointShaderVar, mesh->getVertices()[0])
             .sendData(terrainMaxPointShaderVar, mesh->getVertices()[mesh->getXSize()*mesh->getZSize()-1]);
     }
 
     void TerrainGrass::refreshWith(float ambient) {
-        ShaderDataSender(terrainGrassShader).sendData(terrainAmbientShaderVar, ambient);
+        ShaderDataSender().sendData(terrainAmbientShaderVar, ambient);
     }
 
     void TerrainGrass::generateGrass(const std::shared_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition) {
@@ -302,7 +302,7 @@ namespace urchin {
     void TerrainGrass::setGrassDisplayDistance(float grassDisplayDistance) {
         this->grassDisplayDistance = grassDisplayDistance;
 
-        ShaderDataSender(terrainGrassShader).sendData(grassDisplayDistanceShaderVar, grassDisplayDistance);
+        ShaderDataSender().sendData(grassDisplayDistanceShaderVar, grassDisplayDistance);
     }
 
     float TerrainGrass::getGrassHeight() const {
@@ -312,7 +312,7 @@ namespace urchin {
     void TerrainGrass::setGrassHeight(float grassHeight) {
         this->grassHeight = grassHeight;
 
-        ShaderDataSender(terrainGrassShader).sendData(grassHeightShaderVar, grassHeight);
+        ShaderDataSender().sendData(grassHeightShaderVar, grassHeight);
     }
 
     float TerrainGrass::getGrassLength() const {
@@ -322,7 +322,7 @@ namespace urchin {
     void TerrainGrass::setGrassLength(float grassLength) {
         this->grassLength = grassLength;
 
-        ShaderDataSender(terrainGrassShader).sendData(grassHalfLengthShaderVar, grassLength / 2.0f);
+        ShaderDataSender().sendData(grassHalfLengthShaderVar, grassLength / 2.0f);
     }
 
     unsigned int TerrainGrass::getNumGrassInTexture() const {
@@ -332,7 +332,7 @@ namespace urchin {
     void TerrainGrass::setNumGrassInTexture(unsigned int numGrassInTex) {
         this->numGrassInTex = numGrassInTex;
 
-        ShaderDataSender(terrainGrassShader).sendData(numGrassInTexShaderVar, static_cast<int>(numGrassInTex));
+        ShaderDataSender().sendData(numGrassInTexShaderVar, static_cast<int>(numGrassInTex));
     }
 
     float TerrainGrass::getGrassQuantity() const {
@@ -352,7 +352,7 @@ namespace urchin {
     void TerrainGrass::setWindDirection(const Vector3<float> &windDirection) {
         this->windDirection = windDirection.normalize();
 
-        ShaderDataSender(terrainGrassShader).sendData(windDirectionShaderVar, this->windDirection);
+        ShaderDataSender().sendData(windDirectionShaderVar, this->windDirection);
     }
 
     float TerrainGrass::getWindStrength() const {
@@ -362,7 +362,7 @@ namespace urchin {
     void TerrainGrass::setWindStrength(float windStrength) {
         this->windStrength = windStrength;
 
-        ShaderDataSender(terrainGrassShader).sendData(windStrengthShaderVar, windStrength);
+        ShaderDataSender().sendData(windStrengthShaderVar, windStrength);
     }
 
     void TerrainGrass::display(const Camera *camera, float dt) {
@@ -380,7 +380,7 @@ namespace urchin {
             glBindTexture(GL_TEXTURE_2D, grassMaskTexture->getTextureID());
 
             sumTimeStep += dt;
-            ShaderDataSender(terrainGrassShader)
+            ShaderDataSender()
                 .sendData(sumTimeStepShaderVar, sumTimeStep)
                 .sendData(mViewShaderVar, camera->getViewMatrix())
                 .sendData(cameraPositionShaderVar, camera->getPosition());

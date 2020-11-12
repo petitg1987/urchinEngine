@@ -134,7 +134,7 @@ namespace urchin {
         mProjection.setValues(2.0f/(float)sceneWidth, 0.0f, -1.0f,
                 0.0f, -2.0f/(float)sceneHeight, 1.0f,
                 0.0f, 0.0f, 1.0f);
-        ShaderDataSender(displayTextureShader).sendData(mProjectionShaderVar, mProjection);
+        ShaderDataSender().sendData(mProjectionShaderVar, mProjection);
 
         //update the display
         std::vector<float> vertexCoord = {minX, minY, maxX, minY, maxX, maxY, minX, maxY};
@@ -162,13 +162,13 @@ namespace urchin {
         displayTextureShader->bind();
         float cameraPlanes[2] = {nearPlane, farPlane};
         int colorTexUnit = 0;
-        ShaderDataSender(displayTextureShader)
+        ShaderDataSender()
             .sendData(ShaderVar(displayTextureShader, "colorIntensity"), colorIntensity)
             .sendData(ShaderVar(displayTextureShader, "cameraPlanes"), 2, cameraPlanes)
             .sendData(ShaderVar(displayTextureShader, "colorTex"), colorTexUnit);
 
         if (layer!=-1) {
-            ShaderDataSender(displayTextureShader).sendData(ShaderVar(displayTextureShader, "layer"), layer);
+            ShaderDataSender().sendData(ShaderVar(displayTextureShader, "layer"), layer);
         }
 
         mProjectionShaderVar = ShaderVar(displayTextureShader, "mProjection");

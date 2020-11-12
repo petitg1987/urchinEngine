@@ -114,10 +114,10 @@ namespace urchin {
         return true;
     }
 
-    void Window::display(const std::unique_ptr<Shader> &guiShader, const ShaderVar &translateDistanceShaderVar, float dt) {
+    void Window::display(const ShaderVar &translateDistanceShaderVar, float dt) {
         windowRenderer->draw();
 
-        Widget::display(guiShader, translateDistanceShaderVar, dt);
+        Widget::display(translateDistanceShaderVar, dt);
     }
 
 }

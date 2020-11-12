@@ -42,7 +42,7 @@ namespace urchin {
 
             int diffuseTexUnit = 0;
             int normalTexUnit = 1;
-            ShaderDataSender(modelShader)
+            ShaderDataSender()
                 .sendData(ShaderVar(modelShader, "diffuseTex"), diffuseTexUnit)
                 .sendData(ShaderVar(modelShader, "normalTex"), normalTexUnit);
 
@@ -71,7 +71,7 @@ namespace urchin {
 
         //default matrix
         projectionMatrix = Matrix4<float>();
-        ShaderDataSender(modelShader).sendData(mProjectionShaderVar, projectionMatrix);
+        ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix);
 
         isInitialized = true;
     }
@@ -92,7 +92,7 @@ namespace urchin {
     void ModelDisplayer::onCameraProjectionUpdate(const Camera *camera) {
         this->projectionMatrix = camera->getProjectionMatrix();
 
-        ShaderDataSender(modelShader).sendData(mProjectionShaderVar, projectionMatrix);
+        ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix);
     }
 
     ShaderVar ModelDisplayer::getShaderVar(const std::string &name) const {
@@ -144,22 +144,22 @@ namespace urchin {
             throw std::runtime_error("Model displayer must be initialized before display");
         }
 
-        ShaderDataSender(modelShader).sendData(mViewShaderVar, viewMatrix);
+        ShaderDataSender().sendData(mViewShaderVar, viewMatrix);
         if (customShaderVariable) {
-            customShaderVariable->loadCustomShaderVariables(modelShader);
+            customShaderVariable->loadCustomShaderVariables();
         }
 
         modelShader->bind();
         for (const auto &model : models) {
-            ShaderDataSender(modelShader).sendData(mModelShaderVar, model->getTransform().getTransformMatrix());
+            ShaderDataSender().sendData(mModelShaderVar, model->getTransform().getTransformMatrix());
             if (displayMode==DEFAULT_MODE) {
-                ShaderDataSender(modelShader).sendData(mNormalShaderVar, model->getTransform().getTransformMatrix().toMatrix3().inverse().transpose());
+                ShaderDataSender().sendData(mNormalShaderVar, model->getTransform().getTransformMatrix().toMatrix3().inverse().transpose());
             }
             if (customModelShaderVariable) {
-                customModelShaderVariable->loadCustomShaderVariables(model, modelShader);
+                customModelShaderVariable->loadCustomShaderVariables(model);
             }
 
-            model->display(meshParameter, modelShader);
+            model->display(meshParameter);
         }
     }
 

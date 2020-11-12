@@ -68,7 +68,7 @@ namespace urchin {
             virtual void reset();
             void onDisable();
 
-            virtual void display(const std::unique_ptr<Shader> &, const ShaderVar &, float);
+            virtual void display(const ShaderVar &, float);
 
         protected:
             unsigned int getSceneWidth() const;

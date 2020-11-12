@@ -26,7 +26,7 @@ namespace urchin {
 
     void BilateralBlurFilter::onCameraProjectionUpdate(float nearPlane, float farPlane) {
         float cameraPlanes[2] = {nearPlane, farPlane};
-        ShaderDataSender(getTextureFilterShader()).sendData(cameraPlanesShaderVar, 2, cameraPlanes);
+        ShaderDataSender().sendData(cameraPlanesShaderVar, 2, cameraPlanes);
     }
 
     std::string BilateralBlurFilter::getShaderName() const {
@@ -35,7 +35,7 @@ namespace urchin {
 
     void BilateralBlurFilter::initiateAdditionalShaderVariables(const std::unique_ptr<Shader> &textureFilterShader) {
         int depthTexUnit = 1;
-        ShaderDataSender(textureFilterShader).sendData(ShaderVar(textureFilterShader, "depthTex"), depthTexUnit);
+        ShaderDataSender().sendData(ShaderVar(textureFilterShader, "depthTex"), depthTexUnit);
 
         cameraPlanesShaderVar = ShaderVar(textureFilterShader, "cameraPlanes");
     }

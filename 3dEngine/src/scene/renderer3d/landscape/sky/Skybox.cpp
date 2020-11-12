@@ -89,7 +89,7 @@ namespace urchin {
         mViewShaderVar = ShaderVar(skyboxShader, "mView");
 
         int diffuseTexUnit = 0;
-        ShaderDataSender(skyboxShader).sendData(ShaderVar(skyboxShader, "diffuseTexture"), diffuseTexUnit);
+        ShaderDataSender().sendData(ShaderVar(skyboxShader, "diffuseTexture"), diffuseTexUnit);
 
         std::vector<float> vertexCoord = {
             //x negative:
@@ -140,7 +140,7 @@ namespace urchin {
     }
 
     void Skybox::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) const {
-        ShaderDataSender(skyboxShader).sendData(mProjectionShaderVar, projectionMatrix);
+        ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix);
     }
 
     float Skybox::getOffsetY() const {
@@ -157,7 +157,7 @@ namespace urchin {
 
     void Skybox::display(const Matrix4<float> &viewMatrix, const Point3<float> &cameraPosition) {
         translationMatrix.buildTranslation(cameraPosition.X, cameraPosition.Y + offsetY, cameraPosition.Z);
-        ShaderDataSender(skyboxShader).sendData(mViewShaderVar, viewMatrix * translationMatrix);
+        ShaderDataSender().sendData(mViewShaderVar, viewMatrix * translationMatrix);
 
         skyboxShader->bind();
         skyboxRenderer->draw();

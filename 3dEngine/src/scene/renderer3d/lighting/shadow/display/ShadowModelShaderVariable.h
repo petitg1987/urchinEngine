@@ -21,7 +21,7 @@ namespace urchin {
             void setLayersToUpdateShaderVar(const ShaderVar &);
             void setShadowData(const ShadowData *);
 
-            void loadCustomShaderVariables(const Model *, std::unique_ptr<Shader> &) override;
+            void loadCustomShaderVariables(const Model *) override;
 
         private:
             ShaderVar layersToUpdateShaderVar;

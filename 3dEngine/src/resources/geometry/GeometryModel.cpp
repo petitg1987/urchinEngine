@@ -82,7 +82,7 @@ namespace urchin {
     }
 
     void GeometryModel::display(const Matrix4<float> &viewMatrix) const {
-        ShaderDataSender(shader)
+        ShaderDataSender()
             .sendData(mProjectionShaderVar, projectionMatrix)
             .sendData(mViewShaderVar, viewMatrix * modelMatrix)
             .sendData(colorShaderVar, color);

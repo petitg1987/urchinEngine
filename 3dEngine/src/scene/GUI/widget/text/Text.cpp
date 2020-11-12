@@ -130,12 +130,12 @@ namespace urchin {
         return font;
     }
 
-    void Text::display(const std::unique_ptr<Shader> &guiShader, const ShaderVar &translateDistanceShaderVar, float dt) {
+    void Text::display(const ShaderVar &translateDistanceShaderVar, float dt) {
         if(textRenderer) {
             textRenderer->draw();
         }
 
-        Widget::display(guiShader, translateDistanceShaderVar, dt);
+        Widget::display(translateDistanceShaderVar, dt);
     }
 
 }

@@ -32,7 +32,7 @@ namespace urchin {
         fxaaShader = ShaderBuilder().createShader("fxaa.vert", "", "fxaa.frag", fxaaTokens);
         invSceneSizeShaderVar = ShaderVar(fxaaShader, "invSceneSize");
 
-        ShaderDataSender(fxaaShader)
+        ShaderDataSender()
                 .sendData(ShaderVar(fxaaShader, "tex"), 0)
                 .sendData(invSceneSizeShaderVar, Point2<float>(1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight));
     }
@@ -41,7 +41,7 @@ namespace urchin {
         this->sceneWidth = sceneWidth;
         this->sceneHeight = sceneHeight;
 
-        ShaderDataSender(fxaaShader).sendData(invSceneSizeShaderVar, Point2<float>(1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight));
+        ShaderDataSender().sendData(invSceneSizeShaderVar, Point2<float>(1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight));
     }
 
     void AntiAliasingManager::setQuality(Quality quality) {

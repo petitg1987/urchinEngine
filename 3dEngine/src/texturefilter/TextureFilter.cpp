@@ -62,7 +62,7 @@ namespace urchin {
         }
 
         int texUnit = 0;
-        ShaderDataSender(textureFilterShader).sendData(ShaderVar(textureFilterShader, "tex"), texUnit);
+        ShaderDataSender().sendData(ShaderVar(textureFilterShader, "tex"), texUnit);
         layersToUpdateShaderVar = ShaderVar(textureFilterShader, "layersToUpdate");
         initiateAdditionalShaderVariables(textureFilterShader);
     }
@@ -147,7 +147,7 @@ namespace urchin {
 
         if (textureType == GL_TEXTURE_2D_ARRAY) {
             assert(layersToUpdate != -1);
-            ShaderDataSender(textureFilterShader).sendData(layersToUpdateShaderVar, static_cast<unsigned int>(layersToUpdate));
+            ShaderDataSender().sendData(layersToUpdateShaderVar, static_cast<unsigned int>(layersToUpdate));
         }
 
         glViewport(0, 0, textureWidth, textureHeight);

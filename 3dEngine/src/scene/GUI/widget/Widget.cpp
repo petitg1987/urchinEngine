@@ -322,13 +322,13 @@ namespace urchin {
         }
     }
 
-    void Widget::display(const std::unique_ptr<Shader> &guiShader, const ShaderVar &translateDistanceShaderVar, float dt) { //TODO use guiShader from translateDistanceShaderVar ?
+    void Widget::display(const ShaderVar &translateDistanceShaderVar, float dt) {
         for (auto &child : children) {
             if (child->isVisible()) {
                 Vector2<int> translateVector(child->getGlobalPositionX(), child->getGlobalPositionY());
-                ShaderDataSender(guiShader).sendData(translateDistanceShaderVar, translateVector);
+                ShaderDataSender().sendData(translateDistanceShaderVar, translateVector);
 
-                child->display(guiShader, translateDistanceShaderVar, dt);
+                child->display(translateDistanceShaderVar, dt);
             }
         }
     }

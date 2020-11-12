@@ -20,7 +20,7 @@ namespace urchin {
             void setProjectionMatricesShaderVar(const ShaderVar &);
             void setShadowData(const ShadowData *);
 
-            void loadCustomShaderVariables(std::unique_ptr<Shader> &) override;
+            void loadCustomShaderVariables() override;
 
         private:
             void updateProjectionMatrices();

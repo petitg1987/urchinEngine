@@ -21,8 +21,8 @@ namespace urchin {
         updateProjectionMatrices();
     }
 
-    void ShadowShaderVariable::loadCustomShaderVariables(std::unique_ptr<Shader> &modelShader) {
-        ShaderDataSender(modelShader).sendData(mModelProjectionMatrixShaderVar, projectionMatrices.size(), &projectionMatrices[0]);
+    void ShadowShaderVariable::loadCustomShaderVariables() {
+        ShaderDataSender().sendData(mModelProjectionMatrixShaderVar, projectionMatrices.size(), &projectionMatrices[0]);
     }
 
     void ShadowShaderVariable::updateProjectionMatrices() {

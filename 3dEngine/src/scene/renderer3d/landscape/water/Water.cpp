@@ -41,7 +41,7 @@ namespace urchin {
 
         int normalTexUnit = 0;
         int dudvMapUnit = 1;
-        ShaderDataSender(waterShader)
+        ShaderDataSender()
             .sendData(ShaderVar(waterShader, "normalTex"), normalTexUnit)
             .sendData(ShaderVar(waterShader, "dudvMap"), dudvMapUnit);
 
@@ -149,7 +149,7 @@ namespace urchin {
     void Water::setWaterColor(const Vector3<float> &waterColor) {
         this->waterColor = waterColor;
 
-        ShaderDataSender(waterShader).sendData(waterColorShaderVar, waterColor);
+        ShaderDataSender().sendData(waterColorShaderVar, waterColor);
     }
 
     const Vector3<float> &Water::getWaterColor() const {
@@ -205,7 +205,7 @@ namespace urchin {
     void Water::setWaveSpeed(float waveSpeed) {
         this->waveSpeed = waveSpeed;
 
-        ShaderDataSender(waterShader).sendData(waveSpeedShaderVar, waveSpeed);
+        ShaderDataSender().sendData(waveSpeedShaderVar, waveSpeed);
     }
 
     float Water::getWaveSpeed() const {
@@ -215,7 +215,7 @@ namespace urchin {
     void Water::setWaveStrength(float waveStrength) {
         this->waveStrength = waveStrength;
 
-        ShaderDataSender(waterShader).sendData(waveStrengthShaderVar, waveStrength);
+        ShaderDataSender().sendData(waveStrengthShaderVar, waveStrength);
     }
 
     float Water::getWaveStrength() const {
@@ -265,7 +265,7 @@ namespace urchin {
     void Water::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
 
-        ShaderDataSender(waterShader).sendData(mProjectionShaderVar, projectionMatrix);
+        ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix);
     }
 
     void Water::display(const Camera *camera, FogManager *fogManager, float dt) {
@@ -281,7 +281,7 @@ namespace urchin {
             }
 
             sumTimeStep += dt;
-            ShaderDataSender(waterShader)
+            ShaderDataSender()
                     .sendData(mViewShaderVar, camera->getViewMatrix())
                     .sendData(sumTimeStepShaderVar, sumTimeStep);
 

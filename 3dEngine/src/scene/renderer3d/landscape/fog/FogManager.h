@@ -18,7 +18,7 @@ namespace urchin {
 
             void initiateShaderVariables(const std::unique_ptr<Shader> &);
 
-            void loadFog(const std::unique_ptr<Shader> &);
+            void loadFog();
 
         private:
             std::stack<std::shared_ptr<Fog>> fogs;

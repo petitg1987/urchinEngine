@@ -98,7 +98,7 @@ namespace urchin {
 
         int depthTexUnit = 0;
         int normalAndAmbientTexUnit = 1;
-        ShaderDataSender(ambientOcclusionShader)
+        ShaderDataSender()
                 .sendData(ShaderVar(ambientOcclusionShader, "depthTex"), depthTexUnit)
                 .sendData(ShaderVar(ambientOcclusionShader, "normalAndAmbientTex"), normalAndAmbientTexUnit);
 
@@ -117,7 +117,7 @@ namespace urchin {
         createOrUpdateAOTexture();
         createOrUpdateAOShader();
 
-        ShaderDataSender(ambientOcclusionShader).sendData(resolutionShaderVar, Vector2<float>(sceneWidth, sceneHeight));
+        ShaderDataSender().sendData(resolutionShaderVar, Vector2<float>(sceneWidth, sceneHeight));
     }
 
     void AmbientOcclusionManager::createOrUpdateAOTexture() {
@@ -184,7 +184,7 @@ namespace urchin {
             ssaoKernel.push_back(sample);
         }
 
-        ShaderDataSender(ambientOcclusionShader).sendData(ShaderVar(ambientOcclusionShader, "samples"), ssaoKernel.size(), &ssaoKernel[0]);
+        ShaderDataSender().sendData(ShaderVar(ambientOcclusionShader, "samples"), ssaoKernel.size(), &ssaoKernel[0]);
 
         if (DEBUG_EXPORT_SSAO_KERNEL) {
             exportSVG(std::string(std::getenv("HOME")) + "/ssaoKernel.html", ssaoKernel);
@@ -213,7 +213,7 @@ namespace urchin {
         renderer->updateTexture(2, Texture::build(noiseTexId, Texture::DEFAULT, TextureParam::buildRepeatNearest()));
 
         int noiseTexUnit = 2;
-        ShaderDataSender(ambientOcclusionShader).sendData(ShaderVar(ambientOcclusionShader, "noiseTex"), noiseTexUnit);
+        ShaderDataSender().sendData(ShaderVar(ambientOcclusionShader, "noiseTex"), noiseTexUnit);
     }
 
     void AmbientOcclusionManager::exportSVG(const std::string &filename, const std::vector<Vector3<float>> &ssaoKernel) const {
@@ -325,7 +325,7 @@ namespace urchin {
         glGetIntegerv(GL_FRAMEBUFFER_BINDING, &activeFBO);
         glBindFramebuffer(GL_FRAMEBUFFER, fboID);
 
-        ShaderDataSender(ambientOcclusionShader)
+        ShaderDataSender()
             .sendData(mInverseViewProjectionShaderVar, (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse())
             .sendData(mProjectionShaderVar, camera->getProjectionMatrix())
             .sendData(mViewShaderVar, camera->getViewMatrix());
@@ -344,9 +344,9 @@ namespace urchin {
         glBindFramebuffer(GL_FRAMEBUFFER, static_cast<GLuint>(activeFBO));
     }
 
-    void AmbientOcclusionManager::loadAOTexture(const std::unique_ptr<GenericRenderer> &lightingRenderer, const std::unique_ptr<Shader> &lightingShader) const {
+    void AmbientOcclusionManager::loadAOTexture(const std::unique_ptr<GenericRenderer> &lightingRenderer) const {
         unsigned int aoTextureUnit = lightingRenderer->addAdditionalTexture(Texture::build(getAmbientOcclusionTextureID(), Texture::DEFAULT, TextureParam::buildLinear()));
-        ShaderDataSender(lightingShader).sendData(ambientOcclusionTexShaderVar, static_cast<int>(aoTextureUnit));
+        ShaderDataSender().sendData(ambientOcclusionTexShaderVar, static_cast<int>(aoTextureUnit));
     }
 
 }
