@@ -1,4 +1,8 @@
-# Mingw install
+# Linux
+* Execute:
+  * `sudo apt install qt5-default qtbase5-dev libglew-dev libopenal-dev libsndfile1-dev libfreetype6-dev libcppunit-dev libcurl4-gnutls-dev`
+
+# Windows
 * Mingw:
   * Download: https://sourceforge.net/projects/mingw-w64/
   * Select architecture: X86_64, select path: C:\MinGW
