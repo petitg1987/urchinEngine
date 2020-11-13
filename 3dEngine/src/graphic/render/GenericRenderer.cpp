@@ -91,6 +91,8 @@ namespace urchin {
 
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferId);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.indicesCount * sizeof(unsigned int), indices.ptr, GL_STATIC_DRAW);
+
+            indices.ptr = nullptr; //reset pointer because no guaranteed pointer is still valid after initialization
         }
     }
 
