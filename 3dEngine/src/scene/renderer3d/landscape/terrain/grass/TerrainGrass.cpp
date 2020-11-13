@@ -218,23 +218,22 @@ namespace urchin {
     }
 
     void TerrainGrass::createRenderers(const std::vector<TerrainGrassQuadtree *> &leafGrassPatches) {
-        TextureParam grassTextureParam = TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY);
-        TextureParam grassMaskTextureParam = TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::NO_ANISOTROPY);
-        for (auto *grassQuadtree : leafGrassPatches) {
-            std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(ShapeType::POINT);
-            rendererBuilder
-                    ->enableDepthTest()
-                    ->disableCullFace()
-                    ->addPointsCoord(&grassQuadtree->getGrassVertices())
-                    ->addPointsCoord(&grassQuadtree->getGrassNormals());
+        if(grassTexture) {
+            TextureParam grassTextureParam = TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY);
+            TextureParam grassMaskTextureParam = TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::NO_ANISOTROPY);
 
-            if(grassTexture) {
-                rendererBuilder->addTexture(Texture::build(grassTexture->getTextureID(), Texture::DEFAULT, grassTextureParam));
+            for (auto *grassQuadtree : leafGrassPatches) {
+                std::unique_ptr<GenericRenderer> renderer = std::make_unique<GenericRendererBuilder>(ShapeType::POINT)
+                        ->enableDepthTest()
+                        ->disableCullFace()
+                        ->addPointsCoord(&grassQuadtree->getGrassVertices())
+                        ->addPointsCoord(&grassQuadtree->getGrassNormals())
+                        ->addTexture(Texture::build(grassTexture->getTextureID(), Texture::DEFAULT, grassTextureParam))
+                        ->addTexture(Texture::build(grassMaskTexture->getTextureID(), Texture::DEFAULT, grassMaskTextureParam))
+                        ->build();
+
+                grassQuadtree->setRenderer(std::move(renderer));
             }
-            //TODO doesn't it make sense to create texture when grassTexture==nullptr ?
-            rendererBuilder->addTexture(Texture::build(grassMaskTexture->getTextureID(), Texture::DEFAULT, grassMaskTextureParam));
-
-            grassQuadtree->setRenderer(rendererBuilder->build());
         }
     }
 
