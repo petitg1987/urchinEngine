@@ -4,14 +4,6 @@ namespace urchin {
 
     GenericRendererBuilder::GenericRendererBuilder(ShapeType shapeType) :
             shapeType(shapeType),
-            vertexCoordType(CoordType::FLOAT),
-            vertexCoordDimension(CoordDimension::TWO_DIMENSION),
-            pVertexCoord(nullptr),
-            vertexCoordCount(0),
-            textureCoordType(CoordType::FLOAT),
-            textureCoordDimension(CoordDimension::TWO_DIMENSION),
-            pTextureCoord(nullptr),
-            textureCoordCount(0),
             transparencyEnabled(false),
             depthTestEnabled(false),
             cullFaceEnabled(true),
@@ -24,56 +16,30 @@ namespace urchin {
         return shapeType;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::vertexCoord(std::vector<Point2<float>> *vertexCoord) {
-        setVertexData(CoordType::FLOAT, CoordDimension::TWO_DIMENSION, &(*vertexCoord)[0], vertexCoord->size());
+    GenericRendererBuilder *GenericRendererBuilder::addPointsCoord(std::vector<Point2<float>> *pointsCoord) {
+        GenericRenderer::PointsCoord pc{};
+        pc.coordType = CoordType::FLOAT;
+        pc.coordDimension = CoordDimension::TWO_DIMENSION;
+        pc.points = &(*pointsCoord)[0];
+        pc.pointsCount = pointsCoord->size();
+
+        pointsCoords.push_back(pc);
         return this;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::vertexCoord(std::vector<Point3<float>> *vertexCoord) {
-        setVertexData(CoordType::FLOAT, CoordDimension::THREE_DIMENSION, &(*vertexCoord)[0], vertexCoord->size());
+    GenericRendererBuilder *GenericRendererBuilder::addPointsCoord(std::vector<Point3<float>> *pointsCoord) {
+        GenericRenderer::PointsCoord pc{};
+        pc.coordType = CoordType::FLOAT;
+        pc.coordDimension = CoordDimension::THREE_DIMENSION;
+        pc.points = &(*pointsCoord)[0];
+        pc.pointsCount = pointsCoord->size();
+
+        pointsCoords.push_back(pc);
         return this;
     }
 
-    CoordType GenericRendererBuilder::getVertexCoordType() const {
-        return vertexCoordType;
-    }
-
-    CoordDimension GenericRendererBuilder::getVertexCoordDimension() const {
-        return vertexCoordDimension;
-    }
-
-    void *GenericRendererBuilder::getVertexCoord() const {
-        return pVertexCoord;
-    }
-
-    unsigned int GenericRendererBuilder::getVertexCoordCount() const {
-        return vertexCoordCount;
-    }
-
-    GenericRendererBuilder *GenericRendererBuilder::textureCoord(std::vector<Point2<float>> *textureCoord) {
-        setTextureData(CoordType::FLOAT, CoordDimension::TWO_DIMENSION, &(*textureCoord)[0], textureCoord->size());
-        return this;
-    }
-
-    GenericRendererBuilder *GenericRendererBuilder::textureCoord(std::vector<Point3<float>> *textureCoord) {
-        setTextureData(CoordType::FLOAT, CoordDimension::THREE_DIMENSION, &(*textureCoord)[0], textureCoord->size());
-        return this;
-    }
-
-    CoordType GenericRendererBuilder::getTextureCoordType() const {
-        return textureCoordType;
-    }
-
-    CoordDimension GenericRendererBuilder::getTextureCoordDimension() const {
-        return textureCoordDimension;
-    }
-
-    void *GenericRendererBuilder::getTextureCoord() const {
-        return pTextureCoord;
-    }
-
-    unsigned int GenericRendererBuilder::getTextureCoordCount() const {
-        return textureCoordCount;
+    std::vector<GenericRenderer::PointsCoord> GenericRendererBuilder::getPointsCoords() const {
+        return pointsCoords;
     }
 
     GenericRendererBuilder *GenericRendererBuilder::enableTransparency() {
@@ -126,26 +92,12 @@ namespace urchin {
         return this;
     }
 
-    std::vector<Texture> GenericRendererBuilder::getTextures() const {
+    const std::vector<Texture> &GenericRendererBuilder::getTextures() const {
         return textures;
     }
 
     std::unique_ptr<GenericRenderer> GenericRendererBuilder::build() {
         return std::make_unique<GenericRenderer>(this);
-    }
-
-    void GenericRendererBuilder::setVertexData(CoordType vertexCoordType, CoordDimension vertexCoordDimension, void *vertexCoord, unsigned int vertexCoordCount) {
-        this->vertexCoordType = vertexCoordType;
-        this->vertexCoordDimension = vertexCoordDimension;
-        this->pVertexCoord = vertexCoord;
-        this->vertexCoordCount = vertexCoordCount;
-    }
-
-    void GenericRendererBuilder::setTextureData(CoordType textureCoordType, CoordDimension textureCoordDimension, void *textureCoord, unsigned int textureCoordCount) {
-        this->textureCoordType = textureCoordType;
-        this->textureCoordDimension = textureCoordDimension;
-        this->pTextureCoord = textureCoord;
-        this->textureCoordCount = textureCoordCount;
     }
 
 }

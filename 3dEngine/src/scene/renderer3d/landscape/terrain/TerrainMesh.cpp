@@ -108,7 +108,7 @@ namespace urchin {
         float xStart = (-((float)xSize * xzScale) / 2.0f) + (xzScale / 2.0f);
         float zStart = (-((float)zSize * xzScale) / 2.0f) + (xzScale / 2.0f);
 
-        for (unsigned int z=0; z<zSize; ++z) {
+        for (unsigned int z = 0; z < zSize; ++z) {
             float zFloat = zStart + (float)z * xzScale;
             for (unsigned int x = 0; x < xSize; ++x) {
                 float elevation = 0.0f;

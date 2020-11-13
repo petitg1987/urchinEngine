@@ -141,8 +141,8 @@ namespace urchin {
         std::vector<Point2<float>> textureCoord = {Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)};
         Texture::Type textureType = (layer == -1) ? Texture::Type::DEFAULT : Texture::Type::ARRAY;
         renderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
-                ->vertexCoord(&vertexCoord)
-                ->textureCoord(&textureCoord)
+                ->addPointsCoord(&vertexCoord)
+                ->addPointsCoord(&textureCoord)
                 ->addTexture(Texture::build(textureID, textureType))
                 ->build();
 

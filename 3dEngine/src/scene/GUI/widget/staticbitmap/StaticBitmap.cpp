@@ -39,8 +39,8 @@ namespace urchin {
                 Point2<float>(0.0f, 1.0f)
         };
         bitmapRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
-                ->vertexCoord(&vertexCoord)
-                ->textureCoord(&textureCoord)
+                ->addPointsCoord(&vertexCoord)
+                ->addPointsCoord(&textureCoord)
                 ->addTexture(Texture::build(tex->getTextureID()))
                 ->enableTransparency()
                 ->build();

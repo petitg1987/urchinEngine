@@ -122,8 +122,8 @@ namespace urchin {
         };
 
         skyboxRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
-                ->vertexCoord(&vertexCoord)
-                ->textureCoord(&textureCoord)
+                ->addPointsCoord(&vertexCoord)
+                ->addPointsCoord(&textureCoord)
                 ->addTexture(Texture::build(textureID, Texture::Type::CUBE_MAP, TextureParam::buildLinear()))
                 ->build();
     }

@@ -10,37 +10,38 @@ namespace urchin {
 
     GenericRenderer::GenericRenderer(const GenericRendererBuilder *rendererBuilder) :
             shapeType(rendererBuilder->getShapeType()),
-            vertexCoordType(rendererBuilder->getVertexCoordType()),
-            vertexCoordDimension(rendererBuilder->getVertexCoordDimension()),
-            vertexCoordCount(rendererBuilder->getVertexCoordCount()),
-            textureCoordType(rendererBuilder->getTextureCoordType()),
-            textureCoordDimension(rendererBuilder->getTextureCoordDimension()),
-            textureCoordCount(rendererBuilder->getTextureCoordCount()),
+            pointsCoords(rendererBuilder->getPointsCoords()),
             transparencyEnabled(rendererBuilder->isTransparencyEnabled()),
             depthTestEnabled(rendererBuilder->isDepthTestEnabled()),
             cullFaceEnabled(rendererBuilder->isCullFaceEnabled()),
             polygonMode(rendererBuilder->getPolygonMode()),
             outlineSize(rendererBuilder->getOutlineSize()),
             textures(rendererBuilder->getTextures()),
-            bufferIDs(),
             vertexArrayObject(0) {
-        glGenBuffers(2, bufferIDs);
+
+        assert(!pointsCoords.empty());
+        pointsCount = pointsCoords[0].pointsCount;
+        for(const auto pointCoord : pointsCoords) {
+            assert(pointCoord.pointsCount == pointsCount);
+        }
+
         glGenVertexArrays(1, &vertexArrayObject);
+        initializeDisplay();
 
         for (const auto &texture : textures) {
             initializeTexture(texture);
         }
         additionalTextures.reserve(2); //estimated memory size
-
-        initializeDisplay(rendererBuilder->getVertexCoord(), rendererBuilder->getTextureCoord());
     }
 
     GenericRenderer::~GenericRenderer() {
-        if (vertexArrayObject!=0) {
+        if (vertexArrayObject != 0) {
             glDeleteVertexArrays(1, &vertexArrayObject);
         }
 
-        glDeleteBuffers(2, bufferIDs);
+        for(unsigned int bufferId : bufferIds) {
+            glDeleteBuffers(1, &bufferId);
+        }
     }
 
     void GenericRenderer::initializeTexture(Texture texture) const {
@@ -62,23 +63,24 @@ namespace urchin {
         }
     }
 
-    void GenericRenderer::initializeDisplay(void *vertexCoord, void *textureCoord) {
+    void GenericRenderer::initializeDisplay() {
         glBindVertexArray(vertexArrayObject);
 
-        auto vertexCoordDim = coordDimensionToSize(vertexCoordDimension);
-        auto vertexMemorySize = coordTypeToSize(vertexCoordType) * vertexCoordDim * vertexCoordCount;
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-        glBufferData(GL_ARRAY_BUFFER, vertexMemorySize, vertexCoord, GL_STATIC_DRAW);
-        glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-        glVertexAttribPointer(SHADER_VERTEX_POSITION, vertexCoordDim, coordTypeToGlType(vertexCoordType), GL_FALSE, 0, nullptr);
+        unsigned int pointsCoordUnit = 0;
+        for(auto &pointsCoord : pointsCoords) {
+            unsigned int bufferId = 0;
+            glGenBuffers(1, &bufferId);
+            bufferIds.push_back(bufferId);
 
-        if(textureCoord != nullptr) {
-            auto textureCoordDim = coordDimensionToSize(textureCoordDimension);
-            auto textureMemorySize = coordTypeToSize(textureCoordType) * textureCoordDim * textureCoordCount;
-            glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
-            glBufferData(GL_ARRAY_BUFFER, textureMemorySize, textureCoord, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(SHADER_TEX_COORD);
-            glVertexAttribPointer(SHADER_TEX_COORD, textureCoordDim, coordTypeToGlType(textureCoordType), GL_FALSE, 0, nullptr);
+            auto vertexCoordDim = coordDimensionToSize(pointsCoord.coordDimension);
+            auto vertexMemorySize = coordTypeToSize(pointsCoord.coordType) * vertexCoordDim * pointsCoord.pointsCount;
+            glBindBuffer(GL_ARRAY_BUFFER, bufferId);
+            glBufferData(GL_ARRAY_BUFFER, vertexMemorySize, pointsCoord.points, GL_STATIC_DRAW);
+            glEnableVertexAttribArray(pointsCoordUnit);
+            glVertexAttribPointer(pointsCoordUnit, vertexCoordDim, coordTypeToGlType(pointsCoord.coordType), GL_FALSE, 0, nullptr);
+
+            pointsCoord.points = nullptr; //reset pointer because no guaranteed pointer is still valid after initialization
+            pointsCoordUnit++;
         }
     }
 
@@ -144,10 +146,6 @@ namespace urchin {
     }
 
     void GenericRenderer::draw() const {
-        if(vertexCoordCount == 0) {
-            return;
-        }
-
         unsigned int textureUnit = 0;
         for (const auto &texture : textures) {
             glActiveTexture(GL_TEXTURE0 + textureUnit++);
@@ -183,7 +181,7 @@ namespace urchin {
         }
 
         glBindVertexArray(vertexArrayObject);
-        glDrawArrays(shapeTypeToGlType(shapeType), 0, vertexCoordCount);
+        glDrawArrays(shapeTypeToGlType(shapeType), 0, pointsCount);
 
         resetDrawDefaultValues();
     }

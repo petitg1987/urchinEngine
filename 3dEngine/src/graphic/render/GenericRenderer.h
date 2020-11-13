@@ -15,6 +15,13 @@ namespace urchin {
 
     class GenericRenderer {
         public:
+            struct PointsCoord {
+                CoordType coordType;
+                CoordDimension coordDimension;
+                void *points;
+                unsigned int pointsCount;
+            };
+
             explicit GenericRenderer(const GenericRendererBuilder *);
             ~GenericRenderer();
 
@@ -26,7 +33,7 @@ namespace urchin {
 
         private:
             void initializeTexture(Texture) const;
-            void initializeDisplay(void *, void *);
+            void initializeDisplay();
 
             unsigned int shapeTypeToGlType(ShapeType) const;
             unsigned int coordTypeToSize(CoordType) const;
@@ -37,13 +44,8 @@ namespace urchin {
 
             ShapeType shapeType;
 
-            CoordType vertexCoordType;
-            CoordDimension vertexCoordDimension;
-            unsigned int vertexCoordCount;
-
-            CoordType textureCoordType;
-            CoordDimension textureCoordDimension;
-            unsigned int textureCoordCount;
+            std::vector<PointsCoord> pointsCoords;
+            unsigned int pointsCount;
 
             bool transparencyEnabled;
 
@@ -56,15 +58,8 @@ namespace urchin {
 
             std::vector<Texture> textures, additionalTextures;
 
-            unsigned int bufferIDs[2], vertexArrayObject;
-            enum { //buffer IDs indices
-                VAO_VERTEX_POSITION = 0,
-                VAO_TEX_COORD
-            };
-            enum { //shader input
-                SHADER_VERTEX_POSITION = 0,
-                SHADER_TEX_COORD
-            };
+            unsigned int vertexArrayObject;
+            std::vector<unsigned int> bufferIds;
     };
 
 }

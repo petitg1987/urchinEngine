@@ -68,8 +68,8 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f)
         };
         renderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
-                ->vertexCoord(&vertexCoord)
-                ->textureCoord(&textureCoord)
+                ->addPointsCoord(&vertexCoord)
+                ->addPointsCoord(&textureCoord)
                 ->addTexture(Texture::build(depthTexID, Texture::DEFAULT, TextureParam::buildNearest()))
                 ->addTexture(Texture::build(normalAndAmbientTexID, Texture::DEFAULT, TextureParam::buildNearest()))
                 ->addTexture(Texture::build(noiseTexId, Texture::DEFAULT, TextureParam::buildRepeatNearest()))

@@ -20,19 +20,9 @@ namespace urchin {
 
             ShapeType getShapeType() const;
 
-            GenericRendererBuilder *vertexCoord(std::vector<Point2<float>> *);
-            GenericRendererBuilder *vertexCoord(std::vector<Point3<float>> *);
-            CoordType getVertexCoordType() const;
-            CoordDimension getVertexCoordDimension() const;
-            void *getVertexCoord() const;
-            unsigned int getVertexCoordCount() const;
-
-            GenericRendererBuilder *textureCoord(std::vector<Point2<float>> *);
-            GenericRendererBuilder *textureCoord(std::vector<Point3<float>> *);
-            CoordType getTextureCoordType() const;
-            CoordDimension getTextureCoordDimension() const;
-            void *getTextureCoord() const;
-            unsigned int getTextureCoordCount() const;
+            GenericRendererBuilder *addPointsCoord(std::vector<Point2<float>> *);
+            GenericRendererBuilder *addPointsCoord(std::vector<Point3<float>> *);
+            std::vector<GenericRenderer::PointsCoord> getPointsCoords() const;
 
             GenericRendererBuilder *enableTransparency();
             bool isTransparencyEnabled() const;
@@ -49,25 +39,14 @@ namespace urchin {
             float getOutlineSize() const;
 
             GenericRendererBuilder *addTexture(Texture);
-            std::vector<Texture> getTextures() const;
+            const std::vector<Texture> &getTextures() const;
 
             std::unique_ptr<GenericRenderer> build();
 
         private:
-            void setVertexData(CoordType, CoordDimension, void *, unsigned int);
-            void setTextureData(CoordType, CoordDimension, void *, unsigned int);
-
             ShapeType shapeType;
 
-            CoordType vertexCoordType;
-            CoordDimension vertexCoordDimension;
-            void *pVertexCoord;
-            unsigned int vertexCoordCount;
-
-            CoordType textureCoordType;
-            CoordDimension textureCoordDimension;
-            void *pTextureCoord;
-            unsigned int textureCoordCount;
+            std::vector<GenericRenderer::PointsCoord> pointsCoords;
 
             bool transparencyEnabled;
 
