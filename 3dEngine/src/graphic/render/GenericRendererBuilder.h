@@ -20,11 +20,12 @@ namespace urchin {
 
             ShapeType getShapeType() const;
 
-            GenericRendererBuilder *addPointsCoord(std::vector<Point2<float>> *);
-            GenericRendererBuilder *addPointsCoord(std::vector<Point3<float>> *);
+            GenericRendererBuilder *addPointsCoord(const std::vector<Point2<float>> *);
+            GenericRendererBuilder *addPointsCoord(const std::vector<Point3<float>> *);
+            GenericRendererBuilder *addPointsCoord(const std::vector<Vector3<float>> *);
             const std::vector<GenericRenderer::PointsCoord> &getPointsCoords() const;
 
-            GenericRendererBuilder *indices(std::vector<unsigned int> *);
+            GenericRendererBuilder *indices(const std::vector<unsigned int> *);
             const GenericRenderer::Indices &getIndices() const;
 
             GenericRendererBuilder *enableTransparency();

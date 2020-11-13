@@ -56,23 +56,12 @@ namespace urchin {
             void generateGrass(const std::shared_ptr<TerrainMesh> &, const Point3<float> &);
             unsigned int retrieveVertexIndex(const Point2<float> &) const;
             void buildGrassQuadtree(const std::vector<TerrainGrassQuadtree *> &, unsigned int, unsigned int);
-            void createVBO(const std::vector<TerrainGrassQuadtree *> &);
-            void clearVBO();
+            void createRenderers(const std::vector<TerrainGrassQuadtree *> &);
 
             const float grassPositionRandomPercentage;
             const float grassPatchSize;
             const unsigned int grassQuadtreeDepth;
 
-            std::vector<unsigned int> vertexArrayObjects;
-            std::vector<std::array<unsigned int, 2>> bufferIDs;
-            enum { //buffer IDs indices
-                VAO_VERTEX_POSITION = 0,
-                VAO_NORMAL
-            };
-            enum { //shader input
-                SHADER_VERTEX_POSITION = 0,
-                SHADER_NORMAL
-            };
             std::unique_ptr<Shader> terrainGrassShader;
             ShaderVar mProjectionShaderVar, mViewShaderVar, cameraPositionShaderVar, sumTimeStepShaderVar;
             ShaderVar terrainMinPointShaderVar, terrainMaxPointShaderVar, terrainAmbientShaderVar;

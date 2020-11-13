@@ -9,6 +9,7 @@
 #include "resources/MediaManager.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
 #include "graphic/shader/data/ShaderDataSender.h"
+#include "graphic/render/GenericRendererBuilder.h"
 
 #define DEFAULT_NUM_GRASS_IN_TEX 1
 #define DEFAULT_GRASS_DISPLAY_DISTANCE 100.0
@@ -73,8 +74,6 @@ namespace urchin {
     }
 
     TerrainGrass::~TerrainGrass() {
-        clearVBO();
-
         if (grassTexture) {
             grassTexture->release();
         }
@@ -160,7 +159,7 @@ namespace urchin {
             std::for_each(threads.begin(), threads.end(), [](std::thread& x){x.join();});
 
             buildGrassQuadtree(leafGrassPatches, patchQuantityX, patchQuantityZ);
-            createVBO(leafGrassPatches);
+            createRenderers(leafGrassPatches);
         }
     }
 
@@ -218,41 +217,24 @@ namespace urchin {
         mainGrassQuadtree = new TerrainGrassQuadtree(childrenGrassQuadtree);
     }
 
-    void TerrainGrass::createVBO(const std::vector<TerrainGrassQuadtree *> &leafGrassPatches) {
-        clearVBO();
-
-        vertexArrayObjects.resize(leafGrassPatches.size());
-        glGenVertexArrays(leafGrassPatches.size(), &vertexArrayObjects[0]);
-        bufferIDs.resize(leafGrassPatches.size());
-        glGenBuffers(leafGrassPatches.size() * 2, &bufferIDs[0][0]);
-
-        unsigned int quadtreeId = 0;
+    void TerrainGrass::createRenderers(const std::vector<TerrainGrassQuadtree *> &leafGrassPatches) {
+        TextureParam grassTextureParam = TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY);
+        TextureParam grassMaskTextureParam = TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::NO_ANISOTROPY);
         for (auto *grassQuadtree : leafGrassPatches) {
-            glBindVertexArray(vertexArrayObjects[quadtreeId]);
+            std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(ShapeType::POINT);
+            rendererBuilder
+                    ->enableDepthTest()
+                    ->disableCullFace()
+                    ->addPointsCoord(&grassQuadtree->getGrassVertices())
+                    ->addPointsCoord(&grassQuadtree->getGrassNormals());
 
-            glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[quadtreeId][VAO_VERTEX_POSITION]);
-            glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-            glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-            glBufferData(GL_ARRAY_BUFFER, grassQuadtree->getGrassVertices().size() * sizeof(float) * 3, &grassQuadtree->getGrassVertices()[0], GL_STATIC_DRAW);
+            if(grassTexture) {
+                rendererBuilder->addTexture(Texture::build(grassTexture->getTextureID(), Texture::DEFAULT, grassTextureParam));
+            }
+            //TODO doesn't it make sense to create texture when grassTexture==nullptr ?
+            rendererBuilder->addTexture(Texture::build(grassMaskTexture->getTextureID(), Texture::DEFAULT, grassMaskTextureParam));
 
-            glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[quadtreeId][VAO_NORMAL]);
-            glEnableVertexAttribArray(SHADER_NORMAL);
-            glVertexAttribPointer(SHADER_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-            glBufferData(GL_ARRAY_BUFFER, grassQuadtree->getGrassNormals().size() * sizeof(float) * 3, &grassQuadtree->getGrassNormals()[0], GL_STATIC_DRAW);
-
-            grassQuadtree->setVertexArrayObjectId(quadtreeId++);
-        }
-    }
-
-    void TerrainGrass::clearVBO() {
-        if (!vertexArrayObjects.empty()) {
-            glDeleteVertexArrays(vertexArrayObjects.size(), &vertexArrayObjects[0]);
-            vertexArrayObjects.clear();
-        }
-
-        if (!bufferIDs.empty()) {
-            glDeleteBuffers(bufferIDs.size(), &bufferIDs[0][0]);
-            bufferIDs.clear();
+            grassQuadtree->setRenderer(rendererBuilder->build());
         }
     }
 
@@ -288,11 +270,10 @@ namespace urchin {
 
         if (grassMaskFilename.empty()) {
             grassMaskTexture = new Image(1, 1, Image::IMAGE_GRAYSCALE, std::vector<unsigned char>({0}));
-            grassMaskTexture->toTexture(false, false, false);
         } else {
             grassMaskTexture = MediaManager::instance()->getMedia<Image>(grassMaskFilename);
-            grassMaskTexture->toTexture(false, false, false);
         }
+        grassMaskTexture->toTexture(false, false, false);
     }
 
     float TerrainGrass::getGrassDisplayDistance() const {
@@ -371,13 +352,7 @@ namespace urchin {
 
             assert(grassDisplayDistance != 0.0f);
 
-            glDisable(GL_CULL_FACE);
-            glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE);
-
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, grassTexture->getTextureID());
-            glActiveTexture(GL_TEXTURE1);
-            glBindTexture(GL_TEXTURE_2D, grassMaskTexture->getTextureID());
+            glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE); //TODO move in renderer ?
 
             sumTimeStep += dt;
             ShaderDataSender()
@@ -394,8 +369,7 @@ namespace urchin {
 
                 if (camera->getFrustum().cutFrustum(grassDisplayDistance).collideWithAABBox(*grassQuadtree->getBox())) {
                     if (grassQuadtree->isLeaf()) {
-                        glBindVertexArray(vertexArrayObjects[grassQuadtree->getVertexArrayObjectId()]);
-                        glDrawArrays(GL_POINTS, 0, grassQuadtree->getGrassVertices().size());
+                        grassQuadtree->getRenderer()->draw();
                     } else {
                         for (const auto *child : grassQuadtree->getChildren()) {
                             grassQuadtrees.push_back(child);
@@ -405,7 +379,6 @@ namespace urchin {
             }
 
             glDisable(GL_SAMPLE_ALPHA_TO_COVERAGE);
-            glEnable(GL_CULL_FACE);
         }
     }
 

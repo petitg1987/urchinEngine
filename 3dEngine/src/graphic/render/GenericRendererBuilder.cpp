@@ -16,7 +16,7 @@ namespace urchin {
         return shapeType;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::addPointsCoord(std::vector<Point2<float>> *pointsCoord) {
+    GenericRendererBuilder *GenericRendererBuilder::addPointsCoord(const std::vector<Point2<float>> *pointsCoord) {
         GenericRenderer::PointsCoord pointsCoord2d{};
         pointsCoord2d.coordType = CoordType::FLOAT;
         pointsCoord2d.coordDimension = CoordDimension::TWO_DIMENSION;
@@ -26,7 +26,7 @@ namespace urchin {
         return this;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::addPointsCoord(std::vector<Point3<float>> *pointsCoord) {
+    GenericRendererBuilder *GenericRendererBuilder::addPointsCoord(const std::vector<Point3<float>> *pointsCoord) {
         GenericRenderer::PointsCoord pointsCoord3d{};
         pointsCoord3d.coordType = CoordType::FLOAT;
         pointsCoord3d.coordDimension = CoordDimension::THREE_DIMENSION;
@@ -36,11 +36,16 @@ namespace urchin {
         return this;
     }
 
+    GenericRendererBuilder *GenericRendererBuilder::addPointsCoord(const std::vector<Vector3<float>> *pointsCoord) {
+        addPointsCoord(reinterpret_cast<const std::vector<Point3<float>> *>(pointsCoord));
+        return this;
+    }
+
     const std::vector<GenericRenderer::PointsCoord> &GenericRendererBuilder::getPointsCoords() const {
         return pointsCoords;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::indices(std::vector<unsigned int> *indices) {
+    GenericRendererBuilder *GenericRendererBuilder::indices(const std::vector<unsigned int> *indices) {
         pIndices.ptr = &(*indices)[0];
         pIndices.indicesCount = indices->size();
         return this;

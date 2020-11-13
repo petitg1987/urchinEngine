@@ -18,12 +18,12 @@ namespace urchin {
             struct PointsCoord {
                 CoordType coordType = CoordType::FLOAT;
                 CoordDimension coordDimension = CoordDimension::TWO_DIMENSION;
-                void *ptr = nullptr;
+                const void *ptr = nullptr;
                 unsigned int pointsCount = 0;
             };
 
             struct Indices {
-                void *ptr = nullptr;
+                const void *ptr = nullptr;
                 unsigned int indicesCount = 0;
             };
 

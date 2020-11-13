@@ -5,16 +5,18 @@
 #include <mutex>
 #include "UrchinCommon.h"
 
+#include "graphic/render/GenericRenderer.h"
+
 namespace urchin {
 
     class TerrainGrassQuadtree {
         public:
-            TerrainGrassQuadtree();
+            TerrainGrassQuadtree() = default;
             explicit TerrainGrassQuadtree(std::vector<TerrainGrassQuadtree *> );
             ~TerrainGrassQuadtree();
 
-            void setVertexArrayObjectId(unsigned int);
-            unsigned int getVertexArrayObjectId() const;
+            void setRenderer(std::unique_ptr<GenericRenderer> &&);
+            const std::unique_ptr<GenericRenderer> &getRenderer() const;
 
             bool isLeaf() const;
             const std::unique_ptr<AABBox<float>> &getBox() const;
@@ -27,7 +29,7 @@ namespace urchin {
             const std::vector<Vector3<float>> &getGrassNormals() const;
 
         private:
-            unsigned int vertexArrayObjectId;
+            std::unique_ptr<GenericRenderer> renderer;
 
             std::mutex mutexAddVertex;
             std::vector<TerrainGrassQuadtree *> children;

@@ -4,13 +4,7 @@
 
 namespace urchin {
 
-    TerrainGrassQuadtree::TerrainGrassQuadtree() :
-            vertexArrayObjectId(0) {
-
-    }
-
     TerrainGrassQuadtree::TerrainGrassQuadtree(std::vector<TerrainGrassQuadtree *> children) :
-            vertexArrayObjectId(0),
             children(std::move(children)) {
 
     }
@@ -21,12 +15,12 @@ namespace urchin {
         }
     }
 
-    void TerrainGrassQuadtree::setVertexArrayObjectId(unsigned int vertexArrayObjectId) {
-        this->vertexArrayObjectId = vertexArrayObjectId;
+    void TerrainGrassQuadtree::setRenderer(std::unique_ptr<GenericRenderer> &&renderer) {
+        this->renderer = std::move(renderer);
     }
 
-    unsigned int TerrainGrassQuadtree::getVertexArrayObjectId() const {
-        return vertexArrayObjectId;
+    const std::unique_ptr<GenericRenderer> &TerrainGrassQuadtree::getRenderer() const {
+        return renderer;
     }
 
     bool TerrainGrassQuadtree::isLeaf() const {
