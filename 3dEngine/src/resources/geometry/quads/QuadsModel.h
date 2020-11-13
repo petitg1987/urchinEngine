@@ -16,7 +16,7 @@ namespace urchin {
             Matrix4<float> retrieveModelMatrix() const override;
             std::vector<Point3<float>> retrieveVertexArray() const override;
 
-            void drawGeometry() const override;
+            ShapeType getShapeType() const override;
 
         private:
             std::vector<Point3<float>> quadsPoints;

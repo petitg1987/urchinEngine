@@ -4,9 +4,8 @@
 namespace urchin {
 
     enum CoordDimension {
-        _2D,
-        _3D,
-        _4D
+        TWO_DIMENSION,
+        THREE_DIMENSION
     };
 
 }

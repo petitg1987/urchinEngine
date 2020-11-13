@@ -1,20 +1,17 @@
-#include <GL/glew.h>
 #include <utility>
 
 #include "LinesModel.h"
 
 namespace urchin {
 
-    LinesModel::LinesModel(std::vector<Point3<float>> stripLinesPoints, float linesSize) :
+    LinesModel::LinesModel(std::vector<Point3<float>> stripLinesPoints) :
             linesPoints(std::move(stripLinesPoints)),
-            stripLines(true),
-            linesSize(linesSize) {
+            stripLines(true) {
         initialize();
     }
 
-    LinesModel::LinesModel(const std::vector<LineSegment3D<float>> &lineSegments, float linesSize) :
-            stripLines(false),
-            linesSize(linesSize) {
+    LinesModel::LinesModel(const std::vector<LineSegment3D<float>> &lineSegments) :
+            stripLines(false) {
         linesPoints.reserve(lineSegments.size() * 2);
         for (const auto &lineSegment : lineSegments) {
             linesPoints.emplace_back(lineSegment.getA());
@@ -24,9 +21,8 @@ namespace urchin {
         initialize();
     }
 
-    LinesModel::LinesModel(const LineSegment3D<float> &lineSegment, float linesSize) :
-        stripLines(true),
-        linesSize(linesSize) {
+    LinesModel::LinesModel(const LineSegment3D<float> &lineSegment) :
+        stripLines(true){
         linesPoints.push_back(lineSegment.getA());
         linesPoints.push_back(lineSegment.getB());
 
@@ -41,13 +37,7 @@ namespace urchin {
         return linesPoints;
     }
 
-    void LinesModel::drawGeometry() const {
-        GLfloat savedLineWidth;
-        glGetFloatv(GL_LINE_WIDTH, &savedLineWidth);
-        glLineWidth(linesSize);
-
-        glDrawArrays(stripLines ? GL_LINE_STRIP : GL_LINES, 0, linesPoints.size());
-
-        glLineWidth(savedLineWidth);
+    ShapeType LinesModel::getShapeType() const {
+        return stripLines ? ShapeType::LINE_STRIP : ShapeType::LINE;
     }
 }

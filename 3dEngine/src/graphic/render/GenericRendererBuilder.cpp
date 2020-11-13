@@ -4,18 +4,19 @@ namespace urchin {
 
     GenericRendererBuilder::GenericRendererBuilder(ShapeType shapeType) :
             shapeType(shapeType),
-            pShapeCount(1),
-            vertexCoordType(CoordType::INT),
-            vertexCoordDimension(CoordDimension::_2D),
-            vertexCoord(nullptr),
-            textureCoordType(CoordType::INT),
-            textureCoordDimension(CoordDimension::_2D),
-            textureCoord(nullptr),
+            vertexCoordType(CoordType::FLOAT),
+            vertexCoordDimension(CoordDimension::TWO_DIMENSION),
+            pVertexCoord(nullptr),
+            vertexCoordCount(0),
+            textureCoordType(CoordType::FLOAT),
+            textureCoordDimension(CoordDimension::TWO_DIMENSION),
+            pTextureCoord(nullptr),
+            textureCoordCount(0),
             transparencyEnabled(false),
             depthTestEnabled(false),
             cullFaceEnabled(true),
             pPolygonMode(PolygonMode::FILL),
-            outlineSize(1.0) {
+            pOutlineSize(1.0f) {
 
     }
 
@@ -23,19 +24,13 @@ namespace urchin {
         return shapeType;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::shapeCount(unsigned int shapeCount) {
-        this->pShapeCount = shapeCount;
+    GenericRendererBuilder *GenericRendererBuilder::vertexCoord(std::vector<Point2<float>> *vertexCoord) {
+        setVertexData(CoordType::FLOAT, CoordDimension::TWO_DIMENSION, &(*vertexCoord)[0], vertexCoord->size());
         return this;
     }
 
-    unsigned int GenericRendererBuilder::getShapeCount() const {
-        return pShapeCount;
-    }
-
-    GenericRendererBuilder *GenericRendererBuilder::vertexData(CoordType vertexCoordType, CoordDimension vertexCoordDimension, void *vertexCoord) {
-        this->vertexCoordType = vertexCoordType;
-        this->vertexCoordDimension = vertexCoordDimension;
-        this->vertexCoord = vertexCoord;
+    GenericRendererBuilder *GenericRendererBuilder::vertexCoord(std::vector<Point3<float>> *vertexCoord) {
+        setVertexData(CoordType::FLOAT, CoordDimension::THREE_DIMENSION, &(*vertexCoord)[0], vertexCoord->size());
         return this;
     }
 
@@ -48,13 +43,20 @@ namespace urchin {
     }
 
     void *GenericRendererBuilder::getVertexCoord() const {
-        return vertexCoord;
+        return pVertexCoord;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::textureData(CoordType textureCoordType, CoordDimension textureCoordDimension, void *textureCoord) {
-        this->textureCoordType = textureCoordType;
-        this->textureCoordDimension = textureCoordDimension;
-        this->textureCoord = textureCoord;
+    unsigned int GenericRendererBuilder::getVertexCoordCount() const {
+        return vertexCoordCount;
+    }
+
+    GenericRendererBuilder *GenericRendererBuilder::textureCoord(std::vector<Point2<float>> *textureCoord) {
+        setTextureData(CoordType::FLOAT, CoordDimension::TWO_DIMENSION, &(*textureCoord)[0], textureCoord->size());
+        return this;
+    }
+
+    GenericRendererBuilder *GenericRendererBuilder::textureCoord(std::vector<Point3<float>> *textureCoord) {
+        setTextureData(CoordType::FLOAT, CoordDimension::THREE_DIMENSION, &(*textureCoord)[0], textureCoord->size());
         return this;
     }
 
@@ -67,7 +69,11 @@ namespace urchin {
     }
 
     void *GenericRendererBuilder::getTextureCoord() const {
-        return textureCoord;
+        return pTextureCoord;
+    }
+
+    unsigned int GenericRendererBuilder::getTextureCoordCount() const {
+        return textureCoordCount;
     }
 
     GenericRendererBuilder *GenericRendererBuilder::enableTransparency() {
@@ -97,9 +103,8 @@ namespace urchin {
         return cullFaceEnabled;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::polygonMode(PolygonMode pPolygonMode, float outlineSize) {
+    GenericRendererBuilder *GenericRendererBuilder::polygonMode(PolygonMode pPolygonMode) {
         this->pPolygonMode = pPolygonMode;
-        this->outlineSize = outlineSize;
         return this;
     }
 
@@ -107,8 +112,13 @@ namespace urchin {
         return pPolygonMode;
     }
 
+    GenericRendererBuilder *GenericRendererBuilder::outlineSize(float pOutlineSize) {
+        this->pOutlineSize = pOutlineSize;
+        return this;
+    }
+
     float GenericRendererBuilder::getOutlineSize() const {
-        return outlineSize;
+        return pOutlineSize;
     }
 
     GenericRendererBuilder *GenericRendererBuilder::addTexture(Texture texture) {
@@ -122,6 +132,20 @@ namespace urchin {
 
     std::unique_ptr<GenericRenderer> GenericRendererBuilder::build() {
         return std::make_unique<GenericRenderer>(this);
+    }
+
+    void GenericRendererBuilder::setVertexData(CoordType vertexCoordType, CoordDimension vertexCoordDimension, void *vertexCoord, unsigned int vertexCoordCount) {
+        this->vertexCoordType = vertexCoordType;
+        this->vertexCoordDimension = vertexCoordDimension;
+        this->pVertexCoord = vertexCoord;
+        this->vertexCoordCount = vertexCoordCount;
+    }
+
+    void GenericRendererBuilder::setTextureData(CoordType textureCoordType, CoordDimension textureCoordDimension, void *textureCoord, unsigned int textureCoordCount) {
+        this->textureCoordType = textureCoordType;
+        this->textureCoordDimension = textureCoordDimension;
+        this->pTextureCoord = textureCoord;
+        this->textureCoordCount = textureCoordCount;
     }
 
 }

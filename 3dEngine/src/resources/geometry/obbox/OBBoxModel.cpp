@@ -1,5 +1,3 @@
-#include <GL/glew.h>
-
 #include <utility>
 
 #include "resources/geometry/obbox/OBBoxModel.h"
@@ -60,8 +58,8 @@ namespace urchin {
         return vertexArray;
     }
 
-    void OBBoxModel::drawGeometry() const {
-        glDrawArrays(GL_LINES, 0, 24);
+    ShapeType OBBoxModel::getShapeType() const {
+        return ShapeType::LINE;
     }
 
 }

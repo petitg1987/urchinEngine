@@ -1,5 +1,3 @@
-#include <GL/glew.h>
-
 #include <utility>
 
 #include "TrianglesModel.h"
@@ -19,8 +17,8 @@ namespace urchin {
         return trianglesPoints;
     }
 
-    void TrianglesModel::drawGeometry() const {
-        glDrawArrays(GL_TRIANGLES, 0, trianglesPoints.size());
+    ShapeType TrianglesModel::getShapeType() const {
+        return ShapeType::TRIANGLE;
     }
 
 }

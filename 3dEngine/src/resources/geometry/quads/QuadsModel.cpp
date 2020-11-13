@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <utility>
 
 #include "QuadsModel.h"
@@ -18,8 +17,8 @@ namespace urchin {
         return quadsPoints;
     }
 
-    void QuadsModel::drawGeometry() const {
-        glDrawArrays(GL_QUADS, 0, quadsPoints.size());
+    ShapeType QuadsModel::getShapeType() const {
+        return ShapeType::RECTANGLE;
     }
 
 }

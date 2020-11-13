@@ -10,11 +10,12 @@ namespace urchin {
 
     GenericRenderer::GenericRenderer(const GenericRendererBuilder *rendererBuilder) :
             shapeType(rendererBuilder->getShapeType()),
-            shapeCount(rendererBuilder->getShapeCount()),
             vertexCoordType(rendererBuilder->getVertexCoordType()),
             vertexCoordDimension(rendererBuilder->getVertexCoordDimension()),
+            vertexCoordCount(rendererBuilder->getVertexCoordCount()),
             textureCoordType(rendererBuilder->getTextureCoordType()),
             textureCoordDimension(rendererBuilder->getTextureCoordDimension()),
+            textureCoordCount(rendererBuilder->getTextureCoordCount()),
             transparencyEnabled(rendererBuilder->isTransparencyEnabled()),
             depthTestEnabled(rendererBuilder->isDepthTestEnabled()),
             cullFaceEnabled(rendererBuilder->isCullFaceEnabled()),
@@ -65,33 +66,20 @@ namespace urchin {
         glBindVertexArray(vertexArrayObject);
 
         auto vertexCoordDim = coordDimensionToSize(vertexCoordDimension);
-        auto vertexMemorySize = coordTypeToSize(vertexCoordType) * vertexCoordDim * countVertexNumber(shapeType, shapeCount);
+        auto vertexMemorySize = coordTypeToSize(vertexCoordType) * vertexCoordDim * vertexCoordCount;
         glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
         glBufferData(GL_ARRAY_BUFFER, vertexMemorySize, vertexCoord, GL_STATIC_DRAW);
         glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
         glVertexAttribPointer(SHADER_VERTEX_POSITION, vertexCoordDim, coordTypeToGlType(vertexCoordType), GL_FALSE, 0, nullptr);
 
-        auto textureCoordDim = coordDimensionToSize(textureCoordDimension);
-        auto textureMemorySize = coordTypeToSize(textureCoordType) * textureCoordDim * countVertexNumber(shapeType, shapeCount);
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
-        glBufferData(GL_ARRAY_BUFFER, textureMemorySize, textureCoord, GL_STATIC_DRAW);
-        glEnableVertexAttribArray(SHADER_TEX_COORD);
-        glVertexAttribPointer(SHADER_TEX_COORD, textureCoordDim, coordTypeToGlType(textureCoordType), GL_FALSE, 0, nullptr);
-    }
-
-    unsigned int GenericRenderer::countVertexNumber(ShapeType shapeType, unsigned int shapeCount) const {
-        if (shapeType == ShapeType::RECTANGLE) {
-            return shapeCount * 4;
-        } else if (shapeType == ShapeType::LINE) {
-            return shapeCount * 2;
-        } else if (shapeType == ShapeType::LINE_STRIP) {
-            return shapeCount + 1;
-        } else if (shapeType == ShapeType::TRIANGLE) {
-            return shapeCount * 3;
-        } else if (shapeType == ShapeType::TRIANGLE_STRIP) {
-            return shapeCount + 2;
+        if(textureCoord != nullptr) {
+            auto textureCoordDim = coordDimensionToSize(textureCoordDimension);
+            auto textureMemorySize = coordTypeToSize(textureCoordType) * textureCoordDim * textureCoordCount;
+            glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
+            glBufferData(GL_ARRAY_BUFFER, textureMemorySize, textureCoord, GL_STATIC_DRAW);
+            glEnableVertexAttribArray(SHADER_TEX_COORD);
+            glVertexAttribPointer(SHADER_TEX_COORD, textureCoordDim, coordTypeToGlType(textureCoordType), GL_FALSE, 0, nullptr);
         }
-        throw std::runtime_error("Unknown shape type: " + std::to_string(shapeType));
     }
 
     unsigned int GenericRenderer::shapeTypeToGlType(ShapeType shapeType) const {
@@ -105,6 +93,8 @@ namespace urchin {
             return GL_TRIANGLES;
         } else if (shapeType == ShapeType::TRIANGLE_STRIP) {
             return GL_TRIANGLE_STRIP;
+        } else if (shapeType == ShapeType::POINT) {
+            return GL_POINTS;
         }
         throw std::runtime_error("Unknown shape type: " + std::to_string(shapeType));
     }
@@ -112,10 +102,6 @@ namespace urchin {
     unsigned int GenericRenderer::coordTypeToSize(CoordType coordType) const {
         if (coordType == CoordType::FLOAT) {
             return sizeof(float);
-        } else if (coordType == CoordType::INT) {
-            return sizeof(int);
-        } else if (coordType == CoordType::UNSIGNED_INT) {
-            return sizeof(unsigned int);
         }
         throw std::runtime_error("Unknown coordinate type: " + std::to_string(coordType));
     }
@@ -123,21 +109,15 @@ namespace urchin {
     unsigned int GenericRenderer::coordTypeToGlType(CoordType coordType) const {
         if (coordType == CoordType::FLOAT) {
             return GL_FLOAT;
-        } else if (coordType == CoordType::INT) {
-            return GL_INT;
-        } else if (coordType == CoordType::UNSIGNED_INT) {
-            return GL_UNSIGNED_INT;
         }
         throw std::runtime_error("Unknown coordinate type: " + std::to_string(coordType));
     }
 
     unsigned int GenericRenderer::coordDimensionToSize(CoordDimension coordDimension) const {
-        if (coordDimension == CoordDimension::_2D) {
+        if (coordDimension == CoordDimension::TWO_DIMENSION) {
             return 2;
-        } else if (coordDimension == CoordDimension::_3D) {
+        } else if (coordDimension == CoordDimension::THREE_DIMENSION) {
             return 3;
-        } else if (coordDimension == CoordDimension::_4D) {
-            return 4;
         }
         throw std::runtime_error("Unknown coordinate dimension: " + std::to_string(coordDimension));
     }
@@ -164,7 +144,7 @@ namespace urchin {
     }
 
     void GenericRenderer::draw() const {
-        if(shapeCount == 0) {
+        if(vertexCoordCount == 0) {
             return;
         }
 
@@ -194,11 +174,16 @@ namespace urchin {
 
         if(polygonMode == PolygonMode::WIREFRAME) {
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        }
+
+        if (shapeType == ShapeType::POINT) {
+            glPointSize(outlineSize);
+        } else if (shapeType == ShapeType::LINE || shapeType == ShapeType::LINE_STRIP || polygonMode == PolygonMode::WIREFRAME) {
             glLineWidth(outlineSize);
         }
 
         glBindVertexArray(vertexArrayObject);
-        glDrawArrays(shapeTypeToGlType(shapeType), 0, countVertexNumber(shapeType, shapeCount));
+        glDrawArrays(shapeTypeToGlType(shapeType), 0, vertexCoordCount);
 
         resetDrawDefaultValues();
     }
@@ -220,8 +205,9 @@ namespace urchin {
 
         if(polygonMode != PolygonMode::FILL) {
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-            glLineWidth(1.0f);
-            glPointSize(1.0f);
         }
+
+        glLineWidth(1.0f);
+        glPointSize(1.0f);
     }
 }

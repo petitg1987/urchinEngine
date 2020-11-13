@@ -27,11 +27,21 @@ namespace urchin {
     void TextureFilter::initializeDisplay() {
         std::locale::global(std::locale("C")); //for float
 
-        std::vector<int> vertexCoord = {-1, 1, 1, 1, 1, -1, -1, -1};
-        std::vector<int> textureCoord = {0, 1, 1, 1, 1, 0, 0, 0};
+        std::vector<Point2<float>> vertexCoord = {
+                Point2<float>(-1.0f, 1.0f),
+                Point2<float>(1.0f, 1.0f),
+                Point2<float>(1.0f, -1.0f),
+                Point2<float>(-1.0f, -1.0f)
+        };
+        std::vector<Point2<float>> textureCoord = {
+                Point2<float>(0.0f, 1.0f),
+                Point2<float>(1.0f, 1.0f),
+                Point2<float>(1.0f, 0.0f),
+                Point2<float>(0.0f, 0.0f)
+        };
         textureRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
-                ->vertexData(CoordType::INT, CoordDimension::_2D, &vertexCoord[0])
-                ->textureData(CoordType::INT, CoordDimension::_2D, &textureCoord[0])
+                ->vertexCoord(&vertexCoord)
+                ->textureCoord(&textureCoord)
                 ->build();
 
         std::map<std::string, std::string> shaderTokens;

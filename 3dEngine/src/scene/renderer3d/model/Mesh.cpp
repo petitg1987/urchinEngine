@@ -83,7 +83,8 @@ namespace urchin {
             bonePositions.push_back(bone.pos);
         }
 
-        std::unique_ptr<PointsModel> pointsModel = std::make_unique<PointsModel>(bonePositions, 5);
+        std::unique_ptr<PointsModel> pointsModel = std::make_unique<PointsModel>(bonePositions);
+        pointsModel->setOutlineSize(5.0f);
         pointsModel->onCameraProjectionUpdate(projectionMatrix);
         pointsModel->setAlwaysVisible(true);
         pointsModel->display(viewMatrix);

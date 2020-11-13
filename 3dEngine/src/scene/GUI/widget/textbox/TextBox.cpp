@@ -61,19 +61,35 @@ namespace urchin {
         computeCursorPosition();
 
         //visual
-        std::vector<unsigned int> vertexCoord = {0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()};
-        std::vector<float> textureCoord = {0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0};
+        std::vector<Point2<float>> vertexCoord = {
+                Point2<float>(0.0f, 0.0f),
+                Point2<float>(getWidth(), 0.0f),
+                Point2<float>(getWidth(), getHeight()),
+                Point2<float>(0.0f, getHeight())
+        };
+        std::vector<Point2<float>> textureCoord = {
+                Point2<float>(0.0f, 0.0f),
+                Point2<float>(1.0f, 0.0f),
+                Point2<float>(1.0f, 1.0f),
+                Point2<float>(0.0f, 1.0f)
+        };
         textBoxRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
-                ->vertexData(CoordType::UNSIGNED_INT, CoordDimension::_2D, &vertexCoord[0])
-                ->textureData(CoordType::FLOAT, CoordDimension::_2D, &textureCoord[0])
+                ->vertexCoord(&vertexCoord)
+                ->textureCoord(&textureCoord)
                 ->addTexture(Texture::build(texTextBoxDefault->getTextureID()))
                 ->build();
 
-        std::vector<unsigned int> cursorVertexCoord = {0, widgetOutline->topWidth, 0, getHeight() - widgetOutline->bottomWidth};
-        std::vector<float> cursorTextureCoord = {0.0, 0.0, 1.0, 1.0};
+        std::vector<Point2<float>> cursorVertexCoord = {
+                Point2<float>(0.0f, widgetOutline->topWidth),
+                Point2<float>(0.0f, getHeight() - widgetOutline->bottomWidth)
+        };
+        std::vector<Point2<float>> cursorTextureCoord = {
+                Point2<float>(0.0, 0.0),
+                Point2<float>(1.0, 1.0)
+        };
         cursorRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::LINE)
-                ->vertexData(CoordType::UNSIGNED_INT, CoordDimension::_2D, &cursorVertexCoord[0])
-                ->textureData(CoordType::FLOAT, CoordDimension::_2D, &cursorTextureCoord[0])
+                ->vertexCoord(&cursorVertexCoord)
+                ->textureCoord(&cursorTextureCoord)
                 ->addTexture(Texture::build(texCursorDiffuse->getTextureID(), Texture::DEFAULT, TextureParam::buildRepeatNearest()))
                 ->build();
     }

@@ -38,9 +38,8 @@ namespace urchin {
         }
 
         //creates the vertex array and texture array
-        vertexData.resize(numLetters*8);
-        textureData.resize(numLetters*8);
-        unsigned int vertexIndex = 0, stIndex = 0;
+        vertexCoord.resize(numLetters*4);
+        textureCoord.resize(numLetters*4);
         unsigned int width = 0;
         unsigned int offsetY = 0;
         for (auto &cutTextLine : cutTextLines) { //each lines
@@ -51,23 +50,15 @@ namespace urchin {
                 float t = (float)(letter >> 4u) / 16.0f;
                 float s = (float)(letter % 16) / 16.0f;
 
-                vertexData[vertexIndex++] = offsetX;
-                vertexData[vertexIndex++] = -font->getGlyph(letter).shift + offsetY;
-                vertexData[vertexIndex++] = font->getGlyph(letter).width + offsetX;
-                vertexData[vertexIndex++] = -font->getGlyph(letter).shift + offsetY;
-                vertexData[vertexIndex++] = font->getGlyph(letter).width + offsetX;
-                vertexData[vertexIndex++] = font->getGlyph(letter).height - font->getGlyph(letter).shift + offsetY;
-                vertexData[vertexIndex++] = offsetX;
-                vertexData[vertexIndex++] = font->getGlyph(letter).height - font->getGlyph(letter).shift + offsetY;
+                vertexCoord.emplace_back(Point2<float>(offsetX, -font->getGlyph(letter).shift + offsetY));
+                vertexCoord.emplace_back(Point2<float>(font->getGlyph(letter).width + offsetX, -font->getGlyph(letter).shift + offsetY));
+                vertexCoord.emplace_back(Point2<float>(font->getGlyph(letter).width + offsetX, font->getGlyph(letter).height - font->getGlyph(letter).shift + offsetY));
+                vertexCoord.emplace_back(Point2<float>(offsetX, font->getGlyph(letter).height - font->getGlyph(letter).shift + offsetY));
 
-                textureData[stIndex++] = s;
-                textureData[stIndex++] = t;
-                textureData[stIndex++] = s+((float)font->getGlyph(letter).width / (float)font->getDimensionTexture());
-                textureData[stIndex++] = t;
-                textureData[stIndex++] = s+((float)font->getGlyph(letter).width / (float)font->getDimensionTexture());
-                textureData[stIndex++] = t+((float)font->getGlyph(letter).height / (float)font->getDimensionTexture());
-                textureData[stIndex++] = s;
-                textureData[stIndex++] = t+((float)font->getGlyph(letter).height / (float)font->getDimensionTexture());
+                textureCoord.emplace_back(Point2<float>(s, t));
+                textureCoord.emplace_back(Point2<float>(s+((float)font->getGlyph(letter).width / (float)font->getDimensionTexture()), t));
+                textureCoord.emplace_back(Point2<float>(s+((float)font->getGlyph(letter).width / (float)font->getDimensionTexture()), t+((float)font->getGlyph(letter).height / (float)font->getDimensionTexture())));
+                textureCoord.emplace_back(Point2<float>(s, t+((float)font->getGlyph(letter).height / (float)font->getDimensionTexture())));
 
                 offsetX += font->getGlyph(letter).width + font->getSpaceBetweenLetters();
 
@@ -83,9 +74,8 @@ namespace urchin {
         setSize(Size((float)width, (float)(cutTextLines.size() * font->getHeight() + numberOfInterLines * font->getSpaceBetweenLines()), Size::SizeType::PIXEL));
 
         textRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
-                ->shapeCount(numLetters)
-                ->vertexData(CoordType::INT, CoordDimension::_2D, &vertexData[0])
-                ->textureData(CoordType::FLOAT, CoordDimension::_2D, &textureData[0])
+                ->vertexCoord(&vertexCoord)
+                ->textureCoord(&textureCoord)
                 ->addTexture(Texture::build(font->getTextureID()))
                 ->enableTransparency()
                 ->build();

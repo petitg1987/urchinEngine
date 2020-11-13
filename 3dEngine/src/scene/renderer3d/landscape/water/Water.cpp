@@ -78,18 +78,18 @@ namespace urchin {
                 Point3<float>(-xSize/2.0f, 0.0f, -zSize/2.0f) + centerPosition,
                 Point3<float>(xSize/2.0f, 0.0f, -zSize/2.0f) + centerPosition,
                 Point3<float>(xSize/2.0f, 0.0f, zSize/2.0f) + centerPosition,
-                Point3<float>(-xSize/2.0f, 0.0f, zSize/2.0f) + centerPosition};
-
+                Point3<float>(-xSize/2.0f, 0.0f, zSize/2.0f) + centerPosition
+        };
         std::vector<Point2<float>> textureCoord = {
                 Point2<float>(0.0f*sRepeat, 0.0f*tRepeat),
                 Point2<float>(1.0f*sRepeat, 0.0f*tRepeat),
                 Point2<float>(1.0f*sRepeat, 1.0f*tRepeat),
-                Point2<float>(0.0f*sRepeat, 1.0f*tRepeat)};
-
+                Point2<float>(0.0f*sRepeat, 1.0f*tRepeat)
+        };
         waterRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
                 ->enableDepthTest()
-                ->vertexData(CoordType::FLOAT, CoordDimension::_3D, &vertexCoord[0])
-                ->textureData(CoordType::FLOAT, CoordDimension::_2D, &textureCoord[0])
+                ->vertexCoord(&vertexCoord)
+                ->textureCoord(&textureCoord)
                 ->addTexture(Texture::build(0)) //normal texture
                 ->addTexture(Texture::build(0)) //dudv map
                 ->build();

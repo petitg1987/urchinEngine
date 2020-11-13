@@ -73,11 +73,21 @@ namespace urchin {
         //deferred shading (pass 2)
         createOrUpdateLightingShader();
 
-        std::vector<int> vertexCoord = {-1, 1, 1, 1, 1, -1, -1, -1};
-        std::vector<int> textureCoord = {0, 1, 1, 1, 1, 0, 0, 0};
+        std::vector<Point2<float>> vertexCoord = {
+                Point2<float>(-1.0f, 1.0f),
+                Point2<float>(1.0f, 1.0f),
+                Point2<float>(1.0f, -1.0f),
+                Point2<float>(-1.0f, -1.0f)
+        };
+        std::vector<Point2<float>> textureCoord = {
+                Point2<float>(0.0f, 1.0f),
+                Point2<float>(1.0f, 1.0f),
+                Point2<float>(1.0f, 0.0f),
+                Point2<float>(0.0f, 0.0f)
+        };
         lightingRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
-                ->vertexData(CoordType::INT, CoordDimension::_2D, &vertexCoord[0])
-                ->textureData(CoordType::INT, CoordDimension::_2D, &textureCoord[0])
+                ->vertexCoord(&vertexCoord)
+                ->textureCoord(&textureCoord)
                 ->addTexture(Texture::build(textureIDs[TEX_DEPTH], Texture::DEFAULT, TextureParam::buildNearest()))
                 ->addTexture(Texture::build(textureIDs[TEX_DIFFUSE], Texture::DEFAULT, TextureParam::buildNearest()))
                 ->addTexture(Texture::build(textureIDs[TEX_NORMAL_AND_AMBIENT], Texture::DEFAULT, TextureParam::buildNearest()))

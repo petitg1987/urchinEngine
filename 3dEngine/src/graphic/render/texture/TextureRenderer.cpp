@@ -137,12 +137,12 @@ namespace urchin {
         ShaderDataSender().sendData(mProjectionShaderVar, mProjection);
 
         //update the display
-        std::vector<float> vertexCoord = {minX, minY, maxX, minY, maxX, maxY, minX, maxY};
-        std::vector<int> textureCoord = {0, 1, 1, 1, 1, 0, 0, 0};
+        std::vector<Point2<float>> vertexCoord = {Point2<float>(minX, minY), Point2<float>(maxX, minY), Point2<float>(maxX, maxY), Point2<float>(minX, maxY)};
+        std::vector<Point2<float>> textureCoord = {Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)};
         Texture::Type textureType = (layer == -1) ? Texture::Type::DEFAULT : Texture::Type::ARRAY;
         renderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
-                ->vertexData(CoordType::FLOAT, CoordDimension::_2D, &vertexCoord[0])
-                ->textureData(CoordType::INT, CoordDimension::_2D, &textureCoord[0])
+                ->vertexCoord(&vertexCoord)
+                ->textureCoord(&textureCoord)
                 ->addTexture(Texture::build(textureID, textureType))
                 ->build();
 

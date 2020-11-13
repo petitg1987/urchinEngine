@@ -8,7 +8,8 @@ namespace urchin {
         LINE,
         LINE_STRIP,
         TRIANGLE,
-        TRIANGLE_STRIP
+        TRIANGLE_STRIP,
+        POINT
     };
 
 }

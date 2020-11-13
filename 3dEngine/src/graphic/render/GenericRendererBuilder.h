@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <vector>
+#include "UrchinCommon.h"
 
 #include "graphic/render/GenericRenderer.h"
 #include "graphic/render/model/CoordType.h"
@@ -19,18 +20,19 @@ namespace urchin {
 
             ShapeType getShapeType() const;
 
-            GenericRendererBuilder *shapeCount(unsigned int);
-            unsigned int getShapeCount() const;
-
-            GenericRendererBuilder *vertexData(CoordType, CoordDimension, void *);
+            GenericRendererBuilder *vertexCoord(std::vector<Point2<float>> *);
+            GenericRendererBuilder *vertexCoord(std::vector<Point3<float>> *);
             CoordType getVertexCoordType() const;
             CoordDimension getVertexCoordDimension() const;
             void *getVertexCoord() const;
+            unsigned int getVertexCoordCount() const;
 
-            GenericRendererBuilder *textureData(CoordType, CoordDimension, void *);
+            GenericRendererBuilder *textureCoord(std::vector<Point2<float>> *);
+            GenericRendererBuilder *textureCoord(std::vector<Point3<float>> *);
             CoordType getTextureCoordType() const;
             CoordDimension getTextureCoordDimension() const;
             void *getTextureCoord() const;
+            unsigned int getTextureCoordCount() const;
 
             GenericRendererBuilder *enableTransparency();
             bool isTransparencyEnabled() const;
@@ -41,8 +43,9 @@ namespace urchin {
             GenericRendererBuilder *disableCullFace();
             bool isCullFaceEnabled() const;
 
-            GenericRendererBuilder *polygonMode(PolygonMode, float outlineSize = 1.0f);
+            GenericRendererBuilder *polygonMode(PolygonMode);
             PolygonMode getPolygonMode() const;
+            GenericRendererBuilder *outlineSize(float);
             float getOutlineSize() const;
 
             GenericRendererBuilder *addTexture(Texture);
@@ -51,16 +54,20 @@ namespace urchin {
             std::unique_ptr<GenericRenderer> build();
 
         private:
+            void setVertexData(CoordType, CoordDimension, void *, unsigned int);
+            void setTextureData(CoordType, CoordDimension, void *, unsigned int);
+
             ShapeType shapeType;
-            unsigned int pShapeCount;
 
             CoordType vertexCoordType;
             CoordDimension vertexCoordDimension;
-            void *vertexCoord;
+            void *pVertexCoord;
+            unsigned int vertexCoordCount;
 
             CoordType textureCoordType;
             CoordDimension textureCoordDimension;
-            void *textureCoord;
+            void *pTextureCoord;
+            unsigned int textureCoordCount;
 
             bool transparencyEnabled;
 
@@ -69,7 +76,7 @@ namespace urchin {
             bool cullFaceEnabled;
 
             PolygonMode pPolygonMode;
-            float outlineSize;
+            float pOutlineSize;
 
             std::vector<Texture> textures;
     };

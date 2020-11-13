@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <cmath>
 #include <utility>
 
@@ -59,8 +58,8 @@ namespace urchin {
         return vertexArray;
     }
 
-    void ConeModel::drawGeometry() const {
-        glDrawArrays(GL_TRIANGLES, 0, 3*slices);
+    ShapeType ConeModel::getShapeType() const {
+        return ShapeType::TRIANGLE;
     }
 
 }

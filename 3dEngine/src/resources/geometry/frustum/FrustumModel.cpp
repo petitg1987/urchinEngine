@@ -1,5 +1,3 @@
-#include <GL/glew.h>
-
 #include <utility>
 
 #include "resources/geometry/frustum/FrustumModel.h"
@@ -70,8 +68,8 @@ namespace urchin {
         return vertexArray;
     }
 
-    void FrustumModel::drawGeometry() const {
-        glDrawArrays(GL_LINES, 0, 24);
+    ShapeType FrustumModel::getShapeType() const {
+        return ShapeType::LINE;
     }
 
 }

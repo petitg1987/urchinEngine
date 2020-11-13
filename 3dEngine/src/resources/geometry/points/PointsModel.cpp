@@ -1,19 +1,15 @@
-#include <GL/glew.h>
-
 #include <utility>
 
 #include "resources/geometry/points/PointsModel.h"
 
 namespace urchin {
 
-    PointsModel::PointsModel(std::vector<Point3<float>> points, float pointsSize):
-            points(std::move(points)),
-            pointsSize(pointsSize) {
+    PointsModel::PointsModel(std::vector<Point3<float>> points):
+            points(std::move(points)) {
         initialize();
     }
 
-    PointsModel::PointsModel(const Point3<float> &point, float pointsSize):
-        pointsSize(pointsSize) {
+    PointsModel::PointsModel(const Point3<float> &point) {
         points.push_back(point);
 
         initialize();
@@ -27,13 +23,8 @@ namespace urchin {
         return points;
     }
 
-    void PointsModel::drawGeometry() const {
-        GLfloat savedPointSize;
-        glGetFloatv(GL_POINT_SIZE, &savedPointSize);
-        glPointSize(pointsSize);
-
-        glDrawArrays(GL_POINTS, 0, points.size());
-
-        glPointSize(savedPointSize);
+    ShapeType PointsModel::getShapeType() const {
+        return ShapeType::POINT;
     }
+
 }

@@ -33,8 +33,8 @@ namespace urchin {
 
             //data
             std::vector<std::string> cutTextLines;
-            std::vector<int> vertexData;
-            std::vector<float> textureData;
+            std::vector<Point2<float>> vertexCoord;
+            std::vector<Point2<float>> textureCoord;
 
             //visual
             Font *font;

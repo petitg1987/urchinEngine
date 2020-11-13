@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <cmath>
 #include <utility>
 
@@ -53,8 +52,8 @@ namespace urchin {
         return vertexArray;
     }
 
-    void CylinderModel::drawGeometry() const {
-        glDrawArrays(GL_QUADS, 0, 4*sides);
+    ShapeType CylinderModel::getShapeType() const {
+        return ShapeType::RECTANGLE;
     }
 
 }

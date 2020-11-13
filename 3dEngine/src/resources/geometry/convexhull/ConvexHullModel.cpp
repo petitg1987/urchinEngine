@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <utility>
 
 #include "resources/geometry/convexhull/ConvexHullModel.h"
@@ -34,8 +33,8 @@ namespace urchin {
         return vertexArray;
     }
 
-    void ConvexHullModel::drawGeometry() const {
-        glDrawArrays(GL_TRIANGLES, 0, convexHull.getIndexedTriangles().size()*3);
+    ShapeType ConvexHullModel::getShapeType() const {
+        return ShapeType::TRIANGLE;
     }
 
 }

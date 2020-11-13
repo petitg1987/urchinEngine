@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <cmath>
 #include <utility>
 
@@ -53,7 +52,7 @@ namespace urchin {
 
     }
 
-    void SphereModel::drawGeometry() const {
-        glDrawArrays(GL_QUADS, 0, 4*slices*slices);
+    ShapeType SphereModel::getShapeType() const {
+        return ShapeType::RECTANGLE;
     }
 }

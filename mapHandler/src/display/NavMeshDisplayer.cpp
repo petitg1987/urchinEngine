@@ -44,13 +44,13 @@ namespace urchin {
             }
 
             auto *meshModel = new TrianglesModel(toDisplayPoints(triangleMeshPoints, 0.02f));
-            addNavMeshModel(meshModel, GeometryModel::FILL, Vector3<float>(0.0, 0.0, 1.0));
+            addNavMeshModel(meshModel, PolygonMode::FILL, Vector3<float>(0.0, 0.0, 1.0));
 
             auto *meshWireframeModel = new TrianglesModel(toDisplayPoints(triangleMeshPoints, 0.025f));
-            addNavMeshModel(meshWireframeModel, GeometryModel::WIREFRAME, Vector3<float>(0.5, 0.5, 1.0));
+            addNavMeshModel(meshWireframeModel, PolygonMode::WIREFRAME, Vector3<float>(0.5, 0.5, 1.0));
 
             auto *jumpModel = new QuadsModel(quadJumpPoints);
-            addNavMeshModel(jumpModel, GeometryModel::FILL, Vector3<float>(0.5, 0.0, 0.5));
+            addNavMeshModel(jumpModel, PolygonMode::FILL, Vector3<float>(0.5, 0.0, 0.5));
 
             loadedNavMeshId = navMesh.getUpdateId();
         }
@@ -75,10 +75,10 @@ namespace urchin {
         return displayPoints;
     }
 
-    void NavMeshDisplayer::addNavMeshModel(GeometryModel *model, GeometryModel::PolygonMode polygonMode, const Vector3<float> &color) {
-        model->setLineSize(4.0);
+    void NavMeshDisplayer::addNavMeshModel(GeometryModel *model, PolygonMode polygonMode, const Vector3<float> &color) {
+        model->setOutlineSize(4.0f);
         model->enableTransparency();
-        model->setColor(color.X, color.Y, color.Z, 0.5);
+        model->setColor(color.X, color.Y, color.Z, 0.5f);
         model->setPolygonMode(polygonMode);
         navMeshModels.push_back(model);
         renderer3d->getGeometryManager()->addGeometry(model);

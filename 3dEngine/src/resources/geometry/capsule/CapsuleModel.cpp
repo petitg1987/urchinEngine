@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <cmath>
 #include <utility>
 
@@ -111,8 +110,8 @@ namespace urchin {
         }
     }
 
-    void CapsuleModel::drawGeometry() const {
-        glDrawArrays(GL_QUADS, 0, 4*sides + 2*(4*(slices/2)*slices));
+    ShapeType CapsuleModel::getShapeType() const {
+        return ShapeType::RECTANGLE;
     }
 
 }

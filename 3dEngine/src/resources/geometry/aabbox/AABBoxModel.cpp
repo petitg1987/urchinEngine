@@ -1,5 +1,3 @@
-#include <GL/glew.h>
-
 #include <utility>
 
 #include "resources/geometry/aabbox/AABBoxModel.h"
@@ -67,8 +65,8 @@ namespace urchin {
         return vertexArray;
     }
 
-    void AABBoxModel::drawGeometry() const {
-        glDrawArrays(GL_LINES, 0, 24 * aabboxes.size());
+    ShapeType AABBoxModel::getShapeType() const {
+        return ShapeType::LINE;
     }
 
 }

@@ -1,17 +1,14 @@
-#include <GL/glew.h>
-
 #include "resources/geometry/GeometryModel.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
 #include "graphic/shader/data/ShaderDataSender.h"
+#include "graphic/render/GenericRendererBuilder.h"
 
 namespace urchin {
 
     GeometryModel::GeometryModel() :
-            bufferIDs(),
-            vertexArrayObject(0),
-            color(Vector4<float>(0.0, 1.0, 0.0, 1.0)),
+            color(Vector4<float>(0.0f, 1.0f, 0.0f, 1.0f)),
             polygonMode(WIREFRAME),
-            lineSize(1.3),
+            outlineSize(1.3f),
             transparencyEnabled(false),
             alwaysVisible(false) {
         shader = ShaderBuilder().createShader("displayGeometry.vert", "", "displayGeometry.frag");
@@ -19,14 +16,32 @@ namespace urchin {
         mProjectionShaderVar = ShaderVar(shader, "mProjection");
         mViewShaderVar = ShaderVar(shader, "mView");
         colorShaderVar = ShaderVar(shader, "color");
-
-        glGenBuffers(1, bufferIDs);
-        glGenVertexArrays(1, &vertexArrayObject);
     }
 
-    GeometryModel::~GeometryModel() {
-        glDeleteVertexArrays(1, &vertexArrayObject);
-        glDeleteBuffers(1, bufferIDs);
+    void GeometryModel::initialize() {
+        modelMatrix = retrieveModelMatrix();
+        refreshRenderer();
+    }
+
+    void GeometryModel::refreshRenderer() {
+        std::vector<Point3<float>> vertexArray = retrieveVertexArray();
+
+        std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(getShapeType());
+        rendererBuilder
+                ->vertexCoord(&vertexArray)
+                ->disableCullFace()
+                ->outlineSize(outlineSize)
+                ->polygonMode(polygonMode);
+
+        if(!alwaysVisible) {
+            rendererBuilder->enableDepthTest();
+        }
+
+        if(transparencyEnabled) {
+            rendererBuilder->enableTransparency();
+        }
+
+        renderer = rendererBuilder->build();
     }
 
     void GeometryModel::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) {
@@ -41,16 +56,18 @@ namespace urchin {
         this->color = Vector4<float>(red, green, blue, alpha);
     }
 
-    GeometryModel::PolygonMode GeometryModel::getPolygonMode() const {
+    PolygonMode GeometryModel::getPolygonMode() const {
         return polygonMode;
     }
 
     void GeometryModel::setPolygonMode(PolygonMode polygonMode) {
         this->polygonMode = polygonMode;
+        refreshRenderer();
     }
 
-    void GeometryModel::setLineSize(float lineSize) {
-        this->lineSize = lineSize;
+    void GeometryModel::setOutlineSize(float outlineSize) {
+        this->outlineSize = outlineSize;
+        refreshRenderer();
     }
 
     bool GeometryModel::isTransparencyEnabled() const {
@@ -59,6 +76,7 @@ namespace urchin {
 
     void GeometryModel::enableTransparency() {
         transparencyEnabled = true;
+        refreshRenderer();
     }
 
     bool GeometryModel::isAlwaysVisible() const {
@@ -67,18 +85,7 @@ namespace urchin {
 
     void GeometryModel::setAlwaysVisible(bool alwaysVisible) {
         this->alwaysVisible = alwaysVisible;
-    }
-
-    void GeometryModel::initialize() {
-        modelMatrix = retrieveModelMatrix();
-        std::vector<Point3<float>> vertexArray = retrieveVertexArray();
-
-        glBindVertexArray(vertexArrayObject);
-
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-        glBufferData(GL_ARRAY_BUFFER, vertexArray.size()*sizeof(Point3<float>), &vertexArray[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-        glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+        refreshRenderer();
     }
 
     void GeometryModel::display(const Matrix4<float> &viewMatrix) const {
@@ -88,29 +95,7 @@ namespace urchin {
             .sendData(colorShaderVar, color);
 
         shader->bind();
-        glBindVertexArray(vertexArrayObject);
-
-        glDisable(GL_CULL_FACE);
-        glPolygonMode(GL_FRONT_AND_BACK, polygonMode==WIREFRAME ? GL_LINE : GL_FILL);
-        glLineWidth(lineSize);
-        if (transparencyEnabled) {
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        }
-        if (isAlwaysVisible()) {
-            glDisable(GL_DEPTH_TEST);
-        }
-
-        drawGeometry();
-
-        if (isAlwaysVisible()) {
-            glEnable(GL_DEPTH_TEST);
-        }
-        if (transparencyEnabled) {
-            glDisable(GL_BLEND);
-        }
-        glEnable(GL_CULL_FACE);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        renderer->draw();
     }
 
 }

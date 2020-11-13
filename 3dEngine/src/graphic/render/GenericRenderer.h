@@ -28,7 +28,6 @@ namespace urchin {
             void initializeTexture(Texture) const;
             void initializeDisplay(void *, void *);
 
-            unsigned int countVertexNumber(ShapeType, unsigned int) const;
             unsigned int shapeTypeToGlType(ShapeType) const;
             unsigned int coordTypeToSize(CoordType) const;
             unsigned int coordTypeToGlType(CoordType) const;
@@ -37,13 +36,14 @@ namespace urchin {
             void resetDrawDefaultValues() const;
 
             ShapeType shapeType;
-            unsigned int shapeCount;
 
             CoordType vertexCoordType;
             CoordDimension vertexCoordDimension;
+            unsigned int vertexCoordCount;
 
             CoordType textureCoordType;
             CoordDimension textureCoordDimension;
+            unsigned int textureCoordCount;
 
             bool transparencyEnabled;
 

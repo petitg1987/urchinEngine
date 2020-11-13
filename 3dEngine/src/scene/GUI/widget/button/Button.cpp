@@ -38,11 +38,21 @@ namespace urchin {
         }
 
         //visual
-        std::vector<unsigned int> vertexCoord = {0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()};
-        std::vector<float> textureCoord = {0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0};
+        std::vector<Point2<float>> vertexCoord = {
+                Point2<float>(0.0f, 0.0f),
+                Point2<float>(getWidth(), 0.0f),
+                Point2<float>(getWidth(), getHeight()),
+                Point2<float>(0.0f, getHeight())
+        };
+        std::vector<Point2<float>> textureCoord = {
+                Point2<float>(0.0f, 0.0f),
+                Point2<float>(1.0f, 0.0f),
+                Point2<float>(1.0f, 1.0f),
+                Point2<float>(0.0f, 1.0f)
+        };
         buttonRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
-                ->vertexData(CoordType::UNSIGNED_INT, CoordDimension::_2D, &vertexCoord[0])
-                ->textureData(CoordType::FLOAT, CoordDimension::_2D, &textureCoord[0])
+                ->vertexCoord(&vertexCoord)
+                ->textureCoord(&textureCoord)
                 ->addTexture(Texture::build(texInfoDefault->getTextureID()))
                 ->build();
     }

@@ -5,18 +5,14 @@
 
 #include "graphic/shader/model/Shader.h"
 #include "graphic/shader/model/ShaderVar.h"
+#include "graphic/render/GenericRenderer.h"
 
 namespace urchin {
 
     class GeometryModel {
         public:
             GeometryModel();
-            virtual ~GeometryModel();
-
-            enum PolygonMode {
-                FILL,
-                WIREFRAME
-            };
+            virtual ~GeometryModel() = default;
 
             void onCameraProjectionUpdate(const Matrix4<float> &);
 
@@ -25,7 +21,7 @@ namespace urchin {
 
             PolygonMode getPolygonMode() const;
             void setPolygonMode(PolygonMode);
-            void setLineSize(float);
+            void setOutlineSize(float);
 
             bool isTransparencyEnabled() const;
             void enableTransparency();
@@ -36,21 +32,17 @@ namespace urchin {
             void display(const Matrix4<float> &) const;
 
         protected:
+            void initialize();
+            void refreshRenderer();
+
             virtual Matrix4<float> retrieveModelMatrix() const = 0;
             virtual std::vector<Point3<float>> retrieveVertexArray() const = 0;
 
-            void initialize();
-
-            virtual void drawGeometry() const = 0;
+            virtual ShapeType getShapeType() const = 0;
 
         private:
-            unsigned int bufferIDs[1], vertexArrayObject;
-            enum { //buffer IDs indices
-                VAO_VERTEX_POSITION = 0,
-            };
-            enum { //shader input
-                SHADER_VERTEX_POSITION = 0,
-            };
+            std::unique_ptr<GenericRenderer> renderer;
+
             std::unique_ptr<Shader> shader;
             ShaderVar mProjectionShaderVar, mViewShaderVar, colorShaderVar;
 
@@ -58,10 +50,8 @@ namespace urchin {
             Matrix4<float> modelMatrix;
 
             Vector4<float> color;
-
             PolygonMode polygonMode;
-            float lineSize;
-
+            float outlineSize;
             bool transparencyEnabled;
             bool alwaysVisible;
     };

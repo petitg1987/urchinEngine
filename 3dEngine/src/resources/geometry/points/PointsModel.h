@@ -10,18 +10,17 @@ namespace urchin {
 
     class PointsModel : public GeometryModel {
         public:
-            PointsModel(std::vector<Point3<float>>, float);
-            PointsModel(const Point3<float> &, float);
+            explicit PointsModel(std::vector<Point3<float>>);
+            explicit PointsModel(const Point3<float> &);
 
         protected:
             Matrix4<float> retrieveModelMatrix() const override;
             std::vector<Point3<float>> retrieveVertexArray() const override;
 
-            void drawGeometry() const override;
+            ShapeType getShapeType() const override;
 
         private:
             std::vector<Point3<float>> points;
-            float pointsSize;
     };
 
 }
