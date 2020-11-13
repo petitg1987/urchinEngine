@@ -16,10 +16,15 @@ namespace urchin {
     class GenericRenderer {
         public:
             struct PointsCoord {
-                CoordType coordType;
-                CoordDimension coordDimension;
-                void *points;
-                unsigned int pointsCount;
+                CoordType coordType = CoordType::FLOAT;
+                CoordDimension coordDimension = CoordDimension::TWO_DIMENSION;
+                void *ptr = nullptr;
+                unsigned int pointsCount = 0;
+            };
+
+            struct Indices {
+                void *ptr = nullptr;
+                unsigned int indicesCount = 0;
             };
 
             explicit GenericRenderer(const GenericRendererBuilder *);
@@ -46,6 +51,8 @@ namespace urchin {
 
             std::vector<PointsCoord> pointsCoords;
             unsigned int pointsCount;
+
+            Indices indices;
 
             bool transparencyEnabled;
 

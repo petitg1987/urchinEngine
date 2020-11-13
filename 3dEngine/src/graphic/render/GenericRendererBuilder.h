@@ -22,7 +22,10 @@ namespace urchin {
 
             GenericRendererBuilder *addPointsCoord(std::vector<Point2<float>> *);
             GenericRendererBuilder *addPointsCoord(std::vector<Point3<float>> *);
-            std::vector<GenericRenderer::PointsCoord> getPointsCoords() const;
+            const std::vector<GenericRenderer::PointsCoord> &getPointsCoords() const;
+
+            GenericRendererBuilder *indices(std::vector<unsigned int> *);
+            const GenericRenderer::Indices &getIndices() const;
 
             GenericRendererBuilder *enableTransparency();
             bool isTransparencyEnabled() const;
@@ -45,18 +48,13 @@ namespace urchin {
 
         private:
             ShapeType shapeType;
-
             std::vector<GenericRenderer::PointsCoord> pointsCoords;
-
+            GenericRenderer::Indices pIndices;
             bool transparencyEnabled;
-
             bool depthTestEnabled;
-
             bool cullFaceEnabled;
-
             PolygonMode pPolygonMode;
             float pOutlineSize;
-
             std::vector<Texture> textures;
     };
 

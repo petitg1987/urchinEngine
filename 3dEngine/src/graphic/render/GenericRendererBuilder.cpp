@@ -17,29 +17,37 @@ namespace urchin {
     }
 
     GenericRendererBuilder *GenericRendererBuilder::addPointsCoord(std::vector<Point2<float>> *pointsCoord) {
-        GenericRenderer::PointsCoord pc{};
-        pc.coordType = CoordType::FLOAT;
-        pc.coordDimension = CoordDimension::TWO_DIMENSION;
-        pc.points = &(*pointsCoord)[0];
-        pc.pointsCount = pointsCoord->size();
-
-        pointsCoords.push_back(pc);
+        GenericRenderer::PointsCoord pointsCoord2d{};
+        pointsCoord2d.coordType = CoordType::FLOAT;
+        pointsCoord2d.coordDimension = CoordDimension::TWO_DIMENSION;
+        pointsCoord2d.ptr = &(*pointsCoord)[0];
+        pointsCoord2d.pointsCount = pointsCoord->size();
+        pointsCoords.push_back(pointsCoord2d);
         return this;
     }
 
     GenericRendererBuilder *GenericRendererBuilder::addPointsCoord(std::vector<Point3<float>> *pointsCoord) {
-        GenericRenderer::PointsCoord pc{};
-        pc.coordType = CoordType::FLOAT;
-        pc.coordDimension = CoordDimension::THREE_DIMENSION;
-        pc.points = &(*pointsCoord)[0];
-        pc.pointsCount = pointsCoord->size();
-
-        pointsCoords.push_back(pc);
+        GenericRenderer::PointsCoord pointsCoord3d{};
+        pointsCoord3d.coordType = CoordType::FLOAT;
+        pointsCoord3d.coordDimension = CoordDimension::THREE_DIMENSION;
+        pointsCoord3d.ptr = &(*pointsCoord)[0];
+        pointsCoord3d.pointsCount = pointsCoord->size();
+        pointsCoords.push_back(pointsCoord3d);
         return this;
     }
 
-    std::vector<GenericRenderer::PointsCoord> GenericRendererBuilder::getPointsCoords() const {
+    const std::vector<GenericRenderer::PointsCoord> &GenericRendererBuilder::getPointsCoords() const {
         return pointsCoords;
+    }
+
+    GenericRendererBuilder *GenericRendererBuilder::indices(std::vector<unsigned int> *indices) {
+        pIndices.ptr = &(*indices)[0];
+        pIndices.indicesCount = indices->size();
+        return this;
+    }
+
+    const GenericRenderer::Indices &GenericRendererBuilder::getIndices() const {
+        return pIndices;
     }
 
     GenericRendererBuilder *GenericRendererBuilder::enableTransparency() {

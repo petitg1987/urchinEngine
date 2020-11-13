@@ -11,6 +11,7 @@ namespace urchin {
     GenericRenderer::GenericRenderer(const GenericRendererBuilder *rendererBuilder) :
             shapeType(rendererBuilder->getShapeType()),
             pointsCoords(rendererBuilder->getPointsCoords()),
+            indices(rendererBuilder->getIndices()),
             transparencyEnabled(rendererBuilder->isTransparencyEnabled()),
             depthTestEnabled(rendererBuilder->isDepthTestEnabled()),
             cullFaceEnabled(rendererBuilder->isCullFaceEnabled()),
@@ -75,12 +76,21 @@ namespace urchin {
             auto vertexCoordDim = coordDimensionToSize(pointsCoord.coordDimension);
             auto vertexMemorySize = coordTypeToSize(pointsCoord.coordType) * vertexCoordDim * pointsCoord.pointsCount;
             glBindBuffer(GL_ARRAY_BUFFER, bufferId);
-            glBufferData(GL_ARRAY_BUFFER, vertexMemorySize, pointsCoord.points, GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, vertexMemorySize, pointsCoord.ptr, GL_STATIC_DRAW);
             glEnableVertexAttribArray(pointsCoordUnit);
             glVertexAttribPointer(pointsCoordUnit, vertexCoordDim, coordTypeToGlType(pointsCoord.coordType), GL_FALSE, 0, nullptr);
 
-            pointsCoord.points = nullptr; //reset pointer because no guaranteed pointer is still valid after initialization
+            pointsCoord.ptr = nullptr; //reset pointer because no guaranteed pointer is still valid after initialization
             pointsCoordUnit++;
+        }
+
+        if(indices.ptr) {
+            unsigned int bufferId = 0;
+            glGenBuffers(1, &bufferId);
+            bufferIds.push_back(bufferId);
+
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferId);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.indicesCount * sizeof(unsigned int), indices.ptr, GL_STATIC_DRAW);
         }
     }
 
