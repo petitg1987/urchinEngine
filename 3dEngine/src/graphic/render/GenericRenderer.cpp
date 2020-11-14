@@ -22,7 +22,7 @@ namespace urchin {
 
         assert(!pointsCoords.empty());
         pointsCount = pointsCoords[0].pointsCount;
-        for(const auto pointCoord : pointsCoords) {
+        for(const auto &pointCoord : pointsCoords) {
             assert(pointCoord.pointsCount == pointsCount);
         }
 
