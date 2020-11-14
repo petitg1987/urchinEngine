@@ -38,8 +38,10 @@ namespace urchin {
         }
 
         //creates the vertex array and texture array
-        vertexCoord.resize(numLetters*4);
-        textureCoord.resize(numLetters*4);
+        vertexCoord.clear();
+        textureCoord.clear();
+        vertexCoord.reserve(numLetters * 4);
+        textureCoord.reserve(numLetters * 4);
         unsigned int width = 0;
         unsigned int offsetY = 0;
         for (auto &cutTextLine : cutTextLines) { //each lines
