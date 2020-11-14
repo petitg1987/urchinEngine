@@ -22,9 +22,11 @@ namespace urchin {
 
         assert(!pointsCoords.empty());
         pointsCount = pointsCoords[0].pointsCount;
-        for(const auto &pointCoord : pointsCoords) {
-            assert(pointCoord.pointsCount == pointsCount);
-        }
+        #ifndef NDEBUG
+            for(const auto &pointCoord : pointsCoords) {
+                assert(pointCoord.pointsCount == pointsCount);
+            }
+        #endif
 
         glGenVertexArrays(1, &vertexArrayObject);
         initializeDisplay();
