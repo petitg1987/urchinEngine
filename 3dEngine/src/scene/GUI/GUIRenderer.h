@@ -32,6 +32,7 @@ namespace urchin {
             void display(float) override;
 
         private:
+            unsigned int sceneWidth, sceneHeight;
             std::vector<Widget *> widgets;
 
             Matrix3<float> mProjection;

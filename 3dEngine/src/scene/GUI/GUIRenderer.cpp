@@ -14,7 +14,9 @@ namespace urchin {
     //Debug parameters
     bool DEBUG_DISPLAY_FONT_TEXTURE = false;
 
-    GUIRenderer::GUIRenderer() {
+    GUIRenderer::GUIRenderer() :
+            sceneWidth(0),
+            sceneHeight(0) {
         guiShader = ShaderBuilder().createShader("gui.vert", "", "gui.frag");
 
         mProjectionShaderVar = ShaderVar(guiShader, "mProjection");
@@ -32,6 +34,9 @@ namespace urchin {
     }
 
     void GUIRenderer::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
+        this->sceneWidth = sceneWidth;
+        this->sceneHeight = sceneHeight;
+
         //orthogonal matrix with origin at top left screen
         mProjection.setValues(2.0f/(float)sceneWidth, 0.0f, -1.0f,
             0.0f, -2.0f/(float)sceneHeight, 1.0f,
@@ -135,12 +140,13 @@ namespace urchin {
         }
 
         if (DEBUG_DISPLAY_FONT_TEXTURE) {
-            Font *font = MediaManager::instance()->getMedia<Font>("font/font.fnt");
+            Font *font = MediaManager::instance()->getMedia<Font>("UI/font/font.fnt");
 
             TextureRenderer textureDisplayer(font->getTextureID(), TextureRenderer::DEFAULT_VALUE);
             textureDisplayer.setPosition(TextureRenderer::USER_DEFINED_X, TextureRenderer::USER_DEFINED_Y);
             textureDisplayer.setSize(20.0f, (float)font->getDimensionTexture() + 20.0f, 20.0f, (float)font->getDimensionTexture() + 20.0f);
-            textureDisplayer.initialize(512u, 512u, -1.0f, -1.0f);
+            textureDisplayer.enableTransparency();
+            textureDisplayer.initialize(sceneWidth, sceneHeight, -1.0f, -1.0f);
             textureDisplayer.display();
             font->release();
         }

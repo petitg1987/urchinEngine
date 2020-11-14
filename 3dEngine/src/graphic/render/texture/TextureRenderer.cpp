@@ -12,6 +12,7 @@ namespace urchin {
             coordinateX(TextureRenderer::LEFT),
             coordinateY(TextureRenderer::BOTTOM),
             fullScreen(false),
+            transparencyEnabled(false),
             userMinX(0.0),
             userMaxX(1.0),
             userMinY(0.0),
@@ -28,6 +29,7 @@ namespace urchin {
             coordinateX(TextureRenderer::LEFT),
             coordinateY(TextureRenderer::BOTTOM),
             fullScreen(false),
+            transparencyEnabled(false),
             userMinX(0.0),
             userMaxX(1.0),
             userMinY(0.0),
@@ -71,6 +73,14 @@ namespace urchin {
         }
 
         this->fullScreen = fullScreen;
+    }
+
+    void TextureRenderer::enableTransparency() {
+        if (isInitialized) {
+            throw std::runtime_error("No transparency flag update allowed after initialization.");
+        }
+
+        this->transparencyEnabled = true;
     }
 
     void TextureRenderer::initialize(unsigned int sceneWidth, unsigned int sceneHeight, float nearPlane, float farPlane) {
@@ -140,11 +150,15 @@ namespace urchin {
         std::vector<Point2<float>> vertexCoord = {Point2<float>(minX, minY), Point2<float>(maxX, minY), Point2<float>(maxX, maxY), Point2<float>(minX, maxY)};
         std::vector<Point2<float>> textureCoord = {Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)};
         Texture::Type textureType = (layer == -1) ? Texture::Type::DEFAULT : Texture::Type::ARRAY;
-        renderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
+        std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE);
+        rendererBuilder
                 ->addPointsCoord(&vertexCoord)
                 ->addPointsCoord(&textureCoord)
-                ->addTexture(Texture::build(textureID, textureType))
-                ->build();
+                ->addTexture(Texture::build(textureID, textureType));
+        if(transparencyEnabled) {
+            rendererBuilder->enableTransparency();
+        }
+        renderer = rendererBuilder->build();
 
         isInitialized = true;
     }

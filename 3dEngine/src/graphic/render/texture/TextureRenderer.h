@@ -47,6 +47,7 @@ namespace urchin {
             void setPosition(TextureRenderer::CoordinateX, TextureRenderer::CoordinateY);
             void setSize(float, float, float, float);
             void setFullScreen(bool);
+            void enableTransparency();
 
             void initialize(unsigned int, unsigned int, float, float);
 
@@ -60,6 +61,7 @@ namespace urchin {
             TextureRenderer::CoordinateX coordinateX;
             TextureRenderer::CoordinateY coordinateY;
             bool fullScreen;
+            bool transparencyEnabled;
             float userMinX, userMaxX, userMinY, userMaxY;
 
             //visual
