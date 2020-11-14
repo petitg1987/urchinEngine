@@ -18,6 +18,6 @@ void main() {
     if (color.a < GRASS_ALPHA_TEST)
         discard;
 
-    fragColor = vec4(color.xyz, color.a);
+    fragColor = vec4(color.xyz, 1.0);
     fragNormalAndAmbient = vec4(grassNormal, ambient);
 }

@@ -280,6 +280,7 @@ namespace urchin {
     }
 
     void TerrainGrass::setGrassDisplayDistance(float grassDisplayDistance) {
+        assert(grassDisplayDistance != 0.0f);
         this->grassDisplayDistance = grassDisplayDistance;
 
         ShaderDataSender().sendData(grassDisplayDistanceShaderVar, grassDisplayDistance);
@@ -349,10 +350,6 @@ namespace urchin {
         if (grassTexture) {
             ScopeProfiler profiler("3d", "grassDisplay");
 
-            assert(grassDisplayDistance != 0.0f);
-
-            glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE); //TODO move in renderer ?
-
             sumTimeStep += dt;
             ShaderDataSender()
                 .sendData(sumTimeStepShaderVar, sumTimeStep)
@@ -376,8 +373,6 @@ namespace urchin {
                     }
                 }
             }
-
-            glDisable(GL_SAMPLE_ALPHA_TO_COVERAGE);
         }
     }
 
