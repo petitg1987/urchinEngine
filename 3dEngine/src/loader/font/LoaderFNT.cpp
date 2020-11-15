@@ -105,7 +105,7 @@ namespace urchin {
         }
         auto spaceBetweenLines = static_cast<unsigned int>((float)height * WIDTH_BETWEEN_LINES_RATE);
         auto spaceBetweenLetters = static_cast<unsigned int>(WIDTH_BETWEEN_LETTERS);
-        glyph[' '].width = (int)((float)glyph['A'].width * WIDTH_SPACE_RATE);
+        glyph[static_cast<int>(' ')].width = (int)((float)glyph[static_cast<int>('A')].width * WIDTH_SPACE_RATE);
 
         //dimension of letters and texture
         unsigned int dimensionLetters=0;

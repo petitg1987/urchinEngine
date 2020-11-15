@@ -42,38 +42,44 @@ namespace urchin {
         textureCoord.clear();
         vertexCoord.reserve(numLetters * 4);
         textureCoord.reserve(numLetters * 4);
-        unsigned int width = 0;
-        unsigned int offsetY = 0;
+
+        float width = 0.0f;
+        float offsetY = 0.0f;
+        auto spaceBetweenLetters = static_cast<float>(font->getSpaceBetweenLetters());
+        auto spaceBetweenLines = static_cast<float>(font->getSpaceBetweenLines());
+
         for (auto &cutTextLine : cutTextLines) { //each lines
-            unsigned int offsetX = 0;
+            float offsetX = 0.0f;
             for (char charLetter : cutTextLine) { //each letters
                 auto letter = static_cast<unsigned char>(charLetter);
+                auto letterShift = static_cast<float>(font->getGlyph(letter).shift);
+                auto letterWidth = static_cast<float>(font->getGlyph(letter).width);
+                auto letterHeight = static_cast<float>(font->getGlyph(letter).height);
+
+                vertexCoord.emplace_back(Point2<float>(offsetX, - letterShift + offsetY));
+                vertexCoord.emplace_back(Point2<float>(letterWidth + offsetX, - letterShift + offsetY));
+                vertexCoord.emplace_back(Point2<float>(letterWidth + offsetX, letterHeight - letterShift + offsetY));
+                vertexCoord.emplace_back(Point2<float>(offsetX, letterHeight - letterShift + offsetY));
 
                 float t = (float)(letter >> 4u) / 16.0f;
                 float s = (float)(letter % 16) / 16.0f;
-
-                vertexCoord.emplace_back(Point2<float>(offsetX, -font->getGlyph(letter).shift + offsetY));
-                vertexCoord.emplace_back(Point2<float>(font->getGlyph(letter).width + offsetX, -font->getGlyph(letter).shift + offsetY));
-                vertexCoord.emplace_back(Point2<float>(font->getGlyph(letter).width + offsetX, font->getGlyph(letter).height - font->getGlyph(letter).shift + offsetY));
-                vertexCoord.emplace_back(Point2<float>(offsetX, font->getGlyph(letter).height - font->getGlyph(letter).shift + offsetY));
-
                 textureCoord.emplace_back(Point2<float>(s, t));
-                textureCoord.emplace_back(Point2<float>(s+((float)font->getGlyph(letter).width / (float)font->getDimensionTexture()), t));
-                textureCoord.emplace_back(Point2<float>(s+((float)font->getGlyph(letter).width / (float)font->getDimensionTexture()), t+((float)font->getGlyph(letter).height / (float)font->getDimensionTexture())));
-                textureCoord.emplace_back(Point2<float>(s, t+((float)font->getGlyph(letter).height / (float)font->getDimensionTexture())));
+                textureCoord.emplace_back(Point2<float>(s+(letterWidth / (float)font->getDimensionTexture()), t));
+                textureCoord.emplace_back(Point2<float>(s+(letterWidth / (float)font->getDimensionTexture()), t+(letterHeight / (float)font->getDimensionTexture())));
+                textureCoord.emplace_back(Point2<float>(s, t+(letterHeight / (float)font->getDimensionTexture())));
 
-                offsetX += font->getGlyph(letter).width + font->getSpaceBetweenLetters();
+                offsetX += letterWidth + spaceBetweenLetters;
 
-                width = std::max(width, offsetX - font->getSpaceBetweenLetters());
+                width = std::max(width, offsetX - spaceBetweenLetters);
             }
-            offsetY += font->getSpaceBetweenLines();
+            offsetY += spaceBetweenLines;
         }
 
         if (cutTextLines.empty()) { //add fake line to compute height
             cutTextLines.emplace_back("");
         }
         unsigned int numberOfInterLines = cutTextLines.size() - 1;
-        setSize(Size((float)width, (float)(cutTextLines.size() * font->getHeight() + numberOfInterLines * font->getSpaceBetweenLines()), Size::SizeType::PIXEL));
+        setSize(Size(width, (float)(cutTextLines.size() * font->getHeight() + numberOfInterLines * font->getSpaceBetweenLines()), Size::SizeType::PIXEL));
 
         textRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
                 ->addPointsCoord(&vertexCoord)
