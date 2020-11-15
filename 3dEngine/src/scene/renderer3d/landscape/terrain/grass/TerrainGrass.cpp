@@ -112,11 +112,11 @@ namespace urchin {
             std::default_random_engine generator(seed);
             std::uniform_real_distribution<float> distribution(-grassPositionRandomPercentage / grassQuantity, grassPositionRandomPercentage/grassQuantity);
 
-            auto grassXQuantity = static_cast<unsigned int>(mesh->getXZScale() * (float)mesh->getXSize() * grassQuantity);
-            auto grassZQuantity = static_cast<unsigned int>(mesh->getXZScale() * (float)mesh->getZSize() * grassQuantity);
+            auto grassXQuantity = std::lround(mesh->getXZScale() * (float)mesh->getXSize() * grassQuantity);
+            auto grassZQuantity = std::lround(mesh->getXZScale() * (float)mesh->getZSize() * grassQuantity);
 
-            auto patchQuantityX = static_cast<unsigned int>(mesh->getXZScale() * (float)mesh->getXSize() / grassPatchSize);
-            auto patchQuantityZ = static_cast<unsigned int>(mesh->getXZScale() * (float)mesh->getZSize() / grassPatchSize);
+            auto patchQuantityX = std::lround(mesh->getXZScale() * (float)mesh->getXSize() / grassPatchSize);
+            auto patchQuantityZ = std::lround(mesh->getXZScale() * (float)mesh->getZSize() / grassPatchSize);
             float adjustedPatchSizeX = mesh->getXZScale() * (float)mesh->getXSize() / patchQuantityX;
             float adjustedPatchSizeZ = mesh->getXZScale() * (float)mesh->getZSize() / patchQuantityZ;
 
@@ -147,8 +147,8 @@ namespace urchin {
                             Point3<float> globalGrassVertex(xValue + terrainPosition.X, yValue, zValue + terrainPosition.Z);
                             Vector3<float> grassNormal = (mesh->getNormals()[vertexIndex] / 2.0f) + Vector3<float>(0.5f, 0.5f, 0.5f);
 
-                            unsigned int patchXIndex = std::min(static_cast<unsigned int>((xValue - startX) / adjustedPatchSizeX), patchQuantityX);
-                            unsigned int patchZIndex = std::min(static_cast<unsigned int>((zValue - startZ) / adjustedPatchSizeZ), patchQuantityZ);
+                            unsigned int patchXIndex = std::min(static_cast<long>((xValue - startX) / adjustedPatchSizeX), patchQuantityX);
+                            unsigned int patchZIndex = std::min(static_cast<long>((zValue - startZ) / adjustedPatchSizeZ), patchQuantityZ);
                             unsigned int patchIndex = (patchZIndex * patchQuantityX) + patchXIndex;
 
                             leafGrassPatches[patchIndex]->addVertex(globalGrassVertex, grassNormal);
@@ -362,8 +362,9 @@ namespace urchin {
             terrainGrassShader->bind();
             for (std::size_t i=0; i<grassQuadtrees.size(); ++i) {
                 const TerrainGrassQuadtree *grassQuadtree = grassQuadtrees[i];
+                const std::unique_ptr<AABBox<float>> &grassQuadtreeBox = grassQuadtree->getBox();
 
-                if (camera->getFrustum().cutFrustum(grassDisplayDistance).collideWithAABBox(*grassQuadtree->getBox())) {
+                if (grassQuadtreeBox && camera->getFrustum().cutFrustum(grassDisplayDistance).collideWithAABBox(*grassQuadtreeBox)) {
                     if (grassQuadtree->isLeaf()) {
                         grassQuadtree->getRenderer()->draw();
                     } else {
