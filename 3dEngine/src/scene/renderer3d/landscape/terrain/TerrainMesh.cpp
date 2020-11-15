@@ -24,9 +24,10 @@ namespace urchin {
         zSize = imgTerrain->getHeight();
 
         std::string terrainFilePath = FileSystem::instance()->getResourcesDirectory() + imgTerrain->getName();
-        std::string terrainFrlFilePath = FileSystem::instance()->getSaveDirectory() + FileHandler::getFileNameNoExtension(terrainFilePath) + FRL_FILE_EXTENSION;
-        std::string terrainMd5Sum = std::string(MD5().digestFile(terrainFilePath.c_str()));
+        std::string terrainId = std::string(MD5().digestFile(terrainFilePath.c_str())) + "#" + std::to_string(xzScale) + "#" + std::to_string(yScale);
+        std::string terrainMd5Sum = std::string(MD5().digestString(const_cast<char *>(terrainId.c_str())));
 
+        std::string terrainFrlFilePath = FileSystem::instance()->getSaveDirectory() + FileHandler::getFileNameNoExtension(terrainFilePath) + FRL_FILE_EXTENSION;
         std::ifstream terrainFrlFile;
         terrainFrlFile.open(terrainFrlFilePath, std::ios::in | std::ios::binary);
 
