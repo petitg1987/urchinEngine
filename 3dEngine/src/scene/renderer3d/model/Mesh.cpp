@@ -4,45 +4,21 @@
 #include "resources/model/MeshService.h"
 #include "resources/geometry/points/PointsModel.h"
 #include "graphic/shader/data/ShaderDataSender.h"
+#include "graphic/render/GenericRendererBuilder.h"
 
 namespace urchin {
 
     Mesh::Mesh(const ConstMesh *constMesh) :
-        constMesh(constMesh),
-        bufferIDs(),
-        vertexArrayObject(0) {
-        //visual
-        glGenBuffers(5, bufferIDs);
-        glGenVertexArrays(1, &vertexArrayObject);
-        glBindVertexArray(vertexArrayObject);
-
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-        glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*3, &constMesh->getBaseVertices()[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-        glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
-        glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*2, &constMesh->getTextureCoordinates()[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(SHADER_TEX_COORD);
-        glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
-
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_NORMAL]);
-        glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*3, &constMesh->getBaseNormals()[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(SHADER_NORMAL);
-        glVertexAttribPointer(SHADER_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TANGENT]);
-        glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*3, &constMesh->getBaseTangents()[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(SHADER_TANGENT);
-        glVertexAttribPointer(SHADER_TANGENT, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferIDs[VAO_INDEX]);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, constMesh->getNumberTriangles()*3*sizeof(unsigned int), &constMesh->getTriangles()[0], GL_STATIC_DRAW);
-    }
-
-    Mesh::~Mesh() {
-        glDeleteVertexArrays(1, &vertexArrayObject);
-        glDeleteBuffers(5, bufferIDs);
+            constMesh(constMesh) {
+        meshRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
+                ->addPointsCoord(&constMesh->getBaseVertices())
+                ->addPointsCoord(&constMesh->getTextureCoordinates())
+                ->addPointsCoord(&constMesh->getBaseNormals())
+                ->addPointsCoord(&constMesh->getBaseTangents())
+                ->indices(&constMesh->getTrianglesIndices())
+                ->enableDepthTest()
+                //->addTexture(Texture::build(texInfoDefault->getTextureID())) //TODO add texture
+                ->build();
     }
 
     void Mesh::update(const std::vector<Bone> &skeleton) {
@@ -50,12 +26,9 @@ namespace urchin {
         MeshService::instance()->computeVertices(constMesh, skeleton, vertices);
         MeshService::instance()->computeNormalsAndTangents(constMesh, vertices, normals, tangents);
 
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-        glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*3, &vertices[0], GL_DYNAMIC_DRAW);
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_NORMAL]);
-        glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*3, &normals[0], GL_DYNAMIC_DRAW);
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TANGENT]);
-        glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*3, &tangents[0], GL_DYNAMIC_DRAW);
+        meshRenderer->updatePointsCoord(0, &vertices);
+        meshRenderer->updatePointsCoord(2, &normals); //TODO wrong naming: normals are not "pointsCoord" + add animate model to test
+        meshRenderer->updatePointsCoord(3, &tangents);
     }
 
     void Mesh::display(const MeshParameter &meshParameter) const {
@@ -73,8 +46,7 @@ namespace urchin {
             ShaderDataSender().sendData(meshParameter.getAmbientFactorShaderVar(), constMesh->getMaterial()->getAmbientFactor());
         }
 
-        glBindVertexArray(vertexArrayObject);
-        glDrawElements(GL_TRIANGLES, constMesh->getNumberTriangles()*3, GL_UNSIGNED_INT, nullptr);
+        meshRenderer->draw();
     }
 
     void Mesh::drawBaseBones(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const {

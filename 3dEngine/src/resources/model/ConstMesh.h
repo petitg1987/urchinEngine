@@ -16,10 +16,6 @@ namespace urchin {
         int weightCount;
     };
 
-    struct Triangle {
-        unsigned int index[3]; //indices vertices
-    };
-
     struct Weight {
         int bone; //index of the bone
         float bias; //contribution of the vertex weight
@@ -39,8 +35,8 @@ namespace urchin {
      */
     class ConstMesh {
         public:
-            ConstMesh(const std::string &, const std::vector<Vertex> &, std::vector<Point2<float>> ,
-                    std::vector<Triangle> , std::vector<Weight> , const std::vector<Bone> &);
+            ConstMesh(const std::string &, const std::vector<Vertex> &, std::vector<Point2<float>>,
+                    std::vector<unsigned int>, std::vector<Weight>, const std::vector<Bone> &);
             ~ConstMesh();
 
             const Material *getMaterial() const;
@@ -50,9 +46,7 @@ namespace urchin {
             const std::vector<Point2<float>> &getTextureCoordinates() const;
             const std::vector<unsigned int> &getLinkedVertices(unsigned int) const;
 
-            unsigned int getNumberTriangles() const;
-            const std::vector<Triangle> &getTriangles() const;
-            const Triangle &getTriangle(unsigned int) const;
+            const std::vector<unsigned int> &getTrianglesIndices() const;
 
             unsigned int getNumberWeights() const;
             const Weight &getWeight(unsigned int) const;
@@ -71,7 +65,7 @@ namespace urchin {
             std::vector<Point2<float>> textureCoordinates;
             std::map<unsigned int, std::vector<unsigned int>> linkedVertices;
 
-            std::vector<Triangle> triangles;
+            std::vector<unsigned int> trianglesIndices;
 
             std::vector<Weight> weights;
 

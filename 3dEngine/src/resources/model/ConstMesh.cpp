@@ -9,10 +9,10 @@
 namespace urchin {
 
     ConstMesh::ConstMesh(const std::string &materialFilename, const std::vector<Vertex> &vertices, std::vector<Point2<float>> textureCoordinates,
-            std::vector<Triangle> triangles, std::vector<Weight> weights, const std::vector<Bone> &baseSkeleton) :
+            std::vector<unsigned int> trianglesIndices, std::vector<Weight> weights, const std::vector<Bone> &baseSkeleton) :
             vertices(vertices),
             textureCoordinates(std::move(textureCoordinates)),
-            triangles(std::move(triangles)),
+            trianglesIndices(std::move(trianglesIndices)),
             weights(std::move(weights)),
             baseSkeleton(baseSkeleton) {
 
@@ -62,16 +62,8 @@ namespace urchin {
         throw std::runtime_error("Impossible to find linked vertices for group ID: " + std::to_string(linkedVerticesGroupId));
     }
 
-    unsigned int ConstMesh::getNumberTriangles() const {
-        return triangles.size();
-    }
-
-    const std::vector<Triangle> &ConstMesh::getTriangles() const { //TODO use std::vector<unsigned int> to be compatible with generic renderer ?
-        return triangles;
-    }
-
-    const Triangle &ConstMesh::getTriangle(unsigned int index) const {
-        return triangles[index];
+    const std::vector<unsigned int> &ConstMesh::getTrianglesIndices() const {
+        return trianglesIndices;
     }
 
     unsigned int ConstMesh::getNumberWeights() const {

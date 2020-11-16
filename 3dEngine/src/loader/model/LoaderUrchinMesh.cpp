@@ -79,12 +79,12 @@ namespace urchin {
             iss.clear(); iss.str(buffer);
             iss >> sdata >> numTriangles;
 
-            //triangles
-            std::vector<Triangle> triangles(numTriangles);
-            for (unsigned int i=0;i<numTriangles;i++) {
+            //triangles indices
+            std::vector<unsigned int> trianglesIndices(numTriangles * 3);
+            for (unsigned int i = 0, triVertexIndex = 0; i < numTriangles; i++, triVertexIndex += 3) {
                 FileReaderUtil::nextLine(file, buffer);
                 iss.clear(); iss.str(buffer);
-                iss >> sdata >> idata >> triangles[i].index[0] >> triangles[i].index[1] >> triangles[i].index[2];
+                iss >> sdata >> idata >> trianglesIndices[triVertexIndex] >> trianglesIndices[triVertexIndex + 1] >> trianglesIndices[triVertexIndex + 2];
             }
 
             //numWeights
@@ -102,7 +102,7 @@ namespace urchin {
             }
             FileReaderUtil::nextLine(file, buffer); //buffer= "}"
 
-            constMeshes.push_back(new ConstMesh(materialFilename, vertices, textureCoordinates, triangles, weights, baseSkeleton));
+            constMeshes.push_back(new ConstMesh(materialFilename, vertices, textureCoordinates, trianglesIndices, weights, baseSkeleton));
         }
 
         file.close();

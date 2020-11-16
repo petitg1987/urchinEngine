@@ -32,6 +32,7 @@ namespace urchin {
             ~GenericRenderer();
 
             void updatePointsCoord(std::size_t, const std::vector<Point3<float>> *);
+            void updatePointsCoord(std::size_t, const std::vector<Vector3<float>> *);
 
             void updateTexture(std::size_t, Texture);
             unsigned int addAdditionalTexture(Texture);

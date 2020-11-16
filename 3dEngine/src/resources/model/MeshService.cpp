@@ -45,14 +45,20 @@ namespace urchin {
         vertexNormals.clear();
         vertexNormals.resize(constMesh->getNumberVertices(), Vector3<float>(0.0f, 0.0f, 0.0f));
 
-        for (unsigned int triIndex=0; triIndex<constMesh->getNumberTriangles(); ++triIndex) {
-            const Triangle &tri = constMesh->getTriangle(triIndex);
-            for (unsigned int triVertexIndex=0; triVertexIndex<3; ++triVertexIndex) {
-                auto vertexIndex = tri.index[triVertexIndex];
+        unsigned int numTrianglesIndices = constMesh->getTrianglesIndices().size();
+        assert(numTrianglesIndices % 3 == 0);
+        for(unsigned int triIndices = 0; triIndices < numTrianglesIndices; triIndices += 3) {
+            unsigned int triIndex1 = constMesh->getTrianglesIndices()[triIndices + 0];
+            unsigned int triIndex2 = constMesh->getTrianglesIndices()[triIndices + 1];
+            unsigned int triIndex3 = constMesh->getTrianglesIndices()[triIndices + 2];
 
-                Vector3<float> weightedNormal = computeWeightedVertexNormal(tri, triVertexIndex, vertices);
-                vertexNormals[vertexIndex] += weightedNormal;
-            }
+            Vector3<float> weightedNormal1 = computeWeightedVertexNormal(triIndex1, triIndex2, triIndex3, vertices);
+            Vector3<float> weightedNormal2 = computeWeightedVertexNormal(triIndex2, triIndex3, triIndex1, vertices);
+            Vector3<float> weightedNormal3 = computeWeightedVertexNormal(triIndex3, triIndex1, triIndex2, vertices);
+
+            vertexNormals[triIndex1] += weightedNormal1;
+            vertexNormals[triIndex2] += weightedNormal2;
+            vertexNormals[triIndex3] += weightedNormal3;
         }
 
         //sum weighted normals of same vertex
@@ -82,32 +88,11 @@ namespace urchin {
         }
     }
 
-    int MeshService::indexOfVertexInTriangle(const Triangle &triangle, unsigned int vertexIndex, const ConstMesh *const constMesh) {
-        for (int i=0; i<3; ++i) {
-            auto triVertexIndex = triangle.index[i];
-
-            //classic
-            if (triVertexIndex==vertexIndex) {
-                return i;
-            }
-
-            //by group id
-            unsigned int linkedVerticesGroupId = constMesh->getStructVertex(triVertexIndex).linkedVerticesGroupId;
-            for (unsigned int linkedVertexIndex : constMesh->getLinkedVertices(linkedVerticesGroupId)) {
-                if (linkedVertexIndex == vertexIndex) {
-                    return i;
-                }
-            }
-        }
-
-        return -1;
-    }
-
-    Vector3<float> MeshService::computeWeightedVertexNormal(const Triangle &triangle, unsigned int vertexIndex, const std::vector<Point3<float>> &vertices) {
+    Vector3<float> MeshService::computeWeightedVertexNormal(unsigned int triIndex1, unsigned int triIndex2, unsigned int triIndex3, const std::vector<Point3<float>> &vertices) {
         //see https://stackoverflow.com/questions/18519586/calculate-normal-per-vertex-opengl
-        Point3<float> a = vertices[triangle.index[vertexIndex]];
-        Point3<float> b = vertices[triangle.index[(vertexIndex+1)%3]];
-        Point3<float> c = vertices[triangle.index[(vertexIndex+2)%3]];
+        Point3<float> a = vertices[triIndex1];
+        Point3<float> b = vertices[triIndex2];
+        Point3<float> c = vertices[triIndex3];
 
         Vector3<float> ab = a.vector(b);
         Vector3<float> ac = a.vector(c);

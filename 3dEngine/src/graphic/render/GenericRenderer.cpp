@@ -44,7 +44,7 @@ namespace urchin {
     unsigned int GenericRenderer::computeVerticesCount() const {
         assert(!pointsCoords.empty());
 
-        if(indices.ptr != nullptr) {
+        if(indices.indicesCount > 0) {
             return indices.indicesCount;
         }
 
@@ -168,6 +168,10 @@ namespace urchin {
         sendPointsCoord(pointsCoordIndex, true);
     }
 
+    void GenericRenderer::updatePointsCoord(std::size_t pointsCoordIndex, const std::vector<Vector3<float>> *pointsCoord) {
+        updatePointsCoord(pointsCoordIndex, reinterpret_cast<const std::vector<Point3<float>> *>(pointsCoord));
+    }
+
     void GenericRenderer::updateTexture(std::size_t textureIndex, Texture texture) {
         assert(textures.size() > textureIndex);
 
@@ -225,7 +229,7 @@ namespace urchin {
         }
 
         glBindVertexArray(vertexArrayObject);
-        if(indices.ptr != nullptr) {
+        if(indices.indicesCount > 0) {
             glDrawElements(shapeTypeToGlType(shapeType), verticesCount, GL_UNSIGNED_INT, nullptr);
         } else {
             glDrawArrays(shapeTypeToGlType(shapeType), 0, verticesCount);
