@@ -2,6 +2,7 @@
 #define URCHINENGINE_GENERICRENDERER_H
 
 #include <vector>
+#include "UrchinCommon.h"
 
 #include "graphic/render/model/CoordType.h"
 #include "graphic/render/model/CoordDimension.h"
@@ -30,6 +31,8 @@ namespace urchin {
             explicit GenericRenderer(const GenericRendererBuilder *);
             ~GenericRenderer();
 
+            void updatePointsCoord(std::size_t, const std::vector<Point3<float>> *);
+
             void updateTexture(std::size_t, Texture);
             unsigned int addAdditionalTexture(Texture);
             void clearAdditionalTextures();
@@ -37,6 +40,7 @@ namespace urchin {
             void draw() const;
 
         private:
+            unsigned int computeVerticesCount() const;
             void initializeTexture(Texture) const;
             void initializeDisplay();
 
@@ -50,9 +54,8 @@ namespace urchin {
             ShapeType shapeType;
 
             std::vector<PointsCoord> pointsCoords;
-            unsigned int pointsCount;
-
             Indices indices;
+            unsigned int verticesCount;
 
             bool transparencyEnabled;
 

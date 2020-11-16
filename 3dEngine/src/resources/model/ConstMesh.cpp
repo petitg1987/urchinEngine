@@ -8,15 +8,14 @@
 
 namespace urchin {
 
-    ConstMesh::ConstMesh(const std::string &materialFilename, const std::vector<Vertex> &vertices, std::vector<TextureCoordinate> textureCoordinates,
+    ConstMesh::ConstMesh(const std::string &materialFilename, const std::vector<Vertex> &vertices, std::vector<Point2<float>> textureCoordinates,
             std::vector<Triangle> triangles, std::vector<Weight> weights, const std::vector<Bone> &baseSkeleton) :
-        vertices(vertices),
-        textureCoordinates(std::move(textureCoordinates)),
-        triangles(std::move(triangles)),
-        weights(std::move(weights)),
-        baseSkeleton(baseSkeleton),
-        baseVertices(new Point3<float>[vertices.size()]),
-        baseDataVertices(new DataVertex[vertices.size()]) {
+            vertices(vertices),
+            textureCoordinates(std::move(textureCoordinates)),
+            triangles(std::move(triangles)),
+            weights(std::move(weights)),
+            baseSkeleton(baseSkeleton) {
+
         //regroup duplicate vertex due to their different texture coordinates
         for (std::size_t i=0;i<vertices.size();++i) {
             linkedVertices[vertices[i].linkedVerticesGroupId].push_back(i);
@@ -24,16 +23,13 @@ namespace urchin {
 
         //compute vertices and normals based on bind-pose skeleton
         MeshService::instance()->computeVertices(this, baseSkeleton, baseVertices);
-        MeshService::instance()->computeNormals(this, baseVertices, baseDataVertices);
+        MeshService::instance()->computeNormalsAndTangents(this, baseVertices, baseNormals, baseTangents);
 
         //load material
         material = MediaManager::instance()->getMedia<Material>(materialFilename);
     }
 
     ConstMesh::~ConstMesh() {
-        delete [] baseVertices;
-        delete [] baseDataVertices;
-
         material->release();
     }
 
@@ -49,7 +45,7 @@ namespace urchin {
         return vertices[index];
     }
 
-    const std::vector<TextureCoordinate> &ConstMesh::getTextureCoordinates() const {
+    const std::vector<Point2<float>> &ConstMesh::getTextureCoordinates() const {
         return textureCoordinates;
     }
 
@@ -98,12 +94,16 @@ namespace urchin {
         return baseSkeleton[index];
     }
 
-    const Point3<float> *ConstMesh::getBaseVertices() const {
+    const std::vector<Point3<float>> &ConstMesh::getBaseVertices() const {
         return baseVertices;
     }
 
-    const DataVertex *ConstMesh::getBaseDataVertices() const {
-        return baseDataVertices;
+    const std::vector<Vector3<float>> &ConstMesh::getBaseNormals() const {
+        return baseNormals;
+    }
+
+    const std::vector<Vector3<float>> &ConstMesh::getBaseTangents() const {
+        return baseTangents;
     }
 
 }

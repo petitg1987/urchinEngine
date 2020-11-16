@@ -20,13 +20,7 @@ namespace urchin {
             textures(rendererBuilder->getTextures()),
             vertexArrayObject(0) {
 
-        assert(!pointsCoords.empty());
-        pointsCount = pointsCoords[0].pointsCount;
-        #ifndef NDEBUG
-            for(const auto &pointCoord : pointsCoords) {
-                assert(pointCoord.pointsCount == pointsCount);
-            }
-        #endif
+        verticesCount = computeVerticesCount();
 
         glGenVertexArrays(1, &vertexArrayObject);
         initializeDisplay();
@@ -45,6 +39,22 @@ namespace urchin {
         for(unsigned int bufferId : bufferIds) {
             glDeleteBuffers(1, &bufferId);
         }
+    }
+
+    unsigned int GenericRenderer::computeVerticesCount() const {
+        assert(!pointsCoords.empty());
+
+        if(indices.ptr != nullptr) {
+            return indices.indicesCount;
+        }
+
+        unsigned int countResult = pointsCoords[0].pointsCount;
+        #ifndef NDEBUG
+            for (const auto &pointCoord : pointsCoords) {
+                assert(pointCoord.pointsCount == countResult);
+            }
+        #endif
+        return countResult;
     }
 
     void GenericRenderer::initializeTexture(Texture texture) const {
@@ -138,11 +148,20 @@ namespace urchin {
         throw std::runtime_error("Unknown coordinate dimension: " + std::to_string(coordDimension));
     }
 
-    void GenericRenderer::updateTexture(std::size_t textureUnit, Texture texture) {
+    void GenericRenderer::updatePointsCoord(std::size_t pointsCoordIndex, const std::vector<Point3<float>> *pointsCoord) {
+        GenericRenderer::PointsCoord pointsCoord3d{};
+        pointsCoord3d.coordType = CoordType::FLOAT;
+        pointsCoord3d.coordDimension = CoordDimension::THREE_DIMENSION;
+        pointsCoord3d.ptr = &(*pointsCoord)[0];
+        pointsCoord3d.pointsCount = pointsCoord->size();
+        pointsCoords[pointsCoordIndex] = pointsCoord3d;
+    }
+
+    void GenericRenderer::updateTexture(std::size_t textureIndex, Texture texture) {
         initializeTexture(texture);
 
-        assert(textures.size() > textureUnit);
-        textures[textureUnit] = texture;
+        assert(textures.size() > textureIndex);
+        textures[textureIndex] = texture;
     }
 
     /**
@@ -195,7 +214,11 @@ namespace urchin {
         }
 
         glBindVertexArray(vertexArrayObject);
-        glDrawArrays(shapeTypeToGlType(shapeType), 0, pointsCount);
+        if(indices.ptr != nullptr) {
+            glDrawElements(shapeTypeToGlType(shapeType), verticesCount, GL_UNSIGNED_INT, nullptr);
+        } else {
+            glDrawArrays(shapeTypeToGlType(shapeType), 0, verticesCount);
+        }
 
         resetDrawDefaultValues();
     }

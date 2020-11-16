@@ -22,14 +22,16 @@ namespace urchin {
         private:
             const ConstMesh *const constMesh;
 
-            Point3<float> *const vertices;
-            DataVertex *const dataVertices; //additional information for the vertex
+            std::vector<Point3<float>> vertices;
+            std::vector<Vector3<float>> normals;
+            std::vector<Vector3<float>> tangents;
 
-            unsigned int bufferIDs[4], vertexArrayObject;
+            unsigned int bufferIDs[5], vertexArrayObject;
             enum { //buffer IDs indices
                 VAO_VERTEX_POSITION = 0,
                 VAO_TEX_COORD,
-                VAO_NORMAL_TANGENT,
+                VAO_NORMAL,
+                VAO_TANGENT,
                 VAO_INDEX
             };
             enum { //shader input

@@ -9,17 +9,15 @@ namespace urchin {
 
     Mesh::Mesh(const ConstMesh *constMesh) :
         constMesh(constMesh),
-        vertices(new Point3<float>[constMesh->getNumberVertices()]),
-        dataVertices(new DataVertex[constMesh->getNumberVertices()]),
         bufferIDs(),
         vertexArrayObject(0) {
         //visual
-        glGenBuffers(4, bufferIDs);
+        glGenBuffers(5, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
         glBindVertexArray(vertexArrayObject);
 
         glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-        glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*3, constMesh->getBaseVertices(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*3, &constMesh->getBaseVertices()[0], GL_STATIC_DRAW);
         glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
         glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
@@ -28,34 +26,36 @@ namespace urchin {
         glEnableVertexAttribArray(SHADER_TEX_COORD);
         glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_NORMAL_TANGENT]);
-        glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(DataVertex), constMesh->getBaseDataVertices(), GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_NORMAL]);
+        glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*3, &constMesh->getBaseNormals()[0], GL_STATIC_DRAW);
         glEnableVertexAttribArray(SHADER_NORMAL);
-        glVertexAttribPointer(SHADER_NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof(DataVertex), nullptr);
+        glVertexAttribPointer(SHADER_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TANGENT]);
+        glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*3, &constMesh->getBaseTangents()[0], GL_STATIC_DRAW);
         glEnableVertexAttribArray(SHADER_TANGENT);
-        glVertexAttribPointer(SHADER_TANGENT, 3, GL_FLOAT, GL_FALSE, sizeof(DataVertex), (char*)(sizeof(float)*3));
+        glVertexAttribPointer(SHADER_TANGENT, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferIDs[VAO_INDEX]);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, constMesh->getNumberTriangles()*3*sizeof(int),  &constMesh->getTriangles()[0], GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, constMesh->getNumberTriangles()*3*sizeof(unsigned int), &constMesh->getTriangles()[0], GL_STATIC_DRAW); //TODO use std::vector<unsigned int> ?
     }
 
     Mesh::~Mesh() {
-        delete [] vertices;
-        delete [] dataVertices;
-
         glDeleteVertexArrays(1, &vertexArrayObject);
-        glDeleteBuffers(4, bufferIDs);
+        glDeleteBuffers(5, bufferIDs);
     }
 
     void Mesh::update(const std::vector<Bone> &skeleton) {
         //recompute the vertices and normals
         MeshService::instance()->computeVertices(constMesh, skeleton, vertices);
-        MeshService::instance()->computeNormals(constMesh, vertices, dataVertices);
+        MeshService::instance()->computeNormalsAndTangents(constMesh, vertices, normals, tangents);
 
         glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-        glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*3, vertices, GL_DYNAMIC_DRAW);
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_NORMAL_TANGENT]);
-        glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(DataVertex), dataVertices, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*3, &vertices[0], GL_DYNAMIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_NORMAL]);
+        glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*3, &normals[0], GL_DYNAMIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TANGENT]);
+        glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*3, &tangents[0], GL_DYNAMIC_DRAW);
     }
 
     void Mesh::display(const MeshParameter &meshParameter) const {

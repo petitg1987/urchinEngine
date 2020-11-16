@@ -16,23 +16,14 @@ namespace urchin {
         int weightCount;
     };
 
-    struct TextureCoordinate {
-        float s, t;
-    };
-
     struct Triangle {
-        int index[3]; //indices vertices
+        unsigned int index[3]; //indices vertices
     };
 
     struct Weight {
         int bone; //index of the bone
         float bias; //contribution of the vertex weight
         Point3<float> pos; //coordinates of the vertex weight
-    };
-
-    struct DataVertex {
-        Vector3<float> normal; //vector normal for each vertices
-        Vector3<float> tangent; //vector tangent for each vertices
     };
 
     struct Bone {
@@ -48,7 +39,7 @@ namespace urchin {
      */
     class ConstMesh {
         public:
-            ConstMesh(const std::string &, const std::vector<Vertex> &, std::vector<TextureCoordinate> ,
+            ConstMesh(const std::string &, const std::vector<Vertex> &, std::vector<Point2<float>> ,
                     std::vector<Triangle> , std::vector<Weight> , const std::vector<Bone> &);
             ~ConstMesh();
 
@@ -56,7 +47,7 @@ namespace urchin {
 
             unsigned int getNumberVertices() const;
             const Vertex &getStructVertex(unsigned int) const;
-            const std::vector<TextureCoordinate> &getTextureCoordinates() const;
+            const std::vector<Point2<float>> &getTextureCoordinates() const;
             const std::vector<unsigned int> &getLinkedVertices(unsigned int) const;
 
             unsigned int getNumberTriangles() const;
@@ -69,14 +60,15 @@ namespace urchin {
             unsigned int getNumberBones() const;
             const std::vector<Bone> &getBaseSkeleton() const;
             const Bone &getBaseBone(unsigned int) const;
-            const Point3<float> *getBaseVertices() const;
-            const DataVertex *getBaseDataVertices() const;
+            const std::vector<Point3<float>> &getBaseVertices() const;
+            const std::vector<Vector3<float>> &getBaseNormals() const;
+            const std::vector<Vector3<float>> &getBaseTangents() const;
 
         private:
             Material *material;
 
             std::vector<Vertex> vertices;
-            std::vector<TextureCoordinate> textureCoordinates;
+            std::vector<Point2<float>> textureCoordinates;
             std::map<unsigned int, std::vector<unsigned int>> linkedVertices;
 
             std::vector<Triangle> triangles;
@@ -85,8 +77,9 @@ namespace urchin {
 
             //mesh information in bind-pose
             std::vector<Bone> baseSkeleton; //bind-pose skeleton
-            Point3<float> *const baseVertices;
-            DataVertex *const baseDataVertices; //additional information for the vertex
+            std::vector<Point3<float>> baseVertices;
+            std::vector<Vector3<float>> baseNormals;
+            std::vector<Vector3<float>> baseTangents;
     };
 }
 

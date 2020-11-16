@@ -65,11 +65,11 @@ namespace urchin {
 
             //vertices
             std::vector<Vertex> vertices(numVertices);
-            std::vector<TextureCoordinate> textureCoordinates(numVertices);
+            std::vector<Point2<float>> textureCoordinates(numVertices);
             for (unsigned int i=0;i<numVertices;i++) {
                 FileReaderUtil::nextLine(file, buffer);
                 iss.clear(); iss.str(buffer);
-                iss >> sdata >> idata >> vertices[i].linkedVerticesGroupId >> sdata >> textureCoordinates[i].s >> textureCoordinates[i].t
+                iss >> sdata >> idata >> vertices[i].linkedVerticesGroupId >> sdata >> textureCoordinates[i].X >> textureCoordinates[i].Y
                         >> sdata >> sdata >> vertices[i].weightStart >> vertices[i].weightCount >> sdata;
             }
 
