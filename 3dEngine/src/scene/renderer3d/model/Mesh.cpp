@@ -37,7 +37,7 @@ namespace urchin {
         glVertexAttribPointer(SHADER_TANGENT, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferIDs[VAO_INDEX]);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, constMesh->getNumberTriangles()*3*sizeof(unsigned int), &constMesh->getTriangles()[0], GL_STATIC_DRAW); //TODO use std::vector<unsigned int> ?
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, constMesh->getNumberTriangles()*3*sizeof(unsigned int), &constMesh->getTriangles()[0], GL_STATIC_DRAW);
     }
 
     Mesh::~Mesh() {

@@ -66,7 +66,7 @@ namespace urchin {
         return triangles.size();
     }
 
-    const std::vector<Triangle> &ConstMesh::getTriangles() const {
+    const std::vector<Triangle> &ConstMesh::getTriangles() const { //TODO use std::vector<unsigned int> to be compatible with generic renderer ?
         return triangles;
     }
 

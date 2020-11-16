@@ -79,21 +79,18 @@ namespace urchin {
     void GenericRenderer::initializeDisplay() {
         glBindVertexArray(vertexArrayObject);
 
-        unsigned int pointsCoordUnit = 0;
+        unsigned int pointsCoordIndex = 0;
         for(auto &pointsCoord : pointsCoords) {
             unsigned int bufferId = 0;
             glGenBuffers(1, &bufferId);
             bufferIds.push_back(bufferId);
 
-            auto vertexCoordDim = coordDimensionToSize(pointsCoord.coordDimension);
-            auto vertexMemorySize = coordTypeToSize(pointsCoord.coordType) * vertexCoordDim * pointsCoord.pointsCount;
-            glBindBuffer(GL_ARRAY_BUFFER, bufferId);
-            glBufferData(GL_ARRAY_BUFFER, vertexMemorySize, pointsCoord.ptr, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(pointsCoordUnit);
-            glVertexAttribPointer(pointsCoordUnit, vertexCoordDim, coordTypeToGlType(pointsCoord.coordType), GL_FALSE, 0, nullptr);
+            sendPointsCoord(pointsCoordIndex, false);
+            glEnableVertexAttribArray(pointsCoordIndex);
+            glVertexAttribPointer(pointsCoordIndex, coordDimensionToSize(pointsCoord.coordDimension), coordTypeToGlType(pointsCoord.coordType), GL_FALSE, 0, nullptr);
 
             pointsCoord.ptr = nullptr; //reset pointer because no guaranteed pointer is still valid after initialization
-            pointsCoordUnit++;
+            pointsCoordIndex++;
         }
 
         if(indices.ptr) {
@@ -106,6 +103,16 @@ namespace urchin {
 
             indices.ptr = nullptr; //reset pointer because no guaranteed pointer is still valid after initialization
         }
+    }
+
+    void GenericRenderer::sendPointsCoord(std::size_t pointsCoordIndex, bool update) const {
+        const PointsCoord &pointsCoord = pointsCoords[pointsCoordIndex];
+
+        auto vertexCoordDim = coordDimensionToSize(pointsCoord.coordDimension);
+        auto vertexMemorySize = coordTypeToSize(pointsCoord.coordType) * vertexCoordDim * pointsCoord.pointsCount;
+
+        glBindBuffer(GL_ARRAY_BUFFER, bufferIds[pointsCoordIndex]);
+        glBufferData(GL_ARRAY_BUFFER, vertexMemorySize, pointsCoord.ptr, update ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
     }
 
     unsigned int GenericRenderer::shapeTypeToGlType(ShapeType shapeType) const {
@@ -149,18 +156,22 @@ namespace urchin {
     }
 
     void GenericRenderer::updatePointsCoord(std::size_t pointsCoordIndex, const std::vector<Point3<float>> *pointsCoord) {
+        assert(pointsCoords.size() > pointsCoordIndex);
+
         GenericRenderer::PointsCoord pointsCoord3d{};
         pointsCoord3d.coordType = CoordType::FLOAT;
         pointsCoord3d.coordDimension = CoordDimension::THREE_DIMENSION;
         pointsCoord3d.ptr = &(*pointsCoord)[0];
         pointsCoord3d.pointsCount = pointsCoord->size();
         pointsCoords[pointsCoordIndex] = pointsCoord3d;
+
+        sendPointsCoord(pointsCoordIndex, true);
     }
 
     void GenericRenderer::updateTexture(std::size_t textureIndex, Texture texture) {
-        initializeTexture(texture);
-
         assert(textures.size() > textureIndex);
+
+        initializeTexture(texture);
         textures[textureIndex] = texture;
     }
 

@@ -43,6 +43,7 @@ namespace urchin {
             unsigned int computeVerticesCount() const;
             void initializeTexture(Texture) const;
             void initializeDisplay();
+            void sendPointsCoord(std::size_t, bool) const;
 
             unsigned int shapeTypeToGlType(ShapeType) const;
             unsigned int coordTypeToSize(CoordType) const;
