@@ -27,7 +27,7 @@ namespace urchin {
         MeshService::instance()->computeNormalsAndTangents(constMesh, vertices, normals, tangents);
 
         meshRenderer->updateData(0, &vertices);
-        meshRenderer->updateData(2, &normals); //TODO add animate model to test
+        meshRenderer->updateData(2, &normals);
         meshRenderer->updateData(3, &tangents);
     }
 
