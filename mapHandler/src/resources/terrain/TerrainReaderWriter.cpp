@@ -29,13 +29,16 @@ namespace urchin {
         std::shared_ptr<XmlChunk> sRepeatChunk = xmlParser.getUniqueChunk(true, S_REPEAT_TAG, XmlAttribute(), materialChunk);
         std::shared_ptr<XmlChunk> tRepeatChunk = xmlParser.getUniqueChunk(true, T_REPEAT_TAG, XmlAttribute(), materialChunk);
         std::shared_ptr<XmlChunk> materialFilenamesChunk = xmlParser.getUniqueChunk(true, MATERIAL_FILENAMES, XmlAttribute(), materialChunk);
-        auto terrainMaterial = std::make_unique<TerrainMaterial>(maskMapFilenameChunk->getStringValue(), sRepeatChunk->getFloatValue(), tRepeatChunk->getFloatValue());
-        for (unsigned int i=0; i<4; ++i) {
+        std::vector<std::string> materialFilenames;
+        for (unsigned int i = 0; i < MAX_MATERIAL; ++i) {
             std::shared_ptr<XmlChunk> materialFilenameChunk = xmlParser.getUniqueChunk(false, MATERIAL_FILENAME, XmlAttribute(INDEX_ATTR, std::to_string(i)), materialFilenamesChunk);
             if (materialFilenameChunk) {
-                terrainMaterial->addMaterial(i, materialFilenameChunk->getStringValue());
+                materialFilenames.emplace_back(materialFilenameChunk->getStringValue());
+            } else {
+                materialFilenames.emplace_back("");
             }
         }
+        auto terrainMaterial = std::make_unique<TerrainMaterial>(maskMapFilenameChunk->getStringValue(), materialFilenames, sRepeatChunk->getFloatValue(), tRepeatChunk->getFloatValue());
 
         std::shared_ptr<XmlChunk> positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), terrainChunk);
 

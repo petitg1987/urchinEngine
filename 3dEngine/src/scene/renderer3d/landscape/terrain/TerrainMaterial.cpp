@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <stdexcept>
 
 #include "TerrainMaterial.h"
@@ -6,7 +5,7 @@
 
 namespace urchin {
 
-    TerrainMaterial::TerrainMaterial(const std::string &maskMapFilename, float sRepeat, float tRepeat) :
+    TerrainMaterial::TerrainMaterial(const std::string &maskMapFilename, const std::vector<std::string> &materialFilenames, float sRepeat, float tRepeat) :
             maskMapFilename(maskMapFilename),
             sRepeat(sRepeat),
             tRepeat(tRepeat) {
@@ -22,13 +21,10 @@ namespace urchin {
             maskTexture->toTexture(false, false, false);
         }
 
-        materials.resize(MAX_MATERIAL);
-        for (auto &material : materials) {
-            material = nullptr;
-        }
-
         defaultTexture = new Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({0, 0, 0, 0}));
         defaultTexture->toTexture(false, false, false);
+
+        initializeMaterial(materialFilenames);
     }
 
     TerrainMaterial::~TerrainMaterial() {
@@ -43,24 +39,29 @@ namespace urchin {
         delete defaultTexture;
     }
 
+    void TerrainMaterial::initializeMaterial(const std::vector<std::string> &materialFilenames) {
+        assert(materialFilenames.size() <= MAX_MATERIAL);
+
+        materials.resize(MAX_MATERIAL);
+        for(std::size_t i = 0; i < MAX_MATERIAL; ++i) {
+            if (materialFilenames.size() > i && !materialFilenames[i].empty()) {
+                materials[i] = MediaManager::instance()->getMedia<Material>(materialFilenames[i]);
+            } else {
+                materials[i] = nullptr;
+            }
+        }
+    }
+
     void TerrainMaterial::refreshWith(unsigned int xSize, unsigned int zSize) {
         buildTexCoordinates(xSize, zSize);
     }
 
-    void TerrainMaterial::addMaterial(unsigned int position, const std::string &materialFilename) {
-        if (position >= materials.size()) {
-            throw std::runtime_error("Material position is incorrect. Value : " + std::to_string(position));
-        }
-
-        if (materials[position] != nullptr) {
-            throw std::runtime_error("Material position " + std::to_string(position) + " is already used.");
-        }
-
-        materials[position] = MediaManager::instance()->getMedia<Material>(materialFilename);
-    }
-
     const std::string &TerrainMaterial::getMaskMapFilename() const {
         return maskMapFilename;
+    }
+
+    unsigned int TerrainMaterial::getMaskTexture() const {
+        return maskTexture->getTextureID();
     }
 
     float TerrainMaterial::getSRepeat() const {
@@ -90,20 +91,5 @@ namespace urchin {
 
     const std::vector<Point2<float>> &TerrainMaterial::getTexCoordinates() const {
         return texCoordinates;
-    }
-
-    void TerrainMaterial::loadTextures() const {
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, maskTexture->getTextureID());
-
-        for (std::size_t i=0; i<materials.size(); ++i) {
-            glActiveTexture(GL_TEXTURE0 + i + 1);
-
-            if (materials[i] != nullptr) {
-                glBindTexture(GL_TEXTURE_2D, materials[i]->getDiffuseTexture()->getTextureID());
-            } else {
-                glBindTexture(GL_TEXTURE_2D, defaultTexture->getTextureID());
-            }
-        }
     }
 }

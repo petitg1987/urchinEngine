@@ -59,7 +59,6 @@ namespace urchin {
                 ->addData(&mesh->getNormals())
                 ->addData(&emptyTextureCoordinates)
                 ->indices(&mesh->getIndices())
-                //TODO add textures
                 ->build();
 
         refreshMaterial(); //material uses mesh info: refresh is required
@@ -87,6 +86,16 @@ namespace urchin {
                 .sendData(tRepeatShaderVar, material->getTRepeat());
 
             terrainRenderer->updateData(2, &material->getTexCoordinates());
+
+            terrainRenderer->clearAdditionalTextures();
+            terrainRenderer->addAdditionalTexture(Texture::build(material->getMaskTexture(), Texture::DEFAULT, TextureParam::buildLinear()));
+            for(auto &material : material->getMaterials()) {
+                if (material) {
+                    TextureParam::ReadMode textureReadMode = material->isRepeatableTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
+                    TextureParam textureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY);
+                    terrainRenderer->addAdditionalTexture(Texture::build(material->getDiffuseTexture()->getTextureID(), Texture::DEFAULT, textureParam));
+                }
+            }
         }
     }
 
@@ -150,7 +159,6 @@ namespace urchin {
 
     void Terrain::display(const Camera *camera, float dt) const {
         ShaderDataSender().sendData(mViewShaderVar, camera->getViewMatrix());
-        material->loadTextures();
 
         terrainShader->bind();
         terrainRenderer->draw();

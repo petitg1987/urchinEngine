@@ -61,14 +61,7 @@ namespace urchin {
         SceneTerrain *sceneTerrain = findSceneTerrain(constSceneTerrain);
         Terrain *terrain = sceneTerrain->getTerrain();
 
-        auto terrainMaterial = std::make_unique<TerrainMaterial>(maskMapFilename, sRepeat, tRepeat);
-        unsigned int i=0;
-        for (const auto &materialFilename : materialFilenames) {
-            if (!materialFilename.empty()) {
-                terrainMaterial->addMaterial(i, materialFilename);
-            }
-            i++;
-        }
+        auto terrainMaterial = std::make_unique<TerrainMaterial>(maskMapFilename, materialFilenames, sRepeat, tRepeat);
         terrain->setMaterial(terrainMaterial);
 
         markModified();
