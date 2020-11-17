@@ -10,7 +10,7 @@ namespace urchin {
 
     GenericRenderer::GenericRenderer(const GenericRendererBuilder *rendererBuilder) :
             shapeType(rendererBuilder->getShapeType()),
-            pointsCoords(rendererBuilder->getPointsCoords()),
+            data(rendererBuilder->getData()),
             indices(rendererBuilder->getIndices()),
             transparencyEnabled(rendererBuilder->isTransparencyEnabled()),
             depthTestEnabled(rendererBuilder->isDepthTestEnabled()),
@@ -42,16 +42,16 @@ namespace urchin {
     }
 
     unsigned int GenericRenderer::computeVerticesCount() const {
-        assert(!pointsCoords.empty());
+        assert(!data.empty());
 
         if(indices.indicesCount > 0) {
             return indices.indicesCount;
         }
 
-        unsigned int countResult = pointsCoords[0].pointsCount;
+        unsigned int countResult = data[0].dataCount;
         #ifndef NDEBUG
-            for (const auto &pointCoord : pointsCoords) {
-                assert(pointCoord.pointsCount == countResult);
+            for (const auto &dataValue : data) {
+                assert(dataValue.dataCount == countResult);
             }
         #endif
         return countResult;
@@ -80,16 +80,16 @@ namespace urchin {
         glBindVertexArray(vertexArrayObject);
 
         unsigned int pointsCoordIndex = 0;
-        for(auto &pointsCoord : pointsCoords) {
+        for(auto &dataValue : data) {
             unsigned int bufferId = 0;
             glGenBuffers(1, &bufferId);
             bufferIds.push_back(bufferId);
 
             sendPointsCoord(pointsCoordIndex, false);
             glEnableVertexAttribArray(pointsCoordIndex);
-            glVertexAttribPointer(pointsCoordIndex, coordDimensionToSize(pointsCoord.coordDimension), coordTypeToGlType(pointsCoord.coordType), GL_FALSE, 0, nullptr);
+            glVertexAttribPointer(pointsCoordIndex, dataDimensionToSize(dataValue.dataDimension), dataTypeToGlType(dataValue.dataType), GL_FALSE, 0, nullptr);
 
-            pointsCoord.ptr = nullptr; //reset pointer because no guaranteed pointer is still valid after initialization
+            dataValue.ptr = nullptr; //reset pointer because no guaranteed pointer is still valid after initialization
             pointsCoordIndex++;
         }
 
@@ -106,13 +106,13 @@ namespace urchin {
     }
 
     void GenericRenderer::sendPointsCoord(std::size_t pointsCoordIndex, bool update) const {
-        const PointsCoord &pointsCoord = pointsCoords[pointsCoordIndex];
+        const Data &dataValue = data[pointsCoordIndex];
 
-        auto vertexCoordDim = coordDimensionToSize(pointsCoord.coordDimension);
-        auto vertexMemorySize = coordTypeToSize(pointsCoord.coordType) * vertexCoordDim * pointsCoord.pointsCount;
+        auto vertexCoordDim = dataDimensionToSize(dataValue.dataDimension);
+        auto vertexMemorySize = dataTypeToSize(dataValue.dataType) * vertexCoordDim * dataValue.dataCount;
 
         glBindBuffer(GL_ARRAY_BUFFER, bufferIds[pointsCoordIndex]);
-        glBufferData(GL_ARRAY_BUFFER, vertexMemorySize, pointsCoord.ptr, update ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, vertexMemorySize, dataValue.ptr, update ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
     }
 
     unsigned int GenericRenderer::shapeTypeToGlType(ShapeType shapeType) const {
@@ -132,44 +132,44 @@ namespace urchin {
         throw std::runtime_error("Unknown shape type: " + std::to_string(shapeType));
     }
 
-    unsigned int GenericRenderer::coordTypeToSize(CoordType coordType) const {
-        if (coordType == CoordType::FLOAT) {
+    unsigned int GenericRenderer::dataTypeToSize(DataType dataType) const {
+        if (dataType == DataType::FLOAT) {
             return sizeof(float);
         }
-        throw std::runtime_error("Unknown coordinate type: " + std::to_string(coordType));
+        throw std::runtime_error("Unknown data type: " + std::to_string(dataType));
     }
 
-    unsigned int GenericRenderer::coordTypeToGlType(CoordType coordType) const {
-        if (coordType == CoordType::FLOAT) {
+    unsigned int GenericRenderer::dataTypeToGlType(DataType dataType) const {
+        if (dataType == DataType::FLOAT) {
             return GL_FLOAT;
         }
-        throw std::runtime_error("Unknown coordinate type: " + std::to_string(coordType));
+        throw std::runtime_error("Unknown data type: " + std::to_string(dataType));
     }
 
-    unsigned int GenericRenderer::coordDimensionToSize(CoordDimension coordDimension) const {
-        if (coordDimension == CoordDimension::TWO_DIMENSION) {
+    unsigned int GenericRenderer::dataDimensionToSize(DataDimension dataDimension) const {
+        if (dataDimension == DataDimension::TWO_DIMENSION) {
             return 2;
-        } else if (coordDimension == CoordDimension::THREE_DIMENSION) {
+        } else if (dataDimension == DataDimension::THREE_DIMENSION) {
             return 3;
         }
-        throw std::runtime_error("Unknown coordinate dimension: " + std::to_string(coordDimension));
+        throw std::runtime_error("Unknown data dimension: " + std::to_string(dataDimension));
     }
 
-    void GenericRenderer::updatePointsCoord(std::size_t pointsCoordIndex, const std::vector<Point3<float>> *pointsCoord) {
-        assert(pointsCoords.size() > pointsCoordIndex);
+    void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point3<float>> *dataPtr) {
+        assert(data.size() > dataIndex);
 
-        GenericRenderer::PointsCoord pointsCoord3d{};
-        pointsCoord3d.coordType = CoordType::FLOAT;
-        pointsCoord3d.coordDimension = CoordDimension::THREE_DIMENSION;
-        pointsCoord3d.ptr = &(*pointsCoord)[0];
-        pointsCoord3d.pointsCount = pointsCoord->size();
-        pointsCoords[pointsCoordIndex] = pointsCoord3d;
+        GenericRenderer::Data dataValue{};
+        dataValue.dataType = DataType::FLOAT;
+        dataValue.dataDimension = DataDimension::THREE_DIMENSION;
+        dataValue.ptr = &(*dataPtr)[0];
+        dataValue.dataCount = dataPtr->size();
+        data[dataIndex] = dataValue;
 
-        sendPointsCoord(pointsCoordIndex, true);
+        sendPointsCoord(dataIndex, true);
     }
 
-    void GenericRenderer::updatePointsCoord(std::size_t pointsCoordIndex, const std::vector<Vector3<float>> *pointsCoord) {
-        updatePointsCoord(pointsCoordIndex, reinterpret_cast<const std::vector<Point3<float>> *>(pointsCoord));
+    void GenericRenderer::updateData(std::size_t pointsCoordIndex, const std::vector<Vector3<float>> *dataPtr) {
+        updateData(pointsCoordIndex, reinterpret_cast<const std::vector<Point3<float>> *>(dataPtr));
     }
 
     void GenericRenderer::updateTexture(std::size_t textureIndex, Texture texture) {

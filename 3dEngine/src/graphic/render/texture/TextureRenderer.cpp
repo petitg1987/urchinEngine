@@ -152,8 +152,8 @@ namespace urchin {
         Texture::Type textureType = (layer == -1) ? Texture::Type::DEFAULT : Texture::Type::ARRAY;
         std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE);
         rendererBuilder
-                ->addPointsCoord(&vertexCoord)
-                ->addPointsCoord(&textureCoord)
+                ->addData(&vertexCoord)
+                ->addData(&textureCoord)
                 ->addTexture(Texture::build(textureID, textureType));
         if(transparencyEnabled) {
             rendererBuilder->enableTransparency();

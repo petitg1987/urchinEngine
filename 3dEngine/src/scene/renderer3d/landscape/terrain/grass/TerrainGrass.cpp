@@ -226,8 +226,8 @@ namespace urchin {
                 std::unique_ptr<GenericRenderer> renderer = std::make_unique<GenericRendererBuilder>(ShapeType::POINT)
                         ->enableDepthTest()
                         ->disableCullFace()
-                        ->addPointsCoord(&grassQuadtree->getGrassVertices())
-                        ->addPointsCoord(&grassQuadtree->getGrassNormals())
+                        ->addData(&grassQuadtree->getGrassVertices())
+                        ->addData(&grassQuadtree->getGrassNormals())
                         ->addTexture(Texture::build(grassTexture->getTextureID(), Texture::DEFAULT, grassTextureParam))
                         ->addTexture(Texture::build(grassMaskTexture->getTextureID(), Texture::DEFAULT, grassMaskTextureParam))
                         ->build();

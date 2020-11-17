@@ -88,8 +88,8 @@ namespace urchin {
         };
         waterRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
                 ->enableDepthTest()
-                ->addPointsCoord(&vertexCoord)
-                ->addPointsCoord(&textureCoord)
+                ->addData(&vertexCoord)
+                ->addData(&textureCoord)
                 ->addTexture(Texture::build(0)) //normal texture
                 ->addTexture(Texture::build(0)) //dudv map
                 ->build();

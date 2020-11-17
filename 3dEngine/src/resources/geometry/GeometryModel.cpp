@@ -28,7 +28,7 @@ namespace urchin {
 
         std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(getShapeType());
         rendererBuilder
-                ->addPointsCoord(&vertexArray)
+                ->addData(&vertexArray)
                 ->disableCullFace()
                 ->outlineSize(outlineSize)
                 ->polygonMode(polygonMode);

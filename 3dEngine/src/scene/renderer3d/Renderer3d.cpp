@@ -86,8 +86,8 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f)
         };
         lightingRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
-                ->addPointsCoord(&vertexCoord)
-                ->addPointsCoord(&textureCoord)
+                ->addData(&vertexCoord)
+                ->addData(&textureCoord)
                 ->addTexture(Texture::build(textureIDs[TEX_DEPTH], Texture::DEFAULT, TextureParam::buildNearest()))
                 ->addTexture(Texture::build(textureIDs[TEX_DIFFUSE], Texture::DEFAULT, TextureParam::buildNearest()))
                 ->addTexture(Texture::build(textureIDs[TEX_NORMAL_AND_AMBIENT], Texture::DEFAULT, TextureParam::buildNearest()))

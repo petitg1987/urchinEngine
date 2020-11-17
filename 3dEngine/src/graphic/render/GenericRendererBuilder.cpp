@@ -16,33 +16,33 @@ namespace urchin {
         return shapeType;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::addPointsCoord(const std::vector<Point2<float>> *pointsCoord) {
-        GenericRenderer::PointsCoord pointsCoord2d{};
-        pointsCoord2d.coordType = CoordType::FLOAT;
-        pointsCoord2d.coordDimension = CoordDimension::TWO_DIMENSION;
-        pointsCoord2d.ptr = &(*pointsCoord)[0];
-        pointsCoord2d.pointsCount = pointsCoord->size();
-        pointsCoords.push_back(pointsCoord2d);
+    GenericRendererBuilder *GenericRendererBuilder::addData(const std::vector<Point2<float>> *dataPtr) {
+        GenericRenderer::Data dataValue{};
+        dataValue.dataType = DataType::FLOAT;
+        dataValue.dataDimension = DataDimension::TWO_DIMENSION;
+        dataValue.ptr = &(*dataPtr)[0];
+        dataValue.dataCount = dataPtr->size();
+        data.push_back(dataValue);
         return this;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::addPointsCoord(const std::vector<Point3<float>> *pointsCoord) {
-        GenericRenderer::PointsCoord pointsCoord3d{};
-        pointsCoord3d.coordType = CoordType::FLOAT;
-        pointsCoord3d.coordDimension = CoordDimension::THREE_DIMENSION;
-        pointsCoord3d.ptr = &(*pointsCoord)[0];
-        pointsCoord3d.pointsCount = pointsCoord->size();
-        pointsCoords.push_back(pointsCoord3d);
+    GenericRendererBuilder *GenericRendererBuilder::addData(const std::vector<Point3<float>> *dataPtr) {
+        GenericRenderer::Data dataValue{};
+        dataValue.dataType = DataType::FLOAT;
+        dataValue.dataDimension = DataDimension::THREE_DIMENSION;
+        dataValue.ptr = &(*dataPtr)[0];
+        dataValue.dataCount = dataPtr->size();
+        data.push_back(dataValue);
         return this;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::addPointsCoord(const std::vector<Vector3<float>> *pointsCoord) {
-        addPointsCoord(reinterpret_cast<const std::vector<Point3<float>> *>(pointsCoord));
+    GenericRendererBuilder *GenericRendererBuilder::addData(const std::vector<Vector3<float>> *dataPtr) {
+        addData(reinterpret_cast<const std::vector<Point3<float>> *>(dataPtr));
         return this;
     }
 
-    const std::vector<GenericRenderer::PointsCoord> &GenericRendererBuilder::getPointsCoords() const {
-        return pointsCoords;
+    const std::vector<GenericRenderer::Data> &GenericRendererBuilder::getData() const {
+        return data;
     }
 
     GenericRendererBuilder *GenericRendererBuilder::indices(const std::vector<unsigned int> *indices) {

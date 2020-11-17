@@ -4,8 +4,8 @@
 #include <vector>
 #include "UrchinCommon.h"
 
-#include "graphic/render/model/CoordType.h"
-#include "graphic/render/model/CoordDimension.h"
+#include "graphic/render/model/DataType.h"
+#include "graphic/render/model/DataDimension.h"
 #include "graphic/render/model/ShapeType.h"
 #include "graphic/render/model/PolygonMode.h"
 #include "graphic/render/model/Texture.h"
@@ -16,11 +16,11 @@ namespace urchin {
 
     class GenericRenderer {
         public:
-            struct PointsCoord {
-                CoordType coordType = CoordType::FLOAT;
-                CoordDimension coordDimension = CoordDimension::TWO_DIMENSION;
+            struct Data {
+                DataType dataType = DataType::FLOAT;
+                DataDimension dataDimension = DataDimension::TWO_DIMENSION;
                 const void *ptr = nullptr;
-                unsigned int pointsCount = 0;
+                unsigned int dataCount = 0;
             };
 
             struct Indices {
@@ -31,8 +31,8 @@ namespace urchin {
             explicit GenericRenderer(const GenericRendererBuilder *);
             ~GenericRenderer();
 
-            void updatePointsCoord(std::size_t, const std::vector<Point3<float>> *);
-            void updatePointsCoord(std::size_t, const std::vector<Vector3<float>> *);
+            void updateData(std::size_t, const std::vector<Point3<float>> *);
+            void updateData(std::size_t, const std::vector<Vector3<float>> *);
 
             void updateTexture(std::size_t, Texture);
             unsigned int addAdditionalTexture(Texture);
@@ -47,15 +47,15 @@ namespace urchin {
             void sendPointsCoord(std::size_t, bool) const;
 
             unsigned int shapeTypeToGlType(ShapeType) const;
-            unsigned int coordTypeToSize(CoordType) const;
-            unsigned int coordTypeToGlType(CoordType) const;
-            unsigned int coordDimensionToSize(CoordDimension) const;
+            unsigned int dataTypeToSize(DataType) const;
+            unsigned int dataTypeToGlType(DataType) const;
+            unsigned int dataDimensionToSize(DataDimension) const;
 
             void resetDrawDefaultValues() const;
 
             ShapeType shapeType;
 
-            std::vector<PointsCoord> pointsCoords;
+            std::vector<Data> data;
             Indices indices;
             unsigned int verticesCount;
 

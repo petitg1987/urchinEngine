@@ -11,10 +11,10 @@ namespace urchin {
     Mesh::Mesh(const ConstMesh *constMesh) :
             constMesh(constMesh) {
         meshRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
-                ->addPointsCoord(&constMesh->getBaseVertices())
-                ->addPointsCoord(&constMesh->getTextureCoordinates())
-                ->addPointsCoord(&constMesh->getBaseNormals())
-                ->addPointsCoord(&constMesh->getBaseTangents())
+                ->addData(&constMesh->getBaseVertices())
+                ->addData(&constMesh->getTextureCoordinates())
+                ->addData(&constMesh->getBaseNormals())
+                ->addData(&constMesh->getBaseTangents())
                 ->indices(&constMesh->getTrianglesIndices())
                 ->enableDepthTest()
                 //->addTexture(Texture::build(texInfoDefault->getTextureID())) //TODO add texture
@@ -26,9 +26,9 @@ namespace urchin {
         MeshService::instance()->computeVertices(constMesh, skeleton, vertices);
         MeshService::instance()->computeNormalsAndTangents(constMesh, vertices, normals, tangents);
 
-        meshRenderer->updatePointsCoord(0, &vertices);
-        meshRenderer->updatePointsCoord(2, &normals); //TODO wrong naming: normals are not "pointsCoord" + add animate model to test
-        meshRenderer->updatePointsCoord(3, &tangents);
+        meshRenderer->updateData(0, &vertices);
+        meshRenderer->updateData(2, &normals); //TODO add animate model to test
+        meshRenderer->updateData(3, &tangents);
     }
 
     void Mesh::display(const MeshParameter &meshParameter) const {

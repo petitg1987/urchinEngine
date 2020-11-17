@@ -6,8 +6,8 @@
 #include "UrchinCommon.h"
 
 #include "graphic/render/GenericRenderer.h"
-#include "graphic/render/model/CoordType.h"
-#include "graphic/render/model/CoordDimension.h"
+#include "graphic/render/model/DataType.h"
+#include "graphic/render/model/DataDimension.h"
 #include "graphic/render/model/ShapeType.h"
 #include "graphic/render/model/PolygonMode.h"
 #include "graphic/render/model/Texture.h"
@@ -20,10 +20,10 @@ namespace urchin {
 
             ShapeType getShapeType() const;
 
-            GenericRendererBuilder *addPointsCoord(const std::vector<Point2<float>> *);
-            GenericRendererBuilder *addPointsCoord(const std::vector<Point3<float>> *);
-            GenericRendererBuilder *addPointsCoord(const std::vector<Vector3<float>> *);
-            const std::vector<GenericRenderer::PointsCoord> &getPointsCoords() const;
+            GenericRendererBuilder *addData(const std::vector<Point2<float>> *);
+            GenericRendererBuilder *addData(const std::vector<Point3<float>> *);
+            GenericRendererBuilder *addData(const std::vector<Vector3<float>> *);
+            const std::vector<GenericRenderer::Data> &getData() const;
 
             GenericRendererBuilder *indices(const std::vector<unsigned int> *);
             const GenericRenderer::Indices &getIndices() const;
@@ -49,7 +49,7 @@ namespace urchin {
 
         private:
             ShapeType shapeType;
-            std::vector<GenericRenderer::PointsCoord> pointsCoords;
+            std::vector<GenericRenderer::Data> data;
             GenericRenderer::Indices pIndices;
             bool transparencyEnabled;
             bool depthTestEnabled;

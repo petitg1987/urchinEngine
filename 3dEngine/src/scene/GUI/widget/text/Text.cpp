@@ -82,8 +82,8 @@ namespace urchin {
         setSize(Size(width, (float)(cutTextLines.size() * font->getHeight() + numberOfInterLines * font->getSpaceBetweenLines()), Size::SizeType::PIXEL));
 
         textRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
-                ->addPointsCoord(&vertexCoord)
-                ->addPointsCoord(&textureCoord)
+                ->addData(&vertexCoord)
+                ->addData(&textureCoord)
                 ->addTexture(Texture::build(font->getTextureID()))
                 ->enableTransparency()
                 ->build();

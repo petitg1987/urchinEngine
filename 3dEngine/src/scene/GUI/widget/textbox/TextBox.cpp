@@ -74,8 +74,8 @@ namespace urchin {
                 Point2<float>(0.0f, 1.0f)
         };
         textBoxRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
-                ->addPointsCoord(&vertexCoord)
-                ->addPointsCoord(&textureCoord)
+                ->addData(&vertexCoord)
+                ->addData(&textureCoord)
                 ->addTexture(Texture::build(texTextBoxDefault->getTextureID()))
                 ->build();
 
@@ -88,8 +88,8 @@ namespace urchin {
                 Point2<float>(1.0, 1.0)
         };
         cursorRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::LINE)
-                ->addPointsCoord(&cursorVertexCoord)
-                ->addPointsCoord(&cursorTextureCoord)
+                ->addData(&cursorVertexCoord)
+                ->addData(&cursorTextureCoord)
                 ->addTexture(Texture::build(texCursorDiffuse->getTextureID(), Texture::DEFAULT, TextureParam::buildRepeatNearest()))
                 ->build();
     }

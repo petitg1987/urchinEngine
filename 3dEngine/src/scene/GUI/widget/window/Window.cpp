@@ -56,8 +56,8 @@ namespace urchin {
                 Point2<float>(0.0f, 1.0f)
         };
         windowRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
-                ->addPointsCoord(&vertexCoord)
-                ->addPointsCoord(&textureCoord)
+                ->addData(&vertexCoord)
+                ->addData(&textureCoord)
                 ->addTexture(Texture::build(texWindow->getTextureID()))
                 ->build();
     }
