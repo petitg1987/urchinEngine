@@ -2,11 +2,12 @@
 
 namespace urchin {
 
-    Material::Material(Image *diffuseTexture, Image *normalTexture, float ambientFactor) :
+    Material::Material(Image *diffuseTexture, Image *normalTexture, bool repeatableTextures, float ambientFactor) :
             bHasDiffuseTexture(diffuseTexture!=nullptr),
             diffuseTexture(diffuseTexture),
             bHasNormalTexture(normalTexture!=nullptr),
             normalTexture(normalTexture),
+            repeatableTextures(repeatableTextures),
             ambientFactor(ambientFactor) {
         buildDefaultTextures();
     }
@@ -42,6 +43,10 @@ namespace urchin {
 
     const Image *Material::getNormalTexture() const {
         return normalTexture;
+    }
+
+    bool Material::isRepeatableTextures() const {
+        return repeatableTextures;
     }
 
     float Material::getAmbientFactor() const {

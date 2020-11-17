@@ -19,7 +19,6 @@ namespace urchin {
     class Terrain {
         public:
             Terrain(std::shared_ptr<TerrainMesh> &, std::unique_ptr<TerrainMaterial> &, const Point3<float> &);
-            ~Terrain();
 
             void onCameraProjectionUpdate(const Matrix4<float> &);
 
@@ -45,18 +44,7 @@ namespace urchin {
             void refreshGrassMesh();
             void refreshGrassAmbient();
 
-            unsigned int bufferIDs[4], vertexArrayObject;
-            enum { //buffer IDs indices
-                VAO_VERTEX_POSITION = 0,
-                VAO_TEX_COORD,
-                VAO_NORMAL,
-                VAO_INDEX
-            };
-            enum { //shader input
-                SHADER_VERTEX_POSITION = 0,
-                SHADER_TEX_COORD,
-                SHADER_NORMAL
-            };
+            std::unique_ptr<GenericRenderer> terrainRenderer;
             std::unique_ptr<Shader> terrainShader;
             ShaderVar vPositionShaderVar, mProjectionShaderVar, mViewShaderVar;
             ShaderVar ambientShaderVar;

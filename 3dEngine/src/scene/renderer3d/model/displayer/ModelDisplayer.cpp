@@ -47,8 +47,7 @@ namespace urchin {
                 .sendData(ShaderVar(modelShader, "normalTex"), normalTexUnit);
 
             //setup mesh parameters
-            meshParameter.setDiffuseTextureUnit(diffuseTexUnit);
-            meshParameter.setNormalTextureUnit(normalTexUnit);
+            meshParameter.setNeedRenderTextures(true);
             meshParameter.setAmbientFactorShaderVar(ambientFactorShaderVar);
         } else if (displayMode == DEPTH_ONLY_MODE) {
             //shader creation
@@ -62,8 +61,7 @@ namespace urchin {
             ambientFactorShaderVar = ShaderVar();
 
             //setup mesh parameters
-            meshParameter.setDiffuseTextureUnit(-1);
-            meshParameter.setNormalTextureUnit(-1);
+            meshParameter.setNeedRenderTextures(false);
             meshParameter.setAmbientFactorShaderVar(ShaderVar());
         } else {
             throw std::invalid_argument("Unknown display mode.");

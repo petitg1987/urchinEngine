@@ -31,12 +31,14 @@ namespace urchin {
             explicit GenericRenderer(const GenericRendererBuilder *);
             ~GenericRenderer();
 
+            void updateData(std::size_t, const std::vector<Point2<float>> *);
             void updateData(std::size_t, const std::vector<Point3<float>> *);
             void updateData(std::size_t, const std::vector<Vector3<float>> *);
 
             void updateTexture(std::size_t, Texture);
             unsigned int addAdditionalTexture(Texture);
             void clearAdditionalTextures();
+            void renderTextures(bool);
 
             void draw() const;
 
@@ -44,7 +46,7 @@ namespace urchin {
             unsigned int computeVerticesCount() const;
             void initializeTexture(Texture) const;
             void initializeDisplay();
-            void sendPointsCoord(std::size_t, bool) const;
+            void sendData(std::size_t, bool);
 
             unsigned int shapeTypeToGlType(ShapeType) const;
             unsigned int dataTypeToSize(DataType) const;
@@ -69,6 +71,7 @@ namespace urchin {
             float outlineSize;
 
             std::vector<Texture> textures, additionalTextures;
+            bool bNeedRenderTextures;
 
             unsigned int vertexArrayObject;
             std::vector<unsigned int> bufferIds;

@@ -14,12 +14,10 @@ namespace urchin {
         XmlParser parserXml(filename);
 
         //textures data
-        bool needMipMaps = true;
-        bool needAnisotropy = true;
-        bool needRepeatTexture = false;
+        bool repeatableTextures = false;
         std::shared_ptr<XmlChunk> repeatTexture(parserXml.getUniqueChunk(false, "repeatTexture"));
         if (repeatTexture) {
-            needRepeatTexture = repeatTexture->getBoolValue();
+            repeatableTextures = repeatTexture->getBoolValue();
         }
 
         //diffuse data
@@ -28,7 +26,7 @@ namespace urchin {
         if (diffuse) {
             std::shared_ptr<XmlChunk> diffuseTexture(parserXml.getUniqueChunk(true, "texture", XmlAttribute(), diffuse));
             diffuseTex = MediaManager::instance()->getMedia<Image>(diffuseTexture->getStringValue());
-            diffuseTex->toTexture(needMipMaps, needAnisotropy, needRepeatTexture);
+            diffuseTex->toTexture(true, true, repeatableTextures);
         }
 
         //normal data
@@ -37,7 +35,7 @@ namespace urchin {
         if (normal) {
             std::shared_ptr<XmlChunk> normalTexture(parserXml.getUniqueChunk(true, "texture", XmlAttribute(), normal));
             normalTex = MediaManager::instance()->getMedia<Image>(normalTexture->getStringValue());
-            normalTex->toTexture(needMipMaps, needAnisotropy, needRepeatTexture);
+            normalTex->toTexture(true, true, repeatableTextures);
         }
 
         //ambient data
@@ -48,7 +46,7 @@ namespace urchin {
             fAmbientFactor = Converter::toFloat(ambientFactor->getStringValue());
         }
 
-        return new Material(diffuseTex, normalTex, fAmbientFactor);
+        return new Material(diffuseTex, normalTex, repeatableTextures, fAmbientFactor);
     }
 
 }

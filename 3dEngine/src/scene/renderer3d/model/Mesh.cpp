@@ -1,5 +1,3 @@
-#include <GL/glew.h>
-
 #include "Mesh.h"
 #include "resources/model/MeshService.h"
 #include "resources/geometry/points/PointsModel.h"
@@ -10,14 +8,21 @@ namespace urchin {
 
     Mesh::Mesh(const ConstMesh *constMesh) :
             constMesh(constMesh) {
+
+        unsigned int diffuseTextureId = constMesh->getMaterial()->getDiffuseTexture()->getTextureID();
+        unsigned int normalTextureId = constMesh->getMaterial()->getNormalTexture()->getTextureID();
+        TextureParam::ReadMode textureReadMode = constMesh->getMaterial()->isRepeatableTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
+        TextureParam textureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY);
+
         meshRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
+                ->enableDepthTest()
                 ->addData(&constMesh->getBaseVertices())
                 ->addData(&constMesh->getTextureCoordinates())
                 ->addData(&constMesh->getBaseNormals())
                 ->addData(&constMesh->getBaseTangents())
                 ->indices(&constMesh->getTrianglesIndices())
-                ->enableDepthTest()
-                //->addTexture(Texture::build(texInfoDefault->getTextureID())) //TODO add texture
+                ->addTexture(Texture::build(diffuseTextureId, Texture::DEFAULT, textureParam))
+                ->addTexture(Texture::build(normalTextureId, Texture::DEFAULT, textureParam))
                 ->build();
     }
 
@@ -32,20 +37,11 @@ namespace urchin {
     }
 
     void Mesh::display(const MeshParameter &meshParameter) const {
-        if (meshParameter.getDiffuseTextureUnit() != -1) {
-            glActiveTexture(GL_TEXTURE0 + meshParameter.getDiffuseTextureUnit());
-            glBindTexture(GL_TEXTURE_2D, constMesh->getMaterial()->getDiffuseTexture()->getTextureID());
-        }
-
-        if (meshParameter.getNormalTextureUnit() != -1) {
-            glActiveTexture(GL_TEXTURE0 + meshParameter.getNormalTextureUnit());
-            glBindTexture(GL_TEXTURE_2D, constMesh->getMaterial()->getNormalTexture()->getTextureID());
-        }
-
         if (meshParameter.getAmbientFactorShaderVar().isValid()) {
             ShaderDataSender().sendData(meshParameter.getAmbientFactorShaderVar(), constMesh->getMaterial()->getAmbientFactor());
         }
 
+        meshRenderer->renderTextures(meshParameter.needRenderTextures());
         meshRenderer->draw();
     }
 

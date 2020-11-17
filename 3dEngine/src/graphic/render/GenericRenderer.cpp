@@ -18,6 +18,7 @@ namespace urchin {
             polygonMode(rendererBuilder->getPolygonMode()),
             outlineSize(rendererBuilder->getOutlineSize()),
             textures(rendererBuilder->getTextures()),
+            bNeedRenderTextures(true),
             vertexArrayObject(0) {
 
         verticesCount = computeVerticesCount();
@@ -79,18 +80,12 @@ namespace urchin {
     void GenericRenderer::initializeDisplay() {
         glBindVertexArray(vertexArrayObject);
 
-        unsigned int pointsCoordIndex = 0;
-        for(auto &dataValue : data) {
+        for(std::size_t dataIndex = 0; dataIndex < data.size(); dataIndex++) {
             unsigned int bufferId = 0;
             glGenBuffers(1, &bufferId);
             bufferIds.push_back(bufferId);
 
-            sendPointsCoord(pointsCoordIndex, false);
-            glEnableVertexAttribArray(pointsCoordIndex);
-            glVertexAttribPointer(pointsCoordIndex, dataDimensionToSize(dataValue.dataDimension), dataTypeToGlType(dataValue.dataType), GL_FALSE, 0, nullptr);
-
-            dataValue.ptr = nullptr; //reset pointer because no guaranteed pointer is still valid after initialization
-            pointsCoordIndex++;
+            sendData(dataIndex, false);
         }
 
         if(indices.ptr) {
@@ -105,14 +100,18 @@ namespace urchin {
         }
     }
 
-    void GenericRenderer::sendPointsCoord(std::size_t pointsCoordIndex, bool update) const {
-        const Data &dataValue = data[pointsCoordIndex];
+    void GenericRenderer::sendData(std::size_t dataIndex, bool update) {
+        Data &dataValue = data[dataIndex];
 
-        auto vertexCoordDim = dataDimensionToSize(dataValue.dataDimension);
-        auto vertexMemorySize = dataTypeToSize(dataValue.dataType) * vertexCoordDim * dataValue.dataCount;
+        auto dataDim = dataDimensionToSize(dataValue.dataDimension);
+        auto dataMemorySize = dataTypeToSize(dataValue.dataType) * dataDim * dataValue.dataCount;
 
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIds[pointsCoordIndex]);
-        glBufferData(GL_ARRAY_BUFFER, vertexMemorySize, dataValue.ptr, update ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, bufferIds[dataIndex]);
+        glBufferData(GL_ARRAY_BUFFER, dataMemorySize, dataValue.ptr, update ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+        glEnableVertexAttribArray(dataIndex);
+        glVertexAttribPointer(dataIndex, dataDimensionToSize(dataValue.dataDimension), dataTypeToGlType(dataValue.dataType), GL_FALSE, 0, nullptr);
+
+        dataValue.ptr = nullptr; //reset pointer because no guaranteed pointer is still valid after initialization
     }
 
     unsigned int GenericRenderer::shapeTypeToGlType(ShapeType shapeType) const {
@@ -155,17 +154,20 @@ namespace urchin {
         throw std::runtime_error("Unknown data dimension: " + std::to_string(dataDimension));
     }
 
-    void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point3<float>> *dataPtr) {
+    void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point2<float>> *dataPtr) {
         assert(data.size() > dataIndex);
-
-        GenericRenderer::Data dataValue{};
-        dataValue.dataType = DataType::FLOAT;
-        dataValue.dataDimension = DataDimension::THREE_DIMENSION;
-        dataValue.ptr = &(*dataPtr)[0];
-        dataValue.dataCount = dataPtr->size();
+        GenericRenderer::Data dataValue{DataType::FLOAT, DataDimension::TWO_DIMENSION, &(*dataPtr)[0], (unsigned int)dataPtr->size()};
         data[dataIndex] = dataValue;
 
-        sendPointsCoord(dataIndex, true);
+        sendData(dataIndex, true);
+    }
+
+    void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point3<float>> *dataPtr) {
+        assert(data.size() > dataIndex);
+        GenericRenderer::Data dataValue{DataType::FLOAT, DataDimension::THREE_DIMENSION, &(*dataPtr)[0], (unsigned int)dataPtr->size()};
+        data[dataIndex] = dataValue;
+
+        sendData(dataIndex, true);
     }
 
     void GenericRenderer::updateData(std::size_t pointsCoordIndex, const std::vector<Vector3<float>> *dataPtr) {
@@ -193,15 +195,21 @@ namespace urchin {
         additionalTextures.clear();
     }
 
+    void GenericRenderer::renderTextures(bool bNeedRenderTextures) {
+        this->bNeedRenderTextures = bNeedRenderTextures;
+    }
+
     void GenericRenderer::draw() const {
-        unsigned int textureUnit = 0;
-        for (const auto &texture : textures) {
-            glActiveTexture(GL_TEXTURE0 + textureUnit++);
-            glBindTexture(texture.getGlType(), texture.getId());
-        }
-        for (const auto &additionalTexture : additionalTextures) {
-            glActiveTexture(GL_TEXTURE0 + textureUnit++);
-            glBindTexture(additionalTexture.getGlType(), additionalTexture.getId());
+        if(bNeedRenderTextures) {
+            unsigned int textureUnit = 0;
+            for (const auto &texture : textures) {
+                glActiveTexture(GL_TEXTURE0 + textureUnit++);
+                glBindTexture(texture.getGlType(), texture.getId());
+            }
+            for (const auto &additionalTexture : additionalTextures) {
+                glActiveTexture(GL_TEXTURE0 + textureUnit++);
+                glBindTexture(additionalTexture.getGlType(), additionalTexture.getId());
+            }
         }
 
         if(transparencyEnabled) {

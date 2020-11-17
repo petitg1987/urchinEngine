@@ -11,18 +11,14 @@ namespace urchin {
         public:
             MeshParameter();
 
-            void setDiffuseTextureUnit(int);
-            int getDiffuseTextureUnit() const;
-
-            void setNormalTextureUnit(int);
-            int getNormalTextureUnit() const;
+            void setNeedRenderTextures(bool);
+            bool needRenderTextures() const;
 
             void setAmbientFactorShaderVar(const ShaderVar &);
             const ShaderVar &getAmbientFactorShaderVar() const;
 
         private:
-            int diffuseTextureUnit;
-            int normalTextureUnit;
+            bool bNeedRenderTextures;
             ShaderVar ambientFactorShaderVar;
     };
 

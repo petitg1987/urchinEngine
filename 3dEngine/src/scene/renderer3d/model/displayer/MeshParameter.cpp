@@ -3,37 +3,16 @@
 namespace urchin {
 
     MeshParameter::MeshParameter() :
-        diffuseTextureUnit(-1),
-        normalTextureUnit(-1) {
+        bNeedRenderTextures(true) {
 
     }
 
-    /**
-     * @param diffuseTextureUnit Diffuse texture unit. If -1, there is no diffuse texture.
-     */
-    void MeshParameter::setDiffuseTextureUnit(int diffuseTextureUnit) {
-        this->diffuseTextureUnit = diffuseTextureUnit;
+    void MeshParameter::setNeedRenderTextures(bool bNeedRenderTextures) {
+        this->bNeedRenderTextures = bNeedRenderTextures;
     }
 
-    /**
-     * @return Diffuse texture unit. If -1, there is no diffuse texture.
-     */
-    int MeshParameter::getDiffuseTextureUnit() const {
-        return diffuseTextureUnit;
-    }
-
-    /**
-     * @param normalTextureUnit Normal texture unit. If -1, there is no normal texture.
-     */
-    void MeshParameter::setNormalTextureUnit(int normalTextureUnit) {
-        this->normalTextureUnit = normalTextureUnit;
-    }
-
-    /**
-     * @return Normal texture unit. If -1, there is no normal texture.
-     */
-    int MeshParameter::getNormalTextureUnit() const {
-        return normalTextureUnit;
+    bool MeshParameter::needRenderTextures() const {
+        return bNeedRenderTextures;
     }
 
     void MeshParameter::setAmbientFactorShaderVar(const ShaderVar &ambientFactorShaderVar) {

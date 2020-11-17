@@ -1,9 +1,9 @@
-#include <GL/glew.h>
 #include <stdexcept>
 
 #include "Terrain.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
 #include "graphic/shader/data/ShaderDataSender.h"
+#include "graphic/render/GenericRendererBuilder.h"
 
 #define DEFAULT_AMBIENT 0.3f
 
@@ -13,12 +13,7 @@ namespace urchin {
      * @param position Terrain position. Position is centered on XZ axis and Y value represents a point without elevation.
      */
     Terrain::Terrain(std::shared_ptr<TerrainMesh> &mesh, std::unique_ptr<TerrainMaterial> &material, const Point3<float> &position) :
-            bufferIDs(),
-            vertexArrayObject(0),
             ambient(0.0f) {
-        glGenBuffers(4, bufferIDs);
-        glGenVertexArrays(1, &vertexArrayObject);
-
         terrainShader = ShaderBuilder().createShader("terrain.vert", "", "terrain.frag");
 
         vPositionShaderVar = ShaderVar(terrainShader, "vPosition");
@@ -47,11 +42,6 @@ namespace urchin {
         refreshGrassAmbient();
     }
 
-    Terrain::~Terrain() {
-        glDeleteVertexArrays(1, &vertexArrayObject);
-        glDeleteBuffers(4, bufferIDs);
-    }
-
     void Terrain::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
 
@@ -62,20 +52,15 @@ namespace urchin {
     void Terrain::setMesh(const std::shared_ptr<TerrainMesh> &mesh) {
         this->mesh = mesh;
 
-        glBindVertexArray(vertexArrayObject);
-
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-        glBufferData(GL_ARRAY_BUFFER, mesh->getVertices().size()*sizeof(float)*3, &mesh->getVertices()[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-        glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_NORMAL]);
-        glBufferData(GL_ARRAY_BUFFER, mesh->getNormals().size()*sizeof(float)*3, &mesh->getNormals()[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(SHADER_NORMAL);
-        glVertexAttribPointer(SHADER_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferIDs[VAO_INDEX]);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh->getIndices().size()*sizeof(unsigned int), &mesh->getIndices()[0], GL_STATIC_DRAW);
+        std::vector<Point2<float>> emptyTextureCoordinates;
+        terrainRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE_STRIP)
+                ->enableDepthTest()
+                ->addData(&mesh->getVertices())
+                ->addData(&mesh->getNormals())
+                ->addData(&emptyTextureCoordinates)
+                ->indices(&mesh->getIndices())
+                //TODO add textures
+                ->build();
 
         refreshMaterial(); //material uses mesh info: refresh is required
         refreshGrassMesh(); //grass uses mesh info: refresh is required
@@ -101,11 +86,7 @@ namespace urchin {
                 .sendData(sRepeatShaderVar, material->getSRepeat())
                 .sendData(tRepeatShaderVar, material->getTRepeat());
 
-            glBindVertexArray(vertexArrayObject);
-            glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
-            glBufferData(GL_ARRAY_BUFFER, material->getTexCoordinates().size() * sizeof(float) * 2, &material->getTexCoordinates()[0], GL_STATIC_DRAW);
-            glEnableVertexAttribArray(SHADER_TEX_COORD);
-            glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+            terrainRenderer->updateData(2, &material->getTexCoordinates());
         }
     }
 
@@ -172,8 +153,7 @@ namespace urchin {
         material->loadTextures();
 
         terrainShader->bind();
-        glBindVertexArray(vertexArrayObject);
-        glDrawElements(GL_TRIANGLE_STRIP, mesh->getIndices().size(), GL_UNSIGNED_INT, nullptr);
+        terrainRenderer->draw();
 
         if (grass) {
             grass->display(camera, dt);

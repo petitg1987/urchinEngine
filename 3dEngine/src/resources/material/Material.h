@@ -10,7 +10,7 @@ namespace urchin {
 
     class Material : public Resource {
         public:
-            Material(Image *, Image *, float);
+            Material(Image *, Image *, bool, float);
             ~Material() override;
 
             bool hasDiffuseTexture() const;
@@ -18,6 +18,8 @@ namespace urchin {
 
             bool hasNormalTexture() const;
             const Image *getNormalTexture() const;
+
+            bool isRepeatableTextures() const;
 
             float getAmbientFactor() const;
 
@@ -31,6 +33,8 @@ namespace urchin {
 
             bool bHasNormalTexture;
             Image *normalTexture;
+
+            bool repeatableTextures;
 
             float ambientFactor;
     };
