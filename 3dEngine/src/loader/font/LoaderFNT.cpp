@@ -137,7 +137,7 @@ namespace urchin {
         }
 
         auto *texAlphabet = new Image(dimensionTexture, dimensionTexture, Image::IMAGE_RGBA, std::move(texels));
-        texAlphabet->toTexture(false, false, false);
+        texAlphabet->toTexture(false);
 
         //clears buffers of letters
         for (std::size_t i=0;i<NUM_LETTERS;i++) {

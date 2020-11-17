@@ -11,18 +11,18 @@ namespace urchin {
             tRepeat(tRepeat) {
         if (maskMapFilename.empty()) {
             maskTexture = new Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({255, 0, 0, 0}));
-            maskTexture->toTexture(false, false, false);
+            maskTexture->toTexture(false);
         } else {
             maskTexture = MediaManager::instance()->getMedia<Image>(maskMapFilename);
             if (maskTexture->getImageFormat() != Image::IMAGE_RGBA) {
                 maskTexture->release();
                 throw std::runtime_error("Mask texture must have 4 components (RGBA). Components: " + std::to_string(maskTexture->retrieveComponentsCount()));
             }
-            maskTexture->toTexture(false, false, false);
+            maskTexture->toTexture(false);
         }
 
         defaultTexture = new Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({0, 0, 0, 0}));
-        defaultTexture->toTexture(false, false, false);
+        defaultTexture->toTexture(false);
 
         initializeMaterial(materialFilenames);
     }

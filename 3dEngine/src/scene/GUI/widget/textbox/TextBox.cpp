@@ -56,7 +56,7 @@ namespace urchin {
             texCursorDiffuse->release();
         }
         texCursorDiffuse = new Image(1, 1, Image::IMAGE_RGB, std::move(cursorColor));
-        texCursorDiffuse->toTexture(false, false, true);
+        texCursorDiffuse->toTexture(false);
         refreshText(cursorIndex);
         computeCursorPosition();
 

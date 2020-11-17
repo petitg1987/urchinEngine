@@ -252,7 +252,7 @@ namespace urchin {
             grassTexture = nullptr;
         } else {
             grassTexture = MediaManager::instance()->getMedia<Image>(grassTextureFilename);
-            grassTexture->toTexture(true, true, false);
+            grassTexture->toTexture(true);
         }
     }
 
@@ -272,7 +272,7 @@ namespace urchin {
         } else {
             grassMaskTexture = MediaManager::instance()->getMedia<Image>(grassMaskFilename);
         }
-        grassMaskTexture->toTexture(false, false, false);
+        grassMaskTexture->toTexture(false);
     }
 
     float TerrainGrass::getGrassDisplayDistance() const {

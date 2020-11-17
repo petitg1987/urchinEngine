@@ -109,7 +109,7 @@ namespace urchin {
         }
     }
 
-    unsigned int Image::toTexture(bool needMipMaps, bool needAnisotropy, bool needRepeat) {
+    unsigned int Image::toTexture(bool generateMipMaps) {
         if (isTexture) {
             return textureID;
         }
@@ -121,21 +121,9 @@ namespace urchin {
         glGenTextures(1, &textureID);
         glBindTexture (GL_TEXTURE_2D, textureID);
 
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, needMipMaps ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, needRepeat ? GL_REPEAT : GL_CLAMP_TO_EDGE);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, needRepeat ? GL_REPEAT : GL_CLAMP_TO_EDGE);
-        if (GLEW_EXT_texture_filter_anisotropic) {
-            if (needAnisotropy) {
-                glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, TextureManager::instance()->getAnisotropy());
-            } else {
-                glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 1.0f);
-            }
-        }
-
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glTexImage2D(GL_TEXTURE_2D, 0, retrieveInternalFormat(), width, height, 0, retrieveFormat(), GL_UNSIGNED_BYTE, &texels8[0]);
-        if (needMipMaps) {
+        if (generateMipMaps) {
             glGenerateMipmap(GL_TEXTURE_2D);
         }
 

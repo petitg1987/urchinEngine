@@ -26,7 +26,7 @@ namespace urchin {
         if (diffuse) {
             std::shared_ptr<XmlChunk> diffuseTexture(parserXml.getUniqueChunk(true, "texture", XmlAttribute(), diffuse));
             diffuseTex = MediaManager::instance()->getMedia<Image>(diffuseTexture->getStringValue());
-            diffuseTex->toTexture(true, true, repeatableTextures);
+            diffuseTex->toTexture(true);
         }
 
         //normal data
@@ -35,7 +35,7 @@ namespace urchin {
         if (normal) {
             std::shared_ptr<XmlChunk> normalTexture(parserXml.getUniqueChunk(true, "texture", XmlAttribute(), normal));
             normalTex = MediaManager::instance()->getMedia<Image>(normalTexture->getStringValue());
-            normalTex->toTexture(true, true, repeatableTextures);
+            normalTex->toTexture(true);
         }
 
         //ambient data

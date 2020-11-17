@@ -171,7 +171,7 @@ namespace urchin {
             }
         }
 
-        normalTexture->toTexture(true, true, true);
+        normalTexture->toTexture(true);
         updateWaterTextures();
     }
 
@@ -194,7 +194,7 @@ namespace urchin {
             }
         }
 
-        dudvMap->toTexture(true, true, true);
+        dudvMap->toTexture(true);
         updateWaterTextures();
     }
 

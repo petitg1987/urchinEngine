@@ -23,7 +23,7 @@ namespace urchin {
             tex->release();
         }
         tex = MediaManager::instance()->getMedia<Image>(filename);
-        tex->toTexture(false, false, false);
+        tex->toTexture(false);
 
         //visual
         std::vector<Point2<float>> vertexCoord = {
