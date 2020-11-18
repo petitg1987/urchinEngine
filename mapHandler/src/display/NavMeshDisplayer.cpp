@@ -43,14 +43,18 @@ namespace urchin {
                 }
             }
 
-            auto *meshModel = new TrianglesModel(toDisplayPoints(triangleMeshPoints, 0.02f));
-            addNavMeshModel(meshModel, PolygonMode::FILL, Vector3<float>(0.0, 0.0, 1.0));
+            if(!triangleMeshPoints.empty()) {
+                auto *meshModel = new TrianglesModel(toDisplayPoints(triangleMeshPoints, 0.02f));
+                addNavMeshModel(meshModel, PolygonMode::FILL, Vector3<float>(0.0, 0.0, 1.0));
 
-            auto *meshWireframeModel = new TrianglesModel(toDisplayPoints(triangleMeshPoints, 0.025f));
-            addNavMeshModel(meshWireframeModel, PolygonMode::WIREFRAME, Vector3<float>(0.5, 0.5, 1.0));
+                auto *meshWireframeModel = new TrianglesModel(toDisplayPoints(triangleMeshPoints, 0.025f));
+                addNavMeshModel(meshWireframeModel, PolygonMode::WIREFRAME, Vector3<float>(0.5, 0.5, 1.0));
+            }
 
-            auto *jumpModel = new QuadsModel(quadJumpPoints);
-            addNavMeshModel(jumpModel, PolygonMode::FILL, Vector3<float>(0.5, 0.0, 0.5));
+            if(!quadJumpPoints.empty()) {
+                auto *jumpModel = new QuadsModel(quadJumpPoints);
+                addNavMeshModel(jumpModel, PolygonMode::FILL, Vector3<float>(0.5, 0.0, 0.5));
+            }
 
             loadedNavMeshId = navMesh.getUpdateId();
         }

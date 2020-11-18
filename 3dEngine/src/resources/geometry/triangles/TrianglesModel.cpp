@@ -5,7 +5,10 @@
 namespace urchin {
 
     TrianglesModel::TrianglesModel(std::vector<Point3<float>> trianglesPoints) :
-        trianglesPoints(std::move(trianglesPoints)) {
+            trianglesPoints(std::move(trianglesPoints)) {
+        if(this->trianglesPoints.size() % 3 != 0) {
+            throw std::invalid_argument("Triangles points size must a multiple of three. Size: " + std::to_string(this->trianglesPoints.size()));
+        }
         initialize();
     }
 

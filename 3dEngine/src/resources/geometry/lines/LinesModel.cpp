@@ -7,6 +7,9 @@ namespace urchin {
     LinesModel::LinesModel(std::vector<Point3<float>> stripLinesPoints) :
             linesPoints(std::move(stripLinesPoints)),
             stripLines(true) {
+        if(this->linesPoints.size() != 1) {
+            throw std::invalid_argument("Lines points size must different from one.");
+        }
         initialize();
     }
 

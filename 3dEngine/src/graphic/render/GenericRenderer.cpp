@@ -106,6 +106,7 @@ namespace urchin {
         auto dataDim = dataDimensionToSize(dataValue.dataDimension);
         auto dataMemorySize = dataTypeToSize(dataValue.dataType) * dataDim * dataValue.dataCount;
 
+        glBindVertexArray(vertexArrayObject);
         glBindBuffer(GL_ARRAY_BUFFER, bufferIds[dataIndex]);
         glBufferData(GL_ARRAY_BUFFER, dataMemorySize, dataValue.ptr, update ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
         glEnableVertexAttribArray(dataIndex);
