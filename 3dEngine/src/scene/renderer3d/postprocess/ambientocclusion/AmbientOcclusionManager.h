@@ -8,7 +8,7 @@
 #include "graphic/shader/model/ShaderVar.h"
 #include "scene/renderer3d/camera/Camera.h"
 #include "graphic/render/GenericRenderer.h"
-#include "texturefilter/bilateralblur/BilateralBlurFilter.h"
+#include "texture/filter/bilateralblur/BilateralBlurFilter.h"
 
 namespace urchin {
 

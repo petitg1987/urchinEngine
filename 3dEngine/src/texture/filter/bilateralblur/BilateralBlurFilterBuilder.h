@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_BILATERALBLURFILTERBUILDER_H
 #define URCHINENGINE_BILATERALBLURFILTERBUILDER_H
 
-#include "texturefilter/TextureFilterBuilder.h"
+#include "texture/filter/TextureFilterBuilder.h"
 
 namespace urchin {
 

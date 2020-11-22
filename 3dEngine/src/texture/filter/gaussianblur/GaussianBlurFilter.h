@@ -5,7 +5,7 @@
 #include <vector>
 #include <map>
 
-#include "texturefilter/TextureFilter.h"
+#include "texture/filter/TextureFilter.h"
 
 namespace urchin {
 

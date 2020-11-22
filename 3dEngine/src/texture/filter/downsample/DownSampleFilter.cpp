@@ -1,5 +1,5 @@
 #include "DownSampleFilter.h"
-#include "texturefilter/downsample/DownSampleFilterBuilder.h"
+#include "texture/filter/downsample/DownSampleFilterBuilder.h"
 
 namespace urchin {
 

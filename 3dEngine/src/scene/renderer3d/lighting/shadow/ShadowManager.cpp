@@ -9,9 +9,9 @@
 
 #include "ShadowManager.h"
 #include "scene/renderer3d/lighting/shadow/filter/ModelProduceShadowFilter.h"
-#include "texturefilter/TextureFilter.h"
-#include "texturefilter/gaussianblur/GaussianBlurFilterBuilder.h"
-#include "texturefilter/downsample/DownSampleFilterBuilder.h"
+#include "texture/filter/TextureFilter.h"
+#include "texture/filter/gaussianblur/GaussianBlurFilterBuilder.h"
+#include "texture/filter/downsample/DownSampleFilterBuilder.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
 #include "graphic/shader/data/ShaderDataSender.h"
 #include "resources/geometry/obbox/OBBoxModel.h"

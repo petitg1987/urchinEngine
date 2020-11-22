@@ -4,9 +4,9 @@
 
 #include "Renderer3d.h"
 #include "graphic/render/GenericRendererBuilder.h"
-#include "graphic/render/texture/TextureRenderer.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
 #include "graphic/shader/data/ShaderDataSender.h"
+#include "texture/renderer/TextureRenderer.h"
 #include "scene/renderer3d/utils/OctreeRenderer.h"
 
 #define DEFAULT_OCTREE_MIN_SIZE 20.0f

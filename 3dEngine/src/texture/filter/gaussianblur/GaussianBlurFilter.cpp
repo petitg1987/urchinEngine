@@ -4,7 +4,7 @@
 #include "UrchinCommon.h"
 
 #include "GaussianBlurFilter.h"
-#include "texturefilter/gaussianblur/GaussianBlurFilterBuilder.h"
+#include "texture/filter/gaussianblur/GaussianBlurFilterBuilder.h"
 
 namespace urchin {
 

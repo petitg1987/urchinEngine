@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 
-#include "texturefilter/TextureFilter.h"
+#include "texture/filter/TextureFilter.h"
 #include "graphic/shader/model/ShaderVar.h"
 
 namespace urchin {

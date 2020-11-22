@@ -7,7 +7,7 @@
 #include "graphic/shader/builder/ShaderBuilder.h"
 #include "graphic/shader/data/ShaderDataSender.h"
 #include "graphic/render/GenericRendererBuilder.h"
-#include "texturefilter/bilateralblur/BilateralBlurFilterBuilder.h"
+#include "texture/filter/bilateralblur/BilateralBlurFilterBuilder.h"
 
 #define DEFAULT_TEXTURE_SIZE AOTextureSize::HALF_SIZE
 #define DEFAULT_KERNEL_SAMPLES 64

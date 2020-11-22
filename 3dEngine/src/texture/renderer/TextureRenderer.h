@@ -18,7 +18,7 @@ namespace urchin {
     *    displayTexture.setFullscreen(false);
     *    displayTexture.display();
     */
-    class TextureRenderer {
+    class TextureRenderer { //TODO move outside graphic/renderer
         public:
             enum CoordinateX {
                 LEFT,

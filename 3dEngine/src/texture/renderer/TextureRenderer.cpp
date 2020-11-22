@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "graphic/render/texture/TextureRenderer.h"
+#include "TextureRenderer.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
 #include "graphic/shader/data/ShaderDataSender.h"
 #include "graphic/render/GenericRendererBuilder.h"

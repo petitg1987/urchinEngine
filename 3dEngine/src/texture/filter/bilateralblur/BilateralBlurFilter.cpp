@@ -1,7 +1,7 @@
 #include <stdexcept>
 
 #include "BilateralBlurFilter.h"
-#include "texturefilter/bilateralblur/BilateralBlurFilterBuilder.h"
+#include "texture/filter/bilateralblur/BilateralBlurFilterBuilder.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
 #include "graphic/shader/data/ShaderDataSender.h"
 

@@ -8,9 +8,9 @@
 
 #include "TextureFilter.h"
 #include "graphic/texture/model/TextureType.h"
-#include "texturefilter/downsample/DownSampleFilter.h"
-#include "texturefilter/gaussianblur/GaussianBlurFilter.h"
-#include "texturefilter/bilateralblur/BilateralBlurFilter.h"
+#include "texture/filter/downsample/DownSampleFilter.h"
+#include "texture/filter/gaussianblur/GaussianBlurFilter.h"
+#include "texture/filter/bilateralblur/BilateralBlurFilter.h"
 
 namespace urchin {
 
