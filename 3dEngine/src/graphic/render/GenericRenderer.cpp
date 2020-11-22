@@ -4,7 +4,6 @@
 
 #include "graphic/render/GenericRenderer.h"
 #include "graphic/render/GenericRendererBuilder.h"
-#include "graphic/texture/TextureManager.h"
 
 namespace urchin {
 
@@ -73,7 +72,9 @@ namespace urchin {
         glTexParameteri(textureType, GL_TEXTURE_MAG_FILTER, texture.getParam().getGlReadQualityMagnificationFilter());
 
         if (texture.getParam().needAnisotropy() && GLEW_EXT_texture_filter_anisotropic) {
-            glTexParameterf(textureType, GL_TEXTURE_MAX_ANISOTROPY_EXT, TextureManager::instance()->getAnisotropy());
+            float maxAnisotropy = 1.0;
+            glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropy);
+            glTexParameterf(textureType, GL_TEXTURE_MAX_ANISOTROPY_EXT, maxAnisotropy);
         }
     }
 

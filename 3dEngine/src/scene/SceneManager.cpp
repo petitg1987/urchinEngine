@@ -166,10 +166,6 @@ namespace urchin {
         return dynamic_cast<GUIRenderer *>(activeRenderers[GUI_RENDERER]);
     }
 
-    TextureManager *SceneManager::getTextureManager() const {
-        return TextureManager::instance();
-    }
-
     bool SceneManager::onKeyPress(unsigned int key) {
         for (int i=NUM_RENDERER-1; i>=0; --i) {
             if (activeRenderers[i] && !activeRenderers[i]->onKeyPress(key)) {

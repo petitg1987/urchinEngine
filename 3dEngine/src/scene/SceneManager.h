@@ -9,7 +9,6 @@
 #include "renderer3d/Renderer3d.h"
 #include "GUI/GUIRenderer.h"
 #include "graphic/GraphicService.h"
-#include "graphic/texture/TextureManager.h"
 
 #define NUM_RENDERER 2
 
@@ -39,9 +38,6 @@ namespace urchin {
             void enableGUIRenderer(GUIRenderer *);
             void removeGUIRenderer(GUIRenderer *);
             GUIRenderer *getActiveGUIRenderer() const;
-
-            //texture manager
-            TextureManager *getTextureManager() const;
 
             //events
             bool onKeyPress(unsigned int);

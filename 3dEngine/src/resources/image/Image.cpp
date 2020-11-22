@@ -1,7 +1,6 @@
 #include <stdexcept>
 
 #include "resources/image/Image.h"
-#include "graphic/texture/TextureManager.h"
 
 namespace urchin {
 

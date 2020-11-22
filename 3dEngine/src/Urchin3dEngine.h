@@ -31,8 +31,6 @@
 #include "scene/GUI/widget/textbox/TextBox.h"
 #include "scene/GUI/widget/slider/Slider.h"
 
-#include "graphic/texture/TextureManager.h"
-
 #include "graphic/shader/config/ShaderConfig.h"
 
 #include "resources/geometry/GeometryModel.h"
