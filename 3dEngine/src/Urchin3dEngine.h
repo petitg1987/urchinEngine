@@ -44,7 +44,6 @@
 #include "resources/geometry/obbox/OBBoxModel.h"
 #include "resources/geometry/points/PointsModel.h"
 #include "resources/geometry/lines/LinesModel.h"
-#include "resources/geometry/quads/QuadsModel.h"
 #include "resources/geometry/triangles/TrianglesModel.h"
 #include "resources/geometry/sphere/SphereModel.h"
 #include "resources/geometry/convexhull/ConvexHullModel.h"
