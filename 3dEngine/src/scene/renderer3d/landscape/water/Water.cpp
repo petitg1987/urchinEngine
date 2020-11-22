@@ -74,19 +74,20 @@ namespace urchin {
     }
 
     void Water::generateVertex() {
+        float minX = -xSize/2.0f + centerPosition.X;
+        float minZ = -zSize/2.0f + centerPosition.Z;
+        float maxX = xSize/2.0f + centerPosition.X;
+        float maxZ = zSize/2.0f + centerPosition.Z;
+
         std::vector<Point3<float>> vertexCoord = {
-                Point3<float>(-xSize/2.0f, 0.0f, -zSize/2.0f) + centerPosition,
-                Point3<float>(xSize/2.0f, 0.0f, -zSize/2.0f) + centerPosition,
-                Point3<float>(xSize/2.0f, 0.0f, zSize/2.0f) + centerPosition,
-                Point3<float>(-xSize/2.0f, 0.0f, zSize/2.0f) + centerPosition
+                Point3<float>(minX, centerPosition.Y, minZ), Point3<float>(maxX, centerPosition.Y, minZ), Point3<float>(maxX, centerPosition.Y, maxZ),
+                Point3<float>(minX, centerPosition.Y, minZ), Point3<float>(maxX, centerPosition.Y, maxZ), Point3<float>(minX, centerPosition.Y, maxZ)
         };
         std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f*sRepeat, 0.0f*tRepeat),
-                Point2<float>(1.0f*sRepeat, 0.0f*tRepeat),
-                Point2<float>(1.0f*sRepeat, 1.0f*tRepeat),
-                Point2<float>(0.0f*sRepeat, 1.0f*tRepeat)
+                Point2<float>(0.0f, 0.0f), Point2<float>(sRepeat, 0.0f), Point2<float>(sRepeat, tRepeat),
+                Point2<float>(0.0f, 0.0f), Point2<float>(sRepeat, tRepeat), Point2<float>(0.0f, tRepeat)
         };
-        waterRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
+        waterRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
                 ->enableDepthTest()
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
