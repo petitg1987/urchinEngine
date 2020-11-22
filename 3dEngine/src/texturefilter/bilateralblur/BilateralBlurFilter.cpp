@@ -41,7 +41,7 @@ namespace urchin {
     }
 
     void BilateralBlurFilter::addFurtherTextures(const std::unique_ptr<GenericRenderer> &renderer) const {
-        renderer->addAdditionalTexture(Texture::build(depthTextureID, TextureType::DEFAULT, TextureParam::buildNearest()));
+        renderer->addAdditionalTexture(TextureReader::build(depthTextureID, TextureType::DEFAULT, TextureParam::buildNearest()));
     }
 
     void BilateralBlurFilter::completeShaderTokens(std::map<std::string, std::string> &shaderTokens) const {

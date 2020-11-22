@@ -10,7 +10,7 @@
 #include "graphic/render/model/DataDimension.h"
 #include "graphic/render/model/ShapeType.h"
 #include "graphic/render/model/PolygonMode.h"
-#include "graphic/render/model/Texture.h"
+#include "graphic/texture/TextureReader.h"
 
 namespace urchin {
 
@@ -42,8 +42,8 @@ namespace urchin {
             GenericRendererBuilder *outlineSize(float);
             float getOutlineSize() const;
 
-            GenericRendererBuilder *addTexture(Texture);
-            const std::vector<Texture> &getTextures() const;
+            GenericRendererBuilder *addTexture(TextureReader);
+            const std::vector<TextureReader> &getTextures() const;
 
             std::unique_ptr<GenericRenderer> build();
 
@@ -56,7 +56,7 @@ namespace urchin {
             bool cullFaceEnabled;
             PolygonMode pPolygonMode;
             float pOutlineSize;
-            std::vector<Texture> textures;
+            std::vector<TextureReader> textures;
     };
 
 }

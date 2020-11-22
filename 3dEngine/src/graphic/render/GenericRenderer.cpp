@@ -57,7 +57,7 @@ namespace urchin {
         return countResult;
     }
 
-    void GenericRenderer::initializeTexture(Texture texture) const {
+    void GenericRenderer::initializeTexture(TextureReader texture) const {
         unsigned int textureType = textureTypeToGlType(texture.getType());
         glBindTexture(textureType, texture.getId());
 
@@ -185,7 +185,7 @@ namespace urchin {
         updateData(pointsCoordIndex, reinterpret_cast<const std::vector<Point3<float>> *>(dataPtr));
     }
 
-    void GenericRenderer::updateTexture(std::size_t textureIndex, Texture texture) {
+    void GenericRenderer::updateTexture(std::size_t textureIndex, TextureReader texture) {
         assert(textures.size() > textureIndex);
 
         initializeTexture(texture);
@@ -195,7 +195,7 @@ namespace urchin {
     /**
      * @return Texture unit
      */
-    unsigned int GenericRenderer::addAdditionalTexture(Texture texture) {
+    unsigned int GenericRenderer::addAdditionalTexture(TextureReader texture) {
         initializeTexture(texture);
 
         additionalTextures.push_back(texture);

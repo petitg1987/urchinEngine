@@ -91,8 +91,8 @@ namespace urchin {
                 ->enableDepthTest()
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addTexture(Texture::build(0)) //normal texture
-                ->addTexture(Texture::build(0)) //dudv map
+                ->addTexture(TextureReader::build(0)) //normal texture
+                ->addTexture(TextureReader::build(0)) //dudv map
                 ->build();
         updateWaterTextures();
 
@@ -104,12 +104,12 @@ namespace urchin {
     void Water::updateWaterTextures() {
         if(normalTexture) {
             TextureParam textureParam = TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY);
-            waterRenderer->updateTexture(0, Texture::build(normalTexture->getTextureID(), TextureType::DEFAULT, textureParam));
+            waterRenderer->updateTexture(0, TextureReader::build(normalTexture->getTextureID(), TextureType::DEFAULT, textureParam));
         }
 
         if(dudvMap) {
             TextureParam textureParam = TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY);
-            waterRenderer->updateTexture(1, Texture::build(dudvMap->getTextureID(), TextureType::DEFAULT, textureParam));
+            waterRenderer->updateTexture(1, TextureReader::build(dudvMap->getTextureID(), TextureType::DEFAULT, textureParam));
         }
     }
 

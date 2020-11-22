@@ -576,7 +576,7 @@ namespace urchin {
                 const ShadowData *shadowData = it->second;
 
                 unsigned int texUnit = lightingRenderer
-                        ->addAdditionalTexture(Texture::build(shadowData->getFilteredShadowMapTextureID(), TextureType::ARRAY, TextureParam::buildLinear()));
+                        ->addAdditionalTexture(TextureReader::build(shadowData->getFilteredShadowMapTextureID(), TextureType::ARRAY, TextureParam::buildLinear()));
                 ShaderDataSender().sendData(lightsLocation[i].shadowMapTexShaderVar, static_cast<int>(texUnit));
 
                 for (std::size_t j=0; j<nbShadowMaps; ++j) {

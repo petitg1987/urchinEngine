@@ -21,8 +21,8 @@ namespace urchin {
                 ->addData(&constMesh->getBaseNormals())
                 ->addData(&constMesh->getBaseTangents())
                 ->indices(&constMesh->getTrianglesIndices())
-                ->addTexture(Texture::build(diffuseTextureId, TextureType::DEFAULT, textureParam))
-                ->addTexture(Texture::build(normalTextureId, TextureType::DEFAULT, textureParam))
+                ->addTexture(TextureReader::build(diffuseTextureId, TextureType::DEFAULT, textureParam))
+                ->addTexture(TextureReader::build(normalTextureId, TextureType::DEFAULT, textureParam))
                 ->build();
     }
 

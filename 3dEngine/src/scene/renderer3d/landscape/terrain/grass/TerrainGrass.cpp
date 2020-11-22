@@ -228,8 +228,8 @@ namespace urchin {
                         ->disableCullFace()
                         ->addData(&grassQuadtree->getGrassVertices())
                         ->addData(&grassQuadtree->getGrassNormals())
-                        ->addTexture(Texture::build(grassTexture->getTextureID(), TextureType::DEFAULT, grassTextureParam))
-                        ->addTexture(Texture::build(grassMaskTexture->getTextureID(), TextureType::DEFAULT, grassMaskTextureParam))
+                        ->addTexture(TextureReader::build(grassTexture->getTextureID(), TextureType::DEFAULT, grassTextureParam))
+                        ->addTexture(TextureReader::build(grassMaskTexture->getTextureID(), TextureType::DEFAULT, grassMaskTextureParam))
                         ->build();
 
                 grassQuadtree->setRenderer(std::move(renderer));

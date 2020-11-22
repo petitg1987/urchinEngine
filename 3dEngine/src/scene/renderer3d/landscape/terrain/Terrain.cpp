@@ -88,12 +88,12 @@ namespace urchin {
             terrainRenderer->updateData(2, &material->getTexCoordinates());
 
             terrainRenderer->clearAdditionalTextures();
-            terrainRenderer->addAdditionalTexture(Texture::build(material->getMaskTexture(), TextureType::DEFAULT, TextureParam::buildLinear()));
+            terrainRenderer->addAdditionalTexture(TextureReader::build(material->getMaskTexture(), TextureType::DEFAULT, TextureParam::buildLinear()));
             for(auto &material : material->getMaterials()) {
                 if (material) {
                     TextureParam::ReadMode textureReadMode = material->isRepeatableTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
                     TextureParam textureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY);
-                    terrainRenderer->addAdditionalTexture(Texture::build(material->getDiffuseTexture()->getTextureID(), TextureType::DEFAULT, textureParam));
+                    terrainRenderer->addAdditionalTexture(TextureReader::build(material->getDiffuseTexture()->getTextureID(), TextureType::DEFAULT, textureParam));
                 }
             }
         }

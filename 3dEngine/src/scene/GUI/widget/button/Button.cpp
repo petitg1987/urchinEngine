@@ -49,7 +49,7 @@ namespace urchin {
         buttonRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addTexture(Texture::build(texInfoDefault->getTextureID()))
+                ->addTexture(TextureReader::build(texInfoDefault->getTextureID()))
                 ->build();
     }
 
@@ -64,17 +64,17 @@ namespace urchin {
     }
 
     bool Button::onKeyPressEvent(unsigned int) {
-        buttonRenderer->updateTexture(0, Texture::build(getTextureId()));
+        buttonRenderer->updateTexture(0, TextureReader::build(getTextureId()));
         return true;
     }
 
     bool Button::onKeyReleaseEvent(unsigned int) {
-        buttonRenderer->updateTexture(0, Texture::build(getTextureId()));
+        buttonRenderer->updateTexture(0, TextureReader::build(getTextureId()));
         return true;
     }
 
     bool Button::onMouseMoveEvent(int, int) {
-        buttonRenderer->updateTexture(0, Texture::build(getTextureId()));
+        buttonRenderer->updateTexture(0, TextureReader::build(getTextureId()));
         return true;
     }
 

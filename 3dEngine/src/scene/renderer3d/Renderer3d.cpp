@@ -84,9 +84,9 @@ namespace urchin {
         lightingRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addTexture(Texture::build(textureIDs[TEX_DEPTH], TextureType::DEFAULT, TextureParam::buildNearest()))
-                ->addTexture(Texture::build(textureIDs[TEX_DIFFUSE], TextureType::DEFAULT, TextureParam::buildNearest()))
-                ->addTexture(Texture::build(textureIDs[TEX_NORMAL_AND_AMBIENT], TextureType::DEFAULT, TextureParam::buildNearest()))
+                ->addTexture(TextureReader::build(textureIDs[TEX_DEPTH], TextureType::DEFAULT, TextureParam::buildNearest()))
+                ->addTexture(TextureReader::build(textureIDs[TEX_DIFFUSE], TextureType::DEFAULT, TextureParam::buildNearest()))
+                ->addTexture(TextureReader::build(textureIDs[TEX_NORMAL_AND_AMBIENT], TextureType::DEFAULT, TextureParam::buildNearest()))
                 ->build();
 
         antiAliasingManager = new AntiAliasingManager(textureIDs[TEX_LIGHTING_PASS]);

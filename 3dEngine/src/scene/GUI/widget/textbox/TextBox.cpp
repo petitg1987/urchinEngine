@@ -72,7 +72,7 @@ namespace urchin {
         textBoxRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addTexture(Texture::build(texTextBoxDefault->getTextureID()))
+                ->addTexture(TextureReader::build(texTextBoxDefault->getTextureID()))
                 ->build();
 
         std::vector<Point2<float>> cursorVertexCoord = {
@@ -86,7 +86,7 @@ namespace urchin {
         cursorRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::LINE)
                 ->addData(&cursorVertexCoord)
                 ->addData(&cursorTextureCoord)
-                ->addTexture(Texture::build(texCursorDiffuse->getTextureID(), TextureType::DEFAULT, TextureParam::buildRepeatNearest()))
+                ->addTexture(TextureReader::build(texCursorDiffuse->getTextureID(), TextureType::DEFAULT, TextureParam::buildRepeatNearest()))
                 ->build();
     }
 
@@ -99,13 +99,13 @@ namespace urchin {
             Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
             if (widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
-                textBoxRenderer->updateTexture(0, Texture::build(texTextBoxFocus->getTextureID()));
+                textBoxRenderer->updateTexture(0, TextureReader::build(texTextBoxFocus->getTextureID()));
 
                 int localMouseX = getMouseX() - text->getGlobalPositionX();
                 computeCursorIndex(localMouseX);
             } else {
                 state = UNACTIVE;
-                textBoxRenderer->updateTexture(0, Texture::build(texTextBoxDefault->getTextureID()));
+                textBoxRenderer->updateTexture(0, TextureReader::build(texTextBoxDefault->getTextureID()));
             }
         } else if (state == ACTIVE) {
             if (key == InputDeviceKey::LEFT_ARROW) {
@@ -148,7 +148,7 @@ namespace urchin {
 
     void TextBox::reset() {
         state = UNACTIVE;
-        textBoxRenderer->updateTexture(0, Texture::build(texTextBoxDefault->getTextureID()));
+        textBoxRenderer->updateTexture(0, TextureReader::build(texTextBoxDefault->getTextureID()));
 
         Widget::reset();
     }

@@ -148,7 +148,7 @@ namespace urchin {
 
         TextureType sourceTextureType = layersToUpdate == -1 ? TextureType::DEFAULT : TextureType::ARRAY;
         textureRenderer->clearAdditionalTextures();
-        textureRenderer->addAdditionalTexture(Texture::build(sourceTextureId, sourceTextureType, TextureParam::buildLinear()));
+        textureRenderer->addAdditionalTexture(TextureReader::build(sourceTextureId, sourceTextureType, TextureParam::buildLinear()));
         addFurtherTextures(textureRenderer);
 
         if (textureType == TextureType::ARRAY) {

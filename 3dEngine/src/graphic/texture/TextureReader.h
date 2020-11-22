@@ -2,22 +2,22 @@
 #define URCHINENGINE_TEXTURE_H
 
 #include "graphic/texture/model/TextureType.h"
-#include "graphic/render/model/TextureParam.h"
+#include "graphic/texture/model/TextureParam.h"
 
 namespace urchin {
 
-    class Texture {
+    class TextureReader {
         public:
-            static Texture build(unsigned int);
-            static Texture build(unsigned int, TextureType);
-            static Texture build(unsigned int, TextureType, TextureParam);
+            static TextureReader build(unsigned int);
+            static TextureReader build(unsigned int, TextureType);
+            static TextureReader build(unsigned int, TextureType, TextureParam);
 
             unsigned int getId() const;
             TextureType getType() const;
             TextureParam getParam() const;
 
         private:
-            Texture(unsigned int, TextureType, TextureParam);
+            TextureReader(unsigned int, TextureType, TextureParam);
 
             unsigned int id;
             TextureType type;

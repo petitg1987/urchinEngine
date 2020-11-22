@@ -8,7 +8,7 @@
 #include "graphic/render/model/DataDimension.h"
 #include "graphic/render/model/ShapeType.h"
 #include "graphic/render/model/PolygonMode.h"
-#include "graphic/render/model/Texture.h"
+#include "graphic/texture/TextureReader.h"
 
 namespace urchin {
 
@@ -35,8 +35,8 @@ namespace urchin {
             void updateData(std::size_t, const std::vector<Point3<float>> *);
             void updateData(std::size_t, const std::vector<Vector3<float>> *);
 
-            void updateTexture(std::size_t, Texture);
-            unsigned int addAdditionalTexture(Texture);
+            void updateTexture(std::size_t, TextureReader);
+            unsigned int addAdditionalTexture(TextureReader);
             void clearAdditionalTextures();
             void renderTextures(bool);
 
@@ -44,7 +44,7 @@ namespace urchin {
 
         private:
             unsigned int computeVerticesCount() const;
-            void initializeTexture(Texture) const;
+            void initializeTexture(TextureReader) const;
             void initializeDisplay();
             void sendData(std::size_t, bool);
 
@@ -71,7 +71,7 @@ namespace urchin {
             PolygonMode polygonMode;
             float outlineSize;
 
-            std::vector<Texture> textures, additionalTextures;
+            std::vector<TextureReader> textures, additionalTextures;
             bool bNeedRenderTextures;
 
             unsigned int vertexArrayObject;
