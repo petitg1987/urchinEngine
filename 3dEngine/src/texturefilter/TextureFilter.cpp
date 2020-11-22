@@ -28,18 +28,14 @@ namespace urchin {
         std::locale::global(std::locale("C")); //for float
 
         std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(-1.0f, 1.0f),
-                Point2<float>(1.0f, 1.0f),
-                Point2<float>(1.0f, -1.0f),
-                Point2<float>(-1.0f, -1.0f)
+                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
+                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(-1.0f, -1.0f)
         };
         std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 1.0f),
-                Point2<float>(1.0f, 1.0f),
-                Point2<float>(1.0f, 0.0f),
-                Point2<float>(0.0f, 0.0f)
+                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
+                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
         };
-        textureRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
+        textureRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
                 ->build();

@@ -74,18 +74,14 @@ namespace urchin {
         createOrUpdateLightingShader();
 
         std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(-1.0f, 1.0f),
-                Point2<float>(1.0f, 1.0f),
-                Point2<float>(1.0f, -1.0f),
-                Point2<float>(-1.0f, -1.0f)
+                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
+                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(-1.0f, -1.0f)
         };
         std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 1.0f),
-                Point2<float>(1.0f, 1.0f),
-                Point2<float>(1.0f, 0.0f),
-                Point2<float>(0.0f, 0.0f)
+                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
+                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
         };
-        lightingRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE)
+        lightingRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
                 ->addTexture(Texture::build(textureIDs[TEX_DEPTH], Texture::DEFAULT, TextureParam::buildNearest()))

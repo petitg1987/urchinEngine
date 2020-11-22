@@ -147,10 +147,16 @@ namespace urchin {
         ShaderDataSender().sendData(mProjectionShaderVar, mProjection);
 
         //update the display
-        std::vector<Point2<float>> vertexCoord = {Point2<float>(minX, minY), Point2<float>(maxX, minY), Point2<float>(maxX, maxY), Point2<float>(minX, maxY)};
-        std::vector<Point2<float>> textureCoord = {Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)};
+        std::vector<Point2<float>> vertexCoord = {
+                Point2<float>(minX, minY), Point2<float>(maxX, minY), Point2<float>(maxX, maxY),
+                Point2<float>(minX, minY), Point2<float>(maxX, maxY), Point2<float>(minX, maxY)
+        };
+        std::vector<Point2<float>> textureCoord = {
+                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
+                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
+        };
         Texture::Type textureType = (layer == -1) ? Texture::Type::DEFAULT : Texture::Type::ARRAY;
-        std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(ShapeType::RECTANGLE);
+        std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE);
         rendererBuilder
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
