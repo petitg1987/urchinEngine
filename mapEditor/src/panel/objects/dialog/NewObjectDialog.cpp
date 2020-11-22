@@ -139,13 +139,7 @@ namespace urchin {
 
     bool NewObjectDialog::isSceneObjectExist(const std::string &name) {
         std::list<const SceneObject *> sceneObjects = objectController->getSceneObjects();
-        for (auto &sceneObject : sceneObjects) {
-            if (sceneObject->getName() == name) {
-                return true;
-            }
-        }
-
-        return false;
+        return std::any_of(sceneObjects.begin(), sceneObjects.end(), [name](const auto &so){return so->getName() == name;});
     }
 
 }

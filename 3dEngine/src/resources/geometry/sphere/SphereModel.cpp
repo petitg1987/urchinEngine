@@ -44,6 +44,9 @@ namespace urchin {
                 vertexArray.emplace_back(Point3<float>(x1*zr0*radius, y1*zr0*radius, z0*radius));
                 vertexArray.emplace_back(Point3<float>(x1*zr1*radius, y1*zr1*radius, z1*radius));
                 vertexArray.emplace_back(Point3<float>(x2*zr1*radius, y2*zr1*radius, z1*radius));
+
+                vertexArray.emplace_back(Point3<float>(x1*zr0*radius, y1*zr0*radius, z0*radius));
+                vertexArray.emplace_back(Point3<float>(x2*zr1*radius, y2*zr1*radius, z1*radius));
                 vertexArray.emplace_back(Point3<float>(x2*zr0*radius, y2*zr0*radius, z0*radius));
             }
         }
@@ -53,6 +56,6 @@ namespace urchin {
     }
 
     ShapeType SphereModel::getShapeType() const {
-        return ShapeType::RECTANGLE;
+        return ShapeType::TRIANGLE;
     }
 }

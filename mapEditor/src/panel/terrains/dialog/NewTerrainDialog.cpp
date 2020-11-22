@@ -144,12 +144,6 @@ namespace urchin {
 
     bool NewTerrainDialog::isSceneTerrainExist(const std::string &name) {
         std::list<const SceneTerrain *> sceneTerrains = terrainController->getSceneTerrains();
-        for (auto &sceneTerrain : sceneTerrains) {
-            if (sceneTerrain->getName() == name) {
-                return true;
-            }
-        }
-
-        return false;
+        return std::any_of(sceneTerrains.begin(), sceneTerrains.end(), [name](const auto &st){return st->getName() == name;});
     }
 }

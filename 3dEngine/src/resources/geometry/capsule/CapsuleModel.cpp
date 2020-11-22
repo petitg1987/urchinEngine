@@ -48,11 +48,14 @@ namespace urchin {
         for (int i = 0; i < sides; i++) {
             float x1 = std::cos((float)i * angle) * radius;
             float y1 = std::sin((float)i * angle) * radius;
-            float x2 = std::cos((float)i * angle) * radius;
-            float y2 = std::sin((float)i * angle) * radius;
+            float x2 = std::cos((float)(i+1) * angle) * radius;
+            float y2 = std::sin((float)(i+1) * angle) * radius;
 
             vertexArray.push_back(localCylinderOrientation.rotatePoint(Point3<float>(x1, y1, halfCylinderHeight)));
             vertexArray.push_back(localCylinderOrientation.rotatePoint(Point3<float>(x1, y1, -halfCylinderHeight)));
+            vertexArray.push_back(localCylinderOrientation.rotatePoint(Point3<float>(x2, y2, -halfCylinderHeight)));
+
+            vertexArray.push_back(localCylinderOrientation.rotatePoint(Point3<float>(x1, y1, halfCylinderHeight)));
             vertexArray.push_back(localCylinderOrientation.rotatePoint(Point3<float>(x2, y2, -halfCylinderHeight)));
             vertexArray.push_back(localCylinderOrientation.rotatePoint(Point3<float>(x2, y2, halfCylinderHeight)));
         }
@@ -90,6 +93,9 @@ namespace urchin {
                 vertexArray.push_back(localCapOrientation.rotatePoint(Point3<float>(x1*zr0*radius, y1*zr0*radius+halfCylinderHeight, z0*radius)));
                 vertexArray.push_back(localCapOrientation.rotatePoint(Point3<float>(x1*zr1*radius, y1*zr1*radius+halfCylinderHeight, z1*radius)));
                 vertexArray.push_back(localCapOrientation.rotatePoint(Point3<float>(x2*zr1*radius, y2*zr1*radius+halfCylinderHeight, z1*radius)));
+
+                vertexArray.push_back(localCapOrientation.rotatePoint(Point3<float>(x1*zr0*radius, y1*zr0*radius+halfCylinderHeight, z0*radius)));
+                vertexArray.push_back(localCapOrientation.rotatePoint(Point3<float>(x2*zr1*radius, y2*zr1*radius+halfCylinderHeight, z1*radius)));
                 vertexArray.push_back(localCapOrientation.rotatePoint(Point3<float>(x2*zr0*radius, y2*zr0*radius+halfCylinderHeight, z0*radius)));
             }
 
@@ -105,13 +111,16 @@ namespace urchin {
                 vertexArray.push_back(localCapOrientation.rotatePoint(Point3<float>(x1*zr0*radius, y1*zr0*radius-halfCylinderHeight, z0*radius)));
                 vertexArray.push_back(localCapOrientation.rotatePoint(Point3<float>(x1*zr1*radius, y1*zr1*radius-halfCylinderHeight, z1*radius)));
                 vertexArray.push_back(localCapOrientation.rotatePoint(Point3<float>(x2*zr1*radius, y2*zr1*radius-halfCylinderHeight, z1*radius)));
+
+                vertexArray.push_back(localCapOrientation.rotatePoint(Point3<float>(x1*zr0*radius, y1*zr0*radius-halfCylinderHeight, z0*radius)));
+                vertexArray.push_back(localCapOrientation.rotatePoint(Point3<float>(x2*zr1*radius, y2*zr1*radius-halfCylinderHeight, z1*radius)));
                 vertexArray.push_back(localCapOrientation.rotatePoint(Point3<float>(x2*zr0*radius, y2*zr0*radius-halfCylinderHeight, z0*radius)));
             }
         }
     }
 
     ShapeType CapsuleModel::getShapeType() const {
-        return ShapeType::RECTANGLE;
+        return ShapeType::TRIANGLE;
     }
 
 }

@@ -116,16 +116,14 @@ namespace urchin {
     }
 
     unsigned int GenericRenderer::shapeTypeToGlType(ShapeType shapeType) const {
-        if (shapeType == ShapeType::RECTANGLE) {
-            return GL_QUADS;
+        if (shapeType == ShapeType::TRIANGLE) {
+            return GL_TRIANGLES;
+        } else if (shapeType == ShapeType::TRIANGLE_STRIP) {
+            return GL_TRIANGLE_STRIP;
         } else if (shapeType == ShapeType::LINE) {
             return GL_LINES;
         } else if (shapeType == ShapeType::LINE_STRIP) {
             return GL_LINE_STRIP;
-        } else if (shapeType == ShapeType::TRIANGLE) {
-            return GL_TRIANGLES;
-        } else if (shapeType == ShapeType::TRIANGLE_STRIP) {
-            return GL_TRIANGLE_STRIP;
         } else if (shapeType == ShapeType::POINT) {
             return GL_POINTS;
         }

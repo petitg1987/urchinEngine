@@ -43,17 +43,20 @@ namespace urchin {
             float x2 = std::cos((float)(i+1) * angle) * radius;
             float y2 = std::sin((float)(i+1) * angle) * radius;
 
-            vertexArray.push_back(localOrientation.rotatePoint(Point3<float>(x1, y1, halfHeight)));
-            vertexArray.push_back(localOrientation.rotatePoint(Point3<float>(x1, y1, -halfHeight)));
-            vertexArray.push_back(localOrientation.rotatePoint(Point3<float>(x2, y2, -halfHeight)));
-            vertexArray.push_back(localOrientation.rotatePoint(Point3<float>(x2, y2, halfHeight)));
+            vertexArray.emplace_back(localOrientation.rotatePoint(Point3<float>(x1, y1, halfHeight)));
+            vertexArray.emplace_back(localOrientation.rotatePoint(Point3<float>(x1, y1, -halfHeight)));
+            vertexArray.emplace_back(localOrientation.rotatePoint(Point3<float>(x2, y2, -halfHeight)));
+
+            vertexArray.emplace_back(localOrientation.rotatePoint(Point3<float>(x1, y1, halfHeight)));
+            vertexArray.emplace_back(localOrientation.rotatePoint(Point3<float>(x2, y2, -halfHeight)));
+            vertexArray.emplace_back(localOrientation.rotatePoint(Point3<float>(x2, y2, halfHeight)));
         }
 
         return vertexArray;
     }
 
     ShapeType CylinderModel::getShapeType() const {
-        return ShapeType::RECTANGLE;
+        return ShapeType::TRIANGLE;
     }
 
 }
