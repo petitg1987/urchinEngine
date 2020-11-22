@@ -483,7 +483,7 @@ namespace urchin {
         if (blurShadow!=BlurShadow::NO_BLUR) {
             std::unique_ptr<TextureFilter> verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>()
                     ->textureSize(shadowMapResolution, shadowMapResolution)
-                    ->textureType(GL_TEXTURE_2D_ARRAY)
+                    ->textureType(TextureType::ARRAY)
                     ->textureNumberLayer(nbShadowMaps)
                     ->textureInternalFormat(GL_RG32F)
                     ->textureFormat(GL_RG)
@@ -493,7 +493,7 @@ namespace urchin {
 
             std::unique_ptr<TextureFilter> horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>()
                     ->textureSize(shadowMapResolution, shadowMapResolution)
-                    ->textureType(GL_TEXTURE_2D_ARRAY)
+                    ->textureType(TextureType::ARRAY)
                     ->textureNumberLayer(nbShadowMaps)
                     ->textureInternalFormat(GL_RG32F)
                     ->textureFormat(GL_RG)
@@ -503,10 +503,10 @@ namespace urchin {
 
             shadowDatas[light]->addTextureFilter(std::move(verticalBlurFilter));
             shadowDatas[light]->addTextureFilter(std::move(horizontalBlurFilter));
-        } else { //null filter necessary because it allow to store cached shadow map in a texture which is not cleared with a glClear().
+        } else { //null filter necessary because it allows to store cached shadow map in a texture which is not cleared.
             std::unique_ptr<TextureFilter> nullFilter = std::make_unique<DownSampleFilterBuilder>()
                     ->textureSize(shadowMapResolution, shadowMapResolution)
-                    ->textureType(GL_TEXTURE_2D_ARRAY)
+                    ->textureType(TextureType::ARRAY)
                     ->textureNumberLayer(nbShadowMaps)
                     ->textureInternalFormat(GL_RG32F)
                     ->textureFormat(GL_RG)
@@ -576,7 +576,7 @@ namespace urchin {
                 const ShadowData *shadowData = it->second;
 
                 unsigned int texUnit = lightingRenderer
-                        ->addAdditionalTexture(Texture::build(shadowData->getFilteredShadowMapTextureID(), Texture::ARRAY, TextureParam::buildLinear()));
+                        ->addAdditionalTexture(Texture::build(shadowData->getFilteredShadowMapTextureID(), TextureType::ARRAY, TextureParam::buildLinear()));
                 ShaderDataSender().sendData(lightsLocation[i].shadowMapTexShaderVar, static_cast<int>(texUnit));
 
                 for (std::size_t j=0; j<nbShadowMaps; ++j) {

@@ -86,7 +86,7 @@ namespace urchin {
         cursorRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::LINE)
                 ->addData(&cursorVertexCoord)
                 ->addData(&cursorTextureCoord)
-                ->addTexture(Texture::build(texCursorDiffuse->getTextureID(), Texture::DEFAULT, TextureParam::buildRepeatNearest()))
+                ->addTexture(Texture::build(texCursorDiffuse->getTextureID(), TextureType::DEFAULT, TextureParam::buildRepeatNearest()))
                 ->build();
     }
 

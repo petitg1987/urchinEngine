@@ -104,12 +104,12 @@ namespace urchin {
     void Water::updateWaterTextures() {
         if(normalTexture) {
             TextureParam textureParam = TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY);
-            waterRenderer->updateTexture(0, Texture::build(normalTexture->getTextureID(), Texture::DEFAULT, textureParam));
+            waterRenderer->updateTexture(0, Texture::build(normalTexture->getTextureID(), TextureType::DEFAULT, textureParam));
         }
 
         if(dudvMap) {
             TextureParam textureParam = TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY);
-            waterRenderer->updateTexture(1, Texture::build(dudvMap->getTextureID(), Texture::DEFAULT, textureParam));
+            waterRenderer->updateTexture(1, Texture::build(dudvMap->getTextureID(), TextureType::DEFAULT, textureParam));
         }
     }
 

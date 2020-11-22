@@ -66,9 +66,9 @@ namespace urchin {
         renderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addTexture(Texture::build(depthTexID, Texture::DEFAULT, TextureParam::buildNearest()))
-                ->addTexture(Texture::build(normalAndAmbientTexID, Texture::DEFAULT, TextureParam::buildNearest()))
-                ->addTexture(Texture::build(noiseTexId, Texture::DEFAULT, TextureParam::buildRepeatNearest()))
+                ->addTexture(Texture::build(depthTexID, TextureType::DEFAULT, TextureParam::buildNearest()))
+                ->addTexture(Texture::build(normalAndAmbientTexID, TextureType::DEFAULT, TextureParam::buildNearest()))
+                ->addTexture(Texture::build(noiseTexId, TextureType::DEFAULT, TextureParam::buildRepeatNearest()))
                 ->build();
 
         //frame buffer object
@@ -147,7 +147,7 @@ namespace urchin {
 
         verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>()
                 ->textureSize(textureSizeX, textureSizeY)
-                ->textureType(GL_TEXTURE_2D)
+                ->textureType(TextureType::DEFAULT)
                 ->textureInternalFormat(GL_R16F)
                 ->textureFormat(GL_RED)
                 ->blurDirection(BilateralBlurFilterBuilder::VERTICAL_BLUR)
@@ -158,7 +158,7 @@ namespace urchin {
 
         horizontalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>()
                 ->textureSize(textureSizeX, textureSizeY)
-                ->textureType(GL_TEXTURE_2D)
+                ->textureType(TextureType::DEFAULT)
                 ->textureInternalFormat(GL_R16F)
                 ->textureFormat(GL_RED)
                 ->blurDirection(BilateralBlurFilterBuilder::HORIZONTAL_BLUR)
@@ -216,7 +216,7 @@ namespace urchin {
         glBindTexture(GL_TEXTURE_2D, noiseTexId);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, noiseTextureSize, noiseTextureSize, 0, GL_RGB, GL_FLOAT, &ssaoNoise[0]);
 
-        renderer->updateTexture(2, Texture::build(noiseTexId, Texture::DEFAULT, TextureParam::buildRepeatNearest()));
+        renderer->updateTexture(2, Texture::build(noiseTexId, TextureType::DEFAULT, TextureParam::buildRepeatNearest()));
 
         int noiseTexUnit = 2;
         ShaderDataSender().sendData(ShaderVar(ambientOcclusionShader, "noiseTex"), noiseTexUnit);
@@ -351,7 +351,7 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::loadAOTexture(const std::unique_ptr<GenericRenderer> &lightingRenderer) const {
-        unsigned int aoTextureUnit = lightingRenderer->addAdditionalTexture(Texture::build(getAmbientOcclusionTextureID(), Texture::DEFAULT, TextureParam::buildLinear()));
+        unsigned int aoTextureUnit = lightingRenderer->addAdditionalTexture(Texture::build(getAmbientOcclusionTextureID(), TextureType::DEFAULT, TextureParam::buildLinear()));
         ShaderDataSender().sendData(ambientOcclusionTexShaderVar, static_cast<int>(aoTextureUnit));
     }
 

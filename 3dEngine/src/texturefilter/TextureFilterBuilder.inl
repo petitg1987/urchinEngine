@@ -1,7 +1,7 @@
 template<class T> TextureFilterBuilder<T>::TextureFilterBuilder() :
     textureWidth(1024),
     textureHeight(1024),
-    pTextureType(GL_TEXTURE_2D),
+    pTextureType(TextureType::DEFAULT),
     pTextureNumberLayer(1),
     pTextureInternalFormat(GL_RGB),
     pTextureFormat(GL_RGB) {
@@ -26,12 +26,12 @@ template<class T> unsigned int TextureFilterBuilder<T>::getTextureHeight() const
     return textureHeight;
 }
 
-template<class T> T *TextureFilterBuilder<T>::textureType(unsigned int textureType) {
+template<class T> T *TextureFilterBuilder<T>::textureType(TextureType textureType) {
     this->pTextureType = textureType;
     return _this();
 }
 
-template<class T> unsigned int TextureFilterBuilder<T>::getTextureType() const {
+template<class T> TextureType TextureFilterBuilder<T>::getTextureType() const {
     return pTextureType;
 }
 

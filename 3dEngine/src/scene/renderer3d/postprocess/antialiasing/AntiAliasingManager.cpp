@@ -27,7 +27,7 @@ namespace urchin {
         renderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addTexture(Texture::build(textureId, Texture::DEFAULT, TextureParam::buildLinear()))
+                ->addTexture(Texture::build(textureId, TextureType::DEFAULT, TextureParam::buildLinear()))
                 ->build();
     }
 

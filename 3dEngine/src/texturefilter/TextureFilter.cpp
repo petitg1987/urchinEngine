@@ -56,12 +56,12 @@ namespace urchin {
 
         this->completeShaderTokens(shaderTokens);
 
-        if (textureType == GL_TEXTURE_2D_ARRAY) {
+        if (textureType == TextureType::ARRAY) {
             shaderTokens["MAX_VERTICES"] = std::to_string(3*textureNumberLayer);
             shaderTokens["NUMBER_LAYER"] = std::to_string(textureNumberLayer);
 
             textureFilterShader = ShaderBuilder().createShader("textureFilter.vert", "textureFilter.geom", getShaderName() + "Array.frag", shaderTokens);
-        } else if (textureType == GL_TEXTURE_2D) {
+        } else if (textureType == TextureType::DEFAULT) {
             textureFilterShader = ShaderBuilder().createShader("textureFilter.vert", "", getShaderName() + ".frag", shaderTokens);
         } else {
             throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
@@ -82,10 +82,10 @@ namespace urchin {
         glReadBuffer(GL_NONE);
 
         glGenTextures(1, &textureID);
-        glBindTexture(textureType, textureID);
-        if (textureType == GL_TEXTURE_2D_ARRAY) {
+        glBindTexture(textureType==TextureType::DEFAULT ? GL_TEXTURE_2D : GL_TEXTURE_2D_ARRAY, textureID);
+        if (textureType == TextureType::ARRAY) {
             glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, textureInternalFormat, textureWidth, textureHeight, textureNumberLayer, 0, textureFormat, GL_FLOAT, nullptr);
-        } else if (textureType == GL_TEXTURE_2D) {
+        } else if (textureType == TextureType::DEFAULT) {
             glTexImage2D(GL_TEXTURE_2D, 0, textureInternalFormat, textureWidth, textureHeight, 0, textureFormat, GL_FLOAT, nullptr);
         } else {
             throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
@@ -146,12 +146,12 @@ namespace urchin {
 
         textureFilterShader->bind();
 
-        Texture::Type sourceTextureType = layersToUpdate == -1 ? Texture::Type::DEFAULT : Texture::Type::ARRAY;
+        TextureType sourceTextureType = layersToUpdate == -1 ? TextureType::DEFAULT : TextureType::ARRAY;
         textureRenderer->clearAdditionalTextures();
         textureRenderer->addAdditionalTexture(Texture::build(sourceTextureId, sourceTextureType, TextureParam::buildLinear()));
         addFurtherTextures(textureRenderer);
 
-        if (textureType == GL_TEXTURE_2D_ARRAY) {
+        if (textureType == TextureType::ARRAY) {
             assert(layersToUpdate != -1);
             ShaderDataSender().sendData(layersToUpdateShaderVar, static_cast<unsigned int>(layersToUpdate));
         }
@@ -160,7 +160,5 @@ namespace urchin {
         glBindFramebuffer(GL_FRAMEBUFFER, fboID);
 
         textureRenderer->draw();
-
-        glBindTexture(textureType, 0);
     }
 }

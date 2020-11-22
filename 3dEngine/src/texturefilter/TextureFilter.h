@@ -46,7 +46,7 @@ namespace urchin {
             bool isInitialized;
 
             unsigned int textureWidth, textureHeight;
-            unsigned int textureType;
+            TextureType textureType;
             unsigned int textureNumberLayer;
             int textureInternalFormat;
             unsigned int textureFormat;

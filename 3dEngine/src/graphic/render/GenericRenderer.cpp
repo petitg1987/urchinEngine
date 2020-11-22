@@ -58,7 +58,7 @@ namespace urchin {
     }
 
     void GenericRenderer::initializeTexture(Texture texture) const {
-        unsigned int textureType = texture.getGlType();
+        unsigned int textureType = textureTypeToGlType(texture.getType());
         glBindTexture(textureType, texture.getId());
 
         unsigned int readMode = texture.getParam().getGlReadMode();
@@ -154,6 +154,17 @@ namespace urchin {
         throw std::runtime_error("Unknown data dimension: " + std::to_string(dataDimension));
     }
 
+    unsigned int GenericRenderer::textureTypeToGlType(TextureType textureType) const {
+        if (textureType == TextureType::DEFAULT) {
+            return GL_TEXTURE_2D;
+        } else if (textureType == TextureType::ARRAY) {
+            return GL_TEXTURE_2D_ARRAY;
+        } else if (textureType == TextureType::CUBE_MAP) {
+            return GL_TEXTURE_CUBE_MAP;
+        }
+        throw std::runtime_error("Unknown texture type: " + std::to_string(textureType));
+    }
+
     void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point2<float>> *dataPtr) {
         assert(data.size() > dataIndex);
         GenericRenderer::Data dataValue{DataType::FLOAT, DataDimension::TWO_DIMENSION, &(*dataPtr)[0], (unsigned int)dataPtr->size()};
@@ -204,11 +215,11 @@ namespace urchin {
             unsigned int textureUnit = 0;
             for (const auto &texture : textures) {
                 glActiveTexture(GL_TEXTURE0 + textureUnit++);
-                glBindTexture(texture.getGlType(), texture.getId());
+                glBindTexture(textureTypeToGlType(texture.getType()), texture.getId());
             }
             for (const auto &additionalTexture : additionalTextures) {
                 glActiveTexture(GL_TEXTURE0 + textureUnit++);
-                glBindTexture(additionalTexture.getGlType(), additionalTexture.getId());
+                glBindTexture(textureTypeToGlType(additionalTexture.getType()), additionalTexture.getId());
             }
         }
 

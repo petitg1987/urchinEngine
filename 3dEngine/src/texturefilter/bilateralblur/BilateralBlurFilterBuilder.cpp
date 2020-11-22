@@ -44,7 +44,7 @@ namespace urchin {
     }
 
     std::unique_ptr<TextureFilter> BilateralBlurFilterBuilder::build() {
-        if (getTextureType()!=GL_TEXTURE_2D) {
+        if (getTextureType()!=TextureType::DEFAULT) {
             throw std::invalid_argument("Unsupported texture type for bilateral blur filter: " + std::to_string(getTextureType()));
         } else if (getTextureFormat()!=GL_RED) {
             throw std::invalid_argument("Unsupported texture format for bilateral blur filter: " + std::to_string(getTextureType()));

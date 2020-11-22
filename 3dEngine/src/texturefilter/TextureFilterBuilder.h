@@ -7,6 +7,7 @@
 #include <stdexcept>
 
 #include "TextureFilter.h"
+#include "graphic/texture/model/TextureType.h"
 #include "texturefilter/downsample/DownSampleFilter.h"
 #include "texturefilter/gaussianblur/GaussianBlurFilter.h"
 #include "texturefilter/bilateralblur/BilateralBlurFilter.h"
@@ -22,8 +23,8 @@ namespace urchin {
             unsigned int getTextureWidth() const;
             unsigned int getTextureHeight() const;
 
-            T *textureType(unsigned int);
-            unsigned int getTextureType() const;
+            T *textureType(TextureType);
+            TextureType getTextureType() const;
 
             T *textureNumberLayer(unsigned int);
             unsigned int getTextureNumberLayer() const;
@@ -41,7 +42,7 @@ namespace urchin {
 
             unsigned int textureWidth, textureHeight;
 
-            unsigned int pTextureType;
+            TextureType pTextureType;
             unsigned int pTextureNumberLayer;
             int pTextureInternalFormat;
             unsigned int pTextureFormat;
