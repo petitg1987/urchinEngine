@@ -8,6 +8,7 @@
 
 #include "renderer3d/Renderer3d.h"
 #include "GUI/GUIRenderer.h"
+#include "graphic/GraphicService.h"
 #include "graphic/texture/TextureManager.h"
 
 #define NUM_RENDERER 2
@@ -52,8 +53,10 @@ namespace urchin {
             void display();
 
         private:
-            void initializeGl();
             void computeFps();
+
+            //graphic
+            GraphicService graphicService;
 
             //scene properties
             unsigned int sceneWidth, sceneHeight;
