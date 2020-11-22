@@ -5,7 +5,7 @@
 #include "scene/GUI/GUISkinService.h"
 #include "resources/MediaManager.h"
 #include "resources/font/Font.h"
-#include "texture/renderer/TextureRenderer.h"
+#include "texture/render/TextureRenderer.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
 #include "graphic/shader/data/ShaderDataSender.h"
 

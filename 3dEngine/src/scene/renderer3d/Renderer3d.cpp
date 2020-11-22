@@ -6,7 +6,7 @@
 #include "graphic/render/GenericRendererBuilder.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
 #include "graphic/shader/data/ShaderDataSender.h"
-#include "texture/renderer/TextureRenderer.h"
+#include "texture/render/TextureRenderer.h"
 #include "scene/renderer3d/utils/OctreeRenderer.h"
 
 #define DEFAULT_OCTREE_MIN_SIZE 20.0f

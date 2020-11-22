@@ -10,15 +10,7 @@
 
 namespace urchin {
 
-    /**
-    * Display a frame buffer object
-    * Sample of use:
-    *     DisplayTexture displayTexture(textureIDs[TEX_DEPTH], DisplayTexture::DEPTH_FACTOR);
-    *     displayTexture.setPosition(DisplayTexture::LEFT, DisplayTexture::BOTTOM);
-    *    displayTexture.setFullscreen(false);
-    *    displayTexture.display();
-    */
-    class TextureRenderer { //TODO move outside graphic/renderer
+    class TextureRenderer {
         public:
             enum CoordinateX {
                 LEFT,
