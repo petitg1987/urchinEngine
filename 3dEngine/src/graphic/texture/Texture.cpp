@@ -49,7 +49,11 @@ namespace urchin {
     }
 
     Texture Texture::build3d(unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const void *dataPtr) {
-        return Texture(TextureType::DEFAULT, width, height, layer, format, {dataPtr});
+        return Texture(TextureType::ARRAY, width, height, layer, format, {dataPtr});
+    }
+
+    Texture Texture::buildCubeMap(unsigned int width, unsigned int height, TextureFormat format, const std::vector<const void *> &cubeDataPtr) {
+        return Texture(TextureType::CUBE_MAP, width, height, 1, format, cubeDataPtr);
     }
 
     void Texture::generateMipmap() const {

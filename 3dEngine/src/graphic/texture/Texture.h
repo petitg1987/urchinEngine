@@ -12,6 +12,7 @@ namespace urchin {
         public:
             static Texture build2d(unsigned int, unsigned int, TextureFormat, const void *);
             static Texture build3d(unsigned int, unsigned int, unsigned int, TextureFormat, const void *);
+            static Texture buildCubeMap(unsigned int, unsigned int, TextureFormat, const std::vector<const void *> &);
 
             void generateMipmap() const;
 
