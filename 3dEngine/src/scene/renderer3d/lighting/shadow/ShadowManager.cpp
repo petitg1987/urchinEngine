@@ -469,7 +469,7 @@ namespace urchin {
         glGenTextures(2, &textureIDs[0]);
 
         glBindTexture(GL_TEXTURE_2D_ARRAY, textureIDs[0]);
-        glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, depthComponent, shadowMapResolution, shadowMapResolution, nbShadowMaps, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, nullptr);
+        glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, depthComponent, shadowMapResolution, shadowMapResolution, nbShadowMaps, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
         glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, textureIDs[0], 0);
 
         glBindTexture(GL_TEXTURE_2D_ARRAY, textureIDs[1]);

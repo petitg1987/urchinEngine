@@ -154,7 +154,7 @@ namespace urchin {
         throw std::runtime_error("Unknown data dimension: " + std::to_string(dataDimension));
     }
 
-    unsigned int GenericRenderer::textureTypeToGlType(TextureType textureType) const {
+    unsigned int GenericRenderer::textureTypeToGlType(TextureType textureType) const { //TODO use one from Texture class ?
         if (textureType == TextureType::DEFAULT) {
             return GL_TEXTURE_2D;
         } else if (textureType == TextureType::ARRAY) {
