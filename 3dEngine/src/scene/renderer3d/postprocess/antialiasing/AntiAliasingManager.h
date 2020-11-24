@@ -18,10 +18,11 @@ namespace urchin {
                 VERY_HIGH
             };
 
-            explicit AntiAliasingManager(unsigned int);
+            explicit AntiAliasingManager();
 
             void onResize(unsigned int, unsigned int);
 
+            void setupTexture(const std::shared_ptr<Texture> &);
             void setQuality(Quality quality);
 
             void applyAntiAliasing();

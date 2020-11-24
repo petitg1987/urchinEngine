@@ -10,25 +10,11 @@
 
 namespace urchin {
 
-    AntiAliasingManager::AntiAliasingManager(unsigned int textureId) :
+    AntiAliasingManager::AntiAliasingManager() :
             quality(DEFAULT_AA_QUALITY),
             sceneWidth(0),
             sceneHeight(0) {
         loadFxaaShader();
-
-        std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
-                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(-1.0f, -1.0f)
-        };
-        std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
-                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
-        };
-        renderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
-                ->addData(&vertexCoord)
-                ->addData(&textureCoord)
-                ->addTexture(TextureReader::build(textureId, TextureType::DEFAULT, TextureParam::buildLinear()))
-                ->build();
     }
 
     void AntiAliasingManager::loadFxaaShader() {
@@ -50,6 +36,22 @@ namespace urchin {
         ShaderDataSender().sendData(invSceneSizeShaderVar, Point2<float>(1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight));
     }
 
+    void AntiAliasingManager::setupTexture(const std::shared_ptr<Texture> &texture) {
+        std::vector<Point2<float>> vertexCoord = {
+                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
+                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(-1.0f, -1.0f)
+        };
+        std::vector<Point2<float>> textureCoord = {
+                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
+                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
+        };
+        renderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
+                ->addData(&vertexCoord)
+                ->addData(&textureCoord)
+                ->addTexture(TextureReader::build(texture, TextureParam::buildLinear()))
+                ->build();
+    }
+
     void AntiAliasingManager::setQuality(Quality quality) {
         this->quality = quality;
 
@@ -57,8 +59,10 @@ namespace urchin {
     }
 
     void AntiAliasingManager::applyAntiAliasing() {
-        fxaaShader->bind();
-        renderer->draw();
+        if(renderer) {
+            fxaaShader->bind();
+            renderer->draw();
+        }
     }
 
 }

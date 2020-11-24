@@ -23,6 +23,7 @@
 #include "graphic/shader/model/Shader.h"
 #include "graphic/shader/model/ShaderVar.h"
 #include "graphic/render/GenericRenderer.h"
+#include "graphic/texture/Texture.h"
 
 namespace urchin {
 
@@ -136,12 +137,12 @@ namespace urchin {
             };
 
             unsigned int fboAttachments[3];
+            std::shared_ptr<Texture> normalAndAmbientTexture, lightingPassTexture;
             unsigned int *textureIDs;
             enum { //texture IDs indices
                 TEX_DEPTH = 0,
                 TEX_DIFFUSE,
-                TEX_NORMAL_AND_AMBIENT,
-                TEX_LIGHTING_PASS
+                TEX_NORMAL_AND_AMBIENT
             };
 
             std::unique_ptr<GenericRenderer> lightingRenderer;

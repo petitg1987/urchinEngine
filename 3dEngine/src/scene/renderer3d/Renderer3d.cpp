@@ -43,11 +43,11 @@ namespace urchin {
 
         //deferred shading (pass 1)
         fboIDs = new unsigned int[1];
-        textureIDs = new unsigned int[4];
+        textureIDs = new unsigned int[3];
         modelDisplayer = new ModelDisplayer(ModelDisplayer::DEFAULT_MODE);
         modelDisplayer->initialize();
         glGenFramebuffers(1, fboIDs);
-        glGenTextures(4, textureIDs);
+        glGenTextures(3, textureIDs);
 
         modelOctreeManager = new OctreeManager<Model>(DEFAULT_OCTREE_MIN_SIZE);
 
@@ -89,7 +89,7 @@ namespace urchin {
                 ->addTexture(TextureReader::build(textureIDs[TEX_NORMAL_AND_AMBIENT], TextureType::DEFAULT, TextureParam::buildNearest()))
                 ->build();
 
-        antiAliasingManager = new AntiAliasingManager(textureIDs[TEX_LIGHTING_PASS]);
+        antiAliasingManager = new AntiAliasingManager();
         isAntiAliasingActivated = true;
     }
 
@@ -118,7 +118,7 @@ namespace urchin {
             delete [] fboIDs;
         }
         if (textureIDs) {
-            glDeleteTextures(4, textureIDs);
+            glDeleteTextures(3, textureIDs);
             delete [] textureIDs;
         }
     }
@@ -179,17 +179,18 @@ namespace urchin {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sceneWidth, sceneHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
         glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[1], GL_TEXTURE_2D, textureIDs[TEX_NORMAL_AND_AMBIENT], 0);
 
-        glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_LIGHTING_PASS]); //illuminated scene buffer
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sceneWidth, sceneHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[2], GL_TEXTURE_2D, textureIDs[TEX_LIGHTING_PASS], 0);
+        lightingPassTexture = Texture::build2d(sceneWidth, sceneHeight, TextureFormat::RGB_8_INT, nullptr);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[2], GL_TEXTURE_2D, lightingPassTexture->getTextureId(), 0);
 
         glReadBuffer(GL_NONE);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-        //manager
         shadowManager->onResize(sceneWidth, sceneHeight);
+
         ambientOcclusionManager->onResize(sceneWidth, sceneHeight);
+
         antiAliasingManager->onResize(sceneWidth, sceneHeight);
+        antiAliasingManager->setupTexture(lightingPassTexture);
     }
 
     void Renderer3d::notify(Observable *observable, int notificationType) {
@@ -403,7 +404,7 @@ namespace urchin {
         }
 
         if (DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER) {
-            TextureRenderer textureRenderer(textureIDs[TEX_LIGHTING_PASS], TextureRenderer::DEFAULT_VALUE);
+            TextureRenderer textureRenderer(lightingPassTexture->getTextureId(), TextureRenderer::DEFAULT_VALUE); //TODO accept Texture in construction !
             textureRenderer.setPosition(TextureRenderer::LEFT, TextureRenderer::BOTTOM);
             textureRenderer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureRenderer.display();
