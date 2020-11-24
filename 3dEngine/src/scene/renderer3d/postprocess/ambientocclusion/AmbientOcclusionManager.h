@@ -19,8 +19,10 @@ namespace urchin {
                 HALF_SIZE = 1
             };
 
-            AmbientOcclusionManager(unsigned int, unsigned int);
+            AmbientOcclusionManager();
             ~AmbientOcclusionManager();
+
+            void setupTextures(const std::shared_ptr<Texture> &, const std::shared_ptr<Texture> &);
 
             void initiateShaderVariables(const std::unique_ptr<Shader> &);
             void onResize(unsigned int, unsigned int);
@@ -80,7 +82,7 @@ namespace urchin {
             unsigned int noiseTexId;
 
             //visual data
-            unsigned int depthTexID;
+            std::shared_ptr<Texture> depthTexture;
             ShaderVar ambientOcclusionTexShaderVar;
             std::unique_ptr<GenericRenderer> renderer;
 

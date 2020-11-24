@@ -137,13 +137,7 @@ namespace urchin {
             };
 
             unsigned int fboAttachments[3];
-            std::shared_ptr<Texture> normalAndAmbientTexture, lightingPassTexture;
-            unsigned int *textureIDs;
-            enum { //texture IDs indices
-                TEX_DEPTH = 0,
-                TEX_DIFFUSE,
-                TEX_NORMAL_AND_AMBIENT
-            };
+            std::shared_ptr<Texture> depthTexture, diffuseTexture, normalAndAmbientTexture, lightingPassTexture;
 
             std::unique_ptr<GenericRenderer> lightingRenderer;
             std::unique_ptr<Shader> lightingShader;

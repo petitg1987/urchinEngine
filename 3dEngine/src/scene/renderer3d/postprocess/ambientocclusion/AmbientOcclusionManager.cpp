@@ -25,7 +25,7 @@ namespace urchin {
     //Debug parameters
     bool DEBUG_EXPORT_SSAO_KERNEL = false;
 
-    AmbientOcclusionManager::AmbientOcclusionManager(unsigned int depthTexID, unsigned int normalAndAmbientTexID) :
+    AmbientOcclusionManager::AmbientOcclusionManager() :
             sceneWidth(0),
             sceneHeight(0),
             nearPlane(0.0f),
@@ -50,31 +50,12 @@ namespace urchin {
 
             noiseTexId(0),
 
-            depthTexID(depthTexID),
             verticalBlurFilter(nullptr),
             horizontalBlurFilter(nullptr),
             isBlurActivated(true) {
 
-        std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
-                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(-1.0f, -1.0f)
-        };
-        std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
-                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
-        };
-        renderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
-                ->addData(&vertexCoord)
-                ->addData(&textureCoord)
-                ->addTexture(TextureReader::build(depthTexID, TextureType::DEFAULT, TextureParam::buildNearest()))
-                ->addTexture(TextureReader::build(normalAndAmbientTexID, TextureType::DEFAULT, TextureParam::buildNearest()))
-                ->addTexture(TextureReader::build(noiseTexId, TextureType::DEFAULT, TextureParam::buildRepeatNearest()))
-                ->build();
-
         //frame buffer object
         glGenFramebuffers(1, &fboID);
-        createOrUpdateAOTexture();
-        createOrUpdateAOShader();
     }
 
     AmbientOcclusionManager::~AmbientOcclusionManager() {
@@ -109,7 +90,31 @@ namespace urchin {
                 .sendData(ShaderVar(ambientOcclusionShader, "normalAndAmbientTex"), normalAndAmbientTexUnit);
 
         generateKernelSamples();
+    }
+
+    void AmbientOcclusionManager::setupTextures(const std::shared_ptr<Texture> &depthTexture, const std::shared_ptr<Texture> &normalAndAmbientTexture) {
+        this->depthTexture = depthTexture;
+
+        std::vector<Point2<float>> vertexCoord = {
+                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
+                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(-1.0f, -1.0f)
+        };
+        std::vector<Point2<float>> textureCoord = {
+                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
+                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
+        };
+        renderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
+                ->addData(&vertexCoord)
+                ->addData(&textureCoord)
+                ->addTexture(TextureReader::build(depthTexture, TextureParam::buildNearest()))
+                ->addTexture(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
+                ->addTexture(TextureReader::build(noiseTexId, TextureType::DEFAULT, TextureParam::buildRepeatNearest()))
+                ->build();
+
         generateNoiseTexture();
+
+        createOrUpdateAOTexture();
+        createOrUpdateAOShader();
     }
 
     void AmbientOcclusionManager::initiateShaderVariables(const std::unique_ptr<Shader> &lightingShader) {
@@ -127,48 +132,50 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::createOrUpdateAOTexture() {
-        glBindFramebuffer(GL_FRAMEBUFFER, fboID);
+        if(depthTexture) {
+            glBindFramebuffer(GL_FRAMEBUFFER, fboID);
 
-        GLenum fboAttachments[1] = {GL_COLOR_ATTACHMENT0};
-        glDrawBuffers(1, fboAttachments);
-        glReadBuffer(GL_NONE);
+            GLenum fboAttachments[1] = {GL_COLOR_ATTACHMENT0};
+            glDrawBuffers(1, fboAttachments);
+            glReadBuffer(GL_NONE);
 
-        glDeleteTextures(1, &ambientOcclusionTexID);
-        glGenTextures(1, &ambientOcclusionTexID);
+            glDeleteTextures(1, &ambientOcclusionTexID);
+            glGenTextures(1, &ambientOcclusionTexID);
 
-        this->textureSizeX = sceneWidth / retrieveTextureSizeFactor();
-        this->textureSizeY = sceneHeight / retrieveTextureSizeFactor();
+            this->textureSizeX = sceneWidth / retrieveTextureSizeFactor();
+            this->textureSizeY = sceneHeight / retrieveTextureSizeFactor();
 
-        glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexID);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_R16F, textureSizeX, textureSizeY, 0, GL_RED, GL_FLOAT, nullptr);
-        glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], ambientOcclusionTexID, 0);
+            glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexID);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_R16F, textureSizeX, textureSizeY, 0, GL_RED, GL_FLOAT, nullptr);
+            glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], ambientOcclusionTexID, 0);
 
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-        verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>()
-                ->textureSize(textureSizeX, textureSizeY)
-                ->textureType(TextureType::DEFAULT)
-                ->textureInternalFormat(GL_R16F)
-                ->textureFormat(GL_RED)
-                ->blurDirection(BilateralBlurFilterBuilder::VERTICAL_BLUR)
-                ->blurSize(blurSize)
-                ->blurSharpness(blurSharpness)
-                ->depthTextureID(depthTexID)
-                ->buildBilateralBlur();
+            verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>()
+                    ->textureSize(textureSizeX, textureSizeY)
+                    ->textureType(TextureType::DEFAULT)
+                    ->textureInternalFormat(GL_R16F)
+                    ->textureFormat(GL_RED)
+                    ->blurDirection(BilateralBlurFilterBuilder::VERTICAL_BLUR)
+                    ->blurSize(blurSize)
+                    ->blurSharpness(blurSharpness)
+                    ->depthTextureID(depthTexture->getTextureId())
+                    ->buildBilateralBlur();
 
-        horizontalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>()
-                ->textureSize(textureSizeX, textureSizeY)
-                ->textureType(TextureType::DEFAULT)
-                ->textureInternalFormat(GL_R16F)
-                ->textureFormat(GL_RED)
-                ->blurDirection(BilateralBlurFilterBuilder::HORIZONTAL_BLUR)
-                ->blurSize(blurSize)
-                ->blurSharpness(blurSharpness)
-                ->depthTextureID(depthTexID)
-                ->buildBilateralBlur();
+            horizontalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>()
+                    ->textureSize(textureSizeX, textureSizeY)
+                    ->textureType(TextureType::DEFAULT)
+                    ->textureInternalFormat(GL_R16F)
+                    ->textureFormat(GL_RED)
+                    ->blurDirection(BilateralBlurFilterBuilder::HORIZONTAL_BLUR)
+                    ->blurSize(blurSize)
+                    ->blurSharpness(blurSharpness)
+                    ->depthTextureID(depthTexture->getTextureId())
+                    ->buildBilateralBlur();
 
-        verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
-        horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
+            verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
+            horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
+        }
     }
 
     void AmbientOcclusionManager::generateKernelSamples() {

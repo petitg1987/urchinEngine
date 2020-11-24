@@ -44,7 +44,7 @@ template<class T> unsigned int TextureFilterBuilder<T>::getTextureNumberLayer() 
     return pTextureNumberLayer;
 }
 
-template<class T> T *TextureFilterBuilder<T>::textureInternalFormat(int textureInternalFormat) {
+template<class T> T *TextureFilterBuilder<T>::textureInternalFormat(int textureInternalFormat) { //TODO use TextureFormat ?
     this->pTextureInternalFormat = textureInternalFormat;
     return _this();
 }

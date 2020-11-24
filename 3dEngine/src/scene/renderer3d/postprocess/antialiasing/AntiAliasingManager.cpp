@@ -29,13 +29,6 @@ namespace urchin {
                 .sendData(invSceneSizeShaderVar, Point2<float>(1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight));
     }
 
-    void AntiAliasingManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
-        this->sceneWidth = sceneWidth;
-        this->sceneHeight = sceneHeight;
-
-        ShaderDataSender().sendData(invSceneSizeShaderVar, Point2<float>(1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight));
-    }
-
     void AntiAliasingManager::setupTexture(const std::shared_ptr<Texture> &texture) {
         std::vector<Point2<float>> vertexCoord = {
                 Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
@@ -50,6 +43,13 @@ namespace urchin {
                 ->addData(&textureCoord)
                 ->addTexture(TextureReader::build(texture, TextureParam::buildLinear()))
                 ->build();
+    }
+
+    void AntiAliasingManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
+        this->sceneWidth = sceneWidth;
+        this->sceneHeight = sceneHeight;
+
+        ShaderDataSender().sendData(invSceneSizeShaderVar, Point2<float>(1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight));
     }
 
     void AntiAliasingManager::setQuality(Quality quality) {

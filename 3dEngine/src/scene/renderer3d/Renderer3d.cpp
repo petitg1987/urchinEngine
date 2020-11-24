@@ -38,16 +38,13 @@ namespace urchin {
             geometryManager(nullptr),
             camera(nullptr),
             fboIDs(nullptr),
-            fboAttachments{GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2},
-            textureIDs(nullptr) {
+            fboAttachments{GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2} {
 
         //deferred shading (pass 1)
         fboIDs = new unsigned int[1];
-        textureIDs = new unsigned int[3];
         modelDisplayer = new ModelDisplayer(ModelDisplayer::DEFAULT_MODE);
         modelDisplayer->initialize();
         glGenFramebuffers(1, fboIDs);
-        glGenTextures(3, textureIDs);
 
         modelOctreeManager = new OctreeManager<Model>(DEFAULT_OCTREE_MIN_SIZE);
 
@@ -67,27 +64,11 @@ namespace urchin {
         shadowManager->addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
         isShadowActivated = true;
 
-        ambientOcclusionManager = new AmbientOcclusionManager(textureIDs[TEX_DEPTH], textureIDs[TEX_NORMAL_AND_AMBIENT]);
+        ambientOcclusionManager = new AmbientOcclusionManager();
         isAmbientOcclusionActivated = true;
 
         //deferred shading (pass 2)
         createOrUpdateLightingShader();
-
-        std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
-                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(-1.0f, -1.0f)
-        };
-        std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
-                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
-        };
-        lightingRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
-                ->addData(&vertexCoord)
-                ->addData(&textureCoord)
-                ->addTexture(TextureReader::build(textureIDs[TEX_DEPTH], TextureType::DEFAULT, TextureParam::buildNearest()))
-                ->addTexture(TextureReader::build(textureIDs[TEX_DIFFUSE], TextureType::DEFAULT, TextureParam::buildNearest()))
-                ->addTexture(TextureReader::build(textureIDs[TEX_NORMAL_AND_AMBIENT], TextureType::DEFAULT, TextureParam::buildNearest()))
-                ->build();
 
         antiAliasingManager = new AntiAliasingManager();
         isAntiAliasingActivated = true;
@@ -116,10 +97,6 @@ namespace urchin {
         if (fboIDs) {
             glDeleteFramebuffers(1, fboIDs);
             delete [] fboIDs;
-        }
-        if (textureIDs) {
-            glDeleteTextures(3, textureIDs);
-            delete [] textureIDs;
         }
     }
 
@@ -166,28 +143,37 @@ namespace urchin {
 
         //deferred shading
         glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_SCENE]);
-
-        glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_DEPTH]); //depth buffer
-        glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, sceneWidth, sceneHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, textureIDs[TEX_DEPTH], 0);
-
-        glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_DIFFUSE]); //diffuse buffer
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sceneWidth, sceneHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[0], GL_TEXTURE_2D, textureIDs[TEX_DIFFUSE], 0);
-
-        glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_NORMAL_AND_AMBIENT]); //normal and ambient factor buffer
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sceneWidth, sceneHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[1], GL_TEXTURE_2D, textureIDs[TEX_NORMAL_AND_AMBIENT], 0);
-
+        depthTexture = Texture::build2d(sceneWidth, sceneHeight, TextureFormat::DEPTH_32_FLOAT, nullptr); //depth buffer
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTexture->getTextureId(), 0);
+        diffuseTexture = Texture::build2d(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr); //diffuse buffer
+        glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[0], GL_TEXTURE_2D, diffuseTexture->getTextureId(), 0);
+        normalAndAmbientTexture = Texture::build2d(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr); //normal and ambient factor buffer
+        glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[1], GL_TEXTURE_2D, normalAndAmbientTexture->getTextureId(), 0);
         lightingPassTexture = Texture::build2d(sceneWidth, sceneHeight, TextureFormat::RGB_8_INT, nullptr);
         glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[2], GL_TEXTURE_2D, lightingPassTexture->getTextureId(), 0);
-
         glReadBuffer(GL_NONE);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+        std::vector<Point2<float>> vertexCoord = {
+                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
+                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(-1.0f, -1.0f)
+        };
+        std::vector<Point2<float>> textureCoord = {
+                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
+                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
+        };
+        lightingRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
+                ->addData(&vertexCoord)
+                ->addData(&textureCoord)
+                ->addTexture(TextureReader::build(depthTexture, TextureParam::buildNearest()))
+                ->addTexture(TextureReader::build(diffuseTexture, TextureParam::buildNearest()))
+                ->addTexture(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
+                ->build();
 
         shadowManager->onResize(sceneWidth, sceneHeight);
 
         ambientOcclusionManager->onResize(sceneWidth, sceneHeight);
+        ambientOcclusionManager->setupTextures(depthTexture, normalAndAmbientTexture);
 
         antiAliasingManager->onResize(sceneWidth, sceneHeight);
         antiAliasingManager->setupTexture(lightingPassTexture);
@@ -383,21 +369,21 @@ namespace urchin {
     void Renderer3d::displayBuffers() {
         if (DEBUG_DISPLAY_DEPTH_BUFFER) {
             float depthIntensity = 5.0f;
-            TextureRenderer textureRenderer(textureIDs[TEX_DEPTH], TextureRenderer::DEPTH_VALUE, depthIntensity);
+            TextureRenderer textureRenderer(depthTexture->getTextureId(), TextureRenderer::DEPTH_VALUE, depthIntensity); //TODO accept Texture in construction !
             textureRenderer.setPosition(TextureRenderer::LEFT, TextureRenderer::TOP);
             textureRenderer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureRenderer.display();
         }
 
         if (DEBUG_DISPLAY_COLOR_BUFFER) {
-            TextureRenderer textureRenderer(textureIDs[TEX_DIFFUSE], TextureRenderer::DEFAULT_VALUE);
+            TextureRenderer textureRenderer(diffuseTexture->getTextureId(), TextureRenderer::DEFAULT_VALUE); //TODO accept Texture in construction !
             textureRenderer.setPosition(TextureRenderer::CENTER_X, TextureRenderer::TOP);
             textureRenderer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureRenderer.display();
         }
 
         if (DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER) {
-            TextureRenderer textureRenderer(textureIDs[TEX_NORMAL_AND_AMBIENT], TextureRenderer::DEFAULT_VALUE);
+            TextureRenderer textureRenderer(normalAndAmbientTexture->getTextureId(), TextureRenderer::DEFAULT_VALUE); //TODO accept Texture in construction !
             textureRenderer.setPosition(TextureRenderer::RIGHT, TextureRenderer::TOP);
             textureRenderer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureRenderer.display();
@@ -520,27 +506,29 @@ namespace urchin {
      * Compute lighting in pixel shader and render the scene to screen.
      */
     void Renderer3d::lightingPassRendering() {
-        ScopeProfiler profiler("3d", "lightPassRender");
+        if(lightingRenderer) {
+            ScopeProfiler profiler("3d", "lightPassRender");
 
-        lightingRenderer->clearAdditionalTextures();
-        ShaderDataSender()
-                .sendData(mInverseViewProjectionShaderVar, (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse())
-                .sendData(viewPositionShaderVar, camera->getPosition());
+            lightingRenderer->clearAdditionalTextures();
+            ShaderDataSender()
+                    .sendData(mInverseViewProjectionShaderVar, (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse())
+                    .sendData(viewPositionShaderVar, camera->getPosition());
 
-        lightManager->loadLights();
+            lightManager->loadLights();
 
-        fogManager->loadFog();
+            fogManager->loadFog();
 
-        if (isAmbientOcclusionActivated) {
-            ambientOcclusionManager->loadAOTexture(lightingRenderer);
+            if (isAmbientOcclusionActivated) {
+                ambientOcclusionManager->loadAOTexture(lightingRenderer);
+            }
+
+            if (isShadowActivated) {
+                shadowManager->loadShadowMaps(lightingRenderer);
+            }
+
+            lightingShader->bind();
+            lightingRenderer->draw();
         }
-
-        if (isShadowActivated) {
-            shadowManager->loadShadowMaps(lightingRenderer);
-        }
-
-        lightingShader->bind();
-        lightingRenderer->draw();
     }
 
     void Renderer3d::postUpdateScene() {

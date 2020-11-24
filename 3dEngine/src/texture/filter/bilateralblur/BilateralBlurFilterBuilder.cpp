@@ -34,7 +34,7 @@ namespace urchin {
         return pBlurSharpness;
     }
 
-    BilateralBlurFilterBuilder *BilateralBlurFilterBuilder::depthTextureID(unsigned int depthTextureID) {
+    BilateralBlurFilterBuilder *BilateralBlurFilterBuilder::depthTextureID(unsigned int depthTextureID) { //TODO accept Texture class
         this->pDepthTextureID = depthTextureID;
         return this;
     }
