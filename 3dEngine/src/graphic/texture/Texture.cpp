@@ -13,10 +13,6 @@ namespace urchin {
             layer(layer),
             format(format),
             textureId(0) {
-        assert(layer != 0);
-        assert(layer == 1 || textureType==TextureType::ARRAY);
-        assert(dataPtr.size() == 1 | textureType==TextureType::CUBE_MAP);
-
         unsigned int glTextureType = textureTypeToGlTextureType(textureType);
         unsigned int glInternalFormat = textureFormatToGlInternalFormat(format);
         unsigned int glFormat = textureFormatToGlFormat(format);
@@ -26,17 +22,25 @@ namespace urchin {
         glBindTexture(glTextureType, textureId);
 
         if (textureType == TextureType::DEFAULT) {
+            assert(layer == 1);
+            assert(dataPtr.size() == 1);
+
             glTexImage2D(glTextureType, 0, glInternalFormat, width, height, 0, glFormat, glPixelType, dataPtr[0]);
         } else if (textureType == TextureType::ARRAY) {
+            assert(layer > 1);
+            assert(dataPtr.size() == 1);
+
             glTexImage3D(glTextureType, 0, glInternalFormat, width, height, layer, 0, glFormat, glPixelType, dataPtr[0]);
         } else if (textureType == TextureType::CUBE_MAP) {
+            assert(layer == 1);
             assert(dataPtr.size() == 6);
+
             glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, glInternalFormat, width, height, 0, glFormat, glPixelType, dataPtr[0]);
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, glInternalFormat, width, height, 0, glFormat, glPixelType, dataPtr[1]);
             glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, glInternalFormat, width, height, 0, glFormat, glPixelType, dataPtr[2]);
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, glInternalFormat, width, height, 0, glFormat, glPixelType, dataPtr[3]);
             glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, glInternalFormat, width, height, 0, glFormat, glPixelType, dataPtr[4]);
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, glInternalFormat, width, height, 0, glFormat, glPixelType, dataPtr[6]);
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, glInternalFormat, width, height, 0, glFormat, glPixelType, dataPtr[5]);
         }
     }
 
@@ -44,16 +48,18 @@ namespace urchin {
         glDeleteTextures(1, &textureId);
     }
 
-    Texture Texture::build2d(unsigned int width, unsigned int height, TextureFormat format, const void *dataPtr) {
-        return Texture(TextureType::DEFAULT, width, height, 1, format, {dataPtr});
+    std::shared_ptr<Texture> Texture::build2d(unsigned int width, unsigned int height, TextureFormat format, const void *dataPtr) {
+        std::vector<const void *> allDataPtr = {dataPtr};
+        return std::make_shared<Texture>(TextureType::DEFAULT, width, height, 1, format, allDataPtr);
     }
 
-    Texture Texture::build3d(unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const void *dataPtr) {
-        return Texture(TextureType::ARRAY, width, height, layer, format, {dataPtr});
+    std::shared_ptr<Texture> Texture::build3d(unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const void *dataPtr) {
+        std::vector<const void *> allDataPtr = {dataPtr};
+        return std::make_shared<Texture>(TextureType::ARRAY, width, height, layer, format, allDataPtr);
     }
 
-    Texture Texture::buildCubeMap(unsigned int width, unsigned int height, TextureFormat format, const std::vector<const void *> &cubeDataPtr) {
-        return Texture(TextureType::CUBE_MAP, width, height, 1, format, cubeDataPtr);
+    std::shared_ptr<Texture> Texture::buildCubeMap(unsigned int width, unsigned int height, TextureFormat format, const std::vector<const void *> &cubeDataPtr) {
+        return std::make_shared<Texture>(TextureType::CUBE_MAP, width, height, 1, format, cubeDataPtr);
     }
 
     void Texture::generateMipmap() const {
@@ -61,6 +67,14 @@ namespace urchin {
 
         glBindTexture(glTextureType, textureId);
         glGenerateMipmap(glTextureType);
+    }
+
+    TextureType Texture::getTextureType() const {
+        return textureType;
+    }
+
+    unsigned int Texture::getTextureId() const {
+        return textureId;
     }
 
     unsigned int Texture::textureTypeToGlTextureType(TextureType textureType) const {
@@ -125,7 +139,7 @@ namespace urchin {
         } else if (textureFormat == GRAYSCALE_8_INT
                 || textureFormat == RGB_8_INT
                 || textureFormat == RGBA_8_INT) {
-            return GL_UNSIGNED_INT;
+            return GL_UNSIGNED_BYTE;
         } else {
             throw std::runtime_error("Unknown texture format: " + std::to_string(format));
         }

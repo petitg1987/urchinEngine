@@ -53,7 +53,7 @@ namespace urchin {
             throw std::runtime_error("The image \"" + getName() + "\" was transformed into a texture, you cannot get the texels.");
         }
 
-        if (channelPrecision!=ChannelPrecision::CHANNEL_8) {
+        if (channelPrecision != ChannelPrecision::CHANNEL_8) {
             throw std::runtime_error("Channel must have 8 bits. Channel type: " + std::to_string(channelPrecision));
         }
 
@@ -65,7 +65,7 @@ namespace urchin {
             throw std::runtime_error("The image \"" + getName() + "\" was transformed into a texture, you cannot get the texels.");
         }
 
-        if (channelPrecision!=ChannelPrecision::CHANNEL_16) {
+        if (channelPrecision != ChannelPrecision::CHANNEL_16) {
             throw std::runtime_error("Channel must have 16 bits. Channel type: " + std::to_string(channelPrecision));
         }
 
@@ -84,7 +84,33 @@ namespace urchin {
         }
     }
 
-    GLint Image::retrieveInternalFormat() const {
+    TextureFormat Image::retrieveTextureFormat() const {
+        if (format == Image::IMAGE_GRAYSCALE) {
+            if (channelPrecision == Image::CHANNEL_8) {
+                return TextureFormat::GRAYSCALE_8_INT;
+            } else if (channelPrecision == Image::CHANNEL_16) {
+                return TextureFormat::GRAYSCALE_16_FLOAT;
+            } else {
+                throw std::runtime_error("Unknown channel precision: " + std::to_string(channelPrecision));
+            }
+        } else if (format == Image::IMAGE_RGB) {
+            if (channelPrecision == Image::CHANNEL_8) {
+                return TextureFormat::RGB_8_INT;
+            } else {
+                throw std::invalid_argument("Unsupported channel precision for RGB format: " + std::to_string(channelPrecision));
+            }
+        } else if (format == Image::IMAGE_RGBA) {
+            if (channelPrecision == Image::CHANNEL_8) {
+                return TextureFormat::RGBA_8_INT;
+            } else {
+                throw std::invalid_argument("Unsupported channel precision for RGBA format: " + std::to_string(channelPrecision));
+            }
+        } else {
+            throw std::runtime_error("Unknown image format: " + std::to_string(format));
+        }
+    }
+
+    GLint Image::retrieveInternalFormat() const { //TODO remove this method
         if (format==Image::IMAGE_GRAYSCALE) {
             return GL_RED;
         } else if (format==Image::IMAGE_RGB) {
@@ -96,7 +122,7 @@ namespace urchin {
         }
     }
 
-    GLenum Image::retrieveFormat() const {
+    GLenum Image::retrieveFormat() const { //TODO remove this method
         if (format==Image::IMAGE_GRAYSCALE) {
             return GL_RED;
         } else if (format==Image::IMAGE_RGB) {

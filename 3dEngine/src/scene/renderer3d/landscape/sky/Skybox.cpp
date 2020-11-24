@@ -1,9 +1,9 @@
-#include <GL/glew.h>
 #include <stdexcept>
 
 #include "Skybox.h"
 #include "resources/MediaManager.h"
 #include "graphic/render/GenericRendererBuilder.h"
+#include "graphic/texture/Texture.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
 #include "graphic/shader/data/ShaderDataSender.h"
 
@@ -13,19 +13,18 @@ namespace urchin {
     */
     Skybox::Skybox(const std::vector<std::string> &filenames) :
             filenames(filenames),
-            textureID(0),
             offsetY(0.0) {
         if (filenames.size() != 6) {
             throw std::invalid_argument("There is no 6 skybox filenames.");
         }
 
         //create the textures
-        texSkybox = new Image*[6];
+        skyboxImages = new Image*[6];
         unsigned int skyboxSize = 1;
         for (std::size_t i=0; i < 6; ++i) {
             if (!filenames[i].empty()) {
-                texSkybox[i] = MediaManager::instance()->getMedia<Image>(filenames[i]);
-                skyboxSize = texSkybox[i]->getWidth();
+                skyboxImages[i] = MediaManager::instance()->getMedia<Image>(filenames[i]);
+                skyboxSize = skyboxImages[i]->getWidth();
             }
         }
 
@@ -38,21 +37,27 @@ namespace urchin {
                     defaultTexPixels.push_back(50); //G
                     defaultTexPixels.push_back(255); //B
                 }
-                texSkybox[i] = new Image(skyboxSize, skyboxSize, Image::IMAGE_RGB, std::move(defaultTexPixels));
+                skyboxImages[i] = new Image(skyboxSize, skyboxSize, Image::IMAGE_RGB, std::move(defaultTexPixels));
             }
         }
 
         for (std::size_t i=0; i < 6 - 1; ++i) {
-            unsigned int widthSize = texSkybox[i]->getWidth();
-            unsigned int heightSize = texSkybox[i]->getHeight();
-            unsigned int nextWidthSize = texSkybox[i + 1]->getWidth();
+            unsigned int widthSize = skyboxImages[i]->getWidth();
+            unsigned int heightSize = skyboxImages[i]->getHeight();
+            TextureFormat textureFormat = skyboxImages[0]->retrieveTextureFormat();
 
-            if (texSkybox[i]->getWidth() != texSkybox[i]->getHeight()) {
-                clearTexSkybox();
+            unsigned int nextWidthSize = skyboxImages[i + 1]->getWidth();
+            TextureFormat nextTextureFormat = skyboxImages[i + 1]->retrieveTextureFormat();
+
+            if (skyboxImages[i]->getWidth() != skyboxImages[i]->getHeight()) {
+                clearSkyboxImages();
                 throw std::runtime_error("Skybox image must be a square. Present image size: " + std::to_string(widthSize) + "x" + std::to_string(heightSize));
             } else if (widthSize != nextWidthSize) {
-                clearTexSkybox();
+                clearSkyboxImages();
                 throw std::runtime_error("All skybox images must have the same size: " + std::to_string(widthSize) + " != " + std::to_string(nextWidthSize));
+            } else if (textureFormat != nextTextureFormat) {
+                clearSkyboxImages();
+                throw std::runtime_error("All skybox images must have the same texture format: " + std::to_string(textureFormat) + " != " + std::to_string(nextTextureFormat));
             }
         }
 
@@ -60,27 +65,15 @@ namespace urchin {
     }
 
     Skybox::~Skybox() {
-        clearTexSkybox();
-        glDeleteTextures(1, &textureID);
+        clearSkyboxImages();
     }
 
     void Skybox::initialize() {
-        GLenum cubeMapTarget[6] = {
-            GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
-            GL_TEXTURE_CUBE_MAP_POSITIVE_X,
-            GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
-            GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
-            GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,
-            GL_TEXTURE_CUBE_MAP_POSITIVE_Z
-        };
-        const float SIZE = 10.0f;
-
-        glGenTextures(1, &textureID);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-        for (std::size_t i=0; i<6; i++) {
-            glTexImage2D(cubeMapTarget[i], 0, texSkybox[i]->retrieveInternalFormat(), texSkybox[i]->getWidth(), texSkybox[i]->getHeight(), 0, texSkybox[i]->retrieveFormat(), GL_UNSIGNED_BYTE, &texSkybox[i]->getTexels()[0]);
-        }
-        clearTexSkybox();
+        //texture creation
+        std::vector<const void *> cubeDataPtr = {&skyboxImages[0]->getTexels()[0], &skyboxImages[1]->getTexels()[0], &skyboxImages[2]->getTexels()[0],
+                                                 &skyboxImages[3]->getTexels()[0], &skyboxImages[4]->getTexels()[0], &skyboxImages[5]->getTexels()[0] };
+        auto skyboxTexture = Texture::buildCubeMap(skyboxImages[0]->getWidth(), skyboxImages[0]->getHeight(), skyboxImages[0]->retrieveTextureFormat(), cubeDataPtr);
+        clearSkyboxImages();
 
         //visual
         skyboxShader = ShaderBuilder().createShader("skybox.vert", "", "skybox.frag");
@@ -91,6 +84,7 @@ namespace urchin {
         int diffuseTexUnit = 0;
         ShaderDataSender().sendData(ShaderVar(skyboxShader, "diffuseTexture"), diffuseTexUnit);
 
+        constexpr float SIZE = 10.0f;
         std::vector<Point3<float>> vertexCoord = {
             //x negative:
             Point3<float>(-SIZE, -SIZE, SIZE), Point3<float>(-SIZE, SIZE, SIZE), Point3<float>(-SIZE, SIZE, -SIZE),
@@ -136,18 +130,18 @@ namespace urchin {
         skyboxRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addTexture(TextureReader::build(textureID, TextureType::CUBE_MAP, TextureParam::buildLinear()))
+                ->addTexture(TextureReader::build(skyboxTexture, TextureParam::buildLinear()))
                 ->build();
     }
 
-    void Skybox::clearTexSkybox() {
-        if (texSkybox != nullptr) {
+    void Skybox::clearSkyboxImages() {
+        if (skyboxImages != nullptr) {
             for (std::size_t i = 0; i < 6; i++) {
-                texSkybox[i]->release();
+                skyboxImages[i]->release();
             }
-            delete[] texSkybox;
+            delete[] skyboxImages;
         }
-        texSkybox = nullptr;
+        skyboxImages = nullptr;
     }
 
     void Skybox::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) const {

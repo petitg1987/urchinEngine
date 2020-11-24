@@ -2,6 +2,7 @@
 #define URCHINENGINETEST_TEXTURE_H
 
 #include <vector>
+#include <memory>
 
 #include "graphic/texture/model/TextureType.h"
 #include "graphic/texture/model/TextureFormat.h"
@@ -10,16 +11,19 @@ namespace urchin {
 
     class Texture {
         public:
-            static Texture build2d(unsigned int, unsigned int, TextureFormat, const void *);
-            static Texture build3d(unsigned int, unsigned int, unsigned int, TextureFormat, const void *);
-            static Texture buildCubeMap(unsigned int, unsigned int, TextureFormat, const std::vector<const void *> &);
-
-            void generateMipmap() const;
-
-        private:
             Texture(TextureType textureType, unsigned int, unsigned int, unsigned int, TextureFormat, const std::vector<const void* > &);
             ~Texture();
 
+            static std::shared_ptr<Texture> build2d(unsigned int, unsigned int, TextureFormat, const void *);
+            static std::shared_ptr<Texture> build3d(unsigned int, unsigned int, unsigned int, TextureFormat, const void *);
+            static std::shared_ptr<Texture> buildCubeMap(unsigned int, unsigned int, TextureFormat, const std::vector<const void *> &);
+
+            void generateMipmap() const;
+
+            TextureType getTextureType() const;
+            unsigned int getTextureId() const;
+
+        private:
             unsigned int textureTypeToGlTextureType(TextureType) const;
             unsigned int textureFormatToGlInternalFormat(TextureFormat) const;
             unsigned int textureFormatToGlFormat(TextureFormat) const;

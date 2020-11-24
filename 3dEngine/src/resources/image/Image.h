@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "resources/Resource.h"
+#include "graphic/texture/model/TextureFormat.h"
 
 namespace urchin {
 
@@ -32,6 +33,7 @@ namespace urchin {
             const std::vector<uint16_t> &getTexels16Bits() const;
 
             unsigned int retrieveComponentsCount() const;
+            TextureFormat retrieveTextureFormat() const;
             GLint retrieveInternalFormat() const;
             GLenum retrieveFormat() const;
 
