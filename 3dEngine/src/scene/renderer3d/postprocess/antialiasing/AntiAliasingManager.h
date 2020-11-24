@@ -22,7 +22,7 @@ namespace urchin {
 
             void setupTexture(const std::shared_ptr<Texture> &);
 
-            void onResize(unsigned int, unsigned int);
+            void onResize(unsigned int, unsigned int); //TODO fusion with setupTextures ?
 
             void setQuality(Quality quality);
 

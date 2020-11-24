@@ -25,7 +25,7 @@ namespace urchin {
             void setupTextures(const std::shared_ptr<Texture> &, const std::shared_ptr<Texture> &);
 
             void initiateShaderVariables(const std::unique_ptr<Shader> &);
-            void onResize(unsigned int, unsigned int);
+            void onResize(unsigned int, unsigned int); //TODO fusion with setupTextures ?
             void onCameraProjectionUpdate(const Camera *);
 
             void setTextureSize(AOTextureSize);
