@@ -73,13 +73,13 @@ namespace urchin {
 
             //frame buffer object
             unsigned int fboID;
-            unsigned int ambientOcclusionTexID;
+            std::shared_ptr<Texture> ambientOcclusionTexture;
 
             //ambient occlusion shader
             std::unique_ptr<Shader> ambientOcclusionShader;
             ShaderVar mInverseViewProjectionShaderVar, mProjectionShaderVar, mViewShaderVar;
             ShaderVar resolutionShaderVar;
-            unsigned int noiseTexId;
+            std::shared_ptr<Texture> noiseTexture;
 
             //visual data
             std::shared_ptr<Texture> depthTexture;

@@ -46,9 +46,6 @@ namespace urchin {
             blurSharpness(DEFAULT_BLUR_SHARPNESS),
 
             fboID(0),
-            ambientOcclusionTexID(0),
-
-            noiseTexId(0),
 
             verticalBlurFilter(nullptr),
             horizontalBlurFilter(nullptr),
@@ -60,9 +57,6 @@ namespace urchin {
 
     AmbientOcclusionManager::~AmbientOcclusionManager() {
         glDeleteFramebuffers(1, &fboID);
-        glDeleteTextures(1, &ambientOcclusionTexID);
-
-        glDeleteTextures(1, &noiseTexId);
     }
 
     void AmbientOcclusionManager::createOrUpdateAOShader() {
@@ -85,15 +79,18 @@ namespace urchin {
 
         int depthTexUnit = 0;
         int normalAndAmbientTexUnit = 1;
+        int noiseTexUnit = 2;
         ShaderDataSender()
                 .sendData(ShaderVar(ambientOcclusionShader, "depthTex"), depthTexUnit)
-                .sendData(ShaderVar(ambientOcclusionShader, "normalAndAmbientTex"), normalAndAmbientTexUnit);
+                .sendData(ShaderVar(ambientOcclusionShader, "normalAndAmbientTex"), normalAndAmbientTexUnit)
+                .sendData(ShaderVar(ambientOcclusionShader, "noiseTex"), noiseTexUnit);
 
         generateKernelSamples();
     }
 
     void AmbientOcclusionManager::setupTextures(const std::shared_ptr<Texture> &depthTexture, const std::shared_ptr<Texture> &normalAndAmbientTexture) {
         this->depthTexture = depthTexture;
+        generateNoiseTexture();
 
         std::vector<Point2<float>> vertexCoord = {
                 Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
@@ -103,15 +100,14 @@ namespace urchin {
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
         };
+
         renderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
                 ->addTexture(TextureReader::build(depthTexture, TextureParam::buildNearest()))
                 ->addTexture(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
-                ->addTexture(TextureReader::build(noiseTexId, TextureType::DEFAULT, TextureParam::buildRepeatNearest()))
+                ->addTexture(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest()))
                 ->build();
-
-        generateNoiseTexture();
 
         createOrUpdateAOTexture();
         createOrUpdateAOShader();
@@ -139,15 +135,11 @@ namespace urchin {
             glDrawBuffers(1, fboAttachments);
             glReadBuffer(GL_NONE);
 
-            glDeleteTextures(1, &ambientOcclusionTexID);
-            glGenTextures(1, &ambientOcclusionTexID);
-
             this->textureSizeX = sceneWidth / retrieveTextureSizeFactor();
             this->textureSizeY = sceneHeight / retrieveTextureSizeFactor();
 
-            glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexID);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_R16F, textureSizeX, textureSizeY, 0, GL_RED, GL_FLOAT, nullptr);
-            glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], ambientOcclusionTexID, 0);
+            ambientOcclusionTexture = Texture::build2d(textureSizeX, textureSizeY, TextureFormat::GRAYSCALE_16_FLOAT, nullptr);
+            glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], ambientOcclusionTexture->getTextureId(), 0);
 
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -219,14 +211,7 @@ namespace urchin {
         }
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glGenTextures(1, &noiseTexId);
-        glBindTexture(GL_TEXTURE_2D, noiseTexId);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, noiseTextureSize, noiseTextureSize, 0, GL_RGB, GL_FLOAT, &ssaoNoise[0]);
-
-        renderer->updateTexture(2, TextureReader::build(noiseTexId, TextureType::DEFAULT, TextureParam::buildRepeatNearest()));
-
-        int noiseTexUnit = 2;
-        ShaderDataSender().sendData(ShaderVar(ambientOcclusionShader, "noiseTex"), noiseTexUnit);
+        noiseTexture = Texture::build2d(noiseTextureSize, noiseTextureSize, TextureFormat::RGB_16_FLOAT, &ssaoNoise[0]);
     }
 
     void AmbientOcclusionManager::exportSVG(const std::string &filename, const std::vector<Vector3<float>> &ssaoKernel) const {
@@ -328,7 +313,7 @@ namespace urchin {
             return horizontalBlurFilter->getTextureID();
         }
 
-        return ambientOcclusionTexID;
+        return ambientOcclusionTexture->getTextureId();
     }
 
     void AmbientOcclusionManager::updateAOTexture(const Camera *camera) {
@@ -349,7 +334,7 @@ namespace urchin {
         renderer->draw();
 
         if (isBlurActivated) {
-            verticalBlurFilter->applyOn(ambientOcclusionTexID);
+            verticalBlurFilter->applyOn(ambientOcclusionTexture->getTextureId());
             horizontalBlurFilter->applyOn(verticalBlurFilter->getTextureID());
         }
 
