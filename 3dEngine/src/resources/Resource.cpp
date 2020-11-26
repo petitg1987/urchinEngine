@@ -9,7 +9,7 @@ namespace urchin {
     }
 
     Resource::~Resource() {
-        if (!name.empty()) {
+        if (!name.empty()) { //resource created with ResourceManager
             ResourceManager::instance()->removeResource(name);
         }
     }
@@ -31,6 +31,7 @@ namespace urchin {
     }
 
     void Resource::release() {
+        assert(!name.empty()); //resource created with ResourceManager
         if (--refCount==0) {
             delete this;
         }

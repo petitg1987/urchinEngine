@@ -251,14 +251,14 @@ namespace urchin {
     void TerrainGrass::setMaskTexture(const std::string &grassMaskFilename) {
         this->grassMaskFilename = grassMaskFilename;
 
-        Image *grassMaskImage;
         if (grassMaskFilename.empty()) {
-            grassMaskImage = new Image(1, 1, Image::IMAGE_GRAYSCALE, std::vector<unsigned char>({0}));
+            grassMaskTexture = Image(1, 1, Image::IMAGE_GRAYSCALE, std::vector<unsigned char>({0})).createTexture(false);
         } else {
-            grassMaskImage = MediaManager::instance()->getMedia<Image>(grassMaskFilename);
+            auto *grassMaskImage = MediaManager::instance()->getMedia<Image>(grassMaskFilename);
+            grassMaskTexture = grassMaskImage->createTexture(false);
+            grassMaskImage->release();
         }
-        grassMaskTexture = grassMaskImage->createTexture(false);
-        grassMaskImage->release();
+
     }
 
     float TerrainGrass::getGrassDisplayDistance() const {

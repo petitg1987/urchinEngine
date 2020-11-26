@@ -14,13 +14,13 @@ namespace urchin {
 
     void Material::buildDefaultTextures() {
         if (!diffuseTexture) {
-            auto *defaultDiffuseImage = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({255, 20, 147}));
-            diffuseTexture = defaultDiffuseImage->createTexture(false);
+            Image defaultDiffuseImage(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({255, 20, 147}));
+            diffuseTexture = defaultDiffuseImage.createTexture(false);
         }
 
         if (!normalTexture) {
-            auto *defaultNormalImage = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({127, 127, 255}));
-            normalTexture = defaultNormalImage->createTexture(false);
+            Image defaultNormalImage(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({127, 127, 255}));
+            normalTexture = defaultNormalImage.createTexture(false);
         }
     }
 

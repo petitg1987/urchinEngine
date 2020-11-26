@@ -9,19 +9,17 @@ namespace urchin {
             maskMapFilename(maskMapFilename),
             sRepeat(sRepeat),
             tRepeat(tRepeat) {
-
-        Image *maskImage;
         if (maskMapFilename.empty()) {
-            maskImage = new Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({255, 0, 0, 0}));
+            maskTexture = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({255, 0, 0, 0})).createTexture(false);
         } else {
-            maskImage = MediaManager::instance()->getMedia<Image>(maskMapFilename);
+            auto *maskImage = MediaManager::instance()->getMedia<Image>(maskMapFilename);
             if (maskImage->getImageFormat() != Image::IMAGE_RGBA) {
                 maskImage->release();
                 throw std::runtime_error("Mask texture must have 4 components (RGBA). Components: " + std::to_string(maskImage->retrieveComponentsCount()));
             }
+            maskTexture = maskImage->createTexture(false);
+            maskImage->release();
         }
-        maskTexture = maskImage->createTexture(false);
-        maskImage->release();
 
         initializeMaterial(materialFilenames);
     }

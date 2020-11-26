@@ -50,9 +50,7 @@ namespace urchin {
 
         Vector3<float> fontColor = text->getFont()->getFontColor();
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255)};
-        auto *imgCursorDiffuse = new Image(1, 1, Image::IMAGE_RGB, std::move(cursorColor));
-        texCursorDiffuse = imgCursorDiffuse->createTexture(false);
-        imgCursorDiffuse->release();
+        texCursorDiffuse = Image(1, 1, Image::IMAGE_RGB, std::move(cursorColor)).createTexture(false);
         refreshText(cursorIndex);
         computeCursorPosition();
 

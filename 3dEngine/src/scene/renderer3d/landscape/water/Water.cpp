@@ -66,10 +66,7 @@ namespace urchin {
     }
 
     std::shared_ptr<Texture> Water::buildDefaultTexture(unsigned char r, unsigned char g, unsigned char b) {
-        auto *defaultImage = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({r, g, b}));
-        auto defaultTexture = defaultImage->createTexture(false);
-        defaultImage->release();
-        return defaultTexture;
+        return Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({r, g, b})).createTexture(false);
     }
 
     void Water::generateVertex() {
