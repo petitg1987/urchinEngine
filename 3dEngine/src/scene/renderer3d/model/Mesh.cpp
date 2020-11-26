@@ -10,7 +10,7 @@ namespace urchin {
             constMesh(constMesh) {
 
         TextureParam::ReadMode textureReadMode = constMesh->getMaterial()->isRepeatableTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
-        TextureParam textureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY);
+        TextureParam textureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
 
         meshRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
                 ->enableDepthTest()

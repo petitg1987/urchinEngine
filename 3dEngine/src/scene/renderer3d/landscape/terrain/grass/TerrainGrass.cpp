@@ -213,17 +213,14 @@ namespace urchin {
 
     void TerrainGrass::createRenderers(const std::vector<TerrainGrassQuadtree *> &leafGrassPatches) {
         if(grassTexture) {
-            TextureParam grassTextureParam = TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY);
-            TextureParam grassMaskTextureParam = TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::NO_ANISOTROPY);
-
             for (auto *grassQuadtree : leafGrassPatches) {
                 std::unique_ptr<GenericRenderer> renderer = std::make_unique<GenericRendererBuilder>(ShapeType::POINT)
                         ->enableDepthTest()
                         ->disableCullFace()
                         ->addData(&grassQuadtree->getGrassVertices())
                         ->addData(&grassQuadtree->getGrassNormals())
-                        ->addTexture(TextureReader::build(grassTexture, grassTextureParam))
-                        ->addTexture(TextureReader::build(grassMaskTexture, grassMaskTextureParam))
+                        ->addTexture(TextureReader::build(grassTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
+                        ->addTexture(TextureReader::build(grassMaskTexture, TextureParam::buildLinear()))
                         ->build();
 
                 grassQuadtree->setRenderer(std::move(renderer));

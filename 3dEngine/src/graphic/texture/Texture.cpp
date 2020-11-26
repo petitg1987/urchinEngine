@@ -7,6 +7,7 @@
 namespace urchin {
 
     Texture::Texture(TextureType textureType, unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const std::vector<const void *> &dataPtr) :
+            pHasMipmap(false),
             textureType(textureType),
             width(width),
             height(height),
@@ -63,11 +64,18 @@ namespace urchin {
         return std::make_shared<Texture>(TextureType::CUBE_MAP, width, height, 1, format, cubeDataPtr);
     }
 
-    void Texture::generateMipmap() const {
-        unsigned int glTextureType = textureTypeToGlTextureType(textureType);
+    void Texture::generateMipmap() {
+        assert(!pHasMipmap);
 
+        unsigned int glTextureType = textureTypeToGlTextureType(textureType);
         glBindTexture(glTextureType, textureId);
         glGenerateMipmap(glTextureType);
+
+        pHasMipmap = true;
+    }
+
+    bool Texture::hasMipmap() const {
+        return pHasMipmap;
     }
 
     TextureType Texture::getTextureType() const {

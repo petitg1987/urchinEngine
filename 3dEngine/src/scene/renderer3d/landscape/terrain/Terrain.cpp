@@ -92,7 +92,7 @@ namespace urchin {
             for(auto &material : material->getMaterials()) {
                 if (material) {
                     TextureParam::ReadMode textureReadMode = material->isRepeatableTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
-                    TextureParam textureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY);
+                    TextureParam textureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
                     terrainRenderer->addAdditionalTexture(TextureReader::build(material->getDiffuseTexture(), textureParam));
                 }
             }

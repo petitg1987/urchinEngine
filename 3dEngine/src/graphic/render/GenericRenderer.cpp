@@ -16,7 +16,7 @@ namespace urchin {
             cullFaceEnabled(rendererBuilder->isCullFaceEnabled()),
             polygonMode(rendererBuilder->getPolygonMode()),
             outlineSize(rendererBuilder->getOutlineSize()),
-            textures(rendererBuilder->getTextures()),
+            textureReaders(rendererBuilder->getTextures()),
             bNeedRenderTextures(true),
             vertexArrayObject(0) {
 
@@ -25,10 +25,10 @@ namespace urchin {
         glGenVertexArrays(1, &vertexArrayObject);
         initializeDisplay();
 
-        for (const auto &texture : textures) {
-            initializeTexture(texture);
+        for (const auto &textureReader : textureReaders) {
+            initializeTexture(textureReader);
         }
-        additionalTextures.reserve(2); //estimated memory size
+        additionalTextureReaders.reserve(2); //estimated memory size
     }
 
     GenericRenderer::~GenericRenderer() {
@@ -57,22 +57,22 @@ namespace urchin {
         return countResult;
     }
 
-    void GenericRenderer::initializeTexture(const TextureReader &texture) const {
-        unsigned int textureType = textureTypeToGlType(texture.getType());
-        glBindTexture(textureType, texture.getId());
+    void GenericRenderer::initializeTexture(const TextureReader &textureReader) const {
+        unsigned int textureType = textureTypeToGlType(textureReader.getTexture()->getTextureType());
+        glBindTexture(textureType, textureReader.getTexture()->getTextureId());
 
-        unsigned int readMode = texture.getParam().getGlReadMode();
+        unsigned int readMode = textureReader.getParam().getGlReadMode();
         glTexParameteri(textureType, GL_TEXTURE_WRAP_S, readMode);
         glTexParameteri(textureType, GL_TEXTURE_WRAP_T, readMode);
         if (textureType == GL_TEXTURE_CUBE_MAP) {
             glTexParameteri(textureType, GL_TEXTURE_WRAP_R, readMode);
         }
 
-        glTexParameteri(textureType, GL_TEXTURE_MIN_FILTER, texture.getParam().getGlReadQualityMinifyingFilter());
-        glTexParameteri(textureType, GL_TEXTURE_MAG_FILTER, texture.getParam().getGlReadQualityMagnificationFilter());
+        glTexParameteri(textureType, GL_TEXTURE_MIN_FILTER, textureReader.getParam().getGlReadQuality(textureReader.getTexture()->hasMipmap()));
+        glTexParameteri(textureType, GL_TEXTURE_MAG_FILTER, textureReader.getParam().getGlReadQuality(false));
 
-        if (texture.getParam().needAnisotropy() && GLEW_EXT_texture_filter_anisotropic) {
-            float maxAnisotropy = 1.0;
+        if (textureReader.getParam().needAnisotropy() && GLEW_EXT_texture_filter_anisotropic) {
+            float maxAnisotropy = 1.0f;
             glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropy);
             glTexParameterf(textureType, GL_TEXTURE_MAX_ANISOTROPY_EXT, maxAnisotropy);
         }
@@ -186,10 +186,10 @@ namespace urchin {
     }
 
     void GenericRenderer::updateTexture(std::size_t textureIndex, const TextureReader &texture) {
-        assert(textures.size() > textureIndex);
+        assert(textureReaders.size() > textureIndex);
 
         initializeTexture(texture);
-        textures[textureIndex] = texture;
+        textureReaders[textureIndex] = texture;
     }
 
     /**
@@ -198,12 +198,12 @@ namespace urchin {
     unsigned int GenericRenderer::addAdditionalTexture(const TextureReader &texture) {
         initializeTexture(texture);
 
-        additionalTextures.push_back(texture);
-        return textures.size() + additionalTextures.size() - 1;
+        additionalTextureReaders.push_back(texture);
+        return textureReaders.size() + additionalTextureReaders.size() - 1;
     }
 
     void GenericRenderer::clearAdditionalTextures() {
-        additionalTextures.clear();
+        additionalTextureReaders.clear();
     }
 
     void GenericRenderer::renderTextures(bool bNeedRenderTextures) {
@@ -213,13 +213,13 @@ namespace urchin {
     void GenericRenderer::draw() const {
         if(bNeedRenderTextures) {
             unsigned int textureUnit = 0;
-            for (const auto &texture : textures) {
+            for (const auto &textureReader : textureReaders) {
                 glActiveTexture(GL_TEXTURE0 + textureUnit++);
-                glBindTexture(textureTypeToGlType(texture.getType()), texture.getId());
+                glBindTexture(textureTypeToGlType(textureReader.getTexture()->getTextureType()), textureReader.getTexture()->getTextureId());
             }
-            for (const auto &additionalTexture : additionalTextures) {
+            for (const auto &textureReader : additionalTextureReaders) {
                 glActiveTexture(GL_TEXTURE0 + textureUnit++);
-                glBindTexture(textureTypeToGlType(additionalTexture.getType()), additionalTexture.getId());
+                glBindTexture(textureTypeToGlType(textureReader.getTexture()->getTextureType()), textureReader.getTexture()->getTextureId());
             }
         }
 

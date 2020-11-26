@@ -71,7 +71,7 @@ namespace urchin {
             PolygonMode polygonMode;
             float outlineSize;
 
-            std::vector<TextureReader> textures, additionalTextures;
+            std::vector<TextureReader> textureReaders, additionalTextureReaders;
             bool bNeedRenderTextures;
 
             unsigned int vertexArrayObject;

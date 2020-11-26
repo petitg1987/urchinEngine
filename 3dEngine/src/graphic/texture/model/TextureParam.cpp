@@ -41,24 +41,15 @@ namespace urchin {
         throw std::runtime_error("Unknown texture read mode: " + std::to_string(readMode));
     }
 
-    unsigned int TextureParam::getGlReadQualityMinifyingFilter() const {
-        if (readQuality == ReadQuality::NEAREST) {
+    unsigned int TextureParam::getGlReadQuality(bool forMipmap) const {
+        if (readQuality == ReadQuality::NEAREST && !forMipmap) {
             return GL_NEAREST;
-        } else if (readQuality == ReadQuality::LINEAR) {
+        } else if (readQuality == ReadQuality::LINEAR && !forMipmap) {
             return GL_LINEAR;
-        } else if (readQuality == ReadQuality::NEAREST_MIPMAP) {
+        } else if (readQuality == ReadQuality::NEAREST && forMipmap) {
             return GL_NEAREST_MIPMAP_NEAREST;
-        } else if (readQuality == ReadQuality::LINEAR_MIPMAP) {
+        } else if (readQuality == ReadQuality::LINEAR && forMipmap) {
             return GL_LINEAR_MIPMAP_LINEAR;
-        }
-        throw std::runtime_error("Unknown texture read quality: " + std::to_string(readQuality));
-    }
-
-    unsigned int TextureParam::getGlReadQualityMagnificationFilter() const {
-        if (readQuality == ReadQuality::NEAREST || readQuality == ReadQuality::NEAREST_MIPMAP) {
-            return GL_NEAREST;
-        } else if (readQuality == ReadQuality::LINEAR || readQuality == ReadQuality::LINEAR_MIPMAP) {
-            return GL_LINEAR;
         }
         throw std::runtime_error("Unknown texture read quality: " + std::to_string(readQuality));
     }

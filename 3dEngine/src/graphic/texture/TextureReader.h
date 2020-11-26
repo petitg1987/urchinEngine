@@ -11,8 +11,7 @@ namespace urchin {
         public:
             static TextureReader build(std::shared_ptr<Texture>, TextureParam);
 
-            unsigned int getId() const;
-            TextureType getType() const;
+            const std::shared_ptr<Texture> &getTexture() const;
             TextureParam getParam() const;
 
         private:

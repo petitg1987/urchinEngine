@@ -12,12 +12,8 @@ namespace urchin {
         return TextureReader(std::move(texture), textureParam);
     }
 
-    unsigned int TextureReader::getId() const {
-        return texture->getTextureId();
-    }
-
-    TextureType TextureReader::getType() const {
-        return texture->getTextureType();
+    const std::shared_ptr<Texture> &TextureReader::getTexture() const {
+        return texture;
     }
 
     TextureParam TextureReader::getParam() const {

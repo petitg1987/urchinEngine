@@ -18,8 +18,9 @@ namespace urchin {
             static std::shared_ptr<Texture> buildArray(unsigned int, unsigned int, unsigned int, TextureFormat, const void *);
             static std::shared_ptr<Texture> buildCubeMap(unsigned int, unsigned int, TextureFormat, const std::vector<const void *> &);
 
-            void generateMipmap() const;
+            void generateMipmap();
 
+            bool hasMipmap() const;
             TextureType getTextureType() const;
             unsigned int getWidth() const;
             unsigned int getHeight() const;
@@ -32,9 +33,11 @@ namespace urchin {
             unsigned int textureFormatToGlFormat(TextureFormat) const;
             unsigned int textureFormatToGlPixelType(TextureFormat) const;
 
+            bool pHasMipmap;
             TextureType textureType;
             unsigned int width, height, layer;
             TextureFormat format;
+
             unsigned int textureId;
     };
 
