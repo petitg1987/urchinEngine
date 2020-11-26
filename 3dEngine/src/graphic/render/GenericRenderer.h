@@ -16,6 +16,8 @@ namespace urchin {
 
     class GenericRenderer {
         public:
+            static const unsigned int PRIMITIVE_RESTART_INDEX_VALUE;
+
             struct Data {
                 DataType dataType = DataType::FLOAT;
                 DataDimension dataDimension = DataDimension::TWO_DIMENSION;
@@ -26,6 +28,7 @@ namespace urchin {
             struct Indices {
                 const void *ptr = nullptr;
                 unsigned int indicesCount = 0;
+                bool hasPrimitiveRestartIndex = false;
             };
 
             explicit GenericRenderer(const GenericRendererBuilder *);

@@ -6,8 +6,6 @@
 
 #include "resources/image/Image.h"
 
-#define RESTART_INDEX 4294967295 //(2^32)-1
-
 namespace urchin {
 
     class TerrainMesh {

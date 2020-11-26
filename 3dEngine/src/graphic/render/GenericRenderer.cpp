@@ -7,6 +7,9 @@
 
 namespace urchin {
 
+    //static
+    const unsigned int GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE = 4294967295; //(2^32)-1;
+
     GenericRenderer::GenericRenderer(const GenericRendererBuilder *rendererBuilder) :
             shapeType(rendererBuilder->getShapeType()),
             data(rendererBuilder->getData()),
@@ -241,7 +244,16 @@ namespace urchin {
 
         glBindVertexArray(vertexArrayObject);
         if(indices.indicesCount > 0) {
+            if(indices.hasPrimitiveRestartIndex) {
+                glEnable(GL_PRIMITIVE_RESTART);
+                glPrimitiveRestartIndex(GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE);
+            }
+
             glDrawElements(shapeTypeToGlType(shapeType), verticesCount, GL_UNSIGNED_INT, nullptr);
+
+            if(indices.hasPrimitiveRestartIndex) {
+                glDisable(GL_PRIMITIVE_RESTART);
+            }
         } else {
             glDrawArrays(shapeTypeToGlType(shapeType), 0, verticesCount);
         }

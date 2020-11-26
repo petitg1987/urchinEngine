@@ -4,6 +4,7 @@
 
 #include "TerrainMesh.h"
 #include "resources/MediaManager.h"
+#include "graphic/render/GenericRenderer.h"
 
 #define FRL_FILE_EXTENSION ".frl" //Extension for FRL files (Fast Resource Loading)
 #define TERRAIN_FRL_FILE_VERSION 1
@@ -31,7 +32,7 @@ namespace urchin {
         std::ifstream terrainFrlFile;
         terrainFrlFile.open(terrainFrlFilePath, std::ios::in | std::ios::binary);
 
-        if (terrainFrlFile.is_open() && readVersion(terrainFrlFile)==TERRAIN_FRL_FILE_VERSION && readMd5(terrainFrlFile)==terrainMd5Sum) {
+        if (terrainFrlFile.is_open() && readVersion(terrainFrlFile) == TERRAIN_FRL_FILE_VERSION && readMd5(terrainFrlFile) == terrainMd5Sum) {
             loadTerrainMeshFile(terrainFrlFile);
         } else {
             terrainFrlFile.close();
@@ -137,7 +138,7 @@ namespace urchin {
                 indices.push_back(x + xSize * z);
             }
 
-            indices.push_back(RESTART_INDEX);
+            indices.push_back(GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE);
         }
         return indices;
     }
@@ -152,15 +153,15 @@ namespace urchin {
         normalTriangles.resize(totalTriangles);
         unsigned int numLoopNormalTriangle = indices.size() - 2;
         std::vector<std::thread> threadsNormalTriangle(NUM_THREADS);
-        for (unsigned int threadI=0; threadI<NUM_THREADS; threadI++) {
+        for (unsigned int threadI = 0; threadI < NUM_THREADS; threadI++) {
             unsigned int beginI = threadI * numLoopNormalTriangle / NUM_THREADS;
-            unsigned int endI = (threadI + 1)==NUM_THREADS ? numLoopNormalTriangle : (threadI + 1) * numLoopNormalTriangle / NUM_THREADS;
+            unsigned int endI = (threadI + 1) == NUM_THREADS ? numLoopNormalTriangle : (threadI + 1) * numLoopNormalTriangle / NUM_THREADS;
             threadsNormalTriangle[threadI] = std::thread([&, beginI, endI, xLineQuantity]() {
-                for (unsigned int i = beginI; i<endI; i++) {
-                    if (indices[i+2] != RESTART_INDEX) {
+                for (unsigned int i = beginI; i < endI; i++) {
+                    if (indices[i + 2] != GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE) {
                         Point3<float> point1 = vertices[indices[i]];
-                        Point3<float> point2 = vertices[indices[i+1]];
-                        Point3<float> point3 = vertices[indices[i+2]];
+                        Point3<float> point2 = vertices[indices[i + 1]];
+                        Point3<float> point3 = vertices[indices[i + 2]];
 
                         bool isCwTriangle = (i % xLineQuantity) % 2 == 0;
                         Vector3<float> normal;
@@ -185,9 +186,9 @@ namespace urchin {
         normals.resize(computeNumberNormals());
         unsigned int numLoopNormalVertex = vertices.size();
         std::vector<std::thread> threadsNormalVertex(NUM_THREADS);
-        for (unsigned int threadI=0; threadI<NUM_THREADS; threadI++) {
+        for (unsigned int threadI = 0; threadI < NUM_THREADS; threadI++) {
             unsigned int beginI = threadI * numLoopNormalVertex / NUM_THREADS;
-            unsigned int endI = (threadI + 1)==NUM_THREADS ? numLoopNormalVertex : (threadI + 1) * numLoopNormalVertex / NUM_THREADS;
+            unsigned int endI = (threadI + 1) == NUM_THREADS ? numLoopNormalVertex : (threadI + 1) * numLoopNormalVertex / NUM_THREADS;
 
             threadsNormalVertex[threadI] = std::thread([&, beginI, endI]() {
                 for (unsigned int i = beginI; i<endI; i++) {
@@ -258,9 +259,9 @@ namespace urchin {
         writeVersion(file, TERRAIN_FRL_FILE_VERSION);
         writeMd5(file, md5);
 
-        file.write(reinterpret_cast<const char*>(&vertices[0]), vertices.size()*sizeof(float)*3);
-        file.write(reinterpret_cast<const char*>(&indices[0]), indices.size()*sizeof(unsigned int));
-        file.write(reinterpret_cast<const char*>(&normals[0]), normals.size()*sizeof(float)*3);
+        file.write(reinterpret_cast<const char*>(&vertices[0]), vertices.size() * sizeof(float) * 3);
+        file.write(reinterpret_cast<const char*>(&indices[0]), indices.size() * sizeof(unsigned int));
+        file.write(reinterpret_cast<const char*>(&normals[0]), normals.size() * sizeof(float) * 3);
 
         file.close();
     }

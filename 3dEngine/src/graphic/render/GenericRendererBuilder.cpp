@@ -40,6 +40,15 @@ namespace urchin {
     GenericRendererBuilder *GenericRendererBuilder::indices(const std::vector<unsigned int> *indices) {
         pIndices.ptr = &(*indices)[0];
         pIndices.indicesCount = indices->size();
+        pIndices.hasPrimitiveRestartIndex = false;
+
+        for(unsigned int index : (*indices)) {
+            if(index == GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE) {
+                pIndices.hasPrimitiveRestartIndex = true;
+                break;
+            }
+        }
+
         return this;
     }
 

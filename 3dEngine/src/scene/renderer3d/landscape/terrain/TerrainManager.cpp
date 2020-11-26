@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <algorithm>
 
 #include "TerrainManager.h"
@@ -49,13 +48,8 @@ namespace urchin {
     void TerrainManager::display(const Camera *camera, float dt) const {
         ScopeProfiler profiler("3d", "terrainDisplay");
 
-        glEnable(GL_PRIMITIVE_RESTART);
-        glPrimitiveRestartIndex(RESTART_INDEX);
-
         for (const auto terrain : terrains) {
             terrain->display(camera, dt);
         }
-
-        glDisable(GL_PRIMITIVE_RESTART);
     }
 }
