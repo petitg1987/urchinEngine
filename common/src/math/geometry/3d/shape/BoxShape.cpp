@@ -18,7 +18,7 @@ namespace urchin {
             halfSizes(halfSizes) {
         assert(halfSizes.X >= 0.0);
         assert(halfSizes.Y >= 0.0);
-        assert(halfSizes.Z >= 0.0);
+        assert(halfSizes.Z >= 0.0); //TODO box of zero created !
     }
 
     template<class T> T BoxShape<T>::getHalfSize(unsigned int index) const {
