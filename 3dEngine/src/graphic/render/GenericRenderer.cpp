@@ -57,7 +57,7 @@ namespace urchin {
         return countResult;
     }
 
-    void GenericRenderer::initializeTexture(TextureReader texture) const {
+    void GenericRenderer::initializeTexture(const TextureReader &texture) const {
         unsigned int textureType = textureTypeToGlType(texture.getType());
         glBindTexture(textureType, texture.getId());
 
@@ -154,7 +154,7 @@ namespace urchin {
         throw std::runtime_error("Unknown data dimension: " + std::to_string(dataDimension));
     }
 
-    unsigned int GenericRenderer::textureTypeToGlType(TextureType textureType) const { //TODO use method from Texture class ?
+    unsigned int GenericRenderer::textureTypeToGlType(TextureType textureType) const {
         if (textureType == TextureType::DEFAULT) {
             return GL_TEXTURE_2D;
         } else if (textureType == TextureType::ARRAY) {
@@ -185,7 +185,7 @@ namespace urchin {
         updateData(pointsCoordIndex, reinterpret_cast<const std::vector<Point3<float>> *>(dataPtr));
     }
 
-    void GenericRenderer::updateTexture(std::size_t textureIndex, TextureReader texture) {
+    void GenericRenderer::updateTexture(std::size_t textureIndex, const TextureReader &texture) {
         assert(textures.size() > textureIndex);
 
         initializeTexture(texture);
@@ -195,7 +195,7 @@ namespace urchin {
     /**
      * @return Texture unit
      */
-    unsigned int GenericRenderer::addAdditionalTexture(TextureReader texture) {
+    unsigned int GenericRenderer::addAdditionalTexture(const TextureReader &texture) {
         initializeTexture(texture);
 
         additionalTextures.push_back(texture);

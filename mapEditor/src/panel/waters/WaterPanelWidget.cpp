@@ -301,8 +301,8 @@ namespace urchin {
         this->waterColorG->setValue(water->getWaterColor().Y);
         this->waterColorB->setValue(water->getWaterColor().Z);
 
-        this->normalTextureFilenameText->setText(QString::fromStdString(water->getNormalTexture()->getName()));
-        this->dudvMapFilenameText->setText(QString::fromStdString(water->getDudvMap()->getName()));
+        this->normalTextureFilenameText->setText(QString::fromStdString(water->getNormalFilename()));
+        this->dudvMapFilenameText->setText(QString::fromStdString(water->getDudvFilename()));
 
         this->waveSpeed->setValue(water->getWaveSpeed());
         this->waveStrength->setValue(water->getWaveStrength());
