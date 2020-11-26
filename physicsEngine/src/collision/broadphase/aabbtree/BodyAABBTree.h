@@ -34,7 +34,7 @@ namespace urchin {
             void removeAlternativePairContainerReferences(const AbstractWorkBody *, PairContainer *);
 
             void computeWorldBoundary();
-            void controlBoundaries(AABBNode<AbstractWorkBody *> *);
+            void controlBoundaries(AABBNode<AbstractWorkBody *> *) const;
 
             PairContainer *defaultPairContainer;
 

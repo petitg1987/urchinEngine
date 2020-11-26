@@ -123,18 +123,18 @@ namespace urchin {
         minYBoundary -= worldHeight * BOUNDARIES_MARGIN_PERCENTAGE;
     }
 
-    void BodyAABBTree::controlBoundaries(AABBNode<AbstractWorkBody *> *leafNode) {
+    void BodyAABBTree::controlBoundaries(AABBNode<AbstractWorkBody *> *leafNode) const {
         const AABBox<float> &bodyAABBox = leafNode->getNodeData()->retrieveObjectAABBox();
 
         if (bodyAABBox.getMax().Y < minYBoundary) {
             AbstractWorkBody *body = leafNode->getNodeData()->getNodeObject();
+            if (!body->isStatic()) {
+                std::stringstream logStream;
+                logStream<<"Body "<<body->getId()<<" is below the limit of "<<std::to_string(minYBoundary)<<": "<<body->getPosition();
+                Logger::logger().log(Logger::CriticalityLevel::WARNING, logStream.str());
 
-            std::stringstream logStream;
-            logStream<<"Body "<<body->getId()<<" is below the limit of "<<std::to_string(minYBoundary)<<": "<<body->getPosition();
-            Logger::logger().log(Logger::CriticalityLevel::WARNING, logStream.str());
-
-            body->setIsStatic(true);
-            body->setPosition(Point3<float>(body->getPosition().X, minYBoundary + bodyAABBox.getHalfSizes().Y + 0.01f, body->getPosition().Z));
+                body->setIsStatic(true);
+            }
         }
     }
 }

@@ -49,11 +49,11 @@ void FallingObjectIT::fallForever() {
     bodyManager->addBody(planeBody);
     auto *collisionWorld = new CollisionWorld(bodyManager);
 
-    for (std::size_t i=0; i<500; ++i) {
+    for (std::size_t i = 0; i < 500; ++i) {
         collisionWorld->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
     }
 
-    AssertHelper::assertTrue(cubeBody->getTransform().getPosition().Y > -3.0f, "Check cube doesn't fall forever");
+    AssertHelper::assertTrue(cubeBody->getTransform().getPosition().Y > -4.0f, "Check cube doesn't fall forever");
     AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it goes outside the world limits");
     std::string logValue = Logger::logger().retrieveContent(std::numeric_limits<unsigned long>::max());
     AssertHelper::assertTrue(logValue.find("(WW) Body cube is below the limit of") != std::string::npos);

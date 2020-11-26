@@ -65,24 +65,26 @@ namespace urchin {
     void PhysicsCharacterController::update(float dt) {
         ScopeProfiler profiler("physics", "charactCtrlExec");
 
-        //setup values
-        setup(dt);
+        if(!ghostBody->isStatic()) {
+            //setup values
+            setup(dt);
 
-        //recover from penetration
-        recoverFromPenetration(dt);
+            //recover from penetration
+            recoverFromPenetration(dt);
 
-        //compute values
-        slopeInPercentage = 0.0f;
-        if (isOnGround) {
-            verticalSpeed = 0.0f;
-            slopeInPercentage = computeSlope();
+            //compute values
+            slopeInPercentage = 0.0f;
+            if (isOnGround) {
+                verticalSpeed = 0.0f;
+                slopeInPercentage = computeSlope();
+            }
+            if (hitRoof) {
+                verticalSpeed = 0.0f;
+            }
+
+            //set new transform on character
+            physicsCharacter->updateTransform(ghostBody->getPhysicsTransform());
         }
-        if (hitRoof) {
-            verticalSpeed = 0.0f;
-        }
-
-        //set new transform on character
-        physicsCharacter->updateTransform(ghostBody->getPhysicsTransform());
     }
 
     void PhysicsCharacterController::setup(float dt) {
