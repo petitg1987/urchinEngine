@@ -200,6 +200,9 @@ namespace urchin {
     }
 
     void GenericRenderer::draw() const {
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
+
         if(bNeedRenderTextures) {
             unsigned int textureUnit = 0;
             for (const auto &textureReader : textureReaders) {

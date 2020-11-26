@@ -532,10 +532,9 @@ namespace urchin {
     void ShadowManager::updateShadowMaps() {
         ScopeProfiler profiler("3d", "updateShadowMap");
 
-        glBindTexture(GL_TEXTURE_2D, 0); //TODO remove ?
+        glViewport(0, 0, shadowMapResolution, shadowMapResolution);
 
         for (auto &shadowData : shadowDatas) {
-            glViewport(0, 0, shadowMapResolution, shadowMapResolution);
             glBindFramebuffer(GL_FRAMEBUFFER, shadowData.second->getFboID());
             glClear((unsigned int)GL_DEPTH_BUFFER_BIT | (unsigned int)GL_COLOR_BUFFER_BIT);
 
@@ -549,7 +548,6 @@ namespace urchin {
         }
 
         glViewport(0, 0, sceneWidth, sceneHeight);
-        glBindTexture(GL_TEXTURE_2D_ARRAY, 0); //TODO remove ?
     }
 
     void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer> &lightingRenderer) {
