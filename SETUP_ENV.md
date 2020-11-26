@@ -3,9 +3,9 @@
   * `sudo apt install qt5-default qtbase5-dev libglew-dev libopenal-dev libsndfile1-dev libfreetype6-dev libcppunit-dev libcurl4-gnutls-dev`
 * Configure system to activate core file:
   * Edit `/etc/security/limits.conf`
-  * Add / update: `*               soft    core            unlimited`
+  * Add / change to: `*               soft    core            unlimited`
   * Restart computer
-  * Check with: `ulimit -a`: "core file size" must be unlimited
+  * Check with `ulimit -a`: "core file size" must be unlimited
 
 # Windows
 * Mingw:
