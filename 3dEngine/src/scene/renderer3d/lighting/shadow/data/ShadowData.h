@@ -23,14 +23,14 @@ namespace urchin {
             void setFboID(unsigned int);
             unsigned int getFboID() const;
 
-            void setDepthTextureID(unsigned int);
-            unsigned int getDepthTextureID() const;
-            void setShadowMapTextureID(unsigned int);
-            unsigned int getShadowMapTextureID() const;
+            void setDepthTexture(const std::shared_ptr<Texture> &);
+            const std::shared_ptr<Texture> & getDepthTexture() const;
+            void setShadowMapTexture(const std::shared_ptr<Texture> &);
+            const std::shared_ptr<Texture> &getShadowMapTexture() const;
 
             void addTextureFilter(std::unique_ptr<TextureFilter>);
             void applyTextureFilters();
-            unsigned int getFilteredShadowMapTextureID() const;
+            const std::shared_ptr<Texture> &getFilteredShadowMapTexture() const;
 
             void setLightViewMatrix(const Matrix4<float> &);
             const Matrix4<float> &getLightViewMatrix() const;
@@ -45,8 +45,8 @@ namespace urchin {
             const Light *const light;
 
             unsigned int fboID; //frame buffer object ID containing shadow map(s)
-            unsigned int depthTextureID; //depth texture ID
-            unsigned int shadowMapTextureID; //shadow map texture ID (variance shadow map)
+            std::shared_ptr<Texture> depthTexture; //depth texture
+            std::shared_ptr<Texture> shadowMapTexture; //shadow map texture (variance shadow map)
 
             std::vector<std::unique_ptr<const TextureFilter>> textureFilters; //shadow map filters
 

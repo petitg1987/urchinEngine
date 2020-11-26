@@ -138,7 +138,7 @@ namespace urchin {
             this->textureSizeX = sceneWidth / retrieveTextureSizeFactor();
             this->textureSizeY = sceneHeight / retrieveTextureSizeFactor();
 
-            ambientOcclusionTexture = Texture::build2d(textureSizeX, textureSizeY, TextureFormat::GRAYSCALE_16_FLOAT, nullptr);
+            ambientOcclusionTexture = Texture::build(textureSizeX, textureSizeY, TextureFormat::GRAYSCALE_16_FLOAT, nullptr);
             glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], ambientOcclusionTexture->getTextureId(), 0);
 
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -146,8 +146,7 @@ namespace urchin {
             verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>()
                     ->textureSize(textureSizeX, textureSizeY)
                     ->textureType(TextureType::DEFAULT)
-                    ->textureInternalFormat(GL_R16F)
-                    ->textureFormat(GL_RED)
+                    ->textureFormat(TextureFormat::GRAYSCALE_16_FLOAT)
                     ->blurDirection(BilateralBlurFilterBuilder::VERTICAL_BLUR)
                     ->blurSize(blurSize)
                     ->blurSharpness(blurSharpness)
@@ -157,8 +156,7 @@ namespace urchin {
             horizontalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>()
                     ->textureSize(textureSizeX, textureSizeY)
                     ->textureType(TextureType::DEFAULT)
-                    ->textureInternalFormat(GL_R16F)
-                    ->textureFormat(GL_RED)
+                    ->textureFormat(TextureFormat::GRAYSCALE_16_FLOAT)
                     ->blurDirection(BilateralBlurFilterBuilder::HORIZONTAL_BLUR)
                     ->blurSize(blurSize)
                     ->blurSharpness(blurSharpness)
@@ -211,7 +209,7 @@ namespace urchin {
         }
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        noiseTexture = Texture::build2d(noiseTextureSize, noiseTextureSize, TextureFormat::RGB_16_FLOAT, &ssaoNoise[0]);
+        noiseTexture = Texture::build(noiseTextureSize, noiseTextureSize, TextureFormat::RGB_16_FLOAT, &ssaoNoise[0]);
     }
 
     void AmbientOcclusionManager::exportSVG(const std::string &filename, const std::vector<Vector3<float>> &ssaoKernel) const {
@@ -308,12 +306,12 @@ namespace urchin {
         throw std::invalid_argument("Unknown texture size value: " + std::to_string(textureSize));
     }
 
-    unsigned int AmbientOcclusionManager::getAmbientOcclusionTextureID() const {
+    const std::shared_ptr<Texture> &AmbientOcclusionManager::getAmbientOcclusionTexture() const {
         if (isBlurActivated) {
-            return horizontalBlurFilter->getTextureID();
+            return horizontalBlurFilter->getTexture();
         }
 
-        return ambientOcclusionTexture->getTextureId();
+        return ambientOcclusionTexture;
     }
 
     void AmbientOcclusionManager::updateAOTexture(const Camera *camera) {
@@ -334,8 +332,8 @@ namespace urchin {
         renderer->draw();
 
         if (isBlurActivated) {
-            verticalBlurFilter->applyOn(ambientOcclusionTexture->getTextureId());
-            horizontalBlurFilter->applyOn(verticalBlurFilter->getTextureID());
+            verticalBlurFilter->applyOn(ambientOcclusionTexture);
+            horizontalBlurFilter->applyOn(verticalBlurFilter->getTexture());
         }
 
         glViewport(0, 0, sceneWidth, sceneHeight);
@@ -343,7 +341,7 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::loadAOTexture(const std::unique_ptr<GenericRenderer> &lightingRenderer) const {
-        unsigned int aoTextureUnit = lightingRenderer->addAdditionalTexture(TextureReader::build(getAmbientOcclusionTextureID(), TextureType::DEFAULT, TextureParam::buildLinear()));
+        unsigned int aoTextureUnit = lightingRenderer->addAdditionalTexture(TextureReader::build(getAmbientOcclusionTexture(), TextureParam::buildLinear()));
         ShaderDataSender().sendData(ambientOcclusionTexShaderVar, static_cast<int>(aoTextureUnit));
     }
 

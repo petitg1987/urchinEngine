@@ -143,13 +143,13 @@ namespace urchin {
 
         //deferred shading
         glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_SCENE]);
-        depthTexture = Texture::build2d(sceneWidth, sceneHeight, TextureFormat::DEPTH_32_FLOAT, nullptr); //depth buffer
+        depthTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::DEPTH_32_FLOAT, nullptr); //depth buffer
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTexture->getTextureId(), 0);
-        diffuseTexture = Texture::build2d(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr); //diffuse buffer
+        diffuseTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr); //diffuse buffer
         glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[0], GL_TEXTURE_2D, diffuseTexture->getTextureId(), 0);
-        normalAndAmbientTexture = Texture::build2d(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr); //normal and ambient factor buffer
+        normalAndAmbientTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr); //normal and ambient factor buffer
         glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[1], GL_TEXTURE_2D, normalAndAmbientTexture->getTextureId(), 0);
-        lightingPassTexture = Texture::build2d(sceneWidth, sceneHeight, TextureFormat::RGB_8_INT, nullptr);
+        lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGB_8_INT, nullptr);
         glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[2], GL_TEXTURE_2D, lightingPassTexture->getTextureId(), 0);
         glReadBuffer(GL_NONE);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -399,8 +399,8 @@ namespace urchin {
         if (DEBUG_DISPLAY_SHADOW_MAP) {
             const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
             const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps-1]
-            unsigned int shadowMapTextureID = shadowManager->getShadowData(firstLight).getShadowMapTextureID();
-            TextureRenderer textureDisplayer(shadowMapTextureID, shadowMapNumber, TextureRenderer::DEFAULT_VALUE);
+            auto shadowMapTexture = shadowManager->getShadowData(firstLight).getShadowMapTexture();
+            TextureRenderer textureDisplayer(shadowMapTexture->getTextureId(), shadowMapNumber, TextureRenderer::DEFAULT_VALUE); //TODO accept Texture in construction !
             textureDisplayer.setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
             textureDisplayer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureDisplayer.display();
@@ -408,7 +408,7 @@ namespace urchin {
 
         if (DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER) {
             float ambientOcclusionIntensity = 10.0f;
-            TextureRenderer textureRenderer(ambientOcclusionManager->getAmbientOcclusionTextureID(), TextureRenderer::INVERSE_GRAYSCALE_VALUE, ambientOcclusionIntensity);
+            TextureRenderer textureRenderer(ambientOcclusionManager->getAmbientOcclusionTexture()->getTextureId(), TextureRenderer::INVERSE_GRAYSCALE_VALUE, ambientOcclusionIntensity); //TODO accept Texture in construction !
             textureRenderer.setPosition(TextureRenderer::RIGHT, TextureRenderer::BOTTOM);
             textureRenderer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureRenderer.display();

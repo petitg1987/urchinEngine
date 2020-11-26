@@ -8,9 +8,7 @@ namespace urchin {
 
     ShadowData::ShadowData(const Light *light, unsigned int nbFrustumSplit) :
             light(light),
-            fboID(0),
-            depthTextureID(0),
-            shadowMapTextureID(0) {
+            fboID(0) {
         for (unsigned int frustumSplitIndex =0; frustumSplitIndex<nbFrustumSplit; ++frustumSplitIndex) {
             frustumShadowData.push_back(new FrustumShadowData(frustumSplitIndex));
         }
@@ -22,8 +20,6 @@ namespace urchin {
         }
 
         glDeleteFramebuffers(1, &fboID);
-        glDeleteTextures(1, &depthTextureID);
-        glDeleteTextures(1, &shadowMapTextureID);
     }
 
     void ShadowData::setFboID(unsigned int fboID) {
@@ -34,26 +30,26 @@ namespace urchin {
         return fboID;
     }
 
-    void ShadowData::setDepthTextureID(unsigned int depthTextureID) {
-        this->depthTextureID = depthTextureID;
+    void ShadowData::setDepthTexture(const std::shared_ptr<Texture> &depthTexture) {
+        this->depthTexture = depthTexture;
     }
 
-    unsigned int ShadowData::getDepthTextureID() const {
-        return depthTextureID;
-    }
-
-    /**
-     * @param shadowMapTextureID Shadow map texture ID (variance shadow map)
-     */
-    void ShadowData::setShadowMapTextureID(unsigned int shadowMapTextureID) {
-        this->shadowMapTextureID = shadowMapTextureID;
+    const std::shared_ptr<Texture> &ShadowData::getDepthTexture() const {
+        return depthTexture;
     }
 
     /**
-     * Returns shadow map texture ID (variance shadow map)
+     * @param shadowMapTexture Shadow map texture (variance shadow map)
      */
-    unsigned int ShadowData::getShadowMapTextureID() const {
-        return shadowMapTextureID;
+    void ShadowData::setShadowMapTexture(const std::shared_ptr<Texture> &shadowMapTexture) {
+        this->shadowMapTexture = shadowMapTexture;
+    }
+
+    /**
+     * Returns shadow map texture (variance shadow map)
+     */
+    const std::shared_ptr<Texture> &ShadowData::getShadowMapTexture() const {
+        return shadowMapTexture;
     }
 
     void ShadowData::addTextureFilter(std::unique_ptr<TextureFilter> textureFilter) {
@@ -62,25 +58,25 @@ namespace urchin {
 
     void ShadowData::applyTextureFilters() {
         unsigned int layersToUpdate = 0;
-        for (std::size_t i=0; i<getNbFrustumShadowData(); ++i) {
+        for (std::size_t i = 0; i < getNbFrustumShadowData(); ++i) {
             if (getFrustumShadowData(i)->needShadowMapUpdate()) {
                 layersToUpdate = layersToUpdate | MathAlgorithm::powerOfTwo(i);
             }
         }
 
-        unsigned int textureId = shadowMapTextureID;
+        std::shared_ptr<Texture> texture = shadowMapTexture;
         for (auto &textureFilter : textureFilters) {
-            textureFilter->applyOn(textureId, static_cast<int>(layersToUpdate));
-            textureId = textureFilter->getTextureID();
+            textureFilter->applyOn(texture, static_cast<int>(layersToUpdate));
+            texture = textureFilter->getTexture();
         }
     }
 
-    unsigned int ShadowData::getFilteredShadowMapTextureID() const {
+    const std::shared_ptr<Texture> &ShadowData::getFilteredShadowMapTexture() const {
         if (textureFilters.empty()) {
-            return shadowMapTextureID;
+            return shadowMapTexture;
         }
 
-        return textureFilters.back()->getTextureID();
+        return textureFilters.back()->getTexture();
     }
 
     void ShadowData::setLightViewMatrix(const Matrix4<float> &lightViewMatrix) {

@@ -43,20 +43,20 @@ namespace urchin {
             lightsLocation(nullptr) {
         switch(ConfigService::instance()->getUnsignedIntValue("shadow.depthComponent")) {
             case 16:
-                depthComponent = GL_DEPTH_COMPONENT16;
+                depthTextureFormat = TextureFormat::DEPTH_16_FLOAT;
                 break;
             case 24:
-                depthComponent = GL_DEPTH_COMPONENT24;
+                depthTextureFormat = TextureFormat::DEPTH_24_FLOAT;
                 break;
             case 32:
-                depthComponent = GL_DEPTH_COMPONENT32;
+                depthTextureFormat = TextureFormat::DEPTH_32_FLOAT;
                 break;
             default:
                 throw std::domain_error("Unsupported value for parameter 'shadow.depthComponent'.");
         }
 
-        if (lightViewOverflowStepSize==0.0f) { //because fmod function doesn't accept zero value.
-            lightViewOverflowStepSize=std::numeric_limits<float>::epsilon();
+        if (lightViewOverflowStepSize == 0.0f) { //because fmod function doesn't accept zero value.
+            lightViewOverflowStepSize = std::numeric_limits<float>::epsilon();
         }
 
         lightManager->addObserver(this, LightManager::ADD_LIGHT);
@@ -465,28 +465,22 @@ namespace urchin {
         glDrawBuffers(1, fboAttachments);
         glReadBuffer(GL_NONE);
 
-        unsigned int textureIDs[2];
-        glGenTextures(2, &textureIDs[0]);
+        auto depthTexture = Texture::buildArray(shadowMapResolution, shadowMapResolution, nbShadowMaps, depthTextureFormat, nullptr);
+        glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTexture->getTextureId(), 0);
 
-        glBindTexture(GL_TEXTURE_2D_ARRAY, textureIDs[0]);
-        glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, depthComponent, shadowMapResolution, shadowMapResolution, nbShadowMaps, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
-        glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, textureIDs[0], 0);
+        auto shadowMapTexture = Texture::buildArray(shadowMapResolution, shadowMapResolution, nbShadowMaps, TextureFormat::RG_32_FLOAT, nullptr);
+        glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], shadowMapTexture->getTextureId(), 0);
 
-        glBindTexture(GL_TEXTURE_2D_ARRAY, textureIDs[1]);
-        glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RG32F, shadowMapResolution, shadowMapResolution, nbShadowMaps, 0, GL_RG, GL_FLOAT, nullptr);
-        glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], textureIDs[1], 0);
-
-        shadowDatas[light]->setDepthTextureID(textureIDs[0]);
-        shadowDatas[light]->setShadowMapTextureID(textureIDs[1]);
+        shadowDatas[light]->setDepthTexture(depthTexture);
+        shadowDatas[light]->setShadowMapTexture(shadowMapTexture);
 
         //add shadow map filter
-        if (blurShadow!=BlurShadow::NO_BLUR) {
+        if (blurShadow != BlurShadow::NO_BLUR) {
             std::unique_ptr<TextureFilter> verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>()
                     ->textureSize(shadowMapResolution, shadowMapResolution)
                     ->textureType(TextureType::ARRAY)
                     ->textureNumberLayer(nbShadowMaps)
-                    ->textureInternalFormat(GL_RG32F)
-                    ->textureFormat(GL_RG)
+                    ->textureFormat(TextureFormat::RG_32_FLOAT)
                     ->blurDirection(GaussianBlurFilterBuilder::VERTICAL_BLUR)
                     ->blurSize(static_cast<unsigned int>(blurShadow))
                     ->build();
@@ -495,8 +489,7 @@ namespace urchin {
                     ->textureSize(shadowMapResolution, shadowMapResolution)
                     ->textureType(TextureType::ARRAY)
                     ->textureNumberLayer(nbShadowMaps)
-                    ->textureInternalFormat(GL_RG32F)
-                    ->textureFormat(GL_RG)
+                    ->textureFormat(TextureFormat::RG_32_FLOAT)
                     ->blurDirection(GaussianBlurFilterBuilder::HORIZONTAL_BLUR)
                     ->blurSize(static_cast<unsigned int>(blurShadow))
                     ->build();
@@ -508,8 +501,7 @@ namespace urchin {
                     ->textureSize(shadowMapResolution, shadowMapResolution)
                     ->textureType(TextureType::ARRAY)
                     ->textureNumberLayer(nbShadowMaps)
-                    ->textureInternalFormat(GL_RG32F)
-                    ->textureFormat(GL_RG)
+                    ->textureFormat(TextureFormat::RG_32_FLOAT)
                     ->build();
 
             shadowDatas[light]->addTextureFilter(std::move(nullFilter));
@@ -520,12 +512,6 @@ namespace urchin {
     }
 
     void ShadowManager::removeShadowMaps(const Light *light) {
-        unsigned int depthTextureID = shadowDatas[light]->getDepthTextureID();
-        glDeleteTextures(1, &depthTextureID);
-
-        unsigned int shadowMapTextureID = shadowDatas[light]->getShadowMapTextureID();
-        glDeleteTextures(1, &shadowMapTextureID);
-
         unsigned int frameBufferObjectID = shadowDatas[light]->getFboID();
         glDeleteFramebuffers(1, &frameBufferObjectID);
     }
@@ -576,7 +562,7 @@ namespace urchin {
                 const ShadowData *shadowData = it->second;
 
                 unsigned int texUnit = lightingRenderer
-                        ->addAdditionalTexture(TextureReader::build(shadowData->getFilteredShadowMapTextureID(), TextureType::ARRAY, TextureParam::buildLinear()));
+                        ->addAdditionalTexture(TextureReader::build(shadowData->getFilteredShadowMapTexture(), TextureParam::buildLinear()));
                 ShaderDataSender().sendData(lightsLocation[i].shadowMapTexShaderVar, static_cast<int>(texUnit));
 
                 for (std::size_t j=0; j<nbShadowMaps; ++j) {

@@ -4,10 +4,8 @@ template<class BUILDER> TextureFilter::TextureFilter(const TextureFilterBuilder<
     textureHeight(textureFilterBuilder->getTextureHeight()),
     textureType(textureFilterBuilder->getTextureType()),
     textureNumberLayer(textureFilterBuilder->getTextureNumberLayer()),
-    textureInternalFormat(textureFilterBuilder->getTextureInternalFormat()),
     textureFormat(textureFilterBuilder->getTextureFormat()),
 
-    fboID(0),
-    textureID(0) {
+    fboID(0) {
 
 }

@@ -22,9 +22,9 @@ namespace urchin {
             void initialize();
 
             unsigned int getFboId() const;
-            unsigned int getTextureID() const;
+            const std::shared_ptr<Texture> &getTexture() const;
 
-            void applyOn(unsigned int, int layersToUpdate = -1) const;
+            void applyOn(const std::shared_ptr<Texture> &, int layersToUpdate = -1) const;
 
         protected:
             virtual std::string getShaderName() const = 0;
@@ -48,15 +48,14 @@ namespace urchin {
             unsigned int textureWidth, textureHeight;
             TextureType textureType;
             unsigned int textureNumberLayer;
-            int textureInternalFormat;
-            unsigned int textureFormat;
+            TextureFormat textureFormat;
 
             std::unique_ptr<GenericRenderer> textureRenderer;
             std::unique_ptr<Shader> textureFilterShader;
             ShaderVar layersToUpdateShaderVar;
 
             unsigned int fboID;
-            unsigned int textureID;
+            std::shared_ptr<Texture> texture;
     };
 
     #include "TextureFilter.inl"

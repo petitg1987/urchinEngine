@@ -10,7 +10,6 @@ namespace urchin {
 
     TextureFilter::~TextureFilter() {
         glDeleteFramebuffers(1, &fboID);
-        glDeleteTextures(1, &textureID);
     }
 
     void TextureFilter::initialize() {
@@ -41,13 +40,13 @@ namespace urchin {
                 ->build();
 
         std::map<std::string, std::string> shaderTokens;
-        if (textureFormat == GL_RGB) {
+        if (textureFormat == TextureFormat::RGB_8_INT) {
             shaderTokens["OUTPUT_TYPE"] = "vec3";
             shaderTokens["SOURCE_TEX_COMPONENTS"] = "rgb";
-        } else if (textureFormat == GL_RG) {
+        } else if (textureFormat == TextureFormat::RG_32_FLOAT) {
             shaderTokens["OUTPUT_TYPE"] = "vec2";
             shaderTokens["SOURCE_TEX_COMPONENTS"] = "rg";
-        } else if (textureFormat == GL_RED) {
+        } else if (textureFormat == TextureFormat::GRAYSCALE_16_FLOAT) {
             shaderTokens["OUTPUT_TYPE"] = "float";
             shaderTokens["SOURCE_TEX_COMPONENTS"] = "r";
         } else {
@@ -57,7 +56,7 @@ namespace urchin {
         this->completeShaderTokens(shaderTokens);
 
         if (textureType == TextureType::ARRAY) {
-            shaderTokens["MAX_VERTICES"] = std::to_string(3*textureNumberLayer);
+            shaderTokens["MAX_VERTICES"] = std::to_string(3 * textureNumberLayer);
             shaderTokens["NUMBER_LAYER"] = std::to_string(textureNumberLayer);
 
             textureFilterShader = ShaderBuilder().createShader("textureFilter.vert", "textureFilter.geom", getShaderName() + "Array.frag", shaderTokens);
@@ -81,16 +80,14 @@ namespace urchin {
         glDrawBuffers(1, fboAttachments);
         glReadBuffer(GL_NONE);
 
-        glGenTextures(1, &textureID);
-        glBindTexture(textureType==TextureType::DEFAULT ? GL_TEXTURE_2D : GL_TEXTURE_2D_ARRAY, textureID);
-        if (textureType == TextureType::ARRAY) {
-            glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, textureInternalFormat, textureWidth, textureHeight, textureNumberLayer, 0, textureFormat, GL_FLOAT, nullptr);
-        } else if (textureType == TextureType::DEFAULT) {
-            glTexImage2D(GL_TEXTURE_2D, 0, textureInternalFormat, textureWidth, textureHeight, 0, textureFormat, GL_FLOAT, nullptr);
+        if (textureType == TextureType::DEFAULT) {
+            texture = Texture::build(textureWidth, textureHeight, textureFormat, nullptr);
+        } else if( textureType == TextureType::ARRAY) {
+            texture = Texture::buildArray(textureWidth, textureHeight, textureNumberLayer, textureFormat, nullptr);
         } else {
             throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
         }
-        glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], textureID, 0);
+        glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], texture->getTextureId(), 0);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
@@ -107,8 +104,8 @@ namespace urchin {
         return fboID;
     }
 
-    unsigned int TextureFilter::getTextureID() const {
-        return textureID;
+    const std::shared_ptr<Texture> &TextureFilter::getTexture() const {
+        return texture;
     }
 
     unsigned int TextureFilter::getTextureWidth() const {
@@ -136,23 +133,22 @@ namespace urchin {
     }
 
     /**
-     * @param layersToUpdate Specify the layers which must be affected by the filter (only for GL_TEXTURE_2D_ARRAY).
+     * @param layersToUpdate Specify the layers which must be affected by the filter (only for TextureFormat::ARRAY).
      * Lowest bit represent the first layer, the second lowest bit represent the second layer, etc.
      */
-    void TextureFilter::applyOn(unsigned int sourceTextureId, int layersToUpdate) const {
+    void TextureFilter::applyOn(const std::shared_ptr<Texture> &sourceTexture, int layersToUpdate) const {
+        assert(layersToUpdate == -1 || sourceTexture->getTextureType() == TextureType::ARRAY);
         if (!isInitialized) {
             throw std::runtime_error("Texture filter must be initialized before apply.");
         }
 
         textureFilterShader->bind();
 
-        TextureType sourceTextureType = layersToUpdate == -1 ? TextureType::DEFAULT : TextureType::ARRAY;
         textureRenderer->clearAdditionalTextures();
-        textureRenderer->addAdditionalTexture(TextureReader::build(sourceTextureId, sourceTextureType, TextureParam::buildLinear()));
+        textureRenderer->addAdditionalTexture(TextureReader::build(sourceTexture, TextureParam::buildLinear()));
         addFurtherTextures(textureRenderer);
 
         if (textureType == TextureType::ARRAY) {
-            assert(layersToUpdate != -1);
             ShaderDataSender().sendData(layersToUpdateShaderVar, static_cast<unsigned int>(layersToUpdate));
         }
 

@@ -106,7 +106,7 @@ namespace urchin {
             std::vector<Model *> visibleModels;
 
             //shadow information
-            int depthComponent;
+            TextureFormat depthTextureFormat;
             float frustumDistance;
             std::vector<float> splitDistances;
             std::vector<Frustum<float>> splitFrustums;

@@ -3,8 +3,7 @@ template<class T> TextureFilterBuilder<T>::TextureFilterBuilder() :
     textureHeight(1024),
     pTextureType(TextureType::DEFAULT),
     pTextureNumberLayer(1),
-    pTextureInternalFormat(GL_RGB),
-    pTextureFormat(GL_RGB) {
+    pTextureFormat(TextureFormat::RGB_8_INT) {
 
 }
 
@@ -44,21 +43,12 @@ template<class T> unsigned int TextureFilterBuilder<T>::getTextureNumberLayer() 
     return pTextureNumberLayer;
 }
 
-template<class T> T *TextureFilterBuilder<T>::textureInternalFormat(int textureInternalFormat) { //TODO use TextureFormat ?
-    this->pTextureInternalFormat = textureInternalFormat;
-    return _this();
-}
-
-template<class T> int TextureFilterBuilder<T>::getTextureInternalFormat() const {
-    return pTextureInternalFormat;
-}
-
-template<class T> T *TextureFilterBuilder<T>::textureFormat(unsigned int textureFormat) {
+template<class T> T *TextureFilterBuilder<T>::textureFormat(TextureFormat textureFormat) {
     this->pTextureFormat = textureFormat;
     return _this();
 }
 
-template<class T> unsigned int TextureFilterBuilder<T>::getTextureFormat() const {
+template<class T> TextureFormat TextureFilterBuilder<T>::getTextureFormat() const {
     return pTextureFormat;
 }
 

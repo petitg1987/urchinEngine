@@ -29,11 +29,8 @@ namespace urchin {
             T *textureNumberLayer(unsigned int);
             unsigned int getTextureNumberLayer() const;
 
-            T *textureInternalFormat(int);
-            int getTextureInternalFormat() const;
-
-            T *textureFormat(unsigned int);
-            unsigned int getTextureFormat() const;
+            T *textureFormat(TextureFormat);
+            TextureFormat getTextureFormat() const;
 
             virtual std::unique_ptr<TextureFilter> build() = 0;
 
@@ -44,8 +41,7 @@ namespace urchin {
 
             TextureType pTextureType;
             unsigned int pTextureNumberLayer;
-            int pTextureInternalFormat;
-            unsigned int pTextureFormat;
+            TextureFormat pTextureFormat;
     };
 
     #include "TextureFilterBuilder.inl"
