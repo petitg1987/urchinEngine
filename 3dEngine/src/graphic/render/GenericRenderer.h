@@ -52,7 +52,6 @@ namespace urchin {
             unsigned int dataTypeToSize(DataType) const;
             unsigned int dataTypeToGlType(DataType) const;
             unsigned int dataDimensionToSize(DataDimension) const;
-            unsigned int textureTypeToGlType(TextureType) const;
 
             void resetDrawDefaultValues() const;
 

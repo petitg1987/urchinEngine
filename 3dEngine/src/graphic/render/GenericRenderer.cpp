@@ -58,7 +58,7 @@ namespace urchin {
     }
 
     void GenericRenderer::initializeTexture(const TextureReader &textureReader) const {
-        unsigned int textureType = textureTypeToGlType(textureReader.getTexture()->getTextureType());
+        unsigned int textureType = textureReader.getTexture()->getGlTextureType();
         glBindTexture(textureType, textureReader.getTexture()->getTextureId());
 
         unsigned int readMode = textureReader.getParam().getGlReadMode();
@@ -154,17 +154,6 @@ namespace urchin {
         throw std::runtime_error("Unknown data dimension: " + std::to_string(dataDimension));
     }
 
-    unsigned int GenericRenderer::textureTypeToGlType(TextureType textureType) const {
-        if (textureType == TextureType::DEFAULT) {
-            return GL_TEXTURE_2D;
-        } else if (textureType == TextureType::ARRAY) {
-            return GL_TEXTURE_2D_ARRAY;
-        } else if (textureType == TextureType::CUBE_MAP) {
-            return GL_TEXTURE_CUBE_MAP;
-        }
-        throw std::runtime_error("Unknown texture type: " + std::to_string(textureType));
-    }
-
     void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point2<float>> *dataPtr) {
         assert(data.size() > dataIndex);
         GenericRenderer::Data dataValue{DataType::FLOAT, DataDimension::TWO_DIMENSION, &(*dataPtr)[0], (unsigned int)dataPtr->size()};
@@ -215,11 +204,11 @@ namespace urchin {
             unsigned int textureUnit = 0;
             for (const auto &textureReader : textureReaders) {
                 glActiveTexture(GL_TEXTURE0 + textureUnit++);
-                glBindTexture(textureTypeToGlType(textureReader.getTexture()->getTextureType()), textureReader.getTexture()->getTextureId());
+                glBindTexture(textureReader.getTexture()->getGlTextureType(), textureReader.getTexture()->getTextureId());
             }
             for (const auto &textureReader : additionalTextureReaders) {
                 glActiveTexture(GL_TEXTURE0 + textureUnit++);
-                glBindTexture(textureTypeToGlType(textureReader.getTexture()->getTextureType()), textureReader.getTexture()->getTextureId());
+                glBindTexture(textureReader.getTexture()->getGlTextureType(), textureReader.getTexture()->getTextureId());
             }
         }
 

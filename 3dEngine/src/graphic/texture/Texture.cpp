@@ -14,7 +14,7 @@ namespace urchin {
             layer(layer),
             format(format),
             textureId(0) {
-        unsigned int glTextureType = textureTypeToGlTextureType(textureType);
+        unsigned int glTextureType = getGlTextureType();
         unsigned int glInternalFormat = textureFormatToGlInternalFormat(format);
         unsigned int glFormat = textureFormatToGlFormat(format);
         unsigned int glPixelType = textureFormatToGlPixelType(format);
@@ -67,7 +67,7 @@ namespace urchin {
     void Texture::generateMipmap() {
         assert(!pHasMipmap);
 
-        unsigned int glTextureType = textureTypeToGlTextureType(textureType);
+        unsigned int glTextureType = getGlTextureType();
         glBindTexture(glTextureType, textureId);
         glGenerateMipmap(glTextureType);
 
@@ -90,11 +90,7 @@ namespace urchin {
         return height;
     }
 
-    unsigned int Texture::getTextureId() const {
-        return textureId;
-    }
-
-    unsigned int Texture::textureTypeToGlTextureType(TextureType textureType) const {
+    unsigned int Texture::getGlTextureType() const {
         if (textureType == TextureType::DEFAULT) {
             return GL_TEXTURE_2D;
         } else if (textureType == TextureType::ARRAY) {
@@ -103,6 +99,10 @@ namespace urchin {
             return GL_TEXTURE_CUBE_MAP;
         }
         throw std::runtime_error("Unknown texture type: " + std::to_string(textureType));
+    }
+
+    unsigned int Texture::getTextureId() const {
+        return textureId;
     }
 
     unsigned int Texture::textureFormatToGlInternalFormat(TextureFormat textureFormat) const {

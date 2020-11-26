@@ -25,10 +25,10 @@ namespace urchin {
             unsigned int getWidth() const;
             unsigned int getHeight() const;
 
+            unsigned int getGlTextureType() const;
             unsigned int getTextureId() const;
 
         private:
-            unsigned int textureTypeToGlTextureType(TextureType) const;
             unsigned int textureFormatToGlInternalFormat(TextureFormat) const;
             unsigned int textureFormatToGlFormat(TextureFormat) const;
             unsigned int textureFormatToGlPixelType(TextureFormat) const;
