@@ -20,6 +20,7 @@ namespace urchin {
 
         glGenTextures(1, &textureId);
         glBindTexture(glTextureType, textureId);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
         if (textureType == TextureType::DEFAULT) {
             assert(layer == 1);

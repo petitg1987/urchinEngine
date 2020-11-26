@@ -1,7 +1,6 @@
 #ifndef URCHINENGINE_TEXTUREFILTERBUILDER_H
 #define URCHINENGINE_TEXTUREFILTERBUILDER_H
 
-#include <GL/glew.h>
 #include <string>
 #include <memory>
 #include <stdexcept>

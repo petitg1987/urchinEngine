@@ -1,7 +1,6 @@
 #ifndef URCHINENGINE_AMBIENTOCCLUSIONMANAGER_H
 #define URCHINENGINE_AMBIENTOCCLUSIONMANAGER_H
 
-#include <GL/glew.h>
 #include "UrchinCommon.h"
 
 #include "graphic/shader/model/Shader.h"

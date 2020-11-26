@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <algorithm>
 
 #include "ShadowModelShaderVariable.h"

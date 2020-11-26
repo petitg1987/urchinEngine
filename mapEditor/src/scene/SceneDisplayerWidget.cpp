@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <utility>
 #include <QtWidgets/QShortcut>
 

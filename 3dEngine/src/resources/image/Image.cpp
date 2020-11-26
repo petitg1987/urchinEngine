@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <stdexcept>
 
 #include "resources/image/Image.h"
@@ -105,7 +104,6 @@ namespace urchin {
             texture->generateMipmap();
         }
 
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1); //TODO review...
         return texture;
     }
 }

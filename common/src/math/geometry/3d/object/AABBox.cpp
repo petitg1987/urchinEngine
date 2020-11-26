@@ -6,26 +6,25 @@
 namespace urchin {
 
     template<class T> AABBox<T>::AABBox():
-        boxShape(BoxShape<T>(Vector3<T>(0.0, 0.0, 0.0))),
-        min(Point3<T>(0.0, 0.0, 0.0)),
-        max(Point3<T>(0.0, 0.0, 0.0)) {
+            boxShape(BoxShape<T>(Vector3<T>(0.5, 0.5, 0.5))),
+            min(Point3<T>(0.0, 0.0, 0.0)),
+            max(Point3<T>(1.0, 1.0, 1.0)) {
 
     }
 
     template<class T> AABBox<T>::AABBox(const Point3<T> &min, const Point3<T> &max) :
-        boxShape(BoxShape<T>(Vector3<T>((max.X-min.X)/2.0, (max.Y-min.Y)/2.0, (max.Z-min.Z)/2.0))),
-        min(min),
-        max(max) {
+            boxShape(BoxShape<T>(Vector3<T>((max.X-min.X)/2.0, (max.Y-min.Y)/2.0, (max.Z-min.Z)/2.0))),
+            min(min),
+            max(max) {
         assert(min.X <= max.X);
         assert(min.Y <= max.Y);
         assert(min.Z <= max.Z);
     }
 
     template<class T> AABBox<T>::AABBox(const Point3<T> &min, const Vector3<T> &diagonal) :
-        boxShape(BoxShape<T>(Vector3<T>(diagonal.X/2.0, diagonal.Y/2.0, diagonal.Z/2.0))),
-        min(min),
-        max(min.translate(diagonal)) {
-
+            boxShape(BoxShape<T>(Vector3<T>(diagonal.X/2.0, diagonal.Y/2.0, diagonal.Z/2.0))),
+            min(min),
+            max(min.translate(diagonal)) {
         assert(min.X <= max.X);
         assert(min.Y <= max.Y);
         assert(min.Z <= max.Z);
