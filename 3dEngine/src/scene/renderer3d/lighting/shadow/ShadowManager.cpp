@@ -507,7 +507,6 @@ namespace urchin {
             shadowDatas[light]->addTextureFilter(std::move(nullFilter));
         }
 
-        glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
@@ -533,7 +532,7 @@ namespace urchin {
     void ShadowManager::updateShadowMaps() {
         ScopeProfiler profiler("3d", "updateShadowMap");
 
-        glBindTexture(GL_TEXTURE_2D, 0);
+        glBindTexture(GL_TEXTURE_2D, 0); //TODO remove ?
 
         for (auto &shadowData : shadowDatas) {
             glViewport(0, 0, shadowMapResolution, shadowMapResolution);
@@ -550,7 +549,7 @@ namespace urchin {
         }
 
         glViewport(0, 0, sceneWidth, sceneHeight);
-        glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
+        glBindTexture(GL_TEXTURE_2D_ARRAY, 0); //TODO remove ?
     }
 
     void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer> &lightingRenderer) {
@@ -601,7 +600,7 @@ namespace urchin {
 
             OBBoxModel sceneDependentObboxModel(obboxSceneDependentViewSpace);
             sceneDependentObboxModel.onCameraProjectionUpdate(projectionMatrix);
-            sceneDependentObboxModel.setColor(0.0, 1.0, 0.0);
+            sceneDependentObboxModel.setColor(0.0f, 1.0f, 0.0f);
             sceneDependentObboxModel.display(viewMatrix);
         }
     }

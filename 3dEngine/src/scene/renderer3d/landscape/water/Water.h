@@ -65,7 +65,6 @@ namespace urchin {
             void display(const Camera *, FogManager *, float invFrameRate);
 
         private:
-            std::shared_ptr<Texture> buildDefaultTexture(unsigned char,unsigned char, unsigned char);
             void generateVertex();
             void updateWaterTextures();
             void buildUnderwaterFog();

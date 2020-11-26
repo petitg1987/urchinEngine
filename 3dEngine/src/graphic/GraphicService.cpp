@@ -5,6 +5,11 @@
 
 namespace urchin {
 
+    GraphicService::GraphicService() :
+            errorDetected(false) {
+
+    }
+
     void GraphicService::initializeGraphic() {
         //initialization Glew
         GLenum err = glewInit();
@@ -41,9 +46,12 @@ namespace urchin {
     }
 
     void GraphicService::logErrors() {
-        GLenum err;
-        while ((err = glGetError()) != GL_NO_ERROR) {
-            Logger::logger().logError("OpenGL error detected: " + std::to_string(err));
+        if(!errorDetected) {
+            GLenum err;
+            while ((err = glGetError()) != GL_NO_ERROR) {
+                Logger::logger().logError("OpenGL error detected: " + std::to_string(err));
+            }
+            errorDetected = true;
         }
     }
 

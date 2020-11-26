@@ -43,8 +43,8 @@ namespace urchin {
             .sendData(ShaderVar(waterShader, "normalTex"), normalTexUnit)
             .sendData(ShaderVar(waterShader, "dudvMap"), dudvMapUnit);
 
-        normalTexture = buildDefaultTexture(0, 255, 0);
-        dudvMap = buildDefaultTexture(255, 0, 255);
+        normalTexture = Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({0, 255, 0})).createTexture(false);
+        dudvMap = Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({0, 255, 0})).createTexture(false);
 
         //general properties
         setCenterPosition(DEFAULT_CENTER_POSITION);
@@ -63,10 +63,6 @@ namespace urchin {
         //under water properties
         setDensity(DEFAULT_DENSITY);
         setGradient(DEFAULT_GRADIENT);
-    }
-
-    std::shared_ptr<Texture> Water::buildDefaultTexture(unsigned char r, unsigned char g, unsigned char b) {
-        return Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({r, g, b})).createTexture(false);
     }
 
     void Water::generateVertex() {
@@ -151,7 +147,7 @@ namespace urchin {
         this->normalFilename = normalFilename;
 
         if (normalFilename.empty()) {
-            normalTexture = buildDefaultTexture(0, 255, 0);
+            normalTexture = Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({0, 255, 0})).createTexture(false);
         } else {
             auto *normalImage = MediaManager::instance()->getMedia<Image>(normalFilename);
             if (normalImage->getImageFormat() != Image::IMAGE_RGB) {
@@ -173,7 +169,7 @@ namespace urchin {
         this->dudvFilename = dudvFilename;
 
         if (dudvFilename.empty()) {
-            dudvMap = buildDefaultTexture(255, 0, 255);
+            dudvMap = Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({255, 0, 255})).createTexture(false);
         } else {
             auto *dudvImage = MediaManager::instance()->getMedia<Image>(dudvFilename);
             if (dudvImage->getImageFormat() != Image::IMAGE_RGB) {

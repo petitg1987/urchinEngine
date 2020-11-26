@@ -5,8 +5,13 @@ namespace urchin {
 
     class GraphicService {
         public:
+            GraphicService();
+
             void initializeGraphic();
             void logErrors();
+
+        private:
+            bool errorDetected;
     };
 
 }
