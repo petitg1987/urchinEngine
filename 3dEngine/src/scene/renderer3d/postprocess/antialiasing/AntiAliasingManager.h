@@ -20,9 +20,8 @@ namespace urchin {
 
             explicit AntiAliasingManager();
 
-            void setupTexture(const std::shared_ptr<Texture> &);
-
-            void onResize(unsigned int, unsigned int); //TODO fusion with setupTextures ?
+            void onTextureUpdate(const std::shared_ptr<Texture> &);
+            void onResize(unsigned int, unsigned int);
 
             void setQuality(Quality quality);
 

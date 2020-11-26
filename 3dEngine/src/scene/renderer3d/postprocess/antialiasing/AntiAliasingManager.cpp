@@ -29,7 +29,7 @@ namespace urchin {
                 .sendData(invSceneSizeShaderVar, Point2<float>(1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight));
     }
 
-    void AntiAliasingManager::setupTexture(const std::shared_ptr<Texture> &texture) {
+    void AntiAliasingManager::onTextureUpdate(const std::shared_ptr<Texture> &texture) {
         std::vector<Point2<float>> vertexCoord = {
                 Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
                 Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(-1.0f, -1.0f)

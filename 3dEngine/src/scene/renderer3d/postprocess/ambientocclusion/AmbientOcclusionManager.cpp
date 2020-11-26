@@ -89,7 +89,11 @@ namespace urchin {
         generateKernelSamples();
     }
 
-    void AmbientOcclusionManager::setupTextures(const std::shared_ptr<Texture> &depthTexture, const std::shared_ptr<Texture> &normalAndAmbientTexture) {
+    void AmbientOcclusionManager::initiateShaderVariables(const std::unique_ptr<Shader> &lightingShader) {
+        ambientOcclusionTexShaderVar = ShaderVar(lightingShader, "ambientOcclusionTex");
+    }
+
+    void AmbientOcclusionManager::onTexturesUpdate(const std::shared_ptr<Texture> &depthTexture, const std::shared_ptr<Texture> &normalAndAmbientTexture) {
         this->depthTexture = depthTexture;
         generateNoiseTexture();
 
@@ -111,10 +115,6 @@ namespace urchin {
 
         createOrUpdateAOTexture();
         createOrUpdateAOShader();
-    }
-
-    void AmbientOcclusionManager::initiateShaderVariables(const std::unique_ptr<Shader> &lightingShader) {
-        ambientOcclusionTexShaderVar = ShaderVar(lightingShader, "ambientOcclusionTex");
     }
 
     void AmbientOcclusionManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {

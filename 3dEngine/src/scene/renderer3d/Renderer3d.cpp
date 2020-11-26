@@ -173,10 +173,10 @@ namespace urchin {
         shadowManager->onResize(sceneWidth, sceneHeight);
 
         ambientOcclusionManager->onResize(sceneWidth, sceneHeight);
-        ambientOcclusionManager->setupTextures(depthTexture, normalAndAmbientTexture);
+        ambientOcclusionManager->onTexturesUpdate(depthTexture, normalAndAmbientTexture);
 
         antiAliasingManager->onResize(sceneWidth, sceneHeight);
-        antiAliasingManager->setupTexture(lightingPassTexture);
+        antiAliasingManager->onTextureUpdate(lightingPassTexture);
     }
 
     void Renderer3d::notify(Observable *observable, int notificationType) {
