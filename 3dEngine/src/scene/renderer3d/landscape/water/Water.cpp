@@ -43,6 +43,9 @@ namespace urchin {
             .sendData(ShaderVar(waterShader, "normalTex"), normalTexUnit)
             .sendData(ShaderVar(waterShader, "dudvMap"), dudvMapUnit);
 
+        normalTexture = buildDefaultTexture(0, 255, 0);
+        dudvMap = buildDefaultTexture(255, 0, 255);
+
         //general properties
         setCenterPosition(DEFAULT_CENTER_POSITION);
         setXSize(DEFAULT_SIZE);
@@ -62,11 +65,18 @@ namespace urchin {
         setGradient(DEFAULT_GRADIENT);
     }
 
+    std::shared_ptr<Texture> Water::buildDefaultTexture(unsigned char r, unsigned char g, unsigned char b) {
+        auto *defaultImage = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({r, g, b}));
+        auto defaultTexture = defaultImage->createTexture(false);
+        defaultImage->release();
+        return defaultTexture;
+    }
+
     void Water::generateVertex() {
-        float minX = -xSize/2.0f + centerPosition.X;
-        float minZ = -zSize/2.0f + centerPosition.Z;
-        float maxX = xSize/2.0f + centerPosition.X;
-        float maxZ = zSize/2.0f + centerPosition.Z;
+        float minX = -xSize / 2.0f + centerPosition.X;
+        float minZ = -zSize / 2.0f + centerPosition.Z;
+        float maxX = xSize / 2.0f + centerPosition.X;
+        float maxZ = zSize / 2.0f + centerPosition.Z;
 
         std::vector<Point3<float>> vertexCoord = {
                 Point3<float>(minX, centerPosition.Y, minZ), Point3<float>(maxX, centerPosition.Y, minZ), Point3<float>(maxX, centerPosition.Y, maxZ),
@@ -80,26 +90,20 @@ namespace urchin {
                 ->enableDepthTest()
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addTexture(TextureReader::build(0)) //normal texture
-                ->addTexture(TextureReader::build(0)) //dudv map
+                ->addTexture(TextureReader::build(normalTexture, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY)))
+                ->addTexture(TextureReader::build(dudvMap, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY)))
                 ->build();
-        updateWaterTextures();
 
-        Point2<float> leftFarPoint(Point2<float>(-xSize/2.0f + centerPosition.X, -zSize/2.0f + centerPosition.Z));
-        Point2<float> rightNearPoint(Point2<float>(xSize/2.0f + centerPosition.X, zSize/2.0f + centerPosition.Z));
+        Point2<float> leftFarPoint(Point2<float>(-xSize / 2.0f + centerPosition.X, -zSize / 2.0f + centerPosition.Z));
+        Point2<float> rightNearPoint(Point2<float>(xSize / 2.0f + centerPosition.X, zSize / 2.0f + centerPosition.Z));
         waterRectangle = std::make_unique<Rectangle<float>>(leftFarPoint, rightNearPoint);
     }
 
     void Water::updateWaterTextures() {
-        if(normalTexture) {
-            TextureParam textureParam = TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY);
-            waterRenderer->updateTexture(0, TextureReader::build(normalTexture, textureParam));
-        }
+        assert(normalTexture && dudvMap);
 
-        if(dudvMap) {
-            TextureParam textureParam = TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY);
-            waterRenderer->updateTexture(1, TextureReader::build(dudvMap, textureParam));
-        }
+        waterRenderer->updateTexture(0, TextureReader::build(normalTexture, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY)));
+        waterRenderer->updateTexture(1, TextureReader::build(dudvMap, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY)));
     }
 
     void Water::buildUnderwaterFog() {
@@ -149,19 +153,17 @@ namespace urchin {
     void Water::setNormalTexture(const std::string &normalFilename) {
         this->normalFilename = normalFilename;
 
-        Image *normalImage;
         if (normalFilename.empty()) {
-            normalImage = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({0, 255, 0}));
+            normalTexture = buildDefaultTexture(0, 255, 0);
         } else {
-            normalImage = MediaManager::instance()->getMedia<Image>(normalFilename);
+            auto *normalImage = MediaManager::instance()->getMedia<Image>(normalFilename);
             if (normalImage->getImageFormat() != Image::IMAGE_RGB) {
                 normalImage->release();
                 throw std::runtime_error("Water normal texture must have 3 components (RGB). Components: " + std::to_string(normalImage->retrieveComponentsCount()));
             }
+            normalTexture = normalImage->createTexture(true);
+            normalImage->release();
         }
-
-        normalTexture = normalImage->createTexture(true);
-        normalImage->release();
 
         updateWaterTextures();
     }
@@ -173,19 +175,17 @@ namespace urchin {
     void Water::setDudvMap(const std::string &dudvFilename) {
         this->dudvFilename = dudvFilename;
 
-        Image *dudvImage;
         if (dudvFilename.empty()) {
-            dudvImage = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({255, 0, 255}));
+            dudvMap = buildDefaultTexture(255, 0, 255);
         } else {
-            dudvImage = MediaManager::instance()->getMedia<Image>(dudvFilename);
+            auto *dudvImage = MediaManager::instance()->getMedia<Image>(dudvFilename);
             if (dudvImage->getImageFormat() != Image::IMAGE_RGB) {
                 dudvImage->release();
                 throw std::runtime_error("Water dudv map must have 3 components (RGB). Components: " + std::to_string(dudvImage->retrieveComponentsCount()));
             }
+            dudvMap = dudvImage->createTexture(true);
+            dudvImage->release();
         }
-
-        dudvMap = dudvImage->createTexture(true);
-        dudvImage->release();
 
         updateWaterTextures();
     }

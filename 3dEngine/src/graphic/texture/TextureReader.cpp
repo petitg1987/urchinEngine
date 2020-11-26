@@ -2,23 +2,10 @@
 
 namespace urchin {
 
-    TextureReader::TextureReader(unsigned int id, TextureType type, TextureParam param) :
-            id(id),
-            type(type),
-            param(param) {
-
-    }
-
     TextureReader::TextureReader(std::shared_ptr<Texture> texture, TextureParam param) :
             texture(std::move(texture)),
-            id(this->texture->getTextureId()),
-            type(this->texture->getTextureType()),
             param(param) {
 
-    }
-
-    TextureReader TextureReader::build(unsigned int id) {
-        return TextureReader(id, TextureType::DEFAULT, TextureParam::buildNearest());
     }
 
     TextureReader TextureReader::build(std::shared_ptr<Texture> texture, TextureParam textureParam) {
@@ -26,11 +13,11 @@ namespace urchin {
     }
 
     unsigned int TextureReader::getId() const {
-        return id;
+        return texture->getTextureId();
     }
 
     TextureType TextureReader::getType() const {
-        return type;
+        return texture->getTextureType();
     }
 
     TextureParam TextureReader::getParam() const {
