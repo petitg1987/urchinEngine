@@ -134,12 +134,12 @@ namespace urchin {
 
 
         unsigned int origin = ((unsigned int)header.imageDescriptor & 0x20u) >> 5u; //0:origin bottom, 1:origin top
-        if (origin==0) { //inverses the texels
+        if (origin == 0) { //inverses the texels
             std::vector<unsigned char> texelsInverse(width*height*componentsCount, 0);
 
-            for (unsigned int i=0, iInverse=height-1;i<height;i++, iInverse--) {
-                for (unsigned int j=0;j<width*componentsCount;j++) {
-                    texelsInverse[i*(width*componentsCount) + j] = texels[iInverse*(width*componentsCount) + j];
+            for (unsigned int i = 0, iInverse = height - 1; i < height; i++, iInverse--) {
+                for (unsigned int j = 0; j < width * componentsCount; j++) {
+                    texelsInverse[i*(width * componentsCount) + j] = texels[iInverse * (width * componentsCount) + j];
                 }
             }
 
@@ -156,7 +156,7 @@ namespace urchin {
         switch(header.imageType) {
             case 3: //grayscale 8 bits
             case 11: { //grayscale 8 bits (RLE)
-                if (header.pixelDepth==8) {
+                if (header.pixelDepth == 8) {
                     format = Image::IMAGE_GRAYSCALE;
                     componentsCount = 1;
                 } else {
@@ -170,7 +170,7 @@ namespace urchin {
             case 9: //8 bits color index (RLE)
             case 10: { //BGR 16-24-32 bits (RLE)
                 //8 bits and 16 bits images will be converted to 24 bits
-                if (header.pixelDepth<=24) {
+                if (header.pixelDepth <= 24) {
                     format = Image::IMAGE_RGB;
                     componentsCount = 3;
                 } else { //32 bits
@@ -188,7 +188,7 @@ namespace urchin {
     void LoaderTGA::readTGA8bits() {
         unsigned char color;
 
-        for (unsigned int i=0; i < width*height;++i) {
+        for (unsigned int i=0; i < width*height; ++i) {
             //reads index color byte
             color = data[i];
 
@@ -202,7 +202,7 @@ namespace urchin {
     void LoaderTGA::readTGA16bits() {
         unsigned short color;
 
-        for (unsigned int i=0, j=0;i<width*height;++i, j+=2) {
+        for (unsigned int i = 0, j = 0;i < width * height; ++i, j+=2) {
             //reads color word
             color = data[j] + (data[j+1] << 8u);
 
@@ -214,7 +214,7 @@ namespace urchin {
     }
 
     void LoaderTGA::readTGA24bits() {
-        for (unsigned int i=0, j=0; i<width*height; ++i, j+=3) {
+        for (unsigned int i = 0, j = 0; i < width * height; ++i, j+=3) {
             //reads and converts BGR to RGB
             texels[(i*3)+2] = data[j+0];
             texels[(i*3)+1] = data[j+1];
@@ -223,7 +223,7 @@ namespace urchin {
     }
 
     void LoaderTGA::readTGA32bits() {
-        for (unsigned int i=0,j=0;i<width*height;++i, j+=4) {
+        for (unsigned int i = 0, j = 0; i < width * height; ++i, j+=4) {
             //reads and converts BGRA to RGBA
             texels[(i*4)+2] = data[j+0];
             texels[(i*4)+1] = data[j+1];

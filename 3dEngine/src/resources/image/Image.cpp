@@ -94,7 +94,13 @@ namespace urchin {
     }
 
     std::shared_ptr<Texture> Image::createTexture(bool generateMipMap) {
-        auto texture = Texture::build(width, height, retrieveTextureFormat(), &texels8[0]);
+        std::shared_ptr<Texture> texture;
+        if(channelPrecision == Image::CHANNEL_8) {
+            texture = Texture::build(width, height, retrieveTextureFormat(), &texels8[0]);
+        }else if(channelPrecision == Image::CHANNEL_16) {
+            texture = Texture::build(width, height, retrieveTextureFormat(), &texels16[0]);
+        }
+
         if (generateMipMap) {
             texture->generateMipmap();
         }
