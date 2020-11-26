@@ -12,7 +12,7 @@ namespace urchin {
             blurDirection(blurDirection),
             blurSize(textureFilterBuilder->getBlurSize()),
             blurSharpness(textureFilterBuilder->getBlurSharpness()),
-            depthTextureID(textureFilterBuilder->getDepthTextureID()),
+            depthTexture(textureFilterBuilder->getDepthTexture()),
             textureSize((BlurDirection::VERTICAL==blurDirection) ? getTextureHeight() : getTextureWidth()) {
         if (blurSize <= 1) {
             throw std::invalid_argument("Blur size must be greater than one. Value: " + std::to_string(blurSize));
@@ -41,7 +41,7 @@ namespace urchin {
     }
 
     void BilateralBlurFilter::addFurtherTextures(const std::unique_ptr<GenericRenderer> &renderer) const {
-        renderer->addAdditionalTexture(TextureReader::build(depthTextureID, TextureType::DEFAULT, TextureParam::buildNearest()));
+        renderer->addAdditionalTexture(TextureReader::build(depthTexture, TextureParam::buildNearest()));
     }
 
     void BilateralBlurFilter::completeShaderTokens(std::map<std::string, std::string> &shaderTokens) const {

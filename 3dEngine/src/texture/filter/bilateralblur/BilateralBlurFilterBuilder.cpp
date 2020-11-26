@@ -6,8 +6,7 @@ namespace urchin {
         TextureFilterBuilder(),
         pBlurDirection(BlurDirection::HORIZONTAL_BLUR),
         pBlurSize(3), //3x3 blur
-        pBlurSharpness(40.0),
-        pDepthTextureID(0) {
+        pBlurSharpness(40.0) {
 
     }
 
@@ -34,13 +33,13 @@ namespace urchin {
         return pBlurSharpness;
     }
 
-    BilateralBlurFilterBuilder *BilateralBlurFilterBuilder::depthTextureID(unsigned int depthTextureID) { //TODO accept Texture class
-        this->pDepthTextureID = depthTextureID;
+    BilateralBlurFilterBuilder *BilateralBlurFilterBuilder::depthTexture(const std::shared_ptr<Texture> &depthTexture) {
+        this->pDepthTexture = depthTexture;
         return this;
     }
 
-    unsigned int BilateralBlurFilterBuilder::getDepthTextureID() const {
-        return pDepthTextureID;
+    const std::shared_ptr<Texture> &BilateralBlurFilterBuilder::getDepthTexture() const {
+        return pDepthTexture;
     }
 
     std::unique_ptr<TextureFilter> BilateralBlurFilterBuilder::build() {

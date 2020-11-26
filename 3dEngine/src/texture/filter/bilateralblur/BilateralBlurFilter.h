@@ -33,7 +33,7 @@ namespace urchin {
             BlurDirection blurDirection;
             unsigned int blurSize;
             float blurSharpness;
-            unsigned int depthTextureID;
+            std::shared_ptr<Texture> depthTexture;
 
             unsigned int textureSize;
             ShaderVar cameraPlanesShaderVar;
