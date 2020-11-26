@@ -21,6 +21,9 @@ namespace urchin {
             void generateMipmap() const;
 
             TextureType getTextureType() const;
+            unsigned int getWidth() const;
+            unsigned int getHeight() const;
+
             unsigned int getTextureId() const;
 
         private:

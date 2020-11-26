@@ -17,14 +17,14 @@ namespace urchin {
 
     class Font : public Resource {
         public:
-            Font(unsigned int, const Vector3<float> &, Image *, Glyph *, unsigned int, unsigned int, unsigned int);
+            Font(unsigned int, const Vector3<float> &, std::shared_ptr<Texture>, Glyph *, unsigned int, unsigned int, unsigned int);
             ~Font() override;
 
             unsigned int getFontSize() const;
             Vector3<float> getFontColor() const;
 
             const Glyph &getGlyph(unsigned char i) const;
-            unsigned int getTextureID() const;
+            const std::shared_ptr<Texture> &getTexture() const;
             unsigned int getDimensionTexture() const;
             unsigned int getSpaceBetweenLetters() const;
             unsigned int getSpaceBetweenLines() const;
@@ -34,7 +34,7 @@ namespace urchin {
             unsigned int fontSize;
             Vector3<float> fontColor;
 
-            Image *texAlphabet;
+            std::shared_ptr<Texture> alphabetTexture;
 
             Glyph *glyph;
             unsigned int spaceBetweenLetters, spaceBetweenLines, height;

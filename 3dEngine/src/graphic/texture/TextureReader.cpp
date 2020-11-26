@@ -21,14 +21,6 @@ namespace urchin {
         return TextureReader(id, TextureType::DEFAULT, TextureParam::buildNearest());
     }
 
-    TextureReader TextureReader::build(unsigned int id, TextureType type) {
-        return TextureReader(id, type, TextureParam::buildNearest());
-    }
-
-    TextureReader TextureReader::build(unsigned int id, TextureType type, TextureParam textureParam) {
-        return TextureReader(id, type, textureParam);
-    }
-
     TextureReader TextureReader::build(std::shared_ptr<Texture> texture, TextureParam textureParam) {
         return TextureReader(std::move(texture), textureParam);
     }

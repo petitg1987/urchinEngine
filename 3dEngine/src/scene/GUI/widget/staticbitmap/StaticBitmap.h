@@ -15,7 +15,7 @@ namespace urchin {
     class StaticBitmap : public Widget {
         public:
             StaticBitmap(Position, Size, std::string );
-            ~StaticBitmap() override;
+            ~StaticBitmap() override = default;
 
             void createOrUpdateWidget() override;
 
@@ -26,7 +26,7 @@ namespace urchin {
             const std::string filename;
 
             //visual
-            Image *tex;
+            std::shared_ptr<Texture> tex;
             std::unique_ptr<GenericRenderer> bitmapRenderer;
     };
 

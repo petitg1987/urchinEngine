@@ -20,7 +20,7 @@ namespace urchin {
             void refreshWith(unsigned int, unsigned int);
 
             const std::string &getMaskMapFilename() const;
-            unsigned int getMaskTexture() const;
+            const std::shared_ptr<Texture> &getMaskTexture() const;
             float getSRepeat() const;
             float getTRepeat() const;
             std::vector<Material *> getMaterials() const;
@@ -31,13 +31,11 @@ namespace urchin {
             void buildTexCoordinates(unsigned int, unsigned int);
 
             std::string maskMapFilename;
-            Image *maskTexture;
+            std::shared_ptr<Texture> maskTexture;
             float sRepeat;
             float tRepeat;
             std::vector<Material *> materials;
             std::vector<Point2<float>> texCoordinates;
-
-            Image *defaultTexture;
     };
 
 }

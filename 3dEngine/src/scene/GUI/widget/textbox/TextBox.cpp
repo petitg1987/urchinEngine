@@ -23,13 +23,11 @@ namespace urchin {
             cursorPosition(0),
             cursorBlink(0.0f),
             state(UNACTIVE),
-            widgetOutline(new WidgetOutline()),
-            texCursorDiffuse(nullptr) {
+            widgetOutline(new WidgetOutline()) {
         TextBox::createOrUpdateWidget();
     }
 
     TextBox::~TextBox() {
-        texCursorDiffuse->release();
         delete widgetOutline;
     }
 
@@ -38,10 +36,10 @@ namespace urchin {
         std::shared_ptr<XmlChunk> textBoxChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textBox", XmlAttribute("nameSkin", nameSkin));
 
         std::shared_ptr<XmlChunk> skinChunkDefault = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "default"), textBoxChunk);
-        texTextBoxDefault = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinChunkDefault, widgetOutline);
+        texTextBoxDefault = GUISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinChunkDefault, widgetOutline);
 
         std::shared_ptr<XmlChunk> skinChunkFocus = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "focus"), textBoxChunk);
-        texTextBoxFocus = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinChunkFocus);
+        texTextBoxFocus = GUISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinChunkFocus);
 
         std::shared_ptr<XmlChunk> textFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textFont", XmlAttribute(), textBoxChunk);
         removeChild(text);
@@ -52,11 +50,9 @@ namespace urchin {
 
         Vector3<float> fontColor = text->getFont()->getFontColor();
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255)};
-        if(texCursorDiffuse) {
-            texCursorDiffuse->release();
-        }
-        texCursorDiffuse = new Image(1, 1, Image::IMAGE_RGB, std::move(cursorColor));
-        texCursorDiffuse->toTexture(false);
+        auto *imgCursorDiffuse = new Image(1, 1, Image::IMAGE_RGB, std::move(cursorColor));
+        texCursorDiffuse = imgCursorDiffuse->createTexture(false);
+        imgCursorDiffuse->release();
         refreshText(cursorIndex);
         computeCursorPosition();
 
@@ -72,7 +68,7 @@ namespace urchin {
         textBoxRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addTexture(TextureReader::build(texTextBoxDefault->getTextureID()))
+                ->addTexture(TextureReader::build(texTextBoxDefault, TextureParam::buildNearest()))
                 ->build();
 
         std::vector<Point2<float>> cursorVertexCoord = {
@@ -86,7 +82,7 @@ namespace urchin {
         cursorRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::LINE)
                 ->addData(&cursorVertexCoord)
                 ->addData(&cursorTextureCoord)
-                ->addTexture(TextureReader::build(texCursorDiffuse->getTextureID(), TextureType::DEFAULT, TextureParam::buildRepeatNearest()))
+                ->addTexture(TextureReader::build(texCursorDiffuse, TextureParam::buildRepeatNearest()))
                 ->build();
     }
 
@@ -99,13 +95,13 @@ namespace urchin {
             Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
             if (widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
-                textBoxRenderer->updateTexture(0, TextureReader::build(texTextBoxFocus->getTextureID()));
+                textBoxRenderer->updateTexture(0, TextureReader::build(texTextBoxFocus, TextureParam::buildNearest()));
 
                 int localMouseX = getMouseX() - text->getGlobalPositionX();
                 computeCursorIndex(localMouseX);
             } else {
                 state = UNACTIVE;
-                textBoxRenderer->updateTexture(0, TextureReader::build(texTextBoxDefault->getTextureID()));
+                textBoxRenderer->updateTexture(0, TextureReader::build(texTextBoxDefault, TextureParam::buildNearest()));
             }
         } else if (state == ACTIVE) {
             if (key == InputDeviceKey::LEFT_ARROW) {
@@ -148,7 +144,7 @@ namespace urchin {
 
     void TextBox::reset() {
         state = UNACTIVE;
-        textBoxRenderer->updateTexture(0, TextureReader::build(texTextBoxDefault->getTextureID()));
+        textBoxRenderer->updateTexture(0, TextureReader::build(texTextBoxDefault, TextureParam::buildNearest()));
 
         Widget::reset();
     }

@@ -30,7 +30,7 @@ namespace urchin {
 
         //creates the texture
         std::shared_ptr<XmlChunk> skinChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute(), windowChunk);
-        texWindow = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinChunk, widgetOutline);
+        texWindow = GUISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinChunk, widgetOutline);
 
         //creates font for title
         if (!stringTitle.empty()) {
@@ -54,7 +54,7 @@ namespace urchin {
         windowRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addTexture(TextureReader::build(texWindow->getTextureID()))
+                ->addTexture(TextureReader::build(texWindow, TextureParam::buildNearest()))
                 ->build();
     }
 

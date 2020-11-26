@@ -33,8 +33,8 @@ namespace urchin {
                 INVERSE_GRAYSCALE_VALUE
             };
 
-            TextureRenderer(unsigned int, TextureRenderer::ColorType, float colorIntensity = 1.0);
-            TextureRenderer(unsigned int, unsigned int, TextureRenderer::ColorType, float colorIntensity = 1.0);
+            TextureRenderer(std::shared_ptr<Texture>, TextureRenderer::ColorType, float colorIntensity = 1.0);
+            TextureRenderer(std::shared_ptr<Texture>, unsigned int, TextureRenderer::ColorType, float colorIntensity = 1.0);
 
             void setPosition(TextureRenderer::CoordinateX, TextureRenderer::CoordinateY);
             void setSize(float, float, float, float);
@@ -57,7 +57,7 @@ namespace urchin {
             float userMinX, userMaxX, userMinY, userMaxY;
 
             //visual
-            unsigned int textureID;
+            std::shared_ptr<Texture> texture;
             TextureRenderer::ColorType colorType;
             float colorIntensity;
             std::unique_ptr<GenericRenderer> renderer;

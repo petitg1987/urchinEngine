@@ -1,12 +1,14 @@
 #include "resources/font/Font.h"
 
+#include <utility>
+
 namespace urchin {
 
-    Font::Font(unsigned int fontSize, const Vector3<float> &fontColor, Image *texAlphabet, Glyph *glyph,
+    Font::Font(unsigned int fontSize, const Vector3<float> &fontColor, std::shared_ptr<Texture> alphabetTexture, Glyph *glyph,
                unsigned int spaceBetweenLetters, unsigned int spaceBetweenLines, unsigned int height) :
         fontSize(fontSize),
         fontColor(fontColor),
-        texAlphabet(texAlphabet),
+        alphabetTexture(std::move(alphabetTexture)),
         glyph(glyph),
         spaceBetweenLetters(spaceBetweenLetters),
         spaceBetweenLines(spaceBetweenLines),
@@ -15,7 +17,6 @@ namespace urchin {
     }
 
     Font::~Font() {
-        delete texAlphabet;
         delete [] glyph;
     }
 
@@ -31,12 +32,12 @@ namespace urchin {
         return glyph[(unsigned int)character];
     }
 
-    unsigned int Font::getTextureID() const {
-        return texAlphabet->getTextureID();
+    const std::shared_ptr<Texture> &Font::getTexture() const {
+        return alphabetTexture;
     }
 
     unsigned int Font::getDimensionTexture() const {
-        return texAlphabet->getWidth();
+        return alphabetTexture->getWidth();
     }
 
     unsigned int Font::getSpaceBetweenLetters() const {

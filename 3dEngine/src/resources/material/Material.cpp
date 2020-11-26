@@ -1,47 +1,34 @@
 #include "resources/material/Material.h"
 
+#include <utility>
+
 namespace urchin {
 
-    Material::Material(Image *diffuseTexture, Image *normalTexture, bool repeatableTextures, float ambientFactor) :
-            bHasDiffuseTexture(diffuseTexture!=nullptr),
-            diffuseTexture(diffuseTexture),
-            bHasNormalTexture(normalTexture!=nullptr),
-            normalTexture(normalTexture),
+    Material::Material(std::shared_ptr<Texture> diffuseTexture, std::shared_ptr<Texture> normalTexture, bool repeatableTextures, float ambientFactor) :
+            diffuseTexture(std::move(diffuseTexture)),
+            normalTexture(std::move(normalTexture)),
             repeatableTextures(repeatableTextures),
             ambientFactor(ambientFactor) {
         buildDefaultTextures();
     }
 
-    Material::~Material() {
-        diffuseTexture->release();
-        normalTexture->release();
-    }
-
     void Material::buildDefaultTextures() {
-        if (!hasDiffuseTexture()) {
-            this->diffuseTexture = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({255, 20, 147}));
-            this->diffuseTexture->toTexture(false);
+        if (!diffuseTexture) {
+            auto *defaultDiffuseImage = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({255, 20, 147}));
+            diffuseTexture = defaultDiffuseImage->createTexture(false);
         }
 
-        if (!hasNormalTexture()) {
-            this->normalTexture = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({127, 127, 255}));
-            this->normalTexture->toTexture(false);
+        if (!normalTexture) {
+            auto *defaultNormalImage = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({127, 127, 255}));
+            normalTexture = defaultNormalImage->createTexture(false);
         }
     }
 
-    bool Material::hasDiffuseTexture() const {
-        return bHasDiffuseTexture;
-    }
-
-    const Image *Material::getDiffuseTexture() const {
+    const std::shared_ptr<Texture> &Material::getDiffuseTexture() const {
         return diffuseTexture;
     }
 
-    bool Material::hasNormalTexture() const {
-        return bHasNormalTexture;
-    }
-
-    const Image *Material::getNormalTexture() const {
+    const std::shared_ptr<Texture> &Material::getNormalTexture() const {
         return normalTexture;
     }
 
@@ -51,12 +38,6 @@ namespace urchin {
 
     float Material::getAmbientFactor() const {
         return ambientFactor;
-    }
-
-    std::vector<const Image *> Material::getTextures() const {
-        std::vector<const Image *> textures = {getDiffuseTexture(), getNormalTexture()};
-
-        return textures;
     }
 
 }

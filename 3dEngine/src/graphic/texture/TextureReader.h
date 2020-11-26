@@ -10,8 +10,6 @@ namespace urchin {
     class TextureReader {
         public:
             static TextureReader build(unsigned int); //TODO remove
-            static TextureReader build(unsigned int, TextureType); //TODO remove
-            static TextureReader build(unsigned int, TextureType, TextureParam); //TODO remove
             static TextureReader build(std::shared_ptr<Texture>, TextureParam);
 
             unsigned int getId() const;

@@ -9,8 +9,6 @@ namespace urchin {
     Mesh::Mesh(const ConstMesh *constMesh) :
             constMesh(constMesh) {
 
-        unsigned int diffuseTextureId = constMesh->getMaterial()->getDiffuseTexture()->getTextureID();
-        unsigned int normalTextureId = constMesh->getMaterial()->getNormalTexture()->getTextureID();
         TextureParam::ReadMode textureReadMode = constMesh->getMaterial()->isRepeatableTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
         TextureParam textureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY);
 
@@ -21,8 +19,8 @@ namespace urchin {
                 ->addData(&constMesh->getBaseNormals())
                 ->addData(&constMesh->getBaseTangents())
                 ->indices(&constMesh->getTrianglesIndices())
-                ->addTexture(TextureReader::build(diffuseTextureId, TextureType::DEFAULT, textureParam))
-                ->addTexture(TextureReader::build(normalTextureId, TextureType::DEFAULT, textureParam))
+                ->addTexture(TextureReader::build(constMesh->getMaterial()->getDiffuseTexture(), textureParam))
+                ->addTexture(TextureReader::build(constMesh->getMaterial()->getNormalTexture(), textureParam))
                 ->build();
     }
 

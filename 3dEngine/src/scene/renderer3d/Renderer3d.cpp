@@ -369,28 +369,28 @@ namespace urchin {
     void Renderer3d::displayBuffers() {
         if (DEBUG_DISPLAY_DEPTH_BUFFER) {
             float depthIntensity = 5.0f;
-            TextureRenderer textureRenderer(depthTexture->getTextureId(), TextureRenderer::DEPTH_VALUE, depthIntensity); //TODO accept Texture in construction !
+            TextureRenderer textureRenderer(depthTexture, TextureRenderer::DEPTH_VALUE, depthIntensity);
             textureRenderer.setPosition(TextureRenderer::LEFT, TextureRenderer::TOP);
             textureRenderer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureRenderer.display();
         }
 
         if (DEBUG_DISPLAY_COLOR_BUFFER) {
-            TextureRenderer textureRenderer(diffuseTexture->getTextureId(), TextureRenderer::DEFAULT_VALUE); //TODO accept Texture in construction !
+            TextureRenderer textureRenderer(diffuseTexture, TextureRenderer::DEFAULT_VALUE);
             textureRenderer.setPosition(TextureRenderer::CENTER_X, TextureRenderer::TOP);
             textureRenderer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureRenderer.display();
         }
 
         if (DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER) {
-            TextureRenderer textureRenderer(normalAndAmbientTexture->getTextureId(), TextureRenderer::DEFAULT_VALUE); //TODO accept Texture in construction !
+            TextureRenderer textureRenderer(normalAndAmbientTexture, TextureRenderer::DEFAULT_VALUE);
             textureRenderer.setPosition(TextureRenderer::RIGHT, TextureRenderer::TOP);
             textureRenderer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureRenderer.display();
         }
 
         if (DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER) {
-            TextureRenderer textureRenderer(lightingPassTexture->getTextureId(), TextureRenderer::DEFAULT_VALUE); //TODO accept Texture in construction !
+            TextureRenderer textureRenderer(lightingPassTexture, TextureRenderer::DEFAULT_VALUE);
             textureRenderer.setPosition(TextureRenderer::LEFT, TextureRenderer::BOTTOM);
             textureRenderer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureRenderer.display();
@@ -399,8 +399,7 @@ namespace urchin {
         if (DEBUG_DISPLAY_SHADOW_MAP) {
             const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
             const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps-1]
-            auto shadowMapTexture = shadowManager->getShadowData(firstLight).getShadowMapTexture();
-            TextureRenderer textureDisplayer(shadowMapTexture->getTextureId(), shadowMapNumber, TextureRenderer::DEFAULT_VALUE); //TODO accept Texture in construction !
+            TextureRenderer textureDisplayer(shadowManager->getShadowData(firstLight).getShadowMapTexture(), shadowMapNumber, TextureRenderer::DEFAULT_VALUE);
             textureDisplayer.setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
             textureDisplayer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureDisplayer.display();
@@ -408,7 +407,7 @@ namespace urchin {
 
         if (DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER) {
             float ambientOcclusionIntensity = 10.0f;
-            TextureRenderer textureRenderer(ambientOcclusionManager->getAmbientOcclusionTexture()->getTextureId(), TextureRenderer::INVERSE_GRAYSCALE_VALUE, ambientOcclusionIntensity); //TODO accept Texture in construction !
+            TextureRenderer textureRenderer(ambientOcclusionManager->getAmbientOcclusionTexture(), TextureRenderer::INVERSE_GRAYSCALE_VALUE, ambientOcclusionIntensity);
             textureRenderer.setPosition(TextureRenderer::RIGHT, TextureRenderer::BOTTOM);
             textureRenderer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureRenderer.display();

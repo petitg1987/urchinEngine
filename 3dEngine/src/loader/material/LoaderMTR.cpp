@@ -21,21 +21,23 @@ namespace urchin {
         }
 
         //diffuse data
-        Image *diffuseTex = nullptr;
+        std::shared_ptr<Texture> diffuseTexture;
         std::shared_ptr<XmlChunk> diffuse(parserXml.getUniqueChunk(false, "diffuse"));
         if (diffuse) {
-            std::shared_ptr<XmlChunk> diffuseTexture(parserXml.getUniqueChunk(true, "texture", XmlAttribute(), diffuse));
-            diffuseTex = MediaManager::instance()->getMedia<Image>(diffuseTexture->getStringValue());
-            diffuseTex->toTexture(true);
+            std::shared_ptr<XmlChunk> diffuseTextureElem(parserXml.getUniqueChunk(true, "texture", XmlAttribute(), diffuse));
+            auto *diffuseImage = MediaManager::instance()->getMedia<Image>(diffuseTextureElem->getStringValue());
+            diffuseTexture = diffuseImage->createTexture(true);
+            diffuseImage->release();
         }
 
         //normal data
-        Image *normalTex = nullptr;
+        std::shared_ptr<Texture> normalTexture;
         std::shared_ptr<XmlChunk> normal(parserXml.getUniqueChunk(false, "normal"));
         if (normal) {
-            std::shared_ptr<XmlChunk> normalTexture(parserXml.getUniqueChunk(true, "texture", XmlAttribute(), normal));
-            normalTex = MediaManager::instance()->getMedia<Image>(normalTexture->getStringValue());
-            normalTex->toTexture(true);
+            std::shared_ptr<XmlChunk> normalTextureElem(parserXml.getUniqueChunk(true, "texture", XmlAttribute(), normal));
+            auto *normalImage = MediaManager::instance()->getMedia<Image>(normalTextureElem->getStringValue());
+            normalTexture = normalImage->createTexture(true);
+            normalImage->release();
         }
 
         //ambient data
@@ -46,7 +48,7 @@ namespace urchin {
             fAmbientFactor = Converter::toFloat(ambientFactor->getStringValue());
         }
 
-        return new Material(diffuseTex, normalTex, repeatableTextures, fAmbientFactor);
+        return new Material(diffuseTexture, normalTexture, repeatableTextures, fAmbientFactor);
     }
 
 }

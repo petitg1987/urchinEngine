@@ -52,9 +52,9 @@ namespace urchin {
             } state;
 
             //visual
-            std::shared_ptr<Image> texTextBoxDefault, texTextBoxFocus;
+            std::shared_ptr<Texture> texTextBoxDefault, texTextBoxFocus;
             WidgetOutline *widgetOutline;
-            Image *texCursorDiffuse;
+            std::shared_ptr<Texture> texCursorDiffuse;
             std::unique_ptr<GenericRenderer> textBoxRenderer, cursorRenderer;
     };
 

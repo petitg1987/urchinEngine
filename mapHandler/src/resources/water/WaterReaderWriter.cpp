@@ -66,10 +66,10 @@ namespace urchin {
         waterColorChunk->setVector3Value(water->getWaterColor());
 
         std::shared_ptr<XmlChunk> normalFilenameChunk = xmlWriter.createChunk(NORMAL_FILENAME_TAG, XmlAttribute(), waterChunk);
-        normalFilenameChunk->setStringValue(water->getNormalTexture()->getName());
+        normalFilenameChunk->setStringValue(water->getNormalFilename());
 
         std::shared_ptr<XmlChunk> dudvMapFilenameChunk = xmlWriter.createChunk(DUDV_MAP_FILENAME_TAG, XmlAttribute(), waterChunk);
-        dudvMapFilenameChunk->setStringValue(water->getDudvMap()->getName());
+        dudvMapFilenameChunk->setStringValue(water->getDudvFilename());
 
         std::shared_ptr<XmlChunk> waveSpeedChunk = xmlWriter.createChunk(WAVE_SPEED_TAG, XmlAttribute(), waterChunk);
         waveSpeedChunk->setFloatValue(water->getWaveSpeed());

@@ -17,7 +17,7 @@ namespace urchin {
     class Water : public Observable {
         public:
             Water();
-            ~Water() override;
+            ~Water() override = default;
 
             enum NotificationType {
                 MOVE_UNDER_WATER,
@@ -37,10 +37,10 @@ namespace urchin {
             const Vector3<float> &getWaterColor() const;
 
             void setNormalTexture(const std::string &);
-            const Image *getNormalTexture() const;
+            const std::string &getNormalFilename() const;
 
             void setDudvMap(const std::string &);
-            const Image *getDudvMap() const;
+            const std::string &getDudvFilename() const;
 
             void setWaveSpeed(float);
             float getWaveSpeed() const;
@@ -81,7 +81,8 @@ namespace urchin {
             std::unique_ptr<Rectangle<float>> waterRectangle;
 
             Vector3<float> waterColor;
-            Image *normalTexture, *dudvMap;
+            std::string normalFilename, dudvFilename;
+            std::shared_ptr<Texture> normalTexture, dudvMap;
             float waveSpeed, waveStrength;
             float sRepeat, tRepeat;
 

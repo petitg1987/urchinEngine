@@ -21,8 +21,6 @@ namespace urchin {
             sumTimeStep(0.0f),
             xSize(0.0f),
             zSize(0.0f),
-            normalTexture(nullptr),
-            dudvMap(nullptr),
             waveSpeed(0.0f),
             waveStrength(0.0f),
             sRepeat(0.0f),
@@ -64,15 +62,6 @@ namespace urchin {
         setGradient(DEFAULT_GRADIENT);
     }
 
-    Water::~Water() {
-        if(normalTexture) {
-            normalTexture->release();
-        }
-        if(dudvMap) {
-            dudvMap->release();
-        }
-    }
-
     void Water::generateVertex() {
         float minX = -xSize/2.0f + centerPosition.X;
         float minZ = -zSize/2.0f + centerPosition.Z;
@@ -104,12 +93,12 @@ namespace urchin {
     void Water::updateWaterTextures() {
         if(normalTexture) {
             TextureParam textureParam = TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY);
-            waterRenderer->updateTexture(0, TextureReader::build(normalTexture->getTextureID(), TextureType::DEFAULT, textureParam));
+            waterRenderer->updateTexture(0, TextureReader::build(normalTexture, textureParam));
         }
 
         if(dudvMap) {
             TextureParam textureParam = TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR_MIPMAP, TextureParam::ANISOTROPY);
-            waterRenderer->updateTexture(1, TextureReader::build(dudvMap->getTextureID(), TextureType::DEFAULT, textureParam));
+            waterRenderer->updateTexture(1, TextureReader::build(dudvMap, textureParam));
         }
     }
 
@@ -158,49 +147,51 @@ namespace urchin {
     }
 
     void Water::setNormalTexture(const std::string &normalFilename) {
-        if (normalTexture) {
-            normalTexture->release();
-        }
+        this->normalFilename = normalFilename;
 
+        Image *normalImage;
         if (normalFilename.empty()) {
-            normalTexture = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({0, 255, 0}));
+            normalImage = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({0, 255, 0}));
         } else {
-            normalTexture = MediaManager::instance()->getMedia<Image>(normalFilename);
-            if (normalTexture->getImageFormat() != Image::IMAGE_RGB) {
-                normalTexture->release();
-                throw std::runtime_error("Water normal texture must have 3 components (RGB). Components: " + std::to_string(normalTexture->retrieveComponentsCount()));
+            normalImage = MediaManager::instance()->getMedia<Image>(normalFilename);
+            if (normalImage->getImageFormat() != Image::IMAGE_RGB) {
+                normalImage->release();
+                throw std::runtime_error("Water normal texture must have 3 components (RGB). Components: " + std::to_string(normalImage->retrieveComponentsCount()));
             }
         }
 
-        normalTexture->toTexture(true);
+        normalTexture = normalImage->createTexture(true);
+        normalImage->release();
+
         updateWaterTextures();
     }
 
-    const Image *Water::getNormalTexture() const {
-        return normalTexture;
+    const std::string &Water::getNormalFilename() const {
+        return normalFilename;
     }
 
     void Water::setDudvMap(const std::string &dudvFilename) {
-        if (dudvMap) {
-            dudvMap->release();
-        }
+        this->dudvFilename = dudvFilename;
 
+        Image *dudvImage;
         if (dudvFilename.empty()) {
-            dudvMap = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({255, 0, 255}));
+            dudvImage = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({255, 0, 255}));
         } else {
-            dudvMap = MediaManager::instance()->getMedia<Image>(dudvFilename);
-            if (dudvMap->getImageFormat() != Image::IMAGE_RGB) {
-                dudvMap->release();
-                throw std::runtime_error("Water dudv map must have 3 components (RGB). Components: " + std::to_string(dudvMap->retrieveComponentsCount()));
+            dudvImage = MediaManager::instance()->getMedia<Image>(dudvFilename);
+            if (dudvImage->getImageFormat() != Image::IMAGE_RGB) {
+                dudvImage->release();
+                throw std::runtime_error("Water dudv map must have 3 components (RGB). Components: " + std::to_string(dudvImage->retrieveComponentsCount()));
             }
         }
 
-        dudvMap->toTexture(true);
+        dudvMap = dudvImage->createTexture(true);
+        dudvImage->release();
+
         updateWaterTextures();
     }
 
-    const Image *Water::getDudvMap() const {
-        return dudvMap;
+    const std::string &Water::getDudvFilename() const {
+        return dudvFilename;
     }
 
     void Water::setWaveSpeed(float waveSpeed) {

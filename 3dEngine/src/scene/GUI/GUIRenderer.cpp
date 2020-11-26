@@ -142,7 +142,7 @@ namespace urchin {
         if (DEBUG_DISPLAY_FONT_TEXTURE) {
             Font *font = MediaManager::instance()->getMedia<Font>("UI/font/font.fnt");
 
-            TextureRenderer textureDisplayer(font->getTextureID(), TextureRenderer::DEFAULT_VALUE);
+            TextureRenderer textureDisplayer(font->getTexture(), TextureRenderer::DEFAULT_VALUE);
             textureDisplayer.setPosition(TextureRenderer::USER_DEFINED_X, TextureRenderer::USER_DEFINED_Y);
             textureDisplayer.setSize(20.0f, (float)font->getDimensionTexture() + 20.0f, 20.0f, (float)font->getDimensionTexture() + 20.0f);
             textureDisplayer.enableTransparency();

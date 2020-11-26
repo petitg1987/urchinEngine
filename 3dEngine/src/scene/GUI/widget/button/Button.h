@@ -23,7 +23,7 @@ namespace urchin {
             void display(const ShaderVar &, float) override;
 
         private:
-            unsigned int getTextureId();
+            const std::shared_ptr<Texture> &getTexture();
 
             bool onKeyPressEvent(unsigned int) override;
             bool onKeyReleaseEvent(unsigned int) override;
@@ -37,7 +37,7 @@ namespace urchin {
             const std::string buttonText;
 
             //visual
-            std::shared_ptr<Image> texInfoDefault, texInfoOnFocus, texInfoOnClick;
+            std::shared_ptr<Texture> texInfoDefault, texInfoOnFocus, texInfoOnClick;
             std::unique_ptr<GenericRenderer> buttonRenderer;
     };
 

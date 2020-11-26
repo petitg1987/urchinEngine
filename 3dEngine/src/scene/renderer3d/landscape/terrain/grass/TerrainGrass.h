@@ -75,7 +75,7 @@ namespace urchin {
             Matrix4<float> projectionMatrix;
             float sumTimeStep;
 
-            Image *grassTexture, *grassMaskTexture;
+            std::shared_ptr<Texture> grassTexture, grassMaskTexture;
             std::string grassTextureFilename, grassMaskFilename;
             TerrainGrassQuadtree *mainGrassQuadtree;
             std::vector<const TerrainGrassQuadtree *> grassQuadtrees;

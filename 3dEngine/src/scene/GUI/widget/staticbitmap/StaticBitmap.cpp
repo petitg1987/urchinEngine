@@ -13,17 +13,10 @@ namespace urchin {
         StaticBitmap::createOrUpdateWidget();
     }
 
-    StaticBitmap::~StaticBitmap() {
-        tex->release();
-    }
-
     void StaticBitmap::createOrUpdateWidget() {
         //loads the texture
-        if (tex) {
-            tex->release();
-        }
-        tex = MediaManager::instance()->getMedia<Image>(filename);
-        tex->toTexture(false);
+        auto *img = MediaManager::instance()->getMedia<Image>(filename);
+        tex = img->createTexture(false);
 
         //visual
         std::vector<Point2<float>> vertexCoord = {
@@ -37,7 +30,7 @@ namespace urchin {
         bitmapRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addTexture(TextureReader::build(tex->getTextureID()))
+                ->addTexture(TextureReader::build(tex, TextureParam::buildNearest()))
                 ->enableTransparency()
                 ->build();
     }

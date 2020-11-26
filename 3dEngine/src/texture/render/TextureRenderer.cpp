@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <utility>
 
 #include "TextureRenderer.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
@@ -7,7 +8,7 @@
 
 namespace urchin {
 
-    TextureRenderer::TextureRenderer(unsigned int textureID, TextureRenderer::ColorType colorType, float colorIntensity) :
+    TextureRenderer::TextureRenderer(std::shared_ptr<Texture> texture, TextureRenderer::ColorType colorType, float colorIntensity) :
             isInitialized(false),
             coordinateX(TextureRenderer::LEFT),
             coordinateY(TextureRenderer::BOTTOM),
@@ -17,14 +18,14 @@ namespace urchin {
             userMaxX(1.0),
             userMinY(0.0),
             userMaxY(1.0),
-            textureID(textureID),
+            texture(std::move(texture)),
             colorType(colorType),
             colorIntensity(colorIntensity),
             layer(-1) {
 
     }
 
-    TextureRenderer::TextureRenderer(unsigned int textureID, unsigned int layer, TextureRenderer::ColorType colorType, float colorIntensity) :
+    TextureRenderer::TextureRenderer(std::shared_ptr<Texture> texture, unsigned int layer, TextureRenderer::ColorType colorType, float colorIntensity) :
             isInitialized(false),
             coordinateX(TextureRenderer::LEFT),
             coordinateY(TextureRenderer::BOTTOM),
@@ -34,11 +35,11 @@ namespace urchin {
             userMaxX(1.0),
             userMinY(0.0),
             userMaxY(1.0),
-            textureID(textureID),
+            texture(std::move(texture)),
             colorType(colorType),
             colorIntensity(colorIntensity),
             layer((int)layer) {
-
+        assert(this->texture->getTextureType() == TextureType::ARRAY);
     }
 
     void TextureRenderer::setPosition(TextureRenderer::CoordinateX coordinateX, TextureRenderer::CoordinateY coordinateY) {
@@ -155,12 +156,11 @@ namespace urchin {
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
         };
-        TextureType textureType = (layer == -1) ? TextureType::DEFAULT : TextureType::ARRAY;
         std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE);
         rendererBuilder
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addTexture(TextureReader::build(textureID, textureType));
+                ->addTexture(TextureReader::build(texture, TextureParam::buildNearest()));
         if(transparencyEnabled) {
             rendererBuilder->enableTransparency();
         }

@@ -74,12 +74,6 @@ namespace urchin {
     }
 
     TerrainGrass::~TerrainGrass() {
-        if (grassTexture) {
-            grassTexture->release();
-        }
-        if (grassMaskTexture) {
-            grassMaskTexture->release();
-        }
         delete mainGrassQuadtree;
     }
 
@@ -228,8 +222,8 @@ namespace urchin {
                         ->disableCullFace()
                         ->addData(&grassQuadtree->getGrassVertices())
                         ->addData(&grassQuadtree->getGrassNormals())
-                        ->addTexture(TextureReader::build(grassTexture->getTextureID(), TextureType::DEFAULT, grassTextureParam))
-                        ->addTexture(TextureReader::build(grassMaskTexture->getTextureID(), TextureType::DEFAULT, grassMaskTextureParam))
+                        ->addTexture(TextureReader::build(grassTexture, grassTextureParam))
+                        ->addTexture(TextureReader::build(grassMaskTexture, grassMaskTextureParam))
                         ->build();
 
                 grassQuadtree->setRenderer(std::move(renderer));
@@ -244,15 +238,12 @@ namespace urchin {
     void TerrainGrass::setGrassTexture(const std::string &grassTextureFilename) {
         this->grassTextureFilename = grassTextureFilename;
 
-        if (grassTexture) {
-            grassTexture->release();
-        }
-
         if (grassTextureFilename.empty()) {
             grassTexture = nullptr;
         } else {
-            grassTexture = MediaManager::instance()->getMedia<Image>(grassTextureFilename);
-            grassTexture->toTexture(true);
+            auto *grassTextureImg = MediaManager::instance()->getMedia<Image>(grassTextureFilename);
+            grassTexture = grassTextureImg->createTexture(true);
+            grassTextureImg->release();
         }
     }
 
@@ -263,16 +254,14 @@ namespace urchin {
     void TerrainGrass::setMaskTexture(const std::string &grassMaskFilename) {
         this->grassMaskFilename = grassMaskFilename;
 
-        if (grassMaskTexture) {
-            grassMaskTexture->release();
-        }
-
+        Image *grassMaskImage;
         if (grassMaskFilename.empty()) {
-            grassMaskTexture = new Image(1, 1, Image::IMAGE_GRAYSCALE, std::vector<unsigned char>({0}));
+            grassMaskImage = new Image(1, 1, Image::IMAGE_GRAYSCALE, std::vector<unsigned char>({0}));
         } else {
-            grassMaskTexture = MediaManager::instance()->getMedia<Image>(grassMaskFilename);
+            grassMaskImage = MediaManager::instance()->getMedia<Image>(grassMaskFilename);
         }
-        grassMaskTexture->toTexture(false);
+        grassMaskTexture = grassMaskImage->createTexture(false);
+        grassMaskImage->release();
     }
 
     float TerrainGrass::getGrassDisplayDistance() const {

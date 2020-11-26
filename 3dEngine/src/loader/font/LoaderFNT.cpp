@@ -136,8 +136,9 @@ namespace urchin {
             }
         }
 
-        auto *texAlphabet = new Image(dimensionTexture, dimensionTexture, Image::IMAGE_RGBA, std::move(texels));
-        texAlphabet->toTexture(false);
+        auto *alphabetImage = new Image(dimensionTexture, dimensionTexture, Image::IMAGE_RGBA, std::move(texels));
+        auto alphabetTexture = alphabetImage->createTexture(false);
+        alphabetImage->release();
 
         //clears buffers of letters
         for (std::size_t i=0;i<NUM_LETTERS;i++) {
@@ -145,7 +146,7 @@ namespace urchin {
             glyph[i].buf = nullptr;
         }
 
-        return new Font(fontSize, fontColor, texAlphabet, glyph, spaceBetweenLetters, spaceBetweenLines, height);
+        return new Font(fontSize, fontColor, alphabetTexture, glyph, spaceBetweenLetters, spaceBetweenLines, height);
     }
 
 }

@@ -73,6 +73,14 @@ namespace urchin {
         return textureType;
     }
 
+    unsigned int Texture::getWidth() const {
+        return width;
+    }
+
+    unsigned int Texture::getHeight() const {
+        return height;
+    }
+
     unsigned int Texture::getTextureId() const {
         return textureId;
     }

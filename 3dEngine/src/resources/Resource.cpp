@@ -3,7 +3,8 @@
 
 namespace urchin {
 
-    Resource::Resource() : name(""), refCount(1) {
+    Resource::Resource() :
+            refCount(1) {
 
     }
 
@@ -33,13 +34,6 @@ namespace urchin {
         if (--refCount==0) {
             delete this;
         }
-    }
-
-    /**
-     * Deleter for std::shared_ptr
-     */
-    void Resource::ResourceDeleter::operator()(Resource *const resource) {
-        resource->release();
     }
 
 }

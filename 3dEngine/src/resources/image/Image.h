@@ -1,11 +1,12 @@
-#ifndef URCHINENGINE_CIMAGE_H
-#define URCHINENGINE_CIMAGE_H
+#ifndef URCHINENGINE_IMAGE_H
+#define URCHINENGINE_IMAGE_H
 
-#include <GL/glew.h>
 #include <vector>
+#include <memory>
 
 #include "resources/Resource.h"
 #include "graphic/texture/model/TextureFormat.h"
+#include "graphic/texture/Texture.h"
 
 namespace urchin {
 
@@ -23,7 +24,7 @@ namespace urchin {
 
             Image(unsigned int, unsigned int, ImageFormat, std::vector<unsigned char> &&);
             Image(unsigned int, unsigned int, ImageFormat, std::vector<uint16_t> &&);
-            ~Image() override;
+            ~Image() override = default;
 
             unsigned int getWidth() const;
             unsigned int getHeight() const;
@@ -34,11 +35,8 @@ namespace urchin {
 
             unsigned int retrieveComponentsCount() const;
             TextureFormat retrieveTextureFormat() const;
-            GLint retrieveInternalFormat() const;
-            GLenum retrieveFormat() const;
 
-            unsigned int toTexture(bool);
-            unsigned int getTextureID() const;
+            std::shared_ptr<Texture> createTexture(bool);
 
         private:
             unsigned int width;
@@ -47,9 +45,6 @@ namespace urchin {
             ChannelPrecision channelPrecision;
             std::vector<unsigned char> texels8; //8 bits
             std::vector<uint16_t> texels16; //16 bits
-
-            bool isTexture;
-            unsigned int textureID;
     };
 
 }

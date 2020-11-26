@@ -17,11 +17,6 @@ namespace urchin {
             void addRef();
             void release();
 
-            class ResourceDeleter {
-                public:
-                    void operator()(Resource *);
-            };
-
         private:
             std::string name;
             unsigned int refCount;

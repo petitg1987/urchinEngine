@@ -10,29 +10,21 @@ namespace urchin {
 
     class Material : public Resource {
         public:
-            Material(Image *, Image *, bool, float);
-            ~Material() override;
+            Material(std::shared_ptr<Texture>, std::shared_ptr<Texture>, bool, float);
+            ~Material() override = default;
 
-            bool hasDiffuseTexture() const;
-            const Image *getDiffuseTexture() const;
-
-            bool hasNormalTexture() const;
-            const Image *getNormalTexture() const;
+            const std::shared_ptr<Texture> &getDiffuseTexture() const;
+            const std::shared_ptr<Texture> &getNormalTexture() const;
 
             bool isRepeatableTextures() const;
 
             float getAmbientFactor() const;
 
-            std::vector<const Image *> getTextures() const;
-
         private:
             void buildDefaultTextures();
 
-            bool bHasDiffuseTexture;
-            Image *diffuseTexture;
-
-            bool bHasNormalTexture;
-            Image *normalTexture;
+            std::shared_ptr<Texture> diffuseTexture;
+            std::shared_ptr<Texture> normalTexture;
 
             bool repeatableTextures;
 

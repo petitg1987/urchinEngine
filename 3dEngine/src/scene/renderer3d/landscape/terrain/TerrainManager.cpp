@@ -1,3 +1,4 @@
+#include <GL/glew.h>
 #include <algorithm>
 
 #include "TerrainManager.h"

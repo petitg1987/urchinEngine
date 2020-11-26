@@ -20,13 +20,13 @@ namespace urchin {
         std::shared_ptr<XmlChunk> buttonChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "button", XmlAttribute("nameSkin", nameSkin));
 
         std::shared_ptr<XmlChunk> skinDefaultChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "default"), buttonChunk);
-        texInfoDefault = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinDefaultChunk);
+        texInfoDefault = GUISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinDefaultChunk);
 
         std::shared_ptr<XmlChunk> skinFocusChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "focus"), buttonChunk);
-        texInfoOnFocus = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinFocusChunk);
+        texInfoOnFocus = GUISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinFocusChunk);
 
         std::shared_ptr<XmlChunk> skinClickChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "click"), buttonChunk);
-        texInfoOnClick = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinClickChunk);
+        texInfoOnClick = GUISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinClickChunk);
 
         if (!buttonText.empty()) {
             std::shared_ptr<XmlChunk> textFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textFont", XmlAttribute(), buttonChunk);
@@ -49,32 +49,32 @@ namespace urchin {
         buttonRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addTexture(TextureReader::build(texInfoDefault->getTextureID()))
+                ->addTexture(TextureReader::build(texInfoDefault, TextureParam::buildNearest()))
                 ->build();
     }
 
-    unsigned int Button::getTextureId() {
+    const std::shared_ptr<Texture> &Button::getTexture() {
         if (getWidgetState()==FOCUS) {
-            return texInfoOnFocus->getTextureID();
+            return texInfoOnFocus;
         } else if (getWidgetState()==CLICKING) {
-            return texInfoOnClick->getTextureID();
+            return texInfoOnClick;
         }
 
-        return texInfoDefault->getTextureID();
+        return texInfoDefault;
     }
 
     bool Button::onKeyPressEvent(unsigned int) {
-        buttonRenderer->updateTexture(0, TextureReader::build(getTextureId()));
+        buttonRenderer->updateTexture(0, TextureReader::build(getTexture(), TextureParam::buildNearest()));
         return true;
     }
 
     bool Button::onKeyReleaseEvent(unsigned int) {
-        buttonRenderer->updateTexture(0, TextureReader::build(getTextureId()));
+        buttonRenderer->updateTexture(0, TextureReader::build(getTexture(), TextureParam::buildNearest()));
         return true;
     }
 
     bool Button::onMouseMoveEvent(int, int) {
-        buttonRenderer->updateTexture(0, TextureReader::build(getTextureId()));
+        buttonRenderer->updateTexture(0, TextureReader::build(getTexture(), TextureParam::buildNearest()));
         return true;
     }
 
