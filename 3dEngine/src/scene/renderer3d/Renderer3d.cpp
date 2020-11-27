@@ -368,7 +368,7 @@ namespace urchin {
             TextureRenderer textureRenderer(depthTexture, TextureRenderer::DEPTH_VALUE, depthIntensity);
             textureRenderer.setPosition(TextureRenderer::LEFT, TextureRenderer::TOP);
             textureRenderer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-            textureRenderer.display(finalRenderTarget); //TODO test it
+            textureRenderer.display(finalRenderTarget);
         }
 
         if (DEBUG_DISPLAY_COLOR_BUFFER) {
