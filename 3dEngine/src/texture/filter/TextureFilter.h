@@ -9,6 +9,7 @@
 #include "graphic/shader/model/Shader.h"
 #include "graphic/shader/model/ShaderVar.h"
 #include "graphic/render/GenericRenderer.h"
+#include "graphic/render/target/OffscreenRenderer.h"
 
 namespace urchin {
 
@@ -17,11 +18,10 @@ namespace urchin {
     class TextureFilter {
         public:
             template<class BUILDER> explicit TextureFilter(const TextureFilterBuilder<BUILDER> *);
-            virtual ~TextureFilter();
+            virtual ~TextureFilter() = default;
 
             void initialize();
 
-            unsigned int getFboId() const;
             const std::shared_ptr<Texture> &getTexture() const;
 
             void applyOn(const std::shared_ptr<Texture> &, int layersToUpdate = -1) const;
@@ -54,7 +54,7 @@ namespace urchin {
             std::unique_ptr<Shader> textureFilterShader;
             ShaderVar layersToUpdateShaderVar;
 
-            unsigned int fboID;
+            std::unique_ptr<OffscreenRenderer> offscreenRenderTarget;
             std::shared_ptr<Texture> texture;
     };
 

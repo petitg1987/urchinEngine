@@ -46,18 +46,10 @@ namespace urchin {
             blurSize(DEFAULT_BLUR_SIZE),
             blurSharpness(DEFAULT_BLUR_SHARPNESS),
 
-            fboID(0),
-
             verticalBlurFilter(nullptr),
             horizontalBlurFilter(nullptr),
             isBlurActivated(true) {
 
-        //frame buffer object
-        glGenFramebuffers(1, &fboID);
-    }
-
-    AmbientOcclusionManager::~AmbientOcclusionManager() {
-        glDeleteFramebuffers(1, &fboID);
     }
 
     void AmbientOcclusionManager::createOrUpdateAOShader() {
@@ -129,19 +121,13 @@ namespace urchin {
 
     void AmbientOcclusionManager::createOrUpdateAOTexture() {
         if(depthTexture) {
-            glBindFramebuffer(GL_FRAMEBUFFER, fboID);
-
-            GLenum fboAttachments[1] = {GL_COLOR_ATTACHMENT0};
-            glDrawBuffers(1, fboAttachments);
-            glReadBuffer(GL_NONE);
-
-            this->textureSizeX = sceneWidth / retrieveTextureSizeFactor();
-            this->textureSizeY = sceneHeight / retrieveTextureSizeFactor();
-
+            textureSizeX = sceneWidth / retrieveTextureSizeFactor();
+            textureSizeY = sceneHeight / retrieveTextureSizeFactor();
             ambientOcclusionTexture = Texture::build(textureSizeX, textureSizeY, TextureFormat::GRAYSCALE_16_FLOAT, nullptr);
-            glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], ambientOcclusionTexture->getTextureId(), 0);
 
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            offscreenRenderTarget = std::make_unique<OffscreenRenderer>();
+            offscreenRenderTarget->onResize(textureSizeX, textureSizeY);
+            offscreenRenderTarget->addTexture(ambientOcclusionTexture);
 
             verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>()
                     ->textureSize(textureSizeX, textureSizeY)
@@ -317,27 +303,20 @@ namespace urchin {
     void AmbientOcclusionManager::updateAOTexture(const Camera *camera) {
         ScopeProfiler profiler("3d", "updateAOTexture");
 
-        GLint activeFBO = 0;
-        glGetIntegerv(GL_FRAMEBUFFER_BINDING, &activeFBO);
-        glBindFramebuffer(GL_FRAMEBUFFER, fboID);
-
         ShaderDataSender()
             .sendData(mInverseViewProjectionShaderVar, (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse())
             .sendData(mProjectionShaderVar, camera->getProjectionMatrix())
             .sendData(mViewShaderVar, camera->getViewMatrix());
 
-        glViewport(0, 0, textureSizeX, textureSizeY);
-
         ambientOcclusionShader->bind();
-        renderer->draw();
+        offscreenRenderTarget->draw(renderer);
 
         if (isBlurActivated) {
             verticalBlurFilter->applyOn(ambientOcclusionTexture);
             horizontalBlurFilter->applyOn(verticalBlurFilter->getTexture());
         }
 
-        glViewport(0, 0, sceneWidth, sceneHeight);
-        glBindFramebuffer(GL_FRAMEBUFFER, static_cast<GLuint>(activeFBO));
+        glViewport(0, 0, sceneWidth, sceneHeight); //TODO remove...
     }
 
     void AmbientOcclusionManager::loadAOTexture(const std::unique_ptr<GenericRenderer> &lightingRenderer) const {

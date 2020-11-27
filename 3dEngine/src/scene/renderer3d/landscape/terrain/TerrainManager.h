@@ -3,6 +3,7 @@
 
 #include "UrchinCommon.h"
 
+#include "graphic/render/target/TargetRenderer.h"
 #include "scene/renderer3d/camera/Camera.h"
 #include "scene/renderer3d/landscape/terrain/Terrain.h"
 
@@ -10,7 +11,7 @@ namespace urchin {
 
     class TerrainManager {
         public:
-            TerrainManager();
+            explicit TerrainManager(const TargetRenderer *);
 
             void onCameraProjectionUpdate(const Camera *);
 
@@ -23,6 +24,8 @@ namespace urchin {
 
         private:
             void updateWithConfig();
+
+            const TargetRenderer *targetRenderer;
 
             std::vector<Terrain *> terrains;
 

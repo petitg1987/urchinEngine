@@ -9,14 +9,16 @@
 #include "renderer3d/Renderer3d.h"
 #include "GUI/GUIRenderer.h"
 #include "graphic/GraphicService.h"
+#include "graphic/render/target/ScreenRenderer.h"
 
 #define NUM_RENDERER 2
 
 namespace urchin {
+
     class SceneManager {
         public:
             SceneManager();
-            virtual ~SceneManager();
+            ~SceneManager();
 
             //scene properties
             void onResize(unsigned int, unsigned int);
@@ -58,6 +60,7 @@ namespace urchin {
             unsigned int sceneWidth, sceneHeight;
 
             //renderer
+            ScreenRenderer *screenRenderTarget;
             std::vector<Renderer3d *> renderers3d;
             std::vector<GUIRenderer *> guiRenderers;
             Renderer *activeRenderers[NUM_RENDERER];

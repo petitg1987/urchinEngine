@@ -43,7 +43,7 @@ namespace urchin {
             void clearAdditionalTextures();
             void renderTextures(bool);
 
-            void draw() const;
+            void draw() const; //TODO make it private (add friends: TargetRenderer) ?
 
         private:
             unsigned int computeVerticesCount() const;

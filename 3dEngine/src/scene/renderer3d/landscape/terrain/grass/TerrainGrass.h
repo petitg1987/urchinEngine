@@ -7,6 +7,7 @@
 
 #include "graphic/shader/model/Shader.h"
 #include "graphic/shader/model/ShaderVar.h"
+#include "graphic/render/target/TargetRenderer.h"
 #include "scene/renderer3d/landscape/terrain/grass/TerrainGrassQuadtree.h"
 #include "scene/renderer3d/landscape/terrain/TerrainMesh.h"
 #include "scene/renderer3d/camera/Camera.h"
@@ -50,7 +51,7 @@ namespace urchin {
             float getWindStrength() const;
             void setWindStrength(float);
 
-            void display(const Camera *, float);
+            void display(const TargetRenderer *, const Camera *, float);
 
         private:
             void generateGrass(const std::shared_ptr<TerrainMesh> &, const Point3<float> &);

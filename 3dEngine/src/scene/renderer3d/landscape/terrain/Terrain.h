@@ -8,6 +8,7 @@
 
 #include "graphic/shader/model/Shader.h"
 #include "graphic/shader/model/ShaderVar.h"
+#include "graphic/render/target/TargetRenderer.h"
 #include "scene/renderer3d/landscape/terrain/TerrainMaterial.h"
 #include "scene/renderer3d/landscape/terrain/TerrainMesh.h"
 #include "scene/renderer3d/landscape/terrain/grass/TerrainGrass.h"
@@ -37,7 +38,7 @@ namespace urchin {
             Point3<float> findPointAt(const Point2<float> &) const;
             float findHeightAt(const Point2<float> &) const;
 
-            void display(const Camera *, float invFrameRate) const;
+            void display(const TargetRenderer *, const Camera *, float invFrameRate) const;
 
         private:
             void refreshMaterial();

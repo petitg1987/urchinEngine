@@ -14,6 +14,7 @@
 #include "texture/filter/downsample/DownSampleFilterBuilder.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
 #include "graphic/shader/data/ShaderDataSender.h"
+#include "graphic/render/target/OffscreenRenderer.h"
 #include "resources/geometry/obbox/OBBoxModel.h"
 
 #define DEFAULT_NUMBER_SHADOW_MAPS 5
@@ -67,8 +68,6 @@ namespace urchin {
 
     ShadowManager::~ShadowManager() {
         for (auto &shadowData : shadowDatas) {
-            removeShadowMaps(shadowData.first);
-
             delete shadowData.second;
         }
 
@@ -273,8 +272,6 @@ namespace urchin {
     void ShadowManager::removeShadowLight(const Light *light) {
         light->removeObserver(this, Light::LIGHT_MOVE);
 
-        removeShadowMaps(light);
-
         delete shadowDatas[light];
         shadowDatas.erase(light);
     }
@@ -453,24 +450,15 @@ namespace urchin {
     }
 
     void ShadowManager::createShadowMaps(const Light *light) {
-        //frame buffer object
-        unsigned int fboID = 0;
-        glGenFramebuffers(1, &fboID);
-        glBindFramebuffer(GL_FRAMEBUFFER, fboID);
-
-        shadowDatas[light]->setFboID(fboID);
-
-        //textures for shadow map: depth texture && shadow map texture (variance shadow map)
-        GLenum fboAttachments[1] = {GL_COLOR_ATTACHMENT0};
-        glDrawBuffers(1, fboAttachments);
-        glReadBuffer(GL_NONE);
-
         auto depthTexture = Texture::buildArray(shadowMapResolution, shadowMapResolution, nbShadowMaps, depthTextureFormat, nullptr);
-        glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTexture->getTextureId(), 0);
-
         auto shadowMapTexture = Texture::buildArray(shadowMapResolution, shadowMapResolution, nbShadowMaps, TextureFormat::RG_32_FLOAT, nullptr);
-        glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], shadowMapTexture->getTextureId(), 0);
 
+        auto shadowMapRenderTarget = std::make_unique<OffscreenRenderer>();
+        shadowMapRenderTarget->onResize(shadowMapResolution, shadowMapResolution);
+        shadowMapRenderTarget->addTexture(depthTexture);
+        shadowMapRenderTarget->addTexture(shadowMapTexture);
+
+        shadowDatas[light]->setRenderTarget(std::move(shadowMapRenderTarget));
         shadowDatas[light]->setDepthTexture(depthTexture);
         shadowDatas[light]->setShadowMapTexture(shadowMapTexture);
 
@@ -506,13 +494,6 @@ namespace urchin {
 
             shadowDatas[light]->addTextureFilter(std::move(nullFilter));
         }
-
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    }
-
-    void ShadowManager::removeShadowMaps(const Light *light) {
-        unsigned int frameBufferObjectID = shadowDatas[light]->getFboID();
-        glDeleteFramebuffers(1, &frameBufferObjectID);
     }
 
     void ShadowManager::updateVisibleModels(const Frustum<float> &frustum) {
@@ -532,22 +513,23 @@ namespace urchin {
     void ShadowManager::updateShadowMaps() {
         ScopeProfiler profiler("3d", "updateShadowMap");
 
-        glViewport(0, 0, shadowMapResolution, shadowMapResolution);
-
         for (auto &shadowData : shadowDatas) {
-            glBindFramebuffer(GL_FRAMEBUFFER, shadowData.second->getFboID());
-            glClear((unsigned int)GL_DEPTH_BUFFER_BIT | (unsigned int)GL_COLOR_BUFFER_BIT);
+            const ShadowData *lightShadowData = shadowData.second;
+            const TargetRenderer *renderTarget = lightShadowData->getRenderTarget();
 
-            shadowShaderVariable->setShadowData(shadowData.second);
-            shadowModelShaderVariable->setShadowData(shadowData.second);
+            renderTarget->resetDraw();
 
-            shadowModelDisplayer->setModels(shadowData.second->retrieveModels());
-            shadowModelDisplayer->display(shadowData.second->getLightViewMatrix());
+            shadowShaderVariable->setShadowData(lightShadowData);
+            shadowModelShaderVariable->setShadowData(lightShadowData);
 
-            shadowData.second->applyTextureFilters();
+            shadowModelDisplayer->setModels(lightShadowData->retrieveModels());
+            shadowModelDisplayer->setRenderTarget(renderTarget);
+            shadowModelDisplayer->display(lightShadowData->getLightViewMatrix());
+
+            lightShadowData->applyTextureFilters();
         }
 
-        glViewport(0, 0, sceneWidth, sceneHeight);
+        glViewport(0, 0, sceneWidth, sceneHeight); //TODO remove when targetRender are used everywhere !
     }
 
     void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer> &lightingRenderer) {
@@ -580,9 +562,9 @@ namespace urchin {
         delete []depthSplitDistance;
     }
 
-    void ShadowManager::drawLightSceneBox(const Frustum<float> &frustum, const Light *light, const Matrix4<float> &viewMatrix) const {
+    void ShadowManager::drawLightSceneBox(const TargetRenderer *targetRenderer, const Frustum<float> &frustum, const Light *light, const Matrix4<float> &viewMatrix) const {
         auto itShadowData = shadowDatas.find(light);
-        if (itShadowData==shadowDatas.end()) {
+        if (itShadowData == shadowDatas.end()) {
             throw std::invalid_argument("shadow manager doesn't know this light.");
         }
 
@@ -599,7 +581,7 @@ namespace urchin {
             OBBoxModel sceneDependentObboxModel(obboxSceneDependentViewSpace);
             sceneDependentObboxModel.onCameraProjectionUpdate(projectionMatrix);
             sceneDependentObboxModel.setColor(0.0f, 1.0f, 0.0f);
-            sceneDependentObboxModel.display(viewMatrix);
+            sceneDependentObboxModel.display(targetRenderer, viewMatrix);
         }
     }
 

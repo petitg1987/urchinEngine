@@ -34,16 +34,16 @@ namespace urchin {
         meshRenderer->updateData(3, &tangents);
     }
 
-    void Mesh::display(const MeshParameter &meshParameter) const {
+    void Mesh::display(const TargetRenderer *renderTarget, const MeshParameter &meshParameter) const {
         if (meshParameter.getAmbientFactorShaderVar().isValid()) {
             ShaderDataSender().sendData(meshParameter.getAmbientFactorShaderVar(), constMesh->getMaterial()->getAmbientFactor());
         }
 
         meshRenderer->renderTextures(meshParameter.needRenderTextures());
-        meshRenderer->draw();
+        renderTarget->draw(meshRenderer);
     }
 
-    void Mesh::drawBaseBones(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const {
+    void Mesh::drawBaseBones(const TargetRenderer *renderTarget, const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const {
         std::vector<Point3<float>> bonePositions;
         for (const auto &bone : constMesh->getBaseSkeleton()) {
             bonePositions.push_back(bone.pos);
@@ -53,7 +53,7 @@ namespace urchin {
         pointsModel->setOutlineSize(5.0f);
         pointsModel->onCameraProjectionUpdate(projectionMatrix);
         pointsModel->setAlwaysVisible(true);
-        pointsModel->display(viewMatrix);
+        pointsModel->display(renderTarget, viewMatrix);
     }
 
 }

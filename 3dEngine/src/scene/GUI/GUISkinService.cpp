@@ -6,7 +6,9 @@
 
 namespace urchin {
 
-    GUISkinService::GUISkinService() : Singleton<GUISkinService>(), xmlSkin(nullptr) {
+    GUISkinService::GUISkinService() :
+            Singleton<GUISkinService>(),
+            xmlSkin(nullptr) {
 
     }
 

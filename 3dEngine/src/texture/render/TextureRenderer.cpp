@@ -179,7 +179,7 @@ namespace urchin {
         const std::string &fragShaderName = (layer==-1) ? "displayTexture.frag" : "displayTextureArray.frag";
         displayTextureShader = ShaderBuilder().createShader("displayTexture.vert", "", fragShaderName, textureDisplayTokens);
 
-        displayTextureShader->bind();
+        displayTextureShader->bind(); //TODO required ? remove method ?
         float cameraPlanes[2] = {nearPlane, farPlane};
         int colorTexUnit = 0;
         ShaderDataSender()

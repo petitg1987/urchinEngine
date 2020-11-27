@@ -1,7 +1,8 @@
 #include "SkyManager.h"
 
 namespace urchin {
-    SkyManager::SkyManager() :
+    SkyManager::SkyManager(const TargetRenderer *targetRenderer) :
+        targetRenderer(targetRenderer),
         skybox(nullptr) {
 
     }
@@ -28,7 +29,7 @@ namespace urchin {
 
     void SkyManager::display(const Matrix4<float> &viewMatrix, const Point3<float> &cameraPosition) {
         if (skybox != nullptr) {
-            skybox->display(viewMatrix, cameraPosition);
+            skybox->display(targetRenderer, viewMatrix, cameraPosition);
         }
     }
 }

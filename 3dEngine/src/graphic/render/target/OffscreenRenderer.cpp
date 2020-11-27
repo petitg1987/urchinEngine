@@ -1,22 +1,23 @@
 #include <GL/glew.h>
 
-#include "OffScreenRenderer.h"
+#include "OffscreenRenderer.h"
 
 namespace urchin {
 
-    OffScreenRenderer::OffScreenRenderer() :
+    OffscreenRenderer::OffscreenRenderer() :
             framebufferId(0) {
         glGenFramebuffers(1, &framebufferId);
 
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
         glReadBuffer(GL_NONE);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    OffScreenRenderer::~OffScreenRenderer() {
+    OffscreenRenderer::~OffscreenRenderer() {
         glDeleteFramebuffers(1, &framebufferId);
     }
 
-    void OffScreenRenderer::addTexture(const std::shared_ptr<Texture> &texture) {
+    void OffscreenRenderer::addTexture(const std::shared_ptr<Texture> &texture) {
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
 
         if(texture->getTextureFormat() == TextureFormat::DEPTH_16_FLOAT
@@ -35,22 +36,44 @@ namespace urchin {
             unsigned int attachmentIndex = GL_COLOR_ATTACHMENT0 + textures.size() - 1;
             glFramebufferTexture(GL_FRAMEBUFFER, attachmentIndex, texture->getTextureId(), 0);
 
-            allAttachmentsIndex.emplace_back(attachmentIndex);
-            glDrawBuffers(allAttachmentsIndex.size(), &allAttachmentsIndex[0]);
+            attachmentsIndices.emplace_back(attachmentIndex);
+            glDrawBuffers(attachmentsIndices.size(), &attachmentsIndices[0]);
         }
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    void OffScreenRenderer::clearTextures() const {
+    void OffscreenRenderer::removeAllTextures() {
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
-        glClear((unsigned int)GL_DEPTH_BUFFER_BIT | (unsigned int)GL_COLOR_BUFFER_BIT);
+
+        glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, 0, 0);
+        for (unsigned int i = 0; i<attachmentsIndices.size(); ++i) {
+            glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, 0, 0);
+        }
+        glDrawBuffers(0, &attachmentsIndices[0]);
+
+        depthTexture = nullptr;
+
+        textures.clear();
+        attachmentsIndices.clear();
+
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    void OffScreenRenderer::draw(const std::unique_ptr<GenericRenderer> &renderer) const {
+    void OffscreenRenderer::resetDraw() const {
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
+
+        glClear((unsigned int)GL_DEPTH_BUFFER_BIT | (unsigned int)GL_COLOR_BUFFER_BIT);
+
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+
+    void OffscreenRenderer::draw(const std::unique_ptr<GenericRenderer> &renderer) const {
+        glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
+        glViewport(0, 0, getTargetWidth(), getTargetHeight());
+
         renderer->draw();
+
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 

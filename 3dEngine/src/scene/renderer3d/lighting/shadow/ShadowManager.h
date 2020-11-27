@@ -60,7 +60,7 @@ namespace urchin {
             void updateShadowMaps();
             void loadShadowMaps(const std::unique_ptr<GenericRenderer> &);
 
-            void drawLightSceneBox(const Frustum<float> &, const Light *, const Matrix4<float> &) const;
+            void drawLightSceneBox(const TargetRenderer *targetRenderer, const Frustum<float> &, const Light *, const Matrix4<float> &) const;
 
         private:
             //model displayer
@@ -83,7 +83,6 @@ namespace urchin {
 
             //shadow map handling
             void createShadowMaps(const Light *);
-            void removeShadowMaps(const Light *);
 
             //shadow map quality
             const float shadowMapBias;

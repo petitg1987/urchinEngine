@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <stdexcept>
 #include <locale>
 
@@ -26,7 +25,8 @@ namespace urchin {
     bool DEBUG_DISPLAY_LIGHTS_OCTREE = false;
     bool DEBUG_DISPLAY_LIGHTS_SCENE_BOUNDING_BOX = false;
 
-    Renderer3d::Renderer3d() :
+    Renderer3d::Renderer3d(const TargetRenderer *renderTarget) :
+            renderTarget(renderTarget), //TODO use it
             sceneWidth(0),
             sceneHeight(0),
             paused(true),
@@ -36,29 +36,27 @@ namespace urchin {
             waterManager(nullptr),
             skyManager(nullptr),
             geometryManager(nullptr),
-            camera(nullptr),
-            fboIDs(nullptr),
-            fboAttachments{GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2} {
+            camera(nullptr) {
 
-        //deferred shading (pass 1)
-        fboIDs = new unsigned int[2];
+        //deferred rendering
+        deferredRenderTarget = std::make_unique<OffscreenRenderer>();
+
         modelDisplayer = new ModelDisplayer(ModelDisplayer::DEFAULT_MODE);
         modelDisplayer->initialize();
-        glGenFramebuffers(2, fboIDs);
 
         modelOctreeManager = new OctreeManager<Model>(DEFAULT_OCTREE_MIN_SIZE);
 
         fogManager = new FogManager();
 
-        terrainManager = new TerrainManager();
+        terrainManager = new TerrainManager(deferredRenderTarget.get()); //TODO avoid .get() everywhere
 
-        waterManager = new WaterManager();
+        waterManager = new WaterManager(deferredRenderTarget.get());
 
-        skyManager = new SkyManager();
+        skyManager = new SkyManager(deferredRenderTarget.get());
 
-        geometryManager = new GeometryManager();
+        geometryManager = new GeometryManager(deferredRenderTarget.get());
 
-        lightManager = new LightManager();
+        lightManager = new LightManager(deferredRenderTarget.get());
 
         shadowManager = new ShadowManager(lightManager, modelOctreeManager);
         shadowManager->addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
@@ -67,7 +65,9 @@ namespace urchin {
         ambientOcclusionManager = new AmbientOcclusionManager();
         isAmbientOcclusionActivated = true;
 
-        //deferred shading (pass 2)
+        //lighting pass rendering
+        lightingRenderTarget = std::make_unique<OffscreenRenderer>(); //TODO use ScreenRenderer when not AO
+
         createOrUpdateLightingShader();
 
         antiAliasingManager = new AntiAliasingManager();
@@ -92,12 +92,6 @@ namespace urchin {
         delete lightManager;
         delete ambientOcclusionManager;
         delete antiAliasingManager;
-
-        //deferred shading (pass 1)
-        if (fboIDs) {
-            glDeleteFramebuffers(2, fboIDs);
-            delete [] fboIDs;
-        }
     }
 
     void Renderer3d::createOrUpdateLightingShader() {
@@ -142,25 +136,21 @@ namespace urchin {
         }
 
         //deferred rendering
-        glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_DEFERRED]);
-        depthTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::DEPTH_32_FLOAT, nullptr); //depth buffer
-        glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTexture->getTextureId(), 0);
-        diffuseTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr); //diffuse buffer
-        glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], diffuseTexture->getTextureId(), 0);
-        normalAndAmbientTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr); //normal and ambient factor buffer
-        glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[1], normalAndAmbientTexture->getTextureId(), 0);
-        glReadBuffer(GL_NONE);
-        glDrawBuffers(2, &fboAttachments[0]);
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-        glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_LIGHTING]);
-        lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGB_8_INT, nullptr);
-        glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], lightingPassTexture->getTextureId(), 0);
-        glReadBuffer(GL_NONE);
-        glDrawBuffers(1, &fboAttachments[0]);
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        depthTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::DEPTH_32_FLOAT, nullptr);
+        diffuseTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
+        normalAndAmbientTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
+        deferredRenderTarget->onResize(sceneWidth, sceneHeight);
+        deferredRenderTarget->removeAllTextures();
+        deferredRenderTarget->addTexture(depthTexture);
+        deferredRenderTarget->addTexture(diffuseTexture);
+        deferredRenderTarget->addTexture(normalAndAmbientTexture);
 
         //lighting pass rendering
+        lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGB_8_INT, nullptr);
+        lightingRenderTarget->onResize(sceneWidth, sceneHeight);
+        lightingRenderTarget->removeAllTextures();
+        lightingRenderTarget->addTexture(lightingPassTexture);
+
         std::vector<Point2<float>> vertexCoord = {
                 Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
                 Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(-1.0f, -1.0f)
@@ -354,22 +344,15 @@ namespace urchin {
 
         updateScene(dt);
 
-        glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_DEFERRED]);
-        glClear((unsigned int)GL_DEPTH_BUFFER_BIT | (unsigned int)GL_COLOR_BUFFER_BIT);
         deferredRendering(dt);
+        lightingPassRendering();
 
-        if (isAntiAliasingActivated) {
-            glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_LIGHTING]);
-            lightingPassRendering();
-
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        if(isAntiAliasingActivated) {
             antiAliasingManager->applyAntiAliasing();
-        } else {
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
-            lightingPassRendering();
         }
 
         postUpdateScene();
+
         displayBuffers();
     }
 
@@ -460,11 +443,13 @@ namespace urchin {
     void Renderer3d::deferredRendering(float dt) {
         ScopeProfiler profiler("3d", "deferredRender");
 
+        deferredRenderTarget->resetDraw();
+
         skyManager->display(camera->getViewMatrix(), camera->getPosition());
 
         updateModelsInFrustum();
         modelDisplayer->setModels(modelsInFrustum);
-
+        modelDisplayer->setRenderTarget(deferredRenderTarget.get());
         modelDisplayer->display(camera->getViewMatrix());
 
         terrainManager->display(camera, dt);
@@ -482,7 +467,7 @@ namespace urchin {
 
     void Renderer3d::displayDetails() {
         if (DEBUG_DISPLAY_MODELS_OCTREE) {
-            OctreeRenderer::drawOctree(modelOctreeManager, camera->getProjectionMatrix(), camera->getViewMatrix());
+            OctreeRenderer::drawOctree(deferredRenderTarget.get(), modelOctreeManager, camera->getProjectionMatrix(), camera->getViewMatrix());
         }
 
         if (DEBUG_DISPLAY_MODELS_BOUNDING_BOX) {
@@ -500,7 +485,7 @@ namespace urchin {
         if (DEBUG_DISPLAY_LIGHTS_SCENE_BOUNDING_BOX) { //display scene box visible from light based on split frustums
             const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
             for (const auto &frustum : shadowManager->getSplitFrustums()) {
-                shadowManager->drawLightSceneBox(frustum, firstLight, camera->getViewMatrix());
+                shadowManager->drawLightSceneBox(deferredRenderTarget.get(), frustum, firstLight, camera->getViewMatrix());
             }
         }
     }
@@ -531,7 +516,11 @@ namespace urchin {
             }
 
             lightingShader->bind();
-            lightingRenderer->draw();
+            if (isAntiAliasingActivated) { //TODO: not if (see previous TODO)
+                lightingRenderTarget->draw(lightingRenderer);
+            } else {
+                renderTarget->draw(lightingRenderer);
+            }
         }
     }
 

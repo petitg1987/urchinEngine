@@ -38,7 +38,6 @@
 	- **NEW FEATURE** (`minor`): Textarea
 	- **NEW FEATURE** (`minor`): Scrollbar
 	- **NEW FEATURE** (`minor`): Text selection
-	- **NEW FEATURE** (`minor`): Use 'glutBitmapCharacter' to display characters
 - Graphic effect
 	- **QUALITY IMPROVEMENT** (`minor`): Water (<https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh>)
 	- **NEW FEATURE** (`minor`): Reflects

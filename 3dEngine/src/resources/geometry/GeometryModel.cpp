@@ -88,14 +88,14 @@ namespace urchin {
         refreshRenderer();
     }
 
-    void GeometryModel::display(const Matrix4<float> &viewMatrix) const {
+    void GeometryModel::display(const TargetRenderer *renderTarget, const Matrix4<float> &viewMatrix) const {
         ShaderDataSender()
             .sendData(mProjectionShaderVar, projectionMatrix)
             .sendData(mViewShaderVar, viewMatrix * modelMatrix)
             .sendData(colorShaderVar, color);
 
         shader->bind();
-        renderer->draw();
+        renderTarget->draw(renderer);
     }
 
 }

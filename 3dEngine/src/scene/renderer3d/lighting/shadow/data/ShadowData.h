@@ -7,6 +7,7 @@
 #include "UrchinCommon.h"
 
 #include "FrustumShadowData.h"
+#include "graphic/render/target/OffscreenRenderer.h"
 #include "scene/renderer3d/lighting/light/Light.h"
 #include "texture/filter/TextureFilter.h"
 
@@ -20,8 +21,8 @@ namespace urchin {
             ShadowData(const Light *, unsigned int);
             ~ShadowData();
 
-            void setFboID(unsigned int);
-            unsigned int getFboID() const;
+            void setRenderTarget(std::unique_ptr<OffscreenRenderer> &&);
+            const OffscreenRenderer *getRenderTarget() const;
 
             void setDepthTexture(const std::shared_ptr<Texture> &);
             const std::shared_ptr<Texture> & getDepthTexture() const;
@@ -29,7 +30,7 @@ namespace urchin {
             const std::shared_ptr<Texture> &getShadowMapTexture() const;
 
             void addTextureFilter(std::unique_ptr<TextureFilter>);
-            void applyTextureFilters();
+            void applyTextureFilters() const;
             const std::shared_ptr<Texture> &getFilteredShadowMapTexture() const;
 
             void setLightViewMatrix(const Matrix4<float> &);
@@ -44,7 +45,7 @@ namespace urchin {
         private:
             const Light *const light;
 
-            unsigned int fboID; //frame buffer object ID containing shadow map(s)
+            std::shared_ptr<OffscreenRenderer> renderTarget; //target containing shadow map(s)
             std::shared_ptr<Texture> depthTexture; //depth texture
             std::shared_ptr<Texture> shadowMapTexture; //shadow map texture (variance shadow map)
 

@@ -253,7 +253,7 @@ namespace urchin {
         ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix);
     }
 
-    void Water::display(const Camera *camera, FogManager *fogManager, float dt) {
+    void Water::display(const TargetRenderer *targetRenderer, const Camera *camera, FogManager *fogManager, float dt) {
         if (camera->getPosition().Y < centerPosition.Y && waterRectangle->collideWithPoint(Point2<float>(camera->getPosition().X, camera->getPosition().Z))) {
             if (fogManager->getActiveFog() != underwaterFog) {
                 fogManager->pushFog(underwaterFog);
@@ -271,7 +271,7 @@ namespace urchin {
                     .sendData(sumTimeStepShaderVar, sumTimeStep);
 
             waterShader->bind();
-            waterRenderer->draw();
+            targetRenderer->draw(waterRenderer);
         }
     }
 }

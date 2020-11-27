@@ -8,6 +8,7 @@
 
 #include "graphic/shader/model/Shader.h"
 #include "graphic/shader/model/ShaderVar.h"
+#include "graphic/render/target/TargetRenderer.h"
 #include "graphic/render/GenericRenderer.h"
 #include "resources/image/Image.h"
 #include "scene/renderer3d/camera/Camera.h"
@@ -25,7 +26,8 @@ namespace urchin {
             void setOffsetY(float);
             const std::vector<std::string> &getFilenames() const;
 
-            void display(const Matrix4<float> &, const Point3<float> &);
+            void display(const TargetRenderer *, const Matrix4<float> &, const Point3<float> &);
+
         private:
             void initialize();
             void clearSkyboxImages();

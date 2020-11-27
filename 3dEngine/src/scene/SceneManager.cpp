@@ -13,6 +13,7 @@ namespace urchin {
     SceneManager::SceneManager() :
             sceneWidth(500),
             sceneHeight(500),
+            screenRenderTarget(nullptr),
             activeRenderers(),
             previousFps(),
             fps(START_FPS),
@@ -26,16 +27,17 @@ namespace urchin {
         previousTime = std::chrono::high_resolution_clock::now();
 
         //renderer
+        screenRenderTarget = new ScreenRenderer();
         for (auto &activeRenderer : activeRenderers) {
             activeRenderer = nullptr;
         }
     }
 
     SceneManager::~SceneManager() {
+        delete screenRenderTarget;
         for (auto &renderer3d : renderers3d) {
             delete renderer3d;
         }
-
         for (auto &guiRenderer : guiRenderers) {
             delete guiRenderer;
         }
@@ -44,13 +46,14 @@ namespace urchin {
     }
 
     void SceneManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
-        if (sceneWidth!=0 && sceneHeight!=0) {
+        if (sceneWidth != 0 && sceneHeight != 0) {
             //scene properties
             this->sceneWidth = sceneWidth;
             this->sceneHeight = sceneHeight;
-            glViewport(0, 0, sceneWidth, sceneHeight);
+            glViewport(0, 0, sceneWidth, sceneHeight); //TODO remove
 
             //renderer
+            screenRenderTarget->onResize(sceneWidth, sceneHeight);
             for (auto &activeRenderer : activeRenderers) {
                 if (activeRenderer) {
                     activeRenderer->onResize(sceneWidth, sceneHeight);
@@ -99,7 +102,7 @@ namespace urchin {
     }
 
     Renderer3d *SceneManager::newRenderer3d(bool enable) {
-        auto *renderer3d = new Renderer3d();
+        auto *renderer3d = new Renderer3d(screenRenderTarget);
         renderers3d.push_back(renderer3d);
 
         if (enable) {
@@ -133,7 +136,7 @@ namespace urchin {
     }
 
     GUIRenderer *SceneManager::newGUIRenderer(bool enable) {
-        auto *guiRenderer = new GUIRenderer();
+        auto *guiRenderer = new GUIRenderer(); //TODO provide screenRenderTarget and use it
         guiRenderers.push_back(guiRenderer);
 
         if (enable) {

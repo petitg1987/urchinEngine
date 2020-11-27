@@ -5,7 +5,8 @@
 #define DEFAULT_GRASS_DISPLAY_DISTANCE 100
 
 namespace urchin {
-    TerrainManager::TerrainManager() :
+    TerrainManager::TerrainManager(const TargetRenderer *targetRenderer) :
+            targetRenderer(targetRenderer),
             grassDisplayDistance(DEFAULT_GRASS_DISPLAY_DISTANCE) {
 
     }
@@ -49,7 +50,7 @@ namespace urchin {
         ScopeProfiler profiler("3d", "terrainDisplay");
 
         for (const auto terrain : terrains) {
-            terrain->display(camera, dt);
+            terrain->display(targetRenderer, camera, dt);
         }
     }
 }

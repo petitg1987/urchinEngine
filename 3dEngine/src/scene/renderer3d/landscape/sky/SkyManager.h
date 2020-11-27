@@ -1,6 +1,7 @@
 #ifndef URCHINENGINE_SKYMANAGER_H
 #define URCHINENGINE_SKYMANAGER_H
 
+#include "graphic/render/target/TargetRenderer.h"
 #include "scene/renderer3d/camera/Camera.h"
 #include "scene/renderer3d/landscape/sky/Skybox.h"
 
@@ -8,7 +9,7 @@ namespace urchin {
 
     class SkyManager {
         public:
-            SkyManager();
+            explicit SkyManager(const TargetRenderer *);
 
             void onCameraProjectionUpdate(const Camera *);
 
@@ -18,8 +19,9 @@ namespace urchin {
             void display(const Matrix4<float> &, const Point3<float> &);
 
         private:
-            std::unique_ptr<Skybox> skybox;
+            const TargetRenderer *targetRenderer;
 
+            std::unique_ptr<Skybox> skybox;
             Matrix4<float> projectionMatrix;
     };
 

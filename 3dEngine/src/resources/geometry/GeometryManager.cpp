@@ -4,6 +4,11 @@
 
 namespace urchin {
 
+    GeometryManager::GeometryManager(const TargetRenderer *renderTarget) :
+            renderTarget(renderTarget) {
+
+    }
+
     void GeometryManager::addGeometry(GeometryModel *geometry) {
         if (geometry) {
             geometryModels.push_back(geometry);
@@ -31,7 +36,7 @@ namespace urchin {
 
     void GeometryManager::display(const Matrix4<float> &viewMatrix) const {
         for (auto *geometryModel : geometryModels) {
-            geometryModel->display(viewMatrix);
+            geometryModel->display(renderTarget, viewMatrix);
         }
     }
 

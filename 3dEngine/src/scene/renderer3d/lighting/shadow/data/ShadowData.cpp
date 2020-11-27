@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <cmath>
 #include <stdexcept>
 
@@ -8,7 +7,7 @@ namespace urchin {
 
     ShadowData::ShadowData(const Light *light, unsigned int nbFrustumSplit) :
             light(light),
-            fboID(0) {
+            renderTarget(nullptr) {
         for (unsigned int frustumSplitIndex =0; frustumSplitIndex<nbFrustumSplit; ++frustumSplitIndex) {
             frustumShadowData.push_back(new FrustumShadowData(frustumSplitIndex));
         }
@@ -18,16 +17,14 @@ namespace urchin {
         for (auto &fsd : frustumShadowData) {
             delete fsd;
         }
-
-        glDeleteFramebuffers(1, &fboID);
     }
 
-    void ShadowData::setFboID(unsigned int fboID) {
-        this->fboID = fboID;
+    void ShadowData::setRenderTarget(std::unique_ptr<OffscreenRenderer> &&renderTarget) {
+        this->renderTarget = std::move(renderTarget);
     }
 
-    unsigned int ShadowData::getFboID() const {
-        return fboID;
+    const OffscreenRenderer *ShadowData::getRenderTarget() const {
+        return renderTarget.get();
     }
 
     void ShadowData::setDepthTexture(const std::shared_ptr<Texture> &depthTexture) {
@@ -56,7 +53,7 @@ namespace urchin {
         textureFilters.push_back(std::move(textureFilter));
     }
 
-    void ShadowData::applyTextureFilters() {
+    void ShadowData::applyTextureFilters() const {
         unsigned int layersToUpdate = 0;
         for (std::size_t i = 0; i < getNbFrustumShadowData(); ++i) {
             if (getFrustumShadowData(i)->needShadowMapUpdate()) {

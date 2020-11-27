@@ -19,7 +19,6 @@ namespace urchin {
             };
 
             AmbientOcclusionManager();
-            ~AmbientOcclusionManager();
 
             void initiateShaderVariables(const std::unique_ptr<Shader> &);
             void onTexturesUpdate(const std::shared_ptr<Texture> &, const std::shared_ptr<Texture> &);
@@ -70,7 +69,7 @@ namespace urchin {
             float blurSharpness;
 
             //frame buffer object
-            unsigned int fboID;
+            std::shared_ptr<OffscreenRenderer> offscreenRenderTarget;
             std::shared_ptr<Texture> ambientOcclusionTexture;
 
             //ambient occlusion shader

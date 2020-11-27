@@ -4,6 +4,10 @@
 
 namespace urchin {
 
+    WaterManager::WaterManager(const TargetRenderer *targetRenderer) :
+            targetRenderer(targetRenderer) {
+    }
+
     void WaterManager::onCameraProjectionUpdate(const Camera *camera) {
         this->projectionMatrix = camera->getProjectionMatrix();
         for (const auto water : waters) {
@@ -30,7 +34,7 @@ namespace urchin {
         ScopeProfiler profiler("3d", "waterDisplay");
 
         for (const auto water : waters) {
-            water->display(camera, fogManager, dt);
+            water->display(targetRenderer, camera, fogManager, dt);
         }
     }
 }

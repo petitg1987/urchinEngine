@@ -214,24 +214,25 @@ namespace urchin {
         }
     }
 
-    void Model::display(const MeshParameter &meshParameter) const {
+    void Model::display(const TargetRenderer *renderTarget, const MeshParameter &meshParameter) const {
         if (meshes) {
             for (unsigned int m = 0; m < meshes->getNumberMeshes(); ++m) {
-                meshes->getMesh(m)->display(meshParameter);
+                meshes->getMesh(m)->display(renderTarget, meshParameter);
             }
         }
     }
 
-    void Model::drawBBox(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const {
+    void Model::drawBBox(const TargetRenderer *renderTarget, const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const {
         AABBoxModel aabboxModel(getAABBox());
         aabboxModel.onCameraProjectionUpdate(projectionMatrix);
-        aabboxModel.display(viewMatrix);
+        aabboxModel.display(renderTarget, viewMatrix);
     }
 
-    void Model::drawBaseBones(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const {
+    void Model::drawBaseBones(const TargetRenderer *renderTarget, const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const {
         if (meshes) {
             for (unsigned int m = 0; m < meshes->getNumberMeshes(); ++m) {
-                meshes->getMesh(m)->drawBaseBones(projectionMatrix, viewMatrix * getTransform().getTransformMatrix());
+                Matrix4<float> modelViewMatrix = viewMatrix * getTransform().getTransformMatrix();
+                meshes->getMesh(m)->drawBaseBones(renderTarget, projectionMatrix, modelViewMatrix);
             }
         }
     }

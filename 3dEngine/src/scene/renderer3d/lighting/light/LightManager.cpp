@@ -10,7 +10,8 @@
 
 namespace urchin {
 
-    LightManager::LightManager() :
+    LightManager::LightManager(const TargetRenderer *renderTarget) :
+            renderTarget(renderTarget),
             lastUpdatedLight(nullptr),
             maxLights(ConfigService::instance()->getUnsignedIntValue("light.maxLights")),
             globalAmbientColor(Point4<float>(0.0, 0.0, 0.0, 0.0)) {
@@ -181,7 +182,7 @@ namespace urchin {
     }
 
     void LightManager::drawLightOctree(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const {
-        OctreeRenderer::drawOctree(lightOctreeManager, projectionMatrix, viewMatrix);
+        OctreeRenderer::drawOctree(renderTarget, lightOctreeManager, projectionMatrix, viewMatrix);
     }
 
 }

@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <stdexcept>
 
 #include "TextureFilter.h"
@@ -7,10 +6,6 @@
 #include "graphic/render/GenericRendererBuilder.h"
 
 namespace urchin {
-
-    TextureFilter::~TextureFilter() {
-        glDeleteFramebuffers(1, &fboID);
-    }
 
     void TextureFilter::initialize() {
         if (isInitialized) {
@@ -73,13 +68,6 @@ namespace urchin {
     }
 
     void TextureFilter::initializeTexture() {
-        glGenFramebuffers(1, &fboID);
-        glBindFramebuffer(GL_FRAMEBUFFER, fboID);
-
-        GLenum fboAttachments[1] = {GL_COLOR_ATTACHMENT0};
-        glDrawBuffers(1, fboAttachments);
-        glReadBuffer(GL_NONE);
-
         if (textureType == TextureType::DEFAULT) {
             texture = Texture::build(textureWidth, textureHeight, textureFormat, nullptr);
         } else if( textureType == TextureType::ARRAY) {
@@ -87,9 +75,10 @@ namespace urchin {
         } else {
             throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
         }
-        glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], texture->getTextureId(), 0);
 
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        offscreenRenderTarget = std::make_unique<OffscreenRenderer>();
+        offscreenRenderTarget->onResize(textureWidth, textureHeight);
+        offscreenRenderTarget->addTexture(texture);
     }
 
     void TextureFilter::initiateAdditionalShaderVariables(const std::unique_ptr<Shader> &) {
@@ -98,10 +87,6 @@ namespace urchin {
 
     void TextureFilter::addFurtherTextures(const std::unique_ptr<GenericRenderer> &) const {
         //do nothing: to override
-    }
-
-    unsigned int TextureFilter::getFboId() const {
-        return fboID;
     }
 
     const std::shared_ptr<Texture> &TextureFilter::getTexture() const {
@@ -152,9 +137,6 @@ namespace urchin {
             ShaderDataSender().sendData(layersToUpdateShaderVar, static_cast<unsigned int>(layersToUpdate));
         }
 
-        glViewport(0, 0, textureWidth, textureHeight);
-        glBindFramebuffer(GL_FRAMEBUFFER, fboID);
-
-        textureRenderer->draw();
+        offscreenRenderTarget->draw(textureRenderer);
     }
 }

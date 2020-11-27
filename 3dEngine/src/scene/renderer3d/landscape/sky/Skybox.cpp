@@ -160,12 +160,12 @@ namespace urchin {
         return filenames;
     }
 
-    void Skybox::display(const Matrix4<float> &viewMatrix, const Point3<float> &cameraPosition) {
+    void Skybox::display(const TargetRenderer *targetRenderer, const Matrix4<float> &viewMatrix, const Point3<float> &cameraPosition) {
         translationMatrix.buildTranslation(cameraPosition.X, cameraPosition.Y + offsetY, cameraPosition.Z);
         ShaderDataSender().sendData(mViewShaderVar, viewMatrix * translationMatrix);
 
         skyboxShader->bind();
-        skyboxRenderer->draw();
+        targetRenderer->draw(skyboxRenderer);
     }
 
 }
