@@ -60,7 +60,7 @@ namespace urchin {
             void updateShadowMaps();
             void loadShadowMaps(const std::unique_ptr<GenericRenderer> &);
 
-            void drawLightSceneBox(const TargetRenderer *targetRenderer, const Frustum<float> &, const Light *, const Matrix4<float> &) const;
+            void drawLightSceneBox(const TargetRenderer *, const Frustum<float> &, const Light *, const Matrix4<float> &) const;
 
         private:
             //model displayer

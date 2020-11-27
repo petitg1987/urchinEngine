@@ -473,7 +473,7 @@ namespace urchin {
 
     void Renderer3d::displayDetails() {
         if (DEBUG_DISPLAY_MODELS_OCTREE) {
-            OctreeRenderer::drawOctree(deferredRenderTarget, modelOctreeManager, camera->getProjectionMatrix(), camera->getViewMatrix());
+            OctreeRenderer::drawOctree(modelOctreeManager, deferredRenderTarget, camera->getProjectionMatrix(), camera->getViewMatrix());
         }
 
         if (DEBUG_DISPLAY_MODELS_BOUNDING_BOX) {

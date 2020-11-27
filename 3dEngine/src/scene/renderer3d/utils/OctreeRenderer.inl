@@ -1,5 +1,5 @@
-template<class T> void OctreeRenderer::drawOctree(const TargetRenderer *renderTarget, const OctreeManager<T> *octreeManager, const Matrix4<float> &projectionMatrix,
-        const Matrix4<float> &viewMatrix) { //TODO move in OctreeManager ?
+template<class T> void OctreeRenderer::drawOctree(const OctreeManager<T> *octreeManager, const TargetRenderer *renderTarget,
+        const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) {
     auto leafOctrees = octreeManager->getAllLeafOctrees();
 
     std::vector<AABBox<float>> aabboxes;

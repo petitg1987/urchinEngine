@@ -19,7 +19,7 @@ namespace urchin {
             void display(const Matrix4<float> &, const Point3<float> &);
 
         private:
-            const TargetRenderer *targetRenderer;
+            const TargetRenderer *renderTarget;
 
             std::unique_ptr<Skybox> skybox;
             Matrix4<float> projectionMatrix;

@@ -22,7 +22,7 @@ namespace urchin {
             void display(const Camera *, FogManager *, float) const;
 
         private:
-            const TargetRenderer *targetRenderer;
+            const TargetRenderer *renderTarget;
 
             std::vector<Water *> waters;
 

@@ -559,7 +559,7 @@ namespace urchin {
         delete []depthSplitDistance;
     }
 
-    void ShadowManager::drawLightSceneBox(const TargetRenderer *targetRenderer, const Frustum<float> &frustum, const Light *light, const Matrix4<float> &viewMatrix) const {
+    void ShadowManager::drawLightSceneBox(const TargetRenderer *renderTarget, const Frustum<float> &frustum, const Light *light, const Matrix4<float> &viewMatrix) const {
         auto itShadowData = shadowDatas.find(light);
         if (itShadowData == shadowDatas.end()) {
             throw std::invalid_argument("shadow manager doesn't know this light.");
@@ -578,7 +578,7 @@ namespace urchin {
             OBBoxModel sceneDependentObboxModel(obboxSceneDependentViewSpace);
             sceneDependentObboxModel.onCameraProjectionUpdate(projectionMatrix);
             sceneDependentObboxModel.setColor(0.0f, 1.0f, 0.0f);
-            sceneDependentObboxModel.display(targetRenderer, viewMatrix);
+            sceneDependentObboxModel.display(renderTarget, viewMatrix);
         }
     }
 

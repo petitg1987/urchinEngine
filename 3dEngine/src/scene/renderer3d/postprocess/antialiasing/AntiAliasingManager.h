@@ -32,7 +32,7 @@ namespace urchin {
             void loadFxaaShader();
 
             //properties
-            const TargetRenderer *targetRenderer;
+            const TargetRenderer *renderTarget;
             Quality quality;
             unsigned int sceneWidth, sceneHeight;
 
