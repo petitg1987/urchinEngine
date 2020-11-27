@@ -92,8 +92,8 @@ namespace urchin {
             //scene
             void displayBuffers();
             void updateScene(float);
-            void deferredGeometryRendering(float);
-            void displayGeometryDetails();
+            void deferredRendering(float);
+            void displayDetails();
             void lightingPassRendering();
             void postUpdateScene();
 
@@ -133,7 +133,8 @@ namespace urchin {
             //visual
             unsigned int *fboIDs;
             enum { //FBO IDs indices
-                FBO_SCENE = 0
+                FBO_DEFERRED = 0,
+                FBO_LIGHTING
             };
 
             unsigned int fboAttachments[3];

@@ -15,13 +15,14 @@ namespace urchin {
 
             void addTexture(const std::shared_ptr<Texture> &);
 
-            void apply(const std::unique_ptr<GenericRenderer> &);
+            void apply(const std::unique_ptr<GenericRenderer> &) const;
 
         private:
             unsigned int framebufferId;
 
             std::shared_ptr<Texture> depthTexture;
             std::vector<std::shared_ptr<Texture>> textures;
+            std::vector<unsigned int> allAttachmentsIndex;
     };
 
 }

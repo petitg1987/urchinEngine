@@ -34,12 +34,16 @@ namespace urchin {
 
             unsigned int attachmentIndex = GL_COLOR_ATTACHMENT0 + textures.size() - 1;
             glFramebufferTexture(GL_FRAMEBUFFER, attachmentIndex, texture->getTextureId(), 0);
+
+            allAttachmentsIndex.emplace_back(attachmentIndex);
+            glDrawBuffers(allAttachmentsIndex.size(), &allAttachmentsIndex[0]);
         }
+
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    void OffScreenRenderer::apply(const std::unique_ptr<GenericRenderer> &renderer) {
+    void OffScreenRenderer::apply(const std::unique_ptr<GenericRenderer> &renderer) const {
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
-        //glDrawBuffers(1, &fboAttachments[2]);
 
         renderer->draw();
 

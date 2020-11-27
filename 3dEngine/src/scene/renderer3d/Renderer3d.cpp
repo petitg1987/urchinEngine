@@ -41,10 +41,10 @@ namespace urchin {
             fboAttachments{GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2} {
 
         //deferred shading (pass 1)
-        fboIDs = new unsigned int[1];
+        fboIDs = new unsigned int[2];
         modelDisplayer = new ModelDisplayer(ModelDisplayer::DEFAULT_MODE);
         modelDisplayer->initialize();
-        glGenFramebuffers(1, fboIDs);
+        glGenFramebuffers(2, fboIDs);
 
         modelOctreeManager = new OctreeManager<Model>(DEFAULT_OCTREE_MIN_SIZE);
 
@@ -95,7 +95,7 @@ namespace urchin {
 
         //deferred shading (pass 1)
         if (fboIDs) {
-            glDeleteFramebuffers(1, fboIDs);
+            glDeleteFramebuffers(2, fboIDs);
             delete [] fboIDs;
         }
     }
@@ -141,19 +141,26 @@ namespace urchin {
             onCameraProjectionUpdate();
         }
 
-        //deferred shading
-        glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_SCENE]);
+        //deferred rendering
+        glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_DEFERRED]);
         depthTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::DEPTH_32_FLOAT, nullptr); //depth buffer
         glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTexture->getTextureId(), 0);
         diffuseTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr); //diffuse buffer
         glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], diffuseTexture->getTextureId(), 0);
         normalAndAmbientTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr); //normal and ambient factor buffer
         glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[1], normalAndAmbientTexture->getTextureId(), 0);
-        lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGB_8_INT, nullptr);
-        glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[2], lightingPassTexture->getTextureId(), 0);
         glReadBuffer(GL_NONE);
+        glDrawBuffers(2, &fboAttachments[0]);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+        glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_LIGHTING]);
+        lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGB_8_INT, nullptr);
+        glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], lightingPassTexture->getTextureId(), 0);
+        glReadBuffer(GL_NONE);
+        glDrawBuffers(1, &fboAttachments[0]);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+        //lighting pass rendering
         std::vector<Point2<float>> vertexCoord = {
                 Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
                 Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(-1.0f, -1.0f)
@@ -347,12 +354,11 @@ namespace urchin {
 
         updateScene(dt);
 
-        glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_SCENE]);
-        glDrawBuffers(2, &fboAttachments[0]);
-        deferredGeometryRendering(dt);
+        glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_DEFERRED]);
+        deferredRendering(dt);
 
         if (isAntiAliasingActivated) {
-            glDrawBuffers(1, &fboAttachments[2]);
+            glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_LIGHTING]);
             lightingPassRendering();
 
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -450,8 +456,8 @@ namespace urchin {
      * First pass of deferred shading algorithm.
      * Render depth, color, normal, etc. into buffers.
      */
-    void Renderer3d::deferredGeometryRendering(float dt) {
-        ScopeProfiler profiler("3d", "defGeoRender");
+    void Renderer3d::deferredRendering(float dt) {
+        ScopeProfiler profiler("3d", "deferredRender");
 
         glClear((unsigned int)GL_DEPTH_BUFFER_BIT | (unsigned int)GL_COLOR_BUFFER_BIT);
 
@@ -472,10 +478,10 @@ namespace urchin {
             ambientOcclusionManager->updateAOTexture(camera);
         }
 
-        displayGeometryDetails();
+        displayDetails();
     }
 
-    void Renderer3d::displayGeometryDetails() {
+    void Renderer3d::displayDetails() {
         if (DEBUG_DISPLAY_MODELS_OCTREE) {
             OctreeRenderer::drawOctree(modelOctreeManager, camera->getProjectionMatrix(), camera->getViewMatrix());
         }
