@@ -5,12 +5,12 @@ namespace urchin {
 
     class Shader {
         public:
-            Shader(unsigned int);
+            explicit Shader(unsigned int);
             ~Shader();
 
             unsigned int getShaderId() const;
 
-            void bind() const;
+            void bind() const; //TODO make it protected ?
 
         private:
             unsigned int shaderId;

@@ -81,7 +81,6 @@ namespace urchin {
         shaderTokens.insert(geometryTokens.begin(), geometryTokens.end());
 
         modelShader = ShaderBuilder().createShader(vertexShaderName, geometryShaderName, fragmentShaderName, shaderTokens);
-        modelShader->bind();
 
         mProjectionShaderVar = ShaderVar(modelShader, "mProjection");
         mModelShaderVar = ShaderVar(modelShader, "mModel");
@@ -144,9 +143,11 @@ namespace urchin {
         ScopeProfiler profiler("3d", "modelDisplay");
 
         if (!isInitialized) {
-            throw std::runtime_error("Model displayer must be initialized before display");
+            throw std::runtime_error("Model displayer must be initialized before call display");
         }
-        assert(renderTarget);
+        if (!renderTarget) {
+            throw std::runtime_error("Render target must be specified before call display");
+        }
 
         ShaderDataSender().sendData(mViewShaderVar, viewMatrix);
         if (customShaderVariable) {

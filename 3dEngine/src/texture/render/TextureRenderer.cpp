@@ -186,7 +186,7 @@ namespace urchin {
             .sendData(ShaderVar(displayTextureShader, "cameraPlanes"), 2, cameraPlanes)
             .sendData(ShaderVar(displayTextureShader, "colorTex"), colorTexUnit);
 
-        if (layer!=-1) {
+        if (layer != -1) {
             ShaderDataSender().sendData(ShaderVar(displayTextureShader, "layer"), layer);
         }
 

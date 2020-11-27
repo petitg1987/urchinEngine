@@ -127,8 +127,6 @@ namespace urchin {
             throw std::runtime_error("Texture filter must be initialized before apply.");
         }
 
-        textureFilterShader->bind();
-
         textureRenderer->clearAdditionalTextures();
         textureRenderer->addAdditionalTexture(TextureReader::build(sourceTexture, TextureParam::buildLinear()));
         addFurtherTextures(textureRenderer);
@@ -137,6 +135,7 @@ namespace urchin {
             ShaderDataSender().sendData(layersToUpdateShaderVar, static_cast<unsigned int>(layersToUpdate));
         }
 
+        textureFilterShader->bind();
         offscreenRenderTarget->draw(textureRenderer);
     }
 }
