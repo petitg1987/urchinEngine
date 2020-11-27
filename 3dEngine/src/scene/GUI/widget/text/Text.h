@@ -22,7 +22,7 @@ namespace urchin {
             const std::string &getText() const;
             const Font *getFont();
 
-            void display(const ShaderVar &, float) override;
+            void display(const TargetRenderer *, const ShaderVar &, float) override;
 
         private:
             std::string cutText(const std::string &, unsigned int);

@@ -322,13 +322,13 @@ namespace urchin {
         }
     }
 
-    void Widget::display(const ShaderVar &translateDistanceShaderVar, float dt) {
+    void Widget::display(const TargetRenderer *renderTarget, const ShaderVar &translateDistanceShaderVar, float dt) {
         for (auto &child : children) {
             if (child->isVisible()) {
                 Vector2<int> translateVector(child->getGlobalPositionX(), child->getGlobalPositionY());
                 ShaderDataSender().sendData(translateDistanceShaderVar, translateVector);
 
-                child->display(translateDistanceShaderVar, dt);
+                child->display(renderTarget, translateDistanceShaderVar, dt);
             }
         }
     }

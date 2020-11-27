@@ -100,7 +100,7 @@ namespace urchin {
             void postUpdateScene();
 
             //scene properties
-            const TargetRenderer *renderTarget;
+            const TargetRenderer *finalRenderTarget;
             unsigned int sceneWidth, sceneHeight;
             bool paused;
 
@@ -134,7 +134,7 @@ namespace urchin {
             Camera *camera;
 
             //visual
-            std::unique_ptr<OffscreenRenderer> deferredRenderTarget, lightingRenderTarget;
+            OffscreenRenderer *deferredRenderTarget, *offscreenLightingRenderTarget;
             std::shared_ptr<Texture> depthTexture, diffuseTexture, normalAndAmbientTexture, lightingPassTexture;
             std::unique_ptr<GenericRenderer> lightingRenderer;
             std::unique_ptr<Shader> lightingShader;

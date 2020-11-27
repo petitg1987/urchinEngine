@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <map>
 #include <string>
 #include <locale>
@@ -194,7 +193,6 @@ namespace urchin {
             ssaoNoise.push_back(noise.normalize());
         }
 
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
         noiseTexture = Texture::build(noiseTextureSize, noiseTextureSize, TextureFormat::RGB_16_FLOAT, &ssaoNoise[0]);
     }
 
@@ -315,8 +313,6 @@ namespace urchin {
             verticalBlurFilter->applyOn(ambientOcclusionTexture);
             horizontalBlurFilter->applyOn(verticalBlurFilter->getTexture());
         }
-
-        glViewport(0, 0, sceneWidth, sceneHeight); //TODO remove...
     }
 
     void AmbientOcclusionManager::loadAOTexture(const std::unique_ptr<GenericRenderer> &lightingRenderer) const {

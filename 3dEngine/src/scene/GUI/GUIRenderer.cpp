@@ -14,7 +14,8 @@ namespace urchin {
     //Debug parameters
     bool DEBUG_DISPLAY_FONT_TEXTURE = false;
 
-    GUIRenderer::GUIRenderer() :
+    GUIRenderer::GUIRenderer(const TargetRenderer *renderTarget) :
+            renderTarget(renderTarget),
             sceneWidth(0),
             sceneHeight(0) {
         guiShader = ShaderBuilder().createShader("gui.vert", "", "gui.frag");
@@ -135,7 +136,7 @@ namespace urchin {
                 Vector2<int> translateVector(widget->getGlobalPositionX(), widget->getGlobalPositionY());
                 ShaderDataSender().sendData(translateDistanceShaderVar, translateVector);
 
-                widget->display(translateDistanceShaderVar, dt);
+                widget->display(renderTarget, translateDistanceShaderVar, dt);
             }
         }
 
@@ -147,7 +148,7 @@ namespace urchin {
             textureDisplayer.setSize(20.0f, (float)font->getDimensionTexture() + 20.0f, 20.0f, (float)font->getDimensionTexture() + 20.0f);
             textureDisplayer.enableTransparency();
             textureDisplayer.initialize(sceneWidth, sceneHeight, -1.0f, -1.0f);
-            textureDisplayer.display();
+            textureDisplayer.display(renderTarget);
             font->release();
         }
     }

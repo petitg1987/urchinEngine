@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <cmath>
 #include <sstream>
 #include <memory>
@@ -528,8 +527,6 @@ namespace urchin {
 
             lightShadowData->applyTextureFilters();
         }
-
-        glViewport(0, 0, sceneWidth, sceneHeight); //TODO remove when targetRender are used everywhere !
     }
 
     void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer> &lightingRenderer) {

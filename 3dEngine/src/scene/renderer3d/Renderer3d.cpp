@@ -25,8 +25,8 @@ namespace urchin {
     bool DEBUG_DISPLAY_LIGHTS_OCTREE = false;
     bool DEBUG_DISPLAY_LIGHTS_SCENE_BOUNDING_BOX = false;
 
-    Renderer3d::Renderer3d(const TargetRenderer *renderTarget) :
-            renderTarget(renderTarget), //TODO use it
+    Renderer3d::Renderer3d(const TargetRenderer *finalRenderTarget) :
+            finalRenderTarget(finalRenderTarget),
             sceneWidth(0),
             sceneHeight(0),
             paused(true),
@@ -39,7 +39,7 @@ namespace urchin {
             camera(nullptr) {
 
         //deferred rendering
-        deferredRenderTarget = std::make_unique<OffscreenRenderer>();
+        deferredRenderTarget = new OffscreenRenderer();
 
         modelDisplayer = new ModelDisplayer(ModelDisplayer::DEFAULT_MODE);
         modelDisplayer->initialize();
@@ -48,15 +48,15 @@ namespace urchin {
 
         fogManager = new FogManager();
 
-        terrainManager = new TerrainManager(deferredRenderTarget.get()); //TODO avoid .get() everywhere
+        terrainManager = new TerrainManager(deferredRenderTarget);
 
-        waterManager = new WaterManager(deferredRenderTarget.get());
+        waterManager = new WaterManager(deferredRenderTarget);
 
-        skyManager = new SkyManager(deferredRenderTarget.get());
+        skyManager = new SkyManager(deferredRenderTarget);
 
-        geometryManager = new GeometryManager(deferredRenderTarget.get());
+        geometryManager = new GeometryManager(deferredRenderTarget);
 
-        lightManager = new LightManager(deferredRenderTarget.get());
+        lightManager = new LightManager(deferredRenderTarget);
 
         shadowManager = new ShadowManager(lightManager, modelOctreeManager);
         shadowManager->addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
@@ -66,11 +66,11 @@ namespace urchin {
         isAmbientOcclusionActivated = true;
 
         //lighting pass rendering
-        lightingRenderTarget = std::make_unique<OffscreenRenderer>(); //TODO use ScreenRenderer when not AO
+        offscreenLightingRenderTarget = new OffscreenRenderer();
 
         createOrUpdateLightingShader();
 
-        antiAliasingManager = new AntiAliasingManager();
+        antiAliasingManager = new AntiAliasingManager(finalRenderTarget);
         isAntiAliasingActivated = true;
     }
 
@@ -80,7 +80,9 @@ namespace urchin {
             delete allOctreeableModel;
         }
 
-        //managers
+        //deferred rendering
+        delete deferredRenderTarget;
+
         delete modelDisplayer;
         delete skyManager;
         delete waterManager;
@@ -91,6 +93,10 @@ namespace urchin {
         delete modelOctreeManager;
         delete lightManager;
         delete ambientOcclusionManager;
+
+        //lighting pass rendering
+        delete offscreenLightingRenderTarget;
+
         delete antiAliasingManager;
     }
 
@@ -147,9 +153,9 @@ namespace urchin {
 
         //lighting pass rendering
         lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGB_8_INT, nullptr);
-        lightingRenderTarget->onResize(sceneWidth, sceneHeight);
-        lightingRenderTarget->removeAllTextures();
-        lightingRenderTarget->addTexture(lightingPassTexture);
+        offscreenLightingRenderTarget->onResize(sceneWidth, sceneHeight);
+        offscreenLightingRenderTarget->removeAllTextures();
+        offscreenLightingRenderTarget->addTexture(lightingPassTexture);
 
         std::vector<Point2<float>> vertexCoord = {
                 Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
@@ -362,28 +368,28 @@ namespace urchin {
             TextureRenderer textureRenderer(depthTexture, TextureRenderer::DEPTH_VALUE, depthIntensity);
             textureRenderer.setPosition(TextureRenderer::LEFT, TextureRenderer::TOP);
             textureRenderer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-            textureRenderer.display();
+            textureRenderer.display(finalRenderTarget); //TODO test it
         }
 
         if (DEBUG_DISPLAY_COLOR_BUFFER) {
             TextureRenderer textureRenderer(diffuseTexture, TextureRenderer::DEFAULT_VALUE);
             textureRenderer.setPosition(TextureRenderer::CENTER_X, TextureRenderer::TOP);
             textureRenderer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-            textureRenderer.display();
+            textureRenderer.display(finalRenderTarget);
         }
 
         if (DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER) {
             TextureRenderer textureRenderer(normalAndAmbientTexture, TextureRenderer::DEFAULT_VALUE);
             textureRenderer.setPosition(TextureRenderer::RIGHT, TextureRenderer::TOP);
             textureRenderer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-            textureRenderer.display();
+            textureRenderer.display(finalRenderTarget);
         }
 
         if (DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER) {
             TextureRenderer textureRenderer(lightingPassTexture, TextureRenderer::DEFAULT_VALUE);
             textureRenderer.setPosition(TextureRenderer::LEFT, TextureRenderer::BOTTOM);
             textureRenderer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-            textureRenderer.display();
+            textureRenderer.display(finalRenderTarget);
         }
 
         if (DEBUG_DISPLAY_SHADOW_MAP) {
@@ -392,7 +398,7 @@ namespace urchin {
             TextureRenderer textureDisplayer(shadowManager->getShadowData(firstLight).getShadowMapTexture(), shadowMapNumber, TextureRenderer::DEFAULT_VALUE);
             textureDisplayer.setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
             textureDisplayer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-            textureDisplayer.display();
+            textureDisplayer.display(finalRenderTarget);
         }
 
         if (DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER) {
@@ -400,7 +406,7 @@ namespace urchin {
             TextureRenderer textureRenderer(ambientOcclusionManager->getAmbientOcclusionTexture(), TextureRenderer::INVERSE_GRAYSCALE_VALUE, ambientOcclusionIntensity);
             textureRenderer.setPosition(TextureRenderer::RIGHT, TextureRenderer::BOTTOM);
             textureRenderer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-            textureRenderer.display();
+            textureRenderer.display(finalRenderTarget);
         }
     }
 
@@ -449,7 +455,7 @@ namespace urchin {
 
         updateModelsInFrustum();
         modelDisplayer->setModels(modelsInFrustum);
-        modelDisplayer->setRenderTarget(deferredRenderTarget.get());
+        modelDisplayer->setRenderTarget(deferredRenderTarget);
         modelDisplayer->display(camera->getViewMatrix());
 
         terrainManager->display(camera, dt);
@@ -467,7 +473,7 @@ namespace urchin {
 
     void Renderer3d::displayDetails() {
         if (DEBUG_DISPLAY_MODELS_OCTREE) {
-            OctreeRenderer::drawOctree(deferredRenderTarget.get(), modelOctreeManager, camera->getProjectionMatrix(), camera->getViewMatrix());
+            OctreeRenderer::drawOctree(deferredRenderTarget, modelOctreeManager, camera->getProjectionMatrix(), camera->getViewMatrix());
         }
 
         if (DEBUG_DISPLAY_MODELS_BOUNDING_BOX) {
@@ -485,7 +491,7 @@ namespace urchin {
         if (DEBUG_DISPLAY_LIGHTS_SCENE_BOUNDING_BOX) { //display scene box visible from light based on split frustums
             const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
             for (const auto &frustum : shadowManager->getSplitFrustums()) {
-                shadowManager->drawLightSceneBox(deferredRenderTarget.get(), frustum, firstLight, camera->getViewMatrix());
+                shadowManager->drawLightSceneBox(deferredRenderTarget, frustum, firstLight, camera->getViewMatrix());
             }
         }
     }
@@ -515,12 +521,9 @@ namespace urchin {
                 shadowManager->loadShadowMaps(lightingRenderer);
             }
 
+            auto *lightingRenderTarget = isAntiAliasingActivated ? offscreenLightingRenderTarget : finalRenderTarget;
             lightingShader->bind();
-            if (isAntiAliasingActivated) { //TODO: not if (see previous TODO)
-                lightingRenderTarget->draw(lightingRenderer);
-            } else {
-                renderTarget->draw(lightingRenderer);
-            }
+            lightingRenderTarget->draw(lightingRenderer);
         }
     }
 

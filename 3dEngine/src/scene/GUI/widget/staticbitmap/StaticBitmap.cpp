@@ -36,10 +36,10 @@ namespace urchin {
                 ->build();
     }
 
-    void StaticBitmap::display(const ShaderVar &translateDistanceShaderVar, float dt) {
-        bitmapRenderer->draw();
+    void StaticBitmap::display(const TargetRenderer *renderTarget, const ShaderVar &translateDistanceShaderVar, float dt) {
+        renderTarget->draw(bitmapRenderer);
 
-        Widget::display(translateDistanceShaderVar, dt);
+        Widget::display(renderTarget, translateDistanceShaderVar, dt);
     }
 
 }

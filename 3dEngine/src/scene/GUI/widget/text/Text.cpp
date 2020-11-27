@@ -138,12 +138,12 @@ namespace urchin {
         return font;
     }
 
-    void Text::display(const ShaderVar &translateDistanceShaderVar, float dt) {
+    void Text::display(const TargetRenderer *renderTarget, const ShaderVar &translateDistanceShaderVar, float dt) {
         if(textRenderer) {
-            textRenderer->draw();
+            renderTarget->draw(textRenderer);
         }
 
-        Widget::display(translateDistanceShaderVar, dt);
+        Widget::display(renderTarget, translateDistanceShaderVar, dt);
     }
 
 }

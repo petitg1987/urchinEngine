@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <string>
 
 #include "SceneManager.h"
@@ -50,7 +49,6 @@ namespace urchin {
             //scene properties
             this->sceneWidth = sceneWidth;
             this->sceneHeight = sceneHeight;
-            glViewport(0, 0, sceneWidth, sceneHeight); //TODO remove
 
             //renderer
             screenRenderTarget->onResize(sceneWidth, sceneHeight);
@@ -136,7 +134,7 @@ namespace urchin {
     }
 
     GUIRenderer *SceneManager::newGUIRenderer(bool enable) {
-        auto *guiRenderer = new GUIRenderer(); //TODO provide screenRenderTarget and use it
+        auto *guiRenderer = new GUIRenderer(screenRenderTarget);
         guiRenderers.push_back(guiRenderer);
 
         if (enable) {

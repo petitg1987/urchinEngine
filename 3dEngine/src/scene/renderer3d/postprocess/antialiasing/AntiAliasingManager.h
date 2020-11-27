@@ -6,6 +6,7 @@
 #include "graphic/shader/model/Shader.h"
 #include "graphic/shader/model/ShaderVar.h"
 #include "graphic/render/GenericRenderer.h"
+#include "graphic/render/target/TargetRenderer.h"
 
 namespace urchin {
 
@@ -18,7 +19,7 @@ namespace urchin {
                 VERY_HIGH
             };
 
-            explicit AntiAliasingManager();
+            explicit AntiAliasingManager(const TargetRenderer *);
 
             void onTextureUpdate(const std::shared_ptr<Texture> &);
             void onResize(unsigned int, unsigned int);
@@ -26,10 +27,12 @@ namespace urchin {
             void setQuality(Quality quality);
 
             void applyAntiAliasing();
+
         private:
             void loadFxaaShader();
 
             //properties
+            const TargetRenderer *targetRenderer;
             Quality quality;
             unsigned int sceneWidth, sceneHeight;
 

@@ -120,10 +120,10 @@ namespace urchin {
         return true;
     }
 
-    void Window::display(const ShaderVar &translateDistanceShaderVar, float dt) {
-        windowRenderer->draw();
+    void Window::display(const TargetRenderer *renderTarget, const ShaderVar &translateDistanceShaderVar, float dt) {
+        renderTarget->draw(windowRenderer);
 
-        Widget::display(translateDistanceShaderVar, dt);
+        Widget::display(renderTarget, translateDistanceShaderVar, dt);
     }
 
 }

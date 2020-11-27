@@ -9,6 +9,7 @@
 #include "scene/GUI/widget/Size.h"
 #include "scene/GUI/EventListener.h"
 #include "graphic/shader/model/ShaderVar.h"
+#include "graphic/render/target/TargetRenderer.h"
 
 namespace urchin {
 
@@ -68,7 +69,7 @@ namespace urchin {
             virtual void reset();
             void onDisable();
 
-            virtual void display(const ShaderVar &, float);
+            virtual void display(const TargetRenderer *, const ShaderVar &, float);
 
         protected:
             unsigned int getSceneWidth() const;

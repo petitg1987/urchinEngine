@@ -78,10 +78,10 @@ namespace urchin {
         return true;
     }
 
-    void Button::display(const ShaderVar &translateDistanceShaderVar, float dt) {
-        buttonRenderer->draw();
+    void Button::display(const TargetRenderer *renderTarget, const ShaderVar &translateDistanceShaderVar, float dt) {
+        renderTarget->draw(buttonRenderer);
 
-        Widget::display(translateDistanceShaderVar, dt);
+        Widget::display(renderTarget, translateDistanceShaderVar, dt);
     }
 
 }
