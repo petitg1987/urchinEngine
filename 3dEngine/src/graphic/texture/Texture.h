@@ -24,6 +24,8 @@ namespace urchin {
             TextureType getTextureType() const;
             unsigned int getWidth() const;
             unsigned int getHeight() const;
+            unsigned int getLayer() const;
+            TextureFormat getTextureFormat() const;
 
             unsigned int getGlTextureType() const;
             unsigned int getTextureId() const;

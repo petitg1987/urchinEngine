@@ -90,6 +90,14 @@ namespace urchin {
         return height;
     }
 
+    unsigned int Texture::getLayer() const {
+        return layer;
+    }
+
+    TextureFormat Texture::getTextureFormat() const {
+        return format;
+    }
+
     unsigned int Texture::getGlTextureType() const {
         if (textureType == TextureType::DEFAULT) {
             return GL_TEXTURE_2D;
