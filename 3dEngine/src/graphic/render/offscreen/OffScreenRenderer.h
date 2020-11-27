@@ -15,7 +15,8 @@ namespace urchin {
 
             void addTexture(const std::shared_ptr<Texture> &);
 
-            void apply(const std::unique_ptr<GenericRenderer> &) const;
+            void clearTextures() const;
+            void draw(const std::unique_ptr<GenericRenderer> &) const;
 
         private:
             unsigned int framebufferId;

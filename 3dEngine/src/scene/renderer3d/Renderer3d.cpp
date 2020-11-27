@@ -355,6 +355,7 @@ namespace urchin {
         updateScene(dt);
 
         glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_DEFERRED]);
+        glClear((unsigned int)GL_DEPTH_BUFFER_BIT | (unsigned int)GL_COLOR_BUFFER_BIT);
         deferredRendering(dt);
 
         if (isAntiAliasingActivated) {
@@ -458,8 +459,6 @@ namespace urchin {
      */
     void Renderer3d::deferredRendering(float dt) {
         ScopeProfiler profiler("3d", "deferredRender");
-
-        glClear((unsigned int)GL_DEPTH_BUFFER_BIT | (unsigned int)GL_COLOR_BUFFER_BIT);
 
         skyManager->display(camera->getViewMatrix(), camera->getPosition());
 

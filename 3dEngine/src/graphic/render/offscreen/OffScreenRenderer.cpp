@@ -42,11 +42,15 @@ namespace urchin {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    void OffScreenRenderer::apply(const std::unique_ptr<GenericRenderer> &renderer) const {
+    void OffScreenRenderer::clearTextures() const {
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
+        glClear((unsigned int)GL_DEPTH_BUFFER_BIT | (unsigned int)GL_COLOR_BUFFER_BIT);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
 
+    void OffScreenRenderer::draw(const std::unique_ptr<GenericRenderer> &renderer) const {
+        glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
         renderer->draw();
-
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
