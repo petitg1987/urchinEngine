@@ -144,13 +144,13 @@ namespace urchin {
         //deferred shading
         glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_SCENE]);
         depthTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::DEPTH_32_FLOAT, nullptr); //depth buffer
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTexture->getTextureId(), 0);
+        glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTexture->getTextureId(), 0);
         diffuseTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr); //diffuse buffer
-        glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[0], GL_TEXTURE_2D, diffuseTexture->getTextureId(), 0);
+        glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], diffuseTexture->getTextureId(), 0);
         normalAndAmbientTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr); //normal and ambient factor buffer
-        glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[1], GL_TEXTURE_2D, normalAndAmbientTexture->getTextureId(), 0);
+        glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[1], normalAndAmbientTexture->getTextureId(), 0);
         lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGB_8_INT, nullptr);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[2], GL_TEXTURE_2D, lightingPassTexture->getTextureId(), 0);
+        glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[2], lightingPassTexture->getTextureId(), 0);
         glReadBuffer(GL_NONE);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
