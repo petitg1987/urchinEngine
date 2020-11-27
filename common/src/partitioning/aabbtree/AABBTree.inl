@@ -257,7 +257,7 @@ template<class OBJ> void AABBTree<OBJ>::enlargedRayQuery(const Ray<float> &ray, 
         if (extendedNodeAABBox.collideWithRay(ray)) {
             if (currentNode->isLeaf()) {
                 OBJ object = currentNode->getNodeData()->getNodeObject();
-                if (object!=objectToExclude) {
+                if (object != objectToExclude) {
                     objectsAABBoxHitEnlargedRay.push_back(object);
                 }
             } else {

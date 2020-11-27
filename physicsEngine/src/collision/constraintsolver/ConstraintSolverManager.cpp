@@ -46,7 +46,7 @@ namespace urchin {
 
         //setup constraints solving
         for (auto &manifoldResult : manifoldResults) {
-            for (unsigned int j=0; j< manifoldResult.getNumContactPoints(); ++j) {
+            for (unsigned int j = 0; j < manifoldResult.getNumContactPoints(); ++j) {
                 ManifoldContactPoint &contact = manifoldResult.getManifoldContactPoint(j);
                 if (contact.getDepth() > 0.0 && !contact.isPredictive()) {
                     continue;

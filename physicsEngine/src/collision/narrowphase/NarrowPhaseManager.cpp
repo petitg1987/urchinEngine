@@ -148,6 +148,10 @@ namespace urchin {
         ccd_set continuousCollisionResults;
 
         for (auto bodyAABBoxHit : bodiesAABBoxHit) {
+            if(bodyAABBoxHit->isGhostBody()) {
+                //No CCD support for ghost bodies
+                continue;
+            }
             ScopeLockById lockBody(bodiesMutex, bodyAABBoxHit->getObjectId());
 
             const CollisionShape3D *bodyShape = bodyAABBoxHit->getShape();
