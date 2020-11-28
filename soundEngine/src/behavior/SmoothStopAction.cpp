@@ -39,7 +39,7 @@ namespace urchin {
         }
 
         std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
-        int timeInterval = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - previousTime).count();
+        long timeInterval = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - previousTime).count();
         previousTime = currentTime;
 
         float changeVolumePercentage = - (static_cast<float>(timeInterval) / 1000.0f) * soundBehavior.getVolumeDecreasePercentageOnStop();
@@ -62,9 +62,9 @@ namespace urchin {
         assert(bIsSmoothStopStarted);
 
         std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
-        int timeInterval = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - startingTime).count();
+        long timeInterval = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - startingTime).count();
 
-        int nbMillisecondToVolumeReachZero = static_cast<int>((1.0f / soundBehavior.getVolumeDecreasePercentageOnStop()) * 1000.0f);
+        long nbMillisecondToVolumeReachZero = static_cast<long>((1.0f / soundBehavior.getVolumeDecreasePercentageOnStop()) * 1000.0f);
 
         return timeInterval < nbMillisecondToVolumeReachZero;
     }

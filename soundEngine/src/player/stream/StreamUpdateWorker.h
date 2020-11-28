@@ -32,8 +32,8 @@ namespace urchin {
             void deleteTask(StreamUpdateTask *);
 
             void fillAndPushChunk(StreamUpdateTask *, unsigned int);
-            void fillChunk(StreamUpdateTask *, unsigned int);
-            unsigned int retrieveChunkId(StreamUpdateTask *, ALuint);
+            void fillChunk(StreamUpdateTask *, unsigned int) const;
+            unsigned int retrieveChunkId(StreamUpdateTask *, ALuint) const;
             void clearQueue(StreamUpdateTask *);
 
             const unsigned int nbChunkBuffer;

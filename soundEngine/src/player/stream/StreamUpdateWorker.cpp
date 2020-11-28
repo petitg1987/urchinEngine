@@ -35,7 +35,7 @@ namespace urchin {
         auto *task = new StreamUpdateTask(sound, new StreamChunk[nbChunkBuffer], playLoop);
 
         //create buffers/chunks
-        ALuint *bufferId = new ALuint[nbChunkBuffer];
+        auto *bufferId = new ALuint[nbChunkBuffer];
         alGenBuffers(nbChunkBuffer, bufferId);
         for (unsigned int i=0; i<nbChunkBuffer; ++i) {
             task->getStreamChunk(i).bufferId = bufferId[i];
@@ -175,7 +175,7 @@ namespace urchin {
     /**
      * @param task Task currently executed
      */
-    void StreamUpdateWorker::fillChunk(StreamUpdateTask *task, unsigned int chunkId) {
+    void StreamUpdateWorker::fillChunk(StreamUpdateTask *task, unsigned int chunkId) const {
         StreamChunk &streamChunk = task->getStreamChunk(chunkId);
         unsigned int bufferSize = task->getSoundFileReader()->getSampleRate() * task->getSoundFileReader()->getNumberOfChannels() * nbSecondByChunk;
         streamChunk.samples.resize(bufferSize);
@@ -183,7 +183,7 @@ namespace urchin {
         task->getSoundFileReader()->readNextChunk(streamChunk.samples, streamChunk.numberOfSamples, task->isPlayLoop());
     }
 
-    unsigned int StreamUpdateWorker::retrieveChunkId(StreamUpdateTask *task, ALuint bufferId) {
+    unsigned int StreamUpdateWorker::retrieveChunkId(StreamUpdateTask *task, ALuint bufferId) const {
         for (unsigned int i=0; i<nbChunkBuffer; ++i) {
             if (task->getStreamChunk(i).bufferId == bufferId) {
                 return i;

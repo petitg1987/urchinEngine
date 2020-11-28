@@ -3,7 +3,6 @@
 #include <stdexcept>
 
 #include "SoundManager.h"
-#include "player/stream/AudioStreamPlayer.h"
 
 namespace urchin {
 

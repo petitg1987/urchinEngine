@@ -1,6 +1,5 @@
 #include <utility>
 #include <stdexcept>
-#include <cassert>
 #include <AL/alc.h>
 
 #include "sound/Sound.h"

@@ -43,7 +43,7 @@ namespace urchin {
         bool bufferFilled;
         do
         {
-            unsigned int itemsToRead = buffer.size()-numSamplesRead;
+            unsigned int itemsToRead = buffer.size() - numSamplesRead;
             numSamplesRead += sf_read_short(file, &buffer[numSamplesRead], itemsToRead);
             bool endOfFileReached = buffer.size() != numSamplesRead;
 
