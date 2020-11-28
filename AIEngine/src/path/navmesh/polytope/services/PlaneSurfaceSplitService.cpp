@@ -6,7 +6,7 @@ namespace urchin {
 
     }
 
-    std::vector<PlaneSurfaceSplit> PlaneSurfaceSplitService::splitRectangleSurface(const std::vector<Point3<float>> &planeSurfacePoints) {
+    std::vector<PlaneSurfaceSplit> PlaneSurfaceSplitService::splitRectangleSurface(const std::vector<Point3<float>> &planeSurfacePoints) const {
         #ifndef NDEBUG
             assert(planeSurfacePoints.size() == 4);
             assert(MathAlgorithm::isZero(planeSurfacePoints[0].distance(planeSurfacePoints[1]) - planeSurfacePoints[2].distance(planeSurfacePoints[3]), 0.01f));
@@ -15,8 +15,8 @@ namespace urchin {
 
         std::vector<PlaneSurfaceSplit> planeSurfaceSplits;
 
-        unsigned int aSamples = static_cast<int>(std::ceil(planeSurfacePoints[0].distance(planeSurfacePoints[1]) / surfaceMaxSize));
-        unsigned int bSamples = static_cast<int>(std::ceil(planeSurfacePoints[1].distance(planeSurfacePoints[2]) / surfaceMaxSize));
+        auto aSamples = static_cast<unsigned int>(std::ceil(planeSurfacePoints[0].distance(planeSurfacePoints[1]) / surfaceMaxSize));
+        auto bSamples = static_cast<unsigned int>(std::ceil(planeSurfacePoints[1].distance(planeSurfacePoints[2]) / surfaceMaxSize));
 
         if (aSamples == 1 && bSamples == 1) { //no split required
             PlaneSurfaceSplit planeSurfaceSplit;

@@ -106,13 +106,13 @@ namespace urchin {
         }
     }
 
-    void NavMeshGenerator::addNavObject(const std::shared_ptr<AIEntity> &aiEntity, const std::shared_ptr<Polytope>& expandedPolytope) {
-        auto navObject = std::make_shared<NavObject>(expandedPolytope);
+    void NavMeshGenerator::addNavObject(const std::shared_ptr<AIEntity> &aiEntity, std::unique_ptr<Polytope> &&expandedPolytope) {
+        auto navObject = std::make_shared<NavObject>(std::move(expandedPolytope));
         newOrMovingNavObjectsToRefresh.insert(navObject);
 
-        if (expandedPolytope->isWalkableCandidate()) {
-            for (std::size_t surfaceIndex=0; surfaceIndex<expandedPolytope->getSurfaces().size(); ++surfaceIndex) {
-                const std::shared_ptr<PolytopeSurface> &polytopeSurface = expandedPolytope->getSurface(surfaceIndex);
+        if (navObject->getExpandedPolytope()->isWalkableCandidate()) {
+            for (std::size_t surfaceIndex=0; surfaceIndex<navObject->getExpandedPolytope()->getSurfaces().size(); ++surfaceIndex) {
+                const std::shared_ptr<PolytopeSurface> &polytopeSurface = navObject->getExpandedPolytope()->getSurface(surfaceIndex);
                 if (polytopeSurface->isWalkable()) {
                     navObject->addWalkableSurface(polytopeSurface);
                 }

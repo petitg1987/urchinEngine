@@ -45,14 +45,14 @@ namespace urchin {
     }
 
     template<class T> T CSGPolygon<T>::computeArea() const {
-        unsigned int n = cwPoints.size();
-        cwPoints.reserve(n+2);
+        std::size_t n = cwPoints.size();
+        cwPoints.reserve(n + 2);
         cwPoints.push_back(cwPoints[0]);
         cwPoints.push_back(cwPoints[1]);
 
         auto area = (T)0;
-        for (unsigned int i=1; i<=n; i++) {
-            area -= cwPoints[i].X * (cwPoints[i+1].Y - cwPoints[i-1].Y);
+        for (std::size_t i = 1; i <= n; i++) {
+            area -= cwPoints[i].X * (cwPoints[i + 1].Y - cwPoints[i - 1].Y);
         }
 
         cwPoints.pop_back();

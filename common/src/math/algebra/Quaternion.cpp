@@ -506,7 +506,7 @@ namespace urchin {
     }
 
     template<class T> bool Quaternion<T>::operator !=(const Quaternion<T> &q) const {
-        return !(*this == q);
+        return !(this->operator==(q));
     }
 
     template<class T> T& Quaternion<T>::operator [](int i) {

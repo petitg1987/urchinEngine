@@ -26,7 +26,7 @@ namespace urchin {
             AABBox(const Point3<T> *, unsigned int);
             AABBox(const AABBox<T> &);
             AABBox<T>& operator=(const AABBox<T> &);
-            AABBox<T>& operator=(AABBox<T> &&);
+            AABBox<T>& operator=(AABBox<T> &&) noexcept;
 
             T getHalfSize(unsigned int) const;
             const Vector3<T> &getHalfSizes() const;

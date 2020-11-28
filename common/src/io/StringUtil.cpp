@@ -14,7 +14,7 @@ namespace urchin {
     }
 
     void StringUtil::replaceLine(std::string &str, const std::string &startLineValue, const std::string &newLineValue) {
-        size_t startPos = 0;
+        size_t startPos;
         if ((startPos = str.find(startLineValue)) != std::string::npos) {
             size_t endOfLinePos = str.find('\n', startPos);
             if (endOfLinePos == std::string::npos) {
