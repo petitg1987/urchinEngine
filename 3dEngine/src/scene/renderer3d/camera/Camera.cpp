@@ -43,10 +43,10 @@ namespace urchin {
         float fov = 1.0f / (float)std::tan((angle * PI_VALUE) / 360.0f);
         float ratio = (float)sceneWidth/(float)sceneHeight;
         mProjection.setValues(
-            fov/ratio,     0,         0,         0,
-            0,                 fov,     0,         0,
-            0,                 0,         (farPlane+nearPlane)/(nearPlane-farPlane),  (2.0*farPlane*nearPlane)/(nearPlane-farPlane),
-            0,                 0,         -1,        0);
+            fov/ratio, 0.0f, 0.0f, 0.0f,
+            0.0f, fov, 0.0f, 0.0f,
+            0.0f, 0.0f, (farPlane + nearPlane) / (nearPlane - farPlane), (2.0f * farPlane * nearPlane) / (nearPlane - farPlane),
+            0.0f, 0.0f, -1.0f, 0.0f);
 
         //frustum
         baseFrustum.buildFrustum(angle, ratio, nearPlane, farPlane);

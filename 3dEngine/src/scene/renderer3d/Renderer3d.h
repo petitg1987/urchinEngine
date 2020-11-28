@@ -31,7 +31,7 @@ namespace urchin {
 
     class Renderer3d : public Renderer, public Observer {
         public:
-            Renderer3d(const RenderTarget *);
+            explicit Renderer3d(const RenderTarget *);
             ~Renderer3d() override;
 
             //scene properties

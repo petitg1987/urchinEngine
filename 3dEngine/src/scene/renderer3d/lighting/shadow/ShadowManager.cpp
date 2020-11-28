@@ -412,12 +412,12 @@ namespace urchin {
                 std::max(std::min(aabboxSceneDependent.getMax().Y, aabboxSceneIndependent.getMax().Y), aabboxSceneIndependent.getMin().Y),
                 std::max(std::min(aabboxSceneDependent.getMax().Z, aabboxSceneIndependent.getMax().Z), aabboxSceneIndependent.getMin().Z));
 
-        cutMin.X = (cutMin.X < 0.0f) ? cutMin.X - (lightViewOverflowStepSize + fmod(cutMin.X, lightViewOverflowStepSize)) : cutMin.X - fmod(cutMin.X, lightViewOverflowStepSize);
-        cutMin.Y = (cutMin.Y < 0.0f) ? cutMin.Y - (lightViewOverflowStepSize + fmod(cutMin.Y, lightViewOverflowStepSize)) : cutMin.Y - fmod(cutMin.Y, lightViewOverflowStepSize);
-        cutMin.Z = (cutMin.Z < 0.0f) ? cutMin.Z - (lightViewOverflowStepSize + fmod(cutMin.Z, lightViewOverflowStepSize)) : cutMin.Z - fmod(cutMin.Z, lightViewOverflowStepSize);
-        cutMax.X = (cutMax.X < 0.0f) ? cutMax.X - fmod(cutMax.X, lightViewOverflowStepSize) : cutMax.X + (lightViewOverflowStepSize - fmod(cutMax.X, lightViewOverflowStepSize));
-        cutMax.Y = (cutMax.Y < 0.0f) ? cutMax.Y - fmod(cutMax.Y, lightViewOverflowStepSize) : cutMax.Y + (lightViewOverflowStepSize - fmod(cutMax.Y, lightViewOverflowStepSize));
-        cutMax.Z = (cutMax.Z < 0.0f) ? cutMax.Z - fmod(cutMax.Z, lightViewOverflowStepSize) : cutMax.Z + (lightViewOverflowStepSize - fmod(cutMax.Z, lightViewOverflowStepSize));
+        cutMin.X = (cutMin.X < 0.0f) ? cutMin.X - (lightViewOverflowStepSize + (float)fmod(cutMin.X, lightViewOverflowStepSize)) : cutMin.X - (float)fmod(cutMin.X, lightViewOverflowStepSize);
+        cutMin.Y = (cutMin.Y < 0.0f) ? cutMin.Y - (lightViewOverflowStepSize + (float)fmod(cutMin.Y, lightViewOverflowStepSize)) : cutMin.Y - (float)fmod(cutMin.Y, lightViewOverflowStepSize);
+        cutMin.Z = (cutMin.Z < 0.0f) ? cutMin.Z - (lightViewOverflowStepSize + (float)fmod(cutMin.Z, lightViewOverflowStepSize)) : cutMin.Z - (float)fmod(cutMin.Z, lightViewOverflowStepSize);
+        cutMax.X = (cutMax.X < 0.0f) ? cutMax.X - (float)fmod(cutMax.X, lightViewOverflowStepSize) : cutMax.X + (lightViewOverflowStepSize - (float)fmod(cutMax.X, lightViewOverflowStepSize));
+        cutMax.Y = (cutMax.Y < 0.0f) ? cutMax.Y - (float)fmod(cutMax.Y, lightViewOverflowStepSize) : cutMax.Y + (lightViewOverflowStepSize - (float)fmod(cutMax.Y, lightViewOverflowStepSize));
+        cutMax.Z = (cutMax.Z < 0.0f) ? cutMax.Z - (float)fmod(cutMax.Z, lightViewOverflowStepSize) : cutMax.Z + (lightViewOverflowStepSize - (float)fmod(cutMax.Z, lightViewOverflowStepSize));
 
         return AABBox<float>(cutMin, cutMax);
     }

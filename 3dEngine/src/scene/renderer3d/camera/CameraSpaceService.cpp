@@ -20,8 +20,8 @@ namespace urchin {
      * @param screenPoint Point on screen defining the target of the ray. This point is generally defined by the cursor/sight position.
      */
     Ray<float> CameraSpaceService::screenPointToRay(const Point2<float> &screenPoint, float rayLength) const {
-        float clipSpaceX = (2.0f * (float)screenPoint.X) / ((float)camera->getSceneWidth()) - 1.0f;
-        float clipSpaceY = 1.0f - (2.0f * (float)screenPoint.Y) / ((float)camera->getSceneHeight());
+        float clipSpaceX = (2.0f * screenPoint.X) / ((float)camera->getSceneWidth()) - 1.0f;
+        float clipSpaceY = 1.0f - (2.0f * screenPoint.Y) / ((float)camera->getSceneHeight());
         urchin::Vector4<float> rayDirectionClipSpace(clipSpaceX, clipSpaceY, -1.0f, 1.0f);
 
         urchin::Vector4<float> rayDirectionEyeSpace = camera->getProjectionMatrix().inverse() * rayDirectionClipSpace;

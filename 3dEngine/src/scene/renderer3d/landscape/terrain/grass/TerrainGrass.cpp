@@ -1,4 +1,3 @@
-#include <stdexcept>
 #include <random>
 #include <stack>
 #include <cassert>

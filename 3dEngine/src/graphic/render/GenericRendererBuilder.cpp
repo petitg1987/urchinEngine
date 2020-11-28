@@ -101,7 +101,7 @@ namespace urchin {
         return pOutlineSize;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::addTexture(TextureReader texture) {
+    GenericRendererBuilder *GenericRendererBuilder::addTexture(const TextureReader &texture) {
         textures.push_back(texture);
         return this;
     }

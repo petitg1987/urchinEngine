@@ -42,7 +42,7 @@ namespace urchin {
             GenericRendererBuilder *outlineSize(float);
             float getOutlineSize() const;
 
-            GenericRendererBuilder *addTexture(TextureReader);
+            GenericRendererBuilder *addTexture(const TextureReader &);
             const std::vector<TextureReader> &getTextures() const;
 
             std::unique_ptr<GenericRenderer> build();

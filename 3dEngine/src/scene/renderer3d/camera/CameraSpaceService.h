@@ -9,7 +9,7 @@ namespace urchin {
 
     class CameraSpaceService {
         public:
-            CameraSpaceService(Camera *);
+            explicit CameraSpaceService(Camera *);
 
             Point2<float> worldSpacePointToScreenSpace(const Point3<float> &) const;
             Ray<float> screenPointToRay(const Point2<float> &, float) const;

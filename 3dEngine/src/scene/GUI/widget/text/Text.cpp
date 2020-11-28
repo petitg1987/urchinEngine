@@ -88,7 +88,7 @@ namespace urchin {
         if (cutTextLines.empty()) { //add fake line to compute height
             cutTextLines.emplace_back("");
         }
-        unsigned int numberOfInterLines = cutTextLines.size() - 1;
+        std::size_t numberOfInterLines = cutTextLines.size() - 1;
         setSize(Size(width, (float)(cutTextLines.size() * font->getHeight() + numberOfInterLines * font->getSpaceBetweenLines()), Size::SizeType::PIXEL));
 
         textRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)

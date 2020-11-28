@@ -13,12 +13,12 @@ namespace urchin {
             exponentialAttenuation(0.01),
             sphereScope(nullptr),
             bboxScope(nullptr) {
-        directions.emplace_back(Vector3<float>(1.0, 0.0, 0.0)); //Left
-        directions.emplace_back(Vector3<float>(-1.0, 0.0, 0.0)); //Right
-        directions.emplace_back(Vector3<float>(0.0, 1.0, 0.0)); //Top
-        directions.emplace_back(Vector3<float>(0.0, -1.0, 0.0)); //Bottom
-        directions.emplace_back(Vector3<float>(0.0, 0.0, 1.0)); //Back
-        directions.emplace_back(Vector3<float>(0.0, 0.0, -1.0)); //Front
+        directions.emplace_back(Vector3<float>(1.0f, 0.0f, 0.0f)); //Left
+        directions.emplace_back(Vector3<float>(-1.0f, 0.0f, 0.0f)); //Right
+        directions.emplace_back(Vector3<float>(0.0f, 1.0f, 0.0f)); //Top
+        directions.emplace_back(Vector3<float>(0.0f, -1.0f, 0.0f)); //Bottom
+        directions.emplace_back(Vector3<float>(0.0f, 0.0f, 1.0f)); //Back
+        directions.emplace_back(Vector3<float>(0.0f, 0.0f, -1.0f)); //Front
 
         computeScope();
     }
