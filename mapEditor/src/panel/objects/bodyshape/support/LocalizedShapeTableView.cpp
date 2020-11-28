@@ -56,7 +56,7 @@ namespace urchin {
             QStandardItem *itemShape = localizedShapesTableModel->item(this->currentIndex().row(), 0);
 
             addLocalizedShapeInMap(newLocalizedShape);
-            itemShape->setData(qVariantFromValue(newLocalizedShape.get()), Qt::UserRole + 1);
+            itemShape->setData(QVariant::fromValue(newLocalizedShape.get()), Qt::UserRole + 1);
         }
     }
 
@@ -67,7 +67,7 @@ namespace urchin {
 
         auto *itemShape = new QStandardItem(QString::fromStdString(shapeTypeString));
         addLocalizedShapeInMap(localizedShape);
-        itemShape->setData(qVariantFromValue(localizedShape.get()), Qt::UserRole + 1);
+        itemShape->setData(QVariant::fromValue(localizedShape.get()), Qt::UserRole + 1);
         itemShape->setEditable(false);
 
         int nextRow = localizedShapesTableModel->rowCount();

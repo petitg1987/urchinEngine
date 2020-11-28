@@ -31,7 +31,7 @@ namespace urchin {
     }
 
     bool ObjectTableView::hasSceneObjectSelected() const {
-        return this->currentIndex().row() != -1 && this->selectedIndexes().size() != 0;
+        return this->currentIndex().row() != -1 && !this->selectedIndexes().empty();
     }
 
     int ObjectTableView::getSceneObjectRow(const SceneObject *expectedSceneObject) const {
@@ -55,7 +55,7 @@ namespace urchin {
 
     int ObjectTableView::addObject(const SceneObject *sceneObject) {
         auto *itemObjectName = new QStandardItem(QString::fromStdString(sceneObject->getName()));
-        itemObjectName->setData(qVariantFromValue(sceneObject), Qt::UserRole + 1);
+        itemObjectName->setData(QVariant::fromValue(sceneObject), Qt::UserRole + 1);
         itemObjectName->setEditable(false);
 
         std::string pathFileName;
@@ -64,7 +64,7 @@ namespace urchin {
         }
         auto *itemMeshFile = new QStandardItem(QString::fromStdString(FileHandler::getFileName(pathFileName)));
         itemMeshFile->setToolTip(QString::fromStdString(pathFileName));
-        itemMeshFile->setData(qVariantFromValue(sceneObject), Qt::UserRole + 1);
+        itemMeshFile->setData(QVariant::fromValue(sceneObject), Qt::UserRole + 1);
         itemMeshFile->setEditable(false);
 
         int nextRow = objectsListModel->rowCount();
