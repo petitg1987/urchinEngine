@@ -9,7 +9,7 @@ namespace urchin {
         public:
             ~ScreenRender() override = default;
 
-            void resetDraw() const override;
+            void resetDisplay() const override;
             void display(const std::unique_ptr<GenericRenderer> &) const override;
     };
 

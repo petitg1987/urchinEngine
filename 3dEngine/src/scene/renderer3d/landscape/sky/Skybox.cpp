@@ -164,7 +164,7 @@ namespace urchin {
         translationMatrix.buildTranslation(cameraPosition.X, cameraPosition.Y + offsetY, cameraPosition.Z);
         ShaderDataSender().sendData(mViewShaderVar, viewMatrix * translationMatrix);
 
-        skyboxShader->bind();
+        renderTarget->activeShader(skyboxShader);
         renderTarget->display(skyboxRenderer);
     }
 

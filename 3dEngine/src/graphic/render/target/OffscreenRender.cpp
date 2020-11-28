@@ -60,7 +60,7 @@ namespace urchin {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    void OffscreenRender::resetDraw() const {
+    void OffscreenRender::resetDisplay() const {
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
 
         glClear((unsigned int)GL_DEPTH_BUFFER_BIT | (unsigned int)GL_COLOR_BUFFER_BIT);

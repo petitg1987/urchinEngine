@@ -130,7 +130,7 @@ namespace urchin {
     void GUIRenderer::display(float dt) {
         ScopeProfiler profiler("3d", "uiRenderDisplay");
 
-        guiShader->bind();
+        renderTarget->activeShader(guiShader);
         for (auto &widget : widgets) {
             if (widget->isVisible()) {
                 Vector2<int> translateVector(widget->getGlobalPositionX(), widget->getGlobalPositionY());

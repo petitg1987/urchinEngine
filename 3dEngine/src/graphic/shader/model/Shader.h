@@ -3,14 +3,21 @@
 
 namespace urchin {
 
+    class RenderTarget;
+
     class Shader {
         public:
+            friend class ShaderVar;
+            friend class RenderTarget;
+            friend class ShaderDataSender;
+
             explicit Shader(unsigned int);
             ~Shader();
 
             unsigned int getShaderId() const;
 
-            void bind() const; //TODO make it protected ?
+        protected:
+            void bind() const;
 
         private:
             unsigned int shaderId;

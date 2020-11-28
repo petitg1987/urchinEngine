@@ -306,7 +306,7 @@ namespace urchin {
             .sendData(mProjectionShaderVar, camera->getProjectionMatrix())
             .sendData(mViewShaderVar, camera->getViewMatrix());
 
-        ambientOcclusionShader->bind();
+        offscreenRenderTarget->activeShader(ambientOcclusionShader);
         offscreenRenderTarget->display(renderer);
 
         if (isBlurActivated) {

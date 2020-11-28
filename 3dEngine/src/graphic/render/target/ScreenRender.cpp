@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    void ScreenRender::resetDraw() const {
+    void ScreenRender::resetDisplay() const {
         glClear((unsigned int)GL_DEPTH_BUFFER_BIT | (unsigned int)GL_COLOR_BUFFER_BIT);
     }
 

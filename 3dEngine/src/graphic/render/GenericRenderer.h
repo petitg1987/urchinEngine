@@ -13,7 +13,6 @@
 namespace urchin {
 
     class GenericRendererBuilder;
-    class RenderTarget;
 
     class GenericRenderer {
         public:

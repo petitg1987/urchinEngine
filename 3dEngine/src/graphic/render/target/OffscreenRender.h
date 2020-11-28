@@ -17,7 +17,7 @@ namespace urchin {
             void addTexture(const std::shared_ptr<Texture> &);
             void removeAllTextures();
 
-            void resetDraw() const override;
+            void resetDisplay() const override;
             void display(const std::unique_ptr<GenericRenderer> &) const override;
 
         private:

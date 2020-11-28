@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "graphic/render/GenericRenderer.h"
+#include "graphic/shader/model/Shader.h"
 
 namespace urchin {
 
@@ -14,7 +15,8 @@ namespace urchin {
 
             void onResize(unsigned int, unsigned int);
 
-            virtual void resetDraw() const = 0;
+            void activeShader(const std::unique_ptr<Shader> &) const;
+            virtual void resetDisplay() const = 0;
             virtual void display(const std::unique_ptr<GenericRenderer> &) const = 0;
 
         protected:

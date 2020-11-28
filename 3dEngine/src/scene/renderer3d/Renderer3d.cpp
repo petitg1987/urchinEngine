@@ -449,7 +449,7 @@ namespace urchin {
     void Renderer3d::deferredRendering(float dt) {
         ScopeProfiler profiler("3d", "deferredRender");
 
-        deferredRenderTarget->resetDraw();
+        deferredRenderTarget->resetDisplay();
 
         skyManager->display(camera->getViewMatrix(), camera->getPosition());
 
@@ -522,7 +522,7 @@ namespace urchin {
             }
 
             auto *lightingRenderTarget = isAntiAliasingActivated ? offscreenLightingRenderTarget : finalRenderTarget;
-            lightingShader->bind();
+            lightingRenderTarget->activeShader(lightingShader);
             lightingRenderTarget->display(lightingRenderer);
         }
     }

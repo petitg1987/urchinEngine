@@ -160,7 +160,7 @@ namespace urchin {
     void Terrain::display(const RenderTarget *renderTarget, const Camera *camera, float dt) const {
         ShaderDataSender().sendData(mViewShaderVar, camera->getViewMatrix());
 
-        terrainShader->bind();
+        renderTarget->activeShader(terrainShader);
         renderTarget->display(terrainRenderer);
 
         if (grass) {

@@ -516,7 +516,7 @@ namespace urchin {
             const ShadowData *lightShadowData = shadowData.second;
             const RenderTarget *renderTarget = lightShadowData->getRenderTarget();
 
-            renderTarget->resetDraw();
+            renderTarget->resetDisplay();
 
             shadowShaderVariable->setShadowData(lightShadowData);
             shadowModelShaderVariable->setShadowData(lightShadowData);

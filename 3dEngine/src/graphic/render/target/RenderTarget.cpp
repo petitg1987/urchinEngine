@@ -25,4 +25,8 @@ namespace urchin {
         this->targetHeight = targetHeight;
     }
 
+    void RenderTarget::activeShader(const std::unique_ptr<Shader> &shader) const {
+        shader->bind();
+    }
+
 }
