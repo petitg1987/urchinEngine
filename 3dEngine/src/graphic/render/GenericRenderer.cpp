@@ -8,7 +8,7 @@
 namespace urchin {
 
     //static
-    const unsigned int GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE = 4294967295; //(2^32)-1;
+    const unsigned int GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE = std::numeric_limits<unsigned int>::max();
 
     GenericRenderer::GenericRenderer(const GenericRendererBuilder *rendererBuilder) :
             shapeType(rendererBuilder->getShapeType()),
@@ -258,10 +258,10 @@ namespace urchin {
             glDrawArrays(shapeTypeToGlType(shapeType), 0, verticesCount);
         }
 
-        resetDrawDefaultValues();
+        resetRenderDefaultValues();
     }
 
-    void GenericRenderer::resetDrawDefaultValues() const {
+    void GenericRenderer::resetRenderDefaultValues() const {
         if(transparencyEnabled) {
             glDisable(GL_BLEND);
         }

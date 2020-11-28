@@ -8,15 +8,14 @@ namespace urchin {
     class Shader {
         public:
             friend class ShaderVar;
-            friend class RenderTarget;
             friend class ShaderDataSender;
+            friend class RenderTarget;
 
             explicit Shader(unsigned int);
             ~Shader();
 
-            unsigned int getShaderId() const;
-
         protected:
+            unsigned int getShaderId() const;
             void bind() const;
 
         private:

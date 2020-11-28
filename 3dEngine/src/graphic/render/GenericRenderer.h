@@ -59,7 +59,7 @@ namespace urchin {
             unsigned int dataTypeToGlType(DataType) const;
             unsigned int dataDimensionToSize(DataDimension) const;
 
-            void resetDrawDefaultValues() const;
+            void resetRenderDefaultValues() const;
 
             ShapeType shapeType;
 
