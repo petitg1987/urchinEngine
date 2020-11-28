@@ -41,8 +41,8 @@ namespace urchin {
             bool operator !=(const Point2<T> &) const;
             bool operator <(const Point2<T> &) const;
 
-            T& operator [](int i);
-            const T& operator [](int i) const;
+            T& operator [](std::size_t i);
+            const T& operator [](std::size_t i) const;
 
             explicit operator T*();
             explicit operator const T*() const;

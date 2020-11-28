@@ -145,7 +145,7 @@ namespace urchin {
             physicsWorld->getCollisionWorld()->getNarrowPhaseManager()->processGhostBody(ghostBody, manifoldResults);
 
             for (const auto &manifoldResult : manifoldResults) {
-                float sign = manifoldResult.getBody1()==ghostBody ? -1.0 : 1.0;
+                float sign = manifoldResult.getBody1()==ghostBody ? -1.0f : 1.0f;
                 for (unsigned int i=0; i<manifoldResult.getNumContactPoints(); ++i) {
                     const ManifoldContactPoint &manifoldContactPoint = manifoldResult.getManifoldContactPoint(i);
                     float depth = manifoldContactPoint.getDepth();
@@ -180,13 +180,13 @@ namespace urchin {
     void PhysicsCharacterController::saveSignificantContactValues(SignificantContactValues &significantContactValues, const Vector3<float> &normal) {
         significantContactValues.numberOfHit++;
 
-        float dotProductUpNormalAxis = (-normal).dotProduct(Vector3<float>(0.0, 1.0, 0.0));
+        float dotProductUpNormalAxis = (-normal).dotProduct(Vector3<float>(0.0f, 1.0f, 0.0f));
         if (dotProductUpNormalAxis > significantContactValues.maxDotProductUpNormalAxis) {
             significantContactValues.maxDotProductUpNormalAxis = dotProductUpNormalAxis;
             significantContactValues.mostUpVerticalNormal = -normal;
         }
 
-        float dotProductDownNormalAxis = (-normal).dotProduct(Vector3<float>(0.0, -1.0, 0.0));
+        float dotProductDownNormalAxis = (-normal).dotProduct(Vector3<float>(0.0f, -1.0f, 0.0f));
         if (dotProductDownNormalAxis > significantContactValues.maxDotProductDownNormalAxis) {
             significantContactValues.maxDotProductDownNormalAxis = dotProductDownNormalAxis;
             significantContactValues.mostDownVerticalNormal = -normal;

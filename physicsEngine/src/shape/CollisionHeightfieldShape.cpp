@@ -41,11 +41,11 @@ namespace urchin {
         min.Y = -maxAbsoluteYValue;
         max.Y = maxAbsoluteYValue;
 
-        assert(std::abs(std::abs(min.X)-max.X) < 0.01);
-        assert(std::abs(std::abs(min.Y)-max.Y) < 0.01);
-        assert(std::abs(std::abs(min.Z)-max.Z) < 0.01);
+        assert(std::abs(std::abs(min.X)-max.X) < 0.01f);
+        assert(std::abs(std::abs(min.Y)-max.Y) < 0.01f);
+        assert(std::abs(std::abs(min.Z)-max.Z) < 0.01f);
 
-        Vector3<float> halfSizes((max.X-min.X) / 2.0, (max.Y-min.Y) / 2.0, (max.Z-min.Z) / 2.0);
+        Vector3<float> halfSizes((max.X-min.X) / 2.0f, (max.Y-min.Y) / 2.0f, (max.Z-min.Z) / 2.0f);
         return std::make_unique<BoxShape<float>>(halfSizes);
     }
 

@@ -38,8 +38,8 @@ namespace urchin {
             const Vector2<T>& operator *=(T t);
             const Vector2<T>& operator /=(T t);
 
-            T& operator [](int i);
-            const T& operator [](int i) const;
+            T& operator [](std::size_t i);
+            const T& operator [](std::size_t i) const;
 
             explicit operator T*();
             explicit operator const T*() const;

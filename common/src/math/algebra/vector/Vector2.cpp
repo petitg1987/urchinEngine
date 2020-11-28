@@ -134,11 +134,11 @@ namespace urchin {
         return *this;
     }
 
-    template<class T> T& Vector2<T>::operator [](int i) {
+    template<class T> T& Vector2<T>::operator [](std::size_t i) {
         return (&X)[i];
     }
 
-    template<class T> const T& Vector2<T>::operator [](int i) const {
+    template<class T> const T& Vector2<T>::operator [](std::size_t i) const {
         return (&X)[i];
     }
 

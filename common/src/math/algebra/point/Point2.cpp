@@ -125,18 +125,18 @@ namespace urchin {
     }
 
     template<class T> bool Point2<T>::operator !=(const Point2<T> &p) const {
-        return !(*this == p);
+        return !(this->operator==(p));
     }
 
     template<class T> bool Point2<T>::operator <(const Point2<T> &p) const {
         return X < p.X || (X == p.X && Y < p.Y);
     }
 
-    template<class T> T& Point2<T>::operator [](int i) {
+    template<class T> T& Point2<T>::operator [](std::size_t i) {
         return (&X)[i];
     }
 
-    template<class T> const T& Point2<T>::operator [](int i) const {
+    template<class T> const T& Point2<T>::operator [](std::size_t i) const {
         return (&X)[i];
     }
 

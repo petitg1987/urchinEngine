@@ -178,7 +178,7 @@ namespace urchin {
     template<class T> void Simplex<T>::removePoint(std::size_t index) {
         assert(simplexPointsSize > 0);
 
-        for (unsigned int i = index; i < simplexPointsSize - 1; ++i) {
+        for (std::size_t i = index; i < simplexPointsSize - 1; ++i) {
             simplexPoints[i] = simplexPoints[i + 1];
         }
         simplexPointsSize--;

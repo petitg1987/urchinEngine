@@ -509,11 +509,11 @@ namespace urchin {
         return !(this->operator==(q));
     }
 
-    template<class T> T& Quaternion<T>::operator [](int i) {
+    template<class T> T& Quaternion<T>::operator [](std::size_t i) {
         return (&X)[i];
     }
 
-    template<class T> const T& Quaternion<T>::operator [](int i) const {
+    template<class T> const T& Quaternion<T>::operator [](std::size_t i) const {
         return (&X)[i];
     }
 

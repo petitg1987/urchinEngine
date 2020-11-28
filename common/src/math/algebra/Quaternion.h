@@ -66,8 +66,8 @@ namespace urchin {
             bool operator ==(const Quaternion<T> &) const;
             bool operator !=(const Quaternion<T> &) const;
 
-            T& operator [](int i);
-            const T& operator [](int i) const;
+            T& operator [](std::size_t i);
+            const T& operator [](std::size_t i) const;
 
             T X, Y, Z, W;
 
