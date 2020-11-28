@@ -6,7 +6,7 @@
 
 #include "graphic/shader/model/Shader.h"
 #include "graphic/shader/model/ShaderVar.h"
-#include "graphic/render/target/TargetRenderer.h"
+#include "graphic/render/target/RenderTarget.h"
 #include "scene/Renderer.h"
 #include "scene/GUI/widget/Widget.h"
 
@@ -14,7 +14,7 @@ namespace urchin {
 
     class GUIRenderer : public Renderer, public Observer {
         public:
-            explicit GUIRenderer(const TargetRenderer *);
+            explicit GUIRenderer(const RenderTarget *);
             ~GUIRenderer() override;
 
             void onResize(unsigned int, unsigned  int) override;
@@ -33,7 +33,7 @@ namespace urchin {
             void display(float) override;
 
         private:
-            const TargetRenderer *renderTarget;
+            const RenderTarget *renderTarget;
             unsigned int sceneWidth, sceneHeight;
             std::vector<Widget *> widgets;
 

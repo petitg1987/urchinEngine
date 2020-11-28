@@ -10,7 +10,7 @@
 
 namespace urchin {
 
-    AntiAliasingManager::AntiAliasingManager(const TargetRenderer *renderTarget) :
+    AntiAliasingManager::AntiAliasingManager(const RenderTarget *renderTarget) :
             renderTarget(renderTarget),
             quality(DEFAULT_AA_QUALITY),
             sceneWidth(0),
@@ -62,7 +62,7 @@ namespace urchin {
     void AntiAliasingManager::applyAntiAliasing() {
         if(renderer) {
             fxaaShader->bind();
-            renderTarget->draw(renderer);
+            renderTarget->display(renderer);
         }
     }
 

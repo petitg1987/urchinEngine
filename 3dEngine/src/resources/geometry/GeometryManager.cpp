@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    GeometryManager::GeometryManager(const TargetRenderer *renderTarget) :
+    GeometryManager::GeometryManager(const RenderTarget *renderTarget) :
             renderTarget(renderTarget) {
 
     }

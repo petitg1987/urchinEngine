@@ -23,15 +23,15 @@
 #include "graphic/shader/model/Shader.h"
 #include "graphic/shader/model/ShaderVar.h"
 #include "graphic/render/GenericRenderer.h"
-#include "graphic/render/target/ScreenRenderer.h"
-#include "graphic/render/target/OffscreenRenderer.h"
+#include "graphic/render/target/ScreenRender.h"
+#include "graphic/render/target/OffscreenRender.h"
 #include "graphic/texture/Texture.h"
 
 namespace urchin {
 
     class Renderer3d : public Renderer, public Observer {
         public:
-            Renderer3d(const TargetRenderer *);
+            Renderer3d(const RenderTarget *);
             ~Renderer3d() override;
 
             //scene properties
@@ -100,7 +100,7 @@ namespace urchin {
             void postUpdateScene();
 
             //scene properties
-            const TargetRenderer *finalRenderTarget;
+            const RenderTarget *finalRenderTarget;
             unsigned int sceneWidth, sceneHeight;
             bool paused;
 
@@ -134,7 +134,7 @@ namespace urchin {
             Camera *camera;
 
             //visual
-            OffscreenRenderer *deferredRenderTarget, *offscreenLightingRenderTarget;
+            OffscreenRender *deferredRenderTarget, *offscreenLightingRenderTarget;
             std::shared_ptr<Texture> depthTexture, diffuseTexture, normalAndAmbientTexture, lightingPassTexture;
             std::unique_ptr<GenericRenderer> lightingRenderer;
             std::unique_ptr<Shader> lightingShader;

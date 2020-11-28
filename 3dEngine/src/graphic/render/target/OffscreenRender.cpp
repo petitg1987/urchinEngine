@@ -1,10 +1,10 @@
 #include <GL/glew.h>
 
-#include "OffscreenRenderer.h"
+#include "OffscreenRender.h"
 
 namespace urchin {
 
-    OffscreenRenderer::OffscreenRenderer() :
+    OffscreenRender::OffscreenRender() :
             framebufferId(0) {
         glGenFramebuffers(1, &framebufferId);
 
@@ -13,11 +13,11 @@ namespace urchin {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    OffscreenRenderer::~OffscreenRenderer() {
+    OffscreenRender::~OffscreenRender() {
         glDeleteFramebuffers(1, &framebufferId);
     }
 
-    void OffscreenRenderer::addTexture(const std::shared_ptr<Texture> &texture) {
+    void OffscreenRender::addTexture(const std::shared_ptr<Texture> &texture) {
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
 
         if(texture->getTextureFormat() == TextureFormat::DEPTH_16_FLOAT
@@ -43,7 +43,7 @@ namespace urchin {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    void OffscreenRenderer::removeAllTextures() {
+    void OffscreenRender::removeAllTextures() {
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
 
         glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, 0, 0);
@@ -60,7 +60,7 @@ namespace urchin {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    void OffscreenRenderer::resetDraw() const {
+    void OffscreenRender::resetDraw() const {
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
 
         glClear((unsigned int)GL_DEPTH_BUFFER_BIT | (unsigned int)GL_COLOR_BUFFER_BIT);
@@ -68,11 +68,11 @@ namespace urchin {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    void OffscreenRenderer::draw(const std::unique_ptr<GenericRenderer> &renderer) const {
+    void OffscreenRender::display(const std::unique_ptr<GenericRenderer> &renderer) const {
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
         glViewport(0, 0, getTargetWidth(), getTargetHeight());
 
-        renderer->draw();
+        executeRenderer(renderer);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }

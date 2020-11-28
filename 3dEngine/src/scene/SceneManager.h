@@ -9,7 +9,7 @@
 #include "renderer3d/Renderer3d.h"
 #include "GUI/GUIRenderer.h"
 #include "graphic/GraphicService.h"
-#include "graphic/render/target/ScreenRenderer.h"
+#include "graphic/render/target/ScreenRender.h"
 
 #define NUM_RENDERER 2
 
@@ -60,7 +60,7 @@ namespace urchin {
             unsigned int sceneWidth, sceneHeight;
 
             //renderer
-            ScreenRenderer *screenRenderTarget;
+            ScreenRender *screenRenderTarget;
             std::vector<Renderer3d *> renderers3d;
             std::vector<GUIRenderer *> guiRenderers;
             Renderer *activeRenderers[NUM_RENDERER];

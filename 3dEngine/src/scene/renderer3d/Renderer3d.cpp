@@ -25,7 +25,7 @@ namespace urchin {
     bool DEBUG_DISPLAY_LIGHTS_OCTREE = false;
     bool DEBUG_DISPLAY_LIGHTS_SCENE_BOUNDING_BOX = false;
 
-    Renderer3d::Renderer3d(const TargetRenderer *finalRenderTarget) :
+    Renderer3d::Renderer3d(const RenderTarget *finalRenderTarget) :
             finalRenderTarget(finalRenderTarget),
             sceneWidth(0),
             sceneHeight(0),
@@ -39,7 +39,7 @@ namespace urchin {
             camera(nullptr) {
 
         //deferred rendering
-        deferredRenderTarget = new OffscreenRenderer();
+        deferredRenderTarget = new OffscreenRender();
 
         modelDisplayer = new ModelDisplayer(ModelDisplayer::DEFAULT_MODE);
         modelDisplayer->initialize();
@@ -66,7 +66,7 @@ namespace urchin {
         isAmbientOcclusionActivated = true;
 
         //lighting pass rendering
-        offscreenLightingRenderTarget = new OffscreenRenderer();
+        offscreenLightingRenderTarget = new OffscreenRender();
 
         createOrUpdateLightingShader();
 
@@ -523,7 +523,7 @@ namespace urchin {
 
             auto *lightingRenderTarget = isAntiAliasingActivated ? offscreenLightingRenderTarget : finalRenderTarget;
             lightingShader->bind();
-            lightingRenderTarget->draw(lightingRenderer);
+            lightingRenderTarget->display(lightingRenderer);
         }
     }
 

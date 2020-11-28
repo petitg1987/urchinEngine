@@ -123,7 +123,7 @@ namespace urchin {
         this->customModelShaderVariable = customModelShaderVariable;
     }
 
-    void ModelDisplayer::setRenderTarget(const TargetRenderer *renderTarget) {
+    void ModelDisplayer::setRenderTarget(const RenderTarget *renderTarget) {
         this->renderTarget = renderTarget;
     }
 

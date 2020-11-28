@@ -11,7 +11,7 @@
 #include "CustomModelShaderVariable.h"
 #include "graphic/shader/model/Shader.h"
 #include "graphic/shader/model/ShaderVar.h"
-#include "graphic/render/target/TargetRenderer.h"
+#include "graphic/render/target/RenderTarget.h"
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/camera/Camera.h"
 
@@ -38,7 +38,7 @@ namespace urchin {
             void setCustomShaderVariable(CustomShaderVariable *);
             void setCustomModelShaderVariable(CustomModelShaderVariable *);
 
-            void setRenderTarget(const TargetRenderer *);
+            void setRenderTarget(const RenderTarget *);
             void setModels(const std::vector<Model *> &);
 
             void updateAnimation(float);
@@ -64,7 +64,7 @@ namespace urchin {
             CustomShaderVariable *customShaderVariable;
             CustomModelShaderVariable *customModelShaderVariable;
 
-            const TargetRenderer *renderTarget;
+            const RenderTarget *renderTarget;
             std::vector<Model *> models;
     };
 

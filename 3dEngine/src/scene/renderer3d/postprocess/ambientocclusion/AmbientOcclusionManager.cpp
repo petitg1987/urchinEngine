@@ -124,7 +124,7 @@ namespace urchin {
             textureSizeY = sceneHeight / retrieveTextureSizeFactor();
             ambientOcclusionTexture = Texture::build(textureSizeX, textureSizeY, TextureFormat::GRAYSCALE_16_FLOAT, nullptr);
 
-            offscreenRenderTarget = std::make_unique<OffscreenRenderer>();
+            offscreenRenderTarget = std::make_unique<OffscreenRender>();
             offscreenRenderTarget->onResize(textureSizeX, textureSizeY);
             offscreenRenderTarget->addTexture(ambientOcclusionTexture);
 
@@ -307,7 +307,7 @@ namespace urchin {
             .sendData(mViewShaderVar, camera->getViewMatrix());
 
         ambientOcclusionShader->bind();
-        offscreenRenderTarget->draw(renderer);
+        offscreenRenderTarget->display(renderer);
 
         if (isBlurActivated) {
             verticalBlurFilter->applyOn(ambientOcclusionTexture);

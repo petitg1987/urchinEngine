@@ -69,7 +69,7 @@ namespace urchin {
             float blurSharpness;
 
             //frame buffer object
-            std::shared_ptr<OffscreenRenderer> offscreenRenderTarget;
+            std::shared_ptr<OffscreenRender> offscreenRenderTarget;
             std::shared_ptr<Texture> ambientOcclusionTexture;
 
             //ambient occlusion shader

@@ -26,7 +26,7 @@ namespace urchin {
         previousTime = std::chrono::high_resolution_clock::now();
 
         //renderer
-        screenRenderTarget = new ScreenRenderer();
+        screenRenderTarget = new ScreenRender();
         for (auto &activeRenderer : activeRenderers) {
             activeRenderer = nullptr;
         }

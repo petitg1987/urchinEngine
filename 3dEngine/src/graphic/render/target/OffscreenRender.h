@@ -3,22 +3,22 @@
 
 #include <memory>
 
-#include "graphic/render/target/TargetRenderer.h"
+#include "graphic/render/target/RenderTarget.h"
 #include "graphic/texture/Texture.h"
 #include "graphic/render/GenericRenderer.h"
 
 namespace urchin {
 
-    class OffscreenRenderer : public TargetRenderer {
+    class OffscreenRender : public RenderTarget {
         public:
-            OffscreenRenderer();
-            ~OffscreenRenderer() override;
+            OffscreenRender();
+            ~OffscreenRender() override;
 
             void addTexture(const std::shared_ptr<Texture> &);
             void removeAllTextures();
 
             void resetDraw() const override;
-            void draw(const std::unique_ptr<GenericRenderer> &) const override;
+            void display(const std::unique_ptr<GenericRenderer> &) const override;
 
         private:
             unsigned int framebufferId;

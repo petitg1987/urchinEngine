@@ -202,7 +202,7 @@ namespace urchin {
         this->bNeedRenderTextures = bNeedRenderTextures;
     }
 
-    void GenericRenderer::draw() const {
+    void GenericRenderer::render() const {
         glBindTexture(GL_TEXTURE_2D, 0);
         glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 

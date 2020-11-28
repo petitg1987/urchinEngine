@@ -14,7 +14,7 @@ namespace urchin {
     //Debug parameters
     bool DEBUG_DISPLAY_FONT_TEXTURE = false;
 
-    GUIRenderer::GUIRenderer(const TargetRenderer *renderTarget) :
+    GUIRenderer::GUIRenderer(const RenderTarget *renderTarget) :
             renderTarget(renderTarget),
             sceneWidth(0),
             sceneHeight(0) {

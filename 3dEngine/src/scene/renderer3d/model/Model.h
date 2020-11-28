@@ -10,7 +10,7 @@
 #include "Animation.h"
 #include "resources/model/ConstMeshes.h"
 #include "resources/model/ConstAnimation.h"
-#include "graphic/render/target/TargetRenderer.h"
+#include "graphic/render/target/RenderTarget.h"
 
 namespace urchin {
 
@@ -42,10 +42,10 @@ namespace urchin {
             bool isProduceShadow() const;
 
             void updateAnimation(float);
-            void display(const TargetRenderer *, const MeshParameter &) const;
+            void display(const RenderTarget *, const MeshParameter &) const;
 
-            void drawBBox(const TargetRenderer *, const Matrix4<float> &, const Matrix4<float> &) const;
-            void drawBaseBones(const TargetRenderer *, const Matrix4<float> &, const Matrix4<float> &) const;
+            void drawBBox(const RenderTarget *, const Matrix4<float> &, const Matrix4<float> &) const;
+            void drawBaseBones(const RenderTarget *, const Matrix4<float> &, const Matrix4<float> &) const;
 
         private:
             void initialize(const std::string &);

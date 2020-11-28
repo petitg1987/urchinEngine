@@ -9,7 +9,7 @@
 #include "graphic/shader/model/Shader.h"
 #include "graphic/shader/model/ShaderVar.h"
 #include "graphic/render/GenericRenderer.h"
-#include "graphic/render/target/OffscreenRenderer.h"
+#include "graphic/render/target/OffscreenRender.h"
 
 namespace urchin {
 
@@ -54,7 +54,7 @@ namespace urchin {
             std::unique_ptr<Shader> textureFilterShader;
             ShaderVar layersToUpdateShaderVar;
 
-            std::unique_ptr<OffscreenRenderer> offscreenRenderTarget;
+            std::unique_ptr<OffscreenRender> offscreenRenderTarget;
             std::shared_ptr<Texture> texture;
     };
 

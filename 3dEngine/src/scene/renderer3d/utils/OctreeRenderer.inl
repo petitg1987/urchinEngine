@@ -1,4 +1,4 @@
-template<class T> void OctreeRenderer::drawOctree(const OctreeManager<T> *octreeManager, const TargetRenderer *renderTarget,
+template<class T> void OctreeRenderer::drawOctree(const OctreeManager<T> *octreeManager, const RenderTarget *renderTarget,
         const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) {
     auto leafOctrees = octreeManager->getAllLeafOctrees();
 

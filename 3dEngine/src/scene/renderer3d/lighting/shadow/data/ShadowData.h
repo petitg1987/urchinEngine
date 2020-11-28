@@ -7,7 +7,7 @@
 #include "UrchinCommon.h"
 
 #include "FrustumShadowData.h"
-#include "graphic/render/target/OffscreenRenderer.h"
+#include "graphic/render/target/OffscreenRender.h"
 #include "scene/renderer3d/lighting/light/Light.h"
 #include "texture/filter/TextureFilter.h"
 
@@ -21,8 +21,8 @@ namespace urchin {
             ShadowData(const Light *, unsigned int);
             ~ShadowData();
 
-            void setRenderTarget(std::unique_ptr<OffscreenRenderer> &&);
-            const OffscreenRenderer *getRenderTarget() const;
+            void setRenderTarget(std::unique_ptr<OffscreenRender> &&);
+            const OffscreenRender *getRenderTarget() const;
 
             void setDepthTexture(const std::shared_ptr<Texture> &);
             const std::shared_ptr<Texture> & getDepthTexture() const;
@@ -45,7 +45,7 @@ namespace urchin {
         private:
             const Light *const light;
 
-            std::shared_ptr<OffscreenRenderer> renderTarget; //target containing shadow map(s)
+            std::shared_ptr<OffscreenRender> renderTarget; //target containing shadow map(s)
             std::shared_ptr<Texture> depthTexture; //depth texture
             std::shared_ptr<Texture> shadowMapTexture; //shadow map texture (variance shadow map)
 

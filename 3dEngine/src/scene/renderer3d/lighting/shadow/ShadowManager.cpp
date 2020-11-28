@@ -13,7 +13,7 @@
 #include "texture/filter/downsample/DownSampleFilterBuilder.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
 #include "graphic/shader/data/ShaderDataSender.h"
-#include "graphic/render/target/OffscreenRenderer.h"
+#include "graphic/render/target/OffscreenRender.h"
 #include "resources/geometry/obbox/OBBoxModel.h"
 
 #define DEFAULT_NUMBER_SHADOW_MAPS 5
@@ -452,7 +452,7 @@ namespace urchin {
         auto depthTexture = Texture::buildArray(shadowMapResolution, shadowMapResolution, nbShadowMaps, depthTextureFormat, nullptr);
         auto shadowMapTexture = Texture::buildArray(shadowMapResolution, shadowMapResolution, nbShadowMaps, TextureFormat::RG_32_FLOAT, nullptr);
 
-        auto shadowMapRenderTarget = std::make_unique<OffscreenRenderer>();
+        auto shadowMapRenderTarget = std::make_unique<OffscreenRender>();
         shadowMapRenderTarget->onResize(shadowMapResolution, shadowMapResolution);
         shadowMapRenderTarget->addTexture(depthTexture);
         shadowMapRenderTarget->addTexture(shadowMapTexture);
@@ -514,7 +514,7 @@ namespace urchin {
 
         for (auto &shadowData : shadowDatas) {
             const ShadowData *lightShadowData = shadowData.second;
-            const TargetRenderer *renderTarget = lightShadowData->getRenderTarget();
+            const RenderTarget *renderTarget = lightShadowData->getRenderTarget();
 
             renderTarget->resetDraw();
 
@@ -559,7 +559,7 @@ namespace urchin {
         delete []depthSplitDistance;
     }
 
-    void ShadowManager::drawLightSceneBox(const TargetRenderer *renderTarget, const Frustum<float> &frustum, const Light *light, const Matrix4<float> &viewMatrix) const {
+    void ShadowManager::drawLightSceneBox(const RenderTarget *renderTarget, const Frustum<float> &frustum, const Light *light, const Matrix4<float> &viewMatrix) const {
         auto itShadowData = shadowDatas.find(light);
         if (itShadowData == shadowDatas.end()) {
             throw std::invalid_argument("shadow manager doesn't know this light.");

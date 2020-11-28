@@ -6,14 +6,14 @@
 
 #include "graphic/shader/model/Shader.h"
 #include "graphic/shader/model/ShaderVar.h"
-#include "graphic/render/target/TargetRenderer.h"
+#include "graphic/render/target/RenderTarget.h"
 #include "Light.h"
 
 namespace urchin {
 
     class LightManager : public Observable {
         public:
-            explicit LightManager(const TargetRenderer *);
+            explicit LightManager(const RenderTarget *);
             ~LightManager() override;
 
             enum NotificationType {
@@ -43,7 +43,7 @@ namespace urchin {
             void onLightEvent(Light *, NotificationType);
             void checkMaxLight(const std::vector<Light *> &) const;
 
-            const TargetRenderer *renderTarget;
+            const RenderTarget *renderTarget;
 
             //lights container
             std::vector<Light *> parallelBeamsLights; //sun lights

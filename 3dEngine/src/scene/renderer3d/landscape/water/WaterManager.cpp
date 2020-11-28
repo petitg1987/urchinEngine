@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    WaterManager::WaterManager(const TargetRenderer *renderTarget) :
+    WaterManager::WaterManager(const RenderTarget *renderTarget) :
             renderTarget(renderTarget) {
     }
 

@@ -19,11 +19,11 @@ namespace urchin {
         }
     }
 
-    void ShadowData::setRenderTarget(std::unique_ptr<OffscreenRenderer> &&renderTarget) {
+    void ShadowData::setRenderTarget(std::unique_ptr<OffscreenRender> &&renderTarget) {
         this->renderTarget = std::move(renderTarget);
     }
 
-    const OffscreenRenderer *ShadowData::getRenderTarget() const {
+    const OffscreenRender *ShadowData::getRenderTarget() const {
         return renderTarget.get();
     }
 

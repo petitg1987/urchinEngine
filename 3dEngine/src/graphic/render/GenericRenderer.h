@@ -13,15 +13,13 @@
 namespace urchin {
 
     class GenericRendererBuilder;
-    class OffscreenRenderer;
-    class ScreenRenderer;
+    class RenderTarget;
 
     class GenericRenderer {
         public:
             static const unsigned int PRIMITIVE_RESTART_INDEX_VALUE;
 
-            friend class OffscreenRenderer;
-            friend class ScreenRenderer;
+            friend class RenderTarget;
 
             struct Data {
                 DataType dataType = DataType::FLOAT;
@@ -49,7 +47,7 @@ namespace urchin {
             void renderTextures(bool);
 
         protected:
-            void draw() const;
+            void render() const;
 
         private:
             unsigned int computeVerticesCount() const;

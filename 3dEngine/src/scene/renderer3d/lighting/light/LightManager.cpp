@@ -10,7 +10,7 @@
 
 namespace urchin {
 
-    LightManager::LightManager(const TargetRenderer *renderTarget) :
+    LightManager::LightManager(const RenderTarget *renderTarget) :
             renderTarget(renderTarget),
             lastUpdatedLight(nullptr),
             maxLights(ConfigService::instance()->getUnsignedIntValue("light.maxLights")),

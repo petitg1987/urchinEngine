@@ -6,7 +6,7 @@
 
 #include "graphic/shader/model/Shader.h"
 #include "graphic/shader/model/ShaderVar.h"
-#include "graphic/render/target/TargetRenderer.h"
+#include "graphic/render/target/RenderTarget.h"
 #include "graphic/render/GenericRenderer.h"
 #include "resources/image/Image.h"
 #include "scene/renderer3d/camera/Camera.h"
@@ -63,7 +63,7 @@ namespace urchin {
 
             void onCameraProjectionUpdate(const Matrix4<float> &);
 
-            void display(const TargetRenderer *, const Camera *, FogManager *, float invFrameRate);
+            void display(const RenderTarget *, const Camera *, FogManager *, float invFrameRate);
 
         private:
             void generateVertex();

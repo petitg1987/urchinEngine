@@ -7,7 +7,7 @@
 #include "graphic/shader/model/Shader.h"
 #include "graphic/shader/model/ShaderVar.h"
 #include "graphic/render/GenericRenderer.h"
-#include "graphic/render/target/TargetRenderer.h"
+#include "graphic/render/target/RenderTarget.h"
 
 namespace urchin {
 
@@ -44,7 +44,7 @@ namespace urchin {
 
             void initialize(unsigned int, unsigned int, float, float);
 
-            void display(const TargetRenderer *);
+            void display(const RenderTarget *);
 
         private:
             void initializeShader(float, float);

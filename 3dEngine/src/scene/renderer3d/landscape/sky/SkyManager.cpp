@@ -1,7 +1,7 @@
 #include "SkyManager.h"
 
 namespace urchin {
-    SkyManager::SkyManager(const TargetRenderer *renderTarget) :
+    SkyManager::SkyManager(const RenderTarget *renderTarget) :
             renderTarget(renderTarget),
             skybox(nullptr) {
 

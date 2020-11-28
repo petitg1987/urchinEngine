@@ -332,7 +332,7 @@ namespace urchin {
         ShaderDataSender().sendData(windStrengthShaderVar, windStrength);
     }
 
-    void TerrainGrass::display(const TargetRenderer *renderTarget, const Camera *camera, float dt) {
+    void TerrainGrass::display(const RenderTarget *renderTarget, const Camera *camera, float dt) {
         if (grassTexture) {
             ScopeProfiler profiler("3d", "grassDisplay");
 
@@ -352,7 +352,7 @@ namespace urchin {
 
                 if (grassQuadtreeBox && camera->getFrustum().cutFrustum(grassDisplayDistance).collideWithAABBox(*grassQuadtreeBox)) {
                     if (grassQuadtree->isLeaf()) {
-                        renderTarget->draw(grassQuadtree->getRenderer());
+                        renderTarget->display(grassQuadtree->getRenderer());
                     } else {
                         for (const auto *child : grassQuadtree->getChildren()) {
                             grassQuadtrees.push_back(child);

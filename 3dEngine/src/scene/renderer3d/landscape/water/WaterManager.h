@@ -3,7 +3,7 @@
 
 #include "UrchinCommon.h"
 
-#include "graphic/render/target/TargetRenderer.h"
+#include "graphic/render/target/RenderTarget.h"
 #include "scene/renderer3d/camera/Camera.h"
 #include "scene/renderer3d/landscape/water/Water.h"
 #include "scene/renderer3d/landscape/fog/FogManager.h"
@@ -12,7 +12,7 @@ namespace urchin {
 
     class WaterManager {
         public:
-            explicit WaterManager(const TargetRenderer *);
+            explicit WaterManager(const RenderTarget *);
 
             void onCameraProjectionUpdate(const Camera *);
 
@@ -22,7 +22,7 @@ namespace urchin {
             void display(const Camera *, FogManager *, float) const;
 
         private:
-            const TargetRenderer *renderTarget;
+            const RenderTarget *renderTarget;
 
             std::vector<Water *> waters;
 

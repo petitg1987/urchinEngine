@@ -5,7 +5,7 @@
 
 #include "graphic/shader/model/Shader.h"
 #include "graphic/shader/model/ShaderVar.h"
-#include "graphic/render/target/TargetRenderer.h"
+#include "graphic/render/target/RenderTarget.h"
 #include "graphic/render/GenericRenderer.h"
 
 namespace urchin {
@@ -30,7 +30,7 @@ namespace urchin {
             bool isAlwaysVisible() const;
             void setAlwaysVisible(bool);
 
-            void display(const TargetRenderer *, const Matrix4<float> &) const;
+            void display(const RenderTarget *, const Matrix4<float> &) const;
 
         protected:
             void initialize();

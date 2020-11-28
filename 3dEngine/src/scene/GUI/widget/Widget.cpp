@@ -322,7 +322,7 @@ namespace urchin {
         }
     }
 
-    void Widget::display(const TargetRenderer *renderTarget, const ShaderVar &translateDistanceShaderVar, float dt) {
+    void Widget::display(const RenderTarget *renderTarget, const ShaderVar &translateDistanceShaderVar, float dt) {
         for (auto &child : children) {
             if (child->isVisible()) {
                 Vector2<int> translateVector(child->getGlobalPositionX(), child->getGlobalPositionY());

@@ -157,11 +157,11 @@ namespace urchin {
         return mesh->findHeightAt(localCoordinate) + position.Y;
     }
 
-    void Terrain::display(const TargetRenderer *renderTarget, const Camera *camera, float dt) const {
+    void Terrain::display(const RenderTarget *renderTarget, const Camera *camera, float dt) const {
         ShaderDataSender().sendData(mViewShaderVar, camera->getViewMatrix());
 
         terrainShader->bind();
-        renderTarget->draw(terrainRenderer);
+        renderTarget->display(terrainRenderer);
 
         if (grass) {
             grass->display(renderTarget, camera, dt);

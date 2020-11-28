@@ -212,9 +212,9 @@ namespace urchin {
         computeCursorPosition();
     }
 
-    void TextBox::display(const TargetRenderer *renderTarget, const ShaderVar &translateDistanceShaderVar, float dt) {
+    void TextBox::display(const RenderTarget *renderTarget, const ShaderVar &translateDistanceShaderVar, float dt) {
         //display the text box
-        renderTarget->draw(textBoxRenderer);
+        renderTarget->display(textBoxRenderer);
 
         //displays the cursor
         cursorBlink += dt * CURSOR_BLINK_SPEED;
@@ -222,7 +222,7 @@ namespace urchin {
             Vector2<int> widgetPosition(getGlobalPositionX(), getGlobalPositionY());
             ShaderDataSender().sendData(translateDistanceShaderVar, widgetPosition + Vector2<int>(cursorPosition, 0));
 
-            renderTarget->draw(cursorRenderer);
+            renderTarget->display(cursorRenderer);
 
             ShaderDataSender().sendData(translateDistanceShaderVar, widgetPosition);
         }

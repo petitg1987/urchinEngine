@@ -76,7 +76,7 @@ namespace urchin {
             throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
         }
 
-        offscreenRenderTarget = std::make_unique<OffscreenRenderer>();
+        offscreenRenderTarget = std::make_unique<OffscreenRender>();
         offscreenRenderTarget->onResize(textureWidth, textureHeight);
         offscreenRenderTarget->addTexture(texture);
     }
@@ -136,6 +136,6 @@ namespace urchin {
         }
 
         textureFilterShader->bind();
-        offscreenRenderTarget->draw(textureRenderer);
+        offscreenRenderTarget->display(textureRenderer);
     }
 }
