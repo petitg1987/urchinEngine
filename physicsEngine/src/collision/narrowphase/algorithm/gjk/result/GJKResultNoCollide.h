@@ -17,10 +17,10 @@ namespace urchin {
 
             bool isCollide() const override;
             T getSeparatingDistance() const override;
-            const Point3<T> &getClosestPointA() const override;
-            const Point3<T> &getClosestPointB() const override;
+            const Point3<T>& getClosestPointA() const override;
+            const Point3<T>& getClosestPointB() const override;
 
-            const Simplex<T> &getSimplex() const override;
+            const Simplex<T>& getSimplex() const override;
 
         private:
             void logInputData(const std::string&, const Simplex<T>&);

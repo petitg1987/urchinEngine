@@ -23,16 +23,16 @@ namespace urchin {
             AbstractWorkBody(std::string , const PhysicsTransform&, std::shared_ptr<const CollisionShape3D> );
             ~AbstractWorkBody() override = default;
 
-            const PhysicsTransform &getPhysicsTransform() const;
+            const PhysicsTransform& getPhysicsTransform() const;
 
             void setPosition(const Point3<float>&);
-            const Point3<float> &getPosition() const;
+            const Point3<float>& getPosition() const;
 
             void setOrientation(const Quaternion<float>&);
-            const Quaternion<float> &getOrientation() const;
+            const Quaternion<float>& getOrientation() const;
 
-            const CollisionShape3D *getShape() const;
-            const std::string &getId() const;
+            const CollisionShape3D* getShape() const;
+            const std::string& getId() const;
             void setRestitution(float);
             float getRestitution() const;
             void setFriction(float);
@@ -43,7 +43,7 @@ namespace urchin {
             float getCcdMotionThreshold() const;
             void setCcdMotionThreshold(float);
 
-            virtual PairContainer *getPairContainer() const;
+            virtual PairContainer* getPairContainer() const;
 
             static void disableAllBodies(bool);
             bool isStatic() const;

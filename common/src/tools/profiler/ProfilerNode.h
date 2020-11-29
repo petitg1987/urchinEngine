@@ -12,12 +12,12 @@ namespace urchin {
             ProfilerNode(std::string , ProfilerNode*);
             ~ProfilerNode();
 
-            const std::string &getName() const;
+            const std::string& getName() const;
 
-            ProfilerNode *getParent() const;
+            ProfilerNode* getParent() const;
 
             std::vector<ProfilerNode *> getChildren() const;
-            ProfilerNode *findChildren(const std::string&) const;
+            ProfilerNode* findChildren(const std::string&) const;
             void addChild(ProfilerNode*);
 
             bool isStarted();

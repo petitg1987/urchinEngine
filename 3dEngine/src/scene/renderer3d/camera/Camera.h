@@ -22,13 +22,13 @@ namespace urchin {
             void setDistance(float);
             void setMaxRotationX(float);
 
-            const Matrix4<float> &getViewMatrix() const;
-            const Matrix4<float> &getProjectionMatrix() const;
-            const Frustum<float> &getFrustum() const;
+            const Matrix4<float>& getViewMatrix() const;
+            const Matrix4<float>& getProjectionMatrix() const;
+            const Frustum<float>& getFrustum() const;
 
-            const Point3<float> &getPosition() const;
-            const Vector3<float> &getView() const;
-            const Vector3<float> &getUp() const;
+            const Point3<float>& getPosition() const;
+            const Vector3<float>& getView() const;
+            const Vector3<float>& getUp() const;
 
             unsigned int getSceneWidth() const;
             unsigned int getSceneHeight() const;

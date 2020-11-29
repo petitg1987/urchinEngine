@@ -16,10 +16,10 @@ namespace urchin {
 
             virtual bool isCollide() const = 0;
             virtual T getSeparatingDistance() const = 0;
-            virtual const Point3<T> &getClosestPointA() const = 0;
-            virtual const Point3<T> &getClosestPointB() const = 0;
+            virtual const Point3<T>& getClosestPointA() const = 0;
+            virtual const Point3<T>& getClosestPointB() const = 0;
 
-            virtual const Simplex<T> &getSimplex() const = 0;
+            virtual const Simplex<T>& getSimplex() const = 0;
     };
 
 }

@@ -7,7 +7,7 @@
 
 class QuaternionTest : public CppUnit::TestFixture {
     public:
-        static CppUnit::Test *suite();
+        static CppUnit::Test* suite();
 
         void multiplyAxisAngleQuaternions9And45();
         void multiplyLookAtQuaternions9And45();

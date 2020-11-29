@@ -16,8 +16,8 @@ namespace urchin {
 
             void updateFatMargin(float);
 
-            AABBNode<OBJ> *getRootNode() const;
-            AABBNodeData<OBJ> *getNodeData(OBJ) const;
+            AABBNode<OBJ>* getRootNode() const;
+            AABBNodeData<OBJ>* getNodeData(OBJ) const;
             void getAllNodeObjects(std::vector<OBJ>&) const;
 
             void addObject(AABBNodeData<OBJ>*);

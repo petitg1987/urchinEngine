@@ -28,13 +28,13 @@ namespace urchin {
 
             void saveMapOnFile(const std::string&);
 
-            ObjectController *getObjectController();
-            LightController *getLightController();
-            TerrainController *getTerrainController();
-            WaterController *getWaterController();
-            SkyController *getSkyController();
-            SoundController *getSoundController();
-            AIController *getAIController();
+            ObjectController* getObjectController();
+            LightController* getLightController();
+            TerrainController* getTerrainController();
+            WaterController* getWaterController();
+            SkyController* getSkyController();
+            SoundController* getSoundController();
+            AIController* getAIController();
 
         private:
             std::vector<AbstractController *> subControllers;

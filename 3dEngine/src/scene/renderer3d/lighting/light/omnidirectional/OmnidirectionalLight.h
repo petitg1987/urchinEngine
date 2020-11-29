@@ -15,17 +15,17 @@ namespace urchin {
 
             //general methods
             void setPosition(const Point3<float>&);
-            const Point3<float> &getPosition() const override;
-            const std::vector<Vector3<float>> &getDirections() const override;
+            const Point3<float>& getPosition() const override;
+            const std::vector<Vector3<float>>& getDirections() const override;
             LightType getLightType() const override;
             bool hasParallelBeams() const override;
-            const AABBox<float> &getAABBox() const override;
+            const AABBox<float>& getAABBox() const override;
 
             //attenuation methods
             void setAttenuation(float);
             float getExponentialAttenuation() const;
-            const AABBox<float> &getAABBoxScope() const;
-            const Sphere<float> &getSphereScope() const;
+            const AABBox<float>& getAABBoxScope() const;
+            const Sphere<float>& getSphereScope() const;
 
         private:
             void computeScope();

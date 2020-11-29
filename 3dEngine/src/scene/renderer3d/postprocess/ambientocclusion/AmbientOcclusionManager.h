@@ -37,7 +37,7 @@ namespace urchin {
 
             void activateBlur(bool);
 
-            const std::shared_ptr<Texture> &getAmbientOcclusionTexture() const;
+            const std::shared_ptr<Texture>& getAmbientOcclusionTexture() const;
 
             void updateAOTexture(const Camera*);
             void loadAOTexture(const std::unique_ptr<GenericRenderer>&) const;

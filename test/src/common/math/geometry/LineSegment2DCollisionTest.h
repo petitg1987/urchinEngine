@@ -6,7 +6,7 @@
 
 class LineSegment2DCollisionTest : public CppUnit::TestFixture {
     public:
-        static CppUnit::Test *suite();
+        static CppUnit::Test* suite();
 
         void noIntersection();
         void parallelLines();

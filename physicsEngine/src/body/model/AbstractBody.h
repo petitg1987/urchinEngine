@@ -27,9 +27,9 @@ namespace urchin {
             void setNeedFullRefresh(bool);
             bool needFullRefresh() const;
 
-            virtual AbstractWorkBody *createWorkBody() const = 0;
+            virtual AbstractWorkBody* createWorkBody() const = 0;
             void setWorkBody(AbstractWorkBody*);
-            AbstractWorkBody *getWorkBody() const;
+            AbstractWorkBody* getWorkBody() const;
 
             virtual void updateTo(AbstractWorkBody*);
             virtual bool applyFrom(const AbstractWorkBody*);
@@ -43,7 +43,7 @@ namespace urchin {
             std::shared_ptr<const CollisionShape3D> getScaledShape() const;
 
             void setId(const std::string&);
-            const std::string &getId() const;
+            const std::string& getId() const;
 
             void setRestitution(float);
             float getRestitution() const;

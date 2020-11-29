@@ -15,22 +15,22 @@ namespace urchin {
             explicit AABBNode(AABBNodeData<OBJ>*);
             ~AABBNode();
 
-            AABBNodeData<OBJ> *getNodeData() const;
+            AABBNodeData<OBJ>* getNodeData() const;
 
             bool isLeaf() const;
             bool isRoot() const;
 
             void setParent(AABBNode*);
-            AABBNode *getParent() const;
+            AABBNode* getParent() const;
 
             void setLeftChild(AABBNode*);
-            AABBNode *getLeftChild() const;
+            AABBNode* getLeftChild() const;
             void setRightChild(AABBNode*);
-            AABBNode *getRightChild() const;
+            AABBNode* getRightChild() const;
 
-            AABBNode *getSibling() const;
+            AABBNode* getSibling() const;
 
-            const AABBox<float> &getAABBox() const;
+            const AABBox<float>& getAABBox() const;
             void updateAABBox(float);
 
         protected:

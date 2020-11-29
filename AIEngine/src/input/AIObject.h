@@ -19,7 +19,7 @@ namespace urchin {
 
             AIEntity::AIEntityType getType() const override;
 
-            const std::vector<std::shared_ptr<AIShape>> &getShapes() const;
+            const std::vector<std::shared_ptr<AIShape>>& getShapes() const;
 
         private:
             std::vector<std::shared_ptr<AIShape>> shapes;

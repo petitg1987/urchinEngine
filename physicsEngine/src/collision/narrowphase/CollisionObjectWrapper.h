@@ -15,8 +15,8 @@ namespace urchin {
         public:
             CollisionObjectWrapper(const CollisionShape3D&, const PhysicsTransform&);
 
-            const CollisionShape3D &getShape() const;
-            const PhysicsTransform &getShapeWorldTransform() const;
+            const CollisionShape3D& getShape() const;
+            const PhysicsTransform& getShapeWorldTransform() const;
 
         private:
             const CollisionShape3D &shape;

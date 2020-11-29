@@ -17,7 +17,7 @@ namespace urchin {
             virtual void removeOverlappingPair(AbstractWorkBody*, AbstractWorkBody*) = 0;
             virtual void removeOverlappingPairs(AbstractWorkBody*) = 0;
 
-            virtual const std::vector<OverlappingPair *> &getOverlappingPairs() const = 0;
+            virtual const std::vector<OverlappingPair *>& getOverlappingPairs() const = 0;
             virtual std::vector<OverlappingPair> retrieveCopyOverlappingPairs() const = 0;
     };
 

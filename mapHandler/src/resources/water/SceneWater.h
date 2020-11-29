@@ -23,7 +23,7 @@ namespace urchin {
             std::string getName() const;
             void setName(const std::string&);
 
-            Water *getWater() const;
+            Water* getWater() const;
             void setWater(Water*);
 
         private:

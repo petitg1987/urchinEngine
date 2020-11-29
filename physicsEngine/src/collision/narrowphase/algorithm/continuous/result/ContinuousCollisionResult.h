@@ -16,10 +16,10 @@ namespace urchin {
             ContinuousCollisionResult(AbstractWorkBody*, const Vector3<T>&, const Point3<T>&, T);
             ContinuousCollisionResult(const ContinuousCollisionResult&);
 
-            AbstractWorkBody *getBody2() const;
+            AbstractWorkBody* getBody2() const;
 
-            const Vector3<T> &getNormalFromObject2() const;
-            const Point3<T> &getHitPointOnObject2() const;
+            const Vector3<T>& getNormalFromObject2() const;
+            const Point3<T>& getHitPointOnObject2() const;
             T getTimeToHit() const;
 
         private:

@@ -13,7 +13,7 @@ namespace urchin {
             LoaderPNG();
             ~LoaderPNG() override = default;
 
-            Image *loadFromFile(const std::string&) override;
+            Image* loadFromFile(const std::string&) override;
 
         private:
             std::vector<unsigned char> extract8BitsChannels(const std::vector<unsigned char>&, unsigned int);

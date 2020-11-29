@@ -17,16 +17,16 @@ namespace urchin {
         public:
             ConstraintSolving(WorkRigidBody*, WorkRigidBody*, ManifoldContactPoint&);
 
-            WorkRigidBody *getBody1();
-            WorkRigidBody *getBody2();
+            WorkRigidBody* getBody1();
+            WorkRigidBody* getBody2();
 
-            const CommonSolvingData &getCommonData();
+            const CommonSolvingData& getCommonData();
             void setCommonData(const CommonSolvingData&);
 
-            const ImpulseSolvingData &getImpulseData();
+            const ImpulseSolvingData& getImpulseData();
             void setImpulseData(const ImpulseSolvingData&);
 
-            AccumulatedSolvingData &getAccumulatedData();
+            AccumulatedSolvingData& getAccumulatedData();
 
         private:
             WorkRigidBody *body1;

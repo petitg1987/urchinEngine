@@ -19,9 +19,9 @@ namespace urchin {
             T getRadius() const;
             T getCylinderHeight() const;
             typename CapsuleShape<T>::CapsuleOrientation getCapsuleOrientation() const;
-            const Point3<T> &getCenterOfMass() const;
-            const Quaternion<T> &getOrientation() const;
-            const Vector3<T> &getAxis(unsigned int) const;
+            const Point3<T>& getCenterOfMass() const;
+            const Quaternion<T>& getOrientation() const;
+            const Vector3<T>& getAxis(unsigned int) const;
 
             Point3<T> getSupportPoint(const Vector3<T>&) const;
 

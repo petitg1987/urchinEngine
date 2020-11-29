@@ -20,8 +20,8 @@ namespace urchin {
             ~CollisionHeightfieldShape() override;
 
             CollisionShape3D::ShapeType getShapeType() const override;
-            const ConvexShape3D<float> *getSingleShape() const override;
-            const std::vector<Point3<float>> &getVertices() const;
+            const ConvexShape3D<float>* getSingleShape() const override;
+            const std::vector<Point3<float>>& getVertices() const;
             unsigned int getXLength() const;
             unsigned int getZLength() const;
 
@@ -34,10 +34,10 @@ namespace urchin {
             float getMaxDistanceToCenter() const override;
             float getMinDistanceToCenter() const override;
 
-            CollisionShape3D *clone() const override;
+            CollisionShape3D* clone() const override;
 
-            const std::vector<CollisionTriangleShape> &findTrianglesInAABBox(const AABBox<float>&) const override;
-            const std::vector<CollisionTriangleShape> &findTrianglesHitByRay(const LineSegment3D<float>&) const override;
+            const std::vector<CollisionTriangleShape>& findTrianglesInAABBox(const AABBox<float>&) const override;
+            const std::vector<CollisionTriangleShape>& findTrianglesHitByRay(const LineSegment3D<float>&) const override;
 
         private:
             enum Axis {

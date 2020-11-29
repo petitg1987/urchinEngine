@@ -23,7 +23,7 @@ namespace urchin {
             LightPanelWidget();
             ~LightPanelWidget() override = default;
 
-            LightTableView *getLightTableView() const;
+            LightTableView* getLightTableView() const;
 
             void load(LightController*);
             void unload();

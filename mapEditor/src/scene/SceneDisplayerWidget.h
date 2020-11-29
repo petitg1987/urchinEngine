@@ -46,7 +46,7 @@ namespace urchin {
             void leaveEvent(QEvent*) override;
 
             bool onMouseClickBodyPickup();
-            const std::string &getLastPickedBodyId() const;
+            const std::string& getLastPickedBodyId() const;
             void addObserverObjectMoveController(Observer*, int);
 
         private:

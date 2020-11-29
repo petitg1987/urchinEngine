@@ -7,7 +7,7 @@
 
 class TriangulationTest : public CppUnit::TestFixture {
     public:
-        static CppUnit::Test *suite();
+        static CppUnit::Test* suite();
 
         void triangleTriangulation();
         void cubeTriangulation();

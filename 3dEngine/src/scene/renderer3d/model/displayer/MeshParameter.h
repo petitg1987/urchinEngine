@@ -15,7 +15,7 @@ namespace urchin {
             bool needRenderTextures() const;
 
             void setAmbientFactorShaderVar(const ShaderVar&);
-            const ShaderVar &getAmbientFactorShaderVar() const;
+            const ShaderVar& getAmbientFactorShaderVar() const;
 
         private:
             bool bNeedRenderTextures;

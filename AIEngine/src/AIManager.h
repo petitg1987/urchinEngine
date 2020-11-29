@@ -20,7 +20,7 @@ namespace urchin {
             AIManager();
             ~AIManager();
 
-            NavMeshGenerator *getNavMeshGenerator() const;
+            NavMeshGenerator* getNavMeshGenerator() const;
 
             void addEntity(const std::shared_ptr<AIEntity>&);
             void removeEntity(const std::shared_ptr<AIEntity>&);

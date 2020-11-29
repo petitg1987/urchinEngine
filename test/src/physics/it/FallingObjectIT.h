@@ -6,7 +6,7 @@
 
 class FallingObjectIT : public CppUnit::TestFixture {
     public:
-        static CppUnit::Test *suite();
+        static CppUnit::Test* suite();
 
         void fallOnPlane();
         void fallForever();

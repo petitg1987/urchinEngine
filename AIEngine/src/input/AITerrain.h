@@ -14,7 +14,7 @@ namespace urchin {
 
             AIEntity::AIEntityType getType() const override;
 
-            const std::vector<Point3<float>> &getLocalVertices() const;
+            const std::vector<Point3<float>>& getLocalVertices() const;
             unsigned int getXLength() const;
             unsigned int getZLength() const;
 

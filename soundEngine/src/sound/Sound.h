@@ -18,7 +18,7 @@ namespace urchin {
 
             virtual SoundType getSoundType() const = 0;
             ALuint getSourceId() const;
-            const std::string &getFilename() const;
+            const std::string& getFilename() const;
 
             bool isStopped() const;
             bool isPaused() const;

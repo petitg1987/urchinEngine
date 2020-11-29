@@ -20,7 +20,7 @@ namespace urchin {
             explicit ConvexHull2D(const std::vector<Point2<T>>&);
             static std::unique_ptr<ConvexHull2D<T>> createFromCcwConvexPoints(const std::vector<Point2<T>>&);
 
-            const std::vector<Point2<T>> &getPoints() const;
+            const std::vector<Point2<T>>& getPoints() const;
 
             Point2<T> getSupportPoint(const Vector2<T>&) const;
             T area() const;

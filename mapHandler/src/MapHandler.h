@@ -37,7 +37,7 @@ namespace urchin {
             void setRelativeWorkingDirectory(const std::string&);
 
             void refreshMap();
-            Map *getMap() const;
+            Map* getMap() const;
 
             void pause();
             void unpause();

@@ -11,7 +11,7 @@ namespace urchin {
         public:
             StatusBarStateData(const std::vector<std::string>&, StatusBarState);
 
-            const std::vector<std::string> &getLabels();
+            const std::vector<std::string>& getLabels();
             StatusBarState getPreviousState();
 
         private:

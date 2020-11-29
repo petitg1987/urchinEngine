@@ -19,14 +19,14 @@ namespace urchin {
             ManifoldResult(const ManifoldResult&) = default;
             ManifoldResult(ManifoldResult&&) = default;
 
-            AbstractWorkBody *getBody(unsigned int) const;
-            AbstractWorkBody *getBody1() const;
-            AbstractWorkBody *getBody2() const;
+            AbstractWorkBody* getBody(unsigned int) const;
+            AbstractWorkBody* getBody1() const;
+            AbstractWorkBody* getBody2() const;
 
             unsigned int getNumContactPoints() const;
             float getContactBreakingThreshold() const;
-            ManifoldContactPoint &getManifoldContactPoint(unsigned int);
-            const ManifoldContactPoint &getManifoldContactPoint(unsigned int) const;
+            ManifoldContactPoint& getManifoldContactPoint(unsigned int);
+            const ManifoldContactPoint& getManifoldContactPoint(unsigned int) const;
 
             void addContactPoint(const Vector3<float>&, const Point3<float>&, float, bool);
             void addContactPoint(const Vector3<float>&, const Point3<float>&, const Point3<float>&, const Point3<float>&, const Point3<float>&, float, bool);

@@ -12,7 +12,7 @@ namespace urchin {
         public:
             explicit FileLogger(std::string);
 
-            const std::string &getFilename() const;
+            const std::string& getFilename() const;
 
             std::string retrieveContent(unsigned long) const override;
             void purge() const override;

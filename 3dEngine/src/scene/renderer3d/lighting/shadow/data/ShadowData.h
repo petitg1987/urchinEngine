@@ -22,25 +22,25 @@ namespace urchin {
             ~ShadowData();
 
             void setRenderTarget(std::unique_ptr<OffscreenRender>&&);
-            const OffscreenRender *getRenderTarget() const;
+            const OffscreenRender* getRenderTarget() const;
 
             void setDepthTexture(const std::shared_ptr<Texture>&);
             const std::shared_ptr<Texture> & getDepthTexture() const;
             void setShadowMapTexture(const std::shared_ptr<Texture>&);
-            const std::shared_ptr<Texture> &getShadowMapTexture() const;
+            const std::shared_ptr<Texture>& getShadowMapTexture() const;
 
             void addTextureFilter(std::unique_ptr<TextureFilter>);
             void applyTextureFilters() const;
-            const std::shared_ptr<Texture> &getFilteredShadowMapTexture() const;
+            const std::shared_ptr<Texture>& getFilteredShadowMapTexture() const;
 
             void setLightViewMatrix(const Matrix4<float>&);
-            const Matrix4<float> &getLightViewMatrix() const;
+            const Matrix4<float>& getLightViewMatrix() const;
 
             unsigned int getNbFrustumShadowData() const;
-            FrustumShadowData *getFrustumShadowData(std::size_t);
-            const FrustumShadowData *getFrustumShadowData(std::size_t) const;
+            FrustumShadowData* getFrustumShadowData(std::size_t);
+            const FrustumShadowData* getFrustumShadowData(std::size_t) const;
 
-            const std::vector<Model *> &retrieveModels() const;
+            const std::vector<Model *>& retrieveModels() const;
 
         private:
             const Light *const light;

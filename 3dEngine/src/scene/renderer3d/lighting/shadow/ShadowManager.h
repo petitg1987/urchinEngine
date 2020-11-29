@@ -51,9 +51,9 @@ namespace urchin {
             void setBlurShadow(BlurShadow);
             BlurShadow getBlurShadow() const;
 
-            const std::vector<Frustum<float>> &getSplitFrustums() const;
-            const ShadowData &getShadowData(const Light*) const;
-            const std::vector<Model *> &computeVisibleModels();
+            const std::vector<Frustum<float>>& getSplitFrustums() const;
+            const ShadowData& getShadowData(const Light*) const;
+            const std::vector<Model *>& computeVisibleModels();
 
             void updateVisibleModels(const Frustum<float>&);
             void forceUpdateAllShadowMaps();

@@ -19,8 +19,8 @@ namespace urchin {
             void createOrUpdateWidget() override;
 
             void setText(const std::string&, int maxLength=-1);
-            const std::string &getText() const;
-            const Font *getFont();
+            const std::string& getText() const;
+            const Font* getFont();
 
             void display(const RenderTarget*, const ShaderVar&, float) override;
 

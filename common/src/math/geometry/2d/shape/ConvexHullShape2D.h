@@ -16,7 +16,7 @@ namespace urchin {
             ~ConvexHullShape2D() override = default;
             static std::unique_ptr<ConvexHullShape2D<T>> createFromCcwConvexPoints(const std::vector<Point2<T>>&);
 
-            const std::vector<Point2<T>> &getPoints() const;
+            const std::vector<Point2<T>>& getPoints() const;
 
             Point2<T> getSupportPoint(const Vector2<T>&) const;
             T area() const;

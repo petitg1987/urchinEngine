@@ -22,16 +22,16 @@ namespace urchin {
             };
 
             void initiateShaderVariables(const std::unique_ptr<Shader>&);
-            OctreeManager<Light> *getLightOctreeManager() const;
-            Light *getLastUpdatedLight();
+            OctreeManager<Light>* getLightOctreeManager() const;
+            Light* getLastUpdatedLight();
 
             unsigned int getMaxLights() const;
-            const std::vector<Light *> &getVisibleLights() const;
+            const std::vector<Light *>& getVisibleLights() const;
             void addLight(Light*);
             void removeLight(Light*);
 
             void setGlobalAmbientColor(const Point4<float>&);
-            const Point4<float> &getGlobalAmbientColor() const;
+            const Point4<float>& getGlobalAmbientColor() const;
 
             void updateLights(const Frustum<float>&);
             void loadLights();

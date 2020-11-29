@@ -32,7 +32,7 @@ namespace urchin {
 
             virtual TriggerResultValue evaluateTrigger(const Point3<float>&) = 0;
 
-            const SoundBehavior &getSoundBehavior() const;
+            const SoundBehavior& getSoundBehavior() const;
 
         private:
             SoundBehavior soundBehavior;

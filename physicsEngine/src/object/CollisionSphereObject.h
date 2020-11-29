@@ -13,7 +13,7 @@ namespace urchin {
             CollisionSphereObject(float, const Point3<float>&);
 
             float getRadius() const;
-            const Point3<float> &getCenterOfMass() const;
+            const Point3<float>& getCenterOfMass() const;
 
             CollisionConvexObject3D::ObjectType getObjectType() const override;
             Point3<float> getSupportPoint(const Vector3<float>&, bool) const override;

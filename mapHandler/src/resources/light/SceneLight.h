@@ -24,7 +24,7 @@ namespace urchin {
             std::string getName() const;
             void setName(const std::string&);
 
-            Light *getLight() const;
+            Light* getLight() const;
             void setLight(Light*);
 
         private:

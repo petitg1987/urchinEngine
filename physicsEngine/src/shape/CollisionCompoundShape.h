@@ -22,8 +22,8 @@ namespace urchin {
             explicit CollisionCompoundShape(const std::vector<std::shared_ptr<const LocalizedCollisionShape>>&);
 
             CollisionShape3D::ShapeType getShapeType() const override;
-            const ConvexShape3D<float> *getSingleShape() const override;
-            const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &getLocalizedShapes() const;
+            const ConvexShape3D<float>* getSingleShape() const override;
+            const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& getLocalizedShapes() const;
 
             std::shared_ptr<CollisionShape3D> scale(float) const override;
 
@@ -34,7 +34,7 @@ namespace urchin {
             float getMaxDistanceToCenter() const override;
             float getMinDistanceToCenter() const override;
 
-            CollisionShape3D *clone() const override;
+            CollisionShape3D* clone() const override;
 
         private:
             void initializeDistances();

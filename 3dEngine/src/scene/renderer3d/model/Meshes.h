@@ -15,12 +15,12 @@ namespace urchin {
             ~Meshes();
 
             unsigned int getNumberMeshes() const;
-            Mesh *getMesh(unsigned int) const;
-            const AABBox<float> &getGlobalAABBox() const;
-            const std::vector<AABBox<float>> &getGlobalSplitAABBoxes() const;
-            const AABBox<float> &getGlobalLocalAABBox() const;
+            Mesh* getMesh(unsigned int) const;
+            const AABBox<float>& getGlobalAABBox() const;
+            const std::vector<AABBox<float>>& getGlobalSplitAABBoxes() const;
+            const AABBox<float>& getGlobalLocalAABBox() const;
 
-            const ConstMeshes *getConstMeshes() const;
+            const ConstMeshes* getConstMeshes() const;
 
             void onMoving(const Transform<float>&);
 

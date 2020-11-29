@@ -15,19 +15,19 @@ namespace urchin {
 
             bool isWalkable() const override;
             Rectangle<float> computeXZRectangle() const override;
-            const AABBox<float> &getAABBox() const override;
+            const AABBox<float>& getAABBox() const override;
 
-            const std::vector<Point2<float>> &getOutlineCwPoints() const override;
+            const std::vector<Point2<float>>& getOutlineCwPoints() const override;
             Plane<float> getPlane(const Rectangle<float>&) const override;
-            const std::vector<CSGPolygon<float>> &getSelfObstacles() const override;
+            const std::vector<CSGPolygon<float>>& getSelfObstacles() const override;
             Point3<float> computeRealPoint(const Point2<float>&, const std::shared_ptr<NavMeshAgent>&) const override;
-            const std::shared_ptr<const NavTopography> &getNavTopography() const override;
+            const std::shared_ptr<const NavTopography>& getNavTopography() const override;
 
-            const Point3<float> &getPosition() const;
-            const std::vector<Point3<float>> &getLocalVertices() const;
+            const Point3<float>& getPosition() const;
+            const std::vector<Point3<float>>& getLocalVertices() const;
             unsigned int getXLength() const;
             unsigned int getZLength() const;
-            const Vector3<float> &getApproximateNormal() const;
+            const Vector3<float>& getApproximateNormal() const;
 
         private:
             void buildOutlineCwPoints();

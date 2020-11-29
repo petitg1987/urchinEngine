@@ -39,24 +39,24 @@ namespace urchin {
                     std::vector<unsigned int>, std::vector<Weight>, const std::vector<Bone>&);
             ~ConstMesh();
 
-            const Material *getMaterial() const;
+            const Material* getMaterial() const;
 
             unsigned int getNumberVertices() const;
-            const Vertex &getStructVertex(unsigned int) const;
-            const std::vector<Point2<float>> &getTextureCoordinates() const;
-            const std::vector<unsigned int> &getLinkedVertices(unsigned int) const;
+            const Vertex& getStructVertex(unsigned int) const;
+            const std::vector<Point2<float>>& getTextureCoordinates() const;
+            const std::vector<unsigned int>& getLinkedVertices(unsigned int) const;
 
-            const std::vector<unsigned int> &getTrianglesIndices() const;
+            const std::vector<unsigned int>& getTrianglesIndices() const;
 
             unsigned int getNumberWeights() const;
-            const Weight &getWeight(unsigned int) const;
+            const Weight& getWeight(unsigned int) const;
 
             unsigned int getNumberBones() const;
-            const std::vector<Bone> &getBaseSkeleton() const;
-            const Bone &getBaseBone(unsigned int) const;
-            const std::vector<Point3<float>> &getBaseVertices() const;
-            const std::vector<Vector3<float>> &getBaseNormals() const;
-            const std::vector<Vector3<float>> &getBaseTangents() const;
+            const std::vector<Bone>& getBaseSkeleton() const;
+            const Bone& getBaseBone(unsigned int) const;
+            const std::vector<Point3<float>>& getBaseVertices() const;
+            const std::vector<Vector3<float>>& getBaseNormals() const;
+            const std::vector<Vector3<float>>& getBaseTangents() const;
 
         private:
             Material *material;

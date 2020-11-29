@@ -25,7 +25,7 @@ namespace urchin {
             ~BodyCompoundShapeWidget() override = default;
 
             std::string getBodyShapeName() const override;
-            LocalizedShapeTableView *getLocalizedShapeTableView() const;
+            LocalizedShapeTableView* getLocalizedShapeTableView() const;
 
         protected:
             void doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>) override;

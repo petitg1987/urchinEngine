@@ -6,7 +6,7 @@
 
 class ResizeConvexHull3DTest : public CppUnit::TestFixture {
     public:
-        static CppUnit::Test *suite();
+        static CppUnit::Test* suite();
 
         void reduceBox();
 

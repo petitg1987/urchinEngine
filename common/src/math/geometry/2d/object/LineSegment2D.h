@@ -12,8 +12,8 @@ namespace urchin {
         public:
             LineSegment2D(const Point2<T>&, const Point2<T>&);
 
-            const Point2<T> &getA() const;
-            const Point2<T> &getB() const;
+            const Point2<T>& getA() const;
+            const Point2<T>& getB() const;
 
             Point2<T> getSupportPoint(const Vector2<T>&) const;
             Point2<T> closestPoint(const Point2<T>&, T[2]) const;

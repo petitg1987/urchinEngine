@@ -15,12 +15,12 @@ namespace urchin {
             explicit FrustumShadowData(unsigned int);
 
             void updateShadowCasterReceiverBox(const AABBox<float>&, bool);
-            const AABBox<float> &getShadowCasterReceiverBox() const;
-            const Matrix4<float> &getLightProjectionMatrix() const;
+            const AABBox<float>& getShadowCasterReceiverBox() const;
+            const Matrix4<float>& getLightProjectionMatrix() const;
             bool isShadowCasterReceiverBoxUpdated() const;
 
             void updateModels(const std::vector<Model *>&);
-            const std::vector<Model *> &getModels() const;
+            const std::vector<Model *>& getModels() const;
 
             bool needShadowMapUpdate() const;
 

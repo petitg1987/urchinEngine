@@ -17,9 +17,9 @@ namespace urchin {
             OverlappingPair(AbstractWorkBody*, AbstractWorkBody*, uint_fast64_t);
             OverlappingPair(const OverlappingPair&) = default;
 
-            AbstractWorkBody *getBody(unsigned int) const;
-            AbstractWorkBody *getBody1() const;
-            AbstractWorkBody *getBody2() const;
+            AbstractWorkBody* getBody(unsigned int) const;
+            AbstractWorkBody* getBody1() const;
+            AbstractWorkBody* getBody2() const;
 
             static uint_fast64_t computeBodiesId(const AbstractWorkBody*, const AbstractWorkBody*);
             uint_fast64_t getBodiesId() const;

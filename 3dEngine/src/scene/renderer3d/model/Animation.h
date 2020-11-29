@@ -14,12 +14,12 @@ namespace urchin {
             Animation(ConstAnimation*, Meshes*);
             ~Animation();
 
-            const std::vector<Bone> &getSkeleton() const;
-            const AABBox<float> &getGlobalAABBox() const;
-            const std::vector<AABBox<float>> &getGlobalSplitAABBoxes() const;
-            const AABBox<float> &getGlobalLocalAABBox() const;
+            const std::vector<Bone>& getSkeleton() const;
+            const AABBox<float>& getGlobalAABBox() const;
+            const std::vector<AABBox<float>>& getGlobalSplitAABBoxes() const;
+            const AABBox<float>& getGlobalLocalAABBox() const;
 
-            const ConstAnimation *getConstAnimation() const;
+            const ConstAnimation* getConstAnimation() const;
             unsigned int getCurrFrame() const;
 
             void animate(float);

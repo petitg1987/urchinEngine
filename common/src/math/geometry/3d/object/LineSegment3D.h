@@ -16,8 +16,8 @@ namespace urchin {
             LineSegment3D();
             LineSegment3D(const Point3<T>&, const Point3<T>&);
 
-            const Point3<T> &getA() const;
-            const Point3<T> &getB() const;
+            const Point3<T>& getA() const;
+            const Point3<T>& getB() const;
 
             Point3<T> getSupportPoint(const Vector3<T>&) const;
             Point3<T> closestPoint(const Point3<T>&) const;

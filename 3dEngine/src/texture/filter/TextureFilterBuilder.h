@@ -18,17 +18,17 @@ namespace urchin {
             TextureFilterBuilder();
             virtual ~TextureFilterBuilder();
 
-            T *textureSize(unsigned int, unsigned int);
+            T* textureSize(unsigned int, unsigned int);
             unsigned int getTextureWidth() const;
             unsigned int getTextureHeight() const;
 
-            T *textureType(TextureType);
+            T* textureType(TextureType);
             TextureType getTextureType() const;
 
-            T *textureNumberLayer(unsigned int);
+            T* textureNumberLayer(unsigned int);
             unsigned int getTextureNumberLayer() const;
 
-            T *textureFormat(TextureFormat);
+            T* textureFormat(TextureFormat);
             TextureFormat getTextureFormat() const;
 
             virtual std::unique_ptr<TextureFilter> build() = 0;

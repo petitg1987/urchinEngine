@@ -21,7 +21,7 @@ namespace urchin {
         public:
             NewSoundDialog(QWidget*, const SoundController*);
 
-            SceneSound *getSceneSound() const;
+            SceneSound* getSceneSound() const;
 
         private:
             void setupNameFields(QGridLayout*);

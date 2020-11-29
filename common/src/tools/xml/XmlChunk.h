@@ -69,7 +69,7 @@ namespace urchin {
             void setVector4Value(const Vector4<float>&);
 
         private:
-            TiXmlElement *getChunk() const;
+            TiXmlElement* getChunk() const;
 
             TiXmlElement *chunk;
     };

@@ -15,16 +15,16 @@ namespace urchin {
             BilateralBlurFilterBuilder();
             ~BilateralBlurFilterBuilder() override = default;
 
-            BilateralBlurFilterBuilder *blurDirection(BlurDirection);
+            BilateralBlurFilterBuilder* blurDirection(BlurDirection);
 
-            BilateralBlurFilterBuilder *blurSize(unsigned int);
+            BilateralBlurFilterBuilder* blurSize(unsigned int);
             unsigned int getBlurSize() const;
 
-            BilateralBlurFilterBuilder *blurSharpness(float);
+            BilateralBlurFilterBuilder* blurSharpness(float);
             float getBlurSharpness() const;
 
-            BilateralBlurFilterBuilder *depthTexture(const std::shared_ptr<Texture>&);
-            const std::shared_ptr<Texture> &getDepthTexture() const;
+            BilateralBlurFilterBuilder* depthTexture(const std::shared_ptr<Texture>&);
+            const std::shared_ptr<Texture>& getDepthTexture() const;
 
             std::unique_ptr<TextureFilter> build() override;
             std::unique_ptr<BilateralBlurFilter> buildBilateralBlur();

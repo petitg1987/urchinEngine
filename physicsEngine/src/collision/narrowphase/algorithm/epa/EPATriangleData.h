@@ -10,8 +10,8 @@ namespace urchin {
             EPATriangleData(T, const Vector3<T>&, const Point3<T>&, T [3]);
 
             T getDistanceToOrigin() const;
-            const Vector3<T> &getNormal() const;
-            const Point3<T> &getClosestPointToOrigin() const;
+            const Vector3<T>& getNormal() const;
+            const Point3<T>& getClosestPointToOrigin() const;
             T getBarycentric(unsigned int index) const;
 
         private:

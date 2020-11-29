@@ -13,7 +13,7 @@ namespace urchin {
         public:
             explicit RectangleShape(const Vector2<T>&);
 
-            const Vector2<T> &getDiagonal() const;
+            const Vector2<T>& getDiagonal() const;
 
         private:
             Vector2<T> diagonal; //diagonal from minimum to maximum point

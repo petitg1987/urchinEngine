@@ -28,8 +28,8 @@ namespace urchin {
             std::string getName() const;
             void setName(const std::string&);
 
-            Sound *getSound() const;
-            SoundTrigger *getSoundTrigger() const;
+            Sound* getSound() const;
+            SoundTrigger* getSoundTrigger() const;
             void setSoundElements(Sound*, SoundTrigger*);
             void changeSoundTrigger(SoundTrigger*);
 

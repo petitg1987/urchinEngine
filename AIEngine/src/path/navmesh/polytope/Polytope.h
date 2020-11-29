@@ -15,13 +15,13 @@ namespace urchin {
         public:
             Polytope(std::string, std::vector<std::shared_ptr<PolytopeSurface>>&);
 
-            const std::string &getName() const;
+            const std::string& getName() const;
 
-            const std::vector<std::shared_ptr<PolytopeSurface>> &getSurfaces() const;
-            const std::shared_ptr<PolytopeSurface> &getSurface(unsigned int) const;
+            const std::vector<std::shared_ptr<PolytopeSurface>>& getSurfaces() const;
+            const std::shared_ptr<PolytopeSurface>& getSurface(unsigned int) const;
 
-            const Rectangle<float> &getXZRectangle() const;
-            const AABBox<float> &getAABBox() const;
+            const Rectangle<float>& getXZRectangle() const;
+            const AABBox<float>& getAABBox() const;
 
             void setWalkableCandidate(bool);
             bool isWalkableCandidate() const;

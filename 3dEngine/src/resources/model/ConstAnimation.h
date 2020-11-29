@@ -24,14 +24,14 @@ namespace urchin {
             ConstAnimation(std::string , unsigned int, unsigned int, unsigned int, const Bone *const*, const AABBox<float> *const*);
             ~ConstAnimation() override;
 
-            const std::string &getAnimationFilename() const;
+            const std::string& getAnimationFilename() const;
             unsigned int getNumberFrames() const;
             unsigned int getNumberBones() const;
             unsigned int getFrameRate() const;
-            const Bone &getBone(unsigned int, unsigned int) const;
+            const Bone& getBone(unsigned int, unsigned int) const;
 
-            const AABBox<float> &getOriginalGlobalAABBox() const;
-            const std::vector<AABBox<float>> &getOriginalGlobalSplitAABBoxes() const;
+            const AABBox<float>& getOriginalGlobalAABBox() const;
+            const std::vector<AABBox<float>>& getOriginalGlobalSplitAABBoxes() const;
 
         private:
             std::string animationFilename;

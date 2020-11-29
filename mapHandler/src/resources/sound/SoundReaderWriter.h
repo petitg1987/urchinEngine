@@ -24,11 +24,11 @@ namespace urchin {
         #define INAUDIBLE_DISTANCE_TAG "inaudibleDistance"
 
         public:
-            Sound *loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
+            Sound* loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
             void writeOn(const std::shared_ptr<XmlChunk>&, const Sound*, XmlWriter&) const;
 
         private:
-            Sound *buildSoundFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
+            Sound* buildSoundFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
             void buildChunkFrom(const std::shared_ptr<XmlChunk>&, const Sound*, XmlWriter&) const;
 
             void loadPropertiesOn(Sound*, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;

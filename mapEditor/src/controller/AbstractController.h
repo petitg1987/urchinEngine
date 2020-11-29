@@ -22,7 +22,7 @@ namespace urchin {
         protected:
             void markModified();
 
-            MapHandler *getMapHandler() const;
+            MapHandler* getMapHandler() const;
 
         private:
             bool bIsModified;

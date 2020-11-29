@@ -37,15 +37,15 @@ namespace urchin {
                 AI
             };
 
-            ObjectPanelWidget *getObjectPanelWidget() const;
-            LightPanelWidget *getLightPanelWidget() const;
-            TerrainPanelWidget *getTerrainPanelWidget() const;
-            WaterPanelWidget *getWaterPanelWidget() const;
-            SkyPanelWidget *getSkyPanelWidget() const;
-            SoundPanelWidget *getSoundPanelWidget() const;
-            AIPanelWidget *getAIPanelWidget() const;
+            ObjectPanelWidget* getObjectPanelWidget() const;
+            LightPanelWidget* getLightPanelWidget() const;
+            TerrainPanelWidget* getTerrainPanelWidget() const;
+            WaterPanelWidget* getWaterPanelWidget() const;
+            SkyPanelWidget* getSkyPanelWidget() const;
+            SoundPanelWidget* getSoundPanelWidget() const;
+            AIPanelWidget* getAIPanelWidget() const;
 
-            SceneController *loadMap(SceneController*);
+            SceneController* loadMap(SceneController*);
             void closeMap();
 
             TabName getTabSelected() const;

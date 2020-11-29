@@ -26,7 +26,7 @@ namespace urchin {
             };
 
             void setCenterPosition(const Point3<float>&);
-            const Point3<float> &getCenterPosition() const;
+            const Point3<float>& getCenterPosition() const;
 
             void setXSize(float);
             float getXSize() const;
@@ -35,13 +35,13 @@ namespace urchin {
             float getZSize() const;
 
             void setWaterColor(const Vector3<float>&);
-            const Vector3<float> &getWaterColor() const;
+            const Vector3<float>& getWaterColor() const;
 
             void setNormalTexture(const std::string&);
-            const std::string &getNormalFilename() const;
+            const std::string& getNormalFilename() const;
 
             void setDudvMap(const std::string&);
-            const std::string &getDudvFilename() const;
+            const std::string& getDudvFilename() const;
 
             void setWaveSpeed(float);
             float getWaveSpeed() const;

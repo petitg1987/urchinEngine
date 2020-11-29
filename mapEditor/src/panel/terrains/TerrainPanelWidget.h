@@ -25,7 +25,7 @@ namespace urchin {
             TerrainPanelWidget();
             ~TerrainPanelWidget() override = default;
 
-            TerrainTableView *getTerrainTableView() const;
+            TerrainTableView* getTerrainTableView() const;
 
             void load(TerrainController*);
             void unload();

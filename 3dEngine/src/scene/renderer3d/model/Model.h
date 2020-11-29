@@ -25,18 +25,18 @@ namespace urchin {
             void stopAnimation(bool);
             bool isAnimate() const;
 
-            const ConstMeshes *getMeshes() const;
+            const ConstMeshes* getMeshes() const;
             std::map<std::string, const ConstAnimation *> getAnimations() const;
 
-            const AABBox<float> &getAABBox() const override;
-            const std::vector<AABBox<float>> &getSplitAABBoxes() const;
-            const AABBox<float> &getLocalAABBox() const;
+            const AABBox<float>& getAABBox() const override;
+            const std::vector<AABBox<float>>& getSplitAABBoxes() const;
+            const AABBox<float>& getLocalAABBox() const;
 
             void setPosition(const Point3<float>&);
             void setOrientation(const Quaternion<float>&);
             void setScale(float);
             void setTransform(const Transform<float>&);
-            const Transform<float> &getTransform() const override;
+            const Transform<float>& getTransform() const override;
 
             void setProduceShadow(bool);
             bool isProduceShadow() const;

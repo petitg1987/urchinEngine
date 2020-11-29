@@ -25,7 +25,7 @@ namespace urchin {
             NavMeshGenerator();
 
             void setNavMeshAgent(std::shared_ptr<NavMeshAgent>);
-            const std::shared_ptr<NavMeshAgent> &getNavMeshAgent() const;
+            const std::shared_ptr<NavMeshAgent>& getNavMeshAgent() const;
 
             std::shared_ptr<NavMesh> generate(AIWorld&);
             NavMesh copyLastGeneratedNavMesh() const;
@@ -40,7 +40,7 @@ namespace urchin {
 
             void updateNavPolygons();
             std::vector<std::shared_ptr<NavPolygon>> createNavigationPolygons(const std::shared_ptr<NavObject>&, const std::shared_ptr<PolytopeSurface>&);
-            std::vector<CSGPolygon<float>> &determineObstacles(const std::shared_ptr<NavObject>&, const std::shared_ptr<PolytopeSurface>&) const;
+            std::vector<CSGPolygon<float>>& determineObstacles(const std::shared_ptr<NavObject>&, const std::shared_ptr<PolytopeSurface>&) const;
             CSGPolygon<float> computePolytopeFootprint(const std::shared_ptr<Polytope>&, const std::shared_ptr<PolytopeSurface>&) const;
             void applyObstaclesOnWalkablePolygon(std::vector<CSGPolygon<float>>&);
             std::shared_ptr<NavPolygon> createNavigationPolygon(CSGPolygon<float>&, const std::shared_ptr<PolytopeSurface>&, bool) const;

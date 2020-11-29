@@ -17,7 +17,7 @@ namespace urchin {
         public:
             NewWaterDialog(QWidget*, const WaterController*);
 
-            SceneWater *getSceneWater() const;
+            SceneWater* getSceneWater() const;
 
         private:
             void setupNameFields(QGridLayout*);

@@ -21,7 +21,7 @@ namespace urchin {
         public:
             NewLightDialog(QWidget*, const LightController*);
 
-            SceneLight *getSceneLight() const;
+            SceneLight* getSceneLight() const;
 
         private:
             void setupNameFields(QGridLayout*);

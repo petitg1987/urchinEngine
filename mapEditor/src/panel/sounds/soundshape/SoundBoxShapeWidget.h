@@ -23,7 +23,7 @@ namespace urchin {
 
         protected:
             void doSetupShapePropertiesFrom(const SoundShape*) override;
-            const SoundShape *createSoundShape() const override;
+            const SoundShape* createSoundShape() const override;
 
         private:
             QDoubleSpinBox* positionX;

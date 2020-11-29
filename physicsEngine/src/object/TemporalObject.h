@@ -10,11 +10,11 @@ namespace urchin {
         public:
             TemporalObject(const CollisionShape3D*, const PhysicsTransform&, const PhysicsTransform&);
 
-            const CollisionShape3D *getShape() const;
-            const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &getLocalObject() const;
+            const CollisionShape3D* getShape() const;
+            const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>& getLocalObject() const;
 
-            const PhysicsTransform &getFrom() const;
-            const PhysicsTransform &getTo() const;
+            const PhysicsTransform& getFrom() const;
+            const PhysicsTransform& getTo() const;
 
             bool isRay() const;
 

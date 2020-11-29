@@ -32,8 +32,8 @@ namespace urchin {
                 OBJECT_BODY_SHAPE_WIDGET_CREATED
             };
 
-            ObjectTableView *getObjectTableView() const;
-            BodyShapeWidget *getBodyShapeWidget() const;
+            ObjectTableView* getObjectTableView() const;
+            BodyShapeWidget* getBodyShapeWidget() const;
 
             void load(ObjectController*);
             void unload();

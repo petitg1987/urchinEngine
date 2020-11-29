@@ -44,7 +44,7 @@ namespace urchin {
             bool isConvex() const;
             bool isConcave() const;
             bool isCompound() const;
-            virtual const ConvexShape3D<float> *getSingleShape() const = 0;
+            virtual const ConvexShape3D<float>* getSingleShape() const = 0;
 
             virtual std::shared_ptr<CollisionShape3D> scale(float) const = 0;
 
@@ -57,10 +57,10 @@ namespace urchin {
 
             void checkInnerMarginQuality(const std::string&) const;
 
-            virtual CollisionShape3D *clone() const = 0;
+            virtual CollisionShape3D* clone() const = 0;
 
         protected:
-            FixedSizePool<CollisionConvexObject3D> *getObjectsPool() const;
+            FixedSizePool<CollisionConvexObject3D>* getObjectsPool() const;
             void refreshInnerMargin(float);
 
             mutable AABBox<float> lastAABBox;

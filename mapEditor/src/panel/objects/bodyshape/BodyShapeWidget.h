@@ -27,7 +27,7 @@ namespace urchin {
             explicit BodyShapeWidget(const SceneObject*);
             ~BodyShapeWidget() override = default;
 
-            const SceneObject *getSceneObject() const;
+            const SceneObject* getSceneObject() const;
             virtual std::string getBodyShapeName() const = 0;
             std::shared_ptr<const CollisionShape3D> retrieveShape();
 

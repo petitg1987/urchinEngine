@@ -24,9 +24,9 @@ namespace urchin {
             explicit ConvexHullShape3D(const std::vector<Point3<T>>&);
             ConvexHullShape3D(const std::map<std::size_t, ConvexHullPoint<T>>&, const std::map<std::size_t, IndexedTriangle3D<T>>&);
 
-            const typename std::map<std::size_t, ConvexHullPoint<T>> &getConvexHullPoints() const;
+            const typename std::map<std::size_t, ConvexHullPoint<T>>& getConvexHullPoints() const;
             std::vector<Point3<T>> getPoints() const;
-            const typename std::map<std::size_t, IndexedTriangle3D<T>> &getIndexedTriangles() const;
+            const typename std::map<std::size_t, IndexedTriangle3D<T>>& getIndexedTriangles() const;
 
             std::size_t addNewPoint(const Point3<T>&);
             std::size_t addNewPoint(const Point3<T>&, std::vector<std::size_t>&);
@@ -34,7 +34,7 @@ namespace urchin {
             Point3<T> getSupportPoint(const Vector3<T>&) const;
 
             std::unique_ptr<ConvexHullShape3D<T>> resize(T) const;
-            ConvexShape3D<T> *clone() const override;
+            ConvexShape3D<T>* clone() const override;
             std::unique_ptr<ConvexObject3D<T>> toConvexObject(const Transform<T>&) const override;
 
         private:

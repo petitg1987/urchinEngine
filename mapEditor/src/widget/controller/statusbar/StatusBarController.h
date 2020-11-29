@@ -23,7 +23,7 @@ namespace urchin {
             StatusBarStateData getStateData(StatusBarState);
 
             void applyCurrentState();
-            QFrame *createSeparator();
+            QFrame* createSeparator();
 
             StatusBarState currentState;
             QMainWindow *window;

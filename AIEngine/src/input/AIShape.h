@@ -11,9 +11,9 @@ namespace urchin {
             AIShape(const ConvexShape3D<float>*, Transform<float> localTransform);
             ~AIShape();
 
-            const ConvexShape3D<float> *getShape() const;
+            const ConvexShape3D<float>* getShape() const;
             bool hasLocalTransform() const;
-            const Transform<float> &getLocalTransform() const;
+            const Transform<float>& getLocalTransform() const;
 
         private:
             ConvexShape3D<float> *shape;

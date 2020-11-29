@@ -26,12 +26,12 @@ namespace urchin {
 
             virtual AIEntityType getType() const = 0;
 
-            const std::string &getName() const;
+            const std::string& getName() const;
             Transform<float> getTransform() const;
             bool isObstacleCandidate() const;
 
             void addNavObject(const std::shared_ptr<NavObject>&);
-            const std::vector<std::shared_ptr<NavObject>> &getNavObjects() const;
+            const std::vector<std::shared_ptr<NavObject>>& getNavObjects() const;
             void removeAllNavObjects();
 
         private:

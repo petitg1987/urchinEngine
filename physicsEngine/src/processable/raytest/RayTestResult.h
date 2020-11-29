@@ -21,8 +21,8 @@ namespace urchin {
             bool isResultReady() const;
 
             bool hasHit() const;
-            const std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter> &getNearestResult() const;
-            const ccd_set &getResults() const;
+            const std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter>& getNearestResult() const;
+            const ccd_set& getResults() const;
 
         private:
             std::atomic_bool resultReady;

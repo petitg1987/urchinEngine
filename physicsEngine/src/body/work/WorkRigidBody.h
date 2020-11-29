@@ -12,22 +12,22 @@ namespace urchin {
         public:
             WorkRigidBody(const std::string&, const PhysicsTransform&, const std::shared_ptr<const CollisionShape3D>&);
 
-            static WorkRigidBody *upCast(AbstractWorkBody*);
-            static const WorkRigidBody *upCast(const AbstractWorkBody*);
+            static WorkRigidBody* upCast(AbstractWorkBody*);
+            static const WorkRigidBody* upCast(const AbstractWorkBody*);
 
             void setLinearVelocity(const Vector3<float>&);
-            const Vector3<float> &getLinearVelocity() const;
+            const Vector3<float>& getLinearVelocity() const;
 
             void setAngularVelocity(const Vector3<float>&);
-            const Vector3<float> &getAngularVelocity() const;
+            const Vector3<float>& getAngularVelocity() const;
 
-            const Vector3<float> &getTotalMomentum() const;
+            const Vector3<float>& getTotalMomentum() const;
             void setTotalMomentum(const Vector3<float>&);
             void applyCentralMomentum(const Vector3<float>&);
             void applyMomentum(const Vector3<float>&, const Point3<float>&);
             void resetMomentum();
 
-            const Vector3<float> &getTotalTorqueMomentum() const;
+            const Vector3<float>& getTotalTorqueMomentum() const;
             void setTotalTorqueMomentum(const Vector3<float>&);
             void applyTorqueMomentum(const Vector3<float>&);
             void resetTorqueMomentum();
@@ -36,17 +36,17 @@ namespace urchin {
             float getMass() const;
             float getInvMass() const;
             void refreshInvWorldInertia();
-            const Vector3<float> &getInvLocalInertia() const;
-            const Matrix3<float> &getInvWorldInertia() const;
+            const Vector3<float>& getInvLocalInertia() const;
+            const Matrix3<float>& getInvWorldInertia() const;
 
             void setDamping(float, float);
             float getLinearDamping() const;
             float getAngularDamping() const;
 
             void setLinearFactor(const Vector3<float>&);
-            const Vector3<float> &getLinearFactor() const;
+            const Vector3<float>& getLinearFactor() const;
             void setAngularFactor(const Vector3<float>&);
-            const Vector3<float> &getAngularFactor() const;
+            const Vector3<float>& getAngularFactor() const;
 
             void setIsStatic(bool) override;
             bool isGhostBody() const override;

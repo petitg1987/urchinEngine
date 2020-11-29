@@ -23,7 +23,7 @@ namespace urchin {
             void buildFromCoefficients(T, T, T, T);
             void reverse();
 
-            const Vector3<T> &getNormal() const;
+            const Vector3<T>& getNormal() const;
             void setNormal(const Vector3<T>&);
             T getDistanceToOrigin() const;
             void setDistanceToOrigin(T);

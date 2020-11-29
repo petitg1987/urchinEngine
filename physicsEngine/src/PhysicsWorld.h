@@ -22,8 +22,8 @@ namespace urchin {
             PhysicsWorld();
             ~PhysicsWorld();
 
-            BodyManager *getBodyManager() const;
-            CollisionWorld *getCollisionWorld() const;
+            BodyManager* getBodyManager() const;
+            CollisionWorld* getCollisionWorld() const;
 
             void addBody(AbstractBody*);
             void removeBody(AbstractBody*);
@@ -44,7 +44,7 @@ namespace urchin {
             void controlExecution();
 
             void createCollisionVisualizer();
-            const CollisionVisualizer *getCollisionVisualizer() const;
+            const CollisionVisualizer* getCollisionVisualizer() const;
 
         private:
             void startPhysicsUpdate();

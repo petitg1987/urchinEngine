@@ -13,7 +13,7 @@ namespace urchin {
             Sphere(T, const Point3<T>&);
 
             T getRadius() const;
-            const Point3<T> &getCenterOfMass() const;
+            const Point3<T>& getCenterOfMass() const;
 
             Point3<T> getSupportPoint(const Vector3<T>&) const;
 

@@ -17,9 +17,9 @@ namespace urchin {
             T getRadius() const;
             T getHeight() const;
             typename CylinderShape<T>::CylinderOrientation getCylinderOrientation() const;
-            const Point3<T> &getCenterOfMass() const;
-            const Quaternion<T> &getOrientation() const;
-            const Vector3<T> &getAxis(unsigned int) const;
+            const Point3<T>& getCenterOfMass() const;
+            const Quaternion<T>& getOrientation() const;
+            const Vector3<T>& getAxis(unsigned int) const;
 
             Point3<T> getSupportPoint(const Vector3<T>&) const;
 

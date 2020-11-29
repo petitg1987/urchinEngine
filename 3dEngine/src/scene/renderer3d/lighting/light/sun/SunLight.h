@@ -14,11 +14,11 @@ namespace urchin {
 
             //general methods
             void setDirection(const Vector3<float>&);
-            const std::vector<Vector3<float>> &getDirections() const override;
-            const Point3<float> &getPosition() const override;
+            const std::vector<Vector3<float>>& getDirections() const override;
+            const Point3<float>& getPosition() const override;
             LightType getLightType() const override;
             bool hasParallelBeams() const override;
-            const AABBox<float> &getAABBox() const override;
+            const AABBox<float>& getAABBox() const override;
 
         private:
             std::vector<Vector3<float>> directions;

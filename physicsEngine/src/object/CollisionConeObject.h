@@ -15,9 +15,9 @@ namespace urchin {
             float getRadius() const;
             float getHeight() const;
             typename ConeShape<float>::ConeOrientation getConeOrientation() const;
-            const Point3<float> &getCenterOfMass() const;
-            const Quaternion<float> &getOrientation() const;
-            const Vector3<float> &getAxis(unsigned int) const;
+            const Point3<float>& getCenterOfMass() const;
+            const Quaternion<float>& getOrientation() const;
+            const Vector3<float>& getAxis(unsigned int) const;
 
             CollisionConvexObject3D::ObjectType getObjectType() const override;
             Point3<float> getSupportPoint(const Vector3<float>&, bool) const override;

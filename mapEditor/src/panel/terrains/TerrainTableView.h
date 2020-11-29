@@ -23,7 +23,7 @@ namespace urchin {
             };
 
             bool hasSceneTerrainSelected() const;
-            const SceneTerrain *getSelectedSceneTerrain() const;
+            const SceneTerrain* getSelectedSceneTerrain() const;
 
             void addTerrain(const SceneTerrain*);
             bool removeSelectedTerrain();

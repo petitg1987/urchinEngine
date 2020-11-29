@@ -44,13 +44,13 @@ namespace urchin {
             void paint();
             void resize(unsigned int, unsigned int);
 
-            SceneManager *getSceneManager() const;
-            SceneFreeCamera *getCamera() const;
-            PhysicsWorld *getPhysicsWorld() const;
-            MapHandler *getMapHandler() const;
+            SceneManager* getSceneManager() const;
+            SceneFreeCamera* getCamera() const;
+            PhysicsWorld* getPhysicsWorld() const;
+            MapHandler* getMapHandler() const;
 
-            BodyShapeDisplayer *getBodyShapeDisplayer() const;
-            ObjectMoveController *getObjectMoveController() const;
+            BodyShapeDisplayer* getBodyShapeDisplayer() const;
+            ObjectMoveController* getObjectMoveController() const;
 
         private:
             void initializeEngineResources(const std::string&);

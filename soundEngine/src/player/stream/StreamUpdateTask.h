@@ -19,13 +19,13 @@ namespace urchin {
 
             ALuint getSourceId() const;
             bool isSourceStopped() const;
-            SoundFileReader *getSoundFileReader();
+            SoundFileReader* getSoundFileReader();
             bool isPlayLoop() const;
 
             std::string getSoundFilename() const;
 
-            StreamChunk &getStreamChunk(unsigned int);
-            StreamChunk *getStreamChunks();
+            StreamChunk& getStreamChunk(unsigned int);
+            StreamChunk* getStreamChunks();
 
         private:
             const Sound *sound;

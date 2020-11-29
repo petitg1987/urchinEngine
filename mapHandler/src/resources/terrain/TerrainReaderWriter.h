@@ -36,11 +36,11 @@ namespace urchin {
         #define WIND_STRENGTH_TAG "windStrength"
 
         public:
-            Terrain *loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
+            Terrain* loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
             void writeOn(const std::shared_ptr<XmlChunk>&, const Terrain*, XmlWriter&) const;
 
         private:
-            Terrain *buildTerrainFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
+            Terrain* buildTerrainFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
             void buildChunkFrom(const std::shared_ptr<XmlChunk>&, const Terrain*, XmlWriter&) const;
 
             void loadPropertiesOn(Terrain*, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;

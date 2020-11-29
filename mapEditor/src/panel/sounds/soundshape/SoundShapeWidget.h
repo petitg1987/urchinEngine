@@ -22,9 +22,9 @@ namespace urchin {
             explicit SoundShapeWidget(const SceneSound*);
             ~SoundShapeWidget() override = default;
 
-            const SceneSound *getSceneSound() const;
+            const SceneSound* getSceneSound() const;
             virtual std::string getSoundShapeName() const = 0;
-            const SoundShape *retrieveShape();
+            const SoundShape* retrieveShape();
 
             void setupShapePropertiesFrom(const SoundShape*);
 
@@ -41,7 +41,7 @@ namespace urchin {
             float getMarginValue() const;
 
             virtual void doSetupShapePropertiesFrom(const SoundShape*) = 0;
-            virtual const SoundShape *createSoundShape() const = 0;
+            virtual const SoundShape* createSoundShape() const = 0;
 
         private:
             QDoubleSpinBox *margin;

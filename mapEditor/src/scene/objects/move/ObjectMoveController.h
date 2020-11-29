@@ -29,7 +29,7 @@ namespace urchin {
             bool onEscapeKey();
 
             void setSelectedSceneObject(const SceneObject*);
-            const SceneObject *getSelectedSceneObject() const;
+            const SceneObject* getSelectedSceneObject() const;
 
             void displayAxis();
 

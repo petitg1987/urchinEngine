@@ -23,8 +23,8 @@ namespace urchin {
             unsigned int getFontSize() const;
             Vector3<float> getFontColor() const;
 
-            const Glyph &getGlyph(unsigned char i) const;
-            const std::shared_ptr<Texture> &getTexture() const;
+            const Glyph& getGlyph(unsigned char i) const;
+            const std::shared_ptr<Texture>& getTexture() const;
             unsigned int getDimensionTexture() const;
             unsigned int getSpaceBetweenLetters() const;
             unsigned int getSpaceBetweenLines() const;

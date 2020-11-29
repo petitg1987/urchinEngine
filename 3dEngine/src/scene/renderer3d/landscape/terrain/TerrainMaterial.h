@@ -19,12 +19,12 @@ namespace urchin {
 
             void refreshWith(unsigned int, unsigned int);
 
-            const std::string &getMaskMapFilename() const;
-            const std::shared_ptr<Texture> &getMaskTexture() const;
+            const std::string& getMaskMapFilename() const;
+            const std::shared_ptr<Texture>& getMaskTexture() const;
             float getSRepeat() const;
             float getTRepeat() const;
             std::vector<Material *> getMaterials() const;
-            const std::vector<Point2<float>> &getTexCoordinates() const;
+            const std::vector<Point2<float>>& getTexCoordinates() const;
 
         private:
             void initializeMaterial(const std::vector<std::string>&);

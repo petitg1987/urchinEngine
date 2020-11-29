@@ -24,7 +24,7 @@ namespace urchin {
 
             float getOffsetY() const;
             void setOffsetY(float);
-            const std::vector<std::string> &getFilenames() const;
+            const std::vector<std::string>& getFilenames() const;
 
             void display(const RenderTarget*, const Matrix4<float>&, const Point3<float>&);
 

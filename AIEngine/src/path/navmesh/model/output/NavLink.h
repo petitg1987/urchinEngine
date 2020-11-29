@@ -32,7 +32,7 @@ namespace urchin {
             unsigned int getSourceEdgeIndex() const;
             std::shared_ptr<NavTriangle> getTargetTriangle() const;
 
-            const NavLinkConstraint *getLinkConstraint() const;
+            const NavLinkConstraint* getLinkConstraint() const;
 
         private:
             NavLink(NavLinkType, unsigned int, const std::shared_ptr<NavTriangle>&, NavLinkConstraint*);

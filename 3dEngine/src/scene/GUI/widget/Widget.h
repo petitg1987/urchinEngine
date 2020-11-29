@@ -35,10 +35,10 @@ namespace urchin {
             virtual void removeChild(Widget*);
 
             void setParent(Widget*);
-            Widget *getParent() const;
+            Widget* getParent() const;
 
             void addEventListener(const std::shared_ptr<EventListener>&);
-            const std::vector<std::shared_ptr<EventListener>> &getEventListeners() const;
+            const std::vector<std::shared_ptr<EventListener>>& getEventListeners() const;
             WidgetStates getWidgetState() const;
 
             void setPosition(Position);
@@ -75,7 +75,7 @@ namespace urchin {
             unsigned int getSceneWidth() const;
             unsigned int getSceneHeight() const;
 
-            const std::vector<Widget *> &getChildren() const;
+            const std::vector<Widget *>& getChildren() const;
 
         private:
             void handleWidgetKeyDown(unsigned int);

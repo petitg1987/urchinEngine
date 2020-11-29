@@ -11,13 +11,13 @@ namespace urchin {
             Ray(const Point3<T>&, const Vector3<T>&, T);
             Ray(const Point3<T>&, const Point3<T>&);
 
-            const Point3<T> &getOrigin() const;
+            const Point3<T>& getOrigin() const;
             Point3<T> computeTo() const;
 
-            const Vector3<T> &getDirection() const;
+            const Vector3<T>& getDirection() const;
             T getLength() const;
 
-            const Vector3<T> &getInverseDirection() const;
+            const Vector3<T>& getInverseDirection() const;
             unsigned int getDirectionSign(unsigned int) const;
 
         private:

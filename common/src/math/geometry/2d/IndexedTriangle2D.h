@@ -14,7 +14,7 @@ namespace urchin {
             explicit IndexedTriangle2D(const std::size_t*);
             IndexedTriangle2D(std::size_t, std::size_t, std::size_t);
 
-            const std::size_t *getIndices() const;
+            const std::size_t* getIndices() const;
             std::size_t getIndex(std::size_t) const;
 
         private:

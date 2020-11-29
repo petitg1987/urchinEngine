@@ -12,15 +12,15 @@ namespace urchin {
         public:
             TerrainMesh(const std::string&, float, float);
 
-            const std::string &getHeightFilename() const;
+            const std::string& getHeightFilename() const;
             float getXZScale() const;
             float getYScale() const;
             unsigned int getXSize() const;
             unsigned int getZSize() const;
 
-            const std::vector<Point3<float>> &getVertices() const;
-            const std::vector<Vector3<float>> &getNormals() const;
-            const std::vector<unsigned int> &getIndices() const;
+            const std::vector<Point3<float>>& getVertices() const;
+            const std::vector<Vector3<float>>& getNormals() const;
+            const std::vector<unsigned int>& getIndices() const;
 
             Point3<float> findPointAt(const Point2<float>&) const;
             float findHeightAt(const Point2<float>&) const;

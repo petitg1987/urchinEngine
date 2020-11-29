@@ -16,7 +16,7 @@ namespace urchin {
             RigidBody(const RigidBody&);
             ~RigidBody() override = default;
 
-            AbstractWorkBody *createWorkBody() const override;
+            AbstractWorkBody* createWorkBody() const override;
 
             void updateTo(AbstractWorkBody*) override;
             bool applyFrom(const AbstractWorkBody*) override;

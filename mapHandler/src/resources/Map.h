@@ -45,35 +45,35 @@ namespace urchin {
             Map(Renderer3d*, PhysicsWorld*, SoundManager*, AIManager*);
             ~Map();
 
-            const std::list<SceneObject *> &getSceneObjects() const;
-            SceneObject *getSceneObject(const std::string&) const;
+            const std::list<SceneObject *>& getSceneObjects() const;
+            SceneObject* getSceneObject(const std::string&) const;
             void addSceneObject(SceneObject*);
             void removeSceneObject(SceneObject*);
 
-            const std::list<SceneLight *> &getSceneLights() const;
-            SceneLight *getSceneLight(const std::string&) const;
+            const std::list<SceneLight *>& getSceneLights() const;
+            SceneLight* getSceneLight(const std::string&) const;
             void addSceneLight(SceneLight*);
             void removeSceneLight(SceneLight*);
 
-            const std::list<SceneTerrain *> &getSceneTerrains() const;
-            SceneTerrain *getSceneTerrain(const std::string&) const;
+            const std::list<SceneTerrain *>& getSceneTerrains() const;
+            SceneTerrain* getSceneTerrain(const std::string&) const;
             void addSceneTerrain(SceneTerrain*);
             void removeSceneTerrain(SceneTerrain*);
 
-            const std::list<SceneWater *> &getSceneWaters() const;
-            SceneWater *getSceneWater(const std::string&) const;
+            const std::list<SceneWater *>& getSceneWaters() const;
+            SceneWater* getSceneWater(const std::string&) const;
             void addSceneWater(SceneWater*);
             void removeSceneWater(SceneWater*);
 
-            const SceneSky *getSceneSky() const;
+            const SceneSky* getSceneSky() const;
             void updateSceneSky(std::unique_ptr<Skybox> skybox);
 
-            const std::list<SceneSound *> &getSceneSounds() const;
-            SceneSound *getSceneSound(const std::string&) const;
+            const std::list<SceneSound *>& getSceneSounds() const;
+            SceneSound* getSceneSound(const std::string&) const;
             void addSceneSound(SceneSound*);
             void removeSceneSound(SceneSound*);
 
-            const SceneAI *getSceneAI() const;
+            const SceneAI* getSceneAI() const;
             void updateSceneAI(const std::shared_ptr<NavMeshAgent>&);
 
             void refreshMap();

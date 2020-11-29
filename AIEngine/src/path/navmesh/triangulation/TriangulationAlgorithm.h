@@ -36,7 +36,7 @@ namespace urchin {
 
             std::size_t getAllPointsSize() const;
 
-            const std::vector<std::shared_ptr<NavTriangle>> &triangulate();
+            const std::vector<std::shared_ptr<NavTriangle>>& triangulate();
 
         private:
             std::vector<std::shared_ptr<NavTriangle>> triangulateMonotonePolygon(const MonotonePolygon&);

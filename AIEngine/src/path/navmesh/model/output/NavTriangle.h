@@ -19,9 +19,9 @@ namespace urchin {
             void attachNavPolygon(const std::shared_ptr<NavPolygon>&);
 
             std::shared_ptr<NavPolygon> getNavPolygon() const;
-            const Point3<float> &getCenterPoint() const;
+            const Point3<float>& getCenterPoint() const;
 
-            const std::size_t *getIndices() const;
+            const std::size_t* getIndices() const;
             std::size_t getIndex(std::size_t) const;
 
             void addStandardLink(std::size_t, const std::shared_ptr<NavTriangle>&);

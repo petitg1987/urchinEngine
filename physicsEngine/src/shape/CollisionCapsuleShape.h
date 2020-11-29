@@ -18,7 +18,7 @@ namespace urchin {
             ~CollisionCapsuleShape() override;
 
             CollisionShape3D::ShapeType getShapeType() const override;
-            const ConvexShape3D<float> *getSingleShape() const override;
+            const ConvexShape3D<float>* getSingleShape() const override;
             float getRadius() const;
             float getCylinderHeight() const;
             CapsuleShape<float>::CapsuleOrientation getCapsuleOrientation() const;
@@ -32,7 +32,7 @@ namespace urchin {
             float getMaxDistanceToCenter() const override;
             float getMinDistanceToCenter() const override;
 
-            CollisionShape3D *clone() const override;
+            CollisionShape3D* clone() const override;
 
         private:
             void computeSafeMargin();

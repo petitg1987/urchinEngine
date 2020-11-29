@@ -22,7 +22,7 @@ namespace urchin {
         #define PRODUCE_SHADOW_TAG "produceShadow"
 
         public:
-            Model *loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
+            Model* loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
             void writeOn(const std::shared_ptr<XmlChunk>&, const Model*, XmlWriter&) const;
 
         private:

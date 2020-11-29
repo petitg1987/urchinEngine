@@ -39,32 +39,32 @@ namespace urchin {
             void notify(Observable*, int) override;
 
             //managers
-            OctreeManager<Model> *getModelOctreeManager() const;
+            OctreeManager<Model>* getModelOctreeManager() const;
 
-            FogManager *getFogManager() const;
+            FogManager* getFogManager() const;
 
-            TerrainManager *getTerrainManager() const;
+            TerrainManager* getTerrainManager() const;
 
-            WaterManager *getWaterManager() const;
+            WaterManager* getWaterManager() const;
 
-            SkyManager *getSkyManager() const;
+            SkyManager* getSkyManager() const;
 
-            GeometryManager *getGeometryManager() const;
+            GeometryManager* getGeometryManager() const;
 
-            LightManager *getLightManager() const;
+            LightManager* getLightManager() const;
 
-            ShadowManager *getShadowManager() const;
+            ShadowManager* getShadowManager() const;
             void activateShadow(bool);
 
-            AmbientOcclusionManager *getAmbientOcclusionManager() const;
+            AmbientOcclusionManager* getAmbientOcclusionManager() const;
             void activateAmbientOcclusion(bool);
 
-            AntiAliasingManager *getAntiAliasingManager() const;
+            AntiAliasingManager* getAntiAliasingManager() const;
             void activateAntiAliasing(bool);
 
             //camera
             void setCamera(Camera*);
-            Camera *getCamera() const;
+            Camera* getCamera() const;
 
             //models
             void addModel(Model*);

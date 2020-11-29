@@ -20,30 +20,30 @@ namespace urchin {
 
             ShapeType getShapeType() const;
 
-            GenericRendererBuilder *addData(const std::vector<Point2<float>>*);
-            GenericRendererBuilder *addData(const std::vector<Point3<float>>*);
-            GenericRendererBuilder *addData(const std::vector<Vector3<float>>*);
-            const std::vector<GenericRenderer::Data> &getData() const;
+            GenericRendererBuilder* addData(const std::vector<Point2<float>>*);
+            GenericRendererBuilder* addData(const std::vector<Point3<float>>*);
+            GenericRendererBuilder* addData(const std::vector<Vector3<float>>*);
+            const std::vector<GenericRenderer::Data>& getData() const;
 
-            GenericRendererBuilder *indices(const std::vector<unsigned int>*);
-            const GenericRenderer::Indices &getIndices() const;
+            GenericRendererBuilder* indices(const std::vector<unsigned int>*);
+            const GenericRenderer::Indices& getIndices() const;
 
-            GenericRendererBuilder *enableTransparency();
+            GenericRendererBuilder* enableTransparency();
             bool isTransparencyEnabled() const;
 
-            GenericRendererBuilder *enableDepthTest();
+            GenericRendererBuilder* enableDepthTest();
             bool isDepthTestEnabled() const;
 
-            GenericRendererBuilder *disableCullFace();
+            GenericRendererBuilder* disableCullFace();
             bool isCullFaceEnabled() const;
 
-            GenericRendererBuilder *polygonMode(PolygonMode);
+            GenericRendererBuilder* polygonMode(PolygonMode);
             PolygonMode getPolygonMode() const;
-            GenericRendererBuilder *outlineSize(float);
+            GenericRendererBuilder* outlineSize(float);
             float getOutlineSize() const;
 
-            GenericRendererBuilder *addTexture(const TextureReader&);
-            const std::vector<TextureReader> &getTextures() const;
+            GenericRendererBuilder* addTexture(const TextureReader&);
+            const std::vector<TextureReader>& getTextures() const;
 
             std::unique_ptr<GenericRenderer> build();
 

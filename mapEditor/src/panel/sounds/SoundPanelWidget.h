@@ -30,7 +30,7 @@ namespace urchin {
             SoundPanelWidget();
             ~SoundPanelWidget() override = default;
 
-            SoundTableView *getSoundTableView() const;
+            SoundTableView* getSoundTableView() const;
 
             void load(SoundController*);
             void unload();
@@ -49,7 +49,7 @@ namespace urchin {
             void setupManualTriggerDataFrom();
             void setupShapeTriggerDataFrom(const SceneSound*);
 
-            SoundShapeWidget *retrieveSoundShapeWidget(const SoundShape*, const SceneSound*);
+            SoundShapeWidget* retrieveSoundShapeWidget(const SoundShape*, const SceneSound*);
 
             SoundController *soundController;
 

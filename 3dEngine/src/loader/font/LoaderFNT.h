@@ -12,7 +12,7 @@ namespace urchin {
         public:
             ~LoaderFNT() override = default;
 
-            Font *loadFromFile(const std::string&) override;
+            Font* loadFromFile(const std::string&) override;
     };
 
 }

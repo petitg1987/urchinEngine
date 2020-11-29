@@ -29,11 +29,11 @@ namespace urchin {
         #define SOUND_SHAPE_TAG "soundShape"
 
         public:
-            SoundTrigger *loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
+            SoundTrigger* loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
             void writeOn(const std::shared_ptr<XmlChunk>&, const SoundTrigger*, XmlWriter&) const;
 
         private:
-            SoundTrigger *buildSoundTriggerFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
+            SoundTrigger* buildSoundTriggerFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
             void buildChunkFrom(const std::shared_ptr<XmlChunk>&, const SoundTrigger*, XmlWriter&) const;
 
             SoundBehavior buildSoundBehaviorFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;

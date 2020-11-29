@@ -24,10 +24,10 @@ namespace urchin {
             void refreshWith(const std::shared_ptr<TerrainMesh>&, const Point3<float>&);
             void refreshWith(float);
 
-            const std::string &getGrassTexture() const;
+            const std::string& getGrassTexture() const;
             void setGrassTexture(const std::string&);
 
-            const std::string &getMaskTexture() const;
+            const std::string& getMaskTexture() const;
             void setMaskTexture(const std::string&);
 
             float getGrassDisplayDistance() const;

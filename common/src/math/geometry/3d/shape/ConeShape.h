@@ -26,7 +26,7 @@ namespace urchin {
             T getHeight() const;
             ConeOrientation getConeOrientation() const;
 
-            ConvexShape3D<T> *clone() const override;
+            ConvexShape3D<T>* clone() const override;
             std::unique_ptr<ConvexObject3D<T>> toConvexObject(const Transform<T>&) const override;
 
         private:

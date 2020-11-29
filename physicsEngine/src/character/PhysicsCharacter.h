@@ -13,14 +13,14 @@ namespace urchin {
             PhysicsCharacter(const std::string&, float, const std::shared_ptr<const CollisionShape3D>&, const PhysicsTransform&);
             PhysicsCharacter(std::string , float, std::shared_ptr<const CollisionShape3D> , const PhysicsTransform&, float, float);
 
-            const std::string &getName() const;
+            const std::string& getName() const;
 
             float getMass() const;
 
-            const std::shared_ptr<const CollisionShape3D> &getShape() const;
+            const std::shared_ptr<const CollisionShape3D>& getShape() const;
 
             void updateTransform(const PhysicsTransform&);
-            const PhysicsTransform &getTransform() const;
+            const PhysicsTransform& getTransform() const;
 
             float getJumpSpeed() const;
 

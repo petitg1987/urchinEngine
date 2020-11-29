@@ -20,7 +20,7 @@ namespace urchin {
             void mergeIsland(IslandElement*, IslandElement*);
             void linkToStaticElement(IslandElement*);
 
-            const std::vector<IslandElementLink> &retrieveSortedIslandElements();
+            const std::vector<IslandElementLink>& retrieveSortedIslandElements();
             unsigned int getSize() const;
 
         private:

@@ -29,13 +29,13 @@ namespace urchin {
             AABBox<T>& operator=(AABBox<T>&&) noexcept;
 
             T getHalfSize(unsigned int) const;
-            const Vector3<T> &getHalfSizes() const;
+            const Vector3<T>& getHalfSizes() const;
             T getMaxHalfSize() const;
             unsigned int getMaxHalfSizeIndex() const;
             T getMinHalfSize() const;
             unsigned int getMinHalfSizeIndex() const;
-            const Point3<T> &getMin() const;
-            const Point3<T> &getMax() const;
+            const Point3<T>& getMin() const;
+            const Point3<T>& getMax() const;
             Point3<T> getCenterOfMass() const;
 
             Point3<T> getSupportPoint(const Vector3<T>&) const;

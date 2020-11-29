@@ -9,8 +9,8 @@ namespace urchin {
         public:
             Line2D(const Point2<T>&,  const Point2<T>&);
 
-            const Point2<T> &getA() const;
-            const Point2<T> &getB() const;
+            const Point2<T>& getA() const;
+            const Point2<T>& getB() const;
 
             Vector2<T> computeNormal() const;
             Point2<T> orthogonalProjection(const Point2<T>&) const;

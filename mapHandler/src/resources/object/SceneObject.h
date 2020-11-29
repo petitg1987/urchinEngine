@@ -29,15 +29,15 @@ namespace urchin {
 
             void setObjectManagers(Renderer3d*, PhysicsWorld*, AIManager*);
 
-            const std::string &getName() const;
+            const std::string& getName() const;
             void setName(const std::string&);
 
-            Model *getModel() const;
+            Model* getModel() const;
             void setModel(Model*);
 
             void setupInteractiveBody(RigidBody*);
 
-            RigidBody *getRigidBody() const override;
+            RigidBody* getRigidBody() const override;
 
         protected:
             void moveTo(const Transform<float>&) override;

@@ -18,7 +18,7 @@ namespace urchin {
 
             SoundTrigger::TriggerResultValue evaluateTrigger(const Point3<float>&) override;
 
-            const SoundShape *getSoundShape() const;
+            const SoundShape* getSoundShape() const;
 
         private:
             SoundTrigger::TriggerResultValue getPlayTriggerValue();

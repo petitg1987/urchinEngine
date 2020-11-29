@@ -25,10 +25,10 @@ namespace urchin {
             std::string getName() const;
             void setName(const std::string&);
 
-            Terrain *getTerrain() const;
+            Terrain* getTerrain() const;
             void setTerrain(Terrain*);
 
-            RigidBody *getRigidBody() const override;
+            RigidBody* getRigidBody() const override;
 
         protected:
             void moveTo(const Transform<float>&) override;

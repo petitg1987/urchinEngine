@@ -26,12 +26,12 @@ namespace urchin {
                 COLLISION_RESULT_UPDATED
             };
 
-            BroadPhaseManager *getBroadPhaseManager() const;
-            NarrowPhaseManager *getNarrowPhaseManager() const;
+            BroadPhaseManager* getBroadPhaseManager() const;
+            NarrowPhaseManager* getNarrowPhaseManager() const;
 
             void process(float, const Vector3<float>&);
 
-            const std::vector<ManifoldResult> &getLastUpdatedManifoldResults();
+            const std::vector<ManifoldResult>& getLastUpdatedManifoldResults();
 
         private:
             BodyManager *bodyManager;

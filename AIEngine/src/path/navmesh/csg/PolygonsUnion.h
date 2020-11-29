@@ -13,13 +13,13 @@ namespace urchin {
         public:
             friend class Singleton<PolygonsUnion<T>>;
 
-            std::vector<CSGPolygon<T>> &unionPolygons(const std::vector<CSGPolygon<T>>&) const;
+            std::vector<CSGPolygon<T>>& unionPolygons(const std::vector<CSGPolygon<T>>&) const;
 
         private:
             PolygonsUnion() = default;
             ~PolygonsUnion() override = default;
 
-            const std::vector<CSGPolygonPath> &unionTwoPolygonPaths(const CSGPolygonPath&, const CSGPolygonPath&) const;
+            const std::vector<CSGPolygonPath>& unionTwoPolygonPaths(const CSGPolygonPath&, const CSGPolygonPath&) const;
 
             void logInputData(const std::vector<CSGPolygon<T>>&, const std::string&, Logger::CriticalityLevel) const;
 

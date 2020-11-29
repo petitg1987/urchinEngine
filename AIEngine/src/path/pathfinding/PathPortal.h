@@ -12,14 +12,14 @@ namespace urchin {
 
             void setTransitionPoint(const Point3<float>&);
             bool hasTransitionPoint() const;
-            const Point3<float> &getTransitionPoint() const;
+            const Point3<float>& getTransitionPoint() const;
 
             bool isJumpOriginPortal() const;
             bool hasDifferentTopography() const;
 
-            const LineSegment3D<float> &getPortal() const;
-            const std::shared_ptr<PathNode> &getPreviousPathNode() const;
-            const std::shared_ptr<PathNode> &getNextPathNode() const;
+            const LineSegment3D<float>& getPortal() const;
+            const std::shared_ptr<PathNode>& getPreviousPathNode() const;
+            const std::shared_ptr<PathNode>& getNextPathNode() const;
 
         private:
             LineSegment3D<float> portal;

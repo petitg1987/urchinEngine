@@ -13,8 +13,8 @@ namespace urchin {
             Material(std::shared_ptr<Texture>, std::shared_ptr<Texture>, bool, float);
             ~Material() override = default;
 
-            const std::shared_ptr<Texture> &getDiffuseTexture() const;
-            const std::shared_ptr<Texture> &getNormalTexture() const;
+            const std::shared_ptr<Texture>& getDiffuseTexture() const;
+            const std::shared_ptr<Texture>& getNormalTexture() const;
 
             bool isRepeatableTextures() const;
 

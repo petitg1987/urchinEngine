@@ -23,7 +23,7 @@ namespace urchin {
             void display(const RenderTarget*, const ShaderVar&, float) override;
 
         private:
-            const std::shared_ptr<Texture> &getTexture();
+            const std::shared_ptr<Texture>& getTexture();
 
             bool onKeyPressEvent(unsigned int) override;
             bool onKeyReleaseEvent(unsigned int) override;

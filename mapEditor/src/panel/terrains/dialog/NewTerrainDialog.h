@@ -17,7 +17,7 @@ namespace urchin {
         public:
             NewTerrainDialog(QWidget*, const TerrainController*);
 
-            SceneTerrain *getSceneTerrain() const;
+            SceneTerrain* getSceneTerrain() const;
 
         private:
             void setupNameFields(QGridLayout*);

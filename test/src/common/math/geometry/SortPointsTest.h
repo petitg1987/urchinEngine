@@ -6,7 +6,7 @@
 
 class SortPointsTest : public CppUnit::TestFixture {
     public:
-        static CppUnit::Test *suite();
+        static CppUnit::Test* suite();
 
         void threePointsClockwise();
         void threePointsCounterClockwise();

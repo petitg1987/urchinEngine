@@ -13,7 +13,7 @@ namespace urchin {
             explicit Triangle3D(const Point3<T>*);
             Triangle3D(const Point3<T>&, const Point3<T>&, const Point3<T>&);
 
-            const Point3<T> *getPoints() const;
+            const Point3<T>* getPoints() const;
 
             Point3<T> getSupportPoint(const Vector3<T>&) const;
             Vector3<T> computeNormal() const;

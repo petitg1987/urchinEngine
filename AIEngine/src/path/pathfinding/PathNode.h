@@ -20,7 +20,7 @@ namespace urchin {
         public:
             PathNode(std::shared_ptr<NavTriangle>, float, float);
 
-            const std::shared_ptr<NavTriangle> &getNavTriangle() const;
+            const std::shared_ptr<NavTriangle>& getNavTriangle() const;
 
             void setGScore(float);
             float getGScore() const;
@@ -28,7 +28,7 @@ namespace urchin {
             float getFScore() const;
 
             void setPreviousNode(const std::shared_ptr<PathNode>&, const std::shared_ptr<NavLink>&);
-            const std::shared_ptr<PathNode> &getPreviousNode() const;
+            const std::shared_ptr<PathNode>& getPreviousNode() const;
             PathNodeEdgesLink computePathNodeEdgesLink() const;
 
         private:

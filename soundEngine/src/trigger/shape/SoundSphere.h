@@ -16,8 +16,8 @@ namespace urchin {
 
             SoundShape::ShapeType getShapeType() const override;
 
-            const Sphere<float> &getPlayTriggerSphere() const;
-            const Sphere<float> &getStopTriggerSphere() const;
+            const Sphere<float>& getPlayTriggerSphere() const;
+            const Sphere<float>& getStopTriggerSphere() const;
 
             float getRadius() const;
             Point3<float> getPosition() const;
@@ -25,7 +25,7 @@ namespace urchin {
             bool pointInsidePlayShape(const Point3<float>&) const override;
             bool pointInsideStopShape(const Point3<float>&) const override;
 
-            SoundShape *clone() const override;
+            SoundShape* clone() const override;
 
         private:
             const Sphere<float> playTriggerSphere;

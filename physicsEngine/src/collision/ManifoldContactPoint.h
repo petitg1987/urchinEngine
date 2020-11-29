@@ -12,18 +12,18 @@ namespace urchin {
             ManifoldContactPoint();
             ManifoldContactPoint(const Vector3<float>&, const Point3<float>&, const Point3<float>&, const Point3<float>&, const Point3<float>&, float, bool);
 
-            const Vector3<float> &getNormalFromObject2() const;
-            const Point3<float> &getPointOnObject1() const;
-            const Point3<float> &getPointOnObject2() const;
-            const Point3<float> &getLocalPointOnObject1() const;
-            const Point3<float> &getLocalPointOnObject2() const;
+            const Vector3<float>& getNormalFromObject2() const;
+            const Point3<float>& getPointOnObject1() const;
+            const Point3<float>& getPointOnObject2() const;
+            const Point3<float>& getLocalPointOnObject1() const;
+            const Point3<float>& getLocalPointOnObject2() const;
             float getDepth() const;
             bool isPredictive() const;
 
             void updatePoints(const Point3<float>&, const Point3<float>&);
             void updateDepth(float);
 
-            AccumulatedSolvingData &getAccumulatedSolvingData();
+            AccumulatedSolvingData& getAccumulatedSolvingData();
 
         private:
             Vector3<float> normalFromObject2;

@@ -17,10 +17,10 @@ namespace urchin {
             float retrieveMaxMomentum() const;
 
             void updateMomentum(const Vector3<float>&);
-            const Vector3<float> &getMomentum() const;
+            const Vector3<float>& getMomentum() const;
 
             void updatePosition(const Point3<float>&);
-            const Point3<float> &getPosition() const;
+            const Point3<float>& getPosition() const;
 
         private:
             float mass;

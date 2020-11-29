@@ -13,7 +13,7 @@ namespace urchin {
             void refresh();
 
         protected:
-            virtual RigidBody *getRigidBody() const = 0;
+            virtual RigidBody* getRigidBody() const = 0;
             virtual void moveTo(const Transform<float>&) = 0;
     };
 

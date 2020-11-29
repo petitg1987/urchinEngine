@@ -15,9 +15,9 @@ namespace urchin {
             GaussianBlurFilterBuilder();
             ~GaussianBlurFilterBuilder() override = default;
 
-            GaussianBlurFilterBuilder *blurDirection(BlurDirection);
+            GaussianBlurFilterBuilder* blurDirection(BlurDirection);
 
-            GaussianBlurFilterBuilder *blurSize(unsigned int);
+            GaussianBlurFilterBuilder* blurSize(unsigned int);
             unsigned int getBlurSize() const;
 
             std::unique_ptr<TextureFilter> build() override;

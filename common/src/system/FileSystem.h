@@ -12,10 +12,10 @@ namespace urchin {
             friend class Singleton<FileSystem>;
 
             void setupResourcesDirectory(const std::string&);
-            const std::string &getResourcesDirectory() const;
+            const std::string& getResourcesDirectory() const;
 
             void setupSaveDirectory(const std::string&);
-            const std::string &getSaveDirectory() const;
+            const std::string& getSaveDirectory() const;
 
         private:
             FileSystem();

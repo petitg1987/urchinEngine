@@ -19,9 +19,9 @@ namespace urchin {
             ~CollisionBoxShape() override;
 
             CollisionShape3D::ShapeType getShapeType() const override;
-            const ConvexShape3D<float> *getSingleShape() const override;
+            const ConvexShape3D<float>* getSingleShape() const override;
             float getHalfSize(unsigned int) const;
-            const Vector3<float> &getHalfSizes() const;
+            const Vector3<float>& getHalfSizes() const;
 
             std::shared_ptr<CollisionShape3D> scale(float) const override;
 
@@ -32,7 +32,7 @@ namespace urchin {
             float getMaxDistanceToCenter() const override;
             float getMinDistanceToCenter() const override;
 
-            CollisionShape3D *clone() const override;
+            CollisionShape3D* clone() const override;
 
         private:
             void computeSafeMargin();

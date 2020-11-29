@@ -9,8 +9,8 @@ namespace urchin {
         public:
             Line3D(const Point3<T>&,  const Point3<T>&);
 
-            const Point3<T> &getA() const;
-            const Point3<T> &getB() const;
+            const Point3<T>& getA() const;
+            const Point3<T>& getB() const;
 
             Point3<T> orthogonalProjection(const Point3<T>&) const;
             T squareDistance(const Point3<T>&) const;

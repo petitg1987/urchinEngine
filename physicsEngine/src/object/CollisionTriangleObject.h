@@ -12,7 +12,7 @@ namespace urchin {
         public:
             CollisionTriangleObject(float, const Point3<float>&, const Point3<float>&, const Point3<float>&);
 
-            const Point3<float> &getPoint(unsigned int) const;
+            const Point3<float>& getPoint(unsigned int) const;
 
             CollisionConvexObject3D::ObjectType getObjectType() const override;
             Point3<float> getSupportPoint(const Vector3<float>&, bool) const override;

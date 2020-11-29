@@ -23,7 +23,7 @@ namespace urchin {
         public:
             virtual ~CollisionShapeReaderWriter() = default;
 
-            virtual CollisionShape3D *loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const = 0;
+            virtual CollisionShape3D* loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const = 0;
             virtual void writeOn(const std::shared_ptr<XmlChunk>&, const CollisionShape3D*, XmlWriter&) const = 0;
     };
 

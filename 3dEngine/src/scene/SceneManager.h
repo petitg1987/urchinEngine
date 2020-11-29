@@ -31,15 +31,15 @@ namespace urchin {
             float getDeltaTime() const;
 
             //renderer
-            Renderer3d *newRenderer3d(bool);
+            Renderer3d* newRenderer3d(bool);
             void enableRenderer3d(Renderer3d*);
             void removeRenderer3d(Renderer3d*);
-            Renderer3d *getActiveRenderer3d() const;
+            Renderer3d* getActiveRenderer3d() const;
 
-            GUIRenderer *newGUIRenderer(bool);
+            GUIRenderer* newGUIRenderer(bool);
             void enableGUIRenderer(GUIRenderer*);
             void removeGUIRenderer(GUIRenderer*);
-            GUIRenderer *getActiveGUIRenderer() const;
+            GUIRenderer* getActiveGUIRenderer() const;
 
             //events
             bool onKeyPress(unsigned int);

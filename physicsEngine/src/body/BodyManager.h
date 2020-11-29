@@ -24,12 +24,12 @@ namespace urchin {
 
             void addBody(AbstractBody*);
             void removeBody(AbstractBody*);
-            AbstractWorkBody *getLastUpdatedWorkBody() const;
+            AbstractWorkBody* getLastUpdatedWorkBody() const;
 
             void setupWorkBodies();
             void applyWorkBodies();
 
-            const std::vector<AbstractWorkBody *> &getWorkBodies() const;
+            const std::vector<AbstractWorkBody *>& getWorkBodies() const;
 
         private:
             void createNewWorkBody(AbstractBody*);

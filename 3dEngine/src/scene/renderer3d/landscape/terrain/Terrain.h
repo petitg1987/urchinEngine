@@ -24,13 +24,13 @@ namespace urchin {
             void onCameraProjectionUpdate(const Matrix4<float>&);
 
             void setMesh(const std::shared_ptr<TerrainMesh>&);
-            const TerrainMesh *getMesh() const;
+            const TerrainMesh* getMesh() const;
             void setMaterial(std::unique_ptr<TerrainMaterial>&);
-            const TerrainMaterial *getMaterial() const;
-            TerrainGrass *getGrass() const;
+            const TerrainMaterial* getMaterial() const;
+            TerrainGrass* getGrass() const;
 
             void setPosition(const Point3<float>&);
-            const Point3<float> &getPosition() const;
+            const Point3<float>& getPosition() const;
 
             float getAmbient() const;
             void setAmbient(float);

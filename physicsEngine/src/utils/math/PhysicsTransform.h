@@ -17,10 +17,10 @@ namespace urchin {
             PhysicsTransform& operator=(const PhysicsTransform&);
 
             void setPosition(const Point3<float>&);
-            const Point3<float> &getPosition() const;
+            const Point3<float>& getPosition() const;
 
             void setOrientation(const Quaternion<float>&);
-            const Quaternion<float> &getOrientation() const;
+            const Quaternion<float>& getOrientation() const;
             Matrix3<float> retrieveOrientationMatrix() const;
 
             Transform<float> toTransform() const;

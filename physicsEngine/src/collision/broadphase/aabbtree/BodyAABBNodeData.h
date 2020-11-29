@@ -13,14 +13,14 @@ namespace urchin {
         public:
             BodyAABBNodeData(AbstractWorkBody*, PairContainer*);
 
-            AABBNodeData<AbstractWorkBody *> *clone() const override;
+            AABBNodeData<AbstractWorkBody *>* clone() const override;
 
-            const std::string &getObjectId() const override;
+            const std::string& getObjectId() const override;
             AABBox<float> retrieveObjectAABBox() const override;
             bool isObjectMoving() const override;
 
             bool hasAlternativePairContainer() const;
-            PairContainer *getAlternativePairContainer() const;
+            PairContainer* getAlternativePairContainer() const;
 
             void addOwnerPairContainer(PairContainer*);
             void removeOwnerPairContainer(PairContainer*);

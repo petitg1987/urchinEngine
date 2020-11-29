@@ -18,7 +18,7 @@ namespace urchin {
         public:
             NewObjectDialog(QWidget*, const ObjectController*);
 
-            SceneObject *getSceneObject() const;
+            SceneObject* getSceneObject() const;
 
         private:
             void setupNameFields(QGridLayout*);

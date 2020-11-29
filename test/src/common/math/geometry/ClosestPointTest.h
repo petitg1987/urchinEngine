@@ -6,7 +6,7 @@
 
 class ClosestPointTest : public CppUnit::TestFixture {
     public:
-        static CppUnit::Test *suite();
+        static CppUnit::Test* suite();
 
         void closestPointLineSegment2D();
         void closestPointLineSegment3D();

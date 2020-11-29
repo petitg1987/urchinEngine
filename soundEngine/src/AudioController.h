@@ -20,8 +20,8 @@ namespace urchin {
             AudioController(Sound*, SoundTrigger*, StreamUpdateWorker*);
             ~AudioController();
 
-            const Sound *getSound() const;
-            SoundTrigger *getSoundTrigger() const;
+            const Sound* getSound() const;
+            SoundTrigger* getSoundTrigger() const;
             void changeSoundTrigger(SoundTrigger*);
 
             void pause();

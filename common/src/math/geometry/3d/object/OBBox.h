@@ -26,14 +26,14 @@ namespace urchin {
             explicit OBBox(const Sphere<T>&);
 
             T getHalfSize(unsigned int) const;
-            const Vector3<T> &getHalfSizes() const;
+            const Vector3<T>& getHalfSizes() const;
             T getMaxHalfSize() const;
             unsigned int getMaxHalfSizeIndex() const;
             T getMinHalfSize() const;
             unsigned int getMinHalfSizeIndex() const;
-            const Point3<T> &getCenterOfMass() const;
-            const Vector3<T> &getAxis(unsigned int) const;
-            const Quaternion<T> &getOrientation() const;
+            const Point3<T>& getCenterOfMass() const;
+            const Vector3<T>& getAxis(unsigned int) const;
+            const Quaternion<T>& getOrientation() const;
             std::vector<Point3<T>> getPoints() const;
             Point3<T> getPoint(unsigned int) const;
 

@@ -14,9 +14,9 @@ namespace urchin {
 
             OBJ getNodeObject() const;
 
-            virtual AABBNodeData<OBJ> *clone() const = 0;
+            virtual AABBNodeData<OBJ>* clone() const = 0;
 
-            virtual const std::string &getObjectId() const = 0;
+            virtual const std::string& getObjectId() const = 0;
             virtual AABBox<float> retrieveObjectAABBox() const = 0;
             virtual bool isObjectMoving() const = 0;
 

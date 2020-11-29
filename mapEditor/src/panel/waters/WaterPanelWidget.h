@@ -23,7 +23,7 @@ namespace urchin {
             WaterPanelWidget();
             ~WaterPanelWidget() override = default;
 
-            WaterTableView *getWaterTableView() const;
+            WaterTableView* getWaterTableView() const;
 
             void load(WaterController*);
             void unload();

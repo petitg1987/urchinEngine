@@ -38,9 +38,9 @@ namespace urchin {
             void buildFrustum(T, T, T, T);
             void buildFrustum(const Point3<T>&, const Point3<T>&, const Point3<T>&, const Point3<T>&, const Point3<T>&, const Point3<T>&, const Point3<T>&, const Point3<T>&);
 
-            const Point3<T> *getFrustumPoints() const;
-            const Point3<T> &getFrustumPoint(FrustumPoint frustumPoint) const;
-            const Point3<T> &getPosition() const;
+            const Point3<T>* getFrustumPoints() const;
+            const Point3<T>& getFrustumPoint(FrustumPoint frustumPoint) const;
+            const Point3<T>& getPosition() const;
 
             Point3<T> getSupportPoint(const Vector3<T>&) const;
             T computeNearDistance() const;

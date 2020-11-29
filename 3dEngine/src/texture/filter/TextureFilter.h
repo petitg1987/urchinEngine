@@ -22,7 +22,7 @@ namespace urchin {
 
             void initialize();
 
-            const std::shared_ptr<Texture> &getTexture() const;
+            const std::shared_ptr<Texture>& getTexture() const;
 
             void applyOn(const std::shared_ptr<Texture>&, int layersToUpdate = -1) const;
 
@@ -35,7 +35,7 @@ namespace urchin {
             unsigned int getTextureWidth() const;
             unsigned int getTextureHeight() const;
 
-            const std::unique_ptr<Shader> &getTextureFilterShader() const;
+            const std::unique_ptr<Shader>& getTextureFilterShader() const;
 
             std::string toShaderVectorValues(std::vector<float>&) const;
 

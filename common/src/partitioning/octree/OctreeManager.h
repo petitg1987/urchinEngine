@@ -29,7 +29,7 @@ namespace urchin {
             void refreshOctreeables();
             void postRefreshOctreeables();
 
-            const Octree<TOctreeable> &getMainOctree() const;
+            const Octree<TOctreeable>& getMainOctree() const;
             std::vector<const Octree<TOctreeable> *> getAllLeafOctrees() const;
 
             std::vector<TOctreeable *> getAllOctreeables() const;

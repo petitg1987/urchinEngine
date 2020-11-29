@@ -19,7 +19,7 @@ namespace urchin {
 
             virtual void stop() = 0;
 
-            const Sound *getSound() const;
+            const Sound* getSound() const;
 
         private:
             const Sound *sound;

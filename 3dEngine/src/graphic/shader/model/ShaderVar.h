@@ -15,7 +15,7 @@ namespace urchin {
 
             bool isValid() const;
 
-            Shader *getShader() const;
+            Shader* getShader() const;
             int getVariableLocation() const;
 
         private:

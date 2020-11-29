@@ -22,12 +22,12 @@ namespace urchin {
             };
 
             //general methods
-            virtual const std::vector<Vector3<float>> &getDirections() const = 0;
-            virtual const Point3<float> &getPosition() const = 0;
+            virtual const std::vector<Vector3<float>>& getDirections() const = 0;
+            virtual const Point3<float>& getPosition() const = 0;
             virtual bool hasParallelBeams() const = 0;
             virtual LightType getLightType() const = 0;
-            const AABBox<float> &getAABBox() const override = 0;
-            const Transform<float> &getTransform() const override;
+            const AABBox<float>& getAABBox() const override = 0;
+            const Transform<float>& getTransform() const override;
 
             //shadow methods
             void setProduceShadow(bool);
@@ -35,7 +35,7 @@ namespace urchin {
 
             //properties methods
             void setAmbientColor(const Point3<float>&);
-            const Point3<float> &getAmbientColor() const;
+            const Point3<float>& getAmbientColor() const;
 
         private:
             //general properties

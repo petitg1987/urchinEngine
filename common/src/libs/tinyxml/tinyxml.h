@@ -474,7 +474,7 @@ public:
 
 		The subclasses will wrap this function.
 	*/
-	const char *Value() const { return value.c_str (); }
+	const char* Value() const { return value.c_str (); }
 
 	/** Return Value() as a std::string. If you only use STL,
 	    this is more efficient than calling Value().
@@ -1225,11 +1225,11 @@ public:
 	virtual ~TiXmlDeclaration()	{}
 
 	/// Version. Will return an empty string if none was found.
-	const char *Version() const			{ return version.c_str (); }
+	const char* Version() const			{ return version.c_str (); }
 	/// Encoding. Will return an empty string if none was found.
-	const char *Encoding() const		{ return encoding.c_str (); }
+	const char* Encoding() const		{ return encoding.c_str (); }
 	/// Is this a standalone document?
-	const char *Standalone() const		{ return standalone.c_str (); }
+	const char* Standalone() const		{ return standalone.c_str (); }
 
 	/// Creates a copy of this Declaration and returns it.
 	virtual TiXmlNode* Clone() const;

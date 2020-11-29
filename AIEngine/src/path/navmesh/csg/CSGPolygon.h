@@ -15,8 +15,8 @@ namespace urchin {
             CSGPolygon(CSGPolygon&&) noexcept;
             CSGPolygon& operator=(CSGPolygon&&) noexcept;
 
-            const std::string &getName() const;
-            const std::vector<Point2<T>> &getCwPoints() const;
+            const std::string& getName() const;
+            const std::vector<Point2<T>>& getCwPoints() const;
 
             T computeArea() const;
             bool pointInsidePolygon(const Point2<T>&) const;
@@ -25,7 +25,7 @@ namespace urchin {
             void expand(T);
             void simplify(T, T);
 
-            SVGPolygon *toCsvPolygon(SVGShape::SVGColor) const;
+            SVGPolygon* toCsvPolygon(SVGShape::SVGColor) const;
 
         private:
             bool pointInsidePolygon(const Point2<T>&, bool) const;
