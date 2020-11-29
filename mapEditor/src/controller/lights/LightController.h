@@ -14,7 +14,7 @@ namespace urchin {
         public:
             LightController();
 
-            std::list<const SceneLight *> getSceneLights() const;
+            std::list<const SceneLight*> getSceneLights() const;
             void addSceneLight(SceneLight*);
             void removeSceneLight(const SceneLight*);
 

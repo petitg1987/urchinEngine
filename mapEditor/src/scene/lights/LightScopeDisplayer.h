@@ -17,7 +17,7 @@ namespace urchin {
             void cleanCurrentDisplay();
 
             SceneManager *sceneManager;
-            std::vector<GeometryModel *> lightScopeModels;
+            std::vector<GeometryModel*> lightScopeModels;
     };
 
 }

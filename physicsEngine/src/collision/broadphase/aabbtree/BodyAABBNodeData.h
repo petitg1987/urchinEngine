@@ -9,11 +9,11 @@
 
 namespace urchin {
 
-    class BodyAABBNodeData : public AABBNodeData<AbstractWorkBody *> {
+    class BodyAABBNodeData : public AABBNodeData<AbstractWorkBody*> {
         public:
             BodyAABBNodeData(AbstractWorkBody*, PairContainer*);
 
-            AABBNodeData<AbstractWorkBody *>* clone() const override;
+            AABBNodeData<AbstractWorkBody*>* clone() const override;
 
             const std::string& getObjectId() const override;
             AABBox<float> retrieveObjectAABBox() const override;
@@ -24,11 +24,11 @@ namespace urchin {
 
             void addOwnerPairContainer(PairContainer*);
             void removeOwnerPairContainer(PairContainer*);
-            std::set<PairContainer *> getOwnerPairContainers() const;
+            std::set<PairContainer*> getOwnerPairContainers() const;
 
         private:
             PairContainer *alternativePairContainer;
-            std::set<PairContainer *> ownerPairContainers;
+            std::set<PairContainer*> ownerPairContainers;
     };
 
 }

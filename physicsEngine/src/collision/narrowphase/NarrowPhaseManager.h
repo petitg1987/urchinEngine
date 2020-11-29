@@ -25,14 +25,14 @@ namespace urchin {
             NarrowPhaseManager(const BodyManager*, const BroadPhaseManager*);
             ~NarrowPhaseManager();
 
-            void process(float, const std::vector<OverlappingPair *>&, std::vector<ManifoldResult>&);
+            void process(float, const std::vector<OverlappingPair*>&, std::vector<ManifoldResult>&);
             void processGhostBody(WorkGhostBody*, std::vector<ManifoldResult>&);
 
-            ccd_set continuousCollisionTest(const TemporalObject&,  const std::vector<AbstractWorkBody *>&) const;
-            ccd_set rayTest(const Ray<float>&, const std::vector<AbstractWorkBody *>&) const;
+            ccd_set continuousCollisionTest(const TemporalObject&,  const std::vector<AbstractWorkBody*>&) const;
+            ccd_set rayTest(const Ray<float>&, const std::vector<AbstractWorkBody*>&) const;
 
         private:
-            void processOverlappingPairs(const std::vector<OverlappingPair *>&, std::vector<ManifoldResult>&);
+            void processOverlappingPairs(const std::vector<OverlappingPair*>&, std::vector<ManifoldResult>&);
             void processOverlappingPair(OverlappingPair*, std::vector<ManifoldResult>&);
             std::shared_ptr<CollisionAlgorithm> retrieveCollisionAlgorithm(OverlappingPair*);
 

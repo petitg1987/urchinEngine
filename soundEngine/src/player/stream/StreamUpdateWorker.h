@@ -44,7 +44,7 @@ namespace urchin {
             static std::exception_ptr soundThreadExceptionPtr;
             mutable std::mutex tasksMutex;
 
-            std::vector<StreamUpdateTask *> tasks;
+            std::vector<StreamUpdateTask*> tasks;
     };
 
 }

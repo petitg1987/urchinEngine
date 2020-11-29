@@ -23,7 +23,7 @@ namespace urchin {
             AIManager *aiManager;
             Renderer3d *renderer3d;
 
-            std::vector<urchin::GeometryModel *> navMeshModels;
+            std::vector<urchin::GeometryModel*> navMeshModels;
             unsigned int loadedNavMeshId;
     };
 

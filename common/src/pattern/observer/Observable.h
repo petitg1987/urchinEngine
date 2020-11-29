@@ -18,7 +18,7 @@ namespace urchin {
             void notifyObservers(Observable*, int);
 
         private:
-            mutable std::map<int, std::unordered_set<Observer *> *> mapObservers;
+            mutable std::map<int, std::unordered_set<Observer*>*> mapObservers;
     };
 
 }

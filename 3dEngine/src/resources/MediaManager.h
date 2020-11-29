@@ -29,7 +29,7 @@ namespace urchin {
             MediaManager();
             ~MediaManager() override;
 
-            std::map<std::string, LoaderInterface *> loadersRegistry;
+            std::map<std::string, LoaderInterface*> loadersRegistry;
     };
 
     #include "MediaManager.inl"

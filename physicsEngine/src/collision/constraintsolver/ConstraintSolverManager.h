@@ -38,7 +38,7 @@ namespace urchin {
 
             void logCommonData(const std::string&, const CommonSolvingData&) const;
 
-            std::vector<ConstraintSolving *> constraintsSolving;
+            std::vector<ConstraintSolving*> constraintsSolving;
             FixedSizePool<ConstraintSolving> *constraintSolvingPool;
 
             const unsigned int constraintSolverIteration;

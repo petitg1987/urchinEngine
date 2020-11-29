@@ -25,7 +25,7 @@ namespace urchin {
             void addShapes(std::ofstream&) const;
 
             std::string filename;
-            std::vector<const SVGShape *> shapes;
+            std::vector<const SVGShape*> shapes;
     };
 
 }

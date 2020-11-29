@@ -61,8 +61,8 @@ namespace urchin {
 
             //renderer
             ScreenRender *screenRenderTarget;
-            std::vector<Renderer3d *> renderers3d;
-            std::vector<GUIRenderer *> guiRenderers;
+            std::vector<Renderer3d*> renderers3d;
+            std::vector<GUIRenderer*> guiRenderers;
             Renderer *activeRenderers[NUM_RENDERER];
 
             //fps

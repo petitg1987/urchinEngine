@@ -35,7 +35,7 @@ namespace urchin {
         private:
             const RenderTarget *renderTarget;
             unsigned int sceneWidth, sceneHeight;
-            std::vector<Widget *> widgets;
+            std::vector<Widget*> widgets;
 
             Matrix3<float> mProjection;
             std::unique_ptr<Shader> guiShader;

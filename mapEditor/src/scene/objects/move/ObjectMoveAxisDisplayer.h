@@ -21,7 +21,7 @@ namespace urchin {
             GeometryModel* createAxisModel(const Point3<float>&, unsigned int, std::size_t);
 
             SceneManager *sceneManager;
-            std::vector<GeometryModel *> objectMoveAxisModels;
+            std::vector<GeometryModel*> objectMoveAxisModels;
     };
 
 }

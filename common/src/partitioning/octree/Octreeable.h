@@ -31,7 +31,7 @@ namespace urchin {
             void setProcessed(bool);
             bool isProcessed() const;
 
-            const std::vector<Octree<TOctreeable> *>& getRefOctree() const;
+            const std::vector<Octree<TOctreeable>*>& getRefOctree() const;
             void addRefOctree(Octree<TOctreeable>*);
             void removeRefOctree(Octree<TOctreeable>*);
 
@@ -39,7 +39,7 @@ namespace urchin {
             virtual const Transform<float>& getTransform() const = 0;
 
         private:
-            std::vector<Octree<TOctreeable> *> refOctree;
+            std::vector<Octree<TOctreeable>*> refOctree;
 
             bool bIsMovingInOctree;
             bool bIsVisible;

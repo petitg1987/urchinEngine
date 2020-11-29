@@ -23,7 +23,7 @@ namespace urchin {
             const std::shared_ptr<Texture>& getMaskTexture() const;
             float getSRepeat() const;
             float getTRepeat() const;
-            std::vector<Material *> getMaterials() const;
+            std::vector<Material*> getMaterials() const;
             const std::vector<Point2<float>>& getTexCoordinates() const;
 
         private:
@@ -34,7 +34,7 @@ namespace urchin {
             std::shared_ptr<Texture> maskTexture;
             float sRepeat;
             float tRepeat;
-            std::vector<Material *> materials;
+            std::vector<Material*> materials;
             std::vector<Point2<float>> texCoordinates;
     };
 

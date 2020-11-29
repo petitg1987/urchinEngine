@@ -28,7 +28,7 @@ namespace urchin {
             mutable ConstMeshes *constMeshes;
             unsigned int numMeshes;
 
-            std::vector<Mesh *> meshes;
+            std::vector<Mesh*> meshes;
             AABBox<float> globalBBox; //bounding box transformed by the transformation of the model
             std::vector<AABBox<float>> globalSplitBBoxes;
     };

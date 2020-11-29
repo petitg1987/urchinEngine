@@ -67,7 +67,7 @@ namespace urchin {
             QDoubleSpinBox* tRepeat;
             QLineEdit* maskMapFilenameText;
             static QString preferredMaskMapPath;
-            std::vector<QLineEdit *> materialFilenameTexts;
+            std::vector<QLineEdit*> materialFilenameTexts;
             static QString preferredMaterialPath;
 
             //grass properties

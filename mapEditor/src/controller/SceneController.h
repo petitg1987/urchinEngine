@@ -37,7 +37,7 @@ namespace urchin {
             AIController* getAIController();
 
         private:
-            std::vector<AbstractController *> subControllers;
+            std::vector<AbstractController*> subControllers;
 
             ObjectController *objectController;
             LightController *lightController;

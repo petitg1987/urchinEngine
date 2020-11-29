@@ -29,15 +29,15 @@ namespace urchin {
             void setupWorkBodies();
             void applyWorkBodies();
 
-            const std::vector<AbstractWorkBody *>& getWorkBodies() const;
+            const std::vector<AbstractWorkBody*>& getWorkBodies() const;
 
         private:
             void createNewWorkBody(AbstractBody*);
-            std::vector<AbstractBody *>::iterator deleteBody(AbstractBody*, const std::vector<AbstractBody *>::iterator&);
+            std::vector<AbstractBody*>::iterator deleteBody(AbstractBody*, const std::vector<AbstractBody*>::iterator&);
             void deleteWorkBody(AbstractBody*);
 
-            std::vector<AbstractBody *> bodies;
-            std::vector<AbstractWorkBody *> workBodies;
+            std::vector<AbstractBody*> bodies;
+            std::vector<AbstractWorkBody*> workBodies;
 
             mutable std::mutex bodiesMutex;
 

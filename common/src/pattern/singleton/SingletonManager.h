@@ -35,7 +35,7 @@ namespace urchin {
             SingletonManager() = default;
             ~SingletonManager() = default;
 
-            static std::map<std::string, SingletonInterface *> singletons;
+            static std::map<std::string, SingletonInterface*> singletons;
     };
 
 }

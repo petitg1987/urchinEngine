@@ -107,7 +107,7 @@ namespace urchin {
             //managers
             ModelDisplayer *modelDisplayer;
             OctreeManager<Model> *modelOctreeManager;
-            std::vector<Model *> modelsInFrustum;
+            std::vector<Model*> modelsInFrustum;
 
             FogManager *fogManager;
 

@@ -36,7 +36,7 @@ namespace urchin {
             //visual
             Text* leftButton;
             Text* rightButton;
-            std::vector<Text *> valuesText;
+            std::vector<Text*> valuesText;
 
             std::shared_ptr<EventListener> leftButtonEventListener;
             std::shared_ptr<EventListener> rightButtonEventListener;

@@ -21,7 +21,7 @@ namespace urchin {
             ResourceManager();
             ~ResourceManager() override;
 
-            std::map<std::string, Resource *> mResources;
+            std::map<std::string, Resource*> mResources;
     };
 
     #include "ResourceManager.inl"

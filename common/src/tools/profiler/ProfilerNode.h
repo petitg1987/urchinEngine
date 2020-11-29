@@ -16,7 +16,7 @@ namespace urchin {
 
             ProfilerNode* getParent() const;
 
-            std::vector<ProfilerNode *> getChildren() const;
+            std::vector<ProfilerNode*> getChildren() const;
             ProfilerNode* findChildren(const std::string&) const;
             void addChild(ProfilerNode*);
 
@@ -32,7 +32,7 @@ namespace urchin {
 
             std::string name;
             ProfilerNode *parent;
-            std::vector<ProfilerNode *> children;
+            std::vector<ProfilerNode*> children;
 
             unsigned int startCount;
             std::chrono::time_point<std::chrono::high_resolution_clock> startTime;

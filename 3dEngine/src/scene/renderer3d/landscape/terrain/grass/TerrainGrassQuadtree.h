@@ -12,7 +12,7 @@ namespace urchin {
     class TerrainGrassQuadtree {
         public:
             TerrainGrassQuadtree() = default;
-            explicit TerrainGrassQuadtree(std::vector<TerrainGrassQuadtree *> );
+            explicit TerrainGrassQuadtree(std::vector<TerrainGrassQuadtree*> );
             ~TerrainGrassQuadtree();
 
             void setRenderer(std::unique_ptr<GenericRenderer>&&);
@@ -22,7 +22,7 @@ namespace urchin {
             const std::unique_ptr<AABBox<float>>& getBox() const;
 
             void addChild(TerrainGrassQuadtree*);
-            const std::vector<TerrainGrassQuadtree *>& getChildren() const;
+            const std::vector<TerrainGrassQuadtree*>& getChildren() const;
 
             void addVertex(const Point3<float>&, const Vector3<float>&);
             const std::vector<Point3<float>>& getGrassVertices() const;
@@ -32,7 +32,7 @@ namespace urchin {
             std::unique_ptr<GenericRenderer> renderer;
 
             std::mutex mutexAddVertex;
-            std::vector<TerrainGrassQuadtree *> children;
+            std::vector<TerrainGrassQuadtree*> children;
 
             mutable std::unique_ptr<AABBox<float>> bbox;
             std::vector<Point3<float>> grassVertices;

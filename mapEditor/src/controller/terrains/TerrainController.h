@@ -14,7 +14,7 @@ namespace urchin {
         public:
             TerrainController();
 
-            std::list<const SceneTerrain *> getSceneTerrains() const;
+            std::list<const SceneTerrain*> getSceneTerrains() const;
             void addSceneTerrain(SceneTerrain*);
             void removeSceneTerrain(const SceneTerrain*);
 

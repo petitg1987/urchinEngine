@@ -22,7 +22,7 @@ namespace urchin {
             void removeSound(const Sound*);
             void changeSoundTrigger(const Sound*, SoundTrigger*);
 
-            std::vector<const SoundTrigger *> getSoundTriggers() const;
+            std::vector<const SoundTrigger*> getSoundTriggers() const;
             SoundTrigger* retrieveSoundTriggerFor(const Sound*) const;
 
             void pause();
@@ -36,7 +36,7 @@ namespace urchin {
         private:
             void deleteAudioController(AudioController*);
 
-            std::vector<AudioController *> audioControllers;
+            std::vector<AudioController*> audioControllers;
 
             //stream chunk updater thread
             StreamUpdateWorker *streamUpdateWorker;

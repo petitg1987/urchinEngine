@@ -56,8 +56,8 @@ namespace urchin {
         private:
             void generateGrass(const std::shared_ptr<TerrainMesh>&, const Point3<float>&);
             unsigned int retrieveVertexIndex(const Point2<float>&) const;
-            void buildGrassQuadtree(const std::vector<TerrainGrassQuadtree *>&, unsigned int, unsigned int);
-            void createRenderers(const std::vector<TerrainGrassQuadtree *>&);
+            void buildGrassQuadtree(const std::vector<TerrainGrassQuadtree*>&, unsigned int, unsigned int);
+            void createRenderers(const std::vector<TerrainGrassQuadtree*>&);
 
             const float grassPositionRandomPercentage;
             const float grassPatchSize;
@@ -79,7 +79,7 @@ namespace urchin {
             std::shared_ptr<Texture> grassTexture, grassMaskTexture;
             std::string grassTextureFilename, grassMaskFilename;
             TerrainGrassQuadtree *mainGrassQuadtree;
-            std::vector<const TerrainGrassQuadtree *> grassQuadtrees;
+            std::vector<const TerrainGrassQuadtree*> grassQuadtrees;
             unsigned int numGrassInTex;
             float grassDisplayDistance;
             float grassHeight, grassLength;

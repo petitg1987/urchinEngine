@@ -26,7 +26,7 @@ namespace urchin {
             bool isAnimate() const;
 
             const ConstMeshes* getMeshes() const;
-            std::map<std::string, const ConstAnimation *> getAnimations() const;
+            std::map<std::string, const ConstAnimation*> getAnimations() const;
 
             const AABBox<float>& getAABBox() const override;
             const std::vector<AABBox<float>>& getSplitAABBoxes() const;
@@ -58,7 +58,7 @@ namespace urchin {
             Meshes *meshes;
 
             //animations
-            std::map<std::string, Animation *> animations;
+            std::map<std::string, Animation*> animations;
             Animation *currAnimation;
             bool stopAnimationAtLastFrame;
 

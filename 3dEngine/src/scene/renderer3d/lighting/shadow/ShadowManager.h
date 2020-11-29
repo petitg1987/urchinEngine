@@ -53,7 +53,7 @@ namespace urchin {
 
             const std::vector<Frustum<float>>& getSplitFrustums() const;
             const ShadowData& getShadowData(const Light*) const;
-            const std::vector<Model *>& computeVisibleModels();
+            const std::vector<Model*>& computeVisibleModels();
 
             void updateVisibleModels(const Frustum<float>&);
             void forceUpdateAllShadowMaps();
@@ -78,7 +78,7 @@ namespace urchin {
             AABBox<float> createSceneIndependentBox(const Frustum<float>&, const Matrix4<float>&) const;
             float computeNearZForSceneIndependentBox(const Frustum<float>&) const;
             AABBox<float> createSceneDependentBox(const AABBox<float>&, const OBBox<float>&,
-                    const std::vector<Model *>&, const Matrix4<float>&) const;
+                    const std::vector<Model*>&, const Matrix4<float>&) const;
             void splitFrustum(const Frustum<float>&);
 
             //shadow map handling
@@ -98,18 +98,18 @@ namespace urchin {
             ModelDisplayer *shadowModelDisplayer;
             LightManager *lightManager;
             OctreeManager<Model> *modelOctreeManager;
-            std::vector<Model *> obboxModels;
+            std::vector<Model*> obboxModels;
             Matrix4<float> projectionMatrix;
             ShadowShaderVariable *shadowShaderVariable;
             ShadowModelShaderVariable *shadowModelShaderVariable;
-            std::vector<Model *> visibleModels;
+            std::vector<Model*> visibleModels;
 
             //shadow information
             TextureFormat depthTextureFormat;
             float frustumDistance;
             std::vector<float> splitDistances;
             std::vector<Frustum<float>> splitFrustums;
-            std::map<const Light*, ShadowData *> shadowDatas;
+            std::map<const Light*, ShadowData*> shadowDatas;
             bool bForceUpdateAllShadowMaps;
             ShaderVar depthSplitDistanceShaderVar;
 

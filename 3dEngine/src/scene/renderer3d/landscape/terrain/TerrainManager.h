@@ -27,7 +27,7 @@ namespace urchin {
 
             const RenderTarget *renderTarget;
 
-            std::vector<Terrain *> terrains;
+            std::vector<Terrain*> terrains;
 
             Matrix4<float> projectionMatrix;
 

@@ -25,10 +25,10 @@ namespace urchin {
             void addBodyAsync(AbstractWorkBody*);
             void removeBodyAsync(AbstractWorkBody*);
 
-            const std::vector<OverlappingPair *>& computeOverlappingPairs();
+            const std::vector<OverlappingPair*>& computeOverlappingPairs();
 
-            std::vector<AbstractWorkBody *> rayTest(const Ray<float>&) const;
-            std::vector<AbstractWorkBody *> bodyTest(AbstractWorkBody*, const PhysicsTransform&, const PhysicsTransform&) const;
+            std::vector<AbstractWorkBody*> rayTest(const Ray<float>&) const;
+            std::vector<AbstractWorkBody*> bodyTest(AbstractWorkBody*, const PhysicsTransform&, const PhysicsTransform&) const;
 
         private:
             void addBody(AbstractWorkBody*);
@@ -38,8 +38,8 @@ namespace urchin {
             BroadPhaseAlgorithm *broadPhaseAlgorithm;
 
             std::mutex mutex;
-            std::vector<AbstractWorkBody *> bodiesToAdd;
-            std::vector<AbstractWorkBody *> bodiesToRemove;
+            std::vector<AbstractWorkBody*> bodiesToAdd;
+            std::vector<AbstractWorkBody*> bodiesToRemove;
     };
 
 }

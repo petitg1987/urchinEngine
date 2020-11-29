@@ -14,7 +14,7 @@ namespace urchin {
         public:
             WaterController();
 
-            std::list<const SceneWater *> getSceneWaters() const;
+            std::list<const SceneWater*> getSceneWaters() const;
             void addSceneWater(SceneWater*);
             void removeSceneWater(const SceneWater*);
 

@@ -26,7 +26,7 @@ namespace urchin {
             Light* getLastUpdatedLight();
 
             unsigned int getMaxLights() const;
-            const std::vector<Light *>& getVisibleLights() const;
+            const std::vector<Light*>& getVisibleLights() const;
             void addLight(Light*);
             void removeLight(Light*);
 
@@ -41,15 +41,15 @@ namespace urchin {
 
         private:
             void onLightEvent(Light*, NotificationType);
-            void checkMaxLight(const std::vector<Light *>&) const;
+            void checkMaxLight(const std::vector<Light*>&) const;
 
             const RenderTarget *renderTarget;
 
             //lights container
-            std::vector<Light *> parallelBeamsLights; //sun lights
+            std::vector<Light*> parallelBeamsLights; //sun lights
             OctreeManager<Light> *lightOctreeManager; //others lights
-            std::vector<Light *> lightsInFrustum;
-            std::vector<Light *> visibleLights;
+            std::vector<Light*> lightsInFrustum;
+            std::vector<Light*> visibleLights;
 
             Light *lastUpdatedLight;
 

@@ -24,7 +24,7 @@ namespace urchin {
             void printIslands(const std::vector<IslandElementLink>&);
 
             const BodyManager *bodyManager;
-            std::vector<IslandElement *> islandElements;
+            std::vector<IslandElement*> islandElements;
             IslandContainer islandContainer;
 
             const float squaredLinearSleepingThreshold;

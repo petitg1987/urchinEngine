@@ -75,7 +75,7 @@ namespace urchin {
             unsigned int getSceneWidth() const;
             unsigned int getSceneHeight() const;
 
-            const std::vector<Widget *>& getChildren() const;
+            const std::vector<Widget*>& getChildren() const;
 
         private:
             void handleWidgetKeyDown(unsigned int);
@@ -86,7 +86,7 @@ namespace urchin {
             unsigned int sceneWidth, sceneHeight;
 
             Widget *parent;
-            std::vector<Widget *> children;
+            std::vector<Widget*> children;
 
             std::vector<std::shared_ptr<EventListener>> eventListeners;
             WidgetStates widgetState;

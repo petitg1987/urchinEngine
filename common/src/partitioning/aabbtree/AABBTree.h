@@ -35,11 +35,11 @@ namespace urchin {
             void enlargedRayQuery(const Ray<float>&, float, const OBJ, std::vector<OBJ>&) const;
 
         protected:
-            std::map<OBJ, AABBNode<OBJ> *> objectsNode;
-            mutable std::vector<AABBNode<OBJ> *> browseNodes;
+            std::map<OBJ, AABBNode<OBJ>*> objectsNode;
+            mutable std::vector<AABBNode<OBJ>*> browseNodes;
 
         private:
-            std::vector<AABBNodeData<OBJ> *> extractAllNodeData();
+            std::vector<AABBNodeData<OBJ>*> extractAllNodeData();
             void insertNode(AABBNode<OBJ>*, AABBNode<OBJ>*);
             void replaceNode(AABBNode<OBJ>*, AABBNode<OBJ>*);
             void removeNode(AABBNode<OBJ>*);

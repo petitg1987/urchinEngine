@@ -29,7 +29,7 @@ namespace urchin {
             void cleanCurrentDisplay();
 
             SceneManager *sceneManager;
-            std::vector<GeometryModel *> bodyShapeModels;
+            std::vector<GeometryModel*> bodyShapeModels;
 
             const SceneObject *selectedSceneObject;
             std::shared_ptr<const LocalizedCollisionShape> selectedCompoundShapeComponent;

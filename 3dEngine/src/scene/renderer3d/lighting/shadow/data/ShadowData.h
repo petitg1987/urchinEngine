@@ -40,7 +40,7 @@ namespace urchin {
             FrustumShadowData* getFrustumShadowData(std::size_t);
             const FrustumShadowData* getFrustumShadowData(std::size_t) const;
 
-            const std::vector<Model *>& retrieveModels() const;
+            const std::vector<Model*>& retrieveModels() const;
 
         private:
             const Light *const light;
@@ -52,8 +52,8 @@ namespace urchin {
             std::vector<std::unique_ptr<const TextureFilter>> textureFilters; //shadow map filters
 
             Matrix4<float> lightViewMatrix;
-            std::vector<FrustumShadowData *> frustumShadowData;
-            mutable std::vector<Model *> models;
+            std::vector<FrustumShadowData*> frustumShadowData;
+            mutable std::vector<Model*> models;
     };
 
 }

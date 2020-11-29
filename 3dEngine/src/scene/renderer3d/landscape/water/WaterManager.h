@@ -24,7 +24,7 @@ namespace urchin {
         private:
             const RenderTarget *renderTarget;
 
-            std::vector<Water *> waters;
+            std::vector<Water*> waters;
 
             Matrix4<float> projectionMatrix;
     };

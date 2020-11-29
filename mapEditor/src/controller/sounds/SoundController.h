@@ -14,7 +14,7 @@ namespace urchin {
         public:
             SoundController();
 
-            std::list<const SceneSound *> getSceneSounds() const;
+            std::list<const SceneSound*> getSceneSounds() const;
             void addSceneSound(SceneSound*);
             void removeSceneSound(const SceneSound*);
 
