@@ -42,7 +42,7 @@ namespace urchin {
         return *this;
     }
 
-    template<class T> Plane<T> Plane<T>::operator=(Plane<T> &&plane) {
+    template<class T> Plane<T> Plane<T>::operator=(Plane<T>&& plane) {
         normal = std::move(plane.getNormal());
         d = std::move(plane.getDistanceToOrigin());
         return *this;

@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    Image::Image(unsigned int width, unsigned int height, ImageFormat format, std::vector<unsigned char> &&texels8) :
+    Image::Image(unsigned int width, unsigned int height, ImageFormat format, std::vector<unsigned char>&& texels8) :
             width(width),
             height(height),
             format(format),

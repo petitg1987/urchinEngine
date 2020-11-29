@@ -17,7 +17,7 @@ namespace urchin {
         refreshInnerMargin(0.0f); //no margin for triangle
     }
 
-    CollisionTriangleShape::CollisionTriangleShape(CollisionTriangleShape &&collisionTriangleShape) noexcept :
+    CollisionTriangleShape::CollisionTriangleShape(CollisionTriangleShape&& collisionTriangleShape) noexcept :
             CollisionShape3D(collisionTriangleShape),
             triangleShape(std::exchange(collisionTriangleShape.triangleShape, nullptr)),
             triangleShapesPool(std::exchange(collisionTriangleShape.triangleShapesPool, nullptr)) {

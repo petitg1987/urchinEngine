@@ -78,7 +78,7 @@ namespace urchin {
         return *this;
     }
 
-    template<class T> AABBox<T>& AABBox<T>::operator=(AABBox<T> &&aabbox) noexcept {
+    template<class T> AABBox<T>& AABBox<T>::operator=(AABBox<T>&& aabbox) noexcept {
         this->boxShape = BoxShape<T>(std::move(aabbox.getHalfSizes()));
         this->min = std::move(aabbox.getMin());
         this->max = std::move(aabbox.getMax());

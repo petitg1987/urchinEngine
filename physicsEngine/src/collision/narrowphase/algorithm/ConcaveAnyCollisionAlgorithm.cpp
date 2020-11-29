@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    ConcaveAnyCollisionAlgorithm::ConcaveAnyCollisionAlgorithm(bool objectSwapped, ManifoldResult &&result) :
+    ConcaveAnyCollisionAlgorithm::ConcaveAnyCollisionAlgorithm(bool objectSwapped, ManifoldResult&& result) :
             CollisionAlgorithm(objectSwapped, std::move(result)) {
 
     }
@@ -62,7 +62,7 @@ namespace urchin {
         }
     }
 
-    CollisionAlgorithm *ConcaveAnyCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, ManifoldResult &&result, FixedSizePool<CollisionAlgorithm>* algorithmPool) const {
+    CollisionAlgorithm *ConcaveAnyCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, ManifoldResult&& result, FixedSizePool<CollisionAlgorithm>* algorithmPool) const {
         void *memPtr = algorithmPool->allocate(sizeof(ConcaveAnyCollisionAlgorithm));
         return new(memPtr) ConcaveAnyCollisionAlgorithm(objectSwapped, std::move(result));
     }

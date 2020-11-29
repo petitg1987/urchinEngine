@@ -26,7 +26,7 @@ namespace urchin {
         initialize();
     }
 
-    CollisionConvexHullShape::CollisionConvexHullShape(CollisionConvexHullShape &&collisionConvexHullShape) noexcept :
+    CollisionConvexHullShape::CollisionConvexHullShape(CollisionConvexHullShape&& collisionConvexHullShape) noexcept :
             CollisionShape3D(collisionConvexHullShape),
             convexHullShape(std::exchange(collisionConvexHullShape.convexHullShape, nullptr)),
             convexHullShapeReduced(std::move(collisionConvexHullShape.convexHullShapeReduced)),

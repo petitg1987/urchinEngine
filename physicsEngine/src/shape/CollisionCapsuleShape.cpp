@@ -9,7 +9,7 @@ namespace urchin {
         computeSafeMargin();
     }
 
-    CollisionCapsuleShape::CollisionCapsuleShape(CollisionCapsuleShape &&collisionCapsuleShape) noexcept :
+    CollisionCapsuleShape::CollisionCapsuleShape(CollisionCapsuleShape&& collisionCapsuleShape) noexcept :
             CollisionShape3D(collisionCapsuleShape),
             capsuleShape(std::exchange(collisionCapsuleShape.capsuleShape, nullptr)) {
     }

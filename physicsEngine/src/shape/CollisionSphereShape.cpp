@@ -12,7 +12,7 @@ namespace urchin {
 
     }
 
-    CollisionSphereShape::CollisionSphereShape(CollisionSphereShape &&collisionSphereShape) noexcept :
+    CollisionSphereShape::CollisionSphereShape(CollisionSphereShape&& collisionSphereShape) noexcept :
             CollisionShape3D(collisionSphereShape),
             sphereShape(std::exchange(collisionSphereShape.sphereShape, nullptr)) {
     }
