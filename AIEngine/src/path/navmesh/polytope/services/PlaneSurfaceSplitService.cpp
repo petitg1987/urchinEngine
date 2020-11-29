@@ -6,7 +6,7 @@ namespace urchin {
 
     }
 
-    std::vector<PlaneSurfaceSplit> PlaneSurfaceSplitService::splitRectangleSurface(const std::vector<Point3<float>> &planeSurfacePoints) const {
+    std::vector<PlaneSurfaceSplit> PlaneSurfaceSplitService::splitRectangleSurface(const std::vector<Point3<float>>& planeSurfacePoints) const {
         #ifndef NDEBUG
             assert(planeSurfacePoints.size() == 4);
             assert(MathAlgorithm::isZero(planeSurfacePoints[0].distance(planeSurfacePoints[1]) - planeSurfacePoints[2].distance(planeSurfacePoints[3]), 0.01f));

@@ -105,7 +105,7 @@ namespace urchin {
         return textureFilterShader;
     }
 
-    std::string TextureFilter::toShaderVectorValues(std::vector<float> &vector) const {
+    std::string TextureFilter::toShaderVectorValues(std::vector<float>& vector) const {
         std::string vectorValuesStr;
         for (std::size_t i=0;i<vector.size(); ++i) {
             vectorValuesStr += std::to_string(vector[i]);

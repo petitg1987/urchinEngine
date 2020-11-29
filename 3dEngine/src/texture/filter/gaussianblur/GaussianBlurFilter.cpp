@@ -34,7 +34,7 @@ namespace urchin {
         return "gaussianBlurTex";
     }
 
-    void GaussianBlurFilter::completeShaderTokens(std::map<std::string, std::string> &shaderTokens) const {
+    void GaussianBlurFilter::completeShaderTokens(std::map<std::string, std::string>& shaderTokens) const {
         shaderTokens["IS_VERTICAL_BLUR"] = (blurDirection==BlurDirection::VERTICAL) ? "true" : "false";
         shaderTokens["NB_TEXTURE_FETCH"] = std::to_string(nbTextureFetch);
         shaderTokens["WEIGHTS_TAB"] = weightsTab;
@@ -57,7 +57,7 @@ namespace urchin {
         return weights;
     }
 
-    std::vector<float> GaussianBlurFilter::computeWeightsLinearSampling(const std::vector<float> &weights) const {
+    std::vector<float> GaussianBlurFilter::computeWeightsLinearSampling(const std::vector<float>& weights) const {
         std::vector<float> weightsLinearSampling(nbTextureFetch);
 
         for (unsigned int i=0; i<nbTextureFetch; ++i) {
@@ -71,8 +71,8 @@ namespace urchin {
         return weightsLinearSampling;
     }
 
-    std::vector<float> GaussianBlurFilter::computeOffsetsLinearSampling(const std::vector<float> &weights,
-            const std::vector<float> &weightsLinearSampling) const {
+    std::vector<float> GaussianBlurFilter::computeOffsetsLinearSampling(const std::vector<float>& weights,
+            const std::vector<float>& weightsLinearSampling) const {
         std::vector<float> offsetsLinearSampling(nbTextureFetch);
 
         int firstOffset = -(int)(std::floor((float)blurSize / 2.0f));

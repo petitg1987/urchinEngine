@@ -115,14 +115,14 @@ namespace urchin {
         return expandedPolytopes;
     }
 
-    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string &name, OBBox<float>* box, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const {
+    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, OBBox<float>* box, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const {
         std::vector<Point3<float>> sortedOriginalPoints = box->getPoints();
         std::vector<Point3<float>> sortedExpandedPoints = createExpandedPoints(sortedOriginalPoints, navMeshAgent);
         std::vector<std::shared_ptr<PolytopeSurface>> expandedPolytopeSurfaces = createExpandedPolytopeSurfaces(sortedOriginalPoints, sortedExpandedPoints, navMeshAgent);
         return std::make_unique<Polytope>(name, expandedPolytopeSurfaces);
     }
 
-    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string &name, Capsule<float>* capsule, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const {
+    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, Capsule<float>* capsule, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const {
         Vector3<float> boxHalfSizes(capsule->getRadius(), capsule->getRadius(), capsule->getRadius());
         boxHalfSizes[capsule->getCapsuleOrientation()] += capsule->getCylinderHeight() / 2.0f;
 
@@ -133,7 +133,7 @@ namespace urchin {
         return polytope;
     }
 
-    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string &name, Cone<float>* cone, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const {
+    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, Cone<float>* cone, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const {
         Vector3<float> boxHalfSizes(cone->getRadius(), cone->getRadius(), cone->getRadius());
         boxHalfSizes[cone->getConeOrientation()/2] = cone->getHeight() / 2.0f;
 
@@ -144,7 +144,7 @@ namespace urchin {
         return polytope;
     }
 
-    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string &name, ConvexHull3D<float>* convexHull, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const {
+    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, ConvexHull3D<float>* convexHull, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const {
         std::map<std::size_t, Plane<float>> expandedPlanes;
         for (const auto &itTriangles : convexHull->getIndexedTriangles()) {
             const Point3<float> &point1 = convexHull->getConvexHullPoints().at(itTriangles.second.getIndex(0)).point;
@@ -174,7 +174,7 @@ namespace urchin {
         return polytope;
     }
 
-    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string &name, Cylinder<float>* cylinder, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const {
+    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, Cylinder<float>* cylinder, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const {
         Vector3<float> boxHalfSizes(cylinder->getRadius(), cylinder->getRadius(), cylinder->getRadius());
         boxHalfSizes[cylinder->getCylinderOrientation()] = cylinder->getHeight() / 2.0f;
 
@@ -191,7 +191,7 @@ namespace urchin {
         return std::make_unique<Polytope>(name, expandedSurfaces);
     }
 
-    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string &name, Sphere<float>* sphere, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const {
+    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, Sphere<float>* sphere, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const {
         OBBox<float> sphereBox(*sphere);
         std::unique_ptr<Polytope> polytope = createExpandedPolytopeFor(name, &sphereBox, navMeshAgent);
         polytope->setWalkableCandidate(false);
@@ -202,7 +202,7 @@ namespace urchin {
     /**
      * Return box points. Points are in the following order: NTR, FTR, NBR, FBR, NTL, FTL, NBL, FBL
      */
-    std::vector<Point3<float>> PolytopeBuilder::createExpandedPoints(const std::vector<Point3<float>> &sortedPoints, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const {
+    std::vector<Point3<float>> PolytopeBuilder::createExpandedPoints(const std::vector<Point3<float>>& sortedPoints, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const {
         std::vector<Plane<float>> sortedExpandedPlanes = createExpandedBoxPlanes(sortedPoints, navMeshAgent);
         return expandBoxPoints(sortedExpandedPlanes);
     }
@@ -212,7 +212,7 @@ namespace urchin {
      * @param sortedPoints Points in the following order: NTR, FTR, NBR, FBR, NTL, FTL, NBL, FBL
      * @return Expanded planes in the following order: right, left, top, bottom, front, back
      */
-    std::vector<Plane<float>> PolytopeBuilder::createExpandedBoxPlanes(const std::vector<Point3<float>> &sortedPoints, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const {
+    std::vector<Plane<float>> PolytopeBuilder::createExpandedBoxPlanes(const std::vector<Point3<float>>& sortedPoints, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const {
         std::vector<Plane<float>> expandedPlanes;
         expandedPlanes.reserve(6);
 
@@ -232,7 +232,7 @@ namespace urchin {
         return plane;
     }
 
-    std::vector<Point3<float>> PolytopeBuilder::expandBoxPoints(const std::vector<Plane<float>> &sortedExpandedPlanes) const {
+    std::vector<Point3<float>> PolytopeBuilder::expandBoxPoints(const std::vector<Plane<float>>& sortedExpandedPlanes) const {
         std::vector<Point3<float>> expandedPoints;
         expandedPoints.reserve(8);
 
@@ -261,8 +261,8 @@ namespace urchin {
      * @param sortedOriginalPoints Original points in the following order: NTR, FTR, NBR, FBR, NTL, FTL, NBL, FBL
      * @param sortedExpandedPoints Expanded points in the following order: NTR, FTR, NBR, FBR, NTL, FTL, NBL, FBL
      */
-    std::vector<std::shared_ptr<PolytopeSurface>> PolytopeBuilder::createExpandedPolytopeSurfaces(const std::vector<Point3<float>> &sortedOriginalPoints,
-            const std::vector<Point3<float>> &sortedExpandedPoints, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const {
+    std::vector<std::shared_ptr<PolytopeSurface>> PolytopeBuilder::createExpandedPolytopeSurfaces(const std::vector<Point3<float>>& sortedOriginalPoints,
+            const std::vector<Point3<float>>& sortedExpandedPoints, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const {
         std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces;
         expandedSurfaces.reserve(6);
 

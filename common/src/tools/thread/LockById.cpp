@@ -12,7 +12,7 @@ namespace urchin {
 
     }
 
-    std::shared_ptr<LockById> LockById::getInstance(const std::string &instanceName) {
+    std::shared_ptr<LockById> LockById::getInstance(const std::string& instanceName) {
         auto instanceIt = instances.find(instanceName);
         if (instanceIt!=instances.end()) {
             return instanceIt->second;

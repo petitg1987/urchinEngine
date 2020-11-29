@@ -39,7 +39,7 @@ namespace urchin {
         delete sceneDisplayer;
     }
 
-    void SceneDisplayerWidget::loadMap(SceneController* sceneController, const std::string &mapFilename, const std::string &relativeWorkingDirectory) {
+    void SceneDisplayerWidget::loadMap(SceneController* sceneController, const std::string& mapFilename, const std::string& relativeWorkingDirectory) {
         closeMap();
         statusBarController.applyState(StatusBarState::MAP_LOADED);
 
@@ -50,7 +50,7 @@ namespace urchin {
         updateSceneDisplayerViewProperties();
     }
 
-    void SceneDisplayerWidget::saveState(const std::string &mapFilename) const {
+    void SceneDisplayerWidget::saveState(const std::string& mapFilename) const {
         if (sceneDisplayer) {
             sceneDisplayer->getCamera()->saveCameraState(mapFilename);
         }

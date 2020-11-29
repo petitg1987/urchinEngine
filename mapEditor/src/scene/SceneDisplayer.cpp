@@ -48,7 +48,7 @@ namespace urchin {
         SingletonManager::destroyAllSingletons();
     }
 
-    void SceneDisplayer::loadMap(const std::string &mapEditorPath, const std::string &mapFilename, const std::string &relativeWorkingDirectory) {
+    void SceneDisplayer::loadMap(const std::string& mapEditorPath, const std::string& mapFilename, const std::string& relativeWorkingDirectory) {
         try {
             initializeEngineResources(mapEditorPath);
             std::string mapResourcesDirectory = FileHandler::simplifyDirectoryPath(FileHandler::getDirectoryFrom(mapFilename) + relativeWorkingDirectory);
@@ -67,7 +67,7 @@ namespace urchin {
             mapHandler->unpause();
 
             isInitialized = true;
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             Logger::logger().logError("Error occurred during map load: " + std::string(e.what()));
             QMessageBox::critical(nullptr, "Error", "Unexpected error occurred. Check log file for more details.");
             this->~SceneDisplayer();
@@ -75,7 +75,7 @@ namespace urchin {
         }
     }
 
-    void SceneDisplayer::initializeEngineResources(const std::string &mapEditorPath) {
+    void SceneDisplayer::initializeEngineResources(const std::string& mapEditorPath) {
         std::string mapEditorResourcesDirectory = FileHandler::getDirectoryFrom(mapEditorPath) + "resources/";
         std::string mapEditorSaveDirectory = FileHandler::getDirectoryFrom(mapEditorPath) + "save/";
 
@@ -84,7 +84,7 @@ namespace urchin {
         FileSystem::instance()->setupSaveDirectory(mapEditorSaveDirectory);
     }
 
-    void SceneDisplayer::initializeScene(const std::string &mapFilename) {
+    void SceneDisplayer::initializeScene(const std::string& mapFilename) {
         if (isInitialized) {
             throw std::runtime_error("Scene displayer is already initialized.");
         }
@@ -182,7 +182,7 @@ namespace urchin {
 
                 sceneManager->display();
             }
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             Logger::logger().logError("Error occurred during paint: " + std::string(e.what()));
             QMessageBox::critical(nullptr, "Error", "Unexpected error occurred. Check log file for more details.");
             this->~SceneDisplayer();

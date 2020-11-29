@@ -51,7 +51,7 @@ namespace urchin {
         try {
             sceneObject = new SceneObject();
             sceneObject->setName(objectName);
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());
             delete sceneObject;
 
@@ -89,7 +89,7 @@ namespace urchin {
         }
     }
 
-    bool CloneObjectDialog::isSceneObjectExist(const std::string &name) {
+    bool CloneObjectDialog::isSceneObjectExist(const std::string& name) {
         std::list<const SceneObject *> sceneObjects = objectController->getSceneObjects();
         return std::any_of(sceneObjects.begin(), sceneObjects.end(), [name](const auto& so){return so->getName() == name;});
     }

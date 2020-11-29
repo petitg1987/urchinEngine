@@ -4,7 +4,7 @@
  * @param maxElement Maximum of elements which can be stored in the pool. If the maximum is exceed, a classical allocation
  *  (new/delete) will be performed.
  */
-template<class BaseType> FixedSizePool<BaseType>::FixedSizePool(const std::string &poolName, unsigned int maxElementSize, unsigned int maxElements) :
+template<class BaseType> FixedSizePool<BaseType>::FixedSizePool(const std::string& poolName, unsigned int maxElementSize, unsigned int maxElements) :
         poolName(poolName),
         maxElementSize(maxElementSize),
         maxElements(maxElements),

@@ -276,7 +276,7 @@ namespace urchin {
         return CSGPolygon<float>(polytopeObstacle->getName(), std::move(cwPoints));
     }
 
-    void NavMeshGenerator::applyObstaclesOnWalkablePolygon(std::vector<CSGPolygon<float>> &obstaclePolygons) {
+    void NavMeshGenerator::applyObstaclesOnWalkablePolygon(std::vector<CSGPolygon<float>>& obstaclePolygons) {
         ScopeProfiler scopeProfiler("ai", "subObstacles");
 
         assert(walkablePolygons.size() == 1);

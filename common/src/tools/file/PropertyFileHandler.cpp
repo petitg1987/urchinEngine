@@ -50,7 +50,7 @@ namespace urchin {
         return properties;
     }
 
-    void PropertyFileHandler::savePropertyFile(const std::map<std::string, std::string> &properties) const {
+    void PropertyFileHandler::savePropertyFile(const std::map<std::string, std::string>& properties) const {
         std::ofstream file;
         file.open(propertiesFilePath, std::ios::out);
         if (file.fail()) {

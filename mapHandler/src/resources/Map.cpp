@@ -214,7 +214,7 @@ namespace urchin {
         return sceneObjects;
     }
 
-    SceneObject *Map::getSceneObject(const std::string &name) const {
+    SceneObject *Map::getSceneObject(const std::string& name) const {
         for (auto sceneObject : sceneObjects) {
             if (sceneObject->getName() == name) {
                 return sceneObject;
@@ -238,7 +238,7 @@ namespace urchin {
         return sceneLights;
     }
 
-    SceneLight *Map::getSceneLight(const std::string &name) const {
+    SceneLight *Map::getSceneLight(const std::string& name) const {
         for (auto sceneLight : sceneLights) {
             if (sceneLight->getName() == name) {
                 return sceneLight;
@@ -262,7 +262,7 @@ namespace urchin {
         return sceneTerrains;
     }
 
-    SceneTerrain *Map::getSceneTerrain(const std::string &name) const {
+    SceneTerrain *Map::getSceneTerrain(const std::string& name) const {
         for (auto sceneTerrain : sceneTerrains) {
             if (sceneTerrain->getName() == name) {
                 return sceneTerrain;
@@ -286,7 +286,7 @@ namespace urchin {
         return sceneWaters;
     }
 
-    SceneWater *Map::getSceneWater(const std::string &name) const {
+    SceneWater *Map::getSceneWater(const std::string& name) const {
         for (auto sceneWater : sceneWaters) {
             if (sceneWater->getName() == name) {
                 return sceneWater;
@@ -318,7 +318,7 @@ namespace urchin {
         return sceneSounds;
     }
 
-    SceneSound *Map::getSceneSound(const std::string &name) const {
+    SceneSound *Map::getSceneSound(const std::string& name) const {
         for (auto sceneSound : sceneSounds) {
             if (sceneSound->getName() == name) {
                 return sceneSound;

@@ -20,7 +20,7 @@
 
 namespace urchin {
 
-    TerrainGrass::TerrainGrass(const std::string &grassTextureFilename) :
+    TerrainGrass::TerrainGrass(const std::string& grassTextureFilename) :
             grassPositionRandomPercentage(ConfigService::instance()->getFloatValue("terrain.grassPositionRandomPercentage")),
             grassPatchSize(ConfigService::instance()->getFloatValue("terrain.grassPatchSize")),
             grassQuadtreeDepth(ConfigService::instance()->getUnsignedIntValue("terrain.grassQuadtreeDepth")),
@@ -231,7 +231,7 @@ namespace urchin {
         return grassTextureFilename;
     }
 
-    void TerrainGrass::setGrassTexture(const std::string &grassTextureFilename) {
+    void TerrainGrass::setGrassTexture(const std::string& grassTextureFilename) {
         this->grassTextureFilename = grassTextureFilename;
 
         if (grassTextureFilename.empty()) {
@@ -247,7 +247,7 @@ namespace urchin {
         return grassMaskFilename;
     }
 
-    void TerrainGrass::setMaskTexture(const std::string &grassMaskFilename) {
+    void TerrainGrass::setMaskTexture(const std::string& grassMaskFilename) {
         this->grassMaskFilename = grassMaskFilename;
 
         if (grassMaskFilename.empty()) {

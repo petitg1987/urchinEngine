@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    TerrainMaterial::TerrainMaterial(const std::string &maskMapFilename, const std::vector<std::string> &materialFilenames, float sRepeat, float tRepeat) :
+    TerrainMaterial::TerrainMaterial(const std::string& maskMapFilename, const std::vector<std::string>& materialFilenames, float sRepeat, float tRepeat) :
             maskMapFilename(maskMapFilename),
             sRepeat(sRepeat),
             tRepeat(tRepeat) {
@@ -32,7 +32,7 @@ namespace urchin {
         }
     }
 
-    void TerrainMaterial::initializeMaterial(const std::vector<std::string> &materialFilenames) {
+    void TerrainMaterial::initializeMaterial(const std::vector<std::string>& materialFilenames) {
         assert(materialFilenames.size() <= MAX_MATERIAL);
 
         materials.resize(MAX_MATERIAL);

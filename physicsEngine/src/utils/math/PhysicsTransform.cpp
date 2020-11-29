@@ -104,7 +104,7 @@ namespace urchin {
         return *this;
     }
 
-    std::ostream& operator <<(std::ostream &stream, const PhysicsTransform& transform) {
+    std::ostream& operator <<(std::ostream& stream, const PhysicsTransform& transform) {
         stream.setf(std::ios::left);
         stream << "Position: " << transform.getPosition() << ", Orientation: " << transform.getOrientation();
         return stream;

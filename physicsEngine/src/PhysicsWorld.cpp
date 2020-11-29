@@ -186,7 +186,7 @@ namespace urchin {
                     frameStartTime = frameEndTime;
                 }
             }
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             Logger::logger().logError("Error cause physics thread crash: exception reported to main thread");
             physicsThreadExceptionPtr = std::current_exception();
         }

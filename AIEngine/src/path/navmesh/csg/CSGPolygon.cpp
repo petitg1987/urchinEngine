@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    template<class T> CSGPolygon<T>::CSGPolygon(std::string name, const std::vector<Point2<T>> &cwPoints) :
+    template<class T> CSGPolygon<T>::CSGPolygon(std::string name, const std::vector<Point2<T>>& cwPoints) :
             name(std::move(name)),
             cwPoints(cwPoints) {
         #ifndef NDEBUG
@@ -222,7 +222,7 @@ namespace urchin {
         return svgPolygon;
     }
 
-    template<class T> void CSGPolygon<T>::logInputData(const std::string &message, Logger::CriticalityLevel logLevel, const CSGPolygon<T>& inputPolygon) const {
+    template<class T> void CSGPolygon<T>::logInputData(const std::string& message, Logger::CriticalityLevel logLevel, const CSGPolygon<T>& inputPolygon) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 
@@ -232,7 +232,7 @@ namespace urchin {
         Logger::logger().log(logLevel, logStream.str());
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const CSGPolygon<T>& polygon) {
+    template<class T> std::ostream& operator <<(std::ostream& stream, const CSGPolygon<T>& polygon) {
         stream << "Name: " << polygon.getName() << std::endl;
         stream << "Points (CW): " << std::endl;
         for (const auto &point : polygon.getCwPoints()) {
@@ -243,8 +243,8 @@ namespace urchin {
 
     //explicit template
     template class CSGPolygon<float>;
-    template std::ostream& operator <<<float>(std::ostream &, const CSGPolygon<float>&);
+    template std::ostream& operator <<<float>(std::ostream&, const CSGPolygon<float>&);
 
     template class CSGPolygon<long long>;
-    template std::ostream& operator <<<long long>(std::ostream &, const CSGPolygon<long long>&);
+    template std::ostream& operator <<<long long>(std::ostream&, const CSGPolygon<long long>&);
 }

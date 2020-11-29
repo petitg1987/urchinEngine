@@ -1,4 +1,4 @@
-template<class T> T* MediaManager::getMedia(const std::string &filename) {
+template<class T> T* MediaManager::getMedia(const std::string& filename) {
     //resource already charged ?
     T *resource = ResourceManager::instance()->getResource<T>(filename);
     if (resource) {

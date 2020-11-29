@@ -11,7 +11,7 @@
 
 namespace urchin {
 
-    TerrainMesh::TerrainMesh(const std::string &heightFilename, float xzScale, float yScale) :
+    TerrainMesh::TerrainMesh(const std::string& heightFilename, float xzScale, float yScale) :
             heightFilename(heightFilename),
             xzScale(xzScale),
             yScale(yScale) {
@@ -252,7 +252,7 @@ namespace urchin {
         return triangleIndices;
     }
 
-    void TerrainMesh::writeTerrainMeshFile(const std::string &filePath, const std::string &md5) const {
+    void TerrainMesh::writeTerrainMeshFile(const std::string& filePath, const std::string& md5) const {
         std::ofstream file;
         file.open(filePath, std::ios::out | std::ios::binary | std::ios::trunc);
 
@@ -266,15 +266,15 @@ namespace urchin {
         file.close();
     }
 
-    void TerrainMesh::writeVersion(std::ofstream &file, unsigned int version) const {
+    void TerrainMesh::writeVersion(std::ofstream& file, unsigned int version) const {
         file.write(reinterpret_cast<char*>(&version), sizeof(version));
     }
 
-    void TerrainMesh::writeMd5(std::ofstream &file, const std::string &md5) const {
+    void TerrainMesh::writeMd5(std::ofstream& file, const std::string& md5) const {
         file.write(md5.c_str(), md5.size()*sizeof(char));
     }
 
-    void TerrainMesh::loadTerrainMeshFile(std::ifstream &file) {
+    void TerrainMesh::loadTerrainMeshFile(std::ifstream& file) {
         vertices.resize(computeNumberVertices());
         file.read(reinterpret_cast<char*>(&vertices[0]), vertices.size()*sizeof(float)*3);
 
@@ -287,13 +287,13 @@ namespace urchin {
         file.close();
     }
 
-    unsigned int TerrainMesh::readVersion(std::ifstream &file) const {
+    unsigned int TerrainMesh::readVersion(std::ifstream& file) const {
         unsigned int version;
         file.read(reinterpret_cast<char*>(&version), sizeof(version));
         return version;
     }
 
-    std::string TerrainMesh::readMd5(std::ifstream &file) const {
+    std::string TerrainMesh::readMd5(std::ifstream& file) const {
         constexpr unsigned int md5Size = 32;
         char md5[md5Size];
         file.read(&md5[0], sizeof(md5));

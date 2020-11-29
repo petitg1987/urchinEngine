@@ -7,14 +7,14 @@
 
 namespace urchin {
 
-    std::unique_ptr<Shader> ShaderBuilder::createShader(const std::string &vertexShaderFilename, const std::string &geometryShaderFilename,
-                                              const std::string &fragmentShaderFilename) {
+    std::unique_ptr<Shader> ShaderBuilder::createShader(const std::string& vertexShaderFilename, const std::string& geometryShaderFilename,
+                                              const std::string& fragmentShaderFilename) {
         std::map<std::string, std::string> emptyTokens;
         return createShader(vertexShaderFilename, geometryShaderFilename, fragmentShaderFilename, emptyTokens);
     }
 
-    std::unique_ptr<Shader> ShaderBuilder::createShader(const std::string &vertexShaderFilename, const std::string &geometryShaderFilename,
-                                              const std::string &fragmentShaderFilename, const std::map<std::string, std::string> &tokens) {
+    std::unique_ptr<Shader> ShaderBuilder::createShader(const std::string& vertexShaderFilename, const std::string& geometryShaderFilename,
+                                              const std::string& fragmentShaderFilename, const std::map<std::string, std::string>& tokens) {
         unsigned int shaderId = glCreateProgram();
 
         //vertex shader
@@ -57,7 +57,7 @@ namespace urchin {
         return std::make_unique<Shader>(shaderId);
     }
 
-    std::string ShaderBuilder::readEntireFile(const std::string &filename) {
+    std::string ShaderBuilder::readEntireFile(const std::string& filename) {
         std::string fileContent;
         fileContent.reserve(10000);
 
@@ -77,7 +77,7 @@ namespace urchin {
         return fileContent;
     }
 
-    void ShaderBuilder::checkShaderFile(unsigned int shaderFileId, const std::string &shaderFilename) {
+    void ShaderBuilder::checkShaderFile(unsigned int shaderFileId, const std::string& shaderFilename) {
         int infoLogLength = 0;
         glGetShaderiv(shaderFileId, GL_INFO_LOG_LENGTH, &infoLogLength);
 
@@ -93,7 +93,7 @@ namespace urchin {
         }
     }
 
-    void ShaderBuilder::checkShader(unsigned int programID, const std::string &shaderFilenames) {
+    void ShaderBuilder::checkShader(unsigned int programID, const std::string& shaderFilenames) {
         int infoLogLength = 0;
         glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &infoLogLength);
 

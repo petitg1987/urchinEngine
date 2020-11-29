@@ -47,15 +47,15 @@ namespace urchin {
         return line.getA().vector(a).dotProduct(linesVectorCrossProduction) / linesVectorCrossProduction.length();
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Line3D<T>& l) {
+    template<class T> std::ostream& operator <<(std::ostream& stream, const Line3D<T>& l) {
         return stream << l.getA().X << " " << l.getA().Y << " " << l.getA().Z << " - " << l.getB().X << " " << l.getB().Y << " " << l.getB().Z ;
     }
 
     //explicit template
     template class Line3D<float>;
-    template std::ostream& operator <<<float>(std::ostream &, const Line3D<float>&);
+    template std::ostream& operator <<<float>(std::ostream&, const Line3D<float>&);
 
     template class Line3D<double>;
-    template std::ostream& operator <<<double>(std::ostream &, const Line3D<double>&);
+    template std::ostream& operator <<<double>(std::ostream&, const Line3D<double>&);
 
 }

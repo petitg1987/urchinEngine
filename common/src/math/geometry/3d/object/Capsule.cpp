@@ -68,7 +68,7 @@ namespace urchin {
         return supportPoint2;
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Capsule<T>& capsule) {
+    template<class T> std::ostream& operator <<(std::ostream& stream, const Capsule<T>& capsule) {
         stream.setf(std::ios::left);
         stream << std::setw(20) << "Shape radius: " << capsule.getRadius() << std::endl;
         stream << std::setw(20) << "Shape height: " << capsule.getCylinderHeight() << std::endl;
@@ -81,9 +81,9 @@ namespace urchin {
 
     //explicit template
     template class Capsule<float>;
-    template std::ostream& operator <<<float>(std::ostream &, const Capsule<float>&);
+    template std::ostream& operator <<<float>(std::ostream&, const Capsule<float>&);
 
     template class Capsule<double>;
-    template std::ostream& operator <<<double>(std::ostream &, const Capsule<double>&);
+    template std::ostream& operator <<<double>(std::ostream&, const Capsule<double>&);
 
 }

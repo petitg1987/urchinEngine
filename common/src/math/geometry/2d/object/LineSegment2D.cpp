@@ -193,7 +193,7 @@ namespace urchin {
         return LineSegment2D<NEW_TYPE>(a.template cast<NEW_TYPE>(), b.template cast<NEW_TYPE>());
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const LineSegment2D<T>& l) {
+    template<class T> std::ostream& operator <<(std::ostream& stream, const LineSegment2D<T>& l) {
         return stream << l.getA().X << " " << l.getA().Y << " - " << l.getB().X << " " << l.getB().Y;
     }
 

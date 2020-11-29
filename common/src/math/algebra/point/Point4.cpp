@@ -238,7 +238,7 @@ namespace urchin {
         return m * p;
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Point4<T>& p) {
+    template<class T> std::ostream& operator <<(std::ostream& stream, const Point4<T>& p) {
         return stream << p.X << ", " << p.Y << ", " << p.Z << ", " << p.W;
     }
 
@@ -253,7 +253,7 @@ namespace urchin {
     template Point4<float> operator -<float>(const Point4<float>&, float);
     template Point4<float> operator *<float>(const Matrix4<float>&, const Point4<float>&);
     template Point4<float> operator *<float>(const Point4<float>&, const Matrix4<float>&);
-    template std::ostream& operator <<<float>(std::ostream &, const Point4<float>&);
+    template std::ostream& operator <<<float>(std::ostream&, const Point4<float>&);
 
     template class Point4<double>;
     template Point4<float> Point4<double>::cast() const;
@@ -265,6 +265,6 @@ namespace urchin {
     template Point4<double> operator -<double>(const Point4<double>&, double);
     template Point4<double> operator *<double>(const Matrix4<double>&, const Point4<double>&);
     template Point4<double> operator *<double>(const Point4<double>&, const Matrix4<double>&);
-    template std::ostream& operator <<<double>(std::ostream &, const Point4<double>&);
+    template std::ostream& operator <<<double>(std::ostream&, const Point4<double>&);
 
 }

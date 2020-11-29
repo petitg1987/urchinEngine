@@ -313,7 +313,7 @@ namespace urchin {
         return m * frustum;
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Frustum<T>& frustum) {
+    template<class T> std::ostream& operator <<(std::ostream& stream, const Frustum<T>& frustum) {
         stream.setf(std::ios::left);
         stream << "Frustum point NTL: " << frustum.getFrustumPoint(Frustum<T>::NTL) << std::endl;
         stream << "Frustum point NTR: " << frustum.getFrustumPoint(Frustum<T>::NTR) << std::endl;
@@ -331,11 +331,11 @@ namespace urchin {
     template class Frustum<float>;
     template Frustum<float> operator *<float>(const Matrix4<float>&, const Frustum<float>&);
     template Frustum<float> operator *<float>(const Frustum<float>&, const Matrix4<float>&);
-    template std::ostream& operator <<<float>(std::ostream &, const Frustum<float>&);
+    template std::ostream& operator <<<float>(std::ostream&, const Frustum<float>&);
 
     template class Frustum<double>;
     template Frustum<double> operator *<double>(const Matrix4<double>&, const Frustum<double>&);
     template Frustum<double> operator *<double>(const Frustum<double>&, const Matrix4<double>&);
-    template std::ostream& operator <<<double>(std::ostream &, const Frustum<double>&);
+    template std::ostream& operator <<<double>(std::ostream&, const Frustum<double>&);
 
 }

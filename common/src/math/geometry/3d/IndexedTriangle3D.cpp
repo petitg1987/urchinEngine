@@ -32,7 +32,7 @@ namespace urchin {
         return indices[index];
     }
 
-    template<class T> Vector3<T> IndexedTriangle3D<T>::computeNormal(const std::vector<Point3<T>> &trianglePoints) const {
+    template<class T> Vector3<T> IndexedTriangle3D<T>::computeNormal(const std::vector<Point3<T>>& trianglePoints) const {
         const Vector3<T> &aux = trianglePoints[indices[1]].vector(trianglePoints[indices[2]]);
         return aux.crossProduct(trianglePoints[indices[1]].vector(trianglePoints[indices[0]])).normalize();
     }

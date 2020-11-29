@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    PhysicsCharacter::PhysicsCharacter(const std::string &name, float mass, const std::shared_ptr<const CollisionShape3D>& shape, const PhysicsTransform& transform) :
+    PhysicsCharacter::PhysicsCharacter(const std::string& name, float mass, const std::shared_ptr<const CollisionShape3D>& shape, const PhysicsTransform& transform) :
         PhysicsCharacter(name, mass, shape, transform, DEFAULT_JUMP_SPEED, DEFAULT_MAX_SLOPE) {
 
     }

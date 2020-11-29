@@ -380,7 +380,7 @@ namespace urchin {
 
             try {
                 updateSurfaceWaterProperties();
-            } catch (std::exception &e) {
+            } catch (std::exception& e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearNormalTextureFilename();
             }
@@ -407,7 +407,7 @@ namespace urchin {
 
             try {
                 updateSurfaceWaterProperties();
-            } catch (std::exception &e) {
+            } catch (std::exception& e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearDudvMapFilename();
             }

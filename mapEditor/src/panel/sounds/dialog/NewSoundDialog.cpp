@@ -110,7 +110,7 @@ namespace urchin {
             SoundTrigger *soundTrigger = new ManualTrigger(SoundBehavior(SoundBehavior::PLAY_ONCE, SoundBehavior::INSTANT_STOP));
 
             sceneSound->setSoundElements(sound, soundTrigger);
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());
             delete sceneSound;
 
@@ -166,7 +166,7 @@ namespace urchin {
         }
     }
 
-    bool NewSoundDialog::isSceneSoundExist(const std::string &name) {
+    bool NewSoundDialog::isSceneSoundExist(const std::string& name) {
         std::list<const SceneSound *> sceneSounds = soundController->getSceneSounds();
         return std::any_of(sceneSounds.begin(), sceneSounds.end(), [name](const auto& ss){return ss->getName() == name;});
     }

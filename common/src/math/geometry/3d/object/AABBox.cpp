@@ -30,7 +30,7 @@ namespace urchin {
         assert(min.Z <= max.Z);
     }
 
-    template<class T> AABBox<T>::AABBox(const std::vector<Point3<T>> &points) :
+    template<class T> AABBox<T>::AABBox(const std::vector<Point3<T>>& points) :
             min(Point3<T>(std::numeric_limits<T>::max(), std::numeric_limits<T>::max(), std::numeric_limits<T>::max())),
             max(Point3<T>(-std::numeric_limits<T>::max(), -std::numeric_limits<T>::max(), -std::numeric_limits<T>::max())) {
         for (const auto &point : points) {
@@ -322,7 +322,7 @@ namespace urchin {
         return m * aabb;
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const AABBox<T>& aabbox) {
+    template<class T> std::ostream& operator <<(std::ostream& stream, const AABBox<T>& aabbox) {
         stream.setf(std::ios::left);
         stream << "AABBox min point: " << aabbox.getMin() << std::endl;
         stream << "AABBox max point: " << aabbox.getMax();
@@ -334,10 +334,10 @@ namespace urchin {
     template class AABBox<float>;
     template AABBox<float> operator *<float>(const Matrix4<float>&, const AABBox<float>&);
     template AABBox<float> operator *<float>(const AABBox<float>&, const Matrix4<float>&);
-    template std::ostream& operator <<<float>(std::ostream &, const AABBox<float>&);
+    template std::ostream& operator <<<float>(std::ostream&, const AABBox<float>&);
 
     template class AABBox<double>;
     template AABBox<double> operator *<double>(const Matrix4<double>&, const AABBox<double>&);
     template AABBox<double> operator *<double>(const AABBox<double>&, const Matrix4<double>&);
-    template std::ostream& operator <<<double>(std::ostream &, const AABBox<double>&);
+    template std::ostream& operator <<<double>(std::ostream&, const AABBox<double>&);
 }

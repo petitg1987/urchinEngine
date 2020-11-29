@@ -43,7 +43,7 @@ namespace urchin {
         return name;
     }
 
-    void SceneWater::setName(const std::string &name) {
+    void SceneWater::setName(const std::string& name) {
         this->name = name;
     }
 

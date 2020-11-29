@@ -26,7 +26,7 @@ namespace urchin {
 
     }
 
-    MonotonePolygonError::MonotonePolygonError(const std::string &message) :
+    MonotonePolygonError::MonotonePolygonError(const std::string& message) :
             std::runtime_error(message) {
 
     }
@@ -35,8 +35,8 @@ namespace urchin {
      * @param polygonPoints Polygon points are in CCW order and holes in CW order.
      * @param endContourIndices Delimiter between polygon points and holes points.
      */
-    MonotonePolygonAlgorithm::MonotonePolygonAlgorithm(const std::vector<Point2<float>> &polygonPoints, const std::vector<std::size_t> &endContourIndices,
-                                                       const std::vector<std::string> &contourNames) :
+    MonotonePolygonAlgorithm::MonotonePolygonAlgorithm(const std::vector<Point2<float>>& polygonPoints, const std::vector<std::size_t> &endContourIndices,
+                                                       const std::vector<std::string>& contourNames) :
             polygonPoints(polygonPoints),
             endContourIndices(endContourIndices),
             contourNames(contourNames) {
@@ -426,7 +426,7 @@ namespace urchin {
         }
     }
 
-    void MonotonePolygonAlgorithm::logInputData(const std::string &message, Logger::CriticalityLevel logLevel) const {
+    void MonotonePolygonAlgorithm::logInputData(const std::string& message, Logger::CriticalityLevel logLevel) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 
@@ -448,7 +448,7 @@ namespace urchin {
         }
     }
 
-    void MonotonePolygonAlgorithm::exportSVG(const std::string &filename) const {
+    void MonotonePolygonAlgorithm::exportSVG(const std::string& filename) const {
         SVGExporter svgExporter(filename);
 
         std::vector<Point2<float>> svgPolygonPoints;
@@ -464,7 +464,7 @@ namespace urchin {
         svgExporter.generateSVG(250);
     }
 
-    void MonotonePolygonAlgorithm::logOutputData(const std::string &message, Logger::CriticalityLevel logLevel) const {
+    void MonotonePolygonAlgorithm::logOutputData(const std::string& message, Logger::CriticalityLevel logLevel) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 

@@ -8,7 +8,7 @@ namespace urchin {
     //static
     const char MapUtil::DELIMITER = ',';
 
-    std::string MapUtil::serialize(const std::map<std::string, std::string> &map) {
+    std::string MapUtil::serialize(const std::map<std::string, std::string>& map) {
         std::string mapString;
         for (const auto &[key, value] : map) {
             mapString += escape(key) + DELIMITER + escape(value) + DELIMITER;
@@ -20,7 +20,7 @@ namespace urchin {
         return mapString;
     }
 
-    std::map<std::string, std::string> MapUtil::deserialize(const std::string &mapString) {
+    std::map<std::string, std::string> MapUtil::deserialize(const std::string& mapString) {
         std::vector<std::string> splitStrings;
         std::vector<std::string> mapListString;
         StringUtil::split(mapString, DELIMITER, splitStrings);
@@ -49,14 +49,14 @@ namespace urchin {
         return outputMap;
     }
 
-    std::string MapUtil::escape(const std::string &str) {
+    std::string MapUtil::escape(const std::string& str) {
         std::string escapedStr = str;
         StringUtil::replaceAll(escapedStr, "\\", "\\\\");
         StringUtil::replaceAll(escapedStr, std::string(1, DELIMITER), std::string("\\") + DELIMITER);
         return escapedStr;
     }
 
-    std::string MapUtil::unescape(const std::string &str) {
+    std::string MapUtil::unescape(const std::string& str) {
         std::string unescapedStr = str;
         StringUtil::replaceAll(unescapedStr, std::string("\\") + DELIMITER, std::string(1, DELIMITER));
         StringUtil::replaceAll(unescapedStr, "\\\\", "\\");

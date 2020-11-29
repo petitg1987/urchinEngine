@@ -182,7 +182,7 @@ namespace urchin {
         return scaledShape->computeLocalInertia(mass);
     }
 
-    void AbstractBody::setId(const std::string &id) {
+    void AbstractBody::setId(const std::string& id) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         this->id = id;

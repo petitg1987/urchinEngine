@@ -78,7 +78,7 @@ namespace urchin {
         return name;
     }
 
-    void SceneObject::setName(const std::string &name) {
+    void SceneObject::setName(const std::string& name) {
         this->name = name;
     }
 

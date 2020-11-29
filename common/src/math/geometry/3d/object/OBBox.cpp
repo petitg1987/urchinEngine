@@ -309,7 +309,7 @@ namespace urchin {
         return m * obb;
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const OBBox<T>& obbox) {
+    template<class T> std::ostream& operator <<(std::ostream& stream, const OBBox<T>& obbox) {
         stream.setf(std::ios::left);
         stream << "OBBox point 1: " << obbox.getPoint(0) << std::endl;
         stream << "OBBox point 2: " << obbox.getPoint(1) << std::endl;
@@ -327,11 +327,11 @@ namespace urchin {
     template class OBBox<float>;
     template OBBox<float> operator *<float>(const Matrix4<float>&, const OBBox<float>&);
     template OBBox<float> operator *<float>(const OBBox<float>&, const Matrix4<float>&);
-    template std::ostream& operator <<<float>(std::ostream &, const OBBox<float>&);
+    template std::ostream& operator <<<float>(std::ostream&, const OBBox<float>&);
 
     template class OBBox<double>;
     template OBBox<double> operator *<double>(const Matrix4<double>&, const OBBox<double>&);
     template OBBox<double> operator *<double>(const OBBox<double>&, const Matrix4<double>&);
-    template std::ostream& operator <<<double>(std::ostream &, const OBBox<double>&);
+    template std::ostream& operator <<<double>(std::ostream&, const OBBox<double>&);
 
 }

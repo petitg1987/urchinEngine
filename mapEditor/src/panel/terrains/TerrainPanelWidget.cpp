@@ -483,7 +483,7 @@ namespace urchin {
 
             try {
                 updateTerrainMaterial();
-            } catch (std::exception &e) {
+            } catch (std::exception& e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearMaskFilename();
             }
@@ -512,7 +512,7 @@ namespace urchin {
 
             try {
                 updateTerrainMaterial();
-            } catch (std::exception &e) {
+            } catch (std::exception& e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearMaterialFilename(positionIndexStr);
             }
@@ -540,7 +540,7 @@ namespace urchin {
 
             try {
                 updateTerrainGrass();
-            } catch (std::exception &e) {
+            } catch (std::exception& e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearMaskFilename();
             }
@@ -567,7 +567,7 @@ namespace urchin {
 
             try {
                 updateTerrainGrass();
-            } catch (std::exception &e) {
+            } catch (std::exception& e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearMaskFilename();
             }

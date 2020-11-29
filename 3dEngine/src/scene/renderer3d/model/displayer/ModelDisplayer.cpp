@@ -75,7 +75,7 @@ namespace urchin {
         isInitialized = true;
     }
 
-    void ModelDisplayer::createShader(const std::string &vertexShaderName, const std::string &geometryShaderName, const std::string &fragmentShaderName) {
+    void ModelDisplayer::createShader(const std::string& vertexShaderName, const std::string& geometryShaderName, const std::string& fragmentShaderName) {
         std::map<std::string, std::string> shaderTokens;
         shaderTokens.insert(fragmentTokens.begin(), fragmentTokens.end());
         shaderTokens.insert(geometryTokens.begin(), geometryTokens.end());
@@ -93,11 +93,11 @@ namespace urchin {
         ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix);
     }
 
-    ShaderVar ModelDisplayer::getShaderVar(const std::string &name) const {
+    ShaderVar ModelDisplayer::getShaderVar(const std::string& name) const {
         return ShaderVar(modelShader, std::string(name));
     }
 
-    void ModelDisplayer::setCustomGeometryShader(const std::string &geometryShaderName, const std::map<std::string, std::string> &geometryTokens) {
+    void ModelDisplayer::setCustomGeometryShader(const std::string& geometryShaderName, const std::map<std::string, std::string>& geometryTokens) {
         if (isInitialized) {
             throw std::runtime_error("Impossible to set custom geometry shader once the model displayer initialized.");
         }
@@ -106,7 +106,7 @@ namespace urchin {
         this->geometryTokens = geometryTokens;
     }
 
-    void ModelDisplayer::setCustomFragmentShader(const std::string &fragmentShaderName, const std::map<std::string, std::string> &fragmentTokens) {
+    void ModelDisplayer::setCustomFragmentShader(const std::string& fragmentShaderName, const std::map<std::string, std::string>& fragmentTokens) {
         if (isInitialized) {
             throw std::runtime_error("Impossible to set custom fragment shader once the model displayer initialized.");
         }
@@ -174,7 +174,7 @@ namespace urchin {
         }
     }
 
-    void ModelDisplayer::drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix, const std::string &meshFilename) const {
+    void ModelDisplayer::drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix, const std::string& meshFilename) const {
         for (auto model : models) {
             if (model->getMeshes() && model->getMeshes()->getMeshFilename()==meshFilename) {
                 model->drawBaseBones(renderTarget, projectionMatrix, viewMatrix);

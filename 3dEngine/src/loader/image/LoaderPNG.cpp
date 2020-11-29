@@ -8,7 +8,7 @@ namespace urchin {
 
     }
 
-    Image *LoaderPNG::loadFromFile(const std::string &filename) {
+    Image *LoaderPNG::loadFromFile(const std::string& filename) {
         std::string filenamePath = FileSystem::instance()->getResourcesDirectory() + filename;
         std::vector<unsigned char> png;
         unsigned int errorLoad = lodepng::load_file(png, filenamePath);

@@ -157,7 +157,7 @@ namespace urchin {
         throw std::runtime_error("Unknown data dimension: " + std::to_string(dataDimension));
     }
 
-    void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point2<float>> *dataPtr) {
+    void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point2<float>>* dataPtr) {
         assert(data.size() > dataIndex);
         GenericRenderer::Data dataValue{DataType::FLOAT, DataDimension::TWO_DIMENSION, &(*dataPtr)[0], (unsigned int)dataPtr->size()};
         data[dataIndex] = dataValue;
@@ -165,7 +165,7 @@ namespace urchin {
         sendData(dataIndex, true);
     }
 
-    void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point3<float>> *dataPtr) {
+    void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point3<float>>* dataPtr) {
         assert(data.size() > dataIndex);
         GenericRenderer::Data dataValue{DataType::FLOAT, DataDimension::THREE_DIMENSION, &(*dataPtr)[0], (unsigned int)dataPtr->size()};
         data[dataIndex] = dataValue;
@@ -173,7 +173,7 @@ namespace urchin {
         sendData(dataIndex, true);
     }
 
-    void GenericRenderer::updateData(std::size_t pointsCoordIndex, const std::vector<Vector3<float>> *dataPtr) {
+    void GenericRenderer::updateData(std::size_t pointsCoordIndex, const std::vector<Vector3<float>>* dataPtr) {
         updateData(pointsCoordIndex, reinterpret_cast<const std::vector<Point3<float>> *>(dataPtr));
     }
 

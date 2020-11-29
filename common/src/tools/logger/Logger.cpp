@@ -25,19 +25,19 @@ namespace urchin {
         return *instance;
     }
 
-    void Logger::logInfo(const std::string &toLog) {
+    void Logger::logInfo(const std::string& toLog) {
         log(INFO, toLog);
     }
 
-    void Logger::logWarning(const std::string &toLog) {
+    void Logger::logWarning(const std::string& toLog) {
         log(WARNING, toLog);
     }
 
-    void Logger::logError(const std::string &toLog) {
+    void Logger::logError(const std::string& toLog) {
         log(ERROR, toLog);
     }
 
-    void Logger::log(CriticalityLevel criticalityLevel, const std::string &toLog) {
+    void Logger::log(CriticalityLevel criticalityLevel, const std::string& toLog) {
         #ifndef NDEBUG
             write(prefix(criticalityLevel) + toLog + "\n");
         #else

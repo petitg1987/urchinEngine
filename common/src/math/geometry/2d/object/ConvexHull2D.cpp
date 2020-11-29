@@ -12,12 +12,12 @@ namespace urchin {
      * @param points Points used to construct the convex hull. Points inside the convex hull are accepted but will unused.
      * Duplicate points are supported.
      */
-    template<class T> ConvexHull2D<T>::ConvexHull2D(const std::vector<Point2<T>> &points) :
+    template<class T> ConvexHull2D<T>::ConvexHull2D(const std::vector<Point2<T>>& points) :
         localizedConvexHullShape(ConvexHullShape2D<T>(points)) {
 
     }
 
-    template<class T> std::unique_ptr<ConvexHull2D<T>> ConvexHull2D<T>::createFromCcwConvexPoints(const std::vector<Point2<T>> &ccwConvexPoints) {
+    template<class T> std::unique_ptr<ConvexHull2D<T>> ConvexHull2D<T>::createFromCcwConvexPoints(const std::vector<Point2<T>>& ccwConvexPoints) {
         std::unique_ptr<ConvexHull2D<T>> convexHull = std::make_unique<ConvexHull2D<T>>();
         convexHull->localizedConvexHullShape = *ConvexHullShape2D<T>::createFromCcwConvexPoints(ccwConvexPoints);
 

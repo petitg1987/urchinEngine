@@ -8,7 +8,7 @@ namespace urchin {
 
     }
 
-    void FileSystem::setupResourcesDirectory(const std::string &resourcesDirectory) {
+    void FileSystem::setupResourcesDirectory(const std::string& resourcesDirectory) {
         this->resourcesDirectory = resourcesDirectory;
     }
 
@@ -16,7 +16,7 @@ namespace urchin {
         return resourcesDirectory;
     }
 
-    void FileSystem::setupSaveDirectory(const std::string &saveDirectory) {
+    void FileSystem::setupSaveDirectory(const std::string& saveDirectory) {
         this->saveDirectory = saveDirectory;
     }
 

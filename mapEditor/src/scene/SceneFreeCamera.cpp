@@ -18,7 +18,7 @@ namespace urchin {
         mouseController.moveMouse(x, y);
     }
 
-    void SceneFreeCamera::loadCameraState(const std::string &mapFilename) {
+    void SceneFreeCamera::loadCameraState(const std::string& mapFilename) {
         std::map<std::string, std::string> cameraPositionByMap = MapUtil::deserialize(StateSaveHelper::instance()->retrieveState("camera.position", ""));
         auto it = cameraPositionByMap.find(mapFilename);
         if (it != cameraPositionByMap.end()) {
@@ -31,7 +31,7 @@ namespace urchin {
         }
     }
 
-    void SceneFreeCamera::saveCameraState(const std::string &mapFilename) const {
+    void SceneFreeCamera::saveCameraState(const std::string& mapFilename) const {
         std::map<std::string, std::string> cameraPositionByMap = MapUtil::deserialize(StateSaveHelper::instance()->retrieveState("camera.position", ""));
 
         std::string serializedCameraPosition = std::to_string(getPosition().X) + Converter::FLOAT_DELIMITER + std::to_string(getPosition().Y)

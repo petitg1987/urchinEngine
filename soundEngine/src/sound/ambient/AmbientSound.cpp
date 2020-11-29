@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    AmbientSound::AmbientSound(const std::string &filename) :
+    AmbientSound::AmbientSound(const std::string& filename) :
         Sound(filename) {
         //ambient sound: always position at 0 distance to listener
         alSourcei(getSourceId(), AL_SOURCE_RELATIVE, true);

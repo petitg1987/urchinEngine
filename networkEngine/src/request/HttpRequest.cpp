@@ -46,7 +46,7 @@ namespace urchin {
         }
     }
 
-    void HttpRequest::postTextPlain(const std::string &path, const std::string &value) const {
+    void HttpRequest::postTextPlain(const std::string& path, const std::string& value) const {
         std::string url = basePath + path;
 
         curl_easy_reset(curl);
@@ -58,7 +58,7 @@ namespace urchin {
         executeRequest(url);
     }
 
-    std::string HttpRequest::getTextPlain(const std::string &path) const {
+    std::string HttpRequest::getTextPlain(const std::string& path) const {
         std::string url = basePath + path;
 
         curl_easy_reset(curl);
@@ -68,7 +68,7 @@ namespace urchin {
         return executeRequest(url);
     }
 
-    std::string HttpRequest::executeRequest(const std::string &url) const {
+    std::string HttpRequest::executeRequest(const std::string& url) const {
         std::string readBuffer;
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);

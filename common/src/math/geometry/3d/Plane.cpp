@@ -144,15 +144,15 @@ namespace urchin {
         return line.getA().translate(t * lineVector);
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Plane<T>& p) {
+    template<class T> std::ostream& operator <<(std::ostream& stream, const Plane<T>& p) {
         return stream << "Plane normal: "<<p.getNormal()<<" | Distance to origin: "<<p.getDistanceToOrigin();
     }
 
     //explicit template
     template class Plane<float>;
-    template std::ostream& operator <<<float>(std::ostream &, const Plane<float>&);
+    template std::ostream& operator <<<float>(std::ostream&, const Plane<float>&);
 
     template class Plane<double>;
-    template std::ostream& operator <<<double>(std::ostream &, const Plane<double>&);
+    template std::ostream& operator <<<double>(std::ostream&, const Plane<double>&);
 
 }

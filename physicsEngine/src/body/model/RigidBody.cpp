@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    RigidBody::RigidBody(const std::string &id, const Transform<float>& transform, const std::shared_ptr<const CollisionShape3D>& shape) :
+    RigidBody::RigidBody(const std::string& id, const Transform<float>& transform, const std::shared_ptr<const CollisionShape3D>& shape) :
             AbstractBody(id, transform, shape),
             mass(0.0f),
             linearDamping(0.0f),

@@ -1,4 +1,4 @@
-template<class BaseType> SyncFixedSizePool<BaseType>::SyncFixedSizePool(const std::string &poolName, unsigned int maxElementSize, unsigned int maxElements) :
+template<class BaseType> SyncFixedSizePool<BaseType>::SyncFixedSizePool(const std::string& poolName, unsigned int maxElementSize, unsigned int maxElements) :
         FixedSizePool<BaseType>(poolName, maxElementSize, maxElements) {
 
 }

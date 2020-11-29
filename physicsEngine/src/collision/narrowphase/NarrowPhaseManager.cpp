@@ -25,7 +25,7 @@ namespace urchin {
      * @param overlappingPairs Pairs of bodies potentially colliding
      * @param manifoldResults [OUT] Collision constraints
      */
-    void NarrowPhaseManager::process(float dt, const std::vector<OverlappingPair *> &overlappingPairs, std::vector<ManifoldResult> &manifoldResults) {
+    void NarrowPhaseManager::process(float dt, const std::vector<OverlappingPair *> &overlappingPairs, std::vector<ManifoldResult>& manifoldResults) {
         ScopeProfiler profiler("physics", "narrowPhase");
 
         processOverlappingPairs(overlappingPairs, manifoldResults);
@@ -37,7 +37,7 @@ namespace urchin {
      * @param ghostBody Ghost body to process
      * @param manifoldResults [OUT] Collision constraints
      */
-    void NarrowPhaseManager::processGhostBody(WorkGhostBody* ghostBody, std::vector<ManifoldResult> &manifoldResults) {
+    void NarrowPhaseManager::processGhostBody(WorkGhostBody* ghostBody, std::vector<ManifoldResult>& manifoldResults) {
         std::vector<OverlappingPair> overlappingPairs = ghostBody->getPairContainer()->retrieveCopyOverlappingPairs();
 
         for (auto &overlappingPair : overlappingPairs) {
@@ -45,7 +45,7 @@ namespace urchin {
         }
     }
 
-    void NarrowPhaseManager::processOverlappingPairs(const std::vector<OverlappingPair *> &overlappingPairs, std::vector<ManifoldResult> &manifoldResults) {
+    void NarrowPhaseManager::processOverlappingPairs(const std::vector<OverlappingPair *> &overlappingPairs, std::vector<ManifoldResult>& manifoldResults) {
         ScopeProfiler profiler("physics", "procOverlapPair");
 
         for (const auto &overlappingPair : overlappingPairs) {
@@ -53,7 +53,7 @@ namespace urchin {
         }
     }
 
-    void NarrowPhaseManager::processOverlappingPair(OverlappingPair* overlappingPair, std::vector<ManifoldResult> &manifoldResults) {
+    void NarrowPhaseManager::processOverlappingPair(OverlappingPair* overlappingPair, std::vector<ManifoldResult>& manifoldResults) {
         AbstractWorkBody *body1 = overlappingPair->getBody1();
         AbstractWorkBody *body2 = overlappingPair->getBody2();
 
@@ -87,7 +87,7 @@ namespace urchin {
         return collisionAlgorithm;
     }
 
-    void NarrowPhaseManager::processPredictiveContacts(float dt, std::vector<ManifoldResult> &manifoldResults) {
+    void NarrowPhaseManager::processPredictiveContacts(float dt, std::vector<ManifoldResult>& manifoldResults) {
         ScopeProfiler profiler("physics", "proPrediContact");
 
         for (auto workBody : bodyManager->getWorkBodies()) {
@@ -108,7 +108,7 @@ namespace urchin {
         }
     }
 
-    void NarrowPhaseManager::handleContinuousCollision(AbstractWorkBody* body, const PhysicsTransform& from, const PhysicsTransform& to, std::vector<ManifoldResult> &manifoldResults) {
+    void NarrowPhaseManager::handleContinuousCollision(AbstractWorkBody* body, const PhysicsTransform& from, const PhysicsTransform& to, std::vector<ManifoldResult>& manifoldResults) {
         std::vector<AbstractWorkBody *> bodiesAABBoxHitBody = broadPhaseManager->bodyTest(body, from, to);
         if (!bodiesAABBoxHitBody.empty()) {
             ccd_set ccdResults;
@@ -198,7 +198,7 @@ namespace urchin {
     /**
      * @param continuousCollisionResults [OUT] In case of collision detected: continuous collision result will be updated with collision details
      */
-    void NarrowPhaseManager::trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape> &triangles, const TemporalObject& temporalObject1,
+    void NarrowPhaseManager::trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape>& triangles, const TemporalObject& temporalObject1,
             AbstractWorkBody* body2, ccd_set &continuousCollisionResults) const {
         for (const auto &triangle : triangles) {
             const PhysicsTransform &fromToObject2 = body2->getPhysicsTransform();

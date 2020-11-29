@@ -67,7 +67,7 @@ namespace urchin {
         }
     }
 
-    void GUIRenderer::setupSkin(const std::string &skinFilename) {
+    void GUIRenderer::setupSkin(const std::string& skinFilename) {
         GUISkinService::instance()->setSkin(skinFilename);
     }
 

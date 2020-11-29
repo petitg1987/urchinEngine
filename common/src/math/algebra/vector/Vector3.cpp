@@ -206,7 +206,7 @@ namespace urchin {
         return m * v;
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Vector3<T>& v) {
+    template<class T> std::ostream& operator <<(std::ostream& stream, const Vector3<T>& v) {
         return stream << v.X << ", " << v.Y << ", " << v.Z;
     }
 
@@ -219,7 +219,7 @@ namespace urchin {
     template Vector3<float> operator /<float>(const Vector3<float>&, float);
     template Vector3<float> operator *<float>(const Matrix3<float>&, const Vector3<float>&);
     template Vector3<float> operator *<float>(const Vector3<float>&, const Matrix3<float>&);
-    template std::ostream& operator <<<float>(std::ostream &, const Vector3<float>&);
+    template std::ostream& operator <<<float>(std::ostream&, const Vector3<float>&);
 
     template class Vector3<double>;
     template Vector3<float> Vector3<double>::cast() const;
@@ -229,6 +229,6 @@ namespace urchin {
     template Vector3<double> operator /<double>(const Vector3<double>&, double);
     template Vector3<double> operator *<double>(const Matrix3<double>&, const Vector3<double>&);
     template Vector3<double> operator *<double>(const Vector3<double>&, const Matrix3<double>&);
-    template std::ostream& operator <<<double>(std::ostream &, const Vector3<double>&);
+    template std::ostream& operator <<<double>(std::ostream&, const Vector3<double>&);
 
 }

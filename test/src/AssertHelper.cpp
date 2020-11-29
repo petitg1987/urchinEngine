@@ -5,7 +5,7 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-void AssertHelper::assertTrue(bool b, const std::string &msg) {
+void AssertHelper::assertTrue(bool b, const std::string& msg) {
     if (msg.empty()) {
         CPPUNIT_ASSERT(b);
     } else {
@@ -13,7 +13,7 @@ void AssertHelper::assertTrue(bool b, const std::string &msg) {
     }
 }
 
-void AssertHelper::assertString(const std::string &value, const std::string &expected) {
+void AssertHelper::assertString(const std::string& value, const std::string& expected) {
     CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + value + ", expected: " + expected, value==expected);
 }
 
@@ -70,7 +70,7 @@ void AssertHelper::assertPoint2LongLongEquals(const Point2<long long>& value, co
     }
 }
 
-void AssertHelper::assertPoints2FloatEquals(const std::vector<Point2<float>> &points, const std::vector<Point2<float>> &expectedPoints, double epsilon) {
+void AssertHelper::assertPoints2FloatEquals(const std::vector<Point2<float>>& points, const std::vector<Point2<float>>& expectedPoints, double epsilon) {
     AssertHelper::assertUnsignedInt(points.size(), expectedPoints.size());
 
     for (std::size_t i=0; i<points.size(); ++i) {
@@ -115,13 +115,13 @@ void AssertHelper::assertQuaternionFloatEquals(const Quaternion<float>& value, c
     }
 }
 
-void AssertHelper::assertPolygonFloatEquals(std::vector<Point2<float>> orientedPoints, const std::vector<Point2<float>> &orientedExpectedPoints, double epsilon) {
+void AssertHelper::assertPolygonFloatEquals(std::vector<Point2<float>> orientedPoints, const std::vector<Point2<float>>& orientedExpectedPoints, double epsilon) {
     AssertHelper::assertUnsignedInt(orientedPoints.size(), orientedExpectedPoints.size());
 
     for (std::size_t i=0; i<orientedPoints.size(); ++i) {
         try {
             assertPoints2FloatEquals(orientedPoints, orientedExpectedPoints, epsilon);
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             std::rotate(orientedPoints.begin(), orientedPoints.begin() + 1, orientedPoints.end());
             continue;
         }
@@ -138,7 +138,7 @@ void AssertHelper::assertPolygonLongLongEquals(std::vector<Point2<long long>> or
     for (std::size_t i=0; i<orientedPoints.size(); ++i) {
         try {
             assertPoints2LongLongEquals(orientedPoints, orientedExpectedPoints);
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             std::rotate(orientedPoints.begin(), orientedPoints.begin() + 1, orientedPoints.end());
             continue;
         }

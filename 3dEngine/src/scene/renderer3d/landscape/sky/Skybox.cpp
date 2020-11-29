@@ -11,7 +11,7 @@ namespace urchin {
     /**
     * @param filenames Filenames of the textures in the following order: X-, X+, Y-, Y+, Z-, Z+
     */
-    Skybox::Skybox(const std::vector<std::string> &filenames) :
+    Skybox::Skybox(const std::vector<std::string>& filenames) :
             filenames(filenames),
             offsetY(0.0) {
         if (filenames.size() != 6) {

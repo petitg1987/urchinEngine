@@ -143,7 +143,7 @@ namespace urchin {
         return waterColor;
     }
 
-    void Water::setNormalTexture(const std::string &normalFilename) {
+    void Water::setNormalTexture(const std::string& normalFilename) {
         this->normalFilename = normalFilename;
 
         if (normalFilename.empty()) {
@@ -165,7 +165,7 @@ namespace urchin {
         return normalFilename;
     }
 
-    void Water::setDudvMap(const std::string &dudvFilename) {
+    void Water::setDudvMap(const std::string& dudvFilename) {
         this->dudvFilename = dudvFilename;
 
         if (dudvFilename.empty()) {

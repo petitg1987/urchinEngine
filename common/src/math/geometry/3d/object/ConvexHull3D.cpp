@@ -6,7 +6,7 @@ namespace urchin {
     /**
      * @param points Points used to construct the convex hull. Points inside the convex hull are accepted but will unused.
      */
-    template<class T> ConvexHull3D<T>::ConvexHull3D(const std::vector<Point3<T>> &points) :
+    template<class T> ConvexHull3D<T>::ConvexHull3D(const std::vector<Point3<T>>& points) :
         localizedConvexHullShape(ConvexHullShape3D<T>(points)) {
 
     }
@@ -60,16 +60,16 @@ namespace urchin {
         return ResizeConvexHull3DService<T>::instance()->resizeConvexHull(*this, distance);
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const ConvexHull3D<T>& ch) {
+    template<class T> std::ostream& operator <<(std::ostream& stream, const ConvexHull3D<T>& ch) {
         stream << ch.localizedConvexHullShape;
         return stream;
     }
 
     //explicit template
     template class ConvexHull3D<float>;
-    template std::ostream& operator <<<float>(std::ostream &, const ConvexHull3D<float>&);
+    template std::ostream& operator <<<float>(std::ostream&, const ConvexHull3D<float>&);
 
     template class ConvexHull3D<double>;
-    template std::ostream& operator <<<double>(std::ostream &, const ConvexHull3D<double>&);
+    template std::ostream& operator <<<double>(std::ostream&, const ConvexHull3D<double>&);
 
 }

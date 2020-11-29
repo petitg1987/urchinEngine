@@ -26,14 +26,14 @@ namespace urchin {
         delete map;
     }
 
-    void MapHandler::loadMapFromFile(const std::string &filename, LoadCallback& loadCallback) {
+    void MapHandler::loadMapFromFile(const std::string& filename, LoadCallback& loadCallback) {
         XmlParser xmlParser(filename);
 
         relativeWorkingDirectory = xmlParser.getRootChunk()->getAttributeValue(WORKING_DIR_ATTR);
         map->loadFrom(xmlParser.getRootChunk(), xmlParser, loadCallback);
     }
 
-    void MapHandler::writeMapOnFile(const std::string &filename) const {
+    void MapHandler::writeMapOnFile(const std::string& filename) const {
         XmlWriter xmlWriter(filename);
 
         std::shared_ptr<XmlChunk> rootChunk = xmlWriter.createChunk(SCENE_TAG, XmlAttribute(WORKING_DIR_ATTR, relativeWorkingDirectory));
@@ -46,7 +46,7 @@ namespace urchin {
      * @param filename Absolute path to file containing map information
      * @return Working directory relative to the map file
      */
-    std::string MapHandler::getRelativeWorkingDirectory(const std::string &filename) {
+    std::string MapHandler::getRelativeWorkingDirectory(const std::string& filename) {
         XmlParser xmlParser(filename, "");
         return xmlParser.getRootChunk()->getAttributeValue(WORKING_DIR_ATTR);
     }
@@ -61,7 +61,7 @@ namespace urchin {
     /**
      * @param relativeWorkingDirectory Relative working directory to the map file
      */
-    void MapHandler::setRelativeWorkingDirectory(const std::string &relativeWorkingDirectory) {
+    void MapHandler::setRelativeWorkingDirectory(const std::string& relativeWorkingDirectory) {
         this->relativeWorkingDirectory = relativeWorkingDirectory;
     }
 

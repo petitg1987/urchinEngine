@@ -280,7 +280,7 @@ namespace urchin {
                 m.a41 / t, m.a42 / t, m.a43 / t, m.a44 / t);
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Matrix4<T>& m) {
+    template<class T> std::ostream& operator <<(std::ostream& stream, const Matrix4<T>& m) {
         stream.setf(std::ios::left);
         stream << std::setw(10) << m.a11 << " " << std::setw(10) << m.a12 << " " << std::setw(10) << m.a13 << " " << std::setw(10) << m.a14 << std::endl;
         stream << std::setw(10) << m.a21 << " " << std::setw(10) << m.a22 << " " << std::setw(10) << m.a23 << " " << std::setw(10) << m.a24 << std::endl;
@@ -295,12 +295,12 @@ namespace urchin {
     template Matrix4<float> operator *<float>(const Matrix4<float>&, float);
     template Matrix4<float> operator *<float>(float, const Matrix4<float>&);
     template Matrix4<float> operator /<float>(const Matrix4<float>&, float);
-    template std::ostream& operator <<<float>(std::ostream &, const Matrix4<float>&);
+    template std::ostream& operator <<<float>(std::ostream&, const Matrix4<float>&);
 
     template class Matrix4<double>;
     template Matrix4<double> operator *<double>(const Matrix4<double>&, double);
     template Matrix4<double> operator *<double>(double, const Matrix4<double>&);
     template Matrix4<double> operator /<double>(const Matrix4<double>&, double);
-    template std::ostream& operator <<<double>(std::ostream &, const Matrix4<double>&);
+    template std::ostream& operator <<<double>(std::ostream&, const Matrix4<double>&);
 
 }

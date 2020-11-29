@@ -12,7 +12,7 @@ namespace urchin {
     /**
      * @param vertices [out] Computed vertices based on the skeleton
      */
-    void MeshService::computeVertices(const ConstMesh *const constMesh, const std::vector<Bone> &skeleton, std::vector<Point3<float>> &vertices) {
+    void MeshService::computeVertices(const ConstMesh *const constMesh, const std::vector<Bone>& skeleton, std::vector<Point3<float>>& vertices) {
         //setup vertices
         vertices.resize(constMesh->getNumberVertices());
         for (unsigned int i = 0; i < constMesh->getNumberVertices(); ++i) {
@@ -38,8 +38,8 @@ namespace urchin {
      * @param normals [out] Computed weighted normals for vertices
      * @param tangents [out] Computed tangents for vertices
      */
-    void MeshService::computeNormalsAndTangents(const ConstMesh *const constMesh, const std::vector<Point3<float>> &vertices, std::vector<Vector3<float>> &normals,
-                                                std::vector<Vector3<float>> &tangents) {
+    void MeshService::computeNormalsAndTangents(const ConstMesh *const constMesh, const std::vector<Point3<float>>& vertices, std::vector<Vector3<float>>& normals,
+                                                std::vector<Vector3<float>>& tangents) {
         //compute weighted normals
         static std::vector<Vector3<float>> vertexNormals;
         vertexNormals.clear();
@@ -88,7 +88,7 @@ namespace urchin {
         }
     }
 
-    Vector3<float> MeshService::computeWeightedVertexNormal(unsigned int triIndex1, unsigned int triIndex2, unsigned int triIndex3, const std::vector<Point3<float>> &vertices) {
+    Vector3<float> MeshService::computeWeightedVertexNormal(unsigned int triIndex1, unsigned int triIndex2, unsigned int triIndex3, const std::vector<Point3<float>>& vertices) {
         //see https://stackoverflow.com/questions/18519586/calculate-normal-per-vertex-opengl
         Point3<float> a = vertices[triIndex1];
         Point3<float> b = vertices[triIndex2];

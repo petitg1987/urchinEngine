@@ -32,7 +32,7 @@ template <class OBJ> AABBNodeData<OBJ> *AABBTree<OBJ>::getNodeData(OBJ object) c
  *
  * @tparam nodeObjects [out] Returns all node objects in the tree
  */
-template <class OBJ> void AABBTree<OBJ>::getAllNodeObjects(std::vector<OBJ> &nodeObjects) const {
+template <class OBJ> void AABBTree<OBJ>::getAllNodeObjects(std::vector<OBJ>& nodeObjects) const {
     browseNodes.clear();
     if (rootNode != nullptr) {
         browseNodes.push_back(rootNode);
@@ -194,7 +194,7 @@ template<class OBJ> void AABBTree<OBJ>::preUpdateObjectCallback(AABBNode<OBJ>*) 
 /**
  * @param objectsAABBoxHit [out] Objects AABBox hit by the aabbox
  */
-template<class OBJ> void AABBTree<OBJ>::aabboxQuery(const AABBox<float>& aabbox, std::vector<OBJ> &objectsAABBoxHit) const {
+template<class OBJ> void AABBTree<OBJ>::aabboxQuery(const AABBox<float>& aabbox, std::vector<OBJ>& objectsAABBoxHit) const {
     browseNodes.clear();
     if (rootNode != nullptr) {
         browseNodes.push_back(rootNode);
@@ -217,7 +217,7 @@ template<class OBJ> void AABBTree<OBJ>::aabboxQuery(const AABBox<float>& aabbox,
 /**
  * @param objectsAABBoxHitRay [out] Objects AABBox hit by the ray
  */
-template<class OBJ> void AABBTree<OBJ>::rayQuery(const Ray<float>& ray, std::vector<OBJ> &objectsAABBoxHitRay) const {
+template<class OBJ> void AABBTree<OBJ>::rayQuery(const Ray<float>& ray, std::vector<OBJ>& objectsAABBoxHitRay) const {
     browseNodes.clear();
     if (rootNode != nullptr) {
         browseNodes.push_back(rootNode);
@@ -244,7 +244,7 @@ template<class OBJ> void AABBTree<OBJ>::rayQuery(const Ray<float>& ray, std::vec
  * @param objectsAABBoxHitEnlargedRay [out] Objects AABBox hit by the enlarged ray
  */
 template<class OBJ> void AABBTree<OBJ>::enlargedRayQuery(const Ray<float>& ray, float enlargeNodeBoxHalfSize, const OBJ objectToExclude,
-                               std::vector<OBJ> &objectsAABBoxHitEnlargedRay) const {
+                               std::vector<OBJ>& objectsAABBoxHitEnlargedRay) const {
     browseNodes.clear();
     if (rootNode != nullptr) {
         browseNodes.push_back(rootNode);

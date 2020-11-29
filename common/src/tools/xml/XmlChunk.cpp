@@ -22,7 +22,7 @@ namespace urchin {
     /**
      * @return Attribute value if exist otherwise an empty string
      */
-    std::string XmlChunk::getAttributeValue(const std::string &attributeName) const {
+    std::string XmlChunk::getAttributeValue(const std::string& attributeName) const {
         return *chunk->ToElement()->Attribute(attributeName);
     }
 
@@ -40,7 +40,7 @@ namespace urchin {
         throw std::domain_error("Impossible to find a value on chunk: " + chunk->ValueStr());
     }
 
-    void XmlChunk::setStringValue(const std::string &value) {
+    void XmlChunk::setStringValue(const std::string& value) {
         chunk->LinkEndChild(new TiXmlText(value));
     }
 

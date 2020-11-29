@@ -54,7 +54,7 @@ namespace urchin {
                + std::to_string(viewBox.getMax().Y - viewBox.getMin().Y + (marginY * 2.0f));
     }
 
-    void SVGExporter::addShapes(std::ofstream &fileStream) const {
+    void SVGExporter::addShapes(std::ofstream& fileStream) const {
         for (const auto &shape : shapes) {
             fileStream<<"  "<<shape->getShapeTag()<<std::endl;
         }

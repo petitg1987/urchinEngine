@@ -8,8 +8,8 @@
 
 namespace urchin {
 
-    ConstMesh::ConstMesh(const std::string &materialFilename, const std::vector<Vertex> &vertices, std::vector<Point2<float>> textureCoordinates,
-            std::vector<unsigned int> trianglesIndices, std::vector<Weight> weights, const std::vector<Bone> &baseSkeleton) :
+    ConstMesh::ConstMesh(const std::string& materialFilename, const std::vector<Vertex>& vertices, std::vector<Point2<float>> textureCoordinates,
+            std::vector<unsigned int> trianglesIndices, std::vector<Weight> weights, const std::vector<Bone>& baseSkeleton) :
             vertices(vertices),
             textureCoordinates(std::move(textureCoordinates)),
             trianglesIndices(std::move(trianglesIndices)),

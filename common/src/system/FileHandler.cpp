@@ -8,7 +8,7 @@ namespace urchin {
     /**
      * @return File extension. If not extension found: return empty string
      */
-    std::string FileHandler::getFileExtension(const std::string &filePath) {
+    std::string FileHandler::getFileExtension(const std::string& filePath) {
         std::size_t found = filePath.find_last_of('.');
         if (found==std::string::npos) {
             return "";
@@ -18,7 +18,7 @@ namespace urchin {
 
     }
 
-    std::string FileHandler::getFileName(const std::string &filePath) {
+    std::string FileHandler::getFileName(const std::string& filePath) {
         std::size_t found = filePath.find_last_of("/\\");
         if (found==std::string::npos) {
             return filePath;
@@ -27,14 +27,14 @@ namespace urchin {
         return filePath.substr(found+1);
     }
 
-    std::string FileHandler::getFileNameNoExtension(const std::string &filePath) {
+    std::string FileHandler::getFileNameNoExtension(const std::string& filePath) {
         std::string fileName = getFileName(filePath);
         std::string extension = getFileExtension(filePath);
 
         return fileName.substr(0, fileName.size()-1-extension.size());
     }
 
-    std::string FileHandler::getDirectoryFrom(const std::string &filePath) {
+    std::string FileHandler::getDirectoryFrom(const std::string& filePath) {
         std::size_t found = filePath.find_last_of("/\\");
         if (found==std::string::npos) {
             return "./";
@@ -48,7 +48,7 @@ namespace urchin {
      * @param path Path to convert into relative path
      * @return Relative path from the reference directory
      */
-    std::string FileHandler::getRelativePath(const std::string &referenceDirectory, const std::string &path) {
+    std::string FileHandler::getRelativePath(const std::string& referenceDirectory, const std::string& path) {
         checkDirectory(referenceDirectory);
         std::string simplifiedReferenceDirectory = simplifyDirectoryPath(referenceDirectory);
 
@@ -74,7 +74,7 @@ namespace urchin {
     /**
      * @return Simplified path. Example: xx/yy/../zz/ -> xx/zz/; xx/./ -> xx/
      */
-    std::string FileHandler::simplifyDirectoryPath(const std::string &directoryPath) {
+    std::string FileHandler::simplifyDirectoryPath(const std::string& directoryPath) {
         checkDirectory(directoryPath);
         const std::string parentDirectorySymbol = "..";
 
@@ -95,7 +95,7 @@ namespace urchin {
         return simplifiedDirectoryPath;
     }
 
-    void FileHandler::checkDirectory(const std::string &directory) {
+    void FileHandler::checkDirectory(const std::string& directory) {
         if (directory.empty()) {
             throw std::invalid_argument("Specified directory cannot be null.");
         }

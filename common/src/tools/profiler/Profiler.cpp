@@ -10,7 +10,7 @@ namespace urchin {
     //static
     std::map<std::string, std::shared_ptr<Profiler>> Profiler::instances;
 
-    Profiler::Profiler(const std::string &instanceName) :
+    Profiler::Profiler(const std::string& instanceName) :
             instanceName(instanceName),
             profilerRoot(new ProfilerNode("root", nullptr)),
             currentNode(profilerRoot) {
@@ -22,7 +22,7 @@ namespace urchin {
         delete profilerRoot;
     }
 
-    std::shared_ptr<Profiler> Profiler::getInstance(const std::string &instanceName) {
+    std::shared_ptr<Profiler> Profiler::getInstance(const std::string& instanceName) {
         auto instanceIt = instances.find(instanceName);
         if (instanceIt!=instances.end()) {
             return instanceIt->second;
@@ -33,7 +33,7 @@ namespace urchin {
         return profiler;
     }
 
-    void Profiler::startNewProfile(const std::string &nodeName) {
+    void Profiler::startNewProfile(const std::string& nodeName) {
         if (isEnable) {
             assert(nodeName.length() <= 15); //ensure to use "small string optimization"
 
@@ -52,7 +52,7 @@ namespace urchin {
         }
     }
 
-    void Profiler::stopProfile(const std::string &nodeName) {
+    void Profiler::stopProfile(const std::string& nodeName) {
         if (isEnable) {
             if (!nodeName.empty() && currentNode->getName() != nodeName) {
                 throw std::runtime_error("Impossible to stop node '" + nodeName + "' because current node is '" + currentNode->getName() + "'");

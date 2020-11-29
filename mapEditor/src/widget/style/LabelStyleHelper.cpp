@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    void LabelStyleHelper::applyErrorStyle(QLabel* label, const std::string &errorMsg) {
+    void LabelStyleHelper::applyErrorStyle(QLabel* label, const std::string& errorMsg) {
         label->setStyleSheet("QLabel {color : red; }");
         label->setToolTip(QString::fromStdString(errorMsg));
     }

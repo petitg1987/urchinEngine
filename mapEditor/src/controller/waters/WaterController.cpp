@@ -41,8 +41,8 @@ namespace urchin {
         return sceneWater;
     }
 
-    const SceneWater *WaterController::updateSceneWaterSurface(const SceneWater* constSceneWater, const Vector3<float>& waterColor, const std::string &normalFilename,
-                                                               const std::string &dudvMapFilename, float waveSpeed, float waveStrength, float sRepeat, float tRepeat) {
+    const SceneWater *WaterController::updateSceneWaterSurface(const SceneWater* constSceneWater, const Vector3<float>& waterColor, const std::string& normalFilename,
+                                                               const std::string& dudvMapFilename, float waveSpeed, float waveStrength, float sRepeat, float tRepeat) {
         SceneWater *sceneWater = findSceneWater(constSceneWater);
         Water *water = sceneWater->getWater();
 

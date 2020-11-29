@@ -57,7 +57,7 @@ namespace urchin {
     }
 
     const SceneTerrain *TerrainController::updateSceneTerrainMaterial(const SceneTerrain* constSceneTerrain, float sRepeat, float tRepeat, const std::string& maskMapFilename,
-                                                                      const std::vector<std::string> &materialFilenames) {
+                                                                      const std::vector<std::string>& materialFilenames) {
         SceneTerrain *sceneTerrain = findSceneTerrain(constSceneTerrain);
         Terrain *terrain = sceneTerrain->getTerrain();
 

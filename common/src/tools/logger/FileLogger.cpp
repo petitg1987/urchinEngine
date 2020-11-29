@@ -48,7 +48,7 @@ namespace urchin {
         purge();
     }
 
-    void FileLogger::write(const std::string &msg) {
+    void FileLogger::write(const std::string& msg) {
         std::ofstream file;
         file.open(filename, std::ios::app);
         if (file.fail()) {

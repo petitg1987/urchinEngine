@@ -24,7 +24,7 @@ namespace urchin {
      * @param dt Delta of time (sec.) between two simulation steps
      * @param manifoldResults Constraints to solve
      */
-    void ConstraintSolverManager::solveConstraints(float dt, std::vector<ManifoldResult> &manifoldResults) {
+    void ConstraintSolverManager::solveConstraints(float dt, std::vector<ManifoldResult>& manifoldResults) {
         ScopeProfiler profiler("physics", "solveConstraint");
 
         //setup step to solve constraints
@@ -36,7 +36,7 @@ namespace urchin {
         }
     }
 
-    void ConstraintSolverManager::setupConstraints(std::vector<ManifoldResult> &manifoldResults, float dt) { //See http://en.wikipedia.org/wiki/Collision_response for formulas
+    void ConstraintSolverManager::setupConstraints(std::vector<ManifoldResult>& manifoldResults, float dt) { //See http://en.wikipedia.org/wiki/Collision_response for formulas
 
         //clear constraints solving
         for (auto &constraintSolving : constraintsSolving) {
@@ -225,7 +225,7 @@ namespace urchin {
         return tangentVelocity / tangentVelocityLength;
     }
 
-    void ConstraintSolverManager::logCommonData(const std::string &message, const CommonSolvingData& commonData) const {
+    void ConstraintSolverManager::logCommonData(const std::string& message, const CommonSolvingData& commonData) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 

@@ -1,7 +1,7 @@
 #include "FileReaderUtil.h"
 
 namespace urchin {
-    void FileReaderUtil::nextLine(std::ifstream &file, std::string &buffer) {
+    void FileReaderUtil::nextLine(std::ifstream& file, std::string& buffer) {
         do
         {
             std::getline(file, buffer);

@@ -162,7 +162,7 @@ namespace urchin {
 
             try {
                 skyChanged();
-            } catch (std::exception &e) {
+            } catch (std::exception& e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearSkyboxFilename(skyboxFilenameText);
             }

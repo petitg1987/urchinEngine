@@ -15,7 +15,7 @@ namespace urchin {
         return startPoint.squareDistance(left) < startPoint.squareDistance(right);
     }
 
-    template<class T> HeightfieldPointHelper<T>::HeightfieldPointHelper(const std::vector<Point3<T>> &heightfieldPoints, unsigned int heightfieldXSize) :
+    template<class T> HeightfieldPointHelper<T>::HeightfieldPointHelper(const std::vector<Point3<T>>& heightfieldPoints, unsigned int heightfieldXSize) :
             heightfieldPoints(heightfieldPoints),
             heightfieldXSize(heightfieldXSize) {
         heightfieldZSize = heightfieldPoints.size() / heightfieldXSize;
@@ -122,7 +122,7 @@ namespace urchin {
     /**
      * @param pathPoints [out] Vector where intersection point is added
      */
-    template<class T> void HeightfieldPointHelper<T>::addIntersectionPoint(const LineSegment2D<T>& line, const LineSegment2D<T>& pathLine, std::vector<Point3<T>> &pathPoints) const {
+    template<class T> void HeightfieldPointHelper<T>::addIntersectionPoint(const LineSegment2D<T>& line, const LineSegment2D<T>& pathLine, std::vector<Point3<T>>& pathPoints) const {
         bool hasIntersection;
         Point2<T> intersectionPoint = line.intersectPoint(pathLine, hasIntersection);
         if (hasIntersection) {

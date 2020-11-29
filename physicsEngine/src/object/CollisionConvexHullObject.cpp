@@ -10,7 +10,7 @@ namespace urchin {
      * @param pointsWithoutMargin Points without margin used to construct the convex hull. Points inside the convex hull are accepted but will unused.
      * @param outerMargin Collision outer margin. Collision margin must match with convex hulls arguments.
      */
-    CollisionConvexHullObject::CollisionConvexHullObject(float outerMargin, const std::vector<Point3<float>> &pointsWithMargin, const std::vector<Point3<float>> &pointsWithoutMargin) :
+    CollisionConvexHullObject::CollisionConvexHullObject(float outerMargin, const std::vector<Point3<float>>& pointsWithMargin, const std::vector<Point3<float>>& pointsWithoutMargin) :
             CollisionConvexObject3D(outerMargin),
             convexHullObjectWithMargin(std::make_shared<ConvexHull3D<float>>(pointsWithMargin)),
             convexHullObjectWithoutMargin(std::make_shared<ConvexHull3D<float>>(pointsWithoutMargin)) {

@@ -103,15 +103,15 @@ namespace urchin {
         return Line3D<T>(a, b);
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const LineSegment3D<T>& l) {
+    template<class T> std::ostream& operator <<(std::ostream& stream, const LineSegment3D<T>& l) {
         return stream << l.getA().X << " " << l.getA().Y << " " << l.getA().Z << " - " << l.getB().X << " " << l.getB().Y << " " << l.getB().Z ;
     }
 
     //explicit template
     template class LineSegment3D<float>;
-    template std::ostream& operator <<<float>(std::ostream &, const LineSegment3D<float>&);
+    template std::ostream& operator <<<float>(std::ostream&, const LineSegment3D<float>&);
 
     template class LineSegment3D<double>;
-    template std::ostream& operator <<<double>(std::ostream &, const LineSegment3D<double>&);
+    template std::ostream& operator <<<double>(std::ostream&, const LineSegment3D<double>&);
 
 }

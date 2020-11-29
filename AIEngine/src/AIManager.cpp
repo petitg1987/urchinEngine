@@ -130,7 +130,7 @@ namespace urchin {
                     frameStartTime = frameEndTime;
                 }
             }
-        } catch (std::exception &e) {
+        } catch (std::exception& e) {
             Logger::logger().logError("Error cause AI thread crash: exception reported to main thread");
             aiThreadExceptionPtr = std::current_exception();
         }

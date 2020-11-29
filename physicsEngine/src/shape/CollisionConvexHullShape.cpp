@@ -10,7 +10,7 @@ namespace urchin {
     /**
     * @param points Points used to construct the convex hull
     */
-    CollisionConvexHullShape::CollisionConvexHullShape(const std::vector<Point3<float>> &points) :
+    CollisionConvexHullShape::CollisionConvexHullShape(const std::vector<Point3<float>>& points) :
             CollisionShape3D(),
             convexHullShape(new ConvexHullShape3D<float>(points)),
             minDistanceToCenter(0.0f),

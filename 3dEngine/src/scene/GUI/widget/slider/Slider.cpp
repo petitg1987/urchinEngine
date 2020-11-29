@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    Slider::Slider(Position position, Size size, const std::vector<std::string> &values, const std::string &nameSkin) :
+    Slider::Slider(Position position, Size size, const std::vector<std::string>& values, const std::string& nameSkin) :
         Widget(position, size),
         values(values),
         selectedIndex(0),

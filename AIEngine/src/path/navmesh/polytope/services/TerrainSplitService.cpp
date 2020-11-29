@@ -6,8 +6,8 @@ namespace urchin {
 
     }
 
-    std::vector<TerrainSplit> TerrainSplitService::splitTerrain(const std::string &name, const Point3<float>& position,
-            const std::vector<Point3<float>> &localVertices, unsigned int xLength, unsigned int zLength) const {
+    std::vector<TerrainSplit> TerrainSplitService::splitTerrain(const std::string& name, const Point3<float>& position,
+            const std::vector<Point3<float>>& localVertices, unsigned int xLength, unsigned int zLength) const {
         std::vector<TerrainSplit> terrainSplits;
 
         Point3<float> farLeftVertex = position + localVertices[0];

@@ -8,7 +8,7 @@ namespace urchin {
        * Perform an union of polygons.
        * When polygons cannot be put together because there is no contact: there are returned apart.
        */
-    template<class T> std::vector<CSGPolygon<T>> &PolygonsUnion<T>::unionPolygons(const std::vector<CSGPolygon<T>> &polygons) const {
+    template<class T> std::vector<CSGPolygon<T>> &PolygonsUnion<T>::unionPolygons(const std::vector<CSGPolygon<T>>& polygons) const {
         mergedPolygons.clear();
 
         allPolygonPaths.clear();
@@ -70,7 +70,7 @@ namespace urchin {
         return twoPolygonUnions;
     }
 
-    template<class T> void PolygonsUnion<T>::logInputData(const std::vector<CSGPolygon<T>> &polygons, const std::string &message,
+    template<class T> void PolygonsUnion<T>::logInputData(const std::vector<CSGPolygon<T>>& polygons, const std::string& message,
             Logger::CriticalityLevel logLevel) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<T>::max_digits10);

@@ -1529,7 +1529,7 @@ std::istream& operator>> (std::istream & in, TiXmlNode & base)
 }
 
 	
-std::ostream& operator<< (std::ostream &out, const TiXmlNode & base)
+std::ostream& operator<< (std::ostream& out, const TiXmlNode & base)
 {
 	TiXmlPrinter printer;
 	printer.SetStreamPrinting();

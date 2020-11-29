@@ -18,7 +18,7 @@ namespace urchin {
         return name;
     }
 
-    void Resource::setName(const std::string &nameU) {
+    void Resource::setName(const std::string& nameU) {
         name = nameU;
     }
 

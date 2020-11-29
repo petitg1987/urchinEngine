@@ -44,7 +44,7 @@ namespace urchin {
         return name;
     }
 
-    void SceneLight::setName(const std::string &name) {
+    void SceneLight::setName(const std::string& name) {
         this->name = name;
     }
 

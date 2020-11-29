@@ -24,7 +24,7 @@ namespace urchin {
                 ->build();
     }
 
-    void Mesh::update(const std::vector<Bone> &skeleton) {
+    void Mesh::update(const std::vector<Bone>& skeleton) {
         //recompute the vertices and normals
         MeshService::instance()->computeVertices(constMesh, skeleton, vertices);
         MeshService::instance()->computeNormalsAndTangents(constMesh, vertices, normals, tangents);

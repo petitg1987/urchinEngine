@@ -54,7 +54,7 @@ namespace urchin {
         return name;
     }
 
-    void SceneSound::setName(const std::string &name) {
+    void SceneSound::setName(const std::string& name) {
         this->name = name;
     }
 

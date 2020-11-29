@@ -11,7 +11,7 @@ namespace urchin {
      * @param points Points used to construct the convex hull shape. Points inside the convex hull shape are accepted but will unused.
      * Duplicate points are supported.
      */
-    template<class T> ConvexHullShape2D<T>::ConvexHullShape2D(const std::vector<Point2<T>> &points) {
+    template<class T> ConvexHullShape2D<T>::ConvexHullShape2D(const std::vector<Point2<T>>& points) {
         //Monotone Chain algorithm
         unsigned int nbPoints = points.size();
         unsigned int k = 0; //number of points in convex hull
@@ -50,7 +50,7 @@ namespace urchin {
         convexHullPoints.resize(static_cast<unsigned long>(std::max((static_cast<int>(k))-1, 0))); //k-1: remove the last point which is the same that the first point of lower list
     }
 
-    template<class T> std::unique_ptr<ConvexHullShape2D<T>> ConvexHullShape2D<T>::createFromCcwConvexPoints(const std::vector<Point2<T>> &ccwConvexPoints) {
+    template<class T> std::unique_ptr<ConvexHullShape2D<T>> ConvexHullShape2D<T>::createFromCcwConvexPoints(const std::vector<Point2<T>>& ccwConvexPoints) {
         std::unique_ptr<ConvexHullShape2D<T>> convexHullShape = std::make_unique<ConvexHullShape2D<T>>();
         convexHullShape->convexHullPoints = ccwConvexPoints;
 

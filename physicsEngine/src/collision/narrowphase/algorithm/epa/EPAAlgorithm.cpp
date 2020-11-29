@@ -383,7 +383,7 @@ namespace urchin {
         return EPATriangleData<T>(distanceToOrigin, normal, closestPointToOrigin, barycentrics);
     }
 
-    template<class T> void EPAAlgorithm<T>::logInputData(const std::string &errorMessage, const CollisionConvexObject3D& convexObject1,
+    template<class T> void EPAAlgorithm<T>::logInputData(const std::string& errorMessage, const CollisionConvexObject3D& convexObject1,
             const CollisionConvexObject3D& convexObject2, const GJKResult<T>& gjkResult) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<T>::max_digits10);

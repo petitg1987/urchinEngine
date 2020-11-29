@@ -23,7 +23,7 @@ namespace urchin {
     /**
      * @param ccwPolygonPoints Polygon points in counter clockwise order. Points must be unique.
      */
-    TriangulationAlgorithm::TriangulationAlgorithm(std::vector<Point2<float>> &&ccwPolygonPoints, const std::string &name) :
+    TriangulationAlgorithm::TriangulationAlgorithm(std::vector<Point2<float>> &&ccwPolygonPoints, const std::string& name) :
             polygonPoints(std::move(ccwPolygonPoints)),
             missingTriangleNeighbor(0) {
         this->endContourIndices.push_back(polygonPoints.size());
@@ -51,7 +51,7 @@ namespace urchin {
      * @param cwHolePoints Hole points in clockwise order. Points must be unique and not go outside the polygon contour.
      * @return Hole index (start to 0).
      */
-    std::size_t TriangulationAlgorithm::addHolePoints(const std::vector<Point2<float>> &cwHolePoints, const std::string &holeName) {
+    std::size_t TriangulationAlgorithm::addHolePoints(const std::vector<Point2<float>>& cwHolePoints, const std::string& holeName) {
         polygonPoints.insert(polygonPoints.end(), cwHolePoints.begin(), cwHolePoints.end());
         endContourIndices.push_back(polygonPoints.size());
         contourNames.push_back(holeName);
@@ -301,7 +301,7 @@ namespace urchin {
         return edgeId + std::max(edgeStartIndex, edgeEndIndex);
     }
 
-    void TriangulationAlgorithm::logInputData(const std::string &message, Logger::CriticalityLevel logLevel) const {
+    void TriangulationAlgorithm::logInputData(const std::string& message, Logger::CriticalityLevel logLevel) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 
@@ -322,7 +322,7 @@ namespace urchin {
         Logger::logger().log(logLevel, logStream.str());
     }
 
-    void TriangulationAlgorithm::logOutputData(const std::string &message, const std::vector<std::shared_ptr<NavTriangle>> &triangles, Logger::CriticalityLevel logLevel) const {
+    void TriangulationAlgorithm::logOutputData(const std::string& message, const std::vector<std::shared_ptr<NavTriangle>> &triangles, Logger::CriticalityLevel logLevel) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 

@@ -231,7 +231,7 @@ namespace urchin {
                 m.a31 / t, m.a32 / t, m.a33 / t);
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Matrix3<T>& m) {
+    template<class T> std::ostream& operator <<(std::ostream& stream, const Matrix3<T>& m) {
         stream.setf(std::ios::left);
         stream << std::setw(10) << m.a11 << " " << std::setw(10) << m.a12 << " " << std::setw(10) << m.a13 << std::endl;
         stream << std::setw(10) << m.a21 << " " << std::setw(10) << m.a22 << " " << std::setw(10) << m.a23 << std::endl;
@@ -245,12 +245,12 @@ namespace urchin {
     template Matrix3<float> operator *<float>(const Matrix3<float>& m, float);
     template Matrix3<float> operator *<float>(float, const Matrix3<float>&);
     template Matrix3<float> operator /<float>(const Matrix3<float>&, float);
-    template std::ostream& operator <<<float>(std::ostream &, const Matrix3<float>&);
+    template std::ostream& operator <<<float>(std::ostream&, const Matrix3<float>&);
 
     template class Matrix3<double>;
     template Matrix3<double> operator *<double>(const Matrix3<double>& m, double);
     template Matrix3<double> operator *<double>(double, const Matrix3<double>&);
     template Matrix3<double> operator /<double>(const Matrix3<double>&, double);
-    template std::ostream& operator <<<double>(std::ostream &, const Matrix3<double>&);
+    template std::ostream& operator <<<double>(std::ostream&, const Matrix3<double>&);
 
 }

@@ -20,7 +20,7 @@ namespace urchin {
         return constSceneObjects;
     }
 
-    const SceneObject *ObjectController::findSceneObjectByBodyId(const std::string &bodyId) const {
+    const SceneObject *ObjectController::findSceneObjectByBodyId(const std::string& bodyId) const {
         for (auto sceneObject : getSceneObjects()) {
             if (sceneObject->getRigidBody() && sceneObject->getRigidBody()->getId()==bodyId) {
                 return sceneObject;

@@ -178,7 +178,7 @@ namespace urchin {
         return QString::fromStdString(savedPreferredMapPath);
     }
 
-    void MapEditorWindow::savePreferredMapPath(const std::string &preferredMapPath) {
+    void MapEditorWindow::savePreferredMapPath(const std::string& preferredMapPath) {
         StateSaveHelper::instance()->saveState("preferred.map.path", preferredMapPath);
     }
 
@@ -247,7 +247,7 @@ namespace urchin {
         }
     }
 
-    void MapEditorWindow::loadMap(const std::string &mapFilename, const std::string &relativeWorkingDirectory) {
+    void MapEditorWindow::loadMap(const std::string& mapFilename, const std::string& relativeWorkingDirectory) {
         sceneController = new SceneController();
 
         sceneDisplayerWidget->loadMap(sceneController, mapFilename, relativeWorkingDirectory);
@@ -350,7 +350,7 @@ namespace urchin {
         refreshWindowTitle();
     }
 
-    void MapEditorWindow::updateMapFilename(const std::string &mapFilename) {
+    void MapEditorWindow::updateMapFilename(const std::string& mapFilename) {
         this->mapFilename = mapFilename;
 
         if (!mapFilename.empty()) {

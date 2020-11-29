@@ -17,7 +17,7 @@ namespace urchin {
      * If one body of the island cannot sleep, we set their status to active.
      * @param overlappingPairs Overlapping pairs of broad phase used to determine the islands
      */
-    void IslandManager::refreshBodyActiveState(const std::vector<ManifoldResult> &manifoldResults) {
+    void IslandManager::refreshBodyActiveState(const std::vector<ManifoldResult>& manifoldResults) {
         ScopeProfiler profiler("physics", "refreshBodyStat");
 
         buildIslands(manifoldResults);
@@ -62,7 +62,7 @@ namespace urchin {
         }
     }
 
-    void IslandManager::buildIslands(const std::vector<ManifoldResult> &manifoldResults) {
+    void IslandManager::buildIslands(const std::vector<ManifoldResult>& manifoldResults) {
         //1. create an island for each body
         islandElements.clear();
         for (auto body : bodyManager->getWorkBodies()) {
@@ -92,7 +92,7 @@ namespace urchin {
     /**
      * @return Number of element for island starting at 'startElementIndex'
      */
-    unsigned int IslandManager::computeNumberElements(const std::vector<IslandElementLink> &islandElementsLink, unsigned int startElementIndex) const {
+    unsigned int IslandManager::computeNumberElements(const std::vector<IslandElementLink>& islandElementsLink, unsigned int startElementIndex) const {
         unsigned int islandId = islandElementsLink[startElementIndex].islandIdRef;
         unsigned int endElementIndex;
 
@@ -107,7 +107,7 @@ namespace urchin {
                  && body->getAngularVelocity().squareLength() < squaredAngularSleepingThreshold);
     }
 
-    void IslandManager::printIslands(const std::vector<IslandElementLink> &islandElementsLink) {
+    void IslandManager::printIslands(const std::vector<IslandElementLink>& islandElementsLink) {
         unsigned int islandId = 0;
         unsigned int i=0;
         while (islandElementsLink.size()>i) { //loop on islands

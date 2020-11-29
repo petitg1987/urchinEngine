@@ -32,7 +32,7 @@ namespace urchin {
         return children;
     }
 
-    ProfilerNode *ProfilerNode::findChildren(const std::string &name) const {
+    ProfilerNode *ProfilerNode::findChildren(const std::string& name) const {
         for (const auto &child : children) {
             if (child->getName() == name) {
                 return child;
@@ -85,7 +85,7 @@ namespace urchin {
         return static_cast<int>(times.size()) - 1;
     }
 
-    void ProfilerNode::log(unsigned int level, std::stringstream &logStream, double levelOneTotalTime) {
+    void ProfilerNode::log(unsigned int level, std::stringstream& logStream, double levelOneTotalTime) {
         if (startCount!=0) {
             throw std::runtime_error("Impossible to print node " + getName() + " because there is " + std::to_string(startCount) + " missing stop call");
         }

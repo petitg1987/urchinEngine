@@ -9,7 +9,7 @@ namespace urchin {
     //static
     AABBox<float> Model::defaultModelLocalAABBox = AABBox<float>(Point3<float>(-0.5f, -0.5f, -0.5f), Point3<float>(0.5f, 0.5f, 0.5f));
 
-    Model::Model(const std::string &meshFilename) :
+    Model::Model(const std::string& meshFilename) :
             defaultModelAABBoxes({defaultModelLocalAABBox}),
             meshes(nullptr),
             currAnimation(nullptr),
@@ -39,7 +39,7 @@ namespace urchin {
         }
     }
 
-    void Model::initialize(const std::string &meshFilename) {
+    void Model::initialize(const std::string& meshFilename) {
         if (!meshFilename.empty()) {
             auto *constMeshes = MediaManager::instance()->getMedia<ConstMeshes>(meshFilename);
             meshes = new Meshes(constMeshes);
@@ -48,7 +48,7 @@ namespace urchin {
     }
 
 
-    void Model::loadAnimation(const std::string &name, const std::string &filename) {
+    void Model::loadAnimation(const std::string& name, const std::string& filename) {
         if (!meshes) {
             throw std::runtime_error("Cannot add animation on model without mesh");
         }
@@ -77,7 +77,7 @@ namespace urchin {
         }
     }
 
-    void Model::animate(const std::string &animationName) {
+    void Model::animate(const std::string& animationName) {
         currAnimation = animations.at(animationName);
 
         onMoving(transform);

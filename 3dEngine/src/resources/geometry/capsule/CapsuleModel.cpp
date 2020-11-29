@@ -67,7 +67,7 @@ namespace urchin {
         return vertexArray;
     }
 
-    void CapsuleModel::fillWithCaps(std::vector<Point3<float>> &vertexArray, const Quaternion<float>& localCapOrientation) const {
+    void CapsuleModel::fillWithCaps(std::vector<Point3<float>>& vertexArray, const Quaternion<float>& localCapOrientation) const {
         float radius = capsule.getRadius();
         float halfCylinderHeight = capsule.getCylinderHeight() / 2.0f;
 

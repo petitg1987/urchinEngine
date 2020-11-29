@@ -10,7 +10,7 @@ namespace urchin {
     /**
      * @param points Points used to construct the convex hull shape. Points inside the convex hull shape are accepted but will unused.
      */
-    template<class T> ConvexHullShape3D<T>::ConvexHullShape3D(const std::vector<Point3<T>> &points) :
+    template<class T> ConvexHullShape3D<T>::ConvexHullShape3D(const std::vector<Point3<T>>& points) :
         nextPointIndex(0),
         nextTriangleIndex(0) {
         //build tetrahedron
@@ -192,7 +192,7 @@ namespace urchin {
         }
     }
 
-    template<class T> void ConvexHullShape3D<T>::removeTriangle(const typename std::map<std::size_t, IndexedTriangle3D<T>>::iterator &itTriangle) {
+    template<class T> void ConvexHullShape3D<T>::removeTriangle(const typename std::map<std::size_t, IndexedTriangle3D<T>>::iterator& itTriangle) {
         //remove reference of triangles on points
         const std::size_t *indices = itTriangle->second.getIndices();
         for (std::size_t i=0; i<3; i++) {
@@ -211,7 +211,7 @@ namespace urchin {
     /**
      * @return All indices points used to build the tetrahedron
      */
-    template<class T> std::set<unsigned int> ConvexHullShape3D<T>::buildTetrahedron(const std::vector<Point3<T>> &points) {
+    template<class T> std::set<unsigned int> ConvexHullShape3D<T>::buildTetrahedron(const std::vector<Point3<T>>& points) {
         //1. initialize
         std::set<unsigned int> pointsUsed;
 
@@ -303,7 +303,7 @@ namespace urchin {
      * @param pointsUsed Points currently used to construct the tetrahedron
      * @return Exception during building of tetrahedron
      */
-    template<class T> std::invalid_argument ConvexHullShape3D<T>::buildException(const std::vector<Point3<T>> &points, const std::set<unsigned int>& pointsUsed) {
+    template<class T> std::invalid_argument ConvexHullShape3D<T>::buildException(const std::vector<Point3<T>>& points, const std::set<unsigned int>& pointsUsed) {
         std::string formName;
         if (pointsUsed.empty()) {
             formName = "empty set";
@@ -334,7 +334,7 @@ namespace urchin {
         return std::invalid_argument("Impossible to build the convex hull shape. All points form a " + formName + ".");
     }
 
-    template<class T> void ConvexHullShape3D<T>::logConvexHullData(const std::string &errorMessage) const {
+    template<class T> void ConvexHullShape3D<T>::logConvexHullData(const std::string& errorMessage) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<T>::max_digits10);
 
@@ -344,7 +344,7 @@ namespace urchin {
         Logger::logger().logError(logStream.str());
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const ConvexHullShape3D<T>& ch) {
+    template<class T> std::ostream& operator <<(std::ostream& stream, const ConvexHullShape3D<T>& ch) {
         for (auto it = ch.getIndexedTriangles().begin(); it!=ch.getIndexedTriangles().end(); ++it) {
             stream << "Triangle "<< it->first <<": "
                 <<"("<<ch.getConvexHullPoints().at(it->second.getIndex(0)).point<<") "
@@ -357,11 +357,11 @@ namespace urchin {
 
     //explicit template
     template class ConvexHullShape3D<float>;
-    template std::ostream& operator <<<float>(std::ostream &, const ConvexHullShape3D<float>&);
+    template std::ostream& operator <<<float>(std::ostream&, const ConvexHullShape3D<float>&);
     template struct ConvexHullPoint<float>;
 
     template class ConvexHullShape3D<double>;
-    template std::ostream& operator <<<double>(std::ostream &, const ConvexHullShape3D<double>&);
+    template std::ostream& operator <<<double>(std::ostream&, const ConvexHullShape3D<double>&);
     template struct ConvexHullPoint<double>;
 
 }

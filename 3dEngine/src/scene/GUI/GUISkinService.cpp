@@ -16,7 +16,7 @@ namespace urchin {
         delete xmlSkin;
     }
 
-    void GUISkinService::setSkin(const std::string &skinFilename) {
+    void GUISkinService::setSkin(const std::string& skinFilename) {
         delete xmlSkin;
 
         xmlSkin = new XmlParser(skinFilename);

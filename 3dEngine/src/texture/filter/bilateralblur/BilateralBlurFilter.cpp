@@ -44,7 +44,7 @@ namespace urchin {
         renderer->addAdditionalTexture(TextureReader::build(depthTexture, TextureParam::buildNearest()));
     }
 
-    void BilateralBlurFilter::completeShaderTokens(std::map<std::string, std::string> &shaderTokens) const {
+    void BilateralBlurFilter::completeShaderTokens(std::map<std::string, std::string>& shaderTokens) const {
         shaderTokens["IS_VERTICAL_BLUR"] = (blurDirection==BlurDirection::VERTICAL) ? "true" : "false";
         shaderTokens["KERNEL_RADIUS"] = std::to_string(blurSize / 2);
         shaderTokens["BLUR_SHARPNESS"] = std::to_string(blurSharpness);

@@ -155,7 +155,7 @@ namespace urchin {
         return pointIndicesToPolygon(cwPolygonPointIndices, obstacleIndex);
     }
 
-    unsigned int TerrainObstacleService::retrieveNextPointIndex(unsigned int pointIndex, const std::vector<EdgeDirection> &checkDirections,
+    unsigned int TerrainObstacleService::retrieveNextPointIndex(unsigned int pointIndex, const std::vector<EdgeDirection>& checkDirections,
                                                                 const std::vector<unsigned int>& squares, EdgeDirection& usedDirection) const {
         for (EdgeDirection checkDirection : checkDirections) {
             int nextPointIndex = nextPointInDirection(pointIndex, checkDirection);

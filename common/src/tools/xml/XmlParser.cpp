@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    XmlParser::XmlParser(const std::string &filename) :
+    XmlParser::XmlParser(const std::string& filename) :
         XmlParser(filename, FileSystem::instance()->getResourcesDirectory()) {
 
     }
@@ -13,7 +13,7 @@ namespace urchin {
     /**
      * @param workingDirectory Override the default working directory
      */
-    XmlParser::XmlParser(const std::string &filename, const std::string &workingDirectory) {
+    XmlParser::XmlParser(const std::string& filename, const std::string& workingDirectory) {
         this->filenamePath = workingDirectory + filename;
         this->doc = new TiXmlDocument(filenamePath.c_str());
 
@@ -43,7 +43,7 @@ namespace urchin {
      * @param parent Name of the tag parent of "chunkName"
      * @return XML chunks according to the parameters
      */
-    std::vector<std::shared_ptr<XmlChunk>> XmlParser::getChunks(const std::string &chunkName, const XmlAttribute& attribute, const std::shared_ptr<XmlChunk> &parent) const {
+    std::vector<std::shared_ptr<XmlChunk>> XmlParser::getChunks(const std::string& chunkName, const XmlAttribute& attribute, const std::shared_ptr<XmlChunk> &parent) const {
         std::vector<std::shared_ptr<XmlChunk>> chunks;
 
         const TiXmlNode *firstChild;
@@ -78,7 +78,7 @@ namespace urchin {
      * @param parent Name of the tag parent of "chunkName"
      * @return Unique XML chunk according to the parameters
      */
-    std::shared_ptr<XmlChunk> XmlParser::getUniqueChunk(bool mandatory, const std::string &chunkName, const XmlAttribute& attribute, const std::shared_ptr<XmlChunk> &parent) const {
+    std::shared_ptr<XmlChunk> XmlParser::getUniqueChunk(bool mandatory, const std::string& chunkName, const XmlAttribute& attribute, const std::shared_ptr<XmlChunk> &parent) const {
         std::vector<std::shared_ptr<XmlChunk>> chunks = getChunks(chunkName, attribute, parent);
 
         if (chunks.size()>1) {
@@ -94,7 +94,7 @@ namespace urchin {
         return chunks[0];
     }
 
-    std::string XmlParser::getChunkDescription(const std::string &chunkName, const XmlAttribute& attribute) const {
+    std::string XmlParser::getChunkDescription(const std::string& chunkName, const XmlAttribute& attribute) const {
         if (attribute.getAttributeName().empty()) {
             return chunkName;
         } else {

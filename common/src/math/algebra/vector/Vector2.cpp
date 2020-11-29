@@ -175,7 +175,7 @@ namespace urchin {
         return m * v;
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Vector2<T>& v) {
+    template<class T> std::ostream& operator <<(std::ostream& stream, const Vector2<T>& v) {
         return stream << v.X << ", " << v.Y;
     }
 
@@ -190,7 +190,7 @@ namespace urchin {
     template Vector2<float> operator /<float>(const Vector2<float>&, float);
     template Vector2<float> operator *<float>(const Matrix2<float>&, const Vector2<float>&);
     template Vector2<float> operator *<float>(const Vector2<float>&, const Matrix2<float>&);
-    template std::ostream& operator <<<float>(std::ostream &, const Vector2<float>&);
+    template std::ostream& operator <<<float>(std::ostream&, const Vector2<float>&);
 
     template class Vector2<double>;
     template Vector2<float> Vector2<double>::cast() const;
@@ -202,7 +202,7 @@ namespace urchin {
     template Vector2<double> operator /<double>(const Vector2<double>&, double);
     template Vector2<double> operator *<double>(const Matrix2<double>&, const Vector2<double>&);
     template Vector2<double> operator *<double>(const Vector2<double>&, const Matrix2<double>&);
-    template std::ostream& operator <<<double>(std::ostream &, const Vector2<double>&);
+    template std::ostream& operator <<<double>(std::ostream&, const Vector2<double>&);
 
     template class Vector2<int>;
     template Vector2<float> Vector2<int>::cast() const;
@@ -214,7 +214,7 @@ namespace urchin {
     template Vector2<int> operator /<int>(const Vector2<int>&, int);
     template Vector2<int> operator *<int>(const Matrix2<int>&, const Vector2<int>&);
     template Vector2<int> operator *<int>(const Vector2<int>&, const Matrix2<int>&);
-    template std::ostream& operator <<<int>(std::ostream &, const Vector2<int>&);
+    template std::ostream& operator <<<int>(std::ostream&, const Vector2<int>&);
 
     template class Vector2<long long>;
     template Vector2<float> Vector2<long long>::cast() const;
@@ -226,6 +226,6 @@ namespace urchin {
     template Vector2<long long> operator /<long long>(const Vector2<long long>&, long long);
     template Vector2<long long> operator *<long long>(const Matrix2<long long>&, const Vector2<long long>&);
     template Vector2<long long> operator *<long long>(const Vector2<long long>&, const Matrix2<long long>&);
-    template std::ostream& operator <<<long long>(std::ostream &, const Vector2<long long>&);
+    template std::ostream& operator <<<long long>(std::ostream&, const Vector2<long long>&);
 
 }

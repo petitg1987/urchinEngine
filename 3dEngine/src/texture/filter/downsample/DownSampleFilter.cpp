@@ -12,7 +12,7 @@ namespace urchin {
         return "downSampleTex";
     }
 
-    void DownSampleFilter::completeShaderTokens(std::map<std::string, std::string> &) const {
+    void DownSampleFilter::completeShaderTokens(std::map<std::string, std::string>&) const {
         //nothing to complete
     }
 

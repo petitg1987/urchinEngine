@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    Text::Text(Position position, const std::string &fontFilename) :
+    Text::Text(Position position, const std::string& fontFilename) :
             Widget(position, Size(0, 0, Size::PIXEL)),
             maxLength(-1) {
         font = MediaManager::instance()->getMedia<Font>(fontFilename);
@@ -23,7 +23,7 @@ namespace urchin {
         //nothing to do: text cannot be defined in percentage (Size::SizeType::PERCENTAGE).
     }
 
-    void Text::setText(const std::string &text, int maxLength) {
+    void Text::setText(const std::string& text, int maxLength) {
         this->text = text;
         this->maxLength = maxLength;
 
@@ -99,7 +99,7 @@ namespace urchin {
                 ->build();
     }
 
-    std::string Text::cutText(const std::string &constText, unsigned int maxLength) {
+    std::string Text::cutText(const std::string& constText, unsigned int maxLength) {
         std::string text(constText);
 
         unsigned int lineLength = 0;
