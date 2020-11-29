@@ -31,15 +31,15 @@ namespace urchin {
                 LAST_VIEW_PROPERTIES
             };
 
-            SceneDisplayer(SceneController *, const MouseController &, const StatusBarController &);
+            SceneDisplayer(SceneController *, const MouseController&, const StatusBarController&);
             ~SceneDisplayer();
 
-            void loadMap(const std::string &, const std::string &, const std::string &);
+            void loadMap(const std::string&, const std::string&, const std::string&);
 
             void setViewProperties(SceneDisplayer::ViewProperties, bool);
-            void setHighlightSceneObject(const SceneObject *);
-            void setHighlightSceneLight(const SceneLight *);
-            void setHighlightSceneSound(const SceneSound *);
+            void setHighlightSceneObject(const SceneObject*);
+            void setHighlightSceneLight(const SceneLight*);
+            void setHighlightSceneSound(const SceneSound*);
 
             void paint();
             void resize(unsigned int, unsigned int);
@@ -53,8 +53,8 @@ namespace urchin {
             ObjectMoveController *getObjectMoveController() const;
 
         private:
-            void initializeEngineResources(const std::string &);
-            void initializeScene(const std::string &);
+            void initializeEngineResources(const std::string&);
+            void initializeScene(const std::string&);
 
             void refreshObjectsModel();
             void refreshLightScopeModel();

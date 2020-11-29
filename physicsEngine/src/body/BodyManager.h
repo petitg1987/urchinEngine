@@ -33,7 +33,7 @@ namespace urchin {
 
         private:
             void createNewWorkBody(AbstractBody *);
-            std::vector<AbstractBody *>::iterator deleteBody(AbstractBody *, const std::vector<AbstractBody *>::iterator &);
+            std::vector<AbstractBody *>::iterator deleteBody(AbstractBody *, const std::vector<AbstractBody *>::iterator&);
             void deleteWorkBody(AbstractBody *body);
 
             std::vector<AbstractBody *> bodies;

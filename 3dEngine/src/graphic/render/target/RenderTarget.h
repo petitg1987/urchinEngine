@@ -15,12 +15,12 @@ namespace urchin {
 
             void onResize(unsigned int, unsigned int);
 
-            void activeShader(const std::unique_ptr<Shader> &) const;
+            void activeShader(const std::unique_ptr<Shader>&) const;
             virtual void resetDisplay() const = 0;
-            virtual void display(const std::unique_ptr<GenericRenderer> &) const = 0;
+            virtual void display(const std::unique_ptr<GenericRenderer>&) const = 0;
 
         protected:
-            void executeRenderer(const std::unique_ptr<GenericRenderer> &) const;
+            void executeRenderer(const std::unique_ptr<GenericRenderer>&) const;
 
             unsigned int getTargetWidth() const;
             unsigned int getTargetHeight() const;

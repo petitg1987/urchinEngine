@@ -16,7 +16,7 @@ namespace urchin {
             Q_OBJECT
 
         public:
-            CloneObjectDialog(QWidget *parent, const ObjectController *);
+            CloneObjectDialog(QWidget *parent, const ObjectController*);
 
             SceneObject *getSceneObject() const;
 
@@ -27,7 +27,7 @@ namespace urchin {
             int buildSceneObject(int);
 
             void done(int) override;
-            bool isSceneObjectExist(const std::string &);
+            bool isSceneObjectExist(const std::string&);
 
             const ObjectController *objectController;
 

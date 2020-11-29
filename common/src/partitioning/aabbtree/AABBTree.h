@@ -30,9 +30,9 @@ namespace urchin {
             void updateObjects();
             virtual void preUpdateObjectCallback(AABBNode<OBJ> *);
 
-            void aabboxQuery(const AABBox<float> &, std::vector<OBJ> &) const;
-            void rayQuery(const Ray<float> &, std::vector<OBJ> &) const;
-            void enlargedRayQuery(const Ray<float> &, float, const OBJ, std::vector<OBJ> &) const;
+            void aabboxQuery(const AABBox<float>&, std::vector<OBJ>&) const;
+            void rayQuery(const Ray<float>&, std::vector<OBJ>&) const;
+            void enlargedRayQuery(const Ray<float>&, float, const OBJ, std::vector<OBJ>&) const;
 
         protected:
             std::map<OBJ, AABBNode<OBJ> *> objectsNode;
@@ -40,8 +40,8 @@ namespace urchin {
 
         private:
             std::vector<AABBNodeData<OBJ> *> extractAllNodeData();
-            void insertNode(AABBNode<OBJ> *, AABBNode<OBJ> *);
-            void replaceNode(AABBNode<OBJ> *, AABBNode<OBJ> *);
+            void insertNode(AABBNode<OBJ> *, AABBNode<OBJ>*);
+            void replaceNode(AABBNode<OBJ> *, AABBNode<OBJ>*);
             void removeNode(AABBNode<OBJ> *);
 
             float fatMargin;

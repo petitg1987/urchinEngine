@@ -17,8 +17,8 @@ namespace urchin {
         public:
             ShadowShaderVariable();
 
-            void setProjectionMatricesShaderVar(const ShaderVar &);
-            void setShadowData(const ShadowData *);
+            void setProjectionMatricesShaderVar(const ShaderVar&);
+            void setShadowData(const ShadowData*);
 
             void loadCustomShaderVariables() override;
 

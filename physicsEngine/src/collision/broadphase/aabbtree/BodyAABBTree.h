@@ -16,25 +16,25 @@ namespace urchin {
             BodyAABBTree();
             ~BodyAABBTree() override;
 
-            void addBody(AbstractWorkBody *, PairContainer *);
-            void postAddObjectCallback(AABBNode<AbstractWorkBody *> *) override;
+            void addBody(AbstractWorkBody *, PairContainer*);
+            void postAddObjectCallback(AABBNode<AbstractWorkBody *>*) override;
 
             void removeBody(AbstractWorkBody *);
-            void preRemoveObjectCallback(AABBNode<AbstractWorkBody *> *) override;
+            void preRemoveObjectCallback(AABBNode<AbstractWorkBody *>*) override;
 
             void updateBodies();
-            void preUpdateObjectCallback(AABBNode<AbstractWorkBody *> *) override;
+            void preUpdateObjectCallback(AABBNode<AbstractWorkBody *>*) override;
 
             const std::vector<OverlappingPair *> &getOverlappingPairs() const;
 
         private:
-            void computeOverlappingPairsFor(AABBNode<AbstractWorkBody *> *);
-            void createOverlappingPair(BodyAABBNodeData *, BodyAABBNodeData *);
-            void removeOverlappingPairs(const BodyAABBNodeData *);
-            void removeAlternativePairContainerReferences(const AbstractWorkBody *, PairContainer *);
+            void computeOverlappingPairsFor(AABBNode<AbstractWorkBody *>*);
+            void createOverlappingPair(BodyAABBNodeData *, BodyAABBNodeData*);
+            void removeOverlappingPairs(const BodyAABBNodeData*);
+            void removeAlternativePairContainerReferences(const AbstractWorkBody*, PairContainer*);
 
             void computeWorldBoundary();
-            void controlBoundaries(AABBNode<AbstractWorkBody *> *) const;
+            void controlBoundaries(AABBNode<AbstractWorkBody *>*) const;
 
             PairContainer *defaultPairContainer;
 

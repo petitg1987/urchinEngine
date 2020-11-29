@@ -9,7 +9,7 @@ namespace urchin {
 
     template<class T> class EPAResultCollide : public EPAResult<T> {
         public:
-            EPAResultCollide(const Point3<T> &, const Point3<T> &, const Vector3<T> &, T);
+            EPAResultCollide(const Point3<T>&, const Point3<T>&, const Vector3<T>&, T);
 
             bool isValidResult() const override;
 

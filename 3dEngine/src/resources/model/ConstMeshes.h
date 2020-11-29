@@ -16,7 +16,7 @@ namespace urchin {
      */
     class ConstMeshes : public Resource {
         public:
-            ConstMeshes(std::string , const std::vector<const ConstMesh *> &);
+            ConstMeshes(std::string , const std::vector<const ConstMesh *>&);
             ~ConstMeshes() override;
 
             const std::string &getMeshFilename() const;

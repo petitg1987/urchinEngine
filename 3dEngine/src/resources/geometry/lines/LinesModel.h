@@ -11,8 +11,8 @@ namespace urchin {
     class LinesModel : public GeometryModel {
         public:
             explicit LinesModel(std::vector<Point3<float>>);
-            explicit LinesModel(const std::vector<LineSegment3D<float>> &);
-            explicit LinesModel(const LineSegment3D<float> &);
+            explicit LinesModel(const std::vector<LineSegment3D<float>>&);
+            explicit LinesModel(const LineSegment3D<float>&);
 
         protected:
             Matrix4<float> retrieveModelMatrix() const override;

@@ -22,12 +22,12 @@ namespace urchin {
         #define ANGULAR_FACTOR_TAG "angularFactor"
 
         public:
-            RigidBody *loadFrom(const std::shared_ptr<XmlChunk> &, const std::string &, const Transform<float> &, const XmlParser &) const;
-            void writeOn(const std::shared_ptr<XmlChunk> &, const RigidBody *, XmlWriter &) const;
+            RigidBody *loadFrom(const std::shared_ptr<XmlChunk>&, const std::string&, const Transform<float>&, const XmlParser&) const;
+            void writeOn(const std::shared_ptr<XmlChunk>&, const RigidBody*, XmlWriter&) const;
 
         private:
-            void loadBodyPropertiesOn(RigidBody *, const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
-            void writeBodyPropertiesOn(const std::shared_ptr<XmlChunk> &, const RigidBody *, XmlWriter &) const;
+            void loadBodyPropertiesOn(RigidBody *, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
+            void writeBodyPropertiesOn(const std::shared_ptr<XmlChunk>&, const RigidBody*, XmlWriter&) const;
     };
 
 }

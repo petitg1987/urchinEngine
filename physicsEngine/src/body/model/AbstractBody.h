@@ -15,7 +15,7 @@ namespace urchin {
     class AbstractBody {
         public:
             AbstractBody(std::string , Transform<float> , std::shared_ptr<const CollisionShape3D> );
-            AbstractBody(const AbstractBody &);
+            AbstractBody(const AbstractBody&);
             virtual ~AbstractBody() = default;
 
             void setIsNew(bool);
@@ -32,17 +32,17 @@ namespace urchin {
             AbstractWorkBody *getWorkBody() const;
 
             virtual void updateTo(AbstractWorkBody *);
-            virtual bool applyFrom(const AbstractWorkBody *);
+            virtual bool applyFrom(const AbstractWorkBody*);
 
-            void setTransform(const Transform<float> &);
+            void setTransform(const Transform<float>&);
             Transform<float> getTransform() const;
             bool isManuallyMovedAndResetFlag();
 
-            void setShape(const std::shared_ptr<const CollisionShape3D> &);
+            void setShape(const std::shared_ptr<const CollisionShape3D>&);
             std::shared_ptr<const CollisionShape3D> getOriginalShape() const;
             std::shared_ptr<const CollisionShape3D> getScaledShape() const;
 
-            void setId(const std::string &);
+            void setId(const std::string&);
             const std::string &getId() const;
 
             void setRestitution(float);

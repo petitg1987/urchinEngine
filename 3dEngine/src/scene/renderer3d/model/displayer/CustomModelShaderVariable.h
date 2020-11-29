@@ -15,7 +15,7 @@ namespace urchin {
         public:
             virtual ~CustomModelShaderVariable() = default;
 
-            virtual void loadCustomShaderVariables(const Model *) = 0;
+            virtual void loadCustomShaderVariables(const Model*) = 0;
 
     };
 

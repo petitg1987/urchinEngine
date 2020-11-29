@@ -9,7 +9,7 @@ namespace urchin {
     class CSGPolygonPath {
         public:
             CSGPolygonPath(ClipperLib::Path, std::string);
-            template<class T> explicit CSGPolygonPath(const CSGPolygon<T> &);
+            template<class T> explicit CSGPolygonPath(const CSGPolygon<T>&);
 
             template<class T> CSGPolygon<T> toCSGPolygon() const;
 

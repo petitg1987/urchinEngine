@@ -13,20 +13,20 @@ namespace urchin {
             CollisionAlgorithm(bool, ManifoldResult &&);
             virtual ~CollisionAlgorithm() = default;
 
-            void setupCollisionAlgorithmSelector(const CollisionAlgorithmSelector *);
+            void setupCollisionAlgorithmSelector(const CollisionAlgorithmSelector*);
 
-            void processCollisionAlgorithm(const CollisionObjectWrapper &, const CollisionObjectWrapper &, bool);
+            void processCollisionAlgorithm(const CollisionObjectWrapper&, const CollisionObjectWrapper&, bool);
 
             bool isObjectSwapped() const;
             const ManifoldResult &getConstManifoldResult() const;
 
         protected:
-            virtual void doProcessCollisionAlgorithm(const CollisionObjectWrapper &, const CollisionObjectWrapper &) = 0;
+            virtual void doProcessCollisionAlgorithm(const CollisionObjectWrapper&, const CollisionObjectWrapper&) = 0;
 
             const CollisionAlgorithmSelector *getCollisionAlgorithmSelector() const;
 
             ManifoldResult &getManifoldResult();
-            void addNewContactPoint(const Vector3<float> &, const Point3<float> &, float);
+            void addNewContactPoint(const Vector3<float>&, const Point3<float>&, float);
             float getContactBreakingThreshold() const;
 
         private:

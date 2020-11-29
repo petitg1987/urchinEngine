@@ -7,7 +7,7 @@ namespace urchin {
 
     class PathPoint {
         public:
-            PathPoint(const Point3<float> &, bool);
+            PathPoint(const Point3<float>&, bool);
 
             const Point3<float> &getPoint() const;
             bool isJumpPoint() const;

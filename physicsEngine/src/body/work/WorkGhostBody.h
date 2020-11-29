@@ -12,11 +12,11 @@ namespace urchin {
     */
     class WorkGhostBody : public AbstractWorkBody {
         public:
-            WorkGhostBody(const std::string &, const PhysicsTransform &, const std::shared_ptr<const CollisionShape3D> &);
+            WorkGhostBody(const std::string&, const PhysicsTransform&, const std::shared_ptr<const CollisionShape3D>&);
             ~WorkGhostBody() override;
 
             static WorkGhostBody *upCast(AbstractWorkBody *);
-            static const WorkGhostBody *upCast(const AbstractWorkBody *);
+            static const WorkGhostBody *upCast(const AbstractWorkBody*);
 
             PairContainer *getPairContainer() const override;
 

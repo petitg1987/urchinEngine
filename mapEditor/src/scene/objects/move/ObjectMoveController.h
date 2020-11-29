@@ -14,7 +14,7 @@ namespace urchin {
 
     class ObjectMoveController : public Observable {
         public:
-            ObjectMoveController(SceneManager *, SceneController *, MouseController, StatusBarController);
+            ObjectMoveController(SceneManager *, SceneController*, MouseController, StatusBarController);
 
             enum NotificationType {
                 OBJECT_MOVED
@@ -28,7 +28,7 @@ namespace urchin {
             bool onMouseLeftButton();
             bool onEscapeKey();
 
-            void setSelectedSceneObject(const SceneObject *);
+            void setSelectedSceneObject(const SceneObject*);
             const SceneObject *getSelectedSceneObject() const;
 
             void displayAxis();
@@ -36,8 +36,8 @@ namespace urchin {
         private:
             bool isCameraMoved() const;
             bool adjustMousePosition();
-            void moveObject(const Point2<float> &, const Point2<float> &);
-            void updateObjectPosition(const Point3<float> &);
+            void moveObject(const Point2<float>&, const Point2<float>&);
+            void updateObjectPosition(const Point3<float>&);
 
             unsigned int sceneWidth, sceneHeight;
 

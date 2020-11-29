@@ -12,14 +12,14 @@ namespace urchin {
 
     class WaterManager {
         public:
-            explicit WaterManager(const RenderTarget *);
+            explicit WaterManager(const RenderTarget*);
 
-            void onCameraProjectionUpdate(const Camera *);
+            void onCameraProjectionUpdate(const Camera*);
 
             void addWater(Water *);
             void removeWater(Water *);
 
-            void display(const Camera *, FogManager *, float) const;
+            void display(const Camera*, FogManager*, float) const;
 
         private:
             const RenderTarget *renderTarget;

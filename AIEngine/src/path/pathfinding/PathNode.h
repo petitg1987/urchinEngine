@@ -27,7 +27,7 @@ namespace urchin {
             float getHScore() const;
             float getFScore() const;
 
-            void setPreviousNode(const std::shared_ptr<PathNode> &, const std::shared_ptr<NavLink> &);
+            void setPreviousNode(const std::shared_ptr<PathNode>&, const std::shared_ptr<NavLink>&);
             const std::shared_ptr<PathNode> &getPreviousNode() const;
             PathNodeEdgesLink computePathNodeEdgesLink() const;
 

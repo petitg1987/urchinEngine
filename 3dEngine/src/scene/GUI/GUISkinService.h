@@ -19,9 +19,9 @@ namespace urchin {
         public:
             friend class Singleton<GUISkinService>;
 
-            void setSkin(const std::string &);
+            void setSkin(const std::string&);
 
-            std::shared_ptr<Texture> createWidgetTexture(unsigned int, unsigned int, const std::shared_ptr<XmlChunk> &, WidgetOutline *widgetOutline = nullptr) const;
+            std::shared_ptr<Texture> createWidgetTexture(unsigned int, unsigned int, const std::shared_ptr<XmlChunk>&, WidgetOutline *widgetOutline = nullptr) const;
             XmlParser *getXmlSkin() const;
 
         private:

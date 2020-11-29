@@ -14,7 +14,7 @@ namespace urchin {
 
     class Slider : public Widget {
         public:
-            Slider(Position, Size, const std::vector<std::string> &, const std::string &);
+            Slider(Position, Size, const std::vector<std::string>&, const std::string&);
             ~Slider() override = default;
 
             void createOrUpdateWidget() override;
@@ -22,10 +22,10 @@ namespace urchin {
             unsigned int getSelectedIndex() const;
             void setSelectedIndex(unsigned int);
 
-            void setLeftButtonEventListener(const std::shared_ptr<EventListener> &);
-            void setRightButtonEventListener(const std::shared_ptr<EventListener> &);
+            void setLeftButtonEventListener(const std::shared_ptr<EventListener>&);
+            void setRightButtonEventListener(const std::shared_ptr<EventListener>&);
 
-            void display(const RenderTarget *, const ShaderVar &, float) override;
+            void display(const RenderTarget*, const ShaderVar&, float) override;
 
         private:
             std::string buttonNameFont, valuesNameFont;

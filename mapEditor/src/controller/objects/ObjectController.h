@@ -15,23 +15,23 @@ namespace urchin {
             ObjectController();
 
             std::list<const SceneObject *> getSceneObjects() const;
-            const SceneObject *findSceneObjectByBodyId(const std::string &) const;
+            const SceneObject *findSceneObjectByBodyId(const std::string&) const;
             void addSceneObject(SceneObject *);
-            void removeSceneObject(const SceneObject *);
-            void cloneSceneObject(SceneObject *, const SceneObject *);
+            void removeSceneObject(const SceneObject*);
+            void cloneSceneObject(SceneObject *, const SceneObject*);
 
-            void createDefaultBody(const SceneObject *);
-            void changeBodyShape(const SceneObject *, CollisionShape3D::ShapeType);
-            void removeBody(const SceneObject *);
+            void createDefaultBody(const SceneObject*);
+            void changeBodyShape(const SceneObject*, CollisionShape3D::ShapeType);
+            void removeBody(const SceneObject*);
 
-            const SceneObject *updateSceneObjectTransform(const SceneObject *, const Transform<float> &);
-            const SceneObject *updateSceneObjectFlags(const SceneObject *, bool);
-            const SceneObject *updateSceneObjectPhysicsProperties(const SceneObject *, float, float, float, float, float, float,
-                    const Vector3<float> &, const Vector3<float> &);
-            const SceneObject *updateSceneObjectPhysicsShape(const SceneObject *, const std::shared_ptr< const CollisionShape3D>&);
+            const SceneObject *updateSceneObjectTransform(const SceneObject*, const Transform<float>&);
+            const SceneObject *updateSceneObjectFlags(const SceneObject*, bool);
+            const SceneObject *updateSceneObjectPhysicsProperties(const SceneObject*, float, float, float, float, float, float,
+                    const Vector3<float>&, const Vector3<float>&);
+            const SceneObject *updateSceneObjectPhysicsShape(const SceneObject*, const std::shared_ptr< const CollisionShape3D>&);
 
         private:
-            SceneObject *findSceneObject(const SceneObject *);
+            SceneObject *findSceneObject(const SceneObject*);
     };
 
 }

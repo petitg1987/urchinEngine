@@ -37,7 +37,7 @@ namespace urchin {
             void setupGrassBox(QVBoxLayout *);
 
             void notify(Observable *, int) override;
-            void setupTerrainDataFrom(const SceneTerrain *);
+            void setupTerrainDataFrom(const SceneTerrain*);
 
             TerrainController *terrainController;
 
@@ -95,8 +95,8 @@ namespace urchin {
 
             void showMaskFilenameDialog();
             void clearMaskFilename();
-            void showMaterialFilenameDialog(const QString &);
-            void clearMaterialFilename(const QString &);
+            void showMaterialFilenameDialog(const QString&);
+            void clearMaterialFilename(const QString&);
 
             void showGrassTextureFilenameDialog();
             void clearGrassTextureFilename();

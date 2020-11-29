@@ -51,10 +51,10 @@ namespace urchin {
             void setupPhysicsShapeBox(QVBoxLayout *);
 
             void notify(Observable *, int) override;
-            void setupObjectDataFrom(const SceneObject *);
-            void setupObjectPhysicsDataFrom(const SceneObject *);
+            void setupObjectDataFrom(const SceneObject*);
+            void setupObjectPhysicsDataFrom(const SceneObject*);
 
-            BodyShapeWidget* createBodyShapeWidget(const std::shared_ptr<const CollisionShape3D>&, const SceneObject *);
+            BodyShapeWidget* createBodyShapeWidget(const std::shared_ptr<const CollisionShape3D>&, const SceneObject*);
 
             ObjectController* objectController;
 
@@ -110,7 +110,7 @@ namespace urchin {
             void showChangeBodyShapeDialog();
             void rigidBodyToggled(int);
             void updateObjectPhysicsProperties();
-            void bodyShapeChanged(const std::shared_ptr<const CollisionShape3D> &);
+            void bodyShapeChanged(const std::shared_ptr<const CollisionShape3D>&);
     };
 
 }

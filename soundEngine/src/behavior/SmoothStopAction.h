@@ -10,7 +10,7 @@ namespace urchin {
 
     class SmoothStopAction {
         public:
-            explicit SmoothStopAction(const SoundBehavior &);
+            explicit SmoothStopAction(const SoundBehavior&);
 
             void startSmoothStop();
             void endSmoothStop();

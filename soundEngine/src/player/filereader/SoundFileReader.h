@@ -14,10 +14,10 @@ namespace urchin {
     */
     class SoundFileReader {
         public:
-            explicit SoundFileReader(const std::string &);
+            explicit SoundFileReader(const std::string&);
             ~SoundFileReader();
 
-            void readNextChunk(std::vector<ALshort> &, unsigned int &, bool);
+            void readNextChunk(std::vector<ALshort> &, unsigned int&, bool);
 
             ALenum getFormat() const;
             ALsizei getNumberOfSamples() const;

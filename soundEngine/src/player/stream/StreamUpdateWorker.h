@@ -17,9 +17,9 @@ namespace urchin {
             StreamUpdateWorker();
             ~StreamUpdateWorker();
 
-            void addTask(const Sound *, bool);
-            void removeTask(const Sound *);
-            bool isTaskExist(const Sound *) const;
+            void addTask(const Sound*, bool);
+            void removeTask(const Sound*);
+            bool isTaskExist(const Sound*) const;
 
             void start();
             void interrupt();

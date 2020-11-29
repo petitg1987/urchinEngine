@@ -10,7 +10,7 @@ namespace urchin {
         public:
             PathPortal(LineSegment3D<float>, std::shared_ptr<PathNode>, std::shared_ptr<PathNode>, bool);
 
-            void setTransitionPoint(const Point3<float> &);
+            void setTransitionPoint(const Point3<float>&);
             bool hasTransitionPoint() const;
             const Point3<float> &getTransitionPoint() const;
 

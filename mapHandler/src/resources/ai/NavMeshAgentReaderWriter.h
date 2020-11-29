@@ -15,8 +15,8 @@ namespace urchin {
         #define JUMP_DISTANCE_TAG "jumpDistance"
 
         public:
-            std::shared_ptr<NavMeshAgent> loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
-            void writeOn(const std::shared_ptr<XmlChunk> &, const std::shared_ptr<const NavMeshAgent> &, XmlWriter &) const;
+            std::shared_ptr<NavMeshAgent> loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
+            void writeOn(const std::shared_ptr<XmlChunk>&, const std::shared_ptr<const NavMeshAgent>&, XmlWriter&) const;
     };
 
 }

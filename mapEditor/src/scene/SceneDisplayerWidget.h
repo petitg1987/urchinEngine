@@ -17,22 +17,22 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            SceneDisplayerWidget(QWidget *, const StatusBarController &, std::string);
+            SceneDisplayerWidget(QWidget *, const StatusBarController&, std::string);
             ~SceneDisplayerWidget() override;
 
             enum NotificationType {
                 BODY_PICKED
             };
 
-            void loadMap(SceneController *, const std::string &, const std::string &);
-            void saveState(const std::string &) const;
+            void loadMap(SceneController *, const std::string&, const std::string&);
+            void saveState(const std::string&) const;
             void closeMap();
 
             void setViewProperties(SceneDisplayer::ViewProperties, bool);
-            void setHighlightSceneObject(const SceneObject *);
+            void setHighlightSceneObject(const SceneObject*);
             void setHighlightCompoundShapeComponent(std::shared_ptr<const LocalizedCollisionShape>);
-            void setHighlightSceneLight(const SceneLight *);
-            void setHighlightSceneSound(const SceneSound *);
+            void setHighlightSceneLight(const SceneLight*);
+            void setHighlightSceneSound(const SceneSound*);
 
             void initializeGL() override;
             void paintGL() override;

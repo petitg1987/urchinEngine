@@ -18,7 +18,7 @@ namespace urchin {
         public:
             CollisionShape3D();
             explicit CollisionShape3D(float);
-            CollisionShape3D(const CollisionShape3D &) = default;
+            CollisionShape3D(const CollisionShape3D&) = default;
             virtual ~CollisionShape3D() = default;
 
             enum ShapeType {
@@ -48,14 +48,14 @@ namespace urchin {
 
             virtual std::shared_ptr<CollisionShape3D> scale(float) const = 0;
 
-            virtual AABBox<float> toAABBox(const PhysicsTransform &) const = 0;
-            virtual std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> toConvexObject(const PhysicsTransform &) const = 0;
+            virtual AABBox<float> toAABBox(const PhysicsTransform&) const = 0;
+            virtual std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> toConvexObject(const PhysicsTransform&) const = 0;
 
             virtual Vector3<float> computeLocalInertia(float) const = 0;
             virtual float getMaxDistanceToCenter() const = 0;
             virtual float getMinDistanceToCenter() const = 0;
 
-            void checkInnerMarginQuality(const std::string &) const;
+            void checkInnerMarginQuality(const std::string&) const;
 
             virtual CollisionShape3D *clone() const = 0;
 

@@ -9,7 +9,7 @@ namespace urchin {
         public:
             ~AcceptAllFilter() override = default;
 
-            bool isAccepted(const TOctreeable *, const ConvexObject3D<float> &) const;
+            bool isAccepted(const TOctreeable*, const ConvexObject3D<float>&) const;
     };
 
     #include "AcceptAllFilter.inl"

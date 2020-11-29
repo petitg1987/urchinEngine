@@ -25,12 +25,12 @@ namespace urchin {
                 PAUSE
             };
 
-            explicit SoundTrigger(const SoundBehavior &);
+            explicit SoundTrigger(const SoundBehavior&);
             virtual ~SoundTrigger() = default;
 
             virtual TriggerType getTriggerType() const = 0;
 
-            virtual TriggerResultValue evaluateTrigger(const Point3<float> &) = 0;
+            virtual TriggerResultValue evaluateTrigger(const Point3<float>&) = 0;
 
             const SoundBehavior &getSoundBehavior() const;
 

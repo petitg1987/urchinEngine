@@ -14,12 +14,12 @@ namespace urchin {
 
     class GUIRenderer : public Renderer, public Observer {
         public:
-            explicit GUIRenderer(const RenderTarget *);
+            explicit GUIRenderer(const RenderTarget*);
             ~GUIRenderer() override;
 
             void onResize(unsigned int, unsigned  int) override;
             void notify(Observable *, int) override;
-            void setupSkin(const std::string &);
+            void setupSkin(const std::string&);
 
             bool onKeyPress(unsigned int) override;
             bool onKeyRelease(unsigned int) override;

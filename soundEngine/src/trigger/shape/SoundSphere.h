@@ -12,7 +12,7 @@ namespace urchin {
     */
     class SoundSphere : public SoundShape {
         public:
-            SoundSphere(float, const Point3<float> &, float);
+            SoundSphere(float, const Point3<float>&, float);
 
             SoundShape::ShapeType getShapeType() const override;
 
@@ -22,8 +22,8 @@ namespace urchin {
             float getRadius() const;
             Point3<float> getPosition() const;
 
-            bool pointInsidePlayShape(const Point3<float> &) const override;
-            bool pointInsideStopShape(const Point3<float> &) const override;
+            bool pointInsidePlayShape(const Point3<float>&) const override;
+            bool pointInsideStopShape(const Point3<float>&) const override;
 
             SoundShape *clone() const override;
 

@@ -14,7 +14,7 @@ namespace urchin {
 
     class TerrainMaterial {
         public:
-            explicit TerrainMaterial(const std::string &, const std::vector<std::string> &, float, float);
+            explicit TerrainMaterial(const std::string&, const std::vector<std::string>&, float, float);
             ~TerrainMaterial();
 
             void refreshWith(unsigned int, unsigned int);
@@ -27,7 +27,7 @@ namespace urchin {
             const std::vector<Point2<float>> &getTexCoordinates() const;
 
         private:
-            void initializeMaterial(const std::vector<std::string> &);
+            void initializeMaterial(const std::vector<std::string>&);
             void buildTexCoordinates(unsigned int, unsigned int);
 
             std::string maskMapFilename;

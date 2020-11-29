@@ -22,11 +22,11 @@ namespace urchin {
 
             NavMeshGenerator *getNavMeshGenerator() const;
 
-            void addEntity(const std::shared_ptr<AIEntity> &);
-            void removeEntity(const std::shared_ptr<AIEntity> &);
+            void addEntity(const std::shared_ptr<AIEntity>&);
+            void removeEntity(const std::shared_ptr<AIEntity>&);
 
-            void addPathRequest(const std::shared_ptr<PathRequest> &);
-            void removePathRequest(const std::shared_ptr<PathRequest> &);
+            void addPathRequest(const std::shared_ptr<PathRequest>&);
+            void removePathRequest(const std::shared_ptr<PathRequest>&);
 
             void setUp(float);
             void pause();

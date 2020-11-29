@@ -8,8 +8,8 @@ namespace urchin {
 
     class MapUtil {
         public:
-            static std::string serialize(const std::map<std::string, std::string> &);
-            static std::map<std::string, std::string> deserialize(const std::string &);
+            static std::string serialize(const std::map<std::string, std::string>&);
+            static std::map<std::string, std::string> deserialize(const std::string&);
 
         private:
             MapUtil() = default;
@@ -17,8 +17,8 @@ namespace urchin {
 
             static const char DELIMITER;
 
-            static std::string escape(const std::string &);
-            static std::string unescape(const std::string &);
+            static std::string escape(const std::string&);
+            static std::string unescape(const std::string&);
     };
 
 }

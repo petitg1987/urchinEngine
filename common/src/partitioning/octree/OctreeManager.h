@@ -33,11 +33,11 @@ namespace urchin {
             std::vector<const Octree<TOctreeable> *> getAllLeafOctrees() const;
 
             std::vector<TOctreeable *> getAllOctreeables() const;
-            void getOctreeablesIn(const ConvexObject3D<float> &, std::vector<TOctreeable *> &) const;
-            void getOctreeablesIn(const ConvexObject3D<float> &, std::vector<TOctreeable *> &, const OctreeableFilter<TOctreeable> &) const;
+            void getOctreeablesIn(const ConvexObject3D<float>&, std::vector<TOctreeable *>&) const;
+            void getOctreeablesIn(const ConvexObject3D<float>&, std::vector<TOctreeable *>&, const OctreeableFilter<TOctreeable>&) const;
 
         private:
-            void buildOctree(std::vector<TOctreeable *> &);
+            void buildOctree(std::vector<TOctreeable *>&);
             bool resizeOctree(TOctreeable *);
 
             float overflowSize;

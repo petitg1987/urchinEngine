@@ -38,7 +38,7 @@ namespace urchin {
             Matrix3<T> operator -(const Matrix3<T>&) const;
             const Matrix3<T>& operator +=(const Matrix3<T>&);
             const Matrix3<T>& operator -=(const Matrix3<T>&);
-            Matrix3<T> operator *(const Matrix3<T> &) const;
+            Matrix3<T> operator *(const Matrix3<T>&) const;
             const Matrix3<T>& operator *=(const Matrix3<T>&);
             const Matrix3<T>& operator *=(T);
             const Matrix3<T>& operator /=(T);
@@ -56,11 +56,11 @@ namespace urchin {
                 a13, a23, a33;
     };
 
-    template<class T> Matrix3<T> operator *(const Matrix3<T> &, T);
-    template<class T> Matrix3<T> operator *(T, const Matrix3<T> &);
-    template<class T> Matrix3<T> operator /(const Matrix3<T> &, T);
+    template<class T> Matrix3<T> operator *(const Matrix3<T>&, T);
+    template<class T> Matrix3<T> operator *(T, const Matrix3<T>&);
+    template<class T> Matrix3<T> operator /(const Matrix3<T>&, T);
 
-    template<class T> std::ostream& operator <<(std::ostream &, const Matrix3<T> &);
+    template<class T> std::ostream& operator <<(std::ostream &, const Matrix3<T>&);
 
 }
 

@@ -44,7 +44,7 @@ namespace urchin {
 
             void initialize(unsigned int, unsigned int, float, float);
 
-            void display(const RenderTarget *);
+            void display(const RenderTarget*);
 
         private:
             void initializeShader(float, float);

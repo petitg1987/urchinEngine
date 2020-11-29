@@ -13,9 +13,9 @@ namespace urchin {
 
     class CollisionBoxShape : public CollisionShape3D {
         public:
-            explicit CollisionBoxShape(const Vector3<float> &);
+            explicit CollisionBoxShape(const Vector3<float>&);
             CollisionBoxShape(CollisionBoxShape &&) noexcept;
-            CollisionBoxShape(const CollisionBoxShape &) = delete;
+            CollisionBoxShape(const CollisionBoxShape&) = delete;
             ~CollisionBoxShape() override;
 
             CollisionShape3D::ShapeType getShapeType() const override;
@@ -25,8 +25,8 @@ namespace urchin {
 
             std::shared_ptr<CollisionShape3D> scale(float) const override;
 
-            AABBox<float> toAABBox(const PhysicsTransform &) const override;
-            std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> toConvexObject(const PhysicsTransform &) const override;
+            AABBox<float> toAABBox(const PhysicsTransform&) const override;
+            std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> toConvexObject(const PhysicsTransform&) const override;
 
             Vector3<float> computeLocalInertia(float) const override;
             float getMaxDistanceToCenter() const override;

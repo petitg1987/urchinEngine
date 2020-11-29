@@ -18,8 +18,8 @@ namespace urchin {
 
             void initialize(PhysicsWorld *) override;
 
-            void setup(float, const Vector3<float> &) override;
-            void execute(float, const Vector3<float> &) override;
+            void setup(float, const Vector3<float>&) override;
+            void execute(float, const Vector3<float>&) override;
 
         private:
             const Ray<float> ray;

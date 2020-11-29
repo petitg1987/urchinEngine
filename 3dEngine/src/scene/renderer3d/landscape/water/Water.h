@@ -25,7 +25,7 @@ namespace urchin {
                 MOVE_ABOVE_WATER
             };
 
-            void setCenterPosition(const Point3<float> &);
+            void setCenterPosition(const Point3<float>&);
             const Point3<float> &getCenterPosition() const;
 
             void setXSize(float);
@@ -34,13 +34,13 @@ namespace urchin {
             void setZSize(float);
             float getZSize() const;
 
-            void setWaterColor(const Vector3<float> &);
+            void setWaterColor(const Vector3<float>&);
             const Vector3<float> &getWaterColor() const;
 
-            void setNormalTexture(const std::string &);
+            void setNormalTexture(const std::string&);
             const std::string &getNormalFilename() const;
 
-            void setDudvMap(const std::string &);
+            void setDudvMap(const std::string&);
             const std::string &getDudvFilename() const;
 
             void setWaveSpeed(float);
@@ -61,9 +61,9 @@ namespace urchin {
             void setGradient(float);
             float getGradient() const;
 
-            void onCameraProjectionUpdate(const Matrix4<float> &);
+            void onCameraProjectionUpdate(const Matrix4<float>&);
 
-            void display(const RenderTarget *, const Camera *, FogManager *, float invFrameRate);
+            void display(const RenderTarget*, const Camera*, FogManager*, float invFrameRate);
 
         private:
             void generateVertex();

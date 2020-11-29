@@ -14,12 +14,12 @@ namespace urchin {
     */
     class PointSound : public Sound {
         public:
-            PointSound(const std::string &, const Point3<float> &);
-            PointSound(const std::string &, const Point3<float> &, float);
+            PointSound(const std::string&, const Point3<float>&);
+            PointSound(const std::string&, const Point3<float>&, float);
 
             Sound::SoundType getSoundType() const override;
 
-            void setPosition(const Point3<float> &);
+            void setPosition(const Point3<float>&);
             Point3<float> getPosition() const;
 
             void setInaudibleDistance(float);

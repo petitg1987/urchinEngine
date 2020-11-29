@@ -10,7 +10,7 @@ namespace urchin {
         public:
             virtual ~ConvexObject2D() = default;
 
-            virtual Point2<T> getSupportPoint(const Vector2<T> &) const = 0;
+            virtual Point2<T> getSupportPoint(const Vector2<T>&) const = 0;
     };
 
 }

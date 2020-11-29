@@ -15,20 +15,20 @@ namespace urchin {
         public:
             Point3();
             explicit Point3(T Xu, T Yu, T Zu);
-            explicit Point3(const Point2<T> &, T Zu=1);
-            explicit Point3(const Vector2<T> &, T Zu=1);
-            explicit Point3(const Vector3<T> &);
-            Point3(const Point3<T> &);
-            Point3<T>& operator=(const Point3<T> &);
+            explicit Point3(const Point2<T>&, T Zu=1);
+            explicit Point3(const Vector2<T>&, T Zu=1);
+            explicit Point3(const Vector3<T>&);
+            Point3(const Point3<T>&);
+            Point3<T>& operator=(const Point3<T>&);
 
             void setValues(T, T, T);
             void setNull();
 
-            T distance(const Point3<T> &) const;
-            T squareDistance(const Point3<T> &) const;
-            Vector3<T> vector(const Point3<T> &) const;
+            T distance(const Point3<T>&) const;
+            T squareDistance(const Point3<T>&) const;
+            Vector3<T> vector(const Point3<T>&) const;
             Vector3<T> toVector() const;
-            Point3<T> translate(const Vector3<T> &) const;
+            Point3<T> translate(const Vector3<T>&) const;
             Point3<T> divideByZ() const;
             Point2<T> toPoint2XY() const;
             Point2<T> toPoint2XZ() const;
@@ -36,8 +36,8 @@ namespace urchin {
 
             Point3<T> operator +() const;
             Point3<T> operator -() const;
-            Point3<T> operator +(const Point3<T> &) const;
-            Point3<T> operator -(const Point3<T> &) const;
+            Point3<T> operator +(const Point3<T>&) const;
+            Point3<T> operator -(const Point3<T>&) const;
             const Point3<T>& operator +=(const Point3<T>& v);
             const Point3<T>& operator -=(const Point3<T>& v);
             const Point3<T>& operator *=(T t);
@@ -45,9 +45,9 @@ namespace urchin {
             const Point3<T>& operator +=(T t);
             const Point3<T>& operator -=(T t);
 
-            bool operator ==(const Point3<T> &) const;
-            bool operator !=(const Point3<T> &) const;
-            bool operator <(const Point3<T> &) const;
+            bool operator ==(const Point3<T>&) const;
+            bool operator !=(const Point3<T>&) const;
+            bool operator <(const Point3<T>&) const;
 
             T& operator [](std::size_t i);
             const T& operator [](std::size_t i) const;
@@ -60,16 +60,16 @@ namespace urchin {
             T X, Y, Z;
     };
 
-    template<class T> Point3<T> operator *(const Point3<T> &, T t);
-    template<class T> Point3<T> operator *(T t, const Point3<T> &);
-    template<class T> Point3<T> operator /(const Point3<T> &, T t);
-    template<class T> Point3<T> operator +(const Point3<T> &, T t);
-    template<class T> Point3<T> operator -(const Point3<T> &, T t);
+    template<class T> Point3<T> operator *(const Point3<T>&, T t);
+    template<class T> Point3<T> operator *(T t, const Point3<T>&);
+    template<class T> Point3<T> operator /(const Point3<T>&, T t);
+    template<class T> Point3<T> operator +(const Point3<T>&, T t);
+    template<class T> Point3<T> operator -(const Point3<T>&, T t);
 
-    template<class T> Point3<T> operator *(const Matrix3<T> &, const Point3<T> &);
-    template<class T> Point3<T> operator *(const Point3<T> &, const Matrix3<T> &);
+    template<class T> Point3<T> operator *(const Matrix3<T>&, const Point3<T>&);
+    template<class T> Point3<T> operator *(const Point3<T>&, const Matrix3<T>&);
 
-    template<class T> std::ostream& operator <<(std::ostream &, const Point3<T> &);
+    template<class T> std::ostream& operator <<(std::ostream &, const Point3<T>&);
 
 }
 

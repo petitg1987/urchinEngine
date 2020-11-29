@@ -17,13 +17,13 @@ namespace urchin {
         public:
             GJKContinuousCollisionAlgorithm();
 
-            std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter> calculateTimeOfImpact(const TemporalObject &, const TemporalObject &, AbstractWorkBody *) const;
+            std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter> calculateTimeOfImpact(const TemporalObject&, const TemporalObject&, AbstractWorkBody*) const;
 
         private:
-            Point3<T> getWorldSupportPoint(const TemporalObject &, const Vector3<T> &, const PhysicsTransform &) const;
-            Point3<float> interpolate(const Point3<float> &, const Point3<float> &, T) const;
+            Point3<T> getWorldSupportPoint(const TemporalObject&, const Vector3<T>&, const PhysicsTransform&) const;
+            Point3<float> interpolate(const Point3<float>&, const Point3<float>&, T) const;
 
-            void logInputData(const TemporalObject &, const TemporalObject &, const std::string &, Logger::CriticalityLevel) const;
+            void logInputData(const TemporalObject&, const TemporalObject&, const std::string&, Logger::CriticalityLevel) const;
 
             const T squareEpsilon;
             const unsigned int maxIteration;

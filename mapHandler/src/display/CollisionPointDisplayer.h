@@ -10,7 +10,7 @@ namespace urchin {
 
     class CollisionPointDisplayer {
         public:
-            CollisionPointDisplayer(PhysicsWorld *, Renderer3d *);
+            CollisionPointDisplayer(PhysicsWorld *, Renderer3d*);
             ~CollisionPointDisplayer();
 
             void display();

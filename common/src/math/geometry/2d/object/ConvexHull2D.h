@@ -17,12 +17,12 @@ namespace urchin {
             template<class U> friend class ResizeConvexHull2DService;
 
             ConvexHull2D();
-            explicit ConvexHull2D(const std::vector<Point2<T>> &);
-            static std::unique_ptr<ConvexHull2D<T>> createFromCcwConvexPoints(const std::vector<Point2<T>> &);
+            explicit ConvexHull2D(const std::vector<Point2<T>>&);
+            static std::unique_ptr<ConvexHull2D<T>> createFromCcwConvexPoints(const std::vector<Point2<T>>&);
 
             const std::vector<Point2<T>> &getPoints() const;
 
-            Point2<T> getSupportPoint(const Vector2<T> &) const;
+            Point2<T> getSupportPoint(const Vector2<T>&) const;
             T area() const;
 
             std::unique_ptr<ConvexHull2D<T>> resize(T) const;

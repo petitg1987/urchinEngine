@@ -46,12 +46,12 @@ namespace urchin {
 
     class MonotonePolygonError : public std::runtime_error {
         public:
-            explicit MonotonePolygonError(const std::string &);
+            explicit MonotonePolygonError(const std::string&);
     };
 
     class MonotonePolygonAlgorithm {
         public:
-            MonotonePolygonAlgorithm(const std::vector<Point2<float>> &, const std::vector<std::size_t> &, const std::vector<std::string> &);
+            MonotonePolygonAlgorithm(const std::vector<Point2<float>>&, const std::vector<std::size_t>&, const std::vector<std::string>&);
 
             std::vector<MonotonePolygon> createYMonotonePolygons();
 
@@ -81,9 +81,9 @@ namespace urchin {
             std::vector<std::pair<std::size_t, it_diagonals>> retrievePossibleNextPoints(std::size_t);
             void markDiagonalProcessed(it_diagonals, std::size_t);
 
-            void logInputData(const std::string &, Logger::CriticalityLevel) const;
-            void exportSVG(const std::string &) const;
-            void logOutputData(const std::string &, Logger::CriticalityLevel) const;
+            void logInputData(const std::string&, Logger::CriticalityLevel) const;
+            void exportSVG(const std::string&) const;
+            void logOutputData(const std::string&, Logger::CriticalityLevel) const;
 
             const std::vector<Point2<float>> &polygonPoints;
             const std::vector<std::size_t> &endContourIndices; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndices' will have values: 5 and 9.

@@ -15,13 +15,13 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            explicit SoundSphereShapeWidget(const SceneSound *);
+            explicit SoundSphereShapeWidget(const SceneSound*);
             ~SoundSphereShapeWidget() override = default;
 
             std::string getSoundShapeName() const override;
 
         protected:
-            void doSetupShapePropertiesFrom(const SoundShape *) override;
+            void doSetupShapePropertiesFrom(const SoundShape*) override;
             const SoundShape *createSoundShape() const override;
 
         private:

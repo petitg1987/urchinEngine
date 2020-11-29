@@ -23,16 +23,16 @@ namespace urchin {
 
         private:
             void setupMenu();
-            void setupSceneDisplayerWidget(QWidget *, QHBoxLayout *);
-            void setupSceneControllerWidget(QWidget *, QHBoxLayout *);
+            void setupSceneDisplayerWidget(QWidget *, QHBoxLayout*);
+            void setupSceneControllerWidget(QWidget *, QHBoxLayout*);
 
             QString getPreferredMapPath();
-            void savePreferredMapPath(const std::string &);
+            void savePreferredMapPath(const std::string&);
 
-            void loadMap(const std::string &, const std::string &);
+            void loadMap(const std::string&, const std::string&);
             bool checkCurrentMapSaved();
             void updateInterfaceState();
-            void updateMapFilename(const std::string &);
+            void updateMapFilename(const std::string&);
             void refreshWindowTitle();
 
             void notify(Observable *, int) override;

@@ -9,14 +9,14 @@ namespace urchin {
 
     class SkyManager {
         public:
-            explicit SkyManager(const RenderTarget *);
+            explicit SkyManager(const RenderTarget*);
 
-            void onCameraProjectionUpdate(const Camera *);
+            void onCameraProjectionUpdate(const Camera*);
 
             void setSkybox(std::unique_ptr<Skybox>);
             const std::unique_ptr<Skybox> &getSkybox() const;
 
-            void display(const Matrix4<float> &, const Point3<float> &);
+            void display(const Matrix4<float>&, const Point3<float>&);
 
         private:
             const RenderTarget *renderTarget;

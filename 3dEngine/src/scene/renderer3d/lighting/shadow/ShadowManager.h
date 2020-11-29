@@ -17,7 +17,7 @@
 namespace urchin {
 
     /**
-    * Manager for shadow mapping (parallel-split shadow maps & variance shadow maps)
+    * Manager for shadow mapping (parallel-split shadow maps and variance shadow maps)
     */
     class ShadowManager : public Observer, public Observable {
         public:
@@ -32,12 +32,12 @@ namespace urchin {
                 NUMBER_SHADOW_MAPS_UPDATE
             };
 
-            ShadowManager(LightManager *, OctreeManager<Model> *);
+            ShadowManager(LightManager *, OctreeManager<Model>*);
             ~ShadowManager() override;
 
-            void initiateShaderVariables(const std::unique_ptr<Shader> &);
+            void initiateShaderVariables(const std::unique_ptr<Shader>&);
             void onResize(unsigned int, unsigned int);
-            void onCameraProjectionUpdate(const Camera *);
+            void onCameraProjectionUpdate(const Camera*);
             void notify(Observable *, int) override;
 
             float getShadowMapBias() const;
@@ -52,15 +52,15 @@ namespace urchin {
             BlurShadow getBlurShadow() const;
 
             const std::vector<Frustum<float>> &getSplitFrustums() const;
-            const ShadowData &getShadowData(const Light *) const;
+            const ShadowData &getShadowData(const Light*) const;
             const std::vector<Model *> &computeVisibleModels();
 
-            void updateVisibleModels(const Frustum<float> &);
+            void updateVisibleModels(const Frustum<float>&);
             void forceUpdateAllShadowMaps();
             void updateShadowMaps();
-            void loadShadowMaps(const std::unique_ptr<GenericRenderer> &);
+            void loadShadowMaps(const std::unique_ptr<GenericRenderer>&);
 
-            void drawLightSceneBox(const RenderTarget *, const Frustum<float> &, const Light *, const Matrix4<float> &) const;
+            void drawLightSceneBox(const RenderTarget*, const Frustum<float>&, const Light*, const Matrix4<float>&) const;
 
         private:
             //model displayer
@@ -68,21 +68,21 @@ namespace urchin {
 
             //light handling
             void deleteLightsLocation();
-            void addShadowLight(const Light *);
-            void removeShadowLight(const Light *);
+            void addShadowLight(const Light*);
+            void removeShadowLight(const Light*);
             void updateShadowLights();
 
             //splits handling
-            void updateViewMatrix(const Light *);
-            void updateFrustumShadowData(const Light *, ShadowData *);
-            AABBox<float> createSceneIndependentBox(const Frustum<float> &, const Matrix4<float> &) const;
-            float computeNearZForSceneIndependentBox(const Frustum<float> &) const;
-            AABBox<float> createSceneDependentBox(const AABBox<float> &, const OBBox<float> &,
-                    const std::vector<Model *> &, const Matrix4<float> &) const;
-            void splitFrustum(const Frustum<float> &);
+            void updateViewMatrix(const Light*);
+            void updateFrustumShadowData(const Light*, ShadowData*);
+            AABBox<float> createSceneIndependentBox(const Frustum<float>&, const Matrix4<float>&) const;
+            float computeNearZForSceneIndependentBox(const Frustum<float>&) const;
+            AABBox<float> createSceneDependentBox(const AABBox<float>&, const OBBox<float>&,
+                    const std::vector<Model *>&, const Matrix4<float>&) const;
+            void splitFrustum(const Frustum<float>&);
 
             //shadow map handling
-            void createShadowMaps(const Light *);
+            void createShadowMaps(const Light*);
 
             //shadow map quality
             const float shadowMapBias;
@@ -109,7 +109,7 @@ namespace urchin {
             float frustumDistance;
             std::vector<float> splitDistances;
             std::vector<Frustum<float>> splitFrustums;
-            std::map<const Light *, ShadowData *> shadowDatas;
+            std::map<const Light*, ShadowData *> shadowDatas;
             bool bForceUpdateAllShadowMaps;
             ShaderVar depthSplitDistanceShaderVar;
 

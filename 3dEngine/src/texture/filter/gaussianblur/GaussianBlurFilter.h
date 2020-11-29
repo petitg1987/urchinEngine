@@ -18,15 +18,15 @@ namespace urchin {
                 HORIZONTAL
             };
 
-            GaussianBlurFilter(const GaussianBlurFilterBuilder *, BlurDirection);
+            GaussianBlurFilter(const GaussianBlurFilterBuilder*, BlurDirection);
 
         private:
             std::string getShaderName() const override;
-            void completeShaderTokens(std::map<std::string, std::string> &) const override;
+            void completeShaderTokens(std::map<std::string, std::string>&) const override;
 
             std::vector<float> computeWeights() const;
-            std::vector<float> computeWeightsLinearSampling(const std::vector<float> &) const;
-            std::vector<float> computeOffsetsLinearSampling(const std::vector<float> &, const std::vector<float> &) const;
+            std::vector<float> computeWeightsLinearSampling(const std::vector<float>&) const;
+            std::vector<float> computeOffsetsLinearSampling(const std::vector<float>&, const std::vector<float>&) const;
 
             BlurDirection blurDirection;
             unsigned int blurSize;

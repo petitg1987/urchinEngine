@@ -20,10 +20,10 @@ namespace urchin {
             SceneTerrain();
             ~SceneTerrain();
 
-            void setTerrainManagers(Renderer3d *, PhysicsWorld *, AIManager *);
+            void setTerrainManagers(Renderer3d *, PhysicsWorld*, AIManager*);
 
             std::string getName() const;
-            void setName(const std::string &);
+            void setName(const std::string&);
 
             Terrain *getTerrain() const;
             void setTerrain(Terrain *);
@@ -31,11 +31,11 @@ namespace urchin {
             RigidBody *getRigidBody() const override;
 
         protected:
-            void moveTo(const Transform<float> &) override;
+            void moveTo(const Transform<float>&) override;
 
         private:
-            void loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
-            void writeOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
+            void loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            void writeOn(const std::shared_ptr<XmlChunk>&, XmlWriter&) const;
 
             void setupInteractiveBody(RigidBody *);
             void setupRigidBody(RigidBody *);

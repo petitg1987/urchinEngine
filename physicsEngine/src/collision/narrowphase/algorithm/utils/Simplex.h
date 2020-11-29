@@ -17,7 +17,7 @@ namespace urchin {
         public:
             Simplex();
 
-            void addPoint(const Point3<T> &, const Point3<T> &);
+            void addPoint(const Point3<T>&, const Point3<T>&);
 
             std::size_t getSize() const;
             const Point3<T> &getPoint(std::size_t) const;
@@ -25,9 +25,9 @@ namespace urchin {
             const Point3<T> &getSupportPointB(std::size_t) const;
             T getBarycentric(std::size_t) const;
             const Point3<T> &getClosestPointToOrigin() const;
-            bool isPointInSimplex(const Point3<T> &) const;
+            bool isPointInSimplex(const Point3<T>&) const;
 
-            void computeClosestPoints(Point3<T> &, Point3<T> &) const;
+            void computeClosestPoints(Point3<T> &, Point3<T>&) const;
 
         private:
             void updateSimplex();
@@ -39,7 +39,7 @@ namespace urchin {
             Point3<T> closestPointToOrigin;
     };
 
-    template<class T> std::ostream& operator <<(std::ostream &, const Simplex<T> &);
+    template<class T> std::ostream& operator <<(std::ostream &, const Simplex<T>&);
 
 }
 

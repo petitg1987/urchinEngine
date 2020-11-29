@@ -24,7 +24,7 @@ namespace urchin {
             void addChild(TerrainGrassQuadtree *);
             const std::vector<TerrainGrassQuadtree *> &getChildren() const;
 
-            void addVertex(const Point3<float> &, const Vector3<float> &);
+            void addVertex(const Point3<float>&, const Vector3<float>&);
             const std::vector<Point3<float>> &getGrassVertices() const;
             const std::vector<Vector3<float>> &getGrassNormals() const;
 

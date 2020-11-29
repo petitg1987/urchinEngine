@@ -9,7 +9,7 @@ namespace urchin {
 
     class ScopeLockById {
         public:
-            ScopeLockById(const std::shared_ptr<LockById> &, uint_fast32_t);
+            ScopeLockById(const std::shared_ptr<LockById>&, uint_fast32_t);
             ~ScopeLockById();
 
         private:

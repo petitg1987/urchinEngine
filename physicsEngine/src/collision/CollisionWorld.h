@@ -29,7 +29,7 @@ namespace urchin {
             BroadPhaseManager *getBroadPhaseManager() const;
             NarrowPhaseManager *getNarrowPhaseManager() const;
 
-            void process(float, const Vector3<float> &);
+            void process(float, const Vector3<float>&);
 
             const std::vector<ManifoldResult> &getLastUpdatedManifoldResults();
 

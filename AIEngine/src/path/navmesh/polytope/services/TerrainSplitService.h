@@ -19,7 +19,7 @@ namespace urchin {
         public:
             explicit TerrainSplitService(float);
 
-            std::vector<TerrainSplit> splitTerrain(const std::string &, const Point3<float> &, const std::vector<Point3<float>> &, unsigned int, unsigned int) const;
+            std::vector<TerrainSplit> splitTerrain(const std::string&, const Point3<float>&, const std::vector<Point3<float>>&, unsigned int, unsigned int) const;
 
         private:
             float terrainMaxSize;

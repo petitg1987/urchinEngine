@@ -13,7 +13,7 @@ namespace urchin {
 
     class Polytope {
         public:
-            Polytope(std::string, std::vector<std::shared_ptr<PolytopeSurface>> &);
+            Polytope(std::string, std::vector<std::shared_ptr<PolytopeSurface>>&);
 
             const std::string &getName() const;
 
@@ -43,7 +43,7 @@ namespace urchin {
             bool obstacleCandidate;
     };
 
-    std::ostream& operator <<(std::ostream &, const Polytope &);
+    std::ostream& operator <<(std::ostream &, const Polytope&);
 
 }
 

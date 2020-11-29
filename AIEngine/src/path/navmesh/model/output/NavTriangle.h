@@ -14,9 +14,9 @@ namespace urchin {
     class NavTriangle {
         public:
             NavTriangle(std::size_t, std::size_t, std::size_t);
-            NavTriangle(const NavTriangle &);
+            NavTriangle(const NavTriangle&);
 
-            void attachNavPolygon(const std::shared_ptr<NavPolygon> &);
+            void attachNavPolygon(const std::shared_ptr<NavPolygon>&);
 
             std::shared_ptr<NavPolygon> getNavPolygon() const;
             const Point3<float> &getCenterPoint() const;
@@ -24,11 +24,11 @@ namespace urchin {
             const std::size_t *getIndices() const;
             std::size_t getIndex(std::size_t) const;
 
-            void addStandardLink(std::size_t, const std::shared_ptr<NavTriangle> &);
-            void addJoinPolygonsLink(std::size_t, const std::shared_ptr<NavTriangle> &, NavLinkConstraint *);
-            void addJumpLink(std::size_t, const std::shared_ptr<NavTriangle> &, NavLinkConstraint *);
-            void addLink(const std::shared_ptr<NavLink> &);
-            void removeLinksTo(const std::shared_ptr<NavPolygon> &);
+            void addStandardLink(std::size_t, const std::shared_ptr<NavTriangle>&);
+            void addJoinPolygonsLink(std::size_t, const std::shared_ptr<NavTriangle>&, NavLinkConstraint*);
+            void addJumpLink(std::size_t, const std::shared_ptr<NavTriangle>&, NavLinkConstraint*);
+            void addLink(const std::shared_ptr<NavLink>&);
+            void removeLinksTo(const std::shared_ptr<NavPolygon>&);
             std::vector<std::shared_ptr<NavLink>> getLinks() const;
 
             bool hasEdgeLinks(std::size_t) const;

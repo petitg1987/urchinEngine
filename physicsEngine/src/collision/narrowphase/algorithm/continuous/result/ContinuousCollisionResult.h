@@ -13,8 +13,8 @@ namespace urchin {
 
     template<class T> class ContinuousCollisionResult : public AlgorithmResult {
         public:
-            ContinuousCollisionResult(AbstractWorkBody *, const Vector3<T> &, const Point3<T> &, T);
-            ContinuousCollisionResult(const ContinuousCollisionResult &);
+            ContinuousCollisionResult(AbstractWorkBody *, const Vector3<T>&, const Point3<T>&, T);
+            ContinuousCollisionResult(const ContinuousCollisionResult&);
 
             AbstractWorkBody *getBody2() const;
 
@@ -31,7 +31,7 @@ namespace urchin {
     };
 
     template<class T> struct ContinuousCollisionResultComparator {
-        bool operator()(const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter> &, const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter> &) const;
+        bool operator()(const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter>&, const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter>&) const;
     };
 
     typedef std::set<std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter>, ContinuousCollisionResultComparator<float>> ccd_set;

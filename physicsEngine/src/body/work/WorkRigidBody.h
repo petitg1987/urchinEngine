@@ -10,29 +10,29 @@ namespace urchin {
 
     class WorkRigidBody : public AbstractWorkBody {
         public:
-            WorkRigidBody(const std::string &, const PhysicsTransform &, const std::shared_ptr<const CollisionShape3D> &);
+            WorkRigidBody(const std::string&, const PhysicsTransform&, const std::shared_ptr<const CollisionShape3D>&);
 
             static WorkRigidBody *upCast(AbstractWorkBody *);
-            static const WorkRigidBody *upCast(const AbstractWorkBody *);
+            static const WorkRigidBody *upCast(const AbstractWorkBody*);
 
-            void setLinearVelocity(const Vector3<float> &);
+            void setLinearVelocity(const Vector3<float>&);
             const Vector3<float> &getLinearVelocity() const;
 
-            void setAngularVelocity(const Vector3<float> &);
+            void setAngularVelocity(const Vector3<float>&);
             const Vector3<float> &getAngularVelocity() const;
 
             const Vector3<float> &getTotalMomentum() const;
-            void setTotalMomentum(const Vector3<float> &);
-            void applyCentralMomentum(const Vector3<float> &);
-            void applyMomentum(const Vector3<float> &, const Point3<float> &);
+            void setTotalMomentum(const Vector3<float>&);
+            void applyCentralMomentum(const Vector3<float>&);
+            void applyMomentum(const Vector3<float>&, const Point3<float>&);
             void resetMomentum();
 
             const Vector3<float> &getTotalTorqueMomentum() const;
-            void setTotalTorqueMomentum(const Vector3<float> &);
-            void applyTorqueMomentum(const Vector3<float> &);
+            void setTotalTorqueMomentum(const Vector3<float>&);
+            void applyTorqueMomentum(const Vector3<float>&);
             void resetTorqueMomentum();
 
-            void setMassProperties(float, const Vector3<float> &);
+            void setMassProperties(float, const Vector3<float>&);
             float getMass() const;
             float getInvMass() const;
             void refreshInvWorldInertia();
@@ -43,9 +43,9 @@ namespace urchin {
             float getLinearDamping() const;
             float getAngularDamping() const;
 
-            void setLinearFactor(const Vector3<float> &);
+            void setLinearFactor(const Vector3<float>&);
             const Vector3<float> &getLinearFactor() const;
-            void setAngularFactor(const Vector3<float> &);
+            void setAngularFactor(const Vector3<float>&);
             const Vector3<float> &getAngularFactor() const;
 
             void setIsStatic(bool) override;

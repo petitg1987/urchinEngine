@@ -30,25 +30,25 @@ namespace urchin {
             explicit ModelDisplayer(DisplayMode displayMode);
 
             void initialize();
-            void onCameraProjectionUpdate(const Camera *);
+            void onCameraProjectionUpdate(const Camera*);
 
-            ShaderVar getShaderVar(const std::string &) const;
-            void setCustomGeometryShader(const std::string &, const std::map<std::string, std::string> &);
-            void setCustomFragmentShader(const std::string &, const std::map<std::string, std::string> &);
+            ShaderVar getShaderVar(const std::string&) const;
+            void setCustomGeometryShader(const std::string&, const std::map<std::string, std::string>&);
+            void setCustomFragmentShader(const std::string&, const std::map<std::string, std::string>&);
             void setCustomShaderVariable(CustomShaderVariable *);
             void setCustomModelShaderVariable(CustomModelShaderVariable *);
 
-            void setRenderTarget(const RenderTarget *);
-            void setModels(const std::vector<Model *> &);
+            void setRenderTarget(const RenderTarget*);
+            void setModels(const std::vector<Model *>&);
 
             void updateAnimation(float);
-            void display(const Matrix4<float> &);
+            void display(const Matrix4<float>&);
 
-            void drawBBox(const Matrix4<float> &, const Matrix4<float> &) const;
-            void drawBaseBones(const Matrix4<float> &, const Matrix4<float> &, const std::string &) const;
+            void drawBBox(const Matrix4<float>&, const Matrix4<float>&) const;
+            void drawBaseBones(const Matrix4<float>&, const Matrix4<float>&, const std::string&) const;
 
         private:
-            void createShader(const std::string &, const std::string &, const std::string &);
+            void createShader(const std::string&, const std::string&, const std::string&);
 
             bool isInitialized;
 

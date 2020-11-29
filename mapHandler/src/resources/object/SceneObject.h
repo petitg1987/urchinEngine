@@ -27,10 +27,10 @@ namespace urchin {
             SceneObject();
             ~SceneObject() override;
 
-            void setObjectManagers(Renderer3d *, PhysicsWorld *, AIManager *);
+            void setObjectManagers(Renderer3d *, PhysicsWorld*, AIManager*);
 
             const std::string &getName() const;
-            void setName(const std::string &);
+            void setName(const std::string&);
 
             Model *getModel() const;
             void setModel(Model *);
@@ -40,11 +40,11 @@ namespace urchin {
             RigidBody *getRigidBody() const override;
 
         protected:
-            void moveTo(const Transform<float> &) override;
+            void moveTo(const Transform<float>&) override;
 
         private:
-            void loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
-            void writeOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
+            void loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            void writeOn(const std::shared_ptr<XmlChunk>&, XmlWriter&) const;
 
             void setupRigidBody(RigidBody *);
             void setupAIObject();

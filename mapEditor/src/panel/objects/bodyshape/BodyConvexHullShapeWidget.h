@@ -17,7 +17,7 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            explicit BodyConvexHullShapeWidget(const SceneObject *);
+            explicit BodyConvexHullShapeWidget(const SceneObject*);
             ~BodyConvexHullShapeWidget() override = default;
 
             std::string getBodyShapeName() const override;
@@ -27,7 +27,7 @@ namespace urchin {
             std::shared_ptr<const CollisionShape3D> createBodyShape() const override;
 
         private:
-            void addPoint(const Point3<float> &);
+            void addPoint(const Point3<float>&);
             std::vector<Point3<float>> getPoints() const;
 
             QLabel* pointsLabel;

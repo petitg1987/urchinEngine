@@ -19,7 +19,7 @@ namespace urchin {
         #define POINT_SOUND_LABEL "Point"
 
         public:
-            NewSoundDialog(QWidget *parent, const SoundController *);
+            NewSoundDialog(QWidget *parent, const SoundController*);
 
             SceneSound *getSceneSound() const;
 
@@ -32,7 +32,7 @@ namespace urchin {
             int buildSceneSound(int);
 
             void done(int) override;
-            bool isSceneSoundExist(const std::string &);
+            bool isSceneSoundExist(const std::string&);
 
             const SoundController *soundController;
 

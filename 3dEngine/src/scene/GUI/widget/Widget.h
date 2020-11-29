@@ -37,7 +37,7 @@ namespace urchin {
             void setParent(Widget *);
             Widget *getParent() const;
 
-            void addEventListener(const std::shared_ptr<EventListener> &);
+            void addEventListener(const std::shared_ptr<EventListener>&);
             const std::vector<std::shared_ptr<EventListener>> &getEventListeners() const;
             WidgetStates getWidgetState() const;
 
@@ -69,7 +69,7 @@ namespace urchin {
             virtual void reset();
             void onDisable();
 
-            virtual void display(const RenderTarget *, const ShaderVar &, float);
+            virtual void display(const RenderTarget*, const ShaderVar&, float);
 
         protected:
             unsigned int getSceneWidth() const;

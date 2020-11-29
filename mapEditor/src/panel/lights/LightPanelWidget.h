@@ -34,9 +34,9 @@ namespace urchin {
             void setupSpecificSunLightBox(QVBoxLayout *);
 
             void notify(Observable *, int) override;
-            void setupLightDataFrom(const SceneLight *);
-            void setupOmnidirectionalLightDataFrom(const OmnidirectionalLight *);
-            void setupSunLightDataFrom(const SunLight *);
+            void setupLightDataFrom(const SceneLight*);
+            void setupOmnidirectionalLightDataFrom(const OmnidirectionalLight*);
+            void setupSunLightDataFrom(const SunLight*);
 
             LightController *lightController;
 

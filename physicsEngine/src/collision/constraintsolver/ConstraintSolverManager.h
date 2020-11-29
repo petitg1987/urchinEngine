@@ -20,23 +20,23 @@ namespace urchin {
             ConstraintSolverManager();
             ~ConstraintSolverManager();
 
-            void solveConstraints(float, std::vector<ManifoldResult> &);
+            void solveConstraints(float, std::vector<ManifoldResult>&);
 
         private:
             void setupConstraints(std::vector<ManifoldResult> &, float);
             void solveConstraints();
 
-            CommonSolvingData fillCommonSolvingData(const ManifoldResult &, const ManifoldContactPoint &);
-            ImpulseSolvingData fillImpulseSolvingData(const CommonSolvingData &, float) const;
+            CommonSolvingData fillCommonSolvingData(const ManifoldResult&, const ManifoldContactPoint&);
+            ImpulseSolvingData fillImpulseSolvingData(const CommonSolvingData&, float) const;
 
             void solveNormalConstraint(ConstraintSolving *);
             void solveTangentConstraint(ConstraintSolving *);
 
-            void applyImpulse(WorkRigidBody *, WorkRigidBody *, const CommonSolvingData &, const Vector3<float> &);
-            Vector3<float> computeRelativeVelocity(const CommonSolvingData &) const;
-            Vector3<float> computeTangent(const CommonSolvingData &, const Vector3<float> &) const;
+            void applyImpulse(WorkRigidBody *, WorkRigidBody*, const CommonSolvingData&, const Vector3<float>&);
+            Vector3<float> computeRelativeVelocity(const CommonSolvingData&) const;
+            Vector3<float> computeTangent(const CommonSolvingData&, const Vector3<float>&) const;
 
-            void logCommonData(const std::string &, const CommonSolvingData &) const;
+            void logCommonData(const std::string&, const CommonSolvingData&) const;
 
             std::vector<ConstraintSolving *> constraintsSolving;
             FixedSizePool<ConstraintSolving> *constraintSolvingPool;

@@ -11,16 +11,16 @@ namespace urchin {
 
     class TerrainManager {
         public:
-            explicit TerrainManager(const RenderTarget *);
+            explicit TerrainManager(const RenderTarget*);
 
-            void onCameraProjectionUpdate(const Camera *);
+            void onCameraProjectionUpdate(const Camera*);
 
             void addTerrain(Terrain *);
             void removeTerrain(Terrain *);
 
             void setGrassDisplayDistance(float);
 
-            void display(const Camera *, float) const;
+            void display(const Camera*, float) const;
 
         private:
             void updateWithConfig();

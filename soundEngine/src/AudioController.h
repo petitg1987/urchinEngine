@@ -17,7 +17,7 @@ namespace urchin {
     */
     class AudioController {
         public:
-            AudioController(Sound *, SoundTrigger *, StreamUpdateWorker *);
+            AudioController(Sound *, SoundTrigger*, StreamUpdateWorker*);
             ~AudioController();
 
             const Sound *getSound() const;
@@ -27,7 +27,7 @@ namespace urchin {
             void pause();
             void unpause();
 
-            void process(const Point3<float> &);
+            void process(const Point3<float>&);
 
         private:
             void processTriggerValue(SoundTrigger::TriggerResultValue);

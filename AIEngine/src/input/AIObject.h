@@ -14,8 +14,8 @@ namespace urchin {
 
     class AIObject : public AIEntity {
         public:
-            AIObject(std::string, const Transform<float> &, bool, const std::shared_ptr<AIShape> &);
-            AIObject(std::string, const Transform<float> &, bool, std::vector<std::shared_ptr<AIShape>>);
+            AIObject(std::string, const Transform<float>&, bool, const std::shared_ptr<AIShape>&);
+            AIObject(std::string, const Transform<float>&, bool, std::vector<std::shared_ptr<AIShape>>);
 
             AIEntity::AIEntityType getType() const override;
 

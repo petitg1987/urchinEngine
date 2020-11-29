@@ -25,19 +25,19 @@ namespace urchin {
         public:
             EPAAlgorithm();
 
-            std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> processEPA(const CollisionConvexObject3D &, const CollisionConvexObject3D &, const GJKResult<T> &) const;
+            std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> processEPA(const CollisionConvexObject3D&, const CollisionConvexObject3D&, const GJKResult<T>&) const;
 
         private:
-            std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> handleSubTriangle(const CollisionConvexObject3D &, const CollisionConvexObject3D &) const;
+            std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> handleSubTriangle(const CollisionConvexObject3D&, const CollisionConvexObject3D&) const;
 
-            void determineInitialPoints(const Simplex<T> &, const CollisionConvexObject3D &, const CollisionConvexObject3D &,
-                    std::map<std::size_t, ConvexHullPoint<T>> &, std::map<std::size_t, Point3<T>> &, std::map<std::size_t, Point3<T>> &) const;
-            void determineInitialTriangles(std::map<std::size_t, ConvexHullPoint<T>> &, std::map<std::size_t, IndexedTriangle3D<T>> &) const;
+            void determineInitialPoints(const Simplex<T>&, const CollisionConvexObject3D&, const CollisionConvexObject3D&,
+                    std::map<std::size_t, ConvexHullPoint<T>>&, std::map<std::size_t, Point3<T>>&, std::map<std::size_t, Point3<T>>&) const;
+            void determineInitialTriangles(std::map<std::size_t, ConvexHullPoint<T>>&, std::map<std::size_t, IndexedTriangle3D<T>>&) const;
 
-            typename std::map<std::size_t, EPATriangleData<T>>::const_iterator getClosestTriangleData(const typename std::map<std::size_t, EPATriangleData<T>> &) const;
-            EPATriangleData<T> createTriangleData(const ConvexHullShape3D<T> &, std::size_t) const;
+            typename std::map<std::size_t, EPATriangleData<T>>::const_iterator getClosestTriangleData(const typename std::map<std::size_t, EPATriangleData<T>>&) const;
+            EPATriangleData<T> createTriangleData(const ConvexHullShape3D<T>&, std::size_t) const;
 
-            void logInputData(const std::string &, const CollisionConvexObject3D &, const CollisionConvexObject3D &, const GJKResult<T> &) const;
+            void logInputData(const std::string&, const CollisionConvexObject3D&, const CollisionConvexObject3D&, const GJKResult<T>&) const;
 
             const unsigned int maxIteration;
             const float terminationTolerance;

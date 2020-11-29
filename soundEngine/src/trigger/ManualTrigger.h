@@ -10,7 +10,7 @@ namespace urchin {
     */
     class ManualTrigger : public SoundTrigger {
         public:
-            explicit ManualTrigger(const SoundBehavior &);
+            explicit ManualTrigger(const SoundBehavior&);
 
             SoundTrigger::TriggerType getTriggerType() const override;
 
@@ -18,7 +18,7 @@ namespace urchin {
             void stop();
             void pause();
 
-            SoundTrigger::TriggerResultValue evaluateTrigger(const Point3<float> &) override;
+            SoundTrigger::TriggerResultValue evaluateTrigger(const Point3<float>&) override;
 
         private:
             enum ManualTriggerValue {

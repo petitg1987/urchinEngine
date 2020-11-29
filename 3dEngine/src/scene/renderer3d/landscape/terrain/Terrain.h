@@ -19,26 +19,26 @@ namespace urchin {
 
     class Terrain {
         public:
-            Terrain(std::shared_ptr<TerrainMesh> &, std::unique_ptr<TerrainMaterial> &, const Point3<float> &);
+            Terrain(std::shared_ptr<TerrainMesh> &, std::unique_ptr<TerrainMaterial>&, const Point3<float>&);
 
-            void onCameraProjectionUpdate(const Matrix4<float> &);
+            void onCameraProjectionUpdate(const Matrix4<float>&);
 
-            void setMesh(const std::shared_ptr<TerrainMesh> &);
+            void setMesh(const std::shared_ptr<TerrainMesh>&);
             const TerrainMesh *getMesh() const;
             void setMaterial(std::unique_ptr<TerrainMaterial> &);
             const TerrainMaterial *getMaterial() const;
             TerrainGrass *getGrass() const;
 
-            void setPosition(const Point3<float> &);
+            void setPosition(const Point3<float>&);
             const Point3<float> &getPosition() const;
 
             float getAmbient() const;
             void setAmbient(float);
 
-            Point3<float> findPointAt(const Point2<float> &) const;
-            float findHeightAt(const Point2<float> &) const;
+            Point3<float> findPointAt(const Point2<float>&) const;
+            float findHeightAt(const Point2<float>&) const;
 
-            void display(const RenderTarget *, const Camera *, float invFrameRate) const;
+            void display(const RenderTarget*, const Camera*, float invFrameRate) const;
 
         private:
             void refreshMaterial();

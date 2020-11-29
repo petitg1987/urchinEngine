@@ -17,19 +17,19 @@ namespace urchin {
         public:
             friend class Singleton<ResizeConvexHull3DService<T>>;
 
-            std::unique_ptr<ConvexHullShape3D<T>> resizeConvexHullShape(const ConvexHullShape3D<T> &, T) const;
-            std::unique_ptr<ConvexHull3D<T>> resizeConvexHull(const ConvexHull3D<T> &, T) const;
+            std::unique_ptr<ConvexHullShape3D<T>> resizeConvexHullShape(const ConvexHullShape3D<T>&, T) const;
+            std::unique_ptr<ConvexHull3D<T>> resizeConvexHull(const ConvexHull3D<T>&, T) const;
 
-            std::unique_ptr<ConvexHullShape3D<T>> resizeConvexHullShape(const ConvexHullShape3D<T> &, const std::map<std::size_t, Plane<T>> &) const;
-            std::unique_ptr<ConvexHull3D<T>> resizeConvexHull(const ConvexHull3D<T> &, const std::map<std::size_t, Plane<T>> &) const;
+            std::unique_ptr<ConvexHullShape3D<T>> resizeConvexHullShape(const ConvexHullShape3D<T>&, const std::map<std::size_t, Plane<T>>&) const;
+            std::unique_ptr<ConvexHull3D<T>> resizeConvexHull(const ConvexHull3D<T>&, const std::map<std::size_t, Plane<T>>&) const;
 
         private:
             ResizeConvexHull3DService() = default;
             virtual ~ResizeConvexHull3DService() = default;
 
-            std::map<std::size_t, Plane<T>> buildPlanesFromConvexHullShape(const ConvexHullShape3D<T> &) const;
-            void shiftPlanes(std::map<std::size_t, Plane<T>> &, T) const;
-            std::vector<Plane<T>> findThreeNonParallelPlanes(const std::vector<std::size_t> &, const std::map<std::size_t, Plane<T>> &) const;
+            std::map<std::size_t, Plane<T>> buildPlanesFromConvexHullShape(const ConvexHullShape3D<T>&) const;
+            void shiftPlanes(std::map<std::size_t, Plane<T>>&, T) const;
+            std::vector<Plane<T>> findThreeNonParallelPlanes(const std::vector<std::size_t>&, const std::map<std::size_t, Plane<T>>&) const;
     };
 
 }

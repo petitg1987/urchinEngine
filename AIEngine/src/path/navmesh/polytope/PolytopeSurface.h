@@ -16,7 +16,7 @@ namespace urchin {
             PolytopeSurface();
             virtual ~PolytopeSurface() = default;
 
-            void setPolytope(const Polytope *);
+            void setPolytope(const Polytope*);
             const Polytope *getPolytope() const;
             std::size_t getSurfacePosition() const;
 
@@ -28,9 +28,9 @@ namespace urchin {
             virtual const AABBox<float> &getAABBox() const = 0;
 
             virtual const std::vector<Point2<float>> &getOutlineCwPoints() const = 0;
-            virtual Plane<float> getPlane(const Rectangle<float> &) const = 0;
+            virtual Plane<float> getPlane(const Rectangle<float>&) const = 0;
             virtual const std::vector<CSGPolygon<float>> &getSelfObstacles() const = 0;
-            virtual Point3<float> computeRealPoint(const Point2<float> &, const std::shared_ptr<NavMeshAgent> &) const = 0;
+            virtual Point3<float> computeRealPoint(const Point2<float>&, const std::shared_ptr<NavMeshAgent>&) const = 0;
             virtual const std::shared_ptr<const NavTopography> &getNavTopography() const = 0;
 
         private:

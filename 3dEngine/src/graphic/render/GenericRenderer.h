@@ -33,15 +33,15 @@ namespace urchin {
                 bool hasPrimitiveRestartIndex = false;
             };
 
-            explicit GenericRenderer(const GenericRendererBuilder *);
+            explicit GenericRenderer(const GenericRendererBuilder*);
             ~GenericRenderer();
 
-            void updateData(std::size_t, const std::vector<Point2<float>> *);
-            void updateData(std::size_t, const std::vector<Point3<float>> *);
-            void updateData(std::size_t, const std::vector<Vector3<float>> *);
+            void updateData(std::size_t, const std::vector<Point2<float>>*);
+            void updateData(std::size_t, const std::vector<Point3<float>>*);
+            void updateData(std::size_t, const std::vector<Vector3<float>>*);
 
-            void updateTexture(std::size_t, const TextureReader &);
-            unsigned int addAdditionalTexture(const TextureReader &);
+            void updateTexture(std::size_t, const TextureReader&);
+            unsigned int addAdditionalTexture(const TextureReader&);
             void clearAdditionalTextures();
             void renderTextures(bool);
 
@@ -50,7 +50,7 @@ namespace urchin {
 
         private:
             unsigned int computeVerticesCount() const;
-            void initializeTexture(const TextureReader &) const;
+            void initializeTexture(const TextureReader&) const;
             void initializeDisplay();
             void sendData(std::size_t, bool);
 

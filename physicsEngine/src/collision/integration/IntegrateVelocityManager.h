@@ -14,13 +14,13 @@ namespace urchin {
     */
     class IntegrateVelocityManager {
         public:
-            explicit IntegrateVelocityManager(const BodyManager *);
+            explicit IntegrateVelocityManager(const BodyManager*);
 
-            void integrateVelocity(float, const std::vector<OverlappingPair *> &, const Vector3<float> &);
+            void integrateVelocity(float, const std::vector<OverlappingPair *>&, const Vector3<float>&);
 
         private:
-            void applyGravityForce(const Vector3<float> &, float);
-            void applyRollingFrictionResistanceForce(float , const std::vector<OverlappingPair *> &);
+            void applyGravityForce(const Vector3<float>&, float);
+            void applyRollingFrictionResistanceForce(float , const std::vector<OverlappingPair *>&);
 
             const BodyManager *bodyManager;
     };

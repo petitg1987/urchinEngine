@@ -12,15 +12,15 @@ namespace urchin {
 
     class GeometryManager {
         public:
-            explicit GeometryManager(const RenderTarget *);
+            explicit GeometryManager(const RenderTarget*);
             virtual ~GeometryManager() = default;
 
             void addGeometry(GeometryModel *);
             void removeGeometry(GeometryModel *);
 
-            void onCameraProjectionUpdate(const Camera *);
+            void onCameraProjectionUpdate(const Camera*);
 
-            void display(const Matrix4<float> &) const;
+            void display(const Matrix4<float>&) const;
 
         private:
             const RenderTarget *renderTarget;

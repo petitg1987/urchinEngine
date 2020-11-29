@@ -22,15 +22,15 @@ namespace urchin {
 
             SyncFixedSizePool<AlgorithmResult> *getAlgorithmResultPool() const;
 
-            template<class T> std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> newGJKResultCollide(const Simplex<T> &);
+            template<class T> std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> newGJKResultCollide(const Simplex<T>&);
             template<class T> std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> newGJKResultInvalid();
-            template<class T> std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> newGJKResultNoCollide(T, const Simplex<T> &);
+            template<class T> std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> newGJKResultNoCollide(T, const Simplex<T>&);
 
-            template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> newEPAResultCollide(const Point3<T> &, const Point3<T> &, const Vector3<T> &, T);
+            template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> newEPAResultCollide(const Point3<T>&, const Point3<T>&, const Vector3<T>&, T);
             template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> newEPAResultInvalid();
             template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> newEPAResultNoCollide();
 
-            template<class T> std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter> newContinuousCollisionResult(AbstractWorkBody *, const Vector3<T> &, const Point3<T> &, T);
+            template<class T> std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter> newContinuousCollisionResult(AbstractWorkBody *, const Vector3<T>&, const Point3<T>&, T);
 
         private:
             AlgorithmResultAllocator();

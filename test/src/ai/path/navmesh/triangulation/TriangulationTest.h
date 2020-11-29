@@ -22,8 +22,8 @@ class TriangulationTest : public CppUnit::TestFixture {
         void threeMonotonePolygons();
 
     private:
-        void assertUniqueLink(const std::shared_ptr<urchin::NavTriangle> &, unsigned int, const std::shared_ptr<urchin::NavTriangle> &);
-        void assertLink(const std::shared_ptr<urchin::NavLink> &, unsigned int, const std::shared_ptr<urchin::NavTriangle> &);
+        void assertUniqueLink(const std::shared_ptr<urchin::NavTriangle>&, unsigned int, const std::shared_ptr<urchin::NavTriangle>&);
+        void assertLink(const std::shared_ptr<urchin::NavLink>&, unsigned int, const std::shared_ptr<urchin::NavTriangle>&);
 };
 
 #endif

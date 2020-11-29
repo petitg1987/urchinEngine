@@ -19,7 +19,7 @@ namespace urchin {
         #define OMNIDIRECTIONAL_LIGHT_LABEL "Omnidirectional"
 
         public:
-            NewLightDialog(QWidget *parent, const LightController *);
+            NewLightDialog(QWidget *parent, const LightController*);
 
             SceneLight *getSceneLight() const;
 
@@ -31,7 +31,7 @@ namespace urchin {
             int buildSceneLight(int);
 
             void done(int) override;
-            bool isSceneLightExist(const std::string &);
+            bool isSceneLightExist(const std::string&);
 
             const LightController *lightController;
 

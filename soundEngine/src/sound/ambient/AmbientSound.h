@@ -12,7 +12,7 @@ namespace urchin {
      */
     class AmbientSound : public Sound {
         public:
-            explicit AmbientSound(const std::string &);
+            explicit AmbientSound(const std::string&);
 
             Sound::SoundType getSoundType() const override;
     };

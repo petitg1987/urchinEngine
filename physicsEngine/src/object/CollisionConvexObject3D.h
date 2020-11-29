@@ -24,7 +24,7 @@ namespace urchin {
             float getOuterMargin() const;
 
             virtual CollisionConvexObject3D::ObjectType getObjectType() const = 0;
-            virtual Point3<float> getSupportPoint(const Vector3<float> &, bool) const = 0;
+            virtual Point3<float> getSupportPoint(const Vector3<float>&, bool) const = 0;
 
             virtual std::string toString() const = 0;
 

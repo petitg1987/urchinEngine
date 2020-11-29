@@ -22,7 +22,7 @@ namespace urchin {
 
             CylinderShape<float> getAgentCylinder() const;
             BoxShape<float> getAgentBox() const;
-            float computeExpandDistance(const Vector3<float> &) const;
+            float computeExpandDistance(const Vector3<float>&) const;
 
         private:
             float agentHeight;

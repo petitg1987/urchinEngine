@@ -7,7 +7,7 @@ namespace urchin {
 
     template<class T> class EPATriangleData {
         public:
-            EPATriangleData(T, const Vector3<T> &, const Point3<T> &, T [3]);
+            EPATriangleData(T, const Vector3<T>&, const Point3<T>&, T [3]);
 
             T getDistanceToOrigin() const;
             const Vector3<T> &getNormal() const;

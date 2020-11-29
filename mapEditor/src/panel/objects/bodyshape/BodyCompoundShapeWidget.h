@@ -21,7 +21,7 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            explicit BodyCompoundShapeWidget(const SceneObject *);
+            explicit BodyCompoundShapeWidget(const SceneObject*);
             ~BodyCompoundShapeWidget() override = default;
 
             std::string getBodyShapeName() const override;
@@ -34,10 +34,10 @@ namespace urchin {
         private:
             void notify(Observable *, int) override;
 
-            void setupTransformBox(QVBoxLayout *, const std::shared_ptr<const LocalizedCollisionShape> &);
-            void setupPosition(QGridLayout *, const Point3<float> &);
-            void setupOrientation(QGridLayout *, const Quaternion<float> &);
-            void setupShapeBox(QVBoxLayout *, const std::shared_ptr<const LocalizedCollisionShape> &);
+            void setupTransformBox(QVBoxLayout *, const std::shared_ptr<const LocalizedCollisionShape>&);
+            void setupPosition(QGridLayout *, const Point3<float>&);
+            void setupOrientation(QGridLayout *, const Quaternion<float>&);
+            void setupShapeBox(QVBoxLayout *, const std::shared_ptr<const LocalizedCollisionShape>&);
 
             QLabel* shapesLabel;
             LocalizedShapeTableView* localizedShapeTableView;

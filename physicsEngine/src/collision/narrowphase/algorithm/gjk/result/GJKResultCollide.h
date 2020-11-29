@@ -11,7 +11,7 @@ namespace urchin {
 
     template<class T> class GJKResultCollide : public GJKResult<T> {
         public:
-            explicit GJKResultCollide(const Simplex<T> &);
+            explicit GJKResultCollide(const Simplex<T>&);
 
             bool isValidResult() const override;
 

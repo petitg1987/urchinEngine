@@ -18,10 +18,10 @@ namespace urchin {
         public:
             ShadowModelShaderVariable();
 
-            void setLayersToUpdateShaderVar(const ShaderVar &);
-            void setShadowData(const ShadowData *);
+            void setLayersToUpdateShaderVar(const ShaderVar&);
+            void setShadowData(const ShadowData*);
 
-            void loadCustomShaderVariables(const Model *) override;
+            void loadCustomShaderVariables(const Model*) override;
 
         private:
             ShaderVar layersToUpdateShaderVar;

@@ -10,15 +10,15 @@ namespace urchin {
     template<class T> class Sphere : public ConvexObject3D<T> {
         public:
             Sphere();
-            Sphere(T, const Point3<T> &);
+            Sphere(T, const Point3<T>&);
 
             T getRadius() const;
             const Point3<T> &getCenterOfMass() const;
 
-            Point3<T> getSupportPoint(const Vector3<T> &) const;
+            Point3<T> getSupportPoint(const Vector3<T>&) const;
 
-            bool collideWithPoint(const Point3<T> &) const;
-            bool collideWithSphere(const Sphere<T> &) const;
+            bool collideWithPoint(const Point3<T>&) const;
+            bool collideWithSphere(const Sphere<T>&) const;
 
         private:
             SphereShape<T> sphereShape;

@@ -208,7 +208,7 @@ class MD5
 
         // Encodes input (UINT4) into output (unsigned char). Assumes len is
         // a multiple of 4.
-        static void Encode( unsigned char *output, UINT4 *input, unsigned int len )
+        static void Encode( unsigned char*output, UINT4*input, unsigned int len )
         {
             unsigned int i, j;
 
@@ -222,7 +222,7 @@ class MD5
 
         // Decodes input (unsigned char) into output (UINT4). Assumes len is
         // a multiple of 4.
-        static void Decode( UINT4 *output, unsigned char *input, unsigned int len )
+        static void Decode( UINT4*output, unsigned char*input, unsigned int len )
         {
             unsigned int i, j;
 
@@ -256,7 +256,7 @@ class MD5
         // operation, processing another message block, and updating the
         // context.
         void Update(
-                unsigned char *input,   // input block
+                unsigned char*input,   // input block
                 unsigned int inputLen ) // length of input block
         {
             unsigned int i, index, partLen;
@@ -361,7 +361,7 @@ class MD5
         }
 
         /// Digests a byte-array already in memory
-        char* digestMemory( BYTE *memchunk, int len )
+        char* digestMemory( BYTE*memchunk, int len )
         {
             Init() ;
             Update( memchunk, len ) ;

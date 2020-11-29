@@ -11,7 +11,7 @@ namespace urchin {
     */
     template<class T> class RectangleShape : public ConvexShape2D {
         public:
-            explicit RectangleShape(const Vector2<T> &);
+            explicit RectangleShape(const Vector2<T>&);
 
             const Vector2<T> &getDiagonal() const;
 

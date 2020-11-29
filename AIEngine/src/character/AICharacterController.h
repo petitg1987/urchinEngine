@@ -12,11 +12,11 @@ namespace urchin {
 
     class AICharacterController {
         public:
-            AICharacterController(std::shared_ptr<AICharacter> , AIManager *);
+            AICharacterController(std::shared_ptr<AICharacter> , AIManager*);
 
-            void setupEventHandler(const std::shared_ptr<AICharacterEventHandler> &);
+            void setupEventHandler(const std::shared_ptr<AICharacterEventHandler>&);
 
-            void moveTo(const Point3<float> &);
+            void moveTo(const Point3<float>&);
             void stopMoving();
 
             std::shared_ptr<const PathRequest> getPathRequest() const;
@@ -29,7 +29,7 @@ namespace urchin {
             Point2<float> retrieveNextTarget() const;
             Point2<float> retrieveCharacterPosition() const;
 
-            void computeSteeringMomentum(const Point2<float> &);
+            void computeSteeringMomentum(const Point2<float>&);
             void applyMomentum();
             
             std::shared_ptr<AICharacter> character;

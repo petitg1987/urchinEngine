@@ -15,7 +15,7 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            NewWaterDialog(QWidget *parent, const WaterController *);
+            NewWaterDialog(QWidget *parent, const WaterController*);
 
             SceneWater *getSceneWater() const;
 
@@ -26,7 +26,7 @@ namespace urchin {
             int buildSceneWater(int);
 
             void done(int) override;
-            bool isSceneWaterExist(const std::string &);
+            bool isSceneWaterExist(const std::string&);
 
             const WaterController *waterController;
 

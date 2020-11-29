@@ -12,12 +12,12 @@ namespace urchin {
 
     class Mesh {
         public:
-            explicit Mesh(const ConstMesh *);
+            explicit Mesh(const ConstMesh*);
 
-            void update(const std::vector<Bone> &);
+            void update(const std::vector<Bone>&);
 
-            void display(const RenderTarget *, const MeshParameter &) const;
-            void drawBaseBones(const RenderTarget *, const Matrix4<float> &, const Matrix4<float> &) const;
+            void display(const RenderTarget*, const MeshParameter&) const;
+            void drawBaseBones(const RenderTarget*, const Matrix4<float>&, const Matrix4<float>&) const;
 
         private:
             const ConstMesh *const constMesh;

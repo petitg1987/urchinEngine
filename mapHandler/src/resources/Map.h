@@ -42,26 +42,26 @@ namespace urchin {
         public:
             friend class MapHandler;
 
-            Map(Renderer3d *, PhysicsWorld *, SoundManager *, AIManager *);
+            Map(Renderer3d *, PhysicsWorld*, SoundManager*, AIManager*);
             ~Map();
 
             const std::list<SceneObject *> &getSceneObjects() const;
-            SceneObject *getSceneObject(const std::string &) const;
+            SceneObject *getSceneObject(const std::string&) const;
             void addSceneObject(SceneObject *);
             void removeSceneObject(SceneObject *);
 
             const std::list<SceneLight *> &getSceneLights() const;
-            SceneLight *getSceneLight(const std::string &) const;
+            SceneLight *getSceneLight(const std::string&) const;
             void addSceneLight(SceneLight *);
             void removeSceneLight(SceneLight *);
 
             const std::list<SceneTerrain *> &getSceneTerrains() const;
-            SceneTerrain *getSceneTerrain(const std::string &) const;
+            SceneTerrain *getSceneTerrain(const std::string&) const;
             void addSceneTerrain(SceneTerrain *);
             void removeSceneTerrain(SceneTerrain *);
 
             const std::list<SceneWater *> &getSceneWaters() const;
-            SceneWater *getSceneWater(const std::string &) const;
+            SceneWater *getSceneWater(const std::string&) const;
             void addSceneWater(SceneWater *);
             void removeSceneWater(SceneWater *);
 
@@ -69,12 +69,12 @@ namespace urchin {
             void updateSceneSky(std::unique_ptr<Skybox> skybox);
 
             const std::list<SceneSound *> &getSceneSounds() const;
-            SceneSound *getSceneSound(const std::string &) const;
+            SceneSound *getSceneSound(const std::string&) const;
             void addSceneSound(SceneSound *);
             void removeSceneSound(SceneSound *);
 
             const SceneAI *getSceneAI() const;
-            void updateSceneAI(const std::shared_ptr<NavMeshAgent> &);
+            void updateSceneAI(const std::shared_ptr<NavMeshAgent>&);
 
             void refreshMap();
 
@@ -82,23 +82,23 @@ namespace urchin {
             void unpause();
 
         private:
-            void loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &, LoadCallback &);
-            void loadSceneObjectsFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
-            void loadSceneLightsFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
-            void loadSceneTerrainFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
-            void loadSceneWaterFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
-            void loadSceneSkyFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
-            void loadSceneSoundsFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
-            void loadSceneAIFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
+            void loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&, LoadCallback&);
+            void loadSceneObjectsFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            void loadSceneLightsFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            void loadSceneTerrainFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            void loadSceneWaterFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            void loadSceneSkyFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            void loadSceneSoundsFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            void loadSceneAIFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
 
-            void writeOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
-            void writeSceneObjectsOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
-            void writeSceneLightsOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
-            void writeSceneTerrainsOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
-            void writeSceneWatersOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
-            void writeSceneSkyOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
-            void writeSceneSoundsOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
-            void writeSceneAIOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
+            void writeOn(const std::shared_ptr<XmlChunk>&, XmlWriter&) const;
+            void writeSceneObjectsOn(const std::shared_ptr<XmlChunk>&, XmlWriter&) const;
+            void writeSceneLightsOn(const std::shared_ptr<XmlChunk>&, XmlWriter&) const;
+            void writeSceneTerrainsOn(const std::shared_ptr<XmlChunk>&, XmlWriter&) const;
+            void writeSceneWatersOn(const std::shared_ptr<XmlChunk>&, XmlWriter&) const;
+            void writeSceneSkyOn(const std::shared_ptr<XmlChunk>&, XmlWriter&) const;
+            void writeSceneSoundsOn(const std::shared_ptr<XmlChunk>&, XmlWriter&) const;
+            void writeSceneAIOn(const std::shared_ptr<XmlChunk>&, XmlWriter&) const;
 
             void refreshEntities();
             void refreshSound();

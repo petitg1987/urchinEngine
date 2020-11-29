@@ -15,7 +15,7 @@ namespace urchin {
             GeometryModel();
             virtual ~GeometryModel() = default;
 
-            void onCameraProjectionUpdate(const Matrix4<float> &);
+            void onCameraProjectionUpdate(const Matrix4<float>&);
 
             Vector4<float> getColor() const;
             void setColor(float, float, float, float alpha = 1.0f);
@@ -30,7 +30,7 @@ namespace urchin {
             bool isAlwaysVisible() const;
             void setAlwaysVisible(bool);
 
-            void display(const RenderTarget *, const Matrix4<float> &) const;
+            void display(const RenderTarget*, const Matrix4<float>&) const;
 
         protected:
             void initialize();

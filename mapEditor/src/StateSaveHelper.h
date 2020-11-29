@@ -12,8 +12,8 @@ namespace urchin {
             static const std::string PREFERRED_PATH_MAP;
             static const std::string CAMERA_POSITION;
 
-            void saveState(const std::string &, const std::string &);
-            std::string retrieveState(const std::string &, const std::string &) const;
+            void saveState(const std::string&, const std::string&);
+            std::string retrieveState(const std::string&, const std::string&) const;
 
         private:
             StateSaveHelper();

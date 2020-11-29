@@ -14,7 +14,7 @@ namespace urchin {
     template<class T> class Cone : public ConvexObject3D<T> {
         public:
             Cone();
-            Cone(T, T, typename ConeShape<T>::ConeOrientation, const Point3<T> &, const Quaternion<T> &);
+            Cone(T, T, typename ConeShape<T>::ConeOrientation, const Point3<T>&, const Quaternion<T>&);
 
             T getRadius() const;
             T getHeight() const;
@@ -24,7 +24,7 @@ namespace urchin {
             const Vector3<T> &getAxis(unsigned int) const;
 
             Point3<T> getCenter() const;
-            Point3<T> getSupportPoint(const Vector3<T> &) const;
+            Point3<T> getSupportPoint(const Vector3<T>&) const;
 
         private:
             ConeShape<T> coneShape;

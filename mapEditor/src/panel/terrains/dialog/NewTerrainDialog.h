@@ -15,7 +15,7 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            NewTerrainDialog(QWidget *parent, const TerrainController *);
+            NewTerrainDialog(QWidget *parent, const TerrainController*);
 
             SceneTerrain *getSceneTerrain() const;
 
@@ -27,7 +27,7 @@ namespace urchin {
             int buildSceneTerrain(int);
 
             void done(int) override;
-            bool isSceneTerrainExist(const std::string &);
+            bool isSceneTerrainExist(const std::string&);
 
             const TerrainController *terrainController;
 

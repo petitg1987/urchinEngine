@@ -13,19 +13,19 @@ namespace urchin {
 
     class Text : public Widget {
         public:
-            Text(Position, const std::string &);
+            Text(Position, const std::string&);
             ~Text() override;
 
             void createOrUpdateWidget() override;
 
-            void setText(const std::string &, int maxLength=-1);
+            void setText(const std::string&, int maxLength=-1);
             const std::string &getText() const;
             const Font *getFont();
 
-            void display(const RenderTarget *, const ShaderVar &, float) override;
+            void display(const RenderTarget*, const ShaderVar&, float) override;
 
         private:
-            std::string cutText(const std::string &, unsigned int);
+            std::string cutText(const std::string&, unsigned int);
 
             //properties
             std::string text;

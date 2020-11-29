@@ -17,7 +17,7 @@ namespace urchin {
 
     class Font : public Resource {
         public:
-            Font(unsigned int, const Vector3<float> &, std::shared_ptr<Texture>, Glyph *, unsigned int, unsigned int, unsigned int);
+            Font(unsigned int, const Vector3<float>&, std::shared_ptr<Texture>, Glyph*, unsigned int, unsigned int, unsigned int);
             ~Font() override;
 
             unsigned int getFontSize() const;

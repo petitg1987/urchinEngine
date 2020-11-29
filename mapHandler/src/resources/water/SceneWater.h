@@ -21,14 +21,14 @@ namespace urchin {
             void setWaterManagers(Renderer3d *);
 
             std::string getName() const;
-            void setName(const std::string &);
+            void setName(const std::string&);
 
             Water *getWater() const;
             void setWater(Water *);
 
         private:
-            void loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
-            void writeOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
+            void loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            void writeOn(const std::shared_ptr<XmlChunk>&, XmlWriter&) const;
 
             Renderer3d *renderer3d;
 

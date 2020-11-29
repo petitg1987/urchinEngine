@@ -13,7 +13,7 @@ namespace urchin {
 
     class LightManager : public Observable {
         public:
-            explicit LightManager(const RenderTarget *);
+            explicit LightManager(const RenderTarget*);
             ~LightManager() override;
 
             enum NotificationType {
@@ -21,7 +21,7 @@ namespace urchin {
                 REMOVE_LIGHT, //A light has been removed
             };
 
-            void initiateShaderVariables(const std::unique_ptr<Shader> &);
+            void initiateShaderVariables(const std::unique_ptr<Shader>&);
             OctreeManager<Light> *getLightOctreeManager() const;
             Light *getLastUpdatedLight();
 
@@ -30,18 +30,18 @@ namespace urchin {
             void addLight(Light *);
             void removeLight(Light *);
 
-            void setGlobalAmbientColor(const Point4<float> &);
+            void setGlobalAmbientColor(const Point4<float>&);
             const Point4<float> &getGlobalAmbientColor() const;
 
-            void updateLights(const Frustum<float> &);
+            void updateLights(const Frustum<float>&);
             void loadLights();
             void postUpdateLights();
 
-            void drawLightOctree(const Matrix4<float> &, const Matrix4<float> &) const;
+            void drawLightOctree(const Matrix4<float>&, const Matrix4<float>&) const;
 
         private:
             void onLightEvent(Light *, NotificationType);
-            void checkMaxLight(const std::vector<Light *> &) const;
+            void checkMaxLight(const std::vector<Light *>&) const;
 
             const RenderTarget *renderTarget;
 

@@ -20,12 +20,12 @@ namespace urchin {
     template<class T> class AABBox : public ConvexObject3D<T> {
         public:
             AABBox();
-            AABBox(const Point3<T> &, const Point3<T> &);
-            AABBox(const Point3<T> &, const Vector3<T>&);
-            explicit AABBox(const std::vector<Point3<T>> &);
-            AABBox(const Point3<T> *, unsigned int);
-            AABBox(const AABBox<T> &);
-            AABBox<T>& operator=(const AABBox<T> &);
+            AABBox(const Point3<T>&, const Point3<T>&);
+            AABBox(const Point3<T>&, const Vector3<T>&);
+            explicit AABBox(const std::vector<Point3<T>>&);
+            AABBox(const Point3<T>*, unsigned int);
+            AABBox(const AABBox<T>&);
+            AABBox<T>& operator=(const AABBox<T>&);
             AABBox<T>& operator=(AABBox<T> &&) noexcept;
 
             T getHalfSize(unsigned int) const;
@@ -38,22 +38,22 @@ namespace urchin {
             const Point3<T> &getMax() const;
             Point3<T> getCenterOfMass() const;
 
-            Point3<T> getSupportPoint(const Vector3<T> &) const;
+            Point3<T> getSupportPoint(const Vector3<T>&) const;
             std::vector<Point3<T>> getPoints() const;
             T getVolume() const;
 
-            AABBox<T> moveAABBox(const Transform<T> &) const;
+            AABBox<T> moveAABBox(const Transform<T>&) const;
             Matrix4<T> toProjectionMatrix() const;
-            bool include(const AABBox<T> &) const;
+            bool include(const AABBox<T>&) const;
             static AABBox<T> initMergeableAABBox();
-            AABBox<T> merge(const AABBox<T> &) const;
-            AABBox<T> cutTo(const AABBox<T> &) const;
-            AABBox<T> enlarge(const Vector3<T> &, const Vector3<T> &) const;
+            AABBox<T> merge(const AABBox<T>&) const;
+            AABBox<T> cutTo(const AABBox<T>&) const;
+            AABBox<T> enlarge(const Vector3<T>&, const Vector3<T>&) const;
             AABBox<T> enlarge(T, T) const;
 
-            bool collideWithPoint(const Point3<T> &) const;
-            bool collideWithAABBox(const AABBox<T> &) const;
-            bool collideWithRay(const Ray<T> &) const;
+            bool collideWithPoint(const Point3<T>&) const;
+            bool collideWithAABBox(const AABBox<T>&) const;
+            bool collideWithRay(const Ray<T>&) const;
 
             const Point3<T>& operator [](std::size_t) const;
             Point3<T>& operator [](std::size_t);
@@ -63,10 +63,10 @@ namespace urchin {
             Point3<T> min, max;
     };
 
-    template<class T> AABBox<T> operator *(const Matrix4<T> &, const AABBox<T> &);
-    template<class T> AABBox<T> operator *(const AABBox<T> &, const Matrix4<T> &);
+    template<class T> AABBox<T> operator *(const Matrix4<T>&, const AABBox<T>&);
+    template<class T> AABBox<T> operator *(const AABBox<T>&, const Matrix4<T>&);
 
-    template<class T> std::ostream& operator <<(std::ostream &, const AABBox<T> &);
+    template<class T> std::ostream& operator <<(std::ostream &, const AABBox<T>&);
 
 }
 

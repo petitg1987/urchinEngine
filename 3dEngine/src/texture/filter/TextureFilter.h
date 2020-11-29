@@ -17,20 +17,20 @@ namespace urchin {
 
     class TextureFilter {
         public:
-            template<class BUILDER> explicit TextureFilter(const TextureFilterBuilder<BUILDER> *);
+            template<class BUILDER> explicit TextureFilter(const TextureFilterBuilder<BUILDER>*);
             virtual ~TextureFilter() = default;
 
             void initialize();
 
             const std::shared_ptr<Texture> &getTexture() const;
 
-            void applyOn(const std::shared_ptr<Texture> &, int layersToUpdate = -1) const;
+            void applyOn(const std::shared_ptr<Texture>&, int layersToUpdate = -1) const;
 
         protected:
             virtual std::string getShaderName() const = 0;
-            virtual void initiateAdditionalShaderVariables(const std::unique_ptr<Shader> &);
-            virtual void addFurtherTextures(const std::unique_ptr<GenericRenderer> &) const;
-            virtual void completeShaderTokens(std::map<std::string, std::string> &) const = 0;
+            virtual void initiateAdditionalShaderVariables(const std::unique_ptr<Shader>&);
+            virtual void addFurtherTextures(const std::unique_ptr<GenericRenderer>&) const;
+            virtual void completeShaderTokens(std::map<std::string, std::string>&) const = 0;
 
             unsigned int getTextureWidth() const;
             unsigned int getTextureHeight() const;

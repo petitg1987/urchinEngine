@@ -8,7 +8,7 @@ namespace urchin {
 
     class LabelStyleHelper {
         public:
-            static void applyErrorStyle(QLabel *, const std::string &);
+            static void applyErrorStyle(QLabel *, const std::string&);
             static void applyNormalStyle(QLabel *);
     };
 

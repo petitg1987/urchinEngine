@@ -20,7 +20,7 @@ namespace urchin {
             AIEntity(std::string, Transform<float> , bool);
             virtual ~AIEntity() = default;
 
-            void updateTransform(const Point3<float> &, const Quaternion<float> &);
+            void updateTransform(const Point3<float>&, const Quaternion<float>&);
             bool isToRebuild() const;
             void markRebuilt();
 
@@ -30,7 +30,7 @@ namespace urchin {
             Transform<float> getTransform() const;
             bool isObstacleCandidate() const;
 
-            void addNavObject(const std::shared_ptr<NavObject> &);
+            void addNavObject(const std::shared_ptr<NavObject>&);
             const std::vector<std::shared_ptr<NavObject>> &getNavObjects() const;
             void removeAllNavObjects();
 

@@ -11,7 +11,7 @@ namespace urchin {
 
     class Animation {
         public:
-            Animation(ConstAnimation *, Meshes *);
+            Animation(ConstAnimation *, Meshes*);
             ~Animation();
 
             const std::vector<Bone> &getSkeleton() const;
@@ -24,7 +24,7 @@ namespace urchin {
 
             void animate(float);
 
-            void onMoving(const Transform<float> &);
+            void onMoving(const Transform<float>&);
 
         private:
             mutable ConstAnimation *constAnimation;

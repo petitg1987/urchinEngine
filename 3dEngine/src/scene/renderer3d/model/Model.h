@@ -16,12 +16,12 @@ namespace urchin {
 
     class Model : public Octreeable<Model> {
         public:
-            explicit Model(const std::string &);
-            Model(const Model &);
+            explicit Model(const std::string&);
+            Model(const Model&);
             ~Model() override;
 
-            void loadAnimation(const std::string &, const std::string &);
-            void animate(const std::string &);
+            void loadAnimation(const std::string&, const std::string&);
+            void animate(const std::string&);
             void stopAnimation(bool);
             bool isAnimate() const;
 
@@ -32,24 +32,24 @@ namespace urchin {
             const std::vector<AABBox<float>> &getSplitAABBoxes() const;
             const AABBox<float> &getLocalAABBox() const;
 
-            void setPosition(const Point3<float> &);
-            void setOrientation(const Quaternion<float> &);
+            void setPosition(const Point3<float>&);
+            void setOrientation(const Quaternion<float>&);
             void setScale(float);
-            void setTransform(const Transform<float> &);
+            void setTransform(const Transform<float>&);
             const Transform<float> &getTransform() const override;
 
             void setProduceShadow(bool);
             bool isProduceShadow() const;
 
             void updateAnimation(float);
-            void display(const RenderTarget *, const MeshParameter &) const;
+            void display(const RenderTarget*, const MeshParameter&) const;
 
-            void drawBBox(const RenderTarget *, const Matrix4<float> &, const Matrix4<float> &) const;
-            void drawBaseBones(const RenderTarget *, const Matrix4<float> &, const Matrix4<float> &) const;
+            void drawBBox(const RenderTarget*, const Matrix4<float>&, const Matrix4<float>&) const;
+            void drawBaseBones(const RenderTarget*, const Matrix4<float>&, const Matrix4<float>&) const;
 
         private:
-            void initialize(const std::string &);
-            void onMoving(const Transform<float> &);
+            void initialize(const std::string&);
+            void onMoving(const Transform<float>&);
 
             static AABBox<float> defaultModelLocalAABBox;
             std::vector<AABBox<float>> defaultModelAABBoxes;

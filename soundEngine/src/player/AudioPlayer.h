@@ -7,7 +7,7 @@ namespace urchin {
 
     class AudioPlayer {
         public:
-            explicit AudioPlayer(const Sound *);
+            explicit AudioPlayer(const Sound*);
             virtual ~AudioPlayer() = default;
 
             virtual void play() = 0;

@@ -10,7 +10,7 @@ namespace urchin {
 
     class CollisionConeObject : public CollisionConvexObject3D {
         public:
-            CollisionConeObject(float, float, float, typename ConeShape<float>::ConeOrientation, const Point3<float> &, const Quaternion<float> &);
+            CollisionConeObject(float, float, float, typename ConeShape<float>::ConeOrientation, const Point3<float>&, const Quaternion<float>&);
 
             float getRadius() const;
             float getHeight() const;
@@ -20,7 +20,7 @@ namespace urchin {
             const Vector3<float> &getAxis(unsigned int) const;
 
             CollisionConvexObject3D::ObjectType getObjectType() const override;
-            Point3<float> getSupportPoint(const Vector3<float> &, bool) const override;
+            Point3<float> getSupportPoint(const Vector3<float>&, bool) const override;
 
             Cone<float> retrieveCone() const;
             std::string toString() const override;

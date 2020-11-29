@@ -10,7 +10,7 @@ namespace urchin {
 
     class AABBoxModel : public GeometryModel {
         public:
-            explicit AABBoxModel(const AABBox<float> &);
+            explicit AABBoxModel(const AABBox<float>&);
             explicit AABBoxModel(std::vector<AABBox<float>> );
 
         protected:

@@ -8,7 +8,7 @@ namespace urchin {
 
     class Fog {
         public:
-            Fog(float, float, const Vector3<float> &, float maxHeight = std::numeric_limits<float>::max());
+            Fog(float, float, const Vector3<float>&, float maxHeight = std::numeric_limits<float>::max());
 
             float getDensity() const;
             float getGradient() const;

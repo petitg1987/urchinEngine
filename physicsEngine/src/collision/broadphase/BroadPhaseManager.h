@@ -27,8 +27,8 @@ namespace urchin {
 
             const std::vector<OverlappingPair *> &computeOverlappingPairs();
 
-            std::vector<AbstractWorkBody *> rayTest(const Ray<float> &) const;
-            std::vector<AbstractWorkBody *> bodyTest(AbstractWorkBody *, const PhysicsTransform &, const PhysicsTransform &) const;
+            std::vector<AbstractWorkBody *> rayTest(const Ray<float>&) const;
+            std::vector<AbstractWorkBody *> bodyTest(AbstractWorkBody *, const PhysicsTransform&, const PhysicsTransform&) const;
 
         private:
             void addBody(AbstractWorkBody *);

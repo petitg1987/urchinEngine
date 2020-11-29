@@ -22,11 +22,11 @@ namespace urchin {
     class NavLink {
         public:
             ~NavLink();
-            static std::shared_ptr<NavLink> newStandardLink(unsigned int, const std::shared_ptr<NavTriangle> &);
-            static std::shared_ptr<NavLink> newJoinPolygonsLink(unsigned int, const std::shared_ptr<NavTriangle> &, NavLinkConstraint *);
-            static std::shared_ptr<NavLink> newJumpLink(unsigned int, const std::shared_ptr<NavTriangle> &, NavLinkConstraint *);
+            static std::shared_ptr<NavLink> newStandardLink(unsigned int, const std::shared_ptr<NavTriangle>&);
+            static std::shared_ptr<NavLink> newJoinPolygonsLink(unsigned int, const std::shared_ptr<NavTriangle>&, NavLinkConstraint*);
+            static std::shared_ptr<NavLink> newJumpLink(unsigned int, const std::shared_ptr<NavTriangle>&, NavLinkConstraint*);
 
-            std::shared_ptr<NavLink> copyLink(const std::shared_ptr<NavTriangle> &) const;
+            std::shared_ptr<NavLink> copyLink(const std::shared_ptr<NavTriangle>&) const;
 
             NavLinkType getLinkType() const;
             unsigned int getSourceEdgeIndex() const;
@@ -35,7 +35,7 @@ namespace urchin {
             const NavLinkConstraint *getLinkConstraint() const;
 
         private:
-            NavLink(NavLinkType, unsigned int, const std::shared_ptr<NavTriangle> &, NavLinkConstraint *);
+            NavLink(NavLinkType, unsigned int, const std::shared_ptr<NavTriangle>&, NavLinkConstraint*);
 
             NavLinkType linkType;
             unsigned int sourceEdgeIndex;

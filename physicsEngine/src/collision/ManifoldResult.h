@@ -15,8 +15,8 @@ namespace urchin {
     */
     class ManifoldResult {
         public:
-            ManifoldResult(AbstractWorkBody *, AbstractWorkBody *);
-            ManifoldResult(const ManifoldResult &) = default;
+            ManifoldResult(AbstractWorkBody *, AbstractWorkBody*);
+            ManifoldResult(const ManifoldResult&) = default;
             ManifoldResult(ManifoldResult &&) = default;
 
             AbstractWorkBody *getBody(unsigned int) const;
@@ -28,15 +28,15 @@ namespace urchin {
             ManifoldContactPoint &getManifoldContactPoint(unsigned int);
             const ManifoldContactPoint &getManifoldContactPoint(unsigned int) const;
 
-            void addContactPoint(const Vector3<float> &, const Point3<float> &, float, bool);
-            void addContactPoint(const Vector3<float> &, const Point3<float> &, const Point3<float> &, const Point3<float> &, const Point3<float> &, float, bool);
+            void addContactPoint(const Vector3<float>&, const Point3<float>&, float, bool);
+            void addContactPoint(const Vector3<float>&, const Point3<float>&, const Point3<float>&, const Point3<float>&, const Point3<float>&, float, bool);
             void refreshContactPoints();
 
         private:
-            int getNearestPointIndex(const Point3<float> &) const;
-            unsigned int computeBestInsertionIndex(const Point3<float> &) const;
+            int getNearestPointIndex(const Point3<float>&) const;
+            unsigned int computeBestInsertionIndex(const Point3<float>&) const;
             unsigned int getDeepestPointIndex() const;
-            float computeArea(const Point3<float> &, const Point3<float> &, const Point3<float> &, const Point3<float> &) const;
+            float computeArea(const Point3<float>&, const Point3<float>&, const Point3<float>&, const Point3<float>&) const;
             void removeContactPoint(unsigned int);
 
             AbstractWorkBody *body1;

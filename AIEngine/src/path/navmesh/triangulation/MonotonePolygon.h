@@ -9,7 +9,7 @@ namespace urchin {
 
     class MonotonePolygon {
         public:
-            void setCcwPoints(const std::vector<std::size_t> &);
+            void setCcwPoints(const std::vector<std::size_t>&);
             const std::vector<std::size_t> &getCcwPoints() const;
 
             void addSharedEdge(unsigned int, unsigned int);

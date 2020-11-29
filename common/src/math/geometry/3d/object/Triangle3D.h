@@ -10,15 +10,15 @@ namespace urchin {
 
     template<class T> class Triangle3D : public ConvexObject3D<T> {
         public:
-            explicit Triangle3D(const Point3<T> *);
-            Triangle3D(const Point3<T> &, const Point3<T> &, const Point3<T> &);
+            explicit Triangle3D(const Point3<T>*);
+            Triangle3D(const Point3<T>&, const Point3<T>&, const Point3<T>&);
 
             const Point3<T> *getPoints() const;
 
-            Point3<T> getSupportPoint(const Vector3<T> &) const;
+            Point3<T> getSupportPoint(const Vector3<T>&) const;
             Vector3<T> computeNormal() const;
-            Point3<T> closestPoint(const Point3<T> &, T [3]) const;
-            bool projectedPointInsideTriangle(const Point3<T> &) const;
+            Point3<T> closestPoint(const Point3<T>&, T [3]) const;
+            bool projectedPointInsideTriangle(const Point3<T>&) const;
 
         private:
             TriangleShape3D<T> triangleShape;

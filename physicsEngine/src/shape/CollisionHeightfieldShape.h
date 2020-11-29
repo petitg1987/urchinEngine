@@ -16,7 +16,7 @@ namespace urchin {
         public:
             CollisionHeightfieldShape(std::vector<Point3<float>>, unsigned int, unsigned int);
             CollisionHeightfieldShape(CollisionHeightfieldShape &&) = delete;
-            CollisionHeightfieldShape(const CollisionHeightfieldShape &) = delete;
+            CollisionHeightfieldShape(const CollisionHeightfieldShape&) = delete;
             ~CollisionHeightfieldShape() override;
 
             CollisionShape3D::ShapeType getShapeType() const override;
@@ -27,8 +27,8 @@ namespace urchin {
 
             std::shared_ptr<CollisionShape3D> scale(float) const override;
 
-            AABBox<float> toAABBox(const PhysicsTransform &) const override;
-            std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> toConvexObject(const PhysicsTransform &) const override;
+            AABBox<float> toAABBox(const PhysicsTransform&) const override;
+            std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> toConvexObject(const PhysicsTransform&) const override;
 
             Vector3<float> computeLocalInertia(float) const override;
             float getMaxDistanceToCenter() const override;
@@ -36,8 +36,8 @@ namespace urchin {
 
             CollisionShape3D *clone() const override;
 
-            const std::vector<CollisionTriangleShape> &findTrianglesInAABBox(const AABBox<float> &) const override;
-            const std::vector<CollisionTriangleShape> &findTrianglesHitByRay(const LineSegment3D<float> &) const override;
+            const std::vector<CollisionTriangleShape> &findTrianglesInAABBox(const AABBox<float>&) const override;
+            const std::vector<CollisionTriangleShape> &findTrianglesHitByRay(const LineSegment3D<float>&) const override;
 
         private:
             enum Axis {
@@ -48,7 +48,7 @@ namespace urchin {
             std::unique_ptr<BoxShape<float>> buildLocalAABBox() const;
             std::pair<unsigned int, unsigned int> computeStartEndIndices(float, float, Axis) const;
             void createTrianglesMatchHeight(unsigned int, unsigned int, float, float) const;
-            void createCollisionTriangleShape(const Point3<float> &, const Point3<float> &, const Point3<float> &) const;
+            void createCollisionTriangleShape(const Point3<float>&, const Point3<float>&, const Point3<float>&) const;
 
             std::vector<Point3<float>> vertices;
             unsigned int xLength;

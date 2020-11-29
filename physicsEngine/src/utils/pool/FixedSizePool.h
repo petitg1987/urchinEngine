@@ -14,7 +14,7 @@ namespace urchin {
     */
     template<class BaseType> class FixedSizePool {
         public:
-            FixedSizePool(const std::string &, unsigned int, unsigned int);
+            FixedSizePool(const std::string&, unsigned int, unsigned int);
             virtual ~FixedSizePool();
 
             virtual void* allocate(unsigned int);

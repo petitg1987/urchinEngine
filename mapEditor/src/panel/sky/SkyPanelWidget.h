@@ -24,11 +24,11 @@ namespace urchin {
             typedef void (SkyPanelWidget::*SkyControllerWidgetMemFn)();
 
             void setupSkyboxBox(QVBoxLayout *);
-            QHBoxLayout *createFilenameInputText(QGridLayout *, int, const QString &, QLineEdit **);
+            QHBoxLayout *createFilenameInputText(QGridLayout *, int, const QString&, QLineEdit **);
             QPushButton *createSelectFileButton(QHBoxLayout *);
             QPushButton *createClearFileButton(QHBoxLayout *);
 
-            void setupSkyDataFrom(const std::unique_ptr<Skybox> &);
+            void setupSkyDataFrom(const std::unique_ptr<Skybox>&);
 
             SkyController *skyController;
 

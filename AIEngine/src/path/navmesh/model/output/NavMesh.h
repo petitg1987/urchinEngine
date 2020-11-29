@@ -14,14 +14,14 @@ namespace urchin {
     class NavMesh {
         public:
             NavMesh();
-            NavMesh(const NavMesh &);
+            NavMesh(const NavMesh&);
 
             unsigned int getUpdateId() const;
 
-            void copyAllPolygons(const std::vector<std::shared_ptr<NavPolygon>> &);
+            void copyAllPolygons(const std::vector<std::shared_ptr<NavPolygon>>&);
             const std::vector<std::shared_ptr<NavPolygon>> &getPolygons() const;
 
-            void svgMeshExport(const std::string &) const;
+            void svgMeshExport(const std::string&) const;
         private:
             unsigned int changeUpdateId();
 

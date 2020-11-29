@@ -28,12 +28,12 @@ namespace urchin {
             void addBody(AbstractBody *);
             void removeBody(AbstractBody *);
 
-            void addProcessable(const std::shared_ptr<Processable> &);
-            void removeProcessable(const std::shared_ptr<Processable> &);
+            void addProcessable(const std::shared_ptr<Processable>&);
+            void removeProcessable(const std::shared_ptr<Processable>&);
 
-            std::shared_ptr<const RayTestResult> rayTest(const Ray<float> &);
+            std::shared_ptr<const RayTestResult> rayTest(const Ray<float>&);
 
-            void setGravity(const Vector3<float> &);
+            void setGravity(const Vector3<float>&);
             Vector3<float> getGravity() const;
 
             void setUp(float);
@@ -51,8 +51,8 @@ namespace urchin {
             bool continueExecution();
             void processPhysicsUpdate(float);
 
-            void setupProcessables(const std::vector<std::shared_ptr<Processable>> &, float, const Vector3<float> &);
-            void executeProcessables(const std::vector<std::shared_ptr<Processable>> &, float, const Vector3<float> &);
+            void setupProcessables(const std::vector<std::shared_ptr<Processable>>&, float, const Vector3<float>&);
+            void executeProcessables(const std::vector<std::shared_ptr<Processable>>&, float, const Vector3<float>&);
 
             std::thread *physicsSimulationThread;
             std::atomic_bool physicsSimulationStopper;

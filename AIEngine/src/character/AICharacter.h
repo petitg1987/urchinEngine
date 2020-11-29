@@ -7,7 +7,7 @@ namespace urchin {
 
     class AICharacter {
         public:
-            AICharacter(float, float, const Point3<float> &);
+            AICharacter(float, float, const Point3<float>&);
 
             float getMass() const;
             float getMaxVelocityInKmH() const;
@@ -16,10 +16,10 @@ namespace urchin {
             float retrieveMaxForce() const;
             float retrieveMaxMomentum() const;
 
-            void updateMomentum(const Vector3<float> &);
+            void updateMomentum(const Vector3<float>&);
             const Vector3<float> &getMomentum() const;
 
-            void updatePosition(const Point3<float> &);
+            void updatePosition(const Point3<float>&);
             const Point3<float> &getPosition() const;
 
         private:

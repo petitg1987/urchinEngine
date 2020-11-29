@@ -18,19 +18,19 @@ namespace urchin {
             SoundManager();
             ~SoundManager();
 
-            void addSound(Sound *, SoundTrigger *);
-            void removeSound(const Sound *);
-            void changeSoundTrigger(const Sound *, SoundTrigger *);
+            void addSound(Sound *, SoundTrigger*);
+            void removeSound(const Sound*);
+            void changeSoundTrigger(const Sound*, SoundTrigger*);
 
             std::vector<const SoundTrigger *> getSoundTriggers() const;
-            SoundTrigger *retrieveSoundTriggerFor(const Sound *) const;
+            SoundTrigger *retrieveSoundTriggerFor(const Sound*) const;
 
             void pause();
             void unpause();
 
             void controlExecution();
 
-            void process(const Point3<float> &);
+            void process(const Point3<float>&);
             void process();
 
         private:

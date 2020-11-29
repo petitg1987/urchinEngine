@@ -12,7 +12,7 @@ namespace urchin {
     */
     class SoundBox : public SoundShape {
         public:
-            SoundBox(const Vector3<float> &, const Point3<float> &, const Quaternion<float> &, float);
+            SoundBox(const Vector3<float>&, const Point3<float>&, const Quaternion<float>&, float);
 
             SoundShape::ShapeType getShapeType() const override;
 
@@ -24,13 +24,13 @@ namespace urchin {
             const Quaternion<float> &getOrientation() const;
             const Vector3<float> &getAxis(unsigned int) const;
 
-            bool pointInsidePlayShape(const Point3<float> &) const override;
-            bool pointInsideStopShape(const Point3<float> &) const override;
+            bool pointInsidePlayShape(const Point3<float>&) const override;
+            bool pointInsideStopShape(const Point3<float>&) const override;
 
             SoundShape *clone() const override;
 
         private:
-            bool pointInsideShape(const Point3<float> &, const OBBox<float> &) const;
+            bool pointInsideShape(const Point3<float>&, const OBBox<float>&) const;
 
             const OBBox<float> playTriggerBox;
             const OBBox<float> stopTriggerBox;

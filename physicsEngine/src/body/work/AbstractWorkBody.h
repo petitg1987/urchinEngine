@@ -20,15 +20,15 @@ namespace urchin {
     */
     class AbstractWorkBody : public IslandElement {
         public:
-            AbstractWorkBody(std::string , const PhysicsTransform &, std::shared_ptr<const CollisionShape3D> );
+            AbstractWorkBody(std::string , const PhysicsTransform&, std::shared_ptr<const CollisionShape3D> );
             ~AbstractWorkBody() override = default;
 
             const PhysicsTransform &getPhysicsTransform() const;
 
-            void setPosition(const Point3<float> &);
+            void setPosition(const Point3<float>&);
             const Point3<float> &getPosition() const;
 
-            void setOrientation(const Quaternion<float> &);
+            void setOrientation(const Quaternion<float>&);
             const Quaternion<float> &getOrientation() const;
 
             const CollisionShape3D *getShape() const;

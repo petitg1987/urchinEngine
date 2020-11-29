@@ -26,7 +26,7 @@ namespace urchin {
             bool isModified() const override;
             void resetModified() override;
 
-            void saveMapOnFile(const std::string &);
+            void saveMapOnFile(const std::string&);
 
             ObjectController *getObjectController();
             LightController *getLightController();

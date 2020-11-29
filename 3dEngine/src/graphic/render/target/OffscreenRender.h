@@ -14,11 +14,11 @@ namespace urchin {
             OffscreenRender();
             ~OffscreenRender() override;
 
-            void addTexture(const std::shared_ptr<Texture> &);
+            void addTexture(const std::shared_ptr<Texture>&);
             void removeAllTextures();
 
             void resetDisplay() const override;
-            void display(const std::unique_ptr<GenericRenderer> &) const override;
+            void display(const std::unique_ptr<GenericRenderer>&) const override;
 
         private:
             unsigned int framebufferId;

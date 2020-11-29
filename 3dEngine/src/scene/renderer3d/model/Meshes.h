@@ -22,7 +22,7 @@ namespace urchin {
 
             const ConstMeshes *getConstMeshes() const;
 
-            void onMoving(const Transform<float> &);
+            void onMoving(const Transform<float>&);
 
         private:
             mutable ConstMeshes *constMeshes;

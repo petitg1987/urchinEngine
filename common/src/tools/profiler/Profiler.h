@@ -11,12 +11,12 @@ namespace urchin {
 
     class Profiler {
         public:
-            explicit Profiler(const std::string &);
+            explicit Profiler(const std::string&);
             ~Profiler();
 
-            static std::shared_ptr<Profiler> getInstance(const std::string &);
+            static std::shared_ptr<Profiler> getInstance(const std::string&);
 
-            void startNewProfile(const std::string &);
+            void startNewProfile(const std::string&);
             void stopProfile(const std::string &nodeName = "");
 
             void log();

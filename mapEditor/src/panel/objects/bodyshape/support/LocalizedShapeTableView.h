@@ -11,7 +11,7 @@
 #include "UrchinMapHandler.h"
 #include "controller/SceneController.h"
 
-Q_DECLARE_METATYPE(const urchin::LocalizedCollisionShape *)
+Q_DECLARE_METATYPE(const urchin::LocalizedCollisionShape*)
 
 namespace urchin {
 
@@ -36,9 +36,9 @@ namespace urchin {
 
         private:
             QStandardItemModel *localizedShapesTableModel;
-            std::map<const urchin::LocalizedCollisionShape *, std::shared_ptr<const LocalizedCollisionShape>> localizedShapesMap;
+            std::map<const urchin::LocalizedCollisionShape*, std::shared_ptr<const LocalizedCollisionShape>> localizedShapesMap;
 
-            void selectionChanged(const QItemSelection &, const QItemSelection &) override;
+            void selectionChanged(const QItemSelection&, const QItemSelection&) override;
 
             void addLocalizedShapeInMap(const std::shared_ptr<const LocalizedCollisionShape>&);
             void removeSelectedLocalizedShapeFromMap();

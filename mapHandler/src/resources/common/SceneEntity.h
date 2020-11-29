@@ -14,7 +14,7 @@ namespace urchin {
 
         protected:
             virtual RigidBody *getRigidBody() const = 0;
-            virtual void moveTo(const Transform<float> &) = 0;
+            virtual void moveTo(const Transform<float>&) = 0;
     };
 
 }

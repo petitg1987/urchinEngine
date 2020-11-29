@@ -19,9 +19,9 @@ namespace urchin {
                 VERY_HIGH
             };
 
-            explicit AntiAliasingManager(const RenderTarget *);
+            explicit AntiAliasingManager(const RenderTarget*);
 
-            void onTextureUpdate(const std::shared_ptr<Texture> &);
+            void onTextureUpdate(const std::shared_ptr<Texture>&);
             void onResize(unsigned int, unsigned int);
 
             void setQuality(Quality quality);

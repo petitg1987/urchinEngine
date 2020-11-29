@@ -11,12 +11,12 @@ namespace urchin {
 
     class PathRequest {
         public:
-            PathRequest(const Point3<float> &, const Point3<float> &);
+            PathRequest(const Point3<float>&, const Point3<float>&);
 
             const Point3<float> &getStartPoint() const;
             const Point3<float> &getEndPoint() const;
 
-            void setPath(const std::vector<PathPoint> &);
+            void setPath(const std::vector<PathPoint>&);
             std::vector<PathPoint> getPath() const;
             bool isPathReady() const;
 

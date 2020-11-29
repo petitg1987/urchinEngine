@@ -7,7 +7,7 @@ namespace urchin {
 
     class ScopeProfiler {
         public:
-            ScopeProfiler(const std::string &, const std::string &);
+            ScopeProfiler(const std::string&, const std::string&);
             ~ScopeProfiler();
 
         private:

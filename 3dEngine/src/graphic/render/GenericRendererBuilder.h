@@ -20,12 +20,12 @@ namespace urchin {
 
             ShapeType getShapeType() const;
 
-            GenericRendererBuilder *addData(const std::vector<Point2<float>> *);
-            GenericRendererBuilder *addData(const std::vector<Point3<float>> *);
-            GenericRendererBuilder *addData(const std::vector<Vector3<float>> *);
+            GenericRendererBuilder *addData(const std::vector<Point2<float>>*);
+            GenericRendererBuilder *addData(const std::vector<Point3<float>>*);
+            GenericRendererBuilder *addData(const std::vector<Vector3<float>>*);
             const std::vector<GenericRenderer::Data> &getData() const;
 
-            GenericRendererBuilder *indices(const std::vector<unsigned int> *);
+            GenericRendererBuilder *indices(const std::vector<unsigned int>*);
             const GenericRenderer::Indices &getIndices() const;
 
             GenericRendererBuilder *enableTransparency();
@@ -42,7 +42,7 @@ namespace urchin {
             GenericRendererBuilder *outlineSize(float);
             float getOutlineSize() const;
 
-            GenericRendererBuilder *addTexture(const TextureReader &);
+            GenericRendererBuilder *addTexture(const TextureReader&);
             const std::vector<TextureReader> &getTextures() const;
 
             std::unique_ptr<GenericRenderer> build();

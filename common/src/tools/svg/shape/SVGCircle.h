@@ -9,7 +9,7 @@ namespace urchin {
 
     class SVGCircle : public SVGShape {
         public:
-            SVGCircle(const Point2<float> &, float, SVGColor, float opacity = 1.0f);
+            SVGCircle(const Point2<float>&, float, SVGColor, float opacity = 1.0f);
 
             std::string getShapeTag() const override;
             Rectangle<float> computeRectangle() const override;

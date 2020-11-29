@@ -21,9 +21,9 @@ namespace urchin {
     template<class T> class OBBox : public ConvexObject3D<T> {
         public:
             OBBox();
-            explicit OBBox(const Vector3<T> &, const Point3<T> &, const Quaternion<T> &);
-            explicit OBBox(const AABBox<T> &);
-            explicit OBBox(const Sphere<T> &);
+            explicit OBBox(const Vector3<T>&, const Point3<T>&, const Quaternion<T>&);
+            explicit OBBox(const AABBox<T>&);
+            explicit OBBox(const Sphere<T>&);
 
             T getHalfSize(unsigned int) const;
             const Vector3<T> &getHalfSizes() const;
@@ -37,11 +37,11 @@ namespace urchin {
             std::vector<Point3<T>> getPoints() const;
             Point3<T> getPoint(unsigned int) const;
 
-            Point3<T> getSupportPoint(const Vector3<T> &) const;
+            Point3<T> getSupportPoint(const Vector3<T>&) const;
             AABBox<T> toAABBox() const;
 
-            bool collideWithOBBox(const OBBox<T> &) const;
-            bool collideWithAABBox(const AABBox<T> &) const;
+            bool collideWithOBBox(const OBBox<T>&) const;
+            bool collideWithAABBox(const AABBox<T>&) const;
 
         private:
             BoxShape<T> boxShape;
@@ -51,10 +51,10 @@ namespace urchin {
             Vector3<T> axis[3]; //3 vectors of normalized axis
     };
 
-    template<class T> OBBox<T> operator *(const Matrix4<T> &, const OBBox<T> &);
-    template<class T> OBBox<T> operator *(const OBBox<T> &, const Matrix4<T> &);
+    template<class T> OBBox<T> operator *(const Matrix4<T>&, const OBBox<T>&);
+    template<class T> OBBox<T> operator *(const OBBox<T>&, const Matrix4<T>&);
 
-    template<class T> std::ostream& operator <<(std::ostream &, const OBBox<T> &);
+    template<class T> std::ostream& operator <<(std::ostream &, const OBBox<T>&);
 
 }
 

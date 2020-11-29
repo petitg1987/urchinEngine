@@ -26,16 +26,16 @@ namespace urchin {
             void setSoundManager(SoundManager *);
 
             std::string getName() const;
-            void setName(const std::string &);
+            void setName(const std::string&);
 
             Sound *getSound() const;
             SoundTrigger *getSoundTrigger() const;
-            void setSoundElements(Sound *, SoundTrigger *);
+            void setSoundElements(Sound *, SoundTrigger*);
             void changeSoundTrigger(SoundTrigger *);
 
         private:
-            void loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
-            void writeOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
+            void loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            void writeOn(const std::shared_ptr<XmlChunk>&, XmlWriter&) const;
 
             SoundManager *soundManager;
 

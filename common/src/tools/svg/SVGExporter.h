@@ -16,7 +16,7 @@ namespace urchin {
             explicit SVGExporter(std::string);
             ~SVGExporter();
 
-            void addShape(const SVGShape *);
+            void addShape(const SVGShape*);
 
             void generateSVG(int zoomPercentage = 100) const;
 

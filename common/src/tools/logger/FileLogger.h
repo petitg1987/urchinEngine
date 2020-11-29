@@ -19,7 +19,7 @@ namespace urchin {
             void archive() const override;
 
         private:
-            void write(const std::string &) override;
+            void write(const std::string&) override;
 
             std::string filename;
     };

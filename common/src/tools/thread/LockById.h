@@ -12,7 +12,7 @@ namespace urchin {
         public:
             explicit LockById(std::string );
 
-            static std::shared_ptr<LockById> getInstance(const std::string &);
+            static std::shared_ptr<LockById> getInstance(const std::string&);
 
             void lock(uint_fast32_t);
             void unlock(uint_fast32_t);

@@ -13,9 +13,9 @@ namespace urchin {
         public:
             Vector4();
             explicit Vector4(T Xu, T Yu, T Zu, T Wu);
-            explicit Vector4(const Vector3<T> &, T Wu=1);
-            Vector4(const Vector4<T> &);
-            Vector4<T>& operator=(const Vector4<T> &);
+            explicit Vector4(const Vector3<T>&, T Wu=1);
+            Vector4(const Vector4<T>&);
+            Vector4<T>& operator=(const Vector4<T>&);
 
             void setValues(T, T, T, T);
             void setNull();
@@ -23,19 +23,19 @@ namespace urchin {
             Vector4<T> normalize() const;
             T length() const;
             T squareLength() const;
-            T dotProduct(const Vector4<T> &) const;
+            T dotProduct(const Vector4<T>&) const;
             Vector3<T> xyz() const;
 
             Vector4<T> operator +() const;
             Vector4<T> operator -() const;
-            Vector4<T> operator +(const Vector4<T> &) const;
-            Vector4<T> operator -(const Vector4<T> &) const;
-            Vector4<T> operator *(const Vector4<T> &) const;
-            Vector4<T> operator /(const Vector4<T> &) const;
+            Vector4<T> operator +(const Vector4<T>&) const;
+            Vector4<T> operator -(const Vector4<T>&) const;
+            Vector4<T> operator *(const Vector4<T>&) const;
+            Vector4<T> operator /(const Vector4<T>&) const;
             const Vector4<T>& operator +=(const Vector4<T>&);
             const Vector4<T>& operator -=(const Vector4<T>&);
-            const Vector4<T>& operator *=(const Vector4<T> &);
-            const Vector4<T>& operator /=(const Vector4<T> &);
+            const Vector4<T>& operator *=(const Vector4<T>&);
+            const Vector4<T>& operator /=(const Vector4<T>&);
             const Vector4<T>& operator *=(T t);
             const Vector4<T>& operator /=(T t);
 
@@ -50,14 +50,14 @@ namespace urchin {
             T X, Y, Z, W;
     };
 
-    template<class T> Vector4<T> operator *(const Vector4<T> &, T t);
-    template<class T> Vector4<T> operator *(T t, const Vector4<T> &);
-    template<class T> Vector4<T> operator /(const Vector4<T> &, T t);
+    template<class T> Vector4<T> operator *(const Vector4<T>&, T t);
+    template<class T> Vector4<T> operator *(T t, const Vector4<T>&);
+    template<class T> Vector4<T> operator /(const Vector4<T>&, T t);
 
-    template<class T> Vector4<T> operator *(const Matrix4<T> &, const Vector4<T> &);
-    template<class T> Vector4<T> operator *(const Vector4<T> &, const Matrix4<T> &);
+    template<class T> Vector4<T> operator *(const Matrix4<T>&, const Vector4<T>&);
+    template<class T> Vector4<T> operator *(const Vector4<T>&, const Matrix4<T>&);
 
-    template<class T> std::ostream& operator <<(std::ostream &, const Vector4<T> &);
+    template<class T> std::ostream& operator <<(std::ostream &, const Vector4<T>&);
 
 }
 

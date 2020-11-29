@@ -11,7 +11,7 @@ namespace urchin {
 
     class BodyAABBNodeData : public AABBNodeData<AbstractWorkBody *> {
         public:
-            BodyAABBNodeData(AbstractWorkBody *, PairContainer *);
+            BodyAABBNodeData(AbstractWorkBody *, PairContainer*);
 
             AABBNodeData<AbstractWorkBody *> *clone() const override;
 

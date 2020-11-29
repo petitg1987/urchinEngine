@@ -14,7 +14,7 @@ namespace urchin {
 
             const SceneAI *getSceneAI() const;
 
-            const SceneAI *updateSceneAI(const std::shared_ptr<NavMeshAgent> &);
+            const SceneAI *updateSceneAI(const std::shared_ptr<NavMeshAgent>&);
     };
 
 }

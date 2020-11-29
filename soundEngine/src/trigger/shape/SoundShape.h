@@ -22,8 +22,8 @@ namespace urchin {
 
             virtual ShapeType getShapeType() const = 0;
 
-            virtual bool pointInsidePlayShape(const Point3<float> &) const = 0;
-            virtual bool pointInsideStopShape(const Point3<float> &) const = 0;
+            virtual bool pointInsidePlayShape(const Point3<float>&) const = 0;
+            virtual bool pointInsideStopShape(const Point3<float>&) const = 0;
 
             virtual SoundShape *clone() const = 0;
 

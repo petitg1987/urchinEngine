@@ -14,8 +14,8 @@ namespace urchin {
         public:
             friend class Singleton<ResizeConvexHull2DService<T>>;
 
-            std::unique_ptr<ConvexHullShape2D<T>> resizeConvexHullShape(const ConvexHullShape2D<T> &, T) const;
-            std::unique_ptr<ConvexHull2D<T>> resizeConvexHull(const ConvexHull2D<T> &, T) const;
+            std::unique_ptr<ConvexHullShape2D<T>> resizeConvexHullShape(const ConvexHullShape2D<T>&, T) const;
+            std::unique_ptr<ConvexHull2D<T>> resizeConvexHull(const ConvexHull2D<T>&, T) const;
 
         private:
             ResizeConvexHull2DService();

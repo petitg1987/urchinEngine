@@ -20,10 +20,10 @@ namespace urchin {
 
             AmbientOcclusionManager();
 
-            void initiateShaderVariables(const std::unique_ptr<Shader> &);
-            void onTexturesUpdate(const std::shared_ptr<Texture> &, const std::shared_ptr<Texture> &);
+            void initiateShaderVariables(const std::unique_ptr<Shader>&);
+            void onTexturesUpdate(const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&);
             void onResize(unsigned int, unsigned int);
-            void onCameraProjectionUpdate(const Camera *);
+            void onCameraProjectionUpdate(const Camera*);
 
             void setTextureSize(AOTextureSize);
             void setKernelSamples(unsigned int);
@@ -39,15 +39,15 @@ namespace urchin {
 
             const std::shared_ptr<Texture> &getAmbientOcclusionTexture() const;
 
-            void updateAOTexture(const Camera *);
-            void loadAOTexture(const std::unique_ptr<GenericRenderer> &) const;
+            void updateAOTexture(const Camera*);
+            void loadAOTexture(const std::unique_ptr<GenericRenderer>&) const;
 
         private:
             void createOrUpdateAOTexture();
             void createOrUpdateAOShader();
             void generateKernelSamples();
             void generateNoiseTexture();
-            void exportSVG(const std::string &, const std::vector<Vector3<float>> &) const;
+            void exportSVG(const std::string&, const std::vector<Vector3<float>>&) const;
 
             int retrieveTextureSizeFactor();
 

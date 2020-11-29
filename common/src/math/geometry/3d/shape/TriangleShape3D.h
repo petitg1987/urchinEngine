@@ -10,13 +10,13 @@ namespace urchin {
 
     template<class T> class TriangleShape3D : public ConvexShape3D<T> {
         public:
-            explicit TriangleShape3D(const Point3<T> *);
-            TriangleShape3D(const Point3<T> &, const Point3<T> &, const Point3<T> &);
+            explicit TriangleShape3D(const Point3<T>*);
+            TriangleShape3D(const Point3<T>&, const Point3<T>&, const Point3<T>&);
 
             const Point3<T> *getPoints() const;
 
             ConvexShape3D<T> *clone() const override;
-            std::unique_ptr<ConvexObject3D<T>> toConvexObject(const Transform<T> &) const override;
+            std::unique_ptr<ConvexObject3D<T>> toConvexObject(const Transform<T>&) const override;
 
         private:
             Point3<T> points[3];

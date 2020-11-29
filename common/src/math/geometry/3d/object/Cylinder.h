@@ -12,7 +12,7 @@ namespace urchin {
     template<class T> class Cylinder : public ConvexObject3D<T> {
         public:
             Cylinder();
-            Cylinder(T, T, typename CylinderShape<T>::CylinderOrientation, const Point3<T> &, const Quaternion<T> &);
+            Cylinder(T, T, typename CylinderShape<T>::CylinderOrientation, const Point3<T>&, const Quaternion<T>&);
 
             T getRadius() const;
             T getHeight() const;
@@ -21,7 +21,7 @@ namespace urchin {
             const Quaternion<T> &getOrientation() const;
             const Vector3<T> &getAxis(unsigned int) const;
 
-            Point3<T> getSupportPoint(const Vector3<T> &) const;
+            Point3<T> getSupportPoint(const Vector3<T>&) const;
 
         private:
             CylinderShape<T> cylinderShape;

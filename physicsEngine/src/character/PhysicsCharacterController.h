@@ -31,10 +31,10 @@ namespace urchin {
     */
     class PhysicsCharacterController {
         public:
-            PhysicsCharacterController(const std::shared_ptr<PhysicsCharacter> &, PhysicsWorld *);
+            PhysicsCharacterController(const std::shared_ptr<PhysicsCharacter>&, PhysicsWorld*);
             ~PhysicsCharacterController();
 
-            void setMomentum(const Vector3<float> &);
+            void setMomentum(const Vector3<float>&);
             void jump();
 
             void update(float);
@@ -47,7 +47,7 @@ namespace urchin {
 
             void recoverFromPenetration(float);
             SignificantContactValues resetSignificantContactValues();
-            void saveSignificantContactValues(SignificantContactValues &, const Vector3<float> &);
+            void saveSignificantContactValues(SignificantContactValues &, const Vector3<float>&);
             void computeSignificantContactValues(SignificantContactValues &, float);
 
             float computeSlope();

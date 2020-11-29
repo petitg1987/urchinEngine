@@ -8,7 +8,7 @@ namespace urchin {
 
     class NavObjectAABBNodeData : public AABBNodeData<std::shared_ptr<NavObject>> {
         public:
-            explicit NavObjectAABBNodeData(const std::shared_ptr<NavObject> &);
+            explicit NavObjectAABBNodeData(const std::shared_ptr<NavObject>&);
 
             AABBNodeData<std::shared_ptr<NavObject>> *clone() const override;
 

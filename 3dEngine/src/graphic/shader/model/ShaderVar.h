@@ -11,7 +11,7 @@ namespace urchin {
     class ShaderVar {
         public:
             ShaderVar();
-            ShaderVar(const std::unique_ptr<Shader> &, std::string &&);
+            ShaderVar(const std::unique_ptr<Shader>&, std::string &&);
 
             bool isValid() const;
 

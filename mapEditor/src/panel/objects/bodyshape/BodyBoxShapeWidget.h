@@ -15,7 +15,7 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            explicit BodyBoxShapeWidget(const SceneObject *);
+            explicit BodyBoxShapeWidget(const SceneObject*);
             ~BodyBoxShapeWidget() override = default;
 
             std::string getBodyShapeName() const override;

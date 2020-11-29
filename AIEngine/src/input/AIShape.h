@@ -7,8 +7,8 @@ namespace urchin {
 
     class AIShape {
         public:
-            explicit AIShape(const ConvexShape3D<float> *);
-            AIShape(const ConvexShape3D<float> *, Transform<float> localTransform);
+            explicit AIShape(const ConvexShape3D<float>*);
+            AIShape(const ConvexShape3D<float>*, Transform<float> localTransform);
             ~AIShape();
 
             const ConvexShape3D<float> *getShape() const;

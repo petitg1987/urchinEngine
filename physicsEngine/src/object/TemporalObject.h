@@ -8,7 +8,7 @@ namespace urchin {
 
     class TemporalObject {
         public:
-            TemporalObject(const CollisionShape3D *, const PhysicsTransform &, const PhysicsTransform &);
+            TemporalObject(const CollisionShape3D*, const PhysicsTransform&, const PhysicsTransform&);
 
             const CollisionShape3D *getShape() const;
             const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &getLocalObject() const;

@@ -14,7 +14,7 @@ namespace urchin {
     template<class T> class Capsule : public ConvexObject3D<T> {
         public:
             Capsule();
-            Capsule(T, T, typename CapsuleShape<T>::CapsuleOrientation, const Point3<T> &, const Quaternion<T> &);
+            Capsule(T, T, typename CapsuleShape<T>::CapsuleOrientation, const Point3<T>&, const Quaternion<T>&);
 
             T getRadius() const;
             T getCylinderHeight() const;
@@ -23,7 +23,7 @@ namespace urchin {
             const Quaternion<T> &getOrientation() const;
             const Vector3<T> &getAxis(unsigned int) const;
 
-            Point3<T> getSupportPoint(const Vector3<T> &) const;
+            Point3<T> getSupportPoint(const Vector3<T>&) const;
 
         private:
             CapsuleShape<T> capsuleShape;
@@ -33,7 +33,7 @@ namespace urchin {
             Vector3<T> axis[3]; //3 vectors of normalized axis
     };
 
-    template<class T> std::ostream& operator <<(std::ostream &, const Capsule<T> &);
+    template<class T> std::ostream& operator <<(std::ostream &, const Capsule<T>&);
 
 }
 

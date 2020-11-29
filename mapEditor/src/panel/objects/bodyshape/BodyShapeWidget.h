@@ -24,7 +24,7 @@ namespace urchin {
         #define COMPOUND_SHAPE_LABEL "Compound Shape"
 
         public:
-            explicit BodyShapeWidget(const SceneObject *);
+            explicit BodyShapeWidget(const SceneObject*);
             ~BodyShapeWidget() override = default;
 
             const SceneObject *getSceneObject() const;

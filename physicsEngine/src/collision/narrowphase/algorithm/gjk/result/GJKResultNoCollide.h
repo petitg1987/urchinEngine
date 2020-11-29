@@ -11,7 +11,7 @@ namespace urchin {
 
     template<class T> class GJKResultNoCollide : public GJKResult<T> {
         public:
-            GJKResultNoCollide(T, const Simplex<T> &);
+            GJKResultNoCollide(T, const Simplex<T>&);
 
             bool isValidResult() const override;
 
@@ -23,7 +23,7 @@ namespace urchin {
             const Simplex<T> &getSimplex() const override;
 
         private:
-            void logInputData(const std::string &, const Simplex<T> &);
+            void logInputData(const std::string&, const Simplex<T>&);
 
             T separatingDistance;
             Point3<T> closestPointA, closestPointB;

@@ -9,7 +9,7 @@ namespace urchin {
 
     class ProfilerNode {
         public:
-            ProfilerNode(std::string , ProfilerNode *);
+            ProfilerNode(std::string , ProfilerNode*);
             ~ProfilerNode();
 
             const std::string &getName() const;
@@ -17,14 +17,14 @@ namespace urchin {
             ProfilerNode *getParent() const;
 
             std::vector<ProfilerNode *> getChildren() const;
-            ProfilerNode *findChildren(const std::string &) const;
+            ProfilerNode *findChildren(const std::string&) const;
             void addChild(ProfilerNode *);
 
             bool isStarted();
             void startTimer();
             bool stopTimer();
 
-            void log(unsigned int, std::stringstream &, double);
+            void log(unsigned int, std::stringstream&, double);
 
         private:
             double computeTotalTimes() const;

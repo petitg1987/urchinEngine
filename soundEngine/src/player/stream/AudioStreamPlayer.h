@@ -12,7 +12,7 @@ namespace urchin {
 
     class AudioStreamPlayer : public AudioPlayer {
         public:
-            AudioStreamPlayer(const Sound *, StreamUpdateWorker *);
+            AudioStreamPlayer(const Sound*, StreamUpdateWorker*);
 
             void play() override;
             void playLoop() override;

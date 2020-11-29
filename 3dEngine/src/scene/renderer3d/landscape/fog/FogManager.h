@@ -12,11 +12,11 @@ namespace urchin {
 
     class FogManager {
         public:
-            void pushFog(const std::shared_ptr<Fog> &);
+            void pushFog(const std::shared_ptr<Fog>&);
             void popFog();
             std::shared_ptr<const Fog> getActiveFog() const;
 
-            void initiateShaderVariables(const std::unique_ptr<Shader> &);
+            void initiateShaderVariables(const std::unique_ptr<Shader>&);
 
             void loadFog();
 

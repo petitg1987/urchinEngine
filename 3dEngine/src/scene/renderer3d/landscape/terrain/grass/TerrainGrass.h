@@ -16,19 +16,19 @@ namespace urchin {
 
     class TerrainGrass {
         public:
-            explicit TerrainGrass(const std::string &);
+            explicit TerrainGrass(const std::string&);
             ~TerrainGrass();
 
-            void onCameraProjectionUpdate(const Matrix4<float> &);
+            void onCameraProjectionUpdate(const Matrix4<float>&);
 
-            void refreshWith(const std::shared_ptr<TerrainMesh> &, const Point3<float> &);
+            void refreshWith(const std::shared_ptr<TerrainMesh>&, const Point3<float>&);
             void refreshWith(float);
 
             const std::string &getGrassTexture() const;
-            void setGrassTexture(const std::string &);
+            void setGrassTexture(const std::string&);
 
             const std::string &getMaskTexture() const;
-            void setMaskTexture(const std::string &);
+            void setMaskTexture(const std::string&);
 
             float getGrassDisplayDistance() const;
             void setGrassDisplayDistance(float);
@@ -46,18 +46,18 @@ namespace urchin {
             void setGrassQuantity(float);
 
             Vector3<float> getWindDirection() const;
-            void setWindDirection(const Vector3<float> &);
+            void setWindDirection(const Vector3<float>&);
 
             float getWindStrength() const;
             void setWindStrength(float);
 
-            void display(const RenderTarget *, const Camera *, float);
+            void display(const RenderTarget*, const Camera*, float);
 
         private:
-            void generateGrass(const std::shared_ptr<TerrainMesh> &, const Point3<float> &);
-            unsigned int retrieveVertexIndex(const Point2<float> &) const;
-            void buildGrassQuadtree(const std::vector<TerrainGrassQuadtree *> &, unsigned int, unsigned int);
-            void createRenderers(const std::vector<TerrainGrassQuadtree *> &);
+            void generateGrass(const std::shared_ptr<TerrainMesh>&, const Point3<float>&);
+            unsigned int retrieveVertexIndex(const Point2<float>&) const;
+            void buildGrassQuadtree(const std::vector<TerrainGrassQuadtree *>&, unsigned int, unsigned int);
+            void createRenderers(const std::vector<TerrainGrassQuadtree *>&);
 
             const float grassPositionRandomPercentage;
             const float grassPatchSize;
