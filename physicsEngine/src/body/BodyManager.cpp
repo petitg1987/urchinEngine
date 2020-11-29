@@ -34,7 +34,7 @@ namespace urchin {
         return lastUpdatedWorkBody;
     }
 
-    const std::vector<AbstractWorkBody *> &BodyManager::getWorkBodies() const {
+    const std::vector<AbstractWorkBody *>& BodyManager::getWorkBodies() const {
         return workBodies;
     }
 

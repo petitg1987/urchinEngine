@@ -66,7 +66,7 @@ namespace urchin {
     /**
      * @return Models visible from light in frustum split
      */
-    const std::vector<Model *> &FrustumShadowData::getModels() const {
+    const std::vector<Model *>& FrustumShadowData::getModels() const {
         return models;
     }
 

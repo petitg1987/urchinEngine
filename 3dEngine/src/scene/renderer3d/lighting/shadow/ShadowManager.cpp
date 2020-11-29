@@ -245,7 +245,7 @@ namespace urchin {
     /**
      * @return All visible models from all lights
      */
-    const std::vector<Model *> &ShadowManager::computeVisibleModels() {
+    const std::vector<Model *>& ShadowManager::computeVisibleModels() {
         ScopeProfiler profiler("3d", "coVisibleModel");
 
         visibleModels.clear();

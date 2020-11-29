@@ -84,7 +84,7 @@ namespace urchin {
         return maxLights;
     }
 
-    const std::vector<Light *> &LightManager::getVisibleLights() const {
+    const std::vector<Light *>& LightManager::getVisibleLights() const {
         return visibleLights;
     }
 

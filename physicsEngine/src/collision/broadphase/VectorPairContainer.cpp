@@ -51,7 +51,7 @@ namespace urchin {
         }
     }
 
-    const std::vector<OverlappingPair *> &VectorPairContainer::getOverlappingPairs() const {
+    const std::vector<OverlappingPair *>& VectorPairContainer::getOverlappingPairs() const {
         return overlappingPairs;
     }
 

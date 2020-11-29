@@ -24,7 +24,7 @@ namespace urchin {
         tree->updateBodies();
     }
 
-    const std::vector<OverlappingPair *> &AABBTreeAlgorithm::getOverlappingPairs() const {
+    const std::vector<OverlappingPair *>& AABBTreeAlgorithm::getOverlappingPairs() const {
         return tree->getOverlappingPairs();
     }
 

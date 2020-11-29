@@ -59,7 +59,7 @@ namespace urchin {
         return constMeshes[index];
     }
 
-    const std::vector<const ConstMesh *> &ConstMeshes::getConstMeshes() const {
+    const std::vector<const ConstMesh *>& ConstMeshes::getConstMeshes() const {
         return constMeshes;
     }
 

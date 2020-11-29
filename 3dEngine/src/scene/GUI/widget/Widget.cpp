@@ -59,7 +59,7 @@ namespace urchin {
         }
     }
 
-    const std::vector<Widget *> &Widget::getChildren() const {
+    const std::vector<Widget *>& Widget::getChildren() const {
         return children;
     }
 

@@ -210,7 +210,7 @@ namespace urchin {
         sceneAI->writeOn(aiElementsListChunk, xmlWriter);
     }
 
-    const std::list<SceneObject *> &Map::getSceneObjects() const {
+    const std::list<SceneObject *>& Map::getSceneObjects() const {
         return sceneObjects;
     }
 
@@ -234,7 +234,7 @@ namespace urchin {
         delete sceneObject;
     }
 
-    const std::list<SceneLight *> &Map::getSceneLights() const {
+    const std::list<SceneLight *>& Map::getSceneLights() const {
         return sceneLights;
     }
 
@@ -258,7 +258,7 @@ namespace urchin {
         delete sceneLight;
     }
 
-    const std::list<SceneTerrain *> &Map::getSceneTerrains() const {
+    const std::list<SceneTerrain *>& Map::getSceneTerrains() const {
         return sceneTerrains;
     }
 
@@ -282,7 +282,7 @@ namespace urchin {
         delete sceneTerrain;
     }
 
-    const std::list<SceneWater *> &Map::getSceneWaters() const {
+    const std::list<SceneWater *>& Map::getSceneWaters() const {
         return sceneWaters;
     }
 
@@ -314,7 +314,7 @@ namespace urchin {
         sceneSky->changeSkybox(std::move(skybox));
     }
 
-    const std::list<SceneSound *> &Map::getSceneSounds() const {
+    const std::list<SceneSound *>& Map::getSceneSounds() const {
         return sceneSounds;
     }
 
