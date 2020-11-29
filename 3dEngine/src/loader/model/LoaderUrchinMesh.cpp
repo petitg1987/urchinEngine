@@ -47,7 +47,7 @@ namespace urchin {
         FileReaderUtil::nextLine(file, buffer); //buffer = "}"
 
         //mesh
-        std::vector<const ConstMesh *> constMeshes;
+        std::vector<const ConstMesh*> constMeshes;
         for (unsigned int ii=0; ii<numMeshes; ii++) {
             //material
             std::string materialFilename;

@@ -149,7 +149,7 @@ namespace urchin {
     }
 
     void ShadowManager::notify(Observable* observable, int notificationType) {
-        if (dynamic_cast<LightManager *>(observable)) {
+        if (dynamic_cast<LightManager*>(observable)) {
             Light* light = lightManager->getLastUpdatedLight();
             if (notificationType==LightManager::ADD_LIGHT) {
                 light->addObserver(this, Light::PRODUCE_SHADOW);
@@ -162,7 +162,7 @@ namespace urchin {
                     removeShadowLight(light);
                 }
             }
-        } else if (auto* light = dynamic_cast<Light *>(observable)) {
+        } else if (auto* light = dynamic_cast<Light*>(observable)) {
             if (notificationType==Light::LIGHT_MOVE) {
                 updateViewMatrix(light);
             } else if (notificationType==Light::PRODUCE_SHADOW) {
@@ -245,13 +245,13 @@ namespace urchin {
     /**
      * @return All visible models from all lights
      */
-    const std::vector<Model *>& ShadowManager::computeVisibleModels() {
+    const std::vector<Model*>& ShadowManager::computeVisibleModels() {
         ScopeProfiler profiler("3d", "coVisibleModel");
 
         visibleModels.clear();
         for (const auto& shadowData : shadowDatas) {
             for (std::size_t i=0; i<nbShadowMaps; ++i) {
-                const std::vector<Model *>& visibleModelsForLightInFrustumSplit = shadowData.second->getFrustumShadowData(i)->getModels();
+                const std::vector<Model*>& visibleModelsForLightInFrustumSplit = shadowData.second->getFrustumShadowData(i)->getModels();
                 OctreeableHelper<Model>::merge(visibleModels, visibleModelsForLightInFrustumSplit);
             }
         }
@@ -279,7 +279,7 @@ namespace urchin {
      * Updates lights data which producing shadows
      */
     void ShadowManager::updateShadowLights() {
-        std::vector<const Light *> allLights;
+        std::vector<const Light*> allLights;
         allLights.reserve(shadowDatas.size());
         for (const auto& shadowData : shadowDatas) {
             allLights.emplace_back(shadowData.first);
@@ -382,7 +382,7 @@ namespace urchin {
      * @return Box in light space containing shadow caster and receiver (scene dependent)
      */
     AABBox<float> ShadowManager::createSceneDependentBox(const AABBox<float>& aabboxSceneIndependent, const OBBox<float>& obboxSceneIndependentViewSpace,
-            const std::vector<Model *>& models, const Matrix4<float>& lightViewMatrix) const {
+            const std::vector<Model*>& models, const Matrix4<float>& lightViewMatrix) const {
         ScopeProfiler profiler("3d", "sceneDepBox");
 
         AABBox<float> aabboxSceneDependent;
@@ -531,7 +531,7 @@ namespace urchin {
 
     void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer>& lightingRenderer) {
         int i = 0;
-        const std::vector<Light *>& visibleLights = lightManager->getVisibleLights();
+        const std::vector<Light*>& visibleLights = lightManager->getVisibleLights();
         for (auto* visibleLight : visibleLights) {
             if (visibleLight->isProduceShadow()) {
                 auto it = shadowDatas.find(visibleLight);
@@ -569,7 +569,7 @@ namespace urchin {
         AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(frustum, lightViewMatrix);
         OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrix.inverse() * OBBox<float>(aabboxSceneIndependent);
 
-        std::vector<Model *> models;
+        std::vector<Model*> models;
         modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, models, ModelProduceShadowFilter());
         if (!models.empty()) {
             AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace, models, lightViewMatrix);

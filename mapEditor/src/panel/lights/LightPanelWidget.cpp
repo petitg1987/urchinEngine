@@ -172,7 +172,7 @@ namespace urchin {
     void LightPanelWidget::load(LightController* lightController) {
         this->lightController = lightController;
 
-        std::list<const SceneLight *> sceneLights = lightController->getSceneLights();
+        std::list<const SceneLight*> sceneLights = lightController->getSceneLights();
         for (auto& sceneLight : sceneLights) {
             lightTableView->addLight(sceneLight);
         }
@@ -185,7 +185,7 @@ namespace urchin {
     }
 
     void LightPanelWidget::notify(Observable* observable, int notificationType) {
-        if (auto* lightTableView = dynamic_cast<LightTableView *>(observable)) {
+        if (auto* lightTableView = dynamic_cast<LightTableView*>(observable)) {
             if (notificationType==LightTableView::LIGHT_SELECTION_CHANGED) {
                 if (lightTableView->hasSceneLightSelected()) {
                     const SceneLight* sceneLight = lightTableView->getSelectedSceneLight();
@@ -212,10 +212,10 @@ namespace urchin {
         this->produceShadowCheckBox->setChecked(light->isProduceShadow());
 
         if (light->getLightType()==Light::LightType::OMNIDIRECTIONAL) {
-            setupOmnidirectionalLightDataFrom(dynamic_cast<const OmnidirectionalLight *>(light));
+            setupOmnidirectionalLightDataFrom(dynamic_cast<const OmnidirectionalLight*>(light));
             this->produceShadowCheckBox->setDisabled(true);
         } else if (light->getLightType()==Light::LightType::SUN) {
-            setupSunLightDataFrom(dynamic_cast<const SunLight *>(light));
+            setupSunLightDataFrom(dynamic_cast<const SunLight*>(light));
             this->produceShadowCheckBox->setDisabled(false);
         } else {
             throw std::invalid_argument("Impossible to setup specific light data for light of type: " + std::to_string(light->getLightType()));

@@ -8,7 +8,7 @@ namespace urchin {
 
     }
 
-    AABBNodeData<AbstractWorkBody *>* BodyAABBNodeData::clone() const {
+    AABBNodeData<AbstractWorkBody*>* BodyAABBNodeData::clone() const {
         return new BodyAABBNodeData(getNodeObject(), alternativePairContainer);
     }
 
@@ -43,7 +43,7 @@ namespace urchin {
     /**
      * Returns pair containers which have pair(s) with this node data
      */
-    std::set<PairContainer *> BodyAABBNodeData::getOwnerPairContainers() const {
+    std::set<PairContainer*> BodyAABBNodeData::getOwnerPairContainers() const {
         return ownerPairContainers;
     }
 

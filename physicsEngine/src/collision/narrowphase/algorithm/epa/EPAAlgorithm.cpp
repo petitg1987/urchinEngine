@@ -136,11 +136,11 @@ namespace urchin {
         const CollisionConvexObject3D *otherObject;
 
         if (convexObject1.getObjectType()==CollisionConvexObject3D::TRIANGLE_OBJECT) {
-            triangleObject = dynamic_cast<const CollisionTriangleObject *>(&convexObject1);
+            triangleObject = dynamic_cast<const CollisionTriangleObject*>(&convexObject1);
             otherObject = &convexObject2;
             needSwap = false;
         } else if (convexObject2.getObjectType()==CollisionConvexObject3D::TRIANGLE_OBJECT) {
-            triangleObject = dynamic_cast<const CollisionTriangleObject *>(&convexObject2);
+            triangleObject = dynamic_cast<const CollisionTriangleObject*>(&convexObject2);
             otherObject = &convexObject1;
             needSwap = true;
         } else {

@@ -20,7 +20,7 @@ namespace urchin {
         VectorPairContainer::removeOverlappingPairs(body);
     }
 
-    const std::vector<OverlappingPair *>& SyncVectorPairContainer::getOverlappingPairs() const {
+    const std::vector<OverlappingPair*>& SyncVectorPairContainer::getOverlappingPairs() const {
         throw std::runtime_error("Cannot retrieve overlapping pairs reference on a thread safe container: use 'retrieveCopyOverlappingPairs' method");
     }
 

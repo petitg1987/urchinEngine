@@ -43,7 +43,7 @@ namespace urchin {
     }
 
     void ModelReaderWriter::writeAnimationsOn(const std::shared_ptr<XmlChunk>& modelChunk, const Model* model, XmlWriter& xmlWriter) const {
-        std::map<std::string, const ConstAnimation *> animations = model->getAnimations();
+        std::map<std::string, const ConstAnimation*> animations = model->getAnimations();
         if (!animations.empty()) {
             std::shared_ptr<XmlChunk> animationsListChunk = xmlWriter.createChunk(ANIMATIONS_TAG, XmlAttribute(), modelChunk);
             for (auto& animation : animations) {

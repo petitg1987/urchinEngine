@@ -251,7 +251,7 @@ namespace urchin {
         Plane<float> walkablePlane = walkableSurface->getPlane(polytopeObstacle->getXZRectangle());
 
         for (const auto& polytopeSurface : polytopeObstacle->getSurfaces()) {
-            if (auto* polytopePlaneSurface = dynamic_cast<PolytopePlaneSurface *>(polytopeSurface.get())) {
+            if (auto* polytopePlaneSurface = dynamic_cast<PolytopePlaneSurface*>(polytopeSurface.get())) {
                 for (std::size_t i = 0, previousI = polytopePlaneSurface->getCcwPoints().size() - 1; i < polytopePlaneSurface->getCcwPoints().size(); previousI = i++) {
                     float distance1 = walkablePlane.distance(polytopePlaneSurface->getCcwPoints()[previousI]);
                     float distance2 = walkablePlane.distance(polytopePlaneSurface->getCcwPoints()[i]);

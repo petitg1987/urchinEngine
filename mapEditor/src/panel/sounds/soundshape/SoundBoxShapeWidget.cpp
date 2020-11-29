@@ -77,7 +77,7 @@ namespace urchin {
     }
 
     void SoundBoxShapeWidget::doSetupShapePropertiesFrom(const SoundShape* shape) {
-        const auto* boxShape = dynamic_cast<const SoundBox *>(shape);
+        const auto* boxShape = dynamic_cast<const SoundBox*>(shape);
 
         positionX->setValue(boxShape->getCenterPosition().X);
         positionY->setValue(boxShape->getCenterPosition().Y);
@@ -95,7 +95,7 @@ namespace urchin {
 
     void SoundBoxShapeWidget::updateShapeOrientationType() {
         if (!disableShapeEvent) {
-            const auto* boxShape = dynamic_cast<const SoundBox *>(retrieveShape());
+            const auto* boxShape = dynamic_cast<const SoundBox*>(retrieveShape());
 
             QVariant variant = orientationType->currentData();
             auto newRotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());

@@ -174,7 +174,7 @@ namespace urchin {
     }
 
     void GenericRenderer::updateData(std::size_t pointsCoordIndex, const std::vector<Vector3<float>>* dataPtr) {
-        updateData(pointsCoordIndex, reinterpret_cast<const std::vector<Point3<float>> *>(dataPtr));
+        updateData(pointsCoordIndex, reinterpret_cast<const std::vector<Point3<float>>*>(dataPtr));
     }
 
     void GenericRenderer::updateTexture(std::size_t textureIndex, const TextureReader& texture) {

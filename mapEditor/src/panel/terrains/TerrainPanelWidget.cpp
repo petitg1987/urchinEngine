@@ -326,7 +326,7 @@ namespace urchin {
     void TerrainPanelWidget::load(TerrainController* terrainController) {
         this->terrainController = terrainController;
 
-        std::list<const SceneTerrain *> sceneTerrains = terrainController->getSceneTerrains();
+        std::list<const SceneTerrain*> sceneTerrains = terrainController->getSceneTerrains();
         for (auto& sceneTerrain : sceneTerrains) {
             terrainTableView->addTerrain(sceneTerrain);
         }
@@ -339,7 +339,7 @@ namespace urchin {
     }
 
     void TerrainPanelWidget::notify(Observable* observable, int notificationType) {
-        if (auto* terrainTableView = dynamic_cast<TerrainTableView *>(observable)) {
+        if (auto* terrainTableView = dynamic_cast<TerrainTableView*>(observable)) {
             if (notificationType==TerrainTableView::SELECTION_CHANGED) {
                 if (terrainTableView->hasSceneTerrainSelected()) {
                     const SceneTerrain* sceneTerrain = terrainTableView->getSelectedSceneTerrain();

@@ -9,9 +9,9 @@ namespace urchin {
 
     }
 
-    std::list<const SceneLight *> LightController::getSceneLights() const {
-        const std::list<SceneLight *>& sceneLights = getMapHandler()->getMap()->getSceneLights();
-        std::list<const SceneLight *> constSceneLights;
+    std::list<const SceneLight*> LightController::getSceneLights() const {
+        const std::list<SceneLight*>& sceneLights = getMapHandler()->getMap()->getSceneLights();
+        std::list<const SceneLight*> constSceneLights;
         constSceneLights.insert(constSceneLights.begin(), sceneLights.begin(), sceneLights.end());
 
         return constSceneLights;
@@ -47,7 +47,7 @@ namespace urchin {
     const SceneLight* LightController::updateSceneOmnidirectionalLightProperties(const SceneLight* constSceneLight,
                                                                                  float attenuation, const Point3<float>& position) {
         SceneLight* sceneLight = findSceneLight(constSceneLight);
-        auto* light = dynamic_cast<OmnidirectionalLight *>(sceneLight->getLight());
+        auto* light = dynamic_cast<OmnidirectionalLight*>(sceneLight->getLight());
 
         light->setAttenuation(attenuation);
         light->setPosition(position);
@@ -58,7 +58,7 @@ namespace urchin {
 
     const SceneLight* LightController::updateSceneSunLightProperties(const SceneLight* constSceneLight, const Vector3<float>& direction) {
         SceneLight* sceneLight = findSceneLight(constSceneLight);
-        auto* light = dynamic_cast<SunLight *>(sceneLight->getLight());
+        auto* light = dynamic_cast<SunLight*>(sceneLight->getLight());
 
         light->setDirection(direction);
 
@@ -67,7 +67,7 @@ namespace urchin {
     }
 
     SceneLight* LightController::findSceneLight(const SceneLight* constSceneLight) {
-        const std::list<SceneLight *>& sceneLights = getMapHandler()->getMap()->getSceneLights();
+        const std::list<SceneLight*>& sceneLights = getMapHandler()->getMap()->getSceneLights();
         auto it = std::find(sceneLights.begin(), sceneLights.end(), constSceneLight);
 
         if (it!=sceneLights.end()) {

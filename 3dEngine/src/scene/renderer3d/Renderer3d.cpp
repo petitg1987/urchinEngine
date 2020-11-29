@@ -183,7 +183,7 @@ namespace urchin {
     }
 
     void Renderer3d::notify(Observable* observable, int notificationType) {
-        if (dynamic_cast<ShadowManager *>(observable)) {
+        if (dynamic_cast<ShadowManager*>(observable)) {
             if (notificationType==ShadowManager::NUMBER_SHADOW_MAPS_UPDATE) {
                 createOrUpdateLightingShader();
             }
@@ -291,7 +291,7 @@ namespace urchin {
     }
 
     bool Renderer3d::isModelExist(Model* model) {
-        std::vector<Model *> allOctreeables = modelOctreeManager->getAllOctreeables();
+        std::vector<Model*> allOctreeables = modelOctreeManager->getAllOctreeables();
         return std::find(allOctreeables.begin(), allOctreeables.end(), model) != allOctreeables.end();
     }
 

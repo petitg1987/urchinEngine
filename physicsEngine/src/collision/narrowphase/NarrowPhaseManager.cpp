@@ -25,7 +25,7 @@ namespace urchin {
      * @param overlappingPairs Pairs of bodies potentially colliding
      * @param manifoldResults [OUT] Collision constraints
      */
-    void NarrowPhaseManager::process(float dt, const std::vector<OverlappingPair *>& overlappingPairs, std::vector<ManifoldResult>& manifoldResults) {
+    void NarrowPhaseManager::process(float dt, const std::vector<OverlappingPair*>& overlappingPairs, std::vector<ManifoldResult>& manifoldResults) {
         ScopeProfiler profiler("physics", "narrowPhase");
 
         processOverlappingPairs(overlappingPairs, manifoldResults);
@@ -45,7 +45,7 @@ namespace urchin {
         }
     }
 
-    void NarrowPhaseManager::processOverlappingPairs(const std::vector<OverlappingPair *>& overlappingPairs, std::vector<ManifoldResult>& manifoldResults) {
+    void NarrowPhaseManager::processOverlappingPairs(const std::vector<OverlappingPair*>& overlappingPairs, std::vector<ManifoldResult>& manifoldResults) {
         ScopeProfiler profiler("physics", "procOverlapPair");
 
         for (const auto& overlappingPair : overlappingPairs) {
@@ -109,13 +109,13 @@ namespace urchin {
     }
 
     void NarrowPhaseManager::handleContinuousCollision(AbstractWorkBody* body, const PhysicsTransform& from, const PhysicsTransform& to, std::vector<ManifoldResult>& manifoldResults) {
-        std::vector<AbstractWorkBody *> bodiesAABBoxHitBody = broadPhaseManager->bodyTest(body, from, to);
+        std::vector<AbstractWorkBody*> bodiesAABBoxHitBody = broadPhaseManager->bodyTest(body, from, to);
         if (!bodiesAABBoxHitBody.empty()) {
             ccd_set ccdResults;
 
             const CollisionShape3D* bodyShape = body->getShape();
             if (bodyShape->isCompound()) {
-                const auto* compoundShape = dynamic_cast<const CollisionCompoundShape *>(bodyShape);
+                const auto* compoundShape = dynamic_cast<const CollisionCompoundShape*>(bodyShape);
                 const std::vector<std::shared_ptr<const LocalizedCollisionShape>> & localizedShapes = compoundShape->getLocalizedShapes();
                 for (const auto& localizedShape : localizedShapes) {
                     TemporalObject temporalObject(localizedShape->shape.get(), from * localizedShape->transform, to * localizedShape->transform);
@@ -144,7 +144,7 @@ namespace urchin {
         }
     }
 
-    ccd_set NarrowPhaseManager::continuousCollisionTest(const TemporalObject& temporalObject1, const std::vector<AbstractWorkBody *>& bodiesAABBoxHit) const {
+    ccd_set NarrowPhaseManager::continuousCollisionTest(const TemporalObject& temporalObject1, const std::vector<AbstractWorkBody*>& bodiesAABBoxHit) const {
         ccd_set continuousCollisionResults;
 
         for (auto bodyAABBoxHit : bodiesAABBoxHit) {
@@ -156,7 +156,7 @@ namespace urchin {
 
             const CollisionShape3D* bodyShape = bodyAABBoxHit->getShape();
             if (bodyShape->isCompound()) {
-                const auto* compoundShape = dynamic_cast<const CollisionCompoundShape *>(bodyShape);
+                const auto* compoundShape = dynamic_cast<const CollisionCompoundShape*>(bodyShape);
                 const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape->getLocalizedShapes();
                 for (const auto& localizedShape : localizedShapes) {
                     PhysicsTransform fromToObject2 = bodyAABBoxHit->getPhysicsTransform() * localizedShape->transform;
@@ -170,7 +170,7 @@ namespace urchin {
 
                 continuousCollisionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
             } else if (bodyShape->isConcave()) {
-                const auto* concaveShape = dynamic_cast<const CollisionConcaveShape *>(bodyShape);
+                const auto* concaveShape = dynamic_cast<const CollisionConcaveShape*>(bodyShape);
 
                 PhysicsTransform inverseTransformObject2 = bodyAABBoxHit->getPhysicsTransform().inverse();
                 AABBox<float> fromAABBoxLocalToObject1 = temporalObject1.getShape()->toAABBox(inverseTransformObject2 * temporalObject1.getFrom());
@@ -221,7 +221,7 @@ namespace urchin {
         }
     }
 
-    ccd_set NarrowPhaseManager::rayTest(const Ray<float>& ray, const std::vector<AbstractWorkBody *>& bodiesAABBoxHitRay) const {
+    ccd_set NarrowPhaseManager::rayTest(const Ray<float>& ray, const std::vector<AbstractWorkBody*>& bodiesAABBoxHitRay) const {
         CollisionSphereShape pointShape(0.0f);
         PhysicsTransform from = PhysicsTransform(ray.getOrigin());
         PhysicsTransform to = PhysicsTransform(ray.computeTo());

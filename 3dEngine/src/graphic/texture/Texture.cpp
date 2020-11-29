@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    Texture::Texture(TextureType textureType, unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const std::vector<const void *>& dataPtr) :
+    Texture::Texture(TextureType textureType, unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const std::vector<const void*>& dataPtr) :
             pHasMipmap(false),
             textureType(textureType),
             width(width),
@@ -51,16 +51,16 @@ namespace urchin {
     }
 
     std::shared_ptr<Texture> Texture::build(unsigned int width, unsigned int height, TextureFormat format, const void* dataPtr) {
-        std::vector<const void *> allDataPtr = {dataPtr};
+        std::vector<const void*> allDataPtr = {dataPtr};
         return std::make_shared<Texture>(TextureType::DEFAULT, width, height, 1, format, allDataPtr);
     }
 
     std::shared_ptr<Texture> Texture::buildArray(unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const void* dataPtr) {
-        std::vector<const void *> allDataPtr = {dataPtr};
+        std::vector<const void*> allDataPtr = {dataPtr};
         return std::make_shared<Texture>(TextureType::ARRAY, width, height, layer, format, allDataPtr);
     }
 
-    std::shared_ptr<Texture> Texture::buildCubeMap(unsigned int width, unsigned int height, TextureFormat format, const std::vector<const void *>& cubeDataPtr) {
+    std::shared_ptr<Texture> Texture::buildCubeMap(unsigned int width, unsigned int height, TextureFormat format, const std::vector<const void*>& cubeDataPtr) {
         return std::make_shared<Texture>(TextureType::CUBE_MAP, width, height, 1, format, cubeDataPtr);
     }
 

@@ -370,7 +370,7 @@ namespace urchin {
     void ObjectPanelWidget::load(ObjectController* objectController) {
         this->objectController = objectController;
 
-        std::list<const SceneObject *> sceneObjects = objectController->getSceneObjects();
+        std::list<const SceneObject*> sceneObjects = objectController->getSceneObjects();
         for (auto& sceneObject : sceneObjects) {
             objectTableView->addObject(sceneObject);
         }
@@ -383,7 +383,7 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::notify(Observable* observable, int notificationType) {
-        if (auto* objectTableView = dynamic_cast<ObjectTableView *>(observable)) {
+        if (auto* objectTableView = dynamic_cast<ObjectTableView*>(observable)) {
             if (notificationType==ObjectTableView::OBJECT_SELECTION_CHANGED) {
                 if (objectTableView->hasSceneObjectSelected()) {
                     const SceneObject* sceneObject = objectTableView->getSelectedSceneObject();
@@ -398,7 +398,7 @@ namespace urchin {
                     tabWidget->hide();
                 }
             }
-        } else if (auto* sceneDisplayerWidget = dynamic_cast<SceneDisplayerWidget *>(observable)) {
+        } else if (auto* sceneDisplayerWidget = dynamic_cast<SceneDisplayerWidget*>(observable)) {
             if (notificationType==SceneDisplayerWidget::BODY_PICKED) {
                 const std::string& bodyId = sceneDisplayerWidget->getLastPickedBodyId();
                 const SceneObject* sceneObject = bodyId.empty() ? nullptr : objectController->findSceneObjectByBodyId(bodyId);
@@ -411,7 +411,7 @@ namespace urchin {
                     this->objectTableView->clearSelection();
                 }
             }
-        } else if (auto* objectMoveController = dynamic_cast<ObjectMoveController *>(observable)) {
+        } else if (auto* objectMoveController = dynamic_cast<ObjectMoveController*>(observable)) {
             if (notificationType==ObjectMoveController::OBJECT_MOVED) {
                 setupObjectDataFrom(objectMoveController->getSelectedSceneObject());
             }

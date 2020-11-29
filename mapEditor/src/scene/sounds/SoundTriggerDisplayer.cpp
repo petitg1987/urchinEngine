@@ -19,7 +19,7 @@ namespace urchin {
         if (sceneSound) {
             const SoundTrigger* soundTrigger = sceneSound->getSoundTrigger();
 
-            if (const auto* shapeTrigger = dynamic_cast<const ShapeTrigger *>(soundTrigger)) {
+            if (const auto* shapeTrigger = dynamic_cast<const ShapeTrigger*>(soundTrigger)) {
                 GeometryModel* geometryModel = retrieveGeometry(shapeTrigger->getSoundShape());
                 soundTriggerModels.push_back(geometryModel);
             }
@@ -43,12 +43,12 @@ namespace urchin {
     }
 
     GeometryModel* SoundTriggerDisplayer::retrieveSphereGeometry(const SoundShape* soundShape) const {
-        const auto* soundSphere = dynamic_cast<const SoundSphere *>(soundShape);
+        const auto* soundSphere = dynamic_cast<const SoundSphere*>(soundShape);
         return new SphereModel(soundSphere->getPlayTriggerSphere(), 15);
     }
 
     GeometryModel* SoundTriggerDisplayer::retrieveBoxGeometry(const SoundShape* soundShape) const {
-        const auto* soundBox = dynamic_cast<const SoundBox *>(soundShape);
+        const auto* soundBox = dynamic_cast<const SoundBox*>(soundShape);
         return new OBBoxModel(soundBox->getPlayTriggerBox());
     }
 

@@ -253,7 +253,7 @@ namespace urchin {
     void WaterPanelWidget::load(WaterController* waterController) {
         this->waterController = waterController;
 
-        std::list<const SceneWater *> sceneWaters = waterController->getSceneWaters();
+        std::list<const SceneWater*> sceneWaters = waterController->getSceneWaters();
         for (auto& sceneWater : sceneWaters) {
             waterTableView->addWater(sceneWater);
         }
@@ -266,7 +266,7 @@ namespace urchin {
     }
 
     void WaterPanelWidget::notify(Observable* observable, int notificationType) {
-        if (auto* waterTableView = dynamic_cast<WaterTableView *>(observable)) {
+        if (auto* waterTableView = dynamic_cast<WaterTableView*>(observable)) {
             if (notificationType==WaterTableView::SELECTION_CHANGED) {
                 if (waterTableView->hasSceneWaterSelected()) {
                     const SceneWater* sceneWater = waterTableView->getSelectedSceneWater();

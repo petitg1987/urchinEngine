@@ -10,7 +10,7 @@ template<class TOctreeable> OctreeManager<TOctreeable>::OctreeManager(float minS
 
     overflowSize += 0.001f; //add offset to avoid rounding problem when overflow size is 0.0f.
 
-    std::vector<TOctreeable *> emptyOctreeable;
+    std::vector<TOctreeable*> emptyOctreeable;
     buildOctree(emptyOctreeable);
 }
 
@@ -25,15 +25,15 @@ template<class TOctreeable> OctreeManager<TOctreeable>::~OctreeManager() {
 }
 
 template<class TOctreeable> void OctreeManager<TOctreeable>::notify(Observable* observable, int notificationType) {
-    if (dynamic_cast<TOctreeable *>(observable)) {
+    if (dynamic_cast<TOctreeable*>(observable)) {
         if (notificationType==TOctreeable::MOVE) {
-            TOctreeable* octreeable = dynamic_cast<TOctreeable *>(observable);
+            TOctreeable* octreeable = dynamic_cast<TOctreeable*>(observable);
             movingOctreeables.emplace_back(octreeable);
         }
     }
 }
 
-template<class TOctreeable> void OctreeManager<TOctreeable>::buildOctree(std::vector<TOctreeable *>& octreeables) {
+template<class TOctreeable> void OctreeManager<TOctreeable>::buildOctree(std::vector<TOctreeable*>& octreeables) {
     if (!octreeables.empty()) {
         Point3<float> minScene(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
         Point3<float> maxScene(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
@@ -123,7 +123,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::updateMinSize(float
     this->minSize = minSize;
 
     //gets all octreeables from the current octree
-    std::vector<TOctreeable *> allOctreeables;
+    std::vector<TOctreeable*> allOctreeables;
     if (mainOctree) {
         mainOctree->getAllOctreeables(allOctreeables);
     }
@@ -166,8 +166,8 @@ template<class TOctreeable> const Octree<TOctreeable> &OctreeManager<TOctreeable
     return *mainOctree;
 }
 
-template<class TOctreeable> std::vector<const Octree<TOctreeable> *> OctreeManager<TOctreeable>::getAllLeafOctrees() const {
-    std::vector<const Octree<TOctreeable> *> leafOctrees;
+template<class TOctreeable> std::vector<const Octree<TOctreeable>*> OctreeManager<TOctreeable>::getAllLeafOctrees() const {
+    std::vector<const Octree<TOctreeable>*> leafOctrees;
 
     browseNodes.clear();
     browseNodes.push_back(mainOctree);
@@ -184,8 +184,8 @@ template<class TOctreeable> std::vector<const Octree<TOctreeable> *> OctreeManag
     return leafOctrees;
 }
 
-template<class TOctreeable> std::vector<TOctreeable *> OctreeManager<TOctreeable>::getAllOctreeables() const {
-    std::vector<TOctreeable *> allOctreeables;
+template<class TOctreeable> std::vector<TOctreeable*> OctreeManager<TOctreeable>::getAllOctreeables() const {
+    std::vector<TOctreeable*> allOctreeables;
 
     if (mainOctree) {
         browseNodes.clear();
@@ -214,12 +214,12 @@ template<class TOctreeable> std::vector<TOctreeable *> OctreeManager<TOctreeable
 }
 
 template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float>& convexObject,
-        std::vector<TOctreeable *>& octreeables) const {
+        std::vector<TOctreeable*>& octreeables) const {
     getOctreeablesIn(convexObject, octreeables, AcceptAllFilter<TOctreeable>());
 }
 
 template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float>& convexObject,
-        std::vector<TOctreeable *>& visibleOctreeables, const OctreeableFilter<TOctreeable>& filter) const {
+        std::vector<TOctreeable*>& visibleOctreeables, const OctreeableFilter<TOctreeable>& filter) const {
     ScopeProfiler profiler("3d", "getOctreeables");
 
     browseNodes.clear();
@@ -261,7 +261,7 @@ template<class TOctreeable> bool OctreeManager<TOctreeable>::resizeOctree(TOctre
     }
 
     //gets all octreeables from the current octree
-    std::vector<TOctreeable *> allOctreeables = getAllOctreeables();
+    std::vector<TOctreeable*> allOctreeables = getAllOctreeables();
     allOctreeables.emplace_back(newOctreeable);
 
     //rebuild the octree

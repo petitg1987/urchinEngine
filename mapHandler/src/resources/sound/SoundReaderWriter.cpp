@@ -41,7 +41,7 @@ namespace urchin {
         filenameChunk->setStringValue(sound->getFilename());
 
         if (sound->getSoundType()==Sound::POINT) {
-            const auto* pointSound = dynamic_cast<const PointSound *>(sound);
+            const auto* pointSound = dynamic_cast<const PointSound*>(sound);
             soundChunk->setAttribute(XmlAttribute(TYPE_ATTR, POINT_VALUE));
 
             std::shared_ptr<XmlChunk> positionChunk = xmlWriter.createChunk(POSITION_TAG, XmlAttribute(), soundChunk);

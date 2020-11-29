@@ -27,7 +27,7 @@ namespace urchin {
 
         float startEndHScore = computeHScore(startTriangle, endPoint);
 
-        std::set<NavTriangle *> closedList;
+        std::set<NavTriangle*> closedList;
         std::multiset<std::shared_ptr<PathNode>, PathNodeCompare> openList;
         openList.insert(std::make_shared<PathNode>(startTriangle, 0.0, startEndHScore));
 

@@ -13,7 +13,7 @@ namespace urchin {
     /**
      * Reset the container of island elements. Create islands of one element for each island elements asked.
      */
-    void IslandContainer::reset(const std::vector<IslandElement *>& islandElements) {
+    void IslandContainer::reset(const std::vector<IslandElement*>& islandElements) {
         containerSorted = false;
 
         islandElementsLink.clear();

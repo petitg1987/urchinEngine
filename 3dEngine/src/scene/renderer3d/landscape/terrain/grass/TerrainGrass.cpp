@@ -113,7 +113,7 @@ namespace urchin {
             float adjustedPatchSizeX = mesh->getXZScale() * (float)mesh->getXSize() / patchQuantityX;
             float adjustedPatchSizeZ = mesh->getXZScale() * (float)mesh->getZSize() / patchQuantityZ;
 
-            std::vector<TerrainGrassQuadtree *> leafGrassPatches;
+            std::vector<TerrainGrassQuadtree*> leafGrassPatches;
             leafGrassPatches.reserve(patchQuantityX * patchQuantityZ);
             for (unsigned int i = 0; i < patchQuantityX * patchQuantityZ; ++i) {
                 leafGrassPatches.push_back(new TerrainGrassQuadtree());
@@ -169,8 +169,8 @@ namespace urchin {
         return xIndex + zIndex*mesh->getXSize();
     }
 
-    void TerrainGrass::buildGrassQuadtree(const std::vector<TerrainGrassQuadtree *>& leafGrassPatches, unsigned int leafQuantityX, unsigned int leafQuantityZ) {
-        std::vector<TerrainGrassQuadtree *> childrenGrassQuadtree = leafGrassPatches;
+    void TerrainGrass::buildGrassQuadtree(const std::vector<TerrainGrassQuadtree*>& leafGrassPatches, unsigned int leafQuantityX, unsigned int leafQuantityZ) {
+        std::vector<TerrainGrassQuadtree*> childrenGrassQuadtree = leafGrassPatches;
         unsigned int childrenNbQuadtreeX = leafQuantityX;
         unsigned int childrenNbQuadtreeZ = leafQuantityZ;
 
@@ -180,7 +180,7 @@ namespace urchin {
             auto depthNbQuadtreeZ = depthNbQuadtreeX;
             unsigned int depthNbQuadtree = depthNbQuadtreeX * depthNbQuadtreeZ;
             if (std::sqrt(childrenGrassQuadtree.size()) >= std::sqrt(depthNbQuadtree)*2) {
-                std::vector<TerrainGrassQuadtree *> depthGrassQuadtree;
+                std::vector<TerrainGrassQuadtree*> depthGrassQuadtree;
                 depthGrassQuadtree.reserve(depthNbQuadtree);
                 for (unsigned int i=0; i<depthNbQuadtree; ++i) {
                     depthGrassQuadtree.push_back(new TerrainGrassQuadtree());
@@ -210,7 +210,7 @@ namespace urchin {
         mainGrassQuadtree = new TerrainGrassQuadtree(childrenGrassQuadtree);
     }
 
-    void TerrainGrass::createRenderers(const std::vector<TerrainGrassQuadtree *>& leafGrassPatches) {
+    void TerrainGrass::createRenderers(const std::vector<TerrainGrassQuadtree*>& leafGrassPatches) {
         if(grassTexture) {
             for (auto* grassQuadtree : leafGrassPatches) {
                 std::unique_ptr<GenericRenderer> renderer = std::make_unique<GenericRendererBuilder>(ShapeType::POINT)

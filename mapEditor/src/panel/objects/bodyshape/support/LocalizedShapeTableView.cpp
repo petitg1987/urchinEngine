@@ -31,7 +31,7 @@ namespace urchin {
         if (hasLocalizedShapeSelected()) {
             QModelIndex selectedIndex = this->currentIndex();
 
-            const auto* selectLocalizedShape = selectedIndex.data(Qt::UserRole + 1).value<const LocalizedCollisionShape *>();
+            const auto* selectLocalizedShape = selectedIndex.data(Qt::UserRole + 1).value<const LocalizedCollisionShape*>();
             return localizedShapesMap.at(selectLocalizedShape);
         }
         return std::shared_ptr<const LocalizedCollisionShape>(nullptr);
@@ -42,7 +42,7 @@ namespace urchin {
         for (int row=0; row< localizedShapesTableModel->rowCount(); ++row) {
             QModelIndex shapeIndex = localizedShapesTableModel->index(row, 0);
 
-            const auto* localizedCollisionShape = shapeIndex.data(Qt::UserRole + 1).value<const LocalizedCollisionShape *>();
+            const auto* localizedCollisionShape = shapeIndex.data(Qt::UserRole + 1).value<const LocalizedCollisionShape*>();
             localizedCollisionShapes.push_back(localizedShapesMap.at(localizedCollisionShape));
         }
 
@@ -108,7 +108,7 @@ namespace urchin {
     void LocalizedShapeTableView::removeSelectedLocalizedShapeFromMap() {
         if (hasLocalizedShapeSelected()) {
             QModelIndex shapeIndex = localizedShapesTableModel->index(this->currentIndex().row(), 0);
-            const auto* localizedShape = shapeIndex.data(Qt::UserRole + 1).value<const LocalizedCollisionShape *>();
+            const auto* localizedShape = shapeIndex.data(Qt::UserRole + 1).value<const LocalizedCollisionShape*>();
 
             localizedShapesMap.erase(localizedShape);
         }

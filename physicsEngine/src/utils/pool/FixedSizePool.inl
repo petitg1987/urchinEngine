@@ -11,7 +11,7 @@ template<class BaseType> FixedSizePool<BaseType>::FixedSizePool(const std::strin
         freeCount(maxElements),
         fullPoolLogged(false) {
     //create pool
-    pool = static_cast<unsigned char *>(operator new(this->maxElementSize * this->maxElements));
+    pool = static_cast<unsigned char*>(operator new(this->maxElementSize * this->maxElements));
     firstFree = pool;
 
     //initialize pool: each element contains address of next element and last one contains 0

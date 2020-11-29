@@ -130,7 +130,7 @@ namespace urchin {
     }
 
     Renderer3d* SceneManager::getActiveRenderer3d() const {
-        return dynamic_cast<Renderer3d *>(activeRenderers[RENDERER_3D]);
+        return dynamic_cast<Renderer3d*>(activeRenderers[RENDERER_3D]);
     }
 
     GUIRenderer* SceneManager::newGUIRenderer(bool enable) {
@@ -164,7 +164,7 @@ namespace urchin {
     }
 
     GUIRenderer* SceneManager::getActiveGUIRenderer() const {
-        return dynamic_cast<GUIRenderer *>(activeRenderers[GUI_RENDERER]);
+        return dynamic_cast<GUIRenderer*>(activeRenderers[GUI_RENDERER]);
     }
 
     bool SceneManager::onKeyPress(unsigned int key) {

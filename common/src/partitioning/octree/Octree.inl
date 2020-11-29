@@ -55,11 +55,11 @@ template<class TOctreeable> bool Octree<TOctreeable>::isLeaf() const {
     return bIsLeaf;
 }
 
-template<class TOctreeable> const std::vector<Octree<TOctreeable> *> &Octree<TOctreeable>::getChildren() const {
+template<class TOctreeable> const std::vector<Octree<TOctreeable>*> &Octree<TOctreeable>::getChildren() const {
     return children;
 }
 
-template<class TOctreeable> const std::vector<TOctreeable *> &Octree<TOctreeable>::getOctreeables() const {
+template<class TOctreeable> const std::vector<TOctreeable*> &Octree<TOctreeable>::getOctreeables() const {
     return octreeables;
 }
 

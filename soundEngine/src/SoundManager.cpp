@@ -56,8 +56,8 @@ namespace urchin {
         }
     }
 
-    std::vector<const SoundTrigger *> SoundManager::getSoundTriggers() const {
-        std::vector<const SoundTrigger *> triggers;
+    std::vector<const SoundTrigger*> SoundManager::getSoundTriggers() const {
+        std::vector<const SoundTrigger*> triggers;
 
         for (const auto& audioController : audioControllers) {
             triggers.push_back(audioController->getSoundTrigger());

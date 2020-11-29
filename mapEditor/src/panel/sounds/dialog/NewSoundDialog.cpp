@@ -167,7 +167,7 @@ namespace urchin {
     }
 
     bool NewSoundDialog::isSceneSoundExist(const std::string& name) {
-        std::list<const SceneSound *> sceneSounds = soundController->getSceneSounds();
+        std::list<const SceneSound*> sceneSounds = soundController->getSceneSounds();
         return std::any_of(sceneSounds.begin(), sceneSounds.end(), [name](const auto& ss){return ss->getName() == name;});
     }
 

@@ -28,7 +28,7 @@ namespace urchin {
         return parent;
     }
 
-    std::vector<ProfilerNode *> ProfilerNode::getChildren() const {
+    std::vector<ProfilerNode*> ProfilerNode::getChildren() const {
         return children;
     }
 

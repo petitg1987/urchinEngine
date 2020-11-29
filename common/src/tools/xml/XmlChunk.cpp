@@ -11,7 +11,7 @@ namespace urchin {
     }
 
     XmlChunk::XmlChunk(const TiXmlElement* chunk) :
-            XmlChunk(const_cast<TiXmlElement *>(chunk)) {
+            XmlChunk(const_cast<TiXmlElement*>(chunk)) {
 
     }
 

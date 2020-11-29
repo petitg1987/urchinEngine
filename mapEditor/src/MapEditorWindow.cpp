@@ -183,23 +183,23 @@ namespace urchin {
     }
 
     void MapEditorWindow::notify(Observable* observable, int notificationType) {
-        if (dynamic_cast<ScenePanelWidget *>(observable)) {
+        if (dynamic_cast<ScenePanelWidget*>(observable)) {
             if (notificationType == ScenePanelWidget::TAB_SELECTED) {
                 executeViewPropertiesChangeAction();
             }
-        } else if (auto* objectTableView = dynamic_cast<ObjectTableView *>(observable)) {
+        } else if (auto* objectTableView = dynamic_cast<ObjectTableView*>(observable)) {
             if (notificationType==ObjectTableView::OBJECT_SELECTION_CHANGED) {
                 sceneDisplayerWidget->setHighlightSceneObject(objectTableView->getSelectedSceneObject());
             }
-        } else if (auto* lightTableView = dynamic_cast<LightTableView *>(observable)) {
+        } else if (auto* lightTableView = dynamic_cast<LightTableView*>(observable)) {
             if (notificationType==LightTableView::LIGHT_SELECTION_CHANGED) {
                 sceneDisplayerWidget->setHighlightSceneLight(lightTableView->getSelectedSceneLight());
             }
-        } else if (auto* soundTableView = dynamic_cast<SoundTableView *>(observable)) {
+        } else if (auto* soundTableView = dynamic_cast<SoundTableView*>(observable)) {
             if (notificationType==SoundTableView::SOUND_SELECTION_CHANGED) {
                 sceneDisplayerWidget->setHighlightSceneSound(soundTableView->getSelectedSceneSound());
             }
-        } else if (dynamic_cast<AbstractController *>(observable)) {
+        } else if (dynamic_cast<AbstractController*>(observable)) {
             if (notificationType==AbstractController::CHANGES_DONE) {
                 refreshWindowTitle();
 
@@ -210,14 +210,14 @@ namespace urchin {
     }
 
     void MapEditorWindow::handleCompoundShapeSelectionChange(Observable* observable, int notificationType) {
-        if (auto* objectControllerWidget = dynamic_cast<ObjectPanelWidget *>(observable)) {
+        if (auto* objectControllerWidget = dynamic_cast<ObjectPanelWidget*>(observable)) {
             if (notificationType == ObjectPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED) {
                 BodyShapeWidget* bodyShapeWidget = objectControllerWidget->getBodyShapeWidget();
-                if (auto* bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget *>(bodyShapeWidget)) {
+                if (auto* bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget*>(bodyShapeWidget)) {
                     bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
                 }
             }
-        } else if (auto* localizedShapeTableView = dynamic_cast<LocalizedShapeTableView *>(observable)) {
+        } else if (auto* localizedShapeTableView = dynamic_cast<LocalizedShapeTableView*>(observable)) {
             if (notificationType==LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED) {
                 sceneDisplayerWidget->setHighlightCompoundShapeComponent(localizedShapeTableView->getSelectedLocalizedShape());
             }

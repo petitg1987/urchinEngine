@@ -30,7 +30,7 @@ namespace urchin {
     void CollisionCapsuleReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& shapeChunk, const CollisionShape3D* collisionShape, XmlWriter& xmlWriter) const {
         shapeChunk->setAttribute(XmlAttribute(TYPE_ATTR, CAPSULE_VALUE));
 
-        const auto* capsuleShape = dynamic_cast<const CollisionCapsuleShape *>(collisionShape);
+        const auto* capsuleShape = dynamic_cast<const CollisionCapsuleShape*>(collisionShape);
 
         std::shared_ptr<XmlChunk> orientationChunk = xmlWriter.createChunk(ORIENTATION_TAG, XmlAttribute(), shapeChunk);
         CapsuleShape<float>::CapsuleOrientation orientationValue = capsuleShape->getCapsuleOrientation();

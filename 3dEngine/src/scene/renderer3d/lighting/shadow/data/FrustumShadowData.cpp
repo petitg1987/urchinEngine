@@ -46,7 +46,7 @@ namespace urchin {
     /**
      * @models Models visible from light in frustum split
      */
-    void FrustumShadowData::updateModels(const std::vector<Model *>& models) {
+    void FrustumShadowData::updateModels(const std::vector<Model*>& models) {
         modelsRequireUpdate = false;
 
         if (models != this->models) {
@@ -66,7 +66,7 @@ namespace urchin {
     /**
      * @return Models visible from light in frustum split
      */
-    const std::vector<Model *>& FrustumShadowData::getModels() const {
+    const std::vector<Model*>& FrustumShadowData::getModels() const {
         return models;
     }
 

@@ -50,17 +50,17 @@ namespace urchin {
             std::unique_ptr<ConvexObject3D<float>> object = aiShape->getShape()->toConvexObject(shapeTransform);
             std::unique_ptr<Polytope> expandedPolytope;
 
-            if (auto box = dynamic_cast<OBBox<float> *>(object.get())) {
+            if (auto box = dynamic_cast<OBBox<float>*>(object.get())) {
                 expandedPolytope = createExpandedPolytopeFor(shapeName, box, navMeshAgent);
-            } else if (auto capsule = dynamic_cast<Capsule<float> *>(object.get())) {
+            } else if (auto capsule = dynamic_cast<Capsule<float>*>(object.get())) {
                 expandedPolytope = createExpandedPolytopeFor(shapeName, capsule, navMeshAgent);
-            } else if (auto cone = dynamic_cast<Cone<float> *>(object.get())) {
+            } else if (auto cone = dynamic_cast<Cone<float>*>(object.get())) {
                 expandedPolytope = createExpandedPolytopeFor(shapeName, cone, navMeshAgent);
-            } else if (auto convexHull = dynamic_cast<ConvexHull3D<float> *>(object.get())) {
+            } else if (auto convexHull = dynamic_cast<ConvexHull3D<float>*>(object.get())) {
                 expandedPolytope = createExpandedPolytopeFor(shapeName, convexHull, navMeshAgent);
-            } else if (auto cylinder = dynamic_cast<Cylinder<float> *>(object.get())) {
+            } else if (auto cylinder = dynamic_cast<Cylinder<float>*>(object.get())) {
                 expandedPolytope = createExpandedPolytopeFor(shapeName, cylinder, navMeshAgent);
-            } else if (auto sphere = dynamic_cast<Sphere<float> *>(object.get())) {
+            } else if (auto sphere = dynamic_cast<Sphere<float>*>(object.get())) {
                 expandedPolytope = createExpandedPolytopeFor(shapeName, sphere, navMeshAgent);
             } else {
                 throw std::invalid_argument("Shape type not supported by navigation mesh generator for object: " + aiObject->getName());

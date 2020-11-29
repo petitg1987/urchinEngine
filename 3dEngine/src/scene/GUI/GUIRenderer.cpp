@@ -51,7 +51,7 @@ namespace urchin {
     }
 
     void GUIRenderer::notify(Observable* observable, int notificationType) {
-        if (auto* widget = dynamic_cast<Widget *>(observable)) {
+        if (auto* widget = dynamic_cast<Widget*>(observable)) {
             if (notificationType==Widget::SET_IN_FOREGROUND) {
                 auto it = std::find(widgets.begin(), widgets.end(), widget);
                 widgets.erase(it);

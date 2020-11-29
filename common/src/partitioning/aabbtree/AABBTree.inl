@@ -12,7 +12,7 @@ template<class OBJ> AABBTree<OBJ>::~AABBTree() {
 template<class OBJ> void AABBTree<OBJ>::updateFatMargin(float fatMargin) {
     this->fatMargin = fatMargin;
 
-    std::vector<AABBNodeData<OBJ> *> allNodeData = extractAllNodeData();
+    std::vector<AABBNodeData<OBJ>*> allNodeData = extractAllNodeData();
     delete rootNode;
     rootNode = nullptr;
     for (const auto nodeData : allNodeData) {
@@ -50,8 +50,8 @@ template <class OBJ> void AABBTree<OBJ>::getAllNodeObjects(std::vector<OBJ>& nod
     }
 }
 
-template <class OBJ> std::vector<AABBNodeData<OBJ> *> AABBTree<OBJ>::extractAllNodeData() {
-    std::vector<AABBNodeData<OBJ> *> allNodeData = {};
+template <class OBJ> std::vector<AABBNodeData<OBJ>*> AABBTree<OBJ>::extractAllNodeData() {
+    std::vector<AABBNodeData<OBJ>*> allNodeData = {};
 
     browseNodes.clear();
     if (rootNode != nullptr) {

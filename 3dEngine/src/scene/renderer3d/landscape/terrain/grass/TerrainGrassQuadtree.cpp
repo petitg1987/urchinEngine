@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    TerrainGrassQuadtree::TerrainGrassQuadtree(std::vector<TerrainGrassQuadtree *> children) :
+    TerrainGrassQuadtree::TerrainGrassQuadtree(std::vector<TerrainGrassQuadtree*> children) :
             children(std::move(children)) {
 
     }
@@ -57,7 +57,7 @@ namespace urchin {
         children.push_back(grassPatchOctree);
     }
 
-    const std::vector<TerrainGrassQuadtree *>& TerrainGrassQuadtree::getChildren() const {
+    const std::vector<TerrainGrassQuadtree*>& TerrainGrassQuadtree::getChildren() const {
         return children;
     }
 

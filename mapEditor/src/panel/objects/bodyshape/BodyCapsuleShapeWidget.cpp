@@ -41,7 +41,7 @@ namespace urchin {
     }
 
     void BodyCapsuleShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape) {
-        auto* capsuleShape = dynamic_cast<const CollisionCapsuleShape *>(shape.get());
+        auto* capsuleShape = dynamic_cast<const CollisionCapsuleShape*>(shape.get());
 
         radius->setValue(capsuleShape->getRadius());
         cylinderHeight->setValue(capsuleShape->getCylinderHeight());

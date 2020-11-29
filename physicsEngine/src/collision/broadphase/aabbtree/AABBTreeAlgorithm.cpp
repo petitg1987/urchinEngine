@@ -24,12 +24,12 @@ namespace urchin {
         tree->updateBodies();
     }
 
-    const std::vector<OverlappingPair *>& AABBTreeAlgorithm::getOverlappingPairs() const {
+    const std::vector<OverlappingPair*>& AABBTreeAlgorithm::getOverlappingPairs() const {
         return tree->getOverlappingPairs();
     }
 
-    std::vector<AbstractWorkBody *> AABBTreeAlgorithm::rayTest(const Ray<float>& ray) const {
-        std::vector<AbstractWorkBody *> bodiesAABBoxHitRay;
+    std::vector<AbstractWorkBody*> AABBTreeAlgorithm::rayTest(const Ray<float>& ray) const {
+        std::vector<AbstractWorkBody*> bodiesAABBoxHitRay;
         bodiesAABBoxHitRay.reserve(10);
 
         tree->rayQuery(ray, bodiesAABBoxHitRay);
@@ -37,8 +37,8 @@ namespace urchin {
         return bodiesAABBoxHitRay;
     }
 
-    std::vector<AbstractWorkBody *> AABBTreeAlgorithm::bodyTest(AbstractWorkBody* body, const PhysicsTransform& from, const PhysicsTransform& to) const {
-        std::vector<AbstractWorkBody *> bodiesAABBoxHitBody;
+    std::vector<AbstractWorkBody*> AABBTreeAlgorithm::bodyTest(AbstractWorkBody* body, const PhysicsTransform& from, const PhysicsTransform& to) const {
+        std::vector<AbstractWorkBody*> bodiesAABBoxHitBody;
         bodiesAABBoxHitBody.reserve(15);
 
         Ray<float> ray(from.getPosition(), to.getPosition());

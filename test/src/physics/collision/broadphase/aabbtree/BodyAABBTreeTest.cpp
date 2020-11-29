@@ -14,7 +14,7 @@ void BodyAABBTreeTest::twoBodiesPairedAndRemove() {
     BodyAABBTree bodyAabbTree;
     bodyAabbTree.addBody(bodyA.get(), nullptr);
     bodyAabbTree.addBody(bodyB.get(), nullptr);
-    auto* bodyANodeData = dynamic_cast<BodyAABBNodeData *>(bodyAabbTree.getNodeData(bodyA.get()));
+    auto* bodyANodeData = dynamic_cast<BodyAABBNodeData*>(bodyAabbTree.getNodeData(bodyA.get()));
 
     AssertHelper::assertUnsignedInt(bodyAabbTree.getOverlappingPairs().size(), 1);
     AssertHelper::assertString(bodyAabbTree.getOverlappingPairs()[0]->getBody1()->getId(), "bodyB");
@@ -53,8 +53,8 @@ void BodyAABBTreeTest::oneBodyWithAlternativePairAndRemove(bool removeBodyHaving
     BodyAABBTree bodyAabbTree;
     bodyAabbTree.addBody(bodyA.get(), nullptr);
     bodyAabbTree.addBody(bodyB.get(), bodyB->getPairContainer());
-    auto* bodyANodeData = dynamic_cast<BodyAABBNodeData *>(bodyAabbTree.getNodeData(bodyA.get()));
-    auto* bodyBNodeData = dynamic_cast<BodyAABBNodeData *>(bodyAabbTree.getNodeData(bodyB.get()));
+    auto* bodyANodeData = dynamic_cast<BodyAABBNodeData*>(bodyAabbTree.getNodeData(bodyA.get()));
+    auto* bodyBNodeData = dynamic_cast<BodyAABBNodeData*>(bodyAabbTree.getNodeData(bodyB.get()));
 
     AssertHelper::assertUnsignedInt(bodyAabbTree.getOverlappingPairs().size(), 0);
     std::vector<OverlappingPair> bodyBPairs = bodyB->getPairContainer()->retrieveCopyOverlappingPairs();

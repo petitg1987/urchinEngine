@@ -223,7 +223,7 @@ namespace urchin {
     void SoundPanelWidget::load(SoundController* soundController) {
         this->soundController = soundController;
 
-        std::list<const SceneSound *> sceneSounds = soundController->getSceneSounds();
+        std::list<const SceneSound*> sceneSounds = soundController->getSceneSounds();
         for (auto& sceneSound : sceneSounds) {
             soundTableView->addSound(sceneSound);
         }
@@ -236,7 +236,7 @@ namespace urchin {
     }
 
     void SoundPanelWidget::notify(Observable* observable, int notificationType) {
-        if (auto* soundTableView = dynamic_cast<SoundTableView *>(observable)) {
+        if (auto* soundTableView = dynamic_cast<SoundTableView*>(observable)) {
             if (notificationType==SoundTableView::SOUND_SELECTION_CHANGED) {
                 if (soundTableView->hasSceneSoundSelected()) {
                     const SceneSound* sceneSound = soundTableView->getSelectedSceneSound();
@@ -265,7 +265,7 @@ namespace urchin {
         if (sound->getSoundType()==Sound::SoundType::AMBIENT) {
             setupAmbientSoundDataFrom();
         } else if (sound->getSoundType()==Sound::SoundType::POINT) {
-            setupPointSoundDataFrom(dynamic_cast<const PointSound *>(sound));
+            setupPointSoundDataFrom(dynamic_cast<const PointSound*>(sound));
         } else {
             throw std::invalid_argument("Impossible to setup specific sound data for sound of type: " + std::to_string(sound->getSoundType()));
         }
@@ -329,7 +329,7 @@ namespace urchin {
         specificTriggerShapeGroupBox->show();
         soundTriggerType->setText(SHAPE_TRIGGER_LABEL);
 
-        const auto* shapeTrigger = dynamic_cast<const ShapeTrigger *>(sceneSound->getSoundTrigger());
+        const auto* shapeTrigger = dynamic_cast<const ShapeTrigger*>(sceneSound->getSoundTrigger());
         const SoundShape* soundShape = shapeTrigger->getSoundShape();
         SoundShapeWidget* soundShapeWidget = retrieveSoundShapeWidget(soundShape, sceneSound);
         soundShapeWidget->setupShapePropertiesFrom(soundShape);

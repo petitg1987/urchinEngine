@@ -36,7 +36,7 @@ namespace urchin {
         if (soundTrigger->getTriggerType()==SoundTrigger::MANUAL_TRIGGER) {
             soundTriggerChunk->setAttribute(XmlAttribute(TYPE_ATTR, MANUAL_VALUE));
         } else if (soundTrigger->getTriggerType()==SoundTrigger::SHAPE_TRIGGER) {
-            const auto* shapeTrigger = dynamic_cast<const ShapeTrigger *>(soundTrigger);
+            const auto* shapeTrigger = dynamic_cast<const ShapeTrigger*>(soundTrigger);
             soundTriggerChunk->setAttribute(XmlAttribute(TYPE_ATTR, SHAPE_VALUE));
 
             std::shared_ptr<XmlChunk> soundShapeChunk = xmlWriter.createChunk(SOUND_SHAPE_TAG, XmlAttribute(), soundTriggerChunk);

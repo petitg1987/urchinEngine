@@ -29,7 +29,7 @@ namespace urchin {
     }
 
     GenericRendererBuilder* GenericRendererBuilder::addData(const std::vector<Vector3<float>>* dataPtr) {
-        addData(reinterpret_cast<const std::vector<Point3<float>> *>(dataPtr));
+        addData(reinterpret_cast<const std::vector<Point3<float>>*>(dataPtr));
         return this;
     }
 

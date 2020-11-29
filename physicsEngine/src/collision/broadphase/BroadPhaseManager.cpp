@@ -16,7 +16,7 @@ namespace urchin {
     }
 
     void BroadPhaseManager::notify(Observable* observable, int notificationType) {
-        if (auto* bodyManager = dynamic_cast<BodyManager *>(observable)) {
+        if (auto* bodyManager = dynamic_cast<BodyManager*>(observable)) {
             if (notificationType==BodyManager::ADD_WORK_BODY) {
                 addBody(bodyManager->getLastUpdatedWorkBody());
             } else if (notificationType==BodyManager::REMOVE_WORK_BODY) {
@@ -66,7 +66,7 @@ namespace urchin {
         bodiesToRemove.clear();
     }
 
-    const std::vector<OverlappingPair *>& BroadPhaseManager::computeOverlappingPairs() {
+    const std::vector<OverlappingPair*>& BroadPhaseManager::computeOverlappingPairs() {
         ScopeProfiler profiler("physics", "coOverlapPair");
 
         synchronizeBodies();
@@ -75,11 +75,11 @@ namespace urchin {
         return broadPhaseAlgorithm->getOverlappingPairs();
     }
 
-    std::vector<AbstractWorkBody *> BroadPhaseManager::rayTest(const Ray<float>& ray) const {
+    std::vector<AbstractWorkBody*> BroadPhaseManager::rayTest(const Ray<float>& ray) const {
         return broadPhaseAlgorithm->rayTest(ray);
     }
 
-    std::vector<AbstractWorkBody *> BroadPhaseManager::bodyTest(AbstractWorkBody* body, const PhysicsTransform& from, const PhysicsTransform& to) const {
+    std::vector<AbstractWorkBody*> BroadPhaseManager::bodyTest(AbstractWorkBody* body, const PhysicsTransform& from, const PhysicsTransform& to) const {
         return broadPhaseAlgorithm->bodyTest(body, from, to);
     }
 

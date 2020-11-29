@@ -65,7 +65,7 @@ namespace urchin {
         return tRepeat;
     }
 
-    std::vector<Material *> TerrainMaterial::getMaterials() const {
+    std::vector<Material*> TerrainMaterial::getMaterials() const {
         return materials;
     }
 

@@ -76,12 +76,12 @@ namespace urchin {
         unsigned int surfaceIndex = 0;
         for (const auto& surface : polytope.getSurfaces()) {
             stream<<"Surface "<<surfaceIndex++<<" ";
-            if (const auto* planeSurface = dynamic_cast<PolytopePlaneSurface *>(surface.get())) {
+            if (const auto* planeSurface = dynamic_cast<PolytopePlaneSurface*>(surface.get())) {
                 for (const auto& point : planeSurface->getCcwPoints()) {
                     stream << "(" << point << ") ";
                 }
                 stream << std::endl;
-            } else if (const auto* terrainSurface = dynamic_cast<PolytopeTerrainSurface *>(surface.get())) {
+            } else if (const auto* terrainSurface = dynamic_cast<PolytopeTerrainSurface*>(surface.get())) {
                 terrainSurface->isWalkableCandidate(); //@IgnoreUnused
                 stream << "(terrain: " << polytope.getName() << ") " << std::endl;
             }

@@ -41,7 +41,7 @@ namespace urchin {
     }
 
     void BodyCylinderShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape) {
-        const auto* cylinderShape = dynamic_cast<const CollisionCylinderShape *>(shape.get());
+        const auto* cylinderShape = dynamic_cast<const CollisionCylinderShape*>(shape.get());
 
         radius->setValue(cylinderShape->getRadius());
         height->setValue(cylinderShape->getHeight());

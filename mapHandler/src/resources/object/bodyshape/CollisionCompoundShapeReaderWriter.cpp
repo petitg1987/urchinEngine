@@ -31,7 +31,7 @@ namespace urchin {
     void CollisionCompoundShapeReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& mainShapeChunk, const CollisionShape3D* mainCollisionShape, XmlWriter& xmlWriter) const {
         mainShapeChunk->setAttribute(XmlAttribute(TYPE_ATTR, COMPOUND_SHAPE_VALUE));
 
-        const auto* compoundShape = dynamic_cast<const CollisionCompoundShape *>(mainCollisionShape);
+        const auto* compoundShape = dynamic_cast<const CollisionCompoundShape*>(mainCollisionShape);
 
         std::shared_ptr<XmlChunk> localizedShapesListChunk = xmlWriter.createChunk(LOCALIZED_SHAPES, XmlAttribute(), mainShapeChunk);
         const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& shapes = compoundShape->getLocalizedShapes();

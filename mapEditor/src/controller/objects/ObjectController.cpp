@@ -12,9 +12,9 @@ namespace urchin {
 
     }
 
-    std::list<const SceneObject *> ObjectController::getSceneObjects() const {
-        const std::list<SceneObject *>& sceneObjects = getMapHandler()->getMap()->getSceneObjects();
-        std::list<const SceneObject *> constSceneObjects;
+    std::list<const SceneObject*> ObjectController::getSceneObjects() const {
+        const std::list<SceneObject*>& sceneObjects = getMapHandler()->getMap()->getSceneObjects();
+        std::list<const SceneObject*> constSceneObjects;
         constSceneObjects.insert(constSceneObjects.begin(), sceneObjects.begin(), sceneObjects.end());
 
         return constSceneObjects;
@@ -150,7 +150,7 @@ namespace urchin {
     }
 
     SceneObject* ObjectController::findSceneObject(const SceneObject* constSceneObject) {
-        const std::list<SceneObject *>& sceneObjects = getMapHandler()->getMap()->getSceneObjects();
+        const std::list<SceneObject*>& sceneObjects = getMapHandler()->getMap()->getSceneObjects();
         auto it = std::find(sceneObjects.begin(), sceneObjects.end(), constSceneObject);
 
         if (it!=sceneObjects.end()) {

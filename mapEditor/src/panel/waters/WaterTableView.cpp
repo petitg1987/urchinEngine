@@ -32,7 +32,7 @@ namespace urchin {
     const SceneWater* WaterTableView::getSelectedSceneWater() const {
         QModelIndex selectedIndex = this->currentIndex();
         if (selectedIndex.row()!=-1) {
-            return selectedIndex.data(Qt::UserRole + 1).value<const SceneWater *>();
+            return selectedIndex.data(Qt::UserRole + 1).value<const SceneWater*>();
         }
         return nullptr;
     }

@@ -57,7 +57,7 @@ namespace urchin {
     }
 
     void BodyCompoundShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape) {
-        const auto* compoundShape = dynamic_cast<const CollisionCompoundShape *>(shape.get());
+        const auto* compoundShape = dynamic_cast<const CollisionCompoundShape*>(shape.get());
 
         const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape->getLocalizedShapes();
         for (const auto& localizedShape : localizedShapes) {
@@ -78,7 +78,7 @@ namespace urchin {
     }
 
     void BodyCompoundShapeWidget::notify(Observable* observable, int notificationType) {
-        if (auto* localizedShapeTableView = dynamic_cast<LocalizedShapeTableView *>(observable)) {
+        if (auto* localizedShapeTableView = dynamic_cast<LocalizedShapeTableView*>(observable)) {
             if (notificationType==LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED) {
                 if (localizedShapeTableView->hasLocalizedShapeSelected()) {
                     std::shared_ptr<const LocalizedCollisionShape> localizedShape = localizedShapeTableView->getSelectedLocalizedShape();

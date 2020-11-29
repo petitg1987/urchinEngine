@@ -11,7 +11,7 @@ using namespace urchin;
  */
 void IslandContainerTest::cascadeMergeIslands() {
     TestBody* bodies[] = {new TestBody(), new TestBody(), new TestBody(), new TestBody()};
-    std::vector<IslandElement *> bodiesVector(bodies, bodies + (sizeof(bodies) / sizeof(TestBody*)));
+    std::vector<IslandElement*> bodiesVector(bodies, bodies + (sizeof(bodies) / sizeof(TestBody*)));
 
     IslandContainer islandContainer;
     islandContainer.reset(bodiesVector);
@@ -35,7 +35,7 @@ void IslandContainerTest::cascadeMergeIslands() {
  */
 void IslandContainerTest::mergeAllIslands() {
     TestBody* bodies[] = {new TestBody(), new TestBody(), new TestBody()};
-    std::vector<IslandElement *> bodiesVector(bodies, bodies + (sizeof(bodies) / sizeof(TestBody*)));
+    std::vector<IslandElement*> bodiesVector(bodies, bodies + (sizeof(bodies) / sizeof(TestBody*)));
 
     IslandContainer islandContainer;
     islandContainer.reset(bodiesVector);
@@ -59,7 +59,7 @@ void IslandContainerTest::mergeAllIslands() {
  */
 void IslandContainerTest::createTwoSeparateIslands() {
     TestBody* bodies[] = {new TestBody(), new TestBody(), new TestBody(), new TestBody()};
-    std::vector<IslandElement *> bodiesVector(bodies, bodies + (sizeof(bodies) / sizeof(TestBody*)));
+    std::vector<IslandElement*> bodiesVector(bodies, bodies + (sizeof(bodies) / sizeof(TestBody*)));
 
     IslandContainer islandContainer;
     islandContainer.reset(bodiesVector);

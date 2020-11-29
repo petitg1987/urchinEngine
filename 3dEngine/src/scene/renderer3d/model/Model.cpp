@@ -120,10 +120,10 @@ namespace urchin {
         return nullptr;
     }
 
-    std::map<std::string, const ConstAnimation *> Model::getAnimations() const {
-        std::map<std::string, const ConstAnimation *> constConstAnimations;
+    std::map<std::string, const ConstAnimation*> Model::getAnimations() const {
+        std::map<std::string, const ConstAnimation*> constConstAnimations;
         for (const auto& animation : animations) {
-            constConstAnimations.insert(std::pair<std::string, const ConstAnimation *>(animation.first, animation.second->getConstAnimation()));
+            constConstAnimations.insert(std::pair<std::string, const ConstAnimation*>(animation.first, animation.second->getConstAnimation()));
         }
         return constConstAnimations;
     }

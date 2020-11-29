@@ -20,7 +20,7 @@ namespace urchin {
     }
 
     LightManager::~LightManager() {
-        std::vector<Light *> allOctreeableLights = lightOctreeManager->getAllOctreeables();
+        std::vector<Light*> allOctreeableLights = lightOctreeManager->getAllOctreeables();
         for (auto allOctreeableLight : allOctreeableLights) {
             delete allOctreeableLight;
         }
@@ -84,7 +84,7 @@ namespace urchin {
         return maxLights;
     }
 
-    const std::vector<Light *>& LightManager::getVisibleLights() const {
+    const std::vector<Light*>& LightManager::getVisibleLights() const {
         return visibleLights;
     }
 
@@ -136,7 +136,7 @@ namespace urchin {
     }
 
     void LightManager::loadLights() {
-        const std::vector<Light *>& lights = getVisibleLights();
+        const std::vector<Light*>& lights = getVisibleLights();
         checkMaxLight(lights);
 
         for (unsigned int i=0; i < maxLights; ++i) {
@@ -150,10 +150,10 @@ namespace urchin {
                     .sendData(lightsInfo[i].lightAmbientShaderVar, light->getAmbientColor());
 
                 if (lights[i]->getLightType() == Light::SUN) {
-                    const auto* sunLight = dynamic_cast<const SunLight *>(light);
+                    const auto* sunLight = dynamic_cast<const SunLight*>(light);
                     ShaderDataSender().sendData(lightsInfo[i].positionOrDirectionShaderVar, sunLight->getDirections()[0]);
                 } else if (lights[i]->getLightType() == Light::OMNIDIRECTIONAL) {
-                    const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight *>(light);
+                    const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight*>(light);
                     ShaderDataSender()
                         .sendData(lightsInfo[i].positionOrDirectionShaderVar, omnidirectionalLight->getPosition())
                         .sendData(lightsInfo[i].exponentialAttShaderVar, omnidirectionalLight->getExponentialAttenuation());
@@ -169,7 +169,7 @@ namespace urchin {
         ShaderDataSender().sendData(globalAmbientColorShaderVar, getGlobalAmbientColor());
     }
 
-    void LightManager::checkMaxLight(const std::vector<Light *>& lights) const {
+    void LightManager::checkMaxLight(const std::vector<Light*>& lights) const {
         static bool maxLightReachLogged = false;
         if (lights.size() > maxLights && !maxLightReachLogged) {
             Logger::logger().logWarning("Light in scene (" + std::to_string(lights.size()) + ") is higher that max light (" + std::to_string(maxLights) + ") authorized");
