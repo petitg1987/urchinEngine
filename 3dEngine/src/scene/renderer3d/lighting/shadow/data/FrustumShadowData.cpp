@@ -46,7 +46,7 @@ namespace urchin {
     /**
      * @models Models visible from light in frustum split
      */
-    void FrustumShadowData::updateModels(const std::vector<Model *> &models) {
+    void FrustumShadowData::updateModels(const std::vector<Model *>& models) {
         modelsRequireUpdate = false;
 
         if (models != this->models) {

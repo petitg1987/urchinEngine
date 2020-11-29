@@ -9,7 +9,7 @@ namespace urchin {
     }
 
     std::list<const SceneTerrain *> TerrainController::getSceneTerrains() const {
-        const std::list<SceneTerrain *> &sceneTerrains = getMapHandler()->getMap()->getSceneTerrains();
+        const std::list<SceneTerrain *>& sceneTerrains = getMapHandler()->getMap()->getSceneTerrains();
         std::list<const SceneTerrain *> constSceneTerrains;
         constSceneTerrains.insert(constSceneTerrains.begin(), sceneTerrains.begin(), sceneTerrains.end());
 
@@ -91,7 +91,7 @@ namespace urchin {
     }
 
     SceneTerrain* TerrainController::findSceneTerrain(const SceneTerrain* constSceneTerrain) {
-        const std::list<SceneTerrain *> &sceneTerrains = getMapHandler()->getMap()->getSceneTerrains();
+        const std::list<SceneTerrain *>& sceneTerrains = getMapHandler()->getMap()->getSceneTerrains();
         auto it = std::find(sceneTerrains.begin(), sceneTerrains.end(), constSceneTerrain);
 
         if (it!=sceneTerrains.end()) {

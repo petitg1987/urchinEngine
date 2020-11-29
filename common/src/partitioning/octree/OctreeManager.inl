@@ -33,7 +33,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::notify(Observable* 
     }
 }
 
-template<class TOctreeable> void OctreeManager<TOctreeable>::buildOctree(std::vector<TOctreeable *> &octreeables) {
+template<class TOctreeable> void OctreeManager<TOctreeable>::buildOctree(std::vector<TOctreeable *>& octreeables) {
     if (!octreeables.empty()) {
         Point3<float> minScene(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
         Point3<float> maxScene(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
@@ -214,12 +214,12 @@ template<class TOctreeable> std::vector<TOctreeable *> OctreeManager<TOctreeable
 }
 
 template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float>& convexObject,
-        std::vector<TOctreeable *> &octreeables) const {
+        std::vector<TOctreeable *>& octreeables) const {
     getOctreeablesIn(convexObject, octreeables, AcceptAllFilter<TOctreeable>());
 }
 
 template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float>& convexObject,
-        std::vector<TOctreeable *> &visibleOctreeables, const OctreeableFilter<TOctreeable>& filter) const {
+        std::vector<TOctreeable *>& visibleOctreeables, const OctreeableFilter<TOctreeable>& filter) const {
     ScopeProfiler profiler("3d", "getOctreeables");
 
     browseNodes.clear();

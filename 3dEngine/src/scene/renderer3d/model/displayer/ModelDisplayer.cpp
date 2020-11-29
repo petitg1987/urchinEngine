@@ -127,7 +127,7 @@ namespace urchin {
         this->renderTarget = renderTarget;
     }
 
-    void ModelDisplayer::setModels(const std::vector<Model *> &models) {
+    void ModelDisplayer::setModels(const std::vector<Model *>& models) {
         this->models = models;
     }
 

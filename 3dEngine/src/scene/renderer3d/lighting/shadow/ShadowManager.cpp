@@ -251,7 +251,7 @@ namespace urchin {
         visibleModels.clear();
         for (const auto& shadowData : shadowDatas) {
             for (std::size_t i=0; i<nbShadowMaps; ++i) {
-                const std::vector<Model *> &visibleModelsForLightInFrustumSplit = shadowData.second->getFrustumShadowData(i)->getModels();
+                const std::vector<Model *>& visibleModelsForLightInFrustumSplit = shadowData.second->getFrustumShadowData(i)->getModels();
                 OctreeableHelper<Model>::merge(visibleModels, visibleModelsForLightInFrustumSplit);
             }
         }
@@ -382,7 +382,7 @@ namespace urchin {
      * @return Box in light space containing shadow caster and receiver (scene dependent)
      */
     AABBox<float> ShadowManager::createSceneDependentBox(const AABBox<float>& aabboxSceneIndependent, const OBBox<float>& obboxSceneIndependentViewSpace,
-            const std::vector<Model *> &models, const Matrix4<float>& lightViewMatrix) const {
+            const std::vector<Model *>& models, const Matrix4<float>& lightViewMatrix) const {
         ScopeProfiler profiler("3d", "sceneDepBox");
 
         AABBox<float> aabboxSceneDependent;
@@ -531,7 +531,7 @@ namespace urchin {
 
     void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer>& lightingRenderer) {
         int i = 0;
-        const std::vector<Light *> &visibleLights = lightManager->getVisibleLights();
+        const std::vector<Light *>& visibleLights = lightManager->getVisibleLights();
         for (auto* visibleLight : visibleLights) {
             if (visibleLight->isProduceShadow()) {
                 auto it = shadowDatas.find(visibleLight);

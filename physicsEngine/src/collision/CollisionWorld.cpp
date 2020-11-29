@@ -45,7 +45,7 @@ namespace urchin {
         bodyManager->setupWorkBodies();
 
         //broad phase: determine pairs of bodies potentially colliding based on their AABBox
-        const std::vector<OverlappingPair *> &overlappingPairs = broadPhaseManager->computeOverlappingPairs();
+        const std::vector<OverlappingPair *>& overlappingPairs = broadPhaseManager->computeOverlappingPairs();
 
         //integrate bodies velocities (gravity, external forces...)
         integrateVelocityManager->integrateVelocity(dt, overlappingPairs, gravity);

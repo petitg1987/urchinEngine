@@ -81,7 +81,7 @@ namespace urchin {
         notifyObservers(this, ADD_WORK_BODY);
     }
 
-    std::vector<AbstractBody *>::iterator BodyManager::deleteBody(AbstractBody* body, const std::vector<AbstractBody *>::iterator &it) {
+    std::vector<AbstractBody *>::iterator BodyManager::deleteBody(AbstractBody* body, const std::vector<AbstractBody *>::iterator& it) {
         //delete work body
         deleteWorkBody(body);
 

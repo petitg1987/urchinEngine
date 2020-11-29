@@ -169,7 +169,7 @@ namespace urchin {
         return xIndex + zIndex*mesh->getXSize();
     }
 
-    void TerrainGrass::buildGrassQuadtree(const std::vector<TerrainGrassQuadtree *> &leafGrassPatches, unsigned int leafQuantityX, unsigned int leafQuantityZ) {
+    void TerrainGrass::buildGrassQuadtree(const std::vector<TerrainGrassQuadtree *>& leafGrassPatches, unsigned int leafQuantityX, unsigned int leafQuantityZ) {
         std::vector<TerrainGrassQuadtree *> childrenGrassQuadtree = leafGrassPatches;
         unsigned int childrenNbQuadtreeX = leafQuantityX;
         unsigned int childrenNbQuadtreeZ = leafQuantityZ;
@@ -210,7 +210,7 @@ namespace urchin {
         mainGrassQuadtree = new TerrainGrassQuadtree(childrenGrassQuadtree);
     }
 
-    void TerrainGrass::createRenderers(const std::vector<TerrainGrassQuadtree *> &leafGrassPatches) {
+    void TerrainGrass::createRenderers(const std::vector<TerrainGrassQuadtree *>& leafGrassPatches) {
         if(grassTexture) {
             for (auto* grassQuadtree : leafGrassPatches) {
                 std::unique_ptr<GenericRenderer> renderer = std::make_unique<GenericRendererBuilder>(ShapeType::POINT)

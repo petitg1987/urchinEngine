@@ -25,7 +25,7 @@ namespace urchin {
      * @param overlappingPairs Pairs of bodies potentially colliding
      * @param manifoldResults [OUT] Collision constraints
      */
-    void NarrowPhaseManager::process(float dt, const std::vector<OverlappingPair *> &overlappingPairs, std::vector<ManifoldResult>& manifoldResults) {
+    void NarrowPhaseManager::process(float dt, const std::vector<OverlappingPair *>& overlappingPairs, std::vector<ManifoldResult>& manifoldResults) {
         ScopeProfiler profiler("physics", "narrowPhase");
 
         processOverlappingPairs(overlappingPairs, manifoldResults);
@@ -45,7 +45,7 @@ namespace urchin {
         }
     }
 
-    void NarrowPhaseManager::processOverlappingPairs(const std::vector<OverlappingPair *> &overlappingPairs, std::vector<ManifoldResult>& manifoldResults) {
+    void NarrowPhaseManager::processOverlappingPairs(const std::vector<OverlappingPair *>& overlappingPairs, std::vector<ManifoldResult>& manifoldResults) {
         ScopeProfiler profiler("physics", "procOverlapPair");
 
         for (const auto& overlappingPair : overlappingPairs) {
@@ -144,7 +144,7 @@ namespace urchin {
         }
     }
 
-    ccd_set NarrowPhaseManager::continuousCollisionTest(const TemporalObject& temporalObject1, const std::vector<AbstractWorkBody *> &bodiesAABBoxHit) const {
+    ccd_set NarrowPhaseManager::continuousCollisionTest(const TemporalObject& temporalObject1, const std::vector<AbstractWorkBody *>& bodiesAABBoxHit) const {
         ccd_set continuousCollisionResults;
 
         for (auto bodyAABBoxHit : bodiesAABBoxHit) {
@@ -221,7 +221,7 @@ namespace urchin {
         }
     }
 
-    ccd_set NarrowPhaseManager::rayTest(const Ray<float>& ray, const std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay) const {
+    ccd_set NarrowPhaseManager::rayTest(const Ray<float>& ray, const std::vector<AbstractWorkBody *>& bodiesAABBoxHitRay) const {
         CollisionSphereShape pointShape(0.0f);
         PhysicsTransform from = PhysicsTransform(ray.getOrigin());
         PhysicsTransform to = PhysicsTransform(ray.computeTo());

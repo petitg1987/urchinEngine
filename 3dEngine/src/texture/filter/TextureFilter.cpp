@@ -81,11 +81,11 @@ namespace urchin {
         offscreenRenderTarget->addTexture(texture);
     }
 
-    void TextureFilter::initiateAdditionalShaderVariables(const std::unique_ptr<Shader> &) {
+    void TextureFilter::initiateAdditionalShaderVariables(const std::unique_ptr<Shader>&) {
         //do nothing: to override
     }
 
-    void TextureFilter::addFurtherTextures(const std::unique_ptr<GenericRenderer> &) const {
+    void TextureFilter::addFurtherTextures(const std::unique_ptr<GenericRenderer>&) const {
         //do nothing: to override
     }
 

@@ -107,7 +107,7 @@ namespace urchin {
 
         for (std::size_t i=0; i<getNbFrustumShadowData(); ++i) {
             if (getFrustumShadowData(i)->needShadowMapUpdate()) {
-                const std::vector<Model *> &frustumSplitModels = getFrustumShadowData(i)->getModels();
+                const std::vector<Model *>& frustumSplitModels = getFrustumShadowData(i)->getModels();
                 OctreeableHelper<Model>::merge(models, frustumSplitModels);
             }
         }

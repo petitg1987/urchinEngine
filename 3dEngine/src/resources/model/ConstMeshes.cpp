@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    ConstMeshes::ConstMeshes(std::string meshFilename, const std::vector<const ConstMesh *> &constMeshes) :
+    ConstMeshes::ConstMeshes(std::string meshFilename, const std::vector<const ConstMesh *>& constMeshes) :
             meshFilename(std::move(meshFilename)),
             constMeshes(constMeshes) {
         //determines the bounding box

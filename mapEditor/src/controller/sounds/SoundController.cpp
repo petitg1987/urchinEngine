@@ -11,7 +11,7 @@ namespace urchin {
     }
 
     std::list<const SceneSound *> SoundController::getSceneSounds() const {
-        const std::list<SceneSound *> &sceneSounds = getMapHandler()->getMap()->getSceneSounds();
+        const std::list<SceneSound *>& sceneSounds = getMapHandler()->getMap()->getSceneSounds();
         std::list<const SceneSound *> constSceneSounds;
         constSceneSounds.insert(constSceneSounds.begin(), sceneSounds.begin(), sceneSounds.end());
 
@@ -119,7 +119,7 @@ namespace urchin {
     }
 
     SceneSound* SoundController::findSceneSound(const SceneSound* constSceneSound) {
-        const std::list<SceneSound *> &sceneSounds = getMapHandler()->getMap()->getSceneSounds();
+        const std::list<SceneSound *>& sceneSounds = getMapHandler()->getMap()->getSceneSounds();
         auto it = std::find(sceneSounds.begin(), sceneSounds.end(), constSceneSound);
 
         if (it!=sceneSounds.end()) {

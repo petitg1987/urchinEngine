@@ -9,7 +9,7 @@ namespace urchin {
     }
 
     std::list<const SceneWater *> WaterController::getSceneWaters() const {
-        const std::list<SceneWater *> &sceneWaters = getMapHandler()->getMap()->getSceneWaters();
+        const std::list<SceneWater *>& sceneWaters = getMapHandler()->getMap()->getSceneWaters();
         std::list<const SceneWater *> constSceneWaters;
         constSceneWaters.insert(constSceneWaters.begin(), sceneWaters.begin(), sceneWaters.end());
 
@@ -70,7 +70,7 @@ namespace urchin {
     }
 
     SceneWater* WaterController::findSceneWater(const SceneWater* constSceneWater) {
-        const std::list<SceneWater *> &sceneWaters = getMapHandler()->getMap()->getSceneWaters();
+        const std::list<SceneWater *>& sceneWaters = getMapHandler()->getMap()->getSceneWaters();
         auto it = std::find(sceneWaters.begin(), sceneWaters.end(), constSceneWater);
 
         if (it!=sceneWaters.end()) {
