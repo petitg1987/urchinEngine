@@ -96,7 +96,7 @@ namespace urchin {
     }
 
 
-    SceneObject *NewObjectDialog::getSceneObject() const {
+    SceneObject* NewObjectDialog::getSceneObject() const {
         return sceneObject;
     }
 

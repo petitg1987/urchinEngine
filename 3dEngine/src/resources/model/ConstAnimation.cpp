@@ -31,7 +31,7 @@ namespace urchin {
         delete [] bboxes;
     }
 
-    const std::string &ConstAnimation::getAnimationFilename() const {
+    const std::string& ConstAnimation::getAnimationFilename() const {
         return animationFilename;
     }
 
@@ -47,15 +47,15 @@ namespace urchin {
         return frameRate;
     }
 
-    const Bone &ConstAnimation::getBone(unsigned int frameNumber, unsigned int boneNumber) const {
+    const Bone& ConstAnimation::getBone(unsigned int frameNumber, unsigned int boneNumber) const {
         return skeletonFrames[frameNumber][boneNumber];
     }
 
-    const AABBox<float> &ConstAnimation::getOriginalGlobalAABBox() const {
+    const AABBox<float>& ConstAnimation::getOriginalGlobalAABBox() const {
         return originalGlobalBBox;
     }
 
-    const std::vector<AABBox<float>> &ConstAnimation::getOriginalGlobalSplitAABBoxes() const {
+    const std::vector<AABBox<float>>& ConstAnimation::getOriginalGlobalSplitAABBoxes() const {
         return originalGlobalSplitBBoxes;
     }
 

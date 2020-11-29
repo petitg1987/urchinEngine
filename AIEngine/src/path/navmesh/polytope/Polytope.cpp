@@ -22,23 +22,23 @@ namespace urchin {
         buildAABBox();
     }
 
-    const std::string &Polytope::getName() const {
+    const std::string& Polytope::getName() const {
         return name;
     }
 
-    const std::vector<std::shared_ptr<PolytopeSurface>> &Polytope::getSurfaces() const {
+    const std::vector<std::shared_ptr<PolytopeSurface>>& Polytope::getSurfaces() const {
         return surfaces;
     }
 
-    const std::shared_ptr<PolytopeSurface> &Polytope::getSurface(unsigned int surfaceIndex) const {
+    const std::shared_ptr<PolytopeSurface>& Polytope::getSurface(unsigned int surfaceIndex) const {
         return surfaces[surfaceIndex];
     }
 
-    const Rectangle<float> &Polytope::getXZRectangle() const {
+    const Rectangle<float>& Polytope::getXZRectangle() const {
         return xzRectangle;
     }
 
-    const AABBox<float> &Polytope::getAABBox() const {
+    const AABBox<float>& Polytope::getAABBox() const {
         return aabbox;
     }
 

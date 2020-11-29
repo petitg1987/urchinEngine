@@ -109,7 +109,7 @@ namespace urchin {
         generateVertex();
     }
 
-    const Point3<float> &Water::getCenterPosition() const {
+    const Point3<float>& Water::getCenterPosition() const {
         return centerPosition;
     }
 
@@ -139,7 +139,7 @@ namespace urchin {
         ShaderDataSender().sendData(waterColorShaderVar, waterColor);
     }
 
-    const Vector3<float> &Water::getWaterColor() const {
+    const Vector3<float>& Water::getWaterColor() const {
         return waterColor;
     }
 
@@ -161,7 +161,7 @@ namespace urchin {
         updateWaterTextures();
     }
 
-    const std::string &Water::getNormalFilename() const {
+    const std::string& Water::getNormalFilename() const {
         return normalFilename;
     }
 
@@ -183,7 +183,7 @@ namespace urchin {
         updateWaterTextures();
     }
 
-    const std::string &Water::getDudvFilename() const {
+    const std::string& Water::getDudvFilename() const {
         return dudvFilename;
     }
 

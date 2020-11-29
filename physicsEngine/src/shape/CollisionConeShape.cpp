@@ -30,7 +30,7 @@ namespace urchin {
         return CollisionShape3D::CONE_SHAPE;
     }
 
-    const ConvexShape3D<float> *CollisionConeShape::getSingleShape() const {
+    const ConvexShape3D<float>* CollisionConeShape::getSingleShape() const {
         return coneShape;
     }
 
@@ -104,7 +104,7 @@ namespace urchin {
         return std::min(coneShape->getHeight()/2.0f, coneShape->getRadius());
     }
 
-    CollisionShape3D *CollisionConeShape::clone() const {
+    CollisionShape3D* CollisionConeShape::clone() const {
         return new CollisionConeShape(coneShape->getRadius(), coneShape->getHeight(), coneShape->getConeOrientation());
     }
 

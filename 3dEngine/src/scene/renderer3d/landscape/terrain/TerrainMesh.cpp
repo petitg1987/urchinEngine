@@ -49,7 +49,7 @@ namespace urchin {
         imgTerrain->release();
     }
 
-    const std::string &TerrainMesh::getHeightFilename() const {
+    const std::string& TerrainMesh::getHeightFilename() const {
         return heightFilename;
     }
 
@@ -72,15 +72,15 @@ namespace urchin {
     /**
      * @return Terrain local vertices. First point is the far left point (min X, min Z) and the last pint the near right point (max X, max Z).
      */
-    const std::vector<Point3<float>> &TerrainMesh::getVertices() const {
+    const std::vector<Point3<float>>& TerrainMesh::getVertices() const {
         return vertices;
     }
 
-    const std::vector<Vector3<float>> &TerrainMesh::getNormals() const {
+    const std::vector<Vector3<float>>& TerrainMesh::getNormals() const {
         return normals;
     }
 
-    const std::vector<unsigned int> &TerrainMesh::getIndices() const {
+    const std::vector<unsigned int>& TerrainMesh::getIndices() const {
         return indices;
     }
 

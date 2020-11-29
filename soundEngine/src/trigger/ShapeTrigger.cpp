@@ -33,7 +33,7 @@ namespace urchin {
         return SoundTrigger::NO_TRIGGER;
     }
 
-    const SoundShape *ShapeTrigger::getSoundShape() const {
+    const SoundShape* ShapeTrigger::getSoundShape() const {
         return soundShape;
     }
 

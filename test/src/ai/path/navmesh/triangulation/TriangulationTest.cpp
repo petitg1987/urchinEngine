@@ -229,7 +229,7 @@ void TriangulationTest::threeMonotonePolygons() {
     assertUniqueLink(triangles[4], 2, triangles[0]);
 }
 
-CppUnit::Test *TriangulationTest::suite() {
+CppUnit::Test* TriangulationTest::suite() {
     auto* suite = new CppUnit::TestSuite("TriangulationTest");
 
     suite->addTest(new CppUnit::TestCaller<TriangulationTest>("triangleTriangulation", &TriangulationTest::triangleTriangulation));

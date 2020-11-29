@@ -28,7 +28,7 @@ void GJKConvexObjectTest::overlapSphereAndBox() {
     AssertHelper::assertTrue(result->isCollide());
 }
 
-CppUnit::Test *GJKConvexObjectTest::suite() {
+CppUnit::Test* GJKConvexObjectTest::suite() {
     auto* suite = new CppUnit::TestSuite("GJKConvexObjectTest");
 
     suite->addTest(new CppUnit::TestCaller<GJKConvexObjectTest>("separateSphereAndBox", &GJKConvexObjectTest::separateSphereAndBox));

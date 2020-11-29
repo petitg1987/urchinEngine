@@ -29,7 +29,7 @@ namespace urchin {
         this->bToRebuild.store(false, std::memory_order_relaxed);
     }
 
-    const std::string &AIEntity::getName() const {
+    const std::string& AIEntity::getName() const {
         return name;
     }
 
@@ -46,7 +46,7 @@ namespace urchin {
         navObjects.push_back(navObject);
     }
 
-    const std::vector<std::shared_ptr<NavObject>> &AIEntity::getNavObjects() const {
+    const std::vector<std::shared_ptr<NavObject>>& AIEntity::getNavObjects() const {
         return navObjects;
     }
 

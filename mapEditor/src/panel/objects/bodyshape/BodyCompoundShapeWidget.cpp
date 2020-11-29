@@ -52,7 +52,7 @@ namespace urchin {
         return COMPOUND_SHAPE_LABEL;
     }
 
-    LocalizedShapeTableView *BodyCompoundShapeWidget::getLocalizedShapeTableView() const {
+    LocalizedShapeTableView* BodyCompoundShapeWidget::getLocalizedShapeTableView() const {
         return localizedShapeTableView;
     }
 

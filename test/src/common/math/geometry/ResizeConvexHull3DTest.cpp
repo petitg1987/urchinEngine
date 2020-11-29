@@ -52,7 +52,7 @@ void ResizeConvexHull3DTest::expandTetrahedron() {
     AssertHelper::assertPoint3FloatEquals(convexHullResult->getSupportPoint(Vector3<float>(0.0, 1.0, 0.0)), Point3<float>(0.0, 6.67945, -0.5)); //top point
 }
 
-CppUnit::Test *ResizeConvexHull3DTest::suite() {
+CppUnit::Test* ResizeConvexHull3DTest::suite() {
     auto* suite = new CppUnit::TestSuite("ResizeConvexHullTest");
 
     suite->addTest(new CppUnit::TestCaller<ResizeConvexHull3DTest>("reduceBox", &ResizeConvexHull3DTest::reduceBox));

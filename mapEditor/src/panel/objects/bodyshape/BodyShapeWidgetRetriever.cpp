@@ -18,7 +18,7 @@ namespace urchin {
 
     }
 
-    BodyShapeWidget *BodyShapeWidgetRetriever::createBodyShapeWidget(const std::shared_ptr<const CollisionShape3D>& shape) {
+    BodyShapeWidget* BodyShapeWidgetRetriever::createBodyShapeWidget(const std::shared_ptr<const CollisionShape3D>& shape) {
         if (shape) {
             return createBodyShapeWidget(shape->getShapeType());
         }
@@ -26,7 +26,7 @@ namespace urchin {
         return new NoBodyShapeWidget(sceneObject);
     }
 
-    BodyShapeWidget *BodyShapeWidgetRetriever::createBodyShapeWidget(CollisionShape3D::ShapeType shapeType) {
+    BodyShapeWidget* BodyShapeWidgetRetriever::createBodyShapeWidget(CollisionShape3D::ShapeType shapeType) {
         BodyShapeWidget *bodyShapeWidget;
 
         if (shapeType==CollisionShape3D::ShapeType::SPHERE_SHAPE) {

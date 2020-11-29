@@ -38,11 +38,11 @@ namespace urchin {
         return CSGPolygon<T>(name, std::move(cwPoints));
     }
 
-    const ClipperLib::Path &CSGPolygonPath::getPath() const {
+    const ClipperLib::Path& CSGPolygonPath::getPath() const {
         return path;
     }
 
-    const std::string &CSGPolygonPath::getName() const {
+    const std::string& CSGPolygonPath::getName() const {
         return name;
     }
 

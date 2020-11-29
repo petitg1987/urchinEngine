@@ -30,7 +30,7 @@ namespace urchin {
         return sourceId;
     }
 
-    const std::string &Sound::getFilename() const {
+    const std::string& Sound::getFilename() const {
         return filename;
     }
 

@@ -49,7 +49,7 @@ namespace urchin {
         return targetTriangle.lock();
     }
 
-    const NavLinkConstraint *NavLink::getLinkConstraint() const {
+    const NavLinkConstraint* NavLink::getLinkConstraint() const {
         assert(linkType == NavLinkType::JUMP || linkType == NavLinkType::JOIN_POLYGONS);
 
         return linkConstraint;

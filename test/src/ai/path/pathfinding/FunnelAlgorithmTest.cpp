@@ -73,7 +73,7 @@ void FunnelAlgorithmTest::cornerPath4() {
     AssertHelper::assertPoint3FloatEquals(pathPortals[2]->getTransitionPoint(), Point3<float>(1.0, 0.0, -1.0));
 }
 
-CppUnit::Test *FunnelAlgorithmTest::suite() {
+CppUnit::Test* FunnelAlgorithmTest::suite() {
     auto* suite = new CppUnit::TestSuite("FunnelAlgorithmTest");
 
     suite->addTest(new CppUnit::TestCaller<FunnelAlgorithmTest>("straightPath", &FunnelAlgorithmTest::straightPath));

@@ -62,7 +62,7 @@ namespace urchin {
         markModified();
     }
 
-    const SceneSound *SoundController::updateSceneSoundGeneralProperties(const SceneSound* constSceneSound, float volume) {
+    const SceneSound* SoundController::updateSceneSoundGeneralProperties(const SceneSound* constSceneSound, float volume) {
         SceneSound* sceneSound = findSceneSound(constSceneSound);
 
         sceneSound->getSound()->setVolume(volume);
@@ -71,7 +71,7 @@ namespace urchin {
         return sceneSound;
     }
 
-    const SceneSound *SoundController::updateScenePointSoundProperties(const SceneSound* constSceneSound, const Point3<float>& position,
+    const SceneSound* SoundController::updateScenePointSoundProperties(const SceneSound* constSceneSound, const Point3<float>& position,
             float inaudibleDistance) {
         SceneSound* sceneSound = findSceneSound(constSceneSound);
         auto* pointSound = dynamic_cast<PointSound *>(sceneSound->getSound());
@@ -83,7 +83,7 @@ namespace urchin {
         return sceneSound;
     }
 
-    const SceneSound *SoundController::updateSceneSoundBehaviorProperties(const SceneSound* constSceneSound, SoundBehavior::PlayBehavior playBehavior,
+    const SceneSound* SoundController::updateSceneSoundBehaviorProperties(const SceneSound* constSceneSound, SoundBehavior::PlayBehavior playBehavior,
             SoundBehavior::StopBehavior stopBehavior, float volumeDecreasePercentageOnStop) {
         SceneSound* sceneSound = findSceneSound(constSceneSound);
         SoundTrigger* soundTrigger = sceneSound->getSoundTrigger();
@@ -107,7 +107,7 @@ namespace urchin {
         return sceneSound;
     }
 
-    const SceneSound *SoundController::updateSceneSoundShape(const SceneSound* constSceneSound, const SoundShape* newSoundShape) {
+    const SceneSound* SoundController::updateSceneSoundShape(const SceneSound* constSceneSound, const SoundShape* newSoundShape) {
         SceneSound* sceneSound = findSceneSound(constSceneSound);
         auto* shapeTrigger = dynamic_cast<ShapeTrigger *>(sceneSound->getSoundTrigger());
 
@@ -118,7 +118,7 @@ namespace urchin {
         return sceneSound;
     }
 
-    SceneSound *SoundController::findSceneSound(const SceneSound* constSceneSound) {
+    SceneSound* SoundController::findSceneSound(const SceneSound* constSceneSound) {
         const std::list<SceneSound *> &sceneSounds = getMapHandler()->getMap()->getSceneSounds();
         auto it = std::find(sceneSounds.begin(), sceneSounds.end(), constSceneSound);
 

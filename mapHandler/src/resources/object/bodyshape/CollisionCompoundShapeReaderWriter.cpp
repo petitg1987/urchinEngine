@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    CollisionShape3D *CollisionCompoundShapeReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& mainShapeChunk, const XmlParser& xmlParser) const {
+    CollisionShape3D* CollisionCompoundShapeReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& mainShapeChunk, const XmlParser& xmlParser) const {
         std::shared_ptr<XmlChunk> localizedShapesListChunk = xmlParser.getUniqueChunk(true, LOCALIZED_SHAPES, XmlAttribute(), mainShapeChunk);
         std::vector<std::shared_ptr<XmlChunk>> localizedShapesChunk = xmlParser.getChunks(LOCALIZED_SHAPE, XmlAttribute(), localizedShapesListChunk);
 

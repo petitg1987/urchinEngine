@@ -33,7 +33,7 @@ namespace urchin {
         return !rayTestResults.empty();
     }
 
-    const std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter> &RayTestResult::getNearestResult() const {
+    const std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter>& RayTestResult::getNearestResult() const {
         if (!resultReady.load(std::memory_order_relaxed)) {
             throw std::runtime_error("Ray test callback result is not ready.");
         }
@@ -43,7 +43,7 @@ namespace urchin {
         return *rayTestResults.begin();
     }
 
-    const ccd_set &RayTestResult::getResults() const {
+    const ccd_set& RayTestResult::getResults() const {
         if (!resultReady.load(std::memory_order_relaxed)) {
             throw std::runtime_error("Ray test callback result is not ready.");
         }

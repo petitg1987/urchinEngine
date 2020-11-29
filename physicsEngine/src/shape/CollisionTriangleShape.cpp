@@ -35,7 +35,7 @@ namespace urchin {
         return CollisionShape3D::TRIANGLE_SHAPE;
     }
 
-    const ConvexShape3D<float> *CollisionTriangleShape::getSingleShape() const {
+    const ConvexShape3D<float>* CollisionTriangleShape::getSingleShape() const {
         return triangleShape;
     }
 
@@ -70,7 +70,7 @@ namespace urchin {
         return 0.0f;
     }
 
-    CollisionShape3D *CollisionTriangleShape::clone() const {
+    CollisionShape3D* CollisionTriangleShape::clone() const {
         return new CollisionTriangleShape(triangleShape->getPoints());
     }
 

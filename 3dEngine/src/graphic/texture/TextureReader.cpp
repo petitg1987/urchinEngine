@@ -12,7 +12,7 @@ namespace urchin {
         return TextureReader(std::move(texture), textureParam);
     }
 
-    const std::shared_ptr<Texture> &TextureReader::getTexture() const {
+    const std::shared_ptr<Texture>& TextureReader::getTexture() const {
         return texture;
     }
 

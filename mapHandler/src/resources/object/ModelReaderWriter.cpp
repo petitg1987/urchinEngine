@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    Model *ModelReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& modelChunk, const XmlParser& xmlParser) const {
+    Model* ModelReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& modelChunk, const XmlParser& xmlParser) const {
         std::shared_ptr<XmlChunk> meshChunk = xmlParser.getUniqueChunk(true, MESH_TAG, XmlAttribute(), modelChunk);
         std::shared_ptr<XmlChunk> meshFilenameChunk = xmlParser.getUniqueChunk(true, FILENAME_TAG, XmlAttribute(), meshChunk);
 

@@ -26,7 +26,7 @@ namespace urchin {
         }
     }
 
-    const ManifoldResult &CollisionAlgorithm::getConstManifoldResult() const {
+    const ManifoldResult& CollisionAlgorithm::getConstManifoldResult() const {
         return manifoldResult;
     }
 
@@ -34,11 +34,11 @@ namespace urchin {
         return objectSwapped;
     }
 
-    const CollisionAlgorithmSelector *CollisionAlgorithm::getCollisionAlgorithmSelector() const {
+    const CollisionAlgorithmSelector* CollisionAlgorithm::getCollisionAlgorithmSelector() const {
         return collisionAlgorithmSelector;
     }
 
-    ManifoldResult &CollisionAlgorithm::getManifoldResult() {
+    ManifoldResult& CollisionAlgorithm::getManifoldResult() {
         return manifoldResult;
     }
 

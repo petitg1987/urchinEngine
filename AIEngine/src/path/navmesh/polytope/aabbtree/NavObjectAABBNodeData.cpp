@@ -7,11 +7,11 @@ namespace urchin {
 
     }
 
-    AABBNodeData<std::shared_ptr<NavObject>> *NavObjectAABBNodeData::clone() const {
+    AABBNodeData<std::shared_ptr<NavObject>>* NavObjectAABBNodeData::clone() const {
         throw std::logic_error("Clone not required for static polytope");
     }
 
-    const std::string &NavObjectAABBNodeData::getObjectId() const {
+    const std::string& NavObjectAABBNodeData::getObjectId() const {
         return getNodeObject()->getExpandedPolytope()->getName();
     }
 

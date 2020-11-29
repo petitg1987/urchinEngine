@@ -26,18 +26,18 @@ namespace urchin {
         return coneObject.getConeOrientation();
     }
 
-    const Point3<float> &CollisionConeObject::getCenterOfMass() const {
+    const Point3<float>& CollisionConeObject::getCenterOfMass() const {
         return coneObject.getCenterOfMass();
     }
 
-    const Quaternion<float> &CollisionConeObject::getOrientation() const {
+    const Quaternion<float>& CollisionConeObject::getOrientation() const {
         return coneObject.getOrientation();
     }
 
     /**
      * @return Cone normalized axis for given index
      */
-    const Vector3<float> &CollisionConeObject::getAxis(unsigned int index) const {
+    const Vector3<float>& CollisionConeObject::getAxis(unsigned int index) const {
         return coneObject.getAxis(index);
     }
 

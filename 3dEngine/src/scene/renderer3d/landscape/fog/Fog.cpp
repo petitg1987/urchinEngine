@@ -18,7 +18,7 @@ namespace urchin {
         return gradient;
     }
 
-    const Vector3<float> &Fog::getColor() {
+    const Vector3<float>& Fog::getColor() {
         return color;
     }
 

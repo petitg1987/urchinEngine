@@ -50,7 +50,7 @@ namespace urchin {
      * Sorts the islands by ID and returns them.
      * Once the islands sorted, the container is not usable anymore and need to be reset.
      */
-    const std::vector<IslandElementLink> &IslandContainer::retrieveSortedIslandElements() {
+    const std::vector<IslandElementLink>& IslandContainer::retrieveSortedIslandElements() {
         //store directly island ID on islandIdRef instead of reference
         for (std::size_t i=0; i<islandElementsLink.size(); ++i) {
             islandElementsLink[i].islandIdRef = findIslandId(i);

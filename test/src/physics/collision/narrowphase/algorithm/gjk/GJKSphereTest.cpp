@@ -40,7 +40,7 @@ void GJKSphereTest::overlapSphere() {
     AssertHelper::assertTrue(result->isCollide());
 }
 
-CppUnit::Test *GJKSphereTest::suite() {
+CppUnit::Test* GJKSphereTest::suite() {
     auto* suite = new CppUnit::TestSuite("GJKSphereTest");
 
     suite->addTest(new CppUnit::TestCaller<GJKSphereTest>("identicalSphere", &GJKSphereTest::identicalSphere));

@@ -15,7 +15,7 @@
 
 namespace urchin {
 
-    Font *LoaderFNT::loadFromFile(const std::string& fontFilename) {
+    Font* LoaderFNT::loadFromFile(const std::string& fontFilename) {
         std::locale::global(std::locale("C")); //for float
 
         XmlParser parserXml(fontFilename);

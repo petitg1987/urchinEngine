@@ -121,7 +121,7 @@ namespace urchin {
     }
 
 
-    SceneSound *NewSoundDialog::getSceneSound() const {
+    SceneSound* NewSoundDialog::getSceneSound() const {
         return sceneSound;
     }
 

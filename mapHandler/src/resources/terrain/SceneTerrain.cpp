@@ -69,7 +69,7 @@ namespace urchin {
         this->name = name;
     }
 
-    Terrain *SceneTerrain::getTerrain() const {
+    Terrain* SceneTerrain::getTerrain() const {
         return terrain;
     }
 
@@ -88,7 +88,7 @@ namespace urchin {
         this->terrain = terrain;
     }
 
-    RigidBody *SceneTerrain::getRigidBody() const {
+    RigidBody* SceneTerrain::getRigidBody() const {
         return rigidBody;
     }
 

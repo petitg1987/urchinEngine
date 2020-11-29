@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    Light *LightReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& lightChunk, const XmlParser& xmlParser) const {
+    Light* LightReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& lightChunk, const XmlParser& xmlParser) const {
         Light* light = buildLightFrom(lightChunk, xmlParser);
 
         loadPropertiesOn(light, lightChunk, xmlParser);
@@ -18,7 +18,7 @@ namespace urchin {
         writeFlagsOn(lightChunk, light, xmlWriter);
     }
 
-    Light *LightReaderWriter::buildLightFrom(const std::shared_ptr<XmlChunk>& lightChunk, const XmlParser& xmlParser) const {
+    Light* LightReaderWriter::buildLightFrom(const std::shared_ptr<XmlChunk>& lightChunk, const XmlParser& xmlParser) const {
         std::string lightType = lightChunk->getAttributeValue(TYPE_ATTR);
         if (lightType == OMNIDIRECTIONAL_VALUE) {
             std::shared_ptr<XmlChunk> positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), lightChunk);

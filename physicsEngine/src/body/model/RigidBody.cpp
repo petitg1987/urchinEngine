@@ -51,7 +51,7 @@ namespace urchin {
         this->localInertia = computeScaledShapeLocalInertia(mass);
     }
 
-    AbstractWorkBody *RigidBody::createWorkBody() const {
+    AbstractWorkBody* RigidBody::createWorkBody() const {
         const Transform<float>& transform = getTransform();
         PhysicsTransform physicsTransform(transform.getPosition(), transform.getOrientation());
 

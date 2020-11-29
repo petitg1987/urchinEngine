@@ -7,7 +7,7 @@ namespace urchin {
 
     }
 
-    const SoundBehavior &SoundTrigger::getSoundBehavior() const {
+    const SoundBehavior& SoundTrigger::getSoundBehavior() const {
         return soundBehavior;
     }
 

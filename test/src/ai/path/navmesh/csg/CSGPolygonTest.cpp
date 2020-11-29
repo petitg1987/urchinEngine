@@ -131,7 +131,7 @@ void CSGPolygonTest::simplifyFlatAngleAndNearPoints() { //see csgPolygonSimplify
     AssertHelper::assertPoint2FloatEquals(polygon.getCwPoints()[3], Point2<float>(27.8001709, -19.0002441));
 }
 
-CppUnit::Test *CSGPolygonTest::suite() {
+CppUnit::Test* CSGPolygonTest::suite() {
     auto* suite = new CppUnit::TestSuite("CSGPolygonTest");
 
     suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifySquare", &CSGPolygonTest::simplifySquare));

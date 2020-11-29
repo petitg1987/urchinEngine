@@ -53,7 +53,7 @@ namespace urchin {
         return CollisionHeightfieldShape::HEIGHTFIELD_SHAPE;
     }
 
-    const ConvexShape3D<float> *CollisionHeightfieldShape::getSingleShape() const {
+    const ConvexShape3D<float>* CollisionHeightfieldShape::getSingleShape() const {
         throw std::runtime_error("Impossible to retrieve single convex shape for heightfield shape");
     }
 
@@ -65,7 +65,7 @@ namespace urchin {
         return std::make_shared<CollisionHeightfieldShape>(vertices, xLength, zLength);
     }
 
-    const std::vector<Point3<float>> &CollisionHeightfieldShape::getVertices() const {
+    const std::vector<Point3<float>>& CollisionHeightfieldShape::getVertices() const {
         return vertices;
     }
 
@@ -119,11 +119,11 @@ namespace urchin {
         return 0.0f;
     }
 
-    CollisionShape3D *CollisionHeightfieldShape::clone() const {
+    CollisionShape3D* CollisionHeightfieldShape::clone() const {
         return new CollisionHeightfieldShape(vertices, xLength, zLength);
     }
 
-    const std::vector<CollisionTriangleShape> &CollisionHeightfieldShape::findTrianglesInAABBox(const AABBox<float>& checkAABBox) const {
+    const std::vector<CollisionTriangleShape>& CollisionHeightfieldShape::findTrianglesInAABBox(const AABBox<float>& checkAABBox) const {
         trianglesInAABBox.clear();
 
         auto vertexXRange = computeStartEndIndices(checkAABBox.getMin().X, checkAABBox.getMax().X, Axis::X);
@@ -138,7 +138,7 @@ namespace urchin {
         return trianglesInAABBox;
     }
 
-    const std::vector<CollisionTriangleShape> &CollisionHeightfieldShape::findTrianglesHitByRay(const LineSegment3D<float>& ray) const {
+    const std::vector<CollisionTriangleShape>& CollisionHeightfieldShape::findTrianglesHitByRay(const LineSegment3D<float>& ray) const {
         trianglesInAABBox.clear();
 
         bool raySameXValues = ray.getA().X == ray.getB().X;

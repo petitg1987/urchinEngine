@@ -190,35 +190,35 @@ namespace urchin {
         }
     }
 
-    OctreeManager<Model> *Renderer3d::getModelOctreeManager() const {
+    OctreeManager<Model>* Renderer3d::getModelOctreeManager() const {
         return modelOctreeManager;
     }
 
-    FogManager *Renderer3d::getFogManager() const {
+    FogManager* Renderer3d::getFogManager() const {
         return fogManager;
     }
 
-    TerrainManager *Renderer3d::getTerrainManager() const {
+    TerrainManager* Renderer3d::getTerrainManager() const {
         return terrainManager;
     }
 
-    WaterManager *Renderer3d::getWaterManager() const {
+    WaterManager* Renderer3d::getWaterManager() const {
         return waterManager;
     }
 
-    SkyManager *Renderer3d::getSkyManager() const {
+    SkyManager* Renderer3d::getSkyManager() const {
         return skyManager;
     }
 
-    GeometryManager *Renderer3d::getGeometryManager() const {
+    GeometryManager* Renderer3d::getGeometryManager() const {
         return geometryManager;
     }
 
-    LightManager *Renderer3d::getLightManager() const {
+    LightManager* Renderer3d::getLightManager() const {
         return lightManager;
     }
 
-    ShadowManager *Renderer3d::getShadowManager() const {
+    ShadowManager* Renderer3d::getShadowManager() const {
         return shadowManager;
     }
 
@@ -229,7 +229,7 @@ namespace urchin {
         shadowManager->forceUpdateAllShadowMaps();
     }
 
-    AmbientOcclusionManager *Renderer3d::getAmbientOcclusionManager() const {
+    AmbientOcclusionManager* Renderer3d::getAmbientOcclusionManager() const {
         return ambientOcclusionManager;
     }
 
@@ -239,7 +239,7 @@ namespace urchin {
         createOrUpdateLightingShader();
     }
 
-    AntiAliasingManager *Renderer3d::getAntiAliasingManager() const {
+    AntiAliasingManager* Renderer3d::getAntiAliasingManager() const {
         return antiAliasingManager;
     }
 
@@ -273,7 +273,7 @@ namespace urchin {
         modelOctreeManager->getOctreeablesIn(getCamera()->getFrustum(), modelsInFrustum);
     }
 
-    Camera *Renderer3d::getCamera() const {
+    Camera* Renderer3d::getCamera() const {
         return camera;
     }
 

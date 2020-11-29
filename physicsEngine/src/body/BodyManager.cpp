@@ -30,7 +30,7 @@ namespace urchin {
         body->markAsDeleted();
     }
 
-    AbstractWorkBody *BodyManager::getLastUpdatedWorkBody() const {
+    AbstractWorkBody* BodyManager::getLastUpdatedWorkBody() const {
         return lastUpdatedWorkBody;
     }
 

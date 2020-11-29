@@ -369,7 +369,7 @@ void PolygonsUnionTest::twoPolygonsUnionAndSeparatePolygon() {
                                                                            Point2<float>(1.0, 3.0), Point2<float>(1.4, 1.4), Point2<float>(3.0, 1.0)});
 }
 
-CppUnit::Test *PolygonsUnionTest::suite() {
+CppUnit::Test* PolygonsUnionTest::suite() {
     auto* suite = new CppUnit::TestSuite("PolygonsUnionTest");
 
     suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("onePolygonUnion", &PolygonsUnionTest::onePolygonUnion));

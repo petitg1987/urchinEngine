@@ -29,7 +29,7 @@ namespace urchin {
         delete objectsPool;
     }
 
-    SyncFixedSizePool<CollisionConvexObject3D> *CollisionConvexObjectPool::getObjectsPool() {
+    SyncFixedSizePool<CollisionConvexObject3D>* CollisionConvexObjectPool::getObjectsPool() {
         return objectsPool;
     }
 

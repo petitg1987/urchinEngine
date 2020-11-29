@@ -9,15 +9,15 @@ namespace urchin {
 
     }
 
-    WorkRigidBody *ConstraintSolving::getBody1() {
+    WorkRigidBody* ConstraintSolving::getBody1() {
         return body1;
     }
 
-    WorkRigidBody *ConstraintSolving::getBody2() {
+    WorkRigidBody* ConstraintSolving::getBody2() {
         return body2;
     }
 
-    const CommonSolvingData &ConstraintSolving::getCommonData() {
+    const CommonSolvingData& ConstraintSolving::getCommonData() {
         return commonData;
     }
 
@@ -25,7 +25,7 @@ namespace urchin {
         this->commonData = commonSolvingData;
     }
 
-    const ImpulseSolvingData &ConstraintSolving::getImpulseData() {
+    const ImpulseSolvingData& ConstraintSolving::getImpulseData() {
         return impulseData;
     }
 
@@ -33,7 +33,7 @@ namespace urchin {
         this->impulseData = impulseSolvingData;
     }
 
-    AccumulatedSolvingData &ConstraintSolving::getAccumulatedData() {
+    AccumulatedSolvingData& ConstraintSolving::getAccumulatedData() {
         return manifoldContactPoint.getAccumulatedSolvingData();
     }
 

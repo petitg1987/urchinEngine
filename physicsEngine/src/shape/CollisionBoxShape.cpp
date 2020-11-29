@@ -32,7 +32,7 @@ namespace urchin {
         return CollisionShape3D::BOX_SHAPE;
     }
 
-    const ConvexShape3D<float> *CollisionBoxShape::getSingleShape() const {
+    const ConvexShape3D<float>* CollisionBoxShape::getSingleShape() const {
         return boxShape;
     }
 
@@ -40,7 +40,7 @@ namespace urchin {
         return boxShape->getHalfSize(index);
     }
 
-    const Vector3<float> &CollisionBoxShape::getHalfSizes() const {
+    const Vector3<float>& CollisionBoxShape::getHalfSizes() const {
         return boxShape->getHalfSizes();
     }
 
@@ -96,7 +96,7 @@ namespace urchin {
         return boxShape->getMinHalfSize();
     }
 
-    CollisionShape3D *CollisionBoxShape::clone() const {
+    CollisionShape3D* CollisionBoxShape::clone() const {
         return new CollisionBoxShape(boxShape->getHalfSizes());
     }
 

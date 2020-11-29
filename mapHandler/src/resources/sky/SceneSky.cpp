@@ -7,7 +7,7 @@ namespace urchin {
 
     }
 
-    const std::unique_ptr<Skybox> &SceneSky::getSkybox() const {
+    const std::unique_ptr<Skybox>& SceneSky::getSkybox() const {
         return renderer3d->getSkyManager()->getSkybox();
     }
 

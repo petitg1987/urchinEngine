@@ -26,11 +26,11 @@ namespace urchin {
         connect(margin, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
     }
 
-    const SceneSound *SoundShapeWidget::getSceneSound() const {
+    const SceneSound* SoundShapeWidget::getSceneSound() const {
         return sceneSound;
     }
 
-    const SoundShape *SoundShapeWidget::retrieveShape() {
+    const SoundShape* SoundShapeWidget::retrieveShape() {
         if (!shape) {
             shape = createSoundShape();
         }

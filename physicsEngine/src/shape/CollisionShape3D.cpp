@@ -28,7 +28,7 @@ namespace urchin {
         lastTransform.setPosition(Point3<float>(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
     }
 
-    FixedSizePool<CollisionConvexObject3D> *CollisionShape3D::getObjectsPool() const {
+    FixedSizePool<CollisionConvexObject3D>* CollisionShape3D::getObjectsPool() const {
         return CollisionConvexObjectPool::instance()->getObjectsPool();
     }
 

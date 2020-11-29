@@ -165,7 +165,7 @@ void EdgeLinkDetectionTest::testCrossEdges() {
     AssertHelper::assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.5f, 0.009f);
 }
 
-CppUnit::Test *EdgeLinkDetectionTest::suite() {
+CppUnit::Test* EdgeLinkDetectionTest::suite() {
     auto* suite = new CppUnit::TestSuite("EdgeJumpDetectionTest");
 
     suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testNearParallelEdges", &EdgeLinkDetectionTest::testNearParallelEdges));

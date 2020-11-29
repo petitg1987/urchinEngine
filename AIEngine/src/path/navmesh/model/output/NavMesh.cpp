@@ -29,7 +29,7 @@ namespace urchin {
         NavModelCopy::copyNavPolygons(allPolygons, polygons);
     }
 
-    const std::vector<std::shared_ptr<NavPolygon>> &NavMesh::getPolygons() const {
+    const std::vector<std::shared_ptr<NavPolygon>>& NavMesh::getPolygons() const {
         return polygons;
     }
 

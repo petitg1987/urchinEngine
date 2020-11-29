@@ -16,11 +16,11 @@ namespace urchin {
         return SoundShape::SPHERE_SHAPE;
     }
 
-    const Sphere<float> &SoundSphere::getPlayTriggerSphere() const {
+    const Sphere<float>& SoundSphere::getPlayTriggerSphere() const {
         return playTriggerSphere;
     }
 
-    const Sphere<float> &SoundSphere::getStopTriggerSphere() const {
+    const Sphere<float>& SoundSphere::getStopTriggerSphere() const {
         return stopTriggerSphere;
     }
 
@@ -40,7 +40,7 @@ namespace urchin {
         return stopTriggerSphere.collideWithPoint(point);
     }
 
-    SoundShape *SoundSphere::clone() const {
+    SoundShape* SoundSphere::clone() const {
         return new SoundSphere(getRadius(), getPosition(), getMargin());
     }
 

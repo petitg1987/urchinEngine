@@ -260,7 +260,7 @@ void MonotonePolygonTest::polygonTwoHoles3() { //see monotonePolygonTwoHoles3.gg
     }
 }
 
-CppUnit::Test *MonotonePolygonTest::suite() {
+CppUnit::Test* MonotonePolygonTest::suite() {
     auto* suite = new CppUnit::TestSuite("MonotonePolygonTest");
 
     suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("singleTriangle", &MonotonePolygonTest::singleTriangle));

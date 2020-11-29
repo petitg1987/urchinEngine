@@ -16,11 +16,11 @@ namespace urchin {
 
     }
 
-    WorkRigidBody *WorkRigidBody::upCast(AbstractWorkBody* workBody) {
+    WorkRigidBody* WorkRigidBody::upCast(AbstractWorkBody* workBody) {
         return dynamic_cast<WorkRigidBody*>(workBody);
     }
 
-    const WorkRigidBody *WorkRigidBody::upCast(const AbstractWorkBody* workBody) {
+    const WorkRigidBody* WorkRigidBody::upCast(const AbstractWorkBody* workBody) {
         return dynamic_cast<const WorkRigidBody*>(workBody);
     }
 
@@ -40,7 +40,7 @@ namespace urchin {
         this->linearVelocity = linearVelocity;
     }
 
-    const Vector3<float> &WorkRigidBody::getLinearVelocity() const {
+    const Vector3<float>& WorkRigidBody::getLinearVelocity() const {
         return linearVelocity;
     }
 
@@ -48,11 +48,11 @@ namespace urchin {
         this->angularVelocity = angularVelocity;
     }
 
-    const Vector3<float> &WorkRigidBody::getAngularVelocity() const {
+    const Vector3<float>& WorkRigidBody::getAngularVelocity() const {
         return angularVelocity;
     }
 
-    const Vector3<float> &WorkRigidBody::getTotalMomentum() const {
+    const Vector3<float>& WorkRigidBody::getTotalMomentum() const {
         return totalMomentum;
     }
 
@@ -78,7 +78,7 @@ namespace urchin {
         totalMomentum.setValues(0.0, 0.0, 0.0);
     }
 
-    const Vector3<float> &WorkRigidBody::getTotalTorqueMomentum() const {
+    const Vector3<float>& WorkRigidBody::getTotalTorqueMomentum() const {
         return totalTorqueMomentum;
     }
 
@@ -135,11 +135,11 @@ namespace urchin {
         }
     }
 
-    const Vector3<float> &WorkRigidBody::getInvLocalInertia() const {
+    const Vector3<float>& WorkRigidBody::getInvLocalInertia() const {
         return invLocalInertia;
     }
 
-    const Matrix3<float> &WorkRigidBody::getInvWorldInertia() const {
+    const Matrix3<float>& WorkRigidBody::getInvWorldInertia() const {
         return invWorldInertia;
     }
 
@@ -170,7 +170,7 @@ namespace urchin {
     /**
      * @return Linear factor. Linear factor allows to block movement if axis value is 0.
      */
-    const Vector3<float> &WorkRigidBody::getLinearFactor() const {
+    const Vector3<float>& WorkRigidBody::getLinearFactor() const {
         return linearFactor;
     }
 
@@ -184,7 +184,7 @@ namespace urchin {
     /**
      * @return Angular factor. Angular factor allows to block rotation movement if axis value is 0.
      */
-    const Vector3<float> &WorkRigidBody::getAngularFactor() const {
+    const Vector3<float>& WorkRigidBody::getAngularFactor() const {
         return angularFactor;
     }
 

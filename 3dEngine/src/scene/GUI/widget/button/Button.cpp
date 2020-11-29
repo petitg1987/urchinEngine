@@ -53,7 +53,7 @@ namespace urchin {
                 ->build();
     }
 
-    const std::shared_ptr<Texture> &Button::getTexture() {
+    const std::shared_ptr<Texture>& Button::getTexture() {
         if (getWidgetState()==FOCUS) {
             return texInfoOnFocus;
         } else if (getWidgetState()==CLICKING) {

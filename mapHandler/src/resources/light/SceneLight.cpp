@@ -48,7 +48,7 @@ namespace urchin {
         this->name = name;
     }
 
-    Light *SceneLight::getLight() const {
+    Light* SceneLight::getLight() const {
         return light;
     }
 

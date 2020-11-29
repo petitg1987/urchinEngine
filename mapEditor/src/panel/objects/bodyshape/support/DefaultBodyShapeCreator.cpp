@@ -57,7 +57,7 @@ namespace urchin {
         return std::shared_ptr<const CollisionShape3D>(shape);
     }
 
-    ConvexHullShape3D<float> *DefaultBodyShapeCreator::buildConvexHullShape(const Model* model) const {
+    ConvexHullShape3D<float>* DefaultBodyShapeCreator::buildConvexHullShape(const Model* model) const {
         std::set<Point3<float>> allVertices;
         for (const auto* constMesh : model->getMeshes()->getConstMeshes()) {
             for (unsigned int i=0; i<constMesh->getNumberVertices(); i++) {

@@ -16,11 +16,11 @@ namespace urchin {
         notifyObservers(this, Light::LIGHT_MOVE);
     }
 
-    const std::vector<Vector3<float>> &SunLight::getDirections() const {
+    const std::vector<Vector3<float>>& SunLight::getDirections() const {
         return directions;
     }
 
-    const Point3<float> &SunLight::getPosition() const {
+    const Point3<float>& SunLight::getPosition() const {
         throw std::runtime_error("No position for sun light.");
     }
 
@@ -32,7 +32,7 @@ namespace urchin {
         return true;
     }
 
-    const AABBox<float> &SunLight::getAABBox() const {
+    const AABBox<float>& SunLight::getAABBox() const {
         throw std::runtime_error("No bounding box for sun light.");
     }
 

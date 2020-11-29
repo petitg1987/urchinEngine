@@ -24,7 +24,7 @@ namespace urchin {
 
     }
 
-    const PhysicsTransform &AbstractWorkBody::getPhysicsTransform() const {
+    const PhysicsTransform& AbstractWorkBody::getPhysicsTransform() const {
         return physicsTransform;
     }
 
@@ -32,7 +32,7 @@ namespace urchin {
         physicsTransform.setPosition(position);
     }
 
-    const Point3<float> &AbstractWorkBody::getPosition() const {
+    const Point3<float>& AbstractWorkBody::getPosition() const {
         return physicsTransform.getPosition();
     }
 
@@ -40,15 +40,15 @@ namespace urchin {
         physicsTransform.setOrientation(orientation);
     }
 
-    const Quaternion<float> &AbstractWorkBody::getOrientation() const {
+    const Quaternion<float>& AbstractWorkBody::getOrientation() const {
         return physicsTransform.getOrientation();
     }
 
-    const CollisionShape3D *AbstractWorkBody::getShape() const {
+    const CollisionShape3D* AbstractWorkBody::getShape() const {
         return shape.get();
     }
 
-    const std::string &AbstractWorkBody::getId() const {
+    const std::string& AbstractWorkBody::getId() const {
         return id;
     }
 
@@ -109,7 +109,7 @@ namespace urchin {
         this->ccdMotionThreshold = ccdMotionThreshold;
     }
 
-    PairContainer *AbstractWorkBody::getPairContainer() const {
+    PairContainer* AbstractWorkBody::getPairContainer() const {
         return nullptr;
     }
 

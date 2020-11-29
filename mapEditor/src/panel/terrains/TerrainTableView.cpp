@@ -32,7 +32,7 @@ namespace urchin {
         return this->currentIndex().row()!=-1;
     }
 
-    const SceneTerrain *TerrainTableView::getSelectedSceneTerrain() const {
+    const SceneTerrain* TerrainTableView::getSelectedSceneTerrain() const {
         QModelIndex selectedIndex = this->currentIndex();
         if (selectedIndex.row()!=-1) {
             return selectedIndex.data(Qt::UserRole + 1).value<const SceneTerrain *>();

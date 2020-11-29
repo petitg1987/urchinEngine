@@ -89,7 +89,7 @@ namespace urchin {
         //do nothing: to override
     }
 
-    const std::shared_ptr<Texture> &TextureFilter::getTexture() const {
+    const std::shared_ptr<Texture>& TextureFilter::getTexture() const {
         return texture;
     }
 
@@ -101,7 +101,7 @@ namespace urchin {
         return textureHeight;
     }
 
-    const std::unique_ptr<Shader> &TextureFilter::getTextureFilterShader() const {
+    const std::unique_ptr<Shader>& TextureFilter::getTextureFilterShader() const {
         return textureFilterShader;
     }
 

@@ -95,7 +95,7 @@ namespace urchin {
         this->workBody = workBody;
     }
 
-    AbstractWorkBody *AbstractBody::getWorkBody() const {
+    AbstractWorkBody* AbstractBody::getWorkBody() const {
         return workBody;
     }
 
@@ -188,7 +188,7 @@ namespace urchin {
         this->id = id;
     }
 
-    const std::string &AbstractBody::getId() const {
+    const std::string& AbstractBody::getId() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         return id;

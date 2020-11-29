@@ -20,7 +20,7 @@ namespace urchin {
         return shader != nullptr && variableLocation != -1;
     }
 
-    Shader *ShaderVar::getShader() const {
+    Shader* ShaderVar::getShader() const {
         return shader;
     }
 

@@ -130,11 +130,11 @@ namespace urchin {
         return text;
     }
 
-    const std::string &Text::getText() const {
+    const std::string& Text::getText() const {
         return text;
     }
 
-    const Font *Text::getFont() {
+    const Font* Text::getFont() {
         return font;
     }
 

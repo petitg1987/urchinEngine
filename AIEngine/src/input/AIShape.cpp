@@ -21,7 +21,7 @@ namespace urchin {
         delete shape;
     }
 
-    const ConvexShape3D<float> *AIShape::getShape() const {
+    const ConvexShape3D<float>* AIShape::getShape() const {
         return shape;
     }
 
@@ -29,7 +29,7 @@ namespace urchin {
         return bHasLocalTransform;
     }
 
-    const Transform<float> &AIShape::getLocalTransform() const {
+    const Transform<float>& AIShape::getLocalTransform() const {
         return localTransform;
     }
 

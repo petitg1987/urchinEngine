@@ -7,7 +7,7 @@ namespace urchin {
 
     }
 
-    const SoundShape *DefaultSoundShapeCreator::createDefaultSoundShape(SoundShape::ShapeType shapeType) const {
+    const SoundShape* DefaultSoundShapeCreator::createDefaultSoundShape(SoundShape::ShapeType shapeType) const {
         const Sound* sound = sceneSound->getSound();
         Point3<float> position(0.0, 0.0, 0.0);
         float radius = 1.0;

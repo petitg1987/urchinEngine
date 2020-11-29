@@ -38,7 +38,7 @@ namespace urchin {
         return channelPrecision;
     }
 
-    const std::vector<unsigned char> &Image::getTexels() const {
+    const std::vector<unsigned char>& Image::getTexels() const {
         if (channelPrecision != ChannelPrecision::CHANNEL_8) {
             throw std::runtime_error("Channel must have 8 bits. Channel type: " + std::to_string(channelPrecision));
         }
@@ -46,7 +46,7 @@ namespace urchin {
         return texels8;
     }
 
-    const std::vector<uint16_t> &Image::getTexels16Bits() const {
+    const std::vector<uint16_t>& Image::getTexels16Bits() const {
         if (channelPrecision != ChannelPrecision::CHANNEL_16) {
             throw std::runtime_error("Channel must have 16 bits. Channel type: " + std::to_string(channelPrecision));
         }

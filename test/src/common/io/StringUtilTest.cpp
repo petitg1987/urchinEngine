@@ -28,7 +28,7 @@ void StringUtilTest::splitEmptyString() {
     AssertHelper::assertString(splitStr[2], "str2");
 }
 
-CppUnit::Test *StringUtilTest::suite() {
+CppUnit::Test* StringUtilTest::suite() {
     auto* suite = new CppUnit::TestSuite("StringUtilTest");
 
     suite->addTest(new CppUnit::TestCaller<StringUtilTest>("splitString", &StringUtilTest::splitString));

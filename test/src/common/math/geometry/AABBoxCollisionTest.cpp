@@ -60,7 +60,7 @@ void AABBoxCollisionTest::rayInsideToXPlane() {
     AssertHelper::assertTrue(box.collideWithRay(ray));
 }
 
-CppUnit::Test *AABBoxCollisionTest::suite() {
+CppUnit::Test* AABBoxCollisionTest::suite() {
     auto* suite = new CppUnit::TestSuite("AABBoxCollisionTest");
 
     suite->addTest(new CppUnit::TestCaller<AABBoxCollisionTest>("rayRightToBox", &AABBoxCollisionTest::rayRightToBox));

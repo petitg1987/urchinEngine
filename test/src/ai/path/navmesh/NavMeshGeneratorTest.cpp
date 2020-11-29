@@ -225,7 +225,7 @@ std::shared_ptr<NavMeshAgent> NavMeshGeneratorTest::buildNavMeshAgent() {
     return std::make_shared<NavMeshAgent>(navMeshAgent);
 }
 
-CppUnit::Test *NavMeshGeneratorTest::suite() {
+CppUnit::Test* NavMeshGeneratorTest::suite() {
     auto* suite = new CppUnit::TestSuite("NavMeshGeneratorTest");
 
     suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("holeOnWalkableFace", &NavMeshGeneratorTest::holeOnWalkableFace));

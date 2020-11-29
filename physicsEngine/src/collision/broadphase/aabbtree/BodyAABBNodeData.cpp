@@ -12,7 +12,7 @@ namespace urchin {
         return new BodyAABBNodeData(getNodeObject(), alternativePairContainer);
     }
 
-    const std::string &BodyAABBNodeData::getObjectId() const {
+    const std::string& BodyAABBNodeData::getObjectId() const {
         return getNodeObject()->getId();
     }
 
@@ -28,7 +28,7 @@ namespace urchin {
         return alternativePairContainer != nullptr;
     }
 
-    PairContainer *BodyAABBNodeData::getAlternativePairContainer() const {
+    PairContainer* BodyAABBNodeData::getAlternativePairContainer() const {
         return alternativePairContainer;
     }
 

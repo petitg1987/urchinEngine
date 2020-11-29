@@ -55,7 +55,7 @@ void ShapeToAABBoxTest::convexHullConversion() {
     AssertHelper::assertPoint3FloatEquals(box.getMax(), Point3<float>(2.12132034356, 2.12132034356, 1.0));
 }
 
-CppUnit::Test *ShapeToAABBoxTest::suite() {
+CppUnit::Test* ShapeToAABBoxTest::suite() {
     auto* suite = new CppUnit::TestSuite("ShapeToAABBoxTest");
 
     suite->addTest(new CppUnit::TestCaller<ShapeToAABBoxTest>("boxConversion", &ShapeToAABBoxTest::boxConversion));

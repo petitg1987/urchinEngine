@@ -28,7 +28,7 @@ void InertiaCalculationTest::boxInertiaCalculation() {
     AssertHelper::assertFloatEquals(invWorldInertia(2, 2), 0.03);
 }
 
-CppUnit::Test *InertiaCalculationTest::suite() {
+CppUnit::Test* InertiaCalculationTest::suite() {
     auto* suite = new CppUnit::TestSuite("InertiaCalculationTest");
 
     suite->addTest(new CppUnit::TestCaller<InertiaCalculationTest>("boxInertiaCalculation", &InertiaCalculationTest::boxInertiaCalculation));

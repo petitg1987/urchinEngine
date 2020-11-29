@@ -59,11 +59,11 @@ namespace urchin {
         return Rectangle<float>(minPoint, maxPoint);
     }
 
-    const AABBox<float> &PolytopePlaneSurface::getAABBox() const {
+    const AABBox<float>& PolytopePlaneSurface::getAABBox() const {
         return aabbox;
     }
 
-    const std::vector<Point2<float>> &PolytopePlaneSurface::getOutlineCwPoints() const {
+    const std::vector<Point2<float>>& PolytopePlaneSurface::getOutlineCwPoints() const {
         return outlineCwPoints;
     }
 
@@ -71,7 +71,7 @@ namespace urchin {
         return Plane<float>(ccwPoints[0], ccwPoints[1], ccwPoints[2]);
     }
 
-    const std::vector<CSGPolygon<float>> &PolytopePlaneSurface::getSelfObstacles() const {
+    const std::vector<CSGPolygon<float>>& PolytopePlaneSurface::getSelfObstacles() const {
         return selfObstacles;
     }
 
@@ -87,15 +87,15 @@ namespace urchin {
         return pointOnExpandedSurface.translate(normal * reduceDistance);
     }
 
-    const std::shared_ptr<const NavTopography> &PolytopePlaneSurface::getNavTopography() const {
+    const std::shared_ptr<const NavTopography>& PolytopePlaneSurface::getNavTopography() const {
         return nullNavTopography; //no topography for flat surface
     }
 
-    const std::vector<Point3<float>> &PolytopePlaneSurface::getCcwPoints() const {
+    const std::vector<Point3<float>>& PolytopePlaneSurface::getCcwPoints() const {
         return ccwPoints;
     }
 
-    const Vector3<float> &PolytopePlaneSurface::getNormal() const {
+    const Vector3<float>& PolytopePlaneSurface::getNormal() const {
         return normal;
     }
 

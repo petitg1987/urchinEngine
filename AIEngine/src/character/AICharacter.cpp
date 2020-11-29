@@ -39,7 +39,7 @@ namespace urchin {
         this->momentum = momentum;
     }
 
-    const Vector3<float> &AICharacter::getMomentum() const {
+    const Vector3<float>& AICharacter::getMomentum() const {
         return momentum;
     }
 
@@ -47,7 +47,7 @@ namespace urchin {
         this->position = position;
     }
 
-    const Point3<float> &AICharacter::getPosition() const {
+    const Point3<float>& AICharacter::getPosition() const {
         return position;
     }
 

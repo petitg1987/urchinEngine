@@ -30,7 +30,7 @@ namespace urchin {
         markModified();
     }
 
-    const SceneLight *LightController::updateSceneLightGeneralProperties(const SceneLight* constSceneLight,
+    const SceneLight* LightController::updateSceneLightGeneralProperties(const SceneLight* constSceneLight,
                                                                          const Point3<float>& ambientColor, bool isProduceShadow) {
         SceneLight* sceneLight = findSceneLight(constSceneLight);
         Light* light = sceneLight->getLight();
@@ -44,7 +44,7 @@ namespace urchin {
         return sceneLight;
     }
 
-    const SceneLight *LightController::updateSceneOmnidirectionalLightProperties(const SceneLight* constSceneLight,
+    const SceneLight* LightController::updateSceneOmnidirectionalLightProperties(const SceneLight* constSceneLight,
                                                                                  float attenuation, const Point3<float>& position) {
         SceneLight* sceneLight = findSceneLight(constSceneLight);
         auto* light = dynamic_cast<OmnidirectionalLight *>(sceneLight->getLight());
@@ -56,7 +56,7 @@ namespace urchin {
         return sceneLight;
     }
 
-    const SceneLight *LightController::updateSceneSunLightProperties(const SceneLight* constSceneLight, const Vector3<float>& direction) {
+    const SceneLight* LightController::updateSceneSunLightProperties(const SceneLight* constSceneLight, const Vector3<float>& direction) {
         SceneLight* sceneLight = findSceneLight(constSceneLight);
         auto* light = dynamic_cast<SunLight *>(sceneLight->getLight());
 
@@ -66,7 +66,7 @@ namespace urchin {
         return sceneLight;
     }
 
-    SceneLight *LightController::findSceneLight(const SceneLight* constSceneLight) {
+    SceneLight* LightController::findSceneLight(const SceneLight* constSceneLight) {
         const std::list<SceneLight *> &sceneLights = getMapHandler()->getMap()->getSceneLights();
         auto it = std::find(sceneLights.begin(), sceneLights.end(), constSceneLight);
 

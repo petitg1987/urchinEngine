@@ -17,7 +17,7 @@ void ResizePolygon2DServiceTest::reduceTriangle() {
     AssertHelper::assertPoint2IntEquals(trianglesPoints[2], Point2<int>(1095, -4786));
 }
 
-CppUnit::Test *ResizePolygon2DServiceTest::suite() {
+CppUnit::Test* ResizePolygon2DServiceTest::suite() {
     auto* suite = new CppUnit::TestSuite("ResizePolygon2DServiceTest");
 
     suite->addTest(new CppUnit::TestCaller<ResizePolygon2DServiceTest>("reduceTriangle", &ResizePolygon2DServiceTest::reduceTriangle));

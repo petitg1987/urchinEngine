@@ -43,11 +43,11 @@ namespace urchin {
         Profiler::getInstance("physics")->log();
     }
 
-    BodyManager *PhysicsWorld::getBodyManager() const {
+    BodyManager* PhysicsWorld::getBodyManager() const {
         return bodyManager;
     }
 
-    CollisionWorld *PhysicsWorld::getCollisionWorld() const {
+    CollisionWorld* PhysicsWorld::getCollisionWorld() const {
         return collisionWorld;
     }
 
@@ -258,7 +258,7 @@ namespace urchin {
         }
     }
 
-    const CollisionVisualizer *PhysicsWorld::getCollisionVisualizer() const {
+    const CollisionVisualizer* PhysicsWorld::getCollisionVisualizer() const {
         if (!collisionVisualizer) {
             throw std::runtime_error("Impossible to get collision visualizer because not created.");
         }

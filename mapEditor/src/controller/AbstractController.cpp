@@ -26,7 +26,7 @@ namespace urchin {
         notifyObservers(this, AbstractController::CHANGES_DONE);
     }
 
-    MapHandler *AbstractController::getMapHandler() const {
+    MapHandler* AbstractController::getMapHandler() const {
         return mapHandler;
     }
 }

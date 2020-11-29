@@ -15,7 +15,7 @@ namespace urchin {
 
     }
 
-    TiXmlElement *XmlChunk::getChunk() const {
+    TiXmlElement* XmlChunk::getChunk() const {
         return chunk;
     }
 

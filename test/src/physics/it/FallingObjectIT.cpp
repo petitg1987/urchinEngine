@@ -63,7 +63,7 @@ void FallingObjectIT::fallForever() {
     delete bodyManager;
 }
 
-CppUnit::Test *FallingObjectIT::suite() {
+CppUnit::Test* FallingObjectIT::suite() {
     auto* suite = new CppUnit::TestSuite("FallingObjectIT");
 
     suite->addTest(new CppUnit::TestCaller<FallingObjectIT>("fallOnPlane", &FallingObjectIT::fallOnPlane));

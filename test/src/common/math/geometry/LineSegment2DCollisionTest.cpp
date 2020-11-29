@@ -159,7 +159,7 @@ void LineSegment2DCollisionTest::collinearLinesFullIntersectionOppositeDirection
     AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
 }
 
-CppUnit::Test *LineSegment2DCollisionTest::suite() {
+CppUnit::Test* LineSegment2DCollisionTest::suite() {
     auto* suite = new CppUnit::TestSuite("LineSegment2DCollisionTest");
 
     suite->addTest(new CppUnit::TestCaller<LineSegment2DCollisionTest>("noIntersection", &LineSegment2DCollisionTest::noIntersection));

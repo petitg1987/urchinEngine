@@ -87,31 +87,31 @@ namespace urchin {
         resetModified();
     }
 
-    ObjectController *SceneController::getObjectController() {
+    ObjectController* SceneController::getObjectController() {
         return objectController;
     }
 
-    LightController *SceneController::getLightController() {
+    LightController* SceneController::getLightController() {
         return lightController;
     }
 
-    TerrainController *SceneController::getTerrainController() {
+    TerrainController* SceneController::getTerrainController() {
         return terrainController;
     }
 
-    WaterController *SceneController::getWaterController() {
+    WaterController* SceneController::getWaterController() {
         return waterController;
     }
 
-    SkyController *SceneController::getSkyController() {
+    SkyController* SceneController::getSkyController() {
         return skyController;
     }
 
-    SoundController *SceneController::getSoundController() {
+    SoundController* SceneController::getSoundController() {
         return soundController;
     }
 
-    AIController *SceneController::getAIController() {
+    AIController* SceneController::getAIController() {
         return aiController;
     }
 

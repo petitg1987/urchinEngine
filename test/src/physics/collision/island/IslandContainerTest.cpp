@@ -75,7 +75,7 @@ void IslandContainerTest::createTwoSeparateIslands() {
     delete bodies[0]; delete bodies[1]; delete bodies[2]; delete bodies[3];
 }
 
-CppUnit::Test *IslandContainerTest::suite() {
+CppUnit::Test* IslandContainerTest::suite() {
     auto* suite = new CppUnit::TestSuite("IslandContainerTest");
 
     suite->addTest(new CppUnit::TestCaller<IslandContainerTest>("cascadeMergeIslands", &IslandContainerTest::cascadeMergeIslands));

@@ -90,27 +90,27 @@ namespace urchin {
         this->maxRotationX = maxRotationX;
     }
 
-    const Matrix4<float> &Camera::getViewMatrix() const {
+    const Matrix4<float>& Camera::getViewMatrix() const {
         return mView;
     }
 
-    const Matrix4<float> &Camera::getProjectionMatrix() const {
+    const Matrix4<float>& Camera::getProjectionMatrix() const {
         return mProjection;
     }
 
-    const Frustum<float> &Camera::getFrustum() const {
+    const Frustum<float>& Camera::getFrustum() const {
         return frustum;
     }
 
-    const Point3<float> &Camera::getPosition() const {
+    const Point3<float>& Camera::getPosition() const {
         return position;
     }
 
-    const Vector3<float> &Camera::getView() const {
+    const Vector3<float>& Camera::getView() const {
         return view;
     }
 
-    const Vector3<float> &Camera::getUp() const {
+    const Vector3<float>& Camera::getUp() const {
         return up;
     }
 

@@ -112,7 +112,7 @@ namespace urchin {
         this->notifyOctreeableMove();
     }
 
-    const ConstMeshes *Model::getMeshes() const {
+    const ConstMeshes* Model::getMeshes() const {
         if (meshes) {
             return meshes->getConstMeshes();
         }
@@ -131,7 +131,7 @@ namespace urchin {
     /**
     * @return Merged bounding box for all animations. If not animation exist: return meshes bounding box.
     */
-    const AABBox<float> &Model::getAABBox() const {
+    const AABBox<float>& Model::getAABBox() const {
         if (isAnimate()) {
             return currAnimation->getGlobalAABBox();
         } else if (meshes) {
@@ -144,7 +144,7 @@ namespace urchin {
     /**
      * @return identical to getAABBox() method but the bounding box is split to the limit size configured
      */
-    const std::vector<AABBox<float>> &Model::getSplitAABBoxes() const {
+    const std::vector<AABBox<float>>& Model::getSplitAABBoxes() const {
         if (isAnimate()) {
             return currAnimation->getGlobalSplitAABBoxes();
         } else if (meshes) {
@@ -157,7 +157,7 @@ namespace urchin {
     /**
     * @return Local merged bounding box for all animations. If not animation exist: return local meshes bounding box.
     */
-    const AABBox<float> &Model::getLocalAABBox() const {
+    const AABBox<float>& Model::getLocalAABBox() const {
         if (isAnimate()) {
             return currAnimation->getGlobalLocalAABBox();
         } else if (meshes) {
@@ -187,7 +187,7 @@ namespace urchin {
         onMoving(transform);
     }
 
-    const Transform<float> &Model::getTransform() const {
+    const Transform<float>& Model::getTransform() const {
         return transform;
     }
 

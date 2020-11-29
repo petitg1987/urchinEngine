@@ -31,7 +31,7 @@ void ConvexHullShape2DTest::identicalPoints() {
     AssertHelper::assertPoint2FloatEquals(convexHull.getPoints()[3], Point2<float>(0.0, 1.0));
 }
 
-CppUnit::Test *ConvexHullShape2DTest::suite() {
+CppUnit::Test* ConvexHullShape2DTest::suite() {
     auto* suite = new CppUnit::TestSuite("ConvexHullShape2DTest");
 
     suite->addTest(new CppUnit::TestCaller<ConvexHullShape2DTest>("convexHullBox", &ConvexHullShape2DTest::convexHullBox));

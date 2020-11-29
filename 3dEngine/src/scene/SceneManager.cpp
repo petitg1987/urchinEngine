@@ -99,7 +99,7 @@ namespace urchin {
         previousTime = currentTime;
     }
 
-    Renderer3d *SceneManager::newRenderer3d(bool enable) {
+    Renderer3d* SceneManager::newRenderer3d(bool enable) {
         auto* renderer3d = new Renderer3d(screenRenderTarget);
         renderers3d.push_back(renderer3d);
 
@@ -129,11 +129,11 @@ namespace urchin {
         delete renderer3d;
     }
 
-    Renderer3d *SceneManager::getActiveRenderer3d() const {
+    Renderer3d* SceneManager::getActiveRenderer3d() const {
         return dynamic_cast<Renderer3d *>(activeRenderers[RENDERER_3D]);
     }
 
-    GUIRenderer *SceneManager::newGUIRenderer(bool enable) {
+    GUIRenderer* SceneManager::newGUIRenderer(bool enable) {
         auto* guiRenderer = new GUIRenderer(screenRenderTarget);
         guiRenderers.push_back(guiRenderer);
 
@@ -163,7 +163,7 @@ namespace urchin {
         delete guiRenderer;
     }
 
-    GUIRenderer *SceneManager::getActiveGUIRenderer() const {
+    GUIRenderer* SceneManager::getActiveGUIRenderer() const {
         return dynamic_cast<GUIRenderer *>(activeRenderers[GUI_RENDERER]);
     }
 

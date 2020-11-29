@@ -26,7 +26,7 @@ namespace urchin {
         throw std::runtime_error("Impossible to find surface position for polytope " + polytope->getName());
     }
 
-    const Polytope *PolytopeSurface::getPolytope() const {
+    const Polytope* PolytopeSurface::getPolytope() const {
         return polytope;
     }
 

@@ -58,11 +58,11 @@ namespace urchin {
         this->name = name;
     }
 
-    Sound *SceneSound::getSound() const {
+    Sound* SceneSound::getSound() const {
         return sound;
     }
 
-    SoundTrigger *SceneSound::getSoundTrigger() const {
+    SoundTrigger* SceneSound::getSoundTrigger() const {
         return soundTrigger;
     }
 

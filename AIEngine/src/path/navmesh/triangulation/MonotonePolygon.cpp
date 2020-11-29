@@ -6,7 +6,7 @@ namespace urchin {
         this->ccwPoints = ccwPoints;
     }
 
-    const std::vector<std::size_t> &MonotonePolygon::getCcwPoints() const {
+    const std::vector<std::size_t>& MonotonePolygon::getCcwPoints() const {
         return ccwPoints;
     }
 
@@ -14,7 +14,7 @@ namespace urchin {
         sharedEdges.insert(computeEdgeId(edgeStartIndex, edgeEndIndex));
     }
 
-    const std::set<uint_fast64_t> &MonotonePolygon::getSharedEdges() const {
+    const std::set<uint_fast64_t>& MonotonePolygon::getSharedEdges() const {
         return sharedEdges;
     }
 

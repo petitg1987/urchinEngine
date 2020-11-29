@@ -86,7 +86,7 @@ void ShapeToConvexObjectTest::sphereConversion() {
     AssertHelper::assertPoint3FloatEquals(sphere->getCenterOfMass(), Point3<float>(1.0, 1.0, 1.0));
 }
 
-CppUnit::Test *ShapeToConvexObjectTest::suite() {
+CppUnit::Test* ShapeToConvexObjectTest::suite() {
     auto* suite = new CppUnit::TestSuite("ShapeToConvexObjectTest");
 
     suite->addTest(new CppUnit::TestCaller<ShapeToConvexObjectTest>("boxConversion", &ShapeToConvexObjectTest::boxConversion));

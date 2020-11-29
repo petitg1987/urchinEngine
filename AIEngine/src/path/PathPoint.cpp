@@ -8,7 +8,7 @@ namespace urchin {
 
     }
 
-    const Point3<float> &PathPoint::getPoint() const {
+    const Point3<float>& PathPoint::getPoint() const {
         return point;
     }
 

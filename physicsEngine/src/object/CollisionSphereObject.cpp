@@ -14,7 +14,7 @@ namespace urchin {
         return getOuterMargin();
     }
 
-    const Point3<float> &CollisionSphereObject::getCenterOfMass() const {
+    const Point3<float>& CollisionSphereObject::getCenterOfMass() const {
         return sphereObject.getCenterOfMass();
     }
 

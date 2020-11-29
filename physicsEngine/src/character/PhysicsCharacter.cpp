@@ -25,7 +25,7 @@ namespace urchin {
 
     }
 
-    const std::string &PhysicsCharacter::getName() const {
+    const std::string& PhysicsCharacter::getName() const {
         return name;
     }
 
@@ -33,7 +33,7 @@ namespace urchin {
         return mass;
     }
 
-    const std::shared_ptr<const CollisionShape3D> &PhysicsCharacter::getShape() const {
+    const std::shared_ptr<const CollisionShape3D>& PhysicsCharacter::getShape() const {
         return shape;
     }
 
@@ -43,7 +43,7 @@ namespace urchin {
         this->transform = transform;
     }
 
-    const PhysicsTransform &PhysicsCharacter::getTransform() const {
+    const PhysicsTransform& PhysicsCharacter::getTransform() const {
         std::lock_guard<std::mutex> lock(characterMutex);
 
         return transform;

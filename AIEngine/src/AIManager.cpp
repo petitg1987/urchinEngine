@@ -34,7 +34,7 @@ namespace urchin {
         Profiler::getInstance("ai")->log();
     }
 
-    NavMeshGenerator *AIManager::getNavMeshGenerator() const {
+    NavMeshGenerator* AIManager::getNavMeshGenerator() const {
         return navMeshGenerator;
     }
 

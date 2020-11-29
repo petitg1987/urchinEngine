@@ -50,7 +50,7 @@ void EPAConvexObjectTest::overlapTriangleAndCapsule() {
     AssertHelper::assertPoint3FloatEquals(resultEpa->getContactPointB(), Point3<float>(0.0, -0.55, 0.0));
 }
 
-CppUnit::Test *EPAConvexObjectTest::suite() {
+CppUnit::Test* EPAConvexObjectTest::suite() {
     auto* suite = new CppUnit::TestSuite("EPAConvexObjectTest");
 
     suite->addTest(new CppUnit::TestCaller<EPAConvexObjectTest>("overlapSphereAndBox", &EPAConvexObjectTest::overlapSphereAndBox));

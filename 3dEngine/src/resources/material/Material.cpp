@@ -24,11 +24,11 @@ namespace urchin {
         }
     }
 
-    const std::shared_ptr<Texture> &Material::getDiffuseTexture() const {
+    const std::shared_ptr<Texture>& Material::getDiffuseTexture() const {
         return diffuseTexture;
     }
 
-    const std::shared_ptr<Texture> &Material::getNormalTexture() const {
+    const std::shared_ptr<Texture>& Material::getNormalTexture() const {
         return normalTexture;
     }
 

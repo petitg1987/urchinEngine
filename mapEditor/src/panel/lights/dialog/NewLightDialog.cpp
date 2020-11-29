@@ -85,7 +85,7 @@ namespace urchin {
         return result;
     }
 
-    SceneLight *NewLightDialog::getSceneLight() const {
+    SceneLight* NewLightDialog::getSceneLight() const {
         return sceneLight;
     }
 

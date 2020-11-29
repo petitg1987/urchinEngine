@@ -116,7 +116,7 @@ void GJKBoxTest::overlapOBBoxAABBox() {
     AssertHelper::assertTrue(result->isCollide());
 }
 
-CppUnit::Test *GJKBoxTest::suite() {
+CppUnit::Test* GJKBoxTest::suite() {
     auto* suite = new CppUnit::TestSuite("GJKBoxTest");
 
     suite->addTest(new CppUnit::TestCaller<GJKBoxTest>("identicalAABBox", &GJKBoxTest::identicalAABBox));

@@ -197,27 +197,27 @@ namespace urchin {
         }
     }
 
-    SceneManager *SceneDisplayer::getSceneManager() const {
+    SceneManager* SceneDisplayer::getSceneManager() const {
         return sceneManager;
     }
 
-    SceneFreeCamera *SceneDisplayer::getCamera() const {
+    SceneFreeCamera* SceneDisplayer::getCamera() const {
         return camera;
     }
 
-    PhysicsWorld *SceneDisplayer::getPhysicsWorld() const {
+    PhysicsWorld* SceneDisplayer::getPhysicsWorld() const {
         return physicsWorld;
     }
 
-    MapHandler *SceneDisplayer::getMapHandler() const {
+    MapHandler* SceneDisplayer::getMapHandler() const {
         return mapHandler;
     }
 
-    BodyShapeDisplayer *SceneDisplayer::getBodyShapeDisplayer() const {
+    BodyShapeDisplayer* SceneDisplayer::getBodyShapeDisplayer() const {
         return bodyShapeDisplayer;
     }
 
-    ObjectMoveController *SceneDisplayer::getObjectMoveController() const {
+    ObjectMoveController* SceneDisplayer::getObjectMoveController() const {
         return objectMoveController;
     }
 

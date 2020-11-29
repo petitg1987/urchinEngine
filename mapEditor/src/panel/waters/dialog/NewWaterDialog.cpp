@@ -66,7 +66,7 @@ namespace urchin {
     }
 
 
-    SceneWater *NewWaterDialog::getSceneWater() const {
+    SceneWater* NewWaterDialog::getSceneWater() const {
         return sceneWater;
     }
 

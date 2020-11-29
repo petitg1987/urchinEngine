@@ -29,7 +29,7 @@ namespace urchin {
         return CollisionShape3D::CAPSULE_SHAPE;
     }
 
-    const ConvexShape3D<float> *CollisionCapsuleShape::getSingleShape() const {
+    const ConvexShape3D<float>* CollisionCapsuleShape::getSingleShape() const {
         return capsuleShape;
     }
 
@@ -103,7 +103,7 @@ namespace urchin {
         return capsuleShape->getRadius();
     }
 
-    CollisionShape3D *CollisionCapsuleShape::clone() const {
+    CollisionShape3D* CollisionCapsuleShape::clone() const {
         return new CollisionCapsuleShape(capsuleShape->getRadius(), capsuleShape->getCylinderHeight(), capsuleShape->getCapsuleOrientation());
     }
 

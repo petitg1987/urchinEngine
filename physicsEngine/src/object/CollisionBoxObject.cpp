@@ -18,15 +18,15 @@ namespace urchin {
         return boxObject.getHalfSizes() + Vector3<float>(getOuterMargin(), getOuterMargin(), getOuterMargin());
     }
 
-    const Point3<float> &CollisionBoxObject::getCenterOfMass() const {
+    const Point3<float>& CollisionBoxObject::getCenterOfMass() const {
         return boxObject.getCenterOfMass();
     }
 
-    const Quaternion<float> &CollisionBoxObject::getOrientation() const {
+    const Quaternion<float>& CollisionBoxObject::getOrientation() const {
         return boxObject.getOrientation();
     }
 
-    const Vector3<float> &CollisionBoxObject::getAxis(unsigned int index) const {
+    const Vector3<float>& CollisionBoxObject::getAxis(unsigned int index) const {
         return boxObject.getAxis(index);
     }
 

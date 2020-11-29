@@ -10,12 +10,12 @@ namespace urchin {
 
     }
 
-    BilateralBlurFilterBuilder *BilateralBlurFilterBuilder::blurDirection(BlurDirection blurDirection) {
+    BilateralBlurFilterBuilder* BilateralBlurFilterBuilder::blurDirection(BlurDirection blurDirection) {
         this->pBlurDirection = blurDirection;
         return this;
     }
 
-    BilateralBlurFilterBuilder *BilateralBlurFilterBuilder::blurSize(unsigned int blurSize) {
+    BilateralBlurFilterBuilder* BilateralBlurFilterBuilder::blurSize(unsigned int blurSize) {
         this->pBlurSize = blurSize;
         return this;
     }
@@ -24,7 +24,7 @@ namespace urchin {
         return pBlurSize;
     }
 
-    BilateralBlurFilterBuilder *BilateralBlurFilterBuilder::blurSharpness(float pBlurSharpness) {
+    BilateralBlurFilterBuilder* BilateralBlurFilterBuilder::blurSharpness(float pBlurSharpness) {
         this->pBlurSharpness = pBlurSharpness;
         return this;
     }
@@ -33,12 +33,12 @@ namespace urchin {
         return pBlurSharpness;
     }
 
-    BilateralBlurFilterBuilder *BilateralBlurFilterBuilder::depthTexture(const std::shared_ptr<Texture>& depthTexture) {
+    BilateralBlurFilterBuilder* BilateralBlurFilterBuilder::depthTexture(const std::shared_ptr<Texture>& depthTexture) {
         this->pDepthTexture = depthTexture;
         return this;
     }
 
-    const std::shared_ptr<Texture> &BilateralBlurFilterBuilder::getDepthTexture() const {
+    const std::shared_ptr<Texture>& BilateralBlurFilterBuilder::getDepthTexture() const {
         return pDepthTexture;
     }
 

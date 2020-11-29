@@ -33,35 +33,35 @@ namespace urchin {
         setEnabled(false);
     }
 
-    ObjectPanelWidget *ScenePanelWidget::getObjectPanelWidget() const {
+    ObjectPanelWidget* ScenePanelWidget::getObjectPanelWidget() const {
         return tabObjects;
     }
 
-    LightPanelWidget *ScenePanelWidget::getLightPanelWidget() const {
+    LightPanelWidget* ScenePanelWidget::getLightPanelWidget() const {
         return tabLights;
     }
 
-    TerrainPanelWidget *ScenePanelWidget::getTerrainPanelWidget() const {
+    TerrainPanelWidget* ScenePanelWidget::getTerrainPanelWidget() const {
         return tabTerrains;
     }
 
-    WaterPanelWidget *ScenePanelWidget::getWaterPanelWidget() const {
+    WaterPanelWidget* ScenePanelWidget::getWaterPanelWidget() const {
         return tabWaters;
     }
 
-    SkyPanelWidget *ScenePanelWidget::getSkyPanelWidget() const {
+    SkyPanelWidget* ScenePanelWidget::getSkyPanelWidget() const {
         return tabSky;
     }
 
-    SoundPanelWidget *ScenePanelWidget::getSoundPanelWidget() const {
+    SoundPanelWidget* ScenePanelWidget::getSoundPanelWidget() const {
         return tabSounds;
     }
 
-    AIPanelWidget *ScenePanelWidget::getAIPanelWidget() const {
+    AIPanelWidget* ScenePanelWidget::getAIPanelWidget() const {
         return tabAI;
     }
 
-    SceneController *ScenePanelWidget::loadMap(SceneController* sceneController) {
+    SceneController* ScenePanelWidget::loadMap(SceneController* sceneController) {
         closeMap();
         this->sceneController = sceneController;
 

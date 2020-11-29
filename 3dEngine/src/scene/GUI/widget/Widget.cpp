@@ -67,7 +67,7 @@ namespace urchin {
         this->parent = parent;
     }
 
-    Widget *Widget::getParent() const {
+    Widget* Widget::getParent() const {
         return parent;
     }
 
@@ -75,7 +75,7 @@ namespace urchin {
         this->eventListeners.push_back(eventListener);
     }
 
-    const std::vector<std::shared_ptr<EventListener>> &Widget::getEventListeners() const {
+    const std::vector<std::shared_ptr<EventListener>>& Widget::getEventListeners() const {
         return eventListeners;
     }
 

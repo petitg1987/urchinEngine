@@ -20,15 +20,15 @@ namespace urchin {
         }
     }
 
-    const std::string &NavPolygon::getName() const {
+    const std::string& NavPolygon::getName() const {
         return name;
     }
 
-    const std::vector<Point3<float>> &NavPolygon::getPoints() const {
+    const std::vector<Point3<float>>& NavPolygon::getPoints() const {
         return points;
     }
 
-    const Point3<float> &NavPolygon::getPoint(unsigned int index) const {
+    const Point3<float>& NavPolygon::getPoint(unsigned int index) const {
         return points[index];
     }
 
@@ -41,19 +41,19 @@ namespace urchin {
         }
     }
 
-    const std::vector<std::shared_ptr<NavTriangle>> &NavPolygon::getTriangles() const {
+    const std::vector<std::shared_ptr<NavTriangle>>& NavPolygon::getTriangles() const {
         return triangles;
     }
 
-    const std::shared_ptr<NavTriangle> &NavPolygon::getTriangle(std::size_t index) const {
+    const std::shared_ptr<NavTriangle>& NavPolygon::getTriangle(std::size_t index) const {
         return triangles[index];
     }
 
-    const std::shared_ptr<const NavTopography> &NavPolygon::getNavTopography() const {
+    const std::shared_ptr<const NavTopography>& NavPolygon::getNavTopography() const {
         return navTopography;
     }
 
-    const std::vector<NavPolygonEdge> &NavPolygon::retrieveExternalEdges() const {
+    const std::vector<NavPolygonEdge>& NavPolygon::retrieveExternalEdges() const {
         if (externalEdges.empty()) {
             for (const auto& triangle : triangles) {
                 for (std::size_t edgeIndex = 0; edgeIndex < 3; ++edgeIndex) {

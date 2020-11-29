@@ -37,7 +37,7 @@ namespace urchin {
         this->position = position;
     }
 
-    const Point3<float> &PhysicsTransform::getPosition() const {
+    const Point3<float>& PhysicsTransform::getPosition() const {
         return position;
     }
 
@@ -45,7 +45,7 @@ namespace urchin {
         this->orientation = orientation;
     }
 
-    const Quaternion<float> &PhysicsTransform::getOrientation() const {
+    const Quaternion<float>& PhysicsTransform::getOrientation() const {
         return orientation;
     }
 

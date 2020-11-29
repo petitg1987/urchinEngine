@@ -49,11 +49,11 @@ namespace urchin {
         buildTexCoordinates(xSize, zSize);
     }
 
-    const std::string &TerrainMaterial::getMaskMapFilename() const {
+    const std::string& TerrainMaterial::getMaskMapFilename() const {
         return maskMapFilename;
     }
 
-    const std::shared_ptr<Texture> &TerrainMaterial::getMaskTexture() const {
+    const std::shared_ptr<Texture>& TerrainMaterial::getMaskTexture() const {
         return maskTexture;
     }
 
@@ -82,7 +82,7 @@ namespace urchin {
         }
     }
 
-    const std::vector<Point2<float>> &TerrainMaterial::getTexCoordinates() const {
+    const std::vector<Point2<float>>& TerrainMaterial::getTexCoordinates() const {
         return texCoordinates;
     }
 }

@@ -29,7 +29,7 @@ namespace urchin {
         markModified();
     }
 
-    const SceneTerrain *TerrainController::updateSceneTerrainGeneralProperties(const SceneTerrain* constSceneTerrain,
+    const SceneTerrain* TerrainController::updateSceneTerrainGeneralProperties(const SceneTerrain* constSceneTerrain,
                                                                                const Point3<float>& position, float ambient) {
         SceneTerrain* sceneTerrain = findSceneTerrain(constSceneTerrain);
         Terrain* terrain = sceneTerrain->getTerrain();
@@ -45,7 +45,7 @@ namespace urchin {
         return sceneTerrain;
     }
 
-    const SceneTerrain *TerrainController::updateSceneTerrainMesh(const SceneTerrain* constSceneTerrain, float xzScale, float yScale) {
+    const SceneTerrain* TerrainController::updateSceneTerrainMesh(const SceneTerrain* constSceneTerrain, float xzScale, float yScale) {
         SceneTerrain* sceneTerrain = findSceneTerrain(constSceneTerrain);
         Terrain* terrain = sceneTerrain->getTerrain();
 
@@ -56,7 +56,7 @@ namespace urchin {
         return sceneTerrain;
     }
 
-    const SceneTerrain *TerrainController::updateSceneTerrainMaterial(const SceneTerrain* constSceneTerrain, float sRepeat, float tRepeat, const std::string& maskMapFilename,
+    const SceneTerrain* TerrainController::updateSceneTerrainMaterial(const SceneTerrain* constSceneTerrain, float sRepeat, float tRepeat, const std::string& maskMapFilename,
                                                                       const std::vector<std::string>& materialFilenames) {
         SceneTerrain* sceneTerrain = findSceneTerrain(constSceneTerrain);
         Terrain* terrain = sceneTerrain->getTerrain();
@@ -68,7 +68,7 @@ namespace urchin {
         return sceneTerrain;
     }
 
-    const SceneTerrain *TerrainController::updateSceneTerrainGrass(const SceneTerrain* constSceneTerrain, const std::string& grassTextureFilename, const std::string& grassMaskFilename,
+    const SceneTerrain* TerrainController::updateSceneTerrainGrass(const SceneTerrain* constSceneTerrain, const std::string& grassTextureFilename, const std::string& grassMaskFilename,
                                                                    unsigned int numGrassInTex, float grassQuantity, float grassHeight, float grassLength,
                                                                    const Vector3<float>& windDirection, float windStrength) {
         SceneTerrain* sceneTerrain = findSceneTerrain(constSceneTerrain);
@@ -90,7 +90,7 @@ namespace urchin {
         return sceneTerrain;
     }
 
-    SceneTerrain *TerrainController::findSceneTerrain(const SceneTerrain* constSceneTerrain) {
+    SceneTerrain* TerrainController::findSceneTerrain(const SceneTerrain* constSceneTerrain) {
         const std::list<SceneTerrain *> &sceneTerrains = getMapHandler()->getMap()->getSceneTerrains();
         auto it = std::find(sceneTerrains.begin(), sceneTerrains.end(), constSceneTerrain);
 

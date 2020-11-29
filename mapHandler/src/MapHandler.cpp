@@ -69,7 +69,7 @@ namespace urchin {
         map->refreshMap();
     }
 
-    Map *MapHandler::getMap() const {
+    Map* MapHandler::getMap() const {
         return map;
     }
 

@@ -12,7 +12,7 @@ namespace urchin {
 
     }
 
-    SoundShapeWidget *SoundShapeWidgetRetriever::retrieveShapeWidget(const SoundShape* shape) {
+    SoundShapeWidget* SoundShapeWidgetRetriever::retrieveShapeWidget(const SoundShape* shape) {
         if (!shape) {
             throw std::invalid_argument("Shape used to retrieve sound shape widget cannot be null");
         }
@@ -20,7 +20,7 @@ namespace urchin {
         return retrieveShapeWidget(shape->getShapeType());
     }
 
-    SoundShapeWidget *SoundShapeWidgetRetriever::retrieveShapeWidget(SoundShape::ShapeType shapeType) {
+    SoundShapeWidget* SoundShapeWidgetRetriever::retrieveShapeWidget(SoundShape::ShapeType shapeType) {
         SoundShapeWidget *soundShapeWidget;
 
         if (shapeType==SoundShape::ShapeType::SPHERE_SHAPE) {

@@ -10,19 +10,19 @@ namespace urchin {
 
     }
 
-    const CollisionShape3D *TemporalObject::getShape() const {
+    const CollisionShape3D* TemporalObject::getShape() const {
         return shape;
     }
 
-    const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &TemporalObject::getLocalObject() const {
+    const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>& TemporalObject::getLocalObject() const {
         return localObject;
     }
 
-    const PhysicsTransform &TemporalObject::getFrom() const {
+    const PhysicsTransform& TemporalObject::getFrom() const {
         return from;
     }
 
-    const PhysicsTransform &TemporalObject::getTo() const {
+    const PhysicsTransform& TemporalObject::getTo() const {
         return to;
     }
 

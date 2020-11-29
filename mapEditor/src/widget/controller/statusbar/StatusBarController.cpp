@@ -61,7 +61,7 @@ namespace urchin {
         }
     }
 
-    QFrame *StatusBarController::createSeparator() {
+    QFrame* StatusBarController::createSeparator() {
         QFrame* separator = new QFrame();
         separator->setFrameShape(QFrame::VLine);
         separator->setFrameShadow(QFrame::Shadow::Raised);

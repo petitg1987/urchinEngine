@@ -31,7 +31,7 @@ void OrthogonalProjectionTest::orthogonalProjectionPlane() {
     AssertHelper::assertPoint3FloatEquals(projectedPoint2, Point3<float>(1.0, 1.0, 0.0));
 }
 
-CppUnit::Test *OrthogonalProjectionTest::suite() {
+CppUnit::Test* OrthogonalProjectionTest::suite() {
     auto* suite = new CppUnit::TestSuite("OrthogonalProjectionTest");
 
     suite->addTest(new CppUnit::TestCaller<OrthogonalProjectionTest>("orthogonalProjectionLine2D", &OrthogonalProjectionTest::orthogonalProjectionLine2D));

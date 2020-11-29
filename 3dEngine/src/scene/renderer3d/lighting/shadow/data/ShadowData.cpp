@@ -23,7 +23,7 @@ namespace urchin {
         this->renderTarget = std::move(renderTarget);
     }
 
-    const OffscreenRender *ShadowData::getRenderTarget() const {
+    const OffscreenRender* ShadowData::getRenderTarget() const {
         return renderTarget.get();
     }
 
@@ -31,7 +31,7 @@ namespace urchin {
         this->depthTexture = depthTexture;
     }
 
-    const std::shared_ptr<Texture> &ShadowData::getDepthTexture() const {
+    const std::shared_ptr<Texture>& ShadowData::getDepthTexture() const {
         return depthTexture;
     }
 
@@ -45,7 +45,7 @@ namespace urchin {
     /**
      * Returns shadow map texture (variance shadow map)
      */
-    const std::shared_ptr<Texture> &ShadowData::getShadowMapTexture() const {
+    const std::shared_ptr<Texture>& ShadowData::getShadowMapTexture() const {
         return shadowMapTexture;
     }
 
@@ -68,7 +68,7 @@ namespace urchin {
         }
     }
 
-    const std::shared_ptr<Texture> &ShadowData::getFilteredShadowMapTexture() const {
+    const std::shared_ptr<Texture>& ShadowData::getFilteredShadowMapTexture() const {
         if (textureFilters.empty()) {
             return shadowMapTexture;
         }
@@ -80,7 +80,7 @@ namespace urchin {
         this->lightViewMatrix = lightViewMatrix;
     }
 
-    const Matrix4<float> &ShadowData::getLightViewMatrix() const {
+    const Matrix4<float>& ShadowData::getLightViewMatrix() const {
         return lightViewMatrix;
     }
 
@@ -91,14 +91,14 @@ namespace urchin {
     /**
      * @param index Index of frustum split (0: frustum split nearest to eye)
      */
-    FrustumShadowData *ShadowData::getFrustumShadowData(std::size_t index) {
+    FrustumShadowData* ShadowData::getFrustumShadowData(std::size_t index) {
         return frustumShadowData[index];
     }
 
     /**
      * @param index Index of frustum split (0: frustum split nearest to eye)
      */
-    const FrustumShadowData *ShadowData::getFrustumShadowData(std::size_t index) const {
+    const FrustumShadowData* ShadowData::getFrustumShadowData(std::size_t index) const {
         return frustumShadowData[index];
     }
 

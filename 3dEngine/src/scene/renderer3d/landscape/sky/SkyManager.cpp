@@ -23,7 +23,7 @@ namespace urchin {
         }
     }
 
-    const std::unique_ptr<Skybox> &SkyManager::getSkybox() const {
+    const std::unique_ptr<Skybox>& SkyManager::getSkybox() const {
         return skybox;
     }
 

@@ -41,7 +41,7 @@ namespace urchin {
         this->navigationObjects.updateFatMargin(navigationObjectsMargin);
     }
 
-    const std::shared_ptr<NavMeshAgent> &NavMeshGenerator::getNavMeshAgent() const {
+    const std::shared_ptr<NavMeshAgent>& NavMeshGenerator::getNavMeshAgent() const {
         return navMeshAgent;
     }
 
@@ -220,7 +220,7 @@ namespace urchin {
         return navPolygons;
     }
 
-    std::vector<CSGPolygon<float>> &NavMeshGenerator::determineObstacles(const std::shared_ptr<NavObject>& navObject,
+    std::vector<CSGPolygon<float>>& NavMeshGenerator::determineObstacles(const std::shared_ptr<NavObject>& navObject,
             const std::shared_ptr<PolytopeSurface>& walkableSurface) const {
         ScopeProfiler scopeProfiler("ai", "getObstacles");
 

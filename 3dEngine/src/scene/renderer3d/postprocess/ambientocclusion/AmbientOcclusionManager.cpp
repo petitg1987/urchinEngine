@@ -290,7 +290,7 @@ namespace urchin {
         throw std::invalid_argument("Unknown texture size value: " + std::to_string(textureSize));
     }
 
-    const std::shared_ptr<Texture> &AmbientOcclusionManager::getAmbientOcclusionTexture() const {
+    const std::shared_ptr<Texture>& AmbientOcclusionManager::getAmbientOcclusionTexture() const {
         if (isBlurActivated) {
             return horizontalBlurFilter->getTexture();
         }

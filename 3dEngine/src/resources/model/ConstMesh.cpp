@@ -33,7 +33,7 @@ namespace urchin {
         material->release();
     }
 
-    const Material *ConstMesh::getMaterial() const {
+    const Material* ConstMesh::getMaterial() const {
         return material;
     }
 
@@ -41,11 +41,11 @@ namespace urchin {
         return vertices.size();
     }
 
-    const Vertex &ConstMesh::getStructVertex(unsigned int index) const {
+    const Vertex& ConstMesh::getStructVertex(unsigned int index) const {
         return vertices[index];
     }
 
-    const std::vector<Point2<float>> &ConstMesh::getTextureCoordinates() const {
+    const std::vector<Point2<float>>& ConstMesh::getTextureCoordinates() const {
         return textureCoordinates;
     }
 
@@ -53,7 +53,7 @@ namespace urchin {
      * Vertices can be duplicated because they have different texture coordinates.
      * This method returns all duplicates vertices thanks to 'linked vertices group ID' stored on each vertex.
      */
-    const std::vector<unsigned int> &ConstMesh::getLinkedVertices(unsigned int linkedVerticesGroupId) const {
+    const std::vector<unsigned int>& ConstMesh::getLinkedVertices(unsigned int linkedVerticesGroupId) const {
         auto it = linkedVertices.find(linkedVerticesGroupId);
         if (it!=linkedVertices.end()) {
             return it->second;
@@ -62,7 +62,7 @@ namespace urchin {
         throw std::runtime_error("Impossible to find linked vertices for group ID: " + std::to_string(linkedVerticesGroupId));
     }
 
-    const std::vector<unsigned int> &ConstMesh::getTrianglesIndices() const {
+    const std::vector<unsigned int>& ConstMesh::getTrianglesIndices() const {
         return trianglesIndices;
     }
 
@@ -70,7 +70,7 @@ namespace urchin {
         return weights.size();
     }
 
-    const Weight &ConstMesh::getWeight(unsigned int index) const {
+    const Weight& ConstMesh::getWeight(unsigned int index) const {
         return weights[index];
     }
 
@@ -78,23 +78,23 @@ namespace urchin {
         return baseSkeleton.size();
     }
 
-    const std::vector<Bone> &ConstMesh::getBaseSkeleton() const {
+    const std::vector<Bone>& ConstMesh::getBaseSkeleton() const {
         return baseSkeleton;
     }
 
-    const Bone &ConstMesh::getBaseBone(unsigned int index) const {
+    const Bone& ConstMesh::getBaseBone(unsigned int index) const {
         return baseSkeleton[index];
     }
 
-    const std::vector<Point3<float>> &ConstMesh::getBaseVertices() const {
+    const std::vector<Point3<float>>& ConstMesh::getBaseVertices() const {
         return baseVertices;
     }
 
-    const std::vector<Vector3<float>> &ConstMesh::getBaseNormals() const {
+    const std::vector<Vector3<float>>& ConstMesh::getBaseNormals() const {
         return baseNormals;
     }
 
-    const std::vector<Vector3<float>> &ConstMesh::getBaseTangents() const {
+    const std::vector<Vector3<float>>& ConstMesh::getBaseTangents() const {
         return baseTangents;
     }
 

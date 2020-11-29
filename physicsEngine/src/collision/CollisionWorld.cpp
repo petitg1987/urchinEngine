@@ -25,11 +25,11 @@ namespace urchin {
         delete integrateTransformManager;
     }
 
-    BroadPhaseManager *CollisionWorld::getBroadPhaseManager() const {
+    BroadPhaseManager* CollisionWorld::getBroadPhaseManager() const {
         return broadPhaseManager;
     }
 
-    NarrowPhaseManager *CollisionWorld::getNarrowPhaseManager() const {
+    NarrowPhaseManager* CollisionWorld::getNarrowPhaseManager() const {
         return narrowPhaseManager;
     }
 
@@ -66,7 +66,7 @@ namespace urchin {
         bodyManager->applyWorkBodies();
     }
 
-    const std::vector<ManifoldResult> &CollisionWorld::getLastUpdatedManifoldResults() {
+    const std::vector<ManifoldResult>& CollisionWorld::getLastUpdatedManifoldResults() {
         return manifoldResults;
     }
 

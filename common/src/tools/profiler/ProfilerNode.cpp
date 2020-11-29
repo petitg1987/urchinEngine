@@ -20,11 +20,11 @@ namespace urchin {
         }
     }
 
-    const std::string &ProfilerNode::getName() const {
+    const std::string& ProfilerNode::getName() const {
         return name;
     }
 
-    ProfilerNode *ProfilerNode::getParent() const {
+    ProfilerNode* ProfilerNode::getParent() const {
         return parent;
     }
 
@@ -32,7 +32,7 @@ namespace urchin {
         return children;
     }
 
-    ProfilerNode *ProfilerNode::findChildren(const std::string& name) const {
+    ProfilerNode* ProfilerNode::findChildren(const std::string& name) const {
         for (const auto& child : children) {
             if (child->getName() == name) {
                 return child;

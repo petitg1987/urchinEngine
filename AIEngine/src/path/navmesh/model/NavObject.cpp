@@ -11,7 +11,7 @@ namespace urchin {
         navPolygons.reserve(4); //estimated memory size
     }
 
-    const std::shared_ptr<Polytope> &NavObject::getExpandedPolytope() {
+    const std::shared_ptr<Polytope>& NavObject::getExpandedPolytope() {
         return expandedPolytope;
     }
 
@@ -19,7 +19,7 @@ namespace urchin {
         walkableSurfaces.push_back(walkableSurface);
     }
 
-    const std::vector<std::shared_ptr<PolytopeSurface>> &NavObject::getWalkableSurfaces() const {
+    const std::vector<std::shared_ptr<PolytopeSurface>>& NavObject::getWalkableSurfaces() const {
         return walkableSurfaces;
     }
 
@@ -27,7 +27,7 @@ namespace urchin {
         nearObjects.push_back(nearObject);
     }
 
-    const std::vector<std::weak_ptr<NavObject>> &NavObject::retrieveNearObjects() {
+    const std::vector<std::weak_ptr<NavObject>>& NavObject::retrieveNearObjects() {
         for (auto it = nearObjects.begin(); it != nearObjects.end();) {
             if (it->expired()) {
                 it = nearObjects.erase(it);
@@ -47,7 +47,7 @@ namespace urchin {
         navPolygons.insert(navPolygons.end(), navPolygonsToAdd.begin(), navPolygonsToAdd.end());
     }
 
-    const std::vector<std::shared_ptr<NavPolygon>> &NavObject::getNavPolygons() const {
+    const std::vector<std::shared_ptr<NavPolygon>>& NavObject::getNavPolygons() const {
         return navPolygons;
     }
 

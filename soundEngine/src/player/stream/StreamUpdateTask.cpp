@@ -28,7 +28,7 @@ namespace urchin {
         return sound->isStopped();
     }
 
-    SoundFileReader *StreamUpdateTask::getSoundFileReader() {
+    SoundFileReader* StreamUpdateTask::getSoundFileReader() {
         return soundFileReader;
     }
 
@@ -40,11 +40,11 @@ namespace urchin {
         return sound->getFilename();
     }
 
-    StreamChunk &StreamUpdateTask::getStreamChunk(unsigned int chunkId) {
+    StreamChunk& StreamUpdateTask::getStreamChunk(unsigned int chunkId) {
         return streamChunks[chunkId];
     }
 
-    StreamChunk *StreamUpdateTask::getStreamChunks() {
+    StreamChunk* StreamUpdateTask::getStreamChunks() {
         return streamChunks;
     }
 

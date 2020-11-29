@@ -19,7 +19,7 @@ namespace urchin {
         this->renderer = std::move(renderer);
     }
 
-    const std::unique_ptr<GenericRenderer> &TerrainGrassQuadtree::getRenderer() const {
+    const std::unique_ptr<GenericRenderer>& TerrainGrassQuadtree::getRenderer() const {
         return renderer;
     }
 
@@ -27,7 +27,7 @@ namespace urchin {
         return children.empty();
     }
 
-    const std::unique_ptr<AABBox<float>> &TerrainGrassQuadtree::getBox() const {
+    const std::unique_ptr<AABBox<float>>& TerrainGrassQuadtree::getBox() const {
         if (!bbox) {
             if (isLeaf()) {
                 if(grassVertices.empty()) {
@@ -74,11 +74,11 @@ namespace urchin {
         normals.push_back(normal);
     }
 
-    const std::vector<Point3<float>> &TerrainGrassQuadtree::getGrassVertices() const {
+    const std::vector<Point3<float>>& TerrainGrassQuadtree::getGrassVertices() const {
         return grassVertices;
     }
 
-    const std::vector<Vector3<float>> &TerrainGrassQuadtree::getGrassNormals() const {
+    const std::vector<Vector3<float>>& TerrainGrassQuadtree::getGrassNormals() const {
         return normals;
     }
 }

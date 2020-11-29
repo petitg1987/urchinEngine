@@ -8,11 +8,11 @@ namespace urchin {
 
     }
 
-    const CollisionShape3D &CollisionObjectWrapper::getShape() const {
+    const CollisionShape3D& CollisionObjectWrapper::getShape() const {
         return shape;
     }
 
-    const PhysicsTransform &CollisionObjectWrapper::getShapeWorldTransform() const {
+    const PhysicsTransform& CollisionObjectWrapper::getShapeWorldTransform() const {
         return shapeWorldTransform;
     }
 

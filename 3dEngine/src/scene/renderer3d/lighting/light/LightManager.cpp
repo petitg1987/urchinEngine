@@ -64,7 +64,7 @@ namespace urchin {
         globalAmbientColorShaderVar = ShaderVar(lightingShader, "globalAmbient");
     }
 
-    OctreeManager<Light> *LightManager::getLightOctreeManager() const {
+    OctreeManager<Light>* LightManager::getLightOctreeManager() const {
         return lightOctreeManager;
     }
 
@@ -73,7 +73,7 @@ namespace urchin {
         notifyObservers(this, notificationType);
     }
 
-    Light *LightManager::getLastUpdatedLight() {
+    Light* LightManager::getLastUpdatedLight() {
         return lastUpdatedLight;
     }
 
@@ -119,7 +119,7 @@ namespace urchin {
         this->globalAmbientColor = globalAmbientColor;
     }
 
-    const Point4<float> &LightManager::getGlobalAmbientColor() const {
+    const Point4<float>& LightManager::getGlobalAmbientColor() const {
         return globalAmbientColor;
     }
 

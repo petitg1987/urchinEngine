@@ -1,7 +1,7 @@
 #include "WaterReaderWriter.h"
 
 namespace urchin {
-    Water *WaterReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& waterChunk, const XmlParser& xmlParser) const {
+    Water* WaterReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& waterChunk, const XmlParser& xmlParser) const {
         auto* water = new Water();
         loadGeneralPropertiesOn(water, waterChunk, xmlParser);
         loadWaterSurfaceProperties(water, waterChunk, xmlParser);

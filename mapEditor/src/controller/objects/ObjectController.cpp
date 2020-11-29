@@ -20,7 +20,7 @@ namespace urchin {
         return constSceneObjects;
     }
 
-    const SceneObject *ObjectController::findSceneObjectByBodyId(const std::string& bodyId) const {
+    const SceneObject* ObjectController::findSceneObjectByBodyId(const std::string& bodyId) const {
         for (auto sceneObject : getSceneObjects()) {
             if (sceneObject->getRigidBody() && sceneObject->getRigidBody()->getId()==bodyId) {
                 return sceneObject;
@@ -87,7 +87,7 @@ namespace urchin {
         markModified();
     }
 
-    const SceneObject *ObjectController::updateSceneObjectTransform(const SceneObject* constSceneObject, const Transform<float>& transform) {
+    const SceneObject* ObjectController::updateSceneObjectTransform(const SceneObject* constSceneObject, const Transform<float>& transform) {
         SceneObject* sceneObject = findSceneObject(constSceneObject);
         Model* model = sceneObject->getModel();
 
@@ -100,7 +100,7 @@ namespace urchin {
         return sceneObject;
     }
 
-    const SceneObject *ObjectController::updateSceneObjectFlags(const SceneObject* constSceneObject, bool produceShadow) {
+    const SceneObject* ObjectController::updateSceneObjectFlags(const SceneObject* constSceneObject, bool produceShadow) {
         SceneObject* sceneObject = findSceneObject(constSceneObject);
         Model* model = sceneObject->getModel();
 
@@ -110,7 +110,7 @@ namespace urchin {
         return sceneObject;
     }
 
-    const SceneObject *ObjectController::updateSceneObjectPhysicsProperties(const SceneObject* constSceneObject, float mass, float restitution,
+    const SceneObject* ObjectController::updateSceneObjectPhysicsProperties(const SceneObject* constSceneObject, float mass, float restitution,
             float friction, float rollingFriction, float linearDamping, float angularDamping, const Vector3<float>& linearFactor,
             const Vector3<float>& angularFactor) {
         SceneObject* sceneObject = findSceneObject(constSceneObject);
@@ -130,7 +130,7 @@ namespace urchin {
         return sceneObject;
     }
 
-    const SceneObject *ObjectController::updateSceneObjectPhysicsShape(const SceneObject* constSceneObject, const std::shared_ptr<const CollisionShape3D>& newCollisionShape) {
+    const SceneObject* ObjectController::updateSceneObjectPhysicsShape(const SceneObject* constSceneObject, const std::shared_ptr<const CollisionShape3D>& newCollisionShape) {
         SceneObject* sceneObject = findSceneObject(constSceneObject);
         RigidBody* rigidBody = sceneObject->getRigidBody();
 
@@ -149,7 +149,7 @@ namespace urchin {
         return sceneObject;
     }
 
-    SceneObject *ObjectController::findSceneObject(const SceneObject* constSceneObject) {
+    SceneObject* ObjectController::findSceneObject(const SceneObject* constSceneObject) {
         const std::list<SceneObject *> &sceneObjects = getMapHandler()->getMap()->getSceneObjects();
         auto it = std::find(sceneObjects.begin(), sceneObjects.end(), constSceneObject);
 

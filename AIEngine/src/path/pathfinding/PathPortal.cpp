@@ -26,7 +26,7 @@ namespace urchin {
     /**
      * Transition point represents a change of state: pivot/rotation, change of polygon, jump...
      */
-    const Point3<float> &PathPortal::getTransitionPoint() const {
+    const Point3<float>& PathPortal::getTransitionPoint() const {
         assert(bHasTransitionPoint);
 
         return transitionPoint;
@@ -40,15 +40,15 @@ namespace urchin {
         return previousPathNode->getNavTriangle()->getNavPolygon()->getNavTopography() != nextPathNode->getNavTriangle()->getNavPolygon()->getNavTopography();
     }
 
-    const LineSegment3D<float> &PathPortal::getPortal() const {
+    const LineSegment3D<float>& PathPortal::getPortal() const {
         return portal;
     }
 
-    const std::shared_ptr<PathNode> &PathPortal::getPreviousPathNode() const {
+    const std::shared_ptr<PathNode>& PathPortal::getPreviousPathNode() const {
         return previousPathNode;
     }
 
-    const std::shared_ptr<PathNode> &PathPortal::getNextPathNode() const {
+    const std::shared_ptr<PathNode>& PathPortal::getNextPathNode() const {
         return nextPathNode;
     }
 

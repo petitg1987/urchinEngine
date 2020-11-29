@@ -28,11 +28,11 @@ namespace urchin {
                 && shadowCasterReceiverBox1.getMax().squareDistance(shadowCasterReceiverBox2.getMax())<SQUARE_EPSILON;
     }
 
-    const AABBox<float> &FrustumShadowData::getShadowCasterReceiverBox() const {
+    const AABBox<float>& FrustumShadowData::getShadowCasterReceiverBox() const {
         return shadowCasterReceiverBox;
     }
 
-    const Matrix4<float> &FrustumShadowData::getLightProjectionMatrix() const {
+    const Matrix4<float>& FrustumShadowData::getLightProjectionMatrix() const {
         return lightProjectionMatrix;
     }
 

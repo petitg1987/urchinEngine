@@ -220,7 +220,7 @@ namespace urchin {
         return propagateEvent;
     }
 
-    const std::string &SceneDisplayerWidget::getLastPickedBodyId() const {
+    const std::string& SceneDisplayerWidget::getLastPickedBodyId() const {
         return lastPickedBodyId;
     }
 

@@ -39,7 +39,7 @@ void EPASphereTest::overlapSphere() {
     AssertHelper::assertFloatEquals(resultEpa->getContactPointB().Z, 0.0);
 }
 
-CppUnit::Test *EPASphereTest::suite() {
+CppUnit::Test* EPASphereTest::suite() {
     auto* suite = new CppUnit::TestSuite("EPASphereTest");
 
     suite->addTest(new CppUnit::TestCaller<EPASphereTest>("identicalSphere", &EPASphereTest::identicalSphere));

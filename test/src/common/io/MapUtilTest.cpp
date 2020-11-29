@@ -37,7 +37,7 @@ void MapUtilTest::trickyMapValues() {
     AssertHelper::assertString(deserializedMap["key2\\,"], "valu,,e2");
 }
 
-CppUnit::Test *MapUtilTest::suite() {
+CppUnit::Test* MapUtilTest::suite() {
     auto* suite = new CppUnit::TestSuite("MapUtilTest");
 
     suite->addTest(new CppUnit::TestCaller<MapUtilTest>("emptyMap", &MapUtilTest::emptyMap));

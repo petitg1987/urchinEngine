@@ -164,7 +164,7 @@ namespace urchin {
         }
     }
 
-    const SceneObject *ObjectMoveController::getSelectedSceneObject() const {
+    const SceneObject* ObjectMoveController::getSelectedSceneObject() const {
         return selectedSceneObject;
     }
 

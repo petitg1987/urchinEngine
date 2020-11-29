@@ -9,7 +9,7 @@ namespace urchin {
 
     }
 
-    const Point3<float> &CollisionTriangleObject::getPoint(unsigned int index) const {
+    const Point3<float>& CollisionTriangleObject::getPoint(unsigned int index) const {
         return triangleObject.getPoints()[index];
     }
 

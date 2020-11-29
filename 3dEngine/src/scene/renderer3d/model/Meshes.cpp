@@ -24,23 +24,23 @@ namespace urchin {
         return numMeshes;
     }
 
-    Mesh *Meshes::getMesh(unsigned int index) const {
+    Mesh* Meshes::getMesh(unsigned int index) const {
         return meshes[index];
     }
 
-    const AABBox<float> &Meshes::getGlobalAABBox() const {
+    const AABBox<float>& Meshes::getGlobalAABBox() const {
         return globalBBox;
     }
 
-    const std::vector<AABBox<float>> &Meshes::getGlobalSplitAABBoxes() const {
+    const std::vector<AABBox<float>>& Meshes::getGlobalSplitAABBoxes() const {
         return globalSplitBBoxes;
     }
 
-    const AABBox<float> &Meshes::getGlobalLocalAABBox() const {
+    const AABBox<float>& Meshes::getGlobalLocalAABBox() const {
         return constMeshes->getOriginalAABBox();
     }
 
-    const ConstMeshes *Meshes::getConstMeshes() const {
+    const ConstMeshes* Meshes::getConstMeshes() const {
         return constMeshes;
     }
 

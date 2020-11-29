@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    SoundTrigger *SoundTriggerReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& soundTriggerChunk, const XmlParser& xmlParser) const {
+    SoundTrigger* SoundTriggerReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& soundTriggerChunk, const XmlParser& xmlParser) const {
         SoundTrigger* soundTrigger = buildSoundTriggerFrom(soundTriggerChunk, xmlParser);
 
         return soundTrigger;
@@ -14,7 +14,7 @@ namespace urchin {
         buildChunkFrom(soundTriggerChunk, soundTrigger, xmlWriter);
     }
 
-    SoundTrigger *SoundTriggerReaderWriter::buildSoundTriggerFrom(const std::shared_ptr<XmlChunk>& soundTriggerChunk, const XmlParser& xmlParser) const {
+    SoundTrigger* SoundTriggerReaderWriter::buildSoundTriggerFrom(const std::shared_ptr<XmlChunk>& soundTriggerChunk, const XmlParser& xmlParser) const {
         std::shared_ptr<XmlChunk> soundBehaviorChunk = xmlParser.getUniqueChunk(true, SOUND_BEHAVIOR_TAG, XmlAttribute(), soundTriggerChunk);
         SoundBehavior soundBehavior = buildSoundBehaviorFrom(soundBehaviorChunk, xmlParser);
 

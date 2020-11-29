@@ -56,11 +56,11 @@ namespace urchin {
         return Rectangle<float>(minPoint, maxPoint);
     }
 
-    const AABBox<float> &PolytopeTerrainSurface::getAABBox() const {
+    const AABBox<float>& PolytopeTerrainSurface::getAABBox() const {
         return aabbox;
     }
 
-    const std::vector<Point2<float>> &PolytopeTerrainSurface::getOutlineCwPoints() const {
+    const std::vector<Point2<float>>& PolytopeTerrainSurface::getOutlineCwPoints() const {
         return outlineCwPoints;
     }
 
@@ -71,7 +71,7 @@ namespace urchin {
         return Plane<float>(point1, point2, point3);
     }
 
-    const std::vector<CSGPolygon<float>> &PolytopeTerrainSurface::getSelfObstacles() const {
+    const std::vector<CSGPolygon<float>>& PolytopeTerrainSurface::getSelfObstacles() const {
         return selfObstacles;
     }
 
@@ -90,15 +90,15 @@ namespace urchin {
         return Point3<float>(localCoordinate.X, heightfieldPointHelper->findHeightAt(localCoordinate), localCoordinate.Y) + position;
     }
 
-    const std::shared_ptr<const NavTopography> &PolytopeTerrainSurface::getNavTopography() const {
+    const std::shared_ptr<const NavTopography>& PolytopeTerrainSurface::getNavTopography() const {
         return navTopography;
     }
 
-    const Point3<float> &PolytopeTerrainSurface::getPosition() const {
+    const Point3<float>& PolytopeTerrainSurface::getPosition() const {
         return position;
     }
 
-    const std::vector<Point3<float>> &PolytopeTerrainSurface::getLocalVertices() const {
+    const std::vector<Point3<float>>& PolytopeTerrainSurface::getLocalVertices() const {
         return localVertices;
     }
 
@@ -110,7 +110,7 @@ namespace urchin {
         return zLength;
     }
 
-    const Vector3<float> &PolytopeTerrainSurface::getApproximateNormal() const {
+    const Vector3<float>& PolytopeTerrainSurface::getApproximateNormal() const {
         return approximateNormal;
     }
 

@@ -8,11 +8,11 @@ namespace urchin {
 
     }
 
-    const Point3<float> &PathRequest::getStartPoint() const {
+    const Point3<float>& PathRequest::getStartPoint() const {
         return startPoint;
     }
 
-    const Point3<float> &PathRequest::getEndPoint() const {
+    const Point3<float>& PathRequest::getEndPoint() const {
         return endPoint;
     }
 

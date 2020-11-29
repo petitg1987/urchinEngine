@@ -230,7 +230,7 @@ void QuaternionTest::toAxisAngle90() {
     AssertHelper::assertFloatEquals(angle, PI_VALUE/2.0f);
 }
 
-CppUnit::Test *QuaternionTest::suite() {
+CppUnit::Test* QuaternionTest::suite() {
     auto* suite = new CppUnit::TestSuite("QuaternionTest");
 
     suite->addTest(new CppUnit::TestCaller<QuaternionTest>("multiplyAxisAngleQuaternions9And45", &QuaternionTest::multiplyAxisAngleQuaternions9And45));

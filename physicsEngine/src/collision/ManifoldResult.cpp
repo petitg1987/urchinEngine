@@ -16,17 +16,17 @@ namespace urchin {
     /**
      * @param index Index of body to return. Index must be '0' for body1 or '1' for body2.
      */
-    AbstractWorkBody *ManifoldResult::getBody(unsigned int index) const {
+    AbstractWorkBody* ManifoldResult::getBody(unsigned int index) const {
         assert(index==0 || index==1);
 
         return index==0 ? body1 : body2;
     }
 
-    AbstractWorkBody *ManifoldResult::getBody1() const {
+    AbstractWorkBody* ManifoldResult::getBody1() const {
         return body1;
     }
 
-    AbstractWorkBody *ManifoldResult::getBody2() const {
+    AbstractWorkBody* ManifoldResult::getBody2() const {
         return body2;
     }
 
@@ -38,11 +38,11 @@ namespace urchin {
         return contactBreakingThreshold;
     }
 
-    ManifoldContactPoint &ManifoldResult::getManifoldContactPoint(unsigned int index) {
+    ManifoldContactPoint& ManifoldResult::getManifoldContactPoint(unsigned int index) {
         return contactPoints[index];
     }
 
-    const ManifoldContactPoint &ManifoldResult::getManifoldContactPoint(unsigned int index) const {
+    const ManifoldContactPoint& ManifoldResult::getManifoldContactPoint(unsigned int index) const {
         return contactPoints[index];
     }
 

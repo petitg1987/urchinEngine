@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    RigidBody *RigidBodyReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& physicsChunk, const std::string& id,
+    RigidBody* RigidBodyReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& physicsChunk, const std::string& id,
             const Transform<float>& modelTransform, const XmlParser& xmlParser) const {
         std::shared_ptr<XmlChunk> shapeChunk = xmlParser.getUniqueChunk(true, SHAPE_TAG, XmlAttribute(), physicsChunk);
         std::shared_ptr<CollisionShapeReaderWriter> shapeReaderWriter = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeChunk);

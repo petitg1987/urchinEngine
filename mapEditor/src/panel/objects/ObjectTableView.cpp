@@ -46,7 +46,7 @@ namespace urchin {
         return -1;
     }
 
-    const SceneObject *ObjectTableView::getSelectedSceneObject() const {
+    const SceneObject* ObjectTableView::getSelectedSceneObject() const {
         if (hasSceneObjectSelected()) {
             return this->currentIndex().data(Qt::UserRole + 1).value<const SceneObject *>();
         }

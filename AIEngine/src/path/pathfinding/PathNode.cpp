@@ -11,7 +11,7 @@ namespace urchin {
 
     }
 
-    const std::shared_ptr<NavTriangle> &PathNode::getNavTriangle() const {
+    const std::shared_ptr<NavTriangle>& PathNode::getNavTriangle() const {
         return navTriangle;
     }
 
@@ -39,7 +39,7 @@ namespace urchin {
         this->navLink = navLink;
     }
 
-    const std::shared_ptr<PathNode> &PathNode::getPreviousNode() const {
+    const std::shared_ptr<PathNode>& PathNode::getPreviousNode() const {
         return previousNode;
     }
 

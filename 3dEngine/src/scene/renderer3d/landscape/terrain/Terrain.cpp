@@ -65,7 +65,7 @@ namespace urchin {
         refreshGrassMesh(); //grass uses mesh info: refresh is required
     }
 
-    const TerrainMesh *Terrain::getMesh() const {
+    const TerrainMesh* Terrain::getMesh() const {
         return mesh.get();
     }
 
@@ -99,7 +99,7 @@ namespace urchin {
         }
     }
 
-    const TerrainMaterial *Terrain::getMaterial() const {
+    const TerrainMaterial* Terrain::getMaterial() const {
         return material.get();
     }
 
@@ -115,7 +115,7 @@ namespace urchin {
         }
     }
 
-    TerrainGrass *Terrain::getGrass() const {
+    TerrainGrass* Terrain::getGrass() const {
         return grass.get();
     }
 
@@ -132,7 +132,7 @@ namespace urchin {
     /**
      * @return Terrain position. Position is centered on XZ axis and Y value represents a point without elevation.
      */
-    const Point3<float> &Terrain::getPosition() const {
+    const Point3<float>& Terrain::getPosition() const {
         return position;
     }
 

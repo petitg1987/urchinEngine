@@ -228,11 +228,11 @@ namespace urchin {
         return blurShadow;
     }
 
-    const std::vector<Frustum<float>> &ShadowManager::getSplitFrustums() const {
+    const std::vector<Frustum<float>>& ShadowManager::getSplitFrustums() const {
         return splitFrustums;
     }
 
-    const ShadowData &ShadowManager::getShadowData(const Light* light) const {
+    const ShadowData& ShadowManager::getShadowData(const Light* light) const {
         auto it = shadowDatas.find(light);
         if (it==shadowDatas.end()) {
             throw std::runtime_error("No shadow data found for this light.");

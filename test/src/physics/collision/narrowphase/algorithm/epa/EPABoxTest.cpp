@@ -99,7 +99,7 @@ void EPABoxTest::overlapOBBoxAABBox() {
     AssertHelper::assertFloatEquals(resultEpa->getContactPointA().Z, resultEpa->getContactPointB().Z);
 }
 
-CppUnit::Test *EPABoxTest::suite() {
+CppUnit::Test* EPABoxTest::suite() {
     auto* suite = new CppUnit::TestSuite("EPABoxTest");
 
     suite->addTest(new CppUnit::TestCaller<EPABoxTest>("identicalAABBox", &EPABoxTest::identicalAABBox));

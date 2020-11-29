@@ -61,7 +61,7 @@ namespace urchin {
         return result;
     }
 
-    SceneObject *CloneObjectDialog::getSceneObject() const {
+    SceneObject* CloneObjectDialog::getSceneObject() const {
         return sceneObject;
     }
 

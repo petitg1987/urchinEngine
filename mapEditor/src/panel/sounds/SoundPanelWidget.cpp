@@ -216,7 +216,7 @@ namespace urchin {
         soundShapeWidget = nullptr;
     }
 
-    SoundTableView *SoundPanelWidget::getSoundTableView() const {
+    SoundTableView* SoundPanelWidget::getSoundTableView() const {
         return soundTableView;
     }
 
@@ -337,7 +337,7 @@ namespace urchin {
         soundShapeType->setText(QString::fromStdString(soundShapeWidget->getSoundShapeName()));
     }
 
-    SoundShapeWidget *SoundPanelWidget::retrieveSoundShapeWidget(const SoundShape* shape, const SceneSound* sceneSound) {
+    SoundShapeWidget* SoundPanelWidget::retrieveSoundShapeWidget(const SoundShape* shape, const SceneSound* sceneSound) {
         delete soundShapeWidget;
 
         soundShapeWidget = SoundShapeWidgetRetriever(sceneSound).retrieveShapeWidget(shape);

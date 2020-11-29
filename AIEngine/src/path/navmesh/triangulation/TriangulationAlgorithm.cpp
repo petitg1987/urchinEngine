@@ -83,7 +83,7 @@ namespace urchin {
         return std::vector<Point2<float>>(polygonPoints.begin() + endContourIndices[holeIndex], polygonPoints.begin() + endContourIndices[holeIndex+1]);
     }
 
-    const std::vector<std::shared_ptr<NavTriangle>> &TriangulationAlgorithm::triangulate() { //based on "Computational Geometry - Algorithms and Applications, 3rd Ed" - "Polygon Triangulation"
+    const std::vector<std::shared_ptr<NavTriangle>>& TriangulationAlgorithm::triangulate() { //based on "Computational Geometry - Algorithms and Applications, 3rd Ed" - "Polygon Triangulation"
         if (Check::instance()->additionalChecksEnable()) { //check no duplicate points
             for (std::size_t i = 0; i < polygonPoints.size(); ++i) {
                 for (std::size_t j = 0; j < polygonPoints.size(); ++j) {

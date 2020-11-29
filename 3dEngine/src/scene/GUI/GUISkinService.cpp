@@ -126,7 +126,7 @@ namespace urchin {
         return widgetTexture;
     }
 
-    XmlParser *GUISkinService::getXmlSkin() const {
+    XmlParser* GUISkinService::getXmlSkin() const {
         if (!xmlSkin) {
             throw std::runtime_error("GUI skin is not initialized");
         }

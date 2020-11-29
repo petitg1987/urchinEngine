@@ -16,28 +16,28 @@ namespace urchin {
         return shapeType;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::addData(const std::vector<Point2<float>>* dataPtr) {
+    GenericRendererBuilder* GenericRendererBuilder::addData(const std::vector<Point2<float>>* dataPtr) {
         GenericRenderer::Data dataValue{DataType::FLOAT, DataDimension::TWO_DIMENSION, &(*dataPtr)[0], (unsigned int)dataPtr->size()};
         data.push_back(dataValue);
         return this;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::addData(const std::vector<Point3<float>>* dataPtr) {
+    GenericRendererBuilder* GenericRendererBuilder::addData(const std::vector<Point3<float>>* dataPtr) {
         GenericRenderer::Data dataValue{DataType::FLOAT, DataDimension::THREE_DIMENSION, &(*dataPtr)[0], (unsigned int)dataPtr->size()};
         data.push_back(dataValue);
         return this;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::addData(const std::vector<Vector3<float>>* dataPtr) {
+    GenericRendererBuilder* GenericRendererBuilder::addData(const std::vector<Vector3<float>>* dataPtr) {
         addData(reinterpret_cast<const std::vector<Point3<float>> *>(dataPtr));
         return this;
     }
 
-    const std::vector<GenericRenderer::Data> &GenericRendererBuilder::getData() const {
+    const std::vector<GenericRenderer::Data>& GenericRendererBuilder::getData() const {
         return data;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::indices(const std::vector<unsigned int>* indices) {
+    GenericRendererBuilder* GenericRendererBuilder::indices(const std::vector<unsigned int>* indices) {
         pIndices.ptr = &(*indices)[0];
         pIndices.indicesCount = indices->size();
         pIndices.hasPrimitiveRestartIndex = false;
@@ -52,11 +52,11 @@ namespace urchin {
         return this;
     }
 
-    const GenericRenderer::Indices &GenericRendererBuilder::getIndices() const {
+    const GenericRenderer::Indices& GenericRendererBuilder::getIndices() const {
         return pIndices;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::enableTransparency() {
+    GenericRendererBuilder* GenericRendererBuilder::enableTransparency() {
         this->transparencyEnabled = true;
         return this;
     }
@@ -65,7 +65,7 @@ namespace urchin {
         return transparencyEnabled;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::enableDepthTest() {
+    GenericRendererBuilder* GenericRendererBuilder::enableDepthTest() {
         this->depthTestEnabled = true;
         return this;
     }
@@ -74,7 +74,7 @@ namespace urchin {
         return depthTestEnabled;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::disableCullFace() {
+    GenericRendererBuilder* GenericRendererBuilder::disableCullFace() {
         cullFaceEnabled = false;
         return this;
     }
@@ -83,7 +83,7 @@ namespace urchin {
         return cullFaceEnabled;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::polygonMode(PolygonMode pPolygonMode) {
+    GenericRendererBuilder* GenericRendererBuilder::polygonMode(PolygonMode pPolygonMode) {
         this->pPolygonMode = pPolygonMode;
         return this;
     }
@@ -92,7 +92,7 @@ namespace urchin {
         return pPolygonMode;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::outlineSize(float pOutlineSize) {
+    GenericRendererBuilder* GenericRendererBuilder::outlineSize(float pOutlineSize) {
         this->pOutlineSize = pOutlineSize;
         return this;
     }
@@ -101,12 +101,12 @@ namespace urchin {
         return pOutlineSize;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::addTexture(const TextureReader& texture) {
+    GenericRendererBuilder* GenericRendererBuilder::addTexture(const TextureReader& texture) {
         textures.push_back(texture);
         return this;
     }
 
-    const std::vector<TextureReader> &GenericRendererBuilder::getTextures() const {
+    const std::vector<TextureReader>& GenericRendererBuilder::getTextures() const {
         return textures;
     }
 

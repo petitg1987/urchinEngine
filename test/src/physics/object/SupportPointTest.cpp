@@ -84,7 +84,7 @@ void SupportPointTest::convexHullSupportPoint() {
     AssertHelper::assertPoint3FloatEquals(convexHullObject.getSupportPoint(Vector3<float>(1.0, 0.0, 0.1), true), Point3<float>(0.24, 0.0, 0.04));
 }
 
-CppUnit::Test *SupportPointTest::suite() {
+CppUnit::Test* SupportPointTest::suite() {
     auto* suite = new CppUnit::TestSuite("SupportPointTest");
 
     suite->addTest(new CppUnit::TestCaller<SupportPointTest>("sphereSupportPoint", &SupportPointTest::sphereSupportPoint));

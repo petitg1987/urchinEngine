@@ -109,7 +109,7 @@ namespace urchin {
         }
     }
 
-    const SoundShape *SoundBoxShapeWidget::createSoundShape() const {
+    const SoundShape* SoundBoxShapeWidget::createSoundShape() const {
         Point3<float> position(positionX->value(), positionY->value(), positionZ->value());
 
         Vector3<float> halfSizes(halfSizeX->value(), halfSizeY->value(), halfSizeZ->value());

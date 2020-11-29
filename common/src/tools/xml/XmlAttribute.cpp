@@ -16,11 +16,11 @@ namespace urchin {
 
     }
 
-    const std::string &XmlAttribute::getAttributeName() const {
+    const std::string& XmlAttribute::getAttributeName() const {
         return attributeName;
     }
 
-    const std::string &XmlAttribute::getAttributeValue() const {
+    const std::string& XmlAttribute::getAttributeValue() const {
         return attributeValue;
     }
 

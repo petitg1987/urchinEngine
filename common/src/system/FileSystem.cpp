@@ -12,7 +12,7 @@ namespace urchin {
         this->resourcesDirectory = resourcesDirectory;
     }
 
-    const std::string &FileSystem::getResourcesDirectory() const {
+    const std::string& FileSystem::getResourcesDirectory() const {
         return resourcesDirectory;
     }
 
@@ -20,7 +20,7 @@ namespace urchin {
         this->saveDirectory = saveDirectory;
     }
 
-    const std::string &FileSystem::getSaveDirectory() const {
+    const std::string& FileSystem::getSaveDirectory() const {
         return saveDirectory;
     }
 

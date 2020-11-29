@@ -246,7 +246,7 @@ namespace urchin {
         connect(gradient, SIGNAL(valueChanged(double)), this, SLOT(updateUnderWaterProperties()));
     }
 
-    WaterTableView *WaterPanelWidget::getWaterTableView() const {
+    WaterTableView* WaterPanelWidget::getWaterTableView() const {
         return waterTableView;
     }
 

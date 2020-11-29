@@ -16,30 +16,30 @@ namespace urchin {
         return SoundShape::BOX_SHAPE;
     }
 
-    const OBBox<float> &SoundBox::getPlayTriggerBox() const {
+    const OBBox<float>& SoundBox::getPlayTriggerBox() const {
         return playTriggerBox;
     }
 
-    const OBBox<float> &SoundBox::getStopTriggerBox() const {
+    const OBBox<float>& SoundBox::getStopTriggerBox() const {
         return stopTriggerBox;
     }
 
-    const Vector3<float> &SoundBox::getHalfSizes() const {
+    const Vector3<float>& SoundBox::getHalfSizes() const {
         return playTriggerBox.getHalfSizes();
     }
 
-    const Point3<float> &SoundBox::getCenterPosition() const {
+    const Point3<float>& SoundBox::getCenterPosition() const {
         return playTriggerBox.getCenterOfMass();
     }
 
-    const Quaternion<float> &SoundBox::getOrientation() const {
+    const Quaternion<float>& SoundBox::getOrientation() const {
         return playTriggerBox.getOrientation();
     }
 
     /**
      * @return Bounding box normalized axis
      */
-    const Vector3<float> &SoundBox::getAxis(unsigned int index) const {
+    const Vector3<float>& SoundBox::getAxis(unsigned int index) const {
         return playTriggerBox.getAxis(index);
     }
 
@@ -59,7 +59,7 @@ namespace urchin {
                 std::fabs(localPointTranslation.dotProduct(box.getAxis(2))) <= box.getHalfSize(2);
     }
 
-    SoundShape *SoundBox::clone() const {
+    SoundShape* SoundBox::clone() const {
         return new SoundBox(getHalfSizes(), getCenterPosition(), getOrientation(), getMargin());
     }
 

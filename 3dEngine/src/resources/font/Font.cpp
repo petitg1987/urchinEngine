@@ -28,11 +28,11 @@ namespace urchin {
         return fontColor;
     }
 
-    const Glyph &Font::getGlyph(unsigned char character) const {
+    const Glyph& Font::getGlyph(unsigned char character) const {
         return glyph[(unsigned int)character];
     }
 
-    const std::shared_ptr<Texture> &Font::getTexture() const {
+    const std::shared_ptr<Texture>& Font::getTexture() const {
         return alphabetTexture;
     }
 

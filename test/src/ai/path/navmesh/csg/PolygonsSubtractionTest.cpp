@@ -376,7 +376,7 @@ void PolygonsSubtractionTest::polygonsSubtractionCorner4() { //see polygonsSubtr
                                                                                  Point2<float>(7.27159405, -7.60229063)});
 }
 
-CppUnit::Test *PolygonsSubtractionTest::suite() {
+CppUnit::Test* PolygonsSubtractionTest::suite() {
     auto* suite = new CppUnit::TestSuite("PolygonsSubtractionTest");
 
     suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionSubtrahendInside", &PolygonsSubtractionTest::polygonsSubtractionSubtrahendInside));

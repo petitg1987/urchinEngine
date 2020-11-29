@@ -121,7 +121,7 @@ void BodyAABBTreeTest::threeBodiesPairedAndRemove() {
     AssertHelper::assertUnsignedInt(bodyC->getPairContainer()->retrieveCopyOverlappingPairs().size(), 0);
 }
 
-CppUnit::Test *BodyAABBTreeTest::suite() {
+CppUnit::Test* BodyAABBTreeTest::suite() {
     auto* suite = new CppUnit::TestSuite("BodyAABBTreeTest");
 
     suite->addTest(new CppUnit::TestCaller<BodyAABBTreeTest>("twoBodiesPairedAndRemove", &BodyAABBTreeTest::twoBodiesPairedAndRemove));

@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    Sound *SoundReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& soundChunk, const XmlParser& xmlParser) const {
+    Sound* SoundReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& soundChunk, const XmlParser& xmlParser) const {
         Sound* sound = buildSoundFrom(soundChunk, xmlParser);
 
         loadPropertiesOn(sound, soundChunk, xmlParser);
@@ -16,7 +16,7 @@ namespace urchin {
         writePropertiesOn(soundChunk, sound, xmlWriter);
     }
 
-    Sound *SoundReaderWriter::buildSoundFrom(const std::shared_ptr<XmlChunk>& soundChunk, const XmlParser& xmlParser) const {
+    Sound* SoundReaderWriter::buildSoundFrom(const std::shared_ptr<XmlChunk>& soundChunk, const XmlParser& xmlParser) const {
         std::shared_ptr<XmlChunk> filenameChunk = xmlParser.getUniqueChunk(true, FILENAME_TAG, XmlAttribute(), soundChunk);
         std::string filename = filenameChunk->getStringValue();
 

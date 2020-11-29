@@ -47,7 +47,7 @@ namespace urchin {
         delete originalBBox;
     }
 
-    const std::string &ConstMeshes::getMeshFilename() const {
+    const std::string& ConstMeshes::getMeshFilename() const {
         return meshFilename;
     }
 
@@ -55,7 +55,7 @@ namespace urchin {
         return constMeshes.size();
     }
 
-    const ConstMesh *ConstMeshes::getConstMesh(unsigned int index) const {
+    const ConstMesh* ConstMeshes::getConstMesh(unsigned int index) const {
         return constMeshes[index];
     }
 
@@ -63,11 +63,11 @@ namespace urchin {
         return constMeshes;
     }
 
-    const AABBox<float> &ConstMeshes::getOriginalAABBox() const {
+    const AABBox<float>& ConstMeshes::getOriginalAABBox() const {
         return *originalBBox;
     }
 
-    const std::vector<AABBox<float>> &ConstMeshes::getOriginalSplitAABBoxes() const {
+    const std::vector<AABBox<float>>& ConstMeshes::getOriginalSplitAABBoxes() const {
         return originalSplitBBoxes;
     }
 

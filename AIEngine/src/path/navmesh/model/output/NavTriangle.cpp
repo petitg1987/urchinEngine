@@ -43,7 +43,7 @@ namespace urchin {
         return navPolygon.lock();
     }
 
-    const Point3<float> &NavTriangle::getCenterPoint() const {
+    const Point3<float>& NavTriangle::getCenterPoint() const {
         assert(getNavPolygon() != nullptr); //center point not computed until triangle is not linked to polygon
 
         return centerPoint;
@@ -52,7 +52,7 @@ namespace urchin {
     /**
      * @return Indices of points in CCW order when looked from top
      */
-    const std::size_t *NavTriangle::getIndices() const {
+    const std::size_t* NavTriangle::getIndices() const {
         return indices;
     }
 

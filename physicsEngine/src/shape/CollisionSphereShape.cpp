@@ -25,7 +25,7 @@ namespace urchin {
         return CollisionShape3D::SPHERE_SHAPE;
     }
 
-    const ConvexShape3D<float> *CollisionSphereShape::getSingleShape() const {
+    const ConvexShape3D<float>* CollisionSphereShape::getSingleShape() const {
         return sphereShape;
     }
 
@@ -64,7 +64,7 @@ namespace urchin {
         return sphereShape->getRadius();
     }
 
-    CollisionShape3D *CollisionSphereShape::clone() const {
+    CollisionShape3D* CollisionSphereShape::clone() const {
         return new CollisionSphereShape(sphereShape->getRadius());
     }
 

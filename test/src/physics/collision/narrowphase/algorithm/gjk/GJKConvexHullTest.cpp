@@ -141,7 +141,7 @@ void GJKConvexHullTest::cornerInsideHexagon() {
     AssertHelper::assertTrue(result->isCollide());
 }
 
-CppUnit::Test *GJKConvexHullTest::suite() {
+CppUnit::Test* GJKConvexHullTest::suite() {
     auto* suite = new CppUnit::TestSuite("GJKConvexHullTest");
 
     suite->addTest(new CppUnit::TestCaller<GJKConvexHullTest>("identicalBox", &GJKConvexHullTest::identicalBox));

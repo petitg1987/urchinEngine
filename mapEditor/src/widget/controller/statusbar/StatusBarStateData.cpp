@@ -7,7 +7,7 @@ namespace urchin {
 
     }
 
-    const std::vector<std::string> &StatusBarStateData::getLabels() {
+    const std::vector<std::string>& StatusBarStateData::getLabels() {
         return labels;
     }
 

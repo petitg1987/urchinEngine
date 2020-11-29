@@ -26,18 +26,18 @@ namespace urchin {
         return cylinderObject.getCylinderOrientation();
     }
 
-    const Point3<float> &CollisionCylinderObject::getCenterOfMass() const {
+    const Point3<float>& CollisionCylinderObject::getCenterOfMass() const {
         return cylinderObject.getCenterOfMass();
     }
 
-    const Quaternion<float> &CollisionCylinderObject::getOrientation() const {
+    const Quaternion<float>& CollisionCylinderObject::getOrientation() const {
         return cylinderObject.getOrientation();
     }
 
     /**
      * @return Cylinder normalized axis for given index
      */
-    const Vector3<float> &CollisionCylinderObject::getAxis(unsigned int index) const {
+    const Vector3<float>& CollisionCylinderObject::getAxis(unsigned int index) const {
         return cylinderObject.getAxis(index);
     }
 

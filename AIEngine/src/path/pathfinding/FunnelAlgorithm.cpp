@@ -15,7 +15,7 @@ namespace urchin {
 
     }
 
-    const std::vector<std::shared_ptr<PathPortal>> &FunnelAlgorithm::computePivotPoints() {
+    const std::vector<std::shared_ptr<PathPortal>>& FunnelAlgorithm::computePivotPoints() {
         #ifndef NDEBUG
             assert(portals.size() >= 2);
             assert(portals[0]->getPortal().getA() == portals[0]->getPortal().getB()); //degenerated start portal
@@ -76,7 +76,7 @@ namespace urchin {
         return -1;
     }
 
-    const Point3<float> &FunnelAlgorithm::getPortalPoint(FunnelSide updateSide, unsigned int index) const {
+    const Point3<float>& FunnelAlgorithm::getPortalPoint(FunnelSide updateSide, unsigned int index) const {
         if (updateSide==FunnelSide::LEFT) {
             return portals[index]->getPortal().getA();
         } else {

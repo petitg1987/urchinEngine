@@ -158,7 +158,7 @@ void ClosestPointTest::closestPointTetrahedron() {
     AssertHelper::assertFloatEquals(barycentrics[3], 0.966667);
 }
 
-CppUnit::Test *ClosestPointTest::suite() {
+CppUnit::Test* ClosestPointTest::suite() {
     auto* suite = new CppUnit::TestSuite("VoronoiRegionTest");
 
     suite->addTest(new CppUnit::TestCaller<ClosestPointTest>("closestPointLineSegment2D", &ClosestPointTest::closestPointLineSegment2D));

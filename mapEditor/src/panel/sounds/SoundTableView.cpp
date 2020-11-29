@@ -34,7 +34,7 @@ namespace urchin {
         return this->currentIndex().row()!=-1;
     }
 
-    const SceneSound *SoundTableView::getSelectedSceneSound() const {
+    const SceneSound* SoundTableView::getSelectedSceneSound() const {
         QModelIndex selectedIndex = this->currentIndex();
         if (selectedIndex.row()!=-1) {
             return selectedIndex.data(Qt::UserRole + 1).value<const SceneSound *>();

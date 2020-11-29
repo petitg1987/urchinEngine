@@ -319,7 +319,7 @@ namespace urchin {
         connect(windStrength, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
     }
 
-    TerrainTableView *TerrainPanelWidget::getTerrainTableView() const {
+    TerrainTableView* TerrainPanelWidget::getTerrainTableView() const {
         return terrainTableView;
     }
 

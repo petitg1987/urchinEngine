@@ -93,7 +93,7 @@ void TerrainObstacleServiceTest::squaresInUForm() {
     AssertHelper::assertPoint2FloatEquals(selfObstacles[0].getCwPoints()[7], Point2<float>(0.0f, -2.0f));
 }
 
-CppUnit::Test *TerrainObstacleServiceTest::suite() {
+CppUnit::Test* TerrainObstacleServiceTest::suite() {
     auto* suite = new CppUnit::TestSuite("TerrainObstacleServiceTest");
 
     suite->addTest(new CppUnit::TestCaller<TerrainObstacleServiceTest>("oneSquare", &TerrainObstacleServiceTest::oneSquare));

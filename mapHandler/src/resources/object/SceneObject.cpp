@@ -74,7 +74,7 @@ namespace urchin {
         }
     }
 
-    const std::string &SceneObject::getName() const {
+    const std::string& SceneObject::getName() const {
         return name;
     }
 
@@ -82,7 +82,7 @@ namespace urchin {
         this->name = name;
     }
 
-    Model *SceneObject::getModel() const {
+    Model* SceneObject::getModel() const {
         return model;
     }
 
@@ -106,7 +106,7 @@ namespace urchin {
         setupAIObject();
     }
 
-    RigidBody *SceneObject::getRigidBody() const {
+    RigidBody* SceneObject::getRigidBody() const {
         return rigidBody;
     }
 

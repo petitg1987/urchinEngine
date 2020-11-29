@@ -26,15 +26,15 @@ namespace urchin {
         return capsuleObject.getCapsuleOrientation();
     }
 
-    const Point3<float> &CollisionCapsuleObject::getCenterOfMass() const {
+    const Point3<float>& CollisionCapsuleObject::getCenterOfMass() const {
         return capsuleObject.getCenterOfMass();
     }
 
-    const Quaternion<float> &CollisionCapsuleObject::getOrientation() const {
+    const Quaternion<float>& CollisionCapsuleObject::getOrientation() const {
         return capsuleObject.getOrientation();
     }
 
-    const Vector3<float> &CollisionCapsuleObject::getAxis(unsigned int index) const {
+    const Vector3<float>& CollisionCapsuleObject::getAxis(unsigned int index) const {
         return capsuleObject.getAxis(index);
     }
 

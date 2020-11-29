@@ -18,26 +18,26 @@ namespace urchin {
         constAnimation->release();
     }
 
-    const std::vector<Bone> &Animation::getSkeleton() const {
+    const std::vector<Bone>& Animation::getSkeleton() const {
         return skeleton;
     }
 
-    const AABBox<float> &Animation::getGlobalAABBox() const {
+    const AABBox<float>& Animation::getGlobalAABBox() const {
         return globalBBox;
     }
 
-    const std::vector<AABBox<float>> &Animation::getGlobalSplitAABBoxes() const {
+    const std::vector<AABBox<float>>& Animation::getGlobalSplitAABBoxes() const {
         return globalSplitBBoxes;
     }
 
     /**
      * @return Return global bounding box for all animations but not transformed
      */
-    const AABBox<float> &Animation::getGlobalLocalAABBox() const {
+    const AABBox<float>& Animation::getGlobalLocalAABBox() const {
         return constAnimation->getOriginalGlobalAABBox();
     }
 
-    const ConstAnimation *Animation::getConstAnimation() const {
+    const ConstAnimation* Animation::getConstAnimation() const {
         return constAnimation;
     }
 

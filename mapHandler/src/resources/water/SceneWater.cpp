@@ -47,7 +47,7 @@ namespace urchin {
         this->name = name;
     }
 
-    Water *SceneWater::getWater() const {
+    Water* SceneWater::getWater() const {
         return water;
     }
 

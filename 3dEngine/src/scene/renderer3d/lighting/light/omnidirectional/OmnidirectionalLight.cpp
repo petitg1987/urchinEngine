@@ -36,11 +36,11 @@ namespace urchin {
         notifyObservers(this, Light::LIGHT_MOVE);
     }
 
-    const Point3<float> &OmnidirectionalLight::getPosition() const {
+    const Point3<float>& OmnidirectionalLight::getPosition() const {
         return position;
     }
 
-    const std::vector<Vector3<float>> &OmnidirectionalLight::getDirections() const {
+    const std::vector<Vector3<float>>& OmnidirectionalLight::getDirections() const {
         return directions;
     }
 
@@ -52,7 +52,7 @@ namespace urchin {
         return false;
     }
 
-    const AABBox<float> &OmnidirectionalLight::getAABBox() const {
+    const AABBox<float>& OmnidirectionalLight::getAABBox() const {
         return *bboxScope;
     }
 
@@ -69,11 +69,11 @@ namespace urchin {
         return exponentialAttenuation;
     }
 
-    const AABBox<float> &OmnidirectionalLight::getAABBoxScope() const {
+    const AABBox<float>& OmnidirectionalLight::getAABBoxScope() const {
         return *bboxScope;
     }
 
-    const Sphere<float> &OmnidirectionalLight::getSphereScope() const {
+    const Sphere<float>& OmnidirectionalLight::getSphereScope() const {
         return *sphereScope;
     }
 

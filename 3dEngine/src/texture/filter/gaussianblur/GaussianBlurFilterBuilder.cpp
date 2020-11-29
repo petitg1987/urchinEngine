@@ -10,12 +10,12 @@ namespace urchin {
 
     }
 
-    GaussianBlurFilterBuilder *GaussianBlurFilterBuilder::blurDirection(BlurDirection blurDirection) {
+    GaussianBlurFilterBuilder* GaussianBlurFilterBuilder::blurDirection(BlurDirection blurDirection) {
         this->pBlurDirection = blurDirection;
         return this;
     }
 
-    GaussianBlurFilterBuilder *GaussianBlurFilterBuilder::blurSize(unsigned int blurSize) {
+    GaussianBlurFilterBuilder* GaussianBlurFilterBuilder::blurSize(unsigned int blurSize) {
         this->pBlurSize = blurSize;
         return this;
     }

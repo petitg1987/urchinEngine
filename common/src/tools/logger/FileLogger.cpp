@@ -14,7 +14,7 @@ namespace urchin {
 
     }
 
-    const std::string &FileLogger::getFilename() const {
+    const std::string& FileLogger::getFilename() const {
         return filename;
     }
 

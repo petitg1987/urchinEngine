@@ -165,7 +165,7 @@ namespace urchin {
         connect(directionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
     }
 
-    LightTableView *LightPanelWidget::getLightTableView() const {
+    LightTableView* LightPanelWidget::getLightTableView() const {
         return lightTableView;
     }
 

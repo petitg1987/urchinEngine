@@ -110,7 +110,7 @@ void EPAConvexHullTest::cornerInsideHexagon() {
     AssertHelper::assertFloatEquals(resultEpa->getContactPointA().Z, resultEpa->getContactPointB().Z);
 }
 
-CppUnit::Test *EPAConvexHullTest::suite() {
+CppUnit::Test* EPAConvexHullTest::suite() {
     auto* suite = new CppUnit::TestSuite("EPAConvexHullTest");
 
     suite->addTest(new CppUnit::TestCaller<EPAConvexHullTest>("identicalBox", &EPAConvexHullTest::identicalBox));

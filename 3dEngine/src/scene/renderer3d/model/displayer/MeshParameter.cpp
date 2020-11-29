@@ -19,7 +19,7 @@ namespace urchin {
         this->ambientFactorShaderVar = ambientFactorShaderVar;
     }
 
-    const ShaderVar &MeshParameter::getAmbientFactorShaderVar() const {
+    const ShaderVar& MeshParameter::getAmbientFactorShaderVar() const {
         return ambientFactorShaderVar;
     }
 

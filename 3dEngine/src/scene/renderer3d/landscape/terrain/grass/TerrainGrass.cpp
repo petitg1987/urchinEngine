@@ -227,7 +227,7 @@ namespace urchin {
         }
     }
 
-    const std::string &TerrainGrass::getGrassTexture() const {
+    const std::string& TerrainGrass::getGrassTexture() const {
         return grassTextureFilename;
     }
 
@@ -243,7 +243,7 @@ namespace urchin {
         }
     }
 
-    const std::string &TerrainGrass::getMaskTexture() const {
+    const std::string& TerrainGrass::getMaskTexture() const {
         return grassMaskFilename;
     }
 

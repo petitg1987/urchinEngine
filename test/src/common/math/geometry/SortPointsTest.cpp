@@ -78,7 +78,7 @@ void SortPointsTest::fourPointsCounterClockwiseYNormal() {
     AssertHelper::assertPoint3FloatEquals(sortedPoints[3], Point3<float>(-1.0, 0.0, -1.0));
 }
 
-CppUnit::Test *SortPointsTest::suite() {
+CppUnit::Test* SortPointsTest::suite() {
     auto* suite = new CppUnit::TestSuite("SortPointsTest");
 
     suite->addTest(new CppUnit::TestCaller<SortPointsTest>("threePointsClockwise", &SortPointsTest::threePointsClockwise));

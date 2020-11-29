@@ -8,7 +8,7 @@ namespace urchin {
 
     }
 
-    const Transform<float> &Light::getTransform() const {
+    const Transform<float>& Light::getTransform() const {
         return noTransform;
     }
 
@@ -26,7 +26,7 @@ namespace urchin {
         this->ambientColor = ambientColor;
     }
 
-    const Point3<float> &Light::getAmbientColor() const {
+    const Point3<float>& Light::getAmbientColor() const {
         return ambientColor;
     }
 

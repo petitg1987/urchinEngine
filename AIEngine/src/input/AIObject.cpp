@@ -20,7 +20,7 @@ namespace urchin {
         return AIEntity::OBJECT;
     }
 
-    const std::vector<std::shared_ptr<AIShape>> &AIObject::getShapes() const {
+    const std::vector<std::shared_ptr<AIShape>>& AIObject::getShapes() const {
         return shapes;
     }
 }

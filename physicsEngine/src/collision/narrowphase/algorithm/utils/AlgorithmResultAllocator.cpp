@@ -24,7 +24,7 @@ namespace urchin {
         delete algorithmResultPool;
     }
 
-    SyncFixedSizePool<AlgorithmResult> *AlgorithmResultAllocator::getAlgorithmResultPool() const {
+    SyncFixedSizePool<AlgorithmResult>* AlgorithmResultAllocator::getAlgorithmResultPool() const {
         return algorithmResultPool;
     }
 

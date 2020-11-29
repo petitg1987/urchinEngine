@@ -5,7 +5,7 @@ namespace urchin {
     //static
     std::map<std::string, SingletonInterface *> SingletonManager::singletons;
 
-    void *SingletonManager::getSingleton(const std::string& name) {
+    void* SingletonManager::getSingleton(const std::string& name) {
         auto it = singletons.find(name);
         if (it==singletons.end()) {
             return nullptr;

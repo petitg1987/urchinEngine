@@ -156,7 +156,7 @@ namespace urchin {
         this->offsetY = offsetY;
     }
 
-    const std::vector<std::string> &Skybox::getFilenames() const {
+    const std::vector<std::string>& Skybox::getFilenames() const {
         return filenames;
     }
 

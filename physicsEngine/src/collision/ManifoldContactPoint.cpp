@@ -37,35 +37,35 @@ namespace urchin {
     /**
      * @return Contact normal starting from object 2
      */
-    const Vector3<float> &ManifoldContactPoint::getNormalFromObject2() const {
+    const Vector3<float>& ManifoldContactPoint::getNormalFromObject2() const {
         return normalFromObject2;
     }
 
     /**
      * @return Contact point on object 1 in world position
      */
-    const Point3<float> &ManifoldContactPoint::getPointOnObject1() const {
+    const Point3<float>& ManifoldContactPoint::getPointOnObject1() const {
         return pointOnObject1;
     }
 
     /**
      * @return Contact point on object 2 in world position
      */
-    const Point3<float> &ManifoldContactPoint::getPointOnObject2() const {
+    const Point3<float>& ManifoldContactPoint::getPointOnObject2() const {
         return pointOnObject2;
     }
 
     /**
      * @return Local contact point on object 1
      */
-    const Point3<float> &ManifoldContactPoint::getLocalPointOnObject1() const {
+    const Point3<float>& ManifoldContactPoint::getLocalPointOnObject1() const {
         return localPointOnObject1;
     }
 
     /**
      * @return Local contact point on object 2
      */
-    const Point3<float> &ManifoldContactPoint::getLocalPointOnObject2() const {
+    const Point3<float>& ManifoldContactPoint::getLocalPointOnObject2() const {
         return localPointOnObject2;
     }
 
@@ -103,7 +103,7 @@ namespace urchin {
     /**
      * @return Accumulated data stored by constraint solver through frames
      */
-    AccumulatedSolvingData &ManifoldContactPoint::getAccumulatedSolvingData() {
+    AccumulatedSolvingData& ManifoldContactPoint::getAccumulatedSolvingData() {
         return accumulatedSolvingData;
     }
 }

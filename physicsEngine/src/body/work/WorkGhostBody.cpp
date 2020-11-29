@@ -14,18 +14,18 @@ namespace urchin {
         delete pairContainer;
     }
 
-    WorkGhostBody *WorkGhostBody::upCast(AbstractWorkBody* workBody) {
+    WorkGhostBody* WorkGhostBody::upCast(AbstractWorkBody* workBody) {
         return dynamic_cast<WorkGhostBody*>(workBody);
     }
 
-    const WorkGhostBody *WorkGhostBody::upCast(const AbstractWorkBody* workBody) {
+    const WorkGhostBody* WorkGhostBody::upCast(const AbstractWorkBody* workBody) {
         return dynamic_cast<const WorkGhostBody*>(workBody);
     }
 
     /**
      * @return Pair container used to collect colliding pairs on ghost body
      */
-    PairContainer *WorkGhostBody::getPairContainer() const {
+    PairContainer* WorkGhostBody::getPairContainer() const {
         return pairContainer;
     }
 

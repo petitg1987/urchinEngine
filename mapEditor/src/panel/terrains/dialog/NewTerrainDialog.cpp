@@ -97,7 +97,7 @@ namespace urchin {
     }
 
 
-    SceneTerrain *NewTerrainDialog::getSceneTerrain() const {
+    SceneTerrain* NewTerrainDialog::getSceneTerrain() const {
         return sceneTerrain;
     }
 

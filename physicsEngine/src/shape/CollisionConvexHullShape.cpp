@@ -61,7 +61,7 @@ namespace urchin {
         return CollisionShape3D::CONVEX_HULL_SHAPE;
     }
 
-    const ConvexShape3D<float> *CollisionConvexHullShape::getSingleShape() const {
+    const ConvexShape3D<float>* CollisionConvexHullShape::getSingleShape() const {
         return convexHullShape;
     }
 
@@ -151,7 +151,7 @@ namespace urchin {
         return minDistanceToCenter;
     }
 
-    CollisionShape3D *CollisionConvexHullShape::clone() const {
+    CollisionShape3D* CollisionConvexHullShape::clone() const {
         return new CollisionConvexHullShape(convexHullShape->getPoints());
     }
 

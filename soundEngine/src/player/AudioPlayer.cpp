@@ -7,7 +7,7 @@ namespace urchin {
 
     }
 
-    const Sound *AudioPlayer::getSound() const {
+    const Sound* AudioPlayer::getSound() const {
         return sound;
     }
 

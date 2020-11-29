@@ -32,11 +32,11 @@ namespace urchin {
         return CollisionShape3D::COMPOUND_SHAPE;
     }
 
-    const ConvexShape3D<float> *CollisionCompoundShape::getSingleShape() const {
+    const ConvexShape3D<float>* CollisionCompoundShape::getSingleShape() const {
         throw std::runtime_error("Impossible to retrieve single convex shape for compound shape");
     }
 
-    const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &CollisionCompoundShape::getLocalizedShapes() const {
+    const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& CollisionCompoundShape::getLocalizedShapes() const {
         return localizedShapes;
     }
 
@@ -98,7 +98,7 @@ namespace urchin {
         return minDistanceToCenter;
     }
 
-    CollisionShape3D *CollisionCompoundShape::clone() const {
+    CollisionShape3D* CollisionCompoundShape::clone() const {
         std::vector<std::shared_ptr<const LocalizedCollisionShape>> clonedLocalizedShapes;
         for (const auto& localizedShape : localizedShapes) {
             auto clonedLocalizedShape = std::make_shared<LocalizedCollisionShape>();

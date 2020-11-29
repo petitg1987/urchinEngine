@@ -90,11 +90,11 @@ namespace urchin {
         tabWidget->addTab(tabPhysics, "Physics");
     }
 
-    ObjectTableView *ObjectPanelWidget::getObjectTableView() const {
+    ObjectTableView* ObjectPanelWidget::getObjectTableView() const {
         return objectTableView;
     }
 
-    BodyShapeWidget *ObjectPanelWidget::getBodyShapeWidget() const {
+    BodyShapeWidget* ObjectPanelWidget::getBodyShapeWidget() const {
         return bodyShapeWidget;
     }
 
@@ -476,7 +476,7 @@ namespace urchin {
         disableObjectEvent = false;
     }
 
-    BodyShapeWidget *ObjectPanelWidget::createBodyShapeWidget(const std::shared_ptr<const CollisionShape3D>& shape, const SceneObject* sceneObject) {
+    BodyShapeWidget* ObjectPanelWidget::createBodyShapeWidget(const std::shared_ptr<const CollisionShape3D>& shape, const SceneObject* sceneObject) {
         delete bodyShapeWidget;
 
         bodyShapeWidget = BodyShapeWidgetRetriever(sceneObject).createBodyShapeWidget(shape);
