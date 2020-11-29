@@ -30,10 +30,11 @@ namespace urchin {
             void addPoint(const Point3<float> &);
             std::vector<Point3<float>> getPoints() const;
 
-            QLabel *pointsLabel;
-            QTableView *pointsTable;
-            QStandardItemModel *pointsTableModel;
-            QPushButton *addPointButton, *removePointButton;
+            QLabel* pointsLabel;
+            QTableView* pointsTable;
+            QStandardItemModel* pointsTableModel;
+            QPushButton* addPointButton;
+            QPushButton* removePointButton;
 
         private slots:
             void addNewPoint();

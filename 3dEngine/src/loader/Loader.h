@@ -14,8 +14,8 @@ namespace urchin {
         public:
             virtual ~Loader();
 
-            virtual T *loadFromFile(const std::string &filename);
-            virtual void saveToFile(const T *object, const std::string& filename);
+            virtual T *loadFromFile(const std::string&);
+            virtual void saveToFile(const T*, const std::string&);
     };
 
     #include "Loader.inl"

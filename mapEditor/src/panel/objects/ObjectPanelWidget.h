@@ -54,33 +54,45 @@ namespace urchin {
             void setupObjectDataFrom(const SceneObject *);
             void setupObjectPhysicsDataFrom(const SceneObject *);
 
-            BodyShapeWidget *createBodyShapeWidget(const std::shared_ptr<const CollisionShape3D>&, const SceneObject *);
+            BodyShapeWidget* createBodyShapeWidget(const std::shared_ptr<const CollisionShape3D>&, const SceneObject *);
 
-            ObjectController *objectController;
+            ObjectController* objectController;
 
-            ObjectTableView *objectTableView;
-            QPushButton *addObjectButton;
-            QPushButton *removeObjectButton;
-            QPushButton *cloneObjectButton;
-            QTabWidget *tabWidget;
+            ObjectTableView* objectTableView;
+            QPushButton* addObjectButton;
+            QPushButton* removeObjectButton;
+            QPushButton* cloneObjectButton;
+            QTabWidget* tabWidget;
 
             bool disableObjectEvent;
 
             //general
-            QDoubleSpinBox *positionX, *positionY, *positionZ;
-            QComboBox *orientationType;
-            QDoubleSpinBox *eulerAxis0, *eulerAxis1, *eulerAxis2;
-            QDoubleSpinBox *scale;
-            QCheckBox *produceShadowCheckBox;
+            QDoubleSpinBox* positionX;
+            QDoubleSpinBox* positionY;
+            QDoubleSpinBox* positionZ;
+            QComboBox* orientationType;
+            QDoubleSpinBox* eulerAxis0;
+            QDoubleSpinBox* eulerAxis1;
+            QDoubleSpinBox* eulerAxis2;
+            QDoubleSpinBox* scale;
+            QCheckBox* produceShadowCheckBox;
 
             //physics
-            QCheckBox *hasRigidBody;
-            QTabWidget *tabPhysicsRigidBody;
-            QVBoxLayout *physicsShapeLayout;
-            QDoubleSpinBox *mass, *restitution, *friction, *rollingFriction;
-            QDoubleSpinBox *linearDamping, *angularDamping;
-            QDoubleSpinBox *linearFactorX, *linearFactorY, *linearFactorZ;
-            QDoubleSpinBox *angularFactorX, *angularFactorY, *angularFactorZ;
+            QCheckBox* hasRigidBody;
+            QTabWidget* tabPhysicsRigidBody;
+            QVBoxLayout* physicsShapeLayout;
+            QDoubleSpinBox* mass;
+            QDoubleSpinBox* restitution;
+            QDoubleSpinBox* friction;
+            QDoubleSpinBox* rollingFriction;
+            QDoubleSpinBox* linearDamping;
+            QDoubleSpinBox* angularDamping;
+            QDoubleSpinBox* linearFactorX;
+            QDoubleSpinBox* linearFactorY;
+            QDoubleSpinBox* linearFactorZ;
+            QDoubleSpinBox* angularFactorX;
+            QDoubleSpinBox* angularFactorY;
+            QDoubleSpinBox* angularFactorZ;
             QLabel *shapeTypeValueLabel;
             QPushButton *changeBodyShapeButton;
             BodyShapeWidget *bodyShapeWidget;

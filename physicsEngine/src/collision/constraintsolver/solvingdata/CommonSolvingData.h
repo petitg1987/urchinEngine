@@ -13,7 +13,8 @@ namespace urchin {
     struct CommonSolvingData {
         CommonSolvingData();
 
-        const WorkRigidBody *body1, *body2;
+        const WorkRigidBody* body1;
+        const WorkRigidBody* body2;
 
         Vector3<float> contactNormal;
         Vector3<float> contactTangent;

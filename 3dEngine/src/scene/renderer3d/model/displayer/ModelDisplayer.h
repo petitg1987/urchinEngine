@@ -32,7 +32,7 @@ namespace urchin {
             void initialize();
             void onCameraProjectionUpdate(const Camera *);
 
-            ShaderVar getShaderVar(const std::string &name) const;
+            ShaderVar getShaderVar(const std::string &) const;
             void setCustomGeometryShader(const std::string &, const std::map<std::string, std::string> &);
             void setCustomFragmentShader(const std::string &, const std::map<std::string, std::string> &);
             void setCustomShaderVariable(CustomShaderVariable *);

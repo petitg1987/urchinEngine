@@ -25,8 +25,10 @@ namespace urchin {
             const SoundShape *createSoundShape() const override;
 
         private:
-            QDoubleSpinBox *radius;
-            QDoubleSpinBox *positionX, *positionY, *positionZ;
+            QDoubleSpinBox* radius;
+            QDoubleSpinBox* positionX;
+            QDoubleSpinBox* positionY;
+            QDoubleSpinBox* positionZ;
     };
 
 }

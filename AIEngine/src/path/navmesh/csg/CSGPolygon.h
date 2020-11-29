@@ -31,7 +31,7 @@ namespace urchin {
             bool pointInsidePolygon(const Point2<T> &, bool) const;
 
             bool isCwPoints() const;
-            void logInputData(const std::string &message, Logger::CriticalityLevel logLevel, const CSGPolygon<T> &) const;
+            void logInputData(const std::string &, Logger::CriticalityLevel, const CSGPolygon<T> &) const;
 
             std::string name;
             mutable std::vector<Point2<T>> cwPoints;

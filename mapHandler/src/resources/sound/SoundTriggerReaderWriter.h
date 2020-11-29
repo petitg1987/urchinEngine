@@ -37,7 +37,7 @@ namespace urchin {
             void buildChunkFrom(const std::shared_ptr<XmlChunk> &, const SoundTrigger *, XmlWriter &) const;
 
             SoundBehavior buildSoundBehaviorFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
-            void buildChunkFrom(const std::shared_ptr<XmlChunk> &, const SoundBehavior &, XmlWriter &xmlWriter) const;
+            void buildChunkFrom(const std::shared_ptr<XmlChunk> &, const SoundBehavior &, XmlWriter &) const;
     };
 
 }

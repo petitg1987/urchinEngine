@@ -34,7 +34,8 @@ namespace urchin {
             unsigned int selectedIndex;
 
             //visual
-            Text *leftButton, *rightButton;
+            Text* leftButton;
+            Text* rightButton;
             std::vector<Text *> valuesText;
 
             std::shared_ptr<EventListener> leftButtonEventListener;

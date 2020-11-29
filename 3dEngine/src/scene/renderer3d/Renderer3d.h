@@ -134,7 +134,8 @@ namespace urchin {
             Camera *camera;
 
             //visual
-            OffscreenRender *deferredRenderTarget, *offscreenLightingRenderTarget;
+            OffscreenRender* deferredRenderTarget;
+            OffscreenRender* offscreenLightingRenderTarget;
             std::shared_ptr<Texture> depthTexture, diffuseTexture, normalAndAmbientTexture, lightingPassTexture;
             std::unique_ptr<GenericRenderer> lightingRenderer;
             std::unique_ptr<Shader> lightingShader;

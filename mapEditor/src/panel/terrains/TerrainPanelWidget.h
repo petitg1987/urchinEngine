@@ -53,27 +53,36 @@ namespace urchin {
             bool disableTerrainEvent;
 
             //general properties
-            QDoubleSpinBox *positionX, *positionY, *positionZ;
+            QDoubleSpinBox* positionX;
+            QDoubleSpinBox* positionY;
+            QDoubleSpinBox* positionZ;
             QDoubleSpinBox *ambient;
 
             //mesh properties
-            QDoubleSpinBox *xzScale, *yScale;
+            QDoubleSpinBox* xzScale;
+            QDoubleSpinBox* yScale;
 
             //material properties
-            QDoubleSpinBox *sRepeat, *tRepeat;
-            QLineEdit *maskMapFilenameText;
+            QDoubleSpinBox* sRepeat;
+            QDoubleSpinBox* tRepeat;
+            QLineEdit* maskMapFilenameText;
             static QString preferredMaskMapPath;
             std::vector<QLineEdit *> materialFilenameTexts;
             static QString preferredMaterialPath;
 
             //grass properties
-            QLineEdit *grassTextureFilenameText;
+            QLineEdit* grassTextureFilenameText;
             static QString preferredGrassTexturePath;
-            QLineEdit *grassMaskFilenameText;
+            QLineEdit* grassMaskFilenameText;
             static QString preferredGrassMaskPath;
-            QSpinBox *numGrassInTex;
-            QDoubleSpinBox *grassQuantity, *grassHeight, *grassLength;
-            QDoubleSpinBox *windDirectionX, *windDirectionY, *windDirectionZ, *windStrength;
+            QSpinBox* numGrassInTex;
+            QDoubleSpinBox* grassQuantity;
+            QDoubleSpinBox* grassHeight;
+            QDoubleSpinBox* grassLength;
+            QDoubleSpinBox *windDirectionX;
+            QDoubleSpinBox* windDirectionY;
+            QDoubleSpinBox* windDirectionZ;
+            QDoubleSpinBox* windStrength;
 
         private slots:
             void showAddTerrainDialog();

@@ -46,7 +46,7 @@ namespace urchin {
 
     class MonotonePolygonError : public std::runtime_error {
         public:
-            explicit MonotonePolygonError(const std::string &message);
+            explicit MonotonePolygonError(const std::string &);
     };
 
     class MonotonePolygonAlgorithm {

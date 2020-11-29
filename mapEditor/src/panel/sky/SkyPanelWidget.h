@@ -32,9 +32,12 @@ namespace urchin {
 
             SkyController *skyController;
 
-            QLineEdit *xnSkyboxFilenameText, *xpSkyboxFilenameText;
-            QLineEdit *ynSkyboxFilenameText, *ypSkyboxFilenameText;
-            QLineEdit *znSkyboxFilenameText, *zpSkyboxFilenameText;
+            QLineEdit* xnSkyboxFilenameText;
+            QLineEdit* xpSkyboxFilenameText;
+            QLineEdit* ynSkyboxFilenameText;
+            QLineEdit* ypSkyboxFilenameText;
+            QLineEdit* znSkyboxFilenameText;
+            QLineEdit* zpSkyboxFilenameText;
             static QString preferredSkyboxPath;
             QDoubleSpinBox *offsetY;
 

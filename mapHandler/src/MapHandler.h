@@ -29,7 +29,7 @@ namespace urchin {
             MapHandler(Renderer3d *, PhysicsWorld *, SoundManager *, AIManager *);
             ~MapHandler();
 
-            void loadMapFromFile(const std::string &, LoadCallback &loadCallback);
+            void loadMapFromFile(const std::string &, LoadCallback &);
             void writeMapOnFile(const std::string &) const;
 
             static std::string getRelativeWorkingDirectory(const std::string &);

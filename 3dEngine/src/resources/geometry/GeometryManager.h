@@ -20,7 +20,7 @@ namespace urchin {
 
             void onCameraProjectionUpdate(const Camera *);
 
-            void display(const Matrix4<float> &viewMatrix) const;
+            void display(const Matrix4<float> &) const;
 
         private:
             const RenderTarget *renderTarget;

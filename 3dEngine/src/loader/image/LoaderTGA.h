@@ -50,7 +50,8 @@ namespace urchin {
             void readTGAgray8bitsRLE();
 
             //temporary attributes
-            unsigned char *colorMap, *data;
+            unsigned char* colorMap;
+            unsigned char* data;
 
             //attributes for Image
             unsigned int width, height;

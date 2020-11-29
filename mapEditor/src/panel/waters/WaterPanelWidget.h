@@ -49,17 +49,27 @@ namespace urchin {
             bool disableWaterEvent;
 
             //general properties
-            QDoubleSpinBox *positionX, *positionY, *positionZ;
-            QDoubleSpinBox *xSize, *zSize;
+            QDoubleSpinBox* positionX;
+            QDoubleSpinBox* positionY;
+            QDoubleSpinBox* positionZ;
+            QDoubleSpinBox* xSize;
+            QDoubleSpinBox* zSize;
 
             //surface water properties
-            QDoubleSpinBox *waterColorR, *waterColorG, *waterColorB;
-            QLineEdit *normalTextureFilenameText, *dudvMapFilenameText;
+            QDoubleSpinBox* waterColorR;
+            QDoubleSpinBox* waterColorG;
+            QDoubleSpinBox* waterColorB;
+            QLineEdit* normalTextureFilenameText;
+            QLineEdit* dudvMapFilenameText;
             static QString preferredNormalTexturePath, preferredDudvMapPath;
-            QDoubleSpinBox *waveSpeed, *waveStrength, *sRepeat, *tRepeat;
+            QDoubleSpinBox* waveSpeed;
+            QDoubleSpinBox* waveStrength;
+            QDoubleSpinBox* sRepeat;
+            QDoubleSpinBox* tRepeat;
 
             //under water properties
-            QDoubleSpinBox *density, *gradient;
+            QDoubleSpinBox* density;
+            QDoubleSpinBox* gradient;
 
         private slots:
             void showAddWaterDialog();

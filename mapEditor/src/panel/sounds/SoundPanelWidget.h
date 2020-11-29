@@ -65,23 +65,27 @@ namespace urchin {
             bool disableSoundEvent;
 
             //sound general properties
-            QDoubleSpinBox *volume;
-            QLabel *soundType;
+            QDoubleSpinBox* volume;
+            QLabel* soundType;
 
             //sound specific properties
-            QDoubleSpinBox *positionX, *positionY, *positionZ, *inaudibleDistance;
+            QDoubleSpinBox* positionX;
+            QDoubleSpinBox* positionY;
+            QDoubleSpinBox* positionZ;
+            QDoubleSpinBox* inaudibleDistance;
 
             //sound behavior
-            QComboBox *playBehavior, *stopBehavior;
-            QDoubleSpinBox *volumeDecreasePercentageOnStop;
-            QLabel *soundTriggerType;
+            QComboBox* playBehavior;
+            QComboBox* stopBehavior;
+            QDoubleSpinBox* volumeDecreasePercentageOnStop;
+            QLabel* soundTriggerType;
 
             //sound trigger specific properties
-            QVBoxLayout *triggerShapeLayout;
-            QPushButton *changeSoundTriggerTypeButton;
-            QLabel *soundShapeType;
-            QPushButton *changeSoundShapeTypeButton;
-            SoundShapeWidget *soundShapeWidget;
+            QVBoxLayout* triggerShapeLayout;
+            QPushButton* changeSoundTriggerTypeButton;
+            QLabel* soundShapeType;
+            QPushButton* changeSoundShapeTypeButton;
+            SoundShapeWidget* soundShapeWidget;
 
         private slots:
             void showAddSoundDialog();

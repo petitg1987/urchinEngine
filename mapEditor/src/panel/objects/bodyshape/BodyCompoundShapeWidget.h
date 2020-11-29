@@ -39,15 +39,20 @@ namespace urchin {
             void setupOrientation(QGridLayout *, const Quaternion<float> &);
             void setupShapeBox(QVBoxLayout *, const std::shared_ptr<const LocalizedCollisionShape> &);
 
-            QLabel *shapesLabel;
-            LocalizedShapeTableView *localizedShapeTableView;
-            QPushButton *addShapeButton, *removeShapeButton;
+            QLabel* shapesLabel;
+            LocalizedShapeTableView* localizedShapeTableView;
+            QPushButton* addShapeButton;
+            QPushButton* removeShapeButton;
 
             QWidget *localizedShapeDetails;
-            QDoubleSpinBox *positionX, *positionY, *positionZ;
-            QComboBox *orientationType;
-            QDoubleSpinBox *eulerAxis0, *eulerAxis1, *eulerAxis2;
-            BodyShapeWidget *bodyShapeWidget;
+            QDoubleSpinBox* positionX;
+            QDoubleSpinBox* positionY;
+            QDoubleSpinBox* positionZ;
+            QComboBox* orientationType;
+            QDoubleSpinBox* eulerAxis0;
+            QDoubleSpinBox* eulerAxis1;
+            QDoubleSpinBox* eulerAxis2;
+            BodyShapeWidget* bodyShapeWidget;
 
         private slots:
             void addNewLocalizedShape();

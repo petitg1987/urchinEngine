@@ -18,7 +18,7 @@ namespace urchin {
     };
 
     struct IslandElementLinkSortPredicate {
-        bool operator() (const IslandElementLink &elem1, const IslandElementLink &elem2) const;
+        bool operator() (const IslandElementLink &, const IslandElementLink &) const;
     };
 
 }

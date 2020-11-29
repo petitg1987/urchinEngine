@@ -26,10 +26,16 @@ namespace urchin {
             const SoundShape *createSoundShape() const override;
 
         private:
-            QDoubleSpinBox *positionX, *positionY, *positionZ;
-            QDoubleSpinBox *halfSizeX, *halfSizeY, *halfSizeZ;
+            QDoubleSpinBox* positionX;
+            QDoubleSpinBox* positionY;
+            QDoubleSpinBox* positionZ;
+            QDoubleSpinBox* halfSizeX;
+            QDoubleSpinBox* halfSizeY;
+            QDoubleSpinBox* halfSizeZ;
             QComboBox *orientationType;
-            QDoubleSpinBox *eulerAxis0, *eulerAxis1, *eulerAxis2;
+            QDoubleSpinBox* eulerAxis0;
+            QDoubleSpinBox* eulerAxis1;
+            QDoubleSpinBox* eulerAxis2;
 
         private slots:
             void updateShapeOrientationType();

@@ -14,7 +14,7 @@ namespace urchin {
     */
     class StreamUpdateTask {
         public:
-            StreamUpdateTask(const Sound *sound, StreamChunk *, bool);
+            StreamUpdateTask(const Sound *, StreamChunk *, bool);
             ~StreamUpdateTask();
 
             ALuint getSourceId() const;

@@ -11,7 +11,7 @@ namespace urchin {
 
     template <class T> class DistanceToStartPointComp {
         public:
-            explicit DistanceToStartPointComp(const Point3<T> &startPoint);
+            explicit DistanceToStartPointComp(const Point3<T> &);
             bool operator() (const Point3<T> &, const Point3<T> &) const;
 
         private:
