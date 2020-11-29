@@ -21,8 +21,8 @@ namespace urchin {
             Frustum();
             Frustum(T, T, T, T);
             Frustum(const Point3<T>&, const Point3<T>&, const Point3<T>&, const Point3<T>&, const Point3<T>&, const Point3<T>&, const Point3<T>&, const Point3<T>&);
-            Frustum(Frustum<T> &&) noexcept;
-            Frustum<T>& operator=(Frustum<T> &&) noexcept;
+            Frustum(Frustum<T>&&) noexcept;
+            Frustum<T>& operator=(Frustum<T>&&) noexcept;
 
             enum FrustumPoint {
                 NTL = 0, //Near top left

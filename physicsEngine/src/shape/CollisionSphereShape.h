@@ -14,7 +14,7 @@ namespace urchin {
     class CollisionSphereShape : public CollisionShape3D {
         public:
             explicit CollisionSphereShape(float);
-            CollisionSphereShape(CollisionSphereShape &&) noexcept;
+            CollisionSphereShape(CollisionSphereShape&&) noexcept;
             CollisionSphereShape(const CollisionSphereShape&) = delete;
             ~CollisionSphereShape() override;
 

@@ -11,13 +11,13 @@ namespace urchin {
 
     class ConcaveAnyCollisionAlgorithm : public CollisionAlgorithm {
         public:
-            ConcaveAnyCollisionAlgorithm(bool, ManifoldResult &&);
+            ConcaveAnyCollisionAlgorithm(bool, ManifoldResult&&);
             ~ConcaveAnyCollisionAlgorithm() override = default;
 
             void doProcessCollisionAlgorithm(const CollisionObjectWrapper&, const CollisionObjectWrapper&) override;
 
             struct Builder : public CollisionAlgorithmBuilder {
-                CollisionAlgorithm *createCollisionAlgorithm(bool, ManifoldResult &&, FixedSizePool<CollisionAlgorithm>*) const override;
+                CollisionAlgorithm *createCollisionAlgorithm(bool, ManifoldResult&&, FixedSizePool<CollisionAlgorithm>*) const override;
 
                 const std::vector<CollisionShape3D::ShapeType> &getFirstExpectedShapeType() const override;
                 unsigned int getAlgorithmSize() const override;

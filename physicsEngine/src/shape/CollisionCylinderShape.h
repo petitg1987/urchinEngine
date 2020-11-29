@@ -13,7 +13,7 @@ namespace urchin {
     class CollisionCylinderShape : public CollisionShape3D {
         public:
             CollisionCylinderShape(float, float, CylinderShape<float>::CylinderOrientation);
-            CollisionCylinderShape(CollisionCylinderShape &&) noexcept;
+            CollisionCylinderShape(CollisionCylinderShape&&) noexcept;
             CollisionCylinderShape(const CollisionCylinderShape&) = delete;
             ~CollisionCylinderShape() override;
 

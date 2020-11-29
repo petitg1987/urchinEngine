@@ -26,7 +26,7 @@ namespace urchin {
 
     class TriangulationAlgorithm {
         public:
-            TriangulationAlgorithm(std::vector<Point2<float>> &&, const std::string&);
+            TriangulationAlgorithm(std::vector<Point2<float>>&&, const std::string&);
 
             std::vector<Point2<float>> getPolygonPoints() const;
 

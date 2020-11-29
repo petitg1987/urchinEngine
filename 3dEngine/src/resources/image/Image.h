@@ -22,8 +22,8 @@ namespace urchin {
                 CHANNEL_16
             };
 
-            Image(unsigned int, unsigned int, ImageFormat, std::vector<unsigned char> &&);
-            Image(unsigned int, unsigned int, ImageFormat, std::vector<uint16_t> &&);
+            Image(unsigned int, unsigned int, ImageFormat, std::vector<unsigned char>&&);
+            Image(unsigned int, unsigned int, ImageFormat, std::vector<uint16_t>&&);
             ~Image() override = default;
 
             unsigned int getWidth() const;

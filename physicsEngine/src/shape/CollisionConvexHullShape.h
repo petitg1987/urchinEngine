@@ -15,7 +15,7 @@ namespace urchin {
         public:
             explicit CollisionConvexHullShape(const std::vector<Point3<float>>&);
             explicit CollisionConvexHullShape(ConvexHullShape3D<float>*);
-            CollisionConvexHullShape(CollisionConvexHullShape &&) noexcept;
+            CollisionConvexHullShape(CollisionConvexHullShape&&) noexcept;
             CollisionConvexHullShape(const CollisionConvexHullShape&) = delete;
             ~CollisionConvexHullShape() override;
 

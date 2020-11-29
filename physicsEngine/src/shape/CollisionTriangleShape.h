@@ -17,7 +17,7 @@ namespace urchin {
         public:
             explicit CollisionTriangleShape(const Point3<float>*);
             CollisionTriangleShape(TriangleShape3D<float>*, FixedSizePool<TriangleShape3D<float>>*);
-            CollisionTriangleShape(CollisionTriangleShape &&) noexcept;
+            CollisionTriangleShape(CollisionTriangleShape&&) noexcept;
             CollisionTriangleShape(const CollisionTriangleShape&) = delete;
             ~CollisionTriangleShape() override;
 

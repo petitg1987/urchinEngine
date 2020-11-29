@@ -15,7 +15,7 @@ namespace urchin {
             explicit TerrainGrassQuadtree(std::vector<TerrainGrassQuadtree *> );
             ~TerrainGrassQuadtree();
 
-            void setRenderer(std::unique_ptr<GenericRenderer> &&);
+            void setRenderer(std::unique_ptr<GenericRenderer>&&);
             const std::unique_ptr<GenericRenderer> &getRenderer() const;
 
             bool isLeaf() const;

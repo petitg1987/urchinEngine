@@ -21,7 +21,7 @@ namespace urchin {
             ShadowData(const Light*, unsigned int);
             ~ShadowData();
 
-            void setRenderTarget(std::unique_ptr<OffscreenRender> &&);
+            void setRenderTarget(std::unique_ptr<OffscreenRender>&&);
             const OffscreenRender *getRenderTarget() const;
 
             void setDepthTexture(const std::shared_ptr<Texture>&);

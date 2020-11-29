@@ -13,7 +13,7 @@ namespace urchin {
     class CollisionConeShape : public CollisionShape3D {
         public:
             CollisionConeShape(float, float, ConeShape<float>::ConeOrientation);
-            CollisionConeShape(CollisionConeShape &&) noexcept;
+            CollisionConeShape(CollisionConeShape&&) noexcept;
             CollisionConeShape(const CollisionConeShape&) = delete;
             ~CollisionConeShape() override;
 

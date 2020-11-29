@@ -12,7 +12,7 @@ namespace urchin {
 
     class NavPolygon {
         public:
-            NavPolygon(std::string, std::vector<Point3<float>> &&, std::shared_ptr<const NavTopography>);
+            NavPolygon(std::string, std::vector<Point3<float>>&&, std::shared_ptr<const NavTopography>);
             NavPolygon(const NavPolygon&);
 
             const std::string &getName() const;
