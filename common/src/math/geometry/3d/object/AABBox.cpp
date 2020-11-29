@@ -332,12 +332,12 @@ namespace urchin {
 
     //explicit template
     template class AABBox<float>;
-    template AABBox<float> operator *<float>(const Matrix4<float> &, const AABBox<float> &);
-    template AABBox<float> operator *<float>(const AABBox<float> &, const Matrix4<float> &);
-    template std::ostream& operator <<<float>(std::ostream &, const AABBox<float> &);
+    template AABBox<float> operator *<float>(const Matrix4<float>&, const AABBox<float>&);
+    template AABBox<float> operator *<float>(const AABBox<float>&, const Matrix4<float>&);
+    template std::ostream& operator <<<float>(std::ostream &, const AABBox<float>&);
 
     template class AABBox<double>;
-    template AABBox<double> operator *<double>(const Matrix4<double> &, const AABBox<double> &);
-    template AABBox<double> operator *<double>(const AABBox<double> &, const Matrix4<double> &);
-    template std::ostream& operator <<<double>(std::ostream &, const AABBox<double> &);
+    template AABBox<double> operator *<double>(const Matrix4<double>&, const AABBox<double>&);
+    template AABBox<double> operator *<double>(const AABBox<double>&, const Matrix4<double>&);
+    template std::ostream& operator <<<double>(std::ostream &, const AABBox<double>&);
 }

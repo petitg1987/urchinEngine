@@ -32,19 +32,19 @@ namespace urchin {
 
         //extracts header
         TgaHeader header{};
-        file.read((char *)&header, sizeof(TgaHeader));
+        file.read((char*)&header, sizeof(TgaHeader));
         file.seekg(header.idLenght, std::ios::cur);
 
         //extracts color map (color map is stored in BGR format)
         if (header.colormapType) {
             colorMap = new unsigned char[header.cmLength*(header.cmSize >> 3u)];
-            file.read((char *)colorMap, header.cmLength*(header.cmSize >> 3u));
+            file.read((char*)colorMap, header.cmLength*(header.cmSize >> 3u));
         }
 
         //memory allocation for rough pixel data
         long lengthData = length - file.tellg();
         data = new unsigned char[lengthData];
-        file.read((char *)data, lengthData);
+        file.read((char*)data, lengthData);
 
         //memory allocation for pixel data
         getImageInfo(header);

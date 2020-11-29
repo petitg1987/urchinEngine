@@ -22,7 +22,7 @@ namespace urchin {
         setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
     }
 
-    void SoundTableView::selectionChanged(const QItemSelection &, const QItemSelection &) {
+    void SoundTableView::selectionChanged(const QItemSelection&, const QItemSelection&) {
         //hack to refresh selection
         horizontalHeader()->resizeSection(0, 91);
         horizontalHeader()->resizeSection(0, 90);

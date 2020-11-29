@@ -67,7 +67,7 @@ namespace urchin {
         return outlineCwPoints;
     }
 
-    Plane<float> PolytopePlaneSurface::getPlane(const Rectangle<float> &) const {
+    Plane<float> PolytopePlaneSurface::getPlane(const Rectangle<float>&) const {
         return Plane<float>(ccwPoints[0], ccwPoints[1], ccwPoints[2]);
     }
 

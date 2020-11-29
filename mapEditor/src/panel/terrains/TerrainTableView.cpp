@@ -20,7 +20,7 @@ namespace urchin {
         setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
     }
 
-    void TerrainTableView::selectionChanged(const QItemSelection &, const QItemSelection &) {
+    void TerrainTableView::selectionChanged(const QItemSelection&, const QItemSelection&) {
         //hack to refresh selection
         horizontalHeader()->resizeSection(0, 91);
         horizontalHeader()->resizeSection(0, 90);

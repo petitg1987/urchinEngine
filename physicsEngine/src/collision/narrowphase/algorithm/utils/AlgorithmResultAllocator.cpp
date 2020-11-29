@@ -64,18 +64,18 @@ namespace urchin {
     }
 
     //explicit template
-    template class std::unique_ptr<GJKResult<float>, AlgorithmResultDeleter> AlgorithmResultAllocator::newGJKResultCollide(const Simplex<float> &);
+    template class std::unique_ptr<GJKResult<float>, AlgorithmResultDeleter> AlgorithmResultAllocator::newGJKResultCollide(const Simplex<float>&);
     template class std::unique_ptr<GJKResult<float>, AlgorithmResultDeleter> AlgorithmResultAllocator::newGJKResultInvalid();
-    template class std::unique_ptr<GJKResult<float>, AlgorithmResultDeleter> AlgorithmResultAllocator::newGJKResultNoCollide(float, const Simplex<float> &);
-    template class std::unique_ptr<EPAResult<float>, AlgorithmResultDeleter> AlgorithmResultAllocator::newEPAResultCollide(const Point3<float> &, const Point3<float> &, const Vector3<float> &, float);
+    template class std::unique_ptr<GJKResult<float>, AlgorithmResultDeleter> AlgorithmResultAllocator::newGJKResultNoCollide(float, const Simplex<float>&);
+    template class std::unique_ptr<EPAResult<float>, AlgorithmResultDeleter> AlgorithmResultAllocator::newEPAResultCollide(const Point3<float>&, const Point3<float>&, const Vector3<float>&, float);
     template class std::unique_ptr<EPAResult<float>, AlgorithmResultDeleter> AlgorithmResultAllocator::newEPAResultInvalid();
     template class std::unique_ptr<EPAResult<float>, AlgorithmResultDeleter> AlgorithmResultAllocator::newEPAResultNoCollide();
     template class std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter> AlgorithmResultAllocator::newContinuousCollisionResult(AbstractWorkBody* body2, const Vector3<float>& normalFromObject2, const Point3<float>& hitPointOnObject2, float timeToHit);
 
-    template class std::unique_ptr<GJKResult<double>, AlgorithmResultDeleter> AlgorithmResultAllocator::newGJKResultCollide(const Simplex<double> &);
+    template class std::unique_ptr<GJKResult<double>, AlgorithmResultDeleter> AlgorithmResultAllocator::newGJKResultCollide(const Simplex<double>&);
     template class std::unique_ptr<GJKResult<double>, AlgorithmResultDeleter> AlgorithmResultAllocator::newGJKResultInvalid();
-    template class std::unique_ptr<GJKResult<double>, AlgorithmResultDeleter> AlgorithmResultAllocator::newGJKResultNoCollide(double, const Simplex<double> &);
-    template class std::unique_ptr<EPAResult<double>, AlgorithmResultDeleter> AlgorithmResultAllocator::newEPAResultCollide(const Point3<double> &, const Point3<double> &, const Vector3<double> &, double);
+    template class std::unique_ptr<GJKResult<double>, AlgorithmResultDeleter> AlgorithmResultAllocator::newGJKResultNoCollide(double, const Simplex<double>&);
+    template class std::unique_ptr<EPAResult<double>, AlgorithmResultDeleter> AlgorithmResultAllocator::newEPAResultCollide(const Point3<double>&, const Point3<double>&, const Vector3<double>&, double);
     template class std::unique_ptr<EPAResult<double>, AlgorithmResultDeleter> AlgorithmResultAllocator::newEPAResultInvalid();
     template class std::unique_ptr<EPAResult<double>, AlgorithmResultDeleter> AlgorithmResultAllocator::newEPAResultNoCollide();
     template class std::unique_ptr<ContinuousCollisionResult<double>, AlgorithmResultDeleter> AlgorithmResultAllocator::newContinuousCollisionResult(AbstractWorkBody* body2, const Vector3<double>& normalFromObject2, const Point3<double>& hitPointOnObject2, double timeToHit);

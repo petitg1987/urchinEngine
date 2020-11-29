@@ -539,15 +539,15 @@ namespace urchin {
 
     //explicit template
     template class Quaternion<float>;
-    template Quaternion<float> operator *(const Quaternion<float> &, const Point3<float> &);
-    template Quaternion<float> operator *(const Quaternion<float> &, float);
-    template Quaternion<float> operator *(float, const Quaternion<float> &);
-    template std::ostream& operator <<<float>(std::ostream &, const Quaternion<float> &);
+    template Quaternion<float> operator *(const Quaternion<float>&, const Point3<float>&);
+    template Quaternion<float> operator *(const Quaternion<float>&, float);
+    template Quaternion<float> operator *(float, const Quaternion<float>&);
+    template std::ostream& operator <<<float>(std::ostream &, const Quaternion<float>&);
 
     template class Quaternion<double>;
-    template Quaternion<double> operator *(const Quaternion<double> &, const Point3<double> &);
-    template Quaternion<double> operator *(const Quaternion<double> &, double);
-    template Quaternion<double> operator *(double, const Quaternion<double> &);
-    template std::ostream& operator <<<double>(std::ostream &, const Quaternion<double> &);
+    template Quaternion<double> operator *(const Quaternion<double>&, const Point3<double>&);
+    template Quaternion<double> operator *(const Quaternion<double>&, double);
+    template Quaternion<double> operator *(double, const Quaternion<double>&);
+    template std::ostream& operator <<<double>(std::ostream &, const Quaternion<double>&);
 
 }

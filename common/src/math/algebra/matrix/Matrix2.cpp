@@ -178,15 +178,15 @@ namespace urchin {
 
     //explicit template
     template class Matrix2<float>;
-    template Matrix2<float> operator *<float>(const Matrix2<float> &, float);
-    template Matrix2<float> operator *<float>(float, const Matrix2<float> &);
-    template Matrix2<float> operator /<float>(const Matrix2<float> &, float);
-    template std::ostream& operator <<<float>(std::ostream &, const Matrix2<float> &);
+    template Matrix2<float> operator *<float>(const Matrix2<float>&, float);
+    template Matrix2<float> operator *<float>(float, const Matrix2<float>&);
+    template Matrix2<float> operator /<float>(const Matrix2<float>&, float);
+    template std::ostream& operator <<<float>(std::ostream &, const Matrix2<float>&);
 
     template class Matrix2<double>;
-    template Matrix2<double> operator *<double>(const Matrix2<double> &, double);
-    template Matrix2<double> operator *<double>(double, const Matrix2<double> &);
-    template Matrix2<double> operator /<double>(const Matrix2<double> &, double);
-    template std::ostream& operator <<<double>(std::ostream &, const Matrix2<double> &);
+    template Matrix2<double> operator *<double>(const Matrix2<double>&, double);
+    template Matrix2<double> operator *<double>(double, const Matrix2<double>&);
+    template Matrix2<double> operator /<double>(const Matrix2<double>&, double);
+    template std::ostream& operator <<<double>(std::ostream &, const Matrix2<double>&);
 
 }

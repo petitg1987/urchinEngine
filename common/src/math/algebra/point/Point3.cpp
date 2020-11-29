@@ -231,25 +231,25 @@ namespace urchin {
     template class Point3<float>;
     template Point3<float> Point3<float>::cast() const;
     template Point3<double> Point3<float>::cast() const;
-    template Point3<float> operator *<float>(const Point3<float> &, float);
-    template Point3<float> operator *<float>(float t, const Point3<float> &);
-    template Point3<float> operator /<float>(const Point3<float> &, float);
-    template Point3<float> operator +<float>(const Point3<float> &, float);
-    template Point3<float> operator -<float>(const Point3<float> &, float);
-    template Point3<float> operator *<float>(const Matrix3<float> &, const Point3<float> &);
-    template Point3<float> operator *<float>(const Point3<float> &, const Matrix3<float> &);
-    template std::ostream& operator <<<float>(std::ostream &, const Point3<float> &);
+    template Point3<float> operator *<float>(const Point3<float>&, float);
+    template Point3<float> operator *<float>(float t, const Point3<float>&);
+    template Point3<float> operator /<float>(const Point3<float>&, float);
+    template Point3<float> operator +<float>(const Point3<float>&, float);
+    template Point3<float> operator -<float>(const Point3<float>&, float);
+    template Point3<float> operator *<float>(const Matrix3<float>&, const Point3<float>&);
+    template Point3<float> operator *<float>(const Point3<float>&, const Matrix3<float>&);
+    template std::ostream& operator <<<float>(std::ostream &, const Point3<float>&);
 
     template class Point3<double>;
     template Point3<float> Point3<double>::cast() const;
     template Point3<double> Point3<double>::cast() const;
-    template Point3<double> operator *<double>(const Point3<double> &, double);
-    template Point3<double> operator *<double>(double t, const Point3<double> &);
-    template Point3<double> operator /<double>(const Point3<double> &, double);
-    template Point3<double> operator +<double>(const Point3<double> &, double);
-    template Point3<double> operator -<double>(const Point3<double> &, double);
-    template Point3<double> operator *<double>(const Matrix3<double> &, const Point3<double> &);
-    template Point3<double> operator *<double>(const Point3<double> &, const Matrix3<double> &);
-    template std::ostream& operator <<<double>(std::ostream &, const Point3<double> &);
+    template Point3<double> operator *<double>(const Point3<double>&, double);
+    template Point3<double> operator *<double>(double t, const Point3<double>&);
+    template Point3<double> operator /<double>(const Point3<double>&, double);
+    template Point3<double> operator +<double>(const Point3<double>&, double);
+    template Point3<double> operator -<double>(const Point3<double>&, double);
+    template Point3<double> operator *<double>(const Matrix3<double>&, const Point3<double>&);
+    template Point3<double> operator *<double>(const Point3<double>&, const Matrix3<double>&);
+    template std::ostream& operator <<<double>(std::ostream &, const Point3<double>&);
 
 }

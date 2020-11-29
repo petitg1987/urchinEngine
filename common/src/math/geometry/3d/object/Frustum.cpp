@@ -329,13 +329,13 @@ namespace urchin {
 
     //explicit template
     template class Frustum<float>;
-    template Frustum<float> operator *<float>(const Matrix4<float> &, const Frustum<float> &);
-    template Frustum<float> operator *<float>(const Frustum<float> &, const Matrix4<float> &);
-    template std::ostream& operator <<<float>(std::ostream &, const Frustum<float> &);
+    template Frustum<float> operator *<float>(const Matrix4<float>&, const Frustum<float>&);
+    template Frustum<float> operator *<float>(const Frustum<float>&, const Matrix4<float>&);
+    template std::ostream& operator <<<float>(std::ostream &, const Frustum<float>&);
 
     template class Frustum<double>;
-    template Frustum<double> operator *<double>(const Matrix4<double> &, const Frustum<double> &);
-    template Frustum<double> operator *<double>(const Frustum<double> &, const Matrix4<double> &);
-    template std::ostream& operator <<<double>(std::ostream &, const Frustum<double> &);
+    template Frustum<double> operator *<double>(const Matrix4<double>&, const Frustum<double>&);
+    template Frustum<double> operator *<double>(const Frustum<double>&, const Matrix4<double>&);
+    template std::ostream& operator <<<double>(std::ostream &, const Frustum<double>&);
 
 }

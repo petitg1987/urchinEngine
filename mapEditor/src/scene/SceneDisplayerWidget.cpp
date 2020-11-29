@@ -191,7 +191,7 @@ namespace urchin {
         }
     }
 
-    void SceneDisplayerWidget::leaveEvent(QEvent *) {
+    void SceneDisplayerWidget::leaveEvent(QEvent*) {
         if (sceneDisplayer && !rect().contains(mapFromGlobal(QCursor::pos()))) {
             sceneDisplayer->getObjectMoveController()->onMouseOut();
         }

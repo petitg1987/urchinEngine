@@ -17,7 +17,7 @@ namespace urchin {
         setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
     }
 
-    void WaterTableView::selectionChanged(const QItemSelection &, const QItemSelection &) {
+    void WaterTableView::selectionChanged(const QItemSelection&, const QItemSelection&) {
         //hack to refresh selection
         horizontalHeader()->resizeSection(0, 341);
         horizontalHeader()->resizeSection(0, 340);

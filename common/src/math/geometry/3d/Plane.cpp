@@ -150,9 +150,9 @@ namespace urchin {
 
     //explicit template
     template class Plane<float>;
-    template std::ostream& operator <<<float>(std::ostream &, const Plane<float> &);
+    template std::ostream& operator <<<float>(std::ostream &, const Plane<float>&);
 
     template class Plane<double>;
-    template std::ostream& operator <<<double>(std::ostream &, const Plane<double> &);
+    template std::ostream& operator <<<double>(std::ostream &, const Plane<double>&);
 
 }

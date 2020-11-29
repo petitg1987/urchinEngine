@@ -89,7 +89,7 @@ template <class OBJ> void AABBTree<OBJ>::addObject(AABBNodeData<OBJ>* nodeData) 
     postAddObjectCallback(nodeToInsert);
 }
 
-template<class OBJ>  void AABBTree<OBJ>::postAddObjectCallback(AABBNode<OBJ> *) {
+template<class OBJ> void AABBTree<OBJ>::postAddObjectCallback(AABBNode<OBJ>*) {
     //can be override
 }
 
@@ -145,7 +145,7 @@ template<class OBJ> void AABBTree<OBJ>::removeObject(OBJ object) {
     }
 }
 
-template<class OBJ> void AABBTree<OBJ>::preRemoveObjectCallback(AABBNode<OBJ> *) {
+template<class OBJ> void AABBTree<OBJ>::preRemoveObjectCallback(AABBNode<OBJ>*) {
     //can be override
 }
 
@@ -187,7 +187,7 @@ template<class OBJ> void AABBTree<OBJ>::updateObjects() {
     }
 }
 
-template<class OBJ> void AABBTree<OBJ>::preUpdateObjectCallback(AABBNode<OBJ> *) {
+template<class OBJ> void AABBTree<OBJ>::preUpdateObjectCallback(AABBNode<OBJ>*) {
     //can be override
 }
 

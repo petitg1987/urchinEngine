@@ -18,7 +18,7 @@ namespace urchin {
         setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
     }
 
-    void LightTableView::selectionChanged(const QItemSelection &, const QItemSelection &) {
+    void LightTableView::selectionChanged(const QItemSelection&, const QItemSelection&) {
         //hack to refresh selection
         horizontalHeader()->resizeSection(0, 341);
         horizontalHeader()->resizeSection(0, 340);

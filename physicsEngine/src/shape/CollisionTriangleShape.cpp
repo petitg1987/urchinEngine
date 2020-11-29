@@ -43,7 +43,7 @@ namespace urchin {
         throw std::runtime_error("Scaling is currently not supported (triangle is only usable as a sub-shape)");
     }
 
-    AABBox<float> CollisionTriangleShape::toAABBox(const PhysicsTransform &) const {
+    AABBox<float> CollisionTriangleShape::toAABBox(const PhysicsTransform&) const {
         throw std::runtime_error("Retrieving AABBox is currently not supported (triangle is only usable as a sub-shape)");
     }
 

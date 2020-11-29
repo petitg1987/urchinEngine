@@ -14,7 +14,7 @@ namespace urchin {
         //initialization Glew
         GLenum err = glewInit();
         if (err != GLEW_OK) {
-            throw std::runtime_error((char *)glewGetErrorString(err));
+            throw std::runtime_error((char*)glewGetErrorString(err));
         }
 
         //check OpenGL version supported

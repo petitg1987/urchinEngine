@@ -122,15 +122,15 @@ namespace urchin {
 
     //explicit template
     template class Line2D<float>;
-    template std::ostream& operator <<<float>(std::ostream &, const Line2D<float> &);
+    template std::ostream& operator <<<float>(std::ostream &, const Line2D<float>&);
 
     template class Line2D<double>;
-    template std::ostream& operator <<<double>(std::ostream &, const Line2D<double> &);
+    template std::ostream& operator <<<double>(std::ostream &, const Line2D<double>&);
 
     template class Line2D<int>;
-    template std::ostream& operator <<<int>(std::ostream &, const Line2D<int> &);
+    template std::ostream& operator <<<int>(std::ostream &, const Line2D<int>&);
 
     template class Line2D<long long>;
-    template std::ostream& operator <<<long long>(std::ostream &, const Line2D<long long> &);
+    template std::ostream& operator <<<long long>(std::ostream &, const Line2D<long long>&);
 
 }

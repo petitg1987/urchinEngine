@@ -243,8 +243,8 @@ namespace urchin {
 
     //explicit template
     template class CSGPolygon<float>;
-    template std::ostream& operator <<<float>(std::ostream &, const CSGPolygon<float> &);
+    template std::ostream& operator <<<float>(std::ostream &, const CSGPolygon<float>&);
 
     template class CSGPolygon<long long>;
-    template std::ostream& operator <<<long long>(std::ostream &, const CSGPolygon<long long> &);
+    template std::ostream& operator <<<long long>(std::ostream &, const CSGPolygon<long long>&);
 }

@@ -357,11 +357,11 @@ namespace urchin {
 
     //explicit template
     template class ConvexHullShape3D<float>;
-    template std::ostream& operator <<<float>(std::ostream &, const ConvexHullShape3D<float> &);
+    template std::ostream& operator <<<float>(std::ostream &, const ConvexHullShape3D<float>&);
     template struct ConvexHullPoint<float>;
 
     template class ConvexHullShape3D<double>;
-    template std::ostream& operator <<<double>(std::ostream &, const ConvexHullShape3D<double> &);
+    template std::ostream& operator <<<double>(std::ostream &, const ConvexHullShape3D<double>&);
     template struct ConvexHullPoint<double>;
 
 }

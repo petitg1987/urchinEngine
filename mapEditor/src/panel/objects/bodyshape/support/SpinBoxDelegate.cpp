@@ -14,7 +14,7 @@ namespace urchin {
 
     }
 
-    QWidget *SpinBoxDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem &, const QModelIndex &) const {
+    QWidget *SpinBoxDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem&, const QModelIndex&) const {
          auto *editor = new QDoubleSpinBox(parent);
          SpinBoxStyleHelper::applyDefaultStyleOn(editor);
          connect(editor, SIGNAL(valueChanged(double)), this, SLOT(onChange(double)));
@@ -36,7 +36,7 @@ namespace urchin {
         model->setData(index, value, Qt::EditRole);
     }
 
-    void SpinBoxDelegate::updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex &) const {
+    void SpinBoxDelegate::updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex&) const {
         editor->setGeometry(option.rect);
     }
 

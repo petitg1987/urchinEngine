@@ -81,9 +81,9 @@ namespace urchin {
 
     //explicit template
     template class Capsule<float>;
-    template std::ostream& operator <<<float>(std::ostream &, const Capsule<float> &);
+    template std::ostream& operator <<<float>(std::ostream &, const Capsule<float>&);
 
     template class Capsule<double>;
-    template std::ostream& operator <<<double>(std::ostream &, const Capsule<double> &);
+    template std::ostream& operator <<<double>(std::ostream &, const Capsule<double>&);
 
 }

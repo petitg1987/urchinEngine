@@ -19,7 +19,7 @@ namespace urchin {
         pointsTableModel->setHorizontalHeaderItem(0, new QStandardItem("X"));
         pointsTableModel->setHorizontalHeaderItem(1, new QStandardItem("Y"));
         pointsTableModel->setHorizontalHeaderItem(2, new QStandardItem("Z"));
-        connect(pointsTableModel, SIGNAL(itemChanged(QStandardItem *)), this, SLOT(updateBodyShape()));
+        connect(pointsTableModel, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(updateBodyShape()));
 
         pointsTable = new QTableView();
         mainLayout->addWidget(pointsTable, 1, 0);

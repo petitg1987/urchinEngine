@@ -202,9 +202,9 @@ namespace urchin {
 
     //explicit template
     template class Simplex<float>;
-    template std::ostream& operator <<<float>(std::ostream &, const Simplex<float> &);
+    template std::ostream& operator <<<float>(std::ostream &, const Simplex<float>&);
 
     template class Simplex<double>;
-    template std::ostream& operator <<<double>(std::ostream &, const Simplex<double> &);
+    template std::ostream& operator <<<double>(std::ostream &, const Simplex<double>&);
 
 }

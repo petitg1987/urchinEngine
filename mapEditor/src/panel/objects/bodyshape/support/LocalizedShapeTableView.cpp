@@ -19,7 +19,7 @@ namespace urchin {
         setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
     }
 
-    void LocalizedShapeTableView::selectionChanged(const QItemSelection &, const QItemSelection &) {
+    void LocalizedShapeTableView::selectionChanged(const QItemSelection&, const QItemSelection&) {
         notifyObservers(this, NotificationType::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
     }
 
