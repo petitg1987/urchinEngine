@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    AABBoxModel::AABBoxModel(const AABBox<float> &aabbox):
+    AABBoxModel::AABBoxModel(const AABBox<float>& aabbox):
             aabboxes({aabbox}) {
         initialize();
     }

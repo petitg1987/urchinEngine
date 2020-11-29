@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    BodySphereShapeWidget::BodySphereShapeWidget(const SceneObject *sceneObject) :
+    BodySphereShapeWidget::BodySphereShapeWidget(const SceneObject* sceneObject) :
             BodyShapeWidget(sceneObject) {
         auto *radiusLabel = new QLabel("Radius:");
         mainLayout->addWidget(radiusLabel, 0, 0);

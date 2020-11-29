@@ -8,7 +8,7 @@ namespace urchin {
 
     }
 
-    template<class T> LineSegment3D<T>::LineSegment3D(const Point3<T> &a,  const Point3<T> &b) :
+    template<class T> LineSegment3D<T>::LineSegment3D(const Point3<T>& a,  const Point3<T>& b) :
         a(a),
         b(b) {
 
@@ -22,7 +22,7 @@ namespace urchin {
         return b;
     }
 
-    template<class T> Point3<T> LineSegment3D<T>::getSupportPoint(const Vector3<T> &direction) const {
+    template<class T> Point3<T> LineSegment3D<T>::getSupportPoint(const Vector3<T>& direction) const {
         const T pointADotDirection = a.toVector().dotProduct(direction);
         const T pointBDotDirection = b.toVector().dotProduct(direction);
 
@@ -36,7 +36,7 @@ namespace urchin {
     /**
      * @return Point on segment AB closest to point p
      */
-    template<class T> Point3<T> LineSegment3D<T>::closestPoint(const Point3<T> &p) const {
+    template<class T> Point3<T> LineSegment3D<T>::closestPoint(const Point3<T>& p) const {
         Vector3<T> ab = a.vector(b);
 
         T abSquareLength = ab.squareLength();
@@ -55,7 +55,7 @@ namespace urchin {
      * @param barycentrics [out] Returns barycentric coordinates for closest point
      * @return Point on segment AB closest to point p
      */
-    template<class T> Point3<T> LineSegment3D<T>::closestPoint(const Point3<T> &p, T barycentrics[2]) const {
+    template<class T> Point3<T> LineSegment3D<T>::closestPoint(const Point3<T>& p, T barycentrics[2]) const {
         Vector3<T> ab = a.vector(b);
 
         T abSquareLength = ab.squareLength();
@@ -77,7 +77,7 @@ namespace urchin {
     /**
      * @return Minimum square distance between segment AB and point p
      */
-    template<class T> T LineSegment3D<T>::squareDistance(const Point3<T> &p) const {
+    template<class T> T LineSegment3D<T>::squareDistance(const Point3<T>& p) const {
         Vector3<T> ab = a.vector(b);
         Vector3<T> ap = a.vector(p);
 
@@ -103,7 +103,7 @@ namespace urchin {
         return Line3D<T>(a, b);
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const LineSegment3D<T> &l) {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const LineSegment3D<T>& l) {
         return stream << l.getA().X << " " << l.getA().Y << " " << l.getA().Z << " - " << l.getB().X << " " << l.getB().Y << " " << l.getB().Z ;
     }
 

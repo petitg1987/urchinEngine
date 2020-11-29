@@ -4,12 +4,12 @@
 
 namespace urchin {
 
-    template<class T> Tetrahedron<T>::Tetrahedron(const Point3<T> &a, const Point3<T> &b, const Point3<T> &c, const Point3<T> &d):
+    template<class T> Tetrahedron<T>::Tetrahedron(const Point3<T>& a, const Point3<T>& b, const Point3<T>& c, const Point3<T>& d):
         a(a), b(b), c(c), d(d) {
 
     }
 
-    template<class T> Point3<T> Tetrahedron<T>::getSupportPoint(const Vector3<T> &direction) const {
+    template<class T> Point3<T> Tetrahedron<T>::getSupportPoint(const Vector3<T>& direction) const {
         const T pointADotDirection = a.toVector().dotProduct(direction);
         const T pointBDotDirection = b.toVector().dotProduct(direction);
         const T pointCDotDirection = c.toVector().dotProduct(direction);
@@ -41,7 +41,7 @@ namespace urchin {
      * respectively the following voronoi regions: ABC, ACD, ADB, BDC.
      * @return Point on tetrahedron closest to point p
      */
-    template<class T> Point3<T> Tetrahedron<T>::closestPoint(const Point3<T> &p, T barycentrics[4], unsigned short voronoiRegionMask) const {
+    template<class T> Point3<T> Tetrahedron<T>::closestPoint(const Point3<T>& p, T barycentrics[4], unsigned short voronoiRegionMask) const {
         Point3<T> closestPoint;
         T triangleBarycentrics[3];
         T bestSquareDist = std::numeric_limits<T>::max();
@@ -148,7 +148,7 @@ namespace urchin {
         return closestPoint;
     }
 
-    template<class T> bool Tetrahedron<T>::collideWithPoint(const Point3<T> &p) const {
+    template<class T> bool Tetrahedron<T>::collideWithPoint(const Point3<T>& p) const {
         return !pointOutsidePlane(p, a, b, c, d, false) &&
                 !pointOutsidePlane(p, a, c, d, b, false) &&
                 !pointOutsidePlane(p, a, d, b, c, false) &&
@@ -158,8 +158,8 @@ namespace urchin {
     /**
      * @return True if point p is outside the plane. Direction of plane normal is determinate by d.
      */
-    template<class T> bool Tetrahedron<T>::pointOutsidePlane(const Point3<T> &p, const Point3<T> &planePointA, const Point3<T> &planePointB,
-                                                             const Point3<T> &planePointC, const Point3<T> &d, bool onPlaneIsOutside) const {
+    template<class T> bool Tetrahedron<T>::pointOutsidePlane(const Point3<T>& p, const Point3<T>& planePointA, const Point3<T>& planePointB,
+                                                             const Point3<T>& planePointC, const Point3<T>& d, bool onPlaneIsOutside) const {
         Vector3<T> ap = planePointA.vector(p);
         Vector3<T> ad = planePointA.vector(d);
         Vector3<T> ab = planePointA.vector(planePointB);

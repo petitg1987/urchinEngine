@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    template<class T> LineSegment2D<T>::LineSegment2D(const Point2<T> &a, const Point2<T> &b) :
+    template<class T> LineSegment2D<T>::LineSegment2D(const Point2<T>& a, const Point2<T>& b) :
         a(a), b(b) {
 
     }
@@ -19,7 +19,7 @@ namespace urchin {
         return b;
     }
 
-    template<class T> Point2<T> LineSegment2D<T>::getSupportPoint(const Vector2<T> &direction) const {
+    template<class T> Point2<T> LineSegment2D<T>::getSupportPoint(const Vector2<T>& direction) const {
         const T pointADotDirection = Point2<T>(0.0, 0.0).vector(a).dotProduct(direction);
         const T pointBDotDirection = Point2<T>(0.0, 0.0).vector(b).dotProduct(direction);
 
@@ -34,7 +34,7 @@ namespace urchin {
      * @param barycentrics [out] Returns barycentric coordinates for closest point
      * @return Point on segment AB closest to point p
      */
-    template<class T> Point2<T> LineSegment2D<T>::closestPoint(const Point2<T> &p, T barycentrics[2]) const {
+    template<class T> Point2<T> LineSegment2D<T>::closestPoint(const Point2<T>& p, T barycentrics[2]) const {
         Vector2<T> ab = a.vector(b);
 
         T abSquareLength = ab.squareLength();
@@ -56,7 +56,7 @@ namespace urchin {
     /**
      * @return Minimum square distance between segment AB and point p
      */
-    template<class T> T LineSegment2D<T>::squareDistance(const Point2<T> &p) const {
+    template<class T> T LineSegment2D<T>::squareDistance(const Point2<T>& p) const {
         Vector2<T> ab = a.vector(b);
         Vector2<T> ap = a.vector(p);
 
@@ -77,7 +77,7 @@ namespace urchin {
         return ap.squareLength() - ((apDotAb * apDotAb) / abSquareLength);
     }
 
-    template<class T> bool LineSegment2D<T>::onSegment(const Point2<T> &p) const {
+    template<class T> bool LineSegment2D<T>::onSegment(const Point2<T>& p) const {
         T orientation = ((p.Y - a.Y) * (b.X - p.X) - (p.X - a.X) * (b.Y - p.Y));
         if (orientation==(T)0) {
             return p.X <= std::max(a.X, b.X) && p.X >= std::min(a.X, b.X)
@@ -99,7 +99,7 @@ namespace urchin {
      * Returns the intersection point of the two lines segment.
      * When line segments are collinear and intersect: returns the nearest intersection point between this->getA() and this->getB().
      */
-    template<class T> Point2<T> LineSegment2D<T>::intersectPoint(const LineSegment2D<T> &other, bool &hasIntersection) const {
+    template<class T> Point2<T> LineSegment2D<T>::intersectPoint(const LineSegment2D<T>& other, bool& hasIntersection) const {
         Point2<T> farthestIntersection;
         bool hasFarthestIntersection;
         return intersectPoint(other, hasIntersection, farthestIntersection, hasFarthestIntersection);
@@ -110,8 +110,8 @@ namespace urchin {
      * When line segments are collinear and intersect: returns the nearest intersection point between this->getA() and this->getB().
      * The farthest intersection point is returned in 'farthestIntersection' point.
      */
-    template<class T> Point2<T> LineSegment2D<T>::intersectPoint(const LineSegment2D<T> &other, bool &hasIntersection,
-                                                                 Point2<T> &farthestIntersection, bool &hasFarthestIntersection) const { //see http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
+    template<class T> Point2<T> LineSegment2D<T>::intersectPoint(const LineSegment2D<T>& other, bool& hasIntersection,
+                                                                 Point2<T>& farthestIntersection, bool& hasFarthestIntersection) const { //see http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
         hasFarthestIntersection = false;
 
         Vector2<T> r(b.X - a.X, b.Y - a.Y); //note: a+1.0*r = b;
@@ -180,12 +180,12 @@ namespace urchin {
      * Returns proper intersection boolean of the two lines segment.
      * Touch cases and collinear are not considered as proper intersection.
      */
-    template<class T> bool LineSegment2D<T>::hasProperIntersection(const LineSegment2D<T> &other) const {
+    template<class T> bool LineSegment2D<T>::hasProperIntersection(const LineSegment2D<T>& other) const {
         return (ccw(a, b, other.getA()) * ccw(a, b, other.getB())) < 0.0
             && ccw(other.getA(), other.getB(), a) * ccw(other.getA(), other.getB(), b) < 0.0;
     }
 
-    template<class T> T LineSegment2D<T>::ccw(const Point2<T> &a, const Point2<T> &b, const Point2<T> &c) const {
+    template<class T> T LineSegment2D<T>::ccw(const Point2<T>& a, const Point2<T>& b, const Point2<T>& c) const {
         return (b.X - a.X) * (c.Y - a.Y) - ((b.Y - a.Y) * (c.X - a.X));
     }
 
@@ -193,7 +193,7 @@ namespace urchin {
         return LineSegment2D<NEW_TYPE>(a.template cast<NEW_TYPE>(), b.template cast<NEW_TYPE>());
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const LineSegment2D<T> &l) {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const LineSegment2D<T>& l) {
         return stream << l.getA().X << " " << l.getA().Y << " - " << l.getB().X << " " << l.getB().Y;
     }
 

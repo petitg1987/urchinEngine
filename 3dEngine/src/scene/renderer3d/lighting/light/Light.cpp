@@ -22,7 +22,7 @@ namespace urchin {
         return produceShadow;
     }
 
-    void Light::setAmbientColor(const Point3<float> &ambientColor) {
+    void Light::setAmbientColor(const Point3<float>& ambientColor) {
         this->ambientColor = ambientColor;
     }
 

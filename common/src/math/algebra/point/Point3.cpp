@@ -12,28 +12,28 @@ namespace urchin {
 
     }
 
-    template<class T> Point3<T>::Point3(const Point2<T> &p, T Zu) {
+    template<class T> Point3<T>::Point3(const Point2<T>& p, T Zu) {
         X = p.X;
         Y = p.Y;
         Z = Zu;
     }
 
-    template<class T> Point3<T>::Point3(const Vector2<T> &vector, T Zu) :
+    template<class T> Point3<T>::Point3(const Vector2<T>& vector, T Zu) :
         X(vector.X), Y(vector.Y), Z(Zu) {
 
     }
 
-    template<class T> Point3<T>::Point3(const Vector3<T> &vector) :
+    template<class T> Point3<T>::Point3(const Vector3<T>& vector) :
         X(vector.X), Y(vector.Y), Z(vector.Z) {
 
     }
 
-    template<class T> Point3<T>::Point3(const Point3<T> &point) :
+    template<class T> Point3<T>::Point3(const Point3<T>& point) :
         X(point.X), Y(point.Y), Z(point.Z) {
 
     }
 
-    template<class T> Point3<T>& Point3<T>::operator=(const Point3<T> &point) {
+    template<class T> Point3<T>& Point3<T>::operator=(const Point3<T>& point) {
         X = point.X;
         Y = point.Y;
         Z = point.Z;
@@ -50,15 +50,15 @@ namespace urchin {
         X = Y = Z = 0;
     }
 
-    template<class T> T Point3<T>::distance(const Point3<T> &p) const {
+    template<class T> T Point3<T>::distance(const Point3<T>& p) const {
         return std::sqrt(((X-p.X)*(X-p.X)) + ((Y-p.Y)*(Y-p.Y)) + ((Z-p.Z)*(Z-p.Z)));
     }
 
-    template<class T> T Point3<T>::squareDistance(const Point3<T> &p) const {
+    template<class T> T Point3<T>::squareDistance(const Point3<T>& p) const {
         return (T)(((X-p.X)*(X-p.X)) + ((Y-p.Y)*(Y-p.Y)) + ((Z-p.Z)*(Z-p.Z)));
     }
 
-    template<class T> Vector3<T> Point3<T>::vector(const Point3<T> &target) const {
+    template<class T> Vector3<T> Point3<T>::vector(const Point3<T>& target) const {
         return Vector3<T>(target.X - X, target.Y - Y, target.Z - Z);
     }
 
@@ -69,7 +69,7 @@ namespace urchin {
         return Vector3<T>(X, Y, Z);
     }
 
-    template<class T> Point3<T> Point3<T>::translate(const Vector3<T> &v) const {
+    template<class T> Point3<T> Point3<T>::translate(const Vector3<T>& v) const {
         return Point3<T>(X+v.X, Y+v.Y, Z+v.Z);
     }
 
@@ -101,19 +101,19 @@ namespace urchin {
         return Point3<T>(-X, -Y, -Z);
     }
 
-    template<class T> Point3<T> Point3<T>::operator +(const Point3<T> &p) const {
+    template<class T> Point3<T> Point3<T>::operator +(const Point3<T>& p) const {
         return Point3<T>(    X + p.X,
                     Y + p.Y,
                     Z + p.Z);
     }
 
-    template<class T> Point3<T> Point3<T>::operator -(const Point3<T> &p) const {
+    template<class T> Point3<T> Point3<T>::operator -(const Point3<T>& p) const {
         return Point3<T>(    X - p.X,
                     Y - p.Y,
                     Z - p.Z);
     }
 
-    template<class T> const Point3<T>& Point3<T>::operator +=(const Point3<T> &p) {
+    template<class T> const Point3<T>& Point3<T>::operator +=(const Point3<T>& p) {
         X += p.X;
         Y += p.Y;
         Z += p.Z;
@@ -121,7 +121,7 @@ namespace urchin {
         return *this;
     }
 
-    template<class T> const Point3<T>& Point3<T>::operator -=(const Point3<T> &p) {
+    template<class T> const Point3<T>& Point3<T>::operator -=(const Point3<T>& p) {
         X -= p.X;
         Y -= p.Y;
         Z -= p.Z;
@@ -161,15 +161,15 @@ namespace urchin {
         return *this;
     }
 
-    template<class T> bool Point3<T>::operator ==(const Point3<T> &p) const {
+    template<class T> bool Point3<T>::operator ==(const Point3<T>& p) const {
         return (X==p.X && Y==p.Y && Z==p.Z);
     }
 
-    template<class T> bool Point3<T>::operator !=(const Point3<T> &p) const {
+    template<class T> bool Point3<T>::operator !=(const Point3<T>& p) const {
         return !(this->operator==(p));
     }
 
-    template<class T> bool Point3<T>::operator <(const Point3<T> &p) const {
+    template<class T> bool Point3<T>::operator <(const Point3<T>& p) const {
         return X < p.X || (X == p.X && Y < p.Y) || (X == p.X && Y == p.Y && Z < p.Z);
     }
 
@@ -193,37 +193,37 @@ namespace urchin {
         return Point3<NEW_TYPE>((NEW_TYPE)X, (NEW_TYPE)Y, (NEW_TYPE)Z);
     }
 
-    template<class T> Point3<T> operator *(const Point3<T> &p, T t) {
+    template<class T> Point3<T> operator *(const Point3<T>& p, T t) {
         return Point3<T>(p.X * t, p.Y * t, p.Z * t);
     }
 
-    template<class T> Point3<T> operator *(T t, const Point3<T> &p) {
+    template<class T> Point3<T> operator *(T t, const Point3<T>& p) {
         return p * t;
     }
 
-    template<class T> Point3<T> operator /(const Point3<T> &p, T t) {
+    template<class T> Point3<T> operator /(const Point3<T>& p, T t) {
         return Point3<T>(p.X / t, p.Y / t, p.Z / t);
     }
 
-    template<class T> Point3<T> operator +(const Point3<T> &p, T t) {
+    template<class T> Point3<T> operator +(const Point3<T>& p, T t) {
         return Point3<T>(p.X + t, p.Y + t, p.Z + t);
     }
 
-    template<class T> Point3<T> operator -(const Point3<T> &p, T t) {
+    template<class T> Point3<T> operator -(const Point3<T>& p, T t) {
         return Point3<T>(p.X - t, p.Y - t, p.Z - t);
     }
 
-    template<class T> Point3<T> operator *(const Matrix3<T> &m, const Point3<T> &p) {
+    template<class T> Point3<T> operator *(const Matrix3<T>& m, const Point3<T>& p) {
         return Point3<T>(    m.a11 * p.X + m.a12 * p.Y + m.a13 * p.Z,
                     m.a21 * p.X + m.a22 * p.Y + m.a23 * p.Z,
                     m.a31 * p.X + m.a32 * p.Y + m.a33 * p.Z);
     }
 
-    template<class T> Point3<T> operator *(const Point3<T> &p, const Matrix3<T> &m) {
+    template<class T> Point3<T> operator *(const Point3<T>& p, const Matrix3<T>& m) {
         return m * p;
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Point3<T> &p) {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const Point3<T>& p) {
         return stream << p.X << ", " << p.Y << ", " << p.Z;
     }
 

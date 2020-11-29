@@ -10,7 +10,7 @@ namespace urchin {
         //not need to compute transform matrix: it's the identity matrix
     }
 
-    template<class T> Transform<T>::Transform(const Point3<T> &position, const Quaternion<T> &orientation, T scale) :
+    template<class T> Transform<T>::Transform(const Point3<T>& position, const Quaternion<T>& orientation, T scale) :
         pPosition(position),
         qOrientation(orientation),
         fScale(scale) {
@@ -20,7 +20,7 @@ namespace urchin {
         mTransform = mPosition * mScale * mOrientation;
     }
 
-    template<class T> void Transform<T>::setPosition(const Point3<T> &position) {
+    template<class T> void Transform<T>::setPosition(const Point3<T>& position) {
         pPosition = position;
 
         mPosition.buildTranslation(pPosition.X, pPosition.Y, pPosition.Z);
@@ -31,7 +31,7 @@ namespace urchin {
         return pPosition;
     }
 
-    template<class T> void Transform<T>::setOrientation(const Quaternion<T> &orientation) {
+    template<class T> void Transform<T>::setOrientation(const Quaternion<T>& orientation) {
         qOrientation = orientation;
 
         mOrientation = qOrientation.toMatrix4();
@@ -69,13 +69,13 @@ namespace urchin {
         return mTransform;
     }
 
-    template<class T> Transform<T> Transform<T>::operator *(const Transform<T> &transform) const {
+    template<class T> Transform<T> Transform<T>::operator *(const Transform<T>& transform) const {
         return Transform<T>(pPosition + qOrientation.rotatePoint(transform.getPosition()),
                          qOrientation * transform.getOrientation(),
                          fScale * transform.getScale());
     }
 
-    template<class T> const Transform<T>& Transform<T>::operator *=(const Transform<T> &transform) {
+    template<class T> const Transform<T>& Transform<T>::operator *=(const Transform<T>& transform) {
         *this = *this * transform;
 
         return *this;

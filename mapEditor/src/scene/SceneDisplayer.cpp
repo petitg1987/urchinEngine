@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    SceneDisplayer::SceneDisplayer(SceneController *sceneController, const MouseController &mouseController, const StatusBarController &statusBarController) :
+    SceneDisplayer::SceneDisplayer(SceneController* sceneController, const MouseController& mouseController, const StatusBarController& statusBarController) :
         isInitialized(false),
         sceneController(sceneController),
         mouseController(mouseController),
@@ -121,7 +121,7 @@ namespace urchin {
         viewProperties[viewProperty] = value;
     }
 
-    void SceneDisplayer::setHighlightSceneObject(const SceneObject *highlightSceneObject) {
+    void SceneDisplayer::setHighlightSceneObject(const SceneObject* highlightSceneObject) {
         if (this->highlightSceneObject != highlightSceneObject) {
             this->highlightSceneObject = highlightSceneObject;
 
@@ -130,11 +130,11 @@ namespace urchin {
         }
     }
 
-    void SceneDisplayer::setHighlightSceneLight(const SceneLight *highlightSceneLight) {
+    void SceneDisplayer::setHighlightSceneLight(const SceneLight* highlightSceneLight) {
         this->highlightSceneLight = highlightSceneLight;
     }
 
-    void SceneDisplayer::setHighlightSceneSound(const SceneSound *highlightSceneSound) {
+    void SceneDisplayer::setHighlightSceneSound(const SceneSound* highlightSceneSound) {
         this->highlightSceneSound = highlightSceneSound;
     }
 

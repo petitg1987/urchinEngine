@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    SoundTableView::SoundTableView(QWidget *parent) :
+    SoundTableView::SoundTableView(QWidget* parent) :
         QTableView(parent) {
         soundsListModel = new QStandardItemModel(0, 2, this);
         soundsListModel->setHorizontalHeaderItem(0, new QStandardItem("Sound Name"));
@@ -42,7 +42,7 @@ namespace urchin {
         return nullptr;
     }
 
-    void SoundTableView::addSound(const SceneSound *sceneSound) {
+    void SoundTableView::addSound(const SceneSound* sceneSound) {
         auto *itemSoundName = new QStandardItem(QString::fromStdString(sceneSound->getName()));
         itemSoundName->setData(QVariant::fromValue(sceneSound), Qt::UserRole + 1);
         itemSoundName->setEditable(false);

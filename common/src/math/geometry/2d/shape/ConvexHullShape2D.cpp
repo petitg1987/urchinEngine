@@ -64,7 +64,7 @@ namespace urchin {
         return convexHullPoints;
     }
 
-    template<class T> Point2<T> ConvexHullShape2D<T>::getSupportPoint(const Vector2<T> &direction) const {
+    template<class T> Point2<T> ConvexHullShape2D<T>::getSupportPoint(const Vector2<T>& direction) const {
         T maxPointDotDirection = Point2<T>(0.0, 0.0).vector(convexHullPoints[0]).dotProduct(direction);
         Point2<T> maxPoint = convexHullPoints[0];
 

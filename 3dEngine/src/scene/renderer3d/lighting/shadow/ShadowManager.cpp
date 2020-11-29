@@ -23,7 +23,7 @@
 
 namespace urchin {
 
-    ShadowManager::ShadowManager(LightManager *lightManager, OctreeManager<Model> *modelOctreeManager) :
+    ShadowManager::ShadowManager(LightManager* lightManager, OctreeManager<Model>* modelOctreeManager) :
             shadowMapBias(ConfigService::instance()->getFloatValue("shadow.shadowMapBias")),
             percentageUniformSplit(ConfigService::instance()->getFloatValue("shadow.frustumUniformSplitAgainstLogSplit")),
             lightViewOverflowStepSize(ConfigService::instance()->getFloatValue("shadow.lightViewOverflowStepSize")),
@@ -140,7 +140,7 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::onCameraProjectionUpdate(const Camera *camera) {
+    void ShadowManager::onCameraProjectionUpdate(const Camera* camera) {
         this->projectionMatrix = camera->getProjectionMatrix();
         this->frustumDistance = camera->getFrustum().computeFarDistance() + camera->getFrustum().computeNearDistance();
 
@@ -148,7 +148,7 @@ namespace urchin {
         updateShadowLights();
     }
 
-    void ShadowManager::notify(Observable *observable, int notificationType) {
+    void ShadowManager::notify(Observable* observable, int notificationType) {
         if (dynamic_cast<LightManager *>(observable)) {
             Light *light = lightManager->getLastUpdatedLight();
             if (notificationType==LightManager::ADD_LIGHT) {
@@ -232,7 +232,7 @@ namespace urchin {
         return splitFrustums;
     }
 
-    const ShadowData &ShadowManager::getShadowData(const Light *light) const {
+    const ShadowData &ShadowManager::getShadowData(const Light* light) const {
         auto it = shadowDatas.find(light);
         if (it==shadowDatas.end()) {
             throw std::runtime_error("No shadow data found for this light.");
@@ -259,7 +259,7 @@ namespace urchin {
         return visibleModels;
     }
 
-    void ShadowManager::addShadowLight(const Light *light) {
+    void ShadowManager::addShadowLight(const Light* light) {
         light->addObserver(this, Light::LIGHT_MOVE);
 
         shadowDatas[light] = new ShadowData(light, nbShadowMaps);
@@ -268,7 +268,7 @@ namespace urchin {
         updateViewMatrix(light);
     }
 
-    void ShadowManager::removeShadowLight(const Light *light) {
+    void ShadowManager::removeShadowLight(const Light* light) {
         light->removeObserver(this, Light::LIGHT_MOVE);
 
         delete shadowDatas[light];
@@ -291,7 +291,7 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::updateViewMatrix(const Light *light) {
+    void ShadowManager::updateViewMatrix(const Light* light) {
         ShadowData *shadowData = shadowDatas[light];
 
         if (light->hasParallelBeams()) { //sun light
@@ -319,7 +319,7 @@ namespace urchin {
     /**
      * Updates frustum shadow data (models, shadow caster/receiver box, projection matrix)
      */
-    void ShadowManager::updateFrustumShadowData(const Light *light, ShadowData *shadowData) {
+    void ShadowManager::updateFrustumShadowData(const Light* light, ShadowData* shadowData) {
         ScopeProfiler profiler("3d", "upFrustumShadow");
 
         if (light->hasParallelBeams()) { //sun light
@@ -346,7 +346,7 @@ namespace urchin {
     /**
      * @return Box in light space containing shadow caster and receiver (scene independent)
      */
-    AABBox<float> ShadowManager::createSceneIndependentBox(const Frustum<float> &splitFrustum, const Matrix4<float> &lightViewMatrix) const {
+    AABBox<float> ShadowManager::createSceneIndependentBox(const Frustum<float>& splitFrustum, const Matrix4<float>& lightViewMatrix) const {
         ScopeProfiler profiler("3d", "sceneIndepBox");
 
         const Frustum<float> &frustumLightSpace = lightViewMatrix * splitFrustum;
@@ -368,7 +368,7 @@ namespace urchin {
         return AABBox<float>(shadowReceiverAndCasterVertex, 16);
     }
 
-    float ShadowManager::computeNearZForSceneIndependentBox(const Frustum<float> &splitFrustumLightSpace) const {
+    float ShadowManager::computeNearZForSceneIndependentBox(const Frustum<float>& splitFrustumLightSpace) const {
         float nearestPointFromLight = splitFrustumLightSpace.getFrustumPoints()[0].Z;
         for (unsigned int i=1; i<8; ++i) {
             if (splitFrustumLightSpace.getFrustumPoints()[i].Z > nearestPointFromLight) {
@@ -381,8 +381,8 @@ namespace urchin {
     /**
      * @return Box in light space containing shadow caster and receiver (scene dependent)
      */
-    AABBox<float> ShadowManager::createSceneDependentBox(const AABBox<float> &aabboxSceneIndependent, const OBBox<float> &obboxSceneIndependentViewSpace,
-            const std::vector<Model *> &models, const Matrix4<float> &lightViewMatrix) const {
+    AABBox<float> ShadowManager::createSceneDependentBox(const AABBox<float>& aabboxSceneIndependent, const OBBox<float>& obboxSceneIndependentViewSpace,
+            const std::vector<Model *> &models, const Matrix4<float>& lightViewMatrix) const {
         ScopeProfiler profiler("3d", "sceneDepBox");
 
         AABBox<float> aabboxSceneDependent;
@@ -422,7 +422,7 @@ namespace urchin {
         return AABBox<float>(cutMin, cutMax);
     }
 
-    void ShadowManager::splitFrustum(const Frustum<float> &frustum) {
+    void ShadowManager::splitFrustum(const Frustum<float>& frustum) {
         ScopeProfiler profiler("3d", "splitFrustum");
 
         splitDistances.clear();
@@ -448,7 +448,7 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::createShadowMaps(const Light *light) {
+    void ShadowManager::createShadowMaps(const Light* light) {
         auto depthTexture = Texture::buildArray(shadowMapResolution, shadowMapResolution, nbShadowMaps, depthTextureFormat, nullptr);
         auto shadowMapTexture = Texture::buildArray(shadowMapResolution, shadowMapResolution, nbShadowMaps, TextureFormat::RG_32_FLOAT, nullptr);
 
@@ -495,7 +495,7 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::updateVisibleModels(const Frustum<float> &frustum) {
+    void ShadowManager::updateVisibleModels(const Frustum<float>& frustum) {
         ScopeProfiler profiler("3d", "upVisibleModel");
 
         splitFrustum(frustum);
@@ -559,7 +559,7 @@ namespace urchin {
         delete []depthSplitDistance;
     }
 
-    void ShadowManager::drawLightSceneBox(const RenderTarget *renderTarget, const Frustum<float> &frustum, const Light *light, const Matrix4<float> &viewMatrix) const {
+    void ShadowManager::drawLightSceneBox(const RenderTarget* renderTarget, const Frustum<float>& frustum, const Light* light, const Matrix4<float>& viewMatrix) const {
         auto itShadowData = shadowDatas.find(light);
         if (itShadowData == shadowDatas.end()) {
             throw std::invalid_argument("shadow manager doesn't know this light.");

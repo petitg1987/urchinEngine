@@ -5,7 +5,7 @@
 namespace urchin {
 
     CollisionCapsuleObject::CollisionCapsuleObject(float outerMargin, float radius, float cylinderHeight,
-            typename CapsuleShape<float>::CapsuleOrientation capsuleOrientation, const Point3<float> &centerOfMass, const Quaternion<float> &orientation) :
+            typename CapsuleShape<float>::CapsuleOrientation capsuleOrientation, const Point3<float>& centerOfMass, const Quaternion<float>& orientation) :
         CollisionConvexObject3D(outerMargin),
         capsuleObject(Capsule<float>(radius, cylinderHeight, capsuleOrientation, centerOfMass, orientation)) {
 
@@ -45,7 +45,7 @@ namespace urchin {
     /**
      * @return includeMargin Indicate whether support function need to take into account margin
      */
-    Point3<float> CollisionCapsuleObject::getSupportPoint(const Vector3<float> &direction, bool includeMargin) const {
+    Point3<float> CollisionCapsuleObject::getSupportPoint(const Vector3<float>& direction, bool includeMargin) const {
         if (includeMargin) {
             return retrieveCapsule().getSupportPoint(direction);
         }

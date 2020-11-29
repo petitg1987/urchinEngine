@@ -12,7 +12,7 @@
 namespace urchin {
     QString NewTerrainDialog::preferredHeightPath = QString();
 
-    NewTerrainDialog::NewTerrainDialog(QWidget *parent, const TerrainController *terrainController) :
+    NewTerrainDialog::NewTerrainDialog(QWidget* parent, const TerrainController* terrainController) :
             QDialog(parent),
             terrainController(terrainController),
             terrainNameLabel(nullptr),
@@ -39,7 +39,7 @@ namespace urchin {
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void NewTerrainDialog::setupNameFields(QGridLayout *mainLayout) {
+    void NewTerrainDialog::setupNameFields(QGridLayout* mainLayout) {
         terrainNameLabel = new QLabel("Terrain Name:");
         mainLayout->addWidget(terrainNameLabel, 0, 0);
 
@@ -48,7 +48,7 @@ namespace urchin {
         terrainNameText->setFixedWidth(360);
     }
 
-    void NewTerrainDialog::setupHeightFilenameFields(QGridLayout *mainLayout) {
+    void NewTerrainDialog::setupHeightFilenameFields(QGridLayout* mainLayout) {
         heightFilenameLabel = new QLabel("Height File:");
         mainLayout->addWidget(heightFilenameLabel, 1, 0);
 
@@ -144,6 +144,6 @@ namespace urchin {
 
     bool NewTerrainDialog::isSceneTerrainExist(const std::string &name) {
         std::list<const SceneTerrain *> sceneTerrains = terrainController->getSceneTerrains();
-        return std::any_of(sceneTerrains.begin(), sceneTerrains.end(), [name](const auto &st){return st->getName() == name;});
+        return std::any_of(sceneTerrains.begin(), sceneTerrains.end(), [name](const auto& st){return st->getName() == name;});
     }
 }

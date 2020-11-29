@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    SmoothStopAction::SmoothStopAction(const SoundBehavior &soundBehavior) :
+    SmoothStopAction::SmoothStopAction(const SoundBehavior& soundBehavior) :
         soundBehavior(soundBehavior),
         bIsSmoothStopStarted(false),
         totalChangeVolumePercentage(0.0) {

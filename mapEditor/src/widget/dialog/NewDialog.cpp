@@ -9,7 +9,7 @@
 
 namespace urchin {
 
-    NewDialog::NewDialog(QWidget *parent) :
+    NewDialog::NewDialog(QWidget* parent) :
         QDialog(parent),
         mapNameLabel(nullptr),
         mapNameText(nullptr),
@@ -38,7 +38,7 @@ namespace urchin {
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void NewDialog::setupNameFields(QGridLayout *mainLayout) {
+    void NewDialog::setupNameFields(QGridLayout* mainLayout) {
         mapNameLabel = new QLabel("Name (*.xml):");
         mainLayout->addWidget(mapNameLabel, 0, 0);
 
@@ -47,7 +47,7 @@ namespace urchin {
         mapNameText->setFixedWidth(360);
     }
 
-    void NewDialog::setupDirectoryFields(QGridLayout *mainLayout) {
+    void NewDialog::setupDirectoryFields(QGridLayout* mainLayout) {
         mapDirectoryLabel = new QLabel("Directory:");
         mainLayout->addWidget(mapDirectoryLabel, 1, 0);
 
@@ -63,7 +63,7 @@ namespace urchin {
         connect(selectMapDirButton, SIGNAL(clicked()), this, SLOT(showMapDirectoryDialog()));
     }
 
-    void NewDialog::setupWorkingDirectoryFields(QGridLayout *mainLayout) {
+    void NewDialog::setupWorkingDirectoryFields(QGridLayout* mainLayout) {
         mapWorkingDirectoryLabel = new QLabel("Working Directory:");
         mainLayout->addWidget(mapWorkingDirectoryLabel, 2, 0);
 

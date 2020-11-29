@@ -13,7 +13,7 @@ namespace urchin {
 
     QString NewObjectDialog::preferredMeshPath = QString();
 
-    NewObjectDialog::NewObjectDialog(QWidget *parent, const ObjectController *objectController) :
+    NewObjectDialog::NewObjectDialog(QWidget* parent, const ObjectController* objectController) :
         QDialog(parent),
         objectController(objectController),
         objectNameLabel(nullptr),
@@ -40,7 +40,7 @@ namespace urchin {
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void NewObjectDialog::setupNameFields(QGridLayout *mainLayout) {
+    void NewObjectDialog::setupNameFields(QGridLayout* mainLayout) {
         objectNameLabel = new QLabel("Object Name:");
         mainLayout->addWidget(objectNameLabel, 0, 0);
 
@@ -49,7 +49,7 @@ namespace urchin {
         objectNameText->setFixedWidth(360);
     }
 
-    void NewObjectDialog::setupMeshFilenameFields(QGridLayout *mainLayout) {
+    void NewObjectDialog::setupMeshFilenameFields(QGridLayout* mainLayout) {
         meshFilenameLabel = new QLabel("Mesh File:");
         mainLayout->addWidget(meshFilenameLabel, 1, 0);
 
@@ -139,7 +139,7 @@ namespace urchin {
 
     bool NewObjectDialog::isSceneObjectExist(const std::string &name) {
         std::list<const SceneObject *> sceneObjects = objectController->getSceneObjects();
-        return std::any_of(sceneObjects.begin(), sceneObjects.end(), [name](const auto &so){return so->getName() == name;});
+        return std::any_of(sceneObjects.begin(), sceneObjects.end(), [name](const auto& so){return so->getName() == name;});
     }
 
 }

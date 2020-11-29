@@ -25,7 +25,7 @@ namespace urchin {
         }
     }
 
-    void StringUtil::split(const std::string &str, const char &delimiter, std::vector<std::string> &tokens) {
+    void StringUtil::split(const std::string &str, const char& delimiter, std::vector<std::string> &tokens) {
         std::string::const_iterator start = str.begin();
 
         while (start != str.end()) {

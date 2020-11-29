@@ -16,7 +16,7 @@ namespace urchin {
         return new SphereShape<T>(*this);
     }
 
-    template<class T> std::unique_ptr<ConvexObject3D<T>> SphereShape<T>::toConvexObject(const Transform<T> &transform) const {
+    template<class T> std::unique_ptr<ConvexObject3D<T>> SphereShape<T>::toConvexObject(const Transform<T>& transform) const {
         return std::make_unique<Sphere<T>>(radius*transform.getScale(), transform.getPosition());
     }
 

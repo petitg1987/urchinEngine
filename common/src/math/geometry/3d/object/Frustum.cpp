@@ -31,8 +31,8 @@ namespace urchin {
     * @param fbl Far bottom left point
     * @param fbr Far bottom right point
     */
-    template<class T> Frustum<T>::Frustum(const Point3<T> &ntl, const Point3<T> &ntr, const Point3<T> &nbl, const Point3<T> &nbr,
-        const Point3<T> &ftl, const Point3<T> &ftr, const Point3<T> &fbl, const Point3<T> &fbr) {
+    template<class T> Frustum<T>::Frustum(const Point3<T>& ntl, const Point3<T>& ntr, const Point3<T>& nbl, const Point3<T>& nbr,
+        const Point3<T>& ftl, const Point3<T>& ftr, const Point3<T>& fbl, const Point3<T>& fbr) {
         buildFrustum(ntl, ntr, nbl, nbr, ftl, ftr, fbl, fbr);
     }
 
@@ -117,8 +117,8 @@ namespace urchin {
     * @param fbl Far bottom left point
     * @param fbr Far bottom right point
     */
-    template<class T> void Frustum<T>::buildFrustum(const Point3<T> &ntl, const Point3<T> &ntr, const Point3<T> &nbl, const Point3<T> &nbr,
-        const Point3<T> &ftl, const Point3<T> &ftr, const Point3<T> &fbl, const Point3<T> &fbr) {
+    template<class T> void Frustum<T>::buildFrustum(const Point3<T>& ntl, const Point3<T>& ntr, const Point3<T>& nbl, const Point3<T>& nbr,
+        const Point3<T>& ftl, const Point3<T>& ftr, const Point3<T>& fbl, const Point3<T>& fbr) {
         //building frustum points
         frustumPoints[0] = ntl;
         frustumPoints[1] = ntr;
@@ -163,7 +163,7 @@ namespace urchin {
         return position;
     }
 
-    template<class T> Point3<T> Frustum<T>::getSupportPoint(const Vector3<T> &direction) const {
+    template<class T> Point3<T> Frustum<T>::getSupportPoint(const Vector3<T>& direction) const {
         T maxPointDotDirection = frustumPoints[0].toVector().dotProduct(direction);
         Point3<T> maxPoint = frustumPoints[0];
 
@@ -246,7 +246,7 @@ namespace urchin {
         return Frustum<T>(frustumPoints[NTL], frustumPoints[NTR], frustumPoints[NBL], frustumPoints[NBR], ftl, ftr, fbl, fbr);
     }
 
-    template<class T> bool Frustum<T>::collideWithPoint(const Point3<T> &point) const {
+    template<class T> bool Frustum<T>::collideWithPoint(const Point3<T>& point) const {
         for (auto &plane : planes) {
             if (plane.distance(point) > 0.0) {
                 return false;
@@ -259,7 +259,7 @@ namespace urchin {
     /**
     * @return True if the bounding box collides or is inside this frustum
     */
-    template<class T> bool Frustum<T>::collideWithAABBox(const AABBox<T> &bbox) const {
+    template<class T> bool Frustum<T>::collideWithAABBox(const AABBox<T>& bbox) const {
         for (auto &plane : planes) {
             const Vector3<T> &normal = plane.getNormal();
 
@@ -285,7 +285,7 @@ namespace urchin {
     /**
     * @return True if the sphere collides or is inside this frustum
     */
-    template<class T> bool Frustum<T>::collideWithSphere(const Sphere<T> &sphere) const {
+    template<class T> bool Frustum<T>::collideWithSphere(const Sphere<T>& sphere) const {
         for (auto &plane : planes) {
             if (plane.distance(sphere.getCenterOfMass()) > sphere.getRadius()) {
                 return false;
@@ -295,7 +295,7 @@ namespace urchin {
         return true;
     }
 
-    template<class T> Frustum<T> operator *(const Matrix4<T> &m, const Frustum<T> &frustum) {
+    template<class T> Frustum<T> operator *(const Matrix4<T>& m, const Frustum<T>& frustum) {
         Point4<T> ntl = m * Point4<T>(frustum.getFrustumPoint(Frustum<T>::NTL));
         Point4<T> ntr = m * Point4<T>(frustum.getFrustumPoint(Frustum<T>::NTR));
         Point4<T> nbl = m * Point4<T>(frustum.getFrustumPoint(Frustum<T>::NBL));
@@ -309,11 +309,11 @@ namespace urchin {
             ftl.toPoint3(), ftr.toPoint3(), fbl.toPoint3(), fbr.toPoint3());
     }
 
-    template<class T> Frustum<T> operator *(const Frustum<T> &frustum, const Matrix4<T> &m) {
+    template<class T> Frustum<T> operator *(const Frustum<T>& frustum, const Matrix4<T>& m) {
         return m * frustum;
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Frustum<T> &frustum) {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const Frustum<T>& frustum) {
         stream.setf(std::ios::left);
         stream << "Frustum point NTL: " << frustum.getFrustumPoint(Frustum<T>::NTL) << std::endl;
         stream << "Frustum point NTR: " << frustum.getFrustumPoint(Frustum<T>::NTR) << std::endl;

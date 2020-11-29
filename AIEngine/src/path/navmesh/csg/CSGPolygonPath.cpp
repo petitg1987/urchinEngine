@@ -10,7 +10,7 @@ namespace urchin {
 
     }
 
-    template<class T> CSGPolygonPath::CSGPolygonPath(const CSGPolygon<T> &polygon) :
+    template<class T> CSGPolygonPath::CSGPolygonPath(const CSGPolygon<T>& polygon) :
         name(polygon.getName()) {
         path.reserve(polygon.getCwPoints().size());
 

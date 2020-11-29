@@ -118,7 +118,7 @@ namespace urchin {
         return polygonPoints.size();
     }
 
-    std::vector<std::shared_ptr<NavTriangle>> TriangulationAlgorithm::triangulateMonotonePolygon(const MonotonePolygon &monotonePolygon) {
+    std::vector<std::shared_ptr<NavTriangle>> TriangulationAlgorithm::triangulateMonotonePolygon(const MonotonePolygon& monotonePolygon) {
         missingTriangleNeighbor = 0;
         const std::vector<std::size_t> &monotonePolygonPoints = monotonePolygon.getCcwPoints();
         std::vector<SidedPoint> sortedSidedPoints = buildSortedSidedPoints(monotonePolygonPoints);
@@ -201,7 +201,7 @@ namespace urchin {
             sortedSidedPoints.emplace_back(SidedPoint(currentIndex, isFirstPointAboveSecond(currentIndex, nextIndex)));
         }
 
-        std::sort(sortedSidedPoints.begin(), sortedSidedPoints.end(), [&](const SidedPoint &left, const SidedPoint &right) {return isFirstPointAboveSecond(left.pointIndex, right.pointIndex);});
+        std::sort(sortedSidedPoints.begin(), sortedSidedPoints.end(), [&](const SidedPoint& left, const SidedPoint& right) {return isFirstPointAboveSecond(left.pointIndex, right.pointIndex);});
 
         return sortedSidedPoints;
     }
@@ -229,7 +229,7 @@ namespace urchin {
         }
     }
 
-    void TriangulationAlgorithm::determineNeighbors(std::vector<std::shared_ptr<NavTriangle>> &triangles, const MonotonePolygon &monotonePolygon) {
+    void TriangulationAlgorithm::determineNeighbors(std::vector<std::shared_ptr<NavTriangle>> &triangles, const MonotonePolygon& monotonePolygon) {
         determineNeighborsInsideMonotone(triangles);
         determineNeighborsBetweenMonotones(triangles, monotonePolygon);
     }
@@ -263,7 +263,7 @@ namespace urchin {
         }
     }
 
-    void TriangulationAlgorithm::determineNeighborsBetweenMonotones(std::vector<std::shared_ptr<NavTriangle>> &monotoneTriangles, const MonotonePolygon &monotonePolygon) {
+    void TriangulationAlgorithm::determineNeighborsBetweenMonotones(std::vector<std::shared_ptr<NavTriangle>> &monotoneTriangles, const MonotonePolygon& monotonePolygon) {
         std::size_t currMonotoneTriangleIndex = monotoneTriangles.size() - 1;
         const auto &currTriangle = monotoneTriangles[currMonotoneTriangleIndex];
 

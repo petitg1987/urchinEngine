@@ -14,7 +14,7 @@ namespace urchin {
      * Add a point to the end of the simplex
      * @return Point added (supportPointA - supportPointB)
      */
-    template<class T> void Simplex<T>::addPoint(const Point3<T> &supportPointA, const Point3<T> &supportPointB) {
+    template<class T> void Simplex<T>::addPoint(const Point3<T>& supportPointA, const Point3<T>& supportPointB) {
         assert(simplexPointsSize < 4);
 
         if (simplexPointsSize < 4) {
@@ -57,7 +57,7 @@ namespace urchin {
         return closestPointToOrigin;
     }
 
-    template<class T> bool Simplex<T>::isPointInSimplex(const Point3<T> &p) const {
+    template<class T> bool Simplex<T>::isPointInSimplex(const Point3<T>& p) const {
         for (unsigned int i=0; i<simplexPointsSize; ++i) {
             const Point3<T> &simplexPoint = simplexPoints[i].point;
             if (simplexPoint.X==p.X && simplexPoint.Y==p.Y && simplexPoint.Z==p.Z) {
@@ -73,7 +73,7 @@ namespace urchin {
      * @param closestPointA [out] Computed closest point of object A
      * @param closestPointB [out] Computed closest point of object B
      */
-    template<class T> void Simplex<T>::computeClosestPoints(Point3<T> &closestPointA, Point3<T> &closestPointB) const {
+    template<class T> void Simplex<T>::computeClosestPoints(Point3<T>& closestPointA, Point3<T>& closestPointB) const {
         if (getSize() == 1) { //simplex is a point
 
             closestPointA = simplexPoints[0].barycentric * simplexPoints[0].supportPointA;
@@ -188,7 +188,7 @@ namespace urchin {
         simplexPoints[index].barycentric = barycentric;
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Simplex<T> &simplex) {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const Simplex<T>& simplex) {
         for (std::size_t i=0; i < simplex.getSize(); ++i) {
             stream << "Simplex point " << i << " details:" << std::endl;
             stream << " - Point: " << simplex.getPoint(i) <<std::endl;

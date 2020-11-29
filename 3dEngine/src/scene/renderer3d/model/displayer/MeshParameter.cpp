@@ -15,7 +15,7 @@ namespace urchin {
         return bNeedRenderTextures;
     }
 
-    void MeshParameter::setAmbientFactorShaderVar(const ShaderVar &ambientFactorShaderVar) {
+    void MeshParameter::setAmbientFactorShaderVar(const ShaderVar& ambientFactorShaderVar) {
         this->ambientFactorShaderVar = ambientFactorShaderVar;
     }
 

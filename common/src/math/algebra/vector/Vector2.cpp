@@ -10,12 +10,12 @@ namespace urchin {
 
     }
 
-    template<class T> Vector2<T>::Vector2(const Vector2<T> &vector) :
+    template<class T> Vector2<T>::Vector2(const Vector2<T>& vector) :
         X(vector.X), Y(vector.Y) {
 
     }
 
-    template<class T> Vector2<T>& Vector2<T>::operator=(const Vector2<T> &vector) {
+    template<class T> Vector2<T>& Vector2<T>::operator=(const Vector2<T>& vector) {
         X = vector.X;
         Y = vector.Y;
         return *this;
@@ -48,11 +48,11 @@ namespace urchin {
         return (X*X + Y*Y);
     }
 
-    template<class T> T Vector2<T>::dotProduct(const Vector2<T> &v) const {
+    template<class T> T Vector2<T>::dotProduct(const Vector2<T>& v) const {
         return (X*v.X + Y*v.Y);
     }
 
-    template<class T> T Vector2<T>::crossProduct(const Vector2<T> &v) const {
+    template<class T> T Vector2<T>::crossProduct(const Vector2<T>& v) const {
         return (X*v.Y - Y*v.X);
     }
 
@@ -72,48 +72,48 @@ namespace urchin {
         return Vector2<T>(-X, -Y);
     }
 
-    template<class T> Vector2<T> Vector2<T>::operator +(const Vector2<T> &v) const {
+    template<class T> Vector2<T> Vector2<T>::operator +(const Vector2<T>& v) const {
         return Vector2<T>(    X + v.X,
                     Y + v.Y);
     }
 
-    template<class T> Vector2<T> Vector2<T>::operator -(const Vector2<T> &v) const {
+    template<class T> Vector2<T> Vector2<T>::operator -(const Vector2<T>& v) const {
         return Vector2<T>(    X - v.X,
                     Y - v.Y);
     }
 
-    template<class T> Vector2<T> Vector2<T>::operator *(const Vector2<T> &v) const {
+    template<class T> Vector2<T> Vector2<T>::operator *(const Vector2<T>& v) const {
         return Vector2<T>(    X * v.X,
                 Y * v.Y);
     }
 
-    template<class T> Vector2<T> Vector2<T>::operator /(const Vector2<T> &v) const {
+    template<class T> Vector2<T> Vector2<T>::operator /(const Vector2<T>& v) const {
         return Vector2<T>(    X / v.X,
                 Y / v.Y);
     }
 
-    template<class T> const Vector2<T>& Vector2<T>::operator +=(const Vector2<T> &v) {
+    template<class T> const Vector2<T>& Vector2<T>::operator +=(const Vector2<T>& v) {
         X += v.X;
         Y += v.Y;
 
         return *this;
     }
 
-    template<class T> const Vector2<T>& Vector2<T>::operator -=(const Vector2<T> &v) {
+    template<class T> const Vector2<T>& Vector2<T>::operator -=(const Vector2<T>& v) {
         X -= v.X;
         Y -= v.Y;
 
         return *this;
     }
 
-    template<class T> const Vector2<T>& Vector2<T>::operator *=(const Vector2<T> &v) {
+    template<class T> const Vector2<T>& Vector2<T>::operator *=(const Vector2<T>& v) {
         X *= v.X;
         Y *= v.Y;
 
         return *this;
     }
 
-    template<class T> const Vector2<T>& Vector2<T>::operator /=(const Vector2<T> &v) {
+    template<class T> const Vector2<T>& Vector2<T>::operator /=(const Vector2<T>& v) {
         X /= v.X;
         Y /= v.Y;
 
@@ -154,28 +154,28 @@ namespace urchin {
         return Vector2<NEW_TYPE>((NEW_TYPE)X, (NEW_TYPE)Y);
     }
 
-    template<class T> Vector2<T> operator *(const Vector2<T> &v, T t) {
+    template<class T> Vector2<T> operator *(const Vector2<T>& v, T t) {
         return Vector2<T>(v.X * t, v.Y * t);
     }
 
-    template<class T> Vector2<T> operator *(T t, const Vector2<T> &v) {
+    template<class T> Vector2<T> operator *(T t, const Vector2<T>& v) {
         return v * t;
     }
 
-    template<class T> Vector2<T> operator /(const Vector2<T> &v, T t) {
+    template<class T> Vector2<T> operator /(const Vector2<T>& v, T t) {
         return Vector2<T>(v.X / t, v.Y / t);
     }
 
-    template<class T> Vector2<T> operator *(const Matrix2<T> &m, const Vector2<T> &v) {
+    template<class T> Vector2<T> operator *(const Matrix2<T>& m, const Vector2<T>& v) {
         return Vector2<T>(    m.a11 * v.X + m.a12 * v.Y,
                     m.a21 * v.X + m.a22 * v.Y);
     }
 
-    template<class T> Vector2<T> operator *(const Vector2<T> &v, const Matrix2<T> &m) {
+    template<class T> Vector2<T> operator *(const Vector2<T>& v, const Matrix2<T>& m) {
         return m * v;
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Vector2<T> &v) {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const Vector2<T>& v) {
         return stream << v.X << ", " << v.Y;
     }
 

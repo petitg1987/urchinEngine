@@ -28,7 +28,7 @@ namespace urchin {
      * @param points Points of the convex hull shape (all points must belong to the convex hull shape)
      * @param indexedTriangles Triangles of the convex hull shape (the triangles must form a convex)
      */
-    template<class T> ConvexHullShape3D<T>::ConvexHullShape3D(const std::map<std::size_t, ConvexHullPoint<T>> &points, const std::map<std::size_t, IndexedTriangle3D<T>> &indexedTriangles) :
+    template<class T> ConvexHullShape3D<T>::ConvexHullShape3D(const std::map<std::size_t, ConvexHullPoint<T>>& points, const std::map<std::size_t, IndexedTriangle3D<T>>& indexedTriangles) :
         nextPointIndex(points.rbegin()->first + 1),
         nextTriangleIndex(indexedTriangles.rbegin()->first + 1),
         points(points),
@@ -67,7 +67,7 @@ namespace urchin {
     /**
      * @return Returns index of point added. If point doesn't make part of convex, result is zero.
      */
-    template<class T> std::size_t ConvexHullShape3D<T>::addNewPoint(const Point3<T> &newPoint) {
+    template<class T> std::size_t ConvexHullShape3D<T>::addNewPoint(const Point3<T>& newPoint) {
         std::vector<std::size_t> removedTriangleIndices;
         removedTriangleIndices.reserve(4);
 
@@ -78,7 +78,7 @@ namespace urchin {
     * @param removedTriangleIndices [out] Indices of removed triangles from convex hull shape
     * @return Returns index of point added. If point doesn't make part of convex, result is zero.
     */
-    template<class T> std::size_t ConvexHullShape3D<T>::addNewPoint(const Point3<T> &newPoint, std::vector<std::size_t> &removedTriangleIndices) {
+    template<class T> std::size_t ConvexHullShape3D<T>::addNewPoint(const Point3<T>& newPoint, std::vector<std::size_t> &removedTriangleIndices) {
         std::map<uint_fast64_t, std::pair<std::size_t, std::size_t>> edges;
 
         //deletes all triangles visible by the new point
@@ -144,7 +144,7 @@ namespace urchin {
         return 0;
     }
 
-    template<class T> Point3<T> ConvexHullShape3D<T>::getSupportPoint(const Vector3<T> &direction) const {
+    template<class T> Point3<T> ConvexHullShape3D<T>::getSupportPoint(const Vector3<T>& direction) const {
         T maxPointDotDirection = points.begin()->second.point.toVector().dotProduct(direction);
         Point3<T> maxPoint = points.begin()->second.point;
 
@@ -172,7 +172,7 @@ namespace urchin {
         return new ConvexHullShape3D<T>(*this);
     }
 
-    template<class T> std::unique_ptr<ConvexObject3D<T>> ConvexHullShape3D<T>::toConvexObject(const Transform<T> &transform) const {
+    template<class T> std::unique_ptr<ConvexObject3D<T>> ConvexHullShape3D<T>::toConvexObject(const Transform<T>& transform) const {
         std::map<std::size_t, ConvexHullPoint<T>> transformedConvexHullPoints = points;
         for (auto &it : transformedConvexHullPoints) {
             it.second.point = (transform.getTransformMatrix() * Point4<T>(it.second.point)).toPoint3();
@@ -181,7 +181,7 @@ namespace urchin {
         return std::make_unique<ConvexHull3D<T>>(ConvexHullShape3D<T>(transformedConvexHullPoints, indexedTriangles));
     }
 
-    template<class T> void ConvexHullShape3D<T>::addTriangle(const IndexedTriangle3D<T> &indexedTriangle) {
+    template<class T> void ConvexHullShape3D<T>::addTriangle(const IndexedTriangle3D<T>& indexedTriangle) {
         //add indexed triangles to triangles map
         unsigned int triangleIndex = nextTriangleIndex++;
         indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(triangleIndex, indexedTriangle));
@@ -303,7 +303,7 @@ namespace urchin {
      * @param pointsUsed Points currently used to construct the tetrahedron
      * @return Exception during building of tetrahedron
      */
-    template<class T> std::invalid_argument ConvexHullShape3D<T>::buildException(const std::vector<Point3<T>> &points, const std::set<unsigned int> &pointsUsed) {
+    template<class T> std::invalid_argument ConvexHullShape3D<T>::buildException(const std::vector<Point3<T>> &points, const std::set<unsigned int>& pointsUsed) {
         std::string formName;
         if (pointsUsed.empty()) {
             formName = "empty set";
@@ -344,7 +344,7 @@ namespace urchin {
         Logger::logger().logError(logStream.str());
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const ConvexHullShape3D<T> &ch) {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const ConvexHullShape3D<T>& ch) {
         for (auto it = ch.getIndexedTriangles().begin(); it!=ch.getIndexedTriangles().end(); ++it) {
             stream << "Triangle "<< it->first <<": "
                 <<"("<<ch.getConvexHullPoints().at(it->second.getIndex(0)).point<<") "

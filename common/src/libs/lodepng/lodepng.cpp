@@ -1491,7 +1491,7 @@ static unsigned encodeLZ77(uivector* out, Hash* hash,
     unsigned hashval;
     unsigned current_offset, current_length;
     unsigned prev_offset;
-    const unsigned char *lastptr, *foreptr, *backptr;
+    const unsigned char* lastptr, *foreptr, *backptr;
     unsigned hashpos;
 
     if(windowsize == 0 || windowsize > 32768) return 60; /*error: windowsize smaller/larger than allowed*/
@@ -2513,7 +2513,7 @@ unsigned lodepng_chunk_create(unsigned char** out, size_t* outlength, unsigned l
                               const char* type, const unsigned char* data)
 {
     unsigned i;
-    unsigned char *chunk, *new_buffer;
+    unsigned char* chunk, *new_buffer;
     size_t new_length = (*outlength) + length + 12;
     if(new_length < length + 12 || new_length < (*outlength)) return 77; /*integer overflow happened*/
     new_buffer = (unsigned char*)lodepng_realloc(*out, new_length);

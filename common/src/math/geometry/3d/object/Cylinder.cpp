@@ -11,7 +11,7 @@ namespace urchin {
     }
 
     template<class T> Cylinder<T>::Cylinder(T radius, T height, typename CylinderShape<T>::CylinderOrientation cylinderOrientation,
-            const Point3<T> &centerOfMass, const Quaternion<T> &orientation) :
+            const Point3<T>& centerOfMass, const Quaternion<T>& orientation) :
         cylinderShape(CylinderShape<T>(radius, height, cylinderOrientation)),
         centerOfMass(centerOfMass),
         orientation(orientation) {
@@ -47,7 +47,7 @@ namespace urchin {
         return axis[index];
     }
 
-    template<class T> Point3<T> Cylinder<T>::getSupportPoint(const Vector3<T> &direction) const {
+    template<class T> Point3<T> Cylinder<T>::getSupportPoint(const Vector3<T>& direction) const {
         Vector3<T> normalizedDirection;
         if (direction.X==0.0 && direction.Y==0.0 && direction.Z==0.0) {
             normalizedDirection = Vector3<T>(1.0, 0.0, 0.0);

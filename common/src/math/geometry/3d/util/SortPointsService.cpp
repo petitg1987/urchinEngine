@@ -7,7 +7,7 @@ namespace urchin {
     /**
      * Sort points in clockwise direction in a right hand coordinate system (Z+ directed to the observer) when the normal is directed to the observer.
      */
-    template<class T> std::vector<Point3<T>> SortPointsService<T>::sortPointsClockwise(const std::vector<Point3<T>> &coplanarPoints, const Vector3<T> &normal) {
+    template<class T> std::vector<Point3<T>> SortPointsService<T>::sortPointsClockwise(const std::vector<Point3<T>> &coplanarPoints, const Vector3<T>& normal) {
         std::vector<Point3<T>> sortedPoints;
         sortedPoints.reserve(coplanarPoints.size());
 
@@ -34,11 +34,11 @@ namespace urchin {
     /**
      * Sort points in counter clockwise direction in a right hand coordinate system (Z+ directed to the observer) when the normal is directed to the observer.
      */
-    template<class T> std::vector<Point3<T>> SortPointsService<T>::sortPointsCounterClockwise(const std::vector<Point3<T>> &coplanarPoints, const Vector3<T> &normal) {
+    template<class T> std::vector<Point3<T>> SortPointsService<T>::sortPointsCounterClockwise(const std::vector<Point3<T>> &coplanarPoints, const Vector3<T>& normal) {
         return sortPointsClockwise(coplanarPoints, -normal);
     }
 
-    template<class T> bool SortPointsService<T>::isNewPointClockwiseSorted(const std::vector<Point3<T>> &points, const Vector3<T> &normal, unsigned int newPointIndex) {
+    template<class T> bool SortPointsService<T>::isNewPointClockwiseSorted(const std::vector<Point3<T>> &points, const Vector3<T>& normal, unsigned int newPointIndex) {
         for (unsigned int i=0; i<3; ++i) { //3 (counter-)clockwise tests: previous point, previous point, new point AND previous point, new point, next point AND new point, next point, next point
             unsigned int firstPointIndex = (newPointIndex-2 + i)%points.size();
             unsigned int secondPointIndex = (newPointIndex-1 + i)%points.size();

@@ -16,7 +16,7 @@ namespace urchin {
         axis[2] = Vector3<T>(0.0, 0.0, 0.0);
     }
 
-    template<class T> OBBox<T>::OBBox(const Vector3<T> &halfSizes, const Point3<T> &centerOfMass, const Quaternion<T> &orientation):
+    template<class T> OBBox<T>::OBBox(const Vector3<T>& halfSizes, const Point3<T>& centerOfMass, const Quaternion<T>& orientation):
         boxShape(BoxShape<T>(halfSizes)),
         centerOfMass(centerOfMass),
         orientation(orientation) {
@@ -25,7 +25,7 @@ namespace urchin {
         axis[2] = orientation.rotatePoint(Point3<T>(0.0, 0.0, 1.0)).toVector();
     }
 
-    template<class T> OBBox<T>::OBBox(const AABBox<T> &aabb) :
+    template<class T> OBBox<T>::OBBox(const AABBox<T>& aabb) :
         boxShape(BoxShape<T>(Vector3<T>((aabb.getMax().X - aabb.getMin().X) / 2.0, (aabb.getMax().Y - aabb.getMin().Y) / 2.0, (aabb.getMax().Z - aabb.getMin().Z) / 2.0))),
         centerOfMass((aabb.getMin() + aabb.getMax()) / (T)2.0) {
         axis[0] = Vector3<T>(1.0, 0.0, 0.0);
@@ -33,7 +33,7 @@ namespace urchin {
         axis[2] = Vector3<T>(0.0, 0.0, 1.0);
     }
 
-    template<class T> OBBox<T>::OBBox(const Sphere<T> &sphere) :
+    template<class T> OBBox<T>::OBBox(const Sphere<T>& sphere) :
         boxShape(BoxShape<T>(Vector3<T>(sphere.getRadius(), sphere.getRadius(), sphere.getRadius()))),
         centerOfMass(sphere.getCenterOfMass()) {
         axis[0] = Vector3<T>(1.0, 0.0, 0.0);
@@ -122,7 +122,7 @@ namespace urchin {
         throw std::invalid_argument("Invalid index: " + std::to_string(index));
     }
 
-    template<class T> Point3<T> OBBox<T>::getSupportPoint(const Vector3<T> &direction) const {
+    template<class T> Point3<T> OBBox<T>::getSupportPoint(const Vector3<T>& direction) const {
         T maxPointDotDirection = getPoint(0).toVector().dotProduct(direction);
         Point3<T> maxPoint = getPoint(0);
 
@@ -160,7 +160,7 @@ namespace urchin {
     /**
     * @return True if the bounding box collides or is inside this bounding box
     */
-    template<class T> bool OBBox<T>::collideWithOBBox(const OBBox<T> &bbox) const { //Separated axis theorem (see http://jkh.me/files/tutorials/Separating%20Axis%20Theorem%20for%20Oriented%20Bounding%20Boxes.pdf)
+    template<class T> bool OBBox<T>::collideWithOBBox(const OBBox<T>& bbox) const { //Separated axis theorem (see http://jkh.me/files/tutorials/Separating%20Axis%20Theorem%20for%20Oriented%20Bounding%20Boxes.pdf)
 
         //test spheres collide
         Sphere<T> thisSphere(getPoint(0).distance(centerOfMass), centerOfMass);
@@ -282,11 +282,11 @@ namespace urchin {
     /**
     * @return True if the bounding box collides or is inside this bounding box
     */
-    template<class T> bool OBBox<T>::collideWithAABBox(const AABBox<T> &bbox) const {
+    template<class T> bool OBBox<T>::collideWithAABBox(const AABBox<T>& bbox) const {
         return collideWithOBBox(OBBox<T>(bbox));
     }
 
-    template<class T> OBBox<T> operator *(const Matrix4<T> &m, const OBBox<T> &obb) {
+    template<class T> OBBox<T> operator *(const Matrix4<T>& m, const OBBox<T>& obb) {
         //projection matrix not accepted because result will not an oriented bounding box
         assert(fabs(m(3,0)) < std::numeric_limits<T>::epsilon());
         assert(fabs(m(3,1)) < std::numeric_limits<T>::epsilon());
@@ -305,11 +305,11 @@ namespace urchin {
         return OBBox<T>(halfSizes, centerOfMass, orientation);
     }
 
-    template<class T> OBBox<T> operator *(const OBBox<T> &obb, const Matrix4<T> &m) {
+    template<class T> OBBox<T> operator *(const OBBox<T>& obb, const Matrix4<T>& m) {
         return m * obb;
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const OBBox<T> &obbox) {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const OBBox<T>& obbox) {
         stream.setf(std::ios::left);
         stream << "OBBox point 1: " << obbox.getPoint(0) << std::endl;
         stream << "OBBox point 2: " << obbox.getPoint(1) << std::endl;

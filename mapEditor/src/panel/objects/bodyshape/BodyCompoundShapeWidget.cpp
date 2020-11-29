@@ -13,7 +13,7 @@
 
 namespace urchin {
 
-    BodyCompoundShapeWidget::BodyCompoundShapeWidget(const SceneObject *sceneObject) :
+    BodyCompoundShapeWidget::BodyCompoundShapeWidget(const SceneObject* sceneObject) :
             BodyShapeWidget(sceneObject) {
         shapesLabel = new QLabel("Shapes:");
         mainLayout->addWidget(shapesLabel, 0, 0);
@@ -77,7 +77,7 @@ namespace urchin {
         }
     }
 
-    void BodyCompoundShapeWidget::notify(Observable *observable, int notificationType) {
+    void BodyCompoundShapeWidget::notify(Observable* observable, int notificationType) {
         if (auto *localizedShapeTableView = dynamic_cast<LocalizedShapeTableView *>(observable)) {
             if (notificationType==LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED) {
                 if (localizedShapeTableView->hasLocalizedShapeSelected()) {
@@ -100,7 +100,7 @@ namespace urchin {
         }
     }
 
-    void BodyCompoundShapeWidget::setupTransformBox(QVBoxLayout *localizedShapeLayout, const std::shared_ptr<const LocalizedCollisionShape>& localizedShape) {
+    void BodyCompoundShapeWidget::setupTransformBox(QVBoxLayout* localizedShapeLayout, const std::shared_ptr<const LocalizedCollisionShape>& localizedShape) {
         auto *transformGroupBox = new QGroupBox("Transform");
         localizedShapeLayout->addWidget(transformGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(transformGroupBox);
@@ -111,7 +111,7 @@ namespace urchin {
         setupOrientation(transformLayout,localizedShape->transform.getOrientation());
     }
 
-    void BodyCompoundShapeWidget::setupPosition(QGridLayout *transformLayout, const Point3<float> &position) {
+    void BodyCompoundShapeWidget::setupPosition(QGridLayout* transformLayout, const Point3<float>& position) {
         auto *positionLabel= new QLabel("Position:");
         transformLayout->addWidget(positionLabel, 0, 0);
 
@@ -134,7 +134,7 @@ namespace urchin {
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
     }
 
-    void BodyCompoundShapeWidget::setupOrientation(QGridLayout *transformLayout, const Quaternion<float> &orientation) {
+    void BodyCompoundShapeWidget::setupOrientation(QGridLayout* transformLayout, const Quaternion<float>& orientation) {
         auto *orientationTypeLabel = new QLabel("Orient. Type:");
         transformLayout->addWidget(orientationTypeLabel, 1, 0);
 
@@ -169,7 +169,7 @@ namespace urchin {
         connect(eulerAxis2, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
     }
 
-    void BodyCompoundShapeWidget::setupShapeBox(QVBoxLayout *localizedShapeLayout, const std::shared_ptr<const LocalizedCollisionShape>& localizedShape) {
+    void BodyCompoundShapeWidget::setupShapeBox(QVBoxLayout* localizedShapeLayout, const std::shared_ptr<const LocalizedCollisionShape>& localizedShape) {
         auto *shapeGroupBox = new QGroupBox("Shape");
         localizedShapeLayout->addWidget(shapeGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(shapeGroupBox);

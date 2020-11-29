@@ -154,21 +154,21 @@ namespace urchin {
         return &a11;
     }
 
-    template<class T> Matrix2<T> operator *(const Matrix2<T> &m, T t) {
+    template<class T> Matrix2<T> operator *(const Matrix2<T>& m, T t) {
         return Matrix2<T>(    m.a11 * t, m.a12 * t,
                 m.a21 * t, m.a22 * t);
     }
 
-    template<class T> Matrix2<T> operator *(T t, const Matrix2<T> &m) {
+    template<class T> Matrix2<T> operator *(T t, const Matrix2<T>& m) {
         return m * t;
     }
 
-    template<class T> Matrix2<T> operator /(const Matrix2<T> &m, T t) {
+    template<class T> Matrix2<T> operator /(const Matrix2<T>& m, T t) {
         return Matrix2<T>(    m.a11 / t, m.a12 / t,
                 m.a21 / t, m.a22 / t);
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Matrix2<T> &m) {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const Matrix2<T>& m) {
         stream.setf(std::ios::left);
         stream << std::setw(10) << m.a11 << " " << std::setw(10) << m.a12 << std::endl;
         stream << std::setw(10) << m.a21 << " " << std::setw(10) << m.a22;

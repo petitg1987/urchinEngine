@@ -3,7 +3,7 @@
 #include "TerrainTableView.h"
 
 namespace urchin {
-    TerrainTableView::TerrainTableView(QWidget *parent) :
+    TerrainTableView::TerrainTableView(QWidget* parent) :
             QTableView(parent) {
         terrainsListModel = new QStandardItemModel(0, 2, this);
         terrainsListModel->setHorizontalHeaderItem(0, new QStandardItem("Terrain Name"));
@@ -40,7 +40,7 @@ namespace urchin {
         return nullptr;
     }
 
-    void TerrainTableView::addTerrain(const SceneTerrain *sceneTerrain) {
+    void TerrainTableView::addTerrain(const SceneTerrain* sceneTerrain) {
         auto *itemTerrainName = new QStandardItem(QString::fromStdString(sceneTerrain->getName()));
         itemTerrainName->setData(QVariant::fromValue(sceneTerrain), Qt::UserRole + 1);
         itemTerrainName->setEditable(false);

@@ -2,8 +2,8 @@
 
 namespace urchin {
 
-    template<class T> ContinuousCollisionResult<T>::ContinuousCollisionResult(AbstractWorkBody *body2, const Vector3<T> &normalFromObject2,
-            const Point3<T> &hitPointOnObject2, T timeToHit) :
+    template<class T> ContinuousCollisionResult<T>::ContinuousCollisionResult(AbstractWorkBody* body2, const Vector3<T>& normalFromObject2,
+            const Point3<T>& hitPointOnObject2, T timeToHit) :
         body2(body2),
         normalFromObject2(normalFromObject2),
         hitPointOnObject2(hitPointOnObject2),
@@ -11,7 +11,7 @@ namespace urchin {
 
     }
 
-    template<class T> ContinuousCollisionResult<T>::ContinuousCollisionResult(const ContinuousCollisionResult &continuousCollisionResult) :
+    template<class T> ContinuousCollisionResult<T>::ContinuousCollisionResult(const ContinuousCollisionResult& continuousCollisionResult) :
             body2(continuousCollisionResult.getBody2()),
             normalFromObject2(continuousCollisionResult.getNormalFromObject2()),
             hitPointOnObject2(continuousCollisionResult.getHitPointOnObject2()),
@@ -39,8 +39,8 @@ namespace urchin {
         return timeToHit;
     }
 
-    template<class T> bool ContinuousCollisionResultComparator<T>::operator()(const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter> &result1,
-            const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter> &result2) const {
+    template<class T> bool ContinuousCollisionResultComparator<T>::operator()(const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter>& result1,
+            const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter>& result2) const {
         return result1->getTimeToHit() < result2->getTimeToHit();
     }
 

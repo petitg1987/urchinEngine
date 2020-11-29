@@ -5,7 +5,7 @@ template<class TOctreeable> Octreeable<TOctreeable>::Octreeable() :
 
 }
 
-template<class TOctreeable> Octreeable<TOctreeable>::Octreeable(const Octreeable<TOctreeable> &octreeable) :
+template<class TOctreeable> Octreeable<TOctreeable>::Octreeable(const Octreeable<TOctreeable>& octreeable) :
     bIsMovingInOctree(false),
     bIsVisible(octreeable.isVisible()),
     bIsProcessed(octreeable.isProcessed()) {
@@ -66,11 +66,11 @@ template<class TOctreeable> const std::vector<Octree<TOctreeable> *> &Octreeable
     return refOctree;
 }
 
-template<class TOctreeable> void Octreeable<TOctreeable>::addRefOctree(Octree<TOctreeable> *octree) {
+template<class TOctreeable> void Octreeable<TOctreeable>::addRefOctree(Octree<TOctreeable>* octree) {
     refOctree.push_back(octree);
 }
 
-template<class TOctreeable> void Octreeable<TOctreeable>::removeRefOctree(Octree<TOctreeable> *octree) {
+template<class TOctreeable> void Octreeable<TOctreeable>::removeRefOctree(Octree<TOctreeable>* octree) {
     auto it = std::find(refOctree.begin(), refOctree.end(), octree);
     if (it!=refOctree.end()) {
         VectorEraser::erase(refOctree, it);

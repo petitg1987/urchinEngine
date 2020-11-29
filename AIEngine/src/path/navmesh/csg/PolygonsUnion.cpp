@@ -44,7 +44,7 @@ namespace urchin {
         return mergedPolygons;
     }
 
-    template<class T> const std::vector<CSGPolygonPath> &PolygonsUnion<T>::unionTwoPolygonPaths(const CSGPolygonPath &polygon1, const CSGPolygonPath &polygon2) const {
+    template<class T> const std::vector<CSGPolygonPath> &PolygonsUnion<T>::unionTwoPolygonPaths(const CSGPolygonPath& polygon1, const CSGPolygonPath& polygon2) const {
         ClipperLib::Clipper clipper;
         clipper.ReverseSolution(true);
         clipper.StrictlySimple(true); //slow but avoid duplicate points

@@ -9,7 +9,7 @@ namespace urchin {
         initialize();
     }
 
-    PointsModel::PointsModel(const Point3<float> &point) {
+    PointsModel::PointsModel(const Point3<float>& point) {
         points.push_back(point);
 
         initialize();

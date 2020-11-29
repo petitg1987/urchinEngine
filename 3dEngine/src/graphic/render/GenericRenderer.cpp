@@ -10,7 +10,7 @@ namespace urchin {
     //static
     const unsigned int GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE = std::numeric_limits<unsigned int>::max();
 
-    GenericRenderer::GenericRenderer(const GenericRendererBuilder *rendererBuilder) :
+    GenericRenderer::GenericRenderer(const GenericRendererBuilder* rendererBuilder) :
             shapeType(rendererBuilder->getShapeType()),
             data(rendererBuilder->getData()),
             indices(rendererBuilder->getIndices()),
@@ -60,7 +60,7 @@ namespace urchin {
         return countResult;
     }
 
-    void GenericRenderer::initializeTexture(const TextureReader &textureReader) const {
+    void GenericRenderer::initializeTexture(const TextureReader& textureReader) const {
         unsigned int textureType = textureReader.getTexture()->getGlTextureType();
         glBindTexture(textureType, textureReader.getTexture()->getTextureId());
 
@@ -177,7 +177,7 @@ namespace urchin {
         updateData(pointsCoordIndex, reinterpret_cast<const std::vector<Point3<float>> *>(dataPtr));
     }
 
-    void GenericRenderer::updateTexture(std::size_t textureIndex, const TextureReader &texture) {
+    void GenericRenderer::updateTexture(std::size_t textureIndex, const TextureReader& texture) {
         assert(textureReaders.size() > textureIndex);
 
         initializeTexture(texture);
@@ -187,7 +187,7 @@ namespace urchin {
     /**
      * @return Texture unit
      */
-    unsigned int GenericRenderer::addAdditionalTexture(const TextureReader &texture) {
+    unsigned int GenericRenderer::addAdditionalTexture(const TextureReader& texture) {
         initializeTexture(texture);
 
         additionalTextureReaders.push_back(texture);

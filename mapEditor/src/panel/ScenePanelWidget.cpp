@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    ScenePanelWidget::ScenePanelWidget(QWidget *parent) :
+    ScenePanelWidget::ScenePanelWidget(QWidget* parent) :
             QTabWidget(parent),
             sceneController(nullptr) {
         tabObjects = new ObjectPanelWidget();
@@ -61,7 +61,7 @@ namespace urchin {
         return tabAI;
     }
 
-    SceneController *ScenePanelWidget::loadMap(SceneController *sceneController) {
+    SceneController *ScenePanelWidget::loadMap(SceneController* sceneController) {
         closeMap();
         this->sceneController = sceneController;
 

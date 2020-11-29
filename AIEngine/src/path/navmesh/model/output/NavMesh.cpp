@@ -13,7 +13,7 @@ namespace urchin {
 
     }
 
-    NavMesh::NavMesh(const NavMesh &navMesh) :
+    NavMesh::NavMesh(const NavMesh& navMesh) :
         updateId(navMesh.getUpdateId()) {
         NavModelCopy::copyNavPolygons(navMesh.getPolygons(), polygons);
     }

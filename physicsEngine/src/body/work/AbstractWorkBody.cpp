@@ -9,7 +9,7 @@ namespace urchin {
     uint_fast32_t AbstractWorkBody::nextObjectId = 0;
     bool AbstractWorkBody::bDisableAllBodies = false;
 
-    AbstractWorkBody::AbstractWorkBody(std::string id, const PhysicsTransform &physicsTransform, std::shared_ptr<const CollisionShape3D> shape) :
+    AbstractWorkBody::AbstractWorkBody(std::string id, const PhysicsTransform& physicsTransform, std::shared_ptr<const CollisionShape3D> shape) :
             physicsTransform(physicsTransform),
             shape(std::move(shape)),
             id(std::move(id)),
@@ -28,7 +28,7 @@ namespace urchin {
         return physicsTransform;
     }
 
-    void AbstractWorkBody::setPosition(const Point3<float> &position) {
+    void AbstractWorkBody::setPosition(const Point3<float>& position) {
         physicsTransform.setPosition(position);
     }
 
@@ -36,7 +36,7 @@ namespace urchin {
         return physicsTransform.getPosition();
     }
 
-    void AbstractWorkBody::setOrientation(const Quaternion<float> &orientation) {
+    void AbstractWorkBody::setOrientation(const Quaternion<float>& orientation) {
         physicsTransform.setOrientation(orientation);
     }
 

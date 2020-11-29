@@ -144,7 +144,7 @@ namespace urchin {
         skyboxImages = nullptr;
     }
 
-    void Skybox::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) const {
+    void Skybox::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) const {
         ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix);
     }
 
@@ -160,7 +160,7 @@ namespace urchin {
         return filenames;
     }
 
-    void Skybox::display(const RenderTarget *renderTarget, const Matrix4<float> &viewMatrix, const Point3<float> &cameraPosition) {
+    void Skybox::display(const RenderTarget* renderTarget, const Matrix4<float>& viewMatrix, const Point3<float>& cameraPosition) {
         translationMatrix.buildTranslation(cameraPosition.X, cameraPosition.Y + offsetY, cameraPosition.Z);
         ShaderDataSender().sendData(mViewShaderVar, viewMatrix * translationMatrix);
 

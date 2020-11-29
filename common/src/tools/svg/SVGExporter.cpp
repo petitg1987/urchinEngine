@@ -14,7 +14,7 @@ namespace urchin {
         }
     }
 
-    void SVGExporter::addShape(const SVGShape *shape) {
+    void SVGExporter::addShape(const SVGShape* shape) {
         shapes.push_back(shape);
     }
 

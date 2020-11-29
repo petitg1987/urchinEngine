@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    Animation::Animation(ConstAnimation *constAnimation, Meshes *meshes) :
+    Animation::Animation(ConstAnimation* constAnimation, Meshes* meshes) :
         constAnimation(constAnimation),
         meshes(meshes),
         animationInformation() {
@@ -45,7 +45,7 @@ namespace urchin {
         return animationInformation.currFrame;
     }
 
-    void Animation::onMoving(const Transform<float> &newTransform) {
+    void Animation::onMoving(const Transform<float>& newTransform) {
         globalBBox = constAnimation->getOriginalGlobalAABBox().moveAABBox(newTransform);
 
         globalSplitBBoxes.clear();

@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    template<class T> RectangleShape<T>::RectangleShape(const Vector2<T> &diagonal)    :
+    template<class T> RectangleShape<T>::RectangleShape(const Vector2<T>& diagonal)    :
         diagonal(diagonal) {
 
     }

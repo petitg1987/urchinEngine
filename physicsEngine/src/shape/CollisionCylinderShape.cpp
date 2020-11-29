@@ -51,7 +51,7 @@ namespace urchin {
                 cylinderShape->getHeight() * scale, cylinderShape->getCylinderOrientation());
     }
 
-    AABBox<float> CollisionCylinderShape::toAABBox(const PhysicsTransform &physicsTransform) const {
+    AABBox<float> CollisionCylinderShape::toAABBox(const PhysicsTransform& physicsTransform) const {
         if (!lastTransform.equals(physicsTransform)) {
             Vector3<float> boxHalfSizes(getRadius(), getRadius(), getRadius());
             boxHalfSizes[getCylinderOrientation()] = getHeight() / 2.0f;
@@ -71,7 +71,7 @@ namespace urchin {
         return lastAABBox;
     }
 
-    std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionCylinderShape::toConvexObject(const PhysicsTransform &physicsTransform) const {
+    std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionCylinderShape::toConvexObject(const PhysicsTransform& physicsTransform) const {
         const Point3<float> &position = physicsTransform.getPosition();
         const Quaternion<float> &orientation = physicsTransform.getOrientation();
 

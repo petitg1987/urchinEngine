@@ -56,7 +56,7 @@ namespace urchin {
 
         try {
             createYMonotonePolygonsDiagonals();
-        } catch (MonotonePolygonError &error) {
+        } catch (MonotonePolygonError& error) {
             logInputData(std::string(error.what()), Logger::ERROR);
             return yMonotonePolygons;
         }
@@ -169,7 +169,7 @@ namespace urchin {
     /**
      * @param isMonotonePolygon [out] Returns true if polygon is already monotone
      */
-    std::vector<TypedPoint> MonotonePolygonAlgorithm::buildSortedTypedPoints(bool &isMonotonePolygon) const {
+    std::vector<TypedPoint> MonotonePolygonAlgorithm::buildSortedTypedPoints(bool& isMonotonePolygon) const {
         std::vector<TypedPoint> sortedTypedPoints;
         sortedTypedPoints.reserve(polygonPoints.size());
 
@@ -213,7 +213,7 @@ namespace urchin {
             sortedTypedPoints.emplace_back(TypedPoint(i, pointType));
         }
 
-        std::sort(sortedTypedPoints.begin(), sortedTypedPoints.end(), [&](const TypedPoint &left, const TypedPoint &right) {return isFirstPointAboveSecond(left.pointIndex, right.pointIndex);});
+        std::sort(sortedTypedPoints.begin(), sortedTypedPoints.end(), [&](const TypedPoint& left, const TypedPoint& right) {return isFirstPointAboveSecond(left.pointIndex, right.pointIndex);});
 
         if (!sortedTypedPoints.empty() && sortedTypedPoints[0].type!=PointType::START_VERTEX) {
             throw MonotonePolygonError("First point in the vector should be a start vertex. Point type: " + std::to_string(sortedTypedPoints[0].type));

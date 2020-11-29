@@ -19,7 +19,7 @@ namespace urchin {
         return sourceEdgeLinkEndRange;
     }
 
-    LineSegment3D<float> NavLinkConstraint::computeSourceJumpEdge(const LineSegment3D<float> &sourceEdge) const {
+    LineSegment3D<float> NavLinkConstraint::computeSourceJumpEdge(const LineSegment3D<float>& sourceEdge) const {
         return LineSegment3D<float>(
                 sourceEdgeLinkStartRange * sourceEdge.getA() + (1.0f - sourceEdgeLinkStartRange) * sourceEdge.getB(),
                 sourceEdgeLinkEndRange * sourceEdge.getA() + (1.0f - sourceEdgeLinkEndRange) * sourceEdge.getB());

@@ -5,7 +5,7 @@ namespace urchin {
     /**
      * @param margin Margin to box used to determine stop sound trigger
      */
-    SoundBox::SoundBox(const Vector3<float> &halfSizes, const Point3<float> &centerPosition, const Quaternion<float> &orientation, float margin) :
+    SoundBox::SoundBox(const Vector3<float>& halfSizes, const Point3<float>& centerPosition, const Quaternion<float>& orientation, float margin) :
         SoundShape(margin),
         playTriggerBox(OBBox<float>(halfSizes, centerPosition, orientation)),
         stopTriggerBox(OBBox<float>(halfSizes + Vector3<float>(margin, margin, margin), centerPosition, orientation)) {
@@ -43,15 +43,15 @@ namespace urchin {
         return playTriggerBox.getAxis(index);
     }
 
-    bool SoundBox::pointInsidePlayShape(const Point3<float> &point) const {
+    bool SoundBox::pointInsidePlayShape(const Point3<float>& point) const {
         return pointInsideShape(point, playTriggerBox);
     }
 
-    bool SoundBox::pointInsideStopShape(const Point3<float> &point) const {
+    bool SoundBox::pointInsideStopShape(const Point3<float>& point) const {
         return pointInsideShape(point, stopTriggerBox);
     }
 
-    bool SoundBox::pointInsideShape(const Point3<float> &point, const OBBox<float> &box) const {
+    bool SoundBox::pointInsideShape(const Point3<float>& point, const OBBox<float>& box) const {
         Vector3<float> localPointTranslation = box.getCenterOfMass().vector(point);
 
         return std::fabs(localPointTranslation.dotProduct(box.getAxis(0))) <= box.getHalfSize(0) &&

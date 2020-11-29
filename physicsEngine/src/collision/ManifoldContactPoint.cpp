@@ -17,11 +17,11 @@ namespace urchin {
     * @param normalFromObject2 Contact normal from object 2. The normal direction should be toward the object 1.
     * @param depth Penetration depth (negative when collision exist)
     */
-    ManifoldContactPoint::ManifoldContactPoint(const Vector3<float> &normalFromObject2,
-            const Point3<float> &pointOnObject1,
-            const Point3<float> &pointOnObject2,
-            const Point3<float> &localPointOnObject1,
-            const Point3<float> &localPointOnObject2,
+    ManifoldContactPoint::ManifoldContactPoint(const Vector3<float>& normalFromObject2,
+            const Point3<float>& pointOnObject1,
+            const Point3<float>& pointOnObject2,
+            const Point3<float>& localPointOnObject1,
+            const Point3<float>& localPointOnObject2,
             float depth,
             bool bIsPredictive) :
             normalFromObject2(normalFromObject2),
@@ -88,7 +88,7 @@ namespace urchin {
      * @param pointOnObject1 Contact point on object 1 in world position
      * @param pointOnObject2 Contact point on object 2 in world position
      */
-    void ManifoldContactPoint::updatePoints(const Point3<float> &pointOnObject1, const Point3<float> &pointOnObject2) {
+    void ManifoldContactPoint::updatePoints(const Point3<float>& pointOnObject1, const Point3<float>& pointOnObject2) {
         this->pointOnObject1 = pointOnObject1;
         this->pointOnObject2 = pointOnObject2;
     }

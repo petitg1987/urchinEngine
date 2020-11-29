@@ -38,7 +38,7 @@ namespace urchin {
      * @param numSamplesRead [out] Number of samples read
      * @return True when all samples are read. In case of play loop, the result is always false.
      */
-    void SoundFileReader::readNextChunk(std::vector<ALshort> &buffer, unsigned int &numSamplesRead, bool playLoop) {
+    void SoundFileReader::readNextChunk(std::vector<ALshort> &buffer, unsigned int& numSamplesRead, bool playLoop) {
         numSamplesRead = 0;
         bool bufferFilled;
         do

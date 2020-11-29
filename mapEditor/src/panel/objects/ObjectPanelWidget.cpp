@@ -98,7 +98,7 @@ namespace urchin {
         return bodyShapeWidget;
     }
 
-    void ObjectPanelWidget::setupTransformBox(QVBoxLayout *generalLayout) {
+    void ObjectPanelWidget::setupTransformBox(QVBoxLayout* generalLayout) {
         auto *transformGroupBox = new QGroupBox("Transform");
         generalLayout->addWidget(transformGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(transformGroupBox);
@@ -111,7 +111,7 @@ namespace urchin {
         setupScale(transformLayout);
     }
 
-    void ObjectPanelWidget::setupPosition(QGridLayout *transformLayout) {
+    void ObjectPanelWidget::setupPosition(QGridLayout* transformLayout) {
         auto *positionLabel= new QLabel("Position:");
         transformLayout->addWidget(positionLabel, 0, 0);
 
@@ -131,7 +131,7 @@ namespace urchin {
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
     }
 
-    void ObjectPanelWidget::setupOrientation(QGridLayout *transformLayout) {
+    void ObjectPanelWidget::setupOrientation(QGridLayout* transformLayout) {
         auto *orientationTypeLabel = new QLabel("Orient. Type:");
         transformLayout->addWidget(orientationTypeLabel, 1, 0);
 
@@ -160,7 +160,7 @@ namespace urchin {
         connect(eulerAxis2, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
     }
 
-    void ObjectPanelWidget::setupScale(QGridLayout *transformLayout) {
+    void ObjectPanelWidget::setupScale(QGridLayout* transformLayout) {
         auto *angleLabel = new QLabel("Scale:");
         transformLayout->addWidget(angleLabel, 3, 0);
 
@@ -171,7 +171,7 @@ namespace urchin {
         connect(scale, SIGNAL(valueChanged(double)), this, SLOT(updateObjectScale()));
     }
 
-    void ObjectPanelWidget::setupFlagsBox(QVBoxLayout *generalLayout) {
+    void ObjectPanelWidget::setupFlagsBox(QVBoxLayout* generalLayout) {
         auto *flagsGroupBox = new QGroupBox("Flags");
         generalLayout->addWidget(flagsGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(flagsGroupBox);
@@ -184,7 +184,7 @@ namespace urchin {
         connect(produceShadowCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateObjectFlags()));
     }
 
-    void ObjectPanelWidget::setupPhysicsBox(QVBoxLayout *physicsLayout) {
+    void ObjectPanelWidget::setupPhysicsBox(QVBoxLayout* physicsLayout) {
         hasRigidBody = new QCheckBox("Rigid Body");
         physicsLayout->addWidget(hasRigidBody);
         connect(hasRigidBody, SIGNAL(stateChanged(int)), this, SLOT(rigidBodyToggled(int)));
@@ -209,7 +209,7 @@ namespace urchin {
         tabPhysicsRigidBody->addTab(tabPhysicsShape, "Shape");
     }
 
-    void ObjectPanelWidget::setupPhysicsGeneralPropertiesBox(QVBoxLayout *physicsPropertiesLayout) {
+    void ObjectPanelWidget::setupPhysicsGeneralPropertiesBox(QVBoxLayout* physicsPropertiesLayout) {
         auto *rigidBodyGeneralBox = new QGroupBox("General");
         physicsPropertiesLayout->addWidget(rigidBodyGeneralBox);
         GroupBoxStyleHelper::applyNormalStyle(rigidBodyGeneralBox);
@@ -257,7 +257,7 @@ namespace urchin {
         connect(rollingFriction, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
     }
 
-    void ObjectPanelWidget::setupPhysicsDampingPropertiesBox(QVBoxLayout *physicsPropertiesLayout) {
+    void ObjectPanelWidget::setupPhysicsDampingPropertiesBox(QVBoxLayout* physicsPropertiesLayout) {
         auto *rigidBodyDampingBox = new QGroupBox("Damping");
         physicsPropertiesLayout->addWidget(rigidBodyDampingBox);
         GroupBoxStyleHelper::applyNormalStyle(rigidBodyDampingBox);
@@ -286,7 +286,7 @@ namespace urchin {
         connect(angularDamping, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
     }
 
-    void ObjectPanelWidget::setupPhysicsFactorPropertiesBox(QVBoxLayout *physicsPropertiesLayout) {
+    void ObjectPanelWidget::setupPhysicsFactorPropertiesBox(QVBoxLayout* physicsPropertiesLayout) {
         auto *rigidBodyFactorBox = new QGroupBox("Factor");
         physicsPropertiesLayout->addWidget(rigidBodyFactorBox);
         GroupBoxStyleHelper::applyNormalStyle(rigidBodyFactorBox);
@@ -343,7 +343,7 @@ namespace urchin {
         connect(angularFactorZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
     }
 
-    void ObjectPanelWidget::setupPhysicsShapeBox(QVBoxLayout *physicsShapeLayout) {
+    void ObjectPanelWidget::setupPhysicsShapeBox(QVBoxLayout* physicsShapeLayout) {
         auto *shapeTypeLayout = new QHBoxLayout();
         shapeTypeLayout->setAlignment(Qt::AlignLeft);
         shapeTypeLayout->setSpacing(15);
@@ -367,7 +367,7 @@ namespace urchin {
         bodyShapeWidget = nullptr;
     }
 
-    void ObjectPanelWidget::load(ObjectController *objectController) {
+    void ObjectPanelWidget::load(ObjectController* objectController) {
         this->objectController = objectController;
 
         std::list<const SceneObject *> sceneObjects = objectController->getSceneObjects();
@@ -382,7 +382,7 @@ namespace urchin {
         objectController = nullptr;
     }
 
-    void ObjectPanelWidget::notify(Observable *observable, int notificationType) {
+    void ObjectPanelWidget::notify(Observable* observable, int notificationType) {
         if (auto *objectTableView = dynamic_cast<ObjectTableView *>(observable)) {
             if (notificationType==ObjectTableView::OBJECT_SELECTION_CHANGED) {
                 if (objectTableView->hasSceneObjectSelected()) {
@@ -418,7 +418,7 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::setupObjectDataFrom(const SceneObject *sceneObject) {
+    void ObjectPanelWidget::setupObjectDataFrom(const SceneObject* sceneObject) {
         disableObjectEvent = true;
         const Model *model = sceneObject->getModel();
         const Transform<float> &modelTransform = model->getTransform();
@@ -440,7 +440,7 @@ namespace urchin {
         disableObjectEvent = false;
     }
 
-    void ObjectPanelWidget::setupObjectPhysicsDataFrom(const SceneObject *sceneObject) {
+    void ObjectPanelWidget::setupObjectPhysicsDataFrom(const SceneObject* sceneObject) {
         disableObjectEvent = true;
         const RigidBody *rigidBody = sceneObject->getRigidBody();
         std::shared_ptr<const CollisionShape3D> bodyScaledShape(nullptr);
@@ -476,7 +476,7 @@ namespace urchin {
         disableObjectEvent = false;
     }
 
-    BodyShapeWidget *ObjectPanelWidget::createBodyShapeWidget(const std::shared_ptr<const CollisionShape3D>& shape, const SceneObject *sceneObject) {
+    BodyShapeWidget *ObjectPanelWidget::createBodyShapeWidget(const std::shared_ptr<const CollisionShape3D>& shape, const SceneObject* sceneObject) {
         delete bodyShapeWidget;
 
         bodyShapeWidget = BodyShapeWidgetRetriever(sceneObject).createBodyShapeWidget(shape);

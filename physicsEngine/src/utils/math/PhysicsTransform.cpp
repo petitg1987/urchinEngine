@@ -7,19 +7,19 @@ namespace urchin {
         orientation.setIdentity();
     }
 
-    PhysicsTransform::PhysicsTransform(const PhysicsTransform &physicsTransform) :
+    PhysicsTransform::PhysicsTransform(const PhysicsTransform& physicsTransform) :
         position(physicsTransform.getPosition()),
         orientation(physicsTransform.getOrientation()) {
 
     }
 
-    PhysicsTransform::PhysicsTransform(const Point3<float> &position, const Quaternion<float> &orientation) :
+    PhysicsTransform::PhysicsTransform(const Point3<float>& position, const Quaternion<float>& orientation) :
         position(position),
         orientation(orientation) {
 
     }
 
-    PhysicsTransform::PhysicsTransform(const Transform<float> &transform) :
+    PhysicsTransform::PhysicsTransform(const Transform<float>& transform) :
         position(transform.getPosition()),
         orientation(transform.getOrientation()) {
         if (!MathAlgorithm::isOne(transform.getScale(), 0.001f)) {
@@ -27,13 +27,13 @@ namespace urchin {
         }
     }
 
-    PhysicsTransform& PhysicsTransform::operator=(const PhysicsTransform &physicsTransform) {
+    PhysicsTransform& PhysicsTransform::operator=(const PhysicsTransform& physicsTransform) {
         this->position = physicsTransform.getPosition();
         this->orientation = physicsTransform.getOrientation();
         return *this;
     }
 
-    void PhysicsTransform::setPosition(const Point3<float> &position) {
+    void PhysicsTransform::setPosition(const Point3<float>& position) {
         this->position = position;
     }
 
@@ -41,7 +41,7 @@ namespace urchin {
         return position;
     }
 
-    void PhysicsTransform::setOrientation(const Quaternion<float> &orientation) {
+    void PhysicsTransform::setOrientation(const Quaternion<float>& orientation) {
         this->orientation = orientation;
     }
 
@@ -65,19 +65,19 @@ namespace urchin {
         return PhysicsTransform(invOrientation.rotatePoint(-position), invOrientation);
     }
 
-    bool PhysicsTransform::equals(const PhysicsTransform &physicsTransform) const {
+    bool PhysicsTransform::equals(const PhysicsTransform& physicsTransform) const {
         return physicsTransform.getPosition() == position && physicsTransform.getOrientation() == orientation;
     }
 
-    Point3<float> PhysicsTransform::transform(const Point3<float> &point) const {
+    Point3<float> PhysicsTransform::transform(const Point3<float>& point) const {
         return orientation.rotatePoint(point) + position;
     }
 
-    Point3<float> PhysicsTransform::inverseTransform(const Point3<float> &point) const {
+    Point3<float> PhysicsTransform::inverseTransform(const Point3<float>& point) const {
         return orientation.conjugate().rotatePoint(point - position);
     }
 
-    PhysicsTransform PhysicsTransform::integrate(const Vector3<float> &linearVelocity, const Vector3<float> &angularVelocity, float timeStep) const {
+    PhysicsTransform PhysicsTransform::integrate(const Vector3<float>& linearVelocity, const Vector3<float>& angularVelocity, float timeStep) const {
         Point3<float> interpolatePosition = position.translate(linearVelocity * timeStep);
         Quaternion<float> interpolateOrientation = orientation;
 
@@ -93,18 +93,18 @@ namespace urchin {
         return PhysicsTransform(interpolatePosition, interpolateOrientation);
     }
 
-    PhysicsTransform PhysicsTransform::operator *(const PhysicsTransform &transform) const {
+    PhysicsTransform PhysicsTransform::operator *(const PhysicsTransform& transform) const {
         return PhysicsTransform(position + orientation.rotatePoint(transform.getPosition()),
                                 orientation * transform.getOrientation());
     }
 
-    const PhysicsTransform& PhysicsTransform::operator *=(const PhysicsTransform &transform) {
+    const PhysicsTransform& PhysicsTransform::operator *=(const PhysicsTransform& transform) {
         *this = *this * transform;
 
         return *this;
     }
 
-    std::ostream& operator <<(std::ostream &stream, const PhysicsTransform &transform) {
+    std::ostream& operator <<(std::ostream &stream, const PhysicsTransform& transform) {
         stream.setf(std::ios::left);
         stream << "Position: " << transform.getPosition() << ", Orientation: " << transform.getOrientation();
         return stream;

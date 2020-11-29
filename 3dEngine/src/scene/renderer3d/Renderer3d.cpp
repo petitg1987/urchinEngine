@@ -25,7 +25,7 @@ namespace urchin {
     bool DEBUG_DISPLAY_LIGHTS_OCTREE = false;
     bool DEBUG_DISPLAY_LIGHTS_SCENE_BOUNDING_BOX = false;
 
-    Renderer3d::Renderer3d(const RenderTarget *finalRenderTarget) :
+    Renderer3d::Renderer3d(const RenderTarget* finalRenderTarget) :
             finalRenderTarget(finalRenderTarget),
             sceneWidth(0),
             sceneHeight(0),
@@ -182,7 +182,7 @@ namespace urchin {
         antiAliasingManager->onTextureUpdate(lightingPassTexture);
     }
 
-    void Renderer3d::notify(Observable *observable, int notificationType) {
+    void Renderer3d::notify(Observable* observable, int notificationType) {
         if (dynamic_cast<ShadowManager *>(observable)) {
             if (notificationType==ShadowManager::NUMBER_SHADOW_MAPS_UPDATE) {
                 createOrUpdateLightingShader();
@@ -247,7 +247,7 @@ namespace urchin {
         this->isAntiAliasingActivated = isAntiAliasingActivated;
     }
 
-    void Renderer3d::setCamera(Camera *camera) {
+    void Renderer3d::setCamera(Camera* camera) {
         if (this->camera != nullptr) {
            throw std::runtime_error("Redefine a camera is currently not supported");
         }
@@ -277,20 +277,20 @@ namespace urchin {
         return camera;
     }
 
-    void Renderer3d::addModel(Model *model) {
+    void Renderer3d::addModel(Model* model) {
         if (model) {
             modelOctreeManager->addOctreeable(model);
         }
     }
 
-    void Renderer3d::removeModel(Model *model) {
+    void Renderer3d::removeModel(Model* model) {
         if (model) {
             modelOctreeManager->removeOctreeable(model);
         }
         delete model;
     }
 
-    bool Renderer3d::isModelExist(Model *model) {
+    bool Renderer3d::isModelExist(Model* model) {
         std::vector<Model *> allOctreeables = modelOctreeManager->getAllOctreeables();
         return std::find(allOctreeables.begin(), allOctreeables.end(), model) != allOctreeables.end();
     }

@@ -5,20 +5,20 @@
 #define DEFAULT_GRASS_DISPLAY_DISTANCE 100
 
 namespace urchin {
-    TerrainManager::TerrainManager(const RenderTarget *renderTarget) :
+    TerrainManager::TerrainManager(const RenderTarget* renderTarget) :
             renderTarget(renderTarget),
             grassDisplayDistance(DEFAULT_GRASS_DISPLAY_DISTANCE) {
 
     }
 
-    void TerrainManager::onCameraProjectionUpdate(const Camera *camera) {
+    void TerrainManager::onCameraProjectionUpdate(const Camera* camera) {
         this->projectionMatrix = camera->getProjectionMatrix();
         for (const auto terrain : terrains) {
             terrain->onCameraProjectionUpdate(projectionMatrix);
         }
     }
 
-    void TerrainManager::addTerrain(Terrain *terrain) {
+    void TerrainManager::addTerrain(Terrain* terrain) {
         if (terrain) {
             terrains.push_back(terrain);
 
@@ -27,7 +27,7 @@ namespace urchin {
         }
     }
 
-    void TerrainManager::removeTerrain(Terrain *terrain) {
+    void TerrainManager::removeTerrain(Terrain* terrain) {
         if (terrain) {
             terrains.erase(std::remove(terrains.begin(), terrains.end(), terrain), terrains.end());
             delete terrain;
@@ -46,7 +46,7 @@ namespace urchin {
         }
     }
 
-    void TerrainManager::display(const Camera *camera, float dt) const {
+    void TerrainManager::display(const Camera* camera, float dt) const {
         ScopeProfiler profiler("3d", "terrainDisplay");
 
         for (const auto terrain : terrains) {

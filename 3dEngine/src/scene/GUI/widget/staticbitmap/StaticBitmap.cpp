@@ -36,7 +36,7 @@ namespace urchin {
                 ->build();
     }
 
-    void StaticBitmap::display(const RenderTarget *renderTarget, const ShaderVar &translateDistanceShaderVar, float dt) {
+    void StaticBitmap::display(const RenderTarget* renderTarget, const ShaderVar& translateDistanceShaderVar, float dt) {
         renderTarget->display(bitmapRenderer);
 
         Widget::display(renderTarget, translateDistanceShaderVar, dt);

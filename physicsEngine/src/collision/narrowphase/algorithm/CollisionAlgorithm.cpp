@@ -10,11 +10,11 @@ namespace urchin {
 
     }
 
-    void CollisionAlgorithm::setupCollisionAlgorithmSelector(const CollisionAlgorithmSelector *collisionAlgorithmSelector) {
+    void CollisionAlgorithm::setupCollisionAlgorithmSelector(const CollisionAlgorithmSelector* collisionAlgorithmSelector) {
         this->collisionAlgorithmSelector = collisionAlgorithmSelector;
     }
 
-    void CollisionAlgorithm::processCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2, bool refreshContractPoints) {
+    void CollisionAlgorithm::processCollisionAlgorithm(const CollisionObjectWrapper& object1, const CollisionObjectWrapper& object2, bool refreshContractPoints) {
         if (objectSwapped) {
             doProcessCollisionAlgorithm(object2, object1);
         } else {
@@ -46,7 +46,7 @@ namespace urchin {
      * @param normalFromObject2 Contact normal from object 2. The normal direction should be toward the object 1.
      * @param depth Penetration depth (negative when collision exist)
      */
-    void CollisionAlgorithm::addNewContactPoint(const Vector3<float> &normalFromObject2, const Point3<float> &pointOnObject2, float depth) {
+    void CollisionAlgorithm::addNewContactPoint(const Vector3<float>& normalFromObject2, const Point3<float>& pointOnObject2, float depth) {
         manifoldResult.addContactPoint(normalFromObject2, pointOnObject2, depth, false);
     }
 

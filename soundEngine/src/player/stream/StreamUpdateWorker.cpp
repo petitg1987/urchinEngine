@@ -31,7 +31,7 @@ namespace urchin {
      * Task will be automatically removed when finished.
      * @param sound Sound used to fill the queue
      */
-    void StreamUpdateWorker::addTask(const Sound *sound, bool playLoop) {
+    void StreamUpdateWorker::addTask(const Sound* sound, bool playLoop) {
         auto *task = new StreamUpdateTask(sound, new StreamChunk[nbChunkBuffer], playLoop);
 
         //create buffers/chunks
@@ -55,7 +55,7 @@ namespace urchin {
         tasks.push_back(task);
     }
 
-    bool StreamUpdateWorker::isTaskExist(const Sound *sound) const {
+    bool StreamUpdateWorker::isTaskExist(const Sound* sound) const {
         std::lock_guard<std::mutex> lock(tasksMutex);
 
         for (auto task : tasks) {
@@ -67,7 +67,7 @@ namespace urchin {
         return false;
     }
 
-    void StreamUpdateWorker::removeTask(const Sound *sound) {
+    void StreamUpdateWorker::removeTask(const Sound* sound) {
         std::lock_guard<std::mutex> lock(tasksMutex);
 
         for (auto it=tasks.begin(); it!=tasks.end(); ++it) {
@@ -125,7 +125,7 @@ namespace urchin {
         return !streamUpdateWorkerStopper.load(std::memory_order_relaxed);
     }
 
-    bool StreamUpdateWorker::processTask(StreamUpdateTask *task) {
+    bool StreamUpdateWorker::processTask(StreamUpdateTask* task) {
         ALint chunkProcessed = 0;
         alGetSourcei(task->getSourceId(), AL_BUFFERS_PROCESSED, &chunkProcessed);
 
@@ -143,7 +143,7 @@ namespace urchin {
         return nbQueues==0; //task terminated ?
     }
 
-    void StreamUpdateWorker::deleteTask(StreamUpdateTask *task) {
+    void StreamUpdateWorker::deleteTask(StreamUpdateTask* task) {
         clearQueue(task);
         alSourcei(task->getSourceId(), AL_BUFFER, 0);
 
@@ -159,7 +159,7 @@ namespace urchin {
      * Fill chunk and push it in the queue of buffers
      * @param task Task currently executed
      */
-    void StreamUpdateWorker::fillAndPushChunk(StreamUpdateTask *task, unsigned int chunkId) {
+    void StreamUpdateWorker::fillAndPushChunk(StreamUpdateTask* task, unsigned int chunkId) {
         fillChunk(task, chunkId);
 
         const StreamChunk &streamChunk = task->getStreamChunk(chunkId);
@@ -175,7 +175,7 @@ namespace urchin {
     /**
      * @param task Task currently executed
      */
-    void StreamUpdateWorker::fillChunk(StreamUpdateTask *task, unsigned int chunkId) const {
+    void StreamUpdateWorker::fillChunk(StreamUpdateTask* task, unsigned int chunkId) const {
         StreamChunk &streamChunk = task->getStreamChunk(chunkId);
         unsigned int bufferSize = task->getSoundFileReader()->getSampleRate() * task->getSoundFileReader()->getNumberOfChannels() * nbSecondByChunk;
         streamChunk.samples.resize(bufferSize);
@@ -183,7 +183,7 @@ namespace urchin {
         task->getSoundFileReader()->readNextChunk(streamChunk.samples, streamChunk.numberOfSamples, task->isPlayLoop());
     }
 
-    unsigned int StreamUpdateWorker::retrieveChunkId(StreamUpdateTask *task, ALuint bufferId) const {
+    unsigned int StreamUpdateWorker::retrieveChunkId(StreamUpdateTask* task, ALuint bufferId) const {
         for (unsigned int i=0; i<nbChunkBuffer; ++i) {
             if (task->getStreamChunk(i).bufferId == bufferId) {
                 return i;
@@ -193,7 +193,7 @@ namespace urchin {
         throw std::domain_error("Stream chunk with buffer id " + std::to_string(bufferId) + " not found (" + task->getSoundFilename() + ")");
     }
 
-    void StreamUpdateWorker::clearQueue(StreamUpdateTask *task) {
+    void StreamUpdateWorker::clearQueue(StreamUpdateTask* task) {
         ALint nbQueues;
         alGetSourcei(task->getSourceId(), AL_BUFFERS_QUEUED, &nbQueues);
 

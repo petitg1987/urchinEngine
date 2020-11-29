@@ -212,7 +212,7 @@ namespace urchin {
         computeCursorPosition();
     }
 
-    void TextBox::display(const RenderTarget *renderTarget, const ShaderVar &translateDistanceShaderVar, float dt) {
+    void TextBox::display(const RenderTarget* renderTarget, const ShaderVar& translateDistanceShaderVar, float dt) {
         //display the text box
         renderTarget->display(textBoxRenderer);
 

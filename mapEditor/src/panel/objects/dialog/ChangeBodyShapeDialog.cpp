@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    ChangeBodyShapeDialog::ChangeBodyShapeDialog(QWidget *parent, bool excludeCompoundShape) :
+    ChangeBodyShapeDialog::ChangeBodyShapeDialog(QWidget* parent, bool excludeCompoundShape) :
         QDialog(parent),
         excludeCompoundShape(excludeCompoundShape),
         bodyShapeTypeLabel(nullptr),
@@ -31,7 +31,7 @@ namespace urchin {
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void ChangeBodyShapeDialog::setupBodyShapeTypeFields(QGridLayout *mainLayout) {
+    void ChangeBodyShapeDialog::setupBodyShapeTypeFields(QGridLayout* mainLayout) {
         bodyShapeTypeLabel = new QLabel("Shape Type:");
         mainLayout->addWidget(bodyShapeTypeLabel, 0, 0);
 

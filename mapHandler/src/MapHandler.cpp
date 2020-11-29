@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    MapHandler::MapHandler(Renderer3d *renderer3d, PhysicsWorld *physicsWorld, SoundManager *soundManager, AIManager *aiManager) :
+    MapHandler::MapHandler(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, SoundManager* soundManager, AIManager* aiManager) :
         map(nullptr) {
         if (!renderer3d) {
             throw std::invalid_argument("Renderer 3d cannot be null in map handler");
@@ -26,7 +26,7 @@ namespace urchin {
         delete map;
     }
 
-    void MapHandler::loadMapFromFile(const std::string &filename, LoadCallback &loadCallback) {
+    void MapHandler::loadMapFromFile(const std::string &filename, LoadCallback& loadCallback) {
         XmlParser xmlParser(filename);
 
         relativeWorkingDirectory = xmlParser.getRootChunk()->getAttributeValue(WORKING_DIR_ATTR);

@@ -7,7 +7,7 @@ namespace urchin {
     * @param closestPointToOrigin Point on the triangle nearest to origin
     * @param barycentrics Barycentrics of closest point to origin
     */
-    template<class T> EPATriangleData<T>::EPATriangleData(T distanceToOrigin, const Vector3<T> &normal, const Point3<T> &closestPointToOrigin, T barycentrics[3]) :
+    template<class T> EPATriangleData<T>::EPATriangleData(T distanceToOrigin, const Vector3<T>& normal, const Point3<T>& closestPointToOrigin, T barycentrics[3]) :
         distanceToOrigin(distanceToOrigin),
         normal(normal),
         closestPointToOrigin(closestPointToOrigin) {

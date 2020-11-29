@@ -14,7 +14,7 @@ namespace urchin {
 
     }
 
-    void PathPortal::setTransitionPoint(const Point3<float> &transitionPoint) {
+    void PathPortal::setTransitionPoint(const Point3<float>& transitionPoint) {
         this->transitionPoint = transitionPoint;
         this->bHasTransitionPoint = true;
     }

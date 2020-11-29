@@ -37,7 +37,7 @@ namespace urchin {
         return data;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::indices(const std::vector<unsigned int> *indices) {
+    GenericRendererBuilder *GenericRendererBuilder::indices(const std::vector<unsigned int>* indices) {
         pIndices.ptr = &(*indices)[0];
         pIndices.indicesCount = indices->size();
         pIndices.hasPrimitiveRestartIndex = false;
@@ -101,7 +101,7 @@ namespace urchin {
         return pOutlineSize;
     }
 
-    GenericRendererBuilder *GenericRendererBuilder::addTexture(const TextureReader &texture) {
+    GenericRendererBuilder *GenericRendererBuilder::addTexture(const TextureReader& texture) {
         textures.push_back(texture);
         return this;
     }

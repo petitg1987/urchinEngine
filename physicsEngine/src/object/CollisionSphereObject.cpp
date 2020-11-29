@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    CollisionSphereObject::CollisionSphereObject(float radius, const Point3<float> &centerOfMass) :
+    CollisionSphereObject::CollisionSphereObject(float radius, const Point3<float>& centerOfMass) :
             CollisionConvexObject3D(radius),
             sphereObject(Sphere<float>(radius, centerOfMass)) {
 
@@ -25,7 +25,7 @@ namespace urchin {
     /**
      * @return includeMargin Indicate whether support function need to take into account margin
      */
-    Point3<float> CollisionSphereObject::getSupportPoint(const Vector3<float> &direction, bool includeMargin) const {
+    Point3<float> CollisionSphereObject::getSupportPoint(const Vector3<float>& direction, bool includeMargin) const {
         if (includeMargin) {
             return retrieveSphere().getSupportPoint(direction);
         }

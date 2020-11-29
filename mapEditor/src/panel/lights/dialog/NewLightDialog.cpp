@@ -9,7 +9,7 @@
 #include "widget/style/LabelStyleHelper.h"
 
 namespace urchin {
-    NewLightDialog::NewLightDialog(QWidget *parent, const LightController *lightController) :
+    NewLightDialog::NewLightDialog(QWidget* parent, const LightController* lightController) :
         QDialog(parent),
         lightController(lightController),
         lightNameLabel(nullptr),
@@ -36,7 +36,7 @@ namespace urchin {
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void NewLightDialog::setupNameFields(QGridLayout *mainLayout) {
+    void NewLightDialog::setupNameFields(QGridLayout* mainLayout) {
         lightNameLabel = new QLabel("Light Name:");
         mainLayout->addWidget(lightNameLabel, 0, 0);
 
@@ -45,7 +45,7 @@ namespace urchin {
         lightNameText->setFixedWidth(405);
     }
 
-    void NewLightDialog::setupLightTypeFields(QGridLayout *mainLayout) {
+    void NewLightDialog::setupLightTypeFields(QGridLayout* mainLayout) {
         lightTypeLabel = new QLabel("Light Type:");
         mainLayout->addWidget(lightTypeLabel, 1, 0);
 
@@ -115,7 +115,7 @@ namespace urchin {
 
     bool NewLightDialog::isSceneLightExist(const std::string &name) {
         std::list<const SceneLight *> sceneLights = lightController->getSceneLights();
-        return std::any_of(sceneLights.begin(), sceneLights.end(), [name](const auto &sl){return sl->getName() == name;});
+        return std::any_of(sceneLights.begin(), sceneLights.end(), [name](const auto& sl){return sl->getName() == name;});
     }
 
 }

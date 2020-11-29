@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    CollisionBoxShape::CollisionBoxShape(const Vector3<float> &halfSizes) :
+    CollisionBoxShape::CollisionBoxShape(const Vector3<float>& halfSizes) :
             CollisionShape3D(),
             boxShape(new BoxShape<float>(halfSizes)) {
         computeSafeMargin();
@@ -48,7 +48,7 @@ namespace urchin {
         return std::make_shared<CollisionBoxShape>(boxShape->getHalfSizes() * scale);
     }
 
-    AABBox<float> CollisionBoxShape::toAABBox(const PhysicsTransform &physicsTransform) const {
+    AABBox<float> CollisionBoxShape::toAABBox(const PhysicsTransform& physicsTransform) const {
         if (!lastTransform.equals(physicsTransform)) {
             const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
             Point3<float> extend(
@@ -66,7 +66,7 @@ namespace urchin {
         return lastAABBox;
     }
 
-    std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionBoxShape::toConvexObject(const PhysicsTransform &physicsTransform) const {
+    std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionBoxShape::toConvexObject(const PhysicsTransform& physicsTransform) const {
         const Point3<float> &position = physicsTransform.getPosition();
         const Quaternion<float> &orientation = physicsTransform.getOrientation();
 

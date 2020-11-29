@@ -12,36 +12,36 @@ namespace urchin {
 
     }
 
-    template<class T> Point4<T>::Point4(const Point2<T> &p, T Zu, T Wu) {
+    template<class T> Point4<T>::Point4(const Point2<T>& p, T Zu, T Wu) {
         X = p.X;
         Y = p.Y;
         Z = Zu;
         W = Wu;
     }
 
-    template<class T> Point4<T>::Point4(const Point3<T> &p, T Wu) {
+    template<class T> Point4<T>::Point4(const Point3<T>& p, T Wu) {
         X = p.X;
         Y = p.Y;
         Z = p.Z;
         W = Wu;
     }
 
-    template<class T> Point4<T>::Point4(const Vector3<T> &vector, T Wu) :
+    template<class T> Point4<T>::Point4(const Vector3<T>& vector, T Wu) :
         X(vector.X), Y(vector.Y), Z(vector.Z), W(Wu) {
 
     }
 
-    template<class T> Point4<T>::Point4(const Vector4<T> &vector) :
+    template<class T> Point4<T>::Point4(const Vector4<T>& vector) :
         X(vector.X), Y(vector.Y), Z(vector.Z), W(vector.W) {
 
     }
 
-    template<class T> Point4<T>::Point4(const Point4<T> &point) :
+    template<class T> Point4<T>::Point4(const Point4<T>& point) :
         X(point.X), Y(point.Y), Z(point.Z), W(point.W) {
 
     }
 
-    template<class T> Point4<T>& Point4<T>::operator=(const Point4<T> &point) {
+    template<class T> Point4<T>& Point4<T>::operator=(const Point4<T>& point) {
         X = point.X;
         Y = point.Y;
         Z = point.Z;
@@ -60,15 +60,15 @@ namespace urchin {
         X = Y = Z = W = 0;
     }
 
-    template<class T> T Point4<T>::distance(const Point4<T> &p) const {
+    template<class T> T Point4<T>::distance(const Point4<T>& p) const {
         return std::sqrt(((X-p.X)*(X-p.X)) + ((Y-p.Y)*(Y-p.Y)) + ((Z-p.Z)*(Z-p.Z)) + ((W-p.W)*(W-p.W)));
     }
 
-    template<class T> T Point4<T>::squareDistance(const Point4<T> &p) const {
+    template<class T> T Point4<T>::squareDistance(const Point4<T>& p) const {
         return (T)(((X-p.X)*(X-p.X)) + ((Y-p.Y)*(Y-p.Y)) + ((Z-p.Z)*(Z-p.Z)) + ((W-p.W)*(W-p.W)));
     }
 
-    template<class T> Vector4<T> Point4<T>::vector(const Point4<T> &target) const {
+    template<class T> Vector4<T> Point4<T>::vector(const Point4<T>& target) const {
         return Vector4<T>(target.X - X, target.Y - Y, target.Z - Z, target.W - W);
     }
 
@@ -79,7 +79,7 @@ namespace urchin {
         return Vector4<T>(X, Y, Z, W);
     }
 
-    template<class T> Point4<T> Point4<T>::translate(const Vector4<T> &v) const {
+    template<class T> Point4<T> Point4<T>::translate(const Vector4<T>& v) const {
         return Point4<T>(X+v.X, Y+v.Y, Z+v.Z, W+v.W);
     }
 
@@ -107,21 +107,21 @@ namespace urchin {
         return Point4<T>(-X, -Y, -Z, -W);
     }
 
-    template<class T> Point4<T> Point4<T>::operator +(const Point4<T> &p) const {
+    template<class T> Point4<T> Point4<T>::operator +(const Point4<T>& p) const {
         return Point4<T>(    X + p.X,
                     Y + p.Y,
                     Z + p.Z,
                     W + p.W);
     }
 
-    template<class T> Point4<T> Point4<T>::operator -(const Point4<T> &p) const {
+    template<class T> Point4<T> Point4<T>::operator -(const Point4<T>& p) const {
         return Point4<T>(    X - p.X,
                     Y - p.Y,
                     Z - p.Z,
                     W - p.W);
     }
 
-    template<class T> const Point4<T>& Point4<T>::operator +=(const Point4<T> &p) {
+    template<class T> const Point4<T>& Point4<T>::operator +=(const Point4<T>& p) {
         X += p.X;
         Y += p.Y;
         Z += p.Z;
@@ -130,7 +130,7 @@ namespace urchin {
         return *this;
     }
 
-    template<class T> const Point4<T>& Point4<T>::operator -=(const Point4<T> &p) {
+    template<class T> const Point4<T>& Point4<T>::operator -=(const Point4<T>& p) {
         X -= p.X;
         Y -= p.Y;
         Z -= p.Z;
@@ -175,15 +175,15 @@ namespace urchin {
         return *this;
     }
 
-    template<class T> bool Point4<T>::operator ==(const Point4<T> &p) const {
+    template<class T> bool Point4<T>::operator ==(const Point4<T>& p) const {
         return (X==p.X && Y==p.Y && Z==p.Z && W==p.W);
     }
 
-    template<class T> bool Point4<T>::operator !=(const Point4<T> &p) const {
+    template<class T> bool Point4<T>::operator !=(const Point4<T>& p) const {
         return !(this->operator==(p));
     }
 
-    template<class T> bool Point4<T>::operator <(const Point4<T> &p) const {
+    template<class T> bool Point4<T>::operator <(const Point4<T>& p) const {
         return X < p.X || (X == p.X && Y < p.Y) || (X == p.X && Y == p.Y && Z < p.Z) || (X == p.X && Y == p.Y && Z == p.Z && W < p.W);
     }
 
@@ -207,38 +207,38 @@ namespace urchin {
         return Point4<NEW_TYPE>((NEW_TYPE)X, (NEW_TYPE)Y, (NEW_TYPE)Z, (NEW_TYPE)W);
     }
 
-    template<class T> Point4<T> operator *(const Point4<T> &p, T t) {
+    template<class T> Point4<T> operator *(const Point4<T>& p, T t) {
         return Point4<T>(p.X * t, p.Y * t, p.Z * t, p.W * t);
     }
 
-    template<class T> Point4<T> operator *(T t, const Point4<T> &p) {
+    template<class T> Point4<T> operator *(T t, const Point4<T>& p) {
         return p * t;
     }
 
-    template<class T> Point4<T> operator /(const Point4<T> &p, T t) {
+    template<class T> Point4<T> operator /(const Point4<T>& p, T t) {
         return Point4<T>(p.X / t, p.Y / t, p.Z / t, p.W / t);
     }
 
-    template<class T> Point4<T> operator +(const Point4<T> &p, T t) {
+    template<class T> Point4<T> operator +(const Point4<T>& p, T t) {
         return Point4<T>(p.X + t, p.Y + t, p.Z + t, p.W + t);
     }
 
-    template<class T> Point4<T> operator -(const Point4<T> &p, T t) {
+    template<class T> Point4<T> operator -(const Point4<T>& p, T t) {
         return Point4<T>(p.X - t, p.Y - t, p.Z - t, p.W - t);
     }
 
-    template<class T> Point4<T> operator *(const Matrix4<T> &m, const Point4<T> &p) {
+    template<class T> Point4<T> operator *(const Matrix4<T>& m, const Point4<T>& p) {
         return Point4<T>(    m.a11 * p.X + m.a12 * p.Y + m.a13 * p.Z + m.a14 * p.W,
                     m.a21 * p.X + m.a22 * p.Y + m.a23 * p.Z + m.a24 * p.W,
                     m.a31 * p.X + m.a32 * p.Y + m.a33 * p.Z + m.a34 * p.W,
                     m.a41 * p.X + m.a42 * p.Y + m.a43 * p.Z + m.a44 * p.W);
     }
 
-    template<class T> Point4<T> operator *(const Point4<T> &p, const Matrix4<T> &m) {
+    template<class T> Point4<T> operator *(const Point4<T>& p, const Matrix4<T>& m) {
         return m * p;
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Point4<T> &p) {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const Point4<T>& p) {
         return stream << p.X << ", " << p.Y << ", " << p.Z << ", " << p.W;
     }
 

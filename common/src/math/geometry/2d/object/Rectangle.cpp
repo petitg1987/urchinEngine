@@ -11,7 +11,7 @@ namespace urchin {
     /**
      * @param origin Origin of the rectangle (minimum point on X and Y axis)
      */
-    template<class T> Rectangle<T>::Rectangle(const Point2<T> &origin, const Vector2<T> &diagonal) :
+    template<class T> Rectangle<T>::Rectangle(const Point2<T>& origin, const Vector2<T>& diagonal) :
         rectangleShape(RectangleShape<T>(diagonal)),
         origin(origin) {
 
@@ -21,7 +21,7 @@ namespace urchin {
     * @param minPoint Lower point of rectangle
     * @param maxPoint Upper point of rectangle
     */
-    template<class T> Rectangle<T>::Rectangle(const Point2<T> &minPoint, const Point2<T> &maxPoint) :
+    template<class T> Rectangle<T>::Rectangle(const Point2<T>& minPoint, const Point2<T>& maxPoint) :
         rectangleShape(RectangleShape<T>(minPoint.vector(maxPoint))),
         origin(minPoint) {
 
@@ -39,14 +39,14 @@ namespace urchin {
         return rectangleShape.getDiagonal();
     }
 
-    template<class T> Point2<T> Rectangle<T>::getSupportPoint(const Vector2<T> &direction) const {
+    template<class T> Point2<T> Rectangle<T>::getSupportPoint(const Vector2<T>& direction) const {
         const unsigned int signX = direction.X < (T)0.0 ? 0 : 1;
         const unsigned int signY = direction.Y < (T)0.0 ? 0 : 1;
 
         return origin + Point2<T>(signX * rectangleShape.getDiagonal().X, signY * rectangleShape.getDiagonal().Y);
     }
 
-    template<class T> Rectangle<T> Rectangle<T>::merge(const Rectangle<T> &rectangle) const {
+    template<class T> Rectangle<T> Rectangle<T>::merge(const Rectangle<T>& rectangle) const {
         Point2<T> mergedMin(
                 getMin().X<rectangle.getMin().X ? getMin().X : rectangle.getMin().X,
                 getMin().Y<rectangle.getMin().Y ? getMin().Y : rectangle.getMin().Y
@@ -60,7 +60,7 @@ namespace urchin {
         return Rectangle<T>(mergedMin, mergedMax);
     }
 
-    template<class T> bool Rectangle<T>::collideWithPoint(const Point2<T> &point) const {
+    template<class T> bool Rectangle<T>::collideWithPoint(const Point2<T>& point) const {
         Point2<T> maxPoint = origin.translate(rectangleShape.getDiagonal());
         return point.X>origin.X && point.X<maxPoint.X && point.Y>origin.Y && point.Y<maxPoint.Y;
     }

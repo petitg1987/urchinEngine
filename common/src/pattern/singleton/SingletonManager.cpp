@@ -13,7 +13,7 @@ namespace urchin {
         return it->second;
     }
 
-    void SingletonManager::addSingleton(const std::string &name, SingletonInterface *ptr) {
+    void SingletonManager::addSingleton(const std::string &name, SingletonInterface* ptr) {
         singletons[name] = ptr;
     }
 

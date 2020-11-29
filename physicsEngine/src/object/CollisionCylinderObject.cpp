@@ -5,7 +5,7 @@
 namespace urchin {
 
     CollisionCylinderObject::CollisionCylinderObject(float outerMargin, float radius, float height,
-            typename CylinderShape<float>::CylinderOrientation cylinderOrientation,    const Point3<float> &centerOfMass, const Quaternion<float> &orientation) :
+            typename CylinderShape<float>::CylinderOrientation cylinderOrientation,    const Point3<float>& centerOfMass, const Quaternion<float>& orientation) :
         CollisionConvexObject3D(outerMargin),
         cylinderObject(Cylinder<float>(radius, height, cylinderOrientation, centerOfMass, orientation)) {
 
@@ -48,7 +48,7 @@ namespace urchin {
     /**
      * @return includeMargin Indicate whether support function need to take into account margin
      */
-    Point3<float> CollisionCylinderObject::getSupportPoint(const Vector3<float> &direction, bool includeMargin) const {
+    Point3<float> CollisionCylinderObject::getSupportPoint(const Vector3<float>& direction, bool includeMargin) const {
         if (includeMargin) {
             return retrieveCylinder().getSupportPoint(direction);
         }

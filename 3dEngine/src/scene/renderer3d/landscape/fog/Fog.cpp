@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    Fog::Fog(float density, float gradient, const Vector3<float> &color, float maxHeight) :
+    Fog::Fog(float density, float gradient, const Vector3<float>& color, float maxHeight) :
             density(density),
             gradient(gradient),
             color(color),

@@ -51,13 +51,13 @@ namespace urchin {
         return collisionWorld;
     }
 
-    void PhysicsWorld::addBody(AbstractBody *body) {
+    void PhysicsWorld::addBody(AbstractBody* body) {
         if (body) {
             bodyManager->addBody(body);
         }
     }
 
-    void PhysicsWorld::removeBody(AbstractBody *body) {
+    void PhysicsWorld::removeBody(AbstractBody* body) {
         if (body) {
             bodyManager->removeBody(body);
         }
@@ -80,7 +80,7 @@ namespace urchin {
         }
     }
 
-    std::shared_ptr<const RayTestResult> PhysicsWorld::rayTest(const Ray<float> &ray) {
+    std::shared_ptr<const RayTestResult> PhysicsWorld::rayTest(const Ray<float>& ray) {
         std::lock_guard<std::mutex> lock(mutex);
 
         std::shared_ptr<RayTester> rayTester = std::make_shared<RayTester>(ray);
@@ -94,7 +94,7 @@ namespace urchin {
     /**
      * @param gravity Gravity expressed in units/s^2
      */
-    void PhysicsWorld::setGravity(const Vector3<float> &gravity) {
+    void PhysicsWorld::setGravity(const Vector3<float>& gravity) {
         std::lock_guard<std::mutex> lock(mutex);
 
         this->gravity = gravity;
@@ -232,7 +232,7 @@ namespace urchin {
      * @param dt Delta of time between two simulation steps
      * @param gravity Gravity expressed in units/s^2
      */
-    void PhysicsWorld::setupProcessables(const std::vector<std::shared_ptr<Processable>> &processables, float dt, const Vector3<float> &gravity) {
+    void PhysicsWorld::setupProcessables(const std::vector<std::shared_ptr<Processable>> &processables, float dt, const Vector3<float>& gravity) {
         ScopeProfiler profiler("physics", "stpProcessable");
 
         for (const auto &processable : processables) {
@@ -244,7 +244,7 @@ namespace urchin {
      * @param dt Delta of time between two simulation steps
      * @param gravity Gravity expressed in units/s^2
      */
-    void PhysicsWorld::executeProcessables(const std::vector<std::shared_ptr<Processable>> &processables, float dt, const Vector3<float> &gravity) {
+    void PhysicsWorld::executeProcessables(const std::vector<std::shared_ptr<Processable>> &processables, float dt, const Vector3<float>& gravity) {
         ScopeProfiler profiler("physics", "execProcessable");
 
         for (const auto &processable : processables) {

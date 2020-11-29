@@ -4,12 +4,12 @@
 
 namespace urchin {
 
-    SunLight::SunLight(const Vector3<float> &direction) :
+    SunLight::SunLight(const Vector3<float>& direction) :
         Light() {
         this->directions.emplace_back(direction);
     }
 
-    void SunLight::setDirection(const Vector3<float> &direction) {
+    void SunLight::setDirection(const Vector3<float>& direction) {
         this->directions.clear();
         this->directions.emplace_back(direction);
 

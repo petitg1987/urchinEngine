@@ -11,7 +11,7 @@ namespace urchin {
 
     }
 
-    template<class T> ConvexHull3D<T>::ConvexHull3D(const ConvexHullShape3D<T> &localizedConvexHullShape) :
+    template<class T> ConvexHull3D<T>::ConvexHull3D(const ConvexHullShape3D<T>& localizedConvexHullShape) :
         localizedConvexHullShape(localizedConvexHullShape) {
 
     }
@@ -40,7 +40,7 @@ namespace urchin {
     /**
      * @return Returns index of point added. If point doesn't make part of convex, result is zero.
      */
-    template<class T> unsigned int ConvexHull3D<T>::addNewPoint(const Point3<T> &newPoint) {
+    template<class T> unsigned int ConvexHull3D<T>::addNewPoint(const Point3<T>& newPoint) {
         return localizedConvexHullShape.addNewPoint(newPoint);
     }
 
@@ -48,11 +48,11 @@ namespace urchin {
     * @param removedTriangleIndices [out] Indices of removed triangles from convex hull
     * @return Returns index of point added. If point doesn't make part of convex, result is zero.
     */
-    template<class T> unsigned int ConvexHull3D<T>::addNewPoint(const Point3<T> &newPoint, std::vector<std::size_t> &removedTriangleIndices) {
+    template<class T> unsigned int ConvexHull3D<T>::addNewPoint(const Point3<T>& newPoint, std::vector<std::size_t> &removedTriangleIndices) {
         return localizedConvexHullShape.addNewPoint(newPoint, removedTriangleIndices);
     }
 
-    template<class T> Point3<T> ConvexHull3D<T>::getSupportPoint(const Vector3<T> &direction) const {
+    template<class T> Point3<T> ConvexHull3D<T>::getSupportPoint(const Vector3<T>& direction) const {
         return localizedConvexHullShape.getSupportPoint(direction);
     }
 
@@ -60,7 +60,7 @@ namespace urchin {
         return ResizeConvexHull3DService<T>::instance()->resizeConvexHull(*this, distance);
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const ConvexHull3D<T> &ch) {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const ConvexHull3D<T>& ch) {
         stream << ch.localizedConvexHullShape;
         return stream;
     }

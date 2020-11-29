@@ -2,7 +2,7 @@
 #include "scene/SceneDisplayerWidget.h"
 
 namespace urchin {
-    MouseController::MouseController(QWidget *widget) :
+    MouseController::MouseController(QWidget* widget) :
             widget(widget) {
 
     }

@@ -14,7 +14,7 @@ namespace urchin {
     //Debug parameters
     bool DEBUG_DISPLAY_FONT_TEXTURE = false;
 
-    GUIRenderer::GUIRenderer(const RenderTarget *renderTarget) :
+    GUIRenderer::GUIRenderer(const RenderTarget* renderTarget) :
             renderTarget(renderTarget),
             sceneWidth(0),
             sceneHeight(0) {
@@ -50,7 +50,7 @@ namespace urchin {
         }
     }
 
-    void GUIRenderer::notify(Observable *observable, int notificationType) {
+    void GUIRenderer::notify(Observable* observable, int notificationType) {
         if (auto *widget = dynamic_cast<Widget *>(observable)) {
             if (notificationType==Widget::SET_IN_FOREGROUND) {
                 auto it = std::find(widgets.begin(), widgets.end(), widget);
@@ -115,13 +115,13 @@ namespace urchin {
         }
     }
 
-    void GUIRenderer::addWidget(Widget *widget) {
+    void GUIRenderer::addWidget(Widget* widget) {
         widgets.push_back(widget);
 
         widget->addObserver(this, Widget::SET_IN_FOREGROUND);
     }
 
-    void GUIRenderer::removeWidget(Widget *widget) {
+    void GUIRenderer::removeWidget(Widget* widget) {
         auto it = std::find(widgets.begin(), widgets.end(), widget);
         delete widget;
         widgets.erase(it);

@@ -11,7 +11,7 @@ namespace urchin {
 
     }
 
-    NavPolygon::NavPolygon(const NavPolygon &navPolygon) :
+    NavPolygon::NavPolygon(const NavPolygon& navPolygon) :
             name(navPolygon.getName()),
             points(navPolygon.getPoints()),
             navTopography(navPolygon.getNavTopography()) {

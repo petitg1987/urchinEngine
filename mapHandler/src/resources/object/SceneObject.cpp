@@ -24,7 +24,7 @@ namespace urchin {
         deleteAIObjects();
     }
 
-    void SceneObject::setObjectManagers(Renderer3d *renderer3d, PhysicsWorld *physicsWorld, AIManager *aiManager) {
+    void SceneObject::setObjectManagers(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, AIManager* aiManager) {
         if (this->renderer3d) {
             throw std::invalid_argument("Cannot add the scene object on two different object managers.");
         }
@@ -47,7 +47,7 @@ namespace urchin {
         }
     }
 
-    void SceneObject::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser) {
+    void SceneObject::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser& xmlParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
         std::shared_ptr<XmlChunk> modelChunk = xmlParser.getUniqueChunk(true, MODEL_TAG, XmlAttribute(), chunk);
@@ -62,7 +62,7 @@ namespace urchin {
         }
     }
 
-    void SceneObject::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const {
+    void SceneObject::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter& xmlWriter) const {
         chunk->setAttribute(XmlAttribute(NAME_ATTR, this->name));
 
         std::shared_ptr<XmlChunk> modelChunk = xmlWriter.createChunk(MODEL_TAG, XmlAttribute(), chunk);
@@ -86,7 +86,7 @@ namespace urchin {
         return model;
     }
 
-    void SceneObject::setModel(Model *model) {
+    void SceneObject::setModel(Model* model) {
         if (!model) {
             throw std::invalid_argument("Cannot set a null model on scene object.");
         }
@@ -101,7 +101,7 @@ namespace urchin {
         this->model = model;
     }
 
-    void SceneObject::setupInteractiveBody(RigidBody *rigidBody) {
+    void SceneObject::setupInteractiveBody(RigidBody* rigidBody) {
         setupRigidBody(rigidBody);
         setupAIObject();
     }
@@ -110,14 +110,14 @@ namespace urchin {
         return rigidBody;
     }
 
-    void SceneObject::moveTo(const Transform<float> &newTransform) {
+    void SceneObject::moveTo(const Transform<float>& newTransform) {
         model->setTransform(newTransform);
         if (aiObject) {
             aiObject->updateTransform(newTransform.getPosition(), newTransform.getOrientation());
         }
     }
 
-    void SceneObject::setupRigidBody(RigidBody *rigidBody) {
+    void SceneObject::setupRigidBody(RigidBody* rigidBody) {
         deleteRigidBody();
 
         this->rigidBody = rigidBody;

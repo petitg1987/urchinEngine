@@ -5,7 +5,7 @@ namespace urchin {
     /**
      * @param margin Margin to sphere used to determine stop sound trigger
      */
-    SoundSphere::SoundSphere(float radius, const Point3<float> &position, float margin) :
+    SoundSphere::SoundSphere(float radius, const Point3<float>& position, float margin) :
         SoundShape(margin),
         playTriggerSphere(Sphere<float>(radius, position)),
         stopTriggerSphere(Sphere<float>(radius + margin, position)) {
@@ -32,11 +32,11 @@ namespace urchin {
         return playTriggerSphere.getCenterOfMass();
     }
 
-    bool SoundSphere::pointInsidePlayShape(const Point3<float> &point) const {
+    bool SoundSphere::pointInsidePlayShape(const Point3<float>& point) const {
         return playTriggerSphere.collideWithPoint(point);
     }
 
-    bool SoundSphere::pointInsideStopShape(const Point3<float> &point) const {
+    bool SoundSphere::pointInsideStopShape(const Point3<float>& point) const {
         return stopTriggerSphere.collideWithPoint(point);
     }
 

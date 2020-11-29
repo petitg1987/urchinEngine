@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    BilateralBlurFilter::BilateralBlurFilter(const BilateralBlurFilterBuilder *textureFilterBuilder, BlurDirection blurDirection):
+    BilateralBlurFilter::BilateralBlurFilter(const BilateralBlurFilterBuilder* textureFilterBuilder, BlurDirection blurDirection):
             TextureFilter(textureFilterBuilder),
             blurDirection(blurDirection),
             blurSize(textureFilterBuilder->getBlurSize()),

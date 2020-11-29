@@ -14,7 +14,7 @@ namespace urchin {
     /**
      * @param halfSizes Half sizes (width, height and depth) of box
      */
-    template<class T> BoxShape<T>::BoxShape(const Vector3<T> &halfSizes) :
+    template<class T> BoxShape<T>::BoxShape(const Vector3<T>& halfSizes) :
             halfSizes(halfSizes) {
         assert(halfSizes.X >= 0.0);
         assert(halfSizes.Y >= 0.0);
@@ -61,7 +61,7 @@ namespace urchin {
         return 2;
     }
 
-    template<class T> Point3<T> BoxShape<T>::getSupportPoint(const Vector3<T> &direction) const {
+    template<class T> Point3<T> BoxShape<T>::getSupportPoint(const Vector3<T>& direction) const {
         return Point3<T>(
                 direction.X < 0.0 ? -halfSizes[0] : halfSizes[0],
                 direction.Y < 0.0 ? -halfSizes[1] : halfSizes[1],
@@ -76,7 +76,7 @@ namespace urchin {
         return new BoxShape<T>(*this);
     }
 
-    template<class T> std::unique_ptr<ConvexObject3D<T>> BoxShape<T>::toConvexObject(const Transform<T> &transform) const {
+    template<class T> std::unique_ptr<ConvexObject3D<T>> BoxShape<T>::toConvexObject(const Transform<T>& transform) const {
         return std::make_unique<OBBox<T>>(halfSizes*transform.getScale(), transform.getPosition(), transform.getOrientation());
     }
 

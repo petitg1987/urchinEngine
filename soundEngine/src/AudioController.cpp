@@ -6,7 +6,7 @@ namespace urchin {
     /**
      * @param soundTrigger Trigger used to play the sound
      */
-    AudioController::AudioController(Sound *sound, SoundTrigger *soundTrigger, StreamUpdateWorker *streamUpdateWorker) :
+    AudioController::AudioController(Sound* sound, SoundTrigger* soundTrigger, StreamUpdateWorker* streamUpdateWorker) :
             sound(sound),
             soundTrigger(soundTrigger),
             triggerValue(SoundTrigger::STOP),
@@ -34,7 +34,7 @@ namespace urchin {
         return soundTrigger;
     }
 
-    void AudioController::changeSoundTrigger(SoundTrigger *newSoundTrigger) {
+    void AudioController::changeSoundTrigger(SoundTrigger* newSoundTrigger) {
         audioPlayer->stop();
         triggerValue = SoundTrigger::STOP;
 
@@ -61,7 +61,7 @@ namespace urchin {
         }
     }
 
-    void AudioController::process(const Point3<float> &listenerPosition) {
+    void AudioController::process(const Point3<float>& listenerPosition) {
         if (triggerValue!=SoundTrigger::STOP && triggerValue!=SoundTrigger::SMOOTH_STOP
                 && sound->isStopped()) {
             triggerValue = SoundTrigger::STOP;

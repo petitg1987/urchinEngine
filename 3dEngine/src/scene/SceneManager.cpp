@@ -109,7 +109,7 @@ namespace urchin {
         return renderer3d;
     }
 
-    void SceneManager::enableRenderer3d(Renderer3d *renderer3d) {
+    void SceneManager::enableRenderer3d(Renderer3d* renderer3d) {
         if (activeRenderers[RENDERER_3D] && activeRenderers[RENDERER_3D]!=renderer3d) {
             activeRenderers[RENDERER_3D]->onDisable();
         }
@@ -120,7 +120,7 @@ namespace urchin {
         }
     }
 
-    void SceneManager::removeRenderer3d(Renderer3d *renderer3d) {
+    void SceneManager::removeRenderer3d(Renderer3d* renderer3d) {
         if (activeRenderers[RENDERER_3D] == renderer3d) {
             activeRenderers[RENDERER_3D] = nullptr;
         }
@@ -143,7 +143,7 @@ namespace urchin {
         return guiRenderer;
     }
 
-    void SceneManager::enableGUIRenderer(GUIRenderer *guiRenderer) {
+    void SceneManager::enableGUIRenderer(GUIRenderer* guiRenderer) {
         if (activeRenderers[GUI_RENDERER] && activeRenderers[GUI_RENDERER]!=guiRenderer) {
             activeRenderers[GUI_RENDERER]->onDisable();
         }
@@ -154,7 +154,7 @@ namespace urchin {
         }
     }
 
-    void SceneManager::removeGUIRenderer(GUIRenderer *guiRenderer) {
+    void SceneManager::removeGUIRenderer(GUIRenderer* guiRenderer) {
         if (activeRenderers[GUI_RENDERER] == guiRenderer) {
             activeRenderers[GUI_RENDERER] = nullptr;
         }

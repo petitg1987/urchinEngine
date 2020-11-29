@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    CollisionBoxObject::CollisionBoxObject(float outerMargin, const Vector3<float> &halfSize, const Point3<float> &centerOfMass, const Quaternion<float> &orientation) :
+    CollisionBoxObject::CollisionBoxObject(float outerMargin, const Vector3<float>& halfSize, const Point3<float>& centerOfMass, const Quaternion<float>& orientation) :
             CollisionConvexObject3D(outerMargin),
             boxObject(OBBox<float>(halfSize, centerOfMass, orientation)) {
 
@@ -37,7 +37,7 @@ namespace urchin {
     /**
      * @return includeMargin Indicate whether support function need to take into account margin
      */
-    Point3<float> CollisionBoxObject::getSupportPoint(const Vector3<float> &direction, bool includeMargin) const {
+    Point3<float> CollisionBoxObject::getSupportPoint(const Vector3<float>& direction, bool includeMargin) const {
         if (includeMargin) {
             const Point3<float> &supportPoint = boxObject.getSupportPoint(direction);
             Point3<float> supportPointWithMargin = supportPoint;

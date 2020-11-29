@@ -1,7 +1,7 @@
 #include "ObjectMoveController.h"
 
 namespace urchin {
-    ObjectMoveController::ObjectMoveController(SceneManager *sceneManager, SceneController *sceneController,
+    ObjectMoveController::ObjectMoveController(SceneManager* sceneManager, SceneController* sceneController,
                                                MouseController mouseController, StatusBarController statusBarController) :
             sceneWidth(0),
             sceneHeight(0),
@@ -97,7 +97,7 @@ namespace urchin {
         return false;
     }
 
-    void ObjectMoveController::moveObject(const Point2<float> &oldMouseCoord, const Point2<float> &newMouseCoord) {
+    void ObjectMoveController::moveObject(const Point2<float>& oldMouseCoord, const Point2<float>& newMouseCoord) {
         Point3<float> objectPosition = selectedSceneObject->getModel()->getTransform().getPosition();
         CameraSpaceService cameraSpaceService(sceneManager->getActiveRenderer3d()->getCamera());
 
@@ -121,7 +121,7 @@ namespace urchin {
         updateObjectPosition(newPosition);
     }
 
-    void ObjectMoveController::updateObjectPosition(const Point3<float> &newPosition) {
+    void ObjectMoveController::updateObjectPosition(const Point3<float>& newPosition) {
         Transform<float> transform = selectedSceneObject->getModel()->getTransform();
         transform.setPosition(newPosition);
 
@@ -153,7 +153,7 @@ namespace urchin {
         return propagateEvent;
     }
 
-    void ObjectMoveController::setSelectedSceneObject(const SceneObject *selectedSceneObject) {
+    void ObjectMoveController::setSelectedSceneObject(const SceneObject* selectedSceneObject) {
         this->selectedSceneObject = selectedSceneObject;
         this->selectedAxis = -1;
 

@@ -28,14 +28,14 @@ namespace urchin {
         Profiler::getInstance("sound")->log();
     }
 
-    void SoundManager::addSound(Sound *sound, SoundTrigger *soundTrigger) {
+    void SoundManager::addSound(Sound* sound, SoundTrigger* soundTrigger) {
         if (sound && soundTrigger) {
             auto *audioController = new AudioController(sound, soundTrigger, streamUpdateWorker);
             audioControllers.push_back(audioController);
         }
     }
 
-    void SoundManager::removeSound(const Sound *sound) {
+    void SoundManager::removeSound(const Sound* sound) {
         for (auto it = audioControllers.begin(); it!=audioControllers.end(); ++it) {
             if ((*it)->getSound() == sound) {
                 deleteAudioController(*it);
@@ -46,7 +46,7 @@ namespace urchin {
         }
     }
 
-    void SoundManager::changeSoundTrigger(const Sound *sound, SoundTrigger *newSoundTrigger) {
+    void SoundManager::changeSoundTrigger(const Sound* sound, SoundTrigger* newSoundTrigger) {
         for (auto &audioController : audioControllers) {
             if (audioController->getSound() == sound) {
                 audioController->changeSoundTrigger(newSoundTrigger);
@@ -66,7 +66,7 @@ namespace urchin {
         return triggers;
     }
 
-    SoundTrigger *SoundManager::retrieveSoundTriggerFor(const Sound *sound) const {
+    SoundTrigger *SoundManager::retrieveSoundTriggerFor(const Sound* sound) const {
         for (const auto &audioController : audioControllers) {
             if (audioController->getSound() == sound) {
                 return audioController->getSoundTrigger();
@@ -92,7 +92,7 @@ namespace urchin {
         streamUpdateWorker->controlExecution();
     }
 
-    void SoundManager::process(const Point3<float> &listenerPosition) {
+    void SoundManager::process(const Point3<float>& listenerPosition) {
         alListener3f(AL_POSITION, listenerPosition.X, listenerPosition.Y, listenerPosition.Z);
 
         for (auto &audioController : audioControllers) {
@@ -111,7 +111,7 @@ namespace urchin {
         process(Point3<float>(0.0, 0.0, 0.0));
     }
 
-    void SoundManager::deleteAudioController(AudioController *audioController) {
+    void SoundManager::deleteAudioController(AudioController* audioController) {
         delete audioController;
     }
 }

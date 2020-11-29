@@ -7,11 +7,11 @@
 
 namespace urchin {
 
-    template <class T> DistanceToStartPointComp<T>::DistanceToStartPointComp(const Point3<T> &startPoint) :
+    template <class T> DistanceToStartPointComp<T>::DistanceToStartPointComp(const Point3<T>& startPoint) :
             startPoint(startPoint) {
     }
 
-    template <class T> bool DistanceToStartPointComp<T>::operator() (const Point3<T> &left, const Point3<T> &right) const {
+    template <class T> bool DistanceToStartPointComp<T>::operator() (const Point3<T>& left, const Point3<T>& right) const {
         return startPoint.squareDistance(left) < startPoint.squareDistance(right);
     }
 
@@ -27,7 +27,7 @@ namespace urchin {
     /**
      * @return Nearest heightfield point (3D) of the provided coordinate point (2D)
      */
-    template<class T> Point3<T> HeightfieldPointHelper<T>::findPointAt(const Point2<T> &point) const {
+    template<class T> Point3<T> HeightfieldPointHelper<T>::findPointAt(const Point2<T>& point) const {
         Vector2<T> farLeftToPoint = Point2<T>(heightfieldPoints[0].X, heightfieldPoints[0].Z).vector(point);
         int xIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farLeftToPoint.X / xInterval)), 0, static_cast<int>(heightfieldXSize - 1));
         int zIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farLeftToPoint.Y / zInterval)), 0, static_cast<int>(heightfieldZSize - 1));
@@ -38,7 +38,7 @@ namespace urchin {
     /**
      * @return Heightfield height of the provided coordinate point (2D)
      */
-    template<class T> T HeightfieldPointHelper<T>::findHeightAt(const Point2<T> &point) const {
+    template<class T> T HeightfieldPointHelper<T>::findHeightAt(const Point2<T>& point) const {
         Vector2<T> farLeftToPoint = Point2<T>(heightfieldPoints[0].X, heightfieldPoints[0].Z).vector(point);
         int xIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farLeftToPoint.X / xInterval)), 0, static_cast<int>(heightfieldXSize - 1));
         int zIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farLeftToPoint.Y / zInterval)), 0, static_cast<int>(heightfieldZSize - 1));
@@ -66,7 +66,7 @@ namespace urchin {
     /**
      * @return Path points which follow the topography of the terrain between start and end point
      */
-    template<class T> std::vector<Point3<T>> HeightfieldPointHelper<T>::followTopography(const Point3<T> &startPoint, const Point3<T> &endPoint) const {
+    template<class T> std::vector<Point3<T>> HeightfieldPointHelper<T>::followTopography(const Point3<T>& startPoint, const Point3<T>& endPoint) const {
         Point3<T> adjustedStartPoint = Point3<T>(startPoint.X, findHeightAt(Point2<T>(startPoint.X, startPoint.Z)), startPoint.Z);
         Point3<T> adjustedEndPoint = Point3<T>(endPoint.X, findHeightAt(Point2<T>(endPoint.X, endPoint.Z)), endPoint.Z);
 
@@ -122,7 +122,7 @@ namespace urchin {
     /**
      * @param pathPoints [out] Vector where intersection point is added
      */
-    template<class T> void HeightfieldPointHelper<T>::addIntersectionPoint(const LineSegment2D<T> &line, const LineSegment2D<T> &pathLine, std::vector<Point3<T>> &pathPoints) const {
+    template<class T> void HeightfieldPointHelper<T>::addIntersectionPoint(const LineSegment2D<T>& line, const LineSegment2D<T>& pathLine, std::vector<Point3<T>> &pathPoints) const {
         bool hasIntersection;
         Point2<T> intersectionPoint = line.intersectPoint(pathLine, hasIntersection);
         if (hasIntersection) {
@@ -131,12 +131,12 @@ namespace urchin {
         }
     }
 
-    template<class T> bool HeightfieldPointHelper<T>::isParallelToXAxis(const LineSegment2D<T> &pathLine, T epsilon) const {
+    template<class T> bool HeightfieldPointHelper<T>::isParallelToXAxis(const LineSegment2D<T>& pathLine, T epsilon) const {
         T dotProduct = pathLine.toVector().normalize().dotProduct(Vector2<T>(1.0, 0.0));
         return std::fabs(dotProduct) < epsilon;
     }
 
-    template<class T> bool HeightfieldPointHelper<T>::isParallelToZAxis(const LineSegment2D<T> &pathLine, T epsilon) const {
+    template<class T> bool HeightfieldPointHelper<T>::isParallelToZAxis(const LineSegment2D<T>& pathLine, T epsilon) const {
         T dotProduct = pathLine.toVector().normalize().dotProduct(Vector2<T>(0.0, 1.0));
         return std::fabs(dotProduct) < epsilon;
     }

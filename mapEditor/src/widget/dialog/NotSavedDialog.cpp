@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    NotSavedDialog::NotSavedDialog(QWidget *parent) :
+    NotSavedDialog::NotSavedDialog(QWidget* parent) :
         QDialog(parent),
         bNeedSave(false) {
         this->setWindowTitle("Save Map");
@@ -32,7 +32,7 @@ namespace urchin {
         return bNeedSave;
     }
 
-    void NotSavedDialog::buttonClick(QAbstractButton *button) {
+    void NotSavedDialog::buttonClick(QAbstractButton* button) {
         if (buttonBox->standardButton(button) == QDialogButtonBox::Yes) {
             bNeedSave = true;
             accept();

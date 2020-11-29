@@ -17,8 +17,8 @@ namespace urchin {
     /**
     * @param includeMargin Indicate whether algorithm operates on objects with margin
     */
-    template<class T> std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> GJKAlgorithm<T>::processGJK(const CollisionConvexObject3D &convexObject1,
-            const CollisionConvexObject3D &convexObject2, bool includeMargin) const {
+    template<class T> std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> GJKAlgorithm<T>::processGJK(const CollisionConvexObject3D& convexObject1,
+            const CollisionConvexObject3D& convexObject2, bool includeMargin) const {
         //get point which belongs to the outline of the shape (Minkowski difference)
         Vector3<T> initialDirection = Vector3<T>(1.0, 0.0, 0.0);
         Point3<T> initialSupportPointA = convexObject1.getSupportPoint(initialDirection.template cast<float>(), includeMargin).template cast<T>();
@@ -58,8 +58,8 @@ namespace urchin {
         return AlgorithmResultAllocator::instance()->newGJKResultInvalid<T>();
     }
 
-    template<class T> void GJKAlgorithm<T>::logMaximumIterationReach(const CollisionConvexObject3D &convexObject1,
-            const CollisionConvexObject3D &convexObject2, bool includeMargin) const {
+    template<class T> void GJKAlgorithm<T>::logMaximumIterationReach(const CollisionConvexObject3D& convexObject1,
+            const CollisionConvexObject3D& convexObject2, bool includeMargin) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 

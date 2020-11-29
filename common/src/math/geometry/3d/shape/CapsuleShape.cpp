@@ -30,7 +30,7 @@ namespace urchin {
         return new CapsuleShape<T>(*this);
     }
 
-    template<class T> std::unique_ptr<ConvexObject3D<T>> CapsuleShape<T>::toConvexObject(const Transform<T> &transform) const {
+    template<class T> std::unique_ptr<ConvexObject3D<T>> CapsuleShape<T>::toConvexObject(const Transform<T>& transform) const {
         return std::make_unique<Capsule<T>>(radius*transform.getScale(), cylinderHeight*transform.getScale(),
                 capsuleOrientation, transform.getPosition(), transform.getOrientation());
     }

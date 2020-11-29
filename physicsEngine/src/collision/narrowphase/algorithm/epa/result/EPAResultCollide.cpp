@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    template<class T> EPAResultCollide<T>::EPAResultCollide(const Point3<T> &contactPointA, const Point3<T> &contactPointB, const Vector3<T> &normal, T depth) :
+    template<class T> EPAResultCollide<T>::EPAResultCollide(const Point3<T>& contactPointA, const Point3<T>& contactPointB, const Vector3<T>& normal, T depth) :
         EPAResult<T>(),
         contactPointA(contactPointA),
         contactPointB(contactPointB),

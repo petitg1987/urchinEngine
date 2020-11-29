@@ -58,7 +58,7 @@ template<class BaseType> void* FixedSizePool<BaseType>::allocate(unsigned int si
  * Call destructor of pointer and free location in the pool.
  * @param ptr Pointer to free
  */
-template<class BaseType> void FixedSizePool<BaseType>::free(BaseType *ptr) {
+template<class BaseType> void FixedSizePool<BaseType>::free(BaseType* ptr) {
     if (((unsigned char*)ptr >= pool && (unsigned char*)ptr < pool + maxElementSize*maxElements)) { //ptr is in the pool
         ptr->~BaseType();
 

@@ -10,7 +10,7 @@
 
 namespace urchin {
 
-    PhysicsCharacterController::PhysicsCharacterController(const std::shared_ptr<PhysicsCharacter> &physicsCharacter, PhysicsWorld *physicsWorld) :
+    PhysicsCharacterController::PhysicsCharacterController(const std::shared_ptr<PhysicsCharacter> &physicsCharacter, PhysicsWorld* physicsWorld) :
         timeKeepMoveInAir(ConfigService::instance()->getFloatValue("character.timeKeepMoveInAir")),
         percentageControlInAir(ConfigService::instance()->getFloatValue("character.percentageControlInAir")),
         maxDepthToRecover(ConfigService::instance()->getFloatValue("character.maxDepthToRecover")),
@@ -39,7 +39,7 @@ namespace urchin {
         physicsWorld->getCollisionWorld()->getBroadPhaseManager()->removeBodyAsync(ghostBody);
     }
 
-    void PhysicsCharacterController::setMomentum(const Vector3<float> &momentum) {
+    void PhysicsCharacterController::setMomentum(const Vector3<float>& momentum) {
         std::lock_guard<std::mutex> lock(characterMutex);
 
         this->velocity = (momentum / physicsCharacter->getMass());
@@ -177,7 +177,7 @@ namespace urchin {
         return significantContactValues;
     }
 
-    void PhysicsCharacterController::saveSignificantContactValues(SignificantContactValues &significantContactValues, const Vector3<float> &normal) {
+    void PhysicsCharacterController::saveSignificantContactValues(SignificantContactValues& significantContactValues, const Vector3<float>& normal) {
         significantContactValues.numberOfHit++;
 
         float dotProductUpNormalAxis = (-normal).dotProduct(Vector3<float>(0.0f, 1.0f, 0.0f));
@@ -193,7 +193,7 @@ namespace urchin {
         }
     }
 
-    void PhysicsCharacterController::computeSignificantContactValues(SignificantContactValues &significantContactValues, float dt) {
+    void PhysicsCharacterController::computeSignificantContactValues(SignificantContactValues& significantContactValues, float dt) {
         numberOfHit = significantContactValues.numberOfHit;
         isOnGround = numberOfHit > 0 && std::acos(significantContactValues.maxDotProductUpNormalAxis) < physicsCharacter->getMaxSlopeInRadian();
         hitRoof = numberOfHit > 0 && std::acos(significantContactValues.maxDotProductDownNormalAxis) < physicsCharacter->getMaxSlopeInRadian();

@@ -57,7 +57,7 @@ namespace urchin {
         setupUnderWaterProperties(mainLayout);
     }
 
-    void WaterPanelWidget::setupGeneralPropertiesBox(QVBoxLayout *mainLayout) {
+    void WaterPanelWidget::setupGeneralPropertiesBox(QVBoxLayout* mainLayout) {
         generalPropertiesGroupBox = new QGroupBox("General Properties");
         mainLayout->addWidget(generalPropertiesGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
@@ -103,7 +103,7 @@ namespace urchin {
         connect(zSize, SIGNAL(valueChanged(double)), this, SLOT(updateWaterProperties()));
     }
 
-    void WaterPanelWidget::setupWaterSurfaceProperties(QVBoxLayout *mainLayout) {
+    void WaterPanelWidget::setupWaterSurfaceProperties(QVBoxLayout* mainLayout) {
         waterSurfacePropertiesGroupBox = new QGroupBox("Surface");
         mainLayout->addWidget(waterSurfacePropertiesGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(waterSurfacePropertiesGroupBox);
@@ -218,7 +218,7 @@ namespace urchin {
         connect(tRepeat, SIGNAL(valueChanged(double)), this, SLOT(updateSurfaceWaterProperties()));
     }
 
-    void WaterPanelWidget::setupUnderWaterProperties(QVBoxLayout *mainLayout) {
+    void WaterPanelWidget::setupUnderWaterProperties(QVBoxLayout* mainLayout) {
         underWaterPropertiesGroupBox = new QGroupBox("Under Water");
         mainLayout->addWidget(underWaterPropertiesGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(underWaterPropertiesGroupBox);
@@ -250,7 +250,7 @@ namespace urchin {
         return waterTableView;
     }
 
-    void WaterPanelWidget::load(WaterController *waterController) {
+    void WaterPanelWidget::load(WaterController* waterController) {
         this->waterController = waterController;
 
         std::list<const SceneWater *> sceneWaters = waterController->getSceneWaters();
@@ -265,7 +265,7 @@ namespace urchin {
         waterController = nullptr;
     }
 
-    void WaterPanelWidget::notify(Observable *observable, int notificationType) {
+    void WaterPanelWidget::notify(Observable* observable, int notificationType) {
         if (auto *waterTableView = dynamic_cast<WaterTableView *>(observable)) {
             if (notificationType==WaterTableView::SELECTION_CHANGED) {
                 if (waterTableView->hasSceneWaterSelected()) {
@@ -286,7 +286,7 @@ namespace urchin {
         }
     }
 
-    void WaterPanelWidget::setupWaterDataFrom(const SceneWater *sceneWater) {
+    void WaterPanelWidget::setupWaterDataFrom(const SceneWater* sceneWater) {
         disableWaterEvent = true;
         const Water *water = sceneWater->getWater();
 

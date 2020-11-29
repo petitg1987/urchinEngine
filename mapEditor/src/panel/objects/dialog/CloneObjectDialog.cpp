@@ -7,7 +7,7 @@
 #include "widget/style/LabelStyleHelper.h"
 
 namespace urchin {
-    CloneObjectDialog::CloneObjectDialog(QWidget *parent, const ObjectController *objectController) :
+    CloneObjectDialog::CloneObjectDialog(QWidget* parent, const ObjectController* objectController) :
             QDialog(parent),
             objectController(objectController),
             objectNameLabel(nullptr),
@@ -31,7 +31,7 @@ namespace urchin {
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void CloneObjectDialog::setupNameFields(QGridLayout *mainLayout) {
+    void CloneObjectDialog::setupNameFields(QGridLayout* mainLayout) {
         objectNameLabel = new QLabel("Object Name:");
         mainLayout->addWidget(objectNameLabel, 0, 0);
 
@@ -91,7 +91,7 @@ namespace urchin {
 
     bool CloneObjectDialog::isSceneObjectExist(const std::string &name) {
         std::list<const SceneObject *> sceneObjects = objectController->getSceneObjects();
-        return std::any_of(sceneObjects.begin(), sceneObjects.end(), [name](const auto &so){return so->getName() == name;});
+        return std::any_of(sceneObjects.begin(), sceneObjects.end(), [name](const auto& so){return so->getName() == name;});
     }
 
 }

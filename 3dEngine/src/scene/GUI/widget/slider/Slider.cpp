@@ -103,7 +103,7 @@ namespace urchin {
         this->rightButton->addEventListener(rightButtonEventListener);
     }
 
-    void Slider::display(const RenderTarget *renderTarget, const ShaderVar &translateDistanceShaderVar, float dt) {
+    void Slider::display(const RenderTarget* renderTarget, const ShaderVar& translateDistanceShaderVar, float dt) {
         if (leftButton->getWidgetState() == Widget::WidgetStates::CLICKING) {
             timeInClickingState += dt;
             timeSinceLastChange += dt;
@@ -130,7 +130,7 @@ namespace urchin {
         Widget::display(renderTarget, translateDistanceShaderVar, dt);
     }
 
-    Slider::ButtonSliderEventListener::ButtonSliderEventListener(Slider *slider, bool isLeftButton) :
+    Slider::ButtonSliderEventListener::ButtonSliderEventListener(Slider* slider, bool isLeftButton) :
             slider(slider),
             isLeftButton(isLeftButton) {
 

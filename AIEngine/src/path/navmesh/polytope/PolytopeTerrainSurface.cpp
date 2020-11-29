@@ -5,8 +5,8 @@
 
 namespace urchin {
 
-    PolytopeTerrainSurface::PolytopeTerrainSurface(const Point3<float> &position, std::vector<Point3<float>> localVertices, unsigned int xLength, unsigned int zLength,
-            const Vector3<float> &approximateNormal, std::vector<CSGPolygon<float>> selfObstacles, std::shared_ptr<const NavTopography> navTopography) :
+    PolytopeTerrainSurface::PolytopeTerrainSurface(const Point3<float>& position, std::vector<Point3<float>> localVertices, unsigned int xLength, unsigned int zLength,
+            const Vector3<float>& approximateNormal, std::vector<CSGPolygon<float>> selfObstacles, std::shared_ptr<const NavTopography> navTopography) :
             PolytopeSurface(),
             position(position),
             localVertices(std::move(localVertices)),
@@ -64,7 +64,7 @@ namespace urchin {
         return outlineCwPoints;
     }
 
-    Plane<float> PolytopeTerrainSurface::getPlane(const Rectangle<float> &box) const {
+    Plane<float> PolytopeTerrainSurface::getPlane(const Rectangle<float>& box) const {
         Point3<float> point1 = retrieveGlobalVertex(box.getMin());
         Point3<float> point2 = retrieveGlobalVertex(box.getMax());
         Point3<float> point3 = retrieveGlobalVertex(Point2<float>(box.getMin().X, box.getMax().Y));
@@ -78,14 +78,14 @@ namespace urchin {
     /**
      * Return point on un-expanded surface
      */
-    Point3<float> PolytopeTerrainSurface::computeRealPoint(const Point2<float> &point, const std::shared_ptr<NavMeshAgent> &agent) const {
+    Point3<float> PolytopeTerrainSurface::computeRealPoint(const Point2<float>& point, const std::shared_ptr<NavMeshAgent> &agent) const {
         Point3<float> expandedPoint = retrieveGlobalVertex(point);
 
         float reduceDistance = - agent->computeExpandDistance(approximateNormal);
         return expandedPoint.translate(approximateNormal * reduceDistance);
     }
 
-    Point3<float> PolytopeTerrainSurface::retrieveGlobalVertex(const Point2<float> &globalXzCoordinate) const {
+    Point3<float> PolytopeTerrainSurface::retrieveGlobalVertex(const Point2<float>& globalXzCoordinate) const {
         Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - position.X, -globalXzCoordinate.Y - position.Z);
         return Point3<float>(localCoordinate.X, heightfieldPointHelper->findHeightAt(localCoordinate), localCoordinate.Y) + position;
     }

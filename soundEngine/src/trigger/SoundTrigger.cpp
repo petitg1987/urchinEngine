@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    SoundTrigger::SoundTrigger(const SoundBehavior &soundBehavior) :
+    SoundTrigger::SoundTrigger(const SoundBehavior& soundBehavior) :
         soundBehavior(soundBehavior) {
 
     }

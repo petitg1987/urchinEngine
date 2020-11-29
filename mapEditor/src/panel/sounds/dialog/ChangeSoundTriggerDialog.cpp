@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    ChangeSoundTriggerDialog::ChangeSoundTriggerDialog(QWidget *parent) :
+    ChangeSoundTriggerDialog::ChangeSoundTriggerDialog(QWidget* parent) :
         QDialog(parent),
         soundTriggerTypeLabel(nullptr),
         soundTriggerTypeComboBox(nullptr),
@@ -29,7 +29,7 @@ namespace urchin {
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void ChangeSoundTriggerDialog::setupSoundTriggerTypeFields(QGridLayout *mainLayout) {
+    void ChangeSoundTriggerDialog::setupSoundTriggerTypeFields(QGridLayout* mainLayout) {
         soundTriggerTypeLabel = new QLabel("Trigger Type:");
         mainLayout->addWidget(soundTriggerTypeLabel, 0, 0);
 

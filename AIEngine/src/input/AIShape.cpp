@@ -4,13 +4,13 @@
 
 namespace urchin {
 
-    AIShape::AIShape(const ConvexShape3D<float> *shape) :
+    AIShape::AIShape(const ConvexShape3D<float>* shape) :
         shape(shape->clone()),
         bHasLocalTransform(false) {
 
     }
 
-    AIShape::AIShape(const ConvexShape3D<float> *shape, Transform<float> localTransform) :
+    AIShape::AIShape(const ConvexShape3D<float>* shape, Transform<float> localTransform) :
         shape(shape->clone()),
         bHasLocalTransform(true),
         localTransform(std::move(localTransform)) {

@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    ShadowData::ShadowData(const Light *light, unsigned int nbFrustumSplit) :
+    ShadowData::ShadowData(const Light* light, unsigned int nbFrustumSplit) :
             light(light),
             renderTarget(nullptr) {
         for (unsigned int frustumSplitIndex =0; frustumSplitIndex<nbFrustumSplit; ++frustumSplitIndex) {
@@ -76,7 +76,7 @@ namespace urchin {
         return textureFilters.back()->getTexture();
     }
 
-    void ShadowData::setLightViewMatrix(const Matrix4<float> &lightViewMatrix) {
+    void ShadowData::setLightViewMatrix(const Matrix4<float>& lightViewMatrix) {
         this->lightViewMatrix = lightViewMatrix;
     }
 

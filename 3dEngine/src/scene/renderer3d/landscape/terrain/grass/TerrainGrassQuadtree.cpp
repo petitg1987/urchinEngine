@@ -52,7 +52,7 @@ namespace urchin {
         return bbox;
     }
 
-    void TerrainGrassQuadtree::addChild(TerrainGrassQuadtree *grassPatchOctree) {
+    void TerrainGrassQuadtree::addChild(TerrainGrassQuadtree* grassPatchOctree) {
         assert(bbox==nullptr);
         children.push_back(grassPatchOctree);
     }
@@ -64,7 +64,7 @@ namespace urchin {
     /**
      * Add vertex with its associate normal. Method is thread-safe.
      */
-    void TerrainGrassQuadtree::addVertex(const Point3<float> &vertex, const Vector3<float> &normal) {
+    void TerrainGrassQuadtree::addVertex(const Point3<float>& vertex, const Vector3<float>& normal) {
         std::lock_guard<std::mutex> lock(mutexAddVertex);
 
         assert(children.empty());

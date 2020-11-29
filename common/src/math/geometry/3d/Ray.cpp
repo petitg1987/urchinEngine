@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    template<class T> Ray<T>::Ray(const Point3<T> &origin, const Vector3<T> &direction, T length) :
+    template<class T> Ray<T>::Ray(const Point3<T>& origin, const Vector3<T>& direction, T length) :
             origin(origin),
             direction(direction.normalize()),
             length(length),
@@ -10,7 +10,7 @@ namespace urchin {
         initializeAdditionalData();
     }
 
-    template<class T> Ray<T>::Ray(const Point3<T> &from, const Point3<T> &to) :
+    template<class T> Ray<T>::Ray(const Point3<T>& from, const Point3<T>& to) :
             origin(from),
             directionSigns() {
         Vector3<T> direction = from.vector(to);

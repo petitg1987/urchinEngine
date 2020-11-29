@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    TemporalObject::TemporalObject(const CollisionShape3D *shape, const PhysicsTransform &from, const PhysicsTransform &to) :
+    TemporalObject::TemporalObject(const CollisionShape3D* shape, const PhysicsTransform& from, const PhysicsTransform& to) :
         shape(shape),
         localObject(shape->toConvexObject(PhysicsTransform())),
         from(from),

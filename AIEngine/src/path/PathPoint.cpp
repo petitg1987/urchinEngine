@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    PathPoint::PathPoint(const Point3<float> &point, bool bIsJumpPoint) :
+    PathPoint::PathPoint(const Point3<float>& point, bool bIsJumpPoint) :
         point(point),
         bIsJumpPoint(bIsJumpPoint) {
 

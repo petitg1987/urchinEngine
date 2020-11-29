@@ -13,7 +13,7 @@ namespace urchin {
      * @param startEdge Start edge. Edge must be part of a polygon CCW oriented when looked from top
      * @param endEdge End edge. Edge must be part of a polygon CCW oriented when looked from top
      */
-    EdgeLinkResult EdgeLinkDetection::detectLink(const LineSegment3D<float> &startEdge, const LineSegment3D<float> &endEdge) const {
+    EdgeLinkResult EdgeLinkDetection::detectLink(const LineSegment3D<float>& startEdge, const LineSegment3D<float>& endEdge) const {
         Line3D<float> startLine = startEdge.toLine();
         Line3D<float> endLine = endEdge.toLine();
 
@@ -69,11 +69,11 @@ namespace urchin {
         return EdgeLinkResult::noEdgeLink();
     }
 
-    bool EdgeLinkDetection::pointsAreEquals(const Point3<float> &point1, const Point3<float> &point2) const {
+    bool EdgeLinkDetection::pointsAreEquals(const Point3<float>& point1, const Point3<float>& point2) const {
         return point1.squareDistance(point2) < equalityDistanceThreshold * equalityDistanceThreshold;
     }
 
-    bool EdgeLinkDetection::isCollinearLines(const Line3D<float> &line1, const Line3D<float> &line2) const {
+    bool EdgeLinkDetection::isCollinearLines(const Line3D<float>& line1, const Line3D<float>& line2) const {
         return line1.squareDistance(line2.getA()) < equalityDistanceThreshold * equalityDistanceThreshold
             && line1.squareDistance(line2.getB()) < equalityDistanceThreshold * equalityDistanceThreshold;
     }
@@ -82,8 +82,8 @@ namespace urchin {
      * @param touchingStartRange [out] Touching start range
      * @param touchingEndRange [out] Touching end range
      */
-    bool EdgeLinkDetection::hasCollinearEdgesLink(const LineSegment3D<float> &startEdge, const LineSegment3D<float> &endEdge,
-                                                     float &touchingStartRange, float &touchingEndRange) const {
+    bool EdgeLinkDetection::hasCollinearEdgesLink(const LineSegment3D<float>& startEdge, const LineSegment3D<float>& endEdge,
+                                                     float& touchingStartRange, float& touchingEndRange) const {
         Point3<float> minIntersection(NAN, NAN, NAN), maxIntersection(NAN, NAN, NAN);
         for (std::size_t i=0; i<3; ++i) {
             minIntersection[i] = std::max(std::min(startEdge.getA()[i], startEdge.getB()[i]), std::min(endEdge.getA()[i], endEdge.getB()[i]));
@@ -116,12 +116,12 @@ namespace urchin {
         return false;
     }
 
-    bool EdgeLinkDetection::canJumpThatFar(const Point3<float> &jumpStartPoint, const Point3<float> &jumpEndPoint) const {
+    bool EdgeLinkDetection::canJumpThatFar(const Point3<float>& jumpStartPoint, const Point3<float>& jumpEndPoint) const {
         return jumpStartPoint.squareDistance(jumpEndPoint) < jumpMaxLength * jumpMaxLength;
     }
 
-    bool EdgeLinkDetection::isProperJumpDirection(const LineSegment3D<float> &startJumpEdge, const LineSegment3D<float> &endJumpEdge,
-                                                  const Point3<float> &jumpStartPoint, const Point3<float> &jumpEndPoint) const {
+    bool EdgeLinkDetection::isProperJumpDirection(const LineSegment3D<float>& startJumpEdge, const LineSegment3D<float>& endJumpEdge,
+                                                  const Point3<float>& jumpStartPoint, const Point3<float>& jumpEndPoint) const {
         constexpr float jumpFoV = 0.17364817766; //FoV of 80° = cos((PI_VALUE/180.0) * 80.0)
         Vector2<float> normalizedJumpVectorXZ = jumpStartPoint.toPoint2XZ().vector(jumpEndPoint.toPoint2XZ()).normalize();
 
@@ -139,7 +139,7 @@ namespace urchin {
         return false;
     }
 
-    bool EdgeLinkDetection::isRangeTooSmall(float startRange, float endRange, const LineSegment3D<float> &startEdge) const { //if the link on start edge is only one point or a thin line: ignore it for performance and aesthetic reason
+    bool EdgeLinkDetection::isRangeTooSmall(float startRange, float endRange, const LineSegment3D<float>& startEdge) const { //if the link on start edge is only one point or a thin line: ignore it for performance and aesthetic reason
         Point3<float> startLinkPoint = startRange * startEdge.getA() + (1.0f - startRange) * startEdge.getB();
         Point3<float> endLinkPoint = endRange * startEdge.getA() + (1.0f - endRange) * startEdge.getB();
 

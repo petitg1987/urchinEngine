@@ -3,7 +3,7 @@
 
 namespace urchin {
 
-    StatusBarController::StatusBarController(QMainWindow *window) :
+    StatusBarController::StatusBarController(QMainWindow* window) :
         currentState(StatusBarState::NONE),
         window(window) {
         applyCurrentState();

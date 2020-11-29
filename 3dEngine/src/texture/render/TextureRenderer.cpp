@@ -193,7 +193,7 @@ namespace urchin {
         mProjectionShaderVar = ShaderVar(displayTextureShader, "mProjection");
     }
 
-    void TextureRenderer::display(const RenderTarget *renderTarget) {
+    void TextureRenderer::display(const RenderTarget* renderTarget) {
         if (!isInitialized) {
             throw std::runtime_error("Texture displayer must be initialized before display.");
         }

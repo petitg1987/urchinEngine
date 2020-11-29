@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    OmnidirectionalLight::OmnidirectionalLight(const Point3<float> &position) :
+    OmnidirectionalLight::OmnidirectionalLight(const Point3<float>& position) :
             Light(),
             position(position),
             attenuationNoEffect(ConfigService::instance()->getFloatValue("light.attenuationNoEffect")),
@@ -28,7 +28,7 @@ namespace urchin {
         delete bboxScope;
     }
 
-    void OmnidirectionalLight::setPosition(const Point3<float> &position) {
+    void OmnidirectionalLight::setPosition(const Point3<float>& position) {
         this->position = position;
 
         computeScope();

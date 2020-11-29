@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    void SpinBoxStyleHelper::applyDefaultStyleOn(QDoubleSpinBox *spinBox) {
+    void SpinBoxStyleHelper::applyDefaultStyleOn(QDoubleSpinBox* spinBox) {
         spinBox->setDecimals(5);
         spinBox->setMinimum(-1e+09);
         spinBox->setMaximum(1e+09);
@@ -13,7 +13,7 @@ namespace urchin {
         spinBox->setFixedSize(QSize(80, 22));
     }
 
-    void SpinBoxStyleHelper::applyAngleStyleOn(QDoubleSpinBox *spinBox) {
+    void SpinBoxStyleHelper::applyAngleStyleOn(QDoubleSpinBox* spinBox) {
         spinBox->setDecimals(3);
         spinBox->setMinimum(-360);
         spinBox->setMaximum(360);
@@ -24,7 +24,7 @@ namespace urchin {
         spinBox->setFixedSize(QSize(80, 22));
     }
 
-    void SpinBoxStyleHelper::applyPercentageStyleOn(QDoubleSpinBox *spinBox) {
+    void SpinBoxStyleHelper::applyPercentageStyleOn(QDoubleSpinBox* spinBox) {
         spinBox->setDecimals(0);
         spinBox->setMinimum(0);
         spinBox->setMaximum(100);
@@ -35,7 +35,7 @@ namespace urchin {
         spinBox->setFixedSize(QSize(80, 22));
     }
 
-    void SpinBoxStyleHelper::applyDefaultStyleOn(QSpinBox *spinBox) {
+    void SpinBoxStyleHelper::applyDefaultStyleOn(QSpinBox* spinBox) {
         spinBox->setMinimum(-std::numeric_limits<int>::max());
         spinBox->setMaximum(std::numeric_limits<int>::max());
         spinBox->setSingleStep(1);

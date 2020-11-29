@@ -44,7 +44,7 @@ namespace urchin {
         renderer = rendererBuilder->build();
     }
 
-    void GeometryModel::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) {
+    void GeometryModel::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
     }
 
@@ -88,7 +88,7 @@ namespace urchin {
         refreshRenderer();
     }
 
-    void GeometryModel::display(const RenderTarget *renderTarget, const Matrix4<float> &viewMatrix) const {
+    void GeometryModel::display(const RenderTarget* renderTarget, const Matrix4<float>& viewMatrix) const {
         ShaderDataSender()
             .sendData(mProjectionShaderVar, projectionMatrix)
             .sendData(mViewShaderVar, viewMatrix * modelMatrix)

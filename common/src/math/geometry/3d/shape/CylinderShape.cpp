@@ -26,7 +26,7 @@ namespace urchin {
         return new CylinderShape<T>(*this);
     }
 
-    template<class T> std::unique_ptr<ConvexObject3D<T>> CylinderShape<T>::toConvexObject(const Transform<T> &transform) const {
+    template<class T> std::unique_ptr<ConvexObject3D<T>> CylinderShape<T>::toConvexObject(const Transform<T>& transform) const {
         return std::make_unique<Cylinder<T>>(radius*transform.getScale(), height*transform.getScale(),
                 cylinderOrientation, transform.getPosition(), transform.getOrientation());
     }

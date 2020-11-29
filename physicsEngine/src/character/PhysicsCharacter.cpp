@@ -8,12 +8,12 @@
 
 namespace urchin {
 
-    PhysicsCharacter::PhysicsCharacter(const std::string &name, float mass, const std::shared_ptr<const CollisionShape3D> &shape, const PhysicsTransform &transform) :
+    PhysicsCharacter::PhysicsCharacter(const std::string &name, float mass, const std::shared_ptr<const CollisionShape3D>& shape, const PhysicsTransform& transform) :
         PhysicsCharacter(name, mass, shape, transform, DEFAULT_JUMP_SPEED, DEFAULT_MAX_SLOPE) {
 
     }
 
-    PhysicsCharacter::PhysicsCharacter(std::string name, float mass, std::shared_ptr<const CollisionShape3D> shape, const PhysicsTransform &transform,
+    PhysicsCharacter::PhysicsCharacter(std::string name, float mass, std::shared_ptr<const CollisionShape3D> shape, const PhysicsTransform& transform,
             float jumpSpeed, float maxSlopeInRadian) :
             name(std::move(name)),
             mass(mass),
@@ -37,7 +37,7 @@ namespace urchin {
         return shape;
     }
 
-    void PhysicsCharacter::updateTransform(const PhysicsTransform &transform) {
+    void PhysicsCharacter::updateTransform(const PhysicsTransform& transform) {
         std::lock_guard<std::mutex> lock(characterMutex);
 
         this->transform = transform;

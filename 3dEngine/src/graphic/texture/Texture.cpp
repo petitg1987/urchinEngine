@@ -50,12 +50,12 @@ namespace urchin {
         glDeleteTextures(1, &textureId);
     }
 
-    std::shared_ptr<Texture> Texture::build(unsigned int width, unsigned int height, TextureFormat format, const void *dataPtr) {
+    std::shared_ptr<Texture> Texture::build(unsigned int width, unsigned int height, TextureFormat format, const void* dataPtr) {
         std::vector<const void *> allDataPtr = {dataPtr};
         return std::make_shared<Texture>(TextureType::DEFAULT, width, height, 1, format, allDataPtr);
     }
 
-    std::shared_ptr<Texture> Texture::buildArray(unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const void *dataPtr) {
+    std::shared_ptr<Texture> Texture::buildArray(unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const void* dataPtr) {
         std::vector<const void *> allDataPtr = {dataPtr};
         return std::make_shared<Texture>(TextureType::ARRAY, width, height, layer, format, allDataPtr);
     }

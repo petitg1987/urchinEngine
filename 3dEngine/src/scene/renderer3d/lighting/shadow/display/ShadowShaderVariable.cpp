@@ -9,13 +9,13 @@ namespace urchin {
 
     }
 
-    void ShadowShaderVariable::setProjectionMatricesShaderVar(const ShaderVar &mModelProjectionMatrixShaderVar) {
+    void ShadowShaderVariable::setProjectionMatricesShaderVar(const ShaderVar& mModelProjectionMatrixShaderVar) {
         this->mModelProjectionMatrixShaderVar = mModelProjectionMatrixShaderVar;
 
         updateProjectionMatrices();
     }
 
-    void ShadowShaderVariable::setShadowData(const ShadowData *shadowData) {
+    void ShadowShaderVariable::setShadowData(const ShadowData* shadowData) {
         this->shadowData = shadowData;
 
         updateProjectionMatrices();

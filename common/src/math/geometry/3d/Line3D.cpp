@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    template<class T> Line3D<T>::Line3D(const Point3<T> &a, const Point3<T> &b) :
+    template<class T> Line3D<T>::Line3D(const Point3<T>& a, const Point3<T>& b) :
         a(a), b(b) {
         assert(a.X!=b.X || a.Y!=b.Y || a.Z!=b.Z);
     }
@@ -17,7 +17,7 @@ namespace urchin {
         return b;
     }
 
-    template<class T> Point3<T> Line3D<T>::orthogonalProjection(const Point3<T> &p) const {
+    template<class T> Point3<T> Line3D<T>::orthogonalProjection(const Point3<T>& p) const {
         Vector3<T> ab = a.vector(b);
         Vector3<T> ap = a.vector(p);
 
@@ -28,7 +28,7 @@ namespace urchin {
     /**
      * @return Minimum square distance between line and point p
      */
-    template<class T> T Line3D<T>::squareDistance(const Point3<T> &p) const {
+    template<class T> T Line3D<T>::squareDistance(const Point3<T>& p) const {
         Vector3<T> ab = a.vector(b);
         Vector3<T> ap = a.vector(p);
 
@@ -37,17 +37,17 @@ namespace urchin {
         return ap.squareLength() - ((apDotAb * apDotAb) / ab.squareLength());
     }
 
-    template<class T> Line3D<T> Line3D<T>::parallelLine(const Point3<T> &p) const {
+    template<class T> Line3D<T> Line3D<T>::parallelLine(const Point3<T>& p) const {
         Vector3<T> ab = a.vector(b);
         return Line3D<T>(p, p.translate(ab));
     }
 
-    template<class T> T Line3D<T>::minDistance(const Line3D<T> &line) const {
+    template<class T> T Line3D<T>::minDistance(const Line3D<T>& line) const {
         Vector3<T> linesVectorCrossProduction = a.vector(b).crossProduct(line.getA().vector(line.getB()));
         return line.getA().vector(a).dotProduct(linesVectorCrossProduction) / linesVectorCrossProduction.length();
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Line3D<T> &l) {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const Line3D<T>& l) {
         return stream << l.getA().X << " " << l.getA().Y << " " << l.getA().Z << " - " << l.getB().X << " " << l.getB().Y << " " << l.getB().Z ;
     }
 

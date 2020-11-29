@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    RigidBody::RigidBody(const std::string &id, const Transform<float> &transform, const std::shared_ptr<const CollisionShape3D> &shape) :
+    RigidBody::RigidBody(const std::string &id, const Transform<float>& transform, const std::shared_ptr<const CollisionShape3D>& shape) :
             AbstractBody(id, transform, shape),
             mass(0.0f),
             linearDamping(0.0f),
@@ -15,7 +15,7 @@ namespace urchin {
                 Vector3<float>(1.0f, 1.0f, 1.0f), Vector3<float>(1.0f, 1.0f, 1.0f));
     }
 
-    RigidBody::RigidBody(const RigidBody &rigidBody) :
+    RigidBody::RigidBody(const RigidBody& rigidBody) :
         AbstractBody(rigidBody),
         mass(0.0f),
         linearDamping(0.0f),
@@ -25,7 +25,7 @@ namespace urchin {
     }
 
     void RigidBody::initializeRigidBody(float mass, float linearDamping, float angularDamping,
-            const Vector3<float> &linearFactor, const Vector3<float> &angularFactor) {
+            const Vector3<float>& linearFactor, const Vector3<float>& angularFactor) {
         this->mass = mass;
         refreshMassProperties();
 
@@ -62,7 +62,7 @@ namespace urchin {
         return workRigidBody;
     }
 
-    void RigidBody::updateTo(AbstractWorkBody *workBody) {
+    void RigidBody::updateTo(AbstractWorkBody* workBody) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         AbstractBody::updateTo(workBody);
@@ -82,7 +82,7 @@ namespace urchin {
         }
     }
 
-    bool RigidBody::applyFrom(const AbstractWorkBody *workBody) {
+    bool RigidBody::applyFrom(const AbstractWorkBody* workBody) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         bool fullRefreshRequested = AbstractBody::applyFrom(workBody);
@@ -117,13 +117,13 @@ namespace urchin {
         return totalMomentum;
     }
 
-    void RigidBody::applyCentralMomentum(const Vector3<float> &momentum) {
+    void RigidBody::applyCentralMomentum(const Vector3<float>& momentum) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         totalMomentum += momentum;
     }
 
-    void RigidBody::applyMomentum(const Vector3<float> &momentum, const Point3<float> &pos) {
+    void RigidBody::applyMomentum(const Vector3<float>& momentum, const Point3<float>& pos) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         //apply central force
@@ -139,7 +139,7 @@ namespace urchin {
         return totalTorqueMomentum;
     }
 
-    void RigidBody::applyTorqueMomentum(const Vector3<float> &torqueMomentum) {
+    void RigidBody::applyTorqueMomentum(const Vector3<float>& torqueMomentum) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         totalTorqueMomentum += torqueMomentum;
@@ -200,7 +200,7 @@ namespace urchin {
     /**
      * @param linearFactor Linear factor. Linear factor allows to block movement if axis value is 0.
      */
-    void RigidBody::setLinearFactor(const Vector3<float> &linearFactor) {
+    void RigidBody::setLinearFactor(const Vector3<float>& linearFactor) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         this->linearFactor = linearFactor;
@@ -218,7 +218,7 @@ namespace urchin {
     /**
      * @param angularFactor Angular factor. Angular factor allows to block rotation movement if axis value is 0.
      */
-    void RigidBody::setAngularFactor(const Vector3<float> &angularFactor) {
+    void RigidBody::setAngularFactor(const Vector3<float>& angularFactor) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         this->angularFactor = angularFactor;

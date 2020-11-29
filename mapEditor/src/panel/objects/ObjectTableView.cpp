@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    ObjectTableView::ObjectTableView(QWidget *parent) :
+    ObjectTableView::ObjectTableView(QWidget* parent) :
         QTableView(parent) {
         objectsListModel = new QStandardItemModel(0, 2, this);
         objectsListModel->setHorizontalHeaderItem(0, new QStandardItem("Object Name"));
@@ -34,7 +34,7 @@ namespace urchin {
         return this->currentIndex().row() != -1 && !this->selectedIndexes().empty();
     }
 
-    int ObjectTableView::getSceneObjectRow(const SceneObject *expectedSceneObject) const {
+    int ObjectTableView::getSceneObjectRow(const SceneObject* expectedSceneObject) const {
         for (int rowId = 0; rowId < objectsListModel->rowCount(); ++rowId) {
             QModelIndex index = objectsListModel->index(rowId, 0);
             auto *sceneObject = index.data(Qt::UserRole + 1).value<const SceneObject *>();
@@ -53,7 +53,7 @@ namespace urchin {
         return nullptr;
     }
 
-    int ObjectTableView::addObject(const SceneObject *sceneObject) {
+    int ObjectTableView::addObject(const SceneObject* sceneObject) {
         auto *itemObjectName = new QStandardItem(QString::fromStdString(sceneObject->getName()));
         itemObjectName->setData(QVariant::fromValue(sceneObject), Qt::UserRole + 1);
         itemObjectName->setEditable(false);

@@ -46,12 +46,12 @@ namespace urchin {
         return sceneHeight;
     }
 
-    void Widget::addChild(Widget *child) {
+    void Widget::addChild(Widget* child) {
         child->setParent(this);
         children.push_back(child);
     }
 
-    void Widget::removeChild(Widget *child) {
+    void Widget::removeChild(Widget* child) {
         if (child) {
             auto it = std::find(children.begin(), children.end(), child);
             delete child;
@@ -63,7 +63,7 @@ namespace urchin {
         return children;
     }
 
-    void Widget::setParent(Widget *parent) {
+    void Widget::setParent(Widget* parent) {
         this->parent = parent;
     }
 
@@ -322,7 +322,7 @@ namespace urchin {
         }
     }
 
-    void Widget::display(const RenderTarget *renderTarget, const ShaderVar &translateDistanceShaderVar, float dt) {
+    void Widget::display(const RenderTarget* renderTarget, const ShaderVar& translateDistanceShaderVar, float dt) {
         for (auto &child : children) {
             if (child->isVisible()) {
                 Vector2<int> translateVector(child->getGlobalPositionX(), child->getGlobalPositionY());

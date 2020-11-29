@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    WorkRigidBody::WorkRigidBody(const std::string &id, const PhysicsTransform &physicsTransform, const std::shared_ptr<const CollisionShape3D> &shape) :
+    WorkRigidBody::WorkRigidBody(const std::string &id, const PhysicsTransform& physicsTransform, const std::shared_ptr<const CollisionShape3D>& shape) :
             AbstractWorkBody(id, physicsTransform, shape),
             mass(0.0f),
             invMass(0.0f),
@@ -16,11 +16,11 @@ namespace urchin {
 
     }
 
-    WorkRigidBody *WorkRigidBody::upCast(AbstractWorkBody *workBody) {
+    WorkRigidBody *WorkRigidBody::upCast(AbstractWorkBody* workBody) {
         return dynamic_cast<WorkRigidBody*>(workBody);
     }
 
-    const WorkRigidBody *WorkRigidBody::upCast(const AbstractWorkBody *workBody) {
+    const WorkRigidBody *WorkRigidBody::upCast(const AbstractWorkBody* workBody) {
         return dynamic_cast<const WorkRigidBody*>(workBody);
     }
 
@@ -36,7 +36,7 @@ namespace urchin {
         }
     }
 
-    void WorkRigidBody::setLinearVelocity(const Vector3<float> &linearVelocity) {
+    void WorkRigidBody::setLinearVelocity(const Vector3<float>& linearVelocity) {
         this->linearVelocity = linearVelocity;
     }
 
@@ -44,7 +44,7 @@ namespace urchin {
         return linearVelocity;
     }
 
-    void WorkRigidBody::setAngularVelocity(const Vector3<float> &angularVelocity) {
+    void WorkRigidBody::setAngularVelocity(const Vector3<float>& angularVelocity) {
         this->angularVelocity = angularVelocity;
     }
 
@@ -56,17 +56,17 @@ namespace urchin {
         return totalMomentum;
     }
 
-    void WorkRigidBody::setTotalMomentum(const Vector3<float> &totalMomentum) {
+    void WorkRigidBody::setTotalMomentum(const Vector3<float>& totalMomentum) {
         this->totalMomentum = totalMomentum;
 
         refreshBodyActiveState();
     }
 
-    void WorkRigidBody::applyCentralMomentum(const Vector3<float> &momentum) {
+    void WorkRigidBody::applyCentralMomentum(const Vector3<float>& momentum) {
         totalMomentum += momentum * linearFactor;
     }
 
-    void WorkRigidBody::applyMomentum(const Vector3<float> &momentum, const Point3<float> &momentumPoint) {
+    void WorkRigidBody::applyMomentum(const Vector3<float>& momentum, const Point3<float>& momentumPoint) {
         //apply central force
         totalMomentum += momentum * linearFactor;
 
@@ -82,13 +82,13 @@ namespace urchin {
         return totalTorqueMomentum;
     }
 
-    void WorkRigidBody::setTotalTorqueMomentum(const Vector3<float> &totalTorqueMomentum) {
+    void WorkRigidBody::setTotalTorqueMomentum(const Vector3<float>& totalTorqueMomentum) {
         this->totalTorqueMomentum = totalTorqueMomentum;
 
         refreshBodyActiveState();
     }
 
-    void WorkRigidBody::applyTorqueMomentum(const Vector3<float> &torqueMomentum) {
+    void WorkRigidBody::applyTorqueMomentum(const Vector3<float>& torqueMomentum) {
         totalTorqueMomentum += torqueMomentum * angularFactor;
     }
 
@@ -96,7 +96,7 @@ namespace urchin {
         totalTorqueMomentum.setValues(0.0, 0.0, 0.0);
     }
 
-    void WorkRigidBody::setMassProperties(float mass, const Vector3<float> &localInertia) {
+    void WorkRigidBody::setMassProperties(float mass, const Vector3<float>& localInertia) {
         if (MathAlgorithm::isZero(mass)) {
             setIsStatic(true);
             setIsActive(false);
@@ -163,7 +163,7 @@ namespace urchin {
     /**
      * @param linearFactor Linear factor. Linear factor allows to block movement if axis value is 0.
      */
-    void WorkRigidBody::setLinearFactor(const Vector3<float> &linearFactor) {
+    void WorkRigidBody::setLinearFactor(const Vector3<float>& linearFactor) {
         this->linearFactor = linearFactor;
     }
 
@@ -177,7 +177,7 @@ namespace urchin {
     /**
      * @param angularFactor Angular factor. Angular factor allows to block rotation movement if axis value is 0.
      */
-    void WorkRigidBody::setAngularFactor(const Vector3<float> &angularFactor) {
+    void WorkRigidBody::setAngularFactor(const Vector3<float>& angularFactor) {
         this->angularFactor = angularFactor;
     }
 

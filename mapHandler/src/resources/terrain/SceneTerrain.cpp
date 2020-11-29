@@ -20,7 +20,7 @@ namespace urchin {
         deleteAIObjects();
     }
 
-    void SceneTerrain::setTerrainManagers(Renderer3d *renderer3d, PhysicsWorld *physicsWorld, AIManager *aiManager) {
+    void SceneTerrain::setTerrainManagers(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, AIManager* aiManager) {
         if (this->renderer3d) {
             throw std::invalid_argument("Cannot add the scene terrain on two different renderer.");
         }
@@ -43,7 +43,7 @@ namespace urchin {
         }
     }
 
-    void SceneTerrain::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser) {
+    void SceneTerrain::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser& xmlParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
         setTerrain(TerrainReaderWriter().loadFrom(chunk, xmlParser));
@@ -55,7 +55,7 @@ namespace urchin {
         setupInteractiveBody(terrainRigidBody);
     }
 
-    void SceneTerrain::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const {
+    void SceneTerrain::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter& xmlWriter) const {
         chunk->setAttribute(XmlAttribute(NAME_ATTR, this->name));
 
         TerrainReaderWriter().writeOn(chunk, terrain, xmlWriter);
@@ -73,7 +73,7 @@ namespace urchin {
         return terrain;
     }
 
-    void SceneTerrain::setTerrain(Terrain *terrain) {
+    void SceneTerrain::setTerrain(Terrain* terrain) {
         if (!terrain) {
             throw std::invalid_argument("Cannot set a null terrain on scene terrain.");
         }
@@ -92,17 +92,17 @@ namespace urchin {
         return rigidBody;
     }
 
-    void SceneTerrain::moveTo(const Transform<float> &newTransform) {
+    void SceneTerrain::moveTo(const Transform<float>& newTransform) {
         terrain->setPosition(newTransform.getPosition());
         aiTerrain->updateTransform(newTransform.getPosition(), newTransform.getOrientation());
     }
 
-    void SceneTerrain::setupInteractiveBody(RigidBody *rigidBody) {
+    void SceneTerrain::setupInteractiveBody(RigidBody* rigidBody) {
         setupRigidBody(rigidBody);
         setupAIObject(rigidBody);
     }
 
-    void SceneTerrain::setupRigidBody(RigidBody *rigidBody) {
+    void SceneTerrain::setupRigidBody(RigidBody* rigidBody) {
         deleteRigidBody();
 
         this->rigidBody = rigidBody;
@@ -111,7 +111,7 @@ namespace urchin {
         }
     }
 
-    void SceneTerrain::setupAIObject(RigidBody *rigidBody) {
+    void SceneTerrain::setupAIObject(RigidBody* rigidBody) {
         deleteAIObjects();
 
         if (!rigidBody) {

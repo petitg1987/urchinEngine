@@ -34,7 +34,7 @@ namespace urchin {
         }
     }
 
-    void SceneController::setup(MapHandler *mapHandler) {
+    void SceneController::setup(MapHandler* mapHandler) {
         AbstractController::setup(mapHandler);
 
         objectController->setup(mapHandler);
@@ -46,7 +46,7 @@ namespace urchin {
         aiController->setup(mapHandler);
     }
 
-    void SceneController::addObserverOnAllControllers(Observer *observer, int notificationType) {
+    void SceneController::addObserverOnAllControllers(Observer* observer, int notificationType) {
         this->addObserver(observer, notificationType);
         for (const auto &subController: subControllers) {
             subController->addObserver(observer, notificationType);

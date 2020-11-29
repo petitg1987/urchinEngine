@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    BodyShapeDisplayer::BodyShapeDisplayer(SceneManager *sceneManager) :
+    BodyShapeDisplayer::BodyShapeDisplayer(SceneManager* sceneManager) :
         sceneManager(sceneManager),
         selectedSceneObject(nullptr) {
 
@@ -17,7 +17,7 @@ namespace urchin {
         cleanCurrentDisplay();
     }
 
-    void BodyShapeDisplayer::setSelectedSceneObject(const SceneObject *selectedSceneObject) {
+    void BodyShapeDisplayer::setSelectedSceneObject(const SceneObject* selectedSceneObject) {
         this->selectedSceneObject = selectedSceneObject;
     }
 
@@ -73,7 +73,7 @@ namespace urchin {
         }
     }
 
-    GeometryModel *BodyShapeDisplayer::retrieveSingleGeometry(CollisionShape3D::ShapeType shapeType, const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &bodyObject) {
+    GeometryModel *BodyShapeDisplayer::retrieveSingleGeometry(CollisionShape3D::ShapeType shapeType, const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>& bodyObject) {
         if (shapeType==CollisionShape3D::SPHERE_SHAPE) {
             return retrieveSphereGeometry(bodyObject);
         }
@@ -99,32 +99,32 @@ namespace urchin {
         throw std::invalid_argument("Unknown shape type to retrieve geometry: " + std::to_string(shapeType));
     }
 
-    GeometryModel *BodyShapeDisplayer::retrieveSphereGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &bodyObject) const {
+    GeometryModel *BodyShapeDisplayer::retrieveSphereGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>& bodyObject) const {
         const auto *sphereObject = dynamic_cast<const CollisionSphereObject *>(bodyObject.get());
         return new SphereModel(sphereObject->retrieveSphere(), 15);
     }
 
-    GeometryModel *BodyShapeDisplayer::retrieveBoxGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &bodyObject) const {
+    GeometryModel *BodyShapeDisplayer::retrieveBoxGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>& bodyObject) const {
         const auto *boxObject = dynamic_cast<const CollisionBoxObject *>(bodyObject.get());
         return new OBBoxModel(boxObject->retrieveOBBox());
     }
 
-    GeometryModel *BodyShapeDisplayer::retrieveCylinderGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &bodyObject) const {
+    GeometryModel *BodyShapeDisplayer::retrieveCylinderGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>& bodyObject) const {
         const auto *cylinderObject = dynamic_cast<const CollisionCylinderObject *>(bodyObject.get());
         return new CylinderModel(cylinderObject->retrieveCylinder(), 15);
     }
 
-    GeometryModel *BodyShapeDisplayer::retrieveConeGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &bodyObject) const {
+    GeometryModel *BodyShapeDisplayer::retrieveConeGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>& bodyObject) const {
         const auto *coneObject = dynamic_cast<const CollisionConeObject *>(bodyObject.get());
         return new ConeModel(coneObject->retrieveCone(), 15);
     }
 
-    GeometryModel *BodyShapeDisplayer::retrieveCapsuleGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &bodyObject) const {
+    GeometryModel *BodyShapeDisplayer::retrieveCapsuleGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>& bodyObject) const {
         const auto *capsuleObject = dynamic_cast<const CollisionCapsuleObject *>(bodyObject.get());
         return new CapsuleModel(capsuleObject->retrieveCapsule(), 15, 15);
     }
 
-    GeometryModel *BodyShapeDisplayer::retrieveConvexHullGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &bodyObject) const {
+    GeometryModel *BodyShapeDisplayer::retrieveConvexHullGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>& bodyObject) const {
         const auto *convexHullObject = dynamic_cast<const CollisionConvexHullObject *>(bodyObject.get());
         auto *pointsModel = new PointsModel(convexHullObject->getPointsWithMargin());
         pointsModel->setOutlineSize(5.0f);

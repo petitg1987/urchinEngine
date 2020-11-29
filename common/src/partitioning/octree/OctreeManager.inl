@@ -24,7 +24,7 @@ template<class TOctreeable> OctreeManager<TOctreeable>::~OctreeManager() {
     }
 }
 
-template<class TOctreeable> void OctreeManager<TOctreeable>::notify(Observable *observable, int notificationType) {
+template<class TOctreeable> void OctreeManager<TOctreeable>::notify(Observable* observable, int notificationType) {
     if (dynamic_cast<TOctreeable *>(observable)) {
         if (notificationType==TOctreeable::MOVE) {
             TOctreeable *octreeable = dynamic_cast<TOctreeable *>(observable);
@@ -86,7 +86,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::buildOctree(std::ve
     notifyObservers(this, OCTREE_BUILT);
 }
 
-template<class TOctreeable> void OctreeManager<TOctreeable>::addOctreeable(TOctreeable *octreeable) {
+template<class TOctreeable> void OctreeManager<TOctreeable>::addOctreeable(TOctreeable* octreeable) {
     bool resized = resizeOctree(octreeable);
     if (!resized) {
         browseNodes.clear();
@@ -107,7 +107,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::addOctreeable(TOctr
     octreeable->addObserver(this, TOctreeable::MOVE);
 }
 
-template<class TOctreeable> void OctreeManager<TOctreeable>::removeOctreeable(TOctreeable *octreeable) {
+template<class TOctreeable> void OctreeManager<TOctreeable>::removeOctreeable(TOctreeable* octreeable) {
     //keep size in variable because we remove references during looping
     int refOctreeSize = octreeable->getRefOctree().size();
 
@@ -208,18 +208,18 @@ template<class TOctreeable> std::vector<TOctreeable *> OctreeManager<TOctreeable
         }
     }
 
-    std::for_each(allOctreeables.begin(), allOctreeables.end(), [](TOctreeable *o){o->setProcessed(false);});
+    std::for_each(allOctreeables.begin(), allOctreeables.end(), [](TOctreeable* o){o->setProcessed(false);});
 
     return allOctreeables;
 }
 
-template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float> &convexObject,
+template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float>& convexObject,
         std::vector<TOctreeable *> &octreeables) const {
     getOctreeablesIn(convexObject, octreeables, AcceptAllFilter<TOctreeable>());
 }
 
-template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float> &convexObject,
-        std::vector<TOctreeable *> &visibleOctreeables, const OctreeableFilter<TOctreeable> &filter) const {
+template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float>& convexObject,
+        std::vector<TOctreeable *> &visibleOctreeables, const OctreeableFilter<TOctreeable>& filter) const {
     ScopeProfiler profiler("3d", "getOctreeables");
 
     browseNodes.clear();
@@ -243,10 +243,10 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(co
         }
     }
 
-    std::for_each(visibleOctreeables.begin(), visibleOctreeables.end(), [](TOctreeable *o){o->setProcessed(false);});
+    std::for_each(visibleOctreeables.begin(), visibleOctreeables.end(), [](TOctreeable* o){o->setProcessed(false);});
 }
 
-template<class TOctreeable> bool OctreeManager<TOctreeable>::resizeOctree(TOctreeable *newOctreeable) {
+template<class TOctreeable> bool OctreeManager<TOctreeable>::resizeOctree(TOctreeable* newOctreeable) {
     if (mainOctree) {
         //need to resize ?
         const Point3<float> &minOctree = mainOctree->getAABBox().getMin();

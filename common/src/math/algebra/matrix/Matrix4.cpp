@@ -262,25 +262,25 @@ namespace urchin {
         return &a11;
     }
 
-    template<class T> Matrix4<T> operator *(const Matrix4<T> &m, T t) {
+    template<class T> Matrix4<T> operator *(const Matrix4<T>& m, T t) {
         return Matrix4<T>(    m.a11 * t, m.a12 * t, m.a13 * t, m.a14 * t,
                 m.a21 * t, m.a22 * t, m.a23 * t, m.a24 * t,
                 m.a31 * t, m.a32 * t, m.a33 * t, m.a34 * t,
                 m.a41 * t, m.a42 * t, m.a43 * t, m.a44 * t);
     }
 
-    template<class T> Matrix4<T> operator *(T t, const Matrix4<T> &m) {
+    template<class T> Matrix4<T> operator *(T t, const Matrix4<T>& m) {
         return m * t;
     }
 
-    template<class T> Matrix4<T> operator /(const Matrix4<T> &m, T t) {
+    template<class T> Matrix4<T> operator /(const Matrix4<T>& m, T t) {
         return Matrix4<T>(    m.a11 / t, m.a12 / t, m.a13 / t, m.a14 / t,
                 m.a21 / t, m.a22 / t, m.a23 / t, m.a24 / t,
                 m.a31 / t, m.a32 / t, m.a33 / t, m.a34 / t,
                 m.a41 / t, m.a42 / t, m.a43 / t, m.a44 / t);
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Matrix4<T> &m) {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const Matrix4<T>& m) {
         stream.setf(std::ios::left);
         stream << std::setw(10) << m.a11 << " " << std::setw(10) << m.a12 << " " << std::setw(10) << m.a13 << " " << std::setw(10) << m.a14 << std::endl;
         stream << std::setw(10) << m.a21 << " " << std::setw(10) << m.a22 << " " << std::setw(10) << m.a23 << " " << std::setw(10) << m.a24 << std::endl;

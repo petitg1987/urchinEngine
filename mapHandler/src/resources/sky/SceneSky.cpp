@@ -2,7 +2,7 @@
 #include "resources/sky/SkyboxReaderWriter.h"
 
 namespace urchin {
-    SceneSky::SceneSky(Renderer3d *renderer3d) :
+    SceneSky::SceneSky(Renderer3d* renderer3d) :
             renderer3d(renderer3d) {
 
     }
@@ -15,11 +15,11 @@ namespace urchin {
         renderer3d->getSkyManager()->setSkybox(std::move(skybox));
     }
 
-    void SceneSky::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser) {
+    void SceneSky::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser& xmlParser) {
         changeSkybox(SkyboxReaderWriter().loadFrom(chunk, xmlParser));
     }
 
-    void SceneSky::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const {
+    void SceneSky::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter& xmlWriter) const {
         SkyboxReaderWriter().writeOn(chunk, getSkybox(), xmlWriter);
     }
 }

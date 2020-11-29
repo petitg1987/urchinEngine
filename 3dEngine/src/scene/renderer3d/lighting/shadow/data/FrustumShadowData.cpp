@@ -10,7 +10,7 @@ namespace urchin {
 
     }
 
-    void FrustumShadowData::updateShadowCasterReceiverBox(const AABBox<float> &shadowCasterReceiverBox, bool forceUpdateAllShadowMap) {
+    void FrustumShadowData::updateShadowCasterReceiverBox(const AABBox<float>& shadowCasterReceiverBox, bool forceUpdateAllShadowMap) {
         if (areIdenticalAABBox(shadowCasterReceiverBox, this->shadowCasterReceiverBox) && !forceUpdateAllShadowMap) {
             this->shadowCasterReceiverBoxUpdated = false;
         } else {
@@ -21,7 +21,7 @@ namespace urchin {
         }
     }
 
-    bool FrustumShadowData::areIdenticalAABBox(const AABBox<float> &shadowCasterReceiverBox1, const AABBox<float> &shadowCasterReceiverBox2) const {
+    bool FrustumShadowData::areIdenticalAABBox(const AABBox<float>& shadowCasterReceiverBox1, const AABBox<float>& shadowCasterReceiverBox2) const {
         constexpr float SQUARE_EPSILON = 0.0001f * 0.0001f;
 
         return shadowCasterReceiverBox1.getMin().squareDistance(shadowCasterReceiverBox2.getMin())<SQUARE_EPSILON

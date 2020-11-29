@@ -10,7 +10,7 @@
 
 namespace urchin {
 
-    AntiAliasingManager::AntiAliasingManager(const RenderTarget *renderTarget) :
+    AntiAliasingManager::AntiAliasingManager(const RenderTarget* renderTarget) :
             renderTarget(renderTarget),
             quality(DEFAULT_AA_QUALITY),
             sceneWidth(0),

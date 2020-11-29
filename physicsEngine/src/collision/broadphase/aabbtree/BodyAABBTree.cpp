@@ -16,7 +16,7 @@ namespace urchin {
         delete defaultPairContainer;
     }
 
-    void BodyAABBTree::addBody(AbstractWorkBody *body, PairContainer *alternativePairContainer) {
+    void BodyAABBTree::addBody(AbstractWorkBody* body, PairContainer* alternativePairContainer) {
         auto *nodeData = new BodyAABBNodeData(body, alternativePairContainer);
         AABBTree::addObject(nodeData);
     }
@@ -25,7 +25,7 @@ namespace urchin {
         computeOverlappingPairsFor(newNode);
     }
 
-    void BodyAABBTree::removeBody(AbstractWorkBody *body) {
+    void BodyAABBTree::removeBody(AbstractWorkBody* body) {
         auto *nodeData = AABBTree::getNodeData(body);
         AABBTree::removeObject(nodeData);
     }
@@ -70,7 +70,7 @@ namespace urchin {
         }
     }
 
-    void BodyAABBTree::createOverlappingPair(BodyAABBNodeData *nodeData1, BodyAABBNodeData *nodeData2) {
+    void BodyAABBTree::createOverlappingPair(BodyAABBNodeData* nodeData1, BodyAABBNodeData* nodeData2) {
         if (!nodeData1->hasAlternativePairContainer() && !nodeData2->hasAlternativePairContainer()) {
             defaultPairContainer->addOverlappingPair(nodeData1->getNodeObject(), nodeData2->getNodeObject());
         } else {
@@ -86,7 +86,7 @@ namespace urchin {
         }
     }
 
-    void BodyAABBTree::removeOverlappingPairs(const BodyAABBNodeData *nodeData) {
+    void BodyAABBTree::removeOverlappingPairs(const BodyAABBNodeData* nodeData) {
         if (!nodeData->hasAlternativePairContainer()) {
             defaultPairContainer->removeOverlappingPairs(nodeData->getNodeObject());
         } else {
@@ -101,7 +101,7 @@ namespace urchin {
         }
     }
 
-    void BodyAABBTree::removeAlternativePairContainerReferences(const AbstractWorkBody *body, PairContainer *alternativePairContainer) {
+    void BodyAABBTree::removeAlternativePairContainerReferences(const AbstractWorkBody* body, PairContainer* alternativePairContainer) {
         std::vector<OverlappingPair> overlappingPairs = alternativePairContainer->retrieveCopyOverlappingPairs();
         for (const auto &overlappingPair : overlappingPairs) {
             AbstractWorkBody *otherPairBody = overlappingPair.getBody1() == body ? overlappingPair.getBody2() : overlappingPair.getBody1();

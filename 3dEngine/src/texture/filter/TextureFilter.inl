@@ -1,4 +1,4 @@
-template<class BUILDER> TextureFilter::TextureFilter(const TextureFilterBuilder<BUILDER> *textureFilterBuilder):
+template<class BUILDER> TextureFilter::TextureFilter(const TextureFilterBuilder<BUILDER>* textureFilterBuilder):
     isInitialized(false),
     textureWidth(textureFilterBuilder->getTextureWidth()),
     textureHeight(textureFilterBuilder->getTextureHeight()),

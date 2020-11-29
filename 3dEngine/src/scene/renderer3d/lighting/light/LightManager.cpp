@@ -10,7 +10,7 @@
 
 namespace urchin {
 
-    LightManager::LightManager(const RenderTarget *renderTarget) :
+    LightManager::LightManager(const RenderTarget* renderTarget) :
             renderTarget(renderTarget),
             lastUpdatedLight(nullptr),
             maxLights(ConfigService::instance()->getUnsignedIntValue("light.maxLights")),
@@ -68,7 +68,7 @@ namespace urchin {
         return lightOctreeManager;
     }
 
-    void LightManager::onLightEvent(Light *light, NotificationType notificationType) {
+    void LightManager::onLightEvent(Light* light, NotificationType notificationType) {
         lastUpdatedLight = light;
         notifyObservers(this, notificationType);
     }
@@ -88,7 +88,7 @@ namespace urchin {
         return visibleLights;
     }
 
-    void LightManager::addLight(Light *light) {
+    void LightManager::addLight(Light* light) {
         if (light) {
             if (light->hasParallelBeams()) {
                 parallelBeamsLights.push_back(light);
@@ -100,7 +100,7 @@ namespace urchin {
         }
     }
 
-    void LightManager::removeLight(Light *light) {
+    void LightManager::removeLight(Light* light) {
         if (light) {
             if (light->hasParallelBeams()) {
                 auto it = std::find(parallelBeamsLights.begin(), parallelBeamsLights.end(), light);
@@ -115,7 +115,7 @@ namespace urchin {
         }
     }
 
-    void LightManager::setGlobalAmbientColor(const Point4<float> &globalAmbientColor) {
+    void LightManager::setGlobalAmbientColor(const Point4<float>& globalAmbientColor) {
         this->globalAmbientColor = globalAmbientColor;
     }
 
@@ -123,7 +123,7 @@ namespace urchin {
         return globalAmbientColor;
     }
 
-    void LightManager::updateLights(const Frustum<float> &frustum) {
+    void LightManager::updateLights(const Frustum<float>& frustum) {
         ScopeProfiler profiler("3d", "updateLights");
 
         lightOctreeManager->refreshOctreeables();
@@ -181,7 +181,7 @@ namespace urchin {
         lightOctreeManager->postRefreshOctreeables();
     }
 
-    void LightManager::drawLightOctree(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const {
+    void LightManager::drawLightOctree(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
         OctreeRenderer::drawOctree(lightOctreeManager, renderTarget, projectionMatrix, viewMatrix);
     }
 

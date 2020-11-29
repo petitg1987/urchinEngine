@@ -10,7 +10,7 @@
 
 namespace urchin {
 
-    BodyConvexHullShapeWidget::BodyConvexHullShapeWidget(const SceneObject *sceneObject) :
+    BodyConvexHullShapeWidget::BodyConvexHullShapeWidget(const SceneObject* sceneObject) :
             BodyShapeWidget(sceneObject) {
         pointsLabel = new QLabel("Points:");
         mainLayout->addWidget(pointsLabel, 0, 0);
@@ -96,7 +96,7 @@ namespace urchin {
         return points;
     }
 
-    void BodyConvexHullShapeWidget::addPoint(const Point3<float> &point) {
+    void BodyConvexHullShapeWidget::addPoint(const Point3<float>& point) {
         pointsTableModel->insertRow(pointsTableModel->rowCount());
 
         QModelIndex indexX = pointsTableModel->index(pointsTableModel->rowCount()-1, 0);

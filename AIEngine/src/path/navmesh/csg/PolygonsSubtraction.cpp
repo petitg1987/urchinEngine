@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    template<class T> const std::vector<CSGPolygon<T>> &PolygonsSubtraction<T>::subtractPolygons(const CSGPolygon<T> &minuendPolygon, const CSGPolygon<T> &subtrahendPolygon) const {
+    template<class T> const std::vector<CSGPolygon<T>> &PolygonsSubtraction<T>::subtractPolygons(const CSGPolygon<T>& minuendPolygon, const CSGPolygon<T>& subtrahendPolygon) const {
         bool subtrahendInside;
         return subtractPolygons(minuendPolygon, subtrahendPolygon, subtrahendInside);
     }
@@ -15,7 +15,7 @@ namespace urchin {
      * When subtrahendPolygon is totally included in minuendPolygon: the original minuendPolygon is returned without hole.
      * @param subtrahendInside True when subtrahendPolygon is totally included in minuendPolygon.
      */
-    template<class T> const std::vector<CSGPolygon<T>> &PolygonsSubtraction<T>::subtractPolygons(const CSGPolygon<T> &minuendPolygon, const CSGPolygon<T> &subtrahendPolygon, bool &subtrahendInside) const {
+    template<class T> const std::vector<CSGPolygon<T>> &PolygonsSubtraction<T>::subtractPolygons(const CSGPolygon<T>& minuendPolygon, const CSGPolygon<T>& subtrahendPolygon, bool& subtrahendInside) const {
         subtractedPolygons.clear();
 
         CSGPolygonPath minuendPolygonPath(minuendPolygon);

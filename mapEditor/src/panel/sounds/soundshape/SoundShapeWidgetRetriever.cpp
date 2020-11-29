@@ -7,12 +7,12 @@
 
 namespace urchin {
 
-    SoundShapeWidgetRetriever::SoundShapeWidgetRetriever(const SceneSound *sceneSound) :
+    SoundShapeWidgetRetriever::SoundShapeWidgetRetriever(const SceneSound* sceneSound) :
             sceneSound(sceneSound) {
 
     }
 
-    SoundShapeWidget *SoundShapeWidgetRetriever::retrieveShapeWidget(const SoundShape *shape) {
+    SoundShapeWidget *SoundShapeWidgetRetriever::retrieveShapeWidget(const SoundShape* shape) {
         if (!shape) {
             throw std::invalid_argument("Shape used to retrieve sound shape widget cannot be null");
         }

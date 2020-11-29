@@ -66,7 +66,7 @@ namespace urchin {
         setupGrassBox(mainLayout);
     }
 
-    void TerrainPanelWidget::setupGeneralPropertiesBox(QVBoxLayout *mainLayout) {
+    void TerrainPanelWidget::setupGeneralPropertiesBox(QVBoxLayout* mainLayout) {
         generalPropertiesGroupBox = new QGroupBox("General Properties");
         mainLayout->addWidget(generalPropertiesGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
@@ -104,7 +104,7 @@ namespace urchin {
         connect(ambient, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGeneralProperties()));
     }
 
-    void TerrainPanelWidget::setupMeshBox(QVBoxLayout *mainLayout) {
+    void TerrainPanelWidget::setupMeshBox(QVBoxLayout* mainLayout) {
         meshGroupBox = new QGroupBox("Mesh");
         mainLayout->addWidget(meshGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(meshGroupBox);
@@ -134,7 +134,7 @@ namespace urchin {
         connect(yScale, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMesh()));
     }
 
-    void TerrainPanelWidget::setupMaterialBox(QVBoxLayout *mainLayout) {
+    void TerrainPanelWidget::setupMaterialBox(QVBoxLayout* mainLayout) {
         materialGroupBox = new QGroupBox("Material");
         mainLayout->addWidget(materialGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(materialGroupBox);
@@ -209,7 +209,7 @@ namespace urchin {
         }
     }
 
-    void TerrainPanelWidget::setupGrassBox(QVBoxLayout *mainLayout) {
+    void TerrainPanelWidget::setupGrassBox(QVBoxLayout* mainLayout) {
         grassGroupBox = new QGroupBox("Grass");
         mainLayout->addWidget(grassGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(grassGroupBox);
@@ -323,7 +323,7 @@ namespace urchin {
         return terrainTableView;
     }
 
-    void TerrainPanelWidget::load(TerrainController *terrainController) {
+    void TerrainPanelWidget::load(TerrainController* terrainController) {
         this->terrainController = terrainController;
 
         std::list<const SceneTerrain *> sceneTerrains = terrainController->getSceneTerrains();
@@ -338,7 +338,7 @@ namespace urchin {
         terrainController = nullptr;
     }
 
-    void TerrainPanelWidget::notify(Observable *observable, int notificationType) {
+    void TerrainPanelWidget::notify(Observable* observable, int notificationType) {
         if (auto *terrainTableView = dynamic_cast<TerrainTableView *>(observable)) {
             if (notificationType==TerrainTableView::SELECTION_CHANGED) {
                 if (terrainTableView->hasSceneTerrainSelected()) {
@@ -361,7 +361,7 @@ namespace urchin {
         }
     }
 
-    void TerrainPanelWidget::setupTerrainDataFrom(const SceneTerrain *sceneTerrain) {
+    void TerrainPanelWidget::setupTerrainDataFrom(const SceneTerrain* sceneTerrain) {
         disableTerrainEvent = true;
         const Terrain *terrain = sceneTerrain->getTerrain();
 
@@ -496,7 +496,7 @@ namespace urchin {
         updateTerrainMaterial();
     }
 
-    void TerrainPanelWidget::showMaterialFilenameDialog(const QString &positionIndexStr) {
+    void TerrainPanelWidget::showMaterialFilenameDialog(const QString& positionIndexStr) {
         int i = std::stoi(positionIndexStr.toStdString());
 
         std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
@@ -519,7 +519,7 @@ namespace urchin {
         }
     }
 
-    void TerrainPanelWidget::clearMaterialFilename(const QString &positionIndexStr) {
+    void TerrainPanelWidget::clearMaterialFilename(const QString& positionIndexStr) {
         int i = std::stoi(positionIndexStr.toStdString());
         this->materialFilenameTexts[i]->setText("");
 

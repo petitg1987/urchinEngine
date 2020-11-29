@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    CollisionWorld::CollisionWorld(BodyManager *bodyManager) :
+    CollisionWorld::CollisionWorld(BodyManager* bodyManager) :
             bodyManager(bodyManager),
             broadPhaseManager(new BroadPhaseManager(bodyManager)),
             narrowPhaseManager(new NarrowPhaseManager(bodyManager, broadPhaseManager)),
@@ -38,7 +38,7 @@ namespace urchin {
      * @param dt Delta of time (sec.) between two simulation steps
      * @param gravity Gravity expressed in units/s^2
      */
-    void CollisionWorld::process(float dt, const Vector3<float> &gravity) {
+    void CollisionWorld::process(float dt, const Vector3<float>& gravity) {
         ScopeProfiler profiler("physics", "colWorldProc");
 
         //initialize work bodies from bodies

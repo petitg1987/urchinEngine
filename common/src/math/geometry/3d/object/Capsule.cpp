@@ -11,7 +11,7 @@ namespace urchin {
     }
 
     template<class T> Capsule<T>::Capsule(T radius, T cylinderHeight, typename CapsuleShape<T>::CapsuleOrientation capsuleOrientation,
-            const Point3<T> &centerOfMass, const Quaternion<T> &orientation) :
+            const Point3<T>& centerOfMass, const Quaternion<T>& orientation) :
         capsuleShape(CapsuleShape<T>(radius, cylinderHeight, capsuleOrientation)),
         centerOfMass(centerOfMass),
         orientation(orientation) {
@@ -47,7 +47,7 @@ namespace urchin {
         return axis[index];
     }
 
-    template<class T> Point3<T> Capsule<T>::getSupportPoint(const Vector3<T> &direction) const {
+    template<class T> Point3<T> Capsule<T>::getSupportPoint(const Vector3<T>& direction) const {
         Vector3<T> normalizedDirection;
         if (direction.X==0.0 && direction.Y==0.0 && direction.Z==0.0) {
             normalizedDirection = Vector3<T>(1.0, 0.0, 0.0);
@@ -68,7 +68,7 @@ namespace urchin {
         return supportPoint2;
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Capsule<T> &capsule) {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const Capsule<T>& capsule) {
         stream.setf(std::ios::left);
         stream << std::setw(20) << "Shape radius: " << capsule.getRadius() << std::endl;
         stream << std::setw(20) << "Shape height: " << capsule.getCylinderHeight() << std::endl;

@@ -11,7 +11,7 @@ namespace urchin {
      * Split the bounding box in several bounding boxes at limitSize.
      * If original box doesn't exceed limit size, the original box is returned.
      */
-    std::vector<AABBox<float>> SplitBoundingBox::split(const AABBox<float> &aabbox) const {
+    std::vector<AABBox<float>> SplitBoundingBox::split(const AABBox<float>& aabbox) const {
         std::vector<float> axisSplits[3];
         for (std::size_t axis=0; axis<3; ++axis) {
             float size = aabbox.getHalfSize(axis) * 2.0f;

@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    GaussianBlurFilter::GaussianBlurFilter(const GaussianBlurFilterBuilder *textureFilterBuilder, BlurDirection blurDirection):
+    GaussianBlurFilter::GaussianBlurFilter(const GaussianBlurFilterBuilder* textureFilterBuilder, BlurDirection blurDirection):
         TextureFilter(textureFilterBuilder),
         blurDirection(blurDirection),
         blurSize(textureFilterBuilder->getBlurSize()),

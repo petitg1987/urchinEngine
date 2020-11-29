@@ -37,7 +37,7 @@ namespace urchin {
         return aux.crossProduct(trianglePoints[indices[1]].vector(trianglePoints[indices[0]])).normalize();
     }
 
-    template<class T> Vector3<T> IndexedTriangle3D<T>::computeNormal(const Point3<T> &point0, const Point3<T> &point1, const Point3<T> &point2) const {
+    template<class T> Vector3<T> IndexedTriangle3D<T>::computeNormal(const Point3<T>& point0, const Point3<T>& point1, const Point3<T>& point2) const {
         const Vector3<T> &aux = point1.vector(point2);
         return aux.crossProduct(point1.vector(point0)).normalize();
     }

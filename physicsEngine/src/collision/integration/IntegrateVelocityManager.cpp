@@ -3,7 +3,7 @@
 
 namespace urchin {
 
-    IntegrateVelocityManager::IntegrateVelocityManager(const BodyManager *bodyManager) :
+    IntegrateVelocityManager::IntegrateVelocityManager(const BodyManager* bodyManager) :
         bodyManager(bodyManager) {
 
     }
@@ -13,7 +13,7 @@ namespace urchin {
      * @param manifoldResults Constraints to solve
      * @param gravity Gravity expressed in units/s^2
      */
-    void IntegrateVelocityManager::integrateVelocity(float dt, const std::vector<OverlappingPair *> &overlappingPairs, const Vector3<float> &gravity) {
+    void IntegrateVelocityManager::integrateVelocity(float dt, const std::vector<OverlappingPair *> &overlappingPairs, const Vector3<float>& gravity) {
         //apply internal forces
         applyGravityForce(gravity, dt);
         applyRollingFrictionResistanceForce(dt, overlappingPairs);
@@ -40,7 +40,7 @@ namespace urchin {
     /**
      * @param gravity Gravity expressed in units/s^2
      */
-    void IntegrateVelocityManager::applyGravityForce(const Vector3<float> &gravity, float dt) {
+    void IntegrateVelocityManager::applyGravityForce(const Vector3<float>& gravity, float dt) {
         for (auto abstractBody : bodyManager->getWorkBodies()) {
             WorkRigidBody *body = WorkRigidBody::upCast(abstractBody);
             if (body && body->isActive()) {

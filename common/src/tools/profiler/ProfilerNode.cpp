@@ -7,7 +7,7 @@
 #include "ProfilerNode.h"
 
 namespace urchin {
-    ProfilerNode::ProfilerNode(std::string name, ProfilerNode *parent) :
+    ProfilerNode::ProfilerNode(std::string name, ProfilerNode* parent) :
             name(std::move(name)),
             parent(parent),
             startCount(0) {
@@ -42,7 +42,7 @@ namespace urchin {
         return nullptr;
     }
 
-    void ProfilerNode::addChild(ProfilerNode *child) {
+    void ProfilerNode::addChild(ProfilerNode* child) {
         children.push_back(child);
     }
 

@@ -8,7 +8,7 @@ namespace urchin {
 
     }
 
-    template<class T> Sphere<T>::Sphere(T radius, const Point3<T> &centerOfMass) :
+    template<class T> Sphere<T>::Sphere(T radius, const Point3<T>& centerOfMass) :
         sphereShape(SphereShape<T>(radius)),
         centerOfMass(centerOfMass) {
 
@@ -22,7 +22,7 @@ namespace urchin {
         return centerOfMass;
     }
 
-    template<class T> Point3<T> Sphere<T>::getSupportPoint(const Vector3<T> &direction) const {
+    template<class T> Point3<T> Sphere<T>::getSupportPoint(const Vector3<T>& direction) const {
         if (direction.X==0.0 && direction.Y==0.0 && direction.Z==0.0) {
             return centerOfMass + Point3<T>(getRadius(), (T)0.0, (T)0.0);
         }
@@ -30,14 +30,14 @@ namespace urchin {
         return centerOfMass.translate(direction.normalize() * getRadius());
     }
 
-    template<class T> bool Sphere<T>::collideWithPoint(const Point3<T> &point) const {
+    template<class T> bool Sphere<T>::collideWithPoint(const Point3<T>& point) const {
         return centerOfMass.squareDistance(point) <= this->getRadius() * this->getRadius();
     }
 
     /**
     * @return True if the sphere collides or is inside this sphere
     */
-    template<class T> bool Sphere<T>::collideWithSphere(const Sphere<T> &sphere) const {
+    template<class T> bool Sphere<T>::collideWithSphere(const Sphere<T>& sphere) const {
         float sumRadius = this->getRadius()+sphere.getRadius();
         return centerOfMass.squareDistance(sphere.getCenterOfMass()) <= (sumRadius * sumRadius);
     }

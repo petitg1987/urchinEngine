@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    CollisionShape3D *CollisionCylinderReaderWriter::loadFrom(const std::shared_ptr<XmlChunk> &shapeChunk, const XmlParser &xmlParser) const {
+    CollisionShape3D *CollisionCylinderReaderWriter::loadFrom(const std::shared_ptr<XmlChunk> &shapeChunk, const XmlParser& xmlParser) const {
         std::shared_ptr<XmlChunk> orientationChunk = xmlParser.getUniqueChunk(true, ORIENTATION_TAG, XmlAttribute(), shapeChunk);
         std::string orientationValue = orientationChunk->getStringValue();
         CylinderShape<float>::CylinderOrientation orientation;
@@ -27,7 +27,7 @@ namespace urchin {
         return new CollisionCylinderShape(radius, height, orientation);
     }
 
-    void CollisionCylinderReaderWriter::writeOn(const std::shared_ptr<XmlChunk> &shapeChunk, const CollisionShape3D *collisionShape, XmlWriter &xmlWriter) const {
+    void CollisionCylinderReaderWriter::writeOn(const std::shared_ptr<XmlChunk> &shapeChunk, const CollisionShape3D* collisionShape, XmlWriter& xmlWriter) const {
         shapeChunk->setAttribute(XmlAttribute(TYPE_ATTR, CYLINDER_VALUE));
 
         const auto *cylinderShape = dynamic_cast<const CollisionCylinderShape *>(collisionShape);

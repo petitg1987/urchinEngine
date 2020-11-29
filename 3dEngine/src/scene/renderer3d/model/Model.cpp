@@ -18,7 +18,7 @@ namespace urchin {
         initialize(meshFilename);
     }
 
-    Model::Model(const Model &model) : Octreeable(model),
+    Model::Model(const Model& model) : Octreeable(model),
             defaultModelAABBoxes({defaultModelLocalAABBox}),
             meshes(nullptr),
             currAnimation(nullptr),
@@ -97,7 +97,7 @@ namespace urchin {
         return currAnimation != nullptr;
     }
 
-    void Model::onMoving(const Transform<float> &newTransform) {
+    void Model::onMoving(const Transform<float>& newTransform) {
         //update the bounding box
         if (meshes) {
             meshes->onMoving(newTransform);
@@ -167,12 +167,12 @@ namespace urchin {
         }
     }
 
-    void Model::setPosition(const Point3<float> &p) {
+    void Model::setPosition(const Point3<float>& p) {
         transform.setPosition(p);
         onMoving(transform);
     }
 
-    void Model::setOrientation(const Quaternion<float> &q) {
+    void Model::setOrientation(const Quaternion<float>& q) {
         transform.setOrientation(q);
         onMoving(transform);
     }
@@ -182,7 +182,7 @@ namespace urchin {
         onMoving(transform);
     }
 
-    void Model::setTransform(const Transform<float> &transform) {
+    void Model::setTransform(const Transform<float>& transform) {
         this->transform = transform;
         onMoving(transform);
     }
@@ -214,7 +214,7 @@ namespace urchin {
         }
     }
 
-    void Model::display(const RenderTarget *renderTarget, const MeshParameter &meshParameter) const {
+    void Model::display(const RenderTarget* renderTarget, const MeshParameter& meshParameter) const {
         if (meshes) {
             for (unsigned int m = 0; m < meshes->getNumberMeshes(); ++m) {
                 meshes->getMesh(m)->display(renderTarget, meshParameter);
@@ -222,13 +222,13 @@ namespace urchin {
         }
     }
 
-    void Model::drawBBox(const RenderTarget *renderTarget, const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const {
+    void Model::drawBBox(const RenderTarget* renderTarget, const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
         AABBoxModel aabboxModel(getAABBox());
         aabboxModel.onCameraProjectionUpdate(projectionMatrix);
         aabboxModel.display(renderTarget, viewMatrix);
     }
 
-    void Model::drawBaseBones(const RenderTarget *renderTarget, const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const {
+    void Model::drawBaseBones(const RenderTarget* renderTarget, const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
         if (meshes) {
             for (unsigned int m = 0; m < meshes->getNumberMeshes(); ++m) {
                 Matrix4<float> modelViewMatrix = viewMatrix * getTransform().getTransformMatrix();

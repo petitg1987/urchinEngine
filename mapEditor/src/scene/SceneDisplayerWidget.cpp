@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    SceneDisplayerWidget::SceneDisplayerWidget(QWidget *parent, const StatusBarController &statusBarController, std::string mapEditorPath) :
+    SceneDisplayerWidget::SceneDisplayerWidget(QWidget* parent, const StatusBarController& statusBarController, std::string mapEditorPath) :
             QGLWidget(parent),
             statusBarController(statusBarController),
             mapEditorPath(std::move(mapEditorPath)),
@@ -39,7 +39,7 @@ namespace urchin {
         delete sceneDisplayer;
     }
 
-    void SceneDisplayerWidget::loadMap(SceneController *sceneController, const std::string &mapFilename, const std::string &relativeWorkingDirectory) {
+    void SceneDisplayerWidget::loadMap(SceneController* sceneController, const std::string &mapFilename, const std::string &relativeWorkingDirectory) {
         closeMap();
         statusBarController.applyState(StatusBarState::MAP_LOADED);
 
@@ -68,7 +68,7 @@ namespace urchin {
         updateSceneDisplayerViewProperties();
     }
 
-    void SceneDisplayerWidget::setHighlightSceneObject(const SceneObject *highlightSceneObject) {
+    void SceneDisplayerWidget::setHighlightSceneObject(const SceneObject* highlightSceneObject) {
         if (sceneDisplayer) {
             sceneDisplayer->setHighlightSceneObject(highlightSceneObject);
         }
@@ -80,13 +80,13 @@ namespace urchin {
         }
     }
 
-    void SceneDisplayerWidget::setHighlightSceneLight(const SceneLight *highlightSceneLight) {
+    void SceneDisplayerWidget::setHighlightSceneLight(const SceneLight* highlightSceneLight) {
         if (sceneDisplayer) {
             sceneDisplayer->setHighlightSceneLight(highlightSceneLight);
         }
     }
 
-    void SceneDisplayerWidget::setHighlightSceneSound(const SceneSound *highlightSceneSound) {
+    void SceneDisplayerWidget::setHighlightSceneSound(const SceneSound* highlightSceneSound) {
         if (sceneDisplayer) {
             sceneDisplayer->setHighlightSceneSound(highlightSceneSound);
         }
@@ -122,7 +122,7 @@ namespace urchin {
         }
     }
 
-    void SceneDisplayerWidget::keyPressEvent(QKeyEvent *event) {
+    void SceneDisplayerWidget::keyPressEvent(QKeyEvent* event) {
         if (sceneDisplayer) {
             if (event->key() < 256) {
                 sceneDisplayer->getSceneManager()->onKeyPress(static_cast<unsigned int>(event->key()));
@@ -139,7 +139,7 @@ namespace urchin {
         }
     }
 
-    void SceneDisplayerWidget::keyReleaseEvent(QKeyEvent *event) {
+    void SceneDisplayerWidget::keyReleaseEvent(QKeyEvent* event) {
         if (sceneDisplayer) {
             if (event->key() < 256) {
                 sceneDisplayer->getSceneManager()->onKeyRelease(static_cast<unsigned int>(event->key()));
@@ -153,7 +153,7 @@ namespace urchin {
         }
     }
 
-    void SceneDisplayerWidget::mousePressEvent(QMouseEvent *event) {
+    void SceneDisplayerWidget::mousePressEvent(QMouseEvent* event) {
         if (sceneDisplayer) {
             if (event->buttons() == Qt::LeftButton) {
                 sceneDisplayer->getSceneManager()->onKeyPress(InputDeviceKey::MOUSE_LEFT);
@@ -163,7 +163,7 @@ namespace urchin {
         }
     }
 
-    void SceneDisplayerWidget::mouseReleaseEvent(QMouseEvent *event) {
+    void SceneDisplayerWidget::mouseReleaseEvent(QMouseEvent* event) {
         if (sceneDisplayer) {
             if (event->button() == Qt::LeftButton) {
                 bool propagateEvent = sceneDisplayer->getObjectMoveController()->onMouseLeftButton();
@@ -179,7 +179,7 @@ namespace urchin {
         }
     }
 
-    void SceneDisplayerWidget::mouseMoveEvent(QMouseEvent *event) {
+    void SceneDisplayerWidget::mouseMoveEvent(QMouseEvent* event) {
         this->mouseX = event->x();
         this->mouseY = event->y();
 
@@ -224,7 +224,7 @@ namespace urchin {
         return lastPickedBodyId;
     }
 
-    void SceneDisplayerWidget::addObserverObjectMoveController(Observer *observer, int notificationType) {
+    void SceneDisplayerWidget::addObserverObjectMoveController(Observer* observer, int notificationType) {
         assert(sceneDisplayer != nullptr);
         sceneDisplayer->getObjectMoveController()->addObserver(observer, notificationType);
     }

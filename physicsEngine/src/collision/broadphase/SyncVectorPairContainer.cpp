@@ -2,19 +2,19 @@
 
 namespace urchin {
 
-    void SyncVectorPairContainer::addOverlappingPair(AbstractWorkBody *body1, AbstractWorkBody *body2) {
+    void SyncVectorPairContainer::addOverlappingPair(AbstractWorkBody* body1, AbstractWorkBody* body2) {
         std::lock_guard<std::mutex> lock(pairMutex);
 
         VectorPairContainer::addOverlappingPair(body1, body2);
     }
 
-    void SyncVectorPairContainer::removeOverlappingPair(AbstractWorkBody *body1, AbstractWorkBody *body2) {
+    void SyncVectorPairContainer::removeOverlappingPair(AbstractWorkBody* body1, AbstractWorkBody* body2) {
         std::lock_guard<std::mutex> lock(pairMutex);
 
         VectorPairContainer::removeOverlappingPair(body1, body2);
     }
 
-    void SyncVectorPairContainer::removeOverlappingPairs(AbstractWorkBody *body) {
+    void SyncVectorPairContainer::removeOverlappingPairs(AbstractWorkBody* body) {
         std::lock_guard<std::mutex> lock(pairMutex);
 
         VectorPairContainer::removeOverlappingPairs(body);

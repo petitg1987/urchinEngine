@@ -12,7 +12,7 @@ namespace urchin {
 
     }
 
-    template<class T> AABBox<T>::AABBox(const Point3<T> &min, const Point3<T> &max) :
+    template<class T> AABBox<T>::AABBox(const Point3<T>& min, const Point3<T>& max) :
             boxShape(BoxShape<T>(Vector3<T>((max.X-min.X)/2.0, (max.Y-min.Y)/2.0, (max.Z-min.Z)/2.0))),
             min(min),
             max(max) {
@@ -21,7 +21,7 @@ namespace urchin {
         assert(min.Z <= max.Z);
     }
 
-    template<class T> AABBox<T>::AABBox(const Point3<T> &min, const Vector3<T> &diagonal) :
+    template<class T> AABBox<T>::AABBox(const Point3<T>& min, const Vector3<T>& diagonal) :
             boxShape(BoxShape<T>(Vector3<T>(diagonal.X/2.0, diagonal.Y/2.0, diagonal.Z/2.0))),
             min(min),
             max(min.translate(diagonal)) {
@@ -46,7 +46,7 @@ namespace urchin {
         boxShape = BoxShape<T>(Vector3<T>((max.X-min.X)/2.0, (max.Y-min.Y)/2.0, (max.Z-min.Z)/2.0));
     }
 
-    template<class T> AABBox<T>::AABBox(const Point3<T> *points, unsigned int size) :
+    template<class T> AABBox<T>::AABBox(const Point3<T>* points, unsigned int size) :
             min(Point3<T>(std::numeric_limits<T>::max(), std::numeric_limits<T>::max(), std::numeric_limits<T>::max())),
             max(Point3<T>(-std::numeric_limits<T>::max(), -std::numeric_limits<T>::max(), -std::numeric_limits<T>::max())) {
         for (unsigned int i=0; i<size; ++i) {
@@ -64,14 +64,14 @@ namespace urchin {
         boxShape = BoxShape<T>(Vector3<T>((max.X-min.X)/2.0, (max.Y-min.Y)/2.0, (max.Z-min.Z)/2.0));
     }
 
-    template<class T> AABBox<T>::AABBox(const AABBox<T> &aabbox) :
+    template<class T> AABBox<T>::AABBox(const AABBox<T>& aabbox) :
             boxShape(BoxShape<T>(aabbox.getHalfSizes())),
             min(aabbox.getMin()),
             max(aabbox.getMax()) {
 
     }
 
-    template<class T> AABBox<T>& AABBox<T>::operator=(const AABBox<T> &aabbox) {
+    template<class T> AABBox<T>& AABBox<T>::operator=(const AABBox<T>& aabbox) {
         this->boxShape = BoxShape<T>(aabbox.getHalfSizes());
         this->min = aabbox.getMin();
         this->max = aabbox.getMax();
@@ -121,7 +121,7 @@ namespace urchin {
         return min.translate(boxShape.getHalfSizes());
     }
 
-    template<class T> Point3<T> AABBox<T>::getSupportPoint(const Vector3<T> &direction) const {
+    template<class T> Point3<T> AABBox<T>::getSupportPoint(const Vector3<T>& direction) const {
         const int signX = direction.X < 0.0 ? 0 : 1;
         const int signY = direction.Y < 0.0 ? 0 : 1;
         const int signZ = direction.Z < 0.0 ? 0 : 1;
@@ -152,7 +152,7 @@ namespace urchin {
         return boxShape.getVolume();
     }
 
-    template<class T> AABBox<T> AABBox<T>::moveAABBox(const Transform<T> &transform) const {
+    template<class T> AABBox<T> AABBox<T>::moveAABBox(const Transform<T>& transform) const {
         return transform.getTransformMatrix() * (*this);
     }
 
@@ -171,7 +171,7 @@ namespace urchin {
             0.0, 0.0, 0.0, 1.0);
     }
 
-    template<class T> bool AABBox<T>::include(const AABBox<T> &aabb) const {
+    template<class T> bool AABBox<T>::include(const AABBox<T>& aabb) const {
         return aabb.getMin().X > min.X && aabb.getMax().X < max.X &&
                 aabb.getMin().Y > min.Y && aabb.getMax().Y < max.Y &&
                 aabb.getMin().Z > min.Z && aabb.getMax().Z < max.Z;
@@ -191,7 +191,7 @@ namespace urchin {
         return aabbox;
     }
 
-    template<class T> AABBox<T> AABBox<T>::merge(const AABBox<T> &aabb) const {
+    template<class T> AABBox<T> AABBox<T>::merge(const AABBox<T>& aabb) const {
         Point3<T> mergedMin(std::min(min.X, aabb.getMin().X), std::min(min.Y, aabb.getMin().Y), std::min(min.Z, aabb.getMin().Z));
         Point3<T> mergedMax(std::max(max.X, aabb.getMax().X), std::max(max.Y, aabb.getMax().Y), std::max(max.Z, aabb.getMax().Z));
 
@@ -201,7 +201,7 @@ namespace urchin {
     /**
      * @return Bounding box cut to maximum size of bounding box given in input
      */
-    template<class T> AABBox<T> AABBox<T>::cutTo(const AABBox<T> &aabbox) const {
+    template<class T> AABBox<T> AABBox<T>::cutTo(const AABBox<T>& aabbox) const {
         Point3<T> cutMin(
             min.X<aabbox.getMin().X ? aabbox.getMin().X : min.X,
             min.Y<aabbox.getMin().Y ? aabbox.getMin().Y : min.Y,
@@ -217,7 +217,7 @@ namespace urchin {
         return AABBox<T>(cutMin, cutMax);
     }
 
-    template<class T> AABBox<T> AABBox<T>::enlarge(const Vector3<T> &minAdditionalSize, const Vector3<T> &maxAdditionalSize) const {
+    template<class T> AABBox<T> AABBox<T>::enlarge(const Vector3<T>& minAdditionalSize, const Vector3<T>& maxAdditionalSize) const {
         return AABBox<T>(getMin()-Point3<T>(minAdditionalSize), getMax()+Point3<T>(maxAdditionalSize));
     }
 
@@ -225,7 +225,7 @@ namespace urchin {
         return AABBox<T>(getMin()-Point3<T>(minAdditionalSize, minAdditionalSize, minAdditionalSize), getMax()+Point3<T>(maxAdditionalSize, maxAdditionalSize, maxAdditionalSize));
     }
 
-    template<class T> bool AABBox<T>::collideWithPoint(const Point3<T> &point) const {
+    template<class T> bool AABBox<T>::collideWithPoint(const Point3<T>& point) const {
         return point.X > min.X && point.Y > min.Y && point.Z > min.Z &&
             point.X < max.X && point.Y < max.Y && point.Z < max.Z;
     }
@@ -233,7 +233,7 @@ namespace urchin {
     /**
     * @return True if the bounding box collides or is inside this bounding box
     */
-    template<class T> bool AABBox<T>::collideWithAABBox(const AABBox<T> &aabb) const {
+    template<class T> bool AABBox<T>::collideWithAABBox(const AABBox<T>& aabb) const {
         return aabb.getMin().X < max.X && aabb.getMax().X > min.X &&
                 aabb.getMin().Y < max.Y && aabb.getMax().Y > min.Y &&
                 aabb.getMin().Z < max.Z && aabb.getMax().Z > min.Z;
@@ -242,7 +242,7 @@ namespace urchin {
     /**
      * @return True if the ray is inside or partially inside the bounding box
      */
-    template<class T> bool AABBox<T>::collideWithRay(const Ray<T> &ray) const {
+    template<class T> bool AABBox<T>::collideWithRay(const Ray<T>& ray) const {
         T lengthToMinPlane = ((*this)[ray.getDirectionSign(0)].X - ray.getOrigin().X) * ray.getInverseDirection().X;
         T lengthToMaxPlane = ((*this)[1-ray.getDirectionSign(0)].X - ray.getOrigin().X) * ray.getInverseDirection().X;
 
@@ -292,7 +292,7 @@ namespace urchin {
         return (&min)[i];
     }
 
-    template<class T> AABBox<T> operator *(const Matrix4<T> &m, const AABBox<T> &aabb) {
+    template<class T> AABBox<T> operator *(const Matrix4<T>& m, const AABBox<T>& aabb) {
         //projection matrix not accepted
         assert(fabs(m(3,0)) < std::numeric_limits<T>::epsilon());
         assert(fabs(m(3,1)) < std::numeric_limits<T>::epsilon());
@@ -318,11 +318,11 @@ namespace urchin {
         return AABBox<T>(minX+minY+minZ+translation, maxX+maxY+maxZ+translation);
     }
 
-    template<class T> AABBox<T> operator *(const AABBox<T> &aabb, const Matrix4<T> &m) {
+    template<class T> AABBox<T> operator *(const AABBox<T>& aabb, const Matrix4<T>& m) {
         return m * aabb;
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const AABBox<T> &aabbox) {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const AABBox<T>& aabbox) {
         stream.setf(std::ios::left);
         stream << "AABBox min point: " << aabbox.getMin() << std::endl;
         stream << "AABBox max point: " << aabbox.getMax();

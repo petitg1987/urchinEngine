@@ -16,7 +16,7 @@ namespace urchin {
         return rayTestResult;
     }
 
-    void RayTester::initialize(PhysicsWorld *physicsWorld) {
+    void RayTester::initialize(PhysicsWorld* physicsWorld) {
         collisionWorld = physicsWorld->getCollisionWorld();
     }
 

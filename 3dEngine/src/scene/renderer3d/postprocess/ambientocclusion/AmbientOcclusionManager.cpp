@@ -205,7 +205,7 @@ namespace urchin {
         svgExporter.generateSVG(100);
     }
 
-    void AmbientOcclusionManager::onCameraProjectionUpdate(const Camera *camera) {
+    void AmbientOcclusionManager::onCameraProjectionUpdate(const Camera* camera) {
         nearPlane = camera->getNearPlane();
         farPlane = camera->getFarPlane();
         projectionScale = camera->getProjectionMatrix()(1, 1);
@@ -298,7 +298,7 @@ namespace urchin {
         return ambientOcclusionTexture;
     }
 
-    void AmbientOcclusionManager::updateAOTexture(const Camera *camera) {
+    void AmbientOcclusionManager::updateAOTexture(const Camera* camera) {
         ScopeProfiler profiler("3d", "updateAOTexture");
 
         ShaderDataSender()

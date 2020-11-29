@@ -11,8 +11,8 @@ namespace urchin {
 
     }
 
-    template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> EPAAlgorithm<T>::processEPA(const CollisionConvexObject3D &convexObject1, const CollisionConvexObject3D &convexObject2,
-            const GJKResult<T> &gjkResult) const {
+    template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> EPAAlgorithm<T>::processEPA(const CollisionConvexObject3D& convexObject1, const CollisionConvexObject3D& convexObject2,
+            const GJKResult<T>& gjkResult) const {
         assert(gjkResult.isCollide());
 
         //handle sub triangle cases
@@ -124,8 +124,8 @@ namespace urchin {
         return AlgorithmResultAllocator::instance()->newEPAResultCollide<T>(contactPointA, contactPointB, normal, distanceToOrigin);
     }
 
-    template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> EPAAlgorithm<T>::handleSubTriangle(const CollisionConvexObject3D &convexObject1,
-                                                                                       const CollisionConvexObject3D &convexObject2) const {
+    template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> EPAAlgorithm<T>::handleSubTriangle(const CollisionConvexObject3D& convexObject1,
+                                                                                       const CollisionConvexObject3D& convexObject2) const {
         //Handle specific case for triangles mesh. EPA algorithm is not aware of others triangles of the mesh and can lead to wrong results.
         //Example: an object is inside a triangle: EPA could found a contact point which lead to slide the object on X/Z axis. This is wrong since
         //another triangles exist on X/Z. See: EPAConvexObjectTest::overlapCapsuleAndTriangle() & EPAConvexObjectTest::overlapTriangleAndCapsule().
@@ -172,9 +172,9 @@ namespace urchin {
      * @param supportPointsA [out] Support points of object A used to compute indexed points
      * @param supportPointsB [out] Support points of object B used to compute indexed points
      */
-    template<class T> void EPAAlgorithm<T>::determineInitialPoints(const Simplex<T> &simplex, const CollisionConvexObject3D &convexObject1,
-            const CollisionConvexObject3D &convexObject2, std::map<std::size_t, ConvexHullPoint<T>> &convexHullPoints,
-            std::map<std::size_t, Point3<T>> &supportPointsA, std::map<std::size_t, Point3<T>> &supportPointsB) const {
+    template<class T> void EPAAlgorithm<T>::determineInitialPoints(const Simplex<T>& simplex, const CollisionConvexObject3D& convexObject1,
+            const CollisionConvexObject3D& convexObject2, std::map<std::size_t, ConvexHullPoint<T>>& convexHullPoints,
+            std::map<std::size_t, Point3<T>>& supportPointsA, std::map<std::size_t, Point3<T>>& supportPointsB) const {
         if (simplex.getSize()==2) { //simplex is a segment line containing the origin
             //compute normalized direction vector
             const Vector3<T> lineDirection = simplex.getPoint(0).vector(simplex.getPoint(1)).normalize();
@@ -289,8 +289,8 @@ namespace urchin {
      * @param indexedTriangles [out] Triangle of initial convex hull. When points are too close together or almost on same
      * plane: the indexed triangles can be incomplete
      */
-    template<class T> void EPAAlgorithm<T>::determineInitialTriangles(std::map<std::size_t, ConvexHullPoint<T>> &convexHullPoints,
-            std::map<std::size_t, IndexedTriangle3D<T>> &indexedTriangles) const {
+    template<class T> void EPAAlgorithm<T>::determineInitialTriangles(std::map<std::size_t, ConvexHullPoint<T>>& convexHullPoints,
+            std::map<std::size_t, IndexedTriangle3D<T>>& indexedTriangles) const {
         for (std::size_t i=0; i<3; ++i) {
             for (std::size_t j=i+1; j<4; ++j) {
                 T distance = convexHullPoints.at(i).point.vector(convexHullPoints.at(j).point).length();
@@ -338,7 +338,7 @@ namespace urchin {
      * @return Iterator on closest triangle data
      */
     template<class T> typename std::map<std::size_t, EPATriangleData<T>>::const_iterator EPAAlgorithm<T>::getClosestTriangleData(
-            const typename std::map<std::size_t, EPATriangleData<T>> &trianglesData) const {
+            const typename std::map<std::size_t, EPATriangleData<T>>& trianglesData) const {
         T minDistanceToOrigin = std::numeric_limits<T>::max();
         typename std::map<std::size_t, EPATriangleData<T>>::const_iterator closestTriangleData;
 
@@ -359,7 +359,7 @@ namespace urchin {
      * @param triangleIndex Index of triangle in convex hull shape used to compute the data
      * @return Computed triangle data (normal, distance to origin...).
      */
-    template<class T> EPATriangleData<T> EPAAlgorithm<T>::createTriangleData(const ConvexHullShape3D<T> &convexHullShape, std::size_t triangleIndex) const {
+    template<class T> EPATriangleData<T> EPAAlgorithm<T>::createTriangleData(const ConvexHullShape3D<T>& convexHullShape, std::size_t triangleIndex) const {
         const IndexedTriangle3D<T> &indexedTriangle = convexHullShape.getIndexedTriangles().at(triangleIndex);
         const std::size_t pointIndex1 = indexedTriangle.getIndex(0);
         const std::size_t pointIndex2 = indexedTriangle.getIndex(1);
@@ -383,8 +383,8 @@ namespace urchin {
         return EPATriangleData<T>(distanceToOrigin, normal, closestPointToOrigin, barycentrics);
     }
 
-    template<class T> void EPAAlgorithm<T>::logInputData(const std::string &errorMessage, const CollisionConvexObject3D &convexObject1,
-            const CollisionConvexObject3D &convexObject2, const GJKResult<T> &gjkResult) const {
+    template<class T> void EPAAlgorithm<T>::logInputData(const std::string &errorMessage, const CollisionConvexObject3D& convexObject1,
+            const CollisionConvexObject3D& convexObject2, const GJKResult<T>& gjkResult) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<T>::max_digits10);
 

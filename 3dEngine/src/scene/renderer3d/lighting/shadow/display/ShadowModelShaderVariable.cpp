@@ -11,11 +11,11 @@ namespace urchin {
 
     }
 
-    void ShadowModelShaderVariable::setLayersToUpdateShaderVar(const ShaderVar &layersToUpdateShaderVar) {
+    void ShadowModelShaderVariable::setLayersToUpdateShaderVar(const ShaderVar& layersToUpdateShaderVar) {
         this->layersToUpdateShaderVar = layersToUpdateShaderVar;
     }
 
-    void ShadowModelShaderVariable::setShadowData(const ShadowData *shadowData) {
+    void ShadowModelShaderVariable::setShadowData(const ShadowData* shadowData) {
         this->shadowData = shadowData;
     }
 

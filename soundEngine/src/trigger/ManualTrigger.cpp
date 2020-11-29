@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    ManualTrigger::ManualTrigger(const SoundBehavior &soundBehavior) :
+    ManualTrigger::ManualTrigger(const SoundBehavior& soundBehavior) :
         SoundTrigger(soundBehavior),
         manualTriggerValue(ManualTriggerValue::STOP) {
 

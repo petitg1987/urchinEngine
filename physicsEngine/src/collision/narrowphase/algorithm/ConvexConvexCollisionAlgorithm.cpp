@@ -10,7 +10,7 @@ namespace urchin {
 
     }
 
-    void ConvexConvexCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2) {
+    void ConvexConvexCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper& object1, const CollisionObjectWrapper& object2) {
         ScopeProfiler profiler("physics", "algConvConv");
 
         //transform convex hull shapes
@@ -38,8 +38,8 @@ namespace urchin {
         }
     }
 
-    void ConvexConvexCollisionAlgorithm::processCollisionAlgorithmWithMargin(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &convexObject1,
-            const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &convexObject2) {
+    void ConvexConvexCollisionAlgorithm::processCollisionAlgorithmWithMargin(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>& convexObject1,
+            const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>& convexObject2) {
         std::unique_ptr<GJKResult<double>, AlgorithmResultDeleter> gjkResultWithMargin = gjkAlgorithm.processGJK(*convexObject1, *convexObject2, true);
 
         if (gjkResultWithMargin->isValidResult() && gjkResultWithMargin->isCollide()) {
@@ -55,7 +55,7 @@ namespace urchin {
         }
     }
 
-    CollisionAlgorithm *ConvexConvexCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, ManifoldResult &&result, FixedSizePool<CollisionAlgorithm> *algorithmPool) const {
+    CollisionAlgorithm *ConvexConvexCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, ManifoldResult &&result, FixedSizePool<CollisionAlgorithm>* algorithmPool) const {
         void *memPtr = algorithmPool->allocate(sizeof(ConvexConvexCollisionAlgorithm));
         return new(memPtr) ConvexConvexCollisionAlgorithm(objectSwapped, std::move(result));
     }

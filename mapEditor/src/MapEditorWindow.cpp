@@ -139,7 +139,7 @@ namespace urchin {
         this->setMenuBar(menu);
     }
 
-    void MapEditorWindow::setupSceneDisplayerWidget(QWidget *centralWidget, QHBoxLayout *horizontalLayout) {
+    void MapEditorWindow::setupSceneDisplayerWidget(QWidget* centralWidget, QHBoxLayout* horizontalLayout) {
         sceneDisplayerWidget = new SceneDisplayerWidget(centralWidget, statusBarController, mapEditorPath);
         sceneDisplayerWidget->setMouseTracking(true);
         sceneDisplayerWidget->setFocusPolicy(Qt::FocusPolicy::ClickFocus);
@@ -155,7 +155,7 @@ namespace urchin {
         horizontalLayout->addWidget(sceneDisplayerWidget);
     }
 
-    void MapEditorWindow::setupSceneControllerWidget(QWidget *centralWidget, QHBoxLayout *horizontalLayout) {
+    void MapEditorWindow::setupSceneControllerWidget(QWidget* centralWidget, QHBoxLayout* horizontalLayout) {
         scenePanelWidget = new ScenePanelWidget(centralWidget);
         QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy.setHorizontalStretch(0);
@@ -182,7 +182,7 @@ namespace urchin {
         StateSaveHelper::instance()->saveState("preferred.map.path", preferredMapPath);
     }
 
-    void MapEditorWindow::notify(Observable *observable, int notificationType) {
+    void MapEditorWindow::notify(Observable* observable, int notificationType) {
         if (dynamic_cast<ScenePanelWidget *>(observable)) {
             if (notificationType == ScenePanelWidget::TAB_SELECTED) {
                 executeViewPropertiesChangeAction();
@@ -209,7 +209,7 @@ namespace urchin {
         }
     }
 
-    void MapEditorWindow::handleCompoundShapeSelectionChange(Observable *observable, int notificationType) {
+    void MapEditorWindow::handleCompoundShapeSelectionChange(Observable* observable, int notificationType) {
         if (auto *objectControllerWidget = dynamic_cast<ObjectPanelWidget *>(observable)) {
             if (notificationType == ObjectPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED) {
                 BodyShapeWidget *bodyShapeWidget = objectControllerWidget->getBodyShapeWidget();
@@ -312,7 +312,7 @@ namespace urchin {
         }
     }
 
-    void MapEditorWindow::closeEvent(QCloseEvent *event) {
+    void MapEditorWindow::closeEvent(QCloseEvent* event) {
         if (executeCloseAction()) {
             close();
             QApplication::quit();

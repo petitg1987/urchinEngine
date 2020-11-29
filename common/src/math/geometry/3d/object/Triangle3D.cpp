@@ -2,12 +2,12 @@
 
 namespace urchin {
 
-    template<class T> Triangle3D<T>::Triangle3D(const Point3<T> *points):
+    template<class T> Triangle3D<T>::Triangle3D(const Point3<T>* points):
         triangleShape(TriangleShape3D<T>(points)) {
 
     }
 
-    template<class T> Triangle3D<T>::Triangle3D(const Point3<T> &point1, const Point3<T> &point2, const Point3<T> &point3):
+    template<class T> Triangle3D<T>::Triangle3D(const Point3<T>& point1, const Point3<T>& point2, const Point3<T>& point3):
             triangleShape(TriangleShape3D<T>(point1, point2, point3)) {
 
     }
@@ -16,7 +16,7 @@ namespace urchin {
         return triangleShape.getPoints();
     }
 
-    template<class T> Point3<T> Triangle3D<T>::getSupportPoint(const Vector3<T> &direction) const {
+    template<class T> Point3<T> Triangle3D<T>::getSupportPoint(const Vector3<T>& direction) const {
         T maxPointDotDirection = getPoints()[0].toVector().dotProduct(direction);
         Point3<T> maxPoint = getPoints()[0];
 
@@ -42,7 +42,7 @@ namespace urchin {
      * @param barycentrics [out] Returns barycentric coordinates for closest point
      * @return Point on triangle closest to point p
      */
-    template<class T> Point3<T> Triangle3D<T>::closestPoint(const Point3<T> &p, T barycentrics[3]) const {
+    template<class T> Point3<T> Triangle3D<T>::closestPoint(const Point3<T>& p, T barycentrics[3]) const {
         const Point3<T> &a = this->getPoints()[0];
         const Point3<T> &b = this->getPoints()[1];
         const Point3<T> &c = this->getPoints()[2];
@@ -129,7 +129,7 @@ namespace urchin {
     /**
      * Project point on triangle plane and check if point lies on triangle
      */
-    template<class T> bool Triangle3D<T>::projectedPointInsideTriangle(const Point3<T> &point) const { //see https://stackoverflow.com/questions/25512037/how-to-determine-if-a-point-lies-over-a-triangle-in-3d
+    template<class T> bool Triangle3D<T>::projectedPointInsideTriangle(const Point3<T>& point) const { //see https://stackoverflow.com/questions/25512037/how-to-determine-if-a-point-lies-over-a-triangle-in-3d
         Vector3<T> normal = computeNormal();
 
         for (unsigned int i=0; i<3; ++i) {

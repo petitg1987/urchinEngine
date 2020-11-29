@@ -138,7 +138,7 @@ namespace urchin {
         return font;
     }
 
-    void Text::display(const RenderTarget *renderTarget, const ShaderVar &translateDistanceShaderVar, float dt) {
+    void Text::display(const RenderTarget* renderTarget, const ShaderVar& translateDistanceShaderVar, float dt) {
         if(textRenderer) {
             renderTarget->display(textRenderer);
         }

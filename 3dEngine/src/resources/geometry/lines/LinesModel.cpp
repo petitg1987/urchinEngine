@@ -24,7 +24,7 @@ namespace urchin {
         initialize();
     }
 
-    LinesModel::LinesModel(const LineSegment3D<float> &lineSegment) :
+    LinesModel::LinesModel(const LineSegment3D<float>& lineSegment) :
         stripLines(true){
         linesPoints.push_back(lineSegment.getA());
         linesPoints.push_back(lineSegment.getB());

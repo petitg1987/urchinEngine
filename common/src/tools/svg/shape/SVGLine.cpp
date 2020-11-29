@@ -1,7 +1,7 @@
 #include "SVGLine.h"
 
 namespace urchin {
-    SVGLine::SVGLine(const LineSegment2D<float> &line, SVGColor color, float opacity) :
+    SVGLine::SVGLine(const LineSegment2D<float>& line, SVGColor color, float opacity) :
             SVGShape(color, opacity),
             line(LineSegment2D<float>(Point2<float>(), Point2<float>())) {
         this->line = LineSegment2D<float>(Point2<float>(line.getA().X, -line.getA().Y), Point2<float>(line.getB().X, -line.getB().Y));

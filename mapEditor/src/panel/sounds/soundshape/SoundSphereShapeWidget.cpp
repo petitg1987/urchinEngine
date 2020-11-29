@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    SoundSphereShapeWidget::SoundSphereShapeWidget(const SceneSound *sceneSound) :
+    SoundSphereShapeWidget::SoundSphereShapeWidget(const SceneSound* sceneSound) :
             SoundShapeWidget(sceneSound) {
         auto *positionLabel = new QLabel("Position:");
         mainLayout->addWidget(positionLabel, 1, 0);
@@ -40,7 +40,7 @@ namespace urchin {
         return SPHERE_SHAPE_LABEL;
     }
 
-    void SoundSphereShapeWidget::doSetupShapePropertiesFrom(const SoundShape *shape) {
+    void SoundSphereShapeWidget::doSetupShapePropertiesFrom(const SoundShape* shape) {
         const auto *sphereShape = dynamic_cast<const SoundSphere *>(shape);
 
         positionX->setValue(sphereShape->getPosition().X);

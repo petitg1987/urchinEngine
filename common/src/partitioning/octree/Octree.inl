@@ -1,4 +1,4 @@
-template<class TOctreeable> Octree<TOctreeable>::Octree(const Point3<float> &position, const Vector3<float> &size, float minSize) :
+template<class TOctreeable> Octree<TOctreeable>::Octree(const Point3<float>& position, const Vector3<float>& size, float minSize) :
     bbox(AABBox<float>(position, size)) {
     Vector3<float> sizeChild = size;
     std::vector<float> splitX = {position.X};
@@ -63,7 +63,7 @@ template<class TOctreeable> const std::vector<TOctreeable *> &Octree<TOctreeable
     return octreeables;
 }
 
-template<class TOctreeable> void Octree<TOctreeable>::addOctreeable(TOctreeable *octreeable, bool addRef) {
+template<class TOctreeable> void Octree<TOctreeable>::addOctreeable(TOctreeable* octreeable, bool addRef) {
     assert(bIsLeaf);
 
     octreeables.push_back(octreeable);
@@ -72,7 +72,7 @@ template<class TOctreeable> void Octree<TOctreeable>::addOctreeable(TOctreeable 
     }
 }
 
-template<class TOctreeable> void Octree<TOctreeable>::removeOctreeable(TOctreeable *octreeable, bool removeRef) {
+template<class TOctreeable> void Octree<TOctreeable>::removeOctreeable(TOctreeable* octreeable, bool removeRef) {
     assert(bIsLeaf);
 
     auto it = std::find(octreeables.begin(), octreeables.end(), octreeable);

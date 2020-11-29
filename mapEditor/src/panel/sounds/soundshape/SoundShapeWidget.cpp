@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    SoundShapeWidget::SoundShapeWidget(const SceneSound *sceneSound) :
+    SoundShapeWidget::SoundShapeWidget(const SceneSound* sceneSound) :
             disableShapeEvent(false),
             sceneSound(sceneSound),
             shape(nullptr) {
@@ -37,7 +37,7 @@ namespace urchin {
         return shape;
     }
 
-    void SoundShapeWidget::setupShapePropertiesFrom(const SoundShape *shape) {
+    void SoundShapeWidget::setupShapePropertiesFrom(const SoundShape* shape) {
         disableShapeEvent = true;
 
         margin->setValue(shape->getMargin());

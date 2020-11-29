@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    CollisionCompoundShape::CollisionCompoundShape(const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &localizedShapes) :
+    CollisionCompoundShape::CollisionCompoundShape(const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes) :
             CollisionShape3D(),
             localizedShapes(localizedShapes),
             maxDistanceToCenter(0.0f),
@@ -55,7 +55,7 @@ namespace urchin {
         return std::make_shared<CollisionCompoundShape>(scaledLocalizedShapes);
     }
 
-    AABBox<float> CollisionCompoundShape::toAABBox(const PhysicsTransform &physicsTransform) const {
+    AABBox<float> CollisionCompoundShape::toAABBox(const PhysicsTransform& physicsTransform) const {
         if (!lastTransform.equals(physicsTransform)) {
             PhysicsTransform shapeWorldTransform = physicsTransform * localizedShapes[0]->transform;
             AABBox<float> globalCompoundBox = localizedShapes[0]->shape->toAABBox(shapeWorldTransform);

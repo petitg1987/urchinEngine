@@ -87,7 +87,7 @@ namespace urchin {
         mViewShaderVar = ShaderVar(modelShader, "mView");
     }
 
-    void ModelDisplayer::onCameraProjectionUpdate(const Camera *camera) {
+    void ModelDisplayer::onCameraProjectionUpdate(const Camera* camera) {
         this->projectionMatrix = camera->getProjectionMatrix();
 
         ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix);
@@ -115,15 +115,15 @@ namespace urchin {
         this->fragmentTokens = fragmentTokens;
     }
 
-    void ModelDisplayer::setCustomShaderVariable(CustomShaderVariable *customShaderVariable) {
+    void ModelDisplayer::setCustomShaderVariable(CustomShaderVariable* customShaderVariable) {
         this->customShaderVariable = customShaderVariable;
     }
 
-    void ModelDisplayer::setCustomModelShaderVariable(CustomModelShaderVariable *customModelShaderVariable) {
+    void ModelDisplayer::setCustomModelShaderVariable(CustomModelShaderVariable* customModelShaderVariable) {
         this->customModelShaderVariable = customModelShaderVariable;
     }
 
-    void ModelDisplayer::setRenderTarget(const RenderTarget *renderTarget) {
+    void ModelDisplayer::setRenderTarget(const RenderTarget* renderTarget) {
         this->renderTarget = renderTarget;
     }
 
@@ -139,7 +139,7 @@ namespace urchin {
         }
     }
 
-    void ModelDisplayer::display(const Matrix4<float> &viewMatrix) {
+    void ModelDisplayer::display(const Matrix4<float>& viewMatrix) {
         ScopeProfiler profiler("3d", "modelDisplay");
 
         if (!isInitialized) {
@@ -168,13 +168,13 @@ namespace urchin {
         }
     }
 
-    void ModelDisplayer::drawBBox(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const {
+    void ModelDisplayer::drawBBox(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
         for (auto model : models) {
             model->drawBBox(renderTarget, projectionMatrix, viewMatrix);
         }
     }
 
-    void ModelDisplayer::drawBaseBones(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix, const std::string &meshFilename) const {
+    void ModelDisplayer::drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix, const std::string &meshFilename) const {
         for (auto model : models) {
             if (model->getMeshes() && model->getMeshes()->getMeshFilename()==meshFilename) {
                 model->drawBaseBones(renderTarget, projectionMatrix, viewMatrix);

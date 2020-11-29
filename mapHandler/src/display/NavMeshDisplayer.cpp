@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    NavMeshDisplayer::NavMeshDisplayer(AIManager *aiManager, Renderer3d *renderer3d) :
+    NavMeshDisplayer::NavMeshDisplayer(AIManager* aiManager, Renderer3d* renderer3d) :
         aiManager(aiManager),
         renderer3d(renderer3d),
         loadedNavMeshId(std::numeric_limits<unsigned int>::max()) {
@@ -82,7 +82,7 @@ namespace urchin {
         return displayPoints;
     }
 
-    void NavMeshDisplayer::addNavMeshModel(GeometryModel *model, PolygonMode polygonMode, const Vector3<float> &color) {
+    void NavMeshDisplayer::addNavMeshModel(GeometryModel* model, PolygonMode polygonMode, const Vector3<float>& color) {
         model->setOutlineSize(4.0f);
         model->enableTransparency();
         model->setColor(color.X, color.Y, color.Z, 0.5f);

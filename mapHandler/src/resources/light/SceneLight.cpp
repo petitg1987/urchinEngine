@@ -15,7 +15,7 @@ namespace urchin {
         lightManager->removeLight(light);
     }
 
-    void SceneLight::setLightManager(LightManager *lightManager) {
+    void SceneLight::setLightManager(LightManager* lightManager) {
         if (this->lightManager) {
             throw std::invalid_argument("Cannot add the scene light on two different light managers.");
         }
@@ -28,13 +28,13 @@ namespace urchin {
         lightManager->addLight(light);
     }
 
-    void SceneLight::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser) {
+    void SceneLight::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser& xmlParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
         setLight(LightReaderWriter().loadFrom(chunk, xmlParser));
     }
 
-    void SceneLight::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const {
+    void SceneLight::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter& xmlWriter) const {
         chunk->setAttribute(XmlAttribute(NAME_ATTR, this->name));
 
         LightReaderWriter().writeOn(chunk, light, xmlWriter);
@@ -52,7 +52,7 @@ namespace urchin {
         return light;
     }
 
-    void SceneLight::setLight(Light *light) {
+    void SceneLight::setLight(Light* light) {
         if (!light) {
             throw std::invalid_argument("Cannot set a null light on scene light.");
         }

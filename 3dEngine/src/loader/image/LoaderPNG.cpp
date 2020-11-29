@@ -55,7 +55,7 @@ namespace urchin {
     /**
      * @param channelsMask Channel to extract where bit 0: R, bit 1: G, bit 2: B,  bit 3: A
      */
-    std::vector<unsigned char> LoaderPNG::extract8BitsChannels(const std::vector<unsigned char> &pixelsRGBA16bits, unsigned int channelsMask) {
+    std::vector<unsigned char> LoaderPNG::extract8BitsChannels(const std::vector<unsigned char>& pixelsRGBA16bits, unsigned int channelsMask) {
         std::vector<unsigned char> pixels;
         size_t nbChannels = std::bitset<8>(channelsMask).count();
         pixels.reserve((pixelsRGBA16bits.size()/(4*2))*nbChannels);
@@ -81,7 +81,7 @@ namespace urchin {
     /**
      * @param channelsMask Channel to extract where bit 0: R, bit 1: G, bit 2: B,  bit 3: A
      */
-    std::vector<uint16_t> LoaderPNG::extract16BitsChannels(const std::vector<unsigned char> &pixelsRGBA16bits, unsigned int channelsMask) {
+    std::vector<uint16_t> LoaderPNG::extract16BitsChannels(const std::vector<unsigned char>& pixelsRGBA16bits, unsigned int channelsMask) {
         std::vector<uint16_t> pixels;
         size_t nbChannels = std::bitset<8>(channelsMask).count();
         pixels.reserve((pixelsRGBA16bits.size()/(4*2))*nbChannels);

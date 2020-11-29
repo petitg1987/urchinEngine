@@ -11,7 +11,7 @@ namespace urchin {
 
     }
 
-    void ConcaveAnyCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2) {
+    void ConcaveAnyCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper& object1, const CollisionObjectWrapper& object2) {
         ScopeProfiler profiler("physics", "algConcaveAny");
 
         const CollisionShape3D &otherShape = object2.getShape();
@@ -37,7 +37,7 @@ namespace urchin {
         }
     }
 
-    void ConcaveAnyCollisionAlgorithm::addContactPointsToManifold(const ManifoldResult &manifoldResult, bool manifoldSwapped) {
+    void ConcaveAnyCollisionAlgorithm::addContactPointsToManifold(const ManifoldResult& manifoldResult, bool manifoldSwapped) {
         for (unsigned int i=0; i<manifoldResult.getNumContactPoints(); ++i) {
             const ManifoldContactPoint &manifoldContactPoint = manifoldResult.getManifoldContactPoint(i);
             if (manifoldSwapped) {
@@ -62,7 +62,7 @@ namespace urchin {
         }
     }
 
-    CollisionAlgorithm *ConcaveAnyCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, ManifoldResult &&result, FixedSizePool<CollisionAlgorithm> *algorithmPool) const {
+    CollisionAlgorithm *ConcaveAnyCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, ManifoldResult &&result, FixedSizePool<CollisionAlgorithm>* algorithmPool) const {
         void *memPtr = algorithmPool->allocate(sizeof(ConcaveAnyCollisionAlgorithm));
         return new(memPtr) ConcaveAnyCollisionAlgorithm(objectSwapped, std::move(result));
     }

@@ -10,17 +10,17 @@ namespace urchin {
 
     }
 
-    template<class T> Vector3<T>::Vector3(const Vector2<T> &v, T Zu) :
+    template<class T> Vector3<T>::Vector3(const Vector2<T>& v, T Zu) :
         X(v.X), Y(v.Y), Z(Zu) {
 
     }
 
-    template<class T> Vector3<T>::Vector3(const Vector3<T> &vector) :
+    template<class T> Vector3<T>::Vector3(const Vector3<T>& vector) :
             X(vector.X), Y(vector.Y), Z(vector.Z) {
 
     }
 
-    template<class T> Vector3<T>& Vector3<T>::operator=(const Vector3<T> &vector) {
+    template<class T> Vector3<T>& Vector3<T>::operator=(const Vector3<T>& vector) {
         X = vector.X;
         Y = vector.Y;
         Z = vector.Z;
@@ -54,11 +54,11 @@ namespace urchin {
         return (X*X + Y*Y + Z*Z);
     }
 
-    template<class T> T Vector3<T>::dotProduct(const Vector3<T> &v) const {
+    template<class T> T Vector3<T>::dotProduct(const Vector3<T>& v) const {
         return (X*v.X + Y*v.Y + Z*v.Z);
     }
 
-    template<class T> Vector3<T> Vector3<T>::crossProduct(const Vector3<T> &v) const {
+    template<class T> Vector3<T> Vector3<T>::crossProduct(const Vector3<T>& v) const {
         return Vector3<T>(    Y*v.Z - Z*v.Y,
                     Z*v.X - X*v.Z,
                     X*v.Y - Y*v.X);
@@ -92,31 +92,31 @@ namespace urchin {
         return Vector3<T>(-X, -Y, -Z);
     }
 
-    template<class T> Vector3<T> Vector3<T>::operator +(const Vector3<T> &v) const {
+    template<class T> Vector3<T> Vector3<T>::operator +(const Vector3<T>& v) const {
         return Vector3<T>(    X + v.X,
                     Y + v.Y,
                     Z + v.Z);
     }
 
-    template<class T> Vector3<T> Vector3<T>::operator -(const Vector3<T> &v) const {
+    template<class T> Vector3<T> Vector3<T>::operator -(const Vector3<T>& v) const {
         return Vector3<T>(    X - v.X,
                     Y - v.Y,
                     Z - v.Z);
     }
 
-    template<class T> Vector3<T> Vector3<T>::operator *(const Vector3<T> &v) const {
+    template<class T> Vector3<T> Vector3<T>::operator *(const Vector3<T>& v) const {
         return Vector3<T>(    X * v.X,
                 Y * v.Y,
                 Z * v.Z);
     }
 
-    template<class T> Vector3<T> Vector3<T>::operator /(const Vector3<T> &v) const {
+    template<class T> Vector3<T> Vector3<T>::operator /(const Vector3<T>& v) const {
         return Vector3<T>(    X / v.X,
                 Y / v.Y,
                 Z / v.Z);
     }
 
-    template<class T> const Vector3<T>& Vector3<T>::operator +=(const Vector3<T> &v) {
+    template<class T> const Vector3<T>& Vector3<T>::operator +=(const Vector3<T>& v) {
         X += v.X;
         Y += v.Y;
         Z += v.Z;
@@ -124,7 +124,7 @@ namespace urchin {
         return *this;
     }
 
-    template<class T> const Vector3<T>& Vector3<T>::operator -=(const Vector3<T> &v) {
+    template<class T> const Vector3<T>& Vector3<T>::operator -=(const Vector3<T>& v) {
         X -= v.X;
         Y -= v.Y;
         Z -= v.Z;
@@ -132,7 +132,7 @@ namespace urchin {
         return *this;
     }
 
-    template<class T> const Vector3<T>& Vector3<T>::operator *=(const Vector3<T> &v) {
+    template<class T> const Vector3<T>& Vector3<T>::operator *=(const Vector3<T>& v) {
         X *= v.X;
         Y *= v.Y;
         Z *= v.Z;
@@ -140,7 +140,7 @@ namespace urchin {
         return *this;
     }
 
-    template<class T> const Vector3<T>& Vector3<T>::operator /=(const Vector3<T> &v) {
+    template<class T> const Vector3<T>& Vector3<T>::operator /=(const Vector3<T>& v) {
         X /= v.X;
         Y /= v.Y;
         Z /= v.Z;
@@ -184,29 +184,29 @@ namespace urchin {
         return Vector3<NEW_TYPE>((NEW_TYPE)X, (NEW_TYPE)Y, (NEW_TYPE)Z);
     }
 
-    template<class T> Vector3<T> operator *(const Vector3<T> &v, T t) {
+    template<class T> Vector3<T> operator *(const Vector3<T>& v, T t) {
         return Vector3<T>(v.X * t, v.Y * t, v.Z * t);
     }
 
-    template<class T> Vector3<T> operator *(T t, const Vector3<T> &v) {
+    template<class T> Vector3<T> operator *(T t, const Vector3<T>& v) {
         return v * t;
     }
 
-    template<class T> Vector3<T> operator /(const Vector3<T> &v, T t) {
+    template<class T> Vector3<T> operator /(const Vector3<T>& v, T t) {
         return Vector3<T>(v.X / t, v.Y / t, v.Z / t);
     }
 
-    template<class T> Vector3<T> operator *(const Matrix3<T> &m, const Vector3<T> &v) {
+    template<class T> Vector3<T> operator *(const Matrix3<T>& m, const Vector3<T>& v) {
         return Vector3<T>(    m.a11 * v.X + m.a12 * v.Y + m.a13 * v.Z,
                     m.a21 * v.X + m.a22 * v.Y + m.a23 * v.Z,
                     m.a31 * v.X + m.a32 * v.Y + m.a33 * v.Z);
     }
 
-    template<class T> Vector3<T> operator *(const Vector3<T> &v, const Matrix3<T> &m) {
+    template<class T> Vector3<T> operator *(const Vector3<T>& v, const Matrix3<T>& m) {
         return m * v;
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Vector3<T> &v) {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const Vector3<T>& v) {
         return stream << v.X << ", " << v.Y << ", " << v.Z;
     }
 

@@ -9,7 +9,7 @@ namespace urchin {
 
     }
 
-    void CompoundAnyCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2) {
+    void CompoundAnyCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper& object1, const CollisionObjectWrapper& object2) {
         ScopeProfiler profiler("physics", "algCompoundAny");
 
         const auto &compoundShape = dynamic_cast<const CollisionCompoundShape &>(object1.getShape());
@@ -34,7 +34,7 @@ namespace urchin {
         }
     }
 
-    void CompoundAnyCollisionAlgorithm::addContactPointsToManifold(const ManifoldResult &manifoldResult, bool manifoldSwapped) {
+    void CompoundAnyCollisionAlgorithm::addContactPointsToManifold(const ManifoldResult& manifoldResult, bool manifoldSwapped) {
         for (unsigned int i=0; i<manifoldResult.getNumContactPoints(); ++i) {
             const ManifoldContactPoint &manifoldContactPoint = manifoldResult.getManifoldContactPoint(i);
             if (manifoldSwapped) {
@@ -59,7 +59,7 @@ namespace urchin {
         }
     }
 
-    CollisionAlgorithm *CompoundAnyCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, ManifoldResult &&result, FixedSizePool<CollisionAlgorithm> *algorithmPool) const {
+    CollisionAlgorithm *CompoundAnyCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, ManifoldResult &&result, FixedSizePool<CollisionAlgorithm>* algorithmPool) const {
         void *memPtr = algorithmPool->allocate(sizeof(CompoundAnyCollisionAlgorithm));
         return new(memPtr) CompoundAnyCollisionAlgorithm(objectSwapped, std::move(result));
     }

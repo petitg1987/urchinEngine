@@ -3,7 +3,7 @@
 #include "WaterTableView.h"
 
 namespace urchin {
-    WaterTableView::WaterTableView(QWidget *parent) :
+    WaterTableView::WaterTableView(QWidget* parent) :
             QTableView(parent) {
         watersListModel = new QStandardItemModel(0, 1, this);
         watersListModel->setHorizontalHeaderItem(0, new QStandardItem("Water Name"));
@@ -37,7 +37,7 @@ namespace urchin {
         return nullptr;
     }
 
-    void WaterTableView::addWater(const SceneWater *sceneWater) {
+    void WaterTableView::addWater(const SceneWater* sceneWater) {
         auto *itemWaterName = new QStandardItem(QString::fromStdString(sceneWater->getName()));
         itemWaterName->setData(QVariant::fromValue(sceneWater), Qt::UserRole + 1);
         itemWaterName->setEditable(false);

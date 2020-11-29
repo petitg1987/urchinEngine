@@ -149,7 +149,7 @@ namespace urchin {
         return new Image(width, height, format, std::move(texels));
     }
 
-    void LoaderTGA::getImageInfo(const TgaHeader &header) {
+    void LoaderTGA::getImageInfo(const TgaHeader& header) {
         width = static_cast<unsigned int>(header.width);
         height = static_cast<unsigned int>(header.height);
 

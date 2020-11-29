@@ -22,7 +22,7 @@ namespace urchin {
         }
     }
 
-    void SceneSound::setSoundManager(SoundManager *soundManager) {
+    void SceneSound::setSoundManager(SoundManager* soundManager) {
         this->soundManager = soundManager;
 
         if (soundManager) {
@@ -30,7 +30,7 @@ namespace urchin {
         }
     }
 
-    void SceneSound::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser) {
+    void SceneSound::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser& xmlParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
         std::shared_ptr<XmlChunk> soundChunk = xmlParser.getUniqueChunk(true, SOUND_TAG, XmlAttribute(), chunk);
@@ -40,7 +40,7 @@ namespace urchin {
                 SoundTriggerReaderWriter().loadFrom(soundTriggerChunk, xmlParser));
     }
 
-    void SceneSound::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const {
+    void SceneSound::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter& xmlWriter) const {
         chunk->setAttribute(XmlAttribute(NAME_ATTR, this->name));
 
         std::shared_ptr<XmlChunk> soundChunk = xmlWriter.createChunk(SOUND_TAG, XmlAttribute(), chunk);
@@ -66,7 +66,7 @@ namespace urchin {
         return soundTrigger;
     }
 
-    void SceneSound::setSoundElements(Sound *sound, SoundTrigger *soundTrigger) {
+    void SceneSound::setSoundElements(Sound* sound, SoundTrigger* soundTrigger) {
         if (!sound) {
             throw std::invalid_argument("Cannot set a null sound on scene sound.");
         } else if (!soundTrigger) {
@@ -85,7 +85,7 @@ namespace urchin {
         this->soundTrigger = soundTrigger;
     }
 
-    void SceneSound::changeSoundTrigger(SoundTrigger *newSoundTrigger) {
+    void SceneSound::changeSoundTrigger(SoundTrigger* newSoundTrigger) {
         if (!sound) {
             throw std::invalid_argument("Cannot change sound trigger without having a sound on scene sound.");
         }

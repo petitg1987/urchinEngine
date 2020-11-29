@@ -7,7 +7,7 @@
 #include "widget/style/LabelStyleHelper.h"
 
 namespace urchin {
-    NewWaterDialog::NewWaterDialog(QWidget *parent, const WaterController *waterController) :
+    NewWaterDialog::NewWaterDialog(QWidget* parent, const WaterController* waterController) :
             QDialog(parent),
             waterController(waterController),
             waterNameLabel(nullptr),
@@ -31,7 +31,7 @@ namespace urchin {
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void NewWaterDialog::setupNameFields(QGridLayout *mainLayout) {
+    void NewWaterDialog::setupNameFields(QGridLayout* mainLayout) {
         waterNameLabel = new QLabel("Water Name:");
         mainLayout->addWidget(waterNameLabel, 0, 0);
 
@@ -96,6 +96,6 @@ namespace urchin {
 
     bool NewWaterDialog::isSceneWaterExist(const std::string &name) {
         std::list<const SceneWater *> sceneWaters = waterController->getSceneWaters();
-        return std::any_of(sceneWaters.begin(), sceneWaters.end(), [name](const auto &sw){return sw->getName() == name;});
+        return std::any_of(sceneWaters.begin(), sceneWaters.end(), [name](const auto& sw){return sw->getName() == name;});
     }
 }

@@ -13,7 +13,7 @@ namespace urchin {
 
     QString NewSoundDialog::preferredSoundPath = QString();
 
-    NewSoundDialog::NewSoundDialog(QWidget *parent, const SoundController *soundController) :
+    NewSoundDialog::NewSoundDialog(QWidget* parent, const SoundController* soundController) :
             QDialog(parent),
             soundController(soundController),
             soundNameLabel(nullptr),
@@ -43,7 +43,7 @@ namespace urchin {
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void NewSoundDialog::setupNameFields(QGridLayout *mainLayout) {
+    void NewSoundDialog::setupNameFields(QGridLayout* mainLayout) {
         soundNameLabel = new QLabel("Sound Name:");
         mainLayout->addWidget(soundNameLabel, 0, 0);
 
@@ -52,7 +52,7 @@ namespace urchin {
         soundNameText->setFixedWidth(360);
     }
 
-    void NewSoundDialog::setupSoundFilenameFields(QGridLayout *mainLayout) {
+    void NewSoundDialog::setupSoundFilenameFields(QGridLayout* mainLayout) {
         soundFilenameLabel = new QLabel("Sound File:");
         mainLayout->addWidget(soundFilenameLabel, 1, 0);
 
@@ -68,7 +68,7 @@ namespace urchin {
         connect(selectMeshFileButton, SIGNAL(clicked()), this, SLOT(showSoundFilenameDialog()));
     }
 
-    void NewSoundDialog::setupSoundTypeFields(QGridLayout *mainLayout) {
+    void NewSoundDialog::setupSoundTypeFields(QGridLayout* mainLayout) {
         soundTypeLabel = new QLabel("Sound Type:");
         mainLayout->addWidget(soundTypeLabel, 2, 0);
 
@@ -168,7 +168,7 @@ namespace urchin {
 
     bool NewSoundDialog::isSceneSoundExist(const std::string &name) {
         std::list<const SceneSound *> sceneSounds = soundController->getSceneSounds();
-        return std::any_of(sceneSounds.begin(), sceneSounds.end(), [name](const auto &ss){return ss->getName() == name;});
+        return std::any_of(sceneSounds.begin(), sceneSounds.end(), [name](const auto& ss){return ss->getName() == name;});
     }
 
 }

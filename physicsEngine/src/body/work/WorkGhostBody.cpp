@@ -3,7 +3,7 @@
 
 namespace urchin {
 
-    WorkGhostBody::WorkGhostBody(const std::string &id, const PhysicsTransform &physicsTransform, const std::shared_ptr<const CollisionShape3D> &shape) :
+    WorkGhostBody::WorkGhostBody(const std::string &id, const PhysicsTransform& physicsTransform, const std::shared_ptr<const CollisionShape3D>& shape) :
             AbstractWorkBody(id, physicsTransform, shape),
             pairContainer(new SyncVectorPairContainer()) {
         AbstractWorkBody::setIsStatic(false); //can move and be affected by the physics world: not a static body
@@ -14,11 +14,11 @@ namespace urchin {
         delete pairContainer;
     }
 
-    WorkGhostBody *WorkGhostBody::upCast(AbstractWorkBody *workBody) {
+    WorkGhostBody *WorkGhostBody::upCast(AbstractWorkBody* workBody) {
         return dynamic_cast<WorkGhostBody*>(workBody);
     }
 
-    const WorkGhostBody *WorkGhostBody::upCast(const AbstractWorkBody *workBody) {
+    const WorkGhostBody *WorkGhostBody::upCast(const AbstractWorkBody* workBody) {
         return dynamic_cast<const WorkGhostBody*>(workBody);
     }
 

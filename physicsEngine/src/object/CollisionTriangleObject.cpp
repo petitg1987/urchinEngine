@@ -3,7 +3,7 @@
 #include "CollisionTriangleObject.h"
 
 namespace urchin {
-    CollisionTriangleObject::CollisionTriangleObject(float outerMargin, const Point3<float> &point1, const Point3<float> &point2, const Point3<float> &point3) :
+    CollisionTriangleObject::CollisionTriangleObject(float outerMargin, const Point3<float>& point1, const Point3<float>& point2, const Point3<float>& point3) :
             CollisionConvexObject3D(outerMargin),
             triangleObject(Triangle3D<float>(point1, point2, point3)) {
 
@@ -17,7 +17,7 @@ namespace urchin {
         return CollisionConvexObject3D::TRIANGLE_OBJECT;
     }
 
-    Point3<float> CollisionTriangleObject::getSupportPoint(const Vector3<float> &direction, bool includeMargin) const {
+    Point3<float> CollisionTriangleObject::getSupportPoint(const Vector3<float>& direction, bool includeMargin) const {
         if (includeMargin) {
             return retrieveTriangle().getSupportPoint(direction);
         }

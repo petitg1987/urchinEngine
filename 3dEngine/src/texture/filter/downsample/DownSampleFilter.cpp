@@ -3,7 +3,7 @@
 
 namespace urchin {
 
-    DownSampleFilter::DownSampleFilter(const DownSampleFilterBuilder *textureFilterBuilder):
+    DownSampleFilter::DownSampleFilter(const DownSampleFilterBuilder* textureFilterBuilder):
         TextureFilter(textureFilterBuilder) {
 
     }

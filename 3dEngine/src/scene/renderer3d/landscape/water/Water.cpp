@@ -103,7 +103,7 @@ namespace urchin {
         underwaterFog = std::make_shared<Fog>(density, gradient, waterColor, centerPosition.Y);
     }
 
-    void Water::setCenterPosition(const Point3<float> &centerPosition) {
+    void Water::setCenterPosition(const Point3<float>& centerPosition) {
         this->centerPosition = centerPosition;
 
         generateVertex();
@@ -133,7 +133,7 @@ namespace urchin {
         return zSize;
     }
 
-    void Water::setWaterColor(const Vector3<float> &waterColor) {
+    void Water::setWaterColor(const Vector3<float>& waterColor) {
         this->waterColor = waterColor;
 
         ShaderDataSender().sendData(waterColorShaderVar, waterColor);
@@ -247,13 +247,13 @@ namespace urchin {
         return gradient;
     }
 
-    void Water::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) {
+    void Water::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
 
         ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix);
     }
 
-    void Water::display(const RenderTarget *renderTarget, const Camera *camera, FogManager *fogManager, float dt) {
+    void Water::display(const RenderTarget* renderTarget, const Camera* camera, FogManager* fogManager, float dt) {
         if (camera->getPosition().Y < centerPosition.Y && waterRectangle->collideWithPoint(Point2<float>(camera->getPosition().X, camera->getPosition().Z))) {
             if (fogManager->getActiveFog() != underwaterFog) {
                 fogManager->pushFog(underwaterFog);

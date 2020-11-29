@@ -12,17 +12,17 @@ namespace urchin {
 
     }
 
-    template<class T> Point2<T>::Point2(const Vector2<T> &vector) :
+    template<class T> Point2<T>::Point2(const Vector2<T>& vector) :
         X(vector.X), Y(vector.Y) {
 
     }
 
-    template<class T> Point2<T>::Point2(const Point2<T> &point) :
+    template<class T> Point2<T>::Point2(const Point2<T>& point) :
         X(point.X), Y(point.Y) {
 
     }
 
-    template<class T> Point2<T>& Point2<T>::operator=(const Point2<T> &point) {
+    template<class T> Point2<T>& Point2<T>::operator=(const Point2<T>& point) {
         X = point.X;
         Y = point.Y;
         return *this;
@@ -37,15 +37,15 @@ namespace urchin {
         X = Y = 0;
     }
 
-    template<class T> T Point2<T>::distance(const Point2<T> &p) const {
+    template<class T> T Point2<T>::distance(const Point2<T>& p) const {
         return std::sqrt(((X-p.X)*(X-p.X)) + ((Y-p.Y)*(Y-p.Y)));
     }
 
-    template<class T> T Point2<T>::squareDistance(const Point2<T> &p) const {
+    template<class T> T Point2<T>::squareDistance(const Point2<T>& p) const {
         return (T)(((X-p.X)*(X-p.X)) + ((Y-p.Y)*(Y-p.Y)));
     }
 
-    template<class T> Vector2<T> Point2<T>::vector(const Point2<T> &target) const {
+    template<class T> Vector2<T> Point2<T>::vector(const Point2<T>& target) const {
         return Vector2<T>(target.X - X, target.Y - Y);
     }
 
@@ -56,7 +56,7 @@ namespace urchin {
         return Vector2<T>(X, Y);
     }
 
-    template<class T> Point2<T> Point2<T>::translate(const Vector2<T> &v) const {
+    template<class T> Point2<T> Point2<T>::translate(const Vector2<T>& v) const {
         return Point2<T>(X+v.X, Y+v.Y);
     }
 
@@ -68,24 +68,24 @@ namespace urchin {
         return Point2<T>(-X, -Y);
     }
 
-    template<class T> Point2<T> Point2<T>::operator +(const Point2<T> &p) const {
+    template<class T> Point2<T> Point2<T>::operator +(const Point2<T>& p) const {
         return Point2<T>(    X + p.X,
                     Y + p.Y);
     }
 
-    template<class T> Point2<T> Point2<T>::operator -(const Point2<T> &p) const {
+    template<class T> Point2<T> Point2<T>::operator -(const Point2<T>& p) const {
         return Point2<T>(    X - p.X,
                     Y - p.Y);
     }
 
-    template<class T> const Point2<T>& Point2<T>::operator +=(const Point2<T> &p) {
+    template<class T> const Point2<T>& Point2<T>::operator +=(const Point2<T>& p) {
         X += p.X;
         Y += p.Y;
 
         return *this;
     }
 
-    template<class T> const Point2<T>& Point2<T>::operator -=(const Point2<T> &p) {
+    template<class T> const Point2<T>& Point2<T>::operator -=(const Point2<T>& p) {
         X -= p.X;
         Y -= p.Y;
 
@@ -120,15 +120,15 @@ namespace urchin {
         return *this;
     }
 
-    template<class T> bool Point2<T>::operator ==(const Point2<T> &p) const {
+    template<class T> bool Point2<T>::operator ==(const Point2<T>& p) const {
         return (X==p.X && Y==p.Y);
     }
 
-    template<class T> bool Point2<T>::operator !=(const Point2<T> &p) const {
+    template<class T> bool Point2<T>::operator !=(const Point2<T>& p) const {
         return !(this->operator==(p));
     }
 
-    template<class T> bool Point2<T>::operator <(const Point2<T> &p) const {
+    template<class T> bool Point2<T>::operator <(const Point2<T>& p) const {
         return X < p.X || (X == p.X && Y < p.Y);
     }
 
@@ -152,36 +152,36 @@ namespace urchin {
         return Point2<NEW_TYPE>((NEW_TYPE)X, (NEW_TYPE)Y);
     }
 
-    template<class T> Point2<T> operator *(const Point2<T> &p, T t) {
+    template<class T> Point2<T> operator *(const Point2<T>& p, T t) {
         return Point2<T>(p.X * t, p.Y * t);
     }
 
-    template<class T> Point2<T> operator *(T t, const Point2<T> &p) {
+    template<class T> Point2<T> operator *(T t, const Point2<T>& p) {
         return p * t;
     }
 
-    template<class T> Point2<T> operator /(const Point2<T> &p, T t) {
+    template<class T> Point2<T> operator /(const Point2<T>& p, T t) {
         return Point2<T>(p.X / t, p.Y / t);
     }
 
-    template<class T> Point2<T> operator +(const Point2<T> &p, T t) {
+    template<class T> Point2<T> operator +(const Point2<T>& p, T t) {
         return Point2<T>(p.X + t, p.Y + t);
     }
 
-    template<class T> Point2<T> operator -(const Point2<T> &p, T t) {
+    template<class T> Point2<T> operator -(const Point2<T>& p, T t) {
         return Point2<T>(p.X - t, p.Y - t);
     }
 
-    template<class T> Point2<T> operator *(const Matrix2<T> &m, const Point2<T> &p) {
+    template<class T> Point2<T> operator *(const Matrix2<T>& m, const Point2<T>& p) {
         return Point2<T>(    m.a11 * p.X + m.a12 * p.Y,
                     m.a21 * p.X + m.a22 * p.Y);
     }
 
-    template<class T> Point2<T> operator *(const Point2<T> &p, const Matrix2<T> &m) {
+    template<class T> Point2<T> operator *(const Point2<T>& p, const Matrix2<T>& m) {
         return m * p;
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const Point2<T> &p) {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const Point2<T>& p) {
         return stream << p.X << ", " << p.Y;
     }
 

@@ -14,7 +14,7 @@ namespace urchin {
         renderer3d->getWaterManager()->removeWater(water);
     }
 
-    void SceneWater::setWaterManagers(Renderer3d *renderer3d) {
+    void SceneWater::setWaterManagers(Renderer3d* renderer3d) {
         if (this->renderer3d) {
             throw std::invalid_argument("Cannot add the scene water on two different renderer.");
         }
@@ -27,13 +27,13 @@ namespace urchin {
         renderer3d->getWaterManager()->addWater(water);
     }
 
-    void SceneWater::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser) {
+    void SceneWater::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser& xmlParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
         setWater(WaterReaderWriter().loadFrom(chunk, xmlParser));
     }
 
-    void SceneWater::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const {
+    void SceneWater::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter& xmlWriter) const {
         chunk->setAttribute(XmlAttribute(NAME_ATTR, this->name));
 
         WaterReaderWriter().writeOn(chunk, water, xmlWriter);
@@ -51,7 +51,7 @@ namespace urchin {
         return water;
     }
 
-    void SceneWater::setWater(Water *water) {
+    void SceneWater::setWater(Water* water) {
         if (!water) {
             throw std::invalid_argument("Cannot set a null water on scene water.");
         }

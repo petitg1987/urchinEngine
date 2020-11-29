@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    BodyShapeWidget::BodyShapeWidget(const SceneObject *sceneObject) :
+    BodyShapeWidget::BodyShapeWidget(const SceneObject* sceneObject) :
             disableShapeEvent(false),
             sceneObject(sceneObject) {
         setContentsMargins(0, 0, 0, 0);

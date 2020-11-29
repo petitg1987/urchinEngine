@@ -3,14 +3,14 @@
 
 namespace urchin {
 
-    CollisionTriangleShape::CollisionTriangleShape(const Point3<float> *points) :
+    CollisionTriangleShape::CollisionTriangleShape(const Point3<float>* points) :
             CollisionShape3D(),
             triangleShape(new TriangleShape3D<float>(points)),
             triangleShapesPool(nullptr) {
         refreshInnerMargin(0.0f); //no margin for triangle
     }
 
-    CollisionTriangleShape::CollisionTriangleShape(TriangleShape3D<float> *triangleShape, FixedSizePool<TriangleShape3D<float>> *triangleShapesPool) :
+    CollisionTriangleShape::CollisionTriangleShape(TriangleShape3D<float>* triangleShape, FixedSizePool<TriangleShape3D<float>>* triangleShapesPool) :
             CollisionShape3D(),
             triangleShape(triangleShape),
             triangleShapesPool(triangleShapesPool) {
@@ -47,7 +47,7 @@ namespace urchin {
         throw std::runtime_error("Retrieving AABBox is currently not supported (triangle is only usable as a sub-shape)");
     }
 
-    std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionTriangleShape::toConvexObject(const PhysicsTransform &physicsTransform) const {
+    std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionTriangleShape::toConvexObject(const PhysicsTransform& physicsTransform) const {
         assert(getInnerMargin()==0.0f);
 
         void *memPtr = getObjectsPool()->allocate(sizeof(CollisionTriangleObject));

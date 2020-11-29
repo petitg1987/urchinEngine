@@ -12,7 +12,7 @@ namespace urchin {
 
     }
 
-    void AIEntity::updateTransform(const Point3<float> &position, const Quaternion<float> &orientation) {
+    void AIEntity::updateTransform(const Point3<float>& position, const Quaternion<float>& orientation) {
         {
             std::lock_guard<std::mutex> lock(mutex);
             this->transform = Transform<float>(position, orientation, 1.0);

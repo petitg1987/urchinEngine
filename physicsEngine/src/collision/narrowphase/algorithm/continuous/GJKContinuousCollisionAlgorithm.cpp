@@ -15,8 +15,8 @@ namespace urchin {
 
     }
 
-    template<class T, class U> std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter> GJKContinuousCollisionAlgorithm<T, U>::calculateTimeOfImpact(const TemporalObject &object1, const TemporalObject &object2,
-            AbstractWorkBody *body2) const {
+    template<class T, class U> std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter> GJKContinuousCollisionAlgorithm<T, U>::calculateTimeOfImpact(const TemporalObject& object1, const TemporalObject& object2,
+            AbstractWorkBody* body2) const {
         T timeToHit = 0.0; //0.0 represents initial situation (from transformation), 1.0 represents final situation (to transformation).
         Vector3<T> normalFromObject2;
         bool normalFromObject2Defined = false;
@@ -97,14 +97,14 @@ namespace urchin {
         return std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter>(nullptr);
     }
 
-    template<class T, class U> Point3<T> GJKContinuousCollisionAlgorithm<T, U>::getWorldSupportPoint(const TemporalObject &object, const Vector3<T> &globalDirection, const PhysicsTransform &worldTransform) const {
+    template<class T, class U> Point3<T> GJKContinuousCollisionAlgorithm<T, U>::getWorldSupportPoint(const TemporalObject& object, const Vector3<T>& globalDirection, const PhysicsTransform& worldTransform) const {
         Vector3<float> localDirection = worldTransform.retrieveOrientationMatrix().transpose() * globalDirection.template cast<float>();
         Point3<float> localSupportPoint = object.getLocalObject()->getSupportPoint(localDirection, true);
 
         return worldTransform.transform(localSupportPoint).template cast<T>();
     }
 
-    template<class T, class U> Point3<float> GJKContinuousCollisionAlgorithm<T, U>::interpolate(const Point3<float> &from, const Point3<float> &to, T interpolatePercentage) const {
+    template<class T, class U> Point3<float> GJKContinuousCollisionAlgorithm<T, U>::interpolate(const Point3<float>& from, const Point3<float>& to, T interpolatePercentage) const {
         T invertedInterpolatePercentage = 1.0 - interpolatePercentage;
 
         return Point3<float>(
@@ -113,7 +113,7 @@ namespace urchin {
                 invertedInterpolatePercentage * from.Z + interpolatePercentage * to.Z);
     }
 
-    template<class T, class U> void GJKContinuousCollisionAlgorithm<T, U>::logInputData(const TemporalObject &object1, const TemporalObject &object2,
+    template<class T, class U> void GJKContinuousCollisionAlgorithm<T, U>::logInputData(const TemporalObject& object1, const TemporalObject& object2,
                                                                                             const std::string &message, Logger::CriticalityLevel logLevel) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);

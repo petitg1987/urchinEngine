@@ -1,7 +1,7 @@
 #include "PathRequest.h"
 
 namespace urchin {
-    PathRequest::PathRequest(const Point3<float> &startPoint, const Point3<float> &endPoint) :
+    PathRequest::PathRequest(const Point3<float>& startPoint, const Point3<float>& endPoint) :
             startPoint(startPoint),
             endPoint(endPoint),
             bIsPathReady(false) {

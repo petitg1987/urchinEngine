@@ -55,7 +55,7 @@ namespace urchin {
         setupSpecificSunLightBox(mainLayout);
     }
 
-    void LightPanelWidget::setupGeneralPropertiesBox(QVBoxLayout *mainLayout) {
+    void LightPanelWidget::setupGeneralPropertiesBox(QVBoxLayout* mainLayout) {
         generalPropertiesGroupBox = new QGroupBox("General Properties");
         mainLayout->addWidget(generalPropertiesGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
@@ -99,7 +99,7 @@ namespace urchin {
         generalPropertiesLayout->addWidget(lightType, 2, 1);
     }
 
-    void LightPanelWidget::setupSpecificOmnidirectionalLightBox(QVBoxLayout *mainLayout) {
+    void LightPanelWidget::setupSpecificOmnidirectionalLightBox(QVBoxLayout* mainLayout) {
         specificOmnidirectionalLightGroupBox = new QGroupBox("Omnidirectional Light");
         mainLayout->addWidget(specificOmnidirectionalLightGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(specificOmnidirectionalLightGroupBox);
@@ -137,7 +137,7 @@ namespace urchin {
         connect(attenuation, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
     }
 
-    void LightPanelWidget::setupSpecificSunLightBox(QVBoxLayout *mainLayout) {
+    void LightPanelWidget::setupSpecificSunLightBox(QVBoxLayout* mainLayout) {
         specificSunLightGroupBox = new QGroupBox("Sun Light");
         mainLayout->addWidget(specificSunLightGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(specificSunLightGroupBox);
@@ -169,7 +169,7 @@ namespace urchin {
         return lightTableView;
     }
 
-    void LightPanelWidget::load(LightController *lightController) {
+    void LightPanelWidget::load(LightController* lightController) {
         this->lightController = lightController;
 
         std::list<const SceneLight *> sceneLights = lightController->getSceneLights();
@@ -184,7 +184,7 @@ namespace urchin {
         lightController = nullptr;
     }
 
-    void LightPanelWidget::notify(Observable *observable, int notificationType) {
+    void LightPanelWidget::notify(Observable* observable, int notificationType) {
         if (auto *lightTableView = dynamic_cast<LightTableView *>(observable)) {
             if (notificationType==LightTableView::LIGHT_SELECTION_CHANGED) {
                 if (lightTableView->hasSceneLightSelected()) {
@@ -201,7 +201,7 @@ namespace urchin {
         }
     }
 
-    void LightPanelWidget::setupLightDataFrom(const SceneLight *sceneLight) {
+    void LightPanelWidget::setupLightDataFrom(const SceneLight* sceneLight) {
         disableLightEvent = true;
         const Light *light = sceneLight->getLight();
 
@@ -224,7 +224,7 @@ namespace urchin {
         disableLightEvent = false;
     }
 
-    void LightPanelWidget::setupOmnidirectionalLightDataFrom(const OmnidirectionalLight *light) {
+    void LightPanelWidget::setupOmnidirectionalLightDataFrom(const OmnidirectionalLight* light) {
         specificOmnidirectionalLightGroupBox->show();
         specificSunLightGroupBox->hide();
 
@@ -237,7 +237,7 @@ namespace urchin {
         this->attenuation->setValue(light->getExponentialAttenuation());
     }
 
-    void LightPanelWidget::setupSunLightDataFrom(const SunLight *light) {
+    void LightPanelWidget::setupSunLightDataFrom(const SunLight* light) {
         specificSunLightGroupBox->show();
         specificOmnidirectionalLightGroupBox->hide();
 

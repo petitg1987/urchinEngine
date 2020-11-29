@@ -58,7 +58,7 @@ namespace urchin {
                 ->build();
     }
 
-    void Window::addChild(Widget *child) {
+    void Window::addChild(Widget* child) {
         Position childPosition((float)(child->getPositionX() + widgetOutline->leftWidth), (float)(child->getPositionY() + widgetOutline->topWidth), Position::PIXEL);
         child->setPosition(childPosition);
         Widget::addChild(child);
@@ -120,7 +120,7 @@ namespace urchin {
         return true;
     }
 
-    void Window::display(const RenderTarget *renderTarget, const ShaderVar &translateDistanceShaderVar, float dt) {
+    void Window::display(const RenderTarget* renderTarget, const ShaderVar& translateDistanceShaderVar, float dt) {
         renderTarget->display(windowRenderer);
 
         Widget::display(renderTarget, translateDistanceShaderVar, dt);

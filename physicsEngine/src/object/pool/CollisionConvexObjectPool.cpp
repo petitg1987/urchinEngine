@@ -33,7 +33,7 @@ namespace urchin {
         return objectsPool;
     }
 
-    unsigned int CollisionConvexObjectPool::maxObjectSize(const std::vector<unsigned int> &objectsSize) {
+    unsigned int CollisionConvexObjectPool::maxObjectSize(const std::vector<unsigned int>& objectsSize) {
         unsigned int result = 0;
         for (unsigned int objectSize : objectsSize) {
             result = std::max(result, objectSize);

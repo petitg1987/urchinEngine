@@ -5,7 +5,7 @@ namespace urchin {
     //Debug parameters
     bool DEBUG_PRINT_ISLANDS = false;
 
-    IslandManager::IslandManager(const BodyManager *bodyManager) :
+    IslandManager::IslandManager(const BodyManager* bodyManager) :
         bodyManager(bodyManager),
         squaredLinearSleepingThreshold(ConfigService::instance()->getFloatValue("island.linearSleepingThreshold") * ConfigService::instance()->getFloatValue("island.linearSleepingThreshold")),
         squaredAngularSleepingThreshold(ConfigService::instance()->getFloatValue("island.angularSleepingThreshold") * ConfigService::instance()->getFloatValue("island.angularSleepingThreshold")) {
@@ -102,7 +102,7 @@ namespace urchin {
         return endElementIndex - startElementIndex;
     }
 
-    bool IslandManager::isBodyMoving(const WorkRigidBody *body) const {
+    bool IslandManager::isBodyMoving(const WorkRigidBody* body) const {
         return !(body->getLinearVelocity().squareLength() < squaredLinearSleepingThreshold
                  && body->getAngularVelocity().squareLength() < squaredAngularSleepingThreshold);
     }

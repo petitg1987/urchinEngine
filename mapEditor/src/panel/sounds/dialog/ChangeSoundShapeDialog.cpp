@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    ChangeSoundShapeDialog::ChangeSoundShapeDialog(QWidget *parent) :
+    ChangeSoundShapeDialog::ChangeSoundShapeDialog(QWidget* parent) :
         QDialog(parent),
         soundShapeTypeLabel(nullptr),
         soundShapeTypeComboBox(nullptr),
@@ -30,7 +30,7 @@ namespace urchin {
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void ChangeSoundShapeDialog::setupSoundShapeTypeFields(QGridLayout *mainLayout) {
+    void ChangeSoundShapeDialog::setupSoundShapeTypeFields(QGridLayout* mainLayout) {
         soundShapeTypeLabel = new QLabel("Shape Type:");
         mainLayout->addWidget(soundShapeTypeLabel, 0, 0);
 

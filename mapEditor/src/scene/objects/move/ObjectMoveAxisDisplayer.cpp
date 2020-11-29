@@ -1,7 +1,7 @@
 #include "ObjectMoveAxisDisplayer.h"
 
 namespace urchin {
-    ObjectMoveAxisDisplayer::ObjectMoveAxisDisplayer(SceneManager *sceneManager) :
+    ObjectMoveAxisDisplayer::ObjectMoveAxisDisplayer(SceneManager* sceneManager) :
             sceneManager(sceneManager) {
 
     }
@@ -10,7 +10,7 @@ namespace urchin {
         cleanCurrentDisplay();
     }
 
-    void ObjectMoveAxisDisplayer::displayAxis(const Point3<float> &position, unsigned int selectedAxis) {
+    void ObjectMoveAxisDisplayer::displayAxis(const Point3<float>& position, unsigned int selectedAxis) {
         cleanCurrentDisplay();
 
         GeometryModel *xLine = createAxisModel(position, selectedAxis, 0);
@@ -36,7 +36,7 @@ namespace urchin {
         objectMoveAxisModels.clear();
     }
 
-    GeometryModel *ObjectMoveAxisDisplayer::createAxisModel(const Point3<float> &position, unsigned int selectedAxis, std::size_t axisIndex) {
+    GeometryModel *ObjectMoveAxisDisplayer::createAxisModel(const Point3<float>& position, unsigned int selectedAxis, std::size_t axisIndex) {
         Point3<float> startPoint = position;
         startPoint[axisIndex] -= 500.0f;
 

@@ -7,7 +7,7 @@
 #include "TerrainObstacleService.h"
 
 namespace urchin {
-    TerrainObstacleService::TerrainObstacleService(std::string terrainName, const Point3<float> &position, std::vector<Point3<float>> localVertices,
+    TerrainObstacleService::TerrainObstacleService(std::string terrainName, const Point3<float>& position, std::vector<Point3<float>> localVertices,
                                                    unsigned int xLength, unsigned int zLength) :
             terrainName(std::move(terrainName)),
             position(position),
@@ -61,7 +61,7 @@ namespace urchin {
         return std::min(triangle1Slope, triangle2Slope) >= maxSlopeDotProduct;
     }
 
-    float TerrainObstacleService::computeTriangleSlope(const Point3<float> &p0, const Point3<float> &p1, const Point3<float> &p2) const {
+    float TerrainObstacleService::computeTriangleSlope(const Point3<float>& p0, const Point3<float>& p1, const Point3<float>& p2) const {
         Vector3<float> v1 = p0.vector(p2);
         Vector3<float> v2 = p1.vector(p0);
         Vector3<float> normal = v1.crossProduct(v2).normalize();
@@ -119,7 +119,7 @@ namespace urchin {
         return neighbors;
     }
 
-    CSGPolygon<float> TerrainObstacleService::squaresToPolygon(const std::vector<unsigned int> &squares, unsigned int obstacleIndex) const {
+    CSGPolygon<float> TerrainObstacleService::squaresToPolygon(const std::vector<unsigned int>& squares, unsigned int obstacleIndex) const {
         std::map<EdgeDirection, std::vector<EdgeDirection>> checkDirectionsMap;
         checkDirectionsMap[EdgeDirection::RIGHT] = {EdgeDirection::TOP, EdgeDirection::RIGHT, EdgeDirection::BOTTOM};
         checkDirectionsMap[EdgeDirection::BOTTOM] = {EdgeDirection::RIGHT, EdgeDirection::BOTTOM, EdgeDirection::LEFT};
@@ -156,7 +156,7 @@ namespace urchin {
     }
 
     unsigned int TerrainObstacleService::retrieveNextPointIndex(unsigned int pointIndex, const std::vector<EdgeDirection> &checkDirections,
-                                                                const std::vector<unsigned int> &squares, EdgeDirection &usedDirection) const {
+                                                                const std::vector<unsigned int>& squares, EdgeDirection& usedDirection) const {
         for (EdgeDirection checkDirection : checkDirections) {
             int nextPointIndex = nextPointInDirection(pointIndex, checkDirection);
             if (nextPointIndex!=-1 && edgeBelongToOneSquare(pointIndex, static_cast<unsigned int>(nextPointIndex), squares)) {
@@ -194,7 +194,7 @@ namespace urchin {
         throw std::runtime_error("Unknown edge direction: " + std::to_string(direction));
     }
 
-    bool TerrainObstacleService::edgeBelongToOneSquare(unsigned int point1, unsigned int point2, const std::vector<unsigned int> &squares) const {
+    bool TerrainObstacleService::edgeBelongToOneSquare(unsigned int point1, unsigned int point2, const std::vector<unsigned int>& squares) const {
         for (unsigned int squareIndex : squares) {
             if (     ((squareIndex == point1) || (squareIndex + 1 == point1) || (squareIndex + xLength == point1) || (squareIndex + xLength + 1 == point1)) &&
                     ((squareIndex == point2) || (squareIndex + 1 == point2) || (squareIndex + xLength == point2) || (squareIndex + xLength + 1 == point2)) ) {
@@ -204,7 +204,7 @@ namespace urchin {
         return false;
     }
 
-    CSGPolygon<float> TerrainObstacleService::pointIndicesToPolygon(const std::vector<unsigned int> &cwPolygonPointIndices, unsigned int obstacleIndex) const {
+    CSGPolygon<float> TerrainObstacleService::pointIndicesToPolygon(const std::vector<unsigned int>& cwPolygonPointIndices, unsigned int obstacleIndex) const {
         std::vector<Point2<float>> cwPoints;
         cwPoints.reserve(cwPolygonPointIndices.size());
 

@@ -19,14 +19,14 @@ namespace urchin {
         }
     }
 
-    void BodyManager::addBody(AbstractBody *body) {
+    void BodyManager::addBody(AbstractBody* body) {
         body->setIsNew(true);
 
         std::lock_guard<std::mutex> lock(bodiesMutex);
         this->bodies.push_back(body);
     }
 
-    void BodyManager::removeBody(AbstractBody *body) {
+    void BodyManager::removeBody(AbstractBody* body) {
         body->markAsDeleted();
     }
 
@@ -65,7 +65,7 @@ namespace urchin {
         }
     }
 
-    void BodyManager::createNewWorkBody(AbstractBody *body) {
+    void BodyManager::createNewWorkBody(AbstractBody* body) {
         //create new work body
         AbstractWorkBody *workBody = body->createWorkBody();
         body->setWorkBody(workBody);
@@ -81,7 +81,7 @@ namespace urchin {
         notifyObservers(this, ADD_WORK_BODY);
     }
 
-    std::vector<AbstractBody *>::iterator BodyManager::deleteBody(AbstractBody *body, const std::vector<AbstractBody *>::iterator &it) {
+    std::vector<AbstractBody *>::iterator BodyManager::deleteBody(AbstractBody* body, const std::vector<AbstractBody *>::iterator &it) {
         //delete work body
         deleteWorkBody(body);
 
@@ -92,7 +92,7 @@ namespace urchin {
         return newIt;
     }
 
-    void BodyManager::deleteWorkBody(AbstractBody *body) {
+    void BodyManager::deleteWorkBody(AbstractBody* body) {
         AbstractWorkBody *workBody = body->getWorkBody();
 
         auto itFind = std::find(workBodies.begin(), workBodies.end(), workBody);

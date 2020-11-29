@@ -21,7 +21,7 @@ namespace urchin {
         this->centerPoint = Point3<float>(0.0f, 0.0f, 0.0f);
     }
 
-    NavTriangle::NavTriangle(const NavTriangle &navTriangle) :
+    NavTriangle::NavTriangle(const NavTriangle& navTriangle) :
             indices() {
         this->indices[0] = navTriangle.getIndex(0);
         this->indices[1] = navTriangle.getIndex(1);
@@ -69,11 +69,11 @@ namespace urchin {
         addLink(NavLink::newStandardLink(sourceEdgeIndex, targetTriangle));
     }
 
-    void NavTriangle::addJoinPolygonsLink(std::size_t sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavLinkConstraint *linkConstraint) {
+    void NavTriangle::addJoinPolygonsLink(std::size_t sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavLinkConstraint* linkConstraint) {
         addLink(NavLink::newJoinPolygonsLink(sourceEdgeIndex, targetTriangle, linkConstraint));
     }
 
-    void NavTriangle::addJumpLink(std::size_t sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavLinkConstraint *linkConstraint) {
+    void NavTriangle::addJumpLink(std::size_t sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavLinkConstraint* linkConstraint) {
         addLink(NavLink::newJumpLink(sourceEdgeIndex, targetTriangle, linkConstraint));
     }
 

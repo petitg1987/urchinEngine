@@ -11,7 +11,7 @@ namespace urchin {
 
     }
 
-    void PolytopeSurface::setPolytope(const Polytope *polytope) {
+    void PolytopeSurface::setPolytope(const Polytope* polytope) {
         this->polytope = polytope;
         this->surfacePosition = computeSurfacePosition();
     }

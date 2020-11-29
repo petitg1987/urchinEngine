@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    AICharacter::AICharacter(float mass, float maxVelocityInKmH, const Point3<float> &position) :
+    AICharacter::AICharacter(float mass, float maxVelocityInKmH, const Point3<float>& position) :
         mass(mass),
         maxVelocityInKmH(maxVelocityInKmH),
         momentum(Vector3<float>(0.0f, 0.0f, 0.0f)),
@@ -35,7 +35,7 @@ namespace urchin {
         return retrieveMaxVelocityInMs() * mass;
     }
 
-    void AICharacter::updateMomentum(const Vector3<float> &momentum) {
+    void AICharacter::updateMomentum(const Vector3<float>& momentum) {
         this->momentum = momentum;
     }
 
@@ -43,7 +43,7 @@ namespace urchin {
         return momentum;
     }
 
-    void AICharacter::updatePosition(const Point3<float> &position) {
+    void AICharacter::updatePosition(const Point3<float>& position) {
         this->position = position;
     }
 

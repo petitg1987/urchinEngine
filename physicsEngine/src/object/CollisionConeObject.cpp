@@ -5,7 +5,7 @@
 namespace urchin {
 
     CollisionConeObject::CollisionConeObject(float outerMargin, float radius, float height,
-            typename ConeShape<float>::ConeOrientation coneOrientation,    const Point3<float> &centerOfMass, const Quaternion<float> &orientation) :
+            typename ConeShape<float>::ConeOrientation coneOrientation,    const Point3<float>& centerOfMass, const Quaternion<float>& orientation) :
         CollisionConvexObject3D(outerMargin),
         coneObject(Cone<float>(radius, height, coneOrientation, centerOfMass, orientation)) {
 
@@ -48,7 +48,7 @@ namespace urchin {
     /**
      * @return includeMargin Indicate whether support function need to take into account margin
      */
-    Point3<float> CollisionConeObject::getSupportPoint(const Vector3<float> &direction, bool includeMargin) const {
+    Point3<float> CollisionConeObject::getSupportPoint(const Vector3<float>& direction, bool includeMargin) const {
         if (includeMargin) {
             return retrieveCone().getSupportPoint(direction);
         }

@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    NoBodyShapeWidget::NoBodyShapeWidget(const SceneObject *sceneObject) :
+    NoBodyShapeWidget::NoBodyShapeWidget(const SceneObject* sceneObject) :
             BodyShapeWidget(sceneObject) {
 
     }

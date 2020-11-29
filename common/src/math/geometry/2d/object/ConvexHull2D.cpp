@@ -31,7 +31,7 @@ namespace urchin {
         return localizedConvexHullShape.getPoints();
     }
 
-    template<class T> Point2<T> ConvexHull2D<T>::getSupportPoint(const Vector2<T> &direction) const {
+    template<class T> Point2<T> ConvexHull2D<T>::getSupportPoint(const Vector2<T>& direction) const {
         return localizedConvexHullShape.getSupportPoint(direction);
     }
 

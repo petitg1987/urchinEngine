@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    ManifoldResult::ManifoldResult(AbstractWorkBody *body1, AbstractWorkBody *body2) :
+    ManifoldResult::ManifoldResult(AbstractWorkBody* body1, AbstractWorkBody* body2) :
             body1(body1),
             body2(body2),
             nbContactPoint(0),
@@ -52,7 +52,7 @@ namespace urchin {
      * @param depth Penetration depth (negative when collision exist)
      * @param isPredictive Is a predictive contact point
      */
-    void ManifoldResult::addContactPoint(const Vector3<float> &normalFromObject2, const Point3<float> &pointOnObject2, float depth, bool isPredictive) {
+    void ManifoldResult::addContactPoint(const Vector3<float>& normalFromObject2, const Point3<float>& pointOnObject2, float depth, bool isPredictive) {
         Point3<float> pointOnObject1 = pointOnObject2.translate(normalFromObject2 * depth);
         Point3<float> localPointOnObject1 = body1->getPhysicsTransform().inverseTransform(pointOnObject1);
         Point3<float> localPointOnObject2 = body2->getPhysicsTransform().inverseTransform(pointOnObject2);
@@ -69,8 +69,8 @@ namespace urchin {
      * @param depth Penetration depth (negative when collision exist)
      * @param isPredictive Is a predictive contact point
      */
-    void ManifoldResult::addContactPoint(const Vector3<float> &normalFromObject2, const Point3<float> &pointOnObject1, const Point3<float> &pointOnObject2,
-            const Point3<float> &localPointOnObject1, const Point3<float> &localPointOnObject2, float depth, bool isPredictive) {
+    void ManifoldResult::addContactPoint(const Vector3<float>& normalFromObject2, const Point3<float>& pointOnObject1, const Point3<float>& pointOnObject2,
+            const Point3<float>& localPointOnObject1, const Point3<float>& localPointOnObject2, float depth, bool isPredictive) {
         assert(isPredictive || depth <= contactBreakingThreshold);
 
         //1. if similar point exist in manifold result: replace it
@@ -122,7 +122,7 @@ namespace urchin {
      * @param localPointOnObject2 Local point of object 2 used for comparison
      * @return Nearest point index to point given in parameter. If all points are too far: '-1' is returned.
      */
-    int ManifoldResult::getNearestPointIndex(const Point3<float> &localPointOnObject2) const {
+    int ManifoldResult::getNearestPointIndex(const Point3<float>& localPointOnObject2) const {
         float shortestDistance = contactBreakingThreshold * contactBreakingThreshold;
         int nearestPointIndex = -1;
         for (unsigned int i=0; i<nbContactPoint; ++i) {
@@ -143,7 +143,7 @@ namespace urchin {
      * @param localPointOnObject2 Local point of object 2
      * @return Best index to insert the new point
      */
-    unsigned int ManifoldResult::computeBestInsertionIndex(const Point3<float> &localPointOnObject2) const {
+    unsigned int ManifoldResult::computeBestInsertionIndex(const Point3<float>& localPointOnObject2) const {
         assert(nbContactPoint==MAX_PERSISTENT_POINTS);
 
         unsigned int deepestIndex = getDeepestPointIndex();
@@ -202,7 +202,7 @@ namespace urchin {
     /**
      * Computes area formed by the four points. Formula used: max(|v1.crossProduct(v2)|²).
      */
-    float ManifoldResult::computeArea(const Point3<float> &p0, const Point3<float> &p1, const Point3<float> &p2, const Point3<float> &p3) const {
+    float ManifoldResult::computeArea(const Point3<float>& p0, const Point3<float>& p1, const Point3<float>& p2, const Point3<float>& p3) const {
         Vector3<float> vectorP1p0 = p1.vector(p0);
         Vector3<float> vectorP2p0 = p2.vector(p0);
         Vector3<float> vectorP3p0 = p3.vector(p0);

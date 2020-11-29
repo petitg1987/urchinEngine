@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    Meshes::Meshes(ConstMeshes *constMeshes) :
+    Meshes::Meshes(ConstMeshes* constMeshes) :
             constMeshes(constMeshes),
             numMeshes(constMeshes->getNumberConstMeshes()) {
         //create mesh
@@ -44,7 +44,7 @@ namespace urchin {
         return constMeshes;
     }
 
-    void Meshes::onMoving(const Transform<float> &newTransform) {
+    void Meshes::onMoving(const Transform<float>& newTransform) {
         globalBBox = constMeshes->getOriginalAABBox().moveAABBox(newTransform);
 
         globalSplitBBoxes.clear();

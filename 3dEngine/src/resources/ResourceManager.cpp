@@ -21,7 +21,7 @@ namespace urchin {
         }
     }
 
-    void ResourceManager::addResource(const std::string &name, Resource *resource) {
+    void ResourceManager::addResource(const std::string &name, Resource* resource) {
         mResources[name] = resource;
         resource->setName(name);
     }

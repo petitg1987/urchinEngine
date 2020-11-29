@@ -22,7 +22,7 @@ namespace urchin {
         xmlSkin = new XmlParser(skinFilename);
     }
 
-    std::shared_ptr<Texture> GUISkinService::createWidgetTexture(unsigned int width, unsigned int height, const std::shared_ptr<XmlChunk> &skinXmlChunk, WidgetOutline *widgetOutline) const {
+    std::shared_ptr<Texture> GUISkinService::createWidgetTexture(unsigned int width, unsigned int height, const std::shared_ptr<XmlChunk> &skinXmlChunk, WidgetOutline* widgetOutline) const {
         //skin information
         std::shared_ptr<XmlChunk> widgetImageElem = getXmlSkin()->getUniqueChunk(true, "image", XmlAttribute(), skinXmlChunk);
         auto *rawWidgetImage = MediaManager::instance()->getMedia<Image>(widgetImageElem->getStringValue());

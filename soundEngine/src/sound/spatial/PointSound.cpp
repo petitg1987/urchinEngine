@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    PointSound::PointSound(const std::string &filename, const Point3<float> &position) :
+    PointSound::PointSound(const std::string &filename, const Point3<float>& position) :
         Sound(filename),
         position(position),
         inaudibleDistance(DEFAULT_INAUDIBLE_DISTANCE) {
@@ -14,7 +14,7 @@ namespace urchin {
     /**
      * @param inaudibleDistance Define distance at which the sound become inaudible
      */
-    PointSound::PointSound(const std::string &filename, const Point3<float> &position, float inaudibleDistance) :
+    PointSound::PointSound(const std::string &filename, const Point3<float>& position, float inaudibleDistance) :
         Sound(filename),
         position(position),
         inaudibleDistance(inaudibleDistance) {
@@ -34,7 +34,7 @@ namespace urchin {
         return Sound::POINT;
     }
 
-    void PointSound::setPosition(const Point3<float> &position) {
+    void PointSound::setPosition(const Point3<float>& position) {
         this->position = position;
         alSource3f(getSourceId(), AL_POSITION, position.X, position.Y, position.Z);
     }

@@ -1,7 +1,7 @@
 #include "SVGCircle.h"
 
 namespace urchin {
-    SVGCircle::SVGCircle(const Point2<float> &center, float radius, SVGColor color, float opacity) :
+    SVGCircle::SVGCircle(const Point2<float>& center, float radius, SVGColor color, float opacity) :
             SVGShape(color, opacity),
             center(center),
             radius(radius) {

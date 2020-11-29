@@ -18,7 +18,7 @@ namespace urchin {
         #endif
     }
 
-    template<class T> CSGPolygon<T>::CSGPolygon(const CSGPolygon &polygon) :
+    template<class T> CSGPolygon<T>::CSGPolygon(const CSGPolygon& polygon) :
         name(polygon.name),
         cwPoints(polygon.cwPoints) {
 
@@ -61,15 +61,15 @@ namespace urchin {
         return area / (T)2;
     }
 
-    template<class T> bool CSGPolygon<T>::pointInsidePolygon(const Point2<T> &point) const {
+    template<class T> bool CSGPolygon<T>::pointInsidePolygon(const Point2<T>& point) const {
         return pointInsidePolygon(point, false);
     }
 
-    template<class T> bool CSGPolygon<T>::pointInsideOrOnPolygon(const Point2<T> &point) const {
+    template<class T> bool CSGPolygon<T>::pointInsideOrOnPolygon(const Point2<T>& point) const {
         return pointInsidePolygon(point, true);
     }
 
-    template<class T> bool CSGPolygon<T>::pointInsidePolygon(const Point2<T> &point, bool onEdgeIsInside) const {//see http://web.archive.org/web/20120323102807/http://local.wasp.uwa.edu.au/~pbourke/geometry/insidepoly/
+    template<class T> bool CSGPolygon<T>::pointInsidePolygon(const Point2<T>& point, bool onEdgeIsInside) const {//see http://web.archive.org/web/20120323102807/http://local.wasp.uwa.edu.au/~pbourke/geometry/insidepoly/
         bool inside = false;
 
         for (std::size_t i=0, previousI=cwPoints.size()-1; i<cwPoints.size(); previousI=i++) {
@@ -222,7 +222,7 @@ namespace urchin {
         return svgPolygon;
     }
 
-    template<class T> void CSGPolygon<T>::logInputData(const std::string &message, Logger::CriticalityLevel logLevel, const CSGPolygon<T> &inputPolygon) const {
+    template<class T> void CSGPolygon<T>::logInputData(const std::string &message, Logger::CriticalityLevel logLevel, const CSGPolygon<T>& inputPolygon) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 
@@ -232,7 +232,7 @@ namespace urchin {
         Logger::logger().log(logLevel, logStream.str());
     }
 
-    template<class T> std::ostream& operator <<(std::ostream &stream, const CSGPolygon<T> &polygon) {
+    template<class T> std::ostream& operator <<(std::ostream &stream, const CSGPolygon<T>& polygon) {
         stream << "Name: " << polygon.getName() << std::endl;
         stream << "Points (CW): " << std::endl;
         for (const auto &point : polygon.getCwPoints()) {

@@ -134,7 +134,7 @@ namespace urchin {
         return farPlane;
     }
 
-    void Camera::moveTo(const Point3<float> &position) {
+    void Camera::moveTo(const Point3<float>& position) {
         this->position = position;
 
         updateViewMatrix();
@@ -154,13 +154,13 @@ namespace urchin {
         updateViewMatrix();
     }
 
-    void Camera::lookAt(const Vector3<float> &view) {
+    void Camera::lookAt(const Vector3<float>& view) {
         this->view = view.normalize();
 
         updateViewMatrix();
     }
 
-    void Camera::rotate(const Quaternion<float> &quatRotation) {
+    void Camera::rotate(const Quaternion<float>& quatRotation) {
         Point3<float> pivot;
         if (std::fabs(distance) > std::numeric_limits<float>::epsilon()) {
             pivot = position.translate(view * distance);

@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    AudioStreamPlayer::AudioStreamPlayer(const Sound *sound, StreamUpdateWorker *streamUpdateWorker) :
+    AudioStreamPlayer::AudioStreamPlayer(const Sound* sound, StreamUpdateWorker* streamUpdateWorker) :
         AudioPlayer(sound),
         streamUpdateWorker(streamUpdateWorker) {
 

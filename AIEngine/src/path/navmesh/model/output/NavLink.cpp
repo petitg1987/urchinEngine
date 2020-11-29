@@ -4,7 +4,7 @@
 #include "path/navmesh/model/output/NavTriangle.h"
 
 namespace urchin {
-    NavLink::NavLink(NavLinkType linkType, unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavLinkConstraint *linkConstraint) :
+    NavLink::NavLink(NavLinkType linkType, unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavLinkConstraint* linkConstraint) :
             linkType(linkType),
             sourceEdgeIndex(sourceEdgeIndex),
             targetTriangle(targetTriangle),
@@ -20,12 +20,12 @@ namespace urchin {
         return std::shared_ptr<NavLink>(new NavLink(NavLinkType::STANDARD, sourceEdgeIndex, targetTriangle, nullptr));
     }
 
-    std::shared_ptr<NavLink> NavLink::newJoinPolygonsLink(unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavLinkConstraint *linkConstraint) {
+    std::shared_ptr<NavLink> NavLink::newJoinPolygonsLink(unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavLinkConstraint* linkConstraint) {
         assert(linkConstraint != nullptr);
         return std::shared_ptr<NavLink>(new NavLink(NavLinkType::JOIN_POLYGONS, sourceEdgeIndex, targetTriangle, linkConstraint));
     }
 
-    std::shared_ptr<NavLink> NavLink::newJumpLink(unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavLinkConstraint *linkConstraint) {
+    std::shared_ptr<NavLink> NavLink::newJumpLink(unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavLinkConstraint* linkConstraint) {
         assert(linkConstraint != nullptr);
         return std::shared_ptr<NavLink>(new NavLink(NavLinkType::JUMP, sourceEdgeIndex, targetTriangle, linkConstraint));
     }

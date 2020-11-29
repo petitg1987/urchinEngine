@@ -76,13 +76,13 @@ namespace urchin {
         delete mainGrassQuadtree;
     }
 
-    void TerrainGrass::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) {
+    void TerrainGrass::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
 
         ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix);
     }
 
-    void TerrainGrass::refreshWith(const std::shared_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition) {
+    void TerrainGrass::refreshWith(const std::shared_ptr<TerrainMesh> &mesh, const Point3<float>& terrainPosition) {
         generateGrass(mesh, terrainPosition);
 
         ShaderDataSender()
@@ -94,7 +94,7 @@ namespace urchin {
         ShaderDataSender().sendData(terrainAmbientShaderVar, ambient);
     }
 
-    void TerrainGrass::generateGrass(const std::shared_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition) {
+    void TerrainGrass::generateGrass(const std::shared_ptr<TerrainMesh> &mesh, const Point3<float>& terrainPosition) {
         const unsigned int NUM_THREADS = std::max(2u, std::thread::hardware_concurrency());
 
         if (mesh) {
@@ -156,7 +156,7 @@ namespace urchin {
         }
     }
 
-    unsigned int TerrainGrass::retrieveVertexIndex(const Point2<float> &localXzCoordinate) const {
+    unsigned int TerrainGrass::retrieveVertexIndex(const Point2<float>& localXzCoordinate) const {
         Point3<float> localCoordinate = Point3<float>(localXzCoordinate.X, 0.0f, localXzCoordinate.Y);
         Point3<float> farLeftCoordinate = localCoordinate - mesh->getVertices()[0];
 
@@ -315,7 +315,7 @@ namespace urchin {
         return windDirection;
     }
 
-    void TerrainGrass::setWindDirection(const Vector3<float> &windDirection) {
+    void TerrainGrass::setWindDirection(const Vector3<float>& windDirection) {
         this->windDirection = windDirection.normalize();
 
         ShaderDataSender().sendData(windDirectionShaderVar, this->windDirection);
@@ -331,7 +331,7 @@ namespace urchin {
         ShaderDataSender().sendData(windStrengthShaderVar, windStrength);
     }
 
-    void TerrainGrass::display(const RenderTarget *renderTarget, const Camera *camera, float dt) {
+    void TerrainGrass::display(const RenderTarget* renderTarget, const Camera* camera, float dt) {
         if (grassTexture) {
             ScopeProfiler profiler("3d", "grassDisplay");
 

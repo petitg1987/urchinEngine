@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    BodyAABBNodeData::BodyAABBNodeData(AbstractWorkBody *body, PairContainer *alternativePairContainer) :
+    BodyAABBNodeData::BodyAABBNodeData(AbstractWorkBody* body, PairContainer* alternativePairContainer) :
         AABBNodeData(body),
         alternativePairContainer(alternativePairContainer) {
 
@@ -32,11 +32,11 @@ namespace urchin {
         return alternativePairContainer;
     }
 
-    void BodyAABBNodeData::addOwnerPairContainer(PairContainer *ownerPairContainer) {
+    void BodyAABBNodeData::addOwnerPairContainer(PairContainer* ownerPairContainer) {
         ownerPairContainers.insert(ownerPairContainer);
     }
 
-    void BodyAABBNodeData::removeOwnerPairContainer(PairContainer *ownerPairContainer) {
+    void BodyAABBNodeData::removeOwnerPairContainer(PairContainer* ownerPairContainer) {
         ownerPairContainers.erase(ownerPairContainer);
     }
 

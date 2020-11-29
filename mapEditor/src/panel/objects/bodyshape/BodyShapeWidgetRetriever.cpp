@@ -13,7 +13,7 @@
 
 namespace urchin {
 
-    BodyShapeWidgetRetriever::BodyShapeWidgetRetriever(const SceneObject *sceneObject) :
+    BodyShapeWidgetRetriever::BodyShapeWidgetRetriever(const SceneObject* sceneObject) :
             sceneObject(sceneObject) {
 
     }

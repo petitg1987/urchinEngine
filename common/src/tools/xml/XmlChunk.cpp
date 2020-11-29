@@ -5,12 +5,12 @@
 
 namespace urchin {
 
-    XmlChunk::XmlChunk(TiXmlElement *chunk) :
+    XmlChunk::XmlChunk(TiXmlElement* chunk) :
             chunk(chunk) {
 
     }
 
-    XmlChunk::XmlChunk(const TiXmlElement *chunk) :
+    XmlChunk::XmlChunk(const TiXmlElement* chunk) :
             XmlChunk(const_cast<TiXmlElement *>(chunk)) {
 
     }
@@ -26,7 +26,7 @@ namespace urchin {
         return *chunk->ToElement()->Attribute(attributeName);
     }
 
-    void XmlChunk::setAttribute(const XmlAttribute &attribute) {
+    void XmlChunk::setAttribute(const XmlAttribute& attribute) {
         chunk->SetAttribute(attribute.getAttributeName(), attribute.getAttributeValue());
     }
 
@@ -101,7 +101,7 @@ namespace urchin {
         return Converter::toPoint2(getStringValue());
     }
 
-    void XmlChunk::setPoint2Value(const Point2<float> &value) {
+    void XmlChunk::setPoint2Value(const Point2<float>& value) {
         std::locale::global(std::locale("C")); //for float
 
         setStringValue(std::to_string(value.X) + Converter::FLOAT_DELIMITER + std::to_string(value.Y));
@@ -111,7 +111,7 @@ namespace urchin {
         return Converter::toPoint3(getStringValue());
     }
 
-    void XmlChunk::setPoint3Value(const Point3<float> &value) {
+    void XmlChunk::setPoint3Value(const Point3<float>& value) {
         std::locale::global(std::locale("C")); //for float
 
         setStringValue(std::to_string(value.X) + Converter::FLOAT_DELIMITER + std::to_string(value.Y) + Converter::FLOAT_DELIMITER + std::to_string(value.Z));
@@ -121,7 +121,7 @@ namespace urchin {
         return Converter::toPoint4(getStringValue());
     }
 
-    void XmlChunk::setPoint4Value(const Point4<float> &value) {
+    void XmlChunk::setPoint4Value(const Point4<float>& value) {
         std::locale::global(std::locale("C")); //for float
 
         setStringValue(std::to_string(value.X) + Converter::FLOAT_DELIMITER + std::to_string(value.Y) + Converter::FLOAT_DELIMITER + std::to_string(value.Z)
@@ -132,7 +132,7 @@ namespace urchin {
         return Converter::toVector2(getStringValue());
     }
 
-    void XmlChunk::setVector2Value(const Vector2<float> &value) {
+    void XmlChunk::setVector2Value(const Vector2<float>& value) {
         std::locale::global(std::locale("C")); //for float
 
         setStringValue(std::to_string(value.X) + Converter::FLOAT_DELIMITER + std::to_string(value.Y));
@@ -142,7 +142,7 @@ namespace urchin {
         return Converter::toVector3(getStringValue());
     }
 
-    void XmlChunk::setVector3Value(const Vector3<float> &value) {
+    void XmlChunk::setVector3Value(const Vector3<float>& value) {
         std::locale::global(std::locale("C")); //for float
 
         setStringValue(std::to_string(value.X) + Converter::FLOAT_DELIMITER + std::to_string(value.Y) + Converter::FLOAT_DELIMITER + std::to_string(value.Z));
@@ -152,7 +152,7 @@ namespace urchin {
         return Converter::toVector4(getStringValue());
     }
 
-    void XmlChunk::setVector4Value(const Vector4<float> &value) {
+    void XmlChunk::setVector4Value(const Vector4<float>& value) {
         std::locale::global(std::locale("C")); //for float
 
         setStringValue(std::to_string(value.X) + Converter::FLOAT_DELIMITER + std::to_string(value.Y) + Converter::FLOAT_DELIMITER + std::to_string(value.Z)

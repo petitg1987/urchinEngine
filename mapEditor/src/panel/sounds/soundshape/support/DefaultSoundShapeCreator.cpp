@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    DefaultSoundShapeCreator::DefaultSoundShapeCreator(const SceneSound *sceneSound) :
+    DefaultSoundShapeCreator::DefaultSoundShapeCreator(const SceneSound* sceneSound) :
         sceneSound(sceneSound) {
 
     }

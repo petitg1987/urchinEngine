@@ -2,12 +2,12 @@
 
 namespace urchin {
 
-    CameraSpaceService::CameraSpaceService(Camera *camera) :
+    CameraSpaceService::CameraSpaceService(Camera* camera) :
             camera(camera) {
 
     }
 
-    Point2<float> CameraSpaceService::worldSpacePointToScreenSpace(const Point3<float> &worldSpacePoint) const {
+    Point2<float> CameraSpaceService::worldSpacePointToScreenSpace(const Point3<float>& worldSpacePoint) const {
         Point4<float> pointClipSpace = camera->getProjectionMatrix() * camera->getViewMatrix() * Point4<float>(worldSpacePoint, 1.0f);
         Point4<float> pointNdcSpace = pointClipSpace.divideByW();
         return Point2<float>(
@@ -19,7 +19,7 @@ namespace urchin {
      * Create a ray in world space from camera position to a screen point target.
      * @param screenPoint Point on screen defining the target of the ray. This point is generally defined by the cursor/sight position.
      */
-    Ray<float> CameraSpaceService::screenPointToRay(const Point2<float> &screenPoint, float rayLength) const {
+    Ray<float> CameraSpaceService::screenPointToRay(const Point2<float>& screenPoint, float rayLength) const {
         float clipSpaceX = (2.0f * screenPoint.X) / ((float)camera->getSceneWidth()) - 1.0f;
         float clipSpaceY = 1.0f - (2.0f * screenPoint.Y) / ((float)camera->getSceneHeight());
         urchin::Vector4<float> rayDirectionClipSpace(clipSpaceX, clipSpaceY, -1.0f, 1.0f);

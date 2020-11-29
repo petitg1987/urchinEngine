@@ -8,8 +8,8 @@
 
 namespace urchin {
 
-    IntegrateTransformManager::IntegrateTransformManager(const BodyManager *bodyManager,
-            const BroadPhaseManager *broadPhaseManager, const NarrowPhaseManager *narrowPhaseManager) :
+    IntegrateTransformManager::IntegrateTransformManager(const BodyManager* bodyManager,
+            const BroadPhaseManager* broadPhaseManager, const NarrowPhaseManager* narrowPhaseManager) :
             bodyManager(bodyManager),
             broadPhaseManager(broadPhaseManager),
             narrowPhaseManager(narrowPhaseManager) {
@@ -39,7 +39,7 @@ namespace urchin {
         }
     }
 
-    void IntegrateTransformManager::handleContinuousCollision(WorkRigidBody *body, const PhysicsTransform &from, const PhysicsTransform &to, float dt) {
+    void IntegrateTransformManager::handleContinuousCollision(WorkRigidBody* body, const PhysicsTransform& from, const PhysicsTransform& to, float dt) {
         PhysicsTransform updatedTargetTransform = to;
 
         std::vector<AbstractWorkBody *> bodiesAABBoxHitBody = broadPhaseManager->bodyTest(body, from, to);

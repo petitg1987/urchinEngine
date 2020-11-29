@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    LightTableView::LightTableView(QWidget *parent) :
+    LightTableView::LightTableView(QWidget* parent) :
         QTableView(parent) {
         lightsListModel = new QStandardItemModel(0, 1, this);
         lightsListModel->setHorizontalHeaderItem(0, new QStandardItem("Light Name"));
@@ -38,7 +38,7 @@ namespace urchin {
         return nullptr;
     }
 
-    void LightTableView::addLight(const SceneLight *sceneLight) {
+    void LightTableView::addLight(const SceneLight* sceneLight) {
         auto *itemLightName = new QStandardItem(QString::fromStdString(sceneLight->getName()));
         itemLightName->setData(QVariant::fromValue(sceneLight), Qt::UserRole + 1);
         itemLightName->setEditable(false);

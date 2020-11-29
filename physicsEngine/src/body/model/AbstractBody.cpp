@@ -25,7 +25,7 @@ namespace urchin {
         initialize(0.2f, 0.5f, 0.0f);
     }
 
-    AbstractBody::AbstractBody(const AbstractBody &abstractBody) :
+    AbstractBody::AbstractBody(const AbstractBody& abstractBody) :
             ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
             bIsNew(false),
             bIsDeleted(false),
@@ -91,7 +91,7 @@ namespace urchin {
         return bNeedFullRefresh.load(std::memory_order_relaxed);
     }
 
-    void AbstractBody::setWorkBody(AbstractWorkBody *workBody) {
+    void AbstractBody::setWorkBody(AbstractWorkBody* workBody) {
         this->workBody = workBody;
     }
 
@@ -99,7 +99,7 @@ namespace urchin {
         return workBody;
     }
 
-    void AbstractBody::updateTo(AbstractWorkBody *workBody) {
+    void AbstractBody::updateTo(AbstractWorkBody* workBody) {
         #ifndef NDEBUG
             assert(!bodyMutex.try_lock()); //body mutex should be locked before call this method
         #endif
@@ -110,7 +110,7 @@ namespace urchin {
         workBody->setCcdMotionThreshold(ccdMotionThreshold);
     }
 
-    bool AbstractBody::applyFrom(const AbstractWorkBody *workBody) {
+    bool AbstractBody::applyFrom(const AbstractWorkBody* workBody) {
         #ifndef NDEBUG
             assert(!bodyMutex.try_lock()); //body mutex should be locked before call this method
         #endif
@@ -126,7 +126,7 @@ namespace urchin {
         return fullRefreshRequested;
     }
 
-    void AbstractBody::setTransform(const Transform<float> &transform) {
+    void AbstractBody::setTransform(const Transform<float>& transform) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         if (std::abs(transform.getScale()-this->transform.getScale()) > std::numeric_limits<float>::epsilon()) {
@@ -154,7 +154,7 @@ namespace urchin {
         return false;
     }
 
-    void AbstractBody::setShape(const std::shared_ptr<const CollisionShape3D> &shape) {
+    void AbstractBody::setShape(const std::shared_ptr<const CollisionShape3D>& shape) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         this->originalShape = shape;

@@ -5,7 +5,7 @@ namespace urchin {
     /**
      * @param separatingDistance Separating distance of two objects. In case of collision, the distance is zero.
      */
-    template<class T> GJKResultNoCollide<T>::GJKResultNoCollide(T separatingDistance, const Simplex<T> &simplex) :
+    template<class T> GJKResultNoCollide<T>::GJKResultNoCollide(T separatingDistance, const Simplex<T>& simplex) :
         GJKResult<T>(),
         separatingDistance(separatingDistance),
         simplex(simplex) {
@@ -52,7 +52,7 @@ namespace urchin {
         return closestPointB;
     }
 
-    template<class T> void GJKResultNoCollide<T>::logInputData(const std::string &errorMessage, const Simplex<T> &simplex) {
+    template<class T> void GJKResultNoCollide<T>::logInputData(const std::string &errorMessage, const Simplex<T>& simplex) {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<T>::max_digits10);
 

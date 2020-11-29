@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    CollisionObjectWrapper::CollisionObjectWrapper(const CollisionShape3D &shape, const PhysicsTransform &shapeWorldTransform) :
+    CollisionObjectWrapper::CollisionObjectWrapper(const CollisionShape3D& shape, const PhysicsTransform& shapeWorldTransform) :
                     shape(shape),
                     shapeWorldTransform(shapeWorldTransform) {
 

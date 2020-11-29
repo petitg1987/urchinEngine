@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    AICharacterController::AICharacterController(std::shared_ptr<AICharacter> character, AIManager *aiManager) :
+    AICharacterController::AICharacterController(std::shared_ptr<AICharacter> character, AIManager* aiManager) :
             character(std::move(character)),
             aiManager(aiManager),
             eventHandler(nullptr),
@@ -18,7 +18,7 @@ namespace urchin {
         this->eventHandler = eventHandler;
     }
 
-    void AICharacterController::moveTo(const Point3<float> &seekTarget) {
+    void AICharacterController::moveTo(const Point3<float>& seekTarget) {
         stopMoving();
         pathRequest = std::make_shared<PathRequest>(character->getPosition(), seekTarget);
         aiManager->addPathRequest(pathRequest);
@@ -82,7 +82,7 @@ namespace urchin {
         return character->getPosition().toPoint2XZ();
     }
 
-    void AICharacterController::computeSteeringMomentum(const Point2<float> &target) {
+    void AICharacterController::computeSteeringMomentum(const Point2<float>& target) {
         Vector2<float> desiredVelocity = retrieveCharacterPosition().vector(target).normalize() * character->retrieveMaxVelocityInMs();
         Vector2<float> desiredMomentum = desiredVelocity * character->getMass();
 

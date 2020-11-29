@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    ConstraintSolving::ConstraintSolving(WorkRigidBody *body1, WorkRigidBody *body2, ManifoldContactPoint &manifoldContactPoint) :
+    ConstraintSolving::ConstraintSolving(WorkRigidBody* body1, WorkRigidBody* body2, ManifoldContactPoint& manifoldContactPoint) :
         body1(body1),
         body2(body2),
         manifoldContactPoint(manifoldContactPoint) {
@@ -21,7 +21,7 @@ namespace urchin {
         return commonData;
     }
 
-    void ConstraintSolving::setCommonData(const CommonSolvingData &commonSolvingData) {
+    void ConstraintSolving::setCommonData(const CommonSolvingData& commonSolvingData) {
         this->commonData = commonSolvingData;
     }
 
@@ -29,7 +29,7 @@ namespace urchin {
         return impulseData;
     }
 
-    void ConstraintSolving::setImpulseData(const ImpulseSolvingData &impulseSolvingData) {
+    void ConstraintSolving::setImpulseData(const ImpulseSolvingData& impulseSolvingData) {
         this->impulseData = impulseSolvingData;
     }
 

@@ -77,7 +77,7 @@ namespace urchin {
         return zLength;
     }
 
-    AABBox<float> CollisionHeightfieldShape::toAABBox(const PhysicsTransform &physicsTransform) const {
+    AABBox<float> CollisionHeightfieldShape::toAABBox(const PhysicsTransform& physicsTransform) const {
         if (!lastTransform.equals(physicsTransform)) {
             const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
             Point3<float> extend(
@@ -123,7 +123,7 @@ namespace urchin {
         return new CollisionHeightfieldShape(vertices, xLength, zLength);
     }
 
-    const std::vector<CollisionTriangleShape> &CollisionHeightfieldShape::findTrianglesInAABBox(const AABBox<float> &checkAABBox) const {
+    const std::vector<CollisionTriangleShape> &CollisionHeightfieldShape::findTrianglesInAABBox(const AABBox<float>& checkAABBox) const {
         trianglesInAABBox.clear();
 
         auto vertexXRange = computeStartEndIndices(checkAABBox.getMin().X, checkAABBox.getMax().X, Axis::X);
@@ -138,7 +138,7 @@ namespace urchin {
         return trianglesInAABBox;
     }
 
-    const std::vector<CollisionTriangleShape> &CollisionHeightfieldShape::findTrianglesHitByRay(const LineSegment3D<float> &ray) const {
+    const std::vector<CollisionTriangleShape> &CollisionHeightfieldShape::findTrianglesHitByRay(const LineSegment3D<float>& ray) const {
         trianglesInAABBox.clear();
 
         bool raySameXValues = ray.getA().X == ray.getB().X;
@@ -225,7 +225,7 @@ namespace urchin {
         }
     }
 
-    void CollisionHeightfieldShape::createCollisionTriangleShape(const Point3<float> &p1, const Point3<float> &p2, const Point3<float> &p3) const {
+    void CollisionHeightfieldShape::createCollisionTriangleShape(const Point3<float>& p1, const Point3<float>& p2, const Point3<float>& p3) const {
         void *shapeMemPtr = triangleShapesPool->allocate(sizeof(TriangleShape3D<float>));
         trianglesInAABBox.emplace_back(CollisionTriangleShape(new (shapeMemPtr) TriangleShape3D<float>(p1, p2, p3), triangleShapesPool));
     }

@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    LightScopeDisplayer::LightScopeDisplayer(SceneManager *sceneManager) :
+    LightScopeDisplayer::LightScopeDisplayer(SceneManager* sceneManager) :
         sceneManager(sceneManager) {
 
     }
@@ -13,7 +13,7 @@ namespace urchin {
         cleanCurrentDisplay();
     }
 
-    void LightScopeDisplayer::displayLightScopeFor(const SceneLight *sceneLight) {
+    void LightScopeDisplayer::displayLightScopeFor(const SceneLight* sceneLight) {
         cleanCurrentDisplay();
 
         if (sceneLight) {

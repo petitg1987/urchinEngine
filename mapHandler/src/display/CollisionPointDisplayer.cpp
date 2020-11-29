@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    CollisionPointDisplayer::CollisionPointDisplayer(PhysicsWorld *physicsWorld, Renderer3d *renderer3d) :
+    CollisionPointDisplayer::CollisionPointDisplayer(PhysicsWorld* physicsWorld, Renderer3d* renderer3d) :
             physicsWorld(physicsWorld),
             renderer3d(renderer3d) {
         physicsWorld->createCollisionVisualizer();

@@ -88,7 +88,7 @@ namespace urchin {
         }
     }
 
-    CommonSolvingData ConstraintSolverManager::fillCommonSolvingData(const ManifoldResult &manifoldResult, const ManifoldContactPoint &contact) {
+    CommonSolvingData ConstraintSolverManager::fillCommonSolvingData(const ManifoldResult& manifoldResult, const ManifoldContactPoint& contact) {
         CommonSolvingData commonSolvingData;
 
         WorkRigidBody *body1 = WorkRigidBody::upCast(manifoldResult.getBody1());
@@ -109,7 +109,7 @@ namespace urchin {
         return commonSolvingData;
     }
 
-    ImpulseSolvingData ConstraintSolverManager::fillImpulseSolvingData(const CommonSolvingData &commonData, float dt) const {
+    ImpulseSolvingData ConstraintSolverManager::fillImpulseSolvingData(const CommonSolvingData& commonData, float dt) const {
         ImpulseSolvingData impulseSolvingData;
 
         //friction
@@ -152,7 +152,7 @@ namespace urchin {
     /**
      * Solve normal constraint. Normal constraint is related to non-penetration
      */
-    void ConstraintSolverManager::solveNormalConstraint(ConstraintSolving *constraintSolving) {
+    void ConstraintSolverManager::solveNormalConstraint(ConstraintSolving* constraintSolving) {
         const CommonSolvingData &commonSolvingData = constraintSolving->getCommonData();
         const ImpulseSolvingData &impulseSolvingData = constraintSolving->getImpulseData();
         AccumulatedSolvingData &accumulatedSolvingData = constraintSolving->getAccumulatedData();
@@ -173,7 +173,7 @@ namespace urchin {
     /**
      * Solve tangent constraint. Tangent constraint is related to friction
      */
-    void ConstraintSolverManager::solveTangentConstraint(ConstraintSolving *constraintSolving) {
+    void ConstraintSolverManager::solveTangentConstraint(ConstraintSolving* constraintSolving) {
         const CommonSolvingData &commonSolvingData = constraintSolving->getCommonData();
         const ImpulseSolvingData &impulseSolvingData = constraintSolving->getImpulseData();
         AccumulatedSolvingData &accumulatedSolvingData = constraintSolving->getAccumulatedData();
@@ -192,7 +192,7 @@ namespace urchin {
         applyImpulse(constraintSolving->getBody1(), constraintSolving->getBody2(), commonSolvingData, tangentImpulseVector);
     }
 
-    void ConstraintSolverManager::applyImpulse(WorkRigidBody *body1, WorkRigidBody *body2, const CommonSolvingData &commonData, const Vector3<float> &impulseVector) {
+    void ConstraintSolverManager::applyImpulse(WorkRigidBody* body1, WorkRigidBody* body2, const CommonSolvingData& commonData, const Vector3<float>& impulseVector) {
         body1->setLinearVelocity(body1->getLinearVelocity() - (impulseVector * body1->getInvMass() * body1->getLinearFactor()));
         body1->setAngularVelocity(body1->getAngularVelocity() - (commonData.invInertia1 * commonData.r1.crossProduct(impulseVector * body1->getLinearFactor()) * body1->getAngularFactor()));
 
@@ -203,7 +203,7 @@ namespace urchin {
     /**
      * @return Relative velocity at the contact point
      */
-    Vector3<float> ConstraintSolverManager::computeRelativeVelocity(const CommonSolvingData &commonData) const {
+    Vector3<float> ConstraintSolverManager::computeRelativeVelocity(const CommonSolvingData& commonData) const {
         const Vector3<float> vp1 = commonData.body1->getLinearVelocity() + commonData.body1->getAngularVelocity().crossProduct(commonData.r1);
         const Vector3<float> vp2 = commonData.body2->getLinearVelocity() + commonData.body2->getAngularVelocity().crossProduct(commonData.r2);
 
@@ -213,7 +213,7 @@ namespace urchin {
     /**
      * @return Tangent vector in direction of sliding
      */
-    Vector3<float> ConstraintSolverManager::computeTangent(const CommonSolvingData &commonData, const Vector3<float> &normal) const {
+    Vector3<float> ConstraintSolverManager::computeTangent(const CommonSolvingData& commonData, const Vector3<float>& normal) const {
         Vector3<float> relativeVelocity = computeRelativeVelocity(commonData);
         Vector3<float> tangentVelocity = relativeVelocity - (relativeVelocity.dotProduct(normal)) * normal;
 
@@ -225,7 +225,7 @@ namespace urchin {
         return tangentVelocity / tangentVelocityLength;
     }
 
-    void ConstraintSolverManager::logCommonData(const std::string &message, const CommonSolvingData &commonData) const {
+    void ConstraintSolverManager::logCommonData(const std::string &message, const CommonSolvingData& commonData) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 

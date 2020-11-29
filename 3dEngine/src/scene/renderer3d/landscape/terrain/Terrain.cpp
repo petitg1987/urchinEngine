@@ -12,7 +12,7 @@ namespace urchin {
     /**
      * @param position Terrain position. Position is centered on XZ axis and Y value represents a point without elevation.
      */
-    Terrain::Terrain(std::shared_ptr<TerrainMesh> &mesh, std::unique_ptr<TerrainMaterial> &material, const Point3<float> &position) :
+    Terrain::Terrain(std::shared_ptr<TerrainMesh> &mesh, std::unique_ptr<TerrainMaterial> &material, const Point3<float>& position) :
             ambient(0.0f) {
         terrainShader = ShaderBuilder().createShader("terrain.vert", "", "terrain.frag");
 
@@ -42,7 +42,7 @@ namespace urchin {
         refreshGrassAmbient();
     }
 
-    void Terrain::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix) {
+    void Terrain::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
 
         ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix);
@@ -122,7 +122,7 @@ namespace urchin {
     /**
      * @param position Terrain position. Position is centered on XZ axis and Y value represents a point without elevation.
      */
-    void Terrain::setPosition(const Point3<float> &position) {
+    void Terrain::setPosition(const Point3<float>& position) {
         this->position = position;
 
         ShaderDataSender().sendData(vPositionShaderVar, position);
@@ -147,17 +147,17 @@ namespace urchin {
         refreshGrassAmbient(); //grass uses ambient value: refresh is required
     }
 
-    Point3<float> Terrain::findPointAt(const Point2<float> &globalXzCoordinate) const {
+    Point3<float> Terrain::findPointAt(const Point2<float>& globalXzCoordinate) const {
         Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - position.X, globalXzCoordinate.Y - position.Z);
         return mesh->findPointAt(localCoordinate) + position;
     }
 
-    float Terrain::findHeightAt(const Point2<float> &globalXzCoordinate) const {
+    float Terrain::findHeightAt(const Point2<float>& globalXzCoordinate) const {
         Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - position.X, globalXzCoordinate.Y - position.Z);
         return mesh->findHeightAt(localCoordinate) + position.Y;
     }
 
-    void Terrain::display(const RenderTarget *renderTarget, const Camera *camera, float dt) const {
+    void Terrain::display(const RenderTarget* renderTarget, const Camera* camera, float dt) const {
         ShaderDataSender().sendData(mViewShaderVar, camera->getViewMatrix());
 
         renderTarget->activeShader(terrainShader);

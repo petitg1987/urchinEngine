@@ -54,7 +54,7 @@ namespace urchin {
     /**
      * See '_doc' for an algorithm overview
      */
-    std::shared_ptr<NavMesh> NavMeshGenerator::generate(AIWorld &aiWorld) {
+    std::shared_ptr<NavMesh> NavMeshGenerator::generate(AIWorld& aiWorld) {
         ScopeProfiler scopeProfiler("ai", "navMeshGenerate");
 
         updateExpandedPolytopes(aiWorld);
@@ -71,7 +71,7 @@ namespace urchin {
         return navMesh;
     }
 
-    void NavMeshGenerator::updateExpandedPolytopes(AIWorld &aiWorld) {
+    void NavMeshGenerator::updateExpandedPolytopes(AIWorld& aiWorld) {
         ScopeProfiler scopeProfiler("ai", "upExpandPoly");
 
         newOrMovingNavObjectsToRefresh.clear();
@@ -310,7 +310,7 @@ namespace urchin {
         }
     }
 
-    std::shared_ptr<NavPolygon> NavMeshGenerator::createNavigationPolygon(CSGPolygon<float> &walkablePolygon, const std::shared_ptr<PolytopeSurface> &walkableSurface, bool uniqueWalkableSurface) const {
+    std::shared_ptr<NavPolygon> NavMeshGenerator::createNavigationPolygon(CSGPolygon<float>& walkablePolygon, const std::shared_ptr<PolytopeSurface> &walkableSurface, bool uniqueWalkableSurface) const {
         ScopeProfiler scopeProfiler("ai", "createNavPoly");
 
         navPolygonName = "<" + walkablePolygon.getName() + ">";
@@ -332,7 +332,7 @@ namespace urchin {
         return navPolygon;
     }
 
-    std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const TriangulationAlgorithm &triangulation, const std::shared_ptr<PolytopeSurface> &walkableSurface) const {
+    std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const TriangulationAlgorithm& triangulation, const std::shared_ptr<PolytopeSurface> &walkableSurface) const {
         ScopeProfiler scopeProfiler("ai", "elevateTriPoint");
 
         std::vector<Point3<float>> elevatedPoints;
@@ -386,7 +386,7 @@ namespace urchin {
         }
     }
 
-    void NavMeshGenerator::createNavLinks(const NavPolygonEdge &sourceExternalEdge, const std::shared_ptr<NavObject> &targetNavObject) const {
+    void NavMeshGenerator::createNavLinks(const NavPolygonEdge& sourceExternalEdge, const std::shared_ptr<NavObject> &targetNavObject) const {
         EdgeLinkDetection edgeLinkDetection(navMeshAgent->getJumpDistance());
         LineSegment3D<float> sourceEdge = sourceExternalEdge.triangle->computeEdge(sourceExternalEdge.edgeIndex);
 

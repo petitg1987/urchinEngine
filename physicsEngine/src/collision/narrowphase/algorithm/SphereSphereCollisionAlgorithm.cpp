@@ -10,7 +10,7 @@ namespace urchin {
 
     }
 
-    void SphereSphereCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2) {
+    void SphereSphereCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper& object1, const CollisionObjectWrapper& object2) {
         ScopeProfiler profiler("physics", "algSphereSphere");
 
         const auto &sphere1 = dynamic_cast<const CollisionSphereShape &>(object1.getShape());
@@ -38,7 +38,7 @@ namespace urchin {
         }
     }
 
-    CollisionAlgorithm *SphereSphereCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, ManifoldResult &&result, FixedSizePool<CollisionAlgorithm> *algorithmPool) const {
+    CollisionAlgorithm *SphereSphereCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, ManifoldResult &&result, FixedSizePool<CollisionAlgorithm>* algorithmPool) const {
         void *memPtr = algorithmPool->allocate(sizeof(SphereSphereCollisionAlgorithm));
         return new(memPtr) SphereSphereCollisionAlgorithm(objectSwapped, std::move(result));
     }

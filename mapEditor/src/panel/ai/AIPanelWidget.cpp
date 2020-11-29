@@ -22,7 +22,7 @@ namespace urchin {
         setupNavMeshAgentBox(mainLayout);
     }
 
-    void AIPanelWidget::load(AIController *aiController) {
+    void AIPanelWidget::load(AIController* aiController) {
         this->aiController = aiController;
 
         std::shared_ptr<NavMeshAgent> navMeshAgent = aiController->getSceneAI()->getNavMeshAgent();
@@ -33,7 +33,7 @@ namespace urchin {
         aiController = nullptr;
     }
 
-    void AIPanelWidget::setupNavMeshAgentBox(QVBoxLayout *mainLayout) {
+    void AIPanelWidget::setupNavMeshAgentBox(QVBoxLayout* mainLayout) {
         auto *navMeshAgentGroupBox = new QGroupBox("Nav Mesh Agent");
         mainLayout->addWidget(navMeshAgentGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(navMeshAgentGroupBox);

@@ -72,7 +72,7 @@ namespace urchin {
         }
     }
 
-    std::ostream& operator <<(std::ostream &stream, const Polytope &polytope) {
+    std::ostream& operator <<(std::ostream &stream, const Polytope& polytope) {
         unsigned int surfaceIndex = 0;
         for (const auto &surface : polytope.getSurfaces()) {
             stream<<"Surface "<<surfaceIndex++<<" ";

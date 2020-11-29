@@ -84,11 +84,11 @@ namespace urchin {
         return indices;
     }
 
-    Point3<float> TerrainMesh::findPointAt(const Point2<float> &xzCoordinate) const {
+    Point3<float> TerrainMesh::findPointAt(const Point2<float>& xzCoordinate) const {
         return heightfieldPointHelper->findPointAt(xzCoordinate);
     }
 
-    float TerrainMesh::findHeightAt(const Point2<float> &xzCoordinate) const {
+    float TerrainMesh::findHeightAt(const Point2<float>& xzCoordinate) const {
         return heightfieldPointHelper->findHeightAt(xzCoordinate);
     }
 
@@ -104,7 +104,7 @@ namespace urchin {
         return xSize * zSize;
     }
 
-    std::vector<Point3<float>> TerrainMesh::buildVertices(const Image *imgTerrain) {
+    std::vector<Point3<float>> TerrainMesh::buildVertices(const Image* imgTerrain) {
         vertices.reserve(computeNumberVertices());
 
         float xStart = (-((float)xSize * xzScale) / 2.0f) + (xzScale / 2.0f);

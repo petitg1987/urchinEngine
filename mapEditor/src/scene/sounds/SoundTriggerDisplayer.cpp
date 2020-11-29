@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    SoundTriggerDisplayer::SoundTriggerDisplayer(SceneManager *sceneManager) :
+    SoundTriggerDisplayer::SoundTriggerDisplayer(SceneManager* sceneManager) :
         sceneManager(sceneManager) {
 
     }
@@ -13,7 +13,7 @@ namespace urchin {
         cleanCurrentDisplay();
     }
 
-    void SoundTriggerDisplayer::displaySoundTriggerFor(const SceneSound *sceneSound) {
+    void SoundTriggerDisplayer::displaySoundTriggerFor(const SceneSound* sceneSound) {
         cleanCurrentDisplay();
 
         if (sceneSound) {
@@ -31,7 +31,7 @@ namespace urchin {
         }
     }
 
-    GeometryModel *SoundTriggerDisplayer::retrieveGeometry(const SoundShape *soundShape) {
+    GeometryModel *SoundTriggerDisplayer::retrieveGeometry(const SoundShape* soundShape) {
         SoundShape::ShapeType shapeType = soundShape->getShapeType();
         if (shapeType==SoundShape::ShapeType::SPHERE_SHAPE) {
             return retrieveSphereGeometry(soundShape);
@@ -42,12 +42,12 @@ namespace urchin {
         throw std::invalid_argument("Unknown shape type to retrieve geometry: " + std::to_string(shapeType));
     }
 
-    GeometryModel *SoundTriggerDisplayer::retrieveSphereGeometry(const SoundShape *soundShape) const {
+    GeometryModel *SoundTriggerDisplayer::retrieveSphereGeometry(const SoundShape* soundShape) const {
         const auto *soundSphere = dynamic_cast<const SoundSphere *>(soundShape);
         return new SphereModel(soundSphere->getPlayTriggerSphere(), 15);
     }
 
-    GeometryModel *SoundTriggerDisplayer::retrieveBoxGeometry(const SoundShape *soundShape) const {
+    GeometryModel *SoundTriggerDisplayer::retrieveBoxGeometry(const SoundShape* soundShape) const {
         const auto *soundBox = dynamic_cast<const SoundBox *>(soundShape);
         return new OBBoxModel(soundBox->getPlayTriggerBox());
     }

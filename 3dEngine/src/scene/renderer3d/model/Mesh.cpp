@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    Mesh::Mesh(const ConstMesh *constMesh) :
+    Mesh::Mesh(const ConstMesh* constMesh) :
             constMesh(constMesh) {
 
         TextureParam::ReadMode textureReadMode = constMesh->getMaterial()->isRepeatableTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
@@ -34,7 +34,7 @@ namespace urchin {
         meshRenderer->updateData(3, &tangents);
     }
 
-    void Mesh::display(const RenderTarget *renderTarget, const MeshParameter &meshParameter) const {
+    void Mesh::display(const RenderTarget* renderTarget, const MeshParameter& meshParameter) const {
         if (meshParameter.getAmbientFactorShaderVar().isValid()) {
             ShaderDataSender().sendData(meshParameter.getAmbientFactorShaderVar(), constMesh->getMaterial()->getAmbientFactor());
         }
@@ -43,7 +43,7 @@ namespace urchin {
         renderTarget->display(meshRenderer);
     }
 
-    void Mesh::drawBaseBones(const RenderTarget *renderTarget, const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const {
+    void Mesh::drawBaseBones(const RenderTarget* renderTarget, const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
         std::vector<Point3<float>> bonePositions;
         for (const auto &bone : constMesh->getBaseSkeleton()) {
             bonePositions.push_back(bone.pos);
