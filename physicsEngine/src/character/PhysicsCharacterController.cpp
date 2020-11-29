@@ -144,10 +144,10 @@ namespace urchin {
             manifoldResults.clear();
             physicsWorld->getCollisionWorld()->getNarrowPhaseManager()->processGhostBody(ghostBody, manifoldResults);
 
-            for (const auto &manifoldResult : manifoldResults) {
+            for (const auto& manifoldResult : manifoldResults) {
                 float sign = manifoldResult.getBody1()==ghostBody ? -1.0f : 1.0f;
                 for (unsigned int i=0; i<manifoldResult.getNumContactPoints(); ++i) {
-                    const ManifoldContactPoint &manifoldContactPoint = manifoldResult.getManifoldContactPoint(i);
+                    const ManifoldContactPoint& manifoldContactPoint = manifoldResult.getManifoldContactPoint(i);
                     float depth = manifoldContactPoint.getDepth();
 
                     if (depth < maxDepthToRecover) {

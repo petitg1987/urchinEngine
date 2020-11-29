@@ -50,7 +50,7 @@ namespace urchin {
         std::vector<Point3<T>> result;
         result.reserve(points.size());
 
-        for (const auto &it : points) {
+        for (const auto& it : points) {
             result.push_back(it.second.point);
         }
 
@@ -85,13 +85,13 @@ namespace urchin {
         unsigned int trianglesRemoved = 0;
         for (auto itTriangle=indexedTriangles.begin(); itTriangle!=indexedTriangles.end();) {
             const IndexedTriangle3D<T> indexedTriangle = itTriangle->second;
-            const Vector3<T> &triangleNormal = indexedTriangle.computeNormal(
+            const Vector3<T>& triangleNormal = indexedTriangle.computeNormal(
                     points.at(indexedTriangle.getIndex(0)).point,
                     points.at(indexedTriangle.getIndex(1)).point,
                     points.at(indexedTriangle.getIndex(2)).point);
 
             const Point3<T> &point0 = points.at(indexedTriangle.getIndex(0)).point;
-            const Vector3<T> &triangleToPoint = point0.vector(newPoint);
+            const Vector3<T>& triangleToPoint = point0.vector(newPoint);
 
             if (triangleNormal.dotProduct(triangleToPoint) > 0.0) {
                 for (int i=0; i<3; i++) { //each edge
@@ -123,7 +123,7 @@ namespace urchin {
             std::size_t newPointIndex = nextPointIndex++;
             points[newPointIndex].point = newPoint;
 
-            for (auto &edge : edges) {
+            for (auto& edge : edges) {
                 addTriangle(IndexedTriangle3D<T>(edge.second.first, edge.second.second, newPointIndex));
             }
 
@@ -148,7 +148,7 @@ namespace urchin {
         T maxPointDotDirection = points.begin()->second.point.toVector().dotProduct(direction);
         Point3<T> maxPoint = points.begin()->second.point;
 
-        for (const auto &itPoints : points) {
+        for (const auto& itPoints : points) {
             T currentPointDotDirection  = itPoints.second.point.toVector().dotProduct(direction);
             if (currentPointDotDirection > maxPointDotDirection) {
                 maxPointDotDirection = currentPointDotDirection;
@@ -174,7 +174,7 @@ namespace urchin {
 
     template<class T> std::unique_ptr<ConvexObject3D<T>> ConvexHullShape3D<T>::toConvexObject(const Transform<T>& transform) const {
         std::map<std::size_t, ConvexHullPoint<T>> transformedConvexHullPoints = points;
-        for (auto &it : transformedConvexHullPoints) {
+        for (auto& it : transformedConvexHullPoints) {
             it.second.point = (transform.getTransformMatrix() * Point4<T>(it.second.point)).toPoint3();
         }
 
@@ -194,9 +194,9 @@ namespace urchin {
 
     template<class T> void ConvexHullShape3D<T>::removeTriangle(const typename std::map<std::size_t, IndexedTriangle3D<T>>::iterator& itTriangle) {
         //remove reference of triangles on points
-        const std::size_t *indices = itTriangle->second.getIndices();
+        const std::size_t* indices = itTriangle->second.getIndices();
         for (std::size_t i=0; i<3; i++) {
-            std::vector<std::size_t> &pointTriangles = points.at(indices[i]).triangleIndices;
+            std::vector<std::size_t>& pointTriangles = points.at(indices[i]).triangleIndices;
             pointTriangles.erase(std::remove(pointTriangles.begin(), pointTriangles.end(), itTriangle->first), pointTriangles.end());
             if (pointTriangles.empty()) { //orphan point: remove it
                 points.erase(indices[i]);
@@ -259,24 +259,24 @@ namespace urchin {
         unsigned int triangleIndex2 = nextTriangleIndex++;
         indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(triangleIndex1, IndexedTriangle3D<T>(0, 1, 2)));
         indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(triangleIndex2, IndexedTriangle3D<T>(0, 2, 1)));
-        for (auto &it : this->points) {
+        for (auto& it : this->points) {
             it.second.triangleIndices.push_back(triangleIndex1);
             it.second.triangleIndices.push_back(triangleIndex2);
         }
 
         //5. build tetrahedron (find a no coplanar point to the triangle)
         const IndexedTriangle3D<T> firstIndexedTriangle = this->indexedTriangles.at(0);
-        const Vector3<T> &firstTriangleNormal = firstIndexedTriangle.computeNormal(
+        const Vector3<T>& firstTriangleNormal = firstIndexedTriangle.computeNormal(
                 this->points.at(firstIndexedTriangle.getIndex(0)).point,
                 this->points.at(firstIndexedTriangle.getIndex(1)).point,
                 this->points.at(firstIndexedTriangle.getIndex(2)).point);
-        const Point3<T> &firstPoint = this->points.at(0).point;
+        const Point3<T>& firstPoint = this->points.at(0).point;
         for (std::size_t i=1; i<points.size(); i++) {
             if (pointsUsed.find(i)!=pointsUsed.end()) { //point already used to build the tetrahedron
                 continue;
             }
 
-            const Vector3<T> &triangleToPoint = firstPoint.vector(points[i]);
+            const Vector3<T>& triangleToPoint = firstPoint.vector(points[i]);
             if (firstTriangleNormal.dotProduct(triangleToPoint) != (T)0.0) {
                 addNewPoint(points[i]);
                 pointsUsed.insert(i);

@@ -10,7 +10,7 @@ namespace urchin {
     }
 
     void StatusBarController::clearState() {
-        auto *statusBar = new QStatusBar(window);
+        auto* statusBar = new QStatusBar(window);
         window->setStatusBar(statusBar);
     }
 
@@ -49,7 +49,7 @@ namespace urchin {
     }
 
     void StatusBarController::applyCurrentState() {
-        auto *statusBar = new QStatusBar(window);
+        auto* statusBar = new QStatusBar(window);
         window->setStatusBar(statusBar);
 
         auto statusLabels = getStateData(currentState).getLabels();
@@ -62,7 +62,7 @@ namespace urchin {
     }
 
     QFrame *StatusBarController::createSeparator() {
-        QFrame *separator = new QFrame();
+        QFrame* separator = new QFrame();
         separator->setFrameShape(QFrame::VLine);
         separator->setFrameShadow(QFrame::Shadow::Raised);
         return separator;

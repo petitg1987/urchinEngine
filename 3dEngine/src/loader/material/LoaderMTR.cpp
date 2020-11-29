@@ -25,7 +25,7 @@ namespace urchin {
         std::shared_ptr<XmlChunk> diffuse(parserXml.getUniqueChunk(false, "diffuse"));
         if (diffuse) {
             std::shared_ptr<XmlChunk> diffuseTextureElem(parserXml.getUniqueChunk(true, "texture", XmlAttribute(), diffuse));
-            auto *diffuseImage = MediaManager::instance()->getMedia<Image>(diffuseTextureElem->getStringValue());
+            auto* diffuseImage = MediaManager::instance()->getMedia<Image>(diffuseTextureElem->getStringValue());
             diffuseTexture = diffuseImage->createTexture(true);
             diffuseImage->release();
         }
@@ -35,7 +35,7 @@ namespace urchin {
         std::shared_ptr<XmlChunk> normal(parserXml.getUniqueChunk(false, "normal"));
         if (normal) {
             std::shared_ptr<XmlChunk> normalTextureElem(parserXml.getUniqueChunk(true, "texture", XmlAttribute(), normal));
-            auto *normalImage = MediaManager::instance()->getMedia<Image>(normalTextureElem->getStringValue());
+            auto* normalImage = MediaManager::instance()->getMedia<Image>(normalTextureElem->getStringValue());
             normalTexture = normalImage->createTexture(true);
             normalImage->release();
         }

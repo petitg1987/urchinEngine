@@ -3,7 +3,7 @@
 namespace urchin {
 
     Light *LightReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& lightChunk, const XmlParser& xmlParser) const {
-        Light *light = buildLightFrom(lightChunk, xmlParser);
+        Light* light = buildLightFrom(lightChunk, xmlParser);
 
         loadPropertiesOn(light, lightChunk, xmlParser);
         loadFlagsOn(light, lightChunk, xmlParser);
@@ -22,7 +22,7 @@ namespace urchin {
         std::string lightType = lightChunk->getAttributeValue(TYPE_ATTR);
         if (lightType == OMNIDIRECTIONAL_VALUE) {
             std::shared_ptr<XmlChunk> positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), lightChunk);
-            auto *omnidirectional = new OmnidirectionalLight(positionChunk->getPoint3Value());
+            auto* omnidirectional = new OmnidirectionalLight(positionChunk->getPoint3Value());
 
             std::shared_ptr<XmlChunk> exponentialAttenuationChunk = xmlParser.getUniqueChunk(true, EXPONENTIAL_ATTENUATION_TAG, XmlAttribute(), lightChunk);
             omnidirectional->setAttenuation(exponentialAttenuationChunk->getFloatValue());
@@ -39,7 +39,7 @@ namespace urchin {
 
     void LightReaderWriter::buildChunkFrom(const std::shared_ptr<XmlChunk>& lightChunk, const Light* light, XmlWriter& xmlWriter) const {
         if (light->getLightType()==Light::OMNIDIRECTIONAL) {
-            const auto *omnidirectionalLight = dynamic_cast<const OmnidirectionalLight *>(light);
+            const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight *>(light);
             lightChunk->setAttribute(XmlAttribute(TYPE_ATTR, OMNIDIRECTIONAL_VALUE));
 
             std::shared_ptr<XmlChunk> positionChunk = xmlWriter.createChunk(POSITION_TAG, XmlAttribute(), lightChunk);
@@ -48,7 +48,7 @@ namespace urchin {
             std::shared_ptr<XmlChunk> expenentialAttenuationChunk = xmlWriter.createChunk(EXPONENTIAL_ATTENUATION_TAG, XmlAttribute(), lightChunk);
             expenentialAttenuationChunk->setFloatValue(omnidirectionalLight->getExponentialAttenuation());
         } else if (light->getLightType()==Light::SUN) {
-            const auto *sunLight = dynamic_cast<const SunLight *>(light);
+            const auto* sunLight = dynamic_cast<const SunLight *>(light);
             lightChunk->setAttribute(XmlAttribute(TYPE_ATTR, SUN_VALUE));
 
             std::shared_ptr<XmlChunk> directionChunk = xmlWriter.createChunk(DIRECTION_TAG, XmlAttribute(), lightChunk);

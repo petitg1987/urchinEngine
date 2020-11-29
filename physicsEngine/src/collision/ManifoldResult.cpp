@@ -148,7 +148,7 @@ namespace urchin {
 
         unsigned int deepestIndex = getDeepestPointIndex();
         float areas[MAX_PERSISTENT_POINTS]; //areas[X] contains area formed by all points except point 'contactPoints[X]'
-        for (float &area : areas) {
+        for (float& area : areas) {
             area = 0.0f;
         }
 

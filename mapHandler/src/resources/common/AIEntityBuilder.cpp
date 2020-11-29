@@ -14,7 +14,7 @@ namespace urchin {
         } else if (scaledShape->isCompound()) {
             std::vector<std::shared_ptr<AIShape>> aiShapes;
             std::shared_ptr<const CollisionCompoundShape> scaledCompoundShape = std::dynamic_pointer_cast<const CollisionCompoundShape>(scaledShape);
-            for (const auto &scaledLocalizedShape : scaledCompoundShape->getLocalizedShapes()) {
+            for (const auto& scaledLocalizedShape : scaledCompoundShape->getLocalizedShapes()) {
                 aiShapes.push_back(std::make_shared<AIShape>(scaledLocalizedShape->shape->getSingleShape(), scaledLocalizedShape->transform.toTransform()));
             }
 

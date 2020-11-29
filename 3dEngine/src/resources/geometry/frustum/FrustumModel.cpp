@@ -14,14 +14,14 @@ namespace urchin {
     }
 
     std::vector<Point3<float>> FrustumModel::retrieveVertexArray() const {
-        const Point3<float> &ntl = frustum.getFrustumPoint(Frustum<float>::NTL);
-        const Point3<float> &ntr = frustum.getFrustumPoint(Frustum<float>::NTR);
-        const Point3<float> &nbl = frustum.getFrustumPoint(Frustum<float>::NBL);
-        const Point3<float> &nbr = frustum.getFrustumPoint(Frustum<float>::NBR);
-        const Point3<float> &ftl = frustum.getFrustumPoint(Frustum<float>::FTL);
-        const Point3<float> &ftr = frustum.getFrustumPoint(Frustum<float>::FTR);
-        const Point3<float> &fbl = frustum.getFrustumPoint(Frustum<float>::FBL);
-        const Point3<float> &fbr = frustum.getFrustumPoint(Frustum<float>::FBR);
+        const Point3<float>& ntl = frustum.getFrustumPoint(Frustum<float>::NTL);
+        const Point3<float>& ntr = frustum.getFrustumPoint(Frustum<float>::NTR);
+        const Point3<float>& nbl = frustum.getFrustumPoint(Frustum<float>::NBL);
+        const Point3<float>& nbr = frustum.getFrustumPoint(Frustum<float>::NBR);
+        const Point3<float>& ftl = frustum.getFrustumPoint(Frustum<float>::FTL);
+        const Point3<float>& ftr = frustum.getFrustumPoint(Frustum<float>::FTR);
+        const Point3<float>& fbl = frustum.getFrustumPoint(Frustum<float>::FBL);
+        const Point3<float>& fbr = frustum.getFrustumPoint(Frustum<float>::FBR);
 
         std::vector<Point3<float>> vertexArray;
         vertexArray.reserve(24);

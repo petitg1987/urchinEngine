@@ -5,7 +5,7 @@ template<class T> void OctreeRenderer::drawOctree(const OctreeManager<T>* octree
     std::vector<AABBox<float>> aabboxes;
     aabboxes.reserve(leafOctrees.size());
 
-    for (const auto &leafOctree : leafOctrees) {
+    for (const auto& leafOctree : leafOctrees) {
         aabboxes.push_back(leafOctree->getAABBox());
     }
 

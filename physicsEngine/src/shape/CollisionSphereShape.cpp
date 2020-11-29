@@ -38,16 +38,16 @@ namespace urchin {
     }
 
     AABBox<float> CollisionSphereShape::toAABBox(const PhysicsTransform& physicsTransform) const {
-        const Point3<float> &position = physicsTransform.getPosition();
+        const Point3<float>& position = physicsTransform.getPosition();
 
         return AABBox<float>(position - sphereShape->getRadius(), position + sphereShape->getRadius());
     }
 
     std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionSphereShape::toConvexObject(const PhysicsTransform& physicsTransform) const {
-        const Point3<float> &position = physicsTransform.getPosition();
+        const Point3<float>& position = physicsTransform.getPosition();
 
-        void *memPtr = getObjectsPool()->allocate(sizeof(CollisionSphereObject));
-        auto *collisionObjectPtr = new (memPtr) CollisionSphereObject(getInnerMargin(), position);
+        void* memPtr = getObjectsPool()->allocate(sizeof(CollisionSphereObject));
+        auto* collisionObjectPtr = new (memPtr) CollisionSphereObject(getInnerMargin(), position);
         return std::unique_ptr<CollisionSphereObject, ObjectDeleter>(collisionObjectPtr);
     }
 

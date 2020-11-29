@@ -29,13 +29,13 @@ namespace urchin {
     void GeometryManager::onCameraProjectionUpdate(const Camera* camera) {
         this->projectionMatrix = camera->getProjectionMatrix();
 
-        for (auto &geometryModel : geometryModels) {
+        for (auto& geometryModel : geometryModels) {
             geometryModel->onCameraProjectionUpdate(projectionMatrix);
         }
     }
 
     void GeometryManager::display(const Matrix4<float>& viewMatrix) const {
-        for (auto *geometryModel : geometryModels) {
+        for (auto* geometryModel : geometryModels) {
             geometryModel->display(renderTarget, viewMatrix);
         }
     }

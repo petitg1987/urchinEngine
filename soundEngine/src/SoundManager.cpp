@@ -16,7 +16,7 @@ namespace urchin {
     }
 
     SoundManager::~SoundManager() {
-        for (auto *audioController : audioControllers) {
+        for (auto* audioController : audioControllers) {
             deleteAudioController(audioController);
         }
 
@@ -30,7 +30,7 @@ namespace urchin {
 
     void SoundManager::addSound(Sound* sound, SoundTrigger* soundTrigger) {
         if (sound && soundTrigger) {
-            auto *audioController = new AudioController(sound, soundTrigger, streamUpdateWorker);
+            auto* audioController = new AudioController(sound, soundTrigger, streamUpdateWorker);
             audioControllers.push_back(audioController);
         }
     }
@@ -47,7 +47,7 @@ namespace urchin {
     }
 
     void SoundManager::changeSoundTrigger(const Sound* sound, SoundTrigger* newSoundTrigger) {
-        for (auto &audioController : audioControllers) {
+        for (auto& audioController : audioControllers) {
             if (audioController->getSound() == sound) {
                 audioController->changeSoundTrigger(newSoundTrigger);
 
@@ -59,7 +59,7 @@ namespace urchin {
     std::vector<const SoundTrigger *> SoundManager::getSoundTriggers() const {
         std::vector<const SoundTrigger *> triggers;
 
-        for (const auto &audioController : audioControllers) {
+        for (const auto& audioController : audioControllers) {
             triggers.push_back(audioController->getSoundTrigger());
         }
 
@@ -67,7 +67,7 @@ namespace urchin {
     }
 
     SoundTrigger *SoundManager::retrieveSoundTriggerFor(const Sound* sound) const {
-        for (const auto &audioController : audioControllers) {
+        for (const auto& audioController : audioControllers) {
             if (audioController->getSound() == sound) {
                 return audioController->getSoundTrigger();
             }
@@ -77,13 +77,13 @@ namespace urchin {
     }
 
     void SoundManager::pause() {
-        for (auto &audioController : audioControllers) {
+        for (auto& audioController : audioControllers) {
             audioController->pause();
         }
     }
 
     void SoundManager::unpause() {
-        for (auto &audioController : audioControllers) {
+        for (auto& audioController : audioControllers) {
             audioController->unpause();
         }
     }
@@ -95,7 +95,7 @@ namespace urchin {
     void SoundManager::process(const Point3<float>& listenerPosition) {
         alListener3f(AL_POSITION, listenerPosition.X, listenerPosition.Y, listenerPosition.Z);
 
-        for (auto &audioController : audioControllers) {
+        for (auto& audioController : audioControllers) {
             audioController->process(listenerPosition);
         }
 

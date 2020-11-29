@@ -39,8 +39,8 @@ namespace urchin {
             closedList.insert(currentNode->getNavTriangle().get());
             openList.erase(currentNodeIt);
 
-            const auto &currTriangle = currentNode->getNavTriangle();
-            for (const auto &link : currTriangle->getLinks()) {
+            const auto& currTriangle = currentNode->getNavTriangle();
+            for (const auto& link : currTriangle->getLinks()) {
                 auto neighborTriangle = link->getTargetTriangle();
 
                 if (closedList.find(neighborTriangle.get())!=closedList.end()) { //already processed
@@ -83,9 +83,9 @@ namespace urchin {
         float bestVerticalDistance = std::numeric_limits<float>::max();
         std::shared_ptr<NavTriangle> result = nullptr;
 
-        for (const auto &polygon : navMesh->getPolygons()) {
+        for (const auto& polygon : navMesh->getPolygons()) {
             for (std::size_t triIndex = 0; triIndex < polygon->getTriangles().size(); ++triIndex) {
-                const auto &triangle = polygon->getTriangles()[triIndex];
+                const auto& triangle = polygon->getTriangles()[triIndex];
                 Point2<float> flattenPoint(point.X, point.Z);
 
                 if (isPointInsideTriangle(flattenPoint, polygon, triangle)) {
@@ -122,7 +122,7 @@ namespace urchin {
 
     std::shared_ptr<PathNode> PathfindingAStar::retrievePathNodeFrom(const std::multiset<std::shared_ptr<PathNode>, PathNodeCompare>& pathNodes,
                                                                      const std::shared_ptr<NavTriangle>& navTriangle) const {
-        for (const auto &pathNode : pathNodes) {
+        for (const auto& pathNode : pathNodes) {
             if (pathNode->getNavTriangle().get() == navTriangle.get()) {
                 return pathNode;
             }
@@ -211,13 +211,13 @@ namespace urchin {
 
         addMissingTransitionPoints(pathPortals);
 
-        for (const auto &pathPortal : pathPortals) {
+        for (const auto& pathPortal : pathPortals) {
             if (pathPortal->hasTransitionPoint()) {
                 if (followTopography && !pathPoints.empty()) {
                     auto navPolygonTopography = pathPortal->getPreviousPathNode()->getNavTriangle()->getNavPolygon()->getNavTopography();
                     if (navPolygonTopography) {
-                        const Point3<float> &startPoint = pathPoints.back().getPoint();
-                        const Point3<float> &endPoint = pathPortal->getTransitionPoint();
+                        const Point3<float>& startPoint = pathPoints.back().getPoint();
+                        const Point3<float>& endPoint = pathPortal->getTransitionPoint();
                         std::vector<Point3<float>> topographyPoints = navPolygonTopography->followTopography(startPoint, endPoint);
 
                         pathPoints.pop_back();

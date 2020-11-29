@@ -26,7 +26,7 @@ namespace urchin {
             directionX(nullptr),
             directionY(nullptr),
             directionZ(nullptr) {
-        auto *mainLayout = new QVBoxLayout(this);
+        auto* mainLayout = new QVBoxLayout(this);
         mainLayout->setAlignment(Qt::AlignTop);
         mainLayout->setContentsMargins(1, 1, 1, 1);
 
@@ -35,7 +35,7 @@ namespace urchin {
         lightTableView->addObserver(this, LightTableView::LIGHT_SELECTION_CHANGED);
         lightTableView->setFixedHeight(220);
 
-        auto *buttonsLayout = new QHBoxLayout();
+        auto* buttonsLayout = new QHBoxLayout();
         mainLayout->addLayout(buttonsLayout);
         buttonsLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
@@ -62,12 +62,12 @@ namespace urchin {
         generalPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         generalPropertiesGroupBox->hide();
 
-        auto *generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
+        auto* generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
 
         auto *ambientLabel= new QLabel("Ambient:");
         generalPropertiesLayout->addWidget(ambientLabel, 0, 0);
 
-        auto *ambientLayout = new QHBoxLayout();
+        auto* ambientLayout = new QHBoxLayout();
         generalPropertiesLayout->addLayout(ambientLayout, 0, 1);
         ambientR = new QDoubleSpinBox();
         ambientLayout->addWidget(ambientR);
@@ -106,12 +106,12 @@ namespace urchin {
         specificOmnidirectionalLightGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         specificOmnidirectionalLightGroupBox->hide();
 
-        auto *omniLightLayout = new QGridLayout(specificOmnidirectionalLightGroupBox);
+        auto* omniLightLayout = new QGridLayout(specificOmnidirectionalLightGroupBox);
 
         auto *positionLabel= new QLabel("Position:");
         omniLightLayout->addWidget(positionLabel, 0, 0);
 
-        auto *positionLayout = new QHBoxLayout();
+        auto* positionLayout = new QHBoxLayout();
         omniLightLayout->addLayout(positionLayout, 0, 1);
         positionX = new QDoubleSpinBox();
         positionLayout->addWidget(positionX);
@@ -144,12 +144,12 @@ namespace urchin {
         specificSunLightGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         specificSunLightGroupBox->hide();
 
-        auto *sunLightLayout = new QGridLayout(specificSunLightGroupBox);
+        auto* sunLightLayout = new QGridLayout(specificSunLightGroupBox);
 
         auto *directionLabel= new QLabel("Direction:");
         sunLightLayout->addWidget(directionLabel, 0, 0);
 
-        auto *directionLayout = new QHBoxLayout();
+        auto* directionLayout = new QHBoxLayout();
         sunLightLayout->addLayout(directionLayout, 0, 1);
         directionX = new QDoubleSpinBox();
         directionLayout->addWidget(directionX);
@@ -173,7 +173,7 @@ namespace urchin {
         this->lightController = lightController;
 
         std::list<const SceneLight *> sceneLights = lightController->getSceneLights();
-        for (auto &sceneLight : sceneLights) {
+        for (auto& sceneLight : sceneLights) {
             lightTableView->addLight(sceneLight);
         }
     }
@@ -185,10 +185,10 @@ namespace urchin {
     }
 
     void LightPanelWidget::notify(Observable* observable, int notificationType) {
-        if (auto *lightTableView = dynamic_cast<LightTableView *>(observable)) {
+        if (auto* lightTableView = dynamic_cast<LightTableView *>(observable)) {
             if (notificationType==LightTableView::LIGHT_SELECTION_CHANGED) {
                 if (lightTableView->hasSceneLightSelected()) {
-                    const SceneLight *sceneLight = lightTableView->getSelectedSceneLight();
+                    const SceneLight* sceneLight = lightTableView->getSelectedSceneLight();
                     setupLightDataFrom(sceneLight);
 
                     removeLightButton->setEnabled(true);
@@ -203,7 +203,7 @@ namespace urchin {
 
     void LightPanelWidget::setupLightDataFrom(const SceneLight* sceneLight) {
         disableLightEvent = true;
-        const Light *light = sceneLight->getLight();
+        const Light* light = sceneLight->getLight();
 
         this->ambientR->setValue(light->getAmbientColor().X);
         this->ambientG->setValue(light->getAmbientColor().Y);
@@ -253,7 +253,7 @@ namespace urchin {
         newSceneLightDialog.exec();
 
         if (newSceneLightDialog.result()==QDialog::Accepted) {
-            SceneLight *sceneLight = newSceneLightDialog.getSceneLight();
+            SceneLight* sceneLight = newSceneLightDialog.getSceneLight();
             lightController->addSceneLight(sceneLight);
 
             lightTableView->addLight(sceneLight);
@@ -262,7 +262,7 @@ namespace urchin {
 
     void LightPanelWidget::removeSelectedLight() {
         if (lightTableView->hasSceneLightSelected()) {
-            const SceneLight *sceneLight = lightTableView->getSelectedSceneLight();
+            const SceneLight* sceneLight = lightTableView->getSelectedSceneLight();
             lightController->removeSceneLight(sceneLight);
 
             lightTableView->removeSelectedLight();
@@ -271,7 +271,7 @@ namespace urchin {
 
     void LightPanelWidget::updateLightGeneralProperties() {
         if (!disableLightEvent) {
-            const SceneLight *sceneLight = lightTableView->getSelectedSceneLight();
+            const SceneLight* sceneLight = lightTableView->getSelectedSceneLight();
 
             Point3<float> ambientColor(ambientR->value(), ambientG->value(), ambientB->value());
             bool produceShadow = produceShadowCheckBox->isChecked();
@@ -282,8 +282,8 @@ namespace urchin {
 
     void LightPanelWidget::updateLightSpecificProperties() {
         if (!disableLightEvent) {
-            const SceneLight *sceneLight = lightTableView->getSelectedSceneLight();
-            const Light *light = sceneLight->getLight();
+            const SceneLight* sceneLight = lightTableView->getSelectedSceneLight();
+            const Light* light = sceneLight->getLight();
 
             if (light->getLightType()==Light::LightType::OMNIDIRECTIONAL) {
                 Point3<float> position(positionX->value(), positionY->value(), positionZ->value());

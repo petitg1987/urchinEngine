@@ -5,7 +5,7 @@
 namespace urchin {
 
     SoundTrigger *SoundTriggerReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& soundTriggerChunk, const XmlParser& xmlParser) const {
-        SoundTrigger *soundTrigger = buildSoundTriggerFrom(soundTriggerChunk, xmlParser);
+        SoundTrigger* soundTrigger = buildSoundTriggerFrom(soundTriggerChunk, xmlParser);
 
         return soundTrigger;
     }
@@ -24,7 +24,7 @@ namespace urchin {
         } else if (soundTriggerType == SHAPE_VALUE) {
             std::shared_ptr<XmlChunk> soundShapeChunk = xmlParser.getUniqueChunk(true, SOUND_SHAPE_TAG, XmlAttribute(), soundTriggerChunk);
             std::shared_ptr<SoundShapeReaderWriter> soundShapeReaderWriter = SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(soundShapeChunk);
-            SoundShape *soundShape = soundShapeReaderWriter->loadFrom(soundShapeChunk, xmlParser);
+            SoundShape* soundShape = soundShapeReaderWriter->loadFrom(soundShapeChunk, xmlParser);
 
             return new ShapeTrigger(soundBehavior, soundShape);
         }
@@ -36,7 +36,7 @@ namespace urchin {
         if (soundTrigger->getTriggerType()==SoundTrigger::MANUAL_TRIGGER) {
             soundTriggerChunk->setAttribute(XmlAttribute(TYPE_ATTR, MANUAL_VALUE));
         } else if (soundTrigger->getTriggerType()==SoundTrigger::SHAPE_TRIGGER) {
-            const auto *shapeTrigger = dynamic_cast<const ShapeTrigger *>(soundTrigger);
+            const auto* shapeTrigger = dynamic_cast<const ShapeTrigger *>(soundTrigger);
             soundTriggerChunk->setAttribute(XmlAttribute(TYPE_ATTR, SHAPE_VALUE));
 
             std::shared_ptr<XmlChunk> soundShapeChunk = xmlWriter.createChunk(SOUND_SHAPE_TAG, XmlAttribute(), soundTriggerChunk);

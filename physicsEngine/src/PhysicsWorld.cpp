@@ -235,7 +235,7 @@ namespace urchin {
     void PhysicsWorld::setupProcessables(const std::vector<std::shared_ptr<Processable>>& processables, float dt, const Vector3<float>& gravity) {
         ScopeProfiler profiler("physics", "stpProcessable");
 
-        for (const auto &processable : processables) {
+        for (const auto& processable : processables) {
             processable->setup(dt, gravity);
         }
     }
@@ -247,7 +247,7 @@ namespace urchin {
     void PhysicsWorld::executeProcessables(const std::vector<std::shared_ptr<Processable>>& processables, float dt, const Vector3<float>& gravity) {
         ScopeProfiler profiler("physics", "execProcessable");
 
-        for (const auto &processable : processables) {
+        for (const auto& processable : processables) {
             processable->execute(dt, gravity);
         }
     }

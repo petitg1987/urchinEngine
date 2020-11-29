@@ -9,12 +9,12 @@ namespace urchin {
      * Initialize OpenAL: create context and make it current
      */
     DeviceManager::DeviceManager() {
-        ALCdevice *device = alcOpenDevice(nullptr);
+        ALCdevice* device = alcOpenDevice(nullptr);
         if (!device) {
             throw std::runtime_error("Impossible to found sound device.");
         }
 
-        ALCcontext *context = alcGetCurrentContext();
+        ALCcontext* context = alcGetCurrentContext();
         if (!context) {
             context = alcCreateContext(device, nullptr);
             if (!context) {
@@ -31,7 +31,7 @@ namespace urchin {
     * Shutdown OpenAL: destroy context and close device
     */
     DeviceManager::~DeviceManager() {
-        ALCcontext *context = alcGetCurrentContext();
+        ALCcontext* context = alcGetCurrentContext();
         ALCdevice *device  = alcGetContextsDevice(context);
 
         alcMakeContextCurrent(nullptr);

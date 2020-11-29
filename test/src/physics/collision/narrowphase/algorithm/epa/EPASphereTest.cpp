@@ -40,7 +40,7 @@ void EPASphereTest::overlapSphere() {
 }
 
 CppUnit::Test *EPASphereTest::suite() {
-    auto *suite = new CppUnit::TestSuite("EPASphereTest");
+    auto* suite = new CppUnit::TestSuite("EPASphereTest");
 
     suite->addTest(new CppUnit::TestCaller<EPASphereTest>("identicalSphere", &EPASphereTest::identicalSphere));
     suite->addTest(new CppUnit::TestCaller<EPASphereTest>("overlapSphere", &EPASphereTest::overlapSphere));

@@ -22,14 +22,14 @@ namespace urchin {
         this->resize(530, 195);
         this->setFixedSize(this->width(),this->height());
 
-        auto *mainLayout = new QGridLayout(this);
+        auto* mainLayout = new QGridLayout(this);
         mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
         setupNameFields(mainLayout);
         setupDirectoryFields(mainLayout);
         setupWorkingDirectoryFields(mainLayout);
 
-        auto *buttonBox = new QDialogButtonBox();
+        auto* buttonBox = new QDialogButtonBox();
         mainLayout->addWidget(buttonBox, 5, 0, 1, 3, Qt::AlignRight);
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
@@ -56,7 +56,7 @@ namespace urchin {
         mapDirectoryText->setReadOnly(true);
         mapDirectoryText->setFixedWidth(360);
 
-        auto *selectMapDirButton = new QPushButton("...");
+        auto* selectMapDirButton = new QPushButton("...");
         mainLayout->addWidget(selectMapDirButton, 1, 2);
         ButtonStyleHelper::applyNormalStyle(selectMapDirButton);
         selectMapDirButton->setFixedWidth(22);
@@ -72,14 +72,14 @@ namespace urchin {
         mapWorkingDirectoryText->setReadOnly(true);
         mapWorkingDirectoryText->setFixedWidth(360);
 
-        auto *selectMapWorkingDirButton = new QPushButton("...");
+        auto* selectMapWorkingDirButton = new QPushButton("...");
         mainLayout->addWidget(selectMapWorkingDirButton, 2, 2);
         ButtonStyleHelper::applyNormalStyle(selectMapWorkingDirButton);
         selectMapWorkingDirButton->setFixedWidth(22);
         connect(selectMapWorkingDirButton, SIGNAL(clicked()), this, SLOT(showMapWorkingDirectoryDialog()));
 
         //relative working directory
-        auto *mapRelWorkingDirectoryLabel = new QLabel("Relative Working Dir.:");
+        auto* mapRelWorkingDirectoryLabel = new QLabel("Relative Working Dir.:");
         mainLayout->addWidget(mapRelWorkingDirectoryLabel, 3, 0);
 
         mapRelWorkingDirectoryText = new QLabel();

@@ -12,14 +12,14 @@ namespace urchin {
         mergedPolygons.clear();
 
         allPolygonPaths.clear();
-        for (const auto &polygon : polygons) {
+        for (const auto& polygon : polygons) {
             allPolygonPaths.emplace_back(CSGPolygonPath(polygon));
         }
 
         while (!allPolygonPaths.empty()) {
             bool isPolygonsMerged = false;
             for (std::size_t i=1; i<allPolygonPaths.size(); ++i) {
-                const std::vector<CSGPolygonPath> &result = unionTwoPolygonPaths(allPolygonPaths[0], allPolygonPaths[i]);
+                const std::vector<CSGPolygonPath>& result = unionTwoPolygonPaths(allPolygonPaths[0], allPolygonPaths[i]);
                 if (result.empty()) {
                     logInputData(polygons, "Empty result returned after two polygons union." , Logger::ERROR);
                     mergedPolygons.clear();

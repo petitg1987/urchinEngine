@@ -94,7 +94,7 @@ namespace urchin {
     }
 
     bool NavTriangle::hasEdgeLinks(std::size_t edgeIndex) const {
-        for (const auto &link : links) {
+        for (const auto& link : links) {
             if (link->getSourceEdgeIndex() == edgeIndex) {
                 return true;
             }
@@ -103,7 +103,7 @@ namespace urchin {
     }
 
     bool NavTriangle::isExternalEdge(std::size_t edgeIndex) const {
-        for (const auto &link : links) {
+        for (const auto& link : links) {
             if (link->getSourceEdgeIndex() == edgeIndex && link->getLinkType() == NavLinkType::STANDARD) {
                 return false;
             }
@@ -124,7 +124,7 @@ namespace urchin {
                 unsigned int countStandardLink = 0;
                 unsigned int countJoinPolygonsLink = 0;
                 unsigned int countJumpLink = 0;
-                for (const auto &link : getLinks()) {
+                for (const auto& link : getLinks()) {
                     assert(link->getSourceEdgeIndex() <= 2);
                     if (link->getSourceEdgeIndex() == edgeIndex) {
                         switch(link->getLinkType()) {

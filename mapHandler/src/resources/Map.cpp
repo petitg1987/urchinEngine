@@ -19,23 +19,23 @@ namespace urchin {
         delete sceneAI;
         delete sceneSky;
 
-        for (SceneObject *sceneObject : sceneObjects) {
+        for (SceneObject* sceneObject : sceneObjects) {
             delete sceneObject;
         }
 
-        for (SceneLight *sceneLight : sceneLights) {
+        for (SceneLight* sceneLight : sceneLights) {
             delete sceneLight;
         }
 
-        for (SceneTerrain *sceneTerrain : sceneTerrains) {
+        for (SceneTerrain* sceneTerrain : sceneTerrains) {
             delete sceneTerrain;
         }
 
-        for (SceneWater *sceneWater : sceneWaters) {
+        for (SceneWater* sceneWater : sceneWaters) {
             delete sceneWater;
         }
 
-        for (SceneSound *sceneSound : sceneSounds) {
+        for (SceneSound* sceneSound : sceneSounds) {
             delete sceneSound;
         }
     }
@@ -75,8 +75,8 @@ namespace urchin {
         std::shared_ptr<XmlChunk> objectsListChunk = xmlParser.getUniqueChunk(true, OBJECTS_TAG, XmlAttribute(), chunk);
         std::vector<std::shared_ptr<XmlChunk>> objectsChunk = xmlParser.getChunks(OBJECT_TAG, XmlAttribute(), objectsListChunk);
 
-        for (const auto &objectChunk : objectsChunk) {
-            auto *sceneObject = new SceneObject();
+        for (const auto& objectChunk : objectsChunk) {
+            auto* sceneObject = new SceneObject();
             sceneObject->loadFrom(objectChunk, xmlParser);
 
             addSceneObject(sceneObject);
@@ -87,8 +87,8 @@ namespace urchin {
         std::shared_ptr<XmlChunk> lightsListChunk = xmlParser.getUniqueChunk(true, LIGHTS_TAG, XmlAttribute(), chunk);
         std::vector<std::shared_ptr<XmlChunk>> lightsChunk = xmlParser.getChunks(LIGHT_TAG, XmlAttribute(), lightsListChunk);
 
-        for (const auto &lightChunk : lightsChunk) {
-            auto *sceneLight = new SceneLight();
+        for (const auto& lightChunk : lightsChunk) {
+            auto* sceneLight = new SceneLight();
             sceneLight->loadFrom(lightChunk, xmlParser);
 
             addSceneLight(sceneLight);
@@ -99,8 +99,8 @@ namespace urchin {
         std::shared_ptr<XmlChunk> terrainsListChunk = xmlParser.getUniqueChunk(true, TERRAINS_TAG, XmlAttribute(), chunk);
         std::vector<std::shared_ptr<XmlChunk>> terrainsChunk = xmlParser.getChunks(TERRAIN_TAG, XmlAttribute(), terrainsListChunk);
 
-        for (const auto &terrainChunk : terrainsChunk) {
-            auto *sceneTerrain = new SceneTerrain();
+        for (const auto& terrainChunk : terrainsChunk) {
+            auto* sceneTerrain = new SceneTerrain();
             sceneTerrain->loadFrom(terrainChunk, xmlParser);
 
             addSceneTerrain(sceneTerrain);
@@ -111,8 +111,8 @@ namespace urchin {
         std::shared_ptr<XmlChunk> watersListChunk = xmlParser.getUniqueChunk(true, WATERS_TAG, XmlAttribute(), chunk);
         std::vector<std::shared_ptr<XmlChunk>> watersChunk = xmlParser.getChunks(WATER_TAG, XmlAttribute(), watersListChunk);
 
-        for (const auto &waterChunk : watersChunk) {
-            auto *sceneWater = new SceneWater();
+        for (const auto& waterChunk : watersChunk) {
+            auto* sceneWater = new SceneWater();
             sceneWater->loadFrom(waterChunk, xmlParser);
 
             addSceneWater(sceneWater);
@@ -129,8 +129,8 @@ namespace urchin {
         std::shared_ptr<XmlChunk> soundElementsListChunk = xmlParser.getUniqueChunk(true, SOUND_ELEMENTS_TAG, XmlAttribute(), chunk);
         std::vector<std::shared_ptr<XmlChunk>> soundElementsChunk = xmlParser.getChunks(SOUND_ELEMENT_TAG, XmlAttribute(), soundElementsListChunk);
 
-        for (const auto &soundElementChunk : soundElementsChunk) {
-            auto *sceneSound = new SceneSound();
+        for (const auto& soundElementChunk : soundElementsChunk) {
+            auto* sceneSound = new SceneSound();
             sceneSound->loadFrom(soundElementChunk, xmlParser);
 
             addSceneSound(sceneSound);
@@ -392,11 +392,11 @@ namespace urchin {
     }
 
     void Map::refreshEntities() {
-        for (SceneObject *sceneObject : sceneObjects) {
+        for (SceneObject* sceneObject : sceneObjects) {
             sceneObject->refresh();
         }
 
-        for (SceneTerrain *sceneTerrain : sceneTerrains) {
+        for (SceneTerrain* sceneTerrain : sceneTerrains) {
             sceneTerrain->refresh();
         }
     }

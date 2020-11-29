@@ -3189,13 +3189,13 @@ static void getPixelColorRGBA8(unsigned char* r, unsigned char* g,
         {
             *r = *g = *b = in[i];
             if(mode->key_defined && *r == mode->key_r) *a = 0;
-            else *a = 255;
+            else* a = 255;
         }
         else if(mode->bitdepth == 16)
         {
             *r = *g = *b = in[i * 2 + 0];
             if(mode->key_defined && 256U * in[i * 2 + 0] + in[i * 2 + 1] == mode->key_r) *a = 0;
-            else *a = 255;
+            else* a = 255;
         }
         else
         {
@@ -3204,7 +3204,7 @@ static void getPixelColorRGBA8(unsigned char* r, unsigned char* g,
             unsigned value = readBitsFromReversedStream(&j, in, mode->bitdepth);
             *r = *g = *b = (value * 255) / highest;
             if(mode->key_defined && value == mode->key_r) *a = 0;
-            else *a = 255;
+            else* a = 255;
         }
     }
     else if(mode->colortype == LCT_RGB)
@@ -3213,7 +3213,7 @@ static void getPixelColorRGBA8(unsigned char* r, unsigned char* g,
         {
             *r = in[i * 3 + 0]; *g = in[i * 3 + 1]; *b = in[i * 3 + 2];
             if(mode->key_defined && *r == mode->key_r && *g == mode->key_g && *b == mode->key_b) *a = 0;
-            else *a = 255;
+            else* a = 255;
         }
         else
         {
@@ -3223,7 +3223,7 @@ static void getPixelColorRGBA8(unsigned char* r, unsigned char* g,
             if(mode->key_defined && 256U * in[i * 6 + 0] + in[i * 6 + 1] == mode->key_r
                && 256U * in[i * 6 + 2] + in[i * 6 + 3] == mode->key_g
                && 256U * in[i * 6 + 4] + in[i * 6 + 5] == mode->key_b) *a = 0;
-            else *a = 255;
+            else* a = 255;
         }
     }
     else if(mode->colortype == LCT_PALETTE)
@@ -3429,7 +3429,7 @@ static void getPixelColorRGBA16(unsigned short* r, unsigned short* g, unsigned s
     {
         *r = *g = *b = 256 * in[i * 2 + 0] + in[i * 2 + 1];
         if(mode->key_defined && 256U * in[i * 2 + 0] + in[i * 2 + 1] == mode->key_r) *a = 0;
-        else *a = 65535;
+        else* a = 65535;
     }
     else if(mode->colortype == LCT_RGB)
     {
@@ -3440,7 +3440,7 @@ static void getPixelColorRGBA16(unsigned short* r, unsigned short* g, unsigned s
            && 256u * in[i * 6 + 0] + in[i * 6 + 1] == mode->key_r
            && 256u * in[i * 6 + 2] + in[i * 6 + 3] == mode->key_g
            && 256u * in[i * 6 + 4] + in[i * 6 + 5] == mode->key_b) *a = 0;
-        else *a = 65535;
+        else* a = 65535;
     }
     else if(mode->colortype == LCT_GREY_ALPHA)
     {
@@ -4310,7 +4310,7 @@ static unsigned readChunk_bKGD(LodePNGInfo* info, const unsigned char* data, siz
 static unsigned readChunk_tEXt(LodePNGInfo* info, const unsigned char* data, size_t chunkLength)
 {
     unsigned error = 0;
-    char *key = 0, *str = 0;
+    char* key = 0, *str = 0;
     unsigned i;
 
     while(!error) /*not really a while loop, only used to break on error*/
@@ -4357,7 +4357,7 @@ static unsigned readChunk_zTXt(LodePNGInfo* info, const LodePNGDecompressSetting
     unsigned i;
 
     unsigned length, string2_begin;
-    char *key = 0;
+    char* key = 0;
     ucvector decoded;
 
     ucvector_init(&decoded);
@@ -4406,7 +4406,7 @@ static unsigned readChunk_iTXt(LodePNGInfo* info, const LodePNGDecompressSetting
     unsigned i;
 
     unsigned length, begin, compressed;
-    char *key = 0, *langtag = 0, *transkey = 0;
+    char* key = 0, *langtag = 0, *transkey = 0;
     ucvector decoded;
     ucvector_init(&decoded);
 

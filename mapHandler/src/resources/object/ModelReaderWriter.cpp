@@ -9,7 +9,7 @@ namespace urchin {
         std::shared_ptr<XmlChunk> meshChunk = xmlParser.getUniqueChunk(true, MESH_TAG, XmlAttribute(), modelChunk);
         std::shared_ptr<XmlChunk> meshFilenameChunk = xmlParser.getUniqueChunk(true, FILENAME_TAG, XmlAttribute(), meshChunk);
 
-        auto *model = new Model(meshFilenameChunk->getStringValue());
+        auto* model = new Model(meshFilenameChunk->getStringValue());
         loadAnimationsOn(model, modelChunk, xmlParser);
         loadTransformOn(model, modelChunk, xmlParser);
         loadFlagsOn(model, modelChunk, xmlParser);
@@ -33,7 +33,7 @@ namespace urchin {
         std::shared_ptr<XmlChunk> animationsListChunk = xmlParser.getUniqueChunk(false, ANIMATIONS_TAG, XmlAttribute(), modelChunk);
         if (animationsListChunk) {
             std::vector<std::shared_ptr<XmlChunk>> animationsChunk = xmlParser.getChunks(ANIMATION_TAG, XmlAttribute(), animationsListChunk);
-            for (const auto &animationChunk : animationsChunk) {
+            for (const auto& animationChunk : animationsChunk) {
                 std::shared_ptr<XmlChunk> animationNameChunk = xmlParser.getUniqueChunk(true, NAME_TAG, XmlAttribute(), animationChunk);
                 std::shared_ptr<XmlChunk> animationFilenameChunk = xmlParser.getUniqueChunk(true, FILENAME_TAG, XmlAttribute(), animationChunk);
 
@@ -46,7 +46,7 @@ namespace urchin {
         std::map<std::string, const ConstAnimation *> animations = model->getAnimations();
         if (!animations.empty()) {
             std::shared_ptr<XmlChunk> animationsListChunk = xmlWriter.createChunk(ANIMATIONS_TAG, XmlAttribute(), modelChunk);
-            for (auto &animation : animations) {
+            for (auto& animation : animations) {
                 std::shared_ptr<XmlChunk> animationChunk = xmlWriter.createChunk(ANIMATION_TAG, XmlAttribute(), animationsListChunk);
 
                 std::shared_ptr<XmlChunk> animationNameChunk = xmlWriter.createChunk(NAME_TAG, XmlAttribute(), animationChunk);

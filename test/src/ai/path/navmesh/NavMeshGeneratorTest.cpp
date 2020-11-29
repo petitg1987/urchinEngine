@@ -209,8 +209,8 @@ void NavMeshGeneratorTest::linksRecreatedAfterMove() {
 
 unsigned int NavMeshGeneratorTest::countPolygonLinks(const std::shared_ptr<NavPolygon>& sourcePolygon, const std::shared_ptr<NavPolygon>& targetPolygon) {
     unsigned int countLinks = 0;
-    for (const auto &triangle : sourcePolygon->getTriangles()) {
-        for (const auto &link : triangle->getLinks()) {
+    for (const auto& triangle : sourcePolygon->getTriangles()) {
+        for (const auto& link : triangle->getLinks()) {
             if (link->getTargetTriangle()->getNavPolygon() == targetPolygon) {
                 countLinks++;
             }
@@ -226,7 +226,7 @@ std::shared_ptr<NavMeshAgent> NavMeshGeneratorTest::buildNavMeshAgent() {
 }
 
 CppUnit::Test *NavMeshGeneratorTest::suite() {
-    auto *suite = new CppUnit::TestSuite("NavMeshGeneratorTest");
+    auto* suite = new CppUnit::TestSuite("NavMeshGeneratorTest");
 
     suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("holeOnWalkableFace", &NavMeshGeneratorTest::holeOnWalkableFace));
     suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("holeOnWalkableFaceEdge", &NavMeshGeneratorTest::holeOnWalkableFaceEdge));

@@ -18,9 +18,9 @@ namespace urchin {
         unsigned int shaderId = glCreateProgram();
 
         //vertex shader
-        const std::string &vertexShaderFileSource = readEntireFile(ShaderConfig::instance()->getShadersDirectory() + vertexShaderFilename);
-        const std::string &vertexShaderSource = TokenReplacerShader::replaceTokens(vertexShaderFileSource, tokens);
-        const char *vertexShaderSourceChar = vertexShaderSource.c_str();
+        const std::string& vertexShaderFileSource = readEntireFile(ShaderConfig::instance()->getShadersDirectory() + vertexShaderFilename);
+        const std::string& vertexShaderSource = TokenReplacerShader::replaceTokens(vertexShaderFileSource, tokens);
+        const char* vertexShaderSourceChar = vertexShaderSource.c_str();
         unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
         glShaderSource(vertexShader, 1, &vertexShaderSourceChar, nullptr);
         glCompileShader(vertexShader);
@@ -29,9 +29,9 @@ namespace urchin {
 
         //geometry shader
         if (!geometryShaderFilename.empty()) {
-            const std::string &geometryShaderFileSource = readEntireFile(ShaderConfig::instance()->getShadersDirectory() + geometryShaderFilename);
-            const std::string &geometryShaderSource = TokenReplacerShader::replaceTokens(geometryShaderFileSource, tokens);
-            const char *geometryShaderSourceChar = geometryShaderSource.c_str();
+            const std::string& geometryShaderFileSource = readEntireFile(ShaderConfig::instance()->getShadersDirectory() + geometryShaderFilename);
+            const std::string& geometryShaderSource = TokenReplacerShader::replaceTokens(geometryShaderFileSource, tokens);
+            const char* geometryShaderSourceChar = geometryShaderSource.c_str();
             unsigned int geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
 
             glShaderSource(geometryShader, 1, &geometryShaderSourceChar, nullptr);
@@ -41,9 +41,9 @@ namespace urchin {
         }
 
         //fragment shader
-        const std::string &fragmentShaderFileSource = readEntireFile(ShaderConfig::instance()->getShadersDirectory() + fragmentShaderFilename);
-        const std::string &fragmentShaderSource = TokenReplacerShader::replaceTokens(fragmentShaderFileSource, tokens);
-        const char *fragmentShaderSourceChar = fragmentShaderSource.c_str();
+        const std::string& fragmentShaderFileSource = readEntireFile(ShaderConfig::instance()->getShadersDirectory() + fragmentShaderFilename);
+        const std::string& fragmentShaderSource = TokenReplacerShader::replaceTokens(fragmentShaderFileSource, tokens);
+        const char* fragmentShaderSourceChar = fragmentShaderSource.c_str();
         unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fragmentShader, 1, &fragmentShaderSourceChar, nullptr);
         glCompileShader(fragmentShader);
@@ -82,7 +82,7 @@ namespace urchin {
         glGetShaderiv(shaderFileId, GL_INFO_LOG_LENGTH, &infoLogLength);
 
         if (infoLogLength > 1) {
-            auto *infoLog = new char[infoLogLength];
+            auto* infoLog = new char[infoLogLength];
             glGetShaderInfoLog(shaderFileId, infoLogLength, nullptr, infoLog);
 
             std::ostringstream buffer;
@@ -98,7 +98,7 @@ namespace urchin {
         glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &infoLogLength);
 
         if (infoLogLength > 1) {
-            auto *infoLog = new char[infoLogLength];
+            auto* infoLog = new char[infoLogLength];
             glGetProgramInfoLog(programID, infoLogLength, nullptr, infoLog);
 
             std::ostringstream buffer;

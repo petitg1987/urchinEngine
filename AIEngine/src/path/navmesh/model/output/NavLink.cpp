@@ -31,7 +31,7 @@ namespace urchin {
     }
 
     std::shared_ptr<NavLink> NavLink::copyLink(const std::shared_ptr<NavTriangle>& newTargetTriangle) const {
-        auto *replicateLinkConstraint = linkConstraint ? new NavLinkConstraint(*linkConstraint) : nullptr;
+        auto* replicateLinkConstraint = linkConstraint ? new NavLinkConstraint(*linkConstraint) : nullptr;
         return std::shared_ptr<NavLink>(new NavLink(linkType, sourceEdgeIndex, newTargetTriangle, replicateLinkConstraint));
     }
 

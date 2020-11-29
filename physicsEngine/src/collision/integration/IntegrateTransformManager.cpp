@@ -21,9 +21,9 @@ namespace urchin {
      */
     void IntegrateTransformManager::integrateTransform(float dt) {
         for (auto abstractBody : bodyManager->getWorkBodies()) {
-            WorkRigidBody *body = WorkRigidBody::upCast(abstractBody);
+            WorkRigidBody* body = WorkRigidBody::upCast(abstractBody);
             if (body && body->isActive()) {
-                const PhysicsTransform &currentTransform = body->getPhysicsTransform();
+                const PhysicsTransform& currentTransform = body->getPhysicsTransform();
                 PhysicsTransform newTransform = body->getPhysicsTransform().integrate(body->getLinearVelocity(), body->getAngularVelocity(), dt);
 
                 float ccdMotionThreshold = body->getCcdMotionThreshold();

@@ -166,7 +166,7 @@ void EdgeLinkDetectionTest::testCrossEdges() {
 }
 
 CppUnit::Test *EdgeLinkDetectionTest::suite() {
-    auto *suite = new CppUnit::TestSuite("EdgeJumpDetectionTest");
+    auto* suite = new CppUnit::TestSuite("EdgeJumpDetectionTest");
 
     suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testNearParallelEdges", &EdgeLinkDetectionTest::testNearParallelEdges));
     suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testFarParallelEdges", &EdgeLinkDetectionTest::testFarParallelEdges));

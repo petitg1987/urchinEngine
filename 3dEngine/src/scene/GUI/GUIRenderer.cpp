@@ -51,7 +51,7 @@ namespace urchin {
     }
 
     void GUIRenderer::notify(Observable* observable, int notificationType) {
-        if (auto *widget = dynamic_cast<Widget *>(observable)) {
+        if (auto* widget = dynamic_cast<Widget *>(observable)) {
             if (notificationType==Widget::SET_IN_FOREGROUND) {
                 auto it = std::find(widgets.begin(), widgets.end(), widget);
                 widgets.erase(it);
@@ -131,7 +131,7 @@ namespace urchin {
         ScopeProfiler profiler("3d", "uiRenderDisplay");
 
         renderTarget->activeShader(guiShader);
-        for (auto &widget : widgets) {
+        for (auto& widget : widgets) {
             if (widget->isVisible()) {
                 Vector2<int> translateVector(widget->getGlobalPositionX(), widget->getGlobalPositionY());
                 ShaderDataSender().sendData(translateDistanceShaderVar, translateVector);
@@ -141,7 +141,7 @@ namespace urchin {
         }
 
         if (DEBUG_DISPLAY_FONT_TEXTURE) {
-            Font *font = MediaManager::instance()->getMedia<Font>("UI/font/font.fnt");
+            Font* font = MediaManager::instance()->getMedia<Font>("UI/font/font.fnt");
 
             TextureRenderer textureDisplayer(font->getTexture(), TextureRenderer::DEFAULT_VALUE);
             textureDisplayer.setPosition(TextureRenderer::USER_DEFINED_X, TextureRenderer::USER_DEFINED_Y);

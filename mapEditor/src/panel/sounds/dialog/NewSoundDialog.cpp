@@ -27,14 +27,14 @@ namespace urchin {
         this->resize(530, 160);
         this->setFixedSize(this->width(),this->height());
 
-        auto *mainLayout = new QGridLayout(this);
+        auto* mainLayout = new QGridLayout(this);
         mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
         setupNameFields(mainLayout);
         setupSoundFilenameFields(mainLayout);
         setupSoundTypeFields(mainLayout);
 
-        auto *buttonBox = new QDialogButtonBox();
+        auto* buttonBox = new QDialogButtonBox();
         mainLayout->addWidget(buttonBox, 4, 0, 1, 3, Qt::AlignRight);
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
@@ -61,7 +61,7 @@ namespace urchin {
         soundFilenameText->setReadOnly(true);
         soundFilenameText->setFixedWidth(360);
 
-        auto *selectMeshFileButton = new QPushButton("...");
+        auto* selectMeshFileButton = new QPushButton("...");
         mainLayout->addWidget(selectMeshFileButton, 1, 2);
         ButtonStyleHelper::applyNormalStyle(selectMeshFileButton);
         selectMeshFileButton->setFixedWidth(22);
@@ -107,7 +107,7 @@ namespace urchin {
                 throw std::invalid_argument("Unknown the sound type to create a new sound: " + std::to_string(soundType));
             }
 
-            SoundTrigger *soundTrigger = new ManualTrigger(SoundBehavior(SoundBehavior::PLAY_ONCE, SoundBehavior::INSTANT_STOP));
+            SoundTrigger* soundTrigger = new ManualTrigger(SoundBehavior(SoundBehavior::PLAY_ONCE, SoundBehavior::INSTANT_STOP));
 
             sceneSound->setSoundElements(sound, soundTrigger);
         } catch (std::exception& e) {

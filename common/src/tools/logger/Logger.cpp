@@ -15,7 +15,7 @@ namespace urchin {
     }
 
     std::unique_ptr<Logger> Logger::defineLogger(std::unique_ptr<Logger> logger) {
-        Logger *oldInstance = instance.release();
+        Logger* oldInstance = instance.release();
         instance = std::move(logger);
 
         return std::unique_ptr<Logger>(oldInstance);

@@ -254,14 +254,14 @@ void MonotonePolygonTest::polygonTwoHoles3() { //see monotonePolygonTwoHoles3.gg
     std::vector<MonotonePolygon> monotonePolygons = monotonePolygonAlgorithm.createYMonotonePolygons();
 
     //check duplicate points:
-    for (const auto &monotonePolygon : monotonePolygons) {
+    for (const auto& monotonePolygon : monotonePolygons) {
         std::set<unsigned int> pointsSet(monotonePolygon.getCcwPoints().begin(), monotonePolygon.getCcwPoints().end());
         AssertHelper::assertUnsignedInt(monotonePolygon.getCcwPoints().size(), pointsSet.size());
     }
 }
 
 CppUnit::Test *MonotonePolygonTest::suite() {
-    auto *suite = new CppUnit::TestSuite("MonotonePolygonTest");
+    auto* suite = new CppUnit::TestSuite("MonotonePolygonTest");
 
     suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("singleTriangle", &MonotonePolygonTest::singleTriangle));
 

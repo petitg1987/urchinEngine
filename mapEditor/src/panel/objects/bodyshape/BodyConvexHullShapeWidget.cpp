@@ -32,10 +32,10 @@ namespace urchin {
         pointsTable->setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
         pointsTable->setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
 
-        auto *delegate = new SpinBoxDelegate(nullptr, this, pointsTable, pointsTableModel);
+        auto* delegate = new SpinBoxDelegate(nullptr, this, pointsTable, pointsTableModel);
         pointsTable->setItemDelegate(delegate);
 
-        auto *buttonLayout = new QHBoxLayout();
+        auto* buttonLayout = new QHBoxLayout();
         mainLayout->addLayout(buttonLayout, 2, 0);
         buttonLayout->setAlignment(Qt::AlignLeft);
 
@@ -55,10 +55,10 @@ namespace urchin {
     }
 
     void BodyConvexHullShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape) {
-        const auto *convexHullShape = dynamic_cast<const CollisionConvexHullShape *>(shape.get());
+        const auto* convexHullShape = dynamic_cast<const CollisionConvexHullShape *>(shape.get());
 
-        const std::vector<Point3<float>> &points = convexHullShape->getPoints();
-        for (const auto &point : points) {
+        const std::vector<Point3<float>>& points = convexHullShape->getPoints();
+        for (const auto& point : points) {
             addPoint(point);
         }
     }

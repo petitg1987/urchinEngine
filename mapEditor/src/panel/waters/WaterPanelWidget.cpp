@@ -28,7 +28,7 @@ namespace urchin {
             normalTextureFilenameText(nullptr), dudvMapFilenameText(nullptr),
             waveSpeed(nullptr), waveStrength(nullptr), sRepeat(nullptr), tRepeat(nullptr),
             density(nullptr), gradient(nullptr) {
-        auto *mainLayout = new QVBoxLayout(this);
+        auto* mainLayout = new QVBoxLayout(this);
         mainLayout->setAlignment(Qt::AlignTop);
         mainLayout->setContentsMargins(1, 1, 1, 1);
 
@@ -37,7 +37,7 @@ namespace urchin {
         waterTableView->addObserver(this, WaterTableView::SELECTION_CHANGED);
         waterTableView->setFixedHeight(220);
 
-        auto *buttonsLayout = new QHBoxLayout();
+        auto* buttonsLayout = new QHBoxLayout();
         mainLayout->addLayout(buttonsLayout);
         buttonsLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
@@ -64,12 +64,12 @@ namespace urchin {
         generalPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         generalPropertiesGroupBox->hide();
 
-        auto *generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
+        auto* generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
 
         auto *positionLabel= new QLabel("Position:");
         generalPropertiesLayout->addWidget(positionLabel, 0, 0);
 
-        auto *positionLayout = new QHBoxLayout();
+        auto* positionLayout = new QHBoxLayout();
         generalPropertiesLayout->addLayout(positionLayout, 0, 1, Qt::AlignmentFlag::AlignLeft);
         positionX = new QDoubleSpinBox();
         positionLayout->addWidget(positionX);
@@ -87,7 +87,7 @@ namespace urchin {
         auto *xSizeLabel= new QLabel("XZ size:");
         generalPropertiesLayout->addWidget(xSizeLabel, 1, 0);
 
-        auto *xzSizeLayout = new QHBoxLayout();
+        auto* xzSizeLayout = new QHBoxLayout();
         generalPropertiesLayout->addLayout(xzSizeLayout, 1, 1, Qt::AlignmentFlag::AlignLeft);
         xSize = new QDoubleSpinBox();
         xzSizeLayout->addWidget(xSize);
@@ -110,12 +110,12 @@ namespace urchin {
         waterSurfacePropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         waterSurfacePropertiesGroupBox->hide();
 
-        auto *waterSurfacePropertiesLayout = new QGridLayout(waterSurfacePropertiesGroupBox);
+        auto* waterSurfacePropertiesLayout = new QGridLayout(waterSurfacePropertiesGroupBox);
 
         auto *waterColorLabel= new QLabel("Water color:");
         waterSurfacePropertiesLayout->addWidget(waterColorLabel, 0, 0);
 
-        auto *waterColorLayout = new QHBoxLayout();
+        auto* waterColorLayout = new QHBoxLayout();
         waterSurfacePropertiesLayout->addLayout(waterColorLayout, 0, 1, Qt::AlignmentFlag::AlignLeft);
         waterColorR = new QDoubleSpinBox();
         waterColorLayout->addWidget(waterColorR);
@@ -139,19 +139,19 @@ namespace urchin {
         auto *normalTextureLabel= new QLabel("Normal:");
         waterSurfacePropertiesLayout->addWidget(normalTextureLabel, 2, 0);
 
-        auto *normalTextureLayout = new QHBoxLayout();
+        auto* normalTextureLayout = new QHBoxLayout();
         waterSurfacePropertiesLayout->addLayout(normalTextureLayout, 2, 1, Qt::AlignmentFlag::AlignLeft);
         normalTextureFilenameText = new QLineEdit();
         normalTextureLayout->addWidget(normalTextureFilenameText);
         normalTextureFilenameText->setReadOnly(true);
 
-        auto *selectNormalTextureFileButton = new QPushButton("...");
+        auto* selectNormalTextureFileButton = new QPushButton("...");
         normalTextureLayout->addWidget(selectNormalTextureFileButton);
         ButtonStyleHelper::applyNormalStyle(selectNormalTextureFileButton);
         selectNormalTextureFileButton->setFixedWidth(22);
         connect(selectNormalTextureFileButton, SIGNAL(clicked()), this, SLOT(showNormalTextureFilenameDialog()));
 
-        auto *clearNormalTextureFileButton = new QPushButton("Clr");
+        auto* clearNormalTextureFileButton = new QPushButton("Clr");
         normalTextureLayout->addWidget(clearNormalTextureFileButton);
         ButtonStyleHelper::applyNormalStyle(clearNormalTextureFileButton);
         clearNormalTextureFileButton->setFixedWidth(22);
@@ -160,19 +160,19 @@ namespace urchin {
         auto *dudvMapLabel= new QLabel("Du-dv map:");
         waterSurfacePropertiesLayout->addWidget(dudvMapLabel, 3, 0);
 
-        auto *dudvMapLayout = new QHBoxLayout();
+        auto* dudvMapLayout = new QHBoxLayout();
         waterSurfacePropertiesLayout->addLayout(dudvMapLayout, 3, 1, Qt::AlignmentFlag::AlignLeft);
         dudvMapFilenameText = new QLineEdit();
         dudvMapLayout->addWidget(dudvMapFilenameText);
         dudvMapFilenameText->setReadOnly(true);
 
-        auto *selectDudvMapFileButton = new QPushButton("...");
+        auto* selectDudvMapFileButton = new QPushButton("...");
         dudvMapLayout->addWidget(selectDudvMapFileButton);
         ButtonStyleHelper::applyNormalStyle(selectDudvMapFileButton);
         selectDudvMapFileButton->setFixedWidth(22);
         connect(selectDudvMapFileButton, SIGNAL(clicked()), this, SLOT(showDudvMapFilenameDialog()));
 
-        auto *clearDudvMapFileButton = new QPushButton("Clr");
+        auto* clearDudvMapFileButton = new QPushButton("Clr");
         dudvMapLayout->addWidget(clearDudvMapFileButton);
         ButtonStyleHelper::applyNormalStyle(clearDudvMapFileButton);
         clearDudvMapFileButton->setFixedWidth(22);
@@ -201,7 +201,7 @@ namespace urchin {
         auto *repeatLabel= new QLabel("Repeat:");
         waterSurfacePropertiesLayout->addWidget(repeatLabel, 6, 0);
 
-        auto *repeatLayout = new QHBoxLayout();
+        auto* repeatLayout = new QHBoxLayout();
         waterSurfacePropertiesLayout->addLayout(repeatLayout, 6, 1, Qt::AlignmentFlag::AlignLeft);
         sRepeat = new QDoubleSpinBox();
         repeatLayout->addWidget(sRepeat);
@@ -225,7 +225,7 @@ namespace urchin {
         underWaterPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         underWaterPropertiesGroupBox->hide();
 
-        auto *underWaterPropertiesLayout = new QGridLayout(underWaterPropertiesGroupBox);
+        auto* underWaterPropertiesLayout = new QGridLayout(underWaterPropertiesGroupBox);
 
         auto *densityLabel= new QLabel("Density:");
         underWaterPropertiesLayout->addWidget(densityLabel, 0, 0);
@@ -254,7 +254,7 @@ namespace urchin {
         this->waterController = waterController;
 
         std::list<const SceneWater *> sceneWaters = waterController->getSceneWaters();
-        for (auto &sceneWater : sceneWaters) {
+        for (auto& sceneWater : sceneWaters) {
             waterTableView->addWater(sceneWater);
         }
     }
@@ -266,10 +266,10 @@ namespace urchin {
     }
 
     void WaterPanelWidget::notify(Observable* observable, int notificationType) {
-        if (auto *waterTableView = dynamic_cast<WaterTableView *>(observable)) {
+        if (auto* waterTableView = dynamic_cast<WaterTableView *>(observable)) {
             if (notificationType==WaterTableView::SELECTION_CHANGED) {
                 if (waterTableView->hasSceneWaterSelected()) {
-                    const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
+                    const SceneWater* sceneWater = waterTableView->getSelectedSceneWater();
                     setupWaterDataFrom(sceneWater);
 
                     removeWaterButton->setEnabled(true);
@@ -288,7 +288,7 @@ namespace urchin {
 
     void WaterPanelWidget::setupWaterDataFrom(const SceneWater* sceneWater) {
         disableWaterEvent = true;
-        const Water *water = sceneWater->getWater();
+        const Water* water = sceneWater->getWater();
 
         this->positionX->setValue(water->getCenterPosition().X);
         this->positionY->setValue(water->getCenterPosition().Y);
@@ -321,7 +321,7 @@ namespace urchin {
         newSceneWaterDialog.exec();
 
         if (newSceneWaterDialog.result()==QDialog::Accepted) {
-            SceneWater *sceneWater = newSceneWaterDialog.getSceneWater();
+            SceneWater* sceneWater = newSceneWaterDialog.getSceneWater();
             waterController->addSceneWater(sceneWater);
 
             waterTableView->addWater(sceneWater);
@@ -330,7 +330,7 @@ namespace urchin {
 
     void WaterPanelWidget::removeSelectedWater() {
         if (waterTableView->hasSceneWaterSelected()) {
-            const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
+            const SceneWater* sceneWater = waterTableView->getSelectedSceneWater();
             waterController->removeSceneWater(sceneWater);
 
             waterTableView->removeSelectedWater();
@@ -339,7 +339,7 @@ namespace urchin {
 
     void WaterPanelWidget::updateWaterProperties() {
         if (!disableWaterEvent) {
-            const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
+            const SceneWater* sceneWater = waterTableView->getSelectedSceneWater();
 
             Point3<float> position(positionX->value(), positionY->value(), positionZ->value());
             waterController->updateSceneWaterGeneral(sceneWater, position, (float)xSize->value(), (float)zSize->value());
@@ -348,7 +348,7 @@ namespace urchin {
 
     void WaterPanelWidget::updateSurfaceWaterProperties() {
         if (!disableWaterEvent) {
-            const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
+            const SceneWater* sceneWater = waterTableView->getSelectedSceneWater();
 
             Vector3<float> waterColor(waterColorR->value(), waterColorG->value(), waterColorB->value());
             std::string normalTextureFilename = normalTextureFilenameText->text().toStdString();
@@ -360,7 +360,7 @@ namespace urchin {
 
     void WaterPanelWidget::updateUnderWaterProperties() {
         if (!disableWaterEvent) {
-            const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
+            const SceneWater* sceneWater = waterTableView->getSelectedSceneWater();
 
             waterController->updateSceneWaterUnderWater(sceneWater, (float)density->value(), (float)gradient->value());
         }

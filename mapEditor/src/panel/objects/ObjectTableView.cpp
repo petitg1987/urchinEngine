@@ -37,7 +37,7 @@ namespace urchin {
     int ObjectTableView::getSceneObjectRow(const SceneObject* expectedSceneObject) const {
         for (int rowId = 0; rowId < objectsListModel->rowCount(); ++rowId) {
             QModelIndex index = objectsListModel->index(rowId, 0);
-            auto *sceneObject = index.data(Qt::UserRole + 1).value<const SceneObject *>();
+            auto* sceneObject = index.data(Qt::UserRole + 1).value<const SceneObject *>();
             if (expectedSceneObject->getName() == sceneObject->getName()) {
                 return rowId;
             }
@@ -54,7 +54,7 @@ namespace urchin {
     }
 
     int ObjectTableView::addObject(const SceneObject* sceneObject) {
-        auto *itemObjectName = new QStandardItem(QString::fromStdString(sceneObject->getName()));
+        auto* itemObjectName = new QStandardItem(QString::fromStdString(sceneObject->getName()));
         itemObjectName->setData(QVariant::fromValue(sceneObject), Qt::UserRole + 1);
         itemObjectName->setEditable(false);
 
@@ -62,7 +62,7 @@ namespace urchin {
         if (sceneObject->getModel()->getMeshes()) {
             pathFileName = sceneObject->getModel()->getMeshes()->getMeshFilename();
         }
-        auto *itemMeshFile = new QStandardItem(QString::fromStdString(FileHandler::getFileName(pathFileName)));
+        auto* itemMeshFile = new QStandardItem(QString::fromStdString(FileHandler::getFileName(pathFileName)));
         itemMeshFile->setToolTip(QString::fromStdString(pathFileName));
         itemMeshFile->setData(QVariant::fromValue(sceneObject), Qt::UserRole + 1);
         itemMeshFile->setEditable(false);

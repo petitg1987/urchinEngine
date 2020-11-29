@@ -16,12 +16,12 @@ namespace urchin {
         this->resize(245, 80);
         this->setFixedSize(this->width(),this->height());
 
-        auto *mainLayout = new QGridLayout(this);
+        auto* mainLayout = new QGridLayout(this);
         mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
         setupSoundShapeTypeFields(mainLayout);
 
-        auto *buttonBox = new QDialogButtonBox();
+        auto* buttonBox = new QDialogButtonBox();
         mainLayout->addWidget(buttonBox, 1, 0, 1, 2, Qt::AlignRight);
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);

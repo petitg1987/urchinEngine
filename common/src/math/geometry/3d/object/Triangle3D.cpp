@@ -32,8 +32,8 @@ namespace urchin {
     }
 
     template<class T> Vector3<T> Triangle3D<T>::computeNormal() const {
-        const Vector3<T> &aux = this->getPoints()[1].vector(this->getPoints()[2]);
-        const Vector3<T> &normal = aux.crossProduct(this->getPoints()[1].vector(this->getPoints()[0]));
+        const Vector3<T>& aux = this->getPoints()[1].vector(this->getPoints()[2]);
+        const Vector3<T>& normal = aux.crossProduct(this->getPoints()[1].vector(this->getPoints()[0]));
 
         return normal.normalize();
     }
@@ -43,9 +43,9 @@ namespace urchin {
      * @return Point on triangle closest to point p
      */
     template<class T> Point3<T> Triangle3D<T>::closestPoint(const Point3<T>& p, T barycentrics[3]) const {
-        const Point3<T> &a = this->getPoints()[0];
-        const Point3<T> &b = this->getPoints()[1];
-        const Point3<T> &c = this->getPoints()[2];
+        const Point3<T>& a = this->getPoints()[0];
+        const Point3<T>& b = this->getPoints()[1];
+        const Point3<T>& c = this->getPoints()[2];
 
         //check if P is in voronoi region of point A
         Vector3<T> ab = a.vector(b);

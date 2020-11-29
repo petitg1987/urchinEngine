@@ -26,7 +26,7 @@ namespace urchin {
         StringUtil::split(mapString, DELIMITER, splitStrings);
 
         bool appendNextElement = false;
-        for (const auto &elem : splitStrings) {
+        for (const auto& elem : splitStrings) {
             if (appendNextElement) {
                 mapListString.back() = mapListString.back() + DELIMITER + elem;
             } else {

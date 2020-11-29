@@ -38,7 +38,7 @@ void MapUtilTest::trickyMapValues() {
 }
 
 CppUnit::Test *MapUtilTest::suite() {
-    auto *suite = new CppUnit::TestSuite("MapUtilTest");
+    auto* suite = new CppUnit::TestSuite("MapUtilTest");
 
     suite->addTest(new CppUnit::TestCaller<MapUtilTest>("emptyMap", &MapUtilTest::emptyMap));
     suite->addTest(new CppUnit::TestCaller<MapUtilTest>("simpleMap", &MapUtilTest::simpleMap));

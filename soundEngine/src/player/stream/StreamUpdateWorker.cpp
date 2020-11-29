@@ -21,7 +21,7 @@ namespace urchin {
     }
 
     StreamUpdateWorker::~StreamUpdateWorker() {
-        for (auto &task : tasks) {
+        for (auto& task : tasks) {
             deleteTask(task);
         }
     }
@@ -32,10 +32,10 @@ namespace urchin {
      * @param sound Sound used to fill the queue
      */
     void StreamUpdateWorker::addTask(const Sound* sound, bool playLoop) {
-        auto *task = new StreamUpdateTask(sound, new StreamChunk[nbChunkBuffer], playLoop);
+        auto* task = new StreamUpdateTask(sound, new StreamChunk[nbChunkBuffer], playLoop);
 
         //create buffers/chunks
-        auto *bufferId = new ALuint[nbChunkBuffer];
+        auto* bufferId = new ALuint[nbChunkBuffer];
         alGenBuffers(nbChunkBuffer, bufferId);
         for (unsigned int i=0; i<nbChunkBuffer; ++i) {
             task->getStreamChunk(i).bufferId = bufferId[i];
@@ -162,7 +162,7 @@ namespace urchin {
     void StreamUpdateWorker::fillAndPushChunk(StreamUpdateTask* task, unsigned int chunkId) {
         fillChunk(task, chunkId);
 
-        const StreamChunk &streamChunk = task->getStreamChunk(chunkId);
+        const StreamChunk& streamChunk = task->getStreamChunk(chunkId);
         ALsizei size = streamChunk.numberOfSamples * sizeof(ALushort);
         if (size > 0) {
             alBufferData(streamChunk.bufferId, task->getSoundFileReader()->getFormat(), &streamChunk.samples[0],
@@ -176,7 +176,7 @@ namespace urchin {
      * @param task Task currently executed
      */
     void StreamUpdateWorker::fillChunk(StreamUpdateTask* task, unsigned int chunkId) const {
-        StreamChunk &streamChunk = task->getStreamChunk(chunkId);
+        StreamChunk& streamChunk = task->getStreamChunk(chunkId);
         unsigned int bufferSize = task->getSoundFileReader()->getSampleRate() * task->getSoundFileReader()->getNumberOfChannels() * nbSecondByChunk;
         streamChunk.samples.resize(bufferSize);
 

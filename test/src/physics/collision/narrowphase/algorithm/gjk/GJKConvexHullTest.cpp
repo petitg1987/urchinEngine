@@ -142,7 +142,7 @@ void GJKConvexHullTest::cornerInsideHexagon() {
 }
 
 CppUnit::Test *GJKConvexHullTest::suite() {
-    auto *suite = new CppUnit::TestSuite("GJKConvexHullTest");
+    auto* suite = new CppUnit::TestSuite("GJKConvexHullTest");
 
     suite->addTest(new CppUnit::TestCaller<GJKConvexHullTest>("identicalBox", &GJKConvexHullTest::identicalBox));
     suite->addTest(new CppUnit::TestCaller<GJKConvexHullTest>("separateBox", &GJKConvexHullTest::separateBox));

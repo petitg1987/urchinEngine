@@ -59,7 +59,7 @@ namespace urchin {
 
     template<class T> bool Simplex<T>::isPointInSimplex(const Point3<T>& p) const {
         for (unsigned int i=0; i<simplexPointsSize; ++i) {
-            const Point3<T> &simplexPoint = simplexPoints[i].point;
+            const Point3<T>& simplexPoint = simplexPoints[i].point;
             if (simplexPoint.X==p.X && simplexPoint.Y==p.Y && simplexPoint.Z==p.Z) {
                 return true;
             }
@@ -115,17 +115,17 @@ namespace urchin {
             setBarycentric(0, 1.0);
         } else if (getSize() == 2) { //simplex is a line (1D)
 
-            const Point3<T> &pointA = getPoint(0);
-            const Point3<T> &pointB = getPoint(1); //pointB is the last point added to the simplex
+            const Point3<T>& pointA = getPoint(0);
+            const Point3<T>& pointB = getPoint(1); //pointB is the last point added to the simplex
 
             closestPointToOrigin = LineSegment3D<T>(pointA, pointB).closestPoint(Point3<T>(0.0, 0.0, 0.0), barycentrics);
             setBarycentric(0, barycentrics[0]);
             setBarycentric(1, barycentrics[1]);
         } else if (getSize() == 3) { //simplex is a triangle (2D)
 
-            const Point3<T> &pointA = getPoint(0);
-            const Point3<T> &pointB = getPoint(1);
-            const Point3<T> &pointC = getPoint(2); //pointC is the last point added to the simplex
+            const Point3<T>& pointA = getPoint(0);
+            const Point3<T>& pointB = getPoint(1);
+            const Point3<T>& pointC = getPoint(2); //pointC is the last point added to the simplex
 
             const Vector3<T> co = pointC.vector(Point3<T>(0.0, 0.0, 0.0));
             const Vector3<T> cb = pointC.vector(pointB);
@@ -149,10 +149,10 @@ namespace urchin {
             }
         } else if (getSize() == 4) { //simplex is a tetrahedron (3D)
 
-            const Point3<T> &pointA = getPoint(0);
-            const Point3<T> &pointB = getPoint(1);
-            const Point3<T> &pointC = getPoint(2);
-            const Point3<T> &pointD = getPoint(3); //pointD is the last point added to the simplex
+            const Point3<T>& pointA = getPoint(0);
+            const Point3<T>& pointB = getPoint(1);
+            const Point3<T>& pointC = getPoint(2);
+            const Point3<T>& pointD = getPoint(3); //pointD is the last point added to the simplex
 
             const unsigned short voronoiRegionMask = 14u; //test all voronoi regions except the one which doesn't include the new point added (pointD)
             closestPointToOrigin = Tetrahedron<T>(pointA, pointB, pointC, pointD).closestPoint(Point3<T>(0.0, 0.0, 0.0), barycentrics, voronoiRegionMask);

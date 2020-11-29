@@ -45,7 +45,7 @@ namespace urchin {
         iss >> sdata >> numAnimatedComponents;
 
         //hierarchy
-        auto *boneInfos = new BoneInfo[numBones];
+        auto* boneInfos = new BoneInfo[numBones];
         FileReaderUtil::nextLine(file, buffer); //buffer = "hierarchy {"
         for (unsigned int i=0;i<numBones;i++) {
             FileReaderUtil::nextLine(file, buffer);
@@ -69,7 +69,7 @@ namespace urchin {
         FileReaderUtil::nextLine(file, buffer); //buffer = "}"
 
         //baseframe
-        auto *baseFrame = new BaseFrameBone[numBones];
+        auto* baseFrame = new BaseFrameBone[numBones];
         FileReaderUtil::nextLine(file, buffer); //buffer = "baseframe {"
         for (unsigned int i=0;i<numBones;i++) {
             FileReaderUtil::nextLine(file, buffer);
@@ -81,7 +81,7 @@ namespace urchin {
 
         //frames
         auto **skeletonFrames = new Bone*[numFrames];
-        auto *animFrameData = new float[numAnimatedComponents];
+        auto* animFrameData = new float[numAnimatedComponents];
         for (unsigned int frameIndex=0;frameIndex<numFrames;++frameIndex) {
             skeletonFrames[frameIndex] = new Bone[numBones];
 
@@ -92,7 +92,7 @@ namespace urchin {
 
             //build frame skeleton from the collected data
             for (unsigned int i=0; i<numBones; ++i) {
-                const BaseFrameBone *baseBone = &baseFrame[i];
+                const BaseFrameBone* baseBone = &baseFrame[i];
                 int j = 0;
 
                 Point3<float> animatedPos = baseBone->pos;
@@ -137,7 +137,7 @@ namespace urchin {
                 animatedOrient.computeW();
 
                 //we assume that this bone's parent has already been calculated, i.e. bone's ID should never be smaller than its parent ID.
-                Bone *thisBone = &skeletonFrames[frameIndex][i];
+                Bone* thisBone = &skeletonFrames[frameIndex][i];
 
                 int parent = boneInfos[i].parent;
                 thisBone->parent = parent;
@@ -148,7 +148,7 @@ namespace urchin {
                     thisBone->pos = animatedPos;
                     thisBone->orient = animatedOrient;
                 } else {
-                    Bone *parentBone = &skeletonFrames[frameIndex][parent];
+                    Bone* parentBone = &skeletonFrames[frameIndex][parent];
 
                     //adds positions
                     Point3<float> rpos = parentBone->orient.rotatePoint(animatedPos); //rotated position

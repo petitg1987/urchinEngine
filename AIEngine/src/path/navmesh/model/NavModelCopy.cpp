@@ -10,11 +10,11 @@ namespace urchin {
 
         copiedNavPolygons.reserve(originalNavPolygons.size());
         for (std::size_t originalPolygonIndex=0; originalPolygonIndex < originalNavPolygons.size(); ++originalPolygonIndex) {
-            const auto &originalPolygon = originalNavPolygons[originalPolygonIndex];
+            const auto& originalPolygon = originalNavPolygons[originalPolygonIndex];
             auto copiedNavPolygon = std::make_shared<NavPolygon>(*originalPolygon);
 
             //re-attach triangle to new polygons
-            for (auto &copiedNavTriangle : copiedNavPolygon->getTriangles()) {
+            for (auto& copiedNavTriangle : copiedNavPolygon->getTriangles()) {
                 copiedNavTriangle->attachNavPolygon(copiedNavPolygon);
             }
 
@@ -31,17 +31,17 @@ namespace urchin {
 
         //build triangles links
         for (std::size_t originalPolygonIndex=0; originalPolygonIndex < originalNavPolygons.size(); ++originalPolygonIndex) {
-            const auto &originalPolygon = originalNavPolygons[originalPolygonIndex];
+            const auto& originalPolygon = originalNavPolygons[originalPolygonIndex];
             for (std::size_t originalTriangleIndex=0; originalTriangleIndex < originalPolygon->getTriangles().size(); ++originalTriangleIndex) {
-                const auto &originalTriangle = originalPolygon->getTriangles()[originalTriangleIndex];
-                for (const auto &originalLink : originalTriangle->getLinks()) {
-                    const auto &linkTargetPolygonPositions = originalPositionsMap.find(originalLink->getTargetTriangle()->getNavPolygon().get());
+                const auto& originalTriangle = originalPolygon->getTriangles()[originalTriangleIndex];
+                for (const auto& originalLink : originalTriangle->getLinks()) {
+                    const auto& linkTargetPolygonPositions = originalPositionsMap.find(originalLink->getTargetTriangle()->getNavPolygon().get());
                     assert(linkTargetPolygonPositions != originalPositionsMap.end());
 
-                    const auto &linkTargetTrianglePositions = linkTargetPolygonPositions->second.find(originalLink->getTargetTriangle().get());
+                    const auto& linkTargetTrianglePositions = linkTargetPolygonPositions->second.find(originalLink->getTargetTriangle().get());
                     assert(linkTargetTrianglePositions != linkTargetPolygonPositions->second.end());
 
-                    const std::shared_ptr<NavTriangle> &linkTargetTriangle = copiedNavPolygons[linkTargetTrianglePositions->second.first]->getTriangles()[linkTargetTrianglePositions->second.second];
+                    const std::shared_ptr<NavTriangle>& linkTargetTriangle = copiedNavPolygons[linkTargetTrianglePositions->second.first]->getTriangles()[linkTargetTrianglePositions->second.second];
                     copiedNavPolygons[originalPolygonIndex]->getTriangles()[originalTriangleIndex]->addLink(originalLink->copyLink(linkTargetTriangle));
                 }
             }

@@ -212,7 +212,7 @@ namespace urchin {
 
     void TerrainGrass::createRenderers(const std::vector<TerrainGrassQuadtree *> &leafGrassPatches) {
         if(grassTexture) {
-            for (auto *grassQuadtree : leafGrassPatches) {
+            for (auto* grassQuadtree : leafGrassPatches) {
                 std::unique_ptr<GenericRenderer> renderer = std::make_unique<GenericRendererBuilder>(ShapeType::POINT)
                         ->enableDepthTest()
                         ->disableCullFace()
@@ -237,7 +237,7 @@ namespace urchin {
         if (grassTextureFilename.empty()) {
             grassTexture = nullptr;
         } else {
-            auto *grassTextureImg = MediaManager::instance()->getMedia<Image>(grassTextureFilename);
+            auto* grassTextureImg = MediaManager::instance()->getMedia<Image>(grassTextureFilename);
             grassTexture = grassTextureImg->createTexture(true);
             grassTextureImg->release();
         }
@@ -253,7 +253,7 @@ namespace urchin {
         if (grassMaskFilename.empty()) {
             grassMaskTexture = Image(1, 1, Image::IMAGE_GRAYSCALE, std::vector<unsigned char>({0})).createTexture(false);
         } else {
-            auto *grassMaskImage = MediaManager::instance()->getMedia<Image>(grassMaskFilename);
+            auto* grassMaskImage = MediaManager::instance()->getMedia<Image>(grassMaskFilename);
             grassMaskTexture = grassMaskImage->createTexture(false);
             grassMaskImage->release();
         }
@@ -346,14 +346,14 @@ namespace urchin {
 
             renderTarget->activeShader(terrainGrassShader);
             for (std::size_t i=0; i<grassQuadtrees.size(); ++i) {
-                const TerrainGrassQuadtree *grassQuadtree = grassQuadtrees[i];
-                const std::unique_ptr<AABBox<float>> &grassQuadtreeBox = grassQuadtree->getBox();
+                const TerrainGrassQuadtree* grassQuadtree = grassQuadtrees[i];
+                const std::unique_ptr<AABBox<float>>& grassQuadtreeBox = grassQuadtree->getBox();
 
                 if (grassQuadtreeBox && camera->getFrustum().cutFrustum(grassDisplayDistance).collideWithAABBox(*grassQuadtreeBox)) {
                     if (grassQuadtree->isLeaf()) {
                         renderTarget->display(grassQuadtree->getRenderer());
                     } else {
-                        for (const auto *child : grassQuadtree->getChildren()) {
+                        for (const auto* child : grassQuadtree->getChildren()) {
                             grassQuadtrees.push_back(child);
                         }
                     }

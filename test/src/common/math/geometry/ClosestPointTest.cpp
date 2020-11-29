@@ -159,7 +159,7 @@ void ClosestPointTest::closestPointTetrahedron() {
 }
 
 CppUnit::Test *ClosestPointTest::suite() {
-    auto *suite = new CppUnit::TestSuite("VoronoiRegionTest");
+    auto* suite = new CppUnit::TestSuite("VoronoiRegionTest");
 
     suite->addTest(new CppUnit::TestCaller<ClosestPointTest>("closestPointLineSegment2D", &ClosestPointTest::closestPointLineSegment2D));
     suite->addTest(new CppUnit::TestCaller<ClosestPointTest>("closestPointLineSegment3D", &ClosestPointTest::closestPointLineSegment3D));

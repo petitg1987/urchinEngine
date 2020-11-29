@@ -7,7 +7,7 @@ namespace urchin {
 
     BodyCapsuleShapeWidget::BodyCapsuleShapeWidget(const SceneObject* sceneObject) :
             BodyShapeWidget(sceneObject) {
-        auto *radiusLabel = new QLabel("Radius:");
+        auto* radiusLabel = new QLabel("Radius:");
         mainLayout->addWidget(radiusLabel, 0, 0);
 
         radius = new QDoubleSpinBox();
@@ -16,7 +16,7 @@ namespace urchin {
         radius->setMinimum(0.0);
         connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
 
-        auto *cylinderHeightLabel = new QLabel("Cylinder Height:");
+        auto* cylinderHeightLabel = new QLabel("Cylinder Height:");
         mainLayout->addWidget(cylinderHeightLabel, 1, 0);
 
         cylinderHeight = new QDoubleSpinBox();
@@ -25,7 +25,7 @@ namespace urchin {
         cylinderHeight->setMinimum(0.0);
         connect(cylinderHeight, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
 
-        auto *orientationLabel = new QLabel("Orientation:");
+        auto* orientationLabel = new QLabel("Orientation:");
         mainLayout->addWidget(orientationLabel, 2, 0);
 
         orientation = new QComboBox();
@@ -41,7 +41,7 @@ namespace urchin {
     }
 
     void BodyCapsuleShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape) {
-        auto *capsuleShape = dynamic_cast<const CollisionCapsuleShape *>(shape.get());
+        auto* capsuleShape = dynamic_cast<const CollisionCapsuleShape *>(shape.get());
 
         radius->setValue(capsuleShape->getRadius());
         cylinderHeight->setValue(capsuleShape->getCylinderHeight());

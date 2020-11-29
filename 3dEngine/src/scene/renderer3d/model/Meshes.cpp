@@ -7,7 +7,7 @@ namespace urchin {
             numMeshes(constMeshes->getNumberConstMeshes()) {
         //create mesh
         for (unsigned int m=0; m<numMeshes; m++) {
-            auto *mesh = new Mesh(constMeshes->getConstMesh(m));
+            auto* mesh = new Mesh(constMeshes->getConstMesh(m));
             meshes.push_back(mesh);
         }
     }
@@ -48,7 +48,7 @@ namespace urchin {
         globalBBox = constMeshes->getOriginalAABBox().moveAABBox(newTransform);
 
         globalSplitBBoxes.clear();
-        for (const auto &originalSplitAABBox : constMeshes->getOriginalSplitAABBoxes()) {
+        for (const auto& originalSplitAABBox : constMeshes->getOriginalSplitAABBoxes()) {
             globalSplitBBoxes.push_back(originalSplitAABBox.moveAABBox(newTransform));
         }
     }

@@ -32,7 +32,7 @@ void OrthogonalProjectionTest::orthogonalProjectionPlane() {
 }
 
 CppUnit::Test *OrthogonalProjectionTest::suite() {
-    auto *suite = new CppUnit::TestSuite("OrthogonalProjectionTest");
+    auto* suite = new CppUnit::TestSuite("OrthogonalProjectionTest");
 
     suite->addTest(new CppUnit::TestCaller<OrthogonalProjectionTest>("orthogonalProjectionLine2D", &OrthogonalProjectionTest::orthogonalProjectionLine2D));
     suite->addTest(new CppUnit::TestCaller<OrthogonalProjectionTest>("orthogonalProjectionLine3D", &OrthogonalProjectionTest::orthogonalProjectionLine3D));

@@ -155,7 +155,7 @@ namespace urchin {
         }
 
         renderTarget->activeShader(modelShader);
-        for (const auto &model : models) {
+        for (const auto& model : models) {
             ShaderDataSender().sendData(mModelShaderVar, model->getTransform().getTransformMatrix());
             if (displayMode == DEFAULT_MODE) {
                 ShaderDataSender().sendData(mNormalShaderVar, model->getTransform().getTransformMatrix().toMatrix3().inverse().transpose());

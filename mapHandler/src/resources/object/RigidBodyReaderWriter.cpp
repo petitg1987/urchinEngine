@@ -8,9 +8,9 @@ namespace urchin {
             const Transform<float>& modelTransform, const XmlParser& xmlParser) const {
         std::shared_ptr<XmlChunk> shapeChunk = xmlParser.getUniqueChunk(true, SHAPE_TAG, XmlAttribute(), physicsChunk);
         std::shared_ptr<CollisionShapeReaderWriter> shapeReaderWriter = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeChunk);
-        CollisionShape3D *bodyShape = shapeReaderWriter->loadFrom(shapeChunk, xmlParser);
+        CollisionShape3D* bodyShape = shapeReaderWriter->loadFrom(shapeChunk, xmlParser);
 
-        auto *rigidBody = new RigidBody(id, modelTransform, std::shared_ptr<const CollisionShape3D>(bodyShape));
+        auto* rigidBody = new RigidBody(id, modelTransform, std::shared_ptr<const CollisionShape3D>(bodyShape));
         loadBodyPropertiesOn(rigidBody, physicsChunk, xmlParser);
 
         return rigidBody;

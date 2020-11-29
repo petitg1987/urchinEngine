@@ -24,7 +24,7 @@ namespace urchin {
     }
 
     void LightController::removeSceneLight(const SceneLight* constSceneLight) {
-        SceneLight *sceneLight = findSceneLight(constSceneLight);
+        SceneLight* sceneLight = findSceneLight(constSceneLight);
         getMapHandler()->getMap()->removeSceneLight(sceneLight);
 
         markModified();
@@ -32,8 +32,8 @@ namespace urchin {
 
     const SceneLight *LightController::updateSceneLightGeneralProperties(const SceneLight* constSceneLight,
                                                                          const Point3<float>& ambientColor, bool isProduceShadow) {
-        SceneLight *sceneLight = findSceneLight(constSceneLight);
-        Light *light = sceneLight->getLight();
+        SceneLight* sceneLight = findSceneLight(constSceneLight);
+        Light* light = sceneLight->getLight();
 
         light->setAmbientColor(ambientColor);
         if (light->isProduceShadow()!=isProduceShadow) {
@@ -46,8 +46,8 @@ namespace urchin {
 
     const SceneLight *LightController::updateSceneOmnidirectionalLightProperties(const SceneLight* constSceneLight,
                                                                                  float attenuation, const Point3<float>& position) {
-        SceneLight *sceneLight = findSceneLight(constSceneLight);
-        auto *light = dynamic_cast<OmnidirectionalLight *>(sceneLight->getLight());
+        SceneLight* sceneLight = findSceneLight(constSceneLight);
+        auto* light = dynamic_cast<OmnidirectionalLight *>(sceneLight->getLight());
 
         light->setAttenuation(attenuation);
         light->setPosition(position);
@@ -57,8 +57,8 @@ namespace urchin {
     }
 
     const SceneLight *LightController::updateSceneSunLightProperties(const SceneLight* constSceneLight, const Vector3<float>& direction) {
-        SceneLight *sceneLight = findSceneLight(constSceneLight);
-        auto *light = dynamic_cast<SunLight *>(sceneLight->getLight());
+        SceneLight* sceneLight = findSceneLight(constSceneLight);
+        auto* light = dynamic_cast<SunLight *>(sceneLight->getLight());
 
         light->setDirection(direction);
 

@@ -23,15 +23,15 @@ namespace urchin {
     }
 
     void WaterController::removeSceneWater(const SceneWater* constSceneWater) {
-        SceneWater *sceneWater = findSceneWater(constSceneWater);
+        SceneWater* sceneWater = findSceneWater(constSceneWater);
         getMapHandler()->getMap()->removeSceneWater(sceneWater);
 
         markModified();
     }
 
     const SceneWater *WaterController::updateSceneWaterGeneral(const SceneWater* constSceneWater, const Point3<float>& centerPosition, float xSize, float zSize) {
-        SceneWater *sceneWater = findSceneWater(constSceneWater);
-        Water *water = sceneWater->getWater();
+        SceneWater* sceneWater = findSceneWater(constSceneWater);
+        Water* water = sceneWater->getWater();
 
         water->setCenterPosition(centerPosition);
         water->setXSize(xSize);
@@ -43,8 +43,8 @@ namespace urchin {
 
     const SceneWater *WaterController::updateSceneWaterSurface(const SceneWater* constSceneWater, const Vector3<float>& waterColor, const std::string& normalFilename,
                                                                const std::string& dudvMapFilename, float waveSpeed, float waveStrength, float sRepeat, float tRepeat) {
-        SceneWater *sceneWater = findSceneWater(constSceneWater);
-        Water *water = sceneWater->getWater();
+        SceneWater* sceneWater = findSceneWater(constSceneWater);
+        Water* water = sceneWater->getWater();
 
         water->setWaterColor(waterColor);
         water->setNormalTexture(normalFilename);
@@ -59,8 +59,8 @@ namespace urchin {
     }
 
     const SceneWater *WaterController::updateSceneWaterUnderWater(const SceneWater* constSceneWater, float density, float gradient) {
-        SceneWater *sceneWater = findSceneWater(constSceneWater);
-        Water *water = sceneWater->getWater();
+        SceneWater* sceneWater = findSceneWater(constSceneWater);
+        Water* water = sceneWater->getWater();
 
         water->setDensity(density);
         water->setGradient(gradient);

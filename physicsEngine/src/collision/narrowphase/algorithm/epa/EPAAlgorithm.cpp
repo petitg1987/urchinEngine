@@ -22,7 +22,7 @@ namespace urchin {
         }
 
         //1. check collision exist
-        const Simplex<T> &simplex = gjkResult.getSimplex();
+        const Simplex<T>& simplex = gjkResult.getSimplex();
         if (simplex.getSize()==1) { //simplex point is the origin
             return AlgorithmResultAllocator::instance()->newEPAResultNoCollide<T>();
         }
@@ -58,7 +58,7 @@ namespace urchin {
 
         while (true) {
             itClosestTriangleData = getClosestTriangleData(trianglesData);
-            const EPATriangleData<T> &closestTriangleData = itClosestTriangleData->second;
+            const EPATriangleData<T>& closestTriangleData = itClosestTriangleData->second;
 
             normal = closestTriangleData.getNormal();
             distanceToOrigin = closestTriangleData.getDistanceToOrigin();
@@ -83,7 +83,7 @@ namespace urchin {
                 }
 
                 //compute new triangles data
-                const std::vector<std::size_t> &newTriangleIndices = convexHullShape.getConvexHullPoints().at(index).triangleIndices;
+                const std::vector<std::size_t>& newTriangleIndices = convexHullShape.getConvexHullPoints().at(index).triangleIndices;
                 for (std::size_t newTriangleIndex : newTriangleIndices) {
                     trianglesData.insert(std::pair<std::size_t, EPATriangleData<T>>(newTriangleIndex, createTriangleData(convexHullShape, newTriangleIndex)));
                 }
@@ -103,8 +103,8 @@ namespace urchin {
         }
 
         //5. compute EPA result: normal, penetration depth and contact points of collision
-        const EPATriangleData<T> &closestTriangleData = itClosestTriangleData->second;
-        const IndexedTriangle3D<T> &indexedTriangle = convexHullShape.getIndexedTriangles().at(itClosestTriangleData->first);
+        const EPATriangleData<T>& closestTriangleData = itClosestTriangleData->second;
+        const IndexedTriangle3D<T>& indexedTriangle = convexHullShape.getIndexedTriangles().at(itClosestTriangleData->first);
         const std::size_t pointIndex1 = indexedTriangle.getIndex(0);
         const std::size_t pointIndex2 = indexedTriangle.getIndex(1);
         const std::size_t pointIndex3 = indexedTriangle.getIndex(2);
@@ -343,7 +343,7 @@ namespace urchin {
         typename std::map<std::size_t, EPATriangleData<T>>::const_iterator closestTriangleData;
 
         for (auto it = trianglesData.begin(); it!=trianglesData.end(); ++it) {
-            const EPATriangleData<T> &triangleData = it->second;
+            const EPATriangleData<T>& triangleData = it->second;
             T distanceToOrigin = std::abs(triangleData.getDistanceToOrigin());
 
             if (minDistanceToOrigin > distanceToOrigin) {
@@ -360,14 +360,14 @@ namespace urchin {
      * @return Computed triangle data (normal, distance to origin...).
      */
     template<class T> EPATriangleData<T> EPAAlgorithm<T>::createTriangleData(const ConvexHullShape3D<T>& convexHullShape, std::size_t triangleIndex) const {
-        const IndexedTriangle3D<T> &indexedTriangle = convexHullShape.getIndexedTriangles().at(triangleIndex);
+        const IndexedTriangle3D<T>& indexedTriangle = convexHullShape.getIndexedTriangles().at(triangleIndex);
         const std::size_t pointIndex1 = indexedTriangle.getIndex(0);
         const std::size_t pointIndex2 = indexedTriangle.getIndex(1);
         const std::size_t pointIndex3 = indexedTriangle.getIndex(2);
 
-        const Point3<T> &point1 = convexHullShape.getConvexHullPoints().at(pointIndex1).point;
-        const Point3<T> &point2 = convexHullShape.getConvexHullPoints().at(pointIndex2).point;
-        const Point3<T> &point3 = convexHullShape.getConvexHullPoints().at(pointIndex3).point;
+        const Point3<T>& point1 = convexHullShape.getConvexHullPoints().at(pointIndex1).point;
+        const Point3<T>& point2 = convexHullShape.getConvexHullPoints().at(pointIndex2).point;
+        const Point3<T>& point3 = convexHullShape.getConvexHullPoints().at(pointIndex3).point;
         const Triangle3D<T> triangle(point1, point2, point3);
 
         //compute point on the triangle nearest to origin

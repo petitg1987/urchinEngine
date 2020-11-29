@@ -17,8 +17,8 @@ namespace urchin {
         std::vector<Point3<float>> vertexArray;
         vertexArray.reserve(convexHull.getIndexedTriangles().size()*3);
 
-        auto &convexHullPoints = convexHull.getConvexHullPoints();
-        for (auto &it : convexHull.getIndexedTriangles()) {
+        auto& convexHullPoints = convexHull.getConvexHullPoints();
+        for (auto& it : convexHull.getIndexedTriangles()) {
             IndexedTriangle3D<float> triangle = it.second;
 
             Point3<float> point1 = convexHullPoints.at(triangle.getIndex(0)).point;

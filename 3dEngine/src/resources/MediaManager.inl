@@ -1,6 +1,6 @@
 template<class T> T* MediaManager::getMedia(const std::string& filename) {
     //resource already charged ?
-    T *resource = ResourceManager::instance()->getResource<T>(filename);
+    T* resource = ResourceManager::instance()->getResource<T>(filename);
     if (resource) {
         return resource;
     }
@@ -13,7 +13,7 @@ template<class T> T* MediaManager::getMedia(const std::string& filename) {
         throw std::runtime_error("There isn't loader for this type of file, filename: " + filename + ".");
     }
 
-    Loader<T> *loader = static_cast<Loader<T>*>(it->second);
+    Loader<T>* loader = static_cast<Loader<T>*>(it->second);
     resource = loader->loadFromFile(filename);
 
     ResourceManager::instance()->addResource(filename, resource);

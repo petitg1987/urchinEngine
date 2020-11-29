@@ -22,7 +22,7 @@ namespace urchin {
             zpSkyboxFilenameText(nullptr),
             offsetY(nullptr),
             disableSkyEvent(false) {
-        auto *mainLayout = new QVBoxLayout(this);
+        auto* mainLayout = new QVBoxLayout(this);
         mainLayout->setAlignment(Qt::AlignTop);
         mainLayout->setContentsMargins(1, 1, 1, 1);
 
@@ -32,7 +32,7 @@ namespace urchin {
     void SkyPanelWidget::load(SkyController* skyController) {
         this->skyController = skyController;
 
-        auto &skybox = skyController->getSceneSky()->getSkybox();
+        auto& skybox = skyController->getSceneSky()->getSkybox();
         setupSkyDataFrom(skybox);
     }
 
@@ -41,50 +41,50 @@ namespace urchin {
     }
 
     void SkyPanelWidget::setupSkyboxBox(QVBoxLayout* mainLayout) {
-        auto *skyboxGroupBox = new QGroupBox("Skybox");
+        auto* skyboxGroupBox = new QGroupBox("Skybox");
         mainLayout->addWidget(skyboxGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(skyboxGroupBox);
         skyboxGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-        auto *skyboxLayout = new QGridLayout(skyboxGroupBox);
+        auto* skyboxLayout = new QGridLayout(skyboxGroupBox);
 
-        auto *xnSkyboxLayout = createFilenameInputText(skyboxLayout, 0, "X-:", &xnSkyboxFilenameText);
-        auto *selectXnSkyboxFileButton = createSelectFileButton(xnSkyboxLayout);
+        auto* xnSkyboxLayout = createFilenameInputText(skyboxLayout, 0, "X-:", &xnSkyboxFilenameText);
+        auto* selectXnSkyboxFileButton = createSelectFileButton(xnSkyboxLayout);
         connect(selectXnSkyboxFileButton, SIGNAL(clicked()), this, SLOT(showXnSkyboxFilenameDialog()));
-        auto *clearXnSkyboxFileButton = createClearFileButton(xnSkyboxLayout);
+        auto* clearXnSkyboxFileButton = createClearFileButton(xnSkyboxLayout);
         connect(clearXnSkyboxFileButton, SIGNAL(clicked()), this, SLOT(clearXnSkyboxFilename()));
 
-        auto *xpSkyboxLayout = createFilenameInputText(skyboxLayout, 1, "X+:", &xpSkyboxFilenameText);
-        auto *selectXpSkyboxFileButton = createSelectFileButton(xpSkyboxLayout);
+        auto* xpSkyboxLayout = createFilenameInputText(skyboxLayout, 1, "X+:", &xpSkyboxFilenameText);
+        auto* selectXpSkyboxFileButton = createSelectFileButton(xpSkyboxLayout);
         connect(selectXpSkyboxFileButton, SIGNAL(clicked()), this, SLOT(showXpSkyboxFilenameDialog()));
-        auto *clearXpSkyboxFileButton = createClearFileButton(xpSkyboxLayout);
+        auto* clearXpSkyboxFileButton = createClearFileButton(xpSkyboxLayout);
         connect(clearXpSkyboxFileButton, SIGNAL(clicked()), this, SLOT(clearXpSkyboxFilename()));
 
-        auto *ynSkyboxLayout = createFilenameInputText(skyboxLayout, 2, "Y-:", &ynSkyboxFilenameText);
-        auto *selectYnSkyboxFileButton = createSelectFileButton(ynSkyboxLayout);
+        auto* ynSkyboxLayout = createFilenameInputText(skyboxLayout, 2, "Y-:", &ynSkyboxFilenameText);
+        auto* selectYnSkyboxFileButton = createSelectFileButton(ynSkyboxLayout);
         connect(selectYnSkyboxFileButton, SIGNAL(clicked()), this, SLOT(showYnSkyboxFilenameDialog()));
-        auto *clearYnSkyboxFileButton = createClearFileButton(ynSkyboxLayout);
+        auto* clearYnSkyboxFileButton = createClearFileButton(ynSkyboxLayout);
         connect(clearYnSkyboxFileButton, SIGNAL(clicked()), this, SLOT(clearYnSkyboxFilename()));
 
-        auto *ypSkyboxLayout = createFilenameInputText(skyboxLayout, 3, "Y+:", &ypSkyboxFilenameText);
-        auto *selectYpSkyboxFileButton = createSelectFileButton(ypSkyboxLayout);
+        auto* ypSkyboxLayout = createFilenameInputText(skyboxLayout, 3, "Y+:", &ypSkyboxFilenameText);
+        auto* selectYpSkyboxFileButton = createSelectFileButton(ypSkyboxLayout);
         connect(selectYpSkyboxFileButton, SIGNAL(clicked()), this, SLOT(showYpSkyboxFilenameDialog()));
-        auto *clearYpSkyboxFileButton = createClearFileButton(ypSkyboxLayout);
+        auto* clearYpSkyboxFileButton = createClearFileButton(ypSkyboxLayout);
         connect(clearYpSkyboxFileButton, SIGNAL(clicked()), this, SLOT(clearYpSkyboxFilename()));
 
-        auto *znSkyboxLayout = createFilenameInputText(skyboxLayout, 4, "Z-:", &znSkyboxFilenameText);
-        auto *selectZnSkyboxFileButton = createSelectFileButton(znSkyboxLayout);
+        auto* znSkyboxLayout = createFilenameInputText(skyboxLayout, 4, "Z-:", &znSkyboxFilenameText);
+        auto* selectZnSkyboxFileButton = createSelectFileButton(znSkyboxLayout);
         connect(selectZnSkyboxFileButton, SIGNAL(clicked()), this, SLOT(showZnSkyboxFilenameDialog()));
-        auto *clearZnSkyboxFileButton = createClearFileButton(znSkyboxLayout);
+        auto* clearZnSkyboxFileButton = createClearFileButton(znSkyboxLayout);
         connect(clearZnSkyboxFileButton, SIGNAL(clicked()), this, SLOT(clearZnSkyboxFilename()));
 
-        auto *zpSkyboxLayout = createFilenameInputText(skyboxLayout, 5, "Z+:", &zpSkyboxFilenameText);
-        auto *selectZpSkyboxFileButton = createSelectFileButton(zpSkyboxLayout);
+        auto* zpSkyboxLayout = createFilenameInputText(skyboxLayout, 5, "Z+:", &zpSkyboxFilenameText);
+        auto* selectZpSkyboxFileButton = createSelectFileButton(zpSkyboxLayout);
         connect(selectZpSkyboxFileButton, SIGNAL(clicked()), this, SLOT(showZpSkyboxFilenameDialog()));
-        auto *clearZpSkyboxFileButton = createClearFileButton(zpSkyboxLayout);
+        auto* clearZpSkyboxFileButton = createClearFileButton(zpSkyboxLayout);
         connect(clearZpSkyboxFileButton, SIGNAL(clicked()), this, SLOT(clearZpSkyboxFilename()));
 
-        auto *offsetYLabel = new QLabel("Offset Y:");
+        auto* offsetYLabel = new QLabel("Offset Y:");
         skyboxLayout->addWidget(offsetYLabel, 6, 0);
 
         offsetY = new QDoubleSpinBox();
@@ -97,7 +97,7 @@ namespace urchin {
         auto *skyboxFilenameLabel= new QLabel(text);
         skyboxLayout->addWidget(skyboxFilenameLabel, row, 0);
 
-        auto *skyboxFilenameLayout = new QHBoxLayout();
+        auto* skyboxFilenameLayout = new QHBoxLayout();
         skyboxLayout->addLayout(skyboxFilenameLayout, row, 1, Qt::AlignmentFlag::AlignLeft);
         (*skyboxFilenameText) = new QLineEdit();
         skyboxFilenameLayout->addWidget(*skyboxFilenameText);
@@ -107,7 +107,7 @@ namespace urchin {
     }
 
     QPushButton *SkyPanelWidget::createSelectFileButton(QHBoxLayout* skyboxFilenameLayout) {
-        auto *selectSkyboxFileButton = new QPushButton("...");
+        auto* selectSkyboxFileButton = new QPushButton("...");
         skyboxFilenameLayout->addWidget(selectSkyboxFileButton);
         ButtonStyleHelper::applyNormalStyle(selectSkyboxFileButton);
         selectSkyboxFileButton->setFixedWidth(22);
@@ -116,7 +116,7 @@ namespace urchin {
     }
 
     QPushButton *SkyPanelWidget::createClearFileButton(QHBoxLayout* skyboxFilenameLayout) {
-        auto *clearSkyboxFileButton = new QPushButton("Clr");
+        auto* clearSkyboxFileButton = new QPushButton("Clr");
         skyboxFilenameLayout->addWidget(clearSkyboxFileButton);
         ButtonStyleHelper::applyNormalStyle(clearSkyboxFileButton);
         clearSkyboxFileButton->setFixedWidth(22);

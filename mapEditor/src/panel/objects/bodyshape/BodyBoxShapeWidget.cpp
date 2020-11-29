@@ -7,10 +7,10 @@ namespace urchin {
 
     BodyBoxShapeWidget::BodyBoxShapeWidget(const SceneObject* sceneObject) :
             BodyShapeWidget(sceneObject) {
-        auto *halfSizesLabel = new QLabel("Half Sizes:", this);
+        auto* halfSizesLabel = new QLabel("Half Sizes:", this);
         mainLayout->addWidget(halfSizesLabel, 0, 0);
 
-        auto *halfSizeLayout = new QHBoxLayout();
+        auto* halfSizeLayout = new QHBoxLayout();
         mainLayout->addLayout(halfSizeLayout, 0, 1);
         halfSizeX = new QDoubleSpinBox();
         halfSizeLayout->addWidget(halfSizeX);
@@ -34,9 +34,9 @@ namespace urchin {
     }
 
     void BodyBoxShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape) {
-        auto *boxShape = dynamic_cast<const CollisionBoxShape *>(shape.get());
+        auto* boxShape = dynamic_cast<const CollisionBoxShape *>(shape.get());
 
-        const Vector3<float> &halfSizes = boxShape->getHalfSizes();
+        const Vector3<float>& halfSizes = boxShape->getHalfSizes();
         halfSizeX->setValue(halfSizes.X);
         halfSizeY->setValue(halfSizes.Y);
         halfSizeZ->setValue(halfSizes.Z);

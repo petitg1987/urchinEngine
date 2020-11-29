@@ -44,7 +44,7 @@ namespace urchin {
         std::vector<std::unique_ptr<Polytope>> expandedPolytopes;
 
         unsigned int aiShapeIndex = 0;
-        for (auto &aiShape : aiObject->getShapes()) {
+        for (auto& aiShape : aiObject->getShapes()) {
             std::string shapeName = aiObject->getShapes().size()==1 ? aiObject->getName() : aiObject->getName() + "[" + std::to_string(aiShapeIndex++) + "]";
             Transform<float> shapeTransform = aiShape->hasLocalTransform() ? aiObject->getTransform() * aiShape->getLocalTransform() : aiObject->getTransform();
             std::unique_ptr<ConvexObject3D<float>> object = aiShape->getShape()->toConvexObject(shapeTransform);
@@ -89,14 +89,14 @@ namespace urchin {
         Vector3<float> expandShiftVector = approximateNormal * navMeshAgent->computeExpandDistance(approximateNormal);
         std::vector<Point3<float>> expandedLocalVertices;
         expandedLocalVertices.reserve(aiTerrain->getLocalVertices().size());
-        for (const auto &localVertex : aiTerrain->getLocalVertices()) {
+        for (const auto& localVertex : aiTerrain->getLocalVertices()) {
             expandedLocalVertices.emplace_back(localVertex.translate(expandShiftVector));
         }
 
         std::vector<TerrainSplit> terrainSplits = terrainSplitService->splitTerrain(aiTerrain->getName(), aiTerrain->getTransform().getPosition(),
                 expandedLocalVertices, aiTerrain->getXLength(), aiTerrain->getZLength());
 
-        for (const auto &terrainSplit : terrainSplits) {
+        for (const auto& terrainSplit : terrainSplits) {
             TerrainObstacleService terrainObstacleService(terrainSplit.name, terrainSplit.position, terrainSplit.localVertices, terrainSplit.xLength, terrainSplit.zLength);
             std::vector<CSGPolygon<float>> selfObstacles = terrainObstacleService.computeSelfObstacles(terrainMaxWalkableSlope);
 
@@ -146,10 +146,10 @@ namespace urchin {
 
     std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, ConvexHull3D<float>* convexHull, const std::shared_ptr<NavMeshAgent>& navMeshAgent) const {
         std::map<std::size_t, Plane<float>> expandedPlanes;
-        for (const auto &itTriangles : convexHull->getIndexedTriangles()) {
-            const Point3<float> &point1 = convexHull->getConvexHullPoints().at(itTriangles.second.getIndex(0)).point;
-            const Point3<float> &point2 = convexHull->getConvexHullPoints().at(itTriangles.second.getIndex(1)).point;
-            const Point3<float> &point3 = convexHull->getConvexHullPoints().at(itTriangles.second.getIndex(2)).point;
+        for (const auto& itTriangles : convexHull->getIndexedTriangles()) {
+            const Point3<float>& point1 = convexHull->getConvexHullPoints().at(itTriangles.second.getIndex(0)).point;
+            const Point3<float>& point2 = convexHull->getConvexHullPoints().at(itTriangles.second.getIndex(1)).point;
+            const Point3<float>& point3 = convexHull->getConvexHullPoints().at(itTriangles.second.getIndex(2)).point;
             expandedPlanes.insert(std::pair<std::size_t, Plane<float>>(itTriangles.first, createExpandedPlane(point1, point2, point3, navMeshAgent)));
         }
 
@@ -157,8 +157,8 @@ namespace urchin {
 
         std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces;
         expandedSurfaces.reserve(expandedConvexHull->getIndexedTriangles().size() * 3);
-        for (const auto &indexedTriangle : expandedConvexHull->getIndexedTriangles()) {
-            const std::size_t *indices = indexedTriangle.second.getIndices();
+        for (const auto& indexedTriangle : expandedConvexHull->getIndexedTriangles()) {
+            const std::size_t* indices = indexedTriangle.second.getIndices();
 
             std::vector<Point3<float>> surfacePoints = {
                     expandedConvexHull->getConvexHullPoints().find(indices[0])->second.point,
@@ -238,8 +238,8 @@ namespace urchin {
 
         for (auto planeIndex : PLANE_INDEX_TO_POINTS) {
             const Plane<float> &plane0 = sortedExpandedPlanes[planeIndex[0]];
-            const Plane<float> &plane1 = sortedExpandedPlanes[planeIndex[1]];
-            const Plane<float> &plane2 = sortedExpandedPlanes[planeIndex[2]];
+            const Plane<float>& plane1 = sortedExpandedPlanes[planeIndex[1]];
+            const Plane<float>& plane2 = sortedExpandedPlanes[planeIndex[2]];
 
             Vector3<float> n1CrossN2 = plane0.getNormal().crossProduct(plane1.getNormal());
             Vector3<float> n2CrossN3 = plane1.getNormal().crossProduct(plane2.getNormal());
@@ -287,7 +287,7 @@ namespace urchin {
                 }
 
                 std::vector<PlaneSurfaceSplit> planeSurfaceSplits = planeSurfaceSplitService->splitRectangleSurface(surfacePoints);
-                for (const auto &planeSurfaceSplit : planeSurfaceSplits) {
+                for (const auto& planeSurfaceSplit : planeSurfaceSplits) {
                     expandedSurfaces.push_back(std::make_shared<PolytopePlaneSurface>(planeSurfaceSplit.planeSurfacePoints, normal, isSlopeWalkable));
                 }
             } else {

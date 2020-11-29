@@ -50,14 +50,14 @@ namespace urchin {
 
     AABBox<float> CollisionBoxShape::toAABBox(const PhysicsTransform& physicsTransform) const {
         if (!lastTransform.equals(physicsTransform)) {
-            const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
+            const Matrix3<float>& orientation = physicsTransform.retrieveOrientationMatrix();
             Point3<float> extend(
                     boxShape->getHalfSize(0) * std::abs(orientation(0)) + boxShape->getHalfSize(1) * std::abs(orientation(3)) + boxShape->getHalfSize(2) * std::abs(orientation(6)),
                     boxShape->getHalfSize(0) * std::abs(orientation(1)) + boxShape->getHalfSize(1) * std::abs(orientation(4)) + boxShape->getHalfSize(2) * std::abs(orientation(7)),
                     boxShape->getHalfSize(0) * std::abs(orientation(2)) + boxShape->getHalfSize(1) * std::abs(orientation(5)) + boxShape->getHalfSize(2) * std::abs(orientation(8))
             );
 
-            const Point3<float> &position = physicsTransform.getPosition();
+            const Point3<float>& position = physicsTransform.getPosition();
 
             lastAABBox = AABBox<float>(position - extend, position + extend);
             lastTransform = physicsTransform;
@@ -67,13 +67,13 @@ namespace urchin {
     }
 
     std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionBoxShape::toConvexObject(const PhysicsTransform& physicsTransform) const {
-        const Point3<float> &position = physicsTransform.getPosition();
-        const Quaternion<float> &orientation = physicsTransform.getOrientation();
+        const Point3<float>& position = physicsTransform.getPosition();
+        const Quaternion<float>& orientation = physicsTransform.getOrientation();
 
         Vector3<float> halfSizeSubtractMargin = boxShape->getHalfSizes() - Vector3<float>(getInnerMargin(), getInnerMargin(), getInnerMargin());
 
-        void *memPtr = getObjectsPool()->allocate(sizeof(CollisionBoxObject));
-        auto *collisionObjectPtr = new (memPtr) CollisionBoxObject(getInnerMargin(), halfSizeSubtractMargin, position, orientation);
+        void* memPtr = getObjectsPool()->allocate(sizeof(CollisionBoxObject));
+        auto* collisionObjectPtr = new (memPtr) CollisionBoxObject(getInnerMargin(), halfSizeSubtractMargin, position, orientation);
         return std::unique_ptr<CollisionBoxObject, ObjectDeleter>(collisionObjectPtr);
     }
 

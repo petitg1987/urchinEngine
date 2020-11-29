@@ -50,8 +50,8 @@ namespace urchin {
     std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionTriangleShape::toConvexObject(const PhysicsTransform& physicsTransform) const {
         assert(getInnerMargin()==0.0f);
 
-        void *memPtr = getObjectsPool()->allocate(sizeof(CollisionTriangleObject));
-        auto *collisionObjectPtr = new (memPtr) CollisionTriangleObject(getInnerMargin(),
+        void* memPtr = getObjectsPool()->allocate(sizeof(CollisionTriangleObject));
+        auto* collisionObjectPtr = new (memPtr) CollisionTriangleObject(getInnerMargin(),
                 physicsTransform.transform(triangleShape->getPoints()[0]),
                 physicsTransform.transform(triangleShape->getPoints()[1]),
                 physicsTransform.transform(triangleShape->getPoints()[2]));

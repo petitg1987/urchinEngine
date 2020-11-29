@@ -73,7 +73,7 @@ namespace urchin {
         } else {
             yMonotonePolygons.reserve(diagonals.size());
             for (auto itDiagonal = diagonals.begin(); itDiagonal!=diagonals.end(); ++itDiagonal) {
-                Edge &startDiagonal = itDiagonal->second;
+                Edge& startDiagonal = itDiagonal->second;
                 if (!startDiagonal.isProcessed) {
                     std::size_t yMonotonePolygonsIndex = yMonotonePolygons.size();
                     MonotonePolygon monotonePolygon;
@@ -140,7 +140,7 @@ namespace urchin {
             return;
         }
 
-        for (const auto &typedPoint : sortedTypedPoints) {
+        for (const auto& typedPoint : sortedTypedPoints) {
             switch(typedPoint.type) {
                 case PointType::START_VERTEX:
                     handleStartVertex(typedPoint.pointIndex);

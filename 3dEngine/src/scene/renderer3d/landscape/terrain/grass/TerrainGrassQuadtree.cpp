@@ -10,7 +10,7 @@ namespace urchin {
     }
 
     TerrainGrassQuadtree::~TerrainGrassQuadtree() {
-        for (const auto *child : children) {
+        for (const auto* child : children) {
             delete child;
         }
     }
@@ -36,7 +36,7 @@ namespace urchin {
                     bbox = std::make_unique<AABBox<float>>(grassVertices);
                 }
             } else {
-                const std::unique_ptr<AABBox<float>> &localBboxPtr = children[0]->getBox();
+                const std::unique_ptr<AABBox<float>>& localBboxPtr = children[0]->getBox();
                 if(localBboxPtr) {
                     AABBox<float> localBbox = *localBboxPtr;
                     for (std::size_t i = 1; i < children.size(); ++i) {

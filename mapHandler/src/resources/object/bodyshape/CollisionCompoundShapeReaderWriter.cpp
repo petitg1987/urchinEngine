@@ -19,7 +19,7 @@ namespace urchin {
             loadTransformOn(localizedShape, localizedShapesChunk[i], xmlParser);
 
             std::shared_ptr<XmlChunk> shapeChunk = xmlParser.getUniqueChunk(true, SHAPE, XmlAttribute(), localizedShapesChunk[i]);
-            CollisionShape3D *embeddedCollisionShape = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeChunk)->loadFrom(shapeChunk, xmlParser);
+            CollisionShape3D* embeddedCollisionShape = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeChunk)->loadFrom(shapeChunk, xmlParser);
             localizedShape->shape = std::shared_ptr<CollisionShape3D>(embeddedCollisionShape);
 
             compoundShapes.push_back(localizedShape);
@@ -31,17 +31,17 @@ namespace urchin {
     void CollisionCompoundShapeReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& mainShapeChunk, const CollisionShape3D* mainCollisionShape, XmlWriter& xmlWriter) const {
         mainShapeChunk->setAttribute(XmlAttribute(TYPE_ATTR, COMPOUND_SHAPE_VALUE));
 
-        const auto *compoundShape = dynamic_cast<const CollisionCompoundShape *>(mainCollisionShape);
+        const auto* compoundShape = dynamic_cast<const CollisionCompoundShape *>(mainCollisionShape);
 
         std::shared_ptr<XmlChunk> localizedShapesListChunk = xmlWriter.createChunk(LOCALIZED_SHAPES, XmlAttribute(), mainShapeChunk);
-        const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &shapes = compoundShape->getLocalizedShapes();
-        for (const auto &shape : shapes) {
+        const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& shapes = compoundShape->getLocalizedShapes();
+        for (const auto& shape : shapes) {
             std::shared_ptr<XmlChunk> localizedShapeChunk = xmlWriter.createChunk(LOCALIZED_SHAPE, XmlAttribute(), localizedShapesListChunk);
 
             writeTransformOn(localizedShapeChunk, shape, xmlWriter);
 
             std::shared_ptr<XmlChunk> shapeChunk = xmlWriter.createChunk(SHAPE, XmlAttribute(), localizedShapeChunk);
-            const CollisionShape3D *collisionShape = shape->shape.get();
+            const CollisionShape3D* collisionShape = shape->shape.get();
             CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(collisionShape)->writeOn(shapeChunk, collisionShape, xmlWriter);
         }
     }

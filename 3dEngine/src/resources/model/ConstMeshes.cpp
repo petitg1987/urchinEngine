@@ -40,7 +40,7 @@ namespace urchin {
     }
 
     ConstMeshes::~ConstMeshes() {
-        for (auto &constMesh : constMeshes) {
+        for (auto& constMesh : constMeshes) {
             delete constMesh;
         }
 

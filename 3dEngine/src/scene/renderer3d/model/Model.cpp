@@ -34,14 +34,14 @@ namespace urchin {
     Model::~Model() {
         delete meshes;
 
-        for (auto &animation : animations) {
+        for (auto& animation : animations) {
             delete animation.second;
         }
     }
 
     void Model::initialize(const std::string& meshFilename) {
         if (!meshFilename.empty()) {
-            auto *constMeshes = MediaManager::instance()->getMedia<ConstMeshes>(meshFilename);
+            auto* constMeshes = MediaManager::instance()->getMedia<ConstMeshes>(meshFilename);
             meshes = new Meshes(constMeshes);
             meshes->onMoving(transform);
         }
@@ -54,7 +54,7 @@ namespace urchin {
         }
 
         //load and add the anim to the std::map
-        auto *constAnimation = MediaManager::instance()->getMedia<ConstAnimation>(filename);
+        auto* constAnimation = MediaManager::instance()->getMedia<ConstAnimation>(filename);
         animations[name] = new Animation(constAnimation, meshes);
         animations[name]->onMoving(transform);
 
@@ -122,7 +122,7 @@ namespace urchin {
 
     std::map<std::string, const ConstAnimation *> Model::getAnimations() const {
         std::map<std::string, const ConstAnimation *> constConstAnimations;
-        for (const auto &animation : animations) {
+        for (const auto& animation : animations) {
             constConstAnimations.insert(std::pair<std::string, const ConstAnimation *>(animation.first, animation.second->getConstAnimation()));
         }
         return constConstAnimations;

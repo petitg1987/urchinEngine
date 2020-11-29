@@ -41,7 +41,7 @@ void GJKSphereTest::overlapSphere() {
 }
 
 CppUnit::Test *GJKSphereTest::suite() {
-    auto *suite = new CppUnit::TestSuite("GJKSphereTest");
+    auto* suite = new CppUnit::TestSuite("GJKSphereTest");
 
     suite->addTest(new CppUnit::TestCaller<GJKSphereTest>("identicalSphere", &GJKSphereTest::identicalSphere));
     suite->addTest(new CppUnit::TestCaller<GJKSphereTest>("separateSphere", &GJKSphereTest::separateSphere));

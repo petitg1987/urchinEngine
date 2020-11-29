@@ -38,7 +38,7 @@ namespace urchin {
         FileReaderUtil::nextLine(file, buffer); //buffer = "joints {"
         for (unsigned int i=0;i<numBones;i++) {
             FileReaderUtil::nextLine(file, buffer);
-            Bone *bone = &baseSkeleton[i];
+            Bone* bone = &baseSkeleton[i];
             iss.clear(); iss.str(buffer);
             iss >> bone->name >> bone->parent >> sdata >> bone->pos.X >> bone->pos.Y >> bone->pos.Z >> sdata >> sdata >> bone->orient.X >> bone->orient.Y >> bone->orient.Z;
             bone->orient.computeW();

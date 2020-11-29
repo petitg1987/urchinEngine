@@ -29,7 +29,7 @@ namespace urchin {
 
         urchin::Vector3<float> rayDirectionWorldSpace = (camera->getViewMatrix().inverse() * rayDirectionEyeSpace).xyz().normalize();
 
-        const urchin::Point3<float> &rayStart = camera->getPosition();
+        const urchin::Point3<float>& rayStart = camera->getPosition();
         urchin::Point3<float> rayEnd = rayStart.translate(rayDirectionWorldSpace * rayLength);
         return Ray<float>(rayStart, rayEnd);
     }

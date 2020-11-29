@@ -200,14 +200,14 @@ namespace urchin {
     bool SceneDisplayerWidget::onMouseClickBodyPickup() {
         bool propagateEvent = true;
 
-        Camera *camera = sceneDisplayer->getSceneManager()->getActiveRenderer3d()->getCamera();
+        Camera* camera = sceneDisplayer->getSceneManager()->getActiveRenderer3d()->getCamera();
         Ray<float> pickingRay = CameraSpaceService(camera).screenPointToRay(Point2<float>(mouseX, mouseY), PICKING_RAY_LENGTH);
         std::shared_ptr<const RayTestResult> rayTestResult = sceneDisplayer->getPhysicsWorld()->rayTest(pickingRay);
 
         while (!rayTestResult->isResultReady()) {
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
-        const ccd_set &pickedObjects = rayTestResult->getResults();
+        const ccd_set& pickedObjects = rayTestResult->getResults();
         if (!pickedObjects.empty()) {
             lastPickedBodyId = (*rayTestResult->getResults().begin())->getBody2()->getId();
             notifyObservers(this, BODY_PICKED);

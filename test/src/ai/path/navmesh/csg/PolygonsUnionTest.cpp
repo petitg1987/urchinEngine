@@ -370,7 +370,7 @@ void PolygonsUnionTest::twoPolygonsUnionAndSeparatePolygon() {
 }
 
 CppUnit::Test *PolygonsUnionTest::suite() {
-    auto *suite = new CppUnit::TestSuite("PolygonsUnionTest");
+    auto* suite = new CppUnit::TestSuite("PolygonsUnionTest");
 
     suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("onePolygonUnion", &PolygonsUnionTest::onePolygonUnion));
 

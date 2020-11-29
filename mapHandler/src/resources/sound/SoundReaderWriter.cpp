@@ -3,7 +3,7 @@
 namespace urchin {
 
     Sound *SoundReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& soundChunk, const XmlParser& xmlParser) const {
-        Sound *sound = buildSoundFrom(soundChunk, xmlParser);
+        Sound* sound = buildSoundFrom(soundChunk, xmlParser);
 
         loadPropertiesOn(sound, soundChunk, xmlParser);
 
@@ -23,7 +23,7 @@ namespace urchin {
         std::string soundType = soundChunk->getAttributeValue(TYPE_ATTR);
         if (soundType == POINT_VALUE) {
             std::shared_ptr<XmlChunk> positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), soundChunk);
-            auto *pointSound = new PointSound(filename, positionChunk->getPoint3Value());
+            auto* pointSound = new PointSound(filename, positionChunk->getPoint3Value());
 
             std::shared_ptr<XmlChunk> inaudibleDistanceChunk = xmlParser.getUniqueChunk(true, INAUDIBLE_DISTANCE_TAG, XmlAttribute(), soundChunk);
             pointSound->setInaudibleDistance(inaudibleDistanceChunk->getFloatValue());
@@ -41,7 +41,7 @@ namespace urchin {
         filenameChunk->setStringValue(sound->getFilename());
 
         if (sound->getSoundType()==Sound::POINT) {
-            const auto *pointSound = dynamic_cast<const PointSound *>(sound);
+            const auto* pointSound = dynamic_cast<const PointSound *>(sound);
             soundChunk->setAttribute(XmlAttribute(TYPE_ATTR, POINT_VALUE));
 
             std::shared_ptr<XmlChunk> positionChunk = xmlWriter.createChunk(POSITION_TAG, XmlAttribute(), soundChunk);

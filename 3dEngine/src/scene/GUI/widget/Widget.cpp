@@ -20,7 +20,7 @@ namespace urchin {
     }
 
     Widget::~Widget() {
-        for (auto &child : children) {
+        for (auto& child : children) {
             delete child;
         }
 
@@ -33,7 +33,7 @@ namespace urchin {
 
         createOrUpdateWidget();
 
-        for (auto &child : children) {
+        for (auto& child : children) {
             child->onResize(sceneWidth, sceneHeight);
         }
     }
@@ -164,7 +164,7 @@ namespace urchin {
 
         bool propagateEvent = onKeyPressEvent(key);
 
-        for (auto &child : children) {
+        for (auto& child : children) {
             if (child->isVisible() && !child->onKeyPress(key)) {
                 return false;
             }
@@ -182,7 +182,7 @@ namespace urchin {
             Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
             if (widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
                 widgetState=CLICKING;
-                for (std::shared_ptr<EventListener> &eventListener : eventListeners) {
+                for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
                     eventListener->onClick(this);
                 }
             }
@@ -194,7 +194,7 @@ namespace urchin {
 
         bool propagateEvent = onKeyReleaseEvent(key);
 
-        for (auto &child : children) {
+        for (auto& child : children) {
             if (child->isVisible() && !child->onKeyRelease(key)) {
                 return false;
             }
@@ -212,7 +212,7 @@ namespace urchin {
             if (widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
                 if (widgetState==CLICKING) {
                     widgetState = FOCUS;
-                    for (std::shared_ptr<EventListener> &eventListener : eventListeners) {
+                    for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
                         eventListener->onClickRelease(this);
                     }
                 } else {
@@ -229,7 +229,7 @@ namespace urchin {
             return false;
         }
 
-        for (auto &child : children) {
+        for (auto& child : children) {
             if (child->isVisible() && !child->onChar(character)) {
                 return false;
             }
@@ -249,7 +249,7 @@ namespace urchin {
 
         bool propagateEvent = onMouseMoveEvent(mouseX, mouseY);
 
-        for (auto &child : children) {
+        for (auto& child : children) {
             if (child->isVisible()) {
                 if (!child->onMouseMove(mouseX, mouseY)) {
                     return false;
@@ -268,13 +268,13 @@ namespace urchin {
         if (widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
             if (widgetState==DEFAULT) {
                 widgetState = FOCUS;
-                for (std::shared_ptr<EventListener> &eventListener : eventListeners) {
+                for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
                     eventListener->onFocus(this);
                 }
             }
         } else if (widgetState==FOCUS) {
             widgetState = DEFAULT;
-            for (std::shared_ptr<EventListener> &eventListener : eventListeners) {
+            for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
                 eventListener->onFocusLost(this);
             }
         }
@@ -289,7 +289,7 @@ namespace urchin {
     }
 
     void Widget::reset() {
-        for (auto &child : children) {
+        for (auto& child : children) {
             if (child->isVisible()) {
                 child->reset();
             }
@@ -299,7 +299,7 @@ namespace urchin {
     void Widget::onDisable() {
         handleDisable();
 
-        for (auto &child : children) {
+        for (auto& child : children) {
             if (child->isVisible()) {
                 child->onDisable();
             }
@@ -309,21 +309,21 @@ namespace urchin {
     void Widget::handleDisable() {
         if (widgetState==CLICKING) {
             widgetState = FOCUS;
-            for (std::shared_ptr<EventListener> &eventListener : eventListeners) {
+            for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
                 eventListener->onClickRelease(this);
             }
         }
 
         if (widgetState==FOCUS) {
             widgetState = DEFAULT;
-            for (std::shared_ptr<EventListener> &eventListener : eventListeners) {
+            for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
                 eventListener->onFocusLost(this);
             }
         }
     }
 
     void Widget::display(const RenderTarget* renderTarget, const ShaderVar& translateDistanceShaderVar, float dt) {
-        for (auto &child : children) {
+        for (auto& child : children) {
             if (child->isVisible()) {
                 Vector2<int> translateVector(child->getGlobalPositionX(), child->getGlobalPositionY());
                 ShaderDataSender().sendData(translateDistanceShaderVar, translateVector);

@@ -73,12 +73,12 @@ namespace urchin {
     }
 
     std::shared_ptr<CollisionShape3D> CollisionConvexHullShape::scale(float scale) const {
-        const std::vector<Point3<float>> &convexHullPoints = convexHullShape->getPoints();
+        const std::vector<Point3<float>>& convexHullPoints = convexHullShape->getPoints();
 
         std::vector<Point3<float>> newPoints;
         newPoints.reserve(convexHullPoints.size());
 
-        for (const auto &convexHullPoint : convexHullPoints) {
+        for (const auto& convexHullPoint : convexHullPoints) {
             newPoints.push_back(convexHullPoint * scale);
         }
 
@@ -87,11 +87,11 @@ namespace urchin {
 
     AABBox<float> CollisionConvexHullShape::toAABBox(const PhysicsTransform& physicsTransform) const {
         if (!lastTransform.equals(physicsTransform)) {
-            const Quaternion<float> &orientation = physicsTransform.getOrientation();
+            const Quaternion<float>& orientation = physicsTransform.getOrientation();
             Point3<float> min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
             Point3<float> max(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
-            const std::vector<Point3<float>> &convexHullShapePoints = convexHullShape->getPoints();
-            for (const auto &convexHullShapePoint : convexHullShapePoints) {
+            const std::vector<Point3<float>>& convexHullShapePoints = convexHullShape->getPoints();
+            for (const auto& convexHullShapePoint : convexHullShapePoints) {
                 const Point3<float> point = orientation.rotatePoint(convexHullShapePoint);
 
                 min.X = std::min(min.X, point.X);
@@ -103,7 +103,7 @@ namespace urchin {
                 max.Z = std::max(max.Z, point.Z);
             }
 
-            const Point3<float> &position = physicsTransform.getPosition();
+            const Point3<float>& position = physicsTransform.getPosition();
 
             lastAABBox = AABBox<float>(min + position, max + position);
             lastTransform = physicsTransform;
@@ -115,19 +115,19 @@ namespace urchin {
         Transform<float> transform = physicsTransform.toTransform();
         auto convexHullWithMargin = std::shared_ptr<ConvexHull3D<float>>(dynamic_cast<ConvexHull3D<float>*>(convexHullShape->toConvexObject(transform).release()));
 
-        void *memPtr = getObjectsPool()->allocate(sizeof(CollisionConvexHullObject));
+        void* memPtr = getObjectsPool()->allocate(sizeof(CollisionConvexHullObject));
 
         if (!convexHullShapeReduced) { //impossible to compute convex hull without margin => use convex hull with margin and set a margin of 0.0
             assert(getInnerMargin()==0.0f);
             const std::shared_ptr<ConvexHull3D<float>> &convexHullWithoutMargin(convexHullWithMargin);
 
-            auto *collisionObjectPtr = new (memPtr) CollisionConvexHullObject(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);
+            auto* collisionObjectPtr = new (memPtr) CollisionConvexHullObject(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);
             return std::unique_ptr<CollisionConvexHullObject, ObjectDeleter>(collisionObjectPtr);
         }
 
         auto convexHullWithoutMargin = std::shared_ptr<ConvexHull3D<float>>(dynamic_cast<ConvexHull3D<float>*>(convexHullShapeReduced->toConvexObject(transform).release()));
 
-        auto *collisionObjectPtr = new (memPtr) CollisionConvexHullObject(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);
+        auto* collisionObjectPtr = new (memPtr) CollisionConvexHullObject(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);
         return std::unique_ptr<CollisionConvexHullObject, ObjectDeleter>(collisionObjectPtr);
     }
 

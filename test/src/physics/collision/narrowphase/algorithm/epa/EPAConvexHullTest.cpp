@@ -111,7 +111,7 @@ void EPAConvexHullTest::cornerInsideHexagon() {
 }
 
 CppUnit::Test *EPAConvexHullTest::suite() {
-    auto *suite = new CppUnit::TestSuite("EPAConvexHullTest");
+    auto* suite = new CppUnit::TestSuite("EPAConvexHullTest");
 
     suite->addTest(new CppUnit::TestCaller<EPAConvexHullTest>("identicalBox", &EPAConvexHullTest::identicalBox));
     suite->addTest(new CppUnit::TestCaller<EPAConvexHullTest>("cornerInsideBox", &EPAConvexHullTest::cornerInsideBox));

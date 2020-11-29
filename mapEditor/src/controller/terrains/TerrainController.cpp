@@ -23,7 +23,7 @@ namespace urchin {
     }
 
     void TerrainController::removeSceneTerrain(const SceneTerrain* constSceneTerrain) {
-        SceneTerrain *sceneTerrain = findSceneTerrain(constSceneTerrain);
+        SceneTerrain* sceneTerrain = findSceneTerrain(constSceneTerrain);
         getMapHandler()->getMap()->removeSceneTerrain(sceneTerrain);
 
         markModified();
@@ -31,8 +31,8 @@ namespace urchin {
 
     const SceneTerrain *TerrainController::updateSceneTerrainGeneralProperties(const SceneTerrain* constSceneTerrain,
                                                                                const Point3<float>& position, float ambient) {
-        SceneTerrain *sceneTerrain = findSceneTerrain(constSceneTerrain);
-        Terrain *terrain = sceneTerrain->getTerrain();
+        SceneTerrain* sceneTerrain = findSceneTerrain(constSceneTerrain);
+        Terrain* terrain = sceneTerrain->getTerrain();
 
         terrain->setPosition(position);
         if (sceneTerrain->getRigidBody()) {
@@ -46,8 +46,8 @@ namespace urchin {
     }
 
     const SceneTerrain *TerrainController::updateSceneTerrainMesh(const SceneTerrain* constSceneTerrain, float xzScale, float yScale) {
-        SceneTerrain *sceneTerrain = findSceneTerrain(constSceneTerrain);
-        Terrain *terrain = sceneTerrain->getTerrain();
+        SceneTerrain* sceneTerrain = findSceneTerrain(constSceneTerrain);
+        Terrain* terrain = sceneTerrain->getTerrain();
 
         auto terrainMesh = std::make_shared<TerrainMesh>(terrain->getMesh()->getHeightFilename(), xzScale, yScale);
         terrain->setMesh(terrainMesh);
@@ -58,8 +58,8 @@ namespace urchin {
 
     const SceneTerrain *TerrainController::updateSceneTerrainMaterial(const SceneTerrain* constSceneTerrain, float sRepeat, float tRepeat, const std::string& maskMapFilename,
                                                                       const std::vector<std::string>& materialFilenames) {
-        SceneTerrain *sceneTerrain = findSceneTerrain(constSceneTerrain);
-        Terrain *terrain = sceneTerrain->getTerrain();
+        SceneTerrain* sceneTerrain = findSceneTerrain(constSceneTerrain);
+        Terrain* terrain = sceneTerrain->getTerrain();
 
         auto terrainMaterial = std::make_unique<TerrainMaterial>(maskMapFilename, materialFilenames, sRepeat, tRepeat);
         terrain->setMaterial(terrainMaterial);
@@ -71,9 +71,9 @@ namespace urchin {
     const SceneTerrain *TerrainController::updateSceneTerrainGrass(const SceneTerrain* constSceneTerrain, const std::string& grassTextureFilename, const std::string& grassMaskFilename,
                                                                    unsigned int numGrassInTex, float grassQuantity, float grassHeight, float grassLength,
                                                                    const Vector3<float>& windDirection, float windStrength) {
-        SceneTerrain *sceneTerrain = findSceneTerrain(constSceneTerrain);
-        Terrain *terrain = sceneTerrain->getTerrain();
-        TerrainGrass *terrainGrass = terrain->getGrass();
+        SceneTerrain* sceneTerrain = findSceneTerrain(constSceneTerrain);
+        Terrain* terrain = sceneTerrain->getTerrain();
+        TerrainGrass* terrainGrass = terrain->getGrass();
 
         terrainGrass->setGrassTexture(grassTextureFilename);
         terrainGrass->setMaskTexture(grassMaskFilename);

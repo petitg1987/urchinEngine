@@ -16,7 +16,7 @@ namespace urchin {
     LinesModel::LinesModel(const std::vector<LineSegment3D<float>>& lineSegments) :
             stripLines(false) {
         linesPoints.reserve(lineSegments.size() * 2);
-        for (const auto &lineSegment : lineSegments) {
+        for (const auto& lineSegment : lineSegments) {
             linesPoints.emplace_back(lineSegment.getA());
             linesPoints.emplace_back(lineSegment.getB());
         }

@@ -24,7 +24,7 @@ namespace urchin {
         for (auto allOctreeableLight : allOctreeableLights) {
             delete allOctreeableLight;
         }
-        for (auto &parallelBeamsLight : parallelBeamsLights) {
+        for (auto& parallelBeamsLight : parallelBeamsLights) {
             delete parallelBeamsLight;
         }
 
@@ -141,7 +141,7 @@ namespace urchin {
 
         for (unsigned int i=0; i < maxLights; ++i) {
             if (lights.size() > i) {
-                const Light *light = lights[i];
+                const Light* light = lights[i];
 
                 ShaderDataSender()
                     .sendData(lightsInfo[i].isExistShaderVar, true)
@@ -150,10 +150,10 @@ namespace urchin {
                     .sendData(lightsInfo[i].lightAmbientShaderVar, light->getAmbientColor());
 
                 if (lights[i]->getLightType() == Light::SUN) {
-                    const auto *sunLight = dynamic_cast<const SunLight *>(light);
+                    const auto* sunLight = dynamic_cast<const SunLight *>(light);
                     ShaderDataSender().sendData(lightsInfo[i].positionOrDirectionShaderVar, sunLight->getDirections()[0]);
                 } else if (lights[i]->getLightType() == Light::OMNIDIRECTIONAL) {
-                    const auto *omnidirectionalLight = dynamic_cast<const OmnidirectionalLight *>(light);
+                    const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight *>(light);
                     ShaderDataSender()
                         .sendData(lightsInfo[i].positionOrDirectionShaderVar, omnidirectionalLight->getPosition())
                         .sendData(lightsInfo[i].exponentialAttShaderVar, omnidirectionalLight->getExponentialAttenuation());

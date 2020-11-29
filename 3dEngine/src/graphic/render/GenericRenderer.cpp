@@ -28,7 +28,7 @@ namespace urchin {
         glGenVertexArrays(1, &vertexArrayObject);
         initializeDisplay();
 
-        for (const auto &textureReader : textureReaders) {
+        for (const auto& textureReader : textureReaders) {
             initializeTexture(textureReader);
         }
         additionalTextureReaders.reserve(2); //estimated memory size
@@ -53,7 +53,7 @@ namespace urchin {
 
         unsigned int countResult = data[0].dataCount;
         #ifndef NDEBUG
-            for (const auto &dataValue : data) {
+            for (const auto& dataValue : data) {
                 assert(dataValue.dataCount == countResult);
             }
         #endif
@@ -105,7 +105,7 @@ namespace urchin {
     }
 
     void GenericRenderer::sendData(std::size_t dataIndex, bool update) {
-        Data &dataValue = data[dataIndex];
+        Data& dataValue = data[dataIndex];
 
         auto dataDim = dataDimensionToSize(dataValue.dataDimension);
         auto dataMemorySize = dataTypeToSize(dataValue.dataType) * dataDim * dataValue.dataCount;
@@ -208,11 +208,11 @@ namespace urchin {
 
         if(bNeedRenderTextures) {
             unsigned int textureUnit = 0;
-            for (const auto &textureReader : textureReaders) {
+            for (const auto& textureReader : textureReaders) {
                 glActiveTexture(GL_TEXTURE0 + textureUnit++);
                 glBindTexture(textureReader.getTexture()->getGlTextureType(), textureReader.getTexture()->getTextureId());
             }
-            for (const auto &textureReader : additionalTextureReaders) {
+            for (const auto& textureReader : additionalTextureReaders) {
                 glActiveTexture(GL_TEXTURE0 + textureUnit++);
                 glBindTexture(textureReader.getTexture()->getGlTextureType(), textureReader.getTexture()->getTextureId());
             }

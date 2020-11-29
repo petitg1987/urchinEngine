@@ -56,7 +56,7 @@ namespace urchin {
         std::shared_ptr<XmlChunk> physicsChunk = xmlParser.getUniqueChunk(false, PHYSICS_TAG, XmlAttribute(), chunk);
         if (physicsChunk != nullptr) {
             std::string rigidBodyId = this->name;
-            const Transform<float> &modelTransform = this->model->getTransform();
+            const Transform<float>& modelTransform = this->model->getTransform();
 
             setupInteractiveBody(RigidBodyReaderWriter().loadFrom(physicsChunk, rigidBodyId, modelTransform, xmlParser));
         }

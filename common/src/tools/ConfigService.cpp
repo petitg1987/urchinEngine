@@ -26,7 +26,7 @@ namespace urchin {
         auto loadedProperties = propertyFileHandler.loadPropertyFile();
 
         //replace placeholders
-        for (auto &property : loadedProperties) {
+        for (auto& property : loadedProperties) {
             auto itFind = placeholders.find(property.second);
             if (itFind!=placeholders.end()) {
                 property.second = itFind->second;
@@ -37,7 +37,7 @@ namespace urchin {
         properties.insert(loadedProperties.begin(), loadedProperties.end());
 
         //build specific maps for performance reason (numeric conversion is slow)
-        for (const auto &property : loadedProperties) {
+        for (const auto& property : loadedProperties) {
             if (Converter::isUnsignedInt(property.second)) {
                 unsignedIntProperties[property.first] = Converter::toUnsignedInt(property.second);
             }

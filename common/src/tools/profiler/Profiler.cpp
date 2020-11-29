@@ -40,7 +40,7 @@ namespace urchin {
             if (currentNode->getName() == nodeName) {
                 currentNode->startTimer();
             } else {
-                ProfilerNode *profilerNode = currentNode->findChildren(nodeName);
+                ProfilerNode* profilerNode = currentNode->findChildren(nodeName);
                 if (profilerNode == nullptr) {
                     profilerNode = new ProfilerNode(nodeName, currentNode);
                     currentNode->addChild(profilerNode);

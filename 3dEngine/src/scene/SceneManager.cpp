@@ -27,17 +27,17 @@ namespace urchin {
 
         //renderer
         screenRenderTarget = new ScreenRender();
-        for (auto &activeRenderer : activeRenderers) {
+        for (auto& activeRenderer : activeRenderers) {
             activeRenderer = nullptr;
         }
     }
 
     SceneManager::~SceneManager() {
         delete screenRenderTarget;
-        for (auto &renderer3d : renderers3d) {
+        for (auto& renderer3d : renderers3d) {
             delete renderer3d;
         }
-        for (auto &guiRenderer : guiRenderers) {
+        for (auto& guiRenderer : guiRenderers) {
             delete guiRenderer;
         }
 
@@ -52,7 +52,7 @@ namespace urchin {
 
             //renderer
             screenRenderTarget->onResize(sceneWidth, sceneHeight);
-            for (auto &activeRenderer : activeRenderers) {
+            for (auto& activeRenderer : activeRenderers) {
                 if (activeRenderer) {
                     activeRenderer->onResize(sceneWidth, sceneHeight);
                 }
@@ -100,7 +100,7 @@ namespace urchin {
     }
 
     Renderer3d *SceneManager::newRenderer3d(bool enable) {
-        auto *renderer3d = new Renderer3d(screenRenderTarget);
+        auto* renderer3d = new Renderer3d(screenRenderTarget);
         renderers3d.push_back(renderer3d);
 
         if (enable) {
@@ -134,7 +134,7 @@ namespace urchin {
     }
 
     GUIRenderer *SceneManager::newGUIRenderer(bool enable) {
-        auto *guiRenderer = new GUIRenderer(screenRenderTarget);
+        auto* guiRenderer = new GUIRenderer(screenRenderTarget);
         guiRenderers.push_back(guiRenderer);
 
         if (enable) {
@@ -211,7 +211,7 @@ namespace urchin {
         float dt = getDeltaTime();
 
         //renderer
-        for (auto &activeRenderer : activeRenderers) {
+        for (auto& activeRenderer : activeRenderers) {
             if (activeRenderer) {
                 activeRenderer->display(dt);
             }

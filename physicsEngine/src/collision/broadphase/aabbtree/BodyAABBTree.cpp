@@ -17,7 +17,7 @@ namespace urchin {
     }
 
     void BodyAABBTree::addBody(AbstractWorkBody* body, PairContainer* alternativePairContainer) {
-        auto *nodeData = new BodyAABBNodeData(body, alternativePairContainer);
+        auto* nodeData = new BodyAABBNodeData(body, alternativePairContainer);
         AABBTree::addObject(nodeData);
     }
 
@@ -26,12 +26,12 @@ namespace urchin {
     }
 
     void BodyAABBTree::removeBody(AbstractWorkBody* body) {
-        auto *nodeData = AABBTree::getNodeData(body);
+        auto* nodeData = AABBTree::getNodeData(body);
         AABBTree::removeObject(nodeData);
     }
 
     void BodyAABBTree::preRemoveObjectCallback(AABBNode<AbstractWorkBody *> *nodeToDelete) {
-        auto *bodyNodeToDelete = dynamic_cast<BodyAABBNodeData *>(nodeToDelete->getNodeData());
+        auto* bodyNodeToDelete = dynamic_cast<BodyAABBNodeData *>(nodeToDelete->getNodeData());
         removeOverlappingPairs(bodyNodeToDelete);
     }
 
@@ -90,22 +90,22 @@ namespace urchin {
         if (!nodeData->hasAlternativePairContainer()) {
             defaultPairContainer->removeOverlappingPairs(nodeData->getNodeObject());
         } else {
-            PairContainer *alternativePairContainer = nodeData->getAlternativePairContainer();
+            PairContainer* alternativePairContainer = nodeData->getAlternativePairContainer();
 
             removeAlternativePairContainerReferences(nodeData->getNodeObject(), alternativePairContainer);
             alternativePairContainer->removeOverlappingPairs(nodeData->getNodeObject());
         }
 
-        for (auto &ownerPairContainer : nodeData->getOwnerPairContainers()) {
+        for (auto& ownerPairContainer : nodeData->getOwnerPairContainers()) {
             ownerPairContainer->removeOverlappingPairs(nodeData->getNodeObject());
         }
     }
 
     void BodyAABBTree::removeAlternativePairContainerReferences(const AbstractWorkBody* body, PairContainer* alternativePairContainer) {
         std::vector<OverlappingPair> overlappingPairs = alternativePairContainer->retrieveCopyOverlappingPairs();
-        for (const auto &overlappingPair : overlappingPairs) {
-            AbstractWorkBody *otherPairBody = overlappingPair.getBody1() == body ? overlappingPair.getBody2() : overlappingPair.getBody1();
-            auto *otherNodeData = dynamic_cast<BodyAABBNodeData *>(BodyAABBTree::getNodeData(otherPairBody));
+        for (const auto& overlappingPair : overlappingPairs) {
+            AbstractWorkBody* otherPairBody = overlappingPair.getBody1() == body ? overlappingPair.getBody2() : overlappingPair.getBody1();
+            auto* otherNodeData = dynamic_cast<BodyAABBNodeData *>(BodyAABBTree::getNodeData(otherPairBody));
 
             otherNodeData->removeOwnerPairContainer(alternativePairContainer);
         }
@@ -113,8 +113,8 @@ namespace urchin {
 
     void BodyAABBTree::computeWorldBoundary() {
         float maxYBoundary = -std::numeric_limits<float>::max();
-        for (auto &objectNode : objectsNode) {
-            const AABBox<float> &nodeAABBox = objectNode.second->getAABBox();
+        for (auto& objectNode : objectsNode) {
+            const AABBox<float>& nodeAABBox = objectNode.second->getAABBox();
             minYBoundary = std::min(nodeAABBox.getMin().Y, minYBoundary);
             maxYBoundary = std::max(nodeAABBox.getMax().Y, maxYBoundary);
         }
@@ -124,10 +124,10 @@ namespace urchin {
     }
 
     void BodyAABBTree::controlBoundaries(AABBNode<AbstractWorkBody *> *leafNode) const {
-        const AABBox<float> &bodyAABBox = leafNode->getNodeData()->retrieveObjectAABBox();
+        const AABBox<float>& bodyAABBox = leafNode->getNodeData()->retrieveObjectAABBox();
 
         if (bodyAABBox.getMax().Y < minYBoundary) {
-            AbstractWorkBody *body = leafNode->getNodeData()->getNodeObject();
+            AbstractWorkBody* body = leafNode->getNodeData()->getNodeObject();
             if (!body->isStatic()) {
                 std::stringstream logStream;
                 logStream<<"Body "<<body->getId()<<" is below the limit of "<<std::to_string(minYBoundary)<<": "<<body->getPosition();

@@ -2,7 +2,7 @@
 
 namespace urchin {
     Terrain *TerrainReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& terrainChunk, const XmlParser& xmlParser) const {
-        Terrain *terrain = buildTerrainFrom(terrainChunk, xmlParser);
+        Terrain* terrain = buildTerrainFrom(terrainChunk, xmlParser);
 
         loadPropertiesOn(terrain, terrainChunk, xmlParser);
         loadGrassOn(terrain, terrainChunk, xmlParser);
@@ -63,7 +63,7 @@ namespace urchin {
         tRepeatChunk->setFloatValue(terrain->getMaterial()->getTRepeat());
         std::shared_ptr<XmlChunk> materialFilenamesChunk = xmlWriter.createChunk(MATERIAL_FILENAMES, XmlAttribute(), materialChunk);
         unsigned int i=0;
-        for (const Material *material : terrain->getMaterial()->getMaterials()) {
+        for (const Material* material : terrain->getMaterial()->getMaterials()) {
             if (material != nullptr) {
                 std::shared_ptr<XmlChunk> materialFilenameChunk = xmlWriter.createChunk(MATERIAL_FILENAME, XmlAttribute(INDEX_ATTR, std::to_string(i)), materialFilenamesChunk);
                 materialFilenameChunk->setStringValue(material->getName());

@@ -14,7 +14,7 @@ namespace urchin {
     }
 
     ShadowData::~ShadowData() {
-        for (auto &fsd : frustumShadowData) {
+        for (auto& fsd : frustumShadowData) {
             delete fsd;
         }
     }
@@ -62,7 +62,7 @@ namespace urchin {
         }
 
         std::shared_ptr<Texture> texture = shadowMapTexture;
-        for (auto &textureFilter : textureFilters) {
+        for (auto& textureFilter : textureFilters) {
             textureFilter->applyOn(texture, static_cast<int>(layersToUpdate));
             texture = textureFilter->getTexture();
         }

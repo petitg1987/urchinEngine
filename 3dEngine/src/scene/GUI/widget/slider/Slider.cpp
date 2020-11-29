@@ -41,7 +41,7 @@ namespace urchin {
         //clear
         Widget::removeChild(leftButton);
         Widget::removeChild(rightButton);
-        for (auto &valueText : valuesText) {
+        for (auto& valueText : valuesText) {
             Widget::removeChild(valueText);
         }
         valuesText.clear();
@@ -67,7 +67,7 @@ namespace urchin {
         //values
         valuesText.resize(values.size());
         for (std::size_t i=0; i<values.size(); ++i) {
-            Text *valueText = new Text(Position(0, 0, Position::PIXEL), valuesNameFont);
+            Text* valueText = new Text(Position(0, 0, Position::PIXEL), valuesNameFont);
             valueText->setText(values[i]);
             valueText->setPosition(Position((float)(getWidth()-valueText->getWidth()) / 2.0f, 0, Position::PIXEL));
             valueText->setIsVisible(false);

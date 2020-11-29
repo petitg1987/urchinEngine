@@ -51,7 +51,7 @@ namespace urchin {
         auto collisionTerrainShape = std::make_shared<urchin::CollisionHeightfieldShape>(terrain->getMesh()->getVertices(),
                                                                                          terrain->getMesh()->getXSize(),
                                                                                          terrain->getMesh()->getZSize());
-        auto *terrainRigidBody = new RigidBody(this->name, Transform<float>(terrain->getPosition()), collisionTerrainShape);
+        auto* terrainRigidBody = new RigidBody(this->name, Transform<float>(terrain->getPosition()), collisionTerrainShape);
         setupInteractiveBody(terrainRigidBody);
     }
 

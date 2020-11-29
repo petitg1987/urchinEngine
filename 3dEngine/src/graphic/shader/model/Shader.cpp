@@ -17,7 +17,7 @@ namespace urchin {
 
         int countAttachedShaders = 0;
         int maxCount = 10;
-        auto *attachedShaders = new unsigned int[maxCount];
+        auto* attachedShaders = new unsigned int[maxCount];
 
         glGetAttachedShaders(shaderId, maxCount, &countAttachedShaders, attachedShaders);
 

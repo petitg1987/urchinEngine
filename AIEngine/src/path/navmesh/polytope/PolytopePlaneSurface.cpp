@@ -49,7 +49,7 @@ namespace urchin {
     Rectangle<float> PolytopePlaneSurface::computeXZRectangle() const {
         Point2<float> minPoint(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
         Point2<float> maxPoint(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
-        for (const auto &point : ccwPoints) {
+        for (const auto& point : ccwPoints) {
             minPoint.X = minPoint.X > point.X ? point.X : minPoint.X;
             minPoint.Y = minPoint.Y > -point.Z ? -point.Z : minPoint.Y;
 

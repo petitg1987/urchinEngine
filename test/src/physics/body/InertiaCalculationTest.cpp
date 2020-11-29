@@ -29,7 +29,7 @@ void InertiaCalculationTest::boxInertiaCalculation() {
 }
 
 CppUnit::Test *InertiaCalculationTest::suite() {
-    auto *suite = new CppUnit::TestSuite("InertiaCalculationTest");
+    auto* suite = new CppUnit::TestSuite("InertiaCalculationTest");
 
     suite->addTest(new CppUnit::TestCaller<InertiaCalculationTest>("boxInertiaCalculation", &InertiaCalculationTest::boxInertiaCalculation));
 

@@ -33,7 +33,7 @@ namespace urchin {
         subtrahendInside = false;
 
         if (solution.Childs.size() == 1) {
-            const auto &mainSolution = solution.Childs[0];
+            const auto& mainSolution = solution.Childs[0];
 
             if (mainSolution->Childs.empty()) {
                 std::string subtractionName = "[" + minuendPolygon.getName() + "] - [" + subtrahendPolygon.getName()+ "]";

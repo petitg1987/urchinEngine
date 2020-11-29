@@ -230,7 +230,7 @@ void TriangulationTest::threeMonotonePolygons() {
 }
 
 CppUnit::Test *TriangulationTest::suite() {
-    auto *suite = new CppUnit::TestSuite("TriangulationTest");
+    auto* suite = new CppUnit::TestSuite("TriangulationTest");
 
     suite->addTest(new CppUnit::TestCaller<TriangulationTest>("triangleTriangulation", &TriangulationTest::triangleTriangulation));
     suite->addTest(new CppUnit::TestCaller<TriangulationTest>("cubeTriangulation", &TriangulationTest::cubeTriangulation));

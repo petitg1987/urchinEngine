@@ -29,7 +29,7 @@ void GJKConvexObjectTest::overlapSphereAndBox() {
 }
 
 CppUnit::Test *GJKConvexObjectTest::suite() {
-    auto *suite = new CppUnit::TestSuite("GJKConvexObjectTest");
+    auto* suite = new CppUnit::TestSuite("GJKConvexObjectTest");
 
     suite->addTest(new CppUnit::TestCaller<GJKConvexObjectTest>("separateSphereAndBox", &GJKConvexObjectTest::separateSphereAndBox));
     suite->addTest(new CppUnit::TestCaller<GJKConvexObjectTest>("overlapSphereAndBox", &GJKConvexObjectTest::overlapSphereAndBox));

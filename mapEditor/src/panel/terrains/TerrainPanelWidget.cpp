@@ -36,7 +36,7 @@ namespace urchin {
             numGrassInTex(nullptr),
             grassQuantity(nullptr), grassHeight(nullptr), grassLength(nullptr),
             windDirectionX(nullptr), windDirectionY(nullptr), windDirectionZ(nullptr), windStrength(nullptr) {
-        auto *mainLayout = new QVBoxLayout(this);
+        auto* mainLayout = new QVBoxLayout(this);
         mainLayout->setAlignment(Qt::AlignTop);
         mainLayout->setContentsMargins(1, 1, 1, 1);
 
@@ -45,7 +45,7 @@ namespace urchin {
         terrainTableView->addObserver(this, TerrainTableView::SELECTION_CHANGED);
         terrainTableView->setFixedHeight(220);
 
-        auto *buttonsLayout = new QHBoxLayout();
+        auto* buttonsLayout = new QHBoxLayout();
         mainLayout->addLayout(buttonsLayout);
         buttonsLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
@@ -73,12 +73,12 @@ namespace urchin {
         generalPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         generalPropertiesGroupBox->hide();
 
-        auto *generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
+        auto* generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
 
         auto *positionLabel= new QLabel("Position:");
         generalPropertiesLayout->addWidget(positionLabel, 0, 0);
 
-        auto *positionLayout = new QHBoxLayout();
+        auto* positionLayout = new QHBoxLayout();
         generalPropertiesLayout->addLayout(positionLayout, 0, 1);
         positionX = new QDoubleSpinBox();
         positionLayout->addWidget(positionX);
@@ -111,7 +111,7 @@ namespace urchin {
         meshGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         meshGroupBox->hide();
 
-        auto *meshLayout = new QGridLayout(meshGroupBox);
+        auto* meshLayout = new QGridLayout(meshGroupBox);
 
         auto *xzScaleLabel= new QLabel("XZ scale:");
         meshLayout->addWidget(xzScaleLabel, 0, 0);
@@ -141,7 +141,7 @@ namespace urchin {
         materialGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         materialGroupBox->hide();
 
-        auto *materialLayout = new QGridLayout(materialGroupBox);
+        auto* materialLayout = new QGridLayout(materialGroupBox);
 
         auto *repeatLabel= new QLabel("Repeat:");
         materialLayout->addWidget(repeatLabel, 0, 0);
@@ -167,13 +167,13 @@ namespace urchin {
         materialLayout->addWidget(maskMapFilenameText, 1, 1, 1, 2);
         maskMapFilenameText->setReadOnly(true);
 
-        auto *selectMaskFileButton = new QPushButton("...");
+        auto* selectMaskFileButton = new QPushButton("...");
         materialLayout->addWidget(selectMaskFileButton, 1, 3);
         ButtonStyleHelper::applyNormalStyle(selectMaskFileButton);
         selectMaskFileButton->setFixedWidth(22);
         connect(selectMaskFileButton, SIGNAL(clicked()), this, SLOT(showMaskFilenameDialog()));
 
-        auto *clearMaskFileButton = new QPushButton("Clr");
+        auto* clearMaskFileButton = new QPushButton("Clr");
         materialLayout->addWidget(clearMaskFileButton, 1, 4);
         ButtonStyleHelper::applyNormalStyle(clearMaskFileButton);
         clearMaskFileButton->setFixedWidth(22);
@@ -189,20 +189,20 @@ namespace urchin {
             materialLayout->addWidget(materialFilenameTexts[i], 2+i, 1, 1, 2);
             materialFilenameTexts[i]->setReadOnly(true);
 
-            auto *selectMaterialFileButton = new QPushButton("...");
+            auto* selectMaterialFileButton = new QPushButton("...");
             materialLayout->addWidget(selectMaterialFileButton, 2+i, 3);
             ButtonStyleHelper::applyNormalStyle(selectMaterialFileButton);
             selectMaterialFileButton->setFixedWidth(22);
-            auto *selectSignalMapper = new QSignalMapper();
+            auto* selectSignalMapper = new QSignalMapper();
             connect(selectMaterialFileButton, SIGNAL(clicked()), selectSignalMapper, SLOT(map()));
             selectSignalMapper->setMapping(selectMaterialFileButton, QString::fromStdString(std::to_string(i)));
             connect(selectSignalMapper, SIGNAL(mapped(const QString&)), this, SLOT(showMaterialFilenameDialog(const QString&)));
 
-            auto *clearMaterialFileButton = new QPushButton("Clr");
+            auto* clearMaterialFileButton = new QPushButton("Clr");
             materialLayout->addWidget(clearMaterialFileButton, 2+i, 4);
             ButtonStyleHelper::applyNormalStyle(clearMaterialFileButton);
             clearMaterialFileButton->setFixedWidth(22);
-            auto *clearSignalMapper = new QSignalMapper();
+            auto* clearSignalMapper = new QSignalMapper();
             connect(clearMaterialFileButton, SIGNAL(clicked()), clearSignalMapper, SLOT(map()));
             clearSignalMapper->setMapping(clearMaterialFileButton, QString::fromStdString(std::to_string(i)));
             connect(clearSignalMapper, SIGNAL(mapped(const QString&)), this, SLOT(clearMaterialFilename(const QString&)));
@@ -216,7 +216,7 @@ namespace urchin {
         grassGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         grassGroupBox->hide();
 
-        auto *grassLayout = new QGridLayout(grassGroupBox);
+        auto* grassLayout = new QGridLayout(grassGroupBox);
 
         auto *textureLabel= new QLabel("Texture:");
         grassLayout->addWidget(textureLabel, 1, 0);
@@ -225,13 +225,13 @@ namespace urchin {
         grassLayout->addWidget(grassTextureFilenameText, 1, 1, 1, 3);
         grassTextureFilenameText->setReadOnly(true);
 
-        auto *selectTextureFileButton = new QPushButton("...");
+        auto* selectTextureFileButton = new QPushButton("...");
         grassLayout->addWidget(selectTextureFileButton, 1, 4);
         ButtonStyleHelper::applyNormalStyle(selectTextureFileButton);
         selectTextureFileButton->setFixedWidth(22);
         connect(selectTextureFileButton, SIGNAL(clicked()), this, SLOT(showGrassTextureFilenameDialog()));
 
-        auto *clearTextureFileButton = new QPushButton("Clr");
+        auto* clearTextureFileButton = new QPushButton("Clr");
         grassLayout->addWidget(clearTextureFileButton, 1, 5);
         ButtonStyleHelper::applyNormalStyle(clearTextureFileButton);
         clearTextureFileButton->setFixedWidth(22);
@@ -244,13 +244,13 @@ namespace urchin {
         grassLayout->addWidget(grassMaskFilenameText, 2, 1, 1, 3);
         grassMaskFilenameText->setReadOnly(true);
 
-        auto *selectMaskFileButton = new QPushButton("...");
+        auto* selectMaskFileButton = new QPushButton("...");
         grassLayout->addWidget(selectMaskFileButton, 2, 4);
         ButtonStyleHelper::applyNormalStyle(selectMaskFileButton);
         selectMaskFileButton->setFixedWidth(22);
         connect(selectMaskFileButton, SIGNAL(clicked()), this, SLOT(showGrassMaskFilenameDialog()));
 
-        auto *clearMaskFileButton = new QPushButton("Clr");
+        auto* clearMaskFileButton = new QPushButton("Clr");
         grassLayout->addWidget(clearMaskFileButton, 2, 5);
         ButtonStyleHelper::applyNormalStyle(clearMaskFileButton);
         clearMaskFileButton->setFixedWidth(22);
@@ -327,7 +327,7 @@ namespace urchin {
         this->terrainController = terrainController;
 
         std::list<const SceneTerrain *> sceneTerrains = terrainController->getSceneTerrains();
-        for (auto &sceneTerrain : sceneTerrains) {
+        for (auto& sceneTerrain : sceneTerrains) {
             terrainTableView->addTerrain(sceneTerrain);
         }
     }
@@ -339,10 +339,10 @@ namespace urchin {
     }
 
     void TerrainPanelWidget::notify(Observable* observable, int notificationType) {
-        if (auto *terrainTableView = dynamic_cast<TerrainTableView *>(observable)) {
+        if (auto* terrainTableView = dynamic_cast<TerrainTableView *>(observable)) {
             if (notificationType==TerrainTableView::SELECTION_CHANGED) {
                 if (terrainTableView->hasSceneTerrainSelected()) {
-                    const SceneTerrain *sceneTerrain = terrainTableView->getSelectedSceneTerrain();
+                    const SceneTerrain* sceneTerrain = terrainTableView->getSelectedSceneTerrain();
                     setupTerrainDataFrom(sceneTerrain);
 
                     removeTerrainButton->setEnabled(true);
@@ -363,7 +363,7 @@ namespace urchin {
 
     void TerrainPanelWidget::setupTerrainDataFrom(const SceneTerrain* sceneTerrain) {
         disableTerrainEvent = true;
-        const Terrain *terrain = sceneTerrain->getTerrain();
+        const Terrain* terrain = sceneTerrain->getTerrain();
 
         this->positionX->setValue(terrain->getPosition().X);
         this->positionY->setValue(terrain->getPosition().Y);
@@ -378,7 +378,7 @@ namespace urchin {
         this->maskMapFilenameText->setText(QString::fromStdString(terrain->getMaterial()->getMaskMapFilename()));
         this->materialFilenameTexts.resize(MAX_MATERIAL);
         for (unsigned int i=0; i<MAX_MATERIAL; ++i) {
-            Material *material = terrain->getMaterial()->getMaterials()[i];
+            Material* material = terrain->getMaterial()->getMaterials()[i];
 
             if (material != nullptr) {
                 this->materialFilenameTexts[i]->setText(QString::fromStdString(material->getName()));
@@ -388,7 +388,7 @@ namespace urchin {
         }
 
         if (terrain->getGrass()) {
-            auto *terrainGrass = terrain->getGrass();
+            auto* terrainGrass = terrain->getGrass();
 
             this->grassTextureFilenameText->setText(QString::fromStdString(terrainGrass->getGrassTexture()));
             this->grassMaskFilenameText->setText(QString::fromStdString(terrainGrass->getMaskTexture()));
@@ -410,7 +410,7 @@ namespace urchin {
         newSceneTerrainDialog.exec();
 
         if (newSceneTerrainDialog.result()==QDialog::Accepted) {
-            SceneTerrain *sceneTerrain = newSceneTerrainDialog.getSceneTerrain();
+            SceneTerrain* sceneTerrain = newSceneTerrainDialog.getSceneTerrain();
             terrainController->addSceneTerrain(sceneTerrain);
 
             terrainTableView->addTerrain(sceneTerrain);
@@ -419,7 +419,7 @@ namespace urchin {
 
     void TerrainPanelWidget::removeSelectedTerrain() {
         if (terrainTableView->hasSceneTerrainSelected()) {
-            const SceneTerrain *sceneTerrain = terrainTableView->getSelectedSceneTerrain();
+            const SceneTerrain* sceneTerrain = terrainTableView->getSelectedSceneTerrain();
             terrainController->removeSceneTerrain(sceneTerrain);
 
             terrainTableView->removeSelectedTerrain();
@@ -428,7 +428,7 @@ namespace urchin {
 
     void TerrainPanelWidget::updateTerrainGeneralProperties() {
         if (!disableTerrainEvent) {
-            const SceneTerrain *sceneTerrain = terrainTableView->getSelectedSceneTerrain();
+            const SceneTerrain* sceneTerrain = terrainTableView->getSelectedSceneTerrain();
 
             Point3<float> position(positionX->value(), positionY->value(), positionZ->value());
             terrainController->updateSceneTerrainGeneralProperties(sceneTerrain, position, (float)ambient->value());
@@ -437,7 +437,7 @@ namespace urchin {
 
     void TerrainPanelWidget::updateTerrainMesh() {
         if (!disableTerrainEvent) {
-            const SceneTerrain *sceneTerrain = terrainTableView->getSelectedSceneTerrain();
+            const SceneTerrain* sceneTerrain = terrainTableView->getSelectedSceneTerrain();
 
             terrainController->updateSceneTerrainMesh(sceneTerrain, (float)xzScale->value(), (float)yScale->value());
         }
@@ -445,7 +445,7 @@ namespace urchin {
 
     void TerrainPanelWidget::updateTerrainMaterial() {
         if (!disableTerrainEvent) {
-            const SceneTerrain *sceneTerrain = terrainTableView->getSelectedSceneTerrain();
+            const SceneTerrain* sceneTerrain = terrainTableView->getSelectedSceneTerrain();
 
             std::string maskMapFilename = maskMapFilenameText->text().toStdString();
             std::vector<std::string> materialFilenames;
@@ -458,7 +458,7 @@ namespace urchin {
 
     void TerrainPanelWidget::updateTerrainGrass() {
         if (!disableTerrainEvent) {
-            const SceneTerrain *sceneTerrain = terrainTableView->getSelectedSceneTerrain();
+            const SceneTerrain* sceneTerrain = terrainTableView->getSelectedSceneTerrain();
 
             std::string grassTextureFilename = grassTextureFilenameText->text().toStdString();
             std::string grassMaskFilename = grassMaskFilenameText->text().toStdString();

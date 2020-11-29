@@ -231,7 +231,7 @@ void QuaternionTest::toAxisAngle90() {
 }
 
 CppUnit::Test *QuaternionTest::suite() {
-    auto *suite = new CppUnit::TestSuite("QuaternionTest");
+    auto* suite = new CppUnit::TestSuite("QuaternionTest");
 
     suite->addTest(new CppUnit::TestCaller<QuaternionTest>("multiplyAxisAngleQuaternions9And45", &QuaternionTest::multiplyAxisAngleQuaternions9And45));
     suite->addTest(new CppUnit::TestCaller<QuaternionTest>("multiplyLookAtQuaternions9And45", &QuaternionTest::multiplyLookAtQuaternions9And45));

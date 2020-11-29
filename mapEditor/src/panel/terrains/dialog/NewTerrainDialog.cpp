@@ -24,13 +24,13 @@ namespace urchin {
         this->resize(530, 130);
         this->setFixedSize(this->width(),this->height());
 
-        auto *mainLayout = new QGridLayout(this);
+        auto* mainLayout = new QGridLayout(this);
         mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
         setupNameFields(mainLayout);
         setupHeightFilenameFields(mainLayout);
 
-        auto *buttonBox = new QDialogButtonBox();
+        auto* buttonBox = new QDialogButtonBox();
         mainLayout->addWidget(buttonBox, 2, 0, 1, 3);
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
@@ -57,7 +57,7 @@ namespace urchin {
         heightFilenameText->setReadOnly(true);
         heightFilenameText->setFixedWidth(360);
 
-        auto *selectHeightFileButton = new QPushButton("...");
+        auto* selectHeightFileButton = new QPushButton("...");
         mainLayout->addWidget(selectHeightFileButton, 1, 2);
         ButtonStyleHelper::applyNormalStyle(selectHeightFileButton);
         selectHeightFileButton->setFixedWidth(22);
@@ -83,7 +83,7 @@ namespace urchin {
 
             auto terrainMesh = std::make_shared<TerrainMesh>(relativeHeightFilename, 1.0f, 0.1f);
             auto terrainMaterial = std::make_unique<TerrainMaterial>("", emptyMaterialFilenames, 1.0f, 1.0f);
-            auto *terrain = new Terrain(terrainMesh, terrainMaterial, Point3<float>(0.0f, 0.0f, 0.0f));
+            auto* terrain = new Terrain(terrainMesh, terrainMaterial, Point3<float>(0.0f, 0.0f, 0.0f));
 
             sceneTerrain->setTerrain(terrain);
         } catch (std::exception& e) {

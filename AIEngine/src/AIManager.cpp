@@ -161,7 +161,7 @@ namespace urchin {
             std::shared_ptr<NavMesh> navMesh = navMeshGenerator->generate(aiWorld);
 
             PathfindingAStar pathfindingAStar(navMesh);
-            for (auto &pathRequest : copiedPathRequests) {
+            for (auto& pathRequest : copiedPathRequests) {
                 pathRequest->setPath(pathfindingAStar.findPath(pathRequest->getStartPoint(), pathRequest->getEndPoint()));
             }
         }

@@ -29,7 +29,7 @@ void StringUtilTest::splitEmptyString() {
 }
 
 CppUnit::Test *StringUtilTest::suite() {
-    auto *suite = new CppUnit::TestSuite("StringUtilTest");
+    auto* suite = new CppUnit::TestSuite("StringUtilTest");
 
     suite->addTest(new CppUnit::TestCaller<StringUtilTest>("splitString", &StringUtilTest::splitString));
     suite->addTest(new CppUnit::TestCaller<StringUtilTest>("splitEmptyString", &StringUtilTest::splitEmptyString));

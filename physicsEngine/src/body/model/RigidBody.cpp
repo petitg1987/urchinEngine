@@ -52,10 +52,10 @@ namespace urchin {
     }
 
     AbstractWorkBody *RigidBody::createWorkBody() const {
-        const Transform<float> &transform = getTransform();
+        const Transform<float>& transform = getTransform();
         PhysicsTransform physicsTransform(transform.getPosition(), transform.getOrientation());
 
-        auto *workRigidBody = new WorkRigidBody(getId(), physicsTransform, getScaledShape());
+        auto* workRigidBody = new WorkRigidBody(getId(), physicsTransform, getScaledShape());
         workRigidBody->setMassProperties(getMass(), getLocalInertia());
         workRigidBody->setLinearVelocity(getLinearVelocity());
         workRigidBody->setAngularVelocity(getAngularVelocity());
@@ -67,7 +67,7 @@ namespace urchin {
 
         AbstractBody::updateTo(workBody);
 
-        WorkRigidBody *workRigidBody = WorkRigidBody::upCast(workBody);
+        WorkRigidBody* workRigidBody = WorkRigidBody::upCast(workBody);
         if (workRigidBody) {
             workRigidBody->setTotalMomentum(totalMomentum);
             workRigidBody->setTotalTorqueMomentum(totalTorqueMomentum);
@@ -86,7 +86,7 @@ namespace urchin {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         bool fullRefreshRequested = AbstractBody::applyFrom(workBody);
-        const WorkRigidBody *workRigidBody = WorkRigidBody::upCast(workBody);
+        const WorkRigidBody* workRigidBody = WorkRigidBody::upCast(workBody);
 
         if (workRigidBody && !fullRefreshRequested) {
             mass = workRigidBody->getMass();

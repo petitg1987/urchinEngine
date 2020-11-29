@@ -25,7 +25,7 @@ namespace urchin {
     std::shared_ptr<Texture> GUISkinService::createWidgetTexture(unsigned int width, unsigned int height, const std::shared_ptr<XmlChunk>& skinXmlChunk, WidgetOutline* widgetOutline) const {
         //skin information
         std::shared_ptr<XmlChunk> widgetImageElem = getXmlSkin()->getUniqueChunk(true, "image", XmlAttribute(), skinXmlChunk);
-        auto *rawWidgetImage = MediaManager::instance()->getMedia<Image>(widgetImageElem->getStringValue());
+        auto* rawWidgetImage = MediaManager::instance()->getMedia<Image>(widgetImageElem->getStringValue());
 
         std::shared_ptr<XmlChunk> topElem(getXmlSkin()->getUniqueChunk(true, "part", XmlAttribute("zone", "top"), skinXmlChunk));
         unsigned int top = topElem->getUnsignedIntValue();

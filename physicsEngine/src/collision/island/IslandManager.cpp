@@ -21,7 +21,7 @@ namespace urchin {
         ScopeProfiler profiler("physics", "refreshBodyStat");
 
         buildIslands(manifoldResults);
-        const std::vector<IslandElementLink> &islandElementsLink = islandContainer.retrieveSortedIslandElements();
+        const std::vector<IslandElementLink>& islandElementsLink = islandContainer.retrieveSortedIslandElements();
 
         if (DEBUG_PRINT_ISLANDS) {
             printIslands(islandElementsLink);
@@ -35,7 +35,7 @@ namespace urchin {
             bool islandLinkedToStaticElement = false;
             bool islandBodiesCanSleep = true;
             for (unsigned int j=0; j<nbElements; ++j) { //loop on elements of the island
-                auto *body = dynamic_cast<WorkRigidBody *>(islandElementsLink[startElementIndex+j].element);
+                auto* body = dynamic_cast<WorkRigidBody *>(islandElementsLink[startElementIndex+j].element);
                 if (isBodyMoving(body)) {
                     islandBodiesCanSleep = false;
                     break;
@@ -46,7 +46,7 @@ namespace urchin {
             islandBodiesCanSleep = islandBodiesCanSleep && islandLinkedToStaticElement; //one element of the island must be in contact with a static element to sleep the island
 
             for (unsigned int j=0; j<nbElements; ++j) { //loop on elements of the island
-                auto *body = dynamic_cast<WorkRigidBody *>(islandElementsLink[startElementIndex+j].element);
+                auto* body = dynamic_cast<WorkRigidBody *>(islandElementsLink[startElementIndex+j].element);
                 bool bodyActiveState = !islandBodiesCanSleep;
                 if (body->isActive()!=bodyActiveState) {
                     body->setIsActive(bodyActiveState);
@@ -73,10 +73,10 @@ namespace urchin {
         islandContainer.reset(islandElements);
 
         //2. merge islands for bodies in contact
-        for (const auto &manifoldResult : manifoldResults) {
+        for (const auto& manifoldResult : manifoldResults) {
             if (manifoldResult.getNumContactPoints() > 0) {
-                AbstractWorkBody *body1 = manifoldResult.getBody1();
-                AbstractWorkBody *body2 = manifoldResult.getBody2();
+                AbstractWorkBody* body1 = manifoldResult.getBody1();
+                AbstractWorkBody* body2 = manifoldResult.getBody2();
 
                 if (!body1->isStatic() && !body2->isStatic()) {
                     islandContainer.mergeIsland(body1, body2);
@@ -117,7 +117,7 @@ namespace urchin {
             std::cout<<"Island "<<islandId<<":"<<std::endl;
 
             for (unsigned int j=0; j<nbElements; ++j) { //loop on elements of the island
-                auto *body = dynamic_cast<WorkRigidBody *>(islandElementsLink[startElementIndex+j].element);
+                auto* body = dynamic_cast<WorkRigidBody *>(islandElementsLink[startElementIndex+j].element);
                 std::cout<<"  - Body: "<<body->getId()<<" (moving: "<<isBodyMoving(body)<<", active: "<<body->isActive()<<")"<<std::endl;
             }
 

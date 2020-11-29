@@ -27,7 +27,7 @@ namespace urchin {
         Point3<float> min(vertices[0].X, std::numeric_limits<float>::max(), vertices[0].Z);
         Point3<float> max(vertices[xLength-1].X, -std::numeric_limits<float>::max(), vertices[vertices.size()-1].Z);
 
-        for (const auto &vertex : vertices) {
+        for (const auto& vertex : vertices) {
             if (min.Y > vertex.Y) {
                 min.Y = vertex.Y;
             }
@@ -79,14 +79,14 @@ namespace urchin {
 
     AABBox<float> CollisionHeightfieldShape::toAABBox(const PhysicsTransform& physicsTransform) const {
         if (!lastTransform.equals(physicsTransform)) {
-            const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
+            const Matrix3<float>& orientation = physicsTransform.retrieveOrientationMatrix();
             Point3<float> extend(
                     localAABBox->getHalfSize(0) * std::abs(orientation(0)) + localAABBox->getHalfSize(1) * std::abs(orientation(3)) + localAABBox->getHalfSize(2) * std::abs(orientation(6)),
                     localAABBox->getHalfSize(0) * std::abs(orientation(1)) + localAABBox->getHalfSize(1) * std::abs(orientation(4)) + localAABBox->getHalfSize(2) * std::abs(orientation(7)),
                     localAABBox->getHalfSize(0) * std::abs(orientation(2)) + localAABBox->getHalfSize(1) * std::abs(orientation(5)) + localAABBox->getHalfSize(2) * std::abs(orientation(8))
             );
 
-            const Point3<float> &position = physicsTransform.getPosition();
+            const Point3<float>& position = physicsTransform.getPosition();
 
             lastAABBox = AABBox<float>(position - extend, position + extend);
             lastTransform = physicsTransform;
@@ -226,7 +226,7 @@ namespace urchin {
     }
 
     void CollisionHeightfieldShape::createCollisionTriangleShape(const Point3<float>& p1, const Point3<float>& p2, const Point3<float>& p3) const {
-        void *shapeMemPtr = triangleShapesPool->allocate(sizeof(TriangleShape3D<float>));
+        void* shapeMemPtr = triangleShapesPool->allocate(sizeof(TriangleShape3D<float>));
         trianglesInAABBox.emplace_back(CollisionTriangleShape(new (shapeMemPtr) TriangleShape3D<float>(p1, p2, p3), triangleShapesPool));
     }
 

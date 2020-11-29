@@ -32,7 +32,7 @@ namespace urchin {
      * @return XML chunk according to the parameters
      */
     std::shared_ptr<XmlChunk> XmlWriter::createChunk(const std::string& chunkName, const XmlAttribute& attribute, const std::shared_ptr<XmlChunk>& parent) {
-        auto *chunk = new TiXmlElement(chunkName);
+        auto* chunk = new TiXmlElement(chunkName);
 
         if (!attribute.getAttributeName().empty()) {
             chunk->SetAttribute(attribute.getAttributeName(), attribute.getAttributeValue());

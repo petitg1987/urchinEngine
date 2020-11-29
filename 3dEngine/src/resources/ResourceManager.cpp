@@ -14,7 +14,7 @@ namespace urchin {
         if (!mResources.empty()) {
             std::stringstream logStream;
             logStream<<"Resources not released:"<<std::endl;
-            for (auto &mResource : mResources) {
+            for (auto& mResource : mResources) {
                 logStream<< " - " << mResource.second->getName() << std::endl;
             }
             Logger::logger().logError(logStream.str());

@@ -23,7 +23,7 @@ namespace urchin {
         unsigned int layersToUpdate = 0;
 
         for (std::size_t i=0; i<shadowData->getNbFrustumShadowData(); ++i) {
-            const FrustumShadowData *frustumShadowData = shadowData->getFrustumShadowData(i);
+            const FrustumShadowData* frustumShadowData = shadowData->getFrustumShadowData(i);
             if (frustumShadowData->needShadowMapUpdate()) {
                 layersToUpdate = layersToUpdate | MathAlgorithm::powerOfTwo(i);
             }

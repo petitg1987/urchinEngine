@@ -76,7 +76,7 @@ namespace urchin {
 
     Renderer3d::~Renderer3d() {
         //models
-        for (auto *allOctreeableModel : modelOctreeManager->getAllOctreeables()) {
+        for (auto* allOctreeableModel : modelOctreeManager->getAllOctreeables()) {
             delete allOctreeableModel;
         }
 
@@ -393,7 +393,7 @@ namespace urchin {
         }
 
         if (DEBUG_DISPLAY_SHADOW_MAP) {
-            const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
+            const Light* firstLight = lightManager->getVisibleLights()[0]; //choose light
             const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps-1]
             TextureRenderer textureDisplayer(shadowManager->getShadowData(firstLight).getShadowMapTexture(), shadowMapNumber, TextureRenderer::DEFAULT_VALUE);
             textureDisplayer.setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
@@ -489,8 +489,8 @@ namespace urchin {
         }
 
         if (DEBUG_DISPLAY_LIGHTS_SCENE_BOUNDING_BOX) { //display scene box visible from light based on split frustums
-            const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
-            for (const auto &frustum : shadowManager->getSplitFrustums()) {
+            const Light* firstLight = lightManager->getVisibleLights()[0]; //choose light
+            for (const auto& frustum : shadowManager->getSplitFrustums()) {
                 shadowManager->drawLightSceneBox(deferredRenderTarget, frustum, firstLight, camera->getViewMatrix());
             }
         }
@@ -521,7 +521,7 @@ namespace urchin {
                 shadowManager->loadShadowMaps(lightingRenderer);
             }
 
-            auto *lightingRenderTarget = isAntiAliasingActivated ? offscreenLightingRenderTarget : finalRenderTarget;
+            auto* lightingRenderTarget = isAntiAliasingActivated ? offscreenLightingRenderTarget : finalRenderTarget;
             lightingRenderTarget->activeShader(lightingShader);
             lightingRenderTarget->display(lightingRenderer);
         }

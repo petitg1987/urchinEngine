@@ -34,9 +34,9 @@ namespace urchin {
         this->setAttribute(Qt::WA_DeleteOnClose);
         this->setWindowTitle(QString::fromStdString(WINDOW_TITLE));
         this->resize(1200, 675);
-        auto *centralWidget = new QWidget(this);
+        auto* centralWidget = new QWidget(this);
 
-        auto *horizontalLayout = new QHBoxLayout(centralWidget);
+        auto* horizontalLayout = new QHBoxLayout(centralWidget);
         horizontalLayout->setSpacing(6);
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
 
@@ -54,16 +54,16 @@ namespace urchin {
     }
 
     void MapEditorWindow::setupMenu() {
-        auto *menu = new QMenuBar(this);
+        auto* menu = new QMenuBar(this);
 
-        auto *fileMenu = new QMenu("File");
+        auto* fileMenu = new QMenu("File");
 
-        auto *newAction = new QAction("New...", this);
+        auto* newAction = new QAction("New...", this);
         newAction->setShortcut(QKeySequence("Ctrl+N"));
         fileMenu->addAction(newAction);
         connect(newAction, SIGNAL(triggered()), this, SLOT(showNewDialog()));
 
-        auto *openAction = new QAction("Open...", this);
+        auto* openAction = new QAction("Open...", this);
         openAction->setShortcut(QKeySequence("Ctrl+O"));
         fileMenu->addAction(openAction);
         connect(openAction, SIGNAL(triggered()), this, SLOT(showOpenDialog()));
@@ -88,15 +88,15 @@ namespace urchin {
 
         fileMenu->addSeparator();
 
-        auto *exitAction = new QAction("Exit", this);
+        auto* exitAction = new QAction("Exit", this);
         fileMenu->addAction(exitAction);
         connect(exitAction, SIGNAL(triggered()), this, SLOT(executeExitAction()));
 
-        auto *viewMenu = new QMenu("View");
+        auto* viewMenu = new QMenu("View");
 
-        auto *viewObjectMenu = new QMenu("Object");
+        auto* viewObjectMenu = new QMenu("Object");
         viewMenu->addMenu(viewObjectMenu);
-        auto *viewPhysicsShapeAction = new QAction("Physics Shape", this);
+        auto* viewPhysicsShapeAction = new QAction("Physics Shape", this);
         viewPhysicsShapeAction->setEnabled(false);
         viewPhysicsShapeAction->setCheckable(true);
         viewPhysicsShapeAction->setChecked(true);
@@ -104,9 +104,9 @@ namespace urchin {
         viewActions[SceneDisplayer::MODEL_PHYSICS] = viewPhysicsShapeAction;
         connect(viewPhysicsShapeAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
-        auto *viewLightMenu = new QMenu("Light");
+        auto* viewLightMenu = new QMenu("Light");
         viewMenu->addMenu(viewLightMenu);
-        auto *viewLightScopeAction = new QAction("Light Scope", this);
+        auto* viewLightScopeAction = new QAction("Light Scope", this);
         viewLightScopeAction->setEnabled(false);
         viewLightScopeAction->setCheckable(true);
         viewLightScopeAction->setChecked(true);
@@ -114,9 +114,9 @@ namespace urchin {
         viewActions[SceneDisplayer::LIGHT_SCOPE] = viewLightScopeAction;
         connect(viewLightScopeAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
-        auto *viewSoundMenu = new QMenu("Sound");
+        auto* viewSoundMenu = new QMenu("Sound");
         viewMenu->addMenu(viewSoundMenu);
-        auto *viewSoundTriggerAction = new QAction("Sound Trigger", this);
+        auto* viewSoundTriggerAction = new QAction("Sound Trigger", this);
         viewSoundTriggerAction->setEnabled(false);
         viewSoundTriggerAction->setCheckable(true);
         viewSoundTriggerAction->setChecked(true);
@@ -124,9 +124,9 @@ namespace urchin {
         viewActions[SceneDisplayer::SOUND_TRIGGER] = viewSoundTriggerAction;
         connect(viewSoundTriggerAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
-        auto *viewAIMenu = new QMenu("AI");
+        auto* viewAIMenu = new QMenu("AI");
         viewMenu->addMenu(viewAIMenu);
-        auto *viewNavMeshAction = new QAction("Navigation Mesh", this);
+        auto* viewNavMeshAction = new QAction("Navigation Mesh", this);
         viewNavMeshAction->setEnabled(false);
         viewNavMeshAction->setCheckable(true);
         viewNavMeshAction->setChecked(true);
@@ -187,15 +187,15 @@ namespace urchin {
             if (notificationType == ScenePanelWidget::TAB_SELECTED) {
                 executeViewPropertiesChangeAction();
             }
-        } else if (auto *objectTableView = dynamic_cast<ObjectTableView *>(observable)) {
+        } else if (auto* objectTableView = dynamic_cast<ObjectTableView *>(observable)) {
             if (notificationType==ObjectTableView::OBJECT_SELECTION_CHANGED) {
                 sceneDisplayerWidget->setHighlightSceneObject(objectTableView->getSelectedSceneObject());
             }
-        } else if (auto *lightTableView = dynamic_cast<LightTableView *>(observable)) {
+        } else if (auto* lightTableView = dynamic_cast<LightTableView *>(observable)) {
             if (notificationType==LightTableView::LIGHT_SELECTION_CHANGED) {
                 sceneDisplayerWidget->setHighlightSceneLight(lightTableView->getSelectedSceneLight());
             }
-        } else if (auto *soundTableView = dynamic_cast<SoundTableView *>(observable)) {
+        } else if (auto* soundTableView = dynamic_cast<SoundTableView *>(observable)) {
             if (notificationType==SoundTableView::SOUND_SELECTION_CHANGED) {
                 sceneDisplayerWidget->setHighlightSceneSound(soundTableView->getSelectedSceneSound());
             }
@@ -210,14 +210,14 @@ namespace urchin {
     }
 
     void MapEditorWindow::handleCompoundShapeSelectionChange(Observable* observable, int notificationType) {
-        if (auto *objectControllerWidget = dynamic_cast<ObjectPanelWidget *>(observable)) {
+        if (auto* objectControllerWidget = dynamic_cast<ObjectPanelWidget *>(observable)) {
             if (notificationType == ObjectPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED) {
-                BodyShapeWidget *bodyShapeWidget = objectControllerWidget->getBodyShapeWidget();
-                if (auto *bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget *>(bodyShapeWidget)) {
+                BodyShapeWidget* bodyShapeWidget = objectControllerWidget->getBodyShapeWidget();
+                if (auto* bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget *>(bodyShapeWidget)) {
                     bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
                 }
             }
-        } else if (auto *localizedShapeTableView = dynamic_cast<LocalizedShapeTableView *>(observable)) {
+        } else if (auto* localizedShapeTableView = dynamic_cast<LocalizedShapeTableView *>(observable)) {
             if (notificationType==LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED) {
                 sceneDisplayerWidget->setHighlightCompoundShapeComponent(localizedShapeTableView->getSelectedLocalizedShape());
             }
@@ -343,7 +343,7 @@ namespace urchin {
         saveAction->setEnabled(hasMapOpen);
         saveAsAction->setEnabled(hasMapOpen);
         closeAction->setEnabled(hasMapOpen);
-        for (auto &viewAction : viewActions) {
+        for (auto& viewAction : viewActions) {
             viewAction.second->setEnabled(hasMapOpen);
         }
 

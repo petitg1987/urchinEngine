@@ -20,7 +20,7 @@ namespace urchin {
 
         //integrate velocities and apply damping
         for (auto abstractBody : bodyManager->getWorkBodies()) {
-            WorkRigidBody *body = WorkRigidBody::upCast(abstractBody);
+            WorkRigidBody* body = WorkRigidBody::upCast(abstractBody);
             if (body && body->isActive()) {
                 //integrate velocity
                 body->setLinearVelocity(body->getLinearVelocity() + (body->getTotalMomentum() * body->getInvMass()));
@@ -42,7 +42,7 @@ namespace urchin {
      */
     void IntegrateVelocityManager::applyGravityForce(const Vector3<float>& gravity, float dt) {
         for (auto abstractBody : bodyManager->getWorkBodies()) {
-            WorkRigidBody *body = WorkRigidBody::upCast(abstractBody);
+            WorkRigidBody* body = WorkRigidBody::upCast(abstractBody);
             if (body && body->isActive()) {
                 body->applyCentralMomentum(gravity * body->getMass() * dt);
             }
@@ -50,11 +50,11 @@ namespace urchin {
     }
 
     void IntegrateVelocityManager::applyRollingFrictionResistanceForce(float dt, const std::vector<OverlappingPair *> &overlappingPairs) {
-        for (const auto &overlappingPair : overlappingPairs) {
+        for (const auto& overlappingPair : overlappingPairs) {
             float rollingFriction = std::max(overlappingPair->getBody1()->getRollingFriction(), overlappingPair->getBody2()->getRollingFriction());
 
             for (unsigned int bodyIndex=0; bodyIndex<2; ++bodyIndex) {
-                WorkRigidBody *body = WorkRigidBody::upCast(overlappingPair->getBody(bodyIndex));
+                WorkRigidBody* body = WorkRigidBody::upCast(overlappingPair->getBody(bodyIndex));
                 if (body && body->isActive()) {
                     Matrix3<float> inertia = body->getInvWorldInertia().inverse();
                     Vector3<float> currentTorqueForce = (body->getAngularVelocity() * inertia) / dt;

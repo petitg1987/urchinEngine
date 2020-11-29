@@ -39,11 +39,11 @@ namespace urchin {
      */
     Point3<float> CollisionBoxObject::getSupportPoint(const Vector3<float>& direction, bool includeMargin) const {
         if (includeMargin) {
-            const Point3<float> &supportPoint = boxObject.getSupportPoint(direction);
+            const Point3<float>& supportPoint = boxObject.getSupportPoint(direction);
             Point3<float> supportPointWithMargin = supportPoint;
 
             for (unsigned int i=0; i<3; ++i) { //for each axis
-                const Vector3<float> &axis = boxObject.getAxis(i);
+                const Vector3<float>& axis = boxObject.getAxis(i);
                 if (axis.dotProduct(boxObject.getCenterOfMass().vector(supportPoint)) > 0.0f) {
                     supportPointWithMargin = supportPointWithMargin.translate(axis * getOuterMargin());
                 } else {

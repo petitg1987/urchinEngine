@@ -39,7 +39,7 @@ template <class OBJ> void AABBTree<OBJ>::getAllNodeObjects(std::vector<OBJ>& nod
     }
 
     for (std::size_t i=0; i<browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
-        const AABBNode<OBJ> *currentNode = browseNodes[i];
+        const AABBNode<OBJ>* currentNode = browseNodes[i];
 
         if (currentNode->isLeaf()) {
             nodeObjects.push_back(currentNode->getNodeData()->getNodeObject());
@@ -59,7 +59,7 @@ template <class OBJ> std::vector<AABBNodeData<OBJ> *> AABBTree<OBJ>::extractAllN
     }
 
     for (std::size_t i=0; i<browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
-        AABBNode<OBJ> *currentNode = browseNodes[i];
+        AABBNode<OBJ>* currentNode = browseNodes[i];
 
         if (currentNode->isLeaf()) {
             allNodeData.push_back(currentNode->getNodeData());
@@ -74,7 +74,7 @@ template <class OBJ> std::vector<AABBNodeData<OBJ> *> AABBTree<OBJ>::extractAllN
 }
 
 template <class OBJ> void AABBTree<OBJ>::addObject(AABBNodeData<OBJ>* nodeData) {
-    auto *nodeToInsert = new AABBNode<OBJ>(nodeData);
+    auto* nodeToInsert = new AABBNode<OBJ>(nodeData);
 
     if (rootNode) {
         nodeToInsert->updateAABBox(fatMargin);
@@ -95,16 +95,16 @@ template<class OBJ> void AABBTree<OBJ>::postAddObjectCallback(AABBNode<OBJ>*) {
 
 template<class OBJ> void AABBTree<OBJ>::insertNode(AABBNode<OBJ>* nodeToInsert, AABBNode<OBJ>* currentNode) {
     if (currentNode->isLeaf()) {
-        auto *newParent = new AABBNode<OBJ>(nullptr);
+        auto* newParent = new AABBNode<OBJ>(nullptr);
         replaceNode(currentNode, newParent);
         newParent->setLeftChild(nodeToInsert);
         newParent->setRightChild(currentNode);
         newParent->updateAABBox(fatMargin);
     } else {
-        const AABBox<float> &leftAABBox = currentNode->getLeftChild()->getAABBox();
+        const AABBox<float>& leftAABBox = currentNode->getLeftChild()->getAABBox();
         float volumeDiffLeft = leftAABBox.merge(nodeToInsert->getAABBox()).getVolume() - leftAABBox.getVolume();
 
-        const AABBox<float> &rightAABBox = currentNode->getRightChild()->getAABBox();
+        const AABBox<float>& rightAABBox = currentNode->getRightChild()->getAABBox();
         float volumeDiffRight = rightAABBox.merge(nodeToInsert->getAABBox()).getVolume() - rightAABBox.getVolume();
 
         if (volumeDiffLeft < volumeDiffRight) {
@@ -137,7 +137,7 @@ template<class OBJ> void AABBTree<OBJ>::removeObject(AABBNodeData<OBJ>* nodeData
 template<class OBJ> void AABBTree<OBJ>::removeObject(OBJ object) {
     auto itFind = objectsNode.find(object);
     if (itFind!=objectsNode.end()) {
-        AABBNode<OBJ> *nodeToRemove = itFind->second;
+        AABBNode<OBJ>* nodeToRemove = itFind->second;
         preRemoveObjectCallback(nodeToRemove);
 
         objectsNode.erase(object);
@@ -150,12 +150,12 @@ template<class OBJ> void AABBTree<OBJ>::preRemoveObjectCallback(AABBNode<OBJ>*) 
 }
 
 template<class OBJ> void AABBTree<OBJ>::removeNode(AABBNode<OBJ>* nodeToRemove) {
-    AABBNode<OBJ> *parentNode = nodeToRemove->getParent();
+    AABBNode<OBJ>* parentNode = nodeToRemove->getParent();
 
     if (!parentNode) {
         rootNode = nullptr;
     } else {
-        AABBNode<OBJ> *sibling = nodeToRemove->getSibling();
+        AABBNode<OBJ>* sibling = nodeToRemove->getSibling();
         replaceNode(parentNode, sibling);
 
         parentNode->setLeftChild(nullptr); //avoid child removal
@@ -171,15 +171,15 @@ template<class OBJ> void AABBTree<OBJ>::updateObjects() {
         auto it = objectsNode.begin();
         std::advance(it, i);
 
-        AABBNode<OBJ> *leaf = it->second;
+        AABBNode<OBJ>* leaf = it->second;
         if (it->second->getNodeData()->isObjectMoving()) {
             preUpdateObjectCallback(leaf);
 
-            const AABBox<float> &leafFatAABBox = leaf->getAABBox();
-            const AABBox<float> &objectAABBox = leaf->getNodeData()->retrieveObjectAABBox();
+            const AABBox<float>& leafFatAABBox = leaf->getAABBox();
+            const AABBox<float>& objectAABBox = leaf->getNodeData()->retrieveObjectAABBox();
 
             if (!leafFatAABBox.include(objectAABBox)) {
-                AABBNodeData<OBJ> *clonedNodeData = leaf->getNodeData()->clone();
+                AABBNodeData<OBJ>* clonedNodeData = leaf->getNodeData()->clone();
                 removeObject(leaf->getNodeData());
                 addObject(clonedNodeData);
             }
@@ -201,7 +201,7 @@ template<class OBJ> void AABBTree<OBJ>::aabboxQuery(const AABBox<float>& aabbox,
     }
 
     for (std::size_t i=0; i<browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
-        const AABBNode<OBJ> *currentNode = browseNodes[i];
+        const AABBNode<OBJ>* currentNode = browseNodes[i];
 
         if (currentNode->getAABBox().collideWithAABBox(aabbox)) {
             if (currentNode->isLeaf()) {
@@ -224,7 +224,7 @@ template<class OBJ> void AABBTree<OBJ>::rayQuery(const Ray<float>& ray, std::vec
     }
 
     for (std::size_t i=0; i<browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
-        const AABBNode<OBJ> *currentNode = browseNodes[i];
+        const AABBNode<OBJ>* currentNode = browseNodes[i];
 
         if (currentNode->getAABBox().collideWithRay(ray)) {
             if (currentNode->isLeaf()) {
@@ -251,7 +251,7 @@ template<class OBJ> void AABBTree<OBJ>::enlargedRayQuery(const Ray<float>& ray, 
     }
 
     for (std::size_t i=0; i<browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
-        const AABBNode<OBJ> *currentNode = browseNodes[i];
+        const AABBNode<OBJ>* currentNode = browseNodes[i];
 
         AABBox<float> extendedNodeAABBox = currentNode->getAABBox().enlarge(enlargeNodeBoxHalfSize, enlargeNodeBoxHalfSize);
         if (extendedNodeAABBox.collideWithRay(ray)) {

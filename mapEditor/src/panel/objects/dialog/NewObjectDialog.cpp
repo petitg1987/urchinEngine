@@ -25,13 +25,13 @@ namespace urchin {
         this->resize(530, 130);
         this->setFixedSize(this->width(),this->height());
 
-        auto *mainLayout = new QGridLayout(this);
+        auto* mainLayout = new QGridLayout(this);
         mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
         setupNameFields(mainLayout);
         setupMeshFilenameFields(mainLayout);
 
-        auto *buttonBox = new QDialogButtonBox();
+        auto* buttonBox = new QDialogButtonBox();
         mainLayout->addWidget(buttonBox, 2, 0, 1, 3);
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
@@ -58,7 +58,7 @@ namespace urchin {
         meshFilenameText->setReadOnly(true);
         meshFilenameText->setFixedWidth(360);
 
-        auto *selectMeshFileButton = new QPushButton("...");
+        auto* selectMeshFileButton = new QPushButton("...");
         mainLayout->addWidget(selectMeshFileButton, 1, 2);
         ButtonStyleHelper::applyNormalStyle(selectMeshFileButton);
         selectMeshFileButton->setFixedWidth(22);
@@ -83,7 +83,7 @@ namespace urchin {
             if (!meshFilename.empty()) {
                 relativeMeshFilename = FileHandler::getRelativePath(resourcesDirectory, meshFilename);
             }
-            auto *model = new Model(relativeMeshFilename);
+            auto* model = new Model(relativeMeshFilename);
             sceneObject->setModel(model);
         } catch (std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());

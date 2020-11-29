@@ -16,7 +16,7 @@ template<class TOctreeable> OctreeManager<TOctreeable>::OctreeManager(float minS
 
 template<class TOctreeable> OctreeManager<TOctreeable>::~OctreeManager() {
     if (mainOctree) {
-        for (const auto &octreeable : getAllOctreeables()) {
+        for (const auto& octreeable : getAllOctreeables()) {
             removeOctreeable(octreeable);
         }
 
@@ -27,7 +27,7 @@ template<class TOctreeable> OctreeManager<TOctreeable>::~OctreeManager() {
 template<class TOctreeable> void OctreeManager<TOctreeable>::notify(Observable* observable, int notificationType) {
     if (dynamic_cast<TOctreeable *>(observable)) {
         if (notificationType==TOctreeable::MOVE) {
-            TOctreeable *octreeable = dynamic_cast<TOctreeable *>(observable);
+            TOctreeable* octreeable = dynamic_cast<TOctreeable *>(observable);
             movingOctreeables.emplace_back(octreeable);
         }
     }
@@ -38,8 +38,8 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::buildOctree(std::ve
         Point3<float> minScene(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
         Point3<float> maxScene(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
 
-        for (const auto &octreeable : octreeables) {
-            const Point3<float> &bboxMin = octreeable->getAABBox().getMin();
+        for (const auto& octreeable : octreeables) {
+            const Point3<float>& bboxMin = octreeable->getAABBox().getMin();
             if (minScene.X > bboxMin.X) {
                 minScene.X = bboxMin.X;
             }
@@ -50,7 +50,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::buildOctree(std::ve
                 minScene.Z = bboxMin.Z;
             }
 
-            const Point3<float> &bboxMax = octreeable->getAABBox().getMax();
+            const Point3<float>& bboxMax = octreeable->getAABBox().getMax();
             if (maxScene.X < bboxMax.X) {
                 maxScene.X = bboxMax.X;
             }
@@ -75,7 +75,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::buildOctree(std::ve
         delete mainOctree;
         mainOctree = new Octree<TOctreeable>(position, size, minSize);
 
-        for (auto &octreeable : octreeables) {
+        for (auto& octreeable : octreeables) {
             addOctreeable(octreeable);
         }
     } else {
@@ -92,7 +92,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::addOctreeable(TOctr
         browseNodes.clear();
         browseNodes.push_back(mainOctree);
         for (std::size_t i = 0; i < browseNodes.size(); ++i) {
-            Octree<TOctreeable> *octree = browseNodes[i];
+            Octree<TOctreeable>* octree = browseNodes[i];
 
             if (octreeable->getAABBox().collideWithAABBox(octree->getAABBox())) {
                 if (octree->isLeaf()) {
@@ -138,11 +138,11 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::refreshOctreeables(
     if (mainOctree) {
         movingOctreeables.erase(std::unique(movingOctreeables.begin(), movingOctreeables.end() ), movingOctreeables.end());
 
-        for (auto &movingOctreeable : movingOctreeables) {
+        for (auto& movingOctreeable : movingOctreeables) {
             removeOctreeable(movingOctreeable);
         }
 
-        for (auto &movingOctreeable : movingOctreeables) {
+        for (auto& movingOctreeable : movingOctreeables) {
             addOctreeable(movingOctreeable);
         }
     }
@@ -153,7 +153,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::refreshOctreeables(
 }
 
 template<class TOctreeable> void OctreeManager<TOctreeable>::postRefreshOctreeables() {
-    for (auto &movingOctreeable : movingOctreeables) {
+    for (auto& movingOctreeable : movingOctreeables) {
         movingOctreeable->onMoveDone();
     }
 
@@ -172,7 +172,7 @@ template<class TOctreeable> std::vector<const Octree<TOctreeable> *> OctreeManag
     browseNodes.clear();
     browseNodes.push_back(mainOctree);
     for (std::size_t i=0; i<browseNodes.size(); ++i) {
-        const Octree<TOctreeable> *octree = browseNodes[i];
+        const Octree<TOctreeable>* octree = browseNodes[i];
 
         if (octree->isLeaf()) {
             leafOctrees.push_back(octree);
@@ -191,11 +191,11 @@ template<class TOctreeable> std::vector<TOctreeable *> OctreeManager<TOctreeable
         browseNodes.clear();
         browseNodes.push_back(mainOctree);
         for (std::size_t i = 0; i < browseNodes.size(); ++i) {
-            const Octree<TOctreeable> *octree = browseNodes[i];
+            const Octree<TOctreeable>* octree = browseNodes[i];
 
             if (octree->isLeaf()) {
                 for (std::size_t octreeableI=0; octreeableI<octree->getOctreeables().size(); octreeableI++) {
-                    TOctreeable *octreeable = octree->getOctreeables()[octreeableI];
+                    TOctreeable* octreeable = octree->getOctreeables()[octreeableI];
 
                     if (!octreeable->isProcessed()) {
                         octreeable->setProcessed(true);
@@ -225,12 +225,12 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(co
     browseNodes.clear();
     browseNodes.push_back(mainOctree);
     for (std::size_t i=0; i<browseNodes.size(); ++i) {
-        const Octree<TOctreeable> *octree = browseNodes[i];
+        const Octree<TOctreeable>* octree = browseNodes[i];
 
         if (convexObject.collideWithAABBox(octree->getAABBox())) {
             if (octree->isLeaf()) {
                 for (std::size_t octreeableI=0; octreeableI<octree->getOctreeables().size(); octreeableI++) {
-                    TOctreeable *octreeable = octree->getOctreeables()[octreeableI];
+                    TOctreeable* octreeable = octree->getOctreeables()[octreeableI];
 
                     if (octreeable->isVisible() && !octreeable->isProcessed() && filter.isAccepted(octreeable, convexObject)) {
                         octreeable->setProcessed(true);
@@ -249,8 +249,8 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(co
 template<class TOctreeable> bool OctreeManager<TOctreeable>::resizeOctree(TOctreeable* newOctreeable) {
     if (mainOctree) {
         //need to resize ?
-        const Point3<float> &minOctree = mainOctree->getAABBox().getMin();
-        const Point3<float> &maxOctree = mainOctree->getAABBox().getMax();
+        const Point3<float>& minOctree = mainOctree->getAABBox().getMin();
+        const Point3<float>& maxOctree = mainOctree->getAABBox().getMax();
 
         if (    newOctreeable->getAABBox().getMin().X >= minOctree.X && newOctreeable->getAABBox().getMin().Y >= minOctree.Y &&
             newOctreeable->getAABBox().getMin().Z >= minOctree.Z && newOctreeable->getAABBox().getMax().X <= maxOctree.X &&

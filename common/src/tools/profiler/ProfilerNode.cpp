@@ -15,7 +15,7 @@ namespace urchin {
     }
 
     ProfilerNode::~ProfilerNode() {
-        for (ProfilerNode *child : children) {
+        for (ProfilerNode* child : children) {
             delete child;
         }
     }
@@ -33,7 +33,7 @@ namespace urchin {
     }
 
     ProfilerNode *ProfilerNode::findChildren(const std::string& name) const {
-        for (const auto &child : children) {
+        for (const auto& child : children) {
             if (child->getName() == name) {
                 return child;
             }
@@ -106,7 +106,7 @@ namespace urchin {
 
             if (!children.empty()) {
                 double childTotalTime = 0.0;
-                for (const auto &child : children) {
+                for (const auto& child : children) {
                     childTotalTime += child->computeTotalTimes();
                 }
                 double unTrackedTime = averageTime - (childTotalTime / getNbValidTimes());
@@ -118,7 +118,7 @@ namespace urchin {
             logStream << ")" <<std::endl;
         }
 
-        for (const auto &child : children) {
+        for (const auto& child : children) {
             child->log(level + 1, logStream, levelOneTotalTime);
         }
     }

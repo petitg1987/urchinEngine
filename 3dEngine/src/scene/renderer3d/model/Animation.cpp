@@ -49,8 +49,8 @@ namespace urchin {
         globalBBox = constAnimation->getOriginalGlobalAABBox().moveAABBox(newTransform);
 
         globalSplitBBoxes.clear();
-        const std::vector<AABBox<float>> &originalGlobalSplitAABBoxes = constAnimation->getOriginalGlobalSplitAABBoxes();
-        for (const auto &originalGlobalSplitAABBox : originalGlobalSplitAABBoxes) {
+        const std::vector<AABBox<float>>& originalGlobalSplitAABBoxes = constAnimation->getOriginalGlobalSplitAABBoxes();
+        for (const auto& originalGlobalSplitAABBox : originalGlobalSplitAABBoxes) {
             globalSplitBBoxes.push_back(originalGlobalSplitAABBox.moveAABBox(newTransform));
         }
     }
@@ -73,8 +73,8 @@ namespace urchin {
         float interp = animationInformation.lastTime * static_cast<float>(constAnimation->getFrameRate());
         for (std::size_t i = 0; i < constAnimation->getNumberBones(); ++i) {
             //shortcut
-            const Bone &currentFrameBone = constAnimation->getBone(animationInformation.currFrame, i);
-            const Bone &nextFrameBone = constAnimation->getBone(animationInformation.nextFrame, i);
+            const Bone& currentFrameBone = constAnimation->getBone(animationInformation.currFrame, i);
+            const Bone& nextFrameBone = constAnimation->getBone(animationInformation.nextFrame, i);
 
             //copy parent index
             skeleton[i].parent = currentFrameBone.parent;

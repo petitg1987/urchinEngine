@@ -99,7 +99,7 @@ namespace urchin {
         triangles.clear();
         triangles.reserve((polygonPoints.size()-2) + (2*getHolesSize()));
 
-        for (const auto &monotonePolygon : monotonePolygons) {
+        for (const auto& monotonePolygon : monotonePolygons) {
             std::vector<std::shared_ptr<NavTriangle>> monotonePolygonTriangles = triangulateMonotonePolygon(monotonePolygon);
             triangles.insert(triangles.end(), monotonePolygonTriangles.begin(), monotonePolygonTriangles.end());
         }
@@ -120,7 +120,7 @@ namespace urchin {
 
     std::vector<std::shared_ptr<NavTriangle>> TriangulationAlgorithm::triangulateMonotonePolygon(const MonotonePolygon& monotonePolygon) {
         missingTriangleNeighbor = 0;
-        const std::vector<std::size_t> &monotonePolygonPoints = monotonePolygon.getCcwPoints();
+        const std::vector<std::size_t>& monotonePolygonPoints = monotonePolygon.getCcwPoints();
         std::vector<SidedPoint> sortedSidedPoints = buildSortedSidedPoints(monotonePolygonPoints);
 
         std::vector<std::shared_ptr<NavTriangle>> monotoneTriangles;
@@ -237,11 +237,11 @@ namespace urchin {
     void TriangulationAlgorithm::determineNeighborsInsideMonotone(std::vector<std::shared_ptr<NavTriangle>>& monotoneTriangles) {
         long currMonotoneTriangleIndex = static_cast<long>(monotoneTriangles.size()) - 1;
         long prevMonotoneTriangleIndex = static_cast<long>(monotoneTriangles.size()) - 2;
-        const auto &currTriangle = monotoneTriangles[currMonotoneTriangleIndex];
+        const auto& currTriangle = monotoneTriangles[currMonotoneTriangleIndex];
 
         missingTriangleNeighbor += monotoneTriangles.size()>1 ? 1 : 0; //don't expect neighbor for first triangle
         while (prevMonotoneTriangleIndex>=0 && missingTriangleNeighbor>0) {
-            const auto &prevTriangle = monotoneTriangles[prevMonotoneTriangleIndex];
+            const auto& prevTriangle = monotoneTriangles[prevMonotoneTriangleIndex];
 
             for (std::size_t prevEdgeIndex=2, edgeIndex=0; edgeIndex<3 && missingTriangleNeighbor>0; prevEdgeIndex=edgeIndex++) {
                 if (areSameEdge(prevTriangle, prevEdgeIndex, edgeIndex, currTriangle, 0, 1)) {
@@ -265,7 +265,7 @@ namespace urchin {
 
     void TriangulationAlgorithm::determineNeighborsBetweenMonotones(std::vector<std::shared_ptr<NavTriangle>>& monotoneTriangles, const MonotonePolygon& monotonePolygon) {
         std::size_t currMonotoneTriangleIndex = monotoneTriangles.size() - 1;
-        const auto &currTriangle = monotoneTriangles[currMonotoneTriangleIndex];
+        const auto& currTriangle = monotoneTriangles[currMonotoneTriangleIndex];
 
         for (std::size_t prevEdgeIndex=2, edgeIndex=0; edgeIndex<3; prevEdgeIndex=edgeIndex++) {
             if (!currTriangle->hasEdgeLinks(prevEdgeIndex)) {
@@ -307,15 +307,15 @@ namespace urchin {
 
         logStream<<message<<std::endl;
         logStream<<"Polygon points:"<<std::endl;
-        for (const auto &polygonPoint : polygonPoints) {
+        for (const auto& polygonPoint : polygonPoints) {
             logStream<<" - "<<polygonPoint<<std::endl;
         }
         logStream<<"Contour names:"<<std::endl;
-        for (const auto &contourName : contourNames) {
+        for (const auto& contourName : contourNames) {
             logStream<<" - "<<contourName<<std::endl;
         }
         logStream<<"End contour indices:"<<std::endl;
-        for (const auto &endContourIndex : endContourIndices) {
+        for (const auto& endContourIndex : endContourIndices) {
             logStream<<" - "<<endContourIndex<<std::endl;
         }
 
@@ -328,7 +328,7 @@ namespace urchin {
 
         logStream<<message<<std::endl;
         logStream<<"Monotone polygon triangles output data:"<<std::endl;
-        for (const auto &triangle : triangles) {
+        for (const auto& triangle : triangles) {
             logStream<<" - {"<<triangle->getIndex(0)<<": "<<polygonPoints[triangle->getIndex(0)]
                      <<"}, {"<<triangle->getIndex(1)<<": "<<polygonPoints[triangle->getIndex(1)]
                      <<"}, {"<<triangle->getIndex(2)<<": "<<polygonPoints[triangle->getIndex(2)]<<"}"<<std::endl;

@@ -85,7 +85,7 @@ void SupportPointTest::convexHullSupportPoint() {
 }
 
 CppUnit::Test *SupportPointTest::suite() {
-    auto *suite = new CppUnit::TestSuite("SupportPointTest");
+    auto* suite = new CppUnit::TestSuite("SupportPointTest");
 
     suite->addTest(new CppUnit::TestCaller<SupportPointTest>("sphereSupportPoint", &SupportPointTest::sphereSupportPoint));
     suite->addTest(new CppUnit::TestCaller<SupportPointTest>("boxSupportPoint", &SupportPointTest::boxSupportPoint));

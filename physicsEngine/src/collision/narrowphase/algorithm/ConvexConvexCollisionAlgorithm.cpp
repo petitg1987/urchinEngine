@@ -24,12 +24,12 @@ namespace urchin {
             if (gjkResultWithoutMargin->isCollide()) { //collision detected on reduced objects (without margins)
                 processCollisionAlgorithmWithMargin(convexObject1, convexObject2);
             } else { //collision detected on enlarged objects (with margins) OR no collision detected
-                const Vector3<double> &vectorBA = gjkResultWithoutMargin->getClosestPointB().vector(gjkResultWithoutMargin->getClosestPointA());
+                const Vector3<double>& vectorBA = gjkResultWithoutMargin->getClosestPointB().vector(gjkResultWithoutMargin->getClosestPointA());
                 float vectorBALength = vectorBA.length();
                 float sumMargins = convexObject1->getOuterMargin() + convexObject2->getOuterMargin();
                 if (sumMargins > vectorBALength - getContactBreakingThreshold()) { //collision detected on enlarged objects
-                    const Vector3<double> &normalFromObject2 = vectorBA.normalize();
-                    const Point3<double> &pointOnObject2 = gjkResultWithoutMargin->getClosestPointB().translate(normalFromObject2 * (double)convexObject2->getOuterMargin());
+                    const Vector3<double>& normalFromObject2 = vectorBA.normalize();
+                    const Point3<double>& pointOnObject2 = gjkResultWithoutMargin->getClosestPointB().translate(normalFromObject2 * (double)convexObject2->getOuterMargin());
                     const float penetrationDepth = vectorBALength - sumMargins;
 
                     addNewContactPoint(normalFromObject2.cast<float>(), pointOnObject2.cast<float>(), penetrationDepth);
@@ -46,8 +46,8 @@ namespace urchin {
             std::unique_ptr<EPAResult<double>, AlgorithmResultDeleter> epaResult = epaAlgorithm.processEPA(*convexObject1, *convexObject2, *gjkResultWithMargin);
 
             if (epaResult->isValidResult() && epaResult->isCollide()) { //should be always true except for problems due to float imprecision
-                const Vector3<double> &normalFromObject2 = (-epaResult->getNormal());
-                const Point3<double> &pointOnObject2 = epaResult->getContactPointB();
+                const Vector3<double>& normalFromObject2 = (-epaResult->getNormal());
+                const Point3<double>& pointOnObject2 = epaResult->getContactPointB();
                 const float penetrationDepth = -epaResult->getPenetrationDepth();
 
                 addNewContactPoint(normalFromObject2.cast<float>(), pointOnObject2.cast<float>(), penetrationDepth);
@@ -56,7 +56,7 @@ namespace urchin {
     }
 
     CollisionAlgorithm *ConvexConvexCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, ManifoldResult&& result, FixedSizePool<CollisionAlgorithm>* algorithmPool) const {
-        void *memPtr = algorithmPool->allocate(sizeof(ConvexConvexCollisionAlgorithm));
+        void* memPtr = algorithmPool->allocate(sizeof(ConvexConvexCollisionAlgorithm));
         return new(memPtr) ConvexConvexCollisionAlgorithm(objectSwapped, std::move(result));
     }
 

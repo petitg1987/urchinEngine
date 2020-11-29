@@ -15,7 +15,7 @@ namespace urchin {
             maxSlope(nullptr),
             jumpDistance(nullptr),
             disableAIEvent(false) {
-        auto *mainLayout = new QVBoxLayout(this);
+        auto* mainLayout = new QVBoxLayout(this);
         mainLayout->setAlignment(Qt::AlignTop);
         mainLayout->setContentsMargins(1, 1, 1, 1);
 
@@ -34,14 +34,14 @@ namespace urchin {
     }
 
     void AIPanelWidget::setupNavMeshAgentBox(QVBoxLayout* mainLayout) {
-        auto *navMeshAgentGroupBox = new QGroupBox("Nav Mesh Agent");
+        auto* navMeshAgentGroupBox = new QGroupBox("Nav Mesh Agent");
         mainLayout->addWidget(navMeshAgentGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(navMeshAgentGroupBox);
         navMeshAgentGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-        auto *navMeshAgentLayout = new QGridLayout(navMeshAgentGroupBox);
+        auto* navMeshAgentLayout = new QGridLayout(navMeshAgentGroupBox);
 
-        auto *agentHeightLabel = new QLabel("Agent Height:");
+        auto* agentHeightLabel = new QLabel("Agent Height:");
         navMeshAgentLayout->addWidget(agentHeightLabel, 0, 0);
 
         agentHeight = new QDoubleSpinBox();
@@ -50,7 +50,7 @@ namespace urchin {
         agentHeight->setMinimum(0.0);
         connect(agentHeight, SIGNAL(valueChanged(double)), this, SLOT(aiChanged()));
 
-        auto *agentRadiusLabel = new QLabel("Agent Radius:");
+        auto* agentRadiusLabel = new QLabel("Agent Radius:");
         navMeshAgentLayout->addWidget(agentRadiusLabel, 0, 2);
 
         agentRadius = new QDoubleSpinBox();
@@ -59,7 +59,7 @@ namespace urchin {
         agentRadius->setMinimum(0.0);
         connect(agentRadius, SIGNAL(valueChanged(double)), this, SLOT(aiChanged()));
 
-        auto *maxSlopeLabel = new QLabel("Max Slope (°):");
+        auto* maxSlopeLabel = new QLabel("Max Slope (°):");
         navMeshAgentLayout->addWidget(maxSlopeLabel, 1, 0);
 
         maxSlope = new QDoubleSpinBox();
@@ -69,7 +69,7 @@ namespace urchin {
         maxSlope->setMaximum(85.0);
         connect(maxSlope, SIGNAL(valueChanged(double)), this, SLOT(aiChanged()));
 
-        auto *jumpDistanceLabel = new QLabel("Jump distance:");
+        auto* jumpDistanceLabel = new QLabel("Jump distance:");
         navMeshAgentLayout->addWidget(jumpDistanceLabel, 1, 2);
 
         jumpDistance = new QDoubleSpinBox();

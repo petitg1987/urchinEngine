@@ -22,8 +22,8 @@ namespace urchin {
             assert(portals.back()->getPortal().getA() == portals.back()->getPortal().getB()); //degenerated end portal
         #endif
 
-        const Point3<float> &startPoint = portals[0]->getPortal().getA();
-        const Point3<float> &endPoint = portals.back()->getPortal().getA();
+        const Point3<float>& startPoint = portals[0]->getPortal().getA();
+        const Point3<float>& endPoint = portals.back()->getPortal().getA();
 
         portals[0]->setTransitionPoint(startPoint);
 

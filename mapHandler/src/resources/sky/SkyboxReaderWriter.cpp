@@ -13,7 +13,7 @@ namespace urchin {
             if (filenameListChunk.size() != 6) {
                 throw std::runtime_error("Invalid number of skybox filenames found: " + std::to_string(filenameListChunk.size()));
             }
-            for (const auto &filenameChunk : filenameListChunk) {
+            for (const auto& filenameChunk : filenameListChunk) {
                 filenames.emplace_back(filenameChunk->getStringValue());
             }
 
@@ -30,7 +30,7 @@ namespace urchin {
             std::shared_ptr<XmlChunk> skyboxChunk = xmlWriter.createChunk(SKYBOX_TAG, XmlAttribute(), skyChunk);
 
             std::shared_ptr<XmlChunk> texturesChunk = xmlWriter.createChunk(TEXTURES_TAG, XmlAttribute(), skyboxChunk);
-            for (const auto &filename : skybox->getFilenames()) {
+            for (const auto& filename : skybox->getFilenames()) {
                 std::shared_ptr<XmlChunk> filenameChunk = xmlWriter.createChunk(FILENAME_TAG, XmlAttribute(), texturesChunk);
                 filenameChunk->setStringValue(filename);
             }

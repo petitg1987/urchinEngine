@@ -164,7 +164,7 @@ namespace urchin {
         computeCursorPosition();
 
         //determine the text to display
-        const Font *font = text->getFont();
+        const Font* font = text->getFont();
         unsigned int widthText = 0;
         unsigned int endTextIndex = startTextIndex;
         for (; endTextIndex < allText.length(); ++endTextIndex) {
@@ -178,7 +178,7 @@ namespace urchin {
     }
 
     void TextBox::computeCursorPosition() {
-        const Font *font = text->getFont();
+        const Font* font = text->getFont();
         cursorPosition = ADDITIONAL_LEFT_BORDER;
 
         for (unsigned int i=startTextIndex;i<cursorIndex;++i) {
@@ -195,7 +195,7 @@ namespace urchin {
     }
 
     void TextBox::computeCursorIndex(int approximateCursorPosition) {
-        const Font *font = text->getFont();
+        const Font* font = text->getFont();
         float widthText = 0.0f;
 
         for (cursorIndex=startTextIndex; cursorIndex < allText.length(); ++cursorIndex) {

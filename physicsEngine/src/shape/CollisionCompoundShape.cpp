@@ -21,7 +21,7 @@ namespace urchin {
         maxDistanceToCenter = toAABBox(PhysicsTransform()).getMaxHalfSize();
 
         minDistanceToCenter = std::numeric_limits<float>::max();
-        for (const auto &localizedShape : localizedShapes) {
+        for (const auto& localizedShape : localizedShapes) {
             if (localizedShape->shape->getMinDistanceToCenter() < minDistanceToCenter) {
                 minDistanceToCenter = localizedShape->shape->getMinDistanceToCenter();
             }
@@ -43,7 +43,7 @@ namespace urchin {
     std::shared_ptr<CollisionShape3D> CollisionCompoundShape::scale(float scale) const {
         std::vector<std::shared_ptr<const LocalizedCollisionShape>> scaledLocalizedShapes;
         scaledLocalizedShapes.reserve(localizedShapes.size());
-        for (const auto &localizedShape : localizedShapes) {
+        for (const auto& localizedShape : localizedShapes) {
             std::shared_ptr<LocalizedCollisionShape> scaledLocalizedShape = std::make_shared<LocalizedCollisionShape>();
             scaledLocalizedShape->position = localizedShape->position;
             scaledLocalizedShape->shape = localizedShape->shape->scale(scale);
@@ -100,7 +100,7 @@ namespace urchin {
 
     CollisionShape3D *CollisionCompoundShape::clone() const {
         std::vector<std::shared_ptr<const LocalizedCollisionShape>> clonedLocalizedShapes;
-        for (const auto &localizedShape : localizedShapes) {
+        for (const auto& localizedShape : localizedShapes) {
             auto clonedLocalizedShape = std::make_shared<LocalizedCollisionShape>();
             clonedLocalizedShape->position = localizedShape->position;
             clonedLocalizedShape->shape = std::shared_ptr<const CollisionShape3D>(localizedShape->shape->clone());

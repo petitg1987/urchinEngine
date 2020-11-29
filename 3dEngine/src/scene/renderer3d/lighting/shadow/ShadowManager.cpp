@@ -66,7 +66,7 @@ namespace urchin {
     }
 
     ShadowManager::~ShadowManager() {
-        for (auto &shadowData : shadowDatas) {
+        for (auto& shadowData : shadowDatas) {
             delete shadowData.second;
         }
 
@@ -135,7 +135,7 @@ namespace urchin {
         this->sceneWidth = sceneWidth;
         this->sceneHeight = sceneHeight;
 
-        for (auto &shadowData : shadowDatas) {
+        for (auto& shadowData : shadowDatas) {
             updateViewMatrix(shadowData.first);
         }
     }
@@ -150,7 +150,7 @@ namespace urchin {
 
     void ShadowManager::notify(Observable* observable, int notificationType) {
         if (dynamic_cast<LightManager *>(observable)) {
-            Light *light = lightManager->getLastUpdatedLight();
+            Light* light = lightManager->getLastUpdatedLight();
             if (notificationType==LightManager::ADD_LIGHT) {
                 light->addObserver(this, Light::PRODUCE_SHADOW);
                 if (light->isProduceShadow()) {
@@ -162,7 +162,7 @@ namespace urchin {
                     removeShadowLight(light);
                 }
             }
-        } else if (auto *light = dynamic_cast<Light *>(observable)) {
+        } else if (auto* light = dynamic_cast<Light *>(observable)) {
             if (notificationType==Light::LIGHT_MOVE) {
                 updateViewMatrix(light);
             } else if (notificationType==Light::PRODUCE_SHADOW) {
@@ -238,7 +238,7 @@ namespace urchin {
             throw std::runtime_error("No shadow data found for this light.");
         }
 
-        const ShadowData *shadowData = it->second;
+        const ShadowData* shadowData = it->second;
         return *shadowData;
     }
 
@@ -249,7 +249,7 @@ namespace urchin {
         ScopeProfiler profiler("3d", "coVisibleModel");
 
         visibleModels.clear();
-        for (const auto &shadowData : shadowDatas) {
+        for (const auto& shadowData : shadowDatas) {
             for (std::size_t i=0; i<nbShadowMaps; ++i) {
                 const std::vector<Model *> &visibleModelsForLightInFrustumSplit = shadowData.second->getFrustumShadowData(i)->getModels();
                 OctreeableHelper<Model>::merge(visibleModels, visibleModelsForLightInFrustumSplit);
@@ -281,25 +281,25 @@ namespace urchin {
     void ShadowManager::updateShadowLights() {
         std::vector<const Light *> allLights;
         allLights.reserve(shadowDatas.size());
-        for (const auto &shadowData : shadowDatas) {
+        for (const auto& shadowData : shadowDatas) {
             allLights.emplace_back(shadowData.first);
         }
 
-        for (const auto &allLight : allLights) {
+        for (const auto& allLight : allLights) {
             removeShadowLight(allLight);
             addShadowLight(allLight);
         }
     }
 
     void ShadowManager::updateViewMatrix(const Light* light) {
-        ShadowData *shadowData = shadowDatas[light];
+        ShadowData* shadowData = shadowDatas[light];
 
         if (light->hasParallelBeams()) { //sun light
             Vector3<float> lightDirection = light->getDirections()[0];
 
-            const Vector3<float> &f = lightDirection.normalize();
-            const Vector3<float> &s = f.crossProduct(Vector3<float>(0.0, 1.0, 0.0)).normalize();
-            const Vector3<float> &u = s.crossProduct(f).normalize();
+            const Vector3<float>& f = lightDirection.normalize();
+            const Vector3<float>& s = f.crossProduct(Vector3<float>(0.0, 1.0, 0.0)).normalize();
+            const Vector3<float>& u = s.crossProduct(f).normalize();
             Matrix4<float> M(
                 s[0],    s[1],    s[2],    0,
                 u[0],    u[1],    u[2],    0,
@@ -349,13 +349,13 @@ namespace urchin {
     AABBox<float> ShadowManager::createSceneIndependentBox(const Frustum<float>& splitFrustum, const Matrix4<float>& lightViewMatrix) const {
         ScopeProfiler profiler("3d", "sceneIndepBox");
 
-        const Frustum<float> &frustumLightSpace = lightViewMatrix * splitFrustum;
+        const Frustum<float>& frustumLightSpace = lightViewMatrix * splitFrustum;
 
         //determine point belonging to shadow caster/receiver box
         Point3<float> shadowReceiverAndCasterVertex[16];
         float nearCapZ = computeNearZForSceneIndependentBox(frustumLightSpace);
         for (unsigned int i=0; i<8; ++i) {
-            const Point3<float> &frustumPoint = frustumLightSpace.getFrustumPoints()[i];
+            const Point3<float>& frustumPoint = frustumLightSpace.getFrustumPoints()[i];
 
             //add shadow receiver points
             shadowReceiverAndCasterVertex[i*2] = frustumPoint;
@@ -389,11 +389,11 @@ namespace urchin {
         if (!models.empty()) {
             aabboxSceneDependent = AABBox<float>::initMergeableAABBox();
 
-            for (const auto &model : models) {
+            for (const auto& model : models) {
                 if (model->getSplitAABBoxes().size() == 1) {
                     aabboxSceneDependent = aabboxSceneDependent.merge(lightViewMatrix * model->getSplitAABBoxes()[0]);
                 } else {
-                    for (const auto &splitAABBox : model->getSplitAABBoxes()) {
+                    for (const auto& splitAABBox : model->getSplitAABBoxes()) {
                         if (obboxSceneIndependentViewSpace.collideWithAABBox(splitAABBox)) {
                             aabboxSceneDependent = aabboxSceneDependent.merge(lightViewMatrix * splitAABBox);
                         }
@@ -500,7 +500,7 @@ namespace urchin {
 
         splitFrustum(frustum);
 
-        for (auto &shadowData : shadowDatas) {
+        for (auto& shadowData : shadowDatas) {
             updateFrustumShadowData(shadowData.first, shadowData.second);
         }
     }
@@ -512,9 +512,9 @@ namespace urchin {
     void ShadowManager::updateShadowMaps() {
         ScopeProfiler profiler("3d", "updateShadowMap");
 
-        for (auto &shadowData : shadowDatas) {
-            const ShadowData *lightShadowData = shadowData.second;
-            const RenderTarget *renderTarget = lightShadowData->getRenderTarget();
+        for (auto& shadowData : shadowDatas) {
+            const ShadowData* lightShadowData = shadowData.second;
+            const RenderTarget* renderTarget = lightShadowData->getRenderTarget();
 
             renderTarget->resetDisplay();
 
@@ -532,10 +532,10 @@ namespace urchin {
     void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer>& lightingRenderer) {
         int i = 0;
         const std::vector<Light *> &visibleLights = lightManager->getVisibleLights();
-        for (auto *visibleLight : visibleLights) {
+        for (auto* visibleLight : visibleLights) {
             if (visibleLight->isProduceShadow()) {
                 auto it = shadowDatas.find(visibleLight);
-                const ShadowData *shadowData = it->second;
+                const ShadowData* shadowData = it->second;
 
                 unsigned int texUnit = lightingRenderer
                         ->addAdditionalTexture(TextureReader::build(shadowData->getFilteredShadowMapTexture(), TextureParam::buildLinear()));
@@ -549,7 +549,7 @@ namespace urchin {
             ++i;
         }
 
-        auto *depthSplitDistance = new float[nbShadowMaps];
+        auto* depthSplitDistance = new float[nbShadowMaps];
         for (unsigned int shadowMapIndex=0; shadowMapIndex<nbShadowMaps; ++shadowMapIndex) {
             float currSplitDistance = splitDistances[shadowMapIndex];
             depthSplitDistance[shadowMapIndex] = ((projectionMatrix(2, 2)*-currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance)) / 2.0f + 0.5f;
@@ -565,7 +565,7 @@ namespace urchin {
             throw std::invalid_argument("shadow manager doesn't know this light.");
         }
 
-        const Matrix4<float> &lightViewMatrix = itShadowData->second->getLightViewMatrix();
+        const Matrix4<float>& lightViewMatrix = itShadowData->second->getLightViewMatrix();
         AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(frustum, lightViewMatrix);
         OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrix.inverse() * OBBox<float>(aabboxSceneIndependent);
 

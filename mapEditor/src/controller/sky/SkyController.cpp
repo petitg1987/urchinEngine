@@ -23,7 +23,7 @@ namespace urchin {
     }
 
     bool SkyController::isSkyboxFilenamesAllEmpty(const std::vector<std::string>& skyboxFilenames) const {
-        for (const auto &skyboxFilename : skyboxFilenames) {
+        for (const auto& skyboxFilename : skyboxFilenames) {
             if (!skyboxFilename.empty()) {
                 return false;
             }

@@ -7,7 +7,7 @@ namespace urchin {
 
     BodySphereShapeWidget::BodySphereShapeWidget(const SceneObject* sceneObject) :
             BodyShapeWidget(sceneObject) {
-        auto *radiusLabel = new QLabel("Radius:");
+        auto* radiusLabel = new QLabel("Radius:");
         mainLayout->addWidget(radiusLabel, 0, 0);
 
         radius = new QDoubleSpinBox();
@@ -22,7 +22,7 @@ namespace urchin {
     }
 
     void BodySphereShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape) {
-        const auto *sphereShape = dynamic_cast<const CollisionSphereShape *>(shape.get());
+        const auto* sphereShape = dynamic_cast<const CollisionSphereShape *>(shape.get());
 
         radius->setValue(sphereShape->getRadius());
     }

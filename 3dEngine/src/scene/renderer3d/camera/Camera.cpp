@@ -170,13 +170,13 @@ namespace urchin {
 
         //moves view point
         Quaternion<float> quatView(view.X, view.Y, view.Z, 0.0f);
-        const Quaternion<float> &resultView = (quatRotation * quatView.normalize()) * quatRotation.conjugate();
+        const Quaternion<float>& resultView = (quatRotation * quatView.normalize()) * quatRotation.conjugate();
         Point3<float> viewPoint(resultView.X + pivot.X, resultView.Y + pivot.Y, resultView.Z + pivot.Z);
         view = position.vector(viewPoint).normalize();
 
         //moves up vector
         Quaternion<float> quatUp(up.X, up.Y, up.Z, 0.0f);
-        const Quaternion<float> &resultUp = (quatRotation * quatUp.normalize()) * quatRotation.conjugate();
+        const Quaternion<float>& resultUp = (quatRotation * quatUp.normalize()) * quatRotation.conjugate();
         up.X = resultUp.X;
         up.Y = resultUp.Y;
         up.Z = resultUp.Z;
@@ -185,7 +185,7 @@ namespace urchin {
         if (std::fabs(distance) > std::numeric_limits<float>::epsilon()) {
             Vector3<float> axis = pivot.vector(position);
             Quaternion<float> quatPosition(axis.X, axis.Y, axis.Z, 0.0f);
-            const Quaternion<float> &resultPosition = (quatRotation * quatPosition.normalize()) * quatRotation.conjugate();
+            const Quaternion<float>& resultPosition = (quatRotation * quatPosition.normalize()) * quatRotation.conjugate();
 
             position.X = resultPosition.X + pivot.X;
             position.Y = resultPosition.Y + pivot.Y;
@@ -247,9 +247,9 @@ namespace urchin {
 
     void Camera::updateViewMatrix() {
         //gluLookAt:
-        const Vector3<float> &f = view;
-        const Vector3<float> &s = f.crossProduct(up).normalize();
-        const Vector3<float> &u = s.crossProduct(f).normalize();
+        const Vector3<float>& f = view;
+        const Vector3<float>& s = f.crossProduct(up).normalize();
+        const Vector3<float>& u = s.crossProduct(f).normalize();
 
         Matrix4<float> M(
                 s[0], s[1], s[2], 0,

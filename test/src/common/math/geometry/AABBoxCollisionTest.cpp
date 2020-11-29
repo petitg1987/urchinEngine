@@ -61,7 +61,7 @@ void AABBoxCollisionTest::rayInsideToXPlane() {
 }
 
 CppUnit::Test *AABBoxCollisionTest::suite() {
-    auto *suite = new CppUnit::TestSuite("AABBoxCollisionTest");
+    auto* suite = new CppUnit::TestSuite("AABBoxCollisionTest");
 
     suite->addTest(new CppUnit::TestCaller<AABBoxCollisionTest>("rayRightToBox", &AABBoxCollisionTest::rayRightToBox));
     suite->addTest(new CppUnit::TestCaller<AABBoxCollisionTest>("rayRightTopToBox", &AABBoxCollisionTest::rayRightTopToBox));

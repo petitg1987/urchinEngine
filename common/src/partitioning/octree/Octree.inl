@@ -36,12 +36,12 @@ template<class TOctreeable> Octree<TOctreeable>::Octree(const Point3<float>& pos
 template<class TOctreeable> Octree<TOctreeable>::~Octree() {
     if (bIsLeaf) {
         //remove references to this octree
-        for (auto &octreeable : octreeables) {
+        for (auto& octreeable : octreeables) {
             octreeable->removeRefOctree(this);
         }
     } else {
         //delete children
-        for (auto &child : children) {
+        for (auto& child : children) {
             delete child;
         }
     }

@@ -132,7 +132,7 @@ void CSGPolygonTest::simplifyFlatAngleAndNearPoints() { //see csgPolygonSimplify
 }
 
 CppUnit::Test *CSGPolygonTest::suite() {
-    auto *suite = new CppUnit::TestSuite("CSGPolygonTest");
+    auto* suite = new CppUnit::TestSuite("CSGPolygonTest");
 
     suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifySquare", &CSGPolygonTest::simplifySquare));
     suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyMergeTwoNearPoints", &CSGPolygonTest::simplifyMergeTwoNearPoints));

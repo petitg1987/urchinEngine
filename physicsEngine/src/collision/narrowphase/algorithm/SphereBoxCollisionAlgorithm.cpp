@@ -14,13 +14,13 @@ namespace urchin {
     void SphereBoxCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper& object1, const CollisionObjectWrapper& object2) {
         ScopeProfiler profiler("physics", "algSphereBox");
 
-        const auto &sphere1 = dynamic_cast<const CollisionSphereShape &>(object1.getShape());
-        const auto &box2 = dynamic_cast<const CollisionBoxShape &>(object2.getShape());
+        const auto& sphere1 = dynamic_cast<const CollisionSphereShape &>(object1.getShape());
+        const auto& box2 = dynamic_cast<const CollisionBoxShape &>(object2.getShape());
 
         //For easiest computation, we need to have box position on origin.
         //So, we transform sphere position into box local space.
-        const Point3<float> &spherePos = object1.getShapeWorldTransform().getPosition();
-        const Point3<float> &spherePosLocalBox = object2.getShapeWorldTransform().inverseTransform(spherePos);
+        const Point3<float>& spherePos = object1.getShapeWorldTransform().getPosition();
+        const Point3<float>& spherePosLocalBox = object2.getShapeWorldTransform().inverseTransform(spherePos);
 
         Point3<float> closestPointOnBox(
                 MathAlgorithm::clamp(spherePosLocalBox.X, -box2.getHalfSize(0), box2.getHalfSize(0)),
@@ -76,7 +76,7 @@ namespace urchin {
     }
 
     CollisionAlgorithm *SphereBoxCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, ManifoldResult&& result, FixedSizePool<CollisionAlgorithm>* algorithmPool) const {
-        void *memPtr = algorithmPool->allocate(sizeof(SphereBoxCollisionAlgorithm));
+        void* memPtr = algorithmPool->allocate(sizeof(SphereBoxCollisionAlgorithm));
         return new(memPtr) SphereBoxCollisionAlgorithm(objectSwapped, std::move(result));
     }
 

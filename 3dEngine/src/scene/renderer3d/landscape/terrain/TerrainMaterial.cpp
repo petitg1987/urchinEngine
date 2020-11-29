@@ -12,7 +12,7 @@ namespace urchin {
         if (maskMapFilename.empty()) {
             maskTexture = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({255, 0, 0, 0})).createTexture(false);
         } else {
-            auto *maskImage = MediaManager::instance()->getMedia<Image>(maskMapFilename);
+            auto* maskImage = MediaManager::instance()->getMedia<Image>(maskMapFilename);
             if (maskImage->getImageFormat() != Image::IMAGE_RGBA) {
                 maskImage->release();
                 throw std::runtime_error("Mask texture must have 4 components (RGBA). Components: " + std::to_string(maskImage->retrieveComponentsCount()));
@@ -25,7 +25,7 @@ namespace urchin {
     }
 
     TerrainMaterial::~TerrainMaterial() {
-        for (auto &material : materials) {
+        for (auto& material : materials) {
             if (material != nullptr) {
                 material->release();
             }

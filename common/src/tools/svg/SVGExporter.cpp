@@ -9,7 +9,7 @@ namespace urchin {
     }
 
     SVGExporter::~SVGExporter() {
-        for (const SVGShape *shape : shapes) {
+        for (const SVGShape* shape : shapes) {
            delete shape;
         }
     }
@@ -55,7 +55,7 @@ namespace urchin {
     }
 
     void SVGExporter::addShapes(std::ofstream& fileStream) const {
-        for (const auto &shape : shapes) {
+        for (const auto& shape : shapes) {
             fileStream<<"  "<<shape->getShapeTag()<<std::endl;
         }
     }

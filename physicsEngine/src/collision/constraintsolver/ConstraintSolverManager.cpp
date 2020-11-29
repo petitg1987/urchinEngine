@@ -12,7 +12,7 @@ namespace urchin {
     }
 
     ConstraintSolverManager::~ConstraintSolverManager() {
-        for (auto &constraintSolving : constraintsSolving) {
+        for (auto& constraintSolving : constraintsSolving) {
             constraintSolvingPool->free(constraintSolving);
         }
 
@@ -39,28 +39,28 @@ namespace urchin {
     void ConstraintSolverManager::setupConstraints(std::vector<ManifoldResult>& manifoldResults, float dt) { //See http://en.wikipedia.org/wiki/Collision_response for formulas
 
         //clear constraints solving
-        for (auto &constraintSolving : constraintsSolving) {
+        for (auto& constraintSolving : constraintsSolving) {
             constraintSolvingPool->free(constraintSolving);
         }
         constraintsSolving.clear();
 
         //setup constraints solving
-        for (auto &manifoldResult : manifoldResults) {
+        for (auto& manifoldResult : manifoldResults) {
             for (unsigned int j = 0; j < manifoldResult.getNumContactPoints(); ++j) {
-                ManifoldContactPoint &contact = manifoldResult.getManifoldContactPoint(j);
+                ManifoldContactPoint& contact = manifoldResult.getManifoldContactPoint(j);
                 if (contact.getDepth() > 0.0 && !contact.isPredictive()) {
                     continue;
                 }
 
-                WorkRigidBody *body1 = WorkRigidBody::upCast(manifoldResult.getBody1());
-                WorkRigidBody *body2 = WorkRigidBody::upCast(manifoldResult.getBody2());
-                void *memPtr = constraintSolvingPool->allocate(sizeof(ConstraintSolving));
-                auto *constraintSolving = new(memPtr) ConstraintSolving(body1, body2, contact);
+                WorkRigidBody* body1 = WorkRigidBody::upCast(manifoldResult.getBody1());
+                WorkRigidBody* body2 = WorkRigidBody::upCast(manifoldResult.getBody2());
+                void* memPtr = constraintSolvingPool->allocate(sizeof(ConstraintSolving));
+                auto* constraintSolving = new(memPtr) ConstraintSolving(body1, body2, contact);
 
-                const CommonSolvingData &commonSolvingData = fillCommonSolvingData(manifoldResult, contact);
+                const CommonSolvingData& commonSolvingData = fillCommonSolvingData(manifoldResult, contact);
                 constraintSolving->setCommonData(commonSolvingData);
 
-                const ImpulseSolvingData &impulseSolvingData = fillImpulseSolvingData(commonSolvingData, dt);
+                const ImpulseSolvingData& impulseSolvingData = fillImpulseSolvingData(commonSolvingData, dt);
                 constraintSolving->setImpulseData(impulseSolvingData);
 
                 if (useWarmStarting) {
@@ -78,12 +78,12 @@ namespace urchin {
 
     void ConstraintSolverManager::solveConstraints() {
         //solve tangent constraint first because non-penetration is more important than friction
-        for (auto &constraintSolving : constraintsSolving) {
+        for (auto& constraintSolving : constraintsSolving) {
             solveTangentConstraint(constraintSolving);
         }
 
         //solve normal constraint
-        for (auto &constraintSolving : constraintsSolving) {
+        for (auto& constraintSolving : constraintsSolving) {
             solveNormalConstraint(constraintSolving);
         }
     }
@@ -91,8 +91,8 @@ namespace urchin {
     CommonSolvingData ConstraintSolverManager::fillCommonSolvingData(const ManifoldResult& manifoldResult, const ManifoldContactPoint& contact) {
         CommonSolvingData commonSolvingData;
 
-        WorkRigidBody *body1 = WorkRigidBody::upCast(manifoldResult.getBody1());
-        WorkRigidBody *body2 = WorkRigidBody::upCast(manifoldResult.getBody2());
+        WorkRigidBody* body1 = WorkRigidBody::upCast(manifoldResult.getBody1());
+        WorkRigidBody* body2 = WorkRigidBody::upCast(manifoldResult.getBody2());
 
         commonSolvingData.body1 = body1;
         commonSolvingData.body2 = body2;
@@ -153,9 +153,9 @@ namespace urchin {
      * Solve normal constraint. Normal constraint is related to non-penetration
      */
     void ConstraintSolverManager::solveNormalConstraint(ConstraintSolving* constraintSolving) {
-        const CommonSolvingData &commonSolvingData = constraintSolving->getCommonData();
-        const ImpulseSolvingData &impulseSolvingData = constraintSolving->getImpulseData();
-        AccumulatedSolvingData &accumulatedSolvingData = constraintSolving->getAccumulatedData();
+        const CommonSolvingData& commonSolvingData = constraintSolving->getCommonData();
+        const ImpulseSolvingData& impulseSolvingData = constraintSolving->getImpulseData();
+        AccumulatedSolvingData& accumulatedSolvingData = constraintSolving->getAccumulatedData();
 
         float normalRelativeVelocity = computeRelativeVelocity(commonSolvingData).dotProduct(commonSolvingData.contactNormal);
 
@@ -174,9 +174,9 @@ namespace urchin {
      * Solve tangent constraint. Tangent constraint is related to friction
      */
     void ConstraintSolverManager::solveTangentConstraint(ConstraintSolving* constraintSolving) {
-        const CommonSolvingData &commonSolvingData = constraintSolving->getCommonData();
-        const ImpulseSolvingData &impulseSolvingData = constraintSolving->getImpulseData();
-        AccumulatedSolvingData &accumulatedSolvingData = constraintSolving->getAccumulatedData();
+        const CommonSolvingData& commonSolvingData = constraintSolving->getCommonData();
+        const ImpulseSolvingData& impulseSolvingData = constraintSolving->getImpulseData();
+        AccumulatedSolvingData& accumulatedSolvingData = constraintSolving->getAccumulatedData();
 
         float tangentRelativeVelocity = computeRelativeVelocity(commonSolvingData).dotProduct(commonSolvingData.contactTangent);
 

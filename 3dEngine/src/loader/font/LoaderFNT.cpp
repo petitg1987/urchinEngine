@@ -45,7 +45,7 @@ namespace urchin {
         }
 
         //filled the struct_glyph
-        auto *glyph = new Glyph[NUM_LETTERS];
+        auto* glyph = new Glyph[NUM_LETTERS];
 
         FT_UInt glyphIndex = FT_Get_Char_Index(face, 65);
         if (FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT)) {

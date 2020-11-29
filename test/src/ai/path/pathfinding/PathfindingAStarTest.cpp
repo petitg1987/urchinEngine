@@ -102,7 +102,7 @@ std::vector<PathPoint> PathfindingAStarTest::pathWithJump(NavLinkConstraint* nav
 }
 
 CppUnit::Test *PathfindingAStarTest::suite() {
-    auto *suite = new CppUnit::TestSuite("PathfindingAStarTest");
+    auto* suite = new CppUnit::TestSuite("PathfindingAStarTest");
 
     suite->addTest(new CppUnit::TestCaller<PathfindingAStarTest>("straightPath", &PathfindingAStarTest::straightPath));
 

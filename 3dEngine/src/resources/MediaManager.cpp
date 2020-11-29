@@ -21,7 +21,7 @@ namespace urchin {
     }
 
     MediaManager::~MediaManager() {
-        for (const auto &loaderRegistry : loadersRegistry) {
+        for (const auto& loaderRegistry : loadersRegistry) {
             delete loaderRegistry.second;
         }
     }

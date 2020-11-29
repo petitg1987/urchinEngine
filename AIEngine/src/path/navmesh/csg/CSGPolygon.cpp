@@ -213,11 +213,11 @@ namespace urchin {
     template<class T> SVGPolygon *CSGPolygon<T>::toCsvPolygon(SVGShape::SVGColor color) const {
         std::vector<Point2<float>> cwPointsFloat;
         cwPointsFloat.reserve(cwPoints.size());
-        for (const auto &point : cwPoints) {
+        for (const auto& point : cwPoints) {
             cwPointsFloat.emplace_back(point.template cast<float>());
         }
 
-        auto *svgPolygon = new SVGPolygon(cwPointsFloat, color, 0.5f);
+        auto* svgPolygon = new SVGPolygon(cwPointsFloat, color, 0.5f);
         svgPolygon->setStroke(color, 0.01f);
         return svgPolygon;
     }
@@ -235,7 +235,7 @@ namespace urchin {
     template<class T> std::ostream& operator <<(std::ostream& stream, const CSGPolygon<T>& polygon) {
         stream << "Name: " << polygon.getName() << std::endl;
         stream << "Points (CW): " << std::endl;
-        for (const auto &point : polygon.getCwPoints()) {
+        for (const auto& point : polygon.getCwPoints()) {
             stream << "\t" << point << std::endl;
         }
         return stream;

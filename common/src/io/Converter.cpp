@@ -136,7 +136,7 @@ namespace urchin {
 
         std::vector<float> floatValues;
         floatValues.reserve(expectedSplit);
-        for (const auto &stringValue : stringValues) {
+        for (const auto& stringValue : stringValues) {
             floatValues.push_back(toFloat(stringValue));
         }
 

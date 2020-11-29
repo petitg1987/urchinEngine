@@ -48,7 +48,7 @@ namespace urchin {
         auto spaceBetweenLetters = static_cast<float>(font->getSpaceBetweenLetters());
         auto spaceBetweenLines = static_cast<float>(font->getSpaceBetweenLines());
 
-        for (auto &cutTextLine : cutTextLines) { //each lines
+        for (auto& cutTextLine : cutTextLines) { //each lines
             float offsetX = 0.0f;
             for (char charLetter : cutTextLine) { //each letters
                 auto letter = static_cast<unsigned char>(charLetter);

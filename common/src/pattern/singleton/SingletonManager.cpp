@@ -18,7 +18,7 @@ namespace urchin {
     }
 
     void SingletonManager::destroyAllSingletons() {
-        for (auto &singleton : singletons) {
+        for (auto& singleton : singletons) {
             delete singleton.second;
         }
         singletons.clear();

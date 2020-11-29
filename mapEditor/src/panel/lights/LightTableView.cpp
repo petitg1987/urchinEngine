@@ -39,7 +39,7 @@ namespace urchin {
     }
 
     void LightTableView::addLight(const SceneLight* sceneLight) {
-        auto *itemLightName = new QStandardItem(QString::fromStdString(sceneLight->getName()));
+        auto* itemLightName = new QStandardItem(QString::fromStdString(sceneLight->getName()));
         itemLightName->setData(QVariant::fromValue(sceneLight), Qt::UserRole + 1);
         itemLightName->setEditable(false);
 

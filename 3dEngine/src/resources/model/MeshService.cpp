@@ -20,8 +20,8 @@ namespace urchin {
 
             //calculate final vertex to draw with weights
             for (int j=0;j<constMesh->getStructVertex(i).weightCount;++j) {
-                const Weight *weight = &constMesh->getWeight(static_cast<unsigned int>(constMesh->getStructVertex(i).weightStart + j));
-                const Bone &bone = skeleton[weight->bone];
+                const Weight* weight = &constMesh->getWeight(static_cast<unsigned int>(constMesh->getStructVertex(i).weightStart + j));
+                const Bone& bone = skeleton[weight->bone];
 
                 //calculate transformed vertex for this weight
                 Point3<float> wv = bone.orient.rotatePoint(weight->pos);
@@ -78,8 +78,8 @@ namespace urchin {
             normals[vertexIndex] = normals[vertexIndex].normalize();
 
             //computes tangent
-            const Vector3<float> &c1 = normals[vertexIndex].crossProduct(Vector3<float>(0.0f, 0.0f, 1.0f));
-            const Vector3<float> &c2 = normals[vertexIndex].crossProduct(Vector3<float>(0.0f, 1.0f, 0.0f));
+            const Vector3<float>& c1 = normals[vertexIndex].crossProduct(Vector3<float>(0.0f, 0.0f, 1.0f));
+            const Vector3<float>& c2 = normals[vertexIndex].crossProduct(Vector3<float>(0.0f, 1.0f, 0.0f));
             if (c1.squareLength() > c2.squareLength()) {
                 tangents[vertexIndex] = c1.normalize();
             } else {

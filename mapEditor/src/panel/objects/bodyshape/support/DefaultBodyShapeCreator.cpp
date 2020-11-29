@@ -9,7 +9,7 @@ namespace urchin {
 
     std::shared_ptr<const CollisionShape3D> DefaultBodyShapeCreator::createDefaultBodyShape(CollisionShape3D::ShapeType shapeType, bool scaled) const {
         CollisionShape3D *shape;
-        const AABBox<float> &modelAABBox = sceneObject->getModel()->getLocalAABBox();
+        const AABBox<float>& modelAABBox = sceneObject->getModel()->getLocalAABBox();
 
         if (shapeType==CollisionShape3D::ShapeType::BOX_SHAPE) {
             shape = new CollisionBoxShape(modelAABBox.getHalfSizes());
@@ -31,7 +31,7 @@ namespace urchin {
 
             shape = new CollisionConeShape(radius, height, ConeShape<float>::CONE_X_POSITIVE);
         } else if (shapeType==CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE) {
-            ConvexHullShape3D<float> *convexHullShape = buildConvexHullShape(sceneObject->getModel());
+            ConvexHullShape3D<float>* convexHullShape = buildConvexHullShape(sceneObject->getModel());
             shape = new CollisionConvexHullShape(convexHullShape);
         } else if (shapeType==CollisionShape3D::ShapeType::COMPOUND_SHAPE) {
             std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedCollisionShapes;
@@ -59,7 +59,7 @@ namespace urchin {
 
     ConvexHullShape3D<float> *DefaultBodyShapeCreator::buildConvexHullShape(const Model* model) const {
         std::set<Point3<float>> allVertices;
-        for (const auto *constMesh : model->getMeshes()->getConstMeshes()) {
+        for (const auto* constMesh : model->getMeshes()->getConstMeshes()) {
             for (unsigned int i=0; i<constMesh->getNumberVertices(); i++) {
                 allVertices.insert(constMesh->getBaseVertices()[i]);
             }

@@ -247,7 +247,7 @@ namespace urchin {
     }
 
     template<class T> bool Frustum<T>::collideWithPoint(const Point3<T>& point) const {
-        for (auto &plane : planes) {
+        for (auto& plane : planes) {
             if (plane.distance(point) > 0.0) {
                 return false;
             }
@@ -260,8 +260,8 @@ namespace urchin {
     * @return True if the bounding box collides or is inside this frustum
     */
     template<class T> bool Frustum<T>::collideWithAABBox(const AABBox<T>& bbox) const {
-        for (auto &plane : planes) {
-            const Vector3<T> &normal = plane.getNormal();
+        for (auto& plane : planes) {
+            const Vector3<T>& normal = plane.getNormal();
 
             Point3<T> nVertex(bbox.getMax());
             if (normal.X >= 0.0) {
@@ -286,7 +286,7 @@ namespace urchin {
     * @return True if the sphere collides or is inside this frustum
     */
     template<class T> bool Frustum<T>::collideWithSphere(const Sphere<T>& sphere) const {
-        for (auto &plane : planes) {
+        for (auto& plane : planes) {
             if (plane.distance(sphere.getCenterOfMass()) > sphere.getRadius()) {
                 return false;
             }

@@ -45,7 +45,7 @@ namespace urchin {
 
     void Mesh::drawBaseBones(const RenderTarget* renderTarget, const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
         std::vector<Point3<float>> bonePositions;
-        for (const auto &bone : constMesh->getBaseSkeleton()) {
+        for (const auto& bone : constMesh->getBaseSkeleton()) {
             bonePositions.push_back(bone.pos);
         }
 

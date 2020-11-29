@@ -18,7 +18,7 @@ void IslandContainerTest::cascadeMergeIslands() {
     islandContainer.mergeIsland(bodies[0], bodies[1]); //body 0 is in contact with body 1
     islandContainer.mergeIsland(bodies[1], bodies[2]); //body 1 is in contact with body 2
     islandContainer.mergeIsland(bodies[2], bodies[3]); //body 2 is in contact with body 3
-    const std::vector<IslandElementLink> &islandElementsLink = islandContainer.retrieveSortedIslandElements();
+    const std::vector<IslandElementLink>& islandElementsLink = islandContainer.retrieveSortedIslandElements();
 
     AssertHelper::assertUnsignedInt(islandElementsLink.size(), 4);
     unsigned int islandId = islandElementsLink[0].islandIdRef;
@@ -42,7 +42,7 @@ void IslandContainerTest::mergeAllIslands() {
     islandContainer.mergeIsland(bodies[0], bodies[1]); //body 0 is in contact with body 1
     islandContainer.mergeIsland(bodies[0], bodies[2]); //body 0 is in contact with body 2
     islandContainer.mergeIsland(bodies[1], bodies[2]); //body 1 is in contact with body 2
-    const std::vector<IslandElementLink> &islandElementsLink = islandContainer.retrieveSortedIslandElements();
+    const std::vector<IslandElementLink>& islandElementsLink = islandContainer.retrieveSortedIslandElements();
 
     AssertHelper::assertUnsignedInt(islandElementsLink.size(), 3);
     unsigned int islandId = islandElementsLink[0].islandIdRef;
@@ -65,7 +65,7 @@ void IslandContainerTest::createTwoSeparateIslands() {
     islandContainer.reset(bodiesVector);
     islandContainer.mergeIsland(bodies[0], bodies[3]); //body 0 is in contact with body 3
     islandContainer.mergeIsland(bodies[2], bodies[1]); //body 2 is in contact with body 1
-    const std::vector<IslandElementLink> &islandElementsLink = islandContainer.retrieveSortedIslandElements();
+    const std::vector<IslandElementLink>& islandElementsLink = islandContainer.retrieveSortedIslandElements();
 
     AssertHelper::assertUnsignedInt(islandElementsLink.size(), 4);
     AssertHelper::assertUnsignedInt(islandElementsLink[0].islandIdRef, islandElementsLink[1].islandIdRef);
@@ -76,7 +76,7 @@ void IslandContainerTest::createTwoSeparateIslands() {
 }
 
 CppUnit::Test *IslandContainerTest::suite() {
-    auto *suite = new CppUnit::TestSuite("IslandContainerTest");
+    auto* suite = new CppUnit::TestSuite("IslandContainerTest");
 
     suite->addTest(new CppUnit::TestCaller<IslandContainerTest>("cascadeMergeIslands", &IslandContainerTest::cascadeMergeIslands));
     suite->addTest(new CppUnit::TestCaller<IslandContainerTest>("mergeAllIslands", &IslandContainerTest::mergeAllIslands));

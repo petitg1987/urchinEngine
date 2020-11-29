@@ -100,7 +100,7 @@ void EPABoxTest::overlapOBBoxAABBox() {
 }
 
 CppUnit::Test *EPABoxTest::suite() {
-    auto *suite = new CppUnit::TestSuite("EPABoxTest");
+    auto* suite = new CppUnit::TestSuite("EPABoxTest");
 
     suite->addTest(new CppUnit::TestCaller<EPABoxTest>("identicalAABBox", &EPABoxTest::identicalAABBox));
     suite->addTest(new CppUnit::TestCaller<EPABoxTest>("overlapAABBox", &EPABoxTest::overlapAABBox));

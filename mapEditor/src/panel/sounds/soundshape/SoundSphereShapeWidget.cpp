@@ -8,10 +8,10 @@ namespace urchin {
 
     SoundSphereShapeWidget::SoundSphereShapeWidget(const SceneSound* sceneSound) :
             SoundShapeWidget(sceneSound) {
-        auto *positionLabel = new QLabel("Position:");
+        auto* positionLabel = new QLabel("Position:");
         mainLayout->addWidget(positionLabel, 1, 0);
 
-        auto *positionLayout = new QHBoxLayout();
+        auto* positionLayout = new QHBoxLayout();
         mainLayout->addLayout(positionLayout, 1, 1);
         positionX = new QDoubleSpinBox();
         positionLayout->addWidget(positionX);
@@ -26,7 +26,7 @@ namespace urchin {
         SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
-        auto *radiusLabel = new QLabel("Radius:");
+        auto* radiusLabel = new QLabel("Radius:");
         mainLayout->addWidget(radiusLabel, 2, 0);
 
         radius = new QDoubleSpinBox();
@@ -41,7 +41,7 @@ namespace urchin {
     }
 
     void SoundSphereShapeWidget::doSetupShapePropertiesFrom(const SoundShape* shape) {
-        const auto *sphereShape = dynamic_cast<const SoundSphere *>(shape);
+        const auto* sphereShape = dynamic_cast<const SoundSphere *>(shape);
 
         positionX->setValue(sphereShape->getPosition().X);
         positionY->setValue(sphereShape->getPosition().Y);
