@@ -121,7 +121,7 @@ namespace urchin {
      * @param layersToUpdate Specify the layers which must be affected by the filter (only for TextureFormat::ARRAY).
      * Lowest bit represent the first layer, the second lowest bit represent the second layer, etc.
      */
-    void TextureFilter::applyOn(const std::shared_ptr<Texture> &sourceTexture, int layersToUpdate) const {
+    void TextureFilter::applyOn(const std::shared_ptr<Texture>& sourceTexture, int layersToUpdate) const {
         assert(layersToUpdate == -1 || sourceTexture->getTextureType() == TextureType::ARRAY);
         if (!isInitialized) {
             throw std::runtime_error("Texture filter must be initialized before apply.");

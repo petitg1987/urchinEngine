@@ -89,7 +89,7 @@ namespace urchin {
         }
     }
 
-    void AIPanelWidget::setupNavMeshAgentDataFrom(const std::shared_ptr<NavMeshAgent> &navMeshAgent) {
+    void AIPanelWidget::setupNavMeshAgentDataFrom(const std::shared_ptr<NavMeshAgent>& navMeshAgent) {
         disableAIEvent = true;
         agentHeight->setValue(navMeshAgent->getAgentHeight());
         agentRadius->setValue(navMeshAgent->getAgentRadius());

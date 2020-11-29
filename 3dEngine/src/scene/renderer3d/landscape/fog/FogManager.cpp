@@ -3,7 +3,7 @@
 
 namespace urchin {
 
-    void FogManager::pushFog(const std::shared_ptr<Fog> &fog) {
+    void FogManager::pushFog(const std::shared_ptr<Fog>& fog) {
         fogs.push(fog);
     }
 
@@ -20,7 +20,7 @@ namespace urchin {
         return fogs.top();
     }
 
-    void FogManager::initiateShaderVariables(const std::unique_ptr<Shader> &lightingShader) {
+    void FogManager::initiateShaderVariables(const std::unique_ptr<Shader>& lightingShader) {
         hasFogShaderVar = ShaderVar(lightingShader, "hasFog");
         fogDensityShaderVar = ShaderVar(lightingShader, "fogDensity");
         fogGradientShaderVar = ShaderVar(lightingShader, "fogGradient");

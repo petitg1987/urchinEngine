@@ -199,7 +199,7 @@ namespace urchin {
         skyChanged();
     }
 
-    void SkyPanelWidget::setupSkyDataFrom(const std::unique_ptr<Skybox> &skybox) {
+    void SkyPanelWidget::setupSkyDataFrom(const std::unique_ptr<Skybox>& skybox) {
         disableSkyEvent = true;
         xnSkyboxFilenameText->setText(skybox != nullptr ? QString::fromStdString(skybox->getFilenames()[0]) : "");
         xpSkyboxFilenameText->setText(skybox != nullptr ? QString::fromStdString(skybox->getFilenames()[1]) : "");

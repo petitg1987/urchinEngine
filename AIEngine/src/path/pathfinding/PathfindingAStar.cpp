@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    bool PathNodeCompare::operator()(const std::shared_ptr<PathNode> &node1, const std::shared_ptr<PathNode> &node2) const {
+    bool PathNodeCompare::operator()(const std::shared_ptr<PathNode>& node1, const std::shared_ptr<PathNode>& node2) const {
         return node1->getFScore() < node2->getFScore();
     }
 
@@ -100,7 +100,7 @@ namespace urchin {
         return result;
     }
 
-    bool PathfindingAStar::isPointInsideTriangle(const Point2<float>& point, const std::shared_ptr<NavPolygon> &polygon, const std::shared_ptr<NavTriangle> &triangle) const {
+    bool PathfindingAStar::isPointInsideTriangle(const Point2<float>& point, const std::shared_ptr<NavPolygon>& polygon, const std::shared_ptr<NavTriangle>& triangle) const {
         Point2<float> p0 = polygon->getPoint(triangle->getIndex(0)).toPoint2XZ();
         Point2<float> p1 = polygon->getPoint(triangle->getIndex(1)).toPoint2XZ();
         Point2<float> p2 = polygon->getPoint(triangle->getIndex(2)).toPoint2XZ();
@@ -121,7 +121,7 @@ namespace urchin {
     }
 
     std::shared_ptr<PathNode> PathfindingAStar::retrievePathNodeFrom(const std::multiset<std::shared_ptr<PathNode>, PathNodeCompare>& pathNodes,
-                                                                     const std::shared_ptr<NavTriangle> &navTriangle) const {
+                                                                     const std::shared_ptr<NavTriangle>& navTriangle) const {
         for (const auto &pathNode : pathNodes) {
             if (pathNode->getNavTriangle().get() == navTriangle.get()) {
                 return pathNode;
@@ -133,7 +133,7 @@ namespace urchin {
     /**
      * Compute score from 'startPoint to 'link'
      */
-    float PathfindingAStar::computeGScore(const std::shared_ptr<PathNode> &currentNode, const std::shared_ptr<NavLink> &link, const Point3<float>& startPoint) const {
+    float PathfindingAStar::computeGScore(const std::shared_ptr<PathNode>& currentNode, const std::shared_ptr<NavLink>& link, const Point3<float>& startPoint) const {
         std::shared_ptr<PathNode> neighborNodePath = std::make_shared<PathNode>(link->getTargetTriangle(), 0.0f, 0.0f);
         neighborNodePath->setPreviousNode(currentNode, link);
         std::vector<std::shared_ptr<PathPortal>> pathPortals = determinePath(neighborNodePath, startPoint, link->getTargetTriangle()->getCenterPoint());
@@ -153,12 +153,12 @@ namespace urchin {
     /**
      * Compute approximate score from 'current' to 'endPoint'
      */
-    float PathfindingAStar::computeHScore(const std::shared_ptr<NavTriangle> &current, const Point3<float>& endPoint) const {
+    float PathfindingAStar::computeHScore(const std::shared_ptr<NavTriangle>& current, const Point3<float>& endPoint) const {
         Point3<float> currentPoint = current->getCenterPoint();
         return std::abs(currentPoint.X - endPoint.X) + std::abs(currentPoint.Y - endPoint.Y) + std::abs(currentPoint.Z - endPoint.Z);
     }
 
-    std::vector<std::shared_ptr<PathPortal>> PathfindingAStar::determinePath(const std::shared_ptr<PathNode> &endNode, const Point3<float>& startPoint,
+    std::vector<std::shared_ptr<PathPortal>> PathfindingAStar::determinePath(const std::shared_ptr<PathNode>& endNode, const Point3<float>& startPoint,
                                                                const Point3<float>& endPoint) const {
         std::vector<std::shared_ptr<PathPortal>> portals;
         portals.reserve(10); //estimated memory size
@@ -189,7 +189,7 @@ namespace urchin {
     /**
      * Rearrange portal in a way first point (getA()) of portal segment must be on left of character when it cross a portal.
      */
-    LineSegment3D<float> PathfindingAStar::rearrangePortal(const LineSegment3D<float>& portal, const std::vector<std::shared_ptr<PathPortal>> &portals) const {
+    LineSegment3D<float> PathfindingAStar::rearrangePortal(const LineSegment3D<float>& portal, const std::vector<std::shared_ptr<PathPortal>>& portals) const {
         Point3<float> characterPosition = middlePoint(portals.back()->getPortal());
         Vector3<float> characterMoveDirection = characterPosition.vector(middlePoint(portal)).normalize();
         Vector3<float> characterToPortalA = characterPosition.vector(portal.getA()).normalize();
@@ -205,7 +205,7 @@ namespace urchin {
         return (lineSegment.getA() + lineSegment.getB()) / 2.0f;
     }
 
-    std::vector<PathPoint> PathfindingAStar::pathPortalsToPathPoints(std::vector<std::shared_ptr<PathPortal>> &pathPortals, bool followTopography) const {
+    std::vector<PathPoint> PathfindingAStar::pathPortalsToPathPoints(std::vector<std::shared_ptr<PathPortal>>& pathPortals, bool followTopography) const {
         std::vector<PathPoint> pathPoints;
         pathPoints.reserve(pathPortals.size() / 2); //estimated memory size
 
@@ -237,7 +237,7 @@ namespace urchin {
         return pathPoints;
     }
 
-    void PathfindingAStar::addMissingTransitionPoints(std::vector<std::shared_ptr<PathPortal>> &portals) const {
+    void PathfindingAStar::addMissingTransitionPoints(std::vector<std::shared_ptr<PathPortal>>& portals) const {
         if (!portals.empty()) {
             assert(portals[0]->hasTransitionPoint());
             assert(portals.back()->hasTransitionPoint());
@@ -266,7 +266,7 @@ namespace urchin {
         }
     }
 
-    Point3<float> PathfindingAStar::computeTransitionPoint(const std::shared_ptr<PathPortal> &portal, const Point3<float>& previousTransitionPoint) const {
+    Point3<float> PathfindingAStar::computeTransitionPoint(const std::shared_ptr<PathPortal>& portal, const Point3<float>& previousTransitionPoint) const {
         //Compute approximate point for performance reason (note: real point is intersection of [portal->getPortal()] with [nextTransitionPoint.vector(previousTransitionPoint)])
         return portal->getPortal().closestPoint(previousTransitionPoint);
     }

@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    SoundShape *SoundSphereReaderWriter::loadFrom(const std::shared_ptr<XmlChunk> &shapeChunk, const XmlParser& xmlParser) const {
+    SoundShape *SoundSphereReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& shapeChunk, const XmlParser& xmlParser) const {
         std::shared_ptr<XmlChunk> radiusChunk = xmlParser.getUniqueChunk(true, RADIUS_TAG, XmlAttribute(), shapeChunk);
         float radius = radiusChunk->getFloatValue();
 
@@ -15,7 +15,7 @@ namespace urchin {
         return new SoundSphere(radius, position, margin);
     }
 
-    void SoundSphereReaderWriter::writeOn(const std::shared_ptr<XmlChunk> &shapeChunk, const SoundShape* soundShape, XmlWriter& xmlWriter) const {
+    void SoundSphereReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& shapeChunk, const SoundShape* soundShape, XmlWriter& xmlWriter) const {
         shapeChunk->setAttribute(XmlAttribute(TYPE_ATTR, SPHERE_VALUE));
 
         const auto *sphereShape = dynamic_cast<const SoundSphere *>(soundShape);

@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    ScopeLockById::ScopeLockById(const std::shared_ptr<LockById> &lockById, uint_fast32_t id) :
+    ScopeLockById::ScopeLockById(const std::shared_ptr<LockById>& lockById, uint_fast32_t id) :
             lockById(lockById),
             id(id) {
         lockById->lock(id);

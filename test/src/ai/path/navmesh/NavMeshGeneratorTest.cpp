@@ -207,7 +207,7 @@ void NavMeshGeneratorTest::linksRecreatedAfterMove() {
     AssertHelper::assertUnsignedInt(countPolygonLinks(newCube3WitLinkToCube1Polygon, cube2AffectedByMovePolygon), 0);
 }
 
-unsigned int NavMeshGeneratorTest::countPolygonLinks(const std::shared_ptr<NavPolygon> &sourcePolygon, const std::shared_ptr<NavPolygon> &targetPolygon) {
+unsigned int NavMeshGeneratorTest::countPolygonLinks(const std::shared_ptr<NavPolygon>& sourcePolygon, const std::shared_ptr<NavPolygon>& targetPolygon) {
     unsigned int countLinks = 0;
     for (const auto &triangle : sourcePolygon->getTriangles()) {
         for (const auto &link : triangle->getLinks()) {

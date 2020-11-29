@@ -8,7 +8,7 @@ namespace urchin {
         glClear((unsigned int)GL_DEPTH_BUFFER_BIT | (unsigned int)GL_COLOR_BUFFER_BIT);
     }
 
-    void ScreenRender::display(const std::unique_ptr<GenericRenderer> &renderer) const {
+    void ScreenRender::display(const std::unique_ptr<GenericRenderer>& renderer) const {
         glViewport(0, 0, getTargetWidth(), getTargetHeight());
 
         executeRenderer(renderer);

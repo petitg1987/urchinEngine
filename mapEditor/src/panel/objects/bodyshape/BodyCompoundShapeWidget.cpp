@@ -71,7 +71,7 @@ namespace urchin {
             LabelStyleHelper::applyNormalStyle(shapesLabel);
             std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedCollisionShapes = localizedShapeTableView->getLocalizedShapes();
             return std::make_shared<const CollisionCompoundShape>(localizedCollisionShapes);
-        } catch (std::invalid_argument &e) {
+        } catch (std::invalid_argument& e) {
             LabelStyleHelper::applyErrorStyle(shapesLabel, std::string(e.what()));
             return DefaultBodyShapeCreator(getSceneObject()).createDefaultBodyShape(CollisionShape3D::ShapeType::COMPOUND_SHAPE, true);
         }

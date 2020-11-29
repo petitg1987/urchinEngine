@@ -32,7 +32,7 @@ namespace urchin {
         this->centerPoint = navTriangle.getCenterPoint();
     }
 
-    void NavTriangle::attachNavPolygon(const std::shared_ptr<NavPolygon> &navPolygon) {
+    void NavTriangle::attachNavPolygon(const std::shared_ptr<NavPolygon>& navPolygon) {
         this->navPolygon = navPolygon;
         this->centerPoint = (navPolygon->getPoints()[indices[0]] + navPolygon->getPoints()[indices[1]] + navPolygon->getPoints()[indices[2]]) / 3.0f;
     }
@@ -65,24 +65,24 @@ namespace urchin {
         return indices[index];
     }
 
-    void NavTriangle::addStandardLink(std::size_t sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle) {
+    void NavTriangle::addStandardLink(std::size_t sourceEdgeIndex, const std::shared_ptr<NavTriangle>& targetTriangle) {
         addLink(NavLink::newStandardLink(sourceEdgeIndex, targetTriangle));
     }
 
-    void NavTriangle::addJoinPolygonsLink(std::size_t sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavLinkConstraint* linkConstraint) {
+    void NavTriangle::addJoinPolygonsLink(std::size_t sourceEdgeIndex, const std::shared_ptr<NavTriangle>& targetTriangle, NavLinkConstraint* linkConstraint) {
         addLink(NavLink::newJoinPolygonsLink(sourceEdgeIndex, targetTriangle, linkConstraint));
     }
 
-    void NavTriangle::addJumpLink(std::size_t sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavLinkConstraint* linkConstraint) {
+    void NavTriangle::addJumpLink(std::size_t sourceEdgeIndex, const std::shared_ptr<NavTriangle>& targetTriangle, NavLinkConstraint* linkConstraint) {
         addLink(NavLink::newJumpLink(sourceEdgeIndex, targetTriangle, linkConstraint));
     }
 
-    void NavTriangle::addLink(const std::shared_ptr<NavLink> &navLink) {
+    void NavTriangle::addLink(const std::shared_ptr<NavLink>& navLink) {
         links.emplace_back(navLink);
         assertLinksValidity();
     }
 
-    void NavTriangle::removeLinksTo(const std::shared_ptr<NavPolygon> &navPolygon) {
+    void NavTriangle::removeLinksTo(const std::shared_ptr<NavPolygon>& navPolygon) {
         links.erase(std::remove_if (links.begin(), links.end(),
                 [navPolygon](const std::shared_ptr<NavLink>& link) {
                     return link->getTargetTriangle()->getNavPolygon() == navPolygon;

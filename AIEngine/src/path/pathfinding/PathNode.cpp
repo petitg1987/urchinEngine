@@ -31,7 +31,7 @@ namespace urchin {
         return gScore + hScore;
     }
 
-    void PathNode::setPreviousNode(const std::shared_ptr<PathNode> &previousNode, const std::shared_ptr<NavLink> &navLink) {
+    void PathNode::setPreviousNode(const std::shared_ptr<PathNode>& previousNode, const std::shared_ptr<NavLink>& navLink) {
         assert(previousNode != nullptr);
         assert(navLink != nullptr);
 

@@ -80,11 +80,11 @@ namespace urchin {
         generateKernelSamples();
     }
 
-    void AmbientOcclusionManager::initiateShaderVariables(const std::unique_ptr<Shader> &lightingShader) {
+    void AmbientOcclusionManager::initiateShaderVariables(const std::unique_ptr<Shader>& lightingShader) {
         ambientOcclusionTexShaderVar = ShaderVar(lightingShader, "ambientOcclusionTex");
     }
 
-    void AmbientOcclusionManager::onTexturesUpdate(const std::shared_ptr<Texture> &depthTexture, const std::shared_ptr<Texture> &normalAndAmbientTexture) {
+    void AmbientOcclusionManager::onTexturesUpdate(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& normalAndAmbientTexture) {
         this->depthTexture = depthTexture;
         generateNoiseTexture();
 
@@ -315,7 +315,7 @@ namespace urchin {
         }
     }
 
-    void AmbientOcclusionManager::loadAOTexture(const std::unique_ptr<GenericRenderer> &lightingRenderer) const {
+    void AmbientOcclusionManager::loadAOTexture(const std::unique_ptr<GenericRenderer>& lightingRenderer) const {
         unsigned int aoTextureUnit = lightingRenderer->addAdditionalTexture(TextureReader::build(getAmbientOcclusionTexture(), TextureParam::buildLinear()));
         ShaderDataSender().sendData(ambientOcclusionTexShaderVar, static_cast<int>(aoTextureUnit));
     }

@@ -42,7 +42,7 @@ namespace urchin {
         return bIsObstacleCandidate;
     }
 
-    void AIEntity::addNavObject(const std::shared_ptr<NavObject> &navObject) {
+    void AIEntity::addNavObject(const std::shared_ptr<NavObject>& navObject) {
         navObjects.push_back(navObject);
     }
 

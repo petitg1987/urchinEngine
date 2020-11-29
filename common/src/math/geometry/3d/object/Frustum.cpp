@@ -36,7 +36,7 @@ namespace urchin {
         buildFrustum(ntl, ntr, nbl, nbr, ftl, ftr, fbl, fbr);
     }
 
-    template<class T> Frustum<T>::Frustum(Frustum<T>&& frustum) {
+    template<class T> Frustum<T>::Frustum(Frustum<T>&& frustum) noexcept {
         frustumPoints[0] = frustum.getFrustumPoints()[0];
         frustumPoints[1] = frustum.getFrustumPoints()[1];
         frustumPoints[2] = frustum.getFrustumPoints()[2];
@@ -56,7 +56,7 @@ namespace urchin {
         planes[FARP] = frustum.planes[FARP];
     }
 
-    template<class T> Frustum<T>& Frustum<T>::operator=(Frustum<T>&& frustum) {
+    template<class T> Frustum<T>& Frustum<T>::operator=(Frustum<T>&& frustum) noexcept {
         frustumPoints[0] = frustum.getFrustumPoints()[0];
         frustumPoints[1] = frustum.getFrustumPoints()[1];
         frustumPoints[2] = frustum.getFrustumPoints()[2];

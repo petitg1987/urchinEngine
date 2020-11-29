@@ -9,7 +9,7 @@ namespace urchin {
 
     }
 
-    void RayTestResult::addResults(ccd_set &rayTestResults) {
+    void RayTestResult::addResults(ccd_set& rayTestResults) {
         assert(this->rayTestResults.empty());
 
         this->rayTestResults.merge(rayTestResults);

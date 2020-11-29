@@ -1,7 +1,7 @@
 #include "SkyboxReaderWriter.h"
 
 namespace urchin {
-    std::unique_ptr<Skybox> SkyboxReaderWriter::loadFrom(const std::shared_ptr<XmlChunk> &skyChunk, const XmlParser& xmlParser) const {
+    std::unique_ptr<Skybox> SkyboxReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& skyChunk, const XmlParser& xmlParser) const {
         std::unique_ptr<Skybox> skybox(nullptr);
 
         std::shared_ptr<XmlChunk> skyboxChunk = xmlParser.getUniqueChunk(false, SKYBOX_TAG, XmlAttribute(), skyChunk);
@@ -25,7 +25,7 @@ namespace urchin {
         return skybox;
     }
 
-    void SkyboxReaderWriter::writeOn(const std::shared_ptr<XmlChunk> &skyChunk, const std::unique_ptr<Skybox> &skybox, XmlWriter& xmlWriter) const {
+    void SkyboxReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& skyChunk, const std::unique_ptr<Skybox>& skybox, XmlWriter& xmlWriter) const {
         if (skybox != nullptr) {
             std::shared_ptr<XmlChunk> skyboxChunk = xmlWriter.createChunk(SKYBOX_TAG, XmlAttribute(), skyChunk);
 

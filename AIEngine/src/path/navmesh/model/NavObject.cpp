@@ -15,7 +15,7 @@ namespace urchin {
         return expandedPolytope;
     }
 
-    void NavObject::addWalkableSurface(const std::shared_ptr<PolytopeSurface> &walkableSurface) {
+    void NavObject::addWalkableSurface(const std::shared_ptr<PolytopeSurface>& walkableSurface) {
         walkableSurfaces.push_back(walkableSurface);
     }
 
@@ -23,7 +23,7 @@ namespace urchin {
         return walkableSurfaces;
     }
 
-    void NavObject::addNearObject(const std::weak_ptr<NavObject> &nearObject) {
+    void NavObject::addNearObject(const std::weak_ptr<NavObject>& nearObject) {
         nearObjects.push_back(nearObject);
     }
 
@@ -43,7 +43,7 @@ namespace urchin {
         nearObjects.clear();
     }
 
-    void NavObject::addNavPolygons(const std::vector<std::shared_ptr<NavPolygon>> &navPolygonsToAdd) {
+    void NavObject::addNavPolygons(const std::vector<std::shared_ptr<NavPolygon>>& navPolygonsToAdd) {
         navPolygons.insert(navPolygons.end(), navPolygonsToAdd.begin(), navPolygonsToAdd.end());
     }
 

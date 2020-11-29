@@ -93,12 +93,12 @@ namespace urchin {
         this->selectedIndex = index;
     }
 
-    void Slider::setLeftButtonEventListener(const std::shared_ptr<EventListener> &leftButtonEventListener) {
+    void Slider::setLeftButtonEventListener(const std::shared_ptr<EventListener>& leftButtonEventListener) {
         this->leftButtonEventListener = leftButtonEventListener;
         this->leftButton->addEventListener(leftButtonEventListener);
     }
 
-    void Slider::setRightButtonEventListener(const std::shared_ptr<EventListener> &rightButtonEventListener) {
+    void Slider::setRightButtonEventListener(const std::shared_ptr<EventListener>& rightButtonEventListener) {
         this->rightButtonEventListener = rightButtonEventListener;
         this->rightButton->addEventListener(rightButtonEventListener);
     }

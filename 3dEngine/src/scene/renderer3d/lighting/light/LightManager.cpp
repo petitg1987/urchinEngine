@@ -32,7 +32,7 @@ namespace urchin {
         delete [] lightsInfo;
     }
 
-    void LightManager::initiateShaderVariables(const std::unique_ptr<Shader> &lightingShader) {
+    void LightManager::initiateShaderVariables(const std::unique_ptr<Shader>& lightingShader) {
         std::ostringstream isExistLocName, produceShadowLocName, hasParallelBeamsName, positionOrDirectionLocName;
         std::ostringstream exponentialAttName, lightAmbientName;
         for (unsigned int i=0;i<maxLights;++i) {

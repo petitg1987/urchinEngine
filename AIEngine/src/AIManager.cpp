@@ -38,21 +38,21 @@ namespace urchin {
         return navMeshGenerator;
     }
 
-    void AIManager::addEntity(const std::shared_ptr<AIEntity> &aiEntity) {
+    void AIManager::addEntity(const std::shared_ptr<AIEntity>& aiEntity) {
         aiWorld.addEntity(aiEntity);
     }
 
-    void AIManager::removeEntity(const std::shared_ptr<AIEntity> &aiEntity) {
+    void AIManager::removeEntity(const std::shared_ptr<AIEntity>& aiEntity) {
         aiWorld.removeEntity(aiEntity);
     }
 
-    void AIManager::addPathRequest(const std::shared_ptr<PathRequest> &pathRequest) {
+    void AIManager::addPathRequest(const std::shared_ptr<PathRequest>& pathRequest) {
         std::lock_guard<std::mutex> lock(mutex);
 
         pathRequests.push_back(pathRequest);
     }
 
-    void AIManager::removePathRequest(const std::shared_ptr<PathRequest> &pathRequest) {
+    void AIManager::removePathRequest(const std::shared_ptr<PathRequest>& pathRequest) {
         std::lock_guard<std::mutex> lock(mutex);
 
         if (pathRequest) {

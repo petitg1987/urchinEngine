@@ -77,7 +77,7 @@ namespace urchin {
         delete shadowModelShaderVariable;
     }
 
-    void ShadowManager::initiateShaderVariables(const std::unique_ptr<Shader> &lightingShader) {
+    void ShadowManager::initiateShaderVariables(const std::unique_ptr<Shader>& lightingShader) {
         //shadow information
         depthSplitDistanceShaderVar = ShaderVar(lightingShader, "depthSplitDistance");
 
@@ -529,7 +529,7 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer> &lightingRenderer) {
+    void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer>& lightingRenderer) {
         int i = 0;
         const std::vector<Light *> &visibleLights = lightManager->getVisibleLights();
         for (auto *visibleLight : visibleLights) {

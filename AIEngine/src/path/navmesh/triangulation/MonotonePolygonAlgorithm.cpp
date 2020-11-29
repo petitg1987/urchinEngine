@@ -35,7 +35,7 @@ namespace urchin {
      * @param polygonPoints Polygon points are in CCW order and holes in CW order.
      * @param endContourIndices Delimiter between polygon points and holes points.
      */
-    MonotonePolygonAlgorithm::MonotonePolygonAlgorithm(const std::vector<Point2<float>>& polygonPoints, const std::vector<std::size_t> &endContourIndices,
+    MonotonePolygonAlgorithm::MonotonePolygonAlgorithm(const std::vector<Point2<float>>& polygonPoints, const std::vector<std::size_t>& endContourIndices,
                                                        const std::vector<std::string>& contourNames) :
             polygonPoints(polygonPoints),
             endContourIndices(endContourIndices),

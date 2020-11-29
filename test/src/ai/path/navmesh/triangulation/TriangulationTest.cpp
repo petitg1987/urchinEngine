@@ -247,12 +247,12 @@ CppUnit::Test *TriangulationTest::suite() {
     return suite;
 }
 
-void TriangulationTest::assertUniqueLink(const std::shared_ptr<NavTriangle> &sourceTriangle, unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle) {
+void TriangulationTest::assertUniqueLink(const std::shared_ptr<NavTriangle>& sourceTriangle, unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle>& targetTriangle) {
     AssertHelper::assertUnsignedInt(sourceTriangle->getLinks().size(), 1);
     assertLink(sourceTriangle->getLinks()[0], sourceEdgeIndex, targetTriangle);
 }
 
-void TriangulationTest::assertLink(const std::shared_ptr<NavLink> &link, unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle) {
+void TriangulationTest::assertLink(const std::shared_ptr<NavLink>& link, unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle>& targetTriangle) {
     AssertHelper::assertUnsignedInt(link->getSourceEdgeIndex(), sourceEdgeIndex);
     AssertHelper::assertTrue(link->getTargetTriangle() == targetTriangle);
 }

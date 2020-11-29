@@ -22,7 +22,7 @@ namespace urchin {
         return updateId;
     }
 
-    void NavMesh::copyAllPolygons(const std::vector<std::shared_ptr<NavPolygon>> &allPolygons) {
+    void NavMesh::copyAllPolygons(const std::vector<std::shared_ptr<NavPolygon>>& allPolygons) {
         changeUpdateId();
 
         polygons.clear();

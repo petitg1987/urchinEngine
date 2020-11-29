@@ -43,7 +43,7 @@ namespace urchin {
         }
     }
 
-    void SceneTerrain::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser& xmlParser) {
+    void SceneTerrain::loadFrom(const std::shared_ptr<XmlChunk>& chunk, const XmlParser& xmlParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
         setTerrain(TerrainReaderWriter().loadFrom(chunk, xmlParser));
@@ -55,7 +55,7 @@ namespace urchin {
         setupInteractiveBody(terrainRigidBody);
     }
 
-    void SceneTerrain::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter& xmlWriter) const {
+    void SceneTerrain::writeOn(const std::shared_ptr<XmlChunk>& chunk, XmlWriter& xmlWriter) const {
         chunk->setAttribute(XmlAttribute(NAME_ATTR, this->name));
 
         TerrainReaderWriter().writeOn(chunk, terrain, xmlWriter);

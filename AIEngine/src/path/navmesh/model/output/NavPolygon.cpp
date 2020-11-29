@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    NavPolygon::NavPolygon(std::string name, std::vector<Point3<float>> &&points, std::shared_ptr<const NavTopography> navTopography) :
+    NavPolygon::NavPolygon(std::string name, std::vector<Point3<float>>&& points, std::shared_ptr<const NavTopography> navTopography) :
             name(std::move(name)),
             points(std::move(points)),
             navTopography(std::move(navTopography)) {
@@ -32,7 +32,7 @@ namespace urchin {
         return points[index];
     }
 
-    void NavPolygon::addTriangles(const std::vector<std::shared_ptr<NavTriangle>> &triangles, const std::shared_ptr<NavPolygon> &thisNavPolygon) {
+    void NavPolygon::addTriangles(const std::vector<std::shared_ptr<NavTriangle>>& triangles, const std::shared_ptr<NavPolygon>& thisNavPolygon) {
         assert(thisNavPolygon.get()==this);
 
         this->triangles = triangles;
@@ -70,7 +70,7 @@ namespace urchin {
         return externalEdges;
     }
 
-    void NavPolygon::removeLinksTo(const std::shared_ptr<NavPolygon> &navPolygon) {
+    void NavPolygon::removeLinksTo(const std::shared_ptr<NavPolygon>& navPolygon) {
         for (const auto &triangle : triangles) {
             triangle->removeLinksTo(navPolygon);
         }

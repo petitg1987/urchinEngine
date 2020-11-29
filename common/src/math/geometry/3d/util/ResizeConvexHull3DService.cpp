@@ -86,7 +86,7 @@ namespace urchin {
         }
     }
 
-    template<class T> std::vector<Plane<T>> ResizeConvexHull3DService<T>::findThreeNonParallelPlanes(const std::vector<std::size_t> &planeIndices, const std::map<std::size_t, Plane<T>>& allPlanes) const {
+    template<class T> std::vector<Plane<T>> ResizeConvexHull3DService<T>::findThreeNonParallelPlanes(const std::vector<std::size_t>& planeIndices, const std::map<std::size_t, Plane<T>>& allPlanes) const {
         constexpr float PARALLEL_COMPARISON_TOLERANCE = 0.01f;
 
         std::vector<Plane<T>> nonParallelPlanes;

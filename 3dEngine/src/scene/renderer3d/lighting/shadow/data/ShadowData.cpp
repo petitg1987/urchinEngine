@@ -19,7 +19,7 @@ namespace urchin {
         }
     }
 
-    void ShadowData::setRenderTarget(std::unique_ptr<OffscreenRender> &&renderTarget) {
+    void ShadowData::setRenderTarget(std::unique_ptr<OffscreenRender>&& renderTarget) {
         this->renderTarget = std::move(renderTarget);
     }
 
@@ -27,7 +27,7 @@ namespace urchin {
         return renderTarget.get();
     }
 
-    void ShadowData::setDepthTexture(const std::shared_ptr<Texture> &depthTexture) {
+    void ShadowData::setDepthTexture(const std::shared_ptr<Texture>& depthTexture) {
         this->depthTexture = depthTexture;
     }
 
@@ -38,7 +38,7 @@ namespace urchin {
     /**
      * @param shadowMapTexture Shadow map texture (variance shadow map)
      */
-    void ShadowData::setShadowMapTexture(const std::shared_ptr<Texture> &shadowMapTexture) {
+    void ShadowData::setShadowMapTexture(const std::shared_ptr<Texture>& shadowMapTexture) {
         this->shadowMapTexture = shadowMapTexture;
     }
 

@@ -8,7 +8,7 @@ namespace urchin {
 
     }
 
-    void RenderTarget::executeRenderer(const std::unique_ptr<GenericRenderer> &renderer) const {
+    void RenderTarget::executeRenderer(const std::unique_ptr<GenericRenderer>& renderer) const {
         renderer->render();
     }
 
@@ -25,7 +25,7 @@ namespace urchin {
         this->targetHeight = targetHeight;
     }
 
-    void RenderTarget::activeShader(const std::unique_ptr<Shader> &shader) const {
+    void RenderTarget::activeShader(const std::unique_ptr<Shader>& shader) const {
         shader->bind();
     }
 

@@ -5,7 +5,7 @@ namespace urchin {
     /**
      * @param copiedNavPolygons [out] Return copied navigation polygons
      */
-    void NavModelCopy::copyNavPolygons(const std::vector<std::shared_ptr<NavPolygon>> &originalNavPolygons, std::vector<std::shared_ptr<NavPolygon>> &copiedNavPolygons) {
+    void NavModelCopy::copyNavPolygons(const std::vector<std::shared_ptr<NavPolygon>>& originalNavPolygons, std::vector<std::shared_ptr<NavPolygon>>& copiedNavPolygons) {
         std::map<const NavPolygon*, std::map<const NavTriangle*, std::pair<std::size_t, std::size_t>>> originalPositionsMap;
 
         copiedNavPolygons.reserve(originalNavPolygons.size());

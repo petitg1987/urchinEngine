@@ -13,7 +13,7 @@ namespace urchin {
 
     }
 
-    Image::Image(unsigned int width, unsigned int height, ImageFormat format, std::vector<uint16_t> &&texels16) :
+    Image::Image(unsigned int width, unsigned int height, ImageFormat format, std::vector<uint16_t>&& texels16) :
             width(width),
             height(height),
             format(format),

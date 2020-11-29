@@ -10,7 +10,7 @@ namespace urchin {
         #endif
     }
 
-    template<class T> CSGPolygon<T>::CSGPolygon(std::string name, std::vector<Point2<T>> &&cwPoints) :
+    template<class T> CSGPolygon<T>::CSGPolygon(std::string name, std::vector<Point2<T>>&& cwPoints) :
             name(std::move(name)),
             cwPoints(std::move(cwPoints)) {
         #ifndef NDEBUG

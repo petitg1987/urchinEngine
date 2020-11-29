@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    AIObject::AIObject(std::string name, const Transform<float>& transform, bool bIsObstacleCandidate, const std::shared_ptr<AIShape> &shape) :
+    AIObject::AIObject(std::string name, const Transform<float>& transform, bool bIsObstacleCandidate, const std::shared_ptr<AIShape>& shape) :
             AIEntity(std::move(name), transform, bIsObstacleCandidate) {
         shapes.push_back(shape);
     }

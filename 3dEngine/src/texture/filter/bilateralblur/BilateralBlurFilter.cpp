@@ -33,14 +33,14 @@ namespace urchin {
         return "bilateralBlurTex";
     }
 
-    void BilateralBlurFilter::initiateAdditionalShaderVariables(const std::unique_ptr<Shader> &textureFilterShader) {
+    void BilateralBlurFilter::initiateAdditionalShaderVariables(const std::unique_ptr<Shader>& textureFilterShader) {
         int depthTexUnit = 1;
         ShaderDataSender().sendData(ShaderVar(textureFilterShader, "depthTex"), depthTexUnit);
 
         cameraPlanesShaderVar = ShaderVar(textureFilterShader, "cameraPlanes");
     }
 
-    void BilateralBlurFilter::addFurtherTextures(const std::unique_ptr<GenericRenderer> &renderer) const {
+    void BilateralBlurFilter::addFurtherTextures(const std::unique_ptr<GenericRenderer>& renderer) const {
         renderer->addAdditionalTexture(TextureReader::build(depthTexture, TextureParam::buildNearest()));
     }
 

@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    void MonotonePolygon::setCcwPoints(const std::vector<std::size_t> &ccwPoints) {
+    void MonotonePolygon::setCcwPoints(const std::vector<std::size_t>& ccwPoints) {
         this->ccwPoints = ccwPoints;
     }
 

@@ -9,7 +9,7 @@ namespace urchin {
     /**
      * @param surfaces Indexed faces of the polytope. Surfaces must have their points in counter-clockwise to have face normal pointing outside the polyhedron.
      */
-    Polytope::Polytope(std::string name, std::vector<std::shared_ptr<PolytopeSurface>> &surfaces) :
+    Polytope::Polytope(std::string name, std::vector<std::shared_ptr<PolytopeSurface>>& surfaces) :
             name(std::move(name)),
             surfaces(std::move(surfaces)),
             walkableCandidate(true),

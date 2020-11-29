@@ -10,7 +10,7 @@
 
 namespace urchin {
 
-    PhysicsCharacterController::PhysicsCharacterController(const std::shared_ptr<PhysicsCharacter> &physicsCharacter, PhysicsWorld* physicsWorld) :
+    PhysicsCharacterController::PhysicsCharacterController(const std::shared_ptr<PhysicsCharacter>& physicsCharacter, PhysicsWorld* physicsWorld) :
         timeKeepMoveInAir(ConfigService::instance()->getFloatValue("character.timeKeepMoveInAir")),
         percentageControlInAir(ConfigService::instance()->getFloatValue("character.percentageControlInAir")),
         maxDepthToRecover(ConfigService::instance()->getFloatValue("character.maxDepthToRecover")),

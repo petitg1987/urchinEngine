@@ -23,7 +23,7 @@ namespace urchin {
     /**
      * @param ccwPolygonPoints Polygon points in counter clockwise order. Points must be unique.
      */
-    TriangulationAlgorithm::TriangulationAlgorithm(std::vector<Point2<float>> &&ccwPolygonPoints, const std::string& name) :
+    TriangulationAlgorithm::TriangulationAlgorithm(std::vector<Point2<float>>&& ccwPolygonPoints, const std::string& name) :
             polygonPoints(std::move(ccwPolygonPoints)),
             missingTriangleNeighbor(0) {
         this->endContourIndices.push_back(polygonPoints.size());
@@ -190,7 +190,7 @@ namespace urchin {
         return monotoneTriangles;
     }
 
-    std::vector<SidedPoint> TriangulationAlgorithm::buildSortedSidedPoints(const std::vector<std::size_t> &monotonePolygonPoints) const {
+    std::vector<SidedPoint> TriangulationAlgorithm::buildSortedSidedPoints(const std::vector<std::size_t>& monotonePolygonPoints) const {
         std::vector<SidedPoint> sortedSidedPoints;
         sortedSidedPoints.reserve(monotonePolygonPoints.size());
 
@@ -229,12 +229,12 @@ namespace urchin {
         }
     }
 
-    void TriangulationAlgorithm::determineNeighbors(std::vector<std::shared_ptr<NavTriangle>> &triangles, const MonotonePolygon& monotonePolygon) {
+    void TriangulationAlgorithm::determineNeighbors(std::vector<std::shared_ptr<NavTriangle>>& triangles, const MonotonePolygon& monotonePolygon) {
         determineNeighborsInsideMonotone(triangles);
         determineNeighborsBetweenMonotones(triangles, monotonePolygon);
     }
 
-    void TriangulationAlgorithm::determineNeighborsInsideMonotone(std::vector<std::shared_ptr<NavTriangle>> &monotoneTriangles) {
+    void TriangulationAlgorithm::determineNeighborsInsideMonotone(std::vector<std::shared_ptr<NavTriangle>>& monotoneTriangles) {
         long currMonotoneTriangleIndex = static_cast<long>(monotoneTriangles.size()) - 1;
         long prevMonotoneTriangleIndex = static_cast<long>(monotoneTriangles.size()) - 2;
         const auto &currTriangle = monotoneTriangles[currMonotoneTriangleIndex];
@@ -263,7 +263,7 @@ namespace urchin {
         }
     }
 
-    void TriangulationAlgorithm::determineNeighborsBetweenMonotones(std::vector<std::shared_ptr<NavTriangle>> &monotoneTriangles, const MonotonePolygon& monotonePolygon) {
+    void TriangulationAlgorithm::determineNeighborsBetweenMonotones(std::vector<std::shared_ptr<NavTriangle>>& monotoneTriangles, const MonotonePolygon& monotonePolygon) {
         std::size_t currMonotoneTriangleIndex = monotoneTriangles.size() - 1;
         const auto &currTriangle = monotoneTriangles[currMonotoneTriangleIndex];
 
@@ -289,8 +289,8 @@ namespace urchin {
         }
     }
 
-    bool TriangulationAlgorithm::areSameEdge(const std::shared_ptr<NavTriangle> &triangle1, std::size_t tri1Point1, std::size_t tri1Point2,
-                                             const std::shared_ptr<NavTriangle> &triangle2, std::size_t tri2Point1, std::size_t tri2Point2) const {
+    bool TriangulationAlgorithm::areSameEdge(const std::shared_ptr<NavTriangle>& triangle1, std::size_t tri1Point1, std::size_t tri1Point2,
+                                             const std::shared_ptr<NavTriangle>& triangle2, std::size_t tri2Point1, std::size_t tri2Point2) const {
         return (triangle1->getIndex(tri1Point1)==triangle2->getIndex(tri2Point1) && triangle1->getIndex(tri1Point2)==triangle2->getIndex(tri2Point2))
                || (triangle1->getIndex(tri1Point1)==triangle2->getIndex(tri2Point2) && triangle1->getIndex(tri1Point2)==triangle2->getIndex(tri2Point1));
     }
@@ -322,7 +322,7 @@ namespace urchin {
         Logger::logger().log(logLevel, logStream.str());
     }
 
-    void TriangulationAlgorithm::logOutputData(const std::string& message, const std::vector<std::shared_ptr<NavTriangle>> &triangles, Logger::CriticalityLevel logLevel) const {
+    void TriangulationAlgorithm::logOutputData(const std::string& message, const std::vector<std::shared_ptr<NavTriangle>>& triangles, Logger::CriticalityLevel logLevel) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 

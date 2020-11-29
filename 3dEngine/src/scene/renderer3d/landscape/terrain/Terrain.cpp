@@ -12,7 +12,7 @@ namespace urchin {
     /**
      * @param position Terrain position. Position is centered on XZ axis and Y value represents a point without elevation.
      */
-    Terrain::Terrain(std::shared_ptr<TerrainMesh> &mesh, std::unique_ptr<TerrainMaterial> &material, const Point3<float>& position) :
+    Terrain::Terrain(std::shared_ptr<TerrainMesh>& mesh, std::unique_ptr<TerrainMaterial>& material, const Point3<float>& position) :
             ambient(0.0f) {
         terrainShader = ShaderBuilder().createShader("terrain.vert", "", "terrain.frag");
 
@@ -49,7 +49,7 @@ namespace urchin {
         grass->onCameraProjectionUpdate(projectionMatrix);
     }
 
-    void Terrain::setMesh(const std::shared_ptr<TerrainMesh> &mesh) {
+    void Terrain::setMesh(const std::shared_ptr<TerrainMesh>& mesh) {
         this->mesh = mesh;
 
         std::vector<Point2<float>> emptyTextureCoordinates;
@@ -69,7 +69,7 @@ namespace urchin {
         return mesh.get();
     }
 
-    void Terrain::setMaterial(std::unique_ptr<TerrainMaterial> &terrainMaterial) {
+    void Terrain::setMaterial(std::unique_ptr<TerrainMaterial>& terrainMaterial) {
         if (material != terrainMaterial) {
             material = std::move(terrainMaterial);
         }

@@ -14,7 +14,7 @@ namespace urchin {
 
     }
 
-    void AICharacterController::setupEventHandler(const std::shared_ptr<AICharacterEventHandler> &eventHandler) {
+    void AICharacterController::setupEventHandler(const std::shared_ptr<AICharacterEventHandler>& eventHandler) {
         this->eventHandler = eventHandler;
     }
 

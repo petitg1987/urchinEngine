@@ -17,7 +17,7 @@ namespace urchin {
         glDeleteFramebuffers(1, &framebufferId);
     }
 
-    void OffscreenRender::addTexture(const std::shared_ptr<Texture> &texture) {
+    void OffscreenRender::addTexture(const std::shared_ptr<Texture>& texture) {
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
 
         if(texture->getTextureFormat() == TextureFormat::DEPTH_16_FLOAT
@@ -68,7 +68,7 @@ namespace urchin {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    void OffscreenRender::display(const std::unique_ptr<GenericRenderer> &renderer) const {
+    void OffscreenRender::display(const std::unique_ptr<GenericRenderer>& renderer) const {
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
         glViewport(0, 0, getTargetWidth(), getTargetHeight());
 

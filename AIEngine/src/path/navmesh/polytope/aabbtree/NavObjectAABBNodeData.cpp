@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    NavObjectAABBNodeData::NavObjectAABBNodeData(const std::shared_ptr<NavObject> &navObject) :
+    NavObjectAABBNodeData::NavObjectAABBNodeData(const std::shared_ptr<NavObject>& navObject) :
             AABBNodeData(navObject) {
 
     }

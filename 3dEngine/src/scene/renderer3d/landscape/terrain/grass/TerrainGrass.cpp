@@ -82,7 +82,7 @@ namespace urchin {
         ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix);
     }
 
-    void TerrainGrass::refreshWith(const std::shared_ptr<TerrainMesh> &mesh, const Point3<float>& terrainPosition) {
+    void TerrainGrass::refreshWith(const std::shared_ptr<TerrainMesh>& mesh, const Point3<float>& terrainPosition) {
         generateGrass(mesh, terrainPosition);
 
         ShaderDataSender()
@@ -94,7 +94,7 @@ namespace urchin {
         ShaderDataSender().sendData(terrainAmbientShaderVar, ambient);
     }
 
-    void TerrainGrass::generateGrass(const std::shared_ptr<TerrainMesh> &mesh, const Point3<float>& terrainPosition) {
+    void TerrainGrass::generateGrass(const std::shared_ptr<TerrainMesh>& mesh, const Point3<float>& terrainPosition) {
         const unsigned int NUM_THREADS = std::max(2u, std::thread::hardware_concurrency());
 
         if (mesh) {

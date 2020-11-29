@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    CollisionShape3D *CollisionCompoundShapeReaderWriter::loadFrom(const std::shared_ptr<XmlChunk> &mainShapeChunk, const XmlParser& xmlParser) const {
+    CollisionShape3D *CollisionCompoundShapeReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& mainShapeChunk, const XmlParser& xmlParser) const {
         std::shared_ptr<XmlChunk> localizedShapesListChunk = xmlParser.getUniqueChunk(true, LOCALIZED_SHAPES, XmlAttribute(), mainShapeChunk);
         std::vector<std::shared_ptr<XmlChunk>> localizedShapesChunk = xmlParser.getChunks(LOCALIZED_SHAPE, XmlAttribute(), localizedShapesListChunk);
 
@@ -28,7 +28,7 @@ namespace urchin {
         return new CollisionCompoundShape(compoundShapes);
     }
 
-    void CollisionCompoundShapeReaderWriter::writeOn(const std::shared_ptr<XmlChunk> &mainShapeChunk, const CollisionShape3D* mainCollisionShape, XmlWriter& xmlWriter) const {
+    void CollisionCompoundShapeReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& mainShapeChunk, const CollisionShape3D* mainCollisionShape, XmlWriter& xmlWriter) const {
         mainShapeChunk->setAttribute(XmlAttribute(TYPE_ATTR, COMPOUND_SHAPE_VALUE));
 
         const auto *compoundShape = dynamic_cast<const CollisionCompoundShape *>(mainCollisionShape);
@@ -46,7 +46,7 @@ namespace urchin {
         }
     }
 
-    void CollisionCompoundShapeReaderWriter::loadTransformOn(const std::shared_ptr<LocalizedCollisionShape>& localizedShape, const std::shared_ptr<XmlChunk> &localizedShapeChunk, const XmlParser& xmlParser) const {
+    void CollisionCompoundShapeReaderWriter::loadTransformOn(const std::shared_ptr<LocalizedCollisionShape>& localizedShape, const std::shared_ptr<XmlChunk>& localizedShapeChunk, const XmlParser& xmlParser) const {
         std::shared_ptr<XmlChunk> transformChunk = xmlParser.getUniqueChunk(true, TRANSFORM_TAG, XmlAttribute(), localizedShapeChunk);
 
         std::shared_ptr<XmlChunk> positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), transformChunk);
