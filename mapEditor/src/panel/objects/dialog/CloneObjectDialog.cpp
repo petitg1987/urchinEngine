@@ -91,7 +91,7 @@ namespace urchin {
 
     bool CloneObjectDialog::isSceneObjectExist(const std::string& name) {
         std::list<const SceneObject*> sceneObjects = objectController->getSceneObjects();
-        return std::any_of(sceneObjects.begin(), sceneObjects.end(), [name](const auto& so){return so->getName() == name;});
+        return std::any_of(sceneObjects.begin(), sceneObjects.end(), [&name](const auto& so){return so->getName() == name;});
     }
 
 }

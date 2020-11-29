@@ -1,4 +1,5 @@
 #include <cmath>
+#include <algorithm>
 
 #include "Frustum.h"
 #include "math/geometry/3d/Line3D.h"
@@ -247,13 +248,7 @@ namespace urchin {
     }
 
     template<class T> bool Frustum<T>::collideWithPoint(const Point3<T>& point) const {
-        for (auto& plane : planes) {
-            if (plane.distance(point) > 0.0) {
-                return false;
-            }
-        }
-
-        return true;
+        return std::all_of(planes, planes + 6, [&point](const auto& plane){return plane.distance(point) <= 0.0;});
     }
 
     /**
@@ -286,13 +281,7 @@ namespace urchin {
     * @return True if the sphere collides or is inside this frustum
     */
     template<class T> bool Frustum<T>::collideWithSphere(const Sphere<T>& sphere) const {
-        for (auto& plane : planes) {
-            if (plane.distance(sphere.getCenterOfMass()) > sphere.getRadius()) {
-                return false;
-            }
-        }
-
-        return true;
+        return std::all_of(planes, planes + 6, [&sphere](const auto& plane){return plane.distance(sphere.getCenterOfMass()) <= sphere.getRadius();});
     }
 
     template<class T> Frustum<T> operator *(const Matrix4<T>& m, const Frustum<T>& frustum) {

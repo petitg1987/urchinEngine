@@ -115,7 +115,7 @@ namespace urchin {
 
     bool NewLightDialog::isSceneLightExist(const std::string& name) {
         std::list<const SceneLight*> sceneLights = lightController->getSceneLights();
-        return std::any_of(sceneLights.begin(), sceneLights.end(), [name](const auto& sl){return sl->getName() == name;});
+        return std::any_of(sceneLights.begin(), sceneLights.end(), [&name](const auto& sl){return sl->getName() == name;});
     }
 
 }

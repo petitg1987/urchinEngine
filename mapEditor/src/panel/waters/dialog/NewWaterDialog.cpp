@@ -96,6 +96,6 @@ namespace urchin {
 
     bool NewWaterDialog::isSceneWaterExist(const std::string& name) {
         std::list<const SceneWater*> sceneWaters = waterController->getSceneWaters();
-        return std::any_of(sceneWaters.begin(), sceneWaters.end(), [name](const auto& sw){return sw->getName() == name;});
+        return std::any_of(sceneWaters.begin(), sceneWaters.end(), [&name](const auto& sw){return sw->getName() == name;});
     }
 }
