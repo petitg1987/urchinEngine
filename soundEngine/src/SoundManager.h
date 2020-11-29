@@ -18,7 +18,7 @@ namespace urchin {
             SoundManager();
             ~SoundManager();
 
-            void addSound(Sound *, SoundTrigger*);
+            void addSound(Sound*, SoundTrigger*);
             void removeSound(const Sound*);
             void changeSoundTrigger(const Sound*, SoundTrigger*);
 
@@ -34,7 +34,7 @@ namespace urchin {
             void process();
 
         private:
-            void deleteAudioController(AudioController *);
+            void deleteAudioController(AudioController*);
 
             std::vector<AudioController *> audioControllers;
 

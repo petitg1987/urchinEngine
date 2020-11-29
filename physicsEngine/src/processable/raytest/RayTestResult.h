@@ -16,7 +16,7 @@ namespace urchin {
         public:
             RayTestResult();
 
-            void addResults(ccd_set &rayTestResults);
+            void addResults(ccd_set&);
 
             bool isResultReady() const;
 

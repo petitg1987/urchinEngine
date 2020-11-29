@@ -14,7 +14,7 @@ namespace urchin {
         public:
             friend class Map;
 
-            explicit SceneAI(AIManager *);
+            explicit SceneAI(AIManager*);
 
             std::shared_ptr<NavMeshAgent> getNavMeshAgent() const;
             void changeNavMeshAgent(const std::shared_ptr<NavMeshAgent>&);

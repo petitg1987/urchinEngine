@@ -7,8 +7,8 @@ namespace urchin {
 
     class VectorEraser {
         public:
-            template<class T> static void erase(std::vector<T> &, unsigned int);
-            template<class T> static void erase(std::vector<T> &, typename std::vector<T>::iterator);
+            template<class T> static void erase(std::vector<T>&, unsigned int);
+            template<class T> static void erase(std::vector<T>&, typename std::vector<T>::iterator);
 
     };
 

@@ -17,12 +17,12 @@ namespace urchin {
     */
     class AudioController {
         public:
-            AudioController(Sound *, SoundTrigger*, StreamUpdateWorker*);
+            AudioController(Sound*, SoundTrigger*, StreamUpdateWorker*);
             ~AudioController();
 
             const Sound *getSound() const;
             SoundTrigger *getSoundTrigger() const;
-            void changeSoundTrigger(SoundTrigger *);
+            void changeSoundTrigger(SoundTrigger*);
 
             void pause();
             void unpause();

@@ -14,7 +14,7 @@ namespace urchin {
                 CHANGES_DONE
             };
 
-            virtual void setup(MapHandler *);
+            virtual void setup(MapHandler*);
 
             virtual bool isModified() const;
             virtual void resetModified();

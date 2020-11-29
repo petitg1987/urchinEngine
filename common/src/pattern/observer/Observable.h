@@ -12,10 +12,10 @@ namespace urchin {
         public:
             virtual ~Observable();
 
-            void addObserver(Observer *, int) const;
-            void removeObserver(Observer *, int) const;
+            void addObserver(Observer*, int) const;
+            void removeObserver(Observer*, int) const;
 
-            void notifyObservers(Observable *, int);
+            void notifyObservers(Observable*, int);
 
         private:
             mutable std::map<int, std::unordered_set<Observer *> *> mapObservers;

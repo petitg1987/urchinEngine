@@ -11,7 +11,7 @@ namespace urchin {
 
     class Animation {
         public:
-            Animation(ConstAnimation *, Meshes*);
+            Animation(ConstAnimation*, Meshes*);
             ~Animation();
 
             const std::vector<Bone> &getSkeleton() const;

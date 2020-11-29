@@ -14,7 +14,7 @@ namespace urchin {
 
     class ObjectMoveController : public Observable {
         public:
-            ObjectMoveController(SceneManager *, SceneController*, MouseController, StatusBarController);
+            ObjectMoveController(SceneManager*, SceneController*, MouseController, StatusBarController);
 
             enum NotificationType {
                 OBJECT_MOVED

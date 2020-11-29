@@ -7,7 +7,7 @@ namespace urchin {
 
     class FrameStyleHelper {
         public:
-            static void applyLineStyle(QFrame *);
+            static void applyLineStyle(QFrame*);
     };
 
 }

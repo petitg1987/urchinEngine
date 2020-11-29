@@ -31,7 +31,7 @@ namespace urchin {
             Sound *buildSoundFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
             void buildChunkFrom(const std::shared_ptr<XmlChunk>&, const Sound*, XmlWriter&) const;
 
-            void loadPropertiesOn(Sound *, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
+            void loadPropertiesOn(Sound*, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
             void writePropertiesOn(const std::shared_ptr<XmlChunk>&, const Sound*, XmlWriter&) const;
     };
 

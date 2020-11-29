@@ -32,16 +32,16 @@ namespace urchin {
 
             SoundTableView *getSoundTableView() const;
 
-            void load(SoundController *);
+            void load(SoundController*);
             void unload();
 
         private:
-            void setupSoundGeneralPropertiesBox(QVBoxLayout *);
-            void setupSpecificPointSoundBox(QVBoxLayout *);
-            void setupSoundBehaviorPropertiesBox(QVBoxLayout *);
-            void setupSpecificTriggerShapeBox(QVBoxLayout *);
+            void setupSoundGeneralPropertiesBox(QVBoxLayout*);
+            void setupSpecificPointSoundBox(QVBoxLayout*);
+            void setupSoundBehaviorPropertiesBox(QVBoxLayout*);
+            void setupSpecificTriggerShapeBox(QVBoxLayout*);
 
-            void notify(Observable *, int) override;
+            void notify(Observable*, int) override;
             void setupSoundDataFrom(const SceneSound*);
             void setupAmbientSoundDataFrom();
             void setupPointSoundDataFrom(const PointSound*);

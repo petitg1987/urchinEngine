@@ -19,12 +19,12 @@ namespace urchin {
             ~MapEditorWindow() override;
 
         protected:
-            void closeEvent(QCloseEvent *event) override;
+            void closeEvent(QCloseEvent*) override;
 
         private:
             void setupMenu();
-            void setupSceneDisplayerWidget(QWidget *, QHBoxLayout*);
-            void setupSceneControllerWidget(QWidget *, QHBoxLayout*);
+            void setupSceneDisplayerWidget(QWidget*, QHBoxLayout*);
+            void setupSceneControllerWidget(QWidget*, QHBoxLayout*);
 
             QString getPreferredMapPath();
             void savePreferredMapPath(const std::string&);
@@ -35,8 +35,8 @@ namespace urchin {
             void updateMapFilename(const std::string&);
             void refreshWindowTitle();
 
-            void notify(Observable *, int) override;
-            void handleCompoundShapeSelectionChange(Observable *, int);
+            void notify(Observable*, int) override;
+            void handleCompoundShapeSelectionChange(Observable*, int);
 
             static const std::string WINDOW_TITLE;
 

@@ -46,8 +46,8 @@ namespace urchin {
 
             class ButtonSliderEventListener : public EventListener {
                 public:
-                    ButtonSliderEventListener(Slider *, bool);
-                    void onClickRelease(Widget *) override;
+                    ButtonSliderEventListener(Slider*, bool);
+                    void onClickRelease(Widget*) override;
 
                 private:
                     Slider *slider;

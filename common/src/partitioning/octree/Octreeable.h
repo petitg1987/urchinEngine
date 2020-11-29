@@ -32,8 +32,8 @@ namespace urchin {
             bool isProcessed() const;
 
             const std::vector<Octree<TOctreeable> *> &getRefOctree() const;
-            void addRefOctree(Octree<TOctreeable> *);
-            void removeRefOctree(Octree<TOctreeable> *);
+            void addRefOctree(Octree<TOctreeable>*);
+            void removeRefOctree(Octree<TOctreeable>*);
 
             virtual const AABBox<float> &getAABBox() const = 0;
             virtual const Transform<float> &getTransform() const = 0;

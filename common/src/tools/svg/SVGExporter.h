@@ -22,7 +22,7 @@ namespace urchin {
 
         private:
             std::string retrieveViewBox() const;
-            void addShapes(std::ofstream &fileStream) const;
+            void addShapes(std::ofstream&) const;
 
             std::string filename;
             std::vector<const SVGShape *> shapes;

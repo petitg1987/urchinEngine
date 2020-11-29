@@ -25,15 +25,15 @@ namespace urchin {
 
             WaterTableView *getWaterTableView() const;
 
-            void load(WaterController *);
+            void load(WaterController*);
             void unload();
 
         private:
-            void setupGeneralPropertiesBox(QVBoxLayout *);
-            void setupWaterSurfaceProperties(QVBoxLayout *);
-            void setupUnderWaterProperties(QVBoxLayout *);
+            void setupGeneralPropertiesBox(QVBoxLayout*);
+            void setupWaterSurfaceProperties(QVBoxLayout*);
+            void setupUnderWaterProperties(QVBoxLayout*);
 
-            void notify(Observable *, int) override;
+            void notify(Observable*, int) override;
             void setupWaterDataFrom(const SceneWater*);
 
             WaterController *waterController;

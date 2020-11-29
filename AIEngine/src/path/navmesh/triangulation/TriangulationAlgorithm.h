@@ -44,9 +44,9 @@ namespace urchin {
             bool isFirstPointAboveSecond(std::size_t, std::size_t) const;
             std::shared_ptr<NavTriangle> buildCCWOrientedTriangle(std::size_t, std::size_t, std::size_t) const;
 
-            void determineNeighbors(std::vector<std::shared_ptr<NavTriangle>> &, const MonotonePolygon&);
-            void determineNeighborsInsideMonotone(std::vector<std::shared_ptr<NavTriangle>> &);
-            void determineNeighborsBetweenMonotones(std::vector<std::shared_ptr<NavTriangle>> &, const MonotonePolygon&);
+            void determineNeighbors(std::vector<std::shared_ptr<NavTriangle>>&, const MonotonePolygon&);
+            void determineNeighborsInsideMonotone(std::vector<std::shared_ptr<NavTriangle>>&);
+            void determineNeighborsBetweenMonotones(std::vector<std::shared_ptr<NavTriangle>>&, const MonotonePolygon&);
             bool areSameEdge(const std::shared_ptr<NavTriangle>&, std::size_t, std::size_t, const std::shared_ptr<NavTriangle>&, std::size_t, std::size_t) const;
             uint_fast64_t computeEdgeId(std::size_t, std::size_t) const;
 

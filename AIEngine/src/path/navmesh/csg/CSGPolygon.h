@@ -38,7 +38,7 @@ namespace urchin {
 
     };
 
-    template<class T> std::ostream& operator <<(std::ostream &, const CSGPolygon<T>&);
+    template<class T> std::ostream& operator <<(std::ostream&, const CSGPolygon<T>&);
 
 }
 

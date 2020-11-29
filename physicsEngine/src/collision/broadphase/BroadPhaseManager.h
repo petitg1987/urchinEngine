@@ -17,22 +17,22 @@ namespace urchin {
     */
     class BroadPhaseManager : public Observer {
         public:
-            explicit BroadPhaseManager(BodyManager *);
+            explicit BroadPhaseManager(BodyManager*);
             ~BroadPhaseManager() override;
 
-            void notify(Observable *, int) override;
+            void notify(Observable*, int) override;
 
-            void addBodyAsync(AbstractWorkBody *);
-            void removeBodyAsync(AbstractWorkBody *);
+            void addBodyAsync(AbstractWorkBody*);
+            void removeBodyAsync(AbstractWorkBody*);
 
             const std::vector<OverlappingPair *> &computeOverlappingPairs();
 
             std::vector<AbstractWorkBody *> rayTest(const Ray<float>&) const;
-            std::vector<AbstractWorkBody *> bodyTest(AbstractWorkBody *, const PhysicsTransform&, const PhysicsTransform&) const;
+            std::vector<AbstractWorkBody *> bodyTest(AbstractWorkBody*, const PhysicsTransform&, const PhysicsTransform&) const;
 
         private:
-            void addBody(AbstractWorkBody *);
-            void removeBody(AbstractWorkBody *);
+            void addBody(AbstractWorkBody*);
+            void removeBody(AbstractWorkBody*);
             void synchronizeBodies();
 
             BroadPhaseAlgorithm *broadPhaseAlgorithm;

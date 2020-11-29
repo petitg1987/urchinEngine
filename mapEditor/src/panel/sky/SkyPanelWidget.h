@@ -17,16 +17,16 @@ namespace urchin {
             SkyPanelWidget();
             ~SkyPanelWidget() override = default;
 
-            void load(SkyController *);
+            void load(SkyController*);
             void unload();
 
         private:
             typedef void (SkyPanelWidget::*SkyControllerWidgetMemFn)();
 
-            void setupSkyboxBox(QVBoxLayout *);
-            QHBoxLayout *createFilenameInputText(QGridLayout *, int, const QString&, QLineEdit **);
-            QPushButton *createSelectFileButton(QHBoxLayout *);
-            QPushButton *createClearFileButton(QHBoxLayout *);
+            void setupSkyboxBox(QVBoxLayout*);
+            QHBoxLayout *createFilenameInputText(QGridLayout*, int, const QString&, QLineEdit **);
+            QPushButton *createSelectFileButton(QHBoxLayout*);
+            QPushButton *createClearFileButton(QHBoxLayout*);
 
             void setupSkyDataFrom(const std::unique_ptr<Skybox>&);
 
@@ -50,7 +50,7 @@ namespace urchin {
             void showYpSkyboxFilenameDialog();
             void showZnSkyboxFilenameDialog();
             void showZpSkyboxFilenameDialog();
-            void showSkyboxFilenameDialog(QLineEdit *);
+            void showSkyboxFilenameDialog(QLineEdit*);
 
             void clearXnSkyboxFilename();
             void clearXpSkyboxFilename();
@@ -58,7 +58,7 @@ namespace urchin {
             void clearYpSkyboxFilename();
             void clearZnSkyboxFilename();
             void clearZpSkyboxFilename();
-            void clearSkyboxFilename(QLineEdit *);
+            void clearSkyboxFilename(QLineEdit*);
 
             void skyChanged();
     };

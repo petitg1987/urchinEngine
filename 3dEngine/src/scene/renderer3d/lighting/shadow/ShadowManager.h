@@ -32,13 +32,13 @@ namespace urchin {
                 NUMBER_SHADOW_MAPS_UPDATE
             };
 
-            ShadowManager(LightManager *, OctreeManager<Model>*);
+            ShadowManager(LightManager*, OctreeManager<Model>*);
             ~ShadowManager() override;
 
             void initiateShaderVariables(const std::unique_ptr<Shader>&);
             void onResize(unsigned int, unsigned int);
             void onCameraProjectionUpdate(const Camera*);
-            void notify(Observable *, int) override;
+            void notify(Observable*, int) override;
 
             float getShadowMapBias() const;
 

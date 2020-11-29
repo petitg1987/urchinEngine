@@ -23,16 +23,16 @@ namespace urchin {
             void solveConstraints(float, std::vector<ManifoldResult>&);
 
         private:
-            void setupConstraints(std::vector<ManifoldResult> &, float);
+            void setupConstraints(std::vector<ManifoldResult>&, float);
             void solveConstraints();
 
             CommonSolvingData fillCommonSolvingData(const ManifoldResult&, const ManifoldContactPoint&);
             ImpulseSolvingData fillImpulseSolvingData(const CommonSolvingData&, float) const;
 
-            void solveNormalConstraint(ConstraintSolving *);
-            void solveTangentConstraint(ConstraintSolving *);
+            void solveNormalConstraint(ConstraintSolving*);
+            void solveTangentConstraint(ConstraintSolving*);
 
-            void applyImpulse(WorkRigidBody *, WorkRigidBody*, const CommonSolvingData&, const Vector3<float>&);
+            void applyImpulse(WorkRigidBody*, WorkRigidBody*, const CommonSolvingData&, const Vector3<float>&);
             Vector3<float> computeRelativeVelocity(const CommonSolvingData&) const;
             Vector3<float> computeTangent(const CommonSolvingData&, const Vector3<float>&) const;
 

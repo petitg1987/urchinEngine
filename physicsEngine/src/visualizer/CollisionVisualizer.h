@@ -16,10 +16,10 @@ namespace urchin {
     */
     class CollisionVisualizer : public Observer {
         public:
-            explicit CollisionVisualizer(CollisionWorld *);
+            explicit CollisionVisualizer(CollisionWorld*);
             ~CollisionVisualizer() override;
 
-            void notify(Observable *, int) override;
+            void notify(Observable*, int) override;
 
             std::vector<ManifoldResult> getManifoldResults() const;
 

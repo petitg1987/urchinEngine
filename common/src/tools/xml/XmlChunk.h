@@ -26,7 +26,7 @@ namespace urchin {
             friend class XmlParser;
             friend class XmlWriter;
 
-            explicit XmlChunk(TiXmlElement *);
+            explicit XmlChunk(TiXmlElement*);
             explicit XmlChunk(const TiXmlElement*);
 
             std::string getAttributeValue(const std::string&) const;

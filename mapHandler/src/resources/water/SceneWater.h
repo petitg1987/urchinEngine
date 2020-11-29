@@ -18,13 +18,13 @@ namespace urchin {
             SceneWater();
             ~SceneWater();
 
-            void setWaterManagers(Renderer3d *);
+            void setWaterManagers(Renderer3d*);
 
             std::string getName() const;
             void setName(const std::string&);
 
             Water *getWater() const;
-            void setWater(Water *);
+            void setWater(Water*);
 
         private:
             void loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);

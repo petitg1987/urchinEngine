@@ -26,13 +26,13 @@ namespace urchin {
             void writeOn(const std::shared_ptr<XmlChunk>&, const Model*, XmlWriter&) const;
 
         private:
-            void loadAnimationsOn(Model *, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
+            void loadAnimationsOn(Model*, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
             void writeAnimationsOn(const std::shared_ptr<XmlChunk>&, const Model*, XmlWriter&) const;
 
-            void loadTransformOn(Model *, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
+            void loadTransformOn(Model*, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
             void writeTransformOn(const std::shared_ptr<XmlChunk>&, const Model*, XmlWriter&) const;
 
-            void loadFlagsOn(Model *, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
+            void loadFlagsOn(Model*, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
             void writeFlagsOn(const std::shared_ptr<XmlChunk>&, const Model*, XmlWriter&) const;
     };
 

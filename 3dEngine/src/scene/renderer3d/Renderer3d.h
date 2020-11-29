@@ -36,7 +36,7 @@ namespace urchin {
 
             //scene properties
             void onResize(unsigned int, unsigned int) override;
-            void notify(Observable *, int) override;
+            void notify(Observable*, int) override;
 
             //managers
             OctreeManager<Model> *getModelOctreeManager() const;
@@ -63,13 +63,13 @@ namespace urchin {
             void activateAntiAliasing(bool);
 
             //camera
-            void setCamera(Camera *);
+            void setCamera(Camera*);
             Camera *getCamera() const;
 
             //models
-            void addModel(Model *);
-            void removeModel(Model *);
-            bool isModelExist(Model *);
+            void addModel(Model*);
+            void removeModel(Model*);
+            bool isModelExist(Model*);
 
             //events
             bool isPaused() const;

@@ -16,10 +16,10 @@ namespace urchin {
             BodyAABBTree();
             ~BodyAABBTree() override;
 
-            void addBody(AbstractWorkBody *, PairContainer*);
+            void addBody(AbstractWorkBody*, PairContainer*);
             void postAddObjectCallback(AABBNode<AbstractWorkBody *>*) override;
 
-            void removeBody(AbstractWorkBody *);
+            void removeBody(AbstractWorkBody*);
             void preRemoveObjectCallback(AABBNode<AbstractWorkBody *>*) override;
 
             void updateBodies();
@@ -29,7 +29,7 @@ namespace urchin {
 
         private:
             void computeOverlappingPairsFor(AABBNode<AbstractWorkBody *>*);
-            void createOverlappingPair(BodyAABBNodeData *, BodyAABBNodeData*);
+            void createOverlappingPair(BodyAABBNodeData*, BodyAABBNodeData*);
             void removeOverlappingPairs(const BodyAABBNodeData*);
             void removeAlternativePairContainerReferences(const AbstractWorkBody*, PairContainer*);
 

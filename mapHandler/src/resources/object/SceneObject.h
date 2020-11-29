@@ -27,15 +27,15 @@ namespace urchin {
             SceneObject();
             ~SceneObject() override;
 
-            void setObjectManagers(Renderer3d *, PhysicsWorld*, AIManager*);
+            void setObjectManagers(Renderer3d*, PhysicsWorld*, AIManager*);
 
             const std::string &getName() const;
             void setName(const std::string&);
 
             Model *getModel() const;
-            void setModel(Model *);
+            void setModel(Model*);
 
-            void setupInteractiveBody(RigidBody *);
+            void setupInteractiveBody(RigidBody*);
 
             RigidBody *getRigidBody() const override;
 
@@ -46,7 +46,7 @@ namespace urchin {
             void loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
             void writeOn(const std::shared_ptr<XmlChunk>&, XmlWriter&) const;
 
-            void setupRigidBody(RigidBody *);
+            void setupRigidBody(RigidBody*);
             void setupAIObject();
 
             void deleteRigidBody();

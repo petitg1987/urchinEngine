@@ -8,7 +8,7 @@ namespace urchin {
 
     class LightScopeDisplayer {
         public:
-            explicit LightScopeDisplayer(SceneManager *);
+            explicit LightScopeDisplayer(SceneManager*);
             ~LightScopeDisplayer();
 
             void displayLightScopeFor(const SceneLight*);

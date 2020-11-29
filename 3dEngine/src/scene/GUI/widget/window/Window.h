@@ -22,7 +22,7 @@ namespace urchin {
 
             void createOrUpdateWidget() override;
 
-            void addChild(Widget *) override;
+            void addChild(Widget*) override;
 
             void display(const RenderTarget*, const ShaderVar&, float) override;
 

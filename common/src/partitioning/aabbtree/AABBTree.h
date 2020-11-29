@@ -18,17 +18,17 @@ namespace urchin {
 
             AABBNode<OBJ> *getRootNode() const;
             AABBNodeData<OBJ> *getNodeData(OBJ) const;
-            void getAllNodeObjects(std::vector<OBJ> &) const;
+            void getAllNodeObjects(std::vector<OBJ>&) const;
 
-            void addObject(AABBNodeData<OBJ> *);
-            virtual void postAddObjectCallback(AABBNode<OBJ> *);
+            void addObject(AABBNodeData<OBJ>*);
+            virtual void postAddObjectCallback(AABBNode<OBJ>*);
 
-            void removeObject(AABBNodeData<OBJ> *);
+            void removeObject(AABBNodeData<OBJ>*);
             void removeObject(OBJ);
-            virtual void preRemoveObjectCallback(AABBNode<OBJ> *);
+            virtual void preRemoveObjectCallback(AABBNode<OBJ>*);
 
             void updateObjects();
-            virtual void preUpdateObjectCallback(AABBNode<OBJ> *);
+            virtual void preUpdateObjectCallback(AABBNode<OBJ>*);
 
             void aabboxQuery(const AABBox<float>&, std::vector<OBJ>&) const;
             void rayQuery(const Ray<float>&, std::vector<OBJ>&) const;
@@ -40,9 +40,9 @@ namespace urchin {
 
         private:
             std::vector<AABBNodeData<OBJ> *> extractAllNodeData();
-            void insertNode(AABBNode<OBJ> *, AABBNode<OBJ>*);
-            void replaceNode(AABBNode<OBJ> *, AABBNode<OBJ>*);
-            void removeNode(AABBNode<OBJ> *);
+            void insertNode(AABBNode<OBJ>*, AABBNode<OBJ>*);
+            void replaceNode(AABBNode<OBJ>*, AABBNode<OBJ>*);
+            void removeNode(AABBNode<OBJ>*);
 
             float fatMargin;
             AABBNode<OBJ> *rootNode;

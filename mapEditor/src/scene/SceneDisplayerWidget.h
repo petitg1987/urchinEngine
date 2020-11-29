@@ -17,14 +17,14 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            SceneDisplayerWidget(QWidget *, const StatusBarController&, std::string);
+            SceneDisplayerWidget(QWidget*, const StatusBarController&, std::string);
             ~SceneDisplayerWidget() override;
 
             enum NotificationType {
                 BODY_PICKED
             };
 
-            void loadMap(SceneController *, const std::string&, const std::string&);
+            void loadMap(SceneController*, const std::string&, const std::string&);
             void saveState(const std::string&) const;
             void closeMap();
 
@@ -38,16 +38,16 @@ namespace urchin {
             void paintGL() override;
             void resizeGL(int, int) override;
 
-            void keyPressEvent(QKeyEvent *) override;
-            void keyReleaseEvent(QKeyEvent *) override;
-            void mousePressEvent(QMouseEvent *) override;
-            void mouseReleaseEvent(QMouseEvent *) override;
-            void mouseMoveEvent(QMouseEvent *) override;
-            void leaveEvent(QEvent *) override;
+            void keyPressEvent(QKeyEvent*) override;
+            void keyReleaseEvent(QKeyEvent*) override;
+            void mousePressEvent(QMouseEvent*) override;
+            void mouseReleaseEvent(QMouseEvent*) override;
+            void mouseMoveEvent(QMouseEvent*) override;
+            void leaveEvent(QEvent*) override;
 
             bool onMouseClickBodyPickup();
             const std::string &getLastPickedBodyId() const;
-            void addObserverObjectMoveController(Observer *, int);
+            void addObserverObjectMoveController(Observer*, int);
 
         private:
             void updateSceneDisplayerViewProperties();

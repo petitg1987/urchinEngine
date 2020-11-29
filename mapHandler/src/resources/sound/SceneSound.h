@@ -23,15 +23,15 @@ namespace urchin {
             SceneSound();
             ~SceneSound();
 
-            void setSoundManager(SoundManager *);
+            void setSoundManager(SoundManager*);
 
             std::string getName() const;
             void setName(const std::string&);
 
             Sound *getSound() const;
             SoundTrigger *getSoundTrigger() const;
-            void setSoundElements(Sound *, SoundTrigger*);
-            void changeSoundTrigger(SoundTrigger *);
+            void setSoundElements(Sound*, SoundTrigger*);
+            void changeSoundTrigger(SoundTrigger*);
 
         private:
             void loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);

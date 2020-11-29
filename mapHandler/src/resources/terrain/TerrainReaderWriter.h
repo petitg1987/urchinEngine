@@ -43,10 +43,10 @@ namespace urchin {
             Terrain *buildTerrainFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
             void buildChunkFrom(const std::shared_ptr<XmlChunk>&, const Terrain*, XmlWriter&) const;
 
-            void loadPropertiesOn(Terrain *, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
+            void loadPropertiesOn(Terrain*, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
             void writePropertiesOn(const std::shared_ptr<XmlChunk>&, const Terrain*, XmlWriter&) const;
 
-            void loadGrassOn(Terrain *, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
+            void loadGrassOn(Terrain*, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
             void writeGrassOn(const std::shared_ptr<XmlChunk>&, const Terrain*, XmlWriter&) const;
     };
 

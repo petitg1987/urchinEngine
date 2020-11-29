@@ -15,12 +15,12 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            NewWaterDialog(QWidget *parent, const WaterController*);
+            NewWaterDialog(QWidget*, const WaterController*);
 
             SceneWater *getSceneWater() const;
 
         private:
-            void setupNameFields(QGridLayout *);
+            void setupNameFields(QGridLayout*);
 
             void updateWaterName();
             int buildSceneWater(int);

@@ -22,8 +22,8 @@ namespace urchin {
                 REMOVE_WORK_BODY, //A body has been removed from the world
             };
 
-            void addBody(AbstractBody *);
-            void removeBody(AbstractBody *);
+            void addBody(AbstractBody*);
+            void removeBody(AbstractBody*);
             AbstractWorkBody *getLastUpdatedWorkBody() const;
 
             void setupWorkBodies();
@@ -32,9 +32,9 @@ namespace urchin {
             const std::vector<AbstractWorkBody *> &getWorkBodies() const;
 
         private:
-            void createNewWorkBody(AbstractBody *);
-            std::vector<AbstractBody *>::iterator deleteBody(AbstractBody *, const std::vector<AbstractBody *>::iterator&);
-            void deleteWorkBody(AbstractBody *body);
+            void createNewWorkBody(AbstractBody*);
+            std::vector<AbstractBody *>::iterator deleteBody(AbstractBody*, const std::vector<AbstractBody *>::iterator&);
+            void deleteWorkBody(AbstractBody*);
 
             std::vector<AbstractBody *> bodies;
             std::vector<AbstractWorkBody *> workBodies;

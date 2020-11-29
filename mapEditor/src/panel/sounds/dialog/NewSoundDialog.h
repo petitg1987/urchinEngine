@@ -19,14 +19,14 @@ namespace urchin {
         #define POINT_SOUND_LABEL "Point"
 
         public:
-            NewSoundDialog(QWidget *parent, const SoundController*);
+            NewSoundDialog(QWidget*, const SoundController*);
 
             SceneSound *getSceneSound() const;
 
         private:
-            void setupNameFields(QGridLayout *);
-            void setupSoundFilenameFields(QGridLayout *);
-            void setupSoundTypeFields(QGridLayout *);
+            void setupNameFields(QGridLayout*);
+            void setupSoundFilenameFields(QGridLayout*);
+            void setupSoundTypeFields(QGridLayout*);
 
             void updateSoundName();
             int buildSceneSound(int);

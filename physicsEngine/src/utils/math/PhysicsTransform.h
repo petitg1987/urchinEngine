@@ -39,7 +39,7 @@ namespace urchin {
             Quaternion<float> orientation;
     };
 
-    std::ostream& operator <<(std::ostream &, const PhysicsTransform&);
+    std::ostream& operator <<(std::ostream&, const PhysicsTransform&);
 
 }
 

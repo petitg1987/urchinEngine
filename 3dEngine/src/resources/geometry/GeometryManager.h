@@ -15,8 +15,8 @@ namespace urchin {
             explicit GeometryManager(const RenderTarget*);
             virtual ~GeometryManager() = default;
 
-            void addGeometry(GeometryModel *);
-            void removeGeometry(GeometryModel *);
+            void addGeometry(GeometryModel*);
+            void removeGeometry(GeometryModel*);
 
             void onCameraProjectionUpdate(const Camera*);
 

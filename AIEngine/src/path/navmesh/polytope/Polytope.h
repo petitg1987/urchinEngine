@@ -43,7 +43,7 @@ namespace urchin {
             bool obstacleCandidate;
     };
 
-    std::ostream& operator <<(std::ostream &, const Polytope&);
+    std::ostream& operator <<(std::ostream&, const Polytope&);
 
 }
 

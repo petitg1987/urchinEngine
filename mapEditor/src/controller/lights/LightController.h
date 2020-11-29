@@ -15,7 +15,7 @@ namespace urchin {
             LightController();
 
             std::list<const SceneLight *> getSceneLights() const;
-            void addSceneLight(SceneLight *);
+            void addSceneLight(SceneLight*);
             void removeSceneLight(const SceneLight*);
 
             const SceneLight *updateSceneLightGeneralProperties(const SceneLight*, const Point3<float>&, bool);

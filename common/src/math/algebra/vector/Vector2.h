@@ -56,7 +56,7 @@ namespace urchin {
     template<class T> Vector2<T> operator *(const Matrix2<T>&, const Vector2<T>&);
     template<class T> Vector2<T> operator *(const Vector2<T>&, const Matrix2<T>&);
 
-    template<class T> std::ostream& operator <<(std::ostream &, const Vector2<T>&);
+    template<class T> std::ostream& operator <<(std::ostream&, const Vector2<T>&);
 
 }
 

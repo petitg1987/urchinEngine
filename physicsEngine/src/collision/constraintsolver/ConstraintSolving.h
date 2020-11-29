@@ -15,7 +15,7 @@ namespace urchin {
     */
     class ConstraintSolving {
         public:
-            ConstraintSolving(WorkRigidBody *, WorkRigidBody*, ManifoldContactPoint&);
+            ConstraintSolving(WorkRigidBody*, WorkRigidBody*, ManifoldContactPoint&);
 
             WorkRigidBody *getBody1();
             WorkRigidBody *getBody2();

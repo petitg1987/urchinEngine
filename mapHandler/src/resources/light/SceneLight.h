@@ -19,13 +19,13 @@ namespace urchin {
             SceneLight();
             ~SceneLight();
 
-            void setLightManager(LightManager *);
+            void setLightManager(LightManager*);
 
             std::string getName() const;
             void setName(const std::string&);
 
             Light *getLight() const;
-            void setLight(Light *);
+            void setLight(Light*);
 
         private:
             void loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);

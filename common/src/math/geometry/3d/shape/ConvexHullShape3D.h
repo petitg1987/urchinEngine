@@ -52,7 +52,7 @@ namespace urchin {
             std::map<std::size_t, IndexedTriangle3D<T>> indexedTriangles; //first: triangle index, second: triangle representing the convex hull
     };
 
-    template<class T> std::ostream& operator <<(std::ostream &, const ConvexHullShape3D<T>&);
+    template<class T> std::ostream& operator <<(std::ostream&, const ConvexHullShape3D<T>&);
 
 }
 

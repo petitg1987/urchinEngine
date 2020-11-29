@@ -20,10 +20,10 @@ namespace urchin {
                 OCTREE_BUILT,
             };
 
-            void notify(Observable *, int) override;
+            void notify(Observable*, int) override;
 
-            void addOctreeable(TOctreeable *);
-            void removeOctreeable(TOctreeable *);
+            void addOctreeable(TOctreeable*);
+            void removeOctreeable(TOctreeable*);
 
             void updateMinSize(float);
             void refreshOctreeables();
@@ -38,7 +38,7 @@ namespace urchin {
 
         private:
             void buildOctree(std::vector<TOctreeable *>&);
-            bool resizeOctree(TOctreeable *);
+            bool resizeOctree(TOctreeable*);
 
             float overflowSize;
             int minSize;

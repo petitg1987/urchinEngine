@@ -28,13 +28,13 @@ namespace urchin {
         private:
             bool continueExecution();
 
-            bool processTask(StreamUpdateTask *);
-            void deleteTask(StreamUpdateTask *);
+            bool processTask(StreamUpdateTask*);
+            void deleteTask(StreamUpdateTask*);
 
-            void fillAndPushChunk(StreamUpdateTask *, unsigned int);
-            void fillChunk(StreamUpdateTask *, unsigned int) const;
-            unsigned int retrieveChunkId(StreamUpdateTask *, ALuint) const;
-            void clearQueue(StreamUpdateTask *);
+            void fillAndPushChunk(StreamUpdateTask*, unsigned int);
+            void fillChunk(StreamUpdateTask*, unsigned int) const;
+            unsigned int retrieveChunkId(StreamUpdateTask*, ALuint) const;
+            void clearQueue(StreamUpdateTask*);
 
             const unsigned int nbChunkBuffer;
             const unsigned int nbSecondByChunk;

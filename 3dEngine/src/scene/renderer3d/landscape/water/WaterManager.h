@@ -16,8 +16,8 @@ namespace urchin {
 
             void onCameraProjectionUpdate(const Camera*);
 
-            void addWater(Water *);
-            void removeWater(Water *);
+            void addWater(Water*);
+            void removeWater(Water*);
 
             void display(const Camera*, FogManager*, float) const;
 

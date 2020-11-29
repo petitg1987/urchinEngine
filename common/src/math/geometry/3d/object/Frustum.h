@@ -71,7 +71,7 @@ namespace urchin {
     template<class T> Frustum<T> operator *(const Matrix4<T>&, const Frustum<T>&);
     template<class T> Frustum<T> operator *(const Frustum<T>&, const Matrix4<T>&);
 
-    template<class T> std::ostream& operator <<(std::ostream &, const Frustum<T>&);
+    template<class T> std::ostream& operator <<(std::ostream&, const Frustum<T>&);
 
 }
 

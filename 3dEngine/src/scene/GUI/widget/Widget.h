@@ -31,10 +31,10 @@ namespace urchin {
             void onResize(unsigned int, unsigned int);
             virtual void createOrUpdateWidget() = 0;
 
-            virtual void addChild(Widget *);
-            virtual void removeChild(Widget *);
+            virtual void addChild(Widget*);
+            virtual void removeChild(Widget*);
 
-            void setParent(Widget *);
+            void setParent(Widget*);
             Widget *getParent() const;
 
             void addEventListener(const std::shared_ptr<EventListener>&);

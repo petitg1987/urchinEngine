@@ -440,7 +440,7 @@ public:
 		    A TiXmlDocument will read nodes until it reads a root element, and
 			all the children of that root element.
 	    */	
-	    friend std::ostream& operator<< (std::ostream &out, const TiXmlNode& base);
+	    friend std::ostream& operator<< (std::ostream&out, const TiXmlNode& base);
 
 		/// Appends the XML node or attribute to a std::string.
 		friend std::string& operator<< (std::string& out, const TiXmlNode& base );

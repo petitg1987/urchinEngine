@@ -66,7 +66,7 @@ namespace urchin {
     template<class T> AABBox<T> operator *(const Matrix4<T>&, const AABBox<T>&);
     template<class T> AABBox<T> operator *(const AABBox<T>&, const Matrix4<T>&);
 
-    template<class T> std::ostream& operator <<(std::ostream &, const AABBox<T>&);
+    template<class T> std::ostream& operator <<(std::ostream&, const AABBox<T>&);
 
 }
 

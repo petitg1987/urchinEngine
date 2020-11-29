@@ -15,13 +15,13 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            NewTerrainDialog(QWidget *parent, const TerrainController*);
+            NewTerrainDialog(QWidget*, const TerrainController*);
 
             SceneTerrain *getSceneTerrain() const;
 
         private:
-            void setupNameFields(QGridLayout *);
-            void setupHeightFilenameFields(QGridLayout *);
+            void setupNameFields(QGridLayout*);
+            void setupHeightFilenameFields(QGridLayout*);
 
             void updateTerrainName();
             int buildSceneTerrain(int);

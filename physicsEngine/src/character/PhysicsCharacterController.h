@@ -47,8 +47,8 @@ namespace urchin {
 
             void recoverFromPenetration(float);
             SignificantContactValues resetSignificantContactValues();
-            void saveSignificantContactValues(SignificantContactValues &, const Vector3<float>&);
-            void computeSignificantContactValues(SignificantContactValues &, float);
+            void saveSignificantContactValues(SignificantContactValues&, const Vector3<float>&);
+            void computeSignificantContactValues(SignificantContactValues&, float);
 
             float computeSlope();
 

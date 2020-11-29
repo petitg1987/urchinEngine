@@ -26,18 +26,18 @@ namespace urchin {
             ~NarrowPhaseManager();
 
             void process(float, const std::vector<OverlappingPair *>&, std::vector<ManifoldResult>&);
-            void processGhostBody(WorkGhostBody *, std::vector<ManifoldResult>&);
+            void processGhostBody(WorkGhostBody*, std::vector<ManifoldResult>&);
 
             ccd_set continuousCollisionTest(const TemporalObject&,  const std::vector<AbstractWorkBody *>&) const;
             ccd_set rayTest(const Ray<float>&, const std::vector<AbstractWorkBody *>&) const;
 
         private:
             void processOverlappingPairs(const std::vector<OverlappingPair *>&, std::vector<ManifoldResult>&);
-            void processOverlappingPair(OverlappingPair *, std::vector<ManifoldResult>&);
-            std::shared_ptr<CollisionAlgorithm> retrieveCollisionAlgorithm(OverlappingPair *);
+            void processOverlappingPair(OverlappingPair*, std::vector<ManifoldResult>&);
+            std::shared_ptr<CollisionAlgorithm> retrieveCollisionAlgorithm(OverlappingPair*);
 
             void processPredictiveContacts(float, std::vector<ManifoldResult>&);
-            void handleContinuousCollision(AbstractWorkBody *, const PhysicsTransform&, const PhysicsTransform&, std::vector<ManifoldResult>&);
+            void handleContinuousCollision(AbstractWorkBody*, const PhysicsTransform&, const PhysicsTransform&, std::vector<ManifoldResult>&);
             void trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape>&, const TemporalObject&, AbstractWorkBody*, ccd_set&) const;
             void continuousCollisionTest(const TemporalObject&, const TemporalObject&, AbstractWorkBody*, ccd_set&) const;
 

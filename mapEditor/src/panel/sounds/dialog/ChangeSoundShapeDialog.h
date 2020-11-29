@@ -16,12 +16,12 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            explicit ChangeSoundShapeDialog(QWidget *parent);
+            explicit ChangeSoundShapeDialog(QWidget*);
 
             SoundShape::ShapeType getShapeType() const;
 
         private:
-            void setupSoundShapeTypeFields(QGridLayout *);
+            void setupSoundShapeTypeFields(QGridLayout*);
 
             void done(int) override;
 

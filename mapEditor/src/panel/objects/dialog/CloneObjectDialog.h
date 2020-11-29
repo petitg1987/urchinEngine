@@ -16,12 +16,12 @@ namespace urchin {
             Q_OBJECT
 
         public:
-            CloneObjectDialog(QWidget *parent, const ObjectController*);
+            CloneObjectDialog(QWidget*, const ObjectController*);
 
             SceneObject *getSceneObject() const;
 
         private:
-            void setupNameFields(QGridLayout *);
+            void setupNameFields(QGridLayout*);
 
             void updateObjectName();
             int buildSceneObject(int);

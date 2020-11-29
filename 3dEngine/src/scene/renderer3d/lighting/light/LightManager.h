@@ -27,8 +27,8 @@ namespace urchin {
 
             unsigned int getMaxLights() const;
             const std::vector<Light *> &getVisibleLights() const;
-            void addLight(Light *);
-            void removeLight(Light *);
+            void addLight(Light*);
+            void removeLight(Light*);
 
             void setGlobalAmbientColor(const Point4<float>&);
             const Point4<float> &getGlobalAmbientColor() const;
@@ -40,7 +40,7 @@ namespace urchin {
             void drawLightOctree(const Matrix4<float>&, const Matrix4<float>&) const;
 
         private:
-            void onLightEvent(Light *, NotificationType);
+            void onLightEvent(Light*, NotificationType);
             void checkMaxLight(const std::vector<Light *>&) const;
 
             const RenderTarget *renderTarget;

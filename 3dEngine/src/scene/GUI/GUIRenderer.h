@@ -18,7 +18,7 @@ namespace urchin {
             ~GUIRenderer() override;
 
             void onResize(unsigned int, unsigned  int) override;
-            void notify(Observable *, int) override;
+            void notify(Observable*, int) override;
             void setupSkin(const std::string&);
 
             bool onKeyPress(unsigned int) override;
@@ -27,8 +27,8 @@ namespace urchin {
             bool onMouseMove(int, int) override;
             void onDisable() override;
 
-            void addWidget(Widget *);
-            void removeWidget(Widget *);
+            void addWidget(Widget*);
+            void removeWidget(Widget*);
 
             void display(float) override;
 

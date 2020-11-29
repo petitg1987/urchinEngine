@@ -61,7 +61,7 @@ namespace urchin {
     template<class T> Point2<T> operator *(const Matrix2<T>&, const Point2<T>&);
     template<class T> Point2<T> operator *(const Point2<T>&, const Matrix2<T>&);
 
-    template<class T> std::ostream& operator <<(std::ostream &, const Point2<T>&);
+    template<class T> std::ostream& operator <<(std::ostream&, const Point2<T>&);
 
 }
 

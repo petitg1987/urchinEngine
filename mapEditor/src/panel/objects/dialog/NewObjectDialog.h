@@ -16,13 +16,13 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            NewObjectDialog(QWidget *parent, const ObjectController*);
+            NewObjectDialog(QWidget*, const ObjectController*);
 
             SceneObject *getSceneObject() const;
 
         private:
-            void setupNameFields(QGridLayout *);
-            void setupMeshFilenameFields(QGridLayout *);
+            void setupNameFields(QGridLayout*);
+            void setupMeshFilenameFields(QGridLayout*);
 
             void updateObjectName();
             int buildSceneObject(int);

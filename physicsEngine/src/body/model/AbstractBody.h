@@ -28,10 +28,10 @@ namespace urchin {
             bool needFullRefresh() const;
 
             virtual AbstractWorkBody *createWorkBody() const = 0;
-            void setWorkBody(AbstractWorkBody *);
+            void setWorkBody(AbstractWorkBody*);
             AbstractWorkBody *getWorkBody() const;
 
-            virtual void updateTo(AbstractWorkBody *);
+            virtual void updateTo(AbstractWorkBody*);
             virtual bool applyFrom(const AbstractWorkBody*);
 
             void setTransform(const Transform<float>&);

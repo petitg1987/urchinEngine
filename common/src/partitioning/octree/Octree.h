@@ -26,8 +26,8 @@ namespace urchin {
             const std::vector<Octree<TOctreeable> *> &getChildren() const;
 
             const std::vector<TOctreeable *> &getOctreeables() const;
-            void addOctreeable(TOctreeable *, bool addRef);
-            void removeOctreeable(TOctreeable *, bool removeRef);
+            void addOctreeable(TOctreeable*, bool addRef);
+            void removeOctreeable(TOctreeable*, bool removeRef);
 
         private:
             std::vector<Octree *> children;

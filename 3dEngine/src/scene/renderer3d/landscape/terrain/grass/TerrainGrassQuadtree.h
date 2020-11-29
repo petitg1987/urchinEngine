@@ -21,7 +21,7 @@ namespace urchin {
             bool isLeaf() const;
             const std::unique_ptr<AABBox<float>> &getBox() const;
 
-            void addChild(TerrainGrassQuadtree *);
+            void addChild(TerrainGrassQuadtree*);
             const std::vector<TerrainGrassQuadtree *> &getChildren() const;
 
             void addVertex(const Point3<float>&, const Vector3<float>&);

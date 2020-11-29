@@ -18,7 +18,7 @@ namespace urchin {
             ShapeType getShapeType() const override;
 
         private:
-            void fillWithCaps(std::vector<Point3<float>> &, const Quaternion<float>&) const;
+            void fillWithCaps(std::vector<Point3<float>>&, const Quaternion<float>&) const;
 
             Capsule<float> capsule;
             int sides, slices;

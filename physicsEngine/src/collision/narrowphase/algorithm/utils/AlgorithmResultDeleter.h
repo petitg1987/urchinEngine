@@ -8,7 +8,7 @@ namespace urchin {
 
     class AlgorithmResultDeleter {
         public:
-            void operator()(AlgorithmResult *);
+            void operator()(AlgorithmResult*);
     };
 
 }

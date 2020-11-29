@@ -18,7 +18,7 @@ namespace urchin {
 
             std::vector<ProfilerNode *> getChildren() const;
             ProfilerNode *findChildren(const std::string&) const;
-            void addChild(ProfilerNode *);
+            void addChild(ProfilerNode*);
 
             bool isStarted();
             void startTimer();

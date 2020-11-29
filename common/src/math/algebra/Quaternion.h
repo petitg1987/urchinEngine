@@ -51,7 +51,7 @@ namespace urchin {
 
             Matrix4<T> toMatrix4() const;
             Matrix3<T> toMatrix3() const;
-            void toAxisAngle(Vector3<T> &, T&) const;
+            void toAxisAngle(Vector3<T>&, T&) const;
             Vector3<T> toEulerAngle(RotationSequence) const;
 
             Quaternion<T> operator +(const Quaternion<T>&) const;
@@ -80,7 +80,7 @@ namespace urchin {
     template<class T> Quaternion<T> operator *(const Quaternion<T>&, T);
     template<class T> Quaternion<T> operator *(T, const Quaternion<T>&);
 
-    template<class T> std::ostream& operator <<(std::ostream &, const Quaternion<T>&);
+    template<class T> std::ostream& operator <<(std::ostream&, const Quaternion<T>&);
 
 }
 

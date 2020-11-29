@@ -25,8 +25,8 @@ namespace urchin {
             BodyManager *getBodyManager() const;
             CollisionWorld *getCollisionWorld() const;
 
-            void addBody(AbstractBody *);
-            void removeBody(AbstractBody *);
+            void addBody(AbstractBody*);
+            void removeBody(AbstractBody*);
 
             void addProcessable(const std::shared_ptr<Processable>&);
             void removeProcessable(const std::shared_ptr<Processable>&);

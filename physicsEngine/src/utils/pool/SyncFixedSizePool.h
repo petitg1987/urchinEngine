@@ -13,7 +13,7 @@ namespace urchin {
             ~SyncFixedSizePool() = default;
 
             void* allocate(unsigned int);
-            void free(BaseType *ptr);
+            void free(BaseType*);
 
         private:
             std::mutex mutex;

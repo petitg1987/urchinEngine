@@ -15,7 +15,7 @@ namespace urchin {
         public:
             virtual ~Processable() = default;
 
-            virtual void initialize(PhysicsWorld *) = 0;
+            virtual void initialize(PhysicsWorld*) = 0;
 
             virtual void setup(float, const Vector3<float>&) = 0;
             virtual void execute(float, const Vector3<float>&) = 0;

@@ -19,13 +19,13 @@ namespace urchin {
         #define OMNIDIRECTIONAL_LIGHT_LABEL "Omnidirectional"
 
         public:
-            NewLightDialog(QWidget *parent, const LightController*);
+            NewLightDialog(QWidget*, const LightController*);
 
             SceneLight *getSceneLight() const;
 
         private:
-            void setupNameFields(QGridLayout *);
-            void setupLightTypeFields(QGridLayout *);
+            void setupNameFields(QGridLayout*);
+            void setupLightTypeFields(QGridLayout*);
 
             void updateLightName();
             int buildSceneLight(int);

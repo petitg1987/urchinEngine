@@ -11,7 +11,7 @@ namespace urchin {
 
     class Meshes {
         public:
-            explicit Meshes(ConstMeshes *);
+            explicit Meshes(ConstMeshes*);
             ~Meshes();
 
             unsigned int getNumberMeshes() const;

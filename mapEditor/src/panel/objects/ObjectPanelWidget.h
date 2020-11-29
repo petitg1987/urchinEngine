@@ -35,22 +35,22 @@ namespace urchin {
             ObjectTableView *getObjectTableView() const;
             BodyShapeWidget *getBodyShapeWidget() const;
 
-            void load(ObjectController *);
+            void load(ObjectController*);
             void unload();
 
         private:
-            void setupTransformBox(QVBoxLayout *);
-            void setupPosition(QGridLayout *);
-            void setupOrientation(QGridLayout *);
-            void setupScale(QGridLayout *);
-            void setupFlagsBox(QVBoxLayout *);
-            void setupPhysicsBox(QVBoxLayout *);
-            void setupPhysicsGeneralPropertiesBox(QVBoxLayout *);
-            void setupPhysicsDampingPropertiesBox(QVBoxLayout *);
-            void setupPhysicsFactorPropertiesBox(QVBoxLayout *);
-            void setupPhysicsShapeBox(QVBoxLayout *);
+            void setupTransformBox(QVBoxLayout*);
+            void setupPosition(QGridLayout*);
+            void setupOrientation(QGridLayout*);
+            void setupScale(QGridLayout*);
+            void setupFlagsBox(QVBoxLayout*);
+            void setupPhysicsBox(QVBoxLayout*);
+            void setupPhysicsGeneralPropertiesBox(QVBoxLayout*);
+            void setupPhysicsDampingPropertiesBox(QVBoxLayout*);
+            void setupPhysicsFactorPropertiesBox(QVBoxLayout*);
+            void setupPhysicsShapeBox(QVBoxLayout*);
 
-            void notify(Observable *, int) override;
+            void notify(Observable*, int) override;
             void setupObjectDataFrom(const SceneObject*);
             void setupObjectPhysicsDataFrom(const SceneObject*);
 

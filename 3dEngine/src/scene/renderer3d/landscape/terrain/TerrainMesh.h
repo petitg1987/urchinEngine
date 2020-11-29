@@ -36,12 +36,12 @@ namespace urchin {
             std::vector<unsigned int> findTriangleIndices(unsigned int) const;
 
             void writeTerrainMeshFile(const std::string&, const std::string&) const;
-            void writeVersion(std::ofstream &file, unsigned int) const;
-            void writeMd5(std::ofstream &file, const std::string&) const;
+            void writeVersion(std::ofstream&, unsigned int) const;
+            void writeMd5(std::ofstream&, const std::string&) const;
 
-            void loadTerrainMeshFile(std::ifstream &);
-            unsigned int readVersion(std::ifstream &) const;
-            std::string readMd5(std::ifstream &) const;
+            void loadTerrainMeshFile(std::ifstream&);
+            unsigned int readVersion(std::ifstream&) const;
+            std::string readMd5(std::ifstream&) const;
 
             std::string heightFilename;
             float xzScale;

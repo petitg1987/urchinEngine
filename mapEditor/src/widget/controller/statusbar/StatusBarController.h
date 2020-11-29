@@ -13,7 +13,7 @@ namespace urchin {
 
     class StatusBarController {
         public:
-            explicit StatusBarController(QMainWindow *);
+            explicit StatusBarController(QMainWindow*);
 
             void clearState();
             void applyState(StatusBarState);

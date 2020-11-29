@@ -59,7 +59,7 @@ namespace urchin {
             typedef std::multimap<std::size_t, Edge>::iterator it_diagonals;
 
             void createYMonotonePolygonsDiagonals();
-            std::vector<TypedPoint> buildSortedTypedPoints(bool &) const;
+            std::vector<TypedPoint> buildSortedTypedPoints(bool&) const;
             bool isFirstPointAboveSecond(std::size_t, std::size_t) const;
 
             void handleStartVertex(std::size_t);

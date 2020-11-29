@@ -15,8 +15,8 @@ namespace urchin {
 
             void onCameraProjectionUpdate(const Camera*);
 
-            void addTerrain(Terrain *);
-            void removeTerrain(Terrain *);
+            void addTerrain(Terrain*);
+            void removeTerrain(Terrain*);
 
             void setGrassDisplayDistance(float);
 

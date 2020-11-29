@@ -35,8 +35,8 @@ namespace urchin {
             ShaderVar getShaderVar(const std::string&) const;
             void setCustomGeometryShader(const std::string&, const std::map<std::string, std::string>&);
             void setCustomFragmentShader(const std::string&, const std::map<std::string, std::string>&);
-            void setCustomShaderVariable(CustomShaderVariable *);
-            void setCustomModelShaderVariable(CustomModelShaderVariable *);
+            void setCustomShaderVariable(CustomShaderVariable*);
+            void setCustomModelShaderVariable(CustomModelShaderVariable*);
 
             void setRenderTarget(const RenderTarget*);
             void setModels(const std::vector<Model *>&);

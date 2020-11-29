@@ -35,7 +35,7 @@ namespace urchin {
             ConvexHullShape3D<T> localizedConvexHullShape;
     };
 
-    template<class T> std::ostream& operator <<(std::ostream &, const ConvexHull3D<T>&);
+    template<class T> std::ostream& operator <<(std::ostream&, const ConvexHull3D<T>&);
 
 }
 

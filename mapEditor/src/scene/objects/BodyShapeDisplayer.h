@@ -8,7 +8,7 @@ namespace urchin {
 
     class BodyShapeDisplayer {
         public:
-            explicit BodyShapeDisplayer(SceneManager *);
+            explicit BodyShapeDisplayer(SceneManager*);
             ~BodyShapeDisplayer();
 
             void setSelectedSceneObject(const SceneObject*);

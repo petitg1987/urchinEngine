@@ -15,7 +15,7 @@ namespace urchin {
     */
     class ManifoldResult {
         public:
-            ManifoldResult(AbstractWorkBody *, AbstractWorkBody*);
+            ManifoldResult(AbstractWorkBody*, AbstractWorkBody*);
             ManifoldResult(const ManifoldResult&) = default;
             ManifoldResult(ManifoldResult &&) = default;
 

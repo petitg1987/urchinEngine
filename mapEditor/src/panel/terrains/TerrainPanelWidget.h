@@ -27,16 +27,16 @@ namespace urchin {
 
             TerrainTableView *getTerrainTableView() const;
 
-            void load(TerrainController *);
+            void load(TerrainController*);
             void unload();
 
         private:
-            void setupGeneralPropertiesBox(QVBoxLayout *);
-            void setupMeshBox(QVBoxLayout *);
-            void setupMaterialBox(QVBoxLayout *);
-            void setupGrassBox(QVBoxLayout *);
+            void setupGeneralPropertiesBox(QVBoxLayout*);
+            void setupMeshBox(QVBoxLayout*);
+            void setupMaterialBox(QVBoxLayout*);
+            void setupGrassBox(QVBoxLayout*);
 
-            void notify(Observable *, int) override;
+            void notify(Observable*, int) override;
             void setupTerrainDataFrom(const SceneTerrain*);
 
             TerrainController *terrainController;

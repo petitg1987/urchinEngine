@@ -41,7 +41,7 @@ namespace urchin {
             T d; //Distance to the origin. Positive if dot product between a vector from plane to origin and the normal is positive
     };
 
-    template<class T> std::ostream& operator <<(std::ostream &, const Plane<T>&);
+    template<class T> std::ostream& operator <<(std::ostream&, const Plane<T>&);
 
 }
 

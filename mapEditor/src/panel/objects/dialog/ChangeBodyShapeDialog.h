@@ -16,12 +16,12 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            ChangeBodyShapeDialog(QWidget *parent, bool);
+            ChangeBodyShapeDialog(QWidget*, bool);
 
             CollisionShape3D::ShapeType getShapeType() const;
 
         private:
-            void setupBodyShapeTypeFields(QGridLayout *);
+            void setupBodyShapeTypeFields(QGridLayout*);
 
             void done(int) override;
 

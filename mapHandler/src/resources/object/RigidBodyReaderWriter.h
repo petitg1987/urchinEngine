@@ -26,7 +26,7 @@ namespace urchin {
             void writeOn(const std::shared_ptr<XmlChunk>&, const RigidBody*, XmlWriter&) const;
 
         private:
-            void loadBodyPropertiesOn(RigidBody *, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
+            void loadBodyPropertiesOn(RigidBody*, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
             void writeBodyPropertiesOn(const std::shared_ptr<XmlChunk>&, const RigidBody*, XmlWriter&) const;
     };
 

@@ -54,7 +54,7 @@ namespace urchin {
     template<class T> OBBox<T> operator *(const Matrix4<T>&, const OBBox<T>&);
     template<class T> OBBox<T> operator *(const OBBox<T>&, const Matrix4<T>&);
 
-    template<class T> std::ostream& operator <<(std::ostream &, const OBBox<T>&);
+    template<class T> std::ostream& operator <<(std::ostream&, const OBBox<T>&);
 
 }
 

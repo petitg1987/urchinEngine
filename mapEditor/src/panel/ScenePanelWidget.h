@@ -21,7 +21,7 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            explicit ScenePanelWidget(QWidget *parent);
+            explicit ScenePanelWidget(QWidget*);
 
             enum NotificationType {
                 TAB_SELECTED
@@ -45,7 +45,7 @@ namespace urchin {
             SoundPanelWidget *getSoundPanelWidget() const;
             AIPanelWidget *getAIPanelWidget() const;
 
-            SceneController *loadMap(SceneController *);
+            SceneController *loadMap(SceneController*);
             void closeMap();
 
             TabName getTabSelected() const;

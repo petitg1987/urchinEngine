@@ -7,7 +7,7 @@ namespace urchin {
 
     class GroupBoxStyleHelper {
         public:
-            static void applyNormalStyle(QGroupBox *);
+            static void applyNormalStyle(QGroupBox*);
     };
 
 }

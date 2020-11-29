@@ -12,7 +12,7 @@ namespace urchin {
         public:
             friend class AABBTree<OBJ>;
 
-            explicit AABBNode(AABBNodeData<OBJ> *);
+            explicit AABBNode(AABBNodeData<OBJ>*);
             ~AABBNode();
 
             AABBNodeData<OBJ> *getNodeData() const;
@@ -20,12 +20,12 @@ namespace urchin {
             bool isLeaf() const;
             bool isRoot() const;
 
-            void setParent(AABBNode *);
+            void setParent(AABBNode*);
             AABBNode *getParent() const;
 
-            void setLeftChild(AABBNode *);
+            void setLeftChild(AABBNode*);
             AABBNode *getLeftChild() const;
-            void setRightChild(AABBNode *);
+            void setRightChild(AABBNode*);
             AABBNode *getRightChild() const;
 
             AABBNode *getSibling() const;

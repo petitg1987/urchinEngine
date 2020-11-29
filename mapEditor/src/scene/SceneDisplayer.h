@@ -31,7 +31,7 @@ namespace urchin {
                 LAST_VIEW_PROPERTIES
             };
 
-            SceneDisplayer(SceneController *, const MouseController&, const StatusBarController&);
+            SceneDisplayer(SceneController*, const MouseController&, const StatusBarController&);
             ~SceneDisplayer();
 
             void loadMap(const std::string&, const std::string&, const std::string&);

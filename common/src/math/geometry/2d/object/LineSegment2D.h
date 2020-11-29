@@ -35,7 +35,7 @@ namespace urchin {
             Point2<T> a, b;
     };
 
-    template<class T> std::ostream& operator <<(std::ostream &, const LineSegment2D<T>&);
+    template<class T> std::ostream& operator <<(std::ostream&, const LineSegment2D<T>&);
 
 }
 

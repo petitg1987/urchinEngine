@@ -15,7 +15,7 @@ namespace urchin {
             TerrainController();
 
             std::list<const SceneTerrain *> getSceneTerrains() const;
-            void addSceneTerrain(SceneTerrain *);
+            void addSceneTerrain(SceneTerrain*);
             void removeSceneTerrain(const SceneTerrain*);
 
             const SceneTerrain *updateSceneTerrainGeneralProperties(const SceneTerrain*, const Point3<float>&, float);

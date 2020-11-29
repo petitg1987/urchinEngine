@@ -18,7 +18,7 @@ namespace urchin {
 
             AbstractWorkBody *createWorkBody() const override;
 
-            void updateTo(AbstractWorkBody *) override;
+            void updateTo(AbstractWorkBody*) override;
             bool applyFrom(const AbstractWorkBody*) override;
 
             Vector3<float> getLinearVelocity() const;

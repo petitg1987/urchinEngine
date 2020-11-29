@@ -25,15 +25,15 @@ namespace urchin {
 
             LightTableView *getLightTableView() const;
 
-            void load(LightController *);
+            void load(LightController*);
             void unload();
 
         private:
-            void setupGeneralPropertiesBox(QVBoxLayout *);
-            void setupSpecificOmnidirectionalLightBox(QVBoxLayout *);
-            void setupSpecificSunLightBox(QVBoxLayout *);
+            void setupGeneralPropertiesBox(QVBoxLayout*);
+            void setupSpecificOmnidirectionalLightBox(QVBoxLayout*);
+            void setupSpecificSunLightBox(QVBoxLayout*);
 
-            void notify(Observable *, int) override;
+            void notify(Observable*, int) override;
             void setupLightDataFrom(const SceneLight*);
             void setupOmnidirectionalLightDataFrom(const OmnidirectionalLight*);
             void setupSunLightDataFrom(const SunLight*);

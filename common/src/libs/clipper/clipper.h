@@ -109,9 +109,9 @@ typedef std::vector< Path > Paths;
 inline Path& operator <<(Path& poly, const IntPoint& p) {poly.push_back(p); return poly;}
 inline Paths& operator <<(Paths& polys, const Path& p) {polys.push_back(p); return polys;}
 
-std::ostream& operator <<(std::ostream &s, const IntPoint&p);
-std::ostream& operator <<(std::ostream &s, const Path&p);
-std::ostream& operator <<(std::ostream &s, const Paths&p);
+std::ostream& operator <<(std::ostream&s, const IntPoint&p);
+std::ostream& operator <<(std::ostream&s, const Path&p);
+std::ostream& operator <<(std::ostream&s, const Paths&p);
 
 struct DoublePoint
 {
@@ -176,7 +176,7 @@ int PointInPolygon(const IntPoint&pt, const Path&path);
 
 void SimplifyPolygon(const Path &in_poly, Paths &out_polys, PolyFillType fillType = pftEvenOdd);
 void SimplifyPolygons(const Paths &in_polys, Paths &out_polys, PolyFillType fillType = pftEvenOdd);
-void SimplifyPolygons(Paths &polys, PolyFillType fillType = pftEvenOdd);
+void SimplifyPolygons(Paths&polys, PolyFillType fillType = pftEvenOdd);
 
 void CleanPolygon(const Path& in_poly, Path& out_poly, double distance = 1.415);
 void CleanPolygon(Path& poly, double distance = 1.415);
@@ -230,18 +230,18 @@ public:
   void PreserveCollinear(bool value) {m_PreserveCollinear = value;};
 protected:
   void DisposeLocalMinimaList();
-  TEdge* AddBoundsToLML(TEdge *e, bool IsClosed);
+  TEdge* AddBoundsToLML(TEdge*e, bool IsClosed);
   virtual void Reset();
   TEdge* ProcessBound(TEdge* E, bool IsClockwise);
   void InsertScanbeam(const cInt Y);
-  bool PopScanbeam(cInt &Y);
+  bool PopScanbeam(cInt&Y);
   bool LocalMinimaPending();
   bool PopLocalMinima(cInt Y, const LocalMinimum *&locMin);
   OutRec* CreateOutRec();
   void DisposeAllOutRecs();
   void DisposeOutRec(PolyOutList::size_type index);
-  void SwapPositionsInAEL(TEdge *edge1, TEdge*edge2);
-  void DeleteFromAEL(TEdge *e);
+  void SwapPositionsInAEL(TEdge*edge1, TEdge*edge2);
+  void DeleteFromAEL(TEdge*e);
   void UpdateEdgeIntoAEL(TEdge *&e);
 
   typedef std::vector<LocalMinimum> MinimaList;
@@ -309,43 +309,43 @@ private:
   bool IsEvenOddFillType(const TEdge& edge) const;
   bool IsEvenOddAltFillType(const TEdge& edge) const;
   void InsertLocalMinimaIntoAEL(const cInt botY);
-  void InsertEdgeIntoAEL(TEdge *edge, TEdge* startEdge);
-  void AddEdgeToSEL(TEdge *edge);
+  void InsertEdgeIntoAEL(TEdge*edge, TEdge* startEdge);
+  void AddEdgeToSEL(TEdge*edge);
   bool PopEdgeFromSEL(TEdge *&edge);
   void CopyAELToSEL();
-  void DeleteFromSEL(TEdge *e);
-  void SwapPositionsInSEL(TEdge *edge1, TEdge*edge2);
+  void DeleteFromSEL(TEdge*e);
+  void SwapPositionsInSEL(TEdge*edge1, TEdge*edge2);
   bool IsContributing(const TEdge& edge) const;
   bool IsTopHorz(const cInt XPos);
-  void DoMaxima(TEdge *e);
+  void DoMaxima(TEdge*e);
   void ProcessHorizontals();
-  void ProcessHorizontal(TEdge *horzEdge);
-  void AddLocalMaxPoly(TEdge *e1, TEdge*e2, const IntPoint&pt);
-  OutPt* AddLocalMinPoly(TEdge *e1, TEdge*e2, const IntPoint&pt);
+  void ProcessHorizontal(TEdge*horzEdge);
+  void AddLocalMaxPoly(TEdge*e1, TEdge*e2, const IntPoint&pt);
+  OutPt* AddLocalMinPoly(TEdge*e1, TEdge*e2, const IntPoint&pt);
   OutRec* GetOutRec(int idx);
-  void AppendPolygon(TEdge *e1, TEdge*e2);
-  void IntersectEdges(TEdge *e1, TEdge*e2, IntPoint&pt);
-  OutPt* AddOutPt(TEdge *e, const IntPoint&pt);
-  OutPt* GetLastOutPt(TEdge *e);
+  void AppendPolygon(TEdge*e1, TEdge*e2);
+  void IntersectEdges(TEdge*e1, TEdge*e2, IntPoint&pt);
+  OutPt* AddOutPt(TEdge*e, const IntPoint&pt);
+  OutPt* GetLastOutPt(TEdge*e);
   bool ProcessIntersections(const cInt topY);
   void BuildIntersectList(const cInt topY);
   void ProcessIntersectList();
   void ProcessEdgesAtTopOfScanbeam(const cInt topY);
   void BuildResult(Paths& polys);
   void BuildResult2(PolyTree& polytree);
-  void SetHoleState(TEdge *e, OutRec*outrec);
+  void SetHoleState(TEdge*e, OutRec*outrec);
   void DisposeIntersectNodes();
   bool FixupIntersectionOrder();
-  void FixupOutPolygon(OutRec &outrec);
-  void FixupOutPolyline(OutRec &outrec);
-  bool IsHole(TEdge *e);
-  bool FindOwnerFromSplitRecs(OutRec &outRec, OutRec *&currOrfl);
-  void FixHoleLinkage(OutRec &outrec);
-  void AddJoin(OutPt *op1, OutPt*op2, const IntPoint offPt);
+  void FixupOutPolygon(OutRec&outrec);
+  void FixupOutPolyline(OutRec&outrec);
+  bool IsHole(TEdge*e);
+  bool FindOwnerFromSplitRecs(OutRec&outRec, OutRec *&currOrfl);
+  void FixHoleLinkage(OutRec&outrec);
+  void AddJoin(OutPt*op1, OutPt*op2, const IntPoint offPt);
   void ClearJoins();
   void ClearGhostJoins();
-  void AddGhostJoin(OutPt *op, const IntPoint offPt);
-  bool JoinPoints(Join *j, OutRec* outRec1, OutRec* outRec2);
+  void AddGhostJoin(OutPt*op, const IntPoint offPt);
+  bool JoinPoints(Join*j, OutRec* outRec1, OutRec* outRec2);
   void JoinCommonEdges();
   void DoSimplePolygons();
   void FixupFirstLefts1(OutRec* OldOutRec, OutRec* NewOutRec);

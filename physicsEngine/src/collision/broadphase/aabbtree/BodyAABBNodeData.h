@@ -11,7 +11,7 @@ namespace urchin {
 
     class BodyAABBNodeData : public AABBNodeData<AbstractWorkBody *> {
         public:
-            BodyAABBNodeData(AbstractWorkBody *, PairContainer*);
+            BodyAABBNodeData(AbstractWorkBody*, PairContainer*);
 
             AABBNodeData<AbstractWorkBody *> *clone() const override;
 
@@ -22,8 +22,8 @@ namespace urchin {
             bool hasAlternativePairContainer() const;
             PairContainer *getAlternativePairContainer() const;
 
-            void addOwnerPairContainer(PairContainer *);
-            void removeOwnerPairContainer(PairContainer *);
+            void addOwnerPairContainer(PairContainer*);
+            void removeOwnerPairContainer(PairContainer*);
             std::set<PairContainer *> getOwnerPairContainers() const;
 
         private:

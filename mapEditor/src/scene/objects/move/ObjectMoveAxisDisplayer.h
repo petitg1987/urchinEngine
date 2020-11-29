@@ -11,7 +11,7 @@ namespace urchin {
 
     class ObjectMoveAxisDisplayer {
         public:
-            explicit ObjectMoveAxisDisplayer(SceneManager *);
+            explicit ObjectMoveAxisDisplayer(SceneManager*);
             ~ObjectMoveAxisDisplayer();
 
             void displayAxis(const Point3<float>&, unsigned int);

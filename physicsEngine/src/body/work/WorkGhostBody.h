@@ -15,7 +15,7 @@ namespace urchin {
             WorkGhostBody(const std::string&, const PhysicsTransform&, const std::shared_ptr<const CollisionShape3D>&);
             ~WorkGhostBody() override;
 
-            static WorkGhostBody *upCast(AbstractWorkBody *);
+            static WorkGhostBody *upCast(AbstractWorkBody*);
             static const WorkGhostBody *upCast(const AbstractWorkBody*);
 
             PairContainer *getPairContainer() const override;

@@ -19,12 +19,12 @@ namespace urchin {
         #define SHAPE_TRIGGER_LABEL "Shape"
 
         public:
-            explicit ChangeSoundTriggerDialog(QWidget *parent);
+            explicit ChangeSoundTriggerDialog(QWidget*);
 
             SoundTrigger::TriggerType getTriggerType() const;
 
         private:
-            void setupSoundTriggerTypeFields(QGridLayout *);
+            void setupSoundTriggerTypeFields(QGridLayout*);
 
             void done(int) override;
 

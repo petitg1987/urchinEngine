@@ -18,9 +18,9 @@ namespace urchin {
             std::string getRelativeWorkingDirectory() const;
 
         private:
-            void setupNameFields(QGridLayout *);
-            void setupDirectoryFields(QGridLayout *);
-            void setupWorkingDirectoryFields(QGridLayout *);
+            void setupNameFields(QGridLayout*);
+            void setupDirectoryFields(QGridLayout*);
+            void setupWorkingDirectoryFields(QGridLayout*);
 
             void updateMapFilename();
             void updateRelativeWorkingDirectory();

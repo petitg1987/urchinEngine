@@ -8,7 +8,7 @@ namespace urchin {
         public:
             virtual ~Observer() = default;
 
-            virtual void notify(Observable *, int) = 0;
+            virtual void notify(Observable*, int) = 0;
     };
 
 }
