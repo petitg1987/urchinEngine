@@ -81,7 +81,7 @@ namespace urchin {
     }
 
     const std::vector<CollisionShape3D::ShapeType>& SphereBoxCollisionAlgorithm::Builder::getFirstExpectedShapeType() const {
-        return CollisionShape3D::SPHERE_SHAPES;
+        return CollisionShape3D::sphereShapes();
     }
 
     unsigned int SphereBoxCollisionAlgorithm::Builder::getAlgorithmSize() const {

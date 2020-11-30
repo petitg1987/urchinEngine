@@ -22,6 +22,7 @@ namespace urchin {
             void closeEvent(QCloseEvent*) override;
 
         private:
+            QString getBaseWindowTitle() const;
             void setupMenu();
             void setupSceneDisplayerWidget(QWidget*, QHBoxLayout*);
             void setupSceneControllerWidget(QWidget*, QHBoxLayout*);
@@ -37,8 +38,6 @@ namespace urchin {
 
             void notify(Observable*, int) override;
             void handleCompoundShapeSelectionChange(Observable*, int);
-
-            static const std::string WINDOW_TITLE;
 
             StatusBarController statusBarController;
 

@@ -7,15 +7,6 @@
 
 namespace urchin {
 
-    //static
-    std::vector<CollisionShape3D::ShapeType> CollisionShape3D::CONVEX_SHAPES = {CollisionShape3D::TRIANGLE_SHAPE, CollisionShape3D::SPHERE_SHAPE,
-                                                                             CollisionShape3D::CAPSULE_SHAPE, CollisionShape3D::CYLINDER_SHAPE,
-                                                                             CollisionShape3D::BOX_SHAPE, CollisionShape3D::CONVEX_HULL_SHAPE,
-                                                                             CollisionShape3D::CONE_SHAPE};
-    std::vector<CollisionShape3D::ShapeType> CollisionShape3D::CONCAVE_SHAPES = {CollisionShape3D::HEIGHTFIELD_SHAPE};
-    std::vector<CollisionShape3D::ShapeType> CollisionShape3D::COMPOUND_SHAPES = {CollisionShape3D::COMPOUND_SHAPE};
-    std::vector<CollisionShape3D::ShapeType> CollisionShape3D::SPHERE_SHAPES = {CollisionShape3D::SPHERE_SHAPE};
-
     CollisionShape3D::CollisionShape3D() :
             innerMargin(EagerPropertyLoader::instance()->getCollisionShapeInnerMargin()),
             initialInnerMargin(innerMargin) {
@@ -26,6 +17,28 @@ namespace urchin {
             innerMargin(innerMargin),
             initialInnerMargin(innerMargin) {
         lastTransform.setPosition(Point3<float>(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
+    }
+
+    const std::vector<CollisionShape3D::ShapeType>& CollisionShape3D::convexShapes() {
+        static std::vector<CollisionShape3D::ShapeType> convexShapes = {CollisionShape3D::TRIANGLE_SHAPE, CollisionShape3D::SPHERE_SHAPE, CollisionShape3D::CAPSULE_SHAPE,
+                                                                        CollisionShape3D::CYLINDER_SHAPE, CollisionShape3D::BOX_SHAPE, CollisionShape3D::CONVEX_HULL_SHAPE,
+                                                                        CollisionShape3D::CONE_SHAPE};
+        return convexShapes;
+    }
+
+    const std::vector<CollisionShape3D::ShapeType>& CollisionShape3D::concaveShapes() {
+        static std::vector<CollisionShape3D::ShapeType> concaveShapes = {CollisionShape3D::HEIGHTFIELD_SHAPE};
+        return concaveShapes;
+    }
+
+    const std::vector<CollisionShape3D::ShapeType>& CollisionShape3D::compoundShapes() {
+        static std::vector<CollisionShape3D::ShapeType> compoundShapes = {CollisionShape3D::COMPOUND_SHAPE};
+        return compoundShapes;
+    }
+
+    const std::vector<CollisionShape3D::ShapeType>& CollisionShape3D::sphereShapes() {
+        static std::vector<CollisionShape3D::ShapeType> sphereShapes = {CollisionShape3D::SPHERE_SHAPE};
+        return sphereShapes;
     }
 
     FixedSizePool<CollisionConvexObject3D>* CollisionShape3D::getObjectsPool() const {
@@ -61,14 +74,14 @@ namespace urchin {
     }
 
     bool CollisionShape3D::isConvex() const {
-        return std::find(CONVEX_SHAPES.begin(), CONVEX_SHAPES.end(), getShapeType()) != CONVEX_SHAPES.end();
+        return std::find(convexShapes().begin(), convexShapes().end(), getShapeType()) != convexShapes().end();
     }
 
     bool CollisionShape3D::isConcave() const {
-        return std::find(CONCAVE_SHAPES.begin(), CONCAVE_SHAPES.end(), getShapeType()) != CONCAVE_SHAPES.end();
+        return std::find(concaveShapes().begin(), concaveShapes().end(), getShapeType()) != concaveShapes().end();
     }
 
     bool CollisionShape3D::isCompound() const {
-        return std::find(COMPOUND_SHAPES.begin(), COMPOUND_SHAPES.end(), getShapeType()) != COMPOUND_SHAPES.end();
+        return std::find(compoundShapes().begin(), compoundShapes().end(), getShapeType()) != compoundShapes().end();
     }
 }

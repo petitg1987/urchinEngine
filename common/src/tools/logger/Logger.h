@@ -31,7 +31,7 @@ namespace urchin {
             virtual void purge() const = 0;
             virtual void archive() const = 0;
 
-            bool hasFailure();
+            bool hasFailure() const;
 
         private:
             std::string prefix(CriticalityLevel);

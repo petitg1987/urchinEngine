@@ -37,7 +37,11 @@ namespace urchin {
 
                 SHAPE_MAX
             };
-            static std::vector<ShapeType> CONVEX_SHAPES, CONCAVE_SHAPES, COMPOUND_SHAPES, SPHERE_SHAPES;
+
+            static const std::vector<ShapeType>& convexShapes();
+            static const std::vector<ShapeType>& concaveShapes();
+            static const std::vector<ShapeType>& compoundShapes();
+            static const std::vector<ShapeType>& sphereShapes();
 
             float getInnerMargin() const;
             virtual CollisionShape3D::ShapeType getShapeType() const = 0;

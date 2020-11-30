@@ -61,7 +61,7 @@ namespace urchin {
     }
 
     const std::vector<CollisionShape3D::ShapeType>& ConvexConvexCollisionAlgorithm::Builder::getFirstExpectedShapeType() const {
-        return CollisionShape3D::CONVEX_SHAPES;
+        return CollisionShape3D::convexShapes();
     }
 
     unsigned int ConvexConvexCollisionAlgorithm::Builder::getAlgorithmSize() const {

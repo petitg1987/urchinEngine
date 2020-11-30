@@ -19,9 +19,6 @@
 
 namespace urchin {
 
-    //static
-    const std::string MapEditorWindow::WINDOW_TITLE = "Urchin - Map Editor";
-
     MapEditorWindow::MapEditorWindow(std::string mapEditorPath) :
             statusBarController(StatusBarController(this)),
             saveAction(nullptr),
@@ -32,7 +29,7 @@ namespace urchin {
             sceneDisplayerWidget(nullptr),
             scenePanelWidget(nullptr) {
         this->setAttribute(Qt::WA_DeleteOnClose);
-        this->setWindowTitle(QString::fromStdString(WINDOW_TITLE));
+        this->setWindowTitle(getBaseWindowTitle());
         this->resize(1200, 675);
         auto* centralWidget = new QWidget(this);
 
@@ -51,6 +48,10 @@ namespace urchin {
 
     MapEditorWindow::~MapEditorWindow() {
         delete sceneController;
+    }
+
+    QString MapEditorWindow::getBaseWindowTitle() const {
+        return QString::fromStdString("Urchin - Map Editor");
     }
 
     void MapEditorWindow::setupMenu() {
@@ -361,12 +362,12 @@ namespace urchin {
 
     void MapEditorWindow::refreshWindowTitle() {
         if (mapFilename.empty()) {
-            this->setWindowTitle(QString::fromStdString(WINDOW_TITLE));
+            this->setWindowTitle(getBaseWindowTitle());
         } else {
             if (sceneController && sceneController->isModified()) {
-                this->setWindowTitle(QString::fromStdString("*" + WINDOW_TITLE + " (" + mapFilename + ")"));
+                this->setWindowTitle(QString::fromStdString("*") + getBaseWindowTitle() + QString::fromStdString(" (" + mapFilename + ")"));
             } else {
-                this->setWindowTitle(QString::fromStdString(WINDOW_TITLE + " (" + mapFilename + ")"));
+                this->setWindowTitle(getBaseWindowTitle() + QString::fromStdString(" (" + mapFilename + ")"));
             }
         }
     }

@@ -51,7 +51,7 @@ namespace urchin {
         }
     }
 
-    bool Logger::hasFailure() {
+    bool Logger::hasFailure() const {
         return bHasFailure;
     }
 

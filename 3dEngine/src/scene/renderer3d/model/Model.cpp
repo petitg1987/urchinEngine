@@ -6,11 +6,8 @@
 
 namespace urchin {
 
-    //static
-    AABBox<float> Model::defaultModelLocalAABBox = AABBox<float>(Point3<float>(-0.5f, -0.5f, -0.5f), Point3<float>(0.5f, 0.5f, 0.5f));
-
     Model::Model(const std::string& meshFilename) :
-            defaultModelAABBoxes({defaultModelLocalAABBox}),
+            defaultModelAABBoxes({Model::getDefaultModelLocalAABBox()}),
             meshes(nullptr),
             currAnimation(nullptr),
             stopAnimationAtLastFrame(false),
@@ -19,7 +16,7 @@ namespace urchin {
     }
 
     Model::Model(const Model& model) : Octreeable(model),
-            defaultModelAABBoxes({defaultModelLocalAABBox}),
+            defaultModelAABBoxes({Model::getDefaultModelLocalAABBox()}),
             meshes(nullptr),
             currAnimation(nullptr),
             stopAnimationAtLastFrame(false),
@@ -39,6 +36,11 @@ namespace urchin {
         }
     }
 
+    const AABBox<float> &Model::getDefaultModelLocalAABBox() {
+        static AABBox<float> defaultModelLocalAABBox = AABBox<float>(Point3<float>(-0.5f, -0.5f, -0.5f), Point3<float>(0.5f, 0.5f, 0.5f));
+        return defaultModelLocalAABBox;
+    }
+
     void Model::initialize(const std::string& meshFilename) {
         if (!meshFilename.empty()) {
             auto* constMeshes = MediaManager::instance()->getMedia<ConstMeshes>(meshFilename);
@@ -46,7 +48,6 @@ namespace urchin {
             meshes->onMoving(transform);
         }
     }
-
 
     void Model::loadAnimation(const std::string& name, const std::string& filename) {
         if (!meshes) {
@@ -105,7 +106,7 @@ namespace urchin {
                 currAnimation->onMoving(newTransform);
             }
         } else {
-            defaultModelAABBoxes[0] = defaultModelLocalAABBox.moveAABBox(transform);
+            defaultModelAABBoxes[0] = Model::getDefaultModelLocalAABBox().moveAABBox(transform);
         }
 
         //inform the OctreeManager that the model should be updated in the octree
@@ -163,7 +164,7 @@ namespace urchin {
         } else if (meshes) {
             return meshes->getGlobalLocalAABBox();
         } else {
-            return defaultModelLocalAABBox;
+            return Model::getDefaultModelLocalAABBox();
         }
     }
 

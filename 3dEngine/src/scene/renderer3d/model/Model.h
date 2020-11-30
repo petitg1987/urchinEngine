@@ -48,10 +48,10 @@ namespace urchin {
             void drawBaseBones(const RenderTarget*, const Matrix4<float>&, const Matrix4<float>&) const;
 
         private:
+            static const AABBox<float> &getDefaultModelLocalAABBox();
             void initialize(const std::string&);
             void onMoving(const Transform<float>&);
 
-            static AABBox<float> defaultModelLocalAABBox;
             std::vector<AABBox<float>> defaultModelAABBoxes;
 
             //meshes
