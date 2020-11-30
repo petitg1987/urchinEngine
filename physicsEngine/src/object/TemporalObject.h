@@ -19,7 +19,7 @@ namespace urchin {
             bool isRay() const;
 
         private:
-            const CollisionShape3D *shape;
+            const CollisionShape3D* shape;
             std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> localObject;
 
             PhysicsTransform from;

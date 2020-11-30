@@ -26,7 +26,7 @@ namespace urchin {
             void updateProjectionMatrices();
 
             ShaderVar mModelProjectionMatrixShaderVar;
-            const ShadowData *shadowData;
+            const ShadowData* shadowData;
 
             std::vector<Matrix4<float>> projectionMatrices;
     };

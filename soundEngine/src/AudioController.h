@@ -33,13 +33,13 @@ namespace urchin {
             void processTriggerValue(SoundTrigger::TriggerResultValue);
             void processSmoothStopTriggerValue(SoundTrigger::TriggerResultValue);
 
-            Sound *sound;
-            SoundTrigger *soundTrigger;
-            SmoothStopAction *smoothStopAction;
+            Sound* sound;
+            SoundTrigger* soundTrigger;
+            SmoothStopAction* smoothStopAction;
 
             SoundTrigger::TriggerResultValue triggerValue;
 
-            AudioPlayer *audioPlayer;
+            AudioPlayer* audioPlayer;
             bool isPaused;
     };
 

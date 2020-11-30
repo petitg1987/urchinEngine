@@ -19,7 +19,7 @@ namespace urchin {
             int getVariableLocation() const;
 
         private:
-            Shader *shader;
+            Shader* shader;
             int variableLocation;
     };
 

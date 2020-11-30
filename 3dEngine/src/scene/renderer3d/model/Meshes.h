@@ -25,7 +25,7 @@ namespace urchin {
             void onMoving(const Transform<float>&);
 
         private:
-            mutable ConstMeshes *constMeshes;
+            mutable ConstMeshes* constMeshes;
             unsigned int numMeshes;
 
             std::vector<Mesh*> meshes;

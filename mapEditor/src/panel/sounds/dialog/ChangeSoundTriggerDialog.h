@@ -28,8 +28,8 @@ namespace urchin {
 
             void done(int) override;
 
-            QLabel *soundTriggerTypeLabel;
-            QComboBox *soundTriggerTypeComboBox;
+            QLabel* soundTriggerTypeLabel;
+            QComboBox* soundTriggerTypeComboBox;
 
             SoundTrigger::TriggerType triggerType;
     };

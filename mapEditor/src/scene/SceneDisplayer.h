@@ -62,36 +62,36 @@ namespace urchin {
             void refreshNavMeshModel();
 
             bool isInitialized;
-            SceneController *sceneController;
+            SceneController* sceneController;
             MouseController mouseController;
             StatusBarController statusBarController;
 
             //3d
-            SceneManager *sceneManager;
-            SceneFreeCamera *camera;
-            BodyShapeDisplayer *bodyShapeDisplayer;
-            ObjectMoveController *objectMoveController;
-            LightScopeDisplayer *lightScopeDisplayer;
-            SoundTriggerDisplayer *soundTriggerDisplayer;
+            SceneManager* sceneManager;
+            SceneFreeCamera* camera;
+            BodyShapeDisplayer* bodyShapeDisplayer;
+            ObjectMoveController* objectMoveController;
+            LightScopeDisplayer* lightScopeDisplayer;
+            SoundTriggerDisplayer* soundTriggerDisplayer;
 
             //physics
-            PhysicsWorld *physicsWorld;
+            PhysicsWorld* physicsWorld;
 
             //AI
-            AIManager *aiManager;
-            NavMeshDisplayer *navMeshDisplayer;
+            AIManager* aiManager;
+            NavMeshDisplayer* navMeshDisplayer;
 
             //sound
-            SoundManager *soundManager;
+            SoundManager* soundManager;
 
             //map handler
-            MapHandler *mapHandler;
+            MapHandler* mapHandler;
 
             //scene specifics
             bool viewProperties[LAST_VIEW_PROPERTIES];
-            const SceneObject *highlightSceneObject;
-            const SceneLight *highlightSceneLight;
-            const SceneSound *highlightSceneSound;
+            const SceneObject* highlightSceneObject;
+            const SceneLight* highlightSceneLight;
+            const SceneSound* highlightSceneSound;
     };
 
 }

@@ -28,8 +28,8 @@ namespace urchin {
             std::shared_ptr<CollisionAlgorithm> getCollisionAlgorithm() const;
 
         private:
-            AbstractWorkBody *body1;
-            AbstractWorkBody *body2;
+            AbstractWorkBody* body1;
+            AbstractWorkBody* body2;
             uint_fast64_t bodiesId;
 
             std::shared_ptr<CollisionAlgorithm> collisionAlgorithm;

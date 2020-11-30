@@ -18,7 +18,7 @@ namespace urchin {
         private:
             ConvexHullShape3D<float>* buildConvexHullShape(const Model*) const;
 
-            const SceneObject *sceneObject;
+            const SceneObject* sceneObject;
     };
 
 }

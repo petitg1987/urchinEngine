@@ -93,9 +93,9 @@ namespace urchin {
             QDoubleSpinBox* angularFactorX;
             QDoubleSpinBox* angularFactorY;
             QDoubleSpinBox* angularFactorZ;
-            QLabel *shapeTypeValueLabel;
-            QPushButton *changeBodyShapeButton;
-            BodyShapeWidget *bodyShapeWidget;
+            QLabel* shapeTypeValueLabel;
+            QPushButton* changeBodyShapeButton;
+            BodyShapeWidget* bodyShapeWidget;
 
         private slots:
             void showAddObjectDialog();

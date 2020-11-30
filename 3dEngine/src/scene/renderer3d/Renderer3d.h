@@ -100,38 +100,38 @@ namespace urchin {
             void postUpdateScene();
 
             //scene properties
-            const RenderTarget *finalRenderTarget;
+            const RenderTarget* finalRenderTarget;
             unsigned int sceneWidth, sceneHeight;
             bool paused;
 
             //managers
-            ModelDisplayer *modelDisplayer;
-            OctreeManager<Model> *modelOctreeManager;
+            ModelDisplayer* modelDisplayer;
+            OctreeManager<Model>* modelOctreeManager;
             std::vector<Model*> modelsInFrustum;
 
-            FogManager *fogManager;
+            FogManager* fogManager;
 
-            TerrainManager *terrainManager;
+            TerrainManager* terrainManager;
 
-            WaterManager *waterManager;
+            WaterManager* waterManager;
 
-            SkyManager *skyManager;
+            SkyManager* skyManager;
 
-            GeometryManager *geometryManager;
+            GeometryManager* geometryManager;
 
-            LightManager *lightManager;
+            LightManager* lightManager;
 
-            ShadowManager *shadowManager;
+            ShadowManager* shadowManager;
             bool isShadowActivated;
 
-            AmbientOcclusionManager *ambientOcclusionManager;
+            AmbientOcclusionManager* ambientOcclusionManager;
             bool isAmbientOcclusionActivated;
 
-            AntiAliasingManager *antiAliasingManager;
+            AntiAliasingManager* antiAliasingManager;
             bool isAntiAliasingActivated;
 
             //camera
-            Camera *camera;
+            Camera* camera;
 
             //visual
             OffscreenRender* deferredRenderTarget;

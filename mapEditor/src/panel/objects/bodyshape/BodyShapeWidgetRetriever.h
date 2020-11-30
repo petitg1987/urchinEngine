@@ -18,7 +18,7 @@ namespace urchin {
             BodyShapeWidget* createBodyShapeWidget(CollisionShape3D::ShapeType);
 
         private:
-            const SceneObject *sceneObject;
+            const SceneObject* sceneObject;
     };
 
 }

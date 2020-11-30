@@ -51,15 +51,15 @@ namespace urchin {
             TabName getTabSelected() const;
 
         private:
-            SceneController *sceneController;
+            SceneController* sceneController;
 
-            ObjectPanelWidget *tabObjects;
-            LightPanelWidget *tabLights;
-            TerrainPanelWidget *tabTerrains;
-            WaterPanelWidget *tabWaters;
-            SkyPanelWidget *tabSky;
-            SoundPanelWidget *tabSounds;
-            AIPanelWidget *tabAI;
+            ObjectPanelWidget* tabObjects;
+            LightPanelWidget* tabLights;
+            TerrainPanelWidget* tabTerrains;
+            WaterPanelWidget* tabWaters;
+            SkyPanelWidget* tabSky;
+            SoundPanelWidget* tabSounds;
+            AIPanelWidget* tabAI;
 
         private slots:
             void tabSelected();

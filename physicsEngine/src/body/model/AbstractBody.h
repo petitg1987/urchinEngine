@@ -74,7 +74,7 @@ namespace urchin {
             std::atomic_bool bIsNew;
             std::atomic_bool bIsDeleted;
             std::atomic_bool bNeedFullRefresh;
-            AbstractWorkBody *workBody;
+            AbstractWorkBody* workBody;
 
             //body representation data
             Transform<float> transform;

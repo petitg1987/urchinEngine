@@ -31,7 +31,7 @@ namespace urchin {
             std::string meshFilename;
             std::vector<const ConstMesh*> constMeshes;
 
-            AABBox<float> *originalBBox; //bounding box (not transformed)
+            AABBox<float>* originalBBox; //bounding box (not transformed)
             std::vector<AABBox<float>> originalSplitBBoxes;
     };
 

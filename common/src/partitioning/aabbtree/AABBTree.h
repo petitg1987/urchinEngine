@@ -45,7 +45,7 @@ namespace urchin {
             void removeNode(AABBNode<OBJ>*);
 
             float fatMargin;
-            AABBNode<OBJ> *rootNode;
+            AABBNode<OBJ>* rootNode;
     };
 
     #include "AABBTree.inl"

@@ -22,7 +22,7 @@ namespace urchin {
             void saveInFile();
 
         private:
-            TiXmlDocument *doc;
+            TiXmlDocument* doc;
             std::string filenamePath;
     };
 

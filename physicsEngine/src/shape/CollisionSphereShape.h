@@ -34,7 +34,7 @@ namespace urchin {
             CollisionShape3D* clone() const override;
 
         private:
-            SphereShape<float> *sphereShape; //shape including margin
+            SphereShape<float>* sphereShape; //shape including margin
     };
 
 }

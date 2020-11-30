@@ -37,11 +37,11 @@ namespace urchin {
             void clearNodeData();
 
         private:
-            AABBNodeData<OBJ> *nodeData;
+            AABBNodeData<OBJ>* nodeData;
             AABBox<float> aabbox;
 
-            AABBNode<OBJ> *parentNode;
-            AABBNode<OBJ> *children[2];
+            AABBNode<OBJ>* parentNode;
+            AABBNode<OBJ>* children[2];
     };
 
     #include "AABBNode.inl"

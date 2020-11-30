@@ -21,7 +21,7 @@ namespace urchin {
             Singleton();
 
         private:
-            static T *objectT;
+            static T* objectT;
     };
 
     #include "Singleton.inl"

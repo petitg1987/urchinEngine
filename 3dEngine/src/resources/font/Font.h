@@ -12,7 +12,7 @@ namespace urchin {
         unsigned int width;
         unsigned int height;
         int shift;
-        unsigned char *buf;
+        unsigned char* buf;
     };
 
     class Font : public Resource {
@@ -36,7 +36,7 @@ namespace urchin {
 
             std::shared_ptr<Texture> alphabetTexture;
 
-            Glyph *glyph;
+            Glyph* glyph;
             unsigned int spaceBetweenLetters, spaceBetweenLines, height;
     };
 

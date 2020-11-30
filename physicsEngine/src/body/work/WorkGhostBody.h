@@ -23,7 +23,7 @@ namespace urchin {
             bool isGhostBody() const override;
 
         private:
-            PairContainer *pairContainer;
+            PairContainer* pairContainer;
 
     };
 

@@ -61,10 +61,10 @@ namespace urchin {
             Matrix4<float> projectionMatrix;
             ShaderVar mProjectionShaderVar, mModelShaderVar, mViewShaderVar, mNormalShaderVar, ambientFactorShaderVar;
 
-            CustomShaderVariable *customShaderVariable;
-            CustomModelShaderVariable *customModelShaderVariable;
+            CustomShaderVariable* customShaderVariable;
+            CustomModelShaderVariable* customModelShaderVariable;
 
-            const RenderTarget *renderTarget;
+            const RenderTarget* renderTarget;
             std::vector<Model*> models;
     };
 

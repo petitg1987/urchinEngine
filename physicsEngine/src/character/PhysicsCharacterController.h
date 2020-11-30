@@ -59,10 +59,10 @@ namespace urchin {
             const float maxVerticalSpeed;
 
             std::shared_ptr<PhysicsCharacter> physicsCharacter;
-            PhysicsWorld *physicsWorld;
+            PhysicsWorld* physicsWorld;
             std::vector<ManifoldResult> manifoldResults;
             mutable std::mutex characterMutex;
-            WorkGhostBody *ghostBody;
+            WorkGhostBody* ghostBody;
             float verticalSpeed;
 
             Vector3<float> velocity;

@@ -71,7 +71,7 @@ namespace urchin {
         private:
             TiXmlElement* getChunk() const;
 
-            TiXmlElement *chunk;
+            TiXmlElement* chunk;
     };
 
 }

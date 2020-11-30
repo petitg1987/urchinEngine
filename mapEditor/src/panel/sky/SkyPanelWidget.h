@@ -30,7 +30,7 @@ namespace urchin {
 
             void setupSkyDataFrom(const std::unique_ptr<Skybox>&);
 
-            SkyController *skyController;
+            SkyController* skyController;
 
             QLineEdit* xnSkyboxFilenameText;
             QLineEdit* xpSkyboxFilenameText;
@@ -39,7 +39,7 @@ namespace urchin {
             QLineEdit* znSkyboxFilenameText;
             QLineEdit* zpSkyboxFilenameText;
             static QString preferredSkyboxPath;
-            QDoubleSpinBox *offsetY;
+            QDoubleSpinBox* offsetY;
 
             bool disableSkyEvent;
 

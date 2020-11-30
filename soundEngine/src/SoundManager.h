@@ -39,7 +39,7 @@ namespace urchin {
             std::vector<AudioController*> audioControllers;
 
             //stream chunk updater thread
-            StreamUpdateWorker *streamUpdateWorker;
+            StreamUpdateWorker* streamUpdateWorker;
             std::thread *streamUpdateWorkerThread;
     };
 

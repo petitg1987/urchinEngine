@@ -18,7 +18,7 @@ namespace urchin {
             SoundShapeWidget* retrieveShapeWidget(SoundShape::ShapeType);
 
         private:
-            const SceneSound *sceneSound;
+            const SceneSound* sceneSound;
     };
 
 }

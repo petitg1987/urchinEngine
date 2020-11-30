@@ -23,7 +23,7 @@ namespace urchin {
             void display(const Matrix4<float>&) const;
 
         private:
-            const RenderTarget *renderTarget;
+            const RenderTarget* renderTarget;
 
             std::vector<GeometryModel*> geometryModels;
             Matrix4<float> projectionMatrix;

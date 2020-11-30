@@ -25,7 +25,7 @@ namespace urchin {
             std::shared_ptr<const CollisionShape3D> createBodyShape() const override;
 
         private:
-            QDoubleSpinBox *radius;
+            QDoubleSpinBox* radius;
     };
 
 }

@@ -39,7 +39,7 @@ namespace urchin {
             void initializeConvexHullReduced();
             void initializeDistances();
 
-            ConvexHullShape3D<float> *convexHullShape; //shape including margin
+            ConvexHullShape3D<float>* convexHullShape; //shape including margin
             std::unique_ptr<ConvexHullShape3D<float>> convexHullShapeReduced; //shape where margin has been subtracted
 
             float minDistanceToCenter;

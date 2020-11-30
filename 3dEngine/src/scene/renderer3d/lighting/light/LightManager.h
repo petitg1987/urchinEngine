@@ -43,15 +43,15 @@ namespace urchin {
             void onLightEvent(Light*, NotificationType);
             void checkMaxLight(const std::vector<Light*>&) const;
 
-            const RenderTarget *renderTarget;
+            const RenderTarget* renderTarget;
 
             //lights container
             std::vector<Light*> parallelBeamsLights; //sun lights
-            OctreeManager<Light> *lightOctreeManager; //others lights
+            OctreeManager<Light>* lightOctreeManager; //others lights
             std::vector<Light*> lightsInFrustum;
             std::vector<Light*> visibleLights;
 
-            Light *lastUpdatedLight;
+            Light* lastUpdatedLight;
 
             const unsigned int maxLights; //maximum of lights authorized to affect the scene in the same time
             struct LightInfo {
@@ -63,7 +63,7 @@ namespace urchin {
                 ShaderVar exponentialAttShaderVar;
                 ShaderVar lightAmbientShaderVar;
             };
-            LightInfo *lightsInfo;
+            LightInfo* lightsInfo;
 
             ShaderVar globalAmbientColorShaderVar;
             Point4<float> globalAmbientColor;

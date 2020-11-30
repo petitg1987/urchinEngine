@@ -29,13 +29,13 @@ namespace urchin {
             void done(int) override;
             bool isSceneObjectExist(const std::string&);
 
-            const ObjectController *objectController;
+            const ObjectController* objectController;
 
-            QLabel *objectNameLabel;
-            QLineEdit *objectNameText;
+            QLabel* objectNameLabel;
+            QLineEdit* objectNameText;
 
             std::string objectName;
-            SceneObject *sceneObject;
+            SceneObject* sceneObject;
     };
 
 }

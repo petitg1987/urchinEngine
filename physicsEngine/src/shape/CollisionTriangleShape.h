@@ -36,8 +36,8 @@ namespace urchin {
             CollisionShape3D* clone() const override;
 
         private:
-            TriangleShape3D<float> *triangleShape; //shape including margin
-            FixedSizePool<TriangleShape3D<float>> *triangleShapesPool;
+            TriangleShape3D<float>* triangleShape; //shape including margin
+            FixedSizePool<TriangleShape3D<float>>* triangleShapesPool;
     };
 
 }

@@ -24,12 +24,12 @@ namespace urchin {
 
             void setupNavMeshAgentDataFrom(const std::shared_ptr<NavMeshAgent>&);
 
-            AIController *aiController;
+            AIController* aiController;
 
-            QDoubleSpinBox *agentHeight;
-            QDoubleSpinBox *agentRadius;
-            QDoubleSpinBox *maxSlope;
-            QDoubleSpinBox *jumpDistance;
+            QDoubleSpinBox* agentHeight;
+            QDoubleSpinBox* agentRadius;
+            QDoubleSpinBox* maxSlope;
+            QDoubleSpinBox* jumpDistance;
 
             bool disableAIEvent;
 

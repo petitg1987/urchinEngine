@@ -33,15 +33,15 @@ namespace urchin {
             void done(int) override;
             bool isSceneLightExist(const std::string&);
 
-            const LightController *lightController;
+            const LightController* lightController;
 
-            QLabel *lightNameLabel;
-            QLineEdit *lightNameText;
-            QLabel *lightTypeLabel;
-            QComboBox *lightTypeComboBox;
+            QLabel* lightNameLabel;
+            QLineEdit* lightNameText;
+            QLabel* lightTypeLabel;
+            QComboBox* lightTypeComboBox;
 
             std::string lightName;
-            SceneLight *sceneLight;
+            SceneLight* sceneLight;
     };
 
 }

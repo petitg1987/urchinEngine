@@ -35,7 +35,7 @@ namespace urchin {
             void updateSoundShape();
 
         protected:
-            QGridLayout *mainLayout;
+            QGridLayout* mainLayout;
             bool disableShapeEvent;
 
             float getMarginValue() const;
@@ -44,10 +44,10 @@ namespace urchin {
             virtual const SoundShape* createSoundShape() const = 0;
 
         private:
-            QDoubleSpinBox *margin;
+            QDoubleSpinBox* margin;
 
-            const SceneSound *sceneSound;
-            const SoundShape *shape;
+            const SceneSound* sceneSound;
+            const SoundShape* shape;
     };
 
 }

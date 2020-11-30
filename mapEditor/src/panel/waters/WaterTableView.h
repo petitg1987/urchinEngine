@@ -30,7 +30,7 @@ namespace urchin {
             void removeAllWaters();
 
         private:
-            QStandardItemModel *watersListModel;
+            QStandardItemModel* watersListModel;
 
             void selectionChanged(const QItemSelection&, const QItemSelection&) override;
     };

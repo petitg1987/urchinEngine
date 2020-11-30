@@ -17,8 +17,8 @@ namespace urchin {
             void clearDisplay();
 
         private:
-            PhysicsWorld *physicsWorld;
-            Renderer3d *renderer3d;
+            PhysicsWorld* physicsWorld;
+            Renderer3d* renderer3d;
 
             std::vector<GeometryModel*> contactPointModels;
     };

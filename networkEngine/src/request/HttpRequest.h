@@ -22,10 +22,10 @@ namespace urchin {
         private:
             std::string executeRequest(const std::string&) const;
 
-            CURL *curl;
+            CURL* curl;
             std::string basePath;
 
-            struct curl_slist *textPlainHttpHeader;
+            struct curl_slist* textPlainHttpHeader;
     };
 
 }

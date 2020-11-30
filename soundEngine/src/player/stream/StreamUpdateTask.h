@@ -28,11 +28,11 @@ namespace urchin {
             StreamChunk* getStreamChunks();
 
         private:
-            const Sound *sound;
-            SoundFileReader *soundFileReader;
+            const Sound* sound;
+            SoundFileReader* soundFileReader;
             bool playLoop;
 
-            StreamChunk *streamChunks;
+            StreamChunk* streamChunks;
     };
 
 }

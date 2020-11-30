@@ -55,7 +55,7 @@ namespace urchin {
             StatusBarController statusBarController;
             std::string mapEditorPath;
 
-            SceneDisplayer *sceneDisplayer;
+            SceneDisplayer* sceneDisplayer;
             bool viewProperties[SceneDisplayer::LAST_VIEW_PROPERTIES];
 
             int mouseX, mouseY;

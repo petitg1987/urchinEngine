@@ -103,18 +103,18 @@ namespace urchin {
             void refreshEntities();
             void refreshSound();
 
-            Renderer3d *renderer3d;
-            PhysicsWorld *physicsWorld;
-            SoundManager *soundManager;
-            AIManager *aiManager;
+            Renderer3d* renderer3d;
+            PhysicsWorld* physicsWorld;
+            SoundManager* soundManager;
+            AIManager* aiManager;
 
             std::list<SceneObject*> sceneObjects;
             std::list<SceneLight*> sceneLights;
             std::list<SceneTerrain*> sceneTerrains;
             std::list<SceneWater*> sceneWaters;
-            SceneSky *sceneSky;
+            SceneSky* sceneSky;
             std::list<SceneSound*> sceneSounds;
-            SceneAI *sceneAI;
+            SceneAI* sceneAI;
     };
 
 }

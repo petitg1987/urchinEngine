@@ -25,7 +25,7 @@ namespace urchin {
         private:
             void updateWithConfig();
 
-            const RenderTarget *renderTarget;
+            const RenderTarget* renderTarget;
 
             std::vector<Terrain*> terrains;
 

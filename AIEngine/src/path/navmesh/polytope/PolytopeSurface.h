@@ -36,7 +36,7 @@ namespace urchin {
         private:
             std::size_t computeSurfacePosition();
 
-            const Polytope *polytope;
+            const Polytope* polytope;
             std::size_t surfacePosition; //position/index of surface in polytope
             bool walkableCandidate;
     };

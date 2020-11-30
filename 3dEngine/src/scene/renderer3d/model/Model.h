@@ -55,11 +55,11 @@ namespace urchin {
             std::vector<AABBox<float>> defaultModelAABBoxes;
 
             //meshes
-            Meshes *meshes;
+            Meshes* meshes;
 
             //animations
             std::map<std::string, Animation*> animations;
-            Animation *currAnimation;
+            Animation* currAnimation;
             bool stopAnimationAtLastFrame;
 
             //transform

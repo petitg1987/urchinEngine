@@ -35,7 +35,7 @@ namespace urchin {
             bool objectSwapped;
             ManifoldResult manifoldResult;
 
-            const CollisionAlgorithmSelector *collisionAlgorithmSelector;
+            const CollisionAlgorithmSelector* collisionAlgorithmSelector;
     };
 
 }

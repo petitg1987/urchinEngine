@@ -44,8 +44,8 @@ namespace urchin {
             static const unsigned int POINT_INDEX_TO_PLANES[][4];
             static const unsigned int PLANE_INDEX_TO_POINTS[][3];
 
-            PlaneSurfaceSplitService *planeSurfaceSplitService;
-            TerrainSplitService *terrainSplitService;
+            PlaneSurfaceSplitService* planeSurfaceSplitService;
+            TerrainSplitService* terrainSplitService;
     };
 
 }

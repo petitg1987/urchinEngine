@@ -34,18 +34,18 @@ namespace urchin {
             void done(int) override;
             bool isSceneSoundExist(const std::string&);
 
-            const SoundController *soundController;
+            const SoundController* soundController;
 
-            QLabel *soundNameLabel;
-            QLineEdit *soundNameText;
-            QLabel *soundFilenameLabel;
-            QLineEdit *soundFilenameText;
-            QLabel *soundTypeLabel;
-            QComboBox *soundTypeComboBox;
+            QLabel* soundNameLabel;
+            QLineEdit* soundNameText;
+            QLabel* soundFilenameLabel;
+            QLineEdit* soundFilenameText;
+            QLabel* soundTypeLabel;
+            QComboBox* soundTypeComboBox;
 
             std::string soundName;
             std::string soundFilename;
-            SceneSound *sceneSound;
+            SceneSound* sceneSound;
             static QString preferredSoundPath;
 
         private slots:

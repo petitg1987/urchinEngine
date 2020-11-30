@@ -41,8 +41,8 @@ namespace urchin {
             void trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape>&, const TemporalObject&, AbstractWorkBody*, ccd_set&) const;
             void continuousCollisionTest(const TemporalObject&, const TemporalObject&, AbstractWorkBody*, ccd_set&) const;
 
-            const BodyManager *bodyManager;
-            const BroadPhaseManager *broadPhaseManager;
+            const BodyManager* bodyManager;
+            const BroadPhaseManager* broadPhaseManager;
 
             CollisionAlgorithmSelector *const collisionAlgorithmSelector;
             const GJKContinuousCollisionAlgorithm<double, float> gjkContinuousCollisionAlgorithm;

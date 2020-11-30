@@ -44,7 +44,7 @@ namespace urchin {
 
         private:
             std::string relativeWorkingDirectory;
-            Map *map;
+            Map* map;
     };
 
 }

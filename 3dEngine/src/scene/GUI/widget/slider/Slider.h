@@ -50,7 +50,7 @@ namespace urchin {
                     void onClickRelease(Widget*) override;
 
                 private:
-                    Slider *slider;
+                    Slider* slider;
                     bool isLeftButton;
             };
     };

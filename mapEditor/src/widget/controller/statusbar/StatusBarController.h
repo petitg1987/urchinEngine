@@ -26,7 +26,7 @@ namespace urchin {
             QFrame* createSeparator();
 
             StatusBarState currentState;
-            QMainWindow *window;
+            QMainWindow* window;
     };
 
 }

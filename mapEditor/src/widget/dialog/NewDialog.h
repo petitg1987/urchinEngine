@@ -27,13 +27,13 @@ namespace urchin {
 
             void done(int) override;
 
-            QLabel *mapNameLabel;
-            QLineEdit *mapNameText;
-            QLabel *mapDirectoryLabel;
-            QLineEdit *mapDirectoryText;
-            QLabel *mapWorkingDirectoryLabel;
-            QLineEdit *mapWorkingDirectoryText;
-            QLabel *mapRelWorkingDirectoryText;
+            QLabel* mapNameLabel;
+            QLineEdit* mapNameText;
+            QLabel* mapDirectoryLabel;
+            QLineEdit* mapDirectoryText;
+            QLabel* mapWorkingDirectoryLabel;
+            QLineEdit* mapWorkingDirectoryText;
+            QLabel* mapRelWorkingDirectoryText;
 
             std::string mapFilename;
             std::string mapDirectory;

@@ -33,7 +33,7 @@ namespace urchin {
             void applyMomentum();
             
             std::shared_ptr<AICharacter> character;
-            AIManager *aiManager;
+            AIManager* aiManager;
             std::shared_ptr<AICharacterEventHandler> eventHandler;
 
             Vector2<float> steeringMomentum;

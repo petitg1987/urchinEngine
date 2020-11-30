@@ -22,7 +22,7 @@ namespace urchin {
             const Sound* getSound() const;
 
         private:
-            const Sound *sound;
+            const Sound* sound;
     };
 
 }

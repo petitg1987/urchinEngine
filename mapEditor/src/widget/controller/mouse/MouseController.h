@@ -14,7 +14,7 @@ namespace urchin {
             Point2<int> getMousePosition() const;
 
         private:
-            QWidget *widget;
+            QWidget* widget;
     };
 
 }

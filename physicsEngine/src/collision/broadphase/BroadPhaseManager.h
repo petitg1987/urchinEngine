@@ -35,7 +35,7 @@ namespace urchin {
             void removeBody(AbstractWorkBody*);
             void synchronizeBodies();
 
-            BroadPhaseAlgorithm *broadPhaseAlgorithm;
+            BroadPhaseAlgorithm* broadPhaseAlgorithm;
 
             std::mutex mutex;
             std::vector<AbstractWorkBody*> bodiesToAdd;

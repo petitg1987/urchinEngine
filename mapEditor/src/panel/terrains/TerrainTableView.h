@@ -30,7 +30,7 @@ namespace urchin {
             void removeAllTerrains();
 
         private:
-            QStandardItemModel *terrainsListModel;
+            QStandardItemModel* terrainsListModel;
 
             void selectionChanged(const QItemSelection&, const QItemSelection&) override;
     };

@@ -23,7 +23,7 @@ namespace urchin {
             T getTimeToHit() const;
 
         private:
-            AbstractWorkBody *body2;
+            AbstractWorkBody* body2;
 
             Vector3<T> normalFromObject2;
             Point3<T> hitPointOnObject2;

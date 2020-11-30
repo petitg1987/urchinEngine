@@ -52,13 +52,13 @@ namespace urchin {
             void deleteRigidBody();
             void deleteAIObjects();
 
-            Renderer3d *renderer3d;
-            PhysicsWorld *physicsWorld;
-            AIManager *aiManager;
+            Renderer3d* renderer3d;
+            PhysicsWorld* physicsWorld;
+            AIManager* aiManager;
 
             std::string name;
-            Model *model;
-            RigidBody *rigidBody;
+            Model* model;
+            RigidBody* rigidBody;
             std::shared_ptr<AIObject> aiObject;
     };
 

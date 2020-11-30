@@ -37,8 +37,8 @@ namespace urchin {
             //attenuation properties
             const float attenuationNoEffect; //defines when the attenuation of a light has no light effect on objects
             float exponentialAttenuation;
-            Sphere<float> *sphereScope;
-            AABBox<float> *bboxScope;
+            Sphere<float>* sphereScope;
+            AABBox<float>* bboxScope;
 
     };
 

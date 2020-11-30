@@ -38,15 +38,15 @@ namespace urchin {
             void setupOmnidirectionalLightDataFrom(const OmnidirectionalLight*);
             void setupSunLightDataFrom(const SunLight*);
 
-            LightController *lightController;
+            LightController* lightController;
 
-            LightTableView *lightTableView;
-            QPushButton *addLightButton;
-            QPushButton *removeLightButton;
+            LightTableView* lightTableView;
+            QPushButton* addLightButton;
+            QPushButton* removeLightButton;
 
-            QGroupBox *generalPropertiesGroupBox;
-            QGroupBox *specificOmnidirectionalLightGroupBox;
-            QGroupBox *specificSunLightGroupBox;
+            QGroupBox* generalPropertiesGroupBox;
+            QGroupBox* specificOmnidirectionalLightGroupBox;
+            QGroupBox* specificSunLightGroupBox;
 
             bool disableLightEvent;
 

@@ -30,7 +30,7 @@ namespace urchin {
             void removeAllLights();
 
         private:
-            QStandardItemModel *lightsListModel;
+            QStandardItemModel* lightsListModel;
 
             void selectionChanged(const QItemSelection&, const QItemSelection&) override;
     };

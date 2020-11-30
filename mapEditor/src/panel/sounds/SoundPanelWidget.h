@@ -51,16 +51,16 @@ namespace urchin {
 
             SoundShapeWidget* retrieveSoundShapeWidget(const SoundShape*, const SceneSound*);
 
-            SoundController *soundController;
+            SoundController* soundController;
 
-            SoundTableView *soundTableView;
-            QPushButton *addSoundButton;
-            QPushButton *removeSoundButton;
+            SoundTableView* soundTableView;
+            QPushButton* addSoundButton;
+            QPushButton* removeSoundButton;
 
-            QGroupBox *soundPropertiesGroupBox;
-            QGroupBox *soundTriggerGroupBox;
-            QGroupBox *specificTriggerShapeGroupBox;
-            QGroupBox *specificPointSoundGroupBox;
+            QGroupBox* soundPropertiesGroupBox;
+            QGroupBox* soundTriggerGroupBox;
+            QGroupBox* specificTriggerShapeGroupBox;
+            QGroupBox* specificPointSoundGroupBox;
 
             bool disableSoundEvent;
 

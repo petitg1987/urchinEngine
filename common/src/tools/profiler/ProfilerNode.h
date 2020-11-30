@@ -31,7 +31,7 @@ namespace urchin {
             int getNbValidTimes() const;
 
             std::string name;
-            ProfilerNode *parent;
+            ProfilerNode* parent;
             std::vector<ProfilerNode*> children;
 
             unsigned int startCount;

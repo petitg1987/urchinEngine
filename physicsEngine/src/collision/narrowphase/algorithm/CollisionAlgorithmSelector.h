@@ -34,7 +34,7 @@ namespace urchin {
                     FixedSizePool<CollisionAlgorithm> *const algorithmPool;
             };
 
-            SyncFixedSizePool<CollisionAlgorithm> *algorithmPool;
+            SyncFixedSizePool<CollisionAlgorithm>* algorithmPool;
             CollisionAlgorithmBuilder *collisionAlgorithmBuilderMatrix[CollisionShape3D::SHAPE_MAX][CollisionShape3D::SHAPE_MAX];
     };
 

@@ -16,7 +16,7 @@ namespace urchin {
 
         private:
             bool bNeedSave;
-            QDialogButtonBox *buttonBox;
+            QDialogButtonBox* buttonBox;
 
         private slots:
             void buttonClick(QAbstractButton*);

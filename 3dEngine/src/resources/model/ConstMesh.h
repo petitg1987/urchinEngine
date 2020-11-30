@@ -59,7 +59,7 @@ namespace urchin {
             const std::vector<Vector3<float>>& getBaseTangents() const;
 
         private:
-            Material *material;
+            Material* material;
 
             std::vector<Vertex> vertices;
             std::vector<Point2<float>> textureCoordinates;

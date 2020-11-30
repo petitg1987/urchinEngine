@@ -30,7 +30,7 @@ namespace urchin {
             void removeAllSounds();
 
         private:
-            QStandardItemModel *soundsListModel;
+            QStandardItemModel* soundsListModel;
 
             void selectionChanged(const QItemSelection&, const QItemSelection&) override;
     };

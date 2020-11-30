@@ -37,11 +37,11 @@ namespace urchin {
             void loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
             void writeOn(const std::shared_ptr<XmlChunk>&, XmlWriter&) const;
 
-            SoundManager *soundManager;
+            SoundManager* soundManager;
 
             std::string name;
-            Sound *sound;
-            SoundTrigger *soundTrigger;
+            Sound* sound;
+            SoundTrigger* soundTrigger;
 
     };
 

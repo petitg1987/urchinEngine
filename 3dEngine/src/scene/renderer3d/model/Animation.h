@@ -27,8 +27,8 @@ namespace urchin {
             void onMoving(const Transform<float>&);
 
         private:
-            mutable ConstAnimation *constAnimation;
-            Meshes *meshes;
+            mutable ConstAnimation* constAnimation;
+            Meshes* meshes;
 
             AnimationInformation animationInformation;
             std::vector<Bone> skeleton;

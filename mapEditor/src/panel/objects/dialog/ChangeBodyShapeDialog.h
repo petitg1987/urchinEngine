@@ -27,8 +27,8 @@ namespace urchin {
 
             bool excludeCompoundShape;
 
-            QLabel *bodyShapeTypeLabel;
-            QComboBox *bodyShapeTypeComboBox;
+            QLabel* bodyShapeTypeLabel;
+            QComboBox* bodyShapeTypeComboBox;
 
             CollisionShape3D::ShapeType shapeType;
     };

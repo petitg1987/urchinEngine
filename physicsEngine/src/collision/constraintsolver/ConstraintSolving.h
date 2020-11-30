@@ -29,9 +29,9 @@ namespace urchin {
             AccumulatedSolvingData& getAccumulatedData();
 
         private:
-            WorkRigidBody *body1;
-            WorkRigidBody *body2;
-            ManifoldContactPoint &manifoldContactPoint;
+            WorkRigidBody* body1;
+            WorkRigidBody* body2;
+            ManifoldContactPoint& manifoldContactPoint;
 
             CommonSolvingData commonData;
             ImpulseSolvingData impulseData;

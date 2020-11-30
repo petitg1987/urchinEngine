@@ -25,8 +25,8 @@ namespace urchin {
 
             void done(int) override;
 
-            QLabel *soundShapeTypeLabel;
-            QComboBox *soundShapeTypeComboBox;
+            QLabel* soundShapeTypeLabel;
+            QComboBox* soundShapeTypeComboBox;
 
             SoundShape::ShapeType shapeType;
     };

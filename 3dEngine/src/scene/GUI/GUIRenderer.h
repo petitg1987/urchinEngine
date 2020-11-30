@@ -33,7 +33,7 @@ namespace urchin {
             void display(float) override;
 
         private:
-            const RenderTarget *renderTarget;
+            const RenderTarget* renderTarget;
             unsigned int sceneWidth, sceneHeight;
             std::vector<Widget*> widgets;
 

@@ -16,7 +16,7 @@ namespace urchin {
             const Transform<float>& getLocalTransform() const;
 
         private:
-            ConvexShape3D<float> *shape;
+            ConvexShape3D<float>* shape;
 
             bool bHasLocalTransform;
             Transform<float> localTransform;

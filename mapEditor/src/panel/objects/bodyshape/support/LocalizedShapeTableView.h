@@ -35,7 +35,7 @@ namespace urchin {
             void selectLocalizedShape(int);
 
         private:
-            QStandardItemModel *localizedShapesTableModel;
+            QStandardItemModel* localizedShapesTableModel;
             std::map<const urchin::LocalizedCollisionShape*, std::shared_ptr<const LocalizedCollisionShape>> localizedShapesMap;
 
             void selectionChanged(const QItemSelection&, const QItemSelection&) override;

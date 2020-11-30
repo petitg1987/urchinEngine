@@ -37,7 +37,7 @@ namespace urchin {
         private:
             void computeSafeMargin();
 
-            CylinderShape<float> *cylinderShape; //shape including margin
+            CylinderShape<float>* cylinderShape; //shape including margin
     };
 
 }

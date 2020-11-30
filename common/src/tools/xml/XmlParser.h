@@ -27,7 +27,7 @@ namespace urchin {
         private:
             std::string getChunkDescription(const std::string&, const XmlAttribute&) const;
 
-            TiXmlDocument *doc;
+            TiXmlDocument* doc;
             std::string filenamePath;
     };
 

@@ -37,7 +37,7 @@ namespace urchin {
             const std::string nameSkin;
 
             //display information
-            Text *text; //text of the text box (widget)
+            Text* text; //text of the text box (widget)
             std::string allText; //text of the text box (string)
             unsigned int maxWidthText; //maximum length of text can be displayed
             unsigned int startTextIndex; //index of the first letter to display
@@ -53,7 +53,7 @@ namespace urchin {
 
             //visual
             std::shared_ptr<Texture> texTextBoxDefault, texTextBoxFocus;
-            WidgetOutline *widgetOutline;
+            WidgetOutline* widgetOutline;
             std::shared_ptr<Texture> texCursorDiffuse;
             std::unique_ptr<GenericRenderer> textBoxRenderer, cursorRenderer;
     };

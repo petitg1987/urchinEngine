@@ -27,7 +27,7 @@ namespace urchin {
             std::set<PairContainer*> getOwnerPairContainers() const;
 
         private:
-            PairContainer *alternativePairContainer;
+            PairContainer* alternativePairContainer;
             std::set<PairContainer*> ownerPairContainers;
     };
 

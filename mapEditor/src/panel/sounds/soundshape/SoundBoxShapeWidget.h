@@ -32,7 +32,7 @@ namespace urchin {
             QDoubleSpinBox* halfSizeX;
             QDoubleSpinBox* halfSizeY;
             QDoubleSpinBox* halfSizeZ;
-            QComboBox *orientationType;
+            QComboBox* orientationType;
             QDoubleSpinBox* eulerAxis0;
             QDoubleSpinBox* eulerAxis1;
             QDoubleSpinBox* eulerAxis2;

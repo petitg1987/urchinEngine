@@ -28,13 +28,13 @@ namespace urchin {
             void done(int) override;
             bool isSceneWaterExist(const std::string&);
 
-            const WaterController *waterController;
+            const WaterController* waterController;
 
-            QLabel *waterNameLabel;
-            QLineEdit *waterNameText;
+            QLabel* waterNameLabel;
+            QLineEdit* waterNameText;
 
             std::string waterName;
-            SceneWater *sceneWater;
+            SceneWater* sceneWater;
     };
 
 }

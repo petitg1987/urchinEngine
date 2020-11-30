@@ -39,16 +39,16 @@ namespace urchin {
             void notify(Observable*, int) override;
             void setupTerrainDataFrom(const SceneTerrain*);
 
-            TerrainController *terrainController;
+            TerrainController* terrainController;
 
-            TerrainTableView *terrainTableView;
-            QPushButton *addTerrainButton;
-            QPushButton *removeTerrainButton;
+            TerrainTableView* terrainTableView;
+            QPushButton* addTerrainButton;
+            QPushButton* removeTerrainButton;
 
-            QGroupBox *generalPropertiesGroupBox;
-            QGroupBox *meshGroupBox;
-            QGroupBox *materialGroupBox;
-            QGroupBox *grassGroupBox;
+            QGroupBox* generalPropertiesGroupBox;
+            QGroupBox* meshGroupBox;
+            QGroupBox* materialGroupBox;
+            QGroupBox* grassGroupBox;
 
             bool disableTerrainEvent;
 
@@ -56,7 +56,7 @@ namespace urchin {
             QDoubleSpinBox* positionX;
             QDoubleSpinBox* positionY;
             QDoubleSpinBox* positionZ;
-            QDoubleSpinBox *ambient;
+            QDoubleSpinBox* ambient;
 
             //mesh properties
             QDoubleSpinBox* xzScale;
@@ -79,7 +79,7 @@ namespace urchin {
             QDoubleSpinBox* grassQuantity;
             QDoubleSpinBox* grassHeight;
             QDoubleSpinBox* grassLength;
-            QDoubleSpinBox *windDirectionX;
+            QDoubleSpinBox* windDirectionX;
             QDoubleSpinBox* windDirectionY;
             QDoubleSpinBox* windDirectionZ;
             QDoubleSpinBox* windStrength;

@@ -41,7 +41,7 @@ namespace urchin {
             unsigned int sourceEdgeIndex;
             std::weak_ptr<NavTriangle> targetTriangle; //use weak_ptr to avoid cyclic references (=memory leak) between two triangles
 
-            NavLinkConstraint *linkConstraint;
+            NavLinkConstraint* linkConstraint;
     };
 
 }

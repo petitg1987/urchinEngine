@@ -36,15 +36,15 @@ namespace urchin {
             void notify(Observable*, int) override;
             void setupWaterDataFrom(const SceneWater*);
 
-            WaterController *waterController;
+            WaterController* waterController;
 
-            WaterTableView *waterTableView;
-            QPushButton *addWaterButton;
-            QPushButton *removeWaterButton;
+            WaterTableView* waterTableView;
+            QPushButton* addWaterButton;
+            QPushButton* removeWaterButton;
 
-            QGroupBox *generalPropertiesGroupBox;
-            QGroupBox *waterSurfacePropertiesGroupBox;
-            QGroupBox *underWaterPropertiesGroupBox;
+            QGroupBox* generalPropertiesGroupBox;
+            QGroupBox* waterSurfacePropertiesGroupBox;
+            QGroupBox* underWaterPropertiesGroupBox;
 
             bool disableWaterEvent;
 

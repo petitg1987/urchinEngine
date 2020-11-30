@@ -22,7 +22,7 @@ namespace urchin {
             void applyGravityForce(const Vector3<float>&, float);
             void applyRollingFrictionResistanceForce(float , const std::vector<OverlappingPair*>&);
 
-            const BodyManager *bodyManager;
+            const BodyManager* bodyManager;
     };
 
 }

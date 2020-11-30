@@ -27,7 +27,7 @@ namespace urchin {
         private:
             bool bIsModified;
 
-            MapHandler *mapHandler;
+            MapHandler* mapHandler;
     };
 
 }

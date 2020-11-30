@@ -40,14 +40,14 @@ namespace urchin {
             void updateBodyShape();
 
         protected:
-            QGridLayout *mainLayout;
+            QGridLayout* mainLayout;
             bool disableShapeEvent;
 
             virtual void doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>) = 0;
             virtual std::shared_ptr<const CollisionShape3D> createBodyShape() const = 0;
 
         private:
-            const SceneObject *sceneObject;
+            const SceneObject* sceneObject;
 
             std::shared_ptr<const CollisionShape3D> shape;
     };

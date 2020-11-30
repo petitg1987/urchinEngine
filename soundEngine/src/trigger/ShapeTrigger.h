@@ -24,7 +24,7 @@ namespace urchin {
             SoundTrigger::TriggerResultValue getPlayTriggerValue();
             SoundTrigger::TriggerResultValue getStopTriggerValue();
 
-            const SoundShape *soundShape;
+            const SoundShape* soundShape;
 
             bool isPlaying;
     };

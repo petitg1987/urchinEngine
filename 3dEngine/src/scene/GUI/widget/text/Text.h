@@ -37,7 +37,7 @@ namespace urchin {
             std::vector<Point2<float>> textureCoord;
 
             //visual
-            Font *font;
+            Font* font;
             std::unique_ptr<GenericRenderer> textRenderer;
     };
 

@@ -25,9 +25,9 @@ namespace urchin {
             void updateEditorGeometry(QWidget*, const QStyleOptionViewItem&, const QModelIndex&) const override;
 
         private:
-            BodyShapeWidget *bodyShapeWidget;
-            QTableView *tableView;
-            QStandardItemModel *model;
+            BodyShapeWidget* bodyShapeWidget;
+            QTableView* tableView;
+            QStandardItemModel* model;
 
         private slots:
             void onChange(double);

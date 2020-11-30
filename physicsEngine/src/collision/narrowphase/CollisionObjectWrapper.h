@@ -19,8 +19,8 @@ namespace urchin {
             const PhysicsTransform& getShapeWorldTransform() const;
 
         private:
-            const CollisionShape3D &shape;
-            const PhysicsTransform &shapeWorldTransform;
+            const CollisionShape3D& shape;
+            const PhysicsTransform& shapeWorldTransform;
     };
 
 }

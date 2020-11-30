@@ -60,7 +60,7 @@ namespace urchin {
             unsigned int sceneWidth, sceneHeight;
 
             //renderer
-            ScreenRender *screenRenderTarget;
+            ScreenRender* screenRenderTarget;
             std::vector<Renderer3d*> renderers3d;
             std::vector<GUIRenderer*> guiRenderers;
             Renderer *activeRenderers[NUM_RENDERER];

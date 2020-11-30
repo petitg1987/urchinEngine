@@ -78,7 +78,7 @@ namespace urchin {
 
             std::shared_ptr<Texture> grassTexture, grassMaskTexture;
             std::string grassTextureFilename, grassMaskFilename;
-            TerrainGrassQuadtree *mainGrassQuadtree;
+            TerrainGrassQuadtree* mainGrassQuadtree;
             std::vector<const TerrainGrassQuadtree*> grassQuadtrees;
             unsigned int numGrassInTex;
             float grassDisplayDistance;

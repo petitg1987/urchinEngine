@@ -48,7 +48,7 @@ namespace urchin {
             float timeStep;
             bool paused;
 
-            NavMeshGenerator *navMeshGenerator;
+            NavMeshGenerator* navMeshGenerator;
             AIWorld aiWorld;
             std::vector<std::shared_ptr<PathRequest>> pathRequests;
             std::vector<std::shared_ptr<PathRequest>> copiedPathRequests;

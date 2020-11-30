@@ -20,9 +20,9 @@ namespace urchin {
         private:
             void handleContinuousCollision(WorkRigidBody*, const PhysicsTransform&, const PhysicsTransform&, float);
 
-            const BodyManager *bodyManager;
-            const BroadPhaseManager *broadPhaseManager;
-            const NarrowPhaseManager *narrowPhaseManager;
+            const BodyManager* bodyManager;
+            const BroadPhaseManager* broadPhaseManager;
+            const NarrowPhaseManager* narrowPhaseManager;
     };
 
 }

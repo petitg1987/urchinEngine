@@ -16,7 +16,7 @@ namespace urchin {
             const SoundShape* createDefaultSoundShape(SoundShape::ShapeType) const;
 
         private:
-            const SceneSound *sceneSound;
+            const SceneSound* sceneSound;
     };
 
 }

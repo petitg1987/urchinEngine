@@ -63,14 +63,14 @@ namespace urchin {
             float timeStep;
             bool paused;
 
-            BodyManager *bodyManager;
-            CollisionWorld *collisionWorld;
+            BodyManager* bodyManager;
+            CollisionWorld* collisionWorld;
 
             std::vector<std::shared_ptr<Processable>> processables;
             std::vector<std::shared_ptr<Processable>> oneShotProcessables;
             std::vector<std::shared_ptr<Processable>> copiedProcessables;
 
-            CollisionVisualizer *collisionVisualizer;
+            CollisionVisualizer* collisionVisualizer;
     };
 
 }

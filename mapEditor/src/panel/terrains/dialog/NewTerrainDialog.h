@@ -29,16 +29,16 @@ namespace urchin {
             void done(int) override;
             bool isSceneTerrainExist(const std::string&);
 
-            const TerrainController *terrainController;
+            const TerrainController* terrainController;
 
-            QLabel *terrainNameLabel;
-            QLineEdit *terrainNameText;
-            QLabel *heightFilenameLabel;
-            QLineEdit *heightFilenameText;
+            QLabel* terrainNameLabel;
+            QLineEdit* terrainNameText;
+            QLabel* heightFilenameLabel;
+            QLineEdit* heightFilenameText;
 
             std::string terrainName;
             std::string heightFilename;
-            SceneTerrain *sceneTerrain;
+            SceneTerrain* sceneTerrain;
             static QString preferredHeightPath;
 
         private slots:

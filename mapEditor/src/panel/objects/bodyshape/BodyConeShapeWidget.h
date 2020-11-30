@@ -28,7 +28,7 @@ namespace urchin {
         private:
             QDoubleSpinBox* radius;
             QDoubleSpinBox* height;
-            QComboBox *orientation;
+            QComboBox* orientation;
     };
 
 }

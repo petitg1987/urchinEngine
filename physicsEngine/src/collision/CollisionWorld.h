@@ -34,14 +34,14 @@ namespace urchin {
             const std::vector<ManifoldResult>& getLastUpdatedManifoldResults();
 
         private:
-            BodyManager *bodyManager;
+            BodyManager* bodyManager;
 
-            BroadPhaseManager *broadPhaseManager;
-            NarrowPhaseManager *narrowPhaseManager;
-            IntegrateVelocityManager *integrateVelocityManager;
-            ConstraintSolverManager *constraintSolverManager;
-            IslandManager *islandManager;
-            IntegrateTransformManager *integrateTransformManager;
+            BroadPhaseManager* broadPhaseManager;
+            NarrowPhaseManager* narrowPhaseManager;
+            IntegrateVelocityManager* integrateVelocityManager;
+            ConstraintSolverManager* constraintSolverManager;
+            IslandManager* islandManager;
+            IntegrateTransformManager* integrateTransformManager;
 
             std::vector<ManifoldResult> manifoldResults;
     };

@@ -21,14 +21,14 @@ namespace urchin {
 
             void setSkin(const std::string&);
 
-            std::shared_ptr<Texture> createWidgetTexture(unsigned int, unsigned int, const std::shared_ptr<XmlChunk>&, WidgetOutline *widgetOutline = nullptr) const;
+            std::shared_ptr<Texture> createWidgetTexture(unsigned int, unsigned int, const std::shared_ptr<XmlChunk>&, WidgetOutline* widgetOutline = nullptr) const;
             XmlParser* getXmlSkin() const;
 
         private:
             GUISkinService();
             ~GUISkinService() override;
 
-            XmlParser *xmlSkin;
+            XmlParser* xmlSkin;
     };
 }
 

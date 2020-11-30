@@ -96,7 +96,7 @@ static unsigned char PADDING[64] = {
 typedef unsigned char BYTE ;
 
 // POINTER defines a generic pointer type
-typedef unsigned char *POINTER;
+typedef unsigned char* POINTER;
 
 // UINT2 defines a two byte word
 typedef unsigned short int UINT2;
@@ -341,7 +341,7 @@ class MD5
         {
             Init() ;
 
-            FILE *file;
+            FILE* file;
 
             int len;
             unsigned char buffer[1024] ;

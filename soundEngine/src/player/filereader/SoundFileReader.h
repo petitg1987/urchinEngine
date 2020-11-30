@@ -26,7 +26,7 @@ namespace urchin {
             float getSoundDuration() const;
 
         private:
-            SNDFILE *file;
+            SNDFILE* file;
             bool bEndOfFileReached;
 
             SF_INFO fileInfos;

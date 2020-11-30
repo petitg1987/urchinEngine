@@ -26,7 +26,7 @@ namespace urchin {
         private:
             void play(bool);
 
-            StreamUpdateWorker *streamUpdateWorker;
+            StreamUpdateWorker* streamUpdateWorker;
     };
 
 }

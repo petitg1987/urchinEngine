@@ -31,10 +31,10 @@ namespace urchin {
             void loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
             void writeOn(const std::shared_ptr<XmlChunk>&, XmlWriter&) const;
 
-            LightManager *lightManager;
+            LightManager* lightManager;
 
             std::string name;
-            Light *light;
+            Light* light;
     };
 
 }

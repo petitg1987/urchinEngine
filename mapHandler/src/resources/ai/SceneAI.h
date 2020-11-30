@@ -23,7 +23,7 @@ namespace urchin {
             void loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
             void writeOn(const std::shared_ptr<XmlChunk>&, XmlWriter&) const;
 
-            AIManager *aiManager;
+            AIManager* aiManager;
     };
 
 }

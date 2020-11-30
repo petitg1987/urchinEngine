@@ -36,7 +36,7 @@ namespace urchin {
             AlgorithmResultAllocator();
             ~AlgorithmResultAllocator() override;
 
-            SyncFixedSizePool<AlgorithmResult> *algorithmResultPool;
+            SyncFixedSizePool<AlgorithmResult>* algorithmResultPool;
     };
 
 }

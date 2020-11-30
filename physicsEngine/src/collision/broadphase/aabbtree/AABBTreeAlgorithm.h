@@ -25,7 +25,7 @@ namespace urchin {
             std::vector<AbstractWorkBody*> bodyTest(AbstractWorkBody*, const PhysicsTransform&, const PhysicsTransform&) const override;
 
         private:
-            BodyAABBTree *tree;
+            BodyAABBTree* tree;
 
     };
 

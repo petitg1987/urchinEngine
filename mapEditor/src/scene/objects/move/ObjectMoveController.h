@@ -42,12 +42,12 @@ namespace urchin {
             unsigned int sceneWidth, sceneHeight;
 
             ObjectMoveAxisDisplayer objectMoveAxisDisplayer;
-            SceneManager *sceneManager;
-            SceneController *sceneController;
+            SceneManager* sceneManager;
+            SceneController* sceneController;
             MouseController mouseController;
             StatusBarController statusBarController;
 
-            const SceneObject *selectedSceneObject;
+            const SceneObject* selectedSceneObject;
             int selectedAxis;
             Point3<float> savedPosition;
 

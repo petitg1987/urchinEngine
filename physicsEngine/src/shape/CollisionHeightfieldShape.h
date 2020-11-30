@@ -57,7 +57,7 @@ namespace urchin {
             std::unique_ptr<BoxShape<float>> localAABBox;
             
             mutable std::vector<CollisionTriangleShape> trianglesInAABBox;
-            FixedSizePool<TriangleShape3D<float>> *triangleShapesPool;
+            FixedSizePool<TriangleShape3D<float>>* triangleShapesPool;
     };
 
 }

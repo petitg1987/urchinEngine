@@ -25,7 +25,7 @@ namespace urchin {
             const Ray<float> ray;
             std::shared_ptr<RayTestResult> rayTestResult;
 
-            CollisionWorld *collisionWorld;
+            CollisionWorld* collisionWorld;
 
     };
 

@@ -85,7 +85,7 @@ namespace urchin {
 
             unsigned int sceneWidth, sceneHeight;
 
-            Widget *parent;
+            Widget* parent;
             std::vector<Widget*> children;
 
             std::vector<std::shared_ptr<EventListener>> eventListeners;

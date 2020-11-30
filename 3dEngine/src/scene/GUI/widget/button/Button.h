@@ -33,7 +33,7 @@ namespace urchin {
             const std::string nameSkin;
 
             //display information
-            Text *text;
+            Text* text;
             const std::string buttonText;
 
             //visual

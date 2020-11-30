@@ -24,7 +24,7 @@ namespace urchin {
             std::vector<ManifoldResult> getManifoldResults() const;
 
         private:
-            CollisionWorld *collisionWorld;
+            CollisionWorld* collisionWorld;
             mutable std::mutex visualizerDataMutex;
 
             std::vector<ManifoldResult> manifoldResults;

@@ -27,8 +27,8 @@ namespace urchin {
             bool isEnable;
             std::string instanceName;
 
-            ProfilerNode *profilerRoot;
-            ProfilerNode *currentNode;
+            ProfilerNode* profilerRoot;
+            ProfilerNode* currentNode;
     };
 
 }

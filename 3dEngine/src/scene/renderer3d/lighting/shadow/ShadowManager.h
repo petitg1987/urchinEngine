@@ -95,13 +95,13 @@ namespace urchin {
 
             //scene information
             unsigned int sceneWidth, sceneHeight;
-            ModelDisplayer *shadowModelDisplayer;
-            LightManager *lightManager;
-            OctreeManager<Model> *modelOctreeManager;
+            ModelDisplayer* shadowModelDisplayer;
+            LightManager* lightManager;
+            OctreeManager<Model>* modelOctreeManager;
             std::vector<Model*> obboxModels;
             Matrix4<float> projectionMatrix;
-            ShadowShaderVariable *shadowShaderVariable;
-            ShadowModelShaderVariable *shadowModelShaderVariable;
+            ShadowShaderVariable* shadowShaderVariable;
+            ShadowModelShaderVariable* shadowModelShaderVariable;
             std::vector<Model*> visibleModels;
 
             //shadow information
@@ -116,9 +116,9 @@ namespace urchin {
             //light information
             struct LightLocation { //reservation of light locations for light producing shadow
                 ShaderVar shadowMapTexShaderVar;
-                ShaderVar *mLightProjectionViewShaderVar = nullptr;
+                ShaderVar* mLightProjectionViewShaderVar = nullptr;
             };
-            LightLocation *lightsLocation;
+            LightLocation* lightsLocation;
     };
 
 }

@@ -25,7 +25,7 @@ namespace urchin {
 
         private:
             ShaderVar layersToUpdateShaderVar;
-            const ShadowData *shadowData;
+            const ShadowData* shadowData;
     };
 
 }

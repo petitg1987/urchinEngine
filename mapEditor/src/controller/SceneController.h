@@ -39,13 +39,13 @@ namespace urchin {
         private:
             std::vector<AbstractController*> subControllers;
 
-            ObjectController *objectController;
-            LightController *lightController;
-            TerrainController *terrainController;
-            WaterController *waterController;
-            SkyController *skyController;
-            SoundController *soundController;
-            AIController *aiController;
+            ObjectController* objectController;
+            LightController* lightController;
+            TerrainController* terrainController;
+            WaterController* waterController;
+            SkyController* skyController;
+            SoundController* soundController;
+            AIController* aiController;
     };
 
 }

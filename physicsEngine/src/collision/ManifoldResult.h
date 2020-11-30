@@ -39,8 +39,8 @@ namespace urchin {
             float computeArea(const Point3<float>&, const Point3<float>&, const Point3<float>&, const Point3<float>&) const;
             void removeContactPoint(unsigned int);
 
-            AbstractWorkBody *body1;
-            AbstractWorkBody *body2;
+            AbstractWorkBody* body1;
+            AbstractWorkBody* body2;
 
             ManifoldContactPoint contactPoints[MAX_PERSISTENT_POINTS];
             unsigned int nbContactPoint;

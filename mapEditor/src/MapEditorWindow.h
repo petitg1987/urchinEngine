@@ -42,17 +42,17 @@ namespace urchin {
 
             StatusBarController statusBarController;
 
-            QAction *saveAction;
-            QAction *saveAsAction;
-            QAction *closeAction;
+            QAction* saveAction;
+            QAction* saveAsAction;
+            QAction* closeAction;
             std::map<SceneDisplayer::ViewProperties, QAction*> viewActions;
 
             std::string mapEditorPath;
             std::string mapFilename;
 
-            SceneController *sceneController;
-            SceneDisplayerWidget *sceneDisplayerWidget;
-            ScenePanelWidget *scenePanelWidget;
+            SceneController* sceneController;
+            SceneDisplayerWidget* sceneDisplayerWidget;
+            ScenePanelWidget* scenePanelWidget;
 
         private slots:
             void showNewDialog();

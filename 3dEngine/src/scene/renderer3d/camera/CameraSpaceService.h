@@ -15,7 +15,7 @@ namespace urchin {
             Ray<float> screenPointToRay(const Point2<float>&, float) const;
 
         private:
-            Camera *camera;
+            Camera* camera;
     };
 
 }

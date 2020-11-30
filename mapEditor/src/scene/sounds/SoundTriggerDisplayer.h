@@ -22,7 +22,7 @@ namespace urchin {
 
             void cleanCurrentDisplay();
 
-            SceneManager *sceneManager;
+            SceneManager* sceneManager;
             std::vector<GeometryModel*> soundTriggerModels;
     };
 

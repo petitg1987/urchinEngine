@@ -36,7 +36,7 @@ namespace urchin {
             void computeWorldBoundary();
             void controlBoundaries(AABBNode<AbstractWorkBody*>*) const;
 
-            PairContainer *defaultPairContainer;
+            PairContainer* defaultPairContainer;
 
             bool inInitializationPhase;
             float minYBoundary;

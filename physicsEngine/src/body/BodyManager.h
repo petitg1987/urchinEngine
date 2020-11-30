@@ -41,7 +41,7 @@ namespace urchin {
 
             mutable std::mutex bodiesMutex;
 
-            AbstractWorkBody *lastUpdatedWorkBody;
+            AbstractWorkBody* lastUpdatedWorkBody;
     };
 
 }
