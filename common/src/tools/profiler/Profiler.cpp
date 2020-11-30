@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cassert>
+#include <memory>
 
 #include "Profiler.h"
 #include "tools/ConfigService.h"
@@ -7,8 +8,6 @@
 #include "tools/logger/FileLogger.h"
 
 namespace urchin {
-    //static
-    std::map<std::string, std::shared_ptr<Profiler>> Profiler::instances;
 
     Profiler::Profiler(const std::string& instanceName) :
             instanceName(instanceName),
@@ -22,15 +21,24 @@ namespace urchin {
         delete profilerRoot;
     }
 
-    std::shared_ptr<Profiler> Profiler::getInstance(const std::string& instanceName) {
-        auto instanceIt = instances.find(instanceName);
-        if (instanceIt!=instances.end()) {
-            return instanceIt->second;
-        }
+    const std::unique_ptr<Profiler>& Profiler::graphic() {
+        static auto profiler3d = std::make_unique<Profiler>("3d");
+        return profiler3d;
+    }
 
-        auto profiler = std::make_shared<Profiler>(instanceName);
-        instances.insert(std::pair<std::string, std::shared_ptr<Profiler>>(instanceName, profiler));
-        return profiler;
+    const std::unique_ptr<Profiler>& Profiler::physics() {
+        static auto profilerPhysics = std::make_unique<Profiler>("physics");
+        return profilerPhysics;
+    }
+
+    const std::unique_ptr<Profiler>& Profiler::ai() {
+        static auto profilerAi = std::make_unique<Profiler>("ai");
+        return profilerAi;
+    }
+
+    const std::unique_ptr<Profiler>& Profiler::sound() {
+        static auto profilerSound = std::make_unique<Profiler>("sound");
+        return profilerSound;
     }
 
     void Profiler::startNewProfile(const std::string& nodeName) {

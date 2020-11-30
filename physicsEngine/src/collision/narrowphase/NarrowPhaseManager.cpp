@@ -26,7 +26,7 @@ namespace urchin {
      * @param manifoldResults [OUT] Collision constraints
      */
     void NarrowPhaseManager::process(float dt, const std::vector<OverlappingPair*>& overlappingPairs, std::vector<ManifoldResult>& manifoldResults) {
-        ScopeProfiler profiler("physics", "narrowPhase");
+        ScopeProfiler sp(Profiler::physics(), "narrowPhase");
 
         processOverlappingPairs(overlappingPairs, manifoldResults);
         processPredictiveContacts(dt, manifoldResults);
@@ -46,7 +46,7 @@ namespace urchin {
     }
 
     void NarrowPhaseManager::processOverlappingPairs(const std::vector<OverlappingPair*>& overlappingPairs, std::vector<ManifoldResult>& manifoldResults) {
-        ScopeProfiler profiler("physics", "procOverlapPair");
+        ScopeProfiler sp(Profiler::physics(), "procOverlapPair");
 
         for (const auto& overlappingPair : overlappingPairs) {
             processOverlappingPair(overlappingPair, manifoldResults);
@@ -88,7 +88,7 @@ namespace urchin {
     }
 
     void NarrowPhaseManager::processPredictiveContacts(float dt, std::vector<ManifoldResult>& manifoldResults) {
-        ScopeProfiler profiler("physics", "proPrediContact");
+        ScopeProfiler sp(Profiler::physics(), "proPrediContact");
 
         for (auto workBody : bodyManager->getWorkBodies()) {
             WorkRigidBody* body = WorkRigidBody::upCast(workBody);

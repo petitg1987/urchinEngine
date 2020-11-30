@@ -63,7 +63,7 @@ namespace urchin {
      * @param dt Delta of time between two simulation steps
      */
     void PhysicsCharacterController::update(float dt) {
-        ScopeProfiler profiler("physics", "charactCtrlExec");
+        ScopeProfiler sp(Profiler::physics(), "charactCtrlExec");
 
         if(!ghostBody->isStatic()) {
             //setup values

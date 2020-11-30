@@ -41,7 +41,7 @@ namespace urchin {
             delete guiRenderer;
         }
 
-        Profiler::getInstance("3d")->log();
+        Profiler::graphic()->log();
     }
 
     void SceneManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
@@ -204,7 +204,7 @@ namespace urchin {
     }
 
     void SceneManager::display() {
-        ScopeProfiler profiler("3d", "sceneMgrDisplay");
+        ScopeProfiler sp(Profiler::graphic(), "sceneMgrDisplay");
 
         //fps
         computeFps();

@@ -246,7 +246,7 @@ namespace urchin {
      * @return All visible models from all lights
      */
     const std::vector<Model*>& ShadowManager::computeVisibleModels() {
-        ScopeProfiler profiler("3d", "coVisibleModel");
+        ScopeProfiler sp(Profiler::graphic(), "coVisibleModel");
 
         visibleModels.clear();
         for (const auto& shadowData : shadowDatas) {
@@ -320,7 +320,7 @@ namespace urchin {
      * Updates frustum shadow data (models, shadow caster/receiver box, projection matrix)
      */
     void ShadowManager::updateFrustumShadowData(const Light* light, ShadowData* shadowData) {
-        ScopeProfiler profiler("3d", "upFrustumShadow");
+        ScopeProfiler sp(Profiler::graphic(), "upFrustumShadow");
 
         if (light->hasParallelBeams()) { //sun light
             Matrix4<float> lightViewMatrixInverse = shadowData->getLightViewMatrix().inverse();
@@ -347,7 +347,7 @@ namespace urchin {
      * @return Box in light space containing shadow caster and receiver (scene independent)
      */
     AABBox<float> ShadowManager::createSceneIndependentBox(const Frustum<float>& splitFrustum, const Matrix4<float>& lightViewMatrix) const {
-        ScopeProfiler profiler("3d", "sceneIndepBox");
+        ScopeProfiler sp(Profiler::graphic(), "sceneIndepBox");
 
         const Frustum<float>& frustumLightSpace = lightViewMatrix * splitFrustum;
 
@@ -383,7 +383,7 @@ namespace urchin {
      */
     AABBox<float> ShadowManager::createSceneDependentBox(const AABBox<float>& aabboxSceneIndependent, const OBBox<float>& obboxSceneIndependentViewSpace,
             const std::vector<Model*>& models, const Matrix4<float>& lightViewMatrix) const {
-        ScopeProfiler profiler("3d", "sceneDepBox");
+        ScopeProfiler sp(Profiler::graphic(), "sceneDepBox");
 
         AABBox<float> aabboxSceneDependent;
         if (!models.empty()) {
@@ -423,7 +423,7 @@ namespace urchin {
     }
 
     void ShadowManager::splitFrustum(const Frustum<float>& frustum) {
-        ScopeProfiler profiler("3d", "splitFrustum");
+        ScopeProfiler sp(Profiler::graphic(), "splitFrustum");
 
         splitDistances.clear();
         splitFrustums.clear();
@@ -496,7 +496,7 @@ namespace urchin {
     }
 
     void ShadowManager::updateVisibleModels(const Frustum<float>& frustum) {
-        ScopeProfiler profiler("3d", "upVisibleModel");
+        ScopeProfiler sp(Profiler::graphic(), "upVisibleModel");
 
         splitFrustum(frustum);
 
@@ -510,7 +510,7 @@ namespace urchin {
     }
 
     void ShadowManager::updateShadowMaps() {
-        ScopeProfiler profiler("3d", "updateShadowMap");
+        ScopeProfiler sp(Profiler::graphic(), "updateShadowMap");
 
         for (auto& shadowData : shadowDatas) {
             const ShadowData* lightShadowData = shadowData.second;

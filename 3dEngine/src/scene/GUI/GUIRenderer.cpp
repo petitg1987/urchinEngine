@@ -128,7 +128,7 @@ namespace urchin {
     }
 
     void GUIRenderer::display(float dt) {
-        ScopeProfiler profiler("3d", "uiRenderDisplay");
+        ScopeProfiler sp(Profiler::graphic(), "uiRenderDisplay");
 
         renderTarget->activeShader(guiShader);
         for (auto& widget : widgets) {

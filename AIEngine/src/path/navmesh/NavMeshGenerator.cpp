@@ -55,7 +55,7 @@ namespace urchin {
      * See '_doc' for an algorithm overview
      */
     std::shared_ptr<NavMesh> NavMeshGenerator::generate(AIWorld& aiWorld) {
-        ScopeProfiler scopeProfiler("ai", "navMeshGenerate");
+        ScopeProfiler sp(Profiler::ai(), "navMeshGenerate");
 
         updateExpandedPolytopes(aiWorld);
         prepareNavObjectsToUpdate();
@@ -72,7 +72,7 @@ namespace urchin {
     }
 
     void NavMeshGenerator::updateExpandedPolytopes(AIWorld& aiWorld) {
-        ScopeProfiler scopeProfiler("ai", "upExpandPoly");
+        ScopeProfiler sp(Profiler::ai(), "upExpandPoly");
 
         newOrMovingNavObjectsToRefresh.clear();
         affectedNavObjectsToRefresh.clear();
@@ -138,7 +138,7 @@ namespace urchin {
     }
 
     void NavMeshGenerator::prepareNavObjectsToUpdate() {
-        ScopeProfiler scopeProfiler("ai", "prepNavObjects");
+        ScopeProfiler sp(Profiler::ai(), "prepNavObjects");
 
         navObjectsToRefresh.clear();
         navObjectsLinksToRefresh.clear();
@@ -183,7 +183,7 @@ namespace urchin {
     }
 
     void NavMeshGenerator::updateNavPolygons() {
-        ScopeProfiler scopeProfiler("ai", "upNavPolygons");
+        ScopeProfiler sp(Profiler::ai(), "upNavPolygons");
 
         for (const auto& navObject : navObjectsToRefresh) {
             navObject->removeAllNavPolygons();
@@ -196,7 +196,7 @@ namespace urchin {
 
     std::vector<std::shared_ptr<NavPolygon>> NavMeshGenerator::createNavigationPolygons(const std::shared_ptr<NavObject>& navObject,
             const std::shared_ptr<PolytopeSurface>& walkableSurface) {
-        ScopeProfiler scopeProfiler("ai", "createNavPolys");
+        ScopeProfiler sp(Profiler::ai(), "createNavPolys");
 
         std::string walkableName = walkableSurface->getPolytope()->getName() + "[" + std::to_string(walkableSurface->getSurfacePosition()) + "]";
         walkablePolygons.clear();
@@ -222,7 +222,7 @@ namespace urchin {
 
     std::vector<CSGPolygon<float>>& NavMeshGenerator::determineObstacles(const std::shared_ptr<NavObject>& navObject,
             const std::shared_ptr<PolytopeSurface>& walkableSurface) const {
-        ScopeProfiler scopeProfiler("ai", "getObstacles");
+        ScopeProfiler sp(Profiler::ai(), "getObstacles");
 
         const std::vector<CSGPolygon<float>>& selfObstaclePolygons = walkableSurface->getSelfObstacles();
 
@@ -277,7 +277,7 @@ namespace urchin {
     }
 
     void NavMeshGenerator::applyObstaclesOnWalkablePolygon(std::vector<CSGPolygon<float>>& obstaclePolygons) {
-        ScopeProfiler scopeProfiler("ai", "subObstacles");
+        ScopeProfiler sp(Profiler::ai(), "subObstacles");
 
         assert(walkablePolygons.size() == 1);
         obstaclesInsideWalkablePolygon.clear();
@@ -311,7 +311,7 @@ namespace urchin {
     }
 
     std::shared_ptr<NavPolygon> NavMeshGenerator::createNavigationPolygon(CSGPolygon<float>& walkablePolygon, const std::shared_ptr<PolytopeSurface>& walkableSurface, bool uniqueWalkableSurface) const {
-        ScopeProfiler scopeProfiler("ai", "createNavPoly");
+        ScopeProfiler sp(Profiler::ai(), "createNavPoly");
 
         navPolygonName = "<" + walkablePolygon.getName() + ">";
         std::vector<Point2<float>> walkablePolygonPoints = walkablePolygon.getCwPoints();
@@ -333,7 +333,7 @@ namespace urchin {
     }
 
     std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const TriangulationAlgorithm& triangulation, const std::shared_ptr<PolytopeSurface>& walkableSurface) const {
-        ScopeProfiler scopeProfiler("ai", "elevateTriPoint");
+        ScopeProfiler sp(Profiler::ai(), "elevateTriPoint");
 
         std::vector<Point3<float>> elevatedPoints;
         elevatedPoints.reserve(triangulation.getAllPointsSize());
@@ -353,7 +353,7 @@ namespace urchin {
     }
 
     void NavMeshGenerator::deleteNavLinks() {
-        ScopeProfiler scopeProfiler("ai", "delNavLinks");
+        ScopeProfiler sp(Profiler::ai(), "delNavLinks");
 
         for (const auto& navObjectLinksToRefresh : navObjectsLinksToRefresh) {
             for (const auto& sourceNavPolygon : navObjectLinksToRefresh.first->getNavPolygons()) {
@@ -365,7 +365,7 @@ namespace urchin {
     }
 
     void NavMeshGenerator::createNavLinks() {
-        ScopeProfiler scopeProfiler("ai", "creNavLinks");
+        ScopeProfiler sp(Profiler::ai(), "creNavLinks");
 
         for (const auto& sourceNavObject : navObjectsToRefresh) {
             for (const auto& sourceNavPolygon : sourceNavObject->getNavPolygons()) {

@@ -42,7 +42,7 @@ namespace urchin {
      * Setup work bodies with new data on bodies
      */
     void BodyManager::setupWorkBodies() {
-        ScopeProfiler profiler("physics", "setupWorkBodies");
+        ScopeProfiler sp(Profiler::physics(), "setupWorkBodies");
         std::lock_guard<std::mutex> lock(bodiesMutex);
 
         auto it = bodies.begin();

@@ -25,7 +25,7 @@ namespace urchin {
      * @param manifoldResults Constraints to solve
      */
     void ConstraintSolverManager::solveConstraints(float dt, std::vector<ManifoldResult>& manifoldResults) {
-        ScopeProfiler profiler("physics", "solveConstraint");
+        ScopeProfiler sp(Profiler::physics(), "solveConstraint");
 
         //setup step to solve constraints
         setupConstraints(manifoldResults, dt);

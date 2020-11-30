@@ -40,7 +40,7 @@ namespace urchin {
         delete collisionWorld;
         delete bodyManager;
 
-        Profiler::getInstance("physics")->log();
+        Profiler::physics()->log();
     }
 
     BodyManager* PhysicsWorld::getBodyManager() const {
@@ -200,7 +200,7 @@ namespace urchin {
     }
 
     void PhysicsWorld::processPhysicsUpdate(float frameTimeStep) {
-        ScopeProfiler profiler("physics", "procPhysicsUp");
+        ScopeProfiler sp(Profiler::physics(), "procPhysicsUp");
 
         //copy for local thread
         bool paused;
@@ -233,7 +233,7 @@ namespace urchin {
      * @param gravity Gravity expressed in units/s^2
      */
     void PhysicsWorld::setupProcessables(const std::vector<std::shared_ptr<Processable>>& processables, float dt, const Vector3<float>& gravity) {
-        ScopeProfiler profiler("physics", "stpProcessable");
+        ScopeProfiler sp(Profiler::physics(), "stpProcessable");
 
         for (const auto& processable : processables) {
             processable->setup(dt, gravity);
@@ -245,7 +245,7 @@ namespace urchin {
      * @param gravity Gravity expressed in units/s^2
      */
     void PhysicsWorld::executeProcessables(const std::vector<std::shared_ptr<Processable>>& processables, float dt, const Vector3<float>& gravity) {
-        ScopeProfiler profiler("physics", "execProcessable");
+        ScopeProfiler sp(Profiler::physics(), "execProcessable");
 
         for (const auto& processable : processables) {
             processable->execute(dt, gravity);

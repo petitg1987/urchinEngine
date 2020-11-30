@@ -12,7 +12,7 @@ namespace urchin {
     }
 
     void ConcaveAnyCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper& object1, const CollisionObjectWrapper& object2) {
-        ScopeProfiler profiler("physics", "algConcaveAny");
+        ScopeProfiler sp(Profiler::physics(), "algConcaveAny");
 
         const CollisionShape3D& otherShape = object2.getShape();
 

@@ -47,7 +47,7 @@ namespace urchin {
     }
 
     void TerrainManager::display(const Camera* camera, float dt) const {
-        ScopeProfiler profiler("3d", "terrainDisplay");
+        ScopeProfiler sp(Profiler::graphic(), "terrainDisplay");
 
         for (const auto terrain : terrains) {
             terrain->display(renderTarget, camera, dt);

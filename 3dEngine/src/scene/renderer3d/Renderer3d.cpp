@@ -342,7 +342,7 @@ namespace urchin {
     }
 
     void Renderer3d::display(float dt) {
-        ScopeProfiler profiler("3d", "rendererDisplay");
+        ScopeProfiler sp(Profiler::graphic(), "rendererDisplay");
 
         if (!camera) { //nothing to display if camera doesn't exist
             return;
@@ -411,7 +411,7 @@ namespace urchin {
     }
 
     void Renderer3d::updateScene(float dt) {
-        ScopeProfiler profiler("3d", "updateScene");
+        ScopeProfiler sp(Profiler::graphic(), "updateScene");
 
         //move the camera
         camera->updateCameraView(dt);
@@ -447,7 +447,7 @@ namespace urchin {
      * Render depth, color, normal, etc. into buffers.
      */
     void Renderer3d::deferredRendering(float dt) {
-        ScopeProfiler profiler("3d", "deferredRender");
+        ScopeProfiler sp(Profiler::graphic(), "deferredRender");
 
         deferredRenderTarget->resetDisplay();
 
@@ -502,7 +502,7 @@ namespace urchin {
      */
     void Renderer3d::lightingPassRendering() {
         if(lightingRenderer) {
-            ScopeProfiler profiler("3d", "lightPassRender");
+            ScopeProfiler sp(Profiler::graphic(), "lightPassRender");
 
             lightingRenderer->clearAdditionalTextures();
             ShaderDataSender()
@@ -528,7 +528,7 @@ namespace urchin {
     }
 
     void Renderer3d::postUpdateScene() {
-        ScopeProfiler profiler("3d", "postUpdateScene");
+        ScopeProfiler sp(Profiler::graphic(), "postUpdateScene");
 
         modelOctreeManager->postRefreshOctreeables();
 

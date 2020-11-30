@@ -299,7 +299,7 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::updateAOTexture(const Camera* camera) {
-        ScopeProfiler profiler("3d", "updateAOTexture");
+        ScopeProfiler sp(Profiler::graphic(), "updateAOTexture");
 
         ShaderDataSender()
             .sendData(mInverseViewProjectionShaderVar, (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse())

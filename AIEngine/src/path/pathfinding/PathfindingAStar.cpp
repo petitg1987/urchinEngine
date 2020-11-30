@@ -17,7 +17,7 @@ namespace urchin {
     }
 
     std::vector<PathPoint> PathfindingAStar::findPath(const Point3<float>& startPoint, const Point3<float>& endPoint) const {
-        ScopeProfiler scopeProfiler("ai", "findPath");
+        ScopeProfiler sp(Profiler::ai(), "findPath");
 
         std::shared_ptr<NavTriangle> startTriangle = findTriangle(startPoint);
         std::shared_ptr<NavTriangle> endTriangle = findTriangle(endPoint);

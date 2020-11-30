@@ -31,7 +31,7 @@ namespace urchin {
     }
 
     void WaterManager::display(const Camera* camera, FogManager* fogManager, float dt) const {
-        ScopeProfiler profiler("3d", "waterDisplay");
+        ScopeProfiler sp(Profiler::graphic(), "waterDisplay");
 
         for (const auto water : waters) {
             water->display(renderTarget, camera, fogManager, dt);

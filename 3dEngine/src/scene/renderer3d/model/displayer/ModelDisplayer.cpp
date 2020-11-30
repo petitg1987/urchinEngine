@@ -132,7 +132,7 @@ namespace urchin {
     }
 
     void ModelDisplayer::updateAnimation(float dt) {
-        ScopeProfiler profiler("3d", "updateAnimation");
+        ScopeProfiler sp(Profiler::graphic(), "updateAnimation");
 
         for (auto model : models) {
             model->updateAnimation(dt);
@@ -140,7 +140,7 @@ namespace urchin {
     }
 
     void ModelDisplayer::display(const Matrix4<float>& viewMatrix) {
-        ScopeProfiler profiler("3d", "modelDisplay");
+        ScopeProfiler sp(Profiler::graphic(), "modelDisplay");
 
         if (!isInitialized) {
             throw std::runtime_error("Model displayer must be initialized before call display");

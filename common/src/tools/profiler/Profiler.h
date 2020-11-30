@@ -14,16 +14,17 @@ namespace urchin {
             explicit Profiler(const std::string&);
             ~Profiler();
 
-            static std::shared_ptr<Profiler> getInstance(const std::string&);
+            static const std::unique_ptr<Profiler>& graphic();
+            static const std::unique_ptr<Profiler>& physics();
+            static const std::unique_ptr<Profiler>& ai();
+            static const std::unique_ptr<Profiler>& sound();
 
             void startNewProfile(const std::string&);
-            void stopProfile(const std::string &nodeName = "");
+            void stopProfile(const std::string& nodeName = "");
 
             void log();
 
         private:
-            static std::map<std::string, std::shared_ptr<Profiler>> instances;
-
             bool isEnable;
             std::string instanceName;
 

@@ -46,7 +46,7 @@ namespace urchin {
         children.push_back(child);
     }
 
-    bool ProfilerNode::isStarted() {
+    bool ProfilerNode::isStarted() const {
         return startCount > 0;
     }
 

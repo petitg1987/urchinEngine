@@ -31,7 +31,7 @@ namespace urchin {
 
         delete navMeshGenerator;
 
-        Profiler::getInstance("ai")->log();
+        Profiler::ai()->log();
     }
 
     NavMeshGenerator* AIManager::getNavMeshGenerator() const {
@@ -144,7 +144,7 @@ namespace urchin {
     }
 
     void AIManager::processAIUpdate() {
-        ScopeProfiler profiler("ai", "procAIUpdate");
+        ScopeProfiler sp(Profiler::ai(), "procAIUpdate");
 
         //copy for local thread
         bool paused;

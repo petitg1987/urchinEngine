@@ -333,7 +333,7 @@ namespace urchin {
 
     void TerrainGrass::display(const RenderTarget* renderTarget, const Camera* camera, float dt) {
         if (grassTexture) {
-            ScopeProfiler profiler("3d", "grassDisplay");
+            ScopeProfiler sp(Profiler::graphic(), "grassDisplay");
 
             sumTimeStep += dt;
             ShaderDataSender()

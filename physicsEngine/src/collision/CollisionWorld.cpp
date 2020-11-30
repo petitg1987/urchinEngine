@@ -39,7 +39,7 @@ namespace urchin {
      * @param gravity Gravity expressed in units/s^2
      */
     void CollisionWorld::process(float dt, const Vector3<float>& gravity) {
-        ScopeProfiler profiler("physics", "colWorldProc");
+        ScopeProfiler sp(Profiler::physics(), "colWorldProc");
 
         //initialize work bodies from bodies
         bodyManager->setupWorkBodies();

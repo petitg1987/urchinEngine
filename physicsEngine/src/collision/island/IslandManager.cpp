@@ -18,7 +18,7 @@ namespace urchin {
      * @param overlappingPairs Overlapping pairs of broad phase used to determine the islands
      */
     void IslandManager::refreshBodyActiveState(const std::vector<ManifoldResult>& manifoldResults) {
-        ScopeProfiler profiler("physics", "refreshBodyStat");
+        ScopeProfiler sp(Profiler::physics(), "refreshBodyStat");
 
         buildIslands(manifoldResults);
         const std::vector<IslandElementLink>& islandElementsLink = islandContainer.retrieveSortedIslandElements();

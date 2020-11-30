@@ -20,7 +20,7 @@ namespace urchin {
             ProfilerNode* findChildren(const std::string&) const;
             void addChild(ProfilerNode*);
 
-            bool isStarted();
+            bool isStarted() const;
             void startTimer();
             bool stopTimer();
 
