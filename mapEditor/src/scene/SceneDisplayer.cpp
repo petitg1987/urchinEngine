@@ -68,7 +68,7 @@ namespace urchin {
 
             isInitialized = true;
         } catch (std::exception& e) {
-            Logger::logger().logError("Error occurred during map load: " + std::string(e.what()));
+            Logger::instance()->logError("Error occurred during map load: " + std::string(e.what()));
             QMessageBox::critical(nullptr, "Error", "Unexpected error occurred. Check log file for more details.");
             this->~SceneDisplayer();
             exit(1);
@@ -183,7 +183,7 @@ namespace urchin {
                 sceneManager->display();
             }
         } catch (std::exception& e) {
-            Logger::logger().logError("Error occurred during paint: " + std::string(e.what()));
+            Logger::instance()->logError("Error occurred during paint: " + std::string(e.what()));
             QMessageBox::critical(nullptr, "Error", "Unexpected error occurred. Check log file for more details.");
             this->~SceneDisplayer();
             exit(1);

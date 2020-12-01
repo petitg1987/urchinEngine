@@ -73,23 +73,23 @@ namespace urchin {
     }
 
     template<class T> Vector2<T> Vector2<T>::operator +(const Vector2<T>& v) const {
-        return Vector2<T>(    X + v.X,
-                    Y + v.Y);
+        return Vector2<T>(X + v.X,
+                          Y + v.Y);
     }
 
     template<class T> Vector2<T> Vector2<T>::operator -(const Vector2<T>& v) const {
-        return Vector2<T>(    X - v.X,
-                    Y - v.Y);
+        return Vector2<T>(X - v.X,
+                          Y - v.Y);
     }
 
     template<class T> Vector2<T> Vector2<T>::operator *(const Vector2<T>& v) const {
-        return Vector2<T>(    X * v.X,
-                Y * v.Y);
+        return Vector2<T>(X * v.X,
+                          Y * v.Y);
     }
 
     template<class T> Vector2<T> Vector2<T>::operator /(const Vector2<T>& v) const {
-        return Vector2<T>(    X / v.X,
-                Y / v.Y);
+        return Vector2<T>(X / v.X,
+                          Y / v.Y);
     }
 
     template<class T> const Vector2<T>& Vector2<T>::operator +=(const Vector2<T>& v) {
@@ -167,8 +167,8 @@ namespace urchin {
     }
 
     template<class T> Vector2<T> operator *(const Matrix2<T>& m, const Vector2<T>& v) {
-        return Vector2<T>(    m.a11 * v.X + m.a12 * v.Y,
-                    m.a21 * v.X + m.a22 * v.Y);
+        return Vector2<T>(m.a11 * v.X + m.a12 * v.Y,
+                          m.a21 * v.X + m.a22 * v.Y);
     }
 
     template<class T> Vector2<T> operator *(const Vector2<T>& v, const Matrix2<T>& m) {

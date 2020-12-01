@@ -17,7 +17,7 @@ namespace urchin {
             for (auto& mResource : mResources) {
                 logStream<< " - " << mResource.second->getName() << std::endl;
             }
-            Logger::logger().logError(logStream.str());
+            Logger::instance()->logError(logStream.str());
         }
     }
 

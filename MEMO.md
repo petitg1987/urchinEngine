@@ -13,7 +13,7 @@
     - Use exception (`throw std::runtime_error(...)`) for methods which could be wrongly used by the final user
     - Use assert (`assert(...)`) for methods which could be wrongly used by the engine developer
         - *Note:* surround assert with `#ifndef NDEBUG`/`#endif` when condition has bad performance
-    - Use logger (`Logger::logger().logError(...)`) when the result of an algorithm is not the one excepted
+    - Use logger (`Logger::instance()->logError(...)`) when the result of an algorithm is not the one excepted
         - *Note:* surround logger call with `if (Check::instance()->additionalChecksEnable()) {`/`}` when condition has bad performance
 - Verify when `new` operator is called:
     - Use following source code and add a debug point:

@@ -172,7 +172,7 @@ namespace urchin {
     void LightManager::checkMaxLight(const std::vector<Light*>& lights) const {
         static bool maxLightReachLogged = false;
         if (lights.size() > maxLights && !maxLightReachLogged) {
-            Logger::logger().logWarning("Light in scene (" + std::to_string(lights.size()) + ") is higher that max light (" + std::to_string(maxLights) + ") authorized");
+            Logger::instance()->logWarning("Light in scene (" + std::to_string(lights.size()) + ") is higher that max light (" + std::to_string(maxLights) + ") authorized");
             maxLightReachLogged = true;
         }
     }

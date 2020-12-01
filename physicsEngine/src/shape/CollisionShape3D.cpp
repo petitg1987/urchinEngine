@@ -68,7 +68,7 @@ namespace urchin {
                 logStream<<" - Current margin: "<<innerMargin<<std::endl;
                 logStream<<" - Expected margin: "<<initialInnerMargin<<std::endl;
                 logStream<<" - Shape length: "<<shapeLength;
-                Logger::logger().logWarning(logStream.str());
+                Logger::instance()->logWarning(logStream.str());
             }
         }
     }

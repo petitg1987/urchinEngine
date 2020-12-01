@@ -101,7 +101,7 @@ namespace urchin {
 
         ALenum err;
         while ((err = alGetError()) != AL_NO_ERROR) {
-            Logger::logger().logError("OpenAL error detected: " + std::to_string(err));
+            Logger::instance()->logError("OpenAL error detected: " + std::to_string(err));
         }
     }
 

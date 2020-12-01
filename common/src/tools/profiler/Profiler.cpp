@@ -4,7 +4,6 @@
 
 #include "Profiler.h"
 #include "tools/ConfigService.h"
-#include "tools/logger/Logger.h"
 #include "tools/logger/FileLogger.h"
 
 namespace urchin {
@@ -84,15 +83,13 @@ namespace urchin {
                 throw std::runtime_error("Current node must be the root node to perform print. Current node: " + currentNode->getName());
             }
 
-            std::unique_ptr<Logger> oldLogger = Logger::defineLogger(std::make_unique<FileLogger>("profiler.log"));
             std::stringstream logStream;
             logStream.precision(3);
-
             logStream << "Profiling result (" << instanceName << "):" << std::endl;
             profilerRoot->log(0, logStream, -1.0);
 
-            Logger::logger().logInfo(logStream.str());
-            Logger::defineLogger(std::move(oldLogger));
+            auto profilerLogger = std::make_unique<FileLogger>("profiler.log");
+            profilerLogger->logInfo(logStream.str());
         }
     }
 

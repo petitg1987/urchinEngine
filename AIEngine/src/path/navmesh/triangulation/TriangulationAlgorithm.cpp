@@ -319,7 +319,7 @@ namespace urchin {
             logStream<<" - "<<endContourIndex<<std::endl;
         }
 
-        Logger::logger().log(logLevel, logStream.str());
+        Logger::instance()->log(logLevel, logStream.str());
     }
 
     void TriangulationAlgorithm::logOutputData(const std::string& message, const std::vector<std::shared_ptr<NavTriangle>>& triangles, Logger::CriticalityLevel logLevel) const {
@@ -333,6 +333,6 @@ namespace urchin {
                      <<"}, {"<<triangle->getIndex(1)<<": "<<polygonPoints[triangle->getIndex(1)]
                      <<"}, {"<<triangle->getIndex(2)<<": "<<polygonPoints[triangle->getIndex(2)]<<"}"<<std::endl;
         }
-        Logger::logger().log(logLevel, logStream.str());
+        Logger::instance()->log(logLevel, logStream.str());
     }
 }

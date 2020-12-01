@@ -240,6 +240,6 @@ namespace urchin {
         logStream << " - Contact normal: " << commonData.contactNormal << std::endl;
         logStream << " - Contact tangent: " << commonData.contactTangent;
 
-        Logger::logger().logError(logStream.str());
+        Logger::instance()->logError(logStream.str());
     }
 }

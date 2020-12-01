@@ -7,22 +7,27 @@
 namespace urchin {
 
     //static
-    std::unique_ptr<Logger> Logger::instance = std::make_unique<FileLogger>("urchinEngine.log");
+    std::unique_ptr<Logger> Logger::customInstance = nullptr;
 
     Logger::Logger() :
             bHasFailure(false) {
 
     }
 
-    std::unique_ptr<Logger> Logger::defineLogger(std::unique_ptr<Logger> logger) {
-        Logger* oldInstance = instance.release();
-        instance = std::move(logger);
-
-        return std::unique_ptr<Logger>(oldInstance);
+    const std::unique_ptr<Logger>& Logger::defaultInstance() {
+        static std::unique_ptr<Logger> defaultInstance = std::make_unique<FileLogger>("urchinEngine.log");
+        return defaultInstance;
     }
 
-    Logger& Logger::logger() {
-        return *instance;
+    void Logger::setupCustomInstance(std::unique_ptr<Logger> logger) {
+        customInstance = std::move(logger);
+    }
+
+    const std::unique_ptr<Logger>& Logger::instance() {
+        if(customInstance) {
+            return customInstance;
+        }
+        return defaultInstance();
     }
 
     void Logger::logInfo(const std::string& toLog) {

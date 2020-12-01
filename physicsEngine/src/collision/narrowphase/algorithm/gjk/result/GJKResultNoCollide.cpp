@@ -59,7 +59,7 @@ namespace urchin {
         logStream<<errorMessage<<std::endl;
         logStream<<simplex;
 
-        Logger::logger().logError(logStream.str());
+        Logger::instance()->logError(logStream.str());
     }
 
     //explicit template

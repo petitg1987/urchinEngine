@@ -441,7 +441,7 @@ namespace urchin {
                 logStream<<"\tHole ("<<contourNames[contourIndex++]<<"):"<<std::endl;
             }
         }
-        Logger::logger().log(logLevel, logStream.str());
+        Logger::instance()->log(logLevel, logStream.str());
 
         if (DEBUG_EXPORT_MONOTONE_POINTS) {
             exportSVG(std::string(std::getenv("HOME")) + "/monotonePoints.html");
@@ -476,7 +476,7 @@ namespace urchin {
                 logStream<<" - "<<polygonPoints[pointIndex]<<std::endl;
             }
         }
-        Logger::logger().log(logLevel, logStream.str());
+        Logger::instance()->log(logLevel, logStream.str());
     }
 
 }

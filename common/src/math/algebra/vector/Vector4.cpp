@@ -81,24 +81,24 @@ namespace urchin {
     }
 
     template<class T> Vector4<T> Vector4<T>::operator -(const Vector4<T>& v) const {
-        return Vector4<T>(    X - v.X,
-                    Y - v.Y,
-                    Z - v.Z,
-                    W - v.W);
+        return Vector4<T>(X - v.X,
+                          Y - v.Y,
+                          Z - v.Z,
+                          W - v.W);
     }
 
     template<class T> Vector4<T> Vector4<T>::operator *(const Vector4<T>& v) const {
-        return Vector4<T>(    X * v.X,
-                Y * v.Y,
-                Z * v.Z,
-                W * v.W);
+        return Vector4<T>(X * v.X,
+                          Y * v.Y,
+                          Z * v.Z,
+                          W * v.W);
     }
 
     template<class T> Vector4<T> Vector4<T>::operator /(const Vector4<T>& v) const {
-        return Vector4<T>(    X / v.X,
-                Y / v.Y,
-                Z / v.Z,
-                W / v.W);
+        return Vector4<T>(X / v.X,
+                          Y / v.Y,
+                          Z / v.Z,
+                          W / v.W);
     }
 
     template<class T> const Vector4<T>& Vector4<T>::operator +=(const Vector4<T>& v) {
@@ -188,10 +188,10 @@ namespace urchin {
     }
 
     template<class T> Vector4<T> operator *(const Matrix4<T>& m, const Vector4<T>& v) {
-        return Vector4<T>(    m.a11 * v.X + m.a12 * v.Y + m.a13 * v.Z + m.a14 * v.W,
-                    m.a21 * v.X + m.a22 * v.Y + m.a23 * v.Z + m.a24 * v.W,
-                    m.a31 * v.X + m.a32 * v.Y + m.a33 * v.Z + m.a34 * v.W,
-                    m.a41 * v.X + m.a42 * v.Y + m.a43 * v.Z + m.a44 * v.W);
+        return Vector4<T>(m.a11 * v.X + m.a12 * v.Y + m.a13 * v.Z + m.a14 * v.W,
+                          m.a21 * v.X + m.a22 * v.Y + m.a23 * v.Z + m.a24 * v.W,
+                          m.a31 * v.X + m.a32 * v.Y + m.a33 * v.Z + m.a34 * v.W,
+                          m.a41 * v.X + m.a42 * v.Y + m.a43 * v.Z + m.a44 * v.W);
     }
 
     template<class T> Vector4<T> operator *(const Vector4<T>& v, const Matrix4<T>& m) {

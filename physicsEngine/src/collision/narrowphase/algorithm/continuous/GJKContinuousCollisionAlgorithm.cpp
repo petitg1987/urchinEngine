@@ -126,7 +126,7 @@ namespace urchin {
         logStream<<" - Object 2: "<<std::endl<<object2.getLocalObject()->toString()<<std::endl;
         logStream<<" - Object 2, from: "<<object2.getFrom()<<std::endl;
         logStream<<" - Object 2, to: "<<object2.getTo();
-        Logger::logger().log(logLevel, logStream.str());
+        Logger::instance()->log(logLevel, logStream.str());
     }
 
     //explicit template

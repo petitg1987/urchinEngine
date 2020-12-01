@@ -131,7 +131,7 @@ namespace urchin {
             if (!body->isStatic()) {
                 std::stringstream logStream;
                 logStream<<"Body "<<body->getId()<<" is below the limit of "<<std::to_string(minYBoundary)<<": "<<body->getPosition();
-                Logger::logger().log(Logger::CriticalityLevel::WARNING, logStream.str());
+                Logger::instance()->log(Logger::CriticalityLevel::WARNING, logStream.str());
 
                 body->setIsStatic(true);
             }

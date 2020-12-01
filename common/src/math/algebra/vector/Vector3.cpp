@@ -59,9 +59,9 @@ namespace urchin {
     }
 
     template<class T> Vector3<T> Vector3<T>::crossProduct(const Vector3<T>& v) const {
-        return Vector3<T>(    Y*v.Z - Z*v.Y,
-                    Z*v.X - X*v.Z,
-                    X*v.Y - Y*v.X);
+        return Vector3<T>(Y*v.Z - Z*v.Y,
+                          Z*v.X - X*v.Z,
+                          X*v.Y - Y*v.X);
     }
 
     template<class T> Vector3<T> Vector3<T>::truncate(T maxLength) const {
@@ -94,26 +94,26 @@ namespace urchin {
 
     template<class T> Vector3<T> Vector3<T>::operator +(const Vector3<T>& v) const {
         return Vector3<T>(    X + v.X,
-                    Y + v.Y,
-                    Z + v.Z);
+                              Y + v.Y,
+                              Z + v.Z);
     }
 
     template<class T> Vector3<T> Vector3<T>::operator -(const Vector3<T>& v) const {
-        return Vector3<T>(    X - v.X,
-                    Y - v.Y,
-                    Z - v.Z);
+        return Vector3<T>(X - v.X,
+                          Y - v.Y,
+                          Z - v.Z);
     }
 
     template<class T> Vector3<T> Vector3<T>::operator *(const Vector3<T>& v) const {
-        return Vector3<T>(    X * v.X,
-                Y * v.Y,
-                Z * v.Z);
+        return Vector3<T>(X * v.X,
+                          Y * v.Y,
+                          Z * v.Z);
     }
 
     template<class T> Vector3<T> Vector3<T>::operator /(const Vector3<T>& v) const {
-        return Vector3<T>(    X / v.X,
-                Y / v.Y,
-                Z / v.Z);
+        return Vector3<T>(X / v.X,
+                          Y / v.Y,
+                          Z / v.Z);
     }
 
     template<class T> const Vector3<T>& Vector3<T>::operator +=(const Vector3<T>& v) {
@@ -197,9 +197,9 @@ namespace urchin {
     }
 
     template<class T> Vector3<T> operator *(const Matrix3<T>& m, const Vector3<T>& v) {
-        return Vector3<T>(    m.a11 * v.X + m.a12 * v.Y + m.a13 * v.Z,
-                    m.a21 * v.X + m.a22 * v.Y + m.a23 * v.Z,
-                    m.a31 * v.X + m.a32 * v.Y + m.a33 * v.Z);
+        return Vector3<T>(m.a11 * v.X + m.a12 * v.Y + m.a13 * v.Z,
+                          m.a21 * v.X + m.a22 * v.Y + m.a23 * v.Z,
+                          m.a31 * v.X + m.a32 * v.Y + m.a33 * v.Z);
     }
 
     template<class T> Vector3<T> operator *(const Vector3<T>& v, const Matrix3<T>& m) {

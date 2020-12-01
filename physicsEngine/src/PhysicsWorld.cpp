@@ -187,7 +187,7 @@ namespace urchin {
                 }
             }
         } catch (std::exception& e) {
-            Logger::logger().logError("Error cause physics thread crash: exception reported to main thread");
+            Logger::instance()->logError("Error cause physics thread crash: exception reported to main thread");
             physicsThreadExceptionPtr = std::current_exception();
         }
     }

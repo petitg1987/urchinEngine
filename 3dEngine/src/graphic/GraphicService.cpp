@@ -49,7 +49,7 @@ namespace urchin {
         if(!errorDetected) {
             GLenum err;
             while ((err = glGetError()) != GL_NO_ERROR) {
-                Logger::logger().logError("OpenGL error detected: " + std::to_string(err));
+                Logger::instance()->logError("OpenGL error detected: " + std::to_string(err));
             }
             errorDetected = true;
         }

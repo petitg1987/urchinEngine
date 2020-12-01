@@ -19,8 +19,8 @@ namespace urchin {
                 ERROR
             };
 
-            static std::unique_ptr<Logger> defineLogger(std::unique_ptr<Logger>);
-            static Logger& logger();
+            static void setupCustomInstance(std::unique_ptr<Logger>);
+            static const std::unique_ptr<Logger>& instance();
 
             void logInfo(const std::string&);
             void logWarning(const std::string&);
@@ -34,13 +34,14 @@ namespace urchin {
             bool hasFailure() const;
 
         private:
+            static const std::unique_ptr<Logger>& defaultInstance();
             std::string prefix(CriticalityLevel);
             std::string getCriticalityString(CriticalityLevel);
 
             virtual void write(const std::string&) = 0;
 
             bool bHasFailure;
-            static std::unique_ptr<Logger> instance;
+            static std::unique_ptr<Logger> customInstance;
     };
 
 }
