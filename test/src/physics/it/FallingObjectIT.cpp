@@ -33,7 +33,7 @@ void FallingObjectIT::fallOnPlane() {
 }
 
 void FallingObjectIT::fallForever() {
-    if (!Logger::logger().retrieveContent(std::numeric_limits<unsigned long>::max()).empty()) {
+    if (!Logger::instance()->retrieveContent(std::numeric_limits<unsigned long>::max()).empty()) {
         throw std::runtime_error("Log file must be emptied before start this test.");
     }
 
@@ -55,10 +55,10 @@ void FallingObjectIT::fallForever() {
 
     AssertHelper::assertTrue(cubeBody->getTransform().getPosition().Y > -4.0f, "Check cube doesn't fall forever");
     AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it goes outside the world limits");
-    std::string logValue = Logger::logger().retrieveContent(std::numeric_limits<unsigned long>::max());
+    std::string logValue = Logger::instance()->retrieveContent(std::numeric_limits<unsigned long>::max());
     AssertHelper::assertTrue(logValue.find("(WW) Body cube is below the limit of") != std::string::npos);
 
-    Logger::logger().purge();
+    Logger::instance()->purge();
     delete collisionWorld;
     delete bodyManager;
 }
