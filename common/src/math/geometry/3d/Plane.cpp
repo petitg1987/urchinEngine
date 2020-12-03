@@ -31,18 +31,19 @@ namespace urchin {
         buildFromCoefficients(a, b, c, d);
     }
 
-    template<class T> Plane<T>::Plane(const Plane<T>& plane) {
-        normal = plane.getNormal();
-        d = plane.getDistanceToOrigin();
+    template<class T> Plane<T>::Plane(const Plane<T>& plane) :
+            normal(plane.getNormal()),
+            d(plane.getDistanceToOrigin()) {
+
     }
 
-    template<class T> Plane<T> Plane<T>::operator=(const Plane<T>& plane) {
+    template<class T> Plane<T>& Plane<T>::operator=(const Plane<T>& plane) {
         normal = plane.getNormal();
         d = plane.getDistanceToOrigin();
         return *this;
     }
 
-    template<class T> Plane<T> Plane<T>::operator=(Plane<T>&& plane) {
+    template<class T> Plane<T>& Plane<T>::operator=(Plane<T>&& plane) noexcept {
         normal = std::move(plane.getNormal());
         d = std::move(plane.getDistanceToOrigin());
         return *this;

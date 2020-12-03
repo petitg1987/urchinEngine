@@ -14,11 +14,11 @@ namespace urchin {
         nextPointIndex(0),
         nextTriangleIndex(0) {
         //build tetrahedron
-        std::set<unsigned int> pointsToExclude = buildTetrahedron(points);
+        std::set<std::size_t> pointsToExclude = buildTetrahedron(points);
 
         //add each point to the tetrahedron
         for (std::size_t i=0; i<points.size(); i++) {
-            if (pointsToExclude.find(i)==pointsToExclude.end()) {
+            if (pointsToExclude.find(i) == pointsToExclude.end()) {
                 addNewPoint(points[i]);
             }
         }
@@ -183,11 +183,11 @@ namespace urchin {
 
     template<class T> void ConvexHullShape3D<T>::addTriangle(const IndexedTriangle3D<T>& indexedTriangle) {
         //add indexed triangles to triangles map
-        unsigned int triangleIndex = nextTriangleIndex++;
-        indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(triangleIndex, indexedTriangle));
+        std::size_t triangleIndex = nextTriangleIndex++;
+        indexedTriangles.insert(std::pair<std::size_t, IndexedTriangle3D<T>>(triangleIndex, indexedTriangle));
 
         //add triangles reference on points
-        for (unsigned int i=0; i<3; i++) {
+        for (std::size_t i=0; i<3; i++) {
             points[indexedTriangle.getIndex(i)].triangleIndices.push_back(triangleIndex);
         }
     }
@@ -211,9 +211,9 @@ namespace urchin {
     /**
      * @return All indices points used to build the tetrahedron
      */
-    template<class T> std::set<unsigned int> ConvexHullShape3D<T>::buildTetrahedron(const std::vector<Point3<T>>& points) {
+    template<class T> std::set<std::size_t> ConvexHullShape3D<T>::buildTetrahedron(const std::vector<Point3<T>>& points) {
         //1. initialize
-        std::set<unsigned int> pointsUsed;
+        std::set<std::size_t> pointsUsed;
 
         //2. build a point (use first point)
         if (points.empty()) {
@@ -232,7 +232,7 @@ namespace urchin {
             }
         }
 
-        if (pointsUsed.size()!=2) {
+        if (pointsUsed.size() != 2) {
             throw buildException(points, pointsUsed);
         }
 
@@ -284,7 +284,7 @@ namespace urchin {
             }
         }
 
-        if (pointsUsed.size()!=4) {
+        if (pointsUsed.size() != 4) {
             throw buildException(points, pointsUsed);
         }
 
@@ -303,7 +303,7 @@ namespace urchin {
      * @param pointsUsed Points currently used to construct the tetrahedron
      * @return Exception during building of tetrahedron
      */
-    template<class T> std::invalid_argument ConvexHullShape3D<T>::buildException(const std::vector<Point3<T>>& points, const std::set<unsigned int>& pointsUsed) {
+    template<class T> std::invalid_argument ConvexHullShape3D<T>::buildException(const std::vector<Point3<T>>& points, const std::set<std::size_t>& pointsUsed) {
         std::string formName;
         if (pointsUsed.empty()) {
             formName = "empty set";
@@ -314,9 +314,7 @@ namespace urchin {
         } else if (pointsUsed.size()==3) {
             formName = "plane";
         } else {
-            std::ostringstream oss;
-            oss << pointsUsed.size();
-            return std::invalid_argument("Number of points used to build the tetrahedron unsupported: " + oss.str() + ".");
+            return std::invalid_argument("Number of points used to build the tetrahedron unsupported: " + std::to_string(pointsUsed.size()) + ".");
         }
 
         //log points in error log file

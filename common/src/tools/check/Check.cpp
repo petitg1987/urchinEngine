@@ -8,7 +8,7 @@ namespace urchin {
 
     }
 
-    bool Check::additionalChecksEnable() {
+    bool Check::additionalChecksEnable() const {
         return isAdditionalCheckEnable;
     }
 

@@ -17,11 +17,11 @@ namespace urchin {
 
     template<class T> HeightfieldPointHelper<T>::HeightfieldPointHelper(const std::vector<Point3<T>>& heightfieldPoints, unsigned int heightfieldXSize) :
             heightfieldPoints(heightfieldPoints),
-            heightfieldXSize(heightfieldXSize) {
-        heightfieldZSize = heightfieldPoints.size() / heightfieldXSize;
+            heightfieldXSize(heightfieldXSize),
+            heightfieldZSize(heightfieldPoints.size() / heightfieldXSize),
+            xInterval(heightfieldPoints[1].X - heightfieldPoints[0].X),
+            zInterval(heightfieldPoints[heightfieldXSize].Z - heightfieldPoints[0].Z) {
 
-        xInterval = heightfieldPoints[1].X - heightfieldPoints[0].X;
-        zInterval = heightfieldPoints[heightfieldXSize].Z - heightfieldPoints[0].Z;
     }
 
     /**

@@ -13,7 +13,7 @@ namespace urchin {
      */
     template<class T> ConvexHullShape2D<T>::ConvexHullShape2D(const std::vector<Point2<T>>& points) {
         //Monotone Chain algorithm
-        unsigned int nbPoints = points.size();
+        std::size_t nbPoints = points.size();
         unsigned int k = 0; //number of points in convex hull
 
         convexHullPoints.resize(2*nbPoints);
@@ -25,7 +25,7 @@ namespace urchin {
         std::sort(sortedPoints.begin(), sortedPoints.end());
 
         //build lower convex hull
-        for (unsigned int i=0; i<nbPoints; i++) {
+        for (std::size_t i=0; i<nbPoints; i++) {
             while (k>=2 && Line2D<T>(convexHullPoints[k-2], convexHullPoints[k-1]).ccw(sortedPoints[i]) <= 0.0) { //clockwise detected, we remove the point
                 k--;
             }
@@ -81,7 +81,7 @@ namespace urchin {
 
     template<class T> T ConvexHullShape2D<T>::area() const {
         T area = 0.0;
-        int j;
+        std::size_t j;
 
         for (std::size_t i=0; i<convexHullPoints.size(); i++) {
             j = (i + 1) % convexHullPoints.size();

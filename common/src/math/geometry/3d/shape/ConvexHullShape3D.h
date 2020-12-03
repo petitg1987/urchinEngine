@@ -40,8 +40,8 @@ namespace urchin {
         private:
             void addTriangle(const IndexedTriangle3D<T>&);
             void removeTriangle(const typename std::map<std::size_t, IndexedTriangle3D<T>>::iterator&);
-            std::set<unsigned int> buildTetrahedron(const std::vector<Point3<T>>&);
-            std::invalid_argument buildException(const std::vector<Point3<T>>&, const std::set<unsigned int>&);
+            std::set<std::size_t> buildTetrahedron(const std::vector<Point3<T>>&);
+            std::invalid_argument buildException(const std::vector<Point3<T>>&, const std::set<std::size_t>&);
 
             void logConvexHullData(const std::string&) const;
 

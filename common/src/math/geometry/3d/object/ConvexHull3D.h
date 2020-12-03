@@ -24,8 +24,8 @@ namespace urchin {
             std::vector<Point3<T>> getPoints() const;
             const typename std::map<std::size_t, IndexedTriangle3D<T>>& getIndexedTriangles() const;
 
-            unsigned int addNewPoint(const Point3<T>&);
-            unsigned int addNewPoint(const Point3<T>&, std::vector<std::size_t>&);
+            std::size_t addNewPoint(const Point3<T>&);
+            std::size_t addNewPoint(const Point3<T>&, std::vector<std::size_t>&);
 
             Point3<T> getSupportPoint(const Vector3<T>&) const;
 

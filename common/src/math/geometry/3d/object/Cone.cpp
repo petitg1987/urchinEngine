@@ -7,24 +7,22 @@ namespace urchin {
 
     template<class T> Cone<T>::Cone() :
             coneShape(ConeShape<T>(0.0, 0.0, ConeShape<T>::CONE_X_POSITIVE)),
-            centerOfMass(Point3<T>(0.0, 0.0, 0.0)) {
+            centerOfMass(Point3<T>(0.0, 0.0, 0.0)),
+            baseSideCosAngle(0.0) {
         axis[0] = Vector3<T>(0.0, 0.0, 0.0);
         axis[1] = Vector3<T>(0.0, 0.0, 0.0);
         axis[2] = Vector3<T>(0.0, 0.0, 0.0);
-
-        baseSideCosAngle = 0.0;
     }
 
     template<class T> Cone<T>::Cone(T radius, T height, typename ConeShape<T>::ConeOrientation coneOrientation,
             const Point3<T>& centerOfMass, const Quaternion<T>& orientation) :
-        coneShape(ConeShape<T>(radius, height, coneOrientation)),
-        centerOfMass(centerOfMass),
-        orientation(orientation) {
+            coneShape(ConeShape<T>(radius, height, coneOrientation)),
+            centerOfMass(centerOfMass),
+            orientation(orientation),
+            baseSideCosAngle(radius / std::sqrt(radius * radius + height * height)) {
         axis[0] = orientation.rotatePoint(Point3<T>(1.0, 0.0, 0.0)).toVector();
         axis[1] = orientation.rotatePoint(Point3<T>(0.0, 1.0, 0.0)).toVector();
         axis[2] = orientation.rotatePoint(Point3<T>(0.0, 0.0, 1.0)).toVector();
-
-        baseSideCosAngle = radius / std::sqrt(radius * radius + height * height);
     }
 
     template<class T> T Cone<T>::getRadius() const {

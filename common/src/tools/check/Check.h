@@ -9,7 +9,7 @@ namespace urchin {
         public:
             friend class Singleton<Check>;
 
-            bool additionalChecksEnable();
+            bool additionalChecksEnable() const;
 
         private:
             Check();

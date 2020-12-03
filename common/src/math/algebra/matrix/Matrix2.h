@@ -46,7 +46,7 @@ namespace urchin {
             explicit operator T*();
             explicit operator const T*() const;
 
-            T     a11, a21,
+            T   a11, a21,
                 a12, a22;
     };
 

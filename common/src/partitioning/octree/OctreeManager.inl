@@ -80,7 +80,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::buildOctree(std::ve
         }
     } else {
         delete mainOctree;
-        mainOctree = new Octree<TOctreeable>(Point3<float>(0.0, 0.0, 0.0), Vector3<float>(1.0, 1.0, 1.0), minSize);
+        mainOctree = new Octree<TOctreeable>(Point3<float>(0.0f, 0.0f, 0.0f), Vector3<float>(1.0f, 1.0f, 1.0f), minSize);
     }
 
     notifyObservers(this, OCTREE_BUILT);

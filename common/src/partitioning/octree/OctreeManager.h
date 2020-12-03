@@ -41,7 +41,7 @@ namespace urchin {
             bool resizeOctree(TOctreeable*);
 
             float overflowSize;
-            int minSize;
+            float minSize;
             Octree<TOctreeable>* mainOctree;
 
             std::vector<TOctreeable*> movingOctreeables;
