@@ -5,19 +5,21 @@ namespace urchin {
     /**
      * Construct an identify matrix
      */
-    template<class T> Matrix2<T>::Matrix2() {
-        a11=1.0; a12=0.0;
-        a21=0.0; a22=1.0;
+    template<class T> Matrix2<T>::Matrix2() :
+            a11(1.0), a21(0.0),
+            a12(0.0), a22(1.0) {
+
     }
 
     template<class T> Matrix2<T>::Matrix2(T m11, T m12,
-        T m21, T m22) {
-        a11=m11; a12=m12;
-        a21=m21; a22=m22;
+        T m21, T m22) :
+            a11(m11), a21(m21),
+            a12(m12), a22(m22) {
+
     }
 
     template<class T> void Matrix2<T>::setValues(T m11, T m12,
-        T m21, T m22) {
+            T m21, T m22) {
         a11=m11; a12=m12;
         a21=m21; a22=m22;
     }

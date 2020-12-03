@@ -5,18 +5,20 @@ namespace urchin {
     /**
      * Construct an identify matrix
      */
-    template<class T> Matrix3<T>::Matrix3() {
-        a11=1.0; a12=0.0; a13=0.0;
-        a21=0.0; a22=1.0; a23=0.0;
-        a31=0.0; a32=0.0; a33=1.0;
+    template<class T> Matrix3<T>::Matrix3() :
+            a11(1.0), a21(0.0), a31(0.0),
+            a12(0.0), a22(1.0), a32(0.0),
+            a13(0.0), a23(0.0), a33(1.0) {
+
     }
 
     template<class T> Matrix3<T>::Matrix3(T m11, T m12, T m13,
         T m21, T m22, T m23,
-        T m31, T m32, T m33) {
-        a11=m11; a12=m12; a13=m13;
-        a21=m21; a22=m22; a23=m23;
-        a31=m31; a32=m32; a33=m33;
+        T m31, T m32, T m33) :
+            a11(m11), a21(m21), a31(m31),
+            a12(m12), a22(m22), a32(m32),
+            a13(m13), a23(m23), a33(m33) {
+
     }
 
     template<class T> void Matrix3<T>::setValues(T m11, T m12, T m13,

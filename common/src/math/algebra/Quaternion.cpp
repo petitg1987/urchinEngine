@@ -9,12 +9,12 @@
 namespace urchin {
 
     template<class T> Quaternion<T>::Quaternion() :
-        X(0), Y(0), Z(0), W(1) {
+            X(0), Y(0), Z(0), W(1) {
 
     }
 
     template<class T> Quaternion<T>::Quaternion(T Xu, T Yu, T Zu, T Wu) :
-        X(Xu), Y(Yu), Z(Zu), W(Wu) {
+            X(Xu), Y(Yu), Z(Zu), W(Wu) {
 
     }
 

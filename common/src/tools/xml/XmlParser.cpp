@@ -13,7 +13,7 @@ namespace urchin {
     /**
      * @param workingDirectory Override the default working directory
      */
-    XmlParser::XmlParser(const std::string& filename, const std::string& workingDirectory) {
+    XmlParser::XmlParser(const std::string& filename, const std::string& workingDirectory) : doc() {
         this->filenamePath = workingDirectory + filename;
         this->doc = new TiXmlDocument(filenamePath.c_str());
 

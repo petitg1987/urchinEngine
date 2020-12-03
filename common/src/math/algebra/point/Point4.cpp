@@ -3,27 +3,23 @@
 namespace urchin {
 
     template<class T> Point4<T>::Point4() :
-        X(0), Y(0), Z(0), W(1) {
+            X(0), Y(0), Z(0), W(1) {
 
     }
 
     template<class T> Point4<T>::Point4(T Xu, T Yu, T Zu, T Wu) :
-        X(Xu), Y(Yu), Z(Zu), W(Wu) {
+            X(Xu), Y(Yu), Z(Zu), W(Wu) {
 
     }
 
-    template<class T> Point4<T>::Point4(const Point2<T>& p, T Zu, T Wu) {
-        X = p.X;
-        Y = p.Y;
-        Z = Zu;
-        W = Wu;
+    template<class T> Point4<T>::Point4(const Point2<T>& p, T Zu, T Wu) :
+            X(p.X), Y(p.Y), Z(Zu), W(Wu) {
+
     }
 
-    template<class T> Point4<T>::Point4(const Point3<T>& p, T Wu) {
-        X = p.X;
-        Y = p.Y;
-        Z = p.Z;
-        W = Wu;
+    template<class T> Point4<T>::Point4(const Point3<T>& p, T Wu) :
+            X(p.X), Y(p.Y), Z(p.Z), W(Wu) {
+
     }
 
     template<class T> Point4<T>::Point4(const Vector3<T>& vector, T Wu) :

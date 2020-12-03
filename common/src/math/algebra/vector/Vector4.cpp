@@ -2,16 +2,18 @@
 
 namespace urchin {
 
-    template<class T> Vector4<T>::Vector4() : X(0), Y(0), Z(0), W(1) {
+    template<class T> Vector4<T>::Vector4() :
+            X(0), Y(0), Z(0), W(1) {
 
     }
 
-    template<class T> Vector4<T>::Vector4(T Xu, T Yu, T Zu, T Wu) : X(Xu), Y(Yu), Z(Zu), W(Wu) {
+    template<class T> Vector4<T>::Vector4(T Xu, T Yu, T Zu, T Wu) :
+            X(Xu), Y(Yu), Z(Zu), W(Wu) {
 
     }
 
     template<class T> Vector4<T>::Vector4(const Vector3<T>& v, T Wu) :
-        X(v.X), Y(v.Y), Z(v.Z), W(Wu) {
+            X(v.X), Y(v.Y), Z(v.Z), W(Wu) {
 
     }
 

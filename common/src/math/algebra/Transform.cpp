@@ -6,17 +6,16 @@ namespace urchin {
             fScale(1.0) {
         pPosition.setNull();
         qOrientation.setIdentity();
-
-
         //not need to compute transform matrix: it's the identity matrix
     }
 
     template<class T> Transform<T>::Transform(const Point3<T>& position, const Quaternion<T>& orientation, T scale) :
             pPosition(position),
             qOrientation(orientation),
-            fScale(scale) {
+            fScale(scale),
+            mOrientation(orientation.toMatrix4()) {
         mPosition.buildTranslation(pPosition.X, pPosition.Y, pPosition.Z);
-        mOrientation = qOrientation.toMatrix4();
+
         mScale.buildScale(fScale, fScale, fScale);
         mTransform = mPosition * mScale * mOrientation;
     }

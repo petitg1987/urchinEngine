@@ -2,16 +2,18 @@
 
 namespace urchin {
 
-    template<class T> Vector2<T>::Vector2() : X(0), Y(0) {
+    template<class T> Vector2<T>::Vector2() :
+            X(0), Y(0) {
 
     }
 
-    template<class T> Vector2<T>::Vector2(T Xu, T Yu) : X(Xu), Y(Yu) {
+    template<class T> Vector2<T>::Vector2(T Xu, T Yu) :
+            X(Xu), Y(Yu) {
 
     }
 
     template<class T> Vector2<T>::Vector2(const Vector2<T>& vector) :
-        X(vector.X), Y(vector.Y) {
+            X(vector.X), Y(vector.Y) {
 
     }
 

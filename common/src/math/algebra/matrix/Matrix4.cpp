@@ -5,21 +5,23 @@ namespace urchin {
     /**
      * Construct an identify matrix
      */
-    template<class T> Matrix4<T>::Matrix4() {
-        a11=1.0; a12=0.0; a13=0.0; a14=0.0;
-        a21=0.0; a22=1.0; a23=0.0; a24=0.0;
-        a31=0.0; a32=0.0; a33=1.0; a34=0.0;
-        a41=0.0; a42=0.0; a43=0.0; a44=1.0;
+    template<class T> Matrix4<T>::Matrix4() :
+            a11(1.0), a21(0.0), a31(0.0), a41(0.0),
+            a12(0.0), a22(1.0), a32(0.0), a42(0.0),
+            a13(0.0), a23(0.0), a33(1.0), a43(0.0),
+            a14(0.0), a24(0.0), a34(0.0), a44(1.0) {
+
     }
 
     template<class T> Matrix4<T>::Matrix4(T m11, T m12, T m13, T m14,
         T m21, T m22, T m23, T m24,
         T m31, T m32, T m33, T m34,
-        T m41, T m42, T m43, T m44) {
-        a11=m11; a12=m12; a13=m13; a14=m14;
-        a21=m21; a22=m22; a23=m23; a24=m24;
-        a31=m31; a32=m32; a33=m33; a34=m34;
-        a41=m41; a42=m42; a43=m43; a44=m44;
+        T m41, T m42, T m43, T m44) :
+            a11(m11), a21(m21), a31(m31), a41(m41),
+            a12(m12), a22(m22), a32(m32), a42(m42),
+            a13(m13), a23(m23), a33(m33), a43(m43),
+            a14(m14), a24(m24), a34(m34), a44(m44) {
+
     }
 
     template<class T> void Matrix4<T>::setValues(T m11, T m12, T m13, T m14,

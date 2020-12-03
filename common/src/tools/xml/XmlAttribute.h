@@ -10,7 +10,7 @@ namespace urchin {
      */
     class XmlAttribute {
         public:
-            XmlAttribute();
+            XmlAttribute() = default;
             XmlAttribute(std::string , std::string );
 
             const std::string& getAttributeName() const;

@@ -4,12 +4,6 @@
 
 namespace urchin {
 
-    XmlAttribute::XmlAttribute() :
-        attributeName(""),
-        attributeValue("") {
-
-    }
-
     XmlAttribute::XmlAttribute(std::string attributeName, std::string attributeValue) :
         attributeName(std::move(attributeName)),
         attributeValue(std::move(attributeValue)) {

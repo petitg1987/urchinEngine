@@ -9,10 +9,9 @@ namespace urchin {
      * Constructor
      * @param filename XML filename
      */
-    XmlWriter::XmlWriter(const std::string& filename) {
-        this->filenamePath = FileSystem::instance()->getResourcesDirectory() + filename;
-
-        this->doc = new TiXmlDocument();
+    XmlWriter::XmlWriter(const std::string& filename) :
+            doc(new TiXmlDocument()),
+            filenamePath(FileSystem::instance()->getResourcesDirectory() + filename) {
         auto* decl = new TiXmlDeclaration("1.0", "", "");
         doc->LinkEndChild(decl);
     }
