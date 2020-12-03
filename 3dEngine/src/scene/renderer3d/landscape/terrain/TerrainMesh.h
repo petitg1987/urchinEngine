@@ -26,6 +26,8 @@ namespace urchin {
             float findHeightAt(const Point2<float>&) const;
 
         private:
+            std::string generateTerrainMeshHash(const std::string&, float, float) const;
+
             unsigned int computeNumberVertices() const;
             unsigned int computeNumberIndices() const;
             unsigned int computeNumberNormals() const;
@@ -37,11 +39,11 @@ namespace urchin {
 
             void writeTerrainMeshFile(const std::string&, const std::string&) const;
             void writeVersion(std::ofstream&, unsigned int) const;
-            void writeMd5(std::ofstream&, const std::string&) const;
+            void writeHash(std::ofstream&, const std::string&) const;
 
             void loadTerrainMeshFile(std::ifstream&);
             unsigned int readVersion(std::ifstream&) const;
-            std::string readMd5(std::ifstream&) const;
+            std::string readHash(std::ifstream&) const;
 
             std::string heightFilename;
             float xzScale;

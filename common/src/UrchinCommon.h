@@ -3,7 +3,6 @@
 
 #include "libs/clipper/clipper.h"
 #include "libs/lodepng/lodepng.h"
-#include "libs/md5/md5.h"
 
 #include "tools/check/Check.h"
 #include "tools/file/PropertyFileHandler.h"

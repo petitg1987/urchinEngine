@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "FileReaderUtil.h"
 
 namespace urchin {
@@ -11,5 +13,12 @@ namespace urchin {
                 buffer.resize(buffer.length() - 1);
             }
         }while (buffer.length()==0 && !file.eof());
+    }
+
+    std::string FileReaderUtil::readFile(const std::string& filename) {
+        std::ifstream fileStream(filename);
+        std::stringstream buffer;
+        buffer << fileStream.rdbuf();
+        return buffer.str();
     }
 }

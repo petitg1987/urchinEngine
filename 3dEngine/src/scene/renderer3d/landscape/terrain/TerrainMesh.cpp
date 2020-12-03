@@ -7,6 +7,7 @@
 #include "graphic/render/GenericRenderer.h"
 
 #define FRL_FILE_EXTENSION ".frl" //Extension for FRL files (Fast Resource Loading)
+#define TERRAIN_HASH_SIZE 32
 #define TERRAIN_FRL_FILE_VERSION 1
 
 namespace urchin {
@@ -25,14 +26,13 @@ namespace urchin {
         zSize = imgTerrain->getHeight();
 
         std::string terrainFilePath = FileSystem::instance()->getResourcesDirectory() + imgTerrain->getName();
-        std::string terrainId = std::string(MD5().digestFile(terrainFilePath.c_str())) + "#" + std::to_string(xzScale) + "#" + std::to_string(yScale);
-        std::string terrainMd5Sum = std::string(MD5().digestString(const_cast<char*>(terrainId.c_str())));
+        std::string terrainHash = generateTerrainMeshHash(terrainFilePath, xzScale, yScale);
 
         std::string terrainFrlFilePath = FileSystem::instance()->getSaveDirectory() + FileHandler::getFileNameNoExtension(terrainFilePath) + FRL_FILE_EXTENSION;
         std::ifstream terrainFrlFile;
         terrainFrlFile.open(terrainFrlFilePath, std::ios::in | std::ios::binary);
 
-        if (terrainFrlFile.is_open() && readVersion(terrainFrlFile) == TERRAIN_FRL_FILE_VERSION && readMd5(terrainFrlFile) == terrainMd5Sum) {
+        if (terrainFrlFile.is_open() && readVersion(terrainFrlFile) == TERRAIN_FRL_FILE_VERSION && readHash(terrainFrlFile) == terrainHash) {
             loadTerrainMeshFile(terrainFrlFile);
         } else {
             terrainFrlFile.close();
@@ -41,12 +41,18 @@ namespace urchin {
             buildIndices();
             buildNormals();
 
-            writeTerrainMeshFile(terrainFrlFilePath, terrainMd5Sum);
+            writeTerrainMeshFile(terrainFrlFilePath, terrainHash);
         }
 
         heightfieldPointHelper = std::make_unique<HeightfieldPointHelper<float>>(vertices, xSize);
 
         imgTerrain->release();
+    }
+
+    std::string TerrainMesh::generateTerrainMeshHash(const std::string& terrainFilePath, float xzScale, float yScale) const {
+        std::size_t terrainHashInt = std::hash<std::string>{}(FileReaderUtil::readFile(terrainFilePath) + "#" + std::to_string(xzScale) + "#" + std::to_string(yScale));
+        std::string terrainHash = std::to_string(terrainHashInt);
+        return std::string(TERRAIN_HASH_SIZE - terrainHash.length(), '0') + terrainHash;
     }
 
     const std::string& TerrainMesh::getHeightFilename() const {
@@ -252,12 +258,12 @@ namespace urchin {
         return triangleIndices;
     }
 
-    void TerrainMesh::writeTerrainMeshFile(const std::string& filePath, const std::string& md5) const {
+    void TerrainMesh::writeTerrainMeshFile(const std::string& filePath, const std::string& terrainHash) const {
         std::ofstream file;
         file.open(filePath, std::ios::out | std::ios::binary | std::ios::trunc);
 
         writeVersion(file, TERRAIN_FRL_FILE_VERSION);
-        writeMd5(file, md5);
+        writeHash(file, terrainHash);
 
         file.write(reinterpret_cast<const char*>(&vertices[0]), vertices.size() * sizeof(float) * 3);
         file.write(reinterpret_cast<const char*>(&indices[0]), indices.size() * sizeof(unsigned int));
@@ -270,8 +276,8 @@ namespace urchin {
         file.write(reinterpret_cast<char*>(&version), sizeof(version));
     }
 
-    void TerrainMesh::writeMd5(std::ofstream& file, const std::string& md5) const {
-        file.write(md5.c_str(), md5.size()*sizeof(char));
+    void TerrainMesh::writeHash(std::ofstream& file, const std::string& hash) const {
+        file.write(hash.c_str(), hash.size()*sizeof(char));
     }
 
     void TerrainMesh::loadTerrainMeshFile(std::ifstream& file) {
@@ -293,11 +299,10 @@ namespace urchin {
         return version;
     }
 
-    std::string TerrainMesh::readMd5(std::ifstream& file) const {
-        constexpr unsigned int md5Size = 32;
-        char md5[md5Size];
-        file.read(&md5[0], sizeof(md5));
-        return std::string(md5, md5Size);
+    std::string TerrainMesh::readHash(std::ifstream& file) const {
+        char hash[TERRAIN_HASH_SIZE];
+        file.read(&hash[0], sizeof(hash));
+        return std::string(hash, TERRAIN_HASH_SIZE);
     }
 
 }

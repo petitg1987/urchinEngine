@@ -9,6 +9,7 @@ namespace urchin {
     class FileReaderUtil {
         public:
             static void nextLine(std::ifstream&, std::string&);
+            static std::string readFile(const std::string&);
 
         private:
             FileReaderUtil() = default;
