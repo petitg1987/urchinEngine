@@ -37,8 +37,8 @@ namespace urchin {
 
         //extracts color map (color map is stored in BGR format)
         if (header.colormapType) {
-            colorMap = new unsigned char[header.cmLength*(header.cmSize >> 3u)];
-            file.read((char*)colorMap, header.cmLength*(header.cmSize >> 3u));
+            colorMap = new unsigned char[header.cmLength * (header.cmSize >> 3u)];
+            file.read((char*)colorMap, header.cmLength * (header.cmSize >> 3u));
         }
 
         //memory allocation for rough pixel data
@@ -48,7 +48,7 @@ namespace urchin {
 
         //memory allocation for pixel data
         getImageInfo(header);
-        texels.resize(width*height*componentsCount, 0);
+        texels.resize(width * height * componentsCount, 0);
 
         //reads image data
         switch(header.imageType) {
@@ -193,9 +193,9 @@ namespace urchin {
             color = data[i];
 
             //converts to RGB 24 bits
-            texels[(i*3)+2] = colorMap[(color*3)+0];
-            texels[(i*3)+1] = colorMap[(color*3)+1];
-            texels[(i*3)+0] = colorMap[(color*3)+2];
+            texels[(i * 3) + 2] = colorMap[(color * 3) + 0];
+            texels[(i * 3) + 1] = colorMap[(color * 3) + 1];
+            texels[(i * 3) + 0] = colorMap[(color * 3) + 2];
         }
     }
 
@@ -204,31 +204,31 @@ namespace urchin {
 
         for (unsigned int i = 0, j = 0;i < width * height; ++i, j+=2) {
             //reads color word
-            color = data[j] + (data[j+1] << 8u);
+            color = data[j] + (data[j + 1] << 8u);
 
             //converts BGR to RGB
-            texels[(i*3)+0] = (unsigned char)(((color & 0x7C00u) >> 10u) << 3u);
-            texels[(i*3)+1] = (unsigned char)(((color & 0x03E0u) >>  5u) << 3u);
-            texels[(i*3)+2] = (unsigned char)(((color & 0x001Fu) >>  0u) << 3u);
+            texels[(i * 3) + 0] = (unsigned char)(((color & 0x7C00u) >> 10u) << 3u);
+            texels[(i * 3) + 1] = (unsigned char)(((color & 0x03E0u) >>  5u) << 3u);
+            texels[(i * 3) + 2] = (unsigned char)(((color & 0x001Fu) >>  0u) << 3u);
         }
     }
 
     void LoaderTGA::readTGA24bits() {
         for (unsigned int i = 0, j = 0; i < width * height; ++i, j+=3) {
             //reads and converts BGR to RGB
-            texels[(i*3)+2] = data[j+0];
-            texels[(i*3)+1] = data[j+1];
-            texels[(i*3)+0] = data[j+2];
+            texels[(i * 3) + 2] = data[j + 0];
+            texels[(i * 3) + 1] = data[j + 1];
+            texels[(i * 3) + 0] = data[j + 2];
         }
     }
 
     void LoaderTGA::readTGA32bits() {
         for (unsigned int i = 0, j = 0; i < width * height; ++i, j+=4) {
             //reads and converts BGRA to RGBA
-            texels[(i*4)+2] = data[j+0];
-            texels[(i*4)+1] = data[j+1];
-            texels[(i*4)+0] = data[j+2];
-            texels[(i*4)+3] = data[j+3];
+            texels[(i * 4) + 2] = data[j + 0];
+            texels[(i * 4) + 1] = data[j + 1];
+            texels[(i * 4) + 0] = data[j + 2];
+            texels[(i * 4) + 3] = data[j + 3];
         }
     }
 
@@ -253,19 +253,19 @@ namespace urchin {
                 //run-length packet
                 color = data[j++];
 
-                for (unsigned int i=0; i<size; ++i,ptrIndex+=3) {
+                for (unsigned int i = 0; i < size; ++i, ptrIndex+=3) {
                     texels[ptrIndex] = colorMap[(color * 3) + 2];
-                    texels[ptrIndex+1] = colorMap[(color * 3) + 1];
-                    texels[ptrIndex+2] = colorMap[(color * 3) + 0];
+                    texels[ptrIndex + 1] = colorMap[(color * 3) + 1];
+                    texels[ptrIndex + 2] = colorMap[(color * 3) + 0];
                 }
             } else {
                 //non run-length packet
-                for (unsigned int i=0; i<size; ++i,ptrIndex+=3) {
+                for (unsigned int i = 0; i < size; ++i, ptrIndex+=3) {
                     color = data[j++];
 
                     texels[ptrIndex] = colorMap[(color * 3) + 2];
-                    texels[ptrIndex+1] = colorMap[(color * 3) + 1];
-                    texels[ptrIndex+2] = colorMap[(color * 3) + 0];
+                    texels[ptrIndex + 1] = colorMap[(color * 3) + 1];
+                    texels[ptrIndex + 2] = colorMap[(color * 3) + 0];
                 }
             }
         }
@@ -387,7 +387,7 @@ namespace urchin {
                 color = data[j++];
 
                 for (unsigned int i=0; i<size; ++i,ptrIndex++) {
-                    texels[ptrIndex]=color;
+                    texels[ptrIndex] = color;
                 }
             } else {
                 //non run-length packet
