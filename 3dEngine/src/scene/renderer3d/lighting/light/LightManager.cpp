@@ -12,11 +12,12 @@ namespace urchin {
 
     LightManager::LightManager(const RenderTarget* renderTarget) :
             renderTarget(renderTarget),
+            lightOctreeManager(new OctreeManager<Light>(DEFAULT_OCTREE_MIN_SIZE)),
             lastUpdatedLight(nullptr),
             maxLights(ConfigService::instance()->getUnsignedIntValue("light.maxLights")),
+            lightsInfo(new LightInfo[maxLights]),
             globalAmbientColor(Point4<float>(0.0, 0.0, 0.0, 0.0)) {
-        lightsInfo = new LightInfo[maxLights];
-        lightOctreeManager = new OctreeManager<Light>(DEFAULT_OCTREE_MIN_SIZE);
+
     }
 
     LightManager::~LightManager() {

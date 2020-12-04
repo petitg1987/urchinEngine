@@ -3,9 +3,9 @@
 namespace urchin {
 
     Animation::Animation(ConstAnimation* constAnimation, Meshes* meshes) :
-        constAnimation(constAnimation),
-        meshes(meshes),
-        animationInformation() {
+            constAnimation(constAnimation),
+            meshes(meshes),
+            animationInformation() {
         skeleton.resize(constAnimation->getNumberBones());
 
         animationInformation.currFrame = 0;

@@ -33,7 +33,7 @@ namespace urchin {
         //extracts header
         TgaHeader header{};
         file.read((char*)&header, sizeof(TgaHeader));
-        file.seekg(header.idLenght, std::ios::cur);
+        file.seekg(header.idLength, std::ios::cur);
 
         //extracts color map (color map is stored in BGR format)
         if (header.colormapType) {
@@ -135,7 +135,7 @@ namespace urchin {
 
         unsigned int origin = ((unsigned int)header.imageDescriptor & 0x20u) >> 5u; //0:origin bottom, 1:origin top
         if (origin == 0) { //inverses the texels
-            std::vector<unsigned char> texelsInverse(width*height*componentsCount, 0);
+            std::vector<unsigned char> texelsInverse(width * height * componentsCount, 0);
 
             for (unsigned int i = 0, iInverse = height - 1; i < height; i++, iInverse--) {
                 for (unsigned int j = 0; j < width * componentsCount; j++) {

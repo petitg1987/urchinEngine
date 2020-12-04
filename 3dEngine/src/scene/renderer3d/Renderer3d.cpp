@@ -30,48 +30,34 @@ namespace urchin {
             sceneWidth(0),
             sceneHeight(0),
             paused(true),
-            modelDisplayer(nullptr),
-            fogManager(nullptr),
-            terrainManager(nullptr),
-            waterManager(nullptr),
-            skyManager(nullptr),
-            geometryManager(nullptr),
-            camera(nullptr) {
+            camera(nullptr),
+
+            //deferred rendering
+            deferredRenderTarget(new OffscreenRender()),
+            modelDisplayer(new ModelDisplayer(ModelDisplayer::DEFAULT_MODE)),
+            modelOctreeManager(new OctreeManager<Model>(DEFAULT_OCTREE_MIN_SIZE)),
+            fogManager(new FogManager()),
+            terrainManager(new TerrainManager(deferredRenderTarget)),
+            waterManager(new WaterManager(deferredRenderTarget)),
+            skyManager(new SkyManager(deferredRenderTarget)),
+            geometryManager(new GeometryManager(deferredRenderTarget)),
+            lightManager(new LightManager(deferredRenderTarget)),
+            shadowManager(new ShadowManager(lightManager, modelOctreeManager)),
+            isShadowActivated(true),
+            ambientOcclusionManager(new AmbientOcclusionManager()),
+            isAmbientOcclusionActivated(true),
+
+            //lighting pass rendering
+            offscreenLightingRenderTarget(new OffscreenRender()),
+            antiAliasingManager(new AntiAliasingManager(finalRenderTarget)),
+            isAntiAliasingActivated(true) {
 
         //deferred rendering
-        deferredRenderTarget = new OffscreenRender();
-
-        modelDisplayer = new ModelDisplayer(ModelDisplayer::DEFAULT_MODE);
         modelDisplayer->initialize();
-
-        modelOctreeManager = new OctreeManager<Model>(DEFAULT_OCTREE_MIN_SIZE);
-
-        fogManager = new FogManager();
-
-        terrainManager = new TerrainManager(deferredRenderTarget);
-
-        waterManager = new WaterManager(deferredRenderTarget);
-
-        skyManager = new SkyManager(deferredRenderTarget);
-
-        geometryManager = new GeometryManager(deferredRenderTarget);
-
-        lightManager = new LightManager(deferredRenderTarget);
-
-        shadowManager = new ShadowManager(lightManager, modelOctreeManager);
         shadowManager->addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
-        isShadowActivated = true;
-
-        ambientOcclusionManager = new AmbientOcclusionManager();
-        isAmbientOcclusionActivated = true;
 
         //lighting pass rendering
-        offscreenLightingRenderTarget = new OffscreenRender();
-
         createOrUpdateLightingShader();
-
-        antiAliasingManager = new AntiAliasingManager(finalRenderTarget);
-        isAntiAliasingActivated = true;
     }
 
     Renderer3d::~Renderer3d() {

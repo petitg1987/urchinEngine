@@ -10,7 +10,7 @@ namespace urchin {
 
     #pragma pack(push, 1)
     struct TgaHeader {
-        unsigned char idLenght; //size of image id
+        unsigned char idLength; //size of image id
         unsigned char colormapType; //1 is has a color map
         unsigned char imageType; //compression type
 

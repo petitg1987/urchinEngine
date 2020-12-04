@@ -103,22 +103,19 @@ namespace urchin {
             const RenderTarget* finalRenderTarget;
             unsigned int sceneWidth, sceneHeight;
             bool paused;
+            Camera* camera;
 
-            //managers
+            //deferred rendering
+            OffscreenRender* deferredRenderTarget;
             ModelDisplayer* modelDisplayer;
             OctreeManager<Model>* modelOctreeManager;
             std::vector<Model*> modelsInFrustum;
 
             FogManager* fogManager;
-
             TerrainManager* terrainManager;
-
             WaterManager* waterManager;
-
             SkyManager* skyManager;
-
             GeometryManager* geometryManager;
-
             LightManager* lightManager;
 
             ShadowManager* shadowManager;
@@ -127,19 +124,15 @@ namespace urchin {
             AmbientOcclusionManager* ambientOcclusionManager;
             bool isAmbientOcclusionActivated;
 
-            AntiAliasingManager* antiAliasingManager;
-            bool isAntiAliasingActivated;
-
-            //camera
-            Camera* camera;
-
-            //visual
-            OffscreenRender* deferredRenderTarget;
-            OffscreenRender* offscreenLightingRenderTarget;
             std::shared_ptr<Texture> depthTexture, diffuseTexture, normalAndAmbientTexture, lightingPassTexture;
+
+            //lighting pass rendering
+            OffscreenRender* offscreenLightingRenderTarget;
             std::unique_ptr<GenericRenderer> lightingRenderer;
             std::unique_ptr<Shader> lightingShader;
             ShaderVar mInverseViewProjectionShaderVar, viewPositionShaderVar;
+            AntiAliasingManager* antiAliasingManager;
+            bool isAntiAliasingActivated;
     };
 
 }

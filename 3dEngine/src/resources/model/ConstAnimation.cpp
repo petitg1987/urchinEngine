@@ -6,13 +6,13 @@
 namespace urchin {
 
     ConstAnimation::ConstAnimation(std::string animationFilename, unsigned int numFrames, unsigned int numBones,
-            unsigned int frameRate,    const Bone *const * skeletonFrames, const AABBox<float>*const * bboxes) :
-        animationFilename(std::move(animationFilename)),
-        numFrames(numFrames),
-        numBones(numBones),
-        frameRate(frameRate),
-        skeletonFrames(skeletonFrames),
-        bboxes(bboxes) {
+            unsigned int frameRate, const Bone *const * skeletonFrames, const AABBox<float>*const * bboxes) :
+            animationFilename(std::move(animationFilename)),
+            numFrames(numFrames),
+            numBones(numBones),
+            frameRate(frameRate),
+            skeletonFrames(skeletonFrames),
+            bboxes(bboxes) {
         //determines the bounding box
         originalGlobalBBox = AABBox<float>(bboxes[0]->getMin(), bboxes[0]->getMax());
         for (unsigned int i=0; i<numFrames; ++i) {

@@ -17,11 +17,11 @@ namespace urchin {
      *      * Depth information
      */
     ModelDisplayer::ModelDisplayer(DisplayMode displayMode) :
-        isInitialized(false),
-        displayMode(displayMode),
-        customShaderVariable(nullptr),
-        customModelShaderVariable(nullptr),
-        renderTarget(nullptr) {
+            isInitialized(false),
+            displayMode(displayMode),
+            customShaderVariable(nullptr),
+            customModelShaderVariable(nullptr),
+            renderTarget(nullptr) {
 
     }
 

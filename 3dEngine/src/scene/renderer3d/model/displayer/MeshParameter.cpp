@@ -3,7 +3,7 @@
 namespace urchin {
 
     MeshParameter::MeshParameter() :
-        bNeedRenderTextures(true) {
+            bNeedRenderTextures(true) {
 
     }
 

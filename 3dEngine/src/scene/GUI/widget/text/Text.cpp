@@ -9,9 +9,8 @@ namespace urchin {
 
     Text::Text(Position position, const std::string& fontFilename) :
             Widget(position, Size(0, 0, Size::PIXEL)),
-            maxLength(-1) {
-        font = MediaManager::instance()->getMedia<Font>(fontFilename);
-
+            maxLength(-1),
+            font(MediaManager::instance()->getMedia<Font>(fontFilename)) {
         setText(text);
     }
 
