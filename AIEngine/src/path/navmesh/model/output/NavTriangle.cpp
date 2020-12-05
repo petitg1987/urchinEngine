@@ -22,14 +22,13 @@ namespace urchin {
     }
 
     NavTriangle::NavTriangle(const NavTriangle& navTriangle) :
-            indices() {
+            indices(),
+            centerPoint(navTriangle.getCenterPoint()) {
         this->indices[0] = navTriangle.getIndex(0);
         this->indices[1] = navTriangle.getIndex(1);
         this->indices[2] = navTriangle.getIndex(2);
 
         this->links.reserve(3); //estimated memory size
-
-        this->centerPoint = navTriangle.getCenterPoint();
     }
 
     void NavTriangle::attachNavPolygon(const std::shared_ptr<NavPolygon>& navPolygon) {
@@ -94,21 +93,15 @@ namespace urchin {
     }
 
     bool NavTriangle::hasEdgeLinks(std::size_t edgeIndex) const {
-        for (const auto& link : links) {
-            if (link->getSourceEdgeIndex() == edgeIndex) {
-                return true;
-            }
-        }
-        return false;
+        return std::any_of(links.begin(), links.end(), [&edgeIndex](const auto& link){
+            return link->getSourceEdgeIndex() == edgeIndex;
+        });
     }
 
     bool NavTriangle::isExternalEdge(std::size_t edgeIndex) const {
-        for (const auto& link : links) {
-            if (link->getSourceEdgeIndex() == edgeIndex && link->getLinkType() == NavLinkType::STANDARD) {
-                return false;
-            }
-        }
-        return true;
+        return std::all_of(links.begin(), links.end(), [&edgeIndex](const auto& link){
+            return link->getSourceEdgeIndex() != edgeIndex || link->getLinkType() != NavLinkType::STANDARD;
+        });
     }
 
     LineSegment3D<float> NavTriangle::computeEdge(std::size_t edgeStartIndex) const {

@@ -169,22 +169,22 @@ namespace urchin {
     }
 
     int TerrainObstacleService::nextPointInDirection(unsigned int pointIndex, EdgeDirection direction) const {
-        if (EdgeDirection::RIGHT==direction) {
+        if (EdgeDirection::RIGHT == direction) {
             if ((pointIndex + 1) % xLength == 0) { //no right point
                 return -1;
             }
             return static_cast<int>(pointIndex) + 1;
-        } else if (EdgeDirection::BOTTOM==direction) {
+        } else if (EdgeDirection::BOTTOM == direction) {
             if (pointIndex >= xLength * (zLength - 1)) { //no bottom point
                 return -1;
             }
             return static_cast<int>(pointIndex + xLength);
-        } else if (EdgeDirection::LEFT==direction) {
+        } else if (EdgeDirection::LEFT == direction) {
             if (pointIndex % xLength == 0) { //no left point
                 return -1;
             }
             return static_cast<int>(pointIndex) - 1;
-        } else if (EdgeDirection::TOP==direction) {
+        } else if (EdgeDirection::TOP == direction) {
             if (pointIndex < xLength) { //no top point
                 return -1;
             }
@@ -195,13 +195,10 @@ namespace urchin {
     }
 
     bool TerrainObstacleService::edgeBelongToOneSquare(unsigned int point1, unsigned int point2, const std::vector<unsigned int>& squares) const {
-        for (unsigned int squareIndex : squares) {
-            if (     ((squareIndex == point1) || (squareIndex + 1 == point1) || (squareIndex + xLength == point1) || (squareIndex + xLength + 1 == point1)) &&
-                    ((squareIndex == point2) || (squareIndex + 1 == point2) || (squareIndex + xLength == point2) || (squareIndex + xLength + 1 == point2)) ) {
-                return true;
-            }
-        }
-        return false;
+        return std::any_of(squares.begin(), squares.end(), [&](const auto& squareIndex){
+            return ((squareIndex == point1) || (squareIndex + 1 == point1) || (squareIndex + xLength == point1) || (squareIndex + xLength + 1 == point1)) &&
+                   ((squareIndex == point2) || (squareIndex + 1 == point2) || (squareIndex + xLength == point2) || (squareIndex + xLength + 1 == point2));
+        });
     }
 
     CSGPolygon<float> TerrainObstacleService::pointIndicesToPolygon(const std::vector<unsigned int>& cwPolygonPointIndices, unsigned int obstacleIndex) const {

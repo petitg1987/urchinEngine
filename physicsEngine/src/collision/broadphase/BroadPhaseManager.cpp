@@ -3,8 +3,8 @@
 
 namespace urchin {
 
-    BroadPhaseManager::BroadPhaseManager(BodyManager* bodyManager) {
-        broadPhaseAlgorithm = new AABBTreeAlgorithm();
+    BroadPhaseManager::BroadPhaseManager(BodyManager* bodyManager) :
+            broadPhaseAlgorithm(new AABBTreeAlgorithm()) {
 
         bodyManager->addObserver(this, BodyManager::ADD_WORK_BODY);
         bodyManager->addObserver(this, BodyManager::REMOVE_WORK_BODY);
