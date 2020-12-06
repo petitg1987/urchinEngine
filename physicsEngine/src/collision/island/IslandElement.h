@@ -8,12 +8,16 @@ namespace urchin {
     */
     class IslandElement {
         public:
+            IslandElement();
             virtual ~IslandElement() = default;
 
-            virtual void setIslandElementId(unsigned int) = 0;
-            virtual unsigned int getIslandElementId() const = 0;
+            void setIslandElementId(unsigned int);
+            unsigned int getIslandElementId() const;
 
             virtual bool isActive() const = 0;
+
+        private:
+            unsigned int islandElementId;
     };
 
 }

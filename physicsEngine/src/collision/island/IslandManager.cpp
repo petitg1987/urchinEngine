@@ -96,7 +96,7 @@ namespace urchin {
         unsigned int islandId = islandElementsLink[startElementIndex].islandIdRef;
         unsigned int endElementIndex;
 
-        for (endElementIndex = startElementIndex; islandElementsLink.size()>endElementIndex && islandId==islandElementsLink[endElementIndex].islandIdRef; ++endElementIndex) {
+        for (endElementIndex = startElementIndex; islandElementsLink.size() > endElementIndex && islandId == islandElementsLink[endElementIndex].islandIdRef; ++endElementIndex) {
         }
 
         return endElementIndex - startElementIndex;

@@ -52,9 +52,6 @@ namespace urchin {
             void setIsActive(bool);
             virtual bool isGhostBody() const = 0;
 
-            void setIslandElementId(unsigned int) override;
-            unsigned int getIslandElementId() const override;
-
             uint_fast32_t getObjectId() const;
 
         private:
@@ -71,9 +68,6 @@ namespace urchin {
             static bool bDisableAllBodies;
             bool bIsStatic;
             bool bIsActive;
-
-            //island
-            unsigned int islandElementId;
 
             //technical object id
             static uint_fast32_t nextObjectId;

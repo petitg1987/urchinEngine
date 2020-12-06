@@ -21,7 +21,6 @@ namespace urchin {
             void linkToStaticElement(IslandElement*);
 
             const std::vector<IslandElementLink>& retrieveSortedIslandElements();
-            unsigned int getSize() const;
 
         private:
             unsigned int findIslandId(unsigned int) const;

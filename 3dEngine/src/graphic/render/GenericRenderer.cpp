@@ -14,6 +14,7 @@ namespace urchin {
             shapeType(rendererBuilder->getShapeType()),
             data(rendererBuilder->getData()),
             indices(rendererBuilder->getIndices()),
+            verticesCount(computeVerticesCount()),
             transparencyEnabled(rendererBuilder->isTransparencyEnabled()),
             depthTestEnabled(rendererBuilder->isDepthTestEnabled()),
             cullFaceEnabled(rendererBuilder->isCullFaceEnabled()),
@@ -22,9 +23,6 @@ namespace urchin {
             textureReaders(rendererBuilder->getTextures()),
             bNeedRenderTextures(true),
             vertexArrayObject(0) {
-
-        verticesCount = computeVerticesCount();
-
         glGenVertexArrays(1, &vertexArrayObject);
         initializeDisplay();
 

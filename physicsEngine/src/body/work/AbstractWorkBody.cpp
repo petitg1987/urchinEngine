@@ -10,6 +10,7 @@ namespace urchin {
     bool AbstractWorkBody::bDisableAllBodies = false;
 
     AbstractWorkBody::AbstractWorkBody(std::string id, const PhysicsTransform& physicsTransform, std::shared_ptr<const CollisionShape3D> shape) :
+            IslandElement(),
             physicsTransform(physicsTransform),
             shape(std::move(shape)),
             id(std::move(id)),
@@ -19,7 +20,6 @@ namespace urchin {
             ccdMotionThreshold(0.0f),
             bIsStatic(true),
             bIsActive(false),
-            islandElementId(0),
             objectId(nextObjectId++) {
 
     }
@@ -145,14 +145,6 @@ namespace urchin {
         assert(!(bIsActive && bIsStatic)); //an active body cannot be static
 
         this->bIsActive = bIsActive;
-    }
-
-    void AbstractWorkBody::setIslandElementId(unsigned int islandElementId) {
-        this->islandElementId = islandElementId;
-    }
-
-    unsigned int AbstractWorkBody::getIslandElementId() const {
-        return islandElementId;
     }
 
     uint_fast32_t AbstractWorkBody::getObjectId() const {

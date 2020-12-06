@@ -18,16 +18,6 @@ class IslandContainerTest : public CppUnit::TestFixture {
 
 class TestBody : public urchin::IslandElement {
     public:
-        void setIslandElementId(unsigned int id) override
-        {
-            this->id = id;
-        }
-
-        unsigned int getIslandElementId() const override
-        {
-            return id;
-        }
-
         bool isActive() const override
         {
             return true;

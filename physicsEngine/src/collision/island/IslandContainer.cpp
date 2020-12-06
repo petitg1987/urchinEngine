@@ -20,11 +20,11 @@ namespace urchin {
         islandElementsLink.resize(islandElements.size());
 
         for (std::size_t i=0; i<islandElements.size(); ++i) {
-            islandElements[i]->setIslandElementId(i);
+            islandElements[i]->setIslandElementId((unsigned int)i);
 
             islandElementsLink[i].element = islandElements[i];
             islandElementsLink[i].linkedToStaticElement = !islandElements[i]->isActive();
-            islandElementsLink[i].islandIdRef = i;
+            islandElementsLink[i].islandIdRef = (unsigned int)i;
         }
     }
 
@@ -53,7 +53,7 @@ namespace urchin {
     const std::vector<IslandElementLink>& IslandContainer::retrieveSortedIslandElements() {
         //store directly island ID on islandIdRef instead of reference
         for (std::size_t i=0; i<islandElementsLink.size(); ++i) {
-            islandElementsLink[i].islandIdRef = findIslandId(i);
+            islandElementsLink[i].islandIdRef = findIslandId((unsigned int)i);
         }
 
         std::sort(islandElementsLink.begin(), islandElementsLink.end(), IslandElementLinkSortPredicate());
@@ -69,10 +69,6 @@ namespace urchin {
         }
 
         return elementRef;
-    }
-
-    unsigned int IslandContainer::getSize() const {
-        return islandElementsLink.size();
     }
 
 }

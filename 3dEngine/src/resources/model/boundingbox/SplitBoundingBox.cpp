@@ -14,7 +14,7 @@ namespace urchin {
     std::vector<AABBox<float>> SplitBoundingBox::split(const AABBox<float>& aabbox) const {
         std::vector<float> axisSplits[3];
         for (std::size_t axis=0; axis<3; ++axis) {
-            float size = aabbox.getHalfSize(axis) * 2.0f;
+            float size = aabbox.getHalfSize((unsigned int)axis) * 2.0f;
             axisSplits[axis].push_back(aabbox.getMin()[axis]);
 
             auto nbSplits = static_cast<int>(std::ceil(size/limitSize));

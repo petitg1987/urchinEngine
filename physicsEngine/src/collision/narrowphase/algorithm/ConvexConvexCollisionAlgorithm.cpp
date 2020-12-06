@@ -25,7 +25,7 @@ namespace urchin {
                 processCollisionAlgorithmWithMargin(convexObject1, convexObject2);
             } else { //collision detected on enlarged objects (with margins) OR no collision detected
                 const Vector3<double>& vectorBA = gjkResultWithoutMargin->getClosestPointB().vector(gjkResultWithoutMargin->getClosestPointA());
-                float vectorBALength = vectorBA.length();
+                auto vectorBALength = (float)vectorBA.length();
                 float sumMargins = convexObject1->getOuterMargin() + convexObject2->getOuterMargin();
                 if (sumMargins > vectorBALength - getContactBreakingThreshold()) { //collision detected on enlarged objects
                     const Vector3<double>& normalFromObject2 = vectorBA.normalize();
@@ -48,7 +48,7 @@ namespace urchin {
             if (epaResult->isValidResult() && epaResult->isCollide()) { //should be always true except for problems due to float imprecision
                 const Vector3<double>& normalFromObject2 = (-epaResult->getNormal());
                 const Point3<double>& pointOnObject2 = epaResult->getContactPointB();
-                const float penetrationDepth = -epaResult->getPenetrationDepth();
+                auto penetrationDepth = (float)-epaResult->getPenetrationDepth();
 
                 addNewContactPoint(normalFromObject2.cast<float>(), pointOnObject2.cast<float>(), penetrationDepth);
             }
