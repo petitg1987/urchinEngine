@@ -4,7 +4,7 @@
 #include "PhysicsCharacter.h"
 
 #define DEFAULT_JUMP_SPEED 5.0f
-#define DEFAULT_MAX_SLOPE MathValue::PI_FLOAT / 4.0f //45 degrees
+#define DEFAULT_MAX_SLOPE (MathValue::PI_FLOAT / 4.0f) //45 degrees
 
 namespace urchin {
 

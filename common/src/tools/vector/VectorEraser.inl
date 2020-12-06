@@ -1,7 +1,7 @@
 /**
  * Similar to std::vector.erase() but doesn't keep vector order and is more faster.
  */
-template<class T> void VectorEraser::erase(std::vector<T>& v, unsigned int eraseIndex) {
+template<class T> void VectorEraser::erase(std::vector<T>& v, std::size_t eraseIndex) {
     std::swap(v[eraseIndex], v.back());
     v.pop_back();
 }
