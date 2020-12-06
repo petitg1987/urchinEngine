@@ -4,7 +4,7 @@
 
 #include "math/algebra/Quaternion.h"
 #include "math/algebra/MathValue.h"
-#include "math/algorithm/MathAlgorithm.h"
+#include "math/algorithm/MathFunction.h"
 
 namespace urchin {
 
@@ -137,8 +137,8 @@ namespace urchin {
 
     template<class T> Quaternion<T>::Quaternion(const Vector3<T>& normalizedLookAt, const Vector3<T>& normalizedUp) {
         #ifndef NDEBUG
-            assert(MathAlgorithm::isOne(normalizedLookAt.length(), 0.001));
-            assert(MathAlgorithm::isOne(normalizedUp.length(), 0.001));
+            assert(MathFunction::isOne(normalizedLookAt.length(), 0.001));
+            assert(MathFunction::isOne(normalizedUp.length(), 0.001));
         #endif
 
         Vector3<T> right = normalizedUp.crossProduct(normalizedLookAt);
@@ -419,7 +419,7 @@ namespace urchin {
         T cosEuler1 = Vector2<T>(m(i, i), m(j, i)).length();
 
         if ((sequenceAxis && euler[0]<0) || ((!sequenceAxis) && euler[0]>0)) {
-            euler[0] = (euler[0] > 0) ? euler[0] - PI_VALUE : euler[0] + PI_VALUE;
+            euler[0] = (euler[0] > 0) ? euler[0] - MathValue::PI : euler[0] + MathValue::PI;
             euler[1] = std::atan2(-m(k, i), -cosEuler1);
         } else {
             euler[1] = std::atan2(-m(k, i), cosEuler1);
@@ -442,7 +442,7 @@ namespace urchin {
         T sinEuler1 = Vector2<T>(m(i, j), m(i, k)).length();
 
         if ((sequenceAxis && euler[0]<0) || ((!sequenceAxis) && euler[0]>0)) {
-            euler[0] = (euler[0] > 0) ? euler[0] - PI_VALUE : euler[0] + PI_VALUE;
+            euler[0] = (euler[0] > 0) ? euler[0] - MathValue::PI : euler[0] + MathValue::PI;
             euler[1] = -std::atan2(sinEuler1, m(i, i));
         } else {
             euler[1] = std::atan2(sinEuler1, m(i, i));

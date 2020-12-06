@@ -86,7 +86,7 @@ namespace urchin {
     */
     template<class T> void Frustum<T>::buildFrustum(T angle, T ratio, T nearDistance, T farDistance) {
         //half distance of near and far planes
-        T halfFovy = (angle / 360.0) * PI_VALUE; //half angle in radian
+        T halfFovy = (angle / 360.0) * MathValue::PI; //half angle in radian
         auto tang = (T)std::tan(halfFovy);
         T nearHalfHeight = nearDistance * tang;
         T nearHalfWidth = nearHalfHeight * ratio;

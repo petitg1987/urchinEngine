@@ -10,7 +10,7 @@ using namespace urchin;
 void ShapeToConvexObjectTest::boxConversion() {
     CollisionBoxShape collisionBox(Vector3<float>(1.0, 2.0, 1.0)); //box 1x2x1
     PhysicsTransform transform(urchin::Point3<float>(1.0, 1.0, 1.0), //move 1 unit on X, Y and Z axis
-            urchin::Quaternion<float>(urchin::Vector3<float>(1.0, 0.0, 0.0), PI_VALUE/2.0f)); //rotate 90° on X axis
+            urchin::Quaternion<float>(urchin::Vector3<float>(1.0, 0.0, 0.0), MathValue::PI_FLOAT/2.0f)); //rotate 90° on X axis
 
     auto boxObject = collisionBox.toConvexObject(transform);
     auto* box = dynamic_cast<CollisionBoxObject*>(boxObject.get());
@@ -27,7 +27,7 @@ void ShapeToConvexObjectTest::boxConversion() {
 void ShapeToConvexObjectTest::capsuleConversion() {
     CollisionCapsuleShape collisionCapsule(0.5, 5.0, CapsuleShape<float>::CAPSULE_Y);
     PhysicsTransform transform(urchin::Point3<float>(1.0, 1.0, 1.0), //move 1 unit on X, Y and Z axis
-            urchin::Quaternion<float>(urchin::Vector3<float>(1.0, 0.0, 0.0), PI_VALUE/2)); //rotate 90° on X axis
+            urchin::Quaternion<float>(urchin::Vector3<float>(1.0, 0.0, 0.0), MathValue::PI_FLOAT/2.0)); //rotate 90° on X axis
 
     auto capsuleObject = collisionCapsule.toConvexObject(transform);
     auto* capsule = dynamic_cast<CollisionCapsuleObject*>(capsuleObject.get());
@@ -43,7 +43,7 @@ void ShapeToConvexObjectTest::capsuleConversion() {
 void ShapeToConvexObjectTest::cylinderConversion() {
     CollisionCylinderShape collisionCylinder(0.5, 5.0, CylinderShape<float>::CYLINDER_Y);
     PhysicsTransform transform(urchin::Point3<float>(1.0, 1.0, 1.0), //move 1 unit on X, Y and Z axis
-            urchin::Quaternion<float>(urchin::Vector3<float>(1.0, 0.0, 0.0), PI_VALUE/2)); //rotate 90° on X axis
+            urchin::Quaternion<float>(urchin::Vector3<float>(1.0, 0.0, 0.0), MathValue::PI_FLOAT/2.0)); //rotate 90° on X axis
 
     auto cylinderObject = collisionCylinder.toConvexObject(transform);
     auto* cylinder = dynamic_cast<CollisionCylinderObject*>(cylinderObject.get());
@@ -65,7 +65,7 @@ void ShapeToConvexObjectTest::convexHullConversion() {
 
     CollisionConvexHullShape collisionConvexHull(trapezePoints);
     PhysicsTransform transform(urchin::Point3<float>(0.0, 0.0, 0.0), //move 0 unit on X, Y and Z axis
-            urchin::Quaternion<float>(urchin::Vector3<float>(0.0, 0.0, 1.0), -PI_VALUE/4)); //rotate 45° on Z axis
+            urchin::Quaternion<float>(urchin::Vector3<float>(0.0, 0.0, 1.0), -MathValue::PI_FLOAT/4.0)); //rotate 45° on Z axis
 
     auto convexHullObject = collisionConvexHull.toConvexObject(transform);
     auto* convexHull = dynamic_cast<CollisionConvexHullObject*>(convexHullObject.get());
@@ -77,7 +77,7 @@ void ShapeToConvexObjectTest::convexHullConversion() {
 void ShapeToConvexObjectTest::sphereConversion() {
     CollisionSphereShape collisionSphere(20.0); //sphere radius 20 units
     PhysicsTransform transform(urchin::Point3<float>(1.0, 1.0, 1.0), //move 1 unit on X, Y and Z axis
-            urchin::Quaternion<float>(urchin::Vector3<float>(1.0, 0.0, 0.0), PI_VALUE/2)); //rotate 90° on X axis
+            urchin::Quaternion<float>(urchin::Vector3<float>(1.0, 0.0, 0.0), MathValue::PI_FLOAT/2.0)); //rotate 90° on X axis
 
     auto sphereObject = collisionSphere.toConvexObject(transform);
     auto* sphere = dynamic_cast<CollisionSphereObject*>(sphereObject.get());

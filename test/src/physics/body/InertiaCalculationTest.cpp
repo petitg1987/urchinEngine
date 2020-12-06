@@ -10,7 +10,7 @@ using namespace urchin;
 void InertiaCalculationTest::boxInertiaCalculation() {
     const float mass = 10.0f;
     CollisionBoxShape boxShape(Vector3<float>(1.0, 2.0, 3.0));
-    PhysicsTransform transformRotateXAxis90(Point3<float>(0.0, 0.0, 0.0), Quaternion<float>(Vector3<float>(1.0, 0.0, 0.0), -PI_VALUE/2));
+    PhysicsTransform transformRotateXAxis90(Point3<float>(0.0, 0.0, 0.0), Quaternion<float>(Vector3<float>(1.0, 0.0, 0.0), -MathValue::PI_FLOAT/2));
 
     Vector3<float> localInertia = boxShape.computeLocalInertia(mass);
     Vector3<float> invLocalInertia = Vector3<float>(1.0f/localInertia.X, 1.0f/localInertia.Y, 1.0f/localInertia.Z);

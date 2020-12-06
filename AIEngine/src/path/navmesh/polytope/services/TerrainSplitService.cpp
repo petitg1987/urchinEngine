@@ -20,11 +20,11 @@ namespace urchin {
 
         unsigned int zShit = 0;
         for (unsigned int zSample=0; zSample < zSamples; ++zSample) {
-            unsigned int zSize = std::lround((float)((zSample + 1) * zLength) / (float)zSamples) - zShit;
+            unsigned int zSize = MathFunction::roundToUInt((float)((zSample + 1) * zLength) / (float)zSamples) - zShit;
             unsigned int xShit = 0;
 
             for (unsigned int xSample=0; xSample < xSamples; ++xSample) {
-                unsigned int xSize = std::lround((float)((xSample + 1) * xLength) / (float)xSamples) - xShit;
+                unsigned int xSize = MathFunction::roundToUInt((float)((xSample + 1) * xLength) / (float)xSamples) - xShit;
 
                 TerrainSplit terrainSplit = TerrainSplit();
                 terrainSplit.name = name + "-" + std::to_string((zSample * xSamples) + xSample);

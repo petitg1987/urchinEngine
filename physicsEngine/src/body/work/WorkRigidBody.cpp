@@ -97,7 +97,7 @@ namespace urchin {
     }
 
     void WorkRigidBody::setMassProperties(float mass, const Vector3<float>& localInertia) {
-        if (MathAlgorithm::isZero(mass)) {
+        if (MathFunction::isZero(mass)) {
             setIsStatic(true);
             setIsActive(false);
             this->invMass = 0.0f;
@@ -111,9 +111,9 @@ namespace urchin {
         }
         this->mass = mass;
 
-        this->invLocalInertia.X = MathAlgorithm::isZero(localInertia.X) ? 0.0f : 1.0f/localInertia.X;
-        this->invLocalInertia.Y = MathAlgorithm::isZero(localInertia.Y) ? 0.0f : 1.0f/localInertia.Y;
-        this->invLocalInertia.Z = MathAlgorithm::isZero(localInertia.Z) ? 0.0f : 1.0f/localInertia.Z;
+        this->invLocalInertia.X = MathFunction::isZero(localInertia.X) ? 0.0f : 1.0f / localInertia.X;
+        this->invLocalInertia.Y = MathFunction::isZero(localInertia.Y) ? 0.0f : 1.0f / localInertia.Y;
+        this->invLocalInertia.Z = MathFunction::isZero(localInertia.Z) ? 0.0f : 1.0f / localInertia.Z;
     }
 
     float WorkRigidBody::getMass() const {

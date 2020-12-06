@@ -105,11 +105,11 @@ namespace urchin {
             std::default_random_engine generator(seed);
             std::uniform_real_distribution<float> distribution(-grassPositionRandomPercentage / grassQuantity, grassPositionRandomPercentage/grassQuantity);
 
-            auto grassXQuantity = std::lround(mesh->getXZScale() * (float)mesh->getXSize() * grassQuantity);
-            auto grassZQuantity = std::lround(mesh->getXZScale() * (float)mesh->getZSize() * grassQuantity);
+            auto grassXQuantity = MathFunction::roundToUInt(mesh->getXZScale() * (float)mesh->getXSize() * grassQuantity);
+            auto grassZQuantity = MathFunction::roundToUInt(mesh->getXZScale() * (float)mesh->getZSize() * grassQuantity);
 
-            auto patchQuantityX = std::lround(mesh->getXZScale() * (float)mesh->getXSize() / grassPatchSize);
-            auto patchQuantityZ = std::lround(mesh->getXZScale() * (float)mesh->getZSize() / grassPatchSize);
+            auto patchQuantityX = MathFunction::roundToUInt(mesh->getXZScale() * (float)mesh->getXSize() / grassPatchSize);
+            auto patchQuantityZ = MathFunction::roundToUInt(mesh->getXZScale() * (float)mesh->getZSize() / grassPatchSize);
             float adjustedPatchSizeX = mesh->getXZScale() * (float)mesh->getXSize() / patchQuantityX;
             float adjustedPatchSizeZ = mesh->getXZScale() * (float)mesh->getZSize() / patchQuantityZ;
 
@@ -140,8 +140,8 @@ namespace urchin {
                             Point3<float> globalGrassVertex(xValue + terrainPosition.X, yValue, zValue + terrainPosition.Z);
                             Vector3<float> grassNormal = (mesh->getNormals()[vertexIndex] / 2.0f) + Vector3<float>(0.5f, 0.5f, 0.5f);
 
-                            unsigned int patchXIndex = std::min(static_cast<long>((xValue - startX) / adjustedPatchSizeX), patchQuantityX);
-                            unsigned int patchZIndex = std::min(static_cast<long>((zValue - startZ) / adjustedPatchSizeZ), patchQuantityZ);
+                            unsigned int patchXIndex = std::min(static_cast<unsigned int>((xValue - startX) / adjustedPatchSizeX), patchQuantityX);
+                            unsigned int patchZIndex = std::min(static_cast<unsigned int>((zValue - startZ) / adjustedPatchSizeZ), patchQuantityZ);
                             unsigned int patchIndex = (patchZIndex * patchQuantityX) + patchXIndex;
 
                             leafGrassPatches[patchIndex]->addVertex(globalGrassVertex, grassNormal);
@@ -161,10 +161,10 @@ namespace urchin {
         Point3<float> farLeftCoordinate = localCoordinate - mesh->getVertices()[0];
 
         float xInterval = mesh->getVertices()[1].X - mesh->getVertices()[0].X;
-        int xIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farLeftCoordinate.X / xInterval)), 0, static_cast<int>(mesh->getXSize() - 1));
+        int xIndex = MathFunction::clamp(MathFunction::roundToInt(farLeftCoordinate.X / xInterval), 0, static_cast<int>(mesh->getXSize() - 1));
 
         float zInterval = mesh->getVertices()[mesh->getXSize()].Z - mesh->getVertices()[0].Z;
-        int zIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farLeftCoordinate.Z / zInterval)), 0, static_cast<int>(mesh->getZSize() - 1));
+        int zIndex = MathFunction::clamp(MathFunction::roundToInt(farLeftCoordinate.Z / zInterval), 0, static_cast<int>(mesh->getZSize() - 1));
 
         return xIndex + zIndex*mesh->getXSize();
     }
@@ -176,7 +176,7 @@ namespace urchin {
 
         unsigned int depth = grassQuadtreeDepth;
         while (depth >= 1) {
-            auto depthNbQuadtreeX = static_cast<unsigned int>(MathAlgorithm::pow(2, depth));
+            auto depthNbQuadtreeX = static_cast<unsigned int>(MathFunction::pow(2, depth));
             auto depthNbQuadtreeZ = depthNbQuadtreeX;
             unsigned int depthNbQuadtree = depthNbQuadtreeX * depthNbQuadtreeZ;
             if (std::sqrt(childrenGrassQuadtree.size()) >= std::sqrt(depthNbQuadtree)*2) {

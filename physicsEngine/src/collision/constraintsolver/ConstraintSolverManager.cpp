@@ -185,7 +185,7 @@ namespace urchin {
         float maxFriction = -(impulseSolvingData.friction * accumulatedSolvingData.accNormalImpulse);
 
         float oldAccTangentImpulse = accumulatedSolvingData.accTangentImpulse;
-        accumulatedSolvingData.accTangentImpulse = MathAlgorithm::clamp(oldAccTangentImpulse + tangentImpulse, -maxFriction, maxFriction);
+        accumulatedSolvingData.accTangentImpulse = MathFunction::clamp(oldAccTangentImpulse + tangentImpulse, -maxFriction, maxFriction);
         tangentImpulse = accumulatedSolvingData.accTangentImpulse - oldAccTangentImpulse;
 
         const Vector3<float> tangentImpulseVector = tangentImpulse * commonSolvingData.contactTangent;

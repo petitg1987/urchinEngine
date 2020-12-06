@@ -10,7 +10,7 @@ namespace urchin {
         LEFT_ARROW,
         RIGHT_ARROW,
         BACKSPACE,
-        DELETE
+        DELETE_KEY
     };
 
 }

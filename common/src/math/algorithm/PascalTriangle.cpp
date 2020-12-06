@@ -1,6 +1,5 @@
 #include "math/algorithm/PascalTriangle.h"
-
-#include <cmath>
+#include "math/algorithm/MathFunction.h"
 
 namespace urchin {
 
@@ -14,7 +13,7 @@ namespace urchin {
         lineValues[0] = 1;
         for (unsigned int column=1; column<nbColumns; ++column) {
             auto columnFloat = static_cast<float>(column);
-            lineValues[column] = std::lround(lineValues[column-1] * ((static_cast<float>(lineNumber) - (columnFloat-1.0f)) / columnFloat));
+            lineValues[column] = MathFunction::roundToUInt(lineValues[column - 1] * ((static_cast<float>(lineNumber) - (columnFloat - 1.0f)) / columnFloat));
         }
 
         return lineValues;

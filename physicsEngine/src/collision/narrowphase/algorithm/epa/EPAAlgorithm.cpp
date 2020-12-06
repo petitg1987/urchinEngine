@@ -116,7 +116,7 @@ namespace urchin {
 
         if (Check::instance()->additionalChecksEnable()) {
             const T distanceDelta = contactPointA.vector(contactPointB).length() - distanceToOrigin;
-            if (!MathAlgorithm::isZero(distanceDelta, 0.1f)) {
+            if (!MathFunction::isZero(distanceDelta, 0.1f)) {
                 logInputData("Incoherent EPA distances", convexObject1, convexObject2, gjkResult);
             }
         }

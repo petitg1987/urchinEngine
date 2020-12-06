@@ -100,7 +100,7 @@ namespace urchin {
         touchingEndRange = 0.0f;
         for (std::size_t i=0; i<3; ++i) {
             float denominator = startEdge.getA()[i] - startEdge.getB()[i];
-            if (!MathAlgorithm::isZero(denominator)) {
+            if (!MathFunction::isZero(denominator)) {
                 touchingStartRange = std::clamp((minIntersection[i] - startEdge.getB()[i]) / denominator, 0.0f, 1.0f);
                 touchingEndRange = std::clamp((maxIntersection[i] - startEdge.getB()[i]) / denominator, 0.0f, 1.0f);
 
@@ -122,7 +122,7 @@ namespace urchin {
 
     bool EdgeLinkDetection::isProperJumpDirection(const LineSegment3D<float>& startJumpEdge, const LineSegment3D<float>& endJumpEdge,
                                                   const Point3<float>& jumpStartPoint, const Point3<float>& jumpEndPoint) const {
-        constexpr float jumpFoV = 0.17364817766; //FoV of 80° = cos((PI_VALUE/180.0) * 80.0)
+        constexpr float jumpFoV = 0.17364817766f; //FoV of 80° = cos((MathValue::PI_FLOAT / 180.0f) * 80.0f)
         Vector2<float> normalizedJumpVectorXZ = jumpStartPoint.toPoint2XZ().vector(jumpEndPoint.toPoint2XZ()).normalize();
 
         Line2D<float> startJumpEdgeXZ(startJumpEdge.getA().toPoint2XZ(), startJumpEdge.getB().toPoint2XZ());

@@ -199,10 +199,10 @@ namespace urchin {
         int maxLength = axis==Axis::X ? static_cast<int>(xLength-1) : static_cast<int>(zLength-1);
 
         auto rawStartVertex = static_cast<int>((minValue + halfSize) / verticesDistance);
-        auto startVertex = static_cast<unsigned int>(MathAlgorithm::clamp(rawStartVertex, 0, maxLength));
+        auto startVertex = static_cast<unsigned int>(MathFunction::clamp(rawStartVertex, 0, maxLength));
 
         auto rawEndVertex = static_cast<int>((maxValue + halfSize) / verticesDistance) + 1;
-        auto endVertex = static_cast<unsigned int>(MathAlgorithm::clamp(rawEndVertex, 0, maxLength));
+        auto endVertex = static_cast<unsigned int>(MathFunction::clamp(rawEndVertex, 0, maxLength));
 
         return std::make_pair(startVertex, endVertex);
     }

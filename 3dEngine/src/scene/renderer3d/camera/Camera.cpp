@@ -40,7 +40,7 @@ namespace urchin {
         resetMousePosition();
 
         //projection matrix
-        float fov = 1.0f / (float)std::tan((angle * PI_VALUE) / 360.0f);
+        float fov = 1.0f / std::tan((angle * MathValue::PI_FLOAT) / 360.0f);
         float ratio = (float)sceneWidth/(float)sceneHeight;
         mProjection.setValues(
             fov/ratio, 0.0f, 0.0f, 0.0f,

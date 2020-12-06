@@ -2,7 +2,7 @@
 #include <cassert>
 
 #include "math/geometry/2d/object/LineSegment2D.h"
-#include "math/algorithm/MathAlgorithm.h"
+#include "math/algorithm/MathFunction.h"
 
 namespace urchin {
 
@@ -72,7 +72,7 @@ namespace urchin {
         }
 
         if (typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T)) {
-            return ap.squareLength() - MathAlgorithm::roundDivision<T>(apDotAb * apDotAb, abSquareLength);
+            return ap.squareLength() - MathFunction::roundDivision<T>(apDotAb * apDotAb, abSquareLength);
         }
         return ap.squareLength() - ((apDotAb * apDotAb) / abSquareLength);
     }
@@ -158,14 +158,14 @@ namespace urchin {
         //line segments not parallel
         T thisToOtherCrossR = thisToOther.crossProduct(s);
         if ( //if (t>=0 && t<=1 && u>=0 && u<=1) where t=thisToOtherCrossR/rCrossS and u=startPointsCrossR/rCrossS
-                (thisToOtherCrossR==T(0) || MathAlgorithm::sign<T>(thisToOtherCrossR)==MathAlgorithm::sign<T>(rCrossS))
+                (thisToOtherCrossR==T(0) || MathFunction::sign<T>(thisToOtherCrossR) == MathFunction::sign<T>(rCrossS))
                 && std::abs(rCrossS) >= std::abs(thisToOtherCrossR)
-                && (startPointsCrossR==T(0) || MathAlgorithm::sign<T>(startPointsCrossR)==MathAlgorithm::sign<T>(rCrossS))
+                && (startPointsCrossR==T(0) || MathFunction::sign<T>(startPointsCrossR) == MathFunction::sign<T>(rCrossS))
                 && std::abs(rCrossS) >= std::abs(startPointsCrossR)) { //intersection
             hasIntersection = true;
             if (typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T)) {
-                Vector2<T> vTranslate(MathAlgorithm::roundDivision<T>(thisToOtherCrossR*r.X, rCrossS),
-                                      MathAlgorithm::roundDivision<T>(thisToOtherCrossR*r.Y, rCrossS));
+                Vector2<T> vTranslate(MathFunction::roundDivision<T>(thisToOtherCrossR * r.X, rCrossS),
+                                      MathFunction::roundDivision<T>(thisToOtherCrossR * r.Y, rCrossS));
                 return a.translate(vTranslate);
             }
             return a.translate((thisToOtherCrossR*r)/rCrossS);

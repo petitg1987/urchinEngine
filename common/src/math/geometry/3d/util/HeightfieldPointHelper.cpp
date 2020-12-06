@@ -1,7 +1,7 @@
 #include <algorithm>
 
 #include "HeightfieldPointHelper.h"
-#include "math/algorithm/MathAlgorithm.h"
+#include "math/algorithm/MathFunction.h"
 
 #define PARALLEL_EPSILON 0.07 //= 4 degrees (asin(4/180*pi))
 
@@ -29,8 +29,8 @@ namespace urchin {
      */
     template<class T> Point3<T> HeightfieldPointHelper<T>::findPointAt(const Point2<T>& point) const {
         Vector2<T> farLeftToPoint = Point2<T>(heightfieldPoints[0].X, heightfieldPoints[0].Z).vector(point);
-        int xIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farLeftToPoint.X / xInterval)), 0, static_cast<int>(heightfieldXSize - 1));
-        int zIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farLeftToPoint.Y / zInterval)), 0, static_cast<int>(heightfieldZSize - 1));
+        int xIndex = MathFunction::clamp(MathFunction::roundToInt(farLeftToPoint.X / xInterval), 0, static_cast<int>(heightfieldXSize - 1));
+        int zIndex = MathFunction::clamp(MathFunction::roundToInt(farLeftToPoint.Y / zInterval), 0, static_cast<int>(heightfieldZSize - 1));
 
         return heightfieldPoints[xIndex + zIndex * heightfieldXSize];
     }
@@ -40,8 +40,8 @@ namespace urchin {
      */
     template<class T> T HeightfieldPointHelper<T>::findHeightAt(const Point2<T>& point) const {
         Vector2<T> farLeftToPoint = Point2<T>(heightfieldPoints[0].X, heightfieldPoints[0].Z).vector(point);
-        int xIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farLeftToPoint.X / xInterval)), 0, static_cast<int>(heightfieldXSize - 1));
-        int zIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farLeftToPoint.Y / zInterval)), 0, static_cast<int>(heightfieldZSize - 1));
+        int xIndex = MathFunction::clamp(MathFunction::roundToInt(farLeftToPoint.X / xInterval), 0, static_cast<int>(heightfieldXSize - 1));
+        int zIndex = MathFunction::clamp(MathFunction::roundToInt(farLeftToPoint.Y / zInterval), 0, static_cast<int>(heightfieldZSize - 1));
 
         int nearestPointIndex = xIndex + zIndex * heightfieldXSize;
         Point3<T> nearestPoint = heightfieldPoints[nearestPointIndex];
@@ -81,8 +81,8 @@ namespace urchin {
 
         //X lines collision
         if (!isParallelToXAxis(pathLine, PARALLEL_EPSILON)) {
-            int xStartIndex = MathAlgorithm::clamp(static_cast<int>(std::floor(std::min(farLeftToStartPoint.X, farLeftToEndPoint.X)  / xInterval)), 0, static_cast<int>(heightfieldXSize - 1));
-            int xEndIndex = MathAlgorithm::clamp(static_cast<int>(std::ceil(std::max(farLeftToStartPoint.X, farLeftToEndPoint.X) / xInterval)), 0, static_cast<int>(heightfieldXSize - 1));
+            int xStartIndex = MathFunction::clamp(static_cast<int>(std::floor(std::min(farLeftToStartPoint.X, farLeftToEndPoint.X) / xInterval)), 0, static_cast<int>(heightfieldXSize - 1));
+            int xEndIndex = MathFunction::clamp(static_cast<int>(std::ceil(std::max(farLeftToStartPoint.X, farLeftToEndPoint.X) / xInterval)), 0, static_cast<int>(heightfieldXSize - 1));
             pathPoints.reserve(pathPoints.size() + (xEndIndex-xStartIndex) + 1);
 
             int zLastIndex = (heightfieldZSize - 1) * heightfieldXSize;
@@ -97,8 +97,8 @@ namespace urchin {
 
         //Z lines collision
         if (!isParallelToZAxis(pathLine, PARALLEL_EPSILON)) {
-            int zStartIndex = MathAlgorithm::clamp(static_cast<int>(std::floor(std::min(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / zInterval)), 0, static_cast<int>(heightfieldZSize - 1));
-            int zEndIndex = MathAlgorithm::clamp(static_cast<int>(std::ceil(std::max(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / zInterval)), 0, static_cast<int>(heightfieldZSize - 1));
+            int zStartIndex = MathFunction::clamp(static_cast<int>(std::floor(std::min(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / zInterval)), 0, static_cast<int>(heightfieldZSize - 1));
+            int zEndIndex = MathFunction::clamp(static_cast<int>(std::ceil(std::max(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / zInterval)), 0, static_cast<int>(heightfieldZSize - 1));
             pathPoints.reserve(pathPoints.size() + (zEndIndex-zStartIndex) + 1);
 
             int xLastIndex = heightfieldXSize - 1;

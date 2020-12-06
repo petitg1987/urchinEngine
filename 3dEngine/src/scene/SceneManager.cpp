@@ -12,7 +12,7 @@ namespace urchin {
     SceneManager::SceneManager() :
             sceneWidth(500),
             sceneHeight(500),
-            screenRenderTarget(nullptr),
+            screenRenderTarget(new ScreenRender()),
             activeRenderers(),
             previousFps(),
             fps(START_FPS),
@@ -26,7 +26,6 @@ namespace urchin {
         previousTime = std::chrono::high_resolution_clock::now();
 
         //renderer
-        screenRenderTarget = new ScreenRender();
         for (auto& activeRenderer : activeRenderers) {
             activeRenderer = nullptr;
         }
@@ -77,7 +76,7 @@ namespace urchin {
         timeElapse += getDeltaTime();
 
         if (timeElapse > REFRESH_RATE_FPS) { //refresh fps every REFRESH_RATE_FPS_MS
-            fpsForDisplay = std::lround(fps);
+            fpsForDisplay = MathFunction::roundToUInt(fps);
             timeElapse = 0.0f;
         }
 

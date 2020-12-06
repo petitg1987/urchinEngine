@@ -1,11 +1,11 @@
-#ifndef URCHINENGINE_MATHALGORITHM_H
-#define URCHINENGINE_MATHALGORITHM_H
+#ifndef URCHINENGINE_MATHFUNCTION_H
+#define URCHINENGINE_MATHFUNCTION_H
 
 #include <limits>
 
 namespace urchin {
 
-    class MathAlgorithm {
+    class MathFunction {
         public:
             template<class T> static T clamp(T, T, T);
             template<class T> static T sign(T);
@@ -17,6 +17,8 @@ namespace urchin {
             static bool isZero(float, float tolerance = std::numeric_limits<float>::epsilon());
             static bool isOne(float, float tolerance = std::numeric_limits<float>::epsilon());
 
+            static int roundToInt(float);
+            static unsigned int roundToUInt(float);
             template<class T> static T roundDivision(T, T);
     };
 

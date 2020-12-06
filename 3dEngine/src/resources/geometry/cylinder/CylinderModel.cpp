@@ -24,16 +24,16 @@ namespace urchin {
 
         float radius = cylinder.getRadius();
         float halfHeight = cylinder.getHeight() / 2.0f;
-        float angle = (2.0f * (float)PI_VALUE) / (float)sides;
+        float angle = (2.0f * MathValue::PI_FLOAT) / (float)sides;
 
         Quaternion<float> qCylinderOrientation;
         CylinderShape<float>::CylinderOrientation cylinderOrientation = cylinder.getCylinderOrientation();
         if (cylinderOrientation == CylinderShape<float>::CYLINDER_X) {
-            qCylinderOrientation = Quaternion<float>(Vector3<float>(0.0, 1.0, 0.0), PI_VALUE/2.0);
+            qCylinderOrientation = Quaternion<float>(Vector3<float>(0.0f, 1.0f, 0.0f), MathValue::PI_FLOAT/2.0f);
         } else if (cylinderOrientation == CylinderShape<float>::CYLINDER_Y) {
-            qCylinderOrientation = Quaternion<float>(Vector3<float>(1.0, 0.0, 0.0), PI_VALUE/2.0);
+            qCylinderOrientation = Quaternion<float>(Vector3<float>(1.0f, 0.0f, 0.0f), MathValue::PI_FLOAT/2.0f);
         } else if (cylinderOrientation == CylinderShape<float>::CYLINDER_Z) {
-            qCylinderOrientation = Quaternion<float>(0.0, 0.0, 0.0, 1.0);
+            qCylinderOrientation = Quaternion<float>(0.0f, 0.0f, 0.0f, 1.0f);
         }
 
         Quaternion<float> localOrientation = cylinder.getOrientation() * qCylinderOrientation;

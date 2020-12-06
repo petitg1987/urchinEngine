@@ -2,7 +2,7 @@
 
 #define DEFAULT_AGENT_HEIGHT 1.8
 #define DEFAULT_AGENT_RADIUS 0.25
-#define DEFAULT_MAX_SLOPE (PI_VALUE/4.0f) //45 degrees
+#define DEFAULT_MAX_SLOPE MathValue::PI_FLOAT / 4.0f //45 degrees
 #define DEFAULT_JUMP_DISTANCE 1.5
 
 namespace urchin {

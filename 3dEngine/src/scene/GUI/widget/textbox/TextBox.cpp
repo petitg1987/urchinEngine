@@ -113,7 +113,7 @@ namespace urchin {
                     allText.append(tmpRight);
                     refreshText(cursorIndex-1);
                 }
-            } else if (key == InputDeviceKey::DELETE) {
+            } else if (key == InputDeviceKey::DELETE_KEY) {
                 if (allText.length() > 0 && cursorIndex < allText.length()) {
                     std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex+1L), allText.length()-cursorIndex);
                     allText = allText.substr(0, static_cast<unsigned long>(cursorIndex));

@@ -2,7 +2,7 @@
 
 #include "math/geometry/2d/Line2D.h"
 #include "math/algebra/vector/Vector2.h"
-#include "math/algorithm/MathAlgorithm.h"
+#include "math/algorithm/MathFunction.h"
 
 namespace urchin {
 
@@ -31,8 +31,8 @@ namespace urchin {
         T apDotAb = ap.dotProduct(ab);
         if (typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T)) {
             T abSquareLength = ab.squareLength();
-            Vector2<T> vTranslate(MathAlgorithm::roundDivision<T>(ab.X * apDotAb, abSquareLength),
-                                  MathAlgorithm::roundDivision<T>(ab.Y * apDotAb, abSquareLength));
+            Vector2<T> vTranslate(MathFunction::roundDivision<T>(ab.X * apDotAb, abSquareLength),
+                                  MathFunction::roundDivision<T>(ab.Y * apDotAb, abSquareLength));
             return a.translate(vTranslate);
         }
         return a.translate((ab * ap.dotProduct(ab)) / ab.squareLength());
@@ -48,7 +48,7 @@ namespace urchin {
         T apDotAb = ap.dotProduct(ab);
 
         if (typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T)) {
-            return ap.squareLength() - MathAlgorithm::roundDivision<T>(apDotAb * apDotAb, ab.squareLength());
+            return ap.squareLength() - MathFunction::roundDivision<T>(apDotAb * apDotAb, ab.squareLength());
         }
         return ap.squareLength() - ((apDotAb * apDotAb) / ab.squareLength());
     }
@@ -109,8 +109,8 @@ namespace urchin {
         //lines not parallel
         hasIntersection = true;
         if (typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T)) {
-            Vector2<T> vTranslate(MathAlgorithm::roundDivision<T>(startPointsCrossR*s.X, rCrossS),
-                                  MathAlgorithm::roundDivision<T>(startPointsCrossR*s.Y, rCrossS));
+            Vector2<T> vTranslate(MathFunction::roundDivision<T>(startPointsCrossR * s.X, rCrossS),
+                                  MathFunction::roundDivision<T>(startPointsCrossR * s.Y, rCrossS));
             return other.getA().translate(vTranslate);
         }
         return other.getA().translate((startPointsCrossR*s) / rCrossS);

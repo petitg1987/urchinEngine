@@ -75,8 +75,8 @@ namespace urchin {
 
     std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytope(const std::shared_ptr<AITerrain>& aiTerrain, const std::shared_ptr<NavMeshAgent>& navMeshAgent) {
         #ifndef NDEBUG
-            assert(MathAlgorithm::isOne(aiTerrain->getTransform().getScale()));
-            assert(MathAlgorithm::isOne(aiTerrain->getTransform().getOrientationMatrix().determinant()));
+            assert(MathFunction::isOne(aiTerrain->getTransform().getScale()));
+            assert(MathFunction::isOne(aiTerrain->getTransform().getOrientationMatrix().determinant()));
         #endif
 
         std::vector<std::unique_ptr<Polytope>> expandedPolytopes;

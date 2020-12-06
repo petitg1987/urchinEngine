@@ -6,8 +6,8 @@
 namespace urchin {
 
     template<class T> class AngleConverter {
-        #define RADIAN_TO_DEGREE_FACTOR (180.0 / PI_VALUE)
-        #define DEGREE_TO_RADIAN_FACTOR (PI_VALUE / 180.0)
+        #define RADIAN_TO_DEGREE_FACTOR (180.0 / MathValue::PI)
+        #define DEGREE_TO_RADIAN_FACTOR (MathValue::PI / 180.0)
 
         public:
             static T toDegree(T);

@@ -7,9 +7,10 @@
 - Rendering
     - **OPTIMIZATION** (`minor`): Avoid sending shader variables values at each frame when there is no change in Renderer3d#deferredGeometryRendering()
 - Model
-    - **OPTIMIZATION** (`medium`): Group same models in same octree to perform one draw call
+    - **OPTIMIZATION** (`major`): Use instantiation mechanism when identical models are displayed several times in the scene
+	- **OPTIMIZATION** (`medium`): Regroup draw calls when possible
     - **QUALITY IMPROVEMENT** (`minor`): Use reverse depth for far distant view (<https://outerra.blogspot.com/2012/11/maximizing-depth-buffer-range-and.html>)
-	- **OPTIMIZATION** (`minor`): Models LOD
+	- **OPTIMIZATION** (`medium`): Models LOD
 	- **OPTIMIZATION** (`minor`): Subdivide octree only when number of objects inside this octree reach a threshold
 	- **OPTIMIZATION** (`minor`): Coherent hierarchical culling revisited
 - Lighting
@@ -26,18 +27,18 @@
 	- **NEW FEATURE** (`minor`): Shadow on omnidirectional light
 	- **NEW FEATURE** (`minor`): Implement PCSS
 	- **OPTIMIZATION** (`minor`): Use models LOD
-	- **OPTIMIZATION** (`minor`): Create shadow map texture only for visible lights
+	- **OPTIMIZATION** (`medium`): Create shadow map texture only for visible lights
 - Terrain
     - **OPTIMIZATION** (`medium`): Terrain class should have methods for LOD (usable for physics and AI)
     - **NEW FEATURE** (`medium`): Use material textures (normal map...) for terrain
-    - **NEW FEATURE** (`medium`): Add auto shadow on terrain
+    - **NEW FEATURE** (`minor`): Add auto shadow on terrain
     - **OPTIMIZATION** (`medium`): Don't build grass quadtree which are 100% discarded by grass mask
 - GUI
 	- **NEW FEATURE** (`minor`): Combo list
 	- **NEW FEATURE** (`minor`): Drag and drop
 	- **NEW FEATURE** (`minor`): Textarea
-	- **NEW FEATURE** (`minor`): Scrollbar
-	- **NEW FEATURE** (`minor`): Text selection
+	- **NEW FEATURE** (`medium`): Scrollbar
+	- **NEW FEATURE** (`medium`): Text selection
 - Graphic effect
 	- **QUALITY IMPROVEMENT** (`minor`): Water (<https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh>)
 	- **NEW FEATURE** (`minor`): Reflects
@@ -55,12 +56,12 @@
 	- **OPTIMIZATION** (`medium`): Exclude small objects from navigation mesh
 	- **OPTIMIZATION** (`minor`): Exclude fast moving objects from walkable face
 	- **OPTIMIZATION** (`minor`): NavMeshGenerator#computePolytopeFootprint: put result in cache
-	- **QUALITY IMPROVEMENT** (`minor`): Insert bevel planes during Polytope#buildExpanded* (see BrushExpander.cpp from Hesperus)
+	- **QUALITY IMPROVEMENT** (`medium`): Insert bevel planes during Polytope#buildExpanded* (see BrushExpander.cpp from Hesperus)
 - Pathfinding
 	- **OPTIMIZATION** (`medium`): When compute A* G score: avoid to execute funnel algorithm from start each time
 	- **OPTIMIZATION** (`medium`): When search start and end triangles: use AABBox Tree algorithm
-	- **NEW FEATURE** (`major`): Implement steering behaviour (<https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-collision-avoidance--gamedev-7777>)
-    - **NEW FEATURE** (`medium`): AICharacterController should refresh path points each time the path request is updated 
+	- **NEW FEATURE** (`critical`): Implement steering behaviour (<https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-collision-avoidance--gamedev-7777>)
+    - **NEW FEATURE** (`major`): AICharacterController should refresh path points each time the path request is updated 
 
 # Physics engine
 - Broad phase
@@ -71,7 +72,8 @@
 	- **OPTIMIZATION** (`minor`): GJK, don't test voronoi region opposite to last point added (2D: A, B, AB | 3D: ABC)
 	- **OPTIMIZATION** (`minor`): EPA, add new point on convex hull to improve thanks to adjacent edges: find more faster triangles visible by new point (see Reactphysics3d code)
 - Island
-    - **BUG** (`medium`): A body balancing from one side to the other side (e.g.: cone on his base) could sleep when velocity reach zero
+    - **BUG** (`major`): A body balancing from one side to the other side (e.g.: cone on his base) could disabled when velocity reach zero
+		- Tips 1: don't disable bodies when there is only one contact point
 - Constraints solver
     - **BUG** (`medium`): A restitution of 1.0 introduce new force in the system. Example: a superball bounces more and more higher at each collision
 - Character
@@ -79,9 +81,11 @@
 	- **NEW FEATURE** (`minor`): Apply impulse on objects hit by character
 	
 # Sound engine
+- Sound reader
+  - **IMPROVEMENT** (`major`): Use FLAC format instead of WAV format
 - Sound trigger
 	- **NEW FEATURE** (`medium`): Support convex hull sound shape
-	- **NEW FEATURE** (`medium`): Support portal IN and portal OUT to trigger sound
+	- **NEW FEATURE** (`major`): Support portal IN and portal OUT to trigger sound
 	
 # Map editor
 - Render
