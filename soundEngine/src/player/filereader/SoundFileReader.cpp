@@ -19,9 +19,9 @@ namespace urchin {
 
         //determine sound format
         if (fileInfos.channels==1) {
-            format = AL_FORMAT_MONO16;
+            format = SoundFormat::MONO_16;
         } else if (fileInfos.channels==2) {
-            format = AL_FORMAT_STEREO16;
+            format = SoundFormat::STEREO_16;
         } else {
             sf_close(file);
             throw std::domain_error("Unsupported channels: " + std::to_string(fileInfos.channels) + ".");
@@ -38,7 +38,7 @@ namespace urchin {
      * @param numSamplesRead [out] Number of samples read
      * @return True when all samples are read. In case of play loop, the result is always false.
      */
-    void SoundFileReader::readNextChunk(std::vector<ALshort>& buffer, unsigned int& numSamplesRead, bool playLoop) {
+    void SoundFileReader::readNextChunk(std::vector<short>& buffer, unsigned int& numSamplesRead, bool playLoop) {
         numSamplesRead = 0;
         bool bufferFilled;
         do
@@ -59,36 +59,36 @@ namespace urchin {
         }while (!bufferFilled);
     }
 
-    ALenum SoundFileReader::getFormat() const {
+    SoundFileReader::SoundFormat SoundFileReader::getFormat() const {
         return format;
     }
 
     /**
      * @return Number of samples (frames * channels)
      */
-    ALsizei SoundFileReader::getNumberOfSamples() const {
-        return fileInfos.channels * fileInfos.frames;
+    unsigned int SoundFileReader::getNumberOfSamples() const {
+        return getNumberOfChannels() * (unsigned int)fileInfos.frames;
     }
 
     /**
      * @return Number of channels (1=mono, 2=stereo...)
      */
-    ALsizei SoundFileReader::getNumberOfChannels() const {
-        return fileInfos.channels;
+    unsigned int SoundFileReader::getNumberOfChannels() const {
+        return (unsigned int)fileInfos.channels;
     }
 
     /**
      * @return Number of samples to read by second (frequency)
      */
-    ALsizei SoundFileReader::getSampleRate() const {
-        return fileInfos.samplerate;
+    unsigned int SoundFileReader::getSampleRate() const {
+        return (unsigned int)fileInfos.samplerate;
     }
 
     /**
      * @return Sound duration in second
      */
     float SoundFileReader::getSoundDuration() const {
-        return static_cast<float>(fileInfos.frames) / static_cast<float>(fileInfos.samplerate);
+        return (float)fileInfos.frames / (float)fileInfos.samplerate;
     }
 
 }

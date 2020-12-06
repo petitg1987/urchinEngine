@@ -7,6 +7,11 @@
       <w>grayscale</w>
       <w>heightfield</w>
       <w>lerp</w>
+      <w>mergeable</w>
+      <w>octree</w>
+      <w>octreeable</w>
+      <w>octreeables</w>
+      <w>octrees</w>
       <w>pathfinding</w>
       <w>polytope</w>
       <w>quadtree</w>
@@ -14,6 +19,8 @@
       <w>quatree</w>
       <w>slerp</w>
       <w>struct</w>
+      <w>uninitialize</w>
+      <w>urchinengine</w>
     </words>
   </dictionary>
 </component>

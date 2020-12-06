@@ -161,9 +161,17 @@ namespace urchin {
         const StreamChunk& streamChunk = task->getStreamChunk(chunkId);
         ALsizei size = streamChunk.numberOfSamples * sizeof(ALushort);
         if (size > 0) {
-            alBufferData(streamChunk.bufferId, task->getSoundFileReader()->getFormat(), &streamChunk.samples[0],
-                    size, task->getSoundFileReader()->getSampleRate());
+            SoundFileReader::SoundFormat soundFormat = task->getSoundFileReader()->getFormat();
+            ALenum format;
+            if (SoundFileReader::MONO_16 == soundFormat) {
+                format = AL_FORMAT_MONO16;
+            } else if (SoundFileReader::STEREO_16 == soundFormat) {
+                format = AL_FORMAT_STEREO16;
+            } else {
+                throw std::runtime_error("Unknown sound format: " + std::to_string(task->getSoundFileReader()->getFormat()));
+            }
 
+            alBufferData(streamChunk.bufferId, format, &streamChunk.samples[0], size, (ALsizei)task->getSoundFileReader()->getSampleRate());
             alSourceQueueBuffers(task->getSourceId(), 1, &streamChunk.bufferId);
         }
     }

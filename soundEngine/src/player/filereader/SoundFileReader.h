@@ -1,8 +1,6 @@
 #ifndef URCHINENGINE_SOUNDFILEREADER_H
 #define URCHINENGINE_SOUNDFILEREADER_H
 
-#include <AL/al.h>
-#include <AL/alc.h>
 #include <sndfile.h>
 #include <string>
 #include <vector>
@@ -14,15 +12,20 @@ namespace urchin {
     */
     class SoundFileReader {
         public:
+            enum SoundFormat {
+                MONO_16,
+                STEREO_16
+            };
+
             explicit SoundFileReader(const std::string&);
             ~SoundFileReader();
 
-            void readNextChunk(std::vector<ALshort>&, unsigned int&, bool);
+            void readNextChunk(std::vector<short>&, unsigned int&, bool);
 
-            ALenum getFormat() const;
-            ALsizei getNumberOfSamples() const;
-            ALsizei getNumberOfChannels() const;
-            ALsizei getSampleRate() const;
+            SoundFormat getFormat() const;
+            unsigned int getNumberOfSamples() const;
+            unsigned int getNumberOfChannels() const;
+            unsigned int getSampleRate() const;
             float getSoundDuration() const;
 
         private:
@@ -30,7 +33,7 @@ namespace urchin {
             bool bEndOfFileReached;
 
             SF_INFO fileInfos;
-            ALenum format;
+            SoundFormat format;
     };
 
 }
