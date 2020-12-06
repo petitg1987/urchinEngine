@@ -116,7 +116,7 @@ namespace urchin {
 
         if (Check::instance()->additionalChecksEnable()) {
             const T distanceDelta = contactPointA.vector(contactPointB).length() - distanceToOrigin;
-            if (!MathFunction::isZero(distanceDelta, 0.1f)) {
+            if (!MathFunction::isZero((float)distanceDelta, 0.1f)) {
                 logInputData("Incoherent EPA distances", convexObject1, convexObject2, gjkResult);
             }
         }
@@ -192,7 +192,7 @@ namespace urchin {
             }
 
             //create three vectors around 'lineDirection' separate of 120 degrees
-            const T sin60 = 0.86602540378; //sin(pi/3)
+            const T sin60 = (T)0.86602540378; //sin(pi/3)
             const T cos60 = 0.5; //cos(pi/3)
             const Quaternion<T> rotationQuaternion(lineDirection.X*sin60, lineDirection.Y*sin60, lineDirection.Z*sin60, cos60);
             const Matrix3<T> rotationMatrix = rotationQuaternion.toMatrix3();
@@ -294,7 +294,7 @@ namespace urchin {
         for (std::size_t i=0; i<3; ++i) {
             for (std::size_t j=i+1; j<4; ++j) {
                 T distance = convexHullPoints.at(i).point.vector(convexHullPoints.at(j).point).length();
-                T minPointsDistance = (std::nextafter(distance, std::numeric_limits<T>::max()) - distance) * 10.0;
+                T minPointsDistance = (std::nextafter(distance, std::numeric_limits<T>::max()) - distance) * (T)10.0;
 
                 if (distance < minPointsDistance) {
                     return;

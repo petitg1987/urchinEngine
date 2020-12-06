@@ -159,7 +159,7 @@ namespace urchin {
         fillChunk(task, chunkId);
 
         const StreamChunk& streamChunk = task->getStreamChunk(chunkId);
-        ALsizei size = streamChunk.numberOfSamples * sizeof(ALushort);
+        auto size = static_cast<ALsizei>(streamChunk.numberOfSamples * sizeof(ALushort));
         if (size > 0) {
             SoundFileReader::SoundFormat soundFormat = task->getSoundFileReader()->getFormat();
             ALenum format;

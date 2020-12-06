@@ -52,7 +52,7 @@ namespace urchin {
 
             float computeSlope();
 
-            const float recoverFactors[RECOVER_PENETRATION_SUB_STEPS] = {0.4, 0.7, 0.9, 1.0};
+            const float recoverFactors[RECOVER_PENETRATION_SUB_STEPS] = {0.4f, 0.7f, 0.9f, 1.0f};
             const float timeKeepMoveInAir;
             const float percentageControlInAir;
             const float maxDepthToRecover;

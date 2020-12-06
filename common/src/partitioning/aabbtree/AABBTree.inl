@@ -167,7 +167,7 @@ template<class OBJ> void AABBTree<OBJ>::removeNode(AABBNode<OBJ>* nodeToRemove) 
 }
 
 template<class OBJ> void AABBTree<OBJ>::updateObjects() {
-    for (int i=objectsNode.size()-1; i>=0; --i) { //loop backward to remove elements
+    for (int i = (int)objectsNode.size() - 1; i >= 0; --i) { //loop backward to remove elements
         auto it = objectsNode.begin();
         std::advance(it, i);
 

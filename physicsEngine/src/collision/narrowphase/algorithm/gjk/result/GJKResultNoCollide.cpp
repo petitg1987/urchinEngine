@@ -12,8 +12,8 @@ namespace urchin {
         simplex.computeClosestPoints(closestPointA, closestPointB);
 
         if (Check::instance()->additionalChecksEnable()) {
-            const float distanceDelta = closestPointA.vector(closestPointB).length() - separatingDistance;
-            if (!MathFunction::isZero(distanceDelta, 0.01f)) {
+            const T distanceDelta = closestPointA.vector(closestPointB).length() - separatingDistance;
+            if (!MathFunction::isZero((float)distanceDelta, 0.01f)) {
                 logInputData("Incoherent separating distance (" + std::to_string(separatingDistance) + ") with simplex", simplex);
             }
         }

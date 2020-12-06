@@ -105,12 +105,12 @@ namespace urchin {
     }
 
     template<class T, class U> Point3<float> GJKContinuousCollisionAlgorithm<T, U>::interpolate(const Point3<float>& from, const Point3<float>& to, T interpolatePercentage) const {
-        T invertedInterpolatePercentage = 1.0 - interpolatePercentage;
+        auto invertedInterpolatePercentage = (float)(1.0 - interpolatePercentage);
 
         return Point3<float>(
-                invertedInterpolatePercentage * from.X + interpolatePercentage * to.X,
-                invertedInterpolatePercentage * from.Y + interpolatePercentage * to.Y,
-                invertedInterpolatePercentage * from.Z + interpolatePercentage * to.Z);
+                invertedInterpolatePercentage * from.X + (float)interpolatePercentage * to.X,
+                invertedInterpolatePercentage * from.Y + (float)interpolatePercentage * to.Y,
+                invertedInterpolatePercentage * from.Z + (float)interpolatePercentage * to.Z);
     }
 
     template<class T, class U> void GJKContinuousCollisionAlgorithm<T, U>::logInputData(const TemporalObject& object1, const TemporalObject& object2,
