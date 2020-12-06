@@ -7,8 +7,8 @@
 namespace urchin {
 
     SoundFileReader::SoundFileReader(const std::string& filename) :
-        bEndOfFileReached(false),
-        fileInfos() {
+            bEndOfFileReached(false),
+            fileInfos() {
         //open file
         std::memset (&fileInfos, 0, sizeof (fileInfos)) ;
         std::string filenamePath = FileSystem::instance()->getResourcesDirectory() + filename;
@@ -43,8 +43,8 @@ namespace urchin {
         bool bufferFilled;
         do
         {
-            unsigned int itemsToRead = buffer.size() - numSamplesRead;
-            numSamplesRead += sf_read_short(file, &buffer[numSamplesRead], itemsToRead);
+            std::size_t itemsToRead = buffer.size() - numSamplesRead;
+            numSamplesRead += static_cast<unsigned int>(sf_read_short(file, &buffer[numSamplesRead], itemsToRead));
             bool endOfFileReached = buffer.size() != numSamplesRead;
 
             if (endOfFileReached) {

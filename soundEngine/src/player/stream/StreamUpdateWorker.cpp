@@ -58,13 +58,9 @@ namespace urchin {
     bool StreamUpdateWorker::isTaskExist(const Sound* sound) const {
         std::lock_guard<std::mutex> lock(tasksMutex);
 
-        for (auto task : tasks) {
-            if (task->getSourceId() == sound->getSourceId()) {
-                return true;
-            }
-        }
-
-        return false;
+        return std::any_of(tasks.begin(), tasks.end(), [&sound](const auto& task) {
+            return task->getSourceId() == sound->getSourceId();
+        });
     }
 
     void StreamUpdateWorker::removeTask(const Sound* sound) {

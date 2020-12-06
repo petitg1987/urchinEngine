@@ -6,11 +6,10 @@
 
 namespace urchin {
 
-    SoundManager::SoundManager() {
+    SoundManager::SoundManager() :
+            streamUpdateWorker(new StreamUpdateWorker()),
+            streamUpdateWorkerThread(new std::thread(&StreamUpdateWorker::start, streamUpdateWorker)) {
         DeviceManager::instance();
-        streamUpdateWorker = new StreamUpdateWorker();
-        streamUpdateWorkerThread = new std::thread(&StreamUpdateWorker::start, streamUpdateWorker);
-
         alDistanceModel(AL_LINEAR_DISTANCE_CLAMPED);
         alListener3f(AL_POSITION, 0.f, 0.f, 0.f);
     }

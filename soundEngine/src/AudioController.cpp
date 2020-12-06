@@ -9,11 +9,10 @@ namespace urchin {
     AudioController::AudioController(Sound* sound, SoundTrigger* soundTrigger, StreamUpdateWorker* streamUpdateWorker) :
             sound(sound),
             soundTrigger(soundTrigger),
-            triggerValue(SoundTrigger::STOP),
+            smoothStopAction(new SmoothStopAction(soundTrigger->getSoundBehavior())), triggerValue(SoundTrigger::STOP),
+            audioPlayer(new AudioStreamPlayer(sound, streamUpdateWorker)),
             isPaused(false) {
-        smoothStopAction = new SmoothStopAction(soundTrigger->getSoundBehavior());
 
-        audioPlayer = new AudioStreamPlayer(sound, streamUpdateWorker);
     }
 
     AudioController::~AudioController() {
