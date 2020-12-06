@@ -61,7 +61,7 @@
 	- **OPTIMIZATION** (`medium`): When compute A* G score: avoid to execute funnel algorithm from start each time
 	- **OPTIMIZATION** (`medium`): When search start and end triangles: use AABBox Tree algorithm
 	- **NEW FEATURE** (`critical`): Implement steering behaviour (<https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-collision-avoidance--gamedev-7777>)
-    - **NEW FEATURE** (`major`): AICharacterController should refresh path points each time the path request is updated 
+    - **NEW FEATURE** (`critical`): AICharacterController should refresh path points each time the path request is updated 
 
 # Physics engine
 - Broad phase
