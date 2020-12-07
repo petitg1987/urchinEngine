@@ -22,7 +22,7 @@ namespace urchin {
     void ShadowModelShaderVariable::loadCustomShaderVariables(const Model*) {
         unsigned int layersToUpdate = 0;
 
-        for (std::size_t i=0; i<shadowData->getNbFrustumShadowData(); ++i) {
+        for (unsigned int i = 0; i < shadowData->getNbFrustumShadowData(); ++i) {
             const FrustumShadowData* frustumShadowData = shadowData->getFrustumShadowData(i);
             if (frustumShadowData->needShadowMapUpdate()) {
                 layersToUpdate = layersToUpdate | MathFunction::powerOfTwo(i);

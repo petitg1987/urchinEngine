@@ -250,7 +250,7 @@ namespace urchin {
 
         visibleModels.clear();
         for (const auto& shadowData : shadowDatas) {
-            for (std::size_t i=0; i<nbShadowMaps; ++i) {
+            for (unsigned int i = 0; i < nbShadowMaps; ++i) {
                 const std::vector<Model*>& visibleModelsForLightInFrustumSplit = shadowData.second->getFrustumShadowData(i)->getModels();
                 OctreeableHelper<Model>::merge(visibleModels, visibleModelsForLightInFrustumSplit);
             }
@@ -324,7 +324,7 @@ namespace urchin {
 
         if (light->hasParallelBeams()) { //sun light
             Matrix4<float> lightViewMatrixInverse = shadowData->getLightViewMatrix().inverse();
-            for (std::size_t i=0; i<splitFrustums.size(); ++i) {
+            for (unsigned int i = 0; i < splitFrustums.size(); ++i) {
                 AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splitFrustums[i], shadowData->getLightViewMatrix());
                 OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrixInverse * OBBox<float>(aabboxSceneIndependent);
 
@@ -541,7 +541,7 @@ namespace urchin {
                         ->addAdditionalTexture(TextureReader::build(shadowData->getFilteredShadowMapTexture(), TextureParam::buildLinear()));
                 ShaderDataSender().sendData(lightsLocation[i].shadowMapTexShaderVar, static_cast<int>(texUnit));
 
-                for (std::size_t j=0; j<nbShadowMaps; ++j) {
+                for (unsigned int j = 0; j < nbShadowMaps; ++j) {
                     Matrix4<float> lightProjectionViewMatrix = shadowData->getFrustumShadowData(j)->getLightProjectionMatrix() * shadowData->getLightViewMatrix();
                     ShaderDataSender().sendData(lightsLocation[i].mLightProjectionViewShaderVar[j], lightProjectionViewMatrix);
                 }

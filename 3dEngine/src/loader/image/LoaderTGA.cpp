@@ -27,7 +27,7 @@ namespace urchin {
 
         //gets file length
         file.seekg(0, std::ios::end);
-        int length = file.tellg();
+        long length = file.tellg();
         file.seekg(0, std::ios::beg);
 
         //extracts header
@@ -37,13 +37,13 @@ namespace urchin {
 
         //extracts color map (color map is stored in BGR format)
         if (header.colormapType) {
-            colorMap = new unsigned char[header.cmLength * (header.cmSize >> 3u)];
+            colorMap = new unsigned char[(std::size_t)(header.cmLength * (header.cmSize >> 3u))];
             file.read((char*)colorMap, header.cmLength * (header.cmSize >> 3u));
         }
 
         //memory allocation for rough pixel data
         long lengthData = length - file.tellg();
-        data = new unsigned char[lengthData];
+        data = new unsigned char[(unsigned long)lengthData];
         file.read((char*)data, lengthData);
 
         //memory allocation for pixel data
@@ -204,7 +204,7 @@ namespace urchin {
 
         for (unsigned int i = 0, j = 0;i < width * height; ++i, j+=2) {
             //reads color word
-            color = data[j] + (data[j + 1] << 8u);
+            color = (unsigned short)(data[j] + (data[j + 1] << 8u));
 
             //converts BGR to RGB
             texels[(i * 3) + 0] = (unsigned char)(((color & 0x7C00u) >> 10u) << 3u);
@@ -284,7 +284,7 @@ namespace urchin {
 
             if (packetHeader & 0x80u) {
                 //run-length packet
-                color = data[j] + (data[j + 1] << 8u);
+                color = (unsigned short)(data[j] + (data[j + 1] << 8u));
                 j+=2;
 
                 for (unsigned int i=0; i<size; ++i,ptrIndex+=3) {
@@ -295,7 +295,7 @@ namespace urchin {
             } else {
                 //non run-length packet
                 for (unsigned int i=0; i<size; ++i,ptrIndex+=3,j+=2) {
-                    color = data[j] + (data[j + 1] << 8u);
+                    color = (unsigned short)(data[j] + (data[j + 1] << 8u));
 
                     texels[ptrIndex] = (unsigned char)(((color & 0x7C00u) >> 10u) << 3u);
                     texels[ptrIndex+1] = (unsigned char)(((color & 0x03E0u) >> 5u) << 3u);

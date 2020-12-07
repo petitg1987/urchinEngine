@@ -27,7 +27,7 @@ namespace urchin {
         this->maxLength = maxLength;
 
         //cut the text if needed
-        unsigned int numLetters = 0;
+        std::size_t numLetters = 0;
         std::stringstream cutTextStream((maxLength > 0) ? cutText(text, static_cast<unsigned int>(maxLength)) : text);
         std::string item;
         cutTextLines.clear();

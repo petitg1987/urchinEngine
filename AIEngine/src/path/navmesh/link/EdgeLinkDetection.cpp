@@ -35,7 +35,7 @@ namespace urchin {
         }
 
         const float sampleSpaces = 1.0f;
-        const unsigned int samplesCount = 1 + (unsigned int)std::ceil(startEdge.toVector().length() / sampleSpaces);
+        const unsigned int samplesCount = 1 + MathFunction::ceilToUInt(startEdge.toVector().length() / sampleSpaces);
 
         bool hasJumpPoints = false;
         float jumpStartRange = -std::numeric_limits<float>::max();

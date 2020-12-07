@@ -9,7 +9,7 @@ namespace urchin {
 
     class CapsuleModel : public GeometryModel {
         public:
-            CapsuleModel(Capsule<float> , int, int);
+            CapsuleModel(Capsule<float>, unsigned int, unsigned int);
 
         protected:
             Matrix4<float> retrieveModelMatrix() const override;
@@ -21,7 +21,7 @@ namespace urchin {
             void fillWithCaps(std::vector<Point3<float>>&, const Quaternion<float>&) const;
 
             Capsule<float> capsule;
-            int sides, slices;
+            unsigned int sides, slices;
     };
 
 }

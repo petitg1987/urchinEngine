@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    CapsuleModel::CapsuleModel(Capsule<float> capsule, int sides, int slices):
+    CapsuleModel::CapsuleModel(Capsule<float> capsule, unsigned int sides, unsigned int slices):
             capsule(std::move(capsule)),
             sides(sides),
             slices((slices % 2 == 0) ? slices : slices + 1) /*number of slices must be an even number to have same number of faces for the bottom and the top caps */ {
@@ -42,7 +42,7 @@ namespace urchin {
 
         //cylinder
         Quaternion<float> localCylinderOrientation = capsule.getOrientation() * qCapsuleOrientation;
-        for (int i = 0; i < sides; i++) {
+        for (unsigned int i = 0; i < sides; i++) {
             float x1 = std::cos((float)i * angle) * radius;
             float y1 = std::sin((float)i * angle) * radius;
             float x2 = std::cos((float)(i+1) * angle) * radius;
@@ -68,8 +68,8 @@ namespace urchin {
         float radius = capsule.getRadius();
         float halfCylinderHeight = capsule.getCylinderHeight() / 2.0f;
 
-        int nbLong = slices/2;
-        for (int i = 1; i <= slices; i++) {
+        unsigned int nbLong = slices / 2;
+        for (unsigned int i = 1; i <= slices; i++) {
             float latitude1 = MathValue::PI_FLOAT * (-0.5f + (float)(i - 1) / (float)slices);
             float z0 = std::sin(latitude1);
             float zr0 = std::cos(latitude1);
@@ -79,7 +79,7 @@ namespace urchin {
             float zr1 = std::cos(latitude2);
 
             //bottom cap
-            for (int j = 0; j < nbLong; j++) {
+            for (unsigned int j = 0; j < nbLong; j++) {
                 float longitude1 = MathValue::PI_FLOAT * (float)(j) / (float)nbLong;
                 float longitude2 = MathValue::PI_FLOAT * (float)(j+1) / (float)nbLong;
                 float x1 = std::cos(longitude1);
@@ -97,7 +97,7 @@ namespace urchin {
             }
 
             //top cap
-            for (int j = nbLong; j < slices; j++) {
+            for (unsigned int j = nbLong; j < slices; j++) {
                 float longitude1 = MathValue::PI_FLOAT * (float)(j) / (float)nbLong;
                 float longitude2 = MathValue::PI_FLOAT * (float)(j+1) / (float)nbLong;
                 float x1 = std::cos(longitude1);

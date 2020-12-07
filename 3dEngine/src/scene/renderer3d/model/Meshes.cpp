@@ -6,7 +6,7 @@ namespace urchin {
             constMeshes(constMeshes),
             numMeshes(constMeshes->getNumberConstMeshes()) {
         //create mesh
-        for (unsigned int m=0; m<numMeshes; m++) {
+        for (unsigned int m = 0;  m < numMeshes; m++) {
             auto* mesh = new Mesh(constMeshes->getConstMesh(m));
             meshes.push_back(mesh);
         }

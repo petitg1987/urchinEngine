@@ -24,12 +24,12 @@ namespace urchin {
                 DataType dataType = DataType::FLOAT;
                 DataDimension dataDimension = DataDimension::TWO_DIMENSION;
                 const void *ptr = nullptr;
-                unsigned int dataCount = 0;
+                std::size_t dataCount = 0;
             };
 
             struct Indices {
                 const void *ptr = nullptr;
-                unsigned int indicesCount = 0;
+                std::size_t indicesCount = 0;
                 bool hasPrimitiveRestartIndex = false;
             };
 
@@ -49,7 +49,7 @@ namespace urchin {
             void render() const;
 
         private:
-            unsigned int computeVerticesCount() const;
+            std::size_t computeVerticesCount() const;
             void initializeTexture(const TextureReader&) const;
             void initializeDisplay();
             void sendData(std::size_t, bool);
@@ -65,7 +65,7 @@ namespace urchin {
 
             std::vector<Data> data;
             Indices indices;
-            unsigned int verticesCount;
+            std::size_t verticesCount;
 
             bool transparencyEnabled;
 

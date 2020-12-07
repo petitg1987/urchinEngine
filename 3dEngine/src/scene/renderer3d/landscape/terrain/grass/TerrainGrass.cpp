@@ -11,12 +11,12 @@
 #include "graphic/render/GenericRendererBuilder.h"
 
 #define DEFAULT_NUM_GRASS_IN_TEX 1
-#define DEFAULT_GRASS_DISPLAY_DISTANCE 100.0
-#define DEFAULT_GRASS_HEIGHT 1.0
-#define DEFAULT_GRASS_LENGTH 1.0
-#define DEFAULT_GRASS_QUANTITY 0.1
+#define DEFAULT_GRASS_DISPLAY_DISTANCE 100.0f
+#define DEFAULT_GRASS_HEIGHT 1.0f
+#define DEFAULT_GRASS_LENGTH 1.0f
+#define DEFAULT_GRASS_QUANTITY 0.1f
 #define DEFAULT_WIND_DIRECTION Vector3<float>(1.0f, 0.0f, 0.0f)
-#define DEFAULT_WIND_STRENGTH 1.0
+#define DEFAULT_WIND_STRENGTH 1.0f
 
 namespace urchin {
 
@@ -110,8 +110,8 @@ namespace urchin {
 
             auto patchQuantityX = MathFunction::roundToUInt(mesh->getXZScale() * (float)mesh->getXSize() / grassPatchSize);
             auto patchQuantityZ = MathFunction::roundToUInt(mesh->getXZScale() * (float)mesh->getZSize() / grassPatchSize);
-            float adjustedPatchSizeX = mesh->getXZScale() * (float)mesh->getXSize() / patchQuantityX;
-            float adjustedPatchSizeZ = mesh->getXZScale() * (float)mesh->getZSize() / patchQuantityZ;
+            float adjustedPatchSizeX = mesh->getXZScale() * (float)mesh->getXSize() / (float)patchQuantityX;
+            float adjustedPatchSizeZ = mesh->getXZScale() * (float)mesh->getZSize() / (float)patchQuantityZ;
 
             std::vector<TerrainGrassQuadtree*> leafGrassPatches;
             leafGrassPatches.reserve(patchQuantityX * patchQuantityZ);
@@ -161,12 +161,12 @@ namespace urchin {
         Point3<float> farLeftCoordinate = localCoordinate - mesh->getVertices()[0];
 
         float xInterval = mesh->getVertices()[1].X - mesh->getVertices()[0].X;
-        int xIndex = MathFunction::clamp(MathFunction::roundToInt(farLeftCoordinate.X / xInterval), 0, static_cast<int>(mesh->getXSize() - 1));
+        unsigned int xIndex = MathFunction::clamp(MathFunction::roundToUInt(farLeftCoordinate.X / xInterval), 0u, mesh->getXSize() - 1);
 
         float zInterval = mesh->getVertices()[mesh->getXSize()].Z - mesh->getVertices()[0].Z;
-        int zIndex = MathFunction::clamp(MathFunction::roundToInt(farLeftCoordinate.Z / zInterval), 0, static_cast<int>(mesh->getZSize() - 1));
+        unsigned int zIndex = MathFunction::clamp(MathFunction::roundToUInt(farLeftCoordinate.Z / zInterval), 0u, mesh->getZSize() - 1);
 
-        return xIndex + zIndex*mesh->getXSize();
+        return xIndex + zIndex * mesh->getXSize();
     }
 
     void TerrainGrass::buildGrassQuadtree(const std::vector<TerrainGrassQuadtree*>& leafGrassPatches, unsigned int leafQuantityX, unsigned int leafQuantityZ) {
@@ -188,8 +188,8 @@ namespace urchin {
 
                 for (unsigned int childZ = 0; childZ < childrenNbQuadtreeZ; ++childZ) {
                     for (unsigned int childX = 0; childX < childrenNbQuadtreeX; ++childX) {
-                        auto xQuadtreeIndex = static_cast<int>((depthNbQuadtreeX / (float)childrenNbQuadtreeX) * ((float)childX + 0.5f));
-                        auto zQuadtreeIndex = static_cast<int>((depthNbQuadtreeZ / (float)childrenNbQuadtreeZ) * ((float)childZ + 0.5f));
+                        auto xQuadtreeIndex = static_cast<unsigned int>(((float)depthNbQuadtreeX / (float)childrenNbQuadtreeX) * ((float)childX + 0.5f));
+                        auto zQuadtreeIndex = static_cast<unsigned int>(((float)depthNbQuadtreeZ / (float)childrenNbQuadtreeZ) * ((float)childZ + 0.5f));
 
                         unsigned int quadtreeIndex = (zQuadtreeIndex * depthNbQuadtreeX) + xQuadtreeIndex;
                         unsigned int childQuadtreeIndex = (childZ * childrenNbQuadtreeZ) + childX;

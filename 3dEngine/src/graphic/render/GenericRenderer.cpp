@@ -42,14 +42,14 @@ namespace urchin {
         }
     }
 
-    unsigned int GenericRenderer::computeVerticesCount() const {
+    std::size_t GenericRenderer::computeVerticesCount() const {
         assert(!data.empty());
 
         if(indices.indicesCount > 0) {
             return indices.indicesCount;
         }
 
-        unsigned int countResult = data[0].dataCount;
+        std::size_t countResult = data[0].dataCount;
         #ifndef NDEBUG
             for (const auto& dataValue : data) {
                 assert(dataValue.dataCount == countResult);
@@ -62,7 +62,7 @@ namespace urchin {
         unsigned int textureType = textureReader.getTexture()->getGlTextureType();
         glBindTexture(textureType, textureReader.getTexture()->getTextureId());
 
-        unsigned int readMode = textureReader.getParam().getGlReadMode();
+        GLint readMode = textureReader.getParam().getGlReadMode();
         glTexParameteri(textureType, GL_TEXTURE_WRAP_S, readMode);
         glTexParameteri(textureType, GL_TEXTURE_WRAP_T, readMode);
         if (textureType == GL_TEXTURE_CUBE_MAP) {
@@ -111,8 +111,8 @@ namespace urchin {
         glBindVertexArray(vertexArrayObject);
         glBindBuffer(GL_ARRAY_BUFFER, bufferIds[dataIndex]);
         glBufferData(GL_ARRAY_BUFFER, dataMemorySize, dataValue.ptr, update ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
-        glEnableVertexAttribArray(dataIndex);
-        glVertexAttribPointer(dataIndex, dataDimensionToSize(dataValue.dataDimension), dataTypeToGlType(dataValue.dataType), GL_FALSE, 0, nullptr);
+        glEnableVertexAttribArray((GLuint)dataIndex);
+        glVertexAttribPointer((GLuint)dataIndex, dataDimensionToSize(dataValue.dataDimension), dataTypeToGlType(dataValue.dataType), GL_FALSE, 0, nullptr);
 
         dataValue.ptr = nullptr; //reset pointer because no guaranteed pointer is still valid after initialization
     }
@@ -189,7 +189,7 @@ namespace urchin {
         initializeTexture(texture);
 
         additionalTextureReaders.push_back(texture);
-        return textureReaders.size() + additionalTextureReaders.size() - 1;
+        return (unsigned int)(textureReaders.size() + additionalTextureReaders.size() - 1);
     }
 
     void GenericRenderer::clearAdditionalTextures() {
@@ -247,13 +247,13 @@ namespace urchin {
                 glPrimitiveRestartIndex(GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE);
             }
 
-            glDrawElements(shapeTypeToGlType(shapeType), verticesCount, GL_UNSIGNED_INT, nullptr);
+            glDrawElements(shapeTypeToGlType(shapeType), (GLsizei)verticesCount, GL_UNSIGNED_INT, nullptr);
 
             if(indices.hasPrimitiveRestartIndex) {
                 glDisable(GL_PRIMITIVE_RESTART);
             }
         } else {
-            glDrawArrays(shapeTypeToGlType(shapeType), 0, verticesCount);
+            glDrawArrays(shapeTypeToGlType(shapeType), 0, (GLsizei)verticesCount);
         }
 
         resetRenderDefaultValues();

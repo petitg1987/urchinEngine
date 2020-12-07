@@ -5,15 +5,15 @@
 #include "graphic/shader/data/ShaderDataSender.h"
 
 #define DEFAULT_CENTER_POSITION Point3<float>(0.0f, 0.0f, 0.0f)
-#define DEFAULT_SIZE 1000.0
+#define DEFAULT_SIZE 1000.0f
 #define DEFAULT_WATER_COLOR Vector3<float>(0.08f, 0.22f, 0.29f)
 #define DEFAULT_NORMAL_TEXTURE ""
 #define DEFAULT_DUDV_MAP ""
-#define DEFAULT_WAVE_SPEED 0.08
-#define DEFAULT_WAVE_STRENGTH 0.04
-#define DEFAULT_REPEAT 1.0
-#define DEFAULT_DENSITY 2.0
-#define DEFAULT_GRADIENT 0.5
+#define DEFAULT_WAVE_SPEED 0.08f
+#define DEFAULT_WAVE_STRENGTH 0.04f
+#define DEFAULT_REPEAT 1.0f
+#define DEFAULT_DENSITY 2.0f
+#define DEFAULT_GRADIENT 0.5f
 
 namespace urchin {
 

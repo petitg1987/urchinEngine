@@ -12,7 +12,7 @@ namespace urchin {
         TextureFilter(textureFilterBuilder),
         blurDirection(blurDirection),
         blurSize(textureFilterBuilder->getBlurSize()),
-        nbTextureFetch(std::ceil((float)blurSize / 2.0f)),
+        nbTextureFetch(MathFunction::ceilToUInt((float)blurSize / 2.0f)),
         textureSize((BlurDirection::VERTICAL==blurDirection) ? getTextureHeight() : getTextureWidth()) { //See http://rastergrid.com/blog/2010/09/efficient-gaussian-blur-with-linear-sampling/
 
         if (blurSize<=1) {
@@ -45,13 +45,13 @@ namespace urchin {
         std::vector<unsigned int> pascalTriangleLineValues = PascalTriangle::lineValues(blurSize+3);
 
         //exclude outermost because the values are too insignificant and haven't enough impact on 32bits value
-        std::vector<unsigned int> gaussianFactors(blurSize);
-        std::copy_n(pascalTriangleLineValues.begin()+2, blurSize, gaussianFactors.begin());
+        std::vector<float> gaussianFactors(blurSize);
+        std::copy_n(pascalTriangleLineValues.begin() + 2, blurSize, gaussianFactors.begin());
 
-        float factorsSum = std::accumulate(gaussianFactors.begin(), gaussianFactors.end(), 0.0);
+        float factorsSum = std::accumulate(gaussianFactors.begin(), gaussianFactors.end(), 0.0f);
         std::vector<float> weights(blurSize);
-        for (unsigned int i=0; i<blurSize; ++i) {
-            weights[i] = gaussianFactors[i]/factorsSum;
+        for (unsigned int i = 0; i < blurSize; ++i) {
+            weights[i] = gaussianFactors[i] / factorsSum;
         }
 
         return weights;
@@ -60,11 +60,11 @@ namespace urchin {
     std::vector<float> GaussianBlurFilter::computeWeightsLinearSampling(const std::vector<float>& weights) const {
         std::vector<float> weightsLinearSampling(nbTextureFetch);
 
-        for (unsigned int i=0; i<nbTextureFetch; ++i) {
-            if (i*2+1>=blurSize) {
-                weightsLinearSampling[i] = weights[i*2];
+        for (unsigned int i = 0; i < nbTextureFetch; ++i) {
+            if (i * 2 + 1>=blurSize) {
+                weightsLinearSampling[i] = weights[i * 2];
             } else {
-                weightsLinearSampling[i] = weights[i*2] + weights[i*2+1];
+                weightsLinearSampling[i] = weights[i * 2] + weights[i * 2 + 1];
             }
         }
 
@@ -75,17 +75,17 @@ namespace urchin {
             const std::vector<float>& weightsLinearSampling) const {
         std::vector<float> offsetsLinearSampling(nbTextureFetch);
 
-        int firstOffset = -(int)(std::floor((float)blurSize / 2.0f));
-        for (std::size_t i=0; i < nbTextureFetch; ++i) {
+        int firstOffset = -MathFunction::floorToInt((float)blurSize / 2.0f);
+        for (unsigned int i = 0; i < nbTextureFetch; ++i) {
             if (i * 2 + 1 >= blurSize) {
-                offsetsLinearSampling[i] = firstOffset+i*2;
+                offsetsLinearSampling[i] = (float)(firstOffset + (int)i * 2);
             } else {
-                int offset1 = firstOffset + static_cast<int>(i) * 2;
+                int offset1 = firstOffset + (int)i * 2;
                 int offset2 = offset1 + 1;
                 offsetsLinearSampling[i] = ((float)offset1 * weights[i * 2] + (float)offset2 * weights[i * 2 + 1]) / weightsLinearSampling[i];
             }
 
-            offsetsLinearSampling[i] /= static_cast<float>(textureSize);
+            offsetsLinearSampling[i] /= (float)textureSize;
         }
 
         return offsetsLinearSampling;

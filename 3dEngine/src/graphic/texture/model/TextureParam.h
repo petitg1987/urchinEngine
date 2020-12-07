@@ -1,6 +1,8 @@
 #ifndef URCHINENGINE_TEXTUREPARAM_H
 #define URCHINENGINE_TEXTUREPARAM_H
 
+#include <GL/glew.h>
+
 namespace urchin {
 
     class TextureParam {
@@ -26,8 +28,8 @@ namespace urchin {
             static TextureParam buildRepeatLinear();
             static TextureParam build(ReadMode, ReadQuality, Anisotropy);
 
-            unsigned int getGlReadMode() const;
-            unsigned int getGlReadQuality(bool) const;
+            GLint getGlReadMode() const;
+            GLint getGlReadQuality(bool) const;
 
             bool needAnisotropy() const;
 

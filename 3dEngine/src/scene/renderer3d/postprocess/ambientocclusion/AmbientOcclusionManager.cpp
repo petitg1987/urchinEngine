@@ -11,14 +11,14 @@
 
 #define DEFAULT_TEXTURE_SIZE AOTextureSize::HALF_SIZE
 #define DEFAULT_KERNEL_SAMPLES 64
-#define DEFAULT_RADIUS 0.35
-#define DEFAULT_AO_STRENGTH 0.10
-#define DEFAULT_DEPTH_START_ATTENUATION 0.999
-#define DEFAULT_DEPTH_END_ATTENUATION 0.9995
+#define DEFAULT_RADIUS 0.35f
+#define DEFAULT_AO_STRENGTH 0.10f
+#define DEFAULT_DEPTH_START_ATTENUATION 0.999f
+#define DEFAULT_DEPTH_END_ATTENUATION 0.9995f
 #define DEFAULT_NOISE_TEXTURE_SIZE 4
-#define DEFAULT_BIAS 0.15
+#define DEFAULT_BIAS 0.15f
 #define DEFAULT_BLUR_SIZE 7
-#define DEFAULT_BLUR_SHARPNESS 40.0
+#define DEFAULT_BLUR_SHARPNESS 40.0f
 
 namespace urchin {
 
@@ -115,13 +115,13 @@ namespace urchin {
         createOrUpdateAOTexture();
         createOrUpdateAOShader();
 
-        ShaderDataSender().sendData(resolutionShaderVar, Vector2<float>(sceneWidth, sceneHeight));
+        ShaderDataSender().sendData(resolutionShaderVar, Vector2<float>((float)sceneWidth, (float)sceneHeight));
     }
 
     void AmbientOcclusionManager::createOrUpdateAOTexture() {
         if(depthTexture) {
-            textureSizeX = sceneWidth / retrieveTextureSizeFactor();
-            textureSizeY = sceneHeight / retrieveTextureSizeFactor();
+            textureSizeX = (unsigned int)((float)sceneWidth / (float)retrieveTextureSizeFactor());
+            textureSizeY = (unsigned int)((float)sceneHeight / (float)retrieveTextureSizeFactor());
             ambientOcclusionTexture = Texture::build(textureSizeX, textureSizeY, TextureFormat::GRAYSCALE_16_FLOAT, nullptr);
 
             offscreenRenderTarget = std::make_unique<OffscreenRender>();
@@ -172,7 +172,7 @@ namespace urchin {
             ssaoKernel.push_back(sample);
         }
 
-        ShaderDataSender().sendData(ShaderVar(ambientOcclusionShader, "samples"), ssaoKernel.size(), &ssaoKernel[0]);
+        ShaderDataSender().sendData(ShaderVar(ambientOcclusionShader, "samples"), (unsigned int)ssaoKernel.size(), &ssaoKernel[0]);
 
         if (DEBUG_EXPORT_SSAO_KERNEL) {
             exportSVG(std::string(std::getenv("HOME")) + "/ssaoKernel.html", ssaoKernel);
@@ -200,7 +200,7 @@ namespace urchin {
         SVGExporter svgExporter(filename);
         svgExporter.addShape(new SVGCircle(Point2<float>(0.0, 0.0), radius, SVGPolygon::BLUE));
         for (const auto& kernel : ssaoKernel) {
-            svgExporter.addShape(new SVGCircle(Point2<float>(kernel.X, kernel.Y), 0.001, SVGPolygon::LIME));
+            svgExporter.addShape(new SVGCircle(Point2<float>(kernel.X, kernel.Y), 0.001f, SVGPolygon::LIME));
         }
         svgExporter.generateSVG(100);
     }

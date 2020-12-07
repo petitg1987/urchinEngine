@@ -9,7 +9,7 @@ namespace urchin {
 
     class CylinderModel : public GeometryModel {
         public:
-            CylinderModel(Cylinder<float> , int);
+            CylinderModel(Cylinder<float>, unsigned int);
 
         protected:
             Matrix4<float> retrieveModelMatrix() const override;
@@ -19,7 +19,7 @@ namespace urchin {
 
         private:
             Cylinder<float> cylinder;
-            int sides;
+            unsigned int sides;
     };
 
 }

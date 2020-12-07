@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    CylinderModel::CylinderModel(Cylinder<float> cylinder, int sides):
+    CylinderModel::CylinderModel(Cylinder<float> cylinder, unsigned int sides):
             cylinder(std::move(cylinder)),
             sides(sides) {
         initialize();
@@ -37,7 +37,7 @@ namespace urchin {
         }
 
         Quaternion<float> localOrientation = cylinder.getOrientation() * qCylinderOrientation;
-        for (int i = 0; i < sides; i++) {
+        for (unsigned int i = 0; i < sides; i++) {
             float x1 = std::cos((float)i * angle) * radius;
             float y1 = std::sin((float)i * angle) * radius;
             float x2 = std::cos((float)(i+1) * angle) * radius;

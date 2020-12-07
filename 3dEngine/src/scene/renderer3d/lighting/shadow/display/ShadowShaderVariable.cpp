@@ -22,14 +22,14 @@ namespace urchin {
     }
 
     void ShadowShaderVariable::loadCustomShaderVariables() {
-        ShaderDataSender().sendData(mModelProjectionMatrixShaderVar, projectionMatrices.size(), &projectionMatrices[0]);
+        ShaderDataSender().sendData(mModelProjectionMatrixShaderVar, (unsigned int)projectionMatrices.size(), &projectionMatrices[0]);
     }
 
     void ShadowShaderVariable::updateProjectionMatrices() {
         projectionMatrices.clear();
 
         if (shadowData != nullptr) {
-            for (std::size_t i = 0; i < shadowData->getNbFrustumShadowData(); ++i) {
+            for (unsigned int i = 0; i < shadowData->getNbFrustumShadowData(); ++i) {
                 projectionMatrices.push_back(shadowData->getFrustumShadowData(i)->getLightProjectionMatrix());
             }
         }

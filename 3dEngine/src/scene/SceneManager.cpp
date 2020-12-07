@@ -22,7 +22,7 @@ namespace urchin {
 
         //initialize fps
         previousFps.fill(START_FPS);
-        indexFps = previousFps.size();
+        indexFps = (unsigned int)previousFps.size();
         previousTime = std::chrono::high_resolution_clock::now();
 
         //renderer

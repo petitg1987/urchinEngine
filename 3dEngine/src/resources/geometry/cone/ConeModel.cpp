@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    ConeModel::ConeModel(Cone<float> cone, int slices):
+    ConeModel::ConeModel(Cone<float> cone, unsigned int slices):
             cone(std::move(cone)),
             slices(slices) {
         initialize();
@@ -20,7 +20,7 @@ namespace urchin {
 
     std::vector<Point3<float>> ConeModel::retrieveVertexArray() const {
         std::vector<Point3<float>> vertexArray;
-        vertexArray.reserve(1+(slices+1));
+        vertexArray.reserve(1 + (slices + 1));
 
         float radius = cone.getRadius();
         float angle = (2.0f * MathValue::PI_FLOAT) / (float)slices;
@@ -42,17 +42,17 @@ namespace urchin {
         }
 
         Quaternion<float> localOrientation = cone.getOrientation() * qConeOrientation;
-        Point3<float> topPoint = localOrientation.rotatePoint(Point3<float>(0.0, cone.getHeight()*(3.0/4.0), 0.0));
+        Point3<float> topPoint = localOrientation.rotatePoint(Point3<float>(0.0f, cone.getHeight() * (3.0f / 4.0f), 0.0f));
 
-        for (int i = 0; i < slices; i++) {
+        for (unsigned int i = 0; i < slices; i++) {
             float x1 = std::cos((float)i * angle) * radius;
             float z1 = std::sin((float)i * angle) * radius;
             float x2 = std::cos((float)i * angle) * radius;
             float z2 = std::sin((float)i * angle) * radius;
 
             vertexArray.push_back(topPoint);
-            vertexArray.push_back(localOrientation.rotatePoint(Point3<float>(x1, -cone.getHeight()*(1.0/4.0), z1)));
-            vertexArray.push_back(localOrientation.rotatePoint(Point3<float>(x2, -cone.getHeight()*(1.0/4.0), z2)));
+            vertexArray.push_back(localOrientation.rotatePoint(Point3<float>(x1, -cone.getHeight() * (1.0f / 4.0f), z1)));
+            vertexArray.push_back(localOrientation.rotatePoint(Point3<float>(x2, -cone.getHeight() * (1.0f / 4.0f), z2)));
         }
 
         return vertexArray;

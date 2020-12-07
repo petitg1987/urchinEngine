@@ -33,11 +33,11 @@ namespace urchin {
         } else {
             textures.push_back(texture);
 
-            unsigned int attachmentIndex = GL_COLOR_ATTACHMENT0 + textures.size() - 1;
+            unsigned int attachmentIndex = GL_COLOR_ATTACHMENT0 + (unsigned int)textures.size() - 1;
             glFramebufferTexture(GL_FRAMEBUFFER, attachmentIndex, texture->getTextureId(), 0);
 
             attachmentsIndices.emplace_back(attachmentIndex);
-            glDrawBuffers(attachmentsIndices.size(), &attachmentsIndices[0]);
+            glDrawBuffers((int)attachmentsIndices.size(), &attachmentsIndices[0]);
         }
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -70,7 +70,7 @@ namespace urchin {
 
     void OffscreenRender::display(const std::unique_ptr<GenericRenderer>& renderer) const {
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
-        glViewport(0, 0, getTargetWidth(), getTargetHeight());
+        glViewport(0, 0, (int)getTargetWidth(), (int)getTargetHeight());
 
         executeRenderer(renderer);
 

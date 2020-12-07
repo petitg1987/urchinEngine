@@ -17,13 +17,13 @@ namespace urchin {
     }
 
     GenericRendererBuilder* GenericRendererBuilder::addData(const std::vector<Point2<float>>* dataPtr) {
-        GenericRenderer::Data dataValue{DataType::FLOAT, DataDimension::TWO_DIMENSION, &(*dataPtr)[0], (unsigned int)dataPtr->size()};
+        GenericRenderer::Data dataValue{DataType::FLOAT, DataDimension::TWO_DIMENSION, &(*dataPtr)[0], dataPtr->size()};
         data.push_back(dataValue);
         return this;
     }
 
     GenericRendererBuilder* GenericRendererBuilder::addData(const std::vector<Point3<float>>* dataPtr) {
-        GenericRenderer::Data dataValue{DataType::FLOAT, DataDimension::THREE_DIMENSION, &(*dataPtr)[0], (unsigned int)dataPtr->size()};
+        GenericRenderer::Data dataValue{DataType::FLOAT, DataDimension::THREE_DIMENSION, &(*dataPtr)[0], dataPtr->size()};
         data.push_back(dataValue);
         return this;
     }

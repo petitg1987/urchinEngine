@@ -9,7 +9,7 @@ namespace urchin {
 
     class ConeModel : public GeometryModel {
         public:
-            ConeModel(Cone<float> , int);
+            ConeModel(Cone<float>, unsigned int);
 
         protected:
             Matrix4<float> retrieveModelMatrix() const override;
@@ -19,7 +19,7 @@ namespace urchin {
 
         private:
             Cone<float> cone;
-            int slices;
+            unsigned int slices;
     };
 
 }

@@ -157,7 +157,7 @@ namespace urchin {
         unsigned int xLineQuantity = (xSize * 2) + 1;
         std::vector<Vector3<float>> normalTriangles;
         normalTriangles.resize(totalTriangles);
-        unsigned int numLoopNormalTriangle = indices.size() - 2;
+        auto numLoopNormalTriangle = (unsigned int)(indices.size() - 2);
         std::vector<std::thread> threadsNormalTriangle(NUM_THREADS);
         for (unsigned int threadI = 0; threadI < NUM_THREADS; threadI++) {
             unsigned int beginI = threadI * numLoopNormalTriangle / NUM_THREADS;
@@ -190,7 +190,7 @@ namespace urchin {
 
         //2. compute normal of vertex
         normals.resize(computeNumberNormals());
-        unsigned int numLoopNormalVertex = vertices.size();
+        auto numLoopNormalVertex = (unsigned int)vertices.size();
         std::vector<std::thread> threadsNormalVertex(NUM_THREADS);
         for (unsigned int threadI = 0; threadI < NUM_THREADS; threadI++) {
             unsigned int beginI = threadI * numLoopNormalVertex / NUM_THREADS;
@@ -265,9 +265,9 @@ namespace urchin {
         writeVersion(file, TERRAIN_FRL_FILE_VERSION);
         writeHash(file, terrainHash);
 
-        file.write(reinterpret_cast<const char*>(&vertices[0]), vertices.size() * sizeof(float) * 3);
-        file.write(reinterpret_cast<const char*>(&indices[0]), indices.size() * sizeof(unsigned int));
-        file.write(reinterpret_cast<const char*>(&normals[0]), normals.size() * sizeof(float) * 3);
+        file.write(reinterpret_cast<const char*>(&vertices[0]), (int)(vertices.size() * sizeof(float) * 3));
+        file.write(reinterpret_cast<const char*>(&indices[0]), (int)(indices.size() * sizeof(unsigned int)));
+        file.write(reinterpret_cast<const char*>(&normals[0]), (int)(normals.size() * sizeof(float) * 3));
 
         file.close();
     }
@@ -277,18 +277,18 @@ namespace urchin {
     }
 
     void TerrainMesh::writeHash(std::ofstream& file, const std::string& hash) const {
-        file.write(hash.c_str(), hash.size()*sizeof(char));
+        file.write(hash.c_str(), (int)(hash.size() * sizeof(char)));
     }
 
     void TerrainMesh::loadTerrainMeshFile(std::ifstream& file) {
         vertices.resize(computeNumberVertices());
-        file.read(reinterpret_cast<char*>(&vertices[0]), vertices.size()*sizeof(float)*3);
+        file.read(reinterpret_cast<char*>(&vertices[0]), (int)(vertices.size() * sizeof(float) * 3));
 
         indices.resize(computeNumberIndices());
-        file.read(reinterpret_cast<char*>(&indices[0]), indices.size()*sizeof(unsigned int));
+        file.read(reinterpret_cast<char*>(&indices[0]), (int)(indices.size() * sizeof(unsigned int)));
 
         normals.resize(computeNumberNormals());
-        file.read(reinterpret_cast<char*>(&normals[0]), normals.size()*sizeof(float)*3);
+        file.read(reinterpret_cast<char*>(&normals[0]), (int)(normals.size() * sizeof(float) * 3));
 
         file.close();
     }

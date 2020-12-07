@@ -83,8 +83,8 @@ namespace urchin {
 
         //X lines collision
         if (!isParallelToXAxis(pathLine, PARALLEL_EPSILON)) {
-            unsigned int xStartIndex = MathFunction::clamp((unsigned int)(std::floor(std::min(farLeftToStartPoint.X, farLeftToEndPoint.X) / xInterval)), 0u, heightfieldXSize - 1);
-            unsigned int xEndIndex = MathFunction::clamp((unsigned int)(std::ceil(std::max(farLeftToStartPoint.X, farLeftToEndPoint.X) / xInterval)), 0u, heightfieldXSize - 1);
+            unsigned int xStartIndex = MathFunction::clamp(MathFunction::floorToUInt((float)std::min(farLeftToStartPoint.X, farLeftToEndPoint.X) / (float)xInterval), 0u, heightfieldXSize - 1);
+            unsigned int xEndIndex = MathFunction::clamp(MathFunction::ceilToUInt((float)std::max(farLeftToStartPoint.X, farLeftToEndPoint.X) / (float)xInterval), 0u, heightfieldXSize - 1);
             pathPoints.reserve(pathPoints.size() + (xEndIndex - xStartIndex) + 1);
 
             unsigned int zLastIndex = (heightfieldZSize - 1) * heightfieldXSize;
@@ -99,8 +99,8 @@ namespace urchin {
 
         //Z lines collision
         if (!isParallelToZAxis(pathLine, PARALLEL_EPSILON)) {
-            unsigned int zStartIndex = MathFunction::clamp((unsigned int)(std::floor(std::min(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / zInterval)), 0u, heightfieldZSize - 1);
-            unsigned int zEndIndex = MathFunction::clamp((unsigned int)(std::ceil(std::max(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / zInterval)), 0u, heightfieldZSize - 1);
+            unsigned int zStartIndex = MathFunction::clamp(MathFunction::floorToUInt((float)std::min(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / (float)zInterval), 0u, heightfieldZSize - 1);
+            unsigned int zEndIndex = MathFunction::clamp(MathFunction::ceilToUInt((float)std::max(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / (float)zInterval), 0u, heightfieldZSize - 1);
             pathPoints.reserve(pathPoints.size() + (zEndIndex - zStartIndex) + 1);
 
             unsigned int xLastIndex = heightfieldXSize - 1;

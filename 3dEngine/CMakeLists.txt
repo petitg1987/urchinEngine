@@ -11,7 +11,7 @@ else()
     set(GLEW_LIB GLEW)
 endif()
 
-add_definitions(-DGLEW_STATIC -DGL_GLEXT_PROTOTYPES -ffast-math -Wall -Wextra -Wpedantic -Werror)
+add_definitions(-DGLEW_STATIC -DGL_GLEXT_PROTOTYPES -ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror)
 include_directories(src ../common/src /usr/include/freetype2)
 
 file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.inl" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")

@@ -17,8 +17,8 @@ namespace urchin {
             baseSkeleton(baseSkeleton) {
 
         //regroup duplicate vertex due to their different texture coordinates
-        for (std::size_t i=0;i<vertices.size();++i) {
-            linkedVertices[vertices[i].linkedVerticesGroupId].push_back(i);
+        for (std::size_t i = 0; i < vertices.size(); ++i) {
+            linkedVertices[vertices[i].linkedVerticesGroupId].push_back((unsigned int)i);
         }
 
         //compute vertices and normals based on bind-pose skeleton
@@ -38,7 +38,7 @@ namespace urchin {
     }
 
     unsigned int ConstMesh::getNumberVertices() const {
-        return vertices.size();
+        return (unsigned int)vertices.size();
     }
 
     const Vertex& ConstMesh::getStructVertex(unsigned int index) const {
@@ -67,7 +67,7 @@ namespace urchin {
     }
 
     unsigned int ConstMesh::getNumberWeights() const {
-        return weights.size();
+        return (unsigned int)weights.size();
     }
 
     const Weight& ConstMesh::getWeight(unsigned int index) const {
@@ -75,7 +75,7 @@ namespace urchin {
     }
 
     unsigned int ConstMesh::getNumberBones() const {
-        return baseSkeleton.size();
+        return (unsigned int)baseSkeleton.size();
     }
 
     const std::vector<Bone>& ConstMesh::getBaseSkeleton() const {

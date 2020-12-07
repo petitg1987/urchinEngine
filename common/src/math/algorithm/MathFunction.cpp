@@ -56,6 +56,22 @@ namespace urchin {
         return static_cast<unsigned int>(std::lround(value));
     }
 
+    int MathFunction::ceilToInt(float value) {
+        return static_cast<int>(std::ceil(value));
+    }
+
+    unsigned int MathFunction::ceilToUInt(float value) {
+        return static_cast<unsigned int>(std::ceil(value));
+    }
+
+    int MathFunction::floorToInt(float value) {
+        return static_cast<int>(std::floor(value));
+    }
+
+    unsigned int MathFunction::floorToUInt(float value) {
+        return static_cast<unsigned int>(std::floor(value));
+    }
+
     /**
      * Perform a division of two integers with a classical rounding.
      */

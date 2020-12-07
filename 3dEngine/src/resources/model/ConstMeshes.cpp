@@ -52,7 +52,7 @@ namespace urchin {
     }
 
     unsigned int ConstMeshes::getNumberConstMeshes() const {
-        return constMeshes.size();
+        return (unsigned int)constMeshes.size();
     }
 
     const ConstMesh* ConstMeshes::getConstMesh(unsigned int index) const {

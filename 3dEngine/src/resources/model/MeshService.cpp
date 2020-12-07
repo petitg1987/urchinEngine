@@ -21,7 +21,7 @@ namespace urchin {
             //calculate final vertex to draw with weights
             for (int j=0;j<constMesh->getStructVertex(i).weightCount;++j) {
                 const Weight* weight = &constMesh->getWeight(static_cast<unsigned int>(constMesh->getStructVertex(i).weightStart + j));
-                const Bone& bone = skeleton[weight->bone];
+                const Bone& bone = skeleton[(std::size_t)weight->bone];
 
                 //calculate transformed vertex for this weight
                 Point3<float> wv = bone.orient.rotatePoint(weight->pos);
@@ -45,9 +45,9 @@ namespace urchin {
         vertexNormals.clear();
         vertexNormals.resize(constMesh->getNumberVertices(), Vector3<float>(0.0f, 0.0f, 0.0f));
 
-        unsigned int numTrianglesIndices = constMesh->getTrianglesIndices().size();
+        std::size_t numTrianglesIndices = constMesh->getTrianglesIndices().size();
         assert(numTrianglesIndices % 3 == 0);
-        for(unsigned int triIndices = 0; triIndices < numTrianglesIndices; triIndices += 3) {
+        for(std::size_t triIndices = 0; triIndices < numTrianglesIndices; triIndices += 3) {
             unsigned int triIndex1 = constMesh->getTrianglesIndices()[triIndices + 0];
             unsigned int triIndex2 = constMesh->getTrianglesIndices()[triIndices + 1];
             unsigned int triIndex3 = constMesh->getTrianglesIndices()[triIndices + 2];

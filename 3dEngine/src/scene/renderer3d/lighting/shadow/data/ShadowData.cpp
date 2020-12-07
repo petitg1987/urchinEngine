@@ -55,7 +55,7 @@ namespace urchin {
 
     void ShadowData::applyTextureFilters() const {
         unsigned int layersToUpdate = 0;
-        for (std::size_t i = 0; i < getNbFrustumShadowData(); ++i) {
+        for (unsigned int i = 0; i < getNbFrustumShadowData(); ++i) {
             if (getFrustumShadowData(i)->needShadowMapUpdate()) {
                 layersToUpdate = layersToUpdate | MathFunction::powerOfTwo(i);
             }
@@ -85,27 +85,27 @@ namespace urchin {
     }
 
     unsigned int ShadowData::getNbFrustumShadowData() const {
-        return frustumShadowData.size();
+        return (unsigned int)frustumShadowData.size();
     }
 
     /**
      * @param index Index of frustum split (0: frustum split nearest to eye)
      */
-    FrustumShadowData* ShadowData::getFrustumShadowData(std::size_t index) {
+    FrustumShadowData* ShadowData::getFrustumShadowData(unsigned int index) {
         return frustumShadowData[index];
     }
 
     /**
      * @param index Index of frustum split (0: frustum split nearest to eye)
      */
-    const FrustumShadowData* ShadowData::getFrustumShadowData(std::size_t index) const {
+    const FrustumShadowData* ShadowData::getFrustumShadowData(unsigned int index) const {
         return frustumShadowData[index];
     }
 
     const std::vector<Model*>& ShadowData::retrieveModels() const {
         models.clear();
 
-        for (std::size_t i=0; i<getNbFrustumShadowData(); ++i) {
+        for (unsigned int i=0; i<getNbFrustumShadowData(); ++i) {
             if (getFrustumShadowData(i)->needShadowMapUpdate()) {
                 const std::vector<Model*>& frustumSplitModels = getFrustumShadowData(i)->getModels();
                 OctreeableHelper<Model>::merge(models, frustumSplitModels);

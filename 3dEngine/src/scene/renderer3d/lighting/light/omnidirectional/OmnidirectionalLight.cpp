@@ -10,7 +10,7 @@ namespace urchin {
             Light(),
             position(position),
             attenuationNoEffect(ConfigService::instance()->getFloatValue("light.attenuationNoEffect")),
-            exponentialAttenuation(0.01),
+            exponentialAttenuation(0.01f),
             sphereScope(nullptr),
             bboxScope(nullptr) {
         directions.emplace_back(Vector3<float>(1.0f, 0.0f, 0.0f)); //Left

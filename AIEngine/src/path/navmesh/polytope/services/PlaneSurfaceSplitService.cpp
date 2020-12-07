@@ -15,8 +15,8 @@ namespace urchin {
 
         std::vector<PlaneSurfaceSplit> planeSurfaceSplits;
 
-        auto aSamples = static_cast<unsigned int>(std::ceil(planeSurfacePoints[0].distance(planeSurfacePoints[1]) / surfaceMaxSize));
-        auto bSamples = static_cast<unsigned int>(std::ceil(planeSurfacePoints[1].distance(planeSurfacePoints[2]) / surfaceMaxSize));
+        auto aSamples = MathFunction::ceilToUInt((planeSurfacePoints[0].distance(planeSurfacePoints[1]) / surfaceMaxSize));
+        auto bSamples = MathFunction::ceilToUInt((planeSurfacePoints[1].distance(planeSurfacePoints[2]) / surfaceMaxSize));
 
         if (aSamples == 1 && bSamples == 1) { //no split required
             PlaneSurfaceSplit planeSurfaceSplit;

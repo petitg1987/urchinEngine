@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    SphereModel::SphereModel(Sphere<float> sphere, int slices):
+    SphereModel::SphereModel(Sphere<float> sphere, unsigned int slices):
             sphere(std::move(sphere)),
             slices(slices) {
         initialize();
@@ -20,11 +20,11 @@ namespace urchin {
 
     std::vector<Point3<float>> SphereModel::retrieveVertexArray() const {
         std::vector<Point3<float>> vertexArray;
-        vertexArray.reserve(4*slices*slices);
+        vertexArray.reserve(4 * slices * slices);
 
         float radius = sphere.getRadius();
 
-        for (int i = 1; i <= slices; i++) {
+        for (unsigned int i = 1; i <= slices; i++) {
             float latitude1 = MathValue::PI_FLOAT * (-0.5f + (float)(i - 1) / (float)slices);
             float z0 = std::sin(latitude1);
             float zr0 = std::cos(latitude1);
@@ -33,7 +33,7 @@ namespace urchin {
             float z1 = std::sin(latitude2);
             float zr1 = std::cos(latitude2);
 
-            for (int j = 0; j < slices; j++) {
+            for (unsigned int j = 0; j < slices; j++) {
                 float longitude1 = 2.0f * MathValue::PI_FLOAT * (float)(j - 1) / (float)slices;
                 float longitude2 = 2.0f * MathValue::PI_FLOAT * (float)(j) / (float)slices;
                 float x1 = std::cos(longitude1);

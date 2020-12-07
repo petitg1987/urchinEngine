@@ -9,7 +9,7 @@ namespace urchin {
 
     class SphereModel : public GeometryModel {
         public:
-            SphereModel(Sphere<float> , int);
+            SphereModel(Sphere<float>, unsigned int);
 
         protected:
             Matrix4<float> retrieveModelMatrix() const override;
@@ -19,7 +19,7 @@ namespace urchin {
 
         private:
             Sphere<float> sphere;
-            int slices;
+            unsigned int slices;
     };
 
 }

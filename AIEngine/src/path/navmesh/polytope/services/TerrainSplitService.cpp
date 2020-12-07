@@ -14,9 +14,9 @@ namespace urchin {
         Point3<float> nearRightVertex = position + localVertices[(xLength * zLength) - 1];
 
         float terrainXSize = nearRightVertex.X - farLeftVertex.X;
-        auto xSamples = static_cast<unsigned int>(std::ceil(terrainXSize / terrainMaxSize));
+        auto xSamples = MathFunction::ceilToUInt(terrainXSize / terrainMaxSize);
         float terrainZSize = nearRightVertex.Z - farLeftVertex.Z;
-        auto zSamples = static_cast<unsigned int>(std::ceil(terrainZSize / terrainMaxSize));
+        auto zSamples = MathFunction::ceilToUInt(terrainZSize / terrainMaxSize);
 
         unsigned int zShit = 0;
         for (unsigned int zSample=0; zSample < zSamples; ++zSample) {

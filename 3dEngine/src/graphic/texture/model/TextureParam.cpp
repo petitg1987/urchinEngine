@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <stdexcept>
 
 #include "TextureParam.h"
@@ -32,7 +31,7 @@ namespace urchin {
         return TextureParam(readMode, readQuality, anisotropy);
     }
 
-    unsigned int TextureParam::getGlReadMode() const {
+    GLint TextureParam::getGlReadMode() const {
         if (readMode == ReadMode::EDGE_CLAMP) {
             return GL_CLAMP_TO_EDGE;
         } else if (readMode == ReadMode::REPEAT) {
@@ -41,7 +40,7 @@ namespace urchin {
         throw std::runtime_error("Unknown texture read mode: " + std::to_string(readMode));
     }
 
-    unsigned int TextureParam::getGlReadQuality(bool forMipmap) const {
+    GLint TextureParam::getGlReadQuality(bool forMipmap) const {
         if (readQuality == ReadQuality::NEAREST && !forMipmap) {
             return GL_NEAREST;
         } else if (readQuality == ReadQuality::LINEAR && !forMipmap) {
