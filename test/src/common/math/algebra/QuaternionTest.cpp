@@ -6,227 +6,227 @@
 using namespace urchin;
 
 void QuaternionTest::multiplyAxisAngleQuaternions9And45() {
-    Quaternion<float> axisAngle09DegreeQuaternion(Vector3<float>(0.0, 1.0, 0.0), MathValue::PI_FLOAT/20.0);
-    Quaternion<float> axisAngle45DegreeQuaternion(Vector3<float>(0.0, 1.0, 0.0), MathValue::PI_FLOAT/4.0);
+    Quaternion<float> axisAngle09DegreeQuaternion(Vector3<float>(0.0f, 1.0f, 0.0f), MathValue::PI_FLOAT/20.0f);
+    Quaternion<float> axisAngle45DegreeQuaternion(Vector3<float>(0.0f, 1.0f, 0.0f), MathValue::PI_FLOAT/4.0f);
     Quaternion<float> totalRotation = axisAngle09DegreeQuaternion * axisAngle45DegreeQuaternion;
 
     Vector3<float> axis;
     float angle;
     totalRotation.toAxisAngle(axis, angle);
 
-    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0, 1.0, 0.0));
-    AssertHelper::assertFloatEquals(angle, MathValue::PI_FLOAT/20.0 + MathValue::PI_FLOAT/4.0);
+    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0f, 1.0f, 0.0f));
+    AssertHelper::assertFloatEquals(angle, MathValue::PI_FLOAT/20.0 + MathValue::PI_FLOAT/4.0f);
 }
 
 void QuaternionTest::multiplyLookAtQuaternions9And45() {
-    Quaternion<float> lookAt09DegreeQuaternion(Vector3<float>(std::asin(MathValue::PI_FLOAT/20.0), 0.0, 1.0).normalize(), Vector3<float>(0.0, 1.0, 0.0));
-    Quaternion<float> lookAt45DegreeQuaternion(Vector3<float>(0.70710678118, 0.0, 0.70710678118), Vector3<float>(0.0, 1.0, 0.0));
+    Quaternion<float> lookAt09DegreeQuaternion(Vector3<float>(std::asin(MathValue::PI_FLOAT/20.0f), 0.0f, 1.0f).normalize(), Vector3<float>(0.0f, 1.0f, 0.0f));
+    Quaternion<float> lookAt45DegreeQuaternion(Vector3<float>(0.70710678118f, 0.0f, 0.70710678118f), Vector3<float>(0.0f, 1.0f, 0.0f));
     Quaternion<float> totalRotation = lookAt09DegreeQuaternion * lookAt45DegreeQuaternion;
 
     Vector3<float> axis;
     float angle;
     totalRotation.toAxisAngle(axis, angle);
 
-    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0, 1.0, 0.0));
-    AssertHelper::assertFloatEquals(angle, MathValue::PI_FLOAT/20.0 + MathValue::PI_FLOAT/4.0);
+    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0f, 1.0f, 0.0f));
+    AssertHelper::assertFloatEquals(angle, MathValue::PI_FLOAT/20.0 + MathValue::PI_FLOAT/4.0f);
 }
 
 void QuaternionTest::multiplyLookAtQuaternions180And45() {
-    Quaternion<float> lookAt180DegreeQuaternion(Vector3<float>(0.0, 0.0, -1.0).normalize(), Vector3<float>(0.0, 1.0, 0.0));
-    Quaternion<float> lookAt45DegreeQuaternion(Vector3<float>(0.70710678118, 0.0, 0.70710678118), Vector3<float>(0.0, 1.0, 0.0));
+    Quaternion<float> lookAt180DegreeQuaternion(Vector3<float>(0.0f, 0.0f, -1.0f).normalize(), Vector3<float>(0.0f, 1.0f, 0.0f));
+    Quaternion<float> lookAt45DegreeQuaternion(Vector3<float>(0.70710678118f, 0.0f, 0.70710678118f), Vector3<float>(0.0f, 1.0f, 0.0f));
     Quaternion<float> totalRotation = lookAt180DegreeQuaternion * lookAt45DegreeQuaternion;
 
     Vector3<float> axis;
     float angle;
     totalRotation.toAxisAngle(axis, angle);
 
-    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0, 1.0, 0.0));
-    AssertHelper::assertFloatEquals(angle, MathValue::PI_FLOAT + MathValue::PI_FLOAT/4.0);
+    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0f, 1.0f, 0.0f));
+    AssertHelper::assertFloatEquals(angle, MathValue::PI_FLOAT + MathValue::PI_FLOAT/4.0f);
 }
 
 void QuaternionTest::multiplyLookAtQuaternions180And45UpDown() {
-    Quaternion<float> lookAt0DegreeQuaternion(Vector3<float>(0.0, 0.0, -1.0).normalize(), Vector3<float>(0.0, -1.0, 0.0));
-    Quaternion<float> lookAt45DegreeQuaternion(Vector3<float>(0.70710678118, 0.0, 0.70710678118), Vector3<float>(0.0, -1.0, 0.0));
+    Quaternion<float> lookAt0DegreeQuaternion(Vector3<float>(0.0f, 0.0f, -1.0f).normalize(), Vector3<float>(0.0f, -1.0f, 0.0f));
+    Quaternion<float> lookAt45DegreeQuaternion(Vector3<float>(0.70710678118f, 0.0f, 0.70710678118f), Vector3<float>(0.0f, -1.0f, 0.0f));
     Quaternion<float> totalRotation = lookAt0DegreeQuaternion * lookAt45DegreeQuaternion;
 
     Vector3<float> axis;
     float angle;
     totalRotation.toAxisAngle(axis, angle);
 
-    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0, -1.0, 0.0));
-    AssertHelper::assertFloatEquals(angle, MathValue::PI_FLOAT + MathValue::PI_FLOAT/4.0);
+    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0f, -1.0f, 0.0f));
+    AssertHelper::assertFloatEquals(angle, MathValue::PI_FLOAT + MathValue::PI_FLOAT/4.0f);
 }
 
 void QuaternionTest::eulerXYZ() {
-    Quaternion<float> quaternion(Vector3<float>(1.0, MathValue::PI_FLOAT/4.0, 10.0), Quaternion<float>::RotationSequence::XYZ);
+    Quaternion<float> quaternion(Vector3<float>(1.0f, MathValue::PI_FLOAT/4.0f, 10.0f), Quaternion<float>::RotationSequence::XYZ);
     Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::XYZ);
 
     AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::XYZ));
 }
 
 void QuaternionTest::eulerXZY() {
-    Quaternion<float> quaternion(Vector3<float>(1.0, MathValue::PI_FLOAT/4.0, 2.0), Quaternion<float>::RotationSequence::XZY);
+    Quaternion<float> quaternion(Vector3<float>(1.0f, MathValue::PI_FLOAT/4.0f, 2.0f), Quaternion<float>::RotationSequence::XZY);
     Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::XZY);
 
     AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::XZY));
 }
 
 void QuaternionTest::eulerYXZ() {
-    Quaternion<float> quaternion(Vector3<float>(-1.0, MathValue::PI_FLOAT/2.0, 2.0), Quaternion<float>::RotationSequence::YXZ);
+    Quaternion<float> quaternion(Vector3<float>(-1.0f, MathValue::PI_FLOAT/2.0f, 2.0f), Quaternion<float>::RotationSequence::YXZ);
     Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::YXZ);
 
     AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::YXZ));
 }
 
 void QuaternionTest::eulerYZX() {
-    Quaternion<float> quaternion(Vector3<float>(MathValue::PI_FLOAT/2.0, -1.0, 2.0), Quaternion<float>::RotationSequence::YZX);
+    Quaternion<float> quaternion(Vector3<float>(MathValue::PI_FLOAT/2.0f, -1.0f, 2.0f), Quaternion<float>::RotationSequence::YZX);
     Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::YZX);
 
     AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::YZX));
 }
 
 void QuaternionTest::eulerZXY() {
-    Quaternion<float> quaternion(Vector3<float>(0.0, MathValue::PI_FLOAT/2.0, MathValue::PI_FLOAT/2.0), Quaternion<float>::RotationSequence::ZXY);
+    Quaternion<float> quaternion(Vector3<float>(0.0f, MathValue::PI_FLOAT/2.0f, MathValue::PI_FLOAT/2.0f), Quaternion<float>::RotationSequence::ZXY);
     Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::ZXY);
 
     AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::ZXY));
 }
 
 void QuaternionTest::eulerZYX() {
-    Quaternion<float> quaternion(Vector3<float>(0.0, 0.0, 2.0), Quaternion<float>::RotationSequence::ZYX);
+    Quaternion<float> quaternion(Vector3<float>(0.0f, 0.0f, 2.0f), Quaternion<float>::RotationSequence::ZYX);
     Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::ZYX);
 
     AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::ZYX));
 }
 
 void QuaternionTest::eulerXYX() {
-    Quaternion<float> quaternion(Vector3<float>(MathValue::PI_FLOAT/2.0, -1.0, 2.0), Quaternion<float>::RotationSequence::XYX);
+    Quaternion<float> quaternion(Vector3<float>(MathValue::PI_FLOAT/2.0f, -1.0f, 2.0f), Quaternion<float>::RotationSequence::XYX);
     Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::XYX);
 
     AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::XYX));
 }
 
 void QuaternionTest::eulerXZX() {
-    Quaternion<float> quaternion(Vector3<float>(MathValue::PI_FLOAT, -3.0, MathValue::PI_FLOAT/4.0), Quaternion<float>::RotationSequence::XZX);
+    Quaternion<float> quaternion(Vector3<float>(MathValue::PI_FLOAT, -3.0f, MathValue::PI_FLOAT/4.0f), Quaternion<float>::RotationSequence::XZX);
     Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::XZX);
 
     AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::XZX));
 }
 
 void QuaternionTest::eulerYXY() {
-    Quaternion<float> quaternion(Vector3<float>(MathValue::PI_FLOAT, -3.0, MathValue::PI_FLOAT/4.0), Quaternion<float>::RotationSequence::YXY);
+    Quaternion<float> quaternion(Vector3<float>(MathValue::PI_FLOAT, -3.0f, MathValue::PI_FLOAT/4.0f), Quaternion<float>::RotationSequence::YXY);
     Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::YXY);
 
     AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::YXY));
 }
 
 void QuaternionTest::eulerYZY() {
-    Quaternion<float> quaternion(Vector3<float>(0.0, 0.0, 2.0), Quaternion<float>::RotationSequence::YZY);
+    Quaternion<float> quaternion(Vector3<float>(0.0f, 0.0f, 2.0f), Quaternion<float>::RotationSequence::YZY);
     Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::YZY);
 
     AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::YZY));
 }
 
 void QuaternionTest::eulerZXZ() {
-    Quaternion<float> quaternion(Vector3<float>(0.0, MathValue::PI_FLOAT/2.0, MathValue::PI_FLOAT/2.0), Quaternion<float>::RotationSequence::ZXZ);
+    Quaternion<float> quaternion(Vector3<float>(0.0f, MathValue::PI_FLOAT/2.0f, MathValue::PI_FLOAT/2.0f), Quaternion<float>::RotationSequence::ZXZ);
     Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::ZXZ);
 
     AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::ZXZ));
 }
 
 void QuaternionTest::eulerZYZ() {
-    Quaternion<float> quaternion(Vector3<float>(MathValue::PI_FLOAT/2.0, -1.0, MathValue::PI_FLOAT/2.0), Quaternion<float>::RotationSequence::ZYZ);
+    Quaternion<float> quaternion(Vector3<float>(MathValue::PI_FLOAT/2.0f, -1.0f, MathValue::PI_FLOAT/2.0f), Quaternion<float>::RotationSequence::ZYZ);
     Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::ZYZ);
 
     AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::ZYZ));
 }
 
 void QuaternionTest::slerp50Rotation() {
-    Quaternion<float> q1(Vector3<float>(0.0, 1.0, 0.0), 0.0);
-    Quaternion<float> q2(Vector3<float>(0.0, 1.0, 0.0), MathValue::PI_FLOAT/2.0);
-    Quaternion<float> slerpQuaternion = q1.slerp(q2, 0.5);
+    Quaternion<float> q1(Vector3<float>(0.0f, 1.0f, 0.0f), 0.0f);
+    Quaternion<float> q2(Vector3<float>(0.0f, 1.0f, 0.0f), MathValue::PI_FLOAT/2.0f);
+    Quaternion<float> slerpQuaternion = q1.slerp(q2, 0.5f);
 
     Vector3<float> axis;
     float angle;
     slerpQuaternion.toAxisAngle(axis, angle);
 
-    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0, 1.0, 0.0));
-    AssertHelper::assertFloatEquals(angle, MathValue::PI_FLOAT/4.0);
+    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0f, 1.0f, 0.0f));
+    AssertHelper::assertFloatEquals(angle, MathValue::PI_FLOAT/4.0f);
 }
 
 void QuaternionTest::slerp25Rotation() {
-    Quaternion<float> q1(Vector3<float>(0.0, 1.0, 0.0), 0.0);
-    Quaternion<float> q2(Vector3<float>(0.0, 1.0, 0.0), MathValue::PI_FLOAT/2.0);
-    Quaternion<float> slerpQuaternion = q1.slerp(q2, 0.25);
+    Quaternion<float> q1(Vector3<float>(0.0f, 1.0f, 0.0f), 0.0f);
+    Quaternion<float> q2(Vector3<float>(0.0f, 1.0f, 0.0f), MathValue::PI_FLOAT/2.0f);
+    Quaternion<float> slerpQuaternion = q1.slerp(q2, 0.25f);
 
     Vector3<float> axis;
     float angle;
     slerpQuaternion.toAxisAngle(axis, angle);
 
-    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0, 1.0, 0.0));
-    AssertHelper::assertFloatEquals(angle, MathValue::PI_FLOAT/8.0);
+    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0f, 1.0f, 0.0f));
+    AssertHelper::assertFloatEquals(angle, MathValue::PI_FLOAT/8.0f);
 }
 
 void QuaternionTest::slerpShortestPath() {
-    Quaternion<float> q1(Vector3<float>(0.0, 1.0, 0.0), 0.00345267); //0.2 degrees
-    Quaternion<float> q2(Vector3<float>(0.0, 1.0, 0.0), 4.18863); //240 degrees
-    Quaternion<float> slerpQuaternion = q1.slerp(q2, 0.01);
+    Quaternion<float> q1(Vector3<float>(0.0f, 1.0f, 0.0f), 0.00345267f); //0.2 degrees
+    Quaternion<float> q2(Vector3<float>(0.0f, 1.0f, 0.0f), 4.18863f); //240 degrees
+    Quaternion<float> slerpQuaternion = q1.slerp(q2, 0.01f);
 
     Vector3<float> axis;
     float angle;
     slerpQuaternion.toAxisAngle(axis, angle);
 
-    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0, -1.0, 0.0));
-    AssertHelper::assertFloatEquals(angle, 0.0175102);
+    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0f, -1.0f, 0.0f));
+    AssertHelper::assertFloatEquals(angle, 0.0175102f);
 }
 
 void QuaternionTest::lerp50Rotation() {
-    Quaternion<float> q1(Vector3<float>(0.0, 1.0, 0.0), 0.0);
-    Quaternion<float> q2(Vector3<float>(0.0, 1.0, 0.0), MathValue::PI_FLOAT/2.0);
-    Quaternion<float> lerpQuaternion = q1.lerp(q2, 0.5);
+    Quaternion<float> q1(Vector3<float>(0.0f, 1.0f, 0.0f), 0.0f);
+    Quaternion<float> q2(Vector3<float>(0.0f, 1.0f, 0.0f), MathValue::PI_FLOAT/2.0f);
+    Quaternion<float> lerpQuaternion = q1.lerp(q2, 0.5f);
 
     Vector3<float> axis;
     float angle;
     lerpQuaternion.toAxisAngle(axis, angle);
 
-    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0, 1.0, 0.0));
-    AssertHelper::assertFloatEquals(angle, MathValue::PI_FLOAT/4.0);
+    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0f, 1.0f, 0.0f));
+    AssertHelper::assertFloatEquals(angle, MathValue::PI_FLOAT/4.0f);
 }
 
 void QuaternionTest::lerp25Rotation() {
-    Quaternion<float> q1(Vector3<float>(0.0, 1.0, 0.0), 0.0);
-    Quaternion<float> q2(Vector3<float>(0.0, 1.0, 0.0), MathValue::PI_FLOAT/2.0);
-    Quaternion<float> lerpQuaternion = q1.lerp(q2, 0.25);
+    Quaternion<float> q1(Vector3<float>(0.0f, 1.0f, 0.0f), 0.0f);
+    Quaternion<float> q2(Vector3<float>(0.0f, 1.0f, 0.0f), MathValue::PI_FLOAT/2.0f);
+    Quaternion<float> lerpQuaternion = q1.lerp(q2, 0.25f);
 
     Vector3<float> axis;
     float angle;
     lerpQuaternion.toAxisAngle(axis, angle);
 
-    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0, 1.0, 0.0));
-    AssertHelper::assertFloatEquals(angle, 0.3769595623);
+    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0f, 1.0f, 0.0f));
+    AssertHelper::assertFloatEquals(angle, 0.3769595623f);
 }
 
 void QuaternionTest::lerpShortestPath() {
-    Quaternion<float> q1(Vector3<float>(0.0, 1.0, 0.0), 0.00345267); //0.2 degrees
-    Quaternion<float> q2(Vector3<float>(0.0, 1.0, 0.0), 4.18863); //240 degrees
-    Quaternion<float> lerpQuaternion = q1.lerp(q2, 0.01);
+    Quaternion<float> q1(Vector3<float>(0.0f, 1.0f, 0.0f), 0.00345267f); //0.2 degrees
+    Quaternion<float> q2(Vector3<float>(0.0f, 1.0f, 0.0f), 4.18863f); //240 degrees
+    Quaternion<float> lerpQuaternion = q1.lerp(q2, 0.01f);
 
     Vector3<float> axis;
     float angle;
     lerpQuaternion.toAxisAngle(axis, angle);
 
-    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0, -1.0, 0.0));
-    AssertHelper::assertFloatEquals(angle, 0.0139822755);
+    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0f, -1.0f, 0.0f));
+    AssertHelper::assertFloatEquals(angle, 0.0139822755f);
 }
 
 void QuaternionTest::toAxisAngle90() {
-    Quaternion<float> q(Vector3<float>(0.0, 1.0, 0.0), MathValue::PI_FLOAT/2.0f);
+    Quaternion<float> q(Vector3<float>(0.0f, 1.0f, 0.0f), MathValue::PI_FLOAT/2.0f);
 
     Vector3<float> axis;
     float angle;
     q.toAxisAngle(axis, angle);
 
-    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0, 1.0, 0.0));
+    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0f, 1.0f, 0.0f));
     AssertHelper::assertFloatEquals(angle, MathValue::PI_FLOAT/2.0f);
 }
 

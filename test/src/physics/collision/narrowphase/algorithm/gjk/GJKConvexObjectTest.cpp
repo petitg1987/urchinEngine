@@ -10,18 +10,18 @@
 using namespace urchin;
 
 void GJKConvexObjectTest::separateSphereAndBox() {
-    CollisionSphereObject sphere(1.0, Point3<float>(0.0, 0.0, 0.0));
-    CollisionBoxObject aabbox(0.0, Vector3<float>(0.5, 0.5, 0.5), Point3<float>(1.6, 0.5, 0.5), Quaternion<float>());
+    CollisionSphereObject sphere(1.0f, Point3<float>(0.0f, 0.0f, 0.0f));
+    CollisionBoxObject aabbox(0.0f, Vector3<float>(0.5f, 0.5f, 0.5f), Point3<float>(1.6f, 0.5f, 0.5f), Quaternion<float>());
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(sphere, aabbox);
 
     AssertHelper::assertTrue(!result->isCollide());
-    AssertHelper::assertFloatEquals(result->getSeparatingDistance(), 0.1);
+    AssertHelper::assertFloatEquals(result->getSeparatingDistance(), 0.1f);
 }
 
 void GJKConvexObjectTest::overlapSphereAndBox() {
-    CollisionSphereObject sphere(1.0, Point3<float>(0.0, 0.0, 0.0));
-    CollisionBoxObject aabbox(0.0, Vector3<float>(0.5, 0.5, 0.5), Point3<float>(1.4, 0.5, 0.5), Quaternion<float>());
+    CollisionSphereObject sphere(1.0f, Point3<float>(0.0f, 0.0f, 0.0f));
+    CollisionBoxObject aabbox(0.0f, Vector3<float>(0.5f, 0.5f, 0.5f), Point3<float>(1.4f, 0.5f, 0.5f), Quaternion<float>());
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(sphere, aabbox);
 

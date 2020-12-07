@@ -7,7 +7,7 @@
 using namespace urchin;
 
 void TriangulationTest::triangleTriangulation() {
-    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 0.0), Point2<float>(2.0, 0.0), Point2<float>(1.0, 1.0)};
+    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0f, 0.0f), Point2<float>(2.0f, 0.0f), Point2<float>(1.0f, 1.0f)};
 
     TriangulationAlgorithm triangulationAlgorithm(std::move(ccwPolygonPoints), "test");
     std::vector<std::shared_ptr<NavTriangle>> triangles = triangulationAlgorithm.triangulate();
@@ -18,8 +18,8 @@ void TriangulationTest::triangleTriangulation() {
 }
 
 void TriangulationTest::cubeTriangulation() {
-    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 0.0), Point2<float>(1.0, 0.0),
-                                                   Point2<float>(1.0, 1.0), Point2<float>(0.0, 1.0)};
+    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f),
+                                                   Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)};
 
     TriangulationAlgorithm triangulationAlgorithm(std::move(ccwPolygonPoints), "test");
     std::vector<std::shared_ptr<NavTriangle>> triangles = triangulationAlgorithm.triangulate();
@@ -33,9 +33,9 @@ void TriangulationTest::cubeTriangulation() {
 }
 
 void TriangulationTest::twoNearPoints() {
-    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(500.0, 500.0), Point2<float>(0.0, 3.0), Point2<float>(2.0, 3.0), Point2<float>(2.0, 2.0),
-                                                   Point2<float>(2.0000002, 2.0), Point2<float>(3.0, 1.5), Point2<float>(5.0, 1.5), Point2<float>(0.0, 0.0),
-                                                   Point2<float>(6.0, 0.0)};
+    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(500.0f, 500.0f), Point2<float>(0.0f, 3.0f), Point2<float>(2.0f, 3.0f), Point2<float>(2.0f, 2.0f),
+                                                   Point2<float>(2.0000002f, 2.0f), Point2<float>(3.0f, 1.5f), Point2<float>(5.0f, 1.5f), Point2<float>(0.0f, 0.0f),
+                                                   Point2<float>(6.0f, 0.0f)};
 
     TriangulationAlgorithm triangulationAlgorithm(std::move(ccwPolygonPoints), "test");
     std::vector<std::shared_ptr<NavTriangle>> triangles = triangulationAlgorithm.triangulate();
@@ -74,8 +74,8 @@ void TriangulationTest::twoNearPoints() {
 }
 
 void TriangulationTest::threeAlignedPoints() {
-    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 5.0), Point2<float>(-1.0, 4.0), Point2<float>(0.0, 0.0),
-                                                   Point2<float>(1.0, 1.0), Point2<float>(1.0, 2.0), Point2<float>(1.0, 3.0)};
+    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0f, 5.0f), Point2<float>(-1.0f, 4.0f), Point2<float>(0.0f, 0.0f),
+                                                   Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 2.0f), Point2<float>(1.0f, 3.0f)};
 
     TriangulationAlgorithm triangulationAlgorithm(std::move(ccwPolygonPoints), "test");
     std::vector<std::shared_ptr<NavTriangle>> triangles = triangulationAlgorithm.triangulate();
@@ -99,9 +99,9 @@ void TriangulationTest::threeAlignedPoints() {
 }
 
 void TriangulationTest::alternationPoints() {
-    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 6.0), Point2<float>(-1.0, 4.0), Point2<float>(-1.0, 2.0),
-                                                   Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(1.0, 3.0),
-                                                   Point2<float>(1.0, 5.0)};
+    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0f, 6.0f), Point2<float>(-1.0f, 4.0f), Point2<float>(-1.0f, 2.0f),
+                                                   Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 3.0f),
+                                                   Point2<float>(1.0f, 5.0f)};
 
     TriangulationAlgorithm triangulationAlgorithm(std::move(ccwPolygonPoints), "test");
     std::vector<std::shared_ptr<NavTriangle>> triangles = triangulationAlgorithm.triangulate();
@@ -130,8 +130,8 @@ void TriangulationTest::alternationPoints() {
 }
 
 void TriangulationTest::cavityTriangulation1() {
-    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(3.0, 4.0), Point2<float>(0.0, 3.0), Point2<float>(1.0, 2.0),
-                                                   Point2<float>(0.0, 1.75), Point2<float>(2.0, 0.0)};
+    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(3.0f, 4.0f), Point2<float>(0.0f, 3.0f), Point2<float>(1.0f, 2.0f),
+                                                   Point2<float>(0.0f, 1.75f), Point2<float>(2.0f, 0.0f)};
 
     TriangulationAlgorithm triangulationAlgorithm(std::move(ccwPolygonPoints), "test");
     std::vector<std::shared_ptr<NavTriangle>> triangles = triangulationAlgorithm.triangulate();
@@ -150,9 +150,9 @@ void TriangulationTest::cavityTriangulation1() {
 }
 
 void TriangulationTest::cavityTriangulation2() {
-    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(2.0, 0.0), Point2<float>(3.0, 5.0), Point2<float>(0.0, 3.0),
-                                                   Point2<float>(1.0, 2.5), Point2<float>(0.0, 2.0), Point2<float>(1.0, 1.5),
-                                                   Point2<float>(0.0, 1.0)};
+    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(2.0f, 0.0f), Point2<float>(3.0f, 5.0f), Point2<float>(0.0f, 3.0f),
+                                                   Point2<float>(1.0f, 2.5f), Point2<float>(0.0f, 2.0f), Point2<float>(1.0f, 1.5f),
+                                                   Point2<float>(0.0f, 1.0f)};
 
     TriangulationAlgorithm triangulationAlgorithm(std::move(ccwPolygonPoints), "test");
     std::vector<std::shared_ptr<NavTriangle>> triangles = triangulationAlgorithm.triangulate();
@@ -180,8 +180,8 @@ void TriangulationTest::cavityTriangulation2() {
 }
 
 void TriangulationTest::twoMonotonePolygons() {
-    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 0.0), Point2<float>(4.0, 0.0), Point2<float>(3.0, 2.0),
-                                                   Point2<float>(2.0, 1.0), Point2<float>(1.0, 2.0)};
+    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0f, 0.0f), Point2<float>(4.0f, 0.0f), Point2<float>(3.0f, 2.0f),
+                                                   Point2<float>(2.0f, 1.0f), Point2<float>(1.0f, 2.0f)};
 
     TriangulationAlgorithm triangulationAlgorithm(std::move(ccwPolygonPoints), "test");
     std::vector<std::shared_ptr<NavTriangle>> triangles = triangulationAlgorithm.triangulate();
@@ -200,9 +200,9 @@ void TriangulationTest::twoMonotonePolygons() {
 }
 
 void TriangulationTest::threeMonotonePolygons() {
-    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 0.0), Point2<float>(4.0, 0.0), Point2<float>(4.0, 3.0),
-                                                   Point2<float>(3.0, 1.0), Point2<float>(2.0, 2.0), Point2<float>(1.0, 1.0),
-                                                   Point2<float>(0.0, 2.0)};
+    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0f, 0.0f), Point2<float>(4.0f, 0.0f), Point2<float>(4.0f, 3.0f),
+                                                   Point2<float>(3.0f, 1.0f), Point2<float>(2.0f, 2.0f), Point2<float>(1.0f, 1.0f),
+                                                   Point2<float>(0.0f, 2.0f)};
 
     TriangulationAlgorithm triangulationAlgorithm(std::move(ccwPolygonPoints), "test");
     std::vector<std::shared_ptr<NavTriangle>> triangles = triangulationAlgorithm.triangulate();
@@ -247,12 +247,12 @@ CppUnit::Test* TriangulationTest::suite() {
     return suite;
 }
 
-void TriangulationTest::assertUniqueLink(const std::shared_ptr<NavTriangle>& sourceTriangle, unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle>& targetTriangle) {
+void TriangulationTest::assertUniqueLink(const std::shared_ptr<NavTriangle>& sourceTriangle, std::size_t sourceEdgeIndex, const std::shared_ptr<NavTriangle>& targetTriangle) {
     AssertHelper::assertUnsignedInt(sourceTriangle->getLinks().size(), 1);
     assertLink(sourceTriangle->getLinks()[0], sourceEdgeIndex, targetTriangle);
 }
 
-void TriangulationTest::assertLink(const std::shared_ptr<NavLink>& link, unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle>& targetTriangle) {
+void TriangulationTest::assertLink(const std::shared_ptr<NavLink>& link, std::size_t sourceEdgeIndex, const std::shared_ptr<NavTriangle>& targetTriangle) {
     AssertHelper::assertUnsignedInt(link->getSourceEdgeIndex(), sourceEdgeIndex);
     AssertHelper::assertTrue(link->getTargetTriangle() == targetTriangle);
 }

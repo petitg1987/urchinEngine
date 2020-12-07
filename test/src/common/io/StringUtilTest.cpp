@@ -10,7 +10,7 @@ void StringUtilTest::splitString() {
 
     StringUtil::split(str, ',', splitStr);
 
-    AssertHelper::assertInt(splitStr.size(), 3);
+    AssertHelper::assertUnsignedInt(splitStr.size(), 3);
     AssertHelper::assertString(splitStr[0], "str1");
     AssertHelper::assertString(splitStr[1], "str2");
     AssertHelper::assertString(splitStr[2], "str3");
@@ -22,7 +22,7 @@ void StringUtilTest::splitEmptyString() {
 
     StringUtil::split(str, ',', splitStr);
 
-    AssertHelper::assertInt(splitStr.size(), 3);
+    AssertHelper::assertUnsignedInt(splitStr.size(), 3);
     AssertHelper::assertString(splitStr[0], "str1");
     AssertHelper::assertString(splitStr[1], "");
     AssertHelper::assertString(splitStr[2], "str2");

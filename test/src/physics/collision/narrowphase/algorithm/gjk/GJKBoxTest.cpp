@@ -10,8 +10,8 @@
 using namespace urchin;
 
 void GJKBoxTest::identicalAABBox() {
-    CollisionBoxObject aabbox1(0.0, Vector3<float>(0.5, 0.5, 0.5), Point3<float>(0.5, 0.5, 0.5), Quaternion<float>());
-    CollisionBoxObject aabbox2(0.0, Vector3<float>(0.5, 0.5, 0.5), Point3<float>(0.5, 0.5, 0.5), Quaternion<float>());
+    CollisionBoxObject aabbox1(0.0f, Vector3<float>(0.5f, 0.5f, 0.5f), Point3<float>(0.5f, 0.5f, 0.5f), Quaternion<float>());
+    CollisionBoxObject aabbox2(0.0f, Vector3<float>(0.5f, 0.5f, 0.5f), Point3<float>(0.5f, 0.5f, 0.5f), Quaternion<float>());
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(aabbox1, aabbox2);
 
@@ -19,21 +19,21 @@ void GJKBoxTest::identicalAABBox() {
 }
 
 void GJKBoxTest::separateAABBox() {
-    CollisionBoxObject aabbox1(0.0, Vector3<float>(0.5, 0.5, 0.5), Point3<float>(0.5, 0.5, 0.5), Quaternion<float>());
-    CollisionBoxObject aabbox2(0.0, Vector3<float>(0.5, 0.5, 0.5), Point3<float>(-0.6, 0.5, 0.5), Quaternion<float>());
+    CollisionBoxObject aabbox1(0.0f, Vector3<float>(0.5f, 0.5f, 0.5f), Point3<float>(0.5f, 0.5f, 0.5f), Quaternion<float>());
+    CollisionBoxObject aabbox2(0.0f, Vector3<float>(0.5f, 0.5f, 0.5f), Point3<float>(-0.6f, 0.5f, 0.5f), Quaternion<float>());
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(aabbox1, aabbox2);
 
     AssertHelper::assertTrue(!result->isCollide());
-    AssertHelper::assertFloatEquals(result->getSeparatingDistance(), 0.1);
-    AssertHelper::assertFloatEquals(result->getClosestPointA().X, 0.0);
-    AssertHelper::assertFloatEquals(result->getClosestPointB().X, -0.1);
-    AssertHelper::assertFloatEquals(result->getClosestPointB().vector(result->getClosestPointA()).length(), 0.1);
+    AssertHelper::assertFloatEquals(result->getSeparatingDistance(), 0.1f);
+    AssertHelper::assertFloatEquals(result->getClosestPointA().X, 0.0f);
+    AssertHelper::assertFloatEquals(result->getClosestPointB().X, -0.1f);
+    AssertHelper::assertFloatEquals(result->getClosestPointB().vector(result->getClosestPointA()).length(), 0.1f);
 }
 
 void GJKBoxTest::overlapAABBox() {
-    CollisionBoxObject aabbox1(0.0, Vector3<float>(0.5, 0.5, 0.5), Point3<float>(0.5, 0.5, 0.5), Quaternion<float>());
-    CollisionBoxObject aabbox2(0.0, Vector3<float>(0.5, 0.5, 0.5), Point3<float>(0.0, 0.5, 0.5), Quaternion<float>());
+    CollisionBoxObject aabbox1(0.0f, Vector3<float>(0.5f, 0.5f, 0.5f), Point3<float>(0.5f, 0.5f, 0.5f), Quaternion<float>());
+    CollisionBoxObject aabbox2(0.0f, Vector3<float>(0.5f, 0.5f, 0.5f), Point3<float>(0.0f, 0.5f, 0.5f), Quaternion<float>());
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(aabbox1, aabbox2);
 
@@ -41,10 +41,10 @@ void GJKBoxTest::overlapAABBox() {
 }
 
 void GJKBoxTest::identicalOBBox() {
-    CollisionBoxObject obbox1(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(0.0, 0.0, 0.0),
-            Quaternion<float>(Vector3<float>(0.0, 0.0, 1.0), 2.35619449));
-    CollisionBoxObject obbox2(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(0.0, 0.0, 0.0),
-            Quaternion<float>(Vector3<float>(0.0, 0.0, 1.0), 2.35619449));
+    CollisionBoxObject obbox1(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f),
+            Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), 2.35619449f));
+    CollisionBoxObject obbox2(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f),
+            Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), 2.35619449f));
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(obbox1, obbox2);
 
@@ -52,38 +52,38 @@ void GJKBoxTest::identicalOBBox() {
 }
 
 void GJKBoxTest::separateEdgeOBBox() {
-    CollisionBoxObject obbox1(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(0.0, 0.0, 0.0),
-            Quaternion<float>(Vector3<float>(0.0, 0.0, 1.0), 2.35619449));
-    CollisionBoxObject obbox2(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(3.0, 0.0, 0.0),
-            Quaternion<float>(Vector3<float>(0.0, 0.0, 1.0), 2.35619449));
+    CollisionBoxObject obbox1(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f),
+            Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), 2.35619449f));
+    CollisionBoxObject obbox2(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(3.0f, 0.0f, 0.0f),
+            Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), 2.35619449f));
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(obbox1, obbox2);
 
     AssertHelper::assertTrue(!result->isCollide());
-    AssertHelper::assertFloatEquals(result->getClosestPointA().Y, 0.0);
-    AssertHelper::assertFloatEquals(result->getClosestPointB().X, 1.58578643763);
-    AssertHelper::assertFloatEquals(result->getClosestPointB().Y, 0.0);
-    AssertHelper::assertFloatEquals(result->getClosestPointB().vector(result->getClosestPointA()).length(), 0.17157287526);
+    AssertHelper::assertFloatEquals(result->getClosestPointA().Y, 0.0f);
+    AssertHelper::assertFloatEquals(result->getClosestPointB().X, 1.58578643763f);
+    AssertHelper::assertFloatEquals(result->getClosestPointB().Y, 0.0f);
+    AssertHelper::assertFloatEquals(result->getClosestPointB().vector(result->getClosestPointA()).length(), 0.17157287526f);
 }
 
 void GJKBoxTest::separateCornerOBBox() {
-    CollisionBoxObject obbox1(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(0.0, 0.0, 0.0),
-            Quaternion<float>(Vector3<float>(0.245, 0.769, -0.59), 0.987859));
-    CollisionBoxObject obbox2(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(3.0, 0.0, 0.0), Quaternion<float>());
+    CollisionBoxObject obbox1(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f),
+            Quaternion<float>(Vector3<float>(0.245f, 0.769f, -0.59f), 0.987859f));
+    CollisionBoxObject obbox2(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(3.0f, 0.0f, 0.0f), Quaternion<float>());
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(obbox1, obbox2);
 
     AssertHelper::assertTrue(!result->isCollide());
-    AssertHelper::assertFloatEquals(result->getSeparatingDistance(), 0.26794919243);
-    AssertHelper::assertPoint3FloatEquals(result->getClosestPointA(), Point3<float>(1.73205080757, 0.0, 0.0));
-    AssertHelper::assertPoint3FloatEquals(result->getClosestPointB(), Point3<float>(2.0, 0.0, 0.0));
+    AssertHelper::assertFloatEquals(result->getSeparatingDistance(), 0.26794919243f);
+    AssertHelper::assertPoint3FloatEquals(result->getClosestPointA(), Point3<float>(1.73205080757f, 0.0f, 0.0f));
+    AssertHelper::assertPoint3FloatEquals(result->getClosestPointB(), Point3<float>(2.0f, 0.0f, 0.0f));
 }
 
 void GJKBoxTest::overlapOnEdgeOBBox() {
-    CollisionBoxObject obbox1(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(0.0, 0.0, 0.0),
-            Quaternion<float>(Vector3<float>(0.0, 0.0, 1.0), 2.35619449));
-    CollisionBoxObject obbox2(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(2.0, 0.0, 0.0),
-            Quaternion<float>(Vector3<float>(0.0, 0.0, 1.0), 2.35619449));
+    CollisionBoxObject obbox1(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f),
+            Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), 2.35619449f));
+    CollisionBoxObject obbox2(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(2.0f, 0.0f, 0.0f),
+            Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), 2.35619449f));
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(obbox1, obbox2);
 
@@ -91,25 +91,25 @@ void GJKBoxTest::overlapOnEdgeOBBox() {
 }
 
 void GJKBoxTest::separateOBBoxAABBox() {
-    CollisionBoxObject obbox(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(0.0, 0.0, 0.0),
-            Quaternion<float>(Vector3<float>(0.0, 0.0, 1.0), 2.35619449));
-    CollisionBoxObject aabbox(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(3.0, 0.0, 0.0), Quaternion<float>());
+    CollisionBoxObject obbox(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f),
+            Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), 2.35619449f));
+    CollisionBoxObject aabbox(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(3.0f, 0.0f, 0.0f), Quaternion<float>());
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(obbox, aabbox);
 
     AssertHelper::assertTrue(!result->isCollide());
-    AssertHelper::assertFloatEquals(result->getSeparatingDistance(), 0.58578643763);
-    AssertHelper::assertFloatEquals(result->getClosestPointA().X, 1.41421356237);
-    AssertHelper::assertFloatEquals(result->getClosestPointA().Y, 0.0);
-    AssertHelper::assertFloatEquals(result->getClosestPointB().X, 2.0);
-    AssertHelper::assertFloatEquals(result->getClosestPointB().Y, 0.0);
-    AssertHelper::assertFloatEquals(result->getClosestPointB().vector(result->getClosestPointA()).length(), 0.58578643763);
+    AssertHelper::assertFloatEquals(result->getSeparatingDistance(), 0.58578643763f);
+    AssertHelper::assertFloatEquals(result->getClosestPointA().X, 1.41421356237f);
+    AssertHelper::assertFloatEquals(result->getClosestPointA().Y, 0.0f);
+    AssertHelper::assertFloatEquals(result->getClosestPointB().X, 2.0f);
+    AssertHelper::assertFloatEquals(result->getClosestPointB().Y, 0.0f);
+    AssertHelper::assertFloatEquals(result->getClosestPointB().vector(result->getClosestPointA()).length(), 0.58578643763f);
 }
 
 void GJKBoxTest::overlapOBBoxAABBox() {
-    CollisionBoxObject obbox(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(0.0, 0.0, 0.0),
-            Quaternion<float>(Vector3<float>(0.0, 0.0, 1.0), 2.35619449));
-    CollisionBoxObject aabbox(0.0, Vector3<float>(1.0, 1.0, 1.0), Point3<float>(2.0, 0.0, 0.0), Quaternion<float>());
+    CollisionBoxObject obbox(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f),
+            Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), 2.35619449f));
+    CollisionBoxObject aabbox(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(2.0f, 0.0f, 0.0f), Quaternion<float>());
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(obbox, aabbox);
 

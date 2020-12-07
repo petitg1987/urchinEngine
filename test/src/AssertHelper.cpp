@@ -32,6 +32,10 @@ void AssertHelper::assertUnsignedInt(unsigned int value, unsigned int expected) 
     CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + std::to_string(value) + ", expected: " + std::to_string(expected), value==expected);
 }
 
+void AssertHelper::assertUnsignedInt(std::size_t value, std::size_t expected) {
+    CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + std::to_string(value) + ", expected: " + std::to_string(expected), value==expected);
+}
+
 void AssertHelper::assert3UnsignedInts(const unsigned int* value, unsigned int*&& expected) {
     for (std::size_t i=0; i<3; ++i) {
         CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + std::to_string(value[i]) + ", expected: " + std::to_string(expected[i]), value[i] == expected[i]);

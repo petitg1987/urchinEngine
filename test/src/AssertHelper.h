@@ -12,6 +12,7 @@ class AssertHelper {
         static void assertInt(int, int);
         static void assert3Ints(const int*, const int *&&);
         static void assertUnsignedInt(unsigned int, unsigned int);
+        static void assertUnsignedInt(std::size_t, std::size_t);
         static void assert3UnsignedInts(const unsigned int*, unsigned int *&&);
         static void assert3Sizes(const std::size_t*, std::size_t *&&);
         static void assertFloatEquals(float, float, double epsilon = 0.001);

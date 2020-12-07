@@ -8,7 +8,7 @@
 using namespace urchin;
 
 void MonotonePolygonTest::singleTriangle() {
-    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(-1.0, -1.0), Point2<float>(1.0, 1.0), Point2<float>(-1.0, 1.0)};
+    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(-1.0f, 1.0f)};
     std::vector<std::size_t> endContourIndices = {ccwPolygonPoints.size()};
     std::vector<std::string> contourNames = {"test"};
 
@@ -24,7 +24,7 @@ void MonotonePolygonTest::singleTriangle() {
 }
 
 void MonotonePolygonTest::oneSplitVertex() {
-    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(1.0, 2.0), Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(2.0, 0.0)};
+    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(1.0f, 2.0f), Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(2.0f, 0.0f)};
     std::vector<std::size_t> endContourIndices = {ccwPolygonPoints.size()};
     std::vector<std::string> contourNames = {"test"};
 
@@ -46,8 +46,8 @@ void MonotonePolygonTest::oneSplitVertex() {
 
 void MonotonePolygonTest::twoSplitVertex() {
     std::vector<Point2<float>> ccwPolygonPoints = {
-            Point2<float>(1.0, 3.0), Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(2.0, 0.0),
-            Point2<float>(3.0, 1.0), Point2<float>(4.0, 0.0), Point2<float>(3.0, 3.0)
+            Point2<float>(1.0f, 3.0f), Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(2.0f, 0.0f),
+            Point2<float>(3.0f, 1.0f), Point2<float>(4.0f, 0.0f), Point2<float>(3.0f, 3.0f)
     };
     std::vector<std::size_t> endContourIndices = {ccwPolygonPoints.size()};
     std::vector<std::string> contourNames = {"test"};
@@ -76,7 +76,7 @@ void MonotonePolygonTest::twoSplitVertex() {
 }
 
 void MonotonePolygonTest::oneMergeVertex() {
-    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 2.0), Point2<float>(1.0, 0.0), Point2<float>(2.0, 2.0), Point2<float>(1.0, 1.0)};
+    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0f, 2.0f), Point2<float>(1.0f, 0.0f), Point2<float>(2.0f, 2.0f), Point2<float>(1.0f, 1.0f)};
     std::vector<std::size_t> endContourIndices = {ccwPolygonPoints.size()};
     std::vector<std::string> contourNames = {"test"};
 
@@ -97,7 +97,7 @@ void MonotonePolygonTest::oneMergeVertex() {
 }
 
 void MonotonePolygonTest::twoRegularVertex() {
-    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 2.0), Point2<float>(1.0, 1.0), Point2<float>(0.0, 0.0), Point2<float>(2.0, 1.0)};
+    std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0f, 2.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 0.0f), Point2<float>(2.0f, 1.0f)};
     std::vector<std::size_t> endContourIndices = {ccwPolygonPoints.size()};
     std::vector<std::string> contourNames = {"test"};
 
@@ -112,7 +112,7 @@ void MonotonePolygonTest::twoRegularVertex() {
 
 void MonotonePolygonTest::splitAndMergeVertex() {
     std::vector<Point2<float>> ccwPolygonPoints = {
-            Point2<float>(0.0, 3.0), Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(2.0, 0.0), Point2<float>(2.0, 3.0), Point2<float>(1.0, 2.0)
+            Point2<float>(0.0f, 3.0f), Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(2.0f, 0.0f), Point2<float>(2.0f, 3.0f), Point2<float>(1.0f, 2.0f)
     };
     std::vector<std::size_t> endContourIndices = {ccwPolygonPoints.size()};
     std::vector<std::string> contourNames = {"test"};
@@ -137,8 +137,8 @@ void MonotonePolygonTest::splitAndMergeVertex() {
 
 void MonotonePolygonTest::polygonOneHole() {
     std::vector<Point2<float>> polygonPoints = {
-        Point2<float>(0.0, 0.0), Point2<float>(3.0, 0.0), Point2<float>(3.0, 3.0), Point2<float>(0.0, 3.0), //polygon points
-        Point2<float>(1.0, 1.0), Point2<float>(1.0, 2.0), Point2<float>(2.0, 2.0), Point2<float>(2.0, 1.0) //hole points
+        Point2<float>(0.0f, 0.0f), Point2<float>(3.0f, 0.0f), Point2<float>(3.0f, 3.0f), Point2<float>(0.0f, 3.0f), //polygon points
+        Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 2.0f), Point2<float>(2.0f, 2.0f), Point2<float>(2.0f, 1.0f) //hole points
     };
     std::vector<std::size_t> endContourIndices = {4, polygonPoints.size()};
     std::vector<std::string> contourNames = {"test", "test"};
@@ -167,9 +167,9 @@ void MonotonePolygonTest::polygonOneHole() {
 
 void MonotonePolygonTest::polygonTwoHoles1() {
     std::vector<Point2<float>> polygonPoints = {
-        Point2<float>(0.0, 0.0), Point2<float>(5.0, 0.0), Point2<float>(5.0, 5.0), Point2<float>(0.0, 5.0), //polygon points
-        Point2<float>(1.0, 1.0), Point2<float>(2.0, 2.0), Point2<float>(2.0, 1.0), //hole 1 points
-        Point2<float>(4.0, 3.0), Point2<float>(3.0, 4.0), Point2<float>(4.0, 4.0) //hole 2 points
+        Point2<float>(0.0f, 0.0f), Point2<float>(5.0f, 0.0f), Point2<float>(5.0f, 5.0f), Point2<float>(0.0f, 5.0f), //polygon points
+        Point2<float>(1.0f, 1.0f), Point2<float>(2.0f, 2.0f), Point2<float>(2.0f, 1.0f), //hole 1 points
+        Point2<float>(4.0f, 3.0f), Point2<float>(3.0f, 4.0f), Point2<float>(4.0f, 4.0f) //hole 2 points
     };
     std::vector<std::size_t> endContourIndices = {4, 7, polygonPoints.size()};
     std::vector<std::string> contourNames = {"test", "test", "test"};
@@ -200,9 +200,9 @@ void MonotonePolygonTest::polygonTwoHoles1() {
 
 void MonotonePolygonTest::polygonTwoHoles2() { //see monotonePolygonTwoHoles2.ggb
     std::vector<Point2<float>> polygonPoints = {
-            Point2<float>(52.2733727, 28.6202717), Point2<float>(53.4479446, 26.9843941), Point2<float>(54.7769241, 28.4795456), Point2<float>(53.6023521, 30.1154232), //polygon points
-            Point2<float>(52.2792969, 28.6201172), Point2<float>(52.609375, 28.9912109), Point2<float>(52.4365234, 28.4033203), //hole 1 points
-            Point2<float>(53.8388672, 29.7792969), Point2<float>(54.234375, 29.2304688), Point2<float>(54.0556641, 28.6269531), Point2<float>(53.8388672, 28.6269531) //hole 2 points
+            Point2<float>(52.2733727f, 28.6202717f), Point2<float>(53.4479446f, 26.9843941f), Point2<float>(54.7769241f, 28.4795456f), Point2<float>(53.6023521f, 30.1154232f), //polygon points
+            Point2<float>(52.2792969f, 28.6201172f), Point2<float>(52.609375f, 28.9912109f), Point2<float>(52.4365234f, 28.4033203f), //hole 1 points
+            Point2<float>(53.8388672f, 29.7792969f), Point2<float>(54.234375f, 29.2304688f), Point2<float>(54.0556641f, 28.6269531f), Point2<float>(53.8388672f, 28.6269531f) //hole 2 points
     };
     std::vector<std::size_t> endContourIndices = {4, 7, polygonPoints.size()};
     std::vector<std::string> contourNames = {"test", "test", "test"};
@@ -238,14 +238,14 @@ void MonotonePolygonTest::polygonTwoHoles2() { //see monotonePolygonTwoHoles2.gg
 void MonotonePolygonTest::polygonTwoHoles3() { //see monotonePolygonTwoHoles3.ggb
     std::vector<Point2<float>> polygonPoints = {
             //polygon points:
-            Point2<float>(70.5370255, 62.2370338), Point2<float>(-67.5370255, 62.2370338), Point2<float>(-67.5370255, -75.8370361), Point2<float>(70.5370255, -75.8370361),
+            Point2<float>(70.5370255f, 62.2370338f), Point2<float>(-67.5370255f, 62.2370338f), Point2<float>(-67.5370255f, -75.8370361f), Point2<float>(70.5370255f, -75.8370361f),
             //hole 1 points:
-            Point2<float>(2.56617999, -1.66957319), Point2<float>(-2.56617999, -1.66957319), Point2<float>(-2.56617999, 1.66957319), Point2<float>(2.56617999, 1.66957319),
+            Point2<float>(2.56617999f, -1.66957319f), Point2<float>(-2.56617999f, -1.66957319f), Point2<float>(-2.56617999f, 1.66957319f), Point2<float>(2.56617999f, 1.66957319f),
             //hole 2 points:
-            Point2<float>(0.071179986, -6.55628586), Point2<float>(0.0711799115, -6.55628586), Point2<float>(-0.076661095, -5.97861147), Point2<float>(-0.105679169, -5.97032928),
-            Point2<float>(-1.07951796, -6.02145529), Point2<float>(-1.14598572, -4.24272919), Point2<float>(0.224839747, -4.17076159), Point2<float>(0.224839762, -4.17076159),
-            Point2<float>(0.23582153, -4.46464157), Point2<float>(0.383214414, -4.46464157), Point2<float>(0.383214414, -4.6838522), Point2<float>(0.898347199, -4.83087635),
-            Point2<float>(2.76441312, -4.29339933), Point2<float>(3.20787191, -5.65283394),
+            Point2<float>(0.071179986f, -6.55628586f), Point2<float>(0.0711799115f, -6.55628586f), Point2<float>(-0.076661095f, -5.97861147f), Point2<float>(-0.105679169f, -5.97032928f),
+            Point2<float>(-1.07951796f, -6.02145529f), Point2<float>(-1.14598572f, -4.24272919f), Point2<float>(0.224839747f, -4.17076159f), Point2<float>(0.224839762f, -4.17076159f),
+            Point2<float>(0.23582153f, -4.46464157f), Point2<float>(0.383214414f, -4.46464157f), Point2<float>(0.383214414f, -4.6838522f), Point2<float>(0.898347199f, -4.83087635f),
+            Point2<float>(2.76441312f, -4.29339933f), Point2<float>(3.20787191f, -5.65283394f),
     };
     std::vector<std::size_t> endContourIndices = {4, 8, polygonPoints.size()};
     std::vector<std::string> contourNames = {"test", "test", "test"};

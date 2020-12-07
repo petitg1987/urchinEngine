@@ -12,7 +12,7 @@ void ConvexHullShape2DTest::convexHullBox() {
             Point2<float>(0.0, 0.0) /*excluded points */};
     ConvexHullShape2D<float> convexHull(obbPoints);
 
-    AssertHelper::assertInt(convexHull.getPoints().size(), 4);
+    AssertHelper::assertUnsignedInt(convexHull.getPoints().size(), 4);
     AssertHelper::assertPoint2FloatEquals(convexHull.getPoints()[0], Point2<float>(-1.0, 0.0));
     AssertHelper::assertPoint2FloatEquals(convexHull.getPoints()[1], Point2<float>(0.0, -1.0));
     AssertHelper::assertPoint2FloatEquals(convexHull.getPoints()[2], Point2<float>(1.0, 0.0));
@@ -24,7 +24,7 @@ void ConvexHullShape2DTest::identicalPoints() {
             Point2<float>(1.0, 0.0), Point2<float>(0.0, -1.0), Point2<float>(-1.0, 0.0) /* duplicate points */};
     ConvexHullShape2D<float> convexHull(obbPoints);
 
-    AssertHelper::assertInt(convexHull.getPoints().size(), 4);
+    AssertHelper::assertUnsignedInt(convexHull.getPoints().size(), 4);
     AssertHelper::assertPoint2FloatEquals(convexHull.getPoints()[0], Point2<float>(-1.0, 0.0));
     AssertHelper::assertPoint2FloatEquals(convexHull.getPoints()[1], Point2<float>(0.0, -1.0));
     AssertHelper::assertPoint2FloatEquals(convexHull.getPoints()[2], Point2<float>(1.0, 0.0));
