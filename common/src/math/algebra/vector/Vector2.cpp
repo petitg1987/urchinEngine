@@ -218,6 +218,18 @@ namespace urchin {
     template Vector2<int> operator *<int>(const Vector2<int>&, const Matrix2<int>&);
     template std::ostream& operator <<<int>(std::ostream&, const Vector2<int>&);
 
+    template class Vector2<unsigned int>;
+    template Vector2<float> Vector2<unsigned int>::cast() const;
+    template Vector2<double> Vector2<unsigned int>::cast() const;
+    template Vector2<unsigned int> Vector2<unsigned int>::cast() const;
+    template Vector2<long long> Vector2<unsigned int>::cast() const;
+    template Vector2<unsigned int> operator *<unsigned int>(const Vector2<unsigned int>&, unsigned int);
+    template Vector2<unsigned int> operator *<unsigned int>(unsigned int, const Vector2<unsigned int>&);
+    template Vector2<unsigned int> operator /<unsigned int>(const Vector2<unsigned int>&, unsigned int);
+    template Vector2<unsigned int> operator *<unsigned int>(const Matrix2<unsigned int>&, const Vector2<unsigned int>&);
+    template Vector2<unsigned int> operator *<unsigned int>(const Vector2<unsigned int>&, const Matrix2<unsigned int>&);
+    template std::ostream& operator <<<unsigned int>(std::ostream&, const Vector2<unsigned int>&);
+    
     template class Vector2<long long>;
     template Vector2<float> Vector2<long long>::cast() const;
     template Vector2<double> Vector2<long long>::cast() const;

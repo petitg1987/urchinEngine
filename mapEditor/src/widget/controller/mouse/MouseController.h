@@ -8,10 +8,10 @@ namespace urchin {
 
     class MouseController {
         public:
-            MouseController(QWidget*);
+            explicit MouseController(QWidget*);
 
             void moveMouse(unsigned int, unsigned int);
-            Point2<int> getMousePosition() const;
+            Point2<unsigned int> getMousePosition() const;
 
         private:
             QWidget* widget;

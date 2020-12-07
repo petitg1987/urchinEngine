@@ -17,10 +17,10 @@ namespace urchin {
         
         std::vector<ManifoldResult> manifoldResults = physicsWorld->getCollisionVisualizer()->getManifoldResults();
         for (auto manifoldResult : manifoldResults) {
-            for (unsigned int j=0; j<manifoldResult.getNumContactPoints(); ++j) {
+            for (unsigned int j = 0; j < manifoldResult.getNumContactPoints(); ++j) {
                 ManifoldContactPoint contactPoint = manifoldResult.getManifoldContactPoint(j);
 
-                auto* sphereModel = new SphereModel(Sphere<float>(0.05, contactPoint.getPointOnObject2()), 7);
+                auto* sphereModel = new SphereModel(Sphere<float>(0.05f, contactPoint.getPointOnObject2()), 7);
                 contactPointModels.push_back(sphereModel);
                 renderer3d->getGeometryManager()->addGeometry(sphereModel);
             }

@@ -43,7 +43,7 @@ namespace urchin {
     }
 
     std::shared_ptr<const CollisionShape3D> BodyBoxShapeWidget::createBodyShape() const {
-        Vector3<float> halfSizes(halfSizeX->value(), halfSizeY->value(), halfSizeZ->value());
+        Vector3<float> halfSizes((float)halfSizeX->value(), (float)halfSizeY->value(), (float)halfSizeZ->value());
         return std::make_shared<const CollisionBoxShape>(halfSizes);
     }
 }

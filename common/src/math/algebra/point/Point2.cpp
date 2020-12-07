@@ -228,6 +228,20 @@ namespace urchin {
     template Point2<int> operator *<int>(const Point2<int>&, const Matrix2<int>&);
     template std::ostream& operator <<<int>(std::ostream&, const Point2<int>&);
 
+    template class Point2<unsigned int>;
+    template Point2<float> Point2<unsigned int>::cast() const;
+    template Point2<double> Point2<unsigned int>::cast() const;
+    template Point2<unsigned int> Point2<unsigned int>::cast() const;
+    template Point2<long long> Point2<unsigned int>::cast() const;
+    template Point2<unsigned int> operator *<unsigned int>(const Point2<unsigned int>&, unsigned int);
+    template Point2<unsigned int> operator *<unsigned int>(unsigned int, const Point2<unsigned int>&);
+    template Point2<unsigned int> operator /<unsigned int>(const Point2<unsigned int>&, unsigned int);
+    template Point2<unsigned int> operator +<unsigned int>(const Point2<unsigned int>&, unsigned int);
+    template Point2<unsigned int> operator -<unsigned int>(const Point2<unsigned int>&, unsigned int);
+    template Point2<unsigned int> operator *<unsigned int>(const Matrix2<unsigned int>&, const Point2<unsigned int>&);
+    template Point2<unsigned int> operator *<unsigned int>(const Point2<unsigned int>&, const Matrix2<unsigned int>&);
+    template std::ostream& operator <<<unsigned int>(std::ostream&, const Point2<unsigned int>&);
+
     template class Point2<long long>;
     template Point2<float> Point2<long long>::cast() const;
     template Point2<double> Point2<long long>::cast() const;

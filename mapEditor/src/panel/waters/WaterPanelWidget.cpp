@@ -341,7 +341,7 @@ namespace urchin {
         if (!disableWaterEvent) {
             const SceneWater* sceneWater = waterTableView->getSelectedSceneWater();
 
-            Point3<float> position(positionX->value(), positionY->value(), positionZ->value());
+            Point3<float> position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
             waterController->updateSceneWaterGeneral(sceneWater, position, (float)xSize->value(), (float)zSize->value());
         }
     }
@@ -350,7 +350,7 @@ namespace urchin {
         if (!disableWaterEvent) {
             const SceneWater* sceneWater = waterTableView->getSelectedSceneWater();
 
-            Vector3<float> waterColor(waterColorR->value(), waterColorG->value(), waterColorB->value());
+            Vector3<float> waterColor((float)waterColorR->value(), (float)waterColorG->value(), (float)waterColorB->value());
             std::string normalTextureFilename = normalTextureFilenameText->text().toStdString();
             std::string dudvMapFilename = dudvMapFilenameText->text().toStdString();
             waterController->updateSceneWaterSurface(sceneWater, waterColor, normalTextureFilename, dudvMapFilename, (float)waveSpeed->value(), (float)waveStrength->value(),

@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
-add_definitions(-ffast-math -Wall -Wextra -Wpedantic -Werror)
+add_definitions(-ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror)
 include_directories(src ../common/src ../3dEngine/src ../physicsEngine/src ../soundEngine/src ../AIEngine/src ../mapHandler/src)
 
 find_package(Qt5Widgets)

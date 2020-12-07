@@ -8,8 +8,8 @@ namespace urchin {
             objectMoveAxisDisplayer(sceneManager),
             sceneManager(sceneManager),
             sceneController(sceneController),
-            mouseController(std::move(mouseController)),
-            statusBarController(std::move(statusBarController)),
+            mouseController(mouseController),
+            statusBarController(statusBarController),
             selectedSceneObject(nullptr),
             selectedAxis(-1),
             oldMouseX(-1),
@@ -27,7 +27,7 @@ namespace urchin {
             savedPosition = selectedSceneObject->getModel()->getTransform().getPosition();
         }
 
-        selectedAxis = axisIndex;
+        selectedAxis = (int)axisIndex;
         statusBarController.applyState(StatusBarState::OBJECT_MOVE);
     }
 
@@ -38,7 +38,7 @@ namespace urchin {
             if (oldMouseX != -1 && oldMouseY != -1 && !isCameraMoved()) {
                 mousePositionAdjusted = adjustMousePosition();
                 if (!mousePositionAdjusted) {
-                    moveObject(Point2<float>(oldMouseX, oldMouseY), Point2<float>(mouseX, mouseY));
+                    moveObject(Point2<float>((float)oldMouseX, (float)oldMouseY), Point2<float>((float)mouseX, (float)mouseY));
                 }
             }
 
@@ -71,24 +71,24 @@ namespace urchin {
     }
 
     bool ObjectMoveController::adjustMousePosition() {
-        Point2<int> mousePosition = mouseController.getMousePosition();
-        Point2<int> newMousePosition = mousePosition;
+        Point2<unsigned int> mousePosition = mouseController.getMousePosition();
+        Point2<unsigned int> newMousePosition = mousePosition;
 
-        if (mousePosition.X >= static_cast<int>(sceneWidth)) {
+        if (mousePosition.X >= sceneWidth) {
             newMousePosition.X = 1;
         } else if (mousePosition.X <= 0) {
-            newMousePosition.X = static_cast<int>(sceneWidth) - 1;
+            newMousePosition.X = sceneWidth - 1;
         }
 
-        if (mousePosition.Y >= static_cast<int>(sceneHeight)) {
+        if (mousePosition.Y >= sceneHeight) {
             newMousePosition.Y = 1;
         } else if (mousePosition.Y <= 0) {
-            newMousePosition.Y = static_cast<int>(sceneHeight) - 1;
+            newMousePosition.Y = sceneHeight - 1;
         }
 
         if (mousePosition != newMousePosition) {
-            oldMouseX = newMousePosition.X;
-            oldMouseY = newMousePosition.Y;
+            oldMouseX = (int)newMousePosition.X;
+            oldMouseY = (int)newMousePosition.Y;
 
             mouseController.moveMouse(newMousePosition.X, newMousePosition.Y);
             return true;
@@ -102,11 +102,11 @@ namespace urchin {
         CameraSpaceService cameraSpaceService(sceneManager->getActiveRenderer3d()->getCamera());
 
         Point3<float> startAxisWorldSpacePoint = objectPosition;
-        startAxisWorldSpacePoint[selectedAxis] -= 1.0f;
+        startAxisWorldSpacePoint[(unsigned int)selectedAxis] -= 1.0f;
         Point2<float> startAxisPointScreenSpace = cameraSpaceService.worldSpacePointToScreenSpace(startAxisWorldSpacePoint);
 
         Point3<float> endAxisWorldSpacePoint = objectPosition;
-        endAxisWorldSpacePoint[selectedAxis] += 1.0f;
+        endAxisWorldSpacePoint[(unsigned int)selectedAxis] += 1.0f;
         Point2<float> endAxisPointScreenSpace = cameraSpaceService.worldSpacePointToScreenSpace(endAxisWorldSpacePoint);
 
         Vector2<float> mouseVector = oldMouseCoord.vector(newMouseCoord);
@@ -117,7 +117,7 @@ namespace urchin {
         float moveReduceFactor = 0.001f;
 
         Point3<float> newPosition = objectPosition;
-        newPosition[selectedAxis] += moveFactor * moveSpeed * moveReduceFactor;
+        newPosition[(unsigned int)selectedAxis] += moveFactor * moveSpeed * moveReduceFactor;
         updateObjectPosition(newPosition);
     }
 
@@ -171,7 +171,7 @@ namespace urchin {
     void ObjectMoveController::displayAxis() {
         if (selectedSceneObject) {
             Point3<float> modelPosition = selectedSceneObject->getModel()->getTransform().getPosition();
-            objectMoveAxisDisplayer.displayAxis(modelPosition, selectedAxis);
+            objectMoveAxisDisplayer.displayAxis(modelPosition, (unsigned int)selectedAxis);
         } else {
             objectMoveAxisDisplayer.cleanCurrentDisplay();
         }

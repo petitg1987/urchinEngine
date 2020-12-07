@@ -96,7 +96,7 @@ namespace urchin {
         camera->loadCameraState(mapFilename);
         sceneManager->newRenderer3d(true);
         sceneManager->getActiveRenderer3d()->setCamera(camera);
-        sceneManager->getActiveRenderer3d()->getLightManager()->setGlobalAmbientColor(Point4<float>(0.05, 0.05, 0.05, 0.0));
+        sceneManager->getActiveRenderer3d()->getLightManager()->setGlobalAmbientColor(Point4<float>(0.05f, 0.05f, 0.05f, 0.0f));
 
         bodyShapeDisplayer = new BodyShapeDisplayer(sceneManager);
         objectMoveController = new ObjectMoveController(sceneManager, sceneController, mouseController, statusBarController);

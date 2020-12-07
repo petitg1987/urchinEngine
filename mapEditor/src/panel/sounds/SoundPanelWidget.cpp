@@ -388,7 +388,7 @@ namespace urchin {
             if (sound->getSoundType()==Sound::AMBIENT) {
                 //nothing to update
             } else if (sound->getSoundType()==Sound::POINT) {
-                Point3<float> position(positionX->value(), positionY->value(), positionY->value());
+                Point3<float> position((float)positionX->value(), (float)positionY->value(), (float)positionY->value());
                 auto inaudibleDistance = (float)this->inaudibleDistance->value();
 
                 soundController->updateScenePointSoundProperties(sceneSound, position, inaudibleDistance);

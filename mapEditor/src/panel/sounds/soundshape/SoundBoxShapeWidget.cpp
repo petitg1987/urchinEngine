@@ -110,14 +110,14 @@ namespace urchin {
     }
 
     const SoundShape* SoundBoxShapeWidget::createSoundShape() const {
-        Point3<float> position(positionX->value(), positionY->value(), positionZ->value());
+        Point3<float> position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
 
-        Vector3<float> halfSizes(halfSizeX->value(), halfSizeY->value(), halfSizeZ->value());
+        Vector3<float> halfSizes((float)halfSizeX->value(), (float)halfSizeY->value(), (float)halfSizeZ->value());
 
         Vector3<float> eulerAngle(
-            AngleConverter<float>::toRadian(eulerAxis0->value()),
-            AngleConverter<float>::toRadian(eulerAxis1->value()),
-            AngleConverter<float>::toRadian(eulerAxis2->value())
+            AngleConverter<float>::toRadian((float)eulerAxis0->value()),
+            AngleConverter<float>::toRadian((float)eulerAxis1->value()),
+            AngleConverter<float>::toRadian((float)eulerAxis2->value())
         );
         QVariant variant = orientationType->currentData();
         auto rotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());

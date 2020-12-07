@@ -181,9 +181,9 @@ namespace urchin {
 
         materialFilenameTexts.resize(MAX_MATERIAL);
         for (int i=0; i<MAX_MATERIAL; ++i) {
-            std::string materialLabelStr = "Material " + std::to_string(i+1) +":";
+            std::string materialLabelStr = "Material " + std::to_string(i + 1) +":";
             auto *materialLabel= new QLabel(materialLabelStr.c_str());
-            materialLayout->addWidget(materialLabel, 2+i, 0);
+            materialLayout->addWidget(materialLabel, 2 + i, 0);
 
             materialFilenameTexts[i] = new QLineEdit();
             materialLayout->addWidget(materialFilenameTexts[i], 2+i, 1, 1, 2);
@@ -430,7 +430,7 @@ namespace urchin {
         if (!disableTerrainEvent) {
             const SceneTerrain* sceneTerrain = terrainTableView->getSelectedSceneTerrain();
 
-            Point3<float> position(positionX->value(), positionY->value(), positionZ->value());
+            Point3<float> position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
             terrainController->updateSceneTerrainGeneralProperties(sceneTerrain, position, (float)ambient->value());
         }
     }
@@ -463,7 +463,7 @@ namespace urchin {
             std::string grassTextureFilename = grassTextureFilenameText->text().toStdString();
             std::string grassMaskFilename = grassMaskFilenameText->text().toStdString();
             auto numGrassInTexValue = static_cast<unsigned int>(numGrassInTex->value());
-            Vector3<float> windDirection(windDirectionX->value(), windDirectionY->value(), windDirectionZ->value());
+            Vector3<float> windDirection((float)windDirectionX->value(), (float)windDirectionY->value(), (float)windDirectionZ->value());
             terrainController->updateSceneTerrainGrass(sceneTerrain, grassTextureFilename, grassMaskFilename, numGrassInTexValue, (float)grassQuantity->value(),
                                                        (float)grassHeight->value(), (float)grassLength->value(), windDirection, (float)windStrength->value());
         }
@@ -520,7 +520,7 @@ namespace urchin {
     }
 
     void TerrainPanelWidget::clearMaterialFilename(const QString& positionIndexStr) {
-        int i = std::stoi(positionIndexStr.toStdString());
+        unsigned int i = (unsigned int)std::stoi(positionIndexStr.toStdString());
         this->materialFilenameTexts[i]->setText("");
 
         updateTerrainMaterial();

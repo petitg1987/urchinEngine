@@ -201,7 +201,7 @@ namespace urchin {
         bool propagateEvent = true;
 
         Camera* camera = sceneDisplayer->getSceneManager()->getActiveRenderer3d()->getCamera();
-        Ray<float> pickingRay = CameraSpaceService(camera).screenPointToRay(Point2<float>(mouseX, mouseY), PICKING_RAY_LENGTH);
+        Ray<float> pickingRay = CameraSpaceService(camera).screenPointToRay(Point2<float>((float)mouseX, (float)mouseY), PICKING_RAY_LENGTH);
         std::shared_ptr<const RayTestResult> rayTestResult = sceneDisplayer->getPhysicsWorld()->rayTest(pickingRay);
 
         while (!rayTestResult->isResultReady()) {

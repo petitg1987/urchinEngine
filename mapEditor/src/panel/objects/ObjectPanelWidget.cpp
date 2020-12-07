@@ -550,18 +550,18 @@ namespace urchin {
             const SceneObject* sceneObject = objectTableView->getSelectedSceneObject();
 
             Vector3<float> eulerAngle(
-                    AngleConverter<float>::toRadian(eulerAxis0->value()),
-                    AngleConverter<float>::toRadian(eulerAxis1->value()),
-                    AngleConverter<float>::toRadian(eulerAxis2->value())
+                    AngleConverter<float>::toRadian((float)eulerAxis0->value()),
+                    AngleConverter<float>::toRadian((float)eulerAxis1->value()),
+                    AngleConverter<float>::toRadian((float)eulerAxis2->value())
             );
 
             QVariant variant = orientationType->currentData();
             auto rotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
 
             Transform<float> newSceneObjectTransform(
-                    Point3<float>(positionX->value(), positionY->value(), positionZ->value()),
+                    Point3<float>((float)positionX->value(), (float)positionY->value(), (float)positionZ->value()),
                     Quaternion<float>(eulerAngle, rotationSequence),
-                    scale->value());
+                            (float)scale->value());
 
             objectController->updateSceneObjectTransform(sceneObject, newSceneObjectTransform);
         }
@@ -624,8 +624,8 @@ namespace urchin {
         if (!disableObjectEvent) {
             const SceneObject* sceneObject = objectTableView->getSelectedSceneObject();
 
-            Vector3<float> linearFactor(linearFactorX->value(), linearFactorY->value(), linearFactorZ->value());
-            Vector3<float> angularFactor(angularFactorX->value(), angularFactorY->value(), angularFactorZ->value());
+            Vector3<float> linearFactor((float)linearFactorX->value(), (float)linearFactorY->value(), (float)linearFactorZ->value());
+            Vector3<float> angularFactor((float)angularFactorX->value(), (float)angularFactorY->value(), (float)angularFactorZ->value());
 
             objectController->updateSceneObjectPhysicsProperties(sceneObject, (float)mass->value(), (float)restitution->value(),
                     (float)friction->value(), (float)rollingFriction->value(), (float)linearDamping->value(), (float)angularDamping->value(),
