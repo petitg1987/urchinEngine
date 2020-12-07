@@ -12,12 +12,12 @@ namespace urchin {
             void setCcwPoints(const std::vector<std::size_t>&);
             const std::vector<std::size_t>& getCcwPoints() const;
 
-            void addSharedEdge(unsigned int, unsigned int);
+            void addSharedEdge(std::size_t, std::size_t);
             const std::set<uint_fast64_t>& getSharedEdges() const;
-            bool isSharedEdge(unsigned int, unsigned int) const;
+            bool isSharedEdge(std::size_t, std::size_t) const;
 
         private:
-            uint_fast64_t computeEdgeId(unsigned int, unsigned int) const;
+            uint_fast64_t computeEdgeId(std::size_t, std::size_t) const;
 
             std::vector<std::size_t> ccwPoints;
             std::set<uint_fast64_t> sharedEdges;

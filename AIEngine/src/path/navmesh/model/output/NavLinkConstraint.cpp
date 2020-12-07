@@ -3,7 +3,7 @@
 #include "NavLinkConstraint.h"
 
 namespace urchin {
-    NavLinkConstraint::NavLinkConstraint(float sourceEdgeLinkStartRange, float sourceEdgeLinkEndRange, float targetEdgeIndex) :
+    NavLinkConstraint::NavLinkConstraint(float sourceEdgeLinkStartRange, float sourceEdgeLinkEndRange, std::size_t targetEdgeIndex) :
             sourceEdgeLinkStartRange(sourceEdgeLinkStartRange),
             sourceEdgeLinkEndRange(sourceEdgeLinkEndRange),
             targetEdgeIndex(targetEdgeIndex) {
@@ -25,7 +25,7 @@ namespace urchin {
                 sourceEdgeLinkEndRange * sourceEdge.getA() + (1.0f - sourceEdgeLinkEndRange) * sourceEdge.getB());
     }
 
-    float NavLinkConstraint::getTargetEdgeIndex() const {
+    std::size_t NavLinkConstraint::getTargetEdgeIndex() const {
         return targetEdgeIndex;
     }
 }

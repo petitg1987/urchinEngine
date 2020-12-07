@@ -30,7 +30,7 @@ namespace urchin {
         return surfaces;
     }
 
-    const std::shared_ptr<PolytopeSurface>& Polytope::getSurface(unsigned int surfaceIndex) const {
+    const std::shared_ptr<PolytopeSurface>& Polytope::getSurface(std::size_t surfaceIndex) const {
         return surfaces[surfaceIndex];
     }
 

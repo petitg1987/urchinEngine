@@ -1,9 +1,9 @@
 #include "NavMeshAgent.h"
 
-#define DEFAULT_AGENT_HEIGHT 1.8
-#define DEFAULT_AGENT_RADIUS 0.25
+#define DEFAULT_AGENT_HEIGHT 1.8f
+#define DEFAULT_AGENT_RADIUS 0.25f
 #define DEFAULT_MAX_SLOPE (MathValue::PI_FLOAT / 4.0f) //45 degrees
-#define DEFAULT_JUMP_DISTANCE 1.5
+#define DEFAULT_JUMP_DISTANCE 1.5f
 
 namespace urchin {
 

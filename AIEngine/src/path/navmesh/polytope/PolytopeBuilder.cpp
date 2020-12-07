@@ -248,7 +248,7 @@ namespace urchin {
             Point3<float> newPoint = Point3<float>(n2CrossN3 * plane0.getDistanceToOrigin());
             newPoint += Point3<float>(n3CrossN1 * plane1.getDistanceToOrigin());
             newPoint += Point3<float>(n1CrossN2 * plane2.getDistanceToOrigin());
-            newPoint *= -1.0 / plane0.getNormal().dotProduct(n2CrossN3);
+            newPoint *= -1.0f / plane0.getNormal().dotProduct(n2CrossN3);
 
             expandedPoints.emplace_back(newPoint);
         }

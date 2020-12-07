@@ -386,12 +386,12 @@ namespace urchin {
             if (orientationResult > 0.0) { //counter clockwise
                 if (angle < minAngleCCW) {
                     minAngleCCW = angle;
-                    bestCCWPointIndex = i;
+                    bestCCWPointIndex = (long)i;
                 }
             } else { //clockwise
                 if (angle > maxAngleCW) {
                     maxAngleCW = angle;
-                    bestCWPointIndex = i;
+                    bestCWPointIndex = (long)i;
                 }
             }
         }
@@ -457,7 +457,7 @@ namespace urchin {
 
         for (std::size_t i=0; i<endContourIndices.size()-1; ++i) {
             std::vector<Point2<float>> svgHolePoints;
-            std::copy(polygonPoints.begin()+endContourIndices[i], polygonPoints.begin() + endContourIndices[i + 1], std::back_inserter(svgHolePoints));
+            std::copy(polygonPoints.begin() + endContourIndices[i], polygonPoints.begin() + endContourIndices[i + 1], std::back_inserter(svgHolePoints));
             svgExporter.addShape(new SVGPolygon(svgHolePoints, SVGPolygon::RED, 0.5));
         }
 

@@ -28,7 +28,7 @@ namespace urchin {
         return points;
     }
 
-    const Point3<float>& NavPolygon::getPoint(unsigned int index) const {
+    const Point3<float>& NavPolygon::getPoint(std::size_t index) const {
         return points[index];
     }
 

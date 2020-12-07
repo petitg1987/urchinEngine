@@ -18,7 +18,7 @@ namespace urchin {
             const std::string& getName() const;
 
             const std::vector<Point3<float>>& getPoints() const;
-            const Point3<float>& getPoint(unsigned int) const;
+            const Point3<float>& getPoint(std::size_t) const;
 
             void addTriangles(const std::vector<std::shared_ptr<NavTriangle>>&, const std::shared_ptr<NavPolygon>&);
             const std::vector<std::shared_ptr<NavTriangle>>& getTriangles() const;

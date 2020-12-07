@@ -110,43 +110,41 @@ namespace urchin {
         const T mergePointsSquareDistance = polygonMergePointsDistanceThreshold * polygonMergePointsDistanceThreshold;
 
         //exclude points too close (only neighbor points)
-        for (int i=0; i<(int)cwPoints.size(); i++) {
-            int nextI = (i+1) % cwPoints.size();
-            if (cwPoints[i].squareDistance(cwPoints[nextI]) <= mergePointsSquareDistance) {
-                cwPoints.erase(cwPoints.begin() + nextI);
+        for (int i = 0; i < (int)cwPoints.size(); i++) {
+            std::size_t nextI = (std::size_t)(i + 1) % cwPoints.size();
+            if (cwPoints[(std::size_t)i].squareDistance(cwPoints[nextI]) <= mergePointsSquareDistance) {
+                cwPoints.erase(cwPoints.begin() + (int)nextI);
                 i--;
-                continue;
             }
         }
 
         //exclude angles near to 180 and 0/360 degrees
-        for (int i=0; i<(int)cwPoints.size(); i++) {
-            int nextI = (i+1) % cwPoints.size();
-            int previousI = (i==0) ? cwPoints.size()-1 : i-1;
+        for (int i = 0; i < (int)cwPoints.size(); i++) {
+            std::size_t nextI = (std::size_t)(i + 1) % cwPoints.size();
+            std::size_t previousI = (i==0) ? cwPoints.size() - 1 : (std::size_t)(i - 1);
 
-            Vector2<T> normalizedEdge1 = cwPoints[previousI].vector(cwPoints[i]).normalize();
-            Vector2<T> normalizedEdge2 = cwPoints[i].vector(cwPoints[nextI]).normalize();
+            Vector2<T> normalizedEdge1 = cwPoints[previousI].vector(cwPoints[(std::size_t)i]).normalize();
+            Vector2<T> normalizedEdge2 = cwPoints[(std::size_t)i].vector(cwPoints[nextI]).normalize();
             T absDotProduct = std::abs(normalizedEdge1.dotProduct(normalizedEdge2));
             if (absDotProduct >= polygonMinDotProductThreshold) {
-                cwPoints.erase(cwPoints.begin() + i);
+                cwPoints.erase(cwPoints.begin() + (int)i);
                 i--;
-                continue;
             }
         }
 
         //move or exclude points too close (not neighbor points)
-        for (int i=0; i<(int)cwPoints.size(); i++) {
+        for (int i = 0; i < (int)cwPoints.size(); i++) {
             //Use j=i+3 because:
             // cwPoints[i] and cwPoints[i+1] cannot be close points: they should be already erased by first loop because they are close neighbor
             // cwPoints[i] and cwPoints[i+2] cannot be close points: they should be already erased by previous loop because of the angle between cwPoints[i]-cwPoints[i+1]-cwPoints[i+2]
             bool keepGoing = true;
-            for (int j=i+3; j<(int)cwPoints.size() && keepGoing; j++) {
-                if (cwPoints[i].squareDistance(cwPoints[j]) <= mergePointsSquareDistance) {
-                    int previousI = (i==0) ? cwPoints.size()-1 : i-1;
-                    Vector2<T> moveVector = cwPoints[i].vector(cwPoints[previousI]);
+            for (int j = i + 3; j < (int)cwPoints.size() && keepGoing; j++) {
+                if (cwPoints[(std::size_t)i].squareDistance(cwPoints[(std::size_t)j]) <= mergePointsSquareDistance) {
+                    std::size_t previousI = (i==0) ? cwPoints.size() - 1 : (std::size_t)i - 1;
+                    Vector2<T> moveVector = cwPoints[(std::size_t)i].vector(cwPoints[(std::size_t)previousI]);
                     T moveVectorLength = moveVector.length();
                     if (moveVectorLength > 2 * polygonMergePointsDistanceThreshold) {
-                        cwPoints[i] = cwPoints[i].translate((moveVector / moveVectorLength) * polygonMergePointsDistanceThreshold);
+                        cwPoints[(std::size_t)i] = cwPoints[(std::size_t)i].translate((moveVector / moveVectorLength) * polygonMergePointsDistanceThreshold);
                     } else {
                         cwPoints.erase(cwPoints.begin() + i);
                         i--;
@@ -179,7 +177,7 @@ namespace urchin {
             //assert clockwise order
             double area = 0.0;
             for (std::size_t i = 0, prevI = cwPoints.size() - 1; i < cwPoints.size(); prevI=i++) {
-                area += (cwPoints[i].X - cwPoints[prevI].X) * (cwPoints[i].Y + cwPoints[prevI].Y);
+                area += (double)((cwPoints[i].X - cwPoints[prevI].X) * (cwPoints[i].Y + cwPoints[prevI].Y));
             }
             if (area < 0.0) {
                 return false;
@@ -188,11 +186,11 @@ namespace urchin {
             //assert no lines intersection
             if (cwPoints.size() < 20) //don't check big polygons for performance reason
             {
-                for (unsigned int i=0; i<cwPoints.size(); ++i) {
-                    unsigned int iNext = (i+1)%cwPoints.size();
+                for (std::size_t i=0; i < cwPoints.size(); ++i) {
+                    std::size_t iNext = (i + 1) % cwPoints.size();
                     LineSegment2D<double> line1(cwPoints[i].template cast<double>(), cwPoints[iNext].template cast<double>());
-                    for (unsigned int j=0; j<cwPoints.size(); ++j) {
-                        unsigned int jNext = (j + 1) % cwPoints.size();
+                    for (std::size_t j=0; j<cwPoints.size(); ++j) {
+                        std::size_t jNext = (j + 1) % cwPoints.size();
                         if (i != j && iNext != j && i != jNext) {
                             LineSegment2D<double> line2(cwPoints[j].template cast<double>(), cwPoints[jNext].template cast<double>());
 

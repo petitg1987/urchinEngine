@@ -7,20 +7,20 @@ namespace urchin {
 
     class NavLinkConstraint {
         public:
-            NavLinkConstraint(float, float, float);
+            NavLinkConstraint(float, float, std::size_t);
             NavLinkConstraint(const NavLinkConstraint&) = default;
 
             float getSourceEdgeLinkStartRange() const;
             float getSourceEdgeLinkEndRange() const;
             LineSegment3D<float> computeSourceJumpEdge(const LineSegment3D<float>&) const;
 
-            float getTargetEdgeIndex() const;
+            std::size_t getTargetEdgeIndex() const;
 
         private:
             float sourceEdgeLinkStartRange;
             float sourceEdgeLinkEndRange;
 
-            float targetEdgeIndex;
+            std::size_t targetEdgeIndex;
     };
 
 }

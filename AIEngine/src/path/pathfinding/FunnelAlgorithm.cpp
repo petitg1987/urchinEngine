@@ -32,9 +32,9 @@ namespace urchin {
 
         for (std::size_t portalIndex = 2; portalIndex < portals.size(); portalIndex++) {
             for (FunnelSide funnelSide : {FunnelSide::LEFT, FunnelSide::RIGHT}) {
-                int newPortalIndex = updateFunnelSide(funnelSide, portalIndex);
-                if (newPortalIndex!=-1) {
-                    portalIndex = static_cast<unsigned int>(newPortalIndex);
+                int newPortalIndex = updateFunnelSide(funnelSide, (unsigned int)portalIndex);
+                if (newPortalIndex != -1) {
+                    portalIndex = (unsigned int)newPortalIndex;
                     break;
                 }
             }

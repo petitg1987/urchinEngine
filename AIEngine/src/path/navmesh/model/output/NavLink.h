@@ -22,23 +22,23 @@ namespace urchin {
     class NavLink {
         public:
             ~NavLink();
-            static std::shared_ptr<NavLink> newStandardLink(unsigned int, const std::shared_ptr<NavTriangle>&);
-            static std::shared_ptr<NavLink> newJoinPolygonsLink(unsigned int, const std::shared_ptr<NavTriangle>&, NavLinkConstraint*);
-            static std::shared_ptr<NavLink> newJumpLink(unsigned int, const std::shared_ptr<NavTriangle>&, NavLinkConstraint*);
+            static std::shared_ptr<NavLink> newStandardLink(std::size_t, const std::shared_ptr<NavTriangle>&);
+            static std::shared_ptr<NavLink> newJoinPolygonsLink(std::size_t, const std::shared_ptr<NavTriangle>&, NavLinkConstraint*);
+            static std::shared_ptr<NavLink> newJumpLink(std::size_t, const std::shared_ptr<NavTriangle>&, NavLinkConstraint*);
 
             std::shared_ptr<NavLink> copyLink(const std::shared_ptr<NavTriangle>&) const;
 
             NavLinkType getLinkType() const;
-            unsigned int getSourceEdgeIndex() const;
+            std::size_t getSourceEdgeIndex() const;
             std::shared_ptr<NavTriangle> getTargetTriangle() const;
 
             const NavLinkConstraint* getLinkConstraint() const;
 
         private:
-            NavLink(NavLinkType, unsigned int, const std::shared_ptr<NavTriangle>&, NavLinkConstraint*);
+            NavLink(NavLinkType, std::size_t, const std::shared_ptr<NavTriangle>&, NavLinkConstraint*);
 
             NavLinkType linkType;
-            unsigned int sourceEdgeIndex;
+            std::size_t sourceEdgeIndex;
             std::weak_ptr<NavTriangle> targetTriangle; //use weak_ptr to avoid cyclic references (=memory leak) between two triangles
 
             NavLinkConstraint* linkConstraint;
