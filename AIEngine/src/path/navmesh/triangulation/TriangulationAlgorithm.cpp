@@ -44,7 +44,7 @@ namespace urchin {
      * @return Polygon points in counter clockwise order.
      */
     std::vector<Point2<float>> TriangulationAlgorithm::getPolygonPoints() const {
-        return std::vector<Point2<float>>(polygonPoints.begin(), polygonPoints.begin() + endContourIndices[0]);
+        return std::vector<Point2<float>>(polygonPoints.begin(), polygonPoints.begin() + (int)endContourIndices[0]);
     }
 
     /**
@@ -80,7 +80,7 @@ namespace urchin {
      * @return Hole points in clockwise order.
      */
     std::vector<Point2<float>> TriangulationAlgorithm::getHolePoints(std::size_t holeIndex) const {
-        return std::vector<Point2<float>>(polygonPoints.begin() + endContourIndices[holeIndex], polygonPoints.begin() + endContourIndices[holeIndex+1]);
+        return std::vector<Point2<float>>(polygonPoints.begin() + (int)endContourIndices[holeIndex], polygonPoints.begin() + (int)endContourIndices[holeIndex+1]);
     }
 
     const std::vector<std::shared_ptr<NavTriangle>>& TriangulationAlgorithm::triangulate() { //based on "Computational Geometry - Algorithms and Applications, 3rd Ed" - "Polygon Triangulation"
@@ -235,13 +235,13 @@ namespace urchin {
     }
 
     void TriangulationAlgorithm::determineNeighborsInsideMonotone(std::vector<std::shared_ptr<NavTriangle>>& monotoneTriangles) {
-        long currMonotoneTriangleIndex = static_cast<long>(monotoneTriangles.size()) - 1;
-        long prevMonotoneTriangleIndex = static_cast<long>(monotoneTriangles.size()) - 2;
-        const auto& currTriangle = monotoneTriangles[currMonotoneTriangleIndex];
+        long currMonotoneTriangleIndex = (long)monotoneTriangles.size() - 1;
+        long prevMonotoneTriangleIndex = (long)monotoneTriangles.size() - 2;
+        const auto& currTriangle = monotoneTriangles[(std::size_t)currMonotoneTriangleIndex];
 
         missingTriangleNeighbor += monotoneTriangles.size()>1 ? 1 : 0; //don't expect neighbor for first triangle
-        while (prevMonotoneTriangleIndex>=0 && missingTriangleNeighbor>0) {
-            const auto& prevTriangle = monotoneTriangles[prevMonotoneTriangleIndex];
+        while (prevMonotoneTriangleIndex >= 0 && missingTriangleNeighbor>0) {
+            const auto& prevTriangle = monotoneTriangles[(std::size_t)prevMonotoneTriangleIndex];
 
             for (std::size_t prevEdgeIndex=2, edgeIndex=0; edgeIndex<3 && missingTriangleNeighbor>0; prevEdgeIndex=edgeIndex++) {
                 if (areSameEdge(prevTriangle, prevEdgeIndex, edgeIndex, currTriangle, 0, 1)) {

@@ -90,7 +90,7 @@ namespace urchin {
 
     bool TextBox::onKeyPressEvent(unsigned int key) {
         if (key == InputDeviceKey::MOUSE_LEFT) {
-            Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
+            Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
             if (widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
                 textBoxRenderer->updateTexture(0, TextureReader::build(texTextBoxFocus, TextureParam::buildNearest()));
@@ -108,15 +108,15 @@ namespace urchin {
                 refreshText(cursorIndex + 1);
             } else if (key == InputDeviceKey::BACKSPACE) {
                 if(cursorIndex > 0) {
-                    std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex), allText.length()-cursorIndex);
-                    allText = allText.substr(0, static_cast<unsigned long>(cursorIndex-1L));
+                    std::string tmpRight = allText.substr((unsigned long)cursorIndex, allText.length()-cursorIndex);
+                    allText = allText.substr(0, (unsigned long)(cursorIndex - 1L));
                     allText.append(tmpRight);
                     refreshText(cursorIndex-1);
                 }
             } else if (key == InputDeviceKey::DELETE_KEY) {
                 if (allText.length() > 0 && cursorIndex < allText.length()) {
-                    std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex+1L), allText.length()-cursorIndex);
-                    allText = allText.substr(0, static_cast<unsigned long>(cursorIndex));
+                    std::string tmpRight = allText.substr((unsigned long)(cursorIndex + 1L), allText.length()-cursorIndex);
+                    allText = allText.substr(0, (unsigned long)cursorIndex);
                     allText.append(tmpRight);
                     refreshText(cursorIndex);
                 }
@@ -129,8 +129,8 @@ namespace urchin {
     bool TextBox::onCharEvent(unsigned int character) {
         if (state == ACTIVE) {
             if (character < 256 && character > 30 && character != 127) {
-                std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex), allText.length()-cursorIndex);
-                allText = allText.substr(0, static_cast<unsigned long>(cursorIndex));
+                std::string tmpRight = allText.substr((unsigned long)cursorIndex, allText.length()-cursorIndex);
+                allText = allText.substr(0, (unsigned long)cursorIndex);
                 allText.append(1, (char)character);
                 allText.append(tmpRight);
                 refreshText(cursorIndex+1);
@@ -157,7 +157,7 @@ namespace urchin {
         //refresh start index
         computeCursorPosition();
         if (cursorPosition > maxWidthText) {
-            startTextIndex = (startTextIndex <= allText.length()) ? startTextIndex + LETTER_SHIFT : (int)allText.length();
+            startTextIndex = (startTextIndex <= allText.length()) ? startTextIndex + LETTER_SHIFT : (unsigned int)allText.length();
         } else if (cursorIndex <= startTextIndex) {
             startTextIndex = (startTextIndex>0) ? startTextIndex-LETTER_SHIFT : 0;
         }
@@ -174,7 +174,7 @@ namespace urchin {
                 break;
             }
         }
-        text->setText(allText.substr(static_cast<unsigned long>(startTextIndex), static_cast<unsigned long>(endTextIndex - startTextIndex)));
+        text->setText(allText.substr((unsigned long)startTextIndex, (unsigned long)(endTextIndex - startTextIndex)));
     }
 
     void TextBox::computeCursorPosition() {
@@ -220,7 +220,7 @@ namespace urchin {
         cursorBlink += dt * CURSOR_BLINK_SPEED;
         if (state==ACTIVE && ((int)cursorBlink%2)>0) {
             Vector2<int> widgetPosition(getGlobalPositionX(), getGlobalPositionY());
-            ShaderDataSender().sendData(translateDistanceShaderVar, widgetPosition + Vector2<int>(cursorPosition, 0));
+            ShaderDataSender().sendData(translateDistanceShaderVar, widgetPosition + Vector2<int>((int)cursorPosition, 0));
 
             renderTarget->display(cursorRenderer);
 

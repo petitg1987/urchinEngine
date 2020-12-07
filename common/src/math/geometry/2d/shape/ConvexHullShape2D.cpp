@@ -37,17 +37,17 @@ namespace urchin {
 
         //build upper convex hull
         unsigned int t = k+1;
-        for (int i = static_cast<int>(nbPoints)-2; i>=0; i--) {
-            while (k>=t && Line2D<T>(convexHullPoints[k-2], convexHullPoints[k-1]).ccw(sortedPoints[i]) <= 0.0) { //clockwise detected, we remove the point
+        for (int i = static_cast<int>(nbPoints) - 2; i >= 0; i--) {
+            while (k>=t && Line2D<T>(convexHullPoints[k - 2], convexHullPoints[k-1]).ccw(sortedPoints[(std::size_t)i]) <= 0.0) { //clockwise detected, we remove the point
                 k--;
             }
 
-            if (k==0 || convexHullPoints[k-1]!=sortedPoints[i]) {
-                convexHullPoints[k++] = sortedPoints[i];
+            if (k==0 || convexHullPoints[k-1]!=sortedPoints[(std::size_t)i]) {
+                convexHullPoints[k++] = sortedPoints[(std::size_t)i];
             }
         }
 
-        convexHullPoints.resize(static_cast<unsigned long>(std::max((static_cast<int>(k))-1, 0))); //k-1: remove the last point which is the same that the first point of lower list
+        convexHullPoints.resize((unsigned long)(std::max((static_cast<int>(k)) - 1, 0))); //k-1: remove the last point which is the same that the first point of lower list
     }
 
     template<class T> std::unique_ptr<ConvexHullShape2D<T>> ConvexHullShape2D<T>::createFromCcwConvexPoints(const std::vector<Point2<T>>& ccwConvexPoints) {

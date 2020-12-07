@@ -64,7 +64,7 @@ namespace urchin {
         std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
         long timeInterval = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - startingTime).count();
 
-        long nbMillisecondToVolumeReachZero = static_cast<long>((1.0f / soundBehavior.getVolumeDecreasePercentageOnStop()) * 1000.0f);
+        long nbMillisecondToVolumeReachZero = (long)((1.0f / soundBehavior.getVolumeDecreasePercentageOnStop()) * 1000.0f);
 
         return timeInterval < nbMillisecondToVolumeReachZero;
     }

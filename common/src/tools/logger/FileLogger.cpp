@@ -20,12 +20,12 @@ namespace urchin {
 
     std::string FileLogger::retrieveContent(unsigned long maxSize) const {
         std::ifstream ifs(filename.c_str(), std::ios::in | std::ios::binary | std::ios::ate);
-        auto fileSize = static_cast<unsigned long>(ifs.tellg());
-        auto readSize = std::min(fileSize, maxSize);
+        auto fileSize = ifs.tellg();
+        auto readSize = std::min((unsigned long)fileSize, maxSize);
         ifs.seekg(0, std::ios::beg);
 
         std::vector<char> bytes(readSize);
-        ifs.read(bytes.data(), readSize);
+        ifs.read(bytes.data(), static_cast<std::streamsize>(readSize));
 
         return std::string(bytes.data(), readSize);
     }
@@ -54,7 +54,7 @@ namespace urchin {
         if (file.fail()) {
             throw std::invalid_argument("Cannot open the file " + filename + ".");
         }
-        file.write(msg.c_str(), msg.length());
+        file.write(msg.c_str(), static_cast<std::streamsize>(msg.length()));
         file.flush();
         file.close();
     }

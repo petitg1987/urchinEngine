@@ -23,7 +23,7 @@ namespace urchin {
             Vector2<double> fromNextPoint = polygonPoints[nextI].vector(polygonPoints[i]).template cast<double>().normalize();
             Vector2<double> secondNormal = Vector2<double>(-fromNextPoint.Y, fromNextPoint.X);
 
-            double moveLength = static_cast<double>(distance) / (1.0 + firstNormal.dotProduct(secondNormal));
+            double moveLength = (double)distance / (1.0 + firstNormal.dotProduct(secondNormal));
             previousPoint = polygonPoints[i];
             polygonPoints[i] = Point2<T>(
                     polygonPoints[i].X + (T) ((firstNormal.X + secondNormal.X) * moveLength),
