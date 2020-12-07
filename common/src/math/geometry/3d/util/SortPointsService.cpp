@@ -16,14 +16,14 @@ namespace urchin {
         }
 
         for (std::size_t i=2; i<coplanarPoints.size(); ++i) {
-            std::size_t newPointIndex = sortedPoints.size();
+            auto newPointIndex = (unsigned int)sortedPoints.size();
             sortedPoints.push_back(coplanarPoints[i]);
-            while (newPointIndex>1) {
+            while (newPointIndex > 1) {
                 if (isNewPointClockwiseSorted(sortedPoints, normal, newPointIndex)) {
                     break;
                 }
 
-                std::swap(sortedPoints[newPointIndex], sortedPoints[newPointIndex-1]);
+                std::swap(sortedPoints[newPointIndex], sortedPoints[newPointIndex - 1]);
                 --newPointIndex;
             }
         }

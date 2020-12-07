@@ -22,36 +22,36 @@ namespace urchin {
         const T trace = matrix(0, 0) + matrix(1, 1) + matrix(2, 2);
 
         if (trace > 0.0) {
-            const T s = 0.5f / sqrtf(trace + 1.0f);
+            const T s = 0.5f / std::sqrt(trace + 1.0f);
             X = (matrix(2, 1) - matrix(1, 2)) * s;
             Y = (matrix(0, 2) - matrix(2, 0)) * s;
             Z = (matrix(1, 0) - matrix(0, 1)) * s;
             W = 0.25f / s;
         } else {
             if ((matrix(0, 0) > matrix(1, 1)) && (matrix(0, 0) > matrix(2, 2))) {
-                const T s = sqrtf(1.0 + matrix(0, 0) - matrix(1, 1) - matrix(2, 2)) * 2.0;
-                X = 0.25 * s;
+                const T s = std::sqrt((T)1.0 + matrix(0, 0) - matrix(1, 1) - matrix(2, 2)) * (T)2.0;
+                X = (T)0.25 * s;
                 Y = (matrix(0, 1) + matrix(1, 0)) / s;
                 Z = (matrix(0, 2) + matrix(2, 0)) / s;
                 W = (matrix(2, 1) - matrix(1, 2)) / s;
             } else if (matrix(1, 1) > matrix(2, 2)) {
-                const T s = sqrtf(1.0 - matrix(0, 0) + matrix(1, 1) - matrix(2, 2)) * 2.0;
+                const T s = std::sqrt((T)1.0 - matrix(0, 0) + matrix(1, 1) - matrix(2, 2)) * (T)2.0;
                 X = (matrix(0, 1) + matrix(1, 0)) / s;
-                Y = 0.25 * s;
+                Y = (T)0.25 * s;
                 Z = (matrix(1, 2) + matrix(2, 1)) / s;
                 W = (matrix(0, 2) - matrix(2, 0)) / s;
             } else {
-                const T s = sqrtf(1.0 - matrix(0, 0) - matrix(1, 1) + matrix(2, 2)) * 2.0;
+                const T s = std::sqrt((T)1.0 - matrix(0, 0) - matrix(1, 1) + matrix(2, 2)) * (T)2.0;
                 X = (matrix(0, 2) + matrix(2, 0)) / s;
                 Y = (matrix(1, 2) + matrix(2, 1)) / s;
-                Z = 0.25 * s;
+                Z = (T)0.25 * s;
                 W = (matrix(1, 0) - matrix(0, 1)) / s;
             }
         }
     }
 
     template<class T> Quaternion<T>::Quaternion(const Vector3<T>& axis, T angle) {
-        const T halfAngle = angle / 2.0;
+        const T halfAngle = angle / (T)2.0;
         const T sin = std::sin(halfAngle);
 
         Vector3<T> normalizedAxis = axis.normalize();
@@ -137,40 +137,40 @@ namespace urchin {
 
     template<class T> Quaternion<T>::Quaternion(const Vector3<T>& normalizedLookAt, const Vector3<T>& normalizedUp) {
         #ifndef NDEBUG
-            assert(MathFunction::isOne(normalizedLookAt.length(), 0.001));
-            assert(MathFunction::isOne(normalizedUp.length(), 0.001));
+            assert(MathFunction::isOne((float)normalizedLookAt.length(), 0.001f));
+            assert(MathFunction::isOne((float)normalizedUp.length(), 0.001f));
         #endif
 
         Vector3<T> right = normalizedUp.crossProduct(normalizedLookAt);
         T det = right.X + normalizedUp.Y + normalizedLookAt.Z;
 
         if (det > 0.0) {
-            T sqrtValue = sqrtf(1.0 + det);
-            T halfOverSqrt = 0.5 / sqrtValue;
+            T sqrtValue = std::sqrt((T)1.0 + det);
+            T halfOverSqrt = (T)0.5 / sqrtValue;
             X = (normalizedUp.Z - normalizedLookAt.Y) * halfOverSqrt;
             Y = (normalizedLookAt.X - right.Z) * halfOverSqrt;
             Z = (right.Y - normalizedUp.X) * halfOverSqrt;
-            W = sqrtValue * 0.5;
+            W = sqrtValue * (T)0.5;
         } else if ((right.X >= normalizedUp.Y) && (right.X >= normalizedLookAt.Z)) {
-            T sqrtValue = sqrtf(((1.0 + right.X) - normalizedUp.Y) - normalizedLookAt.Z);
-            T halfOverSqrt = 0.5 / sqrtValue;
-            X = 0.5 * sqrtValue;
+            T sqrtValue = std::sqrt((((T)1.0 + right.X) - normalizedUp.Y) - normalizedLookAt.Z);
+            T halfOverSqrt = (T)0.5 / sqrtValue;
+            X = (T)0.5 * sqrtValue;
             Y = (right.Y + normalizedUp.X) * halfOverSqrt;
             Z = (right.Z + normalizedLookAt.X) * halfOverSqrt;
             W = (normalizedUp.Z - normalizedLookAt.Y) * halfOverSqrt;
         } else if (normalizedUp.Y > normalizedLookAt.Z) {
-            T sqrtValue = sqrtf(((1.0 + normalizedUp.Y) - right.X) - normalizedLookAt.Z);
-            T halfOverSqrt = 0.5 / sqrtValue;
+            T sqrtValue = std::sqrt((((T)1.0 + normalizedUp.Y) - right.X) - normalizedLookAt.Z);
+            T halfOverSqrt = (T)0.5 / sqrtValue;
             X = (normalizedUp.X+ right.Y) * halfOverSqrt;
-            Y = 0.5 * sqrtValue;
+            Y = (T)0.5 * sqrtValue;
             Z = (normalizedLookAt.Y + normalizedUp.Z) * halfOverSqrt;
             W = (normalizedLookAt.X - right.Z) * halfOverSqrt;
         } else {
-            T sqrtValue = sqrtf(((1.0 + normalizedLookAt.Z) - right.X) - normalizedUp.Y);
-            T halfOverSqrt = 0.5 / sqrtValue;
+            T sqrtValue = std::sqrt((((T)1.0 + normalizedLookAt.Z) - right.X) - normalizedUp.Y);
+            T halfOverSqrt = (T)0.5 / sqrtValue;
             X = (normalizedLookAt.X + right.Z) * halfOverSqrt;
             Y = (normalizedLookAt.Y + normalizedUp.Z) * halfOverSqrt;
-            Z = 0.5 * sqrtValue;
+            Z = (T)0.5 * sqrtValue;
             W = (right.Y - normalizedUp.X) * halfOverSqrt;
         }
     }
@@ -181,7 +181,7 @@ namespace urchin {
         if (t<0.0f) {
             W = 0.0f;
         } else {
-            W = -sqrt(t);
+            W = -std::sqrt(t);
         }
     }
 
@@ -271,20 +271,20 @@ namespace urchin {
 
         if (cosOmega > 0.9999) {
             //very close - just use linear interpolation, which will protect against a divide by zero
-            k0 = 1.0 - t;
+            k0 = (T)1.0 - t;
             k1 = t;
         } else {
             //computes the sin of the angle using the trig identity sin^2(omega) + cos^2(omega) = 1
-            T sinOmega = std::sqrt(1.0 - (cosOmega * cosOmega));
+            T sinOmega = std::sqrt((T)1.0 - (cosOmega * cosOmega));
 
             //computes the angle from its sin and cosine
             T omega = std::atan2(sinOmega, cosOmega);
 
             //computes inverse of denominator, so we only have to divide once
-            T oneOverSinOmega = 1.0 / sinOmega;
+            T oneOverSinOmega = (T)1.0 / sinOmega;
 
             //computes interpolation parameters
-            k0 = std::sin((1.0 - t) * omega) * oneOverSinOmega;
+            k0 = std::sin(((T)1.0 - t) * omega) * oneOverSinOmega;
             k1 = std::sin(t * omega) * oneOverSinOmega;
         }
 
@@ -317,12 +317,12 @@ namespace urchin {
             qW = -qW;
         }
 
-        float oneMinusT = 1.0 - t;
+        T oneMinusT = (T)1.0 - t;
         Quaternion<T> lerpResult(
-                oneMinusT*X + t*qX,
-                oneMinusT*Y + t*qY,
-                oneMinusT*Z + t*qZ,
-                oneMinusT*W + t*qW);
+                oneMinusT * X + t*qX,
+                oneMinusT * Y + t*qY,
+                oneMinusT * Z + t*qZ,
+                oneMinusT * W + t*qW);
         return lerpResult.normalize();
     }
 
@@ -364,9 +364,9 @@ namespace urchin {
     }
 
     template<class T> void Quaternion<T>::toAxisAngle(Vector3<T>& axis, T& angle) const {
-        angle = std::acos(W) * 2.0;
+        angle = std::acos(W) * (T)2.0;
 
-        T norm = sqrtf(X*X + Y*Y + Z*Z);
+        T norm = std::sqrt(X*X + Y*Y + Z*Z);
         if (std::fabs(norm) > 0.0) {
             axis.X = X / norm;
             axis.Y = Y / norm;
@@ -409,7 +409,7 @@ namespace urchin {
         }
     }
 
-    template<class T> Vector3<T> Quaternion<T>::threeAxisEulerRotation(int i, int j, int k) const { //inspired on Eigen library (EulerAngle.h)
+    template<class T> Vector3<T> Quaternion<T>::threeAxisEulerRotation(std::size_t i, std::size_t j, std::size_t k) const { //inspired on Eigen library (EulerAngle.h)
         Vector3<T> euler;
 
         bool sequenceAxis = (i+1)%3==j;
@@ -418,21 +418,21 @@ namespace urchin {
         euler[0] = std::atan2(m(k, j), m(k, k));
         T cosEuler1 = Vector2<T>(m(i, i), m(j, i)).length();
 
-        if ((sequenceAxis && euler[0]<0) || ((!sequenceAxis) && euler[0]>0)) {
-            euler[0] = (euler[0] > 0) ? euler[0] - MathValue::PI : euler[0] + MathValue::PI;
+        if ((sequenceAxis && euler[0] < 0.0) || (!sequenceAxis && euler[0] > 0.0)) {
+            euler[0] = (euler[0] > 0.0) ? euler[0] - (T)MathValue::PI : euler[0] + (T)MathValue::PI;
             euler[1] = std::atan2(-m(k, i), -cosEuler1);
         } else {
             euler[1] = std::atan2(-m(k, i), cosEuler1);
         }
 
-        T sinEuler0 = sin(euler[0]);
-        T cosEuler0 = cos(euler[0]);
+        T sinEuler0 = std::sin(euler[0]);
+        T cosEuler0 = std::cos(euler[0]);
         euler[2] = std::atan2(sinEuler0*m(i, k) - cosEuler0*m(i, j), cosEuler0*m(j, j) - sinEuler0*m(j, k));
 
         return sequenceAxis ? euler : -euler;
     }
 
-    template<class T> Vector3<T> Quaternion<T>::twoAxisEulerRotation(int i, int j, int k) const { //inspired on Eigen library (EulerAngle.h)
+    template<class T> Vector3<T> Quaternion<T>::twoAxisEulerRotation(std::size_t i, std::size_t j, std::size_t k) const { //inspired on Eigen library (EulerAngle.h)
         Vector3<T> euler;
 
         bool sequenceAxis = (i+1)%3==j;
@@ -441,15 +441,15 @@ namespace urchin {
         euler[0] = std::atan2(m(i, j), m(i, k));
         T sinEuler1 = Vector2<T>(m(i, j), m(i, k)).length();
 
-        if ((sequenceAxis && euler[0]<0) || ((!sequenceAxis) && euler[0]>0)) {
-            euler[0] = (euler[0] > 0) ? euler[0] - MathValue::PI : euler[0] + MathValue::PI;
+        if ((sequenceAxis && euler[0] < 0.0) || (!sequenceAxis && euler[0] > 0.0)) {
+            euler[0] = (euler[0] > 0.0) ? euler[0] - (T)MathValue::PI : euler[0] + (T)MathValue::PI;
             euler[1] = -std::atan2(sinEuler1, m(i, i));
         } else {
             euler[1] = std::atan2(sinEuler1, m(i, i));
         }
 
-        T sinEuler0 = sin(euler[0]);
-        T cosEuler0 = cos(euler[0]);
+        T sinEuler0 = std::sin(euler[0]);
+        T cosEuler0 = std::cos(euler[0]);
         euler[2] = std::atan2(cosEuler0*m(k, j) - sinEuler0*m(k, k), cosEuler0*m(j, j) - sinEuler0*m(j, k));
 
         return sequenceAxis ? euler : -euler;

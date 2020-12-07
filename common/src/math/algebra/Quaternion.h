@@ -72,8 +72,8 @@ namespace urchin {
             T X, Y, Z, W;
 
         private:
-            Vector3<T> threeAxisEulerRotation(int, int, int) const;
-            Vector3<T> twoAxisEulerRotation(int, int, int) const;
+            Vector3<T> threeAxisEulerRotation(std::size_t, std::size_t, std::size_t) const;
+            Vector3<T> twoAxisEulerRotation(std::size_t, std::size_t, std::size_t) const;
     };
 
     template<class T> Quaternion<T> operator *(const Quaternion<T>&, const Point3<T>&);

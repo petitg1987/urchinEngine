@@ -11,9 +11,10 @@ namespace urchin {
         std::vector<unsigned int> lineValues(nbColumns);
 
         lineValues[0] = 1;
-        for (unsigned int column=1; column<nbColumns; ++column) {
+        for (unsigned int column = 1; column < nbColumns; ++column) {
             auto columnFloat = static_cast<float>(column);
-            lineValues[column] = MathFunction::roundToUInt(lineValues[column - 1] * ((static_cast<float>(lineNumber) - (columnFloat - 1.0f)) / columnFloat));
+            auto lineValue = (float)lineValues[column - 1] * (((float)lineNumber - (columnFloat - 1.0f)) / columnFloat);
+            lineValues[column] = MathFunction::roundToUInt(lineValue);
         }
 
         return lineValues;

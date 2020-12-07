@@ -1,11 +1,13 @@
 #include <algorithm>
+#include <cassert>
 
 #include "HeightfieldPointHelper.h"
 #include "math/algorithm/MathFunction.h"
 
-#define PARALLEL_EPSILON 0.07 //= 4 degrees (asin(4/180*pi))
-
 namespace urchin {
+
+    //static
+    template <class T> const T HeightfieldPointHelper<T>::PARALLEL_EPSILON = (T)0.07; //= 4 degrees (asin(4/180*pi))
 
     template <class T> DistanceToStartPointComp<T>::DistanceToStartPointComp(const Point3<T>& startPoint) :
             startPoint(startPoint) {
@@ -18,10 +20,10 @@ namespace urchin {
     template<class T> HeightfieldPointHelper<T>::HeightfieldPointHelper(const std::vector<Point3<T>>& heightfieldPoints, unsigned int heightfieldXSize) :
             heightfieldPoints(heightfieldPoints),
             heightfieldXSize(heightfieldXSize),
-            heightfieldZSize(heightfieldPoints.size() / heightfieldXSize),
+            heightfieldZSize((unsigned int)heightfieldPoints.size() / heightfieldXSize),
             xInterval(heightfieldPoints[1].X - heightfieldPoints[0].X),
             zInterval(heightfieldPoints[heightfieldXSize].Z - heightfieldPoints[0].Z) {
-
+        assert(heightfieldXSize > 0);
     }
 
     /**
@@ -29,8 +31,8 @@ namespace urchin {
      */
     template<class T> Point3<T> HeightfieldPointHelper<T>::findPointAt(const Point2<T>& point) const {
         Vector2<T> farLeftToPoint = Point2<T>(heightfieldPoints[0].X, heightfieldPoints[0].Z).vector(point);
-        int xIndex = MathFunction::clamp(MathFunction::roundToInt(farLeftToPoint.X / xInterval), 0, static_cast<int>(heightfieldXSize - 1));
-        int zIndex = MathFunction::clamp(MathFunction::roundToInt(farLeftToPoint.Y / zInterval), 0, static_cast<int>(heightfieldZSize - 1));
+        unsigned int xIndex = MathFunction::clamp(MathFunction::roundToUInt((float)(farLeftToPoint.X / xInterval)), 0u, heightfieldXSize - 1);
+        unsigned int zIndex = MathFunction::clamp(MathFunction::roundToUInt((float)(farLeftToPoint.Y / zInterval)), 0u, heightfieldZSize - 1);
 
         return heightfieldPoints[xIndex + zIndex * heightfieldXSize];
     }
@@ -40,18 +42,18 @@ namespace urchin {
      */
     template<class T> T HeightfieldPointHelper<T>::findHeightAt(const Point2<T>& point) const {
         Vector2<T> farLeftToPoint = Point2<T>(heightfieldPoints[0].X, heightfieldPoints[0].Z).vector(point);
-        int xIndex = MathFunction::clamp(MathFunction::roundToInt(farLeftToPoint.X / xInterval), 0, static_cast<int>(heightfieldXSize - 1));
-        int zIndex = MathFunction::clamp(MathFunction::roundToInt(farLeftToPoint.Y / zInterval), 0, static_cast<int>(heightfieldZSize - 1));
+        unsigned int xIndex = MathFunction::clamp(MathFunction::roundToUInt((float)(farLeftToPoint.X / xInterval)), 0u, heightfieldXSize - 1);
+        unsigned int zIndex = MathFunction::clamp(MathFunction::roundToUInt((float)(farLeftToPoint.Y / zInterval)), 0u, heightfieldZSize - 1);
 
-        int nearestPointIndex = xIndex + zIndex * heightfieldXSize;
+        unsigned int nearestPointIndex = xIndex + zIndex * heightfieldXSize;
         Point3<T> nearestPoint = heightfieldPoints[nearestPointIndex];
 
-        int leftRightPointXIndex = (nearestPoint.X > point.X) ? std::max(xIndex - 1, 0) : std::min(xIndex + 1, static_cast<int>(heightfieldXSize - 1));
-        int leftRightPointIndex = leftRightPointXIndex + zIndex * heightfieldXSize;
+        unsigned int leftRightPointXIndex = (nearestPoint.X > point.X) ? (unsigned int)std::max(((int)xIndex - 1), 0) : std::min(xIndex + 1, heightfieldXSize - 1);
+        unsigned int leftRightPointIndex = leftRightPointXIndex + zIndex * heightfieldXSize;
         Point3<T> leftRightPoint = heightfieldPoints[leftRightPointIndex];
 
-        int farNearPointZIndex = (nearestPoint.Z > point.Y) ? std::max(zIndex - 1, 0) : std::min(zIndex + 1, static_cast<int>(heightfieldZSize - 1));
-        int farNearPointIndex = xIndex + farNearPointZIndex * heightfieldXSize;
+        unsigned int farNearPointZIndex = (nearestPoint.Z > point.Y) ? (unsigned int)std::max(((int)zIndex - 1), 0) : std::min(zIndex + 1, heightfieldZSize - 1);
+        unsigned int farNearPointIndex = xIndex + farNearPointZIndex * heightfieldXSize;
         Point3<T> farNearPoint = heightfieldPoints[farNearPointIndex];
 
         if (nearestPointIndex==leftRightPointIndex || nearestPointIndex==farNearPointIndex || leftRightPointIndex==farNearPointIndex) { //coordinates are outside heightfield or on edge: return approximate point
@@ -81,12 +83,12 @@ namespace urchin {
 
         //X lines collision
         if (!isParallelToXAxis(pathLine, PARALLEL_EPSILON)) {
-            int xStartIndex = MathFunction::clamp(static_cast<int>(std::floor(std::min(farLeftToStartPoint.X, farLeftToEndPoint.X) / xInterval)), 0, static_cast<int>(heightfieldXSize - 1));
-            int xEndIndex = MathFunction::clamp(static_cast<int>(std::ceil(std::max(farLeftToStartPoint.X, farLeftToEndPoint.X) / xInterval)), 0, static_cast<int>(heightfieldXSize - 1));
-            pathPoints.reserve(pathPoints.size() + (xEndIndex-xStartIndex) + 1);
+            unsigned int xStartIndex = MathFunction::clamp((unsigned int)(std::floor(std::min(farLeftToStartPoint.X, farLeftToEndPoint.X) / xInterval)), 0u, heightfieldXSize - 1);
+            unsigned int xEndIndex = MathFunction::clamp((unsigned int)(std::ceil(std::max(farLeftToStartPoint.X, farLeftToEndPoint.X) / xInterval)), 0u, heightfieldXSize - 1);
+            pathPoints.reserve(pathPoints.size() + (xEndIndex - xStartIndex) + 1);
 
-            int zLastIndex = (heightfieldZSize - 1) * heightfieldXSize;
-            for (int xCoord = xStartIndex; xCoord <= xEndIndex; ++xCoord) {
+            unsigned int zLastIndex = (heightfieldZSize - 1) * heightfieldXSize;
+            for (unsigned int xCoord = xStartIndex; xCoord <= xEndIndex; ++xCoord) {
                 Point3<T> firstLinePoint = heightfieldPoints[xCoord];
                 Point3<T> endLinePoint = heightfieldPoints[xCoord + zLastIndex];
                 LineSegment2D<T> xLine(Point2<T>(firstLinePoint.X, firstLinePoint.Z), Point2<T>(endLinePoint.X, endLinePoint.Z));
@@ -97,12 +99,12 @@ namespace urchin {
 
         //Z lines collision
         if (!isParallelToZAxis(pathLine, PARALLEL_EPSILON)) {
-            int zStartIndex = MathFunction::clamp(static_cast<int>(std::floor(std::min(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / zInterval)), 0, static_cast<int>(heightfieldZSize - 1));
-            int zEndIndex = MathFunction::clamp(static_cast<int>(std::ceil(std::max(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / zInterval)), 0, static_cast<int>(heightfieldZSize - 1));
-            pathPoints.reserve(pathPoints.size() + (zEndIndex-zStartIndex) + 1);
+            unsigned int zStartIndex = MathFunction::clamp((unsigned int)(std::floor(std::min(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / zInterval)), 0u, heightfieldZSize - 1);
+            unsigned int zEndIndex = MathFunction::clamp((unsigned int)(std::ceil(std::max(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / zInterval)), 0u, heightfieldZSize - 1);
+            pathPoints.reserve(pathPoints.size() + (zEndIndex - zStartIndex) + 1);
 
-            int xLastIndex = heightfieldXSize - 1;
-            for (int zCoord = zStartIndex; zCoord <= zEndIndex; ++zCoord) {
+            unsigned int xLastIndex = heightfieldXSize - 1;
+            for (unsigned int zCoord = zStartIndex; zCoord <= zEndIndex; ++zCoord) {
                 Point3<T> firstLinePoint = heightfieldPoints[zCoord * heightfieldXSize];
                 Point3<T> endLinePoint = heightfieldPoints[xLastIndex + zCoord * heightfieldXSize];
                 LineSegment2D<T> zLine(Point2<T>(firstLinePoint.X, firstLinePoint.Z), Point2<T>(endLinePoint.X, endLinePoint.Z));

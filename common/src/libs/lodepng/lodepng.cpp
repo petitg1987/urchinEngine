@@ -1,3 +1,6 @@
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+
 /*
 LodePNG version 20170917
 
@@ -6230,3 +6233,5 @@ namespace lodepng
 #endif /* LODEPNG_COMPILE_PNG */
 } /* namespace lodepng */
 #endif /*LODEPNG_COMPILE_CPP*/
+
+#pragma GCC diagnostic pop

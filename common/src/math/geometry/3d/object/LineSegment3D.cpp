@@ -69,9 +69,9 @@ namespace urchin {
         T t = ap.dotProduct(ab) / abSquareLength;
         t = std::min((T)1.0, std::max((T)0.0, t));
 
-        barycentrics[0] = 1.0-t;
+        barycentrics[0] = (T)1.0 - t;
         barycentrics[1] = t;
-        return ((b-a)*t) + a;
+        return ((b - a) * t) + a;
     }
 
     /**

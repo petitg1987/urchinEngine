@@ -40,8 +40,8 @@ namespace urchin {
     }
 
     template<class T> Point2<T> Rectangle<T>::getSupportPoint(const Vector2<T>& direction) const {
-        const unsigned int signX = direction.X < (T)0.0 ? 0 : 1;
-        const unsigned int signY = direction.Y < (T)0.0 ? 0 : 1;
+        const T signX = direction.X < 0.0 ? 0.0 : 1.0;
+        const T signY = direction.Y < 0.0 ? 0.0 : 1.0;
 
         return origin + Point2<T>(signX * rectangleShape.getDiagonal().X, signY * rectangleShape.getDiagonal().Y);
     }

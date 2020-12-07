@@ -26,7 +26,7 @@ namespace urchin {
     }
 
     template<class T> OBBox<T>::OBBox(const AABBox<T>& aabb) :
-        boxShape(BoxShape<T>(Vector3<T>((aabb.getMax().X - aabb.getMin().X) / 2.0, (aabb.getMax().Y - aabb.getMin().Y) / 2.0, (aabb.getMax().Z - aabb.getMin().Z) / 2.0))),
+        boxShape(BoxShape<T>(Vector3<T>((aabb.getMax().X - aabb.getMin().X) / (T)2.0, (aabb.getMax().Y - aabb.getMin().Y) / (T)2.0, (aabb.getMax().Z - aabb.getMin().Z) / (T)2.0))),
         centerOfMass((aabb.getMin() + aabb.getMax()) / (T)2.0) {
         axis[0] = Vector3<T>(1.0, 0.0, 0.0);
         axis[1] = Vector3<T>(0.0, 1.0, 0.0);

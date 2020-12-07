@@ -142,7 +142,7 @@ namespace urchin {
             barycentrics[0] = d1.determinant() / d0Determinant;
             barycentrics[1] = d2.determinant() / d0Determinant;
             barycentrics[2] = d3.determinant() / d0Determinant;
-            barycentrics[3] = 1.0 - (barycentrics[0] + barycentrics[1] + barycentrics[2]);
+            barycentrics[3] = (T)1.0 - (barycentrics[0] + barycentrics[1] + barycentrics[2]);
         }
 
         return closestPoint;

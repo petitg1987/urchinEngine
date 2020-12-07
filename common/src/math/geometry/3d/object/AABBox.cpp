@@ -13,7 +13,7 @@ namespace urchin {
     }
 
     template<class T> AABBox<T>::AABBox(const Point3<T>& min, const Point3<T>& max) :
-            boxShape(BoxShape<T>(Vector3<T>((max.X-min.X)/2.0, (max.Y-min.Y)/2.0, (max.Z-min.Z)/2.0))),
+            boxShape(BoxShape<T>(Vector3<T>((max.X - min.X) / (T)2.0, (max.Y - min.Y) / (T)2.0, (max.Z - min.Z) / (T)2.0))),
             min(min),
             max(max) {
         assert(min.X <= max.X);
@@ -22,7 +22,7 @@ namespace urchin {
     }
 
     template<class T> AABBox<T>::AABBox(const Point3<T>& min, const Vector3<T>& diagonal) :
-            boxShape(BoxShape<T>(Vector3<T>(diagonal.X/2.0, diagonal.Y/2.0, diagonal.Z/2.0))),
+            boxShape(BoxShape<T>(Vector3<T>(diagonal.X / (T)2.0, diagonal.Y / (T)2.0, diagonal.Z / (T)2.0))),
             min(min),
             max(min.translate(diagonal)) {
         assert(min.X <= max.X);
@@ -43,7 +43,7 @@ namespace urchin {
             max.Z = std::max(max.Z, point.Z);
         }
 
-        boxShape = BoxShape<T>(Vector3<T>((max.X-min.X)/2.0, (max.Y-min.Y)/2.0, (max.Z-min.Z)/2.0));
+        boxShape = BoxShape<T>(Vector3<T>((max.X - min.X) / (T)2.0, (max.Y - min.Y) / (T)2.0, (max.Z - min.Z) / (T)2.0));
     }
 
     template<class T> AABBox<T>::AABBox(const Point3<T>* points, unsigned int size) :
@@ -61,7 +61,7 @@ namespace urchin {
             max.Z = std::max(max.Z, point.Z);
         }
 
-        boxShape = BoxShape<T>(Vector3<T>((max.X-min.X)/2.0, (max.Y-min.Y)/2.0, (max.Z-min.Z)/2.0));
+        boxShape = BoxShape<T>(Vector3<T>((max.X - min.X) / (T)2.0, (max.Y - min.Y) / (T)2.0, (max.Z - min.Z) / (T)2.0));
     }
 
     template<class T> AABBox<T>::AABBox(const AABBox<T>& aabbox) :
@@ -122,14 +122,14 @@ namespace urchin {
     }
 
     template<class T> Point3<T> AABBox<T>::getSupportPoint(const Vector3<T>& direction) const {
-        const int signX = direction.X < 0.0 ? 0 : 1;
-        const int signY = direction.Y < 0.0 ? 0 : 1;
-        const int signZ = direction.Z < 0.0 ? 0 : 1;
+        const T signX = direction.X < 0.0 ? 0.0 : 1.0;
+        const T signY = direction.Y < 0.0 ? 0.0 : 1.0;
+        const T signZ = direction.Z < 0.0 ? 0.0 : 1.0;
 
         return min + Point3<T>(
-                signX * boxShape.getHalfSize(0) * 2.0,
-                signY * boxShape.getHalfSize(1) * 2.0,
-                signZ * boxShape.getHalfSize(2) * 2.0);
+                signX * boxShape.getHalfSize(0) * (T)2.0,
+                signY * boxShape.getHalfSize(1) * (T)2.0,
+                signZ * boxShape.getHalfSize(2) * (T)2.0);
     }
 
     template<class T> std::vector<Point3<T>> AABBox<T>::getPoints() const {
@@ -160,9 +160,9 @@ namespace urchin {
      * @return Orthogonal projection matrix based on AABBox
      */
     template<class T> Matrix4<T> AABBox<T>::toProjectionMatrix() const {
-        float tx = -((max.X+min.X)/(max.X-min.X));
-        float ty = -((max.Y+min.Y)/(max.Y-min.Y));
-        float tz = -((-min.Z-max.Z)/(-min.Z+max.Z));
+        T tx = -((max.X + min.X) / (max.X - min.X));
+        T ty = -((max.Y + min.Y) / (max.Y - min.Y));
+        T tz = -((-min.Z - max.Z) / (-min.Z + max.Z));
 
         return Matrix4<T>(
             2.0f/(max.X-min.X), 0.0, 0.0, tx,

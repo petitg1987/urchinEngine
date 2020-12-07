@@ -16,11 +16,11 @@ namespace urchin {
      * @return -1 if value is negative, 0 if value is 0, otherwise 1
      */
     template<class T> T MathFunction::sign(T value) {
-        return ((T)0 < value) - (value < (T)0);
+        return (T)((T)0.0 < value) - (value < (T)0.0);
     }
 
     template<class T> T MathFunction::lerp(T v0, T v1, T t) { //see https://en.wikipedia.org/wiki/Linear_interpolation
-        return (1.0 - t) * v0 + t * v1;
+        return ((T)1.0 - t) * v0 + t * v1;
     }
 
     unsigned int MathFunction::powerOfTwo(unsigned int exponent) {
@@ -41,11 +41,11 @@ namespace urchin {
     }
 
     bool MathFunction::isZero(float value, float tolerance) {
-        return value > 0.0f-tolerance && value < 0.0f+tolerance;
+        return value > 0.0f - tolerance && value < 0.0f + tolerance;
     }
 
     bool MathFunction::isOne(float value, float tolerance) {
-        return value > 1.0f-tolerance && value < 1.0f+tolerance;
+        return value > 1.0f - tolerance && value < 1.0f + tolerance;
     }
 
     int MathFunction::roundToInt(float value) {
@@ -80,6 +80,10 @@ namespace urchin {
     template int MathFunction::sign<int>(int);
     template int MathFunction::lerp<int>(int, int, int);
     template int MathFunction::roundDivision<int>(int, int);
+
+    template unsigned int MathFunction::clamp<unsigned int>(unsigned int, unsigned int, unsigned int);
+    template unsigned int MathFunction::lerp<unsigned int>(unsigned int, unsigned int, unsigned int);
+    template unsigned int MathFunction::roundDivision<unsigned int>(unsigned int, unsigned int);
 
     template long long MathFunction::clamp<long long>(long long, long long, long long);
     template long long MathFunction::sign<long long>(long long);

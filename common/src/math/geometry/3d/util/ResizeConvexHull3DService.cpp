@@ -36,7 +36,7 @@ namespace urchin {
                 Point3<T> newPoint = Point3<T>(n2CrossN3 * threePlanes[0].getDistanceToOrigin());
                 newPoint += Point3<T>(n3CrossN1 * threePlanes[1].getDistanceToOrigin());
                 newPoint += Point3<T>(n1CrossN2 * threePlanes[2].getDistanceToOrigin());
-                newPoint *= -1.0 / threePlanes[0].getNormal().dotProduct(n2CrossN3);
+                newPoint *= -(T)1.0 / threePlanes[0].getNormal().dotProduct(n2CrossN3);
 
                 ConvexHullPoint<T> convexHullPoint;
                 convexHullPoint.point = newPoint;

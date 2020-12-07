@@ -23,7 +23,7 @@ namespace urchin {
     }
 
     template<class T> T CapsuleShape<T>::computeHeight() const {
-        return cylinderHeight + 2.0 * radius;
+        return cylinderHeight + (T)2.0 * radius;
     }
 
     template<class T> ConvexShape3D<T> *CapsuleShape<T>::clone() const {

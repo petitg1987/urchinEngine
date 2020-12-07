@@ -69,7 +69,7 @@ namespace urchin {
     }
 
     template<class T> T BoxShape<T>::getVolume() const {
-        return halfSizes.X * halfSizes.Y * halfSizes.Z * 8.0;
+        return halfSizes.X * halfSizes.Y * halfSizes.Z * (T)8.0;
     }
 
     template<class T> ConvexShape3D<T> *BoxShape<T>::clone() const {

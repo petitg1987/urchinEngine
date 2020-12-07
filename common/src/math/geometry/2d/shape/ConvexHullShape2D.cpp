@@ -89,7 +89,7 @@ namespace urchin {
             area -= convexHullPoints[i].Y * convexHullPoints[j].X;
         }
 
-        area /= 2.0;
+        area /= (T)2.0;
         return std::fabs(area);
     }
 

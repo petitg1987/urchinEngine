@@ -20,6 +20,8 @@ namespace urchin {
 
     template<class T> class HeightfieldPointHelper {
         public:
+            static const T PARALLEL_EPSILON;
+
             HeightfieldPointHelper(const std::vector<Point3<T>>&, unsigned int);
 
             Point3<T> findPointAt(const Point2<T>&) const;

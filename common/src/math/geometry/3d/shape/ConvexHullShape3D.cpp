@@ -255,8 +255,8 @@ namespace urchin {
             throw buildException(points, pointsUsed);
         }
 
-        unsigned int triangleIndex1 = nextTriangleIndex++;
-        unsigned int triangleIndex2 = nextTriangleIndex++;
+        std::size_t triangleIndex1 = nextTriangleIndex++;
+        std::size_t triangleIndex2 = nextTriangleIndex++;
         indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(triangleIndex1, IndexedTriangle3D<T>(0, 1, 2)));
         indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(triangleIndex2, IndexedTriangle3D<T>(0, 2, 1)));
         for (auto& it : this->points) {

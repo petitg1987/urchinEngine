@@ -96,8 +96,8 @@ namespace urchin {
         T rCrossS = r.crossProduct(s);
         T startPointsCrossR = a.vector(other.getA()).crossProduct(r);
 
-        if (rCrossS==0.0) { //lines are parallel
-            if (startPointsCrossR==0.0) { //lines are collinear
+        if (rCrossS == (T)0.0) { //lines are parallel
+            if (startPointsCrossR == (T)0.0) { //lines are collinear
                 hasIntersection = true;
                 return a;
             }

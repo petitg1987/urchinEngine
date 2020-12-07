@@ -1,3 +1,6 @@
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+
 /*
 www.sourceforge.net/projects/tinyxml
 Original code (2.0 and earlier )copyright (c) 2000-2006 Lee Thomason (www.grinninglizard.com)
@@ -1802,3 +1805,4 @@ bool TiXmlPrinter::Visit( const TiXmlUnknown& unknown )
 	return true;
 }
 
+#pragma GCC diagnostic pop

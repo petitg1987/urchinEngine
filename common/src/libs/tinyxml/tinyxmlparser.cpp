@@ -1,5 +1,6 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
+#pragma GCC diagnostic ignored "-Wconversion"
 
 /*
 www.sourceforge.net/projects/tinyxml

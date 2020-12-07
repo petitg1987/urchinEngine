@@ -76,7 +76,7 @@ namespace urchin {
         if (vc <= (T)0.0 && abDotAp >= (T)0.0 && abDotBp <= (T)0.0) {
             T v = abDotAp / (abDotAp - abDotBp);
 
-            barycentrics[0] = 1.0-v;
+            barycentrics[0] = (T)1.0 - v;
             barycentrics[1] = v;
             barycentrics[2] = 0.0;
             return a.translate(v * ab);
@@ -98,7 +98,7 @@ namespace urchin {
         if (vb <= (T)0.0 && acDotAp >= (T)0.0 && acDotCp <= (T)0.0) {
             T w = acDotAp / (acDotAp - acDotCp);
 
-            barycentrics[0] = 1.0-w;
+            barycentrics[0] = (T)1.0 - w;
             barycentrics[1] = 0.0;
             barycentrics[2] = w;
             return a.translate(w * ac);
@@ -110,7 +110,7 @@ namespace urchin {
             T w = (acDotBp - abDotBp) / ((acDotBp - abDotBp) + (abDotCp - acDotCp));
 
             barycentrics[0] = 0.0;
-            barycentrics[1] = 1.0-w;
+            barycentrics[1] = (T)1.0 - w;
             barycentrics[2] = w;
             return b + w * (c - b);
         }
@@ -120,7 +120,7 @@ namespace urchin {
         T v = vb * denom;
         T w = vc * denom;
 
-        barycentrics[0] = 1.0-v-w;
+        barycentrics[0] = (T)1.0 - v - w;
         barycentrics[1] = v;
         barycentrics[2] = w;
         return a.translate(ab * v + ac * w);

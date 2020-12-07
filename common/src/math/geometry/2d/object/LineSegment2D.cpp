@@ -48,7 +48,7 @@ namespace urchin {
         T t = ap.dotProduct(ab) / abSquareLength;
         t = std::min((T)1.0, std::max((T)0.0, t));
 
-        barycentrics[0] = 1.0-t;
+        barycentrics[0] = (T)1.0 - t;
         barycentrics[1] = t;
         return ((b-a)*t) + a;
     }
@@ -61,7 +61,7 @@ namespace urchin {
         Vector2<T> ap = a.vector(p);
 
         T apDotAb = ap.dotProduct(ab);
-        if (apDotAb <= 0.0f) {
+        if (apDotAb <= (T)0.0) {
             return ap.dotProduct(ap);
         }
 
@@ -122,12 +122,12 @@ namespace urchin {
         T startPointsCrossR = thisToOther.crossProduct(r);
 
         if (rCrossS==0) { //line segments are parallel
-            auto rDotR = static_cast<double>(r.dotProduct(r));
-            if (startPointsCrossR==0 && rDotR!=0.0) { //line segments are collinear
-                double t0 = thisToOther.dotProduct(r) / rDotR;
-                double t1 = t0 + s.dotProduct(r) / rDotR;
+            auto rDotR = (double)r.dotProduct(r);
+            if (startPointsCrossR==0 && rDotR != 0.0) { //line segments are collinear
+                double t0 = (double)thisToOther.dotProduct(r) / rDotR;
+                double t1 = t0 + (double)s.dotProduct(r) / rDotR;
 
-                if (s.dotProduct(r) < 0.0) { //lines in opposite direction
+                if (s.dotProduct(r) < (T)0.0) { //lines in opposite direction
                     std::swap(t0, t1);
                 }
 
@@ -181,8 +181,8 @@ namespace urchin {
      * Touch cases and collinear are not considered as proper intersection.
      */
     template<class T> bool LineSegment2D<T>::hasProperIntersection(const LineSegment2D<T>& other) const {
-        return (ccw(a, b, other.getA()) * ccw(a, b, other.getB())) < 0.0
-            && ccw(other.getA(), other.getB(), a) * ccw(other.getA(), other.getB(), b) < 0.0;
+        return (ccw(a, b, other.getA()) * ccw(a, b, other.getB())) < (T)0.0
+            && ccw(other.getA(), other.getB(), a) * ccw(other.getA(), other.getB(), b) < (T)0.0;
     }
 
     template<class T> T LineSegment2D<T>::ccw(const Point2<T>& a, const Point2<T>& b, const Point2<T>& c) const {

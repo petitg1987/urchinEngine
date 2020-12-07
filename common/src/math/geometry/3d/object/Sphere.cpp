@@ -38,7 +38,7 @@ namespace urchin {
     * @return True if the sphere collides or is inside this sphere
     */
     template<class T> bool Sphere<T>::collideWithSphere(const Sphere<T>& sphere) const {
-        float sumRadius = this->getRadius()+sphere.getRadius();
+        T sumRadius = this->getRadius() + sphere.getRadius();
         return centerOfMass.squareDistance(sphere.getCenterOfMass()) <= (sumRadius * sumRadius);
     }
 
