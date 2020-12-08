@@ -207,9 +207,9 @@ namespace urchin {
             color = (unsigned short)(data[j] + (data[j + 1] << 8u));
 
             //converts BGR to RGB
-            texels[(i * 3) + 0] = (unsigned char)(((color & 0x7C00u) >> 10u) << 3u);
-            texels[(i * 3) + 1] = (unsigned char)(((color & 0x03E0u) >>  5u) << 3u);
-            texels[(i * 3) + 2] = (unsigned char)(((color & 0x001Fu) >>  0u) << 3u);
+            texels[(i * 3) + 0] = static_cast<unsigned char>(((color & 0x7C00u) >> 10u) << 3u);
+            texels[(i * 3) + 1] = static_cast<unsigned char>(((color & 0x03E0u) >>  5u) << 3u);
+            texels[(i * 3) + 2] = static_cast<unsigned char>(((color & 0x001Fu) >>  0u) << 3u);
         }
     }
 
@@ -288,18 +288,18 @@ namespace urchin {
                 j+=2;
 
                 for (unsigned int i=0; i<size; ++i,ptrIndex+=3) {
-                    texels[ptrIndex] = (unsigned char)(((color & 0x7C00u) >> 10u) << 3u);
-                    texels[ptrIndex+1] = (unsigned char)(((color & 0x03E0u) >>  5u) << 3u);
-                    texels[ptrIndex+2] = (unsigned char)(((color & 0x001Fu) >>  0u) << 3u);
+                    texels[ptrIndex] = static_cast<unsigned char>(((color & 0x7C00u) >> 10u) << 3u);
+                    texels[ptrIndex+1] = static_cast<unsigned char>(((color & 0x03E0u) >>  5u) << 3u);
+                    texels[ptrIndex+2] = static_cast<unsigned char>(((color & 0x001Fu) >>  0u) << 3u);
                 }
             } else {
                 //non run-length packet
                 for (unsigned int i=0; i<size; ++i,ptrIndex+=3,j+=2) {
                     color = (unsigned short)(data[j] + (data[j + 1] << 8u));
 
-                    texels[ptrIndex] = (unsigned char)(((color & 0x7C00u) >> 10u) << 3u);
-                    texels[ptrIndex+1] = (unsigned char)(((color & 0x03E0u) >> 5u) << 3u);
-                    texels[ptrIndex+2] = (unsigned char)(((color & 0x001Fu) >> 0u) << 3u);
+                    texels[ptrIndex] = static_cast<unsigned char>(((color & 0x7C00u) >> 10u) << 3u);
+                    texels[ptrIndex+1] = static_cast<unsigned char>(((color & 0x03E0u) >> 5u) << 3u);
+                    texels[ptrIndex+2] = static_cast<unsigned char>(((color & 0x001Fu) >> 0u) << 3u);
                 }
             }
         }

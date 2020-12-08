@@ -69,7 +69,7 @@ namespace urchin {
 
         T centralDirectionCosAngle = centralAxis.dotProduct(normalizedDirection);
         if (centralDirectionCosAngle > baseSideCosAngle) { //support point = top of cone
-            T shiftUpHeight = getHeight()* static_cast<T>(3.0/4.0);
+            T shiftUpHeight = getHeight()* static_cast<T>(3.0 / 4.0);
             return centerOfMass.translate(centralAxis * shiftUpHeight);
         }
 
@@ -78,7 +78,7 @@ namespace urchin {
             projectedDirectionOnCircle = projectedDirectionOnCircle.normalize();
         }
 
-        T shiftDownHeight = - (getHeight()* static_cast<T>(1.0/4.0));
+        T shiftDownHeight = - (getHeight()* static_cast<T>(1.0 / 4.0));
         Point3<T> bottomPosition = centerOfMass.translate(centralAxis * shiftDownHeight);
         return bottomPosition.translate(projectedDirectionOnCircle * getRadius());
     }

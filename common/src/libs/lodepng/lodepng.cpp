@@ -329,10 +329,10 @@ unsigned lodepng_read32bitInt(const unsigned char* buffer)
 /*buffer must have at least 4 allocated bytes available*/
 static void lodepng_set32bitInt(unsigned char* buffer, unsigned value)
 {
-    buffer[0] = (unsigned char)((value >> 24) & 0xff);
-    buffer[1] = (unsigned char)((value >> 16) & 0xff);
-    buffer[2] = (unsigned char)((value >>  8) & 0xff);
-    buffer[3] = (unsigned char)((value      ) & 0xff);
+    buffer[0] = static_cast<unsigned char>((value >> 24) & 0xff);
+    buffer[1] = static_cast<unsigned char>((value >> 16) & 0xff);
+    buffer[2] = static_cast<unsigned char>((value >>  8) & 0xff);
+    buffer[3] = static_cast<unsigned char>((value      ) & 0xff);
 }
 #endif /*defined(LODEPNG_COMPILE_PNG) || defined(LODEPNG_COMPILE_ENCODER)*/
 
@@ -433,13 +433,13 @@ unsigned lodepng_save_file(const unsigned char* buffer, size_t buffersize, const
 static void addBitsToStream(size_t* bitpointer, ucvector* bitstream, unsigned value, size_t nbits)
 {
     size_t i;
-    for(i = 0; i != nbits; ++i) addBitToStream(bitpointer, bitstream, (unsigned char)((value >> i) & 1));
+    for(i = 0; i != nbits; ++i) addBitToStream(bitpointer, bitstream, static_cast<unsigned char>((value >> i) & 1));
 }
 
 static void addBitsToStreamReversed(size_t* bitpointer, ucvector* bitstream, unsigned value, size_t nbits)
 {
     size_t i;
-    for(i = 0; i != nbits; ++i) addBitToStream(bitpointer, bitstream, (unsigned char)((value >> (nbits - 1 - i)) & 1));
+    for(i = 0; i != nbits; ++i) addBitToStream(bitpointer, bitstream, static_cast<unsigned char>((value >> (nbits - 1 - i)) & 1));
 }
 #endif /*LODEPNG_COMPILE_ENCODER*/
 
@@ -449,7 +449,7 @@ static void addBitsToStreamReversed(size_t* bitpointer, ucvector* bitstream, uns
 
 static unsigned char readBitFromStream(size_t* bitpointer, const unsigned char* bitstream)
 {
-    unsigned char result = (unsigned char)(READBIT(*bitpointer, bitstream));
+    unsigned char result = static_cast<unsigned char>(READBIT(*bitpointer, bitstream));
     ++(*bitpointer);
     return result;
 }
@@ -574,7 +574,7 @@ static unsigned HuffmanTree_make2DTree(HuffmanTree* tree)
     {
         for(i = 0; i != tree->lengths[n]; ++i) /*the bits for this code*/
         {
-            unsigned char bit = (unsigned char)((tree->tree1d[n] >> (tree->lengths[n] - i - 1)) & 1);
+            unsigned char bit = static_cast<unsigned char>((tree->tree1d[n] >> (tree->lengths[n] - i - 1)) & 1);
             /*oversubscribed, see comment in lodepng_error_text*/
             if(treepos > 2147483647 || treepos + 2 > tree->numcodes) return 55;
             if(tree->tree2d[2 * treepos + bit] == 32767) /*not yet filled in*/
@@ -1668,17 +1668,17 @@ static unsigned deflateNoCompression(ucvector* out, const unsigned char* data, s
         BFINAL = (i == numdeflateblocks - 1);
         BTYPE = 0;
 
-        firstbyte = (unsigned char)(BFINAL + ((BTYPE & 1) << 1) + ((BTYPE & 2) << 1));
+        firstbyte = static_cast<unsigned char>(BFINAL + ((BTYPE & 1) << 1) + ((BTYPE & 2) << 1));
         ucvector_push_back(out, firstbyte);
 
         LEN = 65535;
         if(datasize - datapos < 65535) LEN = (unsigned)datasize - datapos;
         NLEN = 65535 - LEN;
 
-        ucvector_push_back(out, (unsigned char)(LEN & 255));
-        ucvector_push_back(out, (unsigned char)(LEN >> 8));
-        ucvector_push_back(out, (unsigned char)(NLEN & 255));
-        ucvector_push_back(out, (unsigned char)(NLEN >> 8));
+        ucvector_push_back(out, static_cast<unsigned char>(LEN & 255));
+        ucvector_push_back(out, static_cast<unsigned char>(LEN >> 8));
+        ucvector_push_back(out, static_cast<unsigned char>(NLEN & 255));
+        ucvector_push_back(out, static_cast<unsigned char>(NLEN >> 8));
 
         /*Decompressed data*/
         for(j = 0; j < 65535 && datapos < datasize; ++j)
@@ -2210,8 +2210,8 @@ unsigned lodepng_zlib_compress(unsigned char** out, size_t* outsize, const unsig
     /*ucvector-controlled version of the output buffer, for dynamic array*/
     ucvector_init_buffer(&outv, *out, *outsize);
 
-    ucvector_push_back(&outv, (unsigned char)(CMFFLG >> 8));
-    ucvector_push_back(&outv, (unsigned char)(CMFFLG & 255));
+    ucvector_push_back(&outv, static_cast<unsigned char>(CMFFLG >> 8));
+    ucvector_push_back(&outv, static_cast<unsigned char>(CMFFLG & 255));
 
     error = deflate(&deflatedata, &deflatesize, in, insize, settings);
 
@@ -2379,7 +2379,7 @@ unsigned lodepng_crc32(const unsigned char* data, size_t length);
 
 static unsigned char readBitFromReversedStream(size_t* bitpointer, const unsigned char* bitstream)
 {
-    unsigned char result = (unsigned char)((bitstream[(*bitpointer) >> 3] >> (7 - ((*bitpointer) & 0x7))) & 1);
+    unsigned char result = static_cast<unsigned char>((bitstream[(*bitpointer) >> 3] >> (7 - ((*bitpointer) & 0x7))) & 1);
     ++(*bitpointer);
     return result;
 }
@@ -2412,7 +2412,7 @@ static void setBitOfReversedStream0(size_t* bitpointer, unsigned char* bitstream
 static void setBitOfReversedStream(size_t* bitpointer, unsigned char* bitstream, unsigned char bit)
 {
     /*the current bit in bitstream may be 0 or 1 for this to work*/
-    if(bit == 0) bitstream[(*bitpointer) >> 3] &=  (unsigned char)(~(1 << (7 - ((*bitpointer) & 0x7))));
+    if(bit == 0) bitstream[(*bitpointer) >> 3] &=  static_cast<unsigned char>(~(1 << (7 - ((*bitpointer) & 0x7))));
     else         bitstream[(*bitpointer) >> 3] |=  (1 << (7 - ((*bitpointer) & 0x7)));
     ++(*bitpointer);
 }
@@ -4950,20 +4950,20 @@ static unsigned addChunk_tRNS(ucvector* out, const LodePNGColorMode* info)
     {
         if(info->key_defined)
         {
-            ucvector_push_back(&tRNS, (unsigned char)(info->key_r >> 8));
-            ucvector_push_back(&tRNS, (unsigned char)(info->key_r & 255));
+            ucvector_push_back(&tRNS, static_cast<unsigned char>(info->key_r >> 8));
+            ucvector_push_back(&tRNS, static_cast<unsigned char>(info->key_r & 255));
         }
     }
     else if(info->colortype == LCT_RGB)
     {
         if(info->key_defined)
         {
-            ucvector_push_back(&tRNS, (unsigned char)(info->key_r >> 8));
-            ucvector_push_back(&tRNS, (unsigned char)(info->key_r & 255));
-            ucvector_push_back(&tRNS, (unsigned char)(info->key_g >> 8));
-            ucvector_push_back(&tRNS, (unsigned char)(info->key_g & 255));
-            ucvector_push_back(&tRNS, (unsigned char)(info->key_b >> 8));
-            ucvector_push_back(&tRNS, (unsigned char)(info->key_b & 255));
+            ucvector_push_back(&tRNS, static_cast<unsigned char>(info->key_r >> 8));
+            ucvector_push_back(&tRNS, static_cast<unsigned char>(info->key_r & 255));
+            ucvector_push_back(&tRNS, static_cast<unsigned char>(info->key_g >> 8));
+            ucvector_push_back(&tRNS, static_cast<unsigned char>(info->key_g & 255));
+            ucvector_push_back(&tRNS, static_cast<unsigned char>(info->key_b >> 8));
+            ucvector_push_back(&tRNS, static_cast<unsigned char>(info->key_b & 255));
         }
     }
 
@@ -5088,21 +5088,21 @@ static unsigned addChunk_bKGD(ucvector* out, const LodePNGInfo* info)
     ucvector_init(&bKGD);
     if(info->color.colortype == LCT_GREY || info->color.colortype == LCT_GREY_ALPHA)
     {
-        ucvector_push_back(&bKGD, (unsigned char)(info->background_r >> 8));
-        ucvector_push_back(&bKGD, (unsigned char)(info->background_r & 255));
+        ucvector_push_back(&bKGD, static_cast<unsigned char>(info->background_r >> 8));
+        ucvector_push_back(&bKGD, static_cast<unsigned char>(info->background_r & 255));
     }
     else if(info->color.colortype == LCT_RGB || info->color.colortype == LCT_RGBA)
     {
-        ucvector_push_back(&bKGD, (unsigned char)(info->background_r >> 8));
-        ucvector_push_back(&bKGD, (unsigned char)(info->background_r & 255));
-        ucvector_push_back(&bKGD, (unsigned char)(info->background_g >> 8));
-        ucvector_push_back(&bKGD, (unsigned char)(info->background_g & 255));
-        ucvector_push_back(&bKGD, (unsigned char)(info->background_b >> 8));
-        ucvector_push_back(&bKGD, (unsigned char)(info->background_b & 255));
+        ucvector_push_back(&bKGD, static_cast<unsigned char>(info->background_r >> 8));
+        ucvector_push_back(&bKGD, static_cast<unsigned char>(info->background_r & 255));
+        ucvector_push_back(&bKGD, static_cast<unsigned char>(info->background_g >> 8));
+        ucvector_push_back(&bKGD, static_cast<unsigned char>(info->background_g & 255));
+        ucvector_push_back(&bKGD, static_cast<unsigned char>(info->background_b >> 8));
+        ucvector_push_back(&bKGD, static_cast<unsigned char>(info->background_b & 255));
     }
     else if(info->color.colortype == LCT_PALETTE)
     {
-        ucvector_push_back(&bKGD, (unsigned char)(info->background_r & 255)); /*palette index*/
+        ucvector_push_back(&bKGD, static_cast<unsigned char>(info->background_r & 255)); /*palette index*/
     }
 
     error = addChunk(out, "bKGD", bKGD.data, bKGD.size);
@@ -5116,8 +5116,8 @@ static unsigned addChunk_tIME(ucvector* out, const LodePNGTime* time)
     unsigned error = 0;
     unsigned char* data = (unsigned char*)lodepng_malloc(7);
     if(!data) return 83; /*alloc fail*/
-    data[0] = (unsigned char)(time->year >> 8);
-    data[1] = (unsigned char)(time->year & 255);
+    data[0] = static_cast<unsigned char>(time->year >> 8);
+    data[1] = static_cast<unsigned char>(time->year & 255);
     data[2] = (unsigned char)time->month;
     data[3] = (unsigned char)time->day;
     data[4] = (unsigned char)time->hour;
@@ -5286,7 +5286,7 @@ static unsigned filter(unsigned char* out, const unsigned char* in, unsigned w, 
                     sum[type] = 0;
                     if(type == 0)
                     {
-                        for(x = 0; x != linebytes; ++x) sum[type] += (unsigned char)(attempt[type][x]);
+                        for(x = 0; x != linebytes; ++x) sum[type] += static_cast<unsigned char>(attempt[type][x]);
                     }
                     else
                     {
