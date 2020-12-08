@@ -12,7 +12,7 @@ namespace urchin {
 
         lineValues[0] = 1;
         for (unsigned int column = 1; column < nbColumns; ++column) {
-            auto columnFloat = static_cast<float>(column);
+            auto columnFloat = (float)column;
             auto lineValue = (float)lineValues[column - 1] * (((float)lineNumber - (columnFloat - 1.0f)) / columnFloat);
             lineValues[column] = MathFunction::roundToUInt(lineValue);
         }

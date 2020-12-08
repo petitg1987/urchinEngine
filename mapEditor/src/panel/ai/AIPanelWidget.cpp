@@ -81,9 +81,9 @@ namespace urchin {
 
     void AIPanelWidget::aiChanged() {
         if (!disableAIEvent) {
-            std::shared_ptr<NavMeshAgent> navMeshAgent = std::make_shared<NavMeshAgent>(static_cast<float>(agentHeight->value()), static_cast<float>(agentRadius->value()));
+            std::shared_ptr<NavMeshAgent> navMeshAgent = std::make_shared<NavMeshAgent>((float)agentHeight->value(), (float)agentRadius->value());
             navMeshAgent->setMaxSlope(AngleConverter<float>::toRadian((float)maxSlope->value()));
-            navMeshAgent->setJumpDistance(static_cast<float>(jumpDistance->value()));
+            navMeshAgent->setJumpDistance((float)jumpDistance->value());
 
             aiController->updateSceneAI(navMeshAgent);
         }

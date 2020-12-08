@@ -21,7 +21,7 @@ namespace urchin {
             float maxValue = aabbox.getMax()[axis];
 
             for (int split = 0; split < nbSplits; ++split) {
-                float splitValue = std::min(aabbox.getMin()[axis] + limitSize * (static_cast<float>(split) + 1.0f), maxValue);
+                float splitValue = std::min(aabbox.getMin()[axis] + limitSize * (float)split + 1.0f, maxValue);
                 axisSplits[axis].push_back(splitValue);
             }
         }

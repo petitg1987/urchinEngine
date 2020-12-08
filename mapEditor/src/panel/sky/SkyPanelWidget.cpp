@@ -221,7 +221,7 @@ namespace urchin {
             skyboxFilenames.emplace_back(znSkyboxFilenameText->text().toStdString());
             skyboxFilenames.emplace_back(zpSkyboxFilenameText->text().toStdString());
 
-            skyController->updateSceneSky(skyboxFilenames, static_cast<float>(offsetY->value()));
+            skyController->updateSceneSky(skyboxFilenames, (float)offsetY->value());
         }
     }
 

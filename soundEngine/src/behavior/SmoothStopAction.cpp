@@ -42,7 +42,7 @@ namespace urchin {
         long timeInterval = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - previousTime).count();
         previousTime = currentTime;
 
-        float changeVolumePercentage = - (static_cast<float>(timeInterval) / 1000.0f) * soundBehavior.getVolumeDecreasePercentageOnStop();
+        float changeVolumePercentage = - ((float)timeInterval / 1000.0f) * soundBehavior.getVolumeDecreasePercentageOnStop();
         totalChangeVolumePercentage += changeVolumePercentage;
 
         return changeVolumePercentage;

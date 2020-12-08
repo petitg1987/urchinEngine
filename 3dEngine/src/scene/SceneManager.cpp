@@ -89,7 +89,7 @@ namespace urchin {
 
     void SceneManager::computeFps() {
         auto currentTime = std::chrono::high_resolution_clock::now();
-        float timeInterval = static_cast<float>(std::chrono::duration_cast<std::chrono::microseconds>(currentTime - previousTime).count());
+        float timeInterval = (float)std::chrono::duration_cast<std::chrono::microseconds>(currentTime - previousTime).count();
 
         previousFps[indexFps%3] = 1000000.0f / timeInterval;
         fps = (previousFps.at(indexFps%3)*9 + previousFps.at((indexFps-1)%3)*3 + previousFps.at((indexFps-2)%3)) / 13.0f;

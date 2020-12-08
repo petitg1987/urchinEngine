@@ -98,7 +98,7 @@ namespace urchin {
                     std::size_t index1 = indexedTriangle.getIndices()[i];
                     std::size_t index2 = indexedTriangle.getIndices()[(i+1)%3];
 
-                    auto edgeId = static_cast<uint_fast64_t>(std::min(index1, index2));
+                    auto edgeId = (uint_fast64_t)std::min(index1, index2);
                     edgeId = edgeId << 32u;
                     edgeId = edgeId + std::max(index1, index2);
 

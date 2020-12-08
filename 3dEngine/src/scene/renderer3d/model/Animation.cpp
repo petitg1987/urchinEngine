@@ -11,7 +11,7 @@ namespace urchin {
         animationInformation.currFrame = 0;
         animationInformation.nextFrame = 1;
         animationInformation.lastTime = 0;
-        animationInformation.maxTime = 1.0f / static_cast<float>(constAnimation->getFrameRate());
+        animationInformation.maxTime = 1.0f / (float)constAnimation->getFrameRate();
     }
 
     Animation::~Animation() {
@@ -70,7 +70,7 @@ namespace urchin {
         }
 
         //interpolate skeletons between two frames
-        float interp = animationInformation.lastTime * static_cast<float>(constAnimation->getFrameRate());
+        float interp = animationInformation.lastTime * (float)constAnimation->getFrameRate();
         for (unsigned int i = 0; i < constAnimation->getNumberBones(); ++i) {
             //shortcut
             const Bone& currentFrameBone = constAnimation->getBone(animationInformation.currFrame, i);

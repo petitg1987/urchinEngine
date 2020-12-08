@@ -436,8 +436,8 @@ namespace urchin {
 
         float previousSplitDistance = near;
         for (unsigned int i=1; i<=nbShadowMaps; ++i) {
-            float uniformSplit = near + (far - near) * (static_cast<float>(i)/static_cast<float>(nbShadowMaps));
-            float logarithmicSplit = near * std::pow(far/near, static_cast<float>(i)/static_cast<float>(nbShadowMaps));
+            float uniformSplit = near + (far - near) * ((float)i / (float)nbShadowMaps);
+            float logarithmicSplit = near * std::pow(far/near, (float)i / (float)nbShadowMaps);
 
             float splitDistance = (percentageUniformSplit * uniformSplit) + ((1.0f - percentageUniformSplit) * logarithmicSplit);
 

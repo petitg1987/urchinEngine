@@ -67,8 +67,8 @@ namespace urchin {
     }
 
     long long Converter::toLongLong(float value, float scale) {
-        const float minValue = static_cast<float>(std::numeric_limits<long long>::min()) / scale;
-        const float maxValue = static_cast<float>(std::numeric_limits<long long>::max()) / scale;
+        const float minValue = (float)std::numeric_limits<long long>::min() / scale;
+        const float maxValue = (float)std::numeric_limits<long long>::max() / scale;
 
         if (value < 0.0) {
             if (value < minValue) {
@@ -85,7 +85,7 @@ namespace urchin {
     }
 
     float Converter::toFloat(long long value, float scale) {
-        return static_cast<float>(value) / scale;
+        return (float)value / scale;
     }
 
     Point2<float> Converter::toPoint2(const std::string& str) {

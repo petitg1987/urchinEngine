@@ -44,16 +44,16 @@ namespace urchin {
 
         float width = 0.0f;
         float offsetY = 0.0f;
-        auto spaceBetweenLetters = static_cast<float>(font->getSpaceBetweenLetters());
-        auto spaceBetweenLines = static_cast<float>(font->getSpaceBetweenLines());
+        auto spaceBetweenLetters = (float)font->getSpaceBetweenLetters();
+        auto spaceBetweenLines = (float)font->getSpaceBetweenLines();
 
         for (auto& cutTextLine : cutTextLines) { //each lines
             float offsetX = 0.0f;
             for (char charLetter : cutTextLine) { //each letters
                 auto letter = static_cast<unsigned char>(charLetter);
-                auto letterShift = static_cast<float>(font->getGlyph(letter).shift);
-                auto letterWidth = static_cast<float>(font->getGlyph(letter).width);
-                auto letterHeight = static_cast<float>(font->getGlyph(letter).height);
+                auto letterShift = (float)font->getGlyph(letter).shift;
+                auto letterWidth = (float)font->getGlyph(letter).width;
+                auto letterHeight = (float)font->getGlyph(letter).height;
                 auto letterOffsetY = offsetY - letterShift;
 
                 vertexCoord.emplace_back(Point2<float>(offsetX, letterOffsetY));

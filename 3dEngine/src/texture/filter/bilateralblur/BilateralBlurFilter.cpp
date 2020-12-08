@@ -56,7 +56,7 @@ namespace urchin {
         std::vector<float> offsets(numOffsets, 0.0f);
 
         if (textureSize != 0) {
-            float pixelSize = 1.0f / static_cast<float>(textureSize);
+            float pixelSize = 1.0f / (float)textureSize;
             for (unsigned int i = 1; i <= numOffsets; ++i) {
                 offsets[i-1] = pixelSize * (float)i;
             }

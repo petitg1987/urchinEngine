@@ -166,7 +166,7 @@ namespace urchin {
                     randomFloats(generator));
             sample = sample.normalize();
 
-            float scale = static_cast<float>(i) / static_cast<float>(kernelSamples);
+            float scale = (float)i / (float)kernelSamples;
             scale = MathFunction::lerp<float>(0.1f, 1.0f, scale * scale); //use square function to bring most of sample closer to center
             sample *= scale;
             ssaoKernel.push_back(sample);
