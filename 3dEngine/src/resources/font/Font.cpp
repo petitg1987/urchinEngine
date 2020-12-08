@@ -17,7 +17,7 @@ namespace urchin {
     }
 
     Font::~Font() {
-        delete [] glyph;
+        delete[] glyph;
     }
 
     unsigned int Font::getFontSize() const {

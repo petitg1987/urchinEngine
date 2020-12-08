@@ -159,9 +159,9 @@ namespace urchin {
                                                                 const std::vector<unsigned int>& squares, EdgeDirection& usedDirection) const {
         for (EdgeDirection checkDirection : checkDirections) {
             int nextPointIndex = nextPointInDirection(pointIndex, checkDirection);
-            if (nextPointIndex!=-1 && edgeBelongToOneSquare(pointIndex, static_cast<unsigned int>(nextPointIndex), squares)) {
+            if (nextPointIndex != -1 && edgeBelongToOneSquare(pointIndex, (unsigned int)nextPointIndex, squares)) {
                 usedDirection = checkDirection;
-                return static_cast<unsigned int>(nextPointIndex);
+                return (unsigned int)nextPointIndex;
             }
         }
 

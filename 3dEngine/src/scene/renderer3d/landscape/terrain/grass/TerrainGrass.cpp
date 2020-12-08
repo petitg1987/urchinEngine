@@ -140,8 +140,8 @@ namespace urchin {
                             Point3<float> globalGrassVertex(xValue + terrainPosition.X, yValue, zValue + terrainPosition.Z);
                             Vector3<float> grassNormal = (mesh->getNormals()[vertexIndex] / 2.0f) + Vector3<float>(0.5f, 0.5f, 0.5f);
 
-                            unsigned int patchXIndex = std::min(static_cast<unsigned int>((xValue - startX) / adjustedPatchSizeX), patchQuantityX);
-                            unsigned int patchZIndex = std::min(static_cast<unsigned int>((zValue - startZ) / adjustedPatchSizeZ), patchQuantityZ);
+                            unsigned int patchXIndex = std::min((unsigned int)((xValue - startX) / adjustedPatchSizeX), patchQuantityX);
+                            unsigned int patchZIndex = std::min((unsigned int)((zValue - startZ) / adjustedPatchSizeZ), patchQuantityZ);
                             unsigned int patchIndex = (patchZIndex * patchQuantityX) + patchXIndex;
 
                             leafGrassPatches[patchIndex]->addVertex(globalGrassVertex, grassNormal);
@@ -176,7 +176,7 @@ namespace urchin {
 
         unsigned int depth = grassQuadtreeDepth;
         while (depth >= 1) {
-            auto depthNbQuadtreeX = static_cast<unsigned int>(MathFunction::pow(2, depth));
+            auto depthNbQuadtreeX = (unsigned int)(MathFunction::pow(2, depth));
             auto depthNbQuadtreeZ = depthNbQuadtreeX;
             unsigned int depthNbQuadtree = depthNbQuadtreeX * depthNbQuadtreeZ;
             if (std::sqrt(childrenGrassQuadtree.size()) >= std::sqrt(depthNbQuadtree)*2) {
@@ -188,8 +188,8 @@ namespace urchin {
 
                 for (unsigned int childZ = 0; childZ < childrenNbQuadtreeZ; ++childZ) {
                     for (unsigned int childX = 0; childX < childrenNbQuadtreeX; ++childX) {
-                        auto xQuadtreeIndex = static_cast<unsigned int>(((float)depthNbQuadtreeX / (float)childrenNbQuadtreeX) * ((float)childX + 0.5f));
-                        auto zQuadtreeIndex = static_cast<unsigned int>(((float)depthNbQuadtreeZ / (float)childrenNbQuadtreeZ) * ((float)childZ + 0.5f));
+                        auto xQuadtreeIndex = (unsigned int)(((float)depthNbQuadtreeX / (float)childrenNbQuadtreeX) * ((float)childX + 0.5f));
+                        auto zQuadtreeIndex = (unsigned int)(((float)depthNbQuadtreeZ / (float)childrenNbQuadtreeZ) * ((float)childZ + 0.5f));
 
                         unsigned int quadtreeIndex = (zQuadtreeIndex * depthNbQuadtreeX) + xQuadtreeIndex;
                         unsigned int childQuadtreeIndex = (childZ * childrenNbQuadtreeZ) + childX;

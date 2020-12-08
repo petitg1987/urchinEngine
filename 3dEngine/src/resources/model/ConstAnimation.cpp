@@ -23,12 +23,12 @@ namespace urchin {
 
     ConstAnimation::~ConstAnimation() {
         for (unsigned int i=0;i<numFrames;i++) {
-            delete [] skeletonFrames[i];
+            delete[] skeletonFrames[i];
             delete bboxes[i];
         }
 
-        delete [] skeletonFrames;
-        delete [] bboxes;
+        delete[] skeletonFrames;
+        delete[] bboxes;
     }
 
     const std::string& ConstAnimation::getAnimationFilename() const {

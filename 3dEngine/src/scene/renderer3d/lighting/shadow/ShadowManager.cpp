@@ -125,9 +125,9 @@ namespace urchin {
     void ShadowManager::deleteLightsLocation() {
         if (lightsLocation) {
             for (unsigned int i=0;i<lightManager->getMaxLights();++i) {
-                delete [] lightsLocation[i].mLightProjectionViewShaderVar;
+                delete[] lightsLocation[i].mLightProjectionViewShaderVar;
             }
-            delete [] lightsLocation;
+            delete[] lightsLocation;
         }
     }
 
@@ -469,7 +469,7 @@ namespace urchin {
                     ->textureNumberLayer(nbShadowMaps)
                     ->textureFormat(TextureFormat::RG_32_FLOAT)
                     ->blurDirection(GaussianBlurFilterBuilder::VERTICAL_BLUR)
-                    ->blurSize(static_cast<unsigned int>(blurShadow))
+                    ->blurSize((unsigned int)blurShadow)
                     ->build();
 
             std::unique_ptr<TextureFilter> horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>()
@@ -478,7 +478,7 @@ namespace urchin {
                     ->textureNumberLayer(nbShadowMaps)
                     ->textureFormat(TextureFormat::RG_32_FLOAT)
                     ->blurDirection(GaussianBlurFilterBuilder::HORIZONTAL_BLUR)
-                    ->blurSize(static_cast<unsigned int>(blurShadow))
+                    ->blurSize((unsigned int)blurShadow)
                     ->build();
 
             shadowDatas[light]->addTextureFilter(std::move(verticalBlurFilter));
@@ -556,7 +556,7 @@ namespace urchin {
         }
 
         ShaderDataSender().sendData(depthSplitDistanceShaderVar, nbShadowMaps, depthSplitDistance);
-        delete []depthSplitDistance;
+        delete[] depthSplitDistance;
     }
 
     void ShadowManager::drawLightSceneBox(const RenderTarget* renderTarget, const Frustum<float>& frustum, const Light* light, const Matrix4<float>& viewMatrix) const {

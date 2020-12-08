@@ -5,22 +5,22 @@
 namespace urchin {
 
     void NumericalCheck::perform() const {
-        auto intSize = static_cast<unsigned int>(sizeof(int));
+        auto intSize = (unsigned int)sizeof(int);
         if (intSize < 4) {
             throw std::runtime_error("Wrong number of byte for int: " + std::to_string(intSize));
         }
 
-        auto longLongSize = static_cast<unsigned int>(sizeof(long long));
+        auto longLongSize = (unsigned int)sizeof(long long);
         if (longLongSize <= 4) {
             throw std::runtime_error("Wrong number of byte for long long: " + std::to_string(longLongSize));
         }
 
-        auto floatSize = static_cast<unsigned int>(sizeof(float));
+        auto floatSize = (unsigned int)sizeof(float);
         if (floatSize < 4) {
             throw std::runtime_error("Wrong number of byte for float: " + std::to_string(floatSize));
         }
 
-        auto doubleSize = static_cast<unsigned int>(sizeof(double));
+        auto doubleSize = (unsigned int)sizeof(double);
         if (doubleSize < 8) {
             throw std::runtime_error("Wrong number of byte for double: " + std::to_string(doubleSize));
         }

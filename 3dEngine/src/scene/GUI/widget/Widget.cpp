@@ -139,16 +139,16 @@ namespace urchin {
 
     unsigned int Widget::getWidth() const {
         if (size.getWidthSizeType()==Size::PERCENTAGE) {
-            return static_cast<unsigned int>(size.getWidth() * (float)sceneWidth);
+            return (unsigned int)(size.getWidth() * (float)sceneWidth);
         }
-        return static_cast<unsigned int>(size.getWidth());
+        return (unsigned int)size.getWidth();
     }
 
     unsigned int Widget::getHeight() const {
         if (size.getHeightSizeType()==Size::PERCENTAGE) {
-            return static_cast<unsigned int>(size.getHeight() * (float)sceneHeight);
+            return (unsigned int)(size.getHeight() * (float)sceneHeight);
         }
-        return static_cast<unsigned int>(size.getHeight());
+        return (unsigned int)size.getHeight();
     }
 
     void Widget::setIsVisible(bool isVisible) {
@@ -179,7 +179,7 @@ namespace urchin {
 
     void Widget::handleWidgetKeyDown(unsigned int key) {
         if (key == InputDeviceKey::MOUSE_LEFT) {
-            Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
+            Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
             if (widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
                 widgetState=CLICKING;
                 for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
@@ -208,7 +208,7 @@ namespace urchin {
 
     void Widget::handleWidgetKeyUp(unsigned int key) {
         if (key == InputDeviceKey::MOUSE_LEFT) {
-            Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
+            Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
             if (widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
                 if (widgetState==CLICKING) {
                     widgetState = FOCUS;
@@ -264,7 +264,7 @@ namespace urchin {
     }
 
     void Widget::handleWidgetMouseMove(int mouseX, int mouseY) {
-        Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
+        Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
         if (widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
             if (widgetState==DEFAULT) {
                 widgetState = FOCUS;

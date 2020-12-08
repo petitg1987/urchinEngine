@@ -14,7 +14,7 @@
 #include "controller/terrains/TerrainController.h"
 #include "panel/terrains/TerrainTableView.h"
 
-#define MAX_MATERIAL 4 //maximum 4 materials (RGBA)
+#define MAX_MATERIAL 4u //maximum 4 materials (RGBA)
 
 namespace urchin {
 

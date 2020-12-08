@@ -45,7 +45,7 @@ namespace urchin {
 
         sceneDisplayer = new SceneDisplayer(sceneController, MouseController(this), statusBarController);
         sceneDisplayer->loadMap(mapEditorPath, mapFilename, relativeWorkingDirectory);
-        sceneDisplayer->resize(static_cast<unsigned int>(geometry().width()), static_cast<unsigned int>(geometry().height()));
+        sceneDisplayer->resize((unsigned int)geometry().width(), (unsigned int)geometry().height());
         sceneController->setup(sceneDisplayer->getMapHandler());
         updateSceneDisplayerViewProperties();
     }
@@ -118,15 +118,15 @@ namespace urchin {
 
     void SceneDisplayerWidget::resizeGL(int width, int height) {
         if (sceneDisplayer) {
-            sceneDisplayer->resize(static_cast<unsigned int>(width), static_cast<unsigned int>(height));
+            sceneDisplayer->resize((unsigned int)width, (unsigned int)height);
         }
     }
 
     void SceneDisplayerWidget::keyPressEvent(QKeyEvent* event) {
         if (sceneDisplayer) {
             if (event->key() < 256) {
-                sceneDisplayer->getSceneManager()->onKeyPress(static_cast<unsigned int>(event->key()));
-                sceneDisplayer->getSceneManager()->onChar(static_cast<unsigned int>(event->text().toLatin1()[0]));
+                sceneDisplayer->getSceneManager()->onKeyPress((unsigned int)event->key());
+                sceneDisplayer->getSceneManager()->onChar((unsigned int)event->text().toLatin1()[0]);
             } else if (event->key() == Qt::Key_Left) {
                 sceneDisplayer->getSceneManager()->onKeyPress(InputDeviceKey::LEFT_ARROW);
             } else if (event->key() == Qt::Key_Right) {
@@ -142,7 +142,7 @@ namespace urchin {
     void SceneDisplayerWidget::keyReleaseEvent(QKeyEvent* event) {
         if (sceneDisplayer) {
             if (event->key() < 256) {
-                sceneDisplayer->getSceneManager()->onKeyRelease(static_cast<unsigned int>(event->key()));
+                sceneDisplayer->getSceneManager()->onKeyRelease((unsigned int)event->key());
             } else if (event->key() == Qt::Key_Left) {
                 sceneDisplayer->getSceneManager()->onKeyRelease(InputDeviceKey::LEFT_ARROW);
             } else if (event->key() == Qt::Key_Right) {

@@ -43,8 +43,8 @@ namespace urchin {
         bool bufferFilled;
         do
         {
-            std::size_t itemsToRead = buffer.size() - numSamplesRead;
-            numSamplesRead += static_cast<unsigned int>(sf_read_short(file, &buffer[numSamplesRead], itemsToRead));
+            auto itemsToRead = (sf_count_t)(buffer.size() - numSamplesRead);
+            numSamplesRead += (unsigned int)sf_read_short(file, &buffer[numSamplesRead], itemsToRead);
             bool endOfFileReached = buffer.size() != numSamplesRead;
 
             if (endOfFileReached) {

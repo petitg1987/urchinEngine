@@ -1081,7 +1081,7 @@ bool ClipperBase::AddPath(const Path& pg, PolyType PolyTyp, bool Closed)
   }
   catch(...)
   {
-    delete [] edges;
+    delete[] edges;
     throw; //range test fails
   }
   TEdge* eStart = &edges[0];
@@ -1122,7 +1122,7 @@ bool ClipperBase::AddPath(const Path& pg, PolyType PolyTyp, bool Closed)
 
   if ((!Closed && (E == E->Next)) || (Closed && (E->Prev == E->Next)))
   {
-    delete [] edges;
+    delete[] edges;
     return false;
   }
 
@@ -1150,7 +1150,7 @@ bool ClipperBase::AddPath(const Path& pg, PolyType PolyTyp, bool Closed)
   {
     if (Closed) 
     {
-      delete [] edges;
+      delete[] edges;
       return false;
     }
     E->Prev->OutIdx = Skip;
@@ -1240,7 +1240,7 @@ void ClipperBase::Clear()
   for (EdgeList::size_type i = 0; i < m_edges.size(); ++i)
   {
     TEdge* edges = m_edges[i];
-    delete [] edges;
+    delete[] edges;
   }
   m_edges.clear();
   m_UseFullRange = false;
@@ -4447,7 +4447,7 @@ void CleanPolygon(const Path& in_poly, Path& out_poly, double distance)
     out_poly[i] = op->Pt;
     op = op->Next;
   }
-  delete [] outPts;
+  delete[] outPts;
 }
 //------------------------------------------------------------------------------
 

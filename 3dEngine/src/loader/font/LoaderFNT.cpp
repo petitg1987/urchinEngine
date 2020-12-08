@@ -51,14 +51,14 @@ namespace urchin {
         if (FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT)) {
             FT_Done_Face(face);
             FT_Done_FreeType(library);
-            delete [] glyph;
+            delete[] glyph;
 
             throw std::runtime_error("Error with the loading of the glyph, filename: " + fileFontPath + ".");
         }
         if (FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL)) {
             FT_Done_Face(face);
             FT_Done_FreeType(library);
-            delete [] glyph;
+            delete[] glyph;
 
             throw std::runtime_error("Error of render with the glyph, filename: " + fileFontPath + ".");
         }
@@ -69,7 +69,7 @@ namespace urchin {
             if (FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT)) {
                 FT_Done_Face(face);
                 FT_Done_FreeType(library);
-                delete [] glyph;
+                delete[] glyph;
 
                 throw std::runtime_error("Error with the loading of the glyph, filename: " + fileFontPath + ".");
             }
@@ -77,7 +77,7 @@ namespace urchin {
             if (FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL)) {
                 FT_Done_Face(face);
                 FT_Done_FreeType(library);
-                delete [] glyph;
+                delete[] glyph;
 
                 throw std::runtime_error("Error of render with the glyph, filename: " + fileFontPath + ".");
             }
@@ -140,7 +140,7 @@ namespace urchin {
 
         //clears buffers of letters
         for (std::size_t i=0;i<NUM_LETTERS;i++) {
-            delete [] glyph[i].buf;
+            delete[] glyph[i].buf;
             glyph[i].buf = nullptr;
         }
 

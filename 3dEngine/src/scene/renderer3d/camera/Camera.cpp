@@ -208,11 +208,11 @@ namespace urchin {
     bool Camera::onMouseMove(int mouseX, int mouseY) {
         if (mouseX > 0 || mouseY > 0) {
             if (!bUseMouse) {
-                oldMouseX = static_cast<unsigned int>(mouseX);
-                oldMouseY = static_cast<unsigned int>(mouseY);
+                oldMouseX = (unsigned int)mouseX;
+                oldMouseY = (unsigned int)mouseY;
                 return true;
             }
-            if ((static_cast<unsigned int>(mouseX) == middleScreenX) && (static_cast<unsigned int>(mouseY) == middleScreenY)) {
+            if ((unsigned int)mouseX == middleScreenX && (unsigned int)mouseY == middleScreenY) {
                 return false;
             }
 

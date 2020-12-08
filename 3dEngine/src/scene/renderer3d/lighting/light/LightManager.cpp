@@ -30,7 +30,7 @@ namespace urchin {
         }
 
         delete lightOctreeManager;
-        delete [] lightsInfo;
+        delete[] lightsInfo;
     }
 
     void LightManager::initiateShaderVariables(const std::unique_ptr<Shader>& lightingShader) {

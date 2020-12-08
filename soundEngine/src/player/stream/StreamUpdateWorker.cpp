@@ -36,11 +36,11 @@ namespace urchin {
 
         //create buffers/chunks
         auto* bufferId = new ALuint[nbChunkBuffer];
-        alGenBuffers(nbChunkBuffer, bufferId);
+        alGenBuffers((int)nbChunkBuffer, bufferId);
         for (unsigned int i=0; i<nbChunkBuffer; ++i) {
             task->getStreamChunk(i).bufferId = bufferId[i];
         }
-        delete []bufferId;
+        delete[] bufferId;
 
         //initialize buffers/chunks
         for (unsigned int i=0; i<nbChunkBuffer; ++i) {
@@ -147,7 +147,7 @@ namespace urchin {
             alDeleteBuffers(1, &task->getStreamChunk(i).bufferId);
         }
 
-        delete [] task->getStreamChunks();
+        delete[] task->getStreamChunks();
         delete task;
     }
 

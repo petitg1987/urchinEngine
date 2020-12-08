@@ -164,9 +164,9 @@ namespace urchin {
             FileReaderUtil::nextLine(file, buffer); //buferf = "}"
         }
 
-        delete [] boneInfos;
-        delete [] baseFrame;
-        delete [] animFrameData;
+        delete[] boneInfos;
+        delete[] baseFrame;
+        delete[] animFrameData;
 
         file.close();
         return (new ConstAnimation(filename, numFrames, numBones, frameRate, skeletonFrames, bboxes));

@@ -180,17 +180,17 @@ namespace urchin {
         connect(clearMaskFileButton, SIGNAL(clicked()), this, SLOT(clearMaskFilename()));
 
         materialFilenameTexts.resize(MAX_MATERIAL);
-        for (int i=0; i<MAX_MATERIAL; ++i) {
+        for (unsigned int i=0; i < MAX_MATERIAL; ++i) {
             std::string materialLabelStr = "Material " + std::to_string(i + 1) +":";
             auto *materialLabel= new QLabel(materialLabelStr.c_str());
-            materialLayout->addWidget(materialLabel, 2 + i, 0);
+            materialLayout->addWidget(materialLabel, 2 + (int)i, 0);
 
             materialFilenameTexts[i] = new QLineEdit();
-            materialLayout->addWidget(materialFilenameTexts[i], 2+i, 1, 1, 2);
+            materialLayout->addWidget(materialFilenameTexts[i], 2 + (int)i, 1, 1, 2);
             materialFilenameTexts[i]->setReadOnly(true);
 
             auto* selectMaterialFileButton = new QPushButton("...");
-            materialLayout->addWidget(selectMaterialFileButton, 2+i, 3);
+            materialLayout->addWidget(selectMaterialFileButton, 2 + (int)i, 3);
             ButtonStyleHelper::applyNormalStyle(selectMaterialFileButton);
             selectMaterialFileButton->setFixedWidth(22);
             auto* selectSignalMapper = new QSignalMapper();
@@ -199,7 +199,7 @@ namespace urchin {
             connect(selectSignalMapper, SIGNAL(mapped(const QString&)), this, SLOT(showMaterialFilenameDialog(const QString&)));
 
             auto* clearMaterialFileButton = new QPushButton("Clr");
-            materialLayout->addWidget(clearMaterialFileButton, 2+i, 4);
+            materialLayout->addWidget(clearMaterialFileButton, 2 + (int)i, 4);
             ButtonStyleHelper::applyNormalStyle(clearMaterialFileButton);
             clearMaterialFileButton->setFixedWidth(22);
             auto* clearSignalMapper = new QSignalMapper();
@@ -462,7 +462,7 @@ namespace urchin {
 
             std::string grassTextureFilename = grassTextureFilenameText->text().toStdString();
             std::string grassMaskFilename = grassMaskFilenameText->text().toStdString();
-            auto numGrassInTexValue = static_cast<unsigned int>(numGrassInTex->value());
+            auto numGrassInTexValue = (unsigned int)numGrassInTex->value();
             Vector3<float> windDirection((float)windDirectionX->value(), (float)windDirectionY->value(), (float)windDirectionZ->value());
             terrainController->updateSceneTerrainGrass(sceneTerrain, grassTextureFilename, grassMaskFilename, numGrassInTexValue, (float)grassQuantity->value(),
                                                        (float)grassHeight->value(), (float)grassLength->value(), windDirection, (float)windStrength->value());
@@ -497,7 +497,7 @@ namespace urchin {
     }
 
     void TerrainPanelWidget::showMaterialFilenameDialog(const QString& positionIndexStr) {
-        int i = std::stoi(positionIndexStr.toStdString());
+        unsigned int i = (unsigned int)std::stoi(positionIndexStr.toStdString());
 
         std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
         QString directory = preferredMaterialPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredMaterialPath;

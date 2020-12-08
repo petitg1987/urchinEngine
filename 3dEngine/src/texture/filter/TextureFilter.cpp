@@ -132,7 +132,7 @@ namespace urchin {
         addFurtherTextures(textureRenderer);
 
         if (textureType == TextureType::ARRAY) {
-            ShaderDataSender().sendData(layersToUpdateShaderVar, static_cast<unsigned int>(layersToUpdate));
+            ShaderDataSender().sendData(layersToUpdateShaderVar, (unsigned int)layersToUpdate);
         }
 
         offscreenRenderTarget->activeShader(textureFilterShader);

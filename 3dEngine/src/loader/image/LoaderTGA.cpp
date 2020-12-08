@@ -120,17 +120,17 @@ namespace urchin {
 
             default:
                 if (header.colormapType) {
-                    delete [] colorMap;
+                    delete[] colorMap;
                 }
-                delete [] data;
+                delete[] data;
                 //image type is not correct
                 throw std::runtime_error("Unknown TGA image type, filename: " + filenamePath + ".");
         }
 
         if (header.colormapType) {
-            delete [] colorMap;
+            delete[] colorMap;
         }
-        delete [] data;
+        delete[] data;
 
 
         unsigned int origin = ((unsigned int)header.imageDescriptor & 0x20u) >> 5u; //0:origin bottom, 1:origin top
@@ -150,8 +150,8 @@ namespace urchin {
     }
 
     void LoaderTGA::getImageInfo(const TgaHeader& header) {
-        width = static_cast<unsigned int>(header.width);
-        height = static_cast<unsigned int>(header.height);
+        width = (unsigned int)header.width;
+        height = (unsigned int)header.height;
 
         switch(header.imageType) {
             case 3: //grayscale 8 bits

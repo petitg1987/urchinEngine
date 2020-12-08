@@ -987,7 +987,7 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 	buf[0] = 0;
 
 	if ( fread( buf, length, 1, file ) != 1 ) {
-		delete [] buf;
+		delete[] buf;
 		SetError( TIXML_ERROR_OPENING_FILE, 0, 0, TIXML_ENCODING_UNKNOWN );
 		return false;
 	}
@@ -1035,7 +1035,7 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 	if ( p-lastPos ) {
 		data.append( lastPos, p-lastPos );
 	}		
-	delete [] buf;
+	delete[] buf;
 	buf = 0;
 
 	Parse( data.c_str(), 0, encoding );

@@ -17,7 +17,7 @@ namespace urchin {
 
         int countAttachedShaders = 0;
         int maxCount = 10;
-        auto* attachedShaders = new unsigned int[maxCount];
+        auto* attachedShaders = new unsigned int[(unsigned long)maxCount];
 
         glGetAttachedShaders(shaderId, maxCount, &countAttachedShaders, attachedShaders);
 
@@ -26,7 +26,7 @@ namespace urchin {
             glDeleteShader(attachedShaders[i]);
         }
 
-        delete [] attachedShaders;
+        delete[] attachedShaders;
         glDeleteProgram(shaderId);
     }
 
