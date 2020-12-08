@@ -49,27 +49,27 @@ namespace urchin {
     }
 
     int MathFunction::roundToInt(float value) {
-        return static_cast<int>(std::lround(value));
+        return (int)std::lround(value);
     }
 
     unsigned int MathFunction::roundToUInt(float value) {
-        return static_cast<unsigned int>(std::lround(value));
+        return (unsigned int)std::lround(value);
     }
 
     int MathFunction::ceilToInt(float value) {
-        return static_cast<int>(std::ceil(value));
+        return (int)std::ceil(value);
     }
 
     unsigned int MathFunction::ceilToUInt(float value) {
-        return static_cast<unsigned int>(std::ceil(value));
+        return (unsigned int)std::ceil(value);
     }
 
     int MathFunction::floorToInt(float value) {
-        return static_cast<int>(std::floor(value));
+        return (int)std::floor(value);
     }
 
     unsigned int MathFunction::floorToUInt(float value) {
-        return static_cast<unsigned int>(std::floor(value));
+        return (unsigned int)std::floor(value);
     }
 
     /**

@@ -1,5 +1,3 @@
-#include <algorithm>
-
 #include "ShadowModelShaderVariable.h"
 #include "graphic/shader/data/ShaderDataSender.h"
 

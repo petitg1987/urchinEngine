@@ -68,7 +68,7 @@ namespace urchin {
                     updateSideIndex(otherSide, otherSideIndex+1);
                     updateSideIndex(updateSide, otherSideIndex+1);
 
-                    return static_cast<int>(otherSideIndex + 1);
+                    return (int)otherSideIndex + 1;
                 }
             }
         }

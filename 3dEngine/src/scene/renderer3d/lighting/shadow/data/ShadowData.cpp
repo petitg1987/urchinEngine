@@ -63,7 +63,7 @@ namespace urchin {
 
         std::shared_ptr<Texture> texture = shadowMapTexture;
         for (auto& textureFilter : textureFilters) {
-            textureFilter->applyOn(texture, static_cast<int>(layersToUpdate));
+            textureFilter->applyOn(texture, (int)layersToUpdate);
             texture = textureFilter->getTexture();
         }
     }

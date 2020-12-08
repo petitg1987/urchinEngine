@@ -178,7 +178,7 @@ namespace urchin {
                 remainingTime = (timeStep + additionalTimeStep) - (float)((double)diffTimeMicroSeconds / 1000000.0);
 
                 if (remainingTime >= 0.0f) {
-                    std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(remainingTime * 1000.0f)));
+                    std::this_thread::sleep_for(std::chrono::milliseconds((int)(remainingTime * 1000.0f)));
 
                     remainingTime = 0.0f;
                     frameStartTime = std::chrono::high_resolution_clock::now();

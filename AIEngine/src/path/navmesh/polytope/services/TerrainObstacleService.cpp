@@ -173,22 +173,22 @@ namespace urchin {
             if ((pointIndex + 1) % xLength == 0) { //no right point
                 return -1;
             }
-            return static_cast<int>(pointIndex) + 1;
+            return (int)pointIndex + 1;
         } else if (EdgeDirection::BOTTOM == direction) {
             if (pointIndex >= xLength * (zLength - 1)) { //no bottom point
                 return -1;
             }
-            return static_cast<int>(pointIndex + xLength);
+            return (int)(pointIndex + xLength);
         } else if (EdgeDirection::LEFT == direction) {
             if (pointIndex % xLength == 0) { //no left point
                 return -1;
             }
-            return static_cast<int>(pointIndex) - 1;
+            return (int)pointIndex - 1;
         } else if (EdgeDirection::TOP == direction) {
             if (pointIndex < xLength) { //no top point
                 return -1;
             }
-            return static_cast<int>(pointIndex - xLength);
+            return (int)(pointIndex - xLength);
         }
 
         throw std::runtime_error("Unknown edge direction: " + std::to_string(direction));

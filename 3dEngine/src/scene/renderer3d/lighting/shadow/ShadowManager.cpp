@@ -539,7 +539,7 @@ namespace urchin {
 
                 unsigned int texUnit = lightingRenderer
                         ->addAdditionalTexture(TextureReader::build(shadowData->getFilteredShadowMapTexture(), TextureParam::buildLinear()));
-                ShaderDataSender().sendData(lightsLocation[i].shadowMapTexShaderVar, static_cast<int>(texUnit));
+                ShaderDataSender().sendData(lightsLocation[i].shadowMapTexShaderVar, (int)texUnit);
 
                 for (unsigned int j = 0; j < nbShadowMaps; ++j) {
                     Matrix4<float> lightProjectionViewMatrix = shadowData->getFrustumShadowData(j)->getLightProjectionMatrix() * shadowData->getLightViewMatrix();

@@ -221,8 +221,8 @@ namespace urchin {
 
             //vector that describes mousePosition - center
             Vector2<float> mouseDirection;
-            mouseDirection.X = (float)(static_cast<int>(middleScreenX) - mouseX) * mouseSensitivity;
-            mouseDirection.Y = (float)(static_cast<int>(middleScreenY) - mouseY) * mouseSensitivity;
+            mouseDirection.X = (float)((int)middleScreenX - mouseX) * mouseSensitivity;
+            mouseDirection.Y = (float)((int)middleScreenY - mouseY) * mouseSensitivity;
 
             //do not rotate up/down more than "maxRotationX" percent
             float currentRotationX = view.Y + mouseDirection.Y;

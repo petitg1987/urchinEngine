@@ -196,13 +196,13 @@ namespace urchin {
     std::pair<unsigned int, unsigned int> CollisionHeightfieldShape::computeStartEndIndices(float minValue, float maxValue, Axis axis) const {
         float halfSize = axis==Axis::X ? localAABBox->getHalfSizes().X : localAABBox->getHalfSizes().Z;
         float verticesDistance = axis==Axis::X ? vertices[1].X - vertices[0].X : vertices[xLength].Z - vertices[0].Z;
-        int maxLength = axis==Axis::X ? static_cast<int>(xLength-1) : static_cast<int>(zLength-1);
+        int maxLength = axis==Axis::X ? (int)xLength - 1 : (int)zLength - 1;
 
-        auto rawStartVertex = static_cast<int>((minValue + halfSize) / verticesDistance);
-        auto startVertex = static_cast<unsigned int>(MathFunction::clamp(rawStartVertex, 0, maxLength));
+        auto rawStartVertex = (int)((minValue + halfSize) / verticesDistance);
+        auto startVertex = (unsigned int)MathFunction::clamp(rawStartVertex, 0, maxLength);
 
-        auto rawEndVertex = static_cast<int>((maxValue + halfSize) / verticesDistance) + 1;
-        auto endVertex = static_cast<unsigned int>(MathFunction::clamp(rawEndVertex, 0, maxLength));
+        auto rawEndVertex = (int)((maxValue + halfSize) / verticesDistance) + 1;
+        auto endVertex = (unsigned int)MathFunction::clamp(rawEndVertex, 0, maxLength);
 
         return std::make_pair(startVertex, endVertex);
     }

@@ -42,7 +42,7 @@ namespace urchin {
     }
 
     ShaderDataSender& ShaderDataSender::sendData(const ShaderVar& shaderVar, bool value) {
-        return sendData(shaderVar, static_cast<int>(value));
+        return sendData(shaderVar, (int)value);
     }
 
     ShaderDataSender& ShaderDataSender::sendData(const ShaderVar& shaderVar, const Matrix2<float>& value) {

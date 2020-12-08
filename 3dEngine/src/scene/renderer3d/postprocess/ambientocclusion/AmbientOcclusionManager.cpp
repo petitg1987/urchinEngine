@@ -317,7 +317,7 @@ namespace urchin {
 
     void AmbientOcclusionManager::loadAOTexture(const std::unique_ptr<GenericRenderer>& lightingRenderer) const {
         unsigned int aoTextureUnit = lightingRenderer->addAdditionalTexture(TextureReader::build(getAmbientOcclusionTexture(), TextureParam::buildLinear()));
-        ShaderDataSender().sendData(ambientOcclusionTexShaderVar, static_cast<int>(aoTextureUnit));
+        ShaderDataSender().sendData(ambientOcclusionTexShaderVar, (int)aoTextureUnit);
     }
 
 }

@@ -20,7 +20,7 @@ namespace urchin {
 
     void AntiAliasingManager::loadFxaaShader() {
         std::map<std::string, std::string> fxaaTokens;
-        fxaaTokens["FXAA_QUALITY"] = std::to_string(static_cast<int>(quality));
+        fxaaTokens["FXAA_QUALITY"] = std::to_string((int)quality);
 
         fxaaShader = ShaderBuilder().createShader("fxaa.vert", "", "fxaa.frag", fxaaTokens);
         invSceneSizeShaderVar = ShaderVar(fxaaShader, "invSceneSize");

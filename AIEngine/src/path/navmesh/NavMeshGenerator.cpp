@@ -285,7 +285,7 @@ namespace urchin {
         for (auto& obstaclePolygon : obstaclePolygons) {
             obstaclePolygon.simplify(polygonMinDotProductThreshold, polygonMergePointsDistanceThreshold);
             if (obstaclePolygon.getCwPoints().size() > 2) {
-                auto walkablePolygonsCounter = static_cast<int>(walkablePolygons.size());
+                auto walkablePolygonsCounter = (int)walkablePolygons.size();
                 while (walkablePolygonsCounter-- != 0) {
                     const CSGPolygon<float>& walkablePolygon = walkablePolygons[0];
 

@@ -105,14 +105,14 @@ namespace urchin {
             contactPoints[i].updateDepth(newDepth);
         }
 
-        for (auto i=static_cast<int>(nbContactPoint-1); i>=0; --i) { //loop from last to first in order to be able to remove contact points
+        for (auto i = (int)nbContactPoint - 1; i>=0; --i) { //loop from last to first in order to be able to remove contact points
             if (contactPoints[i].getDepth() > contactBreakingThreshold) {
-                removeContactPoint(static_cast<unsigned int>(i));
+                removeContactPoint((unsigned int)i);
             } else {
                 Point3<float> projectedPointOnObject2 = contactPoints[i].getPointOnObject1().translate(-(contactPoints[i].getNormalFromObject2() * contactPoints[i].getDepth()));
                 Vector3<float> projectedDifference = projectedPointOnObject2.vector(contactPoints[i].getPointOnObject2());
                 if (projectedDifference.squareLength() > contactBreakingThreshold * contactBreakingThreshold) {
-                    removeContactPoint(static_cast<unsigned int>(i));
+                    removeContactPoint((unsigned int)i);
                 }
             }
         }
@@ -125,12 +125,12 @@ namespace urchin {
     int ManifoldResult::getNearestPointIndex(const Point3<float>& localPointOnObject2) const {
         float shortestDistance = contactBreakingThreshold * contactBreakingThreshold;
         int nearestPointIndex = -1;
-        for (unsigned int i=0; i<nbContactPoint; ++i) {
+        for (unsigned int i = 0; i < nbContactPoint; ++i) {
             Vector3<float> diff = localPointOnObject2.vector(contactPoints[i].getLocalPointOnObject2());
             float diffSquareLength = diff.squareLength();
             if (diffSquareLength < shortestDistance) {
                 shortestDistance = diffSquareLength;
-                nearestPointIndex = static_cast<int>(i);
+                nearestPointIndex = (int)i;
             }
         }
 
@@ -144,7 +144,7 @@ namespace urchin {
      * @return Best index to insert the new point
      */
     unsigned int ManifoldResult::computeBestInsertionIndex(const Point3<float>& localPointOnObject2) const {
-        assert(nbContactPoint==MAX_PERSISTENT_POINTS);
+        assert(nbContactPoint == MAX_PERSISTENT_POINTS);
 
         unsigned int deepestIndex = getDeepestPointIndex();
         float areas[MAX_PERSISTENT_POINTS]; //areas[X] contains area formed by all points except point 'contactPoints[X]'
@@ -176,7 +176,7 @@ namespace urchin {
         //find biggest area
         unsigned int insertionIndex = 0;
         float biggestArea = areas[insertionIndex];
-        for (unsigned int i=1; i<MAX_PERSISTENT_POINTS; ++i) {
+        for (unsigned int i = 1; i < MAX_PERSISTENT_POINTS; ++i) {
             if (areas[i] > biggestArea) {
                 biggestArea = areas[i];
                 insertionIndex = i;
@@ -189,7 +189,7 @@ namespace urchin {
     unsigned int ManifoldResult::getDeepestPointIndex() const {
         float deepestValue = contactPoints[0].getDepth();
         unsigned int deepestIndex = 0;
-        for (unsigned int i=1; i<nbContactPoint; ++i) {
+        for (unsigned int i = 1; i < nbContactPoint; ++i) {
             if (contactPoints[i].getDepth() < deepestValue) {
                 deepestValue = contactPoints[i].getDepth();
                 deepestIndex = i;

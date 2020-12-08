@@ -298,7 +298,7 @@ namespace urchin {
     void TerrainGrass::setNumGrassInTexture(unsigned int numGrassInTex) {
         this->numGrassInTex = numGrassInTex;
 
-        ShaderDataSender().sendData(numGrassInTexShaderVar, static_cast<int>(numGrassInTex));
+        ShaderDataSender().sendData(numGrassInTexShaderVar, (int)numGrassInTex);
     }
 
     float TerrainGrass::getGrassQuantity() const {
