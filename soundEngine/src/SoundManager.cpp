@@ -11,7 +11,7 @@ namespace urchin {
             streamUpdateWorkerThread(new std::thread(&StreamUpdateWorker::start, streamUpdateWorker)) {
         DeviceManager::instance();
         alDistanceModel(AL_LINEAR_DISTANCE_CLAMPED);
-        alListener3f(AL_POSITION, 0.f, 0.f, 0.f);
+        alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
     }
 
     SoundManager::~SoundManager() {
@@ -107,7 +107,7 @@ namespace urchin {
     void SoundManager::process() {
         ScopeProfiler sp(Profiler::sound(), "soundMgrProc");
 
-        process(Point3<float>(0.0, 0.0, 0.0));
+        process(Point3<float>(0.0f, 0.0f, 0.0f));
     }
 
     void SoundManager::deleteAudioController(AudioController* audioController) {

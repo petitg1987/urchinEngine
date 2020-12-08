@@ -131,7 +131,7 @@ namespace urchin {
             if (character < 256 && character > 30 && character != 127) {
                 std::string tmpRight = allText.substr((unsigned long)cursorIndex, allText.length()-cursorIndex);
                 allText = allText.substr(0, (unsigned long)cursorIndex);
-                allText.append(1, (char)character);
+                allText.append(1, static_cast<char>(character));
                 allText.append(tmpRight);
                 refreshText(cursorIndex+1);
             }
