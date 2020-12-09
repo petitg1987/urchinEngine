@@ -63,6 +63,7 @@ namespace urchin {
 
             const Point3<float>& position = physicsTransform.getPosition();
 
+            //TODO: thread safe method required
             lastAABBox = AABBox<float>(position - extend, position + extend);
             lastTransform = physicsTransform;
         }

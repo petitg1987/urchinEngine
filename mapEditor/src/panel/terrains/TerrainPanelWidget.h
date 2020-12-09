@@ -10,11 +10,10 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include "UrchinCommon.h"
+#include "Urchin3dEngine.h"
 
 #include "controller/terrains/TerrainController.h"
 #include "panel/terrains/TerrainTableView.h"
-
-#define MAX_MATERIAL 4u //maximum 4 materials (RGBA)
 
 namespace urchin {
 

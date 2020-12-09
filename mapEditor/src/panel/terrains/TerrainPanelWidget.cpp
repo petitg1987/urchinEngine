@@ -179,8 +179,8 @@ namespace urchin {
         clearMaskFileButton->setFixedWidth(22);
         connect(clearMaskFileButton, SIGNAL(clicked()), this, SLOT(clearMaskFilename()));
 
-        materialFilenameTexts.resize(MAX_MATERIAL);
-        for (unsigned int i=0; i < MAX_MATERIAL; ++i) {
+        materialFilenameTexts.resize(TerrainMaterial::MAX_MATERIAL);
+        for (unsigned int i=0; i < TerrainMaterial::MAX_MATERIAL; ++i) {
             std::string materialLabelStr = "Material " + std::to_string(i + 1) +":";
             auto *materialLabel= new QLabel(materialLabelStr.c_str());
             materialLayout->addWidget(materialLabel, 2 + (int)i, 0);
@@ -376,8 +376,8 @@ namespace urchin {
         this->sRepeat->setValue(terrain->getMaterial()->getSRepeat());
         this->tRepeat->setValue(terrain->getMaterial()->getTRepeat());
         this->maskMapFilenameText->setText(QString::fromStdString(terrain->getMaterial()->getMaskMapFilename()));
-        this->materialFilenameTexts.resize(MAX_MATERIAL);
-        for (unsigned int i=0; i<MAX_MATERIAL; ++i) {
+        this->materialFilenameTexts.resize(TerrainMaterial::MAX_MATERIAL);
+        for (unsigned int i=0; i<TerrainMaterial::MAX_MATERIAL; ++i) {
             Material* material = terrain->getMaterial()->getMaterials()[i];
 
             if (material != nullptr) {
@@ -449,7 +449,7 @@ namespace urchin {
 
             std::string maskMapFilename = maskMapFilenameText->text().toStdString();
             std::vector<std::string> materialFilenames;
-            for (unsigned int i=0; i<MAX_MATERIAL; ++i) {
+            for (unsigned int i=0; i<TerrainMaterial::MAX_MATERIAL; ++i) {
                 materialFilenames.push_back(materialFilenameTexts[i]->text().toStdString());
             }
             terrainController->updateSceneTerrainMaterial(sceneTerrain, (float)sRepeat->value(), (float)tRepeat->value(), maskMapFilename, materialFilenames);

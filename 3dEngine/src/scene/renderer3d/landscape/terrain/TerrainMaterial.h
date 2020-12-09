@@ -8,12 +8,12 @@
 #include "resources/material/Material.h"
 #include "resources/image/Image.h"
 
-#define MAX_MATERIAL 4 //maximum 4 materials (RGBA)
-
 namespace urchin {
 
     class TerrainMaterial {
         public:
+            static const unsigned int MAX_MATERIAL;
+
             explicit TerrainMaterial(const std::string&, const std::vector<std::string>&, float, float);
             ~TerrainMaterial();
 

@@ -30,7 +30,7 @@ namespace urchin {
         std::shared_ptr<XmlChunk> tRepeatChunk = xmlParser.getUniqueChunk(true, T_REPEAT_TAG, XmlAttribute(), materialChunk);
         std::shared_ptr<XmlChunk> materialFilenamesChunk = xmlParser.getUniqueChunk(true, MATERIAL_FILENAMES, XmlAttribute(), materialChunk);
         std::vector<std::string> materialFilenames;
-        for (unsigned int i = 0; i < MAX_MATERIAL; ++i) {
+        for (unsigned int i = 0; i < TerrainMaterial::MAX_MATERIAL; ++i) {
             std::shared_ptr<XmlChunk> materialFilenameChunk = xmlParser.getUniqueChunk(false, MATERIAL_FILENAME, XmlAttribute(INDEX_ATTR, std::to_string(i)), materialFilenamesChunk);
             if (materialFilenameChunk) {
                 materialFilenames.emplace_back(materialFilenameChunk->getStringValue());

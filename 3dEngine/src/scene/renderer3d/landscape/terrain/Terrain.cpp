@@ -26,7 +26,7 @@ namespace urchin {
         int maskTexUnit = 0;
         ShaderDataSender().sendData(ShaderVar(terrainShader, "maskTex"), maskTexUnit);
 
-        for (int i=0; i<MAX_MATERIAL; ++i) {
+        for (int i = 0; i < (int)TerrainMaterial::MAX_MATERIAL; ++i) {
             std::string shaderTextureName = "diffuseTex" + std::to_string(i + 1);
             int diffuseTexUnit = i + 1;
             ShaderDataSender().sendData(ShaderVar(terrainShader, std::move(shaderTextureName)), diffuseTexUnit);
