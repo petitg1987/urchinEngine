@@ -64,7 +64,7 @@ namespace urchin {
         }
         int bitmapTopA = face->glyph->bitmap_top;
 
-        for (std::size_t i=0;i<NUM_LETTERS;i++) {
+        for (std::size_t i = 0; i < NUM_LETTERS;i++) {
             glyphIndex = FT_Get_Char_Index(face, static_cast<FT_ULong>(i));
             if (FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT)) {
                 FT_Done_Face(face);
@@ -109,7 +109,7 @@ namespace urchin {
 
         //dimension of letters and texture
         unsigned int dimensionLetters=0;
-        for (unsigned int i=0; i<NUM_LETTERS; ++i) //seek the largest letter
+        for (unsigned int i = 0; i < NUM_LETTERS; ++i) //seek the largest letter
         {
             if (glyph[i].width > dimensionLetters) {
                 dimensionLetters = glyph[i].width;
@@ -139,7 +139,7 @@ namespace urchin {
         auto alphabetTexture = Image(dimensionTexture, dimensionTexture, Image::IMAGE_RGBA, std::move(texels)).createTexture(false);
 
         //clears buffers of letters
-        for (std::size_t i=0;i<NUM_LETTERS;i++) {
+        for (std::size_t i = 0; i < NUM_LETTERS;i++) {
             delete[] glyph[i].buf;
             glyph[i].buf = nullptr;
         }

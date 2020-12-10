@@ -21,7 +21,7 @@ namespace urchin {
 
         glGetAttachedShaders(shaderId, maxCount, &countAttachedShaders, attachedShaders);
 
-        for (int i=0; i<countAttachedShaders; ++i) {
+        for (int i = 0; i < countAttachedShaders; ++i) {
             glDetachShader(shaderId, attachedShaders[i]);
             glDeleteShader(attachedShaders[i]);
         }

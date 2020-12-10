@@ -188,7 +188,7 @@ namespace urchin {
     void LoaderTGA::readTGA8bits() {
         unsigned char color;
 
-        for (unsigned int i=0; i < width*height; ++i) {
+        for (unsigned int i = 0; i < width * height; ++i) {
             //reads index color byte
             color = data[i];
 
@@ -233,7 +233,7 @@ namespace urchin {
     }
 
     void LoaderTGA::readTGAgray8bits() {
-        for (unsigned int i=0; i<width*height; ++i) {
+        for (unsigned int i = 0; i < width * height; ++i) {
             texels[i] = data[i];
         }
     }
@@ -287,14 +287,14 @@ namespace urchin {
                 color = (unsigned short)(data[j] + (data[j + 1] << 8u));
                 j+=2;
 
-                for (unsigned int i=0; i<size; ++i,ptrIndex+=3) {
+                for (unsigned int i = 0; i < size; ++i, ptrIndex += 3) {
                     texels[ptrIndex] = static_cast<unsigned char>(((color & 0x7C00u) >> 10u) << 3u);
                     texels[ptrIndex+1] = static_cast<unsigned char>(((color & 0x03E0u) >>  5u) << 3u);
                     texels[ptrIndex+2] = static_cast<unsigned char>(((color & 0x001Fu) >>  0u) << 3u);
                 }
             } else {
                 //non run-length packet
-                for (unsigned int i=0; i<size; ++i,ptrIndex+=3,j+=2) {
+                for (unsigned int i = 0; i < size; ++i, ptrIndex += 3, j += 2) {
                     color = (unsigned short)(data[j] + (data[j + 1] << 8u));
 
                     texels[ptrIndex] = static_cast<unsigned char>(((color & 0x7C00u) >> 10u) << 3u);
@@ -321,14 +321,14 @@ namespace urchin {
                 rgb = &data[j];
                 j += 3;
 
-                for (unsigned int i=0; i<size; ++i,ptrIndex+=3) {
+                for (unsigned int i = 0; i < size; ++i, ptrIndex += 3) {
                     texels[ptrIndex] = rgb[2];
                     texels[ptrIndex+1] = rgb[1];
                     texels[ptrIndex+2] = rgb[0];
                 }
             } else {
                 //non run-length packet
-                for (unsigned int i=0; i<size; ++i,ptrIndex+=3,j+=3) {
+                for (unsigned int i = 0; i < size; ++i, ptrIndex += 3, j += 3) {
                     texels[ptrIndex+2] = data[j + 0];
                     texels[ptrIndex+1] = data[j + 1];
                     texels[ptrIndex] = data[j + 2];
@@ -353,7 +353,7 @@ namespace urchin {
                 rgba = &data[j];
                 j += 4;
 
-                for (unsigned int i=0; i<size; ++i,ptrIndex+=4) {
+                for (unsigned int i = 0; i < size; ++i, ptrIndex += 4) {
                     texels[ptrIndex] = rgba[2];
                     texels[ptrIndex+1] = rgba[1];
                     texels[ptrIndex+2] = rgba[0];
@@ -361,7 +361,7 @@ namespace urchin {
                 }
             } else {
                 //non run-length packet
-                for (unsigned int i=0; i<size; ++i,ptrIndex+=4,j+=4) {
+                for (unsigned int i =0 ; i < size; ++i, ptrIndex += 4, j += 4) {
                     texels[ptrIndex+2] = data[j + 0];
                     texels[ptrIndex+1] = data[j + 1];
                     texels[ptrIndex] = data[j + 2];
@@ -386,12 +386,12 @@ namespace urchin {
                 //run-length packet
                 color = data[j++];
 
-                for (unsigned int i=0; i<size; ++i,ptrIndex++) {
+                for (unsigned int i = 0; i < size; ++i, ptrIndex++) {
                     texels[ptrIndex] = color;
                 }
             } else {
                 //non run-length packet
-                for (unsigned int i=0; i<size; ++i) {
+                for (unsigned int i = 0; i < size; ++i) {
                     texels[ptrIndex+i] = data[j+i];
                 }
 

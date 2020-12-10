@@ -89,7 +89,7 @@ float computeShadowContribution(int lightIndex, float depthValue, vec4 position,
     float shadowContribution = 1.0;
 
     if (lightsInfo[lightIndex].produceShadow) {
-        for (int i=0; i<NUMBER_SHADOW_MAPS; ++i) {
+        for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
             if (depthValue < depthSplitDistance[i]) {
 
                 vec4 shadowCoord = (((lightsInfo[lightIndex].mLightProjectionView[i] * position) / 2.0) + 0.5);
@@ -146,7 +146,7 @@ void main() {
         fragColor -= vec4(ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor, 0.0f);
     }
 
-    for (int i=0; i<MAX_LIGHTS; ++i) {
+    for (int i = 0; i < MAX_LIGHTS; ++i) {
         if (lightsInfo[i].isExist) {
             vec3 vertexToLightNormalized;
             float lightAttenuation;
@@ -183,7 +183,7 @@ void main() {
     vec4 splitColors[5] = vec4[](
         vec4(colorValue, 0.0, 0.0, 1.0), vec4(0.0, colorValue, 0.0, 1.0), vec4(0.0, 0.0, colorValue, 1.0),
         vec4(colorValue, 0.0, colorValue, 1.0), vec4(colorValue, colorValue, 0.0, 1.0));
-    for (int i=0; i<NUMBER_SHADOW_MAPS; ++i) {
+    for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
         if (depthValue < depthSplitDistance[i]) {
             fragColor += splitColors[i%5];
             break;
