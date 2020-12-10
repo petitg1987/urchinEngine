@@ -12,12 +12,10 @@ namespace urchin {
     */
     class FrustumShadowData {
         public:
-            explicit FrustumShadowData(unsigned int);
+            FrustumShadowData();
 
             void updateShadowCasterReceiverBox(const AABBox<float>&, bool);
-            const AABBox<float>& getShadowCasterReceiverBox() const;
             const Matrix4<float>& getLightProjectionMatrix() const;
-            bool isShadowCasterReceiverBoxUpdated() const;
 
             void updateModels(const std::vector<Model*>&);
             const std::vector<Model*>& getModels() const;
@@ -26,9 +24,6 @@ namespace urchin {
 
         private:
             bool areAlmostIdenticalAABBox(const AABBox<float>&, const AABBox<float>&) const;
-
-            unsigned int frustumSplitIndex; //index of frustum split (0: frustum split nearest to eye)
-            bool isFarFrustumSplit;
 
             const float updateShadowMapThreshold;
             Matrix4<float> lightProjectionMatrix;

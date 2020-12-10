@@ -8,8 +8,8 @@ namespace urchin {
     ShadowData::ShadowData(const Light* light, unsigned int nbFrustumSplit) :
             light(light),
             renderTarget(nullptr) {
-        for (unsigned int frustumSplitIndex =0; frustumSplitIndex<nbFrustumSplit; ++frustumSplitIndex) {
-            frustumShadowData.push_back(new FrustumShadowData(frustumSplitIndex));
+        for (unsigned int i = 0; i < nbFrustumSplit; ++i) {
+            frustumShadowData.emplace_back(new FrustumShadowData());
         }
     }
 

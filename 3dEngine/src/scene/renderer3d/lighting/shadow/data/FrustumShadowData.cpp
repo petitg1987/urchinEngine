@@ -2,9 +2,7 @@
 
 namespace urchin {
 
-    FrustumShadowData::FrustumShadowData(unsigned int frustumSplitIndex) :
-            frustumSplitIndex(frustumSplitIndex),
-            isFarFrustumSplit(false),
+    FrustumShadowData::FrustumShadowData() :
             updateShadowMapThreshold(ConfigService::instance()->getFloatValue("shadow.updateShadowMapThreshold")),
             shadowCasterReceiverBoxUpdated(false),
             modelsRequireUpdate(false) {
@@ -29,19 +27,8 @@ namespace urchin {
                 && shadowCasterReceiverBox1.getMax().squareDistance(shadowCasterReceiverBox2.getMax()) < updateShadowMapSquareThreshold;
     }
 
-    const AABBox<float>& FrustumShadowData::getShadowCasterReceiverBox() const {
-        return shadowCasterReceiverBox;
-    }
-
     const Matrix4<float>& FrustumShadowData::getLightProjectionMatrix() const {
         return lightProjectionMatrix;
-    }
-
-    /**
-     * @return True when shadow caster and receiver box has been updated since previous frame
-     */
-    bool FrustumShadowData::isShadowCasterReceiverBoxUpdated() const {
-        return shadowCasterReceiverBoxUpdated;
     }
 
     /**
