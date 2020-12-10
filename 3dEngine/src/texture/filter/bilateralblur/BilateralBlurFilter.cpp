@@ -13,7 +13,7 @@ namespace urchin {
             blurSize(textureFilterBuilder->getBlurSize()),
             blurSharpness(textureFilterBuilder->getBlurSharpness()),
             depthTexture(textureFilterBuilder->getDepthTexture()),
-            textureSize((BlurDirection::VERTICAL==blurDirection) ? getTextureHeight() : getTextureWidth()) {
+            textureSize((BlurDirection::VERTICAL == blurDirection) ? getTextureHeight() : getTextureWidth()) {
         if (blurSize <= 1) {
             throw std::invalid_argument("Blur size must be greater than one. Value: " + std::to_string(blurSize));
         } else if (blurSize % 2 == 0) {
@@ -45,7 +45,7 @@ namespace urchin {
     }
 
     void BilateralBlurFilter::completeShaderTokens(std::map<std::string, std::string>& shaderTokens) const {
-        shaderTokens["IS_VERTICAL_BLUR"] = (blurDirection==BlurDirection::VERTICAL) ? "true" : "false";
+        shaderTokens["IS_VERTICAL_BLUR"] = (blurDirection == BlurDirection::VERTICAL) ? "true" : "false";
         shaderTokens["KERNEL_RADIUS"] = std::to_string(blurSize / 2);
         shaderTokens["BLUR_SHARPNESS"] = std::to_string(blurSharpness);
         shaderTokens["OFFSETS_TAB"] = offsetsTab;

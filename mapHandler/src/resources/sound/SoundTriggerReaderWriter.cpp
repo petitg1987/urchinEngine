@@ -33,9 +33,9 @@ namespace urchin {
     }
 
     void SoundTriggerReaderWriter::buildChunkFrom(const std::shared_ptr<XmlChunk>& soundTriggerChunk, const SoundTrigger* soundTrigger, XmlWriter& xmlWriter) const {
-        if (soundTrigger->getTriggerType()==SoundTrigger::MANUAL_TRIGGER) {
+        if (soundTrigger->getTriggerType() == SoundTrigger::MANUAL_TRIGGER) {
             soundTriggerChunk->setAttribute(XmlAttribute(TYPE_ATTR, MANUAL_VALUE));
-        } else if (soundTrigger->getTriggerType()==SoundTrigger::SHAPE_TRIGGER) {
+        } else if (soundTrigger->getTriggerType() == SoundTrigger::SHAPE_TRIGGER) {
             const auto* shapeTrigger = dynamic_cast<const ShapeTrigger*>(soundTrigger);
             soundTriggerChunk->setAttribute(XmlAttribute(TYPE_ATTR, SHAPE_VALUE));
 
@@ -82,18 +82,18 @@ namespace urchin {
 
     void SoundTriggerReaderWriter::buildChunkFrom(const std::shared_ptr<XmlChunk>& soundBehaviorChunk, const SoundBehavior& soundBehavior, XmlWriter& xmlWriter) const {
         std::shared_ptr<XmlChunk> playBehaviorChunk = xmlWriter.createChunk(PLAY_BEHAVIOR_TAG, XmlAttribute(), soundBehaviorChunk);
-        if (soundBehavior.getPlayBehavior()==SoundBehavior::PLAY_ONCE) {
+        if (soundBehavior.getPlayBehavior() == SoundBehavior::PLAY_ONCE) {
             playBehaviorChunk->setStringValue(PLAY_ONCE_VALUE);
-        } else if (soundBehavior.getPlayBehavior()==SoundBehavior::PLAY_LOOP) {
+        } else if (soundBehavior.getPlayBehavior() == SoundBehavior::PLAY_LOOP) {
             playBehaviorChunk->setStringValue(PLAY_LOOP_VALUE);
         } else {
             throw std::invalid_argument("Unknown play behavior to write in map: " + std::to_string(soundBehavior.getPlayBehavior()));
         }
 
         std::shared_ptr<XmlChunk> stopBehaviorChunk = xmlWriter.createChunk(STOP_BEHAVIOR_TAG, XmlAttribute(), soundBehaviorChunk);
-        if (soundBehavior.getStopBehavior()==SoundBehavior::INSTANT_STOP) {
+        if (soundBehavior.getStopBehavior() == SoundBehavior::INSTANT_STOP) {
             stopBehaviorChunk->setStringValue(INSTANT_STOP_VALUE);
-        } else if (soundBehavior.getStopBehavior()==SoundBehavior::SMOOTH_STOP) {
+        } else if (soundBehavior.getStopBehavior() == SoundBehavior::SMOOTH_STOP) {
             stopBehaviorChunk->setStringValue(SMOOTH_STOP_VALUE);
         } else {
             throw std::invalid_argument("Unknown stop behavior to write in map: " + std::to_string(soundBehavior.getStopBehavior()));

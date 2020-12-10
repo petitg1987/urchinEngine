@@ -28,7 +28,7 @@ namespace urchin {
         std::map<std::size_t, ConvexHullPoint<T>> newConvexHullPoints;
         for (const auto& itPoint : originalConvexHullShape.getConvexHullPoints()) {
             std::vector<Plane<T>> threePlanes = findThreeNonParallelPlanes(itPoint.second.triangleIndices, expandedPlanes);
-            if (threePlanes.size()==3) {
+            if (threePlanes.size() == 3) {
                 Vector3<T> n1CrossN2 = threePlanes[0].getNormal().crossProduct(threePlanes[1].getNormal());
                 Vector3<T> n2CrossN3 = threePlanes[1].getNormal().crossProduct(threePlanes[2].getNormal());
                 Vector3<T> n3CrossN1 = threePlanes[2].getNormal().crossProduct(threePlanes[0].getNormal());
@@ -93,20 +93,20 @@ namespace urchin {
         nonParallelPlanes.reserve(3);
 
         const Plane<T>& plane1 = allPlanes.at(planeIndices[0]);
-        for (std::size_t i=1; i<planeIndices.size(); ++i) {
+        for (std::size_t i = 1; i < planeIndices.size(); ++i) {
             const Plane<T>& plane2 = allPlanes.at(planeIndices[i]);
 
             if (plane1.getNormal().crossProduct(plane2.getNormal()).squareLength() < PARALLEL_COMPARISON_TOLERANCE) { //planes are parallel: continue on next plane
                 continue;
             }
 
-            for (std::size_t j=i+1; j<planeIndices.size(); ++j) {
+            for (std::size_t j = i + 1; j < planeIndices.size(); ++j) {
                 const Plane<T>& plane3 = allPlanes.at(planeIndices[j]);
 
                 Vector3<T> n2CrossN3 = plane2.getNormal().crossProduct(plane3.getNormal());
                 if (n2CrossN3.squareLength() < 0.0
                         || plane3.getNormal().crossProduct(plane1.getNormal()).squareLength() < PARALLEL_COMPARISON_TOLERANCE
-                        || plane1.getNormal().dotProduct(n2CrossN3)==0.0) //additional check due to float imprecision
+                        || plane1.getNormal().dotProduct(n2CrossN3) == 0.0) //additional check due to float imprecision
                 { //planes are parallel: continue on next plane
                     continue;
                 }

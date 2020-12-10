@@ -186,7 +186,7 @@ namespace urchin {
 
     void LightPanelWidget::notify(Observable* observable, int notificationType) {
         if (auto* lightTableView = dynamic_cast<LightTableView*>(observable)) {
-            if (notificationType==LightTableView::LIGHT_SELECTION_CHANGED) {
+            if (notificationType == LightTableView::LIGHT_SELECTION_CHANGED) {
                 if (lightTableView->hasSceneLightSelected()) {
                     const SceneLight* sceneLight = lightTableView->getSelectedSceneLight();
                     setupLightDataFrom(sceneLight);
@@ -211,10 +211,10 @@ namespace urchin {
 
         this->produceShadowCheckBox->setChecked(light->isProduceShadow());
 
-        if (light->getLightType()==Light::LightType::OMNIDIRECTIONAL) {
+        if (light->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
             setupOmnidirectionalLightDataFrom(dynamic_cast<const OmnidirectionalLight*>(light));
             this->produceShadowCheckBox->setDisabled(true);
-        } else if (light->getLightType()==Light::LightType::SUN) {
+        } else if (light->getLightType() == Light::LightType::SUN) {
             setupSunLightDataFrom(dynamic_cast<const SunLight*>(light));
             this->produceShadowCheckBox->setDisabled(false);
         } else {
@@ -252,7 +252,7 @@ namespace urchin {
         NewLightDialog newSceneLightDialog(this, lightController);
         newSceneLightDialog.exec();
 
-        if (newSceneLightDialog.result()==QDialog::Accepted) {
+        if (newSceneLightDialog.result() == QDialog::Accepted) {
             SceneLight* sceneLight = newSceneLightDialog.getSceneLight();
             lightController->addSceneLight(sceneLight);
 
@@ -285,10 +285,10 @@ namespace urchin {
             const SceneLight* sceneLight = lightTableView->getSelectedSceneLight();
             const Light* light = sceneLight->getLight();
 
-            if (light->getLightType()==Light::LightType::OMNIDIRECTIONAL) {
+            if (light->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
                 Point3<float> position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
                 lightController->updateSceneOmnidirectionalLightProperties(sceneLight, (float)attenuation->value(), position);
-            } else if (light->getLightType()==Light::LightType::SUN) {
+            } else if (light->getLightType() == Light::LightType::SUN) {
                 Vector3<float> direction((float)directionX->value(), (float)directionY->value(), (float)directionZ->value());
                 lightController->updateSceneSunLightProperties(sceneLight, direction);
             } else {

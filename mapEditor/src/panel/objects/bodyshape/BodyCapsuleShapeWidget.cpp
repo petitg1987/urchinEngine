@@ -47,7 +47,7 @@ namespace urchin {
         cylinderHeight->setValue(capsuleShape->getCylinderHeight());
 
         int index = orientation->findData(capsuleShape->getCapsuleOrientation());
-        if (index!=-1) {
+        if (index != -1) {
             orientation->setCurrentIndex(index);
         }
     }

@@ -33,7 +33,7 @@ namespace urchin {
     void PolytopePlaneSurface::buildOutlineCwPoints() {
         outlineCwPoints.reserve(ccwPoints.size());
 
-        for (auto it = ccwPoints.rbegin(); it!=ccwPoints.rend(); ++it) {
+        for (auto it = ccwPoints.rbegin(); it != ccwPoints.rend(); ++it) {
             outlineCwPoints.emplace_back(Point2<float>(it->X, -it->Z));
         }
     }

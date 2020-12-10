@@ -73,7 +73,7 @@ namespace urchin {
     }
 
     template<class T> Point3<T> Point3<T>::divideByZ() const {
-        if (Z!=0.0) {
+        if (Z != 0.0) {
             return Point3<T>(X/Z, Y/Z, 1);
         }
 
@@ -161,7 +161,7 @@ namespace urchin {
     }
 
     template<class T> bool Point3<T>::operator ==(const Point3<T>& p) const {
-        return (X==p.X && Y==p.Y && Z==p.Z);
+        return (X == p.X && Y == p.Y && Z == p.Z);
     }
 
     template<class T> bool Point3<T>::operator !=(const Point3<T>& p) const {

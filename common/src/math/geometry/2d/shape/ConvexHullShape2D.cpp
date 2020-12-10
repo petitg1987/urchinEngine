@@ -25,12 +25,12 @@ namespace urchin {
         std::sort(sortedPoints.begin(), sortedPoints.end());
 
         //build lower convex hull
-        for (std::size_t i=0; i<nbPoints; i++) {
-            while (k>=2 && Line2D<T>(convexHullPoints[k-2], convexHullPoints[k-1]).ccw(sortedPoints[i]) <= 0.0) { //clockwise detected, we remove the point
+        for (std::size_t i = 0; i < nbPoints; i++) {
+            while (k >= 2 && Line2D<T>(convexHullPoints[k-2], convexHullPoints[k-1]).ccw(sortedPoints[i]) <= 0.0) { //clockwise detected, we remove the point
                 k--;
             }
 
-            if (k==0 || convexHullPoints[k-1]!=sortedPoints[i]) {
+            if (k == 0 || convexHullPoints[k-1] != sortedPoints[i]) {
                 convexHullPoints[k++] = sortedPoints[i];
             }
         }
@@ -42,7 +42,7 @@ namespace urchin {
                 k--;
             }
 
-            if (k==0 || convexHullPoints[k-1]!=sortedPoints[(std::size_t)i]) {
+            if (k == 0 || convexHullPoints[k-1] != sortedPoints[(std::size_t)i]) {
                 convexHullPoints[k++] = sortedPoints[(std::size_t)i];
             }
         }
@@ -69,7 +69,7 @@ namespace urchin {
         Point2<T> maxPoint = convexHullPoints[0];
 
         for (std::size_t i=0; i<convexHullPoints.size(); ++i) {
-            T currentPointDotDirection  = Point2<T>(0.0, 0.0).vector(convexHullPoints[i]).dotProduct(direction);
+            T currentPointDotDirection = Point2<T>(0.0, 0.0).vector(convexHullPoints[i]).dotProduct(direction);
             if (currentPointDotDirection > maxPointDotDirection) {
                 maxPointDotDirection = currentPointDotDirection;
                 maxPoint = convexHullPoints[i];

@@ -33,7 +33,7 @@ namespace urchin {
     }
 
     void NavPolygon::addTriangles(const std::vector<std::shared_ptr<NavTriangle>>& triangles, const std::shared_ptr<NavPolygon>& thisNavPolygon) {
-        assert(thisNavPolygon.get()==this);
+        assert(thisNavPolygon.get() == this);
 
         this->triangles = triangles;
         for (const auto& triangle : triangles) {

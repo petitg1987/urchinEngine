@@ -79,7 +79,7 @@ namespace urchin {
 
     void BodyCompoundShapeWidget::notify(Observable* observable, int notificationType) {
         if (auto* localizedShapeTableView = dynamic_cast<LocalizedShapeTableView*>(observable)) {
-            if (notificationType==LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED) {
+            if (notificationType == LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED) {
                 if (localizedShapeTableView->hasLocalizedShapeSelected()) {
                     std::shared_ptr<const LocalizedCollisionShape> localizedShape = localizedShapeTableView->getSelectedLocalizedShape();
 
@@ -231,7 +231,7 @@ namespace urchin {
         ChangeBodyShapeDialog changeBodyShapeDialog(this, true);
         changeBodyShapeDialog.exec();
 
-        if (changeBodyShapeDialog.result()==QDialog::Accepted) {
+        if (changeBodyShapeDialog.result() == QDialog::Accepted) {
             CollisionShape3D::ShapeType shapeType = changeBodyShapeDialog.getShapeType();
             std::shared_ptr<const CollisionShape3D> defaultNewShape = DefaultBodyShapeCreator(getSceneObject()).createDefaultBodyShape(shapeType, true);
 

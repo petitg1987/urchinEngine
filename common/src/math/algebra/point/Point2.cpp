@@ -121,7 +121,7 @@ namespace urchin {
     }
 
     template<class T> bool Point2<T>::operator ==(const Point2<T>& p) const {
-        return (X==p.X && Y==p.Y);
+        return (X == p.X && Y == p.Y);
     }
 
     template<class T> bool Point2<T>::operator !=(const Point2<T>& p) const {

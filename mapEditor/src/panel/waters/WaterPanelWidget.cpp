@@ -267,7 +267,7 @@ namespace urchin {
 
     void WaterPanelWidget::notify(Observable* observable, int notificationType) {
         if (auto* waterTableView = dynamic_cast<WaterTableView*>(observable)) {
-            if (notificationType==WaterTableView::SELECTION_CHANGED) {
+            if (notificationType == WaterTableView::SELECTION_CHANGED) {
                 if (waterTableView->hasSceneWaterSelected()) {
                     const SceneWater* sceneWater = waterTableView->getSelectedSceneWater();
                     setupWaterDataFrom(sceneWater);
@@ -320,7 +320,7 @@ namespace urchin {
         NewWaterDialog newSceneWaterDialog(this, waterController);
         newSceneWaterDialog.exec();
 
-        if (newSceneWaterDialog.result()==QDialog::Accepted) {
+        if (newSceneWaterDialog.result() == QDialog::Accepted) {
             SceneWater* sceneWater = newSceneWaterDialog.getSceneWater();
             waterController->addSceneWater(sceneWater);
 

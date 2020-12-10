@@ -145,21 +145,21 @@ namespace urchin {
     void ShadowManager::notify(Observable* observable, int notificationType) {
         if (dynamic_cast<LightManager*>(observable)) {
             Light* light = lightManager->getLastUpdatedLight();
-            if (notificationType==LightManager::ADD_LIGHT) {
+            if (notificationType == LightManager::ADD_LIGHT) {
                 light->addObserver(this, Light::PRODUCE_SHADOW);
                 if (light->isProduceShadow()) {
                     addShadowLight(light);
                 }
-            } else if (notificationType==LightManager::REMOVE_LIGHT) {
+            } else if (notificationType == LightManager::REMOVE_LIGHT) {
                 light->removeObserver(this, Light::PRODUCE_SHADOW);
                 if (light->isProduceShadow()) {
                     removeShadowLight(light);
                 }
             }
         } else if (auto* light = dynamic_cast<Light*>(observable)) {
-            if (notificationType==Light::LIGHT_MOVE) {
+            if (notificationType == Light::LIGHT_MOVE) {
                 updateViewMatrix(light);
-            } else if (notificationType==Light::PRODUCE_SHADOW) {
+            } else if (notificationType == Light::PRODUCE_SHADOW) {
                 if (light->isProduceShadow()) {
                     addShadowLight(light);
                 } else {
@@ -228,7 +228,7 @@ namespace urchin {
 
     const ShadowData& ShadowManager::getShadowData(const Light* light) const {
         auto it = shadowDatas.find(light);
-        if (it==shadowDatas.end()) {
+        if (it == shadowDatas.end()) {
             throw std::runtime_error("No shadow data found for this light.");
         }
 

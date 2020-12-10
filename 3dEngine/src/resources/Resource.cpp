@@ -32,7 +32,7 @@ namespace urchin {
 
     void Resource::release() {
         assert(!name.empty()); //resource created with ResourceManager
-        if (--refCount==0) {
+        if (--refCount == 0) {
             delete this;
         }
     }

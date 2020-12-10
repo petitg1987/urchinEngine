@@ -121,7 +121,7 @@ namespace urchin {
         //exclude angles near to 180 and 0/360 degrees
         for (int i = 0; i < (int)cwPoints.size(); i++) {
             std::size_t nextI = (std::size_t)(i + 1) % cwPoints.size();
-            std::size_t previousI = (i==0) ? cwPoints.size() - 1 : (std::size_t)(i - 1);
+            std::size_t previousI = (i == 0) ? cwPoints.size() - 1 : (std::size_t)(i - 1);
 
             Vector2<T> normalizedEdge1 = cwPoints[previousI].vector(cwPoints[(std::size_t)i]).normalize();
             Vector2<T> normalizedEdge2 = cwPoints[(std::size_t)i].vector(cwPoints[nextI]).normalize();
@@ -140,7 +140,7 @@ namespace urchin {
             bool keepGoing = true;
             for (int j = i + 3; j < (int)cwPoints.size() && keepGoing; j++) {
                 if (cwPoints[(std::size_t)i].squareDistance(cwPoints[(std::size_t)j]) <= mergePointsSquareDistance) {
-                    std::size_t previousI = (i==0) ? cwPoints.size() - 1 : (std::size_t)i - 1;
+                    std::size_t previousI = (i == 0) ? cwPoints.size() - 1 : (std::size_t)i - 1;
                     Vector2<T> moveVector = cwPoints[(std::size_t)i].vector(cwPoints[(std::size_t)previousI]);
                     T moveVectorLength = moveVector.length();
                     if (moveVectorLength > 2 * polygonMergePointsDistanceThreshold) {

@@ -78,7 +78,7 @@ namespace urchin {
         terrainGrass->setGrassTexture(grassTextureFilename);
         terrainGrass->setMaskTexture(grassMaskFilename);
         terrainGrass->setNumGrassInTexture(numGrassInTex);
-        if (terrainGrass->getGrassQuantity()!=grassQuantity) {
+        if (terrainGrass->getGrassQuantity() != grassQuantity) {
             terrainGrass->setGrassQuantity(grassQuantity);
         }
         terrainGrass->setGrassHeight(grassHeight);
@@ -94,7 +94,7 @@ namespace urchin {
         const std::list<SceneTerrain*>& sceneTerrains = getMapHandler()->getMap()->getSceneTerrains();
         auto it = std::find(sceneTerrains.begin(), sceneTerrains.end(), constSceneTerrain);
 
-        if (it!=sceneTerrains.end()) {
+        if (it != sceneTerrains.end()) {
             return *it;
         }
 

@@ -384,7 +384,7 @@ namespace urchin {
 
     void ObjectPanelWidget::notify(Observable* observable, int notificationType) {
         if (auto* objectTableView = dynamic_cast<ObjectTableView*>(observable)) {
-            if (notificationType==ObjectTableView::OBJECT_SELECTION_CHANGED) {
+            if (notificationType == ObjectTableView::OBJECT_SELECTION_CHANGED) {
                 if (objectTableView->hasSceneObjectSelected()) {
                     const SceneObject* sceneObject = objectTableView->getSelectedSceneObject();
                     setupObjectDataFrom(sceneObject);
@@ -399,7 +399,7 @@ namespace urchin {
                 }
             }
         } else if (auto* sceneDisplayerWidget = dynamic_cast<SceneDisplayerWidget*>(observable)) {
-            if (notificationType==SceneDisplayerWidget::BODY_PICKED) {
+            if (notificationType == SceneDisplayerWidget::BODY_PICKED) {
                 const std::string& bodyId = sceneDisplayerWidget->getLastPickedBodyId();
                 const SceneObject* sceneObject = bodyId.empty() ? nullptr : objectController->findSceneObjectByBodyId(bodyId);
                 if (sceneObject) {
@@ -412,7 +412,7 @@ namespace urchin {
                 }
             }
         } else if (auto* objectMoveController = dynamic_cast<ObjectMoveController*>(observable)) {
-            if (notificationType==ObjectMoveController::OBJECT_MOVED) {
+            if (notificationType == ObjectMoveController::OBJECT_MOVED) {
                 setupObjectDataFrom(objectMoveController->getSelectedSceneObject());
             }
         }
@@ -494,7 +494,7 @@ namespace urchin {
         NewObjectDialog newSceneObjectDialog(this, objectController);
         newSceneObjectDialog.exec();
 
-        if (newSceneObjectDialog.result()==QDialog::Accepted) {
+        if (newSceneObjectDialog.result() == QDialog::Accepted) {
             SceneObject* sceneObject = newSceneObjectDialog.getSceneObject();
             objectController->addSceneObject(sceneObject);
             objectController->createDefaultBody(sceneObject);
@@ -517,7 +517,7 @@ namespace urchin {
         CloneObjectDialog cloneSceneObjectDialog(this, objectController);
         cloneSceneObjectDialog.exec();
 
-        if (cloneSceneObjectDialog.result()==QDialog::Accepted) {
+        if (cloneSceneObjectDialog.result() == QDialog::Accepted) {
             SceneObject* newSceneObject = cloneSceneObjectDialog.getSceneObject();
             const SceneObject* toCloneSceneObject = objectTableView->getSelectedSceneObject();
             objectController->cloneSceneObject(newSceneObject, toCloneSceneObject);
@@ -587,7 +587,7 @@ namespace urchin {
         if (!disableObjectEvent) {
             const SceneObject* sceneObject = objectTableView->getSelectedSceneObject();
 
-            bool produceShadow = produceShadowCheckBox->checkState()==Qt::Checked;
+            bool produceShadow = produceShadowCheckBox->checkState() == Qt::Checked;
             objectController->updateSceneObjectFlags(sceneObject, produceShadow);
         }
     }
@@ -596,7 +596,7 @@ namespace urchin {
         ChangeBodyShapeDialog changeBodyShapeDialog(this, false);
         changeBodyShapeDialog.exec();
 
-        if (changeBodyShapeDialog.result()==QDialog::Accepted) {
+        if (changeBodyShapeDialog.result() == QDialog::Accepted) {
             const SceneObject* sceneObject = objectTableView->getSelectedSceneObject();
             CollisionShape3D::ShapeType shapeType = changeBodyShapeDialog.getShapeType();
 
@@ -608,10 +608,10 @@ namespace urchin {
     void ObjectPanelWidget::rigidBodyToggled(int rigidBodyState) {
         if (!disableObjectEvent) {
             const SceneObject* sceneObject = objectTableView->getSelectedSceneObject();
-            if (Qt::CheckState::Checked==rigidBodyState) {
+            if (Qt::CheckState::Checked == rigidBodyState) {
                 tabPhysicsRigidBody->show();
                 objectController->createDefaultBody(sceneObject);
-            } else if (Qt::CheckState::Unchecked==rigidBodyState) {
+            } else if (Qt::CheckState::Unchecked == rigidBodyState) {
                 objectController->removeBody(sceneObject);
                 tabPhysicsRigidBody->hide();
             }

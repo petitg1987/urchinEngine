@@ -171,12 +171,12 @@ namespace urchin {
 
     void TextureRenderer::initializeShader(float nearPlane, float farPlane) {
         std::map<std::string, std::string> textureDisplayTokens;
-        textureDisplayTokens["IS_DEFAULT_VALUE"] = colorType==ColorType::DEFAULT_VALUE ? "true" : "false";
-        textureDisplayTokens["IS_DEPTH_VALUE"] = colorType==ColorType::DEPTH_VALUE ? "true" : "false";
-        textureDisplayTokens["IS_GRAYSCALE_VALUE"] = colorType==ColorType::GRAYSCALE_VALUE ? "true" : "false";
-        textureDisplayTokens["IS_INVERSE_GRAYSCALE_VALUE"] = colorType==ColorType::INVERSE_GRAYSCALE_VALUE ? "true" : "false";
+        textureDisplayTokens["IS_DEFAULT_VALUE"] = colorType == ColorType::DEFAULT_VALUE ? "true" : "false";
+        textureDisplayTokens["IS_DEPTH_VALUE"] = colorType == ColorType::DEPTH_VALUE ? "true" : "false";
+        textureDisplayTokens["IS_GRAYSCALE_VALUE"] = colorType == ColorType::GRAYSCALE_VALUE ? "true" : "false";
+        textureDisplayTokens["IS_INVERSE_GRAYSCALE_VALUE"] = colorType == ColorType::INVERSE_GRAYSCALE_VALUE ? "true" : "false";
 
-        const std::string& fragShaderName = (layer==-1) ? "displayTexture.frag" : "displayTextureArray.frag";
+        const std::string& fragShaderName = (layer == -1) ? "displayTexture.frag" : "displayTextureArray.frag";
         displayTextureShader = ShaderBuilder().createShader("displayTexture.vert", "", fragShaderName, textureDisplayTokens);
 
         float cameraPlanes[2] = {nearPlane, farPlane};

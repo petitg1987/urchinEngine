@@ -36,7 +36,7 @@ namespace urchin {
     }
 
     /**
-     * @param barycentrics [out] Returns barycentric coordinates for closestPoint only when closestPoint!=p
+     * @param barycentrics [out] Returns barycentric coordinates for closestPoint only when closestPoint != p
      * @param voronoiRegionMask Mask allowing to include/exclude some voronoi regions to test. The bits from right to left represent
      * respectively the following voronoi regions: ABC, ACD, ADB, BDC.
      * @return Point on tetrahedron closest to point p

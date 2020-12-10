@@ -46,7 +46,7 @@ namespace urchin {
         std::lock_guard<std::mutex> lock(bodiesMutex);
 
         auto it = bodies.begin();
-        while (it!=bodies.end()) {
+        while (it != bodies.end()) {
             AbstractBody* body = *it;
 
             if (body->isNew()) {
@@ -96,7 +96,7 @@ namespace urchin {
         AbstractWorkBody* workBody = body->getWorkBody();
 
         auto itFind = std::find(workBodies.begin(), workBodies.end(), workBody);
-        if (itFind!=workBodies.end()) {
+        if (itFind != workBodies.end()) {
             //remove notification
             lastUpdatedWorkBody = workBody;
             notifyObservers(this, REMOVE_WORK_BODY);

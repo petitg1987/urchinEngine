@@ -40,17 +40,17 @@ namespace urchin {
 
         std::shared_ptr<XmlChunk> orientationChunk = xmlWriter.createChunk(ORIENTATION_TAG, XmlAttribute(), shapeChunk);
         ConeShape<float>::ConeOrientation orientationValue = coneShape->getConeOrientation();
-        if (orientationValue==ConeShape<float>::ConeOrientation::CONE_X_POSITIVE) {
+        if (orientationValue == ConeShape<float>::ConeOrientation::CONE_X_POSITIVE) {
             orientationChunk->setStringValue(X_POSITIVE_VALUE);
-        } else if (orientationValue==ConeShape<float>::ConeOrientation::CONE_X_NEGATIVE) {
+        } else if (orientationValue == ConeShape<float>::ConeOrientation::CONE_X_NEGATIVE) {
             orientationChunk->setStringValue(X_NEGATIVE_VALUE);
-        } else if (orientationValue==ConeShape<float>::ConeOrientation::CONE_Y_POSITIVE) {
+        } else if (orientationValue == ConeShape<float>::ConeOrientation::CONE_Y_POSITIVE) {
             orientationChunk->setStringValue(Y_POSITIVE_VALUE);
-        } else if (orientationValue==ConeShape<float>::ConeOrientation::CONE_Y_NEGATIVE) {
+        } else if (orientationValue == ConeShape<float>::ConeOrientation::CONE_Y_NEGATIVE) {
             orientationChunk->setStringValue(Y_NEGATIVE_VALUE);
-        } else if (orientationValue==ConeShape<float>::ConeOrientation::CONE_Z_POSITIVE) {
+        } else if (orientationValue == ConeShape<float>::ConeOrientation::CONE_Z_POSITIVE) {
             orientationChunk->setStringValue(Z_POSITIVE_VALUE);
-        } else if (orientationValue==ConeShape<float>::ConeOrientation::CONE_Z_NEGATIVE) {
+        } else if (orientationValue == ConeShape<float>::ConeOrientation::CONE_Z_NEGATIVE) {
             orientationChunk->setStringValue(Z_NEGATIVE_VALUE);
         } else {
             throw std::invalid_argument("Cone orientation type unknown: " + std::to_string(orientationValue));

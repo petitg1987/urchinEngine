@@ -28,7 +28,7 @@ namespace urchin {
         cwPoints.reserve(path.size());
 
         for (auto point : path) {
-            if (typeid(long long)==typeid(T)) {
+            if (typeid(long long) == typeid(T)) {
                 cwPoints.emplace_back(Point2<T>((T)point.X, (T)point.Y));
             } else {
                 cwPoints.emplace_back(Point2<T>((T)Converter::toFloat(point.X), (T)Converter::toFloat(point.Y)));

@@ -29,7 +29,7 @@ namespace urchin {
 
     std::shared_ptr<XmlChunk> XmlParser::getRootChunk() const {
         const TiXmlNode* rootNode = doc->FirstChild()->NextSibling();
-        if (rootNode->Type()==TiXmlNode::ELEMENT) {
+        if (rootNode->Type() == TiXmlNode::ELEMENT) {
             return std::make_shared<XmlChunk>(doc->FirstChild()->NextSibling()->ToElement());
         }
 
@@ -54,8 +54,8 @@ namespace urchin {
         }
 
         //seek the good chunk
-        for (const TiXmlNode *pChild=firstChild; pChild!=nullptr; pChild=pChild->NextSibling()) {
-            if (pChild->Type()==TiXmlNode::ELEMENT && pChild->Value()==chunkName) {
+        for (const TiXmlNode *pChild = firstChild; pChild != nullptr; pChild = pChild->NextSibling()) {
+            if (pChild->Type() == TiXmlNode::ELEMENT && pChild->Value() == chunkName) {
                 if (!attribute.getAttributeName().empty()) {
                     const std::string* attributeValue = pChild->ToElement()->Attribute(attribute.getAttributeName());
                     if (attributeValue && (*attributeValue) == attribute.getAttributeValue()) {

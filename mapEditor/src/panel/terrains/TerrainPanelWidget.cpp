@@ -340,7 +340,7 @@ namespace urchin {
 
     void TerrainPanelWidget::notify(Observable* observable, int notificationType) {
         if (auto* terrainTableView = dynamic_cast<TerrainTableView*>(observable)) {
-            if (notificationType==TerrainTableView::SELECTION_CHANGED) {
+            if (notificationType == TerrainTableView::SELECTION_CHANGED) {
                 if (terrainTableView->hasSceneTerrainSelected()) {
                     const SceneTerrain* sceneTerrain = terrainTableView->getSelectedSceneTerrain();
                     setupTerrainDataFrom(sceneTerrain);
@@ -409,7 +409,7 @@ namespace urchin {
         NewTerrainDialog newSceneTerrainDialog(this, terrainController);
         newSceneTerrainDialog.exec();
 
-        if (newSceneTerrainDialog.result()==QDialog::Accepted) {
+        if (newSceneTerrainDialog.result() == QDialog::Accepted) {
             SceneTerrain* sceneTerrain = newSceneTerrainDialog.getSceneTerrain();
             terrainController->addSceneTerrain(sceneTerrain);
 

@@ -53,7 +53,7 @@ namespace urchin {
     }
 
     void TerrainGrassQuadtree::addChild(TerrainGrassQuadtree* grassPatchOctree) {
-        assert(bbox==nullptr);
+        assert(bbox == nullptr);
         children.push_back(grassPatchOctree);
     }
 
@@ -68,7 +68,7 @@ namespace urchin {
         std::lock_guard<std::mutex> lock(mutexAddVertex);
 
         assert(children.empty());
-        assert(bbox==nullptr);
+        assert(bbox == nullptr);
 
         grassVertices.push_back(vertex);
         normals.push_back(normal);

@@ -21,7 +21,7 @@ namespace urchin {
             currAnimation(nullptr),
             stopAnimationAtLastFrame(false),
             bIsProduceShadow(true) {
-        std::string meshFilename = model.getMeshes()!=nullptr ? model.getMeshes()->getName() : "";
+        std::string meshFilename = model.getMeshes() != nullptr ? model.getMeshes()->getName() : "";
         initialize(meshFilename);
 
         setTransform(model.getTransform());

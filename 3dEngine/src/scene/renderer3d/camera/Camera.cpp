@@ -63,7 +63,7 @@ namespace urchin {
         bUseMouse = use;
 
         if (use) {
-            if (middleScreenX!=0 || middleScreenY!=0) {
+            if (middleScreenX != 0 || middleScreenY != 0) {
                 resetMousePosition();
             }
         } else {

@@ -60,7 +60,7 @@ namespace urchin {
     template<class T> bool Simplex<T>::isPointInSimplex(const Point3<T>& p) const {
         for (unsigned int i=0; i<simplexPointsSize; ++i) {
             const Point3<T>& simplexPoint = simplexPoints[i].point;
-            if (simplexPoint.X==p.X && simplexPoint.Y==p.Y && simplexPoint.Z==p.Z) {
+            if (simplexPoint.X == p.X && simplexPoint.Y == p.Y && simplexPoint.Z == p.Z) {
                 return true;
             }
         }
@@ -137,10 +137,10 @@ namespace urchin {
             setBarycentric(1, barycentrics[1]);
             setBarycentric(2, barycentrics[2]);
 
-            if (barycentrics[1]==0.0) { //remove pointB
+            if (barycentrics[1] == 0.0) { //remove pointB
                 removePoint(1);
             }
-            if (barycentrics[0]==0.0) { //remove pointA
+            if (barycentrics[0] == 0.0) { //remove pointA
                 removePoint(0);
             }
 
@@ -161,13 +161,13 @@ namespace urchin {
             setBarycentric(2, barycentrics[2]);
             setBarycentric(3, barycentrics[3]);
 
-            if (barycentrics[2]==0.0) { //remove pointC
+            if (barycentrics[2] == 0.0) { //remove pointC
                 removePoint(2);
             }
-            if (barycentrics[1]==0.0) { //remove pointB
+            if (barycentrics[1] == 0.0) { //remove pointB
                 removePoint(1);
             }
-            if (barycentrics[0]==0.0) { //remove pointA
+            if (barycentrics[0] == 0.0) { //remove pointA
                 removePoint(0);
             }
         } else {

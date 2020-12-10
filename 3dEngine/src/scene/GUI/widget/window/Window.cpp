@@ -103,7 +103,7 @@ namespace urchin {
     }
 
     bool Window::onMouseMoveEvent(int mouseX, int mouseY) {
-        if (state==MOVING) {
+        if (state == MOVING) {
             auto positionX = (float)(mouseX - mousePositionX);
             if (getPosition().getPositionTypeX() == Position::PERCENTAGE) {
                 positionX /= (float)getSceneWidth();

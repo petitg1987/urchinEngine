@@ -99,9 +99,9 @@ namespace urchin {
             auto soundType = static_cast<Sound::SoundType>(variant.toInt());
 
             Sound *sound;
-            if (soundType==Sound::AMBIENT) {
+            if (soundType == Sound::AMBIENT) {
                 sound = new AmbientSound(relativeSoundFilename);
-            } else if (soundType==Sound::POINT) {
+            } else if (soundType == Sound::POINT) {
                 sound = new PointSound(relativeSoundFilename, Point3<float>(0.0, 0.0, 0.0));
             } else {
                 throw std::invalid_argument("Unknown the sound type to create a new sound: " + std::to_string(soundType));

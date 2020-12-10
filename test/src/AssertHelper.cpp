@@ -14,11 +14,11 @@ void AssertHelper::assertTrue(bool b, const std::string& msg) {
 }
 
 void AssertHelper::assertString(const std::string& value, const std::string& expected) {
-    CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + value + ", expected: " + expected, value==expected);
+    CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + value + ", expected: " + expected, value == expected);
 }
 
 void AssertHelper::assertInt(int value, int expected) {
-    CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + std::to_string(value) + ", expected: " + std::to_string(expected), value==expected);
+    CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + std::to_string(value) + ", expected: " + std::to_string(expected), value == expected);
 }
 
 void AssertHelper::assert3Ints(const int* value, const int*&& expected) {
@@ -29,11 +29,11 @@ void AssertHelper::assert3Ints(const int* value, const int*&& expected) {
 }
 
 void AssertHelper::assertUnsignedInt(unsigned int value, unsigned int expected) {
-    CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + std::to_string(value) + ", expected: " + std::to_string(expected), value==expected);
+    CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + std::to_string(value) + ", expected: " + std::to_string(expected), value == expected);
 }
 
 void AssertHelper::assertUnsignedInt(std::size_t value, std::size_t expected) {
-    CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + std::to_string(value) + ", expected: " + std::to_string(expected), value==expected);
+    CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + std::to_string(value) + ", expected: " + std::to_string(expected), value == expected);
 }
 
 void AssertHelper::assert3UnsignedInts(const unsigned int* value, unsigned int*&& expected) {
@@ -64,13 +64,13 @@ void AssertHelper::assertPoint2FloatEquals(const Point2<float>& value, const Poi
 
 void AssertHelper::assertPoint2IntEquals(const Point2<int>& value, const Point2<int>& expected) {
     for (std::size_t i=0; i<2; ++i) {
-        CPPUNIT_ASSERT_MESSAGE("Assert fail on axis: " + std::to_string(i) + ". Value: " + std::to_string(value[i]) + ", expected: " + std::to_string(expected[i]), value[i]==expected[i]);
+        CPPUNIT_ASSERT_MESSAGE("Assert fail on axis: " + std::to_string(i) + ". Value: " + std::to_string(value[i]) + ", expected: " + std::to_string(expected[i]), value[i] == expected[i]);
     }
 }
 
 void AssertHelper::assertPoint2LongLongEquals(const Point2<long long>& value, const Point2<long long>& expected) {
     for (std::size_t i=0; i<2; ++i) {
-        CPPUNIT_ASSERT_MESSAGE("Assert fail on axis: " + std::to_string(i) + ". Value: " + std::to_string(value[i]) + ", expected: " + std::to_string(expected[i]), value[i]==expected[i]);
+        CPPUNIT_ASSERT_MESSAGE("Assert fail on axis: " + std::to_string(i) + ". Value: " + std::to_string(value[i]) + ", expected: " + std::to_string(expected[i]), value[i] == expected[i]);
     }
 }
 

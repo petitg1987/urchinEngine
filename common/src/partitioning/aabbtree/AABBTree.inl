@@ -119,7 +119,7 @@ template<class OBJ> void AABBTree<OBJ>::insertNode(AABBNode<OBJ>* nodeToInsert, 
 
 template<class OBJ> void AABBTree<OBJ>::replaceNode(AABBNode<OBJ>* nodeToReplace, AABBNode<OBJ>* newNode) {
     if (nodeToReplace->getParent()) {
-        if (nodeToReplace->getParent()->getLeftChild()==nodeToReplace) {
+        if (nodeToReplace->getParent()->getLeftChild() == nodeToReplace) {
             nodeToReplace->getParent()->setLeftChild(newNode);
         } else {
             nodeToReplace->getParent()->setRightChild(newNode);
@@ -136,7 +136,7 @@ template<class OBJ> void AABBTree<OBJ>::removeObject(AABBNodeData<OBJ>* nodeData
 
 template<class OBJ> void AABBTree<OBJ>::removeObject(OBJ object) {
     auto itFind = objectsNode.find(object);
-    if (itFind!=objectsNode.end()) {
+    if (itFind != objectsNode.end()) {
         AABBNode<OBJ>* nodeToRemove = itFind->second;
         preRemoveObjectCallback(nodeToRemove);
 

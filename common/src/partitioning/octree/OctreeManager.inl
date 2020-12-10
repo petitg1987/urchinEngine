@@ -26,7 +26,7 @@ template<class TOctreeable> OctreeManager<TOctreeable>::~OctreeManager() {
 
 template<class TOctreeable> void OctreeManager<TOctreeable>::notify(Observable* observable, int notificationType) {
     if (dynamic_cast<TOctreeable*>(observable)) {
-        if (notificationType==TOctreeable::MOVE) {
+        if (notificationType == TOctreeable::MOVE) {
             TOctreeable* octreeable = dynamic_cast<TOctreeable*>(observable);
             movingOctreeables.emplace_back(octreeable);
         }
@@ -147,7 +147,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::refreshOctreeables(
         }
     }
 
-    assert(refreshModCount==postRefreshModCount); //methods 'refreshOctreeables' and 'postRefreshOctreeables' must be called the same number of times
+    assert(refreshModCount == postRefreshModCount); //methods 'refreshOctreeables' and 'postRefreshOctreeables' must be called the same number of times
 
     refreshModCount++;
 }

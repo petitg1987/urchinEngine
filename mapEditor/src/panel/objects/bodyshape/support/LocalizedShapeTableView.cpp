@@ -24,7 +24,7 @@ namespace urchin {
     }
 
     bool LocalizedShapeTableView::hasLocalizedShapeSelected() const {
-        return this->currentIndex().row()!=-1;
+        return this->currentIndex().row() != -1;
     }
 
     std::shared_ptr<const LocalizedCollisionShape> LocalizedShapeTableView::getSelectedLocalizedShape() const {
@@ -94,7 +94,7 @@ namespace urchin {
 
     void LocalizedShapeTableView::selectLocalizedShape(int rowId) {
         QModelIndex modelIndexSelection = localizedShapesTableModel->index(rowId, 0);
-        if (modelIndexSelection.row()!=-1) {
+        if (modelIndexSelection.row() != -1) {
             selectionModel()->setCurrentIndex(modelIndexSelection, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
             selectionModel()->select(modelIndexSelection, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
         }

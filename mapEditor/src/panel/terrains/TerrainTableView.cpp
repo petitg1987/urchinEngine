@@ -29,12 +29,12 @@ namespace urchin {
     }
 
     bool TerrainTableView::hasSceneTerrainSelected() const {
-        return this->currentIndex().row()!=-1;
+        return this->currentIndex().row() != -1;
     }
 
     const SceneTerrain* TerrainTableView::getSelectedSceneTerrain() const {
         QModelIndex selectedIndex = this->currentIndex();
-        if (selectedIndex.row()!=-1) {
+        if (selectedIndex.row() != -1) {
             return selectedIndex.data(Qt::UserRole + 1).value<const SceneTerrain*>();
         }
         return nullptr;

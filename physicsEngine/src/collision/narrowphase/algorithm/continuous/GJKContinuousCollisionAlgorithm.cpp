@@ -70,8 +70,8 @@ namespace urchin {
             T closestPointSquareDistance = direction.squareLength();
 
             if (closestPointSquareDistance < terminationTolerance) {
-                if (simplex.getSize()==4 && !normalFromObject2Defined) {
-                    if (timeToHit==(T)0.0 && simplex.getClosestPointToOrigin()==Point3<T>((T)0.0, (T)0.0, (T)0.0)) {
+                if (simplex.getSize() == 4 && !normalFromObject2Defined) {
+                    if (timeToHit == (T)0.0 && simplex.getClosestPointToOrigin() == Point3<T>((T)0.0, (T)0.0, (T)0.0)) {
                         Point3<T> hitPointOnObject1, hitPointOnObject2;
                         simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
 

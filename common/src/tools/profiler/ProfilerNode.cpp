@@ -64,7 +64,7 @@ namespace urchin {
         }
 
         bool isStopped = false;
-        if (startCount==1) {
+        if (startCount == 1) {
             auto endTime = std::chrono::high_resolution_clock::now();
             double durationMs = static_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count();
 
@@ -86,7 +86,7 @@ namespace urchin {
     }
 
     void ProfilerNode::log(unsigned int level, std::stringstream& logStream, double levelOneTotalTime) {
-        if (startCount!=0) {
+        if (startCount != 0) {
             throw std::runtime_error("Impossible to print node " + getName() + " because there is " + std::to_string(startCount) + " missing stop call");
         }
 

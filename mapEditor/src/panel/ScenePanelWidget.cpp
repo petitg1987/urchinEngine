@@ -92,19 +92,19 @@ namespace urchin {
 
     ScenePanelWidget::TabName ScenePanelWidget::getTabSelected() const {
         int tabIndex = this->currentIndex();
-        if (tabIndex==0) {
+        if (tabIndex == 0) {
             return TabName::OBJECTS;
-        } else if (tabIndex==1) {
+        } else if (tabIndex == 1) {
             return TabName::LIGHTS;
-        } else if (tabIndex==2) {
+        } else if (tabIndex == 2) {
             return TabName::TERRAINS;
-        } else if (tabIndex==3) {
+        } else if (tabIndex == 3) {
             return TabName::WATERS;
-        } else if (tabIndex==4) {
+        } else if (tabIndex == 4) {
             return TabName::SKY;
-        } else if (tabIndex==5) {
+        } else if (tabIndex == 5) {
             return TabName::SOUNDS;
-        } else if (tabIndex==6) {
+        } else if (tabIndex == 6) {
             return TabName::AI;
         }
 

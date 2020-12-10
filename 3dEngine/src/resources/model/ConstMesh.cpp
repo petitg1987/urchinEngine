@@ -55,7 +55,7 @@ namespace urchin {
      */
     const std::vector<unsigned int>& ConstMesh::getLinkedVertices(unsigned int linkedVerticesGroupId) const {
         auto it = linkedVertices.find(linkedVerticesGroupId);
-        if (it!=linkedVertices.end()) {
+        if (it != linkedVertices.end()) {
             return it->second;
         }
 

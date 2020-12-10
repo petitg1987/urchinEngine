@@ -25,7 +25,7 @@ namespace urchin {
                     mergedPolygons.clear();
                     return mergedPolygons;
                 }
-                if (result.size()==1) {
+                if (result.size() == 1) {
                     isPolygonsMerged = true;
 
                     VectorEraser::erase(allPolygonPaths, i);
@@ -56,13 +56,13 @@ namespace urchin {
 
         twoPolygonUnions.clear();
 
-        if (solution.Childs.size()==1) {
+        if (solution.Childs.size() == 1) {
             assert(!solution.Childs[0]->IsOpen());
             assert(!solution.Childs[0]->IsHole());
 
             std::string unionName = "{" + polygon1.getName() + "} ∪ {" + polygon2.getName() + "}";
             twoPolygonUnions.emplace_back(CSGPolygonPath(solution.Childs[0]->Contour, unionName));
-        } else if (solution.Childs.size()==2) {
+        } else if (solution.Childs.size() == 2) {
             twoPolygonUnions.emplace_back(CSGPolygonPath(solution.Childs[0]->Contour, polygon1.getName()));
             twoPolygonUnions.emplace_back(CSGPolygonPath(solution.Childs[1]->Contour, polygon2.getName()));
         }

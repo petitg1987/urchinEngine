@@ -38,16 +38,16 @@ namespace urchin {
     }
 
     void LightReaderWriter::buildChunkFrom(const std::shared_ptr<XmlChunk>& lightChunk, const Light* light, XmlWriter& xmlWriter) const {
-        if (light->getLightType()==Light::OMNIDIRECTIONAL) {
+        if (light->getLightType() == Light::OMNIDIRECTIONAL) {
             const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight*>(light);
             lightChunk->setAttribute(XmlAttribute(TYPE_ATTR, OMNIDIRECTIONAL_VALUE));
 
             std::shared_ptr<XmlChunk> positionChunk = xmlWriter.createChunk(POSITION_TAG, XmlAttribute(), lightChunk);
             positionChunk->setPoint3Value(omnidirectionalLight->getPosition());
 
-            std::shared_ptr<XmlChunk> expenentialAttenuationChunk = xmlWriter.createChunk(EXPONENTIAL_ATTENUATION_TAG, XmlAttribute(), lightChunk);
-            expenentialAttenuationChunk->setFloatValue(omnidirectionalLight->getExponentialAttenuation());
-        } else if (light->getLightType()==Light::SUN) {
+            std::shared_ptr<XmlChunk> exponentialAttenuationChunk = xmlWriter.createChunk(EXPONENTIAL_ATTENUATION_TAG, XmlAttribute(), lightChunk);
+            exponentialAttenuationChunk->setFloatValue(omnidirectionalLight->getExponentialAttenuation());
+        } else if (light->getLightType() == Light::SUN) {
             const auto* sunLight = dynamic_cast<const SunLight*>(light);
             lightChunk->setAttribute(XmlAttribute(TYPE_ATTR, SUN_VALUE));
 

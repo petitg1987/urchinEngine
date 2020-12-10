@@ -179,7 +179,7 @@ namespace urchin {
             determineNeighbors(monotoneTriangles, monotonePolygon);
         }
 
-        if (missingTriangleNeighbor!=0) {
+        if (missingTriangleNeighbor != 0) {
             logOutputData("Missing neighbors (" + std::to_string(missingTriangleNeighbor) + ") on monotone polygon", monotoneTriangles, Logger::ERROR);
         }
 
@@ -214,7 +214,7 @@ namespace urchin {
     }
 
     std::shared_ptr<NavTriangle> TriangulationAlgorithm::buildCCWOrientedTriangle(std::size_t pointIndex1, std::size_t pointIndex2, std::size_t pointIndex3) const {
-        if (pointIndex1==pointIndex2 || pointIndex1==pointIndex3 || pointIndex2==pointIndex3) {
+        if (pointIndex1 == pointIndex2 || pointIndex1 == pointIndex3 || pointIndex2 == pointIndex3) {
             logInputData("Triangulation create navigation triangle with identical indices", Logger::ERROR);
         }
 
@@ -291,8 +291,8 @@ namespace urchin {
 
     bool TriangulationAlgorithm::areSameEdge(const std::shared_ptr<NavTriangle>& triangle1, std::size_t tri1Point1, std::size_t tri1Point2,
                                              const std::shared_ptr<NavTriangle>& triangle2, std::size_t tri2Point1, std::size_t tri2Point2) const {
-        return (triangle1->getIndex(tri1Point1)==triangle2->getIndex(tri2Point1) && triangle1->getIndex(tri1Point2)==triangle2->getIndex(tri2Point2))
-               || (triangle1->getIndex(tri1Point1)==triangle2->getIndex(tri2Point2) && triangle1->getIndex(tri1Point2)==triangle2->getIndex(tri2Point1));
+        return (triangle1->getIndex(tri1Point1) == triangle2->getIndex(tri2Point1) && triangle1->getIndex(tri1Point2) == triangle2->getIndex(tri2Point2))
+               || (triangle1->getIndex(tri1Point1) == triangle2->getIndex(tri2Point2) && triangle1->getIndex(tri1Point2) == triangle2->getIndex(tri2Point1));
     }
 
     uint_fast64_t TriangulationAlgorithm::computeEdgeId(std::size_t edgeStartIndex, std::size_t edgeEndIndex) const {

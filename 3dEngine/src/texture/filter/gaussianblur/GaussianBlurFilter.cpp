@@ -13,11 +13,11 @@ namespace urchin {
         blurDirection(blurDirection),
         blurSize(textureFilterBuilder->getBlurSize()),
         nbTextureFetch(MathFunction::ceilToUInt((float)blurSize / 2.0f)),
-        textureSize((BlurDirection::VERTICAL==blurDirection) ? getTextureHeight() : getTextureWidth()) { //See http://rastergrid.com/blog/2010/09/efficient-gaussian-blur-with-linear-sampling/
+        textureSize((BlurDirection::VERTICAL == blurDirection) ? getTextureHeight() : getTextureWidth()) { //See http://rastergrid.com/blog/2010/09/efficient-gaussian-blur-with-linear-sampling/
 
-        if (blurSize<=1) {
+        if (blurSize <= 1) {
             throw std::invalid_argument("Blur size must be greater than one. Value: " + std::to_string(blurSize));
-        } else if (blurSize%2==0) {
+        } else if (blurSize % 2 == 0) {
             throw std::invalid_argument("Blur size must be an odd number. Value: " + std::to_string(blurSize));
         }
 
@@ -35,7 +35,7 @@ namespace urchin {
     }
 
     void GaussianBlurFilter::completeShaderTokens(std::map<std::string, std::string>& shaderTokens) const {
-        shaderTokens["IS_VERTICAL_BLUR"] = (blurDirection==BlurDirection::VERTICAL) ? "true" : "false";
+        shaderTokens["IS_VERTICAL_BLUR"] = (blurDirection == BlurDirection::VERTICAL) ? "true" : "false";
         shaderTokens["NB_TEXTURE_FETCH"] = std::to_string(nbTextureFetch);
         shaderTokens["WEIGHTS_TAB"] = weightsTab;
         shaderTokens["OFFSETS_TAB"] = offsetsTab;

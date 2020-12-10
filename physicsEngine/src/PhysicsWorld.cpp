@@ -75,7 +75,7 @@ namespace urchin {
         std::lock_guard<std::mutex> lock(mutex);
 
         auto itFind = std::find(processables.begin(), processables.end(), processable);
-        if (itFind!=processables.end()) {
+        if (itFind != processables.end()) {
             processables.erase(itFind);
         }
     }

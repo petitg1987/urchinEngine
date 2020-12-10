@@ -17,7 +17,7 @@ template<class TOctreeable> Octree<TOctreeable>::Octree(const Point3<float>& pos
         splitZ.push_back(position.Z + sizeChild.Z);
     }
 
-    if (splitX.size()==1 && splitY.size()==1 && splitZ.size()==1) {
+    if (splitX.size() == 1 && splitY.size() == 1 && splitZ.size() == 1) {
         bIsLeaf = true;
     } else {
         bIsLeaf = false;
@@ -76,7 +76,7 @@ template<class TOctreeable> void Octree<TOctreeable>::removeOctreeable(TOctreeab
     assert(bIsLeaf);
 
     auto it = std::find(octreeables.begin(), octreeables.end(), octreeable);
-    if (it!=octreeables.end()) {
+    if (it != octreeables.end()) {
         VectorEraser::erase(octreeables, it);
         if (removeRef) {
             octreeable->removeRefOctree(this);

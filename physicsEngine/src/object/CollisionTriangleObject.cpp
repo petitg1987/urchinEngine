@@ -26,7 +26,7 @@ namespace urchin {
     }
 
     Triangle3D<float> CollisionTriangleObject::retrieveTriangle() const {
-        assert(getOuterMargin()==0.0f);
+        assert(getOuterMargin() == 0.0f);
 
         return triangleObject;
     }

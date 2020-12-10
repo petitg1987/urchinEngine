@@ -120,9 +120,9 @@ namespace urchin {
             float zFloat = zStart + (float)z * xzScale;
             for (unsigned int x = 0; x < xSize; ++x) {
                 float elevation = 0.0f;
-                if (imgTerrain->getChannelPrecision()==Image::CHANNEL_8) {
+                if (imgTerrain->getChannelPrecision() == Image::CHANNEL_8) {
                     elevation = (float)imgTerrain->getTexels()[x + xSize * z] * yScale;
-                } else if (imgTerrain->getChannelPrecision()==Image::CHANNEL_16) {
+                } else if (imgTerrain->getChannelPrecision() == Image::CHANNEL_16) {
                     constexpr float scale16BitsTo8Bits = 255.0f / 65535.0f;
                     elevation = (float)imgTerrain->getTexels16Bits()[x + xSize * z] * scale16BitsTo8Bits * yScale;
                 }

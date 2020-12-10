@@ -17,9 +17,9 @@ namespace urchin {
 
     void BroadPhaseManager::notify(Observable* observable, int notificationType) {
         if (auto* bodyManager = dynamic_cast<BodyManager*>(observable)) {
-            if (notificationType==BodyManager::ADD_WORK_BODY) {
+            if (notificationType == BodyManager::ADD_WORK_BODY) {
                 addBody(bodyManager->getLastUpdatedWorkBody());
-            } else if (notificationType==BodyManager::REMOVE_WORK_BODY) {
+            } else if (notificationType == BodyManager::REMOVE_WORK_BODY) {
                 removeBody(bodyManager->getLastUpdatedWorkBody());
             }
         }

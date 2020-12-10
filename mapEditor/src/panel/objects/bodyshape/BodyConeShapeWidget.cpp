@@ -50,7 +50,7 @@ namespace urchin {
         height->setValue(coneShape->getHeight());
 
         int index = orientation->findData(coneShape->getConeOrientation());
-        if (index!=-1) {
+        if (index != -1) {
             orientation->setCurrentIndex(index);
         }
     }

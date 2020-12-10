@@ -137,14 +137,14 @@ namespace urchin {
             EdgeDirection usedDirection;
             unsigned int nextPointIndex = retrieveNextPointIndex(lastPointIndex, checkDirections, squares, usedDirection);
 
-            if (nextPointIndex==cwPolygonPointIndices[0]) { //polygon end reached
-                if (direction==usedDirection) {
+            if (nextPointIndex == cwPolygonPointIndices[0]) { //polygon end reached
+                if (direction == usedDirection) {
                     cwPolygonPointIndices.pop_back();
                 }
                 break;
             }
 
-            if (direction==usedDirection) {
+            if (direction == usedDirection) {
                 cwPolygonPointIndices[cwPolygonPointIndices.size() - 1] = nextPointIndex;
             } else {
                 cwPolygonPointIndices.push_back(nextPointIndex);

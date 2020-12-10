@@ -28,7 +28,7 @@ namespace urchin {
         //replace placeholders
         for (auto& property : loadedProperties) {
             auto itFind = placeholders.find(property.second);
-            if (itFind!=placeholders.end()) {
+            if (itFind != placeholders.end()) {
                 property.second = itFind->second;
             }
         }
@@ -49,12 +49,12 @@ namespace urchin {
 
     bool ConfigService::isExist(const std::string& propertyName) const {
         auto it = properties.find(propertyName);
-        return it!=properties.end();
+        return it != properties.end();
     }
 
     unsigned int ConfigService::getUnsignedIntValue(const std::string& propertyName) const {
         auto it = unsignedIntProperties.find(propertyName);
-        if (it!=unsignedIntProperties.end()) {
+        if (it != unsignedIntProperties.end()) {
             return it->second;
         }
 
@@ -63,7 +63,7 @@ namespace urchin {
 
     float ConfigService::getFloatValue(const std::string& propertyName) const {
         auto it = floatProperties.find(propertyName);
-        if (it!=floatProperties.end()) {
+        if (it != floatProperties.end()) {
             return it->second;
         }
 
@@ -72,7 +72,7 @@ namespace urchin {
 
     std::string ConfigService::getStringValue(const std::string& propertyName) const {
         auto it = properties.find(propertyName);
-        if (it!=properties.end()) {
+        if (it != properties.end()) {
             return it->second;
         }
 
@@ -81,7 +81,7 @@ namespace urchin {
 
     char ConfigService::getCharValue(const std::string& propertyName) const {
         auto it = properties.find(propertyName);
-        if (it!=properties.end()) {
+        if (it != properties.end()) {
             return Converter::toChar(it->second);
         }
 
@@ -90,7 +90,7 @@ namespace urchin {
 
     bool ConfigService::getBoolValue(const std::string& propertyName) const {
         auto it = properties.find(propertyName);
-        if (it!=properties.end()) {
+        if (it != properties.end()) {
             bool value = false;
             if (it->second == "true") {
                 value = true;

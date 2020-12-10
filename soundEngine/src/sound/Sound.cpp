@@ -41,21 +41,21 @@ namespace urchin {
         ALint status;
         alGetSourcei(getSourceId(), AL_SOURCE_STATE, &status);
 
-        return status==AL_STOPPED;
+        return status == AL_STOPPED;
     }
 
     bool Sound::isPaused() const {
         ALint status;
         alGetSourcei(getSourceId(), AL_SOURCE_STATE, &status);
 
-        return status==AL_PAUSED;
+        return status == AL_PAUSED;
     }
 
     bool Sound::isPlaying() const {
         ALint status;
         alGetSourcei(getSourceId(), AL_SOURCE_STATE, &status);
 
-        return status==AL_PLAYING;
+        return status == AL_PLAYING;
     }
 
     /**

@@ -73,7 +73,7 @@ namespace urchin {
         const std::list<SceneWater*>& sceneWaters = getMapHandler()->getMap()->getSceneWaters();
         auto it = std::find(sceneWaters.begin(), sceneWaters.end(), constSceneWater);
 
-        if (it!=sceneWaters.end()) {
+        if (it != sceneWaters.end()) {
             return *it;
         }
 

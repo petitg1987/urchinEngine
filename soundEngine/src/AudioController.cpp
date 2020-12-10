@@ -61,14 +61,14 @@ namespace urchin {
     }
 
     void AudioController::process(const Point3<float>& listenerPosition) {
-        if (triggerValue!=SoundTrigger::STOP && triggerValue!=SoundTrigger::SMOOTH_STOP
+        if (triggerValue != SoundTrigger::STOP && triggerValue != SoundTrigger::SMOOTH_STOP
                 && sound->isStopped()) {
             triggerValue = SoundTrigger::STOP;
         }
 
         SoundTrigger::TriggerResultValue oldTriggerValue = triggerValue;
         SoundTrigger::TriggerResultValue newTriggerValue = soundTrigger->evaluateTrigger(listenerPosition);
-        if (newTriggerValue!=SoundTrigger::NO_TRIGGER) {
+        if (newTriggerValue != SoundTrigger::NO_TRIGGER) {
             triggerValue = newTriggerValue;
         }
 
@@ -78,14 +78,14 @@ namespace urchin {
     void AudioController::processTriggerValue(SoundTrigger::TriggerResultValue oldTriggerValue) {
         processSmoothStopTriggerValue(oldTriggerValue);
 
-        if (triggerValue!=oldTriggerValue) {
-            if (triggerValue==SoundTrigger::PLAY) {
+        if (triggerValue != oldTriggerValue) {
+            if (triggerValue == SoundTrigger::PLAY) {
                 audioPlayer->play();
-            } else if (triggerValue==SoundTrigger::PLAY_LOOP) {
+            } else if (triggerValue == SoundTrigger::PLAY_LOOP) {
                 audioPlayer->playLoop();
-            } else if (triggerValue==SoundTrigger::STOP) {
+            } else if (triggerValue == SoundTrigger::STOP) {
                 audioPlayer->stop();
-            } else if (triggerValue==SoundTrigger::PAUSE) {
+            } else if (triggerValue == SoundTrigger::PAUSE) {
                 audioPlayer->pause();
             }
         }
@@ -93,7 +93,7 @@ namespace urchin {
 
     void AudioController::processSmoothStopTriggerValue(SoundTrigger::TriggerResultValue oldTriggerValue) {
         //process smooth stop if started
-        if (triggerValue==SoundTrigger::SMOOTH_STOP && smoothStopAction->isSmoothStopStarted()) {
+        if (triggerValue == SoundTrigger::SMOOTH_STOP && smoothStopAction->isSmoothStopStarted()) {
             if (smoothStopAction->isSmoothStopProcessing()) {
                 sound->setVolumeChange(smoothStopAction->computeChangeVolumePercentage());
             } else {
@@ -102,13 +102,13 @@ namespace urchin {
         }
 
         //check smooth stop state
-        if (triggerValue!=oldTriggerValue) {
-            if (oldTriggerValue==SoundTrigger::SMOOTH_STOP) {
+        if (triggerValue != oldTriggerValue) {
+            if (oldTriggerValue == SoundTrigger::SMOOTH_STOP) {
                 //reset original volume before smooth stop
                 sound->setVolumeChange(-smoothStopAction->getTotalChangeVolumePercentage());
 
                 smoothStopAction->endSmoothStop();
-            } else if (triggerValue==SoundTrigger::SMOOTH_STOP) {
+            } else if (triggerValue == SoundTrigger::SMOOTH_STOP) {
                 smoothStopAction->startSmoothStop();
             }
         }

@@ -12,7 +12,7 @@ namespace urchin {
             if (buffer.length() > 0 && buffer[buffer.length() - 1] == '\r') {
                 buffer.resize(buffer.length() - 1);
             }
-        }while (buffer.length()==0 && !file.eof());
+        }while (buffer.length() == 0 && !file.eof());
     }
 
     std::string FileReaderUtil::readFile(const std::string& filename) {

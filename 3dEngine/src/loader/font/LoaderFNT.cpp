@@ -32,7 +32,7 @@ namespace urchin {
         }
 
         int error = FT_New_Face(library, fileFontPath.c_str(), 0, &face);
-        if (error!=0) {
+        if (error != 0) {
             FT_Done_FreeType(library);
             throw std::runtime_error("The font file is an invalid format or doesn't exist, filename: " + fileFontPath + ", error id: " + std::to_string(error) + ".");
         }

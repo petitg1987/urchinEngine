@@ -19,9 +19,9 @@ namespace urchin {
 
     std::shared_ptr<SoundShapeReaderWriter> SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(const SoundShape* soundShape) {
         SoundShape::ShapeType shapeType = soundShape->getShapeType();
-        if (shapeType==SoundShape::SPHERE_SHAPE) {
+        if (shapeType == SoundShape::SPHERE_SHAPE) {
             return std::make_shared<SoundSphereReaderWriter>();
-        } else if (shapeType==SoundShape::BOX_SHAPE) {
+        } else if (shapeType == SoundShape::BOX_SHAPE) {
             return std::make_shared<SoundBoxReaderWriter>();
         }
 

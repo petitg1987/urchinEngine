@@ -49,7 +49,7 @@ namespace urchin {
 
     template<class T> Point3<T> Capsule<T>::getSupportPoint(const Vector3<T>& direction) const {
         Vector3<T> normalizedDirection;
-        if (direction.X==0.0 && direction.Y==0.0 && direction.Z==0.0) {
+        if (direction.X == 0.0 && direction.Y == 0.0 && direction.Z == 0.0) {
             normalizedDirection = Vector3<T>(1.0, 0.0, 0.0);
         } else {
             normalizedDirection = direction.normalize();

@@ -34,11 +34,11 @@ namespace urchin {
 
         std::shared_ptr<XmlChunk> orientationChunk = xmlWriter.createChunk(ORIENTATION_TAG, XmlAttribute(), shapeChunk);
         CapsuleShape<float>::CapsuleOrientation orientationValue = capsuleShape->getCapsuleOrientation();
-        if (orientationValue==CapsuleShape<float>::CapsuleOrientation::CAPSULE_X) {
+        if (orientationValue == CapsuleShape<float>::CapsuleOrientation::CAPSULE_X) {
             orientationChunk->setStringValue(X_VALUE);
-        } else if (orientationValue==CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y) {
+        } else if (orientationValue == CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y) {
             orientationChunk->setStringValue(Y_VALUE);
-        } else if (orientationValue==CapsuleShape<float>::CapsuleOrientation::CAPSULE_Z) {
+        } else if (orientationValue == CapsuleShape<float>::CapsuleOrientation::CAPSULE_Z) {
             orientationChunk->setStringValue(Z_VALUE);
         } else {
             throw std::invalid_argument("Capsule orientation type unknown: " + std::to_string(orientationValue));

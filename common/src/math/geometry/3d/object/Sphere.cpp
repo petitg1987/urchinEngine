@@ -23,7 +23,7 @@ namespace urchin {
     }
 
     template<class T> Point3<T> Sphere<T>::getSupportPoint(const Vector3<T>& direction) const {
-        if (direction.X==0.0 && direction.Y==0.0 && direction.Z==0.0) {
+        if (direction.X == 0.0 && direction.Y == 0.0 && direction.Z == 0.0) {
             return centerOfMass + Point3<T>(getRadius(), (T)0.0, (T)0.0);
         }
 

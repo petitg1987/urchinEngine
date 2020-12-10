@@ -39,7 +39,7 @@ namespace urchin {
                 //compute depth penetration
                 boxSphereLength = normalFromObject2.length();
                 depth = boxSphereLength - sphere1.getRadius();
-            } else { //special case when sphere position is inside the box: closestPointOnBox==spherePosLocalBox
+            } else { //special case when sphere position is inside the box: closestPointOnBox == spherePosLocalBox
 
                 //find axis closest to sphere position
                 float minDistToAxis = box2.getHalfSize(0) - std::abs(spherePosLocalBox[0]);

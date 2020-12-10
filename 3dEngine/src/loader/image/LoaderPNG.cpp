@@ -30,7 +30,7 @@ namespace urchin {
         if (colorType == LodePNGColorType::LCT_GREY) {
             if (bitDepth == 8) {
                 return new Image(width, height, Image::IMAGE_GRAYSCALE, extract8BitsChannels(pixelsRGBA16bits, 1));
-            } else if (bitDepth==16) {
+            } else if (bitDepth == 16) {
                 return new Image(width, height, Image::IMAGE_GRAYSCALE, extract16BitsChannels(pixelsRGBA16bits, 1));
             } else {
                 throw std::invalid_argument("Unsupported number of bits for PNG image (grayscale): " + std::to_string(bitDepth));

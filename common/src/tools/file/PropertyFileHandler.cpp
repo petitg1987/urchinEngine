@@ -36,7 +36,7 @@ namespace urchin {
             std::istringstream iss(buffer);
             iss >> propertyName;
 
-            if (buffer.length()==0 || propertyName[0]=='#') { //empty or commented line
+            if (buffer.length() == 0 || propertyName[0] == '#') { //empty or commented line
                 continue;
             }
 

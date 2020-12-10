@@ -67,7 +67,7 @@ namespace urchin {
             CollisionObjectWrapper collisionObject2(*body2->getShape(), body2->getPhysicsTransform());
             collisionAlgorithm->processCollisionAlgorithm(collisionObject1, collisionObject2, true);
 
-            if (collisionAlgorithm->getConstManifoldResult().getNumContactPoints()!=0) {
+            if (collisionAlgorithm->getConstManifoldResult().getNumContactPoints() != 0) {
                 manifoldResults.push_back(collisionAlgorithm->getConstManifoldResult());
             }
         }

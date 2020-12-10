@@ -170,7 +170,7 @@ namespace urchin {
 
     void Renderer3d::notify(Observable* observable, int notificationType) {
         if (dynamic_cast<ShadowManager*>(observable)) {
-            if (notificationType==ShadowManager::NUMBER_SHADOW_MAPS_UPDATE) {
+            if (notificationType == ShadowManager::NUMBER_SHADOW_MAPS_UPDATE) {
                 createOrUpdateLightingShader();
             }
         }

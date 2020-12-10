@@ -43,7 +43,7 @@ namespace urchin {
             for (const auto& link : currTriangle->getLinks()) {
                 auto neighborTriangle = link->getTargetTriangle();
 
-                if (closedList.find(neighborTriangle.get())!=closedList.end()) { //already processed
+                if (closedList.find(neighborTriangle.get()) != closedList.end()) { //already processed
                     continue;
                 }
 
@@ -166,7 +166,7 @@ namespace urchin {
         std::shared_ptr<PathNode> pathNode = endNode;
         std::shared_ptr<PathPortal> endPortal = std::make_shared<PathPortal>(LineSegment3D<float>(endPoint, endPoint), pathNode, nullptr, false);
         portals.emplace_back(endPortal);
-        while (pathNode->getPreviousNode()!=nullptr) {
+        while (pathNode->getPreviousNode() != nullptr) {
             PathNodeEdgesLink pathNodeEdgesLink = pathNode->computePathNodeEdgesLink();
 
             LineSegment3D<float> targetPortal = rearrangePortal(pathNodeEdgesLink.targetEdge, portals);

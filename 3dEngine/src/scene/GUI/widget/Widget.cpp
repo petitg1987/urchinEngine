@@ -95,7 +95,7 @@ namespace urchin {
     * @return Position X of the widget relative to his parent
     */
     int Widget::getPositionX() const {
-        if (position.getPositionTypeX()==Position::PERCENTAGE) {
+        if (position.getPositionTypeX() == Position::PERCENTAGE) {
             return (int)(position.getPositionX() * (float)sceneWidth);
         }
 
@@ -106,7 +106,7 @@ namespace urchin {
     * @return Position Y of the widget relative to his parent
     */
     int Widget::getPositionY() const {
-        if (position.getPositionTypeY()==Position::PERCENTAGE) {
+        if (position.getPositionTypeY() == Position::PERCENTAGE) {
             return (int)(position.getPositionY() * (float)sceneHeight);
         }
 
@@ -138,14 +138,14 @@ namespace urchin {
     }
 
     unsigned int Widget::getWidth() const {
-        if (size.getWidthSizeType()==Size::PERCENTAGE) {
+        if (size.getWidthSizeType() == Size::PERCENTAGE) {
             return (unsigned int)(size.getWidth() * (float)sceneWidth);
         }
         return (unsigned int)size.getWidth();
     }
 
     unsigned int Widget::getHeight() const {
-        if (size.getHeightSizeType()==Size::PERCENTAGE) {
+        if (size.getHeightSizeType() == Size::PERCENTAGE) {
             return (unsigned int)(size.getHeight() * (float)sceneHeight);
         }
         return (unsigned int)size.getHeight();
@@ -210,7 +210,7 @@ namespace urchin {
         if (key == InputDeviceKey::MOUSE_LEFT) {
             Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
             if (widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
-                if (widgetState==CLICKING) {
+                if (widgetState == CLICKING) {
                     widgetState = FOCUS;
                     for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
                         eventListener->onClickRelease(this);
@@ -266,13 +266,13 @@ namespace urchin {
     void Widget::handleWidgetMouseMove(int mouseX, int mouseY) {
         Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
         if (widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
-            if (widgetState==DEFAULT) {
+            if (widgetState == DEFAULT) {
                 widgetState = FOCUS;
                 for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
                     eventListener->onFocus(this);
                 }
             }
-        } else if (widgetState==FOCUS) {
+        } else if (widgetState == FOCUS) {
             widgetState = DEFAULT;
             for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
                 eventListener->onFocusLost(this);
@@ -307,14 +307,14 @@ namespace urchin {
     }
 
     void Widget::handleDisable() {
-        if (widgetState==CLICKING) {
+        if (widgetState == CLICKING) {
             widgetState = FOCUS;
             for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
                 eventListener->onClickRelease(this);
             }
         }
 
-        if (widgetState==FOCUS) {
+        if (widgetState == FOCUS) {
             widgetState = DEFAULT;
             for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
                 eventListener->onFocusLost(this);

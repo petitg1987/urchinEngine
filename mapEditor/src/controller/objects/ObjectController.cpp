@@ -22,7 +22,7 @@ namespace urchin {
 
     const SceneObject* ObjectController::findSceneObjectByBodyId(const std::string& bodyId) const {
         for (auto sceneObject : getSceneObjects()) {
-            if (sceneObject->getRigidBody() && sceneObject->getRigidBody()->getId()==bodyId) {
+            if (sceneObject->getRigidBody() && sceneObject->getRigidBody()->getId() == bodyId) {
                 return sceneObject;
             }
         }
@@ -153,7 +153,7 @@ namespace urchin {
         const std::list<SceneObject*>& sceneObjects = getMapHandler()->getMap()->getSceneObjects();
         auto it = std::find(sceneObjects.begin(), sceneObjects.end(), constSceneObject);
 
-        if (it!=sceneObjects.end()) {
+        if (it != sceneObjects.end()) {
             return *it;
         }
 

@@ -11,7 +11,7 @@ namespace urchin {
     }
 
     Shader::~Shader() {
-        if (shaderId==0) {
+        if (shaderId == 0) {
             return;
         }
 

@@ -48,7 +48,7 @@ namespace urchin {
             for (unsigned int j=0; j<nbElements; ++j) { //loop on elements of the island
                 auto* body = dynamic_cast<WorkRigidBody*>(islandElementsLink[startElementIndex+j].element);
                 bool bodyActiveState = !islandBodiesCanSleep;
-                if (body->isActive()!=bodyActiveState) {
+                if (body->isActive() != bodyActiveState) {
                     body->setIsActive(bodyActiveState);
 
                     if (bodyActiveState) {

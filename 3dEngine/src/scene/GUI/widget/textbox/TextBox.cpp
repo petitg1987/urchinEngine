@@ -150,7 +150,7 @@ namespace urchin {
     void TextBox::refreshText(unsigned int newCursorIndex) {
         //refresh cursor index
         if (    (newCursorIndex > cursorIndex && cursorIndex < allText.length()) ||
-                (newCursorIndex < cursorIndex && cursorIndex!=0)) {
+                (newCursorIndex < cursorIndex && cursorIndex != 0)) {
             cursorIndex = newCursorIndex;
         }
 
@@ -218,7 +218,7 @@ namespace urchin {
 
         //displays the cursor
         cursorBlink += dt * CURSOR_BLINK_SPEED;
-        if (state==ACTIVE && ((int)cursorBlink%2)>0) {
+        if (state == ACTIVE && ((int)cursorBlink%2) > 0) {
             Vector2<int> widgetPosition(getGlobalPositionX(), getGlobalPositionY());
             ShaderDataSender().sendData(translateDistanceShaderVar, widgetPosition + Vector2<int>((int)cursorPosition, 0));
 

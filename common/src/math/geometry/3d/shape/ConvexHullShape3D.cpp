@@ -83,7 +83,7 @@ namespace urchin {
 
         //deletes all triangles visible by the new point
         unsigned int trianglesRemoved = 0;
-        for (auto itTriangle=indexedTriangles.begin(); itTriangle!=indexedTriangles.end();) {
+        for (auto itTriangle = indexedTriangles.begin(); itTriangle != indexedTriangles.end();) {
             const IndexedTriangle3D<T> indexedTriangle = itTriangle->second;
             const Vector3<T>& triangleNormal = indexedTriangle.computeNormal(
                     points.at(indexedTriangle.getIndex(0)).point,
@@ -103,7 +103,7 @@ namespace urchin {
                     edgeId = edgeId + std::max(index1, index2);
 
                     auto itEdge = edges.find(edgeId);
-                    if (itEdge==edges.end()) {
+                    if (itEdge == edges.end()) {
                         edges[edgeId] = std::make_pair(index1, index2);
                     } else {
                         edges.erase(itEdge);
@@ -224,8 +224,8 @@ namespace urchin {
         pointsUsed.insert(0);
 
         //3. build a line (find two distinct points)
-        for (std::size_t i=1; i<points.size(); i++) {
-            if (points[i]!=this->points[0].point) {
+        for (std::size_t i = 1; i < points.size(); i++) {
+            if (points[i] != this->points[0].point) {
                 this->points[nextPointIndex++].point = points[i];
                 pointsUsed.insert(i);
                 break;
@@ -239,7 +239,7 @@ namespace urchin {
         //4. build triangles (find a point which doesn't belong to line).
         Vector3<T> lineVector = this->points[0].point.vector(this->points[1].point);
         for (std::size_t i=1; i<points.size(); i++) {
-            if (pointsUsed.find(i)!=pointsUsed.end()) { //point already used to build the tetrahedron
+            if (pointsUsed.find(i) != pointsUsed.end()) { //point already used to build the tetrahedron
                 continue;
             }
 
@@ -251,7 +251,7 @@ namespace urchin {
             }
         }
 
-        if (pointsUsed.size()!=3) {
+        if (pointsUsed.size() != 3) {
             throw buildException(points, pointsUsed);
         }
 
@@ -271,8 +271,8 @@ namespace urchin {
                 this->points.at(firstIndexedTriangle.getIndex(1)).point,
                 this->points.at(firstIndexedTriangle.getIndex(2)).point);
         const Point3<T>& firstPoint = this->points.at(0).point;
-        for (std::size_t i=1; i<points.size(); i++) {
-            if (pointsUsed.find(i)!=pointsUsed.end()) { //point already used to build the tetrahedron
+        for (std::size_t i = 1; i < points.size(); i++) {
+            if (pointsUsed.find(i) != pointsUsed.end()) { //point already used to build the tetrahedron
                 continue;
             }
 
@@ -288,7 +288,7 @@ namespace urchin {
             throw buildException(points, pointsUsed);
         }
 
-        for (unsigned int i=0; i<4; ++i) {
+        for (unsigned int i = 0; i < 4; ++i) {
             if (this->points[i].triangleIndices.size() < 3) {
                 logConvexHullData("Initial convex hull tetrahedron built with a point having less then 3 triangles");
                 break;
@@ -307,11 +307,11 @@ namespace urchin {
         std::string formName;
         if (pointsUsed.empty()) {
             formName = "empty set";
-        } else if (pointsUsed.size()==1) {
+        } else if (pointsUsed.size() == 1) {
             formName = "point";
-        } else if (pointsUsed.size()==2) {
+        } else if (pointsUsed.size() == 2) {
             formName = "line";
-        } else if (pointsUsed.size()==3) {
+        } else if (pointsUsed.size() == 3) {
             formName = "plane";
         } else {
             return std::invalid_argument("Number of points used to build the tetrahedron unsupported: " + std::to_string(pointsUsed.size()) + ".");
@@ -343,7 +343,7 @@ namespace urchin {
     }
 
     template<class T> std::ostream& operator <<(std::ostream& stream, const ConvexHullShape3D<T>& ch) {
-        for (auto it = ch.getIndexedTriangles().begin(); it!=ch.getIndexedTriangles().end(); ++it) {
+        for (auto it = ch.getIndexedTriangles().begin(); it != ch.getIndexedTriangles().end(); ++it) {
             stream << "Triangle "<< it->first <<": "
                 <<"("<<ch.getConvexHullPoints().at(it->second.getIndex(0)).point<<") "
                 <<"("<<ch.getConvexHullPoints().at(it->second.getIndex(1)).point<<") "

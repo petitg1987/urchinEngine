@@ -189,19 +189,19 @@ namespace urchin {
                 executeViewPropertiesChangeAction();
             }
         } else if (auto* objectTableView = dynamic_cast<ObjectTableView*>(observable)) {
-            if (notificationType==ObjectTableView::OBJECT_SELECTION_CHANGED) {
+            if (notificationType == ObjectTableView::OBJECT_SELECTION_CHANGED) {
                 sceneDisplayerWidget->setHighlightSceneObject(objectTableView->getSelectedSceneObject());
             }
         } else if (auto* lightTableView = dynamic_cast<LightTableView*>(observable)) {
-            if (notificationType==LightTableView::LIGHT_SELECTION_CHANGED) {
+            if (notificationType == LightTableView::LIGHT_SELECTION_CHANGED) {
                 sceneDisplayerWidget->setHighlightSceneLight(lightTableView->getSelectedSceneLight());
             }
         } else if (auto* soundTableView = dynamic_cast<SoundTableView*>(observable)) {
-            if (notificationType==SoundTableView::SOUND_SELECTION_CHANGED) {
+            if (notificationType == SoundTableView::SOUND_SELECTION_CHANGED) {
                 sceneDisplayerWidget->setHighlightSceneSound(soundTableView->getSelectedSceneSound());
             }
         } else if (dynamic_cast<AbstractController*>(observable)) {
-            if (notificationType==AbstractController::CHANGES_DONE) {
+            if (notificationType == AbstractController::CHANGES_DONE) {
                 refreshWindowTitle();
 
             }
@@ -219,7 +219,7 @@ namespace urchin {
                 }
             }
         } else if (auto* localizedShapeTableView = dynamic_cast<LocalizedShapeTableView*>(observable)) {
-            if (notificationType==LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED) {
+            if (notificationType == LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED) {
                 sceneDisplayerWidget->setHighlightCompoundShapeComponent(localizedShapeTableView->getSelectedLocalizedShape());
             }
         }
@@ -230,7 +230,7 @@ namespace urchin {
             NewDialog newDialog(this);
             newDialog.exec();
 
-            if (newDialog.result()==QDialog::Accepted) {
+            if (newDialog.result() == QDialog::Accepted) {
                 loadMap(newDialog.getFilename(), newDialog.getRelativeWorkingDirectory());
                 sceneController->forceModified();
             }
@@ -328,9 +328,9 @@ namespace urchin {
             NotSavedDialog notSavedDialog(this);
             notSavedDialog.exec();
 
-            if (notSavedDialog.result()==QDialog::Accepted && notSavedDialog.needSave()) {
+            if (notSavedDialog.result() == QDialog::Accepted && notSavedDialog.needSave()) {
                 executeSaveAction();
-            } else if (notSavedDialog.result()==QDialog::Rejected) {
+            } else if (notSavedDialog.result() == QDialog::Rejected) {
                 canProceed = false;
             }
         }
@@ -377,24 +377,24 @@ namespace urchin {
             auto viewProperties = static_cast<SceneDisplayer::ViewProperties>(i);
 
             bool isViewChecked = viewActions[viewProperties]->isChecked();
-            bool isCorrespondingTabSelected = (scenePanelWidget==nullptr && i==0)
-                    || (scenePanelWidget!=nullptr && getConcernedTabFor(viewProperties)==scenePanelWidget->getTabSelected());
+            bool isCorrespondingTabSelected = (scenePanelWidget == nullptr && i == 0)
+                    || (scenePanelWidget != nullptr && getConcernedTabFor(viewProperties) == scenePanelWidget->getTabSelected());
 
             sceneDisplayerWidget->setViewProperties(viewProperties, isViewChecked && isCorrespondingTabSelected);
         }
     }
 
     ScenePanelWidget::TabName MapEditorWindow::getConcernedTabFor(SceneDisplayer::ViewProperties viewProperties) {
-        if (SceneDisplayer::MODEL_PHYSICS==viewProperties) {
+        if (SceneDisplayer::MODEL_PHYSICS == viewProperties) {
             return ScenePanelWidget::OBJECTS;
         }
-        if (SceneDisplayer::LIGHT_SCOPE==viewProperties) {
+        if (SceneDisplayer::LIGHT_SCOPE == viewProperties) {
             return ScenePanelWidget::LIGHTS;
         }
-        if (SceneDisplayer::SOUND_TRIGGER==viewProperties) {
+        if (SceneDisplayer::SOUND_TRIGGER == viewProperties) {
             return ScenePanelWidget::SOUNDS;
         }
-        if (SceneDisplayer::NAV_MESH==viewProperties) {
+        if (SceneDisplayer::NAV_MESH == viewProperties) {
             return ScenePanelWidget::AI;
         }
 

@@ -280,10 +280,10 @@ namespace urchin {
     }
 
     int AmbientOcclusionManager::retrieveTextureSizeFactor() {
-        if (textureSize==AOTextureSize::FULL_SIZE) {
+        if (textureSize == AOTextureSize::FULL_SIZE) {
             return 1;
         }
-        if (textureSize==AOTextureSize::HALF_SIZE) {
+        if (textureSize == AOTextureSize::HALF_SIZE) {
             return 2;
         }
 

@@ -87,13 +87,13 @@ namespace urchin {
                 removeNavObject(aiEntity);
                 aiEntity->removeAllNavObjects();
 
-                if (aiEntity->getType()==AIEntity::OBJECT) {
+                if (aiEntity->getType() == AIEntity::OBJECT) {
                     auto aiObject = std::dynamic_pointer_cast<AIObject>(aiEntity);
                     std::vector<std::unique_ptr<Polytope>> objectExpandedPolytopes = PolytopeBuilder::instance()->buildExpandedPolytopes(aiObject, navMeshAgent);
                     for (auto& objectExpandedPolytope : objectExpandedPolytopes) {
                         addNavObject(aiObject, std::move(objectExpandedPolytope));
                     }
-                } else if (aiEntity->getType()==AIEntity::TERRAIN) {
+                } else if (aiEntity->getType() == AIEntity::TERRAIN) {
                     auto aiTerrain = std::dynamic_pointer_cast<AITerrain>(aiEntity);
                     std::vector<std::unique_ptr<Polytope>> terrainExpandedPolytopes = PolytopeBuilder::instance()->buildExpandedPolytope(aiTerrain, navMeshAgent);
                     for (auto& terrainExpandedPolytope : terrainExpandedPolytopes) {

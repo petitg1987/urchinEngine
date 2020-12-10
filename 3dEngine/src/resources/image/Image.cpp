@@ -55,11 +55,11 @@ namespace urchin {
     }
 
     unsigned int Image::retrieveComponentsCount() const {
-        if (format==Image::IMAGE_GRAYSCALE) {
+        if (format == Image::IMAGE_GRAYSCALE) {
             return 1;
-        } else if (format==Image::IMAGE_RGB) {
+        } else if (format == Image::IMAGE_RGB) {
             return 3;
-        } else if (format==Image::IMAGE_RGBA) {
+        } else if (format == Image::IMAGE_RGBA) {
             return 4;
         } else {
             throw std::runtime_error("Unknown image format: " + std::to_string(format) + ".");

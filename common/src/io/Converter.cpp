@@ -59,7 +59,7 @@ namespace urchin {
     }
 
     bool Converter::isChar(const std::string& str) {
-        return str.size()==1;
+        return str.size() == 1;
     }
 
     char Converter::toChar(const std::string& str) {
@@ -129,7 +129,7 @@ namespace urchin {
         stringValues.reserve(expectedSplit);
         StringUtil::split(str, FLOAT_DELIMITER, stringValues);
 
-        if (stringValues.size()!=expectedSplit) {
+        if (stringValues.size() != expectedSplit) {
             throw std::invalid_argument("Number of float expected: " + std::to_string(expectedSplit) + ", found: "
                     + std::to_string((unsigned int)stringValues.size()) + ". String value: " + str + ".");
         }

@@ -412,7 +412,7 @@ namespace urchin {
     template<class T> Vector3<T> Quaternion<T>::threeAxisEulerRotation(std::size_t i, std::size_t j, std::size_t k) const { //inspired on Eigen library (EulerAngle.h)
         Vector3<T> euler;
 
-        bool sequenceAxis = (i+1)%3==j;
+        bool sequenceAxis = (i + 1) % 3 == j;
         Matrix3<T> m = toMatrix3();
 
         euler[0] = std::atan2(m(k, j), m(k, k));
@@ -435,7 +435,7 @@ namespace urchin {
     template<class T> Vector3<T> Quaternion<T>::twoAxisEulerRotation(std::size_t i, std::size_t j, std::size_t k) const { //inspired on Eigen library (EulerAngle.h)
         Vector3<T> euler;
 
-        bool sequenceAxis = (i+1)%3==j;
+        bool sequenceAxis = (i + 1) % 3 == j;
         Matrix3<T> m = toMatrix3();
 
         euler[0] = std::atan2(m(i, j), m(i, k));
@@ -502,11 +502,11 @@ namespace urchin {
     }
 
     template<class T> bool Quaternion<T>::operator ==(const Quaternion<T>& q) const {
-        return (X==q.X && Y==q.Y && Z==q.Z && W==q.W);
+        return (X == q.X && Y == q.Y && Z == q.Z && W == q.W);
     }
 
     template<class T> bool Quaternion<T>::operator !=(const Quaternion<T>& q) const {
-        return !(this->operator==(q));
+        return !(this->operator == (q));
     }
 
     template<class T> T& Quaternion<T>::operator [](std::size_t i) {

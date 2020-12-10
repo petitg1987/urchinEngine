@@ -105,13 +105,13 @@ namespace urchin {
         unsigned int indexLastSpace = 0;
         unsigned int lengthFromLastSpace = 0;
 
-        for (unsigned int numLetter=0; text[numLetter]!=0; numLetter++) { //each letters
+        for (unsigned int numLetter = 0; text[numLetter] != 0; numLetter++) { //each letters
             auto letter = static_cast<unsigned char>(text[numLetter]);
 
-            if (letter=='\n') {
+            if (letter == '\n') {
                 lineLength = 0;
                 lengthFromLastSpace = 0;
-            } else if (letter==' ') {
+            } else if (letter == ' ') {
                 indexLastSpace = numLetter;
                 lengthFromLastSpace = 0;
             }

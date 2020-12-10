@@ -14,7 +14,7 @@ template<class TOctreeable> Octreeable<TOctreeable>::Octreeable(const Octreeable
 
 template<class TOctreeable> Octreeable<TOctreeable>::~Octreeable() {
     //remove references to this octreeable
-    for (auto it = refOctree.begin(); it!=refOctree.end(); ++it) {
+    for (auto it = refOctree.begin(); it != refOctree.end(); ++it) {
         TOctreeable* toctreeable = static_cast<TOctreeable*>(this);
         (*it)->removeOctreeable(toctreeable, false);
     }
@@ -72,7 +72,7 @@ template<class TOctreeable> void Octreeable<TOctreeable>::addRefOctree(Octree<TO
 
 template<class TOctreeable> void Octreeable<TOctreeable>::removeRefOctree(Octree<TOctreeable>* octree) {
     auto it = std::find(refOctree.begin(), refOctree.end(), octree);
-    if (it!=refOctree.end()) {
+    if (it != refOctree.end()) {
         VectorEraser::erase(refOctree, it);
     } else {
         throw std::invalid_argument("Impossible to find the reference octree to remove.");

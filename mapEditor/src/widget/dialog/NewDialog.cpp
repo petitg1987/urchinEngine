@@ -145,7 +145,7 @@ namespace urchin {
             if (mapFilename.empty()) {
                 LabelStyleHelper::applyErrorStyle(mapNameLabel, "Map name is mandatory");
                 hasError = true;
-            } else if (mapFilename.find_last_of("/\\")!=std::string::npos) {
+            } else if (mapFilename.find_last_of("/\\") != std::string::npos) {
                 LabelStyleHelper::applyErrorStyle(mapNameLabel, "Map name cannot contains slash character");
                 hasError = true;
             }

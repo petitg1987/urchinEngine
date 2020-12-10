@@ -45,7 +45,7 @@ namespace urchin {
 
         unsigned int aiShapeIndex = 0;
         for (auto& aiShape : aiObject->getShapes()) {
-            std::string shapeName = aiObject->getShapes().size()==1 ? aiObject->getName() : aiObject->getName() + "[" + std::to_string(aiShapeIndex++) + "]";
+            std::string shapeName = aiObject->getShapes().size() == 1 ? aiObject->getName() : aiObject->getName() + "[" + std::to_string(aiShapeIndex++) + "]";
             Transform<float> shapeTransform = aiShape->hasLocalTransform() ? aiObject->getTransform() * aiShape->getLocalTransform() : aiObject->getTransform();
             std::unique_ptr<ConvexObject3D<float>> object = aiShape->getShape()->toConvexObject(shapeTransform);
             std::unique_ptr<Polytope> expandedPolytope;

@@ -78,7 +78,7 @@ namespace urchin {
 
             case 3:
                 //uncompressed 8 bits grayscale
-                if (header.pixelDepth==8) {
+                if (header.pixelDepth == 8) {
                     readTGAgray8bits();
                 } else {
                     throw std::runtime_error("Wrong number of bits for grayscale: " + std::to_string(header.pixelDepth));

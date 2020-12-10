@@ -18,9 +18,9 @@ namespace urchin {
         }
 
         //determine sound format
-        if (fileInfos.channels==1) {
+        if (fileInfos.channels == 1) {
             format = SoundFormat::MONO_16;
-        } else if (fileInfos.channels==2) {
+        } else if (fileInfos.channels == 2) {
             format = SoundFormat::STEREO_16;
         } else {
             sf_close(file);

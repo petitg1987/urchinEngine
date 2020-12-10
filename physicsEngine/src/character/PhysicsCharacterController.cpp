@@ -145,7 +145,7 @@ namespace urchin {
             physicsWorld->getCollisionWorld()->getNarrowPhaseManager()->processGhostBody(ghostBody, manifoldResults);
 
             for (const auto& manifoldResult : manifoldResults) {
-                float sign = manifoldResult.getBody1()==ghostBody ? -1.0f : 1.0f;
+                float sign = manifoldResult.getBody1() == ghostBody ? -1.0f : 1.0f;
                 for (unsigned int i=0; i<manifoldResult.getNumContactPoints(); ++i) {
                     const ManifoldContactPoint& manifoldContactPoint = manifoldResult.getManifoldContactPoint(i);
                     float depth = manifoldContactPoint.getDepth();
@@ -156,7 +156,7 @@ namespace urchin {
 
                         ghostBody->setPosition(ghostBody->getPosition().translate(moveVector));
 
-                        if (subStepIndex==0) {
+                        if (subStepIndex == 0) {
                             saveSignificantContactValues(significantContactValues, normal);
                         }
                     }
@@ -208,7 +208,7 @@ namespace urchin {
         Point2<float> p1 = Point2<float>(ghostBody->getPosition().X, ghostBody->getPosition().Z);
         Point2<float> p2 = Point2<float>(previousBodyPosition.X, previousBodyPosition.Z);
         float run = p1.vector(p2).length();
-        if (run==0.0f) {
+        if (run == 0.0f) {
             return 0.0f;
         }
 

@@ -35,7 +35,7 @@ namespace urchin {
     }
 
     void SoundManager::removeSound(const Sound* sound) {
-        for (auto it = audioControllers.begin(); it!=audioControllers.end(); ++it) {
+        for (auto it = audioControllers.begin(); it != audioControllers.end(); ++it) {
             if ((*it)->getSound() == sound) {
                 deleteAudioController(*it);
                 audioControllers.erase(it);

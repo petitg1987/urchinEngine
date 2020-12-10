@@ -218,8 +218,8 @@ namespace urchin {
         Vector3<float> tangentVelocity = relativeVelocity - (relativeVelocity.dotProduct(normal)) * normal;
 
         float tangentVelocityLength = tangentVelocity.length();
-        if (tangentVelocityLength==0.0) {
-            return Vector3<float>(0.0, 0.0, 0.0);
+        if (tangentVelocityLength == 0.0f) {
+            return Vector3<float>(0.0f, 0.0f, 0.0f);
         }
 
         return tangentVelocity / tangentVelocityLength;

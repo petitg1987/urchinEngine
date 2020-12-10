@@ -38,7 +38,7 @@ namespace urchin {
         Vector2<T> ab = a.vector(b);
 
         T abSquareLength = ab.squareLength();
-        if (abSquareLength==(T)0.0) {
+        if (abSquareLength == (T)0.0) {
             barycentrics[0] = 1.0;
             barycentrics[1] = 0.0;
             return a;
@@ -71,7 +71,7 @@ namespace urchin {
             return bp.squareLength();
         }
 
-        if (typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T)) {
+        if (typeid(int) == typeid(T) || typeid(long) == typeid(T) || typeid(long long) == typeid(T)) {
             return ap.squareLength() - MathFunction::roundDivision<T>(apDotAb * apDotAb, abSquareLength);
         }
         return ap.squareLength() - ((apDotAb * apDotAb) / abSquareLength);
@@ -79,7 +79,7 @@ namespace urchin {
 
     template<class T> bool LineSegment2D<T>::onSegment(const Point2<T>& p) const {
         T orientation = ((p.Y - a.Y) * (b.X - p.X) - (p.X - a.X) * (b.Y - p.Y));
-        if (orientation==(T)0) {
+        if (orientation == (T)0) {
             return p.X <= std::max(a.X, b.X) && p.X >= std::min(a.X, b.X)
                    && p.Y <= std::max(a.Y, b.Y) && p.Y >= std::min(a.Y, b.Y);
         }
@@ -121,9 +121,9 @@ namespace urchin {
         Vector2<T> thisToOther = a.vector(other.getA());
         T startPointsCrossR = thisToOther.crossProduct(r);
 
-        if (rCrossS==0) { //line segments are parallel
+        if (rCrossS == 0) { //line segments are parallel
             auto rDotR = (double)r.dotProduct(r);
-            if (startPointsCrossR==0 && rDotR != 0.0) { //line segments are collinear
+            if (startPointsCrossR == 0 && rDotR != 0.0) { //line segments are collinear
                 double t0 = (double)thisToOther.dotProduct(r) / rDotR;
                 double t1 = t0 + (double)s.dotProduct(r) / rDotR;
 
@@ -158,12 +158,12 @@ namespace urchin {
         //line segments not parallel
         T thisToOtherCrossR = thisToOther.crossProduct(s);
         if ( //if (t>=0 && t<=1 && u>=0 && u<=1) where t=thisToOtherCrossR/rCrossS and u=startPointsCrossR/rCrossS
-                (thisToOtherCrossR==T(0) || MathFunction::sign<T>(thisToOtherCrossR) == MathFunction::sign<T>(rCrossS))
+                (thisToOtherCrossR == T(0) || MathFunction::sign<T>(thisToOtherCrossR) == MathFunction::sign<T>(rCrossS))
                 && std::abs(rCrossS) >= std::abs(thisToOtherCrossR)
-                && (startPointsCrossR==T(0) || MathFunction::sign<T>(startPointsCrossR) == MathFunction::sign<T>(rCrossS))
+                && (startPointsCrossR == T(0) || MathFunction::sign<T>(startPointsCrossR) == MathFunction::sign<T>(rCrossS))
                 && std::abs(rCrossS) >= std::abs(startPointsCrossR)) { //intersection
             hasIntersection = true;
-            if (typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T)) {
+            if (typeid(int) == typeid(T) || typeid(long) == typeid(T) || typeid(long long) == typeid(T)) {
                 Vector2<T> vTranslate(MathFunction::roundDivision<T>(thisToOtherCrossR * r.X, rCrossS),
                                       MathFunction::roundDivision<T>(thisToOtherCrossR * r.Y, rCrossS));
                 return a.translate(vTranslate);

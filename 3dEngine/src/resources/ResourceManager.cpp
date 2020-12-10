@@ -28,7 +28,7 @@ namespace urchin {
 
     void ResourceManager::removeResource(const std::string& name) {
         auto it = mResources.find(name);
-        if (it!=mResources.end()) {
+        if (it != mResources.end()) {
             mResources.erase(it);
         }
     }

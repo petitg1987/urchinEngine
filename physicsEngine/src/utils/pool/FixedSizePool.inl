@@ -41,7 +41,7 @@ template<class BaseType> void* FixedSizePool<BaseType>::allocate(unsigned int si
         throw std::runtime_error("Fixed size pool '" + poolName + "' cannot allocate " + std::to_string(size) + " bytes because max allowed allocation is " + std::to_string(maxElementSize) + " bytes");
     }
 
-    if (freeCount!=0) { //pool is not full
+    if (freeCount != 0) { //pool is not full
         void* result = firstFree;
         firstFree = *(void**)firstFree;
         --freeCount;

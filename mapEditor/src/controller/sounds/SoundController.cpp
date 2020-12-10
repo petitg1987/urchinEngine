@@ -122,7 +122,7 @@ namespace urchin {
         const std::list<SceneSound*>& sceneSounds = getMapHandler()->getMap()->getSceneSounds();
         auto it = std::find(sceneSounds.begin(), sceneSounds.end(), constSceneSound);
 
-        if (it!=sceneSounds.end()) {
+        if (it != sceneSounds.end()) {
             return *it;
         }
 

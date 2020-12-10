@@ -33,9 +33,9 @@ namespace urchin {
 
     GeometryModel* SoundTriggerDisplayer::retrieveGeometry(const SoundShape* soundShape) {
         SoundShape::ShapeType shapeType = soundShape->getShapeType();
-        if (shapeType==SoundShape::ShapeType::SPHERE_SHAPE) {
+        if (shapeType == SoundShape::ShapeType::SPHERE_SHAPE) {
             return retrieveSphereGeometry(soundShape);
-        } else if (shapeType==SoundShape::ShapeType::BOX_SHAPE) {
+        } else if (shapeType == SoundShape::ShapeType::BOX_SHAPE) {
             return retrieveBoxGeometry(soundShape);
         }
 

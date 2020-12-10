@@ -74,25 +74,25 @@ namespace urchin {
     }
 
     GeometryModel* BodyShapeDisplayer::retrieveSingleGeometry(CollisionShape3D::ShapeType shapeType, const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>& bodyObject) {
-        if (shapeType==CollisionShape3D::SPHERE_SHAPE) {
+        if (shapeType == CollisionShape3D::SPHERE_SHAPE) {
             return retrieveSphereGeometry(bodyObject);
         }
-        if (shapeType==CollisionShape3D::BOX_SHAPE) {
+        if (shapeType == CollisionShape3D::BOX_SHAPE) {
             return retrieveBoxGeometry(bodyObject);
         }
-        if (shapeType==CollisionShape3D::CYLINDER_SHAPE) {
+        if (shapeType == CollisionShape3D::CYLINDER_SHAPE) {
             return retrieveCylinderGeometry(bodyObject);
         }
-        if (shapeType==CollisionShape3D::CONE_SHAPE) {
+        if (shapeType == CollisionShape3D::CONE_SHAPE) {
             return retrieveConeGeometry(bodyObject);
         }
-        if (shapeType==CollisionShape3D::CAPSULE_SHAPE) {
+        if (shapeType == CollisionShape3D::CAPSULE_SHAPE) {
             return retrieveCapsuleGeometry(bodyObject);
         }
-        if (shapeType==CollisionShape3D::CONVEX_HULL_SHAPE) {
+        if (shapeType == CollisionShape3D::CONVEX_HULL_SHAPE) {
             return retrieveConvexHullGeometry(bodyObject);
         }
-        if (shapeType==CollisionShape3D::COMPOUND_SHAPE) {
+        if (shapeType == CollisionShape3D::COMPOUND_SHAPE) {
             throw std::invalid_argument("Impossible to return a simple geometry from a compound shape");
         }
 

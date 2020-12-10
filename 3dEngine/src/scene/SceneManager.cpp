@@ -68,7 +68,7 @@ namespace urchin {
     }
 
     float SceneManager::getFps() const {
-        return (fps==0.0f ? START_FPS : fps);
+        return (fps == 0.0f ? START_FPS : fps);
     }
 
     unsigned int SceneManager::getFpsForDisplay() {
@@ -109,7 +109,7 @@ namespace urchin {
     }
 
     void SceneManager::enableRenderer3d(Renderer3d* renderer3d) {
-        if (activeRenderers[RENDERER_3D] && activeRenderers[RENDERER_3D]!=renderer3d) {
+        if (activeRenderers[RENDERER_3D] && activeRenderers[RENDERER_3D] != renderer3d) {
             activeRenderers[RENDERER_3D]->onDisable();
         }
 
@@ -143,7 +143,7 @@ namespace urchin {
     }
 
     void SceneManager::enableGUIRenderer(GUIRenderer* guiRenderer) {
-        if (activeRenderers[GUI_RENDERER] && activeRenderers[GUI_RENDERER]!=guiRenderer) {
+        if (activeRenderers[GUI_RENDERER] && activeRenderers[GUI_RENDERER] != guiRenderer) {
             activeRenderers[GUI_RENDERER]->onDisable();
         }
 

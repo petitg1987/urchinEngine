@@ -72,9 +72,9 @@ namespace urchin {
         auto lightType = static_cast<Light::LightType>(variant.toInt());
 
         Light *light;
-        if (lightType==Light::OMNIDIRECTIONAL) {
+        if (lightType == Light::OMNIDIRECTIONAL) {
             light = new OmnidirectionalLight(Point3<float>(0.0, 0.0, 0.0));
-        } else if (lightType==Light::SUN) {
+        } else if (lightType == Light::SUN) {
             light = new SunLight(Vector3<float>(1.0, -1.0, 0.0));
         } else {
             throw std::invalid_argument("Unknown the light type to create a new light: " + std::to_string(lightType));

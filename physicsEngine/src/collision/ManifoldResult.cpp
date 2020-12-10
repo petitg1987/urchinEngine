@@ -17,9 +17,9 @@ namespace urchin {
      * @param index Index of body to return. Index must be '0' for body1 or '1' for body2.
      */
     AbstractWorkBody* ManifoldResult::getBody(unsigned int index) const {
-        assert(index==0 || index==1);
+        assert(index == 0 || index == 1);
 
-        return index==0 ? body1 : body2;
+        return index == 0 ? body1 : body2;
     }
 
     AbstractWorkBody* ManifoldResult::getBody1() const {
@@ -83,7 +83,7 @@ namespace urchin {
 
         //2. keep deepest point and four points cover the biggest area
         unsigned int insertionIndex;
-        if (nbContactPoint==MAX_PERSISTENT_POINTS) {
+        if (nbContactPoint == MAX_PERSISTENT_POINTS) {
             insertionIndex = computeBestInsertionIndex(localPointOnObject2);
         } else {
             insertionIndex = nbContactPoint;

@@ -17,11 +17,11 @@ template<class OBJ> AABBNodeData<OBJ> *AABBNode<OBJ>::getNodeData() const {
 }
 
 template<class OBJ> bool AABBNode<OBJ>::isLeaf() const {
-    return children[0]==nullptr;
+    return children[0] == nullptr;
 }
 
 template<class OBJ> bool AABBNode<OBJ>::isRoot() const {
-    return parentNode==nullptr;
+    return parentNode == nullptr;
 }
 
 template<class OBJ> void AABBNode<OBJ>::setParent(AABBNode* parentNode) {
@@ -55,7 +55,7 @@ template<class OBJ> AABBNode<OBJ> *AABBNode<OBJ>::getRightChild() const {
 }
 
 template<class OBJ> AABBNode<OBJ> *AABBNode<OBJ>::getSibling() const {
-    return parentNode->getLeftChild()==this ? parentNode->getRightChild() : parentNode->getLeftChild();
+    return parentNode->getLeftChild() == this ? parentNode->getRightChild() : parentNode->getLeftChild();
 }
 
 /**

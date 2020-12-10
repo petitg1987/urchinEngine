@@ -56,7 +56,7 @@ namespace urchin {
         unsigned int farNearPointIndex = xIndex + farNearPointZIndex * heightfieldXSize;
         Point3<T> farNearPoint = heightfieldPoints[farNearPointIndex];
 
-        if (nearestPointIndex==leftRightPointIndex || nearestPointIndex==farNearPointIndex || leftRightPointIndex==farNearPointIndex) { //coordinates are outside heightfield or on edge: return approximate point
+        if (nearestPointIndex == leftRightPointIndex || nearestPointIndex == farNearPointIndex || leftRightPointIndex == farNearPointIndex) { //coordinates are outside heightfield or on edge: return approximate point
             return nearestPoint.Y;
         }
 

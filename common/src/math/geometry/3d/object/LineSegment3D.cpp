@@ -40,7 +40,7 @@ namespace urchin {
         Vector3<T> ab = a.vector(b);
 
         T abSquareLength = ab.squareLength();
-        if (abSquareLength==(T)0.0) {
+        if (abSquareLength == (T)0.0) {
             return a;
         }
 
@@ -48,7 +48,7 @@ namespace urchin {
         T t = ap.dotProduct(ab) / abSquareLength;
         t = std::min((T)1.0, std::max((T)0.0, t));
 
-        return ((b-a)*t) + a;
+        return ((b - a) * t) + a;
     }
 
     /**
@@ -59,7 +59,7 @@ namespace urchin {
         Vector3<T> ab = a.vector(b);
 
         T abSquareLength = ab.squareLength();
-        if (abSquareLength==(T)0.0) {
+        if (abSquareLength == (T)0.0) {
             barycentrics[0] = 1.0;
             barycentrics[1] = 0.0;
             return a;

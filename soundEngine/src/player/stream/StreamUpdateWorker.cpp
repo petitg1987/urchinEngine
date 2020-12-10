@@ -66,7 +66,7 @@ namespace urchin {
     void StreamUpdateWorker::removeTask(const Sound* sound) {
         std::lock_guard<std::mutex> lock(tasksMutex);
 
-        for (auto it=tasks.begin(); it!=tasks.end(); ++it) {
+        for (auto it=tasks.begin(); it != tasks.end(); ++it) {
             if ((*it)->getSourceId() == sound->getSourceId()) {
                 deleteTask(*it);
                 tasks.erase(it);
@@ -136,7 +136,7 @@ namespace urchin {
 
         ALint nbQueues = 0;
         alGetSourcei(task->getSourceId(), AL_BUFFERS_QUEUED, &nbQueues);
-        return nbQueues==0; //task terminated ?
+        return nbQueues == 0; //task terminated ?
     }
 
     void StreamUpdateWorker::deleteTask(StreamUpdateTask* task) {

@@ -27,9 +27,9 @@ namespace urchin {
       * @param index Index of body to return. Index must be '0' for body1 or '1' for body2.
       */
     AbstractWorkBody* OverlappingPair::getBody(unsigned int index) const {
-        assert(index==0 || index==1);
+        assert(index == 0 || index == 1);
 
-        return index==0 ? body1 : body2;
+        return index == 0 ? body1 : body2;
     }
 
     AbstractWorkBody* OverlappingPair::getBody1() const {

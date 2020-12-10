@@ -59,7 +59,7 @@ namespace urchin {
         for (std::size_t i=0; i<browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
             const AABBNode<AbstractWorkBody*>* currentNode = browseNodes[i];
 
-            if (leafNode!=currentNode && leafNode->getAABBox().collideWithAABBox(currentNode->getAABBox())) {
+            if (leafNode != currentNode && leafNode->getAABBox().collideWithAABBox(currentNode->getAABBox())) {
                 if (currentNode->isLeaf()) {
                     createOverlappingPair(dynamic_cast<BodyAABBNodeData*>(leafNode->getNodeData()), dynamic_cast<BodyAABBNodeData*>(currentNode->getNodeData()));
                 } else {

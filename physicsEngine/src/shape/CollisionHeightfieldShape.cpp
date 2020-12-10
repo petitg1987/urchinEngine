@@ -11,7 +11,7 @@ namespace urchin {
             vertices(std::move(vertices)),
             xLength(xLength),
             zLength(zLength) {
-        assert(this->vertices.size()==xLength*zLength);
+        assert(this->vertices.size() == xLength*zLength);
         localAABBox = buildLocalAABBox();
 
         unsigned int trianglesShapePoolSize = ConfigService::instance()->getUnsignedIntValue("collisionShape.heightfieldTrianglesPoolSize");
@@ -188,9 +188,9 @@ namespace urchin {
      * @param maxValue Upper bound value on X (or Z) axis
      */
     std::pair<unsigned int, unsigned int> CollisionHeightfieldShape::computeStartEndIndices(float minValue, float maxValue, Axis axis) const {
-        float halfSize = axis==Axis::X ? localAABBox->getHalfSizes().X : localAABBox->getHalfSizes().Z;
-        float verticesDistance = axis==Axis::X ? vertices[1].X - vertices[0].X : vertices[xLength].Z - vertices[0].Z;
-        int maxLength = axis==Axis::X ? (int)xLength - 1 : (int)zLength - 1;
+        float halfSize = axis == Axis::X ? localAABBox->getHalfSizes().X : localAABBox->getHalfSizes().Z;
+        float verticesDistance = axis == Axis::X ? vertices[1].X - vertices[0].X : vertices[xLength].Z - vertices[0].Z;
+        int maxLength = axis == Axis::X ? (int)xLength - 1 : (int)zLength - 1;
 
         auto rawStartVertex = (int)((minValue + halfSize) / verticesDistance);
         auto startVertex = (unsigned int)MathFunction::clamp(rawStartVertex, 0, maxLength);
