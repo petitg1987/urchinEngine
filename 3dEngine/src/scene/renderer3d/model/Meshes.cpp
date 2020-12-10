@@ -13,7 +13,7 @@ namespace urchin {
     }
 
     Meshes::~Meshes() {
-        for (unsigned int i=0;i<numMeshes;i++) {
+        for (unsigned int i = 0; i < numMeshes; i++) {
             delete meshes[i];
         }
 
