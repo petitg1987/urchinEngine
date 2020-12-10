@@ -44,6 +44,9 @@ namespace urchin {
 
             float minDistanceToCenter;
             float maxDistanceToCenter;
+
+            static thread_local std::unordered_map<const CollisionConvexHullShape*, AABBox<float>> aabboxCache;
+            static thread_local std::unordered_map<const CollisionConvexHullShape*, PhysicsTransform> transformCache;
     };
 
 }

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cassert>
 #include <memory>
+#include <thread>
 
 #include "Profiler.h"
 #include "tools/ConfigService.h"
@@ -21,22 +22,22 @@ namespace urchin {
     }
 
     const std::unique_ptr<Profiler>& Profiler::graphic() {
-        static auto profiler3d = std::make_unique<Profiler>("3d");
+        static thread_local auto profiler3d = std::make_unique<Profiler>("3d");
         return profiler3d;
     }
 
     const std::unique_ptr<Profiler>& Profiler::physics() {
-        static auto profilerPhysics = std::make_unique<Profiler>("physics");
+        static thread_local auto profilerPhysics = std::make_unique<Profiler>("physics");
         return profilerPhysics;
     }
 
     const std::unique_ptr<Profiler>& Profiler::ai() {
-        static auto profilerAi = std::make_unique<Profiler>("ai");
+        static thread_local auto profilerAi = std::make_unique<Profiler>("ai");
         return profilerAi;
     }
 
     const std::unique_ptr<Profiler>& Profiler::sound() {
-        static auto profilerSound = std::make_unique<Profiler>("sound");
+        static thread_local auto profilerSound = std::make_unique<Profiler>("sound");
         return profilerSound;
     }
 
@@ -85,7 +86,7 @@ namespace urchin {
 
             std::stringstream logStream;
             logStream.precision(3);
-            logStream << "Profiling result (" << instanceName << "):" << std::endl;
+            logStream << "Profiling result for " << instanceName << " on thread " << std::this_thread::get_id() << ":" << std::endl;
             profilerRoot->log(0, logStream, -1.0);
 
             auto profilerLogger = std::make_unique<FileLogger>("profiler.log");

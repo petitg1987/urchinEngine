@@ -67,9 +67,6 @@ namespace urchin {
             FixedSizePool<CollisionConvexObject3D>* getObjectsPool() const;
             void refreshInnerMargin(float);
 
-            mutable AABBox<float> lastAABBox;
-            mutable PhysicsTransform lastTransform;
-
         private:
             float innerMargin;
             const float initialInnerMargin;

@@ -49,9 +49,9 @@ namespace urchin {
                     GeometryModel* geometryModel = retrieveSingleGeometry(localizedShape->shape->getShapeType(), bodyObject);
 
                     if (selectedCompoundShapeComponent != nullptr && selectedCompoundShapeComponent->position == localizedShape->position) {
-                        geometryModel->setColor(1.0, 1.0, 1.0);
+                        geometryModel->setColor(1.0f, 1.0f, 1.0f);
                     } else {
-                        geometryModel->setColor(0.0, 1.0, 0.0);
+                        geometryModel->setColor(0.0f, 1.0f, 0.0f);
                     }
 
                     bodyShapeModels.push_back(geometryModel);
@@ -61,7 +61,7 @@ namespace urchin {
                 std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> bodyObject = bodyShape->toConvexObject(transform);
 
                 GeometryModel* geometryModel = retrieveSingleGeometry(bodyShape->getShapeType(), bodyObject);
-                geometryModel->setColor(0.0, 1.0, 0.0);
+                geometryModel->setColor(0.0f, 1.0f, 0.0f);
                 bodyShapeModels.push_back(geometryModel);
             } else {
                 throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape->getShapeType()));

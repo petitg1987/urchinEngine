@@ -56,22 +56,17 @@ namespace urchin {
     }
 
     AABBox<float> CollisionCompoundShape::toAABBox(const PhysicsTransform& physicsTransform) const {
-        if (!lastTransform.equals(physicsTransform)) {
-            PhysicsTransform shapeWorldTransform = physicsTransform * localizedShapes[0]->transform;
-            AABBox<float> globalCompoundBox = localizedShapes[0]->shape->toAABBox(shapeWorldTransform);
+        PhysicsTransform shapeWorldTransform = physicsTransform * localizedShapes[0]->transform;
+        AABBox<float> globalCompoundBox = localizedShapes[0]->shape->toAABBox(shapeWorldTransform);
 
-            for (std::size_t i = 1; i < localizedShapes.size(); ++i) {
-                shapeWorldTransform = physicsTransform * localizedShapes[i]->transform;
-                AABBox<float> compoundBox = localizedShapes[i]->shape->toAABBox(shapeWorldTransform);
+        for (std::size_t i = 1; i < localizedShapes.size(); ++i) {
+            shapeWorldTransform = physicsTransform * localizedShapes[i]->transform;
+            AABBox<float> compoundBox = localizedShapes[i]->shape->toAABBox(shapeWorldTransform);
 
-                globalCompoundBox = globalCompoundBox.merge(compoundBox);
-            }
-
-            lastAABBox = globalCompoundBox;
-            lastTransform = physicsTransform;
+            globalCompoundBox = globalCompoundBox.merge(compoundBox);
         }
 
-        return lastAABBox;
+        return globalCompoundBox;
     }
 
     std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionCompoundShape::toConvexObject(const PhysicsTransform&) const {

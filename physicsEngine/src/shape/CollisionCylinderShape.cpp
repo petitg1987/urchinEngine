@@ -52,23 +52,17 @@ namespace urchin {
     }
 
     AABBox<float> CollisionCylinderShape::toAABBox(const PhysicsTransform& physicsTransform) const {
-        if (!lastTransform.equals(physicsTransform)) {
-            Vector3<float> boxHalfSizes(getRadius(), getRadius(), getRadius());
-            boxHalfSizes[getCylinderOrientation()] = getHeight() / 2.0f;
-            const Matrix3<float>& orientation = physicsTransform.retrieveOrientationMatrix();
-            Point3<float> extend(
-                    boxHalfSizes.X * std::abs(orientation(0)) + boxHalfSizes.Y * std::abs(orientation(3)) + boxHalfSizes.Z * std::abs(orientation(6)),
-                    boxHalfSizes.X * std::abs(orientation(1)) + boxHalfSizes.Y * std::abs(orientation(4)) + boxHalfSizes.Z * std::abs(orientation(7)),
-                    boxHalfSizes.X * std::abs(orientation(2)) + boxHalfSizes.Y * std::abs(orientation(5)) + boxHalfSizes.Z * std::abs(orientation(8))
-            );
+        Vector3<float> boxHalfSizes(getRadius(), getRadius(), getRadius());
+        boxHalfSizes[getCylinderOrientation()] = getHeight() / 2.0f;
+        const Matrix3<float>& orientation = physicsTransform.retrieveOrientationMatrix();
+        Point3<float> extend(
+                boxHalfSizes.X * std::abs(orientation(0)) + boxHalfSizes.Y * std::abs(orientation(3)) + boxHalfSizes.Z * std::abs(orientation(6)),
+                boxHalfSizes.X * std::abs(orientation(1)) + boxHalfSizes.Y * std::abs(orientation(4)) + boxHalfSizes.Z * std::abs(orientation(7)),
+                boxHalfSizes.X * std::abs(orientation(2)) + boxHalfSizes.Y * std::abs(orientation(5)) + boxHalfSizes.Z * std::abs(orientation(8))
+        );
 
-            const Point3<float>& position = physicsTransform.getPosition();
-
-            lastAABBox = AABBox<float>(position - extend, position + extend);
-            lastTransform = physicsTransform;
-        }
-
-        return lastAABBox;
+        const Point3<float>& position = physicsTransform.getPosition();
+        return AABBox<float>(position - extend, position + extend);
     }
 
     std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionCylinderShape::toConvexObject(const PhysicsTransform& physicsTransform) const {

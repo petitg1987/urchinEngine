@@ -40,7 +40,7 @@ namespace urchin {
         delete collisionWorld;
         delete bodyManager;
 
-        Profiler::physics()->log();
+        Profiler::physics()->log(); //log for main (not physics) thread
     }
 
     BodyManager* PhysicsWorld::getBodyManager() const {
@@ -186,6 +186,8 @@ namespace urchin {
                     frameStartTime = frameEndTime;
                 }
             }
+
+            Profiler::physics()->log(); //log for physics thread
         } catch (std::exception& e) {
             Logger::instance()->logError("Error cause physics thread crash: exception reported to main thread");
             physicsThreadExceptionPtr = std::current_exception();

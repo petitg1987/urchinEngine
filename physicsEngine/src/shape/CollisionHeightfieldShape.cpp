@@ -78,21 +78,15 @@ namespace urchin {
     }
 
     AABBox<float> CollisionHeightfieldShape::toAABBox(const PhysicsTransform& physicsTransform) const {
-        if (!lastTransform.equals(physicsTransform)) {
-            const Matrix3<float>& orientation = physicsTransform.retrieveOrientationMatrix();
-            Point3<float> extend(
-                    localAABBox->getHalfSize(0) * std::abs(orientation(0)) + localAABBox->getHalfSize(1) * std::abs(orientation(3)) + localAABBox->getHalfSize(2) * std::abs(orientation(6)),
-                    localAABBox->getHalfSize(0) * std::abs(orientation(1)) + localAABBox->getHalfSize(1) * std::abs(orientation(4)) + localAABBox->getHalfSize(2) * std::abs(orientation(7)),
-                    localAABBox->getHalfSize(0) * std::abs(orientation(2)) + localAABBox->getHalfSize(1) * std::abs(orientation(5)) + localAABBox->getHalfSize(2) * std::abs(orientation(8))
-            );
+        const Matrix3<float>& orientation = physicsTransform.retrieveOrientationMatrix();
+        Point3<float> extend(
+                localAABBox->getHalfSize(0) * std::abs(orientation(0)) + localAABBox->getHalfSize(1) * std::abs(orientation(3)) + localAABBox->getHalfSize(2) * std::abs(orientation(6)),
+                localAABBox->getHalfSize(0) * std::abs(orientation(1)) + localAABBox->getHalfSize(1) * std::abs(orientation(4)) + localAABBox->getHalfSize(2) * std::abs(orientation(7)),
+                localAABBox->getHalfSize(0) * std::abs(orientation(2)) + localAABBox->getHalfSize(1) * std::abs(orientation(5)) + localAABBox->getHalfSize(2) * std::abs(orientation(8))
+        );
 
-            const Point3<float>& position = physicsTransform.getPosition();
-
-            lastAABBox = AABBox<float>(position - extend, position + extend);
-            lastTransform = physicsTransform;
-        }
-
-        return lastAABBox;
+        const Point3<float>& position = physicsTransform.getPosition();
+        return AABBox<float>(position - extend, position + extend);
     }
 
     std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionHeightfieldShape::toConvexObject(const PhysicsTransform&) const {
