@@ -25,11 +25,12 @@ namespace urchin {
             bool needShadowMapUpdate() const;
 
         private:
-            bool areIdenticalAABBox(const AABBox<float>&, const AABBox<float>&) const;
+            bool areAlmostIdenticalAABBox(const AABBox<float>&, const AABBox<float>&) const;
 
             unsigned int frustumSplitIndex; //index of frustum split (0: frustum split nearest to eye)
             bool isFarFrustumSplit;
 
+            const float updateShadowMapThreshold;
             Matrix4<float> lightProjectionMatrix;
             AABBox<float> shadowCasterReceiverBox;
             bool shadowCasterReceiverBoxUpdated;

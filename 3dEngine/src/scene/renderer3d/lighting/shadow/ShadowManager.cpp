@@ -2,7 +2,6 @@
 #include <sstream>
 #include <memory>
 #include <stdexcept>
-#include <limits>
 #include <map>
 #include <string>
 
@@ -26,7 +25,6 @@ namespace urchin {
     ShadowManager::ShadowManager(LightManager* lightManager, OctreeManager<Model>* modelOctreeManager) :
             shadowMapBias(ConfigService::instance()->getFloatValue("shadow.shadowMapBias")),
             percentageUniformSplit(ConfigService::instance()->getFloatValue("shadow.frustumUniformSplitAgainstLogSplit")),
-            lightViewOverflowStepSize(ConfigService::instance()->getFloatValue("shadow.lightViewOverflowStepSize")),
             shadowMapResolution(DEFAULT_SHADOW_MAP_RESOLUTION),
             nbShadowMaps(DEFAULT_NUMBER_SHADOW_MAPS),
             viewingShadowDistance(DEFAULT_VIEWING_SHADOW_DISTANCE),
@@ -53,10 +51,6 @@ namespace urchin {
                 break;
             default:
                 throw std::domain_error("Unsupported value for parameter 'shadow.depthComponent'.");
-        }
-
-        if (lightViewOverflowStepSize == 0.0f) { //because fmod function doesn't accept zero value.
-            lightViewOverflowStepSize = std::numeric_limits<float>::epsilon();
         }
 
         lightManager->addObserver(this, LightManager::ADD_LIGHT);
@@ -298,7 +292,7 @@ namespace urchin {
             Vector3<float> lightDirection = light->getDirections()[0];
 
             const Vector3<float>& f = lightDirection.normalize();
-            const Vector3<float>& s = f.crossProduct(Vector3<float>(0.0, 1.0, 0.0)).normalize();
+            const Vector3<float>& s = f.crossProduct(Vector3<float>(0.0f, 1.0f, 0.0f)).normalize();
             const Vector3<float>& u = s.crossProduct(f).normalize();
             Matrix4<float> M(
                 s[0],    s[1],    s[2],    0,
@@ -354,14 +348,14 @@ namespace urchin {
         //determine point belonging to shadow caster/receiver box
         Point3<float> shadowReceiverAndCasterVertex[16];
         float nearCapZ = computeNearZForSceneIndependentBox(frustumLightSpace);
-        for (unsigned int i=0; i<8; ++i) {
+        for (unsigned int i = 0; i < 8; ++i) {
             const Point3<float>& frustumPoint = frustumLightSpace.getFrustumPoints()[i];
 
             //add shadow receiver points
-            shadowReceiverAndCasterVertex[i*2] = frustumPoint;
+            shadowReceiverAndCasterVertex[i * 2] = frustumPoint;
 
             //add shadow caster points
-            shadowReceiverAndCasterVertex[i*2 + 1] = Point3<float>(frustumPoint.X, frustumPoint.Y, nearCapZ);
+            shadowReceiverAndCasterVertex[i * 2 + 1] = Point3<float>(frustumPoint.X, frustumPoint.Y, nearCapZ);
         }
 
         //build shadow receiver/caster bounding box from points
@@ -411,13 +405,6 @@ namespace urchin {
                 std::max(std::min(aabboxSceneDependent.getMax().X, aabboxSceneIndependent.getMax().X), aabboxSceneIndependent.getMin().X),
                 std::max(std::min(aabboxSceneDependent.getMax().Y, aabboxSceneIndependent.getMax().Y), aabboxSceneIndependent.getMin().Y),
                 std::max(std::min(aabboxSceneDependent.getMax().Z, aabboxSceneIndependent.getMax().Z), aabboxSceneIndependent.getMin().Z));
-
-        cutMin.X = (cutMin.X < 0.0f) ? cutMin.X - (lightViewOverflowStepSize + (float)fmod(cutMin.X, lightViewOverflowStepSize)) : cutMin.X - (float)fmod(cutMin.X, lightViewOverflowStepSize);
-        cutMin.Y = (cutMin.Y < 0.0f) ? cutMin.Y - (lightViewOverflowStepSize + (float)fmod(cutMin.Y, lightViewOverflowStepSize)) : cutMin.Y - (float)fmod(cutMin.Y, lightViewOverflowStepSize);
-        cutMin.Z = (cutMin.Z < 0.0f) ? cutMin.Z - (lightViewOverflowStepSize + (float)fmod(cutMin.Z, lightViewOverflowStepSize)) : cutMin.Z - (float)fmod(cutMin.Z, lightViewOverflowStepSize);
-        cutMax.X = (cutMax.X < 0.0f) ? cutMax.X - (float)fmod(cutMax.X, lightViewOverflowStepSize) : cutMax.X + (lightViewOverflowStepSize - (float)fmod(cutMax.X, lightViewOverflowStepSize));
-        cutMax.Y = (cutMax.Y < 0.0f) ? cutMax.Y - (float)fmod(cutMax.Y, lightViewOverflowStepSize) : cutMax.Y + (lightViewOverflowStepSize - (float)fmod(cutMax.Y, lightViewOverflowStepSize));
-        cutMax.Z = (cutMax.Z < 0.0f) ? cutMax.Z - (float)fmod(cutMax.Z, lightViewOverflowStepSize) : cutMax.Z + (lightViewOverflowStepSize - (float)fmod(cutMax.Z, lightViewOverflowStepSize));
 
         return AABBox<float>(cutMin, cutMax);
     }

@@ -87,7 +87,6 @@ namespace urchin {
             //shadow map quality
             const float shadowMapBias;
             const float percentageUniformSplit; //percentage of uniform split against the logarithmic split to split frustum
-            float lightViewOverflowStepSize;
             unsigned int shadowMapResolution;
             unsigned int nbShadowMaps;
             float viewingShadowDistance;
