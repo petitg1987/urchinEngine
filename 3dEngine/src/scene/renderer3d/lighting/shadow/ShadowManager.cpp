@@ -406,7 +406,7 @@ namespace urchin {
                 std::max(std::min(aabboxSceneDependent.getMax().Y, aabboxSceneIndependent.getMax().Y), aabboxSceneIndependent.getMin().Y),
                 std::max(std::min(aabboxSceneDependent.getMax().Z, aabboxSceneIndependent.getMax().Z), aabboxSceneIndependent.getMin().Z));
 
-        //avoid AABBox of zero size
+        //avoid AABBox of zero size because cause some shadow artifacts
         cutMin -= 0.0001f;
         cutMax += 0.0001f;
 
