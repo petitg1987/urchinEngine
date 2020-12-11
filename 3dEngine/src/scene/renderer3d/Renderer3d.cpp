@@ -415,7 +415,7 @@ namespace urchin {
 
         //animate models (only those visible to scene OR producing shadow on scene)
         if (isShadowActivated) {
-            modelDisplayer->setModels(shadowManager->computeVisibleModels());
+            modelDisplayer->setModels(shadowManager->getVisibleModels());
         } else {
             updateModelsInFrustum();
             modelDisplayer->setModels(modelsInFrustum);

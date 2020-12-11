@@ -236,12 +236,15 @@ namespace urchin {
         return *shadowData;
     }
 
-    /**
-     * @return All visible models from all lights
-     */
-    const std::vector<Model*>& ShadowManager::computeVisibleModels() {
-        ScopeProfiler sp(Profiler::graphic(), "coVisibleModel");
+    void ShadowManager::updateVisibleModels(const Frustum<float>& frustum) {
+        ScopeProfiler sp(Profiler::graphic(), "upVisibleModel");
 
+        splitFrustum(frustum);
+        for (auto& shadowData : shadowDatas) {
+            updateFrustumShadowData(shadowData.first, shadowData.second);
+        }
+
+        //store all visible models from all lights
         visibleModels.clear();
         for (const auto& shadowData : shadowDatas) {
             for (unsigned int i = 0; i < nbShadowMaps; ++i) {
@@ -249,7 +252,12 @@ namespace urchin {
                 OctreeableHelper<Model>::merge(visibleModels, visibleModelsForLightInFrustumSplit);
             }
         }
+    }
 
+    /**
+     * @return All visible models from all lights
+     */
+    const std::vector<Model*>& ShadowManager::getVisibleModels() {
         return visibleModels;
     }
 
@@ -483,16 +491,6 @@ namespace urchin {
                     ->build();
 
             shadowDatas[light]->addTextureFilter(std::move(nullFilter));
-        }
-    }
-
-    void ShadowManager::updateVisibleModels(const Frustum<float>& frustum) {
-        ScopeProfiler sp(Profiler::graphic(), "upVisibleModel");
-
-        splitFrustum(frustum);
-
-        for (auto& shadowData : shadowDatas) {
-            updateFrustumShadowData(shadowData.first, shadowData.second);
         }
     }
 

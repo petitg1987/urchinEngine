@@ -53,9 +53,10 @@ namespace urchin {
 
             const std::vector<Frustum<float>>& getSplitFrustums() const;
             const ShadowData& getShadowData(const Light*) const;
-            const std::vector<Model*>& computeVisibleModels();
 
             void updateVisibleModels(const Frustum<float>&);
+            const std::vector<Model*>& getVisibleModels();
+
             void forceUpdateAllShadowMaps();
             void updateShadowMaps();
             void loadShadowMaps(const std::unique_ptr<GenericRenderer>&);
