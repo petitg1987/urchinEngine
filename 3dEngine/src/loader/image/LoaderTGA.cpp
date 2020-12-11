@@ -27,7 +27,7 @@ namespace urchin {
 
         //gets file length
         file.seekg(0, std::ios::end);
-        long length = file.tellg();
+        long length = (long)file.tellg();
         file.seekg(0, std::ios::beg);
 
         //extracts header
@@ -42,7 +42,7 @@ namespace urchin {
         }
 
         //memory allocation for rough pixel data
-        long lengthData = length - file.tellg();
+        long lengthData = length - (long)file.tellg();
         data = new unsigned char[(unsigned long)lengthData];
         file.read((char*)data, lengthData);
 
