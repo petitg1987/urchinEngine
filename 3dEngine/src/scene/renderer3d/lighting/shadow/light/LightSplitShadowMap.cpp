@@ -82,39 +82,39 @@ namespace urchin {
     void LightSplitShadowMap::buildSceneDependentBox(const AABBox<float>& aabboxSceneIndependent, const OBBox<float>& obboxSceneIndependentViewSpace, bool forceUpdateAllShadowMap) {
         ScopeProfiler sp(Profiler::graphic(), "sceneDepBox");
 
-        AABBox<float> aabboxSceneDependent;
-        if (!models.empty()) {
-            aabboxSceneDependent = AABBox<float>::initMergeableAABBox();
+        unsigned int modelsCount = 0;
+        AABBox<float> modelsAabbox = AABBox<float>::initMergeableAABBox();
 
-            for (const auto& model : models) {
-                if (model->getSplitAABBoxes().size() == 1) {
-                    aabboxSceneDependent = aabboxSceneDependent.merge(lightShadowMap->getLightViewMatrix() * model->getSplitAABBoxes()[0]);
-                } else {
-                    for (const auto& splitAABBox : model->getSplitAABBoxes()) {
-                        if (obboxSceneIndependentViewSpace.collideWithAABBox(splitAABBox)) {
-                            aabboxSceneDependent = aabboxSceneDependent.merge(lightShadowMap->getLightViewMatrix() * splitAABBox);
-                        }
+        for (const auto& model : models) {
+            if (model->getSplitAABBoxes().size() == 1) {
+                modelsAabbox = modelsAabbox.merge(lightShadowMap->getLightViewMatrix() * model->getSplitAABBoxes()[0]);
+                modelsCount++;
+            } else {
+                for (const auto& splitAABBox : model->getSplitAABBoxes()) {
+                    if (obboxSceneIndependentViewSpace.collideWithAABBox(splitAABBox)) {
+                        modelsAabbox = modelsAabbox.merge(lightShadowMap->getLightViewMatrix() * splitAABBox);
+                        modelsCount++;
                     }
                 }
             }
         }
 
-        Point3<float> cutMin(
-                std::min(std::max(aabboxSceneDependent.getMin().X, aabboxSceneIndependent.getMin().X), aabboxSceneIndependent.getMax().X),
-                std::min(std::max(aabboxSceneDependent.getMin().Y, aabboxSceneIndependent.getMin().Y), aabboxSceneIndependent.getMax().Y),
-                aabboxSceneIndependent.getMin().Z); //shadow can be projected outside the box: value cannot be capped
+        AABBox<float> aabboxSceneDependent = aabboxSceneIndependent;
+        if(modelsCount > 0) {
+            Point3<float> cutMin(
+                    std::min(std::max(modelsAabbox.getMin().X, aabboxSceneIndependent.getMin().X), aabboxSceneIndependent.getMax().X),
+                    std::min(std::max(modelsAabbox.getMin().Y, aabboxSceneIndependent.getMin().Y), aabboxSceneIndependent.getMax().Y),
+                    aabboxSceneIndependent.getMin().Z); //shadow can be projected outside the box: value cannot be capped
 
-        Point3<float> cutMax(
-                std::max(std::min(aabboxSceneDependent.getMax().X, aabboxSceneIndependent.getMax().X), aabboxSceneIndependent.getMin().X),
-                std::max(std::min(aabboxSceneDependent.getMax().Y, aabboxSceneIndependent.getMax().Y), aabboxSceneIndependent.getMin().Y),
-                std::max(std::min(aabboxSceneDependent.getMax().Z, aabboxSceneIndependent.getMax().Z), aabboxSceneIndependent.getMin().Z));
+            Point3<float> cutMax(
+                    std::max(std::min(modelsAabbox.getMax().X, aabboxSceneIndependent.getMax().X), aabboxSceneIndependent.getMin().X),
+                    std::max(std::min(modelsAabbox.getMax().Y, aabboxSceneIndependent.getMax().Y), aabboxSceneIndependent.getMin().Y),
+                    std::max(std::min(modelsAabbox.getMax().Z, aabboxSceneIndependent.getMax().Z), aabboxSceneIndependent.getMin().Z));
 
-        //avoid AABBox of zero size because cause some shadow artifacts
-        cutMin -= 0.0001f;
-        cutMax += 0.0001f;
+            aabboxSceneDependent = AABBox<float>(cutMin, cutMax);
+        } //TODO fix artifact in urchinEngineTest
 
-        AABBox<float> adjustedAabboxSceneDependent = AABBox<float>(cutMin, cutMax);
-        updateShadowCasterReceiverBox(adjustedAabboxSceneDependent, forceUpdateAllShadowMap);
+        updateShadowCasterReceiverBox(aabboxSceneDependent, forceUpdateAllShadowMap);
     }
 
     void LightSplitShadowMap::updateShadowCasterReceiverBox(const AABBox<float>& shadowCasterReceiverBox, bool forceUpdateAllShadowMap) {
