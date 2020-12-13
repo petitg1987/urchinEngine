@@ -2,10 +2,10 @@
 #include <cppunit/TestCaller.h>
 #include <memory>
 #include <cstdio>
-
-#include "physics/it/FallingObjectIT.h"
-#include "AssertHelper.h"
 #include "UrchinPhysicsEngine.h"
+
+#include "physics/collision/FallingObjectIT.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 void FallingObjectIT::fallOnPlane() {

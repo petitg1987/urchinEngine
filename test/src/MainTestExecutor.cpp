@@ -28,7 +28,7 @@
 #include "physics/collision/narrowphase/algorithm/epa/EPAConvexHullTest.h"
 #include "physics/collision/narrowphase/algorithm/epa/EPAConvexObjectTest.h"
 #include "physics/collision/island/IslandContainerTest.h"
-#include "physics/it/FallingObjectIT.h"
+#include "physics/collision/FallingObjectIT.h"
 #include "ai/path/navmesh/csg/CSGPolygonTest.h"
 #include "ai/path/navmesh/csg/PolygonsUnionTest.h"
 #include "ai/path/navmesh/csg/PolygonsSubtractionTest.h"
