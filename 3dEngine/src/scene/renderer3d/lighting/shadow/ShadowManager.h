@@ -72,7 +72,7 @@ namespace urchin {
             void updateShadowLights();
 
             //splits handling
-            void updateFrustumShadowData(const Light*, ShadowData*);
+            void updateFrustumShadowData(ShadowData*);
             void splitFrustum(const Frustum<float>&);
 
             //shadow map quality
@@ -97,7 +97,7 @@ namespace urchin {
             TextureFormat depthTextureFormat;
             std::vector<float> splitDistances;
             std::vector<Frustum<float>> splitFrustums;
-            std::map<const Light*, ShadowData*> shadowDatas; //TODO remove map & "s" !
+            std::map<const Light*, ShadowData*> shadowData;
             bool bForceUpdateAllShadowMaps;
             ShaderVar depthSplitDistanceShaderVar;
 
