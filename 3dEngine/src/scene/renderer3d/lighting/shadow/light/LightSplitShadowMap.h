@@ -1,19 +1,16 @@
-#ifndef URCHINENGINE_FRUSTUMSHADOWDATA_H
-#define URCHINENGINE_FRUSTUMSHADOWDATA_H
+#ifndef URCHINENGINE_LIGHTSPLITSHADOWMAP_H
+#define URCHINENGINE_LIGHTSPLITSHADOWMAP_H
 
 #include "UrchinCommon.h"
 
-#include "scene/renderer3d/lighting/shadow/data/ShadowData.h"
+#include "scene/renderer3d/lighting/shadow/light/LightShadowMap.h"
 #include "scene/renderer3d/model/Model.h"
 
 namespace urchin {
 
-    /**
-    * Shadow execution data for a light and a split frustum
-    */
-    class FrustumShadowData {
+    class LightSplitShadowMap {
         public:
-            explicit FrustumShadowData(ShadowData*);
+            explicit LightSplitShadowMap(LightShadowMap*);
 
             void update(const Frustum<float>&, bool);
 
@@ -30,7 +27,7 @@ namespace urchin {
             bool areAlmostIdenticalAABBox(const AABBox<float>&, const AABBox<float>&) const;
             void updateModels(const std::vector<Model*>&);
 
-            const ShadowData* shadowData;
+            const LightShadowMap* lightShadowMap;
             std::vector<Model*> obboxModels;
 
             const float updateShadowMapThreshold;

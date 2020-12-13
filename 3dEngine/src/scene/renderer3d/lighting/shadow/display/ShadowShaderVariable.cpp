@@ -1,12 +1,12 @@
 #include "ShadowShaderVariable.h"
-#include "scene/renderer3d/lighting/shadow/data/FrustumShadowData.h"
+#include "scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h"
 #include "graphic/shader/data/ShaderDataSender.h"
 
 namespace urchin {
 
     ShadowShaderVariable::ShadowShaderVariable() :
             CustomShaderVariable(),
-            shadowData(nullptr) {
+            lightShadowMap(nullptr) {
 
     }
 
@@ -16,8 +16,8 @@ namespace urchin {
         updateProjectionMatrices();
     }
 
-    void ShadowShaderVariable::setShadowData(const ShadowData* shadowData) {
-        this->shadowData = shadowData;
+    void ShadowShaderVariable::setLightShadowMap(const LightShadowMap* lightShadowMap) {
+        this->lightShadowMap = lightShadowMap;
 
         updateProjectionMatrices();
     }
@@ -29,9 +29,9 @@ namespace urchin {
     void ShadowShaderVariable::updateProjectionMatrices() {
         projectionMatrices.clear();
 
-        if (shadowData != nullptr) {
-            for(const auto& frustumShadowData : shadowData->getFrustumShadowData()) {
-                projectionMatrices.push_back(frustumShadowData->getLightProjectionMatrix());
+        if (lightShadowMap != nullptr) {
+            for(const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
+                projectionMatrices.push_back(lightSplitShadowMap->getLightProjectionMatrix());
             }
         }
     }

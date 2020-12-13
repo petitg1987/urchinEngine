@@ -1,12 +1,12 @@
 #include <cmath>
 #include <stdexcept>
 
-#include "ShadowData.h"
-#include "scene/renderer3d/lighting/shadow/data/FrustumShadowData.h"
+#include "LightShadowMap.h"
+#include "scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h"
 
 namespace urchin {
 
-    ShadowData::ShadowData(const Light* light, const OctreeManager<Model>* modelOctreeManager, float viewingShadowDistance) :
+    LightShadowMap::LightShadowMap(const Light* light, const OctreeManager<Model>* modelOctreeManager, float viewingShadowDistance) :
             light(light),
             modelOctreeManager(modelOctreeManager),
             viewingShadowDistance(viewingShadowDistance),
@@ -15,15 +15,15 @@ namespace urchin {
         light->addObserver(this, Light::LIGHT_MOVE);
     }
 
-    ShadowData::~ShadowData() {
+    LightShadowMap::~LightShadowMap() {
         light->removeObserver(this, Light::LIGHT_MOVE);
 
-        for (auto& fsd : frustumShadowData) {
-            delete fsd;
+        for (auto& lightSplitShadowMap : lightSplitShadowMaps) {
+            delete lightSplitShadowMap;
         }
     }
 
-    void ShadowData::updateLightViewMatrix() {
+    void LightShadowMap::updateLightViewMatrix() {
         if (light->hasParallelBeams()) { //sun light
             Vector3<float> lightDirection = light->getDirections()[0];
 
@@ -46,7 +46,7 @@ namespace urchin {
         }
     }
 
-    void ShadowData::notify(Observable* observable, int notificationType) {
+    void LightShadowMap::notify(Observable* observable, int notificationType) {
         if (auto* light = dynamic_cast<Light*>(observable)) {
             if (notificationType == Light::LIGHT_MOVE) {
                 assert(light == this->light);
@@ -55,57 +55,67 @@ namespace urchin {
         }
     }
 
-    void ShadowData::addFrustumShadowData() { //TODO add comment. First must be the nearest !
-        frustumShadowData.emplace_back(new FrustumShadowData(this));
-    }
-
-    const Light* ShadowData::getLight() const {
+    const Light* LightShadowMap::getLight() const {
         return light;
     }
 
-    const OctreeManager<Model>* ShadowData::getModelOctreeManager() const {
+    const OctreeManager<Model>* LightShadowMap::getModelOctreeManager() const {
         return modelOctreeManager;
     }
 
-    float ShadowData::getViewingShadowDistance() const {
+    float LightShadowMap::getViewingShadowDistance() const {
         return viewingShadowDistance;
     }
 
-    void ShadowData::setRenderTarget(std::unique_ptr<OffscreenRender>&& renderTarget) {
+    /**
+     * First split to add must be the split nearest to the eye.
+     */
+    void LightShadowMap::addLightSplitShadowMap() {
+        lightSplitShadowMaps.emplace_back(new LightSplitShadowMap(this));
+    }
+
+    /**
+     * @return Light split shadow maps. First split in the vector is the split nearest to the eye.
+     */
+    const std::vector<LightSplitShadowMap*>& LightShadowMap::getLightSplitShadowMaps() const {
+        return lightSplitShadowMaps;
+    }
+
+    void LightShadowMap::setRenderTarget(std::unique_ptr<OffscreenRender>&& renderTarget) {
         this->renderTarget = std::move(renderTarget);
     }
 
-    const OffscreenRender* ShadowData::getRenderTarget() const {
+    const OffscreenRender* LightShadowMap::getRenderTarget() const {
         return renderTarget.get();
     }
 
-    void ShadowData::setDepthTexture(const std::shared_ptr<Texture>& depthTexture) {
+    void LightShadowMap::setDepthTexture(const std::shared_ptr<Texture>& depthTexture) {
         this->depthTexture = depthTexture;
     }
 
-    const std::shared_ptr<Texture>& ShadowData::getDepthTexture() const {
+    const std::shared_ptr<Texture>& LightShadowMap::getDepthTexture() const {
         return depthTexture;
     }
 
     /**
      * @param shadowMapTexture Shadow map texture (variance shadow map)
      */
-    void ShadowData::setShadowMapTexture(const std::shared_ptr<Texture>& shadowMapTexture) {
+    void LightShadowMap::setShadowMapTexture(const std::shared_ptr<Texture>& shadowMapTexture) {
         this->shadowMapTexture = shadowMapTexture;
     }
 
     /**
      * Returns shadow map texture (variance shadow map)
      */
-    const std::shared_ptr<Texture>& ShadowData::getShadowMapTexture() const {
+    const std::shared_ptr<Texture>& LightShadowMap::getShadowMapTexture() const {
         return shadowMapTexture;
     }
 
-    void ShadowData::addTextureFilter(std::unique_ptr<TextureFilter> textureFilter) {
+    void LightShadowMap::addTextureFilter(std::unique_ptr<TextureFilter> textureFilter) {
         textureFilters.push_back(std::move(textureFilter));
     }
 
-    void ShadowData::applyTextureFilters() const {
+    void LightShadowMap::applyTextureFilters() const {
         unsigned int layersToUpdate = retrieveLayersToUpdate();
 
         std::shared_ptr<Texture> texture = shadowMapTexture;
@@ -115,7 +125,7 @@ namespace urchin {
         }
     }
 
-    const std::shared_ptr<Texture>& ShadowData::getFilteredShadowMapTexture() const {
+    const std::shared_ptr<Texture>& LightShadowMap::getFilteredShadowMapTexture() const {
         if (textureFilters.empty()) {
             return shadowMapTexture;
         }
@@ -123,19 +133,15 @@ namespace urchin {
         return textureFilters.back()->getTexture();
     }
 
-    const Matrix4<float>& ShadowData::getLightViewMatrix() const {
+    const Matrix4<float>& LightShadowMap::getLightViewMatrix() const {
         return lightViewMatrix;
     }
 
-    const std::vector<FrustumShadowData*>& ShadowData::getFrustumShadowData() const {
-        return frustumShadowData;
-    }
-
-    unsigned int ShadowData::retrieveLayersToUpdate() const {
+    unsigned int LightShadowMap::retrieveLayersToUpdate() const {
         unsigned int layersToUpdate = 0;
         unsigned int i = 0;
-        for(const auto& frustumShadowData : getFrustumShadowData()) {
-            if (frustumShadowData->needShadowMapUpdate()) {
+        for(const auto& lightSplitShadowMap : lightSplitShadowMaps) {
+            if (lightSplitShadowMap->needShadowMapUpdate()) {
                 layersToUpdate = layersToUpdate | MathFunction::powerOfTwo(i);
             }
             i++;
@@ -143,11 +149,11 @@ namespace urchin {
         return layersToUpdate;
     }
 
-    const std::vector<Model*>& ShadowData::retrieveModels() const {
+    const std::vector<Model*>& LightShadowMap::retrieveModels() const {
         models.clear();
-        for(auto &fsd : frustumShadowData) {
-            if (fsd->needShadowMapUpdate()) {
-                const std::vector<Model*>& frustumSplitModels =fsd->getModels();
+        for(auto &lightSplitShadowMap : lightSplitShadowMaps) {
+            if (lightSplitShadowMap->needShadowMapUpdate()) {
+                const std::vector<Model*>& frustumSplitModels = lightSplitShadowMap->getModels();
                 OctreeableHelper<Model>::merge(models, frustumSplitModels);
             }
         }

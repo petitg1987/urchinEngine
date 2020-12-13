@@ -4,7 +4,7 @@
 #include <vector>
 #include "UrchinCommon.h"
 
-#include "scene/renderer3d/lighting/shadow/data/ShadowData.h"
+#include "scene/renderer3d/lighting/shadow/light/LightShadowMap.h"
 #include "scene/renderer3d/model/displayer/CustomShaderVariable.h"
 #include "graphic/shader/model/ShaderVar.h"
 
@@ -18,7 +18,7 @@ namespace urchin {
             ShadowShaderVariable();
 
             void setProjectionMatricesShaderVar(const ShaderVar&);
-            void setShadowData(const ShadowData*);
+            void setLightShadowMap(const LightShadowMap*);
 
             void loadCustomShaderVariables() override;
 
@@ -26,7 +26,7 @@ namespace urchin {
             void updateProjectionMatrices();
 
             ShaderVar mModelProjectionMatrixShaderVar;
-            const ShadowData* shadowData;
+            const LightShadowMap* lightShadowMap;
 
             std::vector<Matrix4<float>> projectionMatrices;
     };

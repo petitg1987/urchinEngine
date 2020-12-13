@@ -12,7 +12,7 @@
 #include "common/math/geometry/ResizePolygon2DServiceTest.h"
 #include "common/math/geometry/ConvexHullShape2DTest.h"
 #include "common/math/geometry/SortPointsTest.h"
-#include "3d/scene/renderer3d/lighting/shadow/data/FrustumShadowDataTest.h"
+#include "3d/scene/renderer3d/lighting/shadow/light/LightSplitShadowMapTest.h"
 #include "physics/shape/ShapeToAABBoxTest.h"
 #include "physics/shape/ShapeToConvexObjectTest.h"
 #include "physics/object/SupportPointTest.h"
@@ -63,7 +63,7 @@ void commonTests(CppUnit::TextUi::TestRunner& runner) {
 
 void engine3dTests(CppUnit::TextUi::TestRunner& runner) {
     //shadow
-    runner.addTest(FrustumShadowDataTest::suite());
+    runner.addTest(LightSplitShadowMapTest::suite());
 }
 
 void physicsTests(CppUnit::TextUi::TestRunner& runner) {

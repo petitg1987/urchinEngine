@@ -3,7 +3,7 @@
 
 #include "UrchinCommon.h"
 
-#include "scene/renderer3d/lighting/shadow/data/ShadowData.h"
+#include "scene/renderer3d/lighting/shadow/light/LightShadowMap.h"
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/model/displayer/CustomModelShaderVariable.h"
 #include "graphic/shader/model/Shader.h"
@@ -19,13 +19,13 @@ namespace urchin {
             ShadowModelShaderVariable();
 
             void setLayersToUpdateShaderVar(const ShaderVar&);
-            void setShadowData(const ShadowData*);
+            void setLightShadowMap(const LightShadowMap*);
 
             void loadCustomShaderVariables(const Model*) override;
 
         private:
             ShaderVar layersToUpdateShaderVar;
-            const ShadowData* shadowData;
+            const LightShadowMap* lightShadowMap;
     };
 
 }

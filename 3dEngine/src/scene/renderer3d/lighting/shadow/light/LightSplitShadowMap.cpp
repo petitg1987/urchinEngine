@@ -1,50 +1,50 @@
-#include "FrustumShadowData.h"
-#include "scene/renderer3d/lighting/shadow/data/ShadowData.h"
+#include "LightSplitShadowMap.h"
+#include "scene/renderer3d/lighting/shadow/light/LightShadowMap.h"
 #include "scene/renderer3d/lighting/shadow/filter/ModelProduceShadowFilter.h"
 
 namespace urchin {
 
-    FrustumShadowData::FrustumShadowData(ShadowData* shadowData) :
-            shadowData(shadowData),
+    LightSplitShadowMap::LightSplitShadowMap(LightShadowMap* lightShadowMap) :
+            lightShadowMap(lightShadowMap),
             updateShadowMapThreshold(ConfigService::instance()->getFloatValue("shadow.updateShadowMapThreshold")),
             shadowCasterReceiverBoxUpdated(false),
             modelsRequireUpdate(false) {
 
     }
 
-    void FrustumShadowData::update(const Frustum<float>&splitFrustums, bool bForceUpdateAllShadowMaps) {
-        AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splitFrustums, shadowData->getLightViewMatrix());
-        OBBox<float> obboxSceneIndependentViewSpace = shadowData->getLightViewMatrix().inverse() * OBBox<float>(aabboxSceneIndependent);
+    void LightSplitShadowMap::update(const Frustum<float>& splitFrustums, bool bForceUpdateAllShadowMaps) {
+        AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splitFrustums, lightShadowMap->getLightViewMatrix());
+        OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * OBBox<float>(aabboxSceneIndependent);
 
         obboxModels.clear();
-        shadowData->getModelOctreeManager()->getOctreeablesIn(obboxSceneIndependentViewSpace, obboxModels, ModelProduceShadowFilter());
+        lightShadowMap->getModelOctreeManager()->getOctreeablesIn(obboxSceneIndependentViewSpace, obboxModels, ModelProduceShadowFilter());
         updateModels(obboxModels);
         buildSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace, bForceUpdateAllShadowMaps);
     }
 
-    const AABBox<float> &FrustumShadowData::getShadowCasterReceiverBox() const {
+    const AABBox<float> &LightSplitShadowMap::getShadowCasterReceiverBox() const {
         return shadowCasterReceiverBox;
     }
 
-    const Matrix4<float>& FrustumShadowData::getLightProjectionMatrix() const {
+    const Matrix4<float>& LightSplitShadowMap::getLightProjectionMatrix() const {
         return lightProjectionMatrix;
     }
 
     /**
      * @return Models visible from light in frustum split
      */
-    const std::vector<Model*>& FrustumShadowData::getModels() const {
+    const std::vector<Model*>& LightSplitShadowMap::getModels() const {
         return models;
     }
 
-    bool FrustumShadowData::needShadowMapUpdate() const {
+    bool LightSplitShadowMap::needShadowMapUpdate() const {
         return shadowCasterReceiverBoxUpdated || modelsRequireUpdate;
     }
 
     /**
      * @return Box in light space containing shadow caster and receiver (scene independent)
      */
-    AABBox<float> FrustumShadowData::createSceneIndependentBox(const Frustum<float>& splitFrustum, const Matrix4<float>& lightViewMatrix) const {
+    AABBox<float> LightSplitShadowMap::createSceneIndependentBox(const Frustum<float>& splitFrustum, const Matrix4<float>& lightViewMatrix) const {
         ScopeProfiler sp(Profiler::graphic(), "sceneIndepBox");
 
         const Frustum<float>& frustumLightSpace = lightViewMatrix * splitFrustum;
@@ -66,20 +66,20 @@ namespace urchin {
         return AABBox<float>(shadowReceiverAndCasterVertex, 16);
     }
 
-    float FrustumShadowData::computeNearZForSceneIndependentBox(const Frustum<float>& splitFrustumLightSpace) const {
+    float LightSplitShadowMap::computeNearZForSceneIndependentBox(const Frustum<float>& splitFrustumLightSpace) const {
         float nearestPointFromLight = splitFrustumLightSpace.getFrustumPoints()[0].Z;
         for (unsigned int i = 1; i < 8; ++i) {
             if (splitFrustumLightSpace.getFrustumPoints()[i].Z > nearestPointFromLight) {
                 nearestPointFromLight = splitFrustumLightSpace.getFrustumPoints()[i].Z;
             }
         }
-        return nearestPointFromLight + shadowData->getViewingShadowDistance();
+        return nearestPointFromLight + lightShadowMap->getViewingShadowDistance();
     }
 
     /**
      * Build box in light space containing shadow caster and receiver (scene dependent)
      */
-    void FrustumShadowData::buildSceneDependentBox(const AABBox<float>& aabboxSceneIndependent, const OBBox<float>& obboxSceneIndependentViewSpace, bool forceUpdateAllShadowMap) {
+    void LightSplitShadowMap::buildSceneDependentBox(const AABBox<float>& aabboxSceneIndependent, const OBBox<float>& obboxSceneIndependentViewSpace, bool forceUpdateAllShadowMap) {
         ScopeProfiler sp(Profiler::graphic(), "sceneDepBox");
 
         AABBox<float> aabboxSceneDependent;
@@ -88,11 +88,11 @@ namespace urchin {
 
             for (const auto& model : models) {
                 if (model->getSplitAABBoxes().size() == 1) {
-                    aabboxSceneDependent = aabboxSceneDependent.merge(shadowData->getLightViewMatrix() * model->getSplitAABBoxes()[0]);
+                    aabboxSceneDependent = aabboxSceneDependent.merge(lightShadowMap->getLightViewMatrix() * model->getSplitAABBoxes()[0]);
                 } else {
                     for (const auto& splitAABBox : model->getSplitAABBoxes()) {
                         if (obboxSceneIndependentViewSpace.collideWithAABBox(splitAABBox)) {
-                            aabboxSceneDependent = aabboxSceneDependent.merge(shadowData->getLightViewMatrix() * splitAABBox);
+                            aabboxSceneDependent = aabboxSceneDependent.merge(lightShadowMap->getLightViewMatrix() * splitAABBox);
                         }
                     }
                 }
@@ -117,7 +117,7 @@ namespace urchin {
         updateShadowCasterReceiverBox(adjustedAabboxSceneDependent, forceUpdateAllShadowMap);
     }
 
-    void FrustumShadowData::updateShadowCasterReceiverBox(const AABBox<float>& shadowCasterReceiverBox, bool forceUpdateAllShadowMap) {
+    void LightSplitShadowMap::updateShadowCasterReceiverBox(const AABBox<float>& shadowCasterReceiverBox, bool forceUpdateAllShadowMap) {
         if (!forceUpdateAllShadowMap && areAlmostIdenticalAABBox(shadowCasterReceiverBox, this->shadowCasterReceiverBox)) {
             this->shadowCasterReceiverBoxUpdated = false;
         } else {
@@ -128,7 +128,7 @@ namespace urchin {
         }
     }
 
-    bool FrustumShadowData::areAlmostIdenticalAABBox(const AABBox<float>& shadowCasterReceiverBox1, const AABBox<float>& shadowCasterReceiverBox2) const {
+    bool LightSplitShadowMap::areAlmostIdenticalAABBox(const AABBox<float>& shadowCasterReceiverBox1, const AABBox<float>& shadowCasterReceiverBox2) const {
         float updateShadowMapSquareThreshold = updateShadowMapThreshold * updateShadowMapThreshold;
 
         return shadowCasterReceiverBox1.getMin().squareDistance(shadowCasterReceiverBox2.getMin()) < updateShadowMapSquareThreshold
@@ -138,7 +138,7 @@ namespace urchin {
     /**
      * @models Models visible from light in frustum split
      */
-    void FrustumShadowData::updateModels(const std::vector<Model*>& models) {
+    void LightSplitShadowMap::updateModels(const std::vector<Model*>& models) {
         modelsRequireUpdate = false;
 
         if (models != this->models) {

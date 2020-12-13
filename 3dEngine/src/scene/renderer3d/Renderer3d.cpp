@@ -380,7 +380,7 @@ namespace urchin {
         if (DEBUG_DISPLAY_SHADOW_MAP) {
             const Light* firstLight = lightManager->getVisibleLights()[0]; //choose light
             const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps-1]
-            TextureRenderer textureDisplayer(shadowManager->getShadowData(firstLight).getShadowMapTexture(), shadowMapNumber, TextureRenderer::DEFAULT_VALUE);
+            TextureRenderer textureDisplayer(shadowManager->getLightShadowMap(firstLight).getShadowMapTexture(), shadowMapNumber, TextureRenderer::DEFAULT_VALUE);
             textureDisplayer.setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
             textureDisplayer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureDisplayer.display(finalRenderTarget);

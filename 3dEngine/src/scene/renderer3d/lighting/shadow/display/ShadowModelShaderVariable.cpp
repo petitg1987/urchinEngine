@@ -1,12 +1,12 @@
 #include "ShadowModelShaderVariable.h"
-#include "scene/renderer3d/lighting/shadow/data/FrustumShadowData.h"
+#include "scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h"
 #include "graphic/shader/data/ShaderDataSender.h"
 
 namespace urchin {
 
     ShadowModelShaderVariable::ShadowModelShaderVariable() :
             CustomModelShaderVariable(),
-            shadowData(nullptr) {
+            lightShadowMap(nullptr) {
 
     }
 
@@ -14,12 +14,12 @@ namespace urchin {
         this->layersToUpdateShaderVar = layersToUpdateShaderVar;
     }
 
-    void ShadowModelShaderVariable::setShadowData(const ShadowData* shadowData) {
-        this->shadowData = shadowData;
+    void ShadowModelShaderVariable::setLightShadowMap(const LightShadowMap* lightShadowMap) {
+        this->lightShadowMap = lightShadowMap;
     }
 
     void ShadowModelShaderVariable::loadCustomShaderVariables(const Model*) {
-        ShaderDataSender().sendData(layersToUpdateShaderVar, shadowData->retrieveLayersToUpdate());
+        ShaderDataSender().sendData(layersToUpdateShaderVar, lightShadowMap->retrieveLayersToUpdate());
     }
 
 }

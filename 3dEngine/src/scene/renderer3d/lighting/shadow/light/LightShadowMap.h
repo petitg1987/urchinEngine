@@ -1,5 +1,5 @@
-#ifndef URCHINENGINE_SHADOWDATA_H
-#define URCHINENGINE_SHADOWDATA_H
+#ifndef URCHINENGINE_LIGHTSHADOWMAP_H
+#define URCHINENGINE_LIGHTSHADOWMAP_H
 
 #include <vector>
 #include <set>
@@ -13,22 +13,21 @@
 
 namespace urchin {
 
-    class FrustumShadowData;
+    class LightSplitShadowMap;
 
-    /**
-    * Shadow execution data for a light
-    */
-    class ShadowData : public Observer{
+    class LightShadowMap : public Observer {
         public:
-            ShadowData(const Light*, const OctreeManager<Model>*, float);
-            ~ShadowData() override;
+            LightShadowMap(const Light*, const OctreeManager<Model>*, float);
+            ~LightShadowMap() override;
 
             void notify(Observable*, int) override;
 
-            void addFrustumShadowData();
             const Light* getLight() const;
             const OctreeManager<Model>* getModelOctreeManager() const;
             float getViewingShadowDistance() const;
+
+            void addLightSplitShadowMap();
+            const std::vector<LightSplitShadowMap*>& getLightSplitShadowMaps() const;
 
             void setRenderTarget(std::unique_ptr<OffscreenRender>&&);
             const OffscreenRender* getRenderTarget() const;
@@ -43,9 +42,6 @@ namespace urchin {
             const std::shared_ptr<Texture>& getFilteredShadowMapTexture() const;
 
             const Matrix4<float>& getLightViewMatrix() const;
-
-            const std::vector<FrustumShadowData*>& getFrustumShadowData() const;
-
             unsigned int retrieveLayersToUpdate() const;
             const std::vector<Model*>& retrieveModels() const;
 
@@ -63,7 +59,7 @@ namespace urchin {
             std::vector<std::unique_ptr<const TextureFilter>> textureFilters; //shadow map filters
 
             Matrix4<float> lightViewMatrix;
-            std::vector<FrustumShadowData*> frustumShadowData;
+            std::vector<LightSplitShadowMap*> lightSplitShadowMaps;
             mutable std::vector<Model*> models;
     };
 

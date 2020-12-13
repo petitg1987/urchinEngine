@@ -3,7 +3,7 @@
 
 #include "UrchinCommon.h"
 
-#include "scene/renderer3d/lighting/shadow/data/ShadowData.h"
+#include "scene/renderer3d/lighting/shadow/light/LightShadowMap.h"
 #include "scene/renderer3d/lighting/shadow/display/ShadowShaderVariable.h"
 #include "scene/renderer3d/lighting/shadow/display/ShadowModelShaderVariable.h"
 #include "scene/renderer3d/lighting/light/Light.h"
@@ -52,7 +52,7 @@ namespace urchin {
             BlurShadow getBlurShadow() const;
 
             const std::vector<Frustum<float>>& getSplitFrustums() const;
-            const ShadowData& getShadowData(const Light*) const;
+            const LightShadowMap& getLightShadowMap(const Light*) const;
 
             void updateVisibleModels(const Frustum<float>&);
             const std::vector<Model*>& getVisibleModels();
@@ -72,7 +72,7 @@ namespace urchin {
             void updateShadowLights();
 
             //splits handling
-            void updateFrustumShadowData(ShadowData*);
+            void updateLightSplitsShadowMap(LightShadowMap*);
             void splitFrustum(const Frustum<float>&);
 
             //shadow map quality
@@ -97,7 +97,7 @@ namespace urchin {
             TextureFormat depthTextureFormat;
             std::vector<float> splitDistances;
             std::vector<Frustum<float>> splitFrustums;
-            std::map<const Light*, ShadowData*> shadowData;
+            std::map<const Light*, LightShadowMap*> lightShadowMaps;
             bool bForceUpdateAllShadowMaps;
             ShaderVar depthSplitDistanceShaderVar;
 

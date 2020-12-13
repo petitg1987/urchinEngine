@@ -13,7 +13,7 @@
 #include "scene/renderer3d/lighting/light/omnidirectional/OmnidirectionalLight.h"
 #include "scene/renderer3d/lighting/light/LightManager.h"
 #include "scene/renderer3d/lighting/shadow/ShadowManager.h"
-#include "scene/renderer3d/lighting/shadow/data/FrustumShadowData.h"
+#include "scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h"
 #include "scene/renderer3d/postprocess/antialiasing/AntiAliasingManager.h"
 #include "scene/renderer3d/landscape/fog/Fog.h"
 #include "scene/renderer3d/landscape/terrain/Terrain.h"
