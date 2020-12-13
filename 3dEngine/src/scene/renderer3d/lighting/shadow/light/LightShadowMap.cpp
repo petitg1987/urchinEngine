@@ -70,8 +70,10 @@ namespace urchin {
     /**
      * First split to add must be the split nearest to the eye.
      */
-    void LightShadowMap::addLightSplitShadowMap() {
-        lightSplitShadowMaps.emplace_back(new LightSplitShadowMap(this));
+    LightSplitShadowMap* LightShadowMap::addLightSplitShadowMap() {
+        auto* lightSplitShadowMap = new LightSplitShadowMap(this);
+        lightSplitShadowMaps.emplace_back(lightSplitShadowMap);
+        return lightSplitShadowMap;
     }
 
     /**

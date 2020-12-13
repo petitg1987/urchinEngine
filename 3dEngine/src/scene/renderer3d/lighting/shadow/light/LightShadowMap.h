@@ -26,7 +26,7 @@ namespace urchin {
             const OctreeManager<Model>* getModelOctreeManager() const;
             float getViewingShadowDistance() const;
 
-            void addLightSplitShadowMap();
+            LightSplitShadowMap* addLightSplitShadowMap();
             const std::vector<LightSplitShadowMap*>& getLightSplitShadowMaps() const;
 
             void setRenderTarget(std::unique_ptr<OffscreenRender>&&);
