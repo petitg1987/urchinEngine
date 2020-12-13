@@ -13,6 +13,7 @@ class LightSplitShadowMapTest : public CppUnit::TestFixture {
 
         void modelsInFrustumSplit();
         void modelsOutsideFrustumSplit();
+        void modelOutsideFrustumProducingShadow();
 
     private:
         std::unique_ptr<urchin::OctreeManager<urchin::Model>> buildModelOctreeManager(const std::vector<urchin::Point3<float>> &);

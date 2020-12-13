@@ -10,6 +10,8 @@ namespace urchin {
 
     class LightSplitShadowMap {
         public:
+            static const float LIGHT_BOX_MARGIN;
+
             explicit LightSplitShadowMap(LightShadowMap*);
 
             void update(const Frustum<float>&, bool);

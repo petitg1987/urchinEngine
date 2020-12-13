@@ -4,6 +4,9 @@
 
 namespace urchin {
 
+    //static
+    const float LightSplitShadowMap::LIGHT_BOX_MARGIN = 0.001f;
+
     LightSplitShadowMap::LightSplitShadowMap(LightShadowMap* lightShadowMap) :
             lightShadowMap(lightShadowMap),
             updateShadowMapThreshold(ConfigService::instance()->getFloatValue("shadow.updateShadowMapThreshold")),
@@ -99,7 +102,7 @@ namespace urchin {
             }
         }
 
-        AABBox<float> aabboxSceneDependent = aabboxSceneIndependent;
+        AABBox<float> aabboxSceneDependent(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(0.0f, 0.0f, 0.0f));
         if(modelsCount > 0) {
             Point3<float> cutMin(
                     std::min(std::max(modelsAabbox.getMin().X, aabboxSceneIndependent.getMin().X), aabboxSceneIndependent.getMax().X),
@@ -112,7 +115,10 @@ namespace urchin {
                     std::max(std::min(modelsAabbox.getMax().Z, aabboxSceneIndependent.getMax().Z), aabboxSceneIndependent.getMin().Z));
 
             aabboxSceneDependent = AABBox<float>(cutMin, cutMax);
-        } //TODO fix artifact in urchinEngineTest
+        }
+
+        //avoid aabbox of size zero when there is no model or when all models are outside of the aabboxSceneIndependent
+        aabboxSceneDependent = AABBox<float>(aabboxSceneDependent.getMin() - LIGHT_BOX_MARGIN, aabboxSceneDependent.getMax() + LIGHT_BOX_MARGIN);
 
         updateShadowCasterReceiverBox(aabboxSceneDependent, forceUpdateAllShadowMap);
     }
