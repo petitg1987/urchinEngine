@@ -3,4 +3,5 @@
 mapEditor/save/*.frl
 mapEditor/save/states.properties
 mapEditor/urchinMapEditor
-test/testRunner
+test/mainTestExecutor
+test/monkeyTestExecutor

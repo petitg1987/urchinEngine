@@ -89,7 +89,9 @@ cd urchinEngine/mapEditor/
     - Build type: `Release`
     - Generation path: `.build/release`
 - Add CMake applications
-  - Application **testRunner**:
-    - Target/executable: `testRunner`
+  - Application **mainTestExecutor**:
+    - Target/executable: `mainTestExecutor`
+  - Application **monkeyTestExecutor**:
+    - Target/executable: `monkeyTestExecutor`
   - Application **urchinMapEditor**:
     - Target/executable: `urchinMapEditor`

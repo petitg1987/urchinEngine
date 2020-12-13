@@ -1,4 +1,5 @@
 #include <cppunit/ui/text/TestRunner.h>
+#include "UrchinCommon.h"
 
 #include "common/io/StringUtilTest.h"
 #include "common/io/MapUtilTest.h"
