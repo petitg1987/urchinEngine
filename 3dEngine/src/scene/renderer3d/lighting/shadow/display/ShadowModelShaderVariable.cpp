@@ -1,4 +1,5 @@
 #include "ShadowModelShaderVariable.h"
+#include "scene/renderer3d/lighting/shadow/data/FrustumShadowData.h"
 #include "graphic/shader/data/ShaderDataSender.h"
 
 namespace urchin {
@@ -18,16 +19,7 @@ namespace urchin {
     }
 
     void ShadowModelShaderVariable::loadCustomShaderVariables(const Model*) {
-        unsigned int layersToUpdate = 0;
-
-        for (unsigned int i = 0; i < shadowData->getNbFrustumShadowData(); ++i) {
-            const FrustumShadowData* frustumShadowData = shadowData->getFrustumShadowData(i);
-            if (frustumShadowData->needShadowMapUpdate()) {
-                layersToUpdate = layersToUpdate | MathFunction::powerOfTwo(i);
-            }
-        }
-
-        ShaderDataSender().sendData(layersToUpdateShaderVar, layersToUpdate);
+        ShaderDataSender().sendData(layersToUpdateShaderVar, shadowData->retrieveLayersToUpdate());
     }
 
 }

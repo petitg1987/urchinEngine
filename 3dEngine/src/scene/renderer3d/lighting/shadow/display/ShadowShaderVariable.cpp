@@ -1,4 +1,5 @@
 #include "ShadowShaderVariable.h"
+#include "scene/renderer3d/lighting/shadow/data/FrustumShadowData.h"
 #include "graphic/shader/data/ShaderDataSender.h"
 
 namespace urchin {
@@ -29,8 +30,8 @@ namespace urchin {
         projectionMatrices.clear();
 
         if (shadowData != nullptr) {
-            for (unsigned int i = 0; i < shadowData->getNbFrustumShadowData(); ++i) {
-                projectionMatrices.push_back(shadowData->getFrustumShadowData(i)->getLightProjectionMatrix());
+            for(const auto& frustumShadowData : shadowData->getFrustumShadowData()) {
+                projectionMatrices.push_back(frustumShadowData->getLightProjectionMatrix());
             }
         }
     }

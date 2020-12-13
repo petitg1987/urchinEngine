@@ -6,14 +6,13 @@
 #include <string>
 
 #include "ShadowManager.h"
-#include "scene/renderer3d/lighting/shadow/filter/ModelProduceShadowFilter.h"
+#include "scene/renderer3d/lighting/shadow/data/FrustumShadowData.h"
 #include "texture/filter/TextureFilter.h"
 #include "texture/filter/gaussianblur/GaussianBlurFilterBuilder.h"
 #include "texture/filter/downsample/DownSampleFilterBuilder.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
 #include "graphic/shader/data/ShaderDataSender.h"
 #include "graphic/render/target/OffscreenRender.h"
-#include "resources/geometry/obbox/OBBoxModel.h"
 
 #define DEFAULT_NUMBER_SHADOW_MAPS 5
 #define DEFAULT_SHADOW_MAP_RESOLUTION 1024
@@ -36,7 +35,6 @@ namespace urchin {
             modelOctreeManager(modelOctreeManager),
             shadowShaderVariable(nullptr),
             shadowModelShaderVariable(nullptr),
-            frustumDistance(0.0),
             bForceUpdateAllShadowMaps(false),
             lightsLocation(nullptr) {
         switch(ConfigService::instance()->getUnsignedIntValue("shadow.depthComponent")) {
@@ -128,15 +126,10 @@ namespace urchin {
     void ShadowManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         this->sceneWidth = sceneWidth;
         this->sceneHeight = sceneHeight;
-
-        for (auto& shadowData : shadowDatas) {
-            updateViewMatrix(shadowData.first);
-        }
     }
 
     void ShadowManager::onCameraProjectionUpdate(const Camera* camera) {
         this->projectionMatrix = camera->getProjectionMatrix();
-        this->frustumDistance = camera->getFrustum().computeFarDistance() + camera->getFrustum().computeNearDistance();
 
         splitFrustum(camera->getFrustum());
         updateShadowLights();
@@ -157,9 +150,7 @@ namespace urchin {
                 }
             }
         } else if (auto* light = dynamic_cast<Light*>(observable)) {
-            if (notificationType == Light::LIGHT_MOVE) {
-                updateViewMatrix(light);
-            } else if (notificationType == Light::PRODUCE_SHADOW) {
+            if (notificationType == Light::PRODUCE_SHADOW) {
                 if (light->isProduceShadow()) {
                     addShadowLight(light);
                 } else {
@@ -199,16 +190,12 @@ namespace urchin {
         return nbShadowMaps;
     }
 
-    /**
-     * @param viewingShadowDistance Viewing shadow distance. If negative, shadow will be displayed until the far plane.
-     */
     void ShadowManager::setViewingShadowDistance(float viewingShadowDistance) {
         this->viewingShadowDistance = viewingShadowDistance;
+
+        updateShadowLights();
     }
 
-    /**
-     * @return Viewing shadow distance. If negative, shadow will be displayed until the far plane.
-     */
     float ShadowManager::getViewingShadowDistance() const {
         return viewingShadowDistance;
     }
@@ -247,9 +234,8 @@ namespace urchin {
         //store all visible models from all lights
         visibleModels.clear();
         for (const auto& shadowData : shadowDatas) {
-            for (unsigned int i = 0; i < nbShadowMaps; ++i) {
-                const std::vector<Model*>& visibleModelsForLightInFrustumSplit = shadowData.second->getFrustumShadowData(i)->getModels();
-                OctreeableHelper<Model>::merge(visibleModels, visibleModelsForLightInFrustumSplit);
+            for(const auto& frustumShadowData : shadowData.second->getFrustumShadowData()) {
+                OctreeableHelper<Model>::merge(visibleModels, frustumShadowData->getModels());
             }
         }
     }
@@ -262,192 +248,6 @@ namespace urchin {
     }
 
     void ShadowManager::addShadowLight(const Light* light) {
-        light->addObserver(this, Light::LIGHT_MOVE);
-
-        shadowDatas[light] = new ShadowData(light, nbShadowMaps);
-
-        createShadowMaps(light);
-        updateViewMatrix(light);
-    }
-
-    void ShadowManager::removeShadowLight(const Light* light) {
-        light->removeObserver(this, Light::LIGHT_MOVE);
-
-        delete shadowDatas[light];
-        shadowDatas.erase(light);
-    }
-
-    /**
-     * Updates lights data which producing shadows
-     */
-    void ShadowManager::updateShadowLights() {
-        std::vector<const Light*> allLights;
-        allLights.reserve(shadowDatas.size());
-        for (const auto& shadowData : shadowDatas) {
-            allLights.emplace_back(shadowData.first);
-        }
-
-        for (const auto& allLight : allLights) {
-            removeShadowLight(allLight);
-            addShadowLight(allLight);
-        }
-    }
-
-    void ShadowManager::updateViewMatrix(const Light* light) {
-        ShadowData* shadowData = shadowDatas[light];
-
-        if (light->hasParallelBeams()) { //sun light
-            Vector3<float> lightDirection = light->getDirections()[0];
-
-            const Vector3<float>& f = lightDirection.normalize();
-            const Vector3<float>& s = f.crossProduct(Vector3<float>(0.0f, 1.0f, 0.0f)).normalize();
-            const Vector3<float>& u = s.crossProduct(f).normalize();
-            Matrix4<float> M(
-                s[0],    s[1],    s[2],    0,
-                u[0],    u[1],    u[2],    0,
-                -f[0],    -f[1],    -f[2],    0,
-                0,        0,        0,        1);
-
-            Matrix4<float> eye;
-            eye.buildTranslation(lightDirection.X, lightDirection.Y, lightDirection.Z);
-            Matrix4<float> mViewShadow = M * eye;
-
-            shadowData->setLightViewMatrix(mViewShadow);
-        } else {
-            throw std::runtime_error("Shadow currently not supported on omnidirectional light.");
-        }
-    }
-
-    /**
-     * Updates frustum shadow data (models, shadow caster/receiver box, projection matrix)
-     */
-    void ShadowManager::updateFrustumShadowData(const Light* light, ShadowData* shadowData) {
-        ScopeProfiler sp(Profiler::graphic(), "upFrustumShadow");
-
-        if (light->hasParallelBeams()) { //sun light
-            Matrix4<float> lightViewMatrixInverse = shadowData->getLightViewMatrix().inverse();
-            for (unsigned int i = 0; i < splitFrustums.size(); ++i) {
-                AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splitFrustums[i], shadowData->getLightViewMatrix());
-                OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrixInverse * OBBox<float>(aabboxSceneIndependent);
-
-                obboxModels.clear();
-                modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, obboxModels, ModelProduceShadowFilter());
-                shadowData->getFrustumShadowData(i)->updateModels(obboxModels);
-
-                AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace,
-                                                                             obboxModels, shadowData->getLightViewMatrix());
-                shadowData->getFrustumShadowData(i)->updateShadowCasterReceiverBox(aabboxSceneDependent, bForceUpdateAllShadowMaps);
-            }
-        } else {
-            throw std::runtime_error("Shadow not supported on omnidirectional light.");
-        }
-
-        bForceUpdateAllShadowMaps = false;
-    }
-
-    /**
-     * @return Box in light space containing shadow caster and receiver (scene independent)
-     */
-    AABBox<float> ShadowManager::createSceneIndependentBox(const Frustum<float>& splitFrustum, const Matrix4<float>& lightViewMatrix) const {
-        ScopeProfiler sp(Profiler::graphic(), "sceneIndepBox");
-
-        const Frustum<float>& frustumLightSpace = lightViewMatrix * splitFrustum;
-
-        //determine point belonging to shadow caster/receiver box
-        Point3<float> shadowReceiverAndCasterVertex[16];
-        float nearCapZ = computeNearZForSceneIndependentBox(frustumLightSpace);
-        for (unsigned int i = 0; i < 8; ++i) {
-            const Point3<float>& frustumPoint = frustumLightSpace.getFrustumPoints()[i];
-
-            //add shadow receiver points
-            shadowReceiverAndCasterVertex[i * 2] = frustumPoint;
-
-            //add shadow caster points
-            shadowReceiverAndCasterVertex[i * 2 + 1] = Point3<float>(frustumPoint.X, frustumPoint.Y, nearCapZ);
-        }
-
-        //build shadow receiver/caster bounding box from points
-        return AABBox<float>(shadowReceiverAndCasterVertex, 16);
-    }
-
-    float ShadowManager::computeNearZForSceneIndependentBox(const Frustum<float>& splitFrustumLightSpace) const {
-        float nearestPointFromLight = splitFrustumLightSpace.getFrustumPoints()[0].Z;
-        for (unsigned int i=1; i<8; ++i) {
-            if (splitFrustumLightSpace.getFrustumPoints()[i].Z > nearestPointFromLight) {
-                nearestPointFromLight = splitFrustumLightSpace.getFrustumPoints()[i].Z;
-            }
-        }
-        return nearestPointFromLight + frustumDistance;
-    }
-
-    /**
-     * @return Box in light space containing shadow caster and receiver (scene dependent)
-     */
-    AABBox<float> ShadowManager::createSceneDependentBox(const AABBox<float>& aabboxSceneIndependent, const OBBox<float>& obboxSceneIndependentViewSpace,
-            const std::vector<Model*>& models, const Matrix4<float>& lightViewMatrix) const {
-        ScopeProfiler sp(Profiler::graphic(), "sceneDepBox");
-
-        AABBox<float> aabboxSceneDependent;
-        if (!models.empty()) {
-            aabboxSceneDependent = AABBox<float>::initMergeableAABBox();
-
-            for (const auto& model : models) {
-                if (model->getSplitAABBoxes().size() == 1) {
-                    aabboxSceneDependent = aabboxSceneDependent.merge(lightViewMatrix * model->getSplitAABBoxes()[0]);
-                } else {
-                    for (const auto& splitAABBox : model->getSplitAABBoxes()) {
-                        if (obboxSceneIndependentViewSpace.collideWithAABBox(splitAABBox)) {
-                            aabboxSceneDependent = aabboxSceneDependent.merge(lightViewMatrix * splitAABBox);
-                        }
-                    }
-                }
-            }
-        }
-
-        Point3<float> cutMin(
-                std::min(std::max(aabboxSceneDependent.getMin().X, aabboxSceneIndependent.getMin().X), aabboxSceneIndependent.getMax().X),
-                std::min(std::max(aabboxSceneDependent.getMin().Y, aabboxSceneIndependent.getMin().Y), aabboxSceneIndependent.getMax().Y),
-                aabboxSceneIndependent.getMin().Z); //shadow can be projected outside the box: value cannot be capped
-
-        Point3<float> cutMax(
-                std::max(std::min(aabboxSceneDependent.getMax().X, aabboxSceneIndependent.getMax().X), aabboxSceneIndependent.getMin().X),
-                std::max(std::min(aabboxSceneDependent.getMax().Y, aabboxSceneIndependent.getMax().Y), aabboxSceneIndependent.getMin().Y),
-                std::max(std::min(aabboxSceneDependent.getMax().Z, aabboxSceneIndependent.getMax().Z), aabboxSceneIndependent.getMin().Z));
-
-        //avoid AABBox of zero size because cause some shadow artifacts
-        cutMin -= 0.0001f;
-        cutMax += 0.0001f;
-
-        return AABBox<float>(cutMin, cutMax);
-    }
-
-    void ShadowManager::splitFrustum(const Frustum<float>& frustum) {
-        ScopeProfiler sp(Profiler::graphic(), "splitFrustum");
-
-        splitDistances.clear();
-        splitFrustums.clear();
-
-        float near = frustum.computeNearDistance();
-        float far = viewingShadowDistance;
-        if (viewingShadowDistance < 0.0f) {
-            far = frustum.computeFarDistance();
-        }
-
-        float previousSplitDistance = near;
-        for (unsigned int i=1; i<=nbShadowMaps; ++i) {
-            float uniformSplit = near + (far - near) * ((float)i / (float)nbShadowMaps);
-            float logarithmicSplit = near * std::pow(far/near, (float)i / (float)nbShadowMaps);
-
-            float splitDistance = (percentageUniformSplit * uniformSplit) + ((1.0f - percentageUniformSplit) * logarithmicSplit);
-
-            splitDistances.push_back(splitDistance);
-            splitFrustums.push_back(frustum.splitFrustum(previousSplitDistance, splitDistance));
-
-            previousSplitDistance = splitDistance;
-        }
-    }
-
-    void ShadowManager::createShadowMaps(const Light* light) {
         auto depthTexture = Texture::buildArray(shadowMapResolution, shadowMapResolution, nbShadowMaps, depthTextureFormat, nullptr);
         auto shadowMapTexture = Texture::buildArray(shadowMapResolution, shadowMapResolution, nbShadowMaps, TextureFormat::RG_32_FLOAT, nullptr);
 
@@ -456,6 +256,10 @@ namespace urchin {
         shadowMapRenderTarget->addTexture(depthTexture);
         shadowMapRenderTarget->addTexture(shadowMapTexture);
 
+        shadowDatas[light] = new ShadowData(light, modelOctreeManager, viewingShadowDistance);
+        for (unsigned int i = 0; i < nbShadowMaps; ++i) {
+            shadowDatas[light]->addFrustumShadowData();
+        }
         shadowDatas[light]->setRenderTarget(std::move(shadowMapRenderTarget));
         shadowDatas[light]->setDepthTexture(depthTexture);
         shadowDatas[light]->setShadowMapTexture(shadowMapTexture);
@@ -491,6 +295,66 @@ namespace urchin {
                     ->build();
 
             shadowDatas[light]->addTextureFilter(std::move(nullFilter));
+        }
+    }
+
+    void ShadowManager::removeShadowLight(const Light* light) {
+        delete shadowDatas[light];
+        shadowDatas.erase(light);
+    }
+
+    /**
+     * Updates lights data which producing shadows
+     */
+    void ShadowManager::updateShadowLights() {
+        std::vector<const Light*> allLights;
+        allLights.reserve(shadowDatas.size());
+        for (const auto& shadowData : shadowDatas) {
+            allLights.emplace_back(shadowData.first);
+        }
+
+        for (const auto& allLight : allLights) {
+            removeShadowLight(allLight);
+            addShadowLight(allLight);
+        }
+    }
+
+    /**
+     * Updates frustum shadow data (models, shadow caster/receiver box, projection matrix)
+     */
+    void ShadowManager::updateFrustumShadowData(const Light* light, ShadowData* shadowData) {
+        ScopeProfiler sp(Profiler::graphic(), "upFrustumShadow");
+
+        if (light->hasParallelBeams()) { //sun light
+            unsigned int i = 0;
+            for(const auto& fsd : shadowData->getFrustumShadowData()) {
+                fsd->update(splitFrustums[i++], bForceUpdateAllShadowMaps);
+            }
+        } else {
+            throw std::runtime_error("Shadow not supported on omnidirectional light.");
+        }
+
+        bForceUpdateAllShadowMaps = false;
+    }
+
+    void ShadowManager::splitFrustum(const Frustum<float>& frustum) {
+        ScopeProfiler sp(Profiler::graphic(), "splitFrustum");
+
+        splitDistances.clear();
+        splitFrustums.clear();
+
+        float near = frustum.computeNearDistance();
+        float previousSplitDistance = near;
+        for (unsigned int i = 1; i <= nbShadowMaps; ++i) {
+            float uniformSplit = near + (viewingShadowDistance - near) * ((float)i / (float)nbShadowMaps);
+            float logarithmicSplit = near * std::pow(viewingShadowDistance / near, (float)i / (float)nbShadowMaps);
+
+            float splitDistance = (percentageUniformSplit * uniformSplit) + ((1.0f - percentageUniformSplit) * logarithmicSplit);
+
+            splitDistances.push_back(splitDistance);
+            splitFrustums.push_back(frustum.splitFrustum(previousSplitDistance, splitDistance));
+
+            previousSplitDistance = splitDistance;
         }
     }
 
@@ -530,9 +394,10 @@ namespace urchin {
                         ->addAdditionalTexture(TextureReader::build(shadowData->getFilteredShadowMapTexture(), TextureParam::buildLinear()));
                 ShaderDataSender().sendData(lightsLocation[i].shadowMapTexShaderVar, (int)texUnit);
 
-                for (unsigned int j = 0; j < nbShadowMaps; ++j) {
-                    Matrix4<float> lightProjectionViewMatrix = shadowData->getFrustumShadowData(j)->getLightProjectionMatrix() * shadowData->getLightViewMatrix();
-                    ShaderDataSender().sendData(lightsLocation[i].mLightProjectionViewShaderVar[j], lightProjectionViewMatrix);
+                unsigned int shadowMapIndex = 0;
+                for(const auto& fsd : shadowData->getFrustumShadowData()) {
+                    Matrix4<float> lightProjectionViewMatrix = fsd->getLightProjectionMatrix() * shadowData->getLightViewMatrix();
+                    ShaderDataSender().sendData(lightsLocation[i].mLightProjectionViewShaderVar[shadowMapIndex++], lightProjectionViewMatrix);
                 }
             }
             ++i;
@@ -546,29 +411,6 @@ namespace urchin {
 
         ShaderDataSender().sendData(depthSplitDistanceShaderVar, nbShadowMaps, depthSplitDistance);
         delete[] depthSplitDistance;
-    }
-
-    void ShadowManager::drawLightSceneBox(const RenderTarget* renderTarget, const Frustum<float>& frustum, const Light* light, const Matrix4<float>& viewMatrix) const {
-        auto itShadowData = shadowDatas.find(light);
-        if (itShadowData == shadowDatas.end()) {
-            throw std::invalid_argument("shadow manager doesn't know this light.");
-        }
-
-        const Matrix4<float>& lightViewMatrix = itShadowData->second->getLightViewMatrix();
-        AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(frustum, lightViewMatrix);
-        OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrix.inverse() * OBBox<float>(aabboxSceneIndependent);
-
-        std::vector<Model*> models;
-        modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, models, ModelProduceShadowFilter());
-        if (!models.empty()) {
-            AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace, models, lightViewMatrix);
-            OBBox<float> obboxSceneDependentViewSpace = lightViewMatrix.inverse() * OBBox<float>(aabboxSceneDependent);
-
-            OBBoxModel sceneDependentObboxModel(obboxSceneDependentViewSpace);
-            sceneDependentObboxModel.onCameraProjectionUpdate(projectionMatrix);
-            sceneDependentObboxModel.setColor(0.0f, 1.0f, 0.0f);
-            sceneDependentObboxModel.display(renderTarget, viewMatrix);
-        }
     }
 
 }

@@ -6,20 +6,29 @@
 #include <memory>
 #include "UrchinCommon.h"
 
-#include "FrustumShadowData.h"
 #include "graphic/render/target/OffscreenRender.h"
 #include "scene/renderer3d/lighting/light/Light.h"
+#include "scene/renderer3d/model/Model.h"
 #include "texture/filter/TextureFilter.h"
 
 namespace urchin {
 
+    class FrustumShadowData;
+
     /**
     * Shadow execution data for a light
     */
-    class ShadowData {
+    class ShadowData : public Observer{
         public:
-            ShadowData(const Light*, unsigned int);
-            ~ShadowData();
+            ShadowData(const Light*, const OctreeManager<Model>*, float);
+            ~ShadowData() override;
+
+            void notify(Observable*, int) override;
+
+            void addFrustumShadowData();
+            const Light* getLight() const;
+            const OctreeManager<Model>* getModelOctreeManager() const;
+            float getViewingShadowDistance() const;
 
             void setRenderTarget(std::unique_ptr<OffscreenRender>&&);
             const OffscreenRender* getRenderTarget() const;
@@ -33,17 +42,19 @@ namespace urchin {
             void applyTextureFilters() const;
             const std::shared_ptr<Texture>& getFilteredShadowMapTexture() const;
 
-            void setLightViewMatrix(const Matrix4<float>&);
             const Matrix4<float>& getLightViewMatrix() const;
 
-            unsigned int getNbFrustumShadowData() const;
-            FrustumShadowData* getFrustumShadowData(unsigned int);
-            const FrustumShadowData* getFrustumShadowData(unsigned int) const;
+            const std::vector<FrustumShadowData*>& getFrustumShadowData() const;
 
+            unsigned int retrieveLayersToUpdate() const;
             const std::vector<Model*>& retrieveModels() const;
 
         private:
-            const Light *const light;
+            void updateLightViewMatrix();
+
+            const Light* light;
+            const OctreeManager<Model>* modelOctreeManager;
+            float viewingShadowDistance;
 
             std::shared_ptr<OffscreenRender> renderTarget; //target containing shadow map(s)
             std::shared_ptr<Texture> depthTexture; //depth texture

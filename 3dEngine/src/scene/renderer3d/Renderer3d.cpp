@@ -23,7 +23,6 @@ namespace urchin {
     bool DEBUG_DISPLAY_MODELS_BOUNDING_BOX = false;
     bool DEBUG_DISPLAY_MODEL_BASE_BONES = false;
     bool DEBUG_DISPLAY_LIGHTS_OCTREE = false;
-    bool DEBUG_DISPLAY_LIGHTS_SCENE_BOUNDING_BOX = false;
 
     Renderer3d::Renderer3d(const RenderTarget* finalRenderTarget) :
             finalRenderTarget(finalRenderTarget),
@@ -472,13 +471,6 @@ namespace urchin {
 
         if (DEBUG_DISPLAY_LIGHTS_OCTREE) {
             lightManager->drawLightOctree(camera->getProjectionMatrix(), camera->getViewMatrix());
-        }
-
-        if (DEBUG_DISPLAY_LIGHTS_SCENE_BOUNDING_BOX) { //display scene box visible from light based on split frustums
-            const Light* firstLight = lightManager->getVisibleLights()[0]; //choose light
-            for (const auto& frustum : shadowManager->getSplitFrustums()) {
-                shadowManager->drawLightSceneBox(deferredRenderTarget, frustum, firstLight, camera->getViewMatrix());
-            }
         }
     }
 

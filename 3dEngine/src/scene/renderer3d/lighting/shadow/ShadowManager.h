@@ -61,8 +61,6 @@ namespace urchin {
             void updateShadowMaps();
             void loadShadowMaps(const std::unique_ptr<GenericRenderer>&);
 
-            void drawLightSceneBox(const RenderTarget*, const Frustum<float>&, const Light*, const Matrix4<float>&) const;
-
         private:
             //model displayer
             void createOrUpdateShadowModelDisplayer();
@@ -74,16 +72,8 @@ namespace urchin {
             void updateShadowLights();
 
             //splits handling
-            void updateViewMatrix(const Light*);
             void updateFrustumShadowData(const Light*, ShadowData*);
-            AABBox<float> createSceneIndependentBox(const Frustum<float>&, const Matrix4<float>&) const;
-            float computeNearZForSceneIndependentBox(const Frustum<float>&) const;
-            AABBox<float> createSceneDependentBox(const AABBox<float>&, const OBBox<float>&,
-                    const std::vector<Model*>&, const Matrix4<float>&) const;
             void splitFrustum(const Frustum<float>&);
-
-            //shadow map handling
-            void createShadowMaps(const Light*);
 
             //shadow map quality
             const float shadowMapBias;
@@ -98,7 +88,6 @@ namespace urchin {
             ModelDisplayer* shadowModelDisplayer;
             LightManager* lightManager;
             OctreeManager<Model>* modelOctreeManager;
-            std::vector<Model*> obboxModels;
             Matrix4<float> projectionMatrix;
             ShadowShaderVariable* shadowShaderVariable;
             ShadowModelShaderVariable* shadowModelShaderVariable;
@@ -106,10 +95,9 @@ namespace urchin {
 
             //shadow information
             TextureFormat depthTextureFormat;
-            float frustumDistance;
             std::vector<float> splitDistances;
             std::vector<Frustum<float>> splitFrustums;
-            std::map<const Light*, ShadowData*> shadowDatas;
+            std::map<const Light*, ShadowData*> shadowDatas; //TODO remove map & "s" !
             bool bForceUpdateAllShadowMaps;
             ShaderVar depthSplitDistanceShaderVar;
 
