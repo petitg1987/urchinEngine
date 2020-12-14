@@ -9,9 +9,13 @@ using namespace urchin;
 
 void GhostBodyMT::test() {
     auto physicsWorld = std::make_unique<PhysicsWorld>();
-    //ground: //TODO replace by CollisionHeightfieldShape
-    std::shared_ptr<CollisionBoxShape> groundShape = std::make_shared<CollisionBoxShape>(Vector3<float>(1000.0f, 0.5f, 1000.0f));
-    auto* groundBody = new RigidBody("ground", Transform<float>(Point3<float>(0.0f, -0.5f, 0.0f), Quaternion<float>(), 1.0f), groundShape);
+    //ground:
+    std::vector<Point3<float>> groundPoints = {
+            Point3<float>(-100.0f, 0.0f, -100.0f), Point3<float>(100.0f, 0.0f, -100.0f),
+            Point3<float>(-100.0f, 0.0f, 100.0f), Point3<float>(100.0f, 0.0f, 100.0f)
+    };
+    std::shared_ptr<CollisionHeightfieldShape> groundShape = std::make_shared<CollisionHeightfieldShape>(groundPoints, 2, 2);
+    auto* groundBody = new RigidBody("ground", Transform<float>(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), groundShape);
     physicsWorld->getBodyManager()->addBody(groundBody);
     //25 cubes:
     float cubeHeight = 0.5f;
@@ -22,7 +26,7 @@ void GhostBodyMT::test() {
             float zValue = (float)z * 1.1f; //min: 0, max: 4.8
             std::shared_ptr<CollisionBoxShape> cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(cubeHeight / 2.0f, cubeHeight / 2.0f, cubeHeight / 2.0f));
             std::string bodyName = "cube_" + std::to_string(x) + "_" + std::to_string(z);
-            auto* cubeBody = new RigidBody(bodyName, Transform<float>(Point3<float>(xValue, 10.0f, zValue), Quaternion<float>(), 1.0f), cubeShape);
+            auto* cubeBody = new RigidBody(bodyName, Transform<float>(Point3<float>(xValue, 10.0f, zValue), Quaternion<float>()), cubeShape);
             cubeBody->setMass(10.0f); //non-static
             physicsWorld->getBodyManager()->addBody(cubeBody);
             cubes.emplace_back(cubeBody);
@@ -34,7 +38,6 @@ void GhostBodyMT::test() {
     auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, characterShape, PhysicsTransform(Point3<float>(2.4f, 5.0f, 2.4f), Quaternion<float>()));
     auto characterController = PhysicsCharacterController(character, physicsWorld.get());
 
-    //TODO check with std::cout in CollisionCapsuleShape::toAABBox (no correct because ground is not concave ?)
     std::thread physicsEngineThread = std::thread([&physicsWorld]() {
         for(std::size_t i = 0; i < 500; ++i) {
             physicsWorld->getCollisionWorld()->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));

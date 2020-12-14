@@ -11,7 +11,7 @@ namespace urchin {
             vertices(std::move(vertices)),
             xLength(xLength),
             zLength(zLength) {
-        assert(this->vertices.size() == xLength*zLength);
+        assert(this->vertices.size() == xLength * zLength);
         localAABBox = buildLocalAABBox();
 
         unsigned int trianglesShapePoolSize = ConfigService::instance()->getUnsignedIntValue("collisionShape.heightfieldTrianglesPoolSize");
@@ -25,7 +25,7 @@ namespace urchin {
 
     std::unique_ptr<BoxShape<float>> CollisionHeightfieldShape::buildLocalAABBox() const {
         Point3<float> min(vertices[0].X, std::numeric_limits<float>::max(), vertices[0].Z);
-        Point3<float> max(vertices[xLength-1].X, -std::numeric_limits<float>::max(), vertices[vertices.size()-1].Z);
+        Point3<float> max(vertices[xLength - 1].X, -std::numeric_limits<float>::max(), vertices[vertices.size() - 1].Z);
 
         for (const auto& vertex : vertices) {
             if (min.Y > vertex.Y) {
@@ -41,11 +41,11 @@ namespace urchin {
         min.Y = -maxAbsoluteYValue;
         max.Y = maxAbsoluteYValue;
 
-        assert(std::abs(std::abs(min.X)-max.X) < 0.01f);
-        assert(std::abs(std::abs(min.Y)-max.Y) < 0.01f);
-        assert(std::abs(std::abs(min.Z)-max.Z) < 0.01f);
+        assert(std::abs(std::abs(min.X) - max.X) < 0.01f);
+        assert(std::abs(std::abs(min.Y) - max.Y) < 0.01f);
+        assert(std::abs(std::abs(min.Z) - max.Z) < 0.01f);
 
-        Vector3<float> halfSizes((max.X-min.X) / 2.0f, (max.Y-min.Y) / 2.0f, (max.Z-min.Z) / 2.0f);
+        Vector3<float> halfSizes((max.X - min.X) / 2.0f, (max.Y - min.Y) / 2.0f, (max.Z - min.Z) / 2.0f);
         return std::make_unique<BoxShape<float>>(halfSizes);
     }
 

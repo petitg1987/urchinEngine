@@ -79,7 +79,7 @@
     - **BUG** (`medium`): A restitution of 1.0 introduce new force in the system. Example: a superball bounces more and more higher at each collision
 - Character
     - **NEW FEATURE** (`medium`): Handle stair for character controller
-    - **NEW FEATURE** (`minor`): Apply impulse on objects hit by character
+    - **NEW FEATURE** (`medium`): Apply impulse on objects hit by character or falling on the character
 
 # Sound engine
 - Sound reader
