@@ -1,38 +1,15 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
-#include <memory>
-#include "UrchinPhysicsEngine.h"
 
 #include "physics/GhostBodyMT.h"
 #include "AssertHelper.h"
 using namespace urchin;
 
-void GhostBodyMT::test() {
+void GhostBodyMT::processGhostBody() {
     auto physicsWorld = std::make_unique<PhysicsWorld>();
-    //ground:
-    std::vector<Point3<float>> groundPoints = {
-            Point3<float>(-100.0f, 0.0f, -100.0f), Point3<float>(100.0f, 0.0f, -100.0f),
-            Point3<float>(-100.0f, 0.0f, 100.0f), Point3<float>(100.0f, 0.0f, 100.0f)
-    };
-    std::shared_ptr<CollisionHeightfieldShape> groundShape = std::make_shared<CollisionHeightfieldShape>(groundPoints, 2, 2);
-    auto* groundBody = new RigidBody("ground", Transform<float>(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), groundShape);
-    physicsWorld->getBodyManager()->addBody(groundBody);
-    //25 cubes:
+    constructGround(physicsWorld);
     float cubeHeight = 0.5f;
-    std::vector<RigidBody*> cubes;
-    for(unsigned int x = 0; x < 5; x++) {
-        float xValue = (float)x * 1.1f; //min: 0, max: 4.8
-        for(unsigned int z = 0; z < 5; z++) {
-            float zValue = (float)z * 1.1f; //min: 0, max: 4.8
-            std::shared_ptr<CollisionBoxShape> cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(cubeHeight / 2.0f, cubeHeight / 2.0f, cubeHeight / 2.0f));
-            std::string bodyName = "cube_" + std::to_string(x) + "_" + std::to_string(z);
-            auto* cubeBody = new RigidBody(bodyName, Transform<float>(Point3<float>(xValue, 10.0f, zValue), Quaternion<float>()), cubeShape);
-            cubeBody->setMass(10.0f); //non-static
-            physicsWorld->getBodyManager()->addBody(cubeBody);
-            cubes.emplace_back(cubeBody);
-        }
-    }
-    //character:
+    auto cubes = constructCubes(physicsWorld, cubeHeight);
     std::shared_ptr<CollisionCapsuleShape> characterShape = std::make_shared<CollisionCapsuleShape>(0.5f, 1.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y);
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
     auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, characterShape, PhysicsTransform(Point3<float>(2.4f, 5.0f, 2.4f), Quaternion<float>()));
@@ -56,8 +33,8 @@ void GhostBodyMT::test() {
     for(const auto& cube : cubes) {
         float posY = cube->getTransform().getPosition().Y;
         float minPosY = (cubeHeight / 2.0f) - 0.01f;
-        float maxPosY = cubeHeight + (cubeHeight / 2.0f) + 0.01f; //cube can be above another cube
-        AssertHelper::assertTrue(posY > minPosY && posY < maxPosY,"Cube must be on the ground or above another cube. Position Y: " + std::to_string(posY));
+        float maxPosY = cubeHeight + (cubeHeight / 2.0f) + 0.01f;
+        AssertHelper::assertTrue(posY > minPosY && posY < maxPosY,"Cube " + cube->getId() + " must be on the ground or above another cube. Position Y: " + std::to_string(posY));
         AssertHelper::assertTrue(!cube->isActive(), "Cube " + cube->getId() + " must become inactive.");
     }
     float posY = character->getTransform().getPosition().Y;
@@ -66,10 +43,39 @@ void GhostBodyMT::test() {
     AssertHelper::assertTrue(posY > minPosY && posY < maxPosY,"Character must be on the ground or above one or two cubes. Position Y: " + std::to_string(posY));
 }
 
+void GhostBodyMT::constructGround(const std::unique_ptr<PhysicsWorld>& physicsWorld) {
+    std::vector<Point3<float>> groundPoints = {
+            Point3<float>(-100.0f, 0.0f, -100.0f), Point3<float>(100.0f, 0.0f, -100.0f),
+            Point3<float>(-100.0f, 0.0f, 100.0f), Point3<float>(100.0f, 0.0f, 100.0f)
+    };
+    std::shared_ptr<CollisionHeightfieldShape> groundShape = std::make_shared<CollisionHeightfieldShape>(groundPoints, 2, 2);
+    auto* groundBody = new RigidBody("ground", Transform<float>(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), groundShape);
+    physicsWorld->getBodyManager()->addBody(groundBody);
+}
+
+std::vector<RigidBody*> GhostBodyMT::constructCubes(const std::unique_ptr<PhysicsWorld>& physicsWorld, float cubeHeight) {
+    std::vector<RigidBody*> cubes;
+    for(unsigned int x = 0; x < 5; x++) {
+        float xValue = (float)x * 1.1f; //min: 0, max: 4.8
+        for(unsigned int z = 0; z < 5; z++) {
+            float zValue = (float)z * 1.1f; //min: 0, max: 4.8
+            std::shared_ptr<CollisionBoxShape> cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(cubeHeight / 2.0f, cubeHeight / 2.0f, cubeHeight / 2.0f));
+            std::string bodyName = "cube_" + std::to_string(x) + "_" + std::to_string(z);
+            auto* cubeBody = new RigidBody(bodyName, Transform<float>(Point3<float>(xValue, 10.0f, zValue), Quaternion<float>()), cubeShape);
+            cubeBody->setMass(10.0f); //non-static
+            physicsWorld->getBodyManager()->addBody(cubeBody);
+            cubes.emplace_back(cubeBody);
+        }
+    }
+    return cubes;
+}
+
 CppUnit::Test* GhostBodyMT::suite() {
     auto* suite = new CppUnit::TestSuite("GhostBodyMT");
 
-    suite->addTest(new CppUnit::TestCaller<GhostBodyMT>("test", &GhostBodyMT::test));
+    for(unsigned int i=0; i < 100; ++i) {
+        suite->addTest(new CppUnit::TestCaller<GhostBodyMT>("processGhostBody_" + std::to_string(i), &GhostBodyMT::processGhostBody));
+    }
 
     return suite;
 }

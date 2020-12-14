@@ -47,9 +47,8 @@ namespace urchin {
     }
 
     void LightShadowMap::notify(Observable* observable, int notificationType) {
-        if (auto* light = dynamic_cast<Light*>(observable)) {
+        if (dynamic_cast<Light*>(observable)) {
             if (notificationType == Light::LIGHT_MOVE) {
-                assert(light == this->light);
                 updateLightViewMatrix();
             }
         }
