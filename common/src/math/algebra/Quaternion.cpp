@@ -194,8 +194,8 @@ namespace urchin {
         const T normValue = norm();
 
         //checks for bogus norm, to protect against divide by zero
-        if (normValue>0.0f) {
-            return Quaternion<T>(X/normValue, Y/normValue, Z/normValue, W/normValue);
+        if (normValue > 0.0f) {
+            return Quaternion<T>(X / normValue, Y / normValue, Z / normValue, W / normValue);
         }
 
         return Quaternion(X, Y, Z, W);
@@ -213,19 +213,19 @@ namespace urchin {
      */
     template<class T> Quaternion<T> Quaternion<T>::inverse() const {
         T squaredNorm = squareNorm();
-        return Quaternion<T>(-X/squaredNorm, -Y/squaredNorm, -Z/squaredNorm, W/squaredNorm);
+        return Quaternion<T>(-X / squaredNorm, -Y / squaredNorm, -Z / squaredNorm, W / squaredNorm);
     }
 
     template<class T> T Quaternion<T>::norm() const {
-        return std::sqrt((X*X) + (Y*Y) + (Z*Z) + (W*W));
+        return std::sqrt((X * X) + (Y * Y) + (Z * Z) + (W * W));
     }
 
     template<class T> T Quaternion<T>::squareNorm() const {
-        return (X*X) + (Y*Y) + (Z*Z) + (W*W);
+        return (X * X) + (Y * Y) + (Z * Z) + (W * W);
     }
 
     template<class T> T Quaternion<T>::dotProduct(const Quaternion<T>& q) const {
-        return ((X*q.X) + (Y*q.Y) + (Z*q.Z) + (W*q.W));
+        return ((X * q.X) + (Y * q.Y) + (Z * q.Z) + (W * q.W));
     }
 
     template<class T> Point3<T> Quaternion<T>::rotatePoint(const Point3<T>& point) const {
@@ -341,10 +341,10 @@ namespace urchin {
         const T zz = Z * Z;
         const T zw = Z * W;
 
-        return Matrix4<T>(    1 - 2 * (yy + zz),         2 * (xy - zw),         2 * (xz + yw),         0,
-                2 * (xy + zw),         1 - 2 * (xx + zz),         2 * (yz - xw),         0,
-                2 * (xz - yw),         2 * (yz + xw),         1 - 2 * (xx + yy),     0,
-                0,                     0,                     0,             1);
+        return Matrix4<T>(1 - 2 * (yy + zz),2 * (xy - zw),2 * (xz + yw),0,
+                2 * (xy + zw),1 - 2 * (xx + zz),2 * (yz - xw),0,
+                2 * (xz - yw),2 * (yz + xw),1 - 2 * (xx + yy),0,
+                0,0,0,1);
     }
 
     template<class T> Matrix3<T> Quaternion<T>::toMatrix3() const {
@@ -358,9 +358,9 @@ namespace urchin {
         const T zz = Z * Z;
         const T zw = Z * W;
 
-        return Matrix3<T>(    1 - 2 * (yy + zz),         2 * (xy - zw),         2 * (xz + yw),
-                2 * (xy + zw),         1 - 2 * (xx + zz),         2 * (yz - xw),
-                2 * (xz - yw),         2 * (yz + xw),         1 - 2 * (xx + yy));
+        return Matrix3<T>(1 - 2 * (yy + zz),2 * (xy - zw),2 * (xz + yw),
+                          2 * (xy + zw),1 - 2 * (xx + zz),2 * (yz - xw),
+                          2 * (xz - yw),2 * (yz + xw),1 - 2 * (xx + yy));
     }
 
     template<class T> void Quaternion<T>::toAxisAngle(Vector3<T>& axis, T& angle) const {
