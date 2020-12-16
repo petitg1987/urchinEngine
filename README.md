@@ -69,7 +69,8 @@ Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
 - Execute tests:
     ```
     cd urchinEngine/test/
-    ./testRunner
+    ./mainTestExecutor
+    ./monkeyTestExecutor
     ```
 
 ## Launch map editor

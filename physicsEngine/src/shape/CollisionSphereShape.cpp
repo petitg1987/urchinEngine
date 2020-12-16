@@ -52,7 +52,7 @@ namespace urchin {
     }
 
     Vector3<float> CollisionSphereShape::computeLocalInertia(float mass) const {
-        float localInertia = (2.0f/5.0f) * mass * sphereShape->getRadius() * sphereShape->getRadius();
+        float localInertia = (2.0f / 5.0f) * mass * sphereShape->getRadius() * sphereShape->getRadius();
         return Vector3<float>(localInertia, localInertia, localInertia);
     }
 

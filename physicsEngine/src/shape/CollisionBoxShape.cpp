@@ -76,9 +76,9 @@ namespace urchin {
         float height = 2.0f * boxShape->getHalfSize(1);
         float depth = 2.0f * boxShape->getHalfSize(2);
 
-        float localInertia1 = (1.0f/12.0f) * mass * (height*height + depth*depth);
-        float localInertia2 = (1.0f/12.0f) * mass * (width*width + depth*depth);
-        float localInertia3 = (1.0f/12.0f) * mass * (width*width + height*height);
+        float localInertia1 = (1.0f / 12.0f) * mass * (height * height + depth * depth);
+        float localInertia2 = (1.0f / 12.0f) * mass * (width * width + depth * depth);
+        float localInertia3 = (1.0f / 12.0f) * mass * (width * width + height * height);
         return Vector3<float>(localInertia1, localInertia2, localInertia3);
     }
 

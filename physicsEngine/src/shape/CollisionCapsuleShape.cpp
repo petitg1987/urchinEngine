@@ -83,9 +83,9 @@ namespace urchin {
         float heightSquare = boxSizes.Y * boxSizes.Y;
         float depthSquare = boxSizes.Z * boxSizes.Z;
 
-        float localInertia1 = (1.0f/12.0f) * mass * (heightSquare + depthSquare);
-        float localInertia2 = (1.0f/12.0f) * mass * (widthSquare + depthSquare);
-        float localInertia3 = (1.0f/12.0f) * mass * (widthSquare + heightSquare);
+        float localInertia1 = (1.0f / 12.0f) * mass * (heightSquare + depthSquare);
+        float localInertia2 = (1.0f / 12.0f) * mass * (widthSquare + depthSquare);
+        float localInertia3 = (1.0f / 12.0f) * mass * (widthSquare + heightSquare);
         return Vector3<float>(localInertia1, localInertia2, localInertia3);
     }
 

@@ -18,13 +18,13 @@ void GhostBodyMT::processGhostBody() {
     std::thread physicsEngineThread = std::thread([&physicsWorld]() {
         for(std::size_t i = 0; i < 500; ++i) {
             physicsWorld->getCollisionWorld()->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            std::this_thread::sleep_for(std::chrono::microseconds(250));
         }
     });
     std::thread mainThread = std::thread([&characterController]() {
         for(std::size_t i = 0; i < 500; ++i) {
             characterController.update(1.0f / 60.0f);
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            std::this_thread::sleep_for(std::chrono::microseconds(250));
         }
     });
     physicsEngineThread.join();
@@ -59,10 +59,11 @@ std::vector<RigidBody*> GhostBodyMT::constructCubes(const std::unique_ptr<Physic
         float xValue = (float)x * 1.1f; //min: 0, max: 4.8
         for(unsigned int z = 0; z < 5; z++) {
             float zValue = (float)z * 1.1f; //min: 0, max: 4.8
-            std::shared_ptr<CollisionBoxShape> cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(cubeHeight / 2.0f, cubeHeight / 2.0f, cubeHeight / 2.0f));
+            std::shared_ptr<CollisionShape3D>  cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(cubeHeight / 2.0f, cubeHeight / 2.0f, cubeHeight / 2.0f));
             std::string bodyName = "cube_" + std::to_string(x) + "_" + std::to_string(z);
             auto* cubeBody = new RigidBody(bodyName, Transform<float>(Point3<float>(xValue, 10.0f, zValue), Quaternion<float>()), cubeShape);
             cubeBody->setMass(10.0f); //non-static
+
             physicsWorld->getBodyManager()->addBody(cubeBody);
             cubes.emplace_back(cubeBody);
         }
@@ -73,7 +74,7 @@ std::vector<RigidBody*> GhostBodyMT::constructCubes(const std::unique_ptr<Physic
 CppUnit::Test* GhostBodyMT::suite() {
     auto* suite = new CppUnit::TestSuite("GhostBodyMT");
 
-    for(unsigned int i=0; i < 100; ++i) {
+    for(unsigned int i=0; i < 1000; ++i) {
         suite->addTest(new CppUnit::TestCaller<GhostBodyMT>("processGhostBody_" + std::to_string(i), &GhostBodyMT::processGhostBody));
     }
 
