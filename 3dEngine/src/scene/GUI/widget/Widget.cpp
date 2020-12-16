@@ -181,7 +181,7 @@ namespace urchin {
         if (key == InputDeviceKey::MOUSE_LEFT) {
             Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
             if (widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
-                widgetState=CLICKING;
+                widgetState = CLICKING;
                 for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
                     eventListener->onClick(this);
                 }

@@ -29,8 +29,8 @@ namespace urchin {
     }
 
     GUIRenderer::~GUIRenderer() {
-        for (long i=(long)widgets.size()-1; i>=0; --i) {
-            delete widgets[i];
+        for (long i = (long)widgets.size() - 1; i >= 0; --i) {
+            delete widgets[(std::size_t)i];
         }
     }
 
@@ -39,14 +39,14 @@ namespace urchin {
         this->sceneHeight = sceneHeight;
 
         //orthogonal matrix with origin at top left screen
-        mProjection.setValues(2.0f/(float)sceneWidth, 0.0f, -1.0f,
-            0.0f, -2.0f/(float)sceneHeight, 1.0f,
+        mProjection.setValues(2.0f / (float)sceneWidth, 0.0f, -1.0f,
+            0.0f, -2.0f / (float)sceneHeight, 1.0f,
             0.0f, 0.0f, 1.0f);
         ShaderDataSender().sendData(mProjectionShaderVar, mProjection);
 
         //widgets resize
-        for (long i=(long)widgets.size()-1; i>=0; --i) {
-            widgets[i]->onResize(sceneWidth, sceneHeight);
+        for (long i = (long)widgets.size() - 1; i >= 0; --i) {
+            widgets[(std::size_t)i]->onResize(sceneWidth, sceneHeight);
         }
     }
 
@@ -58,9 +58,9 @@ namespace urchin {
                 widgets.push_back(widget);
 
                 //reset the other widgets
-                for (long i=(long)widgets.size()-2; i>=0; --i) {
-                    if (widgets[i]->isVisible()) {
-                        widgets[i]->reset();
+                for (long i = (long)widgets.size() - 2; i >= 0; --i) {
+                    if (widgets[(std::size_t)i]->isVisible()) {
+                        widgets[(std::size_t)i]->reset();
                     }
                 }
             }
@@ -72,8 +72,8 @@ namespace urchin {
     }
 
     bool GUIRenderer::onKeyPress(unsigned int key) {
-        for (long i=(long)widgets.size()-1; i>=0; --i) {
-            if (widgets[i]->isVisible() && !widgets[i]->onKeyPress(key)) {
+        for (long i = (long)widgets.size() - 1; i >= 0; --i) {
+            if (widgets[(std::size_t)i]->isVisible() && !widgets[(std::size_t)i]->onKeyPress(key)) {
                 return false;
             }
         }
@@ -81,8 +81,8 @@ namespace urchin {
     }
 
     bool GUIRenderer::onKeyRelease(unsigned int key) {
-        for (long i=(long)widgets.size()-1; i>=0; --i) {
-            if (widgets[i]->isVisible() && !widgets[i]->onKeyRelease(key)) {
+        for (long i = (long)widgets.size() - 1; i >= 0; --i) {
+            if (widgets[(std::size_t)i]->isVisible() && !widgets[(std::size_t)i]->onKeyRelease(key)) {
                 return false;
             }
         }
@@ -90,8 +90,8 @@ namespace urchin {
     }
 
     bool GUIRenderer::onChar(unsigned int character) {
-        for (long i=(long)widgets.size()-1; i>=0; --i) {
-            if (widgets[i]->isVisible() && !widgets[i]->onChar(character)) {
+        for (long i = (long)widgets.size() - 1; i >= 0; --i) {
+            if (widgets[(std::size_t)i]->isVisible() && !widgets[(std::size_t)i]->onChar(character)) {
                 return false;
             }
         }
@@ -99,8 +99,8 @@ namespace urchin {
     }
 
     bool GUIRenderer::onMouseMove(int mouseX, int mouseY) {
-        for (long i=(long)widgets.size()-1; i>=0; --i) {
-            if (widgets[i]->isVisible() && !widgets[i]->onMouseMove(mouseX, mouseY)) {
+        for (long i = (long)widgets.size() - 1; i >= 0; --i) {
+            if (widgets[(std::size_t)i]->isVisible() && !widgets[(std::size_t)i]->onMouseMove(mouseX, mouseY)) {
                 return false;
             }
         }
@@ -108,9 +108,9 @@ namespace urchin {
     }
 
     void GUIRenderer::onDisable() {
-        for (long i=(long)widgets.size()-1; i>=0; --i) {
-            if (widgets[i]->isVisible()) {
-                widgets[i]->onDisable();
+        for (long i = (long)widgets.size() - 1; i >= 0; --i) {
+            if (widgets[(std::size_t)i]->isVisible()) {
+                widgets[(std::size_t)i]->onDisable();
             }
         }
     }

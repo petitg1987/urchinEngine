@@ -244,7 +244,7 @@ namespace urchin {
         unsigned char packetHeader;
         unsigned int ptrIndex = 0;
 
-        while (ptrIndex < width*height*3) {
+        while (ptrIndex < width * height * 3) {
             //reads first byte
             packetHeader = data[j++];
             unsigned int size = 1 + (packetHeader & 0x7fu);
@@ -277,7 +277,7 @@ namespace urchin {
         unsigned char packetHeader;
         unsigned int ptrIndex = 0;
 
-        while (ptrIndex < width*height*3) {
+        while (ptrIndex < width * height * 3) {
             //reads first byte
             packetHeader = data[j++];
             unsigned int size = 1 + (packetHeader & 0x7fu);
@@ -289,8 +289,8 @@ namespace urchin {
 
                 for (unsigned int i = 0; i < size; ++i, ptrIndex += 3) {
                     texels[ptrIndex] = static_cast<unsigned char>(((color & 0x7C00u) >> 10u) << 3u);
-                    texels[ptrIndex+1] = static_cast<unsigned char>(((color & 0x03E0u) >>  5u) << 3u);
-                    texels[ptrIndex+2] = static_cast<unsigned char>(((color & 0x001Fu) >>  0u) << 3u);
+                    texels[ptrIndex + 1] = static_cast<unsigned char>(((color & 0x03E0u) >>  5u) << 3u);
+                    texels[ptrIndex + 2] = static_cast<unsigned char>(((color & 0x001Fu) >>  0u) << 3u);
                 }
             } else {
                 //non run-length packet
@@ -298,8 +298,8 @@ namespace urchin {
                     color = (unsigned short)(data[j] + (data[j + 1] << 8u));
 
                     texels[ptrIndex] = static_cast<unsigned char>(((color & 0x7C00u) >> 10u) << 3u);
-                    texels[ptrIndex+1] = static_cast<unsigned char>(((color & 0x03E0u) >> 5u) << 3u);
-                    texels[ptrIndex+2] = static_cast<unsigned char>(((color & 0x001Fu) >> 0u) << 3u);
+                    texels[ptrIndex + 1] = static_cast<unsigned char>(((color & 0x03E0u) >> 5u) << 3u);
+                    texels[ptrIndex + 2] = static_cast<unsigned char>(((color & 0x001Fu) >> 0u) << 3u);
                 }
             }
         }
@@ -311,7 +311,7 @@ namespace urchin {
         unsigned char packetHeader;
         unsigned int ptrIndex = 0;
 
-        while (ptrIndex < width*height*3) {
+        while (ptrIndex < width * height * 3) {
             //reads first byte
             packetHeader = data[j++];
             unsigned int size = 1 + (packetHeader & 0x7fu);
@@ -323,14 +323,14 @@ namespace urchin {
 
                 for (unsigned int i = 0; i < size; ++i, ptrIndex += 3) {
                     texels[ptrIndex] = rgb[2];
-                    texels[ptrIndex+1] = rgb[1];
-                    texels[ptrIndex+2] = rgb[0];
+                    texels[ptrIndex + 1] = rgb[1];
+                    texels[ptrIndex + 2] = rgb[0];
                 }
             } else {
                 //non run-length packet
                 for (unsigned int i = 0; i < size; ++i, ptrIndex += 3, j += 3) {
-                    texels[ptrIndex+2] = data[j + 0];
-                    texels[ptrIndex+1] = data[j + 1];
+                    texels[ptrIndex + 2] = data[j + 0];
+                    texels[ptrIndex + 1] = data[j + 1];
                     texels[ptrIndex] = data[j + 2];
                 }
             }
@@ -343,7 +343,7 @@ namespace urchin {
         unsigned char packetHeader;
         unsigned int ptrIndex = 0;
 
-        while (ptrIndex < width*height*4) {
+        while (ptrIndex < width * height * 4) {
             //reads first byte
             packetHeader = data[j++];
             unsigned int size = 1 + (packetHeader & 0x7fu);
@@ -355,17 +355,17 @@ namespace urchin {
 
                 for (unsigned int i = 0; i < size; ++i, ptrIndex += 4) {
                     texels[ptrIndex] = rgba[2];
-                    texels[ptrIndex+1] = rgba[1];
-                    texels[ptrIndex+2] = rgba[0];
-                    texels[ptrIndex+3] = rgba[3];
+                    texels[ptrIndex + 1] = rgba[1];
+                    texels[ptrIndex + 2] = rgba[0];
+                    texels[ptrIndex + 3] = rgba[3];
                 }
             } else {
                 //non run-length packet
-                for (unsigned int i =0 ; i < size; ++i, ptrIndex += 4, j += 4) {
-                    texels[ptrIndex+2] = data[j + 0];
-                    texels[ptrIndex+1] = data[j + 1];
+                for (unsigned int i = 0 ; i < size; ++i, ptrIndex += 4, j += 4) {
+                    texels[ptrIndex + 2] = data[j + 0];
+                    texels[ptrIndex + 1] = data[j + 1];
                     texels[ptrIndex] = data[j + 2];
-                    texels[ptrIndex+3] = data[j + 3];
+                    texels[ptrIndex + 3] = data[j + 3];
                 }
             }
         }

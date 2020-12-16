@@ -2,7 +2,7 @@
 #extension GL_EXT_gpu_shader4 : enable
 
 //values are replaced at compilation time:
-#define FXAA_QUALITY 0 //0=Low, 1=Medium, 2=High, 3=Very high
+#define FXAA_QUALITY 0 //0 = Low, 1 = Medium, 2 = High, 3 = Very high
 
 in vec2 textCoordinates;
 
@@ -144,7 +144,7 @@ void main() {
     }else{
         lengthSign = invSceneSize.y;
     }
-    float subpixB = (subpixA * (1.0/12.0)) - lumaM;
+    float subpixB = (subpixA * (1.0 / 12.0)) - lumaM;
 
     float gradientN = lumaN - lumaM;
     float gradientS = lumaS - lumaM;
@@ -184,7 +184,7 @@ void main() {
     if (!pairN) {
         lumaNN = lumaSS;
     }
-    float gradientScaled = gradient * 1.0/4.0;
+    float gradientScaled = gradient * 1.0 / 4.0;
     float halfLumaNN = lumaNN * 0.5;
     float lumaMM = lumaM - halfLumaNN;
     float subpixF = subpixD * subpixE;

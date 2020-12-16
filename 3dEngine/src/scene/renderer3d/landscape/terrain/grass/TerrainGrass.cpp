@@ -179,7 +179,7 @@ namespace urchin {
             auto depthNbQuadtreeX = (unsigned int)(MathFunction::pow(2, depth));
             auto depthNbQuadtreeZ = depthNbQuadtreeX;
             unsigned int depthNbQuadtree = depthNbQuadtreeX * depthNbQuadtreeZ;
-            if (std::sqrt(childrenGrassQuadtree.size()) >= std::sqrt(depthNbQuadtree)*2) {
+            if (std::sqrt(childrenGrassQuadtree.size()) >= std::sqrt(depthNbQuadtree) * 2) {
                 std::vector<TerrainGrassQuadtree*> depthGrassQuadtree;
                 depthGrassQuadtree.reserve(depthNbQuadtree);
                 for (unsigned int i = 0; i < depthNbQuadtree; ++i) {

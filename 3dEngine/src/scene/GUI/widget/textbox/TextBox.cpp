@@ -111,7 +111,7 @@ namespace urchin {
                     std::string tmpRight = allText.substr((unsigned long)cursorIndex, allText.length()-cursorIndex);
                     allText = allText.substr(0, (unsigned long)(cursorIndex - 1L));
                     allText.append(tmpRight);
-                    refreshText(cursorIndex-1);
+                    refreshText(cursorIndex - 1);
                 }
             } else if (key == InputDeviceKey::DELETE_KEY) {
                 if (allText.length() > 0 && cursorIndex < allText.length()) {
@@ -133,7 +133,7 @@ namespace urchin {
                 allText = allText.substr(0, (unsigned long)cursorIndex);
                 allText.append(1, static_cast<char>(character));
                 allText.append(tmpRight);
-                refreshText(cursorIndex+1);
+                refreshText(cursorIndex + 1);
             }
             return false;
         }
@@ -181,7 +181,7 @@ namespace urchin {
         const Font* font = text->getFont();
         cursorPosition = ADDITIONAL_LEFT_BORDER;
 
-        for (unsigned int i=startTextIndex;i<cursorIndex;++i) {
+        for (unsigned int i = startTextIndex; i < cursorIndex; ++i) {
             auto letter = static_cast<unsigned char>(allText[i]);
             cursorPosition += font->getGlyph(letter).width + font->getSpaceBetweenLetters();
         }
@@ -198,7 +198,7 @@ namespace urchin {
         const Font* font = text->getFont();
         float widthText = 0.0f;
 
-        for (cursorIndex=startTextIndex; cursorIndex < allText.length(); ++cursorIndex) {
+        for (cursorIndex = startTextIndex; cursorIndex < allText.length(); ++cursorIndex) {
             auto letter = static_cast<unsigned char>(allText[cursorIndex]);
             widthText += (float)font->getGlyph(letter).width / 2.0f;
             if (widthText > (float)approximateCursorPosition) {
@@ -218,7 +218,7 @@ namespace urchin {
 
         //displays the cursor
         cursorBlink += dt * CURSOR_BLINK_SPEED;
-        if (state == ACTIVE && ((int)cursorBlink%2) > 0) {
+        if (state == ACTIVE && ((int)cursorBlink % 2) > 0) {
             Vector2<int> widgetPosition(getGlobalPositionX(), getGlobalPositionY());
             ShaderDataSender().sendData(translateDistanceShaderVar, widgetPosition + Vector2<int>((int)cursorPosition, 0));
 

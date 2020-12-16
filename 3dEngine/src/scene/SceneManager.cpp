@@ -91,8 +91,8 @@ namespace urchin {
         auto currentTime = std::chrono::high_resolution_clock::now();
         float timeInterval = (float)std::chrono::duration_cast<std::chrono::microseconds>(currentTime - previousTime).count();
 
-        previousFps[indexFps%3] = 1000000.0f / timeInterval;
-        fps = (previousFps.at(indexFps%3)*9 + previousFps.at((indexFps-1)%3)*3 + previousFps.at((indexFps-2)%3)) / 13.0f;
+        previousFps[indexFps % 3] = 1000000.0f / timeInterval;
+        fps = (previousFps.at(indexFps % 3) * 9 + previousFps.at((indexFps - 1) % 3) * 3 + previousFps.at((indexFps - 2) % 3)) / 13.0f;
 
         indexFps++;
         previousTime = currentTime;
@@ -167,7 +167,7 @@ namespace urchin {
     }
 
     bool SceneManager::onKeyPress(unsigned int key) {
-        for (int i=NUM_RENDERER-1; i>=0; --i) {
+        for (int i = NUM_RENDERER - 1; i >= 0; --i) {
             if (activeRenderers[i] && !activeRenderers[i]->onKeyPress(key)) {
                 return false;
             }
@@ -176,7 +176,7 @@ namespace urchin {
     }
 
     bool SceneManager::onKeyRelease(unsigned int key) {
-        for (int i=NUM_RENDERER-1; i>=0; --i) {
+        for (int i = NUM_RENDERER - 1; i >= 0; --i) {
             if (activeRenderers[i] && !activeRenderers[i]->onKeyRelease(key)) {
                 return false;
             }
@@ -185,7 +185,7 @@ namespace urchin {
     }
 
     bool SceneManager::onChar(unsigned int character) {
-        for (int i=NUM_RENDERER-1; i>=0; --i) {
+        for (int i = NUM_RENDERER - 1; i >= 0; --i) {
             if (activeRenderers[i] && !activeRenderers[i]->onChar(character)) {
                 return false;
             }
@@ -194,7 +194,7 @@ namespace urchin {
     }
 
     bool SceneManager::onMouseMove(int mouseX, int mouseY) {
-        for (int i=NUM_RENDERER-1; i>=0; --i) {
+        for (int i = NUM_RENDERER - 1; i >= 0; --i) {
             if (activeRenderers[i] && !activeRenderers[i]->onMouseMove(mouseX, mouseY)) {
                 return false;
             }

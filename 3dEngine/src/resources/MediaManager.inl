@@ -6,7 +6,7 @@ template<class T> T* MediaManager::getMedia(const std::string& filename) {
     }
 
     //resource not already charged
-    std::string extension = filename.substr(filename.find_last_of('.')+1);
+    std::string extension = filename.substr(filename.find_last_of('.') + 1);
 
     std::map<std::string, LoaderInterface*>::const_iterator it = loadersRegistry.find(extension);
     if (it == loadersRegistry.end()) {

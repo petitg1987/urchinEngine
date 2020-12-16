@@ -103,7 +103,7 @@ namespace urchin {
     }
 
     unsigned int TerrainMesh::computeNumberIndices() const {
-        return ((zSize-1) * xSize * 2) + (zSize-1);
+        return ((zSize - 1) * xSize * 2) + (zSize - 1);
     }
 
     unsigned int TerrainMesh::computeNumberNormals() const {

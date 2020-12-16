@@ -157,7 +157,7 @@ namespace urchin {
 
         //line segments not parallel
         T thisToOtherCrossR = thisToOther.crossProduct(s);
-        if ( //if (t>=0 && t<=1 && u>=0 && u<=1) where t=thisToOtherCrossR/rCrossS and u=startPointsCrossR/rCrossS
+        if ( //if (t >= 0 && t <= 1 && u >= 0 && u <= 1) where t = thisToOtherCrossR / rCrossS and u = startPointsCrossR / rCrossS
                 (thisToOtherCrossR == T(0) || MathFunction::sign<T>(thisToOtherCrossR) == MathFunction::sign<T>(rCrossS))
                 && std::abs(rCrossS) >= std::abs(thisToOtherCrossR)
                 && (startPointsCrossR == T(0) || MathFunction::sign<T>(startPointsCrossR) == MathFunction::sign<T>(rCrossS))

@@ -185,7 +185,7 @@ void main() {
         vec4(colorValue, 0.0, colorValue, 1.0), vec4(colorValue, colorValue, 0.0, 1.0));
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
         if (depthValue < depthSplitDistance[i]) {
-            fragColor += splitColors[i%5];
+            fragColor += splitColors[i % 5];
             break;
         }
     }*/

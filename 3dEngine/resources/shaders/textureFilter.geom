@@ -5,7 +5,7 @@
 #define NUMBER_LAYER 0
 
 layout(triangles) in;
-layout(triangle_strip, max_vertices=MAX_VERTICES) out;
+layout(triangle_strip, max_vertices = MAX_VERTICES) out;
 
 uniform uint layersToUpdate;
 
@@ -17,7 +17,7 @@ out int gl_Layer;
 smooth out vec2 vertexTextCoordinates;
 
 void main() {
-    for (int layer=0; layer<NUMBER_LAYER; layer++) {
+    for (int layer = 0; layer < NUMBER_LAYER; layer++) {
         if ((layersToUpdate & POWER_TWO_TAB[layer]) != uint(0)) {
             gl_Layer = layer;
 

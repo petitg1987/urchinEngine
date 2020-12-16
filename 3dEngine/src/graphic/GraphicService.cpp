@@ -27,7 +27,7 @@ namespace urchin {
         glGetIntegerv(GL_MAJOR_VERSION, &majorVersionContext);
         glGetIntegerv(GL_MINOR_VERSION, &minorVersionContext);
 
-        if ((majorVersionContext*100 + minorVersionContext*10) < 450) {
+        if ((majorVersionContext * 100 + minorVersionContext * 10) < 450) {
             std::ostringstream ossMajorVersionContext;
             ossMajorVersionContext << majorVersionContext;
 

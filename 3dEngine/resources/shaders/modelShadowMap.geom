@@ -5,7 +5,7 @@
 #define NUMBER_SHADOW_MAPS 0
 
 layout(triangles) in;
-layout(triangle_strip, max_vertices=MAX_VERTICES) out;
+layout(triangle_strip, max_vertices = MAX_VERTICES) out;
 
 uniform mat4 projectionMatrix[NUMBER_SHADOW_MAPS];
 uniform uint layersToUpdate;
@@ -15,7 +15,7 @@ const uint POWER_TWO_TAB[13] = uint[](1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 102
 out int gl_Layer;
 
 void main() {
-    for (int layer=0; layer<NUMBER_SHADOW_MAPS; layer++) {
+    for (int layer = 0; layer < NUMBER_SHADOW_MAPS; layer++) {
         if ((layersToUpdate & POWER_TWO_TAB[layer]) != uint(0)) {
             gl_Layer = layer;
 

@@ -28,17 +28,17 @@ namespace urchin {
         Quaternion<float> qConeOrientation;
         ConeShape<float>::ConeOrientation coneOrientation = cone.getConeOrientation();
         if (coneOrientation == ConeShape<float>::CONE_X_POSITIVE) {
-            qConeOrientation = Quaternion<float>(Vector3<float>(0.0f, 0.0f, -1.0f), MathValue::PI_FLOAT/2.0f);
+            qConeOrientation = Quaternion<float>(Vector3<float>(0.0f, 0.0f, -1.0f), MathValue::PI_FLOAT / 2.0f);
         } else if (coneOrientation == ConeShape<float>::CONE_X_NEGATIVE) {
-            qConeOrientation = Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), MathValue::PI_FLOAT/2.0f);
+            qConeOrientation = Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), MathValue::PI_FLOAT / 2.0f);
         } else if (coneOrientation == ConeShape<float>::CONE_Y_POSITIVE) {
             qConeOrientation = Quaternion<float>(0.0f, 0.0f, 0.0f, 1.0);
         } else if (coneOrientation == ConeShape<float>::CONE_Y_NEGATIVE) {
             qConeOrientation = Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), MathValue::PI_FLOAT);
         } else if (coneOrientation == ConeShape<float>::CONE_Z_POSITIVE) {
-            qConeOrientation = Quaternion<float>(Vector3<float>(1.0f, 0.0f, 0.0f), MathValue::PI_FLOAT/2.0f);
+            qConeOrientation = Quaternion<float>(Vector3<float>(1.0f, 0.0f, 0.0f), MathValue::PI_FLOAT / 2.0f);
         } else if (coneOrientation == ConeShape<float>::CONE_Z_NEGATIVE) {
-            qConeOrientation = Quaternion<float>(Vector3<float>(-1.0f, 0.0f, 0.0f), MathValue::PI_FLOAT/2.0f);
+            qConeOrientation = Quaternion<float>(Vector3<float>(-1.0f, 0.0f, 0.0f), MathValue::PI_FLOAT / 2.0f);
         }
 
         Quaternion<float> localOrientation = cone.getOrientation() * qConeOrientation;

@@ -29,9 +29,9 @@ namespace urchin {
         Quaternion<float> qCylinderOrientation;
         CylinderShape<float>::CylinderOrientation cylinderOrientation = cylinder.getCylinderOrientation();
         if (cylinderOrientation == CylinderShape<float>::CYLINDER_X) {
-            qCylinderOrientation = Quaternion<float>(Vector3<float>(0.0f, 1.0f, 0.0f), MathValue::PI_FLOAT/2.0f);
+            qCylinderOrientation = Quaternion<float>(Vector3<float>(0.0f, 1.0f, 0.0f), MathValue::PI_FLOAT / 2.0f);
         } else if (cylinderOrientation == CylinderShape<float>::CYLINDER_Y) {
-            qCylinderOrientation = Quaternion<float>(Vector3<float>(1.0f, 0.0f, 0.0f), MathValue::PI_FLOAT/2.0f);
+            qCylinderOrientation = Quaternion<float>(Vector3<float>(1.0f, 0.0f, 0.0f), MathValue::PI_FLOAT / 2.0f);
         } else if (cylinderOrientation == CylinderShape<float>::CYLINDER_Z) {
             qCylinderOrientation = Quaternion<float>(0.0f, 0.0f, 0.0f, 1.0f);
         }
@@ -40,8 +40,8 @@ namespace urchin {
         for (unsigned int i = 0; i < sides; i++) {
             float x1 = std::cos((float)i * angle) * radius;
             float y1 = std::sin((float)i * angle) * radius;
-            float x2 = std::cos((float)(i+1) * angle) * radius;
-            float y2 = std::sin((float)(i+1) * angle) * radius;
+            float x2 = std::cos((float)(i + 1) * angle) * radius;
+            float y2 = std::sin((float)(i + 1) * angle) * radius;
 
             vertexArray.emplace_back(localOrientation.rotatePoint(Point3<float>(x1, y1, halfHeight)));
             vertexArray.emplace_back(localOrientation.rotatePoint(Point3<float>(x1, y1, -halfHeight)));

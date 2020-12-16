@@ -21,7 +21,7 @@ namespace urchin {
 
     std::vector<Point3<float>> CapsuleModel::retrieveVertexArray() const {
         std::vector<Point3<float>> vertexArray;
-        vertexArray.reserve(4*sides + 2*(4*(slices/2)*slices));
+        vertexArray.reserve(4 * sides + 2 * (4 * (slices / 2) * slices));
 
         float radius = capsule.getRadius();
         float halfCylinderHeight = capsule.getCylinderHeight() / 2.0f;
@@ -30,14 +30,14 @@ namespace urchin {
         CapsuleShape<float>::CapsuleOrientation capsuleOrientation = capsule.getCapsuleOrientation();
         Quaternion<float> qCapsuleOrientation, qCapOrientation;
         if (capsuleOrientation == CapsuleShape<float>::CAPSULE_X) {
-            qCapsuleOrientation = Quaternion<float>(Vector3<float>(0.0f, 1.0f, 0.0f), MathValue::PI_FLOAT/2.0f);
-            qCapOrientation = Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), MathValue::PI_FLOAT/2.0f);
+            qCapsuleOrientation = Quaternion<float>(Vector3<float>(0.0f, 1.0f, 0.0f), MathValue::PI_FLOAT / 2.0f);
+            qCapOrientation = Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), MathValue::PI_FLOAT / 2.0f);
         } else if (capsuleOrientation == CapsuleShape<float>::CAPSULE_Y) {
-            qCapsuleOrientation = Quaternion<float>(Vector3<float>(1.0f, 0.0f, 0.0f), MathValue::PI_FLOAT/2.0f);
+            qCapsuleOrientation = Quaternion<float>(Vector3<float>(1.0f, 0.0f, 0.0f), MathValue::PI_FLOAT / 2.0f);
             qCapOrientation = Quaternion<float>(0.0f, 0.0f, 0.0f, 1.0f);
         } else if (capsuleOrientation == CapsuleShape<float>::CAPSULE_Z) {
             qCapsuleOrientation = Quaternion<float>(0.0f, 0.0f, 0.0f, 1.0f);
-            qCapOrientation = Quaternion<float>(Vector3<float>(1.0f, 0.0f, 0.0f), MathValue::PI_FLOAT/2.0f);
+            qCapOrientation = Quaternion<float>(Vector3<float>(1.0f, 0.0f, 0.0f), MathValue::PI_FLOAT / 2.0f);
         }
 
         //cylinder
@@ -45,8 +45,8 @@ namespace urchin {
         for (unsigned int i = 0; i < sides; i++) {
             float x1 = std::cos((float)i * angle) * radius;
             float y1 = std::sin((float)i * angle) * radius;
-            float x2 = std::cos((float)(i+1) * angle) * radius;
-            float y2 = std::sin((float)(i+1) * angle) * radius;
+            float x2 = std::cos((float)(i + 1) * angle) * radius;
+            float y2 = std::sin((float)(i + 1) * angle) * radius;
 
             vertexArray.push_back(localCylinderOrientation.rotatePoint(Point3<float>(x1, y1, halfCylinderHeight)));
             vertexArray.push_back(localCylinderOrientation.rotatePoint(Point3<float>(x1, y1, -halfCylinderHeight)));
@@ -81,7 +81,7 @@ namespace urchin {
             //bottom cap
             for (unsigned int j = 0; j < nbLong; j++) {
                 float longitude1 = MathValue::PI_FLOAT * (float)(j) / (float)nbLong;
-                float longitude2 = MathValue::PI_FLOAT * (float)(j+1) / (float)nbLong;
+                float longitude2 = MathValue::PI_FLOAT * (float)(j + 1) / (float)nbLong;
                 float x1 = std::cos(longitude1);
                 float y1 = std::sin(longitude1);
                 float x2 = std::cos(longitude2);
@@ -99,7 +99,7 @@ namespace urchin {
             //top cap
             for (unsigned int j = nbLong; j < slices; j++) {
                 float longitude1 = MathValue::PI_FLOAT * (float)(j) / (float)nbLong;
-                float longitude2 = MathValue::PI_FLOAT * (float)(j+1) / (float)nbLong;
+                float longitude2 = MathValue::PI_FLOAT * (float)(j + 1) / (float)nbLong;
                 float x1 = std::cos(longitude1);
                 float y1 = std::sin(longitude1);
                 float x2 = std::cos(longitude2);

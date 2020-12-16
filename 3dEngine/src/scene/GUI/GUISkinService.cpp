@@ -72,14 +72,14 @@ namespace urchin {
 
         //copy corner top right
         for (unsigned int i = 0; i < topAdjusted; ++i) {
-            for (unsigned int j=widthMinusRight * componentsCount, k=(rawWidgetImage->getWidth()-right)*componentsCount;j<width * componentsCount;++j, ++k) {
+            for (unsigned int j = widthMinusRight * componentsCount, k = (rawWidgetImage->getWidth()-right) * componentsCount; j < width * componentsCount; ++j, ++k) {
                 texels[i * width * componentsCount + j] = rawWidgetImage->getTexels()[i * rawWidgetImage->getWidth() * componentsCount + k];
             }
         }
 
         //copy right
         for (unsigned int i = top, k = 0; i < heightMinusBottom; ++i, ++k) {
-            for (unsigned int j = widthMinusRight * componentsCount, l=(rawWidgetImage->getWidth() - right) * componentsCount; j < width*componentsCount; ++j, ++l) {
+            for (unsigned int j = widthMinusRight * componentsCount, l = (rawWidgetImage->getWidth() - right) * componentsCount; j < width*componentsCount; ++j, ++l) {
                 texels[i * width * componentsCount + j] = rawWidgetImage->getTexels()[(k % (rawWidgetImage->getHeight() - (top + bottom)) + top) * rawWidgetImage->getWidth() * componentsCount + l];
             }
         }

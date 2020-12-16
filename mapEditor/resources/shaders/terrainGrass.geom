@@ -72,28 +72,28 @@ void main() {
         grassYShift = - grassHeightReducePercentage * grassHeight;
     }
 
-    float piOver180 = 3.14159f/180.0f;
+    float piOver180 = 3.14159f / 180.0f;
     vec3 baseDir[3];
     baseDir[0] = vec3(1.0, 0.0, 0.0);
     baseDir[1] = vec3(float(cos(45.0f*piOver180)), 0.0f, float(sin(45.0f*piOver180)));
     baseDir[2] = vec3(float(cos(-45.0f*piOver180)), 0.0f, float(sin(-45.0f*piOver180)));
 
-    float windPower = 0.5f + sin(grassCenterPosition.x/30.0f + grassCenterPosition.z/30.0f + sumTimeStep*(1.2f+windStrength/20.0f));
+    float windPower = 0.5f + sin(grassCenterPosition.x / 30.0f + grassCenterPosition.z / 30.0f + sumTimeStep * (1.2f + windStrength / 20.0f));
     if (windPower > 0.0f) {
-        windPower = windPower*0.3f;
+        windPower = windPower * 0.3f;
     }else{
-        windPower = windPower*0.2f;
+        windPower = windPower * 0.2f;
     }
     windPower *= windStrength;
 
     for (int i = 0; i < 3; i++) {
         //texture selection
         vec3 seed = grassCenterPosition * float(i);
-        float startTextX = float(randomInt(0, numGrassInTex-1, seed)) * (1.0f / numGrassInTex);
+        float startTextX = float(randomInt(0, numGrassInTex - 1, seed)) * (1.0f / numGrassInTex);
         float endTextX = startTextX + 1.0f / numGrassInTex;
 
         //wind
-        vec3 baseDirRotated = rotationMatrix(vec3(0, 1, 0), sin(sumTimeStep*0.7f)*0.2f) * baseDir[i];
+        vec3 baseDirRotated = rotationMatrix(vec3(0, 1, 0), sin(sumTimeStep * 0.7f) * 0.2f) * baseDir[i];
 
         //top left
         vec3 localTopLeft = grassCenterPosition - baseDirRotated*grassHalfLength + windDirection*windPower;

@@ -1,6 +1,6 @@
 #version 450
 
-layout(location=0) in vec3 vertexPosition;
+layout(location = 0) in vec3 vertexPosition;
 
 uniform mat4 mProjection;
 uniform mat4 mView;

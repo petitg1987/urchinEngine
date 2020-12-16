@@ -84,7 +84,7 @@ namespace urchin {
     std::vector<uint16_t> LoaderPNG::extract16BitsChannels(const std::vector<unsigned char>& pixelsRGBA16bits, unsigned int channelsMask) {
         std::vector<uint16_t> pixels;
         size_t nbChannels = std::bitset<8>(channelsMask).count();
-        pixels.reserve((pixelsRGBA16bits.size()/(4*2))*nbChannels);
+        pixels.reserve((pixelsRGBA16bits.size()/(4 * 2)) * nbChannels);
 
         for (std::size_t i = 7; i < pixelsRGBA16bits.size(); i+=8) {
             if (channelsMask & 1u) { //red

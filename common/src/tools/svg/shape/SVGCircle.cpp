@@ -11,17 +11,17 @@ namespace urchin {
     std::string SVGCircle::getShapeTag() const {
         std::stringstream stream;
 
-        stream<<"<circle cx=\"";
-        stream<<center.X;
-        stream<<"\" cy=\"";
-        stream<<center.Y;
-        stream<<"\"";
+        stream << "<circle cx=\"";
+        stream << center.X;
+        stream << "\" cy=\"";
+        stream << center.Y;
+        stream << "\"";
 
-        stream<<" r=\"";
-        stream<<radius;
-        stream<<"\"";
+        stream << " r=\"";
+        stream << radius;
+        stream << "\"";
 
-        stream<<" style=\"" + getStyle() + "\" />";
+        stream << " style=\"" + getStyle() + "\" />";
 
         return stream.str();
     }

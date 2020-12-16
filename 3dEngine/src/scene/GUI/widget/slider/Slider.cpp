@@ -108,18 +108,16 @@ namespace urchin {
             timeInClickingState += dt;
             timeSinceLastChange += dt;
 
-            if (timeInClickingState > TIME_BEFORE_AUTO_CLICK && timeSinceLastChange > TIME_BEFORE_AUTO_NEXT_CLICK
-                    && getSelectedIndex() > 0) {
-                setSelectedIndex(getSelectedIndex()-1);
+            if (timeInClickingState > TIME_BEFORE_AUTO_CLICK && timeSinceLastChange > TIME_BEFORE_AUTO_NEXT_CLICK && getSelectedIndex() > 0) {
+                setSelectedIndex(getSelectedIndex() - 1);
                 timeSinceLastChange = 0.0f;
             }
         } else if (rightButton->getWidgetState() == Widget::WidgetStates::CLICKING) {
             timeInClickingState += dt;
             timeSinceLastChange += dt;
 
-            if (timeInClickingState > TIME_BEFORE_AUTO_CLICK && timeSinceLastChange > TIME_BEFORE_AUTO_NEXT_CLICK
-                    && getSelectedIndex()+1 < values.size()) {
-                setSelectedIndex(getSelectedIndex()+1);
+            if (timeInClickingState > TIME_BEFORE_AUTO_CLICK && timeSinceLastChange > TIME_BEFORE_AUTO_NEXT_CLICK && getSelectedIndex() + 1 < values.size()) {
+                setSelectedIndex(getSelectedIndex() + 1);
                 timeSinceLastChange = 0.0f;
             }
         } else {
@@ -144,7 +142,7 @@ namespace urchin {
                 slider->valuesText[slider->selectedIndex]->setIsVisible(true);
             }
         } else {
-            if (slider->selectedIndex+1 < slider->valuesText.size()) {
+            if (slider->selectedIndex + 1 < slider->valuesText.size()) {
                 slider->valuesText[slider->selectedIndex]->setIsVisible(false);
                 slider->selectedIndex++;
                 slider->valuesText[slider->selectedIndex]->setIsVisible(true);

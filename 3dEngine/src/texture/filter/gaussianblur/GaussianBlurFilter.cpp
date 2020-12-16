@@ -42,7 +42,7 @@ namespace urchin {
     }
 
     std::vector<float> GaussianBlurFilter::computeWeights() const {
-        std::vector<unsigned int> pascalTriangleLineValues = PascalTriangle::lineValues(blurSize+3);
+        std::vector<unsigned int> pascalTriangleLineValues = PascalTriangle::lineValues(blurSize + 3);
 
         //exclude outermost because the values are too insignificant and haven't enough impact on 32bits value
         std::vector<float> gaussianFactors(blurSize);
