@@ -47,7 +47,7 @@ namespace urchin {
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
 
         glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, 0, 0);
-        for (unsigned int i = 0; i<attachmentsIndices.size(); ++i) {
+        for (unsigned int i = 0; i < attachmentsIndices.size(); ++i) {
             glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, 0, 0);
         }
         glDrawBuffers(0, &attachmentsIndices[0]);

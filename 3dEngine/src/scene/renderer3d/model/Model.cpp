@@ -65,7 +65,7 @@ namespace urchin {
         }
 
         //we just check with mesh[0] && frame[0]
-        for (unsigned int i = 0; i<meshes->getConstMeshes()->getConstMesh(0)->getNumberBones(); ++i) {
+        for (unsigned int i = 0; i < meshes->getConstMeshes()->getConstMesh(0)->getNumberBones(); ++i) {
             //bones must have the same parent index
             if (meshes->getConstMeshes()->getConstMesh(0)->getBaseBone(i).parent != constAnimation->getBone(0, i).parent) {
                 throw std::runtime_error("Bones haven't the same parent index. Meshes filename: " + meshes->getConstMeshes()->getName() + ", Animation filename: " + constAnimation->getName() + ".");

@@ -178,7 +178,7 @@ namespace urchin {
     template<class T> void Quaternion<T>::computeW() {
         const T t = 1.0f - (X*X) - (Y*Y) - (Z*Z);
 
-        if (t<0.0f) {
+        if (t < 0.0f) {
             W = 0.0f;
         } else {
             W = -std::sqrt(t);
