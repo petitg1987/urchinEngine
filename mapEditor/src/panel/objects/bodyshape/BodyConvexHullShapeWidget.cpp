@@ -81,7 +81,7 @@ namespace urchin {
 
     std::vector<Point3<float>> BodyConvexHullShapeWidget::getPoints() const {
         std::vector<Point3<float>> points;
-        for (int row=0; row< pointsTableModel->rowCount(); ++row) {
+        for (int row = 0; row < pointsTableModel->rowCount(); ++row) {
             QModelIndex indexX = pointsTableModel->index(row, 0);
             QModelIndex indexY = pointsTableModel->index(row, 1);
             QModelIndex indexZ = pointsTableModel->index(row, 2);

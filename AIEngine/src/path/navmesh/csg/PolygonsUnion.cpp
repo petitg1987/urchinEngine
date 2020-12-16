@@ -18,7 +18,7 @@ namespace urchin {
 
         while (!allPolygonPaths.empty()) {
             bool isPolygonsMerged = false;
-            for (std::size_t i=1; i<allPolygonPaths.size(); ++i) {
+            for (std::size_t i = 1; i < allPolygonPaths.size(); ++i) {
                 const std::vector<CSGPolygonPath>& result = unionTwoPolygonPaths(allPolygonPaths[0], allPolygonPaths[i]);
                 if (result.empty()) {
                     logInputData(polygons, "Empty result returned after two polygons union." , Logger::ERROR);
@@ -77,7 +77,7 @@ namespace urchin {
 
         logStream<<message<<std::endl;
 
-        for (std::size_t i=0; i<polygons.size(); ++i) {
+        for (std::size_t i = 0; i < polygons.size(); ++i) {
             logStream << "Polygon " << i << std::endl << polygons[i];
             if (i < polygons.size() - 1) {
                 logStream << std::endl;

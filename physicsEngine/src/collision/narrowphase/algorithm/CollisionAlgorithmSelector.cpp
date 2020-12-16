@@ -14,8 +14,8 @@ namespace urchin {
             algorithmPool(nullptr),
             collisionAlgorithmBuilderMatrix() {
         initializeCollisionAlgorithmBuilderMatrix();
-        for (unsigned int i=0; i<CollisionShape3D::SHAPE_MAX; ++i) {
-            for (unsigned int j=0; j<CollisionShape3D::SHAPE_MAX; ++j) {
+        for (unsigned int i = 0; i < CollisionShape3D::SHAPE_MAX; ++i) {
+            for (unsigned int j = 0; j < CollisionShape3D::SHAPE_MAX; ++j) {
                 if (!collisionAlgorithmBuilderMatrix[i][j]) {
                     deleteCollisionAlgorithmBuilderMatrix();
                     throw std::invalid_argument("Collision algorithm builder not initialized for shape type: " + std::to_string(i) + " and " + std::to_string(j) + ".");
@@ -59,7 +59,7 @@ namespace urchin {
 
     void CollisionAlgorithmSelector::initializeConcaveAlgorithm() {
         //heightfield shape
-        for (unsigned int shapeId=0; shapeId<CollisionShape3D::SHAPE_MAX; ++shapeId) {
+        for (unsigned int shapeId = 0; shapeId < CollisionShape3D::SHAPE_MAX; ++shapeId) {
             collisionAlgorithmBuilderMatrix[CollisionShape3D::HEIGHTFIELD_SHAPE][shapeId] = new ConcaveAnyCollisionAlgorithm::Builder();
 
             if (shapeId != CollisionShape3D::HEIGHTFIELD_SHAPE) {
@@ -69,7 +69,7 @@ namespace urchin {
     }
 
     void CollisionAlgorithmSelector::initializeCompoundAlgorithm() {
-        for (unsigned int shapeId=0; shapeId<CollisionShape3D::SHAPE_MAX; ++shapeId) {
+        for (unsigned int shapeId = 0; shapeId < CollisionShape3D::SHAPE_MAX; ++shapeId) {
             if (!collisionAlgorithmBuilderMatrix[CollisionShape3D::COMPOUND_SHAPE][shapeId]) {
                 collisionAlgorithmBuilderMatrix[CollisionShape3D::COMPOUND_SHAPE][shapeId] = new CompoundAnyCollisionAlgorithm::Builder();
             }
@@ -90,8 +90,8 @@ namespace urchin {
 
     void CollisionAlgorithmSelector::initializeAlgorithmPool() {
         unsigned int maxElementSize = 0;
-        for (auto & builderMatrixLine : collisionAlgorithmBuilderMatrix) {
-            for (auto & builderMatrixColumn : builderMatrixLine) {
+        for (auto& builderMatrixLine : collisionAlgorithmBuilderMatrix) {
+            for (auto& builderMatrixColumn : builderMatrixLine) {
                 maxElementSize = std::max(maxElementSize, builderMatrixColumn->getAlgorithmSize());
             }
         }

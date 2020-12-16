@@ -56,7 +56,7 @@ namespace urchin {
         browseNodes.clear();
         browseNodes.push_back(AABBTree::getRootNode());
 
-        for (std::size_t i=0; i<browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
+        for (std::size_t i = 0; i < browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
             const AABBNode<AbstractWorkBody*>* currentNode = browseNodes[i];
 
             if (leafNode != currentNode && leafNode->getAABBox().collideWithAABBox(currentNode->getAABBox())) {
@@ -130,7 +130,7 @@ namespace urchin {
             AbstractWorkBody* body = leafNode->getNodeData()->getNodeObject();
             if (!body->isStatic()) {
                 std::stringstream logStream;
-                logStream<<"Body "<<body->getId()<<" is below the limit of "<<std::to_string(minYBoundary)<<": "<<body->getPosition();
+                logStream << "Body " << body->getId() << " is below the limit of " << std::to_string(minYBoundary) << ": "<<body->getPosition();
                 Logger::instance()->log(Logger::CriticalityLevel::WARNING, logStream.str());
 
                 body->setIsStatic(true);

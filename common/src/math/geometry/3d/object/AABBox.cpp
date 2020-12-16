@@ -49,7 +49,7 @@ namespace urchin {
     template<class T> AABBox<T>::AABBox(const Point3<T>* points, unsigned int size) :
             min(Point3<T>(std::numeric_limits<T>::max(), std::numeric_limits<T>::max(), std::numeric_limits<T>::max())),
             max(Point3<T>(-std::numeric_limits<T>::max(), -std::numeric_limits<T>::max(), -std::numeric_limits<T>::max())) {
-        for (unsigned int i=0; i<size; ++i) {
+        for (unsigned int i = 0; i < size; ++i) {
             const Point3<T>& point = points[i];
 
             min.X = std::min(min.X, point.X);

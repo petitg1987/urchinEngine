@@ -74,7 +74,7 @@ std::vector<RigidBody*> GhostBodyMT::constructCubes(const std::unique_ptr<Physic
 CppUnit::Test* GhostBodyMT::suite() {
     auto* suite = new CppUnit::TestSuite("GhostBodyMT");
 
-    for(unsigned int i=0; i < 1000; ++i) {
+    for(unsigned int i = 0; i < 1000; ++i) {
         suite->addTest(new CppUnit::TestCaller<GhostBodyMT>("processGhostBody_" + std::to_string(i), &GhostBodyMT::processGhostBody));
     }
 

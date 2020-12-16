@@ -11,7 +11,7 @@ namespace urchin {
         std::vector<std::shared_ptr<XmlChunk>> localizedShapesChunk = xmlParser.getChunks(LOCALIZED_SHAPE, XmlAttribute(), localizedShapesListChunk);
 
         std::vector<std::shared_ptr<const LocalizedCollisionShape>> compoundShapes;
-        for (std::size_t i=0; i<localizedShapesChunk.size(); ++i) {
+        for (std::size_t i = 0; i < localizedShapesChunk.size(); ++i) {
             std::shared_ptr<LocalizedCollisionShape> localizedShape(new LocalizedCollisionShape());
 
             localizedShape->position = i;

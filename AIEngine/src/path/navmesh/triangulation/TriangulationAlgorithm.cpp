@@ -130,7 +130,7 @@ namespace urchin {
         stack.push(sortedSidedPoints[0]);
         stack.push(sortedSidedPoints[1]);
 
-        for (std::size_t j=2; j<sortedSidedPoints.size()-1; ++j) {
+        for (std::size_t j = 2; j < sortedSidedPoints.size()-1; ++j) {
             SidedPoint currentPoint = sortedSidedPoints[j];
 
             if (currentPoint.onLeft != stack.top().onLeft) {
@@ -194,9 +194,9 @@ namespace urchin {
         std::vector<SidedPoint> sortedSidedPoints;
         sortedSidedPoints.reserve(monotonePolygonPoints.size());
 
-        for (std::size_t i=0; i<monotonePolygonPoints.size(); ++i) {
+        for (std::size_t i = 0; i < monotonePolygonPoints.size(); ++i) {
             std::size_t currentIndex = monotonePolygonPoints[i];
-            std::size_t nextIndex = monotonePolygonPoints[(i+1)%monotonePolygonPoints.size()];
+            std::size_t nextIndex = monotonePolygonPoints[(i + 1) % monotonePolygonPoints.size()];
 
             sortedSidedPoints.emplace_back(SidedPoint(currentIndex, isFirstPointAboveSecond(currentIndex, nextIndex)));
         }
@@ -239,11 +239,11 @@ namespace urchin {
         long prevMonotoneTriangleIndex = (long)monotoneTriangles.size() - 2;
         const auto& currTriangle = monotoneTriangles[(std::size_t)currMonotoneTriangleIndex];
 
-        missingTriangleNeighbor += monotoneTriangles.size()>1 ? 1 : 0; //don't expect neighbor for first triangle
-        while (prevMonotoneTriangleIndex >= 0 && missingTriangleNeighbor>0) {
+        missingTriangleNeighbor += monotoneTriangles.size() > 1 ? 1 : 0; //don't expect neighbor for first triangle
+        while (prevMonotoneTriangleIndex >= 0 && missingTriangleNeighbor > 0) {
             const auto& prevTriangle = monotoneTriangles[(std::size_t)prevMonotoneTriangleIndex];
 
-            for (std::size_t prevEdgeIndex=2, edgeIndex=0; edgeIndex<3 && missingTriangleNeighbor>0; prevEdgeIndex=edgeIndex++) {
+            for (std::size_t prevEdgeIndex = 2, edgeIndex = 0; edgeIndex < 3 && missingTriangleNeighbor > 0; prevEdgeIndex = edgeIndex++) {
                 if (areSameEdge(prevTriangle, prevEdgeIndex, edgeIndex, currTriangle, 0, 1)) {
                     currTriangle->addStandardLink(0, prevTriangle);
                     prevTriangle->addStandardLink(prevEdgeIndex, currTriangle);
@@ -267,7 +267,7 @@ namespace urchin {
         std::size_t currMonotoneTriangleIndex = monotoneTriangles.size() - 1;
         const auto& currTriangle = monotoneTriangles[currMonotoneTriangleIndex];
 
-        for (std::size_t prevEdgeIndex=2, edgeIndex=0; edgeIndex<3; prevEdgeIndex=edgeIndex++) {
+        for (std::size_t prevEdgeIndex = 2, edgeIndex = 0; edgeIndex < 3; prevEdgeIndex = edgeIndex++) {
             if (!currTriangle->hasEdgeLinks(prevEdgeIndex)) {
                 std::size_t edgeStartIndex = currTriangle->getIndex(prevEdgeIndex);
                 std::size_t edgeEndIndex = currTriangle->getIndex(edgeIndex);

@@ -171,7 +171,7 @@ template<class TOctreeable> std::vector<const Octree<TOctreeable>*> OctreeManage
 
     browseNodes.clear();
     browseNodes.push_back(mainOctree);
-    for (std::size_t i=0; i<browseNodes.size(); ++i) {
+    for (std::size_t i = 0; i < browseNodes.size(); ++i) {
         const Octree<TOctreeable>* octree = browseNodes[i];
 
         if (octree->isLeaf()) {
@@ -224,7 +224,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(co
 
     browseNodes.clear();
     browseNodes.push_back(mainOctree);
-    for (std::size_t i=0; i<browseNodes.size(); ++i) {
+    for (std::size_t i = 0; i < browseNodes.size(); ++i) {
         const Octree<TOctreeable>* octree = browseNodes[i];
 
         if (convexObject.collideWithAABBox(octree->getAABBox())) {

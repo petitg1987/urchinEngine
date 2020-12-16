@@ -20,7 +20,7 @@ namespace urchin {
         T maxPointDotDirection = getPoints()[0].toVector().dotProduct(direction);
         Point3<T> maxPoint = getPoints()[0];
 
-        for (unsigned int i=1;i<3; ++i) {
+        for (unsigned int i = 1; i < 3; ++i) {
             T currentPointDotDirection  = getPoints()[i].toVector().dotProduct(direction);
             if (currentPointDotDirection > maxPointDotDirection) {
                 maxPointDotDirection = currentPointDotDirection;
@@ -132,7 +132,7 @@ namespace urchin {
     template<class T> bool Triangle3D<T>::projectedPointInsideTriangle(const Point3<T>& point) const { //see https://stackoverflow.com/questions/25512037/how-to-determine-if-a-point-lies-over-a-triangle-in-3d
         Vector3<T> normal = computeNormal();
 
-        for (unsigned int i=0; i<3; ++i) {
+        for (unsigned int i = 0; i < 3; ++i) {
             Vector3<T> triangleVector = triangleShape.getPoints()[(i+1)%3].vector(triangleShape.getPoints()[i]);
             Vector3<T> pointToTriangle = point.vector(triangleShape.getPoints()[i]);
             Vector3<T> tetrahedronFaceNormal = triangleVector.crossProduct(pointToTriangle);

@@ -13,7 +13,7 @@ namespace urchin {
         public:
             Vector3();
             explicit Vector3(T Xu, T Yu, T Zu);
-            explicit Vector3(const Vector2<T>&, T Zu=0);
+            explicit Vector3(const Vector2<T>&, T Zu = 0);
             Vector3(const Vector3<T>&);
             Vector3<T>& operator=(const Vector3<T>&);
 

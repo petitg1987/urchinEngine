@@ -42,7 +42,7 @@ namespace urchin {
             const Point3<float>& supportPoint = boxObject.getSupportPoint(direction);
             Point3<float> supportPointWithMargin = supportPoint;
 
-            for (unsigned int i=0; i<3; ++i) { //for each axis
+            for (unsigned int i = 0; i < 3; ++i) { //for each axis
                 const Vector3<float>& axis = boxObject.getAxis(i);
                 if (axis.dotProduct(boxObject.getCenterOfMass().vector(supportPoint)) > 0.0f) {
                     supportPointWithMargin = supportPointWithMargin.translate(axis * getOuterMargin());

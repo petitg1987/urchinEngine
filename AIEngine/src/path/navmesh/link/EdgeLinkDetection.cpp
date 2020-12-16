@@ -41,7 +41,7 @@ namespace urchin {
         float jumpStartRange = -std::numeric_limits<float>::max();
         float jumpEndRange = std::numeric_limits<float>::max();
 
-        for (unsigned int i=0; i<samplesCount; ++i) {
+        for (unsigned int i = 0; i < samplesCount; ++i) {
             float alpha = (float)i / ((float)samplesCount - 1.0f);
             Point3<float> testPoint = alpha * startEdge.getA() + (1.0f - alpha) * startEdge.getB();
             Point3<float> projectedPoint = endEdge.closestPoint(testPoint);
@@ -85,7 +85,7 @@ namespace urchin {
     bool EdgeLinkDetection::hasCollinearEdgesLink(const LineSegment3D<float>& startEdge, const LineSegment3D<float>& endEdge,
                                                      float& touchingStartRange, float& touchingEndRange) const {
         Point3<float> minIntersection(NAN, NAN, NAN), maxIntersection(NAN, NAN, NAN);
-        for (std::size_t i=0; i<3; ++i) {
+        for (std::size_t i = 0; i < 3; ++i) {
             minIntersection[i] = std::max(std::min(startEdge.getA()[i], startEdge.getB()[i]), std::min(endEdge.getA()[i], endEdge.getB()[i]));
             maxIntersection[i] = std::min(std::max(startEdge.getA()[i], startEdge.getB()[i]), std::max(endEdge.getA()[i], endEdge.getB()[i]));
 
@@ -98,7 +98,7 @@ namespace urchin {
 
         touchingStartRange = 1.0f;
         touchingEndRange = 0.0f;
-        for (std::size_t i=0; i<3; ++i) {
+        for (std::size_t i = 0; i < 3; ++i) {
             float denominator = startEdge.getA()[i] - startEdge.getB()[i];
             if (!MathFunction::isZero(denominator)) {
                 touchingStartRange = std::clamp((minIntersection[i] - startEdge.getB()[i]) / denominator, 0.0f, 1.0f);

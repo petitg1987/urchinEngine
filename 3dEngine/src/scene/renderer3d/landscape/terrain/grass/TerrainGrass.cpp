@@ -123,7 +123,7 @@ namespace urchin {
             float startZ = mesh->getVertices()[0].Z;
 
             std::vector<std::thread> threads(NUM_THREADS);
-            for (unsigned int threadI=0; threadI<NUM_THREADS; threadI++) {
+            for (unsigned int threadI = 0; threadI < NUM_THREADS; threadI++) {
                 unsigned int beginX = threadI * grassXQuantity / NUM_THREADS;
                 unsigned int endX = (threadI + 1) == NUM_THREADS ? grassXQuantity : (threadI + 1) * grassXQuantity / NUM_THREADS;
 
@@ -182,7 +182,7 @@ namespace urchin {
             if (std::sqrt(childrenGrassQuadtree.size()) >= std::sqrt(depthNbQuadtree)*2) {
                 std::vector<TerrainGrassQuadtree*> depthGrassQuadtree;
                 depthGrassQuadtree.reserve(depthNbQuadtree);
-                for (unsigned int i=0; i<depthNbQuadtree; ++i) {
+                for (unsigned int i = 0; i < depthNbQuadtree; ++i) {
                     depthGrassQuadtree.push_back(new TerrainGrassQuadtree());
                 }
 
@@ -345,7 +345,7 @@ namespace urchin {
             grassQuadtrees.push_back(mainGrassQuadtree);
 
             renderTarget->activeShader(terrainGrassShader);
-            for (std::size_t i=0; i<grassQuadtrees.size(); ++i) {
+            for (std::size_t i = 0; i < grassQuadtrees.size(); ++i) {
                 const TerrainGrassQuadtree* grassQuadtree = grassQuadtrees[i];
                 const std::unique_ptr<AABBox<float>>& grassQuadtreeBox = grassQuadtree->getBox();
 

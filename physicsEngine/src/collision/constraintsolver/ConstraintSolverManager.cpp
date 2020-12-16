@@ -31,7 +31,7 @@ namespace urchin {
         setupConstraints(manifoldResults, dt);
 
         //iterative constraint solver
-        for (unsigned int i=0; i<constraintSolverIteration; ++i) {
+        for (unsigned int i = 0; i < constraintSolverIteration; ++i) {
             solveConstraints();
         }
     }

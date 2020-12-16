@@ -17,7 +17,7 @@ namespace urchin {
         std::set<std::size_t> pointsToExclude = buildTetrahedron(points);
 
         //add each point to the tetrahedron
-        for (std::size_t i=0; i<points.size(); i++) {
+        for (std::size_t i = 0; i < points.size(); i++) {
             if (pointsToExclude.find(i) == pointsToExclude.end()) {
                 addNewPoint(points[i]);
             }
@@ -94,7 +94,7 @@ namespace urchin {
             const Vector3<T>& triangleToPoint = point0.vector(newPoint);
 
             if (triangleNormal.dotProduct(triangleToPoint) > 0.0) {
-                for (int i=0; i<3; i++) { //each edge
+                for (int i = 0; i < 3; i++) { //each edge
                     std::size_t index1 = indexedTriangle.getIndices()[i];
                     std::size_t index2 = indexedTriangle.getIndices()[(i+1)%3];
 
@@ -187,7 +187,7 @@ namespace urchin {
         indexedTriangles.insert(std::pair<std::size_t, IndexedTriangle3D<T>>(triangleIndex, indexedTriangle));
 
         //add triangles reference on points
-        for (std::size_t i=0; i<3; i++) {
+        for (std::size_t i = 0; i < 3; i++) {
             points[indexedTriangle.getIndex(i)].triangleIndices.push_back(triangleIndex);
         }
     }
@@ -195,7 +195,7 @@ namespace urchin {
     template<class T> void ConvexHullShape3D<T>::removeTriangle(const typename std::map<std::size_t, IndexedTriangle3D<T>>::iterator& itTriangle) {
         //remove reference of triangles on points
         const std::size_t* indices = itTriangle->second.getIndices();
-        for (std::size_t i=0; i<3; i++) {
+        for (std::size_t i = 0; i < 3; i++) {
             std::vector<std::size_t>& pointTriangles = points.at(indices[i]).triangleIndices;
             pointTriangles.erase(std::remove(pointTriangles.begin(), pointTriangles.end(), itTriangle->first), pointTriangles.end());
             if (pointTriangles.empty()) { //orphan point: remove it
@@ -238,7 +238,7 @@ namespace urchin {
 
         //4. build triangles (find a point which doesn't belong to line).
         Vector3<T> lineVector = this->points[0].point.vector(this->points[1].point);
-        for (std::size_t i=1; i<points.size(); i++) {
+        for (std::size_t i = 1; i < points.size(); i++) {
             if (pointsUsed.find(i) != pointsUsed.end()) { //point already used to build the tetrahedron
                 continue;
             }
@@ -320,12 +320,12 @@ namespace urchin {
         //log points in error log file
         std::stringstream logStream;
         if (!points.empty()) {
-            logStream<<"Impossible to build a convex hull shape with following points:"<<std::endl;
-            for (std::size_t i=0; i<points.size(); ++i) {
+            logStream << "Impossible to build a convex hull shape with following points:" << std::endl;
+            for (std::size_t i = 0; i < points.size(); ++i) {
                 logStream << " - " << points[i] << std::endl;
             }
         } else {
-            logStream<<"Impossible to build a convex hull shape with zero point.";
+            logStream << "Impossible to build a convex hull shape with zero point.";
         }
         Logger::instance()->logError(logStream.str());
 
@@ -344,10 +344,10 @@ namespace urchin {
 
     template<class T> std::ostream& operator <<(std::ostream& stream, const ConvexHullShape3D<T>& ch) {
         for (auto it = ch.getIndexedTriangles().begin(); it != ch.getIndexedTriangles().end(); ++it) {
-            stream << "Triangle "<< it->first <<": "
-                <<"("<<ch.getConvexHullPoints().at(it->second.getIndex(0)).point<<") "
-                <<"("<<ch.getConvexHullPoints().at(it->second.getIndex(1)).point<<") "
-                <<"("<<ch.getConvexHullPoints().at(it->second.getIndex(2)).point<<") ";
+            stream << "Triangle " << it->first << ": "
+                << "(" << ch.getConvexHullPoints().at(it->second.getIndex(0)).point << ") "
+                << "(" << ch.getConvexHullPoints().at(it->second.getIndex(1)).point << ") "
+                << "(" << ch.getConvexHullPoints().at(it->second.getIndex(2)).point << ") ";
         }
 
         return stream;

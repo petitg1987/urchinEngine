@@ -13,7 +13,7 @@ namespace urchin {
             Plane(const Vector3<T>&, T);
             Plane(const Point3<T>&, const Point3<T>&, const Point3<T>&);
             Plane(const Vector3<T>&, const Point3<T>&);
-            explicit Plane(T a=0.0, T b=1.0, T c=0.0, T d=0.0);
+            explicit Plane(T a = 0.0, T b = 1.0, T c = 0.0, T d = 0.0);
             Plane(const Plane<T>&);
             Plane<T>& operator=(const Plane<T>&);
             Plane<T>& operator=(Plane<T>&&) noexcept;

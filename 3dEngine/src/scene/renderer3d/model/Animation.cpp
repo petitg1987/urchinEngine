@@ -89,7 +89,7 @@ namespace urchin {
         }
 
         //update the vertex and normals
-        for (unsigned m=0; m<meshes->getNumberMeshes(); ++m) {
+        for (unsigned m = 0; m < meshes->getNumberMeshes(); ++m) {
             meshes->getMesh(m)->update(skeleton);
         }
     }

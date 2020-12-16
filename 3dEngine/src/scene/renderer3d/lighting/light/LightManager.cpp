@@ -36,7 +36,7 @@ namespace urchin {
     void LightManager::initiateShaderVariables(const std::unique_ptr<Shader>& lightingShader) {
         std::ostringstream isExistLocName, produceShadowLocName, hasParallelBeamsName, positionOrDirectionLocName;
         std::ostringstream exponentialAttName, lightAmbientName;
-        for (unsigned int i=0;i<maxLights;++i) {
+        for (unsigned int i = 0; i < maxLights; ++i) {
             isExistLocName.str("");
             isExistLocName << "lightsInfo[" << i << "].isExist";
             lightsInfo[i].isExistShaderVar = ShaderVar(lightingShader, isExistLocName.str());
@@ -140,7 +140,7 @@ namespace urchin {
         const std::vector<Light*>& lights = getVisibleLights();
         checkMaxLight(lights);
 
-        for (unsigned int i=0; i < maxLights; ++i) {
+        for (unsigned int i = 0; i < maxLights; ++i) {
             if (lights.size() > i) {
                 const Light* light = lights[i];
 

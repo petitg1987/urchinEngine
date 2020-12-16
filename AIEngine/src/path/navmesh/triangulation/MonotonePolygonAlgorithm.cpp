@@ -64,7 +64,7 @@ namespace urchin {
         if (diagonals.empty()) {
             std::vector<std::size_t> monotonePointsIndices;
             monotonePointsIndices.reserve(polygonPoints.size());
-            for (std::size_t i=0; i<polygonPoints.size(); ++i) {
+            for (std::size_t i = 0; i < polygonPoints.size(); ++i) {
                 monotonePointsIndices.push_back(i);
             }
             MonotonePolygon monotonePolygon;
@@ -174,7 +174,7 @@ namespace urchin {
         sortedTypedPoints.reserve(polygonPoints.size());
 
         isMonotonePolygon = true;
-        for (std::size_t i=0; i<polygonPoints.size(); ++i) {
+        for (std::size_t i = 0; i < polygonPoints.size(); ++i) {
             PointType pointType;
             std::size_t previousIndex = previousPointIndex(i);
             std::size_t nextIndex = nextPointIndex(i);
@@ -377,7 +377,7 @@ namespace urchin {
         double maxAngleCW = -std::numeric_limits<double>::max();
 
         Vector2<double> edgeVector = polygonPoints[edgeStartIndex].template cast<double>().vector(polygonPoints[edgeEndIndex].template cast<double>());
-        for (std::size_t i=0; i<possibleNextPoints.size(); ++i) {
+        for (std::size_t i = 0; i < possibleNextPoints.size(); ++i) {
             std::size_t testPointIndex = possibleNextPoints[i].first;
             Vector2<double> nextEdgeVector = polygonPoints[edgeEndIndex].template cast<double>().vector(polygonPoints[testPointIndex].template cast<double>());
             double orientationResult = edgeVector.crossProduct(nextEdgeVector);
@@ -431,14 +431,14 @@ namespace urchin {
         logStream.precision(std::numeric_limits<float>::max_digits10);
 
         std::size_t contourIndex = 0;
-        logStream<<message<<std::endl;
-        logStream<<"Monotone polygon input data:"<<std::endl;
-        logStream<<"\tPoints ("<<contourNames[contourIndex++]<<"):"<<std::endl;
-        for (std::size_t i=0; i<polygonPoints.size(); ++i) {
-            logStream<<"\t\t"<<polygonPoints[i]<<std::endl;
+        logStream << message << std::endl;
+        logStream << "Monotone polygon input data:" << std::endl;
+        logStream << "\tPoints (" << contourNames[contourIndex++] << "):" << std::endl;
+        for (std::size_t i = 0; i < polygonPoints.size(); ++i) {
+            logStream << "\t\t" << polygonPoints[i] << std::endl;
 
             if ((i+1) != polygonPoints.size() && std::find(endContourIndices.begin(), endContourIndices.end(), i+1) != endContourIndices.end()) {
-                logStream<<"\tHole ("<<contourNames[contourIndex++]<<"):"<<std::endl;
+                logStream << "\tHole (" << contourNames[contourIndex++] << "):" << std::endl;
             }
         }
         Logger::instance()->log(logLevel, logStream.str());
@@ -468,12 +468,12 @@ namespace urchin {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 
-        logStream<<message<<std::endl;
-        logStream<<"Monotone polygon output data:"<<std::endl;
-        for (std::size_t i=0; i<yMonotonePolygons.size(); ++i) {
-            logStream<<" - Monotone polygon "<<i<<":"<<std::endl;
+        logStream << message << std::endl;
+        logStream << "Monotone polygon output data:" << std::endl;
+        for (std::size_t i = 0; i < yMonotonePolygons.size(); ++i) {
+            logStream << " - Monotone polygon "<<i<<":" << std::endl;
             for (std::size_t pointIndex : yMonotonePolygons[i].getCcwPoints()) {
-                logStream<<" - "<<polygonPoints[pointIndex]<<std::endl;
+                logStream << " - " << polygonPoints[pointIndex] << std::endl;
             }
         }
         Logger::instance()->log(logLevel, logStream.str());

@@ -11,11 +11,11 @@ namespace urchin {
         std::vector<Point3<T>> sortedPoints;
         sortedPoints.reserve(coplanarPoints.size());
 
-        for (std::size_t i=0; i<2 && i<coplanarPoints.size(); i++) {
+        for (std::size_t i = 0; i < 2 && i < coplanarPoints.size(); i++) {
             sortedPoints.push_back(coplanarPoints[i]);
         }
 
-        for (std::size_t i=2; i<coplanarPoints.size(); ++i) {
+        for (std::size_t i = 2; i < coplanarPoints.size(); ++i) {
             auto newPointIndex = (unsigned int)sortedPoints.size();
             sortedPoints.push_back(coplanarPoints[i]);
             while (newPointIndex > 1) {
@@ -39,7 +39,7 @@ namespace urchin {
     }
 
     template<class T> bool SortPointsService<T>::isNewPointClockwiseSorted(const std::vector<Point3<T>>& points, const Vector3<T>& normal, unsigned int newPointIndex) {
-        for (unsigned int i=0; i<3; ++i) { //3 (counter-)clockwise tests: previous point, previous point, new point AND previous point, new point, next point AND new point, next point, next point
+        for (unsigned int i = 0; i < 3; ++i) { //3 (counter-)clockwise tests: previous point, previous point, new point AND previous point, new point, next point AND new point, next point, next point
             std::size_t firstPointIndex = (newPointIndex - 2 + i) % points.size();
             std::size_t secondPointIndex = (newPointIndex - 1 + i) % points.size();
             std::size_t thirdPointIndex = (newPointIndex + i) % points.size();

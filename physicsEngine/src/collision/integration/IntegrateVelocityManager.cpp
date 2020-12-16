@@ -53,7 +53,7 @@ namespace urchin {
         for (const auto& overlappingPair : overlappingPairs) {
             float rollingFriction = std::max(overlappingPair->getBody1()->getRollingFriction(), overlappingPair->getBody2()->getRollingFriction());
 
-            for (unsigned int bodyIndex=0; bodyIndex<2; ++bodyIndex) {
+            for (unsigned int bodyIndex = 0; bodyIndex < 2; ++bodyIndex) {
                 WorkRigidBody* body = WorkRigidBody::upCast(overlappingPair->getBody(bodyIndex));
                 if (body && body->isActive()) {
                     Matrix3<float> inertia = body->getInvWorldInertia().inverse();
@@ -62,7 +62,7 @@ namespace urchin {
                     Vector3<float> rollingFrictionForceDirection = -currentTorqueForce.normalize();
                     Vector3<float> rollingFrictionForce = rollingFrictionForceDirection * rollingFriction * body->getMass();
 
-                    for (std::size_t i=0; i<3; ++i) {
+                    for (std::size_t i = 0; i < 3; ++i) {
                         if (fabs(rollingFrictionForce[i]) > fabs(currentTorqueForce[i])) {
                             //If rolling resistance force is higher that torque force: we apply negative torque force in order to stop rolling.
                             //By doing that, we imitate a static friction.

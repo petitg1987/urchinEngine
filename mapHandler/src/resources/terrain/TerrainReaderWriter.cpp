@@ -62,7 +62,7 @@ namespace urchin {
         std::shared_ptr<XmlChunk> tRepeatChunk = xmlWriter.createChunk(T_REPEAT_TAG, XmlAttribute(), materialChunk);
         tRepeatChunk->setFloatValue(terrain->getMaterial()->getTRepeat());
         std::shared_ptr<XmlChunk> materialFilenamesChunk = xmlWriter.createChunk(MATERIAL_FILENAMES, XmlAttribute(), materialChunk);
-        unsigned int i=0;
+        unsigned int i = 0;
         for (const Material* material : terrain->getMaterial()->getMaterials()) {
             if (material != nullptr) {
                 std::shared_ptr<XmlChunk> materialFilenameChunk = xmlWriter.createChunk(MATERIAL_FILENAME, XmlAttribute(INDEX_ATTR, std::to_string(i)), materialFilenamesChunk);

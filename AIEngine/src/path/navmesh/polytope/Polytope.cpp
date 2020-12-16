@@ -60,14 +60,14 @@ namespace urchin {
 
     void Polytope::buildXZRectangle() {
         xzRectangle = surfaces[0]->computeXZRectangle();
-        for (std::size_t i=1; i<surfaces.size(); ++i) {
+        for (std::size_t i = 1; i < surfaces.size(); ++i) {
             xzRectangle = xzRectangle.merge(surfaces[i]->computeXZRectangle());
         }
     }
 
     void Polytope::buildAABBox() {
         aabbox = surfaces[0]->getAABBox();
-        for (std::size_t i=1; i<surfaces.size(); ++i) {
+        for (std::size_t i = 1; i < surfaces.size(); ++i) {
             aabbox = aabbox.merge(surfaces[i]->getAABBox());
         }
     }

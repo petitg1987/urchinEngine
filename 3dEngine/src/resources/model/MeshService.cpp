@@ -19,7 +19,7 @@ namespace urchin {
             vertices[i].setNull();
 
             //calculate final vertex to draw with weights
-            for (int j=0;j<constMesh->getStructVertex(i).weightCount;++j) {
+            for (int j = 0; j < constMesh->getStructVertex(i).weightCount; ++j) {
                 const Weight* weight = &constMesh->getWeight((unsigned int)(constMesh->getStructVertex(i).weightStart + j));
                 const Bone& bone = skeleton[(std::size_t)weight->bone];
 

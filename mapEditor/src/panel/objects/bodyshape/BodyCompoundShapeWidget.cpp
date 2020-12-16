@@ -236,7 +236,7 @@ namespace urchin {
             std::shared_ptr<const CollisionShape3D> defaultNewShape = DefaultBodyShapeCreator(getSceneObject()).createDefaultBodyShape(shapeType, true);
 
             std::size_t nextPosition = 0;
-            for (std::size_t i=0; i<localizedShapeTableView->getLocalizedShapes().size(); ++i) {
+            for (std::size_t i = 0; i < localizedShapeTableView->getLocalizedShapes().size(); ++i) {
                 if (nextPosition<=localizedShapeTableView->getLocalizedShapes()[i]->position) {
                     nextPosition = localizedShapeTableView->getLocalizedShapes()[i]->position + 1;
                 }

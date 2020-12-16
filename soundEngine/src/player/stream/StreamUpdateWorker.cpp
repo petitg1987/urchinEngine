@@ -37,13 +37,13 @@ namespace urchin {
         //create buffers/chunks
         auto* bufferId = new ALuint[nbChunkBuffer];
         alGenBuffers((int)nbChunkBuffer, bufferId);
-        for (unsigned int i=0; i<nbChunkBuffer; ++i) {
+        for (unsigned int i = 0; i < nbChunkBuffer; ++i) {
             task->getStreamChunk(i).bufferId = bufferId[i];
         }
         delete[] bufferId;
 
         //initialize buffers/chunks
-        for (unsigned int i=0; i<nbChunkBuffer; ++i) {
+        for (unsigned int i  =0; i < nbChunkBuffer; ++i) {
             fillAndPushChunk(task, i);
         }
 
@@ -125,7 +125,7 @@ namespace urchin {
         ALint chunkProcessed = 0;
         alGetSourcei(task->getSourceId(), AL_BUFFERS_PROCESSED, &chunkProcessed);
 
-        for (int i=0; i<chunkProcessed; ++i) {
+        for (int i = 0; i < chunkProcessed; ++i) {
             //pop the first unused buffer from the queue
             ALuint bufferId;
             alSourceUnqueueBuffers(task->getSourceId(), 1, &bufferId);
@@ -143,7 +143,7 @@ namespace urchin {
         clearQueue(task);
         alSourcei(task->getSourceId(), AL_BUFFER, 0);
 
-        for (unsigned int i=0; i<nbChunkBuffer; ++i) {
+        for (unsigned int i = 0; i < nbChunkBuffer; ++i) {
             alDeleteBuffers(1, &task->getStreamChunk(i).bufferId);
         }
 
@@ -188,7 +188,7 @@ namespace urchin {
     }
 
     unsigned int StreamUpdateWorker::retrieveChunkId(StreamUpdateTask* task, ALuint bufferId) const {
-        for (unsigned int i=0; i<nbChunkBuffer; ++i) {
+        for (unsigned int i = 0; i < nbChunkBuffer; ++i) {
             if (task->getStreamChunk(i).bufferId == bufferId) {
                 return i;
             }
@@ -202,7 +202,7 @@ namespace urchin {
         alGetSourcei(task->getSourceId(), AL_BUFFERS_QUEUED, &nbQueues);
 
         ALuint buffer;
-        for (ALint i=0; i<nbQueues; ++i) {
+        for (ALint i = 0; i < nbQueues; ++i) {
             alSourceUnqueueBuffers(task->getSourceId(), 1, &buffer);
         }
     }

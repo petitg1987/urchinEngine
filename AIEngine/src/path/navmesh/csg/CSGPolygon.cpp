@@ -186,10 +186,10 @@ namespace urchin {
             //assert no lines intersection
             if (cwPoints.size() < 20) //don't check big polygons for performance reason
             {
-                for (std::size_t i=0; i < cwPoints.size(); ++i) {
+                for (std::size_t i = 0; i < cwPoints.size(); ++i) {
                     std::size_t iNext = (i + 1) % cwPoints.size();
                     LineSegment2D<double> line1(cwPoints[i].template cast<double>(), cwPoints[iNext].template cast<double>());
-                    for (std::size_t j=0; j<cwPoints.size(); ++j) {
+                    for (std::size_t j = 0; j < cwPoints.size(); ++j) {
                         std::size_t jNext = (j + 1) % cwPoints.size();
                         if (i != j && iNext != j && i != jNext) {
                             LineSegment2D<double> line2(cwPoints[j].template cast<double>(), cwPoints[jNext].template cast<double>());

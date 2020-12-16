@@ -58,7 +58,7 @@ namespace urchin {
     }
 
     template<class T> bool Simplex<T>::isPointInSimplex(const Point3<T>& p) const {
-        for (unsigned int i=0; i<simplexPointsSize; ++i) {
+        for (unsigned int i = 0; i < simplexPointsSize; ++i) {
             const Point3<T>& simplexPoint = simplexPoints[i].point;
             if (simplexPoint.X == p.X && simplexPoint.Y == p.Y && simplexPoint.Z == p.Z) {
                 return true;
@@ -189,7 +189,7 @@ namespace urchin {
     }
 
     template<class T> std::ostream& operator <<(std::ostream& stream, const Simplex<T>& simplex) {
-        for (std::size_t i=0; i < simplex.getSize(); ++i) {
+        for (std::size_t i = 0; i < simplex.getSize(); ++i) {
             stream << "Simplex point " << i << " details:" << std::endl;
             stream << " - Point: " << simplex.getPoint(i) <<std::endl;
             stream << " - Support point A: " << simplex.getSupportPointA(i) <<std::endl;

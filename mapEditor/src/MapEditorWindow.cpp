@@ -373,7 +373,7 @@ namespace urchin {
     }
 
     void MapEditorWindow::executeViewPropertiesChangeAction() {
-        for (int i=0; i<SceneDisplayer::LAST_VIEW_PROPERTIES; ++i) {
+        for (int i = 0; i < SceneDisplayer::LAST_VIEW_PROPERTIES; ++i) {
             auto viewProperties = static_cast<SceneDisplayer::ViewProperties>(i);
 
             bool isViewChecked = viewActions[viewProperties]->isChecked();

@@ -184,8 +184,8 @@ namespace urchin {
 
         std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces = createExpandedPolytopeSurfaces(sortedOriginalPoints, sortedExpandedPoints, navMeshAgent);
 
-        for (std::size_t i=0; i<expandedSurfaces.size(); ++i) {
-            expandedSurfaces[i]->setWalkableCandidate(cylinder->getCylinderOrientation()==i/2);
+        for (std::size_t i = 0; i < expandedSurfaces.size(); ++i) {
+            expandedSurfaces[i]->setWalkableCandidate(cylinder->getCylinderOrientation() == i / 2);
         }
 
         return std::make_unique<Polytope>(name, expandedSurfaces);
@@ -282,7 +282,7 @@ namespace urchin {
             if (isSlopeWalkable) { //walkable surfaces are not expanded on XZ axis to avoid character to walk outside the walkable surface
 
                 Vector3<float> shiftVector = normal * navMeshAgent->computeExpandDistance(normal);
-                for (unsigned int i=0; i<4; ++i) {
+                for (unsigned int i = 0; i < 4; ++i) {
                     surfacePoints.push_back(sortedOriginalPoints[pointIndex[i]].translate(shiftVector));
                 }
 
@@ -291,7 +291,7 @@ namespace urchin {
                     expandedSurfaces.push_back(std::make_shared<PolytopePlaneSurface>(planeSurfaceSplit.planeSurfacePoints, normal, isSlopeWalkable));
                 }
             } else {
-                for (unsigned int i=0; i<4; ++i) {
+                for (unsigned int i = 0; i < 4; ++i) {
                     surfacePoints.push_back(sortedExpandedPoints[pointIndex[i]]);
                 }
 

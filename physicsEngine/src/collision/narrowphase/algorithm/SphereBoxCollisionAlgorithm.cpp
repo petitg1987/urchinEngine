@@ -44,7 +44,7 @@ namespace urchin {
                 //find axis closest to sphere position
                 float minDistToAxis = box2.getHalfSize(0) - std::abs(spherePosLocalBox[0]);
                 std::size_t minAxis = 0;
-                for (std::size_t i=1; i<3; ++i) {
+                for (std::size_t i = 1; i < 3; ++i) {
                     float distToAxis = box2.getHalfSize((unsigned int)i) - std::abs(spherePosLocalBox[i]);
                     if (distToAxis < minDistToAxis) {
                         minDistToAxis = distToAxis;

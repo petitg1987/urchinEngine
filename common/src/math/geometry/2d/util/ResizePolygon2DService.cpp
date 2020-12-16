@@ -14,8 +14,8 @@ namespace urchin {
      */
     template<class T> void ResizePolygon2DService<T>::resizePolygon(std::vector<Point2<T>>& polygonPoints, T distance) const {
         Point2<T> previousPoint = polygonPoints[polygonPoints.size()-1];
-        for (std::size_t i=0; i<polygonPoints.size(); i++) {
-            std::size_t nextI = (i+1) % polygonPoints.size();
+        for (std::size_t i = 0; i < polygonPoints.size(); i++) {
+            std::size_t nextI = (i + 1) % polygonPoints.size();
 
             Vector2<double> toPreviousPoint = polygonPoints[i].vector(previousPoint).template cast<double>().normalize();
             Vector2<double> firstNormal = Vector2<double>(-toPreviousPoint.Y, toPreviousPoint.X);

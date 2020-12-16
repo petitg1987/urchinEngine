@@ -54,7 +54,7 @@ namespace urchin {
 
         //remove common directories from path
         unsigned int commonMaxIndex;
-        for (commonMaxIndex=0; commonMaxIndex<simplifiedReferenceDirectory.size() && commonMaxIndex<path.size(); ++commonMaxIndex) {
+        for (commonMaxIndex = 0; commonMaxIndex < simplifiedReferenceDirectory.size() && commonMaxIndex<path.size(); ++commonMaxIndex) {
             if (simplifiedReferenceDirectory[commonMaxIndex] != path[commonMaxIndex]) {
                 break;
             }
@@ -62,7 +62,7 @@ namespace urchin {
         std::string relativePath = path.substr(commonMaxIndex);
 
         //add '../' to relative path
-        for (std::size_t i=commonMaxIndex; i<simplifiedReferenceDirectory.size(); ++i) {
+        for (std::size_t i = commonMaxIndex; i < simplifiedReferenceDirectory.size(); ++i) {
             if (simplifiedReferenceDirectory[i] == '/' || simplifiedReferenceDirectory[i] == '\\') {
                 relativePath = std::string("../").append(relativePath);
             }

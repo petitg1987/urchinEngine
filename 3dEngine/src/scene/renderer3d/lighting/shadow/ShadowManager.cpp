@@ -77,7 +77,7 @@ namespace urchin {
         deleteLightsLocation();
         lightsLocation = new LightLocation[lightManager->getMaxLights()];
         std::ostringstream shadowMapTextureLocName, mLightProjectionViewLocName;
-        for (unsigned int i=0;i<lightManager->getMaxLights();++i) {
+        for (unsigned int i = 0; i < lightManager->getMaxLights(); ++i) {
             //depth shadow texture
             shadowMapTextureLocName.str("");
             shadowMapTextureLocName << "lightsInfo[" << i << "].shadowMapTex";
@@ -85,7 +85,7 @@ namespace urchin {
 
             //light projection matrices
             lightsLocation[i].mLightProjectionViewShaderVar = new ShaderVar[nbShadowMaps];
-            for (unsigned int j=0; j<nbShadowMaps; ++j) {
+            for (unsigned int j = 0; j < nbShadowMaps; ++j) {
                 mLightProjectionViewLocName.str("");
                 mLightProjectionViewLocName << "lightsInfo[" << i << "].mLightProjectionView[" << j << "]";
                 lightsLocation[i].mLightProjectionViewShaderVar[j] = ShaderVar(lightingShader, mLightProjectionViewLocName.str());
@@ -116,7 +116,7 @@ namespace urchin {
 
     void ShadowManager::deleteLightsLocation() {
         if (lightsLocation) {
-            for (unsigned int i=0;i<lightManager->getMaxLights();++i) {
+            for (unsigned int i = 0; i < lightManager->getMaxLights(); ++i) {
                 delete[] lightsLocation[i].mLightProjectionViewShaderVar;
             }
             delete[] lightsLocation;
@@ -175,7 +175,7 @@ namespace urchin {
     }
 
     void ShadowManager::setNumberShadowMaps(unsigned int nbShadowMaps) {
-        if (nbShadowMaps <= 1) { //note: shadow maps texture array with depth=1 generate error in GLSL texture2DArray function
+        if (nbShadowMaps <= 1) { //note: shadow maps texture array with depth = 1 generate error in GLSL texture2DArray function
             throw std::runtime_error("Number of shadow maps must be greater than one. Value: " + std::to_string(nbShadowMaps));
         }
 
@@ -402,7 +402,7 @@ namespace urchin {
         }
 
         auto* depthSplitDistance = new float[nbShadowMaps];
-        for (unsigned int shadowMapIndex=0; shadowMapIndex<nbShadowMaps; ++shadowMapIndex) {
+        for (unsigned int shadowMapIndex = 0; shadowMapIndex < nbShadowMaps; ++shadowMapIndex) {
             float currSplitDistance = splitDistances[shadowMapIndex];
             depthSplitDistance[shadowMapIndex] = ((projectionMatrix(2, 2)*-currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance)) / 2.0f + 0.5f;
         }

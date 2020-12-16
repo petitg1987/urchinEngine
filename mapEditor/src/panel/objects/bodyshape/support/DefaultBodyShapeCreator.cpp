@@ -60,7 +60,7 @@ namespace urchin {
     ConvexHullShape3D<float>* DefaultBodyShapeCreator::buildConvexHullShape(const Model* model) const {
         std::set<Point3<float>> allVertices;
         for (const auto* constMesh : model->getMeshes()->getConstMeshes()) {
-            for (unsigned int i=0; i<constMesh->getNumberVertices(); i++) {
+            for (unsigned int i = 0; i < constMesh->getNumberVertices(); i++) {
                 allVertices.insert(constMesh->getBaseVertices()[i]);
             }
         }

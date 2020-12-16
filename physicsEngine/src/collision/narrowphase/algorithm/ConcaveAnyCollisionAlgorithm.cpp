@@ -38,7 +38,7 @@ namespace urchin {
     }
 
     void ConcaveAnyCollisionAlgorithm::addContactPointsToManifold(const ManifoldResult& manifoldResult, bool manifoldSwapped) {
-        for (unsigned int i=0; i<manifoldResult.getNumContactPoints(); ++i) {
+        for (unsigned int i = 0; i < manifoldResult.getNumContactPoints(); ++i) {
             const ManifoldContactPoint& manifoldContactPoint = manifoldResult.getManifoldContactPoint(i);
             if (manifoldSwapped) {
                 getManifoldResult().addContactPoint(

@@ -111,7 +111,7 @@ namespace urchin {
         newOrMovingNavObjectsToRefresh.insert(navObject);
 
         if (navObject->getExpandedPolytope()->isWalkableCandidate()) {
-            for (std::size_t surfaceIndex=0; surfaceIndex<navObject->getExpandedPolytope()->getSurfaces().size(); ++surfaceIndex) {
+            for (std::size_t surfaceIndex = 0; surfaceIndex < navObject->getExpandedPolytope()->getSurfaces().size(); ++surfaceIndex) {
                 const std::shared_ptr<PolytopeSurface>& polytopeSurface = navObject->getExpandedPolytope()->getSurface(surfaceIndex);
                 if (polytopeSurface->isWalkable()) {
                     navObject->addWalkableSurface(polytopeSurface);
@@ -342,7 +342,7 @@ namespace urchin {
             elevatedPoints.push_back(walkableSurface->computeRealPoint(walkablePoint, navMeshAgent));
         }
 
-        for (std::size_t holeIndex=0; holeIndex<triangulation.getHolesSize(); ++holeIndex) {
+        for (std::size_t holeIndex = 0; holeIndex < triangulation.getHolesSize(); ++holeIndex) {
             const std::vector<Point2<float>>& holePoints = triangulation.getHolePoints(holeIndex);
             for (const auto& holePoint : holePoints) {
                 elevatedPoints.push_back(walkableSurface->computeRealPoint(holePoint, navMeshAgent));

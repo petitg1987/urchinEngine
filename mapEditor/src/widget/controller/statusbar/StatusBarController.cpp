@@ -22,7 +22,7 @@ namespace urchin {
     void StatusBarController::applyPreviousState() {
         StatusBarState previousState = getStateData(currentState).getPreviousState();
         if (previousState == currentState) {
-            throw new std::runtime_error("No previous state for current state: " + std::to_string(currentState));
+            throw std::runtime_error("No previous state for current state: " + std::to_string(currentState));
         }
 
         currentState = previousState;
@@ -53,7 +53,7 @@ namespace urchin {
         window->setStatusBar(statusBar);
 
         auto statusLabels = getStateData(currentState).getLabels();
-        for (std::size_t i=0; i<statusLabels.size(); ++i) {
+        for (std::size_t i = 0; i < statusLabels.size(); ++i) {
             statusBar->addWidget(new QLabel(QString(statusLabels[i].c_str())));
             if (i != statusLabels.size() - 1) {
                 statusBar->addWidget(createSeparator());
@@ -62,7 +62,7 @@ namespace urchin {
     }
 
     QFrame* StatusBarController::createSeparator() {
-        QFrame* separator = new QFrame();
+        auto* separator = new QFrame();
         separator->setFrameShape(QFrame::VLine);
         separator->setFrameShadow(QFrame::Shadow::Raised);
         return separator;

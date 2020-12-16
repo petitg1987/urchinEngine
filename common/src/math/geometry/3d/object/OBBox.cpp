@@ -87,7 +87,7 @@ namespace urchin {
         std::vector<Point3<T>> points;
         points.reserve(8);
 
-        for (unsigned int i=0; i<8; ++i) {
+        for (unsigned int i = 0; i < 8; ++i) {
             points.push_back(getPoint(i));
         }
 
@@ -126,7 +126,7 @@ namespace urchin {
         T maxPointDotDirection = getPoint(0).toVector().dotProduct(direction);
         Point3<T> maxPoint = getPoint(0);
 
-        for (unsigned int i=1;i<8; ++i) {
+        for (unsigned int i = 1;i < 8; ++i) {
             T currentPointDotDirection  = getPoint(i).toVector().dotProduct(direction);
             if (currentPointDotDirection > maxPointDotDirection) {
                 maxPointDotDirection = currentPointDotDirection;
@@ -141,9 +141,9 @@ namespace urchin {
         Point3<T> min(std::numeric_limits<T>::max(), std::numeric_limits<T>::max(), std::numeric_limits<T>::max());
         Point3<T> max(-std::numeric_limits<T>::max(), -std::numeric_limits<T>::max(), -std::numeric_limits<T>::max());
 
-        for (unsigned int i=0; i<8; ++i) {
+        for (unsigned int i = 0; i < 8; ++i) {
             Point3<T> point = getPoint(i);
-            for (unsigned int coordinate=0; coordinate<3; ++coordinate) {
+            for (unsigned int coordinate = 0; coordinate < 3; ++coordinate) {
                 if (point[coordinate]<min[coordinate]) {
                     min[coordinate] = point[coordinate];
                 }
@@ -178,7 +178,7 @@ namespace urchin {
         auto epsilon = (T)0.00001; //projectionAxis could be near to zero: need epsilon to avoid rounding error
 
         //case 1, 2, 3 (projectionAxis = axis[0] | axis[1] | axis[2])
-        for (unsigned int i=0; i<3;i++) {
+        for (unsigned int i = 0; i < 3; i++) {
             if (std::abs(distCenterPoint.dotProduct(axis[i]))
                 > this->getHalfSize(i)
                 + std::abs(bbox.getHalfSize(0) * AdotB[i][0])
@@ -189,7 +189,7 @@ namespace urchin {
         }
 
         //case 4, 5, 6 (projectionAxis = bbox.getAxis(0) | bbox.getAxis(1) | bbox.getAxis(2))
-        for (unsigned int i=0; i<3;i++) {
+        for (unsigned int i = 0; i < 3; i++) {
             if (std::abs(distCenterPoint.dotProduct(bbox.getAxis(i)))
                 > std::abs(this->getHalfSize(0) * AdotB[0][i])
                 + std::abs(this->getHalfSize(1) * AdotB[1][i])

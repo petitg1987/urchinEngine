@@ -38,7 +38,7 @@ template <class OBJ> void AABBTree<OBJ>::getAllNodeObjects(std::vector<OBJ>& nod
         browseNodes.push_back(rootNode);
     }
 
-    for (std::size_t i=0; i<browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
+    for (std::size_t i = 0; i < browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
         const AABBNode<OBJ>* currentNode = browseNodes[i];
 
         if (currentNode->isLeaf()) {
@@ -58,7 +58,7 @@ template <class OBJ> std::vector<AABBNodeData<OBJ>*> AABBTree<OBJ>::extractAllNo
         browseNodes.push_back(rootNode);
     }
 
-    for (std::size_t i=0; i<browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
+    for (std::size_t i = 0; i < browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
         AABBNode<OBJ>* currentNode = browseNodes[i];
 
         if (currentNode->isLeaf()) {
@@ -200,7 +200,7 @@ template<class OBJ> void AABBTree<OBJ>::aabboxQuery(const AABBox<float>& aabbox,
         browseNodes.push_back(rootNode);
     }
 
-    for (std::size_t i=0; i<browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
+    for (std::size_t i = 0; i < browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
         const AABBNode<OBJ>* currentNode = browseNodes[i];
 
         if (currentNode->getAABBox().collideWithAABBox(aabbox)) {
@@ -223,7 +223,7 @@ template<class OBJ> void AABBTree<OBJ>::rayQuery(const Ray<float>& ray, std::vec
         browseNodes.push_back(rootNode);
     }
 
-    for (std::size_t i=0; i<browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
+    for (std::size_t i = 0; i < browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
         const AABBNode<OBJ>* currentNode = browseNodes[i];
 
         if (currentNode->getAABBox().collideWithRay(ray)) {
@@ -250,7 +250,7 @@ template<class OBJ> void AABBTree<OBJ>::enlargedRayQuery(const Ray<float>& ray, 
         browseNodes.push_back(rootNode);
     }
 
-    for (std::size_t i=0; i<browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
+    for (std::size_t i = 0; i < browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
         const AABBNode<OBJ>* currentNode = browseNodes[i];
 
         AABBox<float> extendedNodeAABBox = currentNode->getAABBox().enlarge(enlargeNodeBoxHalfSize, enlargeNodeBoxHalfSize);

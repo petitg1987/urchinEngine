@@ -105,7 +105,7 @@ void MonotonePolygonTest::twoRegularVertex() {
     std::vector<MonotonePolygon> monotonePolygons = monotonePolygonAlgorithm.createYMonotonePolygons();
 
     AssertHelper::assertUnsignedInt(monotonePolygons.size(), 1);
-    for (std::size_t i=0; i<ccwPolygonPoints.size(); ++i) {
+    for (std::size_t i = 0; i < ccwPolygonPoints.size(); ++i) {
         AssertHelper::assertUnsignedInt(monotonePolygons[0].getCcwPoints()[i], i);
     }
 }

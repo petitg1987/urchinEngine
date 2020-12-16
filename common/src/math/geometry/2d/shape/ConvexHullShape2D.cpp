@@ -68,7 +68,7 @@ namespace urchin {
         T maxPointDotDirection = Point2<T>(0.0, 0.0).vector(convexHullPoints[0]).dotProduct(direction);
         Point2<T> maxPoint = convexHullPoints[0];
 
-        for (std::size_t i=0; i<convexHullPoints.size(); ++i) {
+        for (std::size_t i = 0; i < convexHullPoints.size(); ++i) {
             T currentPointDotDirection = Point2<T>(0.0, 0.0).vector(convexHullPoints[i]).dotProduct(direction);
             if (currentPointDotDirection > maxPointDotDirection) {
                 maxPointDotDirection = currentPointDotDirection;
@@ -83,7 +83,7 @@ namespace urchin {
         T area = 0.0;
         std::size_t j;
 
-        for (std::size_t i=0; i<convexHullPoints.size(); i++) {
+        for (std::size_t i = 0; i < convexHullPoints.size(); i++) {
             j = (i + 1) % convexHullPoints.size();
             area += convexHullPoints[i].X * convexHullPoints[j].Y;
             area -= convexHullPoints[i].Y * convexHullPoints[j].X;

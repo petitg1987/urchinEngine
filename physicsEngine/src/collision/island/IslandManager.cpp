@@ -27,14 +27,14 @@ namespace urchin {
             printIslands(islandElementsLink);
         }
 
-        unsigned int i=0;
+        unsigned int i = 0;
         while (islandElementsLink.size()>i) { //loop on islands
             unsigned int startElementIndex = i;
             unsigned int nbElements = computeNumberElements(islandElementsLink, startElementIndex);
 
             bool islandLinkedToStaticElement = false;
             bool islandBodiesCanSleep = true;
-            for (unsigned int j=0; j<nbElements; ++j) { //loop on elements of the island
+            for (unsigned int j = 0; j < nbElements; ++j) { //loop on elements of the island
                 auto* body = dynamic_cast<WorkRigidBody*>(islandElementsLink[startElementIndex+j].element);
                 if (isBodyMoving(body)) {
                     islandBodiesCanSleep = false;
@@ -45,7 +45,7 @@ namespace urchin {
             }
             islandBodiesCanSleep = islandBodiesCanSleep && islandLinkedToStaticElement; //one element of the island must be in contact with a static element to sleep the island
 
-            for (unsigned int j=0; j<nbElements; ++j) { //loop on elements of the island
+            for (unsigned int j = 0; j < nbElements; ++j) { //loop on elements of the island
                 auto* body = dynamic_cast<WorkRigidBody*>(islandElementsLink[startElementIndex+j].element);
                 bool bodyActiveState = !islandBodiesCanSleep;
                 if (body->isActive() != bodyActiveState) {
@@ -109,23 +109,23 @@ namespace urchin {
 
     void IslandManager::printIslands(const std::vector<IslandElementLink>& islandElementsLink) {
         unsigned int islandId = 0;
-        unsigned int i=0;
+        unsigned int i = 0;
         while (islandElementsLink.size()>i) { //loop on islands
             unsigned int startElementIndex = i;
             unsigned int nbElements = computeNumberElements(islandElementsLink, startElementIndex);
 
-            std::cout<<"Island "<<islandId<<":"<<std::endl;
+            std::cout << "Island " << islandId << ":" << std::endl;
 
-            for (unsigned int j=0; j<nbElements; ++j) { //loop on elements of the island
+            for (unsigned int j = 0; j < nbElements; ++j) { //loop on elements of the island
                 auto* body = dynamic_cast<WorkRigidBody*>(islandElementsLink[startElementIndex+j].element);
-                std::cout<<"  - Body: "<<body->getId()<<" (moving: "<<isBodyMoving(body)<<", active: "<<body->isActive()<<")"<<std::endl;
+                std::cout << "  - Body: " << body->getId() << " (moving: " << isBodyMoving(body) << ", active: " << body->isActive() << ")" << std::endl;
             }
 
             i += nbElements;
             islandId++;
         }
 
-        std::cout<<std::endl;
+        std::cout << std::endl;
     }
 
 }

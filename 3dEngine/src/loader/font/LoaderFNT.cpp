@@ -89,7 +89,7 @@ namespace urchin {
 
             if (glyph[i].width > 0 && glyph[i].height > 0) {
                 glyph[i].buf = new unsigned char[glyph[i].width * glyph[i].height];
-                for (unsigned int j=0; j < (glyph[i].width * glyph[i].height); j++) {
+                for (unsigned int j = 0; j < (glyph[i].width * glyph[i].height); j++) {
                     glyph[i].buf[j] = face->glyph->bitmap.buffer[j];
                 }
             }
@@ -100,7 +100,7 @@ namespace urchin {
 
         //compute space between lines, space between letters and height of letters
         unsigned int height = 0;
-        for (int i='A'; i<'Z';i++) {
+        for (int i = 'A'; i < 'Z'; i++) {
             height = std::max(height, glyph[i].height);
         }
         auto spaceBetweenLines = (unsigned int)((float)height * WIDTH_BETWEEN_LINES_RATE);
@@ -108,7 +108,7 @@ namespace urchin {
         glyph[(int)' '].width = (unsigned int)((float)glyph[(int)'A'].width * WIDTH_SPACE_RATE);
 
         //dimension of letters and texture
-        unsigned int dimensionLetters=0;
+        unsigned int dimensionLetters = 0;
         for (unsigned int i = 0; i < NUM_LETTERS; ++i) //seek the largest letter
         {
             if (glyph[i].width > dimensionLetters) {
@@ -126,11 +126,11 @@ namespace urchin {
             for (unsigned int j = 0; j < dimensionTexture; j += dimensionLetters, c++) {
                 for (unsigned int yy = 0, m = 0; yy < glyph[c].height; yy++) {
                     for (unsigned int xx = 0; xx < glyph[c].width; xx++,m++) {
-                        texels[ ((i+yy)*dimensionTexture * NUM_COLORS) + ((j + xx) * NUM_COLORS) + 0] = (glyph[c].buf[m] > 0) ? static_cast<unsigned char>(fontColor.X * 255) : 0;
-                        texels[ ((i+yy)*dimensionTexture * NUM_COLORS) + ((j + xx) * NUM_COLORS) + 1] = (glyph[c].buf[m] > 0) ? static_cast<unsigned char>(fontColor.Y * 255) : 0;
-                        texels[ ((i+yy)*dimensionTexture * NUM_COLORS) + ((j + xx) * NUM_COLORS) + 2] = (glyph[c].buf[m] > 0) ? static_cast<unsigned char>(fontColor.Z * 255) : 0;
+                        texels[ ((i + yy) * dimensionTexture * NUM_COLORS) + ((j + xx) * NUM_COLORS) + 0] = (glyph[c].buf[m] > 0) ? static_cast<unsigned char>(fontColor.X * 255) : 0;
+                        texels[ ((i + yy) * dimensionTexture * NUM_COLORS) + ((j + xx) * NUM_COLORS) + 1] = (glyph[c].buf[m] > 0) ? static_cast<unsigned char>(fontColor.Y * 255) : 0;
+                        texels[ ((i + yy) * dimensionTexture * NUM_COLORS) + ((j + xx) * NUM_COLORS) + 2] = (glyph[c].buf[m] > 0) ? static_cast<unsigned char>(fontColor.Z * 255) : 0;
 
-                        texels[ ((i+yy)*dimensionTexture * NUM_COLORS) + ((j + xx) * NUM_COLORS) + 3] = glyph[c].buf[m];
+                        texels[ ((i + yy) * dimensionTexture * NUM_COLORS) + ((j + xx) * NUM_COLORS) + 3] = glyph[c].buf[m];
                     }
                 }
             }

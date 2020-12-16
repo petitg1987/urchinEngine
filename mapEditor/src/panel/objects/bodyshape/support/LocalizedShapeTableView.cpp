@@ -39,7 +39,7 @@ namespace urchin {
 
     std::vector<std::shared_ptr<const LocalizedCollisionShape>> LocalizedShapeTableView::getLocalizedShapes() const {
         std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedCollisionShapes;
-        for (int row=0; row< localizedShapesTableModel->rowCount(); ++row) {
+        for (int row = 0; row < localizedShapesTableModel->rowCount(); ++row) {
             QModelIndex shapeIndex = localizedShapesTableModel->index(row, 0);
 
             const auto* localizedCollisionShape = shapeIndex.data(Qt::UserRole + 1).value<const LocalizedCollisionShape*>();

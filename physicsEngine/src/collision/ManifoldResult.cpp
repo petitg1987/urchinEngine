@@ -94,7 +94,7 @@ namespace urchin {
     }
 
     void ManifoldResult::refreshContactPoints() {
-        for (unsigned int i=0; i<nbContactPoint; ++i) {
+        for (unsigned int i = 0; i < nbContactPoint; ++i) {
             //1. update contact points in world position
             Point3<float> newContactPointOnObject1 = body1->getPhysicsTransform().transform(contactPoints[i].getLocalPointOnObject1());
             Point3<float> newContactPointOnObject2 = body2->getPhysicsTransform().transform(contactPoints[i].getLocalPointOnObject2());

@@ -30,7 +30,7 @@ namespace urchin {
         Simplex<T> simplex;
         simplex.addPoint(initialSupportPointA, initialSupportPointB);
 
-        for (unsigned int iterationNumber=0; iterationNumber<maxIteration; ++iterationNumber) {
+        for (unsigned int iterationNumber = 0; iterationNumber < maxIteration; ++iterationNumber) {
             Point3<T> supportPointA = convexObject1.getSupportPoint(direction.template cast<float>(), includeMargin).template cast<T>();
             Point3<T> supportPointB = convexObject2.getSupportPoint((-direction).template cast<float>(), includeMargin).template cast<T>();
             Point3<T> newPoint = supportPointA - supportPointB;
@@ -63,11 +63,11 @@ namespace urchin {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 
-        logStream<<"Maximum of iteration reached on GJK algorithm ("<<maxIteration<<")."<<std::endl;
-        logStream<<" - Termination tolerance: "<<terminationTolerance<<std::endl;
-        logStream<<" - Include margin: "<<includeMargin<<std::endl;
-        logStream<<" - Convex object 1: "<<std::endl<<convexObject1.toString()<<std::endl;
-        logStream<<" - Convex object 2: "<<std::endl<<convexObject2.toString();
+        logStream << "Maximum of iteration reached on GJK algorithm (" << maxIteration << ")." << std::endl;
+        logStream << " - Termination tolerance: " << terminationTolerance << std::endl;
+        logStream << " - Include margin: " << includeMargin << std::endl;
+        logStream << " - Convex object 1: " << std::endl << convexObject1.toString() << std::endl;
+        logStream << " - Convex object 2: " << std::endl << convexObject2.toString();
         Logger::instance()->logWarning(logStream.str());
     }
 

@@ -26,7 +26,7 @@ namespace urchin {
             return planeSurfaceSplits;
         }
 
-        for (unsigned int aSample=0; aSample < aSamples; ++aSample) {
+        for (unsigned int aSample = 0; aSample < aSamples; ++aSample) {
             float aPointStartRange = (float)aSample / (float)aSamples;
             LineSegment3D<float> aLine((1.0f - aPointStartRange) * planeSurfacePoints[0] + aPointStartRange * planeSurfacePoints[1],
                                             (1.0f - aPointStartRange) * planeSurfacePoints[3] + aPointStartRange * planeSurfacePoints[2]);

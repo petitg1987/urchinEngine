@@ -35,7 +35,7 @@ namespace urchin {
 
         Vector3<T> direction = (-initialPoint).toVector();
 
-        for (unsigned int iterationNumber=0; iterationNumber<maxIteration; ++iterationNumber) {
+        for (unsigned int iterationNumber = 0; iterationNumber < maxIteration; ++iterationNumber) {
             Point3<T> supportPoint1 = getWorldSupportPoint(object1, direction, interpolatedTransform1);
             Point3<T> supportPoint2 = getWorldSupportPoint(object2, -direction, interpolatedTransform2);
             Point3<T> newPoint = supportPoint1 - supportPoint2;

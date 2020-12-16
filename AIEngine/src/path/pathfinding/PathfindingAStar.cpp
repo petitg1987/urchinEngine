@@ -221,7 +221,7 @@ namespace urchin {
                         std::vector<Point3<float>> topographyPoints = navPolygonTopography->followTopography(startPoint, endPoint);
 
                         pathPoints.pop_back();
-                        for (std::size_t i=0; i<topographyPoints.size()-1; ++i) {
+                        for (std::size_t i = 0; i < topographyPoints.size() - 1; ++i) {
                             pathPoints.emplace_back(PathPoint(topographyPoints[i], false));
                         }
                         pathPoints.emplace_back(PathPoint(topographyPoints.back(), pathPortal->isJumpOriginPortal()));
@@ -244,7 +244,7 @@ namespace urchin {
         }
 
         Point3<float> previousTransitionPoint = portals[0]->getTransitionPoint();
-        for (std::size_t i=0; i<portals.size(); ++i) {
+        for (std::size_t i = 0; i < portals.size(); ++i) {
             if (portals[i]->isJumpOriginPortal()) {
                 assert(portals.size() >= i + 1); //jump is composed of two portals (start jump portal & end jump portal)
 

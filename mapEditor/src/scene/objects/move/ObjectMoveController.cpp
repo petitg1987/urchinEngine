@@ -62,7 +62,7 @@ namespace urchin {
 
     bool ObjectMoveController::isCameraMoved() const {
         Camera* camera = sceneManager->getActiveRenderer3d()->getCamera();
-        for (unsigned int i=0; i<16; ++i) {
+        for (unsigned int i = 0; i < 16; ++i) {
             if (this->oldCameraViewMatrix(i) != camera->getViewMatrix()(i)) {
                 return true;
             }

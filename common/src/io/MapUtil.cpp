@@ -41,7 +41,7 @@ namespace urchin {
         std::map<std::string, std::string> outputMap;
         assert(mapListString.size() % 2 == 0);
 
-        for (std::size_t i=0; i<mapListString.size(); i+=2) {
+        for (std::size_t i = 0; i < mapListString.size(); i += 2) {
             std::string key = unescape(mapListString[i]);
             std::string value = unescape(mapListString[i + 1]);
             outputMap.insert(std::pair<std::string, std::string>(key, value));

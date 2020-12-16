@@ -184,7 +184,7 @@ namespace urchin {
             // product has the largest length.
             int minAxis = 0; //0=X, 1=Y, 2=Z
             T minValue = std::abs(lineDirection.X);
-            for (int i=1; i<3; ++i) {
+            for (int i = 1; i < 3; ++i) {
                 if (minValue > std::abs(lineDirection[i])) {
                     minValue = std::abs(lineDirection[i]);
                     minAxis = i;
@@ -211,15 +211,15 @@ namespace urchin {
                     convexObject2.getSupportPoint((-v2).template cast<float>(), true).template cast<T>(),
                     convexObject2.getSupportPoint((-v3).template cast<float>(), true).template cast<T>()};
 
-            for (std::size_t i=0; i<2; ++i) {
+            for (std::size_t i = 0; i < 2; ++i) {
                 convexHullPoints[i].point = simplex.getPoint(i);
                 supportPointsA[i] = simplex.getSupportPointA(i);
                 supportPointsB[i] = simplex.getSupportPointB(i);
             }
-            for (std::size_t i=0; i<3; ++i) {
-                convexHullPoints[i+2].point = supportPoints[i] - supportPointsMinus[i];
-                supportPointsA[i+2] = supportPoints[i];
-                supportPointsB[i+2] = supportPointsMinus[i];
+            for (std::size_t i = 0; i < 3; ++i) {
+                convexHullPoints[i + 2].point = supportPoints[i] - supportPointsMinus[i];
+                supportPointsA[i + 2] = supportPoints[i];
+                supportPointsB[i + 2] = supportPointsMinus[i];
             }
 
             //keep only the tetrahedron containing the origin
@@ -291,8 +291,8 @@ namespace urchin {
      */
     template<class T> void EPAAlgorithm<T>::determineInitialTriangles(std::map<std::size_t, ConvexHullPoint<T>>& convexHullPoints,
             std::map<std::size_t, IndexedTriangle3D<T>>& indexedTriangles) const {
-        for (std::size_t i=0; i<3; ++i) {
-            for (std::size_t j=i+1; j<4; ++j) {
+        for (std::size_t i = 0; i < 3; ++i) {
+            for (std::size_t j = i + 1; j < 4; ++j) {
                 T distance = convexHullPoints.at(i).point.vector(convexHullPoints.at(j).point).length();
                 T minPointsDistance = (std::nextafter(distance, std::numeric_limits<T>::max()) - distance) * (T)10.0;
 
@@ -302,9 +302,9 @@ namespace urchin {
             }
         }
 
-        constexpr std::size_t indices[4][3] =         {{0, 1, 2}, {0, 3, 1}, {0, 2, 3}, {1, 3, 2}};
-        constexpr std::size_t revIndices[4][3] =     {{0, 2, 1}, {0, 1, 3}, {0, 3, 2}, {1, 2, 3}};
-        for (std::size_t i=0; i<4; ++i) {
+        constexpr std::size_t indices[4][3] = {{0, 1, 2}, {0, 3, 1}, {0, 2, 3}, {1, 3, 2}};
+        constexpr std::size_t revIndices[4][3] = {{0, 2, 1}, {0, 1, 3}, {0, 3, 2}, {1, 2, 3}};
+        for (std::size_t i = 0; i < 4; ++i) {
             const std::size_t pointOutsideTriangle = 6 - (indices[i][0] + indices[i][1] + indices[i][2]);
             const Vector3<T> normalTriangle = IndexedTriangle3D<T>(indices[i]).computeNormal(
                     convexHullPoints.at(indices[i][0]).point,
@@ -318,12 +318,12 @@ namespace urchin {
 
             if (dotProduct < -dotProductTolerance) {
                 indexedTriangles.insert(std::pair<std::size_t, IndexedTriangle3D<T>>(i, IndexedTriangle3D<T>(indices[i])));
-                for (std::size_t pointI=0; pointI<3; ++pointI) {
+                for (std::size_t pointI = 0; pointI < 3; ++pointI) {
                     convexHullPoints.at(indices[i][pointI]).triangleIndices.push_back(i);
                 }
             } else if (dotProduct > dotProductTolerance) {
                 indexedTriangles.insert(std::pair<std::size_t, IndexedTriangle3D<T>>(i, IndexedTriangle3D<T>(revIndices[i])));
-                for (std::size_t pointI=0; pointI<3; ++pointI) {
+                for (std::size_t pointI = 0; pointI < 3; ++pointI) {
                     convexHullPoints.at(revIndices[i][pointI]).triangleIndices.push_back(i);
                 }
             } else {
@@ -390,7 +390,7 @@ namespace urchin {
 
         logStream << errorMessage << std::endl;
         logStream << "Convex object 1: " << std::endl << convexObject1.toString() << std::endl;
-        logStream << "Convex object 2: " << std::endl<< convexObject2.toString() << std::endl;
+        logStream << "Convex object 2: " << std::endl << convexObject2.toString() << std::endl;
         logStream << "Simplex: " << std::endl << gjkResult.getSimplex();
 
         Logger::instance()->logError(logStream.str());

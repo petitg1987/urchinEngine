@@ -13,7 +13,7 @@ namespace urchin {
         Point3<float> min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
         Point3<float> max(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
         for (auto constMesh : constMeshes) {
-            for (unsigned int i=0; i<constMesh->getNumberVertices(); i++) {
+            for (unsigned int i = 0; i < constMesh->getNumberVertices(); i++) {
                 if (min.X > constMesh->getBaseVertices()[i].X) {
                     min.X = constMesh->getBaseVertices()[i].X;
                 }

@@ -21,18 +21,18 @@ namespace urchin {
         //create the textures
         skyboxImages = new Image*[6];
         unsigned int skyboxSize = 1;
-        for (std::size_t i=0; i < 6; ++i) {
+        for (std::size_t i = 0; i < 6; ++i) {
             if (!filenames[i].empty()) {
                 skyboxImages[i] = MediaManager::instance()->getMedia<Image>(filenames[i]);
                 skyboxSize = skyboxImages[i]->getWidth();
             }
         }
 
-        for (std::size_t i=0; i < 6; ++i) {
+        for (std::size_t i = 0; i < 6; ++i) {
             if (filenames[i].empty()) {
                 std::vector<unsigned char> defaultTexPixels;
                 defaultTexPixels.reserve(skyboxSize * skyboxSize);
-                for (std::size_t pixelIndex=0; pixelIndex < skyboxSize * skyboxSize; ++pixelIndex) {
+                for (std::size_t pixelIndex = 0; pixelIndex < skyboxSize * skyboxSize; ++pixelIndex) {
                     defaultTexPixels.push_back(150); //R
                     defaultTexPixels.push_back(50); //G
                     defaultTexPixels.push_back(255); //B
@@ -41,7 +41,7 @@ namespace urchin {
             }
         }
 
-        for (std::size_t i=0; i < 6 - 1; ++i) {
+        for (std::size_t i = 0; i < 6 - 1; ++i) {
             unsigned int widthSize = skyboxImages[i]->getWidth();
             unsigned int heightSize = skyboxImages[i]->getHeight();
             TextureFormat textureFormat = skyboxImages[0]->retrieveTextureFormat();

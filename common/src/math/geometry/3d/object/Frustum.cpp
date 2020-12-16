@@ -14,7 +14,7 @@ namespace urchin {
 
     /**
     * Frustum constructor from angle, ratio and near/far distances.
-    * Default frustum position: x=0, y=0, z=0
+    * Default frustum position: x = 0, y = 0, z = 0
     * Default frustum view direction: z axis
     * Default frustum up vector: y axis
     */
@@ -80,7 +80,7 @@ namespace urchin {
 
     /**
     * Frustum builder from angle, ratio and near/far distances.
-    * Default frustum position: x=0, y=0, z=0
+    * Default frustum position: x = 0, y = 0, z = 0
     * Default frustum view direction: z axis
     * Default frustum up vector: y axis
     */
@@ -167,7 +167,7 @@ namespace urchin {
         T maxPointDotDirection = frustumPoints[0].toVector().dotProduct(direction);
         Point3<T> maxPoint = frustumPoints[0];
 
-        for (unsigned int i=1;i<8; ++i) {
+        for (unsigned int i = 1; i < 8; ++i) {
             T currentPointDotDirection  = frustumPoints[i].toVector().dotProduct(direction);
             if (currentPointDotDirection > maxPointDotDirection) {
                 maxPointDotDirection = currentPointDotDirection;

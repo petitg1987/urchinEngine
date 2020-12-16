@@ -18,7 +18,7 @@ namespace urchin {
 
         unsigned int width, height;
         lodepng::State state;
-        state.info_raw.bitdepth=16;
+        state.info_raw.bitdepth = 16;
         std::vector<unsigned char> pixelsRGBA16bits;
         unsigned int errorRead = lodepng::decode(pixelsRGBA16bits, width, height, state, png);
         if (errorRead != 0) {
@@ -58,20 +58,20 @@ namespace urchin {
     std::vector<unsigned char> LoaderPNG::extract8BitsChannels(const std::vector<unsigned char>& pixelsRGBA16bits, unsigned int channelsMask) {
         std::vector<unsigned char> pixels;
         size_t nbChannels = std::bitset<8>(channelsMask).count();
-        pixels.reserve((pixelsRGBA16bits.size()/(4*2))*nbChannels);
+        pixels.reserve((pixelsRGBA16bits.size()/(4 * 2)) * nbChannels);
 
-        for (std::size_t i=7; i<pixelsRGBA16bits.size(); i+=8) {
+        for (std::size_t i = 7; i < pixelsRGBA16bits.size(); i += 8) {
             if (channelsMask & 1u) { //red
-                pixels.push_back(pixelsRGBA16bits[i-6]);
+                pixels.push_back(pixelsRGBA16bits[i - 6]);
             }
             if (channelsMask & 2u) { //green
-                pixels.push_back(pixelsRGBA16bits[i-4]);
+                pixels.push_back(pixelsRGBA16bits[i - 4]);
             }
             if (channelsMask & 4u) { //blue
-                pixels.push_back(pixelsRGBA16bits[i-2]);
+                pixels.push_back(pixelsRGBA16bits[i - 2]);
             }
             if (channelsMask & 8u) { //alpha
-                pixels.push_back(pixelsRGBA16bits[i-0]);
+                pixels.push_back(pixelsRGBA16bits[i - 0]);
             }
         }
 

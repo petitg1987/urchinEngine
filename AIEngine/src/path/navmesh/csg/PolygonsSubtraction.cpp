@@ -45,7 +45,7 @@ namespace urchin {
                 subtractedPolygons.emplace_back(minuendPolygon);
             }
         } else if (solution.Childs.size() > 1) {
-            for (std::size_t i=0; i<solution.Childs.size(); ++i) {
+            for (std::size_t i = 0; i < solution.Childs.size(); ++i) {
                 std::string subtractionName = "[" + minuendPolygon.getName() + "] - [" + subtrahendPolygon.getName()+ "]{" + std::to_string(i) + "}";
                 subtractedPolygons.emplace_back(CSGPolygonPath(solution.Childs[i]->Contour, subtractionName).template toCSGPolygon<T>());
             }
