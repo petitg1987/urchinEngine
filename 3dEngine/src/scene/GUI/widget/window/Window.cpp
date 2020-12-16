@@ -76,7 +76,7 @@ namespace urchin {
 
             state = MOVING;
         } else if (key == InputDeviceKey::MOUSE_LEFT && closeZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
-            state =CLOSING;
+            state = CLOSING;
         }
 
         Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),

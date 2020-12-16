@@ -75,7 +75,7 @@ namespace urchin {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<T>::max_digits10);
 
-        logStream<<message<<std::endl;
+        logStream << message << std::endl;
 
         for (std::size_t i = 0; i < polygons.size(); ++i) {
             logStream << "Polygon " << i << std::endl << polygons[i];

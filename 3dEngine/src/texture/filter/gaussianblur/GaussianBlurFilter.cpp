@@ -61,7 +61,7 @@ namespace urchin {
         std::vector<float> weightsLinearSampling(nbTextureFetch);
 
         for (unsigned int i = 0; i < nbTextureFetch; ++i) {
-            if (i * 2 + 1>=blurSize) {
+            if (i * 2 + 1 >= blurSize) {
                 weightsLinearSampling[i] = weights[i * 2];
             } else {
                 weightsLinearSampling[i] = weights[i * 2] + weights[i * 2 + 1];

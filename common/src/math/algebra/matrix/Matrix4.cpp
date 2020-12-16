@@ -28,10 +28,10 @@ namespace urchin {
         T m21, T m22, T m23, T m24,
         T m31, T m32, T m33, T m34,
         T m41, T m42, T m43, T m44) {
-        a11=m11; a12=m12; a13=m13; a14=m14;
-        a21=m21; a22=m22; a23=m23; a24=m24;
-        a31=m31; a32=m32; a33=m33; a34=m34;
-        a41=m41; a42=m42; a43=m43; a44=m44;
+        a11 = m11; a12 = m12; a13 = m13; a14 = m14;
+        a21 = m21; a22 = m22; a23 = m23; a24 = m24;
+        a31 = m31; a32 = m32; a33 = m33; a34 = m34;
+        a41 = m41; a42 = m42; a43 = m43; a44 = m44;
     }
 
     template<class T> void Matrix4<T>::setIdentity() {

@@ -27,8 +27,8 @@ namespace urchin {
             static bool isChar(const std::string&);
             static char toChar(const std::string&);
 
-            static long long toLongLong(float, float scale=FLOAT_INT_SCALE);
-            static float toFloat(long long, float scale=FLOAT_INT_SCALE);
+            static long long toLongLong(float, float scale = FLOAT_INT_SCALE);
+            static float toFloat(long long, float scale = FLOAT_INT_SCALE);
 
             static Point2<float> toPoint2(const std::string&);
             static Point3<float> toPoint3(const std::string&);

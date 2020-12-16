@@ -118,14 +118,14 @@ namespace urchin {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 
-        logStream<<message<<std::endl;
-        logStream<<" - Termination tolerance: "<<terminationTolerance<<std::endl;
-        logStream<<" - Object 1: "<<std::endl<<object1.getLocalObject()->toString()<<std::endl;
-        logStream<<" - Object 1, from: "<<object1.getFrom()<<std::endl;
-        logStream<<" - Object 1, to: "<<object1.getTo()<<std::endl;
-        logStream<<" - Object 2: "<<std::endl<<object2.getLocalObject()->toString()<<std::endl;
-        logStream<<" - Object 2, from: "<<object2.getFrom()<<std::endl;
-        logStream<<" - Object 2, to: "<<object2.getTo();
+        logStream << message << std::endl;
+        logStream << " - Termination tolerance: " << terminationTolerance << std::endl;
+        logStream << " - Object 1: " << std::endl << object1.getLocalObject()->toString() << std::endl;
+        logStream << " - Object 1, from: " << object1.getFrom() << std::endl;
+        logStream << " - Object 1, to: " << object1.getTo() << std::endl;
+        logStream << " - Object 2: " << std::endl << object2.getLocalObject()->toString() << std::endl;
+        logStream << " - Object 2, from: " << object2.getFrom() << std::endl;
+        logStream << " - Object 2, to: " << object2.getTo();
         Logger::instance()->log(logLevel, logStream.str());
     }
 

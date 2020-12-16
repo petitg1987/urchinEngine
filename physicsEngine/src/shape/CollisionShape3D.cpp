@@ -64,10 +64,10 @@ namespace urchin {
 
             if (isBigShape) {
                 std::stringstream logStream;
-                logStream<<"Not optimal margin on shape id "<<shapeId<<"."<<std::endl;
-                logStream<<" - Current margin: "<<innerMargin<<std::endl;
-                logStream<<" - Expected margin: "<<initialInnerMargin<<std::endl;
-                logStream<<" - Shape length: "<<shapeLength;
+                logStream << "Not optimal margin on shape id " << shapeId << "." << std::endl;
+                logStream << " - Current margin: " << innerMargin << std::endl;
+                logStream << " - Expected margin: " << initialInnerMargin << std::endl;
+                logStream << " - Shape length: " << shapeLength;
                 Logger::instance()->logWarning(logStream.str());
             }
         }

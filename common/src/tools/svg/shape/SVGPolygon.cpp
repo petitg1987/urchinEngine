@@ -15,13 +15,13 @@ namespace urchin {
 
     std::string SVGPolygon::getShapeTag() const {
         std::stringstream stream;
-        stream<<"<polygon points=\"";
+        stream << "<polygon points=\"";
         for (const auto& polygonPoint : polygonPoints) {
-            stream<<polygonPoint.X<<","<<polygonPoint.Y<<" ";
+            stream << polygonPoint.X << "," << polygonPoint.Y << " ";
         }
-        stream<<"\"";
+        stream << "\"";
 
-        stream<<" style=\"" + getStyle() + "\" />";
+        stream << " style=\"" + getStyle() + "\" />";
 
         return stream.str();
     }

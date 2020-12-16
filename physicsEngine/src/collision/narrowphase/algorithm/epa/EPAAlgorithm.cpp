@@ -182,7 +182,7 @@ namespace urchin {
             //find best coordinate axis for which i-th component of 'lineDirection' has the smallest absolute value.
             //In this way, the angle between 'lineDirection' and best coordinate axis is the largest. Thus the cross
             // product has the largest length.
-            int minAxis = 0; //0=X, 1=Y, 2=Z
+            int minAxis = 0; //0 = X, 1 = Y, 2 = Z
             T minValue = std::abs(lineDirection.X);
             for (int i = 1; i < 3; ++i) {
                 if (minValue > std::abs(lineDirection[i])) {

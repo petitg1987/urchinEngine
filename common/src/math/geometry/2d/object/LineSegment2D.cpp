@@ -133,17 +133,17 @@ namespace urchin {
 
                 assert(t0 <= t1);
 
-                if (t0>=0.0 && t0<=1.0 && t1>=1.0) { //collinear with intersection
+                if (t0 >= 0.0 && t0 <= 1.0 && t1 >= 1.0) { //collinear with intersection
                     hasIntersection = true;
                     hasFarthestIntersection = true;
                     farthestIntersection = b;
                     return a.translate(T(t0)*r);
-                } else if (t0<=0.0 && t1>=0.0 && t1<=1.0) { //collinear with intersection
+                } else if (t0 <= 0.0 && t1 >= 0.0 && t1 <= 1.0) { //collinear with intersection
                     hasIntersection = true;
                     hasFarthestIntersection = true;
                     farthestIntersection = a.translate(T(t1)*r);
                     return a;
-                } else if (t0>=0.0 && t0<=1.0 && t1>=0.0 && t1<=1.0) { //collinear intersection (other is totally covered by this)
+                } else if (t0 >= 0.0 && t0 <= 1.0 && t1 >= 0.0 && t1 <= 1.0) { //collinear intersection (other is totally covered by this)
                     hasIntersection = true;
                     hasFarthestIntersection = true;
                     farthestIntersection = a.translate(T(t1)*r);

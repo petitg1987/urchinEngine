@@ -115,7 +115,7 @@ namespace urchin {
                 logStream << ", un-tracked: " << std::to_string(unTrackedTime) << "ms/" << unTrackedPercentageTime << "%";
             }
 
-            logStream << ")" <<std::endl;
+            logStream << ")" << std::endl;
         }
 
         for (const auto& child : children) {

@@ -10,19 +10,19 @@ namespace urchin {
     std::string SVGLine::getShapeTag() const {
         std::stringstream stream;
 
-        stream<<"<line x1=\"";
-        stream<<line.getA().X;
-        stream<<"\" y1=\"";
-        stream<<line.getA().Y;
-        stream<<"\"";
+        stream << "<line x1=\"";
+        stream << line.getA().X;
+        stream << "\" y1=\"";
+        stream << line.getA().Y;
+        stream << "\"";
 
-        stream<<" x2=\"";
-        stream<<line.getB().X;
-        stream<<"\" y2=\"";
-        stream<<line.getB().Y;
-        stream<<"\"";
+        stream << " x2=\"";
+        stream << line.getB().X;
+        stream << "\" y2=\"";
+        stream << line.getB().Y;
+        stream << "\"";
 
-        stream<<" style=\"" + getStyle() + "\" />";
+        stream << " style=\"" + getStyle() + "\" />";
 
         return stream.str();
     }

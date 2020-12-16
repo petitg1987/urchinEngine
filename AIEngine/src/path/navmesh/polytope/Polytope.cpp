@@ -75,7 +75,7 @@ namespace urchin {
     std::ostream& operator <<(std::ostream& stream, const Polytope& polytope) {
         unsigned int surfaceIndex = 0;
         for (const auto& surface : polytope.getSurfaces()) {
-            stream<<"Surface "<<surfaceIndex++<<" ";
+            stream << "Surface " << surfaceIndex++ << " ";
             if (const auto* planeSurface = dynamic_cast<PolytopePlaneSurface*>(surface.get())) {
                 for (const auto& point : planeSurface->getCcwPoints()) {
                     stream << "(" << point << ") ";

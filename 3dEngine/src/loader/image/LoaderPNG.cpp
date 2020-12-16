@@ -86,7 +86,7 @@ namespace urchin {
         size_t nbChannels = std::bitset<8>(channelsMask).count();
         pixels.reserve((pixelsRGBA16bits.size()/(4 * 2)) * nbChannels);
 
-        for (std::size_t i = 7; i < pixelsRGBA16bits.size(); i+=8) {
+        for (std::size_t i = 7; i < pixelsRGBA16bits.size(); i += 8) {
             if (channelsMask & 1u) { //red
                 pixels.push_back((uint16_t)((uint16_t)(pixelsRGBA16bits[i - 7] << 8u) | (uint16_t)(pixelsRGBA16bits[i - 6])));
             }

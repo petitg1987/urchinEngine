@@ -56,8 +56,8 @@ namespace urchin {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<T>::max_digits10);
 
-        logStream<<errorMessage<<std::endl;
-        logStream<<simplex;
+        logStream << errorMessage << std::endl;
+        logStream << simplex;
 
         Logger::instance()->logError(logStream.str());
     }

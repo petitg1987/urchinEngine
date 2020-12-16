@@ -191,10 +191,10 @@ namespace urchin {
     template<class T> std::ostream& operator <<(std::ostream& stream, const Simplex<T>& simplex) {
         for (std::size_t i = 0; i < simplex.getSize(); ++i) {
             stream << "Simplex point " << i << " details:" << std::endl;
-            stream << " - Point: " << simplex.getPoint(i) <<std::endl;
-            stream << " - Support point A: " << simplex.getSupportPointA(i) <<std::endl;
-            stream << " - Support point B: " << simplex.getSupportPointB(i) <<std::endl;
-            stream << " - Barycentric: " << simplex.getBarycentric(i) <<std::endl;
+            stream << " - Point: " << simplex.getPoint(i) << std::endl;
+            stream << " - Support point A: " << simplex.getSupportPointA(i) << std::endl;
+            stream << " - Support point B: " << simplex.getSupportPointB(i) << std::endl;
+            stream << " - Barycentric: " << simplex.getBarycentric(i) << std::endl;
         }
         stream << "Closest point to origin: " << simplex.getClosestPointToOrigin();
         return stream;

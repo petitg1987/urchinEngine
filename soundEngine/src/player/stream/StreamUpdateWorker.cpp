@@ -43,7 +43,7 @@ namespace urchin {
         delete[] bufferId;
 
         //initialize buffers/chunks
-        for (unsigned int i  =0; i < nbChunkBuffer; ++i) {
+        for (unsigned int i  = 0; i < nbChunkBuffer; ++i) {
             fillAndPushChunk(task, i);
         }
 
@@ -66,7 +66,7 @@ namespace urchin {
     void StreamUpdateWorker::removeTask(const Sound* sound) {
         std::lock_guard<std::mutex> lock(tasksMutex);
 
-        for (auto it=tasks.begin(); it != tasks.end(); ++it) {
+        for (auto it = tasks.begin(); it != tasks.end(); ++it) {
             if ((*it)->getSourceId() == sound->getSourceId()) {
                 deleteTask(*it);
                 tasks.erase(it);

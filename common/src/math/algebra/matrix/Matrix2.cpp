@@ -20,8 +20,8 @@ namespace urchin {
 
     template<class T> void Matrix2<T>::setValues(T m11, T m12,
             T m21, T m22) {
-        a11=m11; a12=m12;
-        a21=m21; a22=m22;
+        a11 = m11; a12 = m12;
+        a21 = m21; a22 = m22;
     }
 
     template<class T> void Matrix2<T>::setIdentity() {

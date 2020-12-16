@@ -237,7 +237,7 @@ namespace urchin {
 
             std::size_t nextPosition = 0;
             for (std::size_t i = 0; i < localizedShapeTableView->getLocalizedShapes().size(); ++i) {
-                if (nextPosition<=localizedShapeTableView->getLocalizedShapes()[i]->position) {
+                if (nextPosition <= localizedShapeTableView->getLocalizedShapes()[i]->position) {
                     nextPosition = localizedShapeTableView->getLocalizedShapes()[i]->position + 1;
                 }
             }

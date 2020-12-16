@@ -95,7 +95,7 @@ float computeShadowContribution(int lightIndex, float depthValue, vec4 position,
                 vec4 shadowCoord = (((lightsInfo[lightIndex].mLightProjectionView[i] * position) / 2.0) + 0.5);
 
                 //model has produceShadow flag to true ?
-                if (shadowCoord.s<=1.0 && shadowCoord.s>=0.0 && shadowCoord.t<=1.0 && shadowCoord.t>=0.0) {
+                if (shadowCoord.s <= 1.0 && shadowCoord.s >= 0.0 && shadowCoord.t <= 1.0 && shadowCoord.t >= 0.0) {
                     vec2 moments = texture2DArray(lightsInfo[lightIndex].shadowMapTex, vec3(shadowCoord.st, i)).rg;
                     shadowContribution = computePercentLit(shadowCoord.z, moments, NdotL);
                 }

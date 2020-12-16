@@ -24,9 +24,9 @@ namespace urchin {
     template<class T> void Matrix3<T>::setValues(T m11, T m12, T m13,
         T m21, T m22, T m23,
         T m31, T m32, T m33) {
-        a11=m11; a12=m12; a13=m13;
-        a21=m21; a22=m22; a23=m23;
-        a31=m31; a32=m32; a33=m33;
+        a11 = m11; a12 = m12; a13 = m13;
+        a21 = m21; a22 = m22; a23 = m23;
+        a31 = m31; a32 = m32; a33 = m33;
     }
 
     template<class T> void Matrix3<T>::setIdentity() {

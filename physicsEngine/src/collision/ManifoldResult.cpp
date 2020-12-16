@@ -105,7 +105,7 @@ namespace urchin {
             contactPoints[i].updateDepth(newDepth);
         }
 
-        for (auto i = (int)nbContactPoint - 1; i>=0; --i) { //loop from last to first in order to be able to remove contact points
+        for (auto i = (int)nbContactPoint - 1; i >= 0; --i) { //loop from last to first in order to be able to remove contact points
             if (contactPoints[i].getDepth() > contactBreakingThreshold) {
                 removeContactPoint((unsigned int)i);
             } else {

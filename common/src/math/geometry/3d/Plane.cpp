@@ -146,7 +146,7 @@ namespace urchin {
     }
 
     template<class T> std::ostream& operator <<(std::ostream& stream, const Plane<T>& p) {
-        return stream << "Plane normal: "<<p.getNormal()<<" | Distance to origin: "<<p.getDistanceToOrigin();
+        return stream << "Plane normal: " << p.getNormal() << " | Distance to origin: " << p.getDistanceToOrigin();
     }
 
     //explicit template

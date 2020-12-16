@@ -22,16 +22,16 @@ namespace urchin {
         std::ofstream fileStream;
         fileStream.open(filename);
 
-        fileStream<<"<!DOCTYPE html>"<<std::endl;
-        fileStream<<"<html>"<<std::endl;
-        fileStream<<"<body>"<<std::endl;
-        fileStream<< R"(<svg height=")" + std::to_string(zoomPercentage) + R"(%" width=")" + std::to_string(zoomPercentage) + R"(%" viewbox=")" + retrieveViewBox() + "\">"<<std::endl;
+        fileStream << "<!DOCTYPE html>" << std::endl;
+        fileStream << "<html>" << std::endl;
+        fileStream << "<body>" << std::endl;
+        fileStream << R"(<svg height=")" + std::to_string(zoomPercentage) + R"(%" width=")" + std::to_string(zoomPercentage) + R"(%" viewbox=")" + retrieveViewBox() + "\">" << std::endl;
 
         addShapes(fileStream);
 
-        fileStream<<"</svg>"<<std::endl;
-        fileStream<<"</body>"<<std::endl;
-        fileStream<<"</html>"<<std::endl;
+        fileStream << "</svg>" << std::endl;
+        fileStream << "</body>" << std::endl;
+        fileStream << "</html>" << std::endl;
 
         fileStream.close();
     }
@@ -56,7 +56,7 @@ namespace urchin {
 
     void SVGExporter::addShapes(std::ofstream& fileStream) const {
         for (const auto& shape : shapes) {
-            fileStream<<"  "<<shape->getShapeTag()<<std::endl;
+            fileStream << "  " << shape->getShapeTag() << std::endl;
         }
     }
 }

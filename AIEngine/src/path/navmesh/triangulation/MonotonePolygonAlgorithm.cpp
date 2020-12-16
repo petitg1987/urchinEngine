@@ -187,7 +187,7 @@ namespace urchin {
                 Vector2<float> originToNext = polygonPoints[i].vector(polygonPoints[nextIndex]);
                 float orientationResult = previousToOrigin.crossProduct(originToNext);
 
-                if (orientationResult>=0.0) {
+                if (orientationResult >= 0.0f) {
                     pointType = PointType::START_VERTEX;
                 } else {
                     pointType = PointType::SPLIT_VERTEX;
@@ -198,7 +198,7 @@ namespace urchin {
                 Vector2<float> originToNext = polygonPoints[i].vector(polygonPoints[nextIndex]);
                 float orientationResult = previousToOrigin.crossProduct(originToNext);
 
-                if (orientationResult>=0.0) {
+                if (orientationResult >= 0.0f) {
                     pointType = PointType::END_VERTEX;
                 } else {
                     pointType = PointType::MERGE_VERTEX;
@@ -471,7 +471,7 @@ namespace urchin {
         logStream << message << std::endl;
         logStream << "Monotone polygon output data:" << std::endl;
         for (std::size_t i = 0; i < yMonotonePolygons.size(); ++i) {
-            logStream << " - Monotone polygon "<<i<<":" << std::endl;
+            logStream << " - Monotone polygon " << i << ":" << std::endl;
             for (std::size_t pointIndex : yMonotonePolygons[i].getCcwPoints()) {
                 logStream << " - " << polygonPoints[pointIndex] << std::endl;
             }

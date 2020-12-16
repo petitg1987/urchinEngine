@@ -86,7 +86,7 @@ namespace urchin {
             glGetShaderInfoLog(shaderFileId, infoLogLength, nullptr, infoLog);
 
             std::ostringstream buffer;
-            buffer<<"Error in shader file: "<<shaderFilename<<"."<<std::endl<<infoLog;
+            buffer<<"Error in shader file: "<< shaderFilename << "." << std::endl << infoLog;
 
             delete[] infoLog;
             throw std::runtime_error(buffer.str());
@@ -102,7 +102,7 @@ namespace urchin {
             glGetProgramInfoLog(programID, infoLogLength, nullptr, infoLog);
 
             std::ostringstream buffer;
-            buffer<<"Error in shader file(s): "<<shaderFilenames<<"."<<std::endl<<infoLog;
+            buffer<<"Error in shader file(s): " << shaderFilenames << "." << std::endl << infoLog;
 
             delete[] infoLog;
             throw std::runtime_error(buffer.str());

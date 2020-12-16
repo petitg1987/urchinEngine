@@ -58,7 +58,7 @@ namespace urchin {
 
         if (Check::instance()->additionalChecksEnable()) {
             double area = 0.0;
-            for (std::size_t i = 0, prevI = cwHolePoints.size() - 1; i < cwHolePoints.size(); prevI=i++) {
+            for (std::size_t i = 0, prevI = cwHolePoints.size() - 1; i < cwHolePoints.size(); prevI = i++) {
                 area += (cwHolePoints[i].X - cwHolePoints[prevI].X) * (cwHolePoints[i].Y + cwHolePoints[prevI].Y);
             }
             if (area < 0.0) {
@@ -305,18 +305,18 @@ namespace urchin {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 
-        logStream<<message<<std::endl;
-        logStream<<"Polygon points:"<<std::endl;
+        logStream << message << std::endl;
+        logStream << "Polygon points:" << std::endl;
         for (const auto& polygonPoint : polygonPoints) {
-            logStream<<" - "<<polygonPoint<<std::endl;
+            logStream << " - " << polygonPoint << std::endl;
         }
-        logStream<<"Contour names:"<<std::endl;
+        logStream << "Contour names:" << std::endl;
         for (const auto& contourName : contourNames) {
-            logStream<<" - "<<contourName<<std::endl;
+            logStream << " - " << contourName << std::endl;
         }
-        logStream<<"End contour indices:"<<std::endl;
+        logStream << "End contour indices:" << std::endl;
         for (const auto& endContourIndex : endContourIndices) {
-            logStream<<" - "<<endContourIndex<<std::endl;
+            logStream << " - " << endContourIndex << std::endl;
         }
 
         Logger::instance()->log(logLevel, logStream.str());
@@ -326,12 +326,12 @@ namespace urchin {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 
-        logStream<<message<<std::endl;
-        logStream<<"Monotone polygon triangles output data:"<<std::endl;
+        logStream << message << std::endl;
+        logStream << "Monotone polygon triangles output data:" << std::endl;
         for (const auto& triangle : triangles) {
-            logStream<<" - {"<<triangle->getIndex(0)<<": "<<polygonPoints[triangle->getIndex(0)]
-                     <<"}, {"<<triangle->getIndex(1)<<": "<<polygonPoints[triangle->getIndex(1)]
-                     <<"}, {"<<triangle->getIndex(2)<<": "<<polygonPoints[triangle->getIndex(2)]<<"}"<<std::endl;
+            logStream <<" - {" << triangle->getIndex(0) << ": " << polygonPoints[triangle->getIndex(0)]
+                      <<"}, {" << triangle->getIndex(1) << ": " << polygonPoints[triangle->getIndex(1)]
+                      <<"}, {" << triangle->getIndex(2) << ": " << polygonPoints[triangle->getIndex(2)] << "}" << std::endl;
         }
         Logger::instance()->log(logLevel, logStream.str());
     }

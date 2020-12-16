@@ -28,7 +28,7 @@ namespace urchin {
                     max.X = constMesh->getBaseVertices()[i].X;
                 }
                 if (max.Y < constMesh->getBaseVertices()[i].Y) {
-                    max.Y =constMesh->getBaseVertices()[i].Y;
+                    max.Y = constMesh->getBaseVertices()[i].Y;
                 }
                 if (max.Z < constMesh->getBaseVertices()[i].Z) {
                     max.Z = constMesh->getBaseVertices()[i].Z;

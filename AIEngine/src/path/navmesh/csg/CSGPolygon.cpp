@@ -176,7 +176,7 @@ namespace urchin {
 
             //assert clockwise order
             double area = 0.0;
-            for (std::size_t i = 0, prevI = cwPoints.size() - 1; i < cwPoints.size(); prevI=i++) {
+            for (std::size_t i = 0, prevI = cwPoints.size() - 1; i < cwPoints.size(); prevI = i++) {
                 area += (double)((cwPoints[i].X - cwPoints[prevI].X) * (cwPoints[i].Y + cwPoints[prevI].Y));
             }
             if (area < 0.0) {
@@ -224,8 +224,8 @@ namespace urchin {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 
-        logStream<<message<<std::endl;
-        logStream<<inputPolygon;
+        logStream << message << std::endl;
+        logStream << inputPolygon;
 
         Logger::instance()->log(logLevel, logStream.str());
     }

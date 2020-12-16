@@ -51,7 +51,7 @@ namespace urchin {
             FileReaderUtil::nextLine(file, buffer);
             iss.clear(); iss.str(buffer);
             iss >> boneInfos[i].name >> boneInfos[i].parent >> boneInfos[i].flags >>boneInfos[i].startIndex;
-            boneInfos[i].name =boneInfos[i].name.substr(1, boneInfos[i].name.length()-2); //remove quot
+            boneInfos[i].name = boneInfos[i].name.substr(1, boneInfos[i].name.length()-2); //remove quot
         }
         FileReaderUtil::nextLine(file, buffer); //buffer = "}"
 
