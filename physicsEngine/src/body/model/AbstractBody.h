@@ -15,7 +15,7 @@ namespace urchin {
     class AbstractBody : public IslandElement {
         public:
             AbstractBody(std::string, Transform<float>, std::shared_ptr<const CollisionShape3D>);
-            AbstractBody(const AbstractBody&); //TODO remove ???
+            AbstractBody(const AbstractBody&);
             ~AbstractBody() override = default;
 
             void setTransform(const Transform<float>&);
@@ -45,7 +45,7 @@ namespace urchin {
             float getCcdMotionThreshold() const;
             void setCcdMotionThreshold(float);
 
-            virtual PairContainer* getPairContainer() const; //TODO internal only
+            virtual PairContainer* getPairContainer() const;
 
             bool isStatic() const;
             virtual void setIsStatic(bool);

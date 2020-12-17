@@ -26,6 +26,7 @@ namespace urchin {
     }
 
     AbstractBody::AbstractBody(const AbstractBody& abstractBody) :
+            IslandElement(abstractBody),
             ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
             transform(abstractBody.getTransform()),
             isManuallyMoved(false),

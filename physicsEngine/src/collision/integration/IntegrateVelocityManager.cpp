@@ -21,14 +21,15 @@ namespace urchin {
         //integrate velocities and apply damping
         for (auto abstractBody : bodyManager->getBodies()) {
             RigidBody* body = RigidBody::upCast(abstractBody);
-            if (body && body->isActive()) { //TODO reduce call to body to avoid mutex
-                //integrate velocity
-                body->setLinearVelocity(body->getLinearVelocity() + (body->getTotalMomentum() * body->getInvMass()));
-                body->setAngularVelocity(body->getAngularVelocity() + (body->getTotalTorqueMomentum() * body->getInvWorldInertia()));
+            if (body && body->isActive()) {
+                float dampingLinearFactor = powf(1.0f - body->getLinearDamping(), dt);
+                float dampingAngularFactor = powf(1.0f - body->getAngularDamping(), dt);
 
-                //apply damping
-                body->setLinearVelocity(body->getLinearVelocity() * powf(1.0f - body->getLinearDamping(), dt));
-                body->setAngularVelocity(body->getAngularVelocity() * powf(1.0f - body->getAngularDamping(), dt));
+                Vector3<float> newLinearVelocity = (body->getLinearVelocity() + body->getTotalMomentum() * body->getInvMass()) * dampingLinearFactor;
+                Vector3<float> newAngularVelocity = (body->getAngularVelocity() + body->getTotalTorqueMomentum() * body->getInvWorldInertia()) * dampingAngularFactor;
+
+                body->setLinearVelocity(newLinearVelocity);
+                body->setAngularVelocity(newAngularVelocity);
 
                 //reset momentum
                 body->resetMomentum();

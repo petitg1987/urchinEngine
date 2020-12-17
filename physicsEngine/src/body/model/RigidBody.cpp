@@ -198,7 +198,7 @@ namespace urchin {
     }
 
     Matrix3<float> RigidBody::getInvWorldInertia() const { //TODO compute invWorldInertia only when physicTransform is updated ?
-        if (isStatic()) {
+        if (isStatic()) { //TODO useless mutex in isStatic()
             return Matrix3<float>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
         }
 

@@ -9,6 +9,7 @@ namespace urchin {
     class IslandElement {
         public:
             IslandElement();
+            IslandElement(const IslandElement&);
             virtual ~IslandElement() = default;
 
             void setIslandElementId(unsigned int);
