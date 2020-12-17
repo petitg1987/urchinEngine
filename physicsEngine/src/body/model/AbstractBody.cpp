@@ -6,12 +6,11 @@
 
 namespace urchin {
 
+    //static
+    uint_fast32_t AbstractBody::nextObjectId = 0;
+
     AbstractBody::AbstractBody(std::string id, Transform<float> transform, std::shared_ptr<const CollisionShape3D> shape) :
             ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
-            bIsNew(false),
-            bIsDeleted(false),
-            bNeedFullRefresh(false),
-            workBody(nullptr),
             transform(std::move(transform)),
             isManuallyMoved(false),
             id(std::move(id)),
@@ -21,16 +20,13 @@ namespace urchin {
             rollingFriction(0.0f),
             ccdMotionThreshold(0.0f),
             bIsStatic(true),
-            bIsActive(false) {
+            bIsActive(false),
+            objectId(nextObjectId++) {
         initialize(0.2f, 0.5f, 0.0f);
     }
 
     AbstractBody::AbstractBody(const AbstractBody& abstractBody) :
             ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
-            bIsNew(false),
-            bIsDeleted(false),
-            bNeedFullRefresh(false),
-            workBody(nullptr),
             transform(abstractBody.getTransform()),
             isManuallyMoved(false),
             id(abstractBody.getId()),
@@ -40,16 +36,14 @@ namespace urchin {
             rollingFriction(0.0f),
             ccdMotionThreshold(0.0f),
             bIsStatic(true),
-            bIsActive(false) {
+            bIsActive(false),
+            objectId(nextObjectId++) {
         initialize(abstractBody.getRestitution(), abstractBody.getFriction(), abstractBody.getRollingFriction());
         setCcdMotionThreshold(abstractBody.getCcdMotionThreshold());
     }
 
     void AbstractBody::initialize(float restitution, float friction, float rollingFriction) {
         //technical data
-        bIsNew.store(false, std::memory_order_relaxed);
-        bIsDeleted.store(false, std::memory_order_relaxed);
-        bNeedFullRefresh.store(false, std::memory_order_relaxed);
         bIsStatic.store(true, std::memory_order_relaxed);
         bIsActive.store(false, std::memory_order_relaxed);
 
@@ -67,76 +61,33 @@ namespace urchin {
         ccdMotionThreshold = (scaledShape->getMinDistanceToCenter() * 2.0f) * ccdMotionThresholdFactor;
     }
 
-    void AbstractBody::setIsNew(bool isNew) {
-        this->bIsNew.store(isNew, std::memory_order_relaxed);
-    }
-
-    bool AbstractBody::isNew() const {
-        return bIsNew.load(std::memory_order_relaxed);
-    }
-
-    void AbstractBody::markAsDeleted() {
-        this->bIsDeleted.store(true, std::memory_order_relaxed);
-    }
-
-    bool AbstractBody::isDeleted() const {
-        return bIsDeleted.load(std::memory_order_relaxed);
-    }
-
-    void AbstractBody::setNeedFullRefresh(bool needFullRefresh) {
-        this->bNeedFullRefresh.store(needFullRefresh, std::memory_order_relaxed);
-    }
-
-    bool AbstractBody::needFullRefresh() const {
-        return bNeedFullRefresh.load(std::memory_order_relaxed);
-    }
-
-    void AbstractBody::setWorkBody(AbstractWorkBody* workBody) {
-        this->workBody = workBody;
-    }
-
-    AbstractWorkBody* AbstractBody::getWorkBody() const {
-        return workBody;
-    }
-
-    void AbstractBody::updateTo(AbstractWorkBody* workBody) {
-        #ifndef NDEBUG
-            assert(!bodyMutex.try_lock()); //body mutex should be locked before call this method
-        #endif
-
-        workBody->setRestitution(restitution);
-        workBody->setFriction(friction);
-        workBody->setRollingFriction(rollingFriction);
-        workBody->setCcdMotionThreshold(ccdMotionThreshold);
-    }
-
-    bool AbstractBody::applyFrom(const AbstractWorkBody* workBody) {
-        #ifndef NDEBUG
-            assert(!bodyMutex.try_lock()); //body mutex should be locked before call this method
-        #endif
-
-        bool fullRefreshRequested = bNeedFullRefresh.load(std::memory_order_relaxed);
-        if (!fullRefreshRequested) {
-            bIsActive.store(workBody->isActive(), std::memory_order_relaxed);
-
-            transform.setPosition(workBody->getPosition());
-            transform.setOrientation(workBody->getOrientation());
-        }
-
-        return fullRefreshRequested;
-    }
+//    bool AbstractBody::applyFrom(const AbstractWorkBody* workBody) { //TODO remove
+//        #ifndef NDEBUG
+//            assert(!bodyMutex.try_lock()); //body mutex should be locked before call this method
+//        #endif
+//
+//        bool fullRefreshRequested = bNeedFullRefresh.load(std::memory_order_relaxed);
+//        if (!fullRefreshRequested) {
+//            bIsActive.store(workBody->isActive(), std::memory_order_relaxed);
+//
+//            transform.setPosition(workBody->getPosition());
+//            transform.setOrientation(workBody->getOrientation());
+//        }
+//
+//        return fullRefreshRequested;
+//    }
 
     void AbstractBody::setTransform(const Transform<float>& transform) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
-        if (std::abs(transform.getScale()-this->transform.getScale()) > std::numeric_limits<float>::epsilon()) {
+        if (std::abs(transform.getScale() - this->transform.getScale()) > std::numeric_limits<float>::epsilon()) {
             this->transform = transform;
             refreshScaledShape();
         } else {
             this->transform = transform;
         }
 
-        this->setNeedFullRefresh(true);
+        //this->setNeedFullRefresh(true); //TODO send ADD_BODY & REMOVE_BODY event ?
         this->isManuallyMoved = true;
     }
 
@@ -144,6 +95,36 @@ namespace urchin {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         return transform;
+    }
+
+    PhysicsTransform AbstractBody::getPhysicsTransform() const {
+        std::lock_guard<std::mutex> lock(bodyMutex);
+
+        return PhysicsTransform(transform.getPosition(), transform.getOrientation());
+    }
+
+    void AbstractBody::setPosition(const Point3<float>& position) {
+        std::lock_guard<std::mutex> lock(bodyMutex);
+
+        transform.setPosition(position);
+    }
+
+    Point3<float> AbstractBody::getPosition() const {
+        std::lock_guard<std::mutex> lock(bodyMutex);
+
+        return transform.getPosition();
+    }
+
+    void AbstractBody::setOrientation(const Quaternion<float>& orientation) {
+        std::lock_guard<std::mutex> lock(bodyMutex);
+
+        transform.setOrientation(orientation); //TODO transform.setOrientation has bad performance compare to physicsTrasnform.setOrientation !
+    }
+
+    Quaternion<float> AbstractBody::getOrientation() const {
+        std::lock_guard<std::mutex> lock(bodyMutex);
+
+        return transform.getOrientation();
     }
 
     bool AbstractBody::isManuallyMovedAndResetFlag() {
@@ -159,23 +140,29 @@ namespace urchin {
 
         this->originalShape = shape;
         refreshScaledShape();
-        this->setNeedFullRefresh(true);
+        //this->setNeedFullRefresh(true); //TODO send ADD_BODY & REMOVE_BODY event ?
     }
 
-    std::shared_ptr<const CollisionShape3D> AbstractBody::getOriginalShape() const {
-        std::lock_guard<std::mutex> lock(bodyMutex);
+    const std::shared_ptr<const CollisionShape3D>& AbstractBody::getOriginalShape() const {
+        std::lock_guard<std::mutex> lock(bodyMutex); //TODO remove if cannot update when physics thread is running
 
         return originalShape;
+    }
+
+    const std::shared_ptr<const CollisionShape3D>& AbstractBody::getScaledShape() const {
+        std::lock_guard<std::mutex> lock(bodyMutex); //TODO remove if cannot update when physics thread is running
+
+        return scaledShape;
     }
 
     /**
      * @return Scaled shape representing the form of the body. The shape is
      * scaled according to scale define in 'transform' attribute.
      */
-    std::shared_ptr<const CollisionShape3D> AbstractBody::getScaledShape() const {
-        std::lock_guard<std::mutex> lock(bodyMutex);
+    const CollisionShape3D* AbstractBody::getShape() const {
+        std::lock_guard<std::mutex> lock(bodyMutex); //TODO remove if cannot update when physics thread is running
 
-        return scaledShape;
+        return scaledShape.get(); //TODO better to return shared_ptr ?
     }
 
     Vector3<float> AbstractBody::computeScaledShapeLocalInertia(float mass) const {
@@ -268,6 +255,10 @@ namespace urchin {
         this->ccdMotionThreshold = ccdMotionThreshold;
     }
 
+    PairContainer* AbstractBody::getPairContainer() const {
+        return nullptr;
+    }
+
     /**
      * @return True when body is static (cannot be affected by physics world)
      */
@@ -280,6 +271,16 @@ namespace urchin {
      */
     void AbstractBody::setIsStatic(bool bIsStatic) {
         this->bIsStatic.store(bIsStatic, std::memory_order_relaxed);
+        setIsActive(false);
+    }
+
+    /**
+     * @param bIsActive Indicate whether body is active (body has velocity and/or one of body in same island is active)
+     */
+    void AbstractBody::setIsActive(bool bIsActive) {
+        assert(!(bIsActive && bIsStatic)); //an active body cannot be static
+
+        this->bIsActive = bIsActive;
     }
 
     /**
@@ -287,6 +288,10 @@ namespace urchin {
      */
     bool AbstractBody::isActive() const {
         return bIsActive.load(std::memory_order_relaxed);
+    }
+
+    uint_fast32_t AbstractBody::getObjectId() const {
+        return objectId;
     }
 
 }

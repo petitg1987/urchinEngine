@@ -12,11 +12,11 @@ namespace urchin {
         delete tree;
     }
 
-    void AABBTreeAlgorithm::addBody(AbstractWorkBody* body, PairContainer* alternativePairContainer) {
+    void AABBTreeAlgorithm::addBody(AbstractBody* body, PairContainer* alternativePairContainer) {
         tree->addBody(body, alternativePairContainer);
     }
 
-    void AABBTreeAlgorithm::removeBody(AbstractWorkBody* body) {
+    void AABBTreeAlgorithm::removeBody(AbstractBody* body) {
         tree->removeBody(body);
     }
 
@@ -28,8 +28,8 @@ namespace urchin {
         return tree->getOverlappingPairs();
     }
 
-    std::vector<AbstractWorkBody*> AABBTreeAlgorithm::rayTest(const Ray<float>& ray) const {
-        std::vector<AbstractWorkBody*> bodiesAABBoxHitRay;
+    std::vector<AbstractBody*> AABBTreeAlgorithm::rayTest(const Ray<float>& ray) const {
+        std::vector<AbstractBody*> bodiesAABBoxHitRay;
         bodiesAABBoxHitRay.reserve(10);
 
         tree->rayQuery(ray, bodiesAABBoxHitRay);
@@ -37,8 +37,8 @@ namespace urchin {
         return bodiesAABBoxHitRay;
     }
 
-    std::vector<AbstractWorkBody*> AABBTreeAlgorithm::bodyTest(AbstractWorkBody* body, const PhysicsTransform& from, const PhysicsTransform& to) const {
-        std::vector<AbstractWorkBody*> bodiesAABBoxHitBody;
+    std::vector<AbstractBody*> AABBTreeAlgorithm::bodyTest(AbstractBody* body, const PhysicsTransform& from, const PhysicsTransform& to) const {
+        std::vector<AbstractBody*> bodiesAABBoxHitBody;
         bodiesAABBoxHitBody.reserve(15);
 
         Ray<float> ray(from.getPosition(), to.getPosition());

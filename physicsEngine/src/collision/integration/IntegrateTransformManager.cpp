@@ -20,11 +20,11 @@ namespace urchin {
      * @param dt Delta of time between two simulation steps
      */
     void IntegrateTransformManager::integrateTransform(float dt) {
-        for (auto abstractBody : bodyManager->getWorkBodies()) {
-            WorkRigidBody* body = WorkRigidBody::upCast(abstractBody);
+        for (auto abstractBody : bodyManager->getBodies()) {
+            RigidBody* body = RigidBody::upCast(abstractBody);
             if (body && body->isActive()) {
-                const PhysicsTransform& currentTransform = body->getPhysicsTransform();
-                PhysicsTransform newTransform = body->getPhysicsTransform().integrate(body->getLinearVelocity(), body->getAngularVelocity(), dt);
+                PhysicsTransform currentTransform = body->getPhysicsTransform();
+                PhysicsTransform newTransform = currentTransform.integrate(body->getLinearVelocity(), body->getAngularVelocity(), dt);
 
                 float ccdMotionThreshold = body->getCcdMotionThreshold();
                 float motion = currentTransform.getPosition().vector(newTransform.getPosition()).length();
@@ -39,10 +39,10 @@ namespace urchin {
         }
     }
 
-    void IntegrateTransformManager::handleContinuousCollision(WorkRigidBody* body, const PhysicsTransform& from, const PhysicsTransform& to, float dt) {
+    void IntegrateTransformManager::handleContinuousCollision(RigidBody* body, const PhysicsTransform& from, const PhysicsTransform& to, float dt) {
         PhysicsTransform updatedTargetTransform = to;
 
-        std::vector<AbstractWorkBody*> bodiesAABBoxHitBody = broadPhaseManager->bodyTest(body, from, to);
+        std::vector<AbstractBody*> bodiesAABBoxHitBody = broadPhaseManager->bodyTest(body, from, to);
         if (!bodiesAABBoxHitBody.empty()) {
             auto bodyEncompassedSphereShape = std::make_shared<CollisionSphereShape>(body->getShape()->getMinDistanceToCenter());
             TemporalObject temporalObject(bodyEncompassedSphereShape.get(), from, to);

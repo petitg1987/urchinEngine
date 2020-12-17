@@ -4,6 +4,7 @@
 #include "UrchinCommon.h"
 
 #include "utils/pool/SyncFixedSizePool.h"
+#include "body/model/AbstractBody.h"
 #include "collision/narrowphase/algorithm/utils/AlgorithmResult.h"
 #include "collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.h"
 #include "collision/narrowphase/algorithm/gjk/result/GJKResultCollide.h"
@@ -30,7 +31,7 @@ namespace urchin {
             template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> newEPAResultInvalid();
             template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> newEPAResultNoCollide();
 
-            template<class T> std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter> newContinuousCollisionResult(AbstractWorkBody*, const Vector3<T>&, const Point3<T>&, T);
+            template<class T> std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter> newContinuousCollisionResult(AbstractBody*, const Vector3<T>&, const Point3<T>&, T);
 
         private:
             AlgorithmResultAllocator();

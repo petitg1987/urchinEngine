@@ -2,7 +2,7 @@
 #define URCHINENGINE_INTEGRATETRANSFORMMANAGER_H
 
 #include "body/BodyManager.h"
-#include "body/work/WorkRigidBody.h"
+#include "body/model/RigidBody.h"
 #include "collision/broadphase/BroadPhaseManager.h"
 #include "collision/narrowphase/NarrowPhaseManager.h"
 
@@ -18,7 +18,7 @@ namespace urchin {
             void integrateTransform(float);
 
         private:
-            void handleContinuousCollision(WorkRigidBody*, const PhysicsTransform&, const PhysicsTransform&, float);
+            void handleContinuousCollision(RigidBody*, const PhysicsTransform&, const PhysicsTransform&, float);
 
             const BodyManager* bodyManager;
             const BroadPhaseManager* broadPhaseManager;

@@ -17,7 +17,7 @@ namespace urchin {
         maxVerticalSpeed(ConfigService::instance()->getFloatValue("character.maxVerticalSpeed")),
         physicsCharacter(physicsCharacter),
         physicsWorld(physicsWorld),
-        ghostBody(new WorkGhostBody(physicsCharacter->getName(), physicsCharacter->getTransform(), physicsCharacter->getShape())),
+        ghostBody(new GhostBody(physicsCharacter->getName(), physicsCharacter->getTransform(), physicsCharacter->getShape())),
         verticalSpeed(0.0f),
         makeJump(false),
         initialOrientation(physicsCharacter->getTransform().getOrientation()),

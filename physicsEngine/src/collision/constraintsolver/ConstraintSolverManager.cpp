@@ -52,8 +52,8 @@ namespace urchin {
                     continue;
                 }
 
-                WorkRigidBody* body1 = WorkRigidBody::upCast(manifoldResult.getBody1());
-                WorkRigidBody* body2 = WorkRigidBody::upCast(manifoldResult.getBody2());
+                RigidBody* body1 = RigidBody::upCast(manifoldResult.getBody1());
+                RigidBody* body2 = RigidBody::upCast(manifoldResult.getBody2());
                 void* memPtr = constraintSolvingPool->allocate(sizeof(ConstraintSolving));
                 auto* constraintSolving = new(memPtr) ConstraintSolving(body1, body2, contact);
 
@@ -91,8 +91,8 @@ namespace urchin {
     CommonSolvingData ConstraintSolverManager::fillCommonSolvingData(const ManifoldResult& manifoldResult, const ManifoldContactPoint& contact) {
         CommonSolvingData commonSolvingData;
 
-        WorkRigidBody* body1 = WorkRigidBody::upCast(manifoldResult.getBody1());
-        WorkRigidBody* body2 = WorkRigidBody::upCast(manifoldResult.getBody2());
+        RigidBody* body1 = RigidBody::upCast(manifoldResult.getBody1());
+        RigidBody* body2 = RigidBody::upCast(manifoldResult.getBody2());
 
         commonSolvingData.body1 = body1;
         commonSolvingData.body2 = body2;
@@ -192,7 +192,7 @@ namespace urchin {
         applyImpulse(constraintSolving->getBody1(), constraintSolving->getBody2(), commonSolvingData, tangentImpulseVector);
     }
 
-    void ConstraintSolverManager::applyImpulse(WorkRigidBody* body1, WorkRigidBody* body2, const CommonSolvingData& commonData, const Vector3<float>& impulseVector) {
+    void ConstraintSolverManager::applyImpulse(RigidBody* body1, RigidBody* body2, const CommonSolvingData& commonData, const Vector3<float>& impulseVector) {
         body1->setLinearVelocity(body1->getLinearVelocity() - (impulseVector * body1->getInvMass() * body1->getLinearFactor()));
         body1->setAngularVelocity(body1->getAngularVelocity() - (commonData.invInertia1 * commonData.r1.crossProduct(impulseVector * body1->getLinearFactor()) * body1->getAngularFactor()));
 

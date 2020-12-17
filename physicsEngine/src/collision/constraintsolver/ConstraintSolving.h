@@ -3,6 +3,7 @@
 
 #include "UrchinCommon.h"
 
+#include "body/model/RigidBody.h"
 #include "collision/ManifoldContactPoint.h"
 #include "collision/constraintsolver/solvingdata/CommonSolvingData.h"
 #include "collision/constraintsolver/solvingdata/ImpulseSolvingData.h"
@@ -15,10 +16,10 @@ namespace urchin {
     */
     class ConstraintSolving {
         public:
-            ConstraintSolving(WorkRigidBody*, WorkRigidBody*, ManifoldContactPoint&);
+            ConstraintSolving(RigidBody*, RigidBody*, ManifoldContactPoint&);
 
-            WorkRigidBody* getBody1();
-            WorkRigidBody* getBody2();
+            RigidBody* getBody1();
+            RigidBody* getBody2();
 
             const CommonSolvingData& getCommonData();
             void setCommonData(const CommonSolvingData&);
@@ -29,8 +30,8 @@ namespace urchin {
             AccumulatedSolvingData& getAccumulatedData();
 
         private:
-            WorkRigidBody* body1;
-            WorkRigidBody* body2;
+            RigidBody* body1;
+            RigidBody* body2;
             ManifoldContactPoint& manifoldContactPoint;
 
             CommonSolvingData commonData;

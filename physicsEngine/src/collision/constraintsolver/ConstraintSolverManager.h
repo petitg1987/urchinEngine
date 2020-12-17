@@ -11,7 +11,7 @@
 #include "body/BodyManager.h"
 #include "collision/ManifoldResult.h"
 #include "utils/pool/FixedSizePool.h"
-#include "body/work/WorkRigidBody.h"
+#include "body/model/RigidBody.h"
 
 namespace urchin {
 
@@ -32,7 +32,7 @@ namespace urchin {
             void solveNormalConstraint(ConstraintSolving*);
             void solveTangentConstraint(ConstraintSolving*);
 
-            void applyImpulse(WorkRigidBody*, WorkRigidBody*, const CommonSolvingData&, const Vector3<float>&);
+            void applyImpulse(RigidBody*, RigidBody*, const CommonSolvingData&, const Vector3<float>&);
             Vector3<float> computeRelativeVelocity(const CommonSolvingData&) const;
             Vector3<float> computeTangent(const CommonSolvingData&, const Vector3<float>&) const;
 

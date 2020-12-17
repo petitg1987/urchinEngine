@@ -7,7 +7,7 @@ namespace urchin {
 
     //static
     uint_fast32_t AbstractWorkBody::nextObjectId = 0;
-    bool AbstractWorkBody::bDisableAllBodies = false;
+    bool AbstractWorkBody::bDisableAllBodies = false; //TODO move in AbstractBody ?
 
     AbstractWorkBody::AbstractWorkBody(std::string id, const PhysicsTransform& physicsTransform, std::shared_ptr<const CollisionShape3D> shape) :
             IslandElement(),

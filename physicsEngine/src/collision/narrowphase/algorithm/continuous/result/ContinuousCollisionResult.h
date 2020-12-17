@@ -5,7 +5,7 @@
 #include <memory>
 #include "UrchinCommon.h"
 
-#include "body/work/AbstractWorkBody.h"
+#include "body/model/AbstractBody.h"
 #include "collision/narrowphase/algorithm/utils/AlgorithmResult.h"
 #include "collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.h"
 
@@ -13,17 +13,17 @@ namespace urchin {
 
     template<class T> class ContinuousCollisionResult : public AlgorithmResult {
         public:
-            ContinuousCollisionResult(AbstractWorkBody*, const Vector3<T>&, const Point3<T>&, T);
+            ContinuousCollisionResult(AbstractBody*, const Vector3<T>&, const Point3<T>&, T);
             ContinuousCollisionResult(const ContinuousCollisionResult&);
 
-            AbstractWorkBody* getBody2() const;
+            AbstractBody* getBody2() const;
 
             const Vector3<T>& getNormalFromObject2() const;
             const Point3<T>& getHitPointOnObject2() const;
             T getTimeToHit() const;
 
         private:
-            AbstractWorkBody* body2;
+            AbstractBody* body2;
 
             Vector3<T> normalFromObject2;
             Point3<T> hitPointOnObject2;

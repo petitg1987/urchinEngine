@@ -3,12 +3,14 @@
 #include <mutex>
 
 #include "RigidBody.h"
+#include "body/InertiaCalculation.h"
 
 namespace urchin {
 
     RigidBody::RigidBody(const std::string& id, const Transform<float>& transform, const std::shared_ptr<const CollisionShape3D>& shape) :
             AbstractBody(id, transform, shape),
             mass(0.0f),
+            invMass(0.0f),
             linearDamping(0.0f),
             angularDamping(0.0f) {
         initializeRigidBody(0.0f, 0.0f, 0.0f,
@@ -18,10 +20,19 @@ namespace urchin {
     RigidBody::RigidBody(const RigidBody& rigidBody) :
         AbstractBody(rigidBody),
         mass(0.0f),
+        invMass(0.0f),
         linearDamping(0.0f),
         angularDamping(0.0f) {
         initializeRigidBody(rigidBody.getMass(), rigidBody.getLinearDamping(), rigidBody.getAngularDamping(),
                 rigidBody.getLinearFactor(), rigidBody.getAngularFactor());
+    }
+
+    RigidBody* RigidBody::upCast(AbstractBody* abstractBody) {
+        return dynamic_cast<RigidBody*>(abstractBody);
+    }
+
+    const RigidBody* RigidBody::upCast(const AbstractBody* abstractBody) {
+        return dynamic_cast<const RigidBody*>(abstractBody);
     }
 
     void RigidBody::initializeRigidBody(float mass, float linearDamping, float angularDamping,
@@ -44,59 +55,44 @@ namespace urchin {
 
     void RigidBody::refreshMassProperties() {
         refreshLocalInertia();
-        setIsStatic(mass > -std::numeric_limits<float>::epsilon() && mass < std::numeric_limits<float>::epsilon());
+        if (mass > -std::numeric_limits<float>::epsilon() && mass < std::numeric_limits<float>::epsilon()) {
+            setIsStatic(true);
+            invMass = 0.0f;
+        } else {
+            if (isStatic()) //avoid wake up of body (isActive flag) when static flag is already correct
+            {
+                setIsStatic(false);
+                setIsActive(true);
+            }
+            invMass = 1.0f / mass;
+        }
     }
 
     void RigidBody::refreshLocalInertia() {
         this->localInertia = computeScaledShapeLocalInertia(mass);
     }
 
-    AbstractWorkBody* RigidBody::createWorkBody() const {
-        const Transform<float>& transform = getTransform();
-        PhysicsTransform physicsTransform(transform.getPosition(), transform.getOrientation());
+//    bool RigidBody::applyFrom(const AbstractWorkBody* workBody) { //TODO remove
+//        std::lock_guard<std::mutex> lock(bodyMutex);
+//
+//        bool fullRefreshRequested = AbstractBody::applyFrom(workBody);
+//        const WorkRigidBody* workRigidBody = WorkRigidBody::upCast(workBody);
+//
+//        if (workRigidBody && !fullRefreshRequested) {
+//            mass = workRigidBody->getMass();
+//            refreshMassProperties();
+//
+//            linearVelocity = workRigidBody->getLinearVelocity();
+//            angularVelocity = workRigidBody->getAngularVelocity();
+//        }
+//
+//        return fullRefreshRequested;
+//    }
 
-        auto* workRigidBody = new WorkRigidBody(getId(), physicsTransform, getScaledShape());
-        workRigidBody->setMassProperties(getMass(), getLocalInertia());
-        workRigidBody->setLinearVelocity(getLinearVelocity());
-        workRigidBody->setAngularVelocity(getAngularVelocity());
-        return workRigidBody;
-    }
-
-    void RigidBody::updateTo(AbstractWorkBody* workBody) {
+    void RigidBody::setLinearVelocity(const Vector3<float>& linearVelocity) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
-        AbstractBody::updateTo(workBody);
-
-        WorkRigidBody* workRigidBody = WorkRigidBody::upCast(workBody);
-        if (workRigidBody) {
-            workRigidBody->setTotalMomentum(totalMomentum);
-            workRigidBody->setTotalTorqueMomentum(totalTorqueMomentum);
-            workRigidBody->setDamping(linearDamping, angularDamping);
-            workRigidBody->setLinearFactor(linearFactor);
-            workRigidBody->setAngularFactor(angularFactor);
-
-            workRigidBody->refreshInvWorldInertia();
-
-            totalMomentum.setNull();
-            totalTorqueMomentum.setNull();
-        }
-    }
-
-    bool RigidBody::applyFrom(const AbstractWorkBody* workBody) {
-        std::lock_guard<std::mutex> lock(bodyMutex);
-
-        bool fullRefreshRequested = AbstractBody::applyFrom(workBody);
-        const WorkRigidBody* workRigidBody = WorkRigidBody::upCast(workBody);
-
-        if (workRigidBody && !fullRefreshRequested) {
-            mass = workRigidBody->getMass();
-            refreshMassProperties();
-
-            linearVelocity = workRigidBody->getLinearVelocity();
-            angularVelocity = workRigidBody->getAngularVelocity();
-        }
-
-        return fullRefreshRequested;
+        this->linearVelocity = linearVelocity;
     }
 
     Vector3<float> RigidBody::getLinearVelocity() const {
@@ -105,10 +101,28 @@ namespace urchin {
         return linearVelocity;
     }
 
+    void RigidBody::setAngularVelocity(const Vector3<float>& angularVelocity) {
+        std::lock_guard<std::mutex> lock(bodyMutex);
+
+        this->angularVelocity = angularVelocity;
+    }
+
     Vector3<float> RigidBody::getAngularVelocity() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         return angularVelocity;
+    }
+
+    /**
+     * Refresh body active state. If forces are apply on body: active body
+     */
+    void RigidBody::refreshBodyActiveState() {
+        if (!isStatic() && !isActive()) {
+            if (totalMomentum.squareLength() > std::numeric_limits<float>::epsilon()
+                || totalMomentum.squareLength() > std::numeric_limits<float>::epsilon()) {
+                setIsActive(true);
+            }
+        }
     }
 
     Vector3<float> RigidBody::getTotalMomentum() const {
@@ -121,16 +135,21 @@ namespace urchin {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         totalMomentum += momentum;
+        refreshBodyActiveState();
     }
 
     void RigidBody::applyMomentum(const Vector3<float>& momentum, const Point3<float>& pos) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
-        //apply central force
-        totalMomentum += momentum;
+        totalMomentum += momentum; //apply central force
+        totalTorqueMomentum += pos.toVector().crossProduct(momentum); //apply torque
+        refreshBodyActiveState();
+    }
 
-        //apply torque
-        totalTorqueMomentum += pos.toVector().crossProduct(momentum);
+    void RigidBody::resetMomentum() {
+        std::lock_guard<std::mutex> lock(bodyMutex);
+
+        totalMomentum.setNull();
     }
 
     Vector3<float> RigidBody::getTotalTorqueMomentum() const {
@@ -143,6 +162,13 @@ namespace urchin {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         totalTorqueMomentum += torqueMomentum;
+        refreshBodyActiveState();
+    }
+
+    void RigidBody::resetTorqueMomentum() {
+        std::lock_guard<std::mutex> lock(bodyMutex);
+
+        totalTorqueMomentum.setNull();
     }
 
     void RigidBody::setMass(float mass) {
@@ -150,7 +176,7 @@ namespace urchin {
 
         this->mass = mass;
         refreshMassProperties();
-        this->setNeedFullRefresh(true);
+        //this->setNeedFullRefresh(true); //TODO send ADD_BODY & REMOVE_BODY event ?
     }
 
     float RigidBody::getMass() const {
@@ -159,10 +185,28 @@ namespace urchin {
         return mass;
     }
 
+    float RigidBody::getInvMass() const {
+        std::lock_guard<std::mutex> lock(bodyMutex);
+
+        return invMass;
+    }
+
     Vector3<float> RigidBody::getLocalInertia() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         return localInertia;
+    }
+
+    Matrix3<float> RigidBody::getInvWorldInertia() const { //TODO compute invWorldInertia only when physicTransform is updated ?
+        if (isStatic()) {
+            return Matrix3<float>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+        }
+
+        Vector3<float> invLocalInertia(
+                MathFunction::isZero(localInertia.X) ? 0.0f : 1.0f / localInertia.X,
+                MathFunction::isZero(localInertia.Y) ? 0.0f : 1.0f / localInertia.Y,
+                MathFunction::isZero(localInertia.Z) ? 0.0f : 1.0f / localInertia.Z);
+        return InertiaCalculation::computeInverseWorldInertia(invLocalInertia, getPhysicsTransform()); //TODO useless mutex in getPhysicsTransform()
     }
 
     /**
@@ -231,6 +275,18 @@ namespace urchin {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         return angularFactor;
+    }
+
+    void RigidBody::setIsStatic(bool bIsStatic) {
+        //TODO block test !: std::lock_guard<std::mutex> lock(bodyMutex);
+
+        AbstractBody::setIsStatic(bIsStatic);
+        linearVelocity.setNull();
+        angularVelocity.setNull();
+    }
+
+    bool RigidBody::isGhostBody() const {
+        return false;
     }
 
 }

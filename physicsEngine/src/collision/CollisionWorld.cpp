@@ -41,13 +41,13 @@ namespace urchin {
     void CollisionWorld::process(float dt, const Vector3<float>& gravity) {
         ScopeProfiler sp(Profiler::physics(), "colWorldProc");
 
-        //initialize work bodies from bodies
-        bodyManager->setupWorkBodies();
+        //refresh bodies: add new bodies, delete bodies...
+        bodyManager->refreshBodies();
 
         //broad phase: determine pairs of bodies potentially colliding based on their AABBox
         const std::vector<OverlappingPair*>& overlappingPairs = broadPhaseManager->computeOverlappingPairs();
 
-        //integrate bodies velocities (gravity, external forces...)
+        //integrate bodies velocities: gravity, external forces...
         integrateVelocityManager->integrateVelocity(dt, overlappingPairs, gravity);
 
         //narrow phase: check if pair of bodies colliding and update collision constraints
@@ -58,12 +58,11 @@ namespace urchin {
         //constraints solver: solve collision constraints
         constraintSolverManager->solveConstraints(dt, manifoldResults);
 
-        //update bodies state and integrate transformations
+        //update bodies state
         islandManager->refreshBodyActiveState(manifoldResults);
-        integrateTransformManager->integrateTransform(dt);
 
-        //apply work bodies to bodies
-        bodyManager->applyWorkBodies();
+        //integrate transformations
+        integrateTransformManager->integrateTransform(dt);
     }
 
     const std::vector<ManifoldResult>& CollisionWorld::getLastUpdatedManifoldResults() {

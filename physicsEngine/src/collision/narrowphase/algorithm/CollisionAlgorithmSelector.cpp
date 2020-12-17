@@ -106,7 +106,7 @@ namespace urchin {
      * @param shape2 Shape or partial shape composing the body 2
      */
     std::shared_ptr<CollisionAlgorithm> CollisionAlgorithmSelector::createCollisionAlgorithm(
-            AbstractWorkBody* body1, const CollisionShape3D* shape1, AbstractWorkBody* body2, const CollisionShape3D* shape2) const {
+            AbstractBody* body1, const CollisionShape3D* shape1, AbstractBody* body2, const CollisionShape3D* shape2) const {
         CollisionAlgorithmBuilder* collisionAlgorithmBuilder = collisionAlgorithmBuilderMatrix[shape1->getShapeType()][shape2->getShapeType()];
         const std::vector<CollisionShape3D::ShapeType>& firstExpectedShapeType = collisionAlgorithmBuilder->getFirstExpectedShapeType();
 

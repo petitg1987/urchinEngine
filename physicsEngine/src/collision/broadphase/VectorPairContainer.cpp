@@ -10,7 +10,7 @@ namespace urchin {
         }
     }
 
-    void VectorPairContainer::addOverlappingPair(AbstractWorkBody* body1, AbstractWorkBody* body2) {
+    void VectorPairContainer::addOverlappingPair(AbstractBody* body1, AbstractBody* body2) {
         uint_fast64_t bodiesId = OverlappingPair::computeBodiesId(body1, body2);
 
         bool found = false;
@@ -26,7 +26,7 @@ namespace urchin {
         }
     }
 
-    void VectorPairContainer::removeOverlappingPair(AbstractWorkBody* body1, AbstractWorkBody* body2) {
+    void VectorPairContainer::removeOverlappingPair(AbstractBody* body1, AbstractBody* body2) {
         uint_fast64_t bodiesId = OverlappingPair::computeBodiesId(body1, body2);
         for (auto it = overlappingPairs.begin(); it != overlappingPairs.end(); ++it) {
             if ((*it)->getBodiesId() == bodiesId) {
@@ -37,7 +37,7 @@ namespace urchin {
         }
     }
 
-    void VectorPairContainer::removeOverlappingPairs(AbstractWorkBody* body) {
+    void VectorPairContainer::removeOverlappingPairs(AbstractBody* body) {
         auto it = overlappingPairs.begin();
         while (it != overlappingPairs.end()) {
             OverlappingPair* pair = *it;

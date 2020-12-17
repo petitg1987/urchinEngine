@@ -2,13 +2,13 @@
 
 namespace urchin {
 
-    BodyAABBNodeData::BodyAABBNodeData(AbstractWorkBody* body, PairContainer* alternativePairContainer) :
+    BodyAABBNodeData::BodyAABBNodeData(AbstractBody* body, PairContainer* alternativePairContainer) :
         AABBNodeData(body),
         alternativePairContainer(alternativePairContainer) {
 
     }
 
-    AABBNodeData<AbstractWorkBody*>* BodyAABBNodeData::clone() const {
+    AABBNodeData<AbstractBody*>* BodyAABBNodeData::clone() const {
         return new BodyAABBNodeData(getNodeObject(), alternativePairContainer);
     }
 

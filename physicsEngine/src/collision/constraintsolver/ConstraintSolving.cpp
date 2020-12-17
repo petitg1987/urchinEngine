@@ -2,18 +2,18 @@
 
 namespace urchin {
 
-    ConstraintSolving::ConstraintSolving(WorkRigidBody* body1, WorkRigidBody* body2, ManifoldContactPoint& manifoldContactPoint) :
+    ConstraintSolving::ConstraintSolving(RigidBody* body1, RigidBody* body2, ManifoldContactPoint& manifoldContactPoint) :
         body1(body1),
         body2(body2),
         manifoldContactPoint(manifoldContactPoint) {
 
     }
 
-    WorkRigidBody* ConstraintSolving::getBody1() {
+    RigidBody* ConstraintSolving::getBody1() {
         return body1;
     }
 
-    WorkRigidBody* ConstraintSolving::getBody2() {
+    RigidBody* ConstraintSolving::getBody2() {
         return body2;
     }
 

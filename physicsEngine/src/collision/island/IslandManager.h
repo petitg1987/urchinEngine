@@ -6,7 +6,7 @@
 #include "collision/island/IslandContainer.h"
 #include "collision/ManifoldResult.h"
 #include "body/BodyManager.h"
-#include "body/work/WorkRigidBody.h"
+#include "body/model/RigidBody.h"
 
 namespace urchin {
 
@@ -19,7 +19,7 @@ namespace urchin {
         private:
             void buildIslands(const std::vector<ManifoldResult>&);
             unsigned int computeNumberElements(const std::vector<IslandElementLink>&, unsigned int) const;
-            bool isBodyMoving(const WorkRigidBody*) const;
+            bool isBodyMoving(const RigidBody*) const;
 
             void printIslands(const std::vector<IslandElementLink>&);
 

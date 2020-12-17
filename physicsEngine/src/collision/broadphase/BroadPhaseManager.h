@@ -7,7 +7,7 @@
 #include "collision/broadphase/BroadPhaseAlgorithm.h"
 #include "collision/broadphase/PairContainer.h"
 #include "collision/OverlappingPair.h"
-#include "body/work/AbstractWorkBody.h"
+#include "body/model/AbstractBody.h"
 #include "body/BodyManager.h"
 
 namespace urchin {
@@ -22,24 +22,24 @@ namespace urchin {
 
             void notify(Observable*, int) override;
 
-            void addBodyAsync(AbstractWorkBody*);
-            void removeBodyAsync(AbstractWorkBody*);
+            void addBodyAsync(AbstractBody*);
+            void removeBodyAsync(AbstractBody*);
 
             const std::vector<OverlappingPair*>& computeOverlappingPairs();
 
-            std::vector<AbstractWorkBody*> rayTest(const Ray<float>&) const;
-            std::vector<AbstractWorkBody*> bodyTest(AbstractWorkBody*, const PhysicsTransform&, const PhysicsTransform&) const;
+            std::vector<AbstractBody*> rayTest(const Ray<float>&) const;
+            std::vector<AbstractBody*> bodyTest(AbstractBody*, const PhysicsTransform&, const PhysicsTransform&) const;
 
         private:
-            void addBody(AbstractWorkBody*);
-            void removeBody(AbstractWorkBody*);
+            void addBody(AbstractBody*);
+            void removeBody(AbstractBody*);
             void synchronizeBodies();
 
             BroadPhaseAlgorithm* broadPhaseAlgorithm;
 
             std::mutex mutex;
-            std::vector<AbstractWorkBody*> bodiesToAdd;
-            std::vector<AbstractWorkBody*> bodiesToRemove;
+            std::vector<AbstractBody*> bodiesToAdd;
+            std::vector<AbstractBody*> bodiesToRemove;
     };
 
 }

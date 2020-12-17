@@ -12,35 +12,25 @@
 
 namespace urchin {
 
-    class AbstractBody {
+    class AbstractBody : public IslandElement {
         public:
-            AbstractBody(std::string , Transform<float> , std::shared_ptr<const CollisionShape3D> );
-            AbstractBody(const AbstractBody&);
-            virtual ~AbstractBody() = default;
-
-            void setIsNew(bool);
-            bool isNew() const;
-
-            void markAsDeleted();
-            bool isDeleted() const;
-
-            void setNeedFullRefresh(bool);
-            bool needFullRefresh() const;
-
-            virtual AbstractWorkBody* createWorkBody() const = 0;
-            void setWorkBody(AbstractWorkBody*);
-            AbstractWorkBody* getWorkBody() const;
-
-            virtual void updateTo(AbstractWorkBody*);
-            virtual bool applyFrom(const AbstractWorkBody*);
+            AbstractBody(std::string, Transform<float>, std::shared_ptr<const CollisionShape3D>);
+            AbstractBody(const AbstractBody&); //TODO remove ???
+            ~AbstractBody() override = default;
 
             void setTransform(const Transform<float>&);
-            Transform<float> getTransform() const;
+            Transform<float> getTransform() const; //TODO remove or keep for external user ?
+            PhysicsTransform getPhysicsTransform() const;
+            void setPosition(const Point3<float>&); //TODO internal only or required full refresh !
+            Point3<float> getPosition() const;
+            void setOrientation(const Quaternion<float>&); //TODO internal only or required full refresh !
+            Quaternion<float> getOrientation() const;
             bool isManuallyMovedAndResetFlag();
 
-            void setShape(const std::shared_ptr<const CollisionShape3D>&);
-            std::shared_ptr<const CollisionShape3D> getOriginalShape() const;
-            std::shared_ptr<const CollisionShape3D> getScaledShape() const;
+            void setShape(const std::shared_ptr<const CollisionShape3D>&); //TODO remove it or only if paused + REMOVE_BODY & ADD_BODY event !
+            const std::shared_ptr<const CollisionShape3D>& getOriginalShape() const;
+            const std::shared_ptr<const CollisionShape3D>& getScaledShape() const; //TODO remove method duplication with getShape()
+            const CollisionShape3D* getShape() const;
 
             void setId(const std::string&);
             const std::string& getId() const;
@@ -55,15 +45,20 @@ namespace urchin {
             float getCcdMotionThreshold() const;
             void setCcdMotionThreshold(float);
 
+            virtual PairContainer* getPairContainer() const; //TODO internal only
+
             bool isStatic() const;
-            bool isActive() const;
+            virtual void setIsStatic(bool);
+            bool isActive() const override;
+            void setIsActive(bool); //TODO internal only
+            virtual bool isGhostBody() const = 0; //TODO internal only
+
+            uint_fast32_t getObjectId() const; //TODO internal only & still needed or use pointer as ID ?
 
         protected:
             void initialize(float, float, float);
             virtual void refreshScaledShape();
             Vector3<float> computeScaledShapeLocalInertia(float) const;
-
-            void setIsStatic(bool);
 
             //mutex for attributes modifiable from external
             mutable std::mutex bodyMutex;
@@ -71,10 +66,6 @@ namespace urchin {
         private:
             //technical data
             const float ccdMotionThresholdFactor;
-            std::atomic_bool bIsNew;
-            std::atomic_bool bIsDeleted;
-            std::atomic_bool bNeedFullRefresh;
-            AbstractWorkBody* workBody;
 
             //body representation data
             Transform<float> transform;
@@ -92,6 +83,10 @@ namespace urchin {
             //state flags
             std::atomic_bool bIsStatic;
             std::atomic_bool bIsActive;
+
+            //technical object id
+            static uint_fast32_t nextObjectId;
+            uint_fast32_t objectId;
     };
 
 }

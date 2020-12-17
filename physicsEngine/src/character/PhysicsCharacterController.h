@@ -6,7 +6,7 @@
 #include <atomic>
 
 #include "PhysicsCharacter.h"
-#include "body/work/WorkGhostBody.h"
+#include "body/model/GhostBody.h"
 #include "processable/Processable.h"
 #include "collision/ManifoldResult.h"
 
@@ -62,7 +62,7 @@ namespace urchin {
             PhysicsWorld* physicsWorld;
             std::vector<ManifoldResult> manifoldResults;
             mutable std::mutex characterMutex;
-            WorkGhostBody* ghostBody;
+            GhostBody* ghostBody;
             float verticalSpeed;
 
             Vector3<float> velocity;

@@ -8,7 +8,7 @@ namespace urchin {
             pointOnObject2(Point3<float>()),
             localPointOnObject1(Point3<float>()),
             localPointOnObject2(Point3<float>()),
-            depth(0.0),
+            depth(0.0f),
             bIsPredictive(false) {
 
     }

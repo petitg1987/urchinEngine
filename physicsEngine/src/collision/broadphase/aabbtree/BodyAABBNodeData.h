@@ -4,16 +4,16 @@
 #include <set>
 #include "UrchinCommon.h"
 
-#include "body/work/AbstractWorkBody.h"
+#include "body/model/AbstractBody.h"
 #include "collision/broadphase/PairContainer.h"
 
 namespace urchin {
 
-    class BodyAABBNodeData : public AABBNodeData<AbstractWorkBody*> {
+    class BodyAABBNodeData : public AABBNodeData<AbstractBody*> {
         public:
-            BodyAABBNodeData(AbstractWorkBody*, PairContainer*);
+            BodyAABBNodeData(AbstractBody*, PairContainer*);
 
-            AABBNodeData<AbstractWorkBody*>* clone() const override;
+            AABBNodeData<AbstractBody*>* clone() const override;
 
             const std::string& getObjectId() const override;
             AABBox<float> retrieveObjectAABBox() const override;

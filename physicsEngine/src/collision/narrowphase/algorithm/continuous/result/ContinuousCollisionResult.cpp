@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    template<class T> ContinuousCollisionResult<T>::ContinuousCollisionResult(AbstractWorkBody* body2, const Vector3<T>& normalFromObject2,
+    template<class T> ContinuousCollisionResult<T>::ContinuousCollisionResult(AbstractBody* body2, const Vector3<T>& normalFromObject2,
             const Point3<T>& hitPointOnObject2, T timeToHit) :
         body2(body2),
         normalFromObject2(normalFromObject2),
@@ -19,7 +19,7 @@ namespace urchin {
 
     }
 
-    template<class T> AbstractWorkBody *ContinuousCollisionResult<T>::getBody2() const {
+    template<class T> AbstractBody *ContinuousCollisionResult<T>::getBody2() const {
         return body2;
     }
 

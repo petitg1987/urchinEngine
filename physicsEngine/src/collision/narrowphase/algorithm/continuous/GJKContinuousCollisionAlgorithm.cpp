@@ -16,7 +16,7 @@ namespace urchin {
     }
 
     template<class T, class U> std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter> GJKContinuousCollisionAlgorithm<T, U>::calculateTimeOfImpact(const TemporalObject& object1, const TemporalObject& object2,
-            AbstractWorkBody* body2) const {
+                                                                                                                                                                  AbstractBody* body2) const {
         T timeToHit = 0.0; //0.0 represents initial situation (from transformation), 1.0 represents final situation (to transformation).
         Vector3<T> normalFromObject2;
         bool normalFromObject2Defined = false;

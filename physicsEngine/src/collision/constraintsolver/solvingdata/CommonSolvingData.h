@@ -3,7 +3,7 @@
 
 #include "UrchinCommon.h"
 
-#include "body/work/WorkRigidBody.h"
+#include "body/model/RigidBody.h"
 
 namespace urchin {
 
@@ -13,8 +13,8 @@ namespace urchin {
     struct CommonSolvingData {
         CommonSolvingData();
 
-        const WorkRigidBody* body1;
-        const WorkRigidBody* body2;
+        const RigidBody* body1;
+        const RigidBody* body2;
 
         Vector3<float> contactNormal;
         Vector3<float> contactTangent;

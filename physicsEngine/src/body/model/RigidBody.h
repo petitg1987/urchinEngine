@@ -6,7 +6,6 @@
 #include "UrchinCommon.h"
 
 #include "AbstractBody.h"
-#include "body/work/WorkRigidBody.h"
 
 namespace urchin {
 
@@ -16,24 +15,29 @@ namespace urchin {
             RigidBody(const RigidBody&);
             ~RigidBody() override = default;
 
-            AbstractWorkBody* createWorkBody() const override;
+            static RigidBody* upCast(AbstractBody*);
+            static const RigidBody* upCast(const AbstractBody*);
 
-            void updateTo(AbstractWorkBody*) override;
-            bool applyFrom(const AbstractWorkBody*) override;
-
+            void setLinearVelocity(const Vector3<float>&); //TODO internal method +  create common method for linear & angular velocity (reduce mutex) ?
             Vector3<float> getLinearVelocity() const;
+
+            void setAngularVelocity(const Vector3<float>&); //TODO internal method
             Vector3<float> getAngularVelocity() const;
 
             Vector3<float> getTotalMomentum() const;
-            void applyCentralMomentum(const Vector3<float>&);
+            void applyCentralMomentum(const Vector3<float>&); //TODO could have no effect if called by thread 'x' and then thread 'y' call resetMomentum()
             void applyMomentum(const Vector3<float>&, const Point3<float>&);
+            void resetMomentum(); //TODO internal method
 
             Vector3<float> getTotalTorqueMomentum() const;
             void applyTorqueMomentum(const Vector3<float>&);
+            void resetTorqueMomentum(); //TODO internal method
 
             void setMass(float);
             float getMass() const;
+            float getInvMass() const;
             Vector3<float> getLocalInertia() const;
+            Matrix3<float> getInvWorldInertia() const;
 
             void setDamping(float, float);
             float getLinearDamping() const;
@@ -44,11 +48,16 @@ namespace urchin {
             void setAngularFactor(const Vector3<float>&);
             Vector3<float> getAngularFactor() const;
 
+            void setIsStatic(bool) override;
+
+            bool isGhostBody() const override;
+
         private:
             void initializeRigidBody(float, float, float, const Vector3<float>&, const Vector3<float>&);
             void refreshScaledShape() override;
             void refreshMassProperties();
             void refreshLocalInertia();
+            void refreshBodyActiveState();
 
             //rigid body representation data
             Vector3<float> linearVelocity;
@@ -59,6 +68,7 @@ namespace urchin {
 
             //rigid body description data
             float mass;
+            float invMass;
             Vector3<float> localInertia;
 
             float linearDamping;

@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    ManifoldResult::ManifoldResult(AbstractWorkBody* body1, AbstractWorkBody* body2) :
+    ManifoldResult::ManifoldResult(AbstractBody* body1, AbstractBody* body2) :
             body1(body1),
             body2(body2),
             nbContactPoint(0),
@@ -16,17 +16,17 @@ namespace urchin {
     /**
      * @param index Index of body to return. Index must be '0' for body1 or '1' for body2.
      */
-    AbstractWorkBody* ManifoldResult::getBody(unsigned int index) const {
+    AbstractBody* ManifoldResult::getBody(unsigned int index) const {
         assert(index == 0 || index == 1);
 
         return index == 0 ? body1 : body2;
     }
 
-    AbstractWorkBody* ManifoldResult::getBody1() const {
+    AbstractBody* ManifoldResult::getBody1() const {
         return body1;
     }
 
-    AbstractWorkBody* ManifoldResult::getBody2() const {
+    AbstractBody* ManifoldResult::getBody2() const {
         return body2;
     }
 

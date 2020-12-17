@@ -4,7 +4,6 @@
 #include <mutex>
 
 #include "body/model/AbstractBody.h"
-#include "body/work/AbstractWorkBody.h"
 
 namespace urchin {
 
@@ -18,30 +17,27 @@ namespace urchin {
             ~BodyManager() override;
 
             enum NotificationType {
-                ADD_WORK_BODY, //A body has been added to the world
-                REMOVE_WORK_BODY, //A body has been removed from the world
+                ADD_BODY, //A body has been added to the world
+                REMOVE_BODY, //A body has been removed from the world
             };
 
             void addBody(AbstractBody*);
             void removeBody(AbstractBody*);
-            AbstractWorkBody* getLastUpdatedWorkBody() const;
+            AbstractBody* getLastUpdatedBody() const;
 
-            void setupWorkBodies();
-            void applyWorkBodies();
+            void refreshBodies();
 
-            const std::vector<AbstractWorkBody*>& getWorkBodies() const;
+            const std::vector<AbstractBody*>& getBodies() const;
 
         private:
-            void createNewWorkBody(AbstractBody*);
-            std::vector<AbstractBody*>::iterator deleteBody(AbstractBody*, const std::vector<AbstractBody*>::iterator&);
-            void deleteWorkBody(AbstractBody*);
-
             std::vector<AbstractBody*> bodies;
-            std::vector<AbstractWorkBody*> workBodies;
+
+            std::vector<AbstractBody*> newBodies;
+            std::vector<AbstractBody*> bodiesToDelete;
 
             mutable std::mutex bodiesMutex;
 
-            AbstractWorkBody* lastUpdatedWorkBody;
+            AbstractBody* lastUpdatedBody;
     };
 
 }

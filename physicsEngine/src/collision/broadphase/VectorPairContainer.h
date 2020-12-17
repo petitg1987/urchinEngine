@@ -17,9 +17,9 @@ namespace urchin {
         public:
             ~VectorPairContainer() override;
 
-            void addOverlappingPair(AbstractWorkBody*, AbstractWorkBody*) override;
-            void removeOverlappingPair(AbstractWorkBody*, AbstractWorkBody*) override;
-            void removeOverlappingPairs(AbstractWorkBody*) override;
+            void addOverlappingPair(AbstractBody*, AbstractBody*) override;
+            void removeOverlappingPair(AbstractBody*, AbstractBody*) override;
+            void removeOverlappingPairs(AbstractBody*) override;
 
             const std::vector<OverlappingPair*>& getOverlappingPairs() const override;
             std::vector<OverlappingPair> retrieveCopyOverlappingPairs() const override;

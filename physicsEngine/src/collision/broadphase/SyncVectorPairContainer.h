@@ -10,13 +10,13 @@ namespace urchin {
     /**
      * Thread safe pair container. Pair can be added/removed by physics thread while pairs are read from another thread.
      */
-    class SyncVectorPairContainer : public VectorPairContainer {
+    class SyncVectorPairContainer : public VectorPairContainer { //TODO still need this synchronous class ?
         public:
             ~SyncVectorPairContainer() override = default;
 
-            void addOverlappingPair(AbstractWorkBody*, AbstractWorkBody*) override;
-            void removeOverlappingPair(AbstractWorkBody*, AbstractWorkBody*) override;
-            void removeOverlappingPairs(AbstractWorkBody*) override;
+            void addOverlappingPair(AbstractBody*, AbstractBody*) override;
+            void removeOverlappingPair(AbstractBody*, AbstractBody*) override;
+            void removeOverlappingPairs(AbstractBody*) override;
 
             const std::vector<OverlappingPair*>& getOverlappingPairs() const override;
             std::vector<OverlappingPair> retrieveCopyOverlappingPairs() const override;

@@ -4,7 +4,7 @@
 #include <mutex>
 
 #include "shape/CollisionShape3D.h"
-#include "body/work/WorkGhostBody.h"
+#include "body/model/GhostBody.h"
 
 namespace urchin {
 

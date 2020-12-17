@@ -14,8 +14,8 @@
 #include "collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h"
 #include "collision/broadphase/BroadPhaseManager.h"
 #include "body/BodyManager.h"
-#include "body/work/AbstractWorkBody.h"
-#include "body/work/WorkGhostBody.h"
+#include "body/model/AbstractBody.h"
+#include "body/model/GhostBody.h"
 #include "object/TemporalObject.h"
 #include "shape/CollisionTriangleShape.h"
 
@@ -26,10 +26,10 @@ namespace urchin {
             ~NarrowPhaseManager();
 
             void process(float, const std::vector<OverlappingPair*>&, std::vector<ManifoldResult>&);
-            void processGhostBody(WorkGhostBody*, std::vector<ManifoldResult>&);
+            void processGhostBody(GhostBody*, std::vector<ManifoldResult>&);
 
-            ccd_set continuousCollisionTest(const TemporalObject&,  const std::vector<AbstractWorkBody*>&) const;
-            ccd_set rayTest(const Ray<float>&, const std::vector<AbstractWorkBody*>&) const;
+            ccd_set continuousCollisionTest(const TemporalObject&,  const std::vector<AbstractBody*>&) const;
+            ccd_set rayTest(const Ray<float>&, const std::vector<AbstractBody*>&) const;
 
         private:
             void processOverlappingPairs(const std::vector<OverlappingPair*>&, std::vector<ManifoldResult>&);
@@ -37,9 +37,9 @@ namespace urchin {
             std::shared_ptr<CollisionAlgorithm> retrieveCollisionAlgorithm(OverlappingPair*);
 
             void processPredictiveContacts(float, std::vector<ManifoldResult>&);
-            void handleContinuousCollision(AbstractWorkBody*, const PhysicsTransform&, const PhysicsTransform&, std::vector<ManifoldResult>&);
-            void trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape>&, const TemporalObject&, AbstractWorkBody*, ccd_set&) const;
-            void continuousCollisionTest(const TemporalObject&, const TemporalObject&, AbstractWorkBody*, ccd_set&) const;
+            void handleContinuousCollision(AbstractBody*, const PhysicsTransform&, const PhysicsTransform&, std::vector<ManifoldResult>&);
+            void trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape>&, const TemporalObject&, AbstractBody*, ccd_set&) const;
+            void continuousCollisionTest(const TemporalObject&, const TemporalObject&, AbstractBody*, ccd_set&) const;
 
             const BodyManager* bodyManager;
             const BroadPhaseManager* broadPhaseManager;

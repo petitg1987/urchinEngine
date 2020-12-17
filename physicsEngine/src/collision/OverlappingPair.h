@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "body/work/AbstractWorkBody.h"
+#include "body/model/AbstractBody.h"
 #include "collision/narrowphase/algorithm/CollisionAlgorithm.h"
 
 namespace urchin {
@@ -13,23 +13,23 @@ namespace urchin {
     */
     class OverlappingPair {
         public:
-            OverlappingPair(AbstractWorkBody*, AbstractWorkBody*);
-            OverlappingPair(AbstractWorkBody*, AbstractWorkBody*, uint_fast64_t);
+            OverlappingPair(AbstractBody*, AbstractBody*);
+            OverlappingPair(AbstractBody*, AbstractBody*, uint_fast64_t);
             OverlappingPair(const OverlappingPair&) = default;
 
-            AbstractWorkBody* getBody(unsigned int) const;
-            AbstractWorkBody* getBody1() const;
-            AbstractWorkBody* getBody2() const;
+            AbstractBody* getBody(unsigned int) const;
+            AbstractBody* getBody1() const;
+            AbstractBody* getBody2() const;
 
-            static uint_fast64_t computeBodiesId(const AbstractWorkBody*, const AbstractWorkBody*);
+            static uint_fast64_t computeBodiesId(const AbstractBody*, const AbstractBody*);
             uint_fast64_t getBodiesId() const;
 
             void setCollisionAlgorithm(std::shared_ptr<CollisionAlgorithm>);
             std::shared_ptr<CollisionAlgorithm> getCollisionAlgorithm() const;
 
         private:
-            AbstractWorkBody* body1;
-            AbstractWorkBody* body2;
+            AbstractBody* body1;
+            AbstractBody* body2;
             uint_fast64_t bodiesId;
 
             std::shared_ptr<CollisionAlgorithm> collisionAlgorithm;

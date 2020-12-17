@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "body/work/AbstractWorkBody.h"
+#include "body/model/AbstractBody.h"
 #include "collision/narrowphase/algorithm/CollisionAlgorithm.h"
 #include "collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h"
 #include "utils/pool/SyncFixedSizePool.h"
@@ -15,7 +15,7 @@ namespace urchin {
             CollisionAlgorithmSelector();
             ~CollisionAlgorithmSelector();
 
-            std::shared_ptr<CollisionAlgorithm> createCollisionAlgorithm(AbstractWorkBody*, const CollisionShape3D*, AbstractWorkBody*, const CollisionShape3D*) const;
+            std::shared_ptr<CollisionAlgorithm> createCollisionAlgorithm(AbstractBody*, const CollisionShape3D*, AbstractBody*, const CollisionShape3D*) const;
 
         private:
             void initializeCollisionAlgorithmBuilderMatrix();

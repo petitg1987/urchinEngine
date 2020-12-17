@@ -4,8 +4,7 @@
 #include "PhysicsWorld.h"
 
 #include "body/model/RigidBody.h"
-#include "body/work/WorkRigidBody.h"
-#include "body/work/WorkGhostBody.h"
+#include "body/model/GhostBody.h"
 #include "body/InertiaCalculation.h"
 
 #include "shape/CollisionShape3D.h"
