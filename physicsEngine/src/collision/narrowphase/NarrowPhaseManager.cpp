@@ -63,8 +63,8 @@ namespace urchin {
 
             std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = retrieveCollisionAlgorithm(overlappingPair);
 
-            CollisionObjectWrapper collisionObject1(*body1->getShape(), body1->getPhysicsTransform());
-            CollisionObjectWrapper collisionObject2(*body2->getShape(), body2->getPhysicsTransform());
+            CollisionObjectWrapper collisionObject1(*body1->getShape(), body1->getTransform());
+            CollisionObjectWrapper collisionObject2(*body2->getShape(), body2->getTransform());
             collisionAlgorithm->processCollisionAlgorithm(collisionObject1, collisionObject2, true);
 
             if (collisionAlgorithm->getConstManifoldResult().getNumContactPoints() != 0) {
@@ -95,8 +95,8 @@ namespace urchin {
             if (body && body->isActive()) {
                 ScopeLockById lockBody(bodiesMutex, body->getObjectId());
 
-                PhysicsTransform currentTransform = body->getPhysicsTransform();
-                PhysicsTransform newTransform = body->getPhysicsTransform().integrate(body->getLinearVelocity(), body->getAngularVelocity(), dt);
+                PhysicsTransform currentTransform = body->getTransform();
+                PhysicsTransform newTransform = currentTransform.integrate(body->getLinearVelocity(), body->getAngularVelocity(), dt);
 
                 float ccdMotionThreshold = body->getCcdMotionThreshold();
                 float motion = currentTransform.getPosition().vector(newTransform.getPosition()).length();
@@ -159,20 +159,20 @@ namespace urchin {
                 const auto* compoundShape = dynamic_cast<const CollisionCompoundShape*>(bodyShape);
                 const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape->getLocalizedShapes();
                 for (const auto& localizedShape : localizedShapes) {
-                    PhysicsTransform fromToObject2 = bodyAABBoxHit->getPhysicsTransform() * localizedShape->transform;
+                    PhysicsTransform fromToObject2 = bodyAABBoxHit->getTransform() * localizedShape->transform;
                     TemporalObject temporalObject2(localizedShape->shape.get(), fromToObject2, fromToObject2);
 
                     continuousCollisionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
                 }
             } else if (bodyShape->isConvex()) {
-                PhysicsTransform fromToObject2 = bodyAABBoxHit->getPhysicsTransform();
+                PhysicsTransform fromToObject2 = bodyAABBoxHit->getTransform();
                 TemporalObject temporalObject2(bodyShape, fromToObject2, fromToObject2);
 
                 continuousCollisionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
             } else if (bodyShape->isConcave()) {
                 const auto* concaveShape = dynamic_cast<const CollisionConcaveShape*>(bodyShape);
 
-                PhysicsTransform inverseTransformObject2 = bodyAABBoxHit->getPhysicsTransform().inverse();
+                PhysicsTransform inverseTransformObject2 = bodyAABBoxHit->getTransform().inverse();
                 AABBox<float> fromAABBoxLocalToObject1 = temporalObject1.getShape()->toAABBox(inverseTransformObject2 * temporalObject1.getFrom());
                 AABBox<float> toAABBoxLocalToObject1 = temporalObject1.getShape()->toAABBox(inverseTransformObject2 * temporalObject1.getTo());
 
@@ -201,7 +201,7 @@ namespace urchin {
     void NarrowPhaseManager::trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape>& triangles, const TemporalObject& temporalObject1,
                                                               AbstractBody* body2, ccd_set& continuousCollisionResults) const {
         for (const auto& triangle : triangles) {
-            PhysicsTransform fromToObject2 = body2->getPhysicsTransform();
+            PhysicsTransform fromToObject2 = body2->getTransform();
             TemporalObject temporalObject2(&triangle, fromToObject2, fromToObject2);
 
             continuousCollisionTest(temporalObject1, temporalObject2, body2, continuousCollisionResults);

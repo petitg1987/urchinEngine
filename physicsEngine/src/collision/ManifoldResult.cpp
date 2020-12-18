@@ -54,8 +54,8 @@ namespace urchin {
      */
     void ManifoldResult::addContactPoint(const Vector3<float>& normalFromObject2, const Point3<float>& pointOnObject2, float depth, bool isPredictive) {
         Point3<float> pointOnObject1 = pointOnObject2.translate(normalFromObject2 * depth);
-        Point3<float> localPointOnObject1 = body1->getPhysicsTransform().inverseTransform(pointOnObject1);
-        Point3<float> localPointOnObject2 = body2->getPhysicsTransform().inverseTransform(pointOnObject2);
+        Point3<float> localPointOnObject1 = body1->getTransform().inverseTransform(pointOnObject1);
+        Point3<float> localPointOnObject2 = body2->getTransform().inverseTransform(pointOnObject2);
 
         addContactPoint(normalFromObject2, pointOnObject1, pointOnObject2, localPointOnObject1, localPointOnObject2, depth, isPredictive);
     }
@@ -96,8 +96,8 @@ namespace urchin {
     void ManifoldResult::refreshContactPoints() {
         for (unsigned int i = 0; i < nbContactPoint; ++i) {
             //1. update contact points in world position
-            Point3<float> newContactPointOnObject1 = body1->getPhysicsTransform().transform(contactPoints[i].getLocalPointOnObject1());
-            Point3<float> newContactPointOnObject2 = body2->getPhysicsTransform().transform(contactPoints[i].getLocalPointOnObject2());
+            Point3<float> newContactPointOnObject1 = body1->getTransform().transform(contactPoints[i].getLocalPointOnObject1());
+            Point3<float> newContactPointOnObject2 = body2->getTransform().transform(contactPoints[i].getLocalPointOnObject2());
             contactPoints[i].updatePoints(newContactPointOnObject1, newContactPointOnObject2);
 
             //2. update penetration depth

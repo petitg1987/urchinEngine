@@ -8,9 +8,9 @@ namespace urchin {
             const Transform<float>& modelTransform, const XmlParser& xmlParser) const {
         std::shared_ptr<XmlChunk> shapeChunk = xmlParser.getUniqueChunk(true, SHAPE_TAG, XmlAttribute(), physicsChunk);
         std::shared_ptr<CollisionShapeReaderWriter> shapeReaderWriter = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeChunk);
-        CollisionShape3D* bodyShape = shapeReaderWriter->loadFrom(shapeChunk, xmlParser);
+        auto bodyShape = std::shared_ptr<CollisionShape3D>(shapeReaderWriter->loadFrom(shapeChunk, xmlParser));
 
-        auto* rigidBody = new RigidBody(id, modelTransform, std::shared_ptr<const CollisionShape3D>(bodyShape));
+        auto* rigidBody = new RigidBody(id, PhysicsTransform(modelTransform.getPosition(), modelTransform.getOrientation()), bodyShape);
         loadBodyPropertiesOn(rigidBody, physicsChunk, xmlParser);
 
         return rigidBody;
@@ -18,9 +18,9 @@ namespace urchin {
 
     void RigidBodyReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& physicsChunk, const RigidBody* rigidBody, XmlWriter& xmlWriter) const {
         std::shared_ptr<XmlChunk> shapeChunk = xmlWriter.createChunk(SHAPE_TAG, XmlAttribute(), physicsChunk);
-        std::shared_ptr<CollisionShapeReaderWriter> shapeReaderWriter = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(rigidBody->getOriginalShape().get());
+        std::shared_ptr<CollisionShapeReaderWriter> shapeReaderWriter = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(rigidBody->getShape());
 
-        shapeReaderWriter->writeOn(shapeChunk, rigidBody->getOriginalShape().get(), xmlWriter);
+        shapeReaderWriter->writeOn(shapeChunk, rigidBody->getShape(), xmlWriter);
         writeBodyPropertiesOn(physicsChunk, rigidBody, xmlWriter);
     }
 

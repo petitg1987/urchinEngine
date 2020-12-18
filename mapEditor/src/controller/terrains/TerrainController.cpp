@@ -36,7 +36,7 @@ namespace urchin {
 
         terrain->setPosition(position);
         if (sceneTerrain->getRigidBody()) {
-            sceneTerrain->getRigidBody()->setTransform(Transform<float>(position));
+            sceneTerrain->getRigidBody()->setTransform(PhysicsTransform(position));
         }
 
         terrain->setAmbient(ambient);

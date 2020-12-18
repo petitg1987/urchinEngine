@@ -10,10 +10,10 @@ using namespace urchin;
 
 void FallingObjectIT::fallOnPlane() {
     std::shared_ptr<CollisionBoxShape> planeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(1000.0f, 0.5f, 1000.0f));
-    auto* planeBody = new RigidBody("plane", Transform<float>(Point3<float>(0.0f, -0.5f, 0.0f), Quaternion<float>(), 1.0f), planeShape);
+    auto* planeBody = new RigidBody("plane", PhysicsTransform(Point3<float>(0.0f, -0.5f, 0.0f), Quaternion<float>()), planeShape);
 
     std::shared_ptr<CollisionBoxShape> cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
-    auto* cubeBody = new RigidBody("cube", Transform<float>(Point3<float>(0.0f, 5.0f, 0.0f), Quaternion<float>(), 1.0f), cubeShape);
+    auto* cubeBody = new RigidBody("cube", PhysicsTransform(Point3<float>(0.0f, 5.0f, 0.0f), Quaternion<float>()), cubeShape);
     cubeBody->setMass(10.0f);
 
     auto* bodyManager = new BodyManager();
@@ -38,10 +38,10 @@ void FallingObjectIT::fallForever() {
     }
 
     std::shared_ptr<CollisionBoxShape> planeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(1000.0f, 0.5f, 1000.0f));
-    auto* planeBody = new RigidBody("plane", Transform<float>(Point3<float>(0.0f, -0.5f, 0.0f), Quaternion<float>(), 1.0f), planeShape);
+    auto* planeBody = new RigidBody("plane", PhysicsTransform(Point3<float>(0.0f, -0.5f, 0.0f), Quaternion<float>()), planeShape);
 
     std::shared_ptr<CollisionBoxShape> cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
-    auto* cubeBody = new RigidBody("cube", Transform<float>(Point3<float>(1100.0f, 5.0f, 0.0f), Quaternion<float>(), 1.0f), cubeShape);
+    auto* cubeBody = new RigidBody("cube", PhysicsTransform(Point3<float>(1100.0f, 5.0f, 0.0f), Quaternion<float>()), cubeShape);
     cubeBody->setMass(10.0f); //non-static
 
     auto* bodyManager = new BodyManager();

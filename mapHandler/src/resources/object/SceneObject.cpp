@@ -111,7 +111,8 @@ namespace urchin {
     }
 
     void SceneObject::moveTo(const Transform<float>& newTransform) {
-        model->setTransform(newTransform);
+        model->setPosition(newTransform.getPosition());
+        model->setOrientation(newTransform.getOrientation());
         if (aiObject) {
             aiObject->updateTransform(newTransform.getPosition(), newTransform.getOrientation());
         }
@@ -133,7 +134,7 @@ namespace urchin {
             this->aiObject = nullptr;
         } else {
             std::string aiObjectName = "#" + rigidBody->getId(); //prefix to avoid collision name with terrains
-            this->aiObject = AIEntityBuilder::instance()->buildAIObject(aiObjectName, rigidBody->getScaledShape(), rigidBody->getTransform());
+            this->aiObject = AIEntityBuilder::instance()->buildAIObject(aiObjectName, rigidBody->getScaledShape(), rigidBody->getTransform().toTransform());
             if (aiManager) {
                 aiManager->addEntity(aiObject);
             }

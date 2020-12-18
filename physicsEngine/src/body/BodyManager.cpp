@@ -48,16 +48,16 @@ namespace urchin {
 
         //add new bodies
         bodies.insert(bodies.end(), newBodies.begin(), newBodies.end());
-        for(const auto newBody : newBodies) {
+        for (const auto newBody : newBodies) {
             lastUpdatedBody = newBody;
             notifyObservers(this, ADD_BODY);
         }
         newBodies.clear();
 
         //delete bodies
-        for(const auto bodyToDelete: bodiesToDelete) {
+        for (const auto bodyToDelete: bodiesToDelete) {
             auto itFind = std::find(bodies.begin(), bodies.end(), bodyToDelete);
-            if(itFind != bodies.end()) {
+            if (itFind != bodies.end()) {
                 bodies.erase(itFind);
 
                 lastUpdatedBody = bodyToDelete;
@@ -68,12 +68,15 @@ namespace urchin {
         }
         bodiesToDelete.clear();
 
-        //TODO remove
-//        if (body->needFullRefresh()) {
-//            deleteWorkBody(body);
-//            createNewWorkBody(body);
-//            ++it;
-//        }
-    }
+        //refresh bodies
+        for (const auto body : bodies) {
+            if (body->needFullRefresh()) {
+                lastUpdatedBody = body;
+                notifyObservers(this, REMOVE_BODY);
+                notifyObservers(this, ADD_BODY);
 
+                body->setNeedFullRefresh(false);
+            }
+        }
+    }
 }

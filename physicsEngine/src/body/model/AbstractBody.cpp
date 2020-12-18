@@ -1,8 +1,8 @@
 #include <stdexcept>
-#include <limits>
 #include <utility>
 
 #include "AbstractBody.h"
+#include "collision/broadphase/PairContainer.h"
 
 namespace urchin {
 
@@ -10,12 +10,13 @@ namespace urchin {
     uint_fast32_t AbstractBody::nextObjectId = 0;
     bool AbstractBody::bDisableAllBodies = false;
 
-    AbstractBody::AbstractBody(std::string id, Transform<float> transform, std::shared_ptr<const CollisionShape3D> shape) :
+    AbstractBody::AbstractBody(std::string id, const PhysicsTransform& transform, std::shared_ptr<const CollisionShape3D> shape) :
             ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
-            transform(std::move(transform)),
+            bNeedFullRefresh(false),
+            transform(transform),
             isManuallyMoved(false),
             id(std::move(id)),
-            originalShape(std::move(shape)),
+            shape(std::move(shape)),
             restitution(0.0f),
             friction(0.0f),
             rollingFriction(0.0f),
@@ -29,10 +30,11 @@ namespace urchin {
     AbstractBody::AbstractBody(const AbstractBody& abstractBody) :
             IslandElement(abstractBody),
             ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
+            bNeedFullRefresh(false),
             transform(abstractBody.getTransform()),
             isManuallyMoved(false),
             id(abstractBody.getId()),
-            originalShape(std::shared_ptr<const CollisionShape3D>(abstractBody.getOriginalShape()->clone())),
+            shape(std::shared_ptr<const CollisionShape3D>(abstractBody.getShape()->clone())),
             restitution(0.0f),
             friction(0.0f),
             rollingFriction(0.0f),
@@ -41,7 +43,15 @@ namespace urchin {
             bIsActive(false),
             objectId(nextObjectId++) {
         initialize(abstractBody.getRestitution(), abstractBody.getFriction(), abstractBody.getRollingFriction());
-        setCcdMotionThreshold(abstractBody.getCcdMotionThreshold());
+        setCcdMotionThreshold(abstractBody.getCcdMotionThreshold()); //override default value
+    }
+
+    void AbstractBody::setNeedFullRefresh(bool needFullRefresh) {
+        this->bNeedFullRefresh.store(needFullRefresh, std::memory_order_relaxed);
+    }
+
+    bool AbstractBody::needFullRefresh() const {
+        return bNeedFullRefresh.load(std::memory_order_relaxed);
     }
 
     void AbstractBody::initialize(float restitution, float friction, float rollingFriction) {
@@ -50,59 +60,27 @@ namespace urchin {
         bIsActive.store(false, std::memory_order_relaxed);
 
         //body description data
-        refreshScaledShape();
+        shape->checkInnerMarginQuality(id);
+        ccdMotionThreshold = (shape->getMinDistanceToCenter() * 2.0f) * ccdMotionThresholdFactor;
+
         this->restitution = restitution;
         this->friction = friction;
         this->rollingFriction = rollingFriction;
     }
 
-    void AbstractBody::refreshScaledShape() {
-        scaledShape = originalShape->scale(transform.getScale());
-        scaledShape->checkInnerMarginQuality(id);
-
-        ccdMotionThreshold = (scaledShape->getMinDistanceToCenter() * 2.0f) * ccdMotionThresholdFactor;
-    }
-
-//    bool AbstractBody::applyFrom(const AbstractWorkBody* workBody) { //TODO remove
-//        #ifndef NDEBUG
-//            assert(!bodyMutex.try_lock()); //body mutex should be locked before call this method
-//        #endif
-//
-//        bool fullRefreshRequested = bNeedFullRefresh.load(std::memory_order_relaxed);
-//        if (!fullRefreshRequested) {
-//            bIsActive.store(workBody->isActive(), std::memory_order_relaxed);
-//
-//            transform.setPosition(workBody->getPosition());
-//            transform.setOrientation(workBody->getOrientation());
-//        }
-//
-//        return fullRefreshRequested;
-//    }
-
-    void AbstractBody::setTransform(const Transform<float>& transform) {
+    void AbstractBody::setTransform(const PhysicsTransform& transform) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
-        if (std::abs(transform.getScale() - this->transform.getScale()) > std::numeric_limits<float>::epsilon()) {
-            this->transform = transform;
-            refreshScaledShape();
-        } else {
-            this->transform = transform;
-        }
+        this->transform = transform;
 
-        //this->setNeedFullRefresh(true); //TODO send ADD_BODY & REMOVE_BODY event ?
-        this->isManuallyMoved = true;
+        this->setNeedFullRefresh(true);
+        this->isManuallyMoved = true; //TODO handle this boolean correctly
     }
 
-    Transform<float> AbstractBody::getTransform() const {
+    PhysicsTransform AbstractBody::getTransform() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         return transform;
-    }
-
-    PhysicsTransform AbstractBody::getPhysicsTransform() const {
-        std::lock_guard<std::mutex> lock(bodyMutex);
-
-        return PhysicsTransform(transform.getPosition(), transform.getOrientation());
     }
 
     void AbstractBody::setPosition(const Point3<float>& position) {
@@ -120,7 +98,7 @@ namespace urchin {
     void AbstractBody::setOrientation(const Quaternion<float>& orientation) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
-        transform.setOrientation(orientation); //TODO transform.setOrientation has bad performance compare to physicsTrasnform.setOrientation !
+        transform.setOrientation(orientation);
     }
 
     Quaternion<float> AbstractBody::getOrientation() const {
@@ -137,38 +115,16 @@ namespace urchin {
         return false;
     }
 
-    void AbstractBody::setShape(const std::shared_ptr<const CollisionShape3D>& shape) {
-        std::lock_guard<std::mutex> lock(bodyMutex);
-
-        this->originalShape = shape;
-        refreshScaledShape();
-        //this->setNeedFullRefresh(true); //TODO send ADD_BODY & REMOVE_BODY event ?
-    }
-
-    const std::shared_ptr<const CollisionShape3D>& AbstractBody::getOriginalShape() const {
-        std::lock_guard<std::mutex> lock(bodyMutex); //TODO remove if cannot update when physics thread is running
-
-        return originalShape;
-    }
-
     const std::shared_ptr<const CollisionShape3D>& AbstractBody::getScaledShape() const {
-        std::lock_guard<std::mutex> lock(bodyMutex); //TODO remove if cannot update when physics thread is running
-
-        return scaledShape;
+        return shape;
     }
 
-    /**
-     * @return Scaled shape representing the form of the body. The shape is
-     * scaled according to scale define in 'transform' attribute.
-     */
     const CollisionShape3D* AbstractBody::getShape() const {
-        std::lock_guard<std::mutex> lock(bodyMutex); //TODO remove if cannot update when physics thread is running
-
-        return scaledShape.get(); //TODO better to return shared_ptr ?
+        return shape.get();
     }
 
-    Vector3<float> AbstractBody::computeScaledShapeLocalInertia(float mass) const {
-        return scaledShape->computeLocalInertia(mass);
+    Vector3<float> AbstractBody::computeShapeLocalInertia(float mass) const {
+        return shape->computeLocalInertia(mass);
     }
 
     void AbstractBody::setId(const std::string& id) {

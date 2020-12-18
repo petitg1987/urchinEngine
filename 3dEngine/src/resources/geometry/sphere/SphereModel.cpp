@@ -18,7 +18,7 @@ namespace urchin {
         return modelMatrix;
     }
 
-    std::vector<Point3<float>> SphereModel::retrieveVertexArray() const {
+    std::vector<Point3<float>> SphereModel::retrieveVertexArray() const { //TODO Wrong display
         std::vector<Point3<float>> vertexArray;
         vertexArray.reserve(4 * slices * slices);
 
@@ -52,7 +52,6 @@ namespace urchin {
         }
 
         return vertexArray;
-
     }
 
     ShapeType SphereModel::getShapeType() const {

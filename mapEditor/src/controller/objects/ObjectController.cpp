@@ -54,7 +54,7 @@ namespace urchin {
         if (toCloneRigidBody) {
             auto* rigidBody = new RigidBody(*toCloneRigidBody);
             rigidBody->setId(newSceneObject->getName());
-            rigidBody->setTransform(model->getTransform());
+            rigidBody->setTransform(PhysicsTransform(model->getTransform().getPosition(), model->getTransform().getOrientation()));
             newSceneObject->setupInteractiveBody(rigidBody);
         }
 
@@ -66,16 +66,17 @@ namespace urchin {
 
         std::string bodyId = constSceneObject->getName();
         Transform<float> modelTransform = constSceneObject->getModel()->getTransform();
-        std::shared_ptr<const CollisionShape3D> bodyShape = DefaultBodyShapeCreator(constSceneObject).createDefaultBodyShape(CollisionShape3D::ShapeType::BOX_SHAPE, false);
+        PhysicsTransform physicsTransform(modelTransform.getPosition(), modelTransform.getOrientation());
+        auto bodyShape = DefaultBodyShapeCreator(constSceneObject).createDefaultBodyShape(CollisionShape3D::ShapeType::BOX_SHAPE);
 
-        auto* rigidBody = new RigidBody(bodyId, modelTransform, bodyShape);
+        auto* rigidBody = new RigidBody(bodyId, physicsTransform, bodyShape);
         sceneObject->setupInteractiveBody(rigidBody);
 
         markModified();
     }
 
     void ObjectController::changeBodyShape(const SceneObject* constSceneObject, CollisionShape3D::ShapeType shapeType) {
-        std::shared_ptr<const CollisionShape3D> newCollisionShape = DefaultBodyShapeCreator(constSceneObject).createDefaultBodyShape(shapeType, false);
+        std::shared_ptr<const CollisionShape3D> newCollisionShape = DefaultBodyShapeCreator(constSceneObject).createDefaultBodyShape(shapeType);
 
         updateSceneObjectPhysicsShape(constSceneObject, newCollisionShape);
     }
@@ -91,9 +92,15 @@ namespace urchin {
         SceneObject* sceneObject = findSceneObject(constSceneObject);
         Model* model = sceneObject->getModel();
 
+        Transform<float> oldTransform = model->getTransform();
         model->setTransform(transform);
+
         if (sceneObject->getRigidBody()) {
-            sceneObject->getRigidBody()->setTransform(transform);
+            float scaleRatio = transform.getScale() / oldTransform.getScale();
+            std::shared_ptr<const CollisionShape3D> collisionShape = sceneObject->getRigidBody()->getScaledShape();
+            auto scaledCollisionShape = collisionShape->scale(scaleRatio);
+
+            updateSceneObjectPhysicsShape(sceneObject, scaledCollisionShape);
         }
 
         markModified();
@@ -136,12 +143,16 @@ namespace urchin {
 
         std::string bodyId = constSceneObject->getName();
         Transform<float> modelTransform = constSceneObject->getModel()->getTransform();
-        auto* newRigidBody = new RigidBody(bodyId, modelTransform, newCollisionShape);
+        PhysicsTransform physicsTransform(modelTransform.getPosition(), modelTransform.getOrientation());
 
+        auto* newRigidBody = new RigidBody(bodyId, physicsTransform, newCollisionShape);
         newRigidBody->setMass(rigidBody->getMass());
         newRigidBody->setRestitution(rigidBody->getRestitution());
         newRigidBody->setFriction(rigidBody->getFriction());
         newRigidBody->setRollingFriction(rigidBody->getRollingFriction());
+        newRigidBody->setDamping(rigidBody->getLinearDamping(), rigidBody->getAngularDamping());
+        newRigidBody->setLinearFactor(rigidBody->getLinearFactor());
+        newRigidBody->setAngularFactor(rigidBody->getAngularFactor());
 
         sceneObject->setupInteractiveBody(newRigidBody);
 

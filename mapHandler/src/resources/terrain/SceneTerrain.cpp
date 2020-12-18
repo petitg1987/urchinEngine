@@ -51,7 +51,7 @@ namespace urchin {
         auto collisionTerrainShape = std::make_shared<urchin::CollisionHeightfieldShape>(terrain->getMesh()->getVertices(),
                                                                                          terrain->getMesh()->getXSize(),
                                                                                          terrain->getMesh()->getZSize());
-        auto* terrainRigidBody = new RigidBody(this->name, Transform<float>(terrain->getPosition()), collisionTerrainShape);
+        auto* terrainRigidBody = new RigidBody(this->name, PhysicsTransform(terrain->getPosition()), collisionTerrainShape);
         setupInteractiveBody(terrainRigidBody);
     }
 
@@ -118,7 +118,7 @@ namespace urchin {
             this->aiTerrain = nullptr;
         } else {
             std::string aiObjectName = "@" + rigidBody->getId(); //prefix to avoid collision name with objects
-            this->aiTerrain = AIEntityBuilder::instance()->buildAITerrain(aiObjectName, rigidBody->getScaledShape(), rigidBody->getTransform());
+            this->aiTerrain = AIEntityBuilder::instance()->buildAITerrain(aiObjectName, rigidBody->getScaledShape(), rigidBody->getTransform().toTransform());
             if (aiManager) {
                 aiManager->addEntity(aiTerrain);
             }

@@ -12,11 +12,11 @@ namespace urchin {
     */
     class GhostBody : public AbstractBody {
         public:
-            GhostBody(const std::string&, const PhysicsTransform&, const std::shared_ptr<const CollisionShape3D>&); //TODO use Transform instad of PhysicsTrasnform to be aligned with RigidBody ?
+            GhostBody(const std::string&, const PhysicsTransform&, const std::shared_ptr<const CollisionShape3D>&);
             ~GhostBody() override;
 
-            static GhostBody* upCast(AbstractWorkBody*);
-            static const GhostBody* upCast(const AbstractWorkBody*);
+            static GhostBody* upCast(AbstractBody*);
+            static const GhostBody* upCast(const AbstractBody*);
 
             PairContainer* getPairContainer() const override;
 

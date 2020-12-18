@@ -7,7 +7,7 @@ namespace urchin {
 
     }
 
-    std::shared_ptr<const CollisionShape3D> DefaultBodyShapeCreator::createDefaultBodyShape(CollisionShape3D::ShapeType shapeType, bool scaled) const {
+    std::shared_ptr<const CollisionShape3D> DefaultBodyShapeCreator::createDefaultBodyShape(CollisionShape3D::ShapeType shapeType) const {
         CollisionShape3D *shape;
         const AABBox<float>& modelAABBox = sceneObject->getModel()->getLocalAABBox();
 
@@ -47,14 +47,11 @@ namespace urchin {
             throw std::invalid_argument("Unknown shape type to create default body shape: " + std::to_string(shapeType));
         }
 
-        if (scaled) {
-            float scale = sceneObject->getModel()->getTransform().getScale();
-            std::shared_ptr<const CollisionShape3D> scaledShape = shape->scale(scale);
-            delete shape;
+        float scale = sceneObject->getModel()->getTransform().getScale();
+        std::shared_ptr<const CollisionShape3D> scaledShape = shape->scale(scale);
+        delete shape;
 
-            return scaledShape;
-        }
-        return std::shared_ptr<const CollisionShape3D>(shape);
+        return scaledShape;
     }
 
     ConvexHullShape3D<float>* DefaultBodyShapeCreator::buildConvexHullShape(const Model* model) const {

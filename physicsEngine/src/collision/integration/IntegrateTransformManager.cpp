@@ -23,7 +23,7 @@ namespace urchin {
         for (auto abstractBody : bodyManager->getBodies()) {
             RigidBody* body = RigidBody::upCast(abstractBody);
             if (body && body->isActive()) {
-                PhysicsTransform currentTransform = body->getPhysicsTransform();
+                PhysicsTransform currentTransform = body->getTransform();
                 PhysicsTransform newTransform = currentTransform.integrate(body->getLinearVelocity(), body->getAngularVelocity(), dt);
 
                 float ccdMotionThreshold = body->getCcdMotionThreshold();

@@ -11,7 +11,7 @@ namespace urchin {
 
     class RigidBody : public AbstractBody {
         public:
-            RigidBody(const std::string&, const Transform<float>&, const std::shared_ptr<const CollisionShape3D>&);
+            RigidBody(const std::string&, const PhysicsTransform&, const std::shared_ptr<const CollisionShape3D>&);
             RigidBody(const RigidBody&);
             ~RigidBody() override = default;
 
@@ -23,7 +23,7 @@ namespace urchin {
             Vector3<float> getAngularVelocity() const;
 
             Vector3<float> getTotalMomentum() const;
-            void applyCentralMomentum(const Vector3<float>&); //TODO could have no effect if called by thread 'x' and then thread 'y' call resetMomentum()
+            void applyCentralMomentum(const Vector3<float>&); //TODO [URGENT] could have no effect if called by thread 'x' and then thread 'y' call resetMomentum()
             void applyMomentum(const Vector3<float>&, const Point3<float>&);
             void resetMomentum(); //TODO internal method
 
@@ -52,7 +52,6 @@ namespace urchin {
 
         private:
             void initializeRigidBody(float, float, float, const Vector3<float>&, const Vector3<float>&);
-            void refreshScaledShape() override;
             void refreshMassProperties();
             void refreshLocalInertia();
             void refreshBodyActiveState();

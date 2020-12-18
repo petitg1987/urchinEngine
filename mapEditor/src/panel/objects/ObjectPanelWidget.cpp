@@ -559,9 +559,9 @@ namespace urchin {
             auto rotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
 
             Transform<float> newSceneObjectTransform(
-                    Point3<float>((float)positionX->value(), (float)positionY->value(), (float)positionZ->value()),
+                    Point3<float>((float)positionX->value(),(float)positionY->value(),(float)positionZ->value()),
                     Quaternion<float>(eulerAngle, rotationSequence),
-                            (float)scale->value());
+                    (float)scale->value());
 
             objectController->updateSceneObjectTransform(sceneObject, newSceneObjectTransform);
         }
@@ -573,12 +573,9 @@ namespace urchin {
 
             const SceneObject* sceneObject = objectTableView->getSelectedSceneObject();
             if (sceneObject->getRigidBody()) {
-                std::shared_ptr<const CollisionShape3D> originalCollisionShape = sceneObject->getRigidBody()->getOriginalShape();
-                const SceneObject* updatedSceneObject = objectController->updateSceneObjectPhysicsShape(sceneObject, originalCollisionShape);
-
-                std::shared_ptr<const CollisionShape3D> scaledCollisionShape = updatedSceneObject->getRigidBody()->getScaledShape();
-                BodyShapeWidget* bodyShapeWidget = createBodyShapeWidget(scaledCollisionShape, updatedSceneObject);
-                bodyShapeWidget->setupShapePropertiesFrom(scaledCollisionShape);
+                std::shared_ptr<const CollisionShape3D> updatedCollisionShape = sceneObject->getRigidBody()->getScaledShape();
+                BodyShapeWidget* bodyShapeWidget = createBodyShapeWidget(updatedCollisionShape, sceneObject);
+                bodyShapeWidget->setupShapePropertiesFrom(updatedCollisionShape);
             }
         }
     }
@@ -633,14 +630,10 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::bodyShapeChanged(const std::shared_ptr<const CollisionShape3D>& scaledShape) {
+    void ObjectPanelWidget::bodyShapeChanged(const std::shared_ptr<const CollisionShape3D>& shape) {
         if (!disableObjectEvent) {
             const SceneObject* sceneObject = objectTableView->getSelectedSceneObject();
-
-            float invScale = 1.0f / sceneObject->getModel()->getTransform().getScale();
-            std::shared_ptr<const CollisionShape3D> originalShape = scaledShape->scale(invScale);
-
-            objectController->updateSceneObjectPhysicsShape(sceneObject, originalShape);
+            objectController->updateSceneObjectPhysicsShape(sceneObject, shape);
         }
     }
 

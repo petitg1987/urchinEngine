@@ -7,30 +7,32 @@
 #include <mutex>
 #include "UrchinCommon.h"
 
-#include "body/work/AbstractWorkBody.h"
+#include "collision/island/IslandElement.h"
 #include "shape/CollisionShape3D.h"
 
 namespace urchin {
 
+    class PairContainer;
+
     class AbstractBody : public IslandElement {
         public:
-            AbstractBody(std::string, Transform<float>, std::shared_ptr<const CollisionShape3D>);
+            AbstractBody(std::string, const PhysicsTransform&, std::shared_ptr<const CollisionShape3D>);
             AbstractBody(const AbstractBody&);
             ~AbstractBody() override = default;
 
-            void setTransform(const Transform<float>&);
-            Transform<float> getTransform() const; //TODO remove or keep for external user ?
-            PhysicsTransform getPhysicsTransform() const;
-            void setPosition(const Point3<float>&); //TODO internal only or required full refresh !
-            Point3<float> getPosition() const;
-            void setOrientation(const Quaternion<float>&); //TODO internal only or required full refresh !
-            Quaternion<float> getOrientation() const;
-            bool isManuallyMovedAndResetFlag();
+            void setNeedFullRefresh(bool);
+            bool needFullRefresh() const;
 
-            void setShape(const std::shared_ptr<const CollisionShape3D>&); //TODO remove it or only if paused + REMOVE_BODY & ADD_BODY event !
-            const std::shared_ptr<const CollisionShape3D>& getOriginalShape() const;
-            const std::shared_ptr<const CollisionShape3D>& getScaledShape() const; //TODO remove method duplication with getShape()
-            const CollisionShape3D* getShape() const;
+            void setTransform(const PhysicsTransform&); //TODO [URGENT] required full refresh and must be called at right moment to not erase value
+            PhysicsTransform getTransform() const;
+            void setPosition(const Point3<float>&); //TODO internal only
+            Point3<float> getPosition() const;
+            void setOrientation(const Quaternion<float>&); //TODO internal only
+            Quaternion<float> getOrientation() const;
+            bool isManuallyMovedAndResetFlag(); //TODO [URGENT] review this method
+
+            const std::shared_ptr<const CollisionShape3D>& getScaledShape() const; //TODO rename in getShape() when next TODO complete
+            const CollisionShape3D* getShape() const;  //TODO remove method and use getScaledShape()
 
             void setId(const std::string&);
             const std::string& getId() const;
@@ -58,8 +60,7 @@ namespace urchin {
 
         protected:
             void initialize(float, float, float);
-            virtual void refreshScaledShape();
-            Vector3<float> computeScaledShapeLocalInertia(float) const;
+            Vector3<float> computeShapeLocalInertia(float) const;
 
             //mutex for attributes modifiable from external
             mutable std::mutex bodyMutex;
@@ -67,15 +68,15 @@ namespace urchin {
         private:
             //technical data
             const float ccdMotionThresholdFactor;
+            std::atomic_bool bNeedFullRefresh;
 
             //body representation data
-            Transform<float> transform;
+            PhysicsTransform transform;
             bool isManuallyMoved;
 
             //body description data
             std::string id;
-            std::shared_ptr<const CollisionShape3D> originalShape;
-            std::shared_ptr<const CollisionShape3D> scaledShape;
+            std::shared_ptr<const CollisionShape3D> shape;
             float restitution;
             float friction;
             float rollingFriction;

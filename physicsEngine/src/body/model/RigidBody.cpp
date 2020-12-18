@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    RigidBody::RigidBody(const std::string& id, const Transform<float>& transform, const std::shared_ptr<const CollisionShape3D>& shape) :
+    RigidBody::RigidBody(const std::string& id, const PhysicsTransform& transform, const std::shared_ptr<const CollisionShape3D>& shape) :
             AbstractBody(id, transform, shape),
             mass(0.0f),
             invMass(0.0f),
@@ -47,14 +47,9 @@ namespace urchin {
         this->angularFactor = angularFactor;
     }
 
-    void RigidBody::refreshScaledShape() {
-        AbstractBody::refreshScaledShape();
-
-        refreshLocalInertia();
-    }
-
     void RigidBody::refreshMassProperties() {
         refreshLocalInertia();
+
         if (mass > -std::numeric_limits<float>::epsilon() && mass < std::numeric_limits<float>::epsilon()) {
             setIsStatic(true);
             invMass = 0.0f;
@@ -69,25 +64,8 @@ namespace urchin {
     }
 
     void RigidBody::refreshLocalInertia() {
-        this->localInertia = computeScaledShapeLocalInertia(mass);
+        this->localInertia = computeShapeLocalInertia(mass);
     }
-
-//    bool RigidBody::applyFrom(const AbstractWorkBody* workBody) { //TODO remove
-//        std::lock_guard<std::mutex> lock(bodyMutex);
-//
-//        bool fullRefreshRequested = AbstractBody::applyFrom(workBody);
-//        const WorkRigidBody* workRigidBody = WorkRigidBody::upCast(workBody);
-//
-//        if (workRigidBody && !fullRefreshRequested) {
-//            mass = workRigidBody->getMass();
-//            refreshMassProperties();
-//
-//            linearVelocity = workRigidBody->getLinearVelocity();
-//            angularVelocity = workRigidBody->getAngularVelocity();
-//        }
-//
-//        return fullRefreshRequested;
-//    }
 
     void RigidBody::setVelocity(const Vector3<float>& linearVelocity, const Vector3<float>& angularVelocity) {
         std::lock_guard<std::mutex> lock(bodyMutex);
@@ -170,7 +148,7 @@ namespace urchin {
 
         this->mass = mass;
         refreshMassProperties();
-        //this->setNeedFullRefresh(true); //TODO send ADD_BODY & REMOVE_BODY event ?
+        this->setNeedFullRefresh(true);
     }
 
     float RigidBody::getMass() const {
@@ -200,7 +178,7 @@ namespace urchin {
                 MathFunction::isZero(localInertia.X) ? 0.0f : 1.0f / localInertia.X,
                 MathFunction::isZero(localInertia.Y) ? 0.0f : 1.0f / localInertia.Y,
                 MathFunction::isZero(localInertia.Z) ? 0.0f : 1.0f / localInertia.Z);
-        return InertiaCalculation::computeInverseWorldInertia(invLocalInertia, getPhysicsTransform()); //TODO useless mutex in getPhysicsTransform()
+        return InertiaCalculation::computeInverseWorldInertia(invLocalInertia, getTransform()); //TODO useless mutex in getPhysicsTransform()
     }
 
     /**

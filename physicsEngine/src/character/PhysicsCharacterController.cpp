@@ -83,7 +83,7 @@ namespace urchin {
             }
 
             //set new transform on character
-            physicsCharacter->updateTransform(ghostBody->getPhysicsTransform());
+            physicsCharacter->updateTransform(ghostBody->getTransform());
         }
     }
 
