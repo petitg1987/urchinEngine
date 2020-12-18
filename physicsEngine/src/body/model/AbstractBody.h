@@ -42,18 +42,19 @@ namespace urchin {
             void setRollingFriction(float);
             float getRollingFriction() const;
 
-            float getCcdMotionThreshold() const;
             void setCcdMotionThreshold(float);
+            float getCcdMotionThreshold() const;
 
             virtual PairContainer* getPairContainer() const;
 
-            bool isStatic() const;
+            static void disableAllBodies(bool);
             virtual void setIsStatic(bool);
-            bool isActive() const override;
+            bool isStatic() const;
             void setIsActive(bool); //TODO internal only
-            virtual bool isGhostBody() const = 0; //TODO internal only
+            bool isActive() const override;
+            virtual bool isGhostBody() const = 0;
 
-            uint_fast32_t getObjectId() const; //TODO internal only & still needed or use pointer as ID ?
+            uint_fast32_t getObjectId() const;
 
         protected:
             void initialize(float, float, float);
@@ -81,6 +82,7 @@ namespace urchin {
             float ccdMotionThreshold;
 
             //state flags
+            static bool bDisableAllBodies;
             std::atomic_bool bIsStatic;
             std::atomic_bool bIsActive;
 

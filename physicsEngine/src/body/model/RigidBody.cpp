@@ -89,22 +89,17 @@ namespace urchin {
 //        return fullRefreshRequested;
 //    }
 
-    void RigidBody::setLinearVelocity(const Vector3<float>& linearVelocity) {
+    void RigidBody::setVelocity(const Vector3<float>& linearVelocity, const Vector3<float>& angularVelocity) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         this->linearVelocity = linearVelocity;
+        this->angularVelocity = angularVelocity;
     }
 
     Vector3<float> RigidBody::getLinearVelocity() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         return linearVelocity;
-    }
-
-    void RigidBody::setAngularVelocity(const Vector3<float>& angularVelocity) {
-        std::lock_guard<std::mutex> lock(bodyMutex);
-
-        this->angularVelocity = angularVelocity;
     }
 
     Vector3<float> RigidBody::getAngularVelocity() const {
@@ -116,10 +111,9 @@ namespace urchin {
     /**
      * Refresh body active state. If forces are apply on body: active body
      */
-    void RigidBody::refreshBodyActiveState() {
+    void RigidBody::refreshBodyActiveState() { //TODO: avoid mutex inside this private method ?
         if (!isStatic() && !isActive()) {
-            if (totalMomentum.squareLength() > std::numeric_limits<float>::epsilon()
-                || totalMomentum.squareLength() > std::numeric_limits<float>::epsilon()) {
+            if (totalMomentum.squareLength() > std::numeric_limits<float>::epsilon() || totalMomentum.squareLength() > std::numeric_limits<float>::epsilon()) {
                 setIsActive(true);
             }
         }

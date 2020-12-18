@@ -52,8 +52,7 @@ namespace urchin {
                     body->setIsActive(bodyActiveState);
 
                     if (bodyActiveState) {
-                        body->setLinearVelocity(Vector3<float>(0.0, 0.0, 0.0));
-                        body->setAngularVelocity(Vector3<float>(0.0, 0.0, 0.0));
+                        body->setVelocity(Vector3<float>(0.0, 0.0, 0.0), Vector3<float>(0.0, 0.0, 0.0));
                     }
                 }
             }

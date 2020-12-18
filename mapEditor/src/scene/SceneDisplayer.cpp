@@ -105,7 +105,7 @@ namespace urchin {
 
         //physics
         physicsWorld = new PhysicsWorld();
-        AbstractWorkBody::disableAllBodies(true);
+        AbstractBody::disableAllBodies(true);
         physicsWorld->setUp(1.0f/50.0f);
 
         //AI

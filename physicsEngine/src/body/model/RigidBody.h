@@ -18,10 +18,8 @@ namespace urchin {
             static RigidBody* upCast(AbstractBody*);
             static const RigidBody* upCast(const AbstractBody*);
 
-            void setLinearVelocity(const Vector3<float>&); //TODO internal method +  create common method for linear & angular velocity (reduce mutex) ?
+            void setVelocity(const Vector3<float>&, const Vector3<float>&); //TODO internal method
             Vector3<float> getLinearVelocity() const;
-
-            void setAngularVelocity(const Vector3<float>&); //TODO internal method
             Vector3<float> getAngularVelocity() const;
 
             Vector3<float> getTotalMomentum() const;

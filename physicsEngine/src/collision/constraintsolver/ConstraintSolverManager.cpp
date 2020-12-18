@@ -193,11 +193,11 @@ namespace urchin {
     }
 
     void ConstraintSolverManager::applyImpulse(RigidBody* body1, RigidBody* body2, const CommonSolvingData& commonData, const Vector3<float>& impulseVector) {
-        body1->setLinearVelocity(body1->getLinearVelocity() - (impulseVector * body1->getInvMass() * body1->getLinearFactor()));
-        body1->setAngularVelocity(body1->getAngularVelocity() - (commonData.invInertia1 * commonData.r1.crossProduct(impulseVector * body1->getLinearFactor()) * body1->getAngularFactor()));
+        body1->setVelocity(body1->getLinearVelocity() - (impulseVector * body1->getInvMass() * body1->getLinearFactor()),
+                           body1->getAngularVelocity() - (commonData.invInertia1 * commonData.r1.crossProduct(impulseVector * body1->getLinearFactor()) * body1->getAngularFactor()));
 
-        body2->setLinearVelocity(body2->getLinearVelocity() + (impulseVector * body2->getInvMass() * body2->getLinearFactor()));
-        body2->setAngularVelocity(body2->getAngularVelocity() + (commonData.invInertia2 * commonData.r2.crossProduct(impulseVector * body2->getLinearFactor()) * body2->getAngularFactor()));
+        body2->setVelocity(body2->getLinearVelocity() + (impulseVector * body2->getInvMass() * body2->getLinearFactor()),
+                           body2->getAngularVelocity() + (commonData.invInertia2 * commonData.r2.crossProduct(impulseVector * body2->getLinearFactor()) * body2->getAngularFactor()));
     }
 
     /**

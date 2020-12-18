@@ -8,6 +8,7 @@ namespace urchin {
 
     //static
     uint_fast32_t AbstractBody::nextObjectId = 0;
+    bool AbstractBody::bDisableAllBodies = false;
 
     AbstractBody::AbstractBody(std::string id, Transform<float> transform, std::shared_ptr<const CollisionShape3D> shape) :
             ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
@@ -182,9 +183,6 @@ namespace urchin {
         return id;
     }
 
-    /**
-     * @param restitution Restitution (0=stop, 1=100% elastic)
-     */
     void AbstractBody::setRestitution(float restitution) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
@@ -200,9 +198,6 @@ namespace urchin {
         return restitution;
     }
 
-    /**
-     * @param friction Friction (0=no friction, 1=total friction)
-     */
     void AbstractBody::setFriction(float friction) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
@@ -218,9 +213,6 @@ namespace urchin {
         return friction;
     }
 
-    /**
-     * @param rollingFriction Rolling friction (0=no friction, 1=total friction)
-     */
     void AbstractBody::setRollingFriction(float rollingFriction) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
@@ -236,9 +228,15 @@ namespace urchin {
         return rollingFriction;
     }
 
+    void AbstractBody::setCcdMotionThreshold(float ccdMotionThreshold) {
+        std::lock_guard<std::mutex> lock(bodyMutex);
+
+        this->ccdMotionThreshold = ccdMotionThreshold;
+    }
+
     /**
-     * @return Threshold for continuous collision detection in distance unit. A default value is determinate automatically
-     * for each body thanks to properties 'collisionShape.ccdMotionThresholdFactor'.
+     * @return Threshold for continuous collision detection in distance unit (process continuous collision detection if the motion in one
+     * step is more then threshold). A default value is determinate automatically for each body thanks to properties 'collisionShape.ccdMotionThresholdFactor'.
      */
     float AbstractBody::getCcdMotionThreshold() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
@@ -246,38 +244,26 @@ namespace urchin {
         return ccdMotionThreshold;
     }
 
-    /**
-     * Process continuous collision detection if the motion in one step is more then threshold.
-     * @param ccdMotionThreshold Threshold for continuous collision detection in distance unit.
-     */
-    void AbstractBody::setCcdMotionThreshold(float ccdMotionThreshold) {
-        std::lock_guard<std::mutex> lock(bodyMutex);
-
-        this->ccdMotionThreshold = ccdMotionThreshold;
-    }
-
     PairContainer* AbstractBody::getPairContainer() const {
         return nullptr;
     }
 
-    /**
-     * @return True when body is static (cannot be affected by physics world)
-     */
-    bool AbstractBody::isStatic() const {
-        return bIsStatic.load(std::memory_order_relaxed);
+    void AbstractBody::disableAllBodies(bool value) {
+        bDisableAllBodies = value;
     }
 
-    /**
-     * @param bIsStatic Indicate whether body is static (cannot be affected by physics world)
-     */
     void AbstractBody::setIsStatic(bool bIsStatic) {
         this->bIsStatic.store(bIsStatic, std::memory_order_relaxed);
         setIsActive(false);
     }
 
     /**
-     * @param bIsActive Indicate whether body is active (body has velocity and/or one of body in same island is active)
+     * @return True when body is static (cannot be affected by physics world)
      */
+    bool AbstractBody::isStatic() const {
+        return bDisableAllBodies || bIsStatic.load(std::memory_order_relaxed);
+    }
+
     void AbstractBody::setIsActive(bool bIsActive) {
         assert(!(bIsActive && bIsStatic)); //an active body cannot be static
 
@@ -288,7 +274,7 @@ namespace urchin {
      * @return True when body is active (body has velocity and/or one of body in same island is active)
      */
     bool AbstractBody::isActive() const {
-        return bIsActive.load(std::memory_order_relaxed);
+        return !bDisableAllBodies && bIsActive.load(std::memory_order_relaxed);
     }
 
     uint_fast32_t AbstractBody::getObjectId() const {

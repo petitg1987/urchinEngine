@@ -10,7 +10,7 @@ namespace urchin {
     /**
      * Thread safe pair container. Pair can be added/removed by physics thread while pairs are read from another thread.
      */
-    class SyncVectorPairContainer : public VectorPairContainer { //TODO still need this synchronous class ?
+    class SyncVectorPairContainer : public VectorPairContainer {
         public:
             ~SyncVectorPairContainer() override = default;
 

@@ -58,7 +58,7 @@ namespace urchin {
                 float maxLinearVelocity = maxLinearVelocityAllowed * MAX_LINEAR_VELOCITY_FACTOR; //avoid to create new CCD contact points in narrow phase
                 float currentSpeed = body->getLinearVelocity().length();
                 if (currentSpeed > maxLinearVelocity) {
-                    body->setLinearVelocity((body->getLinearVelocity() / currentSpeed) * maxLinearVelocity);
+                    body->setVelocity((body->getLinearVelocity() / currentSpeed) * maxLinearVelocity, body->getAngularVelocity());
                 }
             }
         }
