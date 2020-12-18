@@ -19,8 +19,6 @@ namespace urchin {
             static const RigidBody* upCast(const AbstractBody*);
 
             void setTransform(const PhysicsTransform&) override;
-            void setPosition(const Point3<float>&) override;
-            void setOrientation(const Quaternion<float>&) override;
 
             void setVelocity(const Vector3<float>&, const Vector3<float>&); //TODO internal method
             Vector3<float> getLinearVelocity() const;

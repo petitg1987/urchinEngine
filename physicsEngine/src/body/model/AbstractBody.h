@@ -25,9 +25,7 @@ namespace urchin {
 
             virtual void setTransform(const PhysicsTransform&); //TODO [URGENT] required full refresh and must be called at right moment to not erase value
             PhysicsTransform getTransform() const;
-            virtual void setPosition(const Point3<float>&); //TODO internal only (remove method ?)
             Point3<float> getPosition() const;
-            virtual void setOrientation(const Quaternion<float>&); //TODO internal only (remove method ?)
             Quaternion<float> getOrientation() const;
             bool isManuallyMovedAndResetFlag(); //TODO [URGENT] review this method
 

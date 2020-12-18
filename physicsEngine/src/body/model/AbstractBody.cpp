@@ -75,8 +75,9 @@ namespace urchin {
 
         this->transform = transform;
 
-        this->setNeedFullRefresh(true);
-        this->isManuallyMoved = true; //TODO handle this boolean correctly
+        //TODO handle this property if manual update
+        //this->setNeedFullRefresh(true);
+        //this->isManuallyMoved = true;
     }
 
     PhysicsTransform AbstractBody::getTransform() const {
@@ -85,22 +86,10 @@ namespace urchin {
         return transform;
     }
 
-    void AbstractBody::setPosition(const Point3<float>& position) {
-        std::lock_guard<std::mutex> lock(bodyMutex);
-
-        transform.setPosition(position);
-    }
-
     Point3<float> AbstractBody::getPosition() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         return transform.getPosition();
-    }
-
-    void AbstractBody::setOrientation(const Quaternion<float>& orientation) {
-        std::lock_guard<std::mutex> lock(bodyMutex);
-
-        transform.setOrientation(orientation);
     }
 
     Quaternion<float> AbstractBody::getOrientation() const {

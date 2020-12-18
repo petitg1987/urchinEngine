@@ -92,16 +92,6 @@ namespace urchin {
         refreshWorldInertia();
     }
 
-    void RigidBody::setPosition(const Point3<float>& position) {
-        AbstractBody::setPosition(position);
-        refreshWorldInertia();
-    }
-
-    void RigidBody::setOrientation(const Quaternion<float>& orientation) {
-        AbstractBody::setOrientation(orientation);
-        refreshWorldInertia();
-    }
-
     void RigidBody::setVelocity(const Vector3<float>& linearVelocity, const Vector3<float>& angularVelocity) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 

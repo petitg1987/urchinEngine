@@ -32,8 +32,7 @@ namespace urchin {
                 if (motion > ccdMotionThreshold) {
                     handleContinuousCollision(body, currentTransform, newTransform, dt);
                 } else {
-                    body->setPosition(newTransform.getPosition());
-                    body->setOrientation(newTransform.getOrientation());
+                    body->setTransform(newTransform);
                 }
             }
         }
@@ -63,7 +62,6 @@ namespace urchin {
             }
         }
 
-        body->setPosition(updatedTargetTransform.getPosition());
-        body->setOrientation(updatedTargetTransform.getOrientation());
+        body->setTransform(updatedTargetTransform);
     }
 }

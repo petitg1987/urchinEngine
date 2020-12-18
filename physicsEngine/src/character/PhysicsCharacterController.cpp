@@ -127,19 +127,23 @@ namespace urchin {
         }
 
         //compute and apply orientation
+        Quaternion<float> newOrientation = initialOrientation;
         if (!MathFunction::isZero(velocity.squareLength(), 0.001f)) {
             Quaternion<float> orientation = Quaternion<float>(velocity.normalize()).normalize();
-            ghostBody->setOrientation(orientation * initialOrientation);
+            newOrientation = orientation * initialOrientation;
+        } else {
+            newOrientation = initialOrientation;
         }
 
         //apply data on body
         targetPosition.Y += verticalSpeed * dt;
-        ghostBody->setPosition(targetPosition);
+        ghostBody->setTransform(PhysicsTransform(targetPosition, newOrientation));
     }
 
     void PhysicsCharacterController::recoverFromPenetration(float dt) {
         SignificantContactValues significantContactValues = resetSignificantContactValues();
 
+        Point3<float> characterPosition = ghostBody->getPosition();
         for (unsigned int subStepIndex = 0; subStepIndex < RECOVER_PENETRATION_SUB_STEPS; ++subStepIndex) {
             manifoldResults.clear();
             physicsWorld->getCollisionWorld()->getNarrowPhaseManager()->processGhostBody(ghostBody, manifoldResults);
@@ -154,7 +158,7 @@ namespace urchin {
                         Vector3<float> normal =  manifoldContactPoint.getNormalFromObject2() * sign;
                         Vector3<float> moveVector = normal * depth * recoverFactors[subStepIndex];
 
-                        ghostBody->setPosition(ghostBody->getPosition().translate(moveVector));
+                        characterPosition = characterPosition.translate(moveVector);
 
                         if (subStepIndex == 0) {
                             saveSignificantContactValues(significantContactValues, normal);
@@ -162,6 +166,10 @@ namespace urchin {
                     }
                 }
             }
+        }
+
+        if(!manifoldResults.empty()) {
+            ghostBody->setTransform(PhysicsTransform(characterPosition, ghostBody->getOrientation()));
         }
 
         computeSignificantContactValues(significantContactValues, dt);
