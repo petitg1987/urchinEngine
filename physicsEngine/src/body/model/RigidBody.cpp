@@ -65,7 +65,7 @@ namespace urchin {
     }
 
     void RigidBody::refreshInertia() {
-        this->localInertia = getScaledShape()->computeLocalInertia(mass);
+        this->localInertia = getShape()->computeLocalInertia(mass);
         this->invLocalInertia = Vector3<float>(MathFunction::isZero(localInertia.X) ? 0.0f : 1.0f / localInertia.X,
                                                MathFunction::isZero(localInertia.Y) ? 0.0f : 1.0f / localInertia.Y,
                                                MathFunction::isZero(localInertia.Z) ? 0.0f : 1.0f / localInertia.Z);
@@ -266,7 +266,7 @@ namespace urchin {
     }
 
     void RigidBody::setIsStatic(bool bIsStatic) {
-        //TODO block test !: std::lock_guard<std::mutex> lock(bodyMutex);
+        //TODO block test !: std::lock_guard<std::mutex> lock(bodyMutex); & check missing mutex
 
         AbstractBody::setIsStatic(bIsStatic);
         linearVelocity.setNull();

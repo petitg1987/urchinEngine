@@ -40,8 +40,8 @@ namespace urchin {
         return CAPSULE_SHAPE_LABEL;
     }
 
-    void BodyCapsuleShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape) {
-        auto* capsuleShape = dynamic_cast<const CollisionCapsuleShape*>(shape.get());
+    void BodyCapsuleShapeWidget::doSetupShapePropertiesFrom(const std::shared_ptr<const CollisionShape3D>& shape) {
+        const auto& capsuleShape = std::dynamic_pointer_cast<const CollisionCapsuleShape>(shape);
 
         radius->setValue(capsuleShape->getRadius());
         cylinderHeight->setValue(capsuleShape->getCylinderHeight());

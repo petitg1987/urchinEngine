@@ -9,10 +9,10 @@ namespace urchin {
         return new CollisionBoxShape(halfSize);
     }
 
-    void CollisionBoxReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& shapeChunk, const CollisionShape3D* collisionShape, XmlWriter& xmlWriter) const {
+    void CollisionBoxReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& shapeChunk, const std::shared_ptr<const CollisionShape3D>& collisionShape, XmlWriter& xmlWriter) const {
         shapeChunk->setAttribute(XmlAttribute(TYPE_ATTR, BOX_VALUE));
 
-        const auto* boxShape = dynamic_cast<const CollisionBoxShape*>(collisionShape);
+        const auto& boxShape = std::dynamic_pointer_cast<const CollisionBoxShape>(collisionShape);
 
         std::shared_ptr<XmlChunk> halfSizeChunk = xmlWriter.createChunk(HALF_SIZE_TAG, XmlAttribute(), shapeChunk);
         halfSizeChunk->setVector3Value(boxShape->getHalfSizes());

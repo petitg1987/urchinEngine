@@ -15,7 +15,8 @@ namespace urchin {
             CollisionAlgorithmSelector();
             ~CollisionAlgorithmSelector();
 
-            std::shared_ptr<CollisionAlgorithm> createCollisionAlgorithm(AbstractBody*, const CollisionShape3D*, AbstractBody*, const CollisionShape3D*) const;
+            std::shared_ptr<CollisionAlgorithm> createCollisionAlgorithm(AbstractBody*, const CollisionShape3D*,
+                                                                         AbstractBody*, const CollisionShape3D*) const;
 
         private:
             void initializeCollisionAlgorithmBuilderMatrix();

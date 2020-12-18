@@ -31,8 +31,7 @@ namespace urchin {
             Quaternion<float> getOrientation() const;
             bool isManuallyMovedAndResetFlag(); //TODO [URGENT] review this method
 
-            const std::shared_ptr<const CollisionShape3D>& getScaledShape() const; //TODO rename in getShape() when next TODO complete
-            const CollisionShape3D* getShape() const;  //TODO remove method and use getScaledShape()
+            const std::shared_ptr<const CollisionShape3D>& getShape() const;
 
             void setId(const std::string&);
             const std::string& getId() const;

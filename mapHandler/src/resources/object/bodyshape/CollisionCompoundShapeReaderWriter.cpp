@@ -28,10 +28,10 @@ namespace urchin {
         return new CollisionCompoundShape(compoundShapes);
     }
 
-    void CollisionCompoundShapeReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& mainShapeChunk, const CollisionShape3D* mainCollisionShape, XmlWriter& xmlWriter) const {
+    void CollisionCompoundShapeReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& mainShapeChunk, const std::shared_ptr<const CollisionShape3D>& mainCollisionShape, XmlWriter& xmlWriter) const {
         mainShapeChunk->setAttribute(XmlAttribute(TYPE_ATTR, COMPOUND_SHAPE_VALUE));
 
-        const auto* compoundShape = dynamic_cast<const CollisionCompoundShape*>(mainCollisionShape);
+        const auto& compoundShape = std::dynamic_pointer_cast<const CollisionCompoundShape>(mainCollisionShape);
 
         std::shared_ptr<XmlChunk> localizedShapesListChunk = xmlWriter.createChunk(LOCALIZED_SHAPES, XmlAttribute(), mainShapeChunk);
         const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& shapes = compoundShape->getLocalizedShapes();
@@ -41,8 +41,7 @@ namespace urchin {
             writeTransformOn(localizedShapeChunk, shape, xmlWriter);
 
             std::shared_ptr<XmlChunk> shapeChunk = xmlWriter.createChunk(SHAPE, XmlAttribute(), localizedShapeChunk);
-            const CollisionShape3D* collisionShape = shape->shape.get();
-            CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(collisionShape)->writeOn(shapeChunk, collisionShape, xmlWriter);
+            CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(shape->shape)->writeOn(shapeChunk, shape->shape, xmlWriter);
         }
     }
 

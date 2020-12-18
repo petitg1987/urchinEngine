@@ -97,7 +97,7 @@ namespace urchin {
 
         if (sceneObject->getRigidBody()) {
             float scaleRatio = transform.getScale() / oldTransform.getScale();
-            std::shared_ptr<const CollisionShape3D> collisionShape = sceneObject->getRigidBody()->getScaledShape();
+            std::shared_ptr<const CollisionShape3D> collisionShape = sceneObject->getRigidBody()->getShape();
             auto scaledCollisionShape = collisionShape->scale(scaleRatio);
 
             updateSceneObjectPhysicsShape(sceneObject, scaledCollisionShape);

@@ -443,7 +443,7 @@ namespace urchin {
     void ObjectPanelWidget::setupObjectPhysicsDataFrom(const SceneObject* sceneObject) {
         disableObjectEvent = true;
         const RigidBody* rigidBody = sceneObject->getRigidBody();
-        std::shared_ptr<const CollisionShape3D> bodyScaledShape(nullptr);
+        std::shared_ptr<const CollisionShape3D> bodyShape(nullptr);
         if (rigidBody) {
             hasRigidBody->setChecked(true);
             tabPhysicsRigidBody->show();
@@ -463,14 +463,14 @@ namespace urchin {
             angularFactorY->setValue(rigidBody->getAngularFactor().Y);
             angularFactorZ->setValue(rigidBody->getAngularFactor().Z);
 
-            bodyScaledShape = rigidBody->getScaledShape();
+            bodyShape = rigidBody->getShape();
         } else {
             hasRigidBody->setChecked(false);
             tabPhysicsRigidBody->hide();
         }
 
-        BodyShapeWidget* bodyShapeWidget = createBodyShapeWidget(bodyScaledShape, sceneObject);
-        bodyShapeWidget->setupShapePropertiesFrom(bodyScaledShape);
+        BodyShapeWidget* bodyShapeWidget = createBodyShapeWidget(bodyShape, sceneObject);
+        bodyShapeWidget->setupShapePropertiesFrom(bodyShape);
 
         shapeTypeValueLabel->setText(QString::fromStdString(bodyShapeWidget->getBodyShapeName()));
         disableObjectEvent = false;
@@ -573,7 +573,7 @@ namespace urchin {
 
             const SceneObject* sceneObject = objectTableView->getSelectedSceneObject();
             if (sceneObject->getRigidBody()) {
-                std::shared_ptr<const CollisionShape3D> updatedCollisionShape = sceneObject->getRigidBody()->getScaledShape();
+                const std::shared_ptr<const CollisionShape3D>& updatedCollisionShape = sceneObject->getRigidBody()->getShape();
                 BodyShapeWidget* bodyShapeWidget = createBodyShapeWidget(updatedCollisionShape, sceneObject);
                 bodyShapeWidget->setupShapePropertiesFrom(updatedCollisionShape);
             }

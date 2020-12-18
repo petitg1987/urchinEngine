@@ -56,8 +56,8 @@ namespace urchin {
         return localizedShapeTableView;
     }
 
-    void BodyCompoundShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape) {
-        const auto* compoundShape = dynamic_cast<const CollisionCompoundShape*>(shape.get());
+    void BodyCompoundShapeWidget::doSetupShapePropertiesFrom(const std::shared_ptr<const CollisionShape3D>& shape) {
+        const auto& compoundShape = std::dynamic_pointer_cast<const CollisionCompoundShape>(shape);
 
         const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape->getLocalizedShapes();
         for (const auto& localizedShape : localizedShapes) {

@@ -33,10 +33,10 @@ namespace urchin {
         return new CollisionConeShape(radius, height, orientation);
     }
 
-    void CollisionConeReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& shapeChunk, const CollisionShape3D* collisionShape, XmlWriter& xmlWriter) const {
+    void CollisionConeReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& shapeChunk, const std::shared_ptr<const CollisionShape3D>& collisionShape, XmlWriter& xmlWriter) const {
         shapeChunk->setAttribute(XmlAttribute(TYPE_ATTR, CONE_VALUE));
 
-        const auto* coneShape = dynamic_cast<const CollisionConeShape*>(collisionShape);
+        const auto& coneShape = std::dynamic_pointer_cast<const CollisionConeShape>(collisionShape);
 
         std::shared_ptr<XmlChunk> orientationChunk = xmlWriter.createChunk(ORIENTATION_TAG, XmlAttribute(), shapeChunk);
         ConeShape<float>::ConeOrientation orientationValue = coneShape->getConeOrientation();

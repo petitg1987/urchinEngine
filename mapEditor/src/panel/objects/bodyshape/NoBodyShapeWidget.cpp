@@ -13,7 +13,7 @@ namespace urchin {
         return "/";
     }
 
-    void NoBodyShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>) {
+    void NoBodyShapeWidget::doSetupShapePropertiesFrom(const std::shared_ptr<const CollisionShape3D>&) {
         //nothing to do
     }
 

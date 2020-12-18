@@ -43,8 +43,8 @@ namespace urchin {
         return CONE_SHAPE_LABEL;
     }
 
-    void BodyConeShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape) {
-        const auto* coneShape = dynamic_cast<const CollisionConeShape*>(shape.get());
+    void BodyConeShapeWidget::doSetupShapePropertiesFrom(const std::shared_ptr<const CollisionShape3D>& shape) {
+        const auto& coneShape = std::dynamic_pointer_cast<const CollisionConeShape>(shape);
 
         radius->setValue(coneShape->getRadius());
         height->setValue(coneShape->getHeight());

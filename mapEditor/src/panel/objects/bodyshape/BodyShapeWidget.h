@@ -31,7 +31,7 @@ namespace urchin {
             virtual std::string getBodyShapeName() const = 0;
             std::shared_ptr<const CollisionShape3D> retrieveShape();
 
-            void setupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>);
+            void setupShapePropertiesFrom(const std::shared_ptr<const CollisionShape3D>&);
 
         signals:
             void bodyShapeChange(std::shared_ptr<const CollisionShape3D>);
@@ -43,7 +43,7 @@ namespace urchin {
             QGridLayout* mainLayout;
             bool disableShapeEvent;
 
-            virtual void doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>) = 0;
+            virtual void doSetupShapePropertiesFrom(const std::shared_ptr<const CollisionShape3D>&) = 0;
             virtual std::shared_ptr<const CollisionShape3D> createBodyShape() const = 0;
 
         private:

@@ -9,10 +9,10 @@ namespace urchin {
         return new CollisionSphereShape(radius);
     }
 
-    void CollisionSphereReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& shapeChunk, const CollisionShape3D* collisionShape, XmlWriter& xmlWriter) const {
+    void CollisionSphereReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& shapeChunk, const std::shared_ptr<const CollisionShape3D>& collisionShape, XmlWriter& xmlWriter) const {
         shapeChunk->setAttribute(XmlAttribute(TYPE_ATTR, SPHERE_VALUE));
 
-        const auto* sphereShape = dynamic_cast<const CollisionSphereShape*>(collisionShape);
+        const auto& sphereShape = std::dynamic_pointer_cast<const CollisionSphereShape>(collisionShape);
 
         std::shared_ptr<XmlChunk> radiusChunk = xmlWriter.createChunk(RADIUS_TAG, XmlAttribute(), shapeChunk);
         radiusChunk->setFloatValue(sphereShape->getRadius());

@@ -117,12 +117,8 @@ namespace urchin {
         return false;
     }
 
-    const std::shared_ptr<const CollisionShape3D>& AbstractBody::getScaledShape() const {
+    const std::shared_ptr<const CollisionShape3D>& AbstractBody::getShape() const {
         return shape;
-    }
-
-    const CollisionShape3D* AbstractBody::getShape() const {
-        return shape.get();
     }
 
     void AbstractBody::setId(const std::string& id) {

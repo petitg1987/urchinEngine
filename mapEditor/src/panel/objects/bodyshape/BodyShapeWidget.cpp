@@ -26,11 +26,9 @@ namespace urchin {
         return shape;
     }
 
-    void BodyShapeWidget::setupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape) {
+    void BodyShapeWidget::setupShapePropertiesFrom(const std::shared_ptr<const CollisionShape3D>& shape) {
         disableShapeEvent = true;
-
-        doSetupShapePropertiesFrom(std::move(shape));
-
+        doSetupShapePropertiesFrom(shape);
         disableShapeEvent = false;
     }
 

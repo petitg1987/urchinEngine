@@ -30,7 +30,7 @@ namespace urchin {
 
         if (selectedSceneObject && selectedSceneObject->getRigidBody()) {
             const Transform<float>& modelTransform = selectedSceneObject->getModel()->getTransform();
-            std::shared_ptr<const CollisionShape3D> bodyShape = selectedSceneObject->getRigidBody()->getScaledShape();
+            const std::shared_ptr<const CollisionShape3D>& bodyShape = selectedSceneObject->getRigidBody()->getShape();
 
             if (bodyShape->isConcave()) {
                 PhysicsTransform transform(modelTransform.getPosition(), modelTransform.getOrientation());

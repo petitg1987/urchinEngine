@@ -79,7 +79,7 @@ namespace urchin {
             AbstractBody* body1 = overlappingPair->getBody1();
             AbstractBody* body2 = overlappingPair->getBody2();
 
-            collisionAlgorithm = collisionAlgorithmSelector->createCollisionAlgorithm(body1, body1->getShape(), body2, body2->getShape());
+            collisionAlgorithm = collisionAlgorithmSelector->createCollisionAlgorithm(body1, body1->getShape().get(), body2, body2->getShape().get());
 
             overlappingPair->setCollisionAlgorithm(collisionAlgorithm);
         }
@@ -113,16 +113,16 @@ namespace urchin {
         if (!bodiesAABBoxHitBody.empty()) {
             ccd_set ccdResults;
 
-            const CollisionShape3D* bodyShape = body->getShape();
+            const auto& bodyShape = body->getShape();
             if (bodyShape->isCompound()) {
-                const auto* compoundShape = dynamic_cast<const CollisionCompoundShape*>(bodyShape);
+                const auto& compoundShape = std::dynamic_pointer_cast<const CollisionCompoundShape>(bodyShape);
                 const std::vector<std::shared_ptr<const LocalizedCollisionShape>> & localizedShapes = compoundShape->getLocalizedShapes();
                 for (const auto& localizedShape : localizedShapes) {
                     TemporalObject temporalObject(localizedShape->shape.get(), from * localizedShape->transform, to * localizedShape->transform);
                     ccdResults.merge(continuousCollisionTest(temporalObject, bodiesAABBoxHitBody));
                 }
             } else if (bodyShape->isConvex()) {
-                TemporalObject temporalObject(body->getShape(), from, to);
+                TemporalObject temporalObject(body->getShape().get(), from, to);
                 ccdResults = continuousCollisionTest(temporalObject, bodiesAABBoxHitBody);
             } else {
                 throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape->getShapeType()));
@@ -154,9 +154,9 @@ namespace urchin {
             }
             ScopeLockById lockBody(bodiesMutex, bodyAABBoxHit->getObjectId());
 
-            const CollisionShape3D* bodyShape = bodyAABBoxHit->getShape();
+            const auto& bodyShape = bodyAABBoxHit->getShape();
             if (bodyShape->isCompound()) {
-                const auto* compoundShape = dynamic_cast<const CollisionCompoundShape*>(bodyShape);
+                const auto& compoundShape = std::dynamic_pointer_cast<const CollisionCompoundShape>(bodyShape);
                 const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape->getLocalizedShapes();
                 for (const auto& localizedShape : localizedShapes) {
                     PhysicsTransform fromToObject2 = bodyAABBoxHit->getTransform() * localizedShape->transform;
@@ -166,11 +166,11 @@ namespace urchin {
                 }
             } else if (bodyShape->isConvex()) {
                 PhysicsTransform fromToObject2 = bodyAABBoxHit->getTransform();
-                TemporalObject temporalObject2(bodyShape, fromToObject2, fromToObject2);
+                TemporalObject temporalObject2(bodyShape.get(), fromToObject2, fromToObject2);
 
                 continuousCollisionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
             } else if (bodyShape->isConcave()) {
-                const auto* concaveShape = dynamic_cast<const CollisionConcaveShape*>(bodyShape);
+                const auto& concaveShape = std::dynamic_pointer_cast<const CollisionConcaveShape>(bodyShape);
 
                 PhysicsTransform inverseTransformObject2 = bodyAABBoxHit->getTransform().inverse();
                 AABBox<float> fromAABBoxLocalToObject1 = temporalObject1.getShape()->toAABBox(inverseTransformObject2 * temporalObject1.getFrom());

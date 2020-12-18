@@ -27,10 +27,10 @@ namespace urchin {
         return new CollisionCylinderShape(radius, height, orientation);
     }
 
-    void CollisionCylinderReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& shapeChunk, const CollisionShape3D* collisionShape, XmlWriter& xmlWriter) const {
+    void CollisionCylinderReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& shapeChunk, const std::shared_ptr<const CollisionShape3D>& collisionShape, XmlWriter& xmlWriter) const {
         shapeChunk->setAttribute(XmlAttribute(TYPE_ATTR, CYLINDER_VALUE));
 
-        const auto* cylinderShape = dynamic_cast<const CollisionCylinderShape*>(collisionShape);
+        const auto& cylinderShape = std::dynamic_pointer_cast<const CollisionCylinderShape>(collisionShape);
 
         std::shared_ptr<XmlChunk> orientationChunk = xmlWriter.createChunk(ORIENTATION_TAG, XmlAttribute(), shapeChunk);
         CylinderShape<float>::CylinderOrientation orientationValue = cylinderShape->getCylinderOrientation();
