@@ -18,6 +18,10 @@ namespace urchin {
             static RigidBody* upCast(AbstractBody*);
             static const RigidBody* upCast(const AbstractBody*);
 
+            void setTransform(const PhysicsTransform&) override;
+            void setPosition(const Point3<float>&) override;
+            void setOrientation(const Quaternion<float>&) override;
+
             void setVelocity(const Vector3<float>&, const Vector3<float>&); //TODO internal method
             Vector3<float> getLinearVelocity() const;
             Vector3<float> getAngularVelocity() const;
@@ -53,7 +57,8 @@ namespace urchin {
         private:
             void initializeRigidBody(float, float, float, const Vector3<float>&, const Vector3<float>&);
             void refreshMassProperties();
-            void refreshLocalInertia();
+            void refreshInertia();
+            void refreshWorldInertia();
             void refreshBodyActiveState();
 
             //rigid body representation data
@@ -67,6 +72,8 @@ namespace urchin {
             float mass;
             float invMass;
             Vector3<float> localInertia;
+            Vector3<float> invLocalInertia;
+            Matrix3<float> invWorldInertia;
 
             float linearDamping;
             float angularDamping;

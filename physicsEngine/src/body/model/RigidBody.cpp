@@ -13,18 +13,16 @@ namespace urchin {
             invMass(0.0f),
             linearDamping(0.0f),
             angularDamping(0.0f) {
-        initializeRigidBody(0.0f, 0.0f, 0.0f,
-                Vector3<float>(1.0f, 1.0f, 1.0f), Vector3<float>(1.0f, 1.0f, 1.0f));
+        initializeRigidBody(0.0f, 0.0f, 0.0f,Vector3<float>(1.0f, 1.0f, 1.0f), Vector3<float>(1.0f, 1.0f, 1.0f));
     }
 
     RigidBody::RigidBody(const RigidBody& rigidBody) :
-        AbstractBody(rigidBody),
-        mass(0.0f),
-        invMass(0.0f),
-        linearDamping(0.0f),
-        angularDamping(0.0f) {
-        initializeRigidBody(rigidBody.getMass(), rigidBody.getLinearDamping(), rigidBody.getAngularDamping(),
-                rigidBody.getLinearFactor(), rigidBody.getAngularFactor());
+            AbstractBody(rigidBody),
+            mass(0.0f),
+            invMass(0.0f),
+            linearDamping(0.0f),
+            angularDamping(0.0f) {
+        initializeRigidBody(rigidBody.getMass(), rigidBody.getLinearDamping(), rigidBody.getAngularDamping(), rigidBody.getLinearFactor(), rigidBody.getAngularFactor());
     }
 
     RigidBody* RigidBody::upCast(AbstractBody* abstractBody) {
@@ -36,19 +34,22 @@ namespace urchin {
     }
 
     void RigidBody::initializeRigidBody(float mass, float linearDamping, float angularDamping,
-            const Vector3<float>& linearFactor, const Vector3<float>& angularFactor) {
+                                        const Vector3<float>& linearFactor, const Vector3<float>& angularFactor) {
         this->mass = mass;
-        refreshMassProperties();
 
         this->linearDamping = linearDamping;
         this->angularDamping = angularDamping;
 
         this->linearFactor = linearFactor;
         this->angularFactor = angularFactor;
+
+        refreshMassProperties();
+        refreshInertia();
+        refreshWorldInertia();
     }
 
     void RigidBody::refreshMassProperties() {
-        refreshLocalInertia();
+        refreshInertia();
 
         if (mass > -std::numeric_limits<float>::epsilon() && mass < std::numeric_limits<float>::epsilon()) {
             setIsStatic(true);
@@ -63,8 +64,42 @@ namespace urchin {
         }
     }
 
-    void RigidBody::refreshLocalInertia() {
-        this->localInertia = computeShapeLocalInertia(mass);
+    void RigidBody::refreshInertia() {
+        this->localInertia = getScaledShape()->computeLocalInertia(mass);
+        this->invLocalInertia = Vector3<float>(MathFunction::isZero(localInertia.X) ? 0.0f : 1.0f / localInertia.X,
+                                               MathFunction::isZero(localInertia.Y) ? 0.0f : 1.0f / localInertia.Y,
+                                               MathFunction::isZero(localInertia.Z) ? 0.0f : 1.0f / localInertia.Z);
+        refreshWorldInertia();
+    }
+
+    void RigidBody::refreshWorldInertia() {
+        invWorldInertia = InertiaCalculation::computeInverseWorldInertia(invLocalInertia, transform);
+    }
+
+    /**
+     * Refresh body active state. If forces are apply on body: active body
+     */
+    void RigidBody::refreshBodyActiveState() {
+        if (!isStatic() && !isActive()) {
+            if (totalMomentum.squareLength() > std::numeric_limits<float>::epsilon() || totalMomentum.squareLength() > std::numeric_limits<float>::epsilon()) {
+                setIsActive(true);
+            }
+        }
+    }
+
+    void RigidBody::setTransform(const PhysicsTransform& transform) {
+        AbstractBody::setTransform(transform);
+        refreshWorldInertia();
+    }
+
+    void RigidBody::setPosition(const Point3<float>& position) {
+        AbstractBody::setPosition(position);
+        refreshWorldInertia();
+    }
+
+    void RigidBody::setOrientation(const Quaternion<float>& orientation) {
+        AbstractBody::setOrientation(orientation);
+        refreshWorldInertia();
     }
 
     void RigidBody::setVelocity(const Vector3<float>& linearVelocity, const Vector3<float>& angularVelocity) {
@@ -84,17 +119,6 @@ namespace urchin {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         return angularVelocity;
-    }
-
-    /**
-     * Refresh body active state. If forces are apply on body: active body
-     */
-    void RigidBody::refreshBodyActiveState() { //TODO: avoid mutex inside this private method ?
-        if (!isStatic() && !isActive()) {
-            if (totalMomentum.squareLength() > std::numeric_limits<float>::epsilon() || totalMomentum.squareLength() > std::numeric_limits<float>::epsilon()) {
-                setIsActive(true);
-            }
-        }
     }
 
     Vector3<float> RigidBody::getTotalMomentum() const {
@@ -169,16 +193,8 @@ namespace urchin {
         return localInertia;
     }
 
-    Matrix3<float> RigidBody::getInvWorldInertia() const { //TODO compute invWorldInertia only when physicTransform is updated ?
-        if (isStatic()) { //TODO useless mutex in isStatic()
-            return Matrix3<float>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-        }
-
-        Vector3<float> invLocalInertia(
-                MathFunction::isZero(localInertia.X) ? 0.0f : 1.0f / localInertia.X,
-                MathFunction::isZero(localInertia.Y) ? 0.0f : 1.0f / localInertia.Y,
-                MathFunction::isZero(localInertia.Z) ? 0.0f : 1.0f / localInertia.Z);
-        return InertiaCalculation::computeInverseWorldInertia(invLocalInertia, getTransform()); //TODO useless mutex in getPhysicsTransform()
+    Matrix3<float> RigidBody::getInvWorldInertia() const {
+        return invWorldInertia;
     }
 
     /**

@@ -23,11 +23,11 @@ namespace urchin {
             void setNeedFullRefresh(bool);
             bool needFullRefresh() const;
 
-            void setTransform(const PhysicsTransform&); //TODO [URGENT] required full refresh and must be called at right moment to not erase value
+            virtual void setTransform(const PhysicsTransform&); //TODO [URGENT] required full refresh and must be called at right moment to not erase value
             PhysicsTransform getTransform() const;
-            void setPosition(const Point3<float>&); //TODO internal only
+            virtual void setPosition(const Point3<float>&); //TODO internal only (remove method ?)
             Point3<float> getPosition() const;
-            void setOrientation(const Quaternion<float>&); //TODO internal only
+            virtual void setOrientation(const Quaternion<float>&); //TODO internal only (remove method ?)
             Quaternion<float> getOrientation() const;
             bool isManuallyMovedAndResetFlag(); //TODO [URGENT] review this method
 
@@ -60,19 +60,18 @@ namespace urchin {
 
         protected:
             void initialize(float, float, float);
-            Vector3<float> computeShapeLocalInertia(float) const;
 
             //mutex for attributes modifiable from external
             mutable std::mutex bodyMutex;
+
+            //body representation data
+            PhysicsTransform transform;
+            bool isManuallyMoved;
 
         private:
             //technical data
             const float ccdMotionThresholdFactor;
             std::atomic_bool bNeedFullRefresh;
-
-            //body representation data
-            PhysicsTransform transform;
-            bool isManuallyMoved;
 
             //body description data
             std::string id;
