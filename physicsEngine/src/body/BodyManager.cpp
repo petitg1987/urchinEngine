@@ -49,6 +49,8 @@ namespace urchin {
         //add new bodies
         bodies.insert(bodies.end(), newBodies.begin(), newBodies.end());
         for (const auto newBody : newBodies) {
+            newBody->setPhysicsThreadId(std::this_thread::get_id());
+
             lastUpdatedBody = newBody;
             notifyObservers(this, ADD_BODY);
         }

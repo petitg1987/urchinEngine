@@ -5,6 +5,7 @@
 #include <memory>
 #include <atomic>
 #include <mutex>
+#include <thread>
 #include "UrchinCommon.h"
 
 #include "collision/island/IslandElement.h"
@@ -22,12 +23,13 @@ namespace urchin {
 
             void setNeedFullRefresh(bool);
             bool needFullRefresh() const;
+            void setPhysicsThreadId(std::thread::id);
 
-            virtual void setTransform(const PhysicsTransform&); //TODO [URGENT] required full refresh and must be called at right moment to not erase value
+            virtual void setTransform(const PhysicsTransform&);
             PhysicsTransform getTransform() const;
             Point3<float> getPosition() const;
             Quaternion<float> getOrientation() const;
-            bool isManuallyMovedAndResetFlag(); //TODO [URGENT] review this method
+            bool isManuallyMovedAndResetFlag();
 
             const std::shared_ptr<const CollisionShape3D>& getShape() const;
 
@@ -41,15 +43,15 @@ namespace urchin {
             void setRollingFriction(float);
             float getRollingFriction() const;
 
-            void setCcdMotionThreshold(float);
+            void setCcdMotionThreshold(float); //TODO remove it ???
             float getCcdMotionThreshold() const;
 
             virtual PairContainer* getPairContainer() const;
 
             static void disableAllBodies(bool);
-            virtual void setIsStatic(bool);
+            virtual void setIsStatic(bool); //TODO add comment if cannot be called outside physics thread
             bool isStatic() const;
-            void setIsActive(bool); //TODO internal only
+            void setIsActive(bool); //TODO add comment if cannot be called outside physics thread
             bool isActive() const override;
             virtual bool isGhostBody() const = 0;
 
@@ -57,6 +59,11 @@ namespace urchin {
 
         protected:
             void initialize(float, float, float);
+
+            //technical data
+            const float ccdMotionThresholdFactor;
+            std::atomic_bool bNeedFullRefresh;
+            std::thread::id physicsThreadId;
 
             //mutex for attributes modifiable from external
             mutable std::mutex bodyMutex;
@@ -66,10 +73,6 @@ namespace urchin {
             bool isManuallyMoved;
 
         private:
-            //technical data
-            const float ccdMotionThresholdFactor;
-            std::atomic_bool bNeedFullRefresh;
-
             //body description data
             std::string id;
             std::shared_ptr<const CollisionShape3D> shape;

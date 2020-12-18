@@ -11,10 +11,10 @@ namespace urchin {
     bool AbstractBody::bDisableAllBodies = false;
 
     AbstractBody::AbstractBody(std::string id, const PhysicsTransform& transform, std::shared_ptr<const CollisionShape3D> shape) :
-            transform(transform),
-            isManuallyMoved(false),
             ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
             bNeedFullRefresh(false),
+            transform(transform),
+            isManuallyMoved(false),
             id(std::move(id)),
             shape(std::move(shape)),
             restitution(0.0f),
@@ -29,10 +29,10 @@ namespace urchin {
 
     AbstractBody::AbstractBody(const AbstractBody& abstractBody) :
             IslandElement(abstractBody),
-            transform(abstractBody.getTransform()),
-            isManuallyMoved(false),
             ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
             bNeedFullRefresh(false),
+            transform(abstractBody.getTransform()),
+            isManuallyMoved(false),
             id(abstractBody.getId()),
             shape(std::shared_ptr<const CollisionShape3D>(abstractBody.getShape()->clone())),
             restitution(0.0f),
@@ -55,6 +55,10 @@ namespace urchin {
         return bNeedFullRefresh.load(std::memory_order_relaxed);
     }
 
+    void AbstractBody::setPhysicsThreadId(std::thread::id physicsThreadId) {
+        this->physicsThreadId = physicsThreadId;
+    }
+
     void AbstractBody::initialize(float restitution, float friction, float rollingFriction) {
         //technical data
         bIsStatic.store(true, std::memory_order_relaxed);
@@ -74,10 +78,6 @@ namespace urchin {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         this->transform = transform;
-
-        //TODO handle this property if manual update
-        //this->setNeedFullRefresh(true);
-        //this->isManuallyMoved = true;
     }
 
     PhysicsTransform AbstractBody::getTransform() const {
@@ -193,7 +193,7 @@ namespace urchin {
 
     void AbstractBody::setIsStatic(bool bIsStatic) {
         this->bIsStatic.store(bIsStatic, std::memory_order_relaxed);
-        setIsActive(false);
+        setIsActive(false); //TODO why this call ??
     }
 
     /**

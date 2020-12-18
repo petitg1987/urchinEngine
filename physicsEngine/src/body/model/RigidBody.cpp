@@ -1,6 +1,7 @@
 #include <stdexcept>
 #include <limits>
 #include <mutex>
+#include <thread>
 
 #include "RigidBody.h"
 #include "body/InertiaCalculation.h"
@@ -88,10 +89,23 @@ namespace urchin {
     }
 
     void RigidBody::setTransform(const PhysicsTransform& transform) {
-        AbstractBody::setTransform(transform);
+        std::lock_guard<std::mutex> lock(bodyMutex);
+
+        if (!(std::this_thread::get_id() == physicsThreadId)) {
+            if (!AbstractBody::isActive()) {
+                throw std::runtime_error("Impossible to update the rigid body position/orientation while physics engine manages it");
+            }
+            isManuallyMoved = true;
+            setNeedFullRefresh(true);
+        }
+
+        this->transform = transform;
         refreshWorldInertia();
     }
 
+    /**
+     * Define the body velocity. Undetermined behavior if called outside the physics engine thread.
+     */
     void RigidBody::setVelocity(const Vector3<float>& linearVelocity, const Vector3<float>& angularVelocity) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
@@ -132,12 +146,6 @@ namespace urchin {
         refreshBodyActiveState();
     }
 
-    void RigidBody::resetMomentum() {
-        std::lock_guard<std::mutex> lock(bodyMutex);
-
-        totalMomentum.setNull();
-    }
-
     Vector3<float> RigidBody::getTotalTorqueMomentum() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
@@ -151,9 +159,13 @@ namespace urchin {
         refreshBodyActiveState();
     }
 
-    void RigidBody::resetTorqueMomentum() {
+    /**
+     * Reset momentum and torque momentum. Undetermined behavior if called outside the physics engine thread.
+     */
+    void RigidBody::resetAllMomentum() {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
+        totalMomentum.setNull();
         totalTorqueMomentum.setNull();
     }
 

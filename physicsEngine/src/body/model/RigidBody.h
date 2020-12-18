@@ -20,18 +20,16 @@ namespace urchin {
 
             void setTransform(const PhysicsTransform&) override;
 
-            void setVelocity(const Vector3<float>&, const Vector3<float>&); //TODO internal method
+            void setVelocity(const Vector3<float>&, const Vector3<float>&);
             Vector3<float> getLinearVelocity() const;
             Vector3<float> getAngularVelocity() const;
 
             Vector3<float> getTotalMomentum() const;
             void applyCentralMomentum(const Vector3<float>&); //TODO [URGENT] could have no effect if called by thread 'x' and then thread 'y' call resetMomentum()
             void applyMomentum(const Vector3<float>&, const Point3<float>&);
-            void resetMomentum(); //TODO internal method
-
             Vector3<float> getTotalTorqueMomentum() const;
             void applyTorqueMomentum(const Vector3<float>&);
-            void resetTorqueMomentum(); //TODO internal method
+            void resetAllMomentum();
 
             void setMass(float);
             float getMass() const;

@@ -29,10 +29,7 @@ namespace urchin {
                 Vector3<float> newAngularVelocity = (body->getAngularVelocity() + body->getTotalTorqueMomentum() * body->getInvWorldInertia()) * dampingAngularFactor;
 
                 body->setVelocity(newLinearVelocity, newAngularVelocity);
-
-                //reset momentum
-                body->resetMomentum();
-                body->resetTorqueMomentum();
+                body->resetAllMomentum();
             }
         }
     }
