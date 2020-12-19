@@ -77,12 +77,9 @@ namespace urchin {
         invWorldInertia = InertiaCalculation::computeInverseWorldInertia(invLocalInertia, transform);
     }
 
-    /**
-     * Refresh body active state. If forces are apply on body: active body
-     */
     void RigidBody::refreshBodyActiveState() {
-        if (!isStatic() && !isActive() && bodyMomentum.hasMomentum()) {
-            setIsActive(true);
+        if (!isStatic() && !isActive()) {
+            setIsActive(bodyMomentum.hasMomentum() || isManuallyMoved);
         }
     }
 
@@ -90,11 +87,12 @@ namespace urchin {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         if (!(std::this_thread::get_id() == physicsThreadId)) {
-            if (!AbstractBody::isActive()) {
+            if (AbstractBody::isActive()) {
                 throw std::runtime_error("Impossible to update the rigid body position/orientation while physics engine manages it");
             }
             isManuallyMoved = true;
             setNeedFullRefresh(true);
+            refreshBodyActiveState();
         }
 
         this->transform = transform;
@@ -161,7 +159,7 @@ namespace urchin {
 
         this->mass = mass;
         refreshMassProperties();
-        this->setNeedFullRefresh(true);
+        setNeedFullRefresh(true);
     }
 
     float RigidBody::getMass() const {

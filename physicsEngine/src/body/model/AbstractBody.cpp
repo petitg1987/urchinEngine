@@ -43,7 +43,6 @@ namespace urchin {
             bIsActive(false),
             objectId(nextObjectId++) {
         initialize(abstractBody.getRestitution(), abstractBody.getFriction(), abstractBody.getRollingFriction());
-
         setCcdMotionThreshold(abstractBody.getCcdMotionThreshold()); //override default value
     }
 

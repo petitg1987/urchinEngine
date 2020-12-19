@@ -3,6 +3,7 @@
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
+#include "UrchinPhysicsEngine.h"
 
 class CollisionWorldIT : public CppUnit::TestFixture {
     public:
@@ -10,6 +11,12 @@ class CollisionWorldIT : public CppUnit::TestFixture {
 
         void fallOnPlane();
         void fallForever();
+
+        void changePositionOnInactiveBody();
+        void changeMomentumOnInactiveBody();
+
+    private:
+        std::unique_ptr<urchin::BodyManager> buildWorld(const urchin::Point3<float>&) const;
 };
 
 #endif

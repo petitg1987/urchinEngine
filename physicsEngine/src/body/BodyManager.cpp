@@ -46,16 +46,6 @@ namespace urchin {
         ScopeProfiler sp(Profiler::physics(), "setupWorkBodies");
         std::lock_guard<std::mutex> lock(bodiesMutex);
 
-        //add new bodies
-        bodies.insert(bodies.end(), newBodies.begin(), newBodies.end());
-        for (const auto newBody : newBodies) {
-            newBody->setPhysicsThreadId(std::this_thread::get_id());
-
-            lastUpdatedBody = newBody;
-            notifyObservers(this, ADD_BODY);
-        }
-        newBodies.clear();
-
         //delete bodies
         for (const auto bodyToDelete: bodiesToDelete) {
             auto itFind = std::find(bodies.begin(), bodies.end(), bodyToDelete);
@@ -80,5 +70,15 @@ namespace urchin {
                 body->setNeedFullRefresh(false);
             }
         }
+
+        //add new bodies
+        bodies.insert(bodies.end(), newBodies.begin(), newBodies.end());
+        for (const auto newBody : newBodies) {
+            newBody->setPhysicsThreadId(std::this_thread::get_id());
+
+            lastUpdatedBody = newBody;
+            notifyObservers(this, ADD_BODY);
+        }
+        newBodies.clear();
     }
 }

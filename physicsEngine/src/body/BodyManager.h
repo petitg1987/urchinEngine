@@ -30,12 +30,11 @@ namespace urchin {
             const std::vector<AbstractBody*>& getBodies() const;
 
         private:
+            mutable std::mutex bodiesMutex;
             std::vector<AbstractBody*> bodies;
 
             std::vector<AbstractBody*> newBodies;
             std::vector<AbstractBody*> bodiesToDelete;
-
-            mutable std::mutex bodiesMutex;
 
             AbstractBody* lastUpdatedBody;
     };
