@@ -80,7 +80,7 @@ namespace urchin {
 
             //bottom cap
             for (unsigned int j = 0; j < nbLong; j++) {
-                float longitude1 = MathValue::PI_FLOAT * (float)(j) / (float)nbLong;
+                float longitude1 = MathValue::PI_FLOAT * (float)j / (float)nbLong;
                 float longitude2 = MathValue::PI_FLOAT * (float)(j + 1) / (float)nbLong;
                 float x1 = std::cos(longitude1);
                 float y1 = std::sin(longitude1);
@@ -98,7 +98,7 @@ namespace urchin {
 
             //top cap
             for (unsigned int j = nbLong; j < slices; j++) {
-                float longitude1 = MathValue::PI_FLOAT * (float)(j) / (float)nbLong;
+                float longitude1 = MathValue::PI_FLOAT * (float)j / (float)nbLong;
                 float longitude2 = MathValue::PI_FLOAT * (float)(j + 1) / (float)nbLong;
                 float x1 = std::cos(longitude1);
                 float y1 = std::sin(longitude1);

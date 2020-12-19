@@ -18,7 +18,7 @@ namespace urchin {
         return modelMatrix;
     }
 
-    std::vector<Point3<float>> SphereModel::retrieveVertexArray() const { //TODO Wrong display
+    std::vector<Point3<float>> SphereModel::retrieveVertexArray() const {
         std::vector<Point3<float>> vertexArray;
         vertexArray.reserve(4 * slices * slices);
 
@@ -34,8 +34,8 @@ namespace urchin {
             float zr1 = std::cos(latitude2);
 
             for (unsigned int j = 0; j < slices; j++) {
-                float longitude1 = 2.0f * MathValue::PI_FLOAT * (float)(j - 1) / (float)slices;
-                float longitude2 = 2.0f * MathValue::PI_FLOAT * (float)(j) / (float)slices;
+                float longitude1 = 2.0f * MathValue::PI_FLOAT * (float)j / (float)slices;
+                float longitude2 = 2.0f * MathValue::PI_FLOAT * (float)(j + 1) / (float)slices;
                 float x1 = std::cos(longitude1);
                 float y1 = std::sin(longitude1);
                 float x2 = std::cos(longitude2);
