@@ -15,6 +15,8 @@ class CollisionWorldIT : public CppUnit::TestFixture {
         void changePositionOnInactiveBody();
         void changeMomentumOnInactiveBody();
 
+        void changeMass();
+
     private:
         std::unique_ptr<urchin::BodyManager> buildWorld(const urchin::Point3<float>&) const;
 };

@@ -1,5 +1,4 @@
 #include <stdexcept>
-#include <limits>
 #include <mutex>
 #include <thread>
 
@@ -52,15 +51,13 @@ namespace urchin {
     void RigidBody::refreshMassProperties() {
         refreshInertia();
 
-        if (mass > -std::numeric_limits<float>::epsilon() && mass < std::numeric_limits<float>::epsilon()) {
+        if (MathFunction::isZero(mass)) {
             setIsStatic(true);
+            setIsActive(false);
             invMass = 0.0f;
         } else {
-            if (isStatic()) //avoid wake up of body (isActive flag) when static flag is already correct
-            {
-                setIsStatic(false);
-                setIsActive(true);
-            }
+            setIsStatic(false);
+            setIsActive(true);
             invMass = 1.0f / mass;
         }
     }
@@ -91,7 +88,6 @@ namespace urchin {
                 throw std::runtime_error("Impossible to update the rigid body position/orientation while physics engine manages it");
             }
             isManuallyMoved = true;
-            setNeedFullRefresh(true);
             refreshBodyActiveState();
         }
 
@@ -159,7 +155,6 @@ namespace urchin {
 
         this->mass = mass;
         refreshMassProperties();
-        setNeedFullRefresh(true);
     }
 
     float RigidBody::getMass() const {

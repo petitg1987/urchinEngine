@@ -21,8 +21,6 @@ namespace urchin {
             AbstractBody(const AbstractBody&);
             ~AbstractBody() override = default;
 
-            void setNeedFullRefresh(bool);
-            bool needFullRefresh() const;
             void setPhysicsThreadId(std::thread::id);
 
             virtual void setTransform(const PhysicsTransform&);
@@ -61,7 +59,6 @@ namespace urchin {
 
             //technical data
             const float ccdMotionThresholdFactor;
-            std::atomic_bool bNeedFullRefresh;
             std::thread::id physicsThreadId;
 
             //mutex for attributes modifiable from external

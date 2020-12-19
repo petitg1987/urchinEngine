@@ -60,17 +60,6 @@ namespace urchin {
         }
         bodiesToDelete.clear();
 
-        //refresh bodies
-        for (const auto body : bodies) {
-            if (body->needFullRefresh()) {
-                lastUpdatedBody = body;
-                notifyObservers(this, REMOVE_BODY);
-                notifyObservers(this, ADD_BODY);
-
-                body->setNeedFullRefresh(false);
-            }
-        }
-
         //add new bodies
         bodies.insert(bodies.end(), newBodies.begin(), newBodies.end());
         for (const auto newBody : newBodies) {

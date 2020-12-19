@@ -86,6 +86,33 @@ void CollisionWorldIT::changeMomentumOnInactiveBody() {
     AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it doesn't move (2)");
 }
 
+void CollisionWorldIT::changeMass() {
+    auto bodyManager = buildWorld(Point3<float>(0.0f, 10.0f, 0.0f));
+    auto collisionWorld = std::make_unique<CollisionWorld>(bodyManager.get());
+
+    //1. make sure cube fall
+    for (std::size_t i = 0; i < 5; ++i) {
+        collisionWorld->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
+    }
+    auto* cubeBody = dynamic_cast<RigidBody*>(bodyManager->getBodies()[1]);
+    AssertHelper::assertFloatEquals(cubeBody->getTransform().getPosition().Y, 9.96f, 0.01f);
+
+    //2. change cube mass to 0.0f (static body)
+    cubeBody->setMass(0.0f);
+    for (std::size_t i = 0; i < 250; ++i) {
+        collisionWorld->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
+    }
+    AssertHelper::assertFloatEquals(cubeBody->getTransform().getPosition().Y, 9.96f, 0.01f);
+
+    //3. change cube mass to 10.0f (dynamic body)
+    cubeBody->setMass(10.0f);
+    for (std::size_t i = 0; i < 250; ++i) {
+        collisionWorld->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
+    }
+    AssertHelper::assertFloatEquals(cubeBody->getTransform().getPosition().Y, 0.5f, 0.1f);
+    AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it doesn't move");
+}
+
 std::unique_ptr<BodyManager> CollisionWorldIT::buildWorld(const Point3<float>& cubePosition) const {
     auto bodyManager = std::make_unique<BodyManager>();
 
@@ -109,6 +136,8 @@ CppUnit::Test* CollisionWorldIT::suite() {
 
     suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("changePositionOnInactiveBody", &CollisionWorldIT::changePositionOnInactiveBody));
     suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("changeMomentumOnInactiveBody", &CollisionWorldIT::changeMomentumOnInactiveBody));
+
+    suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("changeMass", &CollisionWorldIT::changeMass));
 
     return suite;
 }

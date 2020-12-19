@@ -12,7 +12,6 @@ namespace urchin {
 
     AbstractBody::AbstractBody(std::string id, const PhysicsTransform& transform, std::shared_ptr<const CollisionShape3D> shape) :
             ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
-            bNeedFullRefresh(false),
             transform(transform),
             isManuallyMoved(false),
             id(std::move(id)),
@@ -30,7 +29,6 @@ namespace urchin {
     AbstractBody::AbstractBody(const AbstractBody& abstractBody) :
             IslandElement(abstractBody),
             ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
-            bNeedFullRefresh(false),
             transform(abstractBody.getTransform()),
             isManuallyMoved(false),
             id(abstractBody.getId()),
@@ -44,14 +42,6 @@ namespace urchin {
             objectId(nextObjectId++) {
         initialize(abstractBody.getRestitution(), abstractBody.getFriction(), abstractBody.getRollingFriction());
         setCcdMotionThreshold(abstractBody.getCcdMotionThreshold()); //override default value
-    }
-
-    void AbstractBody::setNeedFullRefresh(bool needFullRefresh) {
-        this->bNeedFullRefresh.store(needFullRefresh, std::memory_order_relaxed);
-    }
-
-    bool AbstractBody::needFullRefresh() const {
-        return bNeedFullRefresh.load(std::memory_order_relaxed);
     }
 
     void AbstractBody::setPhysicsThreadId(std::thread::id physicsThreadId) {
