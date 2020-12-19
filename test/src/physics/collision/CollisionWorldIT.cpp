@@ -4,11 +4,11 @@
 #include <cstdio>
 #include "UrchinPhysicsEngine.h"
 
-#include "physics/collision/FallingObjectIT.h"
+#include "physics/collision/CollisionWorldIT.h"
 #include "AssertHelper.h"
 using namespace urchin;
 
-void FallingObjectIT::fallOnPlane() {
+void CollisionWorldIT::fallOnPlane() {
     std::shared_ptr<CollisionBoxShape> planeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(1000.0f, 0.5f, 1000.0f));
     auto* planeBody = new RigidBody("plane", PhysicsTransform(Point3<float>(0.0f, -0.5f, 0.0f), Quaternion<float>()), planeShape);
 
@@ -32,7 +32,7 @@ void FallingObjectIT::fallOnPlane() {
     delete bodyManager;
 }
 
-void FallingObjectIT::fallForever() {
+void CollisionWorldIT::fallForever() {
     if (!Logger::instance()->retrieveContent(std::numeric_limits<unsigned long>::max()).empty()) {
         throw std::runtime_error("Log file must be emptied before start this test.");
     }
@@ -63,11 +63,11 @@ void FallingObjectIT::fallForever() {
     delete bodyManager;
 }
 
-CppUnit::Test* FallingObjectIT::suite() {
+CppUnit::Test* CollisionWorldIT::suite() {
     auto* suite = new CppUnit::TestSuite("FallingObjectIT");
 
-    suite->addTest(new CppUnit::TestCaller<FallingObjectIT>("fallOnPlane", &FallingObjectIT::fallOnPlane));
-    suite->addTest(new CppUnit::TestCaller<FallingObjectIT>("fallForever", &FallingObjectIT::fallForever));
+    suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("fallOnPlane", &CollisionWorldIT::fallOnPlane));
+    suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("fallForever", &CollisionWorldIT::fallForever));
 
     return suite;
 }

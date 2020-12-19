@@ -69,8 +69,7 @@ Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
 - Execute tests:
     ```
     cd urchinEngine/test/
-    ./mainTestExecutor
-    ./monkeyTestExecutor
+    ./testExecutor [unit] [integration] [monkey]
     ```
 
 ## Launch map editor
@@ -90,9 +89,8 @@ cd urchinEngine/mapEditor/
     - Build type: `Release`
     - Generation path: `.build/release`
 - Add CMake applications
-  - Application **mainTestExecutor**:
-    - Target/executable: `mainTestExecutor`
-  - Application **monkeyTestExecutor**:
-    - Target/executable: `monkeyTestExecutor`
+  - Application **testExecutor**:
+    - Target/executable: `testExecutor`
+    - Program arguments: `unit integration monkey`
   - Application **urchinMapEditor**:
     - Target/executable: `urchinMapEditor`

@@ -1,10 +1,10 @@
-#ifndef URCHINENGINE_FALLINGOBJECTIT_H
-#define URCHINENGINE_FALLINGOBJECTIT_H
+#ifndef URCHINENGINE_COLLISIONWORLDIT_H
+#define URCHINENGINE_COLLISIONWORLDIT_H
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class FallingObjectIT : public CppUnit::TestFixture {
+class CollisionWorldIT : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

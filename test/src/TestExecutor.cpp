@@ -1,4 +1,5 @@
 #include <cppunit/ui/text/TestRunner.h>
+#include <cppunit/TestResultCollector.h>
 #include "UrchinCommon.h"
 
 #include "common/io/StringUtilTest.h"
@@ -28,7 +29,8 @@
 #include "physics/collision/narrowphase/algorithm/epa/EPAConvexHullTest.h"
 #include "physics/collision/narrowphase/algorithm/epa/EPAConvexObjectTest.h"
 #include "physics/collision/island/IslandContainerTest.h"
-#include "physics/collision/FallingObjectIT.h"
+#include "physics/collision/CollisionWorldIT.h"
+#include "physics/GhostBodyMT.h"
 #include "ai/path/navmesh/csg/CSGPolygonTest.h"
 #include "ai/path/navmesh/csg/PolygonsUnionTest.h"
 #include "ai/path/navmesh/csg/PolygonsSubtractionTest.h"
@@ -40,7 +42,7 @@
 #include "ai/path/pathfinding/FunnelAlgorithmTest.h"
 #include "ai/path/pathfinding/PathfindingAStarTest.h"
 
-void commonTests(CppUnit::TextUi::TestRunner& runner) {
+void addCommonUnitTests(CppUnit::TextUi::TestRunner& runner) {
     //io
     runner.addTest(StringUtilTest::suite());
     runner.addTest(MapUtilTest::suite());
@@ -62,12 +64,12 @@ void commonTests(CppUnit::TextUi::TestRunner& runner) {
     runner.addTest(SortPointsTest::suite());
 }
 
-void engine3dTests(CppUnit::TextUi::TestRunner& runner) {
+void add3dUnitTests(CppUnit::TextUi::TestRunner& runner) {
     //shadow
     runner.addTest(LightSplitShadowMapTest::suite());
 }
 
-void physicsTests(CppUnit::TextUi::TestRunner& runner) {
+void addPhysicsUnitTests(CppUnit::TextUi::TestRunner& runner) {
     //shape
     runner.addTest(ShapeToAABBoxTest::suite());
     runner.addTest(ShapeToConvexObjectTest::suite());
@@ -93,12 +95,19 @@ void physicsTests(CppUnit::TextUi::TestRunner& runner) {
 
     //island
     runner.addTest(IslandContainerTest::suite());
-
-    //integration tests (IT)
-    runner.addTest(FallingObjectIT::suite());
 }
 
-void aiTests(CppUnit::TextUi::TestRunner& runner) {
+void addPhysicsIntegrationTests(CppUnit::TextUi::TestRunner& runner) {
+    //collision world
+    runner.addTest(CollisionWorldIT::suite());
+}
+
+void addPhysicsMonkeyTests(CppUnit::TextUi::TestRunner& runner) {
+    //ghost body
+    runner.addTest(GhostBodyMT::suite());
+}
+
+void addAiUnitTests(CppUnit::TextUi::TestRunner& runner) {
     //navigation mesh
     runner.addTest(CSGPolygonTest::suite());
     runner.addTest(PolygonsUnionTest::suite());
@@ -114,14 +123,45 @@ void aiTests(CppUnit::TextUi::TestRunner& runner) {
     runner.addTest(PathfindingAStarTest::suite());
 }
 
-int main() {
-    urchin::ConfigService::instance()->loadProperties("resources/engine.properties");
+void addAllUnitTests(CppUnit::TextUi::TestRunner& runner) {
+    addCommonUnitTests(runner);
+    add3dUnitTests(runner);
+    addPhysicsUnitTests(runner);
+    addAiUnitTests(runner);
+}
 
+void addAllIntegrationTests(CppUnit::TextUi::TestRunner& runner) {
+    addPhysicsIntegrationTests(runner);
+}
+
+void addAllMonkeyTests(CppUnit::TextUi::TestRunner& runner) {
+    addPhysicsMonkeyTests(runner);
+}
+
+int main(int argc, char *argv[]) {
+    urchin::ConfigService::instance()->loadProperties("resources/engine.properties");
     CppUnit::TextUi::TestRunner runner;
-    commonTests(runner);
-    engine3dTests(runner);
-    physicsTests(runner);
-    aiTests(runner);
+
+    std::string hasUnitTests = "no";
+    std::string hasIntegrationTests = "no";
+    std::string hasMonkeyTests = "no";
+
+    for(int i = 1; i < argc; ++i) {
+        if(std::strcmp(argv[i], "unit") == 0) {
+            addAllUnitTests(runner);
+            hasUnitTests = "yes";
+        } else if(std::strcmp(argv[i], "integration") == 0) {
+            addAllIntegrationTests(runner);
+            hasIntegrationTests = "yes";
+        } else if(std::strcmp(argv[i], "monkey") == 0) {
+            addAllMonkeyTests(runner);
+            hasMonkeyTests = "yes";
+        } else {
+            throw std::invalid_argument("Unknown program argument: " + std::string(argv[i]));
+        }
+    }
+
+    std::cout << "Start running tests (unit: "<< hasUnitTests << ", integration: " << hasIntegrationTests << ", monkey: " << hasMonkeyTests << ")" << std::endl;
     runner.run();
 
     urchin::SingletonManager::destroyAllSingletons();

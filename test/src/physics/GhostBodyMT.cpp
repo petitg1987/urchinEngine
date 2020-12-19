@@ -18,13 +18,13 @@ void GhostBodyMT::processGhostBody() {
     std::thread physicsEngineThread = std::thread([&physicsWorld]() {
         for(std::size_t i = 0; i < 500; ++i) {
             physicsWorld->getCollisionWorld()->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
-            std::this_thread::sleep_for(std::chrono::microseconds(250));
+            std::this_thread::sleep_for(std::chrono::microseconds(150));
         }
     });
     std::thread mainThread = std::thread([&characterController]() {
         for(std::size_t i = 0; i < 500; ++i) {
             characterController.update(1.0f / 60.0f);
-            std::this_thread::sleep_for(std::chrono::microseconds(250));
+            std::this_thread::sleep_for(std::chrono::microseconds(150));
         }
     });
     physicsEngineThread.join();
@@ -74,7 +74,7 @@ std::vector<RigidBody*> GhostBodyMT::constructCubes(const std::unique_ptr<Physic
 CppUnit::Test* GhostBodyMT::suite() {
     auto* suite = new CppUnit::TestSuite("GhostBodyMT");
 
-    for(unsigned int i = 0; i < 1000; ++i) {
+    for(unsigned int i = 0; i < 100; ++i) {
         suite->addTest(new CppUnit::TestCaller<GhostBodyMT>("processGhostBody_" + std::to_string(i), &GhostBodyMT::processGhostBody));
     }
 
