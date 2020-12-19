@@ -86,7 +86,7 @@ namespace urchin {
         return transform;
     }
 
-    bool AbstractBody::isManuallyMovedAndResetFlag() {
+    bool AbstractBody::getManuallyMovedAndReset() {
         if (isManuallyMoved) {
             isManuallyMoved = false;
             return true;
@@ -200,6 +200,10 @@ namespace urchin {
      */
     bool AbstractBody::isActive() const {
         return !bDisableAllBodies && bIsActive.load(std::memory_order_relaxed);
+    }
+
+    bool AbstractBody::isGhostBody() const {
+        return false;
     }
 
     uint_fast32_t AbstractBody::getObjectId() const {

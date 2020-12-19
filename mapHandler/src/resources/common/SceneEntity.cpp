@@ -4,7 +4,7 @@ namespace urchin {
     void SceneEntity::refresh() {
         RigidBody* rigidBody = getRigidBody();
         if (rigidBody) {
-            if (rigidBody->isActive() || rigidBody->isManuallyMovedAndResetFlag()) {
+            if (rigidBody->isActive() || rigidBody->getManuallyMovedAndReset()) {
                 moveTo(rigidBody->getTransform().toTransform());
             }
         }

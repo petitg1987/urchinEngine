@@ -6,6 +6,7 @@
 #include "UrchinCommon.h"
 
 #include "AbstractBody.h"
+#include "body/BodyMomentum.h"
 
 namespace urchin {
 
@@ -24,12 +25,10 @@ namespace urchin {
             Vector3<float> getLinearVelocity() const;
             Vector3<float> getAngularVelocity() const;
 
-            Vector3<float> getTotalMomentum() const;
-            void applyCentralMomentum(const Vector3<float>&); //TODO [URGENT] could have no effect if called by thread 'x' and then thread 'y' call resetMomentum()
+            void applyCentralMomentum(const Vector3<float>&);
             void applyMomentum(const Vector3<float>&, const Point3<float>&);
-            Vector3<float> getTotalTorqueMomentum() const;
             void applyTorqueMomentum(const Vector3<float>&);
-            void resetAllMomentum();
+            BodyMomentum getMomentumAndReset();
 
             void setMass(float);
             float getMass() const;
@@ -46,8 +45,6 @@ namespace urchin {
             void setAngularFactor(const Vector3<float>&);
             Vector3<float> getAngularFactor() const;
 
-            bool isGhostBody() const override;
-
         private:
             void initializeRigidBody(float, float, float, const Vector3<float>&, const Vector3<float>&);
             void refreshMassProperties();
@@ -58,9 +55,7 @@ namespace urchin {
             //rigid body representation data
             Vector3<float> linearVelocity;
             Vector3<float> angularVelocity;
-
-            Vector3<float> totalMomentum;
-            Vector3<float> totalTorqueMomentum;
+            BodyMomentum bodyMomentum;
 
             //rigid body description data
             float mass;

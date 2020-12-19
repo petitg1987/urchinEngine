@@ -24,12 +24,11 @@ namespace urchin {
             if (body && body->isActive()) {
                 float dampingLinearFactor = powf(1.0f - body->getLinearDamping(), dt);
                 float dampingAngularFactor = powf(1.0f - body->getAngularDamping(), dt);
+                BodyMomentum bodyMomentum = body->getMomentumAndReset();
 
-                Vector3<float> newLinearVelocity = (body->getLinearVelocity() + body->getTotalMomentum() * body->getInvMass()) * dampingLinearFactor;
-                Vector3<float> newAngularVelocity = (body->getAngularVelocity() + body->getTotalTorqueMomentum() * body->getInvWorldInertia()) * dampingAngularFactor;
-
+                Vector3<float> newLinearVelocity = (body->getLinearVelocity() + bodyMomentum.getMomentum() * body->getInvMass()) * dampingLinearFactor;
+                Vector3<float> newAngularVelocity = (body->getAngularVelocity() + bodyMomentum.getTorqueMomentum() * body->getInvWorldInertia()) * dampingAngularFactor;
                 body->setVelocity(newLinearVelocity, newAngularVelocity);
-                body->resetAllMomentum();
             }
         }
     }

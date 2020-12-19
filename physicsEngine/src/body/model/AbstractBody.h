@@ -27,7 +27,7 @@ namespace urchin {
 
             virtual void setTransform(const PhysicsTransform&);
             PhysicsTransform getTransform() const;
-            bool isManuallyMovedAndResetFlag();
+            bool getManuallyMovedAndReset();
 
             const std::shared_ptr<const CollisionShape3D>& getShape() const;
 
@@ -50,7 +50,7 @@ namespace urchin {
             bool isStatic() const;
             void setIsActive(bool);
             bool isActive() const override;
-            virtual bool isGhostBody() const = 0;
+            virtual bool isGhostBody() const;
 
             uint_fast32_t getObjectId() const;
 

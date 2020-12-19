@@ -81,10 +81,8 @@ namespace urchin {
      * Refresh body active state. If forces are apply on body: active body
      */
     void RigidBody::refreshBodyActiveState() {
-        if (!isStatic() && !isActive()) {
-            if (totalMomentum.squareLength() > std::numeric_limits<float>::epsilon() || totalMomentum.squareLength() > std::numeric_limits<float>::epsilon()) {
-                setIsActive(true);
-            }
+        if (!isStatic() && !isActive() && bodyMomentum.hasMomentum()) {
+            setIsActive(true);
         }
     }
 
@@ -125,48 +123,37 @@ namespace urchin {
         return angularVelocity;
     }
 
-    Vector3<float> RigidBody::getTotalMomentum() const {
-        std::lock_guard<std::mutex> lock(bodyMutex);
-
-        return totalMomentum;
-    }
-
     void RigidBody::applyCentralMomentum(const Vector3<float>& momentum) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
-        totalMomentum += momentum;
+        bodyMomentum.addMomentum(momentum);
         refreshBodyActiveState();
     }
 
     void RigidBody::applyMomentum(const Vector3<float>& momentum, const Point3<float>& pos) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
-        totalMomentum += momentum; //apply central force
-        totalTorqueMomentum += pos.toVector().crossProduct(momentum); //apply torque
+        bodyMomentum.addMomentum(momentum); //apply central force
+        bodyMomentum.addTorqueMomentum(pos.toVector().crossProduct(momentum)); //apply torque
         refreshBodyActiveState();
-    }
-
-    Vector3<float> RigidBody::getTotalTorqueMomentum() const {
-        std::lock_guard<std::mutex> lock(bodyMutex);
-
-        return totalTorqueMomentum;
     }
 
     void RigidBody::applyTorqueMomentum(const Vector3<float>& torqueMomentum) {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
-        totalTorqueMomentum += torqueMomentum;
+        bodyMomentum.addTorqueMomentum(torqueMomentum);
         refreshBodyActiveState();
     }
 
     /**
-     * Reset momentum and torque momentum. Undetermined behavior if called outside the physics engine thread.
+     * Return the momentum and reset it. Undetermined behavior if called outside the physics engine thread.
      */
-    void RigidBody::resetAllMomentum() {
+    BodyMomentum RigidBody::getMomentumAndReset() {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
-        totalMomentum.setNull();
-        totalTorqueMomentum.setNull();
+        BodyMomentum result(bodyMomentum);
+        bodyMomentum.reset();
+        return result;
     }
 
     void RigidBody::setMass(float mass) {
@@ -267,10 +254,6 @@ namespace urchin {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         return angularFactor;
-    }
-
-    bool RigidBody::isGhostBody() const {
-        return false;
     }
 
 }

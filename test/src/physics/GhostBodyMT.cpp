@@ -49,7 +49,7 @@ void GhostBodyMT::constructGround(const std::unique_ptr<PhysicsWorld>& physicsWo
             Point3<float>(-100.0f, 0.0f, 100.0f), Point3<float>(100.0f, 0.0f, 100.0f)
     };
     std::shared_ptr<CollisionHeightfieldShape> groundShape = std::make_shared<CollisionHeightfieldShape>(groundPoints, 2, 2);
-    auto* groundBody = new RigidBody("ground", Transform<float>(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), groundShape);
+    auto* groundBody = new RigidBody("ground", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), groundShape);
     physicsWorld->getBodyManager()->addBody(groundBody);
 }
 
@@ -61,7 +61,7 @@ std::vector<RigidBody*> GhostBodyMT::constructCubes(const std::unique_ptr<Physic
             float zValue = (float)z * 1.1f; //min: 0, max: 4.8
             std::shared_ptr<CollisionShape3D>  cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(cubeHeight / 2.0f, cubeHeight / 2.0f, cubeHeight / 2.0f));
             std::string bodyName = "cube_" + std::to_string(x) + "_" + std::to_string(z);
-            auto* cubeBody = new RigidBody(bodyName, Transform<float>(Point3<float>(xValue, 10.0f, zValue), Quaternion<float>()), cubeShape);
+            auto* cubeBody = new RigidBody(bodyName, PhysicsTransform(Point3<float>(xValue, 10.0f, zValue), Quaternion<float>()), cubeShape);
             cubeBody->setMass(10.0f); //non-static
 
             physicsWorld->getBodyManager()->addBody(cubeBody);
