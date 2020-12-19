@@ -89,10 +89,10 @@ namespace urchin {
 
     void PhysicsCharacterController::setup(float dt) {
         //save values
-        previousBodyPosition = ghostBody->getPosition();
+        previousBodyPosition = ghostBody->getTransform().getPosition();
 
         //apply user move
-        Point3<float> targetPosition = ghostBody->getPosition();
+        Point3<float> targetPosition = previousBodyPosition;
         Vector3<float> velocity = getVelocity();
         if (isOnGround) {
             float slopeSpeedDecrease = 1.0f - (slopeInPercentage / physicsCharacter->getMaxSlopeInPercentage());
@@ -143,7 +143,7 @@ namespace urchin {
     void PhysicsCharacterController::recoverFromPenetration(float dt) {
         SignificantContactValues significantContactValues = resetSignificantContactValues();
 
-        Point3<float> characterPosition = ghostBody->getPosition();
+        PhysicsTransform characterTransform = ghostBody->getTransform();
         for (unsigned int subStepIndex = 0; subStepIndex < RECOVER_PENETRATION_SUB_STEPS; ++subStepIndex) {
             manifoldResults.clear();
             physicsWorld->getCollisionWorld()->getNarrowPhaseManager()->processGhostBody(ghostBody, manifoldResults);
@@ -158,7 +158,7 @@ namespace urchin {
                         Vector3<float> normal =  manifoldContactPoint.getNormalFromObject2() * sign;
                         Vector3<float> moveVector = normal * depth * recoverFactors[subStepIndex];
 
-                        characterPosition = characterPosition.translate(moveVector);
+                        characterTransform.setPosition(characterTransform.getPosition().translate(moveVector));
 
                         if (subStepIndex == 0) {
                             saveSignificantContactValues(significantContactValues, normal);
@@ -169,7 +169,7 @@ namespace urchin {
         }
 
         if(!manifoldResults.empty()) {
-            ghostBody->setTransform(PhysicsTransform(characterPosition, ghostBody->getOrientation()));
+            ghostBody->setTransform(characterTransform);
         }
 
         computeSignificantContactValues(significantContactValues, dt);
@@ -213,14 +213,15 @@ namespace urchin {
      * Slope is expressed in percentage. A positive value means that character climb.
      */
     float PhysicsCharacterController::computeSlope() {
-        Point2<float> p1 = Point2<float>(ghostBody->getPosition().X, ghostBody->getPosition().Z);
+        Point3<float> bodyPosition = ghostBody->getTransform().getPosition();
+        Point2<float> p1 = Point2<float>(bodyPosition.X, bodyPosition.Z);
         Point2<float> p2 = Point2<float>(previousBodyPosition.X, previousBodyPosition.Z);
         float run = p1.vector(p2).length();
         if (run == 0.0f) {
             return 0.0f;
         }
 
-        float rise = ghostBody->getPosition().Y - previousBodyPosition.Y;
+        float rise = bodyPosition.Y - previousBodyPosition.Y;
 
         return rise / run;
     }

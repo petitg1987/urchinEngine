@@ -27,8 +27,6 @@ namespace urchin {
 
             virtual void setTransform(const PhysicsTransform&);
             PhysicsTransform getTransform() const;
-            Point3<float> getPosition() const;
-            Quaternion<float> getOrientation() const;
             bool isManuallyMovedAndResetFlag();
 
             const std::shared_ptr<const CollisionShape3D>& getShape() const;
@@ -43,15 +41,14 @@ namespace urchin {
             void setRollingFriction(float);
             float getRollingFriction() const;
 
-            void setCcdMotionThreshold(float); //TODO remove it ???
+            void setCcdMotionThreshold(float);
             float getCcdMotionThreshold() const;
 
             virtual PairContainer* getPairContainer() const;
 
             static void disableAllBodies(bool);
-            virtual void setIsStatic(bool); //TODO add comment if cannot be called outside physics thread
             bool isStatic() const;
-            void setIsActive(bool); //TODO add comment if cannot be called outside physics thread
+            void setIsActive(bool);
             bool isActive() const override;
             virtual bool isGhostBody() const = 0;
 
@@ -59,6 +56,8 @@ namespace urchin {
 
         protected:
             void initialize(float, float, float);
+
+            void setIsStatic(bool);
 
             //technical data
             const float ccdMotionThresholdFactor;

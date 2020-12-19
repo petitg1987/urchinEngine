@@ -99,8 +99,8 @@ namespace urchin {
 
         commonSolvingData.invInertia1 = body1->getInvWorldInertia();
         commonSolvingData.invInertia2 = body2->getInvWorldInertia();
-        commonSolvingData.r1 = body1->getPosition().vector(contact.getPointOnObject2());
-        commonSolvingData.r2 = body2->getPosition().vector(contact.getPointOnObject2());
+        commonSolvingData.r1 = body1->getTransform().getPosition().vector(contact.getPointOnObject2());
+        commonSolvingData.r2 = body2->getTransform().getPosition().vector(contact.getPointOnObject2());
 
         commonSolvingData.depth = contact.getDepth();
         commonSolvingData.contactNormal = contact.getNormalFromObject2();

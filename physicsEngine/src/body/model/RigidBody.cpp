@@ -196,6 +196,8 @@ namespace urchin {
     }
 
     Matrix3<float> RigidBody::getInvWorldInertia() const {
+        std::lock_guard<std::mutex> lock(bodyMutex);
+
         return invWorldInertia;
     }
 
@@ -265,14 +267,6 @@ namespace urchin {
         std::lock_guard<std::mutex> lock(bodyMutex);
 
         return angularFactor;
-    }
-
-    void RigidBody::setIsStatic(bool bIsStatic) {
-        //TODO block test !: std::lock_guard<std::mutex> lock(bodyMutex); & check missing mutex
-
-        AbstractBody::setIsStatic(bIsStatic);
-        linearVelocity.setNull();
-        angularVelocity.setNull();
     }
 
     bool RigidBody::isGhostBody() const {

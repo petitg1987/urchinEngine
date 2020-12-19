@@ -130,10 +130,10 @@ namespace urchin {
             AbstractBody* body = leafNode->getNodeData()->getNodeObject();
             if (!body->isStatic()) {
                 std::stringstream logStream;
-                logStream << "Body " << body->getId() << " is below the limit of " << std::to_string(minYBoundary) << ": " << body->getPosition();
+                logStream << "Body " << body->getId() << " is below the limit of " << std::to_string(minYBoundary) << ": " << body->getTransform().getPosition();
                 Logger::instance()->log(Logger::CriticalityLevel::WARNING, logStream.str());
 
-                body->setIsStatic(true);
+                body->setIsActive(false);
             }
         }
     }

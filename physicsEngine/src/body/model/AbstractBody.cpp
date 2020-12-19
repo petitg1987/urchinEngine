@@ -86,18 +86,6 @@ namespace urchin {
         return transform;
     }
 
-    Point3<float> AbstractBody::getPosition() const {
-        std::lock_guard<std::mutex> lock(bodyMutex);
-
-        return transform.getPosition();
-    }
-
-    Quaternion<float> AbstractBody::getOrientation() const {
-        std::lock_guard<std::mutex> lock(bodyMutex);
-
-        return transform.getOrientation();
-    }
-
     bool AbstractBody::isManuallyMovedAndResetFlag() {
         if (isManuallyMoved) {
             isManuallyMoved = false;
@@ -111,14 +99,10 @@ namespace urchin {
     }
 
     void AbstractBody::setId(const std::string& id) {
-        std::lock_guard<std::mutex> lock(bodyMutex);
-
         this->id = id;
     }
 
     const std::string& AbstractBody::getId() const {
-        std::lock_guard<std::mutex> lock(bodyMutex);
-
         return id;
     }
 
@@ -193,24 +177,26 @@ namespace urchin {
 
     void AbstractBody::setIsStatic(bool bIsStatic) {
         this->bIsStatic.store(bIsStatic, std::memory_order_relaxed);
-        setIsActive(false); //TODO why this call ??
     }
 
     /**
-     * @return True when body is static (cannot be affected by physics world)
+     * @return Body static state (static body cannot be affected by the physics world)
      */
     bool AbstractBody::isStatic() const {
         return bDisableAllBodies || bIsStatic.load(std::memory_order_relaxed);
     }
 
+    /**
+     * Define body active state (active body has velocity and/or one of body in the same island is active).
+     * Undetermined behavior if called outside the physics engine thread.
+     */
     void AbstractBody::setIsActive(bool bIsActive) {
         assert(!(bIsActive && bIsStatic)); //an active body cannot be static
-
-        this->bIsActive = bIsActive;
+        this->bIsActive.store(bIsActive, std::memory_order_relaxed);
     }
 
     /**
-     * @return True when body is active (body has velocity and/or one of body in same island is active)
+     * @return Body active state (active body has velocity and/or one of body in the same island is active)
      */
     bool AbstractBody::isActive() const {
         return !bDisableAllBodies && bIsActive.load(std::memory_order_relaxed);

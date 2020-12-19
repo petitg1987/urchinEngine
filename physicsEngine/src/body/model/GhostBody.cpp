@@ -6,7 +6,7 @@ namespace urchin {
     GhostBody::GhostBody(const std::string& id, const PhysicsTransform& physicsTransform, const std::shared_ptr<const CollisionShape3D>& shape) :
             AbstractBody(id, physicsTransform, shape),
             pairContainer(new SyncVectorPairContainer()) {
-        AbstractBody::setIsStatic(false); //can move and be affected by the physics world: not a static body
+        setIsStatic(false); //can move and be affected by the physics world: not a static body
         setIsActive(false); //default value: body is not active
     }
 

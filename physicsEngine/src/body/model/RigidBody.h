@@ -46,8 +46,6 @@ namespace urchin {
             void setAngularFactor(const Vector3<float>&);
             Vector3<float> getAngularFactor() const;
 
-            void setIsStatic(bool) override;
-
             bool isGhostBody() const override;
 
         private:
