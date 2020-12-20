@@ -114,7 +114,7 @@ void main() {
 
     float lumaNS = lumaN + lumaS;
     float lumaWE = lumaW + lumaE;
-    float subpixRcpRange = 1.0/range;
+    float subpixRcpRange = 1.0 / range;
     float subpixNSWE = lumaNS + lumaWE;
     float edgeHorz1 = (-2.0 * lumaM) + lumaNS;
     float edgeVert1 = (-2.0 * lumaM) + lumaWE;
@@ -427,7 +427,7 @@ void main() {
     bool goodSpanN = (lumaEndN < 0.0) != lumaMMLowerZero;
     float spanLength = (dstP + dstN);
     bool goodSpanP = (lumaEndP < 0.0) != lumaMMLowerZero;
-    float spanLengthRcp = 1.0/spanLength;
+    float spanLengthRcp = 1.0 / spanLength;
 
     bool directionN = dstN < dstP;
     float dst = min(dstN, dstP);
