@@ -52,7 +52,7 @@ Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
   - Debug visualization: hit box, light range, sound trigger, navigation mesh
 
 ## Build
-- Environment setup: [here](./SETUP_ENV.md)
+- Environment setup: [here](./SETUP.md)
 - Build:
   - Debug:
     ```
