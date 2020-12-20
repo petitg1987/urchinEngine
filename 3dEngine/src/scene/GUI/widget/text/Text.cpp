@@ -138,7 +138,7 @@ namespace urchin {
     }
 
     void Text::display(const RenderTarget* renderTarget, const ShaderVar& translateDistanceShaderVar, float dt) {
-        if(textRenderer) {
+        if (textRenderer) {
             renderTarget->display(textRenderer);
         }
 

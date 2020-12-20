@@ -119,7 +119,7 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::createOrUpdateAOTexture() {
-        if(depthTexture) {
+        if (depthTexture) {
             textureSizeX = (unsigned int)((float)sceneWidth / (float)retrieveTextureSizeFactor());
             textureSizeY = (unsigned int)((float)sceneHeight / (float)retrieveTextureSizeFactor());
             ambientOcclusionTexture = Texture::build(textureSizeX, textureSizeY, TextureFormat::GRAYSCALE_16_FLOAT, nullptr);

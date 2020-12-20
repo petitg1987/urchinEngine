@@ -16,13 +16,13 @@ void GhostBodyMT::processGhostBody() {
     auto characterController = PhysicsCharacterController(character, physicsWorld.get());
 
     std::thread physicsEngineThread = std::thread([&physicsWorld]() {
-        for(std::size_t i = 0; i < 500; ++i) {
+        for (std::size_t i = 0; i < 500; ++i) {
             physicsWorld->getCollisionWorld()->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
             std::this_thread::sleep_for(std::chrono::microseconds(250));
         }
     });
     std::thread mainThread = std::thread([&characterController]() {
-        for(std::size_t i = 0; i < 500; ++i) {
+        for (std::size_t i = 0; i < 500; ++i) {
             characterController.update(1.0f / 60.0f);
             std::this_thread::sleep_for(std::chrono::microseconds(250));
         }
@@ -30,7 +30,7 @@ void GhostBodyMT::processGhostBody() {
     physicsEngineThread.join();
     mainThread.join();
 
-    for(const auto& cube : cubes) {
+    for (const auto& cube : cubes) {
         float posY = cube->getTransform().getPosition().Y;
         float minPosY = (cubeHeight / 2.0f) - 0.01f;
         float maxPosY = cubeHeight + (cubeHeight / 2.0f) + 0.01f;
@@ -55,9 +55,9 @@ void GhostBodyMT::constructGround(const std::unique_ptr<PhysicsWorld>& physicsWo
 
 std::vector<RigidBody*> GhostBodyMT::constructCubes(const std::unique_ptr<PhysicsWorld>& physicsWorld, float cubeHeight) {
     std::vector<RigidBody*> cubes;
-    for(unsigned int x = 0; x < 5; x++) {
+    for (unsigned int x = 0; x < 5; x++) {
         float xValue = (float)x * 1.1f; //min: 0, max: 4.8
-        for(unsigned int z = 0; z < 5; z++) {
+        for (unsigned int z = 0; z < 5; z++) {
             float zValue = (float)z * 1.1f; //min: 0, max: 4.8
             std::shared_ptr<CollisionShape3D>  cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(cubeHeight / 2.0f, cubeHeight / 2.0f, cubeHeight / 2.0f));
             std::string bodyName = "cube_" + std::to_string(x) + "_" + std::to_string(z);
@@ -74,7 +74,7 @@ std::vector<RigidBody*> GhostBodyMT::constructCubes(const std::unique_ptr<Physic
 CppUnit::Test* GhostBodyMT::suite() {
     auto* suite = new CppUnit::TestSuite("GhostBodyMT");
 
-    for(unsigned int i = 0; i < 50; ++i) {
+    for (unsigned int i = 0; i < 50; ++i) {
         suite->addTest(new CppUnit::TestCaller<GhostBodyMT>("processGhostBody_" + std::to_string(i), &GhostBodyMT::processGhostBody));
     }
 

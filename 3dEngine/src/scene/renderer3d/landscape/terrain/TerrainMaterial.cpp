@@ -39,7 +39,7 @@ namespace urchin {
         assert(materialFilenames.size() <= MAX_MATERIAL);
 
         materials.resize(MAX_MATERIAL);
-        for(std::size_t i = 0; i < MAX_MATERIAL; ++i) {
+        for (std::size_t i = 0; i < MAX_MATERIAL; ++i) {
             if (materialFilenames.size() > i && !materialFilenames[i].empty()) {
                 materials[i] = MediaManager::instance()->getMedia<Material>(materialFilenames[i]);
             } else {

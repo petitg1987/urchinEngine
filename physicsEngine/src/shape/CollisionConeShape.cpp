@@ -86,17 +86,17 @@ namespace urchin {
         float interiaValue = (3.0f / 20.0f) * mass * (getRadius() * getRadius() + 4.0f * getHeight() * getHeight());
 
         Vector3<float> inertia(interiaValue, interiaValue, interiaValue);
-        inertia[getConeOrientation()/2] = (3.0f / 10.0f) * mass * getRadius() * getRadius();
+        inertia[getConeOrientation() / 2] = (3.0f / 10.0f) * mass * getRadius() * getRadius();
 
         return inertia;
     }
 
     float CollisionConeShape::getMaxDistanceToCenter() const {
-        return std::max(coneShape->getHeight()/2.0f, coneShape->getRadius());
+        return std::max(coneShape->getHeight() / 2.0f, coneShape->getRadius());
     }
 
     float CollisionConeShape::getMinDistanceToCenter() const {
-        return std::min(coneShape->getHeight()/2.0f, coneShape->getRadius());
+        return std::min(coneShape->getHeight() / 2.0f, coneShape->getRadius());
     }
 
     CollisionShape3D* CollisionConeShape::clone() const {

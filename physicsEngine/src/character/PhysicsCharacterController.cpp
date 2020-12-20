@@ -65,7 +65,7 @@ namespace urchin {
     void PhysicsCharacterController::update(float dt) {
         ScopeProfiler sp(Profiler::physics(), "charactCtrlExec");
 
-        if(!ghostBody->isStatic()) {
+        if (!ghostBody->isStatic()) {
             //setup values
             setup(dt);
 
@@ -168,7 +168,7 @@ namespace urchin {
             }
         }
 
-        if(!manifoldResults.empty()) {
+        if (!manifoldResults.empty()) {
             ghostBody->setTransform(characterTransform);
         }
 

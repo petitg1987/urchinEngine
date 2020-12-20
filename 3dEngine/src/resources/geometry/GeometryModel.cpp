@@ -33,11 +33,11 @@ namespace urchin {
                 ->outlineSize(outlineSize)
                 ->polygonMode(polygonMode);
 
-        if(!alwaysVisible) {
+        if (!alwaysVisible) {
             rendererBuilder->enableDepthTest();
         }
 
-        if(transparencyEnabled) {
+        if (transparencyEnabled) {
             rendererBuilder->enableTransparency();
         }
 

@@ -203,15 +203,15 @@ namespace urchin {
      */
     template<class T> AABBox<T> AABBox<T>::cutTo(const AABBox<T>& aabbox) const {
         Point3<T> cutMin(
-            min.X<aabbox.getMin().X ? aabbox.getMin().X : min.X,
-            min.Y<aabbox.getMin().Y ? aabbox.getMin().Y : min.Y,
-            min.Z<aabbox.getMin().Z ? aabbox.getMin().Z : min.Z
+            min.X < aabbox.getMin().X ? aabbox.getMin().X : min.X,
+            min.Y < aabbox.getMin().Y ? aabbox.getMin().Y : min.Y,
+            min.Z < aabbox.getMin().Z ? aabbox.getMin().Z : min.Z
         );
 
         Point3<T> cutMax(
-            max.X>aabbox.getMax().X ? aabbox.getMax().X : max.X,
-            max.Y>aabbox.getMax().Y ? aabbox.getMax().Y : max.Y,
-            max.Z>aabbox.getMax().Z ? aabbox.getMax().Z : max.Z
+            max.X > aabbox.getMax().X ? aabbox.getMax().X : max.X,
+            max.Y > aabbox.getMax().Y ? aabbox.getMax().Y : max.Y,
+            max.Z > aabbox.getMax().Z ? aabbox.getMax().Z : max.Z
         );
 
         return AABBox<T>(cutMin, cutMax);
@@ -300,18 +300,18 @@ namespace urchin {
 
         Point3<T> xa = Point3<T>(m(0,0), m(1,0), m(2,0)) * aabb.getMin().X;
         Point3<T> xb = Point3<T>(m(0,0), m(1,0), m(2,0)) * aabb.getMax().X;
-        Point3<T> minX = Point3<T>(xa.X<xb.X ? xa.X : xb.X, xa.Y<xb.Y ? xa.Y : xb.Y, xa.Z<xb.Z ? xa.Z : xb.Z);
-        Point3<T> maxX = Point3<T>(xa.X>xb.X ? xa.X : xb.X, xa.Y>xb.Y ? xa.Y : xb.Y, xa.Z>xb.Z ? xa.Z : xb.Z);
+        Point3<T> minX = Point3<T>(xa.X < xb.X ? xa.X : xb.X, xa.Y < xb.Y ? xa.Y : xb.Y, xa.Z < xb.Z ? xa.Z : xb.Z);
+        Point3<T> maxX = Point3<T>(xa.X > xb.X ? xa.X : xb.X, xa.Y > xb.Y ? xa.Y : xb.Y, xa.Z > xb.Z ? xa.Z : xb.Z);
 
         Point3<T> ya = Point3<T>(m(0,1), m(1,1), m(2,1)) * aabb.getMin().Y;
         Point3<T> yb = Point3<T>(m(0,1), m(1,1), m(2,1)) * aabb.getMax().Y;
-        Point3<T> minY = Point3<T>(ya.X<yb.X ? ya.X : yb.X, ya.Y<yb.Y ? ya.Y : yb.Y, ya.Z<yb.Z ? ya.Z : yb.Z);
-        Point3<T> maxY = Point3<T>(ya.X>yb.X ? ya.X : yb.X, ya.Y>yb.Y ? ya.Y : yb.Y, ya.Z>yb.Z ? ya.Z : yb.Z);
+        Point3<T> minY = Point3<T>(ya.X < yb.X ? ya.X : yb.X, ya.Y < yb.Y ? ya.Y : yb.Y, ya.Z < yb.Z ? ya.Z : yb.Z);
+        Point3<T> maxY = Point3<T>(ya.X > yb.X ? ya.X : yb.X, ya.Y > yb.Y ? ya.Y : yb.Y, ya.Z > yb.Z ? ya.Z : yb.Z);
 
         Point3<T> za = Point3<T>(m(0,2), m(1,2), m(2,2)) * aabb.getMin().Z;
         Point3<T> zb = Point3<T>(m(0,2), m(1,2), m(2,2)) * aabb.getMax().Z;
-        Point3<T> minZ = Point3<T>(za.X<zb.X ? za.X : zb.X, za.Y<zb.Y ? za.Y : zb.Y, za.Z<zb.Z ? za.Z : zb.Z);
-        Point3<T> maxZ = Point3<T>(za.X>zb.X ? za.X : zb.X, za.Y>zb.Y ? za.Y : zb.Y, za.Z>zb.Z ? za.Z : zb.Z);
+        Point3<T> minZ = Point3<T>(za.X < zb.X ? za.X : zb.X, za.Y < zb.Y ? za.Y : zb.Y, za.Z < zb.Z ? za.Z : zb.Z);
+        Point3<T> maxZ = Point3<T>(za.X > zb.X ? za.X : zb.X, za.Y > zb.Y ? za.Y : zb.Y, za.Z > zb.Z ? za.Z : zb.Z);
 
         Point3<T> translation(m(0,3), m(1,3), m(2,3));
 

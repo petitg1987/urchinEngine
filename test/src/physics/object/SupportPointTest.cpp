@@ -52,7 +52,7 @@ void SupportPointTest::cylinderSupportPoint() {
 
 void SupportPointTest::coneSupportPoint() {
     CollisionConeObject coneObject(0.04f, 1.0f, 3.0f, ConeShape<float>::CONE_Y_POSITIVE, Point3<float>(0.25f, 1.0f, 0.0f),
-            Quaternion<float>(Vector3<float>(0.0f, 0.0f, -1.0f), MathValue::PI_FLOAT/2.0f));
+            Quaternion<float>(Vector3<float>(0.0f, 0.0f, -1.0f), MathValue::PI_FLOAT / 2.0f));
 
     AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(1.0f, 0.0f, 0.0f), false), Point3<float>(2.5f, 1.0f, 0.0f));
     AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(2.0f, -1.0f, 0.0f), false), Point3<float>(2.5f, 1.0f, 0.0f));

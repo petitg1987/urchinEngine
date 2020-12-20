@@ -234,7 +234,7 @@ namespace urchin {
         //store all visible models from all lights
         visibleModels.clear();
         for (const auto& lightShadowMap : lightShadowMaps) {
-            for(const auto& lightSplitShadowMap : lightShadowMap.second->getLightSplitShadowMaps()) {
+            for (const auto& lightSplitShadowMap : lightShadowMap.second->getLightSplitShadowMaps()) {
                 OctreeableHelper<Model>::merge(visibleModels, lightSplitShadowMap->getModels());
             }
         }
@@ -326,7 +326,7 @@ namespace urchin {
 
         if (lightShadowMap->getLight()->hasParallelBeams()) { //sun light
             unsigned int i = 0;
-            for(const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
+            for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
                 lightSplitShadowMap->update(splitFrustums[i++], bForceUpdateAllShadowMaps);
             }
         } else {
@@ -393,7 +393,7 @@ namespace urchin {
                 ShaderDataSender().sendData(lightsLocation[i].shadowMapTexShaderVar, (int)texUnit);
 
                 unsigned int shadowMapIndex = 0;
-                for(const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
+                for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
                     Matrix4<float> lightProjectionViewMatrix = lightSplitShadowMap->getLightProjectionMatrix() * lightShadowMap->getLightViewMatrix();
                     ShaderDataSender().sendData(lightsLocation[i].mLightProjectionViewShaderVar[shadowMapIndex++], lightProjectionViewMatrix);
                 }

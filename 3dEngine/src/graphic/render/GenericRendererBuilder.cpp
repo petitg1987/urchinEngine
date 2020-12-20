@@ -42,8 +42,8 @@ namespace urchin {
         pIndices.indicesCount = indices->size();
         pIndices.hasPrimitiveRestartIndex = false;
 
-        for(unsigned int index : (*indices)) {
-            if(index == GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE) {
+        for (unsigned int index : (*indices)) {
+            if (index == GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE) {
                 pIndices.hasPrimitiveRestartIndex = true;
                 break;
             }

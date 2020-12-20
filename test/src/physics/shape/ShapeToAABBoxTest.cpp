@@ -10,7 +10,7 @@ using namespace urchin;
 void ShapeToAABBoxTest::boxConversion() {
     CollisionBoxShape collisionBox(Vector3<float>(1.0f, 2.0f, 1.0f)); //box 1x2x1
     PhysicsTransform transform(urchin::Point3<float>(0.0f, 0.0f, 0.0f), //move 0 unit on X, Y and Z axis
-            urchin::Quaternion<float>(urchin::Vector3<float>(0.0f, 0.0f, -1.0f), MathValue::PI_FLOAT/4.0f)); //rotate 45° on Z axis
+            urchin::Quaternion<float>(urchin::Vector3<float>(0.0f, 0.0f, -1.0f), MathValue::PI_FLOAT / 4.0f)); //rotate 45° on Z axis
 
     AABBox<float> box = collisionBox.toAABBox(transform);
 
@@ -24,7 +24,7 @@ void ShapeToAABBoxTest::boxConversion() {
 void ShapeToAABBoxTest::coneConversion() {
     CollisionConeShape collisionCone(1.0f, 4.0f, ConeShape<float>::CONE_Y_NEGATIVE);
     PhysicsTransform transform(urchin::Point3<float>(1.0f, 5.0f, 0.0f), //move 1 unit on X and 5 unit on Y
-                urchin::Quaternion<float>(urchin::Vector3<float>(0.0f, 0.0f, -1.0f), MathValue::PI_FLOAT/2.0f)); //rotate 90° on Z axis
+                urchin::Quaternion<float>(urchin::Vector3<float>(0.0f, 0.0f, -1.0f), MathValue::PI_FLOAT / 2.0f)); //rotate 90° on Z axis
 
     AABBox<float> box = collisionCone.toAABBox(transform);
 
@@ -44,7 +44,7 @@ void ShapeToAABBoxTest::convexHullConversion() {
 
     CollisionConvexHullShape collisionConvexHull(boxPoints);
     PhysicsTransform transform(urchin::Point3<float>(0.0f, 0.0f, 0.0f), //move 0 unit on X, Y and Z axis
-            urchin::Quaternion<float>(urchin::Vector3<float>(0.0f, 0.0f, -1.0f), MathValue::PI_FLOAT/4.0f)); //rotate 45° on Z axis
+            urchin::Quaternion<float>(urchin::Vector3<float>(0.0f, 0.0f, -1.0f), MathValue::PI_FLOAT / 4.0f)); //rotate 45° on Z axis
 
     AABBox<float> box = collisionConvexHull.toAABBox(transform);
 

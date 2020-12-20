@@ -148,7 +148,7 @@ namespace urchin {
         ccd_set continuousCollisionResults;
 
         for (auto bodyAABBoxHit : bodiesAABBoxHit) {
-            if(bodyAABBoxHit->isGhostBody()) {
+            if (bodyAABBoxHit->isGhostBody()) {
                 //No CCD support for ghost bodies
                 continue;
             }

@@ -107,7 +107,7 @@ namespace urchin {
             } else if (key == InputDeviceKey::RIGHT_ARROW) {
                 refreshText(cursorIndex + 1);
             } else if (key == InputDeviceKey::BACKSPACE) {
-                if(cursorIndex > 0) {
+                if (cursorIndex > 0) {
                     std::string tmpRight = allText.substr((unsigned long)cursorIndex, allText.length()-cursorIndex);
                     allText = allText.substr(0, (unsigned long)(cursorIndex - 1L));
                     allText.append(tmpRight);
@@ -159,7 +159,7 @@ namespace urchin {
         if (cursorPosition > maxWidthText) {
             startTextIndex = (startTextIndex <= allText.length()) ? startTextIndex + LETTER_SHIFT : (unsigned int)allText.length();
         } else if (cursorIndex <= startTextIndex) {
-            startTextIndex = (startTextIndex>0) ? startTextIndex-LETTER_SHIFT : 0;
+            startTextIndex = (startTextIndex > 0) ? startTextIndex-LETTER_SHIFT : 0;
         }
         computeCursorPosition();
 

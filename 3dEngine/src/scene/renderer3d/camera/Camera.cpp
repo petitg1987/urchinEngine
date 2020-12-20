@@ -41,7 +41,7 @@ namespace urchin {
 
         //projection matrix
         float fov = 1.0f / std::tan((angle * MathValue::PI_FLOAT) / 360.0f);
-        float ratio = (float)sceneWidth/(float)sceneHeight;
+        float ratio = (float)sceneWidth / (float)sceneHeight;
         mProjection.setValues(
             fov/ratio, 0.0f, 0.0f, 0.0f,
             0.0f, fov, 0.0f, 0.0f,

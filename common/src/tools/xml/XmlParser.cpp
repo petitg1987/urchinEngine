@@ -81,7 +81,7 @@ namespace urchin {
     std::shared_ptr<XmlChunk> XmlParser::getUniqueChunk(bool mandatory, const std::string& chunkName, const XmlAttribute& attribute, const std::shared_ptr<XmlChunk>& parent) const {
         std::vector<std::shared_ptr<XmlChunk>> chunks = getChunks(chunkName, attribute, parent);
 
-        if (chunks.size()>1) {
+        if (chunks.size() > 1) {
             throw std::invalid_argument("More than one tag found for " + getChunkDescription(chunkName, attribute) + ".");
         } else if (chunks.empty()) {
             if (mandatory) {

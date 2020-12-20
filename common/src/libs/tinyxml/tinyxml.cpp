@@ -476,7 +476,7 @@ const TiXmlDocument* TiXmlNode::GetDocument() const
 {
 	const TiXmlNode* node;
 
-	for( node = this; node; node = node->parent )
+	for (node = this; node; node = node->parent )
 	{
 		if ( node->ToDocument() )
 			return node->ToDocument();
@@ -776,7 +776,7 @@ void TiXmlElement::Print( FILE* cfile, int depth ) const
 			node->Print( cfile, depth+1 );
 		}
 		fprintf( cfile, "\n" );
-		for( i=0; i<depth; ++i ) {
+		for (i=0; i<depth; ++i ) {
 			fprintf( cfile, "    " );
 		}
 		fprintf( cfile, "</%s>", value.c_str() );
@@ -792,7 +792,7 @@ void TiXmlElement::CopyTo( TiXmlElement* target ) const
 	// Element class: 
 	// Clone the attributes, then clone the children.
 	const TiXmlAttribute* attribute = 0;
-	for(	attribute = attributeSet.First();
+	for (attribute = attributeSet.First();
 	attribute;
 	attribute = attribute->Next() )
 	{
@@ -1484,7 +1484,7 @@ void TiXmlAttributeSet::Remove( TiXmlAttribute* removeMe )
 {
 	TiXmlAttribute* node;
 
-	for( node = sentinel.next; node != &sentinel; node = node->next )
+	for (node = sentinel.next; node != &sentinel; node = node->next )
 	{
 		if ( node == removeMe )
 		{
@@ -1501,7 +1501,7 @@ void TiXmlAttributeSet::Remove( TiXmlAttribute* removeMe )
 
 const TiXmlAttribute* TiXmlAttributeSet::Find( const std::string& name ) const
 {
-	for( const TiXmlAttribute* node = sentinel.next; node != &sentinel; node = node->next )
+	for (const TiXmlAttribute* node = sentinel.next; node != &sentinel; node = node->next )
 	{
 		if ( node->name == name )
 			return node;
@@ -1512,7 +1512,7 @@ const TiXmlAttribute* TiXmlAttributeSet::Find( const std::string& name ) const
 
 const TiXmlAttribute* TiXmlAttributeSet::Find( const char* name ) const
 {
-	for( const TiXmlAttribute* node = sentinel.next; node != &sentinel; node = node->next )
+	for (const TiXmlAttribute* node = sentinel.next; node != &sentinel; node = node->next )
 	{
 		if ( strcmp( node->name.c_str(), name ) == 0 )
 			return node;
@@ -1694,7 +1694,7 @@ bool TiXmlPrinter::VisitEnter( const TiXmlElement& element, const TiXmlAttribute
 	buffer += "<";
 	buffer += element.Value();
 
-	for( const TiXmlAttribute* attrib = firstAttribute; attrib; attrib = attrib->Next() )
+	for (const TiXmlAttribute* attrib = firstAttribute; attrib; attrib = attrib->Next() )
 	{
 		buffer += " ";
 		attrib->Print( 0, 0, &buffer );

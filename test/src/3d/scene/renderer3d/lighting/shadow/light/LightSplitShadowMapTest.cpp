@@ -74,7 +74,7 @@ void LightSplitShadowMapTest::modelOutsideFrustumProducingShadow() {
 std::unique_ptr<OctreeManager<Model>> LightSplitShadowMapTest::buildModelOctreeManager(const std::vector<Point3<float>> &modelPositions) {
     auto modelOctreeManager = std::make_unique<OctreeManager<Model>>(10.0f);
 
-    for(const auto& modelPosition : modelPositions) {
+    for (const auto& modelPosition : modelPositions) {
         auto model = new Model(""); //default model size: 1.0 x 1.0 x 1.0
         model->setPosition(modelPosition);
         modelOctreeManager->addOctreeable(model);
@@ -84,7 +84,7 @@ std::unique_ptr<OctreeManager<Model>> LightSplitShadowMapTest::buildModelOctreeM
 }
 
 void LightSplitShadowMapTest::cleanOctreeManager(const std::unique_ptr<OctreeManager<Model>>& modelOctreeManager) {
-    for(auto &model : modelOctreeManager->getAllOctreeables()) {
+    for (auto &model : modelOctreeManager->getAllOctreeables()) {
         delete model;
     }
 }

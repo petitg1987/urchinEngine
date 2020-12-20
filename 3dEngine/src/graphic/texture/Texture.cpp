@@ -114,9 +114,9 @@ namespace urchin {
     }
 
     unsigned int Texture::textureFormatToGlInternalFormat(TextureFormat textureFormat) const {
-        if(textureFormat == TextureFormat::DEPTH_16_FLOAT) {
+        if (textureFormat == TextureFormat::DEPTH_16_FLOAT) {
             return GL_DEPTH_COMPONENT16;
-        } else if(textureFormat == TextureFormat::DEPTH_24_FLOAT) {
+        } else if (textureFormat == TextureFormat::DEPTH_24_FLOAT) {
             return GL_DEPTH_COMPONENT24;
         } else if (textureFormat == TextureFormat::DEPTH_32_FLOAT) {
             return GL_DEPTH_COMPONENT32;
@@ -138,7 +138,7 @@ namespace urchin {
     }
 
     unsigned int Texture::textureFormatToGlFormat(TextureFormat textureFormat) const {
-        if(textureFormat == TextureFormat::DEPTH_16_FLOAT || textureFormat == TextureFormat::DEPTH_24_FLOAT || textureFormat == TextureFormat::DEPTH_32_FLOAT) {
+        if (textureFormat == TextureFormat::DEPTH_16_FLOAT || textureFormat == TextureFormat::DEPTH_24_FLOAT || textureFormat == TextureFormat::DEPTH_32_FLOAT) {
             return GL_DEPTH_COMPONENT;
         } else if (textureFormat == TextureFormat::GRAYSCALE_8_INT || textureFormat == TextureFormat::GRAYSCALE_16_FLOAT) {
             return GL_RED;

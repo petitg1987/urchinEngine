@@ -338,7 +338,7 @@ namespace urchin {
         deferredRendering(dt);
         lightingPassRendering();
 
-        if(isAntiAliasingActivated) {
+        if (isAntiAliasingActivated) {
             antiAliasingManager->applyAntiAliasing();
         }
 
@@ -479,7 +479,7 @@ namespace urchin {
      * Compute lighting in pixel shader and render the scene to screen.
      */
     void Renderer3d::lightingPassRendering() {
-        if(lightingRenderer) {
+        if (lightingRenderer) {
             ScopeProfiler sp(Profiler::graphic(), "lightPassRender");
 
             lightingRenderer->clearAdditionalTextures();

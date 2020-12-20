@@ -46,7 +46,7 @@ namespace urchin {
     }
 
     void GraphicService::logErrors() {
-        if(!errorDetected) {
+        if (!errorDetected) {
             GLenum err;
             while ((err = glGetError()) != GL_NO_ERROR) {
                 Logger::instance()->logError("OpenGL error detected: " + std::to_string(err));

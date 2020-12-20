@@ -60,7 +60,7 @@ namespace urchin {
     }
 
     void AntiAliasingManager::applyAntiAliasing() {
-        if(renderer) {
+        if (renderer) {
             renderTarget->activeShader(fxaaShader);
             renderTarget->display(renderer);
         }

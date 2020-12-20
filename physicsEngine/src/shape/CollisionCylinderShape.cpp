@@ -87,11 +87,11 @@ namespace urchin {
     }
 
     float CollisionCylinderShape::getMaxDistanceToCenter() const {
-        return std::max(cylinderShape->getHeight()/2.0f, cylinderShape->getRadius());
+        return std::max(cylinderShape->getHeight() / 2.0f, cylinderShape->getRadius());
     }
 
     float CollisionCylinderShape::getMinDistanceToCenter() const {
-        return std::min(cylinderShape->getHeight()/2.0f, cylinderShape->getRadius());
+        return std::min(cylinderShape->getHeight() / 2.0f, cylinderShape->getRadius());
     }
 
     CollisionShape3D* CollisionCylinderShape::clone() const {

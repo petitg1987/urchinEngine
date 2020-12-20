@@ -24,7 +24,7 @@ namespace urchin {
     }
 
     const std::unique_ptr<Logger>& Logger::instance() {
-        if(customInstance) {
+        if (customInstance) {
             return customInstance;
         }
         return defaultInstance();

@@ -47,7 +47,7 @@ namespace urchin {
 
         std::size_t numTrianglesIndices = constMesh->getTrianglesIndices().size();
         assert(numTrianglesIndices % 3 == 0);
-        for(std::size_t triIndices = 0; triIndices < numTrianglesIndices; triIndices += 3) {
+        for (std::size_t triIndices = 0; triIndices < numTrianglesIndices; triIndices += 3) {
             unsigned int triIndex1 = constMesh->getTrianglesIndices()[triIndices + 0];
             unsigned int triIndex2 = constMesh->getTrianglesIndices()[triIndices + 1];
             unsigned int triIndex3 = constMesh->getTrianglesIndices()[triIndices + 2];

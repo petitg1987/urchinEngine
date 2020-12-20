@@ -336,7 +336,7 @@ protected:
 		{
 			//strncpy( _value, p, *length );	// lots of compilers don't like this function (unsafe),
 												// and the null terminator isn't needed
-			for( int i=0; p[i] && i<*length; ++i ) {
+			for (int i=0; p[i] && i<*length; ++i ) {
 				_value[i] = p[i];
 			}
 			return p + (*length);
@@ -528,7 +528,7 @@ public:
 	/** An alternate way to walk the children of a node.
 		One way to iterate over nodes is:
 		@verbatim
-			for( child = parent->FirstChild(); child; child = child->NextSibling() )
+			for (child = parent->FirstChild(); child; child = child->NextSibling() )
 		@endverbatim
 
 		IterateChildren does the same thing with the syntax:
@@ -1542,7 +1542,7 @@ private:
 	@verbatim
 	TiXmlElement* child = docHandle.FirstChild( "Document" ).FirstChild( "Element" ).FirstChild( "Child" ).ToElement();
 
-	for( child; child; child=child->NextSiblingElement() )
+	for (child; child; child=child->NextSiblingElement() )
 	{
 		// do something
 	}
@@ -1692,7 +1692,7 @@ public:
 
 private:
 	void DoIndent()	{
-		for( int i=0; i<depth; ++i )
+		for (int i=0; i<depth; ++i )
 			buffer += indent;
 	}
 	void DoLineBreak() {

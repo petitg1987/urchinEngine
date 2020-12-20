@@ -37,7 +37,7 @@ namespace urchin {
             glDeleteVertexArrays(1, &vertexArrayObject);
         }
 
-        for(unsigned int bufferId : bufferIds) {
+        for (unsigned int bufferId : bufferIds) {
             glDeleteBuffers(1, &bufferId);
         }
     }
@@ -45,7 +45,7 @@ namespace urchin {
     std::size_t GenericRenderer::computeVerticesCount() const {
         assert(!data.empty());
 
-        if(indices.indicesCount > 0) {
+        if (indices.indicesCount > 0) {
             return indices.indicesCount;
         }
 
@@ -82,7 +82,7 @@ namespace urchin {
     void GenericRenderer::initializeDisplay() {
         glBindVertexArray(vertexArrayObject);
 
-        for(std::size_t dataIndex = 0; dataIndex < data.size(); dataIndex++) {
+        for (std::size_t dataIndex = 0; dataIndex < data.size(); dataIndex++) {
             unsigned int bufferId = 0;
             glGenBuffers(1, &bufferId);
             bufferIds.push_back(bufferId);
@@ -90,7 +90,7 @@ namespace urchin {
             sendData(dataIndex, false);
         }
 
-        if(indices.ptr) {
+        if (indices.ptr) {
             unsigned int bufferId = 0;
             glGenBuffers(1, &bufferId);
             bufferIds.push_back(bufferId);
@@ -204,7 +204,7 @@ namespace urchin {
         glBindTexture(GL_TEXTURE_2D, 0);
         glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 
-        if(bNeedRenderTextures) {
+        if (bNeedRenderTextures) {
             unsigned int textureUnit = 0;
             for (const auto& textureReader : textureReaders) {
                 glActiveTexture(GL_TEXTURE0 + textureUnit++);
@@ -216,21 +216,21 @@ namespace urchin {
             }
         }
 
-        if(transparencyEnabled) {
+        if (transparencyEnabled) {
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         }
 
-        if(!depthTestEnabled) {
+        if (!depthTestEnabled) {
             glDisable(GL_DEPTH_TEST);
             glDepthMask(GL_FALSE);
         }
 
-        if(!cullFaceEnabled) {
+        if (!cullFaceEnabled) {
             glDisable(GL_CULL_FACE);
         }
 
-        if(polygonMode == PolygonMode::WIREFRAME) {
+        if (polygonMode == PolygonMode::WIREFRAME) {
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         }
 
@@ -241,15 +241,15 @@ namespace urchin {
         }
 
         glBindVertexArray(vertexArrayObject);
-        if(indices.indicesCount > 0) {
-            if(indices.hasPrimitiveRestartIndex) {
+        if (indices.indicesCount > 0) {
+            if (indices.hasPrimitiveRestartIndex) {
                 glEnable(GL_PRIMITIVE_RESTART);
                 glPrimitiveRestartIndex(GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE);
             }
 
             glDrawElements(shapeTypeToGlType(shapeType), (GLsizei)verticesCount, GL_UNSIGNED_INT, nullptr);
 
-            if(indices.hasPrimitiveRestartIndex) {
+            if (indices.hasPrimitiveRestartIndex) {
                 glDisable(GL_PRIMITIVE_RESTART);
             }
         } else {
@@ -260,21 +260,21 @@ namespace urchin {
     }
 
     void GenericRenderer::resetRenderDefaultValues() const {
-        if(transparencyEnabled) {
+        if (transparencyEnabled) {
             glDisable(GL_BLEND);
         }
 
-        if(!depthTestEnabled) {
+        if (!depthTestEnabled) {
             glEnable(GL_DEPTH_TEST);
             glDepthMask(GL_TRUE);
         }
 
-        if(!cullFaceEnabled) {
+        if (!cullFaceEnabled) {
             glEnable(GL_CULL_FACE);
             glCullFace(GL_FRONT);
         }
 
-        if(polygonMode != PolygonMode::FILL) {
+        if (polygonMode != PolygonMode::FILL) {
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         }
 

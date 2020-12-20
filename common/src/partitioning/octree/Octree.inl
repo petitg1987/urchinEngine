@@ -4,15 +4,15 @@ template<class TOctreeable> Octree<TOctreeable>::Octree(const Point3<float>& pos
     std::vector<float> splitX = {position.X};
     std::vector<float> splitY = {position.Y};
     std::vector<float> splitZ = {position.Z};
-    if (size.X/2.0f > minSize) {
+    if (size.X / 2.0f > minSize) {
         sizeChild.X /= 2.0f;
         splitX.push_back(position.X + sizeChild.X);
     }
-    if (size.Y/2.0f > minSize) {
+    if (size.Y / 2.0f > minSize) {
         sizeChild.Y /= 2.0f;
         splitY.push_back(position.Y + sizeChild.Y);
     }
-    if (size.Z/2.0f > minSize) {
+    if (size.Z / 2.0f > minSize) {
         sizeChild.Z /= 2.0f;
         splitZ.push_back(position.Z + sizeChild.Z);
     }

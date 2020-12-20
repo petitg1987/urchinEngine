@@ -448,7 +448,7 @@ int PointInPolygon(const IntPoint& pt, const Path& path)
   size_t cnt = path.size();
   if (cnt < 3) return 0;
   IntPoint ip = path[0];
-  for(size_t i = 1; i <= cnt; ++i)
+  for (size_t i = 1; i <= cnt; ++i)
   {
     IntPoint ipNext = (i == cnt ? path[0] : path[i]);
     if (ipNext.Y == pt.Y)
@@ -490,7 +490,7 @@ int PointInPolygon (const IntPoint& pt, OutPt* op)
   //returns 0 if false, +1 if true, -1 if pt ON polygon boundary
   int result = 0;
   OutPt* startOp = op;
-  for(;;)
+  for (;;)
   {
     if (op->Next->Pt.Y == pt.Y)
     {
@@ -3777,7 +3777,7 @@ DoublePoint GetUnitNormal(const IntPoint& pt1, const IntPoint& pt2)
 
   double Dx = (double)(pt2.X - pt1.X);
   double dy = (double)(pt2.Y - pt1.Y);
-  double f = 1 *1.0/ std::sqrt( Dx*Dx + dy*dy );
+  double f = 1 *1.0 / std::sqrt( Dx*Dx + dy*dy );
   Dx *= f;
   dy *= f;
   return DoublePoint(dy, -Dx);
@@ -3978,7 +3978,7 @@ void ClipperOffset::DoOffset(double delta)
   }
 
   //see offset_triginometry3.svg in the documentation folder ...
-  if (MiterLimit > 2) m_miterLim = 2/(MiterLimit * MiterLimit);
+  if (MiterLimit > 2) m_miterLim = 2 / (MiterLimit * MiterLimit);
   else m_miterLim = 0.5;
 
   double y;

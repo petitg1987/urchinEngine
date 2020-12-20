@@ -211,7 +211,7 @@ namespace urchin {
     }
 
     void TerrainGrass::createRenderers(const std::vector<TerrainGrassQuadtree*>& leafGrassPatches) {
-        if(grassTexture) {
+        if (grassTexture) {
             for (auto* grassQuadtree : leafGrassPatches) {
                 std::unique_ptr<GenericRenderer> renderer = std::make_unique<GenericRendererBuilder>(ShapeType::POINT)
                         ->enableDepthTest()

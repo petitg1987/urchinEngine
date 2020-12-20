@@ -106,11 +106,11 @@ namespace urchin {
         //physics
         physicsWorld = new PhysicsWorld();
         AbstractBody::disableAllBodies(true);
-        physicsWorld->setUp(1.0f/50.0f);
+        physicsWorld->setUp(1.0f / 50.0f);
 
         //AI
         aiManager = new AIManager();
-        aiManager->setUp(1.0f/4.0f);
+        aiManager->setUp(1.0f / 4.0f);
         navMeshDisplayer = new NavMeshDisplayer(aiManager, sceneManager->getActiveRenderer3d());
 
         //sound

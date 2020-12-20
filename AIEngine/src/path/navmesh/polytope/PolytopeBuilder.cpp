@@ -135,7 +135,7 @@ namespace urchin {
 
     std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, Cone<float>* cone, const std::shared_ptr<NavMeshAgent>& navMeshAgent) const {
         Vector3<float> boxHalfSizes(cone->getRadius(), cone->getRadius(), cone->getRadius());
-        boxHalfSizes[cone->getConeOrientation()/2] = cone->getHeight() / 2.0f;
+        boxHalfSizes[cone->getConeOrientation() / 2] = cone->getHeight() / 2.0f;
 
         OBBox<float> coneBox(boxHalfSizes, cone->getCenter(), cone->getOrientation());
         std::unique_ptr<Polytope> polytope = createExpandedPolytopeFor(name, &coneBox, navMeshAgent);

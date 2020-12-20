@@ -30,7 +30,7 @@ namespace urchin {
         projectionMatrices.clear();
 
         if (lightShadowMap != nullptr) {
-            for(const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
+            for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
                 projectionMatrices.push_back(lightSplitShadowMap->getLightProjectionMatrix());
             }
         }

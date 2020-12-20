@@ -80,7 +80,7 @@ namespace urchin {
                     yMonotonePolygons.emplace_back(monotonePolygon);
 
                     std::vector<std::size_t> monotonePointsIndices;
-                    monotonePointsIndices.reserve(polygonPoints.size()/2 + 1); //estimated memory size
+                    monotonePointsIndices.reserve(polygonPoints.size() / 2 + 1); //estimated memory size
                     monotonePointsIndices.push_back(startDiagonal.startIndex);
                     monotonePointsIndices.push_back(startDiagonal.endIndex);
 

@@ -90,7 +90,7 @@ namespace urchin {
     }
 
     float CollisionCapsuleShape::getMaxDistanceToCenter() const {
-        return capsuleShape->getCylinderHeight()/2.0f + capsuleShape->getRadius();
+        return capsuleShape->getCylinderHeight() / 2.0f + capsuleShape->getRadius();
     }
 
     float CollisionCapsuleShape::getMinDistanceToCenter() const {

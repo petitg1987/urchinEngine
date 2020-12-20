@@ -94,7 +94,7 @@ Often in case of an error a value is assigned to a variable and then it breaks
 out of a loop (to go to the cleanup phase of a function). This macro does that.
 It makes the error handling code shorter and more readable.
 
-Example: if(!uivector_resizev(&frequencies_ll, 286, 0)) ERROR_BREAK(83);
+Example: if (!uivector_resizev(&frequencies_ll, 286, 0)) ERROR_BREAK(83);
 */
 #define CERROR_BREAK(errorvar, code)\
 {\
@@ -523,9 +523,9 @@ typedef struct HuffmanTree
 static void HuffmanTree_draw(HuffmanTree* tree)
 {
   std::cout << "tree. length: " << tree->numcodes << " maxbitlen: " << tree->maxbitlen << std::endl;
-  for(size_t i = 0; i != tree->tree1d.size; ++i)
+  for (size_t i = 0; i != tree->tree1d.size; ++i)
   {
-    if(tree->lengths.data[i])
+    if (tree->lengths.data[i])
       std::cout << i << " " << tree->tree1d.data[i] << " " << tree->lengths.data[i] << std::endl;
   }
   std::cout << std::endl;
@@ -1098,7 +1098,7 @@ static unsigned getTreeInflateDynamic(HuffmanTree* tree_ll, HuffmanTree* tree_d,
                     ++i;
                 }
             }
-            else /*if(code == (unsigned)(-1))*/ /*huffmanDecodeSymbol returns (unsigned)(-1) in case of error*/
+            else /*if (code == (unsigned)(-1))*/ /*huffmanDecodeSymbol returns (unsigned)(-1) in case of error*/
             {
                 if(code == (unsigned)(-1))
                 {
@@ -1210,7 +1210,7 @@ static unsigned inflateHuffmanBlock(ucvector* out, const unsigned char* in, size
         {
             break; /*end code, break the loop*/
         }
-        else /*if(code == (unsigned)(-1))*/ /*huffmanDecodeSymbol returns (unsigned)(-1) in case of error*/
+        else /*if (code == (unsigned)(-1))*/ /*huffmanDecodeSymbol returns (unsigned)(-1) in case of error*/
         {
             /*return error code 10 or 11 depending on the situation that happened in huffmanDecodeSymbol
       (10=no endcode, 11=wrong jump outside of tree)*/
@@ -2028,7 +2028,7 @@ static unsigned lodepng_deflatev(ucvector* out, const unsigned char* in, size_t 
     if(settings->btype > 2) return 61;
     else if(settings->btype == 0) return deflateNoCompression(out, in, insize);
     else if(settings->btype == 1) blocksize = insize;
-    else /*if(settings->btype == 2)*/
+    else /*if (settings->btype == 2)*/
     {
         /*on PNGs, deflate blocks of 65-262k seem to give most dense encoding*/
         blocksize = insize / 8 + 8;
@@ -5406,7 +5406,7 @@ static unsigned filter(unsigned char* out, const unsigned char* in, unsigned w, 
             for(type = 0; type != 5; ++type)
             {
                 unsigned testsize = linebytes;
-                /*if(testsize > 8) testsize /= 8;*/ /*it already works good enough by testing a part of the row*/
+                /*if (testsize > 8) testsize /= 8;*/ /*it already works good enough by testing a part of the row*/
 
                 filterScanline(attempt[type], &in[y * linebytes], prevline, linebytes, bytewidth, type);
                 size[type] = 0;

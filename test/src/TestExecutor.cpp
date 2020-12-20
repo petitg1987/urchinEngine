@@ -146,14 +146,14 @@ int main(int argc, char *argv[]) {
     std::string hasIntegrationTests = "no";
     std::string hasMonkeyTests = "no";
 
-    for(int i = 1; i < argc; ++i) {
-        if(std::strcmp(argv[i], "unit") == 0) {
+    for (int i = 1; i < argc; ++i) {
+        if (std::strcmp(argv[i], "unit") == 0) {
             addAllUnitTests(runner);
             hasUnitTests = "yes";
-        } else if(std::strcmp(argv[i], "integration") == 0) {
+        } else if (std::strcmp(argv[i], "integration") == 0) {
             addAllIntegrationTests(runner);
             hasIntegrationTests = "yes";
-        } else if(std::strcmp(argv[i], "monkey") == 0) {
+        } else if (std::strcmp(argv[i], "monkey") == 0) {
             addAllMonkeyTests(runner);
             hasMonkeyTests = "yes";
         } else {

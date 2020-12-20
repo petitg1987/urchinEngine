@@ -46,7 +46,7 @@ namespace urchin {
                 }
             }
 
-            if(!triangleMeshPoints.empty()) {
+            if (!triangleMeshPoints.empty()) {
                 auto* meshModel = new TrianglesModel(toDisplayPoints(triangleMeshPoints, 0.02f));
                 addNavMeshModel(meshModel, PolygonMode::FILL, Vector3<float>(0.0, 0.0, 1.0));
 
@@ -54,7 +54,7 @@ namespace urchin {
                 addNavMeshModel(meshWireframeModel, PolygonMode::WIREFRAME, Vector3<float>(0.5, 0.5, 1.0));
             }
 
-            if(!triangleJumpPoints.empty()) {
+            if (!triangleJumpPoints.empty()) {
                 auto* jumpModel = new TrianglesModel(triangleJumpPoints);
                 addNavMeshModel(jumpModel, PolygonMode::FILL, Vector3<float>(0.5, 0.0, 0.5));
             }

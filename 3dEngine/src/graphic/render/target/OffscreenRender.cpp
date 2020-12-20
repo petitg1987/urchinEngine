@@ -20,10 +20,10 @@ namespace urchin {
     void OffscreenRender::addTexture(const std::shared_ptr<Texture>& texture) {
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
 
-        if(texture->getTextureFormat() == TextureFormat::DEPTH_16_FLOAT
+        if (texture->getTextureFormat() == TextureFormat::DEPTH_16_FLOAT
                 || texture->getTextureFormat() == TextureFormat::DEPTH_24_FLOAT
                 || texture->getTextureFormat() == TextureFormat::DEPTH_32_FLOAT) {
-            if(depthTexture) {
+            if (depthTexture) {
                 throw std::runtime_error("Offscreen renderer doesn't support several depth textures attachment.");
             }
 

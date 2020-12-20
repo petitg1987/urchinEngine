@@ -197,7 +197,7 @@ namespace urchin {
             unsigned int endI = (threadI + 1) == NUM_THREADS ? numLoopNormalVertex : (threadI + 1) * numLoopNormalVertex / NUM_THREADS;
 
             threadsNormalVertex[threadI] = std::thread([&, beginI, endI]() {
-                for (unsigned int i = beginI; i<endI; i++) {
+                for (unsigned int i = beginI; i < endI; i++) {
                     Vector3<float> vertexNormal(0.0, 0.0, 0.0);
                     for (unsigned int triangleIndex : findTriangleIndices(i)) {
                         vertexNormal += normalTriangles[triangleIndex];

@@ -7,7 +7,7 @@
 namespace urchin {
 
     //static
-    template <class T> const T HeightfieldPointHelper<T>::PARALLEL_EPSILON = (T)0.07; //= 4 degrees (asin(4/180*pi))
+    template <class T> const T HeightfieldPointHelper<T>::PARALLEL_EPSILON = (T)0.07; //= 4 degrees (asin(4 / 180 * pi))
 
     template <class T> DistanceToStartPointComp<T>::DistanceToStartPointComp(const Point3<T>& startPoint) :
             startPoint(startPoint) {

@@ -335,14 +335,14 @@ const char* TiXmlBase::SkipWhiteSpace( const char* p, TiXmlEncoding encoding )
 				p += 3;
 				continue;
 			}
-			else if(*(pU+0)==TIXML_UTF_LEAD_0
+			else if (*(pU+0)==TIXML_UTF_LEAD_0
 				 && *(pU+1)==0xbfU
 				 && *(pU+2)==0xbeU )
 			{
 				p += 3;
 				continue;
 			}
-			else if(*(pU+0)==TIXML_UTF_LEAD_0
+			else if (*(pU+0)==TIXML_UTF_LEAD_0
 				 && *(pU+1)==0xbfU
 				 && *(pU+2)==0xbfU )
 			{
@@ -367,7 +367,7 @@ const char* TiXmlBase::SkipWhiteSpace( const char* p, TiXmlEncoding encoding )
 
 /*static*/ bool TiXmlBase::StreamWhiteSpace( std::istream * in, TIXML_STRING * tag )
 {
-	for( ;; )
+	for (;;)
 	{
 		if ( !in->good() ) return false;
 
@@ -514,7 +514,7 @@ const char* TiXmlBase::GetEntity( const char* p, char* value, int* length, TiXml
 	}
 
 	// Now try to match it.
-	for( i=0; i<NUM_ENTITY; ++i )
+	for (i=0; i<NUM_ENTITY; ++i )
 	{
 		if ( strncmp( entity[i].str, p, entity[i].strLength ) == 0 )
 		{
@@ -820,7 +820,7 @@ TiXmlNode* TiXmlNode::Identify( const char* p, TiXmlEncoding encoding )
 	TiXmlNode* returnNode = 0;
 
 	p = SkipWhiteSpace( p, encoding );
-	if( !p || !*p || *p != '<' )
+	if ( !p || !*p || *p != '<' )
 	{
 		return 0;
 	}
@@ -968,7 +968,7 @@ void TiXmlElement::StreamIn (std::istream * in, TIXML_STRING * tag)
 			bool closingTag = false;
 			bool firstCharFound = false;
 
-			for( ;; )
+			for (;;)
 			{
 				if ( !in->good() )
 					return;

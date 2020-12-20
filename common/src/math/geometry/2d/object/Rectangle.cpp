@@ -48,13 +48,13 @@ namespace urchin {
 
     template<class T> Rectangle<T> Rectangle<T>::merge(const Rectangle<T>& rectangle) const {
         Point2<T> mergedMin(
-                getMin().X<rectangle.getMin().X ? getMin().X : rectangle.getMin().X,
-                getMin().Y<rectangle.getMin().Y ? getMin().Y : rectangle.getMin().Y
+                getMin().X < rectangle.getMin().X ? getMin().X : rectangle.getMin().X,
+                getMin().Y < rectangle.getMin().Y ? getMin().Y : rectangle.getMin().Y
         );
 
         Point2<T> mergedMax(
-                getMax().X>rectangle.getMax().X ? getMax().X : rectangle.getMax().X,
-                getMax().Y>rectangle.getMax().Y ? getMax().Y : rectangle.getMax().Y
+                getMax().X > rectangle.getMax().X ? getMax().X : rectangle.getMax().X,
+                getMax().Y > rectangle.getMax().Y ? getMax().Y : rectangle.getMax().Y
         );
 
         return Rectangle<T>(mergedMin, mergedMax);
@@ -62,7 +62,7 @@ namespace urchin {
 
     template<class T> bool Rectangle<T>::collideWithPoint(const Point2<T>& point) const {
         Point2<T> maxPoint = origin.translate(rectangleShape.getDiagonal());
-        return point.X>origin.X && point.X<maxPoint.X && point.Y>origin.Y && point.Y<maxPoint.Y;
+        return point.X > origin.X && point.X<maxPoint.X && point.Y > origin.Y && point.Y<maxPoint.Y;
     }
 
     //explicit template

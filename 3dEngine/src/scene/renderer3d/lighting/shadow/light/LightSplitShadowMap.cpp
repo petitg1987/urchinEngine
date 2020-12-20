@@ -103,7 +103,7 @@ namespace urchin {
         }
 
         AABBox<float> aabboxSceneDependent(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(0.0f, 0.0f, 0.0f));
-        if(modelsCount > 0) {
+        if (modelsCount > 0) {
             Point3<float> cutMin(
                     std::min(std::max(modelsAabbox.getMin().X, aabboxSceneIndependent.getMin().X), aabboxSceneIndependent.getMax().X),
                     std::min(std::max(modelsAabbox.getMin().Y, aabboxSceneIndependent.getMin().Y), aabboxSceneIndependent.getMax().Y),
