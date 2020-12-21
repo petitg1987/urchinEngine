@@ -6,10 +6,13 @@ set(CMAKE_CXX_STANDARD 17)
 
 if (WIN32)
     set(IMAGE_HLP_LIB imagehlp)
+else()
+    set(LINK_OPT -rdynamic) #necessary for SignalHandler to work correctly
 endif()
+
 add_definitions(-ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror)
 include_directories(src)
 
 file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.inl" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 add_library(urchinCommon SHARED ${SOURCE_FILES})
-target_link_libraries(urchinCommon -rdynamic -static-libstdc++ ${IMAGE_HLP_LIB})
+target_link_libraries(urchinCommon ${LINK_OPT} -static-libstdc++ ${IMAGE_HLP_LIB})

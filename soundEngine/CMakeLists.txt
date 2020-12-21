@@ -9,6 +9,7 @@ if (WIN32)
     set(OPENAL_LIB openal32)
 else()
     set(OPENAL_LIB openal)
+    set(LINK_OPT -rdynamic) #necessary for SignalHandler to work correctly
 endif()
 
 add_definitions(-ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror)
@@ -16,4 +17,4 @@ include_directories(src ../common/src)
 
 file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 add_library(urchinSoundEngine SHARED ${SOURCE_FILES})
-target_link_libraries(urchinSoundEngine -rdynamic Threads::Threads ${OPENAL_LIB} sndfile urchinCommon -static-libstdc++)
+target_link_libraries(urchinSoundEngine ${LINK_OPT} Threads::Threads ${OPENAL_LIB} sndfile urchinCommon -static-libstdc++)

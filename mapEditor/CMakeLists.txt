@@ -7,6 +7,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
+if (NOT WIN32)
+    set(LINK_OPT -rdynamic) #necessary for SignalHandler to work correctly
+endif()
+
 add_definitions(-ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror)
 include_directories(src ../common/src ../3dEngine/src ../physicsEngine/src ../soundEngine/src ../AIEngine/src ../mapHandler/src)
 
@@ -21,4 +25,4 @@ add_custom_target(copyShaders rsync -r ${CMAKE_CURRENT_SOURCE_DIR}/../3dEngine/r
 add_executable(urchinMapEditor ${SOURCE_FILES})
 add_dependencies(urchinMapEditor copyShaders)
 qt5_use_modules(urchinMapEditor Widgets OpenGL)
-target_link_libraries(urchinMapEditor -rdynamic ${QT_LIBRARIES} ${OPENGL_LIBRARIES} urchinCommon urchin3dEngine urchinPhysicsEngine urchinSoundEngine urchinAIEngine urchinMapHandler)
+target_link_libraries(urchinMapEditor ${LINK_OPT} ${QT_LIBRARIES} ${OPENGL_LIBRARIES} urchinCommon urchin3dEngine urchinPhysicsEngine urchinSoundEngine urchinAIEngine urchinMapHandler)

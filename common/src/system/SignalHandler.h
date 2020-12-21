@@ -4,18 +4,12 @@
 #include <string>
 #include <csignal>
 #include <memory>
-#include <functional>
-#ifdef _WIN32
-    #include <winsock2.h> //only to avoid inclusion order error in others parts of the engine
-    #include <windows.h>
-    #include <imagehlp.h>
-#else
-    #include <err.h>
-    #include <execinfo.h>
-    #include <cxxabi.h>
-#endif
 
 #include "pattern/singleton/Singleton.h"
+
+#ifdef _WIN32
+    struct EXCEPTION_POINTERS;
+#endif
 
 namespace urchin {
 
@@ -47,7 +41,7 @@ namespace urchin {
 
             void setupSignalHandler();
             #ifdef _WIN32
-                static LONG WINAPI signalHandler(EXCEPTION_POINTERS*);
+                static long __stdcall signalHandler(EXCEPTION_POINTERS*);
             #else
                 static void signalHandler(int, siginfo_t*, void*);
                 std::string executeCommand(const std::string&);

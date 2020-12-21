@@ -2,7 +2,12 @@
 
 #include <iostream>
 #include <cassert>
-#ifndef _WIN32
+#ifdef _WIN32
+    #include <windows.h>
+    #include <imagehlp.h>
+#else
+    #include <execinfo.h>
+    #include <cxxabi.h>
     #include <array>
     #include <unistd.h>
     #include <dlfcn.h>
@@ -28,7 +33,7 @@ namespace urchin {
         SetUnhandledExceptionFilter(signalHandler);
     }
 
-    LONG WINAPI SignalHandler::signalHandler(EXCEPTION_POINTERS* exceptionInfo) {
+    long __stdcall SignalHandler::signalHandler(EXCEPTION_POINTERS* exceptionInfo) {
         std::stringstream ss;
         ss << "Caught signal " << exceptionInfo->ExceptionRecord->ExceptionCode << ":" << std::endl;
 
