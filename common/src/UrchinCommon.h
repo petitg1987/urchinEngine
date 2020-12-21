@@ -47,7 +47,7 @@
 #include "system/FileSystem.h"
 #include "system/FileHandler.h"
 #include "system/NumericalCheck.h"
-#include "system/BacktraceHandler.h"
+#include "system/SignalHandler.h"
 
 #include "math/algebra/matrix/Matrix2.h"
 #include "math/algebra/matrix/Matrix3.h"

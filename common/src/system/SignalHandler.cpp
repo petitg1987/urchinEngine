@@ -1,41 +1,45 @@
-#include "BacktraceHandler.h"
+#include "SignalHandler.h"
 
-#include <utility>
 #include <iostream>
 #include <cassert>
 #ifdef _WIN32
 
 #else
     #include <array>
-    #include <memory>
     #include <unistd.h>
     #include <dlfcn.h>
-    #include <cxxabi.h>
 #endif
 
 #include "system/FileHandler.h"
 #include "tools/logger/Logger.h"
+#include "io/StringUtil.h"
 
-namespace urchin { //TODO add "-g" symbol for Release
+namespace urchin {
 
-    //static
-    std::string BacktraceHandler::programName;
-    BacktraceReceiver* BacktraceHandler::backtraceReceiver;
-
-    BacktraceHandler::BacktraceHandler(std::string programName) {
-        this->programName = std::move(programName);
-    }
-
-    void BacktraceHandler::setup(BacktraceReceiver* backtraceReceiver) {
-        this->backtraceReceiver = backtraceReceiver;
+    SignalHandler::SignalHandler() {
         setupSignalHandler();
     }
 
+    void SignalHandler::registerSignalReceptor(std::unique_ptr<SignalReceptor>&& signalReceptor) {
+        this->signalReceptor = std::move(signalReceptor);
+
+    }
+
 #ifdef _WIN32
-    int BacktraceHandler::addressToLine(void const* addr) {
-        std::stringstream cmd;
-        cmd << "addr2line -f -p -e " << programName << " " << addr;
-        return system(cmd.str().c_str());
+    void Backtrace::setupSignalHandler() {
+        SetUnhandledExceptionFilter(windowsExceptionHandler);
+    }
+
+    LONG WINAPI BacktraceHandler::windowsExceptionHandler(EXCEPTION_POINTERS* exceptionInfo) {
+        std::stringstream ss;
+        ss << "Caught signal " << exceptionInfo->ExceptionRecord->ExceptionCode << ":" << std::endl;
+
+        if (EXCEPTION_STACK_OVERFLOW != exceptionInfo->ExceptionRecord->ExceptionCode) { //cannot walk the stack in case of stack overflow
+            instance()->windowsPrintStacktrace(exceptionInfo->ContextRecord);
+        } else {
+            instance()->addressToLine((void*)exceptionInfo->ContextRecord->Rip);
+        }
+        return EXCEPTION_EXECUTE_HANDLER;
     }
 
     void BacktraceHandler::windowsPrintStacktrace(CONTEXT* context) {
@@ -55,24 +59,31 @@ namespace urchin { //TODO add "-g" symbol for Release
         SymCleanup(GetCurrentProcess());
     }
 
-    LONG WINAPI BacktraceHandler::windowsExceptionHandler(EXCEPTION_POINTERS* exceptionInfo) {
-        std::cout << "Caught signal " << exceptionInfo->ExceptionRecord->ExceptionCode << ":" << std::endl;
-
-        if (EXCEPTION_STACK_OVERFLOW != exceptionInfo->ExceptionRecord->ExceptionCode) { //cannot walk the stack in case of stack overflow
-            windowsPrintStacktrace(exceptionInfo->ContextRecord);
-        } else {
-            addressToLine((void*)exceptionInfo->ContextRecord->Rip);
-        }
-        return EXCEPTION_EXECUTE_HANDLER;
+    int BacktraceHandler::addressToLine(void const* addr) {
+        std::stringstream cmd;
+        cmd << "addr2line -f -p -e " << programName << " " << addr;
+        return system(cmd.str().c_str());
     }
 
-    void Backtrace::setupSignalHandler() {
-        SetUnhandledExceptionFilter(windowsExceptionHandler);
-    }
 #else
-    void BacktraceHandler::signalHandler(int sig, siginfo_t* siginfo, void*) {
+
+    void SignalHandler::setupSignalHandler() {
+        struct sigaction sigAction = {};
+        sigAction.sa_sigaction = &signalHandler;
+        sigemptyset(&sigAction.sa_mask);
+        sigAction.sa_flags = SA_SIGINFO | SA_ONSTACK;
+
+        sigaction(SIGSEGV, &sigAction, nullptr);
+        sigaction(SIGFPE, &sigAction, nullptr);
+        sigaction(SIGINT, &sigAction, nullptr);
+        sigaction(SIGILL, &sigAction, nullptr);
+        sigaction(SIGTERM, &sigAction, nullptr);
+        sigaction(SIGABRT, &sigAction, nullptr);
+    }
+
+    void SignalHandler::signalHandler(int signalId, siginfo_t* signalInfo, void*) {
         std::stringstream ss;
-        ss << "Caught signal " << sig << " (code: " << siginfo->si_code << "):" << std::endl;
+        ss << "Caught signal " << signalId << " (code: " << signalInfo->si_code << "):" << std::endl;
 
         constexpr int maxStackFrames = 256;
         void *traces[maxStackFrames];
@@ -91,62 +102,58 @@ namespace urchin { //TODO add "-g" symbol for Release
                 long methodInstructionShift = (char *)traces[i] - (char *)info.dli_saddr;
                 long instructionShift = methodShift + methodInstructionShift - 1 ; //see https://stackoverflow.com/a/63841497
                 std::stringstream instructionShiftHex;
-                instructionShiftHex << std::hex << instructionShift - 1;
+                instructionShiftHex << std::hex << instructionShift;
 
-                ss << "   [bt] " << moduleName << " => " << methodName << " (0x" << instructionShiftHex.str() << ")" << std::endl;
+                ss << "\t[bt] [" << moduleName << "] " << methodName << " (0x" << instructionShiftHex.str() << ")";
 
                 std::string addr2lineCmd = "addr2line -p -e " + std::string(info.dli_fname) + + " " + instructionShiftHex.str() + " 2> /dev/null";
-                std::string cmdResult = exec(addr2lineCmd);
+                std::string cmdResult = instance()->executeCommand(addr2lineCmd);
                 if(cmdResult.find("??") == std::string::npos) {
-                    ss << "        " << cmdResult;
+                    ss << std::endl << "\t[bt]\t=> " << cmdResult;
                 }
             } else {
-                ss << "   [bt] " << symbols[i] << std::endl;
+                ss << "\t[bt] " << symbols[i];
+            }
+
+            if(i < traceSize - 1) {
+                ss << std::endl;
             }
         }
+
         if (symbols) {
             free(symbols);
         }
 
         urchin::Logger::instance()->logError(ss.str());
-        if(backtraceReceiver) {
-            backtraceReceiver->onSignalCaught(sig);
+        if(instance()->signalReceptor) {
+            instance()->signalReceptor->onSignalReceived(signalId);
         }
 
         //re-send the signal to produce a 'core' file
-        signal(sig, SIG_DFL);
-        kill(getpid(), sig);
+        signal(signalId, SIG_DFL);
+        kill(getpid(), signalId);
     }
 
-    std::string BacktraceHandler::exec(const std::string& cmd) {
+    std::string SignalHandler::executeCommand(const std::string& cmd) {
         std::array<char, 1024> buffer;
         std::string cmdResult;
         std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd.c_str(), "r"), pclose);
         if (!pipe) {
             throw std::runtime_error("Function popen() failed for: " + cmd);
         }
+
         while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
             cmdResult += buffer.data();
         }
+
+        if(StringUtil::endWith(cmdResult, "\n")) {
+            return cmdResult.substr(0, cmdResult.size() - 1);
+        }
         return cmdResult;
-    }
-
-    void BacktraceHandler::setupSignalHandler() {
-        struct sigaction sigAction = {};
-        sigAction.sa_sigaction = signalHandler;
-        sigemptyset(&sigAction.sa_mask);
-        sigAction.sa_flags = SA_SIGINFO | SA_ONSTACK;
-
-        sigaction(SIGSEGV, &sigAction, nullptr);
-        sigaction(SIGFPE, &sigAction, nullptr);
-        sigaction(SIGINT, &sigAction, nullptr);
-        sigaction(SIGILL, &sigAction, nullptr);
-        sigaction(SIGTERM, &sigAction, nullptr);
-        sigaction(SIGABRT, &sigAction, nullptr);
     }
 #endif
 
-    void BacktraceHandler::simulateError(ErrorSimulationType errorType) {
+    void SignalHandler::simulateError(ErrorSimulationType errorType) {
         if (SEGMENTATION_FAULT == errorType) {
             int* p = (int*)0x999999999;
             *p = 0;

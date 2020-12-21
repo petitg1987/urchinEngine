@@ -66,4 +66,11 @@ namespace urchin {
         return true;
     }
 
+    bool StringUtil::endWith(const std::string& str, const std::string& endStr) {
+        if (endStr.size() > str.size()) {
+            return false;
+        }
+        return std::equal(endStr.rbegin(), endStr.rend(), str.rbegin());
+    }
+
 }
