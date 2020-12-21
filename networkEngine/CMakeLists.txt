@@ -9,4 +9,4 @@ include_directories(src ../common/src)
 
 file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 add_library(urchinNetworkEngine SHARED ${SOURCE_FILES})
-target_link_libraries(urchinNetworkEngine curl urchinCommon)
+target_link_libraries(urchinNetworkEngine -rdynamic curl urchinCommon)

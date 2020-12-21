@@ -16,4 +16,4 @@ include_directories(src ../common/src /usr/include/freetype2)
 
 file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.inl" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 add_library(urchin3dEngine SHARED ${SOURCE_FILES})
-target_link_libraries(urchin3dEngine freetype ${GLEW_LIB} OpenGL::GL urchinCommon -static-libstdc++)
+target_link_libraries(urchin3dEngine -rdynamic freetype ${GLEW_LIB} OpenGL::GL urchinCommon -static-libstdc++)

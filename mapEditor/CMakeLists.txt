@@ -21,4 +21,4 @@ add_custom_target(copyShaders rsync -r ${CMAKE_CURRENT_SOURCE_DIR}/../3dEngine/r
 add_executable(urchinMapEditor ${SOURCE_FILES})
 add_dependencies(urchinMapEditor copyShaders)
 qt5_use_modules(urchinMapEditor Widgets OpenGL)
-target_link_libraries(urchinMapEditor ${QT_LIBRARIES} ${OPENGL_LIBRARIES} urchinCommon urchin3dEngine urchinPhysicsEngine urchinSoundEngine urchinAIEngine urchinMapHandler)
+target_link_libraries(urchinMapEditor -rdynamic ${QT_LIBRARIES} ${OPENGL_LIBRARIES} urchinCommon urchin3dEngine urchinPhysicsEngine urchinSoundEngine urchinAIEngine urchinMapHandler)

@@ -15,7 +15,7 @@ namespace urchin {
 
     class Button : public Widget {
         public:
-            Button(Position, Size, std::string , std::string );
+            Button(Position, Size, std::string, std::string);
             ~Button() override = default;
 
             void createOrUpdateWidget() override;

@@ -16,4 +16,4 @@ include_directories(src ../common/src)
 
 file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 add_library(urchinSoundEngine SHARED ${SOURCE_FILES})
-target_link_libraries(urchinSoundEngine Threads::Threads ${OPENAL_LIB} sndfile urchinCommon -static-libstdc++)
+target_link_libraries(urchinSoundEngine -rdynamic Threads::Threads ${OPENAL_LIB} sndfile urchinCommon -static-libstdc++)
