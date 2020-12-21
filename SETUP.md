@@ -44,20 +44,22 @@
 * Zip:
   * Download zip (http://stahlworks.com/dev/zip.exe)
   * Copy file in C:\MinGW\mingw64\bin
-* Path configuration (only to start app. inside IntelliJ):
-  * Add in "Path" Windows env. variable, the DLL directory:
-    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\release\urchinEngine\3dEngine`
-    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\release\urchinEngine\AIEngine`
-    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\release\urchinEngine\common`
-    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\release\urchinEngine\mapHandler`
-    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\release\urchinEngine\physicsEngine`
-    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\release\urchinEngine\soundEngine`
-    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\release\urchinEngine\networkEngine`
-    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\debug\urchinEngine\3dEngine`
-    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\debug\urchinEngine\AIEngine`
-    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\debug\urchinEngine\common`
-    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\debug\urchinEngine\mapHandler`
-    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\debug\urchinEngine\physicsEngine`
-    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\debug\urchinEngine\soundEngine`
-    * `C:\Users\greg\Desktop\Project\laserRiddle\.build\debug\urchinEngine\networkEngine`
-    * `C:\Users\greg\Desktop\Project\laserRiddle\release\windows\resources\lib`
+* Path configuration (only to start application inside CLion):
+  * For debug build, add the following directories in "PATH" environment variable:
+    * `C:\msys\1.0\home\greg\project\laserRiddle\.build\release\urchinEngine\3dEngine`
+    * `C:\msys\1.0\home\greg\project\laserRiddle\.build\release\urchinEngine\AIEngine`
+    * `C:\msys\1.0\home\greg\project\laserRiddle\.build\release\urchinEngine\common`
+    * `C:\msys\1.0\home\greg\project\laserRiddle\.build\release\urchinEngine\mapHandler`
+    * `C:\msys\1.0\home\greg\project\laserRiddle\.build\release\urchinEngine\physicsEngine`
+    * `C:\msys\1.0\home\greg\project\laserRiddle\.build\release\urchinEngine\soundEngine`
+    * `C:\msys\1.0\home\greg\project\laserRiddle\.build\release\urchinEngine\networkEngine`
+    * `C:\msys\1.0\home\greg\project\laserRiddle\release\windows\resources\lib`
+  * For release build, add the following directories in "PATH" environment variable:
+    * `C:\msys\1.0\home\greg\project\laserRiddle\.build\debug\urchinEngine\3dEngine`
+    * `C:\msys\1.0\home\greg\project\laserRiddle\.build\debug\urchinEngine\AIEngine`
+    * `C:\msys\1.0\home\greg\project\laserRiddle\.build\debug\urchinEngine\common`
+    * `C:\msys\1.0\home\greg\project\laserRiddle\.build\debug\urchinEngine\mapHandler`
+    * `C:\msys\1.0\home\greg\project\laserRiddle\.build\debug\urchinEngine\physicsEngine`
+    * `C:\msys\1.0\home\greg\project\laserRiddle\.build\debug\urchinEngine\soundEngine`
+    * `C:\msys\1.0\home\greg\project\laserRiddle\.build\debug\urchinEngine\networkEngine`
+    * `C:\msys\1.0\home\greg\project\laserRiddle\release\windows\resources\lib`

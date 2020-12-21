@@ -14,9 +14,9 @@ namespace urchin {
             virtual ~Logger() = default;
 
             enum CriticalityLevel {
-                INFO,
-                WARNING,
-                ERROR
+                INFO_LVL,
+                WARNING_LVL,
+                ERROR_LVL
             };
 
             static void setupCustomInstance(std::unique_ptr<Logger>);

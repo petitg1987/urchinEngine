@@ -35,7 +35,7 @@ namespace urchin {
                 area += (polygonPoints[i].X - polygonPoints[prevI].X) * (polygonPoints[i].Y + polygonPoints[prevI].Y);
             }
             if (area > 0.0) {
-                logInputData("Triangulation input points not in CCW order. Area: " + std::to_string(area), Logger::ERROR);
+                logInputData("Triangulation input points not in CCW order. Area: " + std::to_string(area), Logger::ERROR_LVL);
             }
         }
     }
@@ -62,7 +62,7 @@ namespace urchin {
                 area += (cwHolePoints[i].X - cwHolePoints[prevI].X) * (cwHolePoints[i].Y + cwHolePoints[prevI].Y);
             }
             if (area < 0.0) {
-                logInputData("Triangulation hole input points not in CW order. Area: " + std::to_string(area), Logger::ERROR);
+                logInputData("Triangulation hole input points not in CW order. Area: " + std::to_string(area), Logger::ERROR_LVL);
             }
         }
 
@@ -88,7 +88,7 @@ namespace urchin {
             for (std::size_t i = 0; i < polygonPoints.size(); ++i) {
                 for (std::size_t j = 0; j < polygonPoints.size(); ++j) {
                     if (i != j && polygonPoints[i] == polygonPoints[j]) {
-                        logInputData("Triangulation point " + std::to_string(i) + " duplicates the point " + std::to_string(j), Logger::ERROR);
+                        logInputData("Triangulation point " + std::to_string(i) + " duplicates the point " + std::to_string(j), Logger::ERROR_LVL);
                     }
                 }
             }
@@ -105,7 +105,7 @@ namespace urchin {
         }
 
         if (!sharedMonotoneEdges.empty()) {
-            logOutputData("Missing neighbors (" + std::to_string(sharedMonotoneEdges.size()) + ") between monotone polygons", triangles, Logger::ERROR);
+            logOutputData("Missing neighbors (" + std::to_string(sharedMonotoneEdges.size()) + ") between monotone polygons", triangles, Logger::ERROR_LVL);
         }
 
         return triangles;
@@ -180,11 +180,11 @@ namespace urchin {
         }
 
         if (missingTriangleNeighbor != 0) {
-            logOutputData("Missing neighbors (" + std::to_string(missingTriangleNeighbor) + ") on monotone polygon", monotoneTriangles, Logger::ERROR);
+            logOutputData("Missing neighbors (" + std::to_string(missingTriangleNeighbor) + ") on monotone polygon", monotoneTriangles, Logger::ERROR_LVL);
         }
 
         if (DEBUG_LOG_TRIANGULATION_OUTPUT_DATA) {
-            logOutputData("Output of triangulation algorithm", monotoneTriangles, Logger::INFO);
+            logOutputData("Output of triangulation algorithm", monotoneTriangles, Logger::INFO_LVL);
         }
 
         return monotoneTriangles;
@@ -215,7 +215,7 @@ namespace urchin {
 
     std::shared_ptr<NavTriangle> TriangulationAlgorithm::buildCCWOrientedTriangle(std::size_t pointIndex1, std::size_t pointIndex2, std::size_t pointIndex3) const {
         if (pointIndex1 == pointIndex2 || pointIndex1 == pointIndex3 || pointIndex2 == pointIndex3) {
-            logInputData("Triangulation create navigation triangle with identical indices", Logger::ERROR);
+            logInputData("Triangulation create navigation triangle with identical indices", Logger::ERROR_LVL);
         }
 
         Vector2<double> v1 = polygonPoints[pointIndex1].template cast<double>().vector(polygonPoints[pointIndex2].template cast<double>());

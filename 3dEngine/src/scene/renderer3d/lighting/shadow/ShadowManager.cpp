@@ -342,11 +342,11 @@ namespace urchin {
         splitDistances.clear();
         splitFrustums.clear();
 
-        float near = frustum.computeNearDistance();
-        float previousSplitDistance = near;
+        float nearDistance = frustum.computeNearDistance();
+        float previousSplitDistance = nearDistance;
         for (unsigned int i = 1; i <= nbShadowMaps; ++i) {
-            float uniformSplit = near + (viewingShadowDistance - near) * ((float)i / (float)nbShadowMaps);
-            float logarithmicSplit = near * std::pow(viewingShadowDistance / near, (float)i / (float)nbShadowMaps);
+            float uniformSplit = nearDistance + (viewingShadowDistance - nearDistance) * ((float)i / (float)nbShadowMaps);
+            float logarithmicSplit = nearDistance * std::pow(viewingShadowDistance / nearDistance, (float)i / (float)nbShadowMaps);
 
             float splitDistance = (percentageUniformSplit * uniformSplit) + ((1.0f - percentageUniformSplit) * logarithmicSplit);
 

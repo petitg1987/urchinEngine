@@ -78,7 +78,7 @@ namespace urchin {
                         return AlgorithmResultAllocator::instance()->newContinuousCollisionResult<U>(body2, Vector3<U>(1.0, 0.0, 0.0), hitPointOnObject2.template cast<U>(), 0.0);
                     } else {
                         std::string wrongSituation = "Unexpected situation reach on continuous collision algorithm.";
-                        logInputData(object1, object2, wrongSituation, Logger::ERROR);
+                        logInputData(object1, object2, wrongSituation, Logger::ERROR_LVL);
                         return std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter>(nullptr);
                     }
                 } else if (normalFromObject2Defined) {
@@ -93,7 +93,7 @@ namespace urchin {
         }
 
         std::string maxIterationReachMsg = "Maximum of iteration reached on GJK continuous collision algorithm (" + std::to_string(maxIteration) + ").";
-        logInputData(object1, object2, maxIterationReachMsg, Logger::WARNING);
+        logInputData(object1, object2, maxIterationReachMsg, Logger::WARNING_LVL);
         return std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter>(nullptr);
     }
 

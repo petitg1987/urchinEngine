@@ -6,6 +6,7 @@
 #include <memory>
 #include <functional>
 #ifdef _WIN32
+    #include <winsock2.h> //only to avoid inclusion order error in others parts of the engine
     #include <windows.h>
     #include <imagehlp.h>
 #else
@@ -46,9 +47,7 @@ namespace urchin {
 
             void setupSignalHandler();
             #ifdef _WIN32
-                int addressToLine(void const*);
-                void windowsPrintStacktrace(CONTEXT*);
-                static LONG WINAPI windowsExceptionHandler(EXCEPTION_POINTERS*);
+                static LONG WINAPI signalHandler(EXCEPTION_POINTERS*);
             #else
                 static void signalHandler(int, siginfo_t*, void*);
                 std::string executeCommand(const std::string&);

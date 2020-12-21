@@ -97,7 +97,7 @@ namespace urchin {
         ResizePolygon2DService<T>::instance()->resizePolygon(cwPoints, -distance);
 
         if (Check::instance()->additionalChecksEnable() && !isCwPoints()) {
-            logInputData("Impossible to expand polygon (distance: " + std::to_string(distance) + ")", Logger::ERROR, *originalPolygon);
+            logInputData("Impossible to expand polygon (distance: " + std::to_string(distance) + ")", Logger::ERROR_LVL, *originalPolygon);
         }
     }
 
@@ -159,7 +159,7 @@ namespace urchin {
         }
 
         if (Check::instance()->additionalChecksEnable() && !isCwPoints()) {
-            logInputData("Impossible to simplify polygon (dot: " + std::to_string(polygonMinDotProductThreshold) + ", distance: " + std::to_string(polygonMergePointsDistanceThreshold) + ")", Logger::ERROR, *originalPolygon);
+            logInputData("Impossible to simplify polygon (dot: " + std::to_string(polygonMinDotProductThreshold) + ", distance: " + std::to_string(polygonMergePointsDistanceThreshold) + ")", Logger::ERROR_LVL, *originalPolygon);
         }
     }
 

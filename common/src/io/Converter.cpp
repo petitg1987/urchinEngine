@@ -72,13 +72,13 @@ namespace urchin {
 
         if (value < 0.0) {
             if (value < minValue) {
-                Logger::instance()->log(Logger::ERROR, "Impossible to convert float " + std::to_string(value) + " in long long type.");
+                Logger::instance()->logError("Impossible to convert float " + std::to_string(value) + " in long long type.");
             }
             return std::llround(value * scale - 0.5);
         }
         else {
             if (value > maxValue) {
-                Logger::instance()->log(Logger::ERROR, "Impossible to convert float " + std::to_string(value) + " in long long type.");
+                Logger::instance()->logError("Impossible to convert float " + std::to_string(value) + " in long long type.");
             }
             return std::llround(value * scale + 0.5);
         }

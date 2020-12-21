@@ -2,9 +2,7 @@
 
 #include <iostream>
 #include <cassert>
-#ifdef _WIN32
-
-#else
+#ifndef _WIN32
     #include <array>
     #include <unistd.h>
     #include <dlfcn.h>
@@ -26,25 +24,20 @@ namespace urchin {
     }
 
 #ifdef _WIN32
-    void Backtrace::setupSignalHandler() {
-        SetUnhandledExceptionFilter(windowsExceptionHandler);
+    void SignalHandler::setupSignalHandler() {
+        SetUnhandledExceptionFilter(signalHandler);
     }
 
-    LONG WINAPI BacktraceHandler::windowsExceptionHandler(EXCEPTION_POINTERS* exceptionInfo) {
+    LONG WINAPI SignalHandler::signalHandler(EXCEPTION_POINTERS* exceptionInfo) {
         std::stringstream ss;
         ss << "Caught signal " << exceptionInfo->ExceptionRecord->ExceptionCode << ":" << std::endl;
 
-        if (EXCEPTION_STACK_OVERFLOW != exceptionInfo->ExceptionRecord->ExceptionCode) { //cannot walk the stack in case of stack overflow
-            instance()->windowsPrintStacktrace(exceptionInfo->ContextRecord);
-        } else {
-            instance()->addressToLine((void*)exceptionInfo->ContextRecord->Rip);
-        }
-        return EXCEPTION_EXECUTE_HANDLER;
-    }
+        HANDLE process = GetCurrentProcess();
+        HANDLE thread = GetCurrentThread();
+        CONTEXT* context = exceptionInfo->ContextRecord;
 
-    void BacktraceHandler::windowsPrintStacktrace(CONTEXT* context) {
-        SymInitialize(GetCurrentProcess(), 0, true);
-        STACKFRAME frame = {0};
+        SymInitialize(process, nullptr, true);
+        STACKFRAME frame = {};
         frame.AddrPC.Offset = context->Rip;
         frame.AddrPC.Mode = AddrModeFlat;
         frame.AddrStack.Offset = context->Rsp;
@@ -52,21 +45,48 @@ namespace urchin {
         frame.AddrFrame.Offset = context->Rbp;
         frame.AddrFrame.Mode = AddrModeFlat;
 
-        while (StackWalk(IMAGE_FILE_MACHINE_I386, GetCurrentProcess(), GetCurrentThread(), &frame, context, 0, SymFunctionTableAccess, SymGetModuleBase, 0)) {
-            addr2line((void*)frame.AddrPC.Offset);
+        unsigned int stackCount = 0;
+        while (StackWalk(IMAGE_FILE_MACHINE_AMD64, process, thread, &frame, context, nullptr, SymFunctionTableAccess, SymGetModuleBase, nullptr)) {
+            std::string moduleName;
+            DWORD64 moduleBase = SymGetModuleBase(process, frame.AddrPC.Offset);
+            char moduleBuffer[MAX_PATH];
+            if (moduleBase && GetModuleFileNameA((HINSTANCE)moduleBase, moduleBuffer, MAX_PATH)) {
+                moduleName = FileHandler::getFileName(moduleBuffer);
+            }
+
+            std::string methodName = "{method not found}";
+            DWORD64 offset = 0;
+            char symbolBuffer[sizeof(IMAGEHLP_SYMBOL) + 255];
+            auto symbol = (PIMAGEHLP_SYMBOL)symbolBuffer;
+            symbol->SizeOfStruct = (sizeof(IMAGEHLP_SYMBOL)) + 255;
+            symbol->MaxNameLength = 254;
+            if (SymGetSymFromAddr(process, frame.AddrPC.Offset, &offset, symbol)) {
+                methodName = symbol->Name;
+            }
+
+            void* instructionShift = (char*)frame.AddrPC.Offset - 1; //see https://stackoverflow.com/a/63841497
+
+            ss << "\t[bt] [" << moduleName << "] " << methodName << " (addr2line -f -e " << moduleName << " " << instructionShift << ")" << std::endl;
+
+            if (++stackCount > 250) { //avoid infinite loop in case of stack overflow error
+                break;
+            }
+        }
+        std::string stacktrace = ss.str();
+        if(StringUtil::endWith(stacktrace, "\n")) {
+            stacktrace = stacktrace.substr(0, stacktrace.size() - 1);
         }
 
-        SymCleanup(GetCurrentProcess());
-    }
+        SymCleanup(process);
 
-    int BacktraceHandler::addressToLine(void const* addr) {
-        std::stringstream cmd;
-        cmd << "addr2line -f -p -e " << programName << " " << addr;
-        return system(cmd.str().c_str());
-    }
+        urchin::Logger::instance()->logError(stacktrace);
+        if(instance()->signalReceptor) {
+            instance()->signalReceptor->onSignalReceived((int)exceptionInfo->ExceptionRecord->ExceptionCode);
+        }
 
+        return EXCEPTION_EXECUTE_HANDLER;
+    }
 #else
-
     void SignalHandler::setupSignalHandler() {
         struct sigaction sigAction = {};
         sigAction.sa_sigaction = &signalHandler;
@@ -98,9 +118,9 @@ namespace urchin {
                 char* demangledMethod = abi::__cxa_demangle(info.dli_sname, nullptr, 0, &status);
                 std::string methodName = status == 0 ? demangledMethod : symbols[i];
 
-                long methodShift = (char *)info.dli_saddr - (char *)info.dli_fbase;
-                long methodInstructionShift = (char *)traces[i] - (char *)info.dli_saddr;
-                long instructionShift = methodShift + methodInstructionShift - 1 ; //see https://stackoverflow.com/a/63841497
+                long methodShift = (char*)info.dli_saddr - (char*)info.dli_fbase;
+                long methodInstructionShift = (char*)traces[i] - (char*)info.dli_saddr;
+                long instructionShift = methodShift + methodInstructionShift - 1; //see https://stackoverflow.com/a/63841497
                 std::stringstream instructionShiftHex;
                 instructionShiftHex << std::hex << instructionShift;
 

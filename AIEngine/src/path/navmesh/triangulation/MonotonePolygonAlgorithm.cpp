@@ -43,7 +43,7 @@ namespace urchin {
         edgeHelpers.reserve(5);
 
         if (DEBUG_LOG_MONOTONE_INPUT_DATA) {
-            logInputData("Debug monotone polygon.", Logger::INFO);
+            logInputData("Debug monotone polygon.", Logger::INFO_LVL);
         }
     }
 
@@ -57,7 +57,7 @@ namespace urchin {
         try {
             createYMonotonePolygonsDiagonals();
         } catch (MonotonePolygonError& error) {
-            logInputData(std::string(error.what()), Logger::ERROR);
+            logInputData(std::string(error.what()), Logger::ERROR_LVL);
             return yMonotonePolygons;
         }
 
@@ -100,7 +100,7 @@ namespace urchin {
                                     logStream.precision(std::numeric_limits<float>::max_digits10);
                                     logStream << "Duplicate point (" << polygonPoints[nextPointIndex] << ") inserted in monotone polygon: ";
 
-                                    logInputData(logStream.str(), Logger::ERROR);
+                                    logInputData(logStream.str(), Logger::ERROR_LVL);
                                 }
                             }
                         }
@@ -110,7 +110,7 @@ namespace urchin {
                         currentPointIndex = nextPointIndex;
 
                         if (monotonePointsIndices.size() > polygonPoints.size()) {
-                            logInputData("Impossible to close monotone polygon.", Logger::ERROR);
+                            logInputData("Impossible to close monotone polygon.", Logger::ERROR_LVL);
                             yMonotonePolygons.clear();
                             return yMonotonePolygons;
                         }
@@ -124,7 +124,7 @@ namespace urchin {
         }
 
         if (DEBUG_LOG_MONOTONE_OUTPUT_DATA) {
-            logOutputData("Debug monotone polygon.", Logger::INFO);
+            logOutputData("Debug monotone polygon.", Logger::INFO_LVL);
         }
 
         return yMonotonePolygons;

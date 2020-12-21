@@ -31,15 +31,15 @@ namespace urchin {
     }
 
     void Logger::logInfo(const std::string& toLog) {
-        log(INFO, toLog);
+        log(INFO_LVL, toLog);
     }
 
     void Logger::logWarning(const std::string& toLog) {
-        log(WARNING, toLog);
+        log(WARNING_LVL, toLog);
     }
 
     void Logger::logError(const std::string& toLog) {
-        log(ERROR, toLog);
+        log(ERROR_LVL, toLog);
     }
 
     void Logger::log(CriticalityLevel criticalityLevel, const std::string& toLog) {
@@ -51,7 +51,7 @@ namespace urchin {
             }
         #endif
 
-        if (criticalityLevel >= WARNING) {
+        if (criticalityLevel >= WARNING_LVL) {
             bHasFailure = true;
         }
     }
@@ -78,13 +78,13 @@ namespace urchin {
     }
 
     std::string Logger::getCriticalityString(CriticalityLevel criticalityLevel) {
-        if (criticalityLevel == INFO) {
+        if (criticalityLevel == INFO_LVL) {
             return "II";
         }
-        if (criticalityLevel == WARNING) {
+        if (criticalityLevel == WARNING_LVL) {
             return "WW";
         }
-        if (criticalityLevel == ERROR) {
+        if (criticalityLevel == ERROR_LVL) {
             return "EE";
         }
 
