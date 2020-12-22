@@ -34,8 +34,7 @@ namespace urchin {
     }
 
     void FileLogger::purge() const {
-        std::ofstream file;
-        file.open(filename, std::ofstream::out | std::ofstream::trunc);
+        std::ofstream file(filename, std::ofstream::out | std::ofstream::trunc);
         if (!file.is_open()) {
             throw std::runtime_error("Unable to open file: " + filename);
         }
@@ -47,7 +46,7 @@ namespace urchin {
         std::string extension = FileUtil::getFileExtension(filename);
         std::string archiveFilename = filename.substr(0, filename.size()-extension.size()-1) + "_" + epoch + "." + extension;
 
-        std::ofstream archiveStream(archiveFilename);
+        std::ofstream archiveStream(archiveFilename, std::ios::binary);
         if (!archiveStream.is_open()) {
             throw std::runtime_error("Unable to open file: " + filename);
         }
@@ -58,9 +57,8 @@ namespace urchin {
     }
 
     void FileLogger::write(const std::string& msg) {
-        std::ofstream file;
-        file.open(filename, std::ios::app);
-        if (file.fail()) {
+        std::ofstream file(filename, std::ios::app);
+        if (!file.is_open()) {
             throw std::runtime_error("Unable to open file: " + filename);
         }
         file.write(msg.c_str(), static_cast<std::streamsize>(msg.length()));
