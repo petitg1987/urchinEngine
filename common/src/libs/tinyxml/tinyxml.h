@@ -973,7 +973,7 @@ public:
 
 		std::stringstream sstream( node->ValueStr() );
 		sstream >> *outValue;
-		if ( !sstream.fail() )
+		if (!sstream.fail() )
 			return TIXML_SUCCESS;
 		return TIXML_WRONG_TYPE;
 	}

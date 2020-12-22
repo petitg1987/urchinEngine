@@ -9,8 +9,8 @@
 namespace urchin {
 
     FileLogger::FileLogger(std::string filename) :
-        Logger(),
-        filename(std::move(filename)) {
+            Logger(),
+            filename(std::move(filename)) {
 
     }
 
@@ -20,9 +20,12 @@ namespace urchin {
 
     std::string FileLogger::retrieveContent(unsigned long maxSize) const {
         std::ifstream ifs(filename.c_str(), std::ios::in | std::ios::binary | std::ios::ate);
+        if (!ifs.is_open()) {
+            throw std::runtime_error("Unable to open file: " + filename);
+        }
         auto fileSize = ifs.tellg();
         auto readSize = std::min((unsigned long)fileSize, maxSize);
-        ifs.seekg(0, std::ios::beg);
+        ifs.seekg(-(int)readSize, std::ios::end);
 
         std::vector<char> bytes(readSize);
         ifs.read(bytes.data(), static_cast<std::streamsize>(readSize));
@@ -33,6 +36,9 @@ namespace urchin {
     void FileLogger::purge() const {
         std::ofstream file;
         file.open(filename, std::ofstream::out | std::ofstream::trunc);
+        if (!file.is_open()) {
+            throw std::runtime_error("Unable to open file: " + filename);
+        }
         file.close();
     }
 
@@ -41,7 +47,10 @@ namespace urchin {
         std::string extension = FileHandler::getFileExtension(filename);
         std::string archiveFilename = filename.substr(0, filename.size()-extension.size()-1) + "_" + epoch + "." + extension;
 
-        std::ofstream archiveStream (archiveFilename);
+        std::ofstream archiveStream(archiveFilename);
+        if (!archiveStream.is_open()) {
+            throw std::runtime_error("Unable to open file: " + filename);
+        }
         archiveStream << retrieveContent(std::numeric_limits<unsigned long>::max()) << std::endl;
         archiveStream.close();
 
@@ -52,7 +61,7 @@ namespace urchin {
         std::ofstream file;
         file.open(filename, std::ios::app);
         if (file.fail()) {
-            throw std::invalid_argument("Cannot open the file " + filename + ".");
+            throw std::runtime_error("Unable to open file: " + filename);
         }
         file.write(msg.c_str(), static_cast<std::streamsize>(msg.length()));
         file.flush();

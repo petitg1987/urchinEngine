@@ -43,13 +43,7 @@ namespace urchin {
     }
 
     void Logger::log(CriticalityLevel criticalityLevel, const std::string& toLog) {
-        #ifndef NDEBUG
-            write(prefix(criticalityLevel) + toLog + "\n");
-        #else
-            if (criticalityLevel >= WARNING) {
-                write(prefix(criticalityLevel) + toLog + "\n");
-            }
-        #endif
+        write(prefix(criticalityLevel) + toLog + "\n");
 
         if (criticalityLevel >= WARNING_LVL) {
             bHasFailure = true;
@@ -65,26 +59,21 @@ namespace urchin {
      */
     std::string Logger::prefix(CriticalityLevel criticalityLevel) {
         time_t now = time(nullptr);
-        struct tm tstruct = *localtime(&now);
-        char buf[80];
-        strftime(buf, sizeof(buf), "[%Y-%m-%d %X]", &tstruct);
+        struct tm timeStruct = *localtime(&now);
+        char buffer[64];
+        strftime(buffer, sizeof(buffer), "[%Y-%m-%d %X]", &timeStruct);
 
-        std::string result(buf);
-        result = result.append(" (");
-        result = result.append(getCriticalityString(criticalityLevel));
-        result = result.append(") ");
-
+        std::string result(buffer);
+        result += " (" + getCriticalityString(criticalityLevel) + ") ";
         return result;
     }
 
     std::string Logger::getCriticalityString(CriticalityLevel criticalityLevel) {
         if (criticalityLevel == INFO_LVL) {
             return "II";
-        }
-        if (criticalityLevel == WARNING_LVL) {
+        } else if (criticalityLevel == WARNING_LVL) {
             return "WW";
-        }
-        if (criticalityLevel == ERROR_LVL) {
+        } else if (criticalityLevel == ERROR_LVL) {
             return "EE";
         }
 
