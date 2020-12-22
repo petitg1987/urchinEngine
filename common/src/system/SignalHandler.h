@@ -32,7 +32,7 @@ namespace urchin {
             };
 
             void initialize();
-            void registerSignalReceptor(std::unique_ptr<SignalReceptor>&&);
+            void registerSignalReceptor(const std::shared_ptr<SignalReceptor>&);
 
             void simulateError(ErrorSimulationType);
 
@@ -49,7 +49,7 @@ namespace urchin {
             #endif
 
             bool isInitialized;
-            std::unique_ptr<SignalReceptor> signalReceptor;
+            std::shared_ptr<SignalReceptor> signalReceptor;
     };
 
 }

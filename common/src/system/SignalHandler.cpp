@@ -31,7 +31,7 @@ namespace urchin {
         }
     }
 
-    void SignalHandler::registerSignalReceptor(std::unique_ptr<SignalReceptor>&& signalReceptor) {
+    void SignalHandler::registerSignalReceptor(const std::shared_ptr<SignalReceptor>& signalReceptor) {
         initialize();
 
         this->signalReceptor = std::move(signalReceptor);
