@@ -8,14 +8,14 @@
 #include "pattern/singleton/Singleton.h"
 
 #ifdef _WIN32
-    struct EXCEPTION_POINTERS;
+    struct _EXCEPTION_POINTERS;
 #endif
 
 namespace urchin {
 
     class SignalReceptor {
         public:
-            virtual void onSignalReceived(int) = 0;
+            virtual void onSignalReceived(unsigned long) = 0;
     };
 
     class SignalHandler : public Singleton<SignalHandler> {
@@ -41,7 +41,7 @@ namespace urchin {
 
             void setupSignalHandler();
             #ifdef _WIN32
-                static long __stdcall signalHandler(EXCEPTION_POINTERS*);
+                static long __stdcall signalHandler(_EXCEPTION_POINTERS*);
             #else
                 static void signalHandler(int, siginfo_t*, void*);
                 std::string executeCommand(const std::string&);

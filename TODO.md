@@ -84,6 +84,7 @@
 - Constraints solver
     - **BUG** (`medium`): A restitution of 1.0 introduce new force in the system. Example: a superball bounces more and more higher at each collision
 - Character
+    - **BUG** (`critical`): Jump actions are sometimes missed when character move on a terrain
     - **NEW FEATURE** (`medium`): Handle stair for character controller
     - **NEW FEATURE** (`medium`): Apply impulse on objects hit by character or falling on the character
 

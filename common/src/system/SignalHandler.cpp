@@ -34,7 +34,7 @@ namespace urchin {
     void SignalHandler::registerSignalReceptor(const std::shared_ptr<SignalReceptor>& signalReceptor) {
         initialize();
 
-        this->signalReceptor = std::move(signalReceptor);
+        this->signalReceptor = signalReceptor;
     }
 
 #ifdef _WIN32
@@ -42,7 +42,7 @@ namespace urchin {
         SetUnhandledExceptionFilter(signalHandler);
     }
 
-    long __stdcall SignalHandler::signalHandler(EXCEPTION_POINTERS* exceptionInfo) {
+    LONG WINAPI SignalHandler::signalHandler(EXCEPTION_POINTERS* exceptionInfo) {
         std::stringstream ss;
         ss << "Caught signal " << exceptionInfo->ExceptionRecord->ExceptionCode << ":" << std::endl;
 
@@ -95,7 +95,7 @@ namespace urchin {
 
         urchin::Logger::instance()->logError(stacktrace);
         if(instance()->signalReceptor) {
-            instance()->signalReceptor->onSignalReceived((int)exceptionInfo->ExceptionRecord->ExceptionCode);
+            instance()->signalReceptor->onSignalReceived(exceptionInfo->ExceptionRecord->ExceptionCode);
         }
 
         return EXCEPTION_EXECUTE_HANDLER;
@@ -160,7 +160,7 @@ namespace urchin {
 
         urchin::Logger::instance()->logError(ss.str());
         if(instance()->signalReceptor) {
-            instance()->signalReceptor->onSignalReceived(signalId);
+            instance()->signalReceptor->onSignalReceived((unsigned long)signalId);
         }
 
         //re-send the signal to produce a 'core' file
