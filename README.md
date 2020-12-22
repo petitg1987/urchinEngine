@@ -63,7 +63,7 @@ Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
   - Release:
     ```
     git clone https://github.com/petitg1987/urchinEngine.git && cd ./urchinEngine
-    cmake -DCMAKE_BUILD_TYPE=Release -S ./ -B .build/release/
+    cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -S ./ -B .build/release/
     cmake --build .build/release/ -- -j 12
     ```
 - Execute tests:

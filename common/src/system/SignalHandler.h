@@ -18,7 +18,6 @@ namespace urchin {
             virtual void onSignalReceived(int) = 0;
     };
 
-    //TODO add "-g" symbol for Release
     class SignalHandler : public Singleton<SignalHandler> {
         public:
             friend class Singleton<SignalHandler>;
