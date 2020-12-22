@@ -21,6 +21,7 @@ namespace urchin {
             collisionWorld(new CollisionWorld(bodyManager)),
             collisionVisualizer(nullptr) {
         NumericalCheck::instance()->perform();
+        SignalHandler::instance()->initialize();
     }
 
     PhysicsWorld::~PhysicsWorld() {

@@ -17,8 +17,12 @@ namespace urchin {
 
     std::string FileReaderUtil::readFile(const std::string& filename) {
         std::ifstream fileStream(filename);
-        std::stringstream buffer;
-        buffer << fileStream.rdbuf();
-        return buffer.str();
+        if (fileStream.is_open()) {
+            std::stringstream buffer;
+            buffer << fileStream.rdbuf();
+            return buffer.str();
+        }
+
+        throw std::runtime_error("Unable to open file: " + filename);
     }
 }

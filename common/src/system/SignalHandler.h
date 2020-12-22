@@ -19,7 +19,6 @@ namespace urchin {
     };
 
     //TODO add "-g" symbol for Release
-    //TODO init SignalHandler in urchin
     class SignalHandler : public Singleton<SignalHandler> {
         public:
             friend class Singleton<SignalHandler>;
@@ -32,7 +31,9 @@ namespace urchin {
                 ILLEGAL_INSTRUCTION
             };
 
+            void initialize();
             void registerSignalReceptor(std::unique_ptr<SignalReceptor>&&);
+
             void simulateError(ErrorSimulationType);
 
         private:
@@ -47,6 +48,7 @@ namespace urchin {
                 std::string executeCommand(const std::string&);
             #endif
 
+            bool isInitialized;
             std::unique_ptr<SignalReceptor> signalReceptor;
     };
 

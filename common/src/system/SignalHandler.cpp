@@ -19,13 +19,22 @@
 
 namespace urchin {
 
-    SignalHandler::SignalHandler() {
-        setupSignalHandler();
+    SignalHandler::SignalHandler() :
+            isInitialized(false) {
+
+    }
+
+    void SignalHandler::initialize() {
+        if(!isInitialized) {
+            setupSignalHandler();
+            isInitialized = true;
+        }
     }
 
     void SignalHandler::registerSignalReceptor(std::unique_ptr<SignalReceptor>&& signalReceptor) {
-        this->signalReceptor = std::move(signalReceptor);
+        initialize();
 
+        this->signalReceptor = std::move(signalReceptor);
     }
 
 #ifdef _WIN32

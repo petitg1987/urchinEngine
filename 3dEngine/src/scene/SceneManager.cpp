@@ -17,7 +17,8 @@ namespace urchin {
             previousFps(),
             fps(START_FPS),
             fpsForDisplay(START_FPS) {
-        //initialize graphic
+        //initialize
+        SignalHandler::instance()->initialize();
         graphicService.initializeGraphic();
 
         //initialize fps
