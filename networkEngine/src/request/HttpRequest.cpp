@@ -25,7 +25,7 @@ namespace urchin {
     }
 
     HttpRequest::HttpRequest(std::string basePath) :
-        basePath(std::move(basePath)) {
+            basePath(std::move(basePath)) {
         static HttpRequestInitializer instance;
 
         curl = curl_easy_init();

@@ -44,7 +44,7 @@ namespace urchin {
     void FileLogger::archive() const {
         std::string epoch = std::to_string(std::time(nullptr));
         std::string extension = FileUtil::getFileExtension(filename);
-        std::string archiveFilename = filename.substr(0, filename.size()-extension.size()-1) + "_" + epoch + "." + extension;
+        std::string archiveFilename = filename.substr(0, filename.size() - extension.size() - 1) + "_" + epoch + "." + extension;
 
         std::ofstream archiveStream(archiveFilename, std::ios::binary);
         if (!archiveStream.is_open()) {
