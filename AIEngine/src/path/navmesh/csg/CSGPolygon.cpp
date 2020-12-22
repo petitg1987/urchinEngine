@@ -90,20 +90,20 @@ namespace urchin {
 
     template<class T> void CSGPolygon<T>::expand(T distance) {
         std::unique_ptr<CSGPolygon<T>> originalPolygon(nullptr);
-        if (Check::instance()->additionalChecksEnable()) {
+        if (DebugCheck::instance()->additionalChecksEnable()) {
             originalPolygon = std::make_unique<CSGPolygon<T>>(*this);
         }
 
         ResizePolygon2DService<T>::instance()->resizePolygon(cwPoints, -distance);
 
-        if (Check::instance()->additionalChecksEnable() && !isCwPoints()) {
+        if (DebugCheck::instance()->additionalChecksEnable() && !isCwPoints()) {
             logInputData("Impossible to expand polygon (distance: " + std::to_string(distance) + ")", Logger::ERROR_LVL, *originalPolygon);
         }
     }
 
     template<class T> void CSGPolygon<T>::simplify(T polygonMinDotProductThreshold, T polygonMergePointsDistanceThreshold) {
         std::unique_ptr<CSGPolygon<T>> originalPolygon(nullptr);
-        if (Check::instance()->additionalChecksEnable()) {
+        if (DebugCheck::instance()->additionalChecksEnable()) {
             originalPolygon = std::make_unique<CSGPolygon<T>>(*this);
         }
 
@@ -158,7 +158,7 @@ namespace urchin {
             cwPoints.clear();
         }
 
-        if (Check::instance()->additionalChecksEnable() && !isCwPoints()) {
+        if (DebugCheck::instance()->additionalChecksEnable() && !isCwPoints()) {
             logInputData("Impossible to simplify polygon (dot: " + std::to_string(polygonMinDotProductThreshold) + ", distance: " + std::to_string(polygonMergePointsDistanceThreshold) + ")", Logger::ERROR_LVL, *originalPolygon);
         }
     }

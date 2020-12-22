@@ -13,9 +13,9 @@
     #include <dlfcn.h>
 #endif
 
-#include "system/FileHandler.h"
-#include "tools/logger/Logger.h"
-#include "io/StringUtil.h"
+#include "util/FileUtil.h"
+#include "util/StringUtil.h"
+#include "logger/Logger.h"
 
 namespace urchin {
 
@@ -65,7 +65,7 @@ namespace urchin {
             DWORD64 moduleBase = SymGetModuleBase(process, frame.AddrPC.Offset);
             char moduleBuffer[MAX_PATH];
             if (moduleBase && GetModuleFileNameA((HINSTANCE)moduleBase, moduleBuffer, MAX_PATH)) {
-                moduleName = FileHandler::getFileName(moduleBuffer);
+                moduleName = FileUtil::getFileName(moduleBuffer);
             }
 
             std::string methodName = "{method not found}";
@@ -127,7 +127,7 @@ namespace urchin {
         for (int i = 1; i < traceSize; ++i) {
             Dl_info info;
             if(dladdr(traces[i], &info) && info.dli_sname) {
-                std::string moduleName = info.dli_fname != nullptr ? FileHandler::getFileName(info.dli_fname) : "[no module]";
+                std::string moduleName = info.dli_fname != nullptr ? FileUtil::getFileName(info.dli_fname) : "[no module]";
                 int status;
                 char* demangledMethod = abi::__cxa_demangle(info.dli_sname, nullptr, 0, &status);
                 std::string methodName = status == 0 ? demangledMethod : symbols[i];

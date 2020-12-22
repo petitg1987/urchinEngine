@@ -3,8 +3,8 @@
 #include "UrchinCommon.h"
 
 #include "GJKContinuousCollisionAlgorithm.h"
-#include "collision/narrowphase/algorithm/utils/AlgorithmResultAllocator.h"
-#include "collision/narrowphase/algorithm/utils/Simplex.h"
+#include "collision/narrowphase/algorithm/util/AlgorithmResultAllocator.h"
+#include "collision/narrowphase/algorithm/util/Simplex.h"
 
 namespace urchin {
 

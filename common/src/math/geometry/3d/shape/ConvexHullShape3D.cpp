@@ -4,7 +4,7 @@
 #include "math/geometry/3d/util/ResizeConvexHull3DService.h"
 #include "math/geometry/3d/object/ConvexHull3D.h"
 #include "math/algebra/point/Point4.h"
-#include "tools/logger/Logger.h"
+#include "logger/Logger.h"
 
 namespace urchin {
     /**

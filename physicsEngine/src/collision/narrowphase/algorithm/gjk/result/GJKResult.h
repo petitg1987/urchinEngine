@@ -3,8 +3,8 @@
 
 #include "UrchinCommon.h"
 
-#include "collision/narrowphase/algorithm/utils/Simplex.h"
-#include "collision/narrowphase/algorithm/utils/AlgorithmResult.h"
+#include "collision/narrowphase/algorithm/util/Simplex.h"
+#include "collision/narrowphase/algorithm/util/AlgorithmResult.h"
 
 namespace urchin {
 

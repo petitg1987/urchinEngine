@@ -45,7 +45,7 @@ namespace urchin {
         std::shared_ptr<XmlChunk> ambient(parserXml.getUniqueChunk(false, "ambient"));
         if (ambient) {
             std::shared_ptr<XmlChunk> ambientFactor(parserXml.getUniqueChunk(true, "factor", XmlAttribute(), ambient));
-            fAmbientFactor = Converter::toFloat(ambientFactor->getStringValue());
+            fAmbientFactor = TypeConverter::toFloat(ambientFactor->getStringValue());
         }
 
         return new Material(diffuseTexture, normalTexture, repeatableTextures, fAmbientFactor);

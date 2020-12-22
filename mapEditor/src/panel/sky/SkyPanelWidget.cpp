@@ -154,10 +154,10 @@ namespace urchin {
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
             std::string imageFilenamePath = filename.toUtf8().constData();
-            std::string relativeTgaFilenamePath = FileHandler::getRelativePath(resourcesDirectory, imageFilenamePath);
+            std::string relativeTgaFilenamePath = FileUtil::getRelativePath(resourcesDirectory, imageFilenamePath);
             skyboxFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
 
-            std::string preferredPathString = FileHandler::getDirectoryFrom(imageFilenamePath);
+            std::string preferredPathString = FileUtil::getDirectoryFrom(imageFilenamePath);
             preferredSkyboxPath = QString::fromStdString(preferredPathString);
 
             try {

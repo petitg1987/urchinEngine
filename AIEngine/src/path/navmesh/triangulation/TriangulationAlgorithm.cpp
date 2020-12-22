@@ -29,7 +29,7 @@ namespace urchin {
         this->endContourIndices.push_back(polygonPoints.size());
         this->contourNames.push_back(name);
 
-        if (Check::instance()->additionalChecksEnable()) {
+        if (DebugCheck::instance()->additionalChecksEnable()) {
             double area = 0.0;
             for (std::size_t i = 0, prevI = polygonPoints.size() - 1; i < polygonPoints.size(); prevI = i++) {
                 area += (polygonPoints[i].X - polygonPoints[prevI].X) * (polygonPoints[i].Y + polygonPoints[prevI].Y);
@@ -56,7 +56,7 @@ namespace urchin {
         endContourIndices.push_back(polygonPoints.size());
         contourNames.push_back(holeName);
 
-        if (Check::instance()->additionalChecksEnable()) {
+        if (DebugCheck::instance()->additionalChecksEnable()) {
             double area = 0.0;
             for (std::size_t i = 0, prevI = cwHolePoints.size() - 1; i < cwHolePoints.size(); prevI = i++) {
                 area += (cwHolePoints[i].X - cwHolePoints[prevI].X) * (cwHolePoints[i].Y + cwHolePoints[prevI].Y);
@@ -84,7 +84,7 @@ namespace urchin {
     }
 
     const std::vector<std::shared_ptr<NavTriangle>>& TriangulationAlgorithm::triangulate() { //based on "Computational Geometry - Algorithms and Applications, 3rd Ed" - "Polygon Triangulation"
-        if (Check::instance()->additionalChecksEnable()) { //check no duplicate points
+        if (DebugCheck::instance()->additionalChecksEnable()) { //check no duplicate points
             for (std::size_t i = 0; i < polygonPoints.size(); ++i) {
                 for (std::size_t j = 0; j < polygonPoints.size(); ++j) {
                     if (i != j && polygonPoints[i] == polygonPoints[j]) {

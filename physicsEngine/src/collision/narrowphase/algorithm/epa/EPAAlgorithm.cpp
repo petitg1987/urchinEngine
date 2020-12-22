@@ -1,5 +1,5 @@
 #include "object/CollisionTriangleObject.h"
-#include "collision/narrowphase/algorithm/utils/AlgorithmResultAllocator.h"
+#include "collision/narrowphase/algorithm/util/AlgorithmResultAllocator.h"
 #include "collision/narrowphase/algorithm/epa/EPAAlgorithm.h"
 #include "utils/property/EagerPropertyLoader.h"
 
@@ -114,7 +114,7 @@ namespace urchin {
         const Point3<T> contactPointB = closestTriangleData.getBarycentric(0) * supportPointsB[pointIndex1] + closestTriangleData.getBarycentric(1) * supportPointsB[pointIndex2]
                 + closestTriangleData.getBarycentric(2) * supportPointsB[pointIndex3];
 
-        if (Check::instance()->additionalChecksEnable()) {
+        if (DebugCheck::instance()->additionalChecksEnable()) {
             const T distanceDelta = contactPointA.vector(contactPointB).length() - distanceToOrigin;
             if (!MathFunction::isZero((float)distanceDelta, 0.1f)) {
                 logInputData("Incoherent EPA distances", convexObject1, convexObject2, gjkResult);
@@ -184,10 +184,10 @@ namespace urchin {
             // product has the largest length.
             int minAxis = 0; //0 = X, 1 = Y, 2 = Z
             T minValue = std::abs(lineDirection.X);
-            for (int i = 1; i < 3; ++i) {
+            for (std::size_t i = 1; i < 3; ++i) {
                 if (minValue > std::abs(lineDirection[i])) {
                     minValue = std::abs(lineDirection[i]);
-                    minAxis = i;
+                    minAxis = (int)i;
                 }
             }
 

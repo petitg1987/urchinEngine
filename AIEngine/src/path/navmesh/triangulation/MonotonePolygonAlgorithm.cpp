@@ -93,7 +93,7 @@ namespace urchin {
                             break;
                         }
 
-                        if (Check::instance()->additionalChecksEnable()) { //check no duplicate points inserted in monotone
+                        if (DebugCheck::instance()->additionalChecksEnable()) { //check no duplicate points inserted in monotone
                             for (std::size_t monotonePointsIndex: monotonePointsIndices) {
                                 if (nextPointIndex == monotonePointsIndex) {
                                     std::stringstream logStream;

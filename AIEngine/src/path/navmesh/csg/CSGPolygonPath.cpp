@@ -18,7 +18,7 @@ namespace urchin {
             if (typeid(long long) == typeid(T)) {
                 path.emplace_back(ClipperLib::IntPoint((long long)point.X, (long long)point.Y));
             } else {
-                path.emplace_back(ClipperLib::IntPoint(Converter::toLongLong((float)point.X), Converter::toLongLong((float)point.Y)));
+                path.emplace_back(ClipperLib::IntPoint(TypeConverter::toLongLong((float)point.X), TypeConverter::toLongLong((float)point.Y)));
             }
         }
     }
@@ -31,7 +31,7 @@ namespace urchin {
             if (typeid(long long) == typeid(T)) {
                 cwPoints.emplace_back(Point2<T>((T)point.X, (T)point.Y));
             } else {
-                cwPoints.emplace_back(Point2<T>((T)Converter::toFloat(point.X), (T)Converter::toFloat(point.Y)));
+                cwPoints.emplace_back(Point2<T>((T)TypeConverter::toFloat(point.X), (T)TypeConverter::toFloat(point.Y)));
             }
         }
 

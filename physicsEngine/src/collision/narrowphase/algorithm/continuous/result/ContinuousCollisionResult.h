@@ -6,8 +6,8 @@
 #include "UrchinCommon.h"
 
 #include "body/model/AbstractBody.h"
-#include "collision/narrowphase/algorithm/utils/AlgorithmResult.h"
-#include "collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.h"
+#include "collision/narrowphase/algorithm/util/AlgorithmResult.h"
+#include "collision/narrowphase/algorithm/util/AlgorithmResultDeleter.h"
 
 namespace urchin {
 

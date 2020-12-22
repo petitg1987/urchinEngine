@@ -5,6 +5,7 @@
 #include <stdexcept>
 
 #include "Octree.h"
+#include "pattern/observer/Observable.h"
 
 namespace urchin {
 

@@ -5,7 +5,7 @@
 #include "UrchinCommon.h"
 
 #include "GJKResult.h"
-#include "collision/narrowphase/algorithm/utils/Simplex.h"
+#include "collision/narrowphase/algorithm/util/Simplex.h"
 
 namespace urchin {
 

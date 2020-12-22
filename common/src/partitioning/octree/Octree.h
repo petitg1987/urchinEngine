@@ -6,6 +6,7 @@
 #include <memory>
 #include <algorithm>
 
+#include "util/VectorEraser.h"
 #include "math/geometry/3d/object/AABBox.h"
 #include "partitioning/octree/filter/OctreeableFilter.h"
 

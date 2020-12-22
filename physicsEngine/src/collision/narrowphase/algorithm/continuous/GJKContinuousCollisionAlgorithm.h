@@ -6,7 +6,7 @@
 #include "body/model/AbstractBody.h"
 #include "object/TemporalObject.h"
 #include "collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h"
-#include "collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.h"
+#include "collision/narrowphase/algorithm/util/AlgorithmResultDeleter.h"
 
 namespace urchin {
 

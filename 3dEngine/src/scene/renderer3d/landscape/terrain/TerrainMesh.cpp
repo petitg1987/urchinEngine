@@ -28,7 +28,7 @@ namespace urchin {
         std::string terrainFilePath = FileSystem::instance()->getResourcesDirectory() + imgTerrain->getName();
         std::string terrainHash = generateTerrainMeshHash(terrainFilePath, xzScale, yScale);
 
-        std::string terrainFrlFilePath = FileSystem::instance()->getSaveDirectory() + FileHandler::getFileNameNoExtension(terrainFilePath) + FRL_FILE_EXTENSION;
+        std::string terrainFrlFilePath = FileSystem::instance()->getSaveDirectory() + FileUtil::getFileNameNoExtension(terrainFilePath) + FRL_FILE_EXTENSION;
         std::ifstream terrainFrlFile;
         terrainFrlFile.open(terrainFrlFilePath, std::ios::in | std::ios::binary);
 
@@ -50,7 +50,7 @@ namespace urchin {
     }
 
     std::string TerrainMesh::generateTerrainMeshHash(const std::string& terrainFilePath, float xzScale, float yScale) const {
-        std::size_t terrainHashInt = std::hash<std::string>{}(FileReaderUtil::readFile(terrainFilePath) + "#" + std::to_string(xzScale) + "#" + std::to_string(yScale));
+        std::size_t terrainHashInt = std::hash<std::string>{}(FileReader::readFile(terrainFilePath) + "#" + std::to_string(xzScale) + "#" + std::to_string(yScale));
         std::string terrainHash = std::to_string(terrainHashInt);
         return std::string(TERRAIN_HASH_SIZE - terrainHash.length(), '0') + terrainHash;
     }

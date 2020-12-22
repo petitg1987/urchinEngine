@@ -2,9 +2,9 @@
 #include <cppunit/TestResultCollector.h>
 #include "UrchinCommon.h"
 
-#include "common/io/StringUtilTest.h"
-#include "common/io/MapUtilTest.h"
-#include "common/system/FileHandlerTest.h"
+#include "common/io/map/MapSerializerTest.h"
+#include "common/util/StringUtilTest.h"
+#include "common/util/FileUtilTest.h"
 #include "common/math/algebra/QuaternionTest.h"
 #include "common/math/geometry/OrthogonalProjectionTest.h"
 #include "common/math/geometry/ClosestPointTest.h"
@@ -44,11 +44,11 @@
 
 void addCommonUnitTests(CppUnit::TextUi::TestRunner& runner) {
     //io
-    runner.addTest(StringUtilTest::suite());
-    runner.addTest(MapUtilTest::suite());
+    runner.addTest(MapSerializerTest::suite());
 
-    //system - file
-    runner.addTest(FileHandlerTest::suite());
+    //util
+    runner.addTest(FileUtilTest::suite());
+    runner.addTest(StringUtilTest::suite());
 
     //math - algebra
     runner.addTest(QuaternionTest::suite());

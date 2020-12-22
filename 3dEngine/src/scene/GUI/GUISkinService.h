@@ -4,7 +4,6 @@
 #include "UrchinCommon.h"
 
 #include "resources/image/Image.h"
-#include "tools/xml/XmlParser.h"
 
 namespace urchin {
 

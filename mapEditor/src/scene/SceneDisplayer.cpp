@@ -51,14 +51,14 @@ namespace urchin {
     void SceneDisplayer::loadMap(const std::string& mapEditorPath, const std::string& mapFilename, const std::string& relativeWorkingDirectory) {
         try {
             initializeEngineResources(mapEditorPath);
-            std::string mapResourcesDirectory = FileHandler::simplifyDirectoryPath(FileHandler::getDirectoryFrom(mapFilename) + relativeWorkingDirectory);
+            std::string mapResourcesDirectory = FileUtil::simplifyDirectoryPath(FileUtil::getDirectoryFrom(mapFilename) + relativeWorkingDirectory);
             FileSystem::instance()->setupResourcesDirectory(mapResourcesDirectory);
 
             initializeScene(mapFilename);
 
             mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), physicsWorld, soundManager, aiManager);
             mapHandler->setRelativeWorkingDirectory(relativeWorkingDirectory);
-            std::string relativeMapFilename = FileHandler::getRelativePath(mapResourcesDirectory, mapFilename);
+            std::string relativeMapFilename = FileUtil::getRelativePath(mapResourcesDirectory, mapFilename);
             std::ifstream streamMapFile(FileSystem::instance()->getResourcesDirectory() + relativeMapFilename);
             if (streamMapFile) { //existing map
                 NullLoadCallback nullLoadCallback;
@@ -76,8 +76,8 @@ namespace urchin {
     }
 
     void SceneDisplayer::initializeEngineResources(const std::string& mapEditorPath) {
-        std::string mapEditorResourcesDirectory = FileHandler::getDirectoryFrom(mapEditorPath) + "resources/";
-        std::string mapEditorSaveDirectory = FileHandler::getDirectoryFrom(mapEditorPath) + "save/";
+        std::string mapEditorResourcesDirectory = FileUtil::getDirectoryFrom(mapEditorPath) + "resources/";
+        std::string mapEditorSaveDirectory = FileUtil::getDirectoryFrom(mapEditorPath) + "save/";
 
         ConfigService::instance()->loadProperties("engine.properties", mapEditorResourcesDirectory);
         ShaderConfig::instance()->replaceShadersParentDirectoryBy(mapEditorResourcesDirectory);

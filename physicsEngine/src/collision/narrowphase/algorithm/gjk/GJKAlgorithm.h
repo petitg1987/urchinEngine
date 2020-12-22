@@ -8,7 +8,7 @@
 #include "collision/narrowphase/algorithm/gjk/result/GJKResultCollide.h"
 #include "collision/narrowphase/algorithm/gjk/result/GJKResultNoCollide.h"
 #include "collision/narrowphase/algorithm/gjk/result/GJKResultInvalid.h"
-#include "collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.h"
+#include "collision/narrowphase/algorithm/util/AlgorithmResultDeleter.h"
 #include "object/CollisionConvexObject3D.h"
 
 namespace urchin {
