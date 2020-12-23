@@ -44,7 +44,6 @@ namespace urchin {
                 static long __stdcall signalHandler(_EXCEPTION_POINTERS*);
             #else
                 static void signalHandler(int, siginfo_t*, void*);
-                std::string executeCommand(const std::string&);
             #endif
 
             bool isInitialized;

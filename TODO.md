@@ -70,6 +70,10 @@
         - Tutorial: <https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-collision-avoidance--gamedev-7777>
     - **NEW FEATURE** (`critical`): AICharacterController should refresh path points each time the path request is updated 
 
+# Network engine
+- Requests
+  - **NEW FEATURE** (`medium`): Make HTTP requests calls thread-safe
+
 # Physics engine
 - Broad phase
     - **OPTIMIZATION** (`medium`): Implement double AABBox trees: static and dynamic (see Bullet)

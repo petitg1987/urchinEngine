@@ -5,16 +5,16 @@
 #ifdef _WIN32
     #include <windows.h>
     #include <imagehlp.h>
+    #include "util/StringUtil.h"
 #else
     #include <execinfo.h>
     #include <cxxabi.h>
-    #include <array>
     #include <unistd.h>
     #include <dlfcn.h>
+    #include "system/CommandExecutor.h"
 #endif
 
 #include "util/FileUtil.h"
-#include "util/StringUtil.h"
 #include "logger/Logger.h"
 
 namespace urchin {
@@ -141,7 +141,7 @@ namespace urchin {
                 ss << "\t[bt] [" << moduleName << "] " << methodName << " (0x" << instructionShiftHex.str() << ")";
 
                 std::string addr2lineCmd = "addr2line -p -e " + std::string(info.dli_fname) + + " " + instructionShiftHex.str() + " 2> /dev/null";
-                std::string cmdResult = instance()->executeCommand(addr2lineCmd);
+                std::string cmdResult = CommandExecutor().execute(addr2lineCmd);
                 if(cmdResult.find("??") == std::string::npos) {
                     ss << std::endl << "\t[bt]\t=> " << cmdResult;
                 }
@@ -166,24 +166,6 @@ namespace urchin {
         //re-send the signal to produce a 'core' file
         signal(signalId, SIG_DFL);
         kill(getpid(), signalId);
-    }
-
-    std::string SignalHandler::executeCommand(const std::string& cmd) {
-        std::array<char, 1024> buffer;
-        std::string cmdResult;
-        std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd.c_str(), "r"), pclose);
-        if (!pipe) {
-            throw std::runtime_error("Function popen() failed for: " + cmd);
-        }
-
-        while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
-            cmdResult += buffer.data();
-        }
-
-        if(StringUtil::endWith(cmdResult, "\n")) {
-            return cmdResult.substr(0, cmdResult.size() - 1);
-        }
-        return cmdResult;
     }
 #endif
 

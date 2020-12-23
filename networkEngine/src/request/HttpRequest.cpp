@@ -30,51 +30,53 @@ namespace urchin {
 
         curl = curl_easy_init();
         if (!curl) {
-            throw std::runtime_error("Impossible to initialize ");
+            throw std::runtime_error("Impossible to initialize curl");
         }
-
-        textPlainHttpHeader = curl_slist_append(nullptr, "Content-Type: text/plain");
     }
 
     HttpRequest::~HttpRequest() {
         if (curl) {
             curl_easy_cleanup(curl);
         }
-
-        if (textPlainHttpHeader) {
-            curl_slist_free_all(textPlainHttpHeader);
-        }
     }
 
-    void HttpRequest::postTextPlain(const std::string& path, const std::string& value) const {
+    void HttpRequest::postTextPlain(const std::string& path, const std::string& body, std::vector<std::string> headers) const {
         std::string url = basePath + path;
+        headers.emplace_back("Content-Type: text/plain");
 
         curl_easy_reset(curl);
-        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, textPlainHttpHeader);
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, value.c_str());
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body.c_str());
         curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "POST");
 
-        executeRequest(url);
+        executeRequest(url, headers);
     }
 
-    std::string HttpRequest::getTextPlain(const std::string& path) const {
+    std::string HttpRequest::getTextPlain(const std::string& path, std::vector<std::string> headers) const {
         std::string url = basePath + path;
+        headers.emplace_back("Content-Type: text/plain");
 
         curl_easy_reset(curl);
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "GET");
 
-        return executeRequest(url);
+        return executeRequest(url, headers);
     }
 
-    std::string HttpRequest::executeRequest(const std::string& url) const {
+    std::string HttpRequest::executeRequest(const std::string& url, const std::vector<std::string>& headers) const {
+        struct curl_slist* curlHttpHeaders = {};
+        for(auto& header : headers) {
+            curlHttpHeaders = curl_slist_append(curlHttpHeaders, header.c_str());
+        }
+
         std::string readBuffer;
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, curlHttpHeaders);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
 
         CURLcode res = curl_easy_perform(curl);
+
         if (res != CURLE_OK) {
             std::string error = "HTTP request fail on \"" + url + "\" : " + std::string(curl_easy_strerror(res));
             throw RequestException(error);
@@ -87,6 +89,8 @@ namespace urchin {
 
             }
         }
+
+        curl_slist_free_all(curlHttpHeaders);
 
         return readBuffer;
     }

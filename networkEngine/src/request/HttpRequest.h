@@ -2,6 +2,7 @@
 #define URCHINENGINE_HTTPREQUEST_H
 
 #include <string>
+#include <vector>
 #include <curl/curl.h>
 
 namespace urchin {
@@ -16,16 +17,14 @@ namespace urchin {
             explicit HttpRequest(std::string );
             ~HttpRequest();
 
-            void postTextPlain(const std::string&, const std::string&) const;
-            std::string getTextPlain(const std::string&) const;
+            void postTextPlain(const std::string&, const std::string&, std::vector<std::string>) const;
+            std::string getTextPlain(const std::string&, std::vector<std::string>) const;
 
         private:
-            std::string executeRequest(const std::string&) const;
+            std::string executeRequest(const std::string&, const std::vector<std::string>&) const;
 
             CURL* curl;
             std::string basePath;
-
-            struct curl_slist* textPlainHttpHeader;
     };
 
 }
