@@ -5,7 +5,6 @@
 #ifdef _WIN32
     #include <windows.h>
     #include <imagehlp.h>
-    #include "util/StringUtil.h"
 #else
     #include <execinfo.h>
     #include <cxxabi.h>
@@ -15,6 +14,7 @@
 #endif
 
 #include "util/FileUtil.h"
+#include "util/StringUtil.h"
 #include "logger/Logger.h"
 
 namespace urchin {
@@ -80,7 +80,8 @@ namespace urchin {
 
             void* instructionShift = (char*)frame.AddrPC.Offset - 1; //see https://stackoverflow.com/a/63841497
 
-            ss << "\t[bt] [" << moduleName << "] " << methodName << " (addr2line -f -e " << moduleName << " " << instructionShift << ")" << std::endl;
+            ss << "\t[bt] [" << moduleName << "] " << methodName << " " << instructionShift << ")" << std::endl;
+            ss << "\t[bt]\t> " << "addr2line -f -e " << moduleName << " " << instructionShift << std::endl;
 
             if (++stackCount > 250) { //avoid infinite loop in case of stack overflow error
                 break;
@@ -138,27 +139,29 @@ namespace urchin {
                 std::stringstream instructionShiftHex;
                 instructionShiftHex << std::hex << instructionShift;
 
-                ss << "\t[bt] [" << moduleName << "] " << methodName << " (0x" << instructionShiftHex.str() << ")";
+                ss << "\t[bt] [" << moduleName << "] " << methodName << " (0x" << instructionShiftHex.str() << ")" << std::endl;
 
-                std::string addr2lineCmd = "addr2line -p -e " + std::string(info.dli_fname) + + " " + instructionShiftHex.str() + " 2> /dev/null";
-                std::string cmdResult = CommandExecutor().execute(addr2lineCmd);
-                if(cmdResult.find("??") == std::string::npos) {
-                    ss << std::endl << "\t[bt]\t=> " << cmdResult;
+                std::string addr2lineCmd = "addr2line -p -e " + std::string(info.dli_fname) + + " 0x" + instructionShiftHex.str();
+                std::string cmdResult = CommandExecutor::instance()->execute(addr2lineCmd + " 2> /dev/null");
+                if(cmdResult.empty()) {
+                    ss << "\t[bt]\t> " << "addr2line -p -e " << FileUtil::getFileName(std::string(info.dli_fname)) << " 0x" << instructionShiftHex.str() << std::endl;
+                }else if(cmdResult.find("??") == std::string::npos) {
+                    ss << "\t[bt]\t> " << cmdResult << std::endl;
                 }
             } else {
-                ss << "\t[bt] " << symbols[i];
+                ss << "\t[bt] " << symbols[i] << std::endl;
             }
-
-            if(i < traceSize - 1) {
-                ss << std::endl;
-            }
+        }
+        std::string stacktrace = ss.str();
+        if(StringUtil::endWith(stacktrace, "\n")) {
+            stacktrace = stacktrace.substr(0, stacktrace.size() - 1);
         }
 
         if (symbols) {
             free(symbols);
         }
 
-        urchin::Logger::instance()->logError(ss.str());
+        urchin::Logger::instance()->logError(stacktrace);
         if(instance()->signalReceptor) {
             instance()->signalReceptor->onSignalReceived((unsigned long)signalId);
         }

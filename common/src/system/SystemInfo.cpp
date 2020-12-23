@@ -15,19 +15,6 @@
 
 namespace urchin {
 
-    std::string SystemInfo::systemInfo() const {
-        std::stringstream systemInfo;
-        systemInfo << "OS: " + retrieveOsInfo() << std::endl;
-        systemInfo << "Num. CPU cores: " + std::to_string(retrieveCpuCores()) << std::endl;
-        systemInfo << "Total memory: " + std::to_string(retrieveTotalMemory()) << std::endl;
-        systemInfo << "Graphics cards: " + retrieveGraphicsCardNames();
-        return systemInfo.str();
-    }
-
-    std::string SystemInfo::systemHash() const {
-        return retrieveCpuHash() + "-" + std::to_string(std::hash<std::string>{}(retrieveGraphicsCardNames()));
-    }
-
     std::string SystemInfo::retrieveOsInfo() const {
         #ifdef _WIN32
             int osVersion = 0;
@@ -56,41 +43,8 @@ namespace urchin {
             GetSystemInfo(&sysInfo);
             return (unsigned int)sysInfo.dwNumberOfProcessors;
         #else
-            std::string numCpuCores = CommandExecutor().execute(R"(grep --max-count=1 "cpu cores" /proc/cpuinfo | cut -d ":" -f 2)");
+            std::string numCpuCores = CommandExecutor::instance()->execute(R"(grep --max-count=1 "cpu cores" /proc/cpuinfo | cut -d ":" -f 2)");
             return TypeConverter::toUnsignedInt(numCpuCores);
-        #endif
-    }
-
-    std::string SystemInfo::retrieveCpuHash() const {
-        #ifdef _WIN32
-            int cpuInfo[4] = {0, 0, 0, 0};
-            __cpuid(cpuInfo, 0);
-            u16 hash = 0;
-            u16* ptr = (u16*)(&cpuInfo[0]);
-            for (u32 i = 0; i < 8; i++) {
-                hash += ptr[i];
-            }
-            return std::to_string(hash);
-        #else
-            unsigned int cpuInfo[4] = {0, 0, 0, 0};
-            unsigned int ax = 0;
-            __asm __volatile (
-                "movl %%ebx, %%esi\n\t"
-                "cpuid\n\t"
-                "xchgl %%ebx, %%esi" :
-                    "=a" (cpuInfo[0]),
-                    "=S" (cpuInfo[1]),
-                    "=c" (cpuInfo[2]),
-                    "=d" (cpuInfo[3]) :
-                    "0" (ax)
-            );
-
-            unsigned int hash = 0;
-            unsigned int* ptr = &cpuInfo[0];
-            for (unsigned int i = 0; i < 4; i++) {
-                hash += (ptr[i] & (unsigned int)0xFFFF) + (ptr[i] >> 16u);
-            }
-            return std::to_string(hash);
         #endif
     }
 
@@ -125,7 +79,7 @@ namespace urchin {
             }
             graphicsCardNames.insert(graphicsCardNames.begin(), setGraphicsCardNames.begin(), setGraphicsCardNames.end());
         #else
-            std::string graphicCardNames = CommandExecutor().execute(R"(lspci | grep -oE "VGA.*" | cut -d ":" -f 2)");
+            std::string graphicCardNames = CommandExecutor::instance()->execute(R"(lspci | grep -oE "VGA.*" | cut -d ":" -f 2)");
             StringUtil::split(graphicCardNames, '\n', graphicsCardNames);
         #endif
 
@@ -138,6 +92,43 @@ namespace urchin {
             graphicsCardNamesList = graphicsCardNamesList.substr(0, graphicsCardNamesList.size() - 2);
         }
         return graphicsCardNamesList;
+    }
+
+    std::string SystemInfo::systemHash() const {
+        return retrieveCpuHash() + "-" + std::to_string(std::hash<std::string>{}(retrieveGraphicsCardNames()));
+    }
+
+    std::string SystemInfo::retrieveCpuHash() const {
+        #ifdef _WIN32
+            int cpuInfo[4] = {0, 0, 0, 0};
+            __cpuid(cpuInfo, 0);
+            u16 hash = 0;
+            u16* ptr = (u16*)(&cpuInfo[0]);
+            for (u32 i = 0; i < 8; i++) {
+                hash += ptr[i];
+            }
+            return std::to_string(hash);
+        #else
+            unsigned int cpuInfo[4] = {0, 0, 0, 0};
+            unsigned int ax = 0;
+            __asm __volatile (
+                "movl %%ebx, %%esi\n\t"
+                "cpuid\n\t"
+                "xchgl %%ebx, %%esi" :
+                "=a" (cpuInfo[0]),
+                "=S" (cpuInfo[1]),
+                "=c" (cpuInfo[2]),
+                "=d" (cpuInfo[3]) :
+                "0" (ax)
+            );
+
+            unsigned int hash = 0;
+            unsigned int* ptr = &cpuInfo[0];
+            for (unsigned int i = 0; i < 4; i++) {
+                hash += (ptr[i] & (unsigned int)0xFFFF) + (ptr[i] >> 16u);
+            }
+            return std::to_string(hash);
+        #endif
     }
 
 }
