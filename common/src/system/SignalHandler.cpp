@@ -80,7 +80,7 @@ namespace urchin {
 
             void* instructionShift = (char*)frame.AddrPC.Offset - 1; //see https://stackoverflow.com/a/63841497
 
-            ss << "\t[bt] [" << moduleName << "] " << methodName << " " << instructionShift << ")" << std::endl;
+            ss << "\t[bt] [" << moduleName << "] " << methodName << " (" << instructionShift << ")" << std::endl;
             ss << "\t[bt]\t> " << "addr2line -f -e " << moduleName << " " << instructionShift << std::endl;
 
             if (++stackCount > 250) { //avoid infinite loop in case of stack overflow error

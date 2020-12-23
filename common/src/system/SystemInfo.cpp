@@ -3,6 +3,7 @@
     #include <windows.h>
     #include <cstdio>
     #include <set>
+    #include <intrin.h>
 #else
     #include <sys/utsname.h>
     #include <sys/sysinfo.h>
@@ -17,11 +18,11 @@ namespace urchin {
 
     std::string SystemInfo::retrieveOsInfo() const {
         #ifdef _WIN32
-            int osVersion = 0;
+            unsigned long osVersion;
             NTSTATUS(WINAPI *RtlGetVersion)(LPOSVERSIONINFOEXW);
             OSVERSIONINFOEXW osInfo;
             *(FARPROC*)&RtlGetVersion = GetProcAddress(GetModuleHandleA("ntdll"), "RtlGetVersion");
-            if (RtlGetVersion != nullptr){
+            if (RtlGetVersion != nullptr) {
                 osInfo.dwOSVersionInfoSize = sizeof(osInfo);
                 RtlGetVersion(&osInfo);
                 osVersion = osInfo.dwMajorVersion;
@@ -48,18 +49,18 @@ namespace urchin {
         #endif
     }
 
-    unsigned long SystemInfo::retrieveTotalMemory() const {
+    uint64_t SystemInfo::retrieveTotalMemory() const {
         #ifdef _WIN32
             MEMORYSTATUSEX statex;
             statex.dwLength = sizeof(statex);
             if (GlobalMemoryStatusEx(&statex)) {
-                return (unsigned long)statex.ullTotalPhys;
+                return (uint64_t)statex.ullTotalPhys;
             }
             return 0L;
         #else
             struct sysinfo sysInfo = {};
             if (!sysinfo(&sysInfo)) {
-                return sysInfo.totalram;
+                return (uint64_t)sysInfo.totalram;
             }
             return 0L;
         #endif
@@ -70,7 +71,8 @@ namespace urchin {
         #ifdef _WIN32
             std::set<std::string> setGraphicsCardNames;
             for(int i = 0; i < 32; i++) {
-                DISPLAY_DEVICE displayDevice = {sizeof(displayDevice), 0};
+                DISPLAY_DEVICE displayDevice = {};
+                displayDevice.cb = sizeof(displayDevice);
                 BOOL result = EnumDisplayDevices(nullptr, i, &displayDevice, EDD_GET_DEVICE_INTERFACE_NAME);
                 if(!result) {
                     break;
@@ -88,7 +90,7 @@ namespace urchin {
             StringUtil::trim(graphicsCardName);
             graphicsCardNamesList += graphicsCardName + ", ";
         }
-        if(graphicsCardNamesList.size() > 2) {
+        if(graphicsCardNamesList.size() >= 2) {
             graphicsCardNamesList = graphicsCardNamesList.substr(0, graphicsCardNamesList.size() - 2);
         }
         return graphicsCardNamesList;
@@ -102,9 +104,9 @@ namespace urchin {
         #ifdef _WIN32
             int cpuInfo[4] = {0, 0, 0, 0};
             __cpuid(cpuInfo, 0);
-            u16 hash = 0;
-            u16* ptr = (u16*)(&cpuInfo[0]);
-            for (u32 i = 0; i < 8; i++) {
+            unsigned int hash = 0;
+            auto* ptr = (uint16_t*)(&cpuInfo[0]);
+            for (std::size_t i = 0; i < 8; i++) {
                 hash += ptr[i];
             }
             return std::to_string(hash);

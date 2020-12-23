@@ -3,6 +3,7 @@
 #include "UrchinCommon.h"
 
 #include "common/io/map/MapSerializerTest.h"
+#include "common/system/SystemInfoTest.h"
 #include "common/util/StringUtilTest.h"
 #include "common/util/FileUtilTest.h"
 #include "common/math/algebra/QuaternionTest.h"
@@ -45,6 +46,9 @@
 void addCommonUnitTests(CppUnit::TextUi::TestRunner& runner) {
     //io
     runner.addTest(MapSerializerTest::suite());
+
+    //system
+    runner.addTest(SystemInfoTest::suite());
 
     //util
     runner.addTest(FileUtilTest::suite());

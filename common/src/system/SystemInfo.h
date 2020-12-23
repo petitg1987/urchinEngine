@@ -1,5 +1,5 @@
-#ifndef LASERRIDDLE_SYSTEMINFO_H
-#define LASERRIDDLE_SYSTEMINFO_H
+#ifndef URCHINENGINE_SYSTEMINFO_H
+#define URCHINENGINE_SYSTEMINFO_H
 
 #include <string>
 
@@ -13,7 +13,7 @@ namespace urchin {
 
             std::string retrieveOsInfo() const;
             unsigned int retrieveCpuCores() const;
-            unsigned long retrieveTotalMemory() const;
+            uint64_t retrieveTotalMemory() const;
             std::string retrieveGraphicsCardNames() const;
 
             std::string systemHash() const;
