@@ -1,9 +1,20 @@
 #include <stdexcept>
+#include <sys/stat.h>
 
 #include "FileUtil.h"
 #include "util/StringUtil.h"
 
 namespace urchin {
+
+    bool FileUtil::isDirectoryExist(const std::string& directoryPath) {
+        struct stat info{};
+        if (stat(directoryPath.c_str(), &info) != 0) {
+            return false;
+        } else if (info.st_mode & (unsigned int)S_IFDIR) {
+            return true;
+        }
+        return false;
+    }
 
     /**
      * @return File extension. If not extension found: return empty string

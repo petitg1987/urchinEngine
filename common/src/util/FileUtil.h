@@ -7,6 +7,8 @@ namespace urchin {
 
     class FileUtil {
         public:
+            static bool isDirectoryExist(const std::string&);
+
             static std::string getFileExtension(const std::string&);
             static std::string getFileName(const std::string&);
             static std::string getFileNameNoExtension(const std::string&);
