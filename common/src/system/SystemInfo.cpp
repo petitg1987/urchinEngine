@@ -4,6 +4,7 @@
     #include <cstdio>
     #include <set>
     #include <intrin.h>
+    #define GetProcAddress (void *)GetProcAddress
 #else
     #include <sys/utsname.h>
     #include <sys/sysinfo.h>
@@ -18,10 +19,10 @@ namespace urchin {
 
     std::string SystemInfo::retrieveOsInfo() const {
         #ifdef _WIN32
+            typedef NTSTATUS (WINAPI fRtlGetVersion) (PRTL_OSVERSIONINFOEXW);
             unsigned long osVersion;
-            NTSTATUS(WINAPI *RtlGetVersion)(LPOSVERSIONINFOEXW);
             OSVERSIONINFOEXW osInfo;
-            *(FARPROC*)&RtlGetVersion = GetProcAddress(GetModuleHandleA("ntdll"), "RtlGetVersion");
+            auto *RtlGetVersion = reinterpret_cast<fRtlGetVersion *>(GetProcAddress(GetModuleHandleA("ntdll"), "RtlGetVersion"));
             if (RtlGetVersion != nullptr) {
                 osInfo.dwOSVersionInfoSize = sizeof(osInfo);
                 RtlGetVersion(&osInfo);
