@@ -12,7 +12,7 @@ else()
     set(LINK_OPT -rdynamic) #necessary for SignalHandler to work correctly
 endif()
 
-add_definitions(-DGLEW_STATIC -DGL_GLEXT_PROTOTYPES -ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror)
+add_definitions(-fPIC -ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror -DGLEW_STATIC) #TODO check useless: -DGL_GLEXT_PROTOTYPES
 include_directories(src ../common/src /usr/include/freetype2)
 
 file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.inl" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
