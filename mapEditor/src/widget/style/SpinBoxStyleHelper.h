@@ -2,16 +2,23 @@
 #define URCHINENGINE_SPINBOXSTYLEHELPER_H
 
 #include <QtWidgets/QDoubleSpinBox>
+#include "UrchinCommon.h"
 
 namespace urchin {
 
-    class SpinBoxStyleHelper {
+    class SpinBoxStyleHelper : public Singleton<SpinBoxStyleHelper> {
         public:
-            static void applyDefaultStyleOn(QDoubleSpinBox*);
-            static void applyAngleStyleOn(QDoubleSpinBox*);
-            static void applyPercentageStyleOn(QDoubleSpinBox*);
+            friend class Singleton<SpinBoxStyleHelper>;
 
-            static void applyDefaultStyleOn(QSpinBox*);
+            void applyDefaultStyleOn(QDoubleSpinBox*);
+            void applyAngleStyleOn(QDoubleSpinBox*);
+            void applyPercentageStyleOn(QDoubleSpinBox*);
+
+            void applyDefaultStyleOn(QSpinBox*);
+
+        private:
+            SpinBoxStyleHelper() = default;
+            ~SpinBoxStyleHelper() override = default;
     };
 
 }

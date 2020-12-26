@@ -15,15 +15,15 @@ namespace urchin {
         mainLayout->addLayout(positionLayout, 1, 1);
         positionX = new QDoubleSpinBox();
         positionLayout->addWidget(positionX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionX);
         connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
         positionY = new QDoubleSpinBox();
         positionLayout->addWidget(positionY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionY);
         connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
         positionZ = new QDoubleSpinBox();
         positionLayout->addWidget(positionZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionZ);
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
         auto* radiusLabel = new QLabel("Radius:");
@@ -31,7 +31,7 @@ namespace urchin {
 
         radius = new QDoubleSpinBox();
         mainLayout->addWidget(radius, 2, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(radius);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(radius);
         radius->setMinimum(0.0);
         connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
     }

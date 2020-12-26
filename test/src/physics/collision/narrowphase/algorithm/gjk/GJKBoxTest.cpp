@@ -15,7 +15,7 @@ void GJKBoxTest::identicalAABBox() {
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(aabbox1, aabbox2);
 
-    AssertHelper::assertTrue(result->isCollide());
+    AssertHelper::instance()->assertTrue(result->isCollide());
 }
 
 void GJKBoxTest::separateAABBox() {
@@ -24,11 +24,11 @@ void GJKBoxTest::separateAABBox() {
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(aabbox1, aabbox2);
 
-    AssertHelper::assertTrue(!result->isCollide());
-    AssertHelper::assertFloatEquals(result->getSeparatingDistance(), 0.1f);
-    AssertHelper::assertFloatEquals(result->getClosestPointA().X, 0.0f);
-    AssertHelper::assertFloatEquals(result->getClosestPointB().X, -0.1f);
-    AssertHelper::assertFloatEquals(result->getClosestPointB().vector(result->getClosestPointA()).length(), 0.1f);
+    AssertHelper::instance()->assertTrue(!result->isCollide());
+    AssertHelper::instance()->assertFloatEquals(result->getSeparatingDistance(), 0.1f);
+    AssertHelper::instance()->assertFloatEquals(result->getClosestPointA().X, 0.0f);
+    AssertHelper::instance()->assertFloatEquals(result->getClosestPointB().X, -0.1f);
+    AssertHelper::instance()->assertFloatEquals(result->getClosestPointB().vector(result->getClosestPointA()).length(), 0.1f);
 }
 
 void GJKBoxTest::overlapAABBox() {
@@ -37,7 +37,7 @@ void GJKBoxTest::overlapAABBox() {
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(aabbox1, aabbox2);
 
-    AssertHelper::assertTrue(result->isCollide());
+    AssertHelper::instance()->assertTrue(result->isCollide());
 }
 
 void GJKBoxTest::identicalOBBox() {
@@ -48,7 +48,7 @@ void GJKBoxTest::identicalOBBox() {
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(obbox1, obbox2);
 
-    AssertHelper::assertTrue(result->isCollide());
+    AssertHelper::instance()->assertTrue(result->isCollide());
 }
 
 void GJKBoxTest::separateEdgeOBBox() {
@@ -59,11 +59,11 @@ void GJKBoxTest::separateEdgeOBBox() {
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(obbox1, obbox2);
 
-    AssertHelper::assertTrue(!result->isCollide());
-    AssertHelper::assertFloatEquals(result->getClosestPointA().Y, 0.0f);
-    AssertHelper::assertFloatEquals(result->getClosestPointB().X, 1.58578643763f);
-    AssertHelper::assertFloatEquals(result->getClosestPointB().Y, 0.0f);
-    AssertHelper::assertFloatEquals(result->getClosestPointB().vector(result->getClosestPointA()).length(), 0.17157287526f);
+    AssertHelper::instance()->assertTrue(!result->isCollide());
+    AssertHelper::instance()->assertFloatEquals(result->getClosestPointA().Y, 0.0f);
+    AssertHelper::instance()->assertFloatEquals(result->getClosestPointB().X, 1.58578643763f);
+    AssertHelper::instance()->assertFloatEquals(result->getClosestPointB().Y, 0.0f);
+    AssertHelper::instance()->assertFloatEquals(result->getClosestPointB().vector(result->getClosestPointA()).length(), 0.17157287526f);
 }
 
 void GJKBoxTest::separateCornerOBBox() {
@@ -73,10 +73,10 @@ void GJKBoxTest::separateCornerOBBox() {
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(obbox1, obbox2);
 
-    AssertHelper::assertTrue(!result->isCollide());
-    AssertHelper::assertFloatEquals(result->getSeparatingDistance(), 0.26794919243f);
-    AssertHelper::assertPoint3FloatEquals(result->getClosestPointA(), Point3<float>(1.73205080757f, 0.0f, 0.0f));
-    AssertHelper::assertPoint3FloatEquals(result->getClosestPointB(), Point3<float>(2.0f, 0.0f, 0.0f));
+    AssertHelper::instance()->assertTrue(!result->isCollide());
+    AssertHelper::instance()->assertFloatEquals(result->getSeparatingDistance(), 0.26794919243f);
+    AssertHelper::instance()->assertPoint3FloatEquals(result->getClosestPointA(), Point3<float>(1.73205080757f, 0.0f, 0.0f));
+    AssertHelper::instance()->assertPoint3FloatEquals(result->getClosestPointB(), Point3<float>(2.0f, 0.0f, 0.0f));
 }
 
 void GJKBoxTest::overlapOnEdgeOBBox() {
@@ -87,7 +87,7 @@ void GJKBoxTest::overlapOnEdgeOBBox() {
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(obbox1, obbox2);
 
-    AssertHelper::assertTrue(result->isCollide());
+    AssertHelper::instance()->assertTrue(result->isCollide());
 }
 
 void GJKBoxTest::separateOBBoxAABBox() {
@@ -97,13 +97,13 @@ void GJKBoxTest::separateOBBoxAABBox() {
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(obbox, aabbox);
 
-    AssertHelper::assertTrue(!result->isCollide());
-    AssertHelper::assertFloatEquals(result->getSeparatingDistance(), 0.58578643763f);
-    AssertHelper::assertFloatEquals(result->getClosestPointA().X, 1.41421356237f);
-    AssertHelper::assertFloatEquals(result->getClosestPointA().Y, 0.0f);
-    AssertHelper::assertFloatEquals(result->getClosestPointB().X, 2.0f);
-    AssertHelper::assertFloatEquals(result->getClosestPointB().Y, 0.0f);
-    AssertHelper::assertFloatEquals(result->getClosestPointB().vector(result->getClosestPointA()).length(), 0.58578643763f);
+    AssertHelper::instance()->assertTrue(!result->isCollide());
+    AssertHelper::instance()->assertFloatEquals(result->getSeparatingDistance(), 0.58578643763f);
+    AssertHelper::instance()->assertFloatEquals(result->getClosestPointA().X, 1.41421356237f);
+    AssertHelper::instance()->assertFloatEquals(result->getClosestPointA().Y, 0.0f);
+    AssertHelper::instance()->assertFloatEquals(result->getClosestPointB().X, 2.0f);
+    AssertHelper::instance()->assertFloatEquals(result->getClosestPointB().Y, 0.0f);
+    AssertHelper::instance()->assertFloatEquals(result->getClosestPointB().vector(result->getClosestPointA()).length(), 0.58578643763f);
 }
 
 void GJKBoxTest::overlapOBBoxAABBox() {
@@ -113,7 +113,7 @@ void GJKBoxTest::overlapOBBoxAABBox() {
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(obbox, aabbox);
 
-    AssertHelper::assertTrue(result->isCollide());
+    AssertHelper::instance()->assertTrue(result->isCollide());
 }
 
 CppUnit::Test* GJKBoxTest::suite() {

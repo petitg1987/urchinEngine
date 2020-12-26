@@ -143,7 +143,7 @@ namespace urchin {
         unsigned int i = 0;
         for (const auto& lightSplitShadowMap : lightSplitShadowMaps) {
             if (lightSplitShadowMap->needShadowMapUpdate()) {
-                layersToUpdate = layersToUpdate | MathFunction::powerOfTwo(i);
+                layersToUpdate = layersToUpdate | MathFunction::instance()->powerOfTwo(i);
             }
             i++;
         }
@@ -155,7 +155,7 @@ namespace urchin {
         for (auto &lightSplitShadowMap : lightSplitShadowMaps) {
             if (lightSplitShadowMap->needShadowMapUpdate()) {
                 const std::vector<Model*>& frustumSplitModels = lightSplitShadowMap->getModels();
-                OctreeableHelper<Model>::merge(models, frustumSplitModels);
+                OctreeableHelper<Model>().merge(models, frustumSplitModels);
             }
         }
 

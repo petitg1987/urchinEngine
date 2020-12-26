@@ -78,7 +78,7 @@ namespace urchin {
 
             if (((point1.Y <= point.Y && point.Y<point2.Y) || (point2.Y <= point.Y && point.Y<point1.Y))
                 //same but without division: ((point.X-point1.X) < (point2.X-point1.X) * (point.Y-point1.Y) / (point2.Y-point1.Y))
-                && ((point.X - point1.X) * std::abs(point2.Y - point1.Y) < (point2.X - point1.X) * (point.Y - point1.Y) * MathFunction::sign<T>(point2.Y - point1.Y))) {
+                && ((point.X - point1.X) * std::abs(point2.Y - point1.Y) < (point2.X - point1.X) * (point.Y - point1.Y) * MathFunction::instance()->sign<T>(point2.Y - point1.Y))) {
                 inside = !inside;
             } else if (onEdgeIsInside && LineSegment2D<T>(point1, point2).onSegment(point)) {
                 return true;

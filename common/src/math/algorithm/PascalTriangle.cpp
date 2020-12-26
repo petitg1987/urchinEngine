@@ -14,7 +14,7 @@ namespace urchin {
         for (unsigned int column = 1; column < nbColumns; ++column) {
             auto columnFloat = (float)column;
             auto lineValue = (float)lineValues[column - 1] * (((float)lineNumber - (columnFloat - 1.0f)) / columnFloat);
-            lineValues[column] = MathFunction::roundToUInt(lineValue);
+            lineValues[column] = MathFunction::instance()->roundToUInt(lineValue);
         }
 
         return lineValues;

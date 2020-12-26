@@ -19,7 +19,7 @@ namespace urchin {
             loadTransformOn(localizedShape, localizedShapesChunk[i], xmlParser);
 
             std::shared_ptr<XmlChunk> shapeChunk = xmlParser.getUniqueChunk(true, SHAPE, XmlAttribute(), localizedShapesChunk[i]);
-            CollisionShape3D* embeddedCollisionShape = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeChunk)->loadFrom(shapeChunk, xmlParser);
+            CollisionShape3D* embeddedCollisionShape = CollisionShapeReaderWriterRetriever().retrieveShapeReaderWriter(shapeChunk)->loadFrom(shapeChunk, xmlParser);
             localizedShape->shape = std::shared_ptr<CollisionShape3D>(embeddedCollisionShape);
 
             compoundShapes.push_back(localizedShape);
@@ -41,7 +41,7 @@ namespace urchin {
             writeTransformOn(localizedShapeChunk, shape, xmlWriter);
 
             std::shared_ptr<XmlChunk> shapeChunk = xmlWriter.createChunk(SHAPE, XmlAttribute(), localizedShapeChunk);
-            CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(shape->shape)->writeOn(shapeChunk, shape->shape, xmlWriter);
+            CollisionShapeReaderWriterRetriever().retrieveShapeReaderWriter(shape->shape)->writeOn(shapeChunk, shape->shape, xmlWriter);
         }
     }
 

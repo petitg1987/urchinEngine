@@ -29,12 +29,12 @@ namespace urchin {
 
         addShapeButton = new QPushButton("New Shape");
         buttonLayout->addWidget(addShapeButton);
-        ButtonStyleHelper::applyNormalStyle(addShapeButton);
+        ButtonStyleHelper::instance()->applyNormalStyle(addShapeButton);
         connect(addShapeButton, SIGNAL(clicked()), this, SLOT(addNewLocalizedShape()));
 
         removeShapeButton = new QPushButton("Remove Shape");
         buttonLayout->addWidget(removeShapeButton);
-        ButtonStyleHelper::applyNormalStyle(removeShapeButton);
+        ButtonStyleHelper::instance()->applyNormalStyle(removeShapeButton);
         connect(removeShapeButton, SIGNAL(clicked()), this, SLOT(removeSelectedLocalizedShape()));
 
         localizedShapeDetails = nullptr;
@@ -68,11 +68,11 @@ namespace urchin {
 
     std::shared_ptr<const CollisionShape3D> BodyCompoundShapeWidget::createBodyShape() const {
         try {
-            LabelStyleHelper::applyNormalStyle(shapesLabel);
+            LabelStyleHelper::instance()->applyNormalStyle(shapesLabel);
             std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedCollisionShapes = localizedShapeTableView->getLocalizedShapes();
             return std::make_shared<const CollisionCompoundShape>(localizedCollisionShapes);
         } catch (std::invalid_argument& e) {
-            LabelStyleHelper::applyErrorStyle(shapesLabel, std::string(e.what()));
+            LabelStyleHelper::instance()->applyErrorStyle(shapesLabel, std::string(e.what()));
             return DefaultBodyShapeCreator(getSceneObject()).createDefaultBodyShape(CollisionShape3D::ShapeType::COMPOUND_SHAPE);
         }
     }
@@ -103,7 +103,7 @@ namespace urchin {
     void BodyCompoundShapeWidget::setupTransformBox(QVBoxLayout* localizedShapeLayout, const std::shared_ptr<const LocalizedCollisionShape>& localizedShape) {
         auto* transformGroupBox = new QGroupBox("Transform");
         localizedShapeLayout->addWidget(transformGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(transformGroupBox);
+        GroupBoxStyleHelper::instance()->applyNormalStyle(transformGroupBox);
         transformGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* transformLayout = new QGridLayout(transformGroupBox);
@@ -119,17 +119,17 @@ namespace urchin {
         transformLayout->addLayout(positionLayout, 0, 1);
         positionX = new QDoubleSpinBox();
         positionLayout->addWidget(positionX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionX);
         positionX->setValue(position.X);
         connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
         positionY = new QDoubleSpinBox();
         positionLayout->addWidget(positionY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionY);
         positionY->setValue(position.Y);
         connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
         positionZ = new QDoubleSpinBox();
         positionLayout->addWidget(positionZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionZ);
         positionZ->setValue(position.Z);
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
     }
@@ -140,7 +140,7 @@ namespace urchin {
 
         orientationType = new QComboBox();
         transformLayout->addWidget(orientationType, 1, 1);
-        ComboBoxStyleHelper::applyOrientationStyleOn(orientationType);
+        ComboBoxStyleHelper::instance()->applyOrientationStyleOn(orientationType);
         connect(orientationType, SIGNAL(currentIndexChanged(int)), this, SLOT(updateLocalizedShapeOrientationType()));
 
         auto* eulerAngleLabel = new QLabel("Euler Angle:");
@@ -154,25 +154,25 @@ namespace urchin {
         transformLayout->addLayout(eulerAxisLayout, 2, 1);
         eulerAxis0 = new QDoubleSpinBox();
         eulerAxisLayout->addWidget(eulerAxis0);
-        SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis0);
-        eulerAxis0->setValue(AngleConverter<float>::toDegree(eulerAngle.X));
+        SpinBoxStyleHelper::instance()->applyAngleStyleOn(eulerAxis0);
+        eulerAxis0->setValue(AngleConverter<float>::instance()->toDegree(eulerAngle.X));
         connect(eulerAxis0, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
         eulerAxis1 = new QDoubleSpinBox();
         eulerAxisLayout->addWidget(eulerAxis1);
-        SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis1);
-        eulerAxis1->setValue(AngleConverter<float>::toDegree(eulerAngle.Y));
+        SpinBoxStyleHelper::instance()->applyAngleStyleOn(eulerAxis1);
+        eulerAxis1->setValue(AngleConverter<float>::instance()->toDegree(eulerAngle.Y));
         connect(eulerAxis1, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
         eulerAxis2 = new QDoubleSpinBox();
         eulerAxisLayout->addWidget(eulerAxis2);
-        SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis2);
-        eulerAxis2->setValue(AngleConverter<float>::toDegree(eulerAngle.Z));
+        SpinBoxStyleHelper::instance()->applyAngleStyleOn(eulerAxis2);
+        eulerAxis2->setValue(AngleConverter<float>::instance()->toDegree(eulerAngle.Z));
         connect(eulerAxis2, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
     }
 
     void BodyCompoundShapeWidget::setupShapeBox(QVBoxLayout* localizedShapeLayout, const std::shared_ptr<const LocalizedCollisionShape>& localizedShape) {
         auto* shapeGroupBox = new QGroupBox("Shape");
         localizedShapeLayout->addWidget(shapeGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(shapeGroupBox);
+        GroupBoxStyleHelper::instance()->applyNormalStyle(shapeGroupBox);
         shapeGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* shapeLayout = new QGridLayout(shapeGroupBox);
@@ -191,9 +191,9 @@ namespace urchin {
             auto newRotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
             Vector3<float> eulerAngle = localizedShape->transform.getOrientation().toEulerAngle(newRotationSequence);
 
-            eulerAxis0->setValue(AngleConverter<float>::toDegree(eulerAngle.X));
-            eulerAxis1->setValue(AngleConverter<float>::toDegree(eulerAngle.Y));
-            eulerAxis2->setValue(AngleConverter<float>::toDegree(eulerAngle.Z));
+            eulerAxis0->setValue(AngleConverter<float>::instance()->toDegree(eulerAngle.X));
+            eulerAxis1->setValue(AngleConverter<float>::instance()->toDegree(eulerAngle.Y));
+            eulerAxis2->setValue(AngleConverter<float>::instance()->toDegree(eulerAngle.Z));
 
             updateSelectedLocalizedShape();
         }
@@ -211,9 +211,9 @@ namespace urchin {
             localizedShape->shape = bodyShapeWidget->retrieveShape();
 
             Vector3<float> eulerAngle(
-                    AngleConverter<float>::toRadian((float)eulerAxis0->value()),
-                    AngleConverter<float>::toRadian((float)eulerAxis1->value()),
-                    AngleConverter<float>::toRadian((float)eulerAxis2->value())
+                    AngleConverter<float>::instance()->toRadian((float)eulerAxis0->value()),
+                    AngleConverter<float>::instance()->toRadian((float)eulerAxis1->value()),
+                    AngleConverter<float>::instance()->toRadian((float)eulerAxis2->value())
             );
             QVariant variant = orientationType->currentData();
             auto rotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());

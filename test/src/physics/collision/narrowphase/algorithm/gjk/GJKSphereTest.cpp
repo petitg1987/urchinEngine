@@ -15,7 +15,7 @@ void GJKSphereTest::identicalSphere() {
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(sphere1, sphere2);
 
-    AssertHelper::assertTrue(result->isCollide());
+    AssertHelper::instance()->assertTrue(result->isCollide());
 }
 
 void GJKSphereTest::separateSphere() {
@@ -25,10 +25,10 @@ void GJKSphereTest::separateSphere() {
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(sphere1, sphere2);
 
     float epsilon = 0.01f; //high epsilon used because curved shapes are bad case for GJK
-    AssertHelper::assertTrue(!result->isCollide());
-    AssertHelper::assertFloatEquals(result->getSeparatingDistance(), 1.31370849889f, epsilon);
-    AssertHelper::assertPoint3FloatEquals(result->getClosestPointA(), Point3<float>(7.0710678118f, 7.0710678118f, 0.0f), epsilon);
-    AssertHelper::assertPoint3FloatEquals(result->getClosestPointB(), Point3<float>(8.0f, 8.0f, 0.0f), epsilon);
+    AssertHelper::instance()->assertTrue(!result->isCollide());
+    AssertHelper::instance()->assertFloatEquals(result->getSeparatingDistance(), 1.31370849889f, epsilon);
+    AssertHelper::instance()->assertPoint3FloatEquals(result->getClosestPointA(), Point3<float>(7.0710678118f, 7.0710678118f, 0.0f), epsilon);
+    AssertHelper::instance()->assertPoint3FloatEquals(result->getClosestPointB(), Point3<float>(8.0f, 8.0f, 0.0f), epsilon);
 }
 
 void GJKSphereTest::overlapSphere() {
@@ -37,7 +37,7 @@ void GJKSphereTest::overlapSphere() {
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(sphere1, sphere2);
 
-    AssertHelper::assertTrue(result->isCollide());
+    AssertHelper::instance()->assertTrue(result->isCollide());
 }
 
 CppUnit::Test* GJKSphereTest::suite() {

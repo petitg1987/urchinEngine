@@ -2,12 +2,19 @@
 #define URCHINENGINE_FRAMESTYLEHELPER_H
 
 #include <QtWidgets/QFrame>
+#include "UrchinCommon.h"
 
 namespace urchin {
 
-    class FrameStyleHelper {
+    class FrameStyleHelper : public Singleton<FrameStyleHelper> {
         public:
-            static void applyLineStyle(QFrame*);
+            friend class Singleton<FrameStyleHelper>;
+
+            void applyLineStyle(QFrame*);
+
+        private:
+            FrameStyleHelper() = default;
+            ~FrameStyleHelper() override = default;
     };
 
 }

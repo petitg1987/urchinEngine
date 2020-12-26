@@ -13,10 +13,10 @@ void EdgeLinkDetectionTest::testNearParallelEdges() {
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
 
-    AssertHelper::assertTrue(edgeLinkResult.hasEdgesLink());
-    AssertHelper::assertTrue(edgeLinkResult.isJumpLink());
-    AssertHelper::assertFloatEquals(edgeLinkResult.getLinkStartRange(), 1.0f);
-    AssertHelper::assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.0f);
+    AssertHelper::instance()->assertTrue(edgeLinkResult.hasEdgesLink());
+    AssertHelper::instance()->assertTrue(edgeLinkResult.isJumpLink());
+    AssertHelper::instance()->assertFloatEquals(edgeLinkResult.getLinkStartRange(), 1.0f);
+    AssertHelper::instance()->assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.0f);
 }
 
 void EdgeLinkDetectionTest::testFarParallelEdges() {
@@ -26,7 +26,7 @@ void EdgeLinkDetectionTest::testFarParallelEdges() {
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
 
-    AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink());
+    AssertHelper::instance()->assertTrue(!edgeLinkResult.hasEdgesLink());
 }
 
 void EdgeLinkDetectionTest::testIdenticalEdges() {
@@ -36,10 +36,10 @@ void EdgeLinkDetectionTest::testIdenticalEdges() {
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
 
-    AssertHelper::assertTrue(edgeLinkResult.hasEdgesLink());
-    AssertHelper::assertTrue(!edgeLinkResult.isJumpLink());
-    AssertHelper::assertFloatEquals(edgeLinkResult.getLinkStartRange(), 1.0f);
-    AssertHelper::assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.0f);
+    AssertHelper::instance()->assertTrue(edgeLinkResult.hasEdgesLink());
+    AssertHelper::instance()->assertTrue(!edgeLinkResult.isJumpLink());
+    AssertHelper::instance()->assertFloatEquals(edgeLinkResult.getLinkStartRange(), 1.0f);
+    AssertHelper::instance()->assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.0f);
 
 }
 
@@ -50,7 +50,7 @@ void EdgeLinkDetectionTest::testIdenticalEdgesWrongDirection() {
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
 
-    AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink());
+    AssertHelper::instance()->assertTrue(!edgeLinkResult.hasEdgesLink());
 }
 
 void EdgeLinkDetectionTest::testCollinearEdges1() {
@@ -60,10 +60,10 @@ void EdgeLinkDetectionTest::testCollinearEdges1() {
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
 
-    AssertHelper::assertTrue(edgeLinkResult.hasEdgesLink());
-    AssertHelper::assertTrue(!edgeLinkResult.isJumpLink());
-    AssertHelper::assertFloatEquals(edgeLinkResult.getLinkStartRange(), 0.666666666f);
-    AssertHelper::assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.333333333f);
+    AssertHelper::instance()->assertTrue(edgeLinkResult.hasEdgesLink());
+    AssertHelper::instance()->assertTrue(!edgeLinkResult.isJumpLink());
+    AssertHelper::instance()->assertFloatEquals(edgeLinkResult.getLinkStartRange(), 0.666666666f);
+    AssertHelper::instance()->assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.333333333f);
 }
 
 void EdgeLinkDetectionTest::testCollinearEdges2() {
@@ -73,10 +73,10 @@ void EdgeLinkDetectionTest::testCollinearEdges2() {
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
 
-    AssertHelper::assertTrue(edgeLinkResult.hasEdgesLink());
-    AssertHelper::assertTrue(!edgeLinkResult.isJumpLink());
-    AssertHelper::assertFloatEquals(edgeLinkResult.getLinkStartRange(), 0.5f);
-    AssertHelper::assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.0f);
+    AssertHelper::instance()->assertTrue(edgeLinkResult.hasEdgesLink());
+    AssertHelper::instance()->assertTrue(!edgeLinkResult.isJumpLink());
+    AssertHelper::instance()->assertFloatEquals(edgeLinkResult.getLinkStartRange(), 0.5f);
+    AssertHelper::instance()->assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.0f);
 }
 
 void EdgeLinkDetectionTest::testCollinearEdges3() {
@@ -86,10 +86,10 @@ void EdgeLinkDetectionTest::testCollinearEdges3() {
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
 
-    AssertHelper::assertTrue(edgeLinkResult.hasEdgesLink());
-    AssertHelper::assertTrue(!edgeLinkResult.isJumpLink());
-    AssertHelper::assertFloatEquals(edgeLinkResult.getLinkStartRange(), 0.02f);
-    AssertHelper::assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.0f);
+    AssertHelper::instance()->assertTrue(edgeLinkResult.hasEdgesLink());
+    AssertHelper::instance()->assertTrue(!edgeLinkResult.isJumpLink());
+    AssertHelper::instance()->assertFloatEquals(edgeLinkResult.getLinkStartRange(), 0.02f);
+    AssertHelper::instance()->assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.0f);
 }
 
 void EdgeLinkDetectionTest::testCollinearEdgesNoLink() {
@@ -99,7 +99,7 @@ void EdgeLinkDetectionTest::testCollinearEdgesNoLink() {
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
 
-    AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink());
+    AssertHelper::instance()->assertTrue(!edgeLinkResult.hasEdgesLink());
 }
 
 void EdgeLinkDetectionTest::testCollinearEdgesTouchingInOnePoint() {
@@ -109,7 +109,7 @@ void EdgeLinkDetectionTest::testCollinearEdgesTouchingInOnePoint() {
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
 
-    AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink());
+    AssertHelper::instance()->assertTrue(!edgeLinkResult.hasEdgesLink());
 }
 
 void EdgeLinkDetectionTest::testCollinearEdgesWrongDirection() {
@@ -119,7 +119,7 @@ void EdgeLinkDetectionTest::testCollinearEdgesWrongDirection() {
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
 
-    AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink());
+    AssertHelper::instance()->assertTrue(!edgeLinkResult.hasEdgesLink());
 }
 
 void EdgeLinkDetectionTest::testWrongStartJumpEdgeDirection() {
@@ -129,7 +129,7 @@ void EdgeLinkDetectionTest::testWrongStartJumpEdgeDirection() {
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
 
-    AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink()); //Cannot jump because character will stay inside the polygon represented by startEdge
+    AssertHelper::instance()->assertTrue(!edgeLinkResult.hasEdgesLink()); //Cannot jump because character will stay inside the polygon represented by startEdge
 }
 
 void EdgeLinkDetectionTest::testWrongEndJumpEdgeDirection() {
@@ -139,7 +139,7 @@ void EdgeLinkDetectionTest::testWrongEndJumpEdgeDirection() {
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
 
-    AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink()); //Cannot jump because character will be on the edge of the polygon represented by endEdge but in direction of the outside
+    AssertHelper::instance()->assertTrue(!edgeLinkResult.hasEdgesLink()); //Cannot jump because character will be on the edge of the polygon represented by endEdge but in direction of the outside
 }
 
 void EdgeLinkDetectionTest::testWrongJumpEdgesDirection() {
@@ -149,7 +149,7 @@ void EdgeLinkDetectionTest::testWrongJumpEdgesDirection() {
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
 
-    AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink());
+    AssertHelper::instance()->assertTrue(!edgeLinkResult.hasEdgesLink());
 }
 
 void EdgeLinkDetectionTest::testCrossEdges() {
@@ -159,10 +159,10 @@ void EdgeLinkDetectionTest::testCrossEdges() {
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
 
-    AssertHelper::assertTrue(edgeLinkResult.hasEdgesLink());
-    AssertHelper::assertTrue(edgeLinkResult.isJumpLink());
-    AssertHelper::assertFloatEquals(edgeLinkResult.getLinkStartRange(), 0.5375f, 0.012f);
-    AssertHelper::assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.5f, 0.009f);
+    AssertHelper::instance()->assertTrue(edgeLinkResult.hasEdgesLink());
+    AssertHelper::instance()->assertTrue(edgeLinkResult.isJumpLink());
+    AssertHelper::instance()->assertFloatEquals(edgeLinkResult.getLinkStartRange(), 0.5375f, 0.012f);
+    AssertHelper::instance()->assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.5f, 0.009f);
 }
 
 CppUnit::Test* EdgeLinkDetectionTest::suite() {

@@ -15,8 +15,8 @@ void GJKConvexObjectTest::separateSphereAndBox() {
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(sphere, aabbox);
 
-    AssertHelper::assertTrue(!result->isCollide());
-    AssertHelper::assertFloatEquals(result->getSeparatingDistance(), 0.1f);
+    AssertHelper::instance()->assertTrue(!result->isCollide());
+    AssertHelper::instance()->assertFloatEquals(result->getSeparatingDistance(), 0.1f);
 }
 
 void GJKConvexObjectTest::overlapSphereAndBox() {
@@ -25,7 +25,7 @@ void GJKConvexObjectTest::overlapSphereAndBox() {
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(sphere, aabbox);
 
-    AssertHelper::assertTrue(result->isCollide());
+    AssertHelper::instance()->assertTrue(result->isCollide());
 }
 
 CppUnit::Test* GJKConvexObjectTest::suite() {

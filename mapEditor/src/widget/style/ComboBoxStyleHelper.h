@@ -2,10 +2,11 @@
 #define URCHINENGINE_COMBOBOXSTYLEHELPER_H
 
 #include <QtWidgets/QComboBox>
+#include "UrchinCommon.h"
 
 namespace urchin {
 
-    class ComboBoxStyleHelper {
+    class ComboBoxStyleHelper : public Singleton<ComboBoxStyleHelper> {
         #define EULER_XYZ_ORIENT_LABEL "Euler XYZ"
         #define EULER_XZY_ORIENT_LABEL "Euler XZY"
         #define EULER_YXZ_ORIENT_LABEL "Euler YXZ"
@@ -20,8 +21,14 @@ namespace urchin {
         #define EULER_ZYZ_ORIENT_LABEL "Euler ZYZ"
 
         public:
-            static void applyDefaultStyleOn(QComboBox*);
-            static void applyOrientationStyleOn(QComboBox*);
+            friend class Singleton<ComboBoxStyleHelper>;
+
+            void applyDefaultStyleOn(QComboBox*);
+            void applyOrientationStyleOn(QComboBox*);
+
+        private:
+            ComboBoxStyleHelper() = default;
+            ~ComboBoxStyleHelper() override = default;
     };
 
 }

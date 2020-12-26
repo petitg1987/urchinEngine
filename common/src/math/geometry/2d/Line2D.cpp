@@ -31,8 +31,8 @@ namespace urchin {
         T apDotAb = ap.dotProduct(ab);
         if (typeid(int) == typeid(T) || typeid(long) == typeid(T) || typeid(long long) == typeid(T)) {
             T abSquareLength = ab.squareLength();
-            Vector2<T> vTranslate(MathFunction::roundDivision<T>(ab.X * apDotAb, abSquareLength),
-                                  MathFunction::roundDivision<T>(ab.Y * apDotAb, abSquareLength));
+            Vector2<T> vTranslate(MathFunction::instance()->roundDivision<T>(ab.X * apDotAb, abSquareLength),
+                                  MathFunction::instance()->roundDivision<T>(ab.Y * apDotAb, abSquareLength));
             return a.translate(vTranslate);
         }
         return a.translate((ab * ap.dotProduct(ab)) / ab.squareLength());
@@ -48,7 +48,7 @@ namespace urchin {
         T apDotAb = ap.dotProduct(ab);
 
         if (typeid(int) == typeid(T) || typeid(long) == typeid(T) || typeid(long long) == typeid(T)) {
-            return ap.squareLength() - MathFunction::roundDivision<T>(apDotAb * apDotAb, ab.squareLength());
+            return ap.squareLength() - MathFunction::instance()->roundDivision<T>(apDotAb * apDotAb, ab.squareLength());
         }
         return ap.squareLength() - ((apDotAb * apDotAb) / ab.squareLength());
     }
@@ -109,8 +109,8 @@ namespace urchin {
         //lines not parallel
         hasIntersection = true;
         if (typeid(int) == typeid(T) || typeid(long) == typeid(T) || typeid(long long) == typeid(T)) {
-            Vector2<T> vTranslate(MathFunction::roundDivision<T>(startPointsCrossR * s.X, rCrossS),
-                                  MathFunction::roundDivision<T>(startPointsCrossR * s.Y, rCrossS));
+            Vector2<T> vTranslate(MathFunction::instance()->roundDivision<T>(startPointsCrossR * s.X, rCrossS),
+                                  MathFunction::instance()->roundDivision<T>(startPointsCrossR * s.Y, rCrossS));
             return other.getA().translate(vTranslate);
         }
         return other.getA().translate((startPointsCrossR*s) / rCrossS);

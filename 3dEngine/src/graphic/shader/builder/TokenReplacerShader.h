@@ -12,7 +12,7 @@ namespace urchin {
     */
     class TokenReplacerShader {
         public:
-            static std::string replaceTokens(const std::string&, const std::map<std::string, std::string>&);
+            std::string replaceTokens(const std::string&, const std::map<std::string, std::string>&);
     };
 
 }

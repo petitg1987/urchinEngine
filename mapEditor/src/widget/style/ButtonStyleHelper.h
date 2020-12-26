@@ -2,12 +2,19 @@
 #define URCHINENGINE_BUTTONSTYLEHELPER_H
 
 #include <QtWidgets/QPushButton>
+#include "UrchinCommon.h"
 
 namespace urchin {
 
-    class ButtonStyleHelper {
+    class ButtonStyleHelper : public Singleton<ButtonStyleHelper> {
         public:
-            static void applyNormalStyle(QPushButton*);
+            friend class Singleton<ButtonStyleHelper>;
+
+            void applyNormalStyle(QPushButton*);
+
+        private:
+            ButtonStyleHelper() = default;
+            ~ButtonStyleHelper() override = default;
     };
 
 }

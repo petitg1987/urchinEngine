@@ -21,7 +21,7 @@ namespace urchin {
     bool DEBUG_EXPORT_NAV_MESH = false;
 
     NavMeshGenerator::NavMeshGenerator() :
-            polygonMinDotProductThreshold(std::cos(AngleConverter<float>::toRadian(ConfigService::instance()->getFloatValue("navMesh.polygonRemoveAngleThresholdInDegree")))),
+            polygonMinDotProductThreshold(std::cos(AngleConverter<float>::instance()->toRadian(ConfigService::instance()->getFloatValue("navMesh.polygonRemoveAngleThresholdInDegree")))),
             polygonMergePointsDistanceThreshold(ConfigService::instance()->getFloatValue("navMesh.polygonMergePointsDistanceThreshold")),
             navMeshAgent(std::make_shared<NavMeshAgent>()),
             navMesh(std::make_shared<NavMesh>()),

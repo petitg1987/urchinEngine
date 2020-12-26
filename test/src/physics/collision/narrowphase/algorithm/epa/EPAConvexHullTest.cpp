@@ -26,9 +26,9 @@ void EPAConvexHullTest::identicalBox() {
     CollisionConvexHullObject ch2(0.0f, obbPoints2, obbPoints2);
     std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(ch1, ch2);
 
-    AssertHelper::assertTrue(resultEpa->isCollide());
-    AssertHelper::assertFloatEquals(resultEpa->getPenetrationDepth(), 0.894427191f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().vector(resultEpa->getContactPointB()).length(), 0.894427191f);
+    AssertHelper::instance()->assertTrue(resultEpa->isCollide());
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getPenetrationDepth(), 0.894427191f);
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointA().vector(resultEpa->getContactPointB()).length(), 0.894427191f);
 }
 
 void EPAConvexHullTest::cornerInsideBox() {
@@ -48,15 +48,15 @@ void EPAConvexHullTest::cornerInsideBox() {
     CollisionConvexHullObject ch2(0.0f, obbPoints, obbPoints);
     std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(ch1, ch2);
 
-    AssertHelper::assertTrue(resultEpa->isCollide());
-    AssertHelper::assertFloatEquals(resultEpa->getPenetrationDepth(), 0.2f);
-    AssertHelper::assertVector3FloatEquals(resultEpa->getNormal(), Vector3<float>(-1.0f, 0.0f, 0.0f));
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().vector(resultEpa->getContactPointB()).length(), 0.2f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().X, 0.0f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().Y, 0.0f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointB().X, 0.2f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointB().Y, 0.0f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().Z, resultEpa->getContactPointB().Z);
+    AssertHelper::instance()->assertTrue(resultEpa->isCollide());
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getPenetrationDepth(), 0.2f);
+    AssertHelper::instance()->assertVector3FloatEquals(resultEpa->getNormal(), Vector3<float>(-1.0f, 0.0f, 0.0f));
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointA().vector(resultEpa->getContactPointB()).length(), 0.2f);
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointA().X, 0.0f);
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointA().Y, 0.0f);
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointB().X, 0.2f);
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointB().Y, 0.0f);
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointA().Z, resultEpa->getContactPointB().Z);
 }
 
 void EPAConvexHullTest::faceInsideTrapeze() {
@@ -76,15 +76,15 @@ void EPAConvexHullTest::faceInsideTrapeze() {
     CollisionConvexHullObject ch2(0.0f, trapezePoints2, trapezePoints2);
     std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(ch1, ch2);
 
-    AssertHelper::assertTrue(resultEpa->isCollide());
-    AssertHelper::assertFloatEquals(resultEpa->getPenetrationDepth(), 0.56568542494f);
-    AssertHelper::assertVector3FloatEquals(resultEpa->getNormal(), Vector3<float>(-0.70710678118f, -0.70710678118f, 0.0f));
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().vector(resultEpa->getContactPointB()).length(), 0.56568542494f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().X, 0.5f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().Y, 0.5f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointB().X, 0.9f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointB().Y, 0.9f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().Z, resultEpa->getContactPointB().Z);
+    AssertHelper::instance()->assertTrue(resultEpa->isCollide());
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getPenetrationDepth(), 0.56568542494f);
+    AssertHelper::instance()->assertVector3FloatEquals(resultEpa->getNormal(), Vector3<float>(-0.70710678118f, -0.70710678118f, 0.0f));
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointA().vector(resultEpa->getContactPointB()).length(), 0.56568542494f);
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointA().X, 0.5f);
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointA().Y, 0.5f);
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointB().X, 0.9f);
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointB().Y, 0.9f);
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointA().Z, resultEpa->getContactPointB().Z);
 }
 
 void EPAConvexHullTest::cornerInsideHexagon() {
@@ -104,10 +104,10 @@ void EPAConvexHullTest::cornerInsideHexagon() {
     CollisionConvexHullObject ch2(0.0f, hexagonPoints2, hexagonPoints2);
     std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(ch1, ch2);
 
-    AssertHelper::assertTrue(resultEpa->isCollide());
-    AssertHelper::assertFloatEquals(resultEpa->getPenetrationDepth(), 0.44721359f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().vector(resultEpa->getContactPointB()).length(), 0.44721359f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().Z, resultEpa->getContactPointB().Z);
+    AssertHelper::instance()->assertTrue(resultEpa->isCollide());
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getPenetrationDepth(), 0.44721359f);
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointA().vector(resultEpa->getContactPointB()).length(), 0.44721359f);
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointA().Z, resultEpa->getContactPointB().Z);
 }
 
 CppUnit::Test* EPAConvexHullTest::suite() {

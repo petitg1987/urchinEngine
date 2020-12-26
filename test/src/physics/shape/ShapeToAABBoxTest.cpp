@@ -14,11 +14,11 @@ void ShapeToAABBoxTest::boxConversion() {
 
     AABBox<float> box = collisionBox.toAABBox(transform);
 
-    AssertHelper::assertFloatEquals(box.getHalfSize(0), 2.12132034356f);
-    AssertHelper::assertFloatEquals(box.getHalfSize(1), 2.12132034356f);
-    AssertHelper::assertFloatEquals(box.getHalfSize(2), 1.0f);
-    AssertHelper::assertPoint3FloatEquals(box.getMin(), Point3<float>(-2.12132034356f, -2.12132034356f, -1.0f));
-    AssertHelper::assertPoint3FloatEquals(box.getMax(), Point3<float>(2.12132034356f, 2.12132034356f, 1.0f));
+    AssertHelper::instance()->assertFloatEquals(box.getHalfSize(0), 2.12132034356f);
+    AssertHelper::instance()->assertFloatEquals(box.getHalfSize(1), 2.12132034356f);
+    AssertHelper::instance()->assertFloatEquals(box.getHalfSize(2), 1.0f);
+    AssertHelper::instance()->assertPoint3FloatEquals(box.getMin(), Point3<float>(-2.12132034356f, -2.12132034356f, -1.0f));
+    AssertHelper::instance()->assertPoint3FloatEquals(box.getMax(), Point3<float>(2.12132034356f, 2.12132034356f, 1.0f));
 }
 
 void ShapeToAABBoxTest::coneConversion() {
@@ -28,11 +28,11 @@ void ShapeToAABBoxTest::coneConversion() {
 
     AABBox<float> box = collisionCone.toAABBox(transform);
 
-    AssertHelper::assertFloatEquals(box.getHalfSize(0), 2.0f);
-    AssertHelper::assertFloatEquals(box.getHalfSize(1), 1.0f);
-    AssertHelper::assertFloatEquals(box.getHalfSize(2), 1.0f);
-    AssertHelper::assertPoint3FloatEquals(box.getMin(), Point3<float>(-2.0f, 4.0f, -1.0f));
-    AssertHelper::assertPoint3FloatEquals(box.getMax(), Point3<float>(2.0f, 6.0f, 1.0f));
+    AssertHelper::instance()->assertFloatEquals(box.getHalfSize(0), 2.0f);
+    AssertHelper::instance()->assertFloatEquals(box.getHalfSize(1), 1.0f);
+    AssertHelper::instance()->assertFloatEquals(box.getHalfSize(2), 1.0f);
+    AssertHelper::instance()->assertPoint3FloatEquals(box.getMin(), Point3<float>(-2.0f, 4.0f, -1.0f));
+    AssertHelper::instance()->assertPoint3FloatEquals(box.getMax(), Point3<float>(2.0f, 6.0f, 1.0f));
 }
 
 void ShapeToAABBoxTest::convexHullConversion() {
@@ -48,11 +48,11 @@ void ShapeToAABBoxTest::convexHullConversion() {
 
     AABBox<float> box = collisionConvexHull.toAABBox(transform);
 
-    AssertHelper::assertFloatEquals(box.getHalfSize(0), 2.12132034356f);
-    AssertHelper::assertFloatEquals(box.getHalfSize(1), 2.12132034356f);
-    AssertHelper::assertFloatEquals(box.getHalfSize(2), 1.0f);
-    AssertHelper::assertPoint3FloatEquals(box.getMin(), Point3<float>(-2.12132034356f, -2.12132034356f, -1.0f));
-    AssertHelper::assertPoint3FloatEquals(box.getMax(), Point3<float>(2.12132034356f, 2.12132034356f, 1.0f));
+    AssertHelper::instance()->assertFloatEquals(box.getHalfSize(0), 2.12132034356f);
+    AssertHelper::instance()->assertFloatEquals(box.getHalfSize(1), 2.12132034356f);
+    AssertHelper::instance()->assertFloatEquals(box.getHalfSize(2), 1.0f);
+    AssertHelper::instance()->assertPoint3FloatEquals(box.getMin(), Point3<float>(-2.12132034356f, -2.12132034356f, -1.0f));
+    AssertHelper::instance()->assertPoint3FloatEquals(box.getMax(), Point3<float>(2.12132034356f, 2.12132034356f, 1.0f));
 }
 
 CppUnit::Test* ShapeToAABBoxTest::suite() {

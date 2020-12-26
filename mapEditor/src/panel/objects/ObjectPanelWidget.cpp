@@ -53,18 +53,18 @@ namespace urchin {
 
         addObjectButton = new QPushButton("New Object");
         buttonsLayout->addWidget(addObjectButton);
-        ButtonStyleHelper::applyNormalStyle(addObjectButton);
+        ButtonStyleHelper::instance()->applyNormalStyle(addObjectButton);
         connect(addObjectButton, SIGNAL(clicked()), this, SLOT(showAddObjectDialog()));
 
         removeObjectButton = new QPushButton("Remove Object");
         buttonsLayout->addWidget(removeObjectButton);
-        ButtonStyleHelper::applyNormalStyle(removeObjectButton);
+        ButtonStyleHelper::instance()->applyNormalStyle(removeObjectButton);
         removeObjectButton->setEnabled(false);
         connect(removeObjectButton, SIGNAL(clicked()), this, SLOT(removeSelectedObject()));
 
         cloneObjectButton = new QPushButton("Clone Object");
         buttonsLayout->addWidget(cloneObjectButton);
-        ButtonStyleHelper::applyNormalStyle(cloneObjectButton);
+        ButtonStyleHelper::instance()->applyNormalStyle(cloneObjectButton);
         cloneObjectButton->setEnabled(false);
         connect(cloneObjectButton, SIGNAL(clicked()), this, SLOT(showCloneObjectDialog()));
 
@@ -101,7 +101,7 @@ namespace urchin {
     void ObjectPanelWidget::setupTransformBox(QVBoxLayout* generalLayout) {
         auto* transformGroupBox = new QGroupBox("Transform");
         generalLayout->addWidget(transformGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(transformGroupBox);
+        GroupBoxStyleHelper::instance()->applyNormalStyle(transformGroupBox);
         transformGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* transformLayout = new QGridLayout(transformGroupBox);
@@ -119,15 +119,15 @@ namespace urchin {
         transformLayout->addLayout(positionLayout, 0, 1);
         positionX = new QDoubleSpinBox();
         positionLayout->addWidget(positionX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionX);
         connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
         positionY = new QDoubleSpinBox();
         positionLayout->addWidget(positionY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionY);
         connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
         positionZ = new QDoubleSpinBox();
         positionLayout->addWidget(positionZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionZ);
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
     }
 
@@ -137,7 +137,7 @@ namespace urchin {
 
         orientationType = new QComboBox();
         transformLayout->addWidget(orientationType, 1, 1);
-        ComboBoxStyleHelper::applyOrientationStyleOn(orientationType);
+        ComboBoxStyleHelper::instance()->applyOrientationStyleOn(orientationType);
         connect(orientationType, SIGNAL(currentIndexChanged(int)), this, SLOT(updateObjectOrientationType()));
 
         auto* eulerAngleLabel = new QLabel("Euler Angle:");
@@ -147,16 +147,16 @@ namespace urchin {
         transformLayout->addLayout(eulerAxisLayout, 2, 1);
         eulerAxis0 = new QDoubleSpinBox();
         eulerAxisLayout->addWidget(eulerAxis0);
-        SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis0);
-        SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis0);
+        SpinBoxStyleHelper::instance()->applyAngleStyleOn(eulerAxis0);
+        SpinBoxStyleHelper::instance()->applyAngleStyleOn(eulerAxis0);
         connect(eulerAxis0, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
         eulerAxis1 = new QDoubleSpinBox();
         eulerAxisLayout->addWidget(eulerAxis1);
-        SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis1);
+        SpinBoxStyleHelper::instance()->applyAngleStyleOn(eulerAxis1);
         connect(eulerAxis1, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
         eulerAxis2 = new QDoubleSpinBox();
         eulerAxisLayout->addWidget(eulerAxis2);
-        SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis2);
+        SpinBoxStyleHelper::instance()->applyAngleStyleOn(eulerAxis2);
         connect(eulerAxis2, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
     }
 
@@ -166,7 +166,7 @@ namespace urchin {
 
         scale = new QDoubleSpinBox();
         transformLayout->addWidget(scale, 3, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(scale);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(scale);
         scale->setMinimum(0.0);
         connect(scale, SIGNAL(valueChanged(double)), this, SLOT(updateObjectScale()));
     }
@@ -174,7 +174,7 @@ namespace urchin {
     void ObjectPanelWidget::setupFlagsBox(QVBoxLayout* generalLayout) {
         auto* flagsGroupBox = new QGroupBox("Flags");
         generalLayout->addWidget(flagsGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(flagsGroupBox);
+        GroupBoxStyleHelper::instance()->applyNormalStyle(flagsGroupBox);
         flagsGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* flagsLayout = new QGridLayout(flagsGroupBox);
@@ -212,7 +212,7 @@ namespace urchin {
     void ObjectPanelWidget::setupPhysicsGeneralPropertiesBox(QVBoxLayout* physicsPropertiesLayout) {
         auto* rigidBodyGeneralBox = new QGroupBox("General");
         physicsPropertiesLayout->addWidget(rigidBodyGeneralBox);
-        GroupBoxStyleHelper::applyNormalStyle(rigidBodyGeneralBox);
+        GroupBoxStyleHelper::instance()->applyNormalStyle(rigidBodyGeneralBox);
         rigidBodyGeneralBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* rigidBodyGeneralLayout = new QGridLayout(rigidBodyGeneralBox);
@@ -222,7 +222,7 @@ namespace urchin {
 
         mass = new QDoubleSpinBox();
         rigidBodyGeneralLayout->addWidget(mass, 0, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(mass);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(mass);
         mass->setMinimum(0.0);
         connect(mass, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 
@@ -231,7 +231,7 @@ namespace urchin {
 
         restitution = new QDoubleSpinBox();
         rigidBodyGeneralLayout->addWidget(restitution, 0, 3);
-        SpinBoxStyleHelper::applyDefaultStyleOn(restitution);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(restitution);
         restitution->setMinimum(0.0);
         restitution->setMaximum(1.0);
         connect(restitution, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
@@ -241,7 +241,7 @@ namespace urchin {
 
         friction = new QDoubleSpinBox();
         rigidBodyGeneralLayout->addWidget(friction, 1, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(friction);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(friction);
         friction->setMinimum(0.0);
         friction->setMaximum(1.0);
         connect(friction, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
@@ -251,7 +251,7 @@ namespace urchin {
 
         rollingFriction = new QDoubleSpinBox();
         rigidBodyGeneralLayout->addWidget(rollingFriction, 1, 3);
-        SpinBoxStyleHelper::applyDefaultStyleOn(rollingFriction);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(rollingFriction);
         rollingFriction->setMinimum(0.0);
         rollingFriction->setMaximum(1.0);
         connect(rollingFriction, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
@@ -260,7 +260,7 @@ namespace urchin {
     void ObjectPanelWidget::setupPhysicsDampingPropertiesBox(QVBoxLayout* physicsPropertiesLayout) {
         auto* rigidBodyDampingBox = new QGroupBox("Damping");
         physicsPropertiesLayout->addWidget(rigidBodyDampingBox);
-        GroupBoxStyleHelper::applyNormalStyle(rigidBodyDampingBox);
+        GroupBoxStyleHelper::instance()->applyNormalStyle(rigidBodyDampingBox);
         rigidBodyDampingBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* rigidBodyDampingLayout = new QGridLayout(rigidBodyDampingBox);
@@ -270,7 +270,7 @@ namespace urchin {
 
         linearDamping = new QDoubleSpinBox();
         rigidBodyDampingLayout->addWidget(linearDamping, 0, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(linearDamping);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(linearDamping);
         linearDamping->setMinimum(0.0);
         linearDamping->setMaximum(1.0);
         connect(linearDamping, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
@@ -280,7 +280,7 @@ namespace urchin {
 
         angularDamping = new QDoubleSpinBox();
         rigidBodyDampingLayout->addWidget(angularDamping, 0, 3);
-        SpinBoxStyleHelper::applyDefaultStyleOn(angularDamping);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(angularDamping);
         angularDamping->setMinimum(0.0);
         angularDamping->setMaximum(1.0);
         connect(angularDamping, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
@@ -289,7 +289,7 @@ namespace urchin {
     void ObjectPanelWidget::setupPhysicsFactorPropertiesBox(QVBoxLayout* physicsPropertiesLayout) {
         auto* rigidBodyFactorBox = new QGroupBox("Factor");
         physicsPropertiesLayout->addWidget(rigidBodyFactorBox);
-        GroupBoxStyleHelper::applyNormalStyle(rigidBodyFactorBox);
+        GroupBoxStyleHelper::instance()->applyNormalStyle(rigidBodyFactorBox);
         rigidBodyFactorBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* rigidBodyFactorLayout = new QGridLayout(rigidBodyFactorBox);
@@ -301,19 +301,19 @@ namespace urchin {
         rigidBodyFactorLayout->addLayout(linearFactorLayout, 0, 1);
         linearFactorX = new QDoubleSpinBox();
         linearFactorLayout->addWidget(linearFactorX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(linearFactorX);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(linearFactorX);
         linearFactorX->setMinimum(0.0);
         linearFactorX->setMaximum(1.0);
         connect(linearFactorX, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
         linearFactorY = new QDoubleSpinBox();
         linearFactorLayout->addWidget(linearFactorY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(linearFactorY);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(linearFactorY);
         linearFactorY->setMinimum(0.0);
         linearFactorY->setMaximum(1.0);
         connect(linearFactorY, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
         linearFactorZ = new QDoubleSpinBox();
         linearFactorLayout->addWidget(linearFactorZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(linearFactorZ);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(linearFactorZ);
         linearFactorZ->setMinimum(0.0);
         linearFactorZ->setMaximum(1.0);
         connect(linearFactorZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
@@ -325,19 +325,19 @@ namespace urchin {
         rigidBodyFactorLayout->addLayout(angularFactorLayout, 1, 1);
         angularFactorX = new QDoubleSpinBox();
         angularFactorLayout->addWidget(angularFactorX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(angularFactorX);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(angularFactorX);
         angularFactorX->setMinimum(0.0);
         angularFactorX->setMaximum(1.0);
         connect(angularFactorX, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
         angularFactorY = new QDoubleSpinBox();
         angularFactorLayout->addWidget(angularFactorY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(angularFactorY);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(angularFactorY);
         angularFactorY->setMinimum(0.0);
         angularFactorY->setMaximum(1.0);
         connect(angularFactorY, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
         angularFactorZ = new QDoubleSpinBox();
         angularFactorLayout->addWidget(angularFactorZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(angularFactorZ);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(angularFactorZ);
         angularFactorZ->setMinimum(0.0);
         angularFactorZ->setMaximum(1.0);
         connect(angularFactorZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
@@ -357,12 +357,12 @@ namespace urchin {
 
         changeBodyShapeButton = new QPushButton("Change");
         shapeTypeLayout->addWidget(changeBodyShapeButton);
-        ButtonStyleHelper::applyNormalStyle(changeBodyShapeButton);
+        ButtonStyleHelper::instance()->applyNormalStyle(changeBodyShapeButton);
         connect(changeBodyShapeButton, SIGNAL(clicked()), this, SLOT(showChangeBodyShapeDialog()));
 
         auto* frameLine = new QFrame();
         physicsShapeLayout->addWidget(frameLine);
-        FrameStyleHelper::applyLineStyle(frameLine);
+        FrameStyleHelper::instance()->applyLineStyle(frameLine);
 
         bodyShapeWidget = nullptr;
     }
@@ -428,9 +428,9 @@ namespace urchin {
         this->positionZ->setValue(modelTransform.getPosition().Z);
 
         Vector3<float> eulerAngle = modelTransform.getOrientation().toEulerAngle(Quaternion<float>::RotationSequence::XYZ);
-        this->eulerAxis0->setValue(AngleConverter<double>::toDegree(eulerAngle[0]));
-        this->eulerAxis1->setValue(AngleConverter<double>::toDegree(eulerAngle[1]));
-        this->eulerAxis2->setValue(AngleConverter<double>::toDegree(eulerAngle[2]));
+        this->eulerAxis0->setValue(AngleConverter<double>::instance()->toDegree(eulerAngle[0]));
+        this->eulerAxis1->setValue(AngleConverter<double>::instance()->toDegree(eulerAngle[1]));
+        this->eulerAxis2->setValue(AngleConverter<double>::instance()->toDegree(eulerAngle[2]));
 
         this->scale->setValue(modelTransform.getScale());
 
@@ -537,9 +537,9 @@ namespace urchin {
             Quaternion<float> orientation = sceneObject->getModel()->getTransform().getOrientation();
             Vector3<float> eulerAngle = orientation.toEulerAngle(newRotationSequence);
 
-            eulerAxis0->setValue(AngleConverter<float>::toDegree(eulerAngle.X));
-            eulerAxis1->setValue(AngleConverter<float>::toDegree(eulerAngle.Y));
-            eulerAxis2->setValue(AngleConverter<float>::toDegree(eulerAngle.Z));
+            eulerAxis0->setValue(AngleConverter<float>::instance()->toDegree(eulerAngle.X));
+            eulerAxis1->setValue(AngleConverter<float>::instance()->toDegree(eulerAngle.Y));
+            eulerAxis2->setValue(AngleConverter<float>::instance()->toDegree(eulerAngle.Z));
 
             updateObjectTransform();
         }
@@ -550,9 +550,9 @@ namespace urchin {
             const SceneObject* sceneObject = objectTableView->getSelectedSceneObject();
 
             Vector3<float> eulerAngle(
-                    AngleConverter<float>::toRadian((float)eulerAxis0->value()),
-                    AngleConverter<float>::toRadian((float)eulerAxis1->value()),
-                    AngleConverter<float>::toRadian((float)eulerAxis2->value())
+                    AngleConverter<float>::instance()->toRadian((float)eulerAxis0->value()),
+                    AngleConverter<float>::instance()->toRadian((float)eulerAxis1->value()),
+                    AngleConverter<float>::instance()->toRadian((float)eulerAxis2->value())
             );
 
             QVariant variant = orientationType->currentData();

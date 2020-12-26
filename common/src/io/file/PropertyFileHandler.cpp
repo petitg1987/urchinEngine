@@ -29,7 +29,7 @@ namespace urchin {
         do
         {
             std::string buffer;
-            FileReader::nextLine(file, buffer);
+            FileReader::instance()->nextLine(file, buffer);
 
             std::istringstream iss(buffer);
             iss >> propertyName;

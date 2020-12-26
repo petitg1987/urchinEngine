@@ -36,7 +36,7 @@ namespace urchin {
     void AIPanelWidget::setupNavMeshAgentBox(QVBoxLayout* mainLayout) {
         auto* navMeshAgentGroupBox = new QGroupBox("Nav Mesh Agent");
         mainLayout->addWidget(navMeshAgentGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(navMeshAgentGroupBox);
+        GroupBoxStyleHelper::instance()->applyNormalStyle(navMeshAgentGroupBox);
         navMeshAgentGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* navMeshAgentLayout = new QGridLayout(navMeshAgentGroupBox);
@@ -46,7 +46,7 @@ namespace urchin {
 
         agentHeight = new QDoubleSpinBox();
         navMeshAgentLayout->addWidget(agentHeight, 0, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(agentHeight);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(agentHeight);
         agentHeight->setMinimum(0.0);
         connect(agentHeight, SIGNAL(valueChanged(double)), this, SLOT(aiChanged()));
 
@@ -55,7 +55,7 @@ namespace urchin {
 
         agentRadius = new QDoubleSpinBox();
         navMeshAgentLayout->addWidget(agentRadius, 0, 3);
-        SpinBoxStyleHelper::applyDefaultStyleOn(agentRadius);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(agentRadius);
         agentRadius->setMinimum(0.0);
         connect(agentRadius, SIGNAL(valueChanged(double)), this, SLOT(aiChanged()));
 
@@ -64,7 +64,7 @@ namespace urchin {
 
         maxSlope = new QDoubleSpinBox();
         navMeshAgentLayout->addWidget(maxSlope, 1, 1);
-        SpinBoxStyleHelper::applyAngleStyleOn(maxSlope);
+        SpinBoxStyleHelper::instance()->applyAngleStyleOn(maxSlope);
         maxSlope->setMinimum(5.0);
         maxSlope->setMaximum(85.0);
         connect(maxSlope, SIGNAL(valueChanged(double)), this, SLOT(aiChanged()));
@@ -74,7 +74,7 @@ namespace urchin {
 
         jumpDistance = new QDoubleSpinBox();
         navMeshAgentLayout->addWidget(jumpDistance, 1, 3);
-        SpinBoxStyleHelper::applyDefaultStyleOn(jumpDistance);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(jumpDistance);
         jumpDistance->setMinimum(0.0);
         connect(jumpDistance, SIGNAL(valueChanged(double)), this, SLOT(aiChanged()));
     }
@@ -82,7 +82,7 @@ namespace urchin {
     void AIPanelWidget::aiChanged() {
         if (!disableAIEvent) {
             std::shared_ptr<NavMeshAgent> navMeshAgent = std::make_shared<NavMeshAgent>((float)agentHeight->value(), (float)agentRadius->value());
-            navMeshAgent->setMaxSlope(AngleConverter<float>::toRadian((float)maxSlope->value()));
+            navMeshAgent->setMaxSlope(AngleConverter<float>::instance()->toRadian((float)maxSlope->value()));
             navMeshAgent->setJumpDistance((float)jumpDistance->value());
 
             aiController->updateSceneAI(navMeshAgent);
@@ -93,7 +93,7 @@ namespace urchin {
         disableAIEvent = true;
         agentHeight->setValue(navMeshAgent->getAgentHeight());
         agentRadius->setValue(navMeshAgent->getAgentRadius());
-        maxSlope->setValue(AngleConverter<float>::toDegree(navMeshAgent->getMaxSlope()));
+        maxSlope->setValue(AngleConverter<float>::instance()->toDegree(navMeshAgent->getMaxSlope()));
         jumpDistance->setValue(navMeshAgent->getJumpDistance());
         disableAIEvent = false;
     }

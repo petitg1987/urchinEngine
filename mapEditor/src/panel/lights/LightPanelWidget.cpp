@@ -41,12 +41,12 @@ namespace urchin {
 
         addLightButton = new QPushButton("New Light");
         buttonsLayout->addWidget(addLightButton);
-        ButtonStyleHelper::applyNormalStyle(addLightButton);
+        ButtonStyleHelper::instance()->applyNormalStyle(addLightButton);
         connect(addLightButton, SIGNAL(clicked()), this, SLOT(showAddLightDialog()));
 
         removeLightButton = new QPushButton("Remove Light");
         buttonsLayout->addWidget(removeLightButton);
-        ButtonStyleHelper::applyNormalStyle(removeLightButton);
+        ButtonStyleHelper::instance()->applyNormalStyle(removeLightButton);
         removeLightButton->setEnabled(false);
         connect(removeLightButton, SIGNAL(clicked()), this, SLOT(removeSelectedLight()));
 
@@ -58,7 +58,7 @@ namespace urchin {
     void LightPanelWidget::setupGeneralPropertiesBox(QVBoxLayout* mainLayout) {
         generalPropertiesGroupBox = new QGroupBox("General Properties");
         mainLayout->addWidget(generalPropertiesGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
+        GroupBoxStyleHelper::instance()->applyNormalStyle(generalPropertiesGroupBox);
         generalPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         generalPropertiesGroupBox->hide();
 
@@ -71,19 +71,19 @@ namespace urchin {
         generalPropertiesLayout->addLayout(ambientLayout, 0, 1);
         ambientR = new QDoubleSpinBox();
         ambientLayout->addWidget(ambientR);
-        SpinBoxStyleHelper::applyDefaultStyleOn(ambientR);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(ambientR);
         ambientR->setMinimum(0.0);
         ambientR->setMaximum(1.0);
         connect(ambientR, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
         ambientG = new QDoubleSpinBox();
         ambientLayout->addWidget(ambientG);
-        SpinBoxStyleHelper::applyDefaultStyleOn(ambientG);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(ambientG);
         ambientG->setMinimum(0.0);
         ambientG->setMaximum(1.0);
         connect(ambientG, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
         ambientB = new QDoubleSpinBox();
         ambientLayout->addWidget(ambientB);
-        SpinBoxStyleHelper::applyDefaultStyleOn(ambientB);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(ambientB);
         ambientB->setMinimum(0.0);
         ambientB->setMaximum(1.0);
         connect(ambientB, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
@@ -102,7 +102,7 @@ namespace urchin {
     void LightPanelWidget::setupSpecificOmnidirectionalLightBox(QVBoxLayout* mainLayout) {
         specificOmnidirectionalLightGroupBox = new QGroupBox("Omnidirectional Light");
         mainLayout->addWidget(specificOmnidirectionalLightGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(specificOmnidirectionalLightGroupBox);
+        GroupBoxStyleHelper::instance()->applyNormalStyle(specificOmnidirectionalLightGroupBox);
         specificOmnidirectionalLightGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         specificOmnidirectionalLightGroupBox->hide();
 
@@ -115,15 +115,15 @@ namespace urchin {
         omniLightLayout->addLayout(positionLayout, 0, 1);
         positionX = new QDoubleSpinBox();
         positionLayout->addWidget(positionX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionX);
         connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
         positionY = new QDoubleSpinBox();
         positionLayout->addWidget(positionY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionY);
         connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
         positionZ = new QDoubleSpinBox();
         positionLayout->addWidget(positionZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionZ);
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
         auto *attenuationLabel= new QLabel("Expo. Att.:");
@@ -131,7 +131,7 @@ namespace urchin {
 
         attenuation = new QDoubleSpinBox();
         omniLightLayout->addWidget(attenuation, 1, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(attenuation);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(attenuation);
         attenuation->setMinimum(0.00001);
         attenuation->setSingleStep(0.05);
         connect(attenuation, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
@@ -140,7 +140,7 @@ namespace urchin {
     void LightPanelWidget::setupSpecificSunLightBox(QVBoxLayout* mainLayout) {
         specificSunLightGroupBox = new QGroupBox("Sun Light");
         mainLayout->addWidget(specificSunLightGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(specificSunLightGroupBox);
+        GroupBoxStyleHelper::instance()->applyNormalStyle(specificSunLightGroupBox);
         specificSunLightGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         specificSunLightGroupBox->hide();
 
@@ -153,15 +153,15 @@ namespace urchin {
         sunLightLayout->addLayout(directionLayout, 0, 1);
         directionX = new QDoubleSpinBox();
         directionLayout->addWidget(directionX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(directionX);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(directionX);
         connect(directionX, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
         directionY = new QDoubleSpinBox();
         directionLayout->addWidget(directionY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(directionY);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(directionY);
         connect(directionY, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
         directionZ = new QDoubleSpinBox();
         directionLayout->addWidget(directionZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(directionZ);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(directionZ);
         connect(directionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
     }
 

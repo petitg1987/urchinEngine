@@ -16,9 +16,9 @@ void EPASphereTest::identicalSphere() {
     std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(sphere1, sphere2);
 
     float epsilon = 0.3f; //high epsilon used because curved shapes are very bad case for EPA
-    AssertHelper::assertTrue(resultEpa->isCollide());
-    AssertHelper::assertFloatEquals(resultEpa->getPenetrationDepth(), 2.0f, epsilon);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().vector(resultEpa->getContactPointB()).length(), 2.0f, epsilon);
+    AssertHelper::instance()->assertTrue(resultEpa->isCollide());
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getPenetrationDepth(), 2.0f, epsilon);
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointA().vector(resultEpa->getContactPointB()).length(), 2.0f, epsilon);
 }
 
 void EPASphereTest::overlapSphere() {
@@ -28,15 +28,15 @@ void EPASphereTest::overlapSphere() {
     std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(sphere1, sphere2);
 
     float epsilon = 0.01f; //high epsilon used because curved shapes are very bad case for EPA
-    AssertHelper::assertTrue(resultEpa->isCollide());
-    AssertHelper::assertFloatEquals(resultEpa->getPenetrationDepth(), 0.10050506338f);
-    AssertHelper::assertVector3FloatEquals(resultEpa->getNormal(), Vector3<float>(0.70710678118f, 0.70710678118f, 0.0f), epsilon);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().X, 7.0710678118f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().Y, 7.0710678118f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().Z, 0.0f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointB().X, 7.0f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointB().Y, 7.0f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointB().Z, 0.0f);
+    AssertHelper::instance()->assertTrue(resultEpa->isCollide());
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getPenetrationDepth(), 0.10050506338f);
+    AssertHelper::instance()->assertVector3FloatEquals(resultEpa->getNormal(), Vector3<float>(0.70710678118f, 0.70710678118f, 0.0f), epsilon);
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointA().X, 7.0710678118f);
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointA().Y, 7.0710678118f);
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointA().Z, 0.0f);
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointB().X, 7.0f);
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointB().Y, 7.0f);
+    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointB().Z, 0.0f);
 }
 
 CppUnit::Test* EPASphereTest::suite() {

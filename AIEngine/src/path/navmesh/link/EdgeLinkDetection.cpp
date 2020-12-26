@@ -35,7 +35,7 @@ namespace urchin {
         }
 
         const float sampleSpaces = 1.0f;
-        const unsigned int samplesCount = 1 + MathFunction::ceilToUInt(startEdge.toVector().length() / sampleSpaces);
+        const unsigned int samplesCount = 1 + MathFunction::instance()->ceilToUInt(startEdge.toVector().length() / sampleSpaces);
 
         bool hasJumpPoints = false;
         float jumpStartRange = -std::numeric_limits<float>::max();
@@ -100,7 +100,7 @@ namespace urchin {
         touchingEndRange = 0.0f;
         for (std::size_t i = 0; i < 3; ++i) {
             float denominator = startEdge.getA()[i] - startEdge.getB()[i];
-            if (!MathFunction::isZero(denominator)) {
+            if (!MathFunction::instance()->isZero(denominator)) {
                 touchingStartRange = std::clamp((minIntersection[i] - startEdge.getB()[i]) / denominator, 0.0f, 1.0f);
                 touchingEndRange = std::clamp((maxIntersection[i] - startEdge.getB()[i]) / denominator, 0.0f, 1.0f);
 

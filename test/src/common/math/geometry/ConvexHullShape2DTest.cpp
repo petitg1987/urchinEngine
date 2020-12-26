@@ -12,11 +12,11 @@ void ConvexHullShape2DTest::convexHullBox() {
             Point2<float>(0.0, 0.0) /*excluded points */};
     ConvexHullShape2D<float> convexHull(obbPoints);
 
-    AssertHelper::assertUnsignedInt(convexHull.getPoints().size(), 4);
-    AssertHelper::assertPoint2FloatEquals(convexHull.getPoints()[0], Point2<float>(-1.0, 0.0));
-    AssertHelper::assertPoint2FloatEquals(convexHull.getPoints()[1], Point2<float>(0.0, -1.0));
-    AssertHelper::assertPoint2FloatEquals(convexHull.getPoints()[2], Point2<float>(1.0, 0.0));
-    AssertHelper::assertPoint2FloatEquals(convexHull.getPoints()[3], Point2<float>(0.0, 1.0));
+    AssertHelper::instance()->assertUnsignedInt(convexHull.getPoints().size(), 4);
+    AssertHelper::instance()->assertPoint2FloatEquals(convexHull.getPoints()[0], Point2<float>(-1.0, 0.0));
+    AssertHelper::instance()->assertPoint2FloatEquals(convexHull.getPoints()[1], Point2<float>(0.0, -1.0));
+    AssertHelper::instance()->assertPoint2FloatEquals(convexHull.getPoints()[2], Point2<float>(1.0, 0.0));
+    AssertHelper::instance()->assertPoint2FloatEquals(convexHull.getPoints()[3], Point2<float>(0.0, 1.0));
 }
 
 void ConvexHullShape2DTest::identicalPoints() {
@@ -24,11 +24,11 @@ void ConvexHullShape2DTest::identicalPoints() {
             Point2<float>(1.0, 0.0), Point2<float>(0.0, -1.0), Point2<float>(-1.0, 0.0) /* duplicate points */};
     ConvexHullShape2D<float> convexHull(obbPoints);
 
-    AssertHelper::assertUnsignedInt(convexHull.getPoints().size(), 4);
-    AssertHelper::assertPoint2FloatEquals(convexHull.getPoints()[0], Point2<float>(-1.0, 0.0));
-    AssertHelper::assertPoint2FloatEquals(convexHull.getPoints()[1], Point2<float>(0.0, -1.0));
-    AssertHelper::assertPoint2FloatEquals(convexHull.getPoints()[2], Point2<float>(1.0, 0.0));
-    AssertHelper::assertPoint2FloatEquals(convexHull.getPoints()[3], Point2<float>(0.0, 1.0));
+    AssertHelper::instance()->assertUnsignedInt(convexHull.getPoints().size(), 4);
+    AssertHelper::instance()->assertPoint2FloatEquals(convexHull.getPoints()[0], Point2<float>(-1.0, 0.0));
+    AssertHelper::instance()->assertPoint2FloatEquals(convexHull.getPoints()[1], Point2<float>(0.0, -1.0));
+    AssertHelper::instance()->assertPoint2FloatEquals(convexHull.getPoints()[2], Point2<float>(1.0, 0.0));
+    AssertHelper::instance()->assertPoint2FloatEquals(convexHull.getPoints()[3], Point2<float>(0.0, 1.0));
 }
 
 CppUnit::Test* ConvexHullShape2DTest::suite() {

@@ -5,7 +5,7 @@
 
 namespace urchin {
     std::shared_ptr<AIObject> AIEntityBuilder::buildAIObject(const std::string& name, const std::shared_ptr<const CollisionShape3D>& shape, const Transform<float>& transform) {
-        assert(MathFunction::isOne(transform.getScale(), 0.01f));
+        assert(MathFunction::instance()->isOne(transform.getScale(), 0.01f));
 
         if (shape->isConvex()) {
             auto singleShape = std::make_shared<AIShape>(shape->getSingleShape());
@@ -24,7 +24,7 @@ namespace urchin {
     }
 
     std::shared_ptr<AITerrain> AIEntityBuilder::buildAITerrain(const std::string& name, const std::shared_ptr<const CollisionShape3D>& shape, const Transform<float>& transform) {
-        assert(MathFunction::isOne(transform.getScale(), 0.01f));
+        assert(MathFunction::instance()->isOne(transform.getScale(), 0.01f));
 
         std::shared_ptr<const CollisionHeightfieldShape> scaledHeightfieldShape = std::dynamic_pointer_cast<const CollisionHeightfieldShape>(shape);
         if (scaledHeightfieldShape) {

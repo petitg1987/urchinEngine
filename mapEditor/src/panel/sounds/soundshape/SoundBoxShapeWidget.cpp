@@ -16,15 +16,15 @@ namespace urchin {
         mainLayout->addLayout(positionLayout, 1, 1);
         positionX = new QDoubleSpinBox();
         positionLayout->addWidget(positionX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionX);
         connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
         positionY = new QDoubleSpinBox();
         positionLayout->addWidget(positionY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionY);
         connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
         positionZ = new QDoubleSpinBox();
         positionLayout->addWidget(positionZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionZ);
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
         auto* halfSizesLabel = new QLabel("Half Sizes:");
@@ -34,15 +34,15 @@ namespace urchin {
         mainLayout->addLayout(halfSizeLayout, 2, 1);
         halfSizeX = new QDoubleSpinBox();
         halfSizeLayout->addWidget(halfSizeX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeX);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(halfSizeX);
         connect(halfSizeX, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
         halfSizeY = new QDoubleSpinBox();
         halfSizeLayout->addWidget(halfSizeY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeY);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(halfSizeY);
         connect(halfSizeY, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
         halfSizeZ = new QDoubleSpinBox();
         halfSizeLayout->addWidget(halfSizeZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeZ);
+        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(halfSizeZ);
         connect(halfSizeZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
         auto* orientationTypeLabel = new QLabel("Orient. Type:");
@@ -50,7 +50,7 @@ namespace urchin {
 
         orientationType = new QComboBox();
         mainLayout->addWidget(orientationType, 3, 1);
-        ComboBoxStyleHelper::applyOrientationStyleOn(orientationType);
+        ComboBoxStyleHelper::instance()->applyOrientationStyleOn(orientationType);
         connect(orientationType, SIGNAL(currentIndexChanged(int)), this, SLOT(updateShapeOrientationType()));
 
         auto* eulerAngleLabel = new QLabel("Euler Angle:");
@@ -60,15 +60,15 @@ namespace urchin {
         mainLayout->addLayout(eulerAxisLayout, 4, 1);
         eulerAxis0 = new QDoubleSpinBox();
         eulerAxisLayout->addWidget(eulerAxis0);
-        SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis0);
+        SpinBoxStyleHelper::instance()->applyAngleStyleOn(eulerAxis0);
         connect(eulerAxis0, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
         eulerAxis1 = new QDoubleSpinBox();
         eulerAxisLayout->addWidget(eulerAxis1);
-        SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis1);
+        SpinBoxStyleHelper::instance()->applyAngleStyleOn(eulerAxis1);
         connect(eulerAxis1, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
         eulerAxis2 = new QDoubleSpinBox();
         eulerAxisLayout->addWidget(eulerAxis2);
-        SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis2);
+        SpinBoxStyleHelper::instance()->applyAngleStyleOn(eulerAxis2);
         connect(eulerAxis2, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
     }
 
@@ -88,9 +88,9 @@ namespace urchin {
         halfSizeZ->setValue(boxShape->getHalfSizes().Z);
 
         Vector3<float> eulerAngle = boxShape->getOrientation().toEulerAngle(Quaternion<float>::RotationSequence::XYZ);
-        this->eulerAxis0->setValue(AngleConverter<double>::toDegree(eulerAngle[0]));
-        this->eulerAxis1->setValue(AngleConverter<double>::toDegree(eulerAngle[1]));
-        this->eulerAxis2->setValue(AngleConverter<double>::toDegree(eulerAngle[2]));
+        this->eulerAxis0->setValue(AngleConverter<double>::instance()->toDegree(eulerAngle[0]));
+        this->eulerAxis1->setValue(AngleConverter<double>::instance()->toDegree(eulerAngle[1]));
+        this->eulerAxis2->setValue(AngleConverter<double>::instance()->toDegree(eulerAngle[2]));
     }
 
     void SoundBoxShapeWidget::updateShapeOrientationType() {
@@ -101,9 +101,9 @@ namespace urchin {
             auto newRotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
             Vector3<float> eulerAngle = boxShape->getOrientation().toEulerAngle(newRotationSequence);
 
-            eulerAxis0->setValue(AngleConverter<float>::toDegree(eulerAngle.X));
-            eulerAxis1->setValue(AngleConverter<float>::toDegree(eulerAngle.Y));
-            eulerAxis2->setValue(AngleConverter<float>::toDegree(eulerAngle.Z));
+            eulerAxis0->setValue(AngleConverter<float>::instance()->toDegree(eulerAngle.X));
+            eulerAxis1->setValue(AngleConverter<float>::instance()->toDegree(eulerAngle.Y));
+            eulerAxis2->setValue(AngleConverter<float>::instance()->toDegree(eulerAngle.Z));
 
             updateSoundShape();
         }
@@ -115,9 +115,9 @@ namespace urchin {
         Vector3<float> halfSizes((float)halfSizeX->value(), (float)halfSizeY->value(), (float)halfSizeZ->value());
 
         Vector3<float> eulerAngle(
-            AngleConverter<float>::toRadian((float)eulerAxis0->value()),
-            AngleConverter<float>::toRadian((float)eulerAxis1->value()),
-            AngleConverter<float>::toRadian((float)eulerAxis2->value())
+            AngleConverter<float>::instance()->toRadian((float)eulerAxis0->value()),
+            AngleConverter<float>::instance()->toRadian((float)eulerAxis1->value()),
+            AngleConverter<float>::instance()->toRadian((float)eulerAxis2->value())
         );
         QVariant variant = orientationType->currentData();
         auto rotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());

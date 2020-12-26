@@ -2,12 +2,19 @@
 #define URCHINENGINE_GROUPBOXSTYLEHELPER_H
 
 #include <QtWidgets/QGroupBox>
+#include "UrchinCommon.h"
 
 namespace urchin {
 
-    class GroupBoxStyleHelper {
+    class GroupBoxStyleHelper : public Singleton<GroupBoxStyleHelper> {
         public:
-            static void applyNormalStyle(QGroupBox*);
+            friend class Singleton<GroupBoxStyleHelper>;
+
+            void applyNormalStyle(QGroupBox*);
+
+        private:
+            GroupBoxStyleHelper() = default;
+            ~GroupBoxStyleHelper() override = default;
     };
 
 }

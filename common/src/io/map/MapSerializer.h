@@ -4,21 +4,25 @@
 #include <string>
 #include <map>
 
+#include "pattern/singleton/Singleton.h"
+
 namespace urchin {
 
-    class MapSerializer {
+    class MapSerializer : public Singleton<MapSerializer> {
         public:
-            static std::string serialize(const std::map<std::string, std::string>&);
-            static std::map<std::string, std::string> deserialize(const std::string&);
+            friend class Singleton<MapSerializer>;
+
+            std::string serialize(const std::map<std::string, std::string>&);
+            std::map<std::string, std::string> deserialize(const std::string&);
 
         private:
             MapSerializer() = default;
-            ~MapSerializer() = default;
+            ~MapSerializer() override = default;
 
             static const char DELIMITER;
 
-            static std::string escape(const std::string&);
-            static std::string unescape(const std::string&);
+            std::string escape(const std::string&);
+            std::string unescape(const std::string&);
     };
 
 }

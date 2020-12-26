@@ -10,10 +10,10 @@ void StringUtilTest::splitString() {
 
     StringUtil::instance()->split(str, ',', splitStr);
 
-    AssertHelper::assertUnsignedInt(splitStr.size(), 3);
-    AssertHelper::assertString(splitStr[0], "str1");
-    AssertHelper::assertString(splitStr[1], "str2");
-    AssertHelper::assertString(splitStr[2], "str3");
+    AssertHelper::instance()->assertUnsignedInt(splitStr.size(), 3);
+    AssertHelper::instance()->assertString(splitStr[0], "str1");
+    AssertHelper::instance()->assertString(splitStr[1], "str2");
+    AssertHelper::instance()->assertString(splitStr[2], "str3");
 }
 
 void StringUtilTest::splitEmptyString() {
@@ -22,10 +22,10 @@ void StringUtilTest::splitEmptyString() {
 
     StringUtil::instance()->split(str, ',', splitStr);
 
-    AssertHelper::assertUnsignedInt(splitStr.size(), 3);
-    AssertHelper::assertString(splitStr[0], "str1");
-    AssertHelper::assertString(splitStr[1], "");
-    AssertHelper::assertString(splitStr[2], "str2");
+    AssertHelper::instance()->assertUnsignedInt(splitStr.size(), 3);
+    AssertHelper::instance()->assertString(splitStr[0], "str1");
+    AssertHelper::instance()->assertString(splitStr[1], "");
+    AssertHelper::instance()->assertString(splitStr[2], "str2");
 }
 
 CppUnit::Test* StringUtilTest::suite() {

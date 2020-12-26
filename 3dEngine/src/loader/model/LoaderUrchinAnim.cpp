@@ -21,62 +21,62 @@ namespace urchin {
 
         //numFrames
         unsigned int numFrames = 0;
-        FileReader::nextLine(file, buffer);
+        FileReader::instance()->nextLine(file, buffer);
         iss.clear(); iss.str(buffer);
         iss >> sdata >> numFrames;
 
         //numBones
         unsigned int numBones = 0;
-        FileReader::nextLine(file, buffer);
+        FileReader::instance()->nextLine(file, buffer);
         iss.clear(); iss.str(buffer);
         iss >> sdata >> numBones;
 
         //frameRates
         unsigned int frameRate = 0;
-        FileReader::nextLine(file, buffer);
+        FileReader::instance()->nextLine(file, buffer);
         iss.clear(); iss.str(buffer);
         iss >> sdata >> frameRate;
 
         //numAnimatedComponents
         unsigned int numAnimatedComponents = 0;
-        FileReader::nextLine(file, buffer);
+        FileReader::instance()->nextLine(file, buffer);
         iss.clear(); iss.str(buffer);
         iss >> sdata >> numAnimatedComponents;
 
         //hierarchy
         auto* boneInfos = new BoneInfo[numBones];
-        FileReader::nextLine(file, buffer); //buffer = "hierarchy {"
+        FileReader::instance()->nextLine(file, buffer); //buffer = "hierarchy {"
         for (unsigned int i = 0; i < numBones; i++) {
-            FileReader::nextLine(file, buffer);
+            FileReader::instance()->nextLine(file, buffer);
             iss.clear(); iss.str(buffer);
             iss >> boneInfos[i].name >> boneInfos[i].parent >> boneInfos[i].flags >>boneInfos[i].startIndex;
             boneInfos[i].name = boneInfos[i].name.substr(1, boneInfos[i].name.length()-2); //remove quot
         }
-        FileReader::nextLine(file, buffer); //buffer = "}"
+        FileReader::instance()->nextLine(file, buffer); //buffer = "}"
 
         //bounds
         auto **bboxes = new AABBox<float>*[numFrames];
-        FileReader::nextLine(file, buffer); //buffer = "bounds {"
+        FileReader::instance()->nextLine(file, buffer); //buffer = "bounds {"
         for (unsigned int i = 0; i < numFrames; i++) {
-            FileReader::nextLine(file, buffer);
+            FileReader::instance()->nextLine(file, buffer);
             iss.clear(); iss.str(buffer);
 
             Point3<float> min, max;
             iss >> sdata >> min.X >> min.Y >> min.Z >> sdata >> sdata >> max.X >> max.Y >> max.Z;
             bboxes[i] = new AABBox<float>(min, max);
         }
-        FileReader::nextLine(file, buffer); //buffer = "}"
+        FileReader::instance()->nextLine(file, buffer); //buffer = "}"
 
         //baseframe
         auto* baseFrame = new BaseFrameBone[numBones];
-        FileReader::nextLine(file, buffer); //buffer = "baseframe {"
+        FileReader::instance()->nextLine(file, buffer); //buffer = "baseframe {"
         for (unsigned int i = 0; i < numBones; i++) {
-            FileReader::nextLine(file, buffer);
+            FileReader::instance()->nextLine(file, buffer);
             iss.clear(); iss.str(buffer);
             iss >> sdata >> baseFrame[i].pos.X >> baseFrame[i].pos.Y >> baseFrame[i].pos.Z >> sdata >> sdata >>baseFrame[i].orient.X >> baseFrame[i].orient.Y >> baseFrame[i].orient.Z;
             baseFrame[i].orient.computeW();
         }
-        FileReader::nextLine(file, buffer); //buffer = "}"
+        FileReader::instance()->nextLine(file, buffer); //buffer = "}"
 
         //frames
         auto **skeletonFrames = new Bone*[numFrames];
@@ -84,7 +84,7 @@ namespace urchin {
         for (unsigned int frameIndex = 0; frameIndex < numFrames; ++frameIndex) {
             skeletonFrames[frameIndex] = new Bone[numBones];
 
-            FileReader::nextLine(file, buffer); // buffer = "frame ? {"
+            FileReader::instance()->nextLine(file, buffer); // buffer = "frame ? {"
             for (unsigned int j = 0; j < numAnimatedComponents; j++) {
                 file >> animFrameData[j];
             }
@@ -160,7 +160,7 @@ namespace urchin {
                 }
             }
 
-            FileReader::nextLine(file, buffer); //buferf = "}"
+            FileReader::instance()->nextLine(file, buffer); //buferf = "}"
         }
 
         delete[] boneInfos;

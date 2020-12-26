@@ -59,7 +59,7 @@ namespace urchin {
 
         auto* selectHeightFileButton = new QPushButton("...");
         mainLayout->addWidget(selectHeightFileButton, 1, 2);
-        ButtonStyleHelper::applyNormalStyle(selectHeightFileButton);
+        ButtonStyleHelper::instance()->applyNormalStyle(selectHeightFileButton);
         selectHeightFileButton->setFixedWidth(22);
         connect(selectHeightFileButton, SIGNAL(clicked()), this, SLOT(showHeightFilenameDialog()));
     }
@@ -118,18 +118,18 @@ namespace urchin {
             bool hasError = false;
 
             updateTerrainName();
-            LabelStyleHelper::applyNormalStyle(terrainNameLabel);
-            LabelStyleHelper::applyNormalStyle(heightFilenameLabel);
+            LabelStyleHelper::instance()->applyNormalStyle(terrainNameLabel);
+            LabelStyleHelper::instance()->applyNormalStyle(heightFilenameLabel);
 
             if (terrainName.empty()) {
-                LabelStyleHelper::applyErrorStyle(terrainNameLabel, "Terrain name is mandatory");
+                LabelStyleHelper::instance()->applyErrorStyle(terrainNameLabel, "Terrain name is mandatory");
                 hasError = true;
             } else if (isSceneTerrainExist(terrainName)) {
-                LabelStyleHelper::applyErrorStyle(terrainNameLabel, "Terrain name is already used");
+                LabelStyleHelper::instance()->applyErrorStyle(terrainNameLabel, "Terrain name is already used");
                 hasError = true;
             }
             if (heightFilename.empty()) {
-                LabelStyleHelper::applyErrorStyle(heightFilenameLabel, "Height is mandatory");
+                LabelStyleHelper::instance()->applyErrorStyle(heightFilenameLabel, "Height is mandatory");
                 hasError = true;
             }
 

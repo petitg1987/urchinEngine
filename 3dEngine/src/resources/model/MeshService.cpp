@@ -99,7 +99,7 @@ namespace urchin {
 
         Vector3<float> normal = ac.crossProduct(ab);
         float sinAlpha = normal.length() / (ab.length() * ac.length());
-        sinAlpha = MathFunction::clamp(sinAlpha, -1.0f + std::numeric_limits<float>::epsilon(), 1.0f - std::numeric_limits<float>::epsilon()); //because of rounding error
+        sinAlpha = MathFunction::instance()->clamp(sinAlpha, -1.0f + std::numeric_limits<float>::epsilon(), 1.0f - std::numeric_limits<float>::epsilon()); //because of rounding error
 
         return normal.normalize() * std::asin(sinAlpha);
     }

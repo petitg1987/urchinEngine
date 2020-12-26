@@ -12,9 +12,9 @@ void ResizePolygon2DServiceTest::reduceTriangle() {
 
     ResizePolygon2DService<int>::instance()->resizePolygon(trianglesPoints, -5);
 
-    AssertHelper::assertPoint2IntEquals(trianglesPoints[0], Point2<int>(-176, -6060));
-    AssertHelper::assertPoint2IntEquals(trianglesPoints[1], Point2<int>(1095, -6060));
-    AssertHelper::assertPoint2IntEquals(trianglesPoints[2], Point2<int>(1095, -4786));
+    AssertHelper::instance()->assertPoint2IntEquals(trianglesPoints[0], Point2<int>(-176, -6060));
+    AssertHelper::instance()->assertPoint2IntEquals(trianglesPoints[1], Point2<int>(1095, -6060));
+    AssertHelper::instance()->assertPoint2IntEquals(trianglesPoints[2], Point2<int>(1095, -4786));
 }
 
 CppUnit::Test* ResizePolygon2DServiceTest::suite() {

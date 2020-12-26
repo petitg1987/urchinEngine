@@ -19,7 +19,7 @@ namespace urchin {
 
         //vertex shader
         const std::string& vertexShaderFileSource = readEntireFile(ShaderConfig::instance()->getShadersDirectory() + vertexShaderFilename);
-        const std::string& vertexShaderSource = TokenReplacerShader::replaceTokens(vertexShaderFileSource, tokens);
+        const std::string& vertexShaderSource = TokenReplacerShader().replaceTokens(vertexShaderFileSource, tokens);
         const char* vertexShaderSourceChar = vertexShaderSource.c_str();
         unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
         glShaderSource(vertexShader, 1, &vertexShaderSourceChar, nullptr);
@@ -30,7 +30,7 @@ namespace urchin {
         //geometry shader
         if (!geometryShaderFilename.empty()) {
             const std::string& geometryShaderFileSource = readEntireFile(ShaderConfig::instance()->getShadersDirectory() + geometryShaderFilename);
-            const std::string& geometryShaderSource = TokenReplacerShader::replaceTokens(geometryShaderFileSource, tokens);
+            const std::string& geometryShaderSource = TokenReplacerShader().replaceTokens(geometryShaderFileSource, tokens);
             const char* geometryShaderSourceChar = geometryShaderSource.c_str();
             unsigned int geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
 
@@ -42,7 +42,7 @@ namespace urchin {
 
         //fragment shader
         const std::string& fragmentShaderFileSource = readEntireFile(ShaderConfig::instance()->getShadersDirectory() + fragmentShaderFilename);
-        const std::string& fragmentShaderSource = TokenReplacerShader::replaceTokens(fragmentShaderFileSource, tokens);
+        const std::string& fragmentShaderSource = TokenReplacerShader().replaceTokens(fragmentShaderFileSource, tokens);
         const char* fragmentShaderSourceChar = fragmentShaderSource.c_str();
         unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fragmentShader, 1, &fragmentShaderSourceChar, nullptr);
