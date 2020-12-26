@@ -14,15 +14,19 @@ namespace urchin {
             void setupResourcesDirectory(const std::string&);
             const std::string& getResourcesDirectory() const;
 
-            void setupSaveDirectory(const std::string&);
-            const std::string& getSaveDirectory() const;
+            const std::string& getEngineUserDataDirectory() const;
+            const std::string& getEngineUserCacheDirectory() const;
 
         private:
             FileSystem();
             ~FileSystem() override = default;
 
+            std::string getEngineDirectoryName() const;
+
             std::string resourcesDirectory;
-            std::string saveDirectory;
+
+            std::string engineUserDataDirectory;
+            std::string engineUserCacheDirectory;
     };
 
 }

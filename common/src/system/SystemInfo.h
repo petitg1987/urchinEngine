@@ -18,11 +18,17 @@ namespace urchin {
 
             std::string systemHash() const;
 
+            std::string userDataDirectory() const;
+            std::string executableDirectory() const;
+
         private:
             SystemInfo() = default;
             ~SystemInfo() override = default;
 
             std::string retrieveCpuHash() const;
+
+            std::string homeDirectory() const;
+            std::string getEnvVariable(const std::string&) const;
     };
 
 }

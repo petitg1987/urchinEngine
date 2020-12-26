@@ -1,11 +1,19 @@
+#include <filesystem>
+
 #include "config/FileSystem.h"
+#include "system/SystemInfo.h"
+#include "util/FileUtil.h"
 
 namespace urchin {
 
     FileSystem::FileSystem() : Singleton<FileSystem>(),
-            resourcesDirectory("./"),
-            saveDirectory("./") {
+            resourcesDirectory("./") {
 
+        this->engineUserDataDirectory = SystemInfo::instance()->userDataDirectory() + "/" + getEngineDirectoryName();
+        FileUtil::createDirectory(engineUserDataDirectory);
+
+        this->engineUserCacheDirectory = engineUserDataDirectory + "/cache";
+        FileUtil::createDirectory(engineUserCacheDirectory);
     }
 
     void FileSystem::setupResourcesDirectory(const std::string& resourcesDirectory) {
@@ -16,12 +24,20 @@ namespace urchin {
         return resourcesDirectory;
     }
 
-    void FileSystem::setupSaveDirectory(const std::string& saveDirectory) {
-        this->saveDirectory = saveDirectory;
+    const std::string& FileSystem::getEngineUserDataDirectory() const {
+        return engineUserDataDirectory;
     }
 
-    const std::string& FileSystem::getSaveDirectory() const {
-        return saveDirectory;
+    const std::string& FileSystem::getEngineUserCacheDirectory() const {
+        return engineUserCacheDirectory;
+    }
+
+    std::string FileSystem::getEngineDirectoryName() const {
+        #ifdef _WIN32
+            return "UrchinEngine";
+        #else
+            return ".urchin-engine";
+        #endif
     }
 
 }

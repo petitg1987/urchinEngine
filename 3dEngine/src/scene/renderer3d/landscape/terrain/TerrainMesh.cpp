@@ -28,7 +28,11 @@ namespace urchin {
         std::string terrainFilePath = FileSystem::instance()->getResourcesDirectory() + imgTerrain->getName();
         std::string terrainHash = generateTerrainMeshHash(terrainFilePath, xzScale, yScale);
 
-        std::string terrainFrlFilePath = FileSystem::instance()->getSaveDirectory() + FileUtil::getFileNameNoExtension(terrainFilePath) + FRL_FILE_EXTENSION;
+        std::string terrainFrlFilePath =
+                FileSystem::instance()->getEngineUserCacheDirectory()
+                + + "/" + FileUtil::getFileNameNoExtension(terrainFilePath)
+                + "_" + std::to_string(std::hash<std::string>{}(terrainFilePath))
+                + FRL_FILE_EXTENSION;
         std::ifstream terrainFrlFile;
         terrainFrlFile.open(terrainFrlFilePath, std::ios::in | std::ios::binary);
 
@@ -261,6 +265,9 @@ namespace urchin {
     void TerrainMesh::writeTerrainMeshFile(const std::string& filePath, const std::string& terrainHash) const {
         std::ofstream file;
         file.open(filePath, std::ios::out | std::ios::binary | std::ios::trunc);
+        if(!file.is_open()) {
+            throw std::runtime_error("Unable to open file: " + filePath);
+        }
 
         writeVersion(file, TERRAIN_FRL_FILE_VERSION);
         writeHash(file, terrainHash);

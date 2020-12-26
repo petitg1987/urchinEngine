@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <filesystem>
 #include <sys/stat.h>
 
 #include "FileUtil.h"
@@ -14,6 +15,14 @@ namespace urchin {
             return true;
         }
         return false;
+    }
+
+    void FileUtil::createDirectory(const std::string& directory) {
+        std::error_code errorCode;
+        std::filesystem::create_directories(directory, errorCode);
+        if(errorCode.value() != 0) {
+            throw std::runtime_error("Unable to create the directory: " + directory);
+        }
     }
 
     /**

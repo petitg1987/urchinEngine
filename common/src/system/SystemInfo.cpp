@@ -8,12 +8,14 @@
 #else
     #include <sys/utsname.h>
     #include <sys/sysinfo.h>
+    #include <zconf.h>
     #include "system/CommandExecutor.h"
     #include "util/TypeConverter.h"
 #endif
 
 #include "SystemInfo.h"
 #include "util/StringUtil.h"
+#include "util/FileUtil.h"
 
 namespace urchin {
 
@@ -133,5 +135,59 @@ namespace urchin {
             return std::to_string(hash);
         #endif
     }
+
+    std::string SystemInfo::homeDirectory() const {
+        std::string homeDirectory = getEnvVariable("HOME");
+        if (homeDirectory.empty()) {
+            homeDirectory = getEnvVariable("USERPROFILE");
+            if (homeDirectory.empty()) {
+                homeDirectory = getEnvVariable("HOMEDRIVE") + getEnvVariable("HOMEPATH");
+            }
+        }
+
+        if (homeDirectory.empty()) {
+            throw std::runtime_error("Impossible to find home directory. Please define env. variable 'HOME' or 'USERPROFILE' or 'HOMEDRIVE'/'HOMEPATH'.");
+        }
+
+        return homeDirectory;
+    }
+
+    std::string SystemInfo::userDataDirectory() const {
+        #ifdef _WIN32
+            return homeDirectory() + "/AppData/Local";
+        #else
+            return homeDirectory();
+        #endif
+    }
+
+    std::string SystemInfo::executableDirectory() const {
+        unsigned int pathBufferSize = 2048;
+
+        #ifdef _WIN32
+            char* buffer = new char[pathBufferSize];
+            GetModuleFileName(nullptr, buffer, pathBufferSize);
+            std::string executablePath(buffer);
+            delete[] buffer;
+            return FileUtil::getDirectoryFrom(executablePath);
+        #else
+            char* buffer = new char[pathBufferSize];
+            ssize_t readSize = readlink("/proc/self/exe", buffer, pathBufferSize);
+            if (readSize > 0) {
+                std::string executablePath(buffer, (unsigned long)readSize);
+                delete[] buffer;
+                return FileUtil::getDirectoryFrom(executablePath);
+            }
+            throw std::runtime_error("Cannot read /proc/self/exe on Linux system.");
+        #endif
+    }
+
+    std::string SystemInfo::getEnvVariable(const std::string& variableName) const {
+        const char* charValue = getenv(variableName.c_str());
+        if (charValue == nullptr) {
+            return "";
+        }
+        return std::string(charValue);
+    }
+
 
 }

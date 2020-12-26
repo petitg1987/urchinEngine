@@ -1,5 +1,5 @@
-#ifndef URCHINENGINE_FILEHANDLER_H
-#define URCHINENGINE_FILEHANDLER_H
+#ifndef URCHINENGINE_FILEUTIL_H
+#define URCHINENGINE_FILEUTIL_H
 
 #include <string>
 
@@ -8,6 +8,7 @@ namespace urchin {
     class FileUtil {
         public:
             static bool isDirectoryExist(const std::string&);
+            static void createDirectory(const std::string&);
 
             static std::string getFileExtension(const std::string&);
             static std::string getFileName(const std::string&);
