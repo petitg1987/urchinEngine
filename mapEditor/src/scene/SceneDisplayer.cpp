@@ -77,11 +77,9 @@ namespace urchin {
 
     void SceneDisplayer::initializeEngineResources(const std::string& mapEditorPath) {
         std::string mapEditorResourcesDirectory = FileUtil::getDirectoryFrom(mapEditorPath) + "resources/";
-        std::string mapEditorSaveDirectory = FileUtil::getDirectoryFrom(mapEditorPath) + "save/";
 
         ConfigService::instance()->loadProperties("engine.properties", mapEditorResourcesDirectory);
         ShaderConfig::instance()->replaceShadersParentDirectoryBy(mapEditorResourcesDirectory);
-        FileSystem::instance()->setupSaveDirectory(mapEditorSaveDirectory);
     }
 
     void SceneDisplayer::initializeScene(const std::string& mapFilename) {

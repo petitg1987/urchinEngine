@@ -17,15 +17,13 @@ namespace urchin {
     std::map<std::string, std::string> PropertyFileHandler::loadPropertyFile() const {
         std::map<std::string, std::string> properties;
 
-        std::ifstream file;
-
         std::string propertyName;
         std::string equalSign;
         std::string propertyValue;
 
-        file.open(propertiesFilePath, std::ios::in);
-        if (file.fail()) {
-            throw std::invalid_argument("Cannot open the file " + propertiesFilePath + ".");
+        std::ifstream file(propertiesFilePath, std::ios::in);
+        if (!file.is_open()) {
+            throw std::invalid_argument("Unable to open file: " + propertiesFilePath);
         }
 
         do

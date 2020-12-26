@@ -1,5 +1,7 @@
 #include <stdexcept>
 #include <filesystem>
+#include <fstream>
+#include <cassert>
 #include <sys/stat.h>
 
 #include "FileUtil.h"
@@ -11,10 +13,16 @@ namespace urchin {
         struct stat info{};
         if (stat(directoryPath.c_str(), &info) != 0) {
             return false;
-        } else if (info.st_mode & (unsigned int)S_IFDIR) {
-            return true;
         }
-        return false;
+        return info.st_mode & (unsigned int)S_IFDIR;
+    }
+
+    bool FileUtil::isFileExist(const std::string& filePath) {
+        struct stat info{};
+        if (stat(filePath.c_str(), &info) != 0) {
+            return false;
+        }
+        return info.st_mode & (unsigned int)S_IFREG;
     }
 
     void FileUtil::createDirectory(const std::string& directory) {
@@ -22,6 +30,35 @@ namespace urchin {
         std::filesystem::create_directories(directory, errorCode);
         if(errorCode.value() != 0) {
             throw std::runtime_error("Unable to create the directory: " + directory);
+        }
+    }
+
+    void FileUtil::copyDirectoryContent(const std::string& srcDirectory, const std::string& dstDirectory) {
+        //Similar to "std::filesystem::copy(src, dst, std::filesystem::copy_options::skip_existing);" method
+        //Unfortunately, the "copy" method doesn't work correctly on MSYS2: https://github.com/msys2/MSYS2-packages/issues/1937
+
+        if(dstDirectory.find_last_of("/\\") != dstDirectory.size() - 1) {
+            throw std::invalid_argument("Destination directory (" + dstDirectory + ") must end with a slash");
+        }
+
+        for (const auto& entry : std::filesystem::directory_iterator(srcDirectory)) {
+            if (entry.is_regular_file()) {
+                std::string srcFile = entry.path();
+                std::string dstFile = dstDirectory + FileUtil::getFileName(srcFile);
+
+                if(!isFileExist(dstFile)) {
+                    std::ifstream src(srcFile, std::ios::binary);
+                    if (!src.is_open()) {
+                        throw std::runtime_error("Unable to open file: " + srcFile);
+                    }
+
+                    std::ofstream dst(dstFile, std::ios::binary);
+                    if (!dst.is_open()) {
+                        throw std::runtime_error("Unable to open file: " + srcFile);
+                    }
+                    dst << src.rdbuf();
+                }
+            }
         }
     }
 
@@ -34,8 +71,7 @@ namespace urchin {
             return "";
         }
 
-        return filePath.substr(found+1, filePath.size()-found);
-
+        return filePath.substr(found + 1, filePath.size()-found);
     }
 
     std::string FileUtil::getFileName(const std::string& filePath) {
@@ -44,14 +80,14 @@ namespace urchin {
             return filePath;
         }
 
-        return filePath.substr(found+1);
+        return filePath.substr(found + 1);
     }
 
     std::string FileUtil::getFileNameNoExtension(const std::string& filePath) {
         std::string fileName = getFileName(filePath);
         std::string extension = getFileExtension(filePath);
 
-        return fileName.substr(0, fileName.size()-1-extension.size());
+        return fileName.substr(0, fileName.size() -1 - extension.size());
     }
 
     std::string FileUtil::getDirectoryFrom(const std::string& filePath) {
@@ -101,12 +137,12 @@ namespace urchin {
         std::string simplifiedDirectoryPath = directoryPath;
         std::size_t returnDirFound = simplifiedDirectoryPath.find(parentDirectorySymbol);
         while (returnDirFound != std::string::npos) {
-            std::size_t found = simplifiedDirectoryPath.find_last_of("/\\", returnDirFound-2);
+            std::size_t found = simplifiedDirectoryPath.find_last_of("/\\", returnDirFound - 2);
             if (found == std::string::npos) {
                 throw std::domain_error("Invalid directory path: " + directoryPath);
             }
 
-            simplifiedDirectoryPath = simplifiedDirectoryPath.replace(found+1, (returnDirFound+2)-found, "");
+            simplifiedDirectoryPath = simplifiedDirectoryPath.replace(found + 1, (returnDirFound + 2) - found, "");
             returnDirFound = simplifiedDirectoryPath.find(parentDirectorySymbol);
         }
 
@@ -120,7 +156,7 @@ namespace urchin {
             throw std::invalid_argument("Specified directory cannot be null.");
         }
 
-        if (directory.find_last_of("/\\") != directory.size()-1) {
+        if (directory.find_last_of("/\\") != directory.size() - 1) {
             throw std::invalid_argument("A directory must end by a slash character: " + directory);
         }
     }

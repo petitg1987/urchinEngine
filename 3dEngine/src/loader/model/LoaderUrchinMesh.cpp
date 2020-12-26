@@ -9,16 +9,15 @@ namespace urchin {
     ConstMeshes* LoaderUrchinMesh::loadFromFile(const std::string& filename) {
         std::locale::global(std::locale("C")); //for float
 
-        std::ifstream file;
         std::istringstream iss;
         std::string buffer;
         std::string sdata;
         int idata = 0;
 
         std::string filenamePath = FileSystem::instance()->getResourcesDirectory() + filename;
-        file.open(filenamePath, std::ios::in);
-        if (file.fail()) {
-            throw std::invalid_argument("Cannot open the file " + filenamePath + ".");
+        std::ifstream file(filenamePath, std::ios::in);
+        if (file.is_open()) {
+            throw std::invalid_argument("Unable to open file: " + filenamePath);
         }
 
         //numBones
