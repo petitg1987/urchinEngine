@@ -12,7 +12,7 @@ namespace urchin {
 
         radius = new QDoubleSpinBox();
         mainLayout->addWidget(radius, 0, 1);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(radius);
+        SpinBoxStyleHelper::applyDefaultStyleOn(radius);
         radius->setMinimum(0.0);
         connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
     }

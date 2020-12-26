@@ -17,7 +17,7 @@ namespace urchin {
             float size = aabbox.getHalfSize((unsigned int)axis) * 2.0f;
             axisSplits[axis].push_back(aabbox.getMin()[axis]);
 
-            auto nbSplits = MathFunction::instance()->ceilToInt(size / limitSize);
+            auto nbSplits = MathFunction::ceilToInt(size / limitSize);
             float maxValue = aabbox.getMax()[axis];
 
             for (int split = 0; split < nbSplits; ++split) {

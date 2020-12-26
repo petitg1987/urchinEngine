@@ -51,12 +51,12 @@ namespace urchin {
 
         addTerrainButton = new QPushButton("New Terrain");
         buttonsLayout->addWidget(addTerrainButton);
-        ButtonStyleHelper::instance()->applyNormalStyle(addTerrainButton);
+        ButtonStyleHelper::applyNormalStyle(addTerrainButton);
         connect(addTerrainButton, SIGNAL(clicked()), this, SLOT(showAddTerrainDialog()));
 
         removeTerrainButton = new QPushButton("Remove Terrain");
         buttonsLayout->addWidget(removeTerrainButton);
-        ButtonStyleHelper::instance()->applyNormalStyle(removeTerrainButton);
+        ButtonStyleHelper::applyNormalStyle(removeTerrainButton);
         removeTerrainButton->setEnabled(false);
         connect(removeTerrainButton, SIGNAL(clicked()), this, SLOT(removeSelectedTerrain()));
 
@@ -69,7 +69,7 @@ namespace urchin {
     void TerrainPanelWidget::setupGeneralPropertiesBox(QVBoxLayout* mainLayout) {
         generalPropertiesGroupBox = new QGroupBox("General Properties");
         mainLayout->addWidget(generalPropertiesGroupBox);
-        GroupBoxStyleHelper::instance()->applyNormalStyle(generalPropertiesGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
         generalPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         generalPropertiesGroupBox->hide();
 
@@ -82,15 +82,15 @@ namespace urchin {
         generalPropertiesLayout->addLayout(positionLayout, 0, 1);
         positionX = new QDoubleSpinBox();
         positionLayout->addWidget(positionX);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionX);
+        SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
         connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGeneralProperties()));
         positionY = new QDoubleSpinBox();
         positionLayout->addWidget(positionY);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionY);
+        SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
         connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGeneralProperties()));
         positionZ = new QDoubleSpinBox();
         positionLayout->addWidget(positionZ);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionZ);
+        SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGeneralProperties()));
 
         auto *ambientLabel= new QLabel("Ambient:");
@@ -98,7 +98,7 @@ namespace urchin {
 
         ambient = new QDoubleSpinBox();
         generalPropertiesLayout->addWidget(ambient, 1, 1);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(ambient);
+        SpinBoxStyleHelper::applyDefaultStyleOn(ambient);
         ambient->setMinimum(0.0);
         ambient->setMaximum(1.0);
         connect(ambient, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGeneralProperties()));
@@ -107,7 +107,7 @@ namespace urchin {
     void TerrainPanelWidget::setupMeshBox(QVBoxLayout* mainLayout) {
         meshGroupBox = new QGroupBox("Mesh");
         mainLayout->addWidget(meshGroupBox);
-        GroupBoxStyleHelper::instance()->applyNormalStyle(meshGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(meshGroupBox);
         meshGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         meshGroupBox->hide();
 
@@ -118,7 +118,7 @@ namespace urchin {
 
         xzScale = new QDoubleSpinBox();
         meshLayout->addWidget(xzScale, 0, 1, 1, 3);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(xzScale);
+        SpinBoxStyleHelper::applyDefaultStyleOn(xzScale);
         xzScale->setMinimum(0.0);
         xzScale->setSingleStep(0.05);
         connect(xzScale, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMesh()));
@@ -128,7 +128,7 @@ namespace urchin {
 
         yScale = new QDoubleSpinBox();
         meshLayout->addWidget(yScale, 1, 1, 1, 3);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(yScale);
+        SpinBoxStyleHelper::applyDefaultStyleOn(yScale);
         yScale->setMinimum(0.0);
         yScale->setSingleStep(0.01);
         connect(yScale, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMesh()));
@@ -137,7 +137,7 @@ namespace urchin {
     void TerrainPanelWidget::setupMaterialBox(QVBoxLayout* mainLayout) {
         materialGroupBox = new QGroupBox("Material");
         mainLayout->addWidget(materialGroupBox);
-        GroupBoxStyleHelper::instance()->applyNormalStyle(materialGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(materialGroupBox);
         materialGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         materialGroupBox->hide();
 
@@ -148,14 +148,14 @@ namespace urchin {
 
         sRepeat = new QDoubleSpinBox();
         materialLayout->addWidget(sRepeat, 0, 1);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(sRepeat);
+        SpinBoxStyleHelper::applyDefaultStyleOn(sRepeat);
         sRepeat->setMinimum(0.0);
         sRepeat->setSingleStep(1.0);
         connect(sRepeat, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
 
         tRepeat = new QDoubleSpinBox();
         materialLayout->addWidget(tRepeat, 0, 2, 1, 3);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(tRepeat);
+        SpinBoxStyleHelper::applyDefaultStyleOn(tRepeat);
         tRepeat->setMinimum(0.0);
         tRepeat->setSingleStep(1.0);
         connect(tRepeat, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
@@ -169,13 +169,13 @@ namespace urchin {
 
         auto* selectMaskFileButton = new QPushButton("...");
         materialLayout->addWidget(selectMaskFileButton, 1, 3);
-        ButtonStyleHelper::instance()->applyNormalStyle(selectMaskFileButton);
+        ButtonStyleHelper::applyNormalStyle(selectMaskFileButton);
         selectMaskFileButton->setFixedWidth(22);
         connect(selectMaskFileButton, SIGNAL(clicked()), this, SLOT(showMaskFilenameDialog()));
 
         auto* clearMaskFileButton = new QPushButton("Clr");
         materialLayout->addWidget(clearMaskFileButton, 1, 4);
-        ButtonStyleHelper::instance()->applyNormalStyle(clearMaskFileButton);
+        ButtonStyleHelper::applyNormalStyle(clearMaskFileButton);
         clearMaskFileButton->setFixedWidth(22);
         connect(clearMaskFileButton, SIGNAL(clicked()), this, SLOT(clearMaskFilename()));
 
@@ -191,7 +191,7 @@ namespace urchin {
 
             auto* selectMaterialFileButton = new QPushButton("...");
             materialLayout->addWidget(selectMaterialFileButton, 2 + (int)i, 3);
-            ButtonStyleHelper::instance()->applyNormalStyle(selectMaterialFileButton);
+            ButtonStyleHelper::applyNormalStyle(selectMaterialFileButton);
             selectMaterialFileButton->setFixedWidth(22);
             auto* selectSignalMapper = new QSignalMapper();
             connect(selectMaterialFileButton, SIGNAL(clicked()), selectSignalMapper, SLOT(map()));
@@ -200,7 +200,7 @@ namespace urchin {
 
             auto* clearMaterialFileButton = new QPushButton("Clr");
             materialLayout->addWidget(clearMaterialFileButton, 2 + (int)i, 4);
-            ButtonStyleHelper::instance()->applyNormalStyle(clearMaterialFileButton);
+            ButtonStyleHelper::applyNormalStyle(clearMaterialFileButton);
             clearMaterialFileButton->setFixedWidth(22);
             auto* clearSignalMapper = new QSignalMapper();
             connect(clearMaterialFileButton, SIGNAL(clicked()), clearSignalMapper, SLOT(map()));
@@ -212,7 +212,7 @@ namespace urchin {
     void TerrainPanelWidget::setupGrassBox(QVBoxLayout* mainLayout) {
         grassGroupBox = new QGroupBox("Grass");
         mainLayout->addWidget(grassGroupBox);
-        GroupBoxStyleHelper::instance()->applyNormalStyle(grassGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(grassGroupBox);
         grassGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         grassGroupBox->hide();
 
@@ -227,13 +227,13 @@ namespace urchin {
 
         auto* selectTextureFileButton = new QPushButton("...");
         grassLayout->addWidget(selectTextureFileButton, 1, 4);
-        ButtonStyleHelper::instance()->applyNormalStyle(selectTextureFileButton);
+        ButtonStyleHelper::applyNormalStyle(selectTextureFileButton);
         selectTextureFileButton->setFixedWidth(22);
         connect(selectTextureFileButton, SIGNAL(clicked()), this, SLOT(showGrassTextureFilenameDialog()));
 
         auto* clearTextureFileButton = new QPushButton("Clr");
         grassLayout->addWidget(clearTextureFileButton, 1, 5);
-        ButtonStyleHelper::instance()->applyNormalStyle(clearTextureFileButton);
+        ButtonStyleHelper::applyNormalStyle(clearTextureFileButton);
         clearTextureFileButton->setFixedWidth(22);
         connect(clearTextureFileButton, SIGNAL(clicked()), this, SLOT(clearGrassTextureFilename()));
 
@@ -246,13 +246,13 @@ namespace urchin {
 
         auto* selectMaskFileButton = new QPushButton("...");
         grassLayout->addWidget(selectMaskFileButton, 2, 4);
-        ButtonStyleHelper::instance()->applyNormalStyle(selectMaskFileButton);
+        ButtonStyleHelper::applyNormalStyle(selectMaskFileButton);
         selectMaskFileButton->setFixedWidth(22);
         connect(selectMaskFileButton, SIGNAL(clicked()), this, SLOT(showGrassMaskFilenameDialog()));
 
         auto* clearMaskFileButton = new QPushButton("Clr");
         grassLayout->addWidget(clearMaskFileButton, 2, 5);
-        ButtonStyleHelper::instance()->applyNormalStyle(clearMaskFileButton);
+        ButtonStyleHelper::applyNormalStyle(clearMaskFileButton);
         clearMaskFileButton->setFixedWidth(22);
         connect(clearMaskFileButton, SIGNAL(clicked()), this, SLOT(clearGrassMaskFilename()));
 
@@ -261,7 +261,7 @@ namespace urchin {
 
         numGrassInTex = new QSpinBox();
         grassLayout->addWidget(numGrassInTex, 3, 1);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(numGrassInTex);
+        SpinBoxStyleHelper::applyDefaultStyleOn(numGrassInTex);
         numGrassInTex->setMinimum(1);
         numGrassInTex->setSingleStep(1);
         connect(numGrassInTex, SIGNAL(valueChanged(int)), this, SLOT(updateTerrainGrass()));
@@ -271,7 +271,7 @@ namespace urchin {
 
         grassQuantity = new QDoubleSpinBox();
         grassLayout->addWidget(grassQuantity, 4, 1);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(grassQuantity);
+        SpinBoxStyleHelper::applyDefaultStyleOn(grassQuantity);
         grassQuantity->setMinimum(0.0);
         grassQuantity->setSingleStep(0.1);
         connect(grassQuantity, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
@@ -281,14 +281,14 @@ namespace urchin {
 
         grassHeight = new QDoubleSpinBox();
         grassLayout->addWidget(grassHeight, 5, 1);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(grassHeight);
+        SpinBoxStyleHelper::applyDefaultStyleOn(grassHeight);
         grassHeight->setMinimum(0.0);
         grassHeight->setSingleStep(0.05);
         connect(grassHeight, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
 
         grassLength = new QDoubleSpinBox();
         grassLayout->addWidget(grassLength, 5, 2);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(grassLength);
+        SpinBoxStyleHelper::applyDefaultStyleOn(grassLength);
         grassLength->setMinimum(0.0);
         grassLength->setSingleStep(0.05);
         connect(grassLength, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
@@ -298,15 +298,15 @@ namespace urchin {
 
         windDirectionX = new QDoubleSpinBox();
         grassLayout->addWidget(windDirectionX, 6, 1);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(windDirectionX);
+        SpinBoxStyleHelper::applyDefaultStyleOn(windDirectionX);
         connect(windDirectionX, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
         windDirectionY = new QDoubleSpinBox();
         grassLayout->addWidget(windDirectionY, 6, 2);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(windDirectionY);
+        SpinBoxStyleHelper::applyDefaultStyleOn(windDirectionY);
         connect(windDirectionY, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
         windDirectionZ = new QDoubleSpinBox();
         grassLayout->addWidget(windDirectionZ, 6, 3, 1, 3);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(windDirectionZ);
+        SpinBoxStyleHelper::applyDefaultStyleOn(windDirectionZ);
         connect(windDirectionZ, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
 
         auto *windStrengthLabel= new QLabel("Wind strength:");
@@ -314,7 +314,7 @@ namespace urchin {
 
         windStrength = new QDoubleSpinBox();
         grassLayout->addWidget(windStrength, 7, 1);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(windStrength);
+        SpinBoxStyleHelper::applyDefaultStyleOn(windStrength);
         windStrength->setMinimum(0.0);
         connect(windStrength, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
     }

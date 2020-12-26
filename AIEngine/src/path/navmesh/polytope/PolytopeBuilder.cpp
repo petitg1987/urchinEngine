@@ -75,13 +75,13 @@ namespace urchin {
 
     std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytope(const std::shared_ptr<AITerrain>& aiTerrain, const std::shared_ptr<NavMeshAgent>& navMeshAgent) {
         #ifndef NDEBUG
-            assert(MathFunction::instance()->isOne(aiTerrain->getTransform().getScale()));
-            assert(MathFunction::instance()->isOne(aiTerrain->getTransform().getOrientationMatrix().determinant()));
+            assert(MathFunction::isOne(aiTerrain->getTransform().getScale()));
+            assert(MathFunction::isOne(aiTerrain->getTransform().getOrientationMatrix().determinant()));
         #endif
 
         std::vector<std::unique_ptr<Polytope>> expandedPolytopes;
 
-        auto terrainMaxWalkableSlope = AngleConverter<float>::instance()->toRadian(ConfigService::instance()->getFloatValue("navMesh.terrainMaxWalkableSlopeInDegree"));
+        auto terrainMaxWalkableSlope = AngleConverter<float>::toRadian(ConfigService::instance()->getFloatValue("navMesh.terrainMaxWalkableSlopeInDegree"));
         auto heightfieldPointHelper = std::make_shared<const HeightfieldPointHelper<float>>(aiTerrain->getLocalVertices(), aiTerrain->getXLength());
         auto terrainNavTopography = std::make_shared<NavTerrainTopography>(heightfieldPointHelper, aiTerrain->getTransform().getPosition());
 

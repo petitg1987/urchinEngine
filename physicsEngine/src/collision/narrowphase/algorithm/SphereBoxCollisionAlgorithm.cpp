@@ -23,9 +23,9 @@ namespace urchin {
         const Point3<float>& spherePosLocalBox = object2.getShapeWorldTransform().inverseTransform(spherePos);
 
         Point3<float> closestPointOnBox(
-                MathFunction::instance()->clamp(spherePosLocalBox.X, -box2.getHalfSize(0), box2.getHalfSize(0)),
-                MathFunction::instance()->clamp(spherePosLocalBox.Y, -box2.getHalfSize(1), box2.getHalfSize(1)),
-                MathFunction::instance()->clamp(spherePosLocalBox.Z, -box2.getHalfSize(2), box2.getHalfSize(2)) );
+                MathFunction::clamp(spherePosLocalBox.X, -box2.getHalfSize(0), box2.getHalfSize(0)),
+                MathFunction::clamp(spherePosLocalBox.Y, -box2.getHalfSize(1), box2.getHalfSize(1)),
+                MathFunction::clamp(spherePosLocalBox.Z, -box2.getHalfSize(2), box2.getHalfSize(2)) );
 
         Vector3<float> normalFromObject2 = closestPointOnBox.vector(spherePosLocalBox);
 
@@ -53,7 +53,7 @@ namespace urchin {
                 }
 
                 //project sphere point on found axis
-                closestPointOnBox[minAxis] = spherePosLocalBox[minAxis] + minDistToAxis * MathFunction::instance()->sign<float>(spherePosLocalBox[minAxis]);
+                closestPointOnBox[minAxis] = spherePosLocalBox[minAxis] + minDistToAxis * MathFunction::sign<float>(spherePosLocalBox[minAxis]);
 
                 //normal computation
                 normalFromObject2 = spherePosLocalBox.vector(closestPointOnBox);

@@ -12,7 +12,7 @@ namespace urchin {
         TextureFilter(textureFilterBuilder),
         blurDirection(blurDirection),
         blurSize(textureFilterBuilder->getBlurSize()),
-        nbTextureFetch(MathFunction::instance()->ceilToUInt((float)blurSize / 2.0f)),
+        nbTextureFetch(MathFunction::ceilToUInt((float)blurSize / 2.0f)),
         textureSize((BlurDirection::VERTICAL == blurDirection) ? getTextureHeight() : getTextureWidth()) { //See http://rastergrid.com/blog/2010/09/efficient-gaussian-blur-with-linear-sampling/
 
         if (blurSize <= 1) {
@@ -42,7 +42,7 @@ namespace urchin {
     }
 
     std::vector<float> GaussianBlurFilter::computeWeights() const {
-        std::vector<unsigned int> pascalTriangleLineValues = PascalTriangle().lineValues(blurSize + 3);
+        std::vector<unsigned int> pascalTriangleLineValues = PascalTriangle::lineValues(blurSize + 3);
 
         //exclude outermost because the values are too insignificant and haven't enough impact on 32bits value
         std::vector<float> gaussianFactors(blurSize);
@@ -75,7 +75,7 @@ namespace urchin {
             const std::vector<float>& weightsLinearSampling) const {
         std::vector<float> offsetsLinearSampling(nbTextureFetch);
 
-        int firstOffset = -MathFunction::instance()->floorToInt((float)blurSize / 2.0f);
+        int firstOffset = -MathFunction::floorToInt((float)blurSize / 2.0f);
         for (unsigned int i = 0; i < nbTextureFetch; ++i) {
             if (i * 2 + 1 >= blurSize) {
                 offsetsLinearSampling[i] = (float)(firstOffset + (int)i * 2);

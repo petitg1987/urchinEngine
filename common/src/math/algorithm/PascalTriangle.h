@@ -7,7 +7,7 @@ namespace urchin {
 
     class PascalTriangle {
         public:
-            std::vector<unsigned int> lineValues(unsigned int);
+            static std::vector<unsigned int> lineValues(unsigned int);
     };
 
 }

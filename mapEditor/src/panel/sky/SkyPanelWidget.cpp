@@ -43,7 +43,7 @@ namespace urchin {
     void SkyPanelWidget::setupSkyboxBox(QVBoxLayout* mainLayout) {
         auto* skyboxGroupBox = new QGroupBox("Skybox");
         mainLayout->addWidget(skyboxGroupBox);
-        GroupBoxStyleHelper::instance()->applyNormalStyle(skyboxGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(skyboxGroupBox);
         skyboxGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* skyboxLayout = new QGridLayout(skyboxGroupBox);
@@ -89,7 +89,7 @@ namespace urchin {
 
         offsetY = new QDoubleSpinBox();
         skyboxLayout->addWidget(offsetY, 6, 1);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(offsetY);
+        SpinBoxStyleHelper::applyDefaultStyleOn(offsetY);
         connect(offsetY, SIGNAL(valueChanged(double)), this, SLOT(skyChanged()));
     }
 
@@ -109,7 +109,7 @@ namespace urchin {
     QPushButton* SkyPanelWidget::createSelectFileButton(QHBoxLayout* skyboxFilenameLayout) {
         auto* selectSkyboxFileButton = new QPushButton("...");
         skyboxFilenameLayout->addWidget(selectSkyboxFileButton);
-        ButtonStyleHelper::instance()->applyNormalStyle(selectSkyboxFileButton);
+        ButtonStyleHelper::applyNormalStyle(selectSkyboxFileButton);
         selectSkyboxFileButton->setFixedWidth(22);
 
         return selectSkyboxFileButton;
@@ -118,7 +118,7 @@ namespace urchin {
     QPushButton* SkyPanelWidget::createClearFileButton(QHBoxLayout* skyboxFilenameLayout) {
         auto* clearSkyboxFileButton = new QPushButton("Clr");
         skyboxFilenameLayout->addWidget(clearSkyboxFileButton);
-        ButtonStyleHelper::instance()->applyNormalStyle(clearSkyboxFileButton);
+        ButtonStyleHelper::applyNormalStyle(clearSkyboxFileButton);
         clearSkyboxFileButton->setFixedWidth(22);
 
         return clearSkyboxFileButton;

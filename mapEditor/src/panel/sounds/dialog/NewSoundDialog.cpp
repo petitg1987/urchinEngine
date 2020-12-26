@@ -63,7 +63,7 @@ namespace urchin {
 
         auto* selectMeshFileButton = new QPushButton("...");
         mainLayout->addWidget(selectMeshFileButton, 1, 2);
-        ButtonStyleHelper::instance()->applyNormalStyle(selectMeshFileButton);
+        ButtonStyleHelper::applyNormalStyle(selectMeshFileButton);
         selectMeshFileButton->setFixedWidth(22);
         connect(selectMeshFileButton, SIGNAL(clicked()), this, SLOT(showSoundFilenameDialog()));
     }
@@ -142,18 +142,18 @@ namespace urchin {
             bool hasError = false;
 
             updateSoundName();
-            LabelStyleHelper::instance()->applyNormalStyle(soundNameLabel);
-            LabelStyleHelper::instance()->applyNormalStyle(soundFilenameLabel);
+            LabelStyleHelper::applyNormalStyle(soundNameLabel);
+            LabelStyleHelper::applyNormalStyle(soundFilenameLabel);
 
             if (soundName.empty()) {
-                LabelStyleHelper::instance()->applyErrorStyle(soundNameLabel, "Sound name is mandatory");
+                LabelStyleHelper::applyErrorStyle(soundNameLabel, "Sound name is mandatory");
                 hasError = true;
             } else if (isSceneSoundExist(soundName)) {
-                LabelStyleHelper::instance()->applyErrorStyle(soundNameLabel, "Sound name is already used");
+                LabelStyleHelper::applyErrorStyle(soundNameLabel, "Sound name is already used");
                 hasError = true;
             }
             if (soundFilename.empty()) {
-                LabelStyleHelper::instance()->applyErrorStyle(soundFilenameLabel, "Sound file is mandatory");
+                LabelStyleHelper::applyErrorStyle(soundFilenameLabel, "Sound file is mandatory");
                 hasError = true;
             }
 

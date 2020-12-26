@@ -34,13 +34,13 @@ void GhostBodyMT::processGhostBody() {
         float posY = cube->getTransform().getPosition().Y;
         float minPosY = (cubeHeight / 2.0f) - 0.01f;
         float maxPosY = cubeHeight + (cubeHeight / 2.0f) + 0.01f;
-        AssertHelper::instance()->assertTrue(posY > minPosY && posY < maxPosY,"Cube " + cube->getId() + " must be on the ground or above another cube. Position Y: " + std::to_string(posY));
-        AssertHelper::instance()->assertTrue(!cube->isActive(), "Cube " + cube->getId() + " must become inactive.");
+        AssertHelper::assertTrue(posY > minPosY && posY < maxPosY,"Cube " + cube->getId() + " must be on the ground or above another cube. Position Y: " + std::to_string(posY));
+        AssertHelper::assertTrue(!cube->isActive(), "Cube " + cube->getId() + " must become inactive.");
     }
     float posY = character->getTransform().getPosition().Y;
     float minPosY = (characterHeight / 2.0f) - 0.01f;
     float maxPosY = cubeHeight + cubeHeight + (characterHeight / 2.0f) + 0.01f;
-    AssertHelper::instance()->assertTrue(posY > minPosY && posY < maxPosY,"Character must be on the ground or above one or two cubes. Position Y: " + std::to_string(posY));
+    AssertHelper::assertTrue(posY > minPosY && posY < maxPosY,"Character must be on the ground or above one or two cubes. Position Y: " + std::to_string(posY));
 }
 
 void GhostBodyMT::constructGround(const std::unique_ptr<PhysicsWorld>& physicsWorld) {

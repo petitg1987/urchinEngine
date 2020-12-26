@@ -27,7 +27,7 @@ namespace urchin {
     }
 
     bool TemporalObject::isRay() const {
-        return shape->getShapeType() == CollisionShape3D::ShapeType::SPHERE_SHAPE && MathFunction::instance()->isZero(shape->getInnerMargin());
+        return shape->getShapeType() == CollisionShape3D::ShapeType::SPHERE_SHAPE && MathFunction::isZero(shape->getInnerMargin());
     }
 
 }

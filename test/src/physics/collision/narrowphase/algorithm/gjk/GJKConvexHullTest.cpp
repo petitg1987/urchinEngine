@@ -26,7 +26,7 @@ void GJKConvexHullTest::identicalBox() {
     CollisionConvexHullObject ch2(0.0f, obbPoints2, obbPoints2);
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(ch1, ch2);
 
-    AssertHelper::instance()->assertTrue(result->isCollide());
+    AssertHelper::assertTrue(result->isCollide());
 }
 
 void GJKConvexHullTest::separateBox() {
@@ -46,13 +46,13 @@ void GJKConvexHullTest::separateBox() {
     CollisionConvexHullObject ch2(0.0f, obbPoints, obbPoints);
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(ch1, ch2);
 
-    AssertHelper::instance()->assertTrue(!result->isCollide());
-    AssertHelper::instance()->assertFloatEquals(result->getSeparatingDistance(), 0.1f);
-    AssertHelper::instance()->assertFloatEquals(result->getClosestPointA().X, 0.0f);
-    AssertHelper::instance()->assertFloatEquals(result->getClosestPointA().Y, 0.0f);
-    AssertHelper::instance()->assertFloatEquals(result->getClosestPointB().X, -0.1f);
-    AssertHelper::instance()->assertFloatEquals(result->getClosestPointB().Y, 0.0f);
-    AssertHelper::instance()->assertFloatEquals(result->getClosestPointB().vector(result->getClosestPointA()).length(), 0.1f);
+    AssertHelper::assertTrue(!result->isCollide());
+    AssertHelper::assertFloatEquals(result->getSeparatingDistance(), 0.1f);
+    AssertHelper::assertFloatEquals(result->getClosestPointA().X, 0.0f);
+    AssertHelper::assertFloatEquals(result->getClosestPointA().Y, 0.0f);
+    AssertHelper::assertFloatEquals(result->getClosestPointB().X, -0.1f);
+    AssertHelper::assertFloatEquals(result->getClosestPointB().Y, 0.0f);
+    AssertHelper::assertFloatEquals(result->getClosestPointB().vector(result->getClosestPointA()).length(), 0.1f);
 }
 
 void GJKConvexHullTest::cornerInsideBox() {
@@ -72,7 +72,7 @@ void GJKConvexHullTest::cornerInsideBox() {
     CollisionConvexHullObject ch2(0.0f, obbPoints, obbPoints);
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(ch1, ch2);
 
-    AssertHelper::instance()->assertTrue(result->isCollide());
+    AssertHelper::assertTrue(result->isCollide());
 }
 
 void GJKConvexHullTest::faceInsideTrapeze() {
@@ -92,7 +92,7 @@ void GJKConvexHullTest::faceInsideTrapeze() {
     CollisionConvexHullObject ch2(0.0f, trapezePoints2, trapezePoints2);
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(ch1, ch2);
 
-    AssertHelper::instance()->assertTrue(result->isCollide());
+    AssertHelper::assertTrue(result->isCollide());
 }
 
 void GJKConvexHullTest::separateHexagon() {
@@ -112,13 +112,13 @@ void GJKConvexHullTest::separateHexagon() {
     CollisionConvexHullObject ch2(0.0f, hexagonPoints2, hexagonPoints2);
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(ch1, ch2);
 
-    AssertHelper::instance()->assertTrue(!result->isCollide());
-    AssertHelper::instance()->assertFloatEquals(result->getSeparatingDistance(), 0.5f);
-    AssertHelper::instance()->assertFloatEquals(result->getClosestPointA().X, -0.5f);
-    AssertHelper::instance()->assertFloatEquals(result->getClosestPointA().Y, 1.0f);
-    AssertHelper::instance()->assertFloatEquals(result->getClosestPointB().X, -1.0f);
-    AssertHelper::instance()->assertFloatEquals(result->getClosestPointB().Y, 1.0f);
-    AssertHelper::instance()->assertFloatEquals(result->getClosestPointB().vector(result->getClosestPointA()).length(), 0.5f);
+    AssertHelper::assertTrue(!result->isCollide());
+    AssertHelper::assertFloatEquals(result->getSeparatingDistance(), 0.5f);
+    AssertHelper::assertFloatEquals(result->getClosestPointA().X, -0.5f);
+    AssertHelper::assertFloatEquals(result->getClosestPointA().Y, 1.0f);
+    AssertHelper::assertFloatEquals(result->getClosestPointB().X, -1.0f);
+    AssertHelper::assertFloatEquals(result->getClosestPointB().Y, 1.0f);
+    AssertHelper::assertFloatEquals(result->getClosestPointB().vector(result->getClosestPointA()).length(), 0.5f);
 }
 
 void GJKConvexHullTest::cornerInsideHexagon() {
@@ -138,7 +138,7 @@ void GJKConvexHullTest::cornerInsideHexagon() {
     CollisionConvexHullObject ch2(0.0f, hexagonPoints2, hexagonPoints2);
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(ch1, ch2);
 
-    AssertHelper::instance()->assertTrue(result->isCollide());
+    AssertHelper::assertTrue(result->isCollide());
 }
 
 CppUnit::Test* GJKConvexHullTest::suite() {

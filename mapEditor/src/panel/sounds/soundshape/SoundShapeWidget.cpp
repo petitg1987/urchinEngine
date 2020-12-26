@@ -21,7 +21,7 @@ namespace urchin {
 
         margin = new QDoubleSpinBox();
         mainLayout->addWidget(margin, 0, 1);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(margin);
+        SpinBoxStyleHelper::applyDefaultStyleOn(margin);
         margin->setMinimum(0.0);
         connect(margin, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
     }

@@ -14,17 +14,17 @@ namespace urchin {
         Point3<float> nearRightVertex = position + localVertices[(xLength * zLength) - 1];
 
         float terrainXSize = nearRightVertex.X - farLeftVertex.X;
-        auto xSamples = MathFunction::instance()->ceilToUInt(terrainXSize / terrainMaxSize);
+        auto xSamples = MathFunction::ceilToUInt(terrainXSize / terrainMaxSize);
         float terrainZSize = nearRightVertex.Z - farLeftVertex.Z;
-        auto zSamples = MathFunction::instance()->ceilToUInt(terrainZSize / terrainMaxSize);
+        auto zSamples = MathFunction::ceilToUInt(terrainZSize / terrainMaxSize);
 
         unsigned int zShit = 0;
         for (unsigned int zSample = 0; zSample < zSamples; ++zSample) {
-            unsigned int zSize = MathFunction::instance()->roundToUInt((float)((zSample + 1) * zLength) / (float)zSamples) - zShit;
+            unsigned int zSize = MathFunction::roundToUInt((float)((zSample + 1) * zLength) / (float)zSamples) - zShit;
             unsigned int xShit = 0;
 
             for (unsigned int xSample = 0; xSample < xSamples; ++xSample) {
-                unsigned int xSize = MathFunction::instance()->roundToUInt((float)((xSample + 1) * xLength) / (float)xSamples) - xShit;
+                unsigned int xSize = MathFunction::roundToUInt((float)((xSample + 1) * xLength) / (float)xSamples) - xShit;
 
                 TerrainSplit terrainSplit = TerrainSplit();
                 terrainSplit.name = name + "-" + std::to_string((zSample * xSamples) + xSample);

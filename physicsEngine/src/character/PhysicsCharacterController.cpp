@@ -96,7 +96,7 @@ namespace urchin {
         Vector3<float> velocity = getVelocity();
         if (isOnGround) {
             float slopeSpeedDecrease = 1.0f - (slopeInPercentage / physicsCharacter->getMaxSlopeInPercentage());
-            slopeSpeedDecrease = MathFunction::instance()->clamp(slopeSpeedDecrease, MIN_WALK_SPEED_PERCENTAGE, MAX_WALK_SPEED_PERCENTAGE);
+            slopeSpeedDecrease = MathFunction::clamp(slopeSpeedDecrease, MIN_WALK_SPEED_PERCENTAGE, MAX_WALK_SPEED_PERCENTAGE);
             targetPosition = targetPosition.translate(velocity * dt * slopeSpeedDecrease);
 
             lastVelocity = velocity;
@@ -128,7 +128,7 @@ namespace urchin {
 
         //compute and apply orientation
         Quaternion<float> newOrientation = initialOrientation;
-        if (!MathFunction::instance()->isZero(velocity.squareLength(), 0.001f)) {
+        if (!MathFunction::isZero(velocity.squareLength(), 0.001f)) {
             Quaternion<float> orientation = Quaternion<float>(velocity.normalize()).normalize();
             newOrientation = orientation * initialOrientation;
         } else {

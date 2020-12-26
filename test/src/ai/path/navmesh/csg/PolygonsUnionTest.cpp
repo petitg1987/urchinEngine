@@ -13,8 +13,8 @@ void PolygonsUnionTest::onePolygonUnion() {
     std::vector<CSGPolygon<float>> allPolygons = {CSGPolygon<float>("p1", std::move(polyPoints1))};
     std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(0.0f, 0.0f), Point2<float>(0.5f, 1.0f), Point2<float>(1.0f, 0.0f)});
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(0.0f, 0.0f), Point2<float>(0.5f, 1.0f), Point2<float>(1.0f, 0.0f)});
 }
 
 void PolygonsUnionTest::twoPolygonsNoUnion() {
@@ -24,9 +24,9 @@ void PolygonsUnionTest::twoPolygonsNoUnion() {
     std::vector<CSGPolygon<float>> allPolygons = {CSGPolygon<float>("p1", std::move(polyPoints1)), CSGPolygon<float>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 2);
-    AssertHelper::instance()->assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(0.0f, 0.0f), Point2<float>(0.5f, 1.0f), Point2<float>(1.0f, 0.0f)});
-    AssertHelper::instance()->assertPolygonFloatEquals(polygonUnion[1].getCwPoints(), {Point2<float>(2.0f, 0.0f), Point2<float>(2.5f, 1.0f), Point2<float>(3.0f, 0.0f)});
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 2);
+    AssertHelper::assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(0.0f, 0.0f), Point2<float>(0.5f, 1.0f), Point2<float>(1.0f, 0.0f)});
+    AssertHelper::assertPolygonFloatEquals(polygonUnion[1].getCwPoints(), {Point2<float>(2.0f, 0.0f), Point2<float>(2.5f, 1.0f), Point2<float>(3.0f, 0.0f)});
 }
 
 void PolygonsUnionTest::polygonInsideAnother() {
@@ -36,8 +36,8 @@ void PolygonsUnionTest::polygonInsideAnother() {
     std::vector<CSGPolygon<float>> allPolygons = {CSGPolygon<float>("p1", std::move(polyPoints1)), CSGPolygon<float>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(0.0f, 0.0f), Point2<float>(1.5f, 4.0f), Point2<float>(3.0f, 0.0f)});
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(0.0f, 0.0f), Point2<float>(1.5f, 4.0f), Point2<float>(3.0f, 0.0f)});
 }
 
 void PolygonsUnionTest::polygonInsideAnotherTouchInOnePoint() {
@@ -47,8 +47,8 @@ void PolygonsUnionTest::polygonInsideAnotherTouchInOnePoint() {
     std::vector<CSGPolygon<float>> allPolygons = {CSGPolygon<float>("p1", std::move(polyPoints1)), CSGPolygon<float>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(0.0f, -5.0f), Point2<float>(0.0f, 0.0f),
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(0.0f, -5.0f), Point2<float>(0.0f, 0.0f),
                                                                            Point2<float>(1.0f, 0.0f), Point2<float>(3.0f, 0.0f)});
 }
 
@@ -67,8 +67,8 @@ void PolygonsUnionTest::twoPolygonsWithHoleInside() {
     std::vector<CSGPolygon<float>> allPolygons = {CSGPolygon<float>("p1", std::move(polyPoints1)), CSGPolygon<float>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 17);
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 17);
     //no points check
 }
 
@@ -79,8 +79,8 @@ void PolygonsUnionTest::twoPolygonsUnion() {
     std::vector<CSGPolygon<float>> allPolygons = {CSGPolygon<float>("p1", std::move(polyPoints1)), CSGPolygon<float>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(0.0f, 0.0f), Point2<float>(0.5f, 0.5f), Point2<float>(0.0f, 0.5f), Point2<float>(1.0f, 1.5f),
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(0.0f, 0.0f), Point2<float>(0.5f, 0.5f), Point2<float>(0.0f, 0.5f), Point2<float>(1.0f, 1.5f),
                                                                            Point2<float>(2.0f, 0.5f), Point2<float>(1.5f, 0.5f), Point2<float>(2.0f, 0.0f)});
 }
 
@@ -93,8 +93,8 @@ void PolygonsUnionTest::twoPolygonsUnionXAligned() {
     std::vector<CSGPolygon<float>> allPolygons = {CSGPolygon<float>("p1", std::move(polyPoints1)), CSGPolygon<float>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(1.12582099f, 4.62417889f), Point2<float>(-0.174179018f, 4.62417889f),
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(1.12582099f, 4.62417889f), Point2<float>(-0.174179018f, 4.62417889f),
                                                                            Point2<float>(-1.52582097f, 4.62417889f), Point2<float>(-1.52582097f, 5.9758215f),
                                                                            Point2<float>(-0.225821018f, 5.9758215f), Point2<float>(1.12582099f, 5.9758215f)});
 }
@@ -108,8 +108,8 @@ void PolygonsUnionTest::twoPolygonsUnionYAligned() {
     std::vector<CSGPolygon<float>> allPolygons = {CSGPolygon<float>("p1", std::move(polyPoints1)), CSGPolygon<float>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(2.0f, -2.0f), Point2<float>(-2.0f, -2.0f), Point2<float>(-2.0f, 1.0f),
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(2.0f, -2.0f), Point2<float>(-2.0f, -2.0f), Point2<float>(-2.0f, 1.0f),
                                                                            Point2<float>(-2.0f, 3.0f), Point2<float>(2.0f, 3.0f), Point2<float>(2.0f, 2.0f)});
 }
 
@@ -122,8 +122,8 @@ void PolygonsUnionTest::twoPolygonsUnionYAlmostAligned() {
     std::vector<CSGPolygon<float>> allPolygons = {CSGPolygon<float>("p1", std::move(polyPoints1)), CSGPolygon<float>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(2.61617994f, -1.71957302f), Point2<float>(-2.61617994f, -1.71957302f),
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(2.61617994f, -1.71957302f), Point2<float>(-2.61617994f, -1.71957302f),
                                                                            Point2<float>(-2.61617994f, 1.63268399f), Point2<float>(-2.6161797f, 3.36731601f),
                                                                            Point2<float>(2.6161797f, 3.36731601f), Point2<float>(2.61617994f, 1.71957302f)});
 }
@@ -137,8 +137,8 @@ void PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge1() {
     std::vector<CSGPolygon<long long>> allPolygons = {CSGPolygon<long long>("p1", std::move(polyPoints1)), CSGPolygon<long long>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<long long>> polygonUnion = PolygonsUnion<long long>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertPolygonLongLongEquals(polygonUnion[0].getCwPoints(), {Point2<long long>(973, -5939), Point2<long long>(-51, -5939),
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertPolygonLongLongEquals(polygonUnion[0].getCwPoints(), {Point2<long long>(973, -5939), Point2<long long>(-51, -5939),
                                                                               Point2<long long>(-51, -5780), Point2<long long>(-419, -5780),
                                                                               Point2<long long>(-419, -5371), Point2<long long>(595, -5241),
                                                                               Point2<long long>(973, -5192)});
@@ -152,8 +152,8 @@ void PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge2() {
     std::vector<CSGPolygon<long long>> allPolygons = {CSGPolygon<long long>("p1", std::move(polyPoints1)), CSGPolygon<long long>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<long long>> polygonUnion = PolygonsUnion<long long>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 9);
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 9);
     //no points check
 }
 
@@ -165,8 +165,8 @@ void PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge3() {
     std::vector<CSGPolygon<long long>> allPolygons = {CSGPolygon<long long>("p1", std::move(polyPoints1)), CSGPolygon<long long>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<long long>> polygonUnion = PolygonsUnion<long long>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 6);
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 6);
     //no points check
 }
 
@@ -180,8 +180,8 @@ void PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge4() { //see polygonsUnionA
     std::vector<CSGPolygon<long long>> allPolygons = {CSGPolygon<long long>("p1", std::move(polyPoints1)), CSGPolygon<long long>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<long long>> polygonUnion = PolygonsUnion<long long>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 10);
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 10);
     //no points check
 }
 
@@ -193,8 +193,8 @@ void PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge5() { //see polygonsUnionA
     std::vector<CSGPolygon<long long>> allPolygons = {CSGPolygon<long long>("p1", std::move(polyPoints1)), CSGPolygon<long long>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<long long>> polygonUnion = PolygonsUnion<long long>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 7);
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 7);
     //no points check
 }
 
@@ -209,8 +209,8 @@ void PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge6() { //see polygonsUnionA
     std::vector<CSGPolygon<float>> allPolygons = {CSGPolygon<float>("p1", std::move(polyPoints1)), CSGPolygon<float>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(55.3621445f, -75.836937f), Point2<float>(42.3322601f, -75.836937f),
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(55.3621445f, -75.836937f), Point2<float>(42.3322601f, -75.836937f),
                                                                            Point2<float>(-55.8955078f, 62.2369347f), Point2<float>(-42.8656235f, 62.2369347f),
                                                                            Point2<float>(0.222888947f, 1.66956329f), Point2<float>(2.56617999f, 1.66957486f),
                                                                            Point2<float>(2.56617999f, -1.58268416f), Point2<float>(2.56617999f, -1.62428343f)});
@@ -223,8 +223,8 @@ void PolygonsUnionTest::twoPolygonsTouchInOnePoint1() {
     std::vector<CSGPolygon<float>> allPolygons = {CSGPolygon<float>("p1", std::move(polyPoints1)), CSGPolygon<float>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(0.0f, -1.0f), Point2<float>(0.0f, 0.0f), Point2<float>(0.0f, 1.0f),
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(0.0f, -1.0f), Point2<float>(0.0f, 0.0f), Point2<float>(0.0f, 1.0f),
                                                                            Point2<float>(0.666666f, 0.333333f), Point2<float>(2.0f, 1.0f)});
 }
 
@@ -238,9 +238,9 @@ void PolygonsUnionTest::twoPolygonsTouchInOnePoint2() {
     std::vector<CSGPolygon<float>> allPolygons = {CSGPolygon<float>("p1", std::move(polyPoints1)), CSGPolygon<float>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 2);
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 3);
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion[1].getCwPoints().size(), 3);
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 2);
+    AssertHelper::assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 3);
+    AssertHelper::assertUnsignedInt(polygonUnion[1].getCwPoints().size(), 3);
     //no points check
 }
 
@@ -251,8 +251,8 @@ void PolygonsUnionTest::twoPolygonsNestedTouchInOnePoint() {
     std::vector<CSGPolygon<float>> allPolygons = {CSGPolygon<float>("p1", std::move(polyPoints1)), CSGPolygon<float>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(0.0f, 0.0f), Point2<float>(0.0f, 2.0f), Point2<float>(2.0f, 0.0f)});
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(0.0f, 0.0f), Point2<float>(0.0f, 2.0f), Point2<float>(2.0f, 0.0f)});
 }
 
 void PolygonsUnionTest::twoIdenticalTriangles() {
@@ -262,8 +262,8 @@ void PolygonsUnionTest::twoIdenticalTriangles() {
     std::vector<CSGPolygon<float>> allPolygons = {CSGPolygon<float>("p1", std::move(polyPoints1)), CSGPolygon<float>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(0.0f, 0.0f), Point2<float>(0.5f, 1.0f),
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(0.0f, 0.0f), Point2<float>(0.5f, 1.0f),
                                                                            Point2<float>(1.0f, 0.0f)});
 }
 
@@ -276,8 +276,8 @@ void PolygonsUnionTest::twoIdenticalSquares() {
     std::vector<CSGPolygon<float>> allPolygons = {CSGPolygon<float>("p1", std::move(polyPoints1)), CSGPolygon<float>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(1.12582f, 4.62418f), Point2<float>(-0.225821f, 4.62418f),
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(1.12582f, 4.62418f), Point2<float>(-0.225821f, 4.62418f),
                                                                            Point2<float>(-0.225821f, 5.97582f), Point2<float>(1.12582f, 5.97582f)});
 }
 
@@ -290,8 +290,8 @@ void PolygonsUnionTest::twoAlmostIdenticalSquares1() {
     std::vector<CSGPolygon<float>> allPolygons = {CSGPolygon<float>("p1", std::move(polyPoints1)), CSGPolygon<float>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(1.12582099f, -5.9758215f), Point2<float>(-0.225821018f, -5.9758215f),
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(1.12582099f, -5.9758215f), Point2<float>(-0.225821018f, -5.9758215f),
                                                                            Point2<float>(-0.225821018f, -4.62417889f), Point2<float>(1.12582099f, -4.62417889f)});
 }
 
@@ -304,8 +304,8 @@ void PolygonsUnionTest::twoAlmostIdenticalSquares2() {
     std::vector<CSGPolygon<float>> allPolygons = {CSGPolygon<float>("p1", std::move(polyPoints1)), CSGPolygon<float>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(1.0258255f, -5.87582397f), Point2<float>(-0.125823975f, -5.87582397f),
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(1.0258255f, -5.87582397f), Point2<float>(-0.125823975f, -5.87582397f),
                                                                            Point2<float>(-0.125823975f, -4.72417879f), Point2<float>(1.02582097f, -4.72417879f)});
 }
 
@@ -318,8 +318,8 @@ void PolygonsUnionTest::twoAlmostIdenticalSquares3() {
     std::vector<CSGPolygon<float>> allPolygons = {CSGPolygon<float>("p1", std::move(polyPoints1)), CSGPolygon<float>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(1.07582f, -5.9258213f), Point2<float>(-0.175821006f, -5.9258213f),
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(1.07582f, -5.9258213f), Point2<float>(-0.175821006f, -5.9258213f),
                                                                            Point2<float>(-0.175821006f, -4.67417908f), Point2<float>(1.07582092f, -4.67417908f)});
 }
 
@@ -332,8 +332,8 @@ void PolygonsUnionTest::twoAlmostIdenticalTrapeze() { //see polygonsUnionAlmostI
     std::vector<CSGPolygon<long long>> allPolygons = {CSGPolygon<long long>("p1", std::move(polyPoints1)), CSGPolygon<long long>("p2", std::move(polyPoints2))};
     std::vector<CSGPolygon<long long>> polygonUnion = PolygonsUnion<long long>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertPolygonLongLongEquals(polygonUnion[0].getCwPoints(), {Point2<long long>(973, -5939), Point2<long long>(502, -5939), Point2<long long>(747, -4979),
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertPolygonLongLongEquals(polygonUnion[0].getCwPoints(), {Point2<long long>(973, -5939), Point2<long long>(502, -5939), Point2<long long>(747, -4979),
                                                                               Point2<long long>(748, -4979), Point2<long long>(922, -5010), Point2<long long>(973, -5019)});
 }
 
@@ -346,8 +346,8 @@ void PolygonsUnionTest::threePolygonsUnion() {
     std::vector<CSGPolygon<float>> allPolygons = {CSGPolygon<float>("p1", std::move(polyPoints1)), CSGPolygon<float>("p2", std::move(polyPoints2)), CSGPolygon<float>("p3", std::move(polyPoints3))};
     std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::instance()->assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(0.0f, 0.0f), Point2<float>(0.0f, 2.0f), Point2<float>(0.75f, 2.0f),
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(0.0f, 0.0f), Point2<float>(0.0f, 2.0f), Point2<float>(0.75f, 2.0f),
                                                                            Point2<float>(1.0f, 3.0f), Point2<float>(1.25f, 2.0f), Point2<float>(2.0f, 2.0f),
                                                                            Point2<float>(2.0f, 1.25f), Point2<float>(3.0f, 1.0f), Point2<float>(2.0f, 0.75f),
                                                                            Point2<float>(2.0f, 0.0f)});
@@ -362,10 +362,10 @@ void PolygonsUnionTest::twoPolygonsUnionAndSeparatePolygon() {
     std::vector<CSGPolygon<float>> allPolygons = {CSGPolygon<float>("p1", std::move(polyPoints1)), CSGPolygon<float>("p2", std::move(polyPoints2)), CSGPolygon<float>("p3", std::move(polyPoints3))};
     std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons);
 
-    AssertHelper::instance()->assertUnsignedInt(polygonUnion.size(), 2);
-    AssertHelper::instance()->assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(4.0f, 0.0f), Point2<float>(4.0f, 2.0f), Point2<float>(6.0f, 2.0f),
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 2);
+    AssertHelper::assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(4.0f, 0.0f), Point2<float>(4.0f, 2.0f), Point2<float>(6.0f, 2.0f),
                                                                            Point2<float>(6.0f, 0.0f)});
-    AssertHelper::instance()->assertPolygonFloatEquals(polygonUnion[1].getCwPoints(), {Point2<float>(1.0f, 0.5f), Point2<float>(1.0f, 1.0f), Point2<float>(0.5f, 1.0f),
+    AssertHelper::assertPolygonFloatEquals(polygonUnion[1].getCwPoints(), {Point2<float>(1.0f, 0.5f), Point2<float>(1.0f, 1.0f), Point2<float>(0.5f, 1.0f),
                                                                            Point2<float>(1.0f, 3.0f), Point2<float>(1.4f, 1.4f), Point2<float>(3.0f, 1.0f)});
 }
 

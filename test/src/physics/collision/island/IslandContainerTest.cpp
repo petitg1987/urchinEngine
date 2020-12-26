@@ -20,10 +20,10 @@ void IslandContainerTest::cascadeMergeIslands() {
     islandContainer.mergeIsland(bodies[2], bodies[3]); //body 2 is in contact with body 3
     const std::vector<IslandElementLink>& islandElementsLink = islandContainer.retrieveSortedIslandElements();
 
-    AssertHelper::instance()->assertUnsignedInt(islandElementsLink.size(), 4);
+    AssertHelper::assertUnsignedInt(islandElementsLink.size(), 4);
     unsigned int islandId = islandElementsLink[0].islandIdRef;
     for (std::size_t i = 1; i < islandElementsLink.size(); ++i) {
-        AssertHelper::instance()->assertUnsignedInt(islandElementsLink[i].islandIdRef, islandId);
+        AssertHelper::assertUnsignedInt(islandElementsLink[i].islandIdRef, islandId);
     }
 
     delete bodies[0]; delete bodies[1]; delete bodies[2]; delete bodies[3];
@@ -44,10 +44,10 @@ void IslandContainerTest::mergeAllIslands() {
     islandContainer.mergeIsland(bodies[1], bodies[2]); //body 1 is in contact with body 2
     const std::vector<IslandElementLink>& islandElementsLink = islandContainer.retrieveSortedIslandElements();
 
-    AssertHelper::instance()->assertUnsignedInt(islandElementsLink.size(), 3);
+    AssertHelper::assertUnsignedInt(islandElementsLink.size(), 3);
     unsigned int islandId = islandElementsLink[0].islandIdRef;
     for (std::size_t i = 1; i < islandElementsLink.size(); ++i) {
-        AssertHelper::instance()->assertUnsignedInt(islandElementsLink[i].islandIdRef, islandId);
+        AssertHelper::assertUnsignedInt(islandElementsLink[i].islandIdRef, islandId);
     }
 
     delete bodies[0]; delete bodies[1]; delete bodies[2];
@@ -67,10 +67,10 @@ void IslandContainerTest::createTwoSeparateIslands() {
     islandContainer.mergeIsland(bodies[2], bodies[1]); //body 2 is in contact with body 1
     const std::vector<IslandElementLink>& islandElementsLink = islandContainer.retrieveSortedIslandElements();
 
-    AssertHelper::instance()->assertUnsignedInt(islandElementsLink.size(), 4);
-    AssertHelper::instance()->assertUnsignedInt(islandElementsLink[0].islandIdRef, islandElementsLink[1].islandIdRef);
-    AssertHelper::instance()->assertUnsignedInt(islandElementsLink[2].islandIdRef, islandElementsLink[3].islandIdRef);
-    AssertHelper::instance()->assertTrue(islandElementsLink[0].islandIdRef != islandElementsLink[2].islandIdRef);
+    AssertHelper::assertUnsignedInt(islandElementsLink.size(), 4);
+    AssertHelper::assertUnsignedInt(islandElementsLink[0].islandIdRef, islandElementsLink[1].islandIdRef);
+    AssertHelper::assertUnsignedInt(islandElementsLink[2].islandIdRef, islandElementsLink[3].islandIdRef);
+    AssertHelper::assertTrue(islandElementsLink[0].islandIdRef != islandElementsLink[2].islandIdRef);
 
     delete bodies[0]; delete bodies[1]; delete bodies[2]; delete bodies[3];
 }

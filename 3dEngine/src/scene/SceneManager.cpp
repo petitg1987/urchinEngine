@@ -77,7 +77,7 @@ namespace urchin {
         timeElapse += getDeltaTime();
 
         if (timeElapse > REFRESH_RATE_FPS) { //refresh fps every REFRESH_RATE_FPS_MS
-            fpsForDisplay = MathFunction::instance()->roundToUInt(fps);
+            fpsForDisplay = MathFunction::roundToUInt(fps);
             timeElapse = 0.0f;
         }
 

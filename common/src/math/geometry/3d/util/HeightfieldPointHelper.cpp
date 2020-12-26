@@ -31,8 +31,8 @@ namespace urchin {
      */
     template<class T> Point3<T> HeightfieldPointHelper<T>::findPointAt(const Point2<T>& point) const {
         Vector2<T> farLeftToPoint = Point2<T>(heightfieldPoints[0].X, heightfieldPoints[0].Z).vector(point);
-        unsigned int xIndex = MathFunction::instance()->clamp(MathFunction::instance()->roundToUInt((float)(farLeftToPoint.X / xInterval)), 0u, heightfieldXSize - 1);
-        unsigned int zIndex = MathFunction::instance()->clamp(MathFunction::instance()->roundToUInt((float)(farLeftToPoint.Y / zInterval)), 0u, heightfieldZSize - 1);
+        unsigned int xIndex = MathFunction::clamp(MathFunction::roundToUInt((float)(farLeftToPoint.X / xInterval)), 0u, heightfieldXSize - 1);
+        unsigned int zIndex = MathFunction::clamp(MathFunction::roundToUInt((float)(farLeftToPoint.Y / zInterval)), 0u, heightfieldZSize - 1);
 
         return heightfieldPoints[xIndex + zIndex * heightfieldXSize];
     }
@@ -42,8 +42,8 @@ namespace urchin {
      */
     template<class T> T HeightfieldPointHelper<T>::findHeightAt(const Point2<T>& point) const {
         Vector2<T> farLeftToPoint = Point2<T>(heightfieldPoints[0].X, heightfieldPoints[0].Z).vector(point);
-        unsigned int xIndex = MathFunction::instance()->clamp(MathFunction::instance()->roundToUInt((float)(farLeftToPoint.X / xInterval)), 0u, heightfieldXSize - 1);
-        unsigned int zIndex = MathFunction::instance()->clamp(MathFunction::instance()->roundToUInt((float)(farLeftToPoint.Y / zInterval)), 0u, heightfieldZSize - 1);
+        unsigned int xIndex = MathFunction::clamp(MathFunction::roundToUInt((float)(farLeftToPoint.X / xInterval)), 0u, heightfieldXSize - 1);
+        unsigned int zIndex = MathFunction::clamp(MathFunction::roundToUInt((float)(farLeftToPoint.Y / zInterval)), 0u, heightfieldZSize - 1);
 
         unsigned int nearestPointIndex = xIndex + zIndex * heightfieldXSize;
         Point3<T> nearestPoint = heightfieldPoints[nearestPointIndex];
@@ -83,8 +83,8 @@ namespace urchin {
 
         //X lines collision
         if (!isParallelToXAxis(pathLine, PARALLEL_EPSILON)) {
-            unsigned int xStartIndex = MathFunction::instance()->clamp(MathFunction::instance()->floorToUInt((float)std::min(farLeftToStartPoint.X, farLeftToEndPoint.X) / (float)xInterval), 0u, heightfieldXSize - 1);
-            unsigned int xEndIndex = MathFunction::instance()->clamp(MathFunction::instance()->ceilToUInt((float)std::max(farLeftToStartPoint.X, farLeftToEndPoint.X) / (float)xInterval), 0u, heightfieldXSize - 1);
+            unsigned int xStartIndex = MathFunction::clamp(MathFunction::floorToUInt((float)std::min(farLeftToStartPoint.X, farLeftToEndPoint.X) / (float)xInterval), 0u, heightfieldXSize - 1);
+            unsigned int xEndIndex = MathFunction::clamp(MathFunction::ceilToUInt((float)std::max(farLeftToStartPoint.X, farLeftToEndPoint.X) / (float)xInterval), 0u, heightfieldXSize - 1);
             pathPoints.reserve(pathPoints.size() + (xEndIndex - xStartIndex) + 1);
 
             unsigned int zLastIndex = (heightfieldZSize - 1) * heightfieldXSize;
@@ -99,8 +99,8 @@ namespace urchin {
 
         //Z lines collision
         if (!isParallelToZAxis(pathLine, PARALLEL_EPSILON)) {
-            unsigned int zStartIndex = MathFunction::instance()->clamp(MathFunction::instance()->floorToUInt((float)std::min(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / (float)zInterval), 0u, heightfieldZSize - 1);
-            unsigned int zEndIndex = MathFunction::instance()->clamp(MathFunction::instance()->ceilToUInt((float)std::max(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / (float)zInterval), 0u, heightfieldZSize - 1);
+            unsigned int zStartIndex = MathFunction::clamp(MathFunction::floorToUInt((float)std::min(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / (float)zInterval), 0u, heightfieldZSize - 1);
+            unsigned int zEndIndex = MathFunction::clamp(MathFunction::ceilToUInt((float)std::max(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / (float)zInterval), 0u, heightfieldZSize - 1);
             pathPoints.reserve(pathPoints.size() + (zEndIndex - zStartIndex) + 1);
 
             unsigned int xLastIndex = heightfieldXSize - 1;

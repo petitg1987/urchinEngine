@@ -51,7 +51,7 @@ namespace urchin {
     void RigidBody::refreshMassProperties() {
         refreshInertia();
 
-        if (MathFunction::instance()->isZero(mass)) {
+        if (MathFunction::isZero(mass)) {
             setIsStatic(true);
             setIsActive(false);
             invMass = 0.0f;
@@ -64,14 +64,14 @@ namespace urchin {
 
     void RigidBody::refreshInertia() {
         this->localInertia = getShape()->computeLocalInertia(mass);
-        this->invLocalInertia = Vector3<float>(MathFunction::instance()->isZero(localInertia.X) ? 0.0f : 1.0f / localInertia.X,
-                                               MathFunction::instance()->isZero(localInertia.Y) ? 0.0f : 1.0f / localInertia.Y,
-                                               MathFunction::instance()->isZero(localInertia.Z) ? 0.0f : 1.0f / localInertia.Z);
+        this->invLocalInertia = Vector3<float>(MathFunction::isZero(localInertia.X) ? 0.0f : 1.0f / localInertia.X,
+                                               MathFunction::isZero(localInertia.Y) ? 0.0f : 1.0f / localInertia.Y,
+                                               MathFunction::isZero(localInertia.Z) ? 0.0f : 1.0f / localInertia.Z);
         refreshWorldInertia();
     }
 
     void RigidBody::refreshWorldInertia() {
-        invWorldInertia = InertiaCalculation().computeInverseWorldInertia(invLocalInertia, transform);
+        invWorldInertia = InertiaCalculation::computeInverseWorldInertia(invLocalInertia, transform);
     }
 
     void RigidBody::refreshBodyActiveState() {

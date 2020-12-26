@@ -60,7 +60,7 @@ namespace urchin {
 
         auto* selectMeshFileButton = new QPushButton("...");
         mainLayout->addWidget(selectMeshFileButton, 1, 2);
-        ButtonStyleHelper::instance()->applyNormalStyle(selectMeshFileButton);
+        ButtonStyleHelper::applyNormalStyle(selectMeshFileButton);
         selectMeshFileButton->setFixedWidth(22);
         connect(selectMeshFileButton, SIGNAL(clicked()), this, SLOT(showMeshFilenameDialog()));
     }
@@ -117,14 +117,14 @@ namespace urchin {
             bool hasError = false;
 
             updateObjectName();
-            LabelStyleHelper::instance()->applyNormalStyle(objectNameLabel);
-            LabelStyleHelper::instance()->applyNormalStyle(meshFilenameLabel);
+            LabelStyleHelper::applyNormalStyle(objectNameLabel);
+            LabelStyleHelper::applyNormalStyle(meshFilenameLabel);
 
             if (objectName.empty()) {
-                LabelStyleHelper::instance()->applyErrorStyle(objectNameLabel, "Object name is mandatory");
+                LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is mandatory");
                 hasError = true;
             } else if (isSceneObjectExist(objectName)) {
-                LabelStyleHelper::instance()->applyErrorStyle(objectNameLabel, "Object name is already used");
+                LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is already used");
                 hasError = true;
             }
 

@@ -43,12 +43,12 @@ namespace urchin {
 
         addWaterButton = new QPushButton("New Water");
         buttonsLayout->addWidget(addWaterButton);
-        ButtonStyleHelper::instance()->applyNormalStyle(addWaterButton);
+        ButtonStyleHelper::applyNormalStyle(addWaterButton);
         connect(addWaterButton, SIGNAL(clicked()), this, SLOT(showAddWaterDialog()));
 
         removeWaterButton = new QPushButton("Remove Water");
         buttonsLayout->addWidget(removeWaterButton);
-        ButtonStyleHelper::instance()->applyNormalStyle(removeWaterButton);
+        ButtonStyleHelper::applyNormalStyle(removeWaterButton);
         removeWaterButton->setEnabled(false);
         connect(removeWaterButton, SIGNAL(clicked()), this, SLOT(removeSelectedWater()));
 
@@ -60,7 +60,7 @@ namespace urchin {
     void WaterPanelWidget::setupGeneralPropertiesBox(QVBoxLayout* mainLayout) {
         generalPropertiesGroupBox = new QGroupBox("General Properties");
         mainLayout->addWidget(generalPropertiesGroupBox);
-        GroupBoxStyleHelper::instance()->applyNormalStyle(generalPropertiesGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
         generalPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         generalPropertiesGroupBox->hide();
 
@@ -73,15 +73,15 @@ namespace urchin {
         generalPropertiesLayout->addLayout(positionLayout, 0, 1, Qt::AlignmentFlag::AlignLeft);
         positionX = new QDoubleSpinBox();
         positionLayout->addWidget(positionX);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionX);
+        SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
         connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateWaterProperties()));
         positionY = new QDoubleSpinBox();
         positionLayout->addWidget(positionY);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionY);
+        SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
         connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateWaterProperties()));
         positionZ = new QDoubleSpinBox();
         positionLayout->addWidget(positionZ);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionZ);
+        SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateWaterProperties()));
 
         auto *xSizeLabel= new QLabel("XZ size:");
@@ -91,13 +91,13 @@ namespace urchin {
         generalPropertiesLayout->addLayout(xzSizeLayout, 1, 1, Qt::AlignmentFlag::AlignLeft);
         xSize = new QDoubleSpinBox();
         xzSizeLayout->addWidget(xSize);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(xSize);
+        SpinBoxStyleHelper::applyDefaultStyleOn(xSize);
         xSize->setMinimum(0.0);
         xSize->setSingleStep(1.0);
         connect(xSize, SIGNAL(valueChanged(double)), this, SLOT(updateWaterProperties()));
         zSize = new QDoubleSpinBox();
         xzSizeLayout->addWidget(zSize);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(zSize);
+        SpinBoxStyleHelper::applyDefaultStyleOn(zSize);
         zSize->setMinimum(0.0);
         zSize->setSingleStep(1.0);
         connect(zSize, SIGNAL(valueChanged(double)), this, SLOT(updateWaterProperties()));
@@ -106,7 +106,7 @@ namespace urchin {
     void WaterPanelWidget::setupWaterSurfaceProperties(QVBoxLayout* mainLayout) {
         waterSurfacePropertiesGroupBox = new QGroupBox("Surface");
         mainLayout->addWidget(waterSurfacePropertiesGroupBox);
-        GroupBoxStyleHelper::instance()->applyNormalStyle(waterSurfacePropertiesGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(waterSurfacePropertiesGroupBox);
         waterSurfacePropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         waterSurfacePropertiesGroupBox->hide();
 
@@ -119,19 +119,19 @@ namespace urchin {
         waterSurfacePropertiesLayout->addLayout(waterColorLayout, 0, 1, Qt::AlignmentFlag::AlignLeft);
         waterColorR = new QDoubleSpinBox();
         waterColorLayout->addWidget(waterColorR);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(waterColorR);
+        SpinBoxStyleHelper::applyDefaultStyleOn(waterColorR);
         waterColorR->setMinimum(0.0);
         waterColorR->setMaximum(1.0);
         connect(waterColorR, SIGNAL(valueChanged(double)), this, SLOT(updateSurfaceWaterProperties()));
         waterColorG = new QDoubleSpinBox();
         waterColorLayout->addWidget(waterColorG);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(waterColorG);
+        SpinBoxStyleHelper::applyDefaultStyleOn(waterColorG);
         waterColorG->setMinimum(0.0);
         waterColorG->setMaximum(1.0);
         connect(waterColorG, SIGNAL(valueChanged(double)), this, SLOT(updateSurfaceWaterProperties()));
         waterColorB = new QDoubleSpinBox();
         waterColorLayout->addWidget(waterColorB);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(waterColorB);
+        SpinBoxStyleHelper::applyDefaultStyleOn(waterColorB);
         waterColorB->setMinimum(0.0);
         waterColorB->setMaximum(1.0);
         connect(waterColorB, SIGNAL(valueChanged(double)), this, SLOT(updateSurfaceWaterProperties()));
@@ -147,13 +147,13 @@ namespace urchin {
 
         auto* selectNormalTextureFileButton = new QPushButton("...");
         normalTextureLayout->addWidget(selectNormalTextureFileButton);
-        ButtonStyleHelper::instance()->applyNormalStyle(selectNormalTextureFileButton);
+        ButtonStyleHelper::applyNormalStyle(selectNormalTextureFileButton);
         selectNormalTextureFileButton->setFixedWidth(22);
         connect(selectNormalTextureFileButton, SIGNAL(clicked()), this, SLOT(showNormalTextureFilenameDialog()));
 
         auto* clearNormalTextureFileButton = new QPushButton("Clr");
         normalTextureLayout->addWidget(clearNormalTextureFileButton);
-        ButtonStyleHelper::instance()->applyNormalStyle(clearNormalTextureFileButton);
+        ButtonStyleHelper::applyNormalStyle(clearNormalTextureFileButton);
         clearNormalTextureFileButton->setFixedWidth(22);
         connect(clearNormalTextureFileButton, SIGNAL(clicked()), this, SLOT(clearNormalTextureFilename()));
 
@@ -168,13 +168,13 @@ namespace urchin {
 
         auto* selectDudvMapFileButton = new QPushButton("...");
         dudvMapLayout->addWidget(selectDudvMapFileButton);
-        ButtonStyleHelper::instance()->applyNormalStyle(selectDudvMapFileButton);
+        ButtonStyleHelper::applyNormalStyle(selectDudvMapFileButton);
         selectDudvMapFileButton->setFixedWidth(22);
         connect(selectDudvMapFileButton, SIGNAL(clicked()), this, SLOT(showDudvMapFilenameDialog()));
 
         auto* clearDudvMapFileButton = new QPushButton("Clr");
         dudvMapLayout->addWidget(clearDudvMapFileButton);
-        ButtonStyleHelper::instance()->applyNormalStyle(clearDudvMapFileButton);
+        ButtonStyleHelper::applyNormalStyle(clearDudvMapFileButton);
         clearDudvMapFileButton->setFixedWidth(22);
         connect(clearDudvMapFileButton, SIGNAL(clicked()), this, SLOT(clearDudvMapFilename()));
 
@@ -183,7 +183,7 @@ namespace urchin {
 
         waveSpeed = new QDoubleSpinBox();
         waterSurfacePropertiesLayout->addWidget(waveSpeed, 4, 1, 1, 3, Qt::AlignLeft);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(waveSpeed);
+        SpinBoxStyleHelper::applyDefaultStyleOn(waveSpeed);
         waveSpeed->setMinimum(0.0);
         waveSpeed->setSingleStep(0.01);
         connect(waveSpeed, SIGNAL(valueChanged(double)), this, SLOT(updateSurfaceWaterProperties()));
@@ -193,7 +193,7 @@ namespace urchin {
 
         waveStrength = new QDoubleSpinBox();
         waterSurfacePropertiesLayout->addWidget(waveStrength, 5, 1, 1, 3, Qt::AlignLeft);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(waveStrength);
+        SpinBoxStyleHelper::applyDefaultStyleOn(waveStrength);
         waveStrength->setMinimum(0.0);
         waveStrength->setSingleStep(0.01);
         connect(waveStrength, SIGNAL(valueChanged(double)), this, SLOT(updateSurfaceWaterProperties()));
@@ -205,14 +205,14 @@ namespace urchin {
         waterSurfacePropertiesLayout->addLayout(repeatLayout, 6, 1, Qt::AlignmentFlag::AlignLeft);
         sRepeat = new QDoubleSpinBox();
         repeatLayout->addWidget(sRepeat);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(sRepeat);
+        SpinBoxStyleHelper::applyDefaultStyleOn(sRepeat);
         sRepeat->setMinimum(0.0);
         sRepeat->setSingleStep(1.0);
         connect(sRepeat, SIGNAL(valueChanged(double)), this, SLOT(updateSurfaceWaterProperties()));
 
         tRepeat = new QDoubleSpinBox();
         repeatLayout->addWidget(tRepeat);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(tRepeat);
+        SpinBoxStyleHelper::applyDefaultStyleOn(tRepeat);
         tRepeat->setMinimum(0.0);
         tRepeat->setSingleStep(1.0);
         connect(tRepeat, SIGNAL(valueChanged(double)), this, SLOT(updateSurfaceWaterProperties()));
@@ -221,7 +221,7 @@ namespace urchin {
     void WaterPanelWidget::setupUnderWaterProperties(QVBoxLayout* mainLayout) {
         underWaterPropertiesGroupBox = new QGroupBox("Under Water");
         mainLayout->addWidget(underWaterPropertiesGroupBox);
-        GroupBoxStyleHelper::instance()->applyNormalStyle(underWaterPropertiesGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(underWaterPropertiesGroupBox);
         underWaterPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         underWaterPropertiesGroupBox->hide();
 
@@ -232,7 +232,7 @@ namespace urchin {
 
         density = new QDoubleSpinBox();
         underWaterPropertiesLayout->addWidget(density, 0, 1, 1, 3, Qt::AlignLeft);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(density);
+        SpinBoxStyleHelper::applyDefaultStyleOn(density);
         density->setMinimum(0.0);
         connect(density, SIGNAL(valueChanged(double)), this, SLOT(updateUnderWaterProperties()));
 
@@ -241,7 +241,7 @@ namespace urchin {
 
         gradient = new QDoubleSpinBox();
         underWaterPropertiesLayout->addWidget(gradient, 1, 1, 1, 3, Qt::AlignLeft);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(gradient);
+        SpinBoxStyleHelper::applyDefaultStyleOn(gradient);
         gradient->setMinimum(0.0);
         connect(gradient, SIGNAL(valueChanged(double)), this, SLOT(updateUnderWaterProperties()));
     }

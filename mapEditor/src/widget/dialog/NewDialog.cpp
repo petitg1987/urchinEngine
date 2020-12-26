@@ -58,7 +58,7 @@ namespace urchin {
 
         auto* selectMapDirButton = new QPushButton("...");
         mainLayout->addWidget(selectMapDirButton, 1, 2);
-        ButtonStyleHelper::instance()->applyNormalStyle(selectMapDirButton);
+        ButtonStyleHelper::applyNormalStyle(selectMapDirButton);
         selectMapDirButton->setFixedWidth(22);
         connect(selectMapDirButton, SIGNAL(clicked()), this, SLOT(showMapDirectoryDialog()));
     }
@@ -74,7 +74,7 @@ namespace urchin {
 
         auto* selectMapWorkingDirButton = new QPushButton("...");
         mainLayout->addWidget(selectMapWorkingDirButton, 2, 2);
-        ButtonStyleHelper::instance()->applyNormalStyle(selectMapWorkingDirButton);
+        ButtonStyleHelper::applyNormalStyle(selectMapWorkingDirButton);
         selectMapWorkingDirButton->setFixedWidth(22);
         connect(selectMapWorkingDirButton, SIGNAL(clicked()), this, SLOT(showMapWorkingDirectoryDialog()));
 
@@ -138,23 +138,23 @@ namespace urchin {
             bool hasError = false;
 
             updateMapFilename();
-            LabelStyleHelper::instance()->applyNormalStyle(mapNameLabel);
-            LabelStyleHelper::instance()->applyNormalStyle(mapDirectoryLabel);
-            LabelStyleHelper::instance()->applyNormalStyle(mapWorkingDirectoryLabel);
+            LabelStyleHelper::applyNormalStyle(mapNameLabel);
+            LabelStyleHelper::applyNormalStyle(mapDirectoryLabel);
+            LabelStyleHelper::applyNormalStyle(mapWorkingDirectoryLabel);
 
             if (mapFilename.empty()) {
-                LabelStyleHelper::instance()->applyErrorStyle(mapNameLabel, "Map name is mandatory");
+                LabelStyleHelper::applyErrorStyle(mapNameLabel, "Map name is mandatory");
                 hasError = true;
             } else if (mapFilename.find_last_of("/\\") != std::string::npos) {
-                LabelStyleHelper::instance()->applyErrorStyle(mapNameLabel, "Map name cannot contains slash character");
+                LabelStyleHelper::applyErrorStyle(mapNameLabel, "Map name cannot contains slash character");
                 hasError = true;
             }
             if (mapDirectory.empty()) {
-                LabelStyleHelper::instance()->applyErrorStyle(mapDirectoryLabel, "Map directory is mandatory");
+                LabelStyleHelper::applyErrorStyle(mapDirectoryLabel, "Map directory is mandatory");
                 hasError = true;
             }
             if (mapWorkingDirectory.empty()) {
-                LabelStyleHelper::instance()->applyErrorStyle(mapWorkingDirectoryLabel, "Map working directory is mandatory");
+                LabelStyleHelper::applyErrorStyle(mapWorkingDirectoryLabel, "Map working directory is mandatory");
                 hasError = true;
             }
 

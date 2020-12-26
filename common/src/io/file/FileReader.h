@@ -4,20 +4,16 @@
 #include <string>
 #include <fstream>
 
-#include "pattern/singleton/Singleton.h"
-
 namespace urchin {
 
-    class FileReader : public Singleton<FileReader> {
+    class FileReader {
         public:
-            friend class Singleton<FileReader>;
-
-            void nextLine(std::ifstream&, std::string&);
-            std::string readFile(const std::string&);
+            static void nextLine(std::ifstream&, std::string&);
+            static std::string readFile(const std::string&);
 
         private:
             FileReader() = default;
-            ~FileReader() override = default;
+            ~FileReader() = default;
     };
 
 }

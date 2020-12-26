@@ -13,8 +13,8 @@ namespace urchin {
     */
     class SoundShapeReaderWriterRetriever {
         public:
-            std::shared_ptr<SoundShapeReaderWriter> retrieveShapeReaderWriter(const std::shared_ptr<XmlChunk>&);
-            std::shared_ptr<SoundShapeReaderWriter> retrieveShapeReaderWriter(const SoundShape*);
+            static std::shared_ptr<SoundShapeReaderWriter> retrieveShapeReaderWriter(const std::shared_ptr<XmlChunk>&);
+            static std::shared_ptr<SoundShapeReaderWriter> retrieveShapeReaderWriter(const SoundShape*);
     };
 
 }

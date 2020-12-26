@@ -53,7 +53,7 @@ namespace urchin {
     }
 
     std::string TerrainMesh::generateTerrainMeshHash(const std::string& terrainFilePath, float xzScale, float yScale) const {
-        std::size_t terrainHashInt = std::hash<std::string>{}(FileReader::instance()->readFile(terrainFilePath) + "#" + std::to_string(xzScale) + "#" + std::to_string(yScale));
+        std::size_t terrainHashInt = std::hash<std::string>{}(FileReader::readFile(terrainFilePath) + "#" + std::to_string(xzScale) + "#" + std::to_string(yScale));
         std::string terrainHash = std::to_string(terrainHashInt);
         return std::string(TERRAIN_HASH_SIZE - terrainHash.length(), '0') + terrainHash;
     }

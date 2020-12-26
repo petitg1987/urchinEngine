@@ -41,12 +41,12 @@ namespace urchin {
 
         addPointButton = new QPushButton("New Point");
         buttonLayout->addWidget(addPointButton);
-        ButtonStyleHelper::instance()->applyNormalStyle(addPointButton);
+        ButtonStyleHelper::applyNormalStyle(addPointButton);
         connect(addPointButton, SIGNAL(clicked()), this, SLOT(addNewPoint()));
 
         removePointButton = new QPushButton("Remove Point");
         buttonLayout->addWidget(removePointButton);
-        ButtonStyleHelper::instance()->applyNormalStyle(removePointButton);
+        ButtonStyleHelper::applyNormalStyle(removePointButton);
         connect(removePointButton, SIGNAL(clicked()), this, SLOT(removeSelectedPoint()));
     }
 
@@ -65,7 +65,7 @@ namespace urchin {
 
     std::shared_ptr<const CollisionShape3D> BodyConvexHullShapeWidget::createBodyShape() const {
         try {
-            LabelStyleHelper::instance()->applyNormalStyle(pointsLabel);
+            LabelStyleHelper::applyNormalStyle(pointsLabel);
             auto scaledShape = std::make_shared<const CollisionConvexHullShape>(getPoints());
 
             //test construction of original shape because can throw an exception due to imprecision of float
@@ -74,7 +74,7 @@ namespace urchin {
 
             return scaledShape;
         } catch (std::invalid_argument& e) {
-            LabelStyleHelper::instance()->applyErrorStyle(pointsLabel, std::string(e.what()));
+            LabelStyleHelper::applyErrorStyle(pointsLabel, std::string(e.what()));
             return DefaultBodyShapeCreator(getSceneObject()).createDefaultBodyShape(CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE);
         }
     }

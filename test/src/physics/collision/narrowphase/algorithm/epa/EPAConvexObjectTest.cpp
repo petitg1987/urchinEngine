@@ -16,12 +16,12 @@ void EPAConvexObjectTest::overlapSphereAndBox() {
     std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(sphere, aabbox);
 
     float epsilon = 0.05f; //high epsilon used because curved shapes are very bad case for EPA
-    AssertHelper::instance()->assertTrue(resultEpa->isCollide());
-    AssertHelper::instance()->assertFloatEquals(resultEpa->getPenetrationDepth(), 0.1f);
-    AssertHelper::instance()->assertVector3FloatEquals(resultEpa->getNormal(), Vector3<float>(1.0f, 0.0f, 0.0f), epsilon);
-    AssertHelper::instance()->assertFloatEquals(resultEpa->getContactPointA().vector(resultEpa->getContactPointB()).length(), 0.1f, epsilon);
-    AssertHelper::instance()->assertPoint3FloatEquals(resultEpa->getContactPointA(), Point3<float>(1.0f, 0.0f, 0.0f), epsilon);
-    AssertHelper::instance()->assertPoint3FloatEquals(resultEpa->getContactPointB(), Point3<float>(0.9f, 0.0f, 0.0f), epsilon);
+    AssertHelper::assertTrue(resultEpa->isCollide());
+    AssertHelper::assertFloatEquals(resultEpa->getPenetrationDepth(), 0.1f);
+    AssertHelper::assertVector3FloatEquals(resultEpa->getNormal(), Vector3<float>(1.0f, 0.0f, 0.0f), epsilon);
+    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().vector(resultEpa->getContactPointB()).length(), 0.1f, epsilon);
+    AssertHelper::assertPoint3FloatEquals(resultEpa->getContactPointA(), Point3<float>(1.0f, 0.0f, 0.0f), epsilon);
+    AssertHelper::assertPoint3FloatEquals(resultEpa->getContactPointB(), Point3<float>(0.9f, 0.0f, 0.0f), epsilon);
 }
 
 void EPAConvexObjectTest::overlapCapsuleAndTriangle() {
@@ -30,11 +30,11 @@ void EPAConvexObjectTest::overlapCapsuleAndTriangle() {
 
     std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(capsule, triangle);
 
-    AssertHelper::instance()->assertTrue(resultEpa->isCollide());
-    AssertHelper::instance()->assertFloatEquals(resultEpa->getPenetrationDepth(), 0.55f);
-    AssertHelper::instance()->assertVector3FloatEquals(resultEpa->getNormal(), Vector3<float>(0.0f, -1.0f, 0.0f));
-    AssertHelper::instance()->assertPoint3FloatEquals(resultEpa->getContactPointA(), Point3<float>(0.0f, -0.55f, 0.0f));
-    AssertHelper::instance()->assertPoint3FloatEquals(resultEpa->getContactPointB(), Point3<float>(0.0f, 0.0f, 0.0f));
+    AssertHelper::assertTrue(resultEpa->isCollide());
+    AssertHelper::assertFloatEquals(resultEpa->getPenetrationDepth(), 0.55f);
+    AssertHelper::assertVector3FloatEquals(resultEpa->getNormal(), Vector3<float>(0.0f, -1.0f, 0.0f));
+    AssertHelper::assertPoint3FloatEquals(resultEpa->getContactPointA(), Point3<float>(0.0f, -0.55f, 0.0f));
+    AssertHelper::assertPoint3FloatEquals(resultEpa->getContactPointB(), Point3<float>(0.0f, 0.0f, 0.0f));
 }
 
 void EPAConvexObjectTest::overlapTriangleAndCapsule() {
@@ -43,11 +43,11 @@ void EPAConvexObjectTest::overlapTriangleAndCapsule() {
 
     std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(triangle, capsule);
 
-    AssertHelper::instance()->assertTrue(resultEpa->isCollide());
-    AssertHelper::instance()->assertFloatEquals(resultEpa->getPenetrationDepth(), 0.55f);
-    AssertHelper::instance()->assertVector3FloatEquals(resultEpa->getNormal(), Vector3<float>(0.0f, 1.0f, 0.0f));
-    AssertHelper::instance()->assertPoint3FloatEquals(resultEpa->getContactPointA(), Point3<float>(0.0f, 0.0f, 0.0f));
-    AssertHelper::instance()->assertPoint3FloatEquals(resultEpa->getContactPointB(), Point3<float>(0.0f, -0.55f, 0.0f));
+    AssertHelper::assertTrue(resultEpa->isCollide());
+    AssertHelper::assertFloatEquals(resultEpa->getPenetrationDepth(), 0.55f);
+    AssertHelper::assertVector3FloatEquals(resultEpa->getNormal(), Vector3<float>(0.0f, 1.0f, 0.0f));
+    AssertHelper::assertPoint3FloatEquals(resultEpa->getContactPointA(), Point3<float>(0.0f, 0.0f, 0.0f));
+    AssertHelper::assertPoint3FloatEquals(resultEpa->getContactPointB(), Point3<float>(0.0f, -0.55f, 0.0f));
 }
 
 CppUnit::Test* EPAConvexObjectTest::suite() {

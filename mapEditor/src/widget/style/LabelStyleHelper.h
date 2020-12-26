@@ -3,20 +3,13 @@
 
 #include <string>
 #include <QtWidgets/QLabel>
-#include "UrchinCommon.h"
 
 namespace urchin {
 
-    class LabelStyleHelper : public Singleton<LabelStyleHelper> {
+    class LabelStyleHelper {
         public:
-            friend class Singleton<LabelStyleHelper>;
-
-            void applyErrorStyle(QLabel*, const std::string&);
-            void applyNormalStyle(QLabel*);
-
-        private:
-            LabelStyleHelper() = default;
-            ~LabelStyleHelper() override = default;
+            static void applyErrorStyle(QLabel*, const std::string&);
+            static void applyNormalStyle(QLabel*);
     };
 
 }

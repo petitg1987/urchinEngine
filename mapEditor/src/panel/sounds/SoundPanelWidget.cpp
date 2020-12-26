@@ -48,18 +48,18 @@ namespace urchin {
 
         addSoundButton = new QPushButton("New Sound");
         buttonsLayout->addWidget(addSoundButton);
-        ButtonStyleHelper::instance()->applyNormalStyle(addSoundButton);
+        ButtonStyleHelper::applyNormalStyle(addSoundButton);
         connect(addSoundButton, SIGNAL(clicked()), this, SLOT(showAddSoundDialog()));
 
         removeSoundButton = new QPushButton("Remove Sound");
         buttonsLayout->addWidget(removeSoundButton);
-        ButtonStyleHelper::instance()->applyNormalStyle(removeSoundButton);
+        ButtonStyleHelper::applyNormalStyle(removeSoundButton);
         removeSoundButton->setEnabled(false);
         connect(removeSoundButton, SIGNAL(clicked()), this, SLOT(removeSelectedSound()));
 
         soundPropertiesGroupBox = new QGroupBox("Sound Properties");
         mainLayout->addWidget(soundPropertiesGroupBox);
-        GroupBoxStyleHelper::instance()->applyNormalStyle(soundPropertiesGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(soundPropertiesGroupBox);
         soundPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         soundPropertiesGroupBox->hide();
 
@@ -69,7 +69,7 @@ namespace urchin {
 
         soundTriggerGroupBox = new QGroupBox("Sound Trigger");
         mainLayout->addWidget(soundTriggerGroupBox);
-        GroupBoxStyleHelper::instance()->applyNormalStyle(soundTriggerGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(soundTriggerGroupBox);
         soundTriggerGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         soundTriggerGroupBox->hide();
 
@@ -81,7 +81,7 @@ namespace urchin {
     void SoundPanelWidget::setupSoundGeneralPropertiesBox(QVBoxLayout* soundPropertiesLayout) {
         auto* generalGroupBox = new QGroupBox("General");
         soundPropertiesLayout->addWidget(generalGroupBox);
-        GroupBoxStyleHelper::instance()->applyNormalStyle(generalGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(generalGroupBox);
 
         auto* generalPropertiesLayout = new QGridLayout(generalGroupBox);
         generalPropertiesLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
@@ -91,7 +91,7 @@ namespace urchin {
 
         volume = new QDoubleSpinBox();
         generalPropertiesLayout->addWidget(volume, 0, 1);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(volume);
+        SpinBoxStyleHelper::applyDefaultStyleOn(volume);
         volume->setMinimum(0.0);
         connect(volume, SIGNAL(valueChanged(double)), this, SLOT(updateSoundGeneralProperties()));
 
@@ -105,7 +105,7 @@ namespace urchin {
     void SoundPanelWidget::setupSpecificPointSoundBox(QVBoxLayout* soundPropertiesLayout) {
         specificPointSoundGroupBox = new QGroupBox("Point Sound");
         soundPropertiesLayout->addWidget(specificPointSoundGroupBox);
-        GroupBoxStyleHelper::instance()->applyNormalStyle(specificPointSoundGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(specificPointSoundGroupBox);
         specificPointSoundGroupBox->hide();
 
         auto* pointSoundLayout = new QGridLayout(specificPointSoundGroupBox);
@@ -118,15 +118,15 @@ namespace urchin {
         pointSoundLayout->addLayout(positionLayout, 0, 1);
         positionX = new QDoubleSpinBox();
         positionLayout->addWidget(positionX);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionX);
+        SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
         connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
         positionY = new QDoubleSpinBox();
         positionLayout->addWidget(positionY);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionY);
+        SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
         connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
         positionZ = new QDoubleSpinBox();
         positionLayout->addWidget(positionZ);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(positionZ);
+        SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
 
         auto *inaudibleDistanceLabel= new QLabel("Inaudible\nDistance:");
@@ -134,7 +134,7 @@ namespace urchin {
 
         inaudibleDistance = new QDoubleSpinBox();
         pointSoundLayout->addWidget(inaudibleDistance, 1, 1);
-        SpinBoxStyleHelper::instance()->applyDefaultStyleOn(inaudibleDistance);
+        SpinBoxStyleHelper::applyDefaultStyleOn(inaudibleDistance);
         inaudibleDistance->setMinimum(0.0);
         connect(inaudibleDistance, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
     }
@@ -142,7 +142,7 @@ namespace urchin {
     void SoundPanelWidget::setupSoundBehaviorPropertiesBox(QVBoxLayout* soundTriggerLayout) {
         auto* soundBehaviorGroupBox = new QGroupBox("Sound Behavior");
         soundTriggerLayout->addWidget(soundBehaviorGroupBox);
-        GroupBoxStyleHelper::instance()->applyNormalStyle(soundBehaviorGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(soundBehaviorGroupBox);
 
         auto* behaviorLayout = new QGridLayout(soundBehaviorGroupBox);
         behaviorLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
@@ -170,7 +170,7 @@ namespace urchin {
 
         volumeDecreasePercentageOnStop = new QDoubleSpinBox();
         behaviorLayout->addWidget(volumeDecreasePercentageOnStop, 2, 1, 1, 3);
-        SpinBoxStyleHelper::instance()->applyPercentageStyleOn(volumeDecreasePercentageOnStop);
+        SpinBoxStyleHelper::applyPercentageStyleOn(volumeDecreasePercentageOnStop);
         connect(volumeDecreasePercentageOnStop, SIGNAL(valueChanged(double)), this, SLOT(updateSoundBehaviorProperties()));
 
         auto *soundTriggerTypeLabel= new QLabel("Trigger:");
@@ -181,14 +181,14 @@ namespace urchin {
 
         changeSoundTriggerTypeButton = new QPushButton("Change");
         behaviorLayout->addWidget(changeSoundTriggerTypeButton, 3, 2);
-        ButtonStyleHelper::instance()->applyNormalStyle(changeSoundTriggerTypeButton);
+        ButtonStyleHelper::applyNormalStyle(changeSoundTriggerTypeButton);
         connect(changeSoundTriggerTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundTriggerDialog()));
     }
 
     void SoundPanelWidget::setupSpecificTriggerShapeBox(QVBoxLayout* soundTriggerLayout) {
         specificTriggerShapeGroupBox = new QGroupBox("Trigger Shape");
         soundTriggerLayout->addWidget(specificTriggerShapeGroupBox);
-        GroupBoxStyleHelper::instance()->applyNormalStyle(specificTriggerShapeGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(specificTriggerShapeGroupBox);
         specificTriggerShapeGroupBox->hide();
 
         triggerShapeLayout = new QVBoxLayout(specificTriggerShapeGroupBox);
@@ -206,12 +206,12 @@ namespace urchin {
 
         changeSoundShapeTypeButton = new QPushButton("Change");
         shapeTypeLayout->addWidget(changeSoundShapeTypeButton);
-        ButtonStyleHelper::instance()->applyNormalStyle(changeSoundShapeTypeButton);
+        ButtonStyleHelper::applyNormalStyle(changeSoundShapeTypeButton);
         connect(changeSoundShapeTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundShapeDialog()));
 
         auto* frameLine = new QFrame();
         triggerShapeLayout->addWidget(frameLine);
-        FrameStyleHelper::instance()->applyLineStyle(frameLine);
+        FrameStyleHelper::applyLineStyle(frameLine);
 
         soundShapeWidget = nullptr;
     }

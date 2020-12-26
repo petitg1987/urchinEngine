@@ -75,13 +75,13 @@ namespace urchin {
             bool hasError = false;
 
             updateWaterName();
-            LabelStyleHelper::instance()->applyNormalStyle(waterNameLabel);
+            LabelStyleHelper::applyNormalStyle(waterNameLabel);
 
             if (waterName.empty()) {
-                LabelStyleHelper::instance()->applyErrorStyle(waterNameLabel, "Water name is mandatory");
+                LabelStyleHelper::applyErrorStyle(waterNameLabel, "Water name is mandatory");
                 hasError = true;
             } else if (isSceneWaterExist(waterName)) {
-                LabelStyleHelper::instance()->applyErrorStyle(waterNameLabel, "Water name is already used");
+                LabelStyleHelper::applyErrorStyle(waterNameLabel, "Water name is already used");
                 hasError = true;
             }
 

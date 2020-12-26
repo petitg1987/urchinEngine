@@ -70,13 +70,13 @@ namespace urchin {
             bool hasError = false;
 
             updateObjectName();
-            LabelStyleHelper::instance()->applyNormalStyle(objectNameLabel);
+            LabelStyleHelper::applyNormalStyle(objectNameLabel);
 
             if (objectName.empty()) {
-                LabelStyleHelper::instance()->applyErrorStyle(objectNameLabel, "Object name is mandatory");
+                LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is mandatory");
                 hasError = true;
             } else if (isSceneObjectExist(objectName)) {
-                LabelStyleHelper::instance()->applyErrorStyle(objectNameLabel, "Object name is already used");
+                LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is already used");
                 hasError = true;
             }
 

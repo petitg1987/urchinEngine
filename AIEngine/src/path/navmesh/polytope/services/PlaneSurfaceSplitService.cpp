@@ -9,14 +9,14 @@ namespace urchin {
     std::vector<PlaneSurfaceSplit> PlaneSurfaceSplitService::splitRectangleSurface(const std::vector<Point3<float>>& planeSurfacePoints) const {
         #ifndef NDEBUG
             assert(planeSurfacePoints.size() == 4);
-            assert(MathFunction::instance()->isZero(planeSurfacePoints[0].distance(planeSurfacePoints[1]) - planeSurfacePoints[2].distance(planeSurfacePoints[3]), 0.01f));
-            assert(MathFunction::instance()->isZero(planeSurfacePoints[1].distance(planeSurfacePoints[2]) - planeSurfacePoints[3].distance(planeSurfacePoints[0]), 0.01f));
+            assert(MathFunction::isZero(planeSurfacePoints[0].distance(planeSurfacePoints[1]) - planeSurfacePoints[2].distance(planeSurfacePoints[3]), 0.01f));
+            assert(MathFunction::isZero(planeSurfacePoints[1].distance(planeSurfacePoints[2]) - planeSurfacePoints[3].distance(planeSurfacePoints[0]), 0.01f));
         #endif
 
         std::vector<PlaneSurfaceSplit> planeSurfaceSplits;
 
-        auto aSamples = MathFunction::instance()->ceilToUInt((planeSurfacePoints[0].distance(planeSurfacePoints[1]) / surfaceMaxSize));
-        auto bSamples = MathFunction::instance()->ceilToUInt((planeSurfacePoints[1].distance(planeSurfacePoints[2]) / surfaceMaxSize));
+        auto aSamples = MathFunction::ceilToUInt((planeSurfacePoints[0].distance(planeSurfacePoints[1]) / surfaceMaxSize));
+        auto bSamples = MathFunction::ceilToUInt((planeSurfacePoints[1].distance(planeSurfacePoints[2]) / surfaceMaxSize));
 
         if (aSamples == 1 && bSamples == 1) { //no split required
             PlaneSurfaceSplit planeSurfaceSplit;

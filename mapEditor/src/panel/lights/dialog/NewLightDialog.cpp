@@ -94,13 +94,13 @@ namespace urchin {
             bool hasError = false;
 
             updateLightName();
-            LabelStyleHelper::instance()->applyNormalStyle(lightNameLabel);
+            LabelStyleHelper::applyNormalStyle(lightNameLabel);
 
             if (lightName.empty()) {
-                LabelStyleHelper::instance()->applyErrorStyle(lightNameLabel, "Light name is mandatory");
+                LabelStyleHelper::applyErrorStyle(lightNameLabel, "Light name is mandatory");
                 hasError = true;
             } else if (isSceneLightExist(lightName)) {
-                LabelStyleHelper::instance()->applyErrorStyle(lightNameLabel, "Light name is already used");
+                LabelStyleHelper::applyErrorStyle(lightNameLabel, "Light name is already used");
                 hasError = true;
             }
 

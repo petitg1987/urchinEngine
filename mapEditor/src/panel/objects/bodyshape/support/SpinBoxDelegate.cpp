@@ -16,7 +16,7 @@ namespace urchin {
 
     QWidget* SpinBoxDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem&, const QModelIndex&) const {
          auto* editor = new QDoubleSpinBox(parent);
-         SpinBoxStyleHelper::instance()->applyDefaultStyleOn(editor);
+         SpinBoxStyleHelper::applyDefaultStyleOn(editor);
          connect(editor, SIGNAL(valueChanged(double)), this, SLOT(onChange(double)));
 
          return editor;

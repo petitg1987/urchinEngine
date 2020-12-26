@@ -11,7 +11,7 @@ void FileUtilTest::getDirectoryFromUnixPath() {
 
     std::string result = FileUtil::instance()->getDirectoryFrom(filenamePath);
 
-    AssertHelper::instance()->assertTrue(result == "/home/jean/");
+    AssertHelper::assertTrue(result == "/home/jean/");
 }
 
 void FileUtilTest::getDirectoryFromWindowsPath() {
@@ -19,7 +19,7 @@ void FileUtilTest::getDirectoryFromWindowsPath() {
 
     std::string result = FileUtil::instance()->getDirectoryFrom(filenamePath);
 
-    AssertHelper::instance()->assertTrue(result == R"(C:\home\jean\)");
+    AssertHelper::assertTrue(result == R"(C:\home\jean\)");
 }
 
 void FileUtilTest::relativePath() {
@@ -28,7 +28,7 @@ void FileUtilTest::relativePath() {
 
     std::string result = FileUtil::instance()->getRelativePath(referenceDirectory, path);
 
-    AssertHelper::instance()->assertTrue(result == "../../aaa/bbb/");
+    AssertHelper::assertTrue(result == "../../aaa/bbb/");
 }
 
 void FileUtilTest::relativePathEqual() {
@@ -37,7 +37,7 @@ void FileUtilTest::relativePathEqual() {
 
     std::string result = FileUtil::instance()->getRelativePath(referenceDirectory, path);
 
-    AssertHelper::instance()->assertTrue(result.empty());
+    AssertHelper::assertTrue(result.empty());
 }
 
 void FileUtilTest::simplifyDirectoryPathUnix() {
@@ -45,7 +45,7 @@ void FileUtilTest::simplifyDirectoryPathUnix() {
 
     std::string result = FileUtil::instance()->simplifyDirectoryPath(directoryPath);
 
-    AssertHelper::instance()->assertTrue(result == "xxx/zzz/rrr/");
+    AssertHelper::assertTrue(result == "xxx/zzz/rrr/");
 }
 
 void FileUtilTest::simplifyDirectoryPathWindows() {
@@ -53,7 +53,7 @@ void FileUtilTest::simplifyDirectoryPathWindows() {
 
     std::string result = FileUtil::instance()->simplifyDirectoryPath(directoryPath);
 
-    AssertHelper::instance()->assertTrue(result == R"(xxx\zzz\rrr\)");
+    AssertHelper::assertTrue(result == R"(xxx\zzz\rrr\)");
 }
 
 CppUnit::Test* FileUtilTest::suite() {
