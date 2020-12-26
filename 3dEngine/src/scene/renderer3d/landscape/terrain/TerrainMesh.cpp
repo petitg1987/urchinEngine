@@ -28,9 +28,8 @@ namespace urchin {
         std::string terrainFilePath = FileSystem::instance()->getResourcesDirectory() + imgTerrain->getName();
         std::string terrainHash = generateTerrainMeshHash(terrainFilePath, xzScale, yScale);
 
-        std::string terrainFrlFilePath =
-                FileSystem::instance()->getEngineUserCacheDirectory()
-                + + "/" + FileUtil::getFileNameNoExtension(terrainFilePath)
+        std::string terrainFrlFilePath = FileSystem::instance()->getEngineUserCacheDirectory()
+                + FileUtil::getFileNameNoExtension(terrainFilePath)
                 + "_" + std::to_string(std::hash<std::string>{}(terrainFilePath))
                 + FRL_FILE_EXTENSION;
         std::ifstream terrainFrlFile;

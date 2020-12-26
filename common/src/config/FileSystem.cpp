@@ -1,5 +1,3 @@
-#include <filesystem>
-
 #include "config/FileSystem.h"
 #include "system/SystemInfo.h"
 #include "util/FileUtil.h"
@@ -9,10 +7,10 @@ namespace urchin {
     FileSystem::FileSystem() : Singleton<FileSystem>(),
             resourcesDirectory("./") {
 
-        this->engineUserDataDirectory = SystemInfo::instance()->userDataDirectory() + "/" + getEngineDirectoryName();
+        this->engineUserDataDirectory = SystemInfo::instance()->userDataDirectory() + getEngineDirectoryName() + "/";
         FileUtil::createDirectory(engineUserDataDirectory);
 
-        this->engineUserCacheDirectory = engineUserDataDirectory + "/cache";
+        this->engineUserCacheDirectory = engineUserDataDirectory + "/cache/";
         FileUtil::createDirectory(engineUserCacheDirectory);
     }
 

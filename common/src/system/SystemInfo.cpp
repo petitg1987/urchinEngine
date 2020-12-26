@@ -149,12 +149,19 @@ namespace urchin {
             throw std::runtime_error("Impossible to find home directory. Please define env. variable 'HOME' or 'USERPROFILE' or 'HOMEDRIVE'/'HOMEPATH'.");
         }
 
+        if (!StringUtil::endWith(homeDirectory, "/") && !StringUtil::endWith(homeDirectory, "\\")) {
+            return homeDirectory + "/";
+        }
         return homeDirectory;
     }
 
     std::string SystemInfo::userDataDirectory() const {
         #ifdef _WIN32
-            return homeDirectory() + "/AppData/Local";
+            std::string userDataDirectory = getenv("LOCALAPPDATA"); //TODO check value on windows (should end by "/")
+            if(userDataDirectory.empty()) {
+                return homeDirectory() + "/AppData/Local/";
+            }
+            return localAppData;
         #else
             return homeDirectory();
         #endif
