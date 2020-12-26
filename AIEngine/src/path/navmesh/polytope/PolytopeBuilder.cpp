@@ -153,7 +153,7 @@ namespace urchin {
             expandedPlanes.insert(std::pair<std::size_t, Plane<float>>(itTriangles.first, createExpandedPlane(point1, point2, point3, navMeshAgent)));
         }
 
-        std::unique_ptr<ConvexHull3D<float>> expandedConvexHull = ResizeConvexHull3DService<float>::instance()->resizeConvexHull(*convexHull, expandedPlanes);
+        std::unique_ptr<ConvexHull3D<float>> expandedConvexHull = ResizeConvexHull3DService<float>::resizeConvexHull(*convexHull, expandedPlanes);
 
         std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces;
         expandedSurfaces.reserve(expandedConvexHull->getIndexedTriangles().size() * 3);

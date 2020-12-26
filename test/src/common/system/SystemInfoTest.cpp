@@ -7,32 +7,32 @@
 using namespace urchin;
 
 void SystemInfoTest::retrieveOsInfo() {
-    std::string osInfo = SystemInfo::instance()->retrieveOsInfo();
+    std::string osInfo = SystemInfo::retrieveOsInfo();
 
     AssertHelper::assertTrue(!osInfo.empty(), "OS info cannot be empty");
 }
 
 void SystemInfoTest::retrieveCpuCores() {
-    unsigned int cpuCores = SystemInfo::instance()->retrieveCpuCores();
+    unsigned int cpuCores = SystemInfo::retrieveCpuCores();
 
     AssertHelper::assertTrue(cpuCores > 0 && cpuCores < 200, "Wrong number of CPU cores");
 }
 
 void SystemInfoTest::retrieveTotalMemory() {
-    uint64_t totalMemory = SystemInfo::instance()->retrieveTotalMemory();
+    uint64_t totalMemory = SystemInfo::retrieveTotalMemory();
 
     AssertHelper::assertTrue(totalMemory > 4000000000 && totalMemory < 512000000000, "Wrong total of memory");
 }
 
 void SystemInfoTest::retrieveGraphicsCardNames() {
-    std::string graphicsCardNames = SystemInfo::instance()->retrieveGraphicsCardNames();
+    std::string graphicsCardNames = SystemInfo::retrieveGraphicsCardNames();
 
     AssertHelper::assertTrue(!graphicsCardNames.empty(), "Graphics card name cannot be empty");
 }
 
 void SystemInfoTest::systemHash() {
-    std::string systemHash1 = SystemInfo::instance()->systemHash();
-    std::string systemHash2 = SystemInfo::instance()->systemHash();
+    std::string systemHash1 = SystemInfo::systemHash();
+    std::string systemHash2 = SystemInfo::systemHash();
 
     AssertHelper::assertTrue(!systemHash1.empty(), "System hash cannot be empty");
     AssertHelper::assertString(systemHash1, systemHash2);

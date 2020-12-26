@@ -20,6 +20,8 @@ namespace urchin {
         #define EULER_ZYZ_ORIENT_LABEL "Euler ZYZ"
 
         public:
+            ComboBoxStyleHelper() = delete;
+
             static void applyDefaultStyleOn(QComboBox*);
             static void applyOrientationStyleOn(QComboBox*);
     };

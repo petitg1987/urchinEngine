@@ -1,19 +1,13 @@
 #ifndef URCHINENGINE_NUMERICALCHECK_H
 #define URCHINENGINE_NUMERICALCHECK_H
 
-#include "pattern/singleton/Singleton.h"
-
 namespace urchin {
 
-    class NumericalCheck : public Singleton<NumericalCheck> {
+    class NumericalCheck {
         public:
-            friend class Singleton<NumericalCheck>;
+            NumericalCheck() = delete;
 
-            void perform() const;
-
-        private:
-            NumericalCheck() = default;
-            ~NumericalCheck() override = default;
+            static void perform();
     };
 
 }

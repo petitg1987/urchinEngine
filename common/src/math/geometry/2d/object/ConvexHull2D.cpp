@@ -40,7 +40,7 @@ namespace urchin {
     }
 
     template<class T> std::unique_ptr<ConvexHull2D<T>> ConvexHull2D<T>::resize(T distance) const {
-        return ResizeConvexHull2DService<T>::instance()->resizeConvexHull(*this, distance);
+        return ResizeConvexHull2DService<T>::resizeConvexHull(*this, distance);
     }
 
     //explicit template

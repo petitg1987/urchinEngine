@@ -11,19 +11,19 @@ namespace urchin {
      * Positive distance will extend convex hull shape and negative distance will shrink the convex hull shape.
      * @return Convex hull shape resized.
      */
-    template<class T> std::unique_ptr<ConvexHullShape3D<T>> ResizeConvexHull3DService<T>::resizeConvexHullShape(const ConvexHullShape3D<T>& originalConvexHullShape, T distance) const {
+    template<class T> std::unique_ptr<ConvexHullShape3D<T>> ResizeConvexHull3DService<T>::resizeConvexHullShape(const ConvexHullShape3D<T>& originalConvexHullShape, T distance) {
          std::map<std::size_t, Plane<T>> planes = buildPlanesFromConvexHullShape(originalConvexHullShape);
         shiftPlanes(planes, distance);
 
         return resizeConvexHullShape(originalConvexHullShape, planes);
     }
 
-    template<class T> std::unique_ptr<ConvexHull3D<T>> ResizeConvexHull3DService<T>::resizeConvexHull(const ConvexHull3D<T>& originalConvexHull, T distance) const {
+    template<class T> std::unique_ptr<ConvexHull3D<T>> ResizeConvexHull3DService<T>::resizeConvexHull(const ConvexHull3D<T>& originalConvexHull, T distance) {
         std::unique_ptr<ConvexHullShape3D<T>> convexHullShapeResized = resizeConvexHullShape(originalConvexHull.localizedConvexHullShape, distance);
         return std::make_unique<ConvexHull3D<T>>(*convexHullShapeResized);
     }
 
-    template<class T> std::unique_ptr<ConvexHullShape3D<T>> ResizeConvexHull3DService<T>::resizeConvexHullShape(const ConvexHullShape3D<T>& originalConvexHullShape, const std::map<std::size_t, Plane<T>>& expandedPlanes) const {
+    template<class T> std::unique_ptr<ConvexHullShape3D<T>> ResizeConvexHull3DService<T>::resizeConvexHullShape(const ConvexHullShape3D<T>& originalConvexHullShape, const std::map<std::size_t, Plane<T>>& expandedPlanes) {
         bool containUselessPoints = false;
         std::map<std::size_t, ConvexHullPoint<T>> newConvexHullPoints;
         for (const auto& itPoint : originalConvexHullShape.getConvexHullPoints()) {
@@ -60,12 +60,12 @@ namespace urchin {
         return std::make_unique<ConvexHullShape3D<T>>(newConvexHullPoints, originalConvexHullShape.getIndexedTriangles());
     }
 
-    template<class T> std::unique_ptr<ConvexHull3D<T>> ResizeConvexHull3DService<T>::resizeConvexHull(const ConvexHull3D<T>& originalConvexHull, const std::map<std::size_t, Plane<T>>& expandedPlanes) const {
+    template<class T> std::unique_ptr<ConvexHull3D<T>> ResizeConvexHull3DService<T>::resizeConvexHull(const ConvexHull3D<T>& originalConvexHull, const std::map<std::size_t, Plane<T>>& expandedPlanes) {
         std::unique_ptr<ConvexHullShape3D<T>> convexHullShapeResized = resizeConvexHullShape(originalConvexHull.localizedConvexHullShape, expandedPlanes);
         return std::make_unique<ConvexHull3D<T>>(*convexHullShapeResized);
     }
 
-    template<class T> std::map<std::size_t, Plane<T>> ResizeConvexHull3DService<T>::buildPlanesFromConvexHullShape(const ConvexHullShape3D<T>& convexHull) const {
+    template<class T> std::map<std::size_t, Plane<T>> ResizeConvexHull3DService<T>::buildPlanesFromConvexHullShape(const ConvexHullShape3D<T>& convexHull) {
         std::map<std::size_t, Plane<T>> planes;
 
         for (const auto& itTriangles : convexHull.getIndexedTriangles()) {
@@ -80,13 +80,13 @@ namespace urchin {
         return planes;
     }
 
-    template<class T> void ResizeConvexHull3DService<T>::shiftPlanes(std::map<std::size_t, Plane<T>>& planes, T distance) const {
+    template<class T> void ResizeConvexHull3DService<T>::shiftPlanes(std::map<std::size_t, Plane<T>>& planes, T distance) {
         for (auto& itPlanes : planes) {
             itPlanes.second.setDistanceToOrigin(itPlanes.second.getDistanceToOrigin() - distance);
         }
     }
 
-    template<class T> std::vector<Plane<T>> ResizeConvexHull3DService<T>::findThreeNonParallelPlanes(const std::vector<std::size_t>& planeIndices, const std::map<std::size_t, Plane<T>>& allPlanes) const {
+    template<class T> std::vector<Plane<T>> ResizeConvexHull3DService<T>::findThreeNonParallelPlanes(const std::vector<std::size_t>& planeIndices, const std::map<std::size_t, Plane<T>>& allPlanes) {
         constexpr float PARALLEL_COMPARISON_TOLERANCE = 0.01f;
 
         std::vector<Plane<T>> nonParallelPlanes;

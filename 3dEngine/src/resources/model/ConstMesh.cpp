@@ -22,8 +22,8 @@ namespace urchin {
         }
 
         //compute vertices and normals based on bind-pose skeleton
-        MeshService::instance()->computeVertices(this, baseSkeleton, baseVertices);
-        MeshService::instance()->computeNormalsAndTangents(this, baseVertices, baseNormals, baseTangents);
+        MeshService::computeVertices(this, baseSkeleton, baseVertices);
+        MeshService::computeNormalsAndTangents(this, baseVertices, baseNormals, baseTangents);
 
         //load material
         material = MediaManager::instance()->getMedia<Material>(materialFilename);

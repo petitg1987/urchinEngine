@@ -8,8 +8,8 @@ class FileUtilTest : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 
-        void getDirectoryFromUnixPath();
-        void getDirectoryFromWindowsPath();
+        void getDirectoryUnix();
+        void getDirectoryWindows();
 
         void relativePath();
         void relativePathEqual();

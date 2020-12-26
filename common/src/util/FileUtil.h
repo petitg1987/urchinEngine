@@ -16,7 +16,7 @@ namespace urchin {
             static std::string getFileExtension(const std::string&);
             static std::string getFileName(const std::string&);
             static std::string getFileNameNoExtension(const std::string&);
-            static std::string getDirectoryFrom(const std::string&);
+            static std::string getDirectory(const std::string&);
             static std::string getRelativePath(const std::string&, const std::string&);
             static std::string simplifyDirectoryPath(const std::string&);
 

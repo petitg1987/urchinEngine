@@ -5,10 +5,6 @@
 
 namespace urchin {
 
-    MeshService::MeshService() : Singleton<MeshService>() {
-
-    }
-
     /**
      * @param vertices [out] Computed vertices based on the skeleton
      */

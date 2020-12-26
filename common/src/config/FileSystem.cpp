@@ -7,7 +7,7 @@ namespace urchin {
     FileSystem::FileSystem() : Singleton<FileSystem>(),
             resourcesDirectory("./") {
 
-        this->engineUserDataDirectory = SystemInfo::instance()->userDataDirectory() + getEngineDirectoryName() + "/";
+        this->engineUserDataDirectory = SystemInfo::userDataDirectory() + getEngineDirectoryName() + "/";
         FileUtil::createDirectory(engineUserDataDirectory);
 
         this->engineUserCacheDirectory = engineUserDataDirectory + "/cache/";

@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    std::string CommandExecutor::execute(const std::string& cmd) const {
+    std::string CommandExecutor::execute(const std::string& cmd) {
         std::array<char, 1024> buffer{};
         std::string cmdResult;
         std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd.c_str(), "r"), pclose);

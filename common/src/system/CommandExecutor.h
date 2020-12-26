@@ -3,19 +3,13 @@
 
 #include <string>
 
-#include "pattern/singleton/Singleton.h"
-
 namespace urchin {
 
-    class CommandExecutor : public Singleton<CommandExecutor> {
+    class CommandExecutor {
         public:
-            friend class Singleton<CommandExecutor>;
+            CommandExecutor() = delete;
 
-            std::string execute(const std::string&) const;
-
-        private:
-            CommandExecutor() = default;
-            ~CommandExecutor() override = default;
+            static std::string execute(const std::string&);
     };
 
 }

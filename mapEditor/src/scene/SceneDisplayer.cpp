@@ -51,7 +51,7 @@ namespace urchin {
     void SceneDisplayer::loadMap(const std::string& mapEditorPath, const std::string& mapFilename, const std::string& relativeWorkingDirectory) {
         try {
             initializeEngineResources(mapEditorPath);
-            std::string mapResourcesDirectory = FileUtil::simplifyDirectoryPath(FileUtil::getDirectoryFrom(mapFilename) + relativeWorkingDirectory);
+            std::string mapResourcesDirectory = FileUtil::simplifyDirectoryPath(FileUtil::getDirectory(mapFilename) + relativeWorkingDirectory);
             FileSystem::instance()->setupResourcesDirectory(mapResourcesDirectory);
 
             initializeScene(mapFilename);
@@ -76,7 +76,7 @@ namespace urchin {
     }
 
     void SceneDisplayer::initializeEngineResources(const std::string& mapEditorPath) {
-        std::string mapEditorResourcesDirectory = FileUtil::getDirectoryFrom(mapEditorPath) + "resources/";
+        std::string mapEditorResourcesDirectory = FileUtil::getDirectory(mapEditorPath) + "resources/";
 
         ConfigService::instance()->loadProperties("engine.properties", mapEditorResourcesDirectory);
         ShaderConfig::instance()->replaceShadersParentDirectoryBy(mapEditorResourcesDirectory);

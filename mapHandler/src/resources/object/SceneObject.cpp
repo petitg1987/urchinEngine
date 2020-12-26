@@ -134,7 +134,7 @@ namespace urchin {
             this->aiObject = nullptr;
         } else {
             std::string aiObjectName = "#" + rigidBody->getId(); //prefix to avoid collision name with terrains
-            this->aiObject = AIEntityBuilder::instance()->buildAIObject(aiObjectName, rigidBody->getShape(), rigidBody->getTransform().toTransform());
+            this->aiObject = AIEntityBuilder::buildAIObject(aiObjectName, rigidBody->getShape(), rigidBody->getTransform().toTransform());
             if (aiManager) {
                 aiManager->addEntity(aiObject);
             }

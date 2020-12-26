@@ -7,18 +7,15 @@ namespace urchin {
     class ConstMesh;
     struct Bone;
 
-    class MeshService : public Singleton<MeshService> {
+    class MeshService {
         public:
-            friend class Singleton<MeshService>;
+            MeshService() = delete;
 
-            void computeVertices(const ConstMesh*, const std::vector<Bone>&, std::vector<Point3<float>>&);
-            void computeNormalsAndTangents(const ConstMesh*, const std::vector<Point3<float>>&, std::vector<Vector3<float>>&, std::vector<Vector3<float>>&);
+            static void computeVertices(const ConstMesh*, const std::vector<Bone>&, std::vector<Point3<float>>&);
+            static void computeNormalsAndTangents(const ConstMesh*, const std::vector<Point3<float>>&, std::vector<Vector3<float>>&, std::vector<Vector3<float>>&);
 
         private:
-            MeshService();
-            ~MeshService() override = default;
-
-            Vector3<float> computeWeightedVertexNormal(unsigned int, unsigned int, unsigned int, const std::vector<Point3<float>>&);
+            static Vector3<float> computeWeightedVertexNormal(unsigned int, unsigned int, unsigned int, const std::vector<Point3<float>>&);
     };
 
 }

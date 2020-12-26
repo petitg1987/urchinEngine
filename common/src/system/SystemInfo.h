@@ -3,32 +3,27 @@
 
 #include <string>
 
-#include "pattern/singleton/Singleton.h"
-
 namespace urchin {
 
-    class SystemInfo : public Singleton<SystemInfo> {
+    class SystemInfo {
         public:
-            friend class Singleton<SystemInfo>;
+            SystemInfo() = delete;
 
-            std::string retrieveOsInfo() const;
-            unsigned int retrieveCpuCores() const;
-            uint64_t retrieveTotalMemory() const;
-            std::string retrieveGraphicsCardNames() const;
+            static std::string retrieveOsInfo();
+            static unsigned int retrieveCpuCores();
+            static uint64_t retrieveTotalMemory();
+            static std::string retrieveGraphicsCardNames();
 
-            std::string systemHash() const;
+            static std::string systemHash();
 
-            std::string userDataDirectory() const;
-            std::string executableDirectory() const;
+            static std::string userDataDirectory();
+            static std::string executableDirectory();
 
         private:
-            SystemInfo() = default;
-            ~SystemInfo() override = default;
+            static std::string retrieveCpuHash();
 
-            std::string retrieveCpuHash() const;
-
-            std::string homeDirectory() const;
-            std::string getEnvVariable(const std::string&) const;
+            static std::string homeDirectory();
+            static std::string getEnvVariable(const std::string&);
     };
 
 }

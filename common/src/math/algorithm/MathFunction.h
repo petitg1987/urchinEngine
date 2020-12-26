@@ -7,6 +7,8 @@ namespace urchin {
 
     class MathFunction {
         public:
+            MathFunction() = delete;
+
             template<class T> static T clamp(T, T, T);
             template<class T> static T sign(T);
             template<class T> static T lerp(T, T, T);

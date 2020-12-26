@@ -478,7 +478,7 @@ namespace urchin {
             std::string relativeTgaFilenamePath = FileUtil::getRelativePath(resourcesDirectory, tgaFilenamePath);
             this->maskMapFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
 
-            std::string preferredPathString = FileUtil::getDirectoryFrom(tgaFilenamePath);
+            std::string preferredPathString = FileUtil::getDirectory(tgaFilenamePath);
             preferredMaskMapPath = QString::fromStdString(preferredPathString);
 
             try {
@@ -507,7 +507,7 @@ namespace urchin {
             std::string relativeMtrFilenamePath = FileUtil::getRelativePath(resourcesDirectory, mtrFilenamePath);
             this->materialFilenameTexts[i]->setText(QString::fromStdString(relativeMtrFilenamePath));
 
-            std::string preferredPathString = FileUtil::getDirectoryFrom(mtrFilenamePath);
+            std::string preferredPathString = FileUtil::getDirectory(mtrFilenamePath);
             preferredMaterialPath = QString::fromStdString(preferredPathString);
 
             try {
@@ -535,7 +535,7 @@ namespace urchin {
             std::string relativeTgaFilenamePath = FileUtil::getRelativePath(resourcesDirectory, tgaFilenamePath);
             this->grassTextureFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
 
-            std::string preferredPathString = FileUtil::getDirectoryFrom(tgaFilenamePath);
+            std::string preferredPathString = FileUtil::getDirectory(tgaFilenamePath);
             preferredGrassTexturePath = QString::fromStdString(preferredPathString);
 
             try {
@@ -562,7 +562,7 @@ namespace urchin {
             std::string relativeTgaFilenamePath = FileUtil::getRelativePath(resourcesDirectory, tgaFilenamePath);
             this->grassMaskFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
 
-            std::string preferredPathString = FileUtil::getDirectoryFrom(tgaFilenamePath);
+            std::string preferredPathString = FileUtil::getDirectory(tgaFilenamePath);
             preferredGrassMaskPath = QString::fromStdString(preferredPathString);
 
             try {

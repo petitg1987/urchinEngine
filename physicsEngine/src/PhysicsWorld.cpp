@@ -20,7 +20,7 @@ namespace urchin {
             bodyManager(new BodyManager()),
             collisionWorld(new CollisionWorld(bodyManager)),
             collisionVisualizer(nullptr) {
-        NumericalCheck::instance()->perform();
+        NumericalCheck::perform();
         SignalHandler::instance()->initialize();
     }
 

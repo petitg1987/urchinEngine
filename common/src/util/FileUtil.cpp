@@ -90,7 +90,7 @@ namespace urchin {
         return fileName.substr(0, fileName.size() -1 - extension.size());
     }
 
-    std::string FileUtil::getDirectoryFrom(const std::string& filePath) {
+    std::string FileUtil::getDirectory(const std::string& filePath) {
         std::size_t found = filePath.find_last_of("/\\");
         if (found == std::string::npos) {
             return "./";

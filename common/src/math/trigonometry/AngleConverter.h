@@ -6,16 +6,15 @@
 namespace urchin {
 
     template<class T> class AngleConverter {
-        static const T RADIAN_TO_DEGREE_FACTOR;
-        static const T DEGREE_TO_RADIAN_FACTOR;
-
         public:
+            AngleConverter() = delete;
+
             static T toDegree(T);
             static T toRadian(T);
 
         private:
-            AngleConverter() = default;
-            ~AngleConverter() = default;
+            static const T RADIAN_TO_DEGREE_FACTOR;
+            static const T DEGREE_TO_RADIAN_FACTOR;
     };
 
 }

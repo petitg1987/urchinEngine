@@ -19,7 +19,7 @@
 
 namespace urchin {
 
-    std::string SystemInfo::retrieveOsInfo() const {
+    std::string SystemInfo::retrieveOsInfo() {
         #ifdef _WIN32
             typedef NTSTATUS (WINAPI fRtlGetVersion) (PRTL_OSVERSIONINFOEXW);
             unsigned long osVersion;
@@ -41,18 +41,18 @@ namespace urchin {
         #endif
     }
 
-    unsigned int SystemInfo::retrieveCpuCores() const {
+    unsigned int SystemInfo::retrieveCpuCores() {
         #ifdef _WIN32
             SYSTEM_INFO sysInfo;
             GetSystemInfo(&sysInfo);
             return (unsigned int)sysInfo.dwNumberOfProcessors;
         #else
-            std::string numCpuCores = CommandExecutor::instance()->execute(R"(grep --max-count=1 "cpu cores" /proc/cpuinfo | cut -d ":" -f 2)");
+            std::string numCpuCores = CommandExecutor::execute(R"(grep --max-count=1 "cpu cores" /proc/cpuinfo | cut -d ":" -f 2)");
             return TypeConverter::toUnsignedInt(numCpuCores);
         #endif
     }
 
-    uint64_t SystemInfo::retrieveTotalMemory() const {
+    uint64_t SystemInfo::retrieveTotalMemory() {
         #ifdef _WIN32
             MEMORYSTATUSEX statex;
             statex.dwLength = sizeof(statex);
@@ -69,7 +69,7 @@ namespace urchin {
         #endif
     }
 
-    std::string SystemInfo::retrieveGraphicsCardNames() const {
+    std::string SystemInfo::retrieveGraphicsCardNames() {
         std::vector<std::string> graphicsCardNames;
         #ifdef _WIN32
             std::set<std::string> setGraphicsCardNames;
@@ -84,7 +84,7 @@ namespace urchin {
             }
             graphicsCardNames.insert(graphicsCardNames.begin(), setGraphicsCardNames.begin(), setGraphicsCardNames.end());
         #else
-            std::string graphicCardNames = CommandExecutor::instance()->execute(R"(lspci | grep -oE "VGA.*" | cut -d ":" -f 2)");
+            std::string graphicCardNames = CommandExecutor::execute(R"(lspci | grep -oE "VGA.*" | cut -d ":" -f 2)");
             StringUtil::split(graphicCardNames, '\n', graphicsCardNames);
         #endif
 
@@ -99,11 +99,11 @@ namespace urchin {
         return graphicsCardNamesList;
     }
 
-    std::string SystemInfo::systemHash() const {
+    std::string SystemInfo::systemHash() {
         return retrieveCpuHash() + "-" + std::to_string(std::hash<std::string>{}(retrieveGraphicsCardNames()));
     }
 
-    std::string SystemInfo::retrieveCpuHash() const {
+    std::string SystemInfo::retrieveCpuHash() {
         #ifdef _WIN32
             int cpuInfo[4] = {0, 0, 0, 0};
             __cpuid(cpuInfo, 0);
@@ -136,7 +136,7 @@ namespace urchin {
         #endif
     }
 
-    std::string SystemInfo::homeDirectory() const {
+    std::string SystemInfo::homeDirectory() {
         std::string homeDirectory = getEnvVariable("HOME");
         if (homeDirectory.empty()) {
             homeDirectory = getEnvVariable("USERPROFILE");
@@ -156,7 +156,7 @@ namespace urchin {
         #endif
     }
 
-    std::string SystemInfo::userDataDirectory() const {
+    std::string SystemInfo::userDataDirectory() {
         #ifdef _WIN32
             std::string userDataDirectory = getenv("LOCALAPPDATA"); //TODO check value on windows
             if(!userDataDirectory.empty()) {
@@ -168,7 +168,7 @@ namespace urchin {
         #endif
     }
 
-    std::string SystemInfo::executableDirectory() const {
+    std::string SystemInfo::executableDirectory() {
         unsigned int pathBufferSize = 2048;
 
         #ifdef _WIN32
@@ -176,20 +176,20 @@ namespace urchin {
             GetModuleFileName(nullptr, buffer, pathBufferSize);
             std::string executablePath(buffer);
             delete[] buffer;
-            return FileUtil::getDirectoryFrom(executablePath);
+            return FileUtil::getDirectory(executablePath);
         #else
             char* buffer = new char[pathBufferSize];
             ssize_t readSize = readlink("/proc/self/exe", buffer, pathBufferSize);
             if (readSize > 0) {
                 std::string executablePath(buffer, (unsigned long)readSize);
                 delete[] buffer;
-                return FileUtil::getDirectoryFrom(executablePath);
+                return FileUtil::getDirectory(executablePath);
             }
             throw std::runtime_error("Cannot read /proc/self/exe on Linux system.");
         #endif
     }
 
-    std::string SystemInfo::getEnvVariable(const std::string& variableName) const {
+    std::string SystemInfo::getEnvVariable(const std::string& variableName) {
         const char* charValue = getenv(variableName.c_str());
         if (charValue == nullptr) {
             return "";

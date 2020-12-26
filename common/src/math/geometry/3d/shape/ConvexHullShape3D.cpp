@@ -165,7 +165,7 @@ namespace urchin {
      * @return Convex hull shape resized. If resize is impossible to keep plane normal outside convex hull shape: nullptr is returned.
      */
     template<class T> std::unique_ptr<ConvexHullShape3D<T>> ConvexHullShape3D<T>::resize(T distance) const {
-        return ResizeConvexHull3DService<T>::instance()->resizeConvexHullShape(*this, distance);
+        return ResizeConvexHull3DService<T>::resizeConvexHullShape(*this, distance);
     }
 
     template<class T> ConvexShape3D<T> *ConvexHullShape3D<T>::clone() const {

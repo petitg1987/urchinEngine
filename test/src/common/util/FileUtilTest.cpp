@@ -6,18 +6,18 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-void FileUtilTest::getDirectoryFromUnixPath() {
+void FileUtilTest::getDirectoryUnix() {
     std::string filenamePath = "/home/jean/binaryFile";
 
-    std::string result = FileUtil::getDirectoryFrom(filenamePath);
+    std::string result = FileUtil::getDirectory(filenamePath);
 
     AssertHelper::assertTrue(result == "/home/jean/");
 }
 
-void FileUtilTest::getDirectoryFromWindowsPath() {
+void FileUtilTest::getDirectoryWindows() {
     std::string filenamePath = R"(C:\home\jean\binaryFile)";
 
-    std::string result = FileUtil::getDirectoryFrom(filenamePath);
+    std::string result = FileUtil::getDirectory(filenamePath);
 
     AssertHelper::assertTrue(result == R"(C:\home\jean\)");
 }
@@ -59,8 +59,8 @@ void FileUtilTest::simplifyDirectoryPathWindows() {
 CppUnit::Test* FileUtilTest::suite() {
     auto* suite = new CppUnit::TestSuite("FileUtilTest");
 
-    suite->addTest(new CppUnit::TestCaller<FileUtilTest>("getDirectoryFromUnixPath", &FileUtilTest::getDirectoryFromUnixPath));
-    suite->addTest(new CppUnit::TestCaller<FileUtilTest>("getDirectoryFromWindowsPath", &FileUtilTest::getDirectoryFromWindowsPath));
+    suite->addTest(new CppUnit::TestCaller<FileUtilTest>("getDirectoryUnix", &FileUtilTest::getDirectoryUnix));
+    suite->addTest(new CppUnit::TestCaller<FileUtilTest>("getDirectoryWindows", &FileUtilTest::getDirectoryWindows));
 
     suite->addTest(new CppUnit::TestCaller<FileUtilTest>("relativePath", &FileUtilTest::relativePath));
     suite->addTest(new CppUnit::TestCaller<FileUtilTest>("relativePathEqual", &FileUtilTest::relativePathEqual));

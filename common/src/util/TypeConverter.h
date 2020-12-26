@@ -18,6 +18,8 @@ namespace urchin {
             static const char FLOAT_DELIMITER;
             static const float FLOAT_INT_SCALE;
 
+            TypeConverter() = delete;
+
             static bool isInt(const std::string&);
             static int toInt(const std::string&);
             static bool isUnsignedInt(const std::string&);
@@ -38,9 +40,6 @@ namespace urchin {
             static Vector4<float> toVector4(const std::string&);
 
         private:
-            TypeConverter() = default;
-            ~TypeConverter() = default;
-
             static std::vector<float> floatSplit(const std::string&, unsigned int);
     };
 

@@ -355,7 +355,7 @@ namespace urchin {
         this->mapFilename = mapFilename;
 
         if (!mapFilename.empty()) {
-            std::string preferredMapPathString = FileUtil::getDirectoryFrom(mapFilename);
+            std::string preferredMapPathString = FileUtil::getDirectory(mapFilename);
             savePreferredMapPath(preferredMapPathString);
         }
     }

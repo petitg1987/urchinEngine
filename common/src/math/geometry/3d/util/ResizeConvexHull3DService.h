@@ -5,7 +5,6 @@
 #include <map>
 #include <vector>
 
-#include "pattern/singleton/Singleton.h"
 #include "math/geometry/3d/shape/ConvexHullShape3D.h"
 #include "math/geometry/3d/object/ConvexHull3D.h"
 #include "math/geometry/3d/Plane.h"
@@ -13,23 +12,20 @@
 
 namespace urchin {
 
-    template<class T> class ResizeConvexHull3DService : public Singleton<ResizeConvexHull3DService<T>> {
+    template<class T> class ResizeConvexHull3DService {
         public:
-            friend class Singleton<ResizeConvexHull3DService<T>>;
+            ResizeConvexHull3DService() = delete;
 
-            std::unique_ptr<ConvexHullShape3D<T>> resizeConvexHullShape(const ConvexHullShape3D<T>&, T) const;
-            std::unique_ptr<ConvexHull3D<T>> resizeConvexHull(const ConvexHull3D<T>&, T) const;
+            static std::unique_ptr<ConvexHullShape3D<T>> resizeConvexHullShape(const ConvexHullShape3D<T>&, T);
+            static std::unique_ptr<ConvexHull3D<T>> resizeConvexHull(const ConvexHull3D<T>&, T);
 
-            std::unique_ptr<ConvexHullShape3D<T>> resizeConvexHullShape(const ConvexHullShape3D<T>&, const std::map<std::size_t, Plane<T>>&) const;
-            std::unique_ptr<ConvexHull3D<T>> resizeConvexHull(const ConvexHull3D<T>&, const std::map<std::size_t, Plane<T>>&) const;
+            static std::unique_ptr<ConvexHullShape3D<T>> resizeConvexHullShape(const ConvexHullShape3D<T>&, const std::map<std::size_t, Plane<T>>&);
+            static std::unique_ptr<ConvexHull3D<T>> resizeConvexHull(const ConvexHull3D<T>&, const std::map<std::size_t, Plane<T>>&);
 
         private:
-            ResizeConvexHull3DService() = default;
-            virtual ~ResizeConvexHull3DService() = default;
-
-            std::map<std::size_t, Plane<T>> buildPlanesFromConvexHullShape(const ConvexHullShape3D<T>&) const;
-            void shiftPlanes(std::map<std::size_t, Plane<T>>&, T) const;
-            std::vector<Plane<T>> findThreeNonParallelPlanes(const std::vector<std::size_t>&, const std::map<std::size_t, Plane<T>>&) const;
+            static std::map<std::size_t, Plane<T>> buildPlanesFromConvexHullShape(const ConvexHullShape3D<T>&);
+            static void shiftPlanes(std::map<std::size_t, Plane<T>>&, T);
+            static std::vector<Plane<T>> findThreeNonParallelPlanes(const std::vector<std::size_t>&, const std::map<std::size_t, Plane<T>>&);
     };
 
 }

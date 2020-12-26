@@ -142,7 +142,7 @@ namespace urchin {
                 ss << "\t[bt] [" << moduleName << "] " << methodName << " (0x" << instructionShiftHex.str() << ")" << std::endl;
 
                 std::string addr2lineCmd = "addr2line -p -e " + std::string(info.dli_fname) + + " 0x" + instructionShiftHex.str();
-                std::string cmdResult = CommandExecutor::instance()->execute(addr2lineCmd + " 2> /dev/null");
+                std::string cmdResult = CommandExecutor::execute(addr2lineCmd + " 2> /dev/null");
                 if(cmdResult.empty()) {
                     ss << "\t[bt]\t> " << "addr2line -p -e " << FileUtil::getFileName(std::string(info.dli_fname)) << " 0x" << instructionShiftHex.str() << std::endl;
                 }else if(cmdResult.find("??") == std::string::npos) {

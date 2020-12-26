@@ -98,7 +98,7 @@ namespace urchin {
      * Positive distance will extend convex hull shape. Negative distance are not supported by this algorithm.
      */
     template<class T> std::unique_ptr<ConvexHullShape2D<T>> ConvexHullShape2D<T>::resize(T distance) const {
-        return ResizeConvexHull2DService<T>::instance()->resizeConvexHullShape(*this, distance);
+        return ResizeConvexHull2DService<T>::resizeConvexHullShape(*this, distance);
     }
 
     //explicit template

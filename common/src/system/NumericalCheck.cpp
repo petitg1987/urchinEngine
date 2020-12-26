@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    void NumericalCheck::perform() const {
+    void NumericalCheck::perform() {
         auto intSize = (unsigned int)sizeof(int);
         if (intSize < 4) {
             throw std::runtime_error("Wrong number of byte for int: " + std::to_string(intSize));

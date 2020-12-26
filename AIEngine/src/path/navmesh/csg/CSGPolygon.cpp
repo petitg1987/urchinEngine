@@ -94,7 +94,7 @@ namespace urchin {
             originalPolygon = std::make_unique<CSGPolygon<T>>(*this);
         }
 
-        ResizePolygon2DService<T>::instance()->resizePolygon(cwPoints, -distance);
+        ResizePolygon2DService<T>::resizePolygon(cwPoints, -distance);
 
         if (DebugCheck::instance()->additionalChecksEnable() && !isCwPoints()) {
             logInputData("Impossible to expand polygon (distance: " + std::to_string(distance) + ")", Logger::ERROR_LVL, *originalPolygon);
