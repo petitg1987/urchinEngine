@@ -40,7 +40,7 @@ namespace urchin {
 
             iss >> equalSign;
             std::getline(iss, propertyValue);
-            StringUtil::instance()->ltrim(propertyValue);
+            StringUtil::ltrim(propertyValue);
 
             properties[propertyName] = propertyValue;
         }while (!file.eof());

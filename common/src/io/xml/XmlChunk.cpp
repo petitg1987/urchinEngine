@@ -45,7 +45,7 @@ namespace urchin {
     }
 
     int XmlChunk::getIntValue() const {
-        return TypeConverter::instance()->toInt(getStringValue());
+        return TypeConverter::toInt(getStringValue());
     }
 
     void XmlChunk::setIntValue(int value) {
@@ -53,7 +53,7 @@ namespace urchin {
     }
 
     unsigned int XmlChunk::getUnsignedIntValue() const {
-        return TypeConverter::instance()->toUnsignedInt(getStringValue());
+        return TypeConverter::toUnsignedInt(getStringValue());
     }
 
     void XmlChunk::setUnsignedIntValue(unsigned int value) {
@@ -61,7 +61,7 @@ namespace urchin {
     }
 
     float XmlChunk::getFloatValue() const {
-        return TypeConverter::instance()->toFloat(getStringValue());
+        return TypeConverter::toFloat(getStringValue());
     }
 
     void XmlChunk::setFloatValue(float value) {
@@ -90,7 +90,7 @@ namespace urchin {
     }
 
     char XmlChunk::getCharValue() const {
-        return TypeConverter::instance()->toChar(getStringValue());
+        return TypeConverter::toChar(getStringValue());
     }
 
     void XmlChunk::setCharValue(char value) {
@@ -98,7 +98,7 @@ namespace urchin {
     }
 
     Point2<float> XmlChunk::getPoint2Value() const {
-        return TypeConverter::instance()->toPoint2(getStringValue());
+        return TypeConverter::toPoint2(getStringValue());
     }
 
     void XmlChunk::setPoint2Value(const Point2<float>& value) {
@@ -108,7 +108,7 @@ namespace urchin {
     }
 
     Point3<float> XmlChunk::getPoint3Value() const {
-        return TypeConverter::instance()->toPoint3(getStringValue());
+        return TypeConverter::toPoint3(getStringValue());
     }
 
     void XmlChunk::setPoint3Value(const Point3<float>& value) {
@@ -118,7 +118,7 @@ namespace urchin {
     }
 
     Point4<float> XmlChunk::getPoint4Value() const {
-        return TypeConverter::instance()->toPoint4(getStringValue());
+        return TypeConverter::toPoint4(getStringValue());
     }
 
     void XmlChunk::setPoint4Value(const Point4<float>& value) {
@@ -129,7 +129,7 @@ namespace urchin {
     }
 
     Vector2<float> XmlChunk::getVector2Value() const {
-        return TypeConverter::instance()->toVector2(getStringValue());
+        return TypeConverter::toVector2(getStringValue());
     }
 
     void XmlChunk::setVector2Value(const Vector2<float>& value) {
@@ -139,7 +139,7 @@ namespace urchin {
     }
 
     Vector3<float> XmlChunk::getVector3Value() const {
-        return TypeConverter::instance()->toVector3(getStringValue());
+        return TypeConverter::toVector3(getStringValue());
     }
 
     void XmlChunk::setVector3Value(const Vector3<float>& value) {
@@ -149,7 +149,7 @@ namespace urchin {
     }
 
     Vector4<float> XmlChunk::getVector4Value() const {
-        return TypeConverter::instance()->toVector4(getStringValue());
+        return TypeConverter::toVector4(getStringValue());
     }
 
     void XmlChunk::setVector4Value(const Vector4<float>& value) {

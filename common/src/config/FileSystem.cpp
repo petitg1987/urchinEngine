@@ -8,10 +8,10 @@ namespace urchin {
             resourcesDirectory("./") {
 
         this->engineUserDataDirectory = SystemInfo::instance()->userDataDirectory() + getEngineDirectoryName() + "/";
-        FileUtil::instance()->createDirectory(engineUserDataDirectory);
+        FileUtil::createDirectory(engineUserDataDirectory);
 
         this->engineUserCacheDirectory = engineUserDataDirectory + "/cache/";
-        FileUtil::instance()->createDirectory(engineUserCacheDirectory);
+        FileUtil::createDirectory(engineUserCacheDirectory);
     }
 
     void FileSystem::setupResourcesDirectory(const std::string& resourcesDirectory) {

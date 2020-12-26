@@ -274,8 +274,8 @@ namespace urchin {
         QString filename = QFileDialog::getSaveFileName(this, tr("Save file"), getPreferredMapPath(), "XML file (*.xml)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
             std::string filenameString = filename.toUtf8().constData();
-            std::string fileExtension = FileUtil::instance()->getFileExtension(filenameString);
-            if (!StringUtil::instance()->insensitiveEquals(fileExtension, ".xml")) {
+            std::string fileExtension = FileUtil::getFileExtension(filenameString);
+            if (!StringUtil::insensitiveEquals(fileExtension, ".xml")) {
                 filenameString += ".xml";
             }
 
@@ -355,7 +355,7 @@ namespace urchin {
         this->mapFilename = mapFilename;
 
         if (!mapFilename.empty()) {
-            std::string preferredMapPathString = FileUtil::instance()->getDirectoryFrom(mapFilename);
+            std::string preferredMapPathString = FileUtil::getDirectoryFrom(mapFilename);
             savePreferredMapPath(preferredMapPathString);
         }
     }

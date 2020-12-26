@@ -23,7 +23,7 @@ namespace urchin {
     std::map<std::string, std::string> MapSerializer::deserialize(const std::string& mapString) {
         std::vector<std::string> splitStrings;
         std::vector<std::string> mapListString;
-        StringUtil::instance()->split(mapString, DELIMITER, splitStrings);
+        StringUtil::split(mapString, DELIMITER, splitStrings);
 
         bool appendNextElement = false;
         for (const auto& elem : splitStrings) {
@@ -34,7 +34,7 @@ namespace urchin {
             }
 
             std::string updatedElem = elem;
-            StringUtil::instance()->replaceAll(updatedElem, "\\\\", "");
+            StringUtil::replaceAll(updatedElem, "\\\\", "");
             appendNextElement = !updatedElem.empty() && updatedElem.back() == '\\';
         }
 
@@ -51,15 +51,15 @@ namespace urchin {
 
     std::string MapSerializer::escape(const std::string& str) {
         std::string escapedStr = str;
-        StringUtil::instance()->replaceAll(escapedStr, "\\", "\\\\");
-        StringUtil::instance()->replaceAll(escapedStr, std::string(1, DELIMITER), std::string("\\") + DELIMITER);
+        StringUtil::replaceAll(escapedStr, "\\", "\\\\");
+        StringUtil::replaceAll(escapedStr, std::string(1, DELIMITER), std::string("\\") + DELIMITER);
         return escapedStr;
     }
 
     std::string MapSerializer::unescape(const std::string& str) {
         std::string unescapedStr = str;
-        StringUtil::instance()->replaceAll(unescapedStr, std::string("\\") + DELIMITER, std::string(1, DELIMITER));
-        StringUtil::instance()->replaceAll(unescapedStr, "\\\\", "\\");
+        StringUtil::replaceAll(unescapedStr, std::string("\\") + DELIMITER, std::string(1, DELIMITER));
+        StringUtil::replaceAll(unescapedStr, "\\\\", "\\");
         return unescapedStr;
     }
 

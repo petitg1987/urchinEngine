@@ -48,7 +48,7 @@ namespace urchin {
             return (unsigned int)sysInfo.dwNumberOfProcessors;
         #else
             std::string numCpuCores = CommandExecutor::instance()->execute(R"(grep --max-count=1 "cpu cores" /proc/cpuinfo | cut -d ":" -f 2)");
-            return TypeConverter::instance()->toUnsignedInt(numCpuCores);
+            return TypeConverter::toUnsignedInt(numCpuCores);
         #endif
     }
 
@@ -85,12 +85,12 @@ namespace urchin {
             graphicsCardNames.insert(graphicsCardNames.begin(), setGraphicsCardNames.begin(), setGraphicsCardNames.end());
         #else
             std::string graphicCardNames = CommandExecutor::instance()->execute(R"(lspci | grep -oE "VGA.*" | cut -d ":" -f 2)");
-            StringUtil::instance()->split(graphicCardNames, '\n', graphicsCardNames);
+            StringUtil::split(graphicCardNames, '\n', graphicsCardNames);
         #endif
 
         std::string graphicsCardNamesList;
         for(auto graphicsCardName : graphicsCardNames) {
-            StringUtil::instance()->trim(graphicsCardName);
+            StringUtil::trim(graphicsCardName);
             graphicsCardNamesList += graphicsCardName + ", ";
         }
         if(graphicsCardNamesList.size() >= 2) {
@@ -183,7 +183,7 @@ namespace urchin {
             if (readSize > 0) {
                 std::string executablePath(buffer, (unsigned long)readSize);
                 delete[] buffer;
-                return FileUtil::instance()->getDirectoryFrom(executablePath);
+                return FileUtil::getDirectoryFrom(executablePath);
             }
             throw std::runtime_error("Cannot read /proc/self/exe on Linux system.");
         #endif

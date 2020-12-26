@@ -81,7 +81,7 @@ namespace urchin {
             std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
             std::string relativeMeshFilename;
             if (!meshFilename.empty()) {
-                relativeMeshFilename = FileUtil::instance()->getRelativePath(resourcesDirectory, meshFilename);
+                relativeMeshFilename = FileUtil::getRelativePath(resourcesDirectory, meshFilename);
             }
             auto* model = new Model(relativeMeshFilename);
             sceneObject->setModel(model);
@@ -107,7 +107,7 @@ namespace urchin {
             this->meshFilename = filename.toUtf8().constData();
             this->meshFilenameText->setText(filename);
 
-            std::string preferredMeshPathString = FileUtil::instance()->getDirectoryFrom(meshFilename);
+            std::string preferredMeshPathString = FileUtil::getDirectoryFrom(meshFilename);
             preferredMeshPath = QString::fromStdString(preferredMeshPathString);
         }
     }

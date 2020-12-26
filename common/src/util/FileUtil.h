@@ -3,32 +3,28 @@
 
 #include <string>
 
-#include "pattern/singleton/Singleton.h"
-
 namespace urchin {
 
-    class FileUtil : public Singleton<FileUtil> {
+    class FileUtil {
         public:
-            friend class Singleton<FileUtil>;
+            static bool isDirectoryExist(const std::string&);
+            static bool isFileExist(const std::string&);
 
-            bool isDirectoryExist(const std::string&);
-            bool isFileExist(const std::string&);
+            static void createDirectory(const std::string&);
+            static void copyDirectoryContent(const std::string&, const std::string&);
 
-            void createDirectory(const std::string&);
-            void copyDirectoryContent(const std::string&, const std::string&);
-
-            std::string getFileExtension(const std::string&);
-            std::string getFileName(const std::string&);
-            std::string getFileNameNoExtension(const std::string&);
-            std::string getDirectoryFrom(const std::string&);
-            std::string getRelativePath(const std::string&, const std::string&);
-            std::string simplifyDirectoryPath(const std::string&);
+            static std::string getFileExtension(const std::string&);
+            static std::string getFileName(const std::string&);
+            static std::string getFileNameNoExtension(const std::string&);
+            static std::string getDirectoryFrom(const std::string&);
+            static std::string getRelativePath(const std::string&, const std::string&);
+            static std::string simplifyDirectoryPath(const std::string&);
 
         private:
             FileUtil() = default;
-            ~FileUtil() override = default;
+            ~FileUtil() = default;
 
-            void checkDirectory(const std::string&);
+            static void checkDirectory(const std::string&);
     };
 
 }

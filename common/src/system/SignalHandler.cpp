@@ -128,7 +128,7 @@ namespace urchin {
         for (int i = 1; i < traceSize; ++i) {
             Dl_info info;
             if(dladdr(traces[i], &info) && info.dli_sname) {
-                std::string moduleName = info.dli_fname != nullptr ? FileUtil::instance()->getFileName(info.dli_fname) : "[no module]";
+                std::string moduleName = info.dli_fname != nullptr ? FileUtil::getFileName(info.dli_fname) : "[no module]";
                 int status;
                 char* demangledMethod = abi::__cxa_demangle(info.dli_sname, nullptr, 0, &status);
                 std::string methodName = status == 0 ? demangledMethod : symbols[i];
@@ -144,7 +144,7 @@ namespace urchin {
                 std::string addr2lineCmd = "addr2line -p -e " + std::string(info.dli_fname) + + " 0x" + instructionShiftHex.str();
                 std::string cmdResult = CommandExecutor::instance()->execute(addr2lineCmd + " 2> /dev/null");
                 if(cmdResult.empty()) {
-                    ss << "\t[bt]\t> " << "addr2line -p -e " << FileUtil::instance()->getFileName(std::string(info.dli_fname)) << " 0x" << instructionShiftHex.str() << std::endl;
+                    ss << "\t[bt]\t> " << "addr2line -p -e " << FileUtil::getFileName(std::string(info.dli_fname)) << " 0x" << instructionShiftHex.str() << std::endl;
                 }else if(cmdResult.find("??") == std::string::npos) {
                     ss << "\t[bt]\t> " << cmdResult << std::endl;
                 }
@@ -153,7 +153,7 @@ namespace urchin {
             }
         }
         std::string stacktrace = ss.str();
-        if(StringUtil::instance()->endWith(stacktrace, "\n")) {
+        if(StringUtil::endWith(stacktrace, "\n")) {
             stacktrace = stacktrace.substr(0, stacktrace.size() - 1);
         }
 

@@ -31,7 +31,7 @@ namespace urchin {
         for (auto it = overlappingPairs.begin(); it != overlappingPairs.end(); ++it) {
             if ((*it)->getBodiesId() == bodiesId) {
                 delete *it;
-                VectorEraser::instance()->erase(overlappingPairs, it);
+                VectorEraser::erase(overlappingPairs, it);
                 break;
             }
         }

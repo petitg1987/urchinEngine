@@ -11,7 +11,7 @@ namespace urchin {
             std::ostringstream newLineValue;
             newLineValue << "#define " << token.first << " " << token.second;
 
-            StringUtil::instance()->replaceLine(result, startLineToken.str(), newLineValue.str());
+            StringUtil::replaceLine(result, startLineToken.str(), newLineValue.str());
         }
 
         return result;

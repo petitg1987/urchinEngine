@@ -38,11 +38,11 @@ namespace urchin {
 
         //build specific maps for performance reason (numeric conversion is slow)
         for (const auto& property : loadedProperties) {
-            if (TypeConverter::instance()->isUnsignedInt(property.second)) {
-                unsignedIntProperties[property.first] = TypeConverter::instance()->toUnsignedInt(property.second);
+            if (TypeConverter::isUnsignedInt(property.second)) {
+                unsignedIntProperties[property.first] = TypeConverter::toUnsignedInt(property.second);
             }
-            if (TypeConverter::instance()->isFloat(property.second)) {
-                floatProperties[property.first] = TypeConverter::instance()->toFloat(property.second);
+            if (TypeConverter::isFloat(property.second)) {
+                floatProperties[property.first] = TypeConverter::toFloat(property.second);
             }
         }
     }
@@ -82,7 +82,7 @@ namespace urchin {
     char ConfigService::getCharValue(const std::string& propertyName) const {
         auto it = properties.find(propertyName);
         if (it != properties.end()) {
-            return TypeConverter::instance()->toChar(it->second);
+            return TypeConverter::toChar(it->second);
         }
 
         throw std::invalid_argument("The property " + propertyName + " doesn't exist.");
