@@ -9,7 +9,7 @@ using namespace urchin;
 void FileUtilTest::getDirectoryFromUnixPath() {
     std::string filenamePath = "/home/jean/binaryFile";
 
-    std::string result = FileUtil::getDirectoryFrom(filenamePath);
+    std::string result = FileUtil::instance()->getDirectoryFrom(filenamePath);
 
     AssertHelper::assertTrue(result == "/home/jean/");
 }
@@ -17,7 +17,7 @@ void FileUtilTest::getDirectoryFromUnixPath() {
 void FileUtilTest::getDirectoryFromWindowsPath() {
     std::string filenamePath = R"(C:\home\jean\binaryFile)";
 
-    std::string result = FileUtil::getDirectoryFrom(filenamePath);
+    std::string result = FileUtil::instance()->getDirectoryFrom(filenamePath);
 
     AssertHelper::assertTrue(result == R"(C:\home\jean\)");
 }
@@ -26,7 +26,7 @@ void FileUtilTest::relativePath() {
     std::string referenceDirectory = "xxx/yyy/zzz/www/";
     std::string path = "xxx/yyy/aaa/bbb/";
 
-    std::string result = FileUtil::getRelativePath(referenceDirectory, path);
+    std::string result = FileUtil::instance()->getRelativePath(referenceDirectory, path);
 
     AssertHelper::assertTrue(result == "../../aaa/bbb/");
 }
@@ -35,7 +35,7 @@ void FileUtilTest::relativePathEqual() {
     std::string referenceDirectory = "xxx/yyy/";
     std::string path = "xxx/yyy/";
 
-    std::string result = FileUtil::getRelativePath(referenceDirectory, path);
+    std::string result = FileUtil::instance()->getRelativePath(referenceDirectory, path);
 
     AssertHelper::assertTrue(result.empty());
 }
@@ -43,7 +43,7 @@ void FileUtilTest::relativePathEqual() {
 void FileUtilTest::simplifyDirectoryPathUnix() {
     std::string directoryPath = "xxx/yyy/../zzz/www/../rrr/";
 
-    std::string result = FileUtil::simplifyDirectoryPath(directoryPath);
+    std::string result = FileUtil::instance()->simplifyDirectoryPath(directoryPath);
 
     AssertHelper::assertTrue(result == "xxx/zzz/rrr/");
 }
@@ -51,7 +51,7 @@ void FileUtilTest::simplifyDirectoryPathUnix() {
 void FileUtilTest::simplifyDirectoryPathWindows() {
     std::string directoryPath = R"(xxx\yyy\..\zzz\www\..\rrr\)";
 
-    std::string result = FileUtil::simplifyDirectoryPath(directoryPath);
+    std::string result = FileUtil::instance()->simplifyDirectoryPath(directoryPath);
 
     AssertHelper::assertTrue(result == R"(xxx\zzz\rrr\)");
 }

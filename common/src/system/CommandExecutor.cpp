@@ -19,7 +19,7 @@ namespace urchin {
             cmdResult += buffer.data();
         }
 
-        if(StringUtil::endWith(cmdResult, "\n")) {
+        if(StringUtil::instance()->endWith(cmdResult, "\n")) {
             return cmdResult.substr(0, cmdResult.size() - 1);
         }
         return cmdResult;

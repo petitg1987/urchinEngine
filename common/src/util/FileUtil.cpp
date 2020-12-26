@@ -146,7 +146,7 @@ namespace urchin {
             returnDirFound = simplifiedDirectoryPath.find(parentDirectorySymbol);
         }
 
-        StringUtil::replaceAll(simplifiedDirectoryPath, "./", "");
+        StringUtil::instance()->replaceAll(simplifiedDirectoryPath, "./", "");
 
         return simplifiedDirectoryPath;
     }

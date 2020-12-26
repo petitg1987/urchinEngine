@@ -29,7 +29,7 @@ namespace urchin {
         std::string terrainHash = generateTerrainMeshHash(terrainFilePath, xzScale, yScale);
 
         std::string terrainFrlFilePath = FileSystem::instance()->getEngineUserCacheDirectory()
-                + FileUtil::getFileNameNoExtension(terrainFilePath)
+                + FileUtil::instance()->getFileNameNoExtension(terrainFilePath)
                 + "_" + std::to_string(std::hash<std::string>{}(terrainFilePath))
                 + FRL_FILE_EXTENSION;
         std::ifstream terrainFrlFile;

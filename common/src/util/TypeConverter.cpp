@@ -127,7 +127,7 @@ namespace urchin {
     std::vector<float> TypeConverter::floatSplit(const std::string& str, unsigned int expectedSplit) {
         std::vector<std::string> stringValues;
         stringValues.reserve(expectedSplit);
-        StringUtil::split(str, FLOAT_DELIMITER, stringValues);
+        StringUtil::instance()->split(str, FLOAT_DELIMITER, stringValues);
 
         if (stringValues.size() != expectedSplit) {
             throw std::invalid_argument("Number of float expected: " + std::to_string(expectedSplit) + ", found: "

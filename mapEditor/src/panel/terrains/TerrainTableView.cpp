@@ -46,7 +46,7 @@ namespace urchin {
         itemTerrainName->setEditable(false);
 
         std::string pathFileName = sceneTerrain->getTerrain()->getMesh()->getHeightFilename();
-        auto* itemHeightFile = new QStandardItem(QString::fromStdString(FileUtil::getFileName(pathFileName)));
+        auto* itemHeightFile = new QStandardItem(QString::fromStdString(FileUtil::instance()->getFileName(pathFileName)));
         itemHeightFile->setToolTip(QString::fromStdString(pathFileName));
         itemHeightFile->setData(QVariant::fromValue(sceneTerrain), Qt::UserRole + 1);
         itemHeightFile->setEditable(false);

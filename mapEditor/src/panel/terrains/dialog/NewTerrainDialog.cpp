@@ -78,7 +78,7 @@ namespace urchin {
             sceneTerrain->setName(terrainName);
 
             std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
-            std::string relativeHeightFilename = FileUtil::getRelativePath(resourcesDirectory, heightFilename);
+            std::string relativeHeightFilename = FileUtil::instance()->getRelativePath(resourcesDirectory, heightFilename);
             std::vector<std::string> emptyMaterialFilenames;
 
             auto terrainMesh = std::make_shared<TerrainMesh>(relativeHeightFilename, 1.0f, 0.1f);
@@ -108,7 +108,7 @@ namespace urchin {
             this->heightFilename = filename.toUtf8().constData();
             this->heightFilenameText->setText(filename);
 
-            std::string preferredHeightPathString = FileUtil::getDirectoryFrom(heightFilename);
+            std::string preferredHeightPathString = FileUtil::instance()->getDirectoryFrom(heightFilename);
             preferredHeightPath = QString::fromStdString(preferredHeightPathString);
         }
     }

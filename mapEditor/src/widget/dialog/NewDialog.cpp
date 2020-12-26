@@ -99,8 +99,8 @@ namespace urchin {
         QString mapFilename = mapNameText->text();
         if (!mapFilename.isEmpty()) {
             this->mapFilename = mapFilename.toUtf8().constData();
-            std::string fileExtension = FileUtil::getFileExtension(this->mapFilename);
-            if (!StringUtil::insensitiveEquals(fileExtension, ".xml")) {
+            std::string fileExtension = FileUtil::instance()->getFileExtension(this->mapFilename);
+            if (!StringUtil::instance()->insensitiveEquals(fileExtension, ".xml")) {
                 this->mapFilename += ".xml";
             }
         }
@@ -128,7 +128,7 @@ namespace urchin {
 
     void NewDialog::updateRelativeWorkingDirectory() {
         if (!mapDirectory.empty() && !mapWorkingDirectory.empty()) {
-            mapRelWorkingDirectory = FileUtil::getRelativePath(mapDirectory, mapWorkingDirectory);
+            mapRelWorkingDirectory = FileUtil::instance()->getRelativePath(mapDirectory, mapWorkingDirectory);
             mapRelWorkingDirectoryText->setText(QString::fromStdString(mapRelWorkingDirectory));
         }
     }

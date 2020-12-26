@@ -8,7 +8,7 @@ void StringUtilTest::splitString() {
     std::string str = "str1,str2,str3";
     std::vector<std::string> splitStr;
 
-    StringUtil::split(str, ',', splitStr);
+    StringUtil::instance()->split(str, ',', splitStr);
 
     AssertHelper::assertUnsignedInt(splitStr.size(), 3);
     AssertHelper::assertString(splitStr[0], "str1");
@@ -20,7 +20,7 @@ void StringUtilTest::splitEmptyString() {
     std::string str = "str1,,str2";
     std::vector<std::string> splitStr;
 
-    StringUtil::split(str, ',', splitStr);
+    StringUtil::instance()->split(str, ',', splitStr);
 
     AssertHelper::assertUnsignedInt(splitStr.size(), 3);
     AssertHelper::assertString(splitStr[0], "str1");

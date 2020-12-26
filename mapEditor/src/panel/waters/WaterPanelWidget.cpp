@@ -372,10 +372,10 @@ namespace urchin {
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
             std::string imageFilenamePath = filename.toUtf8().constData();
-            std::string relativeTgaFilenamePath = FileUtil::getRelativePath(resourcesDirectory, imageFilenamePath);
+            std::string relativeTgaFilenamePath = FileUtil::instance()->getRelativePath(resourcesDirectory, imageFilenamePath);
             this->normalTextureFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
 
-            std::string preferredPathString = FileUtil::getDirectoryFrom(imageFilenamePath);
+            std::string preferredPathString = FileUtil::instance()->getDirectoryFrom(imageFilenamePath);
             preferredNormalTexturePath = QString::fromStdString(preferredPathString);
 
             try {
@@ -399,10 +399,10 @@ namespace urchin {
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
             std::string tgaFilenamePath = filename.toUtf8().constData();
-            std::string relativeTgaFilenamePath = FileUtil::getRelativePath(resourcesDirectory, tgaFilenamePath);
+            std::string relativeTgaFilenamePath = FileUtil::instance()->getRelativePath(resourcesDirectory, tgaFilenamePath);
             this->dudvMapFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
 
-            std::string preferredPathString = FileUtil::getDirectoryFrom(tgaFilenamePath);
+            std::string preferredPathString = FileUtil::instance()->getDirectoryFrom(tgaFilenamePath);
             preferredDudvMapPath = QString::fromStdString(preferredPathString);
 
             try {

@@ -4,25 +4,29 @@
 #include <string>
 #include <vector>
 
+#include "pattern/singleton/Singleton.h"
+
 namespace urchin {
 
-    class StringUtil {
+    class StringUtil : public Singleton<StringUtil> {
         public:
-            static void replaceAll(std::string&, const std::string&, const std::string&);
-            static void replaceLine(std::string&, const std::string&, const std::string&);
+            friend class Singleton<StringUtil>;
 
-            static void split(const std::string&, const char&, std::vector<std::string>&);
+            void replaceAll(std::string&, const std::string&, const std::string&);
+            void replaceLine(std::string&, const std::string&, const std::string&);
 
-            static void ltrim(std::string&);
-            static void rtrim(std::string&);
-            static void trim(std::string&);
+            void split(const std::string&, const char&, std::vector<std::string>&);
 
-            static bool insensitiveEquals(const std::string&, const std::string&);
-            static bool endWith(const std::string&, const std::string&);
+            void ltrim(std::string&);
+            void rtrim(std::string&);
+            void trim(std::string&);
+
+            bool insensitiveEquals(const std::string&, const std::string&);
+            bool endWith(const std::string&, const std::string&);
 
         private:
             StringUtil() = default;
-            ~StringUtil() = default;
+            ~StringUtil() override = default;
     };
 
 }

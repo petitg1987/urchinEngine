@@ -23,11 +23,11 @@ namespace urchin {
         auto it = cameraPositionByMap.find(mapFilename);
         if (it != cameraPositionByMap.end()) {
             std::vector<std::string> serializedCameraElements;
-            StringUtil::split(it->second, DATA_DELIMITER, serializedCameraElements);
+            StringUtil::instance()->split(it->second, DATA_DELIMITER, serializedCameraElements);
             assert(serializedCameraElements.size() == 2);
 
-            moveTo(TypeConverter::toPoint3(serializedCameraElements[0]));
-            lookAt(TypeConverter::toVector3(serializedCameraElements[1]));
+            moveTo(TypeConverter::instance()->toPoint3(serializedCameraElements[0]));
+            lookAt(TypeConverter::instance()->toVector3(serializedCameraElements[1]));
         }
     }
 

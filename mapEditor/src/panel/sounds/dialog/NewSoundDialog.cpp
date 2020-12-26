@@ -93,7 +93,7 @@ namespace urchin {
             sceneSound->setName(soundName);
 
             std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
-            std::string relativeSoundFilename = FileUtil::getRelativePath(resourcesDirectory, soundFilename);
+            std::string relativeSoundFilename = FileUtil::instance()->getRelativePath(resourcesDirectory, soundFilename);
 
             QVariant variant = soundTypeComboBox->currentData();
             auto soundType = static_cast<Sound::SoundType>(variant.toInt());
@@ -132,7 +132,7 @@ namespace urchin {
             this->soundFilename = filename.toUtf8().constData();
             this->soundFilenameText->setText(filename);
 
-            std::string preferredSoundPathString = FileUtil::getDirectoryFrom(soundFilename);
+            std::string preferredSoundPathString = FileUtil::instance()->getDirectoryFrom(soundFilename);
             preferredSoundPath = QString::fromStdString(preferredSoundPathString);
         }
     }

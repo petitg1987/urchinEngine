@@ -28,8 +28,8 @@ namespace urchin {
                 if (result.size() == 1) {
                     isPolygonsMerged = true;
 
-                    VectorEraser::erase(allPolygonPaths, i);
-                    VectorEraser::erase(allPolygonPaths, 0);
+                    VectorEraser::instance()->erase(allPolygonPaths, i);
+                    VectorEraser::instance()->erase(allPolygonPaths, 0);
 
                     allPolygonPaths.emplace_back(result[0]);
                     break;
@@ -37,7 +37,7 @@ namespace urchin {
             }
             if (!isPolygonsMerged) {
                 mergedPolygons.push_back(allPolygonPaths[0].template toCSGPolygon<T>());
-                VectorEraser::erase(allPolygonPaths, 0);
+                VectorEraser::instance()->erase(allPolygonPaths, 0);
             }
         }
 
