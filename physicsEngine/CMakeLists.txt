@@ -13,5 +13,5 @@ add_definitions(-fPIC -fno-semantic-interposition -ffast-math -Wall -Wextra -Wpe
 include_directories(src ../common/src)
 
 file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.inl" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
-add_library(urchinPhysicsEngine SHARED ${SOURCE_FILES})
+add_library(urchinPhysicsEngine STATIC ${SOURCE_FILES})
 target_link_libraries(urchinPhysicsEngine ${LINK_OPT} Threads::Threads urchinCommon -static-libstdc++)
