@@ -127,7 +127,7 @@ namespace urchin {
 
     void NewSoundDialog::showSoundFilenameDialog() {
         QString directory = preferredSoundPath.isEmpty() ? QString::fromStdString(FileSystem::instance()->getResourcesDirectory()) : preferredSoundPath;
-        QString filename = QFileDialog::getOpenFileName(this, tr("Open sound file"), directory, "Sound file (*.wav)", nullptr, QFileDialog::DontUseNativeDialog);
+        QString filename = QFileDialog::getOpenFileName(this, tr("Open sound file"), directory, "Sound file (*.flac)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
             this->soundFilename = filename.toUtf8().constData();
             this->soundFilenameText->setText(filename);

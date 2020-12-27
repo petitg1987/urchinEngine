@@ -93,8 +93,6 @@
     - **NEW FEATURE** (`medium`): Apply impulse on objects hit by character or falling on the character
 
 # Sound engine
-- Sound reader
-  - **IMPROVEMENT** (`major`): Use FLAC format instead of WAV format
 - Sound trigger
     - **NEW FEATURE** (`medium`): Support convex hull sound shape
     - **NEW FEATURE** (`major`): Support portal IN and portal OUT to trigger sound
