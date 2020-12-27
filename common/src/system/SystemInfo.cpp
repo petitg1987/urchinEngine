@@ -159,11 +159,11 @@ namespace urchin {
 
     std::string SystemInfo::userDataDirectory() {
         #ifdef _WIN32
-            std::string userDataDirectory = getenv("LOCALAPPDATA"); //TODO check value on windows
+            std::string userDataDirectory = getenv("LOCALAPPDATA");
             if(!userDataDirectory.empty()) {
                 return userDataDirectory + "\\";
             }
-            return homeDirectory() + "\\AppData\\Local\\";
+            return homeDirectory() + R"(\AppData\Local\)";
         #else
             return homeDirectory();
         #endif

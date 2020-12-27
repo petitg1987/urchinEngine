@@ -1,7 +1,6 @@
 #include <stdexcept>
 #include <filesystem>
 #include <fstream>
-#include <cassert>
 #include <sys/stat.h>
 
 #include "FileUtil.h"

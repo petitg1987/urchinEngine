@@ -10,7 +10,7 @@ else()
     set(LINK_OPT -rdynamic -ldl) #necessary for SignalHandler to work correctly
 endif()
 
-add_definitions(-fPIC -ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror)
+add_definitions(-fPIC -fno-semantic-interposition -ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror)
 include_directories(src)
 
 file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.inl" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
