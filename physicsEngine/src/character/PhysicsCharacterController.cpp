@@ -159,6 +159,7 @@ namespace urchin {
                         Vector3<float> moveVector = normal * depth * recoverFactors[subStepIndex];
 
                         characterTransform.setPosition(characterTransform.getPosition().translate(moveVector));
+                        ghostBody->setTransform(characterTransform);
 
                         if (subStepIndex == 0) {
                             saveSignificantContactValues(significantContactValues, normal);
@@ -166,10 +167,6 @@ namespace urchin {
                     }
                 }
             }
-        }
-
-        if (!manifoldResults.empty()) {
-            ghostBody->setTransform(characterTransform);
         }
 
         computeSignificantContactValues(significantContactValues, dt);
