@@ -35,20 +35,14 @@
   * Download: https://github.com/glfw/glfw/releases/download/3.3.2/glfw-3.3.2.bin.WIN64.zip
   * Copy lib (mingw-w64) & include respectively in C:\msys64\mingw64\lib & C:\msys64\mingw64\x86_64-w64-mingw32\include
 * Libcurl:
-  * Download curl for Windows 64bits (https://curl.haxx.se/windows/dl-7.64.1_1/curl-7.64.1_1-win64-mingw.zip). Note: associate DLL can be also downloaded on this page (OpenSSL 1.1.1)
-  * Copy lib & include respectively in C:\msys64\mingw64\lib & C:\msys64\mingw64\x86_64-w64-mingw32\include
+  * Check curl version: `curl --version` (curl should be installed via 'mingw-w64-x86_64-cmake' package)
+  * Download curl for Windows 64bits matching the version found (example: https://curl.haxx.se/windows/dl-7.73.0_1/curl-7.73.0_1-win64-mingw.zip)
+  * Copy include in C:\msys64\mingw64\x86_64-w64-mingw32\include (don't need to copy lib because already installed via 'mingw-w64-x86_64-cmake' package)
+  * Notes to find the dll files:
+    * The 'libcurl-4.dll' is in C:\msys64\mingw64\bin
+    * The 'libssl-1_1-x64.dll' and 'libcrypto-1_1-x64.dll' are in the corresponding OpenSSL file (example: https://curl.se/windows/dl-7.73.0_1/openssl-1.1.1h_1-win64-mingw.zip)
 * Zip:
   * Download zip (http://stahlworks.com/dev/zip.exe)
   * Copy file in C:\msys64\mingw64\bin
 * Configure Clion:
-  * In File > Settings... > Build, Execution, Deployment > Toolchains, Environment: C:\msys64\mingw64  
-* Path configuration (only to start application inside CLion):
-  * For debug build, add the following directories in "PATH" environment variable:
-    * `C:\msys64\home\greg\project\laserRiddle\.build\release\urchinEngine\3dEngine`
-    * `C:\msys64\home\greg\project\laserRiddle\.build\release\urchinEngine\AIEngine`
-    * `C:\msys64\home\greg\project\laserRiddle\.build\release\urchinEngine\common`
-    * `C:\msys64\home\greg\project\laserRiddle\.build\release\urchinEngine\mapHandler`
-    * `C:\msys64\home\greg\project\laserRiddle\.build\release\urchinEngine\physicsEngine`
-    * `C:\msys64\home\greg\project\laserRiddle\.build\release\urchinEngine\soundEngine`
-    * `C:\msys64\home\greg\project\laserRiddle\.build\release\urchinEngine\networkEngine`
-    * `C:\msys64\home\greg\project\laserRiddle\release\windows\resources\lib`
+  * In File > Settings... > Build, Execution, Deployment > Toolchains, Environment: C:\msys64\mingw64
