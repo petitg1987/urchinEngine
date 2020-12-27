@@ -43,7 +43,7 @@ namespace urchin {
 
         for (const auto& entry : std::filesystem::directory_iterator(srcDirectory)) {
             if (entry.is_regular_file()) {
-                std::string srcFile = entry.path();
+                std::string srcFile = entry.path().string();
                 std::string dstFile = dstDirectory + FileUtil::getFileName(srcFile);
 
                 if(!isFileExist(dstFile)) {

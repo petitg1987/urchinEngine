@@ -12,11 +12,7 @@
   * Download: https://sourceforge.net/projects/msys2/
   * Setup with defautl values
   * Add env. variable PATH: C:\msys64\mingw64\bin
-  * In **mingw64.exe** (not msys2.exe):
-    ```
-    Pacman -Su
-    Pacman -S mingw-w64-x86_64-toolchain mingw64/mingw-w64-x86_64-gcc
-    ```
+  * In **mingw64.exe** (not msys2.exe): `Pacman -S mingw-w64-x86_64-cmake mingw-w64-x86_64-toolchain mingw64/mingw-w64-x86_64-gcc`
 * Freetype:
   * Download: https://download.savannah.gnu.org/releases/freetype/freetype-2.10.1.tar.gz
   * Copy in: C:\msys64\home\greg
