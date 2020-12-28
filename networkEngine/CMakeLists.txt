@@ -8,7 +8,7 @@ if (WIN32)
     set(CURL_LIB curl)
 else()
     set(LINK_OPT -rdynamic) #necessary for SignalHandler to work correctly
-    set(CURL_LIB curl.a ssl.a crypto.a brotlidec.a brotlicommon.a z.a)
+    set(CURL_LIB curl.a ssl.a crypto.a brotlidec.a brotlicommon.a z.a nghttp2.a)
 endif()
 
 add_definitions(-ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror)

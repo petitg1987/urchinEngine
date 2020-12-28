@@ -1,6 +1,17 @@
 # Environment setup 
 ## Linux
-* Install libraries: `sudo apt install qt5-default qtbase5-dev libglew-dev libopenal-dev libsndfile1-dev libfreetype6-dev libcppunit-dev libcurl4-gnutls-dev`
+* Install libraries: `sudo apt install qt5-default qtbase5-dev libglew-dev libopenal-dev libsndfile1-dev libfreetype6-dev libcppunit-dev libssl-dev libnghttp2-dev`
+* Libcurl (custom library only for HTTP/HTTPS protocols):
+  ```
+  rm /tmp/curl/ -rf && mkdir -p /tmp/curl/ && cd /tmp/curl/
+  wget -P /tmp/curl/ https://curl.haxx.se/download/curl-7.74.0.zip
+  unzip curl-7.74.0.zip && cd curl-7.74.0
+  ./configure --disable-shared --enable-static --prefix=/usr/local --disable-ldap --disable-sspi --disable-ftp --disable-file --disable-dict --disable-telnet --disable-tftp --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-smb --without-librtmp --without-libidn --with-ssl --with-nghttp2
+  make
+  sudo make install #create library in /usr/local/lib/libcurl.a
+  sudo mv /usr/lib/x86_64-linux-gnu/libcurl.a /usr/lib/x86_64-linux-gnu/libcurl.a_backup #In case libcurl is installed via package 'libcurl4-gnutls-dev'
+  cat /usr/local/lib/pkgconfig/libcurl.pc | grep "Libs.private" #Display required dependencies
+  ```
 * Configure system to activate core file:
   * Edit `/etc/security/limits.conf`
   * Add / change to: `*               soft    core            unlimited`
