@@ -1,6 +1,6 @@
-#include <GL/glew.h>
 #include "UrchinCommon.h"
 
+#include "libs/glad/glad.h"
 #include "ShaderDataSender.h"
 
 namespace urchin {

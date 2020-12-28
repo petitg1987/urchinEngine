@@ -1,7 +1,7 @@
-#include <GL/glew.h>
 #include <stdexcept>
 #include <cassert>
 
+#include "libs/glad/glad.h"
 #include "graphic/render/GenericRenderer.h"
 #include "graphic/render/GenericRendererBuilder.h"
 
@@ -72,7 +72,7 @@ namespace urchin {
         glTexParameteri(textureType, GL_TEXTURE_MIN_FILTER, textureReader.getParam().getGlReadQuality(textureReader.getTexture()->hasMipmap()));
         glTexParameteri(textureType, GL_TEXTURE_MAG_FILTER, textureReader.getParam().getGlReadQuality(false));
 
-        if (textureReader.getParam().needAnisotropy() && GLEW_EXT_texture_filter_anisotropic) {
+        if (textureReader.getParam().needAnisotropy() && GL_EXT_texture_filter_anisotropic) {
             float maxAnisotropy = 1.0f;
             glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropy);
             glTexParameterf(textureType, GL_TEXTURE_MAX_ANISOTROPY_EXT, maxAnisotropy);
@@ -96,7 +96,7 @@ namespace urchin {
             bufferIds.push_back(bufferId);
 
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferId);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.indicesCount * sizeof(unsigned int), indices.ptr, GL_STATIC_DRAW);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, (long)(indices.indicesCount * sizeof(int)), indices.ptr, GL_STATIC_DRAW);
 
             indices.ptr = nullptr; //reset pointer because no guaranteed pointer is still valid after initialization
         }
@@ -110,9 +110,9 @@ namespace urchin {
 
         glBindVertexArray(vertexArrayObject);
         glBindBuffer(GL_ARRAY_BUFFER, bufferIds[dataIndex]);
-        glBufferData(GL_ARRAY_BUFFER, dataMemorySize, dataValue.ptr, update ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, (long)dataMemorySize, dataValue.ptr, update ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
         glEnableVertexAttribArray((GLuint)dataIndex);
-        glVertexAttribPointer((GLuint)dataIndex, dataDimensionToSize(dataValue.dataDimension), dataTypeToGlType(dataValue.dataType), GL_FALSE, 0, nullptr);
+        glVertexAttribPointer((GLuint)dataIndex, (int)dataDimensionToSize(dataValue.dataDimension), dataTypeToGlType(dataValue.dataType), GL_FALSE, 0, nullptr);
 
         dataValue.ptr = nullptr; //reset pointer because no guaranteed pointer is still valid after initialization
     }

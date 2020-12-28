@@ -1,6 +1,6 @@
-#include <GL/glew.h>
 #include "UrchinCommon.h"
 
+#include "libs/glad/glad.h"
 #include "GraphicService.h"
 
 namespace urchin {
@@ -11,30 +11,24 @@ namespace urchin {
     }
 
     void GraphicService::initializeGraphic() {
-        //initialization Glew
-        GLenum err = glewInit();
-        if (err != GLEW_OK) {
-            throw std::runtime_error((char*)glewGetErrorString(err));
+        constexpr int minVersionInt = 450;
+        const std::string minVersionStr = "4.5";
+
+        if(!gladLoadGL()) {
+            throw std::runtime_error("Unable to initialize GLAD. Your system's graphic drivers must support OpenGL version " + minVersionStr);
         }
 
-        //check OpenGL version supported
-        if (!glewIsSupported("GL_VERSION_4_5")) {
-            throw std::runtime_error("OpenGL version 4.5 is required but it's not supported on this environment.");
+        //check OpenGL version loaded
+        if((GLVersion.major * 100 + GLVersion.minor * 10) < minVersionInt) {
+            throw std::runtime_error("OpenGL version " + minVersionStr + " is required. Loaded version: " + std::to_string(GLVersion.major) + "." + std::to_string(GLVersion.minor));
         }
 
         //check OpenGL context version
         int majorVersionContext = 0, minorVersionContext = 0;
         glGetIntegerv(GL_MAJOR_VERSION, &majorVersionContext);
         glGetIntegerv(GL_MINOR_VERSION, &minorVersionContext);
-
-        if ((majorVersionContext * 100 + minorVersionContext * 10) < 450) {
-            std::ostringstream ossMajorVersionContext;
-            ossMajorVersionContext << majorVersionContext;
-
-            std::ostringstream ossMinorVersionContext;
-            ossMinorVersionContext << minorVersionContext;
-
-            throw std::runtime_error("OpenGL context version required: 4.5 or more, current version: " + ossMajorVersionContext.str() + "." + ossMinorVersionContext.str() + ".");
+        if ((majorVersionContext * 100 + minorVersionContext * 10) < minVersionInt) {
+            throw std::runtime_error("OpenGL version " + minVersionStr + " is required. Context version: " + std::to_string(majorVersionContext) + "." + std::to_string(minorVersionContext));
         }
 
         //initialization OpenGl

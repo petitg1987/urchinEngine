@@ -1,5 +1,4 @@
-#include <GL/glew.h>
-
+#include "libs/glad/glad.h"
 #include "OffscreenRender.h"
 
 namespace urchin {

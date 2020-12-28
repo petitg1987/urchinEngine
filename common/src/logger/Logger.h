@@ -28,6 +28,7 @@ namespace urchin {
             void log(CriticalityLevel, const std::string&);
 
             virtual std::string retrieveContent(unsigned long) const = 0;
+            virtual std::string retrieveTarget() const = 0;
             virtual void purge() const = 0;
             virtual void archive() const = 0;
 

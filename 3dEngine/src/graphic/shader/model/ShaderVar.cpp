@@ -1,5 +1,4 @@
-#include <GL/glew.h>
-
+#include "libs/glad/glad.h"
 #include "ShaderVar.h"
 
 namespace urchin {

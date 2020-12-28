@@ -1,7 +1,7 @@
-#include <GL/glew.h>
 #include <fstream>
 #include <stdexcept>
 
+#include "libs/glad/glad.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
 #include "graphic/shader/config/ShaderConfig.h"
 

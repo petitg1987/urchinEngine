@@ -1,6 +1,6 @@
-#include <GL/glew.h>
 #include <cassert>
 
+#include "libs/glad/glad.h"
 #include "Shader.h"
 
 namespace urchin {

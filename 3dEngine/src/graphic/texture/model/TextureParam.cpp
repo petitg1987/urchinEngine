@@ -1,5 +1,6 @@
 #include <stdexcept>
 
+#include "libs/glad/glad.h"
 #include "TextureParam.h"
 
 namespace urchin {
@@ -31,7 +32,7 @@ namespace urchin {
         return TextureParam(readMode, readQuality, anisotropy);
     }
 
-    GLint TextureParam::getGlReadMode() const {
+    int TextureParam::getGlReadMode() const {
         if (readMode == ReadMode::EDGE_CLAMP) {
             return GL_CLAMP_TO_EDGE;
         } else if (readMode == ReadMode::REPEAT) {
@@ -40,7 +41,7 @@ namespace urchin {
         throw std::runtime_error("Unknown texture read mode: " + std::to_string(readMode));
     }
 
-    GLint TextureParam::getGlReadQuality(bool forMipmap) const {
+    int TextureParam::getGlReadQuality(bool forMipmap) const {
         if (readQuality == ReadQuality::NEAREST && !forMipmap) {
             return GL_NEAREST;
         } else if (readQuality == ReadQuality::LINEAR && !forMipmap) {

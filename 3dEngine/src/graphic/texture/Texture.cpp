@@ -1,7 +1,7 @@
-#include <GL/glew.h>
 #include <stdexcept>
 #include <cassert>
 
+#include "libs/glad/glad.h"
 #include "Texture.h"
 
 namespace urchin {
@@ -27,22 +27,22 @@ namespace urchin {
             assert(layer == 1);
             assert(dataPtr.size() == 1);
 
-            glTexImage2D(glTextureType, 0, glInternalFormat, width, height, 0, glFormat, glPixelType, dataPtr[0]);
+            glTexImage2D(glTextureType, 0, (int)glInternalFormat, (int)width, (int)height, 0, glFormat, glPixelType, dataPtr[0]);
         } else if (textureType == TextureType::ARRAY) {
             assert(layer > 1);
             assert(dataPtr.size() == 1);
 
-            glTexImage3D(glTextureType, 0, glInternalFormat, width, height, layer, 0, glFormat, glPixelType, dataPtr[0]);
+            glTexImage3D(glTextureType, 0, (int)glInternalFormat, (int)width, (int)height, (int)layer, 0, glFormat, glPixelType, dataPtr[0]);
         } else if (textureType == TextureType::CUBE_MAP) {
             assert(layer == 1);
             assert(dataPtr.size() == 6);
 
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, glInternalFormat, width, height, 0, glFormat, glPixelType, dataPtr[0]);
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, glInternalFormat, width, height, 0, glFormat, glPixelType, dataPtr[1]);
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, glInternalFormat, width, height, 0, glFormat, glPixelType, dataPtr[2]);
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, glInternalFormat, width, height, 0, glFormat, glPixelType, dataPtr[3]);
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, glInternalFormat, width, height, 0, glFormat, glPixelType, dataPtr[4]);
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, glInternalFormat, width, height, 0, glFormat, glPixelType, dataPtr[5]);
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, (int)glInternalFormat, (int)width, (int)height, 0, glFormat, glPixelType, dataPtr[0]);
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, (int)glInternalFormat, (int)width, (int)height, 0, glFormat, glPixelType, dataPtr[1]);
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, (int)glInternalFormat, (int)width, (int)height, 0, glFormat, glPixelType, dataPtr[2]);
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, (int)glInternalFormat, (int)width, (int)height, 0, glFormat, glPixelType, dataPtr[3]);
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, (int)glInternalFormat, (int)width, (int)height, 0, glFormat, glPixelType, dataPtr[4]);
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, (int)glInternalFormat, (int)width, (int)height, 0, glFormat, glPixelType, dataPtr[5]);
         }
     }
 

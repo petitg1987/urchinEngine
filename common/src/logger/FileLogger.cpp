@@ -33,6 +33,10 @@ namespace urchin {
         return std::string(bytes.data(), readSize);
     }
 
+    std::string FileLogger::retrieveTarget() const {
+        return filename;
+    }
+
     void FileLogger::purge() const {
         std::ofstream file(filename, std::ofstream::out | std::ofstream::trunc);
         if (!file.is_open()) {

@@ -15,6 +15,7 @@ namespace urchin {
             const std::string& getFilename() const;
 
             std::string retrieveContent(unsigned long) const override;
+            std::string retrieveTarget() const override;
             void purge() const override;
             void archive() const override;
 
