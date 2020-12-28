@@ -10,7 +10,7 @@ if (WIN32)
     set(FREETYPE_LIB freetype)
 else()
     set(LINK_OPT -rdynamic) #necessary for SignalHandler to work correctly
-    set(GLEW_LIB GLEW)
+    set(GLEW_LIB GLEW.a)
     set(FREETYPE_LIB freetype.a png16.a brotlidec.a brotlicommon.a z.a)
 endif()
 

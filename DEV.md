@@ -1,11 +1,12 @@
 # Environment setup 
 ## Linux
-* Install libraries: `sudo apt install qt5-default qtbase5-dev libglew-dev libopenal-dev libsndfile1-dev libfreetype6-dev libcppunit-dev libssl-dev libnghttp2-dev`
-* Libcurl (custom library only for HTTP/HTTPS protocols):
+* Install libraries from Ubuntu package: `sudo apt install qt5-default qtbase5-dev libglew-dev libopenal-dev libsndfile1-dev libfreetype6-dev libcppunit-dev`
+* Install library curl (custom static library only for HTTP/HTTPS protocols):
   ```
+  sudo apt install libssl-dev libnghttp2-dev
   rm /tmp/curl/ -rf && mkdir -p /tmp/curl/ && cd /tmp/curl/
   wget -P /tmp/curl/ https://curl.haxx.se/download/curl-7.74.0.zip
-  unzip curl-7.74.0.zip && cd curl-7.74.0
+  unzip curl-7.74.0.zip && cd /tmp/curl/curl-7.74.0
   ./configure --disable-shared --enable-static --prefix=/usr/local --disable-ldap --disable-sspi --disable-ftp --disable-file --disable-dict --disable-telnet --disable-tftp --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-smb --without-librtmp --without-libidn --with-ssl --with-nghttp2
   make
   sudo make install #create library in /usr/local/lib/libcurl.a
@@ -19,29 +20,29 @@
   * Check with `ulimit -a`: "core file size" must be unlimited
 
 ## Windows
-* Msys2:
+* Install application msys2:
   * Download: https://sourceforge.net/projects/msys2/
   * Setup with defautl values
   * Add in PATH variable: C:\msys64\mingw64\bin
   * In **mingw64.exe** (not msys2.exe): `Pacman -S mingw-w64-x86_64-cmake mingw-w64-x86_64-toolchain mingw64/mingw-w64-x86_64-gcc`
-* Freetype:
+* Install library freetype:
   * Download: https://download.savannah.gnu.org/releases/freetype/freetype-2.10.1.tar.gz
   * Copy in: C:\msys64\home\greg
   * Execute: `./configure --with-zlib=no && make && make install`
   * Copy "include" in C:\msys64\mingw64\x86_64-w64-mingw32\include
-* Glew:
+* Install library glew:
   * Download: https://sourceforge.net/projects/glew/files/glew/2.2.0/glew-2.2.0-win32.zip/download
   * Copy lib (x84) & include respectively in C:\msys64\mingw64\lib & C:\msys64\mingw64\x86_64-w64-mingw32\include
   * Rename .lib files into .a file prefixed with lib: libglew32.a and libglew32s.a
-* OpenAL:
+* Install library openAL:
   * Download and execute windows installer: https://www.openal.org/downloads/oalinst.zip
   * Download: https://www.openal.org/downloads/OpenAL11CoreSDK.zip
   * Copy lib (Win64) & include respectively in C:\msys64\mingw64\lib & C:\msys64\mingw64\x86_64-w64-mingw32\include\AL
   * Rename .lib file into .a file prefixed with lib: libOpenAL32.a
-* Libsnd:
+* Install library sndfile:
   * Download: http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28-w64.zip
   * Copy lib & include respectively in C:\msys64\mingw64\lib & C:\msys64\mingw64\x86_64-w64-mingw32\include
-* Libcurl:
+* Install library curl:
   * Check curl version: `curl --version` (curl should be installed via 'mingw-w64-x86_64-cmake' package)
   * Download curl for Windows 64bits matching the version found (example: https://curl.haxx.se/windows/dl-7.73.0_1/curl-7.73.0_1-win64-mingw.zip)
   * Copy include in C:\msys64\mingw64\x86_64-w64-mingw32\include (don't need to copy lib because already installed via 'mingw-w64-x86_64-cmake' package)
