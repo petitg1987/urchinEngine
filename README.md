@@ -67,13 +67,12 @@ Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
     cmake --build .build/release/ -- -j 12
     ```
 * Execute tests:
-    ```
-    cd urchinEngine/test/
-    ./testExecutor [unit] [integration] [monkey]
-    ```
-
-## Launch map editor
-```
-cd urchinEngine/mapEditor/
-./urchinMapEditor
-```
+  ```
+  cd urchinEngine/test/
+  ./testExecutor [unit] [integration] [monkey]
+  ```
+* Launch map editor:
+  ```
+  cd urchinEngine/mapEditor/
+  ./urchinMapEditor
+  ```
