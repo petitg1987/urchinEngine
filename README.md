@@ -52,7 +52,7 @@ Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
   - Debug visualization: hit box, light range, sound trigger, navigation mesh
 
 ## Build
-- Environment setup: [here](./SETUP.md)
+- Environment setup: [here](./DEV.md)
 - Build:
   - Debug:
     ```
@@ -77,20 +77,3 @@ Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
 cd urchinEngine/mapEditor/
 ./urchinMapEditor
 ```
-
-## CLion configuration
-- Add CMake profiles (File > Settings -> Build,Execution,Deployment > CMake)
-  - Profile **Debug**: 
-    - Name: `Debug`
-    - Build type: `Debug`
-    - Generation path: `.build/debug`
-  - Profile **Release**:
-    - Name: `Release`
-    - Build type: `Release`
-    - Generation path: `.build/release`
-- Add CMake applications
-  - Application **testExecutor**:
-    - Target/executable: `testExecutor`
-    - Program arguments: `unit integration monkey`
-  - Application **urchinMapEditor**:
-    - Target/executable: `urchinMapEditor`

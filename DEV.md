@@ -1,4 +1,5 @@
-# Linux
+# Environment setup 
+## Linux
 * Install libraries:
   * `sudo apt install qt5-default qtbase5-dev libglew-dev libopenal-dev libsndfile1-dev libfreetype6-dev libcppunit-dev libcurl4-gnutls-dev`
 * Configure system to activate core file:
@@ -7,11 +8,11 @@
   * Restart computer
   * Check with `ulimit -a`: "core file size" must be unlimited
 
-# Windows
+## Windows
 * Msys2:
   * Download: https://sourceforge.net/projects/msys2/
   * Setup with defautl values
-  * Add env. variable PATH: C:\msys64\mingw64\bin
+  * Add in PATH environment variable: C:\msys64\mingw64\bin
   * In **mingw64.exe** (not msys2.exe): `Pacman -S mingw-w64-x86_64-cmake mingw-w64-x86_64-toolchain mingw64/mingw-w64-x86_64-gcc`
 * Freetype:
   * Download: https://download.savannah.gnu.org/releases/freetype/freetype-2.10.1.tar.gz
@@ -44,3 +45,47 @@
   * Copy file in C:\msys64\mingw64\bin
 * Configure Clion:
   * In File > Settings... > Build, Execution, Deployment > Toolchains, Environment: C:\msys64\mingw64
+
+## CLion configuration
+- Add CMake profiles (File > Settings -> Build,Execution,Deployment > CMake)
+  - Profile **Debug**:
+    - Name: `Debug`
+    - Build type: `Debug`
+    - Generation path: `.build/debug`
+  - Profile **Release**:
+    - Name: `RelWithDebInfo`
+    - Build type: `RelWithDebInfo`
+    - Generation path: `.build/release`
+- Add CMake applications
+  - Application **testExecutor**:
+    - Target/executable: `testExecutor`
+    - Program arguments: `unit integration monkey`
+  - Application **urchinMapEditor**:
+    - Target/executable: `urchinMapEditor`
+
+# Development tips
+- Error handling:
+  - Use exception (`throw std::runtime_error(...)`) for methods which could be wrongly used by the final user
+  - Use assert (`assert(...)`) for methods which could be wrongly used by the engine developer
+    - *Note:* surround assert with `#ifndef NDEBUG`/`#endif` when condition has bad performance
+  - Use logger (`Logger::instance()->logError(...)`) when the result of an algorithm is not the one excepted
+    - *Note:* surround logger call with `if (DebugCheck::instance()->additionalChecksEnable()) {`/`}` when condition has bad performance
+- Verify when `new` operator is called:
+  - Use following source code and add a debug point:
+      ```
+      void* operator new(std::size_t sz){
+          return std::malloc(sz);
+      }
+
+      void* operator new[](std::size_t sz) {
+          return std::malloc(sz);
+      }
+      ```
+- Coordinates used:
+  - 3D (e.g.: *3D models, Physics rigid bodies, 3D Nav mesh*)
+    - X+ (left), X- (right)
+    - Y+ (top), Y- (bottom)
+    - Z+ (near), Z- (far)
+  - 2D top view (e.g.: *2D Nav mesh*)
+    - X+ (left), X- (right)
+    - Y+ (far), Y- (near)
