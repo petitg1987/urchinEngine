@@ -44,7 +44,7 @@ namespace urchin {
 
     LONG WINAPI SignalHandler::signalHandler(EXCEPTION_POINTERS* exceptionInfo) {
         std::stringstream ss;
-        ss << "Caught signal " << exceptionInfo->ExceptionRecord->ExceptionCode << ":" << std::endl;
+        ss << "Signal caught " << exceptionInfo->ExceptionRecord->ExceptionCode << ":" << std::endl;
 
         HANDLE process = GetCurrentProcess();
         HANDLE thread = GetCurrentThread();
@@ -118,7 +118,7 @@ namespace urchin {
 
     void SignalHandler::signalHandler(int signalId, siginfo_t* signalInfo, void*) {
         std::stringstream ss;
-        ss << "Caught signal " << signalId << " (code: " << signalInfo->si_code << "):" << std::endl;
+        ss << "Signal caught " << signalId << " (code: " << signalInfo->si_code << "):" << std::endl;
 
         constexpr int maxStackFrames = 256;
         void *traces[maxStackFrames];
@@ -143,9 +143,9 @@ namespace urchin {
 
                 std::string addr2lineCmd = "addr2line -p -e " + std::string(info.dli_fname) + + " 0x" + instructionShiftHex.str();
                 std::string cmdResult = CommandExecutor::execute(addr2lineCmd + " 2> /dev/null");
-                if(cmdResult.empty()) {
+                if(cmdResult.empty() /* Command doesn't exist */ || cmdResult.find("??") != std::string::npos /* Debug symbol not found */) {
                     ss << "\t[bt]\t> " << "addr2line -p -e " << FileUtil::getFileName(std::string(info.dli_fname)) << " 0x" << instructionShiftHex.str() << std::endl;
-                }else if(cmdResult.find("??") == std::string::npos) {
+                }else {
                     ss << "\t[bt]\t> " << cmdResult << std::endl;
                 }
             } else {
