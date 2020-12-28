@@ -13,4 +13,4 @@ include_directories(src ../common/src)
 
 file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 add_library(urchinAIEngine STATIC ${SOURCE_FILES})
-target_link_libraries(urchinAIEngine ${LINK_OPT} urchinCommon -static-libstdc++)
+target_link_libraries(urchinAIEngine ${LINK_OPT} urchinCommon)
