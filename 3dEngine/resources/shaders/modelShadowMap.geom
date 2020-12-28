@@ -12,8 +12,6 @@ uniform uint layersToUpdate;
 
 const uint POWER_TWO_TAB[13] = uint[](1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096);
 
-out int gl_Layer;
-
 void main() {
     for (int layer = 0; layer < NUMBER_SHADOW_MAPS; layer++) {
         if ((layersToUpdate & POWER_TWO_TAB[layer]) != uint(0)) {

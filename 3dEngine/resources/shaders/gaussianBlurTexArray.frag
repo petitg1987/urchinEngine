@@ -11,7 +11,6 @@
 
 uniform sampler2DArray tex;
 
-in int gl_Layer;
 in vec2 vertexTextCoordinates;
 
 layout (location = 0) out OUTPUT_TYPE fragColor;

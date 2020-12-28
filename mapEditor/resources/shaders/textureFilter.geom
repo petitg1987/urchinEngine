@@ -13,7 +13,6 @@ const uint POWER_TWO_TAB[13] = uint[](1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 102
 
 in vec2 textCoordinates[];
 
-out int gl_Layer;
 smooth out vec2 vertexTextCoordinates;
 
 void main() {
