@@ -22,27 +22,30 @@
 ## Windows
 * Install application msys2:
   * Download: https://sourceforge.net/projects/msys2/
-  * Setup with defautl values
-  * Add in PATH variable: C:\msys64\mingw64\bin
-  * In **mingw64.exe** (not msys2.exe): `Pacman -S mingw-w64-x86_64-cmake mingw-w64-x86_64-toolchain mingw64/mingw-w64-x86_64-gcc`
+  * Execute the installer with the default values
+  * Add in PATH variable: "C:\msys64\mingw64\bin"
+  * In mingw64.exe (not msys2.exe): `Pacman -S mingw-w64-x86_64-cmake mingw-w64-x86_64-toolchain mingw64/mingw-w64-x86_64-gcc`
 * Install library freetype:
   * Download: https://download.savannah.gnu.org/releases/freetype/freetype-2.10.1.tar.gz
-  * Copy in: C:\msys64\home\greg
+  * Copy in: "C:\msys64\home\greg"
   * Execute: `./configure --with-zlib=no && make && make install`
-  * Copy "include" in C:\msys64\mingw64\x86_64-w64-mingw32\include
+  * Copy include in "C:\msys64\mingw64\x86_64-w64-mingw32\include"
+  * *Info*: libfreetype-6.dll is in "C:\msys64\mingw64\bin"
 * Install library openAL:
-  * Download and execute windows installer: https://www.openal.org/downloads/oalinst.zip
   * Download: https://www.openal.org/downloads/OpenAL11CoreSDK.zip
-  * Copy lib (Win64) & include respectively in C:\msys64\mingw64\lib & C:\msys64\mingw64\x86_64-w64-mingw32\include\AL
+  * Execute the installer and at the end, check "Yes, launch the OpenAL redist"
+  * Copy lib (Win64 OpenAL32.lib) & include from "C:\Program Files (x86)\OpenAL 1.1 SDK" in "C:\msys64\mingw64\lib" & "C:\msys64\mingw64\x86_64-w64-mingw32\include\AL"
+  * *Info*: OpenAL32.dll is in C:\Windows\SysWOW64\OpenAL32.dll
+  * Uninstall OpenAL and OpenAL SDK applications
 * Install library sndfile:
   * Download: http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28-w64.zip
-  * Copy lib & include respectively in C:\msys64\mingw64\lib & C:\msys64\mingw64\x86_64-w64-mingw32\include
+  * Copy lib & include respectively in "C:\msys64\mingw64\lib" & "C:\msys64\mingw64\x86_64-w64-mingw32\include"
+  * *Info*: libsndfile-1.dll is in "bin\" folder
 * Install library curl:
-  * Check curl version: `curl --version` (curl should be installed via 'mingw-w64-x86_64-cmake' package)
-  * Download curl for Windows 64bits matching the version found (example: https://curl.haxx.se/windows/dl-7.73.0_1/curl-7.73.0_1-win64-mingw.zip)
-  * Copy include in C:\msys64\mingw64\x86_64-w64-mingw32\include (don't need to copy lib because already installed via 'mingw-w64-x86_64-cmake' package)
-  * The required DLL 'libcurl-4.dll', 'libbrotlicommon.dll', 'libbrotlidec.dll', 'libiconv-2.dll', 'libidn2-0.dll', 'libintl-8.dll', 'libnghttp2-14.dll', 'libpsl-5.dll', 'libssh2-1.dll', 'libssl-1_1-x64.dll', 'libunistring-2.dll', 'libzstd.dll' and 'zlib1.dll' are in C:\msys64\mingw64\bin
-  * Tips: the 'libssl-1_1-x64.dll' and 'libcrypto-1_1-x64.dll' are also in the corresponding OpenSSL archive (example: https://curl.se/windows/dl-7.73.0_1/openssl-1.1.1h_1-win64-mingw.zip)
+  * Check curl version: `curl --version` (curl should be installed via "mingw-w64-x86_64-cmake" package)
+  * Download curl for Windows 64 bits matching the version found (example: https://curl.haxx.se/windows/dl-7.73.0_1/curl-7.73.0_1-win64-mingw.zip)
+  * Copy include in "C:\msys64\mingw64\x86_64-w64-mingw32\include" (no need to copy lib because already installed via "mingw-w64-x86_64-cmake" package)
+  * *Info*: libcurl-4.dll, libbrotlicommon.dll, libbrotlidec.dll, libiconv-2.dll, libidn2-0.dll, libintl-8.dll, libnghttp2-14.dll, libpsl-5.dll, libssh2-1.dll, libssl-1_1-x64.dll, libunistring-2.dll, libzstd.dll and zlib1.dll are in "C:\msys64\mingw64\bin"
 * Configure Clion:
   * In File > Settings... > Build, Execution, Deployment > Toolchains, Environment: C:\msys64\mingw64
 
