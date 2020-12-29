@@ -30,15 +30,10 @@
   * Copy in: C:\msys64\home\greg
   * Execute: `./configure --with-zlib=no && make && make install`
   * Copy "include" in C:\msys64\mingw64\x86_64-w64-mingw32\include
-* Install library glew:
-  * Download: https://sourceforge.net/projects/glew/files/glew/2.2.0/glew-2.2.0-win32.zip/download
-  * Copy lib (x84) & include respectively in C:\msys64\mingw64\lib & C:\msys64\mingw64\x86_64-w64-mingw32\include
-  * Rename .lib files into .a file prefixed with lib: libglew32.a and libglew32s.a
 * Install library openAL:
   * Download and execute windows installer: https://www.openal.org/downloads/oalinst.zip
   * Download: https://www.openal.org/downloads/OpenAL11CoreSDK.zip
   * Copy lib (Win64) & include respectively in C:\msys64\mingw64\lib & C:\msys64\mingw64\x86_64-w64-mingw32\include\AL
-  * Rename .lib file into .a file prefixed with lib: libOpenAL32.a
 * Install library sndfile:
   * Download: http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28-w64.zip
   * Copy lib & include respectively in C:\msys64\mingw64\lib & C:\msys64\mingw64\x86_64-w64-mingw32\include
