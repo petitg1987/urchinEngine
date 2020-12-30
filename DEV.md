@@ -42,7 +42,7 @@
   * Download: http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28-w64.zip
   * Copy lib & include respectively in "C:\msys64\mingw64\lib" & "C:\msys64\mingw64\x86_64-w64-mingw32\include"
   * *Info*: libsndfile-1.dll is in "bin\" folder
- * Install curl library (custom static library only for HTTP/HTTPS protocols):
+* Install curl library (custom static library only for HTTP/HTTPS protocols):
   ```
   Pacman -S unzip openssl-devel
   rm /tmp/curl/ -rf && mkdir -p /tmp/curl/ && cd /tmp/curl/
