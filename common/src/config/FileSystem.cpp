@@ -10,7 +10,7 @@ namespace urchin {
         this->engineUserDataDirectory = SystemInfo::userDataDirectory() + getEngineDirectoryName() + "/";
         FileUtil::createDirectory(engineUserDataDirectory);
 
-        this->engineUserCacheDirectory = engineUserDataDirectory + "/cache/";
+        this->engineUserCacheDirectory = engineUserDataDirectory + "cache/";
         FileUtil::createDirectory(engineUserCacheDirectory);
     }
 
