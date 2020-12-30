@@ -265,7 +265,7 @@ namespace urchin {
         std::ofstream file;
         file.open(filePath, std::ios::out | std::ios::binary | std::ios::trunc);
         if(!file.is_open()) {
-            throw std::runtime_error("Unable to open file: " + filePath);
+            throw UserAuthorityException("Unable to open file: " + filePath, "Check that the application has enough right to create the file: " + filePath);
         }
 
         writeVersion(file, TERRAIN_FRL_FILE_VERSION);

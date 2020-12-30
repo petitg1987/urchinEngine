@@ -103,6 +103,7 @@
 #include "util/FileUtil.h"
 #include "util/StringUtil.h"
 #include "util/TypeConverter.h"
+#include "util/UserAuthorityException.h"
 #include "util/VectorEraser.h"
 
 #endif

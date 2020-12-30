@@ -79,6 +79,7 @@
 # Development tips
 * Error handling:
   * Use exception (`throw std::runtime_error(...)`) for methods which could be wrongly used by the final user
+  * Use UserAuthorityException for errors where user has authority to fix the problem
   * Use assert (`assert(...)`) for methods which could be wrongly used by the engine developer
     * *Note:* surround assert with `#ifndef NDEBUG`/`#endif` when condition has bad performance
   * Use logger (`Logger::instance()->logError(...)`) when the result of an algorithm is not the one excepted

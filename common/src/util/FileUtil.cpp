@@ -5,6 +5,7 @@
 
 #include "FileUtil.h"
 #include "util/StringUtil.h"
+#include "util/UserAuthorityException.h"
 
 namespace urchin {
 
@@ -28,7 +29,7 @@ namespace urchin {
         std::error_code errorCode;
         std::filesystem::create_directories(directory, errorCode);
         if(errorCode.value() != 0) {
-            throw std::runtime_error("Unable to create the directory: " + directory);
+            throw UserAuthorityException("Unable to create the directory: " + directory, "Check that the application has enough right to create the directory: " + directory);
         }
     }
 
@@ -36,10 +37,7 @@ namespace urchin {
         //Similar to "std::filesystem::copy(src, dst, std::filesystem::copy_options::skip_existing);" method
         //Unfortunately, the "copy" method doesn't work correctly on MSYS2: https://github.com/msys2/MSYS2-packages/issues/1937
 
-        if(dstDirectory.find_last_of("/\\") != dstDirectory.size() - 1) {
-            throw std::invalid_argument("Destination directory (" + dstDirectory + ") must end with a slash");
-        }
-
+        checkDirectory(dstDirectory);
         for (const auto& entry : std::filesystem::directory_iterator(srcDirectory)) {
             if (entry.is_regular_file()) {
                 std::string srcFile = entry.path().string();
@@ -53,7 +51,7 @@ namespace urchin {
 
                     std::ofstream dst(dstFile, std::ios::binary);
                     if (!dst.is_open()) {
-                        throw std::runtime_error("Unable to open file: " + srcFile);
+                        throw UserAuthorityException("Unable to open file: " + dstFile, "Check that the application has enough right to create the file: " + dstFile);
                     }
                     dst << src.rdbuf();
                 }

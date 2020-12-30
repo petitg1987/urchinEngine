@@ -13,14 +13,16 @@ namespace urchin {
     void GraphicService::initializeGraphic() {
         constexpr int minVersionInt = 450;
         const std::string minVersionStr = "4.5";
+        const std::string recommendation = "Your graphic drivers must be updated to support OpenGL version " + minVersionStr;
 
         if(!gladLoadGL()) {
-            throw std::runtime_error("Unable to initialize GLAD. Your system's graphic drivers must support OpenGL version " + minVersionStr);
+            throw UserAuthorityException("Unable to initialize GLAD", recommendation);
         }
 
         //check OpenGL version loaded
         if((GLVersion.major * 100 + GLVersion.minor * 10) < minVersionInt) {
-            throw std::runtime_error("OpenGL version " + minVersionStr + " is required. Loaded version: " + std::to_string(GLVersion.major) + "." + std::to_string(GLVersion.minor));
+            throw UserAuthorityException("OpenGL version " + minVersionStr + " is required but loaded version is: " + std::to_string(GLVersion.major)
+                + "." + std::to_string(GLVersion.minor), recommendation);
         }
 
         //check OpenGL context version
@@ -28,13 +30,14 @@ namespace urchin {
         glGetIntegerv(GL_MAJOR_VERSION, &majorVersionContext);
         glGetIntegerv(GL_MINOR_VERSION, &minorVersionContext);
         if ((majorVersionContext * 100 + minorVersionContext * 10) < minVersionInt) {
-            throw std::runtime_error("OpenGL version " + minVersionStr + " is required. Context version: " + std::to_string(majorVersionContext) + "." + std::to_string(minorVersionContext));
+            throw UserAuthorityException("OpenGL version " + minVersionStr + " is required but context version is: " + std::to_string(majorVersionContext)
+                + "." + std::to_string(minorVersionContext), recommendation);
         }
 
         //initialization OpenGl
         glEnable(GL_DEPTH_TEST);
         glDepthMask(GL_TRUE);
-        glClearColor(1.0, 1.0, 1.0, 1.0);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glEnable(GL_CULL_FACE);
         glCullFace(GL_FRONT);
     }

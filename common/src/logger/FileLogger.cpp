@@ -5,6 +5,7 @@
 
 #include "FileLogger.h"
 #include "util/FileUtil.h"
+#include "util/UserAuthorityException.h"
 
 namespace urchin {
 
@@ -52,7 +53,7 @@ namespace urchin {
 
         std::ofstream archiveStream(archiveFilename, std::ios::binary);
         if (!archiveStream.is_open()) {
-            throw std::runtime_error("Unable to open file: " + filename);
+            throw UserAuthorityException("Unable to open file: " + filename, "Check that the application has enough right to create the file: " + filename);
         }
         archiveStream << retrieveContent(std::numeric_limits<unsigned long>::max()) << std::endl;
         archiveStream.close();
@@ -63,7 +64,7 @@ namespace urchin {
     void FileLogger::write(const std::string& msg) {
         std::ofstream file(filename, std::ios::app);
         if (!file.is_open()) {
-            throw std::runtime_error("Unable to open file: " + filename);
+            throw UserAuthorityException("Unable to open file: " + filename, "Check that the application has enough right to create the file: " + filename);
         }
         file.write(msg.c_str(), static_cast<std::streamsize>(msg.length()));
         file.flush();
