@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(Threads REQUIRED)
 if (WIN32)
     set(OPENAL_LIB openal32)
-    SET(SNFILE_LIB sndfile)
+    SET(SNFILE_LIB sndfile.a)
 else()
     set(LINK_OPT -rdynamic) #necessary for SignalHandler to work correctly
     set(OPENAL_LIB openal)

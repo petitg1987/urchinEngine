@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(OpenGL REQUIRED)
 if (WIN32)
-    set(FREETYPE_LIB freetype)
+    set(FREETYPE_LIB freetype.a)
 else()
     set(LINK_OPT -rdynamic) #necessary for SignalHandler to work correctly
     set(FREETYPE_LIB freetype.a png16.a brotlidec.a brotlicommon.a z.a)
