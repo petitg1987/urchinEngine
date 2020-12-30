@@ -4,29 +4,30 @@
   * **OPTIMIZATION** (`minor`): Use SSE (3 dot products: Triangle3D<T>#getSupportPoint()...)
 
 # 3d Engine
+* General
+  * **NEW FEATURE** (`major`): Replace geometry shader by instantiation
+  * **NEW FEATURE** (`major`): Replace OpenGL by Vulkan
 * Rendering
   * **OPTIMIZATION** (`minor`): Avoid sending shader variables values at each frame when there is no change in Renderer3d#deferredGeometryRendering()
+  * **NEW FEATURE** (`minor`): Alpha management
+  * **OPTIMIZATION** (`minor`): Textures compression  
 * Model
   * **OPTIMIZATION** (`major`): Use instantiation mechanism when identical models are displayed several times in the scene
   * **OPTIMIZATION** (`medium`): Regroup draw calls when possible
-  * **QUALITY IMPROVEMENT** (`minor`): Use reverse depth for far distant view
-    * Tutorial: <https://outerra.blogspot.com/2012/11/maximizing-depth-buffer-range-and.html>
+  * **NEW FEATURE** (`minor`): Use reverse depth for far distant view (see <https://outerra.blogspot.com/2012/11/maximizing-depth-buffer-range-and.html>)
   * **OPTIMIZATION** (`medium`): Models LOD
   * **OPTIMIZATION** (`minor`): Subdivide octree only when number of objects inside this octree reach a threshold
   * **OPTIMIZATION** (`minor`): Coherent hierarchical culling revisited
-* Lighting
-  * **OPTIMIZATION** (`minor`): Use tiled-based deferred shading
-    * Tutorial: <https://software.intel.com/en-us/articles/deferred-rendering-for-current-and-future-rendering-pipelines>
 * Shadow
   * **OPTIMIZATION** (`medium`): Improve performance ShadowManager::updateVisibleModels
     * Tips 1: find solution where models to display could be re-used in Renderer3d#deferredGeometryRendering()
     * Tips 2: call octree manager one times for all frustum splits and then split the models
-  * **QUALITY IMPROVEMENT** (`medium`): Blur variance shadow map with 'summed area' technique.
+  * **NEW FEATURE** (`minor`): Blur variance shadow map with 'summed area' technique.
     * Note 1: decreased light bleeding to improve quality
     * Note 2: force usage of 32 bits shadow map
-  * **QUALITY IMPROVEMENT** (`medium`): Use mipmap on shadow map (on blurred shadow maps when blur used)
-  * **QUALITY IMPROVEMENT** (`medium`): Use anisotropic on shadow map (on blurred shadow maps when blur used)
-  * **NEW FEATURE** (`minor`): Shadow on omnidirectional light
+  * **NEW FEATURE** (`medium`): Use mipmap on shadow map (on blurred shadow maps when blur used)
+  * **NEW FEATURE** (`minor`): Use anisotropic on shadow map (on blurred shadow maps when blur used)
+  * **NEW FEATURE** (`major`): Shadow on omnidirectional light
   * **NEW FEATURE** (`minor`): Implement PCSS
   * **OPTIMIZATION** (`minor`): Use models LOD
   * **OPTIMIZATION** (`medium`): Create shadow map texture only for visible lights
@@ -43,13 +44,10 @@
   * **NEW FEATURE** (`medium`): Text selection
   * **BUG** (`critical`): Widgets are not screen resolution independent
 * Graphic effect
-  * **QUALITY IMPROVEMENT** (`minor`): Water
-    * Tutorial: <https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh>
+  * **NEW FEATURE** (`minor`): Water transparency (see <https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh>)
   * **NEW FEATURE** (`minor`): Reflects
   * **NEW FEATURE** (`minor`): Smoke
   * **NEW FEATURE** (`minor`): Fire & explosion
-  * **NEW FEATURE** (`minor`): Alpha management
-  * **OPTIMIZATION** (`minor`): Textures compression
 
 # AI engine
 * Navigation mesh
@@ -60,14 +58,13 @@
   * **OPTIMIZATION** (`minor`): Reduce memory allocation in NavMeshGenerator#createNavigationPolygon()
   * **OPTIMIZATION** (`minor`): TerrainObstacleService: apply a roughly simplification on self obstacles polygons
   * **OPTIMIZATION** (`medium`): Exclude very small objects from navigation mesh
-  * **OPTIMIZATION** (`minor`): Exclude fast moving objects as walkable face
+  * **NEW FEATURE** (`minor`): Exclude fast moving objects as walkable face
   * **OPTIMIZATION** (`minor`): NavMeshGenerator#computePolytopeFootprint: put result in cache
-  * **QUALITY IMPROVEMENT** (`medium`): Insert bevel planes during Polytope#buildExpanded* (see BrushExpander.cpp from Hesperus)
+  * **NEW FEATURE** (`medium`): Insert bevel planes during Polytope#buildExpanded* (see BrushExpander.cpp from Hesperus)
 - Pathfinding
   * **OPTIMIZATION** (`medium`): When compute A* G score: avoid to execute funnel algorithm from start each time
   * **OPTIMIZATION** (`medium`): When search start and end triangles: use AABBox Tree algorithm
-  * **NEW FEATURE** (`major`): Implement steering behaviour
-    * Tutorial: <https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-collision-avoidance--gamedev-7777>
+  * **NEW FEATURE** (`major`): Implement steering behaviour (see <https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-collision-avoidance--gamedev-7777>)
   * **NEW FEATURE** (`critical`): AICharacterController should refresh path points each time the path request is updated 
 
 # Network engine
@@ -100,8 +97,8 @@
 
 # Map editor
 * Render
-  * **QUALITY IMPROVEMENT** (`medium`): When change orientation of cylinder/capsule: resize physics shape to fit the object size
-  * **QUALITY IMPROVEMENT** (`medium`): Make objects without physics selectable with left click
+  * **NEW FEATURE** (`medium`): When change orientation of cylinder/capsule: resize physics shape to fit the object size
+  * **NEW FEATURE** (`medium`): Make objects without physics selectable with left click
   * **NEW FEATURE** (`medium`): Display box around objects which don't have mesh (allow to select them easily with left click)
 * UI
   * **NEW FEATURE** (`minor`): Allow undo on actions
