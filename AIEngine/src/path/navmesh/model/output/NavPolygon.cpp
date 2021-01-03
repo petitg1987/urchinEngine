@@ -1,7 +1,5 @@
 #include "NavPolygon.h"
 
-#include <utility>
-
 namespace urchin {
 
     NavPolygon::NavPolygon(std::string name, std::vector<Point3<float>>&& points, std::shared_ptr<const NavTopography> navTopography) :

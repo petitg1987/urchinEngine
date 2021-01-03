@@ -30,7 +30,7 @@ namespace urchin {
             SoundShape* clone() const override;
 
         private:
-            bool pointInsideShape(const Point3<float>&, const OBBox<float>&) const;
+            static bool pointInsideShape(const Point3<float>&, const OBBox<float>&);
 
             const OBBox<float> playTriggerBox;
             const OBBox<float> stopTriggerBox;

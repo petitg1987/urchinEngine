@@ -16,8 +16,8 @@ namespace urchin {
             Image* loadFromFile(const std::string&) override;
 
         private:
-            std::vector<unsigned char> extract8BitsChannels(const std::vector<unsigned char>&, unsigned int);
-            std::vector<uint16_t> extract16BitsChannels(const std::vector<unsigned char>&, unsigned int);
+            static std::vector<unsigned char> extract8BitsChannels(const std::vector<unsigned char>&, unsigned int);
+            static std::vector<uint16_t> extract16BitsChannels(const std::vector<unsigned char>&, unsigned int);
     };
 
 }

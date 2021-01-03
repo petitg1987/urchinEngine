@@ -1,6 +1,9 @@
 #ifndef URCHINENGINE_SHADOWMANAGER_H
 #define URCHINENGINE_SHADOWMANAGER_H
 
+#include <vector>
+#include <map>
+#include <memory>
 #include "UrchinCommon.h"
 
 #include "scene/renderer3d/lighting/shadow/light/LightShadowMap.h"

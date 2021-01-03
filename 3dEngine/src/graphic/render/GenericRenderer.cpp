@@ -58,7 +58,7 @@ namespace urchin {
         return countResult;
     }
 
-    void GenericRenderer::initializeTexture(const TextureReader& textureReader) const {
+    void GenericRenderer::initializeTexture(const TextureReader& textureReader) {
         unsigned int textureType = textureReader.getTexture()->getGlTextureType();
         glBindTexture(textureType, textureReader.getTexture()->getTextureId());
 
@@ -117,7 +117,7 @@ namespace urchin {
         dataValue.ptr = nullptr; //reset pointer because no guaranteed pointer is still valid after initialization
     }
 
-    unsigned int GenericRenderer::shapeTypeToGlType(ShapeType shapeType) const {
+    unsigned int GenericRenderer::shapeTypeToGlType(ShapeType shapeType) {
         if (shapeType == ShapeType::TRIANGLE) {
             return GL_TRIANGLES;
         } else if (shapeType == ShapeType::TRIANGLE_STRIP) {
@@ -132,21 +132,21 @@ namespace urchin {
         throw std::runtime_error("Unknown shape type: " + std::to_string(shapeType));
     }
 
-    unsigned int GenericRenderer::dataTypeToSize(DataType dataType) const {
+    unsigned int GenericRenderer::dataTypeToSize(DataType dataType) {
         if (dataType == DataType::FLOAT) {
             return sizeof(float);
         }
         throw std::runtime_error("Unknown data type: " + std::to_string(dataType));
     }
 
-    unsigned int GenericRenderer::dataTypeToGlType(DataType dataType) const {
+    unsigned int GenericRenderer::dataTypeToGlType(DataType dataType) {
         if (dataType == DataType::FLOAT) {
             return GL_FLOAT;
         }
         throw std::runtime_error("Unknown data type: " + std::to_string(dataType));
     }
 
-    unsigned int GenericRenderer::dataDimensionToSize(DataDimension dataDimension) const {
+    unsigned int GenericRenderer::dataDimensionToSize(DataDimension dataDimension) {
         if (dataDimension == DataDimension::TWO_DIMENSION) {
             return 2;
         } else if (dataDimension == DataDimension::THREE_DIMENSION) {

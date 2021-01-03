@@ -71,7 +71,7 @@ namespace urchin {
         navMeshModels.clear();
     }
 
-    std::vector<Point3<float>> NavMeshDisplayer::toDisplayPoints(const std::vector<Point3<float>>& points, float yElevation) const {
+    std::vector<Point3<float>> NavMeshDisplayer::toDisplayPoints(const std::vector<Point3<float>>& points, float yElevation) {
         std::vector<Point3<float>> displayPoints;
         displayPoints.reserve(points.size());
 

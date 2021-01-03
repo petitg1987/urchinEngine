@@ -46,9 +46,9 @@ namespace urchin {
             bool needJumpAndResetFlag();
 
             void recoverFromPenetration(float);
-            SignificantContactValues resetSignificantContactValues();
-            void saveSignificantContactValues(SignificantContactValues&, const Vector3<float>&);
-            void computeSignificantContactValues(SignificantContactValues&, float);
+            void resetSignificantContactValues();
+            void saveSignificantContactValues(const Vector3<float>&);
+            void computeSignificantContactValues(float);
 
             float computeSlope();
 
@@ -68,6 +68,7 @@ namespace urchin {
             Vector3<float> velocity;
             std::atomic_bool makeJump;
 
+            SignificantContactValues significantContactValues;
             Point3<float> previousBodyPosition;
             Quaternion<float> initialOrientation;
             Vector3<float> lastVelocity;

@@ -91,7 +91,7 @@ namespace urchin {
     /**
      * @return Number of element for island starting at 'startElementIndex'
      */
-    unsigned int IslandManager::computeNumberElements(const std::vector<IslandElementLink>& islandElementsLink, unsigned int startElementIndex) const {
+    unsigned int IslandManager::computeNumberElements(const std::vector<IslandElementLink>& islandElementsLink, unsigned int startElementIndex) {
         unsigned int islandId = islandElementsLink[startElementIndex].islandIdRef;
         unsigned int endElementIndex;
 

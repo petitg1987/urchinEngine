@@ -19,7 +19,6 @@ namespace urchin {
 
             void onResize(unsigned int, unsigned  int) override;
             void notify(Observable*, int) override;
-            void setupSkin(const std::string&);
 
             bool onKeyPress(unsigned int) override;
             bool onKeyRelease(unsigned int) override;

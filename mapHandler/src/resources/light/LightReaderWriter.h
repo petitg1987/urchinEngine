@@ -24,18 +24,18 @@ namespace urchin {
         #define PRODUCE_SHADOW_TAG "produceShadow"
 
         public:
-            Light* loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
-            void writeOn(const std::shared_ptr<XmlChunk>&, const Light*, XmlWriter&) const;
+            static Light* loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            static void writeOn(const std::shared_ptr<XmlChunk>&, const Light*, XmlWriter&);
 
         private:
-            Light* buildLightFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
-            void buildChunkFrom(const std::shared_ptr<XmlChunk>&, const Light*, XmlWriter&) const;
+            static Light* buildLightFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            static void buildChunkFrom(const std::shared_ptr<XmlChunk>&, const Light*, XmlWriter&);
 
-            void loadPropertiesOn(Light*, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
-            void writePropertiesOn(const std::shared_ptr<XmlChunk>&, const Light*, XmlWriter&) const;
+            static void loadPropertiesOn(Light*, const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            static void writePropertiesOn(const std::shared_ptr<XmlChunk>&, const Light*, XmlWriter&);
 
-            void loadFlagsOn(Light*, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
-            void writeFlagsOn(const std::shared_ptr<XmlChunk>&, const Light*, XmlWriter&) const;
+            static void loadFlagsOn(Light*, const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            static void writeFlagsOn(const std::shared_ptr<XmlChunk>&, const Light*, XmlWriter&);
     };
 
 }

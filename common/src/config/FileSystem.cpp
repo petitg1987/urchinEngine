@@ -30,7 +30,7 @@ namespace urchin {
         return engineUserCacheDirectory;
     }
 
-    std::string FileSystem::getEngineDirectoryName() const {
+    std::string FileSystem::getEngineDirectoryName() {
         #ifdef _WIN32
             return "UrchinEngine";
         #else

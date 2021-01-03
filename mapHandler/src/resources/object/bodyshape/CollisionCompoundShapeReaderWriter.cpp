@@ -45,24 +45,24 @@ namespace urchin {
         }
     }
 
-    void CollisionCompoundShapeReaderWriter::loadTransformOn(const std::shared_ptr<LocalizedCollisionShape>& localizedShape, const std::shared_ptr<XmlChunk>& localizedShapeChunk, const XmlParser& xmlParser) const {
+    void CollisionCompoundShapeReaderWriter::loadTransformOn(const std::shared_ptr<LocalizedCollisionShape>& localizedShape, const std::shared_ptr<XmlChunk>& localizedShapeChunk, const XmlParser& xmlParser) {
         std::shared_ptr<XmlChunk> transformChunk = xmlParser.getUniqueChunk(true, TRANSFORM_TAG, XmlAttribute(), localizedShapeChunk);
 
         std::shared_ptr<XmlChunk> positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), transformChunk);
         Point3<float> position = positionChunk->getPoint3Value();
 
-        Quaternion<float> orientation = OrientationReaderWriter().loadOrientation(transformChunk, xmlParser);
+        Quaternion<float> orientation = OrientationReaderWriter::loadOrientation(transformChunk, xmlParser);
 
         localizedShape->transform = PhysicsTransform(position, orientation);
     }
 
-    void CollisionCompoundShapeReaderWriter::writeTransformOn(const std::shared_ptr<XmlChunk>& localizedShapeChunk, const std::shared_ptr<const LocalizedCollisionShape>& localizedShape, XmlWriter& xmlWriter) const {
+    void CollisionCompoundShapeReaderWriter::writeTransformOn(const std::shared_ptr<XmlChunk>& localizedShapeChunk, const std::shared_ptr<const LocalizedCollisionShape>& localizedShape, XmlWriter& xmlWriter) {
         std::shared_ptr<XmlChunk> transformChunk = xmlWriter.createChunk(TRANSFORM_TAG, XmlAttribute(), localizedShapeChunk);
 
         std::shared_ptr<XmlChunk> positionChunk = xmlWriter.createChunk(POSITION_TAG, XmlAttribute(), transformChunk);
         positionChunk->setPoint3Value(localizedShape->transform.getPosition());
 
-        OrientationReaderWriter().writeOrientation(transformChunk, localizedShape->transform.getOrientation(), xmlWriter);
+        OrientationReaderWriter::writeOrientation(transformChunk, localizedShape->transform.getOrientation(), xmlWriter);
     }
 
 }

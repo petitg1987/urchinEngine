@@ -51,14 +51,14 @@ namespace urchin {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
         std::shared_ptr<XmlChunk> modelChunk = xmlParser.getUniqueChunk(true, MODEL_TAG, XmlAttribute(), chunk);
-        setModel(ModelReaderWriter().loadFrom(modelChunk, xmlParser));
+        setModel(ModelReaderWriter::loadFrom(modelChunk, xmlParser));
 
         std::shared_ptr<XmlChunk> physicsChunk = xmlParser.getUniqueChunk(false, PHYSICS_TAG, XmlAttribute(), chunk);
         if (physicsChunk != nullptr) {
             std::string rigidBodyId = this->name;
             const Transform<float>& modelTransform = this->model->getTransform();
 
-            setupInteractiveBody(RigidBodyReaderWriter().loadFrom(physicsChunk, rigidBodyId, modelTransform, xmlParser));
+            setupInteractiveBody(RigidBodyReaderWriter::loadFrom(physicsChunk, rigidBodyId, modelTransform, xmlParser));
         }
     }
 
@@ -66,11 +66,11 @@ namespace urchin {
         chunk->setAttribute(XmlAttribute(NAME_ATTR, this->name));
 
         std::shared_ptr<XmlChunk> modelChunk = xmlWriter.createChunk(MODEL_TAG, XmlAttribute(), chunk);
-        ModelReaderWriter().writeOn(modelChunk, model, xmlWriter);
+        ModelReaderWriter::writeOn(modelChunk, model, xmlWriter);
 
         if (rigidBody) {
             std::shared_ptr<XmlChunk> physicsChunk = xmlWriter.createChunk(PHYSICS_TAG, XmlAttribute(), chunk);
-            RigidBodyReaderWriter().writeOn(physicsChunk, rigidBody, xmlWriter);
+            RigidBodyReaderWriter::writeOn(physicsChunk, rigidBody, xmlWriter);
         }
     }
 

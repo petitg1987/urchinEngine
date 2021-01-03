@@ -1,8 +1,6 @@
 #include <cmath>
 #include <sstream>
-#include <memory>
 #include <stdexcept>
-#include <map>
 #include <string>
 
 #include "ShadowManager.h"

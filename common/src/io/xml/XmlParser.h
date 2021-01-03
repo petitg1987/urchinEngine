@@ -25,7 +25,7 @@ namespace urchin {
             std::shared_ptr<XmlChunk> getUniqueChunk(bool, const std::string&, const XmlAttribute & = XmlAttribute(), const std::shared_ptr<XmlChunk> &parent = std::shared_ptr<XmlChunk>()) const;
 
         private:
-            std::string getChunkDescription(const std::string&, const XmlAttribute&) const;
+            static std::string getChunkDescription(const std::string&, const XmlAttribute&);
 
             TiXmlDocument* doc;
             std::string filenamePath;

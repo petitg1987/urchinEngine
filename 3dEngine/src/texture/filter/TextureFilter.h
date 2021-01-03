@@ -37,7 +37,8 @@ namespace urchin {
 
             const std::unique_ptr<Shader>& getTextureFilterShader() const;
 
-            std::string toShaderVectorValues(std::vector<float>&) const;
+        protected:
+            static std::string toShaderVectorValues(std::vector<float>&);
 
         private:
             void initializeDisplay();

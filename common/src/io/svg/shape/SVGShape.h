@@ -29,7 +29,7 @@ namespace urchin {
 
         protected:
             std::string getStyle() const;
-            std::string toColorString(SVGColor) const;
+            static std::string toColorString(SVGColor);
 
             SVGColor color;
             float opacity;

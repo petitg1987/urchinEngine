@@ -32,11 +32,11 @@ namespace urchin {
             void solveNormalConstraint(ConstraintSolving*);
             void solveTangentConstraint(ConstraintSolving*);
 
-            void applyImpulse(RigidBody*, RigidBody*, const CommonSolvingData&, const Vector3<float>&);
-            Vector3<float> computeRelativeVelocity(const CommonSolvingData&) const;
+            static void applyImpulse(RigidBody*, RigidBody*, const CommonSolvingData&, const Vector3<float>&);
+            static Vector3<float> computeRelativeVelocity(const CommonSolvingData&);
             Vector3<float> computeTangent(const CommonSolvingData&, const Vector3<float>&) const;
 
-            void logCommonData(const std::string&, const CommonSolvingData&) const;
+            static void logCommonData(const std::string&, const CommonSolvingData&);
 
             std::vector<ConstraintSolving*> constraintsSolving;
             FixedSizePool<ConstraintSolving>* constraintSolvingPool;

@@ -64,7 +64,7 @@ namespace urchin {
             virtual CollisionShape3D* clone() const = 0;
 
         protected:
-            FixedSizePool<CollisionConvexObject3D>* getObjectsPool() const;
+            static FixedSizePool<CollisionConvexObject3D>* getObjectsPool();
             void refreshInnerMargin(float);
 
         private:

@@ -28,14 +28,14 @@ namespace urchin {
             void writeOn(const std::shared_ptr<XmlChunk>&, const Water*, XmlWriter&) const;
 
         private:
-            void loadGeneralPropertiesOn(Water*, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
-            void writeGeneralPropertiesOn(const std::shared_ptr<XmlChunk>&, const Water*, XmlWriter&) const;
+            static void loadGeneralPropertiesOn(Water*, const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            static void writeGeneralPropertiesOn(const std::shared_ptr<XmlChunk>&, const Water*, XmlWriter&);
 
-            void loadWaterSurfaceProperties(Water*, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
-            void writeWaterSurfacePropertiesOn(const std::shared_ptr<XmlChunk>&, const Water*, XmlWriter&) const;
+            static void loadWaterSurfaceProperties(Water*, const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            static void writeWaterSurfacePropertiesOn(const std::shared_ptr<XmlChunk>&, const Water*, XmlWriter&);
 
-            void loadUnderWaterProperties(Water*, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
-            void writeUnderWaterPropertiesOn(const std::shared_ptr<XmlChunk>&, const Water*, XmlWriter&) const;
+            static void loadUnderWaterProperties(Water*, const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            static void writeUnderWaterPropertiesOn(const std::shared_ptr<XmlChunk>&, const Water*, XmlWriter&);
     };
 
 }

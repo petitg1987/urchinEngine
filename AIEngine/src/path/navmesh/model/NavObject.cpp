@@ -1,7 +1,5 @@
 #include "NavObject.h"
 
-#include <utility>
-
 namespace urchin {
 
     NavObject::NavObject(std::shared_ptr<Polytope> expandedPolytope) :

@@ -41,7 +41,7 @@ namespace urchin {
         return sphereShapes;
     }
 
-    FixedSizePool<CollisionConvexObject3D>* CollisionShape3D::getObjectsPool() const {
+    FixedSizePool<CollisionConvexObject3D>* CollisionShape3D::getObjectsPool() {
         return CollisionConvexObjectPool::instance()->getObjectsPool();
     }
 

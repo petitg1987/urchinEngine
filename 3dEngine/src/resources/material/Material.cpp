@@ -1,7 +1,5 @@
 #include "resources/material/Material.h"
 
-#include <utility>
-
 namespace urchin {
 
     Material::Material(std::shared_ptr<Texture> diffuseTexture, std::shared_ptr<Texture> normalTexture, bool repeatableTextures, float ambientFactor) :

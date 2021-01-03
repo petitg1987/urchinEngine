@@ -51,8 +51,8 @@ namespace urchin {
             bool continueExecution();
             void processPhysicsUpdate(float);
 
-            void setupProcessables(const std::vector<std::shared_ptr<Processable>>&, float, const Vector3<float>&);
-            void executeProcessables(const std::vector<std::shared_ptr<Processable>>&, float, const Vector3<float>&);
+            static void setupProcessables(const std::vector<std::shared_ptr<Processable>>&, float, const Vector3<float>&);
+            static void executeProcessables(const std::vector<std::shared_ptr<Processable>>&, float, const Vector3<float>&);
 
             std::thread *physicsSimulationThread;
             std::atomic_bool physicsSimulationStopper;

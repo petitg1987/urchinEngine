@@ -203,7 +203,7 @@ namespace urchin {
     /**
      * @return Relative velocity at the contact point
      */
-    Vector3<float> ConstraintSolverManager::computeRelativeVelocity(const CommonSolvingData& commonData) const {
+    Vector3<float> ConstraintSolverManager::computeRelativeVelocity(const CommonSolvingData& commonData) {
         const Vector3<float> vp1 = commonData.body1->getLinearVelocity() + commonData.body1->getAngularVelocity().crossProduct(commonData.r1);
         const Vector3<float> vp2 = commonData.body2->getLinearVelocity() + commonData.body2->getAngularVelocity().crossProduct(commonData.r2);
 
@@ -225,7 +225,7 @@ namespace urchin {
         return tangentVelocity / tangentVelocityLength;
     }
 
-    void ConstraintSolverManager::logCommonData(const std::string& message, const CommonSolvingData& commonData) const {
+    void ConstraintSolverManager::logCommonData(const std::string& message, const CommonSolvingData& commonData) {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 

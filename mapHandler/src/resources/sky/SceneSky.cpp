@@ -16,10 +16,10 @@ namespace urchin {
     }
 
     void SceneSky::loadFrom(const std::shared_ptr<XmlChunk>& chunk, const XmlParser& xmlParser) {
-        changeSkybox(SkyboxReaderWriter().loadFrom(chunk, xmlParser));
+        changeSkybox(SkyboxReaderWriter::loadFrom(chunk, xmlParser));
     }
 
     void SceneSky::writeOn(const std::shared_ptr<XmlChunk>& chunk, XmlWriter& xmlWriter) const {
-        SkyboxReaderWriter().writeOn(chunk, getSkybox(), xmlWriter);
+        SkyboxReaderWriter::writeOn(chunk, getSkybox(), xmlWriter);
     }
 }

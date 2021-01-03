@@ -131,8 +131,6 @@ namespace urchin {
         if (!MathFunction::isZero(velocity.squareLength(), 0.001f)) {
             Quaternion<float> orientation = Quaternion<float>(velocity.normalize()).normalize();
             newOrientation = orientation * initialOrientation;
-        } else {
-            newOrientation = initialOrientation;
         }
 
         //apply data on body
@@ -141,7 +139,7 @@ namespace urchin {
     }
 
     void PhysicsCharacterController::recoverFromPenetration(float dt) {
-        SignificantContactValues significantContactValues = resetSignificantContactValues();
+        resetSignificantContactValues();
 
         PhysicsTransform characterTransform = ghostBody->getTransform();
         for (unsigned int subStepIndex = 0; subStepIndex < RECOVER_PENETRATION_SUB_STEPS; ++subStepIndex) {
@@ -162,27 +160,27 @@ namespace urchin {
                         ghostBody->setTransform(characterTransform);
 
                         if (subStepIndex == 0) {
-                            saveSignificantContactValues(significantContactValues, normal);
+                            saveSignificantContactValues(normal);
                         }
                     }
                 }
             }
         }
 
-        computeSignificantContactValues(significantContactValues, dt);
+        computeSignificantContactValues(dt);
     }
 
-    SignificantContactValues PhysicsCharacterController::resetSignificantContactValues() {
-        SignificantContactValues significantContactValues;
+    void PhysicsCharacterController::resetSignificantContactValues() {
         significantContactValues.numberOfHit = 0;
 
         significantContactValues.maxDotProductUpNormalAxis = std::numeric_limits<float>::min();
-        significantContactValues.maxDotProductDownNormalAxis = -std::numeric_limits<float>::max();
+        significantContactValues.mostUpVerticalNormal = Vector3<float>();
 
-        return significantContactValues;
+        significantContactValues.maxDotProductDownNormalAxis = -std::numeric_limits<float>::max();
+        significantContactValues.mostDownVerticalNormal = Vector3<float>();
     }
 
-    void PhysicsCharacterController::saveSignificantContactValues(SignificantContactValues& significantContactValues, const Vector3<float>& normal) {
+    void PhysicsCharacterController::saveSignificantContactValues(const Vector3<float>& normal) {
         significantContactValues.numberOfHit++;
 
         float dotProductUpNormalAxis = (-normal).dotProduct(Vector3<float>(0.0f, 1.0f, 0.0f));
@@ -198,7 +196,7 @@ namespace urchin {
         }
     }
 
-    void PhysicsCharacterController::computeSignificantContactValues(SignificantContactValues& significantContactValues, float dt) {
+    void PhysicsCharacterController::computeSignificantContactValues(float dt) {
         numberOfHit = significantContactValues.numberOfHit;
         isOnGround = numberOfHit > 0 && std::acos(significantContactValues.maxDotProductUpNormalAxis) < physicsCharacter->getMaxSlopeInRadian();
         hitRoof = numberOfHit > 0 && std::acos(significantContactValues.maxDotProductDownNormalAxis) < physicsCharacter->getMaxSlopeInRadian();

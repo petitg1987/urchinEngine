@@ -15,8 +15,8 @@ namespace urchin {
         #define ANGLE_TAG "angle"
 
         public:
-            Quaternion<float> loadOrientation(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
-            void writeOrientation(const std::shared_ptr<XmlChunk>&, const Quaternion<float>&, XmlWriter&) const;
+            static Quaternion<float> loadOrientation(const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            static void writeOrientation(const std::shared_ptr<XmlChunk>&, const Quaternion<float>&, XmlWriter&);
     };
 
 }

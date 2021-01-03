@@ -1,7 +1,5 @@
 #include "resources/font/Font.h"
 
-#include <utility>
-
 namespace urchin {
 
     Font::Font(unsigned int fontSize, const Vector3<float>& fontColor, std::shared_ptr<Texture> alphabetTexture, Glyph* glyph,

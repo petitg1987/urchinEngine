@@ -202,7 +202,7 @@ namespace urchin {
     /**
      * Computes area formed by the four points. Formula used: max(|v1.crossProduct(v2)|²).
      */
-    float ManifoldResult::computeArea(const Point3<float>& p0, const Point3<float>& p1, const Point3<float>& p2, const Point3<float>& p3) const {
+    float ManifoldResult::computeArea(const Point3<float>& p0, const Point3<float>& p1, const Point3<float>& p2, const Point3<float>& p3) {
         Vector3<float> vectorP1p0 = p1.vector(p0);
         Vector3<float> vectorP2p0 = p2.vector(p0);
         Vector3<float> vectorP3p0 = p3.vector(p0);

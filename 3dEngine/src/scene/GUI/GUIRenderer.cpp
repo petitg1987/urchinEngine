@@ -1,8 +1,6 @@
-#include <memory>
 #include <algorithm>
 
 #include "scene/GUI/GUIRenderer.h"
-#include "scene/GUI/GUISkinService.h"
 #include "resources/MediaManager.h"
 #include "resources/font/Font.h"
 #include "texture/render/TextureRenderer.h"
@@ -65,10 +63,6 @@ namespace urchin {
                 }
             }
         }
-    }
-
-    void GUIRenderer::setupSkin(const std::string& skinFilename) {
-        GUISkinService::instance()->setSkin(skinFilename);
     }
 
     bool GUIRenderer::onKeyPress(unsigned int key) {

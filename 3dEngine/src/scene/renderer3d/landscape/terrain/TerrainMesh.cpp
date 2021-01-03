@@ -52,7 +52,7 @@ namespace urchin {
         imgTerrain->release();
     }
 
-    std::string TerrainMesh::generateTerrainMeshHash(const std::string& terrainFilePath, float xzScale, float yScale) const {
+    std::string TerrainMesh::generateTerrainMeshHash(const std::string& terrainFilePath, float xzScale, float yScale) {
         std::size_t terrainHashInt = std::hash<std::string>{}(FileReader::readFile(terrainFilePath) + "#" + std::to_string(xzScale) + "#" + std::to_string(yScale));
         std::string terrainHash = std::to_string(terrainHashInt);
         return std::string(TERRAIN_HASH_SIZE - terrainHash.length(), '0') + terrainHash;
@@ -278,11 +278,11 @@ namespace urchin {
         file.close();
     }
 
-    void TerrainMesh::writeVersion(std::ofstream& file, unsigned int version) const {
+    void TerrainMesh::writeVersion(std::ofstream& file, unsigned int version) {
         file.write(reinterpret_cast<char*>(&version), sizeof(version));
     }
 
-    void TerrainMesh::writeHash(std::ofstream& file, const std::string& hash) const {
+    void TerrainMesh::writeHash(std::ofstream& file, const std::string& hash) {
         file.write(hash.c_str(), (int)(hash.size() * sizeof(char)));
     }
 
@@ -299,13 +299,13 @@ namespace urchin {
         file.close();
     }
 
-    unsigned int TerrainMesh::readVersion(std::ifstream& file) const {
+    unsigned int TerrainMesh::readVersion(std::ifstream& file) {
         unsigned int version;
         file.read(reinterpret_cast<char*>(&version), sizeof(version));
         return version;
     }
 
-    std::string TerrainMesh::readHash(std::ifstream& file) const {
+    std::string TerrainMesh::readHash(std::ifstream& file) {
         char hash[TERRAIN_HASH_SIZE];
         file.read(&hash[0], sizeof(hash));
         return std::string(hash, TERRAIN_HASH_SIZE);

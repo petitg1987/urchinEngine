@@ -100,7 +100,7 @@ int open_gl(void) {
     static const char *NAMES[] = {"libGL.so.1", "libGL.so"};
 #endif
 
-    unsigned int index = 0;
+    unsigned int index;
     for(index = 0; index < (sizeof(NAMES) / sizeof(NAMES[0])); index++) {
         libGL = dlopen(NAMES[index], RTLD_NOW | RTLD_GLOBAL);
 

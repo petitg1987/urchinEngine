@@ -1,7 +1,5 @@
 #include "AICharacterController.h"
 
-#include <utility>
-
 #define CHANGE_PATH_POINT_DISTANCE 0.4f
 
 namespace urchin {

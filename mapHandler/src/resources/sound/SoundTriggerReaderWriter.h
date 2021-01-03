@@ -29,15 +29,15 @@ namespace urchin {
         #define SOUND_SHAPE_TAG "soundShape"
 
         public:
-            SoundTrigger* loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
-            void writeOn(const std::shared_ptr<XmlChunk>&, const SoundTrigger*, XmlWriter&) const;
+            static SoundTrigger* loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            static void writeOn(const std::shared_ptr<XmlChunk>&, const SoundTrigger*, XmlWriter&);
 
         private:
-            SoundTrigger* buildSoundTriggerFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
-            void buildChunkFrom(const std::shared_ptr<XmlChunk>&, const SoundTrigger*, XmlWriter&) const;
+            static SoundTrigger* buildSoundTriggerFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            static void buildChunkFrom(const std::shared_ptr<XmlChunk>&, const SoundTrigger*, XmlWriter&);
 
-            SoundBehavior buildSoundBehaviorFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
-            void buildChunkFrom(const std::shared_ptr<XmlChunk>&, const SoundBehavior&, XmlWriter&) const;
+            static SoundBehavior buildSoundBehaviorFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            static void buildChunkFrom(const std::shared_ptr<XmlChunk>&, const SoundBehavior&, XmlWriter&);
     };
 
 }

@@ -4,17 +4,17 @@
 
 namespace urchin {
 
-    SoundTrigger* SoundTriggerReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& soundTriggerChunk, const XmlParser& xmlParser) const {
+    SoundTrigger* SoundTriggerReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& soundTriggerChunk, const XmlParser& xmlParser) {
         SoundTrigger* soundTrigger = buildSoundTriggerFrom(soundTriggerChunk, xmlParser);
 
         return soundTrigger;
     }
 
-    void SoundTriggerReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& soundTriggerChunk, const SoundTrigger* soundTrigger, XmlWriter& xmlWriter) const {
+    void SoundTriggerReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& soundTriggerChunk, const SoundTrigger* soundTrigger, XmlWriter& xmlWriter) {
         buildChunkFrom(soundTriggerChunk, soundTrigger, xmlWriter);
     }
 
-    SoundTrigger* SoundTriggerReaderWriter::buildSoundTriggerFrom(const std::shared_ptr<XmlChunk>& soundTriggerChunk, const XmlParser& xmlParser) const {
+    SoundTrigger* SoundTriggerReaderWriter::buildSoundTriggerFrom(const std::shared_ptr<XmlChunk>& soundTriggerChunk, const XmlParser& xmlParser) {
         std::shared_ptr<XmlChunk> soundBehaviorChunk = xmlParser.getUniqueChunk(true, SOUND_BEHAVIOR_TAG, XmlAttribute(), soundTriggerChunk);
         SoundBehavior soundBehavior = buildSoundBehaviorFrom(soundBehaviorChunk, xmlParser);
 
@@ -32,7 +32,7 @@ namespace urchin {
         throw std::invalid_argument("Unknown sound trigger type read from map: " + soundTriggerType);
     }
 
-    void SoundTriggerReaderWriter::buildChunkFrom(const std::shared_ptr<XmlChunk>& soundTriggerChunk, const SoundTrigger* soundTrigger, XmlWriter& xmlWriter) const {
+    void SoundTriggerReaderWriter::buildChunkFrom(const std::shared_ptr<XmlChunk>& soundTriggerChunk, const SoundTrigger* soundTrigger, XmlWriter& xmlWriter) {
         if (soundTrigger->getTriggerType() == SoundTrigger::MANUAL_TRIGGER) {
             soundTriggerChunk->setAttribute(XmlAttribute(TYPE_ATTR, MANUAL_VALUE));
         } else if (soundTrigger->getTriggerType() == SoundTrigger::SHAPE_TRIGGER) {
@@ -50,7 +50,7 @@ namespace urchin {
         buildChunkFrom(soundBehaviorChunk, soundTrigger->getSoundBehavior(), xmlWriter);
     }
 
-    SoundBehavior SoundTriggerReaderWriter::buildSoundBehaviorFrom(const std::shared_ptr<XmlChunk>& soundBehaviorChunk, const XmlParser& xmlParser) const {
+    SoundBehavior SoundTriggerReaderWriter::buildSoundBehaviorFrom(const std::shared_ptr<XmlChunk>& soundBehaviorChunk, const XmlParser& xmlParser) {
         std::shared_ptr<XmlChunk> playBehaviorChunk = xmlParser.getUniqueChunk(true, PLAY_BEHAVIOR_TAG, XmlAttribute(), soundBehaviorChunk);
         SoundBehavior::PlayBehavior playBehavior;
         if (playBehaviorChunk->getStringValue() == PLAY_ONCE_VALUE) {
@@ -80,7 +80,7 @@ namespace urchin {
         return {playBehavior, stopBehavior, volumeDecreasePercentageOnStop};
     }
 
-    void SoundTriggerReaderWriter::buildChunkFrom(const std::shared_ptr<XmlChunk>& soundBehaviorChunk, const SoundBehavior& soundBehavior, XmlWriter& xmlWriter) const {
+    void SoundTriggerReaderWriter::buildChunkFrom(const std::shared_ptr<XmlChunk>& soundBehaviorChunk, const SoundBehavior& soundBehavior, XmlWriter& xmlWriter) {
         std::shared_ptr<XmlChunk> playBehaviorChunk = xmlWriter.createChunk(PLAY_BEHAVIOR_TAG, XmlAttribute(), soundBehaviorChunk);
         if (soundBehavior.getPlayBehavior() == SoundBehavior::PLAY_ONCE) {
             playBehaviorChunk->setStringValue(PLAY_ONCE_VALUE);

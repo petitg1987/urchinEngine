@@ -130,7 +130,7 @@ namespace urchin {
             if(dladdr(traces[i], &info) && info.dli_sname) {
                 std::string moduleName = info.dli_fname != nullptr ? FileUtil::getFileName(info.dli_fname) : "[no module]";
                 int status;
-                char* demangledMethod = abi::__cxa_demangle(info.dli_sname, nullptr, 0, &status);
+                char* demangledMethod = abi::__cxa_demangle(info.dli_sname, nullptr, nullptr, &status);
                 std::string methodName = status == 0 ? demangledMethod : symbols[i];
 
                 long methodShift = (char*)info.dli_saddr - (char*)info.dli_fbase;

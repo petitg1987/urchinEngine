@@ -18,7 +18,7 @@ namespace urchin {
             SyncFixedSizePool<CollisionConvexObject3D>* getObjectsPool();
 
         private:
-            unsigned int maxObjectSize(const std::vector<unsigned int>&);
+            static unsigned int maxObjectSize(const std::vector<unsigned int>&);
 
             SyncFixedSizePool<CollisionConvexObject3D>* objectsPool;
     };

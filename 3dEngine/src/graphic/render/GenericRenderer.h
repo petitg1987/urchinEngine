@@ -50,14 +50,14 @@ namespace urchin {
 
         private:
             std::size_t computeVerticesCount() const;
-            void initializeTexture(const TextureReader&) const;
+            static void initializeTexture(const TextureReader&);
             void initializeDisplay();
             void sendData(std::size_t, bool);
 
-            unsigned int shapeTypeToGlType(ShapeType) const;
-            unsigned int dataTypeToSize(DataType) const;
-            unsigned int dataTypeToGlType(DataType) const;
-            unsigned int dataDimensionToSize(DataDimension) const;
+            static unsigned int shapeTypeToGlType(ShapeType);
+            static unsigned int dataTypeToSize(DataType);
+            static unsigned int dataTypeToGlType(DataType);
+            static unsigned int dataDimensionToSize(DataDimension);
 
             void resetRenderDefaultValues() const;
 

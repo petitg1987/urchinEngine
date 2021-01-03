@@ -127,7 +127,7 @@ namespace urchin {
             Vector2<T> normalizedEdge2 = cwPoints[(std::size_t)i].vector(cwPoints[nextI]).normalize();
             T absDotProduct = std::abs(normalizedEdge1.dotProduct(normalizedEdge2));
             if (absDotProduct >= polygonMinDotProductThreshold) {
-                cwPoints.erase(cwPoints.begin() + (int)i);
+                cwPoints.erase(cwPoints.begin() + i);
                 i--;
             }
         }

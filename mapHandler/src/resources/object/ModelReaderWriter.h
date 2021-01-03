@@ -22,18 +22,18 @@ namespace urchin {
         #define PRODUCE_SHADOW_TAG "produceShadow"
 
         public:
-            Model* loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
-            void writeOn(const std::shared_ptr<XmlChunk>&, const Model*, XmlWriter&) const;
+            static Model* loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            static void writeOn(const std::shared_ptr<XmlChunk>&, const Model*, XmlWriter&);
 
         private:
-            void loadAnimationsOn(Model*, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
-            void writeAnimationsOn(const std::shared_ptr<XmlChunk>&, const Model*, XmlWriter&) const;
+            static void loadAnimationsOn(Model*, const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            static void writeAnimationsOn(const std::shared_ptr<XmlChunk>&, const Model*, XmlWriter&);
 
-            void loadTransformOn(Model*, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
-            void writeTransformOn(const std::shared_ptr<XmlChunk>&, const Model*, XmlWriter&) const;
+            static void loadTransformOn(Model*, const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            static void writeTransformOn(const std::shared_ptr<XmlChunk>&, const Model*, XmlWriter&);
 
-            void loadFlagsOn(Model*, const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
-            void writeFlagsOn(const std::shared_ptr<XmlChunk>&, const Model*, XmlWriter&) const;
+            static void loadFlagsOn(Model*, const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            static void writeFlagsOn(const std::shared_ptr<XmlChunk>&, const Model*, XmlWriter&);
     };
 
 }
