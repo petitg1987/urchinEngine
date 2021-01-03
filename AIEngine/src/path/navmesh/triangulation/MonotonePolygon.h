@@ -17,7 +17,7 @@ namespace urchin {
             bool isSharedEdge(std::size_t, std::size_t) const;
 
         private:
-            uint_fast64_t computeEdgeId(std::size_t, std::size_t) const;
+            static uint_fast64_t computeEdgeId(std::size_t, std::size_t);
 
             std::vector<std::size_t> ccwPoints;
             std::set<uint_fast64_t> sharedEdges;

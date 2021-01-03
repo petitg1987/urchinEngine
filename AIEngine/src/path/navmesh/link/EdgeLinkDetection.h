@@ -23,7 +23,7 @@ namespace urchin {
             bool hasCollinearEdgesLink(const LineSegment3D<float>&, const LineSegment3D<float>&, float&, float&) const;
 
             bool canJumpThatFar(const Point3<float>&, const Point3<float>&) const;
-            bool isProperJumpDirection(const LineSegment3D<float>&, const LineSegment3D<float>&, const Point3<float>&, const Point3<float>&) const;
+            static bool isProperJumpDirection(const LineSegment3D<float>&, const LineSegment3D<float>&, const Point3<float>&, const Point3<float>&);
 
             bool isRangeTooSmall(float, float, const LineSegment3D<float>&) const;
     };
