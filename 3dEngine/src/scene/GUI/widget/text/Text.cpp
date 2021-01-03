@@ -18,12 +18,17 @@ namespace urchin {
     }
 
     Text::~Text() {
-        font->release();
+        if(font) {
+            font->release();
+        }
     }
 
     void Text::createOrUpdateWidget() {
         std::shared_ptr<XmlChunk> textChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "text", XmlAttribute("nameSkin", nameSkin));
         std::shared_ptr<XmlChunk> fontFilenameChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "font", XmlAttribute(), textChunk);
+        if(font) {
+            font->release();
+        }
         font = MediaManager::instance()->getMedia<Font>(fontFilenameChunk->getStringValue());
 
         updateText(text, maxLength);
