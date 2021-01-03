@@ -15,13 +15,14 @@
 
 namespace urchin {
 
-    Font* LoaderFNT::loadFromFile(const std::string& fontFilename) {
+    Font* LoaderFNT::loadFromFile(const std::string& fontFilename, const std::map<std::string, std::string>& params) {
+        assert(params.find("size") != params.end());
         std::locale::global(std::locale("C")); //for float
 
         XmlParser parserXml(fontFilename);
         std::string ttfFilename = parserXml.getUniqueChunk(false, "ttf")->getStringValue();
-        unsigned int fontSize = parserXml.getUniqueChunk(false, "size")->getUnsignedIntValue();
         Vector3<float> fontColor =  parserXml.getUniqueChunk(false, "color")->getVector3Value();
+        unsigned int fontSize = TypeConverter::toUnsignedInt(params.find("size")->second);
 
         //initialize freetype
         std::string fileFontPath = FileSystem::instance()->getResourcesDirectory() + ttfFilename;

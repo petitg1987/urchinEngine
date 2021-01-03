@@ -135,7 +135,7 @@ namespace urchin {
         }
 
         if (DEBUG_DISPLAY_FONT_TEXTURE) {
-            Font* font = MediaManager::instance()->getMedia<Font>("UI/font/font.fnt");
+            Font* font = MediaManager::instance()->getMedia<Font>("UI/font/font.fnt", {{"size", "16"}});
 
             TextureRenderer textureDisplayer(font->getTexture(), TextureRenderer::DEFAULT_VALUE);
             textureDisplayer.setPosition(TextureRenderer::USER_DEFINED_X, TextureRenderer::USER_DEFINED_Y);

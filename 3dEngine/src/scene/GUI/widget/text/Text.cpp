@@ -8,39 +8,41 @@
 
 namespace urchin {
 
-    Text::Text(Position position, std::string nameSkin, std::string text) :
+    Text::Text(Position position, std::string nameSkin, Length fontHeight, std::string text) :
             Widget(position, Size(0, 0, Size::PIXEL)),
             nameSkin(std::move(nameSkin)),
+            fontHeight(fontHeight),
             text(std::move(text)),
-            maxLength(-1),
+            maxWidth(9999999.0 /* Cannot use numeric_limit<float>::max() because overflow during cast */, Length::PIXEL),
             font(nullptr) {
         Text::createOrUpdateWidget();
     }
 
     Text::~Text() {
-        if(font) {
-            font->release();
-        }
+        cleanFont();
     }
 
     void Text::createOrUpdateWidget() {
         std::shared_ptr<XmlChunk> textChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "text", XmlAttribute("nameSkin", nameSkin));
         std::shared_ptr<XmlChunk> fontFilenameChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "font", XmlAttribute(), textChunk);
-        if(font) {
-            font->release();
-        }
-        font = MediaManager::instance()->getMedia<Font>(fontFilenameChunk->getStringValue());
 
-        updateText(text, maxLength);
+        cleanFont();
+        std::map<std::string, std::string> fontParams = {{"size", std::to_string(getFontHeight())}};
+        font = MediaManager::instance()->getMedia<Font>(fontFilenameChunk->getStringValue(), fontParams);
+
+        updateText(text);
     }
 
-    void Text::updateText(const std::string& text, int maxLength) { //TODO maxLength should be defined by size.width
+    void Text::setMaxWidth(Length maxWidth) {
+        this->maxWidth = maxWidth;
+    }
+
+    void Text::updateText(const std::string& text) {
         this->text = text;
-        this->maxLength = maxLength;
 
         //cut the text if needed
         std::size_t numLetters = 0;
-        std::stringstream cutTextStream((maxLength > 0) ? cutText(text, (unsigned int)maxLength) : text);
+        std::stringstream cutTextStream(cutText(text));
         std::string item;
         cutTextLines.clear();
         while (std::getline(cutTextStream, item, '\n')) {
@@ -54,14 +56,10 @@ namespace urchin {
         vertexCoord.reserve(numLetters * 4);
         textureCoord.reserve(numLetters * 4);
 
-        //float expectedHeight = 9.0f;
-        //unsigned int currentHeight = font->getHeight();
-        float scale = 1.0; //expectedHeight / (float)currentHeight; //TODO compute better
-
         float width = 0.0f;
         float offsetY = 0.0f;
-        auto spaceBetweenLetters = (float)font->getSpaceBetweenLetters() * scale;
-        auto spaceBetweenLines = (float)font->getSpaceBetweenLines() * scale;
+        auto spaceBetweenLetters = (float)font->getSpaceBetweenLetters();
+        auto spaceBetweenLines = (float)font->getSpaceBetweenLines();
 
         for (auto& cutTextLine : cutTextLines) { //each lines
             float offsetX = 0.0f;
@@ -70,18 +68,15 @@ namespace urchin {
                 auto letterShift = (float)font->getGlyph(letter).shift;
                 auto letterWidth = (float)font->getGlyph(letter).width;
                 auto letterHeight = (float)font->getGlyph(letter).height;
-
-                auto letterOffsetY = offsetY - letterShift * scale;
-                auto letterHeightScaled = letterHeight * scale;
-                auto letterWidthScaled = letterWidth * scale;
+                auto letterOffsetY = offsetY - letterShift;
 
                 vertexCoord.emplace_back(Point2<float>(offsetX, letterOffsetY));
-                vertexCoord.emplace_back(Point2<float>(letterWidthScaled + offsetX, letterOffsetY));
-                vertexCoord.emplace_back(Point2<float>(letterWidthScaled + offsetX, letterHeightScaled + letterOffsetY));
+                vertexCoord.emplace_back(Point2<float>(letterWidth + offsetX, letterOffsetY));
+                vertexCoord.emplace_back(Point2<float>(letterWidth + offsetX, letterHeight + letterOffsetY));
 
                 vertexCoord.emplace_back(Point2<float>(offsetX, letterOffsetY));
-                vertexCoord.emplace_back(Point2<float>(letterWidthScaled + offsetX, letterHeightScaled + letterOffsetY));
-                vertexCoord.emplace_back(Point2<float>(offsetX, letterHeightScaled + letterOffsetY));
+                vertexCoord.emplace_back(Point2<float>(letterWidth + offsetX, letterHeight + letterOffsetY));
+                vertexCoord.emplace_back(Point2<float>(offsetX, letterHeight + letterOffsetY));
 
                 float sMin = (float)(letter % 16) / 16.0f;
                 float tMin = (float)(letter >> 4u) / 16.0f;
@@ -96,7 +91,7 @@ namespace urchin {
                 textureCoord.emplace_back(Point2<float>(sMax, tMax));
                 textureCoord.emplace_back(Point2<float>(sMin, tMax));
 
-                offsetX += letterWidthScaled + spaceBetweenLetters;
+                offsetX += letterWidth + spaceBetweenLetters;
 
                 width = std::max(width, offsetX - spaceBetweenLetters);
             }
@@ -107,7 +102,8 @@ namespace urchin {
             cutTextLines.emplace_back("");
         }
         std::size_t numberOfInterLines = cutTextLines.size() - 1;
-        setSize(Size(scale * width, scale * (float)(cutTextLines.size() * font->getHeight() + numberOfInterLines * font->getSpaceBetweenLines()), Size::SizeType::PIXEL));
+        auto textHeight = (float)(cutTextLines.size() * font->getHeight() + numberOfInterLines * font->getSpaceBetweenLines());
+        setSize(Size(width, textHeight, Size::SizeType::PIXEL));
 
         textRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
@@ -117,7 +113,21 @@ namespace urchin {
                 ->build();
     }
 
-    std::string Text::cutText(const std::string& constText, unsigned int maxLength) {
+    const std::string& Text::getText() const {
+        return text;
+    }
+
+    const Font* Text::getFont() {
+        return font;
+    }
+
+    void Text::cleanFont() {
+        if(font) {
+            font->release();
+        }
+    }
+
+    std::string Text::cutText(const std::string& constText) {
         std::string text(constText);
 
         unsigned int lineLength = 0;
@@ -136,7 +146,7 @@ namespace urchin {
             }
 
             unsigned int lengthLetter = font->getGlyph(letter).width + font->getSpaceBetweenLetters();
-            if (lineLength + lengthLetter >= maxLength) { //cut line
+            if (lineLength + lengthLetter >= getMaxWidth()) { //cut line
                 text[indexLastSpace] = '\n';
                 lineLength = lengthFromLastSpace;
             } else {
@@ -148,12 +158,18 @@ namespace urchin {
         return text;
     }
 
-    const std::string& Text::getText() const {
-        return text;
+    unsigned int Text::getFontHeight() {
+        if (fontHeight.getType() == Length::PERCENTAGE) {
+            return (unsigned int)(fontHeight.getValue() * (float)getSceneHeight());
+        }
+        return (unsigned int)fontHeight.getValue();
     }
 
-    const Font* Text::getFont() {
-        return font;
+    unsigned int Text::getMaxWidth() {
+        if (maxWidth.getType() == Length::PERCENTAGE) {
+            return (unsigned int)(maxWidth.getValue() * (float)getSceneWidth());
+        }
+        return (unsigned int)maxWidth.getValue();
     }
 
     void Text::display(const RenderTarget* renderTarget, const ShaderVar& translateDistanceShaderVar, float dt) {

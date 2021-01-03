@@ -6,6 +6,7 @@
 
 #include "scene/GUI/widget/Widget.h"
 #include "scene/GUI/widget/Position.h"
+#include "scene/GUI/widget/Length.h"
 #include "resources/font/Font.h"
 #include "graphic/render/GenericRenderer.h"
 
@@ -13,12 +14,13 @@ namespace urchin {
 
     class Text : public Widget {
         public:
-            Text(Position, std::string, std::string);
+            Text(Position, std::string, Length, std::string);
             ~Text() override;
 
             void createOrUpdateWidget() override;
 
-            void updateText(const std::string&, int maxLength = -1);
+            void setMaxWidth(Length);
+            void updateText(const std::string&);
 
             const std::string& getText() const;
             const Font* getFont();
@@ -26,12 +28,17 @@ namespace urchin {
             void display(const RenderTarget*, const ShaderVar&, float) override;
 
         private:
-            std::string cutText(const std::string&, unsigned int);
+            void cleanFont();
+            std::string cutText(const std::string&);
+
+            unsigned int getFontHeight();
+            unsigned int getMaxWidth();
 
             //properties
             std::string nameSkin;
+            Length fontHeight;
             std::string text;
-            int maxLength;
+            Length maxWidth;
 
             //data
             std::vector<std::string> cutTextLines;

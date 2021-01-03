@@ -14,7 +14,7 @@ namespace urchin {
             friend class Singleton<ResourceManager>;
 
             template<class T> T* getResource(const std::string&) const;
-            void addResource(const std::string&, Resource*);
+            void addResource(const std::string&, const std::string&, Resource*);
             void removeResource(const std::string&);
 
         private:

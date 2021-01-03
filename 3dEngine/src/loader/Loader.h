@@ -14,7 +14,7 @@ namespace urchin {
         public:
             virtual ~Loader();
 
-            virtual T* loadFromFile(const std::string&);
+            virtual T* loadFromFile(const std::string&, const std::map<std::string, std::string>&);
             virtual void saveToFile(const T*, const std::string&);
     };
 

@@ -2,7 +2,7 @@ template<class T> Loader<T>::~Loader() {
 
 }
 
-template<class T> T *Loader<T>::loadFromFile(const std::string& filename) {
+template<class T> T *Loader<T>::loadFromFile(const std::string& filename, const std::map<std::string, std::string>&) {
     throw std::runtime_error("Impossible to import this type of file, filename: " + filename + ".");
 }
 

@@ -9,17 +9,25 @@ namespace urchin {
     }
 
     Resource::~Resource() {
-        if (!name.empty()) { //resource created with ResourceManager
-            ResourceManager::instance()->removeResource(name);
+        if (!id.empty()) { //resource created with ResourceManager
+            ResourceManager::instance()->removeResource(id);
         }
+    }
+
+    const std::string& Resource::getId() const {
+        return id;
+    }
+
+    void Resource::setId(const std::string& id) {
+        this->id = id;
     }
 
     const std::string& Resource::getName() const {
         return name;
     }
 
-    void Resource::setName(const std::string& nameU) {
-        name = nameU;
+    void Resource::setName(const std::string& name) {
+        this->name = name;
     }
 
     unsigned int Resource::getRefCount() const {

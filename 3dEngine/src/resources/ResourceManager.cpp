@@ -21,13 +21,14 @@ namespace urchin {
         }
     }
 
-    void ResourceManager::addResource(const std::string& name, Resource* resource) {
-        mResources[name] = resource;
+    void ResourceManager::addResource(const std::string& resourceId, const std::string& name, Resource* resource) {
+        mResources[resourceId] = resource;
+        resource->setId(resourceId);
         resource->setName(name);
     }
 
-    void ResourceManager::removeResource(const std::string& name) {
-        auto it = mResources.find(name);
+    void ResourceManager::removeResource(const std::string& resourceId) {
+        auto it = mResources.find(resourceId);
         if (it != mResources.end()) {
             mResources.erase(it);
         }

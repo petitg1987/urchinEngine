@@ -98,6 +98,8 @@ namespace urchin {
             texture = Texture::build(width, height, retrieveTextureFormat(), &texels8[0]);
         }else if (channelPrecision == Image::CHANNEL_16) {
             texture = Texture::build(width, height, retrieveTextureFormat(), &texels16[0]);
+        } else {
+            throw std::runtime_error("Unknown channel precision: " + std::to_string(channelPrecision));
         }
 
         if (generateMipMap) {

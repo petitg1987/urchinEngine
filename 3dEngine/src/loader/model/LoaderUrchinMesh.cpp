@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    ConstMeshes* LoaderUrchinMesh::loadFromFile(const std::string& filename) {
+    ConstMeshes* LoaderUrchinMesh::loadFromFile(const std::string& filename, const std::map<std::string, std::string>&) {
         std::locale::global(std::locale("C")); //for float
 
         std::istringstream iss;
