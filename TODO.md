@@ -36,7 +36,7 @@
   * **NEW FEATURE** (`medium`): Use material textures (normal map...) for terrain
   * **NEW FEATURE** (`minor`): Add auto shadow on terrain
   * **OPTIMIZATION** (`medium`): Don't build grass quadtree which are 100% discarded by grass mask
-* GUI
+* UI
   * **NEW FEATURE** (`minor`): Combo list
   * **NEW FEATURE** (`minor`): Drag and drop
   * **NEW FEATURE** (`minor`): Textarea

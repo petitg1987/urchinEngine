@@ -7,7 +7,7 @@
 #include "UrchinCommon.h"
 
 #include "renderer3d/Renderer3d.h"
-#include "GUI/GUIRenderer.h"
+#include "scene/UI/UIRenderer.h"
 #include "graphic/GraphicService.h"
 #include "graphic/render/target/ScreenRender.h"
 
@@ -36,10 +36,10 @@ namespace urchin {
             void removeRenderer3d(Renderer3d*);
             Renderer3d* getActiveRenderer3d() const;
 
-            GUIRenderer* newGUIRenderer(bool);
-            void enableGUIRenderer(GUIRenderer*);
-            void removeGUIRenderer(GUIRenderer*);
-            GUIRenderer* getActiveGUIRenderer() const;
+            UIRenderer* newUIRenderer(bool);
+            void enableUIRenderer(UIRenderer*);
+            void removeUIRenderer(UIRenderer*);
+            UIRenderer* getActiveUIRenderer() const;
 
             //events
             bool onKeyPress(unsigned int);
@@ -62,7 +62,7 @@ namespace urchin {
             //renderer
             ScreenRender* screenRenderTarget;
             std::vector<Renderer3d*> renderers3d;
-            std::vector<GUIRenderer*> guiRenderers;
+            std::vector<UIRenderer*> uiRenderers;
             Renderer *activeRenderers[NUM_RENDERER];
 
             //fps

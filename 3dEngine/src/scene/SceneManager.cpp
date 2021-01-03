@@ -4,7 +4,7 @@
 
 #define START_FPS 1000.0f //high number of FPS to avoid pass through the ground at startup
 #define RENDERER_3D 0
-#define GUI_RENDERER 1
+#define UI_RENDERER 1
 #define REFRESH_RATE_FPS 0.35f
 
 namespace urchin {
@@ -37,8 +37,8 @@ namespace urchin {
         for (auto& renderer3d : renderers3d) {
             delete renderer3d;
         }
-        for (auto& guiRenderer : guiRenderers) {
-            delete guiRenderer;
+        for (auto& uiRenderer : uiRenderers) {
+            delete uiRenderer;
         }
 
         Profiler::graphic()->log();
@@ -90,7 +90,7 @@ namespace urchin {
 
     void SceneManager::computeFps() {
         auto currentTime = std::chrono::high_resolution_clock::now();
-        float timeInterval = (float)std::chrono::duration_cast<std::chrono::microseconds>(currentTime - previousTime).count();
+        auto timeInterval = (float)std::chrono::duration_cast<std::chrono::microseconds>(currentTime - previousTime).count();
 
         previousFps[indexFps % 3] = 1000000.0f / timeInterval;
         fps = (previousFps.at(indexFps % 3) * 9 + previousFps.at((indexFps - 1) % 3) * 3 + previousFps.at((indexFps - 2) % 3)) / 13.0f;
@@ -133,38 +133,38 @@ namespace urchin {
         return dynamic_cast<Renderer3d*>(activeRenderers[RENDERER_3D]);
     }
 
-    GUIRenderer* SceneManager::newGUIRenderer(bool enable) {
-        auto* guiRenderer = new GUIRenderer(screenRenderTarget);
-        guiRenderers.push_back(guiRenderer);
+    UIRenderer* SceneManager::newUIRenderer(bool enable) {
+        auto* uiRenderer = new UIRenderer(screenRenderTarget);
+        uiRenderers.push_back(uiRenderer);
 
         if (enable) {
-            enableGUIRenderer(guiRenderer);
+            enableUIRenderer(uiRenderer);
         }
-        return guiRenderer;
+        return uiRenderer;
     }
 
-    void SceneManager::enableGUIRenderer(GUIRenderer* guiRenderer) {
-        if (activeRenderers[GUI_RENDERER] && activeRenderers[GUI_RENDERER] != guiRenderer) {
-            activeRenderers[GUI_RENDERER]->onDisable();
+    void SceneManager::enableUIRenderer(UIRenderer* uiRenderer) {
+        if (activeRenderers[UI_RENDERER] && activeRenderers[UI_RENDERER] != uiRenderer) {
+            activeRenderers[UI_RENDERER]->onDisable();
         }
 
-        activeRenderers[GUI_RENDERER] = guiRenderer;
-        if (guiRenderer) {
-            guiRenderer->onResize(sceneWidth, sceneHeight);
+        activeRenderers[UI_RENDERER] = uiRenderer;
+        if (uiRenderer) {
+            uiRenderer->onResize(sceneWidth, sceneHeight);
         }
     }
 
-    void SceneManager::removeGUIRenderer(GUIRenderer* guiRenderer) {
-        if (activeRenderers[GUI_RENDERER] == guiRenderer) {
-            activeRenderers[GUI_RENDERER] = nullptr;
+    void SceneManager::removeUIRenderer(UIRenderer* uiRenderer) {
+        if (activeRenderers[UI_RENDERER] == uiRenderer) {
+            activeRenderers[UI_RENDERER] = nullptr;
         }
 
-        guiRenderers.erase(std::remove(guiRenderers.begin(), guiRenderers.end(), guiRenderer), guiRenderers.end());
-        delete guiRenderer;
+        uiRenderers.erase(std::remove(uiRenderers.begin(), uiRenderers.end(), uiRenderer), uiRenderers.end());
+        delete uiRenderer;
     }
 
-    GUIRenderer* SceneManager::getActiveGUIRenderer() const {
-        return dynamic_cast<GUIRenderer*>(activeRenderers[GUI_RENDERER]);
+    UIRenderer* SceneManager::getActiveUIRenderer() const {
+        return dynamic_cast<UIRenderer*>(activeRenderers[UI_RENDERER]);
     }
 
     bool SceneManager::onKeyPress(unsigned int key) {
