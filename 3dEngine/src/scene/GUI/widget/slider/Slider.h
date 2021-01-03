@@ -28,7 +28,7 @@ namespace urchin {
             void display(const RenderTarget*, const ShaderVar&, float) override;
 
         private:
-            std::string buttonNameFont, valuesNameFont;
+            std::string buttonsTextSkin, valuesTextSkin;
             std::string leftButtonString, rightButtonString;
             const std::vector<std::string> values;
             unsigned int selectedIndex;

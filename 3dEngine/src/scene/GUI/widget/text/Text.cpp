@@ -2,16 +2,19 @@
 
 #include "scene/GUI/widget/text/Text.h"
 #include "scene/GUI/widget/Size.h"
-#include "resources/MediaManager.h"
+#include "scene/GUI/GUISkinService.h"
+#include "resources//MediaManager.h"
 #include "graphic/render/GenericRendererBuilder.h"
 
 namespace urchin {
 
-    Text::Text(Position position, const std::string& fontFilename) :
+    Text::Text(Position position, std::string nameSkin, std::string text) :
             Widget(position, Size(0, 0, Size::PIXEL)),
+            nameSkin(std::move(nameSkin)),
+            text(std::move(text)),
             maxLength(-1),
-            font(MediaManager::instance()->getMedia<Font>(fontFilename)) {
-        setText(text);
+            font(nullptr) {
+        Text::createOrUpdateWidget();
     }
 
     Text::~Text() {
@@ -19,10 +22,14 @@ namespace urchin {
     }
 
     void Text::createOrUpdateWidget() {
-        //nothing to do: text cannot be defined in percentage (Size::SizeType::PERCENTAGE).
+        std::shared_ptr<XmlChunk> textChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "text", XmlAttribute("nameSkin", nameSkin));
+        std::shared_ptr<XmlChunk> fontFilenameChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "font", XmlAttribute(), textChunk);
+        font = MediaManager::instance()->getMedia<Font>(fontFilenameChunk->getStringValue());
+
+        updateText(text, maxLength);
     }
 
-    void Text::setText(const std::string& text, int maxLength) {
+    void Text::updateText(const std::string& text, int maxLength) { //TODO maxLength should be defined by size.width
         this->text = text;
         this->maxLength = maxLength;
 

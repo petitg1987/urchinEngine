@@ -34,10 +34,9 @@ namespace urchin {
 
         //creates font for title
         if (!stringTitle.empty()) {
-            std::shared_ptr<XmlChunk> textFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textFont", XmlAttribute(), windowChunk);
+            std::shared_ptr<XmlChunk> textSkinChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), windowChunk);
             Widget::removeChild(title);
-            title = new Text(Position(0, 0, Position::PIXEL), textFontChunk->getStringValue());
-            title->setText(stringTitle);
+            title = new Text(Position(0, 0, Position::PIXEL), textSkinChunk->getStringValue(), stringTitle);
             title->setPosition(Position((float)(widgetOutline->leftWidth) + 1.0f, (float)(widgetOutline->topWidth - title->getHeight()) / 2.0f, Position::PIXEL));
             Widget::addChild(title);
         }

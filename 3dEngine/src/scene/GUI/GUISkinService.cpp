@@ -120,7 +120,7 @@ namespace urchin {
         }
 
         //create the texture
-        auto widgetTexture =  Image(width, height, rawWidgetImage->getImageFormat(), std::move(texels)).createTexture(false);
+        auto widgetTexture = Image(width, height, rawWidgetImage->getImageFormat(), std::move(texels)).createTexture(false);
 
         rawWidgetImage->release();
         return widgetTexture;

@@ -41,9 +41,9 @@ namespace urchin {
         std::shared_ptr<XmlChunk> skinChunkFocus = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "focus"), textBoxChunk);
         texTextBoxFocus = GUISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinChunkFocus);
 
-        std::shared_ptr<XmlChunk> textFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textFont", XmlAttribute(), textBoxChunk);
+        std::shared_ptr<XmlChunk> textSkinChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), textBoxChunk);
         removeChild(text);
-        text = new Text(Position(0, 0, Position::PIXEL),  textFontChunk->getStringValue());
+        text = new Text(Position(0, 0, Position::PIXEL), textSkinChunk->getStringValue(), "");
         text->setPosition(Position((float)(widgetOutline->leftWidth + ADDITIONAL_LEFT_BORDER), (float)(getHeight() - text->getHeight()) / 2.0f, Position::PIXEL));
         addChild(text);
         maxWidthText = getWidth() - (widgetOutline->leftWidth + widgetOutline->rightWidth + ADDITIONAL_LEFT_BORDER);
@@ -174,7 +174,7 @@ namespace urchin {
                 break;
             }
         }
-        text->setText(allText.substr((unsigned long)startTextIndex, (unsigned long)(endTextIndex - startTextIndex)));
+        text->updateText(allText.substr((unsigned long)startTextIndex, (unsigned long)(endTextIndex - startTextIndex)));
     }
 
     void TextBox::computeCursorPosition() {

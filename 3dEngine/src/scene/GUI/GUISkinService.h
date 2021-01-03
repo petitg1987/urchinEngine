@@ -1,6 +1,7 @@
 #ifndef URCHINENGINE_GUISKINSERVICE_H
 #define URCHINENGINE_GUISKINSERVICE_H
 
+#include <map>
 #include "UrchinCommon.h"
 
 #include "resources/image/Image.h"
@@ -21,6 +22,7 @@ namespace urchin {
             void setSkin(const std::string&);
 
             std::shared_ptr<Texture> createWidgetTexture(unsigned int, unsigned int, const std::shared_ptr<XmlChunk>&, WidgetOutline* widgetOutline = nullptr) const;
+
             XmlParser* getXmlSkin() const;
 
         private:

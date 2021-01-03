@@ -13,12 +13,13 @@ namespace urchin {
 
     class Text : public Widget {
         public:
-            Text(Position, const std::string&);
+            Text(Position, std::string, std::string);
             ~Text() override;
 
             void createOrUpdateWidget() override;
 
-            void setText(const std::string&, int maxLength = -1);
+            void updateText(const std::string&, int maxLength = -1);
+
             const std::string& getText() const;
             const Font* getFont();
 
@@ -28,6 +29,7 @@ namespace urchin {
             std::string cutText(const std::string&, unsigned int);
 
             //properties
+            std::string nameSkin;
             std::string text;
             int maxLength;
 

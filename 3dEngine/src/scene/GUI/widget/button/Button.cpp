@@ -7,11 +7,11 @@
 
 namespace urchin {
 
-    Button::Button(Position position, Size size, std::string nameSkin, std::string buttonText)
-        : Widget(position, size),
-          nameSkin(std::move(nameSkin)),
-          text(nullptr),
-          buttonText(std::move(buttonText)) {
+    Button::Button(Position position, Size size, std::string nameSkin, std::string buttonText) :
+            Widget(position, size),
+            nameSkin(std::move(nameSkin)),
+            text(nullptr),
+            buttonText(std::move(buttonText)) {
         Button::createOrUpdateWidget();
     }
 
@@ -29,10 +29,9 @@ namespace urchin {
         texInfoOnClick = GUISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinClickChunk);
 
         if (!buttonText.empty()) {
-            std::shared_ptr<XmlChunk> textFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textFont", XmlAttribute(), buttonChunk);
+            std::shared_ptr<XmlChunk> textSkinChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), buttonChunk);
             removeChild(text);
-            text = new Text(Position(0, 0, Position::PIXEL), textFontChunk->getStringValue());
-            text->setText(buttonText);
+            text = new Text(Position(0, 0, Position::PIXEL), textSkinChunk->getStringValue(), buttonText);
             text->setPosition(Position((float)(getWidth() - text->getWidth()) / 2.0f, (float)(getHeight() - text->getHeight()) / 2.0f, Position::PIXEL));
             addChild(text);
         }
