@@ -37,7 +37,7 @@ namespace urchin {
             throw std::runtime_error("The font file is an invalid format or doesn't exist, filename: " + fileFontPath + ", error id: " + std::to_string(error) + ".");
         }
 
-        if (FT_Set_Char_Size(face, 0, fontSize << 6u, 96, 96)) {
+        if (FT_Set_Pixel_Sizes(face, 0, fontSize)) {
             FT_Done_Face(face);
             FT_Done_FreeType(library);
 
@@ -125,7 +125,7 @@ namespace urchin {
         for (unsigned int i = 0, c = 0; i < dimensionTexture; i += dimensionLetters) {
             for (unsigned int j = 0; j < dimensionTexture; j += dimensionLetters, c++) {
                 for (unsigned int yy = 0, m = 0; yy < glyph[c].height; yy++) {
-                    for (unsigned int xx = 0; xx < glyph[c].width; xx++,m++) {
+                    for (unsigned int xx = 0; xx < glyph[c].width; xx++,m++) { //TODO should be color agnostic
                         texels[ ((i + yy) * dimensionTexture * NUM_COLORS) + ((j + xx) * NUM_COLORS) + 0] = (glyph[c].buf[m] > 0) ? static_cast<unsigned char>(fontColor.X * 255) : 0;
                         texels[ ((i + yy) * dimensionTexture * NUM_COLORS) + ((j + xx) * NUM_COLORS) + 1] = (glyph[c].buf[m] > 0) ? static_cast<unsigned char>(fontColor.Y * 255) : 0;
                         texels[ ((i + yy) * dimensionTexture * NUM_COLORS) + ((j + xx) * NUM_COLORS) + 2] = (glyph[c].buf[m] > 0) ? static_cast<unsigned char>(fontColor.Z * 255) : 0;
@@ -139,7 +139,7 @@ namespace urchin {
         auto alphabetTexture = Image(dimensionTexture, dimensionTexture, Image::IMAGE_RGBA, std::move(texels)).createTexture(false);
 
         //clears buffers of letters
-        for (std::size_t i = 0; i < NUM_LETTERS;i++) {
+        for (std::size_t i = 0; i < NUM_LETTERS; i++) {
             delete[] glyph[i].buf;
             glyph[i].buf = nullptr;
         }

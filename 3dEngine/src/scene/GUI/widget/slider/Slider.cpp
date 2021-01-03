@@ -22,7 +22,7 @@ namespace urchin {
 
         std::shared_ptr<XmlChunk> sliderChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "slider", XmlAttribute("nameSkin", nameSkin));
 
-        std::shared_ptr<XmlChunk> buttonsTextSkinChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "buttonTextSkin", XmlAttribute(), sliderChunk);
+        std::shared_ptr<XmlChunk> buttonsTextSkinChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "buttonsTextSkin", XmlAttribute(), sliderChunk);
         buttonsTextSkin = buttonsTextSkinChunk->getStringValue();
 
         std::shared_ptr<XmlChunk> valuesTextSkinChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "valuesTextSkin", XmlAttribute(), sliderChunk);
