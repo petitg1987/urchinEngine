@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <utility>
 
 #include "scene/UI/widget/slider/Slider.h"
 #include "scene/UI/UISkinService.h"
@@ -8,19 +9,19 @@
 
 namespace urchin {
 
-    Slider::Slider(Position position, Size size, const std::vector<std::string>& values, const std::string& nameSkin) :
-        Widget(position, size),
-        values(values),
-        selectedIndex(0),
-        leftButton(nullptr),
-        rightButton(nullptr),
-        timeInClickingState(0.0f),
-        timeSinceLastChange(0.0f) {
+    Slider::Slider(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& values) :
+            Widget(parent, position, size),
+            values(values),
+            selectedIndex(0),
+            leftButton(nullptr),
+            rightButton(nullptr),
+            timeInClickingState(0.0f),
+            timeSinceLastChange(0.0f) {
         if (values.empty()) {
             throw std::runtime_error("At least one value must be provided to slider.");
         }
 
-        std::shared_ptr<XmlChunk> sliderChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "slider", XmlAttribute("nameSkin", nameSkin));
+        std::shared_ptr<XmlChunk> sliderChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "slider", XmlAttribute("nameSkin", std::move(nameSkin)));
 
         std::shared_ptr<XmlChunk> buttonsTextSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "buttonsTextSkin", XmlAttribute(), sliderChunk);
         buttonsTextSkin = buttonsTextSkinChunk->getStringValue();
@@ -37,26 +38,29 @@ namespace urchin {
         Slider::createOrUpdateWidget();
     }
 
+    Slider::Slider(Position position, Size size, std::string nameSkin, const std::vector<std::string>& values) :
+            Slider(nullptr, position, size, std::move(nameSkin), values) {
+
+    }
+
     void Slider::createOrUpdateWidget() {
         //clear
-        Widget::removeChild(leftButton);
-        Widget::removeChild(rightButton);
-        for (auto& valueText : valuesText) {
-            Widget::removeChild(valueText);
+        delete leftButton;
+        delete rightButton;
+        for (auto valueText : valuesText) {
+            delete valueText;
         }
         valuesText.clear();
 
         //buttons
-        leftButton = new Text(Position(0, 0, LengthType::PIXEL), buttonsTextSkin, leftButtonString);
-        Widget::addChild(leftButton);
+        leftButton = new Text(this, Position(0, 0, LengthType::PIXEL), buttonsTextSkin, leftButtonString);
         leftButton->addEventListener(std::make_shared<ButtonSliderEventListener>(this, true));
         if (leftButtonEventListener) {
             this->leftButton->addEventListener(leftButtonEventListener);
         }
 
-        rightButton = new Text(Position(0, 0, LengthType::PIXEL), buttonsTextSkin, rightButtonString);
-        Widget::addChild(rightButton);
-        rightButton->setPosition(Position((float)((int)getWidth() - (int)rightButton->getWidth()), 0, LengthType::PIXEL));
+        rightButton = new Text(this, Position(0, 0, LengthType::PIXEL), buttonsTextSkin, rightButtonString);
+        rightButton->setPosition(Position((float)getWidth() - (float)rightButton->getWidth(), 0.0f, LengthType::PIXEL));
         rightButton->addEventListener(std::make_shared<ButtonSliderEventListener>(this, false));
         if (rightButtonEventListener) {
             this->rightButton->addEventListener(rightButtonEventListener);
@@ -65,9 +69,8 @@ namespace urchin {
         //values
         valuesText.resize(values.size());
         for (std::size_t i = 0; i < values.size(); ++i) {
-            auto* valueText = new Text(Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[i]);
-            Widget::addChild(valueText);
-            valueText->setPosition(Position((float)((int)getWidth() - (int)valueText->getWidth()) / 2.0f, 0, LengthType::PIXEL));
+            auto* valueText = new Text(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[i]);
+            valueText->setPosition(Position(((float)getWidth() - (float)valueText->getWidth()) / 2.0f, 0.0f, LengthType::PIXEL));
             valueText->setIsVisible(false);
 
             valuesText[i] = valueText;

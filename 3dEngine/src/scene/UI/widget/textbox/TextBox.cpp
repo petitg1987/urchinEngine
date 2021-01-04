@@ -6,15 +6,14 @@
 #include "graphic/render/GenericRendererBuilder.h"
 #include "graphic/shader/data/ShaderDataSender.h"
 
-#define ADDITIONAL_LEFT_BORDER 1 //Additional border to outline->leftWidth
 #define LETTER_SHIFT 5 //When the text box is full of text, we shift all letters to left
 #define LETTER_AND_CURSOR_SHIFT 2 //Define space between the letters and cursor
 #define CURSOR_BLINK_SPEED 1.75f
 
 namespace urchin {
 
-    TextBox::TextBox(Position position, Size size, std::string nameSkin) :
-            Widget(position, size),
+    TextBox::TextBox(Widget* parent, Position position, Size size, std::string nameSkin) :
+            Widget(parent, position, size),
             nameSkin(std::move(nameSkin)),
             text(nullptr),
             maxWidthText(0),
@@ -22,13 +21,13 @@ namespace urchin {
             cursorIndex(0),
             cursorPosition(0),
             cursorBlink(0.0f),
-            state(UNACTIVE),
-            widgetOutline(new WidgetOutline()) {
+            state(UNACTIVE) {
         TextBox::createOrUpdateWidget();
     }
 
-    TextBox::~TextBox() {
-        delete widgetOutline;
+    TextBox::TextBox(Position position, Size size, std::string nameSkin) :
+            TextBox(nullptr, position, size, std::move(nameSkin)) {
+
     }
 
     void TextBox::createOrUpdateWidget() {
@@ -36,17 +35,16 @@ namespace urchin {
         std::shared_ptr<XmlChunk> textBoxChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textBox", XmlAttribute("nameSkin", nameSkin));
 
         std::shared_ptr<XmlChunk> skinChunkDefault = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "default"), textBoxChunk);
-        texTextBoxDefault = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinChunkDefault, widgetOutline);
+        texTextBoxDefault = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinChunkDefault, &widgetOutline);
 
         std::shared_ptr<XmlChunk> skinChunkFocus = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "focus"), textBoxChunk);
         texTextBoxFocus = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinChunkFocus);
 
         std::shared_ptr<XmlChunk> textSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), textBoxChunk);
-        removeChild(text);
-        text = new Text(Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), "");
-        addChild(text);
-        text->setPosition(Position((float)(widgetOutline->leftWidth + ADDITIONAL_LEFT_BORDER), (float)((int)getHeight() - (int)text->getHeight()) / 2.0f, LengthType::PIXEL));
-        maxWidthText = (unsigned int)((int)getWidth() - (widgetOutline->leftWidth + widgetOutline->rightWidth + ADDITIONAL_LEFT_BORDER));
+        delete text;
+        text = new Text(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), "");
+        text->setPosition(Position(0.0f, ((float)getHeight() - (float)text->getHeight()) / 2.0f, LengthType::PIXEL));
+        maxWidthText = (unsigned int)((int)getWidth() - (widgetOutline.leftWidth + widgetOutline.rightWidth));
 
         Vector3<float> fontColor = text->getFont()->getFontColor();
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255)};
@@ -70,8 +68,8 @@ namespace urchin {
                 ->build();
 
         std::vector<Point2<float>> cursorVertexCoord = {
-                Point2<float>(0.0f, (float)widgetOutline->topWidth),
-                Point2<float>(0.0f, (float)((int)getHeight() - widgetOutline->bottomWidth))
+                Point2<float>(0.0f, (float)widgetOutline.topWidth),
+                Point2<float>(0.0f, (float)((int)getHeight() - widgetOutline.bottomWidth))
         };
         std::vector<Point2<float>> cursorTextureCoord = {
                 Point2<float>(0.0, 0.0),
@@ -179,19 +177,19 @@ namespace urchin {
 
     void TextBox::computeCursorPosition() {
         const Font* font = text->getFont();
-        cursorPosition = ADDITIONAL_LEFT_BORDER;
+        cursorPosition = 0;
 
         for (unsigned int i = startTextIndex; i < cursorIndex; ++i) {
             auto letter = static_cast<unsigned char>(allText[i]);
             cursorPosition += font->getGlyph(letter).width + font->getSpaceBetweenLetters();
         }
 
-        if (cursorPosition > ADDITIONAL_LEFT_BORDER) {
+        if (cursorPosition > 0) {
             cursorPosition -= font->getSpaceBetweenLetters(); //remove last space
             cursorPosition += LETTER_AND_CURSOR_SHIFT;
         }
 
-        cursorPosition += (unsigned int)widgetOutline->leftWidth;
+        cursorPosition += (unsigned int)widgetOutline.leftWidth;
     }
 
     void TextBox::computeCursorIndex(int approximateCursorPosition) {

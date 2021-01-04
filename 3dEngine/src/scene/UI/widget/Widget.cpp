@@ -6,22 +6,30 @@
 
 namespace urchin {
 
-    Widget::Widget(Position position, Size size) :
-        sceneWidth(0),
-        sceneHeight(0),
-        parent(nullptr),
-        widgetState(Widget::DEFAULT),
-        position(position),
-        size(size),
-        bIsVisible(true),
-        mouseX(0),
-        mouseY(0) {
-
+    Widget::Widget(Widget* parent, Position position, Size size) :
+            sceneWidth(parent ? parent->getSceneWidth() : 0),
+            sceneHeight(parent ? parent->getSceneHeight() : 0),
+            parent(parent),
+            widgetState(Widget::DEFAULT),
+            position(position),
+            size(size),
+            bIsVisible(true),
+            mouseX(0),
+            mouseY(0) {
+        if(parent) {
+            parent->children.emplace_back(this);
+        }
     }
 
     Widget::~Widget() {
-        for (auto& child : children) {
+        std::vector<Widget*> childrenCopied(children);
+        for (auto& child : childrenCopied) {
             delete child;
+        }
+
+        if(parent) {
+            auto it = std::find(parent->children.begin(), parent->children.end(), this);
+            parent->children.erase(it);
         }
 
         eventListeners.clear();
@@ -46,29 +54,8 @@ namespace urchin {
         return sceneHeight;
     }
 
-    void Widget::addChild(Widget* child) { //TODO remove method and use it in constructor of widget !
-        child->setParent(this);
-        children.push_back(child);
-    }
-
-    void Widget::removeChild(Widget* child) {
-        if (child) {
-            auto it = std::find(children.begin(), children.end(), child);
-            delete child;
-            children.erase(it);
-        }
-    }
-
     const std::vector<Widget*>& Widget::getChildren() const {
         return children;
-    }
-
-    void Widget::setParent(Widget* parent) {
-        this->parent = parent;
-
-        this->sceneWidth = parent->getSceneWidth(); //TODO review
-        this->sceneHeight = parent->getSceneHeight();
-        createOrUpdateWidget();
     }
 
     Widget* Widget::getParent() const {
@@ -117,12 +104,16 @@ namespace urchin {
         return (int)position.getPositionY();
     }
 
+    const WidgetOutline& Widget::getOutline() const {
+        return widgetOutline;
+    }
+
     int Widget::getGlobalPositionX() const {
         if (!parent) {
             return getPositionX();
         }
 
-        return parent->getGlobalPositionX() + getPositionX();
+        return parent->getGlobalPositionX() + parent->getOutline().leftWidth + getPositionX();
     }
 
     int Widget::getGlobalPositionY() const {
@@ -130,7 +121,7 @@ namespace urchin {
             return getPositionY();
         }
 
-        return parent->getGlobalPositionY() + getPositionY();
+        return parent->getGlobalPositionY() + parent->getOutline().topWidth + getPositionY();
     }
 
     void Widget::setSize(Size size) {

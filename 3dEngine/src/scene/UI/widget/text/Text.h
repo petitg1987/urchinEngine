@@ -14,6 +14,7 @@ namespace urchin {
 
     class Text : public Widget {
         public:
+            Text(Widget*, Position, std::string, std::string);
             Text(Position, std::string, std::string);
             ~Text() override;
 

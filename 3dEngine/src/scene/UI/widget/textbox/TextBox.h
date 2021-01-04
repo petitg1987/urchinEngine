@@ -8,15 +8,14 @@
 #include "scene/UI/widget/Position.h"
 #include "scene/UI/widget/Size.h"
 #include "scene/UI/widget/text/Text.h"
-#include "scene/UI/UISkinService.h"
 #include "graphic/render/GenericRenderer.h"
 
 namespace urchin {
 
     class TextBox : public Widget {
         public:
-            TextBox(Position, Size, std::string );
-            ~TextBox() override;
+            TextBox(Widget*, Position, Size, std::string );
+            TextBox(Position, Size, std::string);
 
             void createOrUpdateWidget() override;
 
@@ -53,7 +52,6 @@ namespace urchin {
 
             //visual
             std::shared_ptr<Texture> texTextBoxDefault, texTextBoxFocus;
-            WidgetOutline* widgetOutline;
             std::shared_ptr<Texture> texCursorDiffuse;
             std::unique_ptr<GenericRenderer> textBoxRenderer, cursorRenderer;
     };

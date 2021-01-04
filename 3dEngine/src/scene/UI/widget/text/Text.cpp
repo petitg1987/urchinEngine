@@ -1,4 +1,5 @@
 #include <memory>
+#include <utility>
 
 #include "scene/UI/widget/text/Text.h"
 #include "scene/UI/widget/Size.h"
@@ -8,13 +9,18 @@
 
 namespace urchin {
 
-    Text::Text(Position position, std::string nameSkin, std::string text) :
-            Widget(position, Size(0, 0, LengthType::PIXEL)),
+    Text::Text(Widget* parent, Position position, std::string nameSkin, std::string text) :
+            Widget(parent, position, Size(0, 0, LengthType::PIXEL)),
             nameSkin(std::move(nameSkin)),
             text(std::move(text)),
             maxWidth(1.0f, LengthType::PERCENTAGE),
             font(nullptr) {
         Text::createOrUpdateWidget();
+    }
+
+    Text::Text(Position position, std::string nameSkin, std::string text) :
+            Text(nullptr, position, std::move(nameSkin), std::move(text)) {
+
     }
 
     Text::~Text() {
@@ -118,8 +124,9 @@ namespace urchin {
             offsetY += spaceBetweenLines;
         }
 
+        std::size_t numberOfLines = cutTextLines.empty() ? 1 : cutTextLines.size();
         std::size_t numberOfInterLines = cutTextLines.empty() ? 0 : cutTextLines.size() - 1;
-        auto textHeight = (float)(cutTextLines.size() * font->getHeight() + numberOfInterLines * font->getSpaceBetweenLines());
+        auto textHeight = (float)(numberOfLines * font->getHeight() + numberOfInterLines * font->getSpaceBetweenLines());
         setSize(Size(width, textHeight, LengthType::PIXEL));
 
         textRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)

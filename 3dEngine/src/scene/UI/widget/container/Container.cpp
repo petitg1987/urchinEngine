@@ -2,8 +2,13 @@
 
 namespace urchin {
 
+    Container::Container(Widget* parent, Position position) :
+            Widget(parent, position, Size(0, 0, LengthType::PIXEL)) {
+
+    }
+
     Container::Container(Position position) :
-        Widget(position, Size(0, 0, LengthType::PIXEL)) {
+            Container(nullptr, position) {
 
     }
 

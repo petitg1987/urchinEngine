@@ -11,6 +11,7 @@ namespace urchin {
      */
     class Container : public Widget {
         public:
+            Container(Widget*, Position);
             explicit Container(Position);
             ~Container() override = default;
 

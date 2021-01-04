@@ -10,10 +10,10 @@
 namespace urchin {
 
     struct WidgetOutline {
-        int topWidth;
-        int bottomWidth;
-        int leftWidth;
-        int rightWidth;
+        int topWidth = 0;
+        int bottomWidth = 0;
+        int leftWidth = 0;
+        int rightWidth = 0;
     };
 
     class UISkinService : public Singleton<UISkinService> {

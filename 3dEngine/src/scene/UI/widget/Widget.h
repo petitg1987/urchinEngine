@@ -7,6 +7,7 @@
 
 #include "scene/UI/widget/Position.h"
 #include "scene/UI/widget/Size.h"
+#include "scene/UI/UISkinService.h"
 #include "scene/UI/EventListener.h"
 #include "graphic/shader/model/ShaderVar.h"
 #include "graphic/render/target/RenderTarget.h"
@@ -15,7 +16,7 @@ namespace urchin {
 
     class Widget : public Observable {
         public:
-            Widget(Position, Size);
+            Widget(Widget*, Position, Size);
             ~Widget() override;
 
             enum NotificationType {
@@ -31,10 +32,6 @@ namespace urchin {
             void onResize(unsigned int, unsigned int);
             virtual void createOrUpdateWidget() = 0;
 
-            virtual void addChild(Widget*);
-            virtual void removeChild(Widget*);
-
-            void setParent(Widget*);
             Widget* getParent() const;
 
             void addEventListener(const std::shared_ptr<EventListener>&);
@@ -45,6 +42,7 @@ namespace urchin {
             Position getPosition() const;
             int getPositionX() const;
             int getPositionY() const;
+            const WidgetOutline& getOutline() const;
             int getGlobalPositionX() const;
             int getGlobalPositionY() const;
 
@@ -76,6 +74,8 @@ namespace urchin {
             unsigned int getSceneHeight() const;
 
             const std::vector<Widget*>& getChildren() const;
+
+            WidgetOutline widgetOutline;
 
         private:
             void handleWidgetKeyDown(unsigned int);
