@@ -110,6 +110,9 @@ namespace urchin {
     }
 
     void UIRenderer::addWidget(Widget* widget) {
+        if(widget->getParent()) {
+            throw std::runtime_error("Cannot add a widget having a parent to the UI renderer");
+        }
         widgets.push_back(widget);
 
         widget->addObserver(this, Widget::SET_IN_FOREGROUND);

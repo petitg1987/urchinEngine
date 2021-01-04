@@ -13,7 +13,7 @@ namespace urchin {
             Widget(parent, position, Size(0, 0, LengthType::PIXEL)),
             nameSkin(std::move(nameSkin)),
             text(std::move(text)),
-            maxWidth(1.0f, LengthType::PERCENTAGE),
+            maxWidth(100.0f, LengthType::PERCENTAGE),
             font(nullptr) {
         Text::createOrUpdateWidget();
     }
@@ -48,7 +48,7 @@ namespace urchin {
         if(StringUtil::insensitiveEquals(fontHeightTypeString, "pixel")) {
             return (unsigned int)fontHeight;
         }else if(StringUtil::insensitiveEquals(fontHeightTypeString, "percentage")) {
-            return (unsigned int)(fontHeight * (float)getSceneHeight());
+            return (unsigned int)(fontHeight / 100.0f * (float)getSceneHeight());
         }
         throw std::runtime_error("Unknown font height type: " + fontHeightTypeString);
     }
@@ -184,7 +184,7 @@ namespace urchin {
 
     unsigned int Text::getMaxWidth() {
         if (maxWidth.getType() == LengthType::PERCENTAGE) {
-            return (unsigned int)(maxWidth.getValue() * (float)getSceneWidth());
+            return (unsigned int)(maxWidth.getValue() / 100.0f * (float)getSceneWidth());
         }
         return (unsigned int)maxWidth.getValue();
     }

@@ -87,7 +87,7 @@ namespace urchin {
     */
     int Widget::getPositionX() const {
         if (position.getPositionTypeX() == LengthType::PERCENTAGE) {
-            return (int)(position.getPositionX() * (float)sceneWidth);
+            return (int)(position.getPositionX() / 100.0f * (float)sceneWidth);
         }
 
         return (int)position.getPositionX();
@@ -98,7 +98,7 @@ namespace urchin {
     */
     int Widget::getPositionY() const {
         if (position.getPositionTypeY() == LengthType::PERCENTAGE) {
-            return (int)(position.getPositionY() * (float)sceneHeight);
+            return (int)(position.getPositionY() / 100.0f * (float)sceneHeight);
         }
 
         return (int)position.getPositionY();
@@ -134,14 +134,14 @@ namespace urchin {
 
     unsigned int Widget::getWidth() const {
         if (size.getWidthSizeType() == LengthType::PERCENTAGE) {
-            return (unsigned int)(size.getWidth() * (float)sceneWidth);
+            return (unsigned int)(size.getWidth() / 100.0f * (float)sceneWidth);
         }
         return (unsigned int)size.getWidth();
     }
 
     unsigned int Widget::getHeight() const {
         if (size.getHeightSizeType() == LengthType::PERCENTAGE) {
-            return (unsigned int)(size.getHeight() * (float)sceneHeight);
+            return (unsigned int)(size.getHeight() / 100.0 * (float)sceneHeight);
         }
         return (unsigned int)size.getHeight();
     }
