@@ -8,10 +8,10 @@
 
 namespace urchin {
 
-    Text::Text(Position position, std::string nameSkin, Length fontHeight, std::string text) :
+    Text::Text(Position position, std::string nameSkin, std::string text) :
             Widget(position, Size(0, 0, Size::PIXEL)),
             nameSkin(std::move(nameSkin)),
-            fontHeight(fontHeight),
+            fontHeight(Length(1.0f, Length::PIXEL)),
             text(std::move(text)),
             maxWidth(9999999.0 /* Cannot use numeric_limit<float>::max() because overflow during cast */, Length::PIXEL),
             font(nullptr) {
@@ -24,22 +24,43 @@ namespace urchin {
 
     void Text::createOrUpdateWidget() {
         std::shared_ptr<XmlChunk> textChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "text", XmlAttribute("nameSkin", nameSkin));
-        std::shared_ptr<XmlChunk> fontFilenameChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "font", XmlAttribute(), textChunk);
+        std::string fontFilename = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "font", XmlAttribute(), textChunk)->getStringValue();
+        fontHeight = loadFontHeight(textChunk);
 
         cleanFont();
         std::map<std::string, std::string> fontParams = {{"size", std::to_string(getFontHeight())}};
-        font = MediaManager::instance()->getMedia<Font>(fontFilenameChunk->getStringValue(), fontParams);
+        font = MediaManager::instance()->getMedia<Font>(fontFilename, fontParams);
 
-        updateText(text);
+        createRender();
+    }
+
+    Length Text::loadFontHeight(const std::shared_ptr<XmlChunk>& textChunk) {
+        std::shared_ptr<XmlChunk> fontHeightChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "height", XmlAttribute(), textChunk);
+        float fontHeight = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "value", XmlAttribute(), fontHeightChunk)->getFloatValue();
+        std::string fontHeightTypeString = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "type", XmlAttribute(), fontHeightChunk)->getStringValue();
+
+        if(StringUtil::insensitiveEquals(fontHeightTypeString, "pixel")) {
+            return Length(fontHeight, Length::PIXEL);
+        }else if(StringUtil::insensitiveEquals(fontHeightTypeString, "percentage")) {
+            return Length(fontHeight, Length::PERCENTAGE);
+        } else {
+            throw std::runtime_error("Unknown font height type: " + fontHeightTypeString);
+        }
     }
 
     void Text::setMaxWidth(Length maxWidth) {
         this->maxWidth = maxWidth;
+
+        createOrUpdateWidget();
     }
 
     void Text::updateText(const std::string& text) {
         this->text = text;
 
+        createOrUpdateWidget();
+    }
+
+    void Text::createRender() {
         //cut the text if needed
         std::size_t numLetters = 0;
         std::stringstream cutTextStream(cutText(text));

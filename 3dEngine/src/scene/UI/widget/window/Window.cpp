@@ -36,7 +36,7 @@ namespace urchin {
         if (!stringTitle.empty()) {
             std::shared_ptr<XmlChunk> textSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), windowChunk);
             Widget::removeChild(title);
-            title = new Text(Position(0, 0, Position::PIXEL), textSkinChunk->getStringValue(), Length(16.0, Length::PIXEL), stringTitle); //TODO review font size
+            title = new Text(Position(0, 0, Position::PIXEL), textSkinChunk->getStringValue(), stringTitle);
             title->setPosition(Position((float)(widgetOutline->leftWidth) + 1.0f, (float)(widgetOutline->topWidth - title->getHeight()) / 2.0f, Position::PIXEL));
             Widget::addChild(title);
         }
@@ -58,16 +58,16 @@ namespace urchin {
     }
 
     void Window::addChild(Widget* child) {
-        Position childPosition((float)(child->getPositionX() + widgetOutline->leftWidth), (float)(child->getPositionY() + widgetOutline->topWidth), Position::PIXEL);
+        Position childPosition((float)(child->getPositionX() + (int)widgetOutline->leftWidth), (float)(child->getPositionY() + (int)widgetOutline->topWidth), Position::PIXEL);
         child->setPosition(childPosition);
         Widget::addChild(child);
     }
 
     bool Window::onKeyPressEvent(unsigned int key) {
         Rectangle<int> titleZone(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
-                Point2<int>(getGlobalPositionX() + (getWidth()-widgetOutline->rightWidth), getGlobalPositionY() + widgetOutline->topWidth));
-        Rectangle<int> closeZone(Point2<int>(getGlobalPositionX()+(getWidth() - widgetOutline->rightWidth), getGlobalPositionY()),
-                Point2<int>(getGlobalPositionX() + getWidth(), getGlobalPositionY() + widgetOutline->topWidth));
+                Point2<int>(getGlobalPositionX() + ((int)getWidth() - (int)widgetOutline->rightWidth), getGlobalPositionY() + (int)widgetOutline->topWidth));
+        Rectangle<int> closeZone(Point2<int>(getGlobalPositionX()+((int)getWidth() - (int)widgetOutline->rightWidth), getGlobalPositionY()),
+                Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)widgetOutline->topWidth));
 
         if (key == InputDeviceKey::MOUSE_LEFT && titleZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
             mousePositionX = getMouseX() - getPositionX();
@@ -79,7 +79,7 @@ namespace urchin {
         }
 
         Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
-                Point2<int>(getGlobalPositionX() + getWidth(), getGlobalPositionY() + getHeight()));
+                Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
         bool propagateEvent = true;
         if (key == InputDeviceKey::MOUSE_LEFT && widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
             notifyObservers(this, SET_IN_FOREGROUND);
@@ -90,8 +90,8 @@ namespace urchin {
     }
 
     bool Window::onKeyReleaseEvent(unsigned int key) {
-        Rectangle<int> closeZone(Point2<int>(getGlobalPositionX() + (getWidth() - widgetOutline->rightWidth), getGlobalPositionY()),
-                Point2<int>(getGlobalPositionX() + getWidth(), getGlobalPositionY() + widgetOutline->topWidth));
+        Rectangle<int> closeZone(Point2<int>(getGlobalPositionX() + ((int)getWidth() - (int)widgetOutline->rightWidth), getGlobalPositionY()),
+                Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)widgetOutline->topWidth));
         if (key == InputDeviceKey::MOUSE_LEFT && state == CLOSING && closeZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
             setIsVisible(false);
         }

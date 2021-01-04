@@ -14,7 +14,7 @@ namespace urchin {
 
     class Text : public Widget {
         public:
-            Text(Position, std::string, Length, std::string);
+            Text(Position, std::string, std::string);
             ~Text() override;
 
             void createOrUpdateWidget() override;
@@ -29,6 +29,8 @@ namespace urchin {
 
         private:
             void cleanFont();
+            static Length loadFontHeight(const std::shared_ptr<XmlChunk>&);
+            void createRender();
             std::string cutText(const std::string&);
 
             unsigned int getFontHeight();
