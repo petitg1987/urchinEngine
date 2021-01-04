@@ -191,7 +191,7 @@ namespace urchin {
             cursorPosition += LETTER_AND_CURSOR_SHIFT;
         }
 
-        cursorPosition += widgetOutline->leftWidth;
+        cursorPosition += (unsigned int)widgetOutline->leftWidth;
     }
 
     void TextBox::computeCursorIndex(int approximateCursorPosition) {
