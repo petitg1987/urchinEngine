@@ -5,7 +5,6 @@ project(urchin3dEngine)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 set(CMAKE_CXX_STANDARD 17)
 
-find_package(OpenGL REQUIRED)
 if (WIN32)
     set(FREETYPE_LIB freetype.a)
 else()
