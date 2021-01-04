@@ -32,8 +32,8 @@ namespace urchin {
             std::shared_ptr<XmlChunk> textSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), buttonChunk);
             removeChild(text);
             text = new Text(Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), buttonText);
-            text->setPosition(Position((float)(getWidth() - text->getWidth()) / 2.0f, (float)(getHeight() - text->getHeight()) / 2.0f, LengthType::PIXEL));
             addChild(text);
+            text->setPosition(Position((float)((int)getWidth() - (int)text->getWidth()) / 2.0f, (float)((int)getHeight() - (int)text->getHeight()) / 2.0f, LengthType::PIXEL));
         }
 
         //visual

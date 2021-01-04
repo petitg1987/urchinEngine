@@ -12,14 +12,8 @@ namespace urchin {
 
     }
 
-    UISkinService::~UISkinService() {
-        delete xmlSkin;
-    }
-
     void UISkinService::setSkin(const std::string& skinFilename) {
-        delete xmlSkin;
-
-        xmlSkin = new XmlParser(skinFilename);
+        xmlSkin = std::make_unique<XmlParser>(skinFilename);
     }
 
     std::shared_ptr<Texture> UISkinService::createWidgetTexture(unsigned int width, unsigned int height, const std::shared_ptr<XmlChunk>& skinXmlChunk, WidgetOutline* widgetOutline) const {
@@ -41,10 +35,10 @@ namespace urchin {
 
         //copy the information into the outline
         if (widgetOutline) {
-            widgetOutline->topWidth = top;
-            widgetOutline->bottomWidth = bottom;
-            widgetOutline->leftWidth = left;
-            widgetOutline->rightWidth = right;
+            widgetOutline->topWidth = (int)top;
+            widgetOutline->bottomWidth = (int)bottom;
+            widgetOutline->leftWidth = (int)left;
+            widgetOutline->rightWidth = (int)right;
         }
 
         //creates the image width*height
@@ -126,11 +120,10 @@ namespace urchin {
         return widgetTexture;
     }
 
-    XmlParser* UISkinService::getXmlSkin() const {
+    const std::unique_ptr<XmlParser>& UISkinService::getXmlSkin() const {
         if (!xmlSkin) {
             throw std::runtime_error("UI skin is not initialized");
         }
-
         return xmlSkin;
     }
 

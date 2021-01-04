@@ -44,9 +44,9 @@ namespace urchin {
         std::shared_ptr<XmlChunk> textSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), textBoxChunk);
         removeChild(text);
         text = new Text(Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), "");
-        text->setPosition(Position((float)(widgetOutline->leftWidth + ADDITIONAL_LEFT_BORDER), (float)(getHeight() - text->getHeight()) / 2.0f, LengthType::PIXEL));
         addChild(text);
-        maxWidthText = getWidth() - (widgetOutline->leftWidth + widgetOutline->rightWidth + ADDITIONAL_LEFT_BORDER);
+        text->setPosition(Position((float)(widgetOutline->leftWidth + ADDITIONAL_LEFT_BORDER), (float)((int)getHeight() - (int)text->getHeight()) / 2.0f, LengthType::PIXEL));
+        maxWidthText = (unsigned int)((int)getWidth() - (widgetOutline->leftWidth + widgetOutline->rightWidth + ADDITIONAL_LEFT_BORDER));
 
         Vector3<float> fontColor = text->getFont()->getFontColor();
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255)};
@@ -71,7 +71,7 @@ namespace urchin {
 
         std::vector<Point2<float>> cursorVertexCoord = {
                 Point2<float>(0.0f, (float)widgetOutline->topWidth),
-                Point2<float>(0.0f, (float)(getHeight() - widgetOutline->bottomWidth))
+                Point2<float>(0.0f, (float)((int)getHeight() - widgetOutline->bottomWidth))
         };
         std::vector<Point2<float>> cursorTextureCoord = {
                 Point2<float>(0.0, 0.0),

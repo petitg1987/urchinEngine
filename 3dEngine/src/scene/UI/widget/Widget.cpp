@@ -46,7 +46,7 @@ namespace urchin {
         return sceneHeight;
     }
 
-    void Widget::addChild(Widget* child) {
+    void Widget::addChild(Widget* child) { //TODO remove method and use it in constructor of widget !
         child->setParent(this);
         children.push_back(child);
     }
@@ -65,6 +65,10 @@ namespace urchin {
 
     void Widget::setParent(Widget* parent) {
         this->parent = parent;
+
+        this->sceneWidth = parent->getSceneWidth(); //TODO review
+        this->sceneHeight = parent->getSceneHeight();
+        createOrUpdateWidget();
     }
 
     Widget* Widget::getParent() const {

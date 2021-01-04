@@ -2,6 +2,7 @@
 #define URCHINENGINE_UISKINSERVICE_H
 
 #include <map>
+#include <memory>
 #include "UrchinCommon.h"
 
 #include "resources/image/Image.h"
@@ -9,10 +10,10 @@
 namespace urchin {
 
     struct WidgetOutline {
-        unsigned int topWidth;
-        unsigned int bottomWidth;
-        unsigned int leftWidth;
-        unsigned int rightWidth;
+        int topWidth;
+        int bottomWidth;
+        int leftWidth;
+        int rightWidth;
     };
 
     class UISkinService : public Singleton<UISkinService> {
@@ -23,13 +24,12 @@ namespace urchin {
 
             std::shared_ptr<Texture> createWidgetTexture(unsigned int, unsigned int, const std::shared_ptr<XmlChunk>&, WidgetOutline* widgetOutline = nullptr) const;
 
-            XmlParser* getXmlSkin() const;
+            const std::unique_ptr<XmlParser>& getXmlSkin() const;
 
         private:
             UISkinService();
-            ~UISkinService() override;
 
-            XmlParser* xmlSkin;
+            std::unique_ptr<XmlParser> xmlSkin;
     };
 }
 

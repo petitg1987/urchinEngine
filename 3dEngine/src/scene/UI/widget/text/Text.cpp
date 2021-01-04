@@ -12,7 +12,7 @@ namespace urchin {
             Widget(position, Size(0, 0, LengthType::PIXEL)),
             nameSkin(std::move(nameSkin)),
             text(std::move(text)),
-            maxWidth(100.0f, LengthType::PERCENTAGE),
+            maxWidth(1.0f, LengthType::PERCENTAGE),
             font(nullptr) {
         Text::createOrUpdateWidget();
     }
@@ -31,7 +31,7 @@ namespace urchin {
         std::map<std::string, std::string> fontParams = {{"fontSize", std::to_string(fontHeight)}, {"fontColor", fontColor}};
         font = MediaManager::instance()->getMedia<Font>(ttfFilename, fontParams);
 
-        createRender();
+        refreshComponent();
     }
 
     unsigned int Text::retrieveFontHeight(const std::shared_ptr<XmlChunk>& textChunk) const {
@@ -59,7 +59,7 @@ namespace urchin {
         createOrUpdateWidget();
     }
 
-    void Text::createRender() {
+    void Text::refreshComponent() {
         //cut the text if needed
         std::size_t numLetters = 0;
         std::stringstream cutTextStream(cutText(text));
@@ -118,10 +118,7 @@ namespace urchin {
             offsetY += spaceBetweenLines;
         }
 
-        if (cutTextLines.empty()) { //add fake line to compute height
-            cutTextLines.emplace_back("");
-        }
-        std::size_t numberOfInterLines = cutTextLines.size() - 1;
+        std::size_t numberOfInterLines = cutTextLines.empty() ? 0 : cutTextLines.size() - 1;
         auto textHeight = (float)(cutTextLines.size() * font->getHeight() + numberOfInterLines * font->getSpaceBetweenLines());
         setSize(Size(width, textHeight, LengthType::PIXEL));
 

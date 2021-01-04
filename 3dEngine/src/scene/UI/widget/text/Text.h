@@ -30,7 +30,7 @@ namespace urchin {
         private:
             void cleanFont();
             unsigned int retrieveFontHeight(const std::shared_ptr<XmlChunk>&) const;
-            void createRender();
+            void refreshComponent();
             std::string cutText(const std::string&);
 
             unsigned int getMaxWidth();
@@ -42,11 +42,11 @@ namespace urchin {
 
             //data
             std::vector<std::string> cutTextLines;
-            std::vector<Point2<float>> vertexCoord;
-            std::vector<Point2<float>> textureCoord;
+            Font* font;
 
             //visual
-            Font* font;
+            std::vector<Point2<float>> vertexCoord;
+            std::vector<Point2<float>> textureCoord;
             std::unique_ptr<GenericRenderer> textRenderer;
     };
 
