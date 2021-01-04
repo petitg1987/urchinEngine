@@ -37,35 +37,44 @@ namespace urchin {
         std::map<std::string, std::string> fontParams = {{"fontSize", std::to_string(fontHeight)}, {"fontColor", fontColor}};
         font = MediaManager::instance()->getMedia<Font>(ttfFilename, fontParams);
 
-        refreshComponent();
+        refreshText();
     }
 
     unsigned int Text::retrieveFontHeight(const std::shared_ptr<XmlChunk>& textChunk) const {
         std::shared_ptr<XmlChunk> fontHeightChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "height", XmlAttribute(), textChunk);
         float fontHeight = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "value", XmlAttribute(), fontHeightChunk)->getFloatValue();
-        std::string fontHeightTypeString = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "type", XmlAttribute(), fontHeightChunk)->getStringValue();
+        LengthType fontHeightType = toLengthType(UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "type", XmlAttribute(), fontHeightChunk)->getStringValue());
 
-        if(StringUtil::insensitiveEquals(fontHeightTypeString, "pixel")) {
+        if(fontHeightType == LengthType::PIXEL) {
             return (unsigned int)fontHeight;
-        }else if(StringUtil::insensitiveEquals(fontHeightTypeString, "percentage")) {
+        }else if(fontHeightType == LengthType::PERCENTAGE) {
             return (unsigned int)(fontHeight / 100.0f * (float)getSceneHeight());
         }
-        throw std::runtime_error("Unknown font height type: " + fontHeightTypeString);
+        throw std::runtime_error("Unknown font height type: " + std::to_string(fontHeightType));
+    }
+
+    LengthType Text::toLengthType(const std::string& lengthTypeString) {
+        if(StringUtil::insensitiveEquals(lengthTypeString, "pixel")) {
+            return LengthType::PIXEL;
+        }else if(StringUtil::insensitiveEquals(lengthTypeString, "percentage")) {
+            return LengthType::PERCENTAGE;
+        }
+        throw std::runtime_error("Unknown length type: " + lengthTypeString);
     }
 
     void Text::setMaxWidth(Length maxWidth) {
         this->maxWidth = maxWidth;
 
-        createOrUpdateWidget();
+        refreshText();
     }
 
     void Text::updateText(const std::string& text) {
         this->text = text;
 
-        createOrUpdateWidget();
+        refreshText();
     }
 
-    void Text::refreshComponent() {
+    void Text::refreshText() {
         //cut the text if needed
         std::size_t numLetters = 0;
         std::stringstream cutTextStream(cutText(text));

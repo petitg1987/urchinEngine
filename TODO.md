@@ -42,7 +42,6 @@
   * **NEW FEATURE** (`minor`): Textarea
   * **NEW FEATURE** (`medium`): Scrollbar
   * **NEW FEATURE** (`medium`): Text selection
-  * **BUG** (`critical`): Widgets are not screen resolution independent
 * Graphic effect
   * **NEW FEATURE** (`minor`): Water transparency (see <https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh>)
   * **NEW FEATURE** (`minor`): Reflects
