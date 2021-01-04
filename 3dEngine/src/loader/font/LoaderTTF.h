@@ -1,5 +1,5 @@
-#ifndef URCHINENGINE_LOADERFNT_H
-#define URCHINENGINE_LOADERFNT_H
+#ifndef URCHINENGINE_LOADERTTF_H
+#define URCHINENGINE_LOADERTTF_H
 
 #include <string>
 
@@ -8,9 +8,9 @@
 
 namespace urchin {
 
-    class LoaderFNT : public Loader<Font> {
+    class LoaderTTF : public Loader<Font> {
         public:
-            ~LoaderFNT() override = default;
+            ~LoaderTTF() override = default;
 
             Font* loadFromFile(const std::string&, const std::map<std::string, std::string>&) override;
     };

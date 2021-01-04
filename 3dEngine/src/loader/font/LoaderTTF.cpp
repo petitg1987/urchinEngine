@@ -3,7 +3,7 @@
 #include FT_FREETYPE_H
 #include "UrchinCommon.h"
 
-#include "loader/font/LoaderFNT.h"
+#include "loader/font/LoaderTTF.h"
 #include "resources/image/Image.h"
 
 #define WIDTH_BETWEEN_LETTERS 2u
@@ -15,14 +15,13 @@
 
 namespace urchin {
 
-    Font* LoaderFNT::loadFromFile(const std::string& fontFilename, const std::map<std::string, std::string>& params) {
-        assert(params.find("size") != params.end());
+    Font* LoaderTTF::loadFromFile(const std::string& ttfFilename, const std::map<std::string, std::string>& params) {
         std::locale::global(std::locale("C")); //for float
 
-        XmlParser parserXml(fontFilename);
-        std::string ttfFilename = parserXml.getUniqueChunk(false, "ttf")->getStringValue();
-        Vector3<float> fontColor =  parserXml.getUniqueChunk(false, "color")->getVector3Value();
-        unsigned int fontSize = TypeConverter::toUnsignedInt(params.find("size")->second);
+        assert(params.find("fontSize") != params.end());
+        assert(params.find("fontColor") != params.end());
+        unsigned int fontSize = TypeConverter::toUnsignedInt(params.find("fontSize")->second);
+        Vector3<float> fontColor = TypeConverter::toVector3(params.find("fontColor")->second);
 
         //initialize freetype
         std::string fileFontPath = FileSystem::instance()->getResourcesDirectory() + ttfFilename;
@@ -110,8 +109,7 @@ namespace urchin {
 
         //dimension of letters and texture
         unsigned int dimensionLetters = 0;
-        for (unsigned int i = 0; i < NUM_LETTERS; ++i) //seek the largest letter
-        {
+        for (unsigned int i = 0; i < NUM_LETTERS; ++i) { //seek the largest letter
             if (glyph[i].width > dimensionLetters) {
                 dimensionLetters = glyph[i].width;
             }
@@ -126,7 +124,7 @@ namespace urchin {
         for (unsigned int i = 0, c = 0; i < dimensionTexture; i += dimensionLetters) {
             for (unsigned int j = 0; j < dimensionTexture; j += dimensionLetters, c++) {
                 for (unsigned int yy = 0, m = 0; yy < glyph[c].height; yy++) {
-                    for (unsigned int xx = 0; xx < glyph[c].width; xx++,m++) { //TODO should be color agnostic
+                    for (unsigned int xx = 0; xx < glyph[c].width; xx++,m++) {
                         texels[ ((i + yy) * dimensionTexture * NUM_COLORS) + ((j + xx) * NUM_COLORS) + 0] = (glyph[c].buf[m] > 0) ? static_cast<unsigned char>(fontColor.X * 255) : 0;
                         texels[ ((i + yy) * dimensionTexture * NUM_COLORS) + ((j + xx) * NUM_COLORS) + 1] = (glyph[c].buf[m] > 0) ? static_cast<unsigned char>(fontColor.Y * 255) : 0;
                         texels[ ((i + yy) * dimensionTexture * NUM_COLORS) + ((j + xx) * NUM_COLORS) + 2] = (glyph[c].buf[m] > 0) ? static_cast<unsigned char>(fontColor.Z * 255) : 0;

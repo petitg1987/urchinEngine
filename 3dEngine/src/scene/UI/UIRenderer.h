@@ -17,7 +17,7 @@ namespace urchin {
             explicit UIRenderer(const RenderTarget*);
             ~UIRenderer() override;
 
-            void onResize(unsigned int, unsigned  int) override;
+            void onResize(unsigned int, unsigned int) override;
             void notify(Observable*, int) override;
 
             bool onKeyPress(unsigned int) override;

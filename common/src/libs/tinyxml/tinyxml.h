@@ -68,7 +68,7 @@ distribution.
 		// GCC version 3 and higher.s
 		//#warning( "Using sn* functions." )
 		#define TIXML_SNPRINTF snprintf
-		#define TIXML_SNSCANF  snscanf
+		#define TIXML_SNSCANF snscanf
 	#endif
 #endif	
 
@@ -239,7 +239,7 @@ public:
 	int Row() const			{ return location.row + 1; }
 	int Column() const		{ return location.col + 1; }	///< See Row()
 
-	void  SetUserData( void* user )			{ userData = user; }	///< Set a pointer to arbitrary user data.
+	void SetUserData( void* user )			{ userData = user; }	///< Set a pointer to arbitrary user data.
 	void* GetUserData()						{ return userData; }	///< Get a pointer to arbitrary user data.
 	const void* GetUserData() const 		{ return userData; }	///< Get a pointer to arbitrary user data.
 
@@ -1460,7 +1460,7 @@ private:
 	void CopyTo( TiXmlDocument* target ) const;
 
 	bool error;
-	int  errorId;
+	int errorId;
 	TIXML_STRING errorDesc;
 	int tabsize;
 	TiXmlCursor errorLocation;

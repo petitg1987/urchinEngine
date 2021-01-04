@@ -1236,7 +1236,7 @@ int TiXmlAttribute::IntValue() const
 	return atoi (value.c_str ());
 }
 
-double  TiXmlAttribute::DoubleValue() const
+double TiXmlAttribute::DoubleValue() const
 {
 	return atof (value.c_str ());
 }

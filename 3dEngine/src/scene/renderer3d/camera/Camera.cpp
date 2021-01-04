@@ -82,11 +82,11 @@ namespace urchin {
     /**
     * @param distance Distance between the camera and the rotation point (0 : first person camera | >0 : third person camera)
     */
-    void  Camera::setDistance(float distance) {
+    void Camera::setDistance(float distance) {
         this->distance = distance;
     }
 
-    void  Camera::setMaxRotationX(float maxRotationX) {
+    void Camera::setMaxRotationX(float maxRotationX) {
         this->maxRotationX = maxRotationX;
     }
 

@@ -8,7 +8,7 @@ namespace urchin {
 
     class RequestException : public std::exception {
         public:
-            explicit RequestException(std::string  message);
+            explicit RequestException(std::string message);
 
             const char* what() const noexcept override;
 

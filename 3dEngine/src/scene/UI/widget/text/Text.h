@@ -29,16 +29,14 @@ namespace urchin {
 
         private:
             void cleanFont();
-            static Length loadFontHeight(const std::shared_ptr<XmlChunk>&);
+            unsigned int retrieveFontHeight(const std::shared_ptr<XmlChunk>&) const;
             void createRender();
             std::string cutText(const std::string&);
 
-            unsigned int getFontHeight();
             unsigned int getMaxWidth();
 
             //properties
             std::string nameSkin;
-            Length fontHeight;
             std::string text;
             Length maxWidth;
 

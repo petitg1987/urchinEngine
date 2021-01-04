@@ -4,7 +4,7 @@
 #include "loader/model/LoaderUrchinMesh.h"
 #include "loader/model/LoaderUrchinAnim.h"
 #include "loader/material/LoaderMTR.h"
-#include "loader/font/LoaderFNT.h"
+#include "loader/font/LoaderTTF.h"
 
 namespace urchin {
 
@@ -17,7 +17,7 @@ namespace urchin {
 
         loadersRegistry.insert(std::pair<std::string, LoaderInterface*>("mtr", new LoaderMTR));
 
-        loadersRegistry.insert(std::pair<std::string, LoaderInterface*>("fnt", new LoaderFNT));
+        loadersRegistry.insert(std::pair<std::string, LoaderInterface*>("ttf", new LoaderTTF));
     }
 
     MediaManager::~MediaManager() {
