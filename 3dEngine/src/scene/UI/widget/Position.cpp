@@ -2,33 +2,31 @@
 
 namespace urchin {
 
-    Position::Position(float positionX, PositionType positionTypeX, float positionY, PositionType positionTypeY) :
-            positionX(positionX),
-            positionY(positionY),
-            positionTypeX(positionTypeX),
-            positionTypeY(positionTypeY) {
+    Position::Position(float positionX, LengthType positionTypeX, float positionY, LengthType positionTypeY) :
+            positionX(Length(positionX, positionTypeX)),
+            positionY(Length(positionY, positionTypeY)) {
 
     }
 
-    Position::Position(float positionX, float positionY, PositionType positionType) :
+    Position::Position(float positionX, float positionY, LengthType positionType) :
         Position(positionX, positionType, positionY, positionType) {
 
     }
 
     float Position::getPositionX() const {
-        return positionX;
+        return positionX.getValue();
     }
 
-    Position::PositionType Position::getPositionTypeX() const {
-        return positionTypeX;
+    LengthType Position::getPositionTypeX() const {
+        return positionX.getType();
     }
 
     float Position::getPositionY() const {
-        return positionY;
+        return positionY.getValue();
     }
 
-    Position::PositionType Position::getPositionTypeY() const {
-        return positionTypeY;
+    LengthType Position::getPositionTypeY() const {
+        return positionY.getType();
     }
 
 }

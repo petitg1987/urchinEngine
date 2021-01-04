@@ -36,8 +36,8 @@ namespace urchin {
         if (!stringTitle.empty()) {
             std::shared_ptr<XmlChunk> textSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), windowChunk);
             Widget::removeChild(title);
-            title = new Text(Position(0, 0, Position::PIXEL), textSkinChunk->getStringValue(), stringTitle);
-            title->setPosition(Position((float)(widgetOutline->leftWidth) + 1.0f, (float)(widgetOutline->topWidth - title->getHeight()) / 2.0f, Position::PIXEL));
+            title = new Text(Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), stringTitle);
+            title->setPosition(Position((float)(widgetOutline->leftWidth) + 1.0f, (float)(widgetOutline->topWidth - title->getHeight()) / 2.0f, LengthType::PIXEL));
             Widget::addChild(title);
         }
 
@@ -58,7 +58,7 @@ namespace urchin {
     }
 
     void Window::addChild(Widget* child) {
-        Position childPosition((float)(child->getPositionX() + (int)widgetOutline->leftWidth), (float)(child->getPositionY() + (int)widgetOutline->topWidth), Position::PIXEL);
+        Position childPosition((float)(child->getPositionX() + (int)widgetOutline->leftWidth), (float)(child->getPositionY() + (int)widgetOutline->topWidth), LengthType::PIXEL);
         child->setPosition(childPosition);
         Widget::addChild(child);
     }
@@ -104,12 +104,12 @@ namespace urchin {
     bool Window::onMouseMoveEvent(int mouseX, int mouseY) {
         if (state == MOVING) {
             auto positionX = (float)(mouseX - mousePositionX);
-            if (getPosition().getPositionTypeX() == Position::PERCENTAGE) {
+            if (getPosition().getPositionTypeX() == LengthType::PERCENTAGE) {
                 positionX /= (float)getSceneWidth();
             }
 
             auto positionY = (float)(mouseY - mousePositionY);
-            if (getPosition().getPositionTypeY() == Position::PERCENTAGE) {
+            if (getPosition().getPositionTypeY() == LengthType::PERCENTAGE) {
                 positionY /= (float)getSceneHeight();
             }
 

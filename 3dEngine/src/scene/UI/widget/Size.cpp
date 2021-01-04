@@ -2,33 +2,31 @@
 
 namespace urchin {
 
-    Size::Size(float width, SizeType widthSizeType, float height, SizeType heightSizeType) :
-            width(width),
-            height(height),
-            widthSizeType(widthSizeType),
-            heightSizeType(heightSizeType) {
+    Size::Size(float width, LengthType widthSizeType, float height, LengthType heightSizeType) :
+            width(Length(width, widthSizeType)),
+            height(Length(height, heightSizeType)) {
 
     }
 
-    Size::Size(float width, float height, SizeType sizeType) :
+    Size::Size(float width, float height, LengthType sizeType) :
         Size(width, sizeType, height, sizeType) {
 
     }
 
     float Size::getWidth() const {
-        return width;
+        return width.getValue();
     }
 
-    Size::SizeType Size::getWidthSizeType() const {
-        return widthSizeType;
+    LengthType Size::getWidthSizeType() const {
+        return width.getType();
     }
 
     float Size::getHeight() const {
-        return height;
+        return height.getValue();
     }
 
-    Size::SizeType Size::getHeightSizeType() const {
-        return heightSizeType;
+    LengthType Size::getHeightSizeType() const {
+        return height.getType();
     }
 
 }

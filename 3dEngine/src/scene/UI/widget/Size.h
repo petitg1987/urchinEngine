@@ -1,27 +1,25 @@
 #ifndef URCHINENGINE_WIDGETSIZE_H
 #define URCHINENGINE_WIDGETSIZE_H
 
+#include "scene/UI/widget/LengthType.h"
+#include "scene/UI/widget/Length.h"
+
 namespace urchin {
 
     class Size {
         public:
-            enum SizeType { //TODO use LengthType
-                PIXEL,
-                PERCENTAGE
-            };
-
-            Size(float, SizeType, float, SizeType);
-            Size(float, float, SizeType);
+            Size(float, LengthType, float, LengthType);
+            Size(float, float, LengthType);
 
             float getWidth() const;
-            SizeType getWidthSizeType() const;
+            LengthType getWidthSizeType() const;
 
             float getHeight() const;
-            SizeType getHeightSizeType() const;
+            LengthType getHeightSizeType() const;
 
         private:
-            float width, height;
-            SizeType widthSizeType, heightSizeType;
+            Length width;
+            Length height;
     };
 
 }

@@ -9,10 +9,10 @@
 namespace urchin {
 
     Text::Text(Position position, std::string nameSkin, std::string text) :
-            Widget(position, Size(0, 0, Size::PIXEL)),
+            Widget(position, Size(0, 0, LengthType::PIXEL)),
             nameSkin(std::move(nameSkin)),
             text(std::move(text)),
-            maxWidth(100.0f, Length::PERCENTAGE),
+            maxWidth(100.0f, LengthType::PERCENTAGE),
             font(nullptr) {
         Text::createOrUpdateWidget();
     }
@@ -123,7 +123,7 @@ namespace urchin {
         }
         std::size_t numberOfInterLines = cutTextLines.size() - 1;
         auto textHeight = (float)(cutTextLines.size() * font->getHeight() + numberOfInterLines * font->getSpaceBetweenLines());
-        setSize(Size(width, textHeight, Size::SizeType::PIXEL));
+        setSize(Size(width, textHeight, LengthType::PIXEL));
 
         textRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
@@ -179,7 +179,7 @@ namespace urchin {
     }
 
     unsigned int Text::getMaxWidth() {
-        if (maxWidth.getType() == Length::PERCENTAGE) {
+        if (maxWidth.getType() == LengthType::PERCENTAGE) {
             return (unsigned int)(maxWidth.getValue() * (float)getSceneWidth());
         }
         return (unsigned int)maxWidth.getValue();

@@ -1,5 +1,5 @@
-#ifndef URCHINENGINE_TEXTURE_H
-#define URCHINENGINE_TEXTURE_H
+#ifndef URCHINENGINE_TEXTUREREADER_H
+#define URCHINENGINE_TEXTUREREADER_H
 
 #include "graphic/texture/Texture.h"
 #include "graphic/texture/model/TextureType.h"

@@ -3,7 +3,7 @@
 namespace urchin {
 
     Container::Container(Position position) :
-        Widget(position, Size(0, 0, Size::PIXEL)) {
+        Widget(position, Size(0, 0, LengthType::PIXEL)) {
 
     }
 

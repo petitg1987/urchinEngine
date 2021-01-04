@@ -12,7 +12,7 @@ namespace urchin {
         return value;
     }
 
-    Length::LengthType Length::getType() const {
+    LengthType Length::getType() const {
         return type;
     }
 

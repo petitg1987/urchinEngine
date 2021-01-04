@@ -1,5 +1,5 @@
-#ifndef URCHINENGINETEST_TEXTURE_H
-#define URCHINENGINETEST_TEXTURE_H
+#ifndef URCHINENGINE_TEXTURE_H
+#define URCHINENGINE_TEXTURE_H
 
 #include <vector>
 #include <memory>

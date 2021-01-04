@@ -1,15 +1,12 @@
-#ifndef URCHINENGINETEST_LENGTH_H
-#define URCHINENGINETEST_LENGTH_H
+#ifndef URCHINENGINE_LENGTH_H
+#define URCHINENGINE_LENGTH_H
+
+#include "scene/UI/widget/LengthType.h"
 
 namespace urchin {
 
     class Length {
         public:
-            enum LengthType {
-                PIXEL,
-                PERCENTAGE
-            };
-
             Length(float, LengthType);
 
             float getValue() const;

@@ -1,27 +1,25 @@
 #ifndef URCHINENGINE_WIDGETPOSITION_H
 #define URCHINENGINE_WIDGETPOSITION_H
 
+#include "scene/UI/widget/LengthType.h"
+#include "scene/UI/widget/Length.h"
+
 namespace urchin {
 
     class Position {
         public:
-            enum PositionType { //TODO use LengthType
-                PIXEL,
-                PERCENTAGE
-            };
-
-            Position(float, PositionType, float, PositionType);
-            Position(float, float, PositionType);
+            Position(float, LengthType, float, LengthType);
+            Position(float, float, LengthType);
 
             float getPositionX() const;
-            PositionType getPositionTypeX() const;
+            LengthType getPositionTypeX() const;
 
             float getPositionY() const;
-            PositionType getPositionTypeY() const;
+            LengthType getPositionTypeY() const;
 
         private:
-            float positionX, positionY;
-            PositionType positionTypeX, positionTypeY;
+            Length positionX;
+            Length positionY;
     };
 
 }

@@ -47,15 +47,15 @@ namespace urchin {
         valuesText.clear();
 
         //buttons
-        leftButton = new Text(Position(0, 0, Position::PIXEL), buttonsTextSkin, leftButtonString);
+        leftButton = new Text(Position(0, 0, LengthType::PIXEL), buttonsTextSkin, leftButtonString);
         leftButton->addEventListener(std::make_shared<ButtonSliderEventListener>(this, true));
         if (leftButtonEventListener) {
             this->leftButton->addEventListener(leftButtonEventListener);
         }
         Widget::addChild(leftButton);
 
-        rightButton = new Text(Position(0, 0, Position::PIXEL), buttonsTextSkin, rightButtonString);
-        rightButton->setPosition(Position((float)(getWidth()-rightButton->getWidth()), 0, Position::PIXEL));
+        rightButton = new Text(Position(0, 0, LengthType::PIXEL), buttonsTextSkin, rightButtonString);
+        rightButton->setPosition(Position((float)(getWidth()-rightButton->getWidth()), 0, LengthType::PIXEL));
         rightButton->addEventListener(std::make_shared<ButtonSliderEventListener>(this, false));
         if (rightButtonEventListener) {
             this->rightButton->addEventListener(rightButtonEventListener);
@@ -65,8 +65,8 @@ namespace urchin {
         //values
         valuesText.resize(values.size());
         for (std::size_t i = 0; i < values.size(); ++i) {
-            auto* valueText = new Text(Position(0, 0, Position::PIXEL), valuesTextSkin, values[i]);
-            valueText->setPosition(Position((float)(getWidth()-valueText->getWidth()) / 2.0f, 0, Position::PIXEL));
+            auto* valueText = new Text(Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[i]);
+            valueText->setPosition(Position((float)(getWidth()-valueText->getWidth()) / 2.0f, 0, LengthType::PIXEL));
             valueText->setIsVisible(false);
 
             Widget::addChild(valueText);
