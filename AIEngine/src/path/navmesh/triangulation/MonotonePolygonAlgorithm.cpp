@@ -250,7 +250,7 @@ namespace urchin {
         if (edgeHelperIt->helperPointType == PointType::MERGE_VERTEX) {
             createDiagonals(i, edgeHelperIt->helperPointIndex);
         }
-        VectorEraser::erase(edgeHelpers, edgeHelperIt);
+        VectorUtil::erase(edgeHelpers, edgeHelperIt);
     }
 
     void MonotonePolygonAlgorithm::handleMergeVertex(std::size_t i) {
@@ -259,7 +259,7 @@ namespace urchin {
         if (edgeHelperIt->helperPointType == PointType::MERGE_VERTEX) {
             createDiagonals(i, edgeHelperIt->helperPointIndex);
         }
-        VectorEraser::erase(edgeHelpers, edgeHelperIt);
+        VectorUtil::erase(edgeHelpers, edgeHelperIt);
 
         auto nearestLeftEdgeHelperIt = findNearestLeftEdgeHelper(i);
         if (nearestLeftEdgeHelperIt->helperPointType == PointType::MERGE_VERTEX) {
@@ -275,7 +275,7 @@ namespace urchin {
         if (edgeHelperIt->helperPointType == PointType::MERGE_VERTEX) {
             createDiagonals(i, edgeHelperIt->helperPointIndex);
         }
-        VectorEraser::erase(edgeHelpers, edgeHelperIt);
+        VectorUtil::erase(edgeHelpers, edgeHelperIt);
 
         createEdgeHelper(i, i, PointType::REGULAR_DOWN_VERTEX);
     }

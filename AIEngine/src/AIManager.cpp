@@ -59,7 +59,7 @@ namespace urchin {
         if (pathRequest) {
             auto itFind = std::find(pathRequests.begin(), pathRequests.end(), pathRequest);
             if (itFind != pathRequests.end()) {
-                VectorEraser::erase(pathRequests, itFind);
+                VectorUtil::erase(pathRequests, itFind);
             }
         }
     }

@@ -73,7 +73,7 @@ template<class TOctreeable> void Octreeable<TOctreeable>::addRefOctree(Octree<TO
 template<class TOctreeable> void Octreeable<TOctreeable>::removeRefOctree(Octree<TOctreeable>* octree) {
     auto it = std::find(refOctree.begin(), refOctree.end(), octree);
     if (it != refOctree.end()) {
-        VectorEraser::erase(refOctree, it);
+        VectorUtil::erase(refOctree, it);
     } else {
         throw std::invalid_argument("Impossible to find the reference octree to remove.");
     }

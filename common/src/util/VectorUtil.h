@@ -1,18 +1,19 @@
-#ifndef URCHINENGINE_VECTORERASER_H
-#define URCHINENGINE_VECTORERASER_H
+#ifndef URCHINENGINE_VECTORUTIL_H
+#define URCHINENGINE_VECTORUTIL_H
 
 #include <vector>
 
 namespace urchin {
 
-    class VectorEraser {
+    class VectorUtil {
         public:
             template<class T> static void erase(std::vector<T>&, std::size_t);
             template<class T> static void erase(std::vector<T>&, typename std::vector<T>::iterator);
 
+            template<class T> static std::vector<T> merge(const std::vector<T>&, const std::vector<T>&);
     };
 
-    #include "VectorEraser.inl"
+    #include "VectorUtil.inl"
 
 }
 

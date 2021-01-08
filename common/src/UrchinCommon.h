@@ -104,6 +104,6 @@
 #include "util/StringUtil.h"
 #include "util/TypeConverter.h"
 #include "util/UserAuthorityException.h"
-#include "util/VectorEraser.h"
+#include "util/VectorUtil.h"
 
 #endif
