@@ -17,17 +17,6 @@ namespace urchin {
 
     }
 
-    template<class T> Point2<T>::Point2(const Point2<T>& point) :
-        X(point.X), Y(point.Y) {
-
-    }
-
-    template<class T> Point2<T>& Point2<T>::operator=(const Point2<T>& point) {
-        X = point.X;
-        Y = point.Y;
-        return *this;
-    }
-
     template<class T> void Point2<T>::setValues(T Xu, T Yu) {
         X = Xu;
         Y = Yu;

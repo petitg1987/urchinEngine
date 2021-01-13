@@ -7,6 +7,8 @@
 #include "common/util/StringUtilTest.h"
 #include "common/util/FileUtilTest.h"
 #include "common/math/algebra/QuaternionTest.h"
+#include "common/math/algebra/point/PointTest.h"
+#include "common/math/algebra/vector/VectorTest.h"
 #include "common/math/geometry/OrthogonalProjectionTest.h"
 #include "common/math/geometry/ClosestPointTest.h"
 #include "common/math/geometry/AABBoxCollisionTest.h"
@@ -56,6 +58,8 @@ void addCommonUnitTests(CppUnit::TextUi::TestRunner& runner) {
 
     //math - algebra
     runner.addTest(QuaternionTest::suite());
+    runner.addTest(PointTest::suite());
+    runner.addTest(VectorTest::suite());
 
     //math - geometry
     runner.addTest(OrthogonalProjectionTest::suite());

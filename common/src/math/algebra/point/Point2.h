@@ -12,10 +12,10 @@ namespace urchin {
     template<class T> class Point2 {
         public:
             Point2();
-            explicit Point2(T Xu, T Yu);
+            Point2(T Xu, T Yu);
             explicit Point2(const Vector2<T>&);
-            Point2(const Point2<T>&);
-            Point2<T>& operator=(const Point2<T>&);
+            Point2(const Point2<T>&) = default;
+            Point2<T>& operator=(const Point2<T>&) = default;
 
             void setValues(T, T);
             void setNull();

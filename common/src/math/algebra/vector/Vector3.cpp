@@ -17,18 +17,6 @@ namespace urchin {
 
     }
 
-    template<class T> Vector3<T>::Vector3(const Vector3<T>& vector) :
-            X(vector.X), Y(vector.Y), Z(vector.Z) {
-
-    }
-
-    template<class T> Vector3<T>& Vector3<T>::operator=(const Vector3<T>& vector) {
-        X = vector.X;
-        Y = vector.Y;
-        Z = vector.Z;
-        return *this;
-    }
-
     template<class T> void Vector3<T>::setValues(T Xu, T Yu, T Zu) {
         X = Xu;
         Y = Yu;

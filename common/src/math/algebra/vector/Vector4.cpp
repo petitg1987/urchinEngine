@@ -17,19 +17,6 @@ namespace urchin {
 
     }
 
-    template<class T> Vector4<T>::Vector4(const Vector4<T>& vector) :
-            X(vector.X), Y(vector.Y), Z(vector.Z), W(vector.W) {
-
-    }
-
-    template<class T> Vector4<T>& Vector4<T>::operator=(const Vector4<T>& vector) {
-        X = vector.X;
-        Y = vector.Y;
-        Z = vector.Z;
-        W = vector.W;
-        return *this;
-    }
-
     template<class T> void Vector4<T>::setValues(T Xu, T Yu, T Zu, T Wu) {
         X = Xu;
         Y = Yu;

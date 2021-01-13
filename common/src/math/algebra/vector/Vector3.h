@@ -12,10 +12,10 @@ namespace urchin {
     template<class T> class Vector3 {
         public:
             Vector3();
-            explicit Vector3(T Xu, T Yu, T Zu);
+            Vector3(T Xu, T Yu, T Zu);
             explicit Vector3(const Vector2<T>&, T Zu = 0);
-            Vector3(const Vector3<T>&);
-            Vector3<T>& operator=(const Vector3<T>&);
+            Vector3(const Vector3<T>&) = default;
+            Vector3<T>& operator=(const Vector3<T>&) = default;
 
             void setValues(T, T, T);
             void setNull();
