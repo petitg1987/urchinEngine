@@ -1,4 +1,5 @@
 #version 450
+#extension GL_ARB_separate_shader_objects : enable
 
 //values are replaced at compilation time:
 #define GRASS_ALPHA_TEST 0
