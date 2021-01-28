@@ -35,20 +35,6 @@ namespace urchin {
             shadowModelShaderVariable(nullptr),
             bForceUpdateAllShadowMaps(false),
             lightsLocation(nullptr) {
-        switch(ConfigService::instance()->getUnsignedIntValue("shadow.depthComponent")) {
-            case 16:
-                depthTextureFormat = TextureFormat::DEPTH_16_FLOAT;
-                break;
-            case 24:
-                depthTextureFormat = TextureFormat::DEPTH_24_FLOAT;
-                break;
-            case 32:
-                depthTextureFormat = TextureFormat::DEPTH_32_FLOAT;
-                break;
-            default:
-                throw std::domain_error("Unsupported value for parameter 'shadow.depthComponent'.");
-        }
-
         lightManager->addObserver(this, LightManager::ADD_LIGHT);
         lightManager->addObserver(this, LightManager::REMOVE_LIGHT);
 
@@ -246,7 +232,7 @@ namespace urchin {
     }
 
     void ShadowManager::addShadowLight(const Light* light) {
-        auto depthTexture = Texture::buildArray(shadowMapResolution, shadowMapResolution, nbShadowMaps, depthTextureFormat, nullptr);
+        auto depthTexture = Texture::buildArray(shadowMapResolution, shadowMapResolution, nbShadowMaps,  TextureFormat::DEPTH_32_FLOAT, nullptr);
         auto shadowMapTexture = Texture::buildArray(shadowMapResolution, shadowMapResolution, nbShadowMaps, TextureFormat::RG_32_FLOAT, nullptr);
 
         auto shadowMapRenderTarget = std::make_unique<OffscreenRender>();

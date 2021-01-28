@@ -4,8 +4,6 @@
 namespace urchin {
 
     enum TextureFormat {
-        DEPTH_16_FLOAT,
-        DEPTH_24_FLOAT,
         DEPTH_32_FLOAT,
 
         GRAYSCALE_8_INT,
