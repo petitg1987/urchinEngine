@@ -86,6 +86,8 @@ namespace urchin {
 
     void AmbientOcclusionManager::onTexturesUpdate(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& normalAndAmbientTexture) {
         this->depthTexture = depthTexture;
+        this->normalAndAmbientTexture = normalAndAmbientTexture;
+
         generateNoiseTexture();
 
         std::vector<Point2<float>> vertexCoord = {
@@ -248,10 +250,10 @@ namespace urchin {
         createOrUpdateAOShader();
     }
 
-    void AmbientOcclusionManager::setNoiseTextureSize(unsigned int noiseTextureSize) { //TODO don't regenerate texture noise !
+    void AmbientOcclusionManager::setNoiseTextureSize(unsigned int noiseTextureSize) {
         this->noiseTextureSize = noiseTextureSize;
 
-        createOrUpdateAOShader();
+        onTexturesUpdate(depthTexture, normalAndAmbientTexture);
     }
 
     void AmbientOcclusionManager::setBias(float bias) {

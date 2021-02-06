@@ -79,6 +79,7 @@ namespace urchin {
 
             //visual data
             std::shared_ptr<Texture> depthTexture;
+            std::shared_ptr<Texture> normalAndAmbientTexture;
             ShaderVar ambientOcclusionTexShaderVar;
             std::unique_ptr<GenericRenderer> renderer;
 
