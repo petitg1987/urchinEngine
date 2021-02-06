@@ -67,7 +67,6 @@ namespace urchin {
         mInverseViewProjectionShaderVar = ShaderVar(ambientOcclusionShader, "mInverseViewProjection");
         mProjectionShaderVar = ShaderVar(ambientOcclusionShader, "mProjection");
         mViewShaderVar = ShaderVar(ambientOcclusionShader, "mView");
-        resolutionShaderVar = ShaderVar(ambientOcclusionShader, "resolution");
 
         int depthTexUnit = 0;
         int normalAndAmbientTexUnit = 1;
@@ -75,7 +74,8 @@ namespace urchin {
         ShaderDataSender()
                 .sendData(ShaderVar(ambientOcclusionShader, "depthTex"), depthTexUnit)
                 .sendData(ShaderVar(ambientOcclusionShader, "normalAndAmbientTex"), normalAndAmbientTexUnit)
-                .sendData(ShaderVar(ambientOcclusionShader, "noiseTex"), noiseTexUnit);
+                .sendData(ShaderVar(ambientOcclusionShader, "noiseTex"), noiseTexUnit)
+                .sendData(ShaderVar(ambientOcclusionShader, "resolution"), Vector2<float>((float)sceneWidth, (float)sceneHeight));
 
         generateKernelSamples();
     }
@@ -114,8 +114,6 @@ namespace urchin {
 
         createOrUpdateAOTexture();
         createOrUpdateAOShader();
-
-        ShaderDataSender().sendData(resolutionShaderVar, Vector2<float>((float)sceneWidth, (float)sceneHeight));
     }
 
     void AmbientOcclusionManager::createOrUpdateAOTexture() {
@@ -184,16 +182,15 @@ namespace urchin {
         std::uniform_real_distribution<float> randomFloats(0.0, 1.0);
         std::default_random_engine generator(seed);
 
-        std::vector<Vector3<float>> ssaoNoise;
-        for (unsigned int i = 0; i < 16; i++) {
-            Vector3<float> noise(
-                    randomFloats(generator) * 2.0f - 1.0f,
-                    randomFloats(generator) * 2.0f - 1.0f,
-                    0.0f);
-            ssaoNoise.push_back(noise.normalize());
+        std::vector<u_int8_t> ssaoNoise;
+        ssaoNoise.reserve(noiseTextureSize * noiseTextureSize * 4);
+        for (unsigned int i = 0; i < noiseTextureSize * noiseTextureSize; i++) {
+            ssaoNoise.emplace_back((u_int8_t)(randomFloats(generator) * 256.0f)); //x
+            ssaoNoise.emplace_back((u_int8_t)(randomFloats(generator) * 256.0f)); //y
+            ssaoNoise.emplace_back(0); //z
+            ssaoNoise.emplace_back(0); //w
         }
-
-        noiseTexture = Texture::build(noiseTextureSize, noiseTextureSize, TextureFormat::RGB_16_FLOAT, &ssaoNoise[0]);
+        noiseTexture = Texture::build(noiseTextureSize, noiseTextureSize, TextureFormat::RGBA_8_INT, &ssaoNoise[0]);
     }
 
     void AmbientOcclusionManager::exportSVG(const std::string& filename, const std::vector<Vector3<float>>& ssaoKernel) const {
@@ -251,7 +248,7 @@ namespace urchin {
         createOrUpdateAOShader();
     }
 
-    void AmbientOcclusionManager::setNoiseTextureSize(unsigned int noiseTextureSize) {
+    void AmbientOcclusionManager::setNoiseTextureSize(unsigned int noiseTextureSize) { //TODO don't regenerate texture noise !
         this->noiseTextureSize = noiseTextureSize;
 
         createOrUpdateAOShader();

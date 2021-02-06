@@ -75,7 +75,6 @@ namespace urchin {
             //ambient occlusion shader
             std::unique_ptr<Shader> ambientOcclusionShader;
             ShaderVar mInverseViewProjectionShaderVar, mProjectionShaderVar, mViewShaderVar;
-            ShaderVar resolutionShaderVar;
             std::shared_ptr<Texture> noiseTexture;
 
             //visual data
