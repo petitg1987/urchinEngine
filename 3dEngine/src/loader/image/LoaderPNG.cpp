@@ -4,7 +4,8 @@
 #include "LoaderPNG.h"
 
 namespace urchin {
-    LoaderPNG::LoaderPNG() : Loader<Image>() {
+    LoaderPNG::LoaderPNG() :
+            Loader<Image>() {
 
     }
 
@@ -29,21 +30,21 @@ namespace urchin {
         LodePNGColorType colorType = state.info_png.color.colortype;
         if (colorType == LodePNGColorType::LCT_GREY) {
             if (bitDepth == 8) {
-                return new Image(width, height, Image::IMAGE_GRAYSCALE, extract8BitsChannels(pixelsRGBA16bits, 1));
+                return new Image(width, height, Image::IMAGE_GRAYSCALE, extract8BitsChannels(pixelsRGBA16bits, 1, false));
             } else if (bitDepth == 16) {
-                return new Image(width, height, Image::IMAGE_GRAYSCALE, extract16BitsChannels(pixelsRGBA16bits, 1));
+                return new Image(width, height, Image::IMAGE_GRAYSCALE, extract16BitsChannels(pixelsRGBA16bits, 1, false));
             } else {
                 throw std::invalid_argument("Unsupported number of bits for PNG image (grayscale): " + std::to_string(bitDepth));
             }
         } else if (colorType == LodePNGColorType::LCT_RGB) {
             if (bitDepth == 8) {
-                return new Image(width, height, Image::IMAGE_RGB, extract8BitsChannels(pixelsRGBA16bits, 7));
+                return new Image(width, height, Image::IMAGE_RGBA, extract8BitsChannels(pixelsRGBA16bits, 7, true));
             } else {
                 throw std::invalid_argument("Unsupported number of bits for PNG image (RGB): " + std::to_string(bitDepth));
             }
         } else if (colorType == LodePNGColorType::LCT_RGBA) {
             if (bitDepth == 8) {
-                return new Image(width, height, Image::IMAGE_RGBA, extract8BitsChannels(pixelsRGBA16bits, 15));
+                return new Image(width, height, Image::IMAGE_RGBA, extract8BitsChannels(pixelsRGBA16bits, 15, true));
             } else {
                 throw std::invalid_argument("Unsupported number of bits for PNG image (RGBA): " + std::to_string(bitDepth));
             }
@@ -54,8 +55,9 @@ namespace urchin {
 
     /**
      * @param channelsMask Channel to extract where bit 0: R, bit 1: G, bit 2: B,  bit 3: A
+     * @param addAlphaChannel Add alpha channel if not present
      */
-    std::vector<unsigned char> LoaderPNG::extract8BitsChannels(const std::vector<unsigned char>& pixelsRGBA16bits, unsigned int channelsMask) {
+    std::vector<unsigned char> LoaderPNG::extract8BitsChannels(const std::vector<unsigned char>& pixelsRGBA16bits, unsigned int channelsMask, bool addAlphaChannel) {
         std::vector<unsigned char> pixels;
         size_t nbChannels = std::bitset<8>(channelsMask).count();
         pixels.reserve((pixelsRGBA16bits.size()/(4 * 2)) * nbChannels);
@@ -72,6 +74,8 @@ namespace urchin {
             }
             if (channelsMask & 8u) { //alpha
                 pixels.push_back(pixelsRGBA16bits[i - 0]);
+            } else if(addAlphaChannel) {
+                pixels.push_back(255); //2^8 - 1
             }
         }
 
@@ -80,8 +84,9 @@ namespace urchin {
 
     /**
      * @param channelsMask Channel to extract where bit 0: R, bit 1: G, bit 2: B,  bit 3: A
+     * @param addAlphaChannel Add alpha channel if not present
      */
-    std::vector<uint16_t> LoaderPNG::extract16BitsChannels(const std::vector<unsigned char>& pixelsRGBA16bits, unsigned int channelsMask) {
+    std::vector<uint16_t> LoaderPNG::extract16BitsChannels(const std::vector<unsigned char>& pixelsRGBA16bits, unsigned int channelsMask, bool addAlphaChannel) {
         std::vector<uint16_t> pixels;
         size_t nbChannels = std::bitset<8>(channelsMask).count();
         pixels.reserve((pixelsRGBA16bits.size()/(4 * 2)) * nbChannels);
@@ -98,6 +103,8 @@ namespace urchin {
             }
             if (channelsMask & 8u) { //alpha
                 pixels.push_back((uint16_t)((uint16_t)(pixelsRGBA16bits[i - 1] << 8u) | (uint16_t)(pixelsRGBA16bits[i - 0])));
+            } else if(addAlphaChannel) {
+                pixels.push_back(65535); //2^16 - 1
             }
         }
 

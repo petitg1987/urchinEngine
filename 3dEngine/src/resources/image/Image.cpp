@@ -57,8 +57,6 @@ namespace urchin {
     unsigned int Image::retrieveComponentsCount() const {
         if (format == Image::IMAGE_GRAYSCALE) {
             return 1;
-        } else if (format == Image::IMAGE_RGB) {
-            return 3;
         } else if (format == Image::IMAGE_RGBA) {
             return 4;
         } else {
@@ -74,12 +72,6 @@ namespace urchin {
                 return TextureFormat::GRAYSCALE_16_FLOAT;
             } else {
                 throw std::runtime_error("Unknown channel precision: " + std::to_string(channelPrecision));
-            }
-        } else if (format == Image::IMAGE_RGB) {
-            if (channelPrecision == Image::CHANNEL_8) {
-                return TextureFormat::RGB_8_INT;
-            } else {
-                throw std::invalid_argument("Unsupported channel precision for RGB format: " + std::to_string(channelPrecision));
             }
         } else if (format == Image::IMAGE_RGBA) {
             if (channelPrecision == Image::CHANNEL_8) {

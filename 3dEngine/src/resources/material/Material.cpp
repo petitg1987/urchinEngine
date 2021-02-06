@@ -12,12 +12,12 @@ namespace urchin {
 
     void Material::buildDefaultTextures() {
         if (!diffuseTexture) {
-            Image defaultDiffuseImage(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({255, 20, 147}));
+            Image defaultDiffuseImage(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({255, 20, 147, 255}));
             diffuseTexture = defaultDiffuseImage.createTexture(false);
         }
 
         if (!normalTexture) {
-            Image defaultNormalImage(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({127, 127, 255}));
+            Image defaultNormalImage(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({127, 127, 255, 255}));
             normalTexture = defaultNormalImage.createTexture(false);
         }
     }

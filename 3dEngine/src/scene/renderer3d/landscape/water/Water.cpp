@@ -43,8 +43,8 @@ namespace urchin {
             .sendData(ShaderVar(waterShader, "normalTex"), normalTexUnit)
             .sendData(ShaderVar(waterShader, "dudvMap"), dudvMapUnit);
 
-        normalTexture = Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({0, 255, 0})).createTexture(false);
-        dudvMap = Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({0, 255, 0})).createTexture(false);
+        normalTexture = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({0, 255, 0, 255})).createTexture(false);
+        dudvMap = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({0, 255, 0, 255})).createTexture(false);
 
         //general properties
         setCenterPosition(DEFAULT_CENTER_POSITION);
@@ -147,12 +147,12 @@ namespace urchin {
         this->normalFilename = normalFilename;
 
         if (normalFilename.empty()) {
-            normalTexture = Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({0, 255, 0})).createTexture(false);
+            normalTexture = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({0, 255, 0, 255})).createTexture(false);
         } else {
             auto* normalImage = MediaManager::instance()->getMedia<Image>(normalFilename);
-            if (normalImage->getImageFormat() != Image::IMAGE_RGB) {
+            if (normalImage->getImageFormat() != Image::IMAGE_RGBA) {
                 normalImage->release();
-                throw std::runtime_error("Water normal texture must have 3 components (RGB). Components: " + std::to_string(normalImage->retrieveComponentsCount()));
+                throw std::runtime_error("Water normal texture must have 4 components (RGBA). Components: " + std::to_string(normalImage->retrieveComponentsCount()));
             }
             normalTexture = normalImage->createTexture(true);
             normalImage->release();
@@ -169,12 +169,12 @@ namespace urchin {
         this->dudvFilename = dudvFilename;
 
         if (dudvFilename.empty()) {
-            dudvMap = Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({255, 0, 255})).createTexture(false);
+            dudvMap = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({255, 0, 255, 255})).createTexture(false);
         } else {
             auto* dudvImage = MediaManager::instance()->getMedia<Image>(dudvFilename);
-            if (dudvImage->getImageFormat() != Image::IMAGE_RGB) {
+            if (dudvImage->getImageFormat() != Image::IMAGE_RGBA) {
                 dudvImage->release();
-                throw std::runtime_error("Water dudv map must have 3 components (RGB). Components: " + std::to_string(dudvImage->retrieveComponentsCount()));
+                throw std::runtime_error("Water dudv map must have 4 components (RGBA). Components: " + std::to_string(dudvImage->retrieveComponentsCount()));
             }
             dudvMap = dudvImage->createTexture(true);
             dudvImage->release();

@@ -11,7 +11,6 @@ namespace urchin {
 
         RG_32_FLOAT,
 
-        RGB_8_INT, //TODO remove it
         RGBA_8_INT
     };
 

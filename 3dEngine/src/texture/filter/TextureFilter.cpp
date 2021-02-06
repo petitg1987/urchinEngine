@@ -35,10 +35,7 @@ namespace urchin {
                 ->build();
 
         std::map<std::string, std::string> shaderTokens;
-        if (textureFormat == TextureFormat::RGB_8_INT) {
-            shaderTokens["OUTPUT_TYPE"] = "vec3";
-            shaderTokens["SOURCE_TEX_COMPONENTS"] = "rgb";
-        } else if (textureFormat == TextureFormat::RG_32_FLOAT) {
+        if (textureFormat == TextureFormat::RG_32_FLOAT) {
             shaderTokens["OUTPUT_TYPE"] = "vec2";
             shaderTokens["SOURCE_TEX_COMPONENTS"] = "rg";
         } else if (textureFormat == TextureFormat::GRAYSCALE_16_FLOAT) {

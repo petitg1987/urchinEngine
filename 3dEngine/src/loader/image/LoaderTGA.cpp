@@ -12,7 +12,7 @@ namespace urchin {
             width(0),
             height(0),
             componentsCount(0),
-            format(Image::IMAGE_RGB) {
+            format(Image::IMAGE_RGBA) {
 
     }
 
@@ -78,7 +78,7 @@ namespace urchin {
             case 3:
                 //uncompressed 8 bits grayscale
                 if (header.pixelDepth == 8) {
-                    readTGAgray8bits();
+                    readTGAGray8bits();
                 } else {
                     throw std::runtime_error("Wrong number of bits for grayscale: " + std::to_string(header.pixelDepth));
                 }
@@ -111,7 +111,7 @@ namespace urchin {
             case 11:
                 //RLE compressed 8bits grayscale
                 if (header.pixelDepth == 8) {
-                    readTGAgray8bitsRLE();
+                    readTGAGray8bitsRLE();
                 } else {
                     throw std::runtime_error("Wrong number of bits for grayscale: " + std::to_string(header.pixelDepth));
                 }
@@ -131,21 +131,29 @@ namespace urchin {
         }
         delete[] data;
 
+        unsigned int origin = ((unsigned int)header.imageDescriptor & 0x20u) >> 5u; //0: origin bottom, 1: origin top
+        bool addAlphaChannel = componentsCount == 3 && format == Image::IMAGE_RGBA;
+        unsigned int expectedComponentsCount = addAlphaChannel ? 4 : componentsCount;
 
-        unsigned int origin = ((unsigned int)header.imageDescriptor & 0x20u) >> 5u; //0:origin bottom, 1:origin top
-        if (origin == 0) { //inverses the texels
-            std::vector<unsigned char> texelsInverse(width * height * componentsCount, 0);
+        std::vector<unsigned char> adjustedTexels(width * height * expectedComponentsCount, 0);
+        for (unsigned int heightIndex = 0, heightInverseIndex = height - 1; heightIndex < height; heightIndex++, heightInverseIndex--) {
+            unsigned int srcHeightIndex = (origin == 0) ? heightInverseIndex : heightIndex;
+            for (unsigned int widthIndex = 0; widthIndex < width; widthIndex++) {
 
-            for (unsigned int i = 0, iInverse = height - 1; i < height; i++, iInverse--) {
-                for (unsigned int j = 0; j < width * componentsCount; j++) {
-                    texelsInverse[i*(width * componentsCount) + j] = texels[iInverse * (width * componentsCount) + j];
+                for(unsigned int componentIndex = 0; componentIndex < componentsCount; ++componentIndex) {
+                    unsigned int dstIndex = heightIndex * (width * expectedComponentsCount) + widthIndex * expectedComponentsCount + componentIndex;
+                    unsigned int srcIndex = srcHeightIndex * (width * componentsCount) + widthIndex * componentsCount + componentIndex;
+                    adjustedTexels[dstIndex] = texels[srcIndex];
+                }
+
+                if(addAlphaChannel) {
+                    unsigned int dstAlphaIndex = heightIndex * (width * expectedComponentsCount) + widthIndex * expectedComponentsCount + 3;
+                    adjustedTexels[dstAlphaIndex] = 255;
                 }
             }
-
-            return new Image(width, height, format, std::move(texelsInverse));
         }
 
-        return new Image(width, height, format, std::move(texels));
+        return new Image(width, height, format, std::move(adjustedTexels));
     }
 
     void LoaderTGA::getImageInfo(const TgaHeader& header) {
@@ -161,22 +169,19 @@ namespace urchin {
                 } else {
                     throw std::runtime_error("Wrong number of bits for grayscale: " + std::to_string(header.pixelDepth));
                 }
-
                 break;
             }
             case 1: //8 bits color index
             case 2: //BGR 16-24-32 bits
             case 9: //8 bits color index (RLE)
             case 10: { //BGR 16-24-32 bits (RLE)
+                format = Image::IMAGE_RGBA;
                 //8 bits and 16 bits images will be converted to 24 bits
                 if (header.pixelDepth <= 24) {
-                    format = Image::IMAGE_RGB;
                     componentsCount = 3;
                 } else { //32 bits
-                    format = Image::IMAGE_RGBA;
                     componentsCount = 4;
                 }
-
                 break;
             }
             default:
@@ -231,7 +236,7 @@ namespace urchin {
         }
     }
 
-    void LoaderTGA::readTGAgray8bits() {
+    void LoaderTGA::readTGAGray8bits() {
         for (unsigned int i = 0; i < width * height; ++i) {
             texels[i] = data[i];
         }
@@ -370,7 +375,7 @@ namespace urchin {
         }
     }
 
-    void LoaderTGA::readTGAgray8bitsRLE() {
+    void LoaderTGA::readTGAGray8bitsRLE() {
         unsigned int j = 0;
         unsigned char color;
         unsigned char packetHeader;

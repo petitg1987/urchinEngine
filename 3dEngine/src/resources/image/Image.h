@@ -13,7 +13,6 @@ namespace urchin {
     class Image : public Resource {
         public:
             enum ImageFormat {
-                IMAGE_RGB,
                 IMAGE_RGBA,
                 IMAGE_GRAYSCALE
             };

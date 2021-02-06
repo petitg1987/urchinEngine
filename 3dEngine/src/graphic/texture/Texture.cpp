@@ -122,8 +122,6 @@ namespace urchin {
             return GL_R16F;
         }else if (textureFormat == TextureFormat::RG_32_FLOAT) {
             return GL_RG32F;
-        } else if (textureFormat == TextureFormat::RGB_8_INT) {
-            return GL_RGB;
         } else if (textureFormat == TextureFormat::RGBA_8_INT) {
             return GL_RGBA;
         } else {
@@ -138,8 +136,6 @@ namespace urchin {
             return GL_RED;
         } else if (textureFormat == TextureFormat::RG_32_FLOAT) {
             return GL_RG;
-        } else if (textureFormat == TextureFormat::RGB_8_INT) {
-            return GL_RGB;
         } else if (textureFormat == TextureFormat::RGBA_8_INT) {
             return GL_RGBA;
         } else {
@@ -153,7 +149,6 @@ namespace urchin {
                 || textureFormat == RG_32_FLOAT) {
             return GL_FLOAT;
         } else if (textureFormat == GRAYSCALE_8_INT
-                || textureFormat == RGB_8_INT
                 || textureFormat == RGBA_8_INT) {
             return GL_UNSIGNED_BYTE;
         } else {

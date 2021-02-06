@@ -3,7 +3,7 @@ template<class T> TextureFilterBuilder<T>::TextureFilterBuilder() :
     textureHeight(1024),
     pTextureType(TextureType::DEFAULT),
     pTextureNumberLayer(1),
-    pTextureFormat(TextureFormat::RGB_8_INT) {
+    pTextureFormat(TextureFormat::RGBA_8_INT) {
 
 }
 

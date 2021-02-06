@@ -137,7 +137,7 @@ namespace urchin {
         deferredRenderTarget->addTexture(normalAndAmbientTexture);
 
         //lighting pass rendering
-        lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGB_8_INT, nullptr);
+        lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
         offscreenLightingRenderTarget->onResize(sceneWidth, sceneHeight);
         offscreenLightingRenderTarget->removeAllTextures();
         offscreenLightingRenderTarget->addTexture(lightingPassTexture);

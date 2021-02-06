@@ -181,16 +181,16 @@ namespace urchin {
 
     void AmbientOcclusionManager::generateNoiseTexture() {
         unsigned int seed = 0; //no need to generate different random numbers at each start
-        std::uniform_real_distribution<float> randomFloats(0.0, 1.0);
+        std::uniform_real_distribution<float> randomFloats(0.0f, 255.0f);
         std::default_random_engine generator(seed);
 
-        std::vector<u_int8_t> ssaoNoise;
+        std::vector<uint8_t> ssaoNoise;
         ssaoNoise.reserve(noiseTextureSize * noiseTextureSize * 4);
         for (unsigned int i = 0; i < noiseTextureSize * noiseTextureSize; i++) {
-            ssaoNoise.emplace_back((u_int8_t)(randomFloats(generator) * 256.0f)); //x
-            ssaoNoise.emplace_back((u_int8_t)(randomFloats(generator) * 256.0f)); //y
+            ssaoNoise.emplace_back((uint8_t)(randomFloats(generator))); //x
+            ssaoNoise.emplace_back((uint8_t)(randomFloats(generator))); //y
             ssaoNoise.emplace_back(0); //z
-            ssaoNoise.emplace_back(0); //w
+            ssaoNoise.emplace_back(255); //w (not used)
         }
         noiseTexture = Texture::build(noiseTextureSize, noiseTextureSize, TextureFormat::RGBA_8_INT, &ssaoNoise[0]);
     }

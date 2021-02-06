@@ -31,13 +31,14 @@ namespace urchin {
         for (std::size_t i = 0; i < 6; ++i) {
             if (filenames[i].empty()) {
                 std::vector<unsigned char> defaultTexPixels;
-                defaultTexPixels.reserve(skyboxSize * skyboxSize);
+                defaultTexPixels.reserve(skyboxSize * skyboxSize * 4);
                 for (std::size_t pixelIndex = 0; pixelIndex < skyboxSize * skyboxSize; ++pixelIndex) {
                     defaultTexPixels.push_back(150); //R
                     defaultTexPixels.push_back(50); //G
                     defaultTexPixels.push_back(255); //B
+                    defaultTexPixels.push_back(255); //A
                 }
-                skyboxImages[i] = new Image(skyboxSize, skyboxSize, Image::IMAGE_RGB, std::move(defaultTexPixels));
+                skyboxImages[i] = new Image(skyboxSize, skyboxSize, Image::IMAGE_RGBA, std::move(defaultTexPixels));
             }
         }
 
