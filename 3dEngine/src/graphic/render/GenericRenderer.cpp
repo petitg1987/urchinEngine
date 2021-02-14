@@ -21,7 +21,6 @@ namespace urchin {
             polygonMode(rendererBuilder->getPolygonMode()),
             outlineSize(rendererBuilder->getOutlineSize()),
             textureReaders(rendererBuilder->getTextures()),
-            bNeedRenderTextures(true),
             vertexArrayObject(0) {
         glGenVertexArrays(1, &vertexArrayObject);
         initializeDisplay();
@@ -196,24 +195,18 @@ namespace urchin {
         additionalTextureReaders.clear();
     }
 
-    void GenericRenderer::renderTextures(bool bNeedRenderTextures) {
-        this->bNeedRenderTextures = bNeedRenderTextures;
-    }
-
     void GenericRenderer::render() const {
         glBindTexture(GL_TEXTURE_2D, 0);
         glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 
-        if (bNeedRenderTextures) {
-            unsigned int textureUnit = 0;
-            for (const auto& textureReader : textureReaders) {
-                glActiveTexture(GL_TEXTURE0 + textureUnit++);
-                glBindTexture(textureReader.getTexture()->getGlTextureType(), textureReader.getTexture()->getTextureId());
-            }
-            for (const auto& textureReader : additionalTextureReaders) {
-                glActiveTexture(GL_TEXTURE0 + textureUnit++);
-                glBindTexture(textureReader.getTexture()->getGlTextureType(), textureReader.getTexture()->getTextureId());
-            }
+        unsigned int textureUnit = 0;
+        for (const auto& textureReader : textureReaders) {
+            glActiveTexture(GL_TEXTURE0 + textureUnit++);
+            glBindTexture(textureReader.getTexture()->getGlTextureType(), textureReader.getTexture()->getTextureId());
+        }
+        for (const auto& textureReader : additionalTextureReaders) {
+            glActiveTexture(GL_TEXTURE0 + textureUnit++);
+            glBindTexture(textureReader.getTexture()->getGlTextureType(), textureReader.getTexture()->getTextureId());
         }
 
         if (transparencyEnabled) {

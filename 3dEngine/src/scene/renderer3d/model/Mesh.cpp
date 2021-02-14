@@ -39,7 +39,6 @@ namespace urchin {
             ShaderDataSender().sendData(meshParameter.getAmbientFactorShaderVar(), constMesh->getMaterial()->getAmbientFactor());
         }
 
-        meshRenderer->renderTextures(meshParameter.needRenderTextures());
         renderTarget->display(meshRenderer);
     }
 

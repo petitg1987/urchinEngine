@@ -9,16 +9,10 @@ namespace urchin {
 
     class MeshParameter {
         public:
-            MeshParameter();
-
-            void setNeedRenderTextures(bool);
-            bool needRenderTextures() const;
-
             void setAmbientFactorShaderVar(const ShaderVar&);
             const ShaderVar& getAmbientFactorShaderVar() const;
 
         private:
-            bool bNeedRenderTextures;
             ShaderVar ambientFactorShaderVar;
     };
 

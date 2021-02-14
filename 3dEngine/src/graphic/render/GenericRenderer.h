@@ -77,7 +77,6 @@ namespace urchin {
             float outlineSize;
 
             std::vector<TextureReader> textureReaders, additionalTextureReaders;
-            bool bNeedRenderTextures;
 
             unsigned int vertexArrayObject;
             std::vector<unsigned int> bufferIds;
