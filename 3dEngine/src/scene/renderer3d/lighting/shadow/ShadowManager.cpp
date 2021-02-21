@@ -232,7 +232,7 @@ namespace urchin {
     }
 
     void ShadowManager::addShadowLight(const Light* light) {
-        auto depthTexture = Texture::buildArray(shadowMapResolution, shadowMapResolution, nbShadowMaps,  TextureFormat::DEPTH_32_FLOAT, nullptr);
+        auto depthTexture = Texture::buildArray(shadowMapResolution, shadowMapResolution, nbShadowMaps, TextureFormat::DEPTH_32_FLOAT, nullptr);
         auto shadowMapTexture = Texture::buildArray(shadowMapResolution, shadowMapResolution, nbShadowMaps, TextureFormat::RG_32_FLOAT, nullptr);
 
         auto shadowMapRenderTarget = std::make_unique<OffscreenRender>();
@@ -245,7 +245,6 @@ namespace urchin {
             newLightShadowMap->addLightSplitShadowMap();
         }
         newLightShadowMap->setRenderTarget(std::move(shadowMapRenderTarget));
-        newLightShadowMap->setDepthTexture(depthTexture);
         newLightShadowMap->setShadowMapTexture(shadowMapTexture);
 
         //add shadow map filter

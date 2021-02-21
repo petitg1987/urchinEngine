@@ -90,14 +90,6 @@ namespace urchin {
         return renderTarget.get();
     }
 
-    void LightShadowMap::setDepthTexture(const std::shared_ptr<Texture>& depthTexture) {
-        this->depthTexture = depthTexture;
-    }
-
-    const std::shared_ptr<Texture>& LightShadowMap::getDepthTexture() const {
-        return depthTexture;
-    }
-
     /**
      * @param shadowMapTexture Shadow map texture (variance shadow map)
      */
