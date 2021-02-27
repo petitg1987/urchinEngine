@@ -43,7 +43,6 @@ namespace urchin {
             void updateTexture(std::size_t, const TextureReader&);
             unsigned int addAdditionalTexture(const TextureReader&);
             void clearAdditionalTextures();
-            void renderTextures(bool);
 
         protected:
             void render() const;
