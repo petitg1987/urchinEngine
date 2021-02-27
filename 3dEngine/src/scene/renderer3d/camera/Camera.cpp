@@ -46,7 +46,7 @@ namespace urchin {
             fov/ratio, 0.0f, 0.0f, 0.0f,
             0.0f, fov, 0.0f, 0.0f,
             0.0f, 0.0f, (farPlane + nearPlane) / (nearPlane - farPlane), (2.0f * farPlane * nearPlane) / (nearPlane - farPlane),
-            0.0f, 0.0f, -1.0f, 0.0f);
+            0.0f, 0.0f, -1.0f, 0.0f); //TODO check depth range for Vulkan
 
         //frustum
         baseFrustum.buildFrustum(angle, ratio, nearPlane, farPlane);

@@ -165,10 +165,10 @@ namespace urchin {
         T tz = -((-min.Z - max.Z) / (-min.Z + max.Z));
 
         return Matrix4<T>(
-            2.0f/(max.X-min.X), 0.0, 0.0, tx,
-            0.0, 2.0f/(max.Y-min.Y), 0.0, ty,
-            0.0, 0.0, -2.0f/(-min.Z+max.Z), tz,
-            0.0, 0.0, 0.0, 1.0);
+            2.0f / (max.X - min.X), 0.0, 0.0, tx,
+            0.0, 2.0f / (max.Y - min.Y), 0.0, ty,
+            0.0, 0.0, -2.0f / (-min.Z + max.Z), tz,
+            0.0, 0.0, 0.0, 1.0); //TODO check depth range for Vulkan
     }
 
     template<class T> bool AABBox<T>::include(const AABBox<T>& aabb) const {
