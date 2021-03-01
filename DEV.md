@@ -105,7 +105,3 @@
   * 2D top view (e.g.: *2D nav mesh*):
     - X+ (left), X- (right)
     - Y+ (far), Y- (near)
-  * NDC space:
-    - X: left=-1.0, right=1.0
-    - Y: bottom=-1.0, top=1.0
-    - X: near=-1.0, far=1.0
