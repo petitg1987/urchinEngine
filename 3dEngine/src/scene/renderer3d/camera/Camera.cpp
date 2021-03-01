@@ -45,8 +45,11 @@ namespace urchin {
         mProjection.setValues(
             fov/ratio, 0.0f, 0.0f, 0.0f,
             0.0f, fov, 0.0f, 0.0f,
-            0.0f, 0.0f, (farPlane + nearPlane) / (nearPlane - farPlane), (2.0f * farPlane * nearPlane) / (nearPlane - farPlane),
-            0.0f, 0.0f, -1.0f, 0.0f); //TODO check depth range for Vulkan
+            0.0f, 0.0f, ((farPlane + nearPlane) / (nearPlane - farPlane)), ((2.0f * farPlane * nearPlane) / (nearPlane - farPlane)),
+            0.0f, 0.0f, -1.0f, 0.0f);
+        //For vulkan Z coordinate, replace:
+        // - m33 by: 0.5 * ((farPlane + nearPlane) / (nearPlane - farPlane)) - 0.5
+        // - m41 by: (farPlane * nearPlane) / (nearPlane - farPlane)
 
         //frustum
         baseFrustum.buildFrustum(angle, ratio, nearPlane, farPlane);
