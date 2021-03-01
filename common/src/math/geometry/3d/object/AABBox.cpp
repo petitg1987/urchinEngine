@@ -160,6 +160,10 @@ namespace urchin {
      * @return Orthogonal projection matrix based on AABBox
      */
     template<class T> Matrix4<T> AABBox<T>::toProjectionMatrix() const {
+        //For Vulkan Z coordinate, replace:
+        // - m33 by: -1.0f / (-min.Z + max.Z)
+        // - tz by: 0.5f - 0.5f * ((-min.Z - max.Z) / (-min.Z + max.Z))
+
         T tx = -((max.X + min.X) / (max.X - min.X));
         T ty = -((max.Y + min.Y) / (max.Y - min.Y));
         T tz = -((-min.Z - max.Z) / (-min.Z + max.Z));
@@ -168,7 +172,7 @@ namespace urchin {
             2.0f / (max.X - min.X), 0.0, 0.0, tx,
             0.0, 2.0f / (max.Y - min.Y), 0.0, ty,
             0.0, 0.0, -2.0f / (-min.Z + max.Z), tz,
-            0.0, 0.0, 0.0, 1.0); //TODO check depth range for Vulkan
+            0.0, 0.0, 0.0, 1.0);
     }
 
     template<class T> bool AABBox<T>::include(const AABBox<T>& aabb) const {
