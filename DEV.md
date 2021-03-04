@@ -36,7 +36,7 @@
   * Execute the installer and at the end, check "Yes, launch the OpenAL redist"
   * Copy lib (Win64) & include from "C:\Program Files (x86)\OpenAL 1.1 SDK" in "C:\msys64\mingw64\lib" & "C:\msys64\mingw64\x86_64-w64-mingw32\include\AL"
   * Rename the copied lib from OpenAL32.lib to libOpenAL32.dll.a
-  * *Info*: OpenAL32.dll is in "C:\Windows\System32\OpenAL32.dll" and "soft_oal.dll" can be downloaded on https://community.pcgamingwiki.com/files/file/7-openal-soft/
+  * *Info*: OpenAL32.dll is in "C:\Windows\System32\OpenAL32.dll" and soft_oal.dll can be downloaded on https://community.pcgamingwiki.com/files/file/7-openal-soft/
   * Uninstall OpenAL and OpenAL SDK applications
 * Install sndfile library:
   * Download: http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28-w64.zip
