@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <utility>
 
 #include "scene/UI/widget/Widget.h"
 #include "scene/InputDeviceKey.h"
@@ -35,6 +36,11 @@ namespace urchin {
         eventListeners.clear();
     }
 
+    void Widget::initialize(std::shared_ptr<RenderTarget> renderTarget) {
+        this->renderTarget = std::move(renderTarget);
+        createOrUpdateWidget();
+    }
+
     void Widget::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         this->sceneWidth = sceneWidth;
         this->sceneHeight = sceneHeight;
@@ -44,6 +50,11 @@ namespace urchin {
         for (auto& child : children) {
             child->onResize(sceneWidth, sceneHeight);
         }
+    }
+
+    const std::shared_ptr<RenderTarget>& Widget::getRenderTarget() const {
+        assert(renderTarget);
+        return renderTarget;
     }
 
     unsigned int Widget::getSceneWidth() const {
@@ -317,13 +328,13 @@ namespace urchin {
         }
     }
 
-    void Widget::display(const RenderTarget* renderTarget, const ShaderVar& translateDistanceShaderVar, float dt) {
+    void Widget::display(const ShaderVar& translateDistanceShaderVar, float dt) {
         for (auto& child : children) {
             if (child->isVisible()) {
                 Vector2<int> translateVector(child->getGlobalPositionX(), child->getGlobalPositionY());
                 ShaderDataSender().sendData(translateDistanceShaderVar, translateVector);
 
-                child->display(renderTarget, translateDistanceShaderVar, dt);
+                child->display(translateDistanceShaderVar, dt);
             }
         }
     }

@@ -21,7 +21,7 @@ namespace urchin {
 
             void createOrUpdateWidget() override;
 
-            void display(const RenderTarget*, const ShaderVar&, float) override;
+            void display(const ShaderVar&, float) override;
 
         private:
             const std::shared_ptr<Texture>& getTexture();

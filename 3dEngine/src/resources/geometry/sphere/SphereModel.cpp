@@ -8,7 +8,7 @@ namespace urchin {
     SphereModel::SphereModel(Sphere<float> sphere, unsigned int slices):
             sphere(std::move(sphere)),
             slices(slices) {
-        initialize();
+
     }
 
     Matrix4<float> SphereModel::retrieveModelMatrix() const {

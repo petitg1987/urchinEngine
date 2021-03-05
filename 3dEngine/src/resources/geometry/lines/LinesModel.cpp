@@ -10,7 +10,6 @@ namespace urchin {
         if (this->linesPoints.size() == 1) {
             throw std::invalid_argument("Lines points size must different from one.");
         }
-        initialize();
     }
 
     LinesModel::LinesModel(const std::vector<LineSegment3D<float>>& lineSegments) :
@@ -20,16 +19,12 @@ namespace urchin {
             linesPoints.emplace_back(lineSegment.getA());
             linesPoints.emplace_back(lineSegment.getB());
         }
-
-        initialize();
     }
 
     LinesModel::LinesModel(const LineSegment3D<float>& lineSegment) :
         stripLines(true){
         linesPoints.push_back(lineSegment.getA());
         linesPoints.push_back(lineSegment.getB());
-
-        initialize();
     }
 
     Matrix4<float> LinesModel::retrieveModelMatrix() const {

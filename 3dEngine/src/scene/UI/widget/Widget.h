@@ -29,6 +29,7 @@ namespace urchin {
                 FOCUS
             };
 
+            void initialize(std::shared_ptr<RenderTarget>);
             void onResize(unsigned int, unsigned int);
             virtual void createOrUpdateWidget() = 0;
 
@@ -67,9 +68,10 @@ namespace urchin {
             virtual void reset();
             void onDisable();
 
-            virtual void display(const RenderTarget*, const ShaderVar&, float);
+            virtual void display(const ShaderVar&, float);
 
         protected:
+            const std::shared_ptr<RenderTarget>& getRenderTarget() const;
             unsigned int getSceneWidth() const;
             unsigned int getSceneHeight() const;
 
@@ -83,6 +85,7 @@ namespace urchin {
             void handleWidgetMouseMove(int, int);
             void handleDisable();
 
+            std::shared_ptr<RenderTarget> renderTarget;
             unsigned int sceneWidth, sceneHeight;
 
             Widget* parent;

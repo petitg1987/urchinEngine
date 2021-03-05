@@ -14,7 +14,7 @@ namespace urchin {
 
     class UIRenderer : public Renderer, public Observer {
         public:
-            explicit UIRenderer(const RenderTarget*);
+            explicit UIRenderer(std::shared_ptr<RenderTarget>);
             ~UIRenderer() override;
 
             void onResize(unsigned int, unsigned int) override;
@@ -32,7 +32,7 @@ namespace urchin {
             void display(float) override;
 
         private:
-            const RenderTarget* renderTarget;
+            std::shared_ptr<RenderTarget> renderTarget;
             unsigned int sceneWidth, sceneHeight;
             std::vector<Widget*> widgets;
 

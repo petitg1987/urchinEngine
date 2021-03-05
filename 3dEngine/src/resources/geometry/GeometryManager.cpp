@@ -4,8 +4,8 @@
 
 namespace urchin {
 
-    GeometryManager::GeometryManager(const RenderTarget* renderTarget) :
-            renderTarget(renderTarget) {
+    GeometryManager::GeometryManager( std::shared_ptr<RenderTarget> renderTarget) :
+            renderTarget(std::move(renderTarget)) {
 
     }
 
@@ -13,6 +13,7 @@ namespace urchin {
         if (geometry) {
             geometryModels.push_back(geometry);
 
+            geometry->initialize(renderTarget);
             geometry->onCameraProjectionUpdate(projectionMatrix);
         }
     }
@@ -36,7 +37,7 @@ namespace urchin {
 
     void GeometryManager::display(const Matrix4<float>& viewMatrix) const {
         for (auto* geometryModel : geometryModels) {
-            geometryModel->display(renderTarget, viewMatrix);
+            geometryModel->display(viewMatrix);
         }
     }
 

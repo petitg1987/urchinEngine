@@ -1,4 +1,4 @@
-template<class T> void OctreeRenderer::drawOctree(const OctreeManager<T>* octreeManager, const RenderTarget* renderTarget,
+template<class T> void OctreeRenderer::drawOctree(const OctreeManager<T>* octreeManager, const std::shared_ptr<RenderTarget>& renderTarget,
         const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) {
     auto leafOctrees = octreeManager->getAllLeafOctrees();
 
@@ -10,6 +10,7 @@ template<class T> void OctreeRenderer::drawOctree(const OctreeManager<T>* octree
     }
 
     urchin::AABBoxModel aabboxModel(aabboxes);
+    aabboxModel.initialize(renderTarget);
     aabboxModel.onCameraProjectionUpdate(projectionMatrix);
-    aabboxModel.display(renderTarget, viewMatrix);
+    aabboxModel.display(viewMatrix);
 }

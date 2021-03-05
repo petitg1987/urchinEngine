@@ -17,7 +17,7 @@ namespace urchin {
             void update(const std::vector<Bone>&);
 
             void display(const RenderTarget*, const MeshParameter&) const;
-            void drawBaseBones(const RenderTarget*, const Matrix4<float>&, const Matrix4<float>&) const;
+            void drawBaseBones(const std::shared_ptr<RenderTarget>&, const Matrix4<float>&, const Matrix4<float>&) const;
 
         private:
             const ConstMesh *const constMesh;

@@ -15,6 +15,7 @@ namespace urchin {
             GeometryModel();
             virtual ~GeometryModel() = default;
 
+            void initialize(const std::shared_ptr<RenderTarget>&);
             void onCameraProjectionUpdate(const Matrix4<float>&);
 
             Vector4<float> getColor() const;
@@ -30,10 +31,9 @@ namespace urchin {
             bool isAlwaysVisible() const;
             void setAlwaysVisible(bool);
 
-            void display(const RenderTarget*, const Matrix4<float>&) const;
+            void display(const Matrix4<float>&) const;
 
         protected:
-            void initialize();
             void refreshRenderer();
 
             virtual Matrix4<float> retrieveModelMatrix() const = 0;
@@ -42,6 +42,9 @@ namespace urchin {
             virtual ShapeType getShapeType() const = 0;
 
         private:
+            bool isInitialized;
+
+            std::shared_ptr<RenderTarget> renderTarget;
             std::unique_ptr<GenericRenderer> renderer;
 
             std::unique_ptr<Shader> shader;

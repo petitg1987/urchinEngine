@@ -8,7 +8,7 @@ namespace urchin {
     CylinderModel::CylinderModel(Cylinder<float> cylinder, unsigned int sides):
             cylinder(std::move(cylinder)),
             sides(sides) {
-        initialize();
+
     }
 
     Matrix4<float> CylinderModel::retrieveModelMatrix() const {

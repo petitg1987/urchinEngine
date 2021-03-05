@@ -22,7 +22,7 @@ namespace urchin {
             cursorPosition(0),
             cursorBlink(0.0f),
             state(UNACTIVE) {
-        TextBox::createOrUpdateWidget();
+
     }
 
     TextBox::TextBox(Position position, Size size, std::string nameSkin) :
@@ -61,7 +61,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        textBoxRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
+        textBoxRenderer = std::make_unique<GenericRendererBuilder>(getRenderTarget(), ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
                 ->addTexture(TextureReader::build(texTextBoxDefault, TextureParam::buildNearest()))
@@ -75,7 +75,7 @@ namespace urchin {
                 Point2<float>(0.0, 0.0),
                 Point2<float>(1.0, 1.0)
         };
-        cursorRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::LINE)
+        cursorRenderer = std::make_unique<GenericRendererBuilder>(getRenderTarget(), ShapeType::LINE)
                 ->addData(&cursorVertexCoord)
                 ->addData(&cursorTextureCoord)
                 ->addTexture(TextureReader::build(texCursorDiffuse, TextureParam::buildRepeatNearest()))
@@ -210,9 +210,9 @@ namespace urchin {
         computeCursorPosition();
     }
 
-    void TextBox::display(const RenderTarget* renderTarget, const ShaderVar& translateDistanceShaderVar, float dt) {
+    void TextBox::display(const ShaderVar& translateDistanceShaderVar, float dt) {
         //display the text box
-        renderTarget->display(textBoxRenderer);
+        getRenderTarget()->display(textBoxRenderer);
 
         //displays the cursor
         cursorBlink += dt * CURSOR_BLINK_SPEED;
@@ -220,12 +220,12 @@ namespace urchin {
             Vector2<int> widgetPosition(getGlobalPositionX(), getGlobalPositionY());
             ShaderDataSender().sendData(translateDistanceShaderVar, widgetPosition + Vector2<int>((int)cursorPosition, 0));
 
-            renderTarget->display(cursorRenderer);
+            getRenderTarget()->display(cursorRenderer);
 
             ShaderDataSender().sendData(translateDistanceShaderVar, widgetPosition);
         }
 
-        Widget::display(renderTarget, translateDistanceShaderVar, dt);
+        Widget::display(translateDistanceShaderVar, dt);
     }
 
 }

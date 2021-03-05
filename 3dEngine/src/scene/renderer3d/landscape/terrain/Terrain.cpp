@@ -12,7 +12,9 @@ namespace urchin {
     /**
      * @param position Terrain position. Position is centered on XZ axis and Y value represents a point without elevation.
      */
-    Terrain::Terrain(std::shared_ptr<TerrainMesh>& mesh, std::unique_ptr<TerrainMaterial>& material, const Point3<float>& position) :
+    Terrain::Terrain(std::shared_ptr<TerrainMesh>& mesh, std::unique_ptr<TerrainMaterial> material, const Point3<float>& position) :
+            mesh(mesh),
+            material(std::move(material)),
             ambient(0.0f) {
         terrainShader = ShaderBuilder().createShader("terrain.vert", "", "terrain.frag");
 
@@ -34,8 +36,14 @@ namespace urchin {
 
         setPosition(position);
         setAmbient(DEFAULT_AMBIENT);
+    }
+
+    void Terrain::setupRenderTarget(const std::shared_ptr<RenderTarget>& renderTarget) {
+        assert(!this->renderTarget);
+        this->renderTarget = renderTarget;
+
         setMesh(mesh);
-        setMaterial(material);
+        setMaterial(std::move(material));
 
         grass = std::make_unique<TerrainGrass>("");
         refreshGrassMesh();
@@ -50,10 +58,11 @@ namespace urchin {
     }
 
     void Terrain::setMesh(const std::shared_ptr<TerrainMesh>& mesh) {
+        assert(renderTarget);
         this->mesh = mesh;
 
         std::vector<Point2<float>> emptyTextureCoordinates;
-        terrainRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE_STRIP)
+        terrainRenderer = std::make_unique<GenericRendererBuilder>(renderTarget, ShapeType::TRIANGLE_STRIP)
                 ->enableDepthTest()
                 ->addData(&mesh->getVertices())
                 ->addData(&mesh->getNormals())
@@ -69,7 +78,7 @@ namespace urchin {
         return mesh.get();
     }
 
-    void Terrain::setMaterial(std::unique_ptr<TerrainMaterial>& terrainMaterial) {
+    void Terrain::setMaterial(std::unique_ptr<TerrainMaterial> terrainMaterial) {
         if (material != terrainMaterial) {
             material = std::move(terrainMaterial);
         }
@@ -157,7 +166,8 @@ namespace urchin {
         return mesh->findHeightAt(localCoordinate) + position.Y;
     }
 
-    void Terrain::display(const RenderTarget* renderTarget, const Camera* camera, float dt) const {
+    void Terrain::display(const Camera* camera, float dt) const {
+        assert(renderTarget);
         ShaderDataSender().sendData(mViewShaderVar, camera->getViewMatrix());
 
         renderTarget->activeShader(terrainShader);

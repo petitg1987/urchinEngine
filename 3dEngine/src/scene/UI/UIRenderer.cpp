@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <utility>
 
 #include "scene/UI/UIRenderer.h"
 #include "resources/MediaManager.h"
@@ -12,8 +13,8 @@ namespace urchin {
     //Debug parameters
     bool DEBUG_DISPLAY_FONT_TEXTURE = false;
 
-    UIRenderer::UIRenderer(const RenderTarget* renderTarget) :
-            renderTarget(renderTarget),
+    UIRenderer::UIRenderer(std::shared_ptr<RenderTarget> renderTarget) :
+            renderTarget(std::move(renderTarget)),
             sceneWidth(0),
             sceneHeight(0) {
         uiShader = ShaderBuilder().createShader("ui.vert", "", "ui.frag");
@@ -115,6 +116,7 @@ namespace urchin {
         }
         widgets.push_back(widget);
 
+        widget->initialize(renderTarget);
         widget->addObserver(this, Widget::SET_IN_FOREGROUND);
     }
 
@@ -133,7 +135,7 @@ namespace urchin {
                 Vector2<int> translateVector(widget->getGlobalPositionX(), widget->getGlobalPositionY());
                 ShaderDataSender().sendData(translateDistanceShaderVar, translateVector);
 
-                widget->display(renderTarget, translateDistanceShaderVar, dt);
+                widget->display(translateDistanceShaderVar, dt);
             }
         }
 
@@ -144,8 +146,8 @@ namespace urchin {
             textureDisplayer.setPosition(TextureRenderer::USER_DEFINED_X, TextureRenderer::USER_DEFINED_Y);
             textureDisplayer.setSize(20.0f, (float)font->getDimensionTexture() + 20.0f, 20.0f, (float)font->getDimensionTexture() + 20.0f);
             textureDisplayer.enableTransparency();
-            textureDisplayer.initialize(sceneWidth, sceneHeight, -1.0f, -1.0f);
-            textureDisplayer.display(renderTarget);
+            textureDisplayer.initialize(renderTarget, sceneWidth, sceneHeight, -1.0f, -1.0f);
+            textureDisplayer.display();
             font->release();
         }
     }

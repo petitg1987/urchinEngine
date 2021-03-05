@@ -10,7 +10,7 @@ namespace urchin {
 
     class OctreeRenderer {
         public:
-            template<class T> static void drawOctree(const OctreeManager<T>*, const RenderTarget*, const Matrix4<float>&, const Matrix4<float>&);
+            template<class T> static void drawOctree(const OctreeManager<T>*, const std::shared_ptr<RenderTarget>&, const Matrix4<float>&, const Matrix4<float>&);
     };
 
     #include "OctreeRenderer.inl"

@@ -42,9 +42,9 @@ namespace urchin {
             void setFullScreen(bool);
             void enableTransparency();
 
-            void initialize(unsigned int, unsigned int, float, float);
+            void initialize(const std::shared_ptr<RenderTarget> &renderTarget, unsigned int, unsigned int, float, float);
 
-            void display(const RenderTarget*);
+            void display();
 
         private:
             void initializeShader(float, float);
@@ -58,6 +58,7 @@ namespace urchin {
             float userMinX, userMaxX, userMinY, userMaxY;
 
             //visual
+            std::shared_ptr<RenderTarget> renderTarget;
             std::shared_ptr<Texture> texture;
             TextureRenderer::ColorType colorType;
             float colorIntensity;

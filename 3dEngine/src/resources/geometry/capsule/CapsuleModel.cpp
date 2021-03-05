@@ -9,7 +9,7 @@ namespace urchin {
             capsule(std::move(capsule)),
             sides(sides),
             slices((slices % 2 == 0) ? slices : slices + 1) /*number of slices must be an even number to have same number of faces for the bottom and the top caps */ {
-        initialize();
+
     }
 
     Matrix4<float> CapsuleModel::retrieveModelMatrix() const {

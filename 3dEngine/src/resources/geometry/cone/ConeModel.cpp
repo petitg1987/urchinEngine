@@ -8,7 +8,7 @@ namespace urchin {
     ConeModel::ConeModel(Cone<float> cone, unsigned int slices):
             cone(std::move(cone)),
             slices(slices) {
-        initialize();
+
     }
 
     Matrix4<float> ConeModel::retrieveModelMatrix() const {

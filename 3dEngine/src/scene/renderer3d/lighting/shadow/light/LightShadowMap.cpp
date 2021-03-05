@@ -86,8 +86,8 @@ namespace urchin {
         this->renderTarget = std::move(renderTarget);
     }
 
-    const OffscreenRender* LightShadowMap::getRenderTarget() const {
-        return renderTarget.get();
+    const std::shared_ptr<OffscreenRender>& LightShadowMap::getRenderTarget() const {
+        return renderTarget;
     }
 
     /**

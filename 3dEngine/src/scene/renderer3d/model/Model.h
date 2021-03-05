@@ -44,8 +44,8 @@ namespace urchin {
             void updateAnimation(float);
             void display(const RenderTarget*, const MeshParameter&) const;
 
-            void drawBBox(const RenderTarget*, const Matrix4<float>&, const Matrix4<float>&) const;
-            void drawBaseBones(const RenderTarget*, const Matrix4<float>&, const Matrix4<float>&) const;
+            void drawBBox(const std::shared_ptr<RenderTarget>&, const Matrix4<float>&, const Matrix4<float>&) const;
+            void drawBaseBones(const std::shared_ptr<RenderTarget>&, const Matrix4<float>&, const Matrix4<float>&) const;
 
         private:
             static const AABBox<float> &getDefaultModelLocalAABBox();

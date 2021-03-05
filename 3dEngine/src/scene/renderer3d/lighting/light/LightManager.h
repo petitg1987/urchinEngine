@@ -13,7 +13,7 @@ namespace urchin {
 
     class LightManager : public Observable {
         public:
-            explicit LightManager(const RenderTarget*);
+            explicit LightManager(std::shared_ptr<RenderTarget>);
             ~LightManager() override;
 
             enum NotificationType {
@@ -43,7 +43,7 @@ namespace urchin {
             void onLightEvent(Light*, NotificationType);
             void checkMaxLight(const std::vector<Light*>&) const;
 
-            const RenderTarget* renderTarget;
+            std::shared_ptr<RenderTarget> renderTarget;
 
             //lights container
             std::vector<Light*> parallelBeamsLights; //sun lights

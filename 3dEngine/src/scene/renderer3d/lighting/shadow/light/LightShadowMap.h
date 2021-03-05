@@ -30,7 +30,7 @@ namespace urchin {
             const std::vector<LightSplitShadowMap*>& getLightSplitShadowMaps() const;
 
             void setRenderTarget(std::unique_ptr<OffscreenRender>&&);
-            const OffscreenRender* getRenderTarget() const;
+            const std::shared_ptr<OffscreenRender>& getRenderTarget() const;
 
             void setShadowMapTexture(const std::shared_ptr<Texture>&);
             const std::shared_ptr<Texture>& getShadowMapTexture() const;

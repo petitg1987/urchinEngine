@@ -6,12 +6,12 @@ namespace urchin {
 
     AABBoxModel::AABBoxModel(const AABBox<float>& aabbox):
             aabboxes({aabbox}) {
-        initialize();
+
     }
 
     AABBoxModel::AABBoxModel(std::vector<AABBox<float>> aabboxes):
             aabboxes(std::move(aabboxes)) {
-        initialize();
+
     }
 
     Matrix4<float> AABBoxModel::retrieveModelMatrix() const {

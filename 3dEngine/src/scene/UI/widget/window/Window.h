@@ -20,7 +20,7 @@ namespace urchin {
 
             void createOrUpdateWidget() override;
 
-            void display(const RenderTarget*, const ShaderVar&, float) override;
+            void display(const ShaderVar&, float) override;
 
         private:
             bool onKeyPressEvent(unsigned int) override;

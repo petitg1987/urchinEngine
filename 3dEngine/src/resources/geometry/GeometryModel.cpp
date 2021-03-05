@@ -6,6 +6,7 @@
 namespace urchin {
 
     GeometryModel::GeometryModel() :
+            isInitialized(false),
             color(Vector4<float>(0.0f, 1.0f, 0.0f, 1.0f)),
             polygonMode(WIREFRAME),
             outlineSize(1.3f),
@@ -18,15 +19,19 @@ namespace urchin {
         colorShaderVar = ShaderVar(shader, "color");
     }
 
-    void GeometryModel::initialize() {
+    void GeometryModel::initialize(const std::shared_ptr<RenderTarget>& renderTarget) {
+        this->renderTarget = renderTarget;
+
         modelMatrix = retrieveModelMatrix();
         refreshRenderer();
+
+        isInitialized = true;
     }
 
     void GeometryModel::refreshRenderer() {
         std::vector<Point3<float>> vertexArray = retrieveVertexArray();
 
-        std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(getShapeType());
+        std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, getShapeType());
         rendererBuilder
                 ->addData(&vertexArray)
                 ->disableCullFace()
@@ -88,7 +93,9 @@ namespace urchin {
         refreshRenderer();
     }
 
-    void GeometryModel::display(const RenderTarget* renderTarget, const Matrix4<float>& viewMatrix) const {
+    void GeometryModel::display(const Matrix4<float>& viewMatrix) const {
+        assert(isInitialized);
+
         ShaderDataSender()
             .sendData(mProjectionShaderVar, projectionMatrix)
             .sendData(mViewShaderVar, viewMatrix * modelMatrix)

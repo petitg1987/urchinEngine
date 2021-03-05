@@ -10,8 +10,8 @@
 
 namespace urchin {
 
-    LightManager::LightManager(const RenderTarget* renderTarget) :
-            renderTarget(renderTarget),
+    LightManager::LightManager(std::shared_ptr<RenderTarget> renderTarget) :
+            renderTarget(std::move(renderTarget)),
             lightOctreeManager(new OctreeManager<Light>(DEFAULT_OCTREE_MIN_SIZE)),
             lastUpdatedLight(nullptr),
             maxLights(ConfigService::instance()->getUnsignedIntValue("light.maxLights")),

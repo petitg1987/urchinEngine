@@ -6,7 +6,7 @@ namespace urchin {
 
     OBBoxModel::OBBoxModel(OBBox<float> obbox):
             obbox(std::move(obbox)) {
-        initialize();
+
     }
 
     Matrix4<float> OBBoxModel::retrieveModelMatrix() const {

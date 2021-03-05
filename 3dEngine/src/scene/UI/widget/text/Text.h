@@ -26,7 +26,7 @@ namespace urchin {
             const std::string& getText() const;
             const Font* getFont();
 
-            void display(const RenderTarget*, const ShaderVar&, float) override;
+            void display(const ShaderVar&, float) override;
 
         private:
             void cleanFont();

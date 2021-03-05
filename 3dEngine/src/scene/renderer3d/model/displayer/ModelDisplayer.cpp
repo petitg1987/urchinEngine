@@ -121,7 +121,7 @@ namespace urchin {
         this->customModelShaderVariable = customModelShaderVariable;
     }
 
-    void ModelDisplayer::setRenderTarget(const RenderTarget* renderTarget) {
+    void ModelDisplayer::setRenderTarget(const std::shared_ptr<RenderTarget>& renderTarget) {
         this->renderTarget = renderTarget;
     }
 

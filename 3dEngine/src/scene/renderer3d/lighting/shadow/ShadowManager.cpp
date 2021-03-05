@@ -348,7 +348,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "updateShadowMap");
 
         for (auto& lightShadowMap : lightShadowMaps) {
-            const RenderTarget* renderTarget = lightShadowMap.second->getRenderTarget();
+            const std::shared_ptr<OffscreenRender>& renderTarget = lightShadowMap.second->getRenderTarget();
 
             renderTarget->resetDisplay();
 

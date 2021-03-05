@@ -31,7 +31,7 @@ namespace urchin {
 
     class Renderer3d : public Renderer, public Observer {
         public:
-            explicit Renderer3d(const RenderTarget*);
+            explicit Renderer3d(const std::shared_ptr<RenderTarget>&);
             ~Renderer3d() override;
 
             //scene properties
@@ -100,13 +100,13 @@ namespace urchin {
             void postUpdateScene();
 
             //scene properties
-            const RenderTarget* finalRenderTarget;
+            std::shared_ptr<RenderTarget> finalRenderTarget;
             unsigned int sceneWidth, sceneHeight;
             bool paused;
             Camera* camera;
 
             //deferred rendering
-            OffscreenRender* deferredRenderTarget;
+            std::shared_ptr<OffscreenRender> deferredRenderTarget;
             ModelDisplayer* modelDisplayer;
             OctreeManager<Model>* modelOctreeManager;
             std::vector<Model*> modelsInFrustum;
@@ -127,7 +127,7 @@ namespace urchin {
             std::shared_ptr<Texture> depthTexture, diffuseTexture, normalAndAmbientTexture, lightingPassTexture;
 
             //lighting pass rendering
-            OffscreenRender* offscreenLightingRenderTarget;
+            std::shared_ptr<OffscreenRender> offscreenLightingRenderTarget;
             std::unique_ptr<GenericRenderer> lightingRenderer;
             std::unique_ptr<Shader> lightingShader;
             ShaderVar mInverseViewProjectionShaderVar, viewPositionShaderVar;

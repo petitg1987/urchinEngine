@@ -84,11 +84,12 @@ namespace urchin {
         this->transparencyEnabled = true;
     }
 
-    void TextureRenderer::initialize(unsigned int sceneWidth, unsigned int sceneHeight, float nearPlane, float farPlane) {
+    void TextureRenderer::initialize(const std::shared_ptr<RenderTarget> &renderTarget, unsigned int sceneWidth, unsigned int sceneHeight, float nearPlane, float farPlane) {
         if (isInitialized) {
             throw std::runtime_error("Texture displayer cannot be initialized twice.");
         }
 
+        this->renderTarget = renderTarget;
         initializeShader(nearPlane, farPlane);
 
         float minX, maxX, minY, maxY;
@@ -156,7 +157,7 @@ namespace urchin {
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
         };
-        std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE);
+        std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, ShapeType::TRIANGLE);
         rendererBuilder
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
@@ -193,7 +194,7 @@ namespace urchin {
         mProjectionShaderVar = ShaderVar(displayTextureShader, "mProjection");
     }
 
-    void TextureRenderer::display(const RenderTarget* renderTarget) {
+    void TextureRenderer::display() {
         if (!isInitialized) {
             throw std::runtime_error("Texture displayer must be initialized before display.");
         }

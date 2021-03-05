@@ -34,8 +34,6 @@ namespace urchin {
 
         std::shared_ptr<XmlChunk> rightButtonTextChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "rightButtonText", XmlAttribute(), sliderChunk);
         rightButtonString = rightButtonTextChunk->getStringValue();
-
-        Slider::createOrUpdateWidget();
     }
 
     Slider::Slider(Position position, Size size, std::string nameSkin, const std::vector<std::string>& values) :
@@ -103,7 +101,7 @@ namespace urchin {
         this->rightButton->addEventListener(rightButtonEventListener);
     }
 
-    void Slider::display(const RenderTarget* renderTarget, const ShaderVar& translateDistanceShaderVar, float dt) {
+    void Slider::display(const ShaderVar& translateDistanceShaderVar, float dt) {
         if (leftButton->getWidgetState() == Widget::WidgetStates::CLICKING) {
             timeInClickingState += dt;
             timeSinceLastChange += dt;
@@ -125,7 +123,7 @@ namespace urchin {
             timeSinceLastChange = 0.0f;
         }
 
-        Widget::display(renderTarget, translateDistanceShaderVar, dt);
+        Widget::display(translateDistanceShaderVar, dt);
     }
 
     Slider::ButtonSliderEventListener::ButtonSliderEventListener(Slider* slider, bool isLeftButton) :

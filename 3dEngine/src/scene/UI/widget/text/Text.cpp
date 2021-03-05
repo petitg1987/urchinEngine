@@ -15,7 +15,7 @@ namespace urchin {
             text(std::move(text)),
             maxWidth(100.0f, LengthType::PERCENTAGE),
             font(nullptr) {
-        Text::createOrUpdateWidget();
+
     }
 
     Text::Text(Position position, std::string nameSkin, std::string text) :
@@ -138,7 +138,7 @@ namespace urchin {
         auto textHeight = (float)(numberOfLines * font->getHeight() + numberOfInterLines * font->getSpaceBetweenLines());
         setSize(Size(width, textHeight, LengthType::PIXEL));
 
-        textRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
+        textRenderer = std::make_unique<GenericRendererBuilder>(getRenderTarget(), ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
                 ->addTexture(TextureReader::build(font->getTexture(), TextureParam::buildNearest()))
@@ -198,12 +198,12 @@ namespace urchin {
         return (unsigned int)maxWidth.getValue();
     }
 
-    void Text::display(const RenderTarget* renderTarget, const ShaderVar& translateDistanceShaderVar, float dt) {
+    void Text::display(const ShaderVar& translateDistanceShaderVar, float dt) {
         if (textRenderer) {
-            renderTarget->display(textRenderer);
+            getRenderTarget()->display(textRenderer);
         }
 
-        Widget::display(renderTarget, translateDistanceShaderVar, dt);
+        Widget::display(translateDistanceShaderVar, dt);
     }
 
 }

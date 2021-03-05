@@ -10,8 +10,8 @@
 
 namespace urchin {
 
-    AntiAliasingManager::AntiAliasingManager(const RenderTarget* renderTarget) :
-            renderTarget(renderTarget),
+    AntiAliasingManager::AntiAliasingManager(std::shared_ptr<RenderTarget> renderTarget) :
+            renderTarget(std::move(renderTarget)),
             quality(DEFAULT_AA_QUALITY),
             sceneWidth(0),
             sceneHeight(0) {
@@ -39,7 +39,7 @@ namespace urchin {
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
         };
-        renderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
+        renderer = std::make_unique<GenericRendererBuilder>(renderTarget, ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
                 ->addTexture(TextureReader::build(texture, TextureParam::buildLinear()))

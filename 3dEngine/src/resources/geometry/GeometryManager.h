@@ -12,7 +12,7 @@ namespace urchin {
 
     class GeometryManager {
         public:
-            explicit GeometryManager(const RenderTarget*);
+            explicit GeometryManager(std::shared_ptr<RenderTarget>);
             virtual ~GeometryManager() = default;
 
             void addGeometry(GeometryModel*);
@@ -23,7 +23,7 @@ namespace urchin {
             void display(const Matrix4<float>&) const;
 
         private:
-            const RenderTarget* renderTarget;
+            std::shared_ptr<RenderTarget> renderTarget;
 
             std::vector<GeometryModel*> geometryModels;
             Matrix4<float> projectionMatrix;

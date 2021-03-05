@@ -50,7 +50,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "terrainDisplay");
 
         for (const auto terrain : terrains) {
-            terrain->display(renderTarget, camera, dt);
+            terrain->display(camera, dt);
         }
     }
 }

@@ -9,7 +9,6 @@ namespace urchin {
         if (this->trianglesPoints.size() % 3 != 0) {
             throw std::invalid_argument("Triangles points size must a multiple of three. Size: " + std::to_string(this->trianglesPoints.size()));
         }
-        initialize();
     }
 
     Matrix4<float> TrianglesModel::retrieveModelMatrix() const {

@@ -10,13 +10,14 @@
 #include "graphic/render/model/DataDimension.h"
 #include "graphic/render/model/ShapeType.h"
 #include "graphic/render/model/PolygonMode.h"
+#include "graphic/render/target/RenderTarget.h"
 #include "graphic/texture/TextureReader.h"
 
 namespace urchin {
 
     class GenericRendererBuilder {
         public:
-            explicit GenericRendererBuilder(ShapeType);
+            explicit GenericRendererBuilder(std::shared_ptr<RenderTarget>, ShapeType);
 
             ShapeType getShapeType() const;
 
@@ -48,6 +49,7 @@ namespace urchin {
             std::unique_ptr<GenericRenderer> build();
 
         private:
+            std::shared_ptr<RenderTarget> renderTarget;
             ShapeType shapeType;
             std::vector<GenericRenderer::Data> data;
             GenericRenderer::Indices pIndices;

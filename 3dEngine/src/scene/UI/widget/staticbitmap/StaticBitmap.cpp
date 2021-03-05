@@ -10,11 +10,11 @@ namespace urchin {
             Widget(parent, position, size),
             filename(std::move(filename)),
             tex(nullptr) {
-        StaticBitmap::createOrUpdateWidget();
+
     }
 
     StaticBitmap::StaticBitmap(Position position, Size size, std::string filename) :
-            StaticBitmap(nullptr, position, size, filename) {
+            StaticBitmap(nullptr, position, size, std::move(filename)) {
 
     }
 
@@ -33,7 +33,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        bitmapRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
+        bitmapRenderer = std::make_unique<GenericRendererBuilder>(getRenderTarget(), ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
                 ->addTexture(TextureReader::build(tex, TextureParam::buildNearest()))
@@ -41,10 +41,10 @@ namespace urchin {
                 ->build();
     }
 
-    void StaticBitmap::display(const RenderTarget* renderTarget, const ShaderVar& translateDistanceShaderVar, float dt) {
-        renderTarget->display(bitmapRenderer);
+    void StaticBitmap::display(const ShaderVar& translateDistanceShaderVar, float dt) {
+        getRenderTarget()->display(bitmapRenderer);
 
-        Widget::display(renderTarget, translateDistanceShaderVar, dt);
+        Widget::display(translateDistanceShaderVar, dt);
     }
 
 }

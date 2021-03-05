@@ -2,7 +2,8 @@
 
 namespace urchin {
 
-    GenericRendererBuilder::GenericRendererBuilder(ShapeType shapeType) :
+    GenericRendererBuilder::GenericRendererBuilder(std::shared_ptr<RenderTarget> renderTarget, ShapeType shapeType) :
+            renderTarget(std::move(renderTarget)),
             shapeType(shapeType),
             transparencyEnabled(false),
             depthTestEnabled(false),

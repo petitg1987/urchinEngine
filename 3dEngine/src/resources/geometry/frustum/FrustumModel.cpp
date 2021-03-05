@@ -6,7 +6,7 @@ namespace urchin {
 
     FrustumModel::FrustumModel(Frustum<float> frustum):
             frustum(std::move(frustum)) {
-        initialize();
+
     }
 
     Matrix4<float> FrustumModel::retrieveModelMatrix() const {

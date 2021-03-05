@@ -6,7 +6,7 @@ namespace urchin {
 
     ConvexHullModel::ConvexHullModel(ConvexHull3D<float> convexHull):
             convexHull(std::move(convexHull)) {
-        initialize();
+
     }
 
     Matrix4<float> ConvexHullModel::retrieveModelMatrix() const {

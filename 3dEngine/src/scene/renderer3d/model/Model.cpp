@@ -223,13 +223,14 @@ namespace urchin {
         }
     }
 
-    void Model::drawBBox(const RenderTarget* renderTarget, const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
+    void Model::drawBBox(const std::shared_ptr<RenderTarget>& renderTarget, const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
         AABBoxModel aabboxModel(getAABBox());
+        aabboxModel.initialize(renderTarget);
         aabboxModel.onCameraProjectionUpdate(projectionMatrix);
-        aabboxModel.display(renderTarget, viewMatrix);
+        aabboxModel.display(viewMatrix);
     }
 
-    void Model::drawBaseBones(const RenderTarget* renderTarget, const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
+    void Model::drawBaseBones(const std::shared_ptr<RenderTarget>& renderTarget, const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
         if (meshes) {
             for (unsigned int m = 0; m < meshes->getNumberMeshes(); ++m) {
                 Matrix4<float> modelViewMatrix = viewMatrix * getTransform().getTransformMatrix();

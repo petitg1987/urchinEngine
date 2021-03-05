@@ -42,17 +42,18 @@ namespace urchin {
         renderTarget->display(meshRenderer);
     }
 
-    void Mesh::drawBaseBones(const RenderTarget* renderTarget, const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
+    void Mesh::drawBaseBones(const std::shared_ptr<RenderTarget>& renderTarget, const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
         std::vector<Point3<float>> bonePositions;
         for (const auto& bone : constMesh->getBaseSkeleton()) {
             bonePositions.push_back(bone.pos);
         }
 
         std::unique_ptr<PointsModel> pointsModel = std::make_unique<PointsModel>(bonePositions);
+        pointsModel->initialize(renderTarget);
         pointsModel->setOutlineSize(5.0f);
         pointsModel->onCameraProjectionUpdate(projectionMatrix);
         pointsModel->setAlwaysVisible(true);
-        pointsModel->display(renderTarget, viewMatrix);
+        pointsModel->display(viewMatrix);
     }
 
 }

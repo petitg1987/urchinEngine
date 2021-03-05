@@ -12,7 +12,7 @@ namespace urchin {
             nameSkin(std::move(nameSkin)),
             text(nullptr),
             buttonText(std::move(buttonText)) {
-        Button::createOrUpdateWidget();
+
     }
 
     Button::Button(Position position, Size size, std::string nameSkin, std::string buttonText) :
@@ -49,7 +49,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        buttonRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
+        buttonRenderer = std::make_unique<GenericRendererBuilder>(getRenderTarget(), ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
                 ->addTexture(TextureReader::build(texInfoDefault, TextureParam::buildNearest()))
@@ -81,10 +81,10 @@ namespace urchin {
         return true;
     }
 
-    void Button::display(const RenderTarget* renderTarget, const ShaderVar& translateDistanceShaderVar, float dt) {
-        renderTarget->display(buttonRenderer);
+    void Button::display(const ShaderVar& translateDistanceShaderVar, float dt) {
+        getRenderTarget()->display(buttonRenderer);
 
-        Widget::display(renderTarget, translateDistanceShaderVar, dt);
+        Widget::display(translateDistanceShaderVar, dt);
     }
 
 }

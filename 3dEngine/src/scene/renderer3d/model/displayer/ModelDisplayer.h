@@ -38,7 +38,7 @@ namespace urchin {
             void setCustomShaderVariable(CustomShaderVariable*);
             void setCustomModelShaderVariable(CustomModelShaderVariable*);
 
-            void setRenderTarget(const RenderTarget*);
+            void setRenderTarget(const std::shared_ptr<RenderTarget>&);
             void setModels(const std::vector<Model*>&);
 
             void updateAnimation(float);
@@ -64,7 +64,7 @@ namespace urchin {
             CustomShaderVariable* customShaderVariable;
             CustomModelShaderVariable* customModelShaderVariable;
 
-            const RenderTarget* renderTarget;
+            std::shared_ptr<RenderTarget> renderTarget;
             std::vector<Model*> models;
     };
 
