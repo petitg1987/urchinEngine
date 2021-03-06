@@ -28,7 +28,7 @@ namespace urchin {
             blurShadow(DEFAULT_BLUR_SHADOW),
             sceneWidth(0),
             sceneHeight(0),
-            shadowModelDisplayer(nullptr),
+            shadowModelSetDisplayer(nullptr),
             lightManager(lightManager),
             modelOctreeManager(modelOctreeManager),
             shadowShaderVariable(nullptr),
@@ -38,7 +38,7 @@ namespace urchin {
         lightManager->addObserver(this, LightManager::ADD_LIGHT);
         lightManager->addObserver(this, LightManager::REMOVE_LIGHT);
 
-        createOrUpdateShadowModelDisplayer();
+        createOrUpdateShadowModelSetDisplayer();
     }
 
     ShadowManager::~ShadowManager() {
@@ -48,7 +48,7 @@ namespace urchin {
 
         deleteLightsLocation();
 
-        delete shadowModelDisplayer;
+        delete shadowModelSetDisplayer;
         delete shadowShaderVariable;
         delete shadowModelShaderVariable;
     }
@@ -77,25 +77,25 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::createOrUpdateShadowModelDisplayer() {
+    void ShadowManager::createOrUpdateShadowModelSetDisplayer() {
         std::map<std::string, std::string> geometryTokens, fragmentTokens;
         geometryTokens["MAX_VERTICES"] = std::to_string(3*nbShadowMaps);
         geometryTokens["NUMBER_SHADOW_MAPS"] = std::to_string(nbShadowMaps);
-        delete shadowModelDisplayer;
-        shadowModelDisplayer = new ModelDisplayer(ModelDisplayer::DEPTH_ONLY_MODE);
-        shadowModelDisplayer->setCustomGeometryShader("modelShadowMap.geom", geometryTokens);
-        shadowModelDisplayer->setCustomFragmentShader("modelShadowMap.frag", fragmentTokens);
-        shadowModelDisplayer->initialize();
+        delete shadowModelSetDisplayer;
+        shadowModelSetDisplayer = new ModelSetDisplayer(ModelSetDisplayer::DEPTH_ONLY_MODE);
+        shadowModelSetDisplayer->setCustomGeometryShader("modelShadowMap.geom", geometryTokens);
+        shadowModelSetDisplayer->setCustomFragmentShader("modelShadowMap.frag", fragmentTokens);
+        shadowModelSetDisplayer->initialize();
 
         delete shadowShaderVariable;
         shadowShaderVariable = new ShadowShaderVariable();
-        shadowShaderVariable->setProjectionMatricesShaderVar(shadowModelDisplayer->getShaderVar("projectionMatrix"));
-        shadowModelDisplayer->setCustomShaderVariable(shadowShaderVariable);
+        shadowShaderVariable->setProjectionMatricesShaderVar(shadowModelSetDisplayer->getShaderVar("projectionMatrix"));
+        shadowModelSetDisplayer->setCustomShaderVariable(shadowShaderVariable);
 
         delete shadowModelShaderVariable;
         shadowModelShaderVariable = new ShadowModelShaderVariable();
-        shadowModelShaderVariable->setLayersToUpdateShaderVar(shadowModelDisplayer->getShaderVar("layersToUpdate"));
-        shadowModelDisplayer->setCustomModelShaderVariable(shadowModelShaderVariable);
+        shadowModelShaderVariable->setLayersToUpdateShaderVar(shadowModelSetDisplayer->getShaderVar("layersToUpdate"));
+        shadowModelSetDisplayer->setCustomModelShaderVariable(shadowModelShaderVariable);
     }
 
     void ShadowManager::deleteLightsLocation() {
@@ -165,7 +165,7 @@ namespace urchin {
 
         this->nbShadowMaps = nbShadowMaps;
 
-        createOrUpdateShadowModelDisplayer();
+        createOrUpdateShadowModelSetDisplayer();
         updateShadowLights();
         notifyObservers(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
     }
@@ -355,9 +355,9 @@ namespace urchin {
             shadowShaderVariable->setLightShadowMap(lightShadowMap.second);
             shadowModelShaderVariable->setLightShadowMap(lightShadowMap.second);
 
-            shadowModelDisplayer->setModels(lightShadowMap.second->retrieveModels());
-            shadowModelDisplayer->setRenderTarget(renderTarget);
-            shadowModelDisplayer->display(lightShadowMap.second->getLightViewMatrix());
+            shadowModelSetDisplayer->setModels(lightShadowMap.second->retrieveModels());
+            shadowModelSetDisplayer->setRenderTarget(renderTarget);
+            shadowModelSetDisplayer->display(lightShadowMap.second->getLightViewMatrix());
 
             lightShadowMap.second->applyTextureFilters();
         }

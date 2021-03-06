@@ -8,12 +8,12 @@
 
 #include "scene/Renderer.h"
 #include "scene/renderer3d/camera/Camera.h"
-#include "scene/renderer3d/model/displayer/ModelDisplayer.h"
+#include "scene/renderer3d/model/displayer/ModelSetDisplayer.h"
 #include "scene/renderer3d/postprocess/antialiasing/AntiAliasingManager.h"
 #include "scene/renderer3d/postprocess/ambientocclusion/AmbientOcclusionManager.h"
 #include "scene/renderer3d/lighting/shadow/ShadowManager.h"
 #include "scene/renderer3d/model/Model.h"
-#include "scene/renderer3d/model/displayer/ModelDisplayer.h"
+#include "scene/renderer3d/model/displayer/ModelSetDisplayer.h"
 #include "scene/renderer3d/landscape/terrain/TerrainManager.h"
 #include "scene/renderer3d/landscape/fog/FogManager.h"
 #include "scene/renderer3d/landscape/water/WaterManager.h"
@@ -108,7 +108,7 @@ namespace urchin {
 
             //deferred rendering
             std::shared_ptr<OffscreenRender> deferredRenderTarget;
-            ModelDisplayer* modelDisplayer;
+            ModelSetDisplayer* modelSetDisplayer;
             OctreeManager<Model>* modelOctreeManager;
             std::vector<Model*> modelsInFrustum;
 

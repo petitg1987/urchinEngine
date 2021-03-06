@@ -12,7 +12,7 @@
 #include "scene/renderer3d/lighting/light/Light.h"
 #include "scene/renderer3d/lighting/light/LightManager.h"
 #include "scene/renderer3d/model/Model.h"
-#include "scene/renderer3d/model/displayer/ModelDisplayer.h"
+#include "scene/renderer3d/model/displayer/ModelSetDisplayer.h"
 #include "scene/renderer3d/camera/Camera.h"
 #include "graphic/shader/model/Shader.h"
 #include "graphic/shader/model/ShaderVar.h"
@@ -66,7 +66,7 @@ namespace urchin {
 
         private:
             //model displayer
-            void createOrUpdateShadowModelDisplayer();
+            void createOrUpdateShadowModelSetDisplayer();
 
             //light handling
             void deleteLightsLocation();
@@ -88,7 +88,7 @@ namespace urchin {
 
             //scene information
             unsigned int sceneWidth, sceneHeight;
-            ModelDisplayer* shadowModelDisplayer;
+            ModelSetDisplayer* shadowModelSetDisplayer;
             LightManager* lightManager;
             OctreeManager<Model>* modelOctreeManager;
             Matrix4<float> projectionMatrix;

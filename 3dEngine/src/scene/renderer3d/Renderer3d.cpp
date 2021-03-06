@@ -33,7 +33,7 @@ namespace urchin {
 
             //deferred rendering
             deferredRenderTarget(std::make_shared<OffscreenRender>()),
-            modelDisplayer(new ModelDisplayer(ModelDisplayer::DEFAULT_MODE)),
+            modelSetDisplayer(new ModelSetDisplayer(ModelSetDisplayer::DEFAULT_MODE)),
             modelOctreeManager(new OctreeManager<Model>(DEFAULT_OCTREE_MIN_SIZE)),
             fogManager(new FogManager()),
             terrainManager(new TerrainManager(deferredRenderTarget)),
@@ -52,7 +52,7 @@ namespace urchin {
             isAntiAliasingActivated(true) {
 
         //deferred rendering
-        modelDisplayer->initialize();
+        modelSetDisplayer->initialize();
         shadowManager->addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
 
         //lighting pass rendering
@@ -65,7 +65,7 @@ namespace urchin {
             delete allOctreeableModel;
         }
 
-        delete modelDisplayer;
+        delete modelSetDisplayer;
         delete skyManager;
         delete waterManager;
         delete terrainManager;
@@ -201,7 +201,7 @@ namespace urchin {
     }
 
     void Renderer3d::onCameraProjectionUpdate() {
-        modelDisplayer->onCameraProjectionUpdate(camera);
+        modelSetDisplayer->onCameraProjectionUpdate(camera);
         terrainManager->onCameraProjectionUpdate(camera);
         waterManager->onCameraProjectionUpdate(camera);
         skyManager->onCameraProjectionUpdate(camera);
@@ -414,12 +414,12 @@ namespace urchin {
 
         //animate models (only those visible to scene OR producing shadow on scene)
         if (isShadowActivated) {
-            modelDisplayer->setModels(shadowManager->getVisibleModels());
+            modelSetDisplayer->setModels(shadowManager->getVisibleModels());
         } else {
             updateModelsInFrustum();
-            modelDisplayer->setModels(modelsInFrustum);
+            modelSetDisplayer->setModels(modelsInFrustum);
         }
-        modelDisplayer->updateAnimation(dt);
+        modelSetDisplayer->updateAnimation(dt);
 
         //update shadow maps
         if (isShadowActivated) {
@@ -439,9 +439,9 @@ namespace urchin {
         skyManager->display(camera->getViewMatrix(), camera->getPosition());
 
         updateModelsInFrustum();
-        modelDisplayer->setModels(modelsInFrustum);
-        modelDisplayer->setRenderTarget(deferredRenderTarget);
-        modelDisplayer->display(camera->getViewMatrix());
+        modelSetDisplayer->setModels(modelsInFrustum);
+        modelSetDisplayer->setRenderTarget(deferredRenderTarget);
+        modelSetDisplayer->display(camera->getViewMatrix());
 
         terrainManager->display(camera, dt);
 
@@ -462,11 +462,11 @@ namespace urchin {
         }
 
         if (DEBUG_DISPLAY_MODELS_BOUNDING_BOX) {
-            modelDisplayer->drawBBox(camera->getProjectionMatrix(), camera->getViewMatrix());
+            modelSetDisplayer->drawBBox(camera->getProjectionMatrix(), camera->getViewMatrix());
         }
 
         if (DEBUG_DISPLAY_MODEL_BASE_BONES) {
-            modelDisplayer->drawBaseBones(camera->getProjectionMatrix(), camera->getViewMatrix(), "models/character.urchinMesh");
+            modelSetDisplayer->drawBaseBones(camera->getProjectionMatrix(), camera->getViewMatrix(), "models/character.urchinMesh");
         }
 
         if (DEBUG_DISPLAY_LIGHTS_OCTREE) {
