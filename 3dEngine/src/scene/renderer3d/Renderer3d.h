@@ -31,7 +31,7 @@ namespace urchin {
 
     class Renderer3d : public Renderer, public Observer {
         public:
-            explicit Renderer3d(const std::shared_ptr<RenderTarget>&);
+            explicit Renderer3d(std::shared_ptr<RenderTarget>);
             ~Renderer3d() override;
 
             //scene properties

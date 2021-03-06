@@ -25,6 +25,9 @@ namespace urchin {
                 MOVE_ABOVE_WATER
             };
 
+            void initialize(std::shared_ptr<RenderTarget>);
+            void onCameraProjectionUpdate(const Matrix4<float>&);
+
             void setCenterPosition(const Point3<float>&);
             const Point3<float>& getCenterPosition() const;
 
@@ -61,15 +64,15 @@ namespace urchin {
             void setGradient(float);
             float getGradient() const;
 
-            void onCameraProjectionUpdate(const Matrix4<float>&);
-
-            void display(const RenderTarget*, const Camera*, FogManager*, float invFrameRate);
+            void display(const Camera*, FogManager*, float invFrameRate);
 
         private:
-            void generateVertex();
-            void updateWaterTextures();
+            void updateRenderer();
             void buildUnderwaterFog();
 
+            bool isInitialized;
+
+            std::shared_ptr<RenderTarget> renderTarget;
             std::unique_ptr<Shader> waterShader;
             ShaderVar mProjectionShaderVar, mViewShaderVar, sumTimeStepShaderVar;
             ShaderVar waterColorShaderVar, waveSpeedShaderVar, waveStrengthShaderVar;

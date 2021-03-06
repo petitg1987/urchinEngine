@@ -4,8 +4,8 @@
 
 namespace urchin {
 
-    WaterManager::WaterManager(const RenderTarget* renderTarget) :
-            renderTarget(renderTarget) {
+    WaterManager::WaterManager(std::shared_ptr<RenderTarget> renderTarget) :
+            renderTarget(std::move(renderTarget)) {
     }
 
     void WaterManager::onCameraProjectionUpdate(const Camera* camera) {
@@ -19,6 +19,7 @@ namespace urchin {
         if (water) {
             waters.push_back(water);
 
+            water->initialize(renderTarget);
             water->onCameraProjectionUpdate(projectionMatrix);
         }
     }
@@ -34,7 +35,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "waterDisplay");
 
         for (const auto water : waters) {
-            water->display(renderTarget, camera, fogManager, dt);
+            water->display(camera, fogManager, dt);
         }
     }
 }

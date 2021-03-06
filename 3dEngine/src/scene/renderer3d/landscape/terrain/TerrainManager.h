@@ -11,7 +11,7 @@ namespace urchin {
 
     class TerrainManager {
         public:
-            explicit TerrainManager(const RenderTarget*);
+            explicit TerrainManager(std::shared_ptr<RenderTarget>);
 
             void onCameraProjectionUpdate(const Camera*);
 
@@ -25,7 +25,7 @@ namespace urchin {
         private:
             void updateWithConfig();
 
-            const RenderTarget* renderTarget;
+            std::shared_ptr<RenderTarget> renderTarget;
 
             std::vector<Terrain*> terrains;
 

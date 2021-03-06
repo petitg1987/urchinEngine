@@ -24,6 +24,7 @@ namespace urchin {
             grassPositionRandomPercentage(ConfigService::instance()->getFloatValue("terrain.grassPositionRandomPercentage")),
             grassPatchSize(ConfigService::instance()->getFloatValue("terrain.grassPatchSize")),
             grassQuadtreeDepth(ConfigService::instance()->getUnsignedIntValue("terrain.grassQuadtreeDepth")),
+            isInitialized(false),
             sumTimeStep(0.0f),
             grassTexture(nullptr),
             grassMaskTexture(nullptr),
@@ -76,6 +77,14 @@ namespace urchin {
         delete mainGrassQuadtree;
     }
 
+    void TerrainGrass::initialize(std::shared_ptr<RenderTarget> renderTarget) {
+        assert(!isInitialized);
+
+        this->renderTarget = std::move(renderTarget);
+
+        isInitialized = true;
+    }
+
     void TerrainGrass::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
 
@@ -83,6 +92,7 @@ namespace urchin {
     }
 
     void TerrainGrass::refreshWith(const std::shared_ptr<TerrainMesh>& mesh, const Point3<float>& terrainPosition) {
+        assert(isInitialized);
         generateGrass(mesh, terrainPosition);
 
         ShaderDataSender()
@@ -91,6 +101,7 @@ namespace urchin {
     }
 
     void TerrainGrass::refreshWith(float ambient) {
+        assert(isInitialized);
         ShaderDataSender().sendData(terrainAmbientShaderVar, ambient);
     }
 
@@ -213,7 +224,7 @@ namespace urchin {
     void TerrainGrass::createRenderers(const std::vector<TerrainGrassQuadtree*>& leafGrassPatches) {
         if (grassTexture) {
             for (auto* grassQuadtree : leafGrassPatches) {
-                std::unique_ptr<GenericRenderer> renderer = std::make_unique<GenericRendererBuilder>(ShapeType::POINT)
+                std::unique_ptr<GenericRenderer> renderer = std::make_unique<GenericRendererBuilder>(renderTarget, ShapeType::POINT)
                         ->enableDepthTest()
                         ->disableCullFace()
                         ->addData(&grassQuadtree->getGrassVertices())
@@ -331,7 +342,9 @@ namespace urchin {
         ShaderDataSender().sendData(windStrengthShaderVar, windStrength);
     }
 
-    void TerrainGrass::display(const RenderTarget* renderTarget, const Camera* camera, float dt) {
+    void TerrainGrass::display(const Camera* camera, float dt) {
+        assert(isInitialized);
+
         if (grassTexture) {
             ScopeProfiler sp(Profiler::graphic(), "grassDisplay");
 

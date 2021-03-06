@@ -9,7 +9,7 @@ namespace urchin {
 
     class SkyManager {
         public:
-            explicit SkyManager(const RenderTarget*);
+            explicit SkyManager(std::shared_ptr<RenderTarget>);
 
             void onCameraProjectionUpdate(const Camera*);
 
@@ -19,7 +19,7 @@ namespace urchin {
             void display(const Matrix4<float>&, const Point3<float>&);
 
         private:
-            const RenderTarget* renderTarget;
+            std::shared_ptr<RenderTarget> renderTarget;
 
             std::unique_ptr<Skybox> skybox;
             Matrix4<float> projectionMatrix;

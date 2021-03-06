@@ -12,8 +12,8 @@ namespace urchin {
             throw std::runtime_error("Texture filter is already initialized");
         }
 
-        initializeDisplay();
         initializeTexture();
+        initializeDisplay();
 
         isInitialized = true;
     }
@@ -29,7 +29,7 @@ namespace urchin {
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
         };
-        textureRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
+        textureRenderer = std::make_unique<GenericRendererBuilder>(offscreenRenderTarget, ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
                 ->build();

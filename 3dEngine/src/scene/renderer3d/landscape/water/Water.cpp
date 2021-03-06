@@ -18,6 +18,7 @@
 namespace urchin {
 
     Water::Water() :
+            isInitialized(false),
             sumTimeStep(0.0f),
             xSize(0.0f),
             zSize(0.0f),
@@ -65,38 +66,47 @@ namespace urchin {
         setGradient(DEFAULT_GRADIENT);
     }
 
-    void Water::generateVertex() {
-        float minX = -xSize / 2.0f + centerPosition.X;
-        float minZ = -zSize / 2.0f + centerPosition.Z;
-        float maxX = xSize / 2.0f + centerPosition.X;
-        float maxZ = zSize / 2.0f + centerPosition.Z;
+    void Water::initialize(std::shared_ptr<RenderTarget> renderTarget) {
+        this->renderTarget = std::move(renderTarget);
 
-        std::vector<Point3<float>> vertexCoord = {
-                Point3<float>(minX, centerPosition.Y, minZ), Point3<float>(maxX, centerPosition.Y, minZ), Point3<float>(maxX, centerPosition.Y, maxZ),
-                Point3<float>(minX, centerPosition.Y, minZ), Point3<float>(maxX, centerPosition.Y, maxZ), Point3<float>(minX, centerPosition.Y, maxZ)
-        };
-        std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(sRepeat, 0.0f), Point2<float>(sRepeat, tRepeat),
-                Point2<float>(0.0f, 0.0f), Point2<float>(sRepeat, tRepeat), Point2<float>(0.0f, tRepeat)
-        };
-        waterRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
-                ->enableDepthTest()
-                ->addData(&vertexCoord)
-                ->addData(&textureCoord)
-                ->addTexture(TextureReader::build(normalTexture, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
-                ->addTexture(TextureReader::build(dudvMap, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
-                ->build();
+        updateRenderer();
+
+        isInitialized = true;
+    }
+
+    void Water::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
+        this->projectionMatrix = projectionMatrix;
+
+        ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix);
+    }
+
+    void Water::updateRenderer() {
+        if(renderTarget) {
+            float minX = -xSize / 2.0f + centerPosition.X;
+            float minZ = -zSize / 2.0f + centerPosition.Z;
+            float maxX = xSize / 2.0f + centerPosition.X;
+            float maxZ = zSize / 2.0f + centerPosition.Z;
+
+            std::vector<Point3<float>> vertexCoord = {
+                    Point3<float>(minX, centerPosition.Y, minZ), Point3<float>(maxX, centerPosition.Y, minZ), Point3<float>(maxX, centerPosition.Y, maxZ),
+                    Point3<float>(minX, centerPosition.Y, minZ), Point3<float>(maxX, centerPosition.Y, maxZ), Point3<float>(minX, centerPosition.Y, maxZ)
+            };
+            std::vector<Point2<float>> textureCoord = {
+                    Point2<float>(0.0f, 0.0f), Point2<float>(sRepeat, 0.0f), Point2<float>(sRepeat, tRepeat),
+                    Point2<float>(0.0f, 0.0f), Point2<float>(sRepeat, tRepeat), Point2<float>(0.0f, tRepeat)
+            };
+            waterRenderer = std::make_unique<GenericRendererBuilder>(renderTarget, ShapeType::TRIANGLE)
+                    ->enableDepthTest()
+                    ->addData(&vertexCoord)
+                    ->addData(&textureCoord)
+                    ->addTexture(TextureReader::build(normalTexture, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
+                    ->addTexture(TextureReader::build(dudvMap, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
+                    ->build();
+        }
 
         Point2<float> leftFarPoint(Point2<float>(-xSize / 2.0f + centerPosition.X, -zSize / 2.0f + centerPosition.Z));
         Point2<float> rightNearPoint(Point2<float>(xSize / 2.0f + centerPosition.X, zSize / 2.0f + centerPosition.Z));
         waterRectangle = std::make_unique<Rectangle<float>>(leftFarPoint, rightNearPoint);
-    }
-
-    void Water::updateWaterTextures() {
-        assert(normalTexture && dudvMap);
-
-        waterRenderer->updateTexture(0, TextureReader::build(normalTexture, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY)));
-        waterRenderer->updateTexture(1, TextureReader::build(dudvMap, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY)));
     }
 
     void Water::buildUnderwaterFog() {
@@ -106,7 +116,7 @@ namespace urchin {
     void Water::setCenterPosition(const Point3<float>& centerPosition) {
         this->centerPosition = centerPosition;
 
-        generateVertex();
+        updateRenderer();
     }
 
     const Point3<float>& Water::getCenterPosition() const {
@@ -116,7 +126,7 @@ namespace urchin {
     void Water::setXSize(float xSize) {
         this->xSize = xSize;
 
-        generateVertex();
+        updateRenderer();
     }
 
     float Water::getXSize() const {
@@ -126,7 +136,7 @@ namespace urchin {
     void Water::setZSize(float zSize) {
         this->zSize = zSize;
 
-        generateVertex();
+        updateRenderer();
     }
 
     float Water::getZSize() const {
@@ -158,7 +168,7 @@ namespace urchin {
             normalImage->release();
         }
 
-        updateWaterTextures();
+        updateRenderer();
     }
 
     const std::string& Water::getNormalFilename() const {
@@ -180,7 +190,7 @@ namespace urchin {
             dudvImage->release();
         }
 
-        updateWaterTextures();
+        updateRenderer();
     }
 
     const std::string& Water::getDudvFilename() const {
@@ -210,7 +220,7 @@ namespace urchin {
     void Water::setSRepeat(float sRepeat) {
         this->sRepeat = sRepeat;
 
-        generateVertex();
+        updateRenderer();
     }
 
     float Water::getSRepeat() const {
@@ -220,7 +230,7 @@ namespace urchin {
     void Water::setTRepeat(float tRepeat) {
         this->tRepeat  = tRepeat;
 
-        generateVertex();
+        updateRenderer();
     }
 
     float Water::getTRepeat() const {
@@ -247,13 +257,8 @@ namespace urchin {
         return gradient;
     }
 
-    void Water::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
-        this->projectionMatrix = projectionMatrix;
-
-        ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix);
-    }
-
-    void Water::display(const RenderTarget* renderTarget, const Camera* camera, FogManager* fogManager, float dt) {
+    void Water::display(const Camera* camera, FogManager* fogManager, float dt) {
+        assert(isInitialized);
         if (camera->getPosition().Y < centerPosition.Y && waterRectangle->collideWithPoint(Point2<float>(camera->getPosition().X, camera->getPosition().Z))) {
             if (fogManager->getActiveFog() != underwaterFog) {
                 fogManager->pushFog(underwaterFog);

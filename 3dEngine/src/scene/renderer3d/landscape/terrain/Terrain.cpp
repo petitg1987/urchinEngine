@@ -13,6 +13,7 @@ namespace urchin {
      * @param position Terrain position. Position is centered on XZ axis and Y value represents a point without elevation.
      */
     Terrain::Terrain(std::shared_ptr<TerrainMesh>& mesh, std::unique_ptr<TerrainMaterial> material, const Point3<float>& position) :
+            isInitialized(false),
             mesh(mesh),
             material(std::move(material)),
             ambient(0.0f) {
@@ -38,16 +39,19 @@ namespace urchin {
         setAmbient(DEFAULT_AMBIENT);
     }
 
-    void Terrain::setupRenderTarget(const std::shared_ptr<RenderTarget>& renderTarget) {
-        assert(!this->renderTarget);
-        this->renderTarget = renderTarget;
+    void Terrain::initialize(std::shared_ptr<RenderTarget> renderTarget) {
+        assert(!isInitialized);
+        this->renderTarget = std::move(renderTarget);
 
         setMesh(mesh);
         setMaterial(std::move(material));
 
         grass = std::make_unique<TerrainGrass>("");
+        grass->initialize(this->renderTarget);
         refreshGrassMesh();
         refreshGrassAmbient();
+
+        isInitialized = true;
     }
 
     void Terrain::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
@@ -167,14 +171,14 @@ namespace urchin {
     }
 
     void Terrain::display(const Camera* camera, float dt) const {
-        assert(renderTarget);
+        assert(isInitialized);
         ShaderDataSender().sendData(mViewShaderVar, camera->getViewMatrix());
 
         renderTarget->activeShader(terrainShader);
         renderTarget->display(terrainRenderer);
 
         if (grass) {
-            grass->display(renderTarget, camera, dt);
+            grass->display(camera, dt);
         }
     }
 }

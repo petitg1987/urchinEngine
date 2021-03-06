@@ -19,6 +19,7 @@ namespace urchin {
             explicit TerrainGrass(const std::string&);
             ~TerrainGrass();
 
+            void initialize(std::shared_ptr<RenderTarget>);
             void onCameraProjectionUpdate(const Matrix4<float>&);
 
             void refreshWith(const std::shared_ptr<TerrainMesh>&, const Point3<float>&);
@@ -51,7 +52,7 @@ namespace urchin {
             float getWindStrength() const;
             void setWindStrength(float);
 
-            void display(const RenderTarget*, const Camera*, float);
+            void display(const Camera*, float);
 
         private:
             void generateGrass(const std::shared_ptr<TerrainMesh>&, const Point3<float>&);
@@ -62,6 +63,9 @@ namespace urchin {
             const float grassPositionRandomPercentage;
             const float grassPatchSize;
             const unsigned int grassQuadtreeDepth;
+
+            bool isInitialized;
+            std::shared_ptr<RenderTarget> renderTarget;
 
             std::unique_ptr<Shader> terrainGrassShader;
             ShaderVar mProjectionShaderVar, mViewShaderVar, cameraPositionShaderVar, sumTimeStepShaderVar;

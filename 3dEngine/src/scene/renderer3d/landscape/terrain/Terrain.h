@@ -21,7 +21,7 @@ namespace urchin {
         public:
             Terrain(std::shared_ptr<TerrainMesh>&, std::unique_ptr<TerrainMaterial>, const Point3<float>&);
 
-            void setupRenderTarget(const std::shared_ptr<RenderTarget>&);
+            void initialize(std::shared_ptr<RenderTarget>);
             void onCameraProjectionUpdate(const Matrix4<float>&);
 
             void setMesh(const std::shared_ptr<TerrainMesh>&);
@@ -46,6 +46,7 @@ namespace urchin {
             void refreshGrassMesh();
             void refreshGrassAmbient();
 
+            bool isInitialized;
             std::shared_ptr<RenderTarget> renderTarget;
 
             std::unique_ptr<GenericRenderer> terrainRenderer;

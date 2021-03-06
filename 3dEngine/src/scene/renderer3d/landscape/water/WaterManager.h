@@ -12,7 +12,7 @@ namespace urchin {
 
     class WaterManager {
         public:
-            explicit WaterManager(const RenderTarget*);
+            explicit WaterManager(std::shared_ptr<RenderTarget>);
 
             void onCameraProjectionUpdate(const Camera*);
 
@@ -22,7 +22,7 @@ namespace urchin {
             void display(const Camera*, FogManager*, float) const;
 
         private:
-            const RenderTarget* renderTarget;
+            std::shared_ptr<RenderTarget> renderTarget;
 
             std::vector<Water*> waters;
 

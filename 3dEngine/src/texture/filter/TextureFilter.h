@@ -51,12 +51,12 @@ namespace urchin {
             unsigned int textureNumberLayer;
             TextureFormat textureFormat;
 
+            std::shared_ptr<OffscreenRender> offscreenRenderTarget;
+            std::shared_ptr<Texture> texture;
+
             std::unique_ptr<GenericRenderer> textureRenderer;
             std::unique_ptr<Shader> textureFilterShader;
             ShaderVar layersToUpdateShaderVar;
-
-            std::unique_ptr<OffscreenRender> offscreenRenderTarget;
-            std::shared_ptr<Texture> texture;
     };
 
     #include "TextureFilter.inl"

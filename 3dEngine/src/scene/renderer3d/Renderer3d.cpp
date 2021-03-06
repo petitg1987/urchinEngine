@@ -24,8 +24,8 @@ namespace urchin {
     bool DEBUG_DISPLAY_MODEL_BASE_BONES = false;
     bool DEBUG_DISPLAY_LIGHTS_OCTREE = false;
 
-    Renderer3d::Renderer3d(const std::shared_ptr<RenderTarget>& finalRenderTarget) :
-            finalRenderTarget(finalRenderTarget),
+    Renderer3d::Renderer3d(std::shared_ptr<RenderTarget> finalRenderTarget) :
+            finalRenderTarget(std::move(finalRenderTarget)),
             sceneWidth(0),
             sceneHeight(0),
             paused(true),
@@ -48,7 +48,7 @@ namespace urchin {
 
             //lighting pass rendering
             offscreenLightingRenderTarget(std::make_shared<OffscreenRender>()),
-            antiAliasingManager(new AntiAliasingManager(finalRenderTarget)),
+            antiAliasingManager(new AntiAliasingManager(this->finalRenderTarget)),
             isAntiAliasingActivated(true) {
 
         //deferred rendering

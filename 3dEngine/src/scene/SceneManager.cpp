@@ -12,7 +12,7 @@ namespace urchin {
     SceneManager::SceneManager() :
             sceneWidth(500),
             sceneHeight(500),
-            screenRenderTarget(new ScreenRender()),
+            screenRenderTarget(std::make_shared<ScreenRender>()),
             activeRenderers(),
             previousFps(),
             fps(START_FPS),
@@ -33,7 +33,6 @@ namespace urchin {
     }
 
     SceneManager::~SceneManager() {
-        delete screenRenderTarget;
         for (auto& renderer3d : renderers3d) {
             delete renderer3d;
         }

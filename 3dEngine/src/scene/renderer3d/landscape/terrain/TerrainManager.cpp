@@ -5,8 +5,8 @@
 #define DEFAULT_GRASS_DISPLAY_DISTANCE 100
 
 namespace urchin {
-    TerrainManager::TerrainManager(const RenderTarget* renderTarget) :
-            renderTarget(renderTarget),
+    TerrainManager::TerrainManager(std::shared_ptr<RenderTarget> renderTarget) :
+            renderTarget(std::move(renderTarget)),
             grassDisplayDistance(DEFAULT_GRASS_DISPLAY_DISTANCE) {
 
     }

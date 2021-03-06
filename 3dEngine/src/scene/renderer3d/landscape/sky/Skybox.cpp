@@ -12,6 +12,7 @@ namespace urchin {
     * @param filenames Filenames of the textures in the following order: X-, X+, Y-, Y+, Z-, Z+
     */
     Skybox::Skybox(const std::vector<std::string>& filenames) :
+            isInitialized(false),
             filenames(filenames),
             offsetY(0.0) {
         if (filenames.size() != 6) {
@@ -61,15 +62,15 @@ namespace urchin {
                 throw std::runtime_error("All skybox images must have the same texture format: " + std::to_string(textureFormat) + " != " + std::to_string(nextTextureFormat));
             }
         }
-
-        initialize();
     }
 
     Skybox::~Skybox() {
         clearSkyboxImages();
     }
 
-    void Skybox::initialize() {
+    void Skybox::initialize(std::shared_ptr<RenderTarget> renderTarget) {
+        this->renderTarget = std::move(renderTarget);
+
         //texture creation
         std::vector<const void*> cubeDataPtr = {&skyboxImages[0]->getTexels()[0], &skyboxImages[1]->getTexels()[0], &skyboxImages[2]->getTexels()[0],
                                                  &skyboxImages[3]->getTexels()[0], &skyboxImages[4]->getTexels()[0], &skyboxImages[5]->getTexels()[0] };
@@ -128,11 +129,13 @@ namespace urchin {
             Point3<float>(SIZE, SIZE, SIZE), Point3<float>(-SIZE, -SIZE, SIZE), Point3<float>(-SIZE, SIZE, SIZE)
         };
 
-        skyboxRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
+        skyboxRenderer = std::make_unique<GenericRendererBuilder>(renderTarget, ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
                 ->addTexture(TextureReader::build(skyboxTexture, TextureParam::buildLinear()))
                 ->build();
+
+        this->isInitialized = true;
     }
 
     void Skybox::clearSkyboxImages() {
@@ -161,7 +164,8 @@ namespace urchin {
         return filenames;
     }
 
-    void Skybox::display(const RenderTarget* renderTarget, const Matrix4<float>& viewMatrix, const Point3<float>& cameraPosition) {
+    void Skybox::display(const Matrix4<float>& viewMatrix, const Point3<float>& cameraPosition) {
+        assert(isInitialized);
         translationMatrix.buildTranslation(cameraPosition.X, cameraPosition.Y + offsetY, cameraPosition.Z);
         ShaderDataSender().sendData(mViewShaderVar, viewMatrix * translationMatrix);
 
