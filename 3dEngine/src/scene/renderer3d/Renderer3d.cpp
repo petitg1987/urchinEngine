@@ -120,45 +120,7 @@ namespace urchin {
             onCameraProjectionUpdate();
         }
 
-        //deferred rendering
-        depthTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::DEPTH_32_FLOAT, nullptr);
-        diffuseTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
-        normalAndAmbientTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
-        deferredRenderTarget->onResize(sceneWidth, sceneHeight);
-        deferredRenderTarget->removeAllTextures();
-        deferredRenderTarget->addTexture(depthTexture);
-        deferredRenderTarget->addTexture(diffuseTexture);
-        deferredRenderTarget->addTexture(normalAndAmbientTexture);
-
-        //lighting pass rendering
-        lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
-        offscreenLightingRenderTarget->onResize(sceneWidth, sceneHeight);
-        offscreenLightingRenderTarget->removeAllTextures();
-        offscreenLightingRenderTarget->addTexture(lightingPassTexture);
-
-        std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
-                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(-1.0f, -1.0f)
-        };
-        std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
-                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
-        };
-        lightingRenderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
-                ->addData(&vertexCoord)
-                ->addData(&textureCoord)
-                ->addTexture(TextureReader::build(depthTexture, TextureParam::buildNearest()))
-                ->addTexture(TextureReader::build(diffuseTexture, TextureParam::buildNearest()))
-                ->addTexture(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
-                ->build();
-
-        shadowManager->onResize(sceneWidth, sceneHeight);
-
-        ambientOcclusionManager->onResize(sceneWidth, sceneHeight);
-        ambientOcclusionManager->onTexturesUpdate(depthTexture, normalAndAmbientTexture);
-
-        antiAliasingManager->onResize(sceneWidth, sceneHeight);
-        antiAliasingManager->onTextureUpdate(lightingPassTexture);
+        refreshRenderer();
     }
 
     void Renderer3d::notify(Observable* observable, int notificationType) {
@@ -224,6 +186,7 @@ namespace urchin {
 
     void Renderer3d::activateAntiAliasing(bool isAntiAliasingActivated) {
         this->isAntiAliasingActivated = isAntiAliasingActivated;
+        refreshRenderer();
     }
 
     void Renderer3d::setCamera(Camera* camera) {
@@ -339,6 +302,49 @@ namespace urchin {
         postUpdateScene();
 
         displayBuffers();
+    }
+
+    void Renderer3d::refreshRenderer() {
+        //deferred rendering
+        depthTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::DEPTH_32_FLOAT, nullptr);
+        diffuseTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
+        normalAndAmbientTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
+        deferredRenderTarget->onResize(sceneWidth, sceneHeight);
+        deferredRenderTarget->removeAllTextures();
+        deferredRenderTarget->addTexture(depthTexture);
+        deferredRenderTarget->addTexture(diffuseTexture);
+        deferredRenderTarget->addTexture(normalAndAmbientTexture);
+
+        //lighting pass rendering
+        lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
+        offscreenLightingRenderTarget->onResize(sceneWidth, sceneHeight);
+        offscreenLightingRenderTarget->removeAllTextures();
+        offscreenLightingRenderTarget->addTexture(lightingPassTexture);
+
+        const auto& renderTarget = isAntiAliasingActivated ? offscreenLightingRenderTarget : finalRenderTarget;
+        std::vector<Point2<float>> vertexCoord = {
+                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
+                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(-1.0f, -1.0f)
+        };
+        std::vector<Point2<float>> textureCoord = {
+                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
+                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
+        };
+        lightingRenderer = std::make_unique<GenericRendererBuilder>(renderTarget, ShapeType::TRIANGLE)
+                ->addData(&vertexCoord)
+                ->addData(&textureCoord)
+                ->addTexture(TextureReader::build(depthTexture, TextureParam::buildNearest()))
+                ->addTexture(TextureReader::build(diffuseTexture, TextureParam::buildNearest()))
+                ->addTexture(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
+                ->build();
+
+        shadowManager->onResize(sceneWidth, sceneHeight);
+
+        ambientOcclusionManager->onResize(sceneWidth, sceneHeight);
+        ambientOcclusionManager->onTexturesUpdate(depthTexture, normalAndAmbientTexture);
+
+        antiAliasingManager->onResize(sceneWidth, sceneHeight);
+        antiAliasingManager->onTextureUpdate(lightingPassTexture);
     }
 
     void Renderer3d::displayBuffers() {

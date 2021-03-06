@@ -89,23 +89,6 @@ namespace urchin {
         this->normalAndAmbientTexture = normalAndAmbientTexture;
 
         generateNoiseTexture();
-
-        std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
-                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(-1.0f, -1.0f)
-        };
-        std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
-                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
-        };
-        renderer = std::make_unique<GenericRendererBuilder>(ShapeType::TRIANGLE)
-                ->addData(&vertexCoord)
-                ->addData(&textureCoord)
-                ->addTexture(TextureReader::build(depthTexture, TextureParam::buildNearest()))
-                ->addTexture(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
-                ->addTexture(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest()))
-                ->build();
-
         createOrUpdateAOTexture();
         createOrUpdateAOShader();
     }
@@ -118,6 +101,26 @@ namespace urchin {
         createOrUpdateAOShader();
     }
 
+    void AmbientOcclusionManager::refreshRenderer() {
+        std::vector<Point2<float>> vertexCoord = {
+                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
+                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(-1.0f, -1.0f)
+        };
+
+        std::vector<Point2<float>> textureCoord = {
+                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
+                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
+        };
+
+        renderer = std::make_unique<GenericRendererBuilder>(offscreenRenderTarget, ShapeType::TRIANGLE)
+                ->addData(&vertexCoord)
+                ->addData(&textureCoord)
+                ->addTexture(TextureReader::build(depthTexture, TextureParam::buildNearest()))
+                ->addTexture(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
+                ->addTexture(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest()))
+                ->build();
+    }
+
     void AmbientOcclusionManager::createOrUpdateAOTexture() {
         if (depthTexture) {
             textureSizeX = (unsigned int)((float)sceneWidth / (float)retrieveTextureSizeFactor());
@@ -127,6 +130,7 @@ namespace urchin {
             offscreenRenderTarget = std::make_unique<OffscreenRender>();
             offscreenRenderTarget->onResize(textureSizeX, textureSizeY);
             offscreenRenderTarget->addTexture(ambientOcclusionTexture);
+            refreshRenderer();
 
             verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>()
                     ->textureSize(textureSizeX, textureSizeY)

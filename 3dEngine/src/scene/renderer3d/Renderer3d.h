@@ -92,6 +92,7 @@ namespace urchin {
             void updateModelsInFrustum();
 
             //scene
+            void refreshRenderer();
             void displayBuffers();
             void updateScene(float);
             void deferredRendering(float);

@@ -43,6 +43,7 @@ namespace urchin {
             void loadAOTexture(const std::unique_ptr<GenericRenderer>&) const;
 
         private:
+            void refreshRenderer();
             void createOrUpdateAOTexture();
             void createOrUpdateAOShader();
             void generateKernelSamples();
