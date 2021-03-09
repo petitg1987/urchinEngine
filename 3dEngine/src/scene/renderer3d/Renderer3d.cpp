@@ -53,6 +53,7 @@ namespace urchin {
 
         //deferred rendering
         modelSetDisplayer->initialize();
+        modelSetDisplayer->setRenderTarget(deferredRenderTarget);
         shadowManager->addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
 
         //lighting pass rendering
@@ -440,7 +441,6 @@ namespace urchin {
 
         updateModelsInFrustum();
         modelSetDisplayer->setModels(modelsInFrustum);
-        modelSetDisplayer->setRenderTarget(deferredRenderTarget);
         modelSetDisplayer->display(camera->getViewMatrix());
 
         terrainManager->display(camera, dt);

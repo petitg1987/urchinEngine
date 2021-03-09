@@ -117,6 +117,7 @@ namespace urchin {
     }
 
     void ModelSetDisplayer::setModels(const std::vector<Model*>& models) {
+        assert(renderTarget);
         for (auto model : models) {
             const auto& itModel = modelsDisplayer.find(model);
             if(itModel == modelsDisplayer.end()) {

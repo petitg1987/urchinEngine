@@ -355,8 +355,8 @@ namespace urchin {
             shadowShaderVariable->setLightShadowMap(lightShadowMap.second);
             shadowModelShaderVariable->setLightShadowMap(lightShadowMap.second);
 
-            shadowModelSetDisplayer->setModels(lightShadowMap.second->retrieveModels());
             shadowModelSetDisplayer->setRenderTarget(renderTarget);
+            shadowModelSetDisplayer->setModels(lightShadowMap.second->retrieveModels());
             shadowModelSetDisplayer->display(lightShadowMap.second->getLightViewMatrix());
 
             lightShadowMap.second->applyTextureFilters();

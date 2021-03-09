@@ -11,7 +11,8 @@ namespace urchin {
             renderTarget(std::move(renderTarget)) {
 
         for(auto& constMesh : model->getConstMeshes()->getConstMeshes()) {
-            auto meshRendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, ShapeType::TRIANGLE)
+            auto meshRendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, ShapeType::TRIANGLE);
+            meshRendererBuilder
                 ->enableDepthTest()
                 ->addData(&constMesh->getBaseVertices())
                 ->addData(&constMesh->getTextureCoordinates())
