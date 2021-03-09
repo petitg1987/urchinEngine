@@ -21,7 +21,7 @@ namespace urchin {
             currAnimation(nullptr),
             stopAnimationAtLastFrame(false),
             bIsProduceShadow(true) {
-        std::string meshFilename = model.getMeshes() != nullptr ? model.getMeshes()->getName() : "";
+        std::string meshFilename = model.getConstMeshes() != nullptr ? model.getConstMeshes()->getName() : "";
         initialize(meshFilename);
 
         setTransform(model.getTransform());
@@ -113,11 +113,14 @@ namespace urchin {
         this->notifyOctreeableMove();
     }
 
-    const ConstMeshes* Model::getMeshes() const {
+    const Meshes* Model::getMeshes() const {
+        return meshes;
+    }
+
+    const ConstMeshes* Model::getConstMeshes() const {
         if (meshes) {
             return meshes->getConstMeshes();
         }
-
         return nullptr;
     }
 
@@ -215,14 +218,7 @@ namespace urchin {
         }
     }
 
-    void Model::display(const RenderTarget* renderTarget, const MeshParameter& meshParameter) const {
-        if (meshes) {
-            for (unsigned int m = 0; m < meshes->getNumberMeshes(); ++m) {
-                meshes->getMesh(m)->display(renderTarget, meshParameter);
-            }
-        }
-    }
-
+    //TODO move next methods in ModelDisplayer ?
     void Model::drawBBox(const std::shared_ptr<RenderTarget>& renderTarget, const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
         AABBoxModel aabboxModel(getAABBox());
         aabboxModel.initialize(renderTarget);

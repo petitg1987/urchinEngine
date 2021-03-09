@@ -21,8 +21,8 @@ namespace urchin {
         std::shared_ptr<XmlChunk> meshChunk = xmlWriter.createChunk(MESH_TAG, XmlAttribute(), modelChunk);
         std::shared_ptr<XmlChunk> meshFilenameChunk = xmlWriter.createChunk(FILENAME_TAG, XmlAttribute(), meshChunk);
 
-        if (model->getMeshes()) {
-            meshFilenameChunk->setStringValue(model->getMeshes()->getMeshFilename());
+        if (model->getConstMeshes()) {
+            meshFilenameChunk->setStringValue(model->getConstMeshes()->getMeshFilename());
         }
         writeAnimationsOn(modelChunk, model, xmlWriter);
         writeTransformOn(modelChunk, model, xmlWriter);

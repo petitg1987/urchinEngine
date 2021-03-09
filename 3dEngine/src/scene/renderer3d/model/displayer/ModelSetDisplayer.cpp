@@ -6,16 +6,7 @@
 #include "graphic/shader/data/ShaderDataSender.h"
 
 namespace urchin {
-    /**
-     * @param displayMode Defines a display mode allowing to choose what we display and how we display models.
-     * The available display modes are:
-     *  - DEFAULT_MODE provide:
-     *      * Depth information
-     *      * Diffuse information (output unit: 0)
-     *      * Normal information and ambient factor (output unit: 1)
-     *  - DEPTH_ONLY_MODE provide:
-     *      * Depth information
-     */
+
     ModelSetDisplayer::ModelSetDisplayer(DisplayMode displayMode) :
             isInitialized(false),
             displayMode(displayMode),
@@ -126,6 +117,13 @@ namespace urchin {
     }
 
     void ModelSetDisplayer::setModels(const std::vector<Model*>& models) {
+        for (auto model : models) {
+            const auto& itModel = modelsDisplayer.find(model);
+            if(itModel == modelsDisplayer.end()) {
+                modelsDisplayer.emplace(std::make_pair(model, std::make_unique<ModelDisplayer>(model, displayMode, renderTarget)));
+            }
+        }
+
         this->models = models;
     }
 
@@ -162,7 +160,7 @@ namespace urchin {
                 customModelShaderVariable->loadCustomShaderVariables(model);
             }
 
-            model->display(renderTarget, meshParameter);
+            modelsDisplayer[model]->display(meshParameter);
         }
     }
 
@@ -174,7 +172,7 @@ namespace urchin {
 
     void ModelSetDisplayer::drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix, const std::string& meshFilename) const {
         for (auto model : models) {
-            if (model->getMeshes() && model->getMeshes()->getMeshFilename() == meshFilename) {
+            if (model->getConstMeshes() && model->getConstMeshes()->getMeshFilename() == meshFilename) {
                 model->drawBaseBones(renderTarget, projectionMatrix, viewMatrix);
             }
         }

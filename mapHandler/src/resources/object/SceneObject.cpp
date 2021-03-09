@@ -130,7 +130,7 @@ namespace urchin {
     void SceneObject::setupAIObject() {
         deleteAIObjects();
 
-        if (!rigidBody || !model->getMeshes()) {
+        if (!rigidBody || !model->getConstMeshes()) {
             this->aiObject = nullptr;
         } else {
             std::string aiObjectName = "#" + rigidBody->getId(); //prefix to avoid collision name with terrains

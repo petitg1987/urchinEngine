@@ -82,7 +82,7 @@ namespace urchin {
         geometryTokens["MAX_VERTICES"] = std::to_string(3*nbShadowMaps);
         geometryTokens["NUMBER_SHADOW_MAPS"] = std::to_string(nbShadowMaps);
         delete shadowModelSetDisplayer;
-        shadowModelSetDisplayer = new ModelSetDisplayer(ModelSetDisplayer::DEPTH_ONLY_MODE);
+        shadowModelSetDisplayer = new ModelSetDisplayer(DisplayMode::DEPTH_ONLY_MODE);
         shadowModelSetDisplayer->setCustomGeometryShader("modelShadowMap.geom", geometryTokens);
         shadowModelSetDisplayer->setCustomFragmentShader("modelShadowMap.frag", fragmentTokens);
         shadowModelSetDisplayer->initialize();

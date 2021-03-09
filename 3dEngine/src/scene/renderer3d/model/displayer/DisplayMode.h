@@ -1,0 +1,21 @@
+#ifndef URCHINENGINE_DISPLAYMODE_H
+#define URCHINENGINE_DISPLAYMODE_H
+
+namespace urchin {
+
+    enum DisplayMode {
+        /* DEFAULT_MODE provide:
+            * Texturing
+            * Depth information
+            * Diffuse information (output unit: 0)
+            * Normal information and ambient factor (output unit: 1) */
+        DEFAULT_MODE = 0,
+
+        /* DEPTH_ONLY_MODE provide:
+            * Depth information */
+        DEPTH_ONLY_MODE
+    };
+
+}
+
+#endif

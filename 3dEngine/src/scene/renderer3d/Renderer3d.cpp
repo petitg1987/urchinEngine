@@ -33,7 +33,7 @@ namespace urchin {
 
             //deferred rendering
             deferredRenderTarget(std::make_shared<OffscreenRender>()),
-            modelSetDisplayer(new ModelSetDisplayer(ModelSetDisplayer::DEFAULT_MODE)),
+            modelSetDisplayer(new ModelSetDisplayer(DisplayMode::DEFAULT_MODE)),
             modelOctreeManager(new OctreeManager<Model>(DEFAULT_OCTREE_MIN_SIZE)),
             fogManager(new FogManager()),
             terrainManager(new TerrainManager(deferredRenderTarget)),

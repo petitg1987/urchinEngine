@@ -19,7 +19,8 @@ namespace urchin {
             ~Octreeable() override;
 
             enum NotificationType {
-                MOVE
+                MOVE,
+                MAX_NOTIFICATION_TYPE
             };
 
             void notifyOctreeableMove();

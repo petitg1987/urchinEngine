@@ -16,7 +16,10 @@ namespace urchin {
 
             void update(const std::vector<Bone>&);
 
-            void display(const RenderTarget*, const MeshParameter&) const;
+            const std::vector<Point3<float>>& getVertices() const;
+            const std::vector<Vector3<float>>& getNormals() const;
+            const std::vector<Vector3<float>>& getTangents() const;
+
             void drawBaseBones(const std::shared_ptr<RenderTarget>&, const Matrix4<float>&, const Matrix4<float>&) const;
 
         private:
@@ -25,8 +28,6 @@ namespace urchin {
             std::vector<Point3<float>> vertices;
             std::vector<Vector3<float>> normals;
             std::vector<Vector3<float>> tangents;
-
-            std::unique_ptr<GenericRenderer> meshRenderer;
     };
 
 }

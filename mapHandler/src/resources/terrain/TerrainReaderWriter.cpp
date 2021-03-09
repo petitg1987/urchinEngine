@@ -42,7 +42,7 @@ namespace urchin {
 
         std::shared_ptr<XmlChunk> positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), terrainChunk);
 
-        return new Terrain(terrainMesh, terrainMaterial, positionChunk->getPoint3Value());
+        return new Terrain(terrainMesh, std::move(terrainMaterial), positionChunk->getPoint3Value());
     }
 
     void TerrainReaderWriter::buildChunkFrom(const std::shared_ptr<XmlChunk>& terrainChunk, const Terrain* terrain, XmlWriter& xmlWriter) const {

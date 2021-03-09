@@ -13,7 +13,9 @@
 #include "graphic/shader/model/ShaderVar.h"
 #include "graphic/render/target/RenderTarget.h"
 #include "scene/renderer3d/model/Model.h"
+#include "scene/renderer3d/model/displayer/DisplayMode.h"
 #include "scene/renderer3d/camera/Camera.h"
+#include "ModelDisplayer.h"
 
 namespace urchin {
 
@@ -22,11 +24,6 @@ namespace urchin {
     */
     class ModelSetDisplayer {
         public:
-            enum DisplayMode {
-                DEFAULT_MODE = 0,
-                DEPTH_ONLY_MODE
-            };
-
             explicit ModelSetDisplayer(DisplayMode displayMode);
 
             void initialize();
@@ -66,6 +63,7 @@ namespace urchin {
 
             std::shared_ptr<RenderTarget> renderTarget;
             std::vector<Model*> models;
+            std::unordered_map<Model*, std::unique_ptr<ModelDisplayer>> modelsDisplayer;
     };
 
 }

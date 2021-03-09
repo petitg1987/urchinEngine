@@ -16,6 +16,10 @@ namespace urchin {
 
     class Model : public Octreeable<Model> {
         public:
+            enum NotificationType {
+                MESH_UPDATED = Octreeable::MAX_NOTIFICATION_TYPE
+            };
+
             explicit Model(const std::string&);
             Model(const Model&);
             ~Model() override;
@@ -25,7 +29,8 @@ namespace urchin {
             void stopAnimation(bool);
             bool isAnimate() const;
 
-            const ConstMeshes* getMeshes() const;
+            const Meshes* getMeshes() const;
+            const ConstMeshes* getConstMeshes() const;
             std::map<std::string, const ConstAnimation*> getAnimations() const;
 
             const AABBox<float>& getAABBox() const override;
@@ -42,7 +47,6 @@ namespace urchin {
             bool isProduceShadow() const;
 
             void updateAnimation(float);
-            void display(const RenderTarget*, const MeshParameter&) const;
 
             void drawBBox(const std::shared_ptr<RenderTarget>&, const Matrix4<float>&, const Matrix4<float>&) const;
             void drawBaseBones(const std::shared_ptr<RenderTarget>&, const Matrix4<float>&, const Matrix4<float>&) const;
