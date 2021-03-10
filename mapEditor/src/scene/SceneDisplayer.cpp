@@ -1,15 +1,16 @@
 #include <stdexcept>
 #include <QMessageBox>
+#include <utility>
 
 #include "SceneDisplayer.h"
 
 namespace urchin {
 
-    SceneDisplayer::SceneDisplayer(SceneController* sceneController, const MouseController& mouseController, const StatusBarController& statusBarController) :
+    SceneDisplayer::SceneDisplayer(SceneController* sceneController, const MouseController& mouseController, StatusBarController statusBarController) :
         isInitialized(false),
         sceneController(sceneController),
         mouseController(mouseController),
-        statusBarController(statusBarController),
+        statusBarController(std::move(statusBarController)),
         sceneManager(nullptr),
         camera(nullptr),
         bodyShapeDisplayer(nullptr),
@@ -139,6 +140,8 @@ namespace urchin {
     void SceneDisplayer::refreshObjectsModel() {
         if (viewProperties[MODEL_PHYSICS]) {
             bodyShapeDisplayer->displayBodyShape();
+        } else {
+            bodyShapeDisplayer->clearDisplay();
         }
 
         objectMoveController->displayAxis();

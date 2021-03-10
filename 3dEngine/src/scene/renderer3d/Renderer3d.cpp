@@ -467,7 +467,7 @@ namespace urchin {
         }
 
         if (DEBUG_DISPLAY_MODEL_BASE_BONES) {
-            modelSetDisplayer->drawBaseBones(camera->getProjectionMatrix(), camera->getViewMatrix(), "models/character.urchinMesh");
+            modelSetDisplayer->drawBaseBones(camera->getProjectionMatrix(), camera->getViewMatrix(), "models/characterAnimate.urchinMesh");
         }
 
         if (DEBUG_DISPLAY_LIGHTS_OCTREE) {

@@ -15,18 +15,17 @@ namespace urchin {
             void setSelectedCompoundShapeComponent(std::shared_ptr<const LocalizedCollisionShape>);
 
             void displayBodyShape();
+            void clearDisplay();
 
         private:
-            GeometryModel* retrieveSingleGeometry(CollisionShape3D::ShapeType shapeType, const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&);
+            static GeometryModel* retrieveSingleGeometry(CollisionShape3D::ShapeType shapeType, const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&);
 
-            GeometryModel* retrieveSphereGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&) const;
-            GeometryModel* retrieveBoxGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&) const;
-            GeometryModel* retrieveCylinderGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&) const;
-            GeometryModel* retrieveConeGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&) const;
-            GeometryModel* retrieveCapsuleGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&) const;
-            GeometryModel* retrieveConvexHullGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&) const;
-
-            void cleanCurrentDisplay();
+            static GeometryModel* retrieveSphereGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&);
+            static GeometryModel* retrieveBoxGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&);
+            static GeometryModel* retrieveCylinderGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&);
+            static GeometryModel* retrieveConeGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&);
+            static GeometryModel* retrieveCapsuleGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&);
+            static GeometryModel* retrieveConvexHullGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&);
 
             SceneManager* sceneManager;
             std::vector<GeometryModel*> bodyShapeModels;
