@@ -16,6 +16,10 @@ namespace urchin {
 
     }
 
+    ModelSetDisplayer::~ModelSetDisplayer() {
+        modelsDisplayer.clear();
+    }
+
     void ModelSetDisplayer::initialize() {
         if (isInitialized) {
             throw std::runtime_error("Model displayer is already initialized.");
@@ -114,6 +118,8 @@ namespace urchin {
 
     void ModelSetDisplayer::setRenderTarget(std::shared_ptr<RenderTarget> renderTarget) {
         this->renderTarget = std::move(renderTarget);
+
+        modelsDisplayer.clear();
     }
 
     void ModelSetDisplayer::setModels(const std::vector<Model*>& models) {
@@ -126,6 +132,10 @@ namespace urchin {
         }
 
         this->models = models;
+    }
+
+    void ModelSetDisplayer::removeModel(Model* model) {
+        modelsDisplayer.erase(model);
     }
 
     void ModelSetDisplayer::updateAnimation(float dt) {

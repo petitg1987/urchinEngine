@@ -50,7 +50,7 @@ namespace urchin {
         delete sceneController;
     }
 
-    QString MapEditorWindow::getBaseWindowTitle() const {
+    QString MapEditorWindow::getBaseWindowTitle() {
         return QString::fromStdString("Urchin - Map Editor");
     }
 

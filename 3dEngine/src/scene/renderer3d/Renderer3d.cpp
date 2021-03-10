@@ -62,11 +62,11 @@ namespace urchin {
 
     Renderer3d::~Renderer3d() {
         //models
+        delete modelSetDisplayer;
         for (auto* allOctreeableModel : modelOctreeManager->getAllOctreeables()) {
             delete allOctreeableModel;
         }
 
-        delete modelSetDisplayer;
         delete skyManager;
         delete waterManager;
         delete terrainManager;
@@ -228,9 +228,12 @@ namespace urchin {
 
     void Renderer3d::removeModel(Model* model) {
         if (model) {
+            shadowManager->removeModel(model);
+            modelSetDisplayer->removeModel(model);
+
             modelOctreeManager->removeOctreeable(model);
+            delete model;
         }
-        delete model;
     }
 
     bool Renderer3d::isModelExist(Model* model) {
@@ -338,8 +341,6 @@ namespace urchin {
                 ->addTexture(TextureReader::build(diffuseTexture, TextureParam::buildNearest()))
                 ->addTexture(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
                 ->build();
-
-        shadowManager->onResize(sceneWidth, sceneHeight);
 
         ambientOcclusionManager->onResize(sceneWidth, sceneHeight);
         ambientOcclusionManager->onTexturesUpdate(depthTexture, normalAndAmbientTexture);

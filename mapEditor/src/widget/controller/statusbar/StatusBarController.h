@@ -20,13 +20,15 @@ namespace urchin {
             void applyPreviousState();
 
         private:
-            StatusBarStateData getStateData(StatusBarState);
+            static StatusBarStateData getStateData(StatusBarState);
 
             void applyCurrentState();
-            QFrame* createSeparator();
+            void addStatusBarWidget(QWidget*);
+            static QFrame* createSeparator();
 
             StatusBarState currentState;
             QMainWindow* window;
+            std::vector<QWidget*> statusBarWidgets;
     };
 
 }

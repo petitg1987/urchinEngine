@@ -26,8 +26,6 @@ namespace urchin {
             nbShadowMaps(DEFAULT_NUMBER_SHADOW_MAPS),
             viewingShadowDistance(DEFAULT_VIEWING_SHADOW_DISTANCE),
             blurShadow(DEFAULT_BLUR_SHADOW),
-            sceneWidth(0),
-            sceneHeight(0),
             shadowModelSetDisplayer(nullptr),
             lightManager(lightManager),
             modelOctreeManager(modelOctreeManager),
@@ -105,11 +103,6 @@ namespace urchin {
             }
             delete[] lightsLocation;
         }
-    }
-
-    void ShadowManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) { //TODO remove if useless ?
-        this->sceneWidth = sceneWidth;
-        this->sceneHeight = sceneHeight;
     }
 
     void ShadowManager::onCameraProjectionUpdate(const Camera* camera) {
@@ -229,6 +222,10 @@ namespace urchin {
      */
     const std::vector<Model*>& ShadowManager::getVisibleModels() {
         return visibleModels;
+    }
+
+    void ShadowManager::removeModel(Model* model) {
+        shadowModelSetDisplayer->removeModel(model);
     }
 
     void ShadowManager::addShadowLight(const Light* light) {

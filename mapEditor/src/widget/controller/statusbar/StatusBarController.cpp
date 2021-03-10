@@ -4,14 +4,17 @@
 namespace urchin {
 
     StatusBarController::StatusBarController(QMainWindow* window) :
-        currentState(StatusBarState::NONE),
-        window(window) {
+            currentState(StatusBarState::NONE),
+            window(window) {
+        window->setStatusBar(new QStatusBar(window));
         applyCurrentState();
     }
 
     void StatusBarController::clearState() {
-        auto* statusBar = new QStatusBar(window);
-        window->setStatusBar(statusBar);
+        for(auto& statusBarWidget : statusBarWidgets) {
+            window->statusBar()->removeWidget(statusBarWidget);
+        }
+        statusBarWidgets.clear();
     }
 
     void StatusBarController::applyState(StatusBarState state) {
@@ -49,16 +52,20 @@ namespace urchin {
     }
 
     void StatusBarController::applyCurrentState() {
-        auto* statusBar = new QStatusBar(window);
-        window->setStatusBar(statusBar);
+        clearState();
 
         auto statusLabels = getStateData(currentState).getLabels();
         for (std::size_t i = 0; i < statusLabels.size(); ++i) {
-            statusBar->addWidget(new QLabel(QString(statusLabels[i].c_str())));
+            addStatusBarWidget(new QLabel(QString(statusLabels[i].c_str())));
             if (i != statusLabels.size() - 1) {
-                statusBar->addWidget(createSeparator());
+                addStatusBarWidget(createSeparator());
             }
         }
+    }
+
+    void StatusBarController::addStatusBarWidget(QWidget* widget) {
+        statusBarWidgets.push_back(widget);
+        window->statusBar()->addWidget(widget);
     }
 
     QFrame* StatusBarController::createSeparator() {

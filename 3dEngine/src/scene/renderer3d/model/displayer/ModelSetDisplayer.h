@@ -25,6 +25,7 @@ namespace urchin {
     class ModelSetDisplayer {
         public:
             explicit ModelSetDisplayer(DisplayMode displayMode);
+            ~ModelSetDisplayer();
 
             void initialize();
             void onCameraProjectionUpdate(const Camera*);
@@ -37,6 +38,7 @@ namespace urchin {
 
             void setRenderTarget(std::shared_ptr<RenderTarget>);
             void setModels(const std::vector<Model*>&);
+            void removeModel(Model*);
 
             void updateAnimation(float);
             void display(const Matrix4<float>&);

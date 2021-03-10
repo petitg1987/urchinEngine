@@ -36,9 +36,12 @@ namespace urchin {
         model->addObserver(this, Model::MESH_UPDATED);
     }
 
+    ModelDisplayer::~ModelDisplayer() {
+        model->removeObserver(this, Model::MESH_UPDATED);
+    }
+
     void ModelDisplayer::notify(Observable* observable, int notificationType) {
         if (auto* model = dynamic_cast<Model*>(observable)) {
-            assert(this->model == model);
             if (notificationType == Model::MESH_UPDATED) {
                 unsigned int meshIndex = 0;
                 for(auto& meshRenderer : meshRenderers) {

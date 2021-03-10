@@ -39,7 +39,6 @@ namespace urchin {
             ~ShadowManager() override;
 
             void initiateShaderVariables(const std::unique_ptr<Shader>&);
-            void onResize(unsigned int, unsigned int);
             void onCameraProjectionUpdate(const Camera*);
             void notify(Observable*, int) override;
 
@@ -59,6 +58,7 @@ namespace urchin {
 
             void updateVisibleModels(const Frustum<float>&);
             const std::vector<Model*>& getVisibleModels();
+            void removeModel(Model*);
 
             void forceUpdateAllShadowMaps();
             void updateShadowMaps();
@@ -87,7 +87,6 @@ namespace urchin {
             BlurShadow blurShadow;
 
             //scene information
-            unsigned int sceneWidth, sceneHeight;
             ModelSetDisplayer* shadowModelSetDisplayer;
             LightManager* lightManager;
             OctreeManager<Model>* modelOctreeManager;

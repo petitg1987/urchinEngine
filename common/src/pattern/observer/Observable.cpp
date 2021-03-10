@@ -6,6 +6,7 @@ namespace urchin {
         for (auto& mapObserver : mapObservers) {
             delete mapObserver.second;
         }
+        mapObservers.clear();
     }
 
     void Observable::addObserver(Observer* observer, int notificationType) const {

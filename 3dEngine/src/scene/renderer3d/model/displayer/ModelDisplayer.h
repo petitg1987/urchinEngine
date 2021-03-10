@@ -9,6 +9,7 @@ namespace urchin {
     class ModelDisplayer : public Observer {
         public:
             explicit ModelDisplayer(Model *, DisplayMode, std::shared_ptr<RenderTarget>);
+            ~ModelDisplayer() override;
 
             void notify(Observable*, int) override;
 

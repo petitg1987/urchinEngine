@@ -22,13 +22,13 @@ namespace urchin {
             void closeEvent(QCloseEvent*) override;
 
         private:
-            QString getBaseWindowTitle() const;
+            static QString getBaseWindowTitle();
             void setupMenu();
             void setupSceneDisplayerWidget(QWidget*, QHBoxLayout*);
             void setupSceneControllerWidget(QWidget*, QHBoxLayout*);
 
-            QString getPreferredMapPath();
-            void savePreferredMapPath(const std::string&);
+            static QString getPreferredMapPath();
+            static void savePreferredMapPath(const std::string&);
 
             void loadMap(const std::string&, const std::string&);
             bool checkCurrentMapSaved();
@@ -62,7 +62,7 @@ namespace urchin {
             void executeExitAction();
 
             void executeViewPropertiesChangeAction();
-            ScenePanelWidget::TabName getConcernedTabFor(SceneDisplayer::ViewProperties);
+            static ScenePanelWidget::TabName getConcernedTabFor(SceneDisplayer::ViewProperties);
     };
 
 }
