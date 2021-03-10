@@ -10,10 +10,11 @@
 * Rendering
   * **OPTIMIZATION** (`minor`): Avoid sending shader variables values at each frame when there is no change in Renderer3d#deferredGeometryRendering()
   * **NEW FEATURE** (`minor`): Alpha management
-  * **OPTIMIZATION** (`minor`): Textures compression  
+  * **OPTIMIZATION** (`minor`): Textures compression
 * Model
   * **OPTIMIZATION** (`major`): Use instantiation mechanism when identical models are displayed several times in the scene
-  * **OPTIMIZATION** (`medium`): Regroup draw calls when possible
+  * **OPTIMIZATION** (`medium`): Regroup draw calls / shaders when possible
+  * **OPTIMIZATION** (`minor`): Clean ModelDisplayer in ModelSetDisplayer for models not displayed for a long time
   * **NEW FEATURE** (`minor`): Use reverse depth for far distant view (see <https://outerra.blogspot.com/2012/11/maximizing-depth-buffer-range-and.html>)
   * **OPTIMIZATION** (`medium`): Models LOD
   * **OPTIMIZATION** (`minor`): Subdivide octree only when number of objects inside this octree reach a threshold
