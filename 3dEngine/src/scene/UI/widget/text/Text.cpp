@@ -15,7 +15,7 @@ namespace urchin {
             text(std::move(text)),
             maxWidth(100.0f, LengthType::PERCENTAGE),
             font(nullptr) {
-
+        refreshText();
     }
 
     Text::Text(Position position, std::string nameSkin, std::string text) :
@@ -28,70 +28,14 @@ namespace urchin {
     }
 
     void Text::createOrUpdateWidget() {
-        std::shared_ptr<XmlChunk> textChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "text", XmlAttribute("nameSkin", nameSkin));
-        std::string ttfFilename = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "font", XmlAttribute(), textChunk)->getStringValue();
-        std::string fontColor = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "color", XmlAttribute(), textChunk)->getStringValue();
-        unsigned int fontHeight = retrieveFontHeight(textChunk);
-
-        cleanFont();
-        std::map<std::string, std::string> fontParams = {{"fontSize", std::to_string(fontHeight)}, {"fontColor", fontColor}};
-        font = MediaManager::instance()->getMedia<Font>(ttfFilename, fontParams);
-
         refreshText();
-    }
-
-    unsigned int Text::retrieveFontHeight(const std::shared_ptr<XmlChunk>& textChunk) const {
-        std::shared_ptr<XmlChunk> fontHeightChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "height", XmlAttribute(), textChunk);
-        float fontHeight = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "value", XmlAttribute(), fontHeightChunk)->getFloatValue();
-        LengthType fontHeightType = toLengthType(UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "type", XmlAttribute(), fontHeightChunk)->getStringValue());
-
-        if(fontHeightType == LengthType::PIXEL) {
-            return (unsigned int)fontHeight;
-        }else if(fontHeightType == LengthType::PERCENTAGE) {
-            return (unsigned int)(fontHeight / 100.0f * (float)getSceneHeight());
-        }
-        throw std::runtime_error("Unknown font height type: " + std::to_string(fontHeightType));
-    }
-
-    LengthType Text::toLengthType(const std::string& lengthTypeString) {
-        if(StringUtil::insensitiveEquals(lengthTypeString, "pixel")) {
-            return LengthType::PIXEL;
-        }else if(StringUtil::insensitiveEquals(lengthTypeString, "percentage")) {
-            return LengthType::PERCENTAGE;
-        }
-        throw std::runtime_error("Unknown length type: " + lengthTypeString);
-    }
-
-    void Text::setMaxWidth(Length maxWidth) {
-        this->maxWidth = maxWidth;
-
-        refreshText();
-    }
-
-    void Text::updateText(const std::string& text) {
-        this->text = text;
-
-        refreshText();
-    }
-
-    void Text::refreshText() {
-        //cut the text if needed
-        std::size_t numLetters = 0;
-        std::stringstream cutTextStream(cutText(text));
-        std::string item;
-        cutTextLines.clear();
-        while (std::getline(cutTextStream, item, '\n')) {
-            cutTextLines.push_back(item);
-            numLetters += item.size();
-        }
 
         //creates the vertex array and texture array
         vertexCoord.clear();
         textureCoord.clear();
-        vertexCoord.reserve(numLetters * 4);
-        textureCoord.reserve(numLetters * 4);
+        vertexCoord.reserve(text.size() * 4);
+        textureCoord.reserve(text.size() * 4);
 
-        float width = 0.0f;
         float offsetY = 0.0f;
         auto spaceBetweenLetters = (float)font->getSpaceBetweenLetters();
         auto spaceBetweenLines = (float)font->getSpaceBetweenLines();
@@ -127,16 +71,9 @@ namespace urchin {
                 textureCoord.emplace_back(Point2<float>(sMin, tMax));
 
                 offsetX += letterWidth + spaceBetweenLetters;
-
-                width = std::max(width, offsetX - spaceBetweenLetters);
             }
             offsetY += spaceBetweenLines;
         }
-
-        std::size_t numberOfLines = cutTextLines.empty() ? 1 : cutTextLines.size();
-        std::size_t numberOfInterLines = cutTextLines.empty() ? 0 : cutTextLines.size() - 1;
-        auto textHeight = (float)(numberOfLines * font->getHeight() + numberOfInterLines * font->getSpaceBetweenLines());
-        setSize(Size(width, textHeight, LengthType::PIXEL));
 
         textRenderer = std::make_unique<GenericRendererBuilder>(getRenderTarget(), ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
@@ -144,6 +81,25 @@ namespace urchin {
                 ->addTexture(TextureReader::build(font->getTexture(), TextureParam::buildNearest()))
                 ->enableTransparency()
                 ->build();
+    }
+
+    void Text::setMaxWidth(Length maxWidth) {
+        this->maxWidth = maxWidth;
+
+        createOrUpdateWidget();
+    }
+
+    unsigned int Text::getMaxWidth() {
+        if (maxWidth.getType() == LengthType::PERCENTAGE) {
+            return (unsigned int)(maxWidth.getValue() / 100.0f * (float)getSceneWidth());
+        }
+        return (unsigned int)maxWidth.getValue();
+    }
+
+    void Text::updateText(const std::string& text) {
+        this->text = text;
+
+        createOrUpdateWidget();
     }
 
     const std::string& Text::getText() const {
@@ -154,10 +110,37 @@ namespace urchin {
         return font;
     }
 
-    void Text::cleanFont() {
-        if(font) {
-            font->release();
+    void Text::refreshText() {
+        refreshFont();
+
+        //cut the text if needed
+        std::size_t numLetters = 0;
+        std::stringstream cutTextStream(cutText(text));
+        std::string item;
+        cutTextLines.clear();
+        while (std::getline(cutTextStream, item, '\n')) {
+            cutTextLines.push_back(item);
+            numLetters += item.size();
         }
+
+        float width = 0.0f;
+        auto spaceBetweenLetters = (float)font->getSpaceBetweenLetters();
+
+        for (auto& cutTextLine : cutTextLines) { //each lines
+            float offsetX = 0.0f;
+            for (char charLetter : cutTextLine) { //each letters
+                auto letter = static_cast<unsigned char>(charLetter);
+                auto letterWidth = (float)font->getGlyph(letter).width;
+
+                offsetX += letterWidth + spaceBetweenLetters;
+            }
+            width = std::max(width, offsetX - spaceBetweenLetters);
+        }
+
+        std::size_t numberOfLines = cutTextLines.empty() ? 1 : cutTextLines.size();
+        std::size_t numberOfInterLines = cutTextLines.empty() ? 0 : cutTextLines.size() - 1;
+        auto textHeight = (float)(numberOfLines * font->getHeight() + numberOfInterLines * font->getSpaceBetweenLines());
+        setSize(Size(width, textHeight, LengthType::PIXEL));
     }
 
     std::string Text::cutText(const std::string& constText) {
@@ -191,19 +174,49 @@ namespace urchin {
         return text;
     }
 
-    unsigned int Text::getMaxWidth() {
-        if (maxWidth.getType() == LengthType::PERCENTAGE) {
-            return (unsigned int)(maxWidth.getValue() / 100.0f * (float)getSceneWidth());
-        }
-        return (unsigned int)maxWidth.getValue();
+    void Text::refreshFont() {
+        std::shared_ptr<XmlChunk> textChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "text", XmlAttribute("nameSkin", nameSkin));
+        std::string ttfFilename = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "font", XmlAttribute(), textChunk)->getStringValue();
+        std::string fontColor = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "color", XmlAttribute(), textChunk)->getStringValue();
+        unsigned int fontHeight = retrieveFontHeight(textChunk);
+
+        cleanFont();
+        std::map<std::string, std::string> fontParams = {{"fontSize", std::to_string(fontHeight)}, {"fontColor", fontColor}};
+        font = MediaManager::instance()->getMedia<Font>(ttfFilename, fontParams);
     }
 
-    void Text::display(const ShaderVar& translateDistanceShaderVar, float dt) {
+    unsigned int Text::retrieveFontHeight(const std::shared_ptr<XmlChunk>& textChunk) const {
+        std::shared_ptr<XmlChunk> fontHeightChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "height", XmlAttribute(), textChunk);
+        float fontHeight = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "value", XmlAttribute(), fontHeightChunk)->getFloatValue();
+        LengthType fontHeightType = toLengthType(UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "type", XmlAttribute(), fontHeightChunk)->getStringValue());
+
+        if(fontHeightType == LengthType::PIXEL) {
+            return (unsigned int)fontHeight;
+        }else if(fontHeightType == LengthType::PERCENTAGE) {
+            return (unsigned int)(fontHeight / 100.0f * (float)getSceneHeight());
+        }
+        throw std::runtime_error("Unknown font height type: " + std::to_string(fontHeightType));
+    }
+
+    LengthType Text::toLengthType(const std::string& lengthTypeString) {
+        if(StringUtil::insensitiveEquals(lengthTypeString, "pixel")) {
+            return LengthType::PIXEL;
+        }else if(StringUtil::insensitiveEquals(lengthTypeString, "percentage")) {
+            return LengthType::PERCENTAGE;
+        }
+        throw std::runtime_error("Unknown length type: " + lengthTypeString);
+    }
+
+    void Text::cleanFont() {
+        if(font) {
+            font->release();
+        }
+    }
+
+    void Text::displayWidget(const ShaderVar&, float) {
         if (textRenderer) {
             getRenderTarget()->display(textRenderer);
         }
-
-        Widget::display(translateDistanceShaderVar, dt);
     }
 
 }

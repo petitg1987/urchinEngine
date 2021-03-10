@@ -107,7 +107,7 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
+    void ShadowManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) { //TODO remove if useless ?
         this->sceneWidth = sceneWidth;
         this->sceneHeight = sceneHeight;
     }

@@ -18,22 +18,23 @@ namespace urchin {
             Text(Position, std::string, std::string);
             ~Text() override;
 
-            void createOrUpdateWidget() override;
-
             void setMaxWidth(Length);
             void updateText(const std::string&);
 
             const std::string& getText() const;
             const Font* getFont();
 
-            void display(const ShaderVar&, float) override;
+        protected:
+            void createOrUpdateWidget() override;
+            void displayWidget(const ShaderVar&, float) override;
 
         private:
-            void cleanFont();
-            unsigned int retrieveFontHeight(const std::shared_ptr<XmlChunk>&) const;
-            static LengthType toLengthType(const std::string&);
             void refreshText();
             std::string cutText(const std::string&);
+            void refreshFont();
+            unsigned int retrieveFontHeight(const std::shared_ptr<XmlChunk>&) const;
+            static LengthType toLengthType(const std::string&);
+            void cleanFont();
 
             unsigned int getMaxWidth();
 

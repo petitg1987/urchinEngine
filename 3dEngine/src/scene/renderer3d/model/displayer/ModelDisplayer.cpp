@@ -3,6 +3,7 @@
 #include "ModelDisplayer.h"
 #include "graphic/render/GenericRendererBuilder.h"
 #include "graphic/shader/data/ShaderDataSender.h"
+#include "resources/geometry/aabbox/AABBoxModel.h"
 
 namespace urchin {
 
@@ -45,8 +46,9 @@ namespace urchin {
                     meshRenderer->updateData(0, &mesh->getVertices());
                     meshRenderer->updateData(2, &mesh->getNormals());
                     meshRenderer->updateData(3, &mesh->getTangents());
+
+                    meshIndex++;
                 }
-                meshIndex++;
             }
         }
     }
@@ -61,6 +63,22 @@ namespace urchin {
 
             renderTarget->display(meshRenderer);
             meshIndex++;
+        }
+    }
+
+    void ModelDisplayer::drawBBox(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
+        AABBoxModel aabboxModel(model->getAABBox());
+        aabboxModel.initialize(renderTarget);
+        aabboxModel.onCameraProjectionUpdate(projectionMatrix);
+        aabboxModel.display(viewMatrix);
+    }
+
+    void ModelDisplayer::drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
+        if (model->getMeshes()) {
+            for (unsigned int m = 0; m < model->getMeshes()->getNumberMeshes(); ++m) {
+                Matrix4<float> modelViewMatrix = viewMatrix * model->getTransform().getTransformMatrix();
+                model->getMeshes()->getMesh(m)->drawBaseBones(renderTarget, projectionMatrix, modelViewMatrix);
+            }
         }
     }
 

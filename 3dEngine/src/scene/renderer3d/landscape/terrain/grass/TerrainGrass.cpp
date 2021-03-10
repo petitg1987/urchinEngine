@@ -24,7 +24,7 @@ namespace urchin {
             grassPositionRandomPercentage(ConfigService::instance()->getFloatValue("terrain.grassPositionRandomPercentage")),
             grassPatchSize(ConfigService::instance()->getFloatValue("terrain.grassPatchSize")),
             grassQuadtreeDepth(ConfigService::instance()->getUnsignedIntValue("terrain.grassQuadtreeDepth")),
-            isInitialized(false),
+            bIsInitialized(false),
             sumTimeStep(0.0f),
             grassTexture(nullptr),
             grassMaskTexture(nullptr),
@@ -78,11 +78,15 @@ namespace urchin {
     }
 
     void TerrainGrass::initialize(std::shared_ptr<RenderTarget> renderTarget) {
-        assert(!isInitialized);
+        assert(!bIsInitialized);
 
         this->renderTarget = std::move(renderTarget);
 
-        isInitialized = true;
+        bIsInitialized = true;
+    }
+
+    bool TerrainGrass::isInitialized() const {
+        return bIsInitialized;
     }
 
     void TerrainGrass::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
@@ -92,7 +96,7 @@ namespace urchin {
     }
 
     void TerrainGrass::refreshWith(const std::shared_ptr<TerrainMesh>& mesh, const Point3<float>& terrainPosition) {
-        assert(isInitialized);
+        assert(bIsInitialized);
         generateGrass(mesh, terrainPosition);
 
         ShaderDataSender()
@@ -101,7 +105,7 @@ namespace urchin {
     }
 
     void TerrainGrass::refreshWith(float ambient) {
-        assert(isInitialized);
+        assert(bIsInitialized);
         ShaderDataSender().sendData(terrainAmbientShaderVar, ambient);
     }
 
@@ -343,7 +347,7 @@ namespace urchin {
     }
 
     void TerrainGrass::display(const Camera* camera, float dt) {
-        assert(isInitialized);
+        assert(bIsInitialized);
 
         if (grassTexture) {
             ScopeProfiler sp(Profiler::graphic(), "grassDisplay");

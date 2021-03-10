@@ -17,11 +17,11 @@ namespace urchin {
             TextBox(Widget*, Position, Size, std::string );
             TextBox(Position, Size, std::string);
 
-            void createOrUpdateWidget() override;
-
             std::string getText();
 
-            void display(const ShaderVar&, float) override;
+        protected:
+            void createOrUpdateWidget() override;
+            void displayWidget(const ShaderVar&, float) override;
 
         private:
             bool onKeyPressEvent(unsigned int) override;

@@ -19,6 +19,7 @@ namespace urchin {
             mouseY(0) {
         if(parent) {
             parent->children.emplace_back(this);
+            initialize(parent->getRenderTarget());
         }
     }
 
@@ -38,7 +39,10 @@ namespace urchin {
 
     void Widget::initialize(std::shared_ptr<RenderTarget> renderTarget) {
         this->renderTarget = std::move(renderTarget);
-        createOrUpdateWidget();
+
+        for(auto& child : children) {
+            child->initialize(renderTarget);
+        }
     }
 
     void Widget::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
@@ -329,6 +333,8 @@ namespace urchin {
     }
 
     void Widget::display(const ShaderVar& translateDistanceShaderVar, float dt) {
+        displayWidget(translateDistanceShaderVar, dt);
+
         for (auto& child : children) {
             if (child->isVisible()) {
                 Vector2<int> translateVector(child->getGlobalPositionX(), child->getGlobalPositionY());

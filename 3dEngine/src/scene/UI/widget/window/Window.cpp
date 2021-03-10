@@ -16,7 +16,7 @@ namespace urchin {
             mousePositionY(0),
             state(DEFAULT),
             title(nullptr) {
-        Window::createOrUpdateWidget();
+
     }
 
     Window::Window(Position position, Size size, std::string nameSkin, std::string stringTitle) :
@@ -111,10 +111,8 @@ namespace urchin {
         return true;
     }
 
-    void Window::display(const ShaderVar& translateDistanceShaderVar, float dt) {
+    void Window::displayWidget(const ShaderVar&, float) {
         getRenderTarget()->display(windowRenderer);
-
-        Widget::display(translateDistanceShaderVar, dt);
     }
 
 }

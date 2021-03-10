@@ -17,9 +17,9 @@ namespace urchin {
             StaticBitmap(Widget*, Position, Size, std::string);
             StaticBitmap(Position, Size, std::string);
 
+        protected:
             void createOrUpdateWidget() override;
-
-            void display(const ShaderVar&, float) override;
+            void displayWidget(const ShaderVar&, float) override;
 
         private:
             //properties

@@ -85,23 +85,25 @@ namespace urchin {
             throw std::out_of_range("Index is out of range: " + std::to_string(index) + ". Maximum index allowed: " + std::to_string(values.size()-1));
         }
 
-        valuesText[selectedIndex]->setIsVisible(false);
-        valuesText[index]->setIsVisible(true);
+        if(!valuesText.empty()) {
+            valuesText[selectedIndex]->setIsVisible(false);
+            valuesText[index]->setIsVisible(true);
+        }
 
         this->selectedIndex = index;
     }
 
     void Slider::setLeftButtonEventListener(const std::shared_ptr<EventListener>& leftButtonEventListener) {
         this->leftButtonEventListener = leftButtonEventListener;
-        this->leftButton->addEventListener(leftButtonEventListener);
+        createOrUpdateWidget();
     }
 
     void Slider::setRightButtonEventListener(const std::shared_ptr<EventListener>& rightButtonEventListener) {
         this->rightButtonEventListener = rightButtonEventListener;
-        this->rightButton->addEventListener(rightButtonEventListener);
+        createOrUpdateWidget();
     }
 
-    void Slider::display(const ShaderVar& translateDistanceShaderVar, float dt) {
+    void Slider::displayWidget(const ShaderVar&, float dt) {
         if (leftButton->getWidgetState() == Widget::WidgetStates::CLICKING) {
             timeInClickingState += dt;
             timeSinceLastChange += dt;
@@ -122,8 +124,6 @@ namespace urchin {
             timeInClickingState = 0.0f;
             timeSinceLastChange = 0.0f;
         }
-
-        Widget::display(translateDistanceShaderVar, dt);
     }
 
     Slider::ButtonSliderEventListener::ButtonSliderEventListener(Slider* slider, bool isLeftButton) :

@@ -18,9 +18,9 @@ namespace urchin {
             Window(Widget*, Position, Size, std::string, std::string);
             Window(Position, Size, std::string, std::string);
 
+        protected:
             void createOrUpdateWidget() override;
-
-            void display(const ShaderVar&, float) override;
+            void displayWidget(const ShaderVar&, float) override;
 
         private:
             bool onKeyPressEvent(unsigned int) override;

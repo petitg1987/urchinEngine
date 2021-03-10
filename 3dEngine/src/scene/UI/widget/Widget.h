@@ -31,7 +31,6 @@ namespace urchin {
 
             void initialize(std::shared_ptr<RenderTarget>);
             void onResize(unsigned int, unsigned int);
-            virtual void createOrUpdateWidget() = 0;
 
             Widget* getParent() const;
 
@@ -68,14 +67,17 @@ namespace urchin {
             virtual void reset();
             void onDisable();
 
-            virtual void display(const ShaderVar&, float);
+            void display(const ShaderVar&, float);
 
         protected:
             const std::shared_ptr<RenderTarget>& getRenderTarget() const;
             unsigned int getSceneWidth() const;
             unsigned int getSceneHeight() const;
+            virtual void createOrUpdateWidget() = 0;
 
             const std::vector<Widget*>& getChildren() const;
+
+            virtual void displayWidget(const ShaderVar&, float) = 0;
 
             WidgetOutline widgetOutline;
 

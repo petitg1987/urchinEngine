@@ -214,25 +214,10 @@ namespace urchin {
                 stopAnimationAtLastFrame = false;
             } else {
                 currAnimation->animate(dt);
+                notifyObservers(this, Model::MESH_UPDATED);
             }
         }
-    }
 
-    //TODO move next methods in ModelDisplayer ?
-    void Model::drawBBox(const std::shared_ptr<RenderTarget>& renderTarget, const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
-        AABBoxModel aabboxModel(getAABBox());
-        aabboxModel.initialize(renderTarget);
-        aabboxModel.onCameraProjectionUpdate(projectionMatrix);
-        aabboxModel.display(viewMatrix);
-    }
-
-    void Model::drawBaseBones(const std::shared_ptr<RenderTarget>& renderTarget, const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
-        if (meshes) {
-            for (unsigned int m = 0; m < meshes->getNumberMeshes(); ++m) {
-                Matrix4<float> modelViewMatrix = viewMatrix * getTransform().getTransformMatrix();
-                meshes->getMesh(m)->drawBaseBones(renderTarget, projectionMatrix, modelViewMatrix);
-            }
-        }
     }
 
 }

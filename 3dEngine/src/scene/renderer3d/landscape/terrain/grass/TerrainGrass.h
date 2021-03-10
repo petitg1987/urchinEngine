@@ -20,6 +20,7 @@ namespace urchin {
             ~TerrainGrass();
 
             void initialize(std::shared_ptr<RenderTarget>);
+            bool isInitialized() const;
             void onCameraProjectionUpdate(const Matrix4<float>&);
 
             void refreshWith(const std::shared_ptr<TerrainMesh>&, const Point3<float>&);
@@ -64,7 +65,7 @@ namespace urchin {
             const float grassPatchSize;
             const unsigned int grassQuadtreeDepth;
 
-            bool isInitialized;
+            bool bIsInitialized;
             std::shared_ptr<RenderTarget> renderTarget;
 
             std::unique_ptr<Shader> terrainGrassShader;

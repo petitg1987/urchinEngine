@@ -19,9 +19,9 @@ namespace urchin {
             Button(Position, Size, std::string, std::string);
             ~Button() override = default;
 
+        protected:
             void createOrUpdateWidget() override;
-
-            void display(const ShaderVar&, float) override;
+            void displayWidget(const ShaderVar&, float) override;
 
         private:
             const std::shared_ptr<Texture>& getTexture();

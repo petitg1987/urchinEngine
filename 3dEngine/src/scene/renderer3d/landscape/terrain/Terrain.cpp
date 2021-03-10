@@ -16,6 +16,7 @@ namespace urchin {
             isInitialized(false),
             mesh(mesh),
             material(std::move(material)),
+            grass(std::make_unique<TerrainGrass>("")),
             ambient(0.0f) {
         terrainShader = ShaderBuilder().createShader("terrain.vert", "", "terrain.frag");
 
@@ -43,11 +44,11 @@ namespace urchin {
         assert(!isInitialized);
         this->renderTarget = std::move(renderTarget);
 
+        grass->initialize(this->renderTarget);
+
         setMesh(mesh);
         setMaterial(std::move(material));
 
-        grass = std::make_unique<TerrainGrass>("");
-        grass->initialize(this->renderTarget);
         refreshGrassMesh();
         refreshGrassAmbient();
 
@@ -117,13 +118,13 @@ namespace urchin {
     }
 
     void Terrain::refreshGrassMesh() {
-        if (grass) {
+        if (grass->isInitialized()) {
             grass->refreshWith(mesh, position);
         }
     }
 
     void Terrain::refreshGrassAmbient() {
-        if (grass) {
+        if (grass->isInitialized()) {
             grass->refreshWith(ambient);
         }
     }

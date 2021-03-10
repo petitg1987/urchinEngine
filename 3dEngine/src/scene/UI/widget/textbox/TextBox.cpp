@@ -210,7 +210,7 @@ namespace urchin {
         computeCursorPosition();
     }
 
-    void TextBox::display(const ShaderVar& translateDistanceShaderVar, float dt) {
+    void TextBox::displayWidget(const ShaderVar& translateDistanceShaderVar, float dt) {
         //display the text box
         getRenderTarget()->display(textBoxRenderer);
 
@@ -224,8 +224,6 @@ namespace urchin {
 
             ShaderDataSender().sendData(translateDistanceShaderVar, widgetPosition);
         }
-
-        Widget::display(translateDistanceShaderVar, dt);
     }
 
 }

@@ -14,6 +14,9 @@ namespace urchin {
 
             void display(const MeshParameter&) const;
 
+            void drawBBox(const Matrix4<float>&, const Matrix4<float>&) const;
+            void drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const;
+
         private:
             Model *model;
             std::shared_ptr<RenderTarget> renderTarget;

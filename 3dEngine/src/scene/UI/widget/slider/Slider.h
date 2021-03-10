@@ -17,15 +17,15 @@ namespace urchin {
             Slider(Widget*, Position, Size, std::string, const std::vector<std::string>&);
             Slider(Position, Size, std::string, const std::vector<std::string>&);
 
-            void createOrUpdateWidget() override;
-
             unsigned int getSelectedIndex() const;
             void setSelectedIndex(unsigned int);
 
             void setLeftButtonEventListener(const std::shared_ptr<EventListener>&);
             void setRightButtonEventListener(const std::shared_ptr<EventListener>&);
 
-            void display(const ShaderVar&, float) override;
+        protected:
+            void createOrUpdateWidget() override;
+            void displayWidget(const ShaderVar&, float) override;
 
         private:
             std::string buttonsTextSkin, valuesTextSkin;

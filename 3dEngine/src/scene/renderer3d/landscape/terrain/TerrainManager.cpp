@@ -22,6 +22,7 @@ namespace urchin {
         if (terrain) {
             terrains.push_back(terrain);
 
+            terrain->initialize(renderTarget);
             terrain->onCameraProjectionUpdate(projectionMatrix);
             updateWithConfig();
         }

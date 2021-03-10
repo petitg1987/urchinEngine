@@ -15,7 +15,9 @@ namespace urchin {
             explicit Container(Position);
             ~Container() override = default;
 
+        protected:
             void createOrUpdateWidget() override;
+            void displayWidget(const ShaderVar&, float) override;
     };
 
 }
