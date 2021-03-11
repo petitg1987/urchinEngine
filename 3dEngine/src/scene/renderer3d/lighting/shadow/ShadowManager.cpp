@@ -352,7 +352,7 @@ namespace urchin {
             shadowShaderVariable->setLightShadowMap(lightShadowMap.second);
             shadowModelShaderVariable->setLightShadowMap(lightShadowMap.second);
 
-            shadowModelSetDisplayer->setRenderTarget(renderTarget);
+            shadowModelSetDisplayer->setRenderTarget(renderTarget); //TODO new target => reset model displayer at each frame => bad
             shadowModelSetDisplayer->setModels(lightShadowMap.second->retrieveModels());
             shadowModelSetDisplayer->display(lightShadowMap.second->getLightViewMatrix());
 

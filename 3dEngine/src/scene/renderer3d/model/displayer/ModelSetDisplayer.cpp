@@ -117,9 +117,11 @@ namespace urchin {
     }
 
     void ModelSetDisplayer::setRenderTarget(std::shared_ptr<RenderTarget> renderTarget) {
-        this->renderTarget = std::move(renderTarget);
+        if(renderTarget != this->renderTarget) {
+            this->renderTarget = std::move(renderTarget);
 
-        modelsDisplayer.clear();
+            modelsDisplayer.clear();
+        }
     }
 
     void ModelSetDisplayer::setModels(const std::vector<Model*>& models) {
@@ -171,21 +173,20 @@ namespace urchin {
                 customModelShaderVariable->loadCustomShaderVariables(model);
             }
 
-            modelsDisplayer[model]->display(meshParameter);
+            modelsDisplayer.at(model)->display(meshParameter);
         }
     }
 
     void ModelSetDisplayer::drawBBox(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
-        for(const auto& modelDisplayer : modelsDisplayer) {
-            modelDisplayer.second->drawBBox(projectionMatrix, viewMatrix);
+        for (const auto& model : models) {
+            modelsDisplayer.at(model)->drawBBox(projectionMatrix, viewMatrix);
         }
     }
 
     void ModelSetDisplayer::drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix, const std::string& meshFilename) const {
-        for(const auto& modelDisplayer : modelsDisplayer) {
-            Model* model = modelDisplayer.first;
+        for (const auto& model : models) {
             if (model->getConstMeshes() && model->getConstMeshes()->getMeshFilename() == meshFilename) {
-                modelDisplayer.second->drawBaseBones(projectionMatrix, viewMatrix);
+                modelsDisplayer.at(model)->drawBaseBones(projectionMatrix, viewMatrix);
             }
         }
     }
