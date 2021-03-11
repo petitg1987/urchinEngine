@@ -20,7 +20,6 @@ namespace urchin {
 
             AmbientOcclusionManager();
 
-            void initiateShaderVariables(const std::unique_ptr<Shader>&);
             void onTexturesUpdate(const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&);
             void onResize(unsigned int, unsigned int);
             void onCameraProjectionUpdate(const Camera*);
@@ -40,7 +39,7 @@ namespace urchin {
             const std::shared_ptr<Texture>& getAmbientOcclusionTexture() const;
 
             void updateAOTexture(const Camera*);
-            void loadAOTexture(const std::unique_ptr<GenericRenderer>&) const;
+            void loadAOTexture(const std::unique_ptr<GenericRenderer>&, std::size_t);
 
         private:
             void refreshRenderer();
@@ -71,6 +70,7 @@ namespace urchin {
 
             //frame buffer object
             std::shared_ptr<OffscreenRender> offscreenRenderTarget;
+            bool ambientOcclusionTextureDirty;
             std::shared_ptr<Texture> ambientOcclusionTexture;
 
             //ambient occlusion shader
@@ -81,7 +81,6 @@ namespace urchin {
             //visual data
             std::shared_ptr<Texture> depthTexture;
             std::shared_ptr<Texture> normalAndAmbientTexture;
-            ShaderVar ambientOcclusionTexShaderVar;
             std::unique_ptr<GenericRenderer> renderer;
 
             std::unique_ptr<BilateralBlurFilter> verticalBlurFilter;

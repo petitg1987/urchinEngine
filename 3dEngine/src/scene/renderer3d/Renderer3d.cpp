@@ -45,6 +45,7 @@ namespace urchin {
             isShadowActivated(true),
             ambientOcclusionManager(new AmbientOcclusionManager()),
             isAmbientOcclusionActivated(true),
+            ambientOcclusionTexUnit(-1),
 
             //lighting pass rendering
             offscreenLightingRenderTarget(std::make_shared<OffscreenRender>()),
@@ -93,10 +94,12 @@ namespace urchin {
         int depthTexUnit = 0;
         int diffuseTexUnit = 1;
         int normalAndAmbientTexUnit = 2;
+        ambientOcclusionTexUnit = 3;
         ShaderDataSender()
             .sendData(ShaderVar(lightingShader, "depthTex"), depthTexUnit)
             .sendData(ShaderVar(lightingShader, "colorTex"), diffuseTexUnit)
             .sendData(ShaderVar(lightingShader, "normalAndAmbientTex"), normalAndAmbientTexUnit)
+            .sendData(ShaderVar(lightingShader, "ambientOcclusionTex"), ambientOcclusionTexUnit)
             .sendData(ShaderVar(lightingShader, "hasShadow"), isShadowActivated)
             .sendData(ShaderVar(lightingShader, "hasAmbientOcclusion"), isAmbientOcclusionActivated);
 
@@ -107,7 +110,6 @@ namespace urchin {
         fogManager->initiateShaderVariables(lightingShader);
         lightManager->initiateShaderVariables(lightingShader);
         shadowManager->initiateShaderVariables(lightingShader);
-        ambientOcclusionManager->initiateShaderVariables(lightingShader);
     }
 
     void Renderer3d::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
@@ -340,6 +342,7 @@ namespace urchin {
                 ->addTexture(TextureReader::build(depthTexture, TextureParam::buildNearest()))
                 ->addTexture(TextureReader::build(diffuseTexture, TextureParam::buildNearest()))
                 ->addTexture(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
+                ->addTexture(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())) //ambient occlusion
                 ->build();
 
         ambientOcclusionManager->onResize(sceneWidth, sceneHeight);
@@ -493,7 +496,7 @@ namespace urchin {
             fogManager->loadFog();
 
             if (isAmbientOcclusionActivated) {
-                ambientOcclusionManager->loadAOTexture(lightingRenderer);
+                ambientOcclusionManager->loadAOTexture(lightingRenderer, static_cast<std::size_t>(ambientOcclusionTexUnit));
             }
 
             if (isShadowActivated) {

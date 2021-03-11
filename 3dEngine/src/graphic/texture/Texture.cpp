@@ -64,6 +64,11 @@ namespace urchin {
         return std::make_shared<Texture>(TextureType::CUBE_MAP, width, height, 1, format, cubeDataPtr);
     }
 
+    std::shared_ptr<Texture> Texture::buildEmpty() {
+        std::vector<const void*> allDataPtr = {nullptr};
+        return std::make_shared<Texture>(TextureType::DEFAULT, 1, 1, 1, TextureFormat::RGBA_8_INT, allDataPtr);
+    }
+
     void Texture::generateMipmap() {
         assert(!pHasMipmap);
 

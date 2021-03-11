@@ -45,6 +45,8 @@ namespace urchin {
             blurSize(DEFAULT_BLUR_SIZE),
             blurSharpness(DEFAULT_BLUR_SHARPNESS),
 
+            ambientOcclusionTextureDirty(true),
+
             verticalBlurFilter(nullptr),
             horizontalBlurFilter(nullptr),
             isBlurActivated(true) {
@@ -78,10 +80,6 @@ namespace urchin {
                 .sendData(ShaderVar(ambientOcclusionShader, "resolution"), Vector2<float>((float)sceneWidth, (float)sceneHeight));
 
         generateKernelSamples();
-    }
-
-    void AmbientOcclusionManager::initiateShaderVariables(const std::unique_ptr<Shader>& lightingShader) {
-        ambientOcclusionTexShaderVar = ShaderVar(lightingShader, "ambientOcclusionTex");
     }
 
     void AmbientOcclusionManager::onTexturesUpdate(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& normalAndAmbientTexture) {
@@ -126,6 +124,7 @@ namespace urchin {
             textureSizeX = (unsigned int)((float)sceneWidth / (float)retrieveTextureSizeFactor());
             textureSizeY = (unsigned int)((float)sceneHeight / (float)retrieveTextureSizeFactor());
             ambientOcclusionTexture = Texture::build(textureSizeX, textureSizeY, TextureFormat::GRAYSCALE_16_FLOAT, nullptr);
+            ambientOcclusionTextureDirty = true;
 
             offscreenRenderTarget = std::make_unique<OffscreenRender>();
             offscreenRenderTarget->onResize(textureSizeX, textureSizeY);
@@ -280,6 +279,8 @@ namespace urchin {
 
     void AmbientOcclusionManager::activateBlur(bool isBlurActivated) {
         this->isBlurActivated = isBlurActivated;
+
+        ambientOcclusionTextureDirty = true; //when blur is activated, AO texture is different: see getAmbientOcclusionTexture() method
     }
 
     int AmbientOcclusionManager::retrieveTextureSizeFactor() {
@@ -318,9 +319,11 @@ namespace urchin {
         }
     }
 
-    void AmbientOcclusionManager::loadAOTexture(const std::unique_ptr<GenericRenderer>& lightingRenderer) const {
-        unsigned int aoTextureUnit = lightingRenderer->addAdditionalTexture(TextureReader::build(getAmbientOcclusionTexture(), TextureParam::buildLinear()));
-        ShaderDataSender().sendData(ambientOcclusionTexShaderVar, (int)aoTextureUnit);
+    void AmbientOcclusionManager::loadAOTexture(const std::unique_ptr<GenericRenderer>& lightingRenderer, std::size_t aoTextureUnit) {
+        if(ambientOcclusionTextureDirty) {
+            lightingRenderer->updateTexture(aoTextureUnit, TextureReader::build(getAmbientOcclusionTexture(), TextureParam::buildLinear()));
+            ambientOcclusionTextureDirty = false;
+        }
     }
 
 }

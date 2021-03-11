@@ -124,6 +124,7 @@ namespace urchin {
 
             AmbientOcclusionManager* ambientOcclusionManager;
             bool isAmbientOcclusionActivated;
+            int ambientOcclusionTexUnit;
 
             std::shared_ptr<Texture> depthTexture, diffuseTexture, normalAndAmbientTexture, lightingPassTexture;
 
