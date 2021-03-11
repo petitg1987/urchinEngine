@@ -112,7 +112,11 @@ namespace urchin {
             }
         }
 
-        assert(false);
+        #ifndef NDEBUG
+            assert(false);
+        #else
+            return false;
+        #endif
     }
 
     bool EdgeLinkDetection::canJumpThatFar(const Point3<float>& jumpStartPoint, const Point3<float>& jumpEndPoint) const {

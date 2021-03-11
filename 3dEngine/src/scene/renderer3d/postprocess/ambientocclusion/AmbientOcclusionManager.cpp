@@ -124,35 +124,41 @@ namespace urchin {
             textureSizeX = (unsigned int)((float)sceneWidth / (float)retrieveTextureSizeFactor());
             textureSizeY = (unsigned int)((float)sceneHeight / (float)retrieveTextureSizeFactor());
             ambientOcclusionTexture = Texture::build(textureSizeX, textureSizeY, TextureFormat::GRAYSCALE_16_FLOAT, nullptr);
-            ambientOcclusionTextureDirty = true;
 
             offscreenRenderTarget = std::make_unique<OffscreenRender>();
             offscreenRenderTarget->onResize(textureSizeX, textureSizeY);
             offscreenRenderTarget->addTexture(ambientOcclusionTexture);
             refreshRenderer();
 
-            verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>()
-                    ->textureSize(textureSizeX, textureSizeY)
-                    ->textureType(TextureType::DEFAULT)
-                    ->textureFormat(TextureFormat::GRAYSCALE_16_FLOAT)
-                    ->blurDirection(BilateralBlurFilterBuilder::VERTICAL_BLUR)
-                    ->blurSize(blurSize)
-                    ->blurSharpness(blurSharpness)
-                    ->depthTexture(depthTexture)
-                    ->buildBilateralBlur();
+            if(isBlurActivated) {
+                verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>()
+                        ->textureSize(textureSizeX, textureSizeY)
+                        ->textureType(TextureType::DEFAULT)
+                        ->textureFormat(TextureFormat::GRAYSCALE_16_FLOAT)
+                        ->blurDirection(BilateralBlurFilterBuilder::VERTICAL_BLUR)
+                        ->blurSize(blurSize)
+                        ->blurSharpness(blurSharpness)
+                        ->depthTexture(depthTexture)
+                        ->buildBilateralBlur();
 
-            horizontalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>()
-                    ->textureSize(textureSizeX, textureSizeY)
-                    ->textureType(TextureType::DEFAULT)
-                    ->textureFormat(TextureFormat::GRAYSCALE_16_FLOAT)
-                    ->blurDirection(BilateralBlurFilterBuilder::HORIZONTAL_BLUR)
-                    ->blurSize(blurSize)
-                    ->blurSharpness(blurSharpness)
-                    ->depthTexture(depthTexture)
-                    ->buildBilateralBlur();
+                horizontalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>()
+                        ->textureSize(textureSizeX, textureSizeY)
+                        ->textureType(TextureType::DEFAULT)
+                        ->textureFormat(TextureFormat::GRAYSCALE_16_FLOAT)
+                        ->blurDirection(BilateralBlurFilterBuilder::HORIZONTAL_BLUR)
+                        ->blurSize(blurSize)
+                        ->blurSharpness(blurSharpness)
+                        ->depthTexture(depthTexture)
+                        ->buildBilateralBlur();
 
-            verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
-            horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
+                verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
+                horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
+            } else {
+                verticalBlurFilter = nullptr;
+                horizontalBlurFilter = nullptr;
+            }
+
+            ambientOcclusionTextureDirty = true;
         }
     }
 
@@ -280,7 +286,7 @@ namespace urchin {
     void AmbientOcclusionManager::activateBlur(bool isBlurActivated) {
         this->isBlurActivated = isBlurActivated;
 
-        ambientOcclusionTextureDirty = true; //when blur is activated, AO texture is different: see getAmbientOcclusionTexture() method
+        createOrUpdateAOTexture();
     }
 
     int AmbientOcclusionManager::retrieveTextureSizeFactor() {
