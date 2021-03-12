@@ -12,7 +12,6 @@
 #include "scene/renderer3d/lighting/light/Light.h"
 #include "scene/renderer3d/lighting/light/LightManager.h"
 #include "scene/renderer3d/model/Model.h"
-#include "scene/renderer3d/model/displayer/ModelSetDisplayer.h"
 #include "scene/renderer3d/camera/Camera.h"
 #include "graphic/shader/model/Shader.h"
 #include "graphic/shader/model/ShaderVar.h"
@@ -65,9 +64,6 @@ namespace urchin {
             void loadShadowMaps(const std::unique_ptr<GenericRenderer>&);
 
         private:
-            //model displayer
-            void createOrUpdateShadowModelSetDisplayer();
-
             //light handling
             void deleteLightsLocation();
             void addShadowLight(const Light*);
@@ -87,12 +83,9 @@ namespace urchin {
             BlurShadow blurShadow;
 
             //scene information
-            ModelSetDisplayer* shadowModelSetDisplayer;
             LightManager* lightManager;
             OctreeManager<Model>* modelOctreeManager;
             Matrix4<float> projectionMatrix;
-            ShadowShaderVariable* shadowShaderVariable;
-            ShadowModelShaderVariable* shadowModelShaderVariable;
             std::vector<Model*> visibleModels;
 
             //shadow information

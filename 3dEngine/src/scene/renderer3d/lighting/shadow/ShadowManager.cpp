@@ -26,17 +26,12 @@ namespace urchin {
             nbShadowMaps(DEFAULT_NUMBER_SHADOW_MAPS),
             viewingShadowDistance(DEFAULT_VIEWING_SHADOW_DISTANCE),
             blurShadow(DEFAULT_BLUR_SHADOW),
-            shadowModelSetDisplayer(nullptr),
             lightManager(lightManager),
             modelOctreeManager(modelOctreeManager),
-            shadowShaderVariable(nullptr),
-            shadowModelShaderVariable(nullptr),
             bForceUpdateAllShadowMaps(false),
             lightsLocation(nullptr) {
         lightManager->addObserver(this, LightManager::ADD_LIGHT);
         lightManager->addObserver(this, LightManager::REMOVE_LIGHT);
-
-        createOrUpdateShadowModelSetDisplayer();
     }
 
     ShadowManager::~ShadowManager() {
@@ -45,10 +40,6 @@ namespace urchin {
         }
 
         deleteLightsLocation();
-
-        delete shadowModelSetDisplayer;
-        delete shadowShaderVariable;
-        delete shadowModelShaderVariable;
     }
 
     void ShadowManager::initiateShaderVariables(const std::unique_ptr<Shader>& lightingShader) {
@@ -73,27 +64,6 @@ namespace urchin {
                 lightsLocation[i].mLightProjectionViewShaderVar[j] = ShaderVar(lightingShader, mLightProjectionViewLocName.str());
             }
         }
-    }
-
-    void ShadowManager::createOrUpdateShadowModelSetDisplayer() {
-        std::map<std::string, std::string> geometryTokens, fragmentTokens;
-        geometryTokens["MAX_VERTICES"] = std::to_string(3*nbShadowMaps);
-        geometryTokens["NUMBER_SHADOW_MAPS"] = std::to_string(nbShadowMaps);
-        delete shadowModelSetDisplayer;
-        shadowModelSetDisplayer = new ModelSetDisplayer(DisplayMode::DEPTH_ONLY_MODE);
-        shadowModelSetDisplayer->setCustomGeometryShader("modelShadowMap.geom", geometryTokens);
-        shadowModelSetDisplayer->setCustomFragmentShader("modelShadowMap.frag", fragmentTokens);
-        shadowModelSetDisplayer->initialize();
-
-        delete shadowShaderVariable;
-        shadowShaderVariable = new ShadowShaderVariable();
-        shadowShaderVariable->setProjectionMatricesShaderVar(shadowModelSetDisplayer->getShaderVar("projectionMatrix"));
-        shadowModelSetDisplayer->setCustomShaderVariable(shadowShaderVariable);
-
-        delete shadowModelShaderVariable;
-        shadowModelShaderVariable = new ShadowModelShaderVariable();
-        shadowModelShaderVariable->setLayersToUpdateShaderVar(shadowModelSetDisplayer->getShaderVar("layersToUpdate"));
-        shadowModelSetDisplayer->setCustomModelShaderVariable(shadowModelShaderVariable);
     }
 
     void ShadowManager::deleteLightsLocation() {
@@ -158,7 +128,6 @@ namespace urchin {
 
         this->nbShadowMaps = nbShadowMaps;
 
-        createOrUpdateShadowModelSetDisplayer();
         updateShadowLights();
         notifyObservers(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
     }
@@ -225,7 +194,9 @@ namespace urchin {
     }
 
     void ShadowManager::removeModel(Model* model) {
-        shadowModelSetDisplayer->removeModel(model);
+        for (auto& lightShadowMap : lightShadowMaps) {
+            lightShadowMap.second->removeModel(model);
+        }
     }
 
     void ShadowManager::addShadowLight(const Light* light) {
@@ -237,11 +208,10 @@ namespace urchin {
         shadowMapRenderTarget->addTexture(depthTexture);
         shadowMapRenderTarget->addTexture(shadowMapTexture);
 
-        auto* newLightShadowMap = new LightShadowMap(light, modelOctreeManager, viewingShadowDistance);
+        auto* newLightShadowMap = new LightShadowMap(light, modelOctreeManager, viewingShadowDistance, nbShadowMaps, std::move(shadowMapRenderTarget));
         for (unsigned int i = 0; i < nbShadowMaps; ++i) {
             newLightShadowMap->addLightSplitShadowMap();
         }
-        newLightShadowMap->setRenderTarget(std::move(shadowMapRenderTarget));
         newLightShadowMap->setShadowMapTexture(shadowMapTexture);
 
         //add shadow map filter
@@ -345,17 +315,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "updateShadowMap");
 
         for (auto& lightShadowMap : lightShadowMaps) {
-            const std::shared_ptr<OffscreenRender>& renderTarget = lightShadowMap.second->getRenderTarget();
-
-            renderTarget->resetDisplay();
-
-            shadowShaderVariable->setLightShadowMap(lightShadowMap.second);
-            shadowModelShaderVariable->setLightShadowMap(lightShadowMap.second);
-
-            shadowModelSetDisplayer->setRenderTarget(renderTarget); //TODO new target => reset model displayer at each frame => bad
-            shadowModelSetDisplayer->setModels(lightShadowMap.second->retrieveModels());
-            shadowModelSetDisplayer->display(lightShadowMap.second->getLightViewMatrix());
-
+            lightShadowMap.second->displayModels();
             lightShadowMap.second->applyTextureFilters();
         }
     }

@@ -29,14 +29,15 @@ namespace urchin {
             void displayWidget(const ShaderVar&, float) override;
 
         private:
-            void refreshText();
+            unsigned int getMaxWidth();
+
+            void refreshTextAndWidgetSize();
             std::string cutText(const std::string&);
             void refreshFont();
             unsigned int retrieveFontHeight(const std::shared_ptr<XmlChunk>&) const;
             static LengthType toLengthType(const std::string&);
             void cleanFont();
-
-            unsigned int getMaxWidth();
+            void refreshRenderer();
 
             //properties
             std::string nameSkin;

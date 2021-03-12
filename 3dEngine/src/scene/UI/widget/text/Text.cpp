@@ -15,7 +15,8 @@ namespace urchin {
             text(std::move(text)),
             maxWidth(100.0f, LengthType::PERCENTAGE),
             font(nullptr) {
-        refreshText();
+        refreshFont();
+        refreshTextAndWidgetSize();
     }
 
     Text::Text(Position position, std::string nameSkin, std::string text) :
@@ -28,65 +29,16 @@ namespace urchin {
     }
 
     void Text::createOrUpdateWidget() {
-        refreshText();
-
-        //creates the vertex array and texture array
-        vertexCoord.clear();
-        textureCoord.clear();
-        vertexCoord.reserve(text.size() * 4);
-        textureCoord.reserve(text.size() * 4);
-
-        float offsetY = 0.0f;
-        auto spaceBetweenLetters = (float)font->getSpaceBetweenLetters();
-        auto spaceBetweenLines = (float)font->getSpaceBetweenLines();
-
-        for (auto& cutTextLine : cutTextLines) { //each lines
-            float offsetX = 0.0f;
-            for (char charLetter : cutTextLine) { //each letters
-                auto letter = static_cast<unsigned char>(charLetter);
-                auto letterShift = (float)font->getGlyph(letter).shift;
-                auto letterWidth = (float)font->getGlyph(letter).width;
-                auto letterHeight = (float)font->getGlyph(letter).height;
-                auto letterOffsetY = offsetY - letterShift;
-
-                vertexCoord.emplace_back(Point2<float>(offsetX, letterOffsetY));
-                vertexCoord.emplace_back(Point2<float>(letterWidth + offsetX, letterOffsetY));
-                vertexCoord.emplace_back(Point2<float>(letterWidth + offsetX, letterHeight + letterOffsetY));
-
-                vertexCoord.emplace_back(Point2<float>(offsetX, letterOffsetY));
-                vertexCoord.emplace_back(Point2<float>(letterWidth + offsetX, letterHeight + letterOffsetY));
-                vertexCoord.emplace_back(Point2<float>(offsetX, letterHeight + letterOffsetY));
-
-                float sMin = (float)(letter % 16) / 16.0f;
-                float tMin = (float)(letter >> 4u) / 16.0f;
-                float sMax = sMin + (letterWidth / (float)font->getDimensionTexture());
-                float tMax = tMin + (letterHeight / (float)font->getDimensionTexture());
-
-                textureCoord.emplace_back(Point2<float>(sMin, tMin));
-                textureCoord.emplace_back(Point2<float>(sMax, tMin));
-                textureCoord.emplace_back(Point2<float>(sMax, tMax));
-
-                textureCoord.emplace_back(Point2<float>(sMin, tMin));
-                textureCoord.emplace_back(Point2<float>(sMax, tMax));
-                textureCoord.emplace_back(Point2<float>(sMin, tMax));
-
-                offsetX += letterWidth + spaceBetweenLetters;
-            }
-            offsetY += spaceBetweenLines;
-        }
-
-        textRenderer = std::make_unique<GenericRendererBuilder>(getRenderTarget(), ShapeType::TRIANGLE)
-                ->addData(&vertexCoord)
-                ->addData(&textureCoord)
-                ->addTexture(TextureReader::build(font->getTexture(), TextureParam::buildNearest()))
-                ->enableTransparency()
-                ->build();
+        refreshFont();
+        refreshTextAndWidgetSize();
+        refreshRenderer();
     }
 
     void Text::setMaxWidth(Length maxWidth) {
         this->maxWidth = maxWidth;
 
-        createOrUpdateWidget();
+        refreshTextAndWidgetSize();
+        refreshRenderer();
     }
 
     unsigned int Text::getMaxWidth() {
@@ -99,7 +51,8 @@ namespace urchin {
     void Text::updateText(const std::string& text) {
         this->text = text;
 
-        createOrUpdateWidget();
+        refreshTextAndWidgetSize();
+        refreshRenderer();
     }
 
     const std::string& Text::getText() const {
@@ -110,9 +63,7 @@ namespace urchin {
         return font;
     }
 
-    void Text::refreshText() {
-        refreshFont();
-
+    void Text::refreshTextAndWidgetSize() {
         //cut the text if needed
         std::size_t numLetters = 0;
         std::stringstream cutTextStream(cutText(text));
@@ -211,6 +162,60 @@ namespace urchin {
         if(font) {
             font->release();
         }
+    }
+
+    void Text::refreshRenderer() {
+        //creates the vertex array and texture array
+        vertexCoord.clear();
+        textureCoord.clear();
+        vertexCoord.reserve(text.size() * 4);
+        textureCoord.reserve(text.size() * 4);
+
+        float offsetY = 0.0f;
+        auto spaceBetweenLetters = (float)font->getSpaceBetweenLetters();
+        auto spaceBetweenLines = (float)font->getSpaceBetweenLines();
+
+        for (auto& cutTextLine : cutTextLines) { //each lines
+            float offsetX = 0.0f;
+            for (char charLetter : cutTextLine) { //each letters
+                auto letter = static_cast<unsigned char>(charLetter);
+                auto letterShift = (float)font->getGlyph(letter).shift;
+                auto letterWidth = (float)font->getGlyph(letter).width;
+                auto letterHeight = (float)font->getGlyph(letter).height;
+                auto letterOffsetY = offsetY - letterShift;
+
+                vertexCoord.emplace_back(Point2<float>(offsetX, letterOffsetY));
+                vertexCoord.emplace_back(Point2<float>(letterWidth + offsetX, letterOffsetY));
+                vertexCoord.emplace_back(Point2<float>(letterWidth + offsetX, letterHeight + letterOffsetY));
+
+                vertexCoord.emplace_back(Point2<float>(offsetX, letterOffsetY));
+                vertexCoord.emplace_back(Point2<float>(letterWidth + offsetX, letterHeight + letterOffsetY));
+                vertexCoord.emplace_back(Point2<float>(offsetX, letterHeight + letterOffsetY));
+
+                float sMin = (float)(letter % 16) / 16.0f;
+                float tMin = (float)(letter >> 4u) / 16.0f;
+                float sMax = sMin + (letterWidth / (float)font->getDimensionTexture());
+                float tMax = tMin + (letterHeight / (float)font->getDimensionTexture());
+
+                textureCoord.emplace_back(Point2<float>(sMin, tMin));
+                textureCoord.emplace_back(Point2<float>(sMax, tMin));
+                textureCoord.emplace_back(Point2<float>(sMax, tMax));
+
+                textureCoord.emplace_back(Point2<float>(sMin, tMin));
+                textureCoord.emplace_back(Point2<float>(sMax, tMax));
+                textureCoord.emplace_back(Point2<float>(sMin, tMax));
+
+                offsetX += letterWidth + spaceBetweenLetters;
+            }
+            offsetY += spaceBetweenLines;
+        }
+
+        textRenderer = std::make_unique<GenericRendererBuilder>(getRenderTarget(), ShapeType::TRIANGLE)
+                ->addData(&vertexCoord)
+                ->addData(&textureCoord)
+                ->addTexture(TextureReader::build(font->getTexture(), TextureParam::buildNearest()))
+                ->enableTransparency()
+                ->build();
     }
 
     void Text::displayWidget(const ShaderVar&, float) {

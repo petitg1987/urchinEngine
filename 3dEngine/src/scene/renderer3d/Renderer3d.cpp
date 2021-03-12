@@ -53,8 +53,7 @@ namespace urchin {
             isAntiAliasingActivated(true) {
 
         //deferred rendering
-        modelSetDisplayer->initialize();
-        modelSetDisplayer->setRenderTarget(deferredRenderTarget);
+        modelSetDisplayer->initialize(deferredRenderTarget);
         shadowManager->addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
 
         //lighting pass rendering

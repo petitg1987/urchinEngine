@@ -20,7 +20,7 @@ namespace urchin {
         modelsDisplayer.clear();
     }
 
-    void ModelSetDisplayer::initialize() {
+    void ModelSetDisplayer::initialize(std::shared_ptr<RenderTarget> renderTarget) {
         if (isInitialized) {
             throw std::runtime_error("Model displayer is already initialized.");
         }
@@ -64,6 +64,8 @@ namespace urchin {
         //default matrix
         projectionMatrix = Matrix4<float>();
         ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix);
+
+        this->renderTarget = std::move(renderTarget);
 
         isInitialized = true;
     }
@@ -114,14 +116,6 @@ namespace urchin {
 
     void ModelSetDisplayer::setCustomModelShaderVariable(CustomModelShaderVariable* customModelShaderVariable) {
         this->customModelShaderVariable = customModelShaderVariable;
-    }
-
-    void ModelSetDisplayer::setRenderTarget(std::shared_ptr<RenderTarget> renderTarget) {
-        if(renderTarget != this->renderTarget) {
-            this->renderTarget = std::move(renderTarget);
-
-            modelsDisplayer.clear();
-        }
     }
 
     void ModelSetDisplayer::setModels(const std::vector<Model*>& models) {

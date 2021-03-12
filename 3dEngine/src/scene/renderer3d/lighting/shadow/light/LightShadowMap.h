@@ -9,15 +9,19 @@
 #include "graphic/render/target/OffscreenRender.h"
 #include "scene/renderer3d/lighting/light/Light.h"
 #include "scene/renderer3d/model/Model.h"
+#include "scene/renderer3d/model/displayer/ModelSetDisplayer.h"
 #include "texture/filter/TextureFilter.h"
 
 namespace urchin {
 
     class LightSplitShadowMap;
+    class ShadowShaderVariable;
+    class ShadowModelShaderVariable;
+
 
     class LightShadowMap : public Observer {
         public:
-            LightShadowMap(const Light*, const OctreeManager<Model>*, float);
+            LightShadowMap(const Light*, const OctreeManager<Model>*, float, unsigned int, std::unique_ptr<OffscreenRender>&&);
             ~LightShadowMap() override;
 
             void notify(Observable*, int) override;
@@ -29,9 +33,6 @@ namespace urchin {
             LightSplitShadowMap* addLightSplitShadowMap();
             const std::vector<LightSplitShadowMap*>& getLightSplitShadowMaps() const;
 
-            void setRenderTarget(std::unique_ptr<OffscreenRender>&&);
-            const std::shared_ptr<OffscreenRender>& getRenderTarget() const;
-
             void setShadowMapTexture(const std::shared_ptr<Texture>&);
             const std::shared_ptr<Texture>& getShadowMapTexture() const;
 
@@ -41,18 +42,25 @@ namespace urchin {
 
             const Matrix4<float>& getLightViewMatrix() const;
             unsigned int retrieveLayersToUpdate() const;
-            const std::vector<Model*>& retrieveModels() const;
+            void removeModel(Model* model);
+
+            void displayModels();
 
         private:
+            void createOrUpdateShadowModelSetDisplayer(unsigned int);
+
             void updateLightViewMatrix();
+            const std::vector<Model*>& retrieveModels() const;
 
             const Light* light;
             const OctreeManager<Model>* modelOctreeManager;
             float viewingShadowDistance;
 
             std::shared_ptr<OffscreenRender> renderTarget; //target containing shadow map(s)
+            ModelSetDisplayer* shadowModelSetDisplayer;
+            ShadowShaderVariable* shadowShaderVariable;
+            ShadowModelShaderVariable* shadowModelShaderVariable;
             std::shared_ptr<Texture> shadowMapTexture; //shadow map texture (variance shadow map)
-
             std::vector<std::unique_ptr<const TextureFilter>> textureFilters; //shadow map filters
 
             Matrix4<float> lightViewMatrix;
