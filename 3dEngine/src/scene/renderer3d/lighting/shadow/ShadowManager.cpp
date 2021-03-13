@@ -320,7 +320,7 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer>& lightingRenderer) {
+    void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer>& lightingRenderer, std::size_t /*shadowMapTexUnitStart*/, std::size_t /*shadowMapTexUnitEnd*/) {
         int i = 0;
         const std::vector<Light*>& visibleLights = lightManager->getVisibleLights();
         for (auto* visibleLight : visibleLights) {

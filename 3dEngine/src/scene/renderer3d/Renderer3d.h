@@ -119,12 +119,13 @@ namespace urchin {
             GeometryManager* geometryManager;
             LightManager* lightManager;
 
-            ShadowManager* shadowManager;
-            bool isShadowActivated;
-
             AmbientOcclusionManager* ambientOcclusionManager;
             bool isAmbientOcclusionActivated;
             int ambientOcclusionTexUnit;
+
+            ShadowManager* shadowManager;
+            bool isShadowActivated;
+            int shadowMapTexUnitStart, shadowMapTexUnitEnd;
 
             std::shared_ptr<Texture> depthTexture, diffuseTexture, normalAndAmbientTexture, lightingPassTexture;
 

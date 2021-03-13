@@ -41,11 +41,13 @@ namespace urchin {
             skyManager(new SkyManager(deferredRenderTarget)),
             geometryManager(new GeometryManager(deferredRenderTarget)),
             lightManager(new LightManager(deferredRenderTarget)),
-            shadowManager(new ShadowManager(lightManager, modelOctreeManager)),
-            isShadowActivated(true),
             ambientOcclusionManager(new AmbientOcclusionManager()),
             isAmbientOcclusionActivated(true),
             ambientOcclusionTexUnit(-1),
+            shadowManager(new ShadowManager(lightManager, modelOctreeManager)),
+            isShadowActivated(true),
+            shadowMapTexUnitStart(-1),
+            shadowMapTexUnitEnd(-1),
 
             //lighting pass rendering
             offscreenLightingRenderTarget(std::make_shared<OffscreenRender>()),
@@ -94,6 +96,8 @@ namespace urchin {
         int diffuseTexUnit = 1;
         int normalAndAmbientTexUnit = 2;
         ambientOcclusionTexUnit = 3;
+        shadowMapTexUnitStart = 4;
+        shadowMapTexUnitEnd = shadowMapTexUnitStart + (int)lightManager->getMaxLights();
         ShaderDataSender()
             .sendData(ShaderVar(lightingShader, "depthTex"), depthTexUnit)
             .sendData(ShaderVar(lightingShader, "colorTex"), diffuseTexUnit)
@@ -335,14 +339,18 @@ namespace urchin {
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
         };
-        lightingRenderer = std::make_unique<GenericRendererBuilder>(renderTarget, ShapeType::TRIANGLE)
+        auto lightingRendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, ShapeType::TRIANGLE);
+        lightingRendererBuilder
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
                 ->addTexture(TextureReader::build(depthTexture, TextureParam::buildNearest()))
                 ->addTexture(TextureReader::build(diffuseTexture, TextureParam::buildNearest()))
-                ->addTexture(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
-                ->addTexture(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())) //ambient occlusion
-                ->build();
+                ->addTexture(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()));
+        lightingRendererBuilder->addTexture(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //ambient occlusion
+        for(int i = shadowMapTexUnitStart; i <= shadowMapTexUnitEnd; ++i) {
+            lightingRendererBuilder->addTexture(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //shadow maps
+        }
+        lightingRenderer = lightingRendererBuilder->build();
 
         ambientOcclusionManager->onResize(sceneWidth, sceneHeight);
         ambientOcclusionManager->onTexturesUpdate(depthTexture, normalAndAmbientTexture);
@@ -495,11 +503,11 @@ namespace urchin {
             fogManager->loadFog();
 
             if (isAmbientOcclusionActivated) {
-                ambientOcclusionManager->loadAOTexture(lightingRenderer, static_cast<std::size_t>(ambientOcclusionTexUnit));
+                ambientOcclusionManager->loadAOTexture(lightingRenderer, (std::size_t)ambientOcclusionTexUnit);
             }
 
             if (isShadowActivated) {
-                shadowManager->loadShadowMaps(lightingRenderer);
+                shadowManager->loadShadowMaps(lightingRenderer, (std::size_t)shadowMapTexUnitStart, (std::size_t)shadowMapTexUnitEnd);
             }
 
             if(isAntiAliasingActivated) {
