@@ -12,10 +12,10 @@ namespace urchin {
     /**
      * @param position Terrain position. Position is centered on XZ axis and Y value represents a point without elevation.
      */
-    Terrain::Terrain(std::shared_ptr<TerrainMesh>& mesh, std::unique_ptr<TerrainMaterial> material, const Point3<float>& position) :
+    Terrain::Terrain(std::shared_ptr<TerrainMesh>& mesh, std::unique_ptr<TerrainMaterials> materials, const Point3<float>& position) :
             isInitialized(false),
             mesh(mesh),
-            material(std::move(material)),
+            materials(std::move(materials)),
             grass(std::make_unique<TerrainGrass>("")),
             ambient(0.0f) {
         terrainShader = ShaderBuilder().createShader("terrain.vert", "", "terrain.frag");
@@ -30,7 +30,7 @@ namespace urchin {
         int maskTexUnit = 0;
         ShaderDataSender().sendData(ShaderVar(terrainShader, "maskTex"), maskTexUnit);
 
-        for (int i = 0; i < (int)TerrainMaterial::MAX_MATERIAL; ++i) {
+        for (int i = 0; i < (int)TerrainMaterials::MAX_MATERIAL; ++i) {
             std::string shaderTextureName = "diffuseTex" + std::to_string(i + 1);
             int diffuseTexUnit = i + 1;
             ShaderDataSender().sendData(ShaderVar(terrainShader, std::move(shaderTextureName)), diffuseTexUnit);
@@ -47,7 +47,7 @@ namespace urchin {
         grass->initialize(this->renderTarget);
 
         setMesh(mesh);
-        setMaterial(std::move(material));
+        setMaterials(std::move(materials));
 
         refreshGrassMesh();
         refreshGrassAmbient();
@@ -67,15 +67,20 @@ namespace urchin {
         this->mesh = mesh;
 
         std::vector<Point2<float>> emptyTextureCoordinates;
-        terrainRenderer = std::make_unique<GenericRendererBuilder>(renderTarget, ShapeType::TRIANGLE_STRIP)
+        auto terrainRendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, ShapeType::TRIANGLE_STRIP);
+        terrainRendererBuilder
                 ->enableDepthTest()
                 ->addData(&mesh->getVertices())
                 ->addData(&mesh->getNormals())
                 ->addData(&emptyTextureCoordinates)
                 ->indices(&mesh->getIndices())
-                ->build();
+                ->addTexture(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //mask texture
+        for(std::size_t i = 0; i < materials->getMaterials().size(); ++i) {
+            terrainRendererBuilder->addTexture(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //material texture
+        }
+        terrainRenderer = terrainRendererBuilder->build();
 
-        refreshMaterial(); //material uses mesh info: refresh is required
+        refreshMaterials(); //material uses mesh info: refresh is required
         refreshGrassMesh(); //grass uses mesh info: refresh is required
     }
 
@@ -83,38 +88,42 @@ namespace urchin {
         return mesh.get();
     }
 
-    void Terrain::setMaterial(std::unique_ptr<TerrainMaterial> terrainMaterial) {
-        if (material != terrainMaterial) {
-            material = std::move(terrainMaterial);
+    void Terrain::setMaterials(std::unique_ptr<TerrainMaterials> materials) {
+        if (this->materials != materials) {
+            this->materials = std::move(materials);
         }
 
-        refreshMaterial();
+        refreshMaterials();
     }
 
-    void Terrain::refreshMaterial() {
-        if (material) {
-            material->refreshWith(mesh->getXSize(), mesh->getZSize());
+    void Terrain::refreshMaterials() {
+        if (materials) {
+            materials->refreshWith(mesh->getXSize(), mesh->getZSize());
 
             ShaderDataSender()
-                .sendData(sRepeatShaderVar, material->getSRepeat())
-                .sendData(tRepeatShaderVar, material->getTRepeat());
+                .sendData(sRepeatShaderVar, materials->getSRepeat())
+                .sendData(tRepeatShaderVar, materials->getTRepeat());
 
-            terrainRenderer->updateData(2, &material->getTexCoordinates());
+            terrainRenderer->updateData(2, &materials->getTexCoordinates());
 
-            terrainRenderer->clearAdditionalTextures();
-            terrainRenderer->addAdditionalTexture(TextureReader::build(material->getMaskTexture(), TextureParam::buildLinear()));
-            for (auto& material : material->getMaterials()) {
+            std::size_t maskMaterialTexUnit = 0;
+            std::size_t materialTexUnitStart = 1;
+
+            terrainRenderer->updateTexture(maskMaterialTexUnit, TextureReader::build(materials->getMaskTexture(), TextureParam::buildLinear()));
+            for (auto& material : materials->getMaterials()) {
                 if (material) {
                     TextureParam::ReadMode textureReadMode = material->isRepeatableTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
                     TextureParam textureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
-                    terrainRenderer->addAdditionalTexture(TextureReader::build(material->getDiffuseTexture(), textureParam));
+                    terrainRenderer->updateTexture(materialTexUnitStart++, TextureReader::build(material->getDiffuseTexture(), textureParam));
+                } else {
+                    terrainRenderer->updateTexture(materialTexUnitStart++, TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest()));
                 }
             }
         }
     }
 
-    const TerrainMaterial* Terrain::getMaterial() const {
-        return material.get();
+    const TerrainMaterials* Terrain::getMaterials() const {
+        return materials.get();
     }
 
     void Terrain::refreshGrassMesh() {

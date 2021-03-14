@@ -30,7 +30,7 @@ namespace urchin {
         std::shared_ptr<XmlChunk> tRepeatChunk = xmlParser.getUniqueChunk(true, T_REPEAT_TAG, XmlAttribute(), materialChunk);
         std::shared_ptr<XmlChunk> materialFilenamesChunk = xmlParser.getUniqueChunk(true, MATERIAL_FILENAMES, XmlAttribute(), materialChunk);
         std::vector<std::string> materialFilenames;
-        for (unsigned int i = 0; i < TerrainMaterial::MAX_MATERIAL; ++i) {
+        for (unsigned int i = 0; i < TerrainMaterials::MAX_MATERIAL; ++i) {
             std::shared_ptr<XmlChunk> materialFilenameChunk = xmlParser.getUniqueChunk(false, MATERIAL_FILENAME, XmlAttribute(INDEX_ATTR, std::to_string(i)), materialFilenamesChunk);
             if (materialFilenameChunk) {
                 materialFilenames.emplace_back(materialFilenameChunk->getStringValue());
@@ -38,7 +38,7 @@ namespace urchin {
                 materialFilenames.emplace_back("");
             }
         }
-        auto terrainMaterial = std::make_unique<TerrainMaterial>(maskMapFilenameChunk->getStringValue(), materialFilenames, sRepeatChunk->getFloatValue(), tRepeatChunk->getFloatValue());
+        auto terrainMaterial = std::make_unique<TerrainMaterials>(maskMapFilenameChunk->getStringValue(), materialFilenames, sRepeatChunk->getFloatValue(), tRepeatChunk->getFloatValue());
 
         std::shared_ptr<XmlChunk> positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), terrainChunk);
 
@@ -56,14 +56,14 @@ namespace urchin {
 
         std::shared_ptr<XmlChunk> materialChunk = xmlWriter.createChunk(MATERIAL_TAG, XmlAttribute(), terrainChunk);
         std::shared_ptr<XmlChunk> maskMapFilenameChunk = xmlWriter.createChunk(MASK_MAP_FILENAME, XmlAttribute(), materialChunk);
-        maskMapFilenameChunk->setStringValue(terrain->getMaterial()->getMaskMapFilename());
+        maskMapFilenameChunk->setStringValue(terrain->getMaterials()->getMaskMapFilename());
         std::shared_ptr<XmlChunk> sRepeatChunk = xmlWriter.createChunk(S_REPEAT_TAG, XmlAttribute(), materialChunk);
-        sRepeatChunk->setFloatValue(terrain->getMaterial()->getSRepeat());
+        sRepeatChunk->setFloatValue(terrain->getMaterials()->getSRepeat());
         std::shared_ptr<XmlChunk> tRepeatChunk = xmlWriter.createChunk(T_REPEAT_TAG, XmlAttribute(), materialChunk);
-        tRepeatChunk->setFloatValue(terrain->getMaterial()->getTRepeat());
+        tRepeatChunk->setFloatValue(terrain->getMaterials()->getTRepeat());
         std::shared_ptr<XmlChunk> materialFilenamesChunk = xmlWriter.createChunk(MATERIAL_FILENAMES, XmlAttribute(), materialChunk);
         unsigned int i = 0;
-        for (const Material* material : terrain->getMaterial()->getMaterials()) {
+        for (const Material* material : terrain->getMaterials()->getMaterials()) {
             if (material != nullptr) {
                 std::shared_ptr<XmlChunk> materialFilenameChunk = xmlWriter.createChunk(MATERIAL_FILENAME, XmlAttribute(INDEX_ATTR, std::to_string(i)), materialFilenamesChunk);
                 materialFilenameChunk->setStringValue(material->getName());

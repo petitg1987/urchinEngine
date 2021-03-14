@@ -1,5 +1,5 @@
-#ifndef URCHINENGINE_TERRAINMATERIAL_H
-#define URCHINENGINE_TERRAINMATERIAL_H
+#ifndef URCHINENGINE_TERRAINMATERIALS_H
+#define URCHINENGINE_TERRAINMATERIALS_H
 
 #include <string>
 #include <vector>
@@ -10,12 +10,12 @@
 
 namespace urchin {
 
-    class TerrainMaterial {
+    class TerrainMaterials {
         public:
             static const unsigned int MAX_MATERIAL;
 
-            explicit TerrainMaterial(const std::string&, const std::vector<std::string>&, float, float);
-            ~TerrainMaterial();
+            explicit TerrainMaterials(const std::string&, const std::vector<std::string>&, float, float);
+            ~TerrainMaterials();
 
             void refreshWith(unsigned int, unsigned int);
 

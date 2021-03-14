@@ -6,9 +6,9 @@
 namespace urchin {
 
     //static
-    const unsigned int TerrainMaterial::MAX_MATERIAL = 4u; //maximum 4 materials (RGBA)
+    const unsigned int TerrainMaterials::MAX_MATERIAL = 4u; //maximum 4 materials (RGBA)
 
-    TerrainMaterial::TerrainMaterial(const std::string& maskMapFilename, const std::vector<std::string>& materialFilenames, float sRepeat, float tRepeat) :
+    TerrainMaterials::TerrainMaterials(const std::string& maskMapFilename, const std::vector<std::string>& materialFilenames, float sRepeat, float tRepeat) :
             maskMapFilename(maskMapFilename),
             sRepeat(sRepeat),
             tRepeat(tRepeat) {
@@ -27,7 +27,7 @@ namespace urchin {
         initializeMaterial(materialFilenames);
     }
 
-    TerrainMaterial::~TerrainMaterial() {
+    TerrainMaterials::~TerrainMaterials() {
         for (auto& material : materials) {
             if (material != nullptr) {
                 material->release();
@@ -35,7 +35,7 @@ namespace urchin {
         }
     }
 
-    void TerrainMaterial::initializeMaterial(const std::vector<std::string>& materialFilenames) {
+    void TerrainMaterials::initializeMaterial(const std::vector<std::string>& materialFilenames) {
         assert(materialFilenames.size() <= MAX_MATERIAL);
 
         materials.resize(MAX_MATERIAL);
@@ -48,31 +48,31 @@ namespace urchin {
         }
     }
 
-    void TerrainMaterial::refreshWith(unsigned int xSize, unsigned int zSize) {
+    void TerrainMaterials::refreshWith(unsigned int xSize, unsigned int zSize) {
         buildTexCoordinates(xSize, zSize);
     }
 
-    const std::string& TerrainMaterial::getMaskMapFilename() const {
+    const std::string& TerrainMaterials::getMaskMapFilename() const {
         return maskMapFilename;
     }
 
-    const std::shared_ptr<Texture>& TerrainMaterial::getMaskTexture() const {
+    const std::shared_ptr<Texture>& TerrainMaterials::getMaskTexture() const {
         return maskTexture;
     }
 
-    float TerrainMaterial::getSRepeat() const {
+    float TerrainMaterials::getSRepeat() const {
         return sRepeat;
     }
 
-    float TerrainMaterial::getTRepeat() const {
+    float TerrainMaterials::getTRepeat() const {
         return tRepeat;
     }
 
-    std::vector<Material*> TerrainMaterial::getMaterials() const {
+    std::vector<Material*> TerrainMaterials::getMaterials() const {
         return materials;
     }
 
-    void TerrainMaterial::buildTexCoordinates(unsigned int xSize, unsigned int zSize) {
+    void TerrainMaterials::buildTexCoordinates(unsigned int xSize, unsigned int zSize) {
         texCoordinates.reserve(xSize * zSize);
 
         for (unsigned int z = 0; z < zSize; ++z) {
@@ -85,7 +85,7 @@ namespace urchin {
         }
     }
 
-    const std::vector<Point2<float>>& TerrainMaterial::getTexCoordinates() const {
+    const std::vector<Point2<float>>& TerrainMaterials::getTexCoordinates() const {
         return texCoordinates;
     }
 }
