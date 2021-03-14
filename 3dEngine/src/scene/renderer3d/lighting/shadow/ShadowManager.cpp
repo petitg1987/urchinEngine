@@ -53,14 +53,14 @@ namespace urchin {
         for (unsigned int i = 0; i < lightManager->getMaxLights(); ++i) {
             //depth shadow texture
             shadowMapTextureLocName.str("");
-            shadowMapTextureLocName << "lightsInfo[" << i << "].shadowMapTex";
+            shadowMapTextureLocName << "shadowMapTex[" << i << "]";
             lightsLocation[i].shadowMapTexShaderVar = ShaderVar(lightingShader, shadowMapTextureLocName.str());
 
             //light projection matrices
             lightsLocation[i].mLightProjectionViewShaderVar = new ShaderVar[nbShadowMaps];
             for (unsigned int j = 0; j < nbShadowMaps; ++j) {
                 mLightProjectionViewLocName.str("");
-                mLightProjectionViewLocName << "lightsInfo[" << i << "].mLightProjectionView[" << j << "]";
+                mLightProjectionViewLocName << "mLightProjectionView[" << i << "][" << j << "]";
                 lightsLocation[i].mLightProjectionViewShaderVar[j] = ShaderVar(lightingShader, mLightProjectionViewLocName.str());
             }
         }

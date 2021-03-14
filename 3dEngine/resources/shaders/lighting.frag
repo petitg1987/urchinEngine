@@ -8,28 +8,20 @@
 #define MAX_LIGHTS 0
 #define OUTPUT_LOCATION 0
 
-//deferred textures:
-//|-------------------------------------------------------------------|
-//| Depth (32 bits)                                                   |
-//|-------------------------------------------------------------------|
-//| Diffuse red    | Diffuse green  | Diffuse blue   | EMPTY          |
-//|-------------------------------------------------------------------|
-//| Normal X       | Normal Y       | Normal Z       | Ambient factor |
-//|-------------------------------------------------------------------|
-//| Ambient occlusion factor (16 bits)                                |
-//|-------------------------------------------------------------------|
-in vec2 textCoordinates;
-uniform sampler2D depthTex;
-uniform sampler2D colorTex;
-uniform sampler2D normalAndAmbientTex;
-uniform sampler2D ambientOcclusionTex;
+//general
 uniform mat4 mInverseViewProjection;
-uniform bool hasShadow;
-uniform bool hasAmbientOcclusion;
 uniform vec3 viewPosition;
 
-//lights and shadows:
-struct StructLightInfo{
+//deferred textures
+in vec2 textCoordinates;
+uniform sampler2D depthTex; //depth (32 bits)
+uniform sampler2D colorTex; //diffuse RGB (3*8 bits) + EMPTY (8 bits)
+uniform sampler2D normalAndAmbientTex; //normal XYZ (3*8 bits) + ambient factor
+uniform sampler2D ambientOcclusionTex; //ambient occlusion factor (16 bits)
+
+//lighting
+uniform vec4 globalAmbient;
+struct StructLightInfo {
     bool isExist;
     bool produceShadow;
     bool hasParallelBeams;
@@ -37,14 +29,17 @@ struct StructLightInfo{
 
     float exponentialAttenuation;
     vec3 lightAmbient;
-
-    sampler2DArray shadowMapTex;
-
-    mat4 mLightProjectionView[NUMBER_SHADOW_MAPS];
 };
 uniform StructLightInfo lightsInfo[MAX_LIGHTS];
+
+//shadow
+uniform bool hasShadow;
 uniform float depthSplitDistance[NUMBER_SHADOW_MAPS];
-uniform vec4 globalAmbient;
+uniform sampler2DArray shadowMapTex[MAX_LIGHTS];
+uniform mat4 mLightProjectionView[MAX_LIGHTS][NUMBER_SHADOW_MAPS];
+
+//ambient occlusion
+uniform bool hasAmbientOcclusion;
 
 //fog
 uniform bool hasFog;
@@ -93,11 +88,11 @@ float computeShadowContribution(int lightIndex, float depthValue, vec4 position,
         for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
             if (depthValue < depthSplitDistance[i]) {
 
-                vec4 shadowCoord = (((lightsInfo[lightIndex].mLightProjectionView[i] * position) / 2.0) + 0.5);
+                vec4 shadowCoord = (((mLightProjectionView[lightIndex][i] * position) / 2.0) + 0.5);
 
                 //model has produceShadow flag to true ?
                 if (shadowCoord.s <= 1.0 && shadowCoord.s >= 0.0 && shadowCoord.t <= 1.0 && shadowCoord.t >= 0.0) {
-                    vec2 moments = texture2DArray(lightsInfo[lightIndex].shadowMapTex, vec3(shadowCoord.st, i)).rg;
+                    vec2 moments = texture2DArray(shadowMapTex[lightIndex], vec3(shadowCoord.st, i)).rg;
                     shadowContribution = computePercentLit(shadowCoord.z, moments, NdotL);
                 }
 
