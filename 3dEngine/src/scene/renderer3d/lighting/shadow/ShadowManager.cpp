@@ -208,15 +208,14 @@ namespace urchin {
         shadowMapRenderTarget->addTexture(depthTexture);
         shadowMapRenderTarget->addTexture(shadowMapTexture);
 
-        auto* newLightShadowMap = new LightShadowMap(light, modelOctreeManager, viewingShadowDistance, nbShadowMaps, std::move(shadowMapRenderTarget));
+        auto* newLightShadowMap = new LightShadowMap(light, modelOctreeManager, viewingShadowDistance, shadowMapTexture, nbShadowMaps, std::move(shadowMapRenderTarget));
         for (unsigned int i = 0; i < nbShadowMaps; ++i) {
             newLightShadowMap->addLightSplitShadowMap();
         }
-        newLightShadowMap->setShadowMapTexture(shadowMapTexture);
 
         //add shadow map filter
         if (blurShadow != BlurShadow::NO_BLUR) {
-            std::unique_ptr<TextureFilter> verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>()
+            std::unique_ptr<TextureFilter> verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(shadowMapTexture)
                     ->textureSize(shadowMapResolution, shadowMapResolution)
                     ->textureType(TextureType::ARRAY)
                     ->textureNumberLayer(nbShadowMaps)
@@ -225,7 +224,7 @@ namespace urchin {
                     ->blurSize((unsigned int)blurShadow)
                     ->build();
 
-            std::unique_ptr<TextureFilter> horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>()
+            std::unique_ptr<TextureFilter> horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(verticalBlurFilter->getTexture())
                     ->textureSize(shadowMapResolution, shadowMapResolution)
                     ->textureType(TextureType::ARRAY)
                     ->textureNumberLayer(nbShadowMaps)
@@ -237,7 +236,7 @@ namespace urchin {
             newLightShadowMap->addTextureFilter(std::move(verticalBlurFilter));
             newLightShadowMap->addTextureFilter(std::move(horizontalBlurFilter));
         } else { //null filter necessary because it allows to store cached shadow map in a texture which is not cleared.
-            std::unique_ptr<TextureFilter> nullFilter = std::make_unique<DownSampleFilterBuilder>()
+            std::unique_ptr<TextureFilter> nullFilter = std::make_unique<DownSampleFilterBuilder>(shadowMapTexture)
                     ->textureSize(shadowMapResolution, shadowMapResolution)
                     ->textureType(TextureType::ARRAY)
                     ->textureNumberLayer(nbShadowMaps)

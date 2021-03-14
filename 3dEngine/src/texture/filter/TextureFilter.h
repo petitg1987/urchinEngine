@@ -24,7 +24,7 @@ namespace urchin {
 
             const std::shared_ptr<Texture>& getTexture() const;
 
-            void applyOn(const std::shared_ptr<Texture>&, int layersToUpdate = -1) const;
+            void applyFilter(int layersToUpdate = -1) const;
 
         protected:
             virtual std::string getShaderName() const = 0;
@@ -41,11 +41,15 @@ namespace urchin {
             static std::string toShaderVectorValues(std::vector<float>&);
 
         private:
-            void initializeDisplay();
             void initializeTexture();
+            void initializeDisplay();
 
             bool isInitialized;
 
+            //source texture
+            std::shared_ptr<Texture> sourceTexture;
+
+            //target texture
             unsigned int textureWidth, textureHeight;
             TextureType textureType;
             unsigned int textureNumberLayer;

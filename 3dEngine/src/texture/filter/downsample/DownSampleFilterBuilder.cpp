@@ -2,8 +2,8 @@
 
 namespace urchin {
 
-    DownSampleFilterBuilder::DownSampleFilterBuilder() :
-        TextureFilterBuilder() {
+    DownSampleFilterBuilder::DownSampleFilterBuilder(const std::shared_ptr<Texture>& sourceTexture) :
+            TextureFilterBuilder(sourceTexture) {
 
     }
 

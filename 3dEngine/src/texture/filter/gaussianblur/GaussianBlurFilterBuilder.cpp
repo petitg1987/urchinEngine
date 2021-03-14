@@ -2,10 +2,10 @@
 
 namespace urchin {
 
-    GaussianBlurFilterBuilder::GaussianBlurFilterBuilder() :
-        TextureFilterBuilder(),
-        pBlurDirection(BlurDirection::HORIZONTAL_BLUR),
-        pBlurSize(3) //3x3 blur
+    GaussianBlurFilterBuilder::GaussianBlurFilterBuilder(const std::shared_ptr<Texture>& sourceTexture) :
+            TextureFilterBuilder(sourceTexture),
+            pBlurDirection(BlurDirection::HORIZONTAL_BLUR),
+            pBlurSize(3) //3x3 blur
     {
 
     }

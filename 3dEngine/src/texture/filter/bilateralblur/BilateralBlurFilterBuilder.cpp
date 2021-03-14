@@ -2,11 +2,11 @@
 
 namespace urchin {
 
-    BilateralBlurFilterBuilder::BilateralBlurFilterBuilder() :
-        TextureFilterBuilder(),
-        pBlurDirection(BlurDirection::HORIZONTAL_BLUR),
-        pBlurSize(3), //3x3 blur
-        pBlurSharpness(40.0) {
+    BilateralBlurFilterBuilder::BilateralBlurFilterBuilder(const std::shared_ptr<Texture>& sourceTexture) :
+            TextureFilterBuilder(sourceTexture),
+            pBlurDirection(BlurDirection::HORIZONTAL_BLUR),
+            pBlurSize(3), //3x3 blur
+            pBlurSharpness(40.0) {
 
     }
 

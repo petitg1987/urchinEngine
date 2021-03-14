@@ -18,6 +18,20 @@ namespace urchin {
         isInitialized = true;
     }
 
+    void TextureFilter::initializeTexture() {
+        if (textureType == TextureType::DEFAULT) {
+            texture = Texture::build(textureWidth, textureHeight, textureFormat, nullptr);
+        } else if (textureType == TextureType::ARRAY) {
+            texture = Texture::buildArray(textureWidth, textureHeight, textureNumberLayer, textureFormat, nullptr);
+        } else {
+            throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
+        }
+
+        offscreenRenderTarget = std::make_unique<OffscreenRender>();
+        offscreenRenderTarget->onResize(textureWidth, textureHeight);
+        offscreenRenderTarget->addTexture(texture);
+    }
+
     void TextureFilter::initializeDisplay() {
         std::locale::global(std::locale("C")); //for float
 
@@ -32,6 +46,7 @@ namespace urchin {
         textureRenderer = std::make_unique<GenericRendererBuilder>(offscreenRenderTarget, ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
+                ->addTexture(TextureReader::build(sourceTexture, TextureParam::buildLinear()))
                 ->build();
 
         std::map<std::string, std::string> shaderTokens;
@@ -62,20 +77,6 @@ namespace urchin {
         ShaderDataSender().sendData(ShaderVar(textureFilterShader, "tex"), texUnit);
         layersToUpdateShaderVar = ShaderVar(textureFilterShader, "layersToUpdate");
         initiateAdditionalShaderVariables(textureFilterShader);
-    }
-
-    void TextureFilter::initializeTexture() {
-        if (textureType == TextureType::DEFAULT) {
-            texture = Texture::build(textureWidth, textureHeight, textureFormat, nullptr);
-        } else if (textureType == TextureType::ARRAY) {
-            texture = Texture::buildArray(textureWidth, textureHeight, textureNumberLayer, textureFormat, nullptr);
-        } else {
-            throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
-        }
-
-        offscreenRenderTarget = std::make_unique<OffscreenRender>();
-        offscreenRenderTarget->onResize(textureWidth, textureHeight);
-        offscreenRenderTarget->addTexture(texture);
     }
 
     void TextureFilter::initiateAdditionalShaderVariables(const std::unique_ptr<Shader>&) {
@@ -118,14 +119,12 @@ namespace urchin {
      * @param layersToUpdate Specify the layers which must be affected by the filter (only for TextureFormat::ARRAY).
      * Lowest bit represent the first layer, the second lowest bit represent the second layer, etc.
      */
-    void TextureFilter::applyOn(const std::shared_ptr<Texture>& sourceTexture, int layersToUpdate) const {
-        assert(layersToUpdate == -1 || sourceTexture->getTextureType() == TextureType::ARRAY);
+    void TextureFilter::applyFilter(int layersToUpdate) const {
         if (!isInitialized) {
             throw std::runtime_error("Texture filter must be initialized before apply.");
         }
 
         textureRenderer->clearAdditionalTextures();
-        textureRenderer->addAdditionalTexture(TextureReader::build(sourceTexture, TextureParam::buildLinear()));
         addFurtherTextures(textureRenderer);
 
         if (textureType == TextureType::ARRAY) {

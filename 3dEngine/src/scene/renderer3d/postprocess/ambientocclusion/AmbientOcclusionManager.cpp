@@ -131,7 +131,7 @@ namespace urchin {
             refreshRenderer();
 
             if(isBlurActivated) {
-                verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>()
+                verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>(ambientOcclusionTexture)
                         ->textureSize(textureSizeX, textureSizeY)
                         ->textureType(TextureType::DEFAULT)
                         ->textureFormat(TextureFormat::GRAYSCALE_16_FLOAT)
@@ -141,7 +141,7 @@ namespace urchin {
                         ->depthTexture(depthTexture)
                         ->buildBilateralBlur();
 
-                horizontalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>()
+                horizontalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>(verticalBlurFilter->getTexture())
                         ->textureSize(textureSizeX, textureSizeY)
                         ->textureType(TextureType::DEFAULT)
                         ->textureFormat(TextureFormat::GRAYSCALE_16_FLOAT)
@@ -320,8 +320,8 @@ namespace urchin {
         offscreenRenderTarget->display(renderer);
 
         if (isBlurActivated) {
-            verticalBlurFilter->applyOn(ambientOcclusionTexture);
-            horizontalBlurFilter->applyOn(verticalBlurFilter->getTexture());
+            verticalBlurFilter->applyFilter();
+            horizontalBlurFilter->applyFilter();
         }
     }
 

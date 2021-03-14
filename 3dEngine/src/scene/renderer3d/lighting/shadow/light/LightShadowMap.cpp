@@ -1,5 +1,5 @@
-#include <cmath>
 #include <stdexcept>
+#include <utility>
 
 #include "LightShadowMap.h"
 #include "scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h"
@@ -8,15 +8,16 @@
 
 namespace urchin {
 
-    LightShadowMap::LightShadowMap(const Light* light, const OctreeManager<Model>* modelOctreeManager, float viewingShadowDistance,
-                                   unsigned int nbShadowMaps, std::unique_ptr<OffscreenRender>&& renderTarget) :
+    LightShadowMap::LightShadowMap(const Light* light, const OctreeManager<Model>* modelOctreeManager, float viewingShadowDistance, std::shared_ptr<Texture> shadowMapTexture,
+                                   unsigned int nbShadowMaps, std::unique_ptr<OffscreenRender> renderTarget) :
             light(light),
             modelOctreeManager(modelOctreeManager),
             viewingShadowDistance(viewingShadowDistance),
             renderTarget(std::move(renderTarget)),
             shadowModelSetDisplayer(nullptr),
             shadowShaderVariable(nullptr),
-            shadowModelShaderVariable(nullptr) {
+            shadowModelShaderVariable(nullptr),
+            shadowMapTexture(std::move(shadowMapTexture)) {
         createOrUpdateShadowModelSetDisplayer(nbShadowMaps);
         updateLightViewMatrix();
         light->addObserver(this, Light::LIGHT_MOVE);
@@ -77,6 +78,13 @@ namespace urchin {
         return viewingShadowDistance;
     }
 
+    /**
+     * Returns shadow map texture (variance shadow map)
+     */
+    const std::shared_ptr<Texture>& LightShadowMap::getShadowMapTexture() const {
+        return shadowMapTexture;
+    }
+
     void LightShadowMap::createOrUpdateShadowModelSetDisplayer(unsigned int nbShadowMaps) {
         std::map<std::string, std::string> geometryTokens, fragmentTokens;
         geometryTokens["MAX_VERTICES"] = std::to_string(3 * nbShadowMaps);
@@ -114,20 +122,6 @@ namespace urchin {
         return lightSplitShadowMaps;
     }
 
-    /**
-     * @param shadowMapTexture Shadow map texture (variance shadow map)
-     */
-    void LightShadowMap::setShadowMapTexture(const std::shared_ptr<Texture>& shadowMapTexture) {
-        this->shadowMapTexture = shadowMapTexture;
-    }
-
-    /**
-     * Returns shadow map texture (variance shadow map)
-     */
-    const std::shared_ptr<Texture>& LightShadowMap::getShadowMapTexture() const {
-        return shadowMapTexture;
-    }
-
     void LightShadowMap::addTextureFilter(std::unique_ptr<TextureFilter> textureFilter) {
         textureFilters.push_back(std::move(textureFilter));
     }
@@ -135,10 +129,8 @@ namespace urchin {
     void LightShadowMap::applyTextureFilters() const {
         unsigned int layersToUpdate = retrieveLayersToUpdate();
 
-        std::shared_ptr<Texture> texture = shadowMapTexture;
         for (auto& textureFilter : textureFilters) {
-            textureFilter->applyOn(texture, (int)layersToUpdate);
-            texture = textureFilter->getTexture();
+            textureFilter->applyFilter((int)layersToUpdate);
         }
     }
 

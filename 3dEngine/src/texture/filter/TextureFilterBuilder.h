@@ -15,8 +15,10 @@ namespace urchin {
 
     template<typename T> class TextureFilterBuilder {
         public:
-            TextureFilterBuilder();
-            virtual ~TextureFilterBuilder();
+            explicit TextureFilterBuilder(const std::shared_ptr<Texture>&);
+            virtual ~TextureFilterBuilder() = default;
+
+            const std::shared_ptr<Texture>& getSourceTexture() const;
 
             T* textureSize(unsigned int, unsigned int);
             unsigned int getTextureWidth() const;
@@ -36,8 +38,11 @@ namespace urchin {
         private:
             T* _this();
 
-            unsigned int textureWidth, textureHeight;
+            //source texture
+            const std::shared_ptr<Texture> sourceTexture;
 
+            //target texture
+            unsigned int textureWidth, textureHeight;
             TextureType pTextureType;
             unsigned int pTextureNumberLayer;
             TextureFormat pTextureFormat;
