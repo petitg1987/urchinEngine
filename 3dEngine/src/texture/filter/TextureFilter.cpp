@@ -43,11 +43,15 @@ namespace urchin {
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
         };
-        textureRenderer = std::make_unique<GenericRendererBuilder>(offscreenRenderTarget, ShapeType::TRIANGLE)
+        auto textureRendererBuilder = std::make_unique<GenericRendererBuilder>(offscreenRenderTarget, ShapeType::TRIANGLE);
+        textureRendererBuilder
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addTexture(TextureReader::build(sourceTexture, TextureParam::buildLinear()))
-                ->build();
+                ->addTexture(TextureReader::build(sourceTexture, TextureParam::buildLinear()));
+        if(depthTexture) {
+            textureRendererBuilder->addTexture(TextureReader::build(depthTexture, TextureParam::buildNearest()));
+        }
+        textureRenderer = textureRendererBuilder->build();
 
         std::map<std::string, std::string> shaderTokens;
         if (textureFormat == TextureFormat::RG_32_FLOAT) {
@@ -80,10 +84,6 @@ namespace urchin {
     }
 
     void TextureFilter::initiateAdditionalShaderVariables(const std::unique_ptr<Shader>&) {
-        //do nothing: to override
-    }
-
-    void TextureFilter::addFurtherTextures(const std::unique_ptr<GenericRenderer>&) const {
         //do nothing: to override
     }
 
@@ -123,9 +123,6 @@ namespace urchin {
         if (!isInitialized) {
             throw std::runtime_error("Texture filter must be initialized before apply.");
         }
-
-        textureRenderer->clearAdditionalTextures();
-        addFurtherTextures(textureRenderer);
 
         if (textureType == TextureType::ARRAY) {
             ShaderDataSender().sendData(layersToUpdateShaderVar, (unsigned int)layersToUpdate);

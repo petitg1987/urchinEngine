@@ -135,20 +135,21 @@ namespace urchin {
                         ->textureSize(textureSizeX, textureSizeY)
                         ->textureType(TextureType::DEFAULT)
                         ->textureFormat(TextureFormat::GRAYSCALE_16_FLOAT)
+                        ->depthTexture(depthTexture)
                         ->blurDirection(BilateralBlurFilterBuilder::VERTICAL_BLUR)
                         ->blurSize(blurSize)
                         ->blurSharpness(blurSharpness)
-                        ->depthTexture(depthTexture)
+
                         ->buildBilateralBlur();
 
                 horizontalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>(verticalBlurFilter->getTexture())
                         ->textureSize(textureSizeX, textureSizeY)
                         ->textureType(TextureType::DEFAULT)
                         ->textureFormat(TextureFormat::GRAYSCALE_16_FLOAT)
+                        ->depthTexture(depthTexture)
                         ->blurDirection(BilateralBlurFilterBuilder::HORIZONTAL_BLUR)
                         ->blurSize(blurSize)
                         ->blurSharpness(blurSharpness)
-                        ->depthTexture(depthTexture)
                         ->buildBilateralBlur();
 
                 verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);

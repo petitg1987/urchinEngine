@@ -33,16 +33,9 @@ namespace urchin {
         return pBlurSharpness;
     }
 
-    BilateralBlurFilterBuilder* BilateralBlurFilterBuilder::depthTexture(const std::shared_ptr<Texture>& depthTexture) {
-        this->pDepthTexture = depthTexture;
-        return this;
-    }
-
-    const std::shared_ptr<Texture>& BilateralBlurFilterBuilder::getDepthTexture() const {
-        return pDepthTexture;
-    }
-
     std::unique_ptr<TextureFilter> BilateralBlurFilterBuilder::build() {
+        assert(getDepthTexture());
+
         if (getTextureType() != TextureType::DEFAULT) {
             throw std::invalid_argument("Unsupported texture type for bilateral blur filter: " + std::to_string(getTextureType()));
         } else if (getTextureFormat() != TextureFormat::GRAYSCALE_16_FLOAT) {
