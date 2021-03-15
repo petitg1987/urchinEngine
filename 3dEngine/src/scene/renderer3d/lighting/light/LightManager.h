@@ -33,9 +33,9 @@ namespace urchin {
             void setGlobalAmbientColor(const Point4<float>&);
             const Point4<float>& getGlobalAmbientColor() const;
 
-            void updateLights(const Frustum<float>&);
-            void loadLights();
-            void postUpdateLights();
+            void updateVisibleLights(const Frustum<float>&);
+            void loadVisibleLights();
+            void postUpdateVisibleLights();
 
             void drawLightOctree(const Matrix4<float>&, const Matrix4<float>&) const;
 

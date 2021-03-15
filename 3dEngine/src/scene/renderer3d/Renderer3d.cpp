@@ -421,7 +421,7 @@ namespace urchin {
         modelOctreeManager->refreshOctreeables();
 
         //determine visible lights on scene
-        lightManager->updateLights(camera->getFrustum());
+        lightManager->updateVisibleLights(camera->getFrustum());
 
         //determine models producing shadow on scene
         if (isShadowActivated) {
@@ -501,7 +501,7 @@ namespace urchin {
                     .sendData(mInverseViewProjectionShaderVar, (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse())
                     .sendData(viewPositionShaderVar, camera->getPosition());
 
-            lightManager->loadLights();
+            lightManager->loadVisibleLights();
 
             fogManager->loadFog();
 
@@ -528,7 +528,7 @@ namespace urchin {
 
         modelOctreeManager->postRefreshOctreeables();
 
-        lightManager->postUpdateLights();
+        lightManager->postUpdateVisibleLights();
     }
 
 }

@@ -124,7 +124,7 @@ namespace urchin {
         return globalAmbientColor;
     }
 
-    void LightManager::updateLights(const Frustum<float>& frustum) {
+    void LightManager::updateVisibleLights(const Frustum<float>& frustum) {
         ScopeProfiler sp(Profiler::graphic(), "updateLights");
 
         lightOctreeManager->refreshOctreeables();
@@ -139,17 +139,16 @@ namespace urchin {
             logMaxLightsReach();
             visibleLights.resize(maxLights);
         }
+
+        /*
+         * Sort visible lights by their memory address.
+         * By sorting visible lights, we make sure that the lights producing shadow are often in same order.
+         * Thus, the shadow textures positions/index in shader don't need to be updated at each frame in ShadowManager#loadShadowMaps().
+         */
+        sort(visibleLights.begin(), visibleLights.end(), std::greater<>());
     }
 
-    void LightManager::logMaxLightsReach() {
-        static bool maxLightReachLogged = false;
-        if(!maxLightReachLogged) {
-            Logger::instance()->logWarning("Light in scene (" + std::to_string(visibleLights.size()) + ") is higher that max light (" + std::to_string(maxLights) + ") authorized");
-            maxLightReachLogged = true;
-        }
-    }
-
-    void LightManager::loadLights() {
+    void LightManager::loadVisibleLights() {
         const std::vector<Light*>& lights = getVisibleLights();
 
         for (unsigned int i = 0; i < maxLights; ++i) {
@@ -182,8 +181,16 @@ namespace urchin {
         ShaderDataSender().sendData(globalAmbientColorShaderVar, getGlobalAmbientColor());
     }
 
-    void LightManager::postUpdateLights() {
+    void LightManager::postUpdateVisibleLights() {
         lightOctreeManager->postRefreshOctreeables();
+    }
+
+    void LightManager::logMaxLightsReach() {
+        static bool maxLightReachLogged = false;
+        if(!maxLightReachLogged) {
+            Logger::instance()->logWarning("Light in scene (" + std::to_string(visibleLights.size()) + ") is higher that max light (" + std::to_string(maxLights) + ") authorized");
+            maxLightReachLogged = true;
+        }
     }
 
     void LightManager::drawLightOctree(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
