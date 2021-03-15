@@ -98,7 +98,7 @@ namespace urchin {
         int normalAndAmbientTexUnit = 2;
         ambientOcclusionTexUnit = 3;
         shadowMapTexUnitStart = 4;
-        shadowMapTexUnitEnd = shadowMapTexUnitStart + (int)lightManager->getMaxLights();
+        shadowMapTexUnitEnd = shadowMapTexUnitStart + (int)shadowManager->getMaxShadowLights();
         ShaderDataSender()
             .sendData(ShaderVar(lightingShader, "depthTex"), depthTexUnit)
             .sendData(ShaderVar(lightingShader, "colorTex"), diffuseTexUnit)
@@ -106,7 +106,7 @@ namespace urchin {
             .sendData(ShaderVar(lightingShader, "ambientOcclusionTex"), ambientOcclusionTexUnit)
             .sendData(ShaderVar(lightingShader, "hasShadow"), isShadowActivated)
             .sendData(ShaderVar(lightingShader, "hasAmbientOcclusion"), isAmbientOcclusionActivated);
-        for(int shadowMapTexUnit = shadowMapTexUnitStart, i = 0; shadowMapTexUnit <= shadowMapTexUnitEnd; ++shadowMapTexUnit, ++i) {
+        for(int shadowMapTexUnit = shadowMapTexUnitStart, i = 0; shadowMapTexUnit <= shadowMapTexUnitEnd; ++shadowMapTexUnit, ++i) { //TODO move in shadowManager->initiateShaderVariables ?
             ShaderDataSender().sendData(ShaderVar(lightingShader, "shadowMapTex[" + std::to_string(i) + "]"), shadowMapTexUnit);
         }
 
