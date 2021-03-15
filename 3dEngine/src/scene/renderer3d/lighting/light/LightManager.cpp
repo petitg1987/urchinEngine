@@ -134,11 +134,23 @@ namespace urchin {
         visibleLights.clear();
         visibleLights = parallelBeamsLights;
         visibleLights.insert(visibleLights.end(), lightsInFrustum.begin(), lightsInFrustum.end());
+
+        if (visibleLights.size() > maxLights) {
+            logMaxLightsReach();
+            visibleLights.resize(maxLights);
+        }
+    }
+
+    void LightManager::logMaxLightsReach() {
+        static bool maxLightReachLogged = false;
+        if(!maxLightReachLogged) {
+            Logger::instance()->logWarning("Light in scene (" + std::to_string(visibleLights.size()) + ") is higher that max light (" + std::to_string(maxLights) + ") authorized");
+            maxLightReachLogged = true;
+        }
     }
 
     void LightManager::loadLights() {
         const std::vector<Light*>& lights = getVisibleLights();
-        checkMaxLight(lights);
 
         for (unsigned int i = 0; i < maxLights; ++i) {
             if (lights.size() > i) {
@@ -168,14 +180,6 @@ namespace urchin {
         }
 
         ShaderDataSender().sendData(globalAmbientColorShaderVar, getGlobalAmbientColor());
-    }
-
-    void LightManager::checkMaxLight(const std::vector<Light*>& lights) const {
-        static bool maxLightReachLogged = false;
-        if (lights.size() > maxLights && !maxLightReachLogged) {
-            Logger::instance()->logWarning("Light in scene (" + std::to_string(lights.size()) + ") is higher that max light (" + std::to_string(maxLights) + ") authorized");
-            maxLightReachLogged = true;
-        }
     }
 
     void LightManager::postUpdateLights() {

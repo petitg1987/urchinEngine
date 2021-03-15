@@ -87,6 +87,7 @@ namespace urchin {
 
         std::map<std::string, std::string> tokens;
         tokens["MAX_LIGHTS"] = std::to_string(lightManager->getMaxLights());
+        tokens["MAX_SHADOW_LIGHTS"] = std::to_string(shadowManager->getMaxShadowLights());
         tokens["NUMBER_SHADOW_MAPS"] = std::to_string(shadowManager->getNumberShadowMaps());
         tokens["SHADOW_MAP_BIAS"] = std::to_string(shadowManager->getShadowMapBias());
         tokens["OUTPUT_LOCATION"] = "0"; // isAntiAliasingActivated ? "0" /*TEX_LIGHTING_PASS*/ : "0" /*Screen*/;

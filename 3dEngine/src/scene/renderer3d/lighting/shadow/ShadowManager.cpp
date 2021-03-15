@@ -29,7 +29,8 @@ namespace urchin {
             lightManager(lightManager),
             modelOctreeManager(modelOctreeManager),
             bForceUpdateAllShadowMaps(false),
-            lightsLocation(nullptr) {
+            shadowMapTexShaderVar(nullptr),
+            mLightProjectionViewShaderVar(nullptr) {
         lightManager->addObserver(this, LightManager::ADD_LIGHT);
         lightManager->addObserver(this, LightManager::REMOVE_LIGHT);
     }
@@ -48,30 +49,31 @@ namespace urchin {
 
         //light information
         deleteLightsLocation();
-        lightsLocation = new LightLocation[lightManager->getMaxLights()];
+        shadowMapTexShaderVar = new ShaderVar[getMaxShadowLights()];
+        mLightProjectionViewShaderVar = new ShaderVar*[getMaxShadowLights()];
         std::ostringstream shadowMapTextureLocName, mLightProjectionViewLocName;
-        for (unsigned int i = 0; i < lightManager->getMaxLights(); ++i) {
+        for (unsigned int i = 0; i < getMaxShadowLights(); ++i) {
             //depth shadow texture
             shadowMapTextureLocName.str("");
             shadowMapTextureLocName << "shadowMapTex[" << i << "]";
-            lightsLocation[i].shadowMapTexShaderVar = ShaderVar(lightingShader, shadowMapTextureLocName.str());
+            shadowMapTexShaderVar[i] = ShaderVar(lightingShader, shadowMapTextureLocName.str());
 
             //light projection matrices
-            lightsLocation[i].mLightProjectionViewShaderVar = new ShaderVar[nbShadowMaps];
+            mLightProjectionViewShaderVar[i] = new ShaderVar[nbShadowMaps];
             for (unsigned int j = 0; j < nbShadowMaps; ++j) {
                 mLightProjectionViewLocName.str("");
                 mLightProjectionViewLocName << "mLightProjectionView[" << i << "][" << j << "]";
-                lightsLocation[i].mLightProjectionViewShaderVar[j] = ShaderVar(lightingShader, mLightProjectionViewLocName.str());
+                mLightProjectionViewShaderVar[i][j] = ShaderVar(lightingShader, mLightProjectionViewLocName.str());
             }
         }
     }
 
     void ShadowManager::deleteLightsLocation() {
-        if (lightsLocation) {
-            for (unsigned int i = 0; i < lightManager->getMaxLights(); ++i) {
-                delete[] lightsLocation[i].mLightProjectionViewShaderVar;
+        delete shadowMapTexShaderVar;
+        if(mLightProjectionViewShaderVar) {
+            for (unsigned int i = 0; i < getMaxShadowLights(); ++i) {
+                delete[] mLightProjectionViewShaderVar[i];
             }
-            delete[] lightsLocation;
         }
     }
 
@@ -105,6 +107,10 @@ namespace urchin {
                 }
             }
         }
+    }
+
+    unsigned int ShadowManager::getMaxShadowLights() const {
+        return lightManager->getMaxLights();
     }
 
     float ShadowManager::getShadowMapBias() const {
@@ -320,24 +326,24 @@ namespace urchin {
     }
 
     void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer>& lightingRenderer, std::size_t /*shadowMapTexUnitStart*/, std::size_t /*shadowMapTexUnitEnd*/) {
-        int i = 0;
+        int lightShadowIndex = 0;
         const std::vector<Light*>& visibleLights = lightManager->getVisibleLights();
         for (auto* visibleLight : visibleLights) {
             if (visibleLight->isProduceShadow()) {
-                auto it = lightShadowMaps.find(visibleLight);
-                const LightShadowMap* lightShadowMap = it->second;
+                const LightShadowMap* lightShadowMap = lightShadowMaps.find(visibleLight)->second;
 
                 unsigned int texUnit = lightingRenderer
                         ->addAdditionalTexture(TextureReader::build(lightShadowMap->getFilteredShadowMapTexture(), TextureParam::buildLinear()));
-                ShaderDataSender().sendData(lightsLocation[i].shadowMapTexShaderVar, (int)texUnit);
+                ShaderDataSender().sendData(shadowMapTexShaderVar[lightShadowIndex], (int)texUnit);
 
                 unsigned int shadowMapIndex = 0;
                 for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
                     Matrix4<float> lightProjectionViewMatrix = lightSplitShadowMap->getLightProjectionMatrix() * lightShadowMap->getLightViewMatrix();
-                    ShaderDataSender().sendData(lightsLocation[i].mLightProjectionViewShaderVar[shadowMapIndex++], lightProjectionViewMatrix);
+                    ShaderDataSender().sendData(mLightProjectionViewShaderVar[lightShadowIndex][shadowMapIndex++], lightProjectionViewMatrix);
                 }
+
+                lightShadowIndex++;
             }
-            ++i;
         }
 
         auto* depthSplitDistance = new float[nbShadowMaps];

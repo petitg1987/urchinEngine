@@ -41,6 +41,7 @@ namespace urchin {
             void onCameraProjectionUpdate(const Camera*);
             void notify(Observable*, int) override;
 
+            unsigned int getMaxShadowLights() const;
             float getShadowMapBias() const;
 
             void setShadowMapResolution(unsigned int);
@@ -95,12 +96,9 @@ namespace urchin {
             bool bForceUpdateAllShadowMaps;
             ShaderVar depthSplitDistanceShaderVar;
 
-            //light information
-            struct LightLocation { //reservation of light locations for light producing shadow
-                ShaderVar shadowMapTexShaderVar;
-                ShaderVar* mLightProjectionViewShaderVar = nullptr;
-            };
-            LightLocation* lightsLocation;
+            //shadow lights information
+            ShaderVar* shadowMapTexShaderVar;
+            ShaderVar** mLightProjectionViewShaderVar;
     };
 
 }

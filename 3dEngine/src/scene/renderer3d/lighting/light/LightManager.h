@@ -41,7 +41,7 @@ namespace urchin {
 
         private:
             void onLightEvent(Light*, NotificationType);
-            void checkMaxLight(const std::vector<Light*>&) const;
+            void logMaxLightsReach();
 
             std::shared_ptr<RenderTarget> renderTarget;
 
