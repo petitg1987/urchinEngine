@@ -28,7 +28,6 @@ namespace urchin {
         for (const auto& textureReader : textureReaders) {
             initializeTexture(textureReader);
         }
-        additionalTextureReaders.reserve(2); //estimated memory size
     }
 
     GenericRenderer::~GenericRenderer() {
@@ -181,30 +180,12 @@ namespace urchin {
         textureReaders[textureIndex] = texture;
     }
 
-    /**
-     * @return Texture unit
-     */
-    unsigned int GenericRenderer::addAdditionalTexture(const TextureReader& texture) {
-        initializeTexture(texture);
-
-        additionalTextureReaders.push_back(texture);
-        return (unsigned int)(textureReaders.size() + additionalTextureReaders.size() - 1);
-    }
-
-    void GenericRenderer::clearAdditionalTextures() {
-        additionalTextureReaders.clear();
-    }
-
     void GenericRenderer::render() const {
         glBindTexture(GL_TEXTURE_2D, 0);
         glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 
         unsigned int textureUnit = 0;
         for (const auto& textureReader : textureReaders) {
-            glActiveTexture(GL_TEXTURE0 + textureUnit++);
-            glBindTexture(textureReader.getTexture()->getGlTextureType(), textureReader.getTexture()->getTextureId());
-        }
-        for (const auto& textureReader : additionalTextureReaders) {
             glActiveTexture(GL_TEXTURE0 + textureUnit++);
             glBindTexture(textureReader.getTexture()->getGlTextureType(), textureReader.getTexture()->getTextureId());
         }

@@ -29,7 +29,6 @@ namespace urchin {
             lightManager(lightManager),
             modelOctreeManager(modelOctreeManager),
             bForceUpdateAllShadowMaps(false),
-            shadowMapTexShaderVar(nullptr),
             mLightProjectionViewShaderVar(nullptr) {
         lightManager->addObserver(this, LightManager::ADD_LIGHT);
         lightManager->addObserver(this, LightManager::REMOVE_LIGHT);
@@ -49,15 +48,9 @@ namespace urchin {
 
         //light information
         deleteLightsLocation();
-        shadowMapTexShaderVar = new ShaderVar[getMaxShadowLights()];
         mLightProjectionViewShaderVar = new ShaderVar*[getMaxShadowLights()];
         std::ostringstream shadowMapTextureLocName, mLightProjectionViewLocName;
         for (unsigned int i = 0; i < getMaxShadowLights(); ++i) {
-            //depth shadow texture
-            shadowMapTextureLocName.str("");
-            shadowMapTextureLocName << "shadowMapTex[" << i << "]";
-            shadowMapTexShaderVar[i] = ShaderVar(lightingShader, shadowMapTextureLocName.str());
-
             //light projection matrices
             mLightProjectionViewShaderVar[i] = new ShaderVar[nbShadowMaps];
             for (unsigned int j = 0; j < nbShadowMaps; ++j) {
@@ -69,7 +62,6 @@ namespace urchin {
     }
 
     void ShadowManager::deleteLightsLocation() {
-        delete shadowMapTexShaderVar;
         if(mLightProjectionViewShaderVar) {
             for (unsigned int i = 0; i < getMaxShadowLights(); ++i) {
                 delete[] mLightProjectionViewShaderVar[i];
@@ -325,15 +317,14 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer>& lightingRenderer, std::size_t /*shadowMapTexUnitStart*/, std::size_t /*shadowMapTexUnitEnd*/) {
-        int lightShadowIndex = 0;
+    void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer>& lightingRenderer, std::size_t shadowMapTexUnitStart, std::size_t /*shadowMapTexUnitEnd*/) { //TODO review args
+        std::size_t lightShadowIndex = 0;
         for (auto* visibleLight : lightManager->getVisibleLights()) {
             if (visibleLight->isProduceShadow()) {
                 const LightShadowMap* lightShadowMap = lightShadowMaps.find(visibleLight)->second;
 
-                unsigned int texUnit = lightingRenderer
-                        ->addAdditionalTexture(TextureReader::build(lightShadowMap->getFilteredShadowMapTexture(), TextureParam::buildLinear()));
-                ShaderDataSender().sendData(shadowMapTexShaderVar[lightShadowIndex], (int)texUnit);
+                std::size_t shadowTexUnit = shadowMapTexUnitStart + lightShadowIndex;
+                lightingRenderer->updateTexture(shadowTexUnit, TextureReader::build(lightShadowMap->getFilteredShadowMapTexture(), TextureParam::buildLinear())); //TODO only update if different of previous frame
 
                 unsigned int shadowMapIndex = 0;
                 for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
@@ -345,7 +336,7 @@ namespace urchin {
             }
         }
 
-        constexpr int maxNbShadowMaps = 20;
+        constexpr int maxNbShadowMaps = 20; //TODO move
         assert(maxNbShadowMaps > nbShadowMaps);
         float depthSplitDistance[maxNbShadowMaps];
         for (unsigned int shadowMapIndex = 0; shadowMapIndex < nbShadowMaps; ++shadowMapIndex) {

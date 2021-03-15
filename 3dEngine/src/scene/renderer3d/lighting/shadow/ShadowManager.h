@@ -97,7 +97,6 @@ namespace urchin {
             ShaderVar depthSplitDistanceShaderVar;
 
             //shadow lights information
-            ShaderVar* shadowMapTexShaderVar;
             ShaderVar** mLightProjectionViewShaderVar;
     };
 

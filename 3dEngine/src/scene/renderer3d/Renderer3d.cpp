@@ -106,6 +106,9 @@ namespace urchin {
             .sendData(ShaderVar(lightingShader, "ambientOcclusionTex"), ambientOcclusionTexUnit)
             .sendData(ShaderVar(lightingShader, "hasShadow"), isShadowActivated)
             .sendData(ShaderVar(lightingShader, "hasAmbientOcclusion"), isAmbientOcclusionActivated);
+        for(int shadowMapTexUnit = shadowMapTexUnitStart, i = 0; shadowMapTexUnit <= shadowMapTexUnitEnd; ++shadowMapTexUnit, ++i) {
+            ShaderDataSender().sendData(ShaderVar(lightingShader, "shadowMapTex[" + std::to_string(i) + "]"), shadowMapTexUnit);
+        }
 
         mInverseViewProjectionShaderVar = ShaderVar(lightingShader, "mInverseViewProjection");
         viewPositionShaderVar = ShaderVar(lightingShader, "viewPosition");
@@ -494,7 +497,6 @@ namespace urchin {
         if (lightingRenderer) {
             ScopeProfiler sp(Profiler::graphic(), "lightPassRender");
 
-            lightingRenderer->clearAdditionalTextures();
             ShaderDataSender()
                     .sendData(mInverseViewProjectionShaderVar, (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse())
                     .sendData(viewPositionShaderVar, camera->getPosition());

@@ -41,8 +41,6 @@ namespace urchin {
             void updateData(std::size_t, const std::vector<Vector3<float>>*);
 
             void updateTexture(std::size_t, const TextureReader&);
-            unsigned int addAdditionalTexture(const TextureReader&);
-            void clearAdditionalTextures();
 
         protected:
             void render() const;
@@ -75,7 +73,7 @@ namespace urchin {
             PolygonMode polygonMode;
             float outlineSize;
 
-            std::vector<TextureReader> textureReaders, additionalTextureReaders;
+            std::vector<TextureReader> textureReaders;
 
             unsigned int vertexArrayObject;
             std::vector<unsigned int> bufferIds;
