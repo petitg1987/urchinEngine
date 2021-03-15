@@ -11,7 +11,7 @@ namespace urchin {
     }
 
     void StatusBarController::clearState() {
-        for(auto& statusBarWidget : statusBarWidgets) {
+        for (auto& statusBarWidget : statusBarWidgets) {
             window->statusBar()->removeWidget(statusBarWidget);
         }
         statusBarWidgets.clear();

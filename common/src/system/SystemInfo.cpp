@@ -74,11 +74,11 @@ namespace urchin {
         std::vector<std::string> graphicsCardNames;
         #ifdef _WIN32
             std::set<std::string> setGraphicsCardNames;
-            for(int i = 0; i < 32; i++) {
+            for (int i = 0; i < 32; i++) {
                 DISPLAY_DEVICE displayDevice = {};
                 displayDevice.cb = sizeof(displayDevice);
                 BOOL result = EnumDisplayDevices(nullptr, i, &displayDevice, EDD_GET_DEVICE_INTERFACE_NAME);
-                if(!result) {
+                if (!result) {
                     break;
                 }
                 setGraphicsCardNames.insert(std::string(displayDevice.DeviceString));
@@ -90,11 +90,11 @@ namespace urchin {
         #endif
 
         std::string graphicsCardNamesList;
-        for(auto graphicsCardName : graphicsCardNames) {
+        for (auto graphicsCardName : graphicsCardNames) {
             StringUtil::trim(graphicsCardName);
             graphicsCardNamesList += graphicsCardName + ", ";
         }
-        if(graphicsCardNamesList.size() >= 2) {
+        if (graphicsCardNamesList.size() >= 2) {
             graphicsCardNamesList = graphicsCardNamesList.substr(0, graphicsCardNamesList.size() - 2);
         }
         return graphicsCardNamesList;
@@ -160,7 +160,7 @@ namespace urchin {
     std::string SystemInfo::userDataDirectory() {
         #ifdef _WIN32
             std::string userDataDirectory = getenv("LOCALAPPDATA");
-            if(!userDataDirectory.empty()) {
+            if (!userDataDirectory.empty()) {
                 return userDataDirectory + "\\";
             }
             return homeDirectory() + R"(\AppData\Local\)";

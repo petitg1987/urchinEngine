@@ -65,7 +65,7 @@ namespace urchin {
 
     std::string HttpRequest::executeRequest(const std::string& url, const std::vector<std::string>& headers) const {
         struct curl_slist* curlHttpHeaders = {};
-        for(auto& header : headers) {
+        for (auto& header : headers) {
             curlHttpHeaders = curl_slist_append(curlHttpHeaders, header.c_str());
         }
 

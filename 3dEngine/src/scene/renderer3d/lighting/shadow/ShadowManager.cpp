@@ -62,7 +62,7 @@ namespace urchin {
     }
 
     void ShadowManager::deleteLightsLocation() {
-        if(mLightProjectionViewShaderVar) {
+        if (mLightProjectionViewShaderVar) {
             for (unsigned int i = 0; i < getMaxShadowLights(); ++i) {
                 delete[] mLightProjectionViewShaderVar[i];
             }
@@ -327,7 +327,7 @@ namespace urchin {
                 const LightShadowMap* lightShadowMap = lightShadowMaps.find(visibleLight)->second;
 
                 std::size_t shadowTexUnit = shadowMapTexUnitStart + shadowLightIndex;
-                if(lightingRenderer->getTextureReader(shadowTexUnit).getTexture() != lightShadowMap->getFilteredShadowMapTexture()) {
+                if (lightingRenderer->getTextureReader(shadowTexUnit).getTexture() != lightShadowMap->getFilteredShadowMapTexture()) {
                     lightingRenderer->updateTextureReader(shadowTexUnit, TextureReader::build(lightShadowMap->getFilteredShadowMapTexture(), TextureParam::buildLinear()));
                 }
 

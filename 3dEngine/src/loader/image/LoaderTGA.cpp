@@ -140,13 +140,13 @@ namespace urchin {
             unsigned int srcHeightIndex = (origin == 0) ? heightInverseIndex : heightIndex;
             for (unsigned int widthIndex = 0; widthIndex < width; widthIndex++) {
 
-                for(unsigned int componentIndex = 0; componentIndex < componentsCount; ++componentIndex) {
+                for (unsigned int componentIndex = 0; componentIndex < componentsCount; ++componentIndex) {
                     unsigned int dstIndex = heightIndex * (width * expectedComponentsCount) + widthIndex * expectedComponentsCount + componentIndex;
                     unsigned int srcIndex = srcHeightIndex * (width * componentsCount) + widthIndex * componentsCount + componentIndex;
                     adjustedTexels[dstIndex] = texels[srcIndex];
                 }
 
-                if(addAlphaChannel) {
+                if (addAlphaChannel) {
                     unsigned int dstAlphaIndex = heightIndex * (width * expectedComponentsCount) + widthIndex * expectedComponentsCount + 3;
                     adjustedTexels[dstAlphaIndex] = 255;
                 }

@@ -81,7 +81,7 @@ namespace urchin {
     }
 
     void Water::updateRenderer() {
-        if(renderTarget) {
+        if (renderTarget) {
             float minX = -xSize / 2.0f + centerPosition.X;
             float minZ = -zSize / 2.0f + centerPosition.Z;
             float maxX = xSize / 2.0f + centerPosition.X;

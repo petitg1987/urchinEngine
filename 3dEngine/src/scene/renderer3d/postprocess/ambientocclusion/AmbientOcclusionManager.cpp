@@ -128,7 +128,7 @@ namespace urchin {
             offscreenRenderTarget->addTexture(ambientOcclusionTexture);
             refreshRenderer();
 
-            if(isBlurActivated) {
+            if (isBlurActivated) {
                 verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>(ambientOcclusionTexture)
                         ->textureSize(textureSizeX, textureSizeY)
                         ->textureType(TextureType::DEFAULT)
@@ -323,7 +323,7 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::loadAOTexture(const std::unique_ptr<GenericRenderer>& lightingRenderer, std::size_t aoTextureUnit) const {
-        if(lightingRenderer->getTextureReader(aoTextureUnit).getTexture() != getAmbientOcclusionTexture()) {
+        if (lightingRenderer->getTextureReader(aoTextureUnit).getTexture() != getAmbientOcclusionTexture()) {
             lightingRenderer->updateTextureReader(aoTextureUnit, TextureReader::build(getAmbientOcclusionTexture(), TextureParam::buildLinear()));
         }
     }

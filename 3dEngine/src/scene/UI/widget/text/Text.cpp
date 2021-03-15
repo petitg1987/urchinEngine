@@ -141,25 +141,25 @@ namespace urchin {
         float fontHeight = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "value", XmlAttribute(), fontHeightChunk)->getFloatValue();
         LengthType fontHeightType = toLengthType(UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "type", XmlAttribute(), fontHeightChunk)->getStringValue());
 
-        if(fontHeightType == LengthType::PIXEL) {
+        if (fontHeightType == LengthType::PIXEL) {
             return (unsigned int)fontHeight;
-        }else if(fontHeightType == LengthType::PERCENTAGE) {
+        } else if (fontHeightType == LengthType::PERCENTAGE) {
             return (unsigned int)(fontHeight / 100.0f * (float)getSceneHeight());
         }
         throw std::runtime_error("Unknown font height type: " + std::to_string(fontHeightType));
     }
 
     LengthType Text::toLengthType(const std::string& lengthTypeString) {
-        if(StringUtil::insensitiveEquals(lengthTypeString, "pixel")) {
+        if (StringUtil::insensitiveEquals(lengthTypeString, "pixel")) {
             return LengthType::PIXEL;
-        }else if(StringUtil::insensitiveEquals(lengthTypeString, "percentage")) {
+        } else if (StringUtil::insensitiveEquals(lengthTypeString, "percentage")) {
             return LengthType::PERCENTAGE;
         }
         throw std::runtime_error("Unknown length type: " + lengthTypeString);
     }
 
     void Text::cleanFont() {
-        if(font) {
+        if (font) {
             font->release();
         }
     }

@@ -17,7 +17,7 @@ namespace urchin {
             bIsVisible(true),
             mouseX(0),
             mouseY(0) {
-        if(parent) {
+        if (parent) {
             parent->children.emplace_back(this);
             initialize(parent->getRenderTarget());
         }
@@ -29,7 +29,7 @@ namespace urchin {
             delete child;
         }
 
-        if(parent) {
+        if (parent) {
             auto it = std::find(parent->children.begin(), parent->children.end(), this);
             parent->children.erase(it);
         }
@@ -40,7 +40,7 @@ namespace urchin {
     void Widget::initialize(std::shared_ptr<RenderTarget> renderTarget) {
         this->renderTarget = std::move(renderTarget);
 
-        for(auto& child : children) {
+        for (auto& child : children) {
             child->initialize(renderTarget);
         }
     }

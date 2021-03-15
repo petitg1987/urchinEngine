@@ -85,7 +85,7 @@ namespace urchin {
             throw std::out_of_range("Index is out of range: " + std::to_string(index) + ". Maximum index allowed: " + std::to_string(values.size()-1));
         }
 
-        if(!valuesText.empty()) {
+        if (!valuesText.empty()) {
             valuesText[selectedIndex]->setIsVisible(false);
             valuesText[index]->setIsVisible(true);
         }

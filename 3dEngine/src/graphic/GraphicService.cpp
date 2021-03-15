@@ -15,12 +15,12 @@ namespace urchin {
         const std::string minVersionStr = "4.5";
         const std::string recommendation = "Your graphic drivers must be updated to support OpenGL version " + minVersionStr;
 
-        if(!gladLoadGL()) {
+        if (!gladLoadGL()) {
             throw UserAuthorityException("Unable to initialize GLAD", recommendation);
         }
 
         //check OpenGL version loaded
-        if((GLVersion.major * 100 + GLVersion.minor * 10) < minVersionInt) {
+        if ((GLVersion.major * 100 + GLVersion.minor * 10) < minVersionInt) {
             throw UserAuthorityException("OpenGL version " + minVersionStr + " is required but loaded version is: " + std::to_string(GLVersion.major)
                 + "." + std::to_string(GLVersion.minor), recommendation);
         }

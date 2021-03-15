@@ -74,7 +74,7 @@ namespace urchin {
             }
             if (channelsMask & 8u) { //alpha
                 pixels.push_back(pixelsRGBA16bits[i - 0]);
-            } else if(addAlphaChannel) {
+            } else if (addAlphaChannel) {
                 pixels.push_back(255); //2^8 - 1
             }
         }
@@ -103,7 +103,7 @@ namespace urchin {
             }
             if (channelsMask & 8u) { //alpha
                 pixels.push_back((uint16_t)((uint16_t)(pixelsRGBA16bits[i - 1] << 8u) | (uint16_t)(pixelsRGBA16bits[i - 0])));
-            } else if(addAlphaChannel) {
+            } else if (addAlphaChannel) {
                 pixels.push_back(65535); //2^16 - 1
             }
         }

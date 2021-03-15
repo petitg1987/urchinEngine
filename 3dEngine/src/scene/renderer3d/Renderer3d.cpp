@@ -106,7 +106,7 @@ namespace urchin {
             .sendData(ShaderVar(lightingShader, "ambientOcclusionTex"), ambientOcclusionTexUnit)
             .sendData(ShaderVar(lightingShader, "hasShadow"), isShadowActivated)
             .sendData(ShaderVar(lightingShader, "hasAmbientOcclusion"), isAmbientOcclusionActivated);
-        for(int shadowMapTexUnit = shadowMapTexUnitStart, i = 0; shadowMapTexUnit <= shadowMapTexUnitEnd; ++shadowMapTexUnit, ++i) {
+        for (int shadowMapTexUnit = shadowMapTexUnitStart, i = 0; shadowMapTexUnit <= shadowMapTexUnitEnd; ++shadowMapTexUnit, ++i) {
             ShaderDataSender().sendData(ShaderVar(lightingShader, "shadowMapTex[" + std::to_string(i) + "]"), shadowMapTexUnit);
         }
 
@@ -351,7 +351,7 @@ namespace urchin {
                 ->addTextureReader(TextureReader::build(diffuseTexture, TextureParam::buildNearest()))
                 ->addTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()));
         lightingRendererBuilder->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //ambient occlusion
-        for(int i = shadowMapTexUnitStart; i <= shadowMapTexUnitEnd; ++i) {
+        for (int i = shadowMapTexUnitStart; i <= shadowMapTexUnitEnd; ++i) {
             lightingRendererBuilder->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //shadow maps
         }
         lightingRenderer = lightingRendererBuilder->build();
@@ -513,7 +513,7 @@ namespace urchin {
                 shadowManager->loadShadowMaps(lightingRenderer, (std::size_t)shadowMapTexUnitStart);
             }
 
-            if(isAntiAliasingActivated) {
+            if (isAntiAliasingActivated) {
                 offscreenLightingRenderTarget->activeShader(lightingShader);
                 offscreenLightingRenderTarget->display(lightingRenderer);
             } else {

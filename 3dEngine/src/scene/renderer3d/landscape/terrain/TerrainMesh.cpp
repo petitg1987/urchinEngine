@@ -264,7 +264,7 @@ namespace urchin {
     void TerrainMesh::writeTerrainMeshFile(const std::string& filePath, const std::string& terrainHash) const {
         std::ofstream file;
         file.open(filePath, std::ios::out | std::ios::binary | std::ios::trunc);
-        if(!file.is_open()) {
+        if (!file.is_open()) {
             throw UserAuthorityException("Unable to open file: " + filePath, "Check that the application has enough right to create the file: " + filePath);
         }
 

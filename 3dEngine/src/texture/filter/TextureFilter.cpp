@@ -48,7 +48,7 @@ namespace urchin {
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
                 ->addTextureReader(TextureReader::build(sourceTexture, TextureParam::buildLinear()));
-        if(depthTexture) {
+        if (depthTexture) {
             textureRendererBuilder->addTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()));
         }
         textureRenderer = textureRendererBuilder->build();

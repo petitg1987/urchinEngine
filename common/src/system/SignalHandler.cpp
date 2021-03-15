@@ -25,7 +25,7 @@ namespace urchin {
     }
 
     void SignalHandler::initialize() {
-        if(!isInitialized) {
+        if (!isInitialized) {
             setupSignalHandler();
             isInitialized = true;
         }
@@ -88,14 +88,14 @@ namespace urchin {
             }
         }
         std::string stacktrace = ss.str();
-        if(StringUtil::endWith(stacktrace, "\n")) {
+        if (StringUtil::endWith(stacktrace, "\n")) {
             stacktrace = stacktrace.substr(0, stacktrace.size() - 1);
         }
 
         SymCleanup(process);
 
         urchin::Logger::instance()->logError(stacktrace);
-        if(instance()->signalReceptor) {
+        if (instance()->signalReceptor) {
             instance()->signalReceptor->onSignalReceived(exceptionInfo->ExceptionRecord->ExceptionCode);
         }
 
@@ -127,7 +127,7 @@ namespace urchin {
 
         for (int i = 1; i < traceSize; ++i) {
             Dl_info info;
-            if(dladdr(traces[i], &info) && info.dli_sname) {
+            if (dladdr(traces[i], &info) && info.dli_sname) {
                 std::string moduleName = info.dli_fname != nullptr ? FileUtil::getFileName(info.dli_fname) : "[no module]";
                 int status;
                 char* demangledMethod = abi::__cxa_demangle(info.dli_sname, nullptr, nullptr, &status);
@@ -143,7 +143,7 @@ namespace urchin {
 
                 std::string addr2lineCmd = "addr2line -p -e " + std::string(info.dli_fname) + + " 0x" + instructionShiftHex.str();
                 std::string cmdResult = CommandExecutor::execute(addr2lineCmd + " 2> /dev/null");
-                if(cmdResult.empty() /* Command doesn't exist */ || cmdResult.find("??") != std::string::npos /* Debug symbol not found */) {
+                if (cmdResult.empty() /* Command doesn't exist */ || cmdResult.find("??") != std::string::npos /* Debug symbol not found */) {
                     ss << "\t[bt]\t> " << "addr2line -p -e " << FileUtil::getFileName(std::string(info.dli_fname)) << " 0x" << instructionShiftHex.str() << std::endl;
                 }else {
                     ss << "\t[bt]\t> " << cmdResult << std::endl;
@@ -153,7 +153,7 @@ namespace urchin {
             }
         }
         std::string stacktrace = ss.str();
-        if(StringUtil::endWith(stacktrace, "\n")) {
+        if (StringUtil::endWith(stacktrace, "\n")) {
             stacktrace = stacktrace.substr(0, stacktrace.size() - 1);
         }
 
@@ -162,7 +162,7 @@ namespace urchin {
         }
 
         urchin::Logger::instance()->logError(stacktrace);
-        if(instance()->signalReceptor) {
+        if (instance()->signalReceptor) {
             instance()->signalReceptor->onSignalReceived((unsigned long)signalId);
         }
 
@@ -180,9 +180,9 @@ namespace urchin {
             int zero = 0;
             int division = 1 / zero;
             std::cerr << division;
-        } else if(EXCEPTION == errorType) {
+        } else if (EXCEPTION == errorType) {
             throw std::runtime_error("BacktraceHandler::simulateError");
-        } else if(ASSERT == errorType) {
+        } else if (ASSERT == errorType) {
             assert(false);
         } else if (ILLEGAL_INSTRUCTION == errorType) {
             raise(SIGILL);

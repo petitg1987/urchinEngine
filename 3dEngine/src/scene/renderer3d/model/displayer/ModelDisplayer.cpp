@@ -11,7 +11,7 @@ namespace urchin {
             model(model),
             renderTarget(std::move(renderTarget)) {
 
-        for(auto& constMesh : model->getConstMeshes()->getConstMeshes()) {
+        for (auto& constMesh : model->getConstMeshes()->getConstMeshes()) {
             auto meshRendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, ShapeType::TRIANGLE);
             meshRendererBuilder
                 ->enableDepthTest()
@@ -21,7 +21,7 @@ namespace urchin {
                 ->addData(&constMesh->getBaseTangents())
                 ->indices(&constMesh->getTrianglesIndices());
 
-            if(displayMode == DisplayMode::DEFAULT_MODE) {
+            if (displayMode == DisplayMode::DEFAULT_MODE) {
                 TextureParam::ReadMode textureReadMode = constMesh->getMaterial()->isRepeatableTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
                 TextureParam textureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
 
@@ -44,7 +44,7 @@ namespace urchin {
         if (auto* model = dynamic_cast<Model*>(observable)) {
             if (notificationType == Model::MESH_UPDATED) {
                 unsigned int meshIndex = 0;
-                for(auto& meshRenderer : meshRenderers) {
+                for (auto& meshRenderer : meshRenderers) {
                     const Mesh* mesh = model->getMeshes()->getMesh(meshIndex);
                     meshRenderer->updateData(0, &mesh->getVertices());
                     meshRenderer->updateData(2, &mesh->getNormals());
@@ -58,7 +58,7 @@ namespace urchin {
 
     void ModelDisplayer::display(const MeshParameter& meshParameter) const {
         unsigned int meshIndex = 0;
-        for(auto& meshRenderer : meshRenderers) {
+        for (auto& meshRenderer : meshRenderers) {
             if (meshParameter.getAmbientFactorShaderVar().isValid()) {
                 const ConstMesh* constMesh = model->getConstMeshes()->getConstMesh(meshIndex);
                 ShaderDataSender().sendData(meshParameter.getAmbientFactorShaderVar(), constMesh->getMaterial()->getAmbientFactor());

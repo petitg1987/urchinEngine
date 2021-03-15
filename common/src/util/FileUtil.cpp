@@ -28,7 +28,7 @@ namespace urchin {
     void FileUtil::createDirectory(const std::string& directory) {
         std::error_code errorCode;
         std::filesystem::create_directories(directory, errorCode);
-        if(errorCode.value() != 0) {
+        if (errorCode.value() != 0) {
             throw UserAuthorityException("Unable to create the directory: " + directory, "Check that the application has enough right to create the directory: " + directory);
         }
     }
@@ -43,7 +43,7 @@ namespace urchin {
                 std::string srcFile = entry.path().string();
                 std::string dstFile = dstDirectory + FileUtil::getFileName(srcFile);
 
-                if(!isFileExist(dstFile)) {
+                if (!isFileExist(dstFile)) {
                     std::ifstream src(srcFile, std::ios::binary);
                     if (!src.is_open()) {
                         throw std::runtime_error("Unable to open file: " + srcFile);

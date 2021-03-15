@@ -75,7 +75,7 @@ namespace urchin {
                 ->addData(&emptyTextureCoordinates)
                 ->indices(&mesh->getIndices())
                 ->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //mask texture
-        for(std::size_t i = 0; i < materials->getMaterials().size(); ++i) {
+        for (std::size_t i = 0; i < materials->getMaterials().size(); ++i) {
             terrainRendererBuilder->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //material texture
         }
         terrainRenderer = terrainRendererBuilder->build();
