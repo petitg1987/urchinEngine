@@ -51,7 +51,7 @@ namespace urchin {
         windowRenderer = std::make_unique<GenericRendererBuilder>(getRenderTarget(), ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addTexture(TextureReader::build(texWindow, TextureParam::buildNearest()))
+                ->addTextureReader(TextureReader::build(texWindow, TextureParam::buildNearest()))
                 ->build();
     }
 

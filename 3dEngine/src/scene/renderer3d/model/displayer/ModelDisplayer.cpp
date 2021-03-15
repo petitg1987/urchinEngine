@@ -26,8 +26,8 @@ namespace urchin {
                 TextureParam textureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
 
                 meshRendererBuilder
-                    ->addTexture(TextureReader::build(constMesh->getMaterial()->getDiffuseTexture(), textureParam))
-                    ->addTexture(TextureReader::build(constMesh->getMaterial()->getNormalTexture(), textureParam));
+                    ->addTextureReader(TextureReader::build(constMesh->getMaterial()->getDiffuseTexture(), textureParam))
+                    ->addTextureReader(TextureReader::build(constMesh->getMaterial()->getNormalTexture(), textureParam));
             }
 
             meshRenderers.push_back(meshRendererBuilder->build());

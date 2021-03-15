@@ -40,7 +40,8 @@ namespace urchin {
             void updateData(std::size_t, const std::vector<Point3<float>>*);
             void updateData(std::size_t, const std::vector<Vector3<float>>*);
 
-            void updateTexture(std::size_t, const TextureReader&);
+            void updateTextureReader(std::size_t, const TextureReader&);
+            const TextureReader& getTextureReader(std::size_t) const;
 
         protected:
             void render() const;

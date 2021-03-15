@@ -106,7 +106,7 @@ namespace urchin {
             .sendData(ShaderVar(lightingShader, "ambientOcclusionTex"), ambientOcclusionTexUnit)
             .sendData(ShaderVar(lightingShader, "hasShadow"), isShadowActivated)
             .sendData(ShaderVar(lightingShader, "hasAmbientOcclusion"), isAmbientOcclusionActivated);
-        for(int shadowMapTexUnit = shadowMapTexUnitStart, i = 0; shadowMapTexUnit <= shadowMapTexUnitEnd; ++shadowMapTexUnit, ++i) { //TODO move in shadowManager->initiateShaderVariables ?
+        for(int shadowMapTexUnit = shadowMapTexUnitStart, i = 0; shadowMapTexUnit <= shadowMapTexUnitEnd; ++shadowMapTexUnit, ++i) {
             ShaderDataSender().sendData(ShaderVar(lightingShader, "shadowMapTex[" + std::to_string(i) + "]"), shadowMapTexUnit);
         }
 
@@ -347,12 +347,12 @@ namespace urchin {
         lightingRendererBuilder
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addTexture(TextureReader::build(depthTexture, TextureParam::buildNearest()))
-                ->addTexture(TextureReader::build(diffuseTexture, TextureParam::buildNearest()))
-                ->addTexture(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()));
-        lightingRendererBuilder->addTexture(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //ambient occlusion
+                ->addTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()))
+                ->addTextureReader(TextureReader::build(diffuseTexture, TextureParam::buildNearest()))
+                ->addTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()));
+        lightingRendererBuilder->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //ambient occlusion
         for(int i = shadowMapTexUnitStart; i <= shadowMapTexUnitEnd; ++i) {
-            lightingRendererBuilder->addTexture(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //shadow maps
+            lightingRendererBuilder->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //shadow maps
         }
         lightingRenderer = lightingRendererBuilder->build();
 
@@ -510,7 +510,7 @@ namespace urchin {
             }
 
             if (isShadowActivated) {
-                shadowManager->loadShadowMaps(lightingRenderer, (std::size_t)shadowMapTexUnitStart, (std::size_t)shadowMapTexUnitEnd);
+                shadowManager->loadShadowMaps(lightingRenderer, (std::size_t)shadowMapTexUnitStart);
             }
 
             if(isAntiAliasingActivated) {

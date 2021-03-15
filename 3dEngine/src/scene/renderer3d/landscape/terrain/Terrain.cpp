@@ -74,9 +74,9 @@ namespace urchin {
                 ->addData(&mesh->getNormals())
                 ->addData(&emptyTextureCoordinates)
                 ->indices(&mesh->getIndices())
-                ->addTexture(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //mask texture
+                ->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //mask texture
         for(std::size_t i = 0; i < materials->getMaterials().size(); ++i) {
-            terrainRendererBuilder->addTexture(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //material texture
+            terrainRendererBuilder->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //material texture
         }
         terrainRenderer = terrainRendererBuilder->build();
 
@@ -109,14 +109,14 @@ namespace urchin {
             std::size_t maskMaterialTexUnit = 0;
             std::size_t materialTexUnitStart = 1;
 
-            terrainRenderer->updateTexture(maskMaterialTexUnit, TextureReader::build(materials->getMaskTexture(), TextureParam::buildLinear()));
+            terrainRenderer->updateTextureReader(maskMaterialTexUnit, TextureReader::build(materials->getMaskTexture(), TextureParam::buildLinear()));
             for (auto& material : materials->getMaterials()) {
                 if (material) {
                     TextureParam::ReadMode textureReadMode = material->isRepeatableTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
                     TextureParam textureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
-                    terrainRenderer->updateTexture(materialTexUnitStart++, TextureReader::build(material->getDiffuseTexture(), textureParam));
+                    terrainRenderer->updateTextureReader(materialTexUnitStart++, TextureReader::build(material->getDiffuseTexture(), textureParam));
                 } else {
-                    terrainRenderer->updateTexture(materialTexUnitStart++, TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest()));
+                    terrainRenderer->updateTextureReader(materialTexUnitStart++, TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest()));
                 }
             }
         }

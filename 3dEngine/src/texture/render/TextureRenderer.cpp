@@ -161,7 +161,7 @@ namespace urchin {
         rendererBuilder
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addTexture(TextureReader::build(texture, TextureParam::buildNearest()));
+                ->addTextureReader(TextureReader::build(texture, TextureParam::buildNearest()));
         if (transparencyEnabled) {
             rendererBuilder->enableTransparency();
         }

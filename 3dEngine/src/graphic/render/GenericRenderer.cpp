@@ -20,7 +20,7 @@ namespace urchin {
             cullFaceEnabled(rendererBuilder->isCullFaceEnabled()),
             polygonMode(rendererBuilder->getPolygonMode()),
             outlineSize(rendererBuilder->getOutlineSize()),
-            textureReaders(rendererBuilder->getTextures()),
+            textureReaders(rendererBuilder->getTextureReaders()),
             vertexArrayObject(0) {
         glGenVertexArrays(1, &vertexArrayObject);
         initializeDisplay();
@@ -173,11 +173,15 @@ namespace urchin {
         updateData(pointsCoordIndex, reinterpret_cast<const std::vector<Point3<float>>*>(dataPtr));
     }
 
-    void GenericRenderer::updateTexture(std::size_t textureIndex, const TextureReader& texture) {
+    void GenericRenderer::updateTextureReader(std::size_t textureIndex, const TextureReader& texture) {
         assert(textureReaders.size() > textureIndex);
 
         initializeTexture(texture);
         textureReaders[textureIndex] = texture;
+    }
+
+    const TextureReader& GenericRenderer::getTextureReader(std::size_t textureIndex) const {
+        return textureReaders[textureIndex];
     }
 
     void GenericRenderer::render() const {

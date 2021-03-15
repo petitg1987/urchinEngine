@@ -102,12 +102,12 @@ namespace urchin {
         return pOutlineSize;
     }
 
-    GenericRendererBuilder* GenericRendererBuilder::addTexture(const TextureReader& texture) {
+    GenericRendererBuilder* GenericRendererBuilder::addTextureReader(const TextureReader& texture) {
         textures.push_back(texture);
         return this;
     }
 
-    const std::vector<TextureReader>& GenericRendererBuilder::getTextures() const {
+    const std::vector<TextureReader>& GenericRendererBuilder::getTextureReaders() const {
         return textures;
     }
 

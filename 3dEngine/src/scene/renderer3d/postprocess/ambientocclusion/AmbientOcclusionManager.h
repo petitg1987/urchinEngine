@@ -39,7 +39,7 @@ namespace urchin {
             const std::shared_ptr<Texture>& getAmbientOcclusionTexture() const;
 
             void updateAOTexture(const Camera*);
-            void loadAOTexture(const std::unique_ptr<GenericRenderer>&, std::size_t);
+            void loadAOTexture(const std::unique_ptr<GenericRenderer>&, std::size_t) const;
 
         private:
             void refreshRenderer();
@@ -70,7 +70,6 @@ namespace urchin {
 
             //frame buffer object
             std::shared_ptr<OffscreenRender> offscreenRenderTarget;
-            bool ambientOcclusionTextureDirty;
             std::shared_ptr<Texture> ambientOcclusionTexture;
 
             //ambient occlusion shader

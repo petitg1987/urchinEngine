@@ -36,7 +36,7 @@ namespace urchin {
         bitmapRenderer = std::make_unique<GenericRendererBuilder>(getRenderTarget(), ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addTexture(TextureReader::build(tex, TextureParam::buildNearest()))
+                ->addTextureReader(TextureReader::build(tex, TextureParam::buildNearest()))
                 ->enableTransparency()
                 ->build();
     }

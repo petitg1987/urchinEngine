@@ -45,8 +45,6 @@ namespace urchin {
             blurSize(DEFAULT_BLUR_SIZE),
             blurSharpness(DEFAULT_BLUR_SHARPNESS),
 
-            ambientOcclusionTextureDirty(true),
-
             verticalBlurFilter(nullptr),
             horizontalBlurFilter(nullptr),
             isBlurActivated(true) {
@@ -113,9 +111,9 @@ namespace urchin {
         renderer = std::make_unique<GenericRendererBuilder>(offscreenRenderTarget, ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addTexture(TextureReader::build(depthTexture, TextureParam::buildNearest()))
-                ->addTexture(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
-                ->addTexture(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest()))
+                ->addTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()))
+                ->addTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
+                ->addTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest()))
                 ->build();
     }
 
@@ -158,8 +156,6 @@ namespace urchin {
                 verticalBlurFilter = nullptr;
                 horizontalBlurFilter = nullptr;
             }
-
-            ambientOcclusionTextureDirty = true;
         }
     }
 
@@ -326,10 +322,9 @@ namespace urchin {
         }
     }
 
-    void AmbientOcclusionManager::loadAOTexture(const std::unique_ptr<GenericRenderer>& lightingRenderer, std::size_t aoTextureUnit) {
-        if(ambientOcclusionTextureDirty) {
-            lightingRenderer->updateTexture(aoTextureUnit, TextureReader::build(getAmbientOcclusionTexture(), TextureParam::buildLinear()));
-            ambientOcclusionTextureDirty = false;
+    void AmbientOcclusionManager::loadAOTexture(const std::unique_ptr<GenericRenderer>& lightingRenderer, std::size_t aoTextureUnit) const {
+        if(lightingRenderer->getTextureReader(aoTextureUnit).getTexture() != getAmbientOcclusionTexture()) {
+            lightingRenderer->updateTextureReader(aoTextureUnit, TextureReader::build(getAmbientOcclusionTexture(), TextureParam::buildLinear()));
         }
     }
 

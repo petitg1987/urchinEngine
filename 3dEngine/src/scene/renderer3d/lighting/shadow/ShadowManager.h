@@ -62,7 +62,7 @@ namespace urchin {
 
             void forceUpdateAllShadowMaps();
             void updateShadowMaps();
-            void loadShadowMaps(const std::unique_ptr<GenericRenderer>&, std::size_t, std::size_t);
+            void loadShadowMaps(const std::unique_ptr<GenericRenderer>&, std::size_t);
 
         private:
             //light handling
@@ -76,6 +76,7 @@ namespace urchin {
             void splitFrustum(const Frustum<float>&);
 
             //shadow map quality
+            static constexpr uint32_t MAX_NB_SHADOW_MAPS = 20;
             const float shadowMapBias;
             const float percentageUniformSplit; //percentage of uniform split against the logarithmic split to split frustum
             unsigned int shadowMapResolution;

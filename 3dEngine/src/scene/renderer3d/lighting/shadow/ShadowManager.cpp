@@ -122,6 +122,8 @@ namespace urchin {
     void ShadowManager::setNumberShadowMaps(unsigned int nbShadowMaps) {
         if (nbShadowMaps <= 1) { //note: shadow maps texture array with depth = 1 generate error in GLSL texture2DArray function
             throw std::runtime_error("Number of shadow maps must be greater than one. Value: " + std::to_string(nbShadowMaps));
+        } else if (nbShadowMaps > MAX_NB_SHADOW_MAPS) {
+            throw std::runtime_error("Number of shadow maps must be lower than " + std::to_string(MAX_NB_SHADOW_MAPS) + ". Value: " + std::to_string(nbShadowMaps));
         }
 
         this->nbShadowMaps = nbShadowMaps;
@@ -317,28 +319,29 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer>& lightingRenderer, std::size_t shadowMapTexUnitStart, std::size_t /*shadowMapTexUnitEnd*/) { //TODO review args
-        std::size_t lightShadowIndex = 0;
+    void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer>& lightingRenderer, std::size_t shadowMapTexUnitStart) {
+        std::size_t shadowLightIndex = 0;
         for (auto* visibleLight : lightManager->getVisibleLights()) {
             if (visibleLight->isProduceShadow()) {
+                assert(shadowLightIndex < getMaxShadowLights());
                 const LightShadowMap* lightShadowMap = lightShadowMaps.find(visibleLight)->second;
 
-                std::size_t shadowTexUnit = shadowMapTexUnitStart + lightShadowIndex;
-                lightingRenderer->updateTexture(shadowTexUnit, TextureReader::build(lightShadowMap->getFilteredShadowMapTexture(), TextureParam::buildLinear())); //TODO only update if different of previous frame
+                std::size_t shadowTexUnit = shadowMapTexUnitStart + shadowLightIndex;
+                if(lightingRenderer->getTextureReader(shadowTexUnit).getTexture() != lightShadowMap->getFilteredShadowMapTexture()) {
+                    lightingRenderer->updateTextureReader(shadowTexUnit, TextureReader::build(lightShadowMap->getFilteredShadowMapTexture(), TextureParam::buildLinear()));
+                }
 
                 unsigned int shadowMapIndex = 0;
                 for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
                     Matrix4<float> lightProjectionViewMatrix = lightSplitShadowMap->getLightProjectionMatrix() * lightShadowMap->getLightViewMatrix();
-                    ShaderDataSender().sendData(mLightProjectionViewShaderVar[lightShadowIndex][shadowMapIndex++], lightProjectionViewMatrix);
+                    ShaderDataSender().sendData(mLightProjectionViewShaderVar[shadowLightIndex][shadowMapIndex++], lightProjectionViewMatrix);
                 }
 
-                lightShadowIndex++;
+                shadowLightIndex++;
             }
         }
 
-        constexpr int maxNbShadowMaps = 20; //TODO move
-        assert(maxNbShadowMaps > nbShadowMaps);
-        float depthSplitDistance[maxNbShadowMaps];
+        float depthSplitDistance[MAX_NB_SHADOW_MAPS];
         for (unsigned int shadowMapIndex = 0; shadowMapIndex < nbShadowMaps; ++shadowMapIndex) {
             float currSplitDistance = splitDistances[shadowMapIndex];
             depthSplitDistance[shadowMapIndex] = ((projectionMatrix(2, 2) * -currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance)) / 2.0f + 0.5f;

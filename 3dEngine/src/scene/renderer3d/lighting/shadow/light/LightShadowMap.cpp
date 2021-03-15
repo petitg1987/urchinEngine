@@ -18,7 +18,9 @@ namespace urchin {
             shadowShaderVariable(nullptr),
             shadowModelShaderVariable(nullptr),
             shadowMapTexture(std::move(shadowMapTexture)) {
-        createOrUpdateShadowModelSetDisplayer(nbShadowMaps);
+        if(renderTarget) { //only false for unit tests
+            createOrUpdateShadowModelSetDisplayer(nbShadowMaps);
+        }
         updateLightViewMatrix();
         light->addObserver(this, Light::LIGHT_MOVE);
     }

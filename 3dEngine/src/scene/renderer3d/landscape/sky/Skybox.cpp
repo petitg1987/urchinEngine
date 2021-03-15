@@ -132,7 +132,7 @@ namespace urchin {
         skyboxRenderer = std::make_unique<GenericRendererBuilder>(renderTarget, ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addTexture(TextureReader::build(skyboxTexture, TextureParam::buildLinear()))
+                ->addTextureReader(TextureReader::build(skyboxTexture, TextureParam::buildLinear()))
                 ->build();
 
         this->isInitialized = true;
