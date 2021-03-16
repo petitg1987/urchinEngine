@@ -50,6 +50,30 @@ namespace urchin {
 
     }
 
+    void AmbientOcclusionManager::onTexturesUpdate(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& normalAndAmbientTexture) {
+        this->depthTexture = depthTexture;
+        this->normalAndAmbientTexture = normalAndAmbientTexture;
+
+        createOrUpdateAO();
+    }
+
+    void AmbientOcclusionManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
+        this->resolution = Vector2<float>((float)sceneWidth, (float)sceneHeight);
+
+        createOrUpdateAO();
+    }
+
+    void AmbientOcclusionManager::createOrUpdateAO() {
+        if (depthTexture) {
+            generateKernelSamples();
+            generateNoiseTexture();
+
+            createOrUpdateAOShader();
+            createOrUpdateAOTexture();
+            createOrUpdateRenderer();
+        }
+    }
+
     void AmbientOcclusionManager::createOrUpdateAOShader() {
         std::locale::global(std::locale("C")); //for float
 
@@ -76,39 +100,55 @@ namespace urchin {
                 .sendData(ShaderVar(ambientOcclusionShader, "depthTex"), depthTexUnit) //binding 20
                 .sendData(ShaderVar(ambientOcclusionShader, "normalAndAmbientTex"), normalAndAmbientTexUnit) //binding 21
                 .sendData(ShaderVar(ambientOcclusionShader, "noiseTex"), noiseTexUnit); //binding 22
-
-        renderer->updateShaderData(2, ShaderDataSender(true).sendData(resolutionShaderVar, resolution));
-
-        generateKernelSamples();
     }
 
-    void AmbientOcclusionManager::onTexturesUpdate(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& normalAndAmbientTexture) {
-        this->depthTexture = depthTexture;
-        this->normalAndAmbientTexture = normalAndAmbientTexture;
+    void AmbientOcclusionManager::createOrUpdateAOTexture() {
+        textureSizeX = (unsigned int)(resolution.X / (float)retrieveTextureSizeFactor());
+        textureSizeY = (unsigned int)(resolution.Y / (float)retrieveTextureSizeFactor());
+        ambientOcclusionTexture = Texture::build(textureSizeX, textureSizeY, TextureFormat::GRAYSCALE_16_FLOAT, nullptr);
 
-        generateNoiseTexture();
-        createOrUpdateAOTexture();
-        createOrUpdateAOShader();
+        offscreenRenderTarget = std::make_unique<OffscreenRender>();
+        offscreenRenderTarget->onResize(textureSizeX, textureSizeY);
+        offscreenRenderTarget->addTexture(ambientOcclusionTexture);
+
+        if (isBlurActivated) {
+            verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>(ambientOcclusionTexture)
+                    ->textureSize(textureSizeX, textureSizeY)
+                    ->textureType(TextureType::DEFAULT)
+                    ->textureFormat(TextureFormat::GRAYSCALE_16_FLOAT)
+                    ->depthTexture(depthTexture)
+                    ->blurDirection(BilateralBlurFilterBuilder::VERTICAL_BLUR)
+                    ->blurSize(blurSize)
+                    ->blurSharpness(blurSharpness)
+                    ->buildBilateralBlur();
+
+            horizontalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>(verticalBlurFilter->getTexture())
+                    ->textureSize(textureSizeX, textureSizeY)
+                    ->textureType(TextureType::DEFAULT)
+                    ->textureFormat(TextureFormat::GRAYSCALE_16_FLOAT)
+                    ->depthTexture(depthTexture)
+                    ->blurDirection(BilateralBlurFilterBuilder::HORIZONTAL_BLUR)
+                    ->blurSize(blurSize)
+                    ->blurSharpness(blurSharpness)
+                    ->buildBilateralBlur();
+
+            verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
+            horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
+        } else {
+            verticalBlurFilter = nullptr;
+            horizontalBlurFilter = nullptr;
+        }
     }
 
-    void AmbientOcclusionManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
-        this->resolution = Vector2<float>((float)sceneWidth, (float)sceneHeight);
-
-        createOrUpdateAOTexture();
-        createOrUpdateAOShader();
-    }
-
-    void AmbientOcclusionManager::refreshRenderer() {
+    void AmbientOcclusionManager::createOrUpdateRenderer() {
         std::vector<Point2<float>> vertexCoord = {
                 Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
                 Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(-1.0f, -1.0f)
         };
-
         std::vector<Point2<float>> textureCoord = {
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
         };
-
         renderer = std::make_unique<GenericRendererBuilder>(offscreenRenderTarget, ambientOcclusionShader, ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
@@ -122,47 +162,6 @@ namespace urchin {
                 ->addTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
                 ->addTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest()))
                 ->build();
-    }
-
-    void AmbientOcclusionManager::createOrUpdateAOTexture() {
-        if (depthTexture) {
-            textureSizeX = (unsigned int)(resolution.X / (float)retrieveTextureSizeFactor());
-            textureSizeY = (unsigned int)(resolution.Y / (float)retrieveTextureSizeFactor());
-            ambientOcclusionTexture = Texture::build(textureSizeX, textureSizeY, TextureFormat::GRAYSCALE_16_FLOAT, nullptr);
-
-            offscreenRenderTarget = std::make_unique<OffscreenRender>();
-            offscreenRenderTarget->onResize(textureSizeX, textureSizeY);
-            offscreenRenderTarget->addTexture(ambientOcclusionTexture);
-            refreshRenderer();
-
-            if (isBlurActivated) {
-                verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>(ambientOcclusionTexture)
-                        ->textureSize(textureSizeX, textureSizeY)
-                        ->textureType(TextureType::DEFAULT)
-                        ->textureFormat(TextureFormat::GRAYSCALE_16_FLOAT)
-                        ->depthTexture(depthTexture)
-                        ->blurDirection(BilateralBlurFilterBuilder::VERTICAL_BLUR)
-                        ->blurSize(blurSize)
-                        ->blurSharpness(blurSharpness)
-                        ->buildBilateralBlur();
-
-                horizontalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>(verticalBlurFilter->getTexture())
-                        ->textureSize(textureSizeX, textureSizeY)
-                        ->textureType(TextureType::DEFAULT)
-                        ->textureFormat(TextureFormat::GRAYSCALE_16_FLOAT)
-                        ->depthTexture(depthTexture)
-                        ->blurDirection(BilateralBlurFilterBuilder::HORIZONTAL_BLUR)
-                        ->blurSize(blurSize)
-                        ->blurSharpness(blurSharpness)
-                        ->buildBilateralBlur();
-
-                verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
-                horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
-            } else {
-                verticalBlurFilter = nullptr;
-                horizontalBlurFilter = nullptr;
-            }
-        }
     }
 
     void AmbientOcclusionManager::generateKernelSamples() {
@@ -184,8 +183,6 @@ namespace urchin {
             sample *= scale;
             ssaoKernel[i] = sample;
         }
-
-        renderer->updateShaderData(1, ShaderDataSender(true).sendData(samplesShaderVar, (unsigned int)ssaoKernel.size(), &ssaoKernel[0]));
 
         if (DEBUG_EXPORT_SSAO_KERNEL) {
             exportSVG(std::string(std::getenv("HOME")) + "/ssaoKernel.html", ssaoKernel);
@@ -221,22 +218,19 @@ namespace urchin {
         nearPlane = camera->getNearPlane();
         farPlane = camera->getFarPlane();
 
-        createOrUpdateAOTexture();
-        createOrUpdateAOShader();
+        createOrUpdateAO();
     }
 
     void AmbientOcclusionManager::setTextureSize(AOTextureSize textureSize) {
         this->textureSize = textureSize;
 
-        createOrUpdateAOTexture();
-        createOrUpdateAOShader();
+        createOrUpdateAO();
     }
 
     void AmbientOcclusionManager::setKernelSamples(unsigned int kernelSamples) {
         this->kernelSamples = kernelSamples;
 
-        createOrUpdateAOTexture();
-        createOrUpdateAOShader();
+        createOrUpdateAO();
     }
 
     /**
@@ -246,13 +240,13 @@ namespace urchin {
     void AmbientOcclusionManager::setRadius(float radius) {
         this->radius = radius;
 
-        createOrUpdateAOShader();
+        createOrUpdateAO();
     }
 
     void AmbientOcclusionManager::setAmbientOcclusionStrength(float ambientOcclusionStrength) {
         this->ambientOcclusionStrength = ambientOcclusionStrength;
 
-        createOrUpdateAOShader();
+        createOrUpdateAO();
     }
 
     void AmbientOcclusionManager::setDistanceAttenuation(float depthStartAttenuation, float depthEndAttenuation) {
@@ -271,25 +265,25 @@ namespace urchin {
     void AmbientOcclusionManager::setBias(float bias) {
         this->bias = bias;
 
-        createOrUpdateAOShader();
+        createOrUpdateAO();
     }
 
     void AmbientOcclusionManager::setBlurSize(unsigned int blurSize) {
         this->blurSize = blurSize;
 
-        createOrUpdateAOTexture();
+        createOrUpdateAO();
     }
 
     void AmbientOcclusionManager::setBlurSharpness(float blurSharpness) {
         this->blurSharpness = blurSharpness;
 
-        createOrUpdateAOTexture();
+        createOrUpdateAO();
     }
 
     void AmbientOcclusionManager::activateBlur(bool isBlurActivated) {
         this->isBlurActivated = isBlurActivated;
 
-        createOrUpdateAOTexture();
+        createOrUpdateAO();
     }
 
     int AmbientOcclusionManager::retrieveTextureSizeFactor() {

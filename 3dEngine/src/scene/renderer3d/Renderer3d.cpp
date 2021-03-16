@@ -18,7 +18,7 @@ namespace urchin {
     bool DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER = false;
     bool DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER = false;
     bool DEBUG_DISPLAY_SHADOW_MAP = false;
-    bool DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER = true;
+    bool DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER = false;
     bool DEBUG_DISPLAY_MODELS_OCTREE = false;
     bool DEBUG_DISPLAY_MODELS_BOUNDING_BOX = false;
     bool DEBUG_DISPLAY_MODEL_BASE_BONES = false;
@@ -117,6 +117,8 @@ namespace urchin {
         fogManager->initiateShaderVariables(lightingShader);
         lightManager->initiateShaderVariables(lightingShader);
         shadowManager->initiateShaderVariables(lightingShader);
+
+        refreshRenderer();
     }
 
     void Renderer3d::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {

@@ -42,9 +42,10 @@ namespace urchin {
             void loadAOTexture(const std::unique_ptr<GenericRenderer>&, std::size_t) const;
 
         private:
-            void refreshRenderer();
-            void createOrUpdateAOTexture();
+            void createOrUpdateAO();
             void createOrUpdateAOShader();
+            void createOrUpdateAOTexture();
+            void createOrUpdateRenderer();
             void generateKernelSamples();
             void generateNoiseTexture();
             void exportSVG(const std::string&, const std::vector<Vector4<float>>&) const;
