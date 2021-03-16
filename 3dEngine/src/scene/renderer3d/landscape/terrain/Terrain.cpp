@@ -73,8 +73,9 @@ namespace urchin {
                 ->addData(&mesh->getNormals())
                 ->addData(&emptyTextureCoordinates)
                 ->addShaderData(ShaderDataSender(true).sendData(mViewShaderVar, Matrix4<float>())) //binding 0
-                ->addShaderData(ShaderDataSender(true).sendData(mProjectionShaderVar, positioningData.projectionMatrix)) //binding 1
-                ->addShaderData(ShaderDataSender(true).sendData(vPositionShaderVar, positioningData.position)) //binding 1
+                ->addShaderData(ShaderDataSender(true)
+                        .sendData(mProjectionShaderVar, positioningData.projectionMatrix)
+                        .sendData(vPositionShaderVar, positioningData.position)) //binding 1
                 ->addShaderData(ShaderDataSender(true).sendData(stRepeatShaderVar, materials->getStRepeat())) //binding 2
                 ->addShaderData(ShaderDataSender(true).sendData(ambientShaderVar, ambient)) //binding 3
                 ->indices(&mesh->getIndices())

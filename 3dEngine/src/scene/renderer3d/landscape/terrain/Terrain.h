@@ -54,7 +54,6 @@ namespace urchin {
             ShaderVar vPositionShaderVar, mProjectionShaderVar, mViewShaderVar;
             ShaderVar ambientShaderVar;
             ShaderVar stRepeatShaderVar;
-
             struct {
                 alignas(16) Matrix4<float> projectionMatrix;
                 alignas(16) Point3<float> position;

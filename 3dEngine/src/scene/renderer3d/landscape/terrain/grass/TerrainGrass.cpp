@@ -25,16 +25,12 @@ namespace urchin {
             grassPatchSize(ConfigService::instance()->getFloatValue("terrain.grassPatchSize")),
             grassQuadtreeDepth(ConfigService::instance()->getUnsignedIntValue("terrain.grassQuadtreeDepth")),
             bIsInitialized(false),
-            sumTimeStep(0.0f),
-            grassTexture(nullptr),
-            grassMaskTexture(nullptr),
+            positioningData({}),
+            grassProperties({}),
+            terrainPositioningData({}),
+            ambient(0.0), //TODO check default value in debug: 0.0 ? 0.5 ? 1.0 ?
             mainGrassQuadtree(nullptr),
-            numGrassInTex(0),
-            grassDisplayDistance(0.0f),
-            grassHeight(0.0f),
-            grassLength(0.0f),
-            grassQuantity(0.0f),
-            windStrength(0.0f) {
+            grassQuantity(0.0) {
         std::map<std::string, std::string> tokens;
         tokens["GRASS_ALPHA_TEST"] = ConfigService::instance()->getStringValue("terrain.grassAlphaTest");
         terrainGrassShader = ShaderBuilder().createShader("terrainGrass.vert", "terrainGrass.geom", "terrainGrass.frag", tokens);
@@ -50,7 +46,7 @@ namespace urchin {
 
         grassDisplayDistanceShaderVar = ShaderVar(terrainGrassShader, "grassDisplayDistance");
         grassHeightShaderVar = ShaderVar(terrainGrassShader, "grassHeight");
-        grassHalfLengthShaderVar = ShaderVar(terrainGrassShader, "grassHalfLength");
+        grassLengthShaderVar = ShaderVar(terrainGrassShader, "grassLength");
         numGrassInTexShaderVar = ShaderVar(terrainGrassShader, "numGrassInTex");
 
         windDirectionShaderVar = ShaderVar(terrainGrassShader, "windDirection");
@@ -58,9 +54,9 @@ namespace urchin {
 
         int grassTexUnit = 0;
         int grassMaskTexUnit = 1;
-        ShaderDataSender()
-            .sendData(ShaderVar(terrainGrassShader, "grassTex"), grassTexUnit)
-            .sendData(ShaderVar(terrainGrassShader, "grassMaskTex"), grassMaskTexUnit);
+        ShaderDataSender(true)
+            .sendData(ShaderVar(terrainGrassShader, "grassTex"), grassTexUnit) //binding 20
+            .sendData(ShaderVar(terrainGrassShader, "grassMaskTex"), grassMaskTexUnit); //binding 21
 
         setGrassTexture(grassTextureFilename);
         setMaskTexture("");
@@ -92,21 +88,32 @@ namespace urchin {
     void TerrainGrass::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
 
-        ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix);
+        for(auto& renderer: getAllRenderers()) {
+            renderer->updateShaderData(3, ShaderDataSender(true).sendData(mProjectionShaderVar, projectionMatrix));
+        }
     }
 
     void TerrainGrass::refreshWith(const std::shared_ptr<TerrainMesh>& mesh, const Point3<float>& terrainPosition) {
         assert(bIsInitialized);
         generateGrass(mesh, terrainPosition);
 
-        ShaderDataSender()
-            .sendData(terrainMinPointShaderVar, mesh->getVertices()[0])
-            .sendData(terrainMaxPointShaderVar, mesh->getVertices()[mesh->getXSize()*mesh->getZSize()-1]);
+        terrainPositioningData.terrainMinPoint = mesh->getVertices()[0];
+        terrainPositioningData.terrainMaxPoint = mesh->getVertices()[mesh->getXSize() * mesh->getZSize() - 1];
+
+        for(auto& renderer: getAllRenderers()) {
+            renderer->updateShaderData(2, ShaderDataSender(true)
+                    .sendData(terrainMinPointShaderVar, terrainPositioningData.terrainMinPoint)
+                    .sendData(terrainMaxPointShaderVar, terrainPositioningData.terrainMaxPoint));
+        }
     }
 
     void TerrainGrass::refreshWith(float ambient) {
         assert(bIsInitialized);
-        ShaderDataSender().sendData(terrainAmbientShaderVar, ambient);
+        this->ambient = ambient;
+
+        for(auto& renderer: getAllRenderers()) {
+            renderer->updateShaderData(4, ShaderDataSender(true).sendData(terrainAmbientShaderVar, ambient));
+        }
     }
 
     void TerrainGrass::generateGrass(const std::shared_ptr<TerrainMesh>& mesh, const Point3<float>& terrainPosition) {
@@ -118,7 +125,7 @@ namespace urchin {
 
             unsigned int seed = 0; //no need to generate different random numbers at each start
             std::default_random_engine generator(seed);
-            std::uniform_real_distribution<float> distribution(-grassPositionRandomPercentage / grassQuantity, grassPositionRandomPercentage/grassQuantity);
+            std::uniform_real_distribution<float> distribution(-grassPositionRandomPercentage / grassQuantity, grassPositionRandomPercentage / grassQuantity);
 
             auto grassXQuantity = MathFunction::roundToUInt(mesh->getXZScale() * (float)mesh->getXSize() * grassQuantity);
             auto grassZQuantity = MathFunction::roundToUInt(mesh->getXZScale() * (float)mesh->getZSize() * grassQuantity);
@@ -233,6 +240,22 @@ namespace urchin {
                         ->disableCullFace()
                         ->addData(&grassQuadtree->getGrassVertices())
                         ->addData(&grassQuadtree->getGrassNormals())
+                        ->addShaderData(ShaderDataSender(true)
+                                .sendData(mViewShaderVar, positioningData.viewMatrix)
+                                .sendData(cameraPositionShaderVar, positioningData.cameraPosition)
+                                .sendData(sumTimeStepShaderVar, positioningData.sumTimeStep)) //binding 0
+                        ->addShaderData(ShaderDataSender(true)
+                                .sendData(grassDisplayDistanceShaderVar, grassProperties.grassDisplayDistance)
+                                .sendData(grassHeightShaderVar, grassProperties.grassHeight)
+                                .sendData(grassLengthShaderVar, grassProperties.grassLength)
+                                .sendData(numGrassInTexShaderVar, grassProperties.numGrassInTex)
+                                .sendData(windStrengthShaderVar, grassProperties.windStrength)
+                                .sendData(windDirectionShaderVar, grassProperties.windDirection)) //binding 1
+                        ->addShaderData(ShaderDataSender(true)
+                                .sendData(terrainMinPointShaderVar, terrainPositioningData.terrainMinPoint)
+                                .sendData(terrainMaxPointShaderVar, terrainPositioningData.terrainMaxPoint)) //binding 2
+                        ->addShaderData(ShaderDataSender(true).sendData(mProjectionShaderVar, projectionMatrix)) //binding 3
+                        ->addShaderData(ShaderDataSender(true).sendData(terrainAmbientShaderVar, ambient)) //binding 4
                         ->addTextureReader(TextureReader::build(grassTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
                         ->addTextureReader(TextureReader::build(grassMaskTexture, TextureParam::buildLinear()))
                         ->build();
@@ -240,6 +263,27 @@ namespace urchin {
                 grassQuadtree->setRenderer(std::move(renderer));
             }
         }
+    }
+
+    std::vector<GenericRenderer*> TerrainGrass::getAllRenderers() const {
+        std::vector<GenericRenderer*> renderers;
+
+        if (mainGrassQuadtree != nullptr) {
+            grassQuadtrees.clear();
+            grassQuadtrees.push_back(mainGrassQuadtree);
+            for (std::size_t i = 0; i < grassQuadtrees.size(); ++i) {
+                const TerrainGrassQuadtree *grassQuadtree = grassQuadtrees[i];
+                if (grassQuadtree->isLeaf()) {
+                    renderers.emplace_back(grassQuadtree->getRenderer().get());
+                } else {
+                    for (const auto *child : grassQuadtree->getChildren()) {
+                        grassQuadtrees.push_back(child);
+                    }
+                }
+            }
+        }
+
+        return renderers;
     }
 
     const std::string& TerrainGrass::getGrassTexture() const {
@@ -276,44 +320,52 @@ namespace urchin {
     }
 
     float TerrainGrass::getGrassDisplayDistance() const {
-        return grassDisplayDistance;
+        return grassProperties.grassDisplayDistance;
     }
 
     void TerrainGrass::setGrassDisplayDistance(float grassDisplayDistance) {
         assert(grassDisplayDistance != 0.0f);
-        this->grassDisplayDistance = grassDisplayDistance;
+        grassProperties.grassDisplayDistance = grassDisplayDistance;
 
-        ShaderDataSender().sendData(grassDisplayDistanceShaderVar, grassDisplayDistance);
+        for(auto& renderer: getAllRenderers()) {
+            renderer->updateShaderData(1, ShaderDataSender(true).sendData(grassDisplayDistanceShaderVar, grassProperties.grassDisplayDistance));
+        }
     }
 
     float TerrainGrass::getGrassHeight() const {
-        return grassHeight;
+        return grassProperties.grassHeight;
     }
 
     void TerrainGrass::setGrassHeight(float grassHeight) {
-        this->grassHeight = grassHeight;
+        grassProperties.grassHeight = grassHeight;
 
-        ShaderDataSender().sendData(grassHeightShaderVar, grassHeight);
+        for(auto& renderer: getAllRenderers()) {
+            renderer->updateShaderData(1, ShaderDataSender(true).sendData(grassHeightShaderVar, grassProperties.grassHeight));
+        }
     }
 
     float TerrainGrass::getGrassLength() const {
-        return grassLength;
+        return grassProperties.grassLength;
     }
 
     void TerrainGrass::setGrassLength(float grassLength) {
-        this->grassLength = grassLength;
+        grassProperties.grassLength = grassLength;
 
-        ShaderDataSender().sendData(grassHalfLengthShaderVar, grassLength / 2.0f);
+        for(auto& renderer: getAllRenderers()) {
+            renderer->updateShaderData(1, ShaderDataSender(true).sendData(grassLengthShaderVar, grassProperties.grassLength));
+        }
     }
 
     unsigned int TerrainGrass::getNumGrassInTexture() const {
-        return numGrassInTex;
+        return (unsigned int)grassProperties.numGrassInTex;
     }
 
     void TerrainGrass::setNumGrassInTexture(unsigned int numGrassInTex) {
-        this->numGrassInTex = numGrassInTex;
+        grassProperties.numGrassInTex = (int)numGrassInTex;
 
-        ShaderDataSender().sendData(numGrassInTexShaderVar, (int)numGrassInTex);
+        for(auto& renderer: getAllRenderers()) {
+            renderer->updateShaderData(1, ShaderDataSender(true).sendData(numGrassInTexShaderVar, grassProperties.numGrassInTex));
+        }
     }
 
     float TerrainGrass::getGrassQuantity() const {
@@ -327,23 +379,27 @@ namespace urchin {
     }
 
     Vector3<float> TerrainGrass::getWindDirection() const {
-        return windDirection;
+        return grassProperties.windDirection;
     }
 
     void TerrainGrass::setWindDirection(const Vector3<float>& windDirection) {
-        this->windDirection = windDirection.normalize();
+        grassProperties.windDirection = windDirection.normalize();
 
-        ShaderDataSender().sendData(windDirectionShaderVar, this->windDirection);
+        for(auto& renderer: getAllRenderers()) {
+            renderer->updateShaderData(1, ShaderDataSender(true).sendData(windDirectionShaderVar, grassProperties.windDirection));
+        }
     }
 
     float TerrainGrass::getWindStrength() const {
-        return windStrength;
+        return grassProperties.windStrength;
     }
 
     void TerrainGrass::setWindStrength(float windStrength) {
-        this->windStrength = windStrength;
+        grassProperties.windStrength = windStrength;
 
-        ShaderDataSender().sendData(windStrengthShaderVar, windStrength);
+        for(auto& renderer: getAllRenderers()) {
+            renderer->updateShaderData(1, ShaderDataSender(true).sendData(windStrengthShaderVar, grassProperties.windStrength));
+        }
     }
 
     void TerrainGrass::display(const Camera* camera, float dt) {
@@ -352,11 +408,9 @@ namespace urchin {
         if (grassTexture) {
             ScopeProfiler sp(Profiler::graphic(), "grassDisplay");
 
-            sumTimeStep += dt;
-            ShaderDataSender()
-                .sendData(sumTimeStepShaderVar, sumTimeStep)
-                .sendData(mViewShaderVar, camera->getViewMatrix())
-                .sendData(cameraPositionShaderVar, camera->getPosition());
+            positioningData.viewMatrix = camera->getViewMatrix();
+            positioningData.cameraPosition = camera->getPosition();
+            positioningData.sumTimeStep += dt;
 
             grassQuadtrees.clear();
             grassQuadtrees.push_back(mainGrassQuadtree);
@@ -365,8 +419,13 @@ namespace urchin {
                 const TerrainGrassQuadtree* grassQuadtree = grassQuadtrees[i];
                 const std::unique_ptr<AABBox<float>>& grassQuadtreeBox = grassQuadtree->getBox();
 
-                if (grassQuadtreeBox && camera->getFrustum().cutFrustum(grassDisplayDistance).collideWithAABBox(*grassQuadtreeBox)) {
+                if (grassQuadtreeBox && camera->getFrustum().cutFrustum(grassProperties.grassDisplayDistance).collideWithAABBox(*grassQuadtreeBox)) {
                     if (grassQuadtree->isLeaf()) {
+                        grassQuadtree->getRenderer()->updateShaderData(0, ShaderDataSender(true)
+                                .sendData(mViewShaderVar, positioningData.viewMatrix)
+                                .sendData(cameraPositionShaderVar, positioningData.cameraPosition)
+                                .sendData(sumTimeStepShaderVar, positioningData.sumTimeStep));
+
                         renderTarget->display(grassQuadtree->getRenderer());
                     } else {
                         for (const auto* child : grassQuadtree->getChildren()) {

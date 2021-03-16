@@ -5,19 +5,23 @@ layout(points) in;
 layout(triangle_strip) out;
 layout(max_vertices = 12) out;
 
-uniform mat4 mProjection;
-uniform mat4 mView;
-uniform vec3 cameraPosition;
-uniform float sumTimeStep;
-uniform vec3 terrainMinPoint;
-uniform vec3 terrainMaxPoint;
-uniform sampler2D grassMaskTex;
-uniform float grassDisplayDistance;
-uniform float grassHeight;
-uniform float grassHalfLength;
-uniform int numGrassInTex;
-uniform vec3 windDirection;
-uniform float windStrength;
+uniform sampler2D grassMaskTex; //binding 21
+
+uniform mat4 mView; //binding 0
+uniform vec3 cameraPosition; //binding 0
+uniform float sumTimeStep; //binding 0
+
+uniform float grassDisplayDistance; //binding 1
+uniform float grassHeight; //binding 1
+uniform float grassLength; //binding 1
+uniform int numGrassInTex; //binding 1
+uniform float windStrength; //binding 1
+uniform vec3 windDirection; //binding 1
+
+uniform vec3 terrainMinPoint; //binding 2
+uniform vec3 terrainMaxPoint; //binding 2
+
+uniform mat4 mProjection; //binding 3
 
 in vec3 normal[];
 
@@ -76,8 +80,8 @@ void main() {
     float piOver180 = 3.14159f / 180.0f;
     vec3 baseDir[3];
     baseDir[0] = vec3(1.0, 0.0, 0.0);
-    baseDir[1] = vec3(float(cos(45.0f*piOver180)), 0.0f, float(sin(45.0f*piOver180)));
-    baseDir[2] = vec3(float(cos(-45.0f*piOver180)), 0.0f, float(sin(-45.0f*piOver180)));
+    baseDir[1] = vec3(float(cos(45.0f * piOver180)), 0.0f, float(sin(45.0f * piOver180)));
+    baseDir[2] = vec3(float(cos(-45.0f * piOver180)), 0.0f, float(sin(-45.0f * piOver180)));
 
     float windPower = 0.5f + sin(grassCenterPosition.x / 30.0f + grassCenterPosition.z / 30.0f + sumTimeStep * (1.2f + windStrength / 20.0f));
     if (windPower > 0.0f) {
@@ -87,6 +91,7 @@ void main() {
     }
     windPower *= windStrength;
 
+    float grassHalfLength = grassLength / 2.0f;
     for (int i = 0; i < 3; i++) {
         //texture selection
         vec3 seed = grassCenterPosition * float(i);
@@ -97,28 +102,28 @@ void main() {
         vec3 baseDirRotated = rotationMatrix(vec3(0, 1, 0), sin(sumTimeStep * 0.7f) * 0.2f) * baseDir[i];
 
         //top left
-        vec3 localTopLeft = grassCenterPosition - baseDirRotated*grassHalfLength + windDirection*windPower;
+        vec3 localTopLeft = grassCenterPosition - baseDirRotated * grassHalfLength + windDirection*windPower;
         localTopLeft.y += grassHeight + grassYShift;
         gl_Position = mProjectionView * vec4(localTopLeft, 1.0f);
         vertexTextCoordinates = vec2(startTextX, 0.0);
         EmitVertex();
 
         //bottom left
-        vec3 localBottomLeft = grassCenterPosition - baseDir[i]*grassHalfLength;
+        vec3 localBottomLeft = grassCenterPosition - baseDir[i] * grassHalfLength;
         localBottomLeft.y += grassYShift;
         gl_Position = mProjectionView * vec4(localBottomLeft, 1.0f);
         vertexTextCoordinates = vec2(startTextX, 1.0);
         EmitVertex();
 
         //top right
-        vec3 localTopRight = grassCenterPosition + baseDirRotated*grassHalfLength + windDirection*windPower;
+        vec3 localTopRight = grassCenterPosition + baseDirRotated * grassHalfLength + windDirection*windPower;
         localTopRight.y += grassHeight + grassYShift;
         gl_Position = mProjectionView * vec4(localTopRight, 1.0f);
         vertexTextCoordinates = vec2(endTextX, 0.0);
         EmitVertex();
 
         //bottom right
-        vec3 localBottomRight = grassCenterPosition + baseDir[i]*grassHalfLength;
+        vec3 localBottomRight = grassCenterPosition + baseDir[i] * grassHalfLength;
         localBottomRight.y += grassYShift;
         gl_Position = mProjectionView * vec4(localBottomRight, 1.0f);
         vertexTextCoordinates = vec2(endTextX, 1.0);

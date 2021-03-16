@@ -60,6 +60,7 @@ namespace urchin {
             unsigned int retrieveVertexIndex(const Point2<float>&) const;
             void buildGrassQuadtree(const std::vector<TerrainGrassQuadtree*>&, unsigned int, unsigned int);
             void createRenderers(const std::vector<TerrainGrassQuadtree*>&);
+            std::vector<GenericRenderer*> getAllRenderers() const;
 
             const float grassPositionRandomPercentage;
             const float grassPatchSize;
@@ -72,26 +73,36 @@ namespace urchin {
             ShaderVar mProjectionShaderVar, mViewShaderVar, cameraPositionShaderVar, sumTimeStepShaderVar;
             ShaderVar terrainMinPointShaderVar, terrainMaxPointShaderVar, terrainAmbientShaderVar;
             ShaderVar grassDisplayDistanceShaderVar;
-            ShaderVar grassHeightShaderVar, grassHalfLengthShaderVar, numGrassInTexShaderVar;
+            ShaderVar grassHeightShaderVar, grassLengthShaderVar, numGrassInTexShaderVar;
             ShaderVar windDirectionShaderVar, windStrengthShaderVar;
+            struct {
+                alignas(16) Matrix4<float> viewMatrix;
+                alignas(16) Point3<float> cameraPosition;
+                alignas(4) float sumTimeStep;
+            } positioningData;
+            struct {
+                alignas(4) float grassDisplayDistance;
+                alignas(4) float grassHeight;
+                alignas(4) float grassLength;
+                alignas(4) int numGrassInTex;
+                alignas(4) float windStrength;
+                alignas(16) Vector3<float> windDirection;
+            } grassProperties;
+            struct {
+                alignas(16) Point3<float> terrainMinPoint;
+                alignas(16) Point3<float> terrainMaxPoint;
+            } terrainPositioningData;
+            Matrix4<float> projectionMatrix;
+            float ambient;
 
             std::shared_ptr<TerrainMesh> mesh;
             Point3<float> terrainPosition;
 
-            Matrix4<float> projectionMatrix;
-            float sumTimeStep;
-
             std::shared_ptr<Texture> grassTexture, grassMaskTexture;
             std::string grassTextureFilename, grassMaskFilename;
             TerrainGrassQuadtree* mainGrassQuadtree;
-            std::vector<const TerrainGrassQuadtree*> grassQuadtrees;
-            unsigned int numGrassInTex;
-            float grassDisplayDistance;
-            float grassHeight, grassLength;
+            mutable std::vector<const TerrainGrassQuadtree*> grassQuadtrees;
             float grassQuantity;
-
-            Vector3<float> windDirection;
-            float windStrength;
     };
 
 }

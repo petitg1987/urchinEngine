@@ -373,8 +373,8 @@ namespace urchin {
         this->xzScale->setValue(terrain->getMesh()->getXZScale());
         this->yScale->setValue(terrain->getMesh()->getYScale());
 
-        this->sRepeat->setValue(terrain->getMaterials()->getSRepeat());
-        this->tRepeat->setValue(terrain->getMaterials()->getTRepeat());
+        this->sRepeat->setValue(terrain->getMaterials()->getStRepeat().X);
+        this->tRepeat->setValue(terrain->getMaterials()->getStRepeat().Y);
         this->maskMapFilenameText->setText(QString::fromStdString(terrain->getMaterials()->getMaskMapFilename()));
         this->materialFilenameTexts.resize(TerrainMaterials::MAX_MATERIAL);
         for (unsigned int i = 0; i < TerrainMaterials::MAX_MATERIAL; ++i) {

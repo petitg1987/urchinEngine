@@ -7,8 +7,9 @@
 smooth in vec2 vertexTextCoordinates;
 in vec3 grassNormal;
 
-uniform sampler2D grassTex;
-uniform float ambient;
+uniform sampler2D grassTex; //binding 20
+
+uniform float ambient; //binding 4
 
 layout (location = 0) out vec4 fragColor;
 layout (location = 1) out vec4 fragNormalAndAmbient;

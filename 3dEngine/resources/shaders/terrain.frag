@@ -4,11 +4,11 @@
 in vec2 textCoordinates;
 in vec3 normal;
 
-uniform sampler2D maskTex;
-uniform sampler2D diffuseTex1;
-uniform sampler2D diffuseTex2;
-uniform sampler2D diffuseTex3;
-uniform sampler2D diffuseTex4;
+uniform sampler2D maskTex; //binding 20
+uniform sampler2D diffuseTex1; //binding 21
+uniform sampler2D diffuseTex2; //binding 22
+uniform sampler2D diffuseTex3; //binding 23
+uniform sampler2D diffuseTex4; //binding 24
 
 uniform vec2 stRepeat; //binding 2
 uniform float ambient; //binding 3
