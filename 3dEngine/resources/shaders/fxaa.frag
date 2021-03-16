@@ -7,9 +7,9 @@
 
 in vec2 textCoordinates;
 
-uniform sampler2D tex; //binding 20
-
 uniform vec2 invSceneSize; //binding 0
+
+uniform sampler2D tex; //binding 20
 
 out vec4 fragColor;
 

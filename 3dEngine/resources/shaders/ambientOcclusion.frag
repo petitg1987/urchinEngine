@@ -10,12 +10,6 @@
 #define DEPTH_START_ATTENUATION 0
 #define DEPTH_END_ATTENUATION 0
 
-in vec2 textCoordinates;
-
-uniform sampler2D depthTex; //binding 20
-uniform sampler2D normalAndAmbientTex; //binsing 21
-uniform sampler2D noiseTex; //binsing 22
-
 uniform mat4 mInverseViewProjection; //binding 0
 uniform mat4 mProjection; //binding 0
 uniform mat4 mView; //binding 0
@@ -23,6 +17,12 @@ uniform mat4 mView; //binding 0
 uniform vec4 samples[KERNEL_SAMPLES]; //binding 1
 
 uniform vec2 resolution; //binding 2
+
+uniform sampler2D depthTex; //binding 20
+uniform sampler2D normalAndAmbientTex; //binsing 21
+uniform sampler2D noiseTex; //binsing 22
+
+in vec2 textCoordinates;
 
 layout (location = 0) out float fragColor;
 
