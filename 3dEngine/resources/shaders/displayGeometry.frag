@@ -1,10 +1,10 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
+uniform vec4 color; //binding 1
+
 layout (location = 0) out vec4 fragColor;
 layout (location = 1) out vec4 fragNormalAndAmbient;
-
-uniform vec4 color; //binding 1
 
 void main() {
     //diffuse

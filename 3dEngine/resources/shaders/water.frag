@@ -3,11 +3,9 @@
 
 uniform mat4 mView; //binding 0 (not used)
 uniform float sumTimeStep; //binding 0
-
 uniform vec3 waterColor; //binding 1
 uniform float waveSpeed; //binding 1
 uniform float waveStrength; //binding 1
-
 uniform sampler2D normalTex; //binding 20
 uniform sampler2D dudvMap; //bindnig 21
 

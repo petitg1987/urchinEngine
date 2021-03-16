@@ -1,12 +1,12 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
+uniform float ambientFactor;
+uniform sampler2D diffuseTex; //binding 20
+uniform sampler2D normalTex; //binding 21
+
 in vec3 t, b, n;
 in vec2 textCoordinates;
-
-uniform sampler2D diffuseTex;
-uniform sampler2D normalTex;
-uniform float ambientFactor;
 
 layout (location = 0) out vec4 fragColor;
 layout (location = 1) out vec4 fragNormalAndAmbient;

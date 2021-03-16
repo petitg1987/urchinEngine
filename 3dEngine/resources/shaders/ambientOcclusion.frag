@@ -13,11 +13,8 @@
 uniform mat4 mInverseViewProjection; //binding 0
 uniform mat4 mProjection; //binding 0
 uniform mat4 mView; //binding 0
-
 uniform vec4 samples[KERNEL_SAMPLES]; //binding 1
-
 uniform vec2 resolution; //binding 2
-
 uniform sampler2D depthTex; //binding 20
 uniform sampler2D normalAndAmbientTex; //binsing 21
 uniform sampler2D noiseTex; //binsing 22

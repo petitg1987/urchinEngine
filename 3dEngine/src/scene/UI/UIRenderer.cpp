@@ -24,7 +24,7 @@ namespace urchin {
         diffuseTexSamplerShaderVar = ShaderVar(uiShader, "diffuseTexture");
 
         int diffuseTexUnit = 0;
-        ShaderDataSender().sendData(diffuseTexSamplerShaderVar, diffuseTexUnit);
+        ShaderDataSender(true).sendData(diffuseTexSamplerShaderVar, diffuseTexUnit); //binding 20
     }
 
     UIRenderer::~UIRenderer() {

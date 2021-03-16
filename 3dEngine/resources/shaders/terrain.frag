@@ -3,7 +3,6 @@
 
 uniform vec2 stRepeat; //binding 2
 uniform float ambient; //binding 3
-
 uniform sampler2D maskTex; //binding 20
 uniform sampler2D diffuseTex1; //binding 21
 uniform sampler2D diffuseTex2; //binding 22

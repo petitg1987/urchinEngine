@@ -38,9 +38,9 @@ namespace urchin {
 
             int diffuseTexUnit = 0;
             int normalTexUnit = 1;
-            ShaderDataSender()
-                .sendData(ShaderVar(modelShader, "diffuseTex"), diffuseTexUnit)
-                .sendData(ShaderVar(modelShader, "normalTex"), normalTexUnit);
+            ShaderDataSender(true)
+                .sendData(ShaderVar(modelShader, "diffuseTex"), diffuseTexUnit) //binding 20
+                .sendData(ShaderVar(modelShader, "normalTex"), normalTexUnit); //binding 21
 
             //setup mesh parameters
             meshParameter.setAmbientFactorShaderVar(ambientFactorShaderVar);

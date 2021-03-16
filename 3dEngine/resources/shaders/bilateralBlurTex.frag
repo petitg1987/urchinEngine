@@ -12,7 +12,6 @@
 #define IS_VERTICAL_BLUR true
 
 uniform float cameraPlanes[2];
-
 uniform sampler2D tex; //binding 20
 uniform sampler2D depthTex; //binding 21
 

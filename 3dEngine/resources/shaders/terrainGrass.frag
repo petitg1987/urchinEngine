@@ -5,7 +5,6 @@
 #define GRASS_ALPHA_TEST 0
 
 uniform float ambient; //binding 4
-
 uniform sampler2D grassTex; //binding 20
 
 smooth in vec2 vertexTextCoordinates;

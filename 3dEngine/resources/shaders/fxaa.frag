@@ -5,11 +5,10 @@
 //values are replaced at compilation time:
 #define FXAA_QUALITY 0 //0 = Low, 1 = Medium, 2 = High, 3 = Very high
 
-in vec2 textCoordinates;
-
 uniform vec2 invSceneSize; //binding 0
-
 uniform sampler2D tex; //binding 20
+
+in vec2 textCoordinates;
 
 out vec4 fragColor;
 

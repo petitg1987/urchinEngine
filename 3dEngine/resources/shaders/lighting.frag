@@ -14,7 +14,6 @@ uniform mat4 mInverseViewProjection;
 uniform vec3 viewPosition;
 
 //deferred textures
-in vec2 textCoordinates;
 uniform sampler2D depthTex; //depth (32 bits)
 uniform sampler2D colorTex; //diffuse RGB (3*8 bits) + EMPTY (8 bits)
 uniform sampler2D normalAndAmbientTex; //normal XYZ (3*8 bits) + ambient factor
@@ -48,6 +47,8 @@ uniform float fogDensity;
 uniform float fogGradient;
 uniform vec4 fogColor;
 uniform float fogMaxHeight;
+
+in vec2 textCoordinates;
 
 layout (location = OUTPUT_LOCATION) out vec4 fragColor;
 

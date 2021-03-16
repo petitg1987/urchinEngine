@@ -1,13 +1,13 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-layout(location = 0) in vec3 vertexPosition;
-layout(location = 1) in vec3 vertexNormal;
-layout(location = 2) in vec2 texCoord;
-
 uniform mat4 mView; //binding 0
 uniform mat4 mProjection; //binding 1
 uniform vec3 vPosition; //binding 1
+
+layout(location = 0) in vec3 vertexPosition;
+layout(location = 1) in vec3 vertexNormal;
+layout(location = 2) in vec2 texCoord;
 
 out vec3 normal;
 out vec2 textCoordinates;

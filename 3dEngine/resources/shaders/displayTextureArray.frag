@@ -11,12 +11,12 @@
 #define IS_GRAYSCALE_VALUE false
 #define IS_INVERSE_GRAYSCALE_VALUE false
 
-in vec2 textCoordinates;
-
 uniform sampler2DArray colorTex;
 uniform float colorIntensity;
 uniform float cameraPlanes[2];
 uniform int layer;
+
+in vec2 textCoordinates;
 
 out vec4 fragColor;
 
