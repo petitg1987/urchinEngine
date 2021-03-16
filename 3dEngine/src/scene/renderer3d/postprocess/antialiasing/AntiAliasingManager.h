@@ -34,7 +34,7 @@ namespace urchin {
             //properties
             std::shared_ptr<RenderTarget> renderTarget;
             Quality quality;
-            unsigned int sceneWidth, sceneHeight;
+            Point2<float> invSceneSize;
 
             //display
             std::shared_ptr<Shader> fxaaShader;

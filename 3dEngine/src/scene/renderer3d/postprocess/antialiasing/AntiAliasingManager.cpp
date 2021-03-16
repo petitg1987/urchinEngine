@@ -12,9 +12,7 @@ namespace urchin {
 
     AntiAliasingManager::AntiAliasingManager(std::shared_ptr<RenderTarget> renderTarget) :
             renderTarget(std::move(renderTarget)),
-            quality(DEFAULT_AA_QUALITY),
-            sceneWidth(0),
-            sceneHeight(0) {
+            quality(DEFAULT_AA_QUALITY) {
         loadFxaaShader();
     }
 
@@ -25,9 +23,8 @@ namespace urchin {
         fxaaShader = ShaderBuilder().createShader("fxaa.vert", "", "fxaa.frag", fxaaTokens);
         invSceneSizeShaderVar = ShaderVar(fxaaShader, "invSceneSize");
 
-        ShaderDataSender()
-                .sendData(ShaderVar(fxaaShader, "tex"), 0)
-                .sendData(invSceneSizeShaderVar, Point2<float>(1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight));
+        int texUnit = 0;
+        ShaderDataSender(true).sendData(ShaderVar(fxaaShader, "tex"), texUnit); //binding 20
     }
 
     void AntiAliasingManager::onTextureUpdate(const std::shared_ptr<Texture>& texture) {
@@ -42,15 +39,14 @@ namespace urchin {
         renderer = std::make_unique<GenericRendererBuilder>(renderTarget, fxaaShader, ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
+                ->addShaderData(ShaderDataSender().sendData(invSceneSizeShaderVar, invSceneSize)) //binding 0
                 ->addTextureReader(TextureReader::build(texture, TextureParam::buildLinear()))
                 ->build();
     }
 
     void AntiAliasingManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
-        this->sceneWidth = sceneWidth;
-        this->sceneHeight = sceneHeight;
-
-        ShaderDataSender().sendData(invSceneSizeShaderVar, Point2<float>(1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight));
+        invSceneSize = Point2<float>(1.0f / (float)sceneWidth, 1.0f / (float)sceneHeight);
+        renderer->updateShaderData(0, ShaderDataSender().sendData(invSceneSizeShaderVar, invSceneSize));
     }
 
     void AntiAliasingManager::setQuality(Quality quality) {
