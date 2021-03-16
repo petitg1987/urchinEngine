@@ -11,8 +11,8 @@
 #define BLUR_SHARPNESS 0
 #define IS_VERTICAL_BLUR true
 
-uniform sampler2D tex;
-uniform sampler2D depthTex;
+uniform sampler2D tex; //binding 20
+uniform sampler2D depthTex; //binding 21
 uniform float cameraPlanes[2];
 
 in vec2 textCoordinates;

@@ -12,7 +12,8 @@
 
 in vec2 textCoordinates;
 
-uniform sampler2D colorTex;
+uniform sampler2D colorTex; //binding 20
+
 uniform float colorIntensity;
 uniform float cameraPlanes[2];
 

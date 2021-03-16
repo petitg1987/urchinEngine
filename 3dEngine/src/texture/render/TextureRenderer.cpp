@@ -182,10 +182,10 @@ namespace urchin {
 
         float cameraPlanes[2] = {nearPlane, farPlane};
         int colorTexUnit = 0;
+        ShaderDataSender(true).sendData(ShaderVar(displayTextureShader, "colorTex"), colorTexUnit); //binding 20
         ShaderDataSender()
             .sendData(ShaderVar(displayTextureShader, "colorIntensity"), colorIntensity)
-            .sendData(ShaderVar(displayTextureShader, "cameraPlanes"), 2, cameraPlanes)
-            .sendData(ShaderVar(displayTextureShader, "colorTex"), colorTexUnit);
+            .sendData(ShaderVar(displayTextureShader, "cameraPlanes"), 2, cameraPlanes);
 
         if (layer != -1) {
             ShaderDataSender().sendData(ShaderVar(displayTextureShader, "layer"), layer);

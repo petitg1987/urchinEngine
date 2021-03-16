@@ -59,9 +59,9 @@ namespace urchin {
             throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
         }
 
-        int texUnit = 0;
-        ShaderDataSender().sendData(ShaderVar(textureFilterShader, "tex"), texUnit);
         layersToUpdateShaderVar = ShaderVar(textureFilterShader, "layersToUpdate");
+        int texUnit = 0;
+        ShaderDataSender(true).sendData(ShaderVar(textureFilterShader, "tex"), texUnit); //binding 20
         initiateAdditionalShaderVariables(textureFilterShader);
 
         std::vector<Point2<float>> vertexCoord = {
