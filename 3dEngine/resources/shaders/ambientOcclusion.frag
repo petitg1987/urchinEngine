@@ -10,16 +10,19 @@
 #define DEPTH_START_ATTENUATION 0
 #define DEPTH_END_ATTENUATION 0
 
-uniform sampler2D depthTex;
-uniform sampler2D normalAndAmbientTex;
-uniform sampler2D noiseTex;
-
 in vec2 textCoordinates;
-uniform vec3 samples[KERNEL_SAMPLES];
-uniform mat4 mInverseViewProjection;
-uniform mat4 mProjection;
-uniform mat4 mView;
-uniform vec2 resolution;
+
+uniform sampler2D depthTex; //binding 20
+uniform sampler2D normalAndAmbientTex; //binsing 21
+uniform sampler2D noiseTex; //binsing 22
+
+uniform mat4 mInverseViewProjection; //binding 0
+uniform mat4 mProjection; //binding 0
+uniform mat4 mView; //binding 0
+
+uniform vec4 samples[KERNEL_SAMPLES]; //binding 1
+
+uniform vec2 resolution; //binding 2
 
 layout (location = 0) out float fragColor;
 
@@ -74,7 +77,7 @@ void main() {
 
     float occlusion = 0.0;
     for (int i = 0; i < KERNEL_SAMPLES; ++i) {
-        vec3 sampleVectorWorldSpace = kernelMatrix * samples[i];
+        vec3 sampleVectorWorldSpace = kernelMatrix * samples[i].xyz;
         vec3 samplePointWorldSpace = position + RADIUS * sampleVectorWorldSpace;
         vec4 samplePointEyeSpace = mView * vec4(samplePointWorldSpace, 1.0);
         vec4 samplePointClipSpace = mProjection * samplePointEyeSpace;

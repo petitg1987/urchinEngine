@@ -39,14 +39,14 @@ namespace urchin {
         renderer = std::make_unique<GenericRendererBuilder>(renderTarget, fxaaShader, ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addShaderData(ShaderDataSender().sendData(invSceneSizeShaderVar, invSceneSize)) //binding 0
+                ->addShaderData(ShaderDataSender(true).sendData(invSceneSizeShaderVar, invSceneSize)) //binding 0
                 ->addTextureReader(TextureReader::build(texture, TextureParam::buildLinear()))
                 ->build();
     }
 
     void AntiAliasingManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         invSceneSize = Point2<float>(1.0f / (float)sceneWidth, 1.0f / (float)sceneHeight);
-        renderer->updateShaderData(0, ShaderDataSender().sendData(invSceneSizeShaderVar, invSceneSize));
+        renderer->updateShaderData(0, ShaderDataSender(true).sendData(invSceneSizeShaderVar, invSceneSize));
     }
 
     void AntiAliasingManager::setQuality(Quality quality) {

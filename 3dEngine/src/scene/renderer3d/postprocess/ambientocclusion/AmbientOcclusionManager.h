@@ -47,12 +47,11 @@ namespace urchin {
             void createOrUpdateAOShader();
             void generateKernelSamples();
             void generateNoiseTexture();
-            void exportSVG(const std::string&, const std::vector<Vector3<float>>&) const;
+            void exportSVG(const std::string&, const std::vector<Vector4<float>>&) const;
 
             int retrieveTextureSizeFactor();
 
             //scene information
-            unsigned int sceneWidth, sceneHeight;
             float nearPlane, farPlane;
             float projectionScale;
 
@@ -75,7 +74,15 @@ namespace urchin {
             //ambient occlusion shader
             std::shared_ptr<Shader> ambientOcclusionShader;
             ShaderVar mInverseViewProjectionShaderVar, mProjectionShaderVar, mViewShaderVar;
+            ShaderVar samplesShaderVar, resolutionShaderVar;
             std::shared_ptr<Texture> noiseTexture;
+            struct {
+                alignas(16) Matrix4<float> inverseViewProjectionMatrix;
+                alignas(16) Matrix4<float> projectionMatrix;
+                alignas(16) Matrix4<float> viewMatrix;
+            } positioningData;
+            std::vector<Vector4<float>> ssaoKernel;
+            Vector2<float> resolution;
 
             //visual data
             std::shared_ptr<Texture> depthTexture;
