@@ -81,9 +81,9 @@ namespace urchin {
                 alignas(4) float sumTimeStep;
             } positioningData;
             struct {
-                alignas(4) float grassDisplayDistance;
-                alignas(4) float grassHeight;
-                alignas(4) float grassLength;
+                alignas(4) float displayDistance;
+                alignas(4) float height;
+                alignas(4) float length;
                 alignas(4) int numGrassInTex;
                 alignas(4) float windStrength;
                 alignas(16) Vector3<float> windDirection;

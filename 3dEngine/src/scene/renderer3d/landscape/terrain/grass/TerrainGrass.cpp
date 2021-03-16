@@ -28,7 +28,7 @@ namespace urchin {
             positioningData({}),
             grassProperties({}),
             terrainPositioningData({}),
-            ambient(0.0), //TODO check default value in debug: 0.0 ? 0.5 ? 1.0 ?
+            ambient(0.5f),
             mainGrassQuadtree(nullptr),
             grassQuantity(0.0) {
         std::map<std::string, std::string> tokens;
@@ -245,9 +245,9 @@ namespace urchin {
                                 .sendData(cameraPositionShaderVar, positioningData.cameraPosition)
                                 .sendData(sumTimeStepShaderVar, positioningData.sumTimeStep)) //binding 0
                         ->addShaderData(ShaderDataSender(true)
-                                .sendData(grassDisplayDistanceShaderVar, grassProperties.grassDisplayDistance)
-                                .sendData(grassHeightShaderVar, grassProperties.grassHeight)
-                                .sendData(grassLengthShaderVar, grassProperties.grassLength)
+                                .sendData(grassDisplayDistanceShaderVar, grassProperties.displayDistance)
+                                .sendData(grassHeightShaderVar, grassProperties.height)
+                                .sendData(grassLengthShaderVar, grassProperties.length)
                                 .sendData(numGrassInTexShaderVar, grassProperties.numGrassInTex)
                                 .sendData(windStrengthShaderVar, grassProperties.windStrength)
                                 .sendData(windDirectionShaderVar, grassProperties.windDirection)) //binding 1
@@ -320,39 +320,39 @@ namespace urchin {
     }
 
     float TerrainGrass::getGrassDisplayDistance() const {
-        return grassProperties.grassDisplayDistance;
+        return grassProperties.displayDistance;
     }
 
     void TerrainGrass::setGrassDisplayDistance(float grassDisplayDistance) {
         assert(grassDisplayDistance != 0.0f);
-        grassProperties.grassDisplayDistance = grassDisplayDistance;
+        grassProperties.displayDistance = grassDisplayDistance;
 
         for(auto& renderer: getAllRenderers()) {
-            renderer->updateShaderData(1, ShaderDataSender(true).sendData(grassDisplayDistanceShaderVar, grassProperties.grassDisplayDistance));
+            renderer->updateShaderData(1, ShaderDataSender(true).sendData(grassDisplayDistanceShaderVar, grassProperties.displayDistance));
         }
     }
 
     float TerrainGrass::getGrassHeight() const {
-        return grassProperties.grassHeight;
+        return grassProperties.height;
     }
 
     void TerrainGrass::setGrassHeight(float grassHeight) {
-        grassProperties.grassHeight = grassHeight;
+        grassProperties.height = grassHeight;
 
         for(auto& renderer: getAllRenderers()) {
-            renderer->updateShaderData(1, ShaderDataSender(true).sendData(grassHeightShaderVar, grassProperties.grassHeight));
+            renderer->updateShaderData(1, ShaderDataSender(true).sendData(grassHeightShaderVar, grassProperties.height));
         }
     }
 
     float TerrainGrass::getGrassLength() const {
-        return grassProperties.grassLength;
+        return grassProperties.length;
     }
 
     void TerrainGrass::setGrassLength(float grassLength) {
-        grassProperties.grassLength = grassLength;
+        grassProperties.length = grassLength;
 
         for(auto& renderer: getAllRenderers()) {
-            renderer->updateShaderData(1, ShaderDataSender(true).sendData(grassLengthShaderVar, grassProperties.grassLength));
+            renderer->updateShaderData(1, ShaderDataSender(true).sendData(grassLengthShaderVar, grassProperties.length));
         }
     }
 
@@ -419,7 +419,7 @@ namespace urchin {
                 const TerrainGrassQuadtree* grassQuadtree = grassQuadtrees[i];
                 const std::unique_ptr<AABBox<float>>& grassQuadtreeBox = grassQuadtree->getBox();
 
-                if (grassQuadtreeBox && camera->getFrustum().cutFrustum(grassProperties.grassDisplayDistance).collideWithAABBox(*grassQuadtreeBox)) {
+                if (grassQuadtreeBox && camera->getFrustum().cutFrustum(grassProperties.displayDistance).collideWithAABBox(*grassQuadtreeBox)) {
                     if (grassQuadtree->isLeaf()) {
                         grassQuadtree->getRenderer()->updateShaderData(0, ShaderDataSender(true)
                                 .sendData(mViewShaderVar, positioningData.viewMatrix)

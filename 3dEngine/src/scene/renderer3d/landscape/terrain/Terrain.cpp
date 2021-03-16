@@ -57,7 +57,7 @@ namespace urchin {
     void Terrain::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
         positioningData.projectionMatrix = projectionMatrix;
 
-        terrainRenderer->updateShaderData(1, ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix));
+        terrainRenderer->updateShaderData(1, ShaderDataSender(true).sendData(mProjectionShaderVar, positioningData.projectionMatrix));
         grass->onCameraProjectionUpdate(projectionMatrix);
     }
 

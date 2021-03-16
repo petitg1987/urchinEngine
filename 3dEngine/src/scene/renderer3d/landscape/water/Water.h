@@ -76,18 +76,23 @@ namespace urchin {
             std::shared_ptr<Shader> waterShader;
             ShaderVar mProjectionShaderVar, mViewShaderVar, sumTimeStepShaderVar;
             ShaderVar waterColorShaderVar, waveSpeedShaderVar, waveStrengthShaderVar;
-
+            struct {
+                alignas(16) Matrix4<float> viewMatrix;
+                alignas(4) float sumTimeStep;
+            } positioningData;
+            struct {
+                alignas(16) Vector3<float> color;
+                alignas(4) float waveSpeed;
+                alignas(4) float waveStrength;
+            } waterProperties;
             Matrix4<float> projectionMatrix;
-            float sumTimeStep;
 
             Point3<float> centerPosition;
             float xSize, zSize;
             std::unique_ptr<Rectangle<float>> waterRectangle;
 
-            Vector3<float> waterColor;
             std::string normalFilename, dudvFilename;
             std::shared_ptr<Texture> normalTexture, dudvMap;
-            float waveSpeed, waveStrength;
             float sRepeat, tRepeat;
 
             float density;
