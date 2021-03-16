@@ -28,7 +28,6 @@ namespace urchin {
     AmbientOcclusionManager::AmbientOcclusionManager() :
             nearPlane(0.0f),
             farPlane(0.0f),
-            projectionScale(0.0f),
 
             textureSize(DEFAULT_TEXTURE_SIZE),
             textureSizeX(0),
@@ -171,8 +170,7 @@ namespace urchin {
         std::uniform_real_distribution<float> randomFloats(0.0, 1.0);
         std::default_random_engine generator(seed);
 
-        ssaoKernel.clear();
-        ssaoKernel.reserve(kernelSamples);
+        ssaoKernel.resize(kernelSamples);
         for (unsigned int i = 0; i < kernelSamples; ++i) {
             Vector4<float> sample(
                     randomFloats(generator) * 2.0f - 1.0f,
@@ -184,7 +182,7 @@ namespace urchin {
             float scale = (float)i / (float)kernelSamples;
             scale = MathFunction::lerp<float>(0.1f, 1.0f, scale * scale); //use square function to bring most of sample closer to center
             sample *= scale;
-            ssaoKernel.push_back(sample);
+            ssaoKernel[i] = sample;
         }
 
         renderer->updateShaderData(1, ShaderDataSender(true).sendData(samplesShaderVar, (unsigned int)ssaoKernel.size(), &ssaoKernel[0]));
@@ -222,7 +220,6 @@ namespace urchin {
     void AmbientOcclusionManager::onCameraProjectionUpdate(const Camera* camera) {
         nearPlane = camera->getNearPlane();
         farPlane = camera->getFarPlane();
-        projectionScale = camera->getProjectionMatrix()(1, 1);
 
         createOrUpdateAOTexture();
         createOrUpdateAOShader();

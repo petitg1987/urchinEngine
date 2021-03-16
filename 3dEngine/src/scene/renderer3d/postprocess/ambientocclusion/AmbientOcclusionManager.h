@@ -53,7 +53,6 @@ namespace urchin {
 
             //scene information
             float nearPlane, farPlane;
-            float projectionScale;
 
             //tweak
             AOTextureSize textureSize;
