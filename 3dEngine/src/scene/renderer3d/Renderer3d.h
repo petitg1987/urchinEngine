@@ -132,7 +132,7 @@ namespace urchin {
             //lighting pass rendering
             std::shared_ptr<OffscreenRender> offscreenLightingRenderTarget;
             std::unique_ptr<GenericRenderer> lightingRenderer;
-            std::unique_ptr<Shader> lightingShader;
+            std::shared_ptr<Shader> lightingShader;
             ShaderVar mInverseViewProjectionShaderVar, viewPositionShaderVar;
             AntiAliasingManager* antiAliasingManager;
             bool isAntiAliasingActivated;

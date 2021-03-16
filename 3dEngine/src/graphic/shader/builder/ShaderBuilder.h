@@ -14,8 +14,8 @@ namespace urchin {
 
     class ShaderBuilder {
         public:
-            std::unique_ptr<Shader> createShader(const std::string&, const std::string&, const std::string&);
-            std::unique_ptr<Shader> createShader(const std::string&, const std::string&, const std::string&, const std::map<std::string, std::string>&);
+            std::shared_ptr<Shader> createShader(const std::string&, const std::string&, const std::string&);
+            std::shared_ptr<Shader> createShader(const std::string&, const std::string&, const std::string&, const std::map<std::string, std::string>&);
 
         private:
             static std::string readEntireFile(const std::string&);

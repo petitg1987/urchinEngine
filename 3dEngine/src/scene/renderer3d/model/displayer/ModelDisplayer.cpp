@@ -7,12 +7,13 @@
 
 namespace urchin {
 
-    ModelDisplayer::ModelDisplayer(Model *model, DisplayMode displayMode, std::shared_ptr<RenderTarget> renderTarget) :
+    ModelDisplayer::ModelDisplayer(Model *model, DisplayMode displayMode, std::shared_ptr<RenderTarget> renderTarget, std::shared_ptr<Shader> shader) :
             model(model),
-            renderTarget(std::move(renderTarget)) {
+            renderTarget(std::move(renderTarget)),
+            shader(std::move(shader)) {
 
         for (auto& constMesh : model->getConstMeshes()->getConstMeshes()) {
-            auto meshRendererBuilder = std::make_unique<GenericRendererBuilder>(this->renderTarget, ShapeType::TRIANGLE);
+            auto meshRendererBuilder = std::make_unique<GenericRendererBuilder>(this->renderTarget, this->shader, ShapeType::TRIANGLE);
             meshRendererBuilder
                 ->enableDepthTest()
                 ->addData(&constMesh->getBaseVertices())

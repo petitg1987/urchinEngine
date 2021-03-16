@@ -37,7 +37,7 @@ namespace urchin {
             std::vector<Widget*> widgets;
 
             Matrix3<float> mProjection;
-            std::unique_ptr<Shader> uiShader;
+            std::shared_ptr<Shader> uiShader;
             ShaderVar mProjectionShaderVar, translateDistanceShaderVar, diffuseTexSamplerShaderVar;
     };
 

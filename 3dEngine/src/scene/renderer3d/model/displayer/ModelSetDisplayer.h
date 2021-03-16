@@ -55,7 +55,7 @@ namespace urchin {
 
             DisplayMode displayMode;
             MeshParameter meshParameter;
-            std::unique_ptr<Shader> modelShader;
+            std::shared_ptr<Shader> modelShader;
             Matrix4<float> projectionMatrix;
             ShaderVar mProjectionShaderVar, mModelShaderVar, mViewShaderVar, mNormalShaderVar, ambientFactorShaderVar;
 

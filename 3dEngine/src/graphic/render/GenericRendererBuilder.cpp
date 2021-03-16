@@ -2,19 +2,25 @@
 
 namespace urchin {
 
-    GenericRendererBuilder::GenericRendererBuilder(std::shared_ptr<RenderTarget> renderTarget, ShapeType shapeType) :
+    GenericRendererBuilder::GenericRendererBuilder(std::shared_ptr<RenderTarget> renderTarget, std::shared_ptr<Shader> shader, ShapeType shapeType) :
             renderTarget(std::move(renderTarget)),
+            shader(std::move(shader)),
             shapeType(shapeType),
             transparencyEnabled(false),
             depthTestEnabled(false),
             cullFaceEnabled(true),
             pPolygonMode(PolygonMode::FILL),
             pOutlineSize(1.0f) {
-
+        assert(this->shader);
+        assert(this->renderTarget);
     }
 
     const std::shared_ptr<RenderTarget>& GenericRendererBuilder::getRenderTarget() const {
         return renderTarget;
+    }
+
+    const std::shared_ptr<Shader>& GenericRendererBuilder::getShader() const {
+        return shader;
     }
 
     ShapeType GenericRendererBuilder::getShapeType() const {

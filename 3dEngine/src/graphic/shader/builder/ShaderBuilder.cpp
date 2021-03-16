@@ -7,13 +7,13 @@
 
 namespace urchin {
 
-    std::unique_ptr<Shader> ShaderBuilder::createShader(const std::string& vertexShaderFilename, const std::string& geometryShaderFilename,
+    std::shared_ptr<Shader> ShaderBuilder::createShader(const std::string& vertexShaderFilename, const std::string& geometryShaderFilename,
                                               const std::string& fragmentShaderFilename) {
         std::map<std::string, std::string> emptyTokens;
         return createShader(vertexShaderFilename, geometryShaderFilename, fragmentShaderFilename, emptyTokens);
     }
 
-    std::unique_ptr<Shader> ShaderBuilder::createShader(const std::string& vertexShaderFilename, const std::string& geometryShaderFilename,
+    std::shared_ptr<Shader> ShaderBuilder::createShader(const std::string& vertexShaderFilename, const std::string& geometryShaderFilename,
                                               const std::string& fragmentShaderFilename, const std::map<std::string, std::string>& tokens) {
         unsigned int shaderId = glCreateProgram();
 
@@ -54,7 +54,7 @@ namespace urchin {
         glLinkProgram(shaderId);
         checkShader(shaderId, vertexShaderFilename + ", " + geometryShaderFilename + ", " + fragmentShaderFilename);
 
-        return std::make_unique<Shader>(shaderId);
+        return std::make_shared<Shader>(shaderId);
     }
 
     std::string ShaderBuilder::readEntireFile(const std::string& filename) {

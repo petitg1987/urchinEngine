@@ -16,7 +16,7 @@ namespace urchin {
             void popFog();
             std::shared_ptr<const Fog> getActiveFog() const;
 
-            void initiateShaderVariables(const std::unique_ptr<Shader>&);
+            void initiateShaderVariables(const std::shared_ptr<Shader>&);
 
             void loadFog();
 

@@ -31,7 +31,7 @@ namespace urchin {
     void GeometryModel::refreshRenderer() {
         std::vector<Point3<float>> vertexArray = retrieveVertexArray();
 
-        std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, getShapeType());
+        std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, shader, getShapeType());
         rendererBuilder
                 ->addData(&vertexArray)
                 ->disableCullFace()

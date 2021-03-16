@@ -210,7 +210,7 @@ namespace urchin {
             offsetY += spaceBetweenLines;
         }
 
-        textRenderer = std::make_unique<GenericRendererBuilder>(getRenderTarget(), ShapeType::TRIANGLE)
+        textRenderer = std::make_unique<GenericRendererBuilder>(getRenderTarget(), getShader(), ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
                 ->addTextureReader(TextureReader::build(font->getTexture(), TextureParam::buildNearest()))

@@ -35,24 +35,6 @@ namespace urchin {
     void TextureFilter::initializeDisplay() {
         std::locale::global(std::locale("C")); //for float
 
-        std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
-                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(-1.0f, -1.0f)
-        };
-        std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
-                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
-        };
-        auto textureRendererBuilder = std::make_unique<GenericRendererBuilder>(offscreenRenderTarget, ShapeType::TRIANGLE);
-        textureRendererBuilder
-                ->addData(&vertexCoord)
-                ->addData(&textureCoord)
-                ->addTextureReader(TextureReader::build(sourceTexture, TextureParam::buildLinear()));
-        if (depthTexture) {
-            textureRendererBuilder->addTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()));
-        }
-        textureRenderer = textureRendererBuilder->build();
-
         std::map<std::string, std::string> shaderTokens;
         if (textureFormat == TextureFormat::RG_32_FLOAT) {
             shaderTokens["OUTPUT_TYPE"] = "vec2";
@@ -81,9 +63,27 @@ namespace urchin {
         ShaderDataSender().sendData(ShaderVar(textureFilterShader, "tex"), texUnit);
         layersToUpdateShaderVar = ShaderVar(textureFilterShader, "layersToUpdate");
         initiateAdditionalShaderVariables(textureFilterShader);
+
+        std::vector<Point2<float>> vertexCoord = {
+                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
+                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(-1.0f, -1.0f)
+        };
+        std::vector<Point2<float>> textureCoord = {
+                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
+                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
+        };
+        auto textureRendererBuilder = std::make_unique<GenericRendererBuilder>(offscreenRenderTarget, getTextureFilterShader(), ShapeType::TRIANGLE);
+        textureRendererBuilder
+                ->addData(&vertexCoord)
+                ->addData(&textureCoord)
+                ->addTextureReader(TextureReader::build(sourceTexture, TextureParam::buildLinear()));
+        if (depthTexture) {
+            textureRendererBuilder->addTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()));
+        }
+        textureRenderer = textureRendererBuilder->build();
     }
 
-    void TextureFilter::initiateAdditionalShaderVariables(const std::unique_ptr<Shader>&) {
+    void TextureFilter::initiateAdditionalShaderVariables(const std::shared_ptr<Shader>&) {
         //do nothing: to override
     }
 
@@ -99,7 +99,7 @@ namespace urchin {
         return textureHeight;
     }
 
-    const std::unique_ptr<Shader>& TextureFilter::getTextureFilterShader() const {
+    const std::shared_ptr<Shader>& TextureFilter::getTextureFilterShader() const {
         return textureFilterShader;
     }
 

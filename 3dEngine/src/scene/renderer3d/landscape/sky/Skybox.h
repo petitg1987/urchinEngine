@@ -44,7 +44,7 @@ namespace urchin {
             std::shared_ptr<RenderTarget> renderTarget;
             std::unique_ptr<GenericRenderer> skyboxRenderer;
 
-            std::unique_ptr<Shader> skyboxShader;
+            std::shared_ptr<Shader> skyboxShader;
             ShaderVar mProjectionShaderVar, mViewShaderVar;
     };
 

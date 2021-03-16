@@ -37,7 +37,7 @@ namespace urchin {
             unsigned int sceneWidth, sceneHeight;
 
             //display
-            std::unique_ptr<Shader> fxaaShader;
+            std::shared_ptr<Shader> fxaaShader;
             ShaderVar invSceneSizeShaderVar;
             std::unique_ptr<GenericRenderer> renderer;
     };

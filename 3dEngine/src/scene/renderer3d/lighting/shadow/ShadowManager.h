@@ -37,7 +37,7 @@ namespace urchin {
             ShadowManager(LightManager*, OctreeManager<Model>*);
             ~ShadowManager() override;
 
-            void initiateShaderVariables(const std::unique_ptr<Shader>&);
+            void initiateShaderVariables(const std::shared_ptr<Shader>&);
             void onCameraProjectionUpdate(const Camera*);
             void notify(Observable*, int) override;
 

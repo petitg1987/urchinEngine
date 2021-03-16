@@ -67,7 +67,7 @@ namespace urchin {
         this->mesh = mesh;
 
         std::vector<Point2<float>> emptyTextureCoordinates;
-        auto terrainRendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, ShapeType::TRIANGLE_STRIP);
+        auto terrainRendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, terrainShader, ShapeType::TRIANGLE_STRIP);
         terrainRendererBuilder
                 ->enableDepthTest()
                 ->addData(&mesh->getVertices())

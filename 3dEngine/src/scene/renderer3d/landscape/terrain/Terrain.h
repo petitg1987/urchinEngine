@@ -50,7 +50,7 @@ namespace urchin {
             std::shared_ptr<RenderTarget> renderTarget;
 
             std::unique_ptr<GenericRenderer> terrainRenderer;
-            std::unique_ptr<Shader> terrainShader;
+            std::shared_ptr<Shader> terrainShader;
             ShaderVar vPositionShaderVar, mProjectionShaderVar, mViewShaderVar;
             ShaderVar ambientShaderVar;
             ShaderVar sRepeatShaderVar, tRepeatShaderVar;

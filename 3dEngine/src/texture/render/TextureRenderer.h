@@ -65,7 +65,7 @@ namespace urchin {
             std::unique_ptr<GenericRenderer> renderer;
 
             Matrix3<float> mProjection;
-            std::unique_ptr<Shader> displayTextureShader;
+            std::shared_ptr<Shader> displayTextureShader;
             int layer;
             ShaderVar mProjectionShaderVar, diffuseTexShaderVar;
     };

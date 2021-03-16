@@ -24,7 +24,7 @@ namespace urchin {
 
         private:
             std::string getShaderName() const override;
-            void initiateAdditionalShaderVariables(const std::unique_ptr<Shader>&) override;
+            void initiateAdditionalShaderVariables(const std::shared_ptr<Shader>&) override;
             void completeShaderTokens(std::map<std::string, std::string>&) const override;
 
             std::vector<float> computeOffsets() const;

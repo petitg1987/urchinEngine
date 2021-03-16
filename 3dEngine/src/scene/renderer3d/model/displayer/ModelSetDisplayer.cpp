@@ -119,11 +119,10 @@ namespace urchin {
     }
 
     void ModelSetDisplayer::setModels(const std::vector<Model*>& models) {
-        assert(renderTarget);
         for (auto model : models) {
             const auto& itModel = modelsDisplayer.find(model);
             if (itModel == modelsDisplayer.end()) {
-                modelsDisplayer.emplace(std::make_pair(model, std::make_unique<ModelDisplayer>(model, displayMode, renderTarget)));
+                modelsDisplayer.emplace(std::make_pair(model, std::make_unique<ModelDisplayer>(model, displayMode, renderTarget, modelShader)));
             }
         }
 

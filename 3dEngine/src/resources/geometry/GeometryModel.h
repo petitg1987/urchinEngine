@@ -47,7 +47,7 @@ namespace urchin {
             std::shared_ptr<RenderTarget> renderTarget;
             std::unique_ptr<GenericRenderer> renderer;
 
-            std::unique_ptr<Shader> shader;
+            std::shared_ptr<Shader> shader;
             ShaderVar mProjectionShaderVar, mViewShaderVar, colorShaderVar;
 
             Matrix4<float> projectionMatrix;

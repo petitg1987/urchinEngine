@@ -61,6 +61,7 @@ namespace urchin {
             void resetRenderDefaultValues() const;
 
             std::shared_ptr<RenderTarget> renderTarget;
+            std::shared_ptr<Shader> shader;
             ShapeType shapeType;
 
             std::vector<Data> data;

@@ -68,7 +68,7 @@ namespace urchin {
             bool bIsInitialized;
             std::shared_ptr<RenderTarget> renderTarget;
 
-            std::unique_ptr<Shader> terrainGrassShader;
+            std::shared_ptr<Shader> terrainGrassShader;
             ShaderVar mProjectionShaderVar, mViewShaderVar, cameraPositionShaderVar, sumTimeStepShaderVar;
             ShaderVar terrainMinPointShaderVar, terrainMaxPointShaderVar, terrainAmbientShaderVar;
             ShaderVar grassDisplayDistanceShaderVar;

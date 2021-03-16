@@ -61,7 +61,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        textBoxRenderer = std::make_unique<GenericRendererBuilder>(getRenderTarget(), ShapeType::TRIANGLE)
+        textBoxRenderer = std::make_unique<GenericRendererBuilder>(getRenderTarget(), getShader(), ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
                 ->addTextureReader(TextureReader::build(texTextBoxDefault, TextureParam::buildNearest()))
@@ -75,7 +75,7 @@ namespace urchin {
                 Point2<float>(0.0, 0.0),
                 Point2<float>(1.0, 1.0)
         };
-        cursorRenderer = std::make_unique<GenericRendererBuilder>(getRenderTarget(), ShapeType::LINE)
+        cursorRenderer = std::make_unique<GenericRendererBuilder>(getRenderTarget(), getShader(), ShapeType::LINE)
                 ->addData(&cursorVertexCoord)
                 ->addData(&cursorTextureCoord)
                 ->addTextureReader(TextureReader::build(texCursorDiffuse, TextureParam::buildRepeatNearest()))

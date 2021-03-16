@@ -42,7 +42,7 @@ namespace urchin {
         deleteLightsLocation();
     }
 
-    void ShadowManager::initiateShaderVariables(const std::unique_ptr<Shader>& lightingShader) {
+    void ShadowManager::initiateShaderVariables(const std::shared_ptr<Shader>& lightingShader) {
         //shadow information
         depthSplitDistanceShaderVar = ShaderVar(lightingShader, "depthSplitDistance");
 

@@ -19,7 +19,7 @@ namespace urchin {
             mouseY(0) {
         if (parent) {
             parent->children.emplace_back(this);
-            initialize(parent->getRenderTarget());
+            initialize(parent->getRenderTarget(), parent->getShader());
         }
     }
 
@@ -37,11 +37,12 @@ namespace urchin {
         eventListeners.clear();
     }
 
-    void Widget::initialize(std::shared_ptr<RenderTarget> renderTarget) {
+    void Widget::initialize(std::shared_ptr<RenderTarget> renderTarget, std::shared_ptr<Shader> shader) {
         this->renderTarget = std::move(renderTarget);
+        this->shader = std::move(shader);
 
         for (auto& child : children) {
-            child->initialize(renderTarget);
+            child->initialize(renderTarget, shader);
         }
     }
 
@@ -59,6 +60,11 @@ namespace urchin {
     const std::shared_ptr<RenderTarget>& Widget::getRenderTarget() const {
         assert(renderTarget);
         return renderTarget;
+    }
+
+    const std::shared_ptr<Shader>& Widget::getShader() const {
+        assert(shader);
+        return shader;
     }
 
     unsigned int Widget::getSceneWidth() const {

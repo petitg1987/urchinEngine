@@ -73,7 +73,7 @@ namespace urchin {
             bool isInitialized;
 
             std::shared_ptr<RenderTarget> renderTarget;
-            std::unique_ptr<Shader> waterShader;
+            std::shared_ptr<Shader> waterShader;
             ShaderVar mProjectionShaderVar, mViewShaderVar, sumTimeStepShaderVar;
             ShaderVar waterColorShaderVar, waveSpeedShaderVar, waveStrengthShaderVar;
 

@@ -29,7 +29,7 @@ namespace urchin {
                 FOCUS
             };
 
-            void initialize(std::shared_ptr<RenderTarget>);
+            void initialize(std::shared_ptr<RenderTarget>, std::shared_ptr<Shader>);
             void onResize(unsigned int, unsigned int);
 
             Widget* getParent() const;
@@ -71,6 +71,7 @@ namespace urchin {
 
         protected:
             const std::shared_ptr<RenderTarget>& getRenderTarget() const;
+            const std::shared_ptr<Shader>& getShader() const;
             unsigned int getSceneWidth() const;
             unsigned int getSceneHeight() const;
             virtual void createOrUpdateWidget() = 0;
@@ -88,6 +89,7 @@ namespace urchin {
             void handleDisable();
 
             std::shared_ptr<RenderTarget> renderTarget;
+            std::shared_ptr<Shader> shader;
             unsigned int sceneWidth, sceneHeight;
 
             Widget* parent;

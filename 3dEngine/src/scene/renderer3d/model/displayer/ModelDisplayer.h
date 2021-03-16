@@ -8,7 +8,7 @@ namespace urchin {
 
     class ModelDisplayer : public Observer {
         public:
-            explicit ModelDisplayer(Model *, DisplayMode, std::shared_ptr<RenderTarget>);
+            explicit ModelDisplayer(Model *, DisplayMode, std::shared_ptr<RenderTarget>, std::shared_ptr<Shader>);
             ~ModelDisplayer() override;
 
             void notify(Observable*, int) override;
@@ -21,6 +21,7 @@ namespace urchin {
         private:
             Model *model;
             std::shared_ptr<RenderTarget> renderTarget;
+            std::shared_ptr<Shader> shader;
 
             std::vector<std::unique_ptr<GenericRenderer>> meshRenderers;
     };

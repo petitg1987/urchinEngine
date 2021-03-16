@@ -17,9 +17,10 @@ namespace urchin {
 
     class GenericRendererBuilder {
         public:
-            explicit GenericRendererBuilder(std::shared_ptr<RenderTarget>, ShapeType);
+            explicit GenericRendererBuilder(std::shared_ptr<RenderTarget>, std::shared_ptr<Shader>, ShapeType);
 
             const std::shared_ptr<RenderTarget>& getRenderTarget() const;
+            const std::shared_ptr<Shader>& getShader() const;
             ShapeType getShapeType() const;
 
             GenericRendererBuilder* addData(const std::vector<Point2<float>>*);
@@ -51,6 +52,7 @@ namespace urchin {
 
         private:
             std::shared_ptr<RenderTarget> renderTarget;
+            std::shared_ptr<Shader> shader;
             ShapeType shapeType;
             std::vector<GenericRenderer::Data> data;
             GenericRenderer::Indices pIndices;

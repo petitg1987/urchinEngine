@@ -21,7 +21,7 @@ namespace urchin {
                 REMOVE_LIGHT, //A light has been removed
             };
 
-            void initiateShaderVariables(const std::unique_ptr<Shader>&);
+            void initiateShaderVariables(const std::shared_ptr<Shader>&);
             OctreeManager<Light>* getLightOctreeManager() const;
             Light* getLastUpdatedLight();
 
