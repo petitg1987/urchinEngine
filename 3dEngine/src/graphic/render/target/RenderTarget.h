@@ -2,11 +2,13 @@
 #define URCHINENGINE_RENDERTARGET_H
 
 #include <memory>
+#include <vector>
 
-#include "graphic/render/GenericRenderer.h"
 #include "graphic/shader/model/Shader.h"
 
 namespace urchin {
+
+    class GenericRenderer;
 
     class RenderTarget {
         public:
@@ -14,6 +16,8 @@ namespace urchin {
             virtual ~RenderTarget() = default;
 
             void onResize(unsigned int, unsigned int);
+
+            void addRenderer(GenericRenderer*);
 
             void activeShader(const std::unique_ptr<Shader>&) const;
             virtual void resetDisplay() const = 0;
@@ -27,6 +31,8 @@ namespace urchin {
 
         private:
             unsigned int targetWidth, targetHeight;
+
+            std::vector<GenericRenderer*> renderers;
     };
 
 }

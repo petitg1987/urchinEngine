@@ -129,7 +129,7 @@ namespace urchin {
             Point3<float>(SIZE, SIZE, SIZE), Point3<float>(-SIZE, -SIZE, SIZE), Point3<float>(-SIZE, SIZE, SIZE)
         };
 
-        skyboxRenderer = std::make_unique<GenericRendererBuilder>(renderTarget, ShapeType::TRIANGLE)
+        skyboxRenderer = std::make_unique<GenericRendererBuilder>(this->renderTarget, ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
                 ->addTextureReader(TextureReader::build(skyboxTexture, TextureParam::buildLinear()))

@@ -8,6 +8,7 @@
 #include "graphic/render/model/DataDimension.h"
 #include "graphic/render/model/ShapeType.h"
 #include "graphic/render/model/PolygonMode.h"
+#include "graphic/render/target/RenderTarget.h"
 #include "graphic/texture/TextureReader.h"
 
 namespace urchin {
@@ -59,6 +60,7 @@ namespace urchin {
 
             void resetRenderDefaultValues() const;
 
+            std::shared_ptr<RenderTarget> renderTarget;
             ShapeType shapeType;
 
             std::vector<Data> data;

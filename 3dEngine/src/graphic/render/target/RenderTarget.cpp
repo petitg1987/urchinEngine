@@ -1,4 +1,5 @@
 #include "RenderTarget.h"
+#include "graphic/render/GenericRenderer.h"
 
 namespace urchin {
 
@@ -10,6 +11,9 @@ namespace urchin {
 
     void RenderTarget::executeRenderer(const std::unique_ptr<GenericRenderer>& renderer) const {
         renderer->render();
+//        for(auto& renderer : renderers) { //TODO use it
+//            renderer->render();
+//        }
     }
 
     unsigned int RenderTarget::getTargetWidth() const {
@@ -23,6 +27,10 @@ namespace urchin {
     void RenderTarget::onResize(unsigned int targetWidth, unsigned int targetHeight) {
         this->targetWidth = targetWidth;
         this->targetHeight = targetHeight;
+    }
+
+    void RenderTarget::addRenderer(GenericRenderer* renderer) {
+        this->renderers.emplace_back(renderer);
     }
 
     void RenderTarget::activeShader(const std::unique_ptr<Shader>& shader) const {

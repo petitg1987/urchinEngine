@@ -13,6 +13,10 @@ namespace urchin {
 
     }
 
+    const std::shared_ptr<RenderTarget>& GenericRendererBuilder::getRenderTarget() const {
+        return renderTarget;
+    }
+
     ShapeType GenericRendererBuilder::getShapeType() const {
         return shapeType;
     }

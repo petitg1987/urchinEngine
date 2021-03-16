@@ -11,6 +11,7 @@ namespace urchin {
     const unsigned int GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE = std::numeric_limits<unsigned int>::max();
 
     GenericRenderer::GenericRenderer(const GenericRendererBuilder* rendererBuilder) :
+            renderTarget(rendererBuilder->getRenderTarget()),
             shapeType(rendererBuilder->getShapeType()),
             data(rendererBuilder->getData()),
             indices(rendererBuilder->getIndices()),
@@ -28,6 +29,8 @@ namespace urchin {
         for (const auto& textureReader : textureReaders) {
             initializeTexture(textureReader);
         }
+
+        renderTarget->addRenderer(this);
     }
 
     GenericRenderer::~GenericRenderer() {
