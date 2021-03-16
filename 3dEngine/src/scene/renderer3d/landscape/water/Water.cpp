@@ -275,7 +275,6 @@ namespace urchin {
                     .sendData(mViewShaderVar, camera->getViewMatrix())
                     .sendData(sumTimeStepShaderVar, sumTimeStep);
 
-            renderTarget->activeShader(waterShader);
             renderTarget->display(waterRenderer);
         }
     }

@@ -33,8 +33,4 @@ namespace urchin {
         this->renderers.emplace_back(renderer);
     }
 
-    void RenderTarget::activeShader(const std::shared_ptr<Shader>& shader) const { //TODO review method call
-        shader->bind();
-    }
-
 }

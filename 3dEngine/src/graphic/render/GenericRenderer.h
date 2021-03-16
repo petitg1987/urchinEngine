@@ -37,9 +37,13 @@ namespace urchin {
             explicit GenericRenderer(const GenericRendererBuilder*);
             ~GenericRenderer();
 
+            const std::shared_ptr<Shader>& getShader() const;
+
             void updateData(std::size_t, const std::vector<Point2<float>>*);
             void updateData(std::size_t, const std::vector<Point3<float>>*);
             void updateData(std::size_t, const std::vector<Vector3<float>>*);
+
+            //void updateShaderData(); //TODO complete...
 
             void updateTextureReader(std::size_t, const TextureReader&);
             const TextureReader& getTextureReader(std::size_t) const;

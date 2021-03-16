@@ -514,10 +514,8 @@ namespace urchin {
             }
 
             if (isAntiAliasingActivated) {
-                offscreenLightingRenderTarget->activeShader(lightingShader);
                 offscreenLightingRenderTarget->display(lightingRenderer);
             } else {
-                finalRenderTarget->activeShader(lightingShader);
                 finalRenderTarget->display(lightingRenderer);
             }
         }

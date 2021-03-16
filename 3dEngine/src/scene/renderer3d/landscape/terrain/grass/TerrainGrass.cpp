@@ -361,7 +361,6 @@ namespace urchin {
             grassQuadtrees.clear();
             grassQuadtrees.push_back(mainGrassQuadtree);
 
-            renderTarget->activeShader(terrainGrassShader);
             for (std::size_t i = 0; i < grassQuadtrees.size(); ++i) {
                 const TerrainGrassQuadtree* grassQuadtree = grassQuadtrees[i];
                 const std::unique_ptr<AABBox<float>>& grassQuadtreeBox = grassQuadtree->getBox();

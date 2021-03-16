@@ -12,6 +12,7 @@ namespace urchin {
 
     GenericRenderer::GenericRenderer(const GenericRendererBuilder* rendererBuilder) :
             renderTarget(rendererBuilder->getRenderTarget()),
+            shader(rendererBuilder->getShader()),
             shapeType(rendererBuilder->getShapeType()),
             data(rendererBuilder->getData()),
             indices(rendererBuilder->getIndices()),
@@ -154,6 +155,10 @@ namespace urchin {
             return 3;
         }
         throw std::runtime_error("Unknown data dimension: " + std::to_string(dataDimension));
+    }
+
+    const std::shared_ptr<Shader>& GenericRenderer::getShader() const {
+        return shader;
     }
 
     void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point2<float>>* dataPtr) {

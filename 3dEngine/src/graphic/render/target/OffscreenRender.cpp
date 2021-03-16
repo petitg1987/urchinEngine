@@ -66,6 +66,8 @@ namespace urchin {
     }
 
     void OffscreenRender::display(const std::unique_ptr<GenericRenderer>& renderer) const {
+        renderer->getShader()->bind();
+
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
         glViewport(0, 0, (int)getTargetWidth(), (int)getTargetHeight());
 

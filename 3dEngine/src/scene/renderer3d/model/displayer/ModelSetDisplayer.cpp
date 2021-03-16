@@ -156,7 +156,6 @@ namespace urchin {
             customShaderVariable->loadCustomShaderVariables();
         }
 
-        renderTarget->activeShader(modelShader);
         for (const auto& model : models) {
             ShaderDataSender().sendData(mModelShaderVar, model->getTransform().getTransformMatrix());
             if (displayMode == DEFAULT_MODE) {

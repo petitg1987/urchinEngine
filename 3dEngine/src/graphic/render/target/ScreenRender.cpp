@@ -1,5 +1,6 @@
 #include "libs/glad/glad.h"
 #include "ScreenRender.h"
+#include "graphic/render/GenericRenderer.h"
 
 namespace urchin {
 
@@ -8,6 +9,8 @@ namespace urchin {
     }
 
     void ScreenRender::display(const std::unique_ptr<GenericRenderer>& renderer) const {
+        renderer->getShader()->bind();
+
         glViewport(0, 0, getTargetWidth(), getTargetHeight());
 
         executeRenderer(renderer);

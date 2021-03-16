@@ -101,7 +101,6 @@ namespace urchin {
             .sendData(mViewShaderVar, viewMatrix * modelMatrix)
             .sendData(colorShaderVar, color);
 
-        renderTarget->activeShader(shader);
         renderTarget->display(renderer);
     }
 

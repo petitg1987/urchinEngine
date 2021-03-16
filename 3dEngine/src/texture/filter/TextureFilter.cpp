@@ -128,7 +128,6 @@ namespace urchin {
             ShaderDataSender().sendData(layersToUpdateShaderVar, (unsigned int)layersToUpdate);
         }
 
-        offscreenRenderTarget->activeShader(textureFilterShader);
         offscreenRenderTarget->display(textureRenderer);
     }
 }

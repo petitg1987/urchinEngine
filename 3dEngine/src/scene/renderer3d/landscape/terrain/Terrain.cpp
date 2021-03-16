@@ -184,7 +184,6 @@ namespace urchin {
         assert(isInitialized);
         ShaderDataSender().sendData(mViewShaderVar, camera->getViewMatrix());
 
-        renderTarget->activeShader(terrainShader);
         renderTarget->display(terrainRenderer);
 
         if (grass) {

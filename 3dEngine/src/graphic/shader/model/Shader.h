@@ -3,13 +3,15 @@
 
 namespace urchin {
 
-    class RenderTarget;
+    class OffscreenRender;
+    class ScreenRender;
 
     class Shader {
         public:
             friend class ShaderVar;
             friend class ShaderDataSender;
-            friend class RenderTarget;
+            friend class OffscreenRender;
+            friend class ScreenRender;
 
             explicit Shader(unsigned int);
             ~Shader();

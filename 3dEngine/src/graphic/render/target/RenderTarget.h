@@ -19,7 +19,6 @@ namespace urchin {
 
             void addRenderer(GenericRenderer*);
 
-            void activeShader(const std::shared_ptr<Shader>&) const;
             virtual void resetDisplay() const = 0;
             virtual void display(const std::unique_ptr<GenericRenderer>&) const = 0;
 
