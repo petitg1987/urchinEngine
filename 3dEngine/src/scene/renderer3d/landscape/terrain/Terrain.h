@@ -53,14 +53,17 @@ namespace urchin {
             std::shared_ptr<Shader> terrainShader;
             ShaderVar vPositionShaderVar, mProjectionShaderVar, mViewShaderVar;
             ShaderVar ambientShaderVar;
-            ShaderVar sRepeatShaderVar, tRepeatShaderVar;
+            ShaderVar stRepeatShaderVar;
 
-            Matrix4<float> projectionMatrix;
+            struct {
+                alignas(16) Matrix4<float> projectionMatrix;
+                alignas(16) Point3<float> position;
+            } positioningData;
 
             std::shared_ptr<TerrainMesh> mesh;
             std::unique_ptr<TerrainMaterials> materials;
             std::unique_ptr<TerrainGrass> grass;
-            Point3<float> position;
+
             float ambient;
     };
 

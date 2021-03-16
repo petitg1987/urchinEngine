@@ -3,7 +3,7 @@
 
 in vec3 textCoordinates;
 
-uniform samplerCube diffuseTexture;
+uniform samplerCube diffuseTexture; //binding 20
 
 layout (location = 0) out vec4 fragColor;
 layout (location = 1) out vec4 fragNormalAndAmbient;

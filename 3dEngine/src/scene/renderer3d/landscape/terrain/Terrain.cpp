@@ -24,16 +24,15 @@ namespace urchin {
         mProjectionShaderVar = ShaderVar(terrainShader, "mProjection");
         mViewShaderVar = ShaderVar(terrainShader, "mView");
         ambientShaderVar = ShaderVar(terrainShader, "ambient");
-        sRepeatShaderVar = ShaderVar(terrainShader, "sRepeat");
-        tRepeatShaderVar = ShaderVar(terrainShader, "tRepeat");
+        stRepeatShaderVar = ShaderVar(terrainShader, "stRepeat");
 
         int maskTexUnit = 0;
-        ShaderDataSender().sendData(ShaderVar(terrainShader, "maskTex"), maskTexUnit);
+        ShaderDataSender(true).sendData(ShaderVar(terrainShader, "maskTex"), maskTexUnit); //binding 20
 
         for (int i = 0; i < (int)TerrainMaterials::MAX_MATERIAL; ++i) {
             std::string shaderTextureName = "diffuseTex" + std::to_string(i + 1);
             int diffuseTexUnit = i + 1;
-            ShaderDataSender().sendData(ShaderVar(terrainShader, std::move(shaderTextureName)), diffuseTexUnit);
+            ShaderDataSender(true).sendData(ShaderVar(terrainShader, std::move(shaderTextureName)), diffuseTexUnit); //binding 21, 22, 23, 24
         }
 
         setPosition(position);
@@ -56,9 +55,9 @@ namespace urchin {
     }
 
     void Terrain::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
-        this->projectionMatrix = projectionMatrix;
+        positioningData.projectionMatrix = projectionMatrix;
 
-        ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix);
+        terrainRenderer->updateShaderData(1, ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix));
         grass->onCameraProjectionUpdate(projectionMatrix);
     }
 
@@ -73,6 +72,11 @@ namespace urchin {
                 ->addData(&mesh->getVertices())
                 ->addData(&mesh->getNormals())
                 ->addData(&emptyTextureCoordinates)
+                ->addShaderData(ShaderDataSender(true).sendData(mViewShaderVar, Matrix4<float>())) //binding 0
+                ->addShaderData(ShaderDataSender(true).sendData(mProjectionShaderVar, positioningData.projectionMatrix)) //binding 1
+                ->addShaderData(ShaderDataSender(true).sendData(vPositionShaderVar, positioningData.position)) //binding 1
+                ->addShaderData(ShaderDataSender(true).sendData(stRepeatShaderVar, materials->getStRepeat())) //binding 2
+                ->addShaderData(ShaderDataSender(true).sendData(ambientShaderVar, ambient)) //binding 3
                 ->indices(&mesh->getIndices())
                 ->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //mask texture
         for (std::size_t i = 0; i < materials->getMaterials().size(); ++i) {
@@ -100,11 +104,8 @@ namespace urchin {
         if (materials) {
             materials->refreshWith(mesh->getXSize(), mesh->getZSize());
 
-            ShaderDataSender()
-                .sendData(sRepeatShaderVar, materials->getSRepeat())
-                .sendData(tRepeatShaderVar, materials->getTRepeat());
-
             terrainRenderer->updateData(2, &materials->getTexCoordinates());
+            terrainRenderer->updateShaderData(2, ShaderDataSender(true).sendData(stRepeatShaderVar, materials->getStRepeat()));
 
             std::size_t maskMaterialTexUnit = 0;
             std::size_t materialTexUnitStart = 1;
@@ -128,7 +129,7 @@ namespace urchin {
 
     void Terrain::refreshGrassMesh() {
         if (grass->isInitialized()) {
-            grass->refreshWith(mesh, position);
+            grass->refreshWith(mesh, positioningData.position);
         }
     }
 
@@ -146,9 +147,9 @@ namespace urchin {
      * @param position Terrain position. Position is centered on XZ axis and Y value represents a point without elevation.
      */
     void Terrain::setPosition(const Point3<float>& position) {
-        this->position = position;
+        positioningData.position = position;
 
-        ShaderDataSender().sendData(vPositionShaderVar, position);
+        terrainRenderer->updateShaderData(1, ShaderDataSender(true).sendData(vPositionShaderVar, positioningData.position));
         refreshGrassMesh(); //grass uses terrain position: refresh is required
     }
 
@@ -156,7 +157,7 @@ namespace urchin {
      * @return Terrain position. Position is centered on XZ axis and Y value represents a point without elevation.
      */
     const Point3<float>& Terrain::getPosition() const {
-        return position;
+        return positioningData.position;
     }
 
     float Terrain::getAmbient() const {
@@ -166,24 +167,24 @@ namespace urchin {
     void Terrain::setAmbient(float ambient) {
         this->ambient = ambient;
 
-        ShaderDataSender().sendData(ambientShaderVar, ambient);
+        terrainRenderer->updateShaderData(3, ShaderDataSender(true).sendData(ambientShaderVar, ambient));
         refreshGrassAmbient(); //grass uses ambient value: refresh is required
     }
 
     Point3<float> Terrain::findPointAt(const Point2<float>& globalXzCoordinate) const {
-        Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - position.X, globalXzCoordinate.Y - position.Z);
-        return mesh->findPointAt(localCoordinate) + position;
+        Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - positioningData.position.X, globalXzCoordinate.Y - positioningData.position.Z);
+        return mesh->findPointAt(localCoordinate) + positioningData.position;
     }
 
     float Terrain::findHeightAt(const Point2<float>& globalXzCoordinate) const {
-        Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - position.X, globalXzCoordinate.Y - position.Z);
-        return mesh->findHeightAt(localCoordinate) + position.Y;
+        Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - positioningData.position.X, globalXzCoordinate.Y - positioningData.position.Z);
+        return mesh->findHeightAt(localCoordinate) + positioningData.position.Y;
     }
 
     void Terrain::display(const Camera* camera, float dt) const {
         assert(isInitialized);
-        ShaderDataSender().sendData(mViewShaderVar, camera->getViewMatrix());
 
+        terrainRenderer->updateShaderData(0, ShaderDataSender(true).sendData(mViewShaderVar, camera->getViewMatrix()));
         renderTarget->display(terrainRenderer);
 
         if (grass) {

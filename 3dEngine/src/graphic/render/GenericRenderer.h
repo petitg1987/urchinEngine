@@ -9,6 +9,7 @@
 #include "graphic/render/model/ShapeType.h"
 #include "graphic/render/model/PolygonMode.h"
 #include "graphic/render/target/RenderTarget.h"
+#include "graphic/shader/data/ShaderDataSender.h"
 #include "graphic/texture/TextureReader.h"
 
 namespace urchin {
@@ -43,7 +44,7 @@ namespace urchin {
             void updateData(std::size_t, const std::vector<Point3<float>>*);
             void updateData(std::size_t, const std::vector<Vector3<float>>*);
 
-            //void updateShaderData(); //TODO complete...
+            void updateShaderData(std::size_t, ShaderDataSender &);
 
             void updateTextureReader(std::size_t, const TextureReader&);
             const TextureReader& getTextureReader(std::size_t) const;

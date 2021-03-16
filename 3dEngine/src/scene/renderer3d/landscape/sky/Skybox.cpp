@@ -84,7 +84,7 @@ namespace urchin {
         mViewShaderVar = ShaderVar(skyboxShader, "mView");
 
         int diffuseTexUnit = 0;
-        ShaderDataSender().sendData(ShaderVar(skyboxShader, "diffuseTexture"), diffuseTexUnit);
+        ShaderDataSender(true).sendData(ShaderVar(skyboxShader, "diffuseTexture"), diffuseTexUnit); //binding 20
 
         constexpr float SIZE = 10.0f;
         std::vector<Point3<float>> vertexCoord = {
@@ -133,6 +133,8 @@ namespace urchin {
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
                 ->addTextureReader(TextureReader::build(skyboxTexture, TextureParam::buildLinear()))
+                ->addShaderData(ShaderDataSender(true).sendData(mProjectionShaderVar, Matrix4<float>())) //binding 0
+                ->addShaderData(ShaderDataSender(true).sendData(mViewShaderVar, Matrix4<float>())) //binding 1
                 ->build();
 
         this->isInitialized = true;
@@ -149,7 +151,7 @@ namespace urchin {
     }
 
     void Skybox::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) const {
-        ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix);
+        skyboxRenderer->updateShaderData(0, ShaderDataSender(true).sendData(mProjectionShaderVar, projectionMatrix));
     }
 
     float Skybox::getOffsetY() const {
@@ -167,7 +169,7 @@ namespace urchin {
     void Skybox::display(const Matrix4<float>& viewMatrix, const Point3<float>& cameraPosition) {
         assert(isInitialized);
         translationMatrix.buildTranslation(cameraPosition.X, cameraPosition.Y + offsetY, cameraPosition.Z);
-        ShaderDataSender().sendData(mViewShaderVar, viewMatrix * translationMatrix);
+        skyboxRenderer->updateShaderData(1, ShaderDataSender(true).sendData(mViewShaderVar, viewMatrix * translationMatrix));
 
         renderTarget->display(skyboxRenderer);
     }

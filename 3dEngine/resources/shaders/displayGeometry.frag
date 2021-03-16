@@ -4,7 +4,7 @@
 layout (location = 0) out vec4 fragColor;
 layout (location = 1) out vec4 fragNormalAndAmbient;
 
-uniform vec4 color;
+uniform vec4 color; //binding 1
 
 void main() {
     //diffuse

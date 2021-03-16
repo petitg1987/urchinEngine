@@ -11,6 +11,7 @@
 #include "graphic/render/model/ShapeType.h"
 #include "graphic/render/model/PolygonMode.h"
 #include "graphic/render/target/RenderTarget.h"
+#include "graphic/shader/data/ShaderDataSender.h"
 #include "graphic/texture/TextureReader.h"
 
 namespace urchin {
@@ -27,9 +28,10 @@ namespace urchin {
             GenericRendererBuilder* addData(const std::vector<Point3<float>>*);
             GenericRendererBuilder* addData(const std::vector<Vector3<float>>*);
             const std::vector<GenericRenderer::Data>& getData() const;
-
             GenericRendererBuilder* indices(const std::vector<unsigned int>*);
             const GenericRenderer::Indices& getIndices() const;
+
+            GenericRendererBuilder* addShaderData(ShaderDataSender&);
 
             GenericRendererBuilder* enableTransparency();
             bool isTransparencyEnabled() const;

@@ -60,12 +60,8 @@ namespace urchin {
         return maskTexture;
     }
 
-    float TerrainMaterials::getSRepeat() const {
-        return sRepeat;
-    }
-
-    float TerrainMaterials::getTRepeat() const {
-        return tRepeat;
+    Vector2<float> TerrainMaterials::getStRepeat() const {
+        return Vector2<float>(sRepeat, tRepeat);
     }
 
     std::vector<Material*> TerrainMaterials::getMaterials() const {

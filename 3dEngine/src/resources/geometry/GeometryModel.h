@@ -49,8 +49,11 @@ namespace urchin {
 
             std::shared_ptr<Shader> shader;
             ShaderVar mProjectionShaderVar, mViewShaderVar, colorShaderVar;
+            mutable struct {
+                alignas(16) Matrix4<float> projectionMatrix;
+                alignas(16) Matrix4<float> viewModelMatrix;
+            } positioningData;
 
-            Matrix4<float> projectionMatrix;
             Matrix4<float> modelMatrix;
 
             Vector4<float> color;

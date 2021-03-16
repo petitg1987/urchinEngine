@@ -181,6 +181,10 @@ namespace urchin {
         updateData(pointsCoordIndex, reinterpret_cast<const std::vector<Point3<float>>*>(dataPtr));
     }
 
+    void GenericRenderer::updateShaderData(std::size_t /*shaderDataIndex*/, ShaderDataSender&) {
+        //fake method to prepare to the Vulkan migration
+    }
+
     void GenericRenderer::updateTextureReader(std::size_t textureIndex, const TextureReader& texture) {
         assert(textureReaders.size() > textureIndex);
 

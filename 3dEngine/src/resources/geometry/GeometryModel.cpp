@@ -34,6 +34,9 @@ namespace urchin {
         std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, shader, getShapeType());
         rendererBuilder
                 ->addData(&vertexArray)
+                ->addShaderData(ShaderDataSender(true).sendData(mProjectionShaderVar, positioningData.projectionMatrix)) //binding 0
+                ->addShaderData(ShaderDataSender(true).sendData(mViewShaderVar, positioningData.viewModelMatrix)) //binding 0
+                ->addShaderData(ShaderDataSender(true).sendData(colorShaderVar, color)) //binding 1
                 ->disableCullFace()
                 ->outlineSize(outlineSize)
                 ->polygonMode(polygonMode);
@@ -50,7 +53,7 @@ namespace urchin {
     }
 
     void GeometryModel::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
-        this->projectionMatrix = projectionMatrix;
+        positioningData.projectionMatrix = projectionMatrix;
     }
 
     Vector4<float> GeometryModel::getColor() const {
@@ -58,7 +61,7 @@ namespace urchin {
     }
 
     void GeometryModel::setColor(float red, float green, float blue, float alpha) {
-        this->color = Vector4<float>(red, green, blue, alpha);
+        color = Vector4<float>(red, green, blue, alpha);
     }
 
     PolygonMode GeometryModel::getPolygonMode() const {
@@ -96,10 +99,10 @@ namespace urchin {
     void GeometryModel::display(const Matrix4<float>& viewMatrix) const {
         assert(isInitialized);
 
-        ShaderDataSender()
-            .sendData(mProjectionShaderVar, projectionMatrix)
-            .sendData(mViewShaderVar, viewMatrix * modelMatrix)
-            .sendData(colorShaderVar, color);
+        positioningData.viewModelMatrix = viewMatrix * modelMatrix;
+        renderer->updateShaderData(0, ShaderDataSender(true).sendData(mProjectionShaderVar, positioningData.projectionMatrix));
+        renderer->updateShaderData(0, ShaderDataSender(true).sendData(mViewShaderVar, positioningData.viewModelMatrix));
+        renderer->updateShaderData(1, ShaderDataSender(true).sendData(colorShaderVar, color));
 
         renderTarget->display(renderer);
     }

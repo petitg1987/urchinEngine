@@ -58,9 +58,9 @@ namespace urchin {
         std::shared_ptr<XmlChunk> maskMapFilenameChunk = xmlWriter.createChunk(MASK_MAP_FILENAME, XmlAttribute(), materialChunk);
         maskMapFilenameChunk->setStringValue(terrain->getMaterials()->getMaskMapFilename());
         std::shared_ptr<XmlChunk> sRepeatChunk = xmlWriter.createChunk(S_REPEAT_TAG, XmlAttribute(), materialChunk);
-        sRepeatChunk->setFloatValue(terrain->getMaterials()->getSRepeat());
+        sRepeatChunk->setFloatValue(terrain->getMaterials()->getStRepeat().X);
         std::shared_ptr<XmlChunk> tRepeatChunk = xmlWriter.createChunk(T_REPEAT_TAG, XmlAttribute(), materialChunk);
-        tRepeatChunk->setFloatValue(terrain->getMaterials()->getTRepeat());
+        tRepeatChunk->setFloatValue(terrain->getMaterials()->getStRepeat().Y);
         std::shared_ptr<XmlChunk> materialFilenamesChunk = xmlWriter.createChunk(MATERIAL_FILENAMES, XmlAttribute(), materialChunk);
         unsigned int i = 0;
         for (const Material* material : terrain->getMaterials()->getMaterials()) {

@@ -67,6 +67,11 @@ namespace urchin {
         return pIndices;
     }
 
+    GenericRendererBuilder* GenericRendererBuilder::addShaderData(ShaderDataSender &) {
+        //fake method to prepare to the Vulkan migration
+        return this;
+    }
+
     GenericRendererBuilder* GenericRendererBuilder::enableTransparency() {
         this->transparencyEnabled = true;
         return this;

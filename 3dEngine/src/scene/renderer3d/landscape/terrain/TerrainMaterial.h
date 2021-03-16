@@ -21,8 +21,7 @@ namespace urchin {
 
             const std::string& getMaskMapFilename() const;
             const std::shared_ptr<Texture>& getMaskTexture() const;
-            float getSRepeat() const;
-            float getTRepeat() const;
+            Vector2<float> getStRepeat() const;
             std::vector<Material*> getMaterials() const;
             const std::vector<Point2<float>>& getTexCoordinates() const;
 
