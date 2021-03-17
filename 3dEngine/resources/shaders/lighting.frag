@@ -16,7 +16,6 @@ uniform bool hasShadow; //binding 1
 uniform bool hasAmbientOcclusion; //binding 1
 
 //lighting
-uniform vec4 globalAmbient;
 struct StructLightInfo {
     bool isExist;
     bool produceShadow;
@@ -26,7 +25,8 @@ struct StructLightInfo {
     float exponentialAttenuation;
     vec3 lightAmbient;
 };
-uniform StructLightInfo lightsInfo[MAX_LIGHTS];
+uniform StructLightInfo lightsInfo[MAX_LIGHTS]; //binding 2
+uniform vec4 globalAmbient; //binding 3
 
 //shadow
 uniform float depthSplitDistance[NUMBER_SHADOW_MAPS];

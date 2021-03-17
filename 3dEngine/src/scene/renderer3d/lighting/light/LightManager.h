@@ -34,7 +34,7 @@ namespace urchin {
             const Point4<float>& getGlobalAmbientColor() const;
 
             void updateVisibleLights(const Frustum<float>&);
-            void loadVisibleLights();
+            void loadVisibleLights(const std::unique_ptr<GenericRenderer>&);
             void postUpdateVisibleLights();
 
             void drawLightOctree(const Matrix4<float>&, const Matrix4<float>&) const;
@@ -43,6 +43,7 @@ namespace urchin {
             void onLightEvent(Light*, NotificationType);
             void logMaxLightsReach();
 
+            const unsigned int maxLights; //maximum of lights authorized to affect the scene in the same time
             std::shared_ptr<RenderTarget> renderTarget;
 
             //lights container
@@ -53,8 +54,7 @@ namespace urchin {
 
             Light* lastUpdatedLight;
 
-            const unsigned int maxLights; //maximum of lights authorized to affect the scene in the same time
-            struct LightInfo {
+            struct LightShaderVar {
                 ShaderVar isExistShaderVar;
                 ShaderVar produceShadowShaderVar;
                 ShaderVar hasParallelBeamsShaderVar;
@@ -63,9 +63,17 @@ namespace urchin {
                 ShaderVar exponentialAttShaderVar;
                 ShaderVar lightAmbientShaderVar;
             };
-            LightInfo* lightsInfo;
-
+            LightShaderVar* lightsShaderVar;
             ShaderVar globalAmbientColorShaderVar;
+            struct LightsData {
+                alignas(4) bool isExist;
+                alignas(4) bool produceShadow;
+                alignas(4) bool hasParallelBeams;
+                alignas(16) Vector3<float> positionOrDirection;
+                alignas(4) float exponentialAttenuation;
+                alignas(16) Point3<float> lightAmbient;
+            };
+            LightsData* lightsData;
             Point4<float> globalAmbientColor;
     };
 

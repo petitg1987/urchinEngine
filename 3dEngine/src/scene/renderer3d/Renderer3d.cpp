@@ -511,7 +511,7 @@ namespace urchin {
                     .sendData(mInverseViewProjectionShaderVar, positioningData.inverseProjectionViewMatrix)
                     .sendData(viewPositionShaderVar, positioningData.viewPosition));
 
-            lightManager->loadVisibleLights();
+            lightManager->loadVisibleLights(lightingRenderer);
 
             fogManager->loadFog();
 

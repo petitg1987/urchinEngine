@@ -11,11 +11,12 @@
 namespace urchin {
 
     LightManager::LightManager(std::shared_ptr<RenderTarget> renderTarget) :
+            maxLights(ConfigService::instance()->getUnsignedIntValue("light.maxLights")),
             renderTarget(std::move(renderTarget)),
             lightOctreeManager(new OctreeManager<Light>(DEFAULT_OCTREE_MIN_SIZE)),
             lastUpdatedLight(nullptr),
-            maxLights(ConfigService::instance()->getUnsignedIntValue("light.maxLights")),
-            lightsInfo(new LightInfo[maxLights]),
+            lightsShaderVar(new LightShaderVar[maxLights]),
+            lightsData(new LightsData[maxLights]),
             globalAmbientColor(Point4<float>(0.0, 0.0, 0.0, 0.0)) {
 
     }
@@ -30,7 +31,8 @@ namespace urchin {
         }
 
         delete lightOctreeManager;
-        delete[] lightsInfo;
+        delete[] lightsShaderVar;
+        delete[] lightsData;
     }
 
     void LightManager::initiateShaderVariables(const std::shared_ptr<Shader>& lightingShader) {
@@ -39,27 +41,27 @@ namespace urchin {
         for (unsigned int i = 0; i < maxLights; ++i) {
             isExistLocName.str("");
             isExistLocName << "lightsInfo[" << i << "].isExist";
-            lightsInfo[i].isExistShaderVar = ShaderVar(lightingShader, isExistLocName.str());
+            lightsShaderVar[i].isExistShaderVar = ShaderVar(lightingShader, isExistLocName.str());
 
             produceShadowLocName.str("");
             produceShadowLocName << "lightsInfo[" << i << "].produceShadow";
-            lightsInfo[i].produceShadowShaderVar = ShaderVar(lightingShader, produceShadowLocName.str());
+            lightsShaderVar[i].produceShadowShaderVar = ShaderVar(lightingShader, produceShadowLocName.str());
 
             hasParallelBeamsName.str("");
             hasParallelBeamsName << "lightsInfo[" << i << "].hasParallelBeams";
-            lightsInfo[i].hasParallelBeamsShaderVar = ShaderVar(lightingShader, hasParallelBeamsName.str());
+            lightsShaderVar[i].hasParallelBeamsShaderVar = ShaderVar(lightingShader, hasParallelBeamsName.str());
 
             positionOrDirectionLocName.str("");
             positionOrDirectionLocName << "lightsInfo[" << i << "].positionOrDirection";
-            lightsInfo[i].positionOrDirectionShaderVar = ShaderVar(lightingShader, positionOrDirectionLocName.str());
+            lightsShaderVar[i].positionOrDirectionShaderVar = ShaderVar(lightingShader, positionOrDirectionLocName.str());
 
             exponentialAttName.str("");
             exponentialAttName << "lightsInfo[" << i << "].exponentialAttenuation";
-            lightsInfo[i].exponentialAttShaderVar = ShaderVar(lightingShader, exponentialAttName.str());
+            lightsShaderVar[i].exponentialAttShaderVar = ShaderVar(lightingShader, exponentialAttName.str());
 
             lightAmbientName.str("");
             lightAmbientName << "lightsInfo[" << i << "].lightAmbient";
-            lightsInfo[i].lightAmbientShaderVar = ShaderVar(lightingShader, lightAmbientName.str());
+            lightsShaderVar[i].lightAmbientShaderVar = ShaderVar(lightingShader, lightAmbientName.str());
         }
 
         globalAmbientColorShaderVar = ShaderVar(lightingShader, "globalAmbient");
@@ -148,37 +150,46 @@ namespace urchin {
         sort(visibleLights.begin(), visibleLights.end(), std::greater<>());
     }
 
-    void LightManager::loadVisibleLights() {
+    void LightManager::loadVisibleLights(const std::unique_ptr<GenericRenderer>& lightingRenderer) {
         const std::vector<Light*>& lights = getVisibleLights();
 
         for (unsigned int i = 0; i < maxLights; ++i) {
             if (lights.size() > i) {
                 const Light* light = lights[i];
 
-                ShaderDataSender()
-                    .sendData(lightsInfo[i].isExistShaderVar, true)
-                    .sendData(lightsInfo[i].produceShadowShaderVar, light->isProduceShadow())
-                    .sendData(lightsInfo[i].hasParallelBeamsShaderVar, light->hasParallelBeams())
-                    .sendData(lightsInfo[i].lightAmbientShaderVar, light->getAmbientColor());
+                lightsData[i].isExist = true;
+                lightsData[i].produceShadow = light->isProduceShadow();
+                lightsData[i].hasParallelBeams = light->hasParallelBeams();
+                lightsData[i].lightAmbient = light->getAmbientColor();
+                ShaderDataSender(true)
+                    .sendData(lightsShaderVar[i].isExistShaderVar, lightsData[i].isExist)
+                    .sendData(lightsShaderVar[i].produceShadowShaderVar, lightsData[i].produceShadow)
+                    .sendData(lightsShaderVar[i].hasParallelBeamsShaderVar, lightsData[i].hasParallelBeams)
+                    .sendData(lightsShaderVar[i].lightAmbientShaderVar, lightsData[i].lightAmbient);
 
                 if (lights[i]->getLightType() == Light::SUN) {
                     const auto* sunLight = dynamic_cast<const SunLight*>(light);
-                    ShaderDataSender().sendData(lightsInfo[i].positionOrDirectionShaderVar, sunLight->getDirections()[0]);
+                    lightsData[i].positionOrDirection = sunLight->getDirections()[0];
+                    ShaderDataSender(true).sendData(lightsShaderVar[i].positionOrDirectionShaderVar, sunLight->getDirections()[0]);
                 } else if (lights[i]->getLightType() == Light::OMNIDIRECTIONAL) {
                     const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight*>(light);
-                    ShaderDataSender()
-                        .sendData(lightsInfo[i].positionOrDirectionShaderVar, omnidirectionalLight->getPosition())
-                        .sendData(lightsInfo[i].exponentialAttShaderVar, omnidirectionalLight->getExponentialAttenuation());
+                    lightsData[i].positionOrDirection = omnidirectionalLight->getPosition().toVector();
+                    lightsData[i].exponentialAttenuation = omnidirectionalLight->getExponentialAttenuation();
+                    ShaderDataSender(true)
+                        .sendData(lightsShaderVar[i].positionOrDirectionShaderVar, lightsData[i].positionOrDirection)
+                        .sendData(lightsShaderVar[i].exponentialAttShaderVar, lightsData[i].exponentialAttenuation);
                 } else {
                     throw std::invalid_argument("Unknown light type to load shader variables: " + std::to_string(light->getLightType()));
                 }
             } else {
-                ShaderDataSender().sendData(lightsInfo[i].isExistShaderVar, false);
+                lightsData[i].isExist = false;
+                ShaderDataSender(true).sendData(lightsShaderVar[i].isExistShaderVar, lightsData[i].isExist);
                 break;
             }
         }
 
-        ShaderDataSender().sendData(globalAmbientColorShaderVar, getGlobalAmbientColor());
+        //for vulkan: lightingRenderer->updateShaderData(2, sizeof(lightsData), &lightData);
+        lightingRenderer->updateShaderData(3, ShaderDataSender(true).sendData(globalAmbientColorShaderVar, globalAmbientColor));
     }
 
     void LightManager::postUpdateVisibleLights() {
