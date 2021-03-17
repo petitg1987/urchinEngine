@@ -53,15 +53,6 @@ template<class T> TextureFormat TextureFilterBuilder<T>::getTextureFormat() cons
     return pTextureFormat;
 }
 
-template<class T> T* TextureFilterBuilder<T>::depthTexture(const std::shared_ptr<Texture>& depthTexture) {
-    this->pDepthTexture = depthTexture;
-    return _this();
-}
-
-template<class T> const std::shared_ptr<Texture>& TextureFilterBuilder<T>::getDepthTexture() const {
-    return pDepthTexture;
-}
-
 template<class T> T* TextureFilterBuilder<T>::_this() {
     return static_cast<T*>(this);
 }

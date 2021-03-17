@@ -33,6 +33,15 @@ namespace urchin {
         return pBlurSharpness;
     }
 
+    BilateralBlurFilterBuilder* BilateralBlurFilterBuilder::depthTexture(const std::shared_ptr<Texture>& depthTexture) {
+        this->pDepthTexture = depthTexture;
+        return this;
+    }
+
+    const std::shared_ptr<Texture>& BilateralBlurFilterBuilder::getDepthTexture() const {
+        return pDepthTexture;
+    }
+
     std::unique_ptr<TextureFilter> BilateralBlurFilterBuilder::build() {
         assert(getDepthTexture());
 

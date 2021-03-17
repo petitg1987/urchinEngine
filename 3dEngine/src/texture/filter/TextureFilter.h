@@ -28,6 +28,7 @@ namespace urchin {
 
         protected:
             virtual std::string getShaderName() const = 0;
+            virtual void initiateAdditionalDisplay(const std::unique_ptr<GenericRendererBuilder>&);
             virtual void initiateAdditionalShaderVariables(const std::shared_ptr<Shader>&);
             virtual void completeShaderTokens(std::map<std::string, std::string>&) const = 0;
 
@@ -35,8 +36,8 @@ namespace urchin {
             unsigned int getTextureHeight() const;
 
             const std::shared_ptr<Shader>& getTextureFilterShader() const;
+            const std::unique_ptr<GenericRenderer>& getTextureRenderer() const;
 
-        protected:
             static std::string toShaderVectorValues(std::vector<float>&);
 
         private:
@@ -47,7 +48,6 @@ namespace urchin {
 
             //source texture
             std::shared_ptr<Texture> sourceTexture;
-            std::shared_ptr<Texture> depthTexture;
 
             //target texture
             unsigned int textureWidth, textureHeight;

@@ -33,9 +33,6 @@ namespace urchin {
             T* textureFormat(TextureFormat);
             TextureFormat getTextureFormat() const;
 
-            T* depthTexture(const std::shared_ptr<Texture>&);
-            const std::shared_ptr<Texture>& getDepthTexture() const;
-
             virtual std::unique_ptr<TextureFilter> build() = 0;
 
         private:
@@ -49,7 +46,6 @@ namespace urchin {
             TextureType pTextureType;
             unsigned int pTextureNumberLayer;
             TextureFormat pTextureFormat;
-            std::shared_ptr<Texture> pDepthTexture;
     };
 
     #include "TextureFilterBuilder.inl"

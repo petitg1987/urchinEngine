@@ -19,7 +19,7 @@ namespace urchin {
     }
 
     void ShadowModelShaderVariable::loadCustomShaderVariables(const Model*) {
-        ShaderDataSender().sendData(layersToUpdateShaderVar, lightShadowMap->retrieveLayersToUpdate());
+        ShaderDataSender().sendData(layersToUpdateShaderVar, (int)lightShadowMap->retrieveLayersToUpdate());
     }
 
 }

@@ -4,15 +4,18 @@
 #include "texture/filter/bilateralblur/BilateralBlurFilterBuilder.h"
 #include "graphic/shader/builder/ShaderBuilder.h"
 #include "graphic/shader/data/ShaderDataSender.h"
+#include "graphic/render/GenericRendererBuilder.h"
 
 namespace urchin {
 
     BilateralBlurFilter::BilateralBlurFilter(const BilateralBlurFilterBuilder* textureFilterBuilder, BlurDirection blurDirection):
             TextureFilter(textureFilterBuilder),
+            depthTexture(textureFilterBuilder->getDepthTexture()),
             blurDirection(blurDirection),
             blurSize(textureFilterBuilder->getBlurSize()),
             blurSharpness(textureFilterBuilder->getBlurSharpness()),
-            textureSize((BlurDirection::VERTICAL == blurDirection) ? getTextureHeight() : getTextureWidth()) {
+            textureSize((BlurDirection::VERTICAL == blurDirection) ? getTextureHeight() : getTextureWidth()),
+            cameraPlanes({}) {
         if (blurSize <= 1) {
             throw std::invalid_argument("Blur size must be greater than one. Value: " + std::to_string(blurSize));
         } else if (blurSize % 2 == 0) {
@@ -24,16 +27,29 @@ namespace urchin {
     }
 
     void BilateralBlurFilter::onCameraProjectionUpdate(float nearPlane, float farPlane) {
-        float cameraPlanes[2] = {nearPlane, farPlane};
-        ShaderDataSender().sendData(cameraPlanesShaderVar, 2, cameraPlanes);
+        cameraPlanes.nearPlane = nearPlane;
+        cameraPlanes.farPlane = farPlane;
+
+        getTextureRenderer()->updateShaderData(1, ShaderDataSender(true)
+                .sendData(cameraNearPlaneShaderVar, cameraPlanes.nearPlane)
+                .sendData(cameraFarPlaneShaderVar, cameraPlanes.farPlane));
     }
 
     std::string BilateralBlurFilter::getShaderName() const {
         return "bilateralBlurTex";
     }
 
+    void BilateralBlurFilter::initiateAdditionalDisplay(const std::unique_ptr<GenericRendererBuilder>& textureRendererBuilder) {
+        textureRendererBuilder
+                ->addShaderData(ShaderDataSender(true)
+                        .sendData(cameraNearPlaneShaderVar, cameraPlanes.nearPlane)
+                        .sendData(cameraFarPlaneShaderVar, cameraPlanes.farPlane)) //binding 1
+                ->addTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()));
+    }
+
     void BilateralBlurFilter::initiateAdditionalShaderVariables(const std::shared_ptr<Shader>& textureFilterShader) {
-        cameraPlanesShaderVar = ShaderVar(textureFilterShader, "cameraPlanes");
+        cameraNearPlaneShaderVar = ShaderVar(textureFilterShader, "cameraNearPlane");
+        cameraFarPlaneShaderVar = ShaderVar(textureFilterShader, "cameraFarPlane");
 
         int depthTexUnit = 1;
         ShaderDataSender(true).sendData(ShaderVar(textureFilterShader, "depthTex"), depthTexUnit); // binding 21

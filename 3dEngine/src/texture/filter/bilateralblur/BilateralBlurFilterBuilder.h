@@ -23,6 +23,9 @@ namespace urchin {
             BilateralBlurFilterBuilder* blurSharpness(float);
             float getBlurSharpness() const;
 
+            BilateralBlurFilterBuilder* depthTexture(const std::shared_ptr<Texture>&);
+            const std::shared_ptr<Texture>& getDepthTexture() const;
+
             std::unique_ptr<TextureFilter> build() override;
             std::unique_ptr<BilateralBlurFilter> buildBilateralBlur();
 
@@ -30,6 +33,7 @@ namespace urchin {
             BlurDirection pBlurDirection;
             unsigned int pBlurSize;
             float pBlurSharpness;
+            std::shared_ptr<Texture> pDepthTexture;
     };
 
 }

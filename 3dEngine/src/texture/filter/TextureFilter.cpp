@@ -60,6 +60,7 @@ namespace urchin {
         }
 
         layersToUpdateShaderVar = ShaderVar(textureFilterShader, "layersToUpdate");
+
         int texUnit = 0;
         ShaderDataSender(true).sendData(ShaderVar(textureFilterShader, "tex"), texUnit); //binding 20
         initiateAdditionalShaderVariables(textureFilterShader);
@@ -76,11 +77,15 @@ namespace urchin {
         textureRendererBuilder
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
+                ->addShaderData(ShaderDataSender(true).sendData(layersToUpdateShaderVar, 0)) //binding 0
                 ->addTextureReader(TextureReader::build(sourceTexture, TextureParam::buildLinear()));
-        if (depthTexture) {
-            textureRendererBuilder->addTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()));
-        }
+        initiateAdditionalDisplay(textureRendererBuilder);
+
         textureRenderer = textureRendererBuilder->build();
+    }
+
+    void TextureFilter::initiateAdditionalDisplay(const std::unique_ptr<GenericRendererBuilder>&) {
+        //do nothing: to override
     }
 
     void TextureFilter::initiateAdditionalShaderVariables(const std::shared_ptr<Shader>&) {
@@ -101,6 +106,10 @@ namespace urchin {
 
     const std::shared_ptr<Shader>& TextureFilter::getTextureFilterShader() const {
         return textureFilterShader;
+    }
+
+    const std::unique_ptr<GenericRenderer>& TextureFilter::getTextureRenderer() const {
+        return textureRenderer;
     }
 
     std::string TextureFilter::toShaderVectorValues(std::vector<float>& vector) {
@@ -125,7 +134,7 @@ namespace urchin {
         }
 
         if (textureType == TextureType::ARRAY) {
-            ShaderDataSender().sendData(layersToUpdateShaderVar, (unsigned int)layersToUpdate);
+            textureRenderer->updateShaderData(0, ShaderDataSender(true).sendData(layersToUpdateShaderVar, layersToUpdate));
         }
 
         offscreenRenderTarget->display(textureRenderer);

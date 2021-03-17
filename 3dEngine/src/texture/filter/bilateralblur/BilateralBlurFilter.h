@@ -24,17 +24,25 @@ namespace urchin {
 
         private:
             std::string getShaderName() const override;
+            void initiateAdditionalDisplay(const std::unique_ptr<GenericRendererBuilder>&) override;
             void initiateAdditionalShaderVariables(const std::shared_ptr<Shader>&) override;
             void completeShaderTokens(std::map<std::string, std::string>&) const override;
 
             std::vector<float> computeOffsets() const;
+
+            //source texture
+            std::shared_ptr<Texture> depthTexture;
 
             BlurDirection blurDirection;
             unsigned int blurSize;
             float blurSharpness;
 
             unsigned int textureSize;
-            ShaderVar cameraPlanesShaderVar;
+            ShaderVar cameraNearPlaneShaderVar, cameraFarPlaneShaderVar;
+            struct {
+                float nearPlane;
+                float farPlane;
+            } cameraPlanes;
 
             std::string offsetsTab;
     };
