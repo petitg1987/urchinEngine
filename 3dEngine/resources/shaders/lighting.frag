@@ -9,15 +9,9 @@
 #define MAX_SHADOW_LIGHTS 0
 #define OUTPUT_LOCATION 0
 
-//general
+//positioning
 uniform mat4 mInverseViewProjection;
 uniform vec3 viewPosition;
-
-//deferred textures
-uniform sampler2D depthTex; //depth (32 bits)
-uniform sampler2D colorTex; //diffuse RGB (3*8 bits) + EMPTY (8 bits)
-uniform sampler2D normalAndAmbientTex; //normal XYZ (3*8 bits) + ambient factor
-uniform sampler2D ambientOcclusionTex; //ambient occlusion factor (16 bits)
 
 //lighting
 uniform vec4 globalAmbient;
@@ -35,7 +29,6 @@ uniform StructLightInfo lightsInfo[MAX_LIGHTS];
 //shadow
 uniform bool hasShadow;
 uniform float depthSplitDistance[NUMBER_SHADOW_MAPS];
-uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS];
 uniform mat4 mLightProjectionView[MAX_SHADOW_LIGHTS][NUMBER_SHADOW_MAPS];
 
 //ambient occlusion
@@ -47,6 +40,13 @@ uniform float fogDensity;
 uniform float fogGradient;
 uniform vec4 fogColor;
 uniform float fogMaxHeight;
+
+//deferred textures
+uniform sampler2D depthTex; //binding 20 - depth (32 bits)
+uniform sampler2D colorTex; //binding 21 - diffuse RGB (3*8 bits) + EMPTY (8 bits)
+uniform sampler2D normalAndAmbientTex; //binding 22 - normal XYZ (3*8 bits) + ambient factor
+uniform sampler2D ambientOcclusionTex; //binding 23 - ambient occlusion factor (16 bits)
+uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //binding 24 - shadow maps for each lights
 
 in vec2 textCoordinates;
 

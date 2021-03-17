@@ -150,7 +150,9 @@ namespace urchin {
     void Terrain::setPosition(const Point3<float>& position) {
         positioningData.position = position;
 
-        terrainRenderer->updateShaderData(1, ShaderDataSender(true).sendData(vPositionShaderVar, positioningData.position));
+        if (terrainRenderer) {
+            terrainRenderer->updateShaderData(1, ShaderDataSender(true).sendData(vPositionShaderVar, positioningData.position));
+        }
         refreshGrassMesh(); //grass uses terrain position: refresh is required
     }
 
@@ -168,7 +170,9 @@ namespace urchin {
     void Terrain::setAmbient(float ambient) {
         this->ambient = ambient;
 
-        terrainRenderer->updateShaderData(3, ShaderDataSender(true).sendData(ambientShaderVar, ambient));
+        if(terrainRenderer) {
+            terrainRenderer->updateShaderData(3, ShaderDataSender(true).sendData(ambientShaderVar, ambient));
+        }
         refreshGrassAmbient(); //grass uses ambient value: refresh is required
     }
 

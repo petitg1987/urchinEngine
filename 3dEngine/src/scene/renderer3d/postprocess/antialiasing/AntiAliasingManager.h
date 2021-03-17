@@ -34,11 +34,11 @@ namespace urchin {
             //properties
             std::shared_ptr<RenderTarget> renderTarget;
             Quality quality;
-            Point2<float> invSceneSize;
 
             //display
             std::shared_ptr<Shader> fxaaShader;
             ShaderVar invSceneSizeShaderVar;
+            Point2<float> invSceneSize;
             std::unique_ptr<GenericRenderer> renderer;
     };
 

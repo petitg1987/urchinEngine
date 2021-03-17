@@ -20,9 +20,9 @@ namespace urchin {
             userMaxY(1.0),
             texture(std::move(texture)),
             colorType(colorType),
-            colorIntensity(colorIntensity),
-            layer(-1) {
-
+            renderingData({}) {
+        renderingData.colorIntensity = colorIntensity;
+        renderingData.layer = -1;
     }
 
     TextureRenderer::TextureRenderer(std::shared_ptr<Texture> texture, unsigned int layer, TextureRenderer::ColorType colorType, float colorIntensity) :
@@ -37,9 +37,11 @@ namespace urchin {
             userMaxY(1.0),
             texture(std::move(texture)),
             colorType(colorType),
-            colorIntensity(colorIntensity),
-            layer((int)layer) {
+            renderingData({}) {
         assert(this->texture->getTextureType() == TextureType::ARRAY);
+
+        renderingData.colorIntensity = colorIntensity;
+        renderingData.layer = (int)layer;
     }
 
     void TextureRenderer::setPosition(TextureRenderer::CoordinateX coordinateX, TextureRenderer::CoordinateY coordinateY) {
@@ -90,7 +92,10 @@ namespace urchin {
         }
 
         this->renderTarget = renderTarget;
-        initializeShader(nearPlane, farPlane);
+        this->renderingData.cameraNearPlane = nearPlane;
+        this->renderingData.cameraFarPlane = farPlane;
+
+        initializeShader();
 
         float minX, maxX, minY, maxY;
         if (fullScreen) {
@@ -146,7 +151,6 @@ namespace urchin {
         mProjection.setValues(2.0f / (float)sceneWidth, 0.0f, -1.0f,
                               0.0f, -2.0f / (float)sceneHeight, 1.0f,
                               0.0f, 0.0f, 1.0f);
-        ShaderDataSender().sendData(mProjectionShaderVar, mProjection);
 
         //update the display
         std::vector<Point2<float>> vertexCoord = {
@@ -161,6 +165,12 @@ namespace urchin {
         rendererBuilder
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
+                ->addShaderData(ShaderDataSender(true).sendData(mProjectionShaderVar, mProjection)) //binding 0
+                ->addShaderData(ShaderDataSender(true)
+                        .sendData(ShaderVar(displayTextureShader, "colorIntensity"), renderingData.colorIntensity)
+                        .sendData(ShaderVar(displayTextureShader, "cameraNearPlane"), renderingData.cameraNearPlane)
+                        .sendData(ShaderVar(displayTextureShader, "cameraFarPlane"), renderingData.cameraFarPlane)
+                        .sendData(ShaderVar(displayTextureShader, "layer"), renderingData.layer)) //binding 1
                 ->addTextureReader(TextureReader::build(texture, TextureParam::buildNearest()));
         if (transparencyEnabled) {
             rendererBuilder->enableTransparency();
@@ -170,28 +180,20 @@ namespace urchin {
         isInitialized = true;
     }
 
-    void TextureRenderer::initializeShader(float nearPlane, float farPlane) {
+    void TextureRenderer::initializeShader() {
         std::map<std::string, std::string> textureDisplayTokens;
         textureDisplayTokens["IS_DEFAULT_VALUE"] = colorType == ColorType::DEFAULT_VALUE ? "true" : "false";
         textureDisplayTokens["IS_DEPTH_VALUE"] = colorType == ColorType::DEPTH_VALUE ? "true" : "false";
         textureDisplayTokens["IS_GRAYSCALE_VALUE"] = colorType == ColorType::GRAYSCALE_VALUE ? "true" : "false";
         textureDisplayTokens["IS_INVERSE_GRAYSCALE_VALUE"] = colorType == ColorType::INVERSE_GRAYSCALE_VALUE ? "true" : "false";
 
-        const std::string& fragShaderName = (layer == -1) ? "displayTexture.frag" : "displayTextureArray.frag";
+        const std::string& fragShaderName = (renderingData.layer == -1) ? "displayTexture.frag" : "displayTextureArray.frag";
         displayTextureShader = ShaderBuilder().createShader("displayTexture.vert", "", fragShaderName, textureDisplayTokens);
 
-        float cameraPlanes[2] = {nearPlane, farPlane};
+        mProjectionShaderVar = ShaderVar(displayTextureShader, "mProjection");
+
         int colorTexUnit = 0;
         ShaderDataSender(true).sendData(ShaderVar(displayTextureShader, "colorTex"), colorTexUnit); //binding 20
-        ShaderDataSender()
-            .sendData(ShaderVar(displayTextureShader, "colorIntensity"), colorIntensity)
-            .sendData(ShaderVar(displayTextureShader, "cameraPlanes"), 2, cameraPlanes);
-
-        if (layer != -1) {
-            ShaderDataSender().sendData(ShaderVar(displayTextureShader, "layer"), layer);
-        }
-
-        mProjectionShaderVar = ShaderVar(displayTextureShader, "mProjection");
     }
 
     void TextureRenderer::display() {

@@ -46,7 +46,9 @@ namespace urchin {
 
     void AntiAliasingManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         invSceneSize = Point2<float>(1.0f / (float)sceneWidth, 1.0f / (float)sceneHeight);
-        renderer->updateShaderData(0, ShaderDataSender(true).sendData(invSceneSizeShaderVar, invSceneSize));
+        if (renderer) {
+            renderer->updateShaderData(0, ShaderDataSender(true).sendData(invSceneSizeShaderVar, invSceneSize));
+        }
     }
 
     void AntiAliasingManager::setQuality(Quality quality) {

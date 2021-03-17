@@ -99,16 +99,17 @@ namespace urchin {
         ambientOcclusionTexUnit = 3;
         shadowMapTexUnitStart = 4;
         shadowMapTexUnitEnd = shadowMapTexUnitStart + (int)shadowManager->getMaxShadowLights();
-        ShaderDataSender()
-            .sendData(ShaderVar(lightingShader, "depthTex"), depthTexUnit)
-            .sendData(ShaderVar(lightingShader, "colorTex"), diffuseTexUnit)
-            .sendData(ShaderVar(lightingShader, "normalAndAmbientTex"), normalAndAmbientTexUnit)
-            .sendData(ShaderVar(lightingShader, "ambientOcclusionTex"), ambientOcclusionTexUnit)
-            .sendData(ShaderVar(lightingShader, "hasShadow"), isShadowActivated)
-            .sendData(ShaderVar(lightingShader, "hasAmbientOcclusion"), isAmbientOcclusionActivated);
+        ShaderDataSender(true)
+                .sendData(ShaderVar(lightingShader, "depthTex"), depthTexUnit) //binding 20
+                .sendData(ShaderVar(lightingShader, "colorTex"), diffuseTexUnit) //binding 21
+                .sendData(ShaderVar(lightingShader, "normalAndAmbientTex"), normalAndAmbientTexUnit) //binding 22
+                .sendData(ShaderVar(lightingShader, "ambientOcclusionTex"), ambientOcclusionTexUnit); //binding 23
         for (int shadowMapTexUnit = shadowMapTexUnitStart, i = 0; shadowMapTexUnit <= shadowMapTexUnitEnd; ++shadowMapTexUnit, ++i) {
-            ShaderDataSender().sendData(ShaderVar(lightingShader, "shadowMapTex[" + std::to_string(i) + "]"), shadowMapTexUnit);
+            ShaderDataSender(true).sendData(ShaderVar(lightingShader, "shadowMapTex[" + std::to_string(i) + "]"), shadowMapTexUnit); //binding 24
         }
+        ShaderDataSender()
+                .sendData(ShaderVar(lightingShader, "hasShadow"), isShadowActivated)
+                .sendData(ShaderVar(lightingShader, "hasAmbientOcclusion"), isAmbientOcclusionActivated);
 
         mInverseViewProjectionShaderVar = ShaderVar(lightingShader, "mInverseViewProjection");
         viewPositionShaderVar = ShaderVar(lightingShader, "viewPosition");
@@ -351,8 +352,8 @@ namespace urchin {
                 ->addData(&textureCoord)
                 ->addTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()))
                 ->addTextureReader(TextureReader::build(diffuseTexture, TextureParam::buildNearest()))
-                ->addTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()));
-        lightingRendererBuilder->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //ambient occlusion
+                ->addTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
+                ->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //ambient occlusion
         for (int i = shadowMapTexUnitStart; i <= shadowMapTexUnitEnd; ++i) {
             lightingRendererBuilder->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //shadow maps
         }

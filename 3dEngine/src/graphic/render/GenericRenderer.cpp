@@ -183,6 +183,8 @@ namespace urchin {
 
     void GenericRenderer::updateShaderData(std::size_t /*shaderDataIndex*/, ShaderDataSender&) {
         //fake method to prepare to the Vulkan migration
+        void *ptr = nullptr;
+        assert(this != ptr);
     }
 
     void GenericRenderer::updateTextureReader(std::size_t textureIndex, const TextureReader& texture) {

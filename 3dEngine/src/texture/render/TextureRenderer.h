@@ -47,7 +47,7 @@ namespace urchin {
             void display();
 
         private:
-            void initializeShader(float, float);
+            void initializeShader();
 
             bool isInitialized;
 
@@ -61,13 +61,17 @@ namespace urchin {
             std::shared_ptr<RenderTarget> renderTarget;
             std::shared_ptr<Texture> texture;
             TextureRenderer::ColorType colorType;
-            float colorIntensity;
             std::unique_ptr<GenericRenderer> renderer;
 
-            Matrix3<float> mProjection;
             std::shared_ptr<Shader> displayTextureShader;
-            int layer;
             ShaderVar mProjectionShaderVar, diffuseTexShaderVar;
+            struct {
+                float colorIntensity;
+                float cameraNearPlane;
+                float cameraFarPlane;
+                int layer;
+            } renderingData;
+            Matrix3<float> mProjection;
     };
 
 }
