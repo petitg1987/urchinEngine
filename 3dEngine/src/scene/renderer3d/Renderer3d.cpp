@@ -42,15 +42,15 @@ namespace urchin {
             geometryManager(new GeometryManager(deferredRenderTarget)),
             lightManager(new LightManager(deferredRenderTarget)),
             ambientOcclusionManager(new AmbientOcclusionManager()),
-            isAmbientOcclusionActivated(true),
             ambientOcclusionTexUnit(-1),
             shadowManager(new ShadowManager(lightManager, modelOctreeManager)),
-            isShadowActivated(true),
             shadowMapTexUnitStart(-1),
             shadowMapTexUnitEnd(-1),
 
             //lighting pass rendering
             offscreenLightingRenderTarget(std::make_shared<OffscreenRender>()),
+            positioningData({}),
+            visualOption({}),
             antiAliasingManager(new AntiAliasingManager(this->finalRenderTarget)),
             isAntiAliasingActivated(true) {
 
@@ -59,6 +59,8 @@ namespace urchin {
         shadowManager->addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
 
         //lighting pass rendering
+        visualOption.isShadowActivated = true;
+        visualOption.isAmbientOcclusionActivated = true;
         createOrUpdateLightingShader();
     }
 
@@ -107,9 +109,6 @@ namespace urchin {
         for (int shadowMapTexUnit = shadowMapTexUnitStart, i = 0; shadowMapTexUnit <= shadowMapTexUnitEnd; ++shadowMapTexUnit, ++i) {
             ShaderDataSender(true).sendData(ShaderVar(lightingShader, "shadowMapTex[" + std::to_string(i) + "]"), shadowMapTexUnit); //binding 24
         }
-        ShaderDataSender()
-                .sendData(ShaderVar(lightingShader, "hasShadow"), isShadowActivated)
-                .sendData(ShaderVar(lightingShader, "hasAmbientOcclusion"), isAmbientOcclusionActivated);
 
         mInverseViewProjectionShaderVar = ShaderVar(lightingShader, "mInverseViewProjection");
         viewPositionShaderVar = ShaderVar(lightingShader, "viewPosition");
@@ -177,7 +176,7 @@ namespace urchin {
     }
 
     void Renderer3d::activateShadow(bool isShadowActivated) {
-        this->isShadowActivated = isShadowActivated;
+        visualOption.isShadowActivated = isShadowActivated;
 
         createOrUpdateLightingShader();
         shadowManager->forceUpdateAllShadowMaps();
@@ -188,7 +187,7 @@ namespace urchin {
     }
 
     void Renderer3d::activateAmbientOcclusion(bool isAmbientOcclusionActivated) {
-        this->isAmbientOcclusionActivated = isAmbientOcclusionActivated;
+        visualOption.isAmbientOcclusionActivated = isAmbientOcclusionActivated;
 
         createOrUpdateLightingShader();
     }
@@ -350,6 +349,12 @@ namespace urchin {
         lightingRendererBuilder
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
+                ->addShaderData(ShaderDataSender(true)
+                        .sendData(mInverseViewProjectionShaderVar, positioningData.inverseProjectionViewMatrix)
+                        .sendData(viewPositionShaderVar, positioningData.viewPosition)) //binding 0
+                ->addShaderData(ShaderDataSender(true)
+                        .sendData(ShaderVar(lightingShader, "hasShadow"), visualOption.isShadowActivated)
+                        .sendData(ShaderVar(lightingShader, "hasAmbientOcclusion"), visualOption.isAmbientOcclusionActivated)) //binding 1
                 ->addTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()))
                 ->addTextureReader(TextureReader::build(diffuseTexture, TextureParam::buildNearest()))
                 ->addTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
@@ -427,12 +432,12 @@ namespace urchin {
         lightManager->updateVisibleLights(camera->getFrustum());
 
         //determine models producing shadow on scene
-        if (isShadowActivated) {
+        if (visualOption.isShadowActivated) {
             shadowManager->updateVisibleModels(camera->getFrustum());
         }
 
         //animate models (only those visible to scene OR producing shadow on scene)
-        if (isShadowActivated) {
+        if (visualOption.isShadowActivated) {
             modelSetDisplayer->setModels(shadowManager->getVisibleModels());
         } else {
             updateModelsInFrustum();
@@ -441,7 +446,7 @@ namespace urchin {
         modelSetDisplayer->updateAnimation(dt);
 
         //update shadow maps
-        if (isShadowActivated) {
+        if (visualOption.isShadowActivated) {
             shadowManager->updateShadowMaps();
         }
     }
@@ -467,7 +472,7 @@ namespace urchin {
 
         geometryManager->display(camera->getViewMatrix());
 
-        if (isAmbientOcclusionActivated) {
+        if (visualOption.isAmbientOcclusionActivated) {
             ambientOcclusionManager->updateAOTexture(camera);
         }
 
@@ -500,19 +505,21 @@ namespace urchin {
         if (lightingRenderer) {
             ScopeProfiler sp(Profiler::graphic(), "lightPassRender");
 
-            ShaderDataSender()
-                    .sendData(mInverseViewProjectionShaderVar, (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse())
-                    .sendData(viewPositionShaderVar, camera->getPosition());
+            positioningData.inverseProjectionViewMatrix = (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse();
+            positioningData.viewPosition = camera->getPosition();
+            lightingRenderer->updateShaderData(0, ShaderDataSender(true)
+                    .sendData(mInverseViewProjectionShaderVar, positioningData.inverseProjectionViewMatrix)
+                    .sendData(viewPositionShaderVar, positioningData.viewPosition));
 
             lightManager->loadVisibleLights();
 
             fogManager->loadFog();
 
-            if (isAmbientOcclusionActivated) {
+            if (visualOption.isAmbientOcclusionActivated) {
                 ambientOcclusionManager->loadAOTexture(lightingRenderer, (std::size_t)ambientOcclusionTexUnit);
             }
 
-            if (isShadowActivated) {
+            if (visualOption.isShadowActivated) {
                 shadowManager->loadShadowMaps(lightingRenderer, (std::size_t)shadowMapTexUnitStart);
             }
 

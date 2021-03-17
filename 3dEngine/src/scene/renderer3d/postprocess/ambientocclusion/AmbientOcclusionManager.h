@@ -77,7 +77,7 @@ namespace urchin {
             ShaderVar samplesShaderVar, resolutionShaderVar;
             std::shared_ptr<Texture> noiseTexture;
             struct {
-                alignas(16) Matrix4<float> inverseViewProjectionMatrix;
+                alignas(16) Matrix4<float> inverseProjectionViewMatrix;
                 alignas(16) Matrix4<float> projectionMatrix;
                 alignas(16) Matrix4<float> viewMatrix;
             } positioningData;

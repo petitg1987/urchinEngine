@@ -9,9 +9,11 @@
 #define MAX_SHADOW_LIGHTS 0
 #define OUTPUT_LOCATION 0
 
-//positioning
-uniform mat4 mInverseViewProjection;
-uniform vec3 viewPosition;
+//global
+uniform mat4 mInverseViewProjection; //binding 0
+uniform vec3 viewPosition; //binding 0
+uniform bool hasShadow; //binding 1
+uniform bool hasAmbientOcclusion; //binding 1
 
 //lighting
 uniform vec4 globalAmbient;
@@ -27,12 +29,8 @@ struct StructLightInfo {
 uniform StructLightInfo lightsInfo[MAX_LIGHTS];
 
 //shadow
-uniform bool hasShadow;
 uniform float depthSplitDistance[NUMBER_SHADOW_MAPS];
 uniform mat4 mLightProjectionView[MAX_SHADOW_LIGHTS][NUMBER_SHADOW_MAPS];
-
-//ambient occlusion
-uniform bool hasAmbientOcclusion;
 
 //fog
 uniform bool hasFog;

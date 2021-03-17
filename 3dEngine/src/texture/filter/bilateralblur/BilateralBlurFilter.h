@@ -40,8 +40,8 @@ namespace urchin {
             unsigned int textureSize;
             ShaderVar cameraNearPlaneShaderVar, cameraFarPlaneShaderVar;
             struct {
-                float nearPlane;
-                float farPlane;
+                alignas(4) float nearPlane;
+                alignas(4) float farPlane;
             } cameraPlanes;
 
             std::string offsetsTab;

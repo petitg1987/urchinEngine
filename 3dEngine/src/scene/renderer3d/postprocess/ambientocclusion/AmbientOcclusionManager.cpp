@@ -153,7 +153,7 @@ namespace urchin {
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
                 ->addShaderData(ShaderDataSender(true)
-                        .sendData(mInverseViewProjectionShaderVar, positioningData.inverseViewProjectionMatrix)
+                        .sendData(mInverseViewProjectionShaderVar, positioningData.inverseProjectionViewMatrix)
                         .sendData(mProjectionShaderVar, positioningData.projectionMatrix)
                         .sendData(mViewShaderVar, positioningData.viewMatrix)) //binding 0
                 ->addShaderData(ShaderDataSender(true).sendData(samplesShaderVar, (unsigned int)ssaoKernel.size(), &ssaoKernel[0])) //binding 1
@@ -308,12 +308,12 @@ namespace urchin {
     void AmbientOcclusionManager::updateAOTexture(const Camera* camera) {
         ScopeProfiler sp(Profiler::graphic(), "updateAOTexture");
 
-        positioningData.inverseViewProjectionMatrix = (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse();
+        positioningData.inverseProjectionViewMatrix = (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse();
         positioningData.projectionMatrix = camera->getProjectionMatrix();
         positioningData.viewMatrix = camera->getViewMatrix();
 
         renderer->updateShaderData(0, ShaderDataSender(true)
-                .sendData(mInverseViewProjectionShaderVar, positioningData.inverseViewProjectionMatrix)
+                .sendData(mInverseViewProjectionShaderVar, positioningData.inverseProjectionViewMatrix)
                 .sendData(mProjectionShaderVar, positioningData.projectionMatrix)
                 .sendData(mViewShaderVar, positioningData.viewMatrix));
 

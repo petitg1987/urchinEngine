@@ -120,11 +120,9 @@ namespace urchin {
             LightManager* lightManager;
 
             AmbientOcclusionManager* ambientOcclusionManager;
-            bool isAmbientOcclusionActivated;
             int ambientOcclusionTexUnit;
 
             ShadowManager* shadowManager;
-            bool isShadowActivated;
             int shadowMapTexUnitStart, shadowMapTexUnitEnd;
 
             std::shared_ptr<Texture> depthTexture, diffuseTexture, normalAndAmbientTexture, lightingPassTexture;
@@ -134,8 +132,17 @@ namespace urchin {
             std::unique_ptr<GenericRenderer> lightingRenderer;
             std::shared_ptr<Shader> lightingShader;
             ShaderVar mInverseViewProjectionShaderVar, viewPositionShaderVar;
+            struct {
+                alignas(16) Matrix4<float> inverseProjectionViewMatrix;
+                alignas(16) Point3<float> viewPosition;
+            } positioningData;
+            struct {
+                alignas(4) bool isShadowActivated;
+                alignas(4) bool isAmbientOcclusionActivated;
+            } visualOption;
             AntiAliasingManager* antiAliasingManager;
             bool isAntiAliasingActivated;
+
     };
 
 }

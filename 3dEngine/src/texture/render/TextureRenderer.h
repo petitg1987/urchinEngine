@@ -66,10 +66,10 @@ namespace urchin {
             std::shared_ptr<Shader> displayTextureShader;
             ShaderVar mProjectionShaderVar, diffuseTexShaderVar;
             struct {
-                float colorIntensity;
-                float cameraNearPlane;
-                float cameraFarPlane;
-                int layer;
+                alignas(4) float colorIntensity;
+                alignas(4) float cameraNearPlane;
+                alignas(4) float cameraFarPlane;
+                alignas(4) int layer;
             } renderingData;
             Matrix3<float> mProjection;
     };
