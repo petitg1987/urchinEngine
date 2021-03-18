@@ -345,6 +345,7 @@ namespace urchin {
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
         };
+
         auto lightingRendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, lightingShader, ShapeType::TRIANGLE);
         lightingRendererBuilder
                 ->addData(&vertexCoord)
@@ -354,7 +355,11 @@ namespace urchin {
                         .sendData(viewPositionShaderVar, positioningData.viewPosition)) //binding 0
                 ->addShaderData(ShaderDataSender(true)
                         .sendData(ShaderVar(lightingShader, "hasShadow"), visualOption.isShadowActivated)
-                        .sendData(ShaderVar(lightingShader, "hasAmbientOcclusion"), visualOption.isAmbientOcclusionActivated)) //binding 1
+                        .sendData(ShaderVar(lightingShader, "hasAmbientOcclusion"), visualOption.isAmbientOcclusionActivated)); //binding 1
+        lightManager->setupLightingRenderer(lightingRendererBuilder); //binding 2 & 3
+        shadowManager->setupLightingRenderer(lightingRendererBuilder); //binding 4 & 5
+
+        lightingRendererBuilder
                 ->addTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()))
                 ->addTextureReader(TextureReader::build(diffuseTexture, TextureParam::buildNearest()))
                 ->addTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
@@ -362,6 +367,7 @@ namespace urchin {
         for (int i = shadowMapTexUnitStart; i <= shadowMapTexUnitEnd; ++i) {
             lightingRendererBuilder->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //shadow maps
         }
+
         lightingRenderer = lightingRendererBuilder->build();
 
         ambientOcclusionManager->onResize(sceneWidth, sceneHeight);

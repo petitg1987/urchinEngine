@@ -29,7 +29,8 @@ namespace urchin {
             lightManager(lightManager),
             modelOctreeManager(modelOctreeManager),
             bForceUpdateAllShadowMaps(false),
-            mLightProjectionViewShaderVar(nullptr) {
+            mLightProjectionViewShaderVar(nullptr),
+            lightProjectionViewMatrices(nullptr) {
         lightManager->addObserver(this, LightManager::ADD_LIGHT);
         lightManager->addObserver(this, LightManager::REMOVE_LIGHT);
     }
@@ -40,12 +41,10 @@ namespace urchin {
         }
 
         deleteLightsLocation();
+        delete[] lightProjectionViewMatrices;
     }
 
     void ShadowManager::initiateShaderVariables(const std::shared_ptr<Shader>& lightingShader) {
-        //shadow information
-        depthSplitDistanceShaderVar = ShaderVar(lightingShader, "depthSplitDistance");
-
         //light information
         deleteLightsLocation();
         mLightProjectionViewShaderVar = new ShaderVar*[getMaxShadowLights()];
@@ -59,6 +58,19 @@ namespace urchin {
                 mLightProjectionViewShaderVar[i][j] = ShaderVar(lightingShader, mLightProjectionViewLocName.str());
             }
         }
+
+        //shadow information
+        depthSplitDistanceShaderVar = ShaderVar(lightingShader, "depthSplitDistance");
+    }
+
+    void ShadowManager::setupLightingRenderer(const std::unique_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
+        std::size_t mLightProjectionViewSize = getMaxShadowLights() * nbShadowMaps;
+        lightProjectionViewMatrices = new Matrix4<float>[mLightProjectionViewSize];
+
+        //Vulkan source code:
+        lightingRendererBuilder
+                //Vulkan source code: ->addShaderData(mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices) //binding 4
+                ->addShaderData(ShaderDataSender(true).sendData(depthSplitDistanceShaderVar, nbShadowMaps, depthSplitDistance)); //binding 5
     }
 
     void ShadowManager::deleteLightsLocation() {
@@ -333,20 +345,26 @@ namespace urchin {
 
                 unsigned int shadowMapIndex = 0;
                 for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
-                    Matrix4<float> lightProjectionViewMatrix = lightSplitShadowMap->getLightProjectionMatrix() * lightShadowMap->getLightViewMatrix();
-                    ShaderDataSender().sendData(mLightProjectionViewShaderVar[shadowLightIndex][shadowMapIndex++], lightProjectionViewMatrix);
+                    std::size_t matrixIndex = shadowLightIndex * getMaxShadowLights() + shadowMapIndex;
+                    lightProjectionViewMatrices[matrixIndex] = lightSplitShadowMap->getLightProjectionMatrix() * lightShadowMap->getLightViewMatrix();
+                    ShaderDataSender(true).sendData(mLightProjectionViewShaderVar[shadowLightIndex][shadowMapIndex], lightProjectionViewMatrices[matrixIndex]);
+                    shadowMapIndex++;
                 }
 
                 shadowLightIndex++;
             }
         }
 
-        float depthSplitDistance[MAX_NB_SHADOW_MAPS];
         for (unsigned int shadowMapIndex = 0; shadowMapIndex < nbShadowMaps; ++shadowMapIndex) {
             float currSplitDistance = splitDistances[shadowMapIndex];
             depthSplitDistance[shadowMapIndex] = ((projectionMatrix(2, 2) * -currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance)) / 2.0f + 0.5f;
+            //Vulkan source code:
+            //depthSplitDistance[shadowMapIndex * 4 - 1] = ((projectionMatrix(2, 2) * -currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance)) / 2.0f + 0.5f;
         }
-        ShaderDataSender().sendData(depthSplitDistanceShaderVar, nbShadowMaps, depthSplitDistance);
+
+        lightingRenderer
+                //Vulkan source code: ->updateShaderData(4, lightProjectionViewMatrices)
+                ->updateShaderData(5, ShaderDataSender(true).sendData(depthSplitDistanceShaderVar, nbShadowMaps, depthSplitDistance));
     }
 
 }

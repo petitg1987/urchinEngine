@@ -7,6 +7,7 @@
 #include "graphic/shader/model/Shader.h"
 #include "graphic/shader/model/ShaderVar.h"
 #include "graphic/render/target/RenderTarget.h"
+#include "graphic/render/GenericRendererBuilder.h"
 #include "Light.h"
 
 namespace urchin {
@@ -22,6 +23,7 @@ namespace urchin {
             };
 
             void initiateShaderVariables(const std::shared_ptr<Shader>&);
+            void setupLightingRenderer(const std::unique_ptr<GenericRendererBuilder>&);
             OctreeManager<Light>* getLightOctreeManager() const;
             Light* getLastUpdatedLight();
 
@@ -59,7 +61,6 @@ namespace urchin {
                 ShaderVar produceShadowShaderVar;
                 ShaderVar hasParallelBeamsShaderVar;
                 ShaderVar positionOrDirectionShaderVar;
-
                 ShaderVar exponentialAttShaderVar;
                 ShaderVar lightAmbientShaderVar;
             };

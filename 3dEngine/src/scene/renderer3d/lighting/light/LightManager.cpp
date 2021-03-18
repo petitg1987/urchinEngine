@@ -16,7 +16,7 @@ namespace urchin {
             lightOctreeManager(new OctreeManager<Light>(DEFAULT_OCTREE_MIN_SIZE)),
             lastUpdatedLight(nullptr),
             lightsShaderVar(new LightShaderVar[maxLights]),
-            lightsData(new LightsData[maxLights]),
+            lightsData(nullptr),
             globalAmbientColor(Point4<float>(0.0, 0.0, 0.0, 0.0)) {
 
     }
@@ -65,6 +65,15 @@ namespace urchin {
         }
 
         globalAmbientColorShaderVar = ShaderVar(lightingShader, "globalAmbient");
+    }
+
+    void LightManager::setupLightingRenderer(const std::unique_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
+        std::size_t lightsDataSize = maxLights;
+        lightsData = new LightsData[lightsDataSize];
+
+        lightingRendererBuilder
+                //Vulkan source code: ->addShaderData(lightsDataSize * sizeof(LightsData), lightsData) //binding 2
+                ->addShaderData(ShaderDataSender(true).sendData(globalAmbientColorShaderVar, globalAmbientColor)); //binding 3
     }
 
     OctreeManager<Light>* LightManager::getLightOctreeManager() const {
@@ -188,8 +197,9 @@ namespace urchin {
             }
         }
 
-        //for vulkan: lightingRenderer->updateShaderData(2, sizeof(lightsData), &lightData);
-        lightingRenderer->updateShaderData(3, ShaderDataSender(true).sendData(globalAmbientColorShaderVar, globalAmbientColor));
+        lightingRenderer
+                //Vulkan source code: ->updateShaderData(2, lightsData)
+                ->updateShaderData(3, ShaderDataSender(true).sendData(globalAmbientColorShaderVar, globalAmbientColor));
     }
 
     void LightManager::postUpdateVisibleLights() {

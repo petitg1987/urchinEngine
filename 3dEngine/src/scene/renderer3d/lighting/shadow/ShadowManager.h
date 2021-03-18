@@ -38,6 +38,7 @@ namespace urchin {
             ~ShadowManager() override;
 
             void initiateShaderVariables(const std::shared_ptr<Shader>&);
+            void setupLightingRenderer(const std::unique_ptr<GenericRendererBuilder>&);
             void onCameraProjectionUpdate(const Camera*);
             void notify(Observable*, int) override;
 
@@ -96,9 +97,11 @@ namespace urchin {
             std::map<const Light*, LightShadowMap*> lightShadowMaps;
             bool bForceUpdateAllShadowMaps;
             ShaderVar depthSplitDistanceShaderVar;
+            float depthSplitDistance[MAX_NB_SHADOW_MAPS * 4]{}; //multiple by 4 because only 1 float over 4 are used in shader due to memory alignment
 
             //shadow lights information
             ShaderVar** mLightProjectionViewShaderVar;
+            Matrix4<float>* lightProjectionViewMatrices;
     };
 
 }

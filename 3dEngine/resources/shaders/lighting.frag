@@ -21,7 +21,6 @@ struct StructLightInfo {
     bool produceShadow;
     bool hasParallelBeams;
     vec3 positionOrDirection;
-
     float exponentialAttenuation;
     vec3 lightAmbient;
 };
@@ -29,8 +28,8 @@ uniform StructLightInfo lightsInfo[MAX_LIGHTS]; //binding 2
 uniform vec4 globalAmbient; //binding 3
 
 //shadow
-uniform float depthSplitDistance[NUMBER_SHADOW_MAPS];
-uniform mat4 mLightProjectionView[MAX_SHADOW_LIGHTS][NUMBER_SHADOW_MAPS];
+uniform mat4 mLightProjectionView[MAX_SHADOW_LIGHTS][NUMBER_SHADOW_MAPS]; //binding 4
+uniform float depthSplitDistance[NUMBER_SHADOW_MAPS]; //binding 5
 
 //fog
 uniform bool hasFog;
