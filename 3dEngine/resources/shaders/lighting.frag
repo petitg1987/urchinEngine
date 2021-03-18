@@ -32,11 +32,11 @@ uniform mat4 mLightProjectionView[MAX_SHADOW_LIGHTS][NUMBER_SHADOW_MAPS]; //bind
 uniform float depthSplitDistance[NUMBER_SHADOW_MAPS]; //binding 5
 
 //fog
-uniform bool hasFog;
-uniform float fogDensity;
-uniform float fogGradient;
-uniform vec4 fogColor;
-uniform float fogMaxHeight;
+uniform bool hasFog; //binding 6
+uniform float fogDensity; //binding 6
+uniform float fogGradient; //binding 6
+uniform float fogMaxHeight; //binding 6
+uniform vec4 fogColor; //binding 6
 
 //deferred textures
 uniform sampler2D depthTex; //binding 20 - depth (32 bits)

@@ -3,6 +3,11 @@
 
 namespace urchin {
 
+    FogManager::FogManager() :
+        fogData({}) {
+
+    }
+
     void FogManager::pushFog(const std::shared_ptr<Fog>& fog) {
         fogs.push(fog);
     }
@@ -28,16 +33,31 @@ namespace urchin {
         fogMaxHeightShaderVar = ShaderVar(lightingShader, "fogMaxHeight");
     }
 
-    void FogManager::loadFog() {
-        ShaderDataSender().sendData(hasFogShaderVar, !fogs.empty());
+    void FogManager::setupLightingRenderer(const std::unique_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
+        lightingRendererBuilder->addShaderData(ShaderDataSender(true)
+                .sendData(hasFogShaderVar, fogData.hasFog)
+                .sendData(fogDensityShaderVar, fogData.density)
+                .sendData(fogGradientShaderVar, fogData.gradient)
+                .sendData(fogMaxHeightShaderVar, fogData.maxHeight)
+                .sendData(fogColorShaderVar, fogData.color)); //binding 6
+    }
 
+    void FogManager::loadFog(const std::unique_ptr<GenericRenderer>& lightingRenderer) {
+        fogData = {};
+        fogData.hasFog = !fogs.empty();
         if (!fogs.empty()) {
-            ShaderDataSender()
-                .sendData(fogDensityShaderVar, fogs.top()->getDensity())
-                .sendData(fogGradientShaderVar, fogs.top()->getGradient())
-                .sendData(fogColorShaderVar, Vector4<float>(fogs.top()->getColor(), 1.0))
-                .sendData(fogMaxHeightShaderVar, fogs.top()->getMaxHeight());
+            fogData.density = fogs.top()->getDensity();
+            fogData.gradient = fogs.top()->getGradient();
+            fogData.maxHeight = fogs.top()->getMaxHeight();
+            fogData.color = Vector4<float>(fogs.top()->getColor(), 1.0);
         }
+
+        lightingRenderer->updateShaderData(6, ShaderDataSender(true)
+                .sendData(hasFogShaderVar, fogData.hasFog)
+                .sendData(fogDensityShaderVar, fogData.density)
+                .sendData(fogGradientShaderVar, fogData.gradient)
+                .sendData(fogMaxHeightShaderVar, fogData.maxHeight)
+                .sendData(fogColorShaderVar, fogData.color));
     }
 
 }

@@ -358,6 +358,7 @@ namespace urchin {
                         .sendData(ShaderVar(lightingShader, "hasAmbientOcclusion"), visualOption.isAmbientOcclusionActivated)); //binding 1
         lightManager->setupLightingRenderer(lightingRendererBuilder); //binding 2 & 3
         shadowManager->setupLightingRenderer(lightingRendererBuilder); //binding 4 & 5
+        fogManager->setupLightingRenderer(lightingRendererBuilder); //binding 6
 
         lightingRendererBuilder
                 ->addTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()))
@@ -519,7 +520,7 @@ namespace urchin {
 
             lightManager->loadVisibleLights(lightingRenderer);
 
-            fogManager->loadFog();
+            fogManager->loadFog(lightingRenderer);
 
             if (visualOption.isAmbientOcclusionActivated) {
                 ambientOcclusionManager->loadAOTexture(lightingRenderer, (std::size_t)ambientOcclusionTexUnit);
