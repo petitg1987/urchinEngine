@@ -38,7 +38,7 @@ namespace urchin {
 
             Matrix3<float> mProjection;
             std::shared_ptr<Shader> uiShader;
-            ShaderVar mProjectionShaderVar, translateDistanceShaderVar, diffuseTexSamplerShaderVar;
+            ShaderVar diffuseTexSamplerShaderVar;
     };
 
 }

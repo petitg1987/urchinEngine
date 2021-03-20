@@ -18,9 +18,6 @@ namespace urchin {
             sceneWidth(0),
             sceneHeight(0) {
         uiShader = ShaderBuilder().createShader("ui.vert", "", "ui.frag");
-
-        mProjectionShaderVar = ShaderVar(uiShader, "mProjection");
-        translateDistanceShaderVar = ShaderVar(uiShader, "translateDistance");
         diffuseTexSamplerShaderVar = ShaderVar(uiShader, "diffuseTexture");
 
         int diffuseTexUnit = 0;
@@ -41,11 +38,10 @@ namespace urchin {
         mProjection.setValues(2.0f / (float)sceneWidth, 0.0f, -1.0f,
             0.0f, -2.0f / (float)sceneHeight, 1.0f,
             0.0f, 0.0f, 1.0f);
-        ShaderDataSender().sendData(mProjectionShaderVar, mProjection);
 
         //widgets resize
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
-            widgets[(std::size_t)i]->onResize(sceneWidth, sceneHeight);
+            widgets[(std::size_t)i]->onResize(sceneWidth, sceneHeight, mProjection);
         }
     }
 
@@ -130,11 +126,8 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "uiRenderDisplay");
 
         for (auto& widget : widgets) {
-            if (widget->isVisible()) {
-                Vector2<int> translateVector(widget->getGlobalPositionX(), widget->getGlobalPositionY());
-                ShaderDataSender().sendData(translateDistanceShaderVar, translateVector);
-
-                widget->display(translateDistanceShaderVar, dt);
+            if (widget->isVisible()) { //TODO disable widget for render target ?
+                widget->display(dt);
             }
         }
 

@@ -49,7 +49,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        buttonRenderer = std::make_unique<GenericRendererBuilder>(getRenderTarget(), getShader(), ShapeType::TRIANGLE)
+        buttonRenderer = setupUiRenderer(ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
                 ->addTextureReader(TextureReader::build(texInfoDefault, TextureParam::buildNearest()))
@@ -81,7 +81,8 @@ namespace urchin {
         return true;
     }
 
-    void Button::displayWidget(const ShaderVar&, float) {
+    void Button::displayWidget(float) {
+        updateTranslateVector(buttonRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
         getRenderTarget()->display(buttonRenderer);
     }
 

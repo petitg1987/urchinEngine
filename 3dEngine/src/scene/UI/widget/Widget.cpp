@@ -19,7 +19,7 @@ namespace urchin {
             mouseY(0) {
         if (parent) {
             parent->children.emplace_back(this);
-            initialize(parent->getRenderTarget(), parent->getShader());
+            initialize(parent->getRenderTarget(), parent->shader);
         }
     }
 
@@ -41,30 +41,42 @@ namespace urchin {
         this->renderTarget = std::move(renderTarget);
         this->shader = std::move(shader);
 
+        mProjectionShaderVar = ShaderVar(this->shader, "mProjection");
+        translateDistanceShaderVar = ShaderVar(this->shader, "translateDistance");
+
         for (auto& child : children) {
             child->initialize(renderTarget, shader);
         }
     }
 
-    void Widget::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
+    void Widget::onResize(unsigned int sceneWidth, unsigned int sceneHeight, const Matrix3<float>& projectionMatrix) {
         this->sceneWidth = sceneWidth;
         this->sceneHeight = sceneHeight;
+        this->projectionMatrix = projectionMatrix;
 
         createOrUpdateWidget();
 
         for (auto& child : children) {
-            child->onResize(sceneWidth, sceneHeight);
+            child->onResize(sceneWidth, sceneHeight, projectionMatrix);
         }
+    }
+
+    std::unique_ptr<GenericRendererBuilder> Widget::setupUiRenderer(ShapeType shapeType) const {
+        assert(shader);
+        auto rendererBuilder = std::make_unique<GenericRendererBuilder>(getRenderTarget(), shader, shapeType);
+        rendererBuilder
+                ->addShaderData(ShaderDataSender(true).sendData(mProjectionShaderVar, projectionMatrix)) //binding 0
+                ->addShaderData(ShaderDataSender(true).sendData(translateDistanceShaderVar, Vector2<int>())); //binding 1
+        return std::unique_ptr<GenericRendererBuilder>(rendererBuilder.release());
+    }
+
+    void Widget::updateTranslateVector(const std::unique_ptr<GenericRenderer>& renderer, const Vector2<int>& translateVector) {
+        renderer->updateShaderData(1, ShaderDataSender(true).sendData(translateDistanceShaderVar, translateVector));
     }
 
     const std::shared_ptr<RenderTarget>& Widget::getRenderTarget() const {
         assert(renderTarget);
         return renderTarget;
-    }
-
-    const std::shared_ptr<Shader>& Widget::getShader() const {
-        assert(shader);
-        return shader;
     }
 
     unsigned int Widget::getSceneWidth() const {
@@ -162,7 +174,7 @@ namespace urchin {
 
     unsigned int Widget::getHeight() const {
         if (size.getHeightSizeType() == LengthType::PERCENTAGE) {
-            return (unsigned int)(size.getHeight() / 100.0 * (float)sceneHeight);
+            return (unsigned int)(size.getHeight() / 100.0f * (float)sceneHeight);
         }
         return (unsigned int)size.getHeight();
     }
@@ -338,15 +350,12 @@ namespace urchin {
         }
     }
 
-    void Widget::display(const ShaderVar& translateDistanceShaderVar, float dt) {
-        displayWidget(translateDistanceShaderVar, dt);
+    void Widget::display(float dt) {
+        displayWidget(dt);
 
         for (auto& child : children) {
-            if (child->isVisible()) {
-                Vector2<int> translateVector(child->getGlobalPositionX(), child->getGlobalPositionY());
-                ShaderDataSender().sendData(translateDistanceShaderVar, translateVector);
-
-                child->display(translateDistanceShaderVar, dt);
+            if (child->isVisible()) { //TODO disable widget for render target ?
+                child->display(dt);
             }
         }
     }

@@ -16,7 +16,7 @@ namespace urchin {
 
     }
 
-    void Container::displayWidget(const ShaderVar&, float) {
+    void Container::displayWidget(float) {
 
     }
 

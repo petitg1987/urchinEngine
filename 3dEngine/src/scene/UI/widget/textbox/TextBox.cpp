@@ -61,7 +61,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        textBoxRenderer = std::make_unique<GenericRendererBuilder>(getRenderTarget(), getShader(), ShapeType::TRIANGLE)
+        textBoxRenderer = setupUiRenderer(ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
                 ->addTextureReader(TextureReader::build(texTextBoxDefault, TextureParam::buildNearest()))
@@ -75,7 +75,7 @@ namespace urchin {
                 Point2<float>(0.0, 0.0),
                 Point2<float>(1.0, 1.0)
         };
-        cursorRenderer = std::make_unique<GenericRendererBuilder>(getRenderTarget(), getShader(), ShapeType::LINE)
+        cursorRenderer = setupUiRenderer(ShapeType::LINE)
                 ->addData(&cursorVertexCoord)
                 ->addData(&cursorTextureCoord)
                 ->addTextureReader(TextureReader::build(texCursorDiffuse, TextureParam::buildRepeatNearest()))
@@ -210,19 +210,16 @@ namespace urchin {
         computeCursorPosition();
     }
 
-    void TextBox::displayWidget(const ShaderVar& translateDistanceShaderVar, float dt) {
+    void TextBox::displayWidget(float dt) {
         //display the text box
+        updateTranslateVector(textBoxRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
         getRenderTarget()->display(textBoxRenderer);
 
         //displays the cursor
         cursorBlink += dt * CURSOR_BLINK_SPEED;
-        if (state == ACTIVE && ((int)cursorBlink % 2) > 0) {
-            Vector2<int> widgetPosition(getGlobalPositionX(), getGlobalPositionY());
-            ShaderDataSender().sendData(translateDistanceShaderVar, widgetPosition + Vector2<int>((int)cursorPosition, 0));
-
+        if (state == ACTIVE && ((int)cursorBlink % 2) > 0) { //TODO disable widget for render target ?
+            updateTranslateVector(cursorRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()) + Vector2<int>((int)cursorPosition, 0));
             getRenderTarget()->display(cursorRenderer);
-
-            ShaderDataSender().sendData(translateDistanceShaderVar, widgetPosition);
         }
     }
 

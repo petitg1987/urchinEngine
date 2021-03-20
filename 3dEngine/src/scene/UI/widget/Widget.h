@@ -11,6 +11,7 @@
 #include "scene/UI/EventListener.h"
 #include "graphic/shader/model/ShaderVar.h"
 #include "graphic/render/target/RenderTarget.h"
+#include "graphic/render/GenericRendererBuilder.h"
 
 namespace urchin {
 
@@ -30,7 +31,7 @@ namespace urchin {
             };
 
             void initialize(std::shared_ptr<RenderTarget>, std::shared_ptr<Shader>);
-            void onResize(unsigned int, unsigned int);
+            void onResize(unsigned int, unsigned int, const Matrix3<float>&);
 
             Widget* getParent() const;
 
@@ -67,18 +68,19 @@ namespace urchin {
             virtual void reset();
             void onDisable();
 
-            void display(const ShaderVar&, float);
+            void display(float);
 
         protected:
+            std::unique_ptr<GenericRendererBuilder> setupUiRenderer(ShapeType) const;
+            void updateTranslateVector(const std::unique_ptr<GenericRenderer>&, const Vector2<int>&);
             const std::shared_ptr<RenderTarget>& getRenderTarget() const;
-            const std::shared_ptr<Shader>& getShader() const;
             unsigned int getSceneWidth() const;
             unsigned int getSceneHeight() const;
             virtual void createOrUpdateWidget() = 0;
 
             const std::vector<Widget*>& getChildren() const;
 
-            virtual void displayWidget(const ShaderVar&, float) = 0;
+            virtual void displayWidget(float) = 0;
 
             WidgetOutline widgetOutline;
 
@@ -91,6 +93,8 @@ namespace urchin {
             std::shared_ptr<RenderTarget> renderTarget;
             std::shared_ptr<Shader> shader;
             unsigned int sceneWidth, sceneHeight;
+            Matrix3<float> projectionMatrix;
+            ShaderVar mProjectionShaderVar, translateDistanceShaderVar;
 
             Widget* parent;
             std::vector<Widget*> children;

@@ -48,7 +48,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        windowRenderer = std::make_unique<GenericRendererBuilder>(getRenderTarget(), getShader(), ShapeType::TRIANGLE)
+        windowRenderer = setupUiRenderer(ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
                 ->addTextureReader(TextureReader::build(texWindow, TextureParam::buildNearest()))
@@ -111,7 +111,8 @@ namespace urchin {
         return true;
     }
 
-    void Window::displayWidget(const ShaderVar&, float) {
+    void Window::displayWidget(float) {
+        updateTranslateVector(windowRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
         getRenderTarget()->display(windowRenderer);
     }
 
