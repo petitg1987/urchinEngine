@@ -9,6 +9,7 @@ namespace urchin {
 
     ModelDisplayer::ModelDisplayer(Model *model, DisplayMode displayMode, std::shared_ptr<RenderTarget> renderTarget, std::shared_ptr<Shader> shader) :
             model(model),
+            displayMode(displayMode),
             renderTarget(std::move(renderTarget)),
             shader(std::move(shader)) {
 
@@ -22,7 +23,7 @@ namespace urchin {
                 ->addData(&constMesh->getBaseTangents())
                 ->indices(&constMesh->getTrianglesIndices());
 
-            if (displayMode == DisplayMode::DEFAULT_MODE) {
+            if (displayMode == DEFAULT_MODE) {
                 TextureParam::ReadMode textureReadMode = constMesh->getMaterial()->isRepeatableTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
                 TextureParam textureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
 
@@ -32,6 +33,15 @@ namespace urchin {
             }
 
             meshRenderers.push_back(meshRendererBuilder->build());
+        }
+
+        mModelShaderVar = ShaderVar(this->shader, "mModel");
+        if (displayMode == DEFAULT_MODE) {
+            mNormalShaderVar = ShaderVar(this->shader, "mNormal");
+        } else if (displayMode == DEPTH_ONLY_MODE) {
+            mNormalShaderVar = ShaderVar();
+        } else {
+            throw std::invalid_argument("Unknown display mode: " + std::to_string(displayMode));
         }
 
         model->addObserver(this, Model::MESH_UPDATED);
@@ -64,6 +74,10 @@ namespace urchin {
                 const ConstMesh* constMesh = model->getConstMeshes()->getConstMesh(meshIndex);
                 ShaderDataSender().sendData(meshParameter.getAmbientFactorShaderVar(), constMesh->getMaterial()->getAmbientFactor());
             }
+            if (displayMode == DEFAULT_MODE) {
+                ShaderDataSender().sendData(mNormalShaderVar, model->getTransform().getTransformMatrix().toMatrix3().inverse().transpose());
+            }
+            ShaderDataSender().sendData(mModelShaderVar, model->getTransform().getTransformMatrix());
 
             renderTarget->display(meshRenderer);
             meshIndex++;

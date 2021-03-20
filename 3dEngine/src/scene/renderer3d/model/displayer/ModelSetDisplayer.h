@@ -33,7 +33,6 @@ namespace urchin {
             ShaderVar getShaderVar(const std::string&) const;
             void setCustomGeometryShader(const std::string&, const std::map<std::string, std::string>&);
             void setCustomFragmentShader(const std::string&, const std::map<std::string, std::string>&);
-            void setCustomShaderVariable(CustomShaderVariable*);
             void setCustomModelShaderVariable(CustomModelShaderVariable*);
 
             void setModels(const std::vector<Model*>&);
@@ -57,9 +56,8 @@ namespace urchin {
             MeshParameter meshParameter;
             std::shared_ptr<Shader> modelShader;
             Matrix4<float> projectionMatrix;
-            ShaderVar mProjectionShaderVar, mModelShaderVar, mViewShaderVar, mNormalShaderVar, ambientFactorShaderVar;
+            ShaderVar mProjectionShaderVar, mViewShaderVar, ambientFactorShaderVar;
 
-            CustomShaderVariable* customShaderVariable;
             CustomModelShaderVariable* customModelShaderVariable;
 
             std::shared_ptr<RenderTarget> renderTarget;

@@ -19,13 +19,18 @@ namespace urchin {
             ShadowModelShaderVariable();
 
             void setLayersToUpdateShaderVar(const ShaderVar&);
+            void setProjectionMatricesShaderVar(const ShaderVar&);
             void setLightShadowMap(const LightShadowMap*);
 
             void loadCustomShaderVariables(const Model*) override;
 
         private:
-            ShaderVar layersToUpdateShaderVar;
+            void updateProjectionMatrices();
+
+            ShaderVar layersToUpdateShaderVar, mModelProjectionMatrixShaderVar;
             const LightShadowMap* lightShadowMap;
+
+            std::vector<Matrix4<float>> projectionMatrices;
     };
 
 }

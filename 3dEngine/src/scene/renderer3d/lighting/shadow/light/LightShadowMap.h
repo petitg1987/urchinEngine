@@ -56,7 +56,6 @@ namespace urchin {
 
             std::shared_ptr<OffscreenRender> renderTarget; //target containing shadow map(s)
             ModelSetDisplayer* shadowModelSetDisplayer;
-            ShadowShaderVariable* shadowShaderVariable;
             ShadowModelShaderVariable* shadowModelShaderVariable;
             std::shared_ptr<Texture> shadowMapTexture; //shadow map texture (variance shadow map)
             std::vector<std::unique_ptr<const TextureFilter>> textureFilters; //shadow map filters

@@ -20,8 +20,10 @@ namespace urchin {
 
         private:
             Model *model;
+            DisplayMode displayMode;
             std::shared_ptr<RenderTarget> renderTarget;
             std::shared_ptr<Shader> shader;
+            ShaderVar mModelShaderVar, mNormalShaderVar;
 
             std::vector<std::unique_ptr<GenericRenderer>> meshRenderers;
     };

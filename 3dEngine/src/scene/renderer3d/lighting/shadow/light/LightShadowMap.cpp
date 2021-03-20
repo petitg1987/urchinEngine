@@ -3,7 +3,6 @@
 
 #include "LightShadowMap.h"
 #include "scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h"
-#include "scene/renderer3d/lighting/shadow/display/ShadowShaderVariable.h"
 #include "scene/renderer3d/lighting/shadow/display/ShadowModelShaderVariable.h"
 
 namespace urchin {
@@ -15,7 +14,6 @@ namespace urchin {
             viewingShadowDistance(viewingShadowDistance),
             renderTarget(std::move(renderTarget)),
             shadowModelSetDisplayer(nullptr),
-            shadowShaderVariable(nullptr),
             shadowModelShaderVariable(nullptr),
             shadowMapTexture(std::move(shadowMapTexture)) {
         if (this->renderTarget) { //only false for unit tests
@@ -33,7 +31,6 @@ namespace urchin {
         }
 
         delete shadowModelSetDisplayer;
-        delete shadowShaderVariable;
         delete shadowModelShaderVariable;
     }
 
@@ -97,14 +94,10 @@ namespace urchin {
         shadowModelSetDisplayer->setCustomFragmentShader("modelShadowMap.frag", fragmentTokens);
         shadowModelSetDisplayer->initialize(renderTarget);
 
-        delete shadowShaderVariable;
-        shadowShaderVariable = new ShadowShaderVariable();
-        shadowShaderVariable->setProjectionMatricesShaderVar(shadowModelSetDisplayer->getShaderVar("projectionMatrix"));
-        shadowModelSetDisplayer->setCustomShaderVariable(shadowShaderVariable);
-
         delete shadowModelShaderVariable;
         shadowModelShaderVariable = new ShadowModelShaderVariable();
         shadowModelShaderVariable->setLayersToUpdateShaderVar(shadowModelSetDisplayer->getShaderVar("layersToUpdate"));
+        shadowModelShaderVariable->setProjectionMatricesShaderVar(shadowModelSetDisplayer->getShaderVar("projectionMatrix"));
         shadowModelSetDisplayer->setCustomModelShaderVariable(shadowModelShaderVariable);
     }
 
@@ -179,7 +172,6 @@ namespace urchin {
     void LightShadowMap::displayModels() {
         renderTarget->resetDisplay();
 
-        shadowShaderVariable->setLightShadowMap(this);
         shadowModelShaderVariable->setLightShadowMap(this);
 
         shadowModelSetDisplayer->setModels(retrieveModels());

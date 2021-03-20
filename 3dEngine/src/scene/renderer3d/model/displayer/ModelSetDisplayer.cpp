@@ -10,7 +10,6 @@ namespace urchin {
     ModelSetDisplayer::ModelSetDisplayer(DisplayMode displayMode) :
             isInitialized(false),
             displayMode(displayMode),
-            customShaderVariable(nullptr),
             customModelShaderVariable(nullptr),
             renderTarget(nullptr) {
 
@@ -33,7 +32,6 @@ namespace urchin {
             }
             createShader(vertexShaderName, geometryShaderName, fragmentShaderName);
 
-            mNormalShaderVar = ShaderVar(modelShader, "mNormal");
             ambientFactorShaderVar = ShaderVar(modelShader, "ambientFactor");
 
             int diffuseTexUnit = 0;
@@ -52,13 +50,12 @@ namespace urchin {
             }
             createShader(vertexShaderName, geometryShaderName, fragmentShaderName);
 
-            mNormalShaderVar = ShaderVar();
             ambientFactorShaderVar = ShaderVar();
 
             //setup mesh parameters
             meshParameter.setAmbientFactorShaderVar(ShaderVar());
         } else {
-            throw std::invalid_argument("Unknown display mode.");
+            throw std::invalid_argument("Unknown display mode: " + std::to_string(displayMode));
         }
 
         //default matrix
@@ -78,7 +75,6 @@ namespace urchin {
         modelShader = ShaderBuilder().createShader(vertexShaderName, geometryShaderName, fragmentShaderName, shaderTokens);
 
         mProjectionShaderVar = ShaderVar(modelShader, "mProjection");
-        mModelShaderVar = ShaderVar(modelShader, "mModel");
         mViewShaderVar = ShaderVar(modelShader, "mView");
     }
 
@@ -108,10 +104,6 @@ namespace urchin {
 
         this->fragmentShaderName = fragmentShaderName;
         this->fragmentTokens = fragmentTokens;
-    }
-
-    void ModelSetDisplayer::setCustomShaderVariable(CustomShaderVariable* customShaderVariable) {
-        this->customShaderVariable = customShaderVariable;
     }
 
     void ModelSetDisplayer::setCustomModelShaderVariable(CustomModelShaderVariable* customModelShaderVariable) {
@@ -152,15 +144,8 @@ namespace urchin {
         }
 
         ShaderDataSender().sendData(mViewShaderVar, viewMatrix);
-        if (customShaderVariable) {
-            customShaderVariable->loadCustomShaderVariables();
-        }
 
         for (const auto& model : models) {
-            ShaderDataSender().sendData(mModelShaderVar, model->getTransform().getTransformMatrix());
-            if (displayMode == DEFAULT_MODE) {
-                ShaderDataSender().sendData(mNormalShaderVar, model->getTransform().getTransformMatrix().toMatrix3().inverse().transpose());
-            }
             if (customModelShaderVariable) {
                 customModelShaderVariable->loadCustomShaderVariables(model);
             }
