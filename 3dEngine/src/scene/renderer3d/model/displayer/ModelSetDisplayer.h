@@ -6,8 +6,6 @@
 #include <string>
 #include "UrchinCommon.h"
 
-#include "MeshParameter.h"
-#include "CustomShaderVariable.h"
 #include "CustomModelShaderVariable.h"
 #include "graphic/shader/model/Shader.h"
 #include "graphic/shader/model/ShaderVar.h"
@@ -53,10 +51,9 @@ namespace urchin {
             std::map<std::string, std::string> geometryTokens, fragmentTokens;
 
             DisplayMode displayMode;
-            MeshParameter meshParameter;
             std::shared_ptr<Shader> modelShader;
             Matrix4<float> projectionMatrix;
-            ShaderVar mProjectionShaderVar, mViewShaderVar, ambientFactorShaderVar;
+            ShaderVar mProjectionShaderVar, mViewShaderVar;
 
             CustomModelShaderVariable* customModelShaderVariable;
 

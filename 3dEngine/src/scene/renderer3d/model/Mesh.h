@@ -4,7 +4,6 @@
 #include "UrchinCommon.h"
 
 #include "resources/model/ConstMesh.h"
-#include "scene/renderer3d/model/displayer/MeshParameter.h"
 #include "graphic/render/GenericRenderer.h"
 #include "graphic/render/target/RenderTarget.h"
 

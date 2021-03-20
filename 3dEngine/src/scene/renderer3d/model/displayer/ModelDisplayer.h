@@ -13,7 +13,7 @@ namespace urchin {
 
             void notify(Observable*, int) override;
 
-            void display(const MeshParameter&) const;
+            void display() const;
 
             void drawBBox(const Matrix4<float>&, const Matrix4<float>&) const;
             void drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const;
@@ -23,7 +23,7 @@ namespace urchin {
             DisplayMode displayMode;
             std::shared_ptr<RenderTarget> renderTarget;
             std::shared_ptr<Shader> shader;
-            ShaderVar mModelShaderVar, mNormalShaderVar;
+            ShaderVar mModelShaderVar, mNormalShaderVar, ambientFactorShaderVar;
 
             std::vector<std::unique_ptr<GenericRenderer>> meshRenderers;
     };

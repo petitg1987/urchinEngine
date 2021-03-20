@@ -32,16 +32,11 @@ namespace urchin {
             }
             createShader(vertexShaderName, geometryShaderName, fragmentShaderName);
 
-            ambientFactorShaderVar = ShaderVar(modelShader, "ambientFactor");
-
             int diffuseTexUnit = 0;
             int normalTexUnit = 1;
             ShaderDataSender(true)
                 .sendData(ShaderVar(modelShader, "diffuseTex"), diffuseTexUnit) //binding 20
                 .sendData(ShaderVar(modelShader, "normalTex"), normalTexUnit); //binding 21
-
-            //setup mesh parameters
-            meshParameter.setAmbientFactorShaderVar(ambientFactorShaderVar);
         } else if (displayMode == DEPTH_ONLY_MODE) {
             //shader creation
             std::string vertexShaderName = "modelDepthOnly.vert";
@@ -49,11 +44,6 @@ namespace urchin {
                 fragmentShaderName = "modelDepthOnly.frag";
             }
             createShader(vertexShaderName, geometryShaderName, fragmentShaderName);
-
-            ambientFactorShaderVar = ShaderVar();
-
-            //setup mesh parameters
-            meshParameter.setAmbientFactorShaderVar(ShaderVar());
         } else {
             throw std::invalid_argument("Unknown display mode: " + std::to_string(displayMode));
         }
@@ -150,7 +140,7 @@ namespace urchin {
                 customModelShaderVariable->loadCustomShaderVariables(model);
             }
 
-            modelsDisplayer.at(model)->display(meshParameter);
+            modelsDisplayer.at(model)->display();
         }
     }
 

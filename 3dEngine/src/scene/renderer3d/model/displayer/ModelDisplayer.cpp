@@ -38,8 +38,10 @@ namespace urchin {
         mModelShaderVar = ShaderVar(this->shader, "mModel");
         if (displayMode == DEFAULT_MODE) {
             mNormalShaderVar = ShaderVar(this->shader, "mNormal");
+            ambientFactorShaderVar = ShaderVar(this->shader, "ambientFactor");
         } else if (displayMode == DEPTH_ONLY_MODE) {
             mNormalShaderVar = ShaderVar();
+            ambientFactorShaderVar = ShaderVar();
         } else {
             throw std::invalid_argument("Unknown display mode: " + std::to_string(displayMode));
         }
@@ -67,12 +69,12 @@ namespace urchin {
         }
     }
 
-    void ModelDisplayer::display(const MeshParameter& meshParameter) const {
+    void ModelDisplayer::display() const {
         unsigned int meshIndex = 0;
         for (auto& meshRenderer : meshRenderers) {
-            if (meshParameter.getAmbientFactorShaderVar().isValid()) {
+            if (ambientFactorShaderVar.isValid()) {
                 const ConstMesh* constMesh = model->getConstMeshes()->getConstMesh(meshIndex);
-                ShaderDataSender().sendData(meshParameter.getAmbientFactorShaderVar(), constMesh->getMaterial()->getAmbientFactor());
+                ShaderDataSender().sendData(ambientFactorShaderVar, constMesh->getMaterial()->getAmbientFactor());
             }
             if (displayMode == DEFAULT_MODE) {
                 ShaderDataSender().sendData(mNormalShaderVar, model->getTransform().getTransformMatrix().toMatrix3().inverse().transpose());
