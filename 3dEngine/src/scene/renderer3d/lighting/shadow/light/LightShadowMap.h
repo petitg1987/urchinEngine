@@ -15,9 +15,7 @@
 namespace urchin {
 
     class LightSplitShadowMap;
-    class ShadowShaderVariable;
     class ShadowModelShaderVariable;
-
 
     class LightShadowMap : public Observer {
         public:
@@ -29,6 +27,7 @@ namespace urchin {
             const Light* getLight() const;
             const OctreeManager<Model>* getModelOctreeManager() const;
             float getViewingShadowDistance() const;
+            unsigned int getNumberShadowMaps() const;
             const std::shared_ptr<Texture>& getShadowMapTexture() const;
 
             LightSplitShadowMap* addLightSplitShadowMap();
@@ -53,6 +52,7 @@ namespace urchin {
             const Light* light;
             const OctreeManager<Model>* modelOctreeManager;
             float viewingShadowDistance;
+            unsigned int nbShadowMaps;
 
             std::shared_ptr<OffscreenRender> renderTarget; //target containing shadow map(s)
             ModelSetDisplayer* shadowModelSetDisplayer;

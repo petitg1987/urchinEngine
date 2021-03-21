@@ -6,7 +6,7 @@
 #define NUMBER_SHADOW_MAPS 0
 
 uniform mat4 projectionMatrix[NUMBER_SHADOW_MAPS]; //binding 2
-uniform int layersToUpdate; //binding 2
+uniform int layersToUpdate; //binding 3
 
 layout(triangles) in;
 layout(triangle_strip, max_vertices = MAX_VERTICES) out;

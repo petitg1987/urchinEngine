@@ -37,7 +37,7 @@ namespace urchin {
                         .sendData(mNormalShaderVar, meshData.normalMatrix)
                         .sendData(ambientFactorShaderVar, meshData.ambientFactor)); //binding 1
             if (customModelShaderVariable) {
-                customModelShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 2
+                customModelShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 2 & 3
             }
 
             if (displayMode == DEFAULT_MODE) {

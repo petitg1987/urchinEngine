@@ -12,6 +12,7 @@ namespace urchin {
             light(light),
             modelOctreeManager(modelOctreeManager),
             viewingShadowDistance(viewingShadowDistance),
+            nbShadowMaps(nbShadowMaps),
             renderTarget(std::move(renderTarget)),
             shadowModelSetDisplayer(nullptr),
             shadowModelShaderVariable(nullptr),
@@ -75,6 +76,10 @@ namespace urchin {
 
     float LightShadowMap::getViewingShadowDistance() const {
         return viewingShadowDistance;
+    }
+
+    unsigned int LightShadowMap::getNumberShadowMaps() const {
+        return nbShadowMaps;
     }
 
     /**

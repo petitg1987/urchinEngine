@@ -22,12 +22,13 @@ namespace urchin {
             void loadCustomShaderVariables(const std::unique_ptr<GenericRenderer>&) override;
 
         private:
-            void updateProjectionMatrices();
+            void refreshShaderVariables();
 
             ShaderVar mModelProjectionMatrixShaderVar, layersToUpdateShaderVar;
             const LightShadowMap* lightShadowMap;
 
             std::vector<Matrix4<float>> projectionMatrices;
+            int layerToUpdate;
     };
 
 }
