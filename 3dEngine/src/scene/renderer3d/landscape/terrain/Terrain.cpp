@@ -27,12 +27,12 @@ namespace urchin {
         stRepeatShaderVar = ShaderVar(terrainShader, "stRepeat");
 
         int maskTexUnit = 0;
-        ShaderDataSender(true).sendData(ShaderVar(terrainShader, "maskTex"), maskTexUnit); //binding 20
+        ShaderDataSender().sendData(ShaderVar(terrainShader, "maskTex"), maskTexUnit); //binding 20
 
         for (int i = 0; i < (int)TerrainMaterials::MAX_MATERIAL; ++i) {
             std::string shaderTextureName = "diffuseTex" + std::to_string(i + 1);
             int diffuseTexUnit = i + 1;
-            ShaderDataSender(true).sendData(ShaderVar(terrainShader, std::move(shaderTextureName)), diffuseTexUnit); //binding 21, 22, 23, 24
+            ShaderDataSender().sendData(ShaderVar(terrainShader, std::move(shaderTextureName)), diffuseTexUnit); //binding 21, 22, 23, 24
         }
 
         setPosition(position);
@@ -57,7 +57,7 @@ namespace urchin {
     void Terrain::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
         positioningData.projectionMatrix = projectionMatrix;
 
-        terrainRenderer->updateShaderData(1, ShaderDataSender(true).sendData(mProjectionShaderVar, positioningData.projectionMatrix));
+        terrainRenderer->updateShaderData(1, ShaderDataSender().sendData(mProjectionShaderVar, positioningData.projectionMatrix));
         grass->onCameraProjectionUpdate(projectionMatrix);
     }
 
@@ -72,12 +72,12 @@ namespace urchin {
                 ->addData(&mesh->getVertices())
                 ->addData(&mesh->getNormals())
                 ->addData(&emptyTextureCoordinates)
-                ->addShaderData(ShaderDataSender(true).sendData(mViewShaderVar, Matrix4<float>())) //binding 0
-                ->addShaderData(ShaderDataSender(true)
+                ->addShaderData(ShaderDataSender().sendData(mViewShaderVar, Matrix4<float>())) //binding 0
+                ->addShaderData(ShaderDataSender()
                         .sendData(mProjectionShaderVar, positioningData.projectionMatrix)
                         .sendData(vPositionShaderVar, positioningData.position)) //binding 1
-                ->addShaderData(ShaderDataSender(true).sendData(stRepeatShaderVar, materials->getStRepeat())) //binding 2
-                ->addShaderData(ShaderDataSender(true).sendData(ambientShaderVar, ambient)) //binding 3
+                ->addShaderData(ShaderDataSender().sendData(stRepeatShaderVar, materials->getStRepeat())) //binding 2
+                ->addShaderData(ShaderDataSender().sendData(ambientShaderVar, ambient)) //binding 3
                 ->indices(&mesh->getIndices())
                 ->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //mask texture
         for (std::size_t i = 0; i < materials->getMaterials().size(); ++i) {
@@ -106,7 +106,7 @@ namespace urchin {
             materials->refreshWith(mesh->getXSize(), mesh->getZSize());
 
             terrainRenderer->updateData(2, &materials->getTexCoordinates());
-            terrainRenderer->updateShaderData(2, ShaderDataSender(true).sendData(stRepeatShaderVar, materials->getStRepeat()));
+            terrainRenderer->updateShaderData(2, ShaderDataSender().sendData(stRepeatShaderVar, materials->getStRepeat()));
 
             std::size_t maskMaterialTexUnit = 0;
             std::size_t materialTexUnitStart = 1;
@@ -151,7 +151,7 @@ namespace urchin {
         positioningData.position = position;
 
         if (terrainRenderer) {
-            terrainRenderer->updateShaderData(1, ShaderDataSender(true).sendData(vPositionShaderVar, positioningData.position));
+            terrainRenderer->updateShaderData(1, ShaderDataSender().sendData(vPositionShaderVar, positioningData.position));
         }
         refreshGrassMesh(); //grass uses terrain position: refresh is required
     }
@@ -171,7 +171,7 @@ namespace urchin {
         this->ambient = ambient;
 
         if(terrainRenderer) {
-            terrainRenderer->updateShaderData(3, ShaderDataSender(true).sendData(ambientShaderVar, ambient));
+            terrainRenderer->updateShaderData(3, ShaderDataSender().sendData(ambientShaderVar, ambient));
         }
         refreshGrassAmbient(); //grass uses ambient value: refresh is required
     }
@@ -189,7 +189,7 @@ namespace urchin {
     void Terrain::display(const Camera* camera, float dt) const {
         assert(isInitialized);
 
-        terrainRenderer->updateShaderData(0, ShaderDataSender(true).sendData(mViewShaderVar, camera->getViewMatrix()));
+        terrainRenderer->updateShaderData(0, ShaderDataSender().sendData(mViewShaderVar, camera->getViewMatrix()));
         renderTarget->display(terrainRenderer);
 
         if (grass) {

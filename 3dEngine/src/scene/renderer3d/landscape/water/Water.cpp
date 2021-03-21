@@ -39,7 +39,7 @@ namespace urchin {
 
         int normalTexUnit = 0;
         int dudvMapUnit = 1;
-        ShaderDataSender(true)
+        ShaderDataSender()
             .sendData(ShaderVar(waterShader, "normalTex"), normalTexUnit) //binding 20
             .sendData(ShaderVar(waterShader, "dudvMap"), dudvMapUnit); //binding 21
 
@@ -76,7 +76,7 @@ namespace urchin {
     void Water::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
 
-        waterRenderer->updateShaderData(2, ShaderDataSender(true).sendData(mProjectionShaderVar, projectionMatrix));
+        waterRenderer->updateShaderData(2, ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix));
     }
 
     void Water::updateRenderer() {
@@ -98,14 +98,14 @@ namespace urchin {
                     ->enableDepthTest()
                     ->addData(&vertexCoord)
                     ->addData(&textureCoord)
-                    ->addShaderData(ShaderDataSender(true)
+                    ->addShaderData(ShaderDataSender()
                         .sendData(mViewShaderVar, positioningData.viewMatrix)
                         .sendData(sumTimeStepShaderVar, positioningData.sumTimeStep)) //binding 0
-                    ->addShaderData(ShaderDataSender(true)
+                    ->addShaderData(ShaderDataSender()
                         .sendData(waterColorShaderVar, waterProperties.color)
                         .sendData(waveSpeedShaderVar, waterProperties.waveSpeed)
                         .sendData(waveStrengthShaderVar, waterProperties.waveStrength)) //binding 1
-                    ->addShaderData(ShaderDataSender(true).sendData(mProjectionShaderVar, projectionMatrix)) //binding 2
+                    ->addShaderData(ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix)) //binding 2
                     ->addTextureReader(TextureReader::build(normalTexture, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
                     ->addTextureReader(TextureReader::build(dudvMap, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
                     ->build();
@@ -154,7 +154,7 @@ namespace urchin {
         waterProperties.color = waterColor;
 
         if(waterRenderer) {
-            waterRenderer->updateShaderData(1, ShaderDataSender(true).sendData(waterColorShaderVar, waterProperties.color));
+            waterRenderer->updateShaderData(1, ShaderDataSender().sendData(waterColorShaderVar, waterProperties.color));
         }
     }
 
@@ -210,7 +210,7 @@ namespace urchin {
         waterProperties.waveSpeed = waveSpeed;
 
         if(waterRenderer) {
-            waterRenderer->updateShaderData(1, ShaderDataSender(true).sendData(waveSpeedShaderVar, waterProperties.waveSpeed));
+            waterRenderer->updateShaderData(1, ShaderDataSender().sendData(waveSpeedShaderVar, waterProperties.waveSpeed));
         }
     }
 
@@ -222,7 +222,7 @@ namespace urchin {
         waterProperties.waveStrength = waveStrength;
 
         if(waterRenderer) {
-            waterRenderer->updateShaderData(1, ShaderDataSender(true).sendData(waveStrengthShaderVar, waterProperties.waveStrength));
+            waterRenderer->updateShaderData(1, ShaderDataSender().sendData(waveStrengthShaderVar, waterProperties.waveStrength));
         }
     }
 
@@ -286,7 +286,7 @@ namespace urchin {
             positioningData.viewMatrix = camera->getViewMatrix();
             positioningData.sumTimeStep += dt;
 
-            waterRenderer->updateShaderData(0, ShaderDataSender(true)
+            waterRenderer->updateShaderData(0, ShaderDataSender()
                     .sendData(mViewShaderVar, positioningData.viewMatrix)
                     .sendData(sumTimeStepShaderVar, positioningData.sumTimeStep));
 

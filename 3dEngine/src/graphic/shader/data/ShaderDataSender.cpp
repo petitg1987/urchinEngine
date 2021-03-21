@@ -5,10 +5,6 @@
 
 namespace urchin {
 
-    ShaderDataSender::ShaderDataSender(bool) {
-
-    }
-
     ShaderDataSender& ShaderDataSender::sendData(const ShaderVar& shaderVar, float value) {
         shaderVar.getShader()->bind();
         glUniform1f(shaderVar.getVariableLocation(), value);

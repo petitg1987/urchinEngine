@@ -70,7 +70,7 @@ namespace urchin {
         //Vulkan source code:
         lightingRendererBuilder
                 //Vulkan source code: ->addShaderData(mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices) //binding 4
-                ->addShaderData(ShaderDataSender(true).sendData(depthSplitDistanceShaderVar, nbShadowMaps, depthSplitDistance)); //binding 5
+                ->addShaderData(ShaderDataSender().sendData(depthSplitDistanceShaderVar, nbShadowMaps, depthSplitDistance)); //binding 5
     }
 
     void ShadowManager::deleteLightsLocation() {
@@ -347,7 +347,7 @@ namespace urchin {
                 for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
                     std::size_t matrixIndex = shadowLightIndex * getMaxShadowLights() + shadowMapIndex;
                     lightProjectionViewMatrices[matrixIndex] = lightSplitShadowMap->getLightProjectionMatrix() * lightShadowMap->getLightViewMatrix();
-                    ShaderDataSender(true).sendData(mLightProjectionViewShaderVar[shadowLightIndex][shadowMapIndex], lightProjectionViewMatrices[matrixIndex]);
+                    ShaderDataSender().sendData(mLightProjectionViewShaderVar[shadowLightIndex][shadowMapIndex], lightProjectionViewMatrices[matrixIndex]);
                     shadowMapIndex++;
                 }
 
@@ -364,7 +364,7 @@ namespace urchin {
 
         lightingRenderer
                 //Vulkan source code: ->updateShaderData(4, lightProjectionViewMatrices)
-                ->updateShaderData(5, ShaderDataSender(true).sendData(depthSplitDistanceShaderVar, nbShadowMaps, depthSplitDistance));
+                ->updateShaderData(5, ShaderDataSender().sendData(depthSplitDistanceShaderVar, nbShadowMaps, depthSplitDistance));
     }
 
 }

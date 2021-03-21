@@ -34,10 +34,10 @@ namespace urchin {
         std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, shader, getShapeType());
         rendererBuilder
                 ->addData(&vertexArray)
-                ->addShaderData(ShaderDataSender(true)
+                ->addShaderData(ShaderDataSender()
                         .sendData(mProjectionShaderVar, positioningData.projectionMatrix)
                         .sendData(mViewShaderVar, positioningData.viewModelMatrix)) //binding 0
-                ->addShaderData(ShaderDataSender(true).sendData(colorShaderVar, color)) //binding 1
+                ->addShaderData(ShaderDataSender().sendData(colorShaderVar, color)) //binding 1
                 ->disableCullFace()
                 ->outlineSize(outlineSize)
                 ->polygonMode(polygonMode);
@@ -101,10 +101,10 @@ namespace urchin {
         assert(isInitialized);
 
         positioningData.viewModelMatrix = viewMatrix * modelMatrix;
-        renderer->updateShaderData(0, ShaderDataSender(true)
+        renderer->updateShaderData(0, ShaderDataSender()
                 .sendData(mProjectionShaderVar, positioningData.projectionMatrix)
                 .sendData(mViewShaderVar, positioningData.viewModelMatrix));
-        renderer->updateShaderData(1, ShaderDataSender(true).sendData(colorShaderVar, color));
+        renderer->updateShaderData(1, ShaderDataSender().sendData(colorShaderVar, color));
 
         renderTarget->display(renderer);
     }

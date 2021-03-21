@@ -24,7 +24,7 @@ namespace urchin {
         invSceneSizeShaderVar = ShaderVar(fxaaShader, "invSceneSize");
 
         int texUnit = 0;
-        ShaderDataSender(true).sendData(ShaderVar(fxaaShader, "tex"), texUnit); //binding 20
+        ShaderDataSender().sendData(ShaderVar(fxaaShader, "tex"), texUnit); //binding 20
     }
 
     void AntiAliasingManager::onTextureUpdate(const std::shared_ptr<Texture>& texture) {
@@ -39,7 +39,7 @@ namespace urchin {
         renderer = std::make_unique<GenericRendererBuilder>(renderTarget, fxaaShader, ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addShaderData(ShaderDataSender(true).sendData(invSceneSizeShaderVar, invSceneSize)) //binding 0
+                ->addShaderData(ShaderDataSender().sendData(invSceneSizeShaderVar, invSceneSize)) //binding 0
                 ->addTextureReader(TextureReader::build(texture, TextureParam::buildLinear()))
                 ->build();
     }
@@ -47,7 +47,7 @@ namespace urchin {
     void AntiAliasingManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         invSceneSize = Point2<float>(1.0f / (float)sceneWidth, 1.0f / (float)sceneHeight);
         if (renderer) {
-            renderer->updateShaderData(0, ShaderDataSender(true).sendData(invSceneSizeShaderVar, invSceneSize));
+            renderer->updateShaderData(0, ShaderDataSender().sendData(invSceneSizeShaderVar, invSceneSize));
         }
     }
 

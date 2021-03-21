@@ -25,13 +25,13 @@ namespace urchin {
     }
 
     void ShadowModelShaderVariable::setupMeshRenderer(const std::unique_ptr<GenericRendererBuilder>& meshRendererBuilder) {
-        meshRendererBuilder->addShaderData(ShaderDataSender(true)
+        meshRendererBuilder->addShaderData(ShaderDataSender()
                 .sendData(mModelProjectionMatrixShaderVar, (unsigned int)projectionMatrices.size(), &projectionMatrices[0])
                 .sendData(layersToUpdateShaderVar, (int)lightShadowMap->retrieveLayersToUpdate())); //binding 2
     }
 
     void ShadowModelShaderVariable::loadCustomShaderVariables(const std::unique_ptr<GenericRenderer>& meshRenderer) { //TODO use struct
-        meshRenderer->updateShaderData(2, ShaderDataSender(true)
+        meshRenderer->updateShaderData(2, ShaderDataSender()
                 .sendData(mModelProjectionMatrixShaderVar, (unsigned int)projectionMatrices.size(), &projectionMatrices[0])
                 .sendData(layersToUpdateShaderVar, (int)lightShadowMap->retrieveLayersToUpdate()));
     }

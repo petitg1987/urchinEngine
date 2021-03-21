@@ -101,13 +101,13 @@ namespace urchin {
         ambientOcclusionTexUnit = 3;
         shadowMapTexUnitStart = 4;
         shadowMapTexUnitEnd = shadowMapTexUnitStart + (int)shadowManager->getMaxShadowLights();
-        ShaderDataSender(true)
+        ShaderDataSender()
                 .sendData(ShaderVar(lightingShader, "depthTex"), depthTexUnit) //binding 20
                 .sendData(ShaderVar(lightingShader, "colorTex"), diffuseTexUnit) //binding 21
                 .sendData(ShaderVar(lightingShader, "normalAndAmbientTex"), normalAndAmbientTexUnit) //binding 22
                 .sendData(ShaderVar(lightingShader, "ambientOcclusionTex"), ambientOcclusionTexUnit); //binding 23
         for (int shadowMapTexUnit = shadowMapTexUnitStart, i = 0; shadowMapTexUnit <= shadowMapTexUnitEnd; ++shadowMapTexUnit, ++i) {
-            ShaderDataSender(true).sendData(ShaderVar(lightingShader, "shadowMapTex[" + std::to_string(i) + "]"), shadowMapTexUnit); //binding 24
+            ShaderDataSender().sendData(ShaderVar(lightingShader, "shadowMapTex[" + std::to_string(i) + "]"), shadowMapTexUnit); //binding 24
         }
 
         mInverseViewProjectionShaderVar = ShaderVar(lightingShader, "mInverseViewProjection");
@@ -350,10 +350,10 @@ namespace urchin {
         lightingRendererBuilder
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addShaderData(ShaderDataSender(true)
+                ->addShaderData(ShaderDataSender()
                         .sendData(mInverseViewProjectionShaderVar, positioningData.inverseProjectionViewMatrix)
                         .sendData(viewPositionShaderVar, positioningData.viewPosition)) //binding 0
-                ->addShaderData(ShaderDataSender(true)
+                ->addShaderData(ShaderDataSender()
                         .sendData(ShaderVar(lightingShader, "hasShadow"), visualOption.isShadowActivated)
                         .sendData(ShaderVar(lightingShader, "hasAmbientOcclusion"), visualOption.isAmbientOcclusionActivated)); //binding 1
         lightManager->setupLightingRenderer(lightingRendererBuilder); //binding 2 & 3
@@ -514,7 +514,7 @@ namespace urchin {
 
             positioningData.inverseProjectionViewMatrix = (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse();
             positioningData.viewPosition = camera->getPosition();
-            lightingRenderer->updateShaderData(0, ShaderDataSender(true)
+            lightingRenderer->updateShaderData(0, ShaderDataSender()
                     .sendData(mInverseViewProjectionShaderVar, positioningData.inverseProjectionViewMatrix)
                     .sendData(viewPositionShaderVar, positioningData.viewPosition));
 

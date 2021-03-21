@@ -34,7 +34,7 @@ namespace urchin {
     }
 
     void FogManager::setupLightingRenderer(const std::unique_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
-        lightingRendererBuilder->addShaderData(ShaderDataSender(true)
+        lightingRendererBuilder->addShaderData(ShaderDataSender()
                 .sendData(hasFogShaderVar, fogData.hasFog)
                 .sendData(fogDensityShaderVar, fogData.density)
                 .sendData(fogGradientShaderVar, fogData.gradient)
@@ -52,7 +52,7 @@ namespace urchin {
             fogData.color = Vector4<float>(fogs.top()->getColor(), 1.0);
         }
 
-        lightingRenderer->updateShaderData(6, ShaderDataSender(true)
+        lightingRenderer->updateShaderData(6, ShaderDataSender()
                 .sendData(hasFogShaderVar, fogData.hasFog)
                 .sendData(fogDensityShaderVar, fogData.density)
                 .sendData(fogGradientShaderVar, fogData.gradient)

@@ -96,7 +96,7 @@ namespace urchin {
         int depthTexUnit = 0;
         int normalAndAmbientTexUnit = 1;
         int noiseTexUnit = 2;
-        ShaderDataSender(true)
+        ShaderDataSender()
                 .sendData(ShaderVar(ambientOcclusionShader, "depthTex"), depthTexUnit) //binding 20
                 .sendData(ShaderVar(ambientOcclusionShader, "normalAndAmbientTex"), normalAndAmbientTexUnit) //binding 21
                 .sendData(ShaderVar(ambientOcclusionShader, "noiseTex"), noiseTexUnit); //binding 22
@@ -152,12 +152,12 @@ namespace urchin {
         renderer = std::make_unique<GenericRendererBuilder>(offscreenRenderTarget, ambientOcclusionShader, ShapeType::TRIANGLE)
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addShaderData(ShaderDataSender(true)
+                ->addShaderData(ShaderDataSender()
                         .sendData(mInverseViewProjectionShaderVar, positioningData.inverseProjectionViewMatrix)
                         .sendData(mProjectionShaderVar, positioningData.projectionMatrix)
                         .sendData(mViewShaderVar, positioningData.viewMatrix)) //binding 0
-                ->addShaderData(ShaderDataSender(true).sendData(samplesShaderVar, (unsigned int)ssaoKernel.size(), &ssaoKernel[0])) //binding 1
-                ->addShaderData(ShaderDataSender(true).sendData(resolutionShaderVar, resolution)) //binding 2
+                ->addShaderData(ShaderDataSender().sendData(samplesShaderVar, (unsigned int)ssaoKernel.size(), &ssaoKernel[0])) //binding 1
+                ->addShaderData(ShaderDataSender().sendData(resolutionShaderVar, resolution)) //binding 2
                 ->addTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()))
                 ->addTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
                 ->addTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest()))
@@ -312,7 +312,7 @@ namespace urchin {
         positioningData.projectionMatrix = camera->getProjectionMatrix();
         positioningData.viewMatrix = camera->getViewMatrix();
 
-        renderer->updateShaderData(0, ShaderDataSender(true)
+        renderer->updateShaderData(0, ShaderDataSender()
                 .sendData(mInverseViewProjectionShaderVar, positioningData.inverseProjectionViewMatrix)
                 .sendData(mProjectionShaderVar, positioningData.projectionMatrix)
                 .sendData(mViewShaderVar, positioningData.viewMatrix));

@@ -12,7 +12,6 @@ namespace urchin {
     class ShaderDataSender {
         public:
             ShaderDataSender() = default;
-            explicit ShaderDataSender(bool); //TODO replace by ShaderDataSender() when only ShaderDataSender(int) is used
 
             ShaderDataSender& sendData(const ShaderVar&, float);
             ShaderDataSender& sendData(const ShaderVar&, unsigned int, const float*);

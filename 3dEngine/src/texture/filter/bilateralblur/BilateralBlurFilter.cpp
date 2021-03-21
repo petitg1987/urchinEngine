@@ -30,7 +30,7 @@ namespace urchin {
         cameraPlanes.nearPlane = nearPlane;
         cameraPlanes.farPlane = farPlane;
 
-        getTextureRenderer()->updateShaderData(1, ShaderDataSender(true)
+        getTextureRenderer()->updateShaderData(1, ShaderDataSender()
                 .sendData(cameraNearPlaneShaderVar, cameraPlanes.nearPlane)
                 .sendData(cameraFarPlaneShaderVar, cameraPlanes.farPlane));
     }
@@ -41,7 +41,7 @@ namespace urchin {
 
     void BilateralBlurFilter::initiateAdditionalDisplay(const std::unique_ptr<GenericRendererBuilder>& textureRendererBuilder) {
         textureRendererBuilder
-                ->addShaderData(ShaderDataSender(true)
+                ->addShaderData(ShaderDataSender()
                         .sendData(cameraNearPlaneShaderVar, cameraPlanes.nearPlane)
                         .sendData(cameraFarPlaneShaderVar, cameraPlanes.farPlane)) //binding 1
                 ->addTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()));
@@ -52,7 +52,7 @@ namespace urchin {
         cameraFarPlaneShaderVar = ShaderVar(textureFilterShader, "cameraFarPlane");
 
         int depthTexUnit = 1;
-        ShaderDataSender(true).sendData(ShaderVar(textureFilterShader, "depthTex"), depthTexUnit); // binding 21
+        ShaderDataSender().sendData(ShaderVar(textureFilterShader, "depthTex"), depthTexUnit); // binding 21
     }
 
     void BilateralBlurFilter::completeShaderTokens(std::map<std::string, std::string>& shaderTokens) const {

@@ -62,7 +62,7 @@ namespace urchin {
         layersToUpdateShaderVar = ShaderVar(textureFilterShader, "layersToUpdate");
 
         int texUnit = 0;
-        ShaderDataSender(true).sendData(ShaderVar(textureFilterShader, "tex"), texUnit); //binding 20
+        ShaderDataSender().sendData(ShaderVar(textureFilterShader, "tex"), texUnit); //binding 20
         initiateAdditionalShaderVariables(textureFilterShader);
 
         std::vector<Point2<float>> vertexCoord = {
@@ -77,7 +77,7 @@ namespace urchin {
         textureRendererBuilder
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addShaderData(ShaderDataSender(true).sendData(layersToUpdateShaderVar, 0)) //binding 0
+                ->addShaderData(ShaderDataSender().sendData(layersToUpdateShaderVar, 0)) //binding 0
                 ->addTextureReader(TextureReader::build(sourceTexture, TextureParam::buildLinear()));
         initiateAdditionalDisplay(textureRendererBuilder);
 
@@ -134,7 +134,7 @@ namespace urchin {
         }
 
         if (textureType == TextureType::ARRAY) {
-            textureRenderer->updateShaderData(0, ShaderDataSender(true).sendData(layersToUpdateShaderVar, layersToUpdate));
+            textureRenderer->updateShaderData(0, ShaderDataSender().sendData(layersToUpdateShaderVar, layersToUpdate));
         }
 
         offscreenRenderTarget->display(textureRenderer);

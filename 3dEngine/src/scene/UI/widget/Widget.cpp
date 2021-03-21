@@ -65,13 +65,13 @@ namespace urchin {
         assert(shader);
         auto rendererBuilder = std::make_unique<GenericRendererBuilder>(getRenderTarget(), shader, shapeType);
         rendererBuilder
-                ->addShaderData(ShaderDataSender(true).sendData(mProjectionShaderVar, projectionMatrix)) //binding 0
-                ->addShaderData(ShaderDataSender(true).sendData(translateDistanceShaderVar, Vector2<int>())); //binding 1
+                ->addShaderData(ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix)) //binding 0
+                ->addShaderData(ShaderDataSender().sendData(translateDistanceShaderVar, Vector2<int>())); //binding 1
         return std::unique_ptr<GenericRendererBuilder>(rendererBuilder.release());
     }
 
     void Widget::updateTranslateVector(const std::unique_ptr<GenericRenderer>& renderer, const Vector2<int>& translateVector) {
-        renderer->updateShaderData(1, ShaderDataSender(true).sendData(translateDistanceShaderVar, translateVector));
+        renderer->updateShaderData(1, ShaderDataSender().sendData(translateDistanceShaderVar, translateVector));
     }
 
     const std::shared_ptr<RenderTarget>& Widget::getRenderTarget() const {

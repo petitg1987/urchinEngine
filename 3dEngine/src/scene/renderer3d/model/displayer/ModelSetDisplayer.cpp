@@ -34,7 +34,7 @@ namespace urchin {
 
             int diffuseTexUnit = 0;
             int normalTexUnit = 1;
-            ShaderDataSender(true)
+            ShaderDataSender()
                 .sendData(ShaderVar(modelShader, "diffuseTex"), diffuseTexUnit) //binding 20
                 .sendData(ShaderVar(modelShader, "normalTex"), normalTexUnit); //binding 21
         } else if (displayMode == DEPTH_ONLY_MODE) {

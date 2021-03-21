@@ -165,8 +165,8 @@ namespace urchin {
         rendererBuilder
                 ->addData(&vertexCoord)
                 ->addData(&textureCoord)
-                ->addShaderData(ShaderDataSender(true).sendData(mProjectionShaderVar, mProjection)) //binding 0
-                ->addShaderData(ShaderDataSender(true)
+                ->addShaderData(ShaderDataSender().sendData(mProjectionShaderVar, mProjection)) //binding 0
+                ->addShaderData(ShaderDataSender()
                         .sendData(ShaderVar(displayTextureShader, "colorIntensity"), renderingData.colorIntensity)
                         .sendData(ShaderVar(displayTextureShader, "cameraNearPlane"), renderingData.cameraNearPlane)
                         .sendData(ShaderVar(displayTextureShader, "cameraFarPlane"), renderingData.cameraFarPlane)
@@ -193,7 +193,7 @@ namespace urchin {
         mProjectionShaderVar = ShaderVar(displayTextureShader, "mProjection");
 
         int colorTexUnit = 0;
-        ShaderDataSender(true).sendData(ShaderVar(displayTextureShader, "colorTex"), colorTexUnit); //binding 20
+        ShaderDataSender().sendData(ShaderVar(displayTextureShader, "colorTex"), colorTexUnit); //binding 20
     }
 
     void TextureRenderer::display() {

@@ -73,7 +73,7 @@ namespace urchin {
 
         lightingRendererBuilder
                 //Vulkan source code: ->addShaderData(lightsDataSize * sizeof(LightsData), lightsData) //binding 2
-                ->addShaderData(ShaderDataSender(true).sendData(globalAmbientColorShaderVar, globalAmbientColor)); //binding 3
+                ->addShaderData(ShaderDataSender().sendData(globalAmbientColorShaderVar, globalAmbientColor)); //binding 3
     }
 
     OctreeManager<Light>* LightManager::getLightOctreeManager() const {
@@ -170,7 +170,7 @@ namespace urchin {
                 lightsData[i].produceShadow = light->isProduceShadow();
                 lightsData[i].hasParallelBeams = light->hasParallelBeams();
                 lightsData[i].lightAmbient = light->getAmbientColor();
-                ShaderDataSender(true)
+                ShaderDataSender()
                     .sendData(lightsShaderVar[i].isExistShaderVar, lightsData[i].isExist)
                     .sendData(lightsShaderVar[i].produceShadowShaderVar, lightsData[i].produceShadow)
                     .sendData(lightsShaderVar[i].hasParallelBeamsShaderVar, lightsData[i].hasParallelBeams)
@@ -179,12 +179,12 @@ namespace urchin {
                 if (lights[i]->getLightType() == Light::SUN) {
                     const auto* sunLight = dynamic_cast<const SunLight*>(light);
                     lightsData[i].positionOrDirection = sunLight->getDirections()[0];
-                    ShaderDataSender(true).sendData(lightsShaderVar[i].positionOrDirectionShaderVar, sunLight->getDirections()[0]);
+                    ShaderDataSender().sendData(lightsShaderVar[i].positionOrDirectionShaderVar, sunLight->getDirections()[0]);
                 } else if (lights[i]->getLightType() == Light::OMNIDIRECTIONAL) {
                     const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight*>(light);
                     lightsData[i].positionOrDirection = omnidirectionalLight->getPosition().toVector();
                     lightsData[i].exponentialAttenuation = omnidirectionalLight->getExponentialAttenuation();
-                    ShaderDataSender(true)
+                    ShaderDataSender()
                         .sendData(lightsShaderVar[i].positionOrDirectionShaderVar, lightsData[i].positionOrDirection)
                         .sendData(lightsShaderVar[i].exponentialAttShaderVar, lightsData[i].exponentialAttenuation);
                 } else {
@@ -192,14 +192,14 @@ namespace urchin {
                 }
             } else {
                 lightsData[i].isExist = false;
-                ShaderDataSender(true).sendData(lightsShaderVar[i].isExistShaderVar, lightsData[i].isExist);
+                ShaderDataSender().sendData(lightsShaderVar[i].isExistShaderVar, lightsData[i].isExist);
                 break;
             }
         }
 
         lightingRenderer
                 //Vulkan source code: ->updateShaderData(2, lightsData)
-                ->updateShaderData(3, ShaderDataSender(true).sendData(globalAmbientColorShaderVar, globalAmbientColor));
+                ->updateShaderData(3, ShaderDataSender().sendData(globalAmbientColorShaderVar, globalAmbientColor));
     }
 
     void LightManager::postUpdateVisibleLights() {

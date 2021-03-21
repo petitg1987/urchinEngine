@@ -30,8 +30,8 @@ namespace urchin {
                 ->addData(&constMesh->getBaseNormals())
                 ->addData(&constMesh->getBaseTangents())
                 ->indices(&constMesh->getTrianglesIndices())
-                ->addShaderData(ShaderDataSender(true).sendData(mProjectionShaderVar, projectionMatrix)) //binding 0
-                ->addShaderData(ShaderDataSender(true)
+                ->addShaderData(ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix)) //binding 0
+                ->addShaderData(ShaderDataSender()
                         .sendData(mViewShaderVar, meshData.viewMatrix)
                         .sendData(mModelShaderVar, meshData.modelMatrix)
                         .sendData(mNormalShaderVar, meshData.normalMatrix)
@@ -61,7 +61,7 @@ namespace urchin {
 
     void ModelDisplayer::onCameraProjectionUpdate(const Camera* camera) {
         for (auto& meshRenderer : meshRenderers) {
-            meshRenderer->updateShaderData(0, ShaderDataSender(true).sendData(mProjectionShaderVar, camera->getProjectionMatrix()));
+            meshRenderer->updateShaderData(0, ShaderDataSender().sendData(mProjectionShaderVar, camera->getProjectionMatrix()));
         }
     }
 
@@ -89,7 +89,7 @@ namespace urchin {
             meshData.normalMatrix = (displayMode == DEFAULT_MODE) ? model->getTransform().getTransformMatrix().toMatrix3().inverse().transpose() : Matrix3<float>();
             meshData.ambientFactor = model->getConstMeshes()->getConstMesh(meshIndex)->getMaterial()->getAmbientFactor();
 
-            meshRenderer->updateShaderData(1, ShaderDataSender(true)
+            meshRenderer->updateShaderData(1, ShaderDataSender()
                     .sendData(mViewShaderVar, meshData.viewMatrix)
                     .sendData(mModelShaderVar, meshData.modelMatrix)
                     .sendData(mNormalShaderVar, meshData.normalMatrix)
