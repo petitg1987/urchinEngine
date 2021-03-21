@@ -10,16 +10,16 @@
 #define DEPTH_START_ATTENUATION 0
 #define DEPTH_END_ATTENUATION 0
 
-uniform sampler2D depthTex;
-uniform sampler2D normalAndAmbientTex;
-uniform sampler2D noiseTex;
+uniform mat4 mInverseViewProjection; //binding 0
+uniform mat4 mProjection; //binding 0
+uniform mat4 mView; //binding 0
+uniform vec4 samples[KERNEL_SAMPLES]; //binding 1
+uniform vec2 resolution; //binding 2
+uniform sampler2D depthTex; //binding 20
+uniform sampler2D normalAndAmbientTex; //binsing 21
+uniform sampler2D noiseTex; //binsing 22
 
 in vec2 textCoordinates;
-uniform vec3 samples[KERNEL_SAMPLES];
-uniform mat4 mInverseViewProjection;
-uniform mat4 mProjection;
-uniform mat4 mView;
-uniform vec2 resolution;
 
 layout (location = 0) out float fragColor;
 
@@ -50,14 +50,14 @@ vec3 fetchPosition(vec2 textCoord, float depthValue) {
 void main() {
     vec4 normalAndAmbient = vec4(texture2D(normalAndAmbientTex, textCoordinates));
     if (normalAndAmbient.a >= 0.99999f) { //no lighting
-        fragColor = 0.0;
+        fragColor = 0.0f;
         return;
     }
 
     float depthValue = texture2D(depthTex, textCoordinates).r;
-    float distanceReduceFactor = 1.0;
+    float distanceReduceFactor = 1.0f;
     if (depthValue > DEPTH_END_ATTENUATION) {
-        fragColor = 0.0;
+        fragColor = 0.0f;
         return;
     }else if (depthValue > DEPTH_START_ATTENUATION) {
         distanceReduceFactor = (DEPTH_END_ATTENUATION - depthValue) / (DEPTH_END_ATTENUATION - DEPTH_START_ATTENUATION);
@@ -72,24 +72,36 @@ void main() {
     vec3 bitangent = cross(normal, tangent);
     mat3 kernelMatrix = mat3(tangent, bitangent, normal);
 
-    float occlusion = 0.0;
+    float occlusion = 0.0f;
     for (int i = 0; i < KERNEL_SAMPLES; ++i) {
-        vec3 sampleVectorWorldSpace = kernelMatrix * samples[i];
+        vec3 sampleVectorWorldSpace = kernelMatrix * samples[i].xyz;
         vec3 samplePointWorldSpace = position + RADIUS * sampleVectorWorldSpace;
         vec4 samplePointEyeSpace = mView * vec4(samplePointWorldSpace, 1.0);
         vec4 samplePointClipSpace = mProjection * samplePointEyeSpace;
         vec3 samplePointNDC = samplePointClipSpace.xyz / samplePointClipSpace.w;
-        vec2 samplePointTexCoord = samplePointNDC.xy * 0.5 + 0.5;
+        vec2 samplePointTexCoord = samplePointNDC.xy * 0.5f + 0.5f;
 
         float zSceneNDC = texture(depthTex, samplePointTexCoord).r;
         vec3 scenePositionEyeSpace = fetchEyePosition(samplePointTexCoord, zSceneNDC);
 
-        float rangeCheck = smoothstep(0.0, 1.0, RADIUS / abs(scenePositionEyeSpace.z - samplePointEyeSpace.z));
-        occlusion += (scenePositionEyeSpace.z >= samplePointEyeSpace.z + BIAS ? 1.0 : 0.0) * rangeCheck;
+        float rangeCheck = smoothstep(0.0f, 1.0f, RADIUS / abs(scenePositionEyeSpace.z - samplePointEyeSpace.z));
+        occlusion += (scenePositionEyeSpace.z >= samplePointEyeSpace.z + BIAS ? 1.0f : 0.0f) * rangeCheck;
     }
 
     fragColor = (occlusion / float(KERNEL_SAMPLES)) * distanceReduceFactor * AO_STRENGTH;
 
-    //DEBUG: display random texture
-    /* fragColor = texture(noiseTex, textCoordinates * noiseScale).x; */
+    //DEBUG: display noise texture
+    //fragColor = texture(noiseTex, textCoordinates).x; //no repeat
+    //fragColor = texture(noiseTex, textCoordinates * noiseScale).x; //repeat
+
+    //DEBUG: display depth texture (pre-requisite: Renderer32#DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER must be activated)
+    //fragColor = texture2D(depthTex, textCoordinates).r / 20.0f; //near objects are whiter
+
+    //DEBUG: display normal texture (pre-requisite: Renderer32#DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER must be activated)
+    //fragColor = texture2D(normalAndAmbientTex, textCoordinates).r; //normals to left are whiter
+    //fragColor = texture2D(normalAndAmbientTex, textCoordinates).g; //normals to bottom are whiter
+    //fragColor = texture2D(normalAndAmbientTex, textCoordinates).b; //normals to far are whiter
+
+    //DEBUG: display kernel samples X values on X axis
+    //fragColor = samples[int(textCoordinates.x * KERNEL_SAMPLES)].x;
 }

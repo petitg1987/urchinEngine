@@ -4,12 +4,11 @@
 //values are replaced at compilation time:
 #define GRASS_ALPHA_TEST 0
 
-smooth in vec2 vertexTextCoordinates;
-in vec3 grassNormal;
-
+uniform float ambient; //binding 4
 uniform sampler2D grassTex; //binding 20
 
-uniform float ambient; //binding 4
+smooth in vec2 vertexTextCoordinates;
+in vec3 grassNormal;
 
 layout (location = 0) out vec4 fragColor;
 layout (location = 1) out vec4 fragNormalAndAmbient;

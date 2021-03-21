@@ -1,17 +1,16 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-in vec2 textCoordinates;
-in vec3 normal;
-
-uniform sampler2D maskTex;
-uniform sampler2D diffuseTex1;
-uniform sampler2D diffuseTex2;
-uniform sampler2D diffuseTex3;
-uniform sampler2D diffuseTex4;
-
 uniform vec2 stRepeat; //binding 2
 uniform float ambient; //binding 3
+uniform sampler2D maskTex; //binding 20
+uniform sampler2D diffuseTex1; //binding 21
+uniform sampler2D diffuseTex2; //binding 22
+uniform sampler2D diffuseTex3; //binding 23
+uniform sampler2D diffuseTex4; //binding 24
+
+in vec2 textCoordinates;
+in vec3 normal;
 
 layout (location = 0) out vec4 fragColor;
 layout (location = 1) out vec4 fragNormalAndAmbient;

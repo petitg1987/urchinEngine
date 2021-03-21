@@ -2,28 +2,26 @@
 #extension GL_ARB_separate_shader_objects : enable
 #extension GL_EXT_gpu_shader4 : enable
 
-#define NEAR_PLANE 0
-#define FAR_PLANE 1
-
 //values are replaced at compilation time:
 #define IS_DEFAULT_VALUE true
 #define IS_DEPTH_VALUE false
 #define IS_GRAYSCALE_VALUE false
 #define IS_INVERSE_GRAYSCALE_VALUE false
 
-in vec2 textCoordinates;
+uniform float colorIntensity; //binding 1
+uniform float cameraNearPlane; //binding 1
+uniform float cameraFarPlane; //binding 1
+uniform int layer; //binding 1
+uniform sampler2DArray colorTex; //binding 20
 
-uniform sampler2DArray colorTex;
-uniform float colorIntensity;
-uniform float cameraPlanes[2];
-uniform int layer;
+in vec2 textCoordinates;
 
 out vec4 fragColor;
 
 float linearizeDepth(float depthValue) {
     float unmapDepthValue = depthValue * 2.0 - 1.0;
-    return (2.0f * cameraPlanes[NEAR_PLANE]) / (cameraPlanes[FAR_PLANE] + cameraPlanes[NEAR_PLANE] -
-            unmapDepthValue * (cameraPlanes[FAR_PLANE] - cameraPlanes[NEAR_PLANE])); //[0.0 = nearPlane, 1.0 = far plane]
+    return (2.0f * cameraNearPlane) / (cameraFarPlane + cameraNearPlane -
+            unmapDepthValue * (cameraFarPlane - cameraNearPlane)); //[0.0 = nearPlane, 1.0 = far plane]
 }
 
 void main() {

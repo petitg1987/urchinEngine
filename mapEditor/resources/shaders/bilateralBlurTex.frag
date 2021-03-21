@@ -1,9 +1,6 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-#define NEAR_PLANE 0
-#define FAR_PLANE 1
-
 //values are replaced at compilation time:
 #define OUTPUT_TYPE vec3
 #define OFFSETS_TAB 0
@@ -11,9 +8,10 @@
 #define BLUR_SHARPNESS 0
 #define IS_VERTICAL_BLUR true
 
-uniform sampler2D tex;
-uniform sampler2D depthTex;
-uniform float cameraPlanes[2];
+uniform float cameraNearPlane; //binding 1
+uniform float cameraFarPlane; //binding 1
+uniform sampler2D tex; //binding 20
+uniform sampler2D depthTex; //binding 21
 
 in vec2 textCoordinates;
 
@@ -21,8 +19,8 @@ layout (location = 0) out OUTPUT_TYPE fragColor;
 
 float linearizeDepth(float depthValue) {
     float unmapDepthValue = depthValue * 2.0 - 1.0;
-    return (2.0f * cameraPlanes[NEAR_PLANE]) / (cameraPlanes[FAR_PLANE] + cameraPlanes[NEAR_PLANE] -
-            unmapDepthValue * (cameraPlanes[FAR_PLANE] - cameraPlanes[NEAR_PLANE])); //[0.0 = nearPlane, 1.0 = far plane]
+    return (2.0f * cameraNearPlane) / (cameraFarPlane + cameraNearPlane -
+            unmapDepthValue * (cameraFarPlane - cameraNearPlane)); //[0.0 = nearPlane, 1.0 = far plane]
 }
 
 float bilateralBlur(vec2 uvOffset, int r, float linearizedDepthCenterValue, inout float totalWeight) {

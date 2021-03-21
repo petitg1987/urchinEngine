@@ -5,7 +5,7 @@
 #define OUTPUT_TYPE vec3
 #define SOURCE_TEX_COMPONENTS rgb
 
-uniform sampler2D tex;
+uniform sampler2D tex; //binding 20
 
 in vec2 vertexTextCoordinates;
 

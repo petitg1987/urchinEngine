@@ -9,45 +9,43 @@
 #define MAX_SHADOW_LIGHTS 0
 #define OUTPUT_LOCATION 0
 
-//general
-uniform mat4 mInverseViewProjection;
-uniform vec3 viewPosition;
-
-//deferred textures
-in vec2 textCoordinates;
-uniform sampler2D depthTex; //depth (32 bits)
-uniform sampler2D colorTex; //diffuse RGB (3*8 bits) + EMPTY (8 bits)
-uniform sampler2D normalAndAmbientTex; //normal XYZ (3*8 bits) + ambient factor
-uniform sampler2D ambientOcclusionTex; //ambient occlusion factor (16 bits)
+//global
+uniform mat4 mInverseViewProjection; //binding 0
+uniform vec3 viewPosition; //binding 0
+uniform bool hasShadow; //binding 1
+uniform bool hasAmbientOcclusion; //binding 1
 
 //lighting
-uniform vec4 globalAmbient;
 struct StructLightInfo {
     bool isExist;
     bool produceShadow;
     bool hasParallelBeams;
     vec3 positionOrDirection;
-
     float exponentialAttenuation;
     vec3 lightAmbient;
 };
-uniform StructLightInfo lightsInfo[MAX_LIGHTS];
+uniform StructLightInfo lightsInfo[MAX_LIGHTS]; //binding 2
+uniform vec4 globalAmbient; //binding 3
 
 //shadow
-uniform bool hasShadow;
-uniform float depthSplitDistance[NUMBER_SHADOW_MAPS];
-uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS];
-uniform mat4 mLightProjectionView[MAX_SHADOW_LIGHTS][NUMBER_SHADOW_MAPS];
-
-//ambient occlusion
-uniform bool hasAmbientOcclusion;
+uniform mat4 mLightProjectionView[MAX_SHADOW_LIGHTS][NUMBER_SHADOW_MAPS]; //binding 4
+uniform float depthSplitDistance[NUMBER_SHADOW_MAPS]; //binding 5
 
 //fog
-uniform bool hasFog;
-uniform float fogDensity;
-uniform float fogGradient;
-uniform vec4 fogColor;
-uniform float fogMaxHeight;
+uniform bool hasFog; //binding 6
+uniform float fogDensity; //binding 6
+uniform float fogGradient; //binding 6
+uniform float fogMaxHeight; //binding 6
+uniform vec4 fogColor; //binding 6
+
+//deferred textures
+uniform sampler2D depthTex; //binding 20 - depth (32 bits)
+uniform sampler2D colorTex; //binding 21 - diffuse RGB (3*8 bits) + EMPTY (8 bits)
+uniform sampler2D normalAndAmbientTex; //binding 22 - normal XYZ (3*8 bits) + ambient factor
+uniform sampler2D ambientOcclusionTex; //binding 23 - ambient occlusion factor (16 bits)
+uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //binding 24 - shadow maps for each lights
+
+in vec2 textCoordinates;
 
 layout (location = OUTPUT_LOCATION) out vec4 fragColor;
 

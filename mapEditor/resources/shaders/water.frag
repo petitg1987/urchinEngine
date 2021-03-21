@@ -1,14 +1,15 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-in vec2 textCoordinates;
+uniform mat4 mView; //binding 0 (not used)
+uniform float sumTimeStep; //binding 0
+uniform vec3 waterColor; //binding 1
+uniform float waveSpeed; //binding 1
+uniform float waveStrength; //binding 1
+uniform sampler2D normalTex; //binding 20
+uniform sampler2D dudvMap; //bindnig 21
 
-uniform sampler2D normalTex;
-uniform sampler2D dudvMap;
-uniform float waveSpeed;
-uniform float waveStrength;
-uniform float sumTimeStep;
-uniform vec3 waterColor;
+in vec2 textCoordinates;
 
 layout (location = 0) out vec4 fragColor;
 layout (location = 1) out vec4 fragNormalAndAmbient;

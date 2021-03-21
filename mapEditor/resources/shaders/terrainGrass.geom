@@ -1,27 +1,23 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-layout(points) in;
-layout(triangle_strip) out;
-layout(max_vertices = 12) out;
-
-uniform sampler2D grassMaskTex; //binding 21
-
 uniform mat4 mView; //binding 0
 uniform vec3 cameraPosition; //binding 0
 uniform float sumTimeStep; //binding 0
-
 uniform float grassDisplayDistance; //binding 1
 uniform float grassHeight; //binding 1
 uniform float grassLength; //binding 1
 uniform int numGrassInTex; //binding 1
 uniform float windStrength; //binding 1
 uniform vec3 windDirection; //binding 1
-
 uniform vec3 terrainMinPoint; //binding 2
 uniform vec3 terrainMaxPoint; //binding 2
-
 uniform mat4 mProjection; //binding 3
+uniform sampler2D grassMaskTex; //binding 21
+
+layout(points) in;
+layout(triangle_strip) out;
+layout(max_vertices = 12) out;
 
 in vec3 normal[];
 

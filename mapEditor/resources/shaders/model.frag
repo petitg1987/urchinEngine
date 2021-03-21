@@ -1,12 +1,15 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
+uniform mat4 mView; //binding 1 - not used
+uniform mat4 mModel; //binding 1 - not used
+uniform mat3 mNormal; //binding 1 - not used
+uniform float ambientFactor; //binding 1
+uniform sampler2D diffuseTex; //binding 20
+uniform sampler2D normalTex; //binding 21
+
 in vec3 t, b, n;
 in vec2 textCoordinates;
-
-uniform sampler2D diffuseTex;
-uniform sampler2D normalTex;
-uniform float ambientFactor;
 
 layout (location = 0) out vec4 fragColor;
 layout (location = 1) out vec4 fragNormalAndAmbient;

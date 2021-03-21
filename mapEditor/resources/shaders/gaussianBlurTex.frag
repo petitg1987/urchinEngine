@@ -9,7 +9,7 @@
 #define IS_VERTICAL_BLUR true
 #define SOURCE_TEX_COMPONENTS rgb
 
-uniform sampler2D tex;
+uniform sampler2D tex; //binding 20
 
 in vec2 textCoordinates;
 
