@@ -93,13 +93,15 @@ namespace urchin {
 
     void ModelSetDisplayer::setCustomModelShaderVariable(CustomModelShaderVariable* customModelShaderVariable) {
         this->customModelShaderVariable = customModelShaderVariable;
+
+        modelsDisplayer.clear();
     }
 
     void ModelSetDisplayer::setModels(const std::vector<Model*>& models) {
         for (auto model : models) {
             const auto& itModel = modelsDisplayer.find(model);
             if (itModel == modelsDisplayer.end()) {
-                auto modelDisplayer = std::make_unique<ModelDisplayer>(model, projectionMatrix, displayMode, renderTarget, modelShader);
+                auto modelDisplayer = std::make_unique<ModelDisplayer>(model, projectionMatrix, displayMode, renderTarget, modelShader, customModelShaderVariable);
                 modelsDisplayer.emplace(std::make_pair(model, std::move(modelDisplayer)));
             }
         }
@@ -128,8 +130,8 @@ namespace urchin {
             throw std::runtime_error("Render target must be specified before call display");
         }
 
-        for (const auto& model : models) {
-            modelsDisplayer.at(model)->display(viewMatrix, customModelShaderVariable);
+        for (auto model : models) {
+            modelsDisplayer.at(model)->display(viewMatrix);
         }
     }
 

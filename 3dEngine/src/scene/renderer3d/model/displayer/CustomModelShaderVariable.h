@@ -4,6 +4,8 @@
 #include "UrchinCommon.h"
 
 #include "scene/renderer3d/model/Model.h"
+#include "graphic/render/GenericRenderer.h"
+#include "graphic/render/GenericRendererBuilder.h"
 #include "graphic/shader/model/Shader.h"
 
 namespace urchin {
@@ -15,7 +17,8 @@ namespace urchin {
         public:
             virtual ~CustomModelShaderVariable() = default;
 
-            virtual void loadCustomShaderVariables(const Model*) = 0;
+            virtual void setupMeshRenderer(const std::unique_ptr<GenericRendererBuilder>&) = 0;
+            virtual void loadCustomShaderVariables(const std::unique_ptr<GenericRenderer>&) = 0;
 
     };
 

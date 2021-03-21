@@ -22,7 +22,8 @@ namespace urchin {
             void setProjectionMatricesShaderVar(const ShaderVar&);
             void setLightShadowMap(const LightShadowMap*);
 
-            void loadCustomShaderVariables(const Model*) override;
+            void setupMeshRenderer(const std::unique_ptr<GenericRendererBuilder>&) override;
+            void loadCustomShaderVariables(const std::unique_ptr<GenericRenderer>&) override;
 
         private:
             void updateProjectionMatrices();

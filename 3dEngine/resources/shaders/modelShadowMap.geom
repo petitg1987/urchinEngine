@@ -5,8 +5,8 @@
 #define MAX_VERTICES 0
 #define NUMBER_SHADOW_MAPS 0
 
-uniform mat4 projectionMatrix[NUMBER_SHADOW_MAPS];
-uniform int layersToUpdate;
+uniform mat4 projectionMatrix[NUMBER_SHADOW_MAPS]; //binding 2
+uniform int layersToUpdate; //binding 2
 
 layout(triangles) in;
 layout(triangle_strip, max_vertices = MAX_VERTICES) out;

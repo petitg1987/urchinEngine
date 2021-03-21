@@ -1,7 +1,10 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-uniform float ambientFactor;
+uniform mat4 mView; //binding 1 - not used
+uniform mat4 mModel; //binding 1 - not used
+uniform mat3 mNormal; //binding 1 - not used
+uniform float ambientFactor; //binding 1
 uniform sampler2D diffuseTex; //binding 20
 uniform sampler2D normalTex; //binding 21
 

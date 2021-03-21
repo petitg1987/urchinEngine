@@ -7,20 +7,19 @@
 
 namespace urchin {
 
-    ModelDisplayer::ModelDisplayer(Model *model, const Matrix4<float>& projectionMatrix, DisplayMode displayMode,
-                                   std::shared_ptr<RenderTarget> renderTarget, std::shared_ptr<Shader> shader) :
+    ModelDisplayer::ModelDisplayer(Model *model, const Matrix4<float>& projectionMatrix, DisplayMode displayMode, std::shared_ptr<RenderTarget> renderTarget,
+                                   std::shared_ptr<Shader> shader, CustomModelShaderVariable* customModelShaderVariable) :
             model(model),
             displayMode(displayMode),
             renderTarget(std::move(renderTarget)),
-            shader(std::move(shader)) {
+            shader(std::move(shader)),
+            customModelShaderVariable(customModelShaderVariable) {
 
         mProjectionShaderVar = ShaderVar(this->shader, "mProjection");
         mViewShaderVar = ShaderVar(this->shader, "mView");
         mModelShaderVar = ShaderVar(this->shader, "mModel");
-        if (displayMode == DEFAULT_MODE) {
-            mNormalShaderVar = ShaderVar(this->shader, "mNormal");
-            ambientFactorShaderVar = ShaderVar(this->shader, "ambientFactor");
-        }
+        mNormalShaderVar = ShaderVar(this->shader, "mNormal");
+        ambientFactorShaderVar = ShaderVar(this->shader, "ambientFactor");
 
         for (auto& constMesh : model->getConstMeshes()->getConstMeshes()) {
             auto meshRendererBuilder = std::make_unique<GenericRendererBuilder>(this->renderTarget, this->shader, ShapeType::TRIANGLE);
@@ -30,8 +29,16 @@ namespace urchin {
                 ->addData(&constMesh->getTextureCoordinates())
                 ->addData(&constMesh->getBaseNormals())
                 ->addData(&constMesh->getBaseTangents())
-                ->addShaderData(ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix)) //binding 0
-                ->indices(&constMesh->getTrianglesIndices());
+                ->indices(&constMesh->getTrianglesIndices())
+                ->addShaderData(ShaderDataSender(true).sendData(mProjectionShaderVar, projectionMatrix)) //binding 0
+                ->addShaderData(ShaderDataSender(true)
+                        .sendData(mViewShaderVar, meshData.viewMatrix)
+                        .sendData(mModelShaderVar, meshData.modelMatrix)
+                        .sendData(mNormalShaderVar, meshData.normalMatrix)
+                        .sendData(ambientFactorShaderVar, meshData.ambientFactor)); //binding 1
+            if (customModelShaderVariable) {
+                customModelShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 2
+            }
 
             if (displayMode == DEFAULT_MODE) {
                 TextureParam::ReadMode textureReadMode = constMesh->getMaterial()->isRepeatableTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
@@ -74,18 +81,22 @@ namespace urchin {
         }
     }
 
-    void ModelDisplayer::display(const Matrix4<float>& viewMatrix, CustomModelShaderVariable* customModelShaderVariable) const {
+    void ModelDisplayer::display(const Matrix4<float>& viewMatrix) const {
         unsigned int meshIndex = 0;
         for (auto& meshRenderer : meshRenderers) {
-            ShaderDataSender().sendData(mViewShaderVar, viewMatrix);
-            ShaderDataSender().sendData(mModelShaderVar, model->getTransform().getTransformMatrix());
-            if (displayMode == DEFAULT_MODE) {
-                const ConstMesh* constMesh = model->getConstMeshes()->getConstMesh(meshIndex);
-                ShaderDataSender().sendData(ambientFactorShaderVar, constMesh->getMaterial()->getAmbientFactor());
-                ShaderDataSender().sendData(mNormalShaderVar, model->getTransform().getTransformMatrix().toMatrix3().inverse().transpose());
-            }
-            if(customModelShaderVariable) {
-                customModelShaderVariable->loadCustomShaderVariables(model);
+            meshData.viewMatrix = viewMatrix;
+            meshData.modelMatrix = model->getTransform().getTransformMatrix();
+            meshData.normalMatrix = (displayMode == DEFAULT_MODE) ? model->getTransform().getTransformMatrix().toMatrix3().inverse().transpose() : Matrix3<float>();
+            meshData.ambientFactor = model->getConstMeshes()->getConstMesh(meshIndex)->getMaterial()->getAmbientFactor();
+
+            meshRenderer->updateShaderData(1, ShaderDataSender(true)
+                    .sendData(mViewShaderVar, meshData.viewMatrix)
+                    .sendData(mModelShaderVar, meshData.modelMatrix)
+                    .sendData(mNormalShaderVar, meshData.normalMatrix)
+                    .sendData(ambientFactorShaderVar, meshData.ambientFactor));
+
+            if (customModelShaderVariable) {
+                customModelShaderVariable->loadCustomShaderVariables(meshRenderer);
             }
 
             renderTarget->display(meshRenderer);
