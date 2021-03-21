@@ -29,6 +29,10 @@ namespace urchin {
     }
 
     void GeometryModel::refreshRenderer() {
+        if(!renderTarget) {
+            return;
+        }
+
         std::vector<Point3<float>> vertexArray = retrieveVertexArray();
 
         std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, shader, getShapeType());
@@ -98,7 +102,9 @@ namespace urchin {
     }
 
     void GeometryModel::display(const Matrix4<float>& viewMatrix) const {
-        assert(isInitialized);
+        if (!isInitialized) {
+            throw std::runtime_error("Geometry model must be initialized before call display");
+        }
 
         positioningData.viewModelMatrix = viewMatrix * modelMatrix;
         renderer->updateShaderData(0, ShaderDataSender()
