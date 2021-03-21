@@ -3,17 +3,20 @@
 
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/model/displayer/DisplayMode.h"
+#include "scene/renderer3d/camera/Camera.h"
+#include "CustomModelShaderVariable.h"
 
 namespace urchin {
 
     class ModelDisplayer : public Observer {
         public:
-            explicit ModelDisplayer(Model *, DisplayMode, std::shared_ptr<RenderTarget>, std::shared_ptr<Shader>);
+            explicit ModelDisplayer(Model *, const Matrix4<float>&, DisplayMode, std::shared_ptr<RenderTarget>, std::shared_ptr<Shader>);
             ~ModelDisplayer() override;
 
             void notify(Observable*, int) override;
+            void onCameraProjectionUpdate(const Camera*);
 
-            void display() const;
+            void display(const Matrix4<float>&, CustomModelShaderVariable*) const;
 
             void drawBBox(const Matrix4<float>&, const Matrix4<float>&) const;
             void drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const;
@@ -23,7 +26,7 @@ namespace urchin {
             DisplayMode displayMode;
             std::shared_ptr<RenderTarget> renderTarget;
             std::shared_ptr<Shader> shader;
-            ShaderVar mModelShaderVar, mNormalShaderVar, ambientFactorShaderVar;
+            ShaderVar mModelShaderVar, mNormalShaderVar, ambientFactorShaderVar, mViewShaderVar, mProjectionShaderVar;
 
             std::vector<std::unique_ptr<GenericRenderer>> meshRenderers;
     };

@@ -1,7 +1,7 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-uniform mat4 mProjection;
+uniform mat4 mProjection; //binding 0
 uniform mat4 mView;
 uniform mat4 mModel;
 uniform mat3 mNormal;

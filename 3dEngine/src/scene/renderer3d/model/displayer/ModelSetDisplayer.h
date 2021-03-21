@@ -53,7 +53,6 @@ namespace urchin {
             DisplayMode displayMode;
             std::shared_ptr<Shader> modelShader;
             Matrix4<float> projectionMatrix;
-            ShaderVar mProjectionShaderVar, mViewShaderVar;
 
             CustomModelShaderVariable* customModelShaderVariable;
 

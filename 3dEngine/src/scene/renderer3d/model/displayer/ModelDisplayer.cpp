@@ -7,11 +7,20 @@
 
 namespace urchin {
 
-    ModelDisplayer::ModelDisplayer(Model *model, DisplayMode displayMode, std::shared_ptr<RenderTarget> renderTarget, std::shared_ptr<Shader> shader) :
+    ModelDisplayer::ModelDisplayer(Model *model, const Matrix4<float>& projectionMatrix, DisplayMode displayMode,
+                                   std::shared_ptr<RenderTarget> renderTarget, std::shared_ptr<Shader> shader) :
             model(model),
             displayMode(displayMode),
             renderTarget(std::move(renderTarget)),
             shader(std::move(shader)) {
+
+        mProjectionShaderVar = ShaderVar(this->shader, "mProjection");
+        mViewShaderVar = ShaderVar(this->shader, "mView");
+        mModelShaderVar = ShaderVar(this->shader, "mModel");
+        if (displayMode == DEFAULT_MODE) {
+            mNormalShaderVar = ShaderVar(this->shader, "mNormal");
+            ambientFactorShaderVar = ShaderVar(this->shader, "ambientFactor");
+        }
 
         for (auto& constMesh : model->getConstMeshes()->getConstMeshes()) {
             auto meshRendererBuilder = std::make_unique<GenericRendererBuilder>(this->renderTarget, this->shader, ShapeType::TRIANGLE);
@@ -21,6 +30,7 @@ namespace urchin {
                 ->addData(&constMesh->getTextureCoordinates())
                 ->addData(&constMesh->getBaseNormals())
                 ->addData(&constMesh->getBaseTangents())
+                ->addShaderData(ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix)) //binding 0
                 ->indices(&constMesh->getTrianglesIndices());
 
             if (displayMode == DEFAULT_MODE) {
@@ -35,22 +45,17 @@ namespace urchin {
             meshRenderers.push_back(meshRendererBuilder->build());
         }
 
-        mModelShaderVar = ShaderVar(this->shader, "mModel");
-        if (displayMode == DEFAULT_MODE) {
-            mNormalShaderVar = ShaderVar(this->shader, "mNormal");
-            ambientFactorShaderVar = ShaderVar(this->shader, "ambientFactor");
-        } else if (displayMode == DEPTH_ONLY_MODE) {
-            mNormalShaderVar = ShaderVar();
-            ambientFactorShaderVar = ShaderVar();
-        } else {
-            throw std::invalid_argument("Unknown display mode: " + std::to_string(displayMode));
-        }
-
         model->addObserver(this, Model::MESH_UPDATED);
     }
 
     ModelDisplayer::~ModelDisplayer() {
         model->removeObserver(this, Model::MESH_UPDATED);
+    }
+
+    void ModelDisplayer::onCameraProjectionUpdate(const Camera* camera) {
+        for (auto& meshRenderer : meshRenderers) {
+            meshRenderer->updateShaderData(0, ShaderDataSender(true).sendData(mProjectionShaderVar, camera->getProjectionMatrix()));
+        }
     }
 
     void ModelDisplayer::notify(Observable* observable, int notificationType) {
@@ -69,17 +74,19 @@ namespace urchin {
         }
     }
 
-    void ModelDisplayer::display() const {
+    void ModelDisplayer::display(const Matrix4<float>& viewMatrix, CustomModelShaderVariable* customModelShaderVariable) const {
         unsigned int meshIndex = 0;
         for (auto& meshRenderer : meshRenderers) {
-            if (ambientFactorShaderVar.isValid()) {
+            ShaderDataSender().sendData(mViewShaderVar, viewMatrix);
+            ShaderDataSender().sendData(mModelShaderVar, model->getTransform().getTransformMatrix());
+            if (displayMode == DEFAULT_MODE) {
                 const ConstMesh* constMesh = model->getConstMeshes()->getConstMesh(meshIndex);
                 ShaderDataSender().sendData(ambientFactorShaderVar, constMesh->getMaterial()->getAmbientFactor());
-            }
-            if (displayMode == DEFAULT_MODE) {
                 ShaderDataSender().sendData(mNormalShaderVar, model->getTransform().getTransformMatrix().toMatrix3().inverse().transpose());
             }
-            ShaderDataSender().sendData(mModelShaderVar, model->getTransform().getTransformMatrix());
+            if(customModelShaderVariable) {
+                customModelShaderVariable->loadCustomShaderVariables(model);
+            }
 
             renderTarget->display(meshRenderer);
             meshIndex++;

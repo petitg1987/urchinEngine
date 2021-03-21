@@ -48,10 +48,6 @@ namespace urchin {
             throw std::invalid_argument("Unknown display mode: " + std::to_string(displayMode));
         }
 
-        //default matrix
-        projectionMatrix = Matrix4<float>();
-        ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix);
-
         this->renderTarget = std::move(renderTarget);
 
         isInitialized = true;
@@ -63,15 +59,14 @@ namespace urchin {
         shaderTokens.insert(geometryTokens.begin(), geometryTokens.end());
 
         modelShader = ShaderBuilder().createShader(vertexShaderName, geometryShaderName, fragmentShaderName, shaderTokens);
-
-        mProjectionShaderVar = ShaderVar(modelShader, "mProjection");
-        mViewShaderVar = ShaderVar(modelShader, "mView");
     }
 
     void ModelSetDisplayer::onCameraProjectionUpdate(const Camera* camera) {
         this->projectionMatrix = camera->getProjectionMatrix();
 
-        ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix);
+        for (auto& modelDisplayer : modelsDisplayer) {
+            modelDisplayer.second->onCameraProjectionUpdate(camera);
+        }
     }
 
     ShaderVar ModelSetDisplayer::getShaderVar(const std::string& name) const {
@@ -104,7 +99,8 @@ namespace urchin {
         for (auto model : models) {
             const auto& itModel = modelsDisplayer.find(model);
             if (itModel == modelsDisplayer.end()) {
-                modelsDisplayer.emplace(std::make_pair(model, std::make_unique<ModelDisplayer>(model, displayMode, renderTarget, modelShader)));
+                auto modelDisplayer = std::make_unique<ModelDisplayer>(model, projectionMatrix, displayMode, renderTarget, modelShader);
+                modelsDisplayer.emplace(std::make_pair(model, std::move(modelDisplayer)));
             }
         }
 
@@ -128,19 +124,12 @@ namespace urchin {
 
         if (!isInitialized) {
             throw std::runtime_error("Model displayer must be initialized before call display");
-        }
-        if (!renderTarget) {
+        } else if (!renderTarget) {
             throw std::runtime_error("Render target must be specified before call display");
         }
 
-        ShaderDataSender().sendData(mViewShaderVar, viewMatrix);
-
         for (const auto& model : models) {
-            if (customModelShaderVariable) {
-                customModelShaderVariable->loadCustomShaderVariables(model);
-            }
-
-            modelsDisplayer.at(model)->display();
+            modelsDisplayer.at(model)->display(viewMatrix, customModelShaderVariable);
         }
     }
 
