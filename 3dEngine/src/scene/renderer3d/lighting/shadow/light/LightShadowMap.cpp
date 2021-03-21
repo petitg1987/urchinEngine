@@ -95,9 +95,7 @@ namespace urchin {
         shadowModelSetDisplayer->initialize(renderTarget);
 
         delete shadowModelShaderVariable;
-        shadowModelShaderVariable = new ShadowModelShaderVariable();
-        shadowModelShaderVariable->setLayersToUpdateShaderVar(shadowModelSetDisplayer->getShaderVar("layersToUpdate"));
-        shadowModelShaderVariable->setProjectionMatricesShaderVar(shadowModelSetDisplayer->getShaderVar("projectionMatrix"));
+        shadowModelShaderVariable = new ShadowModelShaderVariable(this, shadowModelSetDisplayer->getShaderVar("projectionMatrix"), shadowModelSetDisplayer->getShaderVar("layersToUpdate"));
         shadowModelSetDisplayer->setCustomModelShaderVariable(shadowModelShaderVariable);
     }
 
@@ -172,9 +170,7 @@ namespace urchin {
     void LightShadowMap::displayModels() {
         renderTarget->resetDisplay();
 
-        shadowModelShaderVariable->setLightShadowMap(this); //TODO refresh call name
         shadowModelSetDisplayer->setModels(retrieveModels());
-
         shadowModelSetDisplayer->display(lightViewMatrix);
     }
 }

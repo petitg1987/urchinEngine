@@ -4,24 +4,12 @@
 
 namespace urchin {
 
-    ShadowModelShaderVariable::ShadowModelShaderVariable() :
+    ShadowModelShaderVariable::ShadowModelShaderVariable(const LightShadowMap* lightShadowMap, const ShaderVar& mModelProjectionMatrixShaderVar, const ShaderVar& layersToUpdateShaderVar) :
             CustomModelShaderVariable(),
-            lightShadowMap(nullptr) {
+            mModelProjectionMatrixShaderVar(mModelProjectionMatrixShaderVar),
+            layersToUpdateShaderVar(layersToUpdateShaderVar),
+            lightShadowMap(lightShadowMap) {
 
-    }
-
-    void ShadowModelShaderVariable::setLayersToUpdateShaderVar(const ShaderVar& layersToUpdateShaderVar) {
-        this->layersToUpdateShaderVar = layersToUpdateShaderVar;
-    }
-
-    void ShadowModelShaderVariable::setProjectionMatricesShaderVar(const ShaderVar& mModelProjectionMatrixShaderVar) {
-        this->mModelProjectionMatrixShaderVar = mModelProjectionMatrixShaderVar;
-    }
-
-    void ShadowModelShaderVariable::setLightShadowMap(const LightShadowMap* lightShadowMap) {
-        this->lightShadowMap = lightShadowMap;
-
-        updateProjectionMatrices();
     }
 
     void ShadowModelShaderVariable::setupMeshRenderer(const std::unique_ptr<GenericRendererBuilder>& meshRendererBuilder) {
@@ -31,6 +19,8 @@ namespace urchin {
     }
 
     void ShadowModelShaderVariable::loadCustomShaderVariables(const std::unique_ptr<GenericRenderer>& meshRenderer) { //TODO use struct
+        updateProjectionMatrices();
+
         meshRenderer->updateShaderData(2, ShaderDataSender()
                 .sendData(mModelProjectionMatrixShaderVar, (unsigned int)projectionMatrices.size(), &projectionMatrices[0])
                 .sendData(layersToUpdateShaderVar, (int)lightShadowMap->retrieveLayersToUpdate()));
@@ -38,11 +28,8 @@ namespace urchin {
 
     void ShadowModelShaderVariable::updateProjectionMatrices() {
         projectionMatrices.clear();
-
-        if (lightShadowMap != nullptr) {
-            for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
-                projectionMatrices.push_back(lightSplitShadowMap->getLightProjectionMatrix());
-            }
+        for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
+            projectionMatrices.push_back(lightSplitShadowMap->getLightProjectionMatrix());
         }
     }
 

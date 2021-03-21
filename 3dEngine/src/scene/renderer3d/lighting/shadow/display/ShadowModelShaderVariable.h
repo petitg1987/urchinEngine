@@ -16,11 +16,7 @@ namespace urchin {
     */
     class ShadowModelShaderVariable : public CustomModelShaderVariable {
         public:
-            ShadowModelShaderVariable();
-
-            void setLayersToUpdateShaderVar(const ShaderVar&);
-            void setProjectionMatricesShaderVar(const ShaderVar&);
-            void setLightShadowMap(const LightShadowMap*);
+            ShadowModelShaderVariable(const LightShadowMap*, const ShaderVar&, const ShaderVar&);
 
             void setupMeshRenderer(const std::unique_ptr<GenericRendererBuilder>&) override;
             void loadCustomShaderVariables(const std::unique_ptr<GenericRenderer>&) override;
@@ -28,7 +24,7 @@ namespace urchin {
         private:
             void updateProjectionMatrices();
 
-            ShaderVar layersToUpdateShaderVar, mModelProjectionMatrixShaderVar;
+            ShaderVar mModelProjectionMatrixShaderVar, layersToUpdateShaderVar;
             const LightShadowMap* lightShadowMap;
 
             std::vector<Matrix4<float>> projectionMatrices;
