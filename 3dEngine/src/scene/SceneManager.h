@@ -8,7 +8,7 @@
 
 #include "renderer3d/Renderer3d.h"
 #include "scene/UI/UIRenderer.h"
-#include "graphic/GraphicService.h"
+#include "graphic/setup/GraphicService.h"
 #include "graphic/render/target/ScreenRender.h"
 
 #define NUM_RENDERER 2
@@ -17,7 +17,7 @@ namespace urchin {
 
     class SceneManager {
         public:
-            SceneManager();
+            SceneManager(const std::vector<const char*>&, const std::unique_ptr<SurfaceCreator>&, std::unique_ptr<FramebufferSizeRetriever>);
             ~SceneManager();
 
             //scene properties
@@ -52,9 +52,6 @@ namespace urchin {
 
         private:
             void computeFps();
-
-            //graphic
-            GraphicService graphicService;
 
             //scene properties
             unsigned int sceneWidth, sceneHeight;

@@ -1,6 +1,7 @@
 #include <string>
 
 #include "SceneManager.h"
+#include "graphic/render/target/RenderTarget.h"
 
 #define START_FPS 1000.0f //high number of FPS to avoid pass through the ground at startup
 #define RENDERER_3D 0
@@ -9,17 +10,19 @@
 
 namespace urchin {
 
-    SceneManager::SceneManager() :
+    SceneManager::SceneManager(const std::vector<const char*>& windowRequiredExtensions,
+                               const std::unique_ptr<SurfaceCreator>& surfaceCreator,
+                               std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever) :
             sceneWidth(500),
             sceneHeight(500),
-            screenRenderTarget(std::make_shared<ScreenRender>()),
+            screenRenderTarget(std::make_shared<ScreenRender>(RenderTarget::NO_DEPTH_ATTACHMENT, false)), //TODO use last param correctly
             activeRenderers(),
             previousFps(),
             fps(START_FPS),
             fpsForDisplay(START_FPS) {
         //initialize
         SignalHandler::instance()->initialize();
-        graphicService.initializeGraphic();
+        GraphicService::instance()->initialize(windowRequiredExtensions, surfaceCreator, std::move(framebufferSizeRetriever));
 
         //initialize fps
         previousFps.fill(START_FPS);
@@ -50,7 +53,7 @@ namespace urchin {
             this->sceneHeight = sceneHeight;
 
             //renderer
-            screenRenderTarget->onResize(sceneWidth, sceneHeight);
+            screenRenderTarget->onResize();
             for (auto& activeRenderer : activeRenderers) {
                 if (activeRenderer) {
                     activeRenderer->onResize(sceneWidth, sceneHeight);
@@ -215,8 +218,6 @@ namespace urchin {
                 activeRenderer->display(dt);
             }
         }
-
-        graphicService.logErrors();
     }
 
 }

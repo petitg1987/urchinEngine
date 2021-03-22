@@ -11,6 +11,10 @@
   * **OPTIMIZATION** (`minor`): Avoid sending shader variables values at each frame when there is no change in Renderer3d#deferredGeometryRendering()
   * **NEW FEATURE** (`minor`): Alpha management
   * **OPTIMIZATION** (`minor`): Textures compression
+  * **OPTIMIZATION** (`minor`): Use shader constants (VkPipelineShaderStageCreateInfo.pSpecializationInfo) instead of uniform for values infrequently refreshed
+  * **OPTIMIZATION** (`minor`): Use pipeline derivatives (VkGraphicsPipelineCreateInfo.basePipelineHandle)
+  * **OPTIMIZATION** (`medium`): Check secondary command buffers usage for better performance
+  * **OPTIMIZATION** (`medium`): Use same pipeline (vkCmdBindPipeline) in models displayer instead of one by model
 * Model
   * **OPTIMIZATION** (`major`): Use instantiation mechanism when identical models are displayed several times in the scene
   * **OPTIMIZATION** (`medium`): Regroup draw calls / shaders when possible
@@ -32,6 +36,7 @@
   * **NEW FEATURE** (`minor`): Implement PCSS
   * **OPTIMIZATION** (`minor`): Use models LOD
   * **OPTIMIZATION** (`medium`): Create shadow map texture only for visible lights
+    **OPTIMIZATION** (`medium`): Check if the fields of VkPipelineRasterizationStateCreateInfo can be used to improve the performances.  
 * Terrain
   * **OPTIMIZATION** (`medium`): Terrain class should have methods for LOD (usable for physics and AI)
   * **NEW FEATURE** (`medium`): Use material textures (normal map...) for terrain

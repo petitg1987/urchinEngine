@@ -1,16 +1,50 @@
 #ifndef URCHINENGINE_SCREENRENDER_H
 #define URCHINENGINE_SCREENRENDER_H
 
+#include <vector>
+#include <vulkan/vulkan.h>
+
 #include "graphic/render/target/RenderTarget.h"
+#include "graphic/render/handler/SwapChainHandler.h"
 
 namespace urchin {
 
     class ScreenRender : public RenderTarget {
         public:
-            ~ScreenRender() override = default;
+            ScreenRender(DepthAttachmentType, bool);
+            ~ScreenRender() override;
 
-            void resetDisplay() const override;
-            void display(const std::unique_ptr<GenericRenderer>&) const override;
+            void initialize() override;
+            void cleanup() override;
+
+            unsigned int getWidth() const override;
+            unsigned int getHeight() const override;
+            std::size_t getNumFramebuffer() const override;
+
+            void render() override;
+
+        private:
+            void createImageViews();
+            void destroyImageViews();
+            void createRenderPass();
+            void createFramebuffers();
+            void createSyncObjects();
+            void destroySyncObjects();
+
+            void updateGraphicData(uint32_t);
+            void waitCommandBuffersIdle() const override;
+
+            bool isInitialized;
+            bool verticalSyncEnabled;
+
+            SwapChainHandler swapChainHandler;
+            std::vector<VkImageView> swapChainImageViews;
+
+            static const std::size_t MAX_CONCURRENT_FRAMES;
+            std::vector<VkSemaphore> imageAvailableSemaphores;
+            std::vector<VkSemaphore> renderFinishedSemaphores;
+            std::vector<VkFence> commandBufferFences;
+            std::vector<VkFence> imagesFences;
     };
 
 }

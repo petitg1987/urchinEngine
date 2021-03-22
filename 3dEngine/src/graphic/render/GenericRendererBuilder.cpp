@@ -1,4 +1,6 @@
-#include "graphic/render/GenericRendererBuilder.h"
+#include <utility>
+
+#include "GenericRendererBuilder.h"
 
 namespace urchin {
 
@@ -7,12 +9,11 @@ namespace urchin {
             shader(std::move(shader)),
             shapeType(shapeType),
             transparencyEnabled(false),
-            depthTestEnabled(false),
+            depthOperationsEnabled(false),
             cullFaceEnabled(true),
             pPolygonMode(PolygonMode::FILL),
             pOutlineSize(1.0f) {
-        assert(this->shader);
-        assert(this->renderTarget);
+
     }
 
     const std::shared_ptr<RenderTarget>& GenericRendererBuilder::getRenderTarget() const {
@@ -27,49 +28,71 @@ namespace urchin {
         return shapeType;
     }
 
-    GenericRendererBuilder* GenericRendererBuilder::addData(const std::vector<Point2<float>>* dataPtr) {
-        GenericRenderer::Data dataValue{DataType::FLOAT, DataDimension::TWO_DIMENSION, &(*dataPtr)[0], dataPtr->size()};
-        data.push_back(dataValue);
+    GenericRendererBuilder* GenericRendererBuilder::addData(const std::vector<Point2<float>>& dataPtr) {
+        data.emplace_back(DataContainer(DataType::FLOAT, DataDimension::TWO_DIMENSION, dataPtr.size(), dataPtr.data()));
         return this;
     }
 
-    GenericRendererBuilder* GenericRendererBuilder::addData(const std::vector<Point3<float>>* dataPtr) {
-        GenericRenderer::Data dataValue{DataType::FLOAT, DataDimension::THREE_DIMENSION, &(*dataPtr)[0], dataPtr->size()};
-        data.push_back(dataValue);
+    GenericRendererBuilder* GenericRendererBuilder::addData(const std::vector<Point3<float>>& dataPtr) {
+        data.emplace_back(DataContainer(DataType::FLOAT, DataDimension::THREE_DIMENSION, dataPtr.size(), dataPtr.data()));
         return this;
     }
 
-    GenericRendererBuilder* GenericRendererBuilder::addData(const std::vector<Vector3<float>>* dataPtr) {
-        addData(reinterpret_cast<const std::vector<Point3<float>>*>(dataPtr));
+    GenericRendererBuilder* GenericRendererBuilder::addData(const std::vector<Vector3<float>>& dataPtr) {
+        data.emplace_back(DataContainer(DataType::FLOAT, DataDimension::THREE_DIMENSION, dataPtr.size(), dataPtr.data()));
         return this;
     }
 
-    const std::vector<GenericRenderer::Data>& GenericRendererBuilder::getData() const {
+    const std::vector<DataContainer>& GenericRendererBuilder::getData() const {
         return data;
     }
 
-    GenericRendererBuilder* GenericRendererBuilder::indices(const std::vector<unsigned int>* indices) {
-        pIndices.ptr = &(*indices)[0];
-        pIndices.indicesCount = indices->size();
-        pIndices.hasPrimitiveRestartIndex = false;
-
-        for (unsigned int index : (*indices)) {
+    GenericRendererBuilder* GenericRendererBuilder::indices(const std::vector<uint32_t>& indices) {
+        bool hasPrimitiveRestartIndex = false;
+        for (uint32_t index : indices) {
             if (index == GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE) {
-                pIndices.hasPrimitiveRestartIndex = true;
+                hasPrimitiveRestartIndex = true;
                 break;
             }
         }
 
+        pIndices = std::make_shared<IndexContainer>(indices.size(), indices.data(), hasPrimitiveRestartIndex);
         return this;
     }
 
-    const GenericRenderer::Indices& GenericRendererBuilder::getIndices() const {
+    const std::shared_ptr<IndexContainer>& GenericRendererBuilder::getIndices() const {
         return pIndices;
     }
 
-    GenericRendererBuilder* GenericRendererBuilder::addShaderData(ShaderDataSender &) {
-        //fake method to prepare to the Vulkan migration
+    /**
+     * @param dataPtr Shader data pointer. Data must be memory aligned with "alignas(N)" expression using std140 alignment:
+     *   - N=4 for scalar
+     *   - N=8 for Vector2
+     *   - N=16 for Point3, Point4, Vector3, Vector4, Matrix3, Matrix4
+     *   - N=16 for embedded struct
+     *   - N=16 for an array (important: the array elements are rounded up to 16 bytes. Therefore, an array of float (4 bytes) in C++ won't match an array of float in the shader.)
+     */
+    GenericRendererBuilder* GenericRendererBuilder::addShaderData(std::size_t dataSize, void* dataPtr) {
+        shaderData.emplace_back(ShaderDataContainer(dataSize, dataPtr));
         return this;
+    }
+
+    const std::vector<ShaderDataContainer> &GenericRendererBuilder::getShaderData() const {
+        return shaderData;
+    }
+
+    GenericRendererBuilder* GenericRendererBuilder::addTextureReader(const std::shared_ptr<TextureReader>& textureReader) {
+        textureReaders.push_back({textureReader});
+        return this;
+    }
+
+    GenericRendererBuilder* GenericRendererBuilder::addTextureReaderArray(const std::vector<std::shared_ptr<TextureReader>>& textureReadersArray) {
+        textureReaders.push_back(textureReadersArray);
+        return this;
+    }
+
+    const std::vector<std::vector<std::shared_ptr<TextureReader>>>& GenericRendererBuilder::getTextureReaders() const {
+        return textureReaders;
     }
 
     GenericRendererBuilder* GenericRendererBuilder::enableTransparency() {
@@ -81,13 +104,13 @@ namespace urchin {
         return transparencyEnabled;
     }
 
-    GenericRendererBuilder* GenericRendererBuilder::enableDepthTest() {
-        this->depthTestEnabled = true;
+    GenericRendererBuilder* GenericRendererBuilder::enableDepthOperations() {
+        this->depthOperationsEnabled = true;
         return this;
     }
 
-    bool GenericRendererBuilder::isDepthTestEnabled() const {
-        return depthTestEnabled;
+    bool GenericRendererBuilder::isDepthOperationsEnabled() const {
+        return depthOperationsEnabled;
     }
 
     GenericRendererBuilder* GenericRendererBuilder::disableCullFace() {
@@ -115,15 +138,6 @@ namespace urchin {
 
     float GenericRendererBuilder::getOutlineSize() const {
         return pOutlineSize;
-    }
-
-    GenericRendererBuilder* GenericRendererBuilder::addTextureReader(const TextureReader& texture) {
-        textures.push_back(texture);
-        return this;
-    }
-
-    const std::vector<TextureReader>& GenericRendererBuilder::getTextureReaders() const {
-        return textures;
     }
 
     std::unique_ptr<GenericRenderer> GenericRendererBuilder::build() {

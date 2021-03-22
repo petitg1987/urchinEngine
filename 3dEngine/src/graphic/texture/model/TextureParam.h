@@ -1,6 +1,8 @@
 #ifndef URCHINENGINE_TEXTUREPARAM_H
 #define URCHINENGINE_TEXTUREPARAM_H
 
+#include <vulkan/vulkan.h>
+
 namespace urchin {
 
     class TextureParam {
@@ -20,23 +22,33 @@ namespace urchin {
                 ANISOTROPY
             };
 
+            TextureParam(ReadMode, ReadQuality, Anisotropy);
+            ~TextureParam();
+
             static TextureParam buildNearest();
             static TextureParam buildLinear();
             static TextureParam buildRepeatNearest();
             static TextureParam buildRepeatLinear();
             static TextureParam build(ReadMode, ReadQuality, Anisotropy);
 
-            int getGlReadMode() const;
-            int getGlReadQuality(bool) const;
+            void initialize(uint32_t);
+            void cleanup();
 
-            bool needAnisotropy() const;
+            VkSampler getTextureSampler() const;
 
         private:
-            TextureParam(ReadMode, ReadQuality, Anisotropy);
+            VkSamplerAddressMode getVkReadMode() const;
+            VkFilter getVkReadQuality() const;
+            VkSamplerMipmapMode getVkMipmapReadQuality() const;
+            bool needAnisotropy() const;
+
+            bool isInitialized;
 
             ReadMode readMode;
             ReadQuality readQuality;
             Anisotropy anisotropy;
+
+            VkSampler textureSampler;
     };
 
 }

@@ -1,79 +1,160 @@
-#include "libs/glad/glad.h"
 #include "OffscreenRender.h"
+#include "graphic/helper/ImageHelper.h"
+#include "graphic/setup/GraphicService.h"
+#include "graphic/render/GenericRenderer.h"
 
 namespace urchin {
 
-    OffscreenRender::OffscreenRender() :
-            framebufferId(0) {
-        glGenFramebuffers(1, &framebufferId);
+    OffscreenRender::OffscreenRender(DepthAttachmentType depthAttachmentType) :
+            RenderTarget(depthAttachmentType),
+            isInitialized(false),
+            commandBufferFence(nullptr) {
 
-        glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
-        glReadBuffer(GL_NONE);
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
     OffscreenRender::~OffscreenRender() {
-        glDeleteFramebuffers(1, &framebufferId);
+        if(isInitialized) {
+            Logger::instance()->logWarning("Offscreen render not cleanup before destruction");
+            OffscreenRender::cleanup();
+        }
     }
 
     void OffscreenRender::addTexture(const std::shared_ptr<Texture>& texture) {
-        glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
+        assert(!isInitialized);
 
-        if (texture->getTextureFormat() == TextureFormat::DEPTH_32_FLOAT) {
-            if (depthTexture) {
-                throw std::runtime_error("Offscreen renderer doesn't support several depth textures attachment.");
-            }
-
-            depthTexture = texture;
-
-            glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTexture->getTextureId(), 0);
-        } else {
-            textures.push_back(texture);
-
-            unsigned int attachmentIndex = GL_COLOR_ATTACHMENT0 + (unsigned int)textures.size() - 1;
-            glFramebufferTexture(GL_FRAMEBUFFER, attachmentIndex, texture->getTextureId(), 0);
-
-            attachmentsIndices.emplace_back(attachmentIndex);
-            glDrawBuffers((int)attachmentsIndices.size(), &attachmentsIndices[0]);
-        }
-
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        texture->enableTextureWriting();
+        texture->initialize();
+        textures.push_back(texture);
     }
 
-    void OffscreenRender::removeAllTextures() {
-        glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
-
-        glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, 0, 0);
-        for (unsigned int i = 0; i < attachmentsIndices.size(); ++i) {
-            glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, 0, 0);
-        }
-        glDrawBuffers(0, &attachmentsIndices[0]);
-
-        depthTexture = nullptr;
-
+    void OffscreenRender::resetTextures() {
         textures.clear();
-        attachmentsIndices.clear();
-
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        cleanup();
     }
 
-    void OffscreenRender::resetDisplay() const {
-        glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
+    void OffscreenRender::initialize() {
+        assert(!isInitialized);
+        assert(!textures.empty());
 
-        glClear((unsigned int)GL_DEPTH_BUFFER_BIT | (unsigned int)GL_COLOR_BUFFER_BIT);
+        RenderTarget::initialize();
+        createRenderPass();
+        createDepthResources();
+        createFramebuffers();
+        createCommandPool();
+        createCommandBuffers();
+        createSyncObjects();
 
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        isInitialized = true;
     }
 
-    void OffscreenRender::display(const std::unique_ptr<GenericRenderer>& renderer) const {
-        renderer->getShader()->bind();
+    void OffscreenRender::cleanup() {
+        assert(isInitialized);
 
-        glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
-        glViewport(0, 0, (int)getTargetWidth(), (int)getTargetHeight());
+        vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
 
-        executeRenderer(renderer);
+        destroySyncObjects();
+        destroyCommandBuffersAndPool();
+        destroyFramebuffers();
+        destroyDepthResources();
+        destroyRenderPass();
+        RenderTarget::cleanup();
 
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        isInitialized = false;
+    }
+
+    unsigned int OffscreenRender::getWidth() const {
+        return textures[0]->getWidth();
+    }
+
+    unsigned int OffscreenRender::getHeight() const {
+        return textures[0]->getHeight();
+    }
+
+    std::size_t OffscreenRender::getNumFramebuffer() const {
+        return 1;
+    }
+
+    void OffscreenRender::createRenderPass() {
+        std::vector<VkAttachmentDescription> attachments;
+
+        VkAttachmentReference depthAttachmentRef{};
+        if (hasDepthAttachment()) {
+            attachments.emplace_back(buildDepthAttachment(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL));
+            depthAttachmentRef.attachment = (uint32_t)attachments.size() - 1;
+            depthAttachmentRef.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+        }
+
+        for(const auto& texture : textures) {
+            attachments.emplace_back(buildAttachment(texture->getVkFormat(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL));
+        }
+        VkAttachmentReference colorAttachmentRef{};
+        colorAttachmentRef.attachment = (uint32_t )attachments.size() - 1;
+        colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+        RenderTarget::createRenderPass(depthAttachmentRef, colorAttachmentRef, attachments);
+    }
+
+    void OffscreenRender::createFramebuffers() {
+        std::vector<VkImageView> attachments;
+        if (hasDepthAttachment()) {
+            attachments.emplace_back(depthTexture->getImageView());
+        }
+        for(const auto& texture : textures) {
+            attachments.emplace_back(texture->getImageView());
+        }
+
+        RenderTarget::addNewFrameBuffer(attachments);
+    }
+
+    void OffscreenRender::createSyncObjects() {
+        VkFenceCreateInfo fenceInfo{};
+        fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+        fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
+
+        VkResult fenceResult = vkCreateFence(GraphicService::instance()->getDevices().getLogicalDevice(), &fenceInfo, nullptr, &commandBufferFence);
+        if (fenceResult != VK_SUCCESS) {
+            throw std::runtime_error("Failed to create fences with error code: " + std::to_string(fenceResult));
+        }
+    }
+
+    void OffscreenRender::destroySyncObjects() {
+        vkDestroyFence(GraphicService::instance()->getDevices().getLogicalDevice(), commandBufferFence, nullptr);
+    }
+
+    void OffscreenRender::render() {
+        assert(!renderers.empty());
+        auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
+
+        updateGraphicData();
+        updateCommandBuffers();
+
+        VkSubmitInfo submitInfo{};
+        submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+        submitInfo.waitSemaphoreCount = 0;
+        submitInfo.pWaitSemaphores = nullptr;
+        submitInfo.pWaitDstStageMask = nullptr;
+        submitInfo.commandBufferCount = 1;
+        submitInfo.pCommandBuffers = &commandBuffers[0];
+        submitInfo.signalSemaphoreCount = 0;
+        submitInfo.pSignalSemaphores = nullptr;
+
+        vkResetFences(logicalDevice, 1, &commandBufferFence); //ensure fence is reset just before use it
+        VkResult result = vkQueueSubmit(GraphicService::instance()->getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFence);
+        if (result != VK_SUCCESS) {
+            throw std::runtime_error("Failed to submit draw command buffer with error code: " + std::to_string(result));
+        }
+
+        vkQueueWaitIdle(GraphicService::instance()->getQueues().getGraphicsQueue());
+    }
+
+    void OffscreenRender::updateGraphicData() {
+        for (auto &renderer : renderers) {
+            renderer->updateGraphicData(0);
+        }
+    }
+
+    void OffscreenRender::waitCommandBuffersIdle() const {
+        vkWaitForFences(GraphicService::instance()->getDevices().getLogicalDevice(), 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
     }
 
 }

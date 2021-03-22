@@ -1,6 +1,13 @@
 # Environment setup 
 ## Linux
 * Install libraries from Ubuntu package: `sudo apt install qt5-default qtbase5-dev libglew-dev libopenal-dev libsndfile1-dev libfreetype6-dev libcppunit-dev`
+* Install Vulkan library:
+  ```
+  wget -qO - http://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo apt-key add -
+  sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-bionic.list http://packages.lunarg.com/vulkan/lunarg-vulkan-bionic.list
+  sudo apt update
+  sudo apt install vulkan-tools libvulkan-dev vulkan-validationlayers-dev spirv-tools vulkan-sdk
+  ```
 * Install curl library (custom static library only for HTTP/HTTPS protocols):
   ```
   sudo apt install libssl-dev libnghttp2-dev
@@ -38,6 +45,12 @@
   * Rename the copied lib from OpenAL32.lib to libOpenAL32.dll.a
   * *Info*: OpenAL32.dll is in "C:\Windows\System32\OpenAL32.dll" and soft_oal.dll can be downloaded on https://community.pcgamingwiki.com/files/file/7-openal-soft/
   * Uninstall OpenAL and OpenAL SDK applications
+* Install Vulkan library:
+  * Download Vulkan SDK for Windows: https://vulkan.lunarg.com/sdk/home#windows
+  * Install Vulkan SDK in default folder (C:\VulkanSDK)
+  * Copy lib & include respectively in "C:\msys64\mingw64\lib" and in "C:\msys64\mingw64\x86_64-w64-mingw32\include"
+  * *Info*: shaderc_shared.dll is in "C:\VulkanSDK\Bin\shaderc_shared.dll" and vuklan-1.dll can be downloaded on https://fr.dll-files.com/vulkan-1.dll.html
+  * *Info*: Don't uninstall Vulkan SDK application because is is required for validation layer  
 * Install sndfile library:
   * Download: http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28-w64.zip
   * Copy lib & include respectively in "C:\msys64\mingw64\lib" & "C:\msys64\mingw64\x86_64-w64-mingw32\include"
