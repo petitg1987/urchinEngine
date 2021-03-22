@@ -32,7 +32,7 @@
 #include "scene/UI/widget/textbox/TextBox.h"
 #include "scene/UI/widget/slider/Slider.h"
 
-#include "graphic/shader/config/ShaderConfig.h"
+#include "graphic/render/shader/config/ShaderConfig.h"
 
 #include "resources/geometry/GeometryModel.h"
 #include "resources/geometry/aabbox/AABBoxModel.h"

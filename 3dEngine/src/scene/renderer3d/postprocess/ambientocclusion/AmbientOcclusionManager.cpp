@@ -93,8 +93,8 @@ namespace urchin {
         textureSizeY = (unsigned int)(resolution.Y / (float)retrieveTextureSizeFactor());
         ambientOcclusionTexture = Texture::build(textureSizeX, textureSizeY, TextureFormat::GRAYSCALE_16_FLOAT, nullptr);
 
-        offscreenRenderTarget = std::make_unique<OffscreenRender>();
-        offscreenRenderTarget->onResize(textureSizeX, textureSizeY);
+        offscreenRenderTarget = std::make_unique<OffscreenRender>(RenderTarget::NO_DEPTH_ATTACHMENT);
+        offscreenRenderTarget->onResize();
         offscreenRenderTarget->addTexture(ambientOcclusionTexture);
 
         if (isBlurActivated) {
@@ -139,7 +139,7 @@ namespace urchin {
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addShaderData(sizeof(positioningData), &positioningData) //binding 0
-                ->addShaderData(ShaderDataSender().sendData(samplesShaderVar, (unsigned int)ssaoKernel.size(), &ssaoKernel[0])) //binding 1
+                ->addShaderData(sizeof(Vector4<float>) * ssaoKernel.size(), ssaoKernel.data()) //binding 1
                 ->addShaderData(sizeof(resolution), &resolution) //binding 2
                 ->addTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()))
                 ->addTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))

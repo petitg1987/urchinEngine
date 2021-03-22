@@ -119,12 +119,10 @@ namespace urchin {
             LightManager* lightManager;
 
             AmbientOcclusionManager* ambientOcclusionManager;
-            int ambientOcclusionTexUnit;
 
             ShadowManager* shadowManager;
-            int shadowMapTexUnitStart, shadowMapTexUnitEnd;
 
-            std::shared_ptr<Texture> depthTexture, diffuseTexture, normalAndAmbientTexture, lightingPassTexture;
+            std::shared_ptr<Texture> diffuseTexture, normalAndAmbientTexture, lightingPassTexture;
 
             //lighting pass rendering
             std::shared_ptr<OffscreenRender> offscreenLightingRenderTarget;

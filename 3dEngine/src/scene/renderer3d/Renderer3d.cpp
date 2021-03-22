@@ -31,7 +31,7 @@ namespace urchin {
             camera(nullptr),
 
             //deferred rendering
-            deferredRenderTarget(std::make_shared<OffscreenRender>()),
+            deferredRenderTarget(std::make_shared<OffscreenRender>(RenderTarget::READ_WRITE_DEPTH_ATTACHMENT)),
             modelSetDisplayer(new ModelSetDisplayer(DisplayMode::DEFAULT_MODE)),
             modelOctreeManager(new OctreeManager<Model>(DEFAULT_OCTREE_MIN_SIZE)),
             fogManager(new FogManager()),
@@ -41,13 +41,10 @@ namespace urchin {
             geometryManager(new GeometryManager(deferredRenderTarget)),
             lightManager(new LightManager(deferredRenderTarget)),
             ambientOcclusionManager(new AmbientOcclusionManager()),
-            ambientOcclusionTexUnit(-1),
             shadowManager(new ShadowManager(lightManager, modelOctreeManager)),
-            shadowMapTexUnitStart(-1),
-            shadowMapTexUnitEnd(-1),
 
             //lighting pass rendering
-            offscreenLightingRenderTarget(std::make_shared<OffscreenRender>()),
+            offscreenLightingRenderTarget(std::make_shared<OffscreenRender>(RenderTarget::NO_DEPTH_ATTACHMENT)),
             positioningData({}),
             visualOption({}),
             antiAliasingManager(new AntiAliasingManager(this->finalRenderTarget)),
@@ -93,29 +90,6 @@ namespace urchin {
         tokens["SHADOW_MAP_BIAS"] = std::to_string(shadowManager->getShadowMapBias());
         tokens["OUTPUT_LOCATION"] = "0"; // isAntiAliasingActivated ? "0" /*TEX_LIGHTING_PASS*/ : "0" /*Screen*/;
         lightingShader = ShaderBuilder::createShader("lighting.vert", "", "lighting.frag", tokens);
-
-        int depthTexUnit = 0;
-        int diffuseTexUnit = 1;
-        int normalAndAmbientTexUnit = 2;
-        ambientOcclusionTexUnit = 3;
-        shadowMapTexUnitStart = 4;
-        shadowMapTexUnitEnd = shadowMapTexUnitStart + (int)shadowManager->getMaxShadowLights();
-        ShaderDataSender()
-                .sendData(ShaderVar(lightingShader, "depthTex"), depthTexUnit) //binding 20
-                .sendData(ShaderVar(lightingShader, "colorTex"), diffuseTexUnit) //binding 21
-                .sendData(ShaderVar(lightingShader, "normalAndAmbientTex"), normalAndAmbientTexUnit) //binding 22
-                .sendData(ShaderVar(lightingShader, "ambientOcclusionTex"), ambientOcclusionTexUnit); //binding 23
-        for (int shadowMapTexUnit = shadowMapTexUnitStart, i = 0; shadowMapTexUnit <= shadowMapTexUnitEnd; ++shadowMapTexUnit, ++i) {
-            ShaderDataSender().sendData(ShaderVar(lightingShader, "shadowMapTex[" + std::to_string(i) + "]"), shadowMapTexUnit); //binding 24
-        }
-
-        mInverseViewProjectionShaderVar = ShaderVar(lightingShader, "mInverseViewProjection");
-        viewPositionShaderVar = ShaderVar(lightingShader, "viewPosition");
-
-        //managers
-        fogManager->initiateShaderVariables(lightingShader);
-        lightManager->initiateShaderVariables(lightingShader);
-        shadowManager->initiateShaderVariables(lightingShader);
 
         refreshRenderer();
     }
@@ -320,19 +294,17 @@ namespace urchin {
 
     void Renderer3d::refreshRenderer() {
         //deferred rendering
-        depthTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::DEPTH_32_FLOAT, nullptr);
         diffuseTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
         normalAndAmbientTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
-        deferredRenderTarget->onResize(sceneWidth, sceneHeight);
-        deferredRenderTarget->removeAllTextures();
-        deferredRenderTarget->addTexture(depthTexture);
+        deferredRenderTarget->onResize();
+        deferredRenderTarget->resetTextures();
         deferredRenderTarget->addTexture(diffuseTexture);
         deferredRenderTarget->addTexture(normalAndAmbientTexture);
 
         //lighting pass rendering
         lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
-        offscreenLightingRenderTarget->onResize(sceneWidth, sceneHeight);
-        offscreenLightingRenderTarget->removeAllTextures();
+        offscreenLightingRenderTarget->onResize();
+        offscreenLightingRenderTarget->resetTextures();
         offscreenLightingRenderTarget->addTexture(lightingPassTexture);
 
         const auto& renderTarget = isAntiAliasingActivated ? offscreenLightingRenderTarget : finalRenderTarget;
@@ -347,31 +319,27 @@ namespace urchin {
 
         auto lightingRendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, lightingShader, ShapeType::TRIANGLE);
         lightingRendererBuilder
-                ->addData(&vertexCoord)
-                ->addData(&textureCoord)
-                ->addShaderData(ShaderDataSender()
-                        .sendData(mInverseViewProjectionShaderVar, positioningData.inverseProjectionViewMatrix)
-                        .sendData(viewPositionShaderVar, positioningData.viewPosition)) //binding 0
-                ->addShaderData(ShaderDataSender()
-                        .sendData(ShaderVar(lightingShader, "hasShadow"), visualOption.isShadowActivated)
-                        .sendData(ShaderVar(lightingShader, "hasAmbientOcclusion"), visualOption.isAmbientOcclusionActivated)); //binding 1
+                ->addData(vertexCoord)
+                ->addData(textureCoord)
+                ->addShaderData(sizeof(positioningData), &positioningData) //binding 0
+                ->addShaderData(sizeof(visualOption), &visualOption); //binding 1
         lightManager->setupLightingRenderer(lightingRendererBuilder); //binding 2 & 3
         shadowManager->setupLightingRenderer(lightingRendererBuilder); //binding 4 & 5
         fogManager->setupLightingRenderer(lightingRendererBuilder); //binding 6
 
         lightingRendererBuilder
-                ->addTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()))
+                ->addTextureReader(TextureReader::build(deferredRenderTarget->getDepthTexture(), TextureParam::buildNearest()))
                 ->addTextureReader(TextureReader::build(diffuseTexture, TextureParam::buildNearest()))
                 ->addTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
                 ->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //ambient occlusion
-        for (int i = shadowMapTexUnitStart; i <= shadowMapTexUnitEnd; ++i) {
+        for (unsigned int i = 0; i <= shadowManager->getMaxShadowLights(); ++i) {
             lightingRendererBuilder->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //shadow maps
         }
 
         lightingRenderer = lightingRendererBuilder->build();
 
         ambientOcclusionManager->onResize(sceneWidth, sceneHeight);
-        ambientOcclusionManager->onTexturesUpdate(depthTexture, normalAndAmbientTexture);
+        ambientOcclusionManager->onTexturesUpdate(deferredRenderTarget->getDepthTexture(), normalAndAmbientTexture);
 
         antiAliasingManager->onResize(sceneWidth, sceneHeight);
         antiAliasingManager->onTextureUpdate(lightingPassTexture);
@@ -380,7 +348,7 @@ namespace urchin {
     void Renderer3d::displayBuffers() {
         if (DEBUG_DISPLAY_DEPTH_BUFFER) {
             float depthIntensity = 5.0f;
-            TextureRenderer textureRenderer(depthTexture, TextureRenderer::DEPTH_VALUE, depthIntensity);
+            TextureRenderer textureRenderer(deferredRenderTarget->getDepthTexture(), TextureRenderer::DEPTH_VALUE, depthIntensity);
             textureRenderer.setPosition(TextureRenderer::LEFT, TextureRenderer::TOP);
             textureRenderer.initialize(finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureRenderer.display();
@@ -464,7 +432,7 @@ namespace urchin {
     void Renderer3d::deferredRendering(float dt) {
         ScopeProfiler sp(Profiler::graphic(), "deferredRender");
 
-        deferredRenderTarget->resetDisplay();
+        //TODO deferredRenderTarget->resetDisplay();
 
         skyManager->display(camera->getViewMatrix(), camera->getPosition());
 
@@ -513,26 +481,26 @@ namespace urchin {
 
             positioningData.inverseProjectionViewMatrix = (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse();
             positioningData.viewPosition = camera->getPosition();
-            lightingRenderer->updateShaderData(0, ShaderDataSender()
-                    .sendData(mInverseViewProjectionShaderVar, positioningData.inverseProjectionViewMatrix)
-                    .sendData(viewPositionShaderVar, positioningData.viewPosition));
+            lightingRenderer->updateShaderData(0, &positioningData);
 
             lightManager->loadVisibleLights(lightingRenderer);
 
             fogManager->loadFog(lightingRenderer);
 
             if (visualOption.isAmbientOcclusionActivated) {
-                ambientOcclusionManager->loadAOTexture(lightingRenderer, (std::size_t)ambientOcclusionTexUnit);
+                std::size_t ambientOcclusionTexUnit = 3;
+                ambientOcclusionManager->loadAOTexture(lightingRenderer, ambientOcclusionTexUnit);
             }
 
             if (visualOption.isShadowActivated) {
-                shadowManager->loadShadowMaps(lightingRenderer, (std::size_t)shadowMapTexUnitStart);
+                std::size_t shadowMapTexUnitStart = 4;
+                shadowManager->loadShadowMaps(lightingRenderer, shadowMapTexUnitStart);
             }
 
             if (isAntiAliasingActivated) {
-                offscreenLightingRenderTarget->display(lightingRenderer);
+                offscreenLightingRenderTarget->render();
             } else {
-                finalRenderTarget->display(lightingRenderer);
+                finalRenderTarget->render();
             }
         }
     }

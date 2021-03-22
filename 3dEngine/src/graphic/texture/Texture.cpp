@@ -1,5 +1,4 @@
 #include <cassert>
-#include <utility>
 
 #include "Texture.h"
 #include "libs/vma/vk_mem_alloc.h"
@@ -10,7 +9,7 @@
 
 namespace urchin {
 
-    Texture::Texture(TextureType textureType, unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, std::vector<const void*> dataPtr) :
+    Texture::Texture(TextureType textureType, unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const std::vector<const void*>& dataPtr) :
             isInitialized(false),
             mipLevels(1),
             writableTexture(false),
@@ -18,12 +17,19 @@ namespace urchin {
             width(width),
             height(height),
             layer(layer),
+            nbImages(dataPtr.size()),
             format(format),
-            dataPtr(std::move(dataPtr)),
             textureImage(nullptr),
             textureImageMemory(nullptr),
             textureImageView(nullptr) {
-
+        for(const void* imageDataPtr : dataPtr) {
+            if(imageDataPtr != nullptr) {
+                auto imageDataCharPtr = static_cast<const uint8_t*>(imageDataPtr);
+                this->dataPtr.emplace_back(std::vector<uint8_t>(imageDataCharPtr, imageDataCharPtr + getImageSize()));
+            } else {
+                this->dataPtr.emplace_back(std::vector<uint8_t>(getImageSize(), 0));
+            }
+        }
     }
 
     Texture::~Texture() {
@@ -77,7 +83,7 @@ namespace urchin {
                 throw std::runtime_error("Unknown texture type: " + std::to_string(textureType));
             }
 
-            createTextureImage(dataPtr);
+            createTextureImage();
 
             VkImageAspectFlags aspectFlags = isDepthFormat() ? VK_IMAGE_ASPECT_DEPTH_BIT : VK_IMAGE_ASPECT_COLOR_BIT;
             textureImageView = ImageHelper::createImageView(textureImage, imageViewType, getVkFormat(), aspectFlags, layer, mipLevels);
@@ -97,6 +103,10 @@ namespace urchin {
 
             isInitialized = false;
         }
+    }
+
+    TextureType Texture::getTextureType() const {
+        return textureType;
     }
 
     unsigned int Texture::getWidth() const {
@@ -139,10 +149,9 @@ namespace urchin {
         return format == TextureFormat::DEPTH_32_FLOAT;
     }
 
-    void Texture::createTextureImage(const std::vector<const void*>& dataPtr) {
+    void Texture::createTextureImage() {
         auto allocator = GraphicService::instance()->getAllocator();
-        std::size_t imageSize = width * height * getBytesByPixel() * (layer / dataPtr.size());
-        VkDeviceSize allImagesSize = imageSize * dataPtr.size();
+        VkDeviceSize allImagesSize = getImageSize() * dataPtr.size();
 
         VmaAllocation stagingBufferMemory;
         VkBuffer stagingBuffer = BufferHelper::createBuffer(allImagesSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingBufferMemory);
@@ -151,10 +160,8 @@ namespace urchin {
         vmaMapMemory(allocator, stagingBufferMemory, &dataDestination);
         {
             for(unsigned int imageIndex = 0; imageIndex < dataPtr.size(); ++imageIndex) {
-                if(dataPtr[imageIndex] != nullptr) {
-                    void *dataDestinationI = static_cast<char *>(dataDestination) + (imageIndex * imageSize);
-                    memcpy(dataDestinationI, dataPtr[imageIndex], imageSize);
-                }
+                void *dataDestinationI = static_cast<uint8_t *>(dataDestination) + (imageIndex * getImageSize());
+                memcpy(dataDestinationI, dataPtr[imageIndex].data(), getImageSize());
             }
         }
         vmaUnmapMemory(allocator, stagingBufferMemory);
@@ -173,6 +180,11 @@ namespace urchin {
         }
 
         vmaDestroyBuffer(allocator, stagingBuffer, stagingBufferMemory);
+        dataPtr.clear();
+    }
+
+    std::size_t Texture::getImageSize() const {
+        return width * height * getBytesByPixel() * (layer / nbImages);
     }
 
     VkImageUsageFlags Texture::getImageUsage() const {

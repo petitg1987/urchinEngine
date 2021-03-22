@@ -26,6 +26,7 @@ namespace urchin {
 
             void initialize();
 
+            TextureType getTextureType() const;
             unsigned int getWidth() const;
             unsigned int getHeight() const;
             bool hasMipmap() const;
@@ -34,12 +35,13 @@ namespace urchin {
             VkFormat getVkFormat() const;
 
         private:
-            Texture(TextureType textureType, unsigned int, unsigned int, unsigned int, TextureFormat, std::vector<const void*>);
+            Texture(TextureType textureType, unsigned int, unsigned int, unsigned int, TextureFormat, const std::vector<const void*>&);
 
             void cleanup();
 
             bool isDepthFormat() const;
-            void createTextureImage(const std::vector<const void*>&);
+            void createTextureImage();
+            std::size_t getImageSize() const;
             VkImageUsageFlags getImageUsage() const;
             void transitionImageLayout(VkImage, VkImageLayout, VkImageLayout, uint32_t) const;
             void copyBufferToImage(VkBuffer, VkImage);
@@ -53,8 +55,9 @@ namespace urchin {
             bool writableTexture;
             TextureType textureType;
             unsigned int width, height, layer;
+            std::size_t nbImages;
             TextureFormat format;
-            std::vector<const void* > dataPtr;
+            std::vector<std::vector<uint8_t>> dataPtr;
 
             VkImage textureImage;
             VmaAllocation textureImageMemory;

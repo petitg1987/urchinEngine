@@ -34,8 +34,8 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
         bitmapRenderer = setupUiRenderer(ShapeType::TRIANGLE)
-                ->addData(&vertexCoord)
-                ->addData(&textureCoord)
+                ->addData(vertexCoord)
+                ->addData(textureCoord)
                 ->addTextureReader(TextureReader::build(tex, TextureParam::buildNearest()))
                 ->enableTransparency()
                 ->build();
@@ -43,7 +43,7 @@ namespace urchin {
 
     void StaticBitmap::displayWidget(float) {
         updateTranslateVector(bitmapRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
-        getRenderTarget()->display(bitmapRenderer);
+        //TODO getRenderTarget()->display(bitmapRenderer);
     }
 
 }

@@ -23,6 +23,7 @@ namespace urchin {
         //initialize
         SignalHandler::instance()->initialize();
         GraphicService::instance()->initialize(windowRequiredExtensions, surfaceCreator, std::move(framebufferSizeRetriever));
+        screenRenderTarget->initialize();
 
         //initialize fps
         previousFps.fill(START_FPS);
@@ -36,6 +37,8 @@ namespace urchin {
     }
 
     SceneManager::~SceneManager() {
+        screenRenderTarget->cleanup();
+
         for (auto& renderer3d : renderers3d) {
             delete renderer3d;
         }
