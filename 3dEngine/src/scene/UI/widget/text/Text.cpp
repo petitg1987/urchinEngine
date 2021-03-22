@@ -211,8 +211,8 @@ namespace urchin {
         }
 
         textRenderer = setupUiRenderer(ShapeType::TRIANGLE)
-                ->addData(&vertexCoord)
-                ->addData(&textureCoord)
+                ->addData(vertexCoord)
+                ->addData(textureCoord)
                 ->addTextureReader(TextureReader::build(font->getTexture(), TextureParam::buildNearest()))
                 ->enableTransparency()
                 ->build();
@@ -220,7 +220,7 @@ namespace urchin {
 
     void Text::displayWidget(float) {
         updateTranslateVector(textRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
-        getRenderTarget()->display(textRenderer);
+        //TODO getRenderTarget()->display(textRenderer);
     }
 
 }

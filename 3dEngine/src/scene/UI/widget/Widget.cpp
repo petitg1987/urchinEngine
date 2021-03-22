@@ -3,7 +3,6 @@
 
 #include "scene/UI/widget/Widget.h"
 #include "scene/InputDeviceKey.h"
-#include "graphic/shader/data/ShaderDataSender.h"
 
 namespace urchin {
 
@@ -41,9 +40,6 @@ namespace urchin {
         this->renderTarget = std::move(renderTarget);
         this->shader = std::move(shader);
 
-        mProjectionShaderVar = ShaderVar(this->shader, "mProjection");
-        translateDistanceShaderVar = ShaderVar(this->shader, "translateDistance");
-
         for (auto& child : children) {
             child->initialize(renderTarget, shader);
         }
@@ -63,15 +59,18 @@ namespace urchin {
 
     std::unique_ptr<GenericRendererBuilder> Widget::setupUiRenderer(ShapeType shapeType) const {
         assert(shader);
+
+        Vector2<int> translateVector(0, 0);
+
         auto rendererBuilder = std::make_unique<GenericRendererBuilder>(getRenderTarget(), shader, shapeType);
         rendererBuilder
-                ->addShaderData(ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix)) //binding 0
-                ->addShaderData(ShaderDataSender().sendData(translateDistanceShaderVar, Vector2<int>())); //binding 1
+                ->addShaderData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
+                ->addShaderData(sizeof(translateVector), &translateVector); //binding 1
         return std::unique_ptr<GenericRendererBuilder>(rendererBuilder.release());
     }
 
     void Widget::updateTranslateVector(const std::unique_ptr<GenericRenderer>& renderer, const Vector2<int>& translateVector) {
-        renderer->updateShaderData(1, ShaderDataSender().sendData(translateDistanceShaderVar, translateVector));
+        renderer->updateShaderData(1, &translateVector);
     }
 
     const std::shared_ptr<RenderTarget>& Widget::getRenderTarget() const {
@@ -180,7 +179,7 @@ namespace urchin {
     }
 
     void Widget::setIsVisible(bool isVisible) {
-        this->bIsVisible = isVisible;
+        this->bIsVisible = isVisible; //TODO disable widget for render target ?
     }
 
     bool Widget::isVisible() const {
@@ -354,7 +353,7 @@ namespace urchin {
         displayWidget(dt);
 
         for (auto& child : children) {
-            if (child->isVisible()) { //TODO disable widget for render target ?
+            if (child->isVisible()) {
                 child->display(dt);
             }
         }

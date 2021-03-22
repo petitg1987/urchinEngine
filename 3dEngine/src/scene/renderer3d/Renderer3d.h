@@ -20,8 +20,7 @@
 #include "scene/renderer3d/landscape/sky/SkyManager.h"
 #include "resources/geometry/GeometryManager.h"
 #include "resources/geometry/GeometryModel.h"
-#include "graphic/shader/model/Shader.h"
-#include "graphic/shader/model/ShaderVar.h"
+#include "graphic/render/shader/model/Shader.h"
 #include "graphic/render/GenericRenderer.h"
 #include "graphic/render/target/ScreenRender.h"
 #include "graphic/render/target/OffscreenRender.h"
@@ -131,7 +130,6 @@ namespace urchin {
             std::shared_ptr<OffscreenRender> offscreenLightingRenderTarget;
             std::unique_ptr<GenericRenderer> lightingRenderer;
             std::shared_ptr<Shader> lightingShader;
-            ShaderVar mInverseViewProjectionShaderVar, viewPositionShaderVar;
             struct {
                 alignas(16) Matrix4<float> inverseProjectionViewMatrix;
                 alignas(16) Point3<float> viewPosition;

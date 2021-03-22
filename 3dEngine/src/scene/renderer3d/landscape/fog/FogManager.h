@@ -7,8 +7,7 @@
 #include "scene/renderer3d/landscape/fog/Fog.h"
 #include "graphic/render/GenericRenderer.h"
 #include "graphic/render/GenericRendererBuilder.h"
-#include "graphic/shader/model/Shader.h"
-#include "graphic/shader/model/ShaderVar.h"
+#include "graphic/render/shader/model/Shader.h"
 
 namespace urchin {
 
@@ -20,14 +19,12 @@ namespace urchin {
             void popFog();
             std::shared_ptr<const Fog> getActiveFog() const;
 
-            void initiateShaderVariables(const std::shared_ptr<Shader>&);
             void setupLightingRenderer(const std::unique_ptr<GenericRendererBuilder>&);
 
             void loadFog(const std::unique_ptr<GenericRenderer>&);
 
         private:
             std::stack<std::shared_ptr<Fog>> fogs;
-            ShaderVar hasFogShaderVar, fogDensityShaderVar, fogGradientShaderVar, fogColorShaderVar, fogMaxHeightShaderVar;
             struct {
                 alignas(4) bool hasFog;
                 alignas(4) float density;

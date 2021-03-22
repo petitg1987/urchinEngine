@@ -12,8 +12,7 @@
 #include "scene/renderer3d/lighting/light/LightManager.h"
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/camera/Camera.h"
-#include "graphic/shader/model/Shader.h"
-#include "graphic/shader/model/ShaderVar.h"
+#include "graphic/render/shader/model/Shader.h"
 
 namespace urchin {
 
@@ -36,7 +35,6 @@ namespace urchin {
             ShadowManager(LightManager*, OctreeManager<Model>*);
             ~ShadowManager() override;
 
-            void initiateShaderVariables(const std::shared_ptr<Shader>&);
             void setupLightingRenderer(const std::unique_ptr<GenericRendererBuilder>&);
             void onCameraProjectionUpdate(const Camera*);
             void notify(Observable*, int) override;
@@ -66,7 +64,6 @@ namespace urchin {
 
         private:
             //light handling
-            void deleteLightsLocation();
             void addShadowLight(const Light*);
             void removeShadowLight(const Light*);
             void updateShadowLights();
@@ -95,11 +92,9 @@ namespace urchin {
             std::vector<Frustum<float>> splitFrustums;
             std::map<const Light*, LightShadowMap*> lightShadowMaps;
             bool bForceUpdateAllShadowMaps;
-            ShaderVar depthSplitDistanceShaderVar;
             float depthSplitDistance[MAX_NB_SHADOW_MAPS * 4]{}; //multiply by 4 because only 1 float over 4 are transferred to the shader due to memory alignment
 
             //shadow lights information
-            ShaderVar** mLightProjectionViewShaderVar;
             Matrix4<float>* lightProjectionViewMatrices;
     };
 

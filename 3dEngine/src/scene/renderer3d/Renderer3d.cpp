@@ -3,8 +3,7 @@
 
 #include "Renderer3d.h"
 #include "graphic/render/GenericRendererBuilder.h"
-#include "graphic/shader/builder/ShaderBuilder.h"
-#include "graphic/shader/data/ShaderDataSender.h"
+#include "graphic/render/shader/builder/ShaderBuilder.h"
 #include "texture/render/TextureRenderer.h"
 #include "scene/renderer3d/util/OctreeRenderer.h"
 
@@ -93,7 +92,7 @@ namespace urchin {
         tokens["NUMBER_SHADOW_MAPS"] = std::to_string(shadowManager->getNumberShadowMaps());
         tokens["SHADOW_MAP_BIAS"] = std::to_string(shadowManager->getShadowMapBias());
         tokens["OUTPUT_LOCATION"] = "0"; // isAntiAliasingActivated ? "0" /*TEX_LIGHTING_PASS*/ : "0" /*Screen*/;
-        lightingShader = ShaderBuilder().createShader("lighting.vert", "", "lighting.frag", tokens);
+        lightingShader = ShaderBuilder::createShader("lighting.vert", "", "lighting.frag", tokens);
 
         int depthTexUnit = 0;
         int diffuseTexUnit = 1;

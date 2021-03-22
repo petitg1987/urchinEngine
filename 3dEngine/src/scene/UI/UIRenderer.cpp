@@ -5,8 +5,7 @@
 #include "resources/MediaManager.h"
 #include "resources/font/Font.h"
 #include "texture/render/TextureRenderer.h"
-#include "graphic/shader/builder/ShaderBuilder.h"
-#include "graphic/shader/data/ShaderDataSender.h"
+#include "graphic/render/shader/builder/ShaderBuilder.h"
 
 namespace urchin {
 
@@ -17,11 +16,7 @@ namespace urchin {
             renderTarget(std::move(renderTarget)),
             sceneWidth(0),
             sceneHeight(0) {
-        uiShader = ShaderBuilder().createShader("ui.vert", "", "ui.frag");
-        diffuseTexSamplerShaderVar = ShaderVar(uiShader, "diffuseTexture");
-
-        int diffuseTexUnit = 0;
-        ShaderDataSender().sendData(diffuseTexSamplerShaderVar, diffuseTexUnit); //binding 20
+        uiShader = ShaderBuilder::createShader("ui.vert", "", "ui.frag");
     }
 
     UIRenderer::~UIRenderer() {
@@ -126,7 +121,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "uiRenderDisplay");
 
         for (auto& widget : widgets) {
-            if (widget->isVisible()) { //TODO disable widget for render target ?
+            if (widget->isVisible()) {
                 widget->display(dt);
             }
         }

@@ -3,8 +3,7 @@
 
 #include <memory>
 
-#include "graphic/shader/model/Shader.h"
-#include "graphic/shader/model/ShaderVar.h"
+#include "graphic/render/shader/model/Shader.h"
 #include "graphic/render/GenericRenderer.h"
 #include "graphic/render/target/RenderTarget.h"
 
@@ -37,7 +36,6 @@ namespace urchin {
 
             //display
             std::shared_ptr<Shader> fxaaShader;
-            ShaderVar invSceneSizeShaderVar;
             Point2<float> invSceneSize;
             std::unique_ptr<GenericRenderer> renderer;
     };

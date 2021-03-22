@@ -8,8 +8,7 @@
 #include "texture/filter/TextureFilter.h"
 #include "texture/filter/gaussianblur/GaussianBlurFilterBuilder.h"
 #include "texture/filter/downsample/DownSampleFilterBuilder.h"
-#include "graphic/shader/builder/ShaderBuilder.h"
-#include "graphic/shader/data/ShaderDataSender.h"
+#include "graphic/render/shader/builder/ShaderBuilder.h"
 #include "graphic/render/target/OffscreenRender.h"
 
 #define DEFAULT_NUMBER_SHADOW_MAPS 5
@@ -29,7 +28,6 @@ namespace urchin {
             lightManager(lightManager),
             modelOctreeManager(modelOctreeManager),
             bForceUpdateAllShadowMaps(false),
-            mLightProjectionViewShaderVar(nullptr),
             lightProjectionViewMatrices(nullptr) {
         lightManager->addObserver(this, LightManager::ADD_LIGHT);
         lightManager->addObserver(this, LightManager::REMOVE_LIGHT);
@@ -40,27 +38,7 @@ namespace urchin {
             delete lightShadowMap.second;
         }
 
-        deleteLightsLocation();
         delete[] lightProjectionViewMatrices;
-    }
-
-    void ShadowManager::initiateShaderVariables(const std::shared_ptr<Shader>& lightingShader) {
-        //light information
-        deleteLightsLocation();
-        mLightProjectionViewShaderVar = new ShaderVar*[getMaxShadowLights()];
-        std::ostringstream shadowMapTextureLocName, mLightProjectionViewLocName;
-        for (unsigned int i = 0; i < getMaxShadowLights(); ++i) {
-            //light projection matrices
-            mLightProjectionViewShaderVar[i] = new ShaderVar[nbShadowMaps];
-            for (unsigned int j = 0; j < nbShadowMaps; ++j) {
-                mLightProjectionViewLocName.str("");
-                mLightProjectionViewLocName << "mLightProjectionView[" << i << "][" << j << "]";
-                mLightProjectionViewShaderVar[i][j] = ShaderVar(lightingShader, mLightProjectionViewLocName.str());
-            }
-        }
-
-        //shadow information
-        depthSplitDistanceShaderVar = ShaderVar(lightingShader, "depthSplitDistance");
     }
 
     void ShadowManager::setupLightingRenderer(const std::unique_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
@@ -69,16 +47,8 @@ namespace urchin {
 
         //Vulkan source code:
         lightingRendererBuilder
-                //Vulkan source code: ->addShaderData(mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices) //binding 4
-                ->addShaderData(ShaderDataSender().sendData(depthSplitDistanceShaderVar, nbShadowMaps, depthSplitDistance)); //binding 5
-    }
-
-    void ShadowManager::deleteLightsLocation() {
-        if (mLightProjectionViewShaderVar) {
-            for (unsigned int i = 0; i < getMaxShadowLights(); ++i) {
-                delete[] mLightProjectionViewShaderVar[i];
-            }
-        }
+                ->addShaderData(mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices) //binding 4
+                ->addShaderData(nbShadowMaps * sizeof(float) * 4, depthSplitDistance); //binding 5
     }
 
     void ShadowManager::onCameraProjectionUpdate(const Camera* camera) {
@@ -212,12 +182,10 @@ namespace urchin {
     }
 
     void ShadowManager::addShadowLight(const Light* light) {
-        auto depthTexture = Texture::buildArray(shadowMapResolution, shadowMapResolution, nbShadowMaps, TextureFormat::DEPTH_32_FLOAT, nullptr);
         auto shadowMapTexture = Texture::buildArray(shadowMapResolution, shadowMapResolution, nbShadowMaps, TextureFormat::RG_32_FLOAT, nullptr);
 
-        auto shadowMapRenderTarget = std::make_unique<OffscreenRender>();
-        shadowMapRenderTarget->onResize(shadowMapResolution, shadowMapResolution);
-        shadowMapRenderTarget->addTexture(depthTexture);
+        auto shadowMapRenderTarget = std::make_unique<OffscreenRender>(RenderTarget::WRITE_ONLY_DEPTH_ATTACHMENT);
+        shadowMapRenderTarget->onResize();
         shadowMapRenderTarget->addTexture(shadowMapTexture);
 
         auto* newLightShadowMap = new LightShadowMap(light, modelOctreeManager, viewingShadowDistance, shadowMapTexture, nbShadowMaps, std::move(shadowMapRenderTarget));
@@ -347,7 +315,6 @@ namespace urchin {
                 for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
                     std::size_t matrixIndex = shadowLightIndex * getMaxShadowLights() + shadowMapIndex;
                     lightProjectionViewMatrices[matrixIndex] = lightSplitShadowMap->getLightProjectionMatrix() * lightShadowMap->getLightViewMatrix();
-                    ShaderDataSender().sendData(mLightProjectionViewShaderVar[shadowLightIndex][shadowMapIndex], lightProjectionViewMatrices[matrixIndex]);
                     shadowMapIndex++;
                 }
 
@@ -357,14 +324,11 @@ namespace urchin {
 
         for (unsigned int shadowMapIndex = 0; shadowMapIndex < nbShadowMaps; ++shadowMapIndex) {
             float currSplitDistance = splitDistances[shadowMapIndex];
-            depthSplitDistance[shadowMapIndex] = ((projectionMatrix(2, 2) * -currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance)) / 2.0f + 0.5f;
-            //Vulkan source code:
-            //depthSplitDistance[shadowMapIndex * 4 - 1] = ((projectionMatrix(2, 2) * -currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance)) / 2.0f + 0.5f;
+            depthSplitDistance[shadowMapIndex * 4 - 1] = ((projectionMatrix(2, 2) * -currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance)) / 2.0f + 0.5f;
         }
 
-        lightingRenderer
-                //Vulkan source code: ->updateShaderData(4, lightProjectionViewMatrices)
-                ->updateShaderData(5, ShaderDataSender().sendData(depthSplitDistanceShaderVar, nbShadowMaps, depthSplitDistance));
+        lightingRenderer->updateShaderData(4, lightProjectionViewMatrices);
+        lightingRenderer->updateShaderData(5, depthSplitDistance);
     }
 
 }

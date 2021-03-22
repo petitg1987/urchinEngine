@@ -1,8 +1,7 @@
 #include "Water.h"
 #include "resources/MediaManager.h"
 #include "graphic/render/GenericRendererBuilder.h"
-#include "graphic/shader/builder/ShaderBuilder.h"
-#include "graphic/shader/data/ShaderDataSender.h"
+#include "graphic/render/shader/builder/ShaderBuilder.h"
 
 #define DEFAULT_CENTER_POSITION Point3<float>(0.0f, 0.0f, 0.0f)
 #define DEFAULT_SIZE 1000.0f
@@ -27,21 +26,7 @@ namespace urchin {
             tRepeat(0.0f),
             density(0.0f),
             gradient(0.0f) {
-        waterShader = ShaderBuilder().createShader("water.vert", "", "water.frag");
-
-        mProjectionShaderVar = ShaderVar(waterShader, "mProjection");
-        mViewShaderVar = ShaderVar(waterShader, "mView");
-        sumTimeStepShaderVar = ShaderVar(waterShader, "sumTimeStep");
-
-        waterColorShaderVar = ShaderVar(waterShader, "waterColor");
-        waveSpeedShaderVar = ShaderVar(waterShader, "waveSpeed");
-        waveStrengthShaderVar = ShaderVar(waterShader, "waveStrength");
-
-        int normalTexUnit = 0;
-        int dudvMapUnit = 1;
-        ShaderDataSender()
-            .sendData(ShaderVar(waterShader, "normalTex"), normalTexUnit) //binding 20
-            .sendData(ShaderVar(waterShader, "dudvMap"), dudvMapUnit); //binding 21
+        waterShader = ShaderBuilder::createShader("water.vert", "", "water.frag");
 
         normalTexture = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({0, 255, 0, 255})).createTexture(false);
         dudvMap = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({0, 255, 0, 255})).createTexture(false);
@@ -76,7 +61,7 @@ namespace urchin {
     void Water::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
 
-        waterRenderer->updateShaderData(2, ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix));
+        waterRenderer->updateShaderData(2, &projectionMatrix);
     }
 
     void Water::updateRenderer() {
@@ -95,17 +80,12 @@ namespace urchin {
                     Point2<float>(0.0f, 0.0f), Point2<float>(sRepeat, tRepeat), Point2<float>(0.0f, tRepeat)
             };
             waterRenderer = std::make_unique<GenericRendererBuilder>(renderTarget, waterShader, ShapeType::TRIANGLE)
-                    ->enableDepthTest()
-                    ->addData(&vertexCoord)
-                    ->addData(&textureCoord)
-                    ->addShaderData(ShaderDataSender()
-                        .sendData(mViewShaderVar, positioningData.viewMatrix)
-                        .sendData(sumTimeStepShaderVar, positioningData.sumTimeStep)) //binding 0
-                    ->addShaderData(ShaderDataSender()
-                        .sendData(waterColorShaderVar, waterProperties.color)
-                        .sendData(waveSpeedShaderVar, waterProperties.waveSpeed)
-                        .sendData(waveStrengthShaderVar, waterProperties.waveStrength)) //binding 1
-                    ->addShaderData(ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix)) //binding 2
+                    ->enableDepthOperations()
+                    ->addData(vertexCoord)
+                    ->addData(textureCoord)
+                    ->addShaderData(sizeof(positioningData), &positioningData) //binding 0
+                    ->addShaderData(sizeof(waterProperties), &waterProperties) //binding 1
+                    ->addShaderData(sizeof(projectionMatrix), &projectionMatrix) //binding 2
                     ->addTextureReader(TextureReader::build(normalTexture, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
                     ->addTextureReader(TextureReader::build(dudvMap, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
                     ->build();
@@ -154,7 +134,7 @@ namespace urchin {
         waterProperties.color = waterColor;
 
         if(waterRenderer) {
-            waterRenderer->updateShaderData(1, ShaderDataSender().sendData(waterColorShaderVar, waterProperties.color));
+            waterRenderer->updateShaderData(1, &waterProperties);
         }
     }
 
@@ -210,7 +190,7 @@ namespace urchin {
         waterProperties.waveSpeed = waveSpeed;
 
         if(waterRenderer) {
-            waterRenderer->updateShaderData(1, ShaderDataSender().sendData(waveSpeedShaderVar, waterProperties.waveSpeed));
+            waterRenderer->updateShaderData(1, &waterProperties);
         }
     }
 
@@ -222,7 +202,7 @@ namespace urchin {
         waterProperties.waveStrength = waveStrength;
 
         if(waterRenderer) {
-            waterRenderer->updateShaderData(1, ShaderDataSender().sendData(waveStrengthShaderVar, waterProperties.waveStrength));
+            waterRenderer->updateShaderData(1, &waterProperties);
         }
     }
 
@@ -286,11 +266,9 @@ namespace urchin {
             positioningData.viewMatrix = camera->getViewMatrix();
             positioningData.sumTimeStep += dt;
 
-            waterRenderer->updateShaderData(0, ShaderDataSender()
-                    .sendData(mViewShaderVar, positioningData.viewMatrix)
-                    .sendData(sumTimeStepShaderVar, positioningData.sumTimeStep));
+            waterRenderer->updateShaderData(0, &positioningData);
 
-            renderTarget->display(waterRenderer);
+            //TODO renderTarget->display(waterRenderer);
         }
     }
 }

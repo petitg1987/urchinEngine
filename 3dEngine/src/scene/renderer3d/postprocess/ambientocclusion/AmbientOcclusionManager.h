@@ -3,8 +3,7 @@
 
 #include "UrchinCommon.h"
 
-#include "graphic/shader/model/Shader.h"
-#include "graphic/shader/model/ShaderVar.h"
+#include "graphic/render/shader/model/Shader.h"
 #include "scene/renderer3d/camera/Camera.h"
 #include "graphic/render/GenericRenderer.h"
 #include "texture/filter/bilateralblur/BilateralBlurFilter.h"
@@ -73,8 +72,6 @@ namespace urchin {
 
             //ambient occlusion shader
             std::shared_ptr<Shader> ambientOcclusionShader;
-            ShaderVar mInverseViewProjectionShaderVar, mProjectionShaderVar, mViewShaderVar;
-            ShaderVar samplesShaderVar, resolutionShaderVar;
             std::shared_ptr<Texture> noiseTexture;
             struct {
                 alignas(16) Matrix4<float> inverseProjectionViewMatrix;

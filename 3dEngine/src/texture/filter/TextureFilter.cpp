@@ -1,8 +1,7 @@
 #include <stdexcept>
 
 #include "TextureFilter.h"
-#include "graphic/shader/builder/ShaderBuilder.h"
-#include "graphic/shader/data/ShaderDataSender.h"
+#include "graphic/render/shader/builder/ShaderBuilder.h"
 #include "graphic/render/GenericRendererBuilder.h"
 
 namespace urchin {
@@ -52,18 +51,14 @@ namespace urchin {
             shaderTokens["MAX_VERTICES"] = std::to_string(3 * textureNumberLayer);
             shaderTokens["NUMBER_LAYER"] = std::to_string(textureNumberLayer);
 
-            textureFilterShader = ShaderBuilder().createShader("textureFilter.vert", "textureFilter.geom", getShaderName() + "Array.frag", shaderTokens);
+            textureFilterShader = ShaderBuilder::createShader("textureFilter.vert", "textureFilter.geom", getShaderName() + "Array.frag", shaderTokens);
         } else if (textureType == TextureType::DEFAULT) {
-            textureFilterShader = ShaderBuilder().createShader("textureFilter.vert", "", getShaderName() + ".frag", shaderTokens);
+            textureFilterShader = ShaderBuilder::createShader("textureFilter.vert", "", getShaderName() + ".frag", shaderTokens);
         } else {
             throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
         }
 
-        layersToUpdateShaderVar = ShaderVar(textureFilterShader, "layersToUpdate");
-
-        int texUnit = 0;
-        ShaderDataSender().sendData(ShaderVar(textureFilterShader, "tex"), texUnit); //binding 20
-        initiateAdditionalShaderVariables(textureFilterShader);
+        int layersToUpdate = 0;
 
         std::vector<Point2<float>> vertexCoord = {
                 Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
@@ -75,9 +70,9 @@ namespace urchin {
         };
         auto textureRendererBuilder = std::make_unique<GenericRendererBuilder>(offscreenRenderTarget, getTextureFilterShader(), ShapeType::TRIANGLE);
         textureRendererBuilder
-                ->addData(&vertexCoord)
-                ->addData(&textureCoord)
-                ->addShaderData(ShaderDataSender().sendData(layersToUpdateShaderVar, 0)) //binding 0
+                ->addData(vertexCoord)
+                ->addData(textureCoord)
+                ->addShaderData(sizeof(layersToUpdate), &layersToUpdate) //binding 0
                 ->addTextureReader(TextureReader::build(sourceTexture, TextureParam::buildLinear()));
         initiateAdditionalDisplay(textureRendererBuilder);
 
@@ -85,10 +80,6 @@ namespace urchin {
     }
 
     void TextureFilter::initiateAdditionalDisplay(const std::unique_ptr<GenericRendererBuilder>&) {
-        //do nothing: to override
-    }
-
-    void TextureFilter::initiateAdditionalShaderVariables(const std::shared_ptr<Shader>&) {
         //do nothing: to override
     }
 
@@ -134,9 +125,9 @@ namespace urchin {
         }
 
         if (textureType == TextureType::ARRAY) {
-            textureRenderer->updateShaderData(0, ShaderDataSender().sendData(layersToUpdateShaderVar, layersToUpdate));
+            textureRenderer->updateShaderData(0, &layersToUpdate);
         }
 
-        offscreenRenderTarget->display(textureRenderer);
+        //TODO offscreenRenderTarget->display(textureRenderer);
     }
 }

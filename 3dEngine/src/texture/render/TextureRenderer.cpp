@@ -2,8 +2,7 @@
 #include <utility>
 
 #include "TextureRenderer.h"
-#include "graphic/shader/builder/ShaderBuilder.h"
-#include "graphic/shader/data/ShaderDataSender.h"
+#include "graphic/render/shader/builder/ShaderBuilder.h"
 #include "graphic/render/GenericRendererBuilder.h"
 
 namespace urchin {
@@ -163,14 +162,10 @@ namespace urchin {
         };
         std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, displayTextureShader, ShapeType::TRIANGLE);
         rendererBuilder
-                ->addData(&vertexCoord)
-                ->addData(&textureCoord)
-                ->addShaderData(ShaderDataSender().sendData(mProjectionShaderVar, mProjection)) //binding 0
-                ->addShaderData(ShaderDataSender()
-                        .sendData(ShaderVar(displayTextureShader, "colorIntensity"), renderingData.colorIntensity)
-                        .sendData(ShaderVar(displayTextureShader, "cameraNearPlane"), renderingData.cameraNearPlane)
-                        .sendData(ShaderVar(displayTextureShader, "cameraFarPlane"), renderingData.cameraFarPlane)
-                        .sendData(ShaderVar(displayTextureShader, "layer"), renderingData.layer)) //binding 1
+                ->addData(vertexCoord)
+                ->addData(textureCoord)
+                ->addShaderData(sizeof(mProjection), &mProjection) //binding 0
+                ->addShaderData(sizeof(renderingData), &renderingData) //binding 1
                 ->addTextureReader(TextureReader::build(texture, TextureParam::buildNearest()));
         if (transparencyEnabled) {
             rendererBuilder->enableTransparency();
@@ -188,12 +183,7 @@ namespace urchin {
         textureDisplayTokens["IS_INVERSE_GRAYSCALE_VALUE"] = colorType == ColorType::INVERSE_GRAYSCALE_VALUE ? "true" : "false";
 
         const std::string& fragShaderName = (renderingData.layer == -1) ? "displayTexture.frag" : "displayTextureArray.frag";
-        displayTextureShader = ShaderBuilder().createShader("displayTexture.vert", "", fragShaderName, textureDisplayTokens);
-
-        mProjectionShaderVar = ShaderVar(displayTextureShader, "mProjection");
-
-        int colorTexUnit = 0;
-        ShaderDataSender().sendData(ShaderVar(displayTextureShader, "colorTex"), colorTexUnit); //binding 20
+        displayTextureShader = ShaderBuilder::createShader("displayTexture.vert", "", fragShaderName, textureDisplayTokens);
     }
 
     void TextureRenderer::display() {
@@ -201,7 +191,7 @@ namespace urchin {
             throw std::runtime_error("Texture displayer must be initialized before display.");
         }
 
-        renderTarget->display(renderer);
+        //TODO renderTarget->display(renderer);
     }
 
 }

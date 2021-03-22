@@ -6,8 +6,7 @@
 #include <map>
 #include <vector>
 
-#include "graphic/shader/model/Shader.h"
-#include "graphic/shader/model/ShaderVar.h"
+#include "graphic/render/shader/model/Shader.h"
 #include "graphic/render/GenericRenderer.h"
 #include "graphic/render/target/OffscreenRender.h"
 
@@ -29,7 +28,6 @@ namespace urchin {
         protected:
             virtual std::string getShaderName() const = 0;
             virtual void initiateAdditionalDisplay(const std::unique_ptr<GenericRendererBuilder>&);
-            virtual void initiateAdditionalShaderVariables(const std::shared_ptr<Shader>&);
             virtual void completeShaderTokens(std::map<std::string, std::string>&) const = 0;
 
             unsigned int getTextureWidth() const;
@@ -60,7 +58,6 @@ namespace urchin {
 
             std::unique_ptr<GenericRenderer> textureRenderer;
             std::shared_ptr<Shader> textureFilterShader;
-            ShaderVar layersToUpdateShaderVar;
     };
 
     #include "TextureFilter.inl"

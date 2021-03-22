@@ -467,7 +467,7 @@ namespace urchin {
         data[dataIndex] = std::move(dataContainer);
     }
 
-    void GenericRenderer::updateShaderData(std::size_t shaderDataIndex, void* dataPtr) {
+    void GenericRenderer::updateShaderData(std::size_t shaderDataIndex, const void* dataPtr) {
         assert(shaderData.size() > shaderDataIndex);
 
         shaderData[shaderDataIndex].updateData(dataPtr);

@@ -6,7 +6,7 @@
 #include "scene/renderer3d/model/Model.h"
 #include "graphic/render/GenericRenderer.h"
 #include "graphic/render/GenericRendererBuilder.h"
-#include "graphic/shader/model/Shader.h"
+#include "graphic/render/shader/model/Shader.h"
 
 namespace urchin {
 

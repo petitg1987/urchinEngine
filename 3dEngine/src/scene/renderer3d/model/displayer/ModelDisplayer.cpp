@@ -2,7 +2,6 @@
 
 #include "ModelDisplayer.h"
 #include "graphic/render/GenericRendererBuilder.h"
-#include "graphic/shader/data/ShaderDataSender.h"
 #include "resources/geometry/aabbox/AABBoxModel.h"
 
 namespace urchin {
@@ -15,27 +14,17 @@ namespace urchin {
             shader(std::move(shader)),
             customModelShaderVariable(customModelShaderVariable) {
 
-        mProjectionShaderVar = ShaderVar(this->shader, "mProjection");
-        mViewShaderVar = ShaderVar(this->shader, "mView");
-        mModelShaderVar = ShaderVar(this->shader, "mModel");
-        mNormalShaderVar = ShaderVar(this->shader, "mNormal");
-        ambientFactorShaderVar = ShaderVar(this->shader, "ambientFactor");
-
         for (auto& constMesh : model->getConstMeshes()->getConstMeshes()) {
             auto meshRendererBuilder = std::make_unique<GenericRendererBuilder>(this->renderTarget, this->shader, ShapeType::TRIANGLE);
             meshRendererBuilder
-                ->enableDepthTest()
-                ->addData(&constMesh->getBaseVertices())
-                ->addData(&constMesh->getTextureCoordinates())
-                ->addData(&constMesh->getBaseNormals())
-                ->addData(&constMesh->getBaseTangents())
-                ->indices(&constMesh->getTrianglesIndices())
-                ->addShaderData(ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix)) //binding 0
-                ->addShaderData(ShaderDataSender()
-                        .sendData(mViewShaderVar, meshData.viewMatrix)
-                        .sendData(mModelShaderVar, meshData.modelMatrix)
-                        .sendData(mNormalShaderVar, meshData.normalMatrix)
-                        .sendData(ambientFactorShaderVar, meshData.ambientFactor)); //binding 1
+                ->enableDepthOperations()
+                ->addData(constMesh->getBaseVertices())
+                ->addData(constMesh->getTextureCoordinates())
+                ->addData(constMesh->getBaseNormals())
+                ->addData(constMesh->getBaseTangents())
+                ->indices(constMesh->getTrianglesIndices())
+                ->addShaderData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
+                ->addShaderData(sizeof(meshData), &meshData); //binding 1
             if (customModelShaderVariable) {
                 customModelShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 2 & 3
             }
@@ -61,7 +50,7 @@ namespace urchin {
 
     void ModelDisplayer::onCameraProjectionUpdate(const Camera* camera) {
         for (auto& meshRenderer : meshRenderers) {
-            meshRenderer->updateShaderData(0, ShaderDataSender().sendData(mProjectionShaderVar, camera->getProjectionMatrix()));
+            meshRenderer->updateShaderData(0, &camera->getProjectionMatrix());
         }
     }
 
@@ -71,9 +60,9 @@ namespace urchin {
                 unsigned int meshIndex = 0;
                 for (auto& meshRenderer : meshRenderers) {
                     const Mesh* mesh = model->getMeshes()->getMesh(meshIndex);
-                    meshRenderer->updateData(0, &mesh->getVertices());
-                    meshRenderer->updateData(2, &mesh->getNormals());
-                    meshRenderer->updateData(3, &mesh->getTangents());
+                    meshRenderer->updateData(0, mesh->getVertices());
+                    meshRenderer->updateData(2, mesh->getNormals());
+                    meshRenderer->updateData(3, mesh->getTangents());
 
                     meshIndex++;
                 }
@@ -89,17 +78,13 @@ namespace urchin {
             meshData.normalMatrix = (displayMode == DEFAULT_MODE) ? model->getTransform().getTransformMatrix().toMatrix3().inverse().transpose() : Matrix3<float>();
             meshData.ambientFactor = model->getConstMeshes()->getConstMesh(meshIndex)->getMaterial()->getAmbientFactor();
 
-            meshRenderer->updateShaderData(1, ShaderDataSender()
-                    .sendData(mViewShaderVar, meshData.viewMatrix)
-                    .sendData(mModelShaderVar, meshData.modelMatrix)
-                    .sendData(mNormalShaderVar, meshData.normalMatrix)
-                    .sendData(ambientFactorShaderVar, meshData.ambientFactor));
+            meshRenderer->updateShaderData(1, &meshData);
 
             if (customModelShaderVariable) {
                 customModelShaderVariable->loadCustomShaderVariables(meshRenderer);
             }
 
-            renderTarget->display(meshRenderer);
+            //TODO renderTarget->display(meshRenderer);
             meshIndex++;
         }
     }

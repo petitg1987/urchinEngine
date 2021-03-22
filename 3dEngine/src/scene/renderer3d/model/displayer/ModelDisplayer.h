@@ -26,7 +26,6 @@ namespace urchin {
             DisplayMode displayMode;
             std::shared_ptr<RenderTarget> renderTarget;
             std::shared_ptr<Shader> shader;
-            ShaderVar mModelShaderVar, mNormalShaderVar, ambientFactorShaderVar, mViewShaderVar, mProjectionShaderVar;
             mutable struct {
                 alignas(16) Matrix4<float> viewMatrix;
                 alignas(16) Matrix4<float> modelMatrix;

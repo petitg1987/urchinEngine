@@ -4,8 +4,7 @@
 #include <random>
 
 #include "AmbientOcclusionManager.h"
-#include "graphic/shader/builder/ShaderBuilder.h"
-#include "graphic/shader/data/ShaderDataSender.h"
+#include "graphic/render/shader/builder/ShaderBuilder.h"
 #include "graphic/render/GenericRendererBuilder.h"
 #include "texture/filter/bilateralblur/BilateralBlurFilterBuilder.h"
 
@@ -85,21 +84,8 @@ namespace urchin {
         ambientOcclusionTokens["DEPTH_END_ATTENUATION"] = std::to_string(depthEndAttenuation);
         ambientOcclusionTokens["NOISE_TEXTURE_SIZE"] = std::to_string(noiseTextureSize);
         ambientOcclusionTokens["BIAS"] = std::to_string(bias);
-        ambientOcclusionShader = ShaderBuilder().createShader("ambientOcclusion.vert", "", "ambientOcclusion.frag", ambientOcclusionTokens);
 
-        mInverseViewProjectionShaderVar = ShaderVar(ambientOcclusionShader, "mInverseViewProjection");
-        mProjectionShaderVar = ShaderVar(ambientOcclusionShader, "mProjection");
-        mViewShaderVar = ShaderVar(ambientOcclusionShader, "mView");
-        samplesShaderVar = ShaderVar(ambientOcclusionShader, "samples");
-        resolutionShaderVar = ShaderVar(ambientOcclusionShader, "resolution");
-
-        int depthTexUnit = 0;
-        int normalAndAmbientTexUnit = 1;
-        int noiseTexUnit = 2;
-        ShaderDataSender()
-                .sendData(ShaderVar(ambientOcclusionShader, "depthTex"), depthTexUnit) //binding 20
-                .sendData(ShaderVar(ambientOcclusionShader, "normalAndAmbientTex"), normalAndAmbientTexUnit) //binding 21
-                .sendData(ShaderVar(ambientOcclusionShader, "noiseTex"), noiseTexUnit); //binding 22
+        ambientOcclusionShader = ShaderBuilder::createShader("ambientOcclusion.vert", "", "ambientOcclusion.frag", ambientOcclusionTokens);
     }
 
     void AmbientOcclusionManager::createOrUpdateAOTexture() {
@@ -150,14 +136,11 @@ namespace urchin {
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
         };
         renderer = std::make_unique<GenericRendererBuilder>(offscreenRenderTarget, ambientOcclusionShader, ShapeType::TRIANGLE)
-                ->addData(&vertexCoord)
-                ->addData(&textureCoord)
-                ->addShaderData(ShaderDataSender()
-                        .sendData(mInverseViewProjectionShaderVar, positioningData.inverseProjectionViewMatrix)
-                        .sendData(mProjectionShaderVar, positioningData.projectionMatrix)
-                        .sendData(mViewShaderVar, positioningData.viewMatrix)) //binding 0
+                ->addData(vertexCoord)
+                ->addData(textureCoord)
+                ->addShaderData(sizeof(positioningData), &positioningData) //binding 0
                 ->addShaderData(ShaderDataSender().sendData(samplesShaderVar, (unsigned int)ssaoKernel.size(), &ssaoKernel[0])) //binding 1
-                ->addShaderData(ShaderDataSender().sendData(resolutionShaderVar, resolution)) //binding 2
+                ->addShaderData(sizeof(resolution), &resolution) //binding 2
                 ->addTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()))
                 ->addTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
                 ->addTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest()))
@@ -311,13 +294,9 @@ namespace urchin {
         positioningData.inverseProjectionViewMatrix = (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse();
         positioningData.projectionMatrix = camera->getProjectionMatrix();
         positioningData.viewMatrix = camera->getViewMatrix();
+        renderer->updateShaderData(0, &positioningData);
 
-        renderer->updateShaderData(0, ShaderDataSender()
-                .sendData(mInverseViewProjectionShaderVar, positioningData.inverseProjectionViewMatrix)
-                .sendData(mProjectionShaderVar, positioningData.projectionMatrix)
-                .sendData(mViewShaderVar, positioningData.viewMatrix));
-
-        offscreenRenderTarget->display(renderer);
+        //TODO offscreenRenderTarget->display(renderer);
 
         if (isBlurActivated) {
             verticalBlurFilter->applyFilter();
@@ -326,7 +305,7 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::loadAOTexture(const std::unique_ptr<GenericRenderer>& lightingRenderer, std::size_t aoTextureUnit) const {
-        if (lightingRenderer->getTextureReader(aoTextureUnit).getTexture() != getAmbientOcclusionTexture()) {
+        if (lightingRenderer->getTextureReader(aoTextureUnit)->getTexture() != getAmbientOcclusionTexture()) {
             lightingRenderer->updateTextureReader(aoTextureUnit, TextureReader::build(getAmbientOcclusionTexture(), TextureParam::buildLinear()));
         }
     }

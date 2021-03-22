@@ -72,7 +72,7 @@ namespace urchin {
      *   - N=16 for embedded struct
      *   - N=16 for an array (important: the array elements are rounded up to 16 bytes. Therefore, an array of float (4 bytes) in C++ won't match an array of float in the shader.)
      */
-    GenericRendererBuilder* GenericRendererBuilder::addShaderData(std::size_t dataSize, void* dataPtr) {
+    GenericRendererBuilder* GenericRendererBuilder::addShaderData(std::size_t dataSize, const void* dataPtr) {
         shaderData.emplace_back(ShaderDataContainer(dataSize, dataPtr));
         return this;
     }

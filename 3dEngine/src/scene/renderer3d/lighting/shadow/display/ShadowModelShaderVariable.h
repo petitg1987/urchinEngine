@@ -6,8 +6,7 @@
 #include "scene/renderer3d/lighting/shadow/light/LightShadowMap.h"
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/model/displayer/CustomModelShaderVariable.h"
-#include "graphic/shader/model/Shader.h"
-#include "graphic/shader/model/ShaderVar.h"
+#include "graphic/render/shader/model/Shader.h"
 
 namespace urchin {
 
@@ -16,7 +15,7 @@ namespace urchin {
     */
     class ShadowModelShaderVariable : public CustomModelShaderVariable {
         public:
-            ShadowModelShaderVariable(const LightShadowMap*, const ShaderVar&, const ShaderVar&);
+            explicit ShadowModelShaderVariable(const LightShadowMap*);
 
             void setupMeshRenderer(const std::unique_ptr<GenericRendererBuilder>&) override;
             void loadCustomShaderVariables(const std::unique_ptr<GenericRenderer>&) override;
@@ -24,7 +23,6 @@ namespace urchin {
         private:
             void refreshShaderVariables();
 
-            ShaderVar mModelProjectionMatrixShaderVar, layersToUpdateShaderVar;
             const LightShadowMap* lightShadowMap;
 
             std::vector<Matrix4<float>> projectionMatrices;

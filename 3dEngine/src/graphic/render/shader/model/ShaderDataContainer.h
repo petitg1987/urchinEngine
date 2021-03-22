@@ -8,11 +8,11 @@ namespace urchin {
 
     class ShaderDataContainer {
         public:
-            ShaderDataContainer(std::size_t, void*);
+            ShaderDataContainer(std::size_t, const void*);
             ShaderDataContainer(const ShaderDataContainer&);
             ~ShaderDataContainer();
 
-            void updateData(void*);
+            void updateData(const void*);
             void* getData() const;
             std::size_t getDataSize() const;
 

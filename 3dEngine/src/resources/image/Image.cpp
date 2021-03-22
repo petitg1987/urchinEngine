@@ -95,7 +95,7 @@ namespace urchin {
         }
 
         if (generateMipMap) {
-            texture->generateMipmap();
+            texture->enableMipmap();
         }
 
         return texture;

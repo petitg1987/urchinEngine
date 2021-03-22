@@ -1,8 +1,5 @@
-#include <stdexcept>
-
 #include "Terrain.h"
-#include "graphic/shader/builder/ShaderBuilder.h"
-#include "graphic/shader/data/ShaderDataSender.h"
+#include "graphic/render/shader/builder/ShaderBuilder.h"
 #include "graphic/render/GenericRendererBuilder.h"
 
 #define DEFAULT_AMBIENT 0.3f
@@ -18,22 +15,7 @@ namespace urchin {
             materials(std::move(materials)),
             grass(std::make_unique<TerrainGrass>("")),
             ambient(0.0f) {
-        terrainShader = ShaderBuilder().createShader("terrain.vert", "", "terrain.frag");
-
-        vPositionShaderVar = ShaderVar(terrainShader, "vPosition");
-        mProjectionShaderVar = ShaderVar(terrainShader, "mProjection");
-        mViewShaderVar = ShaderVar(terrainShader, "mView");
-        ambientShaderVar = ShaderVar(terrainShader, "ambient");
-        stRepeatShaderVar = ShaderVar(terrainShader, "stRepeat");
-
-        int maskTexUnit = 0;
-        ShaderDataSender().sendData(ShaderVar(terrainShader, "maskTex"), maskTexUnit); //binding 20
-
-        for (int i = 0; i < (int)TerrainMaterials::MAX_MATERIAL; ++i) {
-            std::string shaderTextureName = "diffuseTex" + std::to_string(i + 1);
-            int diffuseTexUnit = i + 1;
-            ShaderDataSender().sendData(ShaderVar(terrainShader, std::move(shaderTextureName)), diffuseTexUnit); //binding 21, 22, 23, 24
-        }
+        terrainShader = ShaderBuilder::createShader("terrain.vert", "", "terrain.frag");
 
         setPosition(position);
         setAmbient(DEFAULT_AMBIENT);
@@ -57,7 +39,7 @@ namespace urchin {
     void Terrain::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
         positioningData.projectionMatrix = projectionMatrix;
 
-        terrainRenderer->updateShaderData(1, ShaderDataSender().sendData(mProjectionShaderVar, positioningData.projectionMatrix));
+        terrainRenderer->updateShaderData(1, &positioningData);
         grass->onCameraProjectionUpdate(projectionMatrix);
     }
 
@@ -66,19 +48,20 @@ namespace urchin {
         this->mesh = mesh;
 
         std::vector<Point2<float>> emptyTextureCoordinates;
+        Matrix4<float> viewMatrix;
+        Vector2<float> materialsStRepeat = materials->getStRepeat();
+
         auto terrainRendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, terrainShader, ShapeType::TRIANGLE_STRIP);
         terrainRendererBuilder
-                ->enableDepthTest()
-                ->addData(&mesh->getVertices())
-                ->addData(&mesh->getNormals())
-                ->addData(&emptyTextureCoordinates)
-                ->addShaderData(ShaderDataSender().sendData(mViewShaderVar, Matrix4<float>())) //binding 0
-                ->addShaderData(ShaderDataSender()
-                        .sendData(mProjectionShaderVar, positioningData.projectionMatrix)
-                        .sendData(vPositionShaderVar, positioningData.position)) //binding 1
-                ->addShaderData(ShaderDataSender().sendData(stRepeatShaderVar, materials->getStRepeat())) //binding 2
-                ->addShaderData(ShaderDataSender().sendData(ambientShaderVar, ambient)) //binding 3
-                ->indices(&mesh->getIndices())
+                ->enableDepthOperations()
+                ->addData(mesh->getVertices())
+                ->addData(mesh->getNormals())
+                ->addData(emptyTextureCoordinates)
+                ->indices(mesh->getIndices())
+                ->addShaderData(sizeof(viewMatrix), &viewMatrix) //binding 0
+                ->addShaderData(sizeof(positioningData), &positioningData) //binding 1
+                ->addShaderData(sizeof(materials->getStRepeat()), &materialsStRepeat) //binding 2
+                ->addShaderData(sizeof(ambient), &ambient) //binding 3
                 ->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //mask texture
         for (std::size_t i = 0; i < materials->getMaterials().size(); ++i) {
             terrainRendererBuilder->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //material texture
@@ -105,8 +88,9 @@ namespace urchin {
         if (materials) {
             materials->refreshWith(mesh->getXSize(), mesh->getZSize());
 
-            terrainRenderer->updateData(2, &materials->getTexCoordinates());
-            terrainRenderer->updateShaderData(2, ShaderDataSender().sendData(stRepeatShaderVar, materials->getStRepeat()));
+            Vector2<float> materialsStRepeat = materials->getStRepeat();
+            terrainRenderer->updateData(2, materials->getTexCoordinates());
+            terrainRenderer->updateShaderData(2, &materialsStRepeat);
 
             std::size_t maskMaterialTexUnit = 0;
             std::size_t materialTexUnitStart = 1;
@@ -151,7 +135,7 @@ namespace urchin {
         positioningData.position = position;
 
         if (terrainRenderer) {
-            terrainRenderer->updateShaderData(1, ShaderDataSender().sendData(vPositionShaderVar, positioningData.position));
+            terrainRenderer->updateShaderData(1, &positioningData);
         }
         refreshGrassMesh(); //grass uses terrain position: refresh is required
     }
@@ -171,7 +155,7 @@ namespace urchin {
         this->ambient = ambient;
 
         if(terrainRenderer) {
-            terrainRenderer->updateShaderData(3, ShaderDataSender().sendData(ambientShaderVar, ambient));
+            terrainRenderer->updateShaderData(3, &ambient);
         }
         refreshGrassAmbient(); //grass uses ambient value: refresh is required
     }
@@ -189,8 +173,8 @@ namespace urchin {
     void Terrain::display(const Camera* camera, float dt) const {
         assert(isInitialized);
 
-        terrainRenderer->updateShaderData(0, ShaderDataSender().sendData(mViewShaderVar, camera->getViewMatrix()));
-        renderTarget->display(terrainRenderer);
+        terrainRenderer->updateShaderData(0, &camera->getViewMatrix());
+        //TODO renderTarget->display(terrainRenderer);
 
         if (grass) {
             grass->display(camera, dt);

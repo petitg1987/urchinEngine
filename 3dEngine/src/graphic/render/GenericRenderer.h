@@ -36,7 +36,7 @@ namespace urchin {
             void updateData(std::size_t, const std::vector<Point3<float>>&);
             void updateData(std::size_t, const std::vector<Vector3<float>>&);
 
-            void updateShaderData(std::size_t, void*);
+            void updateShaderData(std::size_t, const void*);
 
             void updateTextureReader(std::size_t, const std::shared_ptr<TextureReader>&);
             const std::shared_ptr<TextureReader>& getTextureReader(std::size_t) const;

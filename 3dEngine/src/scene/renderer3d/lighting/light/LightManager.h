@@ -4,8 +4,7 @@
 #include <vector>
 #include "UrchinCommon.h"
 
-#include "graphic/shader/model/Shader.h"
-#include "graphic/shader/model/ShaderVar.h"
+#include "graphic/render/shader/model/Shader.h"
 #include "graphic/render/target/RenderTarget.h"
 #include "graphic/render/GenericRendererBuilder.h"
 #include "Light.h"
@@ -22,7 +21,6 @@ namespace urchin {
                 REMOVE_LIGHT, //A light has been removed
             };
 
-            void initiateShaderVariables(const std::shared_ptr<Shader>&);
             void setupLightingRenderer(const std::unique_ptr<GenericRendererBuilder>&);
             OctreeManager<Light>* getLightOctreeManager() const;
             Light* getLastUpdatedLight();
@@ -56,16 +54,6 @@ namespace urchin {
 
             Light* lastUpdatedLight;
 
-            struct LightShaderVar {
-                ShaderVar isExistShaderVar;
-                ShaderVar produceShadowShaderVar;
-                ShaderVar hasParallelBeamsShaderVar;
-                ShaderVar positionOrDirectionShaderVar;
-                ShaderVar exponentialAttShaderVar;
-                ShaderVar lightAmbientShaderVar;
-            };
-            LightShaderVar* lightsShaderVar;
-            ShaderVar globalAmbientColorShaderVar;
             struct LightsData {
                 alignas(4) bool isExist;
                 alignas(4) bool produceShadow;

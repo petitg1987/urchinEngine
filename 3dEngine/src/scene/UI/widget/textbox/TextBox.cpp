@@ -4,7 +4,6 @@
 #include "scene/UI/widget/textbox/TextBox.h"
 #include "scene/InputDeviceKey.h"
 #include "graphic/render/GenericRendererBuilder.h"
-#include "graphic/shader/data/ShaderDataSender.h"
 
 #define LETTER_SHIFT 5 //When the text box is full of text, we shift all letters to left
 #define LETTER_AND_CURSOR_SHIFT 2 //Define space between the letters and cursor
@@ -62,8 +61,8 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
         textBoxRenderer = setupUiRenderer(ShapeType::TRIANGLE)
-                ->addData(&vertexCoord)
-                ->addData(&textureCoord)
+                ->addData(vertexCoord)
+                ->addData(textureCoord)
                 ->addTextureReader(TextureReader::build(texTextBoxDefault, TextureParam::buildNearest()))
                 ->build();
 
@@ -76,8 +75,8 @@ namespace urchin {
                 Point2<float>(1.0, 1.0)
         };
         cursorRenderer = setupUiRenderer(ShapeType::LINE)
-                ->addData(&cursorVertexCoord)
-                ->addData(&cursorTextureCoord)
+                ->addData(cursorVertexCoord)
+                ->addData(cursorTextureCoord)
                 ->addTextureReader(TextureReader::build(texCursorDiffuse, TextureParam::buildRepeatNearest()))
                 ->build();
     }
@@ -213,13 +212,13 @@ namespace urchin {
     void TextBox::displayWidget(float dt) {
         //display the text box
         updateTranslateVector(textBoxRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
-        getRenderTarget()->display(textBoxRenderer);
+        //TODO getRenderTarget()->display(textBoxRenderer);
 
         //displays the cursor
         cursorBlink += dt * CURSOR_BLINK_SPEED;
         if (state == ACTIVE && ((int)cursorBlink % 2) > 0) { //TODO disable widget for render target ?
             updateTranslateVector(cursorRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()) + Vector2<int>((int)cursorPosition, 0));
-            getRenderTarget()->display(cursorRenderer);
+            //TODO getRenderTarget()->display(cursorRenderer);
         }
     }
 

@@ -9,7 +9,6 @@
 #include "scene/UI/widget/Size.h"
 #include "scene/UI/UISkinService.h"
 #include "scene/UI/EventListener.h"
-#include "graphic/shader/model/ShaderVar.h"
 #include "graphic/render/target/RenderTarget.h"
 #include "graphic/render/GenericRendererBuilder.h"
 
@@ -72,7 +71,7 @@ namespace urchin {
 
         protected:
             std::unique_ptr<GenericRendererBuilder> setupUiRenderer(ShapeType) const;
-            void updateTranslateVector(const std::unique_ptr<GenericRenderer>&, const Vector2<int>&);
+            static void updateTranslateVector(const std::unique_ptr<GenericRenderer>&, const Vector2<int>&);
             const std::shared_ptr<RenderTarget>& getRenderTarget() const;
             unsigned int getSceneWidth() const;
             unsigned int getSceneHeight() const;
@@ -94,7 +93,6 @@ namespace urchin {
             std::shared_ptr<Shader> shader;
             unsigned int sceneWidth, sceneHeight;
             Matrix3<float> projectionMatrix;
-            ShaderVar mProjectionShaderVar, translateDistanceShaderVar;
 
             Widget* parent;
             std::vector<Widget*> children;

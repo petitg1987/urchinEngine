@@ -7,8 +7,7 @@
 #include "UrchinCommon.h"
 
 #include "CustomModelShaderVariable.h"
-#include "graphic/shader/model/Shader.h"
-#include "graphic/shader/model/ShaderVar.h"
+#include "graphic/render/shader/model/Shader.h"
 #include "graphic/render/target/RenderTarget.h"
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/model/displayer/DisplayMode.h"
@@ -28,7 +27,6 @@ namespace urchin {
             void initialize(std::shared_ptr<RenderTarget>);
             void onCameraProjectionUpdate(const Camera*);
 
-            ShaderVar getShaderVar(const std::string&) const;
             void setCustomGeometryShader(const std::string&, const std::map<std::string, std::string>&);
             void setCustomFragmentShader(const std::string&, const std::map<std::string, std::string>&);
             void setCustomModelShaderVariable(CustomModelShaderVariable*);

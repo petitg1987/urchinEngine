@@ -1,5 +1,4 @@
 #include "FogManager.h"
-#include "graphic/shader/data/ShaderDataSender.h"
 
 namespace urchin {
 
@@ -25,21 +24,8 @@ namespace urchin {
         return fogs.top();
     }
 
-    void FogManager::initiateShaderVariables(const std::shared_ptr<Shader>& lightingShader) {
-        hasFogShaderVar = ShaderVar(lightingShader, "hasFog");
-        fogDensityShaderVar = ShaderVar(lightingShader, "fogDensity");
-        fogGradientShaderVar = ShaderVar(lightingShader, "fogGradient");
-        fogColorShaderVar = ShaderVar(lightingShader, "fogColor");
-        fogMaxHeightShaderVar = ShaderVar(lightingShader, "fogMaxHeight");
-    }
-
     void FogManager::setupLightingRenderer(const std::unique_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
-        lightingRendererBuilder->addShaderData(ShaderDataSender()
-                .sendData(hasFogShaderVar, fogData.hasFog)
-                .sendData(fogDensityShaderVar, fogData.density)
-                .sendData(fogGradientShaderVar, fogData.gradient)
-                .sendData(fogMaxHeightShaderVar, fogData.maxHeight)
-                .sendData(fogColorShaderVar, fogData.color)); //binding 6
+        lightingRendererBuilder->addShaderData(sizeof(fogData), &fogData); //binding 6
     }
 
     void FogManager::loadFog(const std::unique_ptr<GenericRenderer>& lightingRenderer) {
@@ -52,12 +38,7 @@ namespace urchin {
             fogData.color = Vector4<float>(fogs.top()->getColor(), 1.0);
         }
 
-        lightingRenderer->updateShaderData(6, ShaderDataSender()
-                .sendData(hasFogShaderVar, fogData.hasFog)
-                .sendData(fogDensityShaderVar, fogData.density)
-                .sendData(fogGradientShaderVar, fogData.gradient)
-                .sendData(fogMaxHeightShaderVar, fogData.maxHeight)
-                .sendData(fogColorShaderVar, fogData.color));
+        lightingRenderer->updateShaderData(6, &fogData);
     }
 
 }

@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    ShaderDataContainer::ShaderDataContainer(std::size_t dataSize, void* ptr) :
+    ShaderDataContainer::ShaderDataContainer(std::size_t dataSize, const void* ptr) :
             dataSize(dataSize),
             newData(true),
             newDataTotalUpdate(0) {
@@ -24,7 +24,7 @@ namespace urchin {
         free(ptr);
     }
 
-    void ShaderDataContainer::updateData(void* newDataPtr) {
+    void ShaderDataContainer::updateData(const void* newDataPtr) {
         std::memcpy(this->ptr, newDataPtr, dataSize);
         newData = true;
     }

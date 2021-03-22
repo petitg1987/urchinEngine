@@ -4,8 +4,7 @@
 #include <memory>
 #include "UrchinCommon.h"
 
-#include "graphic/shader/model/Shader.h"
-#include "graphic/shader/model/ShaderVar.h"
+#include "graphic/render/shader/model/Shader.h"
 #include "graphic/render/GenericRenderer.h"
 #include "graphic/render/target/RenderTarget.h"
 
@@ -64,7 +63,6 @@ namespace urchin {
             std::unique_ptr<GenericRenderer> renderer;
 
             std::shared_ptr<Shader> displayTextureShader;
-            ShaderVar mProjectionShaderVar, diffuseTexShaderVar;
             struct {
                 alignas(4) float colorIntensity;
                 alignas(4) float cameraNearPlane;

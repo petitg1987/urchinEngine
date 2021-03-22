@@ -6,8 +6,7 @@
 
 #include "TerrainGrass.h"
 #include "resources/MediaManager.h"
-#include "graphic/shader/builder/ShaderBuilder.h"
-#include "graphic/shader/data/ShaderDataSender.h"
+#include "graphic/render/shader/builder/ShaderBuilder.h"
 #include "graphic/render/GenericRendererBuilder.h"
 
 #define DEFAULT_NUM_GRASS_IN_TEX 1
@@ -33,30 +32,7 @@ namespace urchin {
             grassQuantity(0.0) {
         std::map<std::string, std::string> tokens;
         tokens["GRASS_ALPHA_TEST"] = ConfigService::instance()->getStringValue("terrain.grassAlphaTest");
-        terrainGrassShader = ShaderBuilder().createShader("terrainGrass.vert", "terrainGrass.geom", "terrainGrass.frag", tokens);
-
-        mProjectionShaderVar = ShaderVar(terrainGrassShader, "mProjection");
-        mViewShaderVar = ShaderVar(terrainGrassShader, "mView");
-        cameraPositionShaderVar = ShaderVar(terrainGrassShader, "cameraPosition");
-        sumTimeStepShaderVar = ShaderVar(terrainGrassShader, "sumTimeStep");
-
-        terrainMinPointShaderVar = ShaderVar(terrainGrassShader, "terrainMinPoint");
-        terrainMaxPointShaderVar = ShaderVar(terrainGrassShader, "terrainMaxPoint");
-        terrainAmbientShaderVar = ShaderVar(terrainGrassShader, "ambient");
-
-        grassDisplayDistanceShaderVar = ShaderVar(terrainGrassShader, "grassDisplayDistance");
-        grassHeightShaderVar = ShaderVar(terrainGrassShader, "grassHeight");
-        grassLengthShaderVar = ShaderVar(terrainGrassShader, "grassLength");
-        numGrassInTexShaderVar = ShaderVar(terrainGrassShader, "numGrassInTex");
-
-        windDirectionShaderVar = ShaderVar(terrainGrassShader, "windDirection");
-        windStrengthShaderVar = ShaderVar(terrainGrassShader, "windStrength");
-
-        int grassTexUnit = 0;
-        int grassMaskTexUnit = 1;
-        ShaderDataSender()
-            .sendData(ShaderVar(terrainGrassShader, "grassTex"), grassTexUnit) //binding 20
-            .sendData(ShaderVar(terrainGrassShader, "grassMaskTex"), grassMaskTexUnit); //binding 21
+        terrainGrassShader = ShaderBuilder::createShader("terrainGrass.vert", "terrainGrass.geom", "terrainGrass.frag", tokens);
 
         setGrassTexture(grassTextureFilename);
         setMaskTexture("");
@@ -89,7 +65,7 @@ namespace urchin {
         this->projectionMatrix = projectionMatrix;
 
         for(auto& renderer: getAllRenderers()) {
-            renderer->updateShaderData(3, ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix));
+            renderer->updateShaderData(3, &projectionMatrix);
         }
     }
 
@@ -101,9 +77,7 @@ namespace urchin {
         terrainPositioningData.terrainMaxPoint = mesh->getVertices()[mesh->getXSize() * mesh->getZSize() - 1];
 
         for(auto& renderer: getAllRenderers()) {
-            renderer->updateShaderData(2, ShaderDataSender()
-                    .sendData(terrainMinPointShaderVar, terrainPositioningData.terrainMinPoint)
-                    .sendData(terrainMaxPointShaderVar, terrainPositioningData.terrainMaxPoint));
+            renderer->updateShaderData(2, &terrainPositioningData);
         }
     }
 
@@ -112,7 +86,7 @@ namespace urchin {
         this->ambient = ambient;
 
         for(auto& renderer: getAllRenderers()) {
-            renderer->updateShaderData(4, ShaderDataSender().sendData(terrainAmbientShaderVar, ambient));
+            renderer->updateShaderData(4, &ambient);
         }
     }
 
@@ -236,26 +210,15 @@ namespace urchin {
         if (grassTexture) {
             for (auto* grassQuadtree : leafGrassPatches) {
                 std::unique_ptr<GenericRenderer> renderer = std::make_unique<GenericRendererBuilder>(renderTarget, terrainGrassShader, ShapeType::POINT)
-                        ->enableDepthTest()
+                        ->enableDepthOperations()
                         ->disableCullFace()
-                        ->addData(&grassQuadtree->getGrassVertices())
-                        ->addData(&grassQuadtree->getGrassNormals())
-                        ->addShaderData(ShaderDataSender()
-                                .sendData(mViewShaderVar, positioningData.viewMatrix)
-                                .sendData(cameraPositionShaderVar, positioningData.cameraPosition)
-                                .sendData(sumTimeStepShaderVar, positioningData.sumTimeStep)) //binding 0
-                        ->addShaderData(ShaderDataSender()
-                                .sendData(grassDisplayDistanceShaderVar, grassProperties.displayDistance)
-                                .sendData(grassHeightShaderVar, grassProperties.height)
-                                .sendData(grassLengthShaderVar, grassProperties.length)
-                                .sendData(numGrassInTexShaderVar, grassProperties.numGrassInTex)
-                                .sendData(windStrengthShaderVar, grassProperties.windStrength)
-                                .sendData(windDirectionShaderVar, grassProperties.windDirection)) //binding 1
-                        ->addShaderData(ShaderDataSender()
-                                .sendData(terrainMinPointShaderVar, terrainPositioningData.terrainMinPoint)
-                                .sendData(terrainMaxPointShaderVar, terrainPositioningData.terrainMaxPoint)) //binding 2
-                        ->addShaderData(ShaderDataSender().sendData(mProjectionShaderVar, projectionMatrix)) //binding 3
-                        ->addShaderData(ShaderDataSender().sendData(terrainAmbientShaderVar, ambient)) //binding 4
+                        ->addData(grassQuadtree->getGrassVertices())
+                        ->addData(grassQuadtree->getGrassNormals())
+                        ->addShaderData(sizeof(positioningData), &positioningData) //binding 0
+                        ->addShaderData(sizeof(grassProperties), &grassProperties) //binding 1
+                        ->addShaderData(sizeof(terrainPositioningData), &terrainPositioningData) //binding 2
+                        ->addShaderData(sizeof(projectionMatrix), &projectionMatrix) //binding 3
+                        ->addShaderData(sizeof(ambient), &ambient) //binding 4
                         ->addTextureReader(TextureReader::build(grassTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
                         ->addTextureReader(TextureReader::build(grassMaskTexture, TextureParam::buildLinear()))
                         ->build();
@@ -328,7 +291,7 @@ namespace urchin {
         grassProperties.displayDistance = grassDisplayDistance;
 
         for(auto& renderer: getAllRenderers()) {
-            renderer->updateShaderData(1, ShaderDataSender().sendData(grassDisplayDistanceShaderVar, grassProperties.displayDistance));
+            renderer->updateShaderData(1, &grassProperties);
         }
     }
 
@@ -340,7 +303,7 @@ namespace urchin {
         grassProperties.height = grassHeight;
 
         for(auto& renderer: getAllRenderers()) {
-            renderer->updateShaderData(1, ShaderDataSender().sendData(grassHeightShaderVar, grassProperties.height));
+            renderer->updateShaderData(1, &grassProperties);
         }
     }
 
@@ -352,7 +315,7 @@ namespace urchin {
         grassProperties.length = grassLength;
 
         for(auto& renderer: getAllRenderers()) {
-            renderer->updateShaderData(1, ShaderDataSender().sendData(grassLengthShaderVar, grassProperties.length));
+            renderer->updateShaderData(1, &grassProperties);
         }
     }
 
@@ -364,7 +327,7 @@ namespace urchin {
         grassProperties.numGrassInTex = (int)numGrassInTex;
 
         for(auto& renderer: getAllRenderers()) {
-            renderer->updateShaderData(1, ShaderDataSender().sendData(numGrassInTexShaderVar, grassProperties.numGrassInTex));
+            renderer->updateShaderData(1, &grassProperties);
         }
     }
 
@@ -386,7 +349,7 @@ namespace urchin {
         grassProperties.windDirection = windDirection.normalize();
 
         for(auto& renderer: getAllRenderers()) {
-            renderer->updateShaderData(1, ShaderDataSender().sendData(windDirectionShaderVar, grassProperties.windDirection));
+            renderer->updateShaderData(1, &grassProperties);
         }
     }
 
@@ -398,7 +361,7 @@ namespace urchin {
         grassProperties.windStrength = windStrength;
 
         for(auto& renderer: getAllRenderers()) {
-            renderer->updateShaderData(1, ShaderDataSender().sendData(windStrengthShaderVar, grassProperties.windStrength));
+            renderer->updateShaderData(1, &grassProperties);
         }
     }
 
@@ -421,12 +384,9 @@ namespace urchin {
 
                 if (grassQuadtreeBox && camera->getFrustum().cutFrustum(grassProperties.displayDistance).collideWithAABBox(*grassQuadtreeBox)) {
                     if (grassQuadtree->isLeaf()) {
-                        grassQuadtree->getRenderer()->updateShaderData(0, ShaderDataSender()
-                                .sendData(mViewShaderVar, positioningData.viewMatrix)
-                                .sendData(cameraPositionShaderVar, positioningData.cameraPosition)
-                                .sendData(sumTimeStepShaderVar, positioningData.sumTimeStep));
+                        grassQuadtree->getRenderer()->updateShaderData(0, &positioningData);
 
-                        renderTarget->display(grassQuadtree->getRenderer());
+                        //TODO renderTarget->display(grassQuadtree->getRenderer());
                     } else {
                         for (const auto* child : grassQuadtree->getChildren()) {
                             grassQuadtrees.push_back(child);

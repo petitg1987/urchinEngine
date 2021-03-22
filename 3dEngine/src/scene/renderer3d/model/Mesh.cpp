@@ -1,7 +1,6 @@
 #include "Mesh.h"
 #include "resources/model/MeshService.h"
 #include "resources/geometry/points/PointsModel.h"
-#include "graphic/shader/data/ShaderDataSender.h"
 #include "graphic/render/GenericRendererBuilder.h"
 
 namespace urchin {

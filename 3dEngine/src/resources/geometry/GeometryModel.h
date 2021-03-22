@@ -3,8 +3,7 @@
 
 #include "UrchinCommon.h"
 
-#include "graphic/shader/model/Shader.h"
-#include "graphic/shader/model/ShaderVar.h"
+#include "graphic/render/shader/model/Shader.h"
 #include "graphic/render/target/RenderTarget.h"
 #include "graphic/render/GenericRenderer.h"
 
@@ -48,7 +47,6 @@ namespace urchin {
             std::unique_ptr<GenericRenderer> renderer;
 
             std::shared_ptr<Shader> shader;
-            ShaderVar mProjectionShaderVar, mViewShaderVar, colorShaderVar;
             mutable struct {
                 alignas(16) Matrix4<float> projectionMatrix;
                 alignas(16) Matrix4<float> viewModelMatrix;

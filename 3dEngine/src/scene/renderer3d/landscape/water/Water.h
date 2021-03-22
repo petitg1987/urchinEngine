@@ -4,8 +4,7 @@
 #include "UrchinCommon.h"
 #include <memory>
 
-#include "graphic/shader/model/Shader.h"
-#include "graphic/shader/model/ShaderVar.h"
+#include "graphic/render/shader/model/Shader.h"
 #include "graphic/render/target/RenderTarget.h"
 #include "graphic/render/GenericRenderer.h"
 #include "resources/image/Image.h"
@@ -74,8 +73,6 @@ namespace urchin {
 
             std::shared_ptr<RenderTarget> renderTarget;
             std::shared_ptr<Shader> waterShader;
-            ShaderVar mProjectionShaderVar, mViewShaderVar, sumTimeStepShaderVar;
-            ShaderVar waterColorShaderVar, waveSpeedShaderVar, waveStrengthShaderVar;
             struct {
                 alignas(16) Matrix4<float> viewMatrix;
                 alignas(4) float sumTimeStep;

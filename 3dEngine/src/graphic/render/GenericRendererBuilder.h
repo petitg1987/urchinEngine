@@ -30,7 +30,7 @@ namespace urchin {
             GenericRendererBuilder* indices(const std::vector<uint32_t>&);
             const std::shared_ptr<IndexContainer>& getIndices() const;
 
-            GenericRendererBuilder* addShaderData(std::size_t, void*);
+            GenericRendererBuilder* addShaderData(std::size_t, const void*);
             const std::vector<ShaderDataContainer> &getShaderData() const;
 
             GenericRendererBuilder* addTextureReader(const std::shared_ptr<TextureReader>&);

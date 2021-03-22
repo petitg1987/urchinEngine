@@ -2,8 +2,7 @@
 #include <stdexcept>
 
 #include "ModelSetDisplayer.h"
-#include "graphic/shader/builder/ShaderBuilder.h"
-#include "graphic/shader/data/ShaderDataSender.h"
+#include "graphic/render/shader/builder/ShaderBuilder.h"
 
 namespace urchin {
 
@@ -31,12 +30,6 @@ namespace urchin {
                 fragmentShaderName = "model.frag";
             }
             createShader(vertexShaderName, geometryShaderName, fragmentShaderName);
-
-            int diffuseTexUnit = 0;
-            int normalTexUnit = 1;
-            ShaderDataSender()
-                .sendData(ShaderVar(modelShader, "diffuseTex"), diffuseTexUnit) //binding 20
-                .sendData(ShaderVar(modelShader, "normalTex"), normalTexUnit); //binding 21
         } else if (displayMode == DEPTH_ONLY_MODE) {
             //shader creation
             std::string vertexShaderName = "modelDepthOnly.vert";
@@ -58,7 +51,7 @@ namespace urchin {
         shaderTokens.insert(fragmentTokens.begin(), fragmentTokens.end());
         shaderTokens.insert(geometryTokens.begin(), geometryTokens.end());
 
-        modelShader = ShaderBuilder().createShader(vertexShaderName, geometryShaderName, fragmentShaderName, shaderTokens);
+        modelShader = ShaderBuilder::createShader(vertexShaderName, geometryShaderName, fragmentShaderName, shaderTokens);
     }
 
     void ModelSetDisplayer::onCameraProjectionUpdate(const Camera* camera) {
@@ -67,10 +60,6 @@ namespace urchin {
         for (auto& modelDisplayer : modelsDisplayer) {
             modelDisplayer.second->onCameraProjectionUpdate(camera);
         }
-    }
-
-    ShaderVar ModelSetDisplayer::getShaderVar(const std::string& name) const {
-        return ShaderVar(modelShader, std::string(name));
     }
 
     void ModelSetDisplayer::setCustomGeometryShader(const std::string& geometryShaderName, const std::map<std::string, std::string>& geometryTokens) {

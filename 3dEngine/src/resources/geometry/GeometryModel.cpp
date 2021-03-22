@@ -1,6 +1,5 @@
 #include "resources/geometry/GeometryModel.h"
-#include "graphic/shader/builder/ShaderBuilder.h"
-#include "graphic/shader/data/ShaderDataSender.h"
+#include "graphic/render/shader/builder/ShaderBuilder.h"
 #include "graphic/render/GenericRendererBuilder.h"
 
 namespace urchin {
@@ -12,11 +11,7 @@ namespace urchin {
             outlineSize(1.3f),
             transparencyEnabled(false),
             alwaysVisible(false) {
-        shader = ShaderBuilder().createShader("displayGeometry.vert", "", "displayGeometry.frag");
-
-        mProjectionShaderVar = ShaderVar(shader, "mProjection");
-        mViewShaderVar = ShaderVar(shader, "mView");
-        colorShaderVar = ShaderVar(shader, "color");
+        shader = ShaderBuilder::createShader("displayGeometry.vert", "", "displayGeometry.frag");
     }
 
     void GeometryModel::initialize(const std::shared_ptr<RenderTarget>& renderTarget) {
@@ -37,17 +32,15 @@ namespace urchin {
 
         std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, shader, getShapeType());
         rendererBuilder
-                ->addData(&vertexArray)
-                ->addShaderData(ShaderDataSender()
-                        .sendData(mProjectionShaderVar, positioningData.projectionMatrix)
-                        .sendData(mViewShaderVar, positioningData.viewModelMatrix)) //binding 0
-                ->addShaderData(ShaderDataSender().sendData(colorShaderVar, color)) //binding 1
+                ->addData(vertexArray)
+                ->addShaderData(sizeof(positioningData), &positioningData) //binding 0
+                ->addShaderData(sizeof(color), &color) //binding 1
                 ->disableCullFace()
                 ->outlineSize(outlineSize)
                 ->polygonMode(polygonMode);
 
         if (!alwaysVisible) {
-            rendererBuilder->enableDepthTest();
+            rendererBuilder->enableDepthOperations();
         }
 
         if (transparencyEnabled) {
@@ -107,12 +100,10 @@ namespace urchin {
         }
 
         positioningData.viewModelMatrix = viewMatrix * modelMatrix;
-        renderer->updateShaderData(0, ShaderDataSender()
-                .sendData(mProjectionShaderVar, positioningData.projectionMatrix)
-                .sendData(mViewShaderVar, positioningData.viewModelMatrix));
-        renderer->updateShaderData(1, ShaderDataSender().sendData(colorShaderVar, color));
+        renderer->updateShaderData(0, &positioningData);
+        renderer->updateShaderData(1, &color);
 
-        renderTarget->display(renderer);
+        //TODO renderTarget->display(renderer);
     }
 
 }
