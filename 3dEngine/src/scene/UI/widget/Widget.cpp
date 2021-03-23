@@ -45,7 +45,7 @@ namespace urchin {
         }
     }
 
-    void Widget::onResize(unsigned int sceneWidth, unsigned int sceneHeight, const Matrix3<float>& projectionMatrix) {
+    void Widget::onResize(unsigned int sceneWidth, unsigned int sceneHeight, const Matrix4<float>& projectionMatrix) {
         this->sceneWidth = sceneWidth;
         this->sceneHeight = sceneHeight;
         this->projectionMatrix = projectionMatrix;

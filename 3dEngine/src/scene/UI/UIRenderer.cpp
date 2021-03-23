@@ -30,9 +30,10 @@ namespace urchin {
         this->sceneHeight = sceneHeight;
 
         //orthogonal matrix with origin at top left screen
-        mProjection.setValues(2.0f / (float)sceneWidth, 0.0f, -1.0f,
-            0.0f, -2.0f / (float)sceneHeight, 1.0f,
-            0.0f, 0.0f, 1.0f);
+        mProjection.setValues(2.0f / (float)sceneWidth, 0.0f, -1.0f, 0.0f,
+            0.0f, -2.0f / (float)sceneHeight, 1.0f, 0.0f,
+            0.0f, 0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f);
 
         //widgets resize
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {

@@ -35,7 +35,7 @@ namespace urchin {
             unsigned int sceneWidth, sceneHeight;
             std::vector<Widget*> widgets;
 
-            Matrix3<float> mProjection;
+            Matrix4<float> mProjection;
             std::shared_ptr<Shader> uiShader;
     };
 

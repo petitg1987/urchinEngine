@@ -30,7 +30,7 @@ namespace urchin {
             };
 
             void initialize(std::shared_ptr<RenderTarget>, std::shared_ptr<Shader>);
-            void onResize(unsigned int, unsigned int, const Matrix3<float>&);
+            void onResize(unsigned int, unsigned int, const Matrix4<float>&);
 
             Widget* getParent() const;
 
@@ -92,7 +92,7 @@ namespace urchin {
             std::shared_ptr<RenderTarget> renderTarget;
             std::shared_ptr<Shader> shader;
             unsigned int sceneWidth, sceneHeight;
-            Matrix3<float> projectionMatrix;
+            Matrix4<float> projectionMatrix;
 
             Widget* parent;
             std::vector<Widget*> children;
