@@ -221,6 +221,7 @@ namespace urchin {
                 activeRenderer->display(dt);
             }
         }
+        screenRenderTarget->render();
     }
 
 }

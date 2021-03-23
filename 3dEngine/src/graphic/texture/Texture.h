@@ -62,7 +62,6 @@ namespace urchin {
             VkImage textureImage;
             VmaAllocation textureImageMemory;
             VkImageView textureImageView;
-
     };
 
 }

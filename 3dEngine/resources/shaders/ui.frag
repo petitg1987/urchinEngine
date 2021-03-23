@@ -3,10 +3,10 @@
 
 layout(binding = 20) uniform sampler2D diffuseTexture;
 
-layout(location = 0) in vec2 textCoordinates;
+layout(location = 0) in vec2 texCoordinates;
 
 layout(location = 0) out vec4 fragColor;
 
 void main() {
-    fragColor = texture(diffuseTexture, textCoordinates);
+    fragColor = texture(diffuseTexture, texCoordinates);
 }

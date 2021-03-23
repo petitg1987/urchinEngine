@@ -218,7 +218,7 @@ namespace urchin {
         VkResult queuePresentResult = vkQueuePresentKHR(GraphicService::instance()->getQueues().getPresentationQueue(), &presentInfo);
         if (queuePresentResult == VK_ERROR_OUT_OF_DATE_KHR || queuePresentResult == VK_SUBOPTIMAL_KHR) {
             onResize();
-        } else if(queuePresentResult != VK_SUCCESS) {
+        } else if (queuePresentResult != VK_SUCCESS) {
             throw std::runtime_error("Failed to acquire swap chain image with error code: " + std::to_string(resultAcquireImage));
         }
 

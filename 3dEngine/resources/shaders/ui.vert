@@ -2,7 +2,7 @@
 #extension GL_ARB_separate_shader_objects : enable
 
 layout(std140, set = 0, binding = 0) uniform Projection {
-    mat3 matrix;
+    mat3 matrix; //TODO error in renderdoc: 48 bytes needed, 36 bytes provided
 } projection;
 layout(std140, set = 0, binding = 1) uniform Translate {
     ivec2 distance;
