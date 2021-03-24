@@ -75,7 +75,7 @@ namespace urchin {
         for (auto& meshRenderer : meshRenderers) {
             meshData.viewMatrix = viewMatrix;
             meshData.modelMatrix = model->getTransform().getTransformMatrix();
-            meshData.normalMatrix = (displayMode == DEFAULT_MODE) ? model->getTransform().getTransformMatrix().toMatrix3().inverse().transpose() : Matrix3<float>();
+            meshData.normalMatrix = (displayMode == DEFAULT_MODE) ? model->getTransform().getTransformMatrix().inverse().transpose() : Matrix4<float>();
             meshData.ambientFactor = model->getConstMeshes()->getConstMesh(meshIndex)->getMaterial()->getAmbientFactor();
 
             meshRenderer->updateShaderData(1, &meshData);

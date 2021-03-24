@@ -1,6 +1,5 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
-#extension GL_EXT_gpu_shader4 : enable
 
 //values are replaced at compilation time:
 #define NUMBER_SHADOW_MAPS 0
@@ -45,14 +44,14 @@ uniform sampler2D normalAndAmbientTex; //binding 22 - normal XYZ (3*8 bits) + am
 uniform sampler2D ambientOcclusionTex; //binding 23 - ambient occlusion factor (16 bits)
 uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //binding 24 - shadow maps for each lights
 
-in vec2 textCoordinates;
+layout(location = 0) in vec2 texCoordinates;
 
-layout (location = OUTPUT_LOCATION) out vec4 fragColor;
+layout(location = OUTPUT_LOCATION) out vec4 fragColor;
 
-vec4 fetchPosition(vec2 textCoord, float depthValue) {
+vec4 fetchPosition(vec2 texCoord, float depthValue) {
     vec4 texPosition = vec4(
-        textCoord.s * 2.0f - 1.0f,
-        textCoord.t * 2.0f - 1.0f,
+        texCoord.s * 2.0f - 1.0f,
+        texCoord.t * 2.0f - 1.0f,
         depthValue * 2.0f - 1.0f,
         1.0
     );
@@ -114,16 +113,16 @@ vec4 addFog(vec4 baseColor, vec4 position) {
     }
 
     float distance = distance(viewPosition, correctedPosition);
-    float visibility = exp(-pow((distance*fogDensity), fogGradient));
+    float visibility = exp(-pow((distance * fogDensity), fogGradient));
     return mix(fogColor, baseColor, visibility);
 }
 
 void main() {
-    vec4 diffuse = texture2D(colorTex, textCoordinates);
-    vec4 normalAndAmbient = vec4(texture2D(normalAndAmbientTex, textCoordinates));
+    vec4 diffuse = texture(colorTex, texCoordinates);
+    vec4 normalAndAmbient = vec4(texture(normalAndAmbientTex, texCoordinates));
     float modelAmbientFactor = normalAndAmbient.a;
-    float depthValue = texture2D(depthTex, textCoordinates).r;
-    vec4 position = fetchPosition(textCoordinates, depthValue);
+    float depthValue = texture(depthTex, texCoordinates).r;
+    vec4 position = fetchPosition(texCoordinates, depthValue);
 
     if (modelAmbientFactor >= 0.99999f) { //no lighting
         fragColor = addFog(diffuse, position);
@@ -135,7 +134,7 @@ void main() {
     fragColor = globalAmbient;
 
     if (hasAmbientOcclusion) {
-        float ambientOcclusionFactor = texture2D(ambientOcclusionTex, textCoordinates).r;
+        float ambientOcclusionFactor = texture2D(ambientOcclusionTex, texCoordinates).r;
         fragColor -= vec4(ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor, 0.0f);
     }
 

@@ -29,7 +29,7 @@ namespace urchin {
             mutable struct {
                 alignas(16) Matrix4<float> viewMatrix;
                 alignas(16) Matrix4<float> modelMatrix;
-                alignas(16) Matrix3<float> normalMatrix;
+                alignas(16) Matrix4<float> normalMatrix;
                 alignas(4) float ambientFactor;
             } meshData;
             CustomModelShaderVariable* customModelShaderVariable;

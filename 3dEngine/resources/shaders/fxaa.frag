@@ -1,16 +1,17 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
-#extension GL_EXT_gpu_shader4 : enable
 
 //values are replaced at compilation time:
 #define FXAA_QUALITY 0 //0 = Low, 1 = Medium, 2 = High, 3 = Very high
 
-uniform vec2 invSceneSize; //binding 0
-uniform sampler2D tex; //binding 20
+layout(std140, set = 0, binding = 1) uniform Scene {
+    vec2 invSceneSize;
+} scene;
+layout(binding = 20) uniform sampler2D tex;
 
-in vec2 textCoordinates;
+layout(location = 0) in vec2 textCoordinates;
 
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
 
 #if (FXAA_QUALITY == 0)
     #define FXAA_QUALITY_PS 6
@@ -86,10 +87,10 @@ void main() {
 
     vec4 rgbyM = textureLod(tex, posM, 0.0);
     float lumaM = fxaaLuma(rgbyM);
-    float lumaS = fxaaLuma(texture2DLodOffset(tex, posM, 0.0, ivec2( 0, 1)));
-    float lumaE = fxaaLuma(texture2DLodOffset(tex, posM, 0.0, ivec2( 1, 0)));
-    float lumaN = fxaaLuma(texture2DLodOffset(tex, posM, 0.0, ivec2( 0,-1)));
-    float lumaW = fxaaLuma(texture2DLodOffset(tex, posM, 0.0, ivec2(-1, 0)));
+    float lumaS = fxaaLuma(textureOffset(tex, posM, ivec2( 0, 1)));
+    float lumaE = fxaaLuma(textureOffset(tex, posM, ivec2( 1, 0)));
+    float lumaN = fxaaLuma(textureOffset(tex, posM, ivec2( 0,-1)));
+    float lumaW = fxaaLuma(textureOffset(tex, posM, ivec2(-1, 0)));
 
     float maxSM = max(lumaS, lumaM);
     float minSM = min(lumaS, lumaM);
@@ -108,10 +109,10 @@ void main() {
         return;
     }
 
-    float lumaNW = fxaaLuma(texture2DLodOffset(tex, posM, 0.0, ivec2(-1,-1)));
-    float lumaSE = fxaaLuma(texture2DLodOffset(tex, posM, 0.0, ivec2( 1, 1)));
-    float lumaNE = fxaaLuma(texture2DLodOffset(tex, posM, 0.0, ivec2( 1,-1)));
-    float lumaSW = fxaaLuma(texture2DLodOffset(tex, posM, 0.0, ivec2(-1, 1)));
+    float lumaNW = fxaaLuma(textureOffset(tex, posM, ivec2(-1,-1)));
+    float lumaSE = fxaaLuma(textureOffset(tex, posM, ivec2( 1, 1)));
+    float lumaNE = fxaaLuma(textureOffset(tex, posM, ivec2( 1,-1)));
+    float lumaSW = fxaaLuma(textureOffset(tex, posM, ivec2(-1, 1)));
 
     float lumaNS = lumaN + lumaS;
     float lumaWE = lumaW + lumaE;
@@ -135,7 +136,7 @@ void main() {
     float edgeVert = abs(edgeVert3) + edgeVert4;
 
     float subpixNWSWNESE = lumaNWSW + lumaNESE;
-    float lengthSign = invSceneSize.x;
+    float lengthSign = scene.invSceneSize.x;
     bool horzSpan = edgeHorz >= edgeVert;
     float subpixA = subpixNSWE * 2.0 + subpixNWSWNESE;
 
@@ -143,7 +144,7 @@ void main() {
         lumaN = lumaW;
         lumaS = lumaE;
     }else{
-        lengthSign = invSceneSize.y;
+        lengthSign = scene.invSceneSize.y;
     }
     float subpixB = (subpixA * (1.0 / 12.0)) - lumaM;
 
@@ -162,8 +163,8 @@ void main() {
     posB.x = posM.x;
     posB.y = posM.y;
     vec2 offNP;
-    offNP.x = (!horzSpan) ? 0.0 : invSceneSize.x;
-    offNP.y = (horzSpan) ? 0.0 : invSceneSize.y;
+    offNP.x = (!horzSpan) ? 0.0 : scene.invSceneSize.x;
+    offNP.y = (horzSpan) ? 0.0 : scene.invSceneSize.y;
     if (!horzSpan) {
         posB.x += lengthSign * 0.5;
     }else{
