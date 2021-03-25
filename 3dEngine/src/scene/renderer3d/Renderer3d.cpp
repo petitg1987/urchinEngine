@@ -25,8 +25,8 @@ namespace urchin {
 
     Renderer3d::Renderer3d(std::shared_ptr<RenderTarget> finalRenderTarget) :
             finalRenderTarget(std::move(finalRenderTarget)),
-            sceneWidth(0),
-            sceneHeight(0),
+            sceneWidth(500),
+            sceneHeight(500),
             paused(true),
             camera(nullptr),
 
@@ -293,10 +293,6 @@ namespace urchin {
     }
 
     void Renderer3d::refreshRenderer() {
-        if(sceneWidth == 0 || sceneHeight == 0) {
-            return;
-        }
-
         //deferred rendering
         diffuseTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
         normalAndAmbientTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
@@ -438,8 +434,6 @@ namespace urchin {
     void Renderer3d::deferredRendering(float dt) {
         ScopeProfiler sp(Profiler::graphic(), "deferredRender");
 
-        //TODO deferredRenderTarget->resetDisplay();
-
         skyManager->display(camera->getViewMatrix(), camera->getPosition());
 
         updateModelsInFrustum();
@@ -457,6 +451,8 @@ namespace urchin {
         }
 
         displayDetails();
+
+        deferredRenderTarget->render();
     }
 
     void Renderer3d::displayDetails() {

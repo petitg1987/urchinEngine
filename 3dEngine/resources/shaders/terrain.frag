@@ -3,27 +3,27 @@
 
 uniform vec2 stRepeat; //binding 2
 uniform float ambient; //binding 3
-uniform sampler2D maskTex; //binding 20
-uniform sampler2D diffuseTex1; //binding 21
-uniform sampler2D diffuseTex2; //binding 22
-uniform sampler2D diffuseTex3; //binding 23
-uniform sampler2D diffuseTex4; //binding 24
+layout(binding = 20) uniform sampler2D maskTex;
+layout(binding = 21) uniform sampler2D diffuseTex1;
+layout(binding = 22) uniform sampler2D diffuseTex2;
+layout(binding = 23) uniform sampler2D diffuseTex3;
+layout(binding = 24) uniform sampler2D diffuseTex4;
 
-in vec2 textCoordinates;
-in vec3 normal;
+layout(location = 0) in vec2 texCoordinates;
+layout(location = 1) in vec3 normal;
 
-layout (location = 0) out vec4 fragColor;
-layout (location = 1) out vec4 fragNormalAndAmbient;
+layout(location = 0) out vec4 fragColor;
+layout(location = 1) out vec4 fragNormalAndAmbient;
 
 void main() {
     //diffuse
-    vec2 maskTextCoordinates = vec2(textCoordinates.x / stRepeat.x, textCoordinates.y / stRepeat.y);
-    vec4 maskValue = texture2D(maskTex, maskTextCoordinates);
+    vec2 maskTexCoordinates = vec2(texCoordinates.x / stRepeat.x, texCoordinates.y / stRepeat.y);
+    vec4 maskValue = texture(maskTex, maskTexCoordinates);
 
-    vec4 diffuseValue1 = texture2D(diffuseTex1, textCoordinates);
-    vec4 diffuseValue2 = texture2D(diffuseTex2, textCoordinates);
-    vec4 diffuseValue3 = texture2D(diffuseTex3, textCoordinates);
-    vec4 diffuseValue4 = texture2D(diffuseTex4, textCoordinates);
+    vec4 diffuseValue1 = texture(diffuseTex1, texCoordinates);
+    vec4 diffuseValue2 = texture(diffuseTex2, texCoordinates);
+    vec4 diffuseValue3 = texture(diffuseTex3, texCoordinates);
+    vec4 diffuseValue4 = texture(diffuseTex4, texCoordinates);
 
     fragColor = maskValue.r * diffuseValue1
         + maskValue.g * diffuseValue2

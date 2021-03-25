@@ -9,7 +9,7 @@ layout(binding = 20) uniform sampler2D tex;
 
 layout(location = 0) in vec2 vertexTexCoordinates;
 
-layout (location = 0) out OUTPUT_TYPE fragColor;
+layout(location = 0) out OUTPUT_TYPE fragColor;
 
 void main() {
     fragColor = texture2D(tex, vertexTexCoordinates.st).SOURCE_TEX_COMPONENTS;

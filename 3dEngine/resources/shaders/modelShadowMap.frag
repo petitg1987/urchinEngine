@@ -1,7 +1,7 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-layout (location = 0) out vec2 fragColor;
+layout(location = 0) out vec2 fragColor;
 
 void main() {
     float depth = gl_FragCoord.z / gl_FragCoord.w;

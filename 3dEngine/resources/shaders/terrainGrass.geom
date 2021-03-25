@@ -13,16 +13,16 @@ uniform vec3 windDirection; //binding 1
 uniform vec3 terrainMinPoint; //binding 2
 uniform vec3 terrainMaxPoint; //binding 2
 uniform mat4 mProjection; //binding 3
-uniform sampler2D grassMaskTex; //binding 21
+layout(binding = 21) uniform sampler2D grassMaskTex;
 
 layout(points) in;
 layout(triangle_strip) out;
 layout(max_vertices = 12) out;
 
-in vec3 normal[];
+layout(location = 0) in vec3 normal[];
 
-smooth out vec2 vertexTextCoordinates;
-out vec3 grassNormal;
+layout(location = 0) smooth out vec2 vertexTexCoordinates;
+layout(location = 1) out vec3 grassNormal;
 
 float PHI = 1.61803398874989484820459 * 00000.1; //golden ratio
 float PI  = 3.14159265358979323846264 * 00000.1; //PI
@@ -101,28 +101,28 @@ void main() {
         vec3 localTopLeft = grassCenterPosition - baseDirRotated * grassHalfLength + windDirection*windPower;
         localTopLeft.y += grassHeight + grassYShift;
         gl_Position = mProjectionView * vec4(localTopLeft, 1.0f);
-        vertexTextCoordinates = vec2(startTextX, 0.0);
+        vertexTexCoordinates = vec2(startTextX, 0.0);
         EmitVertex();
 
         //bottom left
         vec3 localBottomLeft = grassCenterPosition - baseDir[i] * grassHalfLength;
         localBottomLeft.y += grassYShift;
         gl_Position = mProjectionView * vec4(localBottomLeft, 1.0f);
-        vertexTextCoordinates = vec2(startTextX, 1.0);
+        vertexTexCoordinates = vec2(startTextX, 1.0);
         EmitVertex();
 
         //top right
         vec3 localTopRight = grassCenterPosition + baseDirRotated * grassHalfLength + windDirection*windPower;
         localTopRight.y += grassHeight + grassYShift;
         gl_Position = mProjectionView * vec4(localTopRight, 1.0f);
-        vertexTextCoordinates = vec2(endTextX, 0.0);
+        vertexTexCoordinates = vec2(endTextX, 0.0);
         EmitVertex();
 
         //bottom right
         vec3 localBottomRight = grassCenterPosition + baseDir[i] * grassHalfLength;
         localBottomRight.y += grassYShift;
         gl_Position = mProjectionView * vec4(localBottomRight, 1.0f);
-        vertexTextCoordinates = vec2(endTextX, 1.0);
+        vertexTexCoordinates = vec2(endTextX, 1.0);
         EmitVertex();
 
         EndPrimitive();

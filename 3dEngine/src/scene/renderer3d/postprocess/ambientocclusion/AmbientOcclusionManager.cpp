@@ -96,6 +96,7 @@ namespace urchin {
         offscreenRenderTarget = std::make_unique<OffscreenRender>(RenderTarget::NO_DEPTH_ATTACHMENT);
         offscreenRenderTarget->onResize();
         offscreenRenderTarget->addTexture(ambientOcclusionTexture);
+        offscreenRenderTarget->initialize();
 
         if (isBlurActivated) {
             verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>(ambientOcclusionTexture)
@@ -296,7 +297,7 @@ namespace urchin {
         positioningData.viewMatrix = camera->getViewMatrix();
         renderer->updateShaderData(0, &positioningData);
 
-        //TODO offscreenRenderTarget->display(renderer);
+        offscreenRenderTarget->render();
 
         if (isBlurActivated) {
             verticalBlurFilter->applyFilter();

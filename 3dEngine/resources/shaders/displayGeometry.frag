@@ -3,8 +3,8 @@
 
 uniform vec4 color; //binding 1
 
-layout (location = 0) out vec4 fragColor;
-layout (location = 1) out vec4 fragNormalAndAmbient;
+layout(location = 0) out vec4 fragColor;
+layout(location = 1) out vec4 fragNormalAndAmbient;
 
 void main() {
     //diffuse

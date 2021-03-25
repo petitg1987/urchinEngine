@@ -9,12 +9,12 @@ layout(location = 0) in vec3 vertexPosition;
 layout(location = 1) in vec3 vertexNormal;
 layout(location = 2) in vec2 texCoord;
 
-out vec3 normal;
-out vec2 textCoordinates;
+layout(location = 0) out vec2 texCoordinates;
+layout(location = 1) out vec3 normal;
 invariant gl_Position;
 
 void main() {
-    textCoordinates = texCoord;
+    texCoordinates = texCoord;
 
     normal = vertexNormal;
 

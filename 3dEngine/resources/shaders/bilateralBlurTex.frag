@@ -8,30 +8,32 @@
 #define BLUR_SHARPNESS 0
 #define IS_VERTICAL_BLUR true
 
-uniform float cameraNearPlane; //binding 1
-uniform float cameraFarPlane; //binding 1
-uniform sampler2D tex; //binding 20
-uniform sampler2D depthTex; //binding 21
+layout(std140, set = 0, binding = 1) uniform CameraPlanes {
+    float nearPlane;
+    float farPlane;
+} cameraPlanes;
+layout(binding = 20) uniform sampler2D tex;
+layout(binding = 21) uniform sampler2D depthTex;
 
 layout(location = 0) in vec2 texCoordinates;
 
-layout (location = 0) out OUTPUT_TYPE fragColor;
+layout(location = 0) out OUTPUT_TYPE fragColor;
 
 float linearizeDepth(float depthValue) {
     float unmapDepthValue = depthValue * 2.0 - 1.0;
-    return (2.0f * cameraNearPlane) / (cameraFarPlane + cameraNearPlane -
-            unmapDepthValue * (cameraFarPlane - cameraNearPlane)); //[0.0 = nearPlane, 1.0 = far plane]
+    return (2.0f * cameraPlanes.nearPlane) / (cameraPlanes.farPlane + cameraPlanes.nearPlane -
+            unmapDepthValue * (cameraPlanes.farPlane - cameraPlanes.nearPlane)); //[0.0 = nearPlane, 1.0 = far plane]
 }
 
 float bilateralBlur(vec2 uvOffset, int r, float linearizedDepthCenterValue, inout float totalWeight) {
-    float texValue = texture2D(tex, texCoordinates+uvOffset).r;
-    float depthValue = texture2D(depthTex, texCoordinates).r;
+    float texValue = texture(tex, texCoordinates+uvOffset).r;
+    float depthValue = texture(depthTex, texCoordinates).r;
     float linearizedDepthValue = linearizeDepth(depthValue);
 
     const float blurSigma = float(KERNEL_RADIUS) * 0.5f;
-    const float blurFalloff = 1.0 / (2.0*blurSigma*blurSigma);
+    const float blurFalloff = 1.0 / (2.0 * blurSigma*blurSigma);
     float ddiff = (linearizedDepthValue - linearizedDepthCenterValue) * BLUR_SHARPNESS;
-    float weight = exp2(-r*r*blurFalloff - ddiff*ddiff);
+    float weight = exp2(-r * r * blurFalloff - ddiff * ddiff);
 
     totalWeight += weight;
 
@@ -39,8 +41,8 @@ float bilateralBlur(vec2 uvOffset, int r, float linearizedDepthCenterValue, inou
 }
 
 void main() {
-    float centerTexValue = texture2D(tex, texCoordinates).r;
-    float depthCenterValue = texture2D(depthTex, texCoordinates).r;
+    float centerTexValue = texture(tex, texCoordinates).r;
+    float depthCenterValue = texture(depthTex, texCoordinates).r;
     float linearizedDepthCenterValue = linearizeDepth(depthCenterValue);
 
     float offsets[] = float[](OFFSETS_TAB);
