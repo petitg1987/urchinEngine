@@ -73,8 +73,8 @@ namespace urchin {
         assert(bIsInitialized);
         generateGrass(mesh, terrainPosition);
 
-        terrainPositioningData.terrainMinPoint = mesh->getVertices()[0];
-        terrainPositioningData.terrainMaxPoint = mesh->getVertices()[mesh->getXSize() * mesh->getZSize() - 1];
+        terrainPositioningData.minPoint = mesh->getVertices()[0];
+        terrainPositioningData.maxPoint = mesh->getVertices()[mesh->getXSize() * mesh->getZSize() - 1];
 
         for(auto& renderer: getAllRenderers()) {
             renderer->updateShaderData(2, &terrainPositioningData);

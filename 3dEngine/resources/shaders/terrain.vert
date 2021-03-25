@@ -1,9 +1,13 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-uniform mat4 mView; //binding 0
-uniform mat4 mProjection; //binding 1
-uniform vec3 vPosition; //binding 1
+layout(std140, set = 0, binding = 0) uniform View {
+    mat4 mView;
+} view;
+layout(std140, set = 0, binding = 0) uniform PositioningData {
+    mat4 mProjection;
+    vec3 vPosition;
+} positioningData;
 
 layout(location = 0) in vec3 vertexPosition;
 layout(location = 1) in vec3 vertexNormal;
@@ -15,8 +19,7 @@ invariant gl_Position;
 
 void main() {
     texCoordinates = texCoord;
-
     normal = vertexNormal;
 
-    gl_Position = mProjection * mView * vec4(vPosition + vertexPosition, 1.0);
+    gl_Position = positioningData.mProjection * view.mView * vec4(positioningData.vPosition + vertexPosition, 1.0);
 }

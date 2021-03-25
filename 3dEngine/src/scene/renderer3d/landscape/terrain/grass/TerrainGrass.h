@@ -83,8 +83,8 @@ namespace urchin {
                 alignas(16) Vector3<float> windDirection;
             } grassProperties;
             struct {
-                alignas(16) Point3<float> terrainMinPoint;
-                alignas(16) Point3<float> terrainMaxPoint;
+                alignas(16) Point3<float> minPoint;
+                alignas(16) Point3<float> maxPoint;
             } terrainPositioningData;
             Matrix4<float> projectionMatrix;
             float ambient;

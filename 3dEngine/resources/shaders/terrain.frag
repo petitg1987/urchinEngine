@@ -1,8 +1,12 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-uniform vec2 stRepeat; //binding 2
-uniform float ambient; //binding 3
+layout(std140, set = 0, binding = 2) uniform Material {
+    vec2 stRepeat;
+} material;
+layout(std140, set = 0, binding = 3) uniform Lighting {
+    float ambient;
+} lighting;
 layout(binding = 20) uniform sampler2D maskTex;
 layout(binding = 21) uniform sampler2D diffuseTex1;
 layout(binding = 22) uniform sampler2D diffuseTex2;
@@ -17,7 +21,7 @@ layout(location = 1) out vec4 fragNormalAndAmbient;
 
 void main() {
     //diffuse
-    vec2 maskTexCoordinates = vec2(texCoordinates.x / stRepeat.x, texCoordinates.y / stRepeat.y);
+    vec2 maskTexCoordinates = vec2(texCoordinates.x / material.stRepeat.x, texCoordinates.y / material.stRepeat.y);
     vec4 maskValue = texture(maskTex, maskTexCoordinates);
 
     vec4 diffuseValue1 = texture(diffuseTex1, texCoordinates);
@@ -32,5 +36,5 @@ void main() {
 
     //material
     vec3 texNormal = (normal + 1.0) / 2.0;
-    fragNormalAndAmbient = vec4(texNormal, ambient);
+    fragNormalAndAmbient = vec4(texNormal, lighting.ambient);
 }

@@ -1,11 +1,15 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-uniform mat4 mView; //binding 0 (not used)
-uniform float sumTimeStep; //binding 0
-uniform vec3 waterColor; //binding 1
-uniform float waveSpeed; //binding 1
-uniform float waveStrength; //binding 1
+layout(std140, set = 0, binding = 0) uniform PositioningData {
+    mat4 mView;
+    float sumTimeStep;
+} positioningData;
+layout(std140, set = 0, binding = 1) uniform WaterProperties {
+    vec3 color;
+    float waveSpeed;
+    float waveStrength;
+} waterProperties;
 layout(location = 20) uniform sampler2D normalTex;
 layout(location = 21) uniform sampler2D dudvMap;
 
@@ -23,13 +27,13 @@ vec3 toGlobalNormal(vec3 localNormal) {
 }
 
 void main() {
-    float speed = sumTimeStep * waveSpeed;
+    float speed = positioningData.sumTimeStep * waterProperties.waveSpeed;
     vec2 distortedTexCoords = texture(dudvMap, vec2(texCoordinates.x + speed, texCoordinates.y)).rg * 0.1;
     distortedTexCoords = texCoordinates + vec2(distortedTexCoords.x, distortedTexCoords.y * speed);
-    vec2 totalDistortion = (texture(dudvMap, distortedTexCoords).rg * 2.0 - 1.0) * waveStrength;
+    vec2 totalDistortion = (texture(dudvMap, distortedTexCoords).rg * 2.0 - 1.0) * waterProperties.waveStrength;
 
     //diffuse
-    fragColor = vec4(waterColor, 0.0);
+    fragColor = vec4(waterProperties.color, 0.0);
 
     //normal and ambient factor
     vec2 normalTexCoordinates = texCoordinates + totalDistortion;
