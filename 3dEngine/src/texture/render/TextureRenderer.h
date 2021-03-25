@@ -69,7 +69,7 @@ namespace urchin {
                 alignas(4) float cameraFarPlane;
                 alignas(4) int layer;
             } renderingData;
-            Matrix3<float> mProjection;
+            Matrix4<float> mProjection;
     };
 
 }

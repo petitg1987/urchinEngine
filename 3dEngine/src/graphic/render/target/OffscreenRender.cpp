@@ -48,18 +48,18 @@ namespace urchin {
     }
 
     void OffscreenRender::cleanup() {
-        assert(isInitialized);
+        if(isInitialized) {
+            vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
 
-        vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
+            destroySyncObjects();
+            destroyCommandBuffersAndPool();
+            destroyFramebuffers();
+            destroyDepthResources();
+            destroyRenderPass();
+            RenderTarget::cleanup();
 
-        destroySyncObjects();
-        destroyCommandBuffersAndPool();
-        destroyFramebuffers();
-        destroyDepthResources();
-        destroyRenderPass();
-        RenderTarget::cleanup();
-
-        isInitialized = false;
+            isInitialized = false;
+        }
     }
 
     unsigned int OffscreenRender::getWidth() const {

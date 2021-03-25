@@ -9,10 +9,14 @@
 #define OUTPUT_LOCATION 0
 
 //global
-uniform mat4 mInverseViewProjection; //binding 0
-uniform vec3 viewPosition; //binding 0
-uniform bool hasShadow; //binding 1
-uniform bool hasAmbientOcclusion; //binding 1
+layout(std140, set = 0, binding = 0) uniform PositioningData {
+    mat4 mInverseViewProjection;
+    vec3 viewPosition;
+} positioningData;
+layout(std140, set = 0, binding = 1) uniform VisualOption {
+    bool hasShadow;
+    bool hasAmbientOcclusion;
+} visualOption;
 
 //lighting
 struct StructLightInfo {
@@ -23,26 +27,36 @@ struct StructLightInfo {
     float exponentialAttenuation;
     vec3 lightAmbient;
 };
-uniform StructLightInfo lightsInfo[MAX_LIGHTS]; //binding 2
-uniform vec4 globalAmbient; //binding 3
+layout(std140, set = 0, binding = 2) uniform Lights {
+    StructLightInfo lightsInfo[MAX_LIGHTS];
+} lights;
+layout(std140, set = 0, binding = 3) uniform Lighting {
+    vec4 globalAmbient;
+} lighting;
 
 //shadow
-uniform mat4 mLightProjectionView[MAX_SHADOW_LIGHTS][NUMBER_SHADOW_MAPS]; //binding 4
-uniform float depthSplitDistance[NUMBER_SHADOW_MAPS]; //binding 5
+layout(std140, set = 0, binding = 4) uniform ShadowLight {
+    mat4 mLightProjectionView[MAX_SHADOW_LIGHTS][NUMBER_SHADOW_MAPS];
+} shadowLight;
+layout(std140, set = 0, binding = 5) uniform ShadowMap {
+    float depthSplitDistance[NUMBER_SHADOW_MAPS];
+} shadowMap;
 
 //fog
-uniform bool hasFog; //binding 6
-uniform float fogDensity; //binding 6
-uniform float fogGradient; //binding 6
-uniform float fogMaxHeight; //binding 6
-uniform vec4 fogColor; //binding 6
+layout(std140, set = 0, binding = 6) uniform Fog {
+    bool hasFog;
+    float density;
+    float gradient;
+    float maxHeight;
+    vec4 color;
+} fog;
 
 //deferred textures
-uniform sampler2D depthTex; //binding 20 - depth (32 bits)
-uniform sampler2D colorTex; //binding 21 - diffuse RGB (3*8 bits) + EMPTY (8 bits)
-uniform sampler2D normalAndAmbientTex; //binding 22 - normal XYZ (3*8 bits) + ambient factor
-uniform sampler2D ambientOcclusionTex; //binding 23 - ambient occlusion factor (16 bits)
-uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //binding 24 - shadow maps for each lights
+layout(binding = 20) uniform sampler2D depthTex; //depth (32 bits)
+layout(binding = 21) uniform sampler2D colorTex; //diffuse RGB (3*8 bits) + EMPTY (8 bits)
+layout(binding = 22) uniform sampler2D normalAndAmbientTex; //normal XYZ (3*8 bits) + ambient factor
+layout(binding = 23) uniform sampler2D ambientOcclusionTex; //ambient occlusion factor (16 bits)
+layout(binding = 24) uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //shadow maps for each lights
 
 layout(location = 0) in vec2 texCoordinates;
 
@@ -55,7 +69,7 @@ vec4 fetchPosition(vec2 texCoord, float depthValue) {
         depthValue * 2.0f - 1.0f,
         1.0
     );
-    vec4 position = mInverseViewProjection * texPosition;
+    vec4 position = positioningData.mInverseViewProjection * texPosition;
     position /= position.w;
     return position;
 }
@@ -83,13 +97,13 @@ float computeShadowContribution(int shadowLightIndex, float depthValue, vec4 pos
     float shadowContribution = 1.0;
 
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
-        if (depthValue < depthSplitDistance[i]) {
+        if (depthValue < shadowMap.depthSplitDistance[i]) {
 
-            vec4 shadowCoord = (((mLightProjectionView[shadowLightIndex][i] * position) / 2.0) + 0.5);
+            vec4 shadowCoord = (((shadowLight.mLightProjectionView[shadowLightIndex][i] * position) / 2.0) + 0.5);
 
             //model has produceShadow flag to true ?
             if (shadowCoord.s <= 1.0 && shadowCoord.s >= 0.0 && shadowCoord.t <= 1.0 && shadowCoord.t >= 0.0) {
-                vec2 moments = texture2DArray(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, i)).rg;
+                vec2 moments = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, i)).rg;
                 shadowContribution = computePercentLit(shadowCoord.z, moments, NdotL);
             }
 
@@ -101,20 +115,20 @@ float computeShadowContribution(int shadowLightIndex, float depthValue, vec4 pos
 }
 
 vec4 addFog(vec4 baseColor, vec4 position) {
-    if (!hasFog || viewPosition.y > fogMaxHeight) {
+    if (!fog.hasFog || positioningData.viewPosition.y > fog.maxHeight) {
         return baseColor;
     }
 
-    vec3 lineVector = position.xyz - viewPosition;
-    float t = (fogMaxHeight - viewPosition.y) / lineVector.y;
+    vec3 lineVector = position.xyz - positioningData.viewPosition;
+    float t = (fog.maxHeight - positioningData.viewPosition.y) / lineVector.y;
     vec3 correctedPosition = position.xyz;
     if (t > 0.0 && t < 1.0) {
-        correctedPosition = viewPosition + (t * lineVector);
+        correctedPosition = positioningData.viewPosition + (t * lineVector);
     }
 
-    float distance = distance(viewPosition, correctedPosition);
-    float visibility = exp(-pow((distance * fogDensity), fogGradient));
-    return mix(fogColor, baseColor, visibility);
+    float distance = distance(positioningData.viewPosition, correctedPosition);
+    float visibility = exp(-pow((distance * fog.density), fog.gradient));
+    return mix(fog.color, baseColor, visibility);
 }
 
 void main() {
@@ -131,34 +145,34 @@ void main() {
 
     vec3 normal = vec3(normalAndAmbient) * 2.0f - 1.0f;
     vec4 modelAmbient = diffuse * modelAmbientFactor;
-    fragColor = globalAmbient;
+    fragColor = lighting.globalAmbient;
 
-    if (hasAmbientOcclusion) {
-        float ambientOcclusionFactor = texture2D(ambientOcclusionTex, texCoordinates).r;
+    if (visualOption.hasAmbientOcclusion) {
+        float ambientOcclusionFactor = texture(ambientOcclusionTex, texCoordinates).r;
         fragColor -= vec4(ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor, 0.0f);
     }
 
     for (int lightIndex = 0, shadowLightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
-        if (lightsInfo[lightIndex].isExist) {
+        if (lights.lightsInfo[lightIndex].isExist) {
             vec3 vertexToLightNormalized;
             float lightAttenuation;
 
-            if (lightsInfo[lightIndex].hasParallelBeams) { //sun light
-                vec3 vertexToLight = -lightsInfo[lightIndex].positionOrDirection;
+            if (lights.lightsInfo[lightIndex].hasParallelBeams) { //sun light
+                vec3 vertexToLight = -lights.lightsInfo[lightIndex].positionOrDirection;
                 vertexToLightNormalized = normalize(vertexToLight);
                 lightAttenuation = 1.0f;
             } else { //omnidirectional light
-                vec3 vertexToLight = lightsInfo[lightIndex].positionOrDirection - vec3(position);
+                vec3 vertexToLight = lights.lightsInfo[lightIndex].positionOrDirection - vec3(position);
                 float dist = length(vertexToLight);
                 vertexToLightNormalized = normalize(vertexToLight);
-                lightAttenuation = exp(-dist * lightsInfo[lightIndex].exponentialAttenuation);
+                lightAttenuation = exp(-dist * lights.lightsInfo[lightIndex].exponentialAttenuation);
             }
 
             float NdotL = max(dot(normal, vertexToLightNormalized), 0.0f);
-            vec4 ambient = vec4(lightsInfo[lightIndex].lightAmbient, 0.0f) * modelAmbient;
+            vec4 ambient = vec4(lights.lightsInfo[lightIndex].lightAmbient, 0.0f) * modelAmbient;
 
             float percentLit = 1.0;
-            if (hasShadow && lightsInfo[lightIndex].produceShadow) {
+            if (visualOption.hasShadow && lights.lightsInfo[lightIndex].produceShadow) {
                 percentLit = computeShadowContribution(shadowLightIndex, depthValue, position, NdotL);
                 shadowLightIndex++;
             }
@@ -177,7 +191,7 @@ void main() {
         vec4(colorValue, 0.0, 0.0, 1.0), vec4(0.0, colorValue, 0.0, 1.0), vec4(0.0, 0.0, colorValue, 1.0),
         vec4(colorValue, 0.0, colorValue, 1.0), vec4(colorValue, colorValue, 0.0, 1.0));
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
-        if (depthValue < depthSplitDistance[i]) {
+        if (depthValue < shadowMap.depthSplitDistance[i]) {
             fragColor += splitColors[i % 5];
             break;
         }

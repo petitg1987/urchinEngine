@@ -14,7 +14,7 @@ uniform float cameraFarPlane; //binding 1
 uniform int layer; //binding 1
 uniform sampler2DArray colorTex; //binding 20
 
-in vec2 textCoordinates;
+layout(location = 0) in vec2 texCoordinates;
 
 out vec4 fragColor;
 
@@ -25,7 +25,7 @@ float linearizeDepth(float depthValue) {
 }
 
 void main() {
-    vec4 diffuse = texture2DArray(colorTex, vec3(textCoordinates, layer));
+    vec4 diffuse = texture2DArray(colorTex, vec3(texCoordinates, layer));
 
     vec4 finalDiffuse;
     if (IS_DEFAULT_VALUE) {

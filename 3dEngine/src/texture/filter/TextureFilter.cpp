@@ -29,6 +29,7 @@ namespace urchin {
         offscreenRenderTarget = std::make_unique<OffscreenRender>(RenderTarget::NO_DEPTH_ATTACHMENT);
         offscreenRenderTarget->onResize();
         offscreenRenderTarget->addTexture(texture);
+        offscreenRenderTarget->initialize();
     }
 
     void TextureFilter::initializeDisplay() {
@@ -128,6 +129,6 @@ namespace urchin {
             textureRenderer->updateShaderData(0, &layersToUpdate);
         }
 
-        //TODO offscreenRenderTarget->display(textureRenderer);
+        offscreenRenderTarget->render();
     }
 }

@@ -9,11 +9,11 @@
 #define IS_VERTICAL_BLUR true
 #define SOURCE_TEX_COMPONENTS rgb
 
-uniform sampler2D tex; //binding 20
+layout(binding = 20) uniform sampler2D tex;
 
-in vec2 textCoordinates;
+layout(location = 0) in vec2 texCoordinates;
 
-layout (location = 0) out OUTPUT_TYPE fragColor;
+layout(location = 0) out OUTPUT_TYPE fragColor;
 
 void main() {
     fragColor = OUTPUT_TYPE(0.0);
@@ -23,6 +23,6 @@ void main() {
 
     for (int i = 0; i < NB_TEXTURE_FETCH; ++i) {
         vec2 uvOffset = (IS_VERTICAL_BLUR) ? vec2(0.0, offsets[i]) : vec2(offsets[i], 0.0);
-        fragColor += weights[i] * texture2D(tex, textCoordinates+uvOffset).SOURCE_TEX_COMPONENTS;
+        fragColor += weights[i] * texture2D(tex, texCoordinates+uvOffset).SOURCE_TEX_COMPONENTS;
     }
 }

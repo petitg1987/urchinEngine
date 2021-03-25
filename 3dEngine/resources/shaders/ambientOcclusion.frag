@@ -15,18 +15,18 @@ uniform mat4 mProjection; //binding 0
 uniform mat4 mView; //binding 0
 uniform vec4 samples[KERNEL_SAMPLES]; //binding 1
 uniform vec2 resolution; //binding 2
-uniform sampler2D depthTex; //binding 20
-uniform sampler2D normalAndAmbientTex; //binsing 21
-uniform sampler2D noiseTex; //binsing 22
+layout(binding = 20) uniform sampler2D depthTex;
+layout(binding = 21) uniform sampler2D normalAndAmbientTex;
+layout(binding = 22) uniform sampler2D noiseTex;
 
-in vec2 textCoordinates;
+layout(location = 0) in vec2 texCoordinates;
 
-layout (location = 0) out float fragColor;
+layout(location = 0) out float fragColor;
 
-vec3 fetchEyePosition(vec2 textCoord, float depthValue) {
+vec3 fetchEyePosition(vec2 texCoord, float depthValue) {
     vec4 texPosition = vec4(
-        textCoord.s * 2.0f - 1.0f,
-        textCoord.t * 2.0f - 1.0f,
+        texCoord.s * 2.0f - 1.0f,
+        texCoord.t * 2.0f - 1.0f,
         depthValue * 2.0f - 1.0f,
         1.0
     );
@@ -35,10 +35,10 @@ vec3 fetchEyePosition(vec2 textCoord, float depthValue) {
     return vec3(position);
 }
 
-vec3 fetchPosition(vec2 textCoord, float depthValue) {
+vec3 fetchPosition(vec2 texCoord, float depthValue) {
     vec4 texPosition = vec4(
-        textCoord.s * 2.0f - 1.0f,
-        textCoord.t * 2.0f - 1.0f,
+        texCoord.s * 2.0f - 1.0f,
+        texCoord.t * 2.0f - 1.0f,
         depthValue * 2.0f - 1.0f,
         1.0
     );
@@ -48,13 +48,13 @@ vec3 fetchPosition(vec2 textCoord, float depthValue) {
 }
 
 void main() {
-    vec4 normalAndAmbient = vec4(texture2D(normalAndAmbientTex, textCoordinates));
+    vec4 normalAndAmbient = vec4(texture2D(normalAndAmbientTex, texCoordinates));
     if (normalAndAmbient.a >= 0.99999f) { //no lighting
         fragColor = 0.0f;
         return;
     }
 
-    float depthValue = texture2D(depthTex, textCoordinates).r;
+    float depthValue = texture2D(depthTex, texCoordinates).r;
     float distanceReduceFactor = 1.0f;
     if (depthValue > DEPTH_END_ATTENUATION) {
         fragColor = 0.0f;
@@ -63,10 +63,10 @@ void main() {
         distanceReduceFactor = (DEPTH_END_ATTENUATION - depthValue) / (DEPTH_END_ATTENUATION - DEPTH_START_ATTENUATION);
     }
 
-    vec3 position = fetchPosition(textCoordinates, depthValue);
+    vec3 position = fetchPosition(texCoordinates, depthValue);
     vec3 normal = normalAndAmbient.xyz * 2.0f - 1.0f;
     vec2 noiseScale = vec2(resolution.x / NOISE_TEXTURE_SIZE, resolution.y / NOISE_TEXTURE_SIZE);
-    vec3 randomVector = normalize(texture(noiseTex, textCoordinates * noiseScale).xyz * 2.0f - 1.0f);
+    vec3 randomVector = normalize(texture(noiseTex, texCoordinates * noiseScale).xyz * 2.0f - 1.0f);
 
     vec3 tangent = normalize(randomVector - dot(randomVector, normal) * normal);
     vec3 bitangent = cross(normal, tangent);
@@ -91,17 +91,17 @@ void main() {
     fragColor = (occlusion / float(KERNEL_SAMPLES)) * distanceReduceFactor * AO_STRENGTH;
 
     //DEBUG: display noise texture
-    //fragColor = texture(noiseTex, textCoordinates).x; //no repeat
-    //fragColor = texture(noiseTex, textCoordinates * noiseScale).x; //repeat
+    //fragColor = texture(noiseTex, texCoordinates).x; //no repeat
+    //fragColor = texture(noiseTex, texCoordinates * noiseScale).x; //repeat
 
     //DEBUG: display depth texture (pre-requisite: Renderer32#DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER must be activated)
-    //fragColor = texture2D(depthTex, textCoordinates).r / 20.0f; //near objects are whiter
+    //fragColor = texture2D(depthTex, texCoordinates).r / 20.0f; //near objects are whiter
 
     //DEBUG: display normal texture (pre-requisite: Renderer32#DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER must be activated)
-    //fragColor = texture2D(normalAndAmbientTex, textCoordinates).r; //normals to left are whiter
-    //fragColor = texture2D(normalAndAmbientTex, textCoordinates).g; //normals to bottom are whiter
-    //fragColor = texture2D(normalAndAmbientTex, textCoordinates).b; //normals to far are whiter
+    //fragColor = texture2D(normalAndAmbientTex, texCoordinates).r; //normals to left are whiter
+    //fragColor = texture2D(normalAndAmbientTex, texCoordinates).g; //normals to bottom are whiter
+    //fragColor = texture2D(normalAndAmbientTex, texCoordinates).b; //normals to far are whiter
 
     //DEBUG: display kernel samples X values on X axis
-    //fragColor = samples[int(textCoordinates.x * KERNEL_SAMPLES)].x;
+    //fragColor = samples[int(texCoordinates.x * KERNEL_SAMPLES)].x;
 }

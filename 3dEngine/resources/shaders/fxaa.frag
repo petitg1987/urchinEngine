@@ -9,7 +9,7 @@ layout(std140, set = 0, binding = 1) uniform Scene {
 } scene;
 layout(binding = 20) uniform sampler2D tex;
 
-layout(location = 0) in vec2 textCoordinates;
+layout(location = 0) in vec2 texCoordinates;
 
 layout(location = 0) out vec4 fragColor;
 
@@ -82,8 +82,8 @@ void main() {
     const float fxaaQualityEdgeThresholdMin = 0.1;
 
     vec2 posM;
-    posM.x = textCoordinates.x;
-    posM.y = textCoordinates.y;
+    posM.x = texCoordinates.x;
+    posM.y = texCoordinates.y;
 
     vec4 rgbyM = textureLod(tex, posM, 0.0);
     float lumaM = fxaaLuma(rgbyM);

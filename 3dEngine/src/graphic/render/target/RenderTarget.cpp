@@ -20,8 +20,10 @@ namespace urchin {
         vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
 
         notifyObservers(this, NotificationType::START_RESIZE);
-        cleanup();
-        initialize();
+        if (isInitialized) {
+            cleanup();
+            initialize();
+        }
         notifyObservers(this, NotificationType::END_RESIZE);
     }
 
@@ -34,11 +36,11 @@ namespace urchin {
     }
 
     void RenderTarget::cleanup() {
-        assert(isInitialized);
+        if(isInitialized) {
+            clearValues.clear();
 
-        clearValues.clear();
-
-        isInitialized = false;
+            isInitialized = false;
+        }
     }
 
     VkRenderPass RenderTarget::getRenderPass() const {

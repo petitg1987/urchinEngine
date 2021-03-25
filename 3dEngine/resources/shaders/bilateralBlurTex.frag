@@ -13,7 +13,7 @@ uniform float cameraFarPlane; //binding 1
 uniform sampler2D tex; //binding 20
 uniform sampler2D depthTex; //binding 21
 
-in vec2 textCoordinates;
+layout(location = 0) in vec2 texCoordinates;
 
 layout (location = 0) out OUTPUT_TYPE fragColor;
 
@@ -24,8 +24,8 @@ float linearizeDepth(float depthValue) {
 }
 
 float bilateralBlur(vec2 uvOffset, int r, float linearizedDepthCenterValue, inout float totalWeight) {
-    float texValue = texture2D(tex, textCoordinates+uvOffset).r;
-    float depthValue = texture2D(depthTex, textCoordinates).r;
+    float texValue = texture2D(tex, texCoordinates+uvOffset).r;
+    float depthValue = texture2D(depthTex, texCoordinates).r;
     float linearizedDepthValue = linearizeDepth(depthValue);
 
     const float blurSigma = float(KERNEL_RADIUS) * 0.5f;
@@ -39,8 +39,8 @@ float bilateralBlur(vec2 uvOffset, int r, float linearizedDepthCenterValue, inou
 }
 
 void main() {
-    float centerTexValue = texture2D(tex, textCoordinates).r;
-    float depthCenterValue = texture2D(depthTex, textCoordinates).r;
+    float centerTexValue = texture2D(tex, texCoordinates).r;
+    float depthCenterValue = texture2D(depthTex, texCoordinates).r;
     float linearizedDepthCenterValue = linearizeDepth(depthCenterValue);
 
     float offsets[] = float[](OFFSETS_TAB);
