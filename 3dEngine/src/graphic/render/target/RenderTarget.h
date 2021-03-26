@@ -11,7 +11,7 @@ namespace urchin {
 
     class GenericRenderer;
 
-    class RenderTarget : public Observable {
+    class RenderTarget {
         public:
             enum DepthAttachmentType {
                 NO_DEPTH_ATTACHMENT, //no depth attachment
@@ -19,13 +19,8 @@ namespace urchin {
                 READ_WRITE_DEPTH_ATTACHMENT //depth attachment readable outside the render target
             };
 
-            enum NotificationType {
-                START_RESIZE,
-                END_RESIZE
-            };
-
             explicit RenderTarget(DepthAttachmentType);
-            ~RenderTarget() override = default;
+            virtual ~RenderTarget() = default;
 
             virtual void onResize();
 
@@ -49,6 +44,8 @@ namespace urchin {
             virtual void render() = 0;
 
         protected:
+            void initializeRenderers();
+            void cleanupRenderers();
             VkAttachmentDescription buildDepthAttachment(VkImageLayout) const;
             static VkAttachmentDescription buildAttachment(VkFormat, VkImageLayout);
             void createRenderPass(const VkAttachmentReference&, const std::vector<VkAttachmentReference>&, const std::vector<VkAttachmentDescription>&);

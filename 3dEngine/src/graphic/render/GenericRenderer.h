@@ -22,14 +22,14 @@ namespace urchin {
 
     class GenericRendererBuilder;
 
-    class GenericRenderer : public Observer {
+    class GenericRenderer {
         public:
             static const uint32_t PRIMITIVE_RESTART_INDEX_VALUE;
+            friend class RenderTarget;
 
             explicit GenericRenderer(const GenericRendererBuilder*);
-            ~GenericRenderer() override;
+            ~GenericRenderer();
 
-            void notify(Observable*, int) override;
             bool isDrawCommandDirty() const;
 
             void updateData(std::size_t, const std::vector<Point2<float>>&);
@@ -69,6 +69,8 @@ namespace urchin {
             void updateData(std::size_t, DataContainer&&);
 
             static const uint32_t UNIFORM_TEX_BINDING_START_INDEX;
+
+            bool isInitialized;
 
             std::shared_ptr<RenderTarget> renderTarget;
             std::shared_ptr<Shader> shader;

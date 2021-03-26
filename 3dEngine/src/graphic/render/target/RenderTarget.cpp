@@ -16,12 +16,8 @@ namespace urchin {
     }
 
     void RenderTarget::onResize() {
-        vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
-
-        notifyObservers(this, NotificationType::START_RESIZE);
         cleanup();
         initialize();
-        notifyObservers(this, NotificationType::END_RESIZE);
     }
 
     VkRenderPass RenderTarget::getRenderPass() const {
@@ -62,6 +58,18 @@ namespace urchin {
         return renderersDirty || std::any_of(renderers.begin(), renderers.end(), [](const auto& renderer){return renderer->isDrawCommandDirty();});
     }
 
+    void RenderTarget::initializeRenderers() {
+        for (auto& renderer: renderers) {
+            renderer->initialize();
+        }
+    }
+
+    void RenderTarget::cleanupRenderers() {
+        for (auto& renderer: renderers) {
+            renderer->cleanup();
+        }
+    }
+
     VkAttachmentDescription RenderTarget::buildDepthAttachment(VkImageLayout finalLayout) const {
         VkAttachmentDescription depthAttachment{};
         depthAttachment.format = VK_FORMAT_D32_SFLOAT;
@@ -72,7 +80,6 @@ namespace urchin {
         depthAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
         depthAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
         depthAttachment.finalLayout = finalLayout;
-
         return depthAttachment;
     }
 

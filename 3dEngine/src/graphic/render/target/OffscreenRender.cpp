@@ -44,12 +44,16 @@ namespace urchin {
         createCommandBuffers();
         createSyncObjects();
 
+        initializeRenderers();
+
         isInitialized = true;
     }
 
     void OffscreenRender::cleanup() {
-        if(isInitialized) {
+        if(isInitialized) { //TODO: assert ?
             vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
+
+            cleanupRenderers();
 
             destroySyncObjects();
             destroyCommandBuffersAndPool();

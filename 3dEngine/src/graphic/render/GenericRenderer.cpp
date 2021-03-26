@@ -10,6 +10,7 @@ namespace urchin {
     const uint32_t GenericRenderer::UNIFORM_TEX_BINDING_START_INDEX = 20;
 
     GenericRenderer::GenericRenderer(const GenericRendererBuilder* rendererBuilder) :
+            isInitialized(false),
             renderTarget(rendererBuilder->getRenderTarget()),
             shader(rendererBuilder->getShader()),
             shapeType(rendererBuilder->getShapeType()),
@@ -41,15 +42,10 @@ namespace urchin {
         }
 
         initialize();
-
-        renderTarget->addObserver(this, RenderTarget::NotificationType::START_RESIZE);
-        renderTarget->addObserver(this, RenderTarget::NotificationType::END_RESIZE);
         renderTarget->addRenderer(this);
     }
 
     GenericRenderer::~GenericRenderer() {
-        renderTarget->removeObserver(this, RenderTarget::NotificationType::START_RESIZE);
-        renderTarget->removeObserver(this, RenderTarget::NotificationType::END_RESIZE);
         renderTarget->removeRenderer(this);
 
         cleanup();
@@ -57,6 +53,8 @@ namespace urchin {
     }
 
     void GenericRenderer::initialize() {
+        assert(!isInitialized);
+
         createDescriptorSetLayout();
         createGraphicsPipeline();
         createVertexBuffers();
@@ -65,27 +63,22 @@ namespace urchin {
         createDescriptorPool();
         createDescriptorSets();
 
+        isInitialized = true;
         drawCommandDirty = true;
     }
 
     void GenericRenderer::cleanup() {
-        vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
+        if (isInitialized) {
+            vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
 
-        destroyDescriptorSetsAndPool();
-        destroyUniformBuffers();
-        destroyIndexBuffer();
-        destroyVertexBuffers();
-        destroyGraphicsPipeline();
-        destroyDescriptorSetLayout();
-    }
+            destroyDescriptorSetsAndPool();
+            destroyUniformBuffers();
+            destroyIndexBuffer();
+            destroyVertexBuffers();
+            destroyGraphicsPipeline();
+            destroyDescriptorSetLayout();
 
-    void GenericRenderer::notify(Observable* observable, int notificationType) {
-        if (dynamic_cast<RenderTarget*>(observable)) {
-            if (notificationType == RenderTarget::NotificationType::START_RESIZE) {
-                cleanup();
-            } else if (notificationType == RenderTarget::NotificationType::END_RESIZE) {
-                initialize();
-            }
+            isInitialized = false;
         }
     }
 

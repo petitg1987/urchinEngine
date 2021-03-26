@@ -37,12 +37,16 @@ namespace urchin {
         createCommandBuffers();
         createSyncObjects();
 
+        initializeRenderers();
+
         isInitialized = true;
     }
 
     void ScreenRender::cleanup() {
         if(isInitialized) {
             vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
+
+            cleanupRenderers();
 
             destroySyncObjects();
             destroyCommandBuffersAndPool();
