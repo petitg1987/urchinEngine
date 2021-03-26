@@ -22,8 +22,6 @@ namespace urchin {
             explicit RenderTarget(DepthAttachmentType);
             virtual ~RenderTarget() = default;
 
-            virtual void onResize();
-
             virtual void initialize() = 0;
             virtual void cleanup() = 0;
 

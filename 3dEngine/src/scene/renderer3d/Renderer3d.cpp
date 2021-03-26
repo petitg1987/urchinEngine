@@ -301,13 +301,13 @@ namespace urchin {
         deferredRenderTarget->resetTextures();
         deferredRenderTarget->addTexture(diffuseTexture);
         deferredRenderTarget->addTexture(normalAndAmbientTexture);
-        deferredRenderTarget->onResize();
+        deferredRenderTarget->initialize();
 
         //lighting pass rendering
         lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
         offscreenLightingRenderTarget->resetTextures();
         offscreenLightingRenderTarget->addTexture(lightingPassTexture);
-        offscreenLightingRenderTarget->onResize();
+        offscreenLightingRenderTarget->initialize();
 
         const auto& renderTarget = isAntiAliasingActivated ? offscreenLightingRenderTarget : finalRenderTarget;
         std::vector<Point2<float>> vertexCoord = {

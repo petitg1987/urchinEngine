@@ -218,7 +218,7 @@ namespace urchin {
         //renderer
         for (auto& activeRenderer : activeRenderers) {
             if (activeRenderer) {
-                activeRenderer->display(dt);
+                activeRenderer->display(dt); //TODO rename all child method
             }
         }
         screenRenderTarget->render();

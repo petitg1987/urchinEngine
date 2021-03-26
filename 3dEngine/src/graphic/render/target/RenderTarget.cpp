@@ -15,11 +15,6 @@ namespace urchin {
 
     }
 
-    void RenderTarget::onResize() {
-        cleanup();
-        initialize();
-    }
-
     VkRenderPass RenderTarget::getRenderPass() const {
         return renderPass;
     }

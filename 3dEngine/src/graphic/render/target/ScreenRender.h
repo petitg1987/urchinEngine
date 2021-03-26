@@ -16,6 +16,7 @@ namespace urchin {
 
             void initialize() override;
             void cleanup() override;
+            void onResize();
 
             unsigned int getWidth() const override;
             unsigned int getHeight() const override;

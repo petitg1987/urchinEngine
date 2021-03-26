@@ -61,6 +61,11 @@ namespace urchin {
         }
     }
 
+    void ScreenRender::onResize() {
+        cleanup();
+        initialize();
+    }
+
     unsigned int ScreenRender::getWidth() const {
         return swapChainHandler.getSwapChainExtent().width;
     }

@@ -27,9 +27,11 @@ namespace urchin {
         textures.push_back(texture);
     }
 
-    void OffscreenRender::resetTextures() { //TODO reset imply => texture size & nb attachment change => should reset renderer !
+    void OffscreenRender::resetTextures() {
         textures.clear();
-        cleanup();
+        if (isInitialized) {
+            cleanup();
+        }
     }
 
     void OffscreenRender::initialize() {
@@ -50,20 +52,19 @@ namespace urchin {
     }
 
     void OffscreenRender::cleanup() {
-        if(isInitialized) { //TODO: assert ?
-            vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
+        assert(isInitialized);
+        vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
 
-            cleanupRenderers();
+        cleanupRenderers();
 
-            destroySyncObjects();
-            destroyCommandBuffersAndPool();
-            destroyFramebuffers();
-            destroyDepthResources();
-            destroyRenderPass();
-            clearValues.clear();
+        destroySyncObjects();
+        destroyCommandBuffersAndPool();
+        destroyFramebuffers();
+        destroyDepthResources();
+        destroyRenderPass();
+        clearValues.clear();
 
-            isInitialized = false;
-        }
+        isInitialized = false;
     }
 
     unsigned int OffscreenRender::getWidth() const {
