@@ -165,8 +165,6 @@ namespace urchin {
         translationMatrix.buildTranslation(cameraPosition.X, cameraPosition.Y + offsetY, cameraPosition.Z);
         Matrix4<float> skyboxViewMatrix = viewMatrix * translationMatrix;
         skyboxRenderer->updateShaderData(1, &skyboxViewMatrix);
-
-        //TODO renderTarget->display(skyboxRenderer);
     }
 
 }

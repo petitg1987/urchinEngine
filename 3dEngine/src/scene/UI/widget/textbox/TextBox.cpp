@@ -212,13 +212,11 @@ namespace urchin {
     void TextBox::displayWidget(float dt) {
         //display the text box
         updateTranslateVector(textBoxRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
-        //TODO getRenderTarget()->display(textBoxRenderer);
 
         //displays the cursor
         cursorBlink += dt * CURSOR_BLINK_SPEED;
         if (state == ACTIVE && ((int)cursorBlink % 2) > 0) { //TODO disable widget for render target ?
             updateTranslateVector(cursorRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()) + Vector2<int>((int)cursorPosition, 0));
-            //TODO getRenderTarget()->display(cursorRenderer);
         }
     }
 

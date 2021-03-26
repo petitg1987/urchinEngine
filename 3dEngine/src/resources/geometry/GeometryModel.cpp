@@ -102,8 +102,6 @@ namespace urchin {
         positioningData.viewModelMatrix = viewMatrix * modelMatrix;
         renderer->updateShaderData(0, &positioningData);
         renderer->updateShaderData(1, &color);
-
-        //TODO renderTarget->display(renderer);
     }
 
 }

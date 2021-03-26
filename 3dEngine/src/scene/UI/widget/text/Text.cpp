@@ -220,7 +220,6 @@ namespace urchin {
 
     void Text::displayWidget(float) {
         updateTranslateVector(textRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
-        //TODO getRenderTarget()->display(textRenderer);
     }
 
 }

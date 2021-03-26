@@ -83,7 +83,6 @@ namespace urchin {
 
     void Button::displayWidget(float) {
         updateTranslateVector(buttonRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
-        //TODO getRenderTarget()->display(buttonRenderer);
     }
 
 }

@@ -174,7 +174,6 @@ namespace urchin {
         assert(isInitialized);
 
         terrainRenderer->updateShaderData(0, &camera->getViewMatrix());
-        //TODO renderTarget->display(terrainRenderer);
 
         if (grass) {
             grass->display(camera, dt);
