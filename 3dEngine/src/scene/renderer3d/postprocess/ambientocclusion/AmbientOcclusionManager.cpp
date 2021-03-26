@@ -49,6 +49,12 @@ namespace urchin {
 
     }
 
+    AmbientOcclusionManager::~AmbientOcclusionManager() {
+        if (offscreenRenderTarget) {
+            offscreenRenderTarget->cleanup();
+        }
+    }
+
     void AmbientOcclusionManager::onTexturesUpdate(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& normalAndAmbientTexture) {
         this->depthTexture = depthTexture;
         this->normalAndAmbientTexture = normalAndAmbientTexture;
@@ -94,7 +100,6 @@ namespace urchin {
         ambientOcclusionTexture = Texture::build(textureSizeX, textureSizeY, TextureFormat::GRAYSCALE_16_FLOAT, nullptr);
 
         offscreenRenderTarget = std::make_unique<OffscreenRender>(RenderTarget::NO_DEPTH_ATTACHMENT);
-        offscreenRenderTarget->onResize();
         offscreenRenderTarget->addTexture(ambientOcclusionTexture);
         offscreenRenderTarget->initialize();
 

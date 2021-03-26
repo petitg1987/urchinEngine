@@ -26,6 +26,7 @@ namespace urchin {
             void render() override;
 
         private:
+            void initializeClearValues();
             void createRenderPass();
             void createFramebuffers();
             void createSyncObjects();
@@ -35,6 +36,8 @@ namespace urchin {
             void waitCommandBuffersIdle() const override;
 
             bool isInitialized;
+
+            std::vector<VkClearValue> clearValues;
 
             std::vector<std::shared_ptr<Texture>> textures;
             VkFence commandBufferFence;

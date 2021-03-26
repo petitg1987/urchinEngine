@@ -18,6 +18,7 @@ namespace urchin {
             shadowModelShaderVariable(nullptr),
             shadowMapTexture(std::move(shadowMapTexture)) {
         if (this->renderTarget) { //only false for unit tests
+            this->renderTarget->initialize();
             createOrUpdateShadowModelSetDisplayer(nbShadowMaps);
         }
         updateLightViewMatrix();
@@ -26,6 +27,10 @@ namespace urchin {
 
     LightShadowMap::~LightShadowMap() {
         light->removeObserver(this, Light::LIGHT_MOVE);
+
+        if (renderTarget) {
+            renderTarget->cleanup();
+        }
 
         for (auto& lightSplitShadowMap : lightSplitShadowMaps) {
             delete lightSplitShadowMap;

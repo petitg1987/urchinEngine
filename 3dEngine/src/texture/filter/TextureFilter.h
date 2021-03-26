@@ -17,7 +17,7 @@ namespace urchin {
     class TextureFilter {
         public:
             template<class BUILDER> explicit TextureFilter(const TextureFilterBuilder<BUILDER>*);
-            virtual ~TextureFilter() = default;
+            virtual ~TextureFilter();
 
             void initialize();
 

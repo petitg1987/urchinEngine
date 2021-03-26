@@ -1,5 +1,4 @@
 #include <cmath>
-#include <sstream>
 #include <stdexcept>
 #include <string>
 
@@ -185,7 +184,6 @@ namespace urchin {
         auto shadowMapTexture = Texture::buildArray(shadowMapResolution, shadowMapResolution, nbShadowMaps, TextureFormat::RG_32_FLOAT, nullptr);
 
         auto shadowMapRenderTarget = std::make_unique<OffscreenRender>(RenderTarget::WRITE_ONLY_DEPTH_ATTACHMENT);
-        shadowMapRenderTarget->onResize();
         shadowMapRenderTarget->addTexture(shadowMapTexture);
 
         auto* newLightShadowMap = new LightShadowMap(light, modelOctreeManager, viewingShadowDistance, shadowMapTexture, nbShadowMaps, std::move(shadowMapRenderTarget));
@@ -324,7 +322,7 @@ namespace urchin {
 
         for (unsigned int shadowMapIndex = 0; shadowMapIndex < nbShadowMaps; ++shadowMapIndex) {
             float currSplitDistance = splitDistances[shadowMapIndex];
-            depthSplitDistance[shadowMapIndex * 4 - 1] = ((projectionMatrix(2, 2) * -currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance)) / 2.0f + 0.5f;
+            depthSplitDistance[shadowMapIndex * 4] = ((projectionMatrix(2, 2) * -currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance)) / 2.0f + 0.5f;
         }
 
         lightingRenderer->updateShaderData(4, lightProjectionViewMatrices);

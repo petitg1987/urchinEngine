@@ -11,8 +11,7 @@ namespace urchin {
             renderPass(nullptr),
             depthAttachmentType(depthAttachmentType),
             commandPool(nullptr),
-            renderersDirty(false),
-            isInitialized(false) {
+            renderersDirty(false) {
 
     }
 
@@ -20,27 +19,9 @@ namespace urchin {
         vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
 
         notifyObservers(this, NotificationType::START_RESIZE);
-        if (isInitialized) {
-            cleanup();
-            initialize();
-        }
+        cleanup();
+        initialize();
         notifyObservers(this, NotificationType::END_RESIZE);
-    }
-
-    void RenderTarget::initialize() {
-        assert(!isInitialized);
-
-        initializeClearValues();
-
-        isInitialized = true;
-    }
-
-    void RenderTarget::cleanup() {
-        if(isInitialized) {
-            clearValues.clear();
-
-            isInitialized = false;
-        }
     }
 
     VkRenderPass RenderTarget::getRenderPass() const {
@@ -79,17 +60,6 @@ namespace urchin {
 
     bool RenderTarget::needCommandBuffersRefresh() const {
         return renderersDirty || std::any_of(renderers.begin(), renderers.end(), [](const auto& renderer){return renderer->isDrawCommandDirty();});
-    }
-
-    void RenderTarget::initializeClearValues() {
-        if (hasDepthAttachment()) {
-            VkClearValue clearDepth{};
-            clearDepth.depthStencil = {1.0f, 0};
-            clearValues.emplace_back(clearDepth);
-        }
-        VkClearValue clearColor{};
-        clearColor.color = {{0.0f, 0.0f, 0.0f, 1.0f}};
-        clearValues.emplace_back(clearColor);
     }
 
     VkAttachmentDescription RenderTarget::buildDepthAttachment(VkImageLayout finalLayout) const {
@@ -225,7 +195,7 @@ namespace urchin {
         vkDestroyCommandPool(GraphicService::instance()->getDevices().getLogicalDevice(), commandPool, nullptr);
     }
 
-    void RenderTarget::updateCommandBuffers() {
+    void RenderTarget::updateCommandBuffers(const std::vector<VkClearValue>& clearValues) {
         if(!needCommandBuffersRefresh()) {
             return;
         }

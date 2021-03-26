@@ -27,7 +27,7 @@ namespace urchin {
     void ScreenRender::initialize() {
         assert(!isInitialized);
 
-        RenderTarget::initialize();
+        initializeClearValues();
         swapChainHandler.initialize(verticalSyncEnabled);
         createImageViews();
         createRenderPass();
@@ -51,7 +51,7 @@ namespace urchin {
             destroyRenderPass();
             destroyImageViews();
             swapChainHandler.cleanup();
-            RenderTarget::cleanup();
+            clearValues.clear();
 
             isInitialized = false;
         }
@@ -67,6 +67,17 @@ namespace urchin {
 
     std::size_t ScreenRender::getNumFramebuffer() const {
         return swapChainHandler.getSwapChainImages().size();
+    }
+
+    void ScreenRender::initializeClearValues() {
+        if (hasDepthAttachment()) {
+            VkClearValue clearDepth{};
+            clearDepth.depthStencil = {1.0f, 0};
+            clearValues.emplace_back(clearDepth);
+        }
+        VkClearValue clearColor{};
+        clearColor.color = {{0.0f, 0.0f, 0.0f, 1.0f}};
+        clearValues.emplace_back(clearColor);
     }
 
     void ScreenRender::createImageViews() {
@@ -177,7 +188,7 @@ namespace urchin {
         }
 
         updateGraphicData(vkImageIndex);
-        updateCommandBuffers();
+        updateCommandBuffers(clearValues);
 
         //fence to wait if a previous frame is using this image (can happen when MAX_CONCURRENT_FRAMES > swap chain images size)
         if (imagesFences[vkImageIndex] != VK_NULL_HANDLE) {

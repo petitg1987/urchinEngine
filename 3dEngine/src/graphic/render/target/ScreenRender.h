@@ -24,6 +24,7 @@ namespace urchin {
             void render() override;
 
         private:
+            void initializeClearValues();
             void createImageViews();
             void destroyImageViews();
             void createRenderPass();
@@ -37,6 +38,7 @@ namespace urchin {
             bool isInitialized;
             bool verticalSyncEnabled;
 
+            std::vector<VkClearValue> clearValues;
             SwapChainHandler swapChainHandler;
             std::vector<VkImageView> swapChainImageViews;
 

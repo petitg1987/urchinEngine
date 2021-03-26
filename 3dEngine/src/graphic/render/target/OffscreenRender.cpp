@@ -36,7 +36,7 @@ namespace urchin {
         assert(!isInitialized);
         assert(!textures.empty());
 
-        RenderTarget::initialize();
+        initializeClearValues();
         createRenderPass();
         createDepthResources();
         createFramebuffers();
@@ -56,7 +56,7 @@ namespace urchin {
             destroyFramebuffers();
             destroyDepthResources();
             destroyRenderPass();
-            RenderTarget::cleanup();
+            clearValues.clear();
 
             isInitialized = false;
         }
@@ -72,6 +72,19 @@ namespace urchin {
 
     std::size_t OffscreenRender::getNumFramebuffer() const {
         return 1;
+    }
+
+    void OffscreenRender::initializeClearValues() {
+        if (hasDepthAttachment()) {
+            VkClearValue clearDepth{};
+            clearDepth.depthStencil = {1.0f, 0};
+            clearValues.emplace_back(clearDepth);
+        }
+        VkClearValue clearColor{};
+        clearColor.color = {{0.0f, 0.0f, 0.0f, 1.0f}};
+        for(std::size_t i = 0; i < textures.size(); ++i) {
+            clearValues.emplace_back(clearColor);
+        }
     }
 
     void OffscreenRender::createRenderPass() {
@@ -126,7 +139,7 @@ namespace urchin {
         auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
 
         updateGraphicData();
-        updateCommandBuffers();
+        updateCommandBuffers(clearValues);
 
         VkSubmitInfo submitInfo{};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;

@@ -29,8 +29,8 @@ namespace urchin {
 
             virtual void onResize();
 
-            virtual void initialize();
-            virtual void cleanup();
+            virtual void initialize() = 0;
+            virtual void cleanup() = 0;
 
             virtual unsigned int getWidth() const = 0;
             virtual unsigned int getHeight() const = 0;
@@ -61,7 +61,7 @@ namespace urchin {
             void destroyCommandBuffersAndPool();
 
             virtual void waitCommandBuffersIdle() const = 0;
-            void updateCommandBuffers();
+            void updateCommandBuffers(const std::vector<VkClearValue>&);
 
             VkRenderPass renderPass;
             DepthAttachmentType depthAttachmentType;
@@ -74,11 +74,7 @@ namespace urchin {
             bool renderersDirty;
 
         private:
-            void initializeClearValues();
             bool needCommandBuffersRefresh() const;
-
-            bool isInitialized;
-            std::vector<VkClearValue> clearValues;
     };
 
 }

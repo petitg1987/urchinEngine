@@ -67,6 +67,8 @@ namespace urchin {
             delete allOctreeableModel;
         }
 
+        offscreenLightingRenderTarget->cleanup();
+        deferredRenderTarget->cleanup();
         delete skyManager;
         delete waterManager;
         delete terrainManager;
@@ -296,18 +298,16 @@ namespace urchin {
         //deferred rendering
         diffuseTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
         normalAndAmbientTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
-        deferredRenderTarget->onResize();
         deferredRenderTarget->resetTextures();
         deferredRenderTarget->addTexture(diffuseTexture);
         deferredRenderTarget->addTexture(normalAndAmbientTexture);
-        deferredRenderTarget->initialize();
+        deferredRenderTarget->onResize();
 
         //lighting pass rendering
         lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
-        offscreenLightingRenderTarget->onResize();
         offscreenLightingRenderTarget->resetTextures();
         offscreenLightingRenderTarget->addTexture(lightingPassTexture);
-        offscreenLightingRenderTarget->initialize();
+        offscreenLightingRenderTarget->onResize();
 
         const auto& renderTarget = isAntiAliasingActivated ? offscreenLightingRenderTarget : finalRenderTarget;
         std::vector<Point2<float>> vertexCoord = {

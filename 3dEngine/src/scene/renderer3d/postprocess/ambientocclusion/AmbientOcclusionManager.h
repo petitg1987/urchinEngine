@@ -18,6 +18,7 @@ namespace urchin {
             };
 
             AmbientOcclusionManager();
+            ~AmbientOcclusionManager();
 
             void onTexturesUpdate(const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&);
             void onResize(unsigned int, unsigned int);

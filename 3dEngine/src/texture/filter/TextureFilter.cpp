@@ -6,6 +6,12 @@
 
 namespace urchin {
 
+    TextureFilter::~TextureFilter() {
+        if (offscreenRenderTarget) {
+            offscreenRenderTarget->cleanup();
+        }
+    }
+
     void TextureFilter::initialize() {
         if (isInitialized) {
             throw std::runtime_error("Texture filter is already initialized");
@@ -27,7 +33,6 @@ namespace urchin {
         }
 
         offscreenRenderTarget = std::make_unique<OffscreenRender>(RenderTarget::NO_DEPTH_ATTACHMENT);
-        offscreenRenderTarget->onResize();
         offscreenRenderTarget->addTexture(texture);
         offscreenRenderTarget->initialize();
     }
