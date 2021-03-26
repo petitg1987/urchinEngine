@@ -27,7 +27,7 @@ namespace urchin {
         textures.push_back(texture);
     }
 
-    void OffscreenRender::resetTextures() {
+    void OffscreenRender::resetTextures() { //TODO reset imply => texture size & nb attachment change => should reset renderer !
         textures.clear();
         cleanup();
     }
@@ -70,6 +70,10 @@ namespace urchin {
         return textures[0]->getHeight();
     }
 
+    std::size_t OffscreenRender::getNumColorAttachment() const {
+        return textures.size();
+    }
+
     std::size_t OffscreenRender::getNumFramebuffer() const {
         return 1;
     }
@@ -89,22 +93,25 @@ namespace urchin {
 
     void OffscreenRender::createRenderPass() {
         std::vector<VkAttachmentDescription> attachments;
+        uint32_t attachmentIndex = 0;
 
         VkAttachmentReference depthAttachmentRef{};
         if (hasDepthAttachment()) {
             attachments.emplace_back(buildDepthAttachment(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL));
-            depthAttachmentRef.attachment = (uint32_t)attachments.size() - 1;
+            depthAttachmentRef.attachment = attachmentIndex++;
             depthAttachmentRef.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
         }
 
+        std::vector<VkAttachmentReference> colorAttachmentRefs;
         for(const auto& texture : textures) {
             attachments.emplace_back(buildAttachment(texture->getVkFormat(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL));
+            VkAttachmentReference colorAttachmentRef{};
+            colorAttachmentRef.attachment = attachmentIndex++;
+            colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+            colorAttachmentRefs.push_back(colorAttachmentRef);
         }
-        VkAttachmentReference colorAttachmentRef{};
-        colorAttachmentRef.attachment = (uint32_t )attachments.size() - 1;
-        colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
 
-        RenderTarget::createRenderPass(depthAttachmentRef, colorAttachmentRef, attachments);
+        RenderTarget::createRenderPass(depthAttachmentRef, colorAttachmentRefs, attachments);
     }
 
     void OffscreenRender::createFramebuffers() {

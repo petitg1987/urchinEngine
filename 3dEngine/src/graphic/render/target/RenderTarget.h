@@ -35,6 +35,7 @@ namespace urchin {
             virtual unsigned int getWidth() const = 0;
             virtual unsigned int getHeight() const = 0;
             virtual std::size_t getNumFramebuffer() const = 0;
+            virtual std::size_t getNumColorAttachment() const = 0;
             VkRenderPass getRenderPass() const;
 
             bool hasDepthAttachment() const;
@@ -50,7 +51,7 @@ namespace urchin {
         protected:
             VkAttachmentDescription buildDepthAttachment(VkImageLayout) const;
             static VkAttachmentDescription buildAttachment(VkFormat, VkImageLayout);
-            void createRenderPass(const VkAttachmentReference&, const VkAttachmentReference&, const std::vector<VkAttachmentDescription>&);
+            void createRenderPass(const VkAttachmentReference&, const std::vector<VkAttachmentReference>&, const std::vector<VkAttachmentDescription>&);
             void destroyRenderPass();
             void createDepthResources();
             void destroyDepthResources();

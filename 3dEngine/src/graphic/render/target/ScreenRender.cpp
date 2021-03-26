@@ -69,6 +69,10 @@ namespace urchin {
         return swapChainHandler.getSwapChainImages().size();
     }
 
+    std::size_t ScreenRender::getNumColorAttachment() const {
+        return 1;
+    }
+
     void ScreenRender::initializeClearValues() {
         if (hasDepthAttachment()) {
             VkClearValue clearDepth{};
@@ -97,20 +101,23 @@ namespace urchin {
 
     void ScreenRender::createRenderPass() {
         std::vector<VkAttachmentDescription> attachments;
+        uint32_t attachmentIndex = 0;
 
         VkAttachmentReference depthAttachmentRef{};
         if (hasDepthAttachment()) {
             attachments.emplace_back(buildDepthAttachment(VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL));
-            depthAttachmentRef.attachment = (uint32_t) attachments.size() - 1;
+            depthAttachmentRef.attachment = attachmentIndex++;
             depthAttachmentRef.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
         }
 
+        std::vector<VkAttachmentReference> colorAttachmentRefs;
         attachments.emplace_back(buildAttachment(swapChainHandler.getImageFormat(), VK_IMAGE_LAYOUT_PRESENT_SRC_KHR));
         VkAttachmentReference colorAttachmentRef{};
-        colorAttachmentRef.attachment = (uint32_t )attachments.size() - 1;
+        colorAttachmentRef.attachment = attachmentIndex;
         colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+        colorAttachmentRefs.push_back(colorAttachmentRef);
 
-        RenderTarget::createRenderPass(depthAttachmentRef, colorAttachmentRef, attachments);
+        RenderTarget::createRenderPass(depthAttachmentRef, colorAttachmentRefs, attachments);
     }
 
     void ScreenRender::createFramebuffers() {
