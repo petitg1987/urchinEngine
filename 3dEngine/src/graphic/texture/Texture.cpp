@@ -58,6 +58,11 @@ namespace urchin {
         return std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::RGBA_8_INT, allDataPtr));
     }
 
+    std::shared_ptr<Texture> Texture::buildEmptyArray() {
+        std::vector<const void*> allDataPtr(1, nullptr);
+        return std::shared_ptr<Texture>(new Texture(TextureType::ARRAY, 1, 1, 2, TextureFormat::RGBA_8_INT, allDataPtr));
+    }
+
     void Texture::enableMipmap() {
         assert(!isInitialized);
 

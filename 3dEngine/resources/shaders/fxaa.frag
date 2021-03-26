@@ -4,7 +4,7 @@
 //values are replaced at compilation time:
 #define FXAA_QUALITY 0 //0 = Low, 1 = Medium, 2 = High, 3 = Very high
 
-layout(std140, set = 0, binding = 1) uniform Scene {
+layout(std140, set = 0, binding = 0) uniform Scene {
     vec2 invSceneSize;
 } scene;
 layout(binding = 20) uniform sampler2D tex;

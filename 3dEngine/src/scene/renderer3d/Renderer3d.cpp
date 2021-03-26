@@ -329,16 +329,17 @@ namespace urchin {
         shadowManager->setupLightingRenderer(lightingRendererBuilder); //binding 4 & 5
         fogManager->setupLightingRenderer(lightingRendererBuilder); //binding 6
 
-        lightingRendererBuilder
+        std::vector<std::shared_ptr<TextureReader>> shadowMapTextureReaders;
+        for (unsigned int i = 0; i <= shadowManager->getMaxShadowLights(); ++i) {
+            shadowMapTextureReaders.push_back(TextureReader::build(Texture::buildEmptyArray(), TextureParam::buildNearest()));
+        }
+        lightingRenderer = lightingRendererBuilder
                 ->addTextureReader(TextureReader::build(deferredRenderTarget->getDepthTexture(), TextureParam::buildNearest()))
                 ->addTextureReader(TextureReader::build(diffuseTexture, TextureParam::buildNearest()))
                 ->addTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
-                ->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //ambient occlusion
-        for (unsigned int i = 0; i <= shadowManager->getMaxShadowLights(); ++i) {
-            lightingRendererBuilder->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //shadow maps
-        }
-
-        lightingRenderer = lightingRendererBuilder->build();
+                ->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())) //ambient occlusion
+                ->addTextureReaderArray(shadowMapTextureReaders)
+                ->build();
 
         ambientOcclusionManager->onResize(sceneWidth, sceneHeight);
         ambientOcclusionManager->onTexturesUpdate(deferredRenderTarget->getDepthTexture(), normalAndAmbientTexture);
@@ -495,8 +496,8 @@ namespace urchin {
             }
 
             if (visualOption.isShadowActivated) {
-                std::size_t shadowMapTexUnitStart = 4;
-                shadowManager->loadShadowMaps(lightingRenderer, shadowMapTexUnitStart);
+                std::size_t shadowMapTexUnit = 4;
+                shadowManager->loadShadowMaps(lightingRenderer, shadowMapTexUnit);
             }
 
             if (isAntiAliasingActivated) {

@@ -306,6 +306,7 @@ namespace urchin {
 
                 std::size_t shadowTexUnit = shadowMapTexUnitStart + shadowLightIndex;
                 if (lightingRenderer->getTextureReader(shadowTexUnit)->getTexture() != lightShadowMap->getFilteredShadowMapTexture()) {
+                    //TODO should use updateTextureReaderArray but require first to update updateTextureReaderArray to access an index
                     lightingRenderer->updateTextureReader(shadowTexUnit, TextureReader::build(lightShadowMap->getFilteredShadowMapTexture(), TextureParam::buildLinear()));
                 }
 

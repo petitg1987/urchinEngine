@@ -99,6 +99,9 @@ namespace urchin {
         textureSizeY = (unsigned int)(resolution.Y / (float)retrieveTextureSizeFactor());
         ambientOcclusionTexture = Texture::build(textureSizeX, textureSizeY, TextureFormat::GRAYSCALE_16_FLOAT, nullptr);
 
+        if (offscreenRenderTarget) {
+            offscreenRenderTarget->cleanup();
+        }
         offscreenRenderTarget = std::make_unique<OffscreenRender>(RenderTarget::NO_DEPTH_ATTACHMENT);
         offscreenRenderTarget->addTexture(ambientOcclusionTexture);
         offscreenRenderTarget->initialize();
