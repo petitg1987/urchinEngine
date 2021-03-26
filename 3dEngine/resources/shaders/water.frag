@@ -10,8 +10,8 @@ layout(std140, set = 0, binding = 1) uniform WaterProperties {
     float waveSpeed;
     float waveStrength;
 } waterProperties;
-layout(location = 20) uniform sampler2D normalTex;
-layout(location = 21) uniform sampler2D dudvMap;
+layout(binding = 20) uniform sampler2D normalTex;
+layout(binding = 21) uniform sampler2D dudvMap;
 
 layout(location = 0) in vec2 texCoordinates;
 
@@ -37,7 +37,7 @@ void main() {
 
     //normal and ambient factor
     vec2 normalTexCoordinates = texCoordinates + totalDistortion;
-    vec3 localNormal = texture2D(normalTex, normalTexCoordinates).xyz * 2.0 - 1.0;
+    vec3 localNormal = texture(normalTex, normalTexCoordinates).xyz * 2.0 - 1.0;
     vec3 globalNormal = toGlobalNormal(localNormal);
     fragNormalAndAmbient = vec4((globalNormal + 1.0) / 2.0, 0.3);
 }

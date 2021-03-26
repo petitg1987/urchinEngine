@@ -18,5 +18,5 @@ invariant gl_Position;
 void main() {
     texCoordinates = texCoord;
 
-    gl_Position = projection.mProjection * mProjection.mView * vec4(vertexPosition, 1.0);
+    gl_Position = projection.mProjection * positioningData.mView * vec4(vertexPosition, 1.0);
 }
