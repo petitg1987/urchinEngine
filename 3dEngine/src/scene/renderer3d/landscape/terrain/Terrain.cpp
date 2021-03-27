@@ -60,7 +60,7 @@ namespace urchin {
                 ->indices(mesh->getIndices())
                 ->addShaderData(sizeof(viewMatrix), &viewMatrix) //binding 0
                 ->addShaderData(sizeof(positioningData), &positioningData) //binding 1
-                ->addShaderData(sizeof(materials->getStRepeat()), &materialsStRepeat) //binding 2
+                ->addShaderData(sizeof(materialsStRepeat), &materialsStRepeat) //binding 2
                 ->addShaderData(sizeof(ambient), &ambient) //binding 3
                 ->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //mask texture
         for (std::size_t i = 0; i < materials->getMaterials().size(); ++i) {

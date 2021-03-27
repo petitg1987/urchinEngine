@@ -61,7 +61,7 @@ namespace urchin {
                 for (auto& meshRenderer : meshRenderers) {
                     const Mesh* mesh = model->getMeshes()->getMesh(meshIndex);
                     meshRenderer->updateData(0, mesh->getVertices());
-                    if(displayMode == DEFAULT_MODE) {
+                    if (displayMode == DEFAULT_MODE) {
                         meshRenderer->updateData(2, mesh->getNormals());
                         meshRenderer->updateData(3, mesh->getTangents());
                     }

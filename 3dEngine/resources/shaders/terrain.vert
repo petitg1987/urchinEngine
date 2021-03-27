@@ -4,7 +4,7 @@
 layout(std140, set = 0, binding = 0) uniform View {
     mat4 mView;
 } view;
-layout(std140, set = 0, binding = 0) uniform PositioningData {
+layout(std140, set = 0, binding = 1) uniform PositioningData {
     mat4 mProjection;
     vec3 vPosition;
 } positioningData;

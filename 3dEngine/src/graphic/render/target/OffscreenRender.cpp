@@ -173,6 +173,7 @@ namespace urchin {
     }
 
     void OffscreenRender::updateGraphicData() {
+        ScopeProfiler sp(Profiler::graphic(), "upGraphData");
         for (auto &renderer : renderers) {
             renderer->updateGraphicData(0);
         }

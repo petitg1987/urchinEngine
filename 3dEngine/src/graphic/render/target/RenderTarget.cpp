@@ -198,6 +198,7 @@ namespace urchin {
     }
 
     void RenderTarget::updateCommandBuffers(const std::vector<VkClearValue>& clearValues) {
+        ScopeProfiler sp(Profiler::graphic(), "upCmdBuffers");
         if(!needCommandBuffersRefresh()) {
             return;
         }
