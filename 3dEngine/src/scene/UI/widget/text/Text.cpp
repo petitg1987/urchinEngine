@@ -210,6 +210,14 @@ namespace urchin {
             offsetY += spaceBetweenLines;
         }
 
+        //TODO review:
+        if (vertexCoord.empty()) {
+            vertexCoord.emplace_back(Point2<float>(0.0f ,0.0f));
+        }
+        if (textureCoord.empty()) {
+            textureCoord.emplace_back(Point2<float>(0.0f ,0.0f));
+        }
+
         textRenderer = setupUiRenderer(ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)

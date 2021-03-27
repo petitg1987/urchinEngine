@@ -47,7 +47,7 @@ namespace urchin {
         assert(renderTarget);
         this->mesh = mesh;
 
-        std::vector<Point2<float>> emptyTextureCoordinates;
+        std::vector<Point2<float>> dummyTextureCoordinates = {Point2<float>(0.0, 0.0)};
         Matrix4<float> viewMatrix;
         Vector2<float> materialsStRepeat = materials->getStRepeat();
 
@@ -56,7 +56,7 @@ namespace urchin {
                 ->enableDepthOperations()
                 ->addData(mesh->getVertices())
                 ->addData(mesh->getNormals())
-                ->addData(emptyTextureCoordinates)
+                ->addData(dummyTextureCoordinates)
                 ->indices(mesh->getIndices())
                 ->addShaderData(sizeof(viewMatrix), &viewMatrix) //binding 0
                 ->addShaderData(sizeof(positioningData), &positioningData) //binding 1

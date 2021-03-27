@@ -297,17 +297,15 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer>& lightingRenderer, std::size_t shadowMapTexUnitStart) {
+    void ShadowManager::loadShadowMaps(const std::unique_ptr<GenericRenderer>& lightingRenderer, std::size_t shadowMapTexUnit) {
         std::size_t shadowLightIndex = 0;
         for (auto* visibleLight : lightManager->getVisibleLights()) {
             if (visibleLight->isProduceShadow()) {
                 assert(shadowLightIndex < getMaxShadowLights());
                 const LightShadowMap* lightShadowMap = lightShadowMaps.find(visibleLight)->second;
 
-                std::size_t shadowTexUnit = shadowMapTexUnitStart + shadowLightIndex;
-                if (lightingRenderer->getTextureReader(shadowTexUnit)->getTexture() != lightShadowMap->getFilteredShadowMapTexture()) {
-                    //TODO should use updateTextureReaderArray but require first to update updateTextureReaderArray to access an index
-                    lightingRenderer->updateTextureReader(shadowTexUnit, TextureReader::build(lightShadowMap->getFilteredShadowMapTexture(), TextureParam::buildLinear()));
+                if (lightingRenderer->getTextureReader(shadowMapTexUnit, shadowLightIndex)->getTexture() != lightShadowMap->getFilteredShadowMapTexture()) {
+                    lightingRenderer->updateTextureReaderArray(shadowMapTexUnit, shadowLightIndex, TextureReader::build(lightShadowMap->getFilteredShadowMapTexture(), TextureParam::buildLinear()));
                 }
 
                 unsigned int shadowMapIndex = 0;

@@ -470,28 +470,32 @@ namespace urchin {
         shaderData[shaderDataIndex].updateData(dataPtr);
     }
 
-    void GenericRenderer::updateTextureReader(std::size_t textureIndex, const std::shared_ptr<TextureReader>& textureReader) {
-        updateTextureReaderArray(textureIndex, {textureReader});
+    void GenericRenderer::updateTextureReader(std::size_t texturePosition, const std::shared_ptr<TextureReader>& textureReader) {
+        updateTextureReaderArray(texturePosition, 0, textureReader);
     }
 
-    const std::shared_ptr<TextureReader>& GenericRenderer::getTextureReader(std::size_t textureIndex) const {
-        assert(textureReaders[textureIndex].size() == 1);
-
-        return getTextureReaderArray(textureIndex)[0];
+    const std::shared_ptr<TextureReader>& GenericRenderer::getTextureReader(std::size_t texturePosition) const {
+        assert(textureReaders.size() > texturePosition);
+        assert(textureReaders[texturePosition].size() == 1);
+        return getTextureReaderArray(texturePosition)[0];
     }
 
-    void GenericRenderer::updateTextureReaderArray(std::size_t textureIndex, const std::vector<std::shared_ptr<TextureReader>>& textureReaderArray) {
-        assert(textureReaders.size() > textureIndex);
-        assert(textureReaders[textureIndex].size() == textureReaderArray.size());
+    const std::shared_ptr<TextureReader>& GenericRenderer::getTextureReader(std::size_t texturePosition, std::size_t textureIndex) const {
+        assert(textureReaders.size() > texturePosition);
+        assert(textureReaders[texturePosition].size() > textureIndex);
+        return getTextureReaderArray(texturePosition)[textureIndex];
+    }
+
+    void GenericRenderer::updateTextureReaderArray(std::size_t texturePosition, std::size_t textureIndex, const std::shared_ptr<TextureReader>& textureReader) {
+        assert(textureReaders.size() > texturePosition);
+        assert(textureReaders[texturePosition].size() > textureIndex);
 
         vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
 
-        for(auto& textureReader : textureReaderArray) {
-            textureReader->initialize();
-        }
-        textureReaders[textureIndex] = textureReaderArray;
+        textureReader->initialize();
+        textureReaders[texturePosition][textureIndex] = textureReader;
 
-        updateDescriptorSets();
+        updateDescriptorSets(); //TODO update only updated ?
     }
 
     const std::vector<std::shared_ptr<TextureReader>>& GenericRenderer::getTextureReaderArray(std::size_t textureIndex) const {

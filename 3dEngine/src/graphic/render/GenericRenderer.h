@@ -40,7 +40,8 @@ namespace urchin {
 
             void updateTextureReader(std::size_t, const std::shared_ptr<TextureReader>&);
             const std::shared_ptr<TextureReader>& getTextureReader(std::size_t) const;
-            void updateTextureReaderArray(std::size_t, const std::vector<std::shared_ptr<TextureReader>>&);
+            const std::shared_ptr<TextureReader>& getTextureReader(std::size_t, std::size_t) const;
+            void updateTextureReaderArray(std::size_t, std::size_t, const std::shared_ptr<TextureReader>&);
             const std::vector<std::shared_ptr<TextureReader>>& getTextureReaderArray(std::size_t) const;
 
             void updateGraphicData(uint32_t);
