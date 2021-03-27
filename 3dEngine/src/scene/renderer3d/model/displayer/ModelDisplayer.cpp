@@ -19,9 +19,6 @@ namespace urchin {
             meshRendererBuilder
                 ->enableDepthOperations()
                 ->addData(constMesh->getBaseVertices())
-                ->addData(constMesh->getTextureCoordinates())
-                ->addData(constMesh->getBaseNormals())
-                ->addData(constMesh->getBaseTangents())
                 ->indices(constMesh->getTrianglesIndices())
                 ->addShaderData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
                 ->addShaderData(sizeof(meshData), &meshData); //binding 1
@@ -34,6 +31,9 @@ namespace urchin {
                 TextureParam textureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
 
                 meshRendererBuilder
+                    ->addData(constMesh->getTextureCoordinates())
+                    ->addData(constMesh->getBaseNormals())
+                    ->addData(constMesh->getBaseTangents())
                     ->addTextureReader(TextureReader::build(constMesh->getMaterial()->getDiffuseTexture(), textureParam))
                     ->addTextureReader(TextureReader::build(constMesh->getMaterial()->getNormalTexture(), textureParam));
             }
@@ -61,8 +61,10 @@ namespace urchin {
                 for (auto& meshRenderer : meshRenderers) {
                     const Mesh* mesh = model->getMeshes()->getMesh(meshIndex);
                     meshRenderer->updateData(0, mesh->getVertices());
-                    meshRenderer->updateData(2, mesh->getNormals());
-                    meshRenderer->updateData(3, mesh->getTangents());
+                    if(displayMode == DEFAULT_MODE) {
+                        meshRenderer->updateData(2, mesh->getNormals());
+                        meshRenderer->updateData(3, mesh->getTangents());
+                    }
 
                     meshIndex++;
                 }

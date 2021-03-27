@@ -3,7 +3,8 @@
 
 namespace urchin {
 
-    Shader::Shader(const std::vector<std::pair<Shader::ShaderType, std::vector<char>>>& shaderSources) {
+    Shader::Shader(std::string shaderName, const std::vector<std::pair<Shader::ShaderType, std::vector<char>>>& shaderSources):
+            shaderName(std::move(shaderName)) {
         for(const auto& shaderSource : shaderSources) {
             VkShaderModule shaderModule = createShaderModule(shaderSource.second);
             shaderModules.emplace_back(shaderModule);

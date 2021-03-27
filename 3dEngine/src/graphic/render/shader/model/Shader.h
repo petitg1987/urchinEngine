@@ -2,6 +2,7 @@
 #define URCHINENGINE_SHADER_H
 
 #include <vector>
+#include <string>
 #include <vulkan/vulkan.h>
 
 namespace urchin {
@@ -14,7 +15,7 @@ namespace urchin {
                 FRAGMENT
             };
 
-            explicit Shader(const std::vector<std::pair<Shader::ShaderType, std::vector<char>>>&);
+            Shader(std::string, const std::vector<std::pair<Shader::ShaderType, std::vector<char>>>&);
             ~Shader();
 
             const std::vector<VkPipelineShaderStageCreateInfo>& getShaderStages() const;
@@ -24,6 +25,7 @@ namespace urchin {
             static VkPipelineShaderStageCreateInfo createPipelineShaderStage(VkShaderModule, ShaderType);
             static VkShaderStageFlagBits toShaderStageFlag(Shader::ShaderType);
 
+            std::string shaderName;
             std::vector<VkShaderModule> shaderModules;
             std::vector<VkPipelineShaderStageCreateInfo> shaderStages;
     };

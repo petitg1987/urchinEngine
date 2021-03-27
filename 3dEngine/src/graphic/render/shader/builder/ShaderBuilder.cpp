@@ -31,7 +31,8 @@ namespace urchin {
         std::vector<char> fragmentShader = compile(fragmentShaderFilename, tokens, shaderc_glsl_fragment_shader);
         shaderSources.emplace_back(std::make_pair(Shader::FRAGMENT, fragmentShader));
 
-        return std::make_shared<Shader>(shaderSources);
+        std::string shaderName = FileUtil::getFileName(vertexShaderFilename);
+        return std::make_shared<Shader>(shaderName, shaderSources);
     }
 
     std::vector<char> ShaderBuilder::compile(const std::string &filename, const std::map<std::string, std::string>& tokens, shaderc_shader_kind shaderKind) {
