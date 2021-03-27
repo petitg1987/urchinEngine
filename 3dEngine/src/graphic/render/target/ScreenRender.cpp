@@ -252,12 +252,6 @@ namespace urchin {
         currentFrameIndex = (currentFrameIndex + 1) % MAX_CONCURRENT_FRAMES;
     }
 
-    void ScreenRender::updateGraphicData(uint32_t frameIndex) {
-        for (auto &renderer : renderers) {
-            renderer->updateGraphicData(frameIndex);
-        }
-    }
-
     void ScreenRender::waitCommandBuffersIdle() const {
         for (unsigned int i = 0; i < MAX_CONCURRENT_FRAMES; ++i) {
             vkWaitForFences(GraphicService::instance()->getDevices().getLogicalDevice(), 1, &commandBufferFences[i], VK_TRUE, UINT64_MAX);

@@ -197,6 +197,12 @@ namespace urchin {
         vkDestroyCommandPool(GraphicService::instance()->getDevices().getLogicalDevice(), commandPool, nullptr);
     }
 
+    void RenderTarget::updateGraphicData(uint32_t frameIndex) {
+        for (auto &renderer : renderers) {
+            renderer->updateGraphicData(frameIndex);
+        }
+    }
+
     void RenderTarget::updateCommandBuffers(const std::vector<VkClearValue>& clearValues) {
         ScopeProfiler sp(Profiler::graphic(), "upCmdBuffers");
         if(!needCommandBuffersRefresh()) {

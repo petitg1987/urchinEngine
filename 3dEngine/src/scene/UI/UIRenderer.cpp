@@ -118,8 +118,8 @@ namespace urchin {
         widgets.erase(it);
     }
 
-    void UIRenderer::display(float dt) {
-        ScopeProfiler sp(Profiler::graphic(), "uiRenderDisplay");
+    void UIRenderer::prepareRendering(float dt) {
+        ScopeProfiler sp(Profiler::graphic(), "uiPreRendering");
 
         for (auto& widget : widgets) {
             if (widget->isVisible()) {

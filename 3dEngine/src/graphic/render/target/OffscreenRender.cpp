@@ -150,7 +150,7 @@ namespace urchin {
         assert(!renderers.empty());
         auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
 
-        updateGraphicData();
+        updateGraphicData(0);
         updateCommandBuffers(clearValues);
 
         VkSubmitInfo submitInfo{};
@@ -170,13 +170,6 @@ namespace urchin {
         }
 
         vkQueueWaitIdle(GraphicService::instance()->getQueues().getGraphicsQueue());
-    }
-
-    void OffscreenRender::updateGraphicData() {
-        ScopeProfiler sp(Profiler::graphic(), "upGraphData");
-        for (auto &renderer : renderers) {
-            renderer->updateGraphicData(0);
-        }
     }
 
     void OffscreenRender::waitCommandBuffersIdle() const {

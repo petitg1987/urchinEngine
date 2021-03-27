@@ -17,5 +17,5 @@ add_subdirectory(AIEngine)
 add_subdirectory(mapHandler)
 if ((URCHIN_BUILD_TOOLS MATCHES "YES") AND (NOT WIN32)) #not handled on Windows
 #TODO    add_subdirectory(mapEditor)
-#TODO    add_subdirectory(test)
+    add_subdirectory(test)
 endif()

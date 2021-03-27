@@ -57,6 +57,7 @@ namespace urchin {
             void destroyCommandBuffersAndPool();
 
             virtual void waitCommandBuffersIdle() const = 0;
+            void updateGraphicData(uint32_t);
             void updateCommandBuffers(const std::vector<VkClearValue>&);
 
             VkRenderPass renderPass;

@@ -15,7 +15,7 @@ namespace urchin {
             virtual bool onMouseMove(int, int) = 0;
             virtual void onDisable() = 0;
 
-            virtual void display(float) = 0;
+            virtual void prepareRendering(float) = 0;
     };
 
 }

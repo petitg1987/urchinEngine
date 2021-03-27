@@ -28,7 +28,7 @@ namespace urchin {
             void addWidget(Widget*);
             void removeWidget(Widget*);
 
-            void display(float) override;
+            void prepareRendering(float) override;
 
         private:
             std::shared_ptr<RenderTarget> renderTarget;

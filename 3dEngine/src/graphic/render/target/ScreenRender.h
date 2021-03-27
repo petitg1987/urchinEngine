@@ -34,7 +34,6 @@ namespace urchin {
             void createSyncObjects();
             void destroySyncObjects();
 
-            void updateGraphicData(uint32_t);
             void waitCommandBuffersIdle() const override;
 
             bool isInitialized;

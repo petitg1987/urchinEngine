@@ -273,8 +273,8 @@ namespace urchin {
         //nothing to do
     }
 
-    void Renderer3d::display(float dt) {
-        ScopeProfiler sp(Profiler::graphic(), "rendererDisplay");
+    void Renderer3d::prepareRendering(float dt) {
+        ScopeProfiler sp(Profiler::graphic(), "pre3dRendering");
 
         if (!camera) { //nothing to display if camera doesn't exist
             return;

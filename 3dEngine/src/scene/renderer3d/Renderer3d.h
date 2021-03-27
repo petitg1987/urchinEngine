@@ -81,7 +81,7 @@ namespace urchin {
             //scene
             void pause();
             void unpause();
-            void display(float) override;
+            void prepareRendering(float) override;
 
         private:
             void createOrUpdateLightingShader();
