@@ -44,7 +44,7 @@ namespace urchin {
         float ratio = (float)sceneWidth / (float)sceneHeight;
         mProjection.setValues(
             fov/ratio, 0.0f, 0.0f, 0.0f,
-            0.0f, fov, 0.0f, 0.0f,
+            0.0f, -fov, 0.0f, 0.0f,
             0.0f, 0.0f, 0.5f * ((farPlane + nearPlane) / (nearPlane - farPlane)) - 0.5f, (farPlane * nearPlane) / (nearPlane - farPlane),
             0.0f, 0.0f, -1.0f, 0.0f);
 

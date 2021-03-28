@@ -85,7 +85,7 @@ namespace urchin {
     const std::shared_ptr<RenderTarget> &GenericRenderer::getRenderTarget() const {
         return renderTarget;
     }
-    
+
     bool GenericRenderer::isDrawCommandDirty() const {
         return drawCommandDirty;
     }
@@ -168,9 +168,9 @@ namespace urchin {
         //viewports and scissors stage
         VkViewport viewport{};
         viewport.x = 0.0f;
-        viewport.y = (float)renderTarget->getHeight() - 0.0f; //flip Y
+        viewport.y = 0.0f;
         viewport.width = (float)renderTarget->getWidth();
-        viewport.height = - (float)renderTarget->getHeight(); //flip Y
+        viewport.height = (float)renderTarget->getHeight();
         viewport.minDepth = 0.0f;
         viewport.maxDepth = 1.0f;
         VkRect2D scissor = {{0, 0}, {renderTarget->getWidth(), renderTarget->getHeight()}};

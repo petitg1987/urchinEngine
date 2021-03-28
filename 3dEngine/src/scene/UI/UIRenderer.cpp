@@ -31,7 +31,7 @@ namespace urchin {
 
         //orthogonal matrix with origin at top left screen
         mProjection.setValues(2.0f / (float)sceneWidth, 0.0f, -1.0f, 0.0f,
-            0.0f, -2.0f / (float)sceneHeight, 1.0f, 0.0f,
+            0.0f, 2.0f / (float)sceneHeight, -1.0f, 0.0f,
             0.0f, 0.0f, 1.0f, 0.0f,
             0.0f, 0.0f, 0.0f, 1.0f);
 
