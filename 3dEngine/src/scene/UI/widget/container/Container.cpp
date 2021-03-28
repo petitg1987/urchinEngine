@@ -16,7 +16,7 @@ namespace urchin {
 
     }
 
-    void Container::displayWidget(float) {
+    void Container::prepareWidgetRendering(float) {
 
     }
 

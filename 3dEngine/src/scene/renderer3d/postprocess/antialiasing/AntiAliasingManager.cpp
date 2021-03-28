@@ -54,7 +54,7 @@ namespace urchin {
 
     void AntiAliasingManager::applyAntiAliasing() {
         if (renderer) {
-            //TODO renderTarget->display(renderer);
+            renderTarget->addRenderer(renderer.get()); //TODO review unique_ptr
         }
     }
 

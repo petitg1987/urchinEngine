@@ -43,7 +43,7 @@ namespace urchin {
 
             void initialize(const std::shared_ptr<RenderTarget> &renderTarget, unsigned int, unsigned int, float, float);
 
-            void display();
+            void prepareRendering();
 
         private:
             void initializeShader();

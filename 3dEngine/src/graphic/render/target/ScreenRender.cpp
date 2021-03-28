@@ -186,7 +186,9 @@ namespace urchin {
     }
 
     void ScreenRender::render() {
-        assert(!renderers.empty());
+        if(!hasRenderer()) {
+            return;
+        }
 
         static size_t currentFrameIndex = 0;
         auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();

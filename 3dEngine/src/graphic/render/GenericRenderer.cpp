@@ -82,6 +82,10 @@ namespace urchin {
         }
     }
 
+    const std::shared_ptr<RenderTarget> &GenericRenderer::getRenderTarget() const {
+        return renderTarget;
+    }
+    
     bool GenericRenderer::isDrawCommandDirty() const {
         return drawCommandDirty;
     }

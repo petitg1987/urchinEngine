@@ -94,9 +94,9 @@ namespace urchin {
         refreshRenderer();
     }
 
-    void GeometryModel::display(const Matrix4<float>& viewMatrix) const {
+    void GeometryModel::prepareRendering(const Matrix4<float>& viewMatrix) const {
         if (!isInitialized) {
-            throw std::runtime_error("Geometry model must be initialized before call display");
+            throw std::runtime_error("Geometry model must be initialized before call prepare rendering");
         }
 
         positioningData.viewModelMatrix = viewMatrix * modelMatrix;

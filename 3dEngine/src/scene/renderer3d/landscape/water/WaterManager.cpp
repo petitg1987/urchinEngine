@@ -31,11 +31,11 @@ namespace urchin {
         }
     }
 
-    void WaterManager::display(const Camera* camera, FogManager* fogManager, float dt) const {
-        ScopeProfiler sp(Profiler::graphic(), "waterDisplay");
+    void WaterManager::prepareRendering(const Camera* camera, FogManager* fogManager, float dt) const {
+        ScopeProfiler sp(Profiler::graphic(), "waterPreRender");
 
         for (const auto water : waters) {
-            water->display(camera, fogManager, dt);
+            water->prepareRendering(camera, fogManager, dt);
         }
     }
 }

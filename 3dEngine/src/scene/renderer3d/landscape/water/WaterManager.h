@@ -19,7 +19,7 @@ namespace urchin {
             void addWater(Water*);
             void removeWater(Water*);
 
-            void display(const Camera*, FogManager*, float) const;
+            void prepareRendering(const Camera*, FogManager*, float) const;
 
         private:
             std::shared_ptr<RenderTarget> renderTarget;

@@ -35,7 +35,7 @@ namespace urchin {
             void removeModel(Model*);
 
             void updateAnimation(float);
-            void display(const Matrix4<float>&);
+            void prepareRendering(const Matrix4<float>&);
 
             void drawBBox(const Matrix4<float>&, const Matrix4<float>&) const;
             void drawBaseBones(const Matrix4<float>&, const Matrix4<float>&, const std::string&) const;

@@ -181,6 +181,6 @@ namespace urchin {
         //TODO renderTarget->resetDisplay();
 
         shadowModelSetDisplayer->setModels(retrieveModels());
-        shadowModelSetDisplayer->display(lightViewMatrix);
+        shadowModelSetDisplayer->prepareRendering(lightViewMatrix);
     }
 }

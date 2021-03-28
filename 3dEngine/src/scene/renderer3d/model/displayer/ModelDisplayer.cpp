@@ -72,7 +72,7 @@ namespace urchin {
         }
     }
 
-    void ModelDisplayer::display(const Matrix4<float>& viewMatrix) const {
+    void ModelDisplayer::prepareRendering(const Matrix4<float>& viewMatrix) const {
         unsigned int meshIndex = 0;
         for (auto& meshRenderer : meshRenderers) {
             meshData.viewMatrix = viewMatrix;
@@ -95,7 +95,7 @@ namespace urchin {
         AABBoxModel aabboxModel(model->getAABBox());
         aabboxModel.initialize(renderTarget);
         aabboxModel.onCameraProjectionUpdate(projectionMatrix);
-        aabboxModel.display(viewMatrix);
+        aabboxModel.prepareRendering(viewMatrix);
     }
 
     void ModelDisplayer::drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {

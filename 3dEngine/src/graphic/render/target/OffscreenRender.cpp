@@ -147,7 +147,10 @@ namespace urchin {
     }
 
     void OffscreenRender::render() {
-        assert(!renderers.empty());
+        if(!hasRenderer()) {
+            return;
+        }
+
         auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
 
         updateGraphicData(0);

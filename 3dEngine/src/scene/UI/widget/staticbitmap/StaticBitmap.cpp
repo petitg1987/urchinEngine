@@ -41,8 +41,9 @@ namespace urchin {
                 ->build();
     }
 
-    void StaticBitmap::displayWidget(float) {
+    void StaticBitmap::prepareWidgetRendering(float) {
         updateTranslateVector(bitmapRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
+        bitmapRenderer->getRenderTarget()->addRenderer(bitmapRenderer.get()); //TODO review unique_ptr management !
     }
 
 }

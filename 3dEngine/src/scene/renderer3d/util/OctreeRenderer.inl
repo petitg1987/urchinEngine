@@ -12,5 +12,5 @@ template<class T> void OctreeRenderer::drawOctree(const OctreeManager<T>* octree
     urchin::AABBoxModel aabboxModel(aabboxes);
     aabboxModel.initialize(renderTarget);
     aabboxModel.onCameraProjectionUpdate(projectionMatrix);
-    aabboxModel.display(viewMatrix);
+    aabboxModel.prepareRendering(viewMatrix);
 }

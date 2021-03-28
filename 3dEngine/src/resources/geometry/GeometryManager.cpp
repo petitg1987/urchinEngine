@@ -35,9 +35,9 @@ namespace urchin {
         }
     }
 
-    void GeometryManager::display(const Matrix4<float>& viewMatrix) const {
+    void GeometryManager::prepareRendering(const Matrix4<float>& viewMatrix) const {
         for (auto* geometryModel : geometryModels) {
-            geometryModel->display(viewMatrix);
+            geometryModel->prepareRendering(viewMatrix);
         }
     }
 

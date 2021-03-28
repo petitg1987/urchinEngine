@@ -20,7 +20,7 @@ namespace urchin {
 
             void onCameraProjectionUpdate(const Camera*);
 
-            void display(const Matrix4<float>&) const;
+            void prepareRendering(const Matrix4<float>&) const;
 
         private:
             std::shared_ptr<RenderTarget> renderTarget;

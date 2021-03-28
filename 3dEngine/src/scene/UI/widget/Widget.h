@@ -67,7 +67,7 @@ namespace urchin {
             virtual void reset();
             void onDisable();
 
-            void display(float);
+            void prepareRendering(float);
 
         protected:
             std::unique_ptr<GenericRendererBuilder> setupUiRenderer(ShapeType) const;
@@ -79,7 +79,7 @@ namespace urchin {
 
             const std::vector<Widget*>& getChildren() const;
 
-            virtual void displayWidget(float) = 0;
+            virtual void prepareWidgetRendering(float) = 0;
 
             WidgetOutline widgetOutline;
 

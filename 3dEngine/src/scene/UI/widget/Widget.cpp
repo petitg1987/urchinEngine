@@ -349,12 +349,12 @@ namespace urchin {
         }
     }
 
-    void Widget::display(float dt) {
-        displayWidget(dt);
+    void Widget::prepareRendering(float dt) {
+        prepareWidgetRendering(dt);
 
         for (auto& child : children) {
             if (child->isVisible()) {
-                child->display(dt);
+                child->prepareRendering(dt);
             }
         }
     }

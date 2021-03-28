@@ -20,7 +20,7 @@ namespace urchin {
 
             void setGrassDisplayDistance(float);
 
-            void display(const Camera*, float) const;
+            void prepareRendering(const Camera*, float) const;
 
         private:
             void updateWithConfig();

@@ -52,7 +52,7 @@ namespace urchin {
             float getWindStrength() const;
             void setWindStrength(float);
 
-            void display(const Camera*, float);
+            void prepareRendering(const Camera*, float);
 
         private:
             void generateGrass(const std::shared_ptr<TerrainMesh>&, const Point3<float>&);

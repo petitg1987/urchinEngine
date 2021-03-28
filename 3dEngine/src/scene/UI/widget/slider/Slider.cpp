@@ -103,7 +103,7 @@ namespace urchin {
         createOrUpdateWidget();
     }
 
-    void Slider::displayWidget(float dt) {
+    void Slider::prepareWidgetRendering(float dt) {
         if (leftButton->getWidgetState() == Widget::WidgetStates::CLICKING) {
             timeInClickingState += dt;
             timeSinceLastChange += dt;

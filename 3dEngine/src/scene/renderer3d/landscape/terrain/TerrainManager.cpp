@@ -47,11 +47,11 @@ namespace urchin {
         }
     }
 
-    void TerrainManager::display(const Camera* camera, float dt) const {
-        ScopeProfiler sp(Profiler::graphic(), "terrainDisplay");
+    void TerrainManager::prepareRendering(const Camera* camera, float dt) const {
+        ScopeProfiler sp(Profiler::graphic(), "terPreRender");
 
         for (const auto terrain : terrains) {
-            terrain->display(camera, dt);
+            terrain->prepareRendering(camera, dt);
         }
     }
 }

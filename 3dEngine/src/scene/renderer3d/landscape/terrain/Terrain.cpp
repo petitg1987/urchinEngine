@@ -170,13 +170,13 @@ namespace urchin {
         return mesh->findHeightAt(localCoordinate) + positioningData.position.Y;
     }
 
-    void Terrain::display(const Camera* camera, float dt) const {
+    void Terrain::prepareRendering(const Camera* camera, float dt) const {
         assert(isInitialized);
 
         terrainRenderer->updateShaderData(0, &camera->getViewMatrix());
 
         if (grass) {
-            grass->display(camera, dt);
+            grass->prepareRendering(camera, dt);
         }
     }
 }

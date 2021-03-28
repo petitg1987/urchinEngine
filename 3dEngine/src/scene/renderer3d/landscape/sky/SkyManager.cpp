@@ -28,9 +28,9 @@ namespace urchin {
         return skybox;
     }
 
-    void SkyManager::display(const Matrix4<float>& viewMatrix, const Point3<float>& cameraPosition) {
+    void SkyManager::prepareRendering(const Matrix4<float>& viewMatrix, const Point3<float>& cameraPosition) {
         if (skybox != nullptr) {
-            skybox->display(viewMatrix, cameraPosition);
+            skybox->prepareRendering(viewMatrix, cameraPosition);
         }
     }
 }

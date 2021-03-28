@@ -365,11 +365,11 @@ namespace urchin {
         }
     }
 
-    void TerrainGrass::display(const Camera* camera, float dt) {
+    void TerrainGrass::prepareRendering(const Camera* camera, float dt) {
         assert(bIsInitialized);
 
         if (grassTexture) {
-            ScopeProfiler sp(Profiler::graphic(), "grassDisplay");
+            ScopeProfiler sp(Profiler::graphic(), "grassPreRender");
 
             positioningData.viewMatrix = camera->getViewMatrix();
             positioningData.cameraPosition = camera->getPosition();

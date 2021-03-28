@@ -25,7 +25,7 @@ namespace urchin {
 
         protected:
             void createOrUpdateWidget() override;
-            void displayWidget(float) override;
+            void prepareWidgetRendering(float) override;
 
         private:
             std::string buttonsTextSkin, valuesTextSkin;

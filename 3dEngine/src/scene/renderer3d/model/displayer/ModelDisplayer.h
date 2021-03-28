@@ -16,7 +16,7 @@ namespace urchin {
             void notify(Observable*, int) override;
             void onCameraProjectionUpdate(const Camera*);
 
-            void display(const Matrix4<float>&) const;
+            void prepareRendering(const Matrix4<float>&) const;
 
             void drawBBox(const Matrix4<float>&, const Matrix4<float>&) const;
             void drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const;

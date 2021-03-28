@@ -110,7 +110,7 @@ namespace urchin {
         }
     }
 
-    void ModelSetDisplayer::display(const Matrix4<float>& viewMatrix) {
+    void ModelSetDisplayer::prepareRendering(const Matrix4<float>& viewMatrix) {
         ScopeProfiler sp(Profiler::graphic(), "modelDisplay");
 
         if (!isInitialized) {
@@ -120,7 +120,7 @@ namespace urchin {
         }
 
         for (auto model : models) {
-            modelsDisplayer.at(model)->display(viewMatrix);
+            modelsDisplayer.at(model)->prepareRendering(viewMatrix);
         }
     }
 

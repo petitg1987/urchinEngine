@@ -21,7 +21,7 @@ namespace urchin {
 
         protected:
             void createOrUpdateWidget() override;
-            void displayWidget(float) override;
+            void prepareWidgetRendering(float) override;
 
         private:
             const std::shared_ptr<Texture>& getTexture();

@@ -160,7 +160,7 @@ namespace urchin {
         return filenames;
     }
 
-    void Skybox::display(const Matrix4<float>& viewMatrix, const Point3<float>& cameraPosition) {
+    void Skybox::prepareRendering(const Matrix4<float>& viewMatrix, const Point3<float>& cameraPosition) {
         assert(isInitialized);
         translationMatrix.buildTranslation(cameraPosition.X, cameraPosition.Y + offsetY, cameraPosition.Z);
         Matrix4<float> skyboxViewMatrix = viewMatrix * translationMatrix;

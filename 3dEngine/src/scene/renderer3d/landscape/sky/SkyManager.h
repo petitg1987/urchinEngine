@@ -16,7 +16,7 @@ namespace urchin {
             void setSkybox(std::unique_ptr<Skybox>);
             const std::unique_ptr<Skybox>& getSkybox() const;
 
-            void display(const Matrix4<float>&, const Point3<float>&);
+            void prepareRendering(const Matrix4<float>&, const Point3<float>&);
 
         private:
             std::shared_ptr<RenderTarget> renderTarget;

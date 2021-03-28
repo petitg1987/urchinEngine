@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cassert>
 
 #include "RenderTarget.h"
 #include "graphic/setup/GraphicService.h"
@@ -35,6 +36,8 @@ namespace urchin {
     }
 
     void RenderTarget::addRenderer(GenericRenderer* renderer) {
+        assert(renderer->getRenderTarget().get() == this);
+
         renderers.emplace_back(renderer);
         renderersDirty = true;
     }
@@ -63,6 +66,10 @@ namespace urchin {
         for (auto& renderer: renderers) {
             renderer->cleanup();
         }
+    }
+
+    bool RenderTarget::hasRenderer() {
+        return !renderers.empty();
     }
 
     VkAttachmentDescription RenderTarget::buildDepthAttachment(VkImageLayout finalLayout) const {

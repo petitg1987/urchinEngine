@@ -30,6 +30,7 @@ namespace urchin {
             explicit GenericRenderer(const GenericRendererBuilder*);
             ~GenericRenderer();
 
+            const std::shared_ptr<RenderTarget> &getRenderTarget() const;
             bool isDrawCommandDirty() const;
 
             void updateData(std::size_t, const std::vector<Point2<float>>&);

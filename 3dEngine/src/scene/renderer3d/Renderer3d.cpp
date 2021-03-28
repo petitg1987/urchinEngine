@@ -354,28 +354,28 @@ namespace urchin {
             TextureRenderer textureRenderer(deferredRenderTarget->getDepthTexture(), TextureRenderer::DEPTH_VALUE, depthIntensity);
             textureRenderer.setPosition(TextureRenderer::LEFT, TextureRenderer::TOP);
             textureRenderer.initialize(finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-            textureRenderer.display();
+            textureRenderer.prepareRendering();
         }
 
         if (DEBUG_DISPLAY_COLOR_BUFFER) {
             TextureRenderer textureRenderer(diffuseTexture, TextureRenderer::DEFAULT_VALUE);
             textureRenderer.setPosition(TextureRenderer::CENTER_X, TextureRenderer::TOP);
             textureRenderer.initialize(finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-            textureRenderer.display();
+            textureRenderer.prepareRendering();
         }
 
         if (DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER) {
             TextureRenderer textureRenderer(normalAndAmbientTexture, TextureRenderer::DEFAULT_VALUE);
             textureRenderer.setPosition(TextureRenderer::RIGHT, TextureRenderer::TOP);
             textureRenderer.initialize(finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-            textureRenderer.display();
+            textureRenderer.prepareRendering();
         }
 
         if (DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER) {
             TextureRenderer textureRenderer(lightingPassTexture, TextureRenderer::DEFAULT_VALUE);
             textureRenderer.setPosition(TextureRenderer::LEFT, TextureRenderer::BOTTOM);
             textureRenderer.initialize(finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-            textureRenderer.display();
+            textureRenderer.prepareRendering();
         }
 
         if (DEBUG_DISPLAY_SHADOW_MAP) {
@@ -384,7 +384,7 @@ namespace urchin {
             TextureRenderer textureDisplayer(shadowManager->getLightShadowMap(firstLight).getShadowMapTexture(), shadowMapNumber, TextureRenderer::DEFAULT_VALUE);
             textureDisplayer.setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
             textureDisplayer.initialize(finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-            textureDisplayer.display();
+            textureDisplayer.prepareRendering();
         }
 
         if (DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER) {
@@ -392,7 +392,7 @@ namespace urchin {
             TextureRenderer textureRenderer(ambientOcclusionManager->getAmbientOcclusionTexture(), TextureRenderer::INVERSE_GRAYSCALE_VALUE, ambientOcclusionIntensity);
             textureRenderer.setPosition(TextureRenderer::RIGHT, TextureRenderer::BOTTOM);
             textureRenderer.initialize(finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-            textureRenderer.display();
+            textureRenderer.prepareRendering();
         }
     }
 
@@ -435,17 +435,17 @@ namespace urchin {
     void Renderer3d::deferredRendering(float dt) {
         ScopeProfiler sp(Profiler::graphic(), "deferredRender");
 
-        skyManager->display(camera->getViewMatrix(), camera->getPosition());
+        skyManager->prepareRendering(camera->getViewMatrix(), camera->getPosition());
 
         updateModelsInFrustum();
         modelSetDisplayer->setModels(modelsInFrustum);
-        modelSetDisplayer->display(camera->getViewMatrix());
+        modelSetDisplayer->prepareRendering(camera->getViewMatrix());
 
-        terrainManager->display(camera, dt);
+        terrainManager->prepareRendering(camera, dt);
 
-        waterManager->display(camera, fogManager, dt);
+        waterManager->prepareRendering(camera, fogManager, dt);
 
-        geometryManager->display(camera->getViewMatrix());
+        geometryManager->prepareRendering(camera->getViewMatrix());
 
         if (visualOption.isAmbientOcclusionActivated) {
             ambientOcclusionManager->updateAOTexture(camera);
@@ -503,6 +503,8 @@ namespace urchin {
             if (isAntiAliasingActivated) {
                 offscreenLightingRenderTarget->render();
             }
+
+            lightingRenderer->getRenderTarget()->addRenderer(lightingRenderer.get()); //TODO unique_ptr to shared ?
         }
     }
 

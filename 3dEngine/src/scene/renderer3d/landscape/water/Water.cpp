@@ -250,7 +250,7 @@ namespace urchin {
         return gradient;
     }
 
-    void Water::display(const Camera* camera, FogManager* fogManager, float dt) {
+    void Water::prepareRendering(const Camera* camera, FogManager* fogManager, float dt) {
         assert(isInitialized);
         if (camera->getPosition().Y < centerPosition.Y && waterRectangle->collideWithPoint(Point2<float>(camera->getPosition().X, camera->getPosition().Z))) {
             if (fogManager->getActiveFog() != underwaterFog) {

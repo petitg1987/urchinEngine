@@ -30,7 +30,7 @@ namespace urchin {
             bool isAlwaysVisible() const;
             void setAlwaysVisible(bool);
 
-            void display(const Matrix4<float>&) const;
+            void prepareRendering(const Matrix4<float>&) const;
 
         protected:
             void refreshRenderer();

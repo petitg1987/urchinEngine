@@ -44,6 +44,8 @@ namespace urchin {
         protected:
             void initializeRenderers();
             void cleanupRenderers();
+            bool hasRenderer();
+
             VkAttachmentDescription buildDepthAttachment(VkImageLayout) const;
             static VkAttachmentDescription buildAttachment(VkFormat, VkImageLayout);
             void createRenderPass(const VkAttachmentReference&, const std::vector<VkAttachmentReference>&, const std::vector<VkAttachmentDescription>&);
@@ -67,11 +69,11 @@ namespace urchin {
             std::vector<VkCommandBuffer> commandBuffers;
             VkCommandPool commandPool;
 
-            std::vector<GenericRenderer*> renderers;
-            bool renderersDirty;
-
         private:
             bool needCommandBuffersRefresh() const;
+
+            std::vector<GenericRenderer*> renderers;
+            bool renderersDirty;
     };
 
 }

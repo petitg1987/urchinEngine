@@ -17,7 +17,7 @@ namespace urchin {
 
         protected:
             void createOrUpdateWidget() override;
-            void displayWidget(float) override;
+            void prepareWidgetRendering(float) override;
     };
 
 }

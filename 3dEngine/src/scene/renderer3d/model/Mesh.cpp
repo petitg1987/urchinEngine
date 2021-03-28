@@ -39,7 +39,7 @@ namespace urchin {
         pointsModel->setOutlineSize(5.0f);
         pointsModel->onCameraProjectionUpdate(projectionMatrix);
         pointsModel->setAlwaysVisible(true);
-        pointsModel->display(viewMatrix);
+        pointsModel->prepareRendering(viewMatrix);
     }
 
 }

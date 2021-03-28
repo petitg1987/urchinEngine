@@ -226,8 +226,9 @@ namespace urchin {
                 ->build();
     }
 
-    void Text::displayWidget(float) {
+    void Text::prepareWidgetRendering(float) {
         updateTranslateVector(textRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
+        textRenderer->getRenderTarget()->addRenderer(textRenderer.get()); //TODO review unique_ptr management !
     }
 
 }

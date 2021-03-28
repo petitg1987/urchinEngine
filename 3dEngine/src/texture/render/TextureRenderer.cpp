@@ -187,9 +187,9 @@ namespace urchin {
         displayTextureShader = ShaderBuilder::createShader("displayTexture.vert", "", fragShaderName, textureDisplayTokens);
     }
 
-    void TextureRenderer::display() {
+    void TextureRenderer::prepareRendering() {
         if (!isInitialized) {
-            throw std::runtime_error("Texture displayer must be initialized before display.");
+            throw std::runtime_error("Texture displayer must be initialized before prepare rendering.");
         }
 
         //TODO renderTarget->display(renderer);

@@ -123,7 +123,7 @@ namespace urchin {
 
         for (auto& widget : widgets) {
             if (widget->isVisible()) {
-                widget->display(dt);
+                widget->prepareRendering(dt);
             }
         }
 
@@ -135,7 +135,7 @@ namespace urchin {
             textureDisplayer.setSize(20.0f, (float)font->getDimensionTexture() + 20.0f, 20.0f, (float)font->getDimensionTexture() + 20.0f);
             textureDisplayer.enableTransparency();
             textureDisplayer.initialize(renderTarget, sceneWidth, sceneHeight, -1.0f, -1.0f);
-            textureDisplayer.display();
+            textureDisplayer.prepareRendering();
             font->release();
         }
     }
