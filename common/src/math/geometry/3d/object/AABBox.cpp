@@ -161,12 +161,12 @@ namespace urchin {
      */
     template<class T> Matrix4<T> AABBox<T>::toProjectionMatrix() const {
         T tx = -((max.X + min.X) / (max.X - min.X));
-        T ty = -((max.Y + min.Y) / (max.Y - min.Y));
+        T ty = ((max.Y + min.Y) / (max.Y - min.Y));
         T tz = 0.5f - 0.5f * ((-min.Z - max.Z) / (-min.Z + max.Z));
 
         return Matrix4<T>(
             2.0f / (max.X - min.X), 0.0, 0.0, tx,
-            0.0, 2.0f / (max.Y - min.Y), 0.0, ty,
+            0.0, -2.0f / (max.Y - min.Y), 0.0, ty,
             0.0, 0.0, -1.0f / (-min.Z + max.Z), tz,
             0.0, 0.0, 0.0, 1.0);
     }

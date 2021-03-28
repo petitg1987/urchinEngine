@@ -109,11 +109,11 @@ namespace urchin {
             Point3<float>(SIZE, SIZE, -SIZE), Point3<float>(SIZE, -SIZE, -SIZE), Point3<float>(SIZE, -SIZE, SIZE),
             Point3<float>(SIZE, SIZE, -SIZE), Point3<float>(SIZE, -SIZE, SIZE), Point3<float>(SIZE, SIZE, SIZE),
             //y negative:
-            Point3<float>(-SIZE, -SIZE, SIZE), Point3<float>(SIZE, -SIZE, SIZE), Point3<float>(SIZE, -SIZE, -SIZE),
-            Point3<float>(-SIZE, -SIZE, SIZE), Point3<float>(SIZE, -SIZE, -SIZE), Point3<float>(-SIZE, -SIZE, -SIZE),
+            Point3<float>(SIZE, SIZE, SIZE), Point3<float>(-SIZE, SIZE, SIZE), Point3<float>(-SIZE, SIZE, -SIZE),
+            Point3<float>(SIZE, SIZE, SIZE), Point3<float>(-SIZE, SIZE, -SIZE), Point3<float>(SIZE, SIZE, -SIZE),
             //y positive:
-            Point3<float>(-SIZE, SIZE, -SIZE), Point3<float>(SIZE, SIZE, -SIZE), Point3<float>(SIZE, SIZE, SIZE),
-            Point3<float>(-SIZE, SIZE, -SIZE), Point3<float>(SIZE, SIZE, SIZE), Point3<float>(-SIZE, SIZE, SIZE),
+            Point3<float>(SIZE, -SIZE, -SIZE), Point3<float>(-SIZE, -SIZE, -SIZE), Point3<float>(-SIZE, -SIZE, SIZE),
+            Point3<float>(SIZE, -SIZE, -SIZE), Point3<float>(-SIZE, -SIZE, SIZE), Point3<float>(SIZE, -SIZE, SIZE),
             //z negative:
             Point3<float>(-SIZE, SIZE, -SIZE), Point3<float>(-SIZE, -SIZE, -SIZE), Point3<float>(SIZE, -SIZE, -SIZE),
             Point3<float>(-SIZE, SIZE, -SIZE), Point3<float>(SIZE, -SIZE, -SIZE), Point3<float>(SIZE, SIZE, -SIZE),
@@ -126,7 +126,7 @@ namespace urchin {
         skyboxRenderer = std::make_unique<GenericRendererBuilder>(this->renderTarget, skyboxShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addTextureReader(TextureReader::build(skyboxTexture, TextureParam::buildLinear()))
+                ->addTextureReader(TextureReader::build(skyboxTexture, TextureParam::buildNearest()))
                 ->addShaderData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
                 ->addShaderData(sizeof(viewMatrix), &viewMatrix) //binding 1
                 ->build();
@@ -165,6 +165,8 @@ namespace urchin {
         translationMatrix.buildTranslation(cameraPosition.X, cameraPosition.Y + offsetY, cameraPosition.Z);
         Matrix4<float> skyboxViewMatrix = viewMatrix * translationMatrix;
         skyboxRenderer->updateShaderData(1, &skyboxViewMatrix);
+
+        skyboxRenderer->getRenderTarget()->addRenderer(skyboxRenderer.get()); //TODO fix unique_ptr
     }
 
 }

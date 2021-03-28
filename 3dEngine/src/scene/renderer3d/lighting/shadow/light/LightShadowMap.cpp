@@ -178,9 +178,11 @@ namespace urchin {
     }
 
     void LightShadowMap::displayModels() {
-        //TODO renderTarget->resetDisplay();
+        renderTarget->clearRenderers();
 
         shadowModelSetDisplayer->setModels(retrieveModels());
         shadowModelSetDisplayer->prepareRendering(lightViewMatrix);
+
+        renderTarget->render();
     }
 }
