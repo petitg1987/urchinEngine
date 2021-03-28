@@ -158,7 +158,7 @@ namespace urchin {
 
     void AmbientOcclusionManager::generateKernelSamples() {
         unsigned int seed = 0; //no need to generate different random numbers at each start
-        std::uniform_real_distribution<float> randomFloats(0.0, 1.0);
+        std::uniform_real_distribution<float> randomFloats(0.0f, 1.0f);
         std::default_random_engine generator(seed);
 
         ssaoKernel.resize(kernelSamples);
@@ -281,8 +281,7 @@ namespace urchin {
     int AmbientOcclusionManager::retrieveTextureSizeFactor() {
         if (textureSize == AOTextureSize::FULL_SIZE) {
             return 1;
-        }
-        if (textureSize == AOTextureSize::HALF_SIZE) {
+        }else if (textureSize == AOTextureSize::HALF_SIZE) {
             return 2;
         }
 

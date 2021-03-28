@@ -9,8 +9,8 @@
 namespace urchin {
 
     RenderTarget::RenderTarget(DepthAttachmentType depthAttachmentType) :
-            renderPass(nullptr),
             depthAttachmentType(depthAttachmentType),
+            renderPass(nullptr),
             commandPool(nullptr),
             renderersDirty(false) {
 

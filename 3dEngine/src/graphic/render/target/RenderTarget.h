@@ -62,15 +62,16 @@ namespace urchin {
             void updateGraphicData(uint32_t);
             void updateCommandBuffers(const std::vector<VkClearValue>&);
 
-            VkRenderPass renderPass;
-            DepthAttachmentType depthAttachmentType;
             std::shared_ptr<Texture> depthTexture;
-            std::vector<VkFramebuffer> framebuffers;
             std::vector<VkCommandBuffer> commandBuffers;
-            VkCommandPool commandPool;
 
         private:
             bool needCommandBuffersRefresh() const;
+
+            DepthAttachmentType depthAttachmentType;
+            VkRenderPass renderPass;
+            std::vector<VkFramebuffer> framebuffers;
+            VkCommandPool commandPool;
 
             std::vector<GenericRenderer*> renderers;
             bool renderersDirty;
