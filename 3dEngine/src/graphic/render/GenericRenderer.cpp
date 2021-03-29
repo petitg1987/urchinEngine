@@ -197,7 +197,7 @@ namespace urchin {
         rasterization.depthBiasClamp = 0.0f;
         rasterization.depthBiasSlopeFactor = 0.0f;
 
-        //multisampling stage (manly for anti-aliasing)
+        //multisampling stage (mainly for anti-aliasing)
         VkPipelineMultisampleStateCreateInfo multisampling{};
         multisampling.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
         multisampling.sampleShadingEnable = VK_FALSE;

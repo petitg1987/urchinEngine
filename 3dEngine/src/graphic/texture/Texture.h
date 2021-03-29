@@ -30,6 +30,7 @@ namespace urchin {
             TextureType getTextureType() const;
             unsigned int getWidth() const;
             unsigned int getHeight() const;
+            unsigned int getLayer() const;
             bool hasMipmap() const;
             uint32_t getMipLevels() const;
             VkImageView getImageView() const;

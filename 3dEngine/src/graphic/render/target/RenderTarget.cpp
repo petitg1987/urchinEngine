@@ -140,7 +140,11 @@ namespace urchin {
 
     void RenderTarget::createDepthResources() {
         if (hasDepthAttachment()) {
-            depthTexture = Texture::build(getWidth(), getHeight(), TextureFormat::DEPTH_32_FLOAT, nullptr);
+            if(getLayer() == 1) {
+                depthTexture = Texture::build(getWidth(), getHeight(), TextureFormat::DEPTH_32_FLOAT, nullptr);
+            } else {
+                depthTexture = Texture::buildArray(getWidth(), getHeight(), getLayer(), TextureFormat::DEPTH_32_FLOAT, nullptr);
+            }
             depthTexture->initialize();
         }
     }
@@ -159,7 +163,7 @@ namespace urchin {
         framebufferInfo.pAttachments = attachments.data();
         framebufferInfo.width = getWidth();
         framebufferInfo.height = getHeight();
-        framebufferInfo.layers = 1;
+        framebufferInfo.layers = getLayer();
 
         framebuffers.resize(framebuffers.size() + 1, nullptr);
         VkResult result = vkCreateFramebuffer(GraphicService::instance()->getDevices().getLogicalDevice(), &framebufferInfo, nullptr, &framebuffers[framebuffers.size() - 1]);

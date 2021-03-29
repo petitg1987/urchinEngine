@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <utility>
 
 #include "ScreenRender.h"
 #include "graphic/setup/GraphicService.h"
@@ -11,7 +12,7 @@ namespace urchin {
     const std::size_t ScreenRender::MAX_CONCURRENT_FRAMES = 2;
 
     ScreenRender::ScreenRender(std::string name, DepthAttachmentType depthAttachmentType, bool verticalSyncEnabled) :
-            RenderTarget(name, depthAttachmentType),
+            RenderTarget(std::move(name), depthAttachmentType),
             isInitialized(false),
             verticalSyncEnabled(verticalSyncEnabled) {
 
@@ -72,6 +73,10 @@ namespace urchin {
 
     unsigned int ScreenRender::getHeight() const {
         return swapChainHandler.getSwapChainExtent().height;
+    }
+
+    unsigned int ScreenRender::getLayer() const {
+        return 1;
     }
 
     std::size_t ScreenRender::getNumFramebuffer() const {

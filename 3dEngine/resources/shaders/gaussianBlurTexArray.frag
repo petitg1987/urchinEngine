@@ -11,7 +11,7 @@
 
 layout(binding = 20) uniform sampler2DArray tex;
 
-layout(location = 0)in vec2 vertexTexCoordinates;
+layout(location = 0) in vec2 vertexTexCoordinates;
 
 layout(location = 0) out OUTPUT_TYPE fragColor;
 
@@ -23,6 +23,6 @@ void main() {
 
     for (int i = 0; i < NB_TEXTURE_FETCH; ++i) {
         vec2 uvOffset = (IS_VERTICAL_BLUR) ? vec2(0.0, offsets[i]) : vec2(offsets[i], 0.0);
-        fragColor += weights[i] * texture(tex, vec3(vertexTexCoordinates+uvOffset, gl_Layer)).SOURCE_TEX_COMPONENTS;
+        fragColor += weights[i] * texture(tex, vec3(vertexTexCoordinates + uvOffset, gl_Layer)).SOURCE_TEX_COMPONENTS;
     }
 }

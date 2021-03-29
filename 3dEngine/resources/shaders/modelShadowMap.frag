@@ -9,5 +9,5 @@ void main() {
 
     float dx = dFdx(depth);
     float dy = dFdy(depth);
-    fragColor.y = (depth * depth) + 0.25*(dx*dx + dy*dy);
+    fragColor.y = (depth * depth) + 0.25 * (dx * dx + dy * dy);
 }

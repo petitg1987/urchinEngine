@@ -1,4 +1,6 @@
 #include "OffscreenRender.h"
+
+#include <utility>
 #include "graphic/helper/ImageHelper.h"
 #include "graphic/setup/GraphicService.h"
 #include "graphic/render/GenericRenderer.h"
@@ -6,7 +8,7 @@
 namespace urchin {
 
     OffscreenRender::OffscreenRender(std::string name, DepthAttachmentType depthAttachmentType) :
-            RenderTarget(name, depthAttachmentType),
+            RenderTarget(std::move(name), depthAttachmentType),
             isInitialized(false),
             commandBufferFence(nullptr) {
 
@@ -73,6 +75,10 @@ namespace urchin {
 
     unsigned int OffscreenRender::getHeight() const {
         return textures[0]->getHeight();
+    }
+
+    unsigned int OffscreenRender::getLayer() const {
+        return textures[0]->getLayer();
     }
 
     std::size_t OffscreenRender::getNumColorAttachment() const {

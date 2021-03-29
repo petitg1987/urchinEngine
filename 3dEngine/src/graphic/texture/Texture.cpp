@@ -122,6 +122,10 @@ namespace urchin {
         return height;
     }
 
+    unsigned int Texture::getLayer() const {
+        return layer;
+    }
+
     bool Texture::hasMipmap() const {
         return mipLevels > 1;
     }
