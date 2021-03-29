@@ -60,7 +60,7 @@ namespace urchin {
             throw std::invalid_argument("Unknown blur direction type: " + std::to_string(pBlurDirection));
         }
 
-        textureFilter->initialize();
+        textureFilter->initialize("bilateral blur filter");
 
         return textureFilter;
     }

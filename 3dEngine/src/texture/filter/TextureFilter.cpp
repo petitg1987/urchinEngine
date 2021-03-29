@@ -12,18 +12,18 @@ namespace urchin {
         }
     }
 
-    void TextureFilter::initialize() {
+    void TextureFilter::initialize(const std::string& filterName) {
         if (isInitialized) {
             throw std::runtime_error("Texture filter is already initialized");
         }
 
-        initializeTexture();
-        initializeDisplay();
+        initializeTexture(filterName);
+        initializeDisplay(filterName);
 
         isInitialized = true;
     }
 
-    void TextureFilter::initializeTexture() {
+    void TextureFilter::initializeTexture(const std::string& filterName) {
         if (textureType == TextureType::DEFAULT) {
             texture = Texture::build(textureWidth, textureHeight, textureFormat, nullptr);
         } else if (textureType == TextureType::ARRAY) {
@@ -32,12 +32,12 @@ namespace urchin {
             throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
         }
 
-        offscreenRenderTarget = std::make_unique<OffscreenRender>(RenderTarget::NO_DEPTH_ATTACHMENT);
+        offscreenRenderTarget = std::make_unique<OffscreenRender>(filterName, RenderTarget::NO_DEPTH_ATTACHMENT);
         offscreenRenderTarget->addTexture(texture);
         offscreenRenderTarget->initialize();
     }
 
-    void TextureFilter::initializeDisplay() {
+    void TextureFilter::initializeDisplay(const std::string& filterName) {
         std::locale::global(std::locale("C")); //for float
 
         std::map<std::string, std::string> shaderTokens;
@@ -74,7 +74,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        auto textureRendererBuilder = std::make_unique<GenericRendererBuilder>(offscreenRenderTarget, getTextureFilterShader(), ShapeType::TRIANGLE);
+        auto textureRendererBuilder = std::make_unique<GenericRendererBuilder>(filterName, offscreenRenderTarget, getTextureFilterShader(), ShapeType::TRIANGLE);
         textureRendererBuilder
                 ->addData(vertexCoord)
                 ->addData(textureCoord)

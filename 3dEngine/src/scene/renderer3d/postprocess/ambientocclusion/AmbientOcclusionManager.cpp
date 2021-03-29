@@ -102,7 +102,7 @@ namespace urchin {
         if (offscreenRenderTarget) {
             offscreenRenderTarget->cleanup();
         }
-        offscreenRenderTarget = std::make_unique<OffscreenRender>(RenderTarget::NO_DEPTH_ATTACHMENT);
+        offscreenRenderTarget = std::make_unique<OffscreenRender>("ambient occlusion", RenderTarget::NO_DEPTH_ATTACHMENT);
         offscreenRenderTarget->addTexture(ambientOcclusionTexture);
         offscreenRenderTarget->initialize();
 
@@ -144,7 +144,7 @@ namespace urchin {
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
         };
-        renderer = std::make_unique<GenericRendererBuilder>(offscreenRenderTarget, ambientOcclusionShader, ShapeType::TRIANGLE)
+        renderer = std::make_unique<GenericRendererBuilder>("ambient occlusion", offscreenRenderTarget, ambientOcclusionShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addShaderData(sizeof(positioningData), &positioningData) //binding 0

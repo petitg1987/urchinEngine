@@ -29,6 +29,8 @@ namespace urchin {
             VkCommandPool getAllocateCommandPool() const;
             VmaAllocator getAllocator() const;
 
+            const ValidationLayer& getValidationLayer() const;
+
         private:
             GraphicService();
             ~GraphicService() override;

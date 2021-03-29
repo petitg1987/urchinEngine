@@ -10,8 +10,8 @@ namespace urchin {
     //static
     const std::size_t ScreenRender::MAX_CONCURRENT_FRAMES = 2;
 
-    ScreenRender::ScreenRender(DepthAttachmentType depthAttachmentType, bool verticalSyncEnabled) :
-            RenderTarget(depthAttachmentType),
+    ScreenRender::ScreenRender(std::string name, DepthAttachmentType depthAttachmentType, bool verticalSyncEnabled) :
+            RenderTarget(name, depthAttachmentType),
             isInitialized(false),
             verticalSyncEnabled(verticalSyncEnabled) {
 

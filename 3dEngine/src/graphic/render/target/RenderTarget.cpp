@@ -3,12 +3,14 @@
 
 #include "RenderTarget.h"
 #include "graphic/setup/GraphicService.h"
+#include "graphic/helper/ObjectNamingHelper.h"
 #include "graphic/helper/ImageHelper.h"
 #include "graphic/render/GenericRenderer.h"
 
 namespace urchin {
 
-    RenderTarget::RenderTarget(DepthAttachmentType depthAttachmentType) :
+    RenderTarget::RenderTarget(std::string name, DepthAttachmentType depthAttachmentType) :
+            name(std::move(name)),
             depthAttachmentType(depthAttachmentType),
             renderPass(nullptr),
             commandPool(nullptr),
@@ -128,6 +130,8 @@ namespace urchin {
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to create render pass with error code: " + std::to_string(result));
         }
+
+        ObjectNamingHelper::nameObject(ObjectNamingHelper::RENDER_PASS, renderPass, name);
     }
 
     void RenderTarget::destroyRenderPass() {

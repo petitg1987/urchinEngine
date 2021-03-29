@@ -19,7 +19,7 @@ namespace urchin {
             template<class BUILDER> explicit TextureFilter(const TextureFilterBuilder<BUILDER>*);
             virtual ~TextureFilter();
 
-            void initialize();
+            void initialize(const std::string&);
 
             const std::shared_ptr<Texture>& getTexture() const;
 
@@ -39,8 +39,8 @@ namespace urchin {
             static std::string toShaderVectorValues(std::vector<float>&);
 
         private:
-            void initializeTexture();
-            void initializeDisplay();
+            void initializeTexture(const std::string&);
+            void initializeDisplay(const std::string&);
 
             bool isInitialized;
 

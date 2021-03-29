@@ -10,7 +10,7 @@ namespace urchin {
 
     class OffscreenRender : public RenderTarget {
         public:
-            explicit OffscreenRender(DepthAttachmentType);
+            explicit OffscreenRender(std::string, DepthAttachmentType);
             ~OffscreenRender() override;
 
             void addTexture(const std::shared_ptr<Texture>&);

@@ -74,6 +74,7 @@ namespace urchin {
 
             bool isInitialized;
 
+            std::string name;
             std::shared_ptr<RenderTarget> renderTarget;
             std::shared_ptr<Shader> shader;
             ShapeType shapeType;

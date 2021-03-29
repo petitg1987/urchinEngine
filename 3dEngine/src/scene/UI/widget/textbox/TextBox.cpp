@@ -60,7 +60,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        textBoxRenderer = setupUiRenderer(ShapeType::TRIANGLE)
+        textBoxRenderer = setupUiRenderer("text box", ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addTextureReader(TextureReader::build(texTextBoxDefault, TextureParam::buildNearest()))
@@ -74,7 +74,7 @@ namespace urchin {
                 Point2<float>(0.0, 0.0),
                 Point2<float>(1.0, 1.0)
         };
-        cursorRenderer = setupUiRenderer(ShapeType::LINE)
+        cursorRenderer = setupUiRenderer("text box - cursor", ShapeType::LINE)
                 ->addData(cursorVertexCoord)
                 ->addData(cursorTextureCoord)
                 ->addTextureReader(TextureReader::build(texCursorDiffuse, TextureParam::buildRepeatNearest()))

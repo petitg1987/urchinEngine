@@ -85,7 +85,8 @@ namespace urchin {
         this->transparencyEnabled = true;
     }
 
-    void TextureRenderer::initialize(const std::shared_ptr<RenderTarget> &renderTarget, unsigned int sceneWidth, unsigned int sceneHeight, float nearPlane, float farPlane) {
+    void TextureRenderer::initialize(const std::string& name, const std::shared_ptr<RenderTarget> &renderTarget, unsigned int sceneWidth, unsigned int sceneHeight,
+                                     float nearPlane, float farPlane) {
         if (isInitialized) {
             throw std::runtime_error("Texture displayer cannot be initialized twice.");
         }
@@ -161,7 +162,7 @@ namespace urchin {
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
         };
-        std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, displayTextureShader, ShapeType::TRIANGLE);
+        std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>(name, renderTarget, displayTextureShader, ShapeType::TRIANGLE);
         rendererBuilder
                 ->addData(vertexCoord)
                 ->addData(textureCoord)

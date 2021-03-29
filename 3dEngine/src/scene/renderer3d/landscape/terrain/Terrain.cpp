@@ -51,7 +51,7 @@ namespace urchin {
         Matrix4<float> viewMatrix;
         Vector2<float> materialsStRepeat = materials->getStRepeat();
 
-        auto terrainRendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, terrainShader, ShapeType::TRIANGLE_STRIP);
+        auto terrainRendererBuilder = std::make_unique<GenericRendererBuilder>("terrain", renderTarget, terrainShader, ShapeType::TRIANGLE_STRIP);
         terrainRendererBuilder
                 ->enableDepthOperations()
                 ->addData(mesh->getVertices())

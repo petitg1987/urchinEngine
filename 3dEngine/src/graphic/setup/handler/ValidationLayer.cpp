@@ -14,7 +14,7 @@ namespace urchin {
 
     ValidationLayer::ValidationLayer() :
             validationLayer({"VK_LAYER_KHRONOS_validation"}),
-            isValidationActive(DebugCheck::instance()->additionalChecksEnable()),
+            bIsValidationActive(DebugCheck::instance()->additionalChecksEnable()),
             instance(nullptr),
             debugMessenger(nullptr),
             instanceDebugCreateInfo({}),
@@ -31,7 +31,7 @@ namespace urchin {
     }
 
     void ValidationLayer::initializeDebugMessengerForInstance(VkInstanceCreateInfo& instanceCreateInfo) {
-        if (isValidationActive) {
+        if (bIsValidationActive) {
             if (!checkValidationLayerSupport()) {
                 throw std::runtime_error("Vulkan validation layers requested but not available");
             }
@@ -52,7 +52,7 @@ namespace urchin {
     }
 
     void ValidationLayer::initializeDebugMessenger(VkInstance vkInstance) {
-        if (isValidationActive) {
+        if (bIsValidationActive) {
             this->instance = vkInstance;
 
             VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{};
@@ -66,13 +66,17 @@ namespace urchin {
     }
 
     void ValidationLayer::cleanup() {
-        if (isValidationActive && instance) {
+        if (bIsValidationActive && instance) {
             destroyDebugUtilsMessengerEXT(instance);
         }
     }
 
+    bool ValidationLayer::isValidationActive() const {
+        return bIsValidationActive;
+    }
+
     std::vector<const char*> ValidationLayer::getRequiredExtensions() const {
-        if (isValidationActive) {
+        if (bIsValidationActive) {
             return {VK_EXT_DEBUG_UTILS_EXTENSION_NAME};
         }
         return {};

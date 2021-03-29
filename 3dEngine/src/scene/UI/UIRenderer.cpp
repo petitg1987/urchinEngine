@@ -134,7 +134,7 @@ namespace urchin {
             textureDisplayer.setPosition(TextureRenderer::USER_DEFINED_X, TextureRenderer::USER_DEFINED_Y);
             textureDisplayer.setSize(20.0f, (float)font->getDimensionTexture() + 20.0f, 20.0f, (float)font->getDimensionTexture() + 20.0f);
             textureDisplayer.enableTransparency();
-            textureDisplayer.initialize(renderTarget, sceneWidth, sceneHeight, -1.0f, -1.0f);
+            textureDisplayer.initialize("[DEBUG] font texture", renderTarget, sceneWidth, sceneHeight, -1.0f, -1.0f);
             textureDisplayer.prepareRendering();
             font->release();
         }

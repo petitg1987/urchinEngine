@@ -5,8 +5,8 @@
 
 namespace urchin {
 
-    OffscreenRender::OffscreenRender(DepthAttachmentType depthAttachmentType) :
-            RenderTarget(depthAttachmentType),
+    OffscreenRender::OffscreenRender(std::string name, DepthAttachmentType depthAttachmentType) :
+            RenderTarget(name, depthAttachmentType),
             isInitialized(false),
             commandBufferFence(nullptr) {
 

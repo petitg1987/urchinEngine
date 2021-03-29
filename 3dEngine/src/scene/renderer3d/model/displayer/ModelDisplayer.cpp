@@ -15,7 +15,8 @@ namespace urchin {
             customModelShaderVariable(customModelShaderVariable) {
 
         for (auto& constMesh : model->getConstMeshes()->getConstMeshes()) {
-            auto meshRendererBuilder = std::make_unique<GenericRendererBuilder>(this->renderTarget, this->shader, ShapeType::TRIANGLE);
+            auto meshName = model->getMeshes()->getConstMeshes()->getName();
+            auto meshRendererBuilder = std::make_unique<GenericRendererBuilder>("mesh - " + meshName, this->renderTarget, this->shader, ShapeType::TRIANGLE);
             meshRendererBuilder
                 ->enableDepthOperations()
                 ->addData(constMesh->getBaseVertices())

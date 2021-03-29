@@ -33,7 +33,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        bitmapRenderer = setupUiRenderer(ShapeType::TRIANGLE)
+        bitmapRenderer = setupUiRenderer("static bitmap", ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addTextureReader(TextureReader::build(tex, TextureParam::buildNearest()))

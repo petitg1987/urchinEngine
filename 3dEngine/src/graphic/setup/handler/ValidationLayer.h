@@ -13,6 +13,7 @@ namespace urchin {
             void initializeDebugMessenger(VkInstance);
             void cleanup();
 
+            bool isValidationActive() const;
             std::vector<const char*> getRequiredExtensions() const;
 
         private:
@@ -28,7 +29,7 @@ namespace urchin {
             static std::vector<std::string> FILTER_OUT_MESSAGES;
             std::vector<const char*> validationLayer;
 
-            bool isValidationActive;
+            bool bIsValidationActive;
 
             VkInstance instance;
             VkDebugUtilsMessengerEXT debugMessenger;

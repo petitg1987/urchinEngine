@@ -183,7 +183,7 @@ namespace urchin {
     void ShadowManager::addShadowLight(const Light* light) {
         auto shadowMapTexture = Texture::buildArray(shadowMapResolution, shadowMapResolution, nbShadowMaps, TextureFormat::RG_32_FLOAT, nullptr);
 
-        auto shadowMapRenderTarget = std::make_unique<OffscreenRender>(RenderTarget::WRITE_ONLY_DEPTH_ATTACHMENT);
+        auto shadowMapRenderTarget = std::make_unique<OffscreenRender>("shadow map", RenderTarget::WRITE_ONLY_DEPTH_ATTACHMENT);
         shadowMapRenderTarget->addTexture(shadowMapTexture);
 
         auto* newLightShadowMap = new LightShadowMap(light, modelOctreeManager, viewingShadowDistance, shadowMapTexture, nbShadowMaps, std::move(shadowMapRenderTarget));

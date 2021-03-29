@@ -19,7 +19,7 @@ namespace urchin {
                 READ_WRITE_DEPTH_ATTACHMENT //depth attachment readable outside the render target
             };
 
-            explicit RenderTarget(DepthAttachmentType);
+            explicit RenderTarget(std::string, DepthAttachmentType);
             virtual ~RenderTarget() = default;
 
             virtual void initialize() = 0;
@@ -68,6 +68,7 @@ namespace urchin {
         private:
             bool needCommandBuffersRefresh() const;
 
+            std::string name;
             DepthAttachmentType depthAttachmentType;
             VkRenderPass renderPass;
             std::vector<VkFramebuffer> framebuffers;

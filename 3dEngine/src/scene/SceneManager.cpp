@@ -15,7 +15,7 @@ namespace urchin {
                                std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever) :
             sceneWidth(500),
             sceneHeight(500),
-            screenRenderTarget(std::make_shared<ScreenRender>(RenderTarget::NO_DEPTH_ATTACHMENT, false)), //TODO use last param correctly
+            screenRenderTarget(std::make_shared<ScreenRender>("screen", RenderTarget::NO_DEPTH_ATTACHMENT, false)), //TODO use last param correctly
             activeRenderers(),
             previousFps(),
             fps(START_FPS),

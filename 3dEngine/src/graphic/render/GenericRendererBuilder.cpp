@@ -4,7 +4,8 @@
 
 namespace urchin {
 
-    GenericRendererBuilder::GenericRendererBuilder(std::shared_ptr<RenderTarget> renderTarget, std::shared_ptr<Shader> shader, ShapeType shapeType) :
+    GenericRendererBuilder::GenericRendererBuilder(std::string name, std::shared_ptr<RenderTarget> renderTarget, std::shared_ptr<Shader> shader, ShapeType shapeType) :
+            name(std::move(name)),
             renderTarget(std::move(renderTarget)),
             shader(std::move(shader)),
             shapeType(shapeType),
@@ -14,6 +15,10 @@ namespace urchin {
             pPolygonMode(PolygonMode::FILL),
             pOutlineSize(1.0f) {
 
+    }
+
+    const std::string& GenericRendererBuilder::getName() const {
+        return name;
     }
 
     const std::shared_ptr<RenderTarget>& GenericRendererBuilder::getRenderTarget() const {

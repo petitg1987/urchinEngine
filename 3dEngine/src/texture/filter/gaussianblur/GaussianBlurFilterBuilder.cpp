@@ -25,16 +25,19 @@ namespace urchin {
     }
 
     std::unique_ptr<TextureFilter> GaussianBlurFilterBuilder::build() {
+        std::string blurDirection;
         std::unique_ptr<TextureFilter> textureFilter;
         if (pBlurDirection == BlurDirection::HORIZONTAL_BLUR) {
             textureFilter = std::make_unique<GaussianBlurFilter>(this, GaussianBlurFilter::HORIZONTAL);
+            blurDirection = "horizontal";
         } else if (pBlurDirection == BlurDirection::VERTICAL_BLUR) {
             textureFilter = std::make_unique<GaussianBlurFilter>(this, GaussianBlurFilter::VERTICAL);
+            blurDirection = "vertical";
         } else {
             throw std::invalid_argument("Unknown blur direction type: " + std::to_string(pBlurDirection));
         }
 
-        textureFilter->initialize();
+        textureFilter->initialize("gaussian blur filter - " + blurDirection);
 
         return textureFilter;
     }

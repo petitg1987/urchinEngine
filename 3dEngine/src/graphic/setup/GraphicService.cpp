@@ -73,6 +73,10 @@ namespace urchin {
         return allocator;
     }
 
+    const ValidationLayer& GraphicService::getValidationLayer() const {
+        return validationLayer;
+    }
+
     void GraphicService::createInstance(const std::vector<const char*>& windowRequiredExtensions) {
         VkApplicationInfo applicationInfo{};
         applicationInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;

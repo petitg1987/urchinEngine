@@ -218,7 +218,7 @@ namespace urchin {
             textureCoord.emplace_back(Point2<float>(0.0f ,0.0f));
         }
 
-        textRenderer = setupUiRenderer(ShapeType::TRIANGLE)
+        textRenderer = setupUiRenderer("text", ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addTextureReader(TextureReader::build(font->getTexture(), TextureParam::buildNearest()))

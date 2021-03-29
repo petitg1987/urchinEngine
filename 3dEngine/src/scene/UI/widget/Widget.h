@@ -70,7 +70,7 @@ namespace urchin {
             void prepareRendering(float);
 
         protected:
-            std::unique_ptr<GenericRendererBuilder> setupUiRenderer(ShapeType) const;
+            std::unique_ptr<GenericRendererBuilder> setupUiRenderer(const std::string&, ShapeType) const;
             static void updateTranslateVector(const std::unique_ptr<GenericRenderer>&, const Vector2<int>&);
             const std::shared_ptr<RenderTarget>& getRenderTarget() const;
             unsigned int getSceneWidth() const;

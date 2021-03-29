@@ -31,7 +31,7 @@ namespace urchin {
             camera(nullptr),
 
             //deferred rendering
-            deferredRenderTarget(std::make_shared<OffscreenRender>(RenderTarget::READ_WRITE_DEPTH_ATTACHMENT)),
+            deferredRenderTarget(std::make_shared<OffscreenRender>("deferred rendering - first pass", RenderTarget::READ_WRITE_DEPTH_ATTACHMENT)),
             modelSetDisplayer(new ModelSetDisplayer(DisplayMode::DEFAULT_MODE)),
             modelOctreeManager(new OctreeManager<Model>(DEFAULT_OCTREE_MIN_SIZE)),
             fogManager(new FogManager()),
@@ -44,7 +44,7 @@ namespace urchin {
             shadowManager(new ShadowManager(lightManager, modelOctreeManager)),
 
             //lighting pass rendering
-            offscreenLightingRenderTarget(std::make_shared<OffscreenRender>(RenderTarget::NO_DEPTH_ATTACHMENT)),
+            offscreenLightingRenderTarget(std::make_shared<OffscreenRender>("deferred rendering - second pass", RenderTarget::NO_DEPTH_ATTACHMENT)),
             positioningData({}),
             visualOption({}),
             antiAliasingManager(new AntiAliasingManager(this->finalRenderTarget)),
@@ -319,7 +319,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
 
-        auto lightingRendererBuilder = std::make_unique<GenericRendererBuilder>(renderTarget, lightingShader, ShapeType::TRIANGLE);
+        auto lightingRendererBuilder = std::make_unique<GenericRendererBuilder>("deferred rendering - second pass", renderTarget, lightingShader, ShapeType::TRIANGLE);
         lightingRendererBuilder
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
@@ -353,28 +353,28 @@ namespace urchin {
             float depthIntensity = 5.0f;
             TextureRenderer textureRenderer(deferredRenderTarget->getDepthTexture(), TextureRenderer::DEPTH_VALUE, depthIntensity);
             textureRenderer.setPosition(TextureRenderer::LEFT, TextureRenderer::TOP);
-            textureRenderer.initialize(finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
+            textureRenderer.initialize("[DEBUG] depth texture", finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureRenderer.prepareRendering();
         }
 
         if (DEBUG_DISPLAY_COLOR_BUFFER) {
             TextureRenderer textureRenderer(diffuseTexture, TextureRenderer::DEFAULT_VALUE);
             textureRenderer.setPosition(TextureRenderer::CENTER_X, TextureRenderer::TOP);
-            textureRenderer.initialize(finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
+            textureRenderer.initialize("[DEBUG] diffuse texture",finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureRenderer.prepareRendering();
         }
 
         if (DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER) {
             TextureRenderer textureRenderer(normalAndAmbientTexture, TextureRenderer::DEFAULT_VALUE);
             textureRenderer.setPosition(TextureRenderer::RIGHT, TextureRenderer::TOP);
-            textureRenderer.initialize(finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
+            textureRenderer.initialize("[DEBUG] normal/ambient texture",finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureRenderer.prepareRendering();
         }
 
         if (DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER) {
             TextureRenderer textureRenderer(lightingPassTexture, TextureRenderer::DEFAULT_VALUE);
             textureRenderer.setPosition(TextureRenderer::LEFT, TextureRenderer::BOTTOM);
-            textureRenderer.initialize(finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
+            textureRenderer.initialize("[DEBUG] lighting pass texture", finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureRenderer.prepareRendering();
         }
 
@@ -383,7 +383,7 @@ namespace urchin {
             const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps - 1]
             TextureRenderer textureDisplayer(shadowManager->getLightShadowMap(firstLight).getShadowMapTexture(), shadowMapNumber, TextureRenderer::DEFAULT_VALUE);
             textureDisplayer.setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
-            textureDisplayer.initialize(finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
+            textureDisplayer.initialize("[DEBUG] shadow map", finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureDisplayer.prepareRendering();
         }
 
@@ -391,7 +391,7 @@ namespace urchin {
             float ambientOcclusionIntensity = 10.0f;
             TextureRenderer textureRenderer(ambientOcclusionManager->getAmbientOcclusionTexture(), TextureRenderer::INVERSE_GRAYSCALE_VALUE, ambientOcclusionIntensity);
             textureRenderer.setPosition(TextureRenderer::RIGHT, TextureRenderer::BOTTOM);
-            textureRenderer.initialize(finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
+            textureRenderer.initialize("[DEBUG] ambient occlusion texture", finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureRenderer.prepareRendering();
         }
     }

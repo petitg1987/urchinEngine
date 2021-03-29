@@ -9,7 +9,7 @@ namespace urchin {
 
     std::unique_ptr<TextureFilter> DownSampleFilterBuilder::build() {
         std::unique_ptr<TextureFilter> textureFilter = std::make_unique<DownSampleFilter>(this);
-        textureFilter->initialize();
+        textureFilter->initialize("down sample filter");
         return textureFilter;
     }
 

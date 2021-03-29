@@ -1,4 +1,5 @@
 #include "GenericRenderer.h"
+#include "graphic/helper/ObjectNamingHelper.h"
 #include "graphic/setup/GraphicService.h"
 #include "graphic/render/GenericRendererBuilder.h"
 #include "graphic/render/model/DataContainer.h"
@@ -11,6 +12,7 @@ namespace urchin {
 
     GenericRenderer::GenericRenderer(const GenericRendererBuilder* rendererBuilder) :
             isInitialized(false),
+            name(rendererBuilder->getName()),
             renderTarget(rendererBuilder->getRenderTarget()),
             shader(rendererBuilder->getShader()),
             shapeType(rendererBuilder->getShapeType()),
@@ -275,6 +277,8 @@ namespace urchin {
         if (pipelinesResult != VK_SUCCESS) {
             throw std::runtime_error("Failed to create graphics pipeline with error code: " + std::to_string(pipelinesResult));
         }
+
+        ObjectNamingHelper::nameObject(ObjectNamingHelper::PIPELINE, graphicsPipeline, name);
     }
 
     void GenericRenderer::destroyGraphicsPipeline() {

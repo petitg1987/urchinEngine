@@ -49,7 +49,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        buttonRenderer = setupUiRenderer(ShapeType::TRIANGLE)
+        buttonRenderer = setupUiRenderer("button", ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addTextureReader(TextureReader::build(texInfoDefault, TextureParam::buildNearest()))
