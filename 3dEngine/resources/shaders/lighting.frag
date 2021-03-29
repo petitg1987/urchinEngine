@@ -66,7 +66,7 @@ vec4 fetchPosition(vec2 texCoord, float depthValue) {
     vec4 texPosition = vec4(
         texCoord.s * 2.0f - 1.0f,
         texCoord.t * 2.0f - 1.0f,
-        depthValue * 2.0f - 1.0f,
+        depthValue,
         1.0
     );
     vec4 position = positioningData.mInverseViewProjection * texPosition;
@@ -84,9 +84,9 @@ float computePercentLit(float shadowMapZ, vec2 moments, float NdotL) {
     float shadowMapZBias = shadowMapZ - bias;
     float isInHardShadow = float(shadowMapZBias <= moments.x);
 
-    float variance = moments.y - (moments.x*moments.x);
+    float variance = moments.y - (moments.x * moments.x);
     float d = moments.x - shadowMapZBias;
-    float pMax = variance / (variance + d*d);
+    float pMax = variance / (variance + d * d);
 
     pMax = linearStep(0.75f, 1.0f, pMax); //reduce light bleeding
 

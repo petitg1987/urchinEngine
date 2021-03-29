@@ -320,7 +320,7 @@ namespace urchin {
 
         for (unsigned int shadowMapIndex = 0; shadowMapIndex < nbShadowMaps; ++shadowMapIndex) {
             float currSplitDistance = splitDistances[shadowMapIndex];
-            depthSplitDistance[shadowMapIndex * 4] = ((projectionMatrix(2, 2) * -currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance)) / 2.0f + 0.5f;
+            depthSplitDistance[shadowMapIndex * 4] = ((projectionMatrix(2, 2) * -currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance));
         }
 
         lightingRenderer->updateShaderData(4, lightProjectionViewMatrices);
