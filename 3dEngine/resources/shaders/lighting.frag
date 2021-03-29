@@ -67,7 +67,7 @@ vec4 fetchPosition(vec2 texCoord, float depthValue) {
         texCoord.s * 2.0f - 1.0f,
         texCoord.t * 2.0f - 1.0f,
         depthValue,
-        1.0
+        1.0f
     );
     vec4 position = positioningData.mInverseViewProjection * texPosition;
     position /= position.w;
@@ -94,14 +94,16 @@ float computePercentLit(float shadowMapZ, vec2 moments, float NdotL) {
 }
 
 float computeShadowContribution(int shadowLightIndex, float depthValue, vec4 position, float NdotL) {
-    float shadowContribution = 1.0;
+    float shadowContribution = 1.0f;
 
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
         if (depthValue < shadowMap.depthSplitDistance[i]) {
-            vec4 shadowCoord = (((shadowLight.mLightProjectionView[shadowLightIndex * MAX_SHADOW_LIGHTS + i] * position) / 2.0) + 0.5);
+            vec4 shadowCoord = shadowLight.mLightProjectionView[shadowLightIndex * MAX_SHADOW_LIGHTS + i] * position;
+            shadowCoord.s = (shadowCoord.s / 2.0f) + 0.5f;
+            shadowCoord.t = (shadowCoord.t / 2.0f) + 0.5f;
 
             //model has produceShadow flag to true ?
-            if (shadowCoord.s <= 1.0 && shadowCoord.s >= 0.0 && shadowCoord.t <= 1.0 && shadowCoord.t >= 0.0) {
+            if (shadowCoord.s <= 1.0f && shadowCoord.s >= 0.0f && shadowCoord.t <= 1.0f && shadowCoord.t >= 0.0f) {
                 vec2 moments = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, i)).rg;
                 shadowContribution = computePercentLit(shadowCoord.z, moments, NdotL);
             }
@@ -121,7 +123,7 @@ vec4 addFog(vec4 baseColor, vec4 position) {
     vec3 lineVector = position.xyz - positioningData.viewPosition;
     float t = (fog.maxHeight - positioningData.viewPosition.y) / lineVector.y;
     vec3 correctedPosition = position.xyz;
-    if (t > 0.0 && t < 1.0) {
+    if (t > 0.0f && t < 1.0f) {
         correctedPosition = positioningData.viewPosition + (t * lineVector);
     }
 
@@ -170,14 +172,14 @@ void main() {
             float NdotL = max(dot(normal, vertexToLightNormalized), 0.0f);
             vec4 ambient = vec4(lights.lightsInfo[lightIndex].lightAmbient, 0.0f) * modelAmbient;
 
-            float percentLit = 1.0;
+            float percentLit = 1.0f;
             if (visualOption.hasShadow && lights.lightsInfo[lightIndex].produceShadow) {
                 percentLit = computeShadowContribution(shadowLightIndex, depthValue, position, NdotL);
                 shadowLightIndex++;
             }
 
             fragColor += lightAttenuation * (percentLit * (diffuse * NdotL) + ambient);
-        }else{
+        } else {
             break; //no more light
         }
     }
