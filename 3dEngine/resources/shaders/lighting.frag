@@ -36,7 +36,7 @@ layout(std140, set = 0, binding = 3) uniform Lighting {
 
 //shadow
 layout(std140, set = 0, binding = 4) uniform ShadowLight {
-    mat4 mLightProjectionView[MAX_SHADOW_LIGHTS][NUMBER_SHADOW_MAPS];
+    mat4 mLightProjectionView[MAX_SHADOW_LIGHTS * NUMBER_SHADOW_MAPS]; //use 1 dim. table because 2 dim. tables are bugged (only in RenderDoc ?)
 } shadowLight;
 layout(std140, set = 0, binding = 5) uniform ShadowMap {
     float depthSplitDistance[NUMBER_SHADOW_MAPS];
@@ -98,8 +98,7 @@ float computeShadowContribution(int shadowLightIndex, float depthValue, vec4 pos
 
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
         if (depthValue < shadowMap.depthSplitDistance[i]) {
-
-            vec4 shadowCoord = (((shadowLight.mLightProjectionView[shadowLightIndex][i] * position) / 2.0) + 0.5);
+            vec4 shadowCoord = (((shadowLight.mLightProjectionView[shadowLightIndex * MAX_SHADOW_LIGHTS + i] * position) / 2.0) + 0.5);
 
             //model has produceShadow flag to true ?
             if (shadowCoord.s <= 1.0 && shadowCoord.s >= 0.0 && shadowCoord.t <= 1.0 && shadowCoord.t >= 0.0) {

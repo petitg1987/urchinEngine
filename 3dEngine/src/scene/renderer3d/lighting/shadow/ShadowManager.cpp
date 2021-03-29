@@ -42,9 +42,8 @@ namespace urchin {
 
     void ShadowManager::setupLightingRenderer(const std::unique_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
         std::size_t mLightProjectionViewSize = getMaxShadowLights() * nbShadowMaps;
-        lightProjectionViewMatrices = new Matrix4<float>[mLightProjectionViewSize];
+        lightProjectionViewMatrices = new Matrix4<float>[mLightProjectionViewSize]{};
 
-        //Vulkan source code:
         lightingRendererBuilder
                 ->addShaderData(mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices) //binding 4
                 ->addShaderData(nbShadowMaps * sizeof(float) * 4, depthSplitDistance); //binding 5
@@ -325,7 +324,7 @@ namespace urchin {
         }
 
         lightingRenderer->updateShaderData(4, lightProjectionViewMatrices);
-        lightingRenderer->updateShaderData(5, depthSplitDistance);
+        lightingRenderer->updateShaderData(5, depthSplitDistance); //TODO: merge binding 4 & 5
     }
 
 }
