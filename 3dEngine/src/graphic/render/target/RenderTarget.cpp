@@ -213,6 +213,8 @@ namespace urchin {
     }
 
     void RenderTarget::updateGraphicData(uint32_t frameIndex) {
+        ScopeProfiler sp(Profiler::graphic(), "upShaderData");
+
         for (auto &renderer : renderers) {
             renderer->updateGraphicData(frameIndex);
         }

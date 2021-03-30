@@ -191,6 +191,8 @@ namespace urchin {
     }
 
     void ScreenRender::render() {
+        ScopeProfiler sp(Profiler::graphic(), "screenRender");
+
         if(!hasRenderer()) {
             return;
         }

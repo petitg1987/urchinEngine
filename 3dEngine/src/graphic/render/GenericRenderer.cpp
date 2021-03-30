@@ -531,6 +531,7 @@ namespace urchin {
     }
 
     void GenericRenderer::updateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t frameIndex) {
+        ScopeProfiler sp(Profiler::graphic(), "renderUpCmdBuf");
         vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
 
         std::array<VkDeviceSize, 20> offsets = {0};

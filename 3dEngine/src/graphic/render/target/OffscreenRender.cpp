@@ -153,6 +153,8 @@ namespace urchin {
     }
 
     void OffscreenRender::render() {
+        ScopeProfiler sp(Profiler::graphic(), "offRender");
+
         if(!hasRenderer()) {
             return;
         }
@@ -178,7 +180,13 @@ namespace urchin {
             throw std::runtime_error("Failed to submit draw command buffer with error code: " + std::to_string(result));
         }
 
-        vkQueueWaitIdle(GraphicService::instance()->getQueues().getGraphicsQueue());
+        waitQueueIdle();
+    }
+
+    void OffscreenRender::waitQueueIdle() {
+        ScopeProfiler sp(Profiler::graphic(), "waitQueueIdle");
+
+        vkQueueWaitIdle(GraphicService::instance()->getQueues().getGraphicsQueue()); //TODO improve perf for this line
     }
 
     void OffscreenRender::waitCommandBuffersIdle() const {
