@@ -131,9 +131,13 @@ namespace urchin {
         }
 
         if (textureType == TextureType::ARRAY) {
-            textureRenderer->updateShaderData(0, &layersToUpdate);
+            if (layersToUpdate != 0) {
+                //TODO if all layers are not updated: we should ensure color attachment is not clear (see  colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR)
+                textureRenderer->updateShaderData(0, &layersToUpdate);
+                offscreenRenderTarget->render();
+            }
+        } else {
+            offscreenRenderTarget->render();
         }
-
-        offscreenRenderTarget->render();
     }
 }

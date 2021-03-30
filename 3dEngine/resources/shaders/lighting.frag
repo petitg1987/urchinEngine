@@ -98,6 +98,7 @@ float computeShadowContribution(int shadowLightIndex, float depthValue, vec4 pos
 
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
         if (depthValue < shadowMap.depthSplitDistance[i]) {
+            //TODO: fix glitch probably due to new depth range (0.0-1.0) replacing range old range (-1.0-1.0)
             vec4 shadowCoord = shadowLight.mLightProjectionView[shadowLightIndex * MAX_SHADOW_LIGHTS + i] * position;
             shadowCoord.s = (shadowCoord.s / 2.0f) + 0.5f;
             shadowCoord.t = (shadowCoord.t / 2.0f) + 0.5f;

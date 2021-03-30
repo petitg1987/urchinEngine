@@ -20,7 +20,7 @@ const uint POWER_TWO_TAB[13] = uint[](1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 102
 
 void main() {
     for (int layerIndex = 0; layerIndex < NUMBER_LAYER; layerIndex++) {
-        //TODO if ((uint(layer.layersToUpdate) & POWER_TWO_TAB[layerIndex]) != uint(0)) {
+        if ((uint(layer.layersToUpdate) & POWER_TWO_TAB[layerIndex]) != uint(0)) {
             gl_Layer = layerIndex;
 
             gl_Position = gl_in[0].gl_Position;
@@ -34,6 +34,6 @@ void main() {
             EmitVertex();
 
             EndPrimitive();
-        //}
+        }
     }
 }
