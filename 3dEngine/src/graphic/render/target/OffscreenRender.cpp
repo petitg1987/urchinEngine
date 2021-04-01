@@ -160,6 +160,7 @@ namespace urchin {
         }
 
         auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
+        vkWaitForFences(logicalDevice, 1, &commandBufferFence, VK_TRUE, UINT64_MAX); //TODO: check Sasha deferred.cpp, draw()
 
         updateGraphicData(0);
         updateCommandBuffers(clearValues);
@@ -167,7 +168,7 @@ namespace urchin {
         VkSubmitInfo submitInfo{};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
         submitInfo.waitSemaphoreCount = 0;
-        submitInfo.pWaitSemaphores = nullptr;
+        submitInfo.pWaitSemaphores = nullptr; //TODO use it for AO ?
         submitInfo.pWaitDstStageMask = nullptr;
         submitInfo.commandBufferCount = 1;
         submitInfo.pCommandBuffers = &commandBuffers[0];
@@ -180,7 +181,8 @@ namespace urchin {
             throw std::runtime_error("Failed to submit draw command buffer with error code: " + std::to_string(result));
         }
 
-        waitQueueIdle();
+        //waitCommandBuffersIdle(); //TODO: check Sasha deferred.cpp, draw()
+        //waitQueueIdle();
     }
 
     void OffscreenRender::waitQueueIdle() {
@@ -190,7 +192,7 @@ namespace urchin {
     }
 
     void OffscreenRender::waitCommandBuffersIdle() const {
-        vkWaitForFences(GraphicService::instance()->getDevices().getLogicalDevice(), 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
+        //vkWaitForFences(GraphicService::instance()->getDevices().getLogicalDevice(), 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
     }
 
 }

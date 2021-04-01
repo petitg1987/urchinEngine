@@ -111,7 +111,7 @@ namespace urchin {
     }
 
     void ModelSetDisplayer::prepareRendering(const Matrix4<float>& viewMatrix) {
-        ScopeProfiler sp(Profiler::graphic(), "modelDisplay");
+        ScopeProfiler sp(Profiler::graphic(), "modelPreRender");
 
         if (!isInitialized) {
             throw std::runtime_error("Model displayer must be initialized before call display");
