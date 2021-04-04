@@ -144,7 +144,7 @@ namespace urchin {
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
                 Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
         };
-        renderer = std::make_unique<GenericRendererBuilder>("ambient occlusion", offscreenRenderTarget, ambientOcclusionShader, ShapeType::TRIANGLE)
+        renderer = GenericRendererBuilder::create("ambient occlusion", offscreenRenderTarget, ambientOcclusionShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addShaderData(sizeof(positioningData), &positioningData) //binding 0
@@ -312,7 +312,7 @@ namespace urchin {
         }
     }
 
-    void AmbientOcclusionManager::loadAOTexture(const std::unique_ptr<GenericRenderer>& lightingRenderer, std::size_t aoTextureUnit) const {
+    void AmbientOcclusionManager::loadAOTexture(const std::shared_ptr<GenericRenderer>& lightingRenderer, std::size_t aoTextureUnit) const {
         if (lightingRenderer->getTextureReader(aoTextureUnit)->getTexture() != getAmbientOcclusionTexture()) {
             lightingRenderer->updateTextureReader(aoTextureUnit, TextureReader::build(getAmbientOcclusionTexture(), TextureParam::buildLinear()));
         }

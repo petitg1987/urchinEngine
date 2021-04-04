@@ -37,15 +37,17 @@ namespace urchin {
         return depthTexture;
     }
 
-    void RenderTarget::addRenderer(GenericRenderer* renderer) {
+    void RenderTarget::addRenderer(const std::shared_ptr<GenericRenderer>& renderer) {
         assert(renderer->getRenderTarget().get() == this);
 
         renderers.emplace_back(renderer);
         renderersDirty = true;
     }
 
-    void RenderTarget::removeRenderer(GenericRenderer* renderer) {
-        renderers.erase(std::remove(renderers.begin(), renderers.end(), renderer), renderers.end());
+    void RenderTarget::removeRenderer(const std::shared_ptr<GenericRenderer>& renderer) {
+        renderers.erase(
+                std::remove_if(renderers.begin(), renderers.end(), [&](const std::weak_ptr<GenericRenderer>& ptr){return ptr.lock().get() == renderer.get();}),
+                renderers.end());
         renderersDirty = true;
     }
 
@@ -54,23 +56,35 @@ namespace urchin {
         renderersDirty = true;
     }
 
-    bool RenderTarget::needCommandBuffersRefresh() const {
-        return renderersDirty || std::any_of(renderers.begin(), renderers.end(), [](const auto& renderer){return renderer->isDrawCommandDirty();});
+    void RenderTarget::refreshWeakRenderers() {
+        std::size_t renderersCount = renderers.size();
+        renderers.erase(
+                std::remove_if(renderers.begin(), renderers.end(), [](const std::weak_ptr<GenericRenderer>& ptr){return ptr.lock() == nullptr;}),
+                renderers.end());
+        renderersDirty = renderersCount != renderers.size();
+    }
+
+    bool RenderTarget::needCommandBuffersRefresh() {
+        refreshWeakRenderers();
+        return renderersDirty || std::any_of(renderers.begin(), renderers.end(), [](const auto& renderer){return renderer.lock()->isDrawCommandDirty();});
     }
 
     void RenderTarget::initializeRenderers() {
+        refreshWeakRenderers();
         for (auto& renderer: renderers) {
-            renderer->initialize();
+            renderer.lock()->initialize();
         }
     }
 
     void RenderTarget::cleanupRenderers() {
+        refreshWeakRenderers();
         for (auto& renderer: renderers) {
-            renderer->cleanup();
+            renderer.lock()->cleanup();
         }
     }
 
     bool RenderTarget::hasRenderer() {
+        refreshWeakRenderers();
         return !renderers.empty();
     }
 
@@ -216,7 +230,9 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "upShaderData");
 
         for (auto &renderer : renderers) {
-            renderer->updateGraphicData(frameIndex);
+            if(!renderer.expired()) {
+                renderer.lock()->updateGraphicData(frameIndex);
+            }
         }
     }
 
@@ -253,7 +269,9 @@ namespace urchin {
 
             vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
             for (auto &renderer : renderers) {
-                renderer->updateCommandBuffer(commandBuffers[i], i);
+                if(!renderer.expired()) {
+                    renderer.lock()->updateCommandBuffer(commandBuffers[i], i);
+                }
             }
             vkCmdEndRenderPass(commandBuffers[i]);
 

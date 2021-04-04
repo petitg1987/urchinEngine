@@ -209,7 +209,7 @@ namespace urchin {
     void TerrainGrass::createRenderers(const std::vector<TerrainGrassQuadtree*>& leafGrassPatches) {
         if (grassTexture) {
             for (auto* grassQuadtree : leafGrassPatches) {
-                std::unique_ptr<GenericRenderer> renderer = std::make_unique<GenericRendererBuilder>("grass", renderTarget, terrainGrassShader, ShapeType::POINT)
+                auto renderer = GenericRendererBuilder::create("grass", renderTarget, terrainGrassShader, ShapeType::POINT)
                         ->enableDepthOperations()
                         ->disableCullFace()
                         ->addData(grassQuadtree->getGrassVertices())
@@ -223,13 +223,13 @@ namespace urchin {
                         ->addTextureReader(TextureReader::build(grassMaskTexture, TextureParam::buildLinear()))
                         ->build();
 
-                grassQuadtree->setRenderer(std::move(renderer));
+                grassQuadtree->setRenderer(renderer);
             }
         }
     }
 
-    std::vector<GenericRenderer*> TerrainGrass::getAllRenderers() const {
-        std::vector<GenericRenderer*> renderers;
+    std::vector<std::shared_ptr<GenericRenderer>> TerrainGrass::getAllRenderers() const {
+        std::vector<std::shared_ptr<GenericRenderer>> renderers;
 
         if (mainGrassQuadtree != nullptr) {
             grassQuadtrees.clear();

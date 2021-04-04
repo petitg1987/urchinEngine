@@ -16,8 +16,7 @@ namespace urchin {
 
         for (auto& constMesh : model->getConstMeshes()->getConstMeshes()) {
             auto meshName = model->getMeshes()->getConstMeshes()->getName();
-            auto meshRendererBuilder = std::make_unique<GenericRendererBuilder>("mesh - " + meshName, this->renderTarget, this->shader, ShapeType::TRIANGLE);
-            meshRendererBuilder
+            auto meshRendererBuilder = GenericRendererBuilder::create("mesh - " + meshName, this->renderTarget, this->shader, ShapeType::TRIANGLE)
                 ->enableDepthOperations()
                 ->addData(constMesh->getBaseVertices())
                 ->indices(constMesh->getTrianglesIndices())
@@ -87,7 +86,7 @@ namespace urchin {
                 customModelShaderVariable->loadCustomShaderVariables(meshRenderer);
             }
 
-            renderTarget->addRenderer(meshRenderer.get());
+            renderTarget->addRenderer(meshRenderer);
             meshIndex++;
         }
     }

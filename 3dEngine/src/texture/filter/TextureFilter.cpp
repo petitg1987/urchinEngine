@@ -74,8 +74,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        auto textureRendererBuilder = std::make_unique<GenericRendererBuilder>(filterName, offscreenRenderTarget, getTextureFilterShader(), ShapeType::TRIANGLE);
-        textureRendererBuilder
+        auto textureRendererBuilder = GenericRendererBuilder::create(filterName, offscreenRenderTarget, getTextureFilterShader(), ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addShaderData(sizeof(layersToUpdate), &layersToUpdate) //binding 0
@@ -85,7 +84,7 @@ namespace urchin {
         textureRenderer = textureRendererBuilder->build();
     }
 
-    void TextureFilter::initiateAdditionalDisplay(const std::unique_ptr<GenericRendererBuilder>&) {
+    void TextureFilter::initiateAdditionalDisplay(const std::shared_ptr<GenericRendererBuilder>&) {
         //do nothing: to override
     }
 
@@ -105,7 +104,7 @@ namespace urchin {
         return textureFilterShader;
     }
 
-    const std::unique_ptr<GenericRenderer>& TextureFilter::getTextureRenderer() const {
+    const std::shared_ptr<GenericRenderer>& TextureFilter::getTextureRenderer() const {
         return textureRenderer;
     }
 

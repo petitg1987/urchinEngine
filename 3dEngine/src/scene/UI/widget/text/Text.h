@@ -51,7 +51,7 @@ namespace urchin {
             //visual
             std::vector<Point2<float>> vertexCoord;
             std::vector<Point2<float>> textureCoord;
-            std::unique_ptr<GenericRenderer> textRenderer;
+            std::shared_ptr<GenericRenderer> textRenderer;
     };
 
 }

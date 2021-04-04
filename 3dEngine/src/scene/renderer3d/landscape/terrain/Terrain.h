@@ -48,7 +48,7 @@ namespace urchin {
             bool isInitialized;
             std::shared_ptr<RenderTarget> renderTarget;
 
-            std::unique_ptr<GenericRenderer> terrainRenderer;
+            std::shared_ptr<GenericRenderer> terrainRenderer;
             std::shared_ptr<Shader> terrainShader;
             struct {
                 alignas(16) Matrix4<float> projectionMatrix;

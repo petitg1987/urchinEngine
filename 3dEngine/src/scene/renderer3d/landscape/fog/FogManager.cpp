@@ -24,11 +24,11 @@ namespace urchin {
         return fogs.top();
     }
 
-    void FogManager::setupLightingRenderer(const std::unique_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
+    void FogManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
         lightingRendererBuilder->addShaderData(sizeof(fogData), &fogData); //binding 6
     }
 
-    void FogManager::loadFog(const std::unique_ptr<GenericRenderer>& lightingRenderer) {
+    void FogManager::loadFog(const std::shared_ptr<GenericRenderer>& lightingRenderer) {
         fogData = {};
         fogData.hasFog = !fogs.empty();
         if (!fogs.empty()) {

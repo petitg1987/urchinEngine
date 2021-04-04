@@ -39,7 +39,7 @@ namespace urchin {
             const std::shared_ptr<Texture>& getAmbientOcclusionTexture() const;
 
             void updateAOTexture(const Camera*);
-            void loadAOTexture(const std::unique_ptr<GenericRenderer>&, std::size_t) const;
+            void loadAOTexture(const std::shared_ptr<GenericRenderer>&, std::size_t) const;
 
         private:
             void createOrUpdateAO();
@@ -85,7 +85,7 @@ namespace urchin {
             //visual data
             std::shared_ptr<Texture> depthTexture;
             std::shared_ptr<Texture> normalAndAmbientTexture;
-            std::unique_ptr<GenericRenderer> renderer;
+            std::shared_ptr<GenericRenderer> renderer;
 
             std::unique_ptr<BilateralBlurFilter> verticalBlurFilter;
             std::unique_ptr<BilateralBlurFilter> horizontalBlurFilter;

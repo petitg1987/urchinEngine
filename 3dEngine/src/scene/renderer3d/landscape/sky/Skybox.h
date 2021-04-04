@@ -41,7 +41,7 @@ namespace urchin {
 
             //visual
             std::shared_ptr<RenderTarget> renderTarget;
-            std::unique_ptr<GenericRenderer> skyboxRenderer;
+            std::shared_ptr<GenericRenderer> skyboxRenderer;
 
             std::shared_ptr<Shader> skyboxShader;
     };

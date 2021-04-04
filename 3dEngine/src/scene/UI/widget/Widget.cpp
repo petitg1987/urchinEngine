@@ -57,19 +57,17 @@ namespace urchin {
         }
     }
 
-    std::unique_ptr<GenericRendererBuilder> Widget::setupUiRenderer(const std::string& name, ShapeType shapeType) const {
+    std::shared_ptr<GenericRendererBuilder> Widget::setupUiRenderer(const std::string& name, ShapeType shapeType) const {
         assert(shader);
 
         Vector2<int> translateVector(0, 0);
 
-        auto rendererBuilder = std::make_unique<GenericRendererBuilder>(name, getRenderTarget(), shader, shapeType);
-        rendererBuilder
+        return GenericRendererBuilder::create(name, getRenderTarget(), shader, shapeType)
                 ->addShaderData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
                 ->addShaderData(sizeof(translateVector), &translateVector); //binding 1
-        return std::unique_ptr<GenericRendererBuilder>(rendererBuilder.release());
     }
 
-    void Widget::updateTranslateVector(const std::unique_ptr<GenericRenderer>& renderer, const Vector2<int>& translateVector) {
+    void Widget::updateTranslateVector(const std::shared_ptr<GenericRenderer>& renderer, const Vector2<int>& translateVector) {
         renderer->updateShaderData(1, &translateVector);
     }
 

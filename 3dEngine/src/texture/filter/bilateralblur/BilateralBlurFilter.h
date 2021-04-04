@@ -23,7 +23,7 @@ namespace urchin {
 
         private:
             std::string getShaderName() const override;
-            void initiateAdditionalDisplay(const std::unique_ptr<GenericRendererBuilder>&) override;
+            void initiateAdditionalDisplay(const std::shared_ptr<GenericRendererBuilder>&) override;
             void completeShaderTokens(std::map<std::string, std::string>&) const override;
 
             std::vector<float> computeOffsets() const;

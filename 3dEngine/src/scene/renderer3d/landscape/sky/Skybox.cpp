@@ -123,7 +123,7 @@ namespace urchin {
         };
 
         Matrix4<float> projectionMatrix, viewMatrix;
-        skyboxRenderer = std::make_unique<GenericRendererBuilder>("skybox", this->renderTarget, skyboxShader, ShapeType::TRIANGLE)
+        skyboxRenderer = GenericRendererBuilder::create("skybox", this->renderTarget, skyboxShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addTextureReader(TextureReader::build(skyboxTexture, TextureParam::buildNearest()))
@@ -166,7 +166,7 @@ namespace urchin {
         Matrix4<float> skyboxViewMatrix = viewMatrix * translationMatrix;
         skyboxRenderer->updateShaderData(1, &skyboxViewMatrix);
 
-        skyboxRenderer->getRenderTarget()->addRenderer(skyboxRenderer.get()); //TODO fix unique_ptr
+        skyboxRenderer->getRenderTarget()->addRenderer(skyboxRenderer); //TODO review
     }
 
 }

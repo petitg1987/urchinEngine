@@ -17,8 +17,8 @@ namespace urchin {
         public:
             explicit ShadowModelShaderVariable(const LightShadowMap*);
 
-            void setupMeshRenderer(const std::unique_ptr<GenericRendererBuilder>&) override;
-            void loadCustomShaderVariables(const std::unique_ptr<GenericRenderer>&) override;
+            void setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>&) override;
+            void loadCustomShaderVariables(const std::shared_ptr<GenericRenderer>&) override;
 
         private:
             void refreshShaderVariables();

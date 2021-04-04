@@ -36,7 +36,7 @@ namespace urchin {
         return "bilateralBlurTex";
     }
 
-    void BilateralBlurFilter::initiateAdditionalDisplay(const std::unique_ptr<GenericRendererBuilder>& textureRendererBuilder) {
+    void BilateralBlurFilter::initiateAdditionalDisplay(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder) {
         textureRendererBuilder
                 ->addShaderData(sizeof(cameraPlanes), &cameraPlanes) //binding 1
                 ->addTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()));

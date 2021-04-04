@@ -217,7 +217,6 @@ namespace urchin {
         if (textureCoord.empty()) {
             textureCoord.emplace_back(Point2<float>(0.0f ,0.0f));
         }
-
         textRenderer = setupUiRenderer("text", ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
@@ -228,7 +227,7 @@ namespace urchin {
 
     void Text::prepareWidgetRendering(float) {
         updateTranslateVector(textRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
-        textRenderer->getRenderTarget()->addRenderer(textRenderer.get()); //TODO review unique_ptr management !
+        textRenderer->getRenderTarget()->addRenderer(textRenderer); //TODO review
     }
 
 }

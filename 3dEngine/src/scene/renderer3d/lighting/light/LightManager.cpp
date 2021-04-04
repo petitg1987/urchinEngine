@@ -32,7 +32,7 @@ namespace urchin {
         delete[] lightsData;
     }
 
-    void LightManager::setupLightingRenderer(const std::unique_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
+    void LightManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
         std::size_t lightsDataSize = maxLights;
         lightsData = new LightsData[lightsDataSize];
 
@@ -124,7 +124,7 @@ namespace urchin {
         sort(visibleLights.begin(), visibleLights.end(), std::greater<>());
     }
 
-    void LightManager::loadVisibleLights(const std::unique_ptr<GenericRenderer>& lightingRenderer) {
+    void LightManager::loadVisibleLights(const std::shared_ptr<GenericRenderer>& lightingRenderer) {
         const std::vector<Light*>& lights = getVisibleLights();
 
         for (unsigned int i = 0; i < maxLights; ++i) {

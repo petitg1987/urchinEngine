@@ -36,13 +36,14 @@ namespace urchin {
             bool isReadableDepthAttachment() const;
             const std::shared_ptr<Texture>& getDepthTexture() const;
 
-            void addRenderer(GenericRenderer*);
-            void removeRenderer(GenericRenderer*);
+            void addRenderer(const std::shared_ptr<GenericRenderer>&);
+            void removeRenderer(const std::shared_ptr<GenericRenderer>&);
             void clearRenderers();
 
             virtual void render() = 0;
 
         protected:
+            void refreshWeakRenderers();
             void initializeRenderers();
             void cleanupRenderers();
             bool hasRenderer();
@@ -67,7 +68,7 @@ namespace urchin {
             std::vector<VkCommandBuffer> commandBuffers;
 
         private:
-            bool needCommandBuffersRefresh() const;
+            bool needCommandBuffersRefresh();
 
             std::string name;
             DepthAttachmentType depthAttachmentType;
@@ -75,7 +76,7 @@ namespace urchin {
             std::vector<VkFramebuffer> framebuffers;
             VkCommandPool commandPool;
 
-            std::vector<GenericRenderer*> renderers;
+            std::vector<std::weak_ptr<GenericRenderer>> renderers;
             bool renderersDirty;
     };
 

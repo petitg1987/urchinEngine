@@ -21,7 +21,7 @@ namespace urchin {
                 REMOVE_LIGHT, //A light has been removed
             };
 
-            void setupLightingRenderer(const std::unique_ptr<GenericRendererBuilder>&);
+            void setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>&);
             OctreeManager<Light>* getLightOctreeManager() const;
             Light* getLastUpdatedLight();
 
@@ -34,7 +34,7 @@ namespace urchin {
             const Point4<float>& getGlobalAmbientColor() const;
 
             void updateVisibleLights(const Frustum<float>&);
-            void loadVisibleLights(const std::unique_ptr<GenericRenderer>&);
+            void loadVisibleLights(const std::shared_ptr<GenericRenderer>&);
             void postUpdateVisibleLights();
 
             void drawLightOctree(const Matrix4<float>&, const Matrix4<float>&) const;

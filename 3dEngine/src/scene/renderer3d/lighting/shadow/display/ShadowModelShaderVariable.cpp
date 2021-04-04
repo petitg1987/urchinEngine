@@ -10,7 +10,7 @@ namespace urchin {
 
     }
 
-    void ShadowModelShaderVariable::setupMeshRenderer(const std::unique_ptr<GenericRendererBuilder>& meshRendererBuilder) {
+    void ShadowModelShaderVariable::setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>& meshRendererBuilder) {
         projectionMatrices.resize(lightShadowMap->getNumberShadowMaps());
         layerToUpdate = (int)lightShadowMap->retrieveLayersToUpdate();
 
@@ -19,7 +19,7 @@ namespace urchin {
                 ->addShaderData(sizeof(layerToUpdate), &layerToUpdate); //binding 3
     }
 
-    void ShadowModelShaderVariable::loadCustomShaderVariables(const std::unique_ptr<GenericRenderer>& meshRenderer) {
+    void ShadowModelShaderVariable::loadCustomShaderVariables(const std::shared_ptr<GenericRenderer>& meshRenderer) {
         refreshShaderVariables();
 
         meshRenderer->updateShaderData(2, &projectionMatrices[0]);

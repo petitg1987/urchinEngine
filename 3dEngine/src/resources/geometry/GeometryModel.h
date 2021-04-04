@@ -44,7 +44,7 @@ namespace urchin {
             bool isInitialized;
 
             std::shared_ptr<RenderTarget> renderTarget;
-            std::unique_ptr<GenericRenderer> renderer;
+            std::shared_ptr<GenericRenderer> renderer;
 
             std::shared_ptr<Shader> shader;
             mutable struct {

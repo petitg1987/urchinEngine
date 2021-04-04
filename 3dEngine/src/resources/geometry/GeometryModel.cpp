@@ -30,8 +30,7 @@ namespace urchin {
 
         std::vector<Point3<float>> vertexArray = retrieveVertexArray();
 
-        std::unique_ptr<GenericRendererBuilder> rendererBuilder = std::make_unique<GenericRendererBuilder>("geometry model", renderTarget, shader, getShapeType());
-        rendererBuilder
+        auto rendererBuilder = GenericRendererBuilder::create("geometry model", renderTarget, shader, getShapeType())
                 ->addData(vertexArray)
                 ->addShaderData(sizeof(positioningData), &positioningData) //binding 0
                 ->addShaderData(sizeof(color), &color) //binding 1

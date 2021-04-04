@@ -319,8 +319,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
 
-        auto lightingRendererBuilder = std::make_unique<GenericRendererBuilder>("deferred rendering - second pass", renderTarget, lightingShader, ShapeType::TRIANGLE);
-        lightingRendererBuilder
+        auto lightingRendererBuilder = GenericRendererBuilder::create("deferred rendering - second pass", renderTarget, lightingShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addShaderData(sizeof(positioningData), &positioningData) //binding 0
@@ -507,7 +506,7 @@ namespace urchin {
             }
 
             lightingRenderer->getRenderTarget()->clearRenderers();
-            lightingRenderer->getRenderTarget()->addRenderer(lightingRenderer.get()); //TODO unique_ptr to shared ?
+            lightingRenderer->getRenderTarget()->addRenderer(lightingRenderer); //TODO review
         }
     }
 

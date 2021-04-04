@@ -30,6 +30,7 @@ namespace urchin {
             explicit GenericRenderer(const GenericRendererBuilder*);
             ~GenericRenderer();
 
+            const std::string &getName() const;
             const std::shared_ptr<RenderTarget> &getRenderTarget() const;
             bool isDrawCommandDirty() const;
 

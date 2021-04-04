@@ -79,7 +79,7 @@ namespace urchin {
                     Point2<float>(0.0f, 0.0f), Point2<float>(sRepeat, 0.0f), Point2<float>(sRepeat, tRepeat),
                     Point2<float>(0.0f, 0.0f), Point2<float>(sRepeat, tRepeat), Point2<float>(0.0f, tRepeat)
             };
-            waterRenderer = std::make_unique<GenericRendererBuilder>("water", renderTarget, waterShader, ShapeType::TRIANGLE)
+            waterRenderer = GenericRendererBuilder::create("water", renderTarget, waterShader, ShapeType::TRIANGLE)
                     ->enableDepthOperations()
                     ->addData(vertexCoord)
                     ->addData(textureCoord)

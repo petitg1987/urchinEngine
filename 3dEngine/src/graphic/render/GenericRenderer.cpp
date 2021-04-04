@@ -44,12 +44,9 @@ namespace urchin {
         }
 
         initialize();
-        renderTarget->addRenderer(this);
     }
 
     GenericRenderer::~GenericRenderer() {
-        renderTarget->removeRenderer(this);
-
         cleanup();
         textureReaders.clear();
     }
@@ -82,6 +79,10 @@ namespace urchin {
 
             isInitialized = false;
         }
+    }
+
+    const std::string &GenericRenderer::getName() const {
+        return name;
     }
 
     const std::shared_ptr<RenderTarget> &GenericRenderer::getRenderTarget() const {

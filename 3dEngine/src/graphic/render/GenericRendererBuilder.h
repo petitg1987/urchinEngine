@@ -15,46 +15,48 @@
 
 namespace urchin {
 
-    class GenericRendererBuilder {
+    class GenericRendererBuilder : public std::enable_shared_from_this<GenericRendererBuilder> {
         public:
-            explicit GenericRendererBuilder(std::string, std::shared_ptr<RenderTarget>, std::shared_ptr<Shader>, ShapeType);
+            static std::shared_ptr<GenericRendererBuilder> create(std::string, std::shared_ptr<RenderTarget>, std::shared_ptr<Shader>, ShapeType);
 
             const std::string& getName() const;
             const std::shared_ptr<RenderTarget>& getRenderTarget() const;
             const std::shared_ptr<Shader>& getShader() const;
             ShapeType getShapeType() const;
 
-            GenericRendererBuilder* addData(const std::vector<Point2<float>>&);
-            GenericRendererBuilder* addData(const std::vector<Point3<float>>&);
-            GenericRendererBuilder* addData(const std::vector<Vector3<float>>&);
+            std::shared_ptr<GenericRendererBuilder> addData(const std::vector<Point2<float>>&);
+            std::shared_ptr<GenericRendererBuilder> addData(const std::vector<Point3<float>>&);
+            std::shared_ptr<GenericRendererBuilder> addData(const std::vector<Vector3<float>>&);
             const std::vector<DataContainer>& getData() const;
-            GenericRendererBuilder* indices(const std::vector<uint32_t>&);
+            std::shared_ptr<GenericRendererBuilder> indices(const std::vector<uint32_t>&);
             const std::shared_ptr<IndexContainer>& getIndices() const;
 
-            GenericRendererBuilder* addShaderData(std::size_t, const void*);
+            std::shared_ptr<GenericRendererBuilder> addShaderData(std::size_t, const void*);
             const std::vector<ShaderDataContainer> &getShaderData() const;
 
-            GenericRendererBuilder* addTextureReader(const std::shared_ptr<TextureReader>&);
-            GenericRendererBuilder* addTextureReaderArray(const std::vector<std::shared_ptr<TextureReader>>&);
+            std::shared_ptr<GenericRendererBuilder> addTextureReader(const std::shared_ptr<TextureReader>&);
+            std::shared_ptr<GenericRendererBuilder> addTextureReaderArray(const std::vector<std::shared_ptr<TextureReader>>&);
             const std::vector<std::vector<std::shared_ptr<TextureReader>>>& getTextureReaders() const;
 
-            GenericRendererBuilder* enableTransparency();
+            std::shared_ptr<GenericRendererBuilder> enableTransparency();
             bool isTransparencyEnabled() const;
 
-            GenericRendererBuilder* enableDepthOperations();
+            std::shared_ptr<GenericRendererBuilder> enableDepthOperations();
             bool isDepthOperationsEnabled() const;
 
-            GenericRendererBuilder* disableCullFace();
+            std::shared_ptr<GenericRendererBuilder> disableCullFace();
             bool isCullFaceEnabled() const;
 
-            GenericRendererBuilder* polygonMode(PolygonMode);
+            std::shared_ptr<GenericRendererBuilder> polygonMode(PolygonMode);
             PolygonMode getPolygonMode() const;
-            GenericRendererBuilder* outlineSize(float);
+            std::shared_ptr<GenericRendererBuilder> outlineSize(float);
             float getOutlineSize() const;
 
-            std::unique_ptr<GenericRenderer> build();
+            std::shared_ptr<GenericRenderer> build();
 
         private:
+            GenericRendererBuilder(std::string, std::shared_ptr<RenderTarget>, std::shared_ptr<Shader>, ShapeType);
+
             std::string name;
             std::shared_ptr<RenderTarget> renderTarget;
             std::shared_ptr<Shader> shader;
