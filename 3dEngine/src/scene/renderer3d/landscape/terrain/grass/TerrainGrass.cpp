@@ -237,7 +237,7 @@ namespace urchin {
             for (std::size_t i = 0; i < grassQuadtrees.size(); ++i) {
                 const TerrainGrassQuadtree *grassQuadtree = grassQuadtrees[i];
                 if (grassQuadtree->isLeaf()) {
-                    renderers.emplace_back(grassQuadtree->getRenderer().get());
+                    renderers.emplace_back(grassQuadtree->getRenderer());
                 } else {
                     for (const auto *child : grassQuadtree->getChildren()) {
                         grassQuadtrees.push_back(child);
@@ -385,8 +385,7 @@ namespace urchin {
                 if (grassQuadtreeBox && camera->getFrustum().cutFrustum(grassProperties.displayDistance).collideWithAABBox(*grassQuadtreeBox)) {
                     if (grassQuadtree->isLeaf()) {
                         grassQuadtree->getRenderer()->updateShaderData(0, &positioningData);
-
-                        //TODO renderTarget->display(grassQuadtree->getRenderer());
+                        grassQuadtree->getRenderer()->addOnRenderTarget();
                     } else {
                         for (const auto* child : grassQuadtree->getChildren()) {
                             grassQuadtrees.push_back(child);

@@ -434,12 +434,13 @@ namespace urchin {
     void Renderer3d::deferredRendering(float dt) {
         ScopeProfiler sp(Profiler::graphic(), "deferredRender");
 
+        updateModelsInFrustum();
+        modelSetDisplayer->setModels(modelsInFrustum);
+
         deferredRenderTarget->clearRenderers();
 
         skyManager->prepareRendering(camera->getViewMatrix(), camera->getPosition());
 
-        updateModelsInFrustum();
-        modelSetDisplayer->setModels(modelsInFrustum);
         modelSetDisplayer->prepareRendering(camera->getViewMatrix());
 
         terrainManager->prepareRendering(camera, dt);

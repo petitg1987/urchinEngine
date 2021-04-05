@@ -177,7 +177,7 @@ namespace urchin {
     }
 
     void Widget::setIsVisible(bool isVisible) {
-        this->bIsVisible = isVisible; //TODO disable widget for render target ?
+        this->bIsVisible = isVisible;
     }
 
     bool Widget::isVisible() const {
