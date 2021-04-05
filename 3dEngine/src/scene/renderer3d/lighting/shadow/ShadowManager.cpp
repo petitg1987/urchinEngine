@@ -291,7 +291,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "updateShadowMap");
 
         for (auto& lightShadowMap : lightShadowMaps) {
-            lightShadowMap.second->displayModels();
+            lightShadowMap.second->renderModels();
             lightShadowMap.second->applyTextureFilters();
         }
     }

@@ -22,7 +22,7 @@ namespace urchin {
 
     class GenericRendererBuilder;
 
-    class GenericRenderer {
+    class GenericRenderer : public std::enable_shared_from_this<GenericRenderer> {
         public:
             static const uint32_t PRIMITIVE_RESTART_INDEX_VALUE;
             friend class RenderTarget;
@@ -33,6 +33,9 @@ namespace urchin {
             const std::string &getName() const;
             const std::shared_ptr<RenderTarget> &getRenderTarget() const;
             bool isDrawCommandDirty() const;
+
+            void addOnRenderTarget();
+            void removeFromRenderTarget();
 
             void updateData(std::size_t, const std::vector<Point2<float>>&);
             void updateData(std::size_t, const std::vector<Point3<float>>&);

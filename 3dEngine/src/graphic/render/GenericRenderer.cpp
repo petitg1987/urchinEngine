@@ -93,6 +93,14 @@ namespace urchin {
         return drawCommandDirty;
     }
 
+    void GenericRenderer::addOnRenderTarget() {
+        renderTarget->addRenderer(shared_from_this());
+    }
+
+    void GenericRenderer::removeFromRenderTarget() {
+        renderTarget->removeRenderer(shared_from_this());
+    }
+
     void GenericRenderer::createDescriptorSetLayout() {
         auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
 

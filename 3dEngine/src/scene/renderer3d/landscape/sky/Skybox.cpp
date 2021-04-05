@@ -166,7 +166,7 @@ namespace urchin {
         Matrix4<float> skyboxViewMatrix = viewMatrix * translationMatrix;
         skyboxRenderer->updateShaderData(1, &skyboxViewMatrix);
 
-        skyboxRenderer->getRenderTarget()->addRenderer(skyboxRenderer); //TODO review
+        skyboxRenderer->addOnRenderTarget();
     }
 
 }

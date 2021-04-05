@@ -76,7 +76,7 @@ namespace urchin {
             std::vector<VkFramebuffer> framebuffers;
             VkCommandPool commandPool;
 
-            std::vector<std::weak_ptr<GenericRenderer>> renderers;
+            std::vector<std::weak_ptr<GenericRenderer>> renderers; //use weak_ptr to avoid cyclic reference with GenericRenderer
             bool renderersDirty;
     };
 

@@ -38,7 +38,12 @@ namespace urchin {
     }
 
     void RenderTarget::addRenderer(const std::shared_ptr<GenericRenderer>& renderer) {
-        assert(renderer->getRenderTarget().get() == this);
+        #ifndef NDEBUG
+            assert(renderer->getRenderTarget().get() == this);
+            for(auto& r : renderers) {
+                assert(r.lock() != renderer);
+            }
+        #endif
 
         renderers.emplace_back(renderer);
         renderersDirty = true;

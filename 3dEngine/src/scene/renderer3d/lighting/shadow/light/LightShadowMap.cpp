@@ -177,12 +177,11 @@ namespace urchin {
         return models;
     }
 
-    void LightShadowMap::displayModels() {
-        renderTarget->clearRenderers();
-
+    void LightShadowMap::renderModels() {
         shadowModelSetDisplayer->setModels(retrieveModels());
-        shadowModelSetDisplayer->prepareRendering(lightViewMatrix);
 
+        renderTarget->clearRenderers();
+        shadowModelSetDisplayer->prepareRendering(lightViewMatrix);
         renderTarget->render();
     }
 }

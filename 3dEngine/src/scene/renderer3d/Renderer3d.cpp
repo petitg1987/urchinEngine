@@ -506,7 +506,7 @@ namespace urchin {
             }
 
             lightingRenderer->getRenderTarget()->clearRenderers();
-            lightingRenderer->getRenderTarget()->addRenderer(lightingRenderer); //TODO review
+            lightingRenderer->addOnRenderTarget();
         }
     }
 
