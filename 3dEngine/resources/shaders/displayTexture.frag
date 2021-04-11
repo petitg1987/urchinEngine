@@ -7,36 +7,38 @@
 #define IS_GRAYSCALE_VALUE false
 #define IS_INVERSE_GRAYSCALE_VALUE false
 
-uniform float colorIntensity; //binding 1
-uniform float cameraNearPlane; //binding 1
-uniform float cameraFarPlane; //binding 1
-uniform int layer; //binding 1 - not used
+layout(std140, set = 0, binding = 1) uniform RenderingData {
+    float colorIntensity;
+    float cameraNearPlane;
+    float cameraFarPlane;
+    int layer; //not used
+} renderingData;
 layout(binding = 20) uniform sampler2D colorTex;
 
 layout(location = 0) in vec2 texCoordinates;
 
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
 
 float linearizeDepth(float depthValue) {
     float unmapDepthValue = depthValue * 2.0 - 1.0;
-    return (2.0f * cameraNearPlane) / (cameraFarPlane + cameraNearPlane -
-            unmapDepthValue * (cameraFarPlane - cameraNearPlane)); //[0.0 = nearPlane, 1.0 = far plane]
+    return (2.0f * renderingData.cameraNearPlane) / (renderingData.cameraFarPlane + renderingData.cameraNearPlane -
+            unmapDepthValue * (renderingData.cameraFarPlane - renderingData.cameraNearPlane)); //[0.0 = nearPlane, 1.0 = far plane]
 }
 
 void main() {
-    vec4 diffuse = texture2D(colorTex, texCoordinates);
+    vec4 diffuse = texture(colorTex, texCoordinates);
 
     vec4 finalDiffuse;
     if (IS_DEFAULT_VALUE) {
-        finalDiffuse = diffuse * colorIntensity;
+        finalDiffuse = diffuse * renderingData.colorIntensity;
     }else if (IS_DEPTH_VALUE) {
-        float linearizedDepthValue = linearizeDepth(diffuse.x) * colorIntensity;
+        float linearizedDepthValue = linearizeDepth(diffuse.x) * renderingData.colorIntensity;
         finalDiffuse = vec4(linearizedDepthValue, linearizedDepthValue, linearizedDepthValue, diffuse.w);
     }else if (IS_GRAYSCALE_VALUE) {
-        float value = diffuse.x * colorIntensity;
+        float value = diffuse.x * renderingData.colorIntensity;
         finalDiffuse = vec4(value, value, value, diffuse.w);
     }else if (IS_INVERSE_GRAYSCALE_VALUE) {
-        float value = 1.0f - (diffuse.x * colorIntensity);
+        float value = 1.0f - (diffuse.x * renderingData.colorIntensity);
         finalDiffuse = vec4(value, value, value, diffuse.w);
     }
 

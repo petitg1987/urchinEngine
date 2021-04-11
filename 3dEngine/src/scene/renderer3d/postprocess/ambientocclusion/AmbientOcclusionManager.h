@@ -17,6 +17,16 @@ namespace urchin {
                 HALF_SIZE = 1
             };
 
+            struct AmbientOcclusionShaderConst {
+                unsigned int kernelSamples;
+                float radius;
+                float ambientOcclusionStrength;
+                float depthStartAttenuation;
+                float depthEndAttenuation;
+                unsigned int noiseTextureSize;
+                float bias;
+            };
+
             AmbientOcclusionManager();
             ~AmbientOcclusionManager();
 
@@ -51,6 +61,8 @@ namespace urchin {
             void exportSVG(const std::string&, const std::vector<Vector4<float>>&) const;
 
             int retrieveTextureSizeFactor();
+
+            const unsigned int MAX_KERNEL_SAMPLES;
 
             //scene information
             float nearPlane, farPlane;

@@ -1,14 +1,13 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-//values are replaced at compilation time:
-#define KERNEL_SAMPLES 0
-#define RADIUS 0
-#define BIAS 0
-#define AO_STRENGTH 0
-#define NOISE_TEXTURE_SIZE 0
-#define DEPTH_START_ATTENUATION 0
-#define DEPTH_END_ATTENUATION 0
+layout(constant_id = 0) const uint KERNEL_SAMPLES = 64; //must be equals to AmbientOcclusionManager#MAX_KERNEL_SAMPLES
+layout(constant_id = 1) const float RADIUS = 0.0f;
+layout(constant_id = 2) const float AO_STRENGTH = 0.0f;
+layout(constant_id = 3) const float DEPTH_START_ATTENUATION = 0.0f;
+layout(constant_id = 4) const float DEPTH_END_ATTENUATION = 0.0f;
+layout(constant_id = 5) const uint NOISE_TEXTURE_SIZE = 0;
+layout(constant_id = 6) const float BIAS = 0.0f;
 
 layout(std140, set = 0, binding = 0) uniform PositioningData {
     mat4 mInverseViewProjection;

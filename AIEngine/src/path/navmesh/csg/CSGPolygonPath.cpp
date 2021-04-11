@@ -15,7 +15,7 @@ namespace urchin {
         path.reserve(polygon.getCwPoints().size());
 
         for (const auto& point : polygon.getCwPoints()) {
-            if (typeid(long long) == typeid(T)) {
+            if (typeid(long long) == typeid(T)) { //TODO use: if constexpr (std::is_same_v<T, long long>) {
                 path.emplace_back(ClipperLib::IntPoint((long long)point.X, (long long)point.Y));
             } else {
                 path.emplace_back(ClipperLib::IntPoint(TypeConverter::toLongLong((float)point.X), TypeConverter::toLongLong((float)point.Y)));

@@ -1,5 +1,6 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
+#extension GL_EXT_nonuniform_qualifier : enable
 
 //values are replaced at compilation time:
 #define NUMBER_SHADOW_MAPS 0

@@ -35,6 +35,25 @@ namespace urchin {
         return std::make_shared<Shader>(shaderName, shaderSources);
     }
 
+    std::shared_ptr<Shader> ShaderBuilder::createShader(const std::string& vertexShaderFilename, const std::string& geometryShaderFilename,
+                                                        const std::string& fragmentShaderFilename, std::unique_ptr<ShaderConstants> shaderConstants) {
+        std::vector<std::pair<Shader::ShaderType, std::vector<char>>> shaderSources;
+
+        //vertex shader
+        shaderSources.emplace_back(std::make_pair(Shader::VERTEX, readFile(ShaderConfig::instance()->getShadersDirectory() + vertexShaderFilename)));
+
+        //geometry shader
+        if (!geometryShaderFilename.empty()) {
+            shaderSources.emplace_back(std::make_pair(Shader::GEOMETRY, readFile(ShaderConfig::instance()->getShadersDirectory() + geometryShaderFilename)));
+        }
+
+        //fragment shader
+        shaderSources.emplace_back(std::make_pair(Shader::FRAGMENT, readFile(ShaderConfig::instance()->getShadersDirectory() + fragmentShaderFilename)));
+
+        std::string shaderName = urchin::FileUtil::getFileName(vertexShaderFilename);
+        return std::make_shared<Shader>(shaderName, shaderSources, std::move(shaderConstants));
+    }
+
     std::vector<char> ShaderBuilder::compile(const std::string &filename, const std::map<std::string, std::string>& tokens, shaderc_shader_kind shaderKind) {
         std::vector<char> rawShaderCode = readFile(ShaderConfig::instance()->getShadersDirectory() + filename);
         std::string shaderCode = TokenReplacerShader::replaceTokens(std::string(rawShaderCode.begin(), rawShaderCode.end()), tokens);

@@ -47,7 +47,7 @@ void main() {
 
     float offsets[] = float[](OFFSETS_TAB);
 
-    fragColor = centerTexValue;
+    fragColor = vec3(centerTexValue, centerTexValue, centerTexValue);
     float totalWeight = 1.0f;
 
     for (int i = 0; i < KERNEL_RADIUS; ++i) {

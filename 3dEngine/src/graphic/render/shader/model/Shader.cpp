@@ -4,12 +4,24 @@
 namespace urchin {
 
     Shader::Shader(std::string shaderName, const std::vector<std::pair<Shader::ShaderType, std::vector<char>>>& shaderSources):
-            shaderName(std::move(shaderName)) {
+            shaderName(std::move(shaderName)),
+            shaderConstants(std::unique_ptr<ShaderConstants>(nullptr)) {
         for(const auto& shaderSource : shaderSources) {
             VkShaderModule shaderModule = createShaderModule(shaderSource.second);
             shaderModules.emplace_back(shaderModule);
 
-            shaderStages.emplace_back(createPipelineShaderStage(shaderModule, shaderSource.first));
+            shaderStagesData.emplace_back(createPipelineShaderStage(shaderModule, shaderSource.first));
+        }
+    }
+
+    Shader::Shader(std::string shaderName, const std::vector<std::pair<Shader::ShaderType, std::vector<char>>>& shaderSources, std::unique_ptr<ShaderConstants> shaderConstants) :
+            shaderName(std::move(shaderName)),
+            shaderConstants(std::move(shaderConstants)) {
+        for(const auto& shaderSource : shaderSources) {
+            VkShaderModule shaderModule = createShaderModule(shaderSource.second);
+            shaderModules.emplace_back(shaderModule);
+
+            shaderStagesData.emplace_back(createPipelineShaderStage(shaderModule, shaderSource.first));
         }
     }
 
@@ -20,7 +32,14 @@ namespace urchin {
         }
     }
 
-    const std::vector<VkPipelineShaderStageCreateInfo>& Shader::getShaderStages() const {
+    std::vector<VkPipelineShaderStageCreateInfo> Shader::getShaderStages() const {
+        std::vector<VkPipelineShaderStageCreateInfo> shaderStages;
+        shaderStages.reserve(shaderStagesData.size());
+
+        for(auto& shaderStageData : shaderStagesData) {
+            shaderStages.emplace_back(shaderStageData->shaderStageCreateInfo);
+        }
+
         return shaderStages;
     }
 
@@ -38,15 +57,40 @@ namespace urchin {
         return shaderModule;
     }
 
-    VkPipelineShaderStageCreateInfo Shader::createPipelineShaderStage(VkShaderModule shaderModule, ShaderType shaderType) {
-        VkPipelineShaderStageCreateInfo shaderStageInfo{};
-        shaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-        shaderStageInfo.stage = toShaderStageFlag(shaderType);
-        shaderStageInfo.module = shaderModule;
-        shaderStageInfo.pName = "main";
-        shaderStageInfo.pSpecializationInfo = nullptr; //can be used to transfer constant variables to the shader
+    std::unique_ptr<ShaderStageData> Shader::createPipelineShaderStage(VkShaderModule shaderModule, ShaderType shaderType) {
+        auto shaderStageData = std::make_unique<ShaderStageData>();
 
-        return shaderStageInfo;
+        shaderStageData->shaderStageCreateInfo = {};
+        shaderStageData->shaderStageCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+        shaderStageData->shaderStageCreateInfo.stage = toShaderStageFlag(shaderType);
+        shaderStageData->shaderStageCreateInfo.module = shaderModule;
+        shaderStageData->shaderStageCreateInfo.pName = "main";
+
+        if(shaderConstants) {
+            shaderStageData->specializationMapEntries.reserve(shaderConstants->getVariableDescriptions().size());
+            uint32_t constantId = 0;
+            for (auto &variableDescription : shaderConstants->getVariableDescriptions()) {
+                shaderStageData->specializationMapEntries.emplace_back(createSpecializationMapEntry(constantId++, (uint32_t)variableDescription.dataOffset, variableDescription.dataSize));
+            }
+
+            shaderStageData->specializationInfo = {};
+            shaderStageData->specializationInfo.mapEntryCount = (uint32_t) shaderStageData->specializationMapEntries.size();
+            shaderStageData->specializationInfo.pMapEntries = shaderStageData->specializationMapEntries.data();
+            shaderStageData->specializationInfo.dataSize = shaderConstants->computeDataSize();
+            shaderStageData->specializationInfo.pData = shaderConstants->getData();
+
+            shaderStageData->shaderStageCreateInfo.pSpecializationInfo = &shaderStageData->specializationInfo;
+        }
+
+        return shaderStageData;
+    }
+
+    VkSpecializationMapEntry Shader::createSpecializationMapEntry(uint32_t constantId, uint32_t offset, std::size_t size) {
+        VkSpecializationMapEntry specializationMapEntry{};
+        specializationMapEntry.constantID = constantId;
+        specializationMapEntry.offset = offset;
+        specializationMapEntry.size = size;
+        return specializationMapEntry;
     }
 
     VkShaderStageFlagBits Shader::toShaderStageFlag(Shader::ShaderType shaderType) {

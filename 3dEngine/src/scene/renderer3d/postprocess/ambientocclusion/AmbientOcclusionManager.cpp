@@ -9,7 +9,7 @@
 #include "texture/filter/bilateralblur/BilateralBlurFilterBuilder.h"
 
 #define DEFAULT_TEXTURE_SIZE AOTextureSize::HALF_SIZE
-#define DEFAULT_KERNEL_SAMPLES 64
+#define DEFAULT_KERNEL_SAMPLES 32
 #define DEFAULT_RADIUS 0.35f
 #define DEFAULT_AO_STRENGTH 0.10f
 #define DEFAULT_DEPTH_START_ATTENUATION 0.999f
@@ -25,6 +25,8 @@ namespace urchin {
     bool DEBUG_EXPORT_SSAO_KERNEL = false;
 
     AmbientOcclusionManager::AmbientOcclusionManager() :
+            MAX_KERNEL_SAMPLES(64), //limited by default const value of 'KERNEL_SAMPLES' in shader
+
             nearPlane(0.0f),
             farPlane(0.0f),
 
@@ -80,18 +82,27 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::createOrUpdateAOShader() {
-        std::locale::global(std::locale("C")); //for float
+        AmbientOcclusionShaderConst aoConstData{};
+        aoConstData.kernelSamples = kernelSamples;
+        aoConstData.radius = radius;
+        aoConstData.ambientOcclusionStrength = ambientOcclusionStrength;
+        aoConstData.depthStartAttenuation = depthStartAttenuation;
+        aoConstData.depthEndAttenuation = depthEndAttenuation;
+        aoConstData.noiseTextureSize = noiseTextureSize;
+        aoConstData.bias = bias;
 
-        std::map<std::string, std::string> ambientOcclusionTokens;
-        ambientOcclusionTokens["KERNEL_SAMPLES"] = std::to_string(kernelSamples);
-        ambientOcclusionTokens["RADIUS"] = std::to_string(radius);
-        ambientOcclusionTokens["AO_STRENGTH"] = std::to_string(ambientOcclusionStrength);
-        ambientOcclusionTokens["DEPTH_START_ATTENUATION"] = std::to_string(depthStartAttenuation);
-        ambientOcclusionTokens["DEPTH_END_ATTENUATION"] = std::to_string(depthEndAttenuation);
-        ambientOcclusionTokens["NOISE_TEXTURE_SIZE"] = std::to_string(noiseTextureSize);
-        ambientOcclusionTokens["BIAS"] = std::to_string(bias);
+        std::vector<ShaderVarDescription> variablesDescriptions = {
+                { offsetof(AmbientOcclusionShaderConst, kernelSamples), sizeof(AmbientOcclusionShaderConst::kernelSamples) },
+                { offsetof(AmbientOcclusionShaderConst, radius), sizeof(AmbientOcclusionShaderConst::radius) },
+                { offsetof(AmbientOcclusionShaderConst, ambientOcclusionStrength), sizeof(AmbientOcclusionShaderConst::ambientOcclusionStrength) },
+                { offsetof(AmbientOcclusionShaderConst, depthStartAttenuation), sizeof(AmbientOcclusionShaderConst::depthStartAttenuation) },
+                { offsetof(AmbientOcclusionShaderConst, depthEndAttenuation), sizeof(AmbientOcclusionShaderConst::depthEndAttenuation) },
+                { offsetof(AmbientOcclusionShaderConst, noiseTextureSize), sizeof(AmbientOcclusionShaderConst::noiseTextureSize) },
+                { offsetof(AmbientOcclusionShaderConst, bias), sizeof(AmbientOcclusionShaderConst::bias) }
+        };
+        auto shaderConstants = std::make_unique<ShaderConstants>(variablesDescriptions, &aoConstData);
 
-        ambientOcclusionShader = ShaderBuilder::createShader("ambientOcclusion.vert", "", "ambientOcclusion.frag", ambientOcclusionTokens);
+        ambientOcclusionShader = ShaderBuilder::createShader("ambientOcclusion.vert", "", "ambientOcclusion.frag", std::move(shaderConstants));
     }
 
     void AmbientOcclusionManager::createOrUpdateAOTexture() {
@@ -220,6 +231,9 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::setKernelSamples(unsigned int kernelSamples) {
+        if(kernelSamples > MAX_KERNEL_SAMPLES) {
+            throw std::runtime_error("Kernel samples value is limited to " + std::to_string(MAX_KERNEL_SAMPLES));
+        }
         this->kernelSamples = kernelSamples;
 
         createOrUpdateAO();
