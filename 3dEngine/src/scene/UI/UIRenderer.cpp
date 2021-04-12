@@ -9,8 +9,8 @@
 
 namespace urchin {
 
-    //Debug parameters
-    bool DEBUG_DISPLAY_FONT_TEXTURE = false;
+    //debug parameters
+    constexpr bool DEBUG_DISPLAY_FONT_TEXTURE = false;
 
     UIRenderer::UIRenderer(std::shared_ptr<RenderTarget> renderTarget) :
             renderTarget(std::move(renderTarget)),

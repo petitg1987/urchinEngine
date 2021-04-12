@@ -9,6 +9,9 @@
 
 namespace urchin {
 
+    //static
+    constexpr unsigned int LightManager::LIGHTS_LIMIT = 15; //limited by default const value of 'MAX_LIGHTS' in lighting shader
+
     LightManager::LightManager(std::shared_ptr<RenderTarget> renderTarget) :
             maxLights(ConfigService::instance()->getUnsignedIntValue("light.maxLights")),
             renderTarget(std::move(renderTarget)),
@@ -16,7 +19,9 @@ namespace urchin {
             lastUpdatedLight(nullptr),
             lightsData(nullptr),
             globalAmbientColor(Point4<float>(0.0, 0.0, 0.0, 0.0)) {
-
+        if(maxLights > LIGHTS_LIMIT) {
+            throw std::runtime_error("Maximum lights value is limited to " + std::to_string(LIGHTS_LIMIT));
+        }
     }
 
     LightManager::~LightManager() {

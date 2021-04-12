@@ -11,17 +11,17 @@
 
 namespace urchin {
 
-    //Debug parameters
-    bool DEBUG_DISPLAY_DEPTH_BUFFER = false;
-    bool DEBUG_DISPLAY_COLOR_BUFFER = false;
-    bool DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER = false;
-    bool DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER = false;
-    bool DEBUG_DISPLAY_SHADOW_MAP = false;
-    bool DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER = false;
-    bool DEBUG_DISPLAY_MODELS_OCTREE = false;
-    bool DEBUG_DISPLAY_MODELS_BOUNDING_BOX = false;
-    bool DEBUG_DISPLAY_MODEL_BASE_BONES = false;
-    bool DEBUG_DISPLAY_LIGHTS_OCTREE = false;
+    //debug parameters
+    constexpr bool DEBUG_DISPLAY_DEPTH_BUFFER = false;
+    constexpr bool DEBUG_DISPLAY_COLOR_BUFFER = false;
+    constexpr bool DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER = false;
+    constexpr bool DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER = false;
+    constexpr bool DEBUG_DISPLAY_SHADOW_MAP = false;
+    constexpr bool DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER = false;
+    constexpr bool DEBUG_DISPLAY_MODELS_OCTREE = false;
+    constexpr bool DEBUG_DISPLAY_MODELS_BOUNDING_BOX = false;
+    constexpr bool DEBUG_DISPLAY_MODEL_BASE_BONES = false;
+    constexpr bool DEBUG_DISPLAY_LIGHTS_OCTREE = false;
 
     Renderer3d::Renderer3d(std::shared_ptr<RenderTarget> finalRenderTarget) :
             finalRenderTarget(std::move(finalRenderTarget)),
@@ -83,15 +83,20 @@ namespace urchin {
     }
 
     void Renderer3d::createOrUpdateLightingShader() {
-        std::locale::global(std::locale("C")); //for float
+        LightingShaderConst lightingConstData{};
+        lightingConstData.maxLights = lightManager->getMaxLights();
+        lightingConstData.maxShadowLights = shadowManager->getMaxShadowLights();
+        lightingConstData.numberShadowMaps = shadowManager->getNumberShadowMaps();
+        lightingConstData.shadowMapBias = shadowManager->getShadowMapBias();
+        std::vector<ShaderVarDescription> variablesDescriptions = {
+                { offsetof(LightingShaderConst, maxLights), sizeof(LightingShaderConst::maxLights) },
+                { offsetof(LightingShaderConst, maxShadowLights), sizeof(LightingShaderConst::maxShadowLights) },
+                { offsetof(LightingShaderConst, numberShadowMaps), sizeof(LightingShaderConst::numberShadowMaps) },
+                { offsetof(LightingShaderConst, shadowMapBias), sizeof(LightingShaderConst::shadowMapBias) }
+        };
+        auto shaderConstants = std::make_unique<ShaderConstants>(variablesDescriptions, &lightingConstData);
 
-        std::map<std::string, std::string> tokens;
-        tokens["MAX_LIGHTS"] = std::to_string(lightManager->getMaxLights());
-        tokens["MAX_SHADOW_LIGHTS"] = std::to_string(shadowManager->getMaxShadowLights());
-        tokens["NUMBER_SHADOW_MAPS"] = std::to_string(shadowManager->getNumberShadowMaps());
-        tokens["SHADOW_MAP_BIAS"] = std::to_string(shadowManager->getShadowMapBias());
-        tokens["OUTPUT_LOCATION"] = "0"; // isAntiAliasingActivated ? "0" /*TEX_LIGHTING_PASS*/ : "0" /*Screen*/;
-        lightingShader = ShaderBuilder::createShader("lighting.vert", "", "lighting.frag", tokens);
+        lightingShader = ShaderBuilder::createShader("lighting.vert", "", "lighting.frag", std::move(shaderConstants));
 
         refreshRenderer();
     }

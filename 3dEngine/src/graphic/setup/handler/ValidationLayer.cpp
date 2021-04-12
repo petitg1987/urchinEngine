@@ -5,8 +5,8 @@ using namespace urchin;
 
 namespace urchin {
 
-    //Debug parameters
-    bool DEBUG_DISPLAY_VULKAN_INFO = false;
+    //debug parameters
+    constexpr bool DEBUG_DISPLAY_VULKAN_INFO = false;
 
     //static
     constexpr unsigned int ValidationLayer::MAX_ERRORS_LOG = 50;

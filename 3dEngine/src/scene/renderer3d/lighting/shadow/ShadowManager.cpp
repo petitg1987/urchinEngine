@@ -17,6 +17,9 @@
 
 namespace urchin {
 
+    //static
+    constexpr uint32_t ShadowManager::SHADOW_MAPS_LIMIT = 7; //limited by default const value of 'NUMBER_SHADOW_MAPS' in lighting shader
+
     ShadowManager::ShadowManager(LightManager* lightManager, OctreeManager<Model>* modelOctreeManager) :
             shadowMapBias(ConfigService::instance()->getFloatValue("shadow.shadowMapBias")),
             percentageUniformSplit(ConfigService::instance()->getFloatValue("shadow.frustumUniformSplitAgainstLogSplit")),
@@ -100,10 +103,10 @@ namespace urchin {
     }
 
     void ShadowManager::setNumberShadowMaps(unsigned int nbShadowMaps) {
-        if (nbShadowMaps <= 1) { //note: shadow maps texture array with depth = 1 generate error in GLSL texture2DArray function
+        if (nbShadowMaps <= 1) { //note: shadow maps texture array with depth = 1 generate error in GLSL texture() function
             throw std::runtime_error("Number of shadow maps must be greater than one. Value: " + std::to_string(nbShadowMaps));
-        } else if (nbShadowMaps > MAX_NB_SHADOW_MAPS) {
-            throw std::runtime_error("Number of shadow maps must be lower than " + std::to_string(MAX_NB_SHADOW_MAPS) + ". Value: " + std::to_string(nbShadowMaps));
+        } else if (nbShadowMaps > SHADOW_MAPS_LIMIT) {
+            throw std::runtime_error("Number of shadow maps must be lower than " + std::to_string(SHADOW_MAPS_LIMIT) + ". Value: " + std::to_string(nbShadowMaps));
         }
 
         this->nbShadowMaps = nbShadowMaps;

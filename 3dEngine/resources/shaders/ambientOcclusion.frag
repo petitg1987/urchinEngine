@@ -1,7 +1,7 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-layout(constant_id = 0) const uint KERNEL_SAMPLES = 64; //must be equals to AmbientOcclusionManager#MAX_KERNEL_SAMPLES
+layout(constant_id = 0) const uint KERNEL_SAMPLES = 64; //must be equals to AmbientOcclusionManager::KERNEL_SAMPLES_LIMIT
 layout(constant_id = 1) const float RADIUS = 0.0f;
 layout(constant_id = 2) const float AO_STRENGTH = 0.0f;
 layout(constant_id = 3) const float DEPTH_START_ATTENUATION = 0.0f;

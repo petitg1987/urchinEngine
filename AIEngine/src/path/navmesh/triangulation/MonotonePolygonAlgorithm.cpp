@@ -6,10 +6,10 @@
 
 namespace urchin {
 
-    //Debug parameters
-    bool DEBUG_LOG_MONOTONE_INPUT_DATA = false;
-    bool DEBUG_LOG_MONOTONE_OUTPUT_DATA = false;
-    bool DEBUG_EXPORT_MONOTONE_POINTS = false;
+    //debug parameters
+    constexpr bool DEBUG_LOG_MONOTONE_INPUT_DATA = false;
+    constexpr bool DEBUG_LOG_MONOTONE_OUTPUT_DATA = false;
+    constexpr bool DEBUG_EXPORT_MONOTONE_POINTS = false;
 
     TypedPoint::TypedPoint(std::size_t pointIndex, PointType type) :
             pointIndex(pointIndex), type(type) {

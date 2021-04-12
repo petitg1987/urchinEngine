@@ -2,8 +2,8 @@
 
 namespace urchin {
 
-    //Debug parameters
-    bool DEBUG_PRINT_ISLANDS = false;
+    //debug parameters
+    constexpr bool DEBUG_PRINT_ISLANDS = false;
 
     IslandManager::IslandManager(const BodyManager* bodyManager) :
         bodyManager(bodyManager),

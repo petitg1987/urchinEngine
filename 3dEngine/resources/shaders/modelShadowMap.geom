@@ -2,7 +2,7 @@
 #extension GL_ARB_separate_shader_objects : enable
 
 //values are replaced at compilation time:
-#define MAX_VERTICES 0
+#define MAX_VERTICES 3 * 15 //must be equals to LightManager::LIGHTS_LIMIT //TODO update comment in LightManager::LIGHTS_LIMIT & use shader const
 #define NUMBER_SHADOW_MAPS 0
 
 layout(std140, set = 0, binding = 2) uniform Projection {

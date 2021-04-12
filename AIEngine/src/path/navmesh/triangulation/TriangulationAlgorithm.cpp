@@ -7,8 +7,8 @@
 
 namespace urchin {
 
-    //Debug parameters
-    bool DEBUG_LOG_TRIANGULATION_OUTPUT_DATA = false;
+    //debug parameters
+    constexpr bool DEBUG_LOG_TRIANGULATION_OUTPUT_DATA = false;
 
     SidedPoint::SidedPoint(std::size_t pointIndex, bool onLeft) :
             pointIndex(pointIndex), onLeft(onLeft) {

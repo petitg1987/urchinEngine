@@ -30,6 +30,13 @@ namespace urchin {
 
     class Renderer3d : public Renderer, public Observer {
         public:
+            struct LightingShaderConst {
+                unsigned int maxLights;
+                unsigned int maxShadowLights;
+                unsigned int numberShadowMaps;
+                float shadowMapBias;
+            };
+
             explicit Renderer3d(std::shared_ptr<RenderTarget>);
             ~Renderer3d() override;
 

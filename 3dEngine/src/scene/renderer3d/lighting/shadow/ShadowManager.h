@@ -73,7 +73,7 @@ namespace urchin {
             void splitFrustum(const Frustum<float>&);
 
             //shadow map quality
-            static constexpr uint32_t MAX_NB_SHADOW_MAPS = 20;
+            static const uint32_t SHADOW_MAPS_LIMIT;
             const float shadowMapBias;
             const float percentageUniformSplit; //percentage of uniform split against the logarithmic split to split frustum
             unsigned int shadowMapResolution;

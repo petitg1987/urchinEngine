@@ -2,12 +2,10 @@
 #extension GL_ARB_separate_shader_objects : enable
 #extension GL_EXT_nonuniform_qualifier : enable
 
-//values are replaced at compilation time:
-#define NUMBER_SHADOW_MAPS 0
-#define SHADOW_MAP_BIAS 0
-#define MAX_LIGHTS 0
-#define MAX_SHADOW_LIGHTS 0
-#define OUTPUT_LOCATION 0
+layout(constant_id = 0) const uint MAX_LIGHTS = 15; //must be equals to LightManager::LIGHTS_LIMIT
+layout(constant_id = 1) const uint MAX_SHADOW_LIGHTS = 15; //must be equals to LightManager::LIGHTS_LIMIT
+layout(constant_id = 2) const uint NUMBER_SHADOW_MAPS = 7; //must be equals to ShadowManager::SHADOW_MAPS_LIMIT
+layout(constant_id = 3) const float SHADOW_MAP_BIAS = 0.0f;
 
 //global
 layout(std140, set = 0, binding = 0) uniform PositioningData {
@@ -61,7 +59,7 @@ layout(binding = 24) uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //s
 
 layout(location = 0) in vec2 texCoordinates;
 
-layout(location = OUTPUT_LOCATION) out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
 
 vec4 fetchPosition(vec2 texCoord, float depthValue) {
     vec4 texPosition = vec4(
