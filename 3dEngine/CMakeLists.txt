@@ -11,11 +11,7 @@ set(compiledShadersDir "${shadersDir}/spirv")
 file(GLOB shaderFiles "${shadersDir}/*.*")
 foreach(shaderFile ${shaderFiles})
     get_filename_component(shaderFilename ${shaderFile} NAME)
-    get_filename_component(compiledShaderName ${shaderFile} NAME_WLE)
-    get_filename_component(shaderExt ${shaderFile} LAST_EXT)
-    string(SUBSTRING ${shaderExt} 1 10 shaderExt)
-    set(compiledShaderName "${compiledShaderName}_${shaderExt}.spv")
-
+    set(compiledShaderName "${shaderFilename}.spv")
     add_custom_command( OUTPUT ${compiledShadersDir}/${compiledShaderName}
             DEPENDS ${shadersDir}/${shaderFilename}
             COMMAND glslc --target-env=vulkan1.1 -O -Werror ${shadersDir}/${shaderFilename} -o ${compiledShadersDir}/${compiledShaderName})

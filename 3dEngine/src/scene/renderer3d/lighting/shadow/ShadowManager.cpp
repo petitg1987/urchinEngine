@@ -17,9 +17,6 @@
 
 namespace urchin {
 
-    //static
-    constexpr uint32_t ShadowManager::SHADOW_MAPS_LIMIT = 7; //limited by default const value of 'NUMBER_SHADOW_MAPS' in lighting shader
-
     ShadowManager::ShadowManager(LightManager* lightManager, OctreeManager<Model>* modelOctreeManager) :
             shadowMapBias(ConfigService::instance()->getFloatValue("shadow.shadowMapBias")),
             percentageUniformSplit(ConfigService::instance()->getFloatValue("shadow.frustumUniformSplitAgainstLogSplit")),

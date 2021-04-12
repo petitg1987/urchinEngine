@@ -10,7 +10,7 @@
 namespace urchin {
 
     //static
-    constexpr unsigned int LightManager::LIGHTS_LIMIT = 15; //limited by default const value of 'MAX_LIGHTS' in lighting shader
+    constexpr unsigned int LightManager::LIGHTS_LIMIT = 15; //limited by default const value of 'MAX_LIGHTS'/'MAX_VERTICES' in lighting/modelShadowMap shaders
 
     LightManager::LightManager(std::shared_ptr<RenderTarget> renderTarget) :
             maxLights(ConfigService::instance()->getUnsignedIntValue("light.maxLights")),

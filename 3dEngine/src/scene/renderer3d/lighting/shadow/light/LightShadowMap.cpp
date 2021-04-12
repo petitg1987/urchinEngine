@@ -95,13 +95,12 @@ namespace urchin {
     }
 
     void LightShadowMap::createOrUpdateShadowModelSetDisplayer(unsigned int nbShadowMaps) {
-        std::map<std::string, std::string> geometryTokens, fragmentTokens;
-        geometryTokens["MAX_VERTICES"] = std::to_string(3 * nbShadowMaps);
-        geometryTokens["NUMBER_SHADOW_MAPS"] = std::to_string(nbShadowMaps);
+        std::vector<ShaderVarDescription> variablesDescriptions = {{0, sizeof(nbShadowMaps)}};
+        auto shaderConstants = std::make_unique<ShaderConstants>(variablesDescriptions, &nbShadowMaps);
+
         delete shadowModelSetDisplayer;
         shadowModelSetDisplayer = new ModelSetDisplayer(DisplayMode::DEPTH_ONLY_MODE);
-        shadowModelSetDisplayer->setCustomGeometryShader("modelShadowMap.geom", geometryTokens);
-        shadowModelSetDisplayer->setCustomFragmentShader("modelShadowMap.frag", fragmentTokens);
+        shadowModelSetDisplayer->setCustomShader("modelShadowMap.geom", "modelShadowMap.frag", std::move(shaderConstants));
         shadowModelSetDisplayer->initialize(renderTarget);
 
         delete shadowModelShaderVariable;

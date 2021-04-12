@@ -29,14 +29,14 @@ namespace urchin {
             if (fragmentShaderName.empty()) { //use default fragment shader
                 fragmentShaderName = "model.frag";
             }
-            createShader(vertexShaderName, geometryShaderName, fragmentShaderName);
+            modelShader = ShaderBuilder::createShader(vertexShaderName, geometryShaderName, fragmentShaderName, std::move(shaderConstants));
         } else if (displayMode == DEPTH_ONLY_MODE) {
             //shader creation
             std::string vertexShaderName = "modelDepthOnly.vert";
             if (fragmentShaderName.empty()) { //use default fragment shader
                 fragmentShaderName = "modelDepthOnly.frag";
             }
-            createShader(vertexShaderName, geometryShaderName, fragmentShaderName);
+            modelShader = ShaderBuilder::createShader(vertexShaderName, geometryShaderName, fragmentShaderName, std::move(shaderConstants));
         } else {
             throw std::invalid_argument("Unknown display mode: " + std::to_string(displayMode));
         }
@@ -44,14 +44,6 @@ namespace urchin {
         this->renderTarget = std::move(renderTarget);
 
         isInitialized = true;
-    }
-
-    void ModelSetDisplayer::createShader(const std::string& vertexShaderName, const std::string& geometryShaderName, const std::string& fragmentShaderName) {
-        std::map<std::string, std::string> shaderTokens;
-        shaderTokens.insert(fragmentTokens.begin(), fragmentTokens.end());
-        shaderTokens.insert(geometryTokens.begin(), geometryTokens.end());
-
-        modelShader = ShaderBuilder::createShader(vertexShaderName, geometryShaderName, fragmentShaderName, shaderTokens);
     }
 
     void ModelSetDisplayer::onCameraProjectionUpdate(const Camera* camera) {
@@ -62,22 +54,14 @@ namespace urchin {
         }
     }
 
-    void ModelSetDisplayer::setCustomGeometryShader(const std::string& geometryShaderName, const std::map<std::string, std::string>& geometryTokens) {
+    void ModelSetDisplayer::setCustomShader(const std::string& geometryShaderName, const std::string& fragmentShaderName, std::unique_ptr<ShaderConstants> shaderConstants) {
         if (isInitialized) {
-            throw std::runtime_error("Impossible to set custom geometry shader once the model displayer initialized.");
+            throw std::runtime_error("Impossible to set custom shader once the model displayer initialized.");
         }
 
         this->geometryShaderName = geometryShaderName;
-        this->geometryTokens = geometryTokens;
-    }
-
-    void ModelSetDisplayer::setCustomFragmentShader(const std::string& fragmentShaderName, const std::map<std::string, std::string>& fragmentTokens) {
-        if (isInitialized) {
-            throw std::runtime_error("Impossible to set custom fragment shader once the model displayer initialized.");
-        }
-
         this->fragmentShaderName = fragmentShaderName;
-        this->fragmentTokens = fragmentTokens;
+        this->shaderConstants = std::move(shaderConstants);
     }
 
     void ModelSetDisplayer::setCustomModelShaderVariable(CustomModelShaderVariable* customModelShaderVariable) {

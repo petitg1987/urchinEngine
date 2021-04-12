@@ -27,8 +27,7 @@ namespace urchin {
             void initialize(std::shared_ptr<RenderTarget>);
             void onCameraProjectionUpdate(const Camera*);
 
-            void setCustomGeometryShader(const std::string&, const std::map<std::string, std::string>&);
-            void setCustomFragmentShader(const std::string&, const std::map<std::string, std::string>&);
+            void setCustomShader(const std::string&, const std::string&, std::unique_ptr<ShaderConstants>);
             void setCustomModelShaderVariable(CustomModelShaderVariable*);
 
             void setModels(const std::vector<Model*>&);
@@ -41,12 +40,10 @@ namespace urchin {
             void drawBaseBones(const Matrix4<float>&, const Matrix4<float>&, const std::string&) const;
 
         private:
-            void createShader(const std::string&, const std::string&, const std::string&);
-
             bool isInitialized;
 
             std::string geometryShaderName, fragmentShaderName;
-            std::map<std::string, std::string> geometryTokens, fragmentTokens;
+            std::unique_ptr<ShaderConstants> shaderConstants;
 
             DisplayMode displayMode;
             std::shared_ptr<Shader> modelShader;

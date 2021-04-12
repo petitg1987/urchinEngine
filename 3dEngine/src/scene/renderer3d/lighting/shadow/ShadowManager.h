@@ -73,7 +73,7 @@ namespace urchin {
             void splitFrustum(const Frustum<float>&);
 
             //shadow map quality
-            static const uint32_t SHADOW_MAPS_LIMIT;
+            static constexpr uint32_t SHADOW_MAPS_LIMIT = 7; //limited by default const value of 'NUMBER_SHADOW_MAPS' in lighting shader
             const float shadowMapBias;
             const float percentageUniformSplit; //percentage of uniform split against the logarithmic split to split frustum
             unsigned int shadowMapResolution;
@@ -92,7 +92,7 @@ namespace urchin {
             std::vector<Frustum<float>> splitFrustums;
             std::map<const Light*, LightShadowMap*> lightShadowMaps;
             bool bForceUpdateAllShadowMaps;
-            float depthSplitDistance[MAX_NB_SHADOW_MAPS * 4]{}; //multiply by 4 because only 1 float over 4 are transferred to the shader due to memory alignment
+            float depthSplitDistance[SHADOW_MAPS_LIMIT * 4]{}; //multiply by 4 because only 1 float over 4 are transferred to the shader due to memory alignment
 
             //shadow lights information
             Matrix4<float>* lightProjectionViewMatrices;
