@@ -25,6 +25,8 @@ namespace urchin {
             return std::make_pair(VK_OBJECT_TYPE_PIPELINE, "[PIPELINE] ");
         } else if (objectType == RENDER_PASS) {
             return std::make_pair(VK_OBJECT_TYPE_RENDER_PASS, "[RENDER_PASS] ");
+        } else if (objectType == SHADER) {
+            return std::make_pair(VK_OBJECT_TYPE_SHADER_MODULE, "[SHADER] ");
         }
         throw std::runtime_error("Unknown graphic object type: " + std::to_string(objectType));
     }

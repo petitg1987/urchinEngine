@@ -5,24 +5,19 @@
 
 namespace urchin {
 
-    struct ShaderVarDescription {
-        std::size_t dataOffset;
-        std::size_t dataSize;
-    };
-
     class ShaderConstants {
         public:
-            ShaderConstants(std::vector<ShaderVarDescription>, void*);
+            ShaderConstants(std::vector<std::size_t>, void*);
             ShaderConstants(const ShaderConstants&) = delete;
             ShaderConstants(ShaderConstants&&) noexcept = delete;
 
-            const std::vector<ShaderVarDescription>& getVariableDescriptions() const;
+            const std::vector<std::size_t>& getVariablesSize() const;
 
-            std::size_t computeDataSize() const;
+            std::size_t sumVariablesSize() const;
             void* getData() const;
 
         private:
-            std::vector<ShaderVarDescription> variableDescriptions;
+            std::vector<std::size_t> variablesSize;
             void* data;
     };
 

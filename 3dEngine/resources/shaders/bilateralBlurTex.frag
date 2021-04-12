@@ -2,7 +2,7 @@
 #extension GL_ARB_separate_shader_objects : enable
 
 //values are replaced at compilation time:
-#define OUTPUT_TYPE vec3
+#define OUTPUT_TYPE float
 #define OFFSETS_TAB 0
 #define KERNEL_RADIUS 0
 #define BLUR_SHARPNESS 0
@@ -47,7 +47,7 @@ void main() {
 
     float offsets[] = float[](OFFSETS_TAB);
 
-    fragColor = vec3(centerTexValue, centerTexValue, centerTexValue);
+    fragColor = centerTexValue; //TODO review float assign to float, vec2, vec3...
     float totalWeight = 1.0f;
 
     for (int i = 0; i < KERNEL_RADIUS; ++i) {

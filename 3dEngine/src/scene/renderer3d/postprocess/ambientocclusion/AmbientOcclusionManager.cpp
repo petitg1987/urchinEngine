@@ -91,18 +91,18 @@ namespace urchin {
         aoConstData.depthEndAttenuation = depthEndAttenuation;
         aoConstData.noiseTextureSize = noiseTextureSize;
         aoConstData.bias = bias;
-        std::vector<ShaderVarDescription> variablesDescriptions = {
-                { offsetof(AmbientOcclusionShaderConst, kernelSamples), sizeof(AmbientOcclusionShaderConst::kernelSamples) },
-                { offsetof(AmbientOcclusionShaderConst, radius), sizeof(AmbientOcclusionShaderConst::radius) },
-                { offsetof(AmbientOcclusionShaderConst, ambientOcclusionStrength), sizeof(AmbientOcclusionShaderConst::ambientOcclusionStrength) },
-                { offsetof(AmbientOcclusionShaderConst, depthStartAttenuation), sizeof(AmbientOcclusionShaderConst::depthStartAttenuation) },
-                { offsetof(AmbientOcclusionShaderConst, depthEndAttenuation), sizeof(AmbientOcclusionShaderConst::depthEndAttenuation) },
-                { offsetof(AmbientOcclusionShaderConst, noiseTextureSize), sizeof(AmbientOcclusionShaderConst::noiseTextureSize) },
-                { offsetof(AmbientOcclusionShaderConst, bias), sizeof(AmbientOcclusionShaderConst::bias) }
+        std::vector<std::size_t> variablesSize = {
+            sizeof(AmbientOcclusionShaderConst::kernelSamples),
+            sizeof(AmbientOcclusionShaderConst::radius),
+            sizeof(AmbientOcclusionShaderConst::ambientOcclusionStrength),
+            sizeof(AmbientOcclusionShaderConst::depthStartAttenuation),
+            sizeof(AmbientOcclusionShaderConst::depthEndAttenuation),
+            sizeof(AmbientOcclusionShaderConst::noiseTextureSize),
+            sizeof(AmbientOcclusionShaderConst::bias)
         };
-        auto shaderConstants = std::make_unique<ShaderConstants>(variablesDescriptions, &aoConstData);
+        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &aoConstData);
 
-        ambientOcclusionShader = ShaderBuilder::createShader("ambientOcclusion.vert", "", "ambientOcclusion.frag", std::move(shaderConstants));
+        ambientOcclusionShader = ShaderBuilder::createShader("spirv/ambientOcclusion.vert.spv", "", "spirv/ambientOcclusion.frag.spv", std::move(shaderConstants));
     }
 
     void AmbientOcclusionManager::createOrUpdateAOTexture() {

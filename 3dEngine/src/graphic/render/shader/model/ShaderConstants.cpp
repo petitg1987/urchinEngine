@@ -5,20 +5,20 @@
 
 namespace urchin {
 
-    ShaderConstants::ShaderConstants(std::vector<ShaderVarDescription> variableDescriptions, void* data) :
-            variableDescriptions(std::move(variableDescriptions)) {
-        this->data = malloc(computeDataSize());
-        std::memcpy(this->data, data, computeDataSize());
+    ShaderConstants::ShaderConstants(std::vector<std::size_t> variablesSize, void* data) :
+            variablesSize(std::move(variablesSize)) {
+        this->data = malloc(sumVariablesSize());
+        std::memcpy(this->data, data, sumVariablesSize());
     }
 
-    const std::vector<ShaderVarDescription>& ShaderConstants::getVariableDescriptions() const {
-        return variableDescriptions;
+    const std::vector<std::size_t>& ShaderConstants::getVariablesSize() const {
+        return variablesSize;
     }
 
-    std::size_t ShaderConstants::computeDataSize() const {
+    std::size_t ShaderConstants::sumVariablesSize() const {
         std::size_t dataSize = 0;
-        for(auto& variableDescription : variableDescriptions) {
-            dataSize += variableDescription.dataSize;
+        for(auto& variableSize : variablesSize) {
+            dataSize += variableSize;
         }
         return dataSize;
     }

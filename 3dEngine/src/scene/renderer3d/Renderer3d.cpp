@@ -88,15 +88,15 @@ namespace urchin {
         lightingConstData.maxShadowLights = shadowManager->getMaxShadowLights();
         lightingConstData.numberShadowMaps = shadowManager->getNumberShadowMaps();
         lightingConstData.shadowMapBias = shadowManager->getShadowMapBias();
-        std::vector<ShaderVarDescription> variablesDescriptions = {
-                { offsetof(LightingShaderConst, maxLights), sizeof(LightingShaderConst::maxLights) },
-                { offsetof(LightingShaderConst, maxShadowLights), sizeof(LightingShaderConst::maxShadowLights) },
-                { offsetof(LightingShaderConst, numberShadowMaps), sizeof(LightingShaderConst::numberShadowMaps) },
-                { offsetof(LightingShaderConst, shadowMapBias), sizeof(LightingShaderConst::shadowMapBias) }
+        std::vector<std::size_t> variablesSize = {
+            sizeof(LightingShaderConst::maxLights),
+            sizeof(LightingShaderConst::maxShadowLights),
+            sizeof(LightingShaderConst::numberShadowMaps),
+            sizeof(LightingShaderConst::shadowMapBias)
         };
-        auto shaderConstants = std::make_unique<ShaderConstants>(variablesDescriptions, &lightingConstData);
+        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &lightingConstData);
 
-        lightingShader = ShaderBuilder::createShader("lighting.vert", "", "lighting.frag", std::move(shaderConstants));
+        lightingShader = ShaderBuilder::createShader("spirv/lighting.vert.spv", "", "spirv/lighting.frag.spv", std::move(shaderConstants));
 
         refreshRenderer();
     }

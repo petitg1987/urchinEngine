@@ -10,7 +10,8 @@ namespace urchin {
         public:
             enum ObjectType {
                 PIPELINE,
-                RENDER_PASS
+                RENDER_PASS,
+                SHADER
             };
 
             static void nameObject(ObjectType, void*, const std::string&);
