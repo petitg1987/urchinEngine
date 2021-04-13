@@ -38,6 +38,7 @@ namespace urchin {
     }
 
     void LightManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
+        delete[] lightsData;
         std::size_t lightsDataSize = maxLights;
         lightsData = new LightsData[lightsDataSize];
 

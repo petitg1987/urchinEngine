@@ -10,6 +10,7 @@ namespace urchin {
             ShaderConstants(std::vector<std::size_t>, void*);
             ShaderConstants(const ShaderConstants&) = delete;
             ShaderConstants(ShaderConstants&&) noexcept = delete;
+            ~ShaderConstants();
 
             const std::vector<std::size_t>& getVariablesSize() const;
 

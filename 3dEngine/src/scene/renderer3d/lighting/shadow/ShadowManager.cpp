@@ -41,6 +41,7 @@ namespace urchin {
     }
 
     void ShadowManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
+        delete[] lightProjectionViewMatrices;
         std::size_t mLightProjectionViewSize = getMaxShadowLights() * nbShadowMaps;
         lightProjectionViewMatrices = new Matrix4<float>[mLightProjectionViewSize]{};
 

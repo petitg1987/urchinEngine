@@ -16,7 +16,7 @@ namespace urchin {
             renderTarget(std::move(renderTarget)),
             sceneWidth(0),
             sceneHeight(0) {
-        uiShader = ShaderBuilder::createShader("ui.vert", "", "ui.frag");
+        uiShader = ShaderBuilder::createShader("spirv/ui.vert.spv", "", "spirv/ui.frag.spv", std::unique_ptr<ShaderConstants>(nullptr));
     }
 
     UIRenderer::~UIRenderer() {

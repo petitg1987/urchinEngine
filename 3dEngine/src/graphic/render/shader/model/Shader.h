@@ -26,7 +26,7 @@ namespace urchin {
                 FRAGMENT
             };
 
-            Shader(std::string, const std::vector<std::pair<Shader::ShaderType, std::vector<char>>>&);
+            Shader(std::string, const std::vector<std::pair<Shader::ShaderType, std::vector<char>>>&); //TODO remove ?
             Shader(std::string, const std::vector<std::pair<Shader::ShaderType, std::vector<char>>>&, std::unique_ptr<ShaderConstants>);
             ~Shader();
 

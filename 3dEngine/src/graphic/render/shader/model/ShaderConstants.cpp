@@ -11,6 +11,10 @@ namespace urchin {
         std::memcpy(this->data, data, sumVariablesSize());
     }
 
+    ShaderConstants::~ShaderConstants() {
+        free(data);
+    }
+
     const std::vector<std::size_t>& ShaderConstants::getVariablesSize() const {
         return variablesSize;
     }
