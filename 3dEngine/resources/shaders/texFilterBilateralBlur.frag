@@ -2,7 +2,6 @@
 #extension GL_ARB_separate_shader_objects : enable
 
 //values are replaced at compilation time:
-#define OUTPUT_TYPE float
 #define OFFSETS_TAB 0
 #define KERNEL_RADIUS 0
 #define BLUR_SHARPNESS 0
@@ -17,7 +16,7 @@ layout(binding = 21) uniform sampler2D depthTex;
 
 layout(location = 0) in vec2 texCoordinates;
 
-layout(location = 0) out OUTPUT_TYPE fragColor;
+layout(location = 0) out float fragColor;
 
 float linearizeDepth(float depthValue) {
     float unmapDepthValue = depthValue * 2.0 - 1.0;
@@ -47,7 +46,7 @@ void main() {
 
     float offsets[] = float[](OFFSETS_TAB);
 
-    fragColor = centerTexValue; //TODO review float assign to float, vec2, vec3...
+    fragColor = centerTexValue;
     float totalWeight = 1.0f;
 
     for (int i = 0; i < KERNEL_RADIUS; ++i) {

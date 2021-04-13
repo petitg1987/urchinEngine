@@ -1,8 +1,7 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-//values are replaced at compilation time:
-#define FXAA_QUALITY 0 //0 = Low, 1 = Medium, 2 = High, 3 = Very high
+layout(constant_id = 0) const uint FXAA_QUALITY = 0; //0 = Low, 1 = Medium, 2 = High, 3 = Very high
 
 layout(std140, set = 0, binding = 0) uniform Scene {
     vec2 invSceneSize;

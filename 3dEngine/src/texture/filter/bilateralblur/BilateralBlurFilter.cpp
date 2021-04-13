@@ -33,7 +33,10 @@ namespace urchin {
     }
 
     std::string BilateralBlurFilter::getShaderName() const {
-        return "bilateralBlurTex";
+        if(getTextureFormat() == TextureFormat::GRAYSCALE_16_FLOAT && getTextureType() == TextureType::DEFAULT) {
+            return "texFilterBilateralBlur";
+        }
+        throw std::runtime_error("Unimplemented bilateral blur filter for: " + std::to_string(getTextureFormat()) + " - " + std::to_string(getTextureType()));
     }
 
     void BilateralBlurFilter::initiateAdditionalDisplay(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder) {

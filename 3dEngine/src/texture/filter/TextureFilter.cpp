@@ -38,28 +38,18 @@ namespace urchin {
     }
 
     void TextureFilter::initializeDisplay(const std::string& filterName) {
-        std::locale::global(std::locale("C")); //for float
+        std::locale::global(std::locale("C")); //for float //TODO remove...
 
         std::map<std::string, std::string> shaderTokens;
-        if (textureFormat == TextureFormat::RG_32_FLOAT) {
-            shaderTokens["OUTPUT_TYPE"] = "vec2";
-            shaderTokens["SOURCE_TEX_COMPONENTS"] = "rg";
-        } else if (textureFormat == TextureFormat::GRAYSCALE_16_FLOAT) {
-            shaderTokens["OUTPUT_TYPE"] = "float";
-            shaderTokens["SOURCE_TEX_COMPONENTS"] = "r";
-        } else {
-            throw std::invalid_argument("Unsupported texture format for filter: " + std::to_string(textureFormat));
-        }
-
         this->completeShaderTokens(shaderTokens);
 
         if (textureType == TextureType::ARRAY) {
             shaderTokens["MAX_VERTICES"] = std::to_string(3 * textureNumberLayer);
             shaderTokens["NUMBER_LAYER"] = std::to_string(textureNumberLayer);
 
-            textureFilterShader = ShaderBuilder::createShader("textureFilter.vert", "textureFilter.geom", getShaderName() + "Array.frag", shaderTokens);
+            textureFilterShader = ShaderBuilder::createShader("texFilter.vert", "texFilter.geom", getShaderName() + ".frag", shaderTokens);
         } else if (textureType == TextureType::DEFAULT) {
-            textureFilterShader = ShaderBuilder::createShader("textureFilter.vert", "", getShaderName() + ".frag", shaderTokens);
+            textureFilterShader = ShaderBuilder::createShader("texFilter.vert", "", getShaderName() + ".frag", shaderTokens);
         } else {
             throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
         }
@@ -90,6 +80,14 @@ namespace urchin {
 
     const std::shared_ptr<Texture>& TextureFilter::getTexture() const {
         return texture;
+    }
+
+    TextureFormat TextureFilter::getTextureFormat() const {
+        return textureFormat;
+    }
+
+    TextureType TextureFilter::getTextureType() const {
+        return textureType;
     }
 
     unsigned int TextureFilter::getTextureWidth() const {

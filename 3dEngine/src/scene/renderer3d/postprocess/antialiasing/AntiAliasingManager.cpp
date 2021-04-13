@@ -16,10 +16,11 @@ namespace urchin {
     }
 
     void AntiAliasingManager::loadFxaaShader() {
-        std::map<std::string, std::string> fxaaTokens;
-        fxaaTokens["FXAA_QUALITY"] = std::to_string((int)quality);
+        int qualityInt = (int)quality;
+        std::vector<std::size_t> variablesSize = {sizeof(qualityInt),};
+        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &qualityInt);
 
-        fxaaShader = ShaderBuilder::createShader("fxaa.vert", "", "fxaa.frag", fxaaTokens);
+        fxaaShader = ShaderBuilder::createShader("spirv/fxaa.vert.spv", "", "spirv/fxaa.frag.spv", std::move(shaderConstants));
     }
 
     void AntiAliasingManager::onTextureUpdate(const std::shared_ptr<Texture>& texture) {

@@ -30,6 +30,8 @@ namespace urchin {
             virtual void initiateAdditionalDisplay(const std::shared_ptr<GenericRendererBuilder>&);
             virtual void completeShaderTokens(std::map<std::string, std::string>&) const = 0;
 
+            TextureFormat getTextureFormat() const;
+            TextureType getTextureType() const;
             unsigned int getTextureWidth() const;
             unsigned int getTextureHeight() const;
 

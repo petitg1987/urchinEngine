@@ -26,7 +26,7 @@ namespace urchin {
             tRepeat(0.0f),
             density(0.0f),
             gradient(0.0f) {
-        waterShader = ShaderBuilder::createShader("water.vert", "", "water.frag");
+        waterShader = ShaderBuilder::createShader("spirv/water.vert.spv", "", "spirv/water.frag.spv");
 
         normalTexture = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({0, 255, 0, 255})).createTexture(false);
         dudvMap = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({0, 255, 0, 255})).createTexture(false);
