@@ -1,11 +1,10 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-//values are replaced at compilation time:
-#define OFFSETS_TAB 0
-#define KERNEL_RADIUS 0
-#define BLUR_SHARPNESS 0
-#define IS_VERTICAL_BLUR true
+layout(constant_id = 1) const bool IS_VERTICAL_BLUR = true;
+layout(constant_id = 2) const uint KERNEL_RADIUS = 0;
+layout(constant_id = 3) const float BLUR_SHARPNESS = 0.0f;
+layout(constant_id = 4) const float[] OFFSETS = float[](0.0f);
 
 layout(std140, set = 0, binding = 1) uniform CameraPlanes {
     float nearPlane;
@@ -44,18 +43,16 @@ void main() {
     float depthCenterValue = texture(depthTex, texCoordinates).r;
     float linearizedDepthCenterValue = linearizeDepth(depthCenterValue);
 
-    float offsets[] = float[](OFFSETS_TAB);
-
     fragColor = centerTexValue;
     float totalWeight = 1.0f;
 
     for (int i = 0; i < KERNEL_RADIUS; ++i) {
-        vec2 uvOffset = (IS_VERTICAL_BLUR) ? vec2(0.0, offsets[i]) : vec2(offsets[i], 0.0);
+        vec2 uvOffset = (IS_VERTICAL_BLUR) ? vec2(0.0, OFFSETS[i]) : vec2(OFFSETS[i], 0.0);
         fragColor += bilateralBlur(uvOffset, i + 1, linearizedDepthCenterValue, totalWeight);
     }
 
     for (int i = 0; i < KERNEL_RADIUS; ++i) {
-        vec2 uvOffset = (IS_VERTICAL_BLUR) ? vec2(0.0, -offsets[i]) : vec2(-offsets[i], 0.0);
+        vec2 uvOffset = (IS_VERTICAL_BLUR) ? vec2(0.0, -OFFSETS[i]) : vec2(-OFFSETS[i], 0.0);
         fragColor += bilateralBlur(uvOffset, i + 1, linearizedDepthCenterValue, totalWeight);
     }
 

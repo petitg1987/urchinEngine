@@ -18,11 +18,19 @@ namespace urchin {
                 HORIZONTAL
             };
 
+            struct GaussianBlurShaderConst {
+                unsigned int numberLayer;
+                bool isVerticalBlur;
+                unsigned int nbTextureFetch;
+                std::vector<float> weights;
+                std::vector<float> offsets;
+            };
+
             GaussianBlurFilter(const GaussianBlurFilterBuilder*, BlurDirection);
 
         private:
             std::string getShaderName() const override;
-            void completeShaderTokens(std::map<std::string, std::string>&) const override;
+            std::unique_ptr<ShaderConstants> buildShaderConstants() const override;
 
             std::vector<float> computeWeights() const;
             std::vector<float> computeWeightsLinearSampling(const std::vector<float>&) const;
@@ -33,8 +41,8 @@ namespace urchin {
 
             unsigned int nbTextureFetch;
             unsigned int textureSize;
-            std::string weightsTab;
-            std::string offsetsTab;
+            std::vector<float> weightsLinearSampling;
+            std::vector<float> offsetsLinearSampling;
     };
 
 }

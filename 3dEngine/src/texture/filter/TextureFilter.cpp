@@ -38,23 +38,15 @@ namespace urchin {
     }
 
     void TextureFilter::initializeDisplay(const std::string& filterName) {
-        std::locale::global(std::locale("C")); //for float //TODO remove...
-
-        std::map<std::string, std::string> shaderTokens;
-        this->completeShaderTokens(shaderTokens);
+        std::unique_ptr<ShaderConstants> shaderConstants = buildShaderConstants();
 
         if (textureType == TextureType::ARRAY) {
-            shaderTokens["MAX_VERTICES"] = std::to_string(3 * textureNumberLayer);
-            shaderTokens["NUMBER_LAYER"] = std::to_string(textureNumberLayer);
-
-            textureFilterShader = ShaderBuilder::createShader("texFilter.vert", "texFilter.geom", getShaderName() + ".frag", shaderTokens);
+            textureFilterShader = ShaderBuilder::createShader("spirv/texFilter.vert.spv", "spirv/texFilter.geom.spv", "spirv/" + getShaderName() + ".frag.spv", std::move(shaderConstants));
         } else if (textureType == TextureType::DEFAULT) {
-            textureFilterShader = ShaderBuilder::createShader("texFilter.vert", "", getShaderName() + ".frag", shaderTokens);
+            textureFilterShader = ShaderBuilder::createShader("spirv/texFilter.vert.spv", "", "spirv/" + getShaderName() + ".frag.spv", std::move(shaderConstants));
         } else {
             throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
         }
-
-        int layersToUpdate = 0;
 
         std::vector<Point2<float>> vertexCoord = {
                 Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(1.0f, 1.0f),
@@ -64,7 +56,8 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        auto textureRendererBuilder = GenericRendererBuilder::create(filterName, offscreenRenderTarget, getTextureFilterShader(), ShapeType::TRIANGLE)
+        int layersToUpdate = 0;
+        auto textureRendererBuilder = GenericRendererBuilder::create(filterName, offscreenRenderTarget, textureFilterShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addShaderData(sizeof(layersToUpdate), &layersToUpdate) //binding 0
@@ -96,6 +89,10 @@ namespace urchin {
 
     unsigned int TextureFilter::getTextureHeight() const {
         return textureHeight;
+    }
+
+    unsigned int TextureFilter::getTextureLayer() const {
+        return textureNumberLayer;
     }
 
     const std::shared_ptr<Shader>& TextureFilter::getTextureFilterShader() const {

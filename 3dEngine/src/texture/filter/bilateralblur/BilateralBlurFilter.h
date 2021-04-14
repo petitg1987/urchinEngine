@@ -17,6 +17,14 @@ namespace urchin {
                 HORIZONTAL
             };
 
+            struct BilateralBlurShaderConst {
+                unsigned int numberLayer;
+                bool isVerticalBlur;
+                unsigned int kernelRadius;
+                float blurSharpness;
+                std::vector<float> offsets;
+            };
+
             BilateralBlurFilter(const BilateralBlurFilterBuilder*, BlurDirection);
 
             void onCameraProjectionUpdate(float, float);
@@ -24,7 +32,7 @@ namespace urchin {
         private:
             std::string getShaderName() const override;
             void initiateAdditionalDisplay(const std::shared_ptr<GenericRendererBuilder>&) override;
-            void completeShaderTokens(std::map<std::string, std::string>&) const override;
+            std::unique_ptr<ShaderConstants> buildShaderConstants() const override;
 
             std::vector<float> computeOffsets() const;
 
@@ -40,8 +48,6 @@ namespace urchin {
                 alignas(4) float nearPlane;
                 alignas(4) float farPlane;
             } cameraPlanes;
-
-            std::string offsetsTab;
     };
 
 }

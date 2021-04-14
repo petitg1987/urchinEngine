@@ -43,7 +43,7 @@ namespace urchin {
             void onLightEvent(Light*, NotificationType);
             void logMaxLightsReach();
 
-            static const unsigned int LIGHTS_LIMIT;
+            static const unsigned int LIGHTS_SHADER_LIMIT;
 
             const unsigned int maxLights; //maximum of lights authorized to affect the scene in the same time
             std::shared_ptr<RenderTarget> renderTarget;

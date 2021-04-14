@@ -45,11 +45,21 @@ namespace urchin {
                 ->addTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()));
     }
 
-    void BilateralBlurFilter::completeShaderTokens(std::map<std::string, std::string>& shaderTokens) const {
-        shaderTokens["IS_VERTICAL_BLUR"] = (blurDirection == BlurDirection::VERTICAL) ? "true" : "false";
-        shaderTokens["KERNEL_RADIUS"] = std::to_string(blurSize / 2);
-        shaderTokens["BLUR_SHARPNESS"] = std::to_string(blurSharpness);
-        shaderTokens["OFFSETS_TAB"] = offsetsTab;
+    std::unique_ptr<ShaderConstants> BilateralBlurFilter::buildShaderConstants() const {
+        BilateralBlurShaderConst bilateralBlurData{};
+        bilateralBlurData.numberLayer = getTextureLayer();
+        bilateralBlurData.isVerticalBlur = blurDirection == BlurDirection::VERTICAL;
+        bilateralBlurData.kernelRadius = blurSize / 2;
+        bilateralBlurData.blurSharpness = blurSharpness;
+        bilateralBlurData.offsets = computeOffsets();
+        std::vector<std::size_t> variablesSize = {
+                sizeof(BilateralBlurShaderConst::numberLayer),
+                sizeof(BilateralBlurShaderConst::isVerticalBlur),
+                sizeof(BilateralBlurShaderConst::kernelRadius),
+                sizeof(BilateralBlurShaderConst::blurSharpness),
+                sizeof(float) * bilateralBlurData.offsets.size()
+        };
+        return std::make_unique<ShaderConstants>(variablesSize, &bilateralBlurData);
     }
 
     std::vector<float> BilateralBlurFilter::computeOffsets() const {

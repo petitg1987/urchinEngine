@@ -25,7 +25,7 @@ namespace urchin {
     constexpr bool DEBUG_EXPORT_SSAO_KERNEL = false;
 
     //static
-    constexpr unsigned int AmbientOcclusionManager::KERNEL_SAMPLES_LIMIT = 64; //limited by default const value of 'KERNEL_SAMPLES' in AO shader
+    constexpr unsigned int AmbientOcclusionManager::KERNEL_SAMPLES_SHADER_LIMIT = 64; //must be equals to 'KERNEL_SAMPLES' in AO shader
 
     AmbientOcclusionManager::AmbientOcclusionManager() :
             nearPlane(0.0f),
@@ -231,8 +231,8 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::setKernelSamples(unsigned int kernelSamples) {
-        if(kernelSamples > KERNEL_SAMPLES_LIMIT) {
-            throw std::runtime_error("Kernel samples value is limited to " + std::to_string(KERNEL_SAMPLES_LIMIT));
+        if(kernelSamples > KERNEL_SAMPLES_SHADER_LIMIT) {
+            throw std::runtime_error("Kernel samples value is limited to " + std::to_string(KERNEL_SAMPLES_SHADER_LIMIT));
         }
         this->kernelSamples = kernelSamples;
 

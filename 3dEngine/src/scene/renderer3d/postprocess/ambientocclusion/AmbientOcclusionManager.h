@@ -62,7 +62,7 @@ namespace urchin {
 
             int retrieveTextureSizeFactor();
 
-            static const unsigned int KERNEL_SAMPLES_LIMIT;
+            static const unsigned int KERNEL_SAMPLES_SHADER_LIMIT;
 
             //scene information
             float nearPlane, farPlane;

@@ -16,7 +16,7 @@ namespace urchin {
 
         private:
             std::string getShaderName() const override;
-            void completeShaderTokens(std::map<std::string, std::string>&) const override;
+            std::unique_ptr<ShaderConstants> buildShaderConstants() const override;
     };
 
 }

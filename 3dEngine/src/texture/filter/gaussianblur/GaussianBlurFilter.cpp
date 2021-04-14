@@ -22,12 +22,8 @@ namespace urchin {
         }
 
         std::vector<float> weights = computeWeights();
-
-        std::vector<float> weightsLinearSampling = computeWeightsLinearSampling(weights);
-        weightsTab = toShaderVectorValues(weightsLinearSampling);
-
-        std::vector<float> offsetsLinearSampling = computeOffsetsLinearSampling(weights, weightsLinearSampling);
-        offsetsTab = toShaderVectorValues(offsetsLinearSampling);
+        weightsLinearSampling = computeWeightsLinearSampling(weights);
+        offsetsLinearSampling = computeOffsetsLinearSampling(weights, weightsLinearSampling);
     }
 
     std::string GaussianBlurFilter::getShaderName() const {
@@ -37,11 +33,21 @@ namespace urchin {
         throw std::runtime_error("Unimplemented gaussian blur filter for: " + std::to_string(getTextureFormat()) + " - " + std::to_string(getTextureType()));
     }
 
-    void GaussianBlurFilter::completeShaderTokens(std::map<std::string, std::string>& shaderTokens) const {
-        shaderTokens["IS_VERTICAL_BLUR"] = (blurDirection == BlurDirection::VERTICAL) ? "true" : "false";
-        shaderTokens["NB_TEXTURE_FETCH"] = std::to_string(nbTextureFetch);
-        shaderTokens["WEIGHTS_TAB"] = weightsTab;
-        shaderTokens["OFFSETS_TAB"] = offsetsTab;
+    std::unique_ptr<ShaderConstants> GaussianBlurFilter::buildShaderConstants() const {
+        GaussianBlurShaderConst gaussianBlurData{};
+        gaussianBlurData.numberLayer = getTextureLayer();
+        gaussianBlurData.isVerticalBlur = blurDirection == BlurDirection::VERTICAL;
+        gaussianBlurData.nbTextureFetch = nbTextureFetch;
+        gaussianBlurData.weights = weightsLinearSampling;
+        gaussianBlurData.offsets = offsetsLinearSampling;
+        std::vector<std::size_t> variablesSize = {
+                sizeof(GaussianBlurShaderConst::numberLayer),
+                sizeof(GaussianBlurShaderConst::isVerticalBlur),
+                sizeof(GaussianBlurShaderConst::nbTextureFetch),
+                sizeof(float) * gaussianBlurData.weights.size(),
+                sizeof(float) * gaussianBlurData.offsets.size()
+        };
+        return std::make_unique<ShaderConstants>(variablesSize, &gaussianBlurData);
     }
 
     std::vector<float> GaussianBlurFilter::computeWeights() const {

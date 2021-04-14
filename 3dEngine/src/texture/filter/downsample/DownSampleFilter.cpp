@@ -15,8 +15,10 @@ namespace urchin {
         throw std::runtime_error("Unimplemented down sample filter for: " + std::to_string(getTextureFormat()) + " - " + std::to_string(getTextureType()));
     }
 
-    void DownSampleFilter::completeShaderTokens(std::map<std::string, std::string>&) const {
-        //nothing to complete
+    std::unique_ptr<ShaderConstants> DownSampleFilter::buildShaderConstants() const {
+        unsigned int textureLayer = getTextureLayer();
+        std::vector<std::size_t> variablesSize = {sizeof(textureLayer)};
+        return std::make_unique<ShaderConstants>(variablesSize, &textureLayer);
     }
 
 }

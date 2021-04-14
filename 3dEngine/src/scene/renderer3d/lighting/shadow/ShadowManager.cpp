@@ -103,8 +103,8 @@ namespace urchin {
     void ShadowManager::setNumberShadowMaps(unsigned int nbShadowMaps) {
         if (nbShadowMaps <= 1) { //note: shadow maps texture array with depth = 1 generate error in GLSL texture() function
             throw std::runtime_error("Number of shadow maps must be greater than one. Value: " + std::to_string(nbShadowMaps));
-        } else if (nbShadowMaps > SHADOW_MAPS_LIMIT) {
-            throw std::runtime_error("Number of shadow maps must be lower than " + std::to_string(SHADOW_MAPS_LIMIT) + ". Value: " + std::to_string(nbShadowMaps));
+        } else if (nbShadowMaps > SHADOW_MAPS_SHADER_LIMIT) {
+            throw std::runtime_error("Number of shadow maps must be lower than " + std::to_string(SHADOW_MAPS_SHADER_LIMIT) + ". Value: " + std::to_string(nbShadowMaps));
         }
 
         this->nbShadowMaps = nbShadowMaps;

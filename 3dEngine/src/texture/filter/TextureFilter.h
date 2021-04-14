@@ -28,22 +28,24 @@ namespace urchin {
         protected:
             virtual std::string getShaderName() const = 0;
             virtual void initiateAdditionalDisplay(const std::shared_ptr<GenericRendererBuilder>&);
-            virtual void completeShaderTokens(std::map<std::string, std::string>&) const = 0;
+            virtual std::unique_ptr<ShaderConstants> buildShaderConstants() const = 0;
 
             TextureFormat getTextureFormat() const;
             TextureType getTextureType() const;
             unsigned int getTextureWidth() const;
             unsigned int getTextureHeight() const;
+            unsigned int getTextureLayer() const;
 
             const std::shared_ptr<Shader>& getTextureFilterShader() const;
             const std::shared_ptr<GenericRenderer>& getTextureRenderer() const;
 
-            static std::string toShaderVectorValues(std::vector<float>&);
+            static std::string toShaderVectorValues(std::vector<float>&); //TODO remove..
 
         private:
             void initializeTexture(const std::string&);
             void initializeDisplay(const std::string&);
 
+            static constexpr unsigned int TEXTURE_LAYER_SHADER_LIMIT = 10; //must be equals to 'TEXTURE_LAYER_SHADER_LIMIT' in texFilter shaders
             bool isInitialized;
 
             //source texture
