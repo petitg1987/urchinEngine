@@ -52,7 +52,7 @@ namespace urchin {
         buttonRenderer = setupUiRenderer("button", ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addTextureReader(TextureReader::build(texInfoDefault, TextureParam::buildNearest()))
+                ->addUniformTextureReader(TextureReader::build(texInfoDefault, TextureParam::buildNearest()))
                 ->build();
     }
 
@@ -67,17 +67,17 @@ namespace urchin {
     }
 
     bool Button::onKeyPressEvent(unsigned int) {
-        buttonRenderer->updateTextureReader(0, TextureReader::build(getTexture(), TextureParam::buildNearest()));
+        buttonRenderer->updateUniformTextureReader(0, TextureReader::build(getTexture(), TextureParam::buildNearest()));
         return true;
     }
 
     bool Button::onKeyReleaseEvent(unsigned int) {
-        buttonRenderer->updateTextureReader(0, TextureReader::build(getTexture(), TextureParam::buildNearest()));
+        buttonRenderer->updateUniformTextureReader(0, TextureReader::build(getTexture(), TextureParam::buildNearest()));
         return true;
     }
 
     bool Button::onMouseMoveEvent(int, int) {
-        buttonRenderer->updateTextureReader(0, TextureReader::build(getTexture(), TextureParam::buildNearest()));
+        buttonRenderer->updateUniformTextureReader(0, TextureReader::build(getTexture(), TextureParam::buildNearest()));
         return true;
     }
 

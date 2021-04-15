@@ -63,12 +63,12 @@ namespace urchin {
         Vector2<int> translateVector(0, 0);
 
         return GenericRendererBuilder::create(name, getRenderTarget(), shader, shapeType)
-                ->addShaderData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
-                ->addShaderData(sizeof(translateVector), &translateVector); //binding 1
+                ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
+                ->addUniformData(sizeof(translateVector), &translateVector); //binding 1
     }
 
     void Widget::updateTranslateVector(const std::shared_ptr<GenericRenderer>& renderer, const Vector2<int>& translateVector) {
-        renderer->updateShaderData(1, &translateVector);
+        renderer->updateUniformData(1, &translateVector);
     }
 
     const std::shared_ptr<RenderTarget>& Widget::getRenderTarget() const {

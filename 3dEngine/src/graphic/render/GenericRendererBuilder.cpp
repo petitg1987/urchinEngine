@@ -81,27 +81,27 @@ namespace urchin {
      *   - N=16 for embedded struct
      *   - N=16 for an array (important: the array elements are rounded up to 16 bytes. Therefore, an array of float (4 bytes) in C++ won't match an array of float in the shader.)
      */
-    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addShaderData(std::size_t dataSize, const void* dataPtr) {
-        shaderData.emplace_back(ShaderDataContainer(dataSize, dataPtr));
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addUniformData(std::size_t dataSize, const void* dataPtr) {
+        uniformData.emplace_back(ShaderDataContainer(dataSize, dataPtr));
         return shared_from_this();
     }
 
-    const std::vector<ShaderDataContainer> &GenericRendererBuilder::getShaderData() const {
-        return shaderData;
+    const std::vector<ShaderDataContainer> &GenericRendererBuilder::getUniformData() const {
+        return uniformData;
     }
 
-    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addTextureReader(const std::shared_ptr<TextureReader>& textureReader) {
-        textureReaders.push_back({textureReader});
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addUniformTextureReader(const std::shared_ptr<TextureReader>& textureReader) {
+        uniformTextureReaders.push_back({textureReader});
         return shared_from_this();
     }
 
-    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addTextureReaderArray(const std::vector<std::shared_ptr<TextureReader>>& textureReadersArray) {
-        textureReaders.push_back(textureReadersArray);
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addUniformTextureReaderArray(const std::vector<std::shared_ptr<TextureReader>>& textureReadersArray) {
+        uniformTextureReaders.push_back(textureReadersArray);
         return shared_from_this();
     }
 
-    const std::vector<std::vector<std::shared_ptr<TextureReader>>>& GenericRendererBuilder::getTextureReaders() const {
-        return textureReaders;
+    const std::vector<std::vector<std::shared_ptr<TextureReader>>>& GenericRendererBuilder::getUniformTextureReaders() const {
+        return uniformTextureReaders;
     }
 
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::enableTransparency() {

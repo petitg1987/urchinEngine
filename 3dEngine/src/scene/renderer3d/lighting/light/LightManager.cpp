@@ -43,8 +43,8 @@ namespace urchin {
         lightsData = new LightsData[lightsDataSize];
 
         lightingRendererBuilder
-                ->addShaderData(lightsDataSize * sizeof(LightsData), lightsData) //binding 2
-                ->addShaderData(sizeof(globalAmbientColor), &globalAmbientColor); //binding 3
+                ->addUniformData(lightsDataSize * sizeof(LightsData), lightsData) //binding 2
+                ->addUniformData(sizeof(globalAmbientColor), &globalAmbientColor); //binding 3
     }
 
     OctreeManager<Light>* LightManager::getLightOctreeManager() const {
@@ -158,8 +158,8 @@ namespace urchin {
             }
         }
 
-        lightingRenderer->updateShaderData(2, lightsData);
-        lightingRenderer->updateShaderData(3, &globalAmbientColor);
+        lightingRenderer->updateUniformData(2, lightsData);
+        lightingRenderer->updateUniformData(3, &globalAmbientColor);
     }
 
     void LightManager::postUpdateVisibleLights() {

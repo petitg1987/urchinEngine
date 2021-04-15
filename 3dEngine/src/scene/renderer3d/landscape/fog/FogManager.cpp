@@ -25,7 +25,7 @@ namespace urchin {
     }
 
     void FogManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
-        lightingRendererBuilder->addShaderData(sizeof(fogData), &fogData); //binding 6
+        lightingRendererBuilder->addUniformData(sizeof(fogData), &fogData); //binding 6
     }
 
     void FogManager::loadFog(const std::shared_ptr<GenericRenderer>& lightingRenderer) {
@@ -38,7 +38,7 @@ namespace urchin {
             fogData.color = Vector4<float>(fogs.top()->getColor(), 1.0);
         }
 
-        lightingRenderer->updateShaderData(6, &fogData);
+        lightingRenderer->updateUniformData(6, &fogData);
     }
 
 }

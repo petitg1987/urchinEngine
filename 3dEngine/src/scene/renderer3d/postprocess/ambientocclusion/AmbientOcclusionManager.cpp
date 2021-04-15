@@ -158,12 +158,12 @@ namespace urchin {
         renderer = GenericRendererBuilder::create("ambient occlusion", offscreenRenderTarget, ambientOcclusionShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addShaderData(sizeof(positioningData), &positioningData) //binding 0
-                ->addShaderData(sizeof(Vector4<float>) * ssaoKernel.size(), ssaoKernel.data()) //binding 1
-                ->addShaderData(sizeof(resolution), &resolution) //binding 2
-                ->addTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()))
-                ->addTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
-                ->addTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest()))
+                ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
+                ->addUniformData(sizeof(Vector4<float>) * ssaoKernel.size(), ssaoKernel.data()) //binding 1
+                ->addUniformData(sizeof(resolution), &resolution) //binding 2
+                ->addUniformTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest()))
                 ->build();
     }
 
@@ -316,7 +316,7 @@ namespace urchin {
         positioningData.inverseProjectionViewMatrix = (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse();
         positioningData.projectionMatrix = camera->getProjectionMatrix();
         positioningData.viewMatrix = camera->getViewMatrix();
-        renderer->updateShaderData(0, &positioningData);
+        renderer->updateUniformData(0, &positioningData);
 
         offscreenRenderTarget->render();
 
@@ -327,8 +327,8 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::loadAOTexture(const std::shared_ptr<GenericRenderer>& lightingRenderer, std::size_t aoTextureUnit) const {
-        if (lightingRenderer->getTextureReader(aoTextureUnit)->getTexture() != getAmbientOcclusionTexture()) {
-            lightingRenderer->updateTextureReader(aoTextureUnit, TextureReader::build(getAmbientOcclusionTexture(), TextureParam::buildLinear()));
+        if (lightingRenderer->getUniformTextureReader(aoTextureUnit)->getTexture() != getAmbientOcclusionTexture()) {
+            lightingRenderer->updateUniformTextureReader(aoTextureUnit, TextureReader::build(getAmbientOcclusionTexture(), TextureParam::buildLinear()));
         }
     }
 

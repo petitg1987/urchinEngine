@@ -36,7 +36,7 @@ namespace urchin {
         bitmapRenderer = setupUiRenderer("static bitmap", ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addTextureReader(TextureReader::build(tex, TextureParam::buildNearest()))
+                ->addUniformTextureReader(TextureReader::build(tex, TextureParam::buildNearest()))
                 ->enableTransparency()
                 ->build();
     }

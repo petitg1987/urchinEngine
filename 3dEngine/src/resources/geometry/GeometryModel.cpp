@@ -32,8 +32,8 @@ namespace urchin {
 
         auto rendererBuilder = GenericRendererBuilder::create("geometry model", renderTarget, shader, getShapeType())
                 ->addData(vertexArray)
-                ->addShaderData(sizeof(positioningData), &positioningData) //binding 0
-                ->addShaderData(sizeof(color), &color) //binding 1
+                ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
+                ->addUniformData(sizeof(color), &color) //binding 1
                 ->disableCullFace()
                 ->outlineSize(outlineSize)
                 ->polygonMode(polygonMode);
@@ -99,8 +99,8 @@ namespace urchin {
         }
 
         positioningData.viewModelMatrix = viewMatrix * modelMatrix;
-        renderer->updateShaderData(0, &positioningData);
-        renderer->updateShaderData(1, &color);
+        renderer->updateUniformData(0, &positioningData);
+        renderer->updateUniformData(1, &color);
     }
 
 }

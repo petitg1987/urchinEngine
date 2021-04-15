@@ -46,8 +46,8 @@ namespace urchin {
         lightProjectionViewMatrices = new Matrix4<float>[mLightProjectionViewSize]{};
 
         lightingRendererBuilder
-                ->addShaderData(mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices) //binding 4
-                ->addShaderData(nbShadowMaps * sizeof(float) * 4, depthSplitDistance); //binding 5
+                ->addUniformData(mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices) //binding 4
+                ->addUniformData(nbShadowMaps * sizeof(float) * 4, depthSplitDistance); //binding 5
     }
 
     void ShadowManager::onCameraProjectionUpdate(const Camera* camera) {
@@ -304,8 +304,8 @@ namespace urchin {
                 assert(shadowLightIndex < getMaxShadowLights());
                 const LightShadowMap* lightShadowMap = lightShadowMaps.find(visibleLight)->second;
 
-                if (lightingRenderer->getTextureReader(shadowMapTexUnit, shadowLightIndex)->getTexture() != lightShadowMap->getFilteredShadowMapTexture()) {
-                    lightingRenderer->updateTextureReaderArray(shadowMapTexUnit, shadowLightIndex, TextureReader::build(lightShadowMap->getFilteredShadowMapTexture(), TextureParam::buildLinear()));
+                if (lightingRenderer->getUniformTextureReader(shadowMapTexUnit, shadowLightIndex)->getTexture() != lightShadowMap->getFilteredShadowMapTexture()) {
+                    lightingRenderer->updateUniformTextureReaderArray(shadowMapTexUnit, shadowLightIndex, TextureReader::build(lightShadowMap->getFilteredShadowMapTexture(), TextureParam::buildLinear()));
                 }
 
                 unsigned int shadowMapIndex = 0;
@@ -324,8 +324,8 @@ namespace urchin {
             depthSplitDistance[shadowMapIndex * 4] = ((projectionMatrix(2, 2) * -currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance));
         }
 
-        lightingRenderer->updateShaderData(4, lightProjectionViewMatrices);
-        lightingRenderer->updateShaderData(5, depthSplitDistance); //TODO: merge binding 4 & 5
+        lightingRenderer->updateUniformData(4, lightProjectionViewMatrices);
+        lightingRenderer->updateUniformData(5, depthSplitDistance); //TODO: merge binding 4 & 5
     }
 
 }

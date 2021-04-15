@@ -20,8 +20,8 @@ namespace urchin {
                 ->enableDepthOperations()
                 ->addData(constMesh->getBaseVertices())
                 ->indices(constMesh->getTrianglesIndices())
-                ->addShaderData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
-                ->addShaderData(sizeof(meshData), &meshData); //binding 1
+                ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
+                ->addUniformData(sizeof(meshData), &meshData); //binding 1
             if (customModelShaderVariable) {
                 customModelShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 2 & 3
             }
@@ -34,8 +34,8 @@ namespace urchin {
                     ->addData(constMesh->getTextureCoordinates())
                     ->addData(constMesh->getBaseNormals())
                     ->addData(constMesh->getBaseTangents())
-                    ->addTextureReader(TextureReader::build(constMesh->getMaterial()->getDiffuseTexture(), textureParam))
-                    ->addTextureReader(TextureReader::build(constMesh->getMaterial()->getNormalTexture(), textureParam));
+                    ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial()->getDiffuseTexture(), textureParam))
+                    ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial()->getNormalTexture(), textureParam));
             }
 
             meshRenderers.push_back(meshRendererBuilder->build());
@@ -50,7 +50,7 @@ namespace urchin {
 
     void ModelDisplayer::onCameraProjectionUpdate(const Camera* camera) {
         for (auto& meshRenderer : meshRenderers) {
-            meshRenderer->updateShaderData(0, &camera->getProjectionMatrix());
+            meshRenderer->updateUniformData(0, &camera->getProjectionMatrix());
         }
     }
 
@@ -80,7 +80,7 @@ namespace urchin {
             meshData.normalMatrix = (displayMode == DEFAULT_MODE) ? model->getTransform().getTransformMatrix().inverse().transpose() : Matrix4<float>();
             meshData.ambientFactor = model->getConstMeshes()->getConstMesh(meshIndex)->getMaterial()->getAmbientFactor();
 
-            meshRenderer->updateShaderData(1, &meshData);
+            meshRenderer->updateUniformData(1, &meshData);
 
             if (customModelShaderVariable) {
                 customModelShaderVariable->loadCustomShaderVariables(meshRenderer);

@@ -61,7 +61,7 @@ namespace urchin {
     void Water::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
 
-        waterRenderer->updateShaderData(2, &projectionMatrix);
+        waterRenderer->updateUniformData(2, &projectionMatrix);
     }
 
     void Water::updateRenderer() {
@@ -83,11 +83,11 @@ namespace urchin {
                     ->enableDepthOperations()
                     ->addData(vertexCoord)
                     ->addData(textureCoord)
-                    ->addShaderData(sizeof(positioningData), &positioningData) //binding 0
-                    ->addShaderData(sizeof(waterProperties), &waterProperties) //binding 1
-                    ->addShaderData(sizeof(projectionMatrix), &projectionMatrix) //binding 2
-                    ->addTextureReader(TextureReader::build(normalTexture, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
-                    ->addTextureReader(TextureReader::build(dudvMap, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
+                    ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
+                    ->addUniformData(sizeof(waterProperties), &waterProperties) //binding 1
+                    ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 2
+                    ->addUniformTextureReader(TextureReader::build(normalTexture, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
+                    ->addUniformTextureReader(TextureReader::build(dudvMap, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
                     ->build();
         }
 
@@ -134,7 +134,7 @@ namespace urchin {
         waterProperties.color = waterColor;
 
         if(waterRenderer) {
-            waterRenderer->updateShaderData(1, &waterProperties);
+            waterRenderer->updateUniformData(1, &waterProperties);
         }
     }
 
@@ -190,7 +190,7 @@ namespace urchin {
         waterProperties.waveSpeed = waveSpeed;
 
         if(waterRenderer) {
-            waterRenderer->updateShaderData(1, &waterProperties);
+            waterRenderer->updateUniformData(1, &waterProperties);
         }
     }
 
@@ -202,7 +202,7 @@ namespace urchin {
         waterProperties.waveStrength = waveStrength;
 
         if(waterRenderer) {
-            waterRenderer->updateShaderData(1, &waterProperties);
+            waterRenderer->updateUniformData(1, &waterProperties);
         }
     }
 
@@ -266,7 +266,7 @@ namespace urchin {
             positioningData.viewMatrix = camera->getViewMatrix();
             positioningData.sumTimeStep += dt;
 
-            waterRenderer->updateShaderData(0, &positioningData);
+            waterRenderer->updateUniformData(0, &positioningData);
             waterRenderer->addOnRenderTarget();
         }
     }

@@ -41,13 +41,13 @@ namespace urchin {
             void updateData(std::size_t, const std::vector<Point3<float>>&);
             void updateData(std::size_t, const std::vector<Vector3<float>>&);
 
-            void updateShaderData(std::size_t, const void*);
+            void updateUniformData(std::size_t, const void*);
 
-            void updateTextureReader(std::size_t, const std::shared_ptr<TextureReader>&);
-            const std::shared_ptr<TextureReader>& getTextureReader(std::size_t) const;
-            const std::shared_ptr<TextureReader>& getTextureReader(std::size_t, std::size_t) const;
-            void updateTextureReaderArray(std::size_t, std::size_t, const std::shared_ptr<TextureReader>&);
-            const std::vector<std::shared_ptr<TextureReader>>& getTextureReaderArray(std::size_t) const;
+            void updateUniformTextureReader(std::size_t, const std::shared_ptr<TextureReader>&);
+            const std::shared_ptr<TextureReader>& getUniformTextureReader(std::size_t) const;
+            const std::shared_ptr<TextureReader>& getUniformTextureReader(std::size_t, std::size_t) const;
+            void updateUniformTextureReaderArray(std::size_t, std::size_t, const std::shared_ptr<TextureReader>&);
+            const std::vector<std::shared_ptr<TextureReader>>& getUniformTextureReaderArray(std::size_t) const;
 
             void updateGraphicData(uint32_t);
             void updateCommandBuffer(VkCommandBuffer, std::size_t);
@@ -85,8 +85,8 @@ namespace urchin {
 
             std::vector<DataContainer> data;
             std::shared_ptr<IndexContainer> indices;
-            std::vector<ShaderDataContainer> shaderData;
-            std::vector<std::vector<std::shared_ptr<TextureReader>>> textureReaders;
+            std::vector<ShaderDataContainer> uniformData;
+            std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
             bool transparencyEnabled;
             bool depthOperationsEnabled;
             bool cullFaceEnabled;

@@ -223,7 +223,7 @@ namespace urchin {
         textRenderer = setupUiRenderer("text", ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addTextureReader(TextureReader::build(font->getTexture(), TextureParam::buildNearest()))
+                ->addUniformTextureReader(TextureReader::build(font->getTexture(), TextureParam::buildNearest()))
                 ->enableTransparency()
                 ->build();
     }

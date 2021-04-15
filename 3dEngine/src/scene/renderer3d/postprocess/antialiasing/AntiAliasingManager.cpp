@@ -35,15 +35,15 @@ namespace urchin {
         renderer = GenericRendererBuilder::create("anti aliasing", renderTarget, fxaaShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addShaderData(sizeof(invSceneSize), &invSceneSize) //binding 0
-                ->addTextureReader(TextureReader::build(texture, TextureParam::buildLinear()))
+                ->addUniformData(sizeof(invSceneSize), &invSceneSize) //binding 0
+                ->addUniformTextureReader(TextureReader::build(texture, TextureParam::buildLinear()))
                 ->build();
     }
 
     void AntiAliasingManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         invSceneSize = Point2<float>(1.0f / (float)sceneWidth, 1.0f / (float)sceneHeight);
         if (renderer) {
-            renderer->updateShaderData(0, &invSceneSize);
+            renderer->updateUniformData(0, &invSceneSize);
         }
     }
 

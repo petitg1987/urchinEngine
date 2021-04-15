@@ -164,9 +164,9 @@ namespace urchin {
         auto rendererBuilder = GenericRendererBuilder::create(name, renderTarget, displayTextureShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addShaderData(sizeof(mProjection), &mProjection) //binding 0
-                ->addShaderData(sizeof(renderingData), &renderingData) //binding 1
-                ->addTextureReader(TextureReader::build(texture, TextureParam::buildNearest()));
+                ->addUniformData(sizeof(mProjection), &mProjection) //binding 0
+                ->addUniformData(sizeof(renderingData), &renderingData) //binding 1
+                ->addUniformTextureReader(TextureReader::build(texture, TextureParam::buildNearest()));
         if (transparencyEnabled) {
             rendererBuilder->enableTransparency();
         }

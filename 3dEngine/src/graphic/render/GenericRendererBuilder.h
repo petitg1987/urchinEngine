@@ -31,12 +31,12 @@ namespace urchin {
             std::shared_ptr<GenericRendererBuilder> indices(const std::vector<uint32_t>&);
             const std::shared_ptr<IndexContainer>& getIndices() const;
 
-            std::shared_ptr<GenericRendererBuilder> addShaderData(std::size_t, const void*);
-            const std::vector<ShaderDataContainer> &getShaderData() const;
+            std::shared_ptr<GenericRendererBuilder> addUniformData(std::size_t, const void*);
+            const std::vector<ShaderDataContainer> &getUniformData() const;
 
-            std::shared_ptr<GenericRendererBuilder> addTextureReader(const std::shared_ptr<TextureReader>&);
-            std::shared_ptr<GenericRendererBuilder> addTextureReaderArray(const std::vector<std::shared_ptr<TextureReader>>&);
-            const std::vector<std::vector<std::shared_ptr<TextureReader>>>& getTextureReaders() const;
+            std::shared_ptr<GenericRendererBuilder> addUniformTextureReader(const std::shared_ptr<TextureReader>&);
+            std::shared_ptr<GenericRendererBuilder> addUniformTextureReaderArray(const std::vector<std::shared_ptr<TextureReader>>&);
+            const std::vector<std::vector<std::shared_ptr<TextureReader>>>& getUniformTextureReaders() const;
 
             std::shared_ptr<GenericRendererBuilder> enableTransparency();
             bool isTransparencyEnabled() const;
@@ -64,8 +64,8 @@ namespace urchin {
 
             std::vector<DataContainer> data;
             std::shared_ptr<IndexContainer> pIndices;
-            std::vector<ShaderDataContainer> shaderData;
-            std::vector<std::vector<std::shared_ptr<TextureReader>>> textureReaders;
+            std::vector<ShaderDataContainer> uniformData;
+            std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
             bool transparencyEnabled;
             bool depthOperationsEnabled;
             bool cullFaceEnabled;

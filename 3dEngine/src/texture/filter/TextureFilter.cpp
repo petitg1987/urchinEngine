@@ -60,8 +60,8 @@ namespace urchin {
         auto textureRendererBuilder = GenericRendererBuilder::create(filterName, offscreenRenderTarget, textureFilterShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addShaderData(sizeof(layersToUpdate), &layersToUpdate) //binding 0
-                ->addTextureReader(TextureReader::build(sourceTexture, TextureParam::buildLinear()));
+                ->addUniformData(sizeof(layersToUpdate), &layersToUpdate) //binding 0
+                ->addUniformTextureReader(TextureReader::build(sourceTexture, TextureParam::buildLinear()));
         completeRenderer(textureRendererBuilder);
 
         textureRenderer = textureRendererBuilder->build();
@@ -115,7 +115,7 @@ namespace urchin {
         if (textureType == TextureType::ARRAY) {
             if (layersToUpdate != 0) {
                 //TODO if all layers are not updated: we should ensure color attachment is not clear (see  colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR)
-                textureRenderer->updateShaderData(0, &layersToUpdate);
+                textureRenderer->updateUniformData(0, &layersToUpdate);
                 offscreenRenderTarget->render();
             }
         } else {

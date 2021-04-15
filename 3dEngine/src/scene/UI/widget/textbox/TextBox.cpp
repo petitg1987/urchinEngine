@@ -63,7 +63,7 @@ namespace urchin {
         textBoxRenderer = setupUiRenderer("text box", ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addTextureReader(TextureReader::build(texTextBoxDefault, TextureParam::buildNearest()))
+                ->addUniformTextureReader(TextureReader::build(texTextBoxDefault, TextureParam::buildNearest()))
                 ->build();
 
         std::vector<Point2<float>> cursorVertexCoord = {
@@ -77,7 +77,7 @@ namespace urchin {
         cursorRenderer = setupUiRenderer("text box - cursor", ShapeType::LINE)
                 ->addData(cursorVertexCoord)
                 ->addData(cursorTextureCoord)
-                ->addTextureReader(TextureReader::build(texCursorDiffuse, TextureParam::buildRepeatNearest()))
+                ->addUniformTextureReader(TextureReader::build(texCursorDiffuse, TextureParam::buildRepeatNearest()))
                 ->build();
     }
 
@@ -90,13 +90,13 @@ namespace urchin {
             Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
             if (widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
-                textBoxRenderer->updateTextureReader(0, TextureReader::build(texTextBoxFocus, TextureParam::buildNearest()));
+                textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxFocus, TextureParam::buildNearest()));
 
                 int localMouseX = getMouseX() - text->getGlobalPositionX();
                 computeCursorIndex(localMouseX);
             } else {
                 state = UNACTIVE;
-                textBoxRenderer->updateTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::buildNearest()));
+                textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::buildNearest()));
             }
         } else if (state == ACTIVE) {
             if (key == InputDeviceKey::LEFT_ARROW) {
@@ -139,7 +139,7 @@ namespace urchin {
 
     void TextBox::reset() {
         state = UNACTIVE;
-        textBoxRenderer->updateTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::buildNearest()));
+        textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::buildNearest()));
 
         Widget::reset();
     }

@@ -66,7 +66,7 @@ namespace urchin {
         this->projectionMatrix = projectionMatrix;
 
         for(auto& renderer: getAllRenderers()) {
-            renderer->updateShaderData(3, &projectionMatrix);
+            renderer->updateUniformData(3, &projectionMatrix);
         }
     }
 
@@ -78,7 +78,7 @@ namespace urchin {
         terrainPositioningData.maxPoint = mesh->getVertices()[mesh->getXSize() * mesh->getZSize() - 1];
 
         for(auto& renderer: getAllRenderers()) {
-            renderer->updateShaderData(2, &terrainPositioningData);
+            renderer->updateUniformData(2, &terrainPositioningData);
         }
     }
 
@@ -87,7 +87,7 @@ namespace urchin {
         this->ambient = ambient;
 
         for(auto& renderer: getAllRenderers()) {
-            renderer->updateShaderData(4, &ambient);
+            renderer->updateUniformData(4, &ambient);
         }
     }
 
@@ -215,13 +215,13 @@ namespace urchin {
                         ->disableCullFace()
                         ->addData(grassQuadtree->getGrassVertices())
                         ->addData(grassQuadtree->getGrassNormals())
-                        ->addShaderData(sizeof(positioningData), &positioningData) //binding 0
-                        ->addShaderData(sizeof(grassProperties), &grassProperties) //binding 1
-                        ->addShaderData(sizeof(terrainPositioningData), &terrainPositioningData) //binding 2
-                        ->addShaderData(sizeof(projectionMatrix), &projectionMatrix) //binding 3
-                        ->addShaderData(sizeof(ambient), &ambient) //binding 4
-                        ->addTextureReader(TextureReader::build(grassTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
-                        ->addTextureReader(TextureReader::build(grassMaskTexture, TextureParam::buildLinear()))
+                        ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
+                        ->addUniformData(sizeof(grassProperties), &grassProperties) //binding 1
+                        ->addUniformData(sizeof(terrainPositioningData), &terrainPositioningData) //binding 2
+                        ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 3
+                        ->addUniformData(sizeof(ambient), &ambient) //binding 4
+                        ->addUniformTextureReader(TextureReader::build(grassTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
+                        ->addUniformTextureReader(TextureReader::build(grassMaskTexture, TextureParam::buildLinear()))
                         ->build();
 
                 grassQuadtree->setRenderer(renderer);
@@ -292,7 +292,7 @@ namespace urchin {
         grassProperties.displayDistance = grassDisplayDistance;
 
         for(auto& renderer: getAllRenderers()) {
-            renderer->updateShaderData(1, &grassProperties);
+            renderer->updateUniformData(1, &grassProperties);
         }
     }
 
@@ -304,7 +304,7 @@ namespace urchin {
         grassProperties.height = grassHeight;
 
         for(auto& renderer: getAllRenderers()) {
-            renderer->updateShaderData(1, &grassProperties);
+            renderer->updateUniformData(1, &grassProperties);
         }
     }
 
@@ -316,7 +316,7 @@ namespace urchin {
         grassProperties.length = grassLength;
 
         for(auto& renderer: getAllRenderers()) {
-            renderer->updateShaderData(1, &grassProperties);
+            renderer->updateUniformData(1, &grassProperties);
         }
     }
 
@@ -328,7 +328,7 @@ namespace urchin {
         grassProperties.numGrassInTex = (int)numGrassInTex;
 
         for(auto& renderer: getAllRenderers()) {
-            renderer->updateShaderData(1, &grassProperties);
+            renderer->updateUniformData(1, &grassProperties);
         }
     }
 
@@ -350,7 +350,7 @@ namespace urchin {
         grassProperties.windDirection = windDirection.normalize();
 
         for(auto& renderer: getAllRenderers()) {
-            renderer->updateShaderData(1, &grassProperties);
+            renderer->updateUniformData(1, &grassProperties);
         }
     }
 
@@ -362,7 +362,7 @@ namespace urchin {
         grassProperties.windStrength = windStrength;
 
         for(auto& renderer: getAllRenderers()) {
-            renderer->updateShaderData(1, &grassProperties);
+            renderer->updateUniformData(1, &grassProperties);
         }
     }
 
@@ -385,7 +385,7 @@ namespace urchin {
 
                 if (grassQuadtreeBox && camera->getFrustum().cutFrustum(grassProperties.displayDistance).collideWithAABBox(*grassQuadtreeBox)) {
                     if (grassQuadtree->isLeaf()) {
-                        grassQuadtree->getRenderer()->updateShaderData(0, &positioningData);
+                        grassQuadtree->getRenderer()->updateUniformData(0, &positioningData);
                         grassQuadtree->getRenderer()->addOnRenderTarget();
                     } else {
                         for (const auto* child : grassQuadtree->getChildren()) {

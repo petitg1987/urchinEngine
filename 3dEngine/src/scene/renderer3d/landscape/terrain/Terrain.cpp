@@ -39,7 +39,7 @@ namespace urchin {
     void Terrain::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
         positioningData.projectionMatrix = projectionMatrix;
 
-        terrainRenderer->updateShaderData(1, &positioningData);
+        terrainRenderer->updateUniformData(1, &positioningData);
         grass->onCameraProjectionUpdate(projectionMatrix);
     }
 
@@ -57,13 +57,13 @@ namespace urchin {
                 ->addData(mesh->getNormals())
                 ->addData(dummyTextureCoordinates)
                 ->indices(mesh->getIndices())
-                ->addShaderData(sizeof(viewMatrix), &viewMatrix) //binding 0
-                ->addShaderData(sizeof(positioningData), &positioningData) //binding 1
-                ->addShaderData(sizeof(materialsStRepeat), &materialsStRepeat) //binding 2
-                ->addShaderData(sizeof(ambient), &ambient) //binding 3
-                ->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //mask texture
+                ->addUniformData(sizeof(viewMatrix), &viewMatrix) //binding 0
+                ->addUniformData(sizeof(positioningData), &positioningData) //binding 1
+                ->addUniformData(sizeof(materialsStRepeat), &materialsStRepeat) //binding 2
+                ->addUniformData(sizeof(ambient), &ambient) //binding 3
+                ->addUniformTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //mask texture
         for (std::size_t i = 0; i < materials->getMaterials().size(); ++i) {
-            terrainRendererBuilder->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //material texture
+            terrainRendererBuilder->addUniformTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //material texture
         }
         terrainRenderer = terrainRendererBuilder->build();
 
@@ -89,19 +89,19 @@ namespace urchin {
 
             Vector2<float> materialsStRepeat = materials->getStRepeat();
             terrainRenderer->updateData(2, materials->getTexCoordinates());
-            terrainRenderer->updateShaderData(2, &materialsStRepeat);
+            terrainRenderer->updateUniformData(2, &materialsStRepeat);
 
             std::size_t maskMaterialTexUnit = 0;
             std::size_t materialTexUnitStart = 1;
 
-            terrainRenderer->updateTextureReader(maskMaterialTexUnit, TextureReader::build(materials->getMaskTexture(), TextureParam::buildLinear()));
+            terrainRenderer->updateUniformTextureReader(maskMaterialTexUnit, TextureReader::build(materials->getMaskTexture(), TextureParam::buildLinear()));
             for (auto& material : materials->getMaterials()) {
                 if (material) {
                     TextureParam::ReadMode textureReadMode = material->isRepeatableTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
                     TextureParam textureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
-                    terrainRenderer->updateTextureReader(materialTexUnitStart++, TextureReader::build(material->getDiffuseTexture(), textureParam));
+                    terrainRenderer->updateUniformTextureReader(materialTexUnitStart++, TextureReader::build(material->getDiffuseTexture(), textureParam));
                 } else {
-                    terrainRenderer->updateTextureReader(materialTexUnitStart++, TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest()));
+                    terrainRenderer->updateUniformTextureReader(materialTexUnitStart++, TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest()));
                 }
             }
         }
@@ -134,7 +134,7 @@ namespace urchin {
         positioningData.position = position;
 
         if (terrainRenderer) {
-            terrainRenderer->updateShaderData(1, &positioningData);
+            terrainRenderer->updateUniformData(1, &positioningData);
         }
         refreshGrassMesh(); //grass uses terrain position: refresh is required
     }
@@ -154,7 +154,7 @@ namespace urchin {
         this->ambient = ambient;
 
         if(terrainRenderer) {
-            terrainRenderer->updateShaderData(3, &ambient);
+            terrainRenderer->updateUniformData(3, &ambient);
         }
         refreshGrassAmbient(); //grass uses ambient value: refresh is required
     }
@@ -172,7 +172,7 @@ namespace urchin {
     void Terrain::prepareRendering(const Camera* camera, float dt) const {
         assert(isInitialized);
 
-        terrainRenderer->updateShaderData(0, &camera->getViewMatrix());
+        terrainRenderer->updateUniformData(0, &camera->getViewMatrix());
         terrainRenderer->addOnRenderTarget();
 
         if (grass) {

@@ -327,8 +327,8 @@ namespace urchin {
         auto lightingRendererBuilder = GenericRendererBuilder::create("deferred rendering - second pass", renderTarget, lightingShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addShaderData(sizeof(positioningData), &positioningData) //binding 0
-                ->addShaderData(sizeof(visualOption), &visualOption); //binding 1
+                ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
+                ->addUniformData(sizeof(visualOption), &visualOption); //binding 1
         lightManager->setupLightingRenderer(lightingRendererBuilder); //binding 2 & 3
         shadowManager->setupLightingRenderer(lightingRendererBuilder); //binding 4 & 5
         fogManager->setupLightingRenderer(lightingRendererBuilder); //binding 6
@@ -338,11 +338,11 @@ namespace urchin {
             shadowMapTextureReaders.push_back(TextureReader::build(Texture::buildEmptyArray(), TextureParam::buildNearest()));
         }
         lightingRenderer = lightingRendererBuilder
-                ->addTextureReader(TextureReader::build(deferredRenderTarget->getDepthTexture(), TextureParam::buildNearest()))
-                ->addTextureReader(TextureReader::build(diffuseTexture, TextureParam::buildNearest()))
-                ->addTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
-                ->addTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())) //ambient occlusion
-                ->addTextureReaderArray(shadowMapTextureReaders)
+                ->addUniformTextureReader(TextureReader::build(deferredRenderTarget->getDepthTexture(), TextureParam::buildNearest()))
+                ->addUniformTextureReader(TextureReader::build(diffuseTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())) //ambient occlusion
+                ->addUniformTextureReaderArray(shadowMapTextureReaders)
                 ->build();
 
         ambientOcclusionManager->onResize(sceneWidth, sceneHeight);
@@ -491,7 +491,7 @@ namespace urchin {
 
             positioningData.inverseProjectionViewMatrix = (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse();
             positioningData.viewPosition = camera->getPosition();
-            lightingRenderer->updateShaderData(0, &positioningData);
+            lightingRenderer->updateUniformData(0, &positioningData);
 
             lightManager->loadVisibleLights(lightingRenderer);
 

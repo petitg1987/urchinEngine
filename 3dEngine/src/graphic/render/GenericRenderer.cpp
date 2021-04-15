@@ -18,8 +18,8 @@ namespace urchin {
             shapeType(rendererBuilder->getShapeType()),
             data(rendererBuilder->getData()),
             indices(rendererBuilder->getIndices()),
-            shaderData(rendererBuilder->getShaderData()),
-            textureReaders(rendererBuilder->getTextureReaders()),
+            uniformData(rendererBuilder->getUniformData()),
+            uniformTextureReaders(rendererBuilder->getUniformTextureReaders()),
             transparencyEnabled(rendererBuilder->isTransparencyEnabled()),
             depthOperationsEnabled(rendererBuilder->isDepthOperationsEnabled()),
             cullFaceEnabled(rendererBuilder->isCullFaceEnabled()),
@@ -33,13 +33,13 @@ namespace urchin {
         if(depthOperationsEnabled && !renderTarget->hasDepthAttachment()) {
             throw std::runtime_error("Depth operations are enabled but there is no depth attachment on the render target");
         }
-        if(shaderData.size() > UNIFORM_TEX_BINDING_START_INDEX) {
-            throw std::runtime_error("Too much of shader data (" + std::to_string(shaderData.size()) + "), limit is: " + std::to_string(UNIFORM_TEX_BINDING_START_INDEX));
+        if(uniformData.size() > UNIFORM_TEX_BINDING_START_INDEX) {
+            throw std::runtime_error("Too much of uniform data (" + std::to_string(uniformData.size()) + "), limit is: " + std::to_string(UNIFORM_TEX_BINDING_START_INDEX));
         }
 
-        for(auto& textureReaderArray : textureReaders) {
-            for(auto& textureReader : textureReaderArray) {
-                textureReader->initialize();
+        for(auto& uniformTextureReaderArray : uniformTextureReaders) {
+            for(auto& uniformTextureReader : uniformTextureReaderArray) {
+                uniformTextureReader->initialize();
             }
         }
 
@@ -48,7 +48,7 @@ namespace urchin {
 
     GenericRenderer::~GenericRenderer() {
         cleanup();
-        textureReaders.clear();
+        uniformTextureReaders.clear();
     }
 
     void GenericRenderer::initialize() {
@@ -106,7 +106,7 @@ namespace urchin {
 
         std::vector<VkDescriptorSetLayoutBinding> bindings;
 
-        for(unsigned int i = 0; i < shaderData.size(); ++i) {
+        for(unsigned int i = 0; i < uniformData.size(); ++i) {
             VkDescriptorSetLayoutBinding uboLayoutBinding{};
             uboLayoutBinding.binding = i; //shader uniform binding
             uboLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
@@ -116,10 +116,10 @@ namespace urchin {
             bindings.emplace_back(uboLayoutBinding);
         }
 
-        for(unsigned int i = 0; i < textureReaders.size(); ++i) {
+        for(unsigned int i = 0; i < uniformTextureReaders.size(); ++i) {
             VkDescriptorSetLayoutBinding samplerLayoutBinding{};
             samplerLayoutBinding.binding = UNIFORM_TEX_BINDING_START_INDEX + i; //shader uniform binding
-            samplerLayoutBinding.descriptorCount = (uint32_t)textureReaders[i].size();
+            samplerLayoutBinding.descriptorCount = (uint32_t)uniformTextureReaders[i].size();
             samplerLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
             samplerLayoutBinding.pImmutableSamplers = nullptr;
             samplerLayoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_GEOMETRY_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
@@ -340,9 +340,9 @@ namespace urchin {
     }
 
     void GenericRenderer::createUniformBuffers() {
-        uniformsBuffers.resize(shaderData.size());
-        for (std::size_t dataIndex = 0; dataIndex < shaderData.size(); ++dataIndex) {
-            uniformsBuffers[dataIndex].initialize(BufferHandler::UNIFORM, renderTarget->getNumFramebuffer(), shaderData[dataIndex].getDataSize());
+        uniformsBuffers.resize(uniformData.size());
+        for (std::size_t dataIndex = 0; dataIndex < uniformData.size(); ++dataIndex) {
+            uniformsBuffers[dataIndex].initialize(BufferHandler::UNIFORM, renderTarget->getNumFramebuffer(), uniformData[dataIndex].getDataSize());
         }
     }
 
@@ -357,10 +357,10 @@ namespace urchin {
         auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
 
         std::array<VkDescriptorPoolSize, 2> poolSizes{};
-        int uboDescriptorCount = std::max(1, (int)renderTarget->getNumFramebuffer() * (int)shaderData.size());
+        int uboDescriptorCount = std::max(1, (int)renderTarget->getNumFramebuffer() * (int)uniformData.size());
         poolSizes[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
         poolSizes[0].descriptorCount = (uint32_t)uboDescriptorCount;
-        int textureDescriptorCount = std::max(1, (int)renderTarget->getNumFramebuffer() * (int)textureReaders.size());
+        int textureDescriptorCount = std::max(1, (int)renderTarget->getNumFramebuffer() * (int)uniformTextureReaders.size());
         poolSizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
         poolSizes[1].descriptorCount = (uint32_t)textureDescriptorCount;
 
@@ -404,7 +404,7 @@ namespace urchin {
             //uniform buffer objects
             uint32_t shaderUniformBinding = 0;
             std::vector<VkDescriptorBufferInfo> bufferInfos;
-            for(std::size_t dataIndex = 0; dataIndex < shaderData.size(); ++dataIndex) {
+            for(std::size_t dataIndex = 0; dataIndex < uniformData.size(); ++dataIndex) {
                 VkDescriptorBufferInfo bufferInfo{};
                 bufferInfo.buffer = uniformsBuffers[dataIndex].getBuffer(frameIndex);
                 bufferInfo.offset = 0;
@@ -426,13 +426,13 @@ namespace urchin {
             //textures
             shaderUniformBinding = UNIFORM_TEX_BINDING_START_INDEX;
             std::vector<std::vector<VkDescriptorImageInfo>> imageInfos;
-            for(auto& textureReaderArray : textureReaders) {
+            for(auto& uniformTextureReaderArray : uniformTextureReaders) {
                 std::vector<VkDescriptorImageInfo> imageInfosArray;
-                for(auto& textureReader : textureReaderArray) {
+                for(auto& uniformTextureReader : uniformTextureReaderArray) {
                     VkDescriptorImageInfo imageInfo{};
                     imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-                    imageInfo.imageView = textureReader->getTexture()->getImageView();
-                    imageInfo.sampler = textureReader->getParam().getTextureSampler();
+                    imageInfo.imageView = uniformTextureReader->getTexture()->getImageView();
+                    imageInfo.sampler = uniformTextureReader->getParam().getTextureSampler();
                     imageInfosArray.emplace_back(imageInfo);
                 }
                 imageInfos.emplace_back(imageInfosArray);
@@ -481,44 +481,44 @@ namespace urchin {
         data[dataIndex] = std::move(dataContainer);
     }
 
-    void GenericRenderer::updateShaderData(std::size_t shaderDataIndex, const void* dataPtr) {
-        assert(shaderData.size() > shaderDataIndex);
+    void GenericRenderer::updateUniformData(std::size_t uniformDataIndex, const void* dataPtr) {
+        assert(uniformData.size() > uniformDataIndex);
 
-        shaderData[shaderDataIndex].updateData(dataPtr);
+        uniformData[uniformDataIndex].updateData(dataPtr);
     }
 
-    void GenericRenderer::updateTextureReader(std::size_t texturePosition, const std::shared_ptr<TextureReader>& textureReader) {
-        updateTextureReaderArray(texturePosition, 0, textureReader);
+    void GenericRenderer::updateUniformTextureReader(std::size_t texturePosition, const std::shared_ptr<TextureReader>& textureReader) {
+        updateUniformTextureReaderArray(texturePosition, 0, textureReader);
     }
 
-    const std::shared_ptr<TextureReader>& GenericRenderer::getTextureReader(std::size_t texturePosition) const {
-        assert(textureReaders.size() > texturePosition);
-        assert(textureReaders[texturePosition].size() == 1);
-        return getTextureReaderArray(texturePosition)[0];
+    const std::shared_ptr<TextureReader>& GenericRenderer::getUniformTextureReader(std::size_t uniformTexPosition) const {
+        assert(uniformTextureReaders.size() > uniformTexPosition);
+        assert(uniformTextureReaders[uniformTexPosition].size() == 1);
+        return getUniformTextureReaderArray(uniformTexPosition)[0];
     }
 
-    const std::shared_ptr<TextureReader>& GenericRenderer::getTextureReader(std::size_t texturePosition, std::size_t textureIndex) const {
-        assert(textureReaders.size() > texturePosition);
-        assert(textureReaders[texturePosition].size() > textureIndex);
-        return getTextureReaderArray(texturePosition)[textureIndex];
+    const std::shared_ptr<TextureReader>& GenericRenderer::getUniformTextureReader(std::size_t uniformTexPosition, std::size_t textureIndex) const {
+        assert(uniformTextureReaders.size() > uniformTexPosition);
+        assert(uniformTextureReaders[uniformTexPosition].size() > textureIndex);
+        return getUniformTextureReaderArray(uniformTexPosition)[textureIndex];
     }
 
-    void GenericRenderer::updateTextureReaderArray(std::size_t texturePosition, std::size_t textureIndex, const std::shared_ptr<TextureReader>& textureReader) {
-        assert(textureReaders.size() > texturePosition);
-        assert(textureReaders[texturePosition].size() > textureIndex);
+    void GenericRenderer::updateUniformTextureReaderArray(std::size_t uniformTexPosition, std::size_t textureIndex, const std::shared_ptr<TextureReader>& textureReader) {
+        assert(uniformTextureReaders.size() > uniformTexPosition);
+        assert(uniformTextureReaders[uniformTexPosition].size() > textureIndex);
 
         vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
 
         textureReader->initialize();
-        textureReaders[texturePosition][textureIndex] = textureReader;
+        uniformTextureReaders[uniformTexPosition][textureIndex] = textureReader;
 
         updateDescriptorSets(); //TODO update only updated ?
     }
 
-    const std::vector<std::shared_ptr<TextureReader>>& GenericRenderer::getTextureReaderArray(std::size_t textureIndex) const {
-        assert(textureReaders.size() > textureIndex);
+    const std::vector<std::shared_ptr<TextureReader>>& GenericRenderer::getUniformTextureReaderArray(std::size_t textureIndex) const {
+        assert(uniformTextureReaders.size() > textureIndex);
 
-        return textureReaders[textureIndex];
+        return uniformTextureReaders[textureIndex];
     }
 
     void GenericRenderer::updateGraphicData(uint32_t frameIndex) {
@@ -531,10 +531,10 @@ namespace urchin {
         }
 
         //update shader uniforms
-        for (std::size_t shaderDataIndex = 0; shaderDataIndex < shaderData.size(); ++shaderDataIndex) {
-            if (shaderData[shaderDataIndex].hasNewData()) {
-                drawCommandDirty |= uniformsBuffers[shaderDataIndex].updateData(frameIndex, shaderData[shaderDataIndex].getData());
-                shaderData[shaderDataIndex].newDataAck(renderTarget->getNumFramebuffer());
+        for (std::size_t uniformDataIndex = 0; uniformDataIndex < uniformData.size(); ++uniformDataIndex) {
+            if (uniformData[uniformDataIndex].hasNewData()) {
+                drawCommandDirty |= uniformsBuffers[uniformDataIndex].updateData(frameIndex, uniformData[uniformDataIndex].getData());
+                uniformData[uniformDataIndex].newDataAck(renderTarget->getNumFramebuffer());
             }
         }
     }
