@@ -18,6 +18,10 @@ namespace urchin {
 
     }
 
+    std::string RenderTarget::getName() const {
+        return name;
+    }
+
     VkRenderPass RenderTarget::getRenderPass() const {
         return renderPass;
     }

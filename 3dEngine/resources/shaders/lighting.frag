@@ -51,11 +51,11 @@ layout(std140, set = 0, binding = 6) uniform Fog {
 } fog;
 
 //deferred textures
-layout(binding = 20) uniform sampler2D depthTex; //depth (32 bits)
-layout(binding = 21) uniform sampler2D colorTex; //diffuse RGB (3*8 bits) + EMPTY (8 bits)
-layout(binding = 22) uniform sampler2D normalAndAmbientTex; //normal XYZ (3*8 bits) + ambient factor
-layout(binding = 23) uniform sampler2D ambientOcclusionTex; //ambient occlusion factor (16 bits)
-layout(binding = 24) uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //shadow maps for each lights
+layout(binding = 7) uniform sampler2D depthTex; //depth (32 bits)
+layout(binding = 8) uniform sampler2D colorTex; //diffuse RGB (3*8 bits) + EMPTY (8 bits)
+layout(binding = 9) uniform sampler2D normalAndAmbientTex; //normal XYZ (3*8 bits) + ambient factor
+layout(binding = 10) uniform sampler2D ambientOcclusionTex; //ambient occlusion factor (16 bits)
+layout(binding = 11) uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //shadow maps for each lights
 
 layout(location = 0) in vec2 texCoordinates;
 

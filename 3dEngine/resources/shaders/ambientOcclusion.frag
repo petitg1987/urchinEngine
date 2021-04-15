@@ -20,9 +20,9 @@ layout(std140, set = 0, binding = 1) uniform KernelData {
 layout(std140, set = 0, binding = 2) uniform Scene {
     vec2 resolution;
 } scene;
-layout(binding = 20) uniform sampler2D depthTex;
-layout(binding = 21) uniform sampler2D normalAndAmbientTex;
-layout(binding = 22) uniform sampler2D noiseTex;
+layout(binding = 3) uniform sampler2D depthTex;
+layout(binding = 4) uniform sampler2D normalAndAmbientTex;
+layout(binding = 5) uniform sampler2D noiseTex;
 
 layout(location = 0) in vec2 texCoordinates;
 

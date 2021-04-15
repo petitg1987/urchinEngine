@@ -46,7 +46,7 @@ namespace urchin {
         throw std::runtime_error("Unimplemented bilateral blur filter for: " + std::to_string(getTextureFormat()) + " - " + std::to_string(getTextureType()));
     }
 
-    void BilateralBlurFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder) {
+    void BilateralBlurFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder, const std::shared_ptr<TextureReader>& sourceTextureReader) {
         std::vector<float> offsetsShaderData(offsets.size() * 4, 0.0f);
         for(std::size_t i = 0; i< offsets.size(); ++i) {
             offsetsShaderData[i * 4] = offsets[i];
@@ -55,7 +55,8 @@ namespace urchin {
         textureRendererBuilder
                 ->addUniformData(sizeof(cameraPlanes), &cameraPlanes) //binding 1
                 ->addUniformData(offsetsShaderData.size() * sizeof(float), offsetsShaderData.data()) //binding 2
-                ->addUniformTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()));
+                ->addUniformTextureReader(sourceTextureReader) //binding 3
+                ->addUniformTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest())); //binding 4
     }
 
     std::unique_ptr<ShaderConstants> BilateralBlurFilter::buildShaderConstants() const {

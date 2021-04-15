@@ -7,11 +7,11 @@ layout(std140, set = 0, binding = 2) uniform Material {
 layout(std140, set = 0, binding = 3) uniform Lighting {
     float ambient;
 } lighting;
-layout(binding = 20) uniform sampler2D maskTex;
-layout(binding = 21) uniform sampler2D diffuseTex1;
-layout(binding = 22) uniform sampler2D diffuseTex2;
-layout(binding = 23) uniform sampler2D diffuseTex3;
-layout(binding = 24) uniform sampler2D diffuseTex4;
+layout(binding = 4) uniform sampler2D maskTex;
+layout(binding = 5) uniform sampler2D diffuseTex1;
+layout(binding = 6) uniform sampler2D diffuseTex2;
+layout(binding = 7) uniform sampler2D diffuseTex3;
+layout(binding = 8) uniform sampler2D diffuseTex4;
 
 layout(location = 0) in vec2 texCoordinates;
 layout(location = 1) in vec3 normal;

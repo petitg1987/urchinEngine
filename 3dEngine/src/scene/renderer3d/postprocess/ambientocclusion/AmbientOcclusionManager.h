@@ -17,16 +17,6 @@ namespace urchin {
                 HALF_SIZE = 1
             };
 
-            struct AmbientOcclusionShaderConst {
-                uint32_t kernelSamples;
-                float radius;
-                float ambientOcclusionStrength;
-                float depthStartAttenuation;
-                float depthEndAttenuation;
-                uint32_t noiseTextureSize;
-                float bias;
-            };
-
             AmbientOcclusionManager();
             ~AmbientOcclusionManager();
 
@@ -52,6 +42,16 @@ namespace urchin {
             void loadAOTexture(const std::shared_ptr<GenericRenderer>&, std::size_t) const;
 
         private:
+            struct AmbientOcclusionShaderConst {
+                uint32_t kernelSamples;
+                float radius;
+                float ambientOcclusionStrength;
+                float depthStartAttenuation;
+                float depthEndAttenuation;
+                uint32_t noiseTextureSize;
+                float bias;
+            };
+
             void createOrUpdateAO();
             void createOrUpdateAOShader();
             void createOrUpdateAOTexture();

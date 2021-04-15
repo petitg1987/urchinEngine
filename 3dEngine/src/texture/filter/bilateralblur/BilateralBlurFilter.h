@@ -17,6 +17,11 @@ namespace urchin {
                 HORIZONTAL
             };
 
+            BilateralBlurFilter(const BilateralBlurFilterBuilder*, BlurDirection);
+
+            void onCameraProjectionUpdate(float, float);
+
+        private:
             struct BilateralBlurShaderConst {
                 uint32_t numberLayer;
                 uint32_t isVerticalBlur;
@@ -24,13 +29,8 @@ namespace urchin {
                 float blurSharpness;
             };
 
-            BilateralBlurFilter(const BilateralBlurFilterBuilder*, BlurDirection);
-
-            void onCameraProjectionUpdate(float, float);
-
-        private:
             std::string getShaderName() const override;
-            void completeRenderer(const std::shared_ptr<GenericRendererBuilder>&) override;
+            void completeRenderer(const std::shared_ptr<GenericRendererBuilder>&, const std::shared_ptr<TextureReader>&) override;
             std::unique_ptr<ShaderConstants> buildShaderConstants() const override;
 
             std::vector<float> computeOffsets() const;

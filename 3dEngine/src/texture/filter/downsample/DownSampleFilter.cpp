@@ -1,5 +1,6 @@
 #include "DownSampleFilter.h"
 #include "texture/filter/downsample/DownSampleFilterBuilder.h"
+#include "graphic/render/GenericRendererBuilder.h"
 
 namespace urchin {
 
@@ -13,6 +14,10 @@ namespace urchin {
             return "texFilterDownSampleVec2Array";
         }
         throw std::runtime_error("Unimplemented down sample filter for: " + std::to_string(getTextureFormat()) + " - " + std::to_string(getTextureType()));
+    }
+
+    void DownSampleFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder, const std::shared_ptr<TextureReader>& sourceTextureReader) {
+        textureRendererBuilder->addUniformTextureReader(sourceTextureReader); //binding 1
     }
 
     std::unique_ptr<ShaderConstants> DownSampleFilter::buildShaderConstants() const {

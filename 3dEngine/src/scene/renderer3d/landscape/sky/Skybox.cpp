@@ -128,7 +128,7 @@ namespace urchin {
                 ->addData(textureCoord)
                 ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
                 ->addUniformData(sizeof(viewMatrix), &viewMatrix) //binding 1
-                ->addUniformTextureReader(TextureReader::build(skyboxTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(TextureReader::build(skyboxTexture, TextureParam::buildNearest())) //binding 2
                 ->build();
 
         this->isInitialized = true;

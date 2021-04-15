@@ -25,6 +25,7 @@ namespace urchin {
             virtual void initialize() = 0;
             virtual void cleanup() = 0;
 
+            std::string getName() const;
             virtual unsigned int getWidth() const = 0;
             virtual unsigned int getHeight() const = 0;
             virtual unsigned int getLayer() const = 0;

@@ -8,7 +8,6 @@ namespace urchin {
 
     //static
     const uint32_t GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE = 0xFFFFFFFF;
-    const uint32_t GenericRenderer::UNIFORM_TEX_BINDING_START_INDEX = 20;
 
     GenericRenderer::GenericRenderer(const GenericRendererBuilder* rendererBuilder) :
             isInitialized(false),
@@ -32,9 +31,6 @@ namespace urchin {
             drawCommandDirty(false) {
         if(depthOperationsEnabled && !renderTarget->hasDepthAttachment()) {
             throw std::runtime_error("Depth operations are enabled but there is no depth attachment on the render target");
-        }
-        if(uniformData.size() > UNIFORM_TEX_BINDING_START_INDEX) {
-            throw std::runtime_error("Too much of uniform data (" + std::to_string(uniformData.size()) + "), limit is: " + std::to_string(UNIFORM_TEX_BINDING_START_INDEX));
         }
 
         for(auto& uniformTextureReaderArray : uniformTextureReaders) {
@@ -104,11 +100,13 @@ namespace urchin {
     void GenericRenderer::createDescriptorSetLayout() {
         auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
 
+        uint32_t shaderUniformBinding = 0;
         std::vector<VkDescriptorSetLayoutBinding> bindings;
 
-        for(unsigned int i = 0; i < uniformData.size(); ++i) {
+        for(auto& uniformSingleData : uniformData) {
+            std::ignore = uniformSingleData;
             VkDescriptorSetLayoutBinding uboLayoutBinding{};
-            uboLayoutBinding.binding = i; //shader uniform binding
+            uboLayoutBinding.binding = shaderUniformBinding++;
             uboLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
             uboLayoutBinding.descriptorCount = 1;
             uboLayoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_GEOMETRY_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
@@ -116,10 +114,10 @@ namespace urchin {
             bindings.emplace_back(uboLayoutBinding);
         }
 
-        for(unsigned int i = 0; i < uniformTextureReaders.size(); ++i) {
+        for(auto& uniformTextureReader : uniformTextureReaders) {
             VkDescriptorSetLayoutBinding samplerLayoutBinding{};
-            samplerLayoutBinding.binding = UNIFORM_TEX_BINDING_START_INDEX + i; //shader uniform binding
-            samplerLayoutBinding.descriptorCount = (uint32_t)uniformTextureReaders[i].size();
+            samplerLayoutBinding.binding = shaderUniformBinding++;
+            samplerLayoutBinding.descriptorCount = (uint32_t)uniformTextureReader.size();
             samplerLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
             samplerLayoutBinding.pImmutableSamplers = nullptr;
             samplerLayoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_GEOMETRY_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
@@ -400,13 +398,13 @@ namespace urchin {
 
         for (std::size_t frameIndex = 0; frameIndex < renderTarget->getNumFramebuffer(); frameIndex++) {
             std::vector<VkWriteDescriptorSet> descriptorWrites;
+            uint32_t shaderUniformBinding = 0;
 
             //uniform buffer objects
-            uint32_t shaderUniformBinding = 0;
             std::vector<VkDescriptorBufferInfo> bufferInfos;
-            for(std::size_t dataIndex = 0; dataIndex < uniformData.size(); ++dataIndex) {
+            for(std::size_t uniformDataIndex = 0; uniformDataIndex < uniformData.size(); ++uniformDataIndex) {
                 VkDescriptorBufferInfo bufferInfo{};
-                bufferInfo.buffer = uniformsBuffers[dataIndex].getBuffer(frameIndex);
+                bufferInfo.buffer = uniformsBuffers[uniformDataIndex].getBuffer(frameIndex);
                 bufferInfo.offset = 0;
                 bufferInfo.range = VK_WHOLE_SIZE;
                 bufferInfos.emplace_back(bufferInfo);
@@ -424,7 +422,6 @@ namespace urchin {
             }
 
             //textures
-            shaderUniformBinding = UNIFORM_TEX_BINDING_START_INDEX;
             std::vector<std::vector<VkDescriptorImageInfo>> imageInfos;
             for(auto& uniformTextureReaderArray : uniformTextureReaders) {
                 std::vector<VkDescriptorImageInfo> imageInfosArray;
@@ -487,8 +484,8 @@ namespace urchin {
         uniformData[uniformDataIndex].updateData(dataPtr);
     }
 
-    void GenericRenderer::updateUniformTextureReader(std::size_t texturePosition, const std::shared_ptr<TextureReader>& textureReader) {
-        updateUniformTextureReaderArray(texturePosition, 0, textureReader);
+    void GenericRenderer::updateUniformTextureReader(std::size_t uniformTexPosition, const std::shared_ptr<TextureReader>& textureReader) {
+        updateUniformTextureReaderArray(uniformTexPosition, 0, textureReader);
     }
 
     const std::shared_ptr<TextureReader>& GenericRenderer::getUniformTextureReader(std::size_t uniformTexPosition) const {

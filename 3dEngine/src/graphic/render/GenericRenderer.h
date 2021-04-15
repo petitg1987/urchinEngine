@@ -74,8 +74,6 @@ namespace urchin {
 
             void updateData(std::size_t, DataContainer&&);
 
-            static const uint32_t UNIFORM_TEX_BINDING_START_INDEX;
-
             bool isInitialized;
 
             std::string name;

@@ -52,7 +52,7 @@ namespace urchin {
         buttonRenderer = setupUiRenderer("button", ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformTextureReader(TextureReader::build(texInfoDefault, TextureParam::buildNearest()))
+                ->addUniformTextureReader(TextureReader::build(texInfoDefault, TextureParam::buildNearest())) //binding 2
                 ->build();
     }
 

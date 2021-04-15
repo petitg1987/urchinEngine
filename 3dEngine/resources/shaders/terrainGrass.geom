@@ -21,7 +21,7 @@ layout(std140, set = 0, binding = 2) uniform TerrainPositioningData {
 layout(std140, set = 0, binding = 3) uniform Projection {
     mat4 mProjection;
 } projection;
-layout(binding = 21) uniform sampler2D grassMaskTex;
+layout(binding = 6) uniform sampler2D grassMaskTex;
 
 layout(points) in;
 layout(triangle_strip) out;

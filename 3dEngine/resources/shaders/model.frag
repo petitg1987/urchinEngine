@@ -7,8 +7,8 @@ layout(std140, set = 0, binding = 1) uniform MeshData {
     mat4 mNormal;
     float ambientFactor;
 } meshData;
-layout(binding = 20) uniform sampler2D diffuseTex;
-layout(binding = 21) uniform sampler2D normalTex;
+layout(binding = 2) uniform sampler2D diffuseTex;
+layout(binding = 3) uniform sampler2D normalTex;
 
 layout(location = 0) in vec3 t;
 layout(location = 1) in vec3 b;

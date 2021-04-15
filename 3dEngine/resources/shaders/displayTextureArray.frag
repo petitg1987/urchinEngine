@@ -12,7 +12,7 @@ layout(std140, set = 0, binding = 1) uniform RenderingData {
     float cameraFarPlane;
     int layer;
 } renderingData;
-layout(binding = 20) uniform sampler2DArray colorTex;
+layout(binding = 2) uniform sampler2DArray colorTex;
 
 layout(location = 0) in vec2 texCoordinates;
 

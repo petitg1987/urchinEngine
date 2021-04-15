@@ -63,7 +63,7 @@ namespace urchin {
         textBoxRenderer = setupUiRenderer("text box", ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformTextureReader(TextureReader::build(texTextBoxDefault, TextureParam::buildNearest()))
+                ->addUniformTextureReader(TextureReader::build(texTextBoxDefault, TextureParam::buildNearest())) //binding 3
                 ->build();
 
         std::vector<Point2<float>> cursorVertexCoord = {
@@ -77,7 +77,7 @@ namespace urchin {
         cursorRenderer = setupUiRenderer("text box - cursor", ShapeType::LINE)
                 ->addData(cursorVertexCoord)
                 ->addData(cursorTextureCoord)
-                ->addUniformTextureReader(TextureReader::build(texCursorDiffuse, TextureParam::buildRepeatNearest()))
+                ->addUniformTextureReader(TextureReader::build(texCursorDiffuse, TextureParam::buildRepeatNearest())) //binding 2
                 ->build();
     }
 

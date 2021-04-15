@@ -338,11 +338,11 @@ namespace urchin {
             shadowMapTextureReaders.push_back(TextureReader::build(Texture::buildEmptyArray(), TextureParam::buildNearest()));
         }
         lightingRenderer = lightingRendererBuilder
-                ->addUniformTextureReader(TextureReader::build(deferredRenderTarget->getDepthTexture(), TextureParam::buildNearest()))
-                ->addUniformTextureReader(TextureReader::build(diffuseTexture, TextureParam::buildNearest()))
-                ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
-                ->addUniformTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())) //ambient occlusion
-                ->addUniformTextureReaderArray(shadowMapTextureReaders)
+                ->addUniformTextureReader(TextureReader::build(deferredRenderTarget->getDepthTexture(), TextureParam::buildNearest())) //binding 7
+                ->addUniformTextureReader(TextureReader::build(diffuseTexture, TextureParam::buildNearest())) //binding 8
+                ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 9
+                ->addUniformTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())) //binding 10 - ambient occlusion
+                ->addUniformTextureReaderArray(shadowMapTextureReaders) //binding 11
                 ->build();
 
         ambientOcclusionManager->onResize(sceneWidth, sceneHeight);

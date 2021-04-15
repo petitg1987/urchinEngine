@@ -83,14 +83,7 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::createOrUpdateAOShader() {
-        AmbientOcclusionShaderConst aoConstData{};
-        aoConstData.kernelSamples = kernelSamples;
-        aoConstData.radius = radius;
-        aoConstData.ambientOcclusionStrength = ambientOcclusionStrength;
-        aoConstData.depthStartAttenuation = depthStartAttenuation;
-        aoConstData.depthEndAttenuation = depthEndAttenuation;
-        aoConstData.noiseTextureSize = noiseTextureSize;
-        aoConstData.bias = bias;
+        AmbientOcclusionShaderConst aoConstData{kernelSamples, radius, ambientOcclusionStrength, depthStartAttenuation, depthEndAttenuation, noiseTextureSize, bias};
         std::vector<std::size_t> variablesSize = {
             sizeof(AmbientOcclusionShaderConst::kernelSamples),
             sizeof(AmbientOcclusionShaderConst::radius),
@@ -161,9 +154,9 @@ namespace urchin {
                 ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
                 ->addUniformData(sizeof(Vector4<float>) * ssaoKernel.size(), ssaoKernel.data()) //binding 1
                 ->addUniformData(sizeof(resolution), &resolution) //binding 2
-                ->addUniformTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()))
-                ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
-                ->addUniformTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest()))
+                ->addUniformTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest())) //binding 3
+                ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 4
+                ->addUniformTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest())) //binding 5
                 ->build();
     }
 

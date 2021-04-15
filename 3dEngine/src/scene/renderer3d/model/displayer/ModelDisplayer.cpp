@@ -27,6 +27,7 @@ namespace urchin {
             }
 
             if (displayMode == DEFAULT_MODE) {
+                assert(!customModelShaderVariable); //ensure binding id are correct
                 TextureParam::ReadMode textureReadMode = constMesh->getMaterial()->isRepeatableTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
                 TextureParam textureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
 
@@ -34,8 +35,8 @@ namespace urchin {
                     ->addData(constMesh->getTextureCoordinates())
                     ->addData(constMesh->getBaseNormals())
                     ->addData(constMesh->getBaseTangents())
-                    ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial()->getDiffuseTexture(), textureParam))
-                    ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial()->getNormalTexture(), textureParam));
+                    ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial()->getDiffuseTexture(), textureParam)) //binding 2
+                    ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial()->getNormalTexture(), textureParam)); //binding 3
             }
 
             meshRenderers.push_back(meshRendererBuilder->build());

@@ -16,6 +16,7 @@ namespace urchin {
 
         private:
             std::string getShaderName() const override;
+            void completeRenderer(const std::shared_ptr<GenericRendererBuilder>&, const std::shared_ptr<TextureReader>&) override;
             std::unique_ptr<ShaderConstants> buildShaderConstants() const override;
     };
 

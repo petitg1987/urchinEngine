@@ -60,15 +60,11 @@ namespace urchin {
         auto textureRendererBuilder = GenericRendererBuilder::create(filterName, offscreenRenderTarget, textureFilterShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformData(sizeof(layersToUpdate), &layersToUpdate) //binding 0
-                ->addUniformTextureReader(TextureReader::build(sourceTexture, TextureParam::buildLinear()));
-        completeRenderer(textureRendererBuilder);
+                ->addUniformData(sizeof(layersToUpdate), &layersToUpdate); //binding 0
+        auto sourceTargetReader = TextureReader::build(sourceTexture, TextureParam::buildLinear());
+        completeRenderer(textureRendererBuilder, sourceTargetReader);
 
         textureRenderer = textureRendererBuilder->build();
-    }
-
-    void TextureFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>&) {
-        //do nothing: to override
     }
 
     const std::shared_ptr<Texture>& TextureFilter::getTexture() const {

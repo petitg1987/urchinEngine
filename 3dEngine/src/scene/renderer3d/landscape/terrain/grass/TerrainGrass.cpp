@@ -220,8 +220,8 @@ namespace urchin {
                         ->addUniformData(sizeof(terrainPositioningData), &terrainPositioningData) //binding 2
                         ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 3
                         ->addUniformData(sizeof(ambient), &ambient) //binding 4
-                        ->addUniformTextureReader(TextureReader::build(grassTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
-                        ->addUniformTextureReader(TextureReader::build(grassMaskTexture, TextureParam::buildLinear()))
+                        ->addUniformTextureReader(TextureReader::build(grassTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::ANISOTROPY))) //binding 5
+                        ->addUniformTextureReader(TextureReader::build(grassMaskTexture, TextureParam::buildLinear())) //binding 6
                         ->build();
 
                 grassQuadtree->setRenderer(renderer);

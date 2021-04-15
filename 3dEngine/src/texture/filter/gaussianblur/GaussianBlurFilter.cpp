@@ -41,7 +41,7 @@ namespace urchin {
         throw std::runtime_error("Unimplemented gaussian blur filter for: " + std::to_string(getTextureFormat()) + " - " + std::to_string(getTextureType()));
     }
 
-    void GaussianBlurFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder) {
+    void GaussianBlurFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder, const std::shared_ptr<TextureReader>& sourceTextureReader) {
         std::vector<float> offsetsShaderData(offsetsLinearSampling.size() * 4, 0.0f);
         for(std::size_t i = 0; i < offsetsLinearSampling.size(); ++i) {
             offsetsShaderData[i * 4] = offsetsLinearSampling[i];
@@ -54,7 +54,8 @@ namespace urchin {
 
         textureRendererBuilder
                 ->addUniformData(offsetsShaderData.size() * sizeof(float), offsetsShaderData.data()) //binding 1
-                ->addUniformData(weightsShaderData.size() * sizeof(float), weightsShaderData.data()); //binding 2
+                ->addUniformData(weightsShaderData.size() * sizeof(float), weightsShaderData.data()) //binding 2
+                ->addUniformTextureReader(sourceTextureReader); //binding 3
     }
 
     std::unique_ptr<ShaderConstants> GaussianBlurFilter::buildShaderConstants() const {

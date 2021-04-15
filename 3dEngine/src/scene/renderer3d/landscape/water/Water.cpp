@@ -86,8 +86,8 @@ namespace urchin {
                     ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
                     ->addUniformData(sizeof(waterProperties), &waterProperties) //binding 1
                     ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 2
-                    ->addUniformTextureReader(TextureReader::build(normalTexture, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
-                    ->addUniformTextureReader(TextureReader::build(dudvMap, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
+                    ->addUniformTextureReader(TextureReader::build(normalTexture, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY))) //binding 3
+                    ->addUniformTextureReader(TextureReader::build(dudvMap, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY))) //binding 4
                     ->build();
         }
 

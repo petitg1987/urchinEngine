@@ -6,7 +6,7 @@ layout(constant_id = 0) const uint FXAA_QUALITY = 0; //0 = Low, 1 = Medium, 2 = 
 layout(std140, set = 0, binding = 0) uniform Scene {
     vec2 invSceneSize;
 } scene;
-layout(binding = 20) uniform sampler2D tex;
+layout(binding = 1) uniform sampler2D tex;
 
 layout(location = 0) in vec2 texCoordinates;
 

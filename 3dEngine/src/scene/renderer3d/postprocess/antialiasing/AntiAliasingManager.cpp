@@ -36,7 +36,7 @@ namespace urchin {
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(sizeof(invSceneSize), &invSceneSize) //binding 0
-                ->addUniformTextureReader(TextureReader::build(texture, TextureParam::buildLinear()))
+                ->addUniformTextureReader(TextureReader::build(texture, TextureParam::buildLinear())) //binding 1
                 ->build();
     }
 
