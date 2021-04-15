@@ -31,9 +31,9 @@ namespace urchin {
     class Renderer3d : public Renderer, public Observer {
         public:
             struct LightingShaderConst {
-                unsigned int maxLights;
-                unsigned int maxShadowLights;
-                unsigned int numberShadowMaps;
+                uint32_t maxLights;
+                uint32_t maxShadowLights;
+                uint32_t numberShadowMaps;
                 float shadowMapBias;
             };
 

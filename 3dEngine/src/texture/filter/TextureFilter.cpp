@@ -62,12 +62,12 @@ namespace urchin {
                 ->addData(textureCoord)
                 ->addShaderData(sizeof(layersToUpdate), &layersToUpdate) //binding 0
                 ->addTextureReader(TextureReader::build(sourceTexture, TextureParam::buildLinear()));
-        initiateAdditionalDisplay(textureRendererBuilder);
+        completeRenderer(textureRendererBuilder);
 
         textureRenderer = textureRendererBuilder->build();
     }
 
-    void TextureFilter::initiateAdditionalDisplay(const std::shared_ptr<GenericRendererBuilder>&) {
+    void TextureFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>&) {
         //do nothing: to override
     }
 
@@ -101,18 +101,6 @@ namespace urchin {
 
     const std::shared_ptr<GenericRenderer>& TextureFilter::getTextureRenderer() const {
         return textureRenderer;
-    }
-
-    std::string TextureFilter::toShaderVectorValues(std::vector<float>& vector) {
-        std::string vectorValuesStr;
-        for (std::size_t i = 0; i < vector.size(); ++i) {
-            vectorValuesStr += std::to_string(vector[i]);
-            if (i != vector.size() - 1) {
-                vectorValuesStr += ", ";
-            }
-        }
-
-        return vectorValuesStr;
     }
 
     /**

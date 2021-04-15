@@ -18,12 +18,12 @@ namespace urchin {
             };
 
             struct AmbientOcclusionShaderConst {
-                unsigned int kernelSamples;
+                uint32_t kernelSamples;
                 float radius;
                 float ambientOcclusionStrength;
                 float depthStartAttenuation;
                 float depthEndAttenuation;
-                unsigned int noiseTextureSize;
+                uint32_t noiseTextureSize;
                 float bias;
             };
 

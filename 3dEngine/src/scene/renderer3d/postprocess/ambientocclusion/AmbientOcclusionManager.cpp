@@ -232,7 +232,7 @@ namespace urchin {
 
     void AmbientOcclusionManager::setKernelSamples(unsigned int kernelSamples) {
         if(kernelSamples > KERNEL_SAMPLES_SHADER_LIMIT) {
-            throw std::runtime_error("Kernel samples value is limited to " + std::to_string(KERNEL_SAMPLES_SHADER_LIMIT));
+            throw std::invalid_argument("Kernel samples value is limited to " + std::to_string(KERNEL_SAMPLES_SHADER_LIMIT) + ". Value: " + std::to_string(kernelSamples));
         }
         this->kernelSamples = kernelSamples;
 

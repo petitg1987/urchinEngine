@@ -7,22 +7,29 @@
 
 namespace urchin {
 
+    //static
+    constexpr unsigned int BilateralBlurFilter::KERNEL_RADIUS_SHADER_LIMIT = 9; //must be equals to 'NB_TEXTURE_FETCH' in texFilterGaussian shader
+
     BilateralBlurFilter::BilateralBlurFilter(const BilateralBlurFilterBuilder* textureFilterBuilder, BlurDirection blurDirection):
             TextureFilter(textureFilterBuilder),
             depthTexture(textureFilterBuilder->getDepthTexture()),
             blurDirection(blurDirection),
-            blurSize(textureFilterBuilder->getBlurSize()),
             blurSharpness(textureFilterBuilder->getBlurSharpness()),
             textureSize((BlurDirection::VERTICAL == blurDirection) ? getTextureHeight() : getTextureWidth()),
             cameraPlanes({}) {
+        unsigned int blurSize = textureFilterBuilder->getBlurSize();
         if (blurSize <= 1) {
             throw std::invalid_argument("Blur size must be greater than one. Value: " + std::to_string(blurSize));
         } else if (blurSize % 2 == 0) {
             throw std::invalid_argument("Blur size must be an odd number. Value: " + std::to_string(blurSize));
         }
 
-        std::vector<float> offsets = computeOffsets();
-        offsetsTab = toShaderVectorValues(offsets);
+        kernelRadius = textureFilterBuilder->getBlurSize() / 2;
+        if (kernelRadius > KERNEL_RADIUS_SHADER_LIMIT) {
+            throw std::invalid_argument("Kernel radius value is limited to " + std::to_string(KERNEL_RADIUS_SHADER_LIMIT) + ". Value: " + std::to_string(kernelRadius));
+        }
+
+        offsets = computeOffsets();
     }
 
     void BilateralBlurFilter::onCameraProjectionUpdate(float nearPlane, float farPlane) {
@@ -39,36 +46,40 @@ namespace urchin {
         throw std::runtime_error("Unimplemented bilateral blur filter for: " + std::to_string(getTextureFormat()) + " - " + std::to_string(getTextureType()));
     }
 
-    void BilateralBlurFilter::initiateAdditionalDisplay(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder) {
+    void BilateralBlurFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder) {
+        std::vector<float> offsetsShaderData;
+        offsetsShaderData.resize(offsets.size() * 4, 0.0f);
+        for(std::size_t i = 0; i< offsets.size(); ++i) {
+            offsetsShaderData[i * 4] = offsets[i];
+        }
+
         textureRendererBuilder
                 ->addShaderData(sizeof(cameraPlanes), &cameraPlanes) //binding 1
+                ->addShaderData(offsetsShaderData.size() * sizeof(float), &offsetsShaderData) //binding 2
                 ->addTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()));
     }
 
     std::unique_ptr<ShaderConstants> BilateralBlurFilter::buildShaderConstants() const {
         BilateralBlurShaderConst bilateralBlurData{};
         bilateralBlurData.numberLayer = getTextureLayer();
-        bilateralBlurData.isVerticalBlur = blurDirection == BlurDirection::VERTICAL;
-        bilateralBlurData.kernelRadius = blurSize / 2;
+        bilateralBlurData.isVerticalBlur = (blurDirection == BlurDirection::VERTICAL) ? 1 : 0;
+        bilateralBlurData.kernelRadius = kernelRadius;
         bilateralBlurData.blurSharpness = blurSharpness;
-        bilateralBlurData.offsets = computeOffsets();
         std::vector<std::size_t> variablesSize = {
                 sizeof(BilateralBlurShaderConst::numberLayer),
                 sizeof(BilateralBlurShaderConst::isVerticalBlur),
                 sizeof(BilateralBlurShaderConst::kernelRadius),
-                sizeof(BilateralBlurShaderConst::blurSharpness),
-                sizeof(float) * bilateralBlurData.offsets.size()
+                sizeof(BilateralBlurShaderConst::blurSharpness)
         };
         return std::make_unique<ShaderConstants>(variablesSize, &bilateralBlurData);
     }
 
     std::vector<float> BilateralBlurFilter::computeOffsets() const {
-        unsigned int numOffsets = blurSize / 2;
-        std::vector<float> offsets(numOffsets, 0.0f);
+        std::vector<float> offsets(kernelRadius, 0.0f);
 
         if (textureSize != 0) {
             float pixelSize = 1.0f / (float)textureSize;
-            for (unsigned int i = 1; i <= numOffsets; ++i) {
+            for (unsigned int i = 1; i <= kernelRadius; ++i) {
                 offsets[i - 1] = pixelSize * (float)i;
             }
         }

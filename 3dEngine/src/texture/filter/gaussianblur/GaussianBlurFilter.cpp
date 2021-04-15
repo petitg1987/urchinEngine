@@ -5,8 +5,12 @@
 
 #include "GaussianBlurFilter.h"
 #include "texture/filter/gaussianblur/GaussianBlurFilterBuilder.h"
+#include "graphic/render/GenericRendererBuilder.h"
 
 namespace urchin {
+
+    //static
+    constexpr unsigned int GaussianBlurFilter::TEXTURE_FETCH_SHADER_LIMIT = 9; //must be equals to 'KERNEL_RADIUS' in texFilterBilateralBlur shader
 
     GaussianBlurFilter::GaussianBlurFilter(const GaussianBlurFilterBuilder* textureFilterBuilder, BlurDirection blurDirection):
         TextureFilter(textureFilterBuilder),
@@ -21,6 +25,10 @@ namespace urchin {
             throw std::invalid_argument("Blur size must be an odd number. Value: " + std::to_string(blurSize));
         }
 
+        if (nbTextureFetch > TEXTURE_FETCH_SHADER_LIMIT) {
+            throw std::invalid_argument("Texture fetch value is limited to " + std::to_string(TEXTURE_FETCH_SHADER_LIMIT) + ". Value: " + std::to_string(nbTextureFetch));
+        }
+
         std::vector<float> weights = computeWeights();
         weightsLinearSampling = computeWeightsLinearSampling(weights);
         offsetsLinearSampling = computeOffsetsLinearSampling(weights, weightsLinearSampling);
@@ -33,19 +41,34 @@ namespace urchin {
         throw std::runtime_error("Unimplemented gaussian blur filter for: " + std::to_string(getTextureFormat()) + " - " + std::to_string(getTextureType()));
     }
 
+    void GaussianBlurFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder) {
+        std::vector<float> offsetsShaderData;
+        offsetsShaderData.resize(offsetsLinearSampling.size() * 4, 0.0f);
+        for(std::size_t i = 0; i < offsetsLinearSampling.size(); ++i) {
+            offsetsShaderData[i * 4] = offsetsLinearSampling[i];
+        }
+
+        std::vector<float> weightsShaderData;
+        weightsShaderData.resize(weightsLinearSampling.size() * 4, 0.0f);
+        for(std::size_t i = 0; i < weightsLinearSampling.size(); ++i) {
+            weightsShaderData[i * 4] = weightsLinearSampling[i];
+        }
+
+        //TODO wrong value received in shader: why ?
+        textureRendererBuilder
+                ->addShaderData(offsetsShaderData.size() * sizeof(float), &offsetsShaderData) //binding 1
+                ->addShaderData(weightsShaderData.size() * sizeof(float), &weightsShaderData); //binding 2
+    }
+
     std::unique_ptr<ShaderConstants> GaussianBlurFilter::buildShaderConstants() const {
         GaussianBlurShaderConst gaussianBlurData{};
         gaussianBlurData.numberLayer = getTextureLayer();
-        gaussianBlurData.isVerticalBlur = blurDirection == BlurDirection::VERTICAL;
+        gaussianBlurData.isVerticalBlur = (blurDirection == BlurDirection::VERTICAL) ? 1 : 0;
         gaussianBlurData.nbTextureFetch = nbTextureFetch;
-        gaussianBlurData.weights = weightsLinearSampling;
-        gaussianBlurData.offsets = offsetsLinearSampling;
         std::vector<std::size_t> variablesSize = {
                 sizeof(GaussianBlurShaderConst::numberLayer),
                 sizeof(GaussianBlurShaderConst::isVerticalBlur),
-                sizeof(GaussianBlurShaderConst::nbTextureFetch),
-                sizeof(float) * gaussianBlurData.weights.size(),
-                sizeof(float) * gaussianBlurData.offsets.size()
+                sizeof(GaussianBlurShaderConst::nbTextureFetch)
         };
         return std::make_unique<ShaderConstants>(variablesSize, &gaussianBlurData);
     }
@@ -53,7 +76,7 @@ namespace urchin {
     std::vector<float> GaussianBlurFilter::computeWeights() const {
         std::vector<unsigned int> pascalTriangleLineValues = PascalTriangle::lineValues(blurSize + 3);
 
-        //exclude outermost because the values are too insignificant and haven't enough impact on 32bits value
+        //exclude outermost because the values are too insignificant and haven't enough impact on 32 bits value
         std::vector<float> gaussianFactors(blurSize);
         std::copy_n(pascalTriangleLineValues.begin() + 2, blurSize, gaussianFactors.begin());
 

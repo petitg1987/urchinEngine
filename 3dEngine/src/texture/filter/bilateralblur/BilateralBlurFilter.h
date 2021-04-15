@@ -18,11 +18,10 @@ namespace urchin {
             };
 
             struct BilateralBlurShaderConst {
-                unsigned int numberLayer;
-                bool isVerticalBlur;
-                unsigned int kernelRadius;
+                uint32_t numberLayer;
+                uint32_t isVerticalBlur;
+                uint32_t kernelRadius;
                 float blurSharpness;
-                std::vector<float> offsets;
             };
 
             BilateralBlurFilter(const BilateralBlurFilterBuilder*, BlurDirection);
@@ -31,17 +30,19 @@ namespace urchin {
 
         private:
             std::string getShaderName() const override;
-            void initiateAdditionalDisplay(const std::shared_ptr<GenericRendererBuilder>&) override;
+            void completeRenderer(const std::shared_ptr<GenericRendererBuilder>&) override;
             std::unique_ptr<ShaderConstants> buildShaderConstants() const override;
 
             std::vector<float> computeOffsets() const;
 
-            //source texture
-            std::shared_ptr<Texture> depthTexture;
+            static const unsigned int KERNEL_RADIUS_SHADER_LIMIT;
+
+            std::shared_ptr<Texture> depthTexture; //source texture
 
             BlurDirection blurDirection;
-            unsigned int blurSize;
+            unsigned int kernelRadius;
             float blurSharpness;
+            std::vector<float> offsets;
 
             unsigned int textureSize;
             struct {

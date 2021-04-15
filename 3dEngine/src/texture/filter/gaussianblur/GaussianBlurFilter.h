@@ -19,22 +19,23 @@ namespace urchin {
             };
 
             struct GaussianBlurShaderConst {
-                unsigned int numberLayer;
-                bool isVerticalBlur;
-                unsigned int nbTextureFetch;
-                std::vector<float> weights;
-                std::vector<float> offsets;
+                uint32_t numberLayer;
+                uint32_t isVerticalBlur;
+                uint32_t nbTextureFetch;
             };
 
             GaussianBlurFilter(const GaussianBlurFilterBuilder*, BlurDirection);
 
         private:
             std::string getShaderName() const override;
+            void completeRenderer(const std::shared_ptr<GenericRendererBuilder>&) override;
             std::unique_ptr<ShaderConstants> buildShaderConstants() const override;
 
             std::vector<float> computeWeights() const;
             std::vector<float> computeWeightsLinearSampling(const std::vector<float>&) const;
             std::vector<float> computeOffsetsLinearSampling(const std::vector<float>&, const std::vector<float>&) const;
+
+            static const unsigned int TEXTURE_FETCH_SHADER_LIMIT;
 
             BlurDirection blurDirection;
             unsigned int blurSize;

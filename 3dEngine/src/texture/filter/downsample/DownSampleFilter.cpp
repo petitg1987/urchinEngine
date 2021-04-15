@@ -16,7 +16,7 @@ namespace urchin {
     }
 
     std::unique_ptr<ShaderConstants> DownSampleFilter::buildShaderConstants() const {
-        unsigned int textureLayer = getTextureLayer();
+        uint32_t textureLayer = getTextureLayer();
         std::vector<std::size_t> variablesSize = {sizeof(textureLayer)};
         return std::make_unique<ShaderConstants>(variablesSize, &textureLayer);
     }
