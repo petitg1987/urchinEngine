@@ -29,7 +29,7 @@ namespace urchin {
         Vector2<T> ap = a.vector(p);
 
         T apDotAb = ap.dotProduct(ab);
-        if (typeid(int) == typeid(T) || typeid(long) == typeid(T) || typeid(long long) == typeid(T)) {
+        if constexpr (std::is_same_v<T, int> || std::is_same_v<T, long> || std::is_same_v<T, long long>) {
             T abSquareLength = ab.squareLength();
             Vector2<T> vTranslate(MathFunction::roundDivision<T>(ab.X * apDotAb, abSquareLength),
                                   MathFunction::roundDivision<T>(ab.Y * apDotAb, abSquareLength));
@@ -47,7 +47,7 @@ namespace urchin {
 
         T apDotAb = ap.dotProduct(ab);
 
-        if (typeid(int) == typeid(T) || typeid(long) == typeid(T) || typeid(long long) == typeid(T)) {
+        if constexpr (std::is_same_v<T, int> || std::is_same_v<T, long> || std::is_same_v<T, long long>) {
             return ap.squareLength() - MathFunction::roundDivision<T>(apDotAb * apDotAb, ab.squareLength());
         }
         return ap.squareLength() - ((apDotAb * apDotAb) / ab.squareLength());
@@ -108,7 +108,7 @@ namespace urchin {
 
         //lines not parallel
         hasIntersection = true;
-        if (typeid(int) == typeid(T) || typeid(long) == typeid(T) || typeid(long long) == typeid(T)) {
+        if constexpr (std::is_same_v<T, int> || std::is_same_v<T, long> || std::is_same_v<T, long long>) {
             Vector2<T> vTranslate(MathFunction::roundDivision<T>(startPointsCrossR * s.X, rCrossS),
                                   MathFunction::roundDivision<T>(startPointsCrossR * s.Y, rCrossS));
             return other.getA().translate(vTranslate);

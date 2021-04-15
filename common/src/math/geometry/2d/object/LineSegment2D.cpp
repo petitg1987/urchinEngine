@@ -71,7 +71,7 @@ namespace urchin {
             return bp.squareLength();
         }
 
-        if (typeid(int) == typeid(T) || typeid(long) == typeid(T) || typeid(long long) == typeid(T)) {
+        if constexpr (std::is_same_v<T, int> || std::is_same_v<T, long> || std::is_same_v<T, long long>) {
             return ap.squareLength() - MathFunction::roundDivision<T>(apDotAb * apDotAb, abSquareLength);
         }
         return ap.squareLength() - ((apDotAb * apDotAb) / abSquareLength);
@@ -163,7 +163,7 @@ namespace urchin {
                 && (startPointsCrossR == T(0) || MathFunction::sign<T>(startPointsCrossR) == MathFunction::sign<T>(rCrossS))
                 && std::abs(rCrossS) >= std::abs(startPointsCrossR)) { //intersection
             hasIntersection = true;
-            if (typeid(int) == typeid(T) || typeid(long) == typeid(T) || typeid(long long) == typeid(T)) {
+            if constexpr (std::is_same_v<T, int> || std::is_same_v<T, long> || std::is_same_v<T, long long>) {
                 Vector2<T> vTranslate(MathFunction::roundDivision<T>(thisToOtherCrossR * r.X, rCrossS),
                                       MathFunction::roundDivision<T>(thisToOtherCrossR * r.Y, rCrossS));
                 return a.translate(vTranslate);

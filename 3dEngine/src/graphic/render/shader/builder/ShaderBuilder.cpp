@@ -26,7 +26,7 @@ namespace urchin {
         //fragment shader
         shaderSources.emplace_back(std::make_pair(Shader::FRAGMENT, readFile(ShaderConfig::instance()->getShadersDirectory() + fragmentShaderFilename)));
 
-        std::string shaderName = urchin::FileUtil::getFileName(vertexShaderFilename);
+        std::string shaderName = FileUtil::getFileNameNoExtension(FileUtil::getFileNameNoExtension(vertexShaderFilename));
         return std::make_shared<Shader>(shaderName, shaderSources, std::move(shaderConstants));
     }
 

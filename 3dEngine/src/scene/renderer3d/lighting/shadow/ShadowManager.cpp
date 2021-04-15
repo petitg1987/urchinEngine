@@ -325,7 +325,7 @@ namespace urchin {
         }
 
         lightingRenderer->updateUniformData(4, lightProjectionViewMatrices);
-        lightingRenderer->updateUniformData(5, depthSplitDistance); //TODO: merge binding 4 & 5
+        lightingRenderer->updateUniformData(5, depthSplitDistance);
     }
 
 }
