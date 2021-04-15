@@ -47,22 +47,21 @@ namespace urchin {
     }
 
     void BilateralBlurFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder) {
-        std::vector<float> offsetsShaderData;
-        offsetsShaderData.resize(offsets.size() * 4, 0.0f);
+        std::vector<float> offsetsShaderData(offsets.size() * 4, 0.0f);
         for(std::size_t i = 0; i< offsets.size(); ++i) {
             offsetsShaderData[i * 4] = offsets[i];
         }
 
         textureRendererBuilder
                 ->addShaderData(sizeof(cameraPlanes), &cameraPlanes) //binding 1
-                ->addShaderData(offsetsShaderData.size() * sizeof(float), &offsetsShaderData) //binding 2
+                ->addShaderData(offsetsShaderData.size() * sizeof(float), offsetsShaderData.data()) //binding 2
                 ->addTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest()));
     }
 
     std::unique_ptr<ShaderConstants> BilateralBlurFilter::buildShaderConstants() const {
         BilateralBlurShaderConst bilateralBlurData{};
         bilateralBlurData.numberLayer = getTextureLayer();
-        bilateralBlurData.isVerticalBlur = (blurDirection == BlurDirection::VERTICAL) ? 1 : 0;
+        bilateralBlurData.isVerticalBlur = blurDirection == BlurDirection::VERTICAL;
         bilateralBlurData.kernelRadius = kernelRadius;
         bilateralBlurData.blurSharpness = blurSharpness;
         std::vector<std::size_t> variablesSize = {

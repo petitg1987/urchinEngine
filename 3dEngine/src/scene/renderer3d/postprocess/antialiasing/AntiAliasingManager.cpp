@@ -20,7 +20,7 @@ namespace urchin {
         std::vector<std::size_t> variablesSize = {sizeof(qualityInt),};
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &qualityInt);
 
-        fxaaShader = ShaderBuilder::createShader("spirv/fxaa.vert.spv", "", "spirv/fxaa.frag.spv", std::move(shaderConstants));
+        fxaaShader = ShaderBuilder::createShader("fxaa.vert.spv", "", "fxaa.frag.spv", std::move(shaderConstants));
     }
 
     void AntiAliasingManager::onTextureUpdate(const std::shared_ptr<Texture>& texture) {

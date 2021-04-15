@@ -42,28 +42,25 @@ namespace urchin {
     }
 
     void GaussianBlurFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder) {
-        std::vector<float> offsetsShaderData;
-        offsetsShaderData.resize(offsetsLinearSampling.size() * 4, 0.0f);
+        std::vector<float> offsetsShaderData(offsetsLinearSampling.size() * 4, 0.0f);
         for(std::size_t i = 0; i < offsetsLinearSampling.size(); ++i) {
             offsetsShaderData[i * 4] = offsetsLinearSampling[i];
         }
 
-        std::vector<float> weightsShaderData;
-        weightsShaderData.resize(weightsLinearSampling.size() * 4, 0.0f);
+        std::vector<float> weightsShaderData(weightsLinearSampling.size() * 4, 0.0f);
         for(std::size_t i = 0; i < weightsLinearSampling.size(); ++i) {
             weightsShaderData[i * 4] = weightsLinearSampling[i];
         }
 
-        //TODO wrong value received in shader: why ?
         textureRendererBuilder
-                ->addShaderData(offsetsShaderData.size() * sizeof(float), &offsetsShaderData) //binding 1
-                ->addShaderData(weightsShaderData.size() * sizeof(float), &weightsShaderData); //binding 2
+                ->addShaderData(offsetsShaderData.size() * sizeof(float), offsetsShaderData.data()) //binding 1
+                ->addShaderData(weightsShaderData.size() * sizeof(float), weightsShaderData.data()); //binding 2
     }
 
     std::unique_ptr<ShaderConstants> GaussianBlurFilter::buildShaderConstants() const {
         GaussianBlurShaderConst gaussianBlurData{};
         gaussianBlurData.numberLayer = getTextureLayer();
-        gaussianBlurData.isVerticalBlur = (blurDirection == BlurDirection::VERTICAL) ? 1 : 0;
+        gaussianBlurData.isVerticalBlur = blurDirection == BlurDirection::VERTICAL;
         gaussianBlurData.nbTextureFetch = nbTextureFetch;
         std::vector<std::size_t> variablesSize = {
                 sizeof(GaussianBlurShaderConst::numberLayer),

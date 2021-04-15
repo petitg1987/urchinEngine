@@ -49,8 +49,8 @@
   * Download Vulkan SDK for Windows: https://vulkan.lunarg.com/sdk/home#windows
   * Install Vulkan SDK in default folder (C:\VulkanSDK)
   * Copy lib & include respectively in "C:\msys64\mingw64\lib" and in "C:\msys64\mingw64\x86_64-w64-mingw32\include"
-  * *Info*: shaderc_shared.dll is in "C:\VulkanSDK\Bin\shaderc_shared.dll" and vuklan-1.dll can be downloaded on https://fr.dll-files.com/vulkan-1.dll.html
-  * *Info*: Don't uninstall Vulkan SDK application because is is required for validation layer  
+  * *Info*: vuklan-1.dll can be downloaded on https://fr.dll-files.com/vulkan-1.dll.html
+  * *Info*: Don't uninstall Vulkan SDK application because it is required for validation layer  
 * Install sndfile library:
   * Download: http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28-w64.zip
   * Copy lib & include respectively in "C:\msys64\mingw64\lib" & "C:\msys64\mingw64\x86_64-w64-mingw32\include"

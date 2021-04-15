@@ -25,16 +25,16 @@ namespace urchin {
 
         if (displayMode == DEFAULT_MODE) {
             //shader creation
-            std::string vertexShaderName = "spirv/model.vert.spv";
+            std::string vertexShaderName = "model.vert.spv";
             if (fragmentShaderName.empty()) { //use default fragment shader
-                fragmentShaderName = "spirv/model.frag.spv";
+                fragmentShaderName = "model.frag.spv";
             }
             modelShader = ShaderBuilder::createShader(vertexShaderName, geometryShaderName, fragmentShaderName, std::move(shaderConstants));
         } else if (displayMode == DEPTH_ONLY_MODE) {
             //shader creation
-            std::string vertexShaderName = "spirv/modelDepthOnly.vert.spv";
+            std::string vertexShaderName = "modelDepthOnly.vert.spv";
             if (fragmentShaderName.empty()) { //use default fragment shader
-                fragmentShaderName = "spirv/modelDepthOnly.frag.spv";
+                fragmentShaderName = "modelDepthOnly.frag.spv";
             }
             modelShader = ShaderBuilder::createShader(vertexShaderName, geometryShaderName, fragmentShaderName, std::move(shaderConstants));
         } else {

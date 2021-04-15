@@ -21,11 +21,11 @@ add_custom_target(urchinShader ALL DEPENDS "${compiledShaderNames}")
 
 if (WIN32)
     set(FREETYPE_LIB freetype.a)
-    SET(VULKAN_LIB vulkan-1 shaderc_shared)
+    SET(VULKAN_LIB vulkan-1)
 else()
     set(LINK_OPT -rdynamic) #necessary for SignalHandler to work correctly
     set(FREETYPE_LIB freetype.a png16.a brotlidec.a brotlicommon.a z.a)
-    SET(VULKAN_LIB vulkan shaderc_combined.a)
+    SET(VULKAN_LIB vulkan)
 endif()
 
 add_definitions(-ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror)

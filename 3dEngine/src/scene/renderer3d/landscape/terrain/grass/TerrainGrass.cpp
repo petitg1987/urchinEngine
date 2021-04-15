@@ -29,10 +29,11 @@ namespace urchin {
             terrainPositioningData({}),
             ambient(0.5f),
             mainGrassQuadtree(nullptr),
-            grassQuantity(0.0) {
-        std::map<std::string, std::string> tokens;
-        tokens["GRASS_ALPHA_TEST"] = ConfigService::instance()->getStringValue("terrain.grassAlphaTest");
-        terrainGrassShader = ShaderBuilder::createShader("terrainGrass.vert", "terrainGrass.geom", "terrainGrass.frag", tokens);
+            grassQuantity(0.0f) {
+        float grassAlphaTest = ConfigService::instance()->getFloatValue("terrain.grassAlphaTest");
+        std::vector<std::size_t> variablesSize = {sizeof(grassAlphaTest)};
+        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &grassAlphaTest);
+        terrainGrassShader = ShaderBuilder::createShader("terrainGrass.vert.spv", "terrainGrass.geom.spv", "terrainGrass.frag.spv", std::move(shaderConstants));
 
         setGrassTexture(grassTextureFilename);
         setMaskTexture("");

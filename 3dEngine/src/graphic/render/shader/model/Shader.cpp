@@ -4,19 +4,6 @@
 
 namespace urchin {
 
-    Shader::Shader(std::string shaderName, const std::vector<std::pair<Shader::ShaderType, std::vector<char>>>& shaderSources):
-            shaderName(std::move(shaderName)),
-            shaderConstants(std::unique_ptr<ShaderConstants>(nullptr)) {
-        for(const auto& shaderSource : shaderSources) {
-            auto shaderStageData = std::make_unique<ShaderStageData>();
-
-            fillShaderModule(shaderStageData, shaderSource.second);
-            fillPipelineShaderStage(shaderStageData, shaderSource.first);
-
-            shaderStagesData.emplace_back(std::move(shaderStageData));
-        }
-    }
-
     Shader::Shader(std::string shaderName, const std::vector<std::pair<Shader::ShaderType, std::vector<char>>>& shaderSources, std::unique_ptr<ShaderConstants> shaderConstants) :
             shaderName(std::move(shaderName)),
             shaderConstants(std::move(shaderConstants)) {

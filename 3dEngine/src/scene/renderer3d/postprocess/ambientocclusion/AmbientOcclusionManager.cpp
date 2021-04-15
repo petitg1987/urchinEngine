@@ -22,7 +22,7 @@
 namespace urchin {
 
     //debug parameters
-    constexpr bool DEBUG_EXPORT_SSAO_KERNEL = false;
+    bool DEBUG_EXPORT_SSAO_KERNEL = false;
 
     //static
     constexpr unsigned int AmbientOcclusionManager::KERNEL_SAMPLES_SHADER_LIMIT = 64; //must be equals to 'KERNEL_SAMPLES' in AO shader
@@ -102,7 +102,7 @@ namespace urchin {
         };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &aoConstData);
 
-        ambientOcclusionShader = ShaderBuilder::createShader("spirv/ambientOcclusion.vert.spv", "", "spirv/ambientOcclusion.frag.spv", std::move(shaderConstants));
+        ambientOcclusionShader = ShaderBuilder::createShader("ambientOcclusion.vert.spv", "", "ambientOcclusion.frag.spv", std::move(shaderConstants));
     }
 
     void AmbientOcclusionManager::createOrUpdateAOTexture() {
@@ -188,7 +188,7 @@ namespace urchin {
         }
 
         if (DEBUG_EXPORT_SSAO_KERNEL) {
-            exportSVG(std::string(std::getenv("HOME")) + "/ssaoKernel.html", ssaoKernel);
+            exportSVG(std::string(secure_getenv("HOME")) + "/ssaoKernel.html", ssaoKernel);
         }
     }
 

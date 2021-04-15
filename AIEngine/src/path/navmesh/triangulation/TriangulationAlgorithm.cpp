@@ -8,7 +8,7 @@
 namespace urchin {
 
     //debug parameters
-    constexpr bool DEBUG_LOG_TRIANGULATION_OUTPUT_DATA = false;
+    bool DEBUG_LOG_TRIANGULATION_OUTPUT_DATA = false;
 
     SidedPoint::SidedPoint(std::size_t pointIndex, bool onLeft) :
             pointIndex(pointIndex), onLeft(onLeft) {
@@ -35,7 +35,7 @@ namespace urchin {
                 area += (polygonPoints[i].X - polygonPoints[prevI].X) * (polygonPoints[i].Y + polygonPoints[prevI].Y);
             }
             if (area > 0.0) {
-                logInputData("Triangulation input points not in CCW order. Area: " + std::to_string(area), Logger::ERROR_LVL);
+                logInputData("Triangulation input points not in CCW order. Area: " + std::to_string(area));
             }
         }
     }
@@ -62,7 +62,7 @@ namespace urchin {
                 area += (cwHolePoints[i].X - cwHolePoints[prevI].X) * (cwHolePoints[i].Y + cwHolePoints[prevI].Y);
             }
             if (area < 0.0) {
-                logInputData("Triangulation hole input points not in CW order. Area: " + std::to_string(area), Logger::ERROR_LVL);
+                logInputData("Triangulation hole input points not in CW order. Area: " + std::to_string(area));
             }
         }
 
@@ -88,7 +88,7 @@ namespace urchin {
             for (std::size_t i = 0; i < polygonPoints.size(); ++i) {
                 for (std::size_t j = 0; j < polygonPoints.size(); ++j) {
                     if (i != j && polygonPoints[i] == polygonPoints[j]) {
-                        logInputData("Triangulation point " + std::to_string(i) + " duplicates the point " + std::to_string(j), Logger::ERROR_LVL);
+                        logInputData("Triangulation point " + std::to_string(i) + " duplicates the point " + std::to_string(j));
                     }
                 }
             }
@@ -215,7 +215,7 @@ namespace urchin {
 
     std::shared_ptr<NavTriangle> TriangulationAlgorithm::buildCCWOrientedTriangle(std::size_t pointIndex1, std::size_t pointIndex2, std::size_t pointIndex3) const {
         if (pointIndex1 == pointIndex2 || pointIndex1 == pointIndex3 || pointIndex2 == pointIndex3) {
-            logInputData("Triangulation create navigation triangle with identical indices", Logger::ERROR_LVL);
+            logInputData("Triangulation create navigation triangle with identical indices");
         }
 
         Vector2<double> v1 = polygonPoints[pointIndex1].template cast<double>().vector(polygonPoints[pointIndex2].template cast<double>());
@@ -301,7 +301,7 @@ namespace urchin {
         return edgeId + std::max(edgeStartIndex, edgeEndIndex);
     }
 
-    void TriangulationAlgorithm::logInputData(const std::string& message, Logger::CriticalityLevel logLevel) const {
+    void TriangulationAlgorithm::logInputData(const std::string& message) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 
@@ -319,7 +319,7 @@ namespace urchin {
             logStream << " - " << endContourIndex << std::endl;
         }
 
-        Logger::instance()->log(logLevel, logStream.str());
+        Logger::instance()->log(Logger::ERROR_LVL, logStream.str());
     }
 
     void TriangulationAlgorithm::logOutputData(const std::string& message, const std::vector<std::shared_ptr<NavTriangle>>& triangles, Logger::CriticalityLevel logLevel) const {

@@ -77,7 +77,7 @@ namespace urchin {
         clearSkyboxImages();
 
         //visual
-        skyboxShader = ShaderBuilder::createShader("spirv/skybox.vert.spv", "", "spirv/skybox.frag.spv", std::unique_ptr<ShaderConstants>(nullptr));
+        skyboxShader = ShaderBuilder::createShader("skybox.vert.spv", "", "skybox.frag.spv", std::unique_ptr<ShaderConstants>());
 
         constexpr float SIZE = 10.0f;
         std::vector<Point3<float>> vertexCoord = {

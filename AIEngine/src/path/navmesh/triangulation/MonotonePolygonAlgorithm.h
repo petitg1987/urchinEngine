@@ -83,7 +83,7 @@ namespace urchin {
 
             void logInputData(const std::string&, Logger::CriticalityLevel) const;
             void exportSVG(const std::string&) const;
-            void logOutputData(const std::string&, Logger::CriticalityLevel) const;
+            void logOutputData(const std::string&) const;
 
             const std::vector<Point2<float>> &polygonPoints;
             const std::vector<std::size_t> &endContourIndices; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndices' will have values: 5 and 9.

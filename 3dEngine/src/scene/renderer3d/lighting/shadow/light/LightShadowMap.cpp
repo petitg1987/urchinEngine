@@ -100,7 +100,7 @@ namespace urchin {
 
         delete shadowModelSetDisplayer;
         shadowModelSetDisplayer = new ModelSetDisplayer(DisplayMode::DEPTH_ONLY_MODE);
-        shadowModelSetDisplayer->setCustomShader("spirv/modelShadowMap.geom.spv", "spirv/modelShadowMap.frag.spv", std::move(shaderConstants));
+        shadowModelSetDisplayer->setCustomShader("modelShadowMap.geom.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
         shadowModelSetDisplayer->initialize(renderTarget);
 
         delete shadowModelShaderVariable;

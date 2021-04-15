@@ -41,9 +41,9 @@ namespace urchin {
         std::unique_ptr<ShaderConstants> shaderConstants = buildShaderConstants();
 
         if (textureType == TextureType::ARRAY) {
-            textureFilterShader = ShaderBuilder::createShader("spirv/texFilter.vert.spv", "spirv/texFilter.geom.spv", "spirv/" + getShaderName() + ".frag.spv", std::move(shaderConstants));
+            textureFilterShader = ShaderBuilder::createShader("texFilter.vert.spv", "texFilter.geom.spv", getShaderName() + ".frag.spv", std::move(shaderConstants));
         } else if (textureType == TextureType::DEFAULT) {
-            textureFilterShader = ShaderBuilder::createShader("spirv/texFilter.vert.spv", "", "spirv/" + getShaderName() + ".frag.spv", std::move(shaderConstants));
+            textureFilterShader = ShaderBuilder::createShader("texFilter.vert.spv", "", getShaderName() + ".frag.spv", std::move(shaderConstants));
         } else {
             throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
         }

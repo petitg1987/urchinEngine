@@ -10,13 +10,13 @@
 namespace urchin {
 
     //debug parameters
-    constexpr bool DEBUG_DISPLAY_FONT_TEXTURE = false;
+    bool DEBUG_DISPLAY_FONT_TEXTURE = false;
 
     UIRenderer::UIRenderer(std::shared_ptr<RenderTarget> renderTarget) :
             renderTarget(std::move(renderTarget)),
             sceneWidth(0),
             sceneHeight(0) {
-        uiShader = ShaderBuilder::createShader("spirv/ui.vert.spv", "", "spirv/ui.frag.spv", std::unique_ptr<ShaderConstants>(nullptr));
+        uiShader = ShaderBuilder::createShader("ui.vert.spv", "", "ui.frag.spv", std::unique_ptr<ShaderConstants>());
     }
 
     UIRenderer::~UIRenderer() {

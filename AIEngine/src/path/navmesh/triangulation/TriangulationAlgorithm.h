@@ -50,7 +50,7 @@ namespace urchin {
             static bool areSameEdge(const std::shared_ptr<NavTriangle>&, std::size_t, std::size_t, const std::shared_ptr<NavTriangle>&, std::size_t, std::size_t);
             static uint_fast64_t computeEdgeId(std::size_t, std::size_t);
 
-            void logInputData(const std::string&, Logger::CriticalityLevel) const;
+            void logInputData(const std::string&) const;
             void logOutputData(const std::string&, const std::vector<std::shared_ptr<NavTriangle>>&, Logger::CriticalityLevel) const;
 
             std::vector<Point2<float>> polygonPoints;

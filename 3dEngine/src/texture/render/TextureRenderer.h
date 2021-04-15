@@ -33,6 +33,13 @@ namespace urchin {
                 INVERSE_GRAYSCALE_VALUE
             };
 
+            struct TextureRendererShaderConst {
+                uint32_t isDefaultValue;
+                uint32_t isDepthValue;
+                uint32_t isGrayscaleValue;
+                uint32_t isInverseGrayscaleValue;
+            };
+
             TextureRenderer(std::shared_ptr<Texture>, TextureRenderer::ColorType, float colorIntensity = 1.0);
             TextureRenderer(std::shared_ptr<Texture>, unsigned int, TextureRenderer::ColorType, float colorIntensity = 1.0);
 
@@ -57,7 +64,6 @@ namespace urchin {
             float userMinX, userMaxX, userMinY, userMaxY;
 
             //visual
-            std::shared_ptr<RenderTarget> renderTarget;
             std::shared_ptr<Texture> texture;
             TextureRenderer::ColorType colorType;
             std::shared_ptr<GenericRenderer> renderer;

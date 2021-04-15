@@ -7,9 +7,9 @@
 namespace urchin {
 
     //debug parameters
-    constexpr bool DEBUG_LOG_MONOTONE_INPUT_DATA = false;
-    constexpr bool DEBUG_LOG_MONOTONE_OUTPUT_DATA = false;
-    constexpr bool DEBUG_EXPORT_MONOTONE_POINTS = false;
+    bool DEBUG_LOG_MONOTONE_INPUT_DATA = false;
+    bool DEBUG_LOG_MONOTONE_OUTPUT_DATA = false;
+    bool DEBUG_EXPORT_MONOTONE_POINTS = false;
 
     TypedPoint::TypedPoint(std::size_t pointIndex, PointType type) :
             pointIndex(pointIndex), type(type) {
@@ -124,7 +124,7 @@ namespace urchin {
         }
 
         if (DEBUG_LOG_MONOTONE_OUTPUT_DATA) {
-            logOutputData("Debug monotone polygon.", Logger::INFO_LVL);
+            logOutputData("Debug monotone polygon.");
         }
 
         return yMonotonePolygons;
@@ -444,7 +444,7 @@ namespace urchin {
         Logger::instance()->log(logLevel, logStream.str());
 
         if (DEBUG_EXPORT_MONOTONE_POINTS) {
-            exportSVG(std::string(std::getenv("HOME")) + "/monotonePoints.html");
+            exportSVG(std::string(secure_getenv("HOME")) + "/monotonePoints.html");
         }
     }
 
@@ -464,7 +464,7 @@ namespace urchin {
         svgExporter.generateSVG(250);
     }
 
-    void MonotonePolygonAlgorithm::logOutputData(const std::string& message, Logger::CriticalityLevel logLevel) const {
+    void MonotonePolygonAlgorithm::logOutputData(const std::string& message) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 
@@ -476,7 +476,7 @@ namespace urchin {
                 logStream << " - " << polygonPoints[pointIndex] << std::endl;
             }
         }
-        Logger::instance()->log(logLevel, logStream.str());
+        Logger::instance()->log(Logger::INFO_LVL, logStream.str());
     }
 
 }

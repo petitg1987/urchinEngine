@@ -11,7 +11,7 @@ namespace urchin {
             outlineSize(1.3f),
             transparencyEnabled(false),
             alwaysVisible(false) {
-        shader = ShaderBuilder::createShader("spirv/displayGeometry.vert.spv", "", "spirv/displayGeometry.frag.spv", std::unique_ptr<ShaderConstants>(nullptr));
+        shader = ShaderBuilder::createShader("displayGeometry.vert.spv", "", "displayGeometry.frag.spv", std::unique_ptr<ShaderConstants>());
     }
 
     void GeometryModel::initialize(const std::shared_ptr<RenderTarget>& renderTarget) {

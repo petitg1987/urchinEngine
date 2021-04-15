@@ -1,7 +1,7 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-layout(constant_id = 1) const uint IS_VERTICAL_BLUR = 1;
+layout(constant_id = 1) const bool IS_VERTICAL_BLUR = true;
 layout(constant_id = 2) const uint KERNEL_RADIUS = 9; //must be equals to BilateralBlurFilter::KERNEL_RADIUS_SHADER_LIMIT
 layout(constant_id = 3) const float BLUR_SHARPNESS = 0.0f;
 
@@ -49,12 +49,12 @@ void main() {
     float totalWeight = 1.0f;
 
     for (int i = 0; i < KERNEL_RADIUS; ++i) {
-        vec2 uvOffset = (IS_VERTICAL_BLUR != 0) ? vec2(0.0, blurData.offsets[i]) : vec2(blurData.offsets[i], 0.0);
+        vec2 uvOffset = (IS_VERTICAL_BLUR) ? vec2(0.0, blurData.offsets[i]) : vec2(blurData.offsets[i], 0.0);
         fragColor += bilateralBlur(uvOffset, i + 1, linearizedDepthCenterValue, totalWeight);
     }
 
     for (int i = 0; i < KERNEL_RADIUS; ++i) {
-        vec2 uvOffset = (IS_VERTICAL_BLUR != 0) ? vec2(0.0, -blurData.offsets[i]) : vec2(-blurData.offsets[i], 0.0);
+        vec2 uvOffset = (IS_VERTICAL_BLUR) ? vec2(0.0, -blurData.offsets[i]) : vec2(-blurData.offsets[i], 0.0);
         fragColor += bilateralBlur(uvOffset, i + 1, linearizedDepthCenterValue, totalWeight);
     }
 

@@ -1,11 +1,10 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-//values are replaced at compilation time:
-#define IS_DEFAULT_VALUE true
-#define IS_DEPTH_VALUE false
-#define IS_GRAYSCALE_VALUE false
-#define IS_INVERSE_GRAYSCALE_VALUE false
+layout(constant_id = 0) const bool IS_DEFAULT_VALUE = true;
+layout(constant_id = 1) const bool IS_DEPTH_VALUE = false;
+layout(constant_id = 2) const bool IS_GRAYSCALE_VALUE = false;
+layout(constant_id = 3) const bool IS_INVERSE_GRAYSCALE_VALUE = false;
 
 layout(std140, set = 0, binding = 1) uniform RenderingData {
     float colorIntensity;

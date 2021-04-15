@@ -109,11 +109,11 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::addOctreeable(TOctr
 
 template<class TOctreeable> void OctreeManager<TOctreeable>::removeOctreeable(TOctreeable* octreeable) {
     //keep size in variable because we remove references during looping
-    std::size_t refOctreeSize = octreeable->getRefOctree().size();
+    int refOctreeSize = (int)octreeable->getRefOctree().size();
 
     //delete from end to start: more faster for a vector
-    for (int i = (int)refOctreeSize - 1; i >= 0; --i) {
-        octreeable->getRefOctree()[i]->removeOctreeable(octreeable, true);
+    for (int i = refOctreeSize - 1; i >= 0; --i) {
+        octreeable->getRefOctree()[(std::size_t)i]->removeOctreeable(octreeable, true);
     }
 
     octreeable->removeObserver(this, TOctreeable::MOVE);

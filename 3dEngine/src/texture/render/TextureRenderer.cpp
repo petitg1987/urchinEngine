@@ -91,7 +91,6 @@ namespace urchin {
             throw std::runtime_error("Texture displayer cannot be initialized twice.");
         }
 
-        this->renderTarget = renderTarget;
         this->renderingData.cameraNearPlane = nearPlane;
         this->renderingData.cameraFarPlane = farPlane;
 
@@ -177,14 +176,21 @@ namespace urchin {
     }
 
     void TextureRenderer::initializeShader() {
-        std::map<std::string, std::string> textureDisplayTokens;
-        textureDisplayTokens["IS_DEFAULT_VALUE"] = colorType == ColorType::DEFAULT_VALUE ? "true" : "false";
-        textureDisplayTokens["IS_DEPTH_VALUE"] = colorType == ColorType::DEPTH_VALUE ? "true" : "false";
-        textureDisplayTokens["IS_GRAYSCALE_VALUE"] = colorType == ColorType::GRAYSCALE_VALUE ? "true" : "false";
-        textureDisplayTokens["IS_INVERSE_GRAYSCALE_VALUE"] = colorType == ColorType::INVERSE_GRAYSCALE_VALUE ? "true" : "false";
+        TextureRendererShaderConst trConstData{};
+        trConstData.isDefaultValue = colorType == ColorType::DEFAULT_VALUE;
+        trConstData.isDepthValue = colorType == ColorType::DEPTH_VALUE;
+        trConstData.isGrayscaleValue = colorType == ColorType::GRAYSCALE_VALUE;
+        trConstData.isInverseGrayscaleValue = colorType == ColorType::INVERSE_GRAYSCALE_VALUE;
+        std::vector<std::size_t> variablesSize = {
+                sizeof(TextureRendererShaderConst::isDefaultValue),
+                sizeof(TextureRendererShaderConst::isDepthValue),
+                sizeof(TextureRendererShaderConst::isGrayscaleValue),
+                sizeof(TextureRendererShaderConst::isInverseGrayscaleValue)
+        };
+        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &trConstData);
 
-        const std::string& fragShaderName = (renderingData.layer == -1) ? "displayTexture.frag" : "displayTextureArray.frag";
-        displayTextureShader = ShaderBuilder::createShader("displayTexture.vert", "", fragShaderName, textureDisplayTokens);
+        const std::string& fragShaderName = (renderingData.layer == -1) ? "displayTexture.frag.spv" : "displayTextureArray.frag.spv";
+        displayTextureShader = ShaderBuilder::createShader("displayTexture.vert.spv", "", fragShaderName, std::move(shaderConstants));
     }
 
     void TextureRenderer::prepareRendering() {
@@ -192,7 +198,7 @@ namespace urchin {
             throw std::runtime_error("Texture displayer must be initialized before prepare rendering.");
         }
 
-        //TODO renderTarget->display(renderer);
+        //TODO renderer->addOnRenderTarget();
     }
 
 }
