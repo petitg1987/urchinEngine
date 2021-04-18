@@ -436,7 +436,7 @@ namespace urchin {
      * First pass of deferred shading algorithm.
      * Render depth, color, normal, etc. into buffers.
      */
-    void Renderer3d::deferredRendering(float dt) {
+    void Renderer3d::deferredRendering(float dt) { //TODO re-organise this method with updateScene()
         ScopeProfiler sp(Profiler::graphic(), "deferredRender");
 
         updateModelsInFrustum();
@@ -454,13 +454,13 @@ namespace urchin {
 
         geometryManager->prepareRendering(camera->getViewMatrix());
 
-        if (visualOption.isAmbientOcclusionActivated) {
-            ambientOcclusionManager->updateAOTexture(camera);
-        }
-
         displayDetails();
 
         deferredRenderTarget->render();
+
+        if (visualOption.isAmbientOcclusionActivated) {
+            ambientOcclusionManager->updateAOTexture(camera);
+        }
     }
 
     void Renderer3d::displayDetails() {

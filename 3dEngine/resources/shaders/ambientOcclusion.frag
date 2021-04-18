@@ -100,12 +100,12 @@ void main() {
     //fragColor = texture(noiseTex, texCoordinates * noiseScale).x; //repeat
 
     //DEBUG: display depth texture (pre-requisite: Renderer32#DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER must be activated)
-    //fragColor = texture2D(depthTex, texCoordinates).r / 20.0f; //near objects are whiter
+    //fragColor = texture(depthTex, texCoordinates).r / 20.0f; //near objects are whiter
 
     //DEBUG: display normal texture (pre-requisite: Renderer32#DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER must be activated)
-    //fragColor = texture2D(normalAndAmbientTex, texCoordinates).r; //normals to left are whiter
-    //fragColor = texture2D(normalAndAmbientTex, texCoordinates).g; //normals to bottom are whiter
-    //fragColor = texture2D(normalAndAmbientTex, texCoordinates).b; //normals to far are whiter
+    //fragColor = texture(normalAndAmbientTex, texCoordinates).r; //normals to left are whiter
+    //fragColor = texture(normalAndAmbientTex, texCoordinates).g; //normals to bottom are whiter
+    //fragColor = texture(normalAndAmbientTex, texCoordinates).b; //normals to far are whiter
 
     //DEBUG: display kernel samples X values on X axis
     //fragColor = kernelData.samples[int(texCoordinates.x * KERNEL_SAMPLES)].x;

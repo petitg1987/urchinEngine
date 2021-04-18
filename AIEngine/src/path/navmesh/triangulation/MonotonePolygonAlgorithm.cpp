@@ -444,7 +444,7 @@ namespace urchin {
         Logger::instance()->log(logLevel, logStream.str());
 
         if (DEBUG_EXPORT_MONOTONE_POINTS) {
-            exportSVG(std::string(secure_getenv("HOME")) + "/monotonePoints.html");
+            exportSVG(std::string(std::getenv("HOME")) + "/monotonePoints.html");
         }
     }
 

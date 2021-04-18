@@ -12,7 +12,7 @@
 #define DEFAULT_KERNEL_SAMPLES 32
 #define DEFAULT_RADIUS 0.35f
 #define DEFAULT_AO_STRENGTH 0.10f
-#define DEFAULT_DEPTH_START_ATTENUATION 0.999f
+#define DEFAULT_DEPTH_START_ATTENUATION 0.999f //TODO review values for new depth range ([-1, 1] => [0, 1])
 #define DEFAULT_DEPTH_END_ATTENUATION 0.9995f
 #define DEFAULT_NOISE_TEXTURE_SIZE 4
 #define DEFAULT_BIAS 0.15f
@@ -181,7 +181,7 @@ namespace urchin {
         }
 
         if (DEBUG_EXPORT_SSAO_KERNEL) {
-            exportSVG(std::string(secure_getenv("HOME")) + "/ssaoKernel.html", ssaoKernel);
+            exportSVG(std::string(std::getenv("HOME")) + "/ssaoKernel.html", ssaoKernel);
         }
     }
 
