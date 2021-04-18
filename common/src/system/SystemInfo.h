@@ -16,13 +16,13 @@ namespace urchin {
 
             static std::string systemHash();
 
+            static std::string homeDirectory();
             static std::string userDataDirectory();
             static std::string executableDirectory();
 
         private:
             static std::string retrieveCpuHash();
 
-            static std::string homeDirectory();
             static std::string getEnvVariable(const std::string&);
     };
 

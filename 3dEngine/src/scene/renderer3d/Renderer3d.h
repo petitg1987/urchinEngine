@@ -25,6 +25,7 @@
 #include "graphic/render/target/ScreenRender.h"
 #include "graphic/render/target/OffscreenRender.h"
 #include "graphic/texture/Texture.h"
+#include "texture/render/TextureRenderer.h"
 
 namespace urchin {
 
@@ -99,11 +100,12 @@ namespace urchin {
 
             //scene
             void refreshRenderer();
-            void displayBuffers();
+            void setupDebugTextures();
             void updateScene(float);
             void deferredRendering(float);
             void displayDetails();
             void lightingPassRendering();
+            void debugTexturesRendering();
             void postUpdateScene();
 
             //scene properties
@@ -124,9 +126,7 @@ namespace urchin {
             SkyManager* skyManager;
             GeometryManager* geometryManager;
             LightManager* lightManager;
-
             AmbientOcclusionManager* ambientOcclusionManager;
-
             ShadowManager* shadowManager;
 
             std::shared_ptr<Texture> diffuseTexture, normalAndAmbientTexture, lightingPassTexture;
@@ -146,6 +146,7 @@ namespace urchin {
             AntiAliasingManager* antiAliasingManager;
             bool isAntiAliasingActivated;
 
+            std::vector<std::unique_ptr<TextureRenderer>> textureRenderers;
     };
 
 }

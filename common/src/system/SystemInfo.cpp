@@ -191,7 +191,7 @@ namespace urchin {
     }
 
     std::string SystemInfo::getEnvVariable(const std::string& variableName) {
-        const char* charValue = getenv(variableName.c_str());
+        const char* charValue = std::getenv(variableName.c_str());
         if (charValue == nullptr) {
             return "";
         }

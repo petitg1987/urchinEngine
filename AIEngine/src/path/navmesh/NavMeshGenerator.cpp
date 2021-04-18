@@ -65,7 +65,7 @@ namespace urchin {
         updateNavMesh();
 
         if (DEBUG_EXPORT_NAV_MESH) {
-            navMesh->svgMeshExport(std::string(std::getenv("HOME")) + "/navMesh/navMesh" + std::to_string(navMesh->getUpdateId()) + ".html");
+            navMesh->svgMeshExport(SystemInfo::homeDirectory() + "navMesh/navMesh" + std::to_string(navMesh->getUpdateId()) + ".html");
         }
 
         return navMesh;

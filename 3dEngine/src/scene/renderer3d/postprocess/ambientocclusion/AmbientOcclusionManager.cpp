@@ -181,7 +181,7 @@ namespace urchin {
         }
 
         if (DEBUG_EXPORT_SSAO_KERNEL) {
-            exportSVG(std::string(std::getenv("HOME")) + "/ssaoKernel.html", ssaoKernel);
+            exportSVG(SystemInfo::homeDirectory() + "ssaoKernel.html", ssaoKernel);
         }
     }
 
