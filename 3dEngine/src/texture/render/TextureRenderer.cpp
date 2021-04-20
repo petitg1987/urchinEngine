@@ -158,8 +158,8 @@ namespace urchin {
                 Point2<float>(minX, minY), Point2<float>(maxX, maxY), Point2<float>(minX, maxY)
         };
         std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
-                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
+                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
+                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
         auto rendererBuilder = GenericRendererBuilder::create(name, renderTarget, displayTextureShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)

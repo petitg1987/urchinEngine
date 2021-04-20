@@ -29,8 +29,8 @@ namespace urchin {
         for (auto allOctreeableLight : allOctreeableLights) {
             delete allOctreeableLight;
         }
-        for (auto& parallelBeamsLight : parallelBeamsLights) {
-            delete parallelBeamsLight;
+        for (auto& sunLight : sunLights) {
+            delete sunLight;
         }
 
         delete lightOctreeManager;
@@ -67,6 +67,10 @@ namespace urchin {
         return maxLights;
     }
 
+    const std::vector<Light*>& LightManager::getSunLights() const {
+        return sunLights;
+    }
+
     const std::vector<Light*>& LightManager::getVisibleLights() const {
         return visibleLights;
     }
@@ -74,7 +78,7 @@ namespace urchin {
     void LightManager::addLight(Light* light) {
         if (light) {
             if (light->hasParallelBeams()) {
-                parallelBeamsLights.push_back(light);
+                sunLights.push_back(light);
             } else {
                 lightOctreeManager->addOctreeable(light);
             }
@@ -86,8 +90,8 @@ namespace urchin {
     void LightManager::removeLight(Light* light) {
         if (light) {
             if (light->hasParallelBeams()) {
-                auto it = std::find(parallelBeamsLights.begin(), parallelBeamsLights.end(), light);
-                parallelBeamsLights.erase(it);
+                auto it = std::find(sunLights.begin(), sunLights.end(), light);
+                sunLights.erase(it);
             } else {
                 lightOctreeManager->removeOctreeable(light);
             }
@@ -114,7 +118,7 @@ namespace urchin {
         lightOctreeManager->getOctreeablesIn(frustum, lightsInFrustum);
 
         visibleLights.clear();
-        visibleLights = parallelBeamsLights;
+        visibleLights = sunLights;
         visibleLights.insert(visibleLights.end(), lightsInFrustum.begin(), lightsInFrustum.end());
 
         if (visibleLights.size() > maxLights) {

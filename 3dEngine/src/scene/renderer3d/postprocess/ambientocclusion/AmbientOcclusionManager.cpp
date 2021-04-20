@@ -12,8 +12,8 @@
 #define DEFAULT_KERNEL_SAMPLES 32
 #define DEFAULT_RADIUS 0.35f
 #define DEFAULT_AO_STRENGTH 0.10f
-#define DEFAULT_DEPTH_START_ATTENUATION 0.999f //TODO review values for new depth range ([-1, 1] => [0, 1])
-#define DEFAULT_DEPTH_END_ATTENUATION 0.9995f
+#define DEFAULT_DEPTH_START_ATTENUATION 0.995f
+#define DEFAULT_DEPTH_END_ATTENUATION 0.997f
 #define DEFAULT_NOISE_TEXTURE_SIZE 4
 #define DEFAULT_BIAS 0.15f
 #define DEFAULT_BLUR_SIZE 7
@@ -141,12 +141,12 @@ namespace urchin {
 
     void AmbientOcclusionManager::createOrUpdateRenderer() {
         std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, -1.0f),
-                Point2<float>(-1.0f, 1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(-1.0f, -1.0f)
+                Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(1.0f, 1.0f),
+                Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(-1.0f, 1.0f)
         };
         std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(1.0f, 0.0f),
-                Point2<float>(0.0f, 1.0f), Point2<float>(1.0f, 0.0f), Point2<float>(0.0f, 0.0f)
+                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
+                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
         renderer = GenericRendererBuilder::create("ambient occlusion", offscreenRenderTarget, ambientOcclusionShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
