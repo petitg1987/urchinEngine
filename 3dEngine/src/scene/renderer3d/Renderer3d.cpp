@@ -338,7 +338,7 @@ namespace urchin {
         fogManager->setupLightingRenderer(lightingRendererBuilder); //binding 6
 
         std::vector<std::shared_ptr<TextureReader>> shadowMapTextureReaders;
-        for (unsigned int i = 0; i <= shadowManager->getMaxShadowLights(); ++i) {
+        for (unsigned int i = 0; i < shadowManager->getMaxShadowLights(); ++i) {
             shadowMapTextureReaders.push_back(TextureReader::build(Texture::buildEmptyArray(), TextureParam::buildNearest()));
         }
         lightingRenderer = lightingRendererBuilder
