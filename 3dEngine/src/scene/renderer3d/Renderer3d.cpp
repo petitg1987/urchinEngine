@@ -498,34 +498,32 @@ namespace urchin {
      * Compute lighting in pixel shader and render the scene to screen.
      */
     void Renderer3d::lightingPassRendering() {
-        if (lightingRenderer) { //TODO useful "if" ?
-            ScopeProfiler sp(Profiler::graphic(), "lightPassRender");
+        ScopeProfiler sp(Profiler::graphic(), "lightPassRender");
 
-            positioningData.inverseProjectionViewMatrix = (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse();
-            positioningData.viewPosition = camera->getPosition();
-            lightingRenderer->updateUniformData(0, &positioningData);
+        positioningData.inverseProjectionViewMatrix = (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse();
+        positioningData.viewPosition = camera->getPosition();
+        lightingRenderer->updateUniformData(0, &positioningData);
 
-            lightManager->loadVisibleLights(lightingRenderer);
+        lightManager->loadVisibleLights(lightingRenderer);
 
-            fogManager->loadFog(lightingRenderer);
+        fogManager->loadFog(lightingRenderer);
 
-            if (visualOption.isAmbientOcclusionActivated) {
-                std::size_t ambientOcclusionTexUnit = 3;
-                ambientOcclusionManager->loadAOTexture(lightingRenderer, ambientOcclusionTexUnit);
-            }
-
-            if (visualOption.isShadowActivated) {
-                std::size_t shadowMapTexUnit = 4;
-                shadowManager->loadShadowMaps(lightingRenderer, shadowMapTexUnit);
-            }
-
-            if (isAntiAliasingActivated) {
-                offscreenLightingRenderTarget->render();
-            }
-
-            lightingRenderer->getRenderTarget()->clearRenderers();
-            lightingRenderer->addOnRenderTarget();
+        if (visualOption.isAmbientOcclusionActivated) {
+            std::size_t ambientOcclusionTexUnit = 3;
+            ambientOcclusionManager->loadAOTexture(lightingRenderer, ambientOcclusionTexUnit);
         }
+
+        if (visualOption.isShadowActivated) {
+            std::size_t shadowMapTexUnit = 4;
+            shadowManager->loadShadowMaps(lightingRenderer, shadowMapTexUnit);
+        }
+
+        if (isAntiAliasingActivated) {
+            offscreenLightingRenderTarget->render();
+        }
+
+        lightingRenderer->getRenderTarget()->clearRenderers();
+        lightingRenderer->addOnRenderTarget();
     }
 
     void Renderer3d::debugTexturesRendering() {

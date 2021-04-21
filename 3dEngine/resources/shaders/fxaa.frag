@@ -86,9 +86,9 @@ void main() {
 
     vec4 rgbyM = textureLod(tex, posM, 0.0);
     float lumaM = fxaaLuma(rgbyM);
-    float lumaS = fxaaLuma(textureOffset(tex, posM, ivec2( 0, 1)));
-    float lumaE = fxaaLuma(textureOffset(tex, posM, ivec2( 1, 0)));
-    float lumaN = fxaaLuma(textureOffset(tex, posM, ivec2( 0,-1)));
+    float lumaS = fxaaLuma(textureOffset(tex, posM, ivec2(0, 1)));
+    float lumaE = fxaaLuma(textureOffset(tex, posM, ivec2(1, 0)));
+    float lumaN = fxaaLuma(textureOffset(tex, posM, ivec2(0, -1)));
     float lumaW = fxaaLuma(textureOffset(tex, posM, ivec2(-1, 0)));
 
     float maxSM = max(lumaS, lumaM);
@@ -108,9 +108,9 @@ void main() {
         return;
     }
 
-    float lumaNW = fxaaLuma(textureOffset(tex, posM, ivec2(-1,-1)));
-    float lumaSE = fxaaLuma(textureOffset(tex, posM, ivec2( 1, 1)));
-    float lumaNE = fxaaLuma(textureOffset(tex, posM, ivec2( 1,-1)));
+    float lumaNW = fxaaLuma(textureOffset(tex, posM, ivec2(-1, -1)));
+    float lumaSE = fxaaLuma(textureOffset(tex, posM, ivec2(1, 1)));
+    float lumaNE = fxaaLuma(textureOffset(tex, posM, ivec2(1, -1)));
     float lumaSW = fxaaLuma(textureOffset(tex, posM, ivec2(-1, 1)));
 
     float lumaNS = lumaN + lumaS;

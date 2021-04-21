@@ -32,8 +32,8 @@ vec3 fetchEyePosition(vec2 texCoord, float depthValue) {
     vec4 texPosition = vec4(
         texCoord.s * 2.0f - 1.0f,
         texCoord.t * 2.0f - 1.0f,
-        depthValue * 2.0f - 1.0f,
-        1.0
+        depthValue,
+        1.0f
     );
     vec4 position = inverse(positioningData.mProjection) * texPosition;
     position /= position.w;
@@ -44,8 +44,8 @@ vec3 fetchPosition(vec2 texCoord, float depthValue) {
     vec4 texPosition = vec4(
         texCoord.s * 2.0f - 1.0f,
         texCoord.t * 2.0f - 1.0f,
-        depthValue * 2.0f - 1.0f,
-        1.0
+        depthValue,
+        1.0f
     );
     vec4 position = positioningData.mInverseViewProjection * texPosition;
     position /= position.w;

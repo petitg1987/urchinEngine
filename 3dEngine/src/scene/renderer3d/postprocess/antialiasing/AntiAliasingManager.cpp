@@ -16,9 +16,9 @@ namespace urchin {
     }
 
     void AntiAliasingManager::loadFxaaShader() {
-        int qualityInt = (int)quality;
-        std::vector<std::size_t> variablesSize = {sizeof(qualityInt),};
-        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &qualityInt);
+        auto qualityUInt = (unsigned int)quality;
+        std::vector<std::size_t> variablesSize = {sizeof(qualityUInt)};
+        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &qualityUInt);
 
         fxaaShader = ShaderBuilder::createShader("fxaa.vert.spv", "", "fxaa.frag.spv", std::move(shaderConstants));
     }
