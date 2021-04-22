@@ -54,12 +54,17 @@ namespace urchin {
     }
 
     std::shared_ptr<Texture> Texture::buildEmpty() {
-        std::vector<const void*> allDataPtr(1, nullptr);
+        std::array<uint8_t, 4> textureArrayData = {255, 20, 147, 0}; //pink
+        std::vector<const void*> allDataPtr(1, textureArrayData.data());
         return std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::RGBA_8_INT, allDataPtr));
     }
 
     std::shared_ptr<Texture> Texture::buildEmptyArray() {
-        std::vector<const void*> allDataPtr(1, nullptr);
+        std::array<uint8_t, 8> textureArrayData = {
+                255, 20, 147, 0, //pink - layer 0
+                255, 20, 147, 0 //pink - layer 1
+        };
+        std::vector<const void*> allDataPtr(1, textureArrayData.data());
         return std::shared_ptr<Texture>(new Texture(TextureType::ARRAY, 1, 1, 2, TextureFormat::RGBA_8_INT, allDataPtr));
     }
 
