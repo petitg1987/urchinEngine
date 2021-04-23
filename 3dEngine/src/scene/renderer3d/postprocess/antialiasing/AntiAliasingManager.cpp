@@ -1,11 +1,10 @@
 #include <map>
-#include <string>
 
 #include "scene/renderer3d/postprocess/antialiasing/AntiAliasingManager.h"
 #include "graphic/render/shader/builder/ShaderBuilder.h"
 #include "graphic/render/GenericRendererBuilder.h"
 
-#define DEFAULT_AA_QUALITY AntiAliasingManager::Quality::VERY_HIGH
+#define DEFAULT_AA_QUALITY AntiAliasingManager::Quality::HIGH
 
 namespace urchin {
 
@@ -16,9 +15,31 @@ namespace urchin {
     }
 
     void AntiAliasingManager::loadFxaaShader() {
-        auto qualityUInt = (unsigned int)quality;
-        std::vector<std::size_t> variablesSize = {sizeof(qualityUInt)};
-        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &qualityUInt);
+        AntiAliasingShaderConst antiAliasingShaderConst = {};
+        if (quality == LOW) {
+            antiAliasingShaderConst = {6, 1.0f, 1.5f, 2.0f, 2.0f, 4.0f, 12.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f};
+        } else if (quality == MEDIUM) {
+            antiAliasingShaderConst = {8, 1.0f, 1.5f, 2.0f, 2.0f, 2.0f, 2.0f, 4.0f, 8.0f, -1.0f, -1.0f, -1.0f, -1.0f};
+        } else if (quality == HIGH) {
+            antiAliasingShaderConst = {12, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.5f, 2.0f, 2.0f, 2.0f, 2.0f, 4.0f, 8.0f};
+        }
+
+        std::vector<std::size_t> variablesSize = {
+                sizeof(AntiAliasingShaderConst::qualityPs),
+                sizeof(AntiAliasingShaderConst::qualityP0),
+                sizeof(AntiAliasingShaderConst::qualityP1),
+                sizeof(AntiAliasingShaderConst::qualityP2),
+                sizeof(AntiAliasingShaderConst::qualityP3),
+                sizeof(AntiAliasingShaderConst::qualityP4),
+                sizeof(AntiAliasingShaderConst::qualityP5),
+                sizeof(AntiAliasingShaderConst::qualityP6),
+                sizeof(AntiAliasingShaderConst::qualityP7),
+                sizeof(AntiAliasingShaderConst::qualityP8),
+                sizeof(AntiAliasingShaderConst::qualityP9),
+                sizeof(AntiAliasingShaderConst::qualityP10),
+                sizeof(AntiAliasingShaderConst::qualityP11)
+        };
+        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &antiAliasingShaderConst);
 
         fxaaShader = ShaderBuilder::createShader("fxaa.vert.spv", "", "fxaa.frag.spv", std::move(shaderConstants));
     }

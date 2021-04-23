@@ -14,8 +14,7 @@ namespace urchin {
             enum Quality {
                 LOW = 0,
                 MEDIUM,
-                HIGH,
-                VERY_HIGH
+                HIGH
             };
 
             explicit AntiAliasingManager(std::shared_ptr<RenderTarget>);
@@ -28,6 +27,22 @@ namespace urchin {
             void applyAntiAliasing();
 
         private:
+            struct AntiAliasingShaderConst {
+                uint32_t qualityPs;
+                float qualityP0;
+                float qualityP1;
+                float qualityP2;
+                float qualityP3;
+                float qualityP4;
+                float qualityP5;
+                float qualityP6;
+                float qualityP7;
+                float qualityP8;
+                float qualityP9;
+                float qualityP10;
+                float qualityP11;
+            };
+
             void loadFxaaShader();
 
             //properties
