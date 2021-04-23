@@ -19,8 +19,8 @@ namespace urchin {
             static std::shared_ptr<Texture> build(unsigned int, unsigned int, TextureFormat, const void*);
             static std::shared_ptr<Texture> buildArray(unsigned int, unsigned int, unsigned int, TextureFormat, const void*);
             static std::shared_ptr<Texture> buildCubeMap(unsigned int, unsigned int, TextureFormat, const std::vector<const void*>&);
-            static std::shared_ptr<Texture> buildEmpty();
-            static std::shared_ptr<Texture> buildEmptyArray();
+            static std::shared_ptr<Texture> buildEmptyRgba();
+            static std::shared_ptr<Texture> buildEmptyArrayRg();
 
             void enableMipmap();
             void enableTextureWriting();

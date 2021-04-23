@@ -385,7 +385,7 @@ namespace urchin {
         allocInfo.pSetLayouts = layouts.data();
 
         descriptorSets.resize(renderTarget->getNumFramebuffer());
-        VkResult result =  vkAllocateDescriptorSets(logicalDevice, &allocInfo, descriptorSets.data());
+        VkResult result = vkAllocateDescriptorSets(logicalDevice, &allocInfo, descriptorSets.data());
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to allocate descriptor sets with error code: " + std::to_string(result));
         }

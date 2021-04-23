@@ -53,19 +53,19 @@ namespace urchin {
         return std::shared_ptr<Texture>(new Texture(TextureType::CUBE_MAP, width, height, layerCount, format, cubeDataPtr));
     }
 
-    std::shared_ptr<Texture> Texture::buildEmpty() {
+    std::shared_ptr<Texture> Texture::buildEmptyRgba() {
         std::array<uint8_t, 4> textureArrayData = {255, 20, 147, 0}; //pink
         std::vector<const void*> allDataPtr(1, textureArrayData.data());
         return std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::RGBA_8_INT, allDataPtr));
     }
 
-    std::shared_ptr<Texture> Texture::buildEmptyArray() {
-        std::array<uint8_t, 8> textureArrayData = {
-                255, 20, 147, 0, //pink - layer 0
-                255, 20, 147, 0 //pink - layer 1
+    std::shared_ptr<Texture> Texture::buildEmptyArrayRg() {
+        std::array<float, 4> textureArrayData = {
+                0.0f, 0.25f,
+                0.5f, 1.0f
         };
         std::vector<const void*> allDataPtr(1, textureArrayData.data());
-        return std::shared_ptr<Texture>(new Texture(TextureType::ARRAY, 1, 1, 2, TextureFormat::RGBA_8_INT, allDataPtr));
+        return std::shared_ptr<Texture>(new Texture(TextureType::ARRAY, 1, 1, 2, TextureFormat::RG_32_FLOAT, allDataPtr));
     }
 
     void Texture::enableMipmap() {

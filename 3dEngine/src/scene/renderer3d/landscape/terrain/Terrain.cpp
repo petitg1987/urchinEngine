@@ -61,9 +61,9 @@ namespace urchin {
                 ->addUniformData(sizeof(positioningData), &positioningData) //binding 1
                 ->addUniformData(sizeof(materialsStRepeat), &materialsStRepeat) //binding 2
                 ->addUniformData(sizeof(ambient), &ambient) //binding 3
-                ->addUniformTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //binding 4 - mask texture
+                ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyRgba(), TextureParam::buildNearest())); //binding 4 - mask texture
         for (std::size_t i = 0; i < materials->getMaterials().size(); ++i) {
-            terrainRendererBuilder->addUniformTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())); //binding 5..8 - material texture
+            terrainRendererBuilder->addUniformTextureReader(TextureReader::build(Texture::buildEmptyRgba(), TextureParam::buildNearest())); //binding 5..8 - material texture
         }
         terrainRenderer = terrainRendererBuilder->build();
 
@@ -101,7 +101,7 @@ namespace urchin {
                     TextureParam textureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
                     terrainRenderer->updateUniformTextureReader(materialTexUnitStart++, TextureReader::build(material->getDiffuseTexture(), textureParam));
                 } else {
-                    terrainRenderer->updateUniformTextureReader(materialTexUnitStart++, TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest()));
+                    terrainRenderer->updateUniformTextureReader(materialTexUnitStart++, TextureReader::build(Texture::buildEmptyRgba(), TextureParam::buildNearest()));
                 }
             }
         }

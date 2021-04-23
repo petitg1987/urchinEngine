@@ -339,13 +339,13 @@ namespace urchin {
 
         std::vector<std::shared_ptr<TextureReader>> shadowMapTextureReaders;
         for (unsigned int i = 0; i < shadowManager->getMaxShadowLights(); ++i) {
-            shadowMapTextureReaders.push_back(TextureReader::build(Texture::buildEmptyArray(), TextureParam::buildNearest()));
+            shadowMapTextureReaders.push_back(TextureReader::build(Texture::buildEmptyArrayRg(), TextureParam::buildNearest()));
         }
         lightingRenderer = lightingRendererBuilder
                 ->addUniformTextureReader(TextureReader::build(deferredRenderTarget->getDepthTexture(), TextureParam::buildNearest())) //binding 7
                 ->addUniformTextureReader(TextureReader::build(diffuseTexture, TextureParam::buildNearest())) //binding 8
                 ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 9
-                ->addUniformTextureReader(TextureReader::build(Texture::buildEmpty(), TextureParam::buildNearest())) //binding 10 - ambient occlusion
+                ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyRgba(), TextureParam::buildNearest())) //binding 10 - ambient occlusion
                 ->addUniformTextureReaderArray(shadowMapTextureReaders) //binding 11
                 ->build();
 
