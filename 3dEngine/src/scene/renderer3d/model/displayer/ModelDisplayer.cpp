@@ -2,7 +2,6 @@
 
 #include "ModelDisplayer.h"
 #include "graphic/render/GenericRendererBuilder.h"
-#include "resources/geometry/aabbox/AABBoxModel.h"
 
 namespace urchin {
 
@@ -92,11 +91,11 @@ namespace urchin {
         }
     }
 
-    void ModelDisplayer::drawBBox(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
-        AABBoxModel aabboxModel(model->getAABBox());
-        aabboxModel.initialize(renderTarget);
-        aabboxModel.onCameraProjectionUpdate(projectionMatrix);
-        aabboxModel.prepareRendering(viewMatrix);
+    void ModelDisplayer::drawBBox(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) {
+        aabboxModel = std::make_unique<AABBoxModel>(model->getAABBox());
+        aabboxModel->initialize(renderTarget);
+        aabboxModel->onCameraProjectionUpdate(projectionMatrix);
+        aabboxModel->prepareRendering(viewMatrix);
     }
 
     void ModelDisplayer::drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {

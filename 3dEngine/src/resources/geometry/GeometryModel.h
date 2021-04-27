@@ -17,12 +17,15 @@ namespace urchin {
             void initialize(const std::shared_ptr<RenderTarget>&);
             void onCameraProjectionUpdate(const Matrix4<float>&);
 
+            const std::shared_ptr<RenderTarget>& getRenderTarget() const;
+
             Vector4<float> getColor() const;
             void setColor(float, float, float, float alpha = 1.0f);
 
             PolygonMode getPolygonMode() const;
             void setPolygonMode(PolygonMode);
-            void setOutlineSize(float);
+            void setLineWidth(float);
+            void setPointSize(float);
 
             bool isTransparencyEnabled() const;
             void enableTransparency();
@@ -56,7 +59,8 @@ namespace urchin {
 
             Vector4<float> color;
             PolygonMode polygonMode;
-            float outlineSize;
+            float lineWidth;
+            float pointSize;
             bool transparencyEnabled;
             bool alwaysVisible;
     };

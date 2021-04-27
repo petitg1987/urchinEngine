@@ -15,8 +15,9 @@ namespace urchin {
     bool DEBUG_DISPLAY_COLOR_BUFFER = false;
     bool DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER = false;
     bool DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER = false;
-    bool DEBUG_DISPLAY_SHADOW_MAP = false;
+    bool DEBUG_DISPLAY_SHADOW_MAP_BUFFER = false;
     bool DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER = false;
+
     bool DEBUG_DISPLAY_MODELS_OCTREE = false;
     bool DEBUG_DISPLAY_MODELS_BOUNDING_BOX = false;
     bool DEBUG_DISPLAY_MODEL_BASE_BONES = false;
@@ -393,7 +394,7 @@ namespace urchin {
                 textureRenderers.emplace_back(std::move(textureRenderer));
             }
 
-            if (DEBUG_DISPLAY_SHADOW_MAP) {
+            if (DEBUG_DISPLAY_SHADOW_MAP_BUFFER) {
                 const Light *firstLight = lightManager->getSunLights()[0]; //choose light
                 const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps - 1]
                 auto textureRenderer = std::make_unique<TextureRenderer>(shadowManager->getLightShadowMap(firstLight).getShadowMapTexture(), shadowMapNumber, TextureRenderer::DEFAULT_VALUE);

@@ -8,10 +8,10 @@ namespace urchin {
             isInitialized(false),
             color(Vector4<float>(0.0f, 1.0f, 0.0f, 1.0f)),
             polygonMode(WIREFRAME),
-            outlineSize(1.3f),
+            lineWidth(2.0f),
+            pointSize(2.0f),
             transparencyEnabled(false),
             alwaysVisible(false) {
-        shader = ShaderBuilder::createShader("displayGeometry.vert.spv", "", "displayGeometry.frag.spv", std::unique_ptr<ShaderConstants>());
     }
 
     void GeometryModel::initialize(const std::shared_ptr<RenderTarget>& renderTarget) {
@@ -30,12 +30,16 @@ namespace urchin {
 
         std::vector<Point3<float>> vertexArray = retrieveVertexArray();
 
+        std::vector<std::size_t> variablesSize = {sizeof(pointSize)};
+        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &pointSize);
+        shader = ShaderBuilder::createShader("displayGeometry.vert.spv", "", "displayGeometry.frag.spv", std::move(shaderConstants));
+
         auto rendererBuilder = GenericRendererBuilder::create("geometry model", renderTarget, shader, getShapeType())
                 ->addData(vertexArray)
                 ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
                 ->addUniformData(sizeof(color), &color) //binding 1
                 ->disableCullFace()
-                ->outlineSize(outlineSize)
+                ->lineWidth(lineWidth)
                 ->polygonMode(polygonMode);
 
         if (!alwaysVisible) {
@@ -51,6 +55,10 @@ namespace urchin {
 
     void GeometryModel::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
         positioningData.projectionMatrix = projectionMatrix;
+    }
+
+    const std::shared_ptr<RenderTarget>& GeometryModel::getRenderTarget() const {
+        return renderTarget;
     }
 
     Vector4<float> GeometryModel::getColor() const {
@@ -70,8 +78,13 @@ namespace urchin {
         refreshRenderer();
     }
 
-    void GeometryModel::setOutlineSize(float outlineSize) {
-        this->outlineSize = outlineSize;
+    void GeometryModel::setLineWidth(float lineWidth) {
+        this->lineWidth = lineWidth;
+        refreshRenderer();
+    }
+
+    void GeometryModel::setPointSize(float pointSize) {
+        this->pointSize = pointSize;
         refreshRenderer();
     }
 

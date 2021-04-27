@@ -49,8 +49,8 @@ namespace urchin {
 
             std::shared_ptr<GenericRendererBuilder> polygonMode(PolygonMode);
             PolygonMode getPolygonMode() const;
-            std::shared_ptr<GenericRendererBuilder> outlineSize(float);
-            float getOutlineSize() const;
+            std::shared_ptr<GenericRendererBuilder> lineWidth(float);
+            float getLineWidth() const;
 
             std::shared_ptr<GenericRenderer> build();
 
@@ -70,7 +70,7 @@ namespace urchin {
             bool depthOperationsEnabled;
             bool cullFaceEnabled;
             PolygonMode pPolygonMode;
-            float pOutlineSize;
+            float pLineWidth;
 
     };
 

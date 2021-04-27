@@ -13,7 +13,7 @@ namespace urchin {
             depthOperationsEnabled(false),
             cullFaceEnabled(true),
             pPolygonMode(PolygonMode::FILL),
-            pOutlineSize(1.0f) {
+            pLineWidth(1.0f) {
 
     }
 
@@ -143,13 +143,13 @@ namespace urchin {
         return pPolygonMode;
     }
 
-    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::outlineSize(float pOutlineSize) {
-        this->pOutlineSize = pOutlineSize;
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::lineWidth(float pLineWidth) {
+        this->pLineWidth = pLineWidth;
         return shared_from_this();
     }
 
-    float GenericRendererBuilder::getOutlineSize() const {
-        return pOutlineSize;
+    float GenericRendererBuilder::getLineWidth() const {
+        return pLineWidth;
     }
 
     std::shared_ptr<GenericRenderer> GenericRendererBuilder::build() {

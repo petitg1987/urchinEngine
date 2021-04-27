@@ -89,7 +89,7 @@ namespace urchin {
             bool depthOperationsEnabled;
             bool cullFaceEnabled;
             PolygonMode polygonMode;
-            float outlineSize;
+            float lineWidth;
 
             VkDescriptorSetLayout descriptorSetLayout;
             VkPipelineLayout pipelineLayout;

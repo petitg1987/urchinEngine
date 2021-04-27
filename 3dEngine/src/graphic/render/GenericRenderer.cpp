@@ -23,7 +23,7 @@ namespace urchin {
             depthOperationsEnabled(rendererBuilder->isDepthOperationsEnabled()),
             cullFaceEnabled(rendererBuilder->isCullFaceEnabled()),
             polygonMode(rendererBuilder->getPolygonMode()),
-            outlineSize(rendererBuilder->getOutlineSize()),
+            lineWidth(rendererBuilder->getLineWidth()),
             descriptorSetLayout(nullptr),
             pipelineLayout(nullptr),
             graphicsPipeline(nullptr),
@@ -195,7 +195,7 @@ namespace urchin {
         rasterization.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
         rasterization.rasterizerDiscardEnable = VK_FALSE;
         rasterization.polygonMode = polygonMode == PolygonMode::WIREFRAME ? VK_POLYGON_MODE_LINE : VK_POLYGON_MODE_FILL;
-        rasterization.lineWidth = outlineSize;
+        rasterization.lineWidth = lineWidth;
         rasterization.cullMode = cullFaceEnabled ? VK_CULL_MODE_BACK_BIT : VK_CULL_MODE_NONE;
         rasterization.frontFace = VK_FRONT_FACE_CLOCKWISE;
         rasterization.depthClampEnable = VK_FALSE;

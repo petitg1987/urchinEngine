@@ -4,6 +4,7 @@
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/model/displayer/DisplayMode.h"
 #include "scene/renderer3d/camera/Camera.h"
+#include "resources/geometry/aabbox/AABBoxModel.h"
 #include "CustomModelShaderVariable.h"
 
 namespace urchin {
@@ -18,7 +19,7 @@ namespace urchin {
 
             void prepareRendering(const Matrix4<float>&) const;
 
-            void drawBBox(const Matrix4<float>&, const Matrix4<float>&) const;
+            void drawBBox(const Matrix4<float>&, const Matrix4<float>&);
             void drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const;
 
         private:
@@ -35,6 +36,7 @@ namespace urchin {
             CustomModelShaderVariable* customModelShaderVariable;
 
             std::vector<std::shared_ptr<GenericRenderer>> meshRenderers;
+            std::unique_ptr<AABBoxModel> aabboxModel;
     };
 
 }

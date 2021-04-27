@@ -1,6 +1,5 @@
 #include "Mesh.h"
 #include "resources/model/MeshService.h"
-#include "resources/geometry/points/PointsModel.h"
 #include "graphic/render/GenericRendererBuilder.h"
 
 namespace urchin {
@@ -28,15 +27,15 @@ namespace urchin {
         return tangents;
     }
 
-    void Mesh::drawBaseBones(const std::shared_ptr<RenderTarget>& renderTarget, const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
+    void Mesh::drawBaseBones(const std::shared_ptr<RenderTarget>& renderTarget, const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) {
         std::vector<Point3<float>> bonePositions;
         for (const auto& bone : constMesh->getBaseSkeleton()) {
             bonePositions.push_back(bone.pos);
         }
 
-        std::unique_ptr<PointsModel> pointsModel = std::make_unique<PointsModel>(bonePositions);
+        pointsModel = std::make_unique<PointsModel>(bonePositions);
         pointsModel->initialize(renderTarget);
-        pointsModel->setOutlineSize(5.0f);
+        pointsModel->setPointSize(5.0f);
         pointsModel->onCameraProjectionUpdate(projectionMatrix);
         pointsModel->setAlwaysVisible(true);
         pointsModel->prepareRendering(viewMatrix);
