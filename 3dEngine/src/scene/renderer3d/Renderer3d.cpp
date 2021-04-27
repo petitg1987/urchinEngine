@@ -17,7 +17,6 @@ namespace urchin {
     bool DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER = false;
     bool DEBUG_DISPLAY_SHADOW_MAP_BUFFER = false;
     bool DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER = false;
-
     bool DEBUG_DISPLAY_MODELS_OCTREE = false;
     bool DEBUG_DISPLAY_MODELS_BOUNDING_BOX = false;
     bool DEBUG_DISPLAY_MODEL_BASE_BONES = false;
@@ -476,9 +475,10 @@ namespace urchin {
         }
     }
 
-    void Renderer3d::displayDetails() { //TODO test it and rename method
+    void Renderer3d::displayDetails() { //TODO rename method
         if (DEBUG_DISPLAY_MODELS_OCTREE) {
-            OctreeRenderer::drawOctree(modelOctreeManager, deferredRenderTarget, camera->getProjectionMatrix(), camera->getViewMatrix());
+            debugModelOctree = OctreeRenderer::createOctreeModel(modelOctreeManager, deferredRenderTarget, camera->getProjectionMatrix());
+            debugModelOctree->prepareRendering(camera->getViewMatrix());
         }
 
         if (DEBUG_DISPLAY_MODELS_BOUNDING_BOX) {

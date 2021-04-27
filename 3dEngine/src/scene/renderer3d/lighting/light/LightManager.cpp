@@ -178,8 +178,9 @@ namespace urchin {
         }
     }
 
-    void LightManager::drawLightOctree(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
-        OctreeRenderer::drawOctree(lightOctreeManager, renderTarget, projectionMatrix, viewMatrix);
+    void LightManager::drawLightOctree(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) {
+        debugLightOctree = OctreeRenderer::createOctreeModel(lightOctreeManager, renderTarget, projectionMatrix);
+        debugLightOctree->prepareRendering(viewMatrix);
     }
 
 }

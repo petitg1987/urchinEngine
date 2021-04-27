@@ -1,5 +1,5 @@
-template<class T> void OctreeRenderer::drawOctree(const OctreeManager<T>* octreeManager, const std::shared_ptr<RenderTarget>& renderTarget,
-        const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) {
+template<class T> std::unique_ptr<AABBoxModel> OctreeRenderer::createOctreeModel(const OctreeManager<T>* octreeManager,
+        const std::shared_ptr<RenderTarget>& renderTarget, const Matrix4<float>& projectionMatrix) {
     auto leafOctrees = octreeManager->getAllLeafOctrees();
 
     std::vector<AABBox<float>> aabboxes;
@@ -9,8 +9,9 @@ template<class T> void OctreeRenderer::drawOctree(const OctreeManager<T>* octree
         aabboxes.push_back(leafOctree->getAABBox());
     }
 
-    urchin::AABBoxModel aabboxModel(aabboxes);
-    aabboxModel.initialize(renderTarget);
-    aabboxModel.onCameraProjectionUpdate(projectionMatrix);
-    aabboxModel.prepareRendering(viewMatrix);
+    auto aabboxModel = std::make_unique<AABBoxModel>(aabboxes);
+    aabboxModel->initialize(renderTarget);
+    aabboxModel->onCameraProjectionUpdate(projectionMatrix);
+
+    return aabboxModel;
 }

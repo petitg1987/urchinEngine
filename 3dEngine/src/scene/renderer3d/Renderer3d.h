@@ -118,6 +118,7 @@ namespace urchin {
             std::shared_ptr<OffscreenRender> deferredRenderTarget;
             ModelSetDisplayer* modelSetDisplayer;
             OctreeManager<Model>* modelOctreeManager;
+            std::unique_ptr<AABBoxModel> debugModelOctree;
             std::vector<Model*> modelsInFrustum;
 
             FogManager* fogManager;
