@@ -33,7 +33,6 @@ namespace urchin {
             void setModels(const std::vector<Model*>&);
             void removeModel(Model*);
 
-            void updateAnimation(float);
             void prepareRendering(const Matrix4<float>&);
 
             void drawBBox(const Matrix4<float>&, const Matrix4<float>&) const;

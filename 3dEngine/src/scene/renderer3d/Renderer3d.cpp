@@ -285,15 +285,13 @@ namespace urchin {
         }
 
         updateScene(dt);
-
         deferredRendering(dt);
         lightingPassRendering();
-
         if (isAntiAliasingActivated) {
             antiAliasingManager->applyAntiAliasing();
         }
 
-        debugTexturesRendering();
+        renderDebugFramebuffers();
         postUpdateScene();
     }
 
@@ -357,11 +355,11 @@ namespace urchin {
             antiAliasingManager->onTextureUpdate(lightingPassTexture);
         }
 
-        setupDebugTextures();
+        setupDebugFramebuffers();
     }
 
-    void Renderer3d::setupDebugTextures() {
-        textureRenderers.clear();
+    void Renderer3d::setupDebugFramebuffers() {
+        debugFramebuffers.clear();
 
         if(camera) {
             if (DEBUG_DISPLAY_DEPTH_BUFFER) {
@@ -369,28 +367,28 @@ namespace urchin {
                 auto textureRenderer = std::make_unique<TextureRenderer>(deferredRenderTarget->getDepthTexture(), TextureRenderer::DEPTH_VALUE, depthIntensity);
                 textureRenderer->setPosition(TextureRenderer::LEFT, TextureRenderer::TOP);
                 textureRenderer->initialize("[DEBUG] depth texture", finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-                textureRenderers.emplace_back(std::move(textureRenderer));
+                debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
 
             if (DEBUG_DISPLAY_COLOR_BUFFER) {
                 auto textureRenderer = std::make_unique<TextureRenderer>(diffuseTexture, TextureRenderer::DEFAULT_VALUE);
                 textureRenderer->setPosition(TextureRenderer::CENTER_X, TextureRenderer::TOP);
                 textureRenderer->initialize("[DEBUG] diffuse texture", finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-                textureRenderers.emplace_back(std::move(textureRenderer));
+                debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
 
             if (DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER) {
                 auto textureRenderer = std::make_unique<TextureRenderer>(normalAndAmbientTexture, TextureRenderer::DEFAULT_VALUE);
                 textureRenderer->setPosition(TextureRenderer::RIGHT, TextureRenderer::TOP);
                 textureRenderer->initialize("[DEBUG] normal/ambient texture", finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-                textureRenderers.emplace_back(std::move(textureRenderer));
+                debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
 
             if (DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER) {
                 auto textureRenderer = std::make_unique<TextureRenderer>(lightingPassTexture, TextureRenderer::DEFAULT_VALUE);
                 textureRenderer->setPosition(TextureRenderer::LEFT, TextureRenderer::BOTTOM);
                 textureRenderer->initialize("[DEBUG] lighting pass texture", finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-                textureRenderers.emplace_back(std::move(textureRenderer));
+                debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
 
             if (DEBUG_DISPLAY_SHADOW_MAP_BUFFER) {
@@ -399,7 +397,7 @@ namespace urchin {
                 auto textureRenderer = std::make_unique<TextureRenderer>(shadowManager->getLightShadowMap(firstLight).getShadowMapTexture(), shadowMapNumber, TextureRenderer::DEFAULT_VALUE);
                 textureRenderer->setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
                 textureRenderer->initialize("[DEBUG] shadow map", finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-                textureRenderers.emplace_back(std::move(textureRenderer));
+                debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
 
             if (DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER) {
@@ -407,7 +405,7 @@ namespace urchin {
                 auto textureRenderer = std::make_unique<TextureRenderer>(ambientOcclusionManager->getAmbientOcclusionTexture(), TextureRenderer::INVERSE_GRAYSCALE_VALUE, ambientOcclusionIntensity);
                 textureRenderer->setPosition(TextureRenderer::RIGHT, TextureRenderer::BOTTOM);
                 textureRenderer->initialize("[DEBUG] ambient occlusion texture", finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-                textureRenderers.emplace_back(std::move(textureRenderer));
+                debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
         }
     }
@@ -421,26 +419,26 @@ namespace urchin {
         //refresh models in octree
         modelOctreeManager->refreshOctreeables();
 
+        //determine model visible on scene
+        updateModelsInFrustum();
+        modelSetDisplayer->setModels(modelsInFrustum);
+
         //determine visible lights on scene
         lightManager->updateVisibleLights(camera->getFrustum());
 
-        //determine models producing shadow on scene
         if (visualOption.isShadowActivated) {
+            //determine models producing shadow on scene
             shadowManager->updateVisibleModels(camera->getFrustum());
-        }
 
-        //animate models (only those visible to scene OR producing shadow on scene)
-        if (visualOption.isShadowActivated) {
-            modelSetDisplayer->setModels(shadowManager->getVisibleModels());
+            //animate models
+            for (auto model : shadowManager->getVisibleModels()) {
+                model->updateAnimation(dt);
+            }
         } else {
-            updateModelsInFrustum();
-            modelSetDisplayer->setModels(modelsInFrustum);
-        }
-        modelSetDisplayer->updateAnimation(dt);
-
-        //update shadow maps
-        if (visualOption.isShadowActivated) {
-            shadowManager->updateShadowMaps();
+            //animate models
+            for (auto model : modelsInFrustum) {
+                model->updateAnimation(dt);
+            }
         }
     }
 
@@ -448,34 +446,31 @@ namespace urchin {
      * First pass of deferred shading algorithm.
      * Render depth, color, normal, etc. into buffers.
      */
-    void Renderer3d::deferredRendering(float dt) { //TODO re-organise this method with updateScene()
+    void Renderer3d::deferredRendering(float dt) {
         ScopeProfiler sp(Profiler::graphic(), "deferredRender");
 
-        updateModelsInFrustum();
-        modelSetDisplayer->setModels(modelsInFrustum);
+        //deferred shadow map
+        if (visualOption.isShadowActivated) {
+            shadowManager->updateShadowMaps();
+        }
 
+        //deferred scene (depth, color, normal, ambient)
         deferredRenderTarget->clearRenderers();
-
         skyManager->prepareRendering(camera->getViewMatrix(), camera->getPosition());
-
         modelSetDisplayer->prepareRendering(camera->getViewMatrix());
-
         terrainManager->prepareRendering(camera, dt);
-
         waterManager->prepareRendering(camera, fogManager, dt);
-
         geometryManager->prepareRendering(camera->getViewMatrix());
-
-        displayDetails();
-
+        renderDebugSceneData();
         deferredRenderTarget->render();
 
+        //deferred ambient occlusion
         if (visualOption.isAmbientOcclusionActivated) {
             ambientOcclusionManager->updateAOTexture(camera);
         }
     }
 
-    void Renderer3d::displayDetails() { //TODO rename method
+    void Renderer3d::renderDebugSceneData() {
         if (DEBUG_DISPLAY_MODELS_OCTREE) {
             debugModelOctree = OctreeRenderer::createOctreeModel(modelOctreeManager, deferredRenderTarget, camera->getProjectionMatrix());
             debugModelOctree->prepareRendering(camera->getViewMatrix());
@@ -527,9 +522,9 @@ namespace urchin {
         lightingRenderer->addOnRenderTarget();
     }
 
-    void Renderer3d::debugTexturesRendering() {
-        for(auto& textureRenderer : textureRenderers) {
-            textureRenderer->prepareRendering();
+    void Renderer3d::renderDebugFramebuffers() {
+        for(auto& debugFramebuffer : debugFramebuffers) {
+            debugFramebuffer->prepareRendering();
         }
     }
 
@@ -537,7 +532,6 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "postUpdateScene");
 
         modelOctreeManager->postRefreshOctreeables();
-
         lightManager->postUpdateVisibleLights();
     }
 

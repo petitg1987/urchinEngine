@@ -86,14 +86,6 @@ namespace urchin {
         modelsDisplayer.erase(model);
     }
 
-    void ModelSetDisplayer::updateAnimation(float dt) {
-        ScopeProfiler sp(Profiler::graphic(), "updateAnimation");
-
-        for (auto model : models) {
-            model->updateAnimation(dt);
-        }
-    }
-
     void ModelSetDisplayer::prepareRendering(const Matrix4<float>& viewMatrix) {
         ScopeProfiler sp(Profiler::graphic(), "modelPreRender");
 

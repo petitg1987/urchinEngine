@@ -100,12 +100,12 @@ namespace urchin {
 
             //scene
             void refreshRenderer();
-            void setupDebugTextures();
+            void setupDebugFramebuffers();
             void updateScene(float);
             void deferredRendering(float);
-            void displayDetails();
+            void renderDebugSceneData();
             void lightingPassRendering();
-            void debugTexturesRendering();
+            void renderDebugFramebuffers();
             void postUpdateScene();
 
             //scene properties
@@ -147,7 +147,7 @@ namespace urchin {
             AntiAliasingManager* antiAliasingManager;
             bool isAntiAliasingActivated;
 
-            std::vector<std::unique_ptr<TextureRenderer>> textureRenderers;
+            std::vector<std::unique_ptr<TextureRenderer>> debugFramebuffers;
     };
 
 }
