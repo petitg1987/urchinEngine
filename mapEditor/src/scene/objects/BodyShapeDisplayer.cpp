@@ -127,7 +127,7 @@ namespace urchin {
     GeometryModel* BodyShapeDisplayer::retrieveConvexHullGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>& bodyObject) {
         const auto* convexHullObject = dynamic_cast<const CollisionConvexHullObject*>(bodyObject.get());
         auto* pointsModel = new PointsModel(convexHullObject->getPointsWithMargin());
-        pointsModel->setOutlineSize(5.0f);
+        pointsModel->setPointSize(5.0f);
         return pointsModel;
     }
 

@@ -10,7 +10,7 @@ namespace urchin {
 
     GraphicService::GraphicService() :
             apiGraphicInitialized(false),
-            vulkanVersion(VK_API_VERSION_1_1),
+            vulkanVersion(VK_API_VERSION_1_1), //must be aligned with glslc target environment
             vkInstance(nullptr),
             surface(nullptr),
             allocateCommandPool(nullptr),

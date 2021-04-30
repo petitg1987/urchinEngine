@@ -89,7 +89,10 @@ namespace urchin {
         }
 
         //3d
-        sceneManager = new SceneManager();
+        std::vector<const char*> windowRequiredExtensions;
+        std::unique_ptr<SurfaceCreator> surfaceCreator;
+        std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever;
+        sceneManager = new SceneManager(windowRequiredExtensions, surfaceCreator, std::move(framebufferSizeRetriever)); //TODO review args
         camera = new SceneFreeCamera(50.0f, 0.1f, 2000.0f, mouseController);
         camera->setSpeed(45.0f, 2.0f);
         camera->loadCameraState(mapFilename);

@@ -45,7 +45,7 @@ namespace urchin {
 
         LineSegment3D<float> axeLineSegment(startPoint, endPoint);
         GeometryModel* axisModel = new LinesModel(axeLineSegment);
-        axisModel->setOutlineSize(axisIndex == selectedAxis ? 2.0f : 1.0f);
+        axisModel->setLineWidth(axisIndex == selectedAxis ? 2.0f : 1.0f);
         axisModel->enableTransparency();
         objectMoveAxisModels.push_back(axisModel);
 

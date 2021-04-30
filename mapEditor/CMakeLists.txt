@@ -22,7 +22,7 @@ find_package(Qt5OpenGL)
 find_package(OpenGL)
 
 file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
-add_custom_target(copyShaders rsync -r ${CMAKE_CURRENT_SOURCE_DIR}/../3dEngine/resources/shaders/* ${CMAKE_CURRENT_SOURCE_DIR}/resources/shaders/)
+add_custom_target(copyShaders rsync -r ${CMAKE_CURRENT_SOURCE_DIR}/../3dEngine/resources/shaders/spirv/* ${CMAKE_CURRENT_SOURCE_DIR}/resources/shaders/)
 add_executable(urchinMapEditor ${SOURCE_FILES})
 add_dependencies(urchinMapEditor copyShaders)
 qt5_use_modules(urchinMapEditor Widgets OpenGL)
