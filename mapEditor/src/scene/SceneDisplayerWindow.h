@@ -1,10 +1,9 @@
-#ifndef URCHINENGINE_SCENEDISPLAYERWIDGET_H
-#define URCHINENGINE_SCENEDISPLAYERWIDGET_H
+#ifndef URCHINENGINE_SCENEDISPLAYERWINDOW_H
+#define URCHINENGINE_SCENEDISPLAYERWINDOW_H
 
 #include <string>
 #include <QKeyEvent>
-#include <GL/glew.h>
-#include <QGLWidget>
+#include <QVulkanWindowRenderer>
 
 #include "UrchinCommon.h"
 #include "SceneDisplayer.h"
@@ -13,16 +12,29 @@
 
 namespace urchin {
 
-    class SceneDisplayerWidget : public QGLWidget, public Observable {
+    class SceneDisplayerWindow;
+
+    struct QtSurfaceCreator : public urchin::SurfaceCreator {
+        explicit QtSurfaceCreator(SceneDisplayerWindow*);
+        VkSurfaceKHR createSurface(VkInstance instance) const override;
+
+        SceneDisplayerWindow *vulkanWindow;
+    };
+
+    class SceneDisplayerWindow : public QWindow, public Observable {
         Q_OBJECT
 
         public:
-            SceneDisplayerWidget(QWidget*, const StatusBarController&, std::string);
-            ~SceneDisplayerWidget() override;
+            SceneDisplayerWindow(QWidget*, StatusBarController, std::string);
+            ~SceneDisplayerWindow() override;
 
             enum NotificationType {
                 BODY_PICKED
             };
+
+            std::vector<const char*> getWindowRequiredExtensions();
+            void exposeEvent(QExposeEvent *) override;
+            bool event(QEvent *) override;
 
             void loadMap(SceneController*, const std::string&, const std::string&);
             void saveState(const std::string&) const;
@@ -34,16 +46,14 @@ namespace urchin {
             void setHighlightSceneLight(const SceneLight*);
             void setHighlightSceneSound(const SceneSound*);
 
-            void initializeGL() override;
-            void paintGL() override;
-            void resizeGL(int, int) override;
+            void render();
 
             void keyPressEvent(QKeyEvent*) override;
             void keyReleaseEvent(QKeyEvent*) override;
             void mousePressEvent(QMouseEvent*) override;
             void mouseReleaseEvent(QMouseEvent*) override;
             void mouseMoveEvent(QMouseEvent*) override;
-            void leaveEvent(QEvent*) override;
+//TODO            void leaveEvent(QEvent*) override;
 
             bool onMouseClickBodyPickup();
             const std::string& getLastPickedBodyId() const;
@@ -52,8 +62,11 @@ namespace urchin {
         private:
             void updateSceneDisplayerViewProperties();
 
+            QWidget* parent;
             StatusBarController statusBarController;
             std::string mapEditorPath;
+
+            QVulkanInstance vulkanInstance;
 
             SceneDisplayer* sceneDisplayer;
             bool viewProperties[SceneDisplayer::LAST_VIEW_PROPERTIES];

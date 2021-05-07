@@ -1,8 +1,9 @@
 #include "MouseController.h"
-#include "scene/SceneDisplayerWidget.h"
+#include "scene/SceneDisplayerWindow.h"
 
 namespace urchin {
-    MouseController::MouseController(QWidget* widget) :
+
+    MouseController::MouseController(QWindow* widget) :
             widget(widget) {
 
     }

@@ -3,11 +3,13 @@
 #include <utility>
 
 #include "SceneDisplayer.h"
+#include "SceneDisplayerWindow.h"
 
 namespace urchin {
 
-    SceneDisplayer::SceneDisplayer(SceneController* sceneController, const MouseController& mouseController, StatusBarController statusBarController) :
+    SceneDisplayer::SceneDisplayer(SceneDisplayerWindow* vulkanWindow, SceneController* sceneController, const MouseController& mouseController, StatusBarController statusBarController) :
         isInitialized(false),
+        vulkanWindow(vulkanWindow),
         sceneController(sceneController),
         mouseController(mouseController),
         statusBarController(std::move(statusBarController)),
@@ -89,10 +91,9 @@ namespace urchin {
         }
 
         //3d
-        std::vector<const char*> windowRequiredExtensions;
-        std::unique_ptr<SurfaceCreator> surfaceCreator;
-        std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever;
-        sceneManager = new SceneManager(windowRequiredExtensions, surfaceCreator, std::move(framebufferSizeRetriever)); //TODO review args
+        std::unique_ptr<SurfaceCreator> surfaceCreator = std::make_unique<QtSurfaceCreator>(vulkanWindow);
+        auto framebufferSizeRetriever = std::unique_ptr<FramebufferSizeRetriever>(nullptr); //no required
+        sceneManager = new SceneManager(surfaceCreator, std::move(framebufferSizeRetriever));
         camera = new SceneFreeCamera(50.0f, 0.1f, 2000.0f, mouseController);
         camera->setSpeed(45.0f, 2.0f);
         camera->loadCameraState(mapFilename);

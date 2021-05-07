@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "ObjectMoveController.h"
 
 namespace urchin {
@@ -9,7 +11,7 @@ namespace urchin {
             sceneManager(sceneManager),
             sceneController(sceneController),
             mouseController(mouseController),
-            statusBarController(statusBarController),
+            statusBarController(std::move(statusBarController)),
             selectedSceneObject(nullptr),
             selectedAxis(-1),
             oldMouseX(-1),

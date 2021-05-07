@@ -6,7 +6,8 @@
 #include <QMainWindow>
 #include <QtWidgets/QHBoxLayout>
 
-#include "scene/SceneDisplayerWidget.h"
+#include "scene/SceneDisplayer.h"
+#include "scene/SceneDisplayerWindow.h"
 #include "panel/ScenePanelWidget.h"
 
 namespace urchin {
@@ -50,7 +51,7 @@ namespace urchin {
             std::string mapFilename;
 
             SceneController* sceneController;
-            SceneDisplayerWidget* sceneDisplayerWidget;
+            SceneDisplayerWindow* sceneDisplayerWindow;
             ScenePanelWidget* scenePanelWidget;
 
         private slots:

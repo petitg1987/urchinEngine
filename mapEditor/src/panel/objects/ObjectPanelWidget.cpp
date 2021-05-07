@@ -10,7 +10,7 @@
 #include "panel/objects/dialog/CloneObjectDialog.h"
 #include "panel/objects/dialog/ChangeBodyShapeDialog.h"
 #include "panel/objects/bodyshape/BodyShapeWidgetRetriever.h"
-#include "scene/SceneDisplayerWidget.h"
+#include "scene/SceneDisplayerWindow.h"
 #include "scene/objects/move/ObjectMoveController.h"
 
 namespace urchin {
@@ -398,8 +398,8 @@ namespace urchin {
                     tabWidget->hide();
                 }
             }
-        } else if (auto* sceneDisplayerWidget = dynamic_cast<SceneDisplayerWidget*>(observable)) {
-            if (notificationType == SceneDisplayerWidget::BODY_PICKED) {
+        } else if (auto* sceneDisplayerWidget = dynamic_cast<SceneDisplayerWindow*>(observable)) {
+            if (notificationType == SceneDisplayerWindow::BODY_PICKED) {
                 const std::string& bodyId = sceneDisplayerWidget->getLastPickedBodyId();
                 const SceneObject* sceneObject = bodyId.empty() ? nullptr : objectController->findSceneObjectByBodyId(bodyId);
                 if (sceneObject) {

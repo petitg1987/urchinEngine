@@ -17,7 +17,7 @@ namespace urchin {
 
     class SceneManager {
         public:
-            SceneManager(const std::vector<const char*>&, const std::unique_ptr<SurfaceCreator>&, std::unique_ptr<FramebufferSizeRetriever>);
+            SceneManager(const std::unique_ptr<SurfaceCreator>&, std::unique_ptr<FramebufferSizeRetriever>);
             ~SceneManager();
 
             //scene properties
