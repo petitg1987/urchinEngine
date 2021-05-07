@@ -14,7 +14,6 @@ namespace urchin {
         VkSurfaceKHR createSurface(VkInstance instance) override;
 
         SceneDisplayerWindow *window;
-        QVulkanInstance vulkanInstance;
     };
 
     struct QtFramebufferSizeRetriever : public urchin::FramebufferSizeRetriever {

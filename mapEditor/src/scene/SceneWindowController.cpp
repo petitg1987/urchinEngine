@@ -7,11 +7,7 @@ namespace urchin {
     }
 
     VkSurfaceKHR QtSurfaceCreator::createSurface(VkInstance instance) {
-        vulkanInstance.setVkInstance(instance);
-        if (!vulkanInstance.create()) {
-            throw std::runtime_error("Failed to create Vulkan instance: " + std::to_string(vulkanInstance.errorCode()));
-        }
-        window->setVulkanInstance(&vulkanInstance); //TODO ensure vulkanInstance is never destroyed ? To store on window ?
+        window->setupVkInstance(instance);
         return QVulkanInstance::surfaceForWindow(window);
     }
 

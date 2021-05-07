@@ -57,6 +57,14 @@ namespace urchin {
         return QWindow::event(e);
     }
 
+    void SceneDisplayerWindow::setupVkInstance(VkInstance instance) {
+        vulkanInstance.setVkInstance(instance);
+        if (!vulkanInstance.create()) {
+            throw std::runtime_error("Failed to create Vulkan instance: " + std::to_string(vulkanInstance.errorCode()));
+        }
+        setVulkanInstance(&vulkanInstance);
+    }
+
     void SceneDisplayerWindow::loadMap(SceneController* sceneController, const std::string& mapFilename, const std::string& relativeWorkingDirectory) {
         closeMap();
         statusBarController.applyState(StatusBarState::MAP_LOADED);

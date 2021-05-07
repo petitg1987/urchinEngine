@@ -26,6 +26,7 @@ namespace urchin {
 
             void exposeEvent(QExposeEvent *) override;
             bool event(QEvent *) override;
+            void setupVkInstance(VkInstance);
 
             void loadMap(SceneController*, const std::string&, const std::string&);
             void saveState(const std::string&) const;
@@ -53,6 +54,7 @@ namespace urchin {
             void updateSceneDisplayerViewProperties();
 
             QWidget* parent;
+            QVulkanInstance vulkanInstance;
             StatusBarController statusBarController;
             std::string mapEditorPath;
 
