@@ -1,0 +1,175 @@
+[2021-05-07 15:21:08] (EE) Vulkan validation layer error: Validation Warning: [ UNASSIGNED-BestPractices-vkCreateInstance-deprecated-extension ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0x9111e735 | CreateInstance(): Attempting to enable deprecated extension VK_KHR_device_group_creation, but this extension has been promoted to VK_VERSION_1_1.
+[2021-05-07 15:21:08] (EE) Vulkan validation layer error: Validation Warning: [ UNASSIGNED-BestPractices-vkCreateInstance-deprecated-extension ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0x9111e735 | CreateInstance(): Attempting to enable deprecated extension VK_KHR_external_fence_capabilities, but this extension has been promoted to VK_VERSION_1_1.
+[2021-05-07 15:21:08] (EE) Vulkan validation layer error: Validation Warning: [ UNASSIGNED-BestPractices-vkCreateInstance-deprecated-extension ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0x9111e735 | CreateInstance(): Attempting to enable deprecated extension VK_KHR_external_memory_capabilities, but this extension has been promoted to VK_VERSION_1_1.
+[2021-05-07 15:21:08] (EE) Vulkan validation layer error: Validation Warning: [ UNASSIGNED-BestPractices-vkCreateInstance-deprecated-extension ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0x9111e735 | CreateInstance(): Attempting to enable deprecated extension VK_KHR_external_semaphore_capabilities, but this extension has been promoted to VK_VERSION_1_1.
+[2021-05-07 15:21:08] (EE) Vulkan validation layer error: Validation Warning: [ UNASSIGNED-BestPractices-vkCreateInstance-deprecated-extension ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0x9111e735 | CreateInstance(): Attempting to enable deprecated extension VK_KHR_get_physical_device_properties2, but this extension has been promoted to VK_VERSION_1_1.
+[2021-05-07 15:21:11] (EE) Signal caught 11 (code: 1):
+	[bt] /lib/x86_64-linux-gnu/libpthread.so.0(+0x14bb0) [0x7f27a80f0bb0]
+	[bt] /lib/x86_64-linux-gnu/libQt5XcbQpa.so.5(+0xca254) [0x7f27a4880254]
+	[bt] /lib/x86_64-linux-gnu/libQt5XcbQpa.so.5(+0x7e123) [0x7f27a4834123]
+	[bt] /lib/x86_64-linux-gnu/libQt5XcbQpa.so.5(+0x7e1f1) [0x7f27a48341f1]
+	[bt] [libQt5Gui.so.5] QWindowPrivate::destroy() (0x149829)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x149829
+	[bt] [libQt5Gui.so.5] QWindowPrivate::destroy() (0x1498a0)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x1498a0
+	[bt] [libQt5Gui.so.5] QWindow::event(QEvent*) (0x14a87f)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x14a87f
+	[bt] /lib/x86_64-linux-gnu/libQt5Widgets.so.5(+0x1c7efb) [0x7f27a910befb]
+	[bt] [libQt5Widgets.so.5] QApplicationPrivate::notify_helper(QObject*, QEvent*) (0x16b012)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x16b012
+	[bt] [libQt5Core.so.5] QCoreApplication::notifyInternal2(QObject*, QEvent*) (0x2ab1c9)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2ab1c9
+	[bt] [libQt5Gui.so.5] QGuiApplicationPrivate::processCloseEvent(QWindowSystemInterfacePrivate::CloseEvent*) (0x13b1ec)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x13b1ec
+	[bt] [libQt5Gui.so.5] QWindowSystemInterface::sendWindowSystemEvents(QFlags<QEventLoop::ProcessEventsFlag>) (0x1142ba)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x1142ba
+	[bt] /lib/x86_64-linux-gnu/libQt5XcbQpa.so.5(+0x6835e) [0x7f27a481e35e]
+	[bt] [libglib-2.0.so.0] /lib/x86_64-linux-gnu/libglib-2.0.so.0(g_main_context_dispatch+0x25b) [0x7f27a719a62b] (0x5362a)
+	[bt]	> addr2line -p -e libglib-2.0.so.0 0x5362a
+	[bt] /lib/x86_64-linux-gnu/libglib-2.0.so.0(+0x538d8) [0x7f27a719a8d8]
+	[bt] [libglib-2.0.so.0] /lib/x86_64-linux-gnu/libglib-2.0.so.0(g_main_context_iteration+0x33) [0x7f27a719a9a3] (0x539a2)
+	[bt]	> addr2line -p -e libglib-2.0.so.0 0x539a2
+	[bt] [libQt5Core.so.5] QEventDispatcherGlib::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) (0x302842)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x302842
+	[bt] [libQt5Core.so.5] QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) (0x2a9a4a)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2a9a4a
+	[bt] [libQt5Core.so.5] QCoreApplication::exec() (0x2b1fc5)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2b1fc5
+	[bt] [urchinMapEditor] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(main+0x401) [0x5570c13464f5] (0x4fa4f4)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/Main.cpp:37
+	[bt] [libc.so.6] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf2) [0x7f27a7adfcb2] (0x28cb1)
+	[bt]	> addr2line -p -e libc.so.6 0x28cb1
+	[bt] [urchinMapEditor] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(_start+0x2e) [0x5570c133f6de] (0x4f36dd)
+	[bt]	> addr2line -p -e urchinMapEditor 0x4f36dd
+[2021-05-07 15:34:12] (EE) Vulkan validation layer error: Validation Warning: [ UNASSIGNED-BestPractices-vkCreateInstance-deprecated-extension ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0x9111e735 | CreateInstance(): Attempting to enable deprecated extension VK_KHR_device_group_creation, but this extension has been promoted to VK_VERSION_1_1.
+[2021-05-07 15:34:12] (EE) Vulkan validation layer error: Validation Warning: [ UNASSIGNED-BestPractices-vkCreateInstance-deprecated-extension ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0x9111e735 | CreateInstance(): Attempting to enable deprecated extension VK_KHR_external_fence_capabilities, but this extension has been promoted to VK_VERSION_1_1.
+[2021-05-07 15:34:12] (EE) Vulkan validation layer error: Validation Warning: [ UNASSIGNED-BestPractices-vkCreateInstance-deprecated-extension ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0x9111e735 | CreateInstance(): Attempting to enable deprecated extension VK_KHR_external_memory_capabilities, but this extension has been promoted to VK_VERSION_1_1.
+[2021-05-07 15:34:12] (EE) Vulkan validation layer error: Validation Warning: [ UNASSIGNED-BestPractices-vkCreateInstance-deprecated-extension ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0x9111e735 | CreateInstance(): Attempting to enable deprecated extension VK_KHR_external_semaphore_capabilities, but this extension has been promoted to VK_VERSION_1_1.
+[2021-05-07 15:34:12] (EE) Vulkan validation layer error: Validation Warning: [ UNASSIGNED-BestPractices-vkCreateInstance-deprecated-extension ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0x9111e735 | CreateInstance(): Attempting to enable deprecated extension VK_KHR_get_physical_device_properties2, but this extension has been promoted to VK_VERSION_1_1.
+[2021-05-07 15:34:19] (EE) Signal caught 11 (code: 1):
+	[bt] /lib/x86_64-linux-gnu/libpthread.so.0(+0x14bb0) [0x7f8b51ef2bb0]
+	[bt] [libQt5Gui.so.5] QVulkanInstance::handle() const (0x51ec56)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x51ec56
+	[bt] /lib/x86_64-linux-gnu/libQt5XcbQpa.so.5(+0x7e114) [0x7f8b4e636114]
+	[bt] /lib/x86_64-linux-gnu/libQt5XcbQpa.so.5(+0x7e1f1) [0x7f8b4e6361f1]
+	[bt] [libQt5Gui.so.5] QWindowPrivate::destroy() (0x149829)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x149829
+	[bt] [libQt5Gui.so.5] QWindowPrivate::destroy() (0x1498a0)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x1498a0
+	[bt] [libQt5Gui.so.5] QWindow::event(QEvent*) (0x14a87f)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x14a87f
+	[bt] /lib/x86_64-linux-gnu/libQt5Widgets.so.5(+0x1c7efb) [0x7f8b52f0defb]
+	[bt] [libQt5Widgets.so.5] QApplicationPrivate::notify_helper(QObject*, QEvent*) (0x16b012)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x16b012
+	[bt] [libQt5Core.so.5] QCoreApplication::notifyInternal2(QObject*, QEvent*) (0x2ab1c9)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2ab1c9
+	[bt] [libQt5Gui.so.5] QGuiApplicationPrivate::processCloseEvent(QWindowSystemInterfacePrivate::CloseEvent*) (0x13b1ec)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x13b1ec
+	[bt] [libQt5Gui.so.5] QWindowSystemInterface::sendWindowSystemEvents(QFlags<QEventLoop::ProcessEventsFlag>) (0x1142ba)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x1142ba
+	[bt] /lib/x86_64-linux-gnu/libQt5XcbQpa.so.5(+0x6835e) [0x7f8b4e62035e]
+	[bt] [libglib-2.0.so.0] /lib/x86_64-linux-gnu/libglib-2.0.so.0(g_main_context_dispatch+0x25b) [0x7f8b50f9c62b] (0x5362a)
+	[bt]	> addr2line -p -e libglib-2.0.so.0 0x5362a
+	[bt] /lib/x86_64-linux-gnu/libglib-2.0.so.0(+0x538d8) [0x7f8b50f9c8d8]
+	[bt] [libglib-2.0.so.0] /lib/x86_64-linux-gnu/libglib-2.0.so.0(g_main_context_iteration+0x33) [0x7f8b50f9c9a3] (0x539a2)
+	[bt]	> addr2line -p -e libglib-2.0.so.0 0x539a2
+	[bt] [libQt5Core.so.5] QEventDispatcherGlib::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) (0x302842)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x302842
+	[bt] [libQt5Core.so.5] QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) (0x2a9a4a)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2a9a4a
+	[bt] [libQt5Core.so.5] QCoreApplication::exec() (0x2b1fc5)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2b1fc5
+	[bt] [urchinMapEditor] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(main+0x401) [0x557a5e2164f5] (0x4fa4f4)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/Main.cpp:37
+	[bt] [libc.so.6] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf2) [0x7f8b518e1cb2] (0x28cb1)
+	[bt]	> addr2line -p -e libc.so.6 0x28cb1
+	[bt] [urchinMapEditor] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(_start+0x2e) [0x557a5e20f6de] (0x4f36dd)
+	[bt]	> addr2line -p -e urchinMapEditor 0x4f36dd
+[2021-05-07 15:59:39] (EE) Vulkan validation layer error: Validation Warning: [ UNASSIGNED-BestPractices-vkCreateInstance-deprecated-extension ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0x9111e735 | CreateInstance(): Attempting to enable deprecated extension VK_KHR_device_group_creation, but this extension has been promoted to VK_VERSION_1_1.
+[2021-05-07 15:59:39] (EE) Vulkan validation layer error: Validation Warning: [ UNASSIGNED-BestPractices-vkCreateInstance-deprecated-extension ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0x9111e735 | CreateInstance(): Attempting to enable deprecated extension VK_KHR_external_fence_capabilities, but this extension has been promoted to VK_VERSION_1_1.
+[2021-05-07 15:59:39] (EE) Vulkan validation layer error: Validation Warning: [ UNASSIGNED-BestPractices-vkCreateInstance-deprecated-extension ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0x9111e735 | CreateInstance(): Attempting to enable deprecated extension VK_KHR_external_memory_capabilities, but this extension has been promoted to VK_VERSION_1_1.
+[2021-05-07 15:59:39] (EE) Vulkan validation layer error: Validation Warning: [ UNASSIGNED-BestPractices-vkCreateInstance-deprecated-extension ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0x9111e735 | CreateInstance(): Attempting to enable deprecated extension VK_KHR_external_semaphore_capabilities, but this extension has been promoted to VK_VERSION_1_1.
+[2021-05-07 15:59:39] (EE) Vulkan validation layer error: Validation Warning: [ UNASSIGNED-BestPractices-vkCreateInstance-deprecated-extension ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0x9111e735 | CreateInstance(): Attempting to enable deprecated extension VK_KHR_get_physical_device_properties2, but this extension has been promoted to VK_VERSION_1_1.
+[2021-05-07 16:00:28] (EE) Signal caught 11 (code: 1):
+	[bt] /lib/x86_64-linux-gnu/libpthread.so.0(+0x14bb0) [0x7f95b78d9bb0]
+	[bt] [libQt5Gui.so.5] QVulkanInstance::handle() const (0x51ec56)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x51ec56
+	[bt] /lib/x86_64-linux-gnu/libQt5XcbQpa.so.5(+0x7e114) [0x7f95b401d114]
+	[bt] /lib/x86_64-linux-gnu/libQt5XcbQpa.so.5(+0x7e1f1) [0x7f95b401d1f1]
+	[bt] [libQt5Gui.so.5] QWindowPrivate::destroy() (0x149829)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x149829
+	[bt] [libQt5Gui.so.5] QWindowPrivate::destroy() (0x1498a0)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x1498a0
+	[bt] [libQt5Gui.so.5] QWindow::event(QEvent*) (0x14a87f)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x14a87f
+	[bt] /lib/x86_64-linux-gnu/libQt5Widgets.so.5(+0x1c7efb) [0x7f95b88f4efb]
+	[bt] [libQt5Widgets.so.5] QApplicationPrivate::notify_helper(QObject*, QEvent*) (0x16b012)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x16b012
+	[bt] [libQt5Core.so.5] QCoreApplication::notifyInternal2(QObject*, QEvent*) (0x2ab1c9)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2ab1c9
+	[bt] [libQt5Gui.so.5] QGuiApplicationPrivate::processCloseEvent(QWindowSystemInterfacePrivate::CloseEvent*) (0x13b1ec)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x13b1ec
+	[bt] [libQt5Gui.so.5] QWindowSystemInterface::sendWindowSystemEvents(QFlags<QEventLoop::ProcessEventsFlag>) (0x1142ba)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x1142ba
+	[bt] /lib/x86_64-linux-gnu/libQt5XcbQpa.so.5(+0x6835e) [0x7f95b400735e]
+	[bt] [libglib-2.0.so.0] /lib/x86_64-linux-gnu/libglib-2.0.so.0(g_main_context_dispatch+0x25b) [0x7f95b698362b] (0x5362a)
+	[bt]	> addr2line -p -e libglib-2.0.so.0 0x5362a
+	[bt] /lib/x86_64-linux-gnu/libglib-2.0.so.0(+0x538d8) [0x7f95b69838d8]
+	[bt] [libglib-2.0.so.0] /lib/x86_64-linux-gnu/libglib-2.0.so.0(g_main_context_iteration+0x33) [0x7f95b69839a3] (0x539a2)
+	[bt]	> addr2line -p -e libglib-2.0.so.0 0x539a2
+	[bt] [libQt5Core.so.5] QEventDispatcherGlib::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) (0x302842)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x302842
+	[bt] [libQt5Core.so.5] QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) (0x2a9a4a)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2a9a4a
+	[bt] [libQt5Core.so.5] QCoreApplication::exec() (0x2b1fc5)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2b1fc5
+	[bt] [urchinMapEditor] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(main+0x401) [0x5603997fb515] (0x4fa514)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/Main.cpp:37
+	[bt] [libc.so.6] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf2) [0x7f95b72c8cb2] (0x28cb1)
+	[bt]	> addr2line -p -e libc.so.6 0x28cb1
+	[bt] [urchinMapEditor] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(_start+0x2e) [0x5603997f46fe] (0x4f36fd)
+	[bt]	> addr2line -p -e urchinMapEditor 0x4f36fd
+[2021-05-07 16:02:34] (EE) Vulkan validation layer error: Validation Warning: [ UNASSIGNED-BestPractices-vkCreateInstance-deprecated-extension ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0x9111e735 | CreateInstance(): Attempting to enable deprecated extension VK_KHR_device_group_creation, but this extension has been promoted to VK_VERSION_1_1.
+[2021-05-07 16:02:34] (EE) Vulkan validation layer error: Validation Warning: [ UNASSIGNED-BestPractices-vkCreateInstance-deprecated-extension ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0x9111e735 | CreateInstance(): Attempting to enable deprecated extension VK_KHR_external_fence_capabilities, but this extension has been promoted to VK_VERSION_1_1.
+[2021-05-07 16:02:34] (EE) Vulkan validation layer error: Validation Warning: [ UNASSIGNED-BestPractices-vkCreateInstance-deprecated-extension ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0x9111e735 | CreateInstance(): Attempting to enable deprecated extension VK_KHR_external_memory_capabilities, but this extension has been promoted to VK_VERSION_1_1.
+[2021-05-07 16:02:34] (EE) Vulkan validation layer error: Validation Warning: [ UNASSIGNED-BestPractices-vkCreateInstance-deprecated-extension ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0x9111e735 | CreateInstance(): Attempting to enable deprecated extension VK_KHR_external_semaphore_capabilities, but this extension has been promoted to VK_VERSION_1_1.
+[2021-05-07 16:02:34] (EE) Vulkan validation layer error: Validation Warning: [ UNASSIGNED-BestPractices-vkCreateInstance-deprecated-extension ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0x9111e735 | CreateInstance(): Attempting to enable deprecated extension VK_KHR_get_physical_device_properties2, but this extension has been promoted to VK_VERSION_1_1.
+[2021-05-07 16:03:16] (EE) Signal caught 11 (code: 1):
+	[bt] /lib/x86_64-linux-gnu/libpthread.so.0(+0x14bb0) [0x7f986313bbb0]
+	[bt] [libQt5Gui.so.5] QVulkanInstance::handle() const (0x51ec56)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x51ec56
+	[bt] /lib/x86_64-linux-gnu/libQt5XcbQpa.so.5(+0x7e114) [0x7f985f87f114]
+	[bt] /lib/x86_64-linux-gnu/libQt5XcbQpa.so.5(+0x7e1f1) [0x7f985f87f1f1]
+	[bt] [libQt5Gui.so.5] QWindowPrivate::destroy() (0x149829)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x149829
+	[bt] [libQt5Gui.so.5] QWindowPrivate::destroy() (0x1498a0)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x1498a0
+	[bt] [libQt5Gui.so.5] QWindow::event(QEvent*) (0x14a87f)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x14a87f
+	[bt] /lib/x86_64-linux-gnu/libQt5Widgets.so.5(+0x1c7efb) [0x7f9864156efb]
+	[bt] [libQt5Widgets.so.5] QApplicationPrivate::notify_helper(QObject*, QEvent*) (0x16b012)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x16b012
+	[bt] [libQt5Core.so.5] QCoreApplication::notifyInternal2(QObject*, QEvent*) (0x2ab1c9)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2ab1c9
+	[bt] [libQt5Gui.so.5] QGuiApplicationPrivate::processCloseEvent(QWindowSystemInterfacePrivate::CloseEvent*) (0x13b1ec)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x13b1ec
+	[bt] [libQt5Gui.so.5] QWindowSystemInterface::sendWindowSystemEvents(QFlags<QEventLoop::ProcessEventsFlag>) (0x1142ba)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x1142ba
+	[bt] /lib/x86_64-linux-gnu/libQt5XcbQpa.so.5(+0x6835e) [0x7f985f86935e]
+	[bt] [libglib-2.0.so.0] /lib/x86_64-linux-gnu/libglib-2.0.so.0(g_main_context_dispatch+0x25b) [0x7f98621e562b] (0x5362a)
+	[bt]	> addr2line -p -e libglib-2.0.so.0 0x5362a
+	[bt] /lib/x86_64-linux-gnu/libglib-2.0.so.0(+0x538d8) [0x7f98621e58d8]
+	[bt] [libglib-2.0.so.0] /lib/x86_64-linux-gnu/libglib-2.0.so.0(g_main_context_iteration+0x33) [0x7f98621e59a3] (0x539a2)
+	[bt]	> addr2line -p -e libglib-2.0.so.0 0x539a2
+	[bt] [libQt5Core.so.5] QEventDispatcherGlib::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) (0x302842)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x302842
+	[bt] [libQt5Core.so.5] QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) (0x2a9a4a)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2a9a4a
+	[bt] [libQt5Core.so.5] QCoreApplication::exec() (0x2b1fc5)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2b1fc5
+	[bt] [urchinMapEditor] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(main+0x401) [0x56328e920515] (0x4fa514)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/Main.cpp:37
+	[bt] [libc.so.6] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf2) [0x7f9862b2acb2] (0x28cb1)
+	[bt]	> addr2line -p -e libc.so.6 0x28cb1
+	[bt] [urchinMapEditor] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(_start+0x2e) [0x56328e9196fe] (0x4f36fd)
+	[bt]	> addr2line -p -e urchinMapEditor 0x4f36fd

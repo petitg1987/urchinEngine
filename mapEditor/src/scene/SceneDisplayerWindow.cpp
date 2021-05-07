@@ -41,8 +41,14 @@ namespace urchin {
                 break;
             case QEvent::Resize:
                 if (sceneDisplayer) {
-                    QSize windowSize = size() * devicePixelRatio(); //TODO use frameSizeRetrieve ?
-                    sceneDisplayer->resize((unsigned int)windowSize.width(), (unsigned int)windowSize.height());
+                    int width = 0, height = 0;
+                    SceneWindowController(this).getFramebufferSizeRetriever()->getFramebufferSizeInPixel(width, height);
+                    sceneDisplayer->resize((unsigned int)width, (unsigned int)height);
+                }
+                break;
+            case QEvent::Leave: //mouse leaves widget
+                if (sceneDisplayer && !geometry().contains(mapFromGlobal(QCursor::pos()))) { //TODO test it for Y axis
+                    sceneDisplayer->getObjectMoveController()->onMouseOut();
                 }
                 break;
             default:
@@ -191,12 +197,6 @@ namespace urchin {
             }
         }
     }
-
-//    void SceneDisplayerWindow::leaveEvent(QEvent*) {
-//        if (sceneDisplayer && !rect().contains(mapFromGlobal(QCursor::pos()))) {
-//            sceneDisplayer->getObjectMoveController()->onMouseOut();
-//        }
-//    }
 
     bool SceneDisplayerWindow::onMouseClickBodyPickup() {
         bool propagateEvent = true;

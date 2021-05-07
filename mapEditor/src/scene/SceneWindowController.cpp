@@ -11,7 +11,7 @@ namespace urchin {
         if (!vulkanInstance.create()) {
             throw std::runtime_error("Failed to create Vulkan instance: " + std::to_string(vulkanInstance.errorCode()));
         }
-        window->setVulkanInstance(&vulkanInstance); //TODO vulkanInstance never destroyed ? To store on window ?
+        window->setVulkanInstance(&vulkanInstance); //TODO ensure vulkanInstance is never destroyed ? To store on window ?
         return QVulkanInstance::surfaceForWindow(window);
     }
 
