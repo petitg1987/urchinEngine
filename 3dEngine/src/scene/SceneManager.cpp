@@ -10,7 +10,7 @@
 
 namespace urchin {
 
-    SceneManager::SceneManager(const std::unique_ptr<SurfaceCreator>& surfaceCreator, std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever) :
+    SceneManager::SceneManager(const std::vector<std::string>& windowRequiredExtensions, const std::unique_ptr<SurfaceCreator>& surfaceCreator, std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever) :
             sceneWidth(500),
             sceneHeight(500),
             screenRenderTarget(std::make_shared<ScreenRender>("screen", RenderTarget::NO_DEPTH_ATTACHMENT, false)), //TODO use last param correctly
@@ -20,7 +20,7 @@ namespace urchin {
             fpsForDisplay(START_FPS) {
         //initialize
         SignalHandler::instance()->initialize();
-        GraphicService::instance()->initialize(surfaceCreator, std::move(framebufferSizeRetriever));
+        GraphicService::instance()->initialize(windowRequiredExtensions, surfaceCreator, std::move(framebufferSizeRetriever));
         screenRenderTarget->initialize();
 
         //initialize fps

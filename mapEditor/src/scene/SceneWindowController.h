@@ -1,0 +1,41 @@
+#ifndef URCHINENGINE_SCENEWINDOWCONTROLLER_H
+#define URCHINENGINE_SCENEWINDOWCONTROLLER_H
+
+#include <vector>
+#include <memory>
+#include <QVulkanInstance>
+
+#include "SceneDisplayerWindow.h"
+
+namespace urchin {
+
+    struct QtSurfaceCreator : public urchin::SurfaceCreator {
+        explicit QtSurfaceCreator(SceneDisplayerWindow*);
+        VkSurfaceKHR createSurface(VkInstance instance) override;
+
+        SceneDisplayerWindow *window;
+        QVulkanInstance vulkanInstance;
+    };
+
+    struct QtFramebufferSizeRetriever : public urchin::FramebufferSizeRetriever {
+        explicit QtFramebufferSizeRetriever(SceneDisplayerWindow*);
+        void getFramebufferSizeInPixel(int&, int&) const override;
+
+        SceneDisplayerWindow *window;
+    };
+
+    class SceneWindowController {
+        public:
+            explicit SceneWindowController(SceneDisplayerWindow*);
+
+            static std::vector<std::string> windowRequiredExtensions();
+            std::unique_ptr<QtSurfaceCreator> getSurfaceCreator() const;
+            std::unique_ptr<QtFramebufferSizeRetriever> getFramebufferSizeRetriever() const;
+
+        private:
+            SceneDisplayerWindow *window;
+    };
+
+}
+
+#endif

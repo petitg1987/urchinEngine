@@ -2,19 +2,12 @@
 #include <QtWidgets/QShortcut>
 
 #include "SceneDisplayerWindow.h"
+#include "SceneWindowController.h"
 #include "widget/controller/mouse/MouseController.h"
 
 #define PICKING_RAY_LENGTH 100.0f
 
 namespace urchin {
-
-    QtSurfaceCreator::QtSurfaceCreator(SceneDisplayerWindow* vulkanWindow) :
-            vulkanWindow(vulkanWindow) {
-    }
-
-    VkSurfaceKHR QtSurfaceCreator::createSurface(VkInstance) const {
-        return QVulkanInstance::surfaceForWindow(vulkanWindow);
-    }
 
     SceneDisplayerWindow::SceneDisplayerWindow(QWidget* parent, StatusBarController statusBarController, std::string mapEditorPath) :
             parent(parent),
@@ -24,13 +17,7 @@ namespace urchin {
             viewProperties(),
             mouseX(0),
             mouseY(0) {
-        vulkanInstance.setVkInstance(GraphicService::instance()->createInstance(getWindowRequiredExtensions()));
-        if (!vulkanInstance.create()) {
-            throw std::runtime_error("Failed to create Vulkan instance: " + std::to_string(vulkanInstance.errorCode()));
-        }
-
         setSurfaceType(QSurface::VulkanSurface);
-        setVulkanInstance(&vulkanInstance);
 
         QObject::connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_X), parent), SIGNAL(activated()), this, SLOT(onCtrlXPressed()));
         QObject::connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_Y), parent), SIGNAL(activated()), this, SLOT(onCtrlYPressed()));
@@ -41,18 +28,9 @@ namespace urchin {
         delete sceneDisplayer;
     }
 
-    std::vector<const char*> SceneDisplayerWindow::getWindowRequiredExtensions() {
-        std::vector<const char*> result;
-        QVulkanInfoVector<QVulkanExtension> extensions = vulkanInstance.supportedExtensions();
-        for(auto& extension : extensions) {
-            result.emplace_back(extension.name.constData());
-        }
-        return result;
-    }
-
     void SceneDisplayerWindow::exposeEvent(QExposeEvent *) {
-        if (isExposed()) { //TODO call be called several times !
-            render();
+        if (isExposed()) {
+            render(); //launch first frame
         }
     }
 
@@ -63,7 +41,7 @@ namespace urchin {
                 break;
             case QEvent::Resize:
                 if (sceneDisplayer) {
-                    QSize windowSize = size() * devicePixelRatio(); //TODO correct + use it at init?
+                    QSize windowSize = size() * devicePixelRatio(); //TODO use frameSizeRetrieve ?
                     sceneDisplayer->resize((unsigned int)windowSize.width(), (unsigned int)windowSize.height());
                 }
                 break;
@@ -77,7 +55,8 @@ namespace urchin {
         closeMap();
         statusBarController.applyState(StatusBarState::MAP_LOADED);
 
-        sceneDisplayer = new SceneDisplayer(this, sceneController, MouseController(this), statusBarController);
+        auto sceneWindowController = std::make_unique<SceneWindowController>(this);
+        sceneDisplayer = new SceneDisplayer(std::move(sceneWindowController), sceneController, MouseController(this), statusBarController);
         sceneDisplayer->loadMap(mapEditorPath, mapFilename, relativeWorkingDirectory);
         sceneDisplayer->resize((unsigned int)geometry().width(), (unsigned int)geometry().height());
         sceneController->setup(sceneDisplayer->getMapHandler());

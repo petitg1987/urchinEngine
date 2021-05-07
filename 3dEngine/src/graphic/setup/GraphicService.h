@@ -20,8 +20,7 @@ namespace urchin {
         public:
             friend class Singleton<GraphicService>;
 
-            VkInstance createInstance(const std::vector<const char*>&);
-            void initialize(const std::unique_ptr<SurfaceCreator>&, std::unique_ptr<FramebufferSizeRetriever>);
+            void initialize(const std::vector<std::string>&, const std::unique_ptr<SurfaceCreator>&, std::unique_ptr<FramebufferSizeRetriever>);
 
             const std::unique_ptr<FramebufferSizeRetriever>& getFramebufferSizeRetriever() const;
             VkSurfaceKHR getSurface() const;
@@ -35,6 +34,8 @@ namespace urchin {
         private:
             GraphicService();
             ~GraphicService() override;
+
+            void createInstance(const std::vector<std::string>&);
 
             void createAllocateCommandPool();
             void createAllocator();

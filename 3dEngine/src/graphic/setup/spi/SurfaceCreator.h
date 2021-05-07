@@ -9,7 +9,7 @@ namespace urchin {
         public:
             virtual ~SurfaceCreator() = default;
 
-            virtual VkSurfaceKHR createSurface(VkInstance) const = 0;
+            virtual VkSurfaceKHR createSurface(VkInstance) = 0;
     };
 
 }

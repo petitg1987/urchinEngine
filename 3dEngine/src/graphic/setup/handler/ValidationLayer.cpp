@@ -75,7 +75,7 @@ namespace urchin {
         return bIsValidationActive;
     }
 
-    std::vector<const char*> ValidationLayer::getRequiredExtensions() const {
+    std::vector<std::string> ValidationLayer::getRequiredExtensions() const {
         if (bIsValidationActive) {
             return {VK_EXT_DEBUG_UTILS_EXTENSION_NAME};
         }

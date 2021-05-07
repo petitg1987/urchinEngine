@@ -27,7 +27,22 @@ namespace urchin {
         vkDestroyInstance(vkInstance, nullptr);
     }
 
-    VkInstance GraphicService::createInstance(const std::vector<const char*>& windowRequiredExtensions) {
+    void GraphicService::initialize(const std::vector<std::string>& windowRequiredExtensions, const std::unique_ptr<SurfaceCreator>& surfaceCreator, std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever) {
+        this->framebufferSizeRetriever = std::move(framebufferSizeRetriever);
+
+        createInstance(windowRequiredExtensions);
+        validationLayer.initializeDebugMessenger(vkInstance);
+        surface = surfaceCreator->createSurface(vkInstance);
+        deviceHandler.initializeDevices(vkInstance, surface);
+        queueHandler.initializeQueueFamilies(deviceHandler.getPhysicalDevice(), surface);
+        queueHandler.initializeQueues(deviceHandler.getLogicalDevice());
+        createAllocateCommandPool();
+        createAllocator();
+
+        apiGraphicInitialized = true;
+    }
+
+    void GraphicService::createInstance(const std::vector<std::string>& windowRequiredExtensions) {
         VkApplicationInfo applicationInfo{};
         applicationInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
         applicationInfo.pApplicationName = "VulkanApp-ff268de9-d92a-47b4-b6b0-8df93853565f";
@@ -36,7 +51,13 @@ namespace urchin {
         applicationInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
         applicationInfo.apiVersion = vulkanVersion;
 
-        std::vector<const char*> requiredExtensions = VectorUtil::merge(windowRequiredExtensions, validationLayer.getRequiredExtensions());
+        std::vector<std::string> requiredExtensionsString = VectorUtil::merge(windowRequiredExtensions, validationLayer.getRequiredExtensions());
+        std::vector<const char*> requiredExtensions;
+        requiredExtensions.reserve(requiredExtensionsString.size());
+        for (std::string const& requiredExtensionString : requiredExtensionsString) {
+            requiredExtensions.emplace_back(requiredExtensionString.data());
+        }
+
         VkInstanceCreateInfo instanceCreateInfo{};
         instanceCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
         instanceCreateInfo.pApplicationInfo = &applicationInfo;
@@ -48,25 +69,6 @@ namespace urchin {
         if(result != VK_SUCCESS) {
             throw UserAuthorityException("Failed to create Vulkan instance with error code: " + std::to_string(result), "Upgrade your graphic drivers to support better Vulkan");
         }
-        return vkInstance;
-    }
-
-    void GraphicService::initialize(const std::unique_ptr<SurfaceCreator>& surfaceCreator, std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever) {
-        if(vkInstance == nullptr) {
-            throw std::runtime_error("createInstance method must be called first"); //TODO call automatically the method ?
-        }
-
-        this->framebufferSizeRetriever = std::move(framebufferSizeRetriever);
-
-        validationLayer.initializeDebugMessenger(vkInstance);
-        surface = surfaceCreator->createSurface(vkInstance);
-        deviceHandler.initializeDevices(vkInstance, surface);
-        queueHandler.initializeQueueFamilies(deviceHandler.getPhysicalDevice(), surface);
-        queueHandler.initializeQueues(deviceHandler.getLogicalDevice());
-        createAllocateCommandPool();
-        createAllocator();
-
-        apiGraphicInitialized = true;
     }
 
     const std::unique_ptr<FramebufferSizeRetriever>& GraphicService::getFramebufferSizeRetriever() const {

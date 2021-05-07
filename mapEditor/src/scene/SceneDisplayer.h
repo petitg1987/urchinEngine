@@ -21,6 +21,7 @@
 namespace urchin {
 
     class SceneDisplayerWindow;
+    class SceneWindowController;
 
     class SceneDisplayer {
         public:
@@ -33,7 +34,7 @@ namespace urchin {
                 LAST_VIEW_PROPERTIES
             };
 
-            SceneDisplayer(SceneDisplayerWindow*, SceneController*, const MouseController&, StatusBarController); //TODO change first argument to WindowController ?
+            SceneDisplayer(std::unique_ptr<SceneWindowController>, SceneController*, const MouseController&, StatusBarController);
             ~SceneDisplayer();
 
             void loadMap(const std::string&, const std::string&, const std::string&);
@@ -64,7 +65,7 @@ namespace urchin {
             void refreshNavMeshModel();
 
             bool isInitialized;
-            SceneDisplayerWindow* vulkanWindow;
+            std::unique_ptr<SceneWindowController> windowController;
             SceneController* sceneController;
             MouseController mouseController;
             StatusBarController statusBarController;

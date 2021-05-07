@@ -14,7 +14,7 @@ namespace urchin {
             void cleanup();
 
             bool isValidationActive() const;
-            std::vector<const char*> getRequiredExtensions() const;
+            std::vector<std::string> getRequiredExtensions() const;
 
         private:
             bool checkValidationLayerSupport() const;

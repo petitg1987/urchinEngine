@@ -3,7 +3,8 @@
 
 #include <string>
 #include <QKeyEvent>
-#include <QVulkanWindowRenderer>
+#include <QWindow>
+#include <QVulkanInstance>
 
 #include "UrchinCommon.h"
 #include "SceneDisplayer.h"
@@ -11,15 +12,6 @@
 #include "widget/controller/statusbar/StatusBarController.h"
 
 namespace urchin {
-
-    class SceneDisplayerWindow;
-
-    struct QtSurfaceCreator : public urchin::SurfaceCreator {
-        explicit QtSurfaceCreator(SceneDisplayerWindow*);
-        VkSurfaceKHR createSurface(VkInstance instance) const override;
-
-        SceneDisplayerWindow *vulkanWindow;
-    };
 
     class SceneDisplayerWindow : public QWindow, public Observable {
         Q_OBJECT
@@ -32,7 +24,6 @@ namespace urchin {
                 BODY_PICKED
             };
 
-            std::vector<const char*> getWindowRequiredExtensions();
             void exposeEvent(QExposeEvent *) override;
             bool event(QEvent *) override;
 
@@ -65,8 +56,6 @@ namespace urchin {
             QWidget* parent;
             StatusBarController statusBarController;
             std::string mapEditorPath;
-
-            QVulkanInstance vulkanInstance;
 
             SceneDisplayer* sceneDisplayer;
             bool viewProperties[SceneDisplayer::LAST_VIEW_PROPERTIES];
