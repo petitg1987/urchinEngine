@@ -26,10 +26,31 @@ namespace urchin {
     }
 
     std::vector<std::string> SceneWindowController::windowRequiredExtensions() {
+        std::vector<std::string> extensions;
+        extensions.emplace_back(VK_KHR_SURFACE_EXTENSION_NAME);
+        extensions.emplace_back("VK_KHR_xcb_surface"); //Unix
+        extensions.emplace_back("VK_KHR_xlib_surface"); //Unix
+        extensions.emplace_back("VK_KHR_wayland_surface"); //Unix
+        extensions.emplace_back("VK_KHR_win32_surface"); //Windows
+        extensions.emplace_back("VK_EXT_metal_surface"); //Mac OS
+        extensions.emplace_back("VK_KHR_android_surface"); //Android
+        extensions.emplace_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+
         std::vector<std::string> requiredExtensions;
-        for(auto& extension : QVulkanInstance().supportedExtensions()) { //TODO avoid deprecated extension
-            requiredExtensions.emplace_back(std::string(extension.name.constData()));
+        for(auto& extension : extensions) {
+            bool extensionSupported = false;
+            for(auto& supportedExtension : QVulkanInstance().supportedExtensions()) {
+                if(extension == std::string(supportedExtension.name.constData())) {
+                    extensionSupported = true;
+                    break;
+                }
+            }
+
+            if(extensionSupported) {
+                requiredExtensions.emplace_back(extension);
+            }
         }
+
         return requiredExtensions;
     }
 
