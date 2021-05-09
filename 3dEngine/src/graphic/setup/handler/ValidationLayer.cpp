@@ -21,7 +21,7 @@ namespace urchin {
             features({}),
             featureEnables({}) {
 
-        assert(FILTER_OUT_MESSAGES.empty());
+        FILTER_OUT_MESSAGES.clear();
         FILTER_OUT_MESSAGES.emplace_back("vkQueuePresentKHR(): Returned error VK_ERROR_OUT_OF_DATE_KHR"); //error VK_ERROR_OUT_OF_DATE_KHR is handled by the application
         FILTER_OUT_MESSAGES.emplace_back("Attempting to enable deprecated extension VK_EXT_debug_report"); //deprecated extension but still used by Renderdoc
         #ifndef NDEBUG

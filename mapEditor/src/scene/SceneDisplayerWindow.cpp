@@ -85,6 +85,7 @@ namespace urchin {
 
     void SceneDisplayerWindow::closeMap() {
         statusBarController.clearState();
+        vulkanInstance.destroy();
 
         delete sceneDisplayer;
         sceneDisplayer = nullptr;

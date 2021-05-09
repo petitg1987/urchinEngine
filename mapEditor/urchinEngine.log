@@ -1,0 +1,346 @@
+[2021-05-09 16:13:45] (EE) Signal caught 11 (code: 1):
+	[bt] /lib/x86_64-linux-gnu/libpthread.so.0(+0x14bb0) [0x7f8ab009abb0]
+	[bt] /lib/x86_64-linux-gnu/libQt5XcbQpa.so.5(+0xca254) [0x7f8aac82a254]
+	[bt] /lib/x86_64-linux-gnu/libQt5XcbQpa.so.5(+0x7e123) [0x7f8aac7de123]
+	[bt] /lib/x86_64-linux-gnu/libQt5XcbQpa.so.5(+0x7e1f1) [0x7f8aac7de1f1]
+	[bt] [libQt5Gui.so.5] QWindowPrivate::destroy() (0x149829)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x149829
+	[bt] [libQt5Gui.so.5] QWindowPrivate::destroy() (0x1498a0)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x1498a0
+	[bt] [libQt5Gui.so.5] QWindow::event(QEvent*) (0x14a87f)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x14a87f
+	[bt] /lib/x86_64-linux-gnu/libQt5Widgets.so.5(+0x1c7efb) [0x7f8ab10b5efb]
+	[bt] [libQt5Widgets.so.5] QApplicationPrivate::notify_helper(QObject*, QEvent*) (0x16b012)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x16b012
+	[bt] [libQt5Core.so.5] QCoreApplication::notifyInternal2(QObject*, QEvent*) (0x2ab1c9)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2ab1c9
+	[bt] [libQt5Gui.so.5] QGuiApplicationPrivate::processCloseEvent(QWindowSystemInterfacePrivate::CloseEvent*) (0x13b1ec)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x13b1ec
+	[bt] [libQt5Gui.so.5] QWindowSystemInterface::sendWindowSystemEvents(QFlags<QEventLoop::ProcessEventsFlag>) (0x1142ba)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x1142ba
+	[bt] /lib/x86_64-linux-gnu/libQt5XcbQpa.so.5(+0x6835e) [0x7f8aac7c835e]
+	[bt] [libglib-2.0.so.0] /lib/x86_64-linux-gnu/libglib-2.0.so.0(g_main_context_dispatch+0x25b) [0x7f8aaf14462b] (0x5362a)
+	[bt]	> addr2line -p -e libglib-2.0.so.0 0x5362a
+	[bt] /lib/x86_64-linux-gnu/libglib-2.0.so.0(+0x538d8) [0x7f8aaf1448d8]
+	[bt] [libglib-2.0.so.0] /lib/x86_64-linux-gnu/libglib-2.0.so.0(g_main_context_iteration+0x33) [0x7f8aaf1449a3] (0x539a2)
+	[bt]	> addr2line -p -e libglib-2.0.so.0 0x539a2
+	[bt] [libQt5Core.so.5] QEventDispatcherGlib::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) (0x302842)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x302842
+	[bt] [libQt5Core.so.5] QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) (0x2a9a4a)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2a9a4a
+	[bt] [libQt5Core.so.5] QCoreApplication::exec() (0x2b1fc5)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2b1fc5
+	[bt] [urchinMapEditor] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(main+0x401) [0x563a4b8ad535] (0x4fb534)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/Main.cpp:37
+	[bt] [libc.so.6] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf2) [0x7f8aafa89cb2] (0x28cb1)
+	[bt]	> addr2line -p -e libc.so.6 0x28cb1
+	[bt] [urchinMapEditor] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(_start+0x2e) [0x563a4b8a671e] (0x4f471d)
+	[bt]	> addr2line -p -e urchinMapEditor 0x4f471d
+[2021-05-09 17:37:21] (EE) Signal caught 11 (code: 2):
+	[bt] /lib/x86_64-linux-gnu/libpthread.so.0(+0x14bb0) [0x7f4b209f4bb0]
+	[bt] [0x564c98e62f60]
+[2021-05-09 17:58:35] (EE) Signal caught 6 (code: -6):
+	[bt] /lib/x86_64-linux-gnu/libpthread.so.0(+0x14bb0) [0x7ff291880bb0]
+	[bt] [libc.so.6] /lib/x86_64-linux-gnu/libc.so.6(gsignal+0xcb) [0x7ff2912888cb] (0x418ca)
+	[bt]	> addr2line -p -e libc.so.6 0x418ca
+	[bt] [libc.so.6] /lib/x86_64-linux-gnu/libc.so.6(abort+0x116) [0x7ff29126d864] (0x26863)
+	[bt]	> addr2line -p -e libc.so.6 0x26863
+	[bt] /lib/x86_64-linux-gnu/libc.so.6(+0x26749) [0x7ff29126d749]
+	[bt] /lib/x86_64-linux-gnu/libc.so.6(+0x38a96) [0x7ff29127fa96]
+	[bt] [urchinMapEditor] urchin::ValidationLayer::ValidationLayer() (0x6d6af8)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/src/graphic/setup/handler/ValidationLayer.cpp:24 (discriminator 1)
+	[bt] [urchinMapEditor] urchin::GraphicService::GraphicService() (0x6bbb45)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/src/graphic/setup/GraphicService.cpp:17
+	[bt] [urchinMapEditor] urchin::Singleton<urchin::GraphicService>::instance() (0x5ff8a3)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/../common/src/pattern/singleton/Singleton.inl:16
+	[bt] [urchinMapEditor] urchin::SceneManager::SceneManager(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, std::unique_ptr<urchin::SurfaceCreator, std::default_delete<urchin::SurfaceCreator> > const&, std::unique_ptr<urchin::FramebufferSizeRetriever, std::default_delete<urchin::FramebufferSizeRetriever> >) (0x5fe0af)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/src/scene/SceneManager.cpp:23
+	[bt] [urchinMapEditor] urchin::SceneDisplayer::initializeScene(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (0x557bb2)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/scene/SceneDisplayer.cpp:94 (discriminator 4)
+	[bt] [urchinMapEditor] urchin::SceneDisplayer::loadMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (0x55740a)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/scene/SceneDisplayer.cpp:60
+	[bt] [urchinMapEditor] urchin::SceneDisplayerWindow::loadMap(urchin::SceneController*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (0x55ab1f)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/scene/SceneDisplayerWindow.cpp:74 (discriminator 8)
+	[bt] [urchinMapEditor] urchin::MapEditorWindow::loadMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (0x4fe5fe)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/MapEditorWindow.cpp:257
+	[bt] [urchinMapEditor] urchin::MapEditorWindow::showOpenDialog() (0x4fe4a7)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/MapEditorWindow.cpp:249
+	[bt] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(+0x4f4860) [0x560e4e240860]
+	[bt] /lib/x86_64-linux-gnu/libQt5Core.so.5(+0x2e1320) [0x7ff291dbf320]
+	[bt] [libQt5Widgets.so.5] QAction::triggered(bool) (0x164825)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x164825
+	[bt] [libQt5Widgets.so.5] QAction::activate(QAction::ActionEvent) (0x167110)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x167110
+	[bt] /lib/x86_64-linux-gnu/libQt5Widgets.so.5(+0x2e4a5a) [0x7ff2929b8a5a]
+	[bt] /lib/x86_64-linux-gnu/libQt5Widgets.so.5(+0x2ec0c2) [0x7ff2929c00c2]
+	[bt] [libQt5Widgets.so.5] QWidget::event(QEvent*) (0x1ac30d)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x1ac30d
+	[bt] [libQt5Widgets.so.5] QApplicationPrivate::notify_helper(QObject*, QEvent*) (0x16b012)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x16b012
+	[bt] [libQt5Widgets.so.5] QApplication::notify(QObject*, QEvent*) (0x170840)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x170840
+	[bt] [libQt5Core.so.5] QCoreApplication::notifyInternal2(QObject*, QEvent*) (0x2ab1c9)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2ab1c9
+	[bt] [libQt5Widgets.so.5] QApplicationPrivate::sendMouseEvent(QWidget*, QMouseEvent*, QWidget*, QWidget*, QWidget**, QPointer<QWidget>&, bool, bool) (0x16f739)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x16f739
+	[bt] /lib/x86_64-linux-gnu/libQt5Widgets.so.5(+0x1c593f) [0x7ff29289993f]
+	[bt] /lib/x86_64-linux-gnu/libQt5Widgets.so.5(+0x1c7d8e) [0x7ff29289bd8e]
+	[bt] [libQt5Widgets.so.5] QApplicationPrivate::notify_helper(QObject*, QEvent*) (0x16b012)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x16b012
+	[bt] [libQt5Core.so.5] QCoreApplication::notifyInternal2(QObject*, QEvent*) (0x2ab1c9)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2ab1c9
+	[bt] [libQt5Gui.so.5] QGuiApplicationPrivate::processMouseEvent(QWindowSystemInterfacePrivate::MouseEvent*) (0x13e48a)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x13e48a
+	[bt] [libQt5Gui.so.5] QWindowSystemInterface::sendWindowSystemEvents(QFlags<QEventLoop::ProcessEventsFlag>) (0x1142ba)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x1142ba
+	[bt] /lib/x86_64-linux-gnu/libQt5XcbQpa.so.5(+0x6835e) [0x7ff28dfae35e]
+	[bt] [libglib-2.0.so.0] /lib/x86_64-linux-gnu/libglib-2.0.so.0(g_main_context_dispatch+0x25b) [0x7ff29092a62b] (0x5362a)
+	[bt]	> addr2line -p -e libglib-2.0.so.0 0x5362a
+	[bt] /lib/x86_64-linux-gnu/libglib-2.0.so.0(+0x538d8) [0x7ff29092a8d8]
+	[bt] [libglib-2.0.so.0] /lib/x86_64-linux-gnu/libglib-2.0.so.0(g_main_context_iteration+0x33) [0x7ff29092a9a3] (0x539a2)
+	[bt]	> addr2line -p -e libglib-2.0.so.0 0x539a2
+	[bt] [libQt5Core.so.5] QEventDispatcherGlib::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) (0x302842)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x302842
+	[bt] [libQt5Core.so.5] QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) (0x2a9a4a)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2a9a4a
+	[bt] [libQt5Core.so.5] QCoreApplication::exec() (0x2b1fc5)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2b1fc5
+	[bt] [urchinMapEditor] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(main+0x401) [0x560e4e247515] (0x4fb514)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/Main.cpp:37
+	[bt] [libc.so.6] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf2) [0x7ff29126fcb2] (0x28cb1)
+	[bt]	> addr2line -p -e libc.so.6 0x28cb1
+	[bt] [urchinMapEditor] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(_start+0x2e) [0x560e4e2406fe] (0x4f46fd)
+	[bt]	> addr2line -p -e urchinMapEditor 0x4f46fd
+[2021-05-09 18:04:26] (EE) Vulkan validation layer error: Validation Error: [ VUID-vkGetPhysicalDeviceSurfaceCapabilitiesKHR-surface-parameter ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0xde3e1fd6 | Invalid VkSurfaceKHR Object 0x20000000002. The Vulkan spec states: surface must be a valid VkSurfaceKHR handle (https://vulkan.lunarg.com/doc/view/1.2.162.1~rc2/linux/1.2-extensions/vkspec.html#VUID-vkGetPhysicalDeviceSurfaceCapabilitiesKHR-surface-parameter)
+[2021-05-09 18:04:26] (EE) Vulkan validation layer error: Validation Error: [ UNASSIGNED-Threading-Info ] Object 0: handle = 0x20000000002, type = VK_OBJECT_TYPE_SURFACE_KHR; | MessageID = 0x5d6b67e2 | Couldn't find VkSurfaceKHR Object 0x20000000002. This should not happen and may indicate a bug in the application.
+[2021-05-09 18:04:27] (EE) Signal caught 11 (code: 1):
+	[bt] /lib/x86_64-linux-gnu/libpthread.so.0(+0x14bb0) [0x7f4363249bb0]
+	[bt] /lib/x86_64-linux-gnu/libvulkan.so.1(+0x2bce9) [0x7f4363282ce9]
+	[bt] /lib/x86_64-linux-gnu/libVkLayer_khronos_validation.so(+0x98169a) [0x7f432da4669a]
+	[bt] /lib/x86_64-linux-gnu/libVkLayer_khronos_validation.so(+0x91510e) [0x7f432d9da10e]
+	[bt] [urchinMapEditor] urchin::SwapChainHandler::querySwapChainSupport(VkPhysicalDevice_T*) (0x6ee577)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/src/graphic/render/handler/SwapChainHandler.cpp:119 (discriminator 1)
+	[bt] [urchinMapEditor] urchin::DeviceHandler::retrievePhysicalDeviceSuitability(VkPhysicalDevice_T*) (0x6cdebe)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/src/graphic/setup/handler/DeviceHandler.cpp:123
+	[bt] [urchinMapEditor] urchin::DeviceHandler::findPhysicalDevice(VkInstance_T*) (0x6cd870)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/src/graphic/setup/handler/DeviceHandler.cpp:86 (discriminator 2)
+	[bt] [urchinMapEditor] urchin::DeviceHandler::initializeDevices(VkInstance_T*, VkSurfaceKHR_T*) (0x6cd54e)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/src/graphic/setup/handler/DeviceHandler.cpp:49
+	[bt] [urchinMapEditor] urchin::GraphicService::initialize(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, std::unique_ptr<urchin::SurfaceCreator, std::default_delete<urchin::SurfaceCreator> > const&, std::unique_ptr<urchin::FramebufferSizeRetriever, std::default_delete<urchin::FramebufferSizeRetriever> >) (0x6bbe1c)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/src/graphic/setup/GraphicService.cpp:36
+	[bt] [urchinMapEditor] urchin::SceneManager::SceneManager(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, std::unique_ptr<urchin::SurfaceCreator, std::default_delete<urchin::SurfaceCreator> > const&, std::unique_ptr<urchin::FramebufferSizeRetriever, std::default_delete<urchin::FramebufferSizeRetriever> >) (0x5fe0e7)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/src/scene/SceneManager.cpp:23
+	[bt] [urchinMapEditor] urchin::SceneDisplayer::initializeScene(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (0x557bb2)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/scene/SceneDisplayer.cpp:94 (discriminator 4)
+	[bt] [urchinMapEditor] urchin::SceneDisplayer::loadMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (0x55740a)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/scene/SceneDisplayer.cpp:60
+	[bt] [urchinMapEditor] urchin::SceneDisplayerWindow::loadMap(urchin::SceneController*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (0x55ab1f)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/scene/SceneDisplayerWindow.cpp:74 (discriminator 8)
+	[bt] [urchinMapEditor] urchin::MapEditorWindow::loadMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (0x4fe5fe)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/MapEditorWindow.cpp:257
+	[bt] [urchinMapEditor] urchin::MapEditorWindow::showOpenDialog() (0x4fe4a7)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/MapEditorWindow.cpp:249
+	[bt] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(+0x4f4860) [0x56191ee69860]
+	[bt] /lib/x86_64-linux-gnu/libQt5Core.so.5(+0x2e1320) [0x7f4363788320]
+	[bt] [libQt5Widgets.so.5] QAction::triggered(bool) (0x164825)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x164825
+	[bt] [libQt5Widgets.so.5] QAction::activate(QAction::ActionEvent) (0x167110)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x167110
+	[bt] /lib/x86_64-linux-gnu/libQt5Widgets.so.5(+0x2e4a5a) [0x7f4364381a5a]
+	[bt] /lib/x86_64-linux-gnu/libQt5Widgets.so.5(+0x2ec0c2) [0x7f43643890c2]
+	[bt] [libQt5Widgets.so.5] QWidget::event(QEvent*) (0x1ac30d)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x1ac30d
+	[bt] [libQt5Widgets.so.5] QApplicationPrivate::notify_helper(QObject*, QEvent*) (0x16b012)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x16b012
+	[bt] [libQt5Widgets.so.5] QApplication::notify(QObject*, QEvent*) (0x170840)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x170840
+	[bt] [libQt5Core.so.5] QCoreApplication::notifyInternal2(QObject*, QEvent*) (0x2ab1c9)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2ab1c9
+	[bt] [libQt5Widgets.so.5] QApplicationPrivate::sendMouseEvent(QWidget*, QMouseEvent*, QWidget*, QWidget*, QWidget**, QPointer<QWidget>&, bool, bool) (0x16f739)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x16f739
+	[bt] /lib/x86_64-linux-gnu/libQt5Widgets.so.5(+0x1c593f) [0x7f436426293f]
+	[bt] /lib/x86_64-linux-gnu/libQt5Widgets.so.5(+0x1c7d8e) [0x7f4364264d8e]
+	[bt] [libQt5Widgets.so.5] QApplicationPrivate::notify_helper(QObject*, QEvent*) (0x16b012)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x16b012
+	[bt] [libQt5Core.so.5] QCoreApplication::notifyInternal2(QObject*, QEvent*) (0x2ab1c9)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2ab1c9
+	[bt] [libQt5Gui.so.5] QGuiApplicationPrivate::processMouseEvent(QWindowSystemInterfacePrivate::MouseEvent*) (0x13e48a)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x13e48a
+	[bt] [libQt5Gui.so.5] QWindowSystemInterface::sendWindowSystemEvents(QFlags<QEventLoop::ProcessEventsFlag>) (0x1142ba)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x1142ba
+	[bt] /lib/x86_64-linux-gnu/libQt5XcbQpa.so.5(+0x6835e) [0x7f435f97735e]
+	[bt] [libglib-2.0.so.0] /lib/x86_64-linux-gnu/libglib-2.0.so.0(g_main_context_dispatch+0x25b) [0x7f43622f362b] (0x5362a)
+	[bt]	> addr2line -p -e libglib-2.0.so.0 0x5362a
+	[bt] /lib/x86_64-linux-gnu/libglib-2.0.so.0(+0x538d8) [0x7f43622f38d8]
+	[bt] [libglib-2.0.so.0] /lib/x86_64-linux-gnu/libglib-2.0.so.0(g_main_context_iteration+0x33) [0x7f43622f39a3] (0x539a2)
+	[bt]	> addr2line -p -e libglib-2.0.so.0 0x539a2
+	[bt] [libQt5Core.so.5] QEventDispatcherGlib::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) (0x302842)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x302842
+	[bt] [libQt5Core.so.5] QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) (0x2a9a4a)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2a9a4a
+	[bt] [libQt5Core.so.5] QCoreApplication::exec() (0x2b1fc5)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2b1fc5
+	[bt] [urchinMapEditor] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(main+0x401) [0x56191ee70515] (0x4fb514)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/Main.cpp:37
+	[bt] [libc.so.6] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf2) [0x7f4362c38cb2] (0x28cb1)
+	[bt]	> addr2line -p -e libc.so.6 0x28cb1
+	[bt] [urchinMapEditor] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(_start+0x2e) [0x56191ee696fe] (0x4f46fd)
+	[bt]	> addr2line -p -e urchinMapEditor 0x4f46fd
+[2021-05-09 18:04:54] (EE) Vulkan validation layer error: Validation Error: [ VUID-vkGetPhysicalDeviceSurfaceCapabilitiesKHR-surface-parameter ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0xde3e1fd6 | Invalid VkSurfaceKHR Object 0x20000000002. The Vulkan spec states: surface must be a valid VkSurfaceKHR handle (https://vulkan.lunarg.com/doc/view/1.2.162.1~rc2/linux/1.2-extensions/vkspec.html#VUID-vkGetPhysicalDeviceSurfaceCapabilitiesKHR-surface-parameter)
+[2021-05-09 18:04:54] (EE) Vulkan validation layer error: Validation Error: [ UNASSIGNED-Threading-Info ] Object 0: handle = 0x20000000002, type = VK_OBJECT_TYPE_SURFACE_KHR; | MessageID = 0x5d6b67e2 | Couldn't find VkSurfaceKHR Object 0x20000000002. This should not happen and may indicate a bug in the application.
+[2021-05-09 18:05:48] (EE) Vulkan validation layer error: Validation Error: [ VUID-vkGetPhysicalDeviceSurfaceCapabilitiesKHR-surface-parameter ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0xde3e1fd6 | Invalid VkSurfaceKHR Object 0x20000000002. The Vulkan spec states: surface must be a valid VkSurfaceKHR handle (https://vulkan.lunarg.com/doc/view/1.2.162.1~rc2/linux/1.2-extensions/vkspec.html#VUID-vkGetPhysicalDeviceSurfaceCapabilitiesKHR-surface-parameter)
+[2021-05-09 18:05:48] (EE) Vulkan validation layer error: Validation Error: [ UNASSIGNED-Threading-Info ] Object 0: handle = 0x20000000002, type = VK_OBJECT_TYPE_SURFACE_KHR; | MessageID = 0x5d6b67e2 | Couldn't find VkSurfaceKHR Object 0x20000000002. This should not happen and may indicate a bug in the application.
+[2021-05-09 18:34:34] (EE) Vulkan validation layer error: Validation Error: [ VUID-vkGetPhysicalDeviceSurfaceCapabilitiesKHR-surface-parameter ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0xde3e1fd6 | Invalid VkSurfaceKHR Object 0x20000000002. The Vulkan spec states: surface must be a valid VkSurfaceKHR handle (https://vulkan.lunarg.com/doc/view/1.2.162.1~rc2/linux/1.2-extensions/vkspec.html#VUID-vkGetPhysicalDeviceSurfaceCapabilitiesKHR-surface-parameter)
+[2021-05-09 18:34:34] (EE) Vulkan validation layer error: Validation Error: [ UNASSIGNED-Threading-Info ] Object 0: handle = 0x20000000002, type = VK_OBJECT_TYPE_SURFACE_KHR; | MessageID = 0x5d6b67e2 | Couldn't find VkSurfaceKHR Object 0x20000000002. This should not happen and may indicate a bug in the application.
+[2021-05-09 18:34:34] (EE) Signal caught 11 (code: 1):
+	[bt] /lib/x86_64-linux-gnu/libpthread.so.0(+0x14bb0) [0x7f3edbbbdbb0]
+	[bt] /lib/x86_64-linux-gnu/libvulkan.so.1(+0x2bce9) [0x7f3edbbf6ce9]
+	[bt] /lib/x86_64-linux-gnu/libVkLayer_khronos_validation.so(+0x98169a) [0x7f3ea1a4669a]
+	[bt] /lib/x86_64-linux-gnu/libVkLayer_khronos_validation.so(+0x91510e) [0x7f3ea19da10e]
+	[bt] [urchinMapEditor] urchin::SwapChainHandler::querySwapChainSupport(VkPhysicalDevice_T*) (0x6ee5a7)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/src/graphic/render/handler/SwapChainHandler.cpp:119 (discriminator 1)
+	[bt] [urchinMapEditor] urchin::DeviceHandler::retrievePhysicalDeviceSuitability(VkPhysicalDevice_T*) (0x6cdeee)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/src/graphic/setup/handler/DeviceHandler.cpp:123
+	[bt] [urchinMapEditor] urchin::DeviceHandler::findPhysicalDevice(VkInstance_T*) (0x6cd8a0)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/src/graphic/setup/handler/DeviceHandler.cpp:86 (discriminator 2)
+	[bt] [urchinMapEditor] urchin::DeviceHandler::initializeDevices(VkInstance_T*, VkSurfaceKHR_T*) (0x6cd57e)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/src/graphic/setup/handler/DeviceHandler.cpp:49
+	[bt] [urchinMapEditor] urchin::GraphicService::initialize(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, std::unique_ptr<urchin::SurfaceCreator, std::default_delete<urchin::SurfaceCreator> > const&, std::unique_ptr<urchin::FramebufferSizeRetriever, std::default_delete<urchin::FramebufferSizeRetriever> >) (0x6bbe4c)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/src/graphic/setup/GraphicService.cpp:36
+	[bt] [urchinMapEditor] urchin::SceneManager::SceneManager(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, std::unique_ptr<urchin::SurfaceCreator, std::default_delete<urchin::SurfaceCreator> > const&, std::unique_ptr<urchin::FramebufferSizeRetriever, std::default_delete<urchin::FramebufferSizeRetriever> >) (0x5fe117)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/src/scene/SceneManager.cpp:23
+	[bt] [urchinMapEditor] urchin::SceneDisplayer::initializeScene(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (0x557bd2)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/scene/SceneDisplayer.cpp:94 (discriminator 4)
+	[bt] [urchinMapEditor] urchin::SceneDisplayer::loadMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (0x55742a)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/scene/SceneDisplayer.cpp:60
+	[bt] [urchinMapEditor] urchin::SceneDisplayerWindow::loadMap(urchin::SceneController*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (0x55ab3f)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/scene/SceneDisplayerWindow.cpp:74 (discriminator 8)
+	[bt] [urchinMapEditor] urchin::MapEditorWindow::loadMap(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (0x4fe61e)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/MapEditorWindow.cpp:257
+	[bt] [urchinMapEditor] urchin::MapEditorWindow::showOpenDialog() (0x4fe4c7)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/MapEditorWindow.cpp:249
+	[bt] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(+0x4f4880) [0x560313673880]
+	[bt] /lib/x86_64-linux-gnu/libQt5Core.so.5(+0x2e1320) [0x7f3edc0fc320]
+	[bt] [libQt5Widgets.so.5] QAction::triggered(bool) (0x164825)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x164825
+	[bt] [libQt5Widgets.so.5] QAction::activate(QAction::ActionEvent) (0x167110)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x167110
+	[bt] /lib/x86_64-linux-gnu/libQt5Widgets.so.5(+0x2e4a5a) [0x7f3edccf5a5a]
+	[bt] /lib/x86_64-linux-gnu/libQt5Widgets.so.5(+0x2ec0c2) [0x7f3edccfd0c2]
+	[bt] [libQt5Widgets.so.5] QWidget::event(QEvent*) (0x1ac30d)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x1ac30d
+	[bt] [libQt5Widgets.so.5] QApplicationPrivate::notify_helper(QObject*, QEvent*) (0x16b012)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x16b012
+	[bt] [libQt5Widgets.so.5] QApplication::notify(QObject*, QEvent*) (0x170840)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x170840
+	[bt] [libQt5Core.so.5] QCoreApplication::notifyInternal2(QObject*, QEvent*) (0x2ab1c9)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2ab1c9
+	[bt] [libQt5Widgets.so.5] QApplicationPrivate::sendMouseEvent(QWidget*, QMouseEvent*, QWidget*, QWidget*, QWidget**, QPointer<QWidget>&, bool, bool) (0x16f739)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x16f739
+	[bt] /lib/x86_64-linux-gnu/libQt5Widgets.so.5(+0x1c593f) [0x7f3edcbd693f]
+	[bt] /lib/x86_64-linux-gnu/libQt5Widgets.so.5(+0x1c7d8e) [0x7f3edcbd8d8e]
+	[bt] [libQt5Widgets.so.5] QApplicationPrivate::notify_helper(QObject*, QEvent*) (0x16b012)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x16b012
+	[bt] [libQt5Core.so.5] QCoreApplication::notifyInternal2(QObject*, QEvent*) (0x2ab1c9)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2ab1c9
+	[bt] [libQt5Gui.so.5] QGuiApplicationPrivate::processMouseEvent(QWindowSystemInterfacePrivate::MouseEvent*) (0x13e48a)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x13e48a
+	[bt] [libQt5Gui.so.5] QWindowSystemInterface::sendWindowSystemEvents(QFlags<QEventLoop::ProcessEventsFlag>) (0x1142ba)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x1142ba
+	[bt] /lib/x86_64-linux-gnu/libQt5XcbQpa.so.5(+0x6835e) [0x7f3ed82eb35e]
+	[bt] [libglib-2.0.so.0] /lib/x86_64-linux-gnu/libglib-2.0.so.0(g_main_context_dispatch+0x25b) [0x7f3edac6762b] (0x5362a)
+	[bt]	> addr2line -p -e libglib-2.0.so.0 0x5362a
+	[bt] /lib/x86_64-linux-gnu/libglib-2.0.so.0(+0x538d8) [0x7f3edac678d8]
+	[bt] [libglib-2.0.so.0] /lib/x86_64-linux-gnu/libglib-2.0.so.0(g_main_context_iteration+0x33) [0x7f3edac679a3] (0x539a2)
+	[bt]	> addr2line -p -e libglib-2.0.so.0 0x539a2
+	[bt] [libQt5Core.so.5] QEventDispatcherGlib::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) (0x302842)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x302842
+	[bt] [libQt5Core.so.5] QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) (0x2a9a4a)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2a9a4a
+	[bt] [libQt5Core.so.5] QCoreApplication::exec() (0x2b1fc5)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2b1fc5
+	[bt] [urchinMapEditor] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(main+0x401) [0x56031367a535] (0x4fb534)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/Main.cpp:37
+	[bt] [libc.so.6] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf2) [0x7f3edb5accb2] (0x28cb1)
+	[bt]	> addr2line -p -e libc.so.6 0x28cb1
+	[bt] [urchinMapEditor] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(_start+0x2e) [0x56031367371e] (0x4f471d)
+	[bt]	> addr2line -p -e urchinMapEditor 0x4f471d
+[2021-05-09 18:34:50] (EE) Vulkan validation layer error: Validation Error: [ VUID-vkGetPhysicalDeviceSurfaceCapabilitiesKHR-surface-parameter ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0xde3e1fd6 | Invalid VkSurfaceKHR Object 0x20000000002. The Vulkan spec states: surface must be a valid VkSurfaceKHR handle (https://vulkan.lunarg.com/doc/view/1.2.162.1~rc2/linux/1.2-extensions/vkspec.html#VUID-vkGetPhysicalDeviceSurfaceCapabilitiesKHR-surface-parameter)
+[2021-05-09 18:34:50] (EE) Vulkan validation layer error: Validation Error: [ UNASSIGNED-Threading-Info ] Object 0: handle = 0x20000000002, type = VK_OBJECT_TYPE_SURFACE_KHR; | MessageID = 0x5d6b67e2 | Couldn't find VkSurfaceKHR Object 0x20000000002. This should not happen and may indicate a bug in the application.
+[2021-05-09 19:04:18] (EE) Signal caught 11 (code: 1):
+	[bt] /lib/x86_64-linux-gnu/libpthread.so.0(+0x14bb0) [0x7f373b706bb0]
+	[bt] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(+0x69f2d8) [0x55ac6fd8b2d8]
+	[bt] [urchinMapEditor] VmaVector<VmaAllocation_T*, VmaStlAllocator<VmaAllocation_T*> >::~VmaVector() (0x6c5851)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/src/libs/vma/vk_mem_alloc.h:5043
+	[bt] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(+0x6bd003) [0x55ac6fda9003]
+	[bt] [urchinMapEditor] VmaAllocator_T::~VmaAllocator_T() (0x6b36cb)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/src/libs/vma/vk_mem_alloc.h:15937
+	[bt] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(+0x6bd1e9) [0x55ac6fda91e9]
+	[bt] [urchinMapEditor] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(vmaDestroyAllocator+0x6e) [0x55ac6fda4ffa] (0x6b8ff9)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/src/libs/vma/vk_mem_alloc.h:17804
+	[bt] [urchinMapEditor] urchin::GraphicService::reset() (0x6bbe46)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/src/graphic/setup/GraphicService.cpp:41
+	[bt] [urchinMapEditor] urchin::GraphicService::~GraphicService() (0x6bbc59)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/src/graphic/setup/GraphicService.cpp:22
+	[bt] [urchinMapEditor] urchin::GraphicService::~GraphicService() (0x6bbcb7)
+	[bt]	> /home/greg/project/urchin/urchinEngine/3dEngine/src/graphic/setup/GraphicService.cpp:23
+	[bt] [urchinMapEditor] urchin::SingletonManager::destroyAllSingletons() (0x5d9fa6)
+	[bt]	> /home/greg/project/urchin/urchinEngine/common/src/pattern/singleton/SingletonManager.cpp:22 (discriminator 1)
+	[bt] [urchinMapEditor] urchin::SceneDisplayer::~SceneDisplayer() (0x557311)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/scene/SceneDisplayer.cpp:51
+	[bt] [urchinMapEditor] urchin::SceneDisplayerWindow::closeMap() (0x55acfc)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/scene/SceneDisplayerWindow.cpp:90 (discriminator 1)
+	[bt] [urchinMapEditor] urchin::MapEditorWindow::executeCloseAction() (0x4feb4e)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/MapEditorWindow.cpp:298
+	[bt] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(+0x4f48b3) [0x55ac6fbe08b3]
+	[bt] /lib/x86_64-linux-gnu/libQt5Core.so.5(+0x2e1320) [0x7f373bc45320]
+	[bt] [libQt5Widgets.so.5] QAction::triggered(bool) (0x164825)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x164825
+	[bt] [libQt5Widgets.so.5] QAction::activate(QAction::ActionEvent) (0x167110)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x167110
+	[bt] /lib/x86_64-linux-gnu/libQt5Widgets.so.5(+0x2e4a5a) [0x7f373c83ea5a]
+	[bt] /lib/x86_64-linux-gnu/libQt5Widgets.so.5(+0x2ec0c2) [0x7f373c8460c2]
+	[bt] [libQt5Widgets.so.5] QWidget::event(QEvent*) (0x1ac30d)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x1ac30d
+	[bt] [libQt5Widgets.so.5] QApplicationPrivate::notify_helper(QObject*, QEvent*) (0x16b012)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x16b012
+	[bt] [libQt5Widgets.so.5] QApplication::notify(QObject*, QEvent*) (0x170840)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x170840
+	[bt] [libQt5Core.so.5] QCoreApplication::notifyInternal2(QObject*, QEvent*) (0x2ab1c9)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2ab1c9
+	[bt] [libQt5Widgets.so.5] QApplicationPrivate::sendMouseEvent(QWidget*, QMouseEvent*, QWidget*, QWidget*, QWidget**, QPointer<QWidget>&, bool, bool) (0x16f739)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x16f739
+	[bt] /lib/x86_64-linux-gnu/libQt5Widgets.so.5(+0x1c593f) [0x7f373c71f93f]
+	[bt] /lib/x86_64-linux-gnu/libQt5Widgets.so.5(+0x1c7d8e) [0x7f373c721d8e]
+	[bt] [libQt5Widgets.so.5] QApplicationPrivate::notify_helper(QObject*, QEvent*) (0x16b012)
+	[bt]	> addr2line -p -e libQt5Widgets.so.5 0x16b012
+	[bt] [libQt5Core.so.5] QCoreApplication::notifyInternal2(QObject*, QEvent*) (0x2ab1c9)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2ab1c9
+	[bt] [libQt5Gui.so.5] QGuiApplicationPrivate::processMouseEvent(QWindowSystemInterfacePrivate::MouseEvent*) (0x13e48a)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x13e48a
+	[bt] [libQt5Gui.so.5] QWindowSystemInterface::sendWindowSystemEvents(QFlags<QEventLoop::ProcessEventsFlag>) (0x1142ba)
+	[bt]	> addr2line -p -e libQt5Gui.so.5 0x1142ba
+	[bt] /lib/x86_64-linux-gnu/libQt5XcbQpa.so.5(+0x6835e) [0x7f3737e3435e]
+	[bt] [libglib-2.0.so.0] /lib/x86_64-linux-gnu/libglib-2.0.so.0(g_main_context_dispatch+0x25b) [0x7f373a7b062b] (0x5362a)
+	[bt]	> addr2line -p -e libglib-2.0.so.0 0x5362a
+	[bt] /lib/x86_64-linux-gnu/libglib-2.0.so.0(+0x538d8) [0x7f373a7b08d8]
+	[bt] [libglib-2.0.so.0] /lib/x86_64-linux-gnu/libglib-2.0.so.0(g_main_context_iteration+0x33) [0x7f373a7b09a3] (0x539a2)
+	[bt]	> addr2line -p -e libglib-2.0.so.0 0x539a2
+	[bt] [libQt5Core.so.5] QEventDispatcherGlib::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) (0x302842)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x302842
+	[bt] [libQt5Core.so.5] QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) (0x2a9a4a)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2a9a4a
+	[bt] [libQt5Core.so.5] QCoreApplication::exec() (0x2b1fc5)
+	[bt]	> addr2line -p -e libQt5Core.so.5 0x2b1fc5
+	[bt] [urchinMapEditor] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(main+0x401) [0x55ac6fbe7535] (0x4fb534)
+	[bt]	> /home/greg/project/urchin/urchinEngine/mapEditor/src/Main.cpp:37
+	[bt] [libc.so.6] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf2) [0x7f373b0f5cb2] (0x28cb1)
+	[bt]	> addr2line -p -e libc.so.6 0x28cb1
+	[bt] [urchinMapEditor] /home/greg/project/urchin/urchinEngine/mapEditor/urchinMapEditor(_start+0x2e) [0x55ac6fbe071e] (0x4f471d)
+	[bt]	> addr2line -p -e urchinMapEditor 0x4f471d
+[2021-05-09 19:17:13] (EE) Vulkan validation layer error: Validation Error: [ VUID-vkGetPhysicalDeviceSurfaceCapabilitiesKHR-surface-parameter ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0xde3e1fd6 | Invalid VkSurfaceKHR Object 0x20000000002. The Vulkan spec states: surface must be a valid VkSurfaceKHR handle (https://vulkan.lunarg.com/doc/view/1.2.162.1~rc2/linux/1.2-extensions/vkspec.html#VUID-vkGetPhysicalDeviceSurfaceCapabilitiesKHR-surface-parameter)
+[2021-05-09 19:17:13] (EE) Vulkan validation layer error: Validation Error: [ UNASSIGNED-Threading-Info ] Object 0: handle = 0x20000000002, type = VK_OBJECT_TYPE_SURFACE_KHR; | MessageID = 0x5d6b67e2 | Couldn't find VkSurfaceKHR Object 0x20000000002. This should not happen and may indicate a bug in the application.
+[2021-05-09 19:18:44] (EE) Vulkan validation layer error: Validation Error: [ VUID-vkGetPhysicalDeviceSurfaceCapabilitiesKHR-surface-parameter ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0xde3e1fd6 | Invalid VkSurfaceKHR Object 0x20000000002. The Vulkan spec states: surface must be a valid VkSurfaceKHR handle (https://vulkan.lunarg.com/doc/view/1.2.162.1~rc2/linux/1.2-extensions/vkspec.html#VUID-vkGetPhysicalDeviceSurfaceCapabilitiesKHR-surface-parameter)
+[2021-05-09 19:18:44] (EE) Vulkan validation layer error: Validation Error: [ UNASSIGNED-Threading-Info ] Object 0: handle = 0x20000000002, type = VK_OBJECT_TYPE_SURFACE_KHR; | MessageID = 0x5d6b67e2 | Couldn't find VkSurfaceKHR Object 0x20000000002. This should not happen and may indicate a bug in the application.
+[2021-05-09 19:50:46] (EE) Vulkan validation layer error: Validation Error: [ VUID-vkGetPhysicalDeviceSurfaceCapabilitiesKHR-surface-parameter ] Object 0: VK_NULL_HANDLE, type = VK_OBJECT_TYPE_INSTANCE; | MessageID = 0xde3e1fd6 | Invalid VkSurfaceKHR Object 0x20000000002. The Vulkan spec states: surface must be a valid VkSurfaceKHR handle (https://vulkan.lunarg.com/doc/view/1.2.162.1~rc2/linux/1.2-extensions/vkspec.html#VUID-vkGetPhysicalDeviceSurfaceCapabilitiesKHR-surface-parameter)
+[2021-05-09 19:50:46] (EE) Vulkan validation layer error: Validation Error: [ UNASSIGNED-Threading-Info ] Object 0: handle = 0x20000000002, type = VK_OBJECT_TYPE_SURFACE_KHR; | MessageID = 0x5d6b67e2 | Couldn't find VkSurfaceKHR Object 0x20000000002. This should not happen and may indicate a bug in the application.
