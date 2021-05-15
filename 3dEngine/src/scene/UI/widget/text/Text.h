@@ -37,7 +37,9 @@ namespace urchin {
             unsigned int retrieveFontHeight(const std::shared_ptr<XmlChunk>&) const;
             static LengthType toLengthType(const std::string&);
             void cleanFont();
+            void refreshCoordinates();
             void refreshRenderer();
+            void refreshRendererData();
 
             //properties
             std::string nameSkin;

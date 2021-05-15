@@ -38,7 +38,7 @@ namespace urchin {
         this->maxWidth = maxWidth;
 
         refreshTextAndWidgetSize();
-        refreshRenderer();
+        refreshRendererData();
     }
 
     unsigned int Text::getMaxWidth() {
@@ -52,7 +52,7 @@ namespace urchin {
         this->text = text;
 
         refreshTextAndWidgetSize();
-        refreshRenderer();
+        refreshRendererData();
     }
 
     const std::string& Text::getText() const {
@@ -164,7 +164,7 @@ namespace urchin {
         }
     }
 
-    void Text::refreshRenderer() {
+    void Text::refreshCoordinates() {
         //creates the vertex array and texture array
         vertexCoord.clear();
         textureCoord.clear();
@@ -220,12 +220,26 @@ namespace urchin {
             textureCoord.emplace_back(Point2<float>(0.0f ,0.0f));
             textureCoord.emplace_back(Point2<float>(0.0f ,0.0f));
         }
+    }
+
+    void Text::refreshRenderer() {
+        refreshCoordinates();
+
         textRenderer = setupUiRenderer("text", ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformTextureReader(TextureReader::build(font->getTexture(), TextureParam::buildNearest())) //binding 2
                 ->enableTransparency()
                 ->build();
+    }
+
+    void Text::refreshRendererData() {
+        if(textRenderer != nullptr) {
+            refreshCoordinates();
+
+            textRenderer->updateData(0, vertexCoord);
+            textRenderer->updateData(1, textureCoord);
+        }
     }
 
     void Text::prepareWidgetRendering(float) {
