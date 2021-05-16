@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.10)
-set(OpenGL_GL_PREFERENCE "GLVND")
 project(urchin3dEngine)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})

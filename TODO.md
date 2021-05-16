@@ -6,7 +6,6 @@
 # 3d Engine
 * General
   * **NEW FEATURE** (`major`): Replace geometry shader by instantiation
-  * **NEW FEATURE** (`major`): Replace OpenGL by Vulkan
 * Rendering
   * **OPTIMIZATION** (`minor`): Avoid sending shader variables values at each frame when there is no change in Renderer3d#deferredGeometryRendering()
   * **NEW FEATURE** (`minor`): Alpha management
