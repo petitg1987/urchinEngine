@@ -18,7 +18,7 @@ namespace urchin {
     }
 
     SwapChainHandler::~SwapChainHandler() {
-        if(isInitialized) {
+        if (isInitialized) {
             Logger::instance()->logWarning("Swap chain handler not cleanup before destruction");
             cleanup();
         }
@@ -146,7 +146,7 @@ namespace urchin {
     }
 
     VkPresentModeKHR SwapChainHandler::chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes, bool verticalSyncEnabled) {
-        if(verticalSyncEnabled) {
+        if (verticalSyncEnabled) {
             for (const auto& availablePresentMode : availablePresentModes) {
                 if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR) {
                     return availablePresentMode;

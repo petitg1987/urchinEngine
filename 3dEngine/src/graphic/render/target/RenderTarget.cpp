@@ -44,7 +44,7 @@ namespace urchin {
     void RenderTarget::addRenderer(const std::shared_ptr<GenericRenderer>& renderer) {
         #ifndef NDEBUG
             assert(renderer->getRenderTarget().get() == this);
-            for(auto& r : renderers) {
+            for (auto& r : renderers) {
                 assert(r.lock() != renderer);
             }
         #endif
@@ -163,7 +163,7 @@ namespace urchin {
 
     void RenderTarget::createDepthResources() {
         if (hasDepthAttachment()) {
-            if(getLayer() == 1) {
+            if (getLayer() == 1) {
                 depthTexture = Texture::build(getWidth(), getHeight(), TextureFormat::DEPTH_32_FLOAT, nullptr);
             } else {
                 depthTexture = Texture::buildArray(getWidth(), getHeight(), getLayer(), TextureFormat::DEPTH_32_FLOAT, nullptr);
@@ -239,7 +239,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "upShaderData");
 
         for (auto &renderer : renderers) {
-            if(!renderer.expired()) {
+            if (!renderer.expired()) {
                 renderer.lock()->updateGraphicData(frameIndex);
             }
         }
@@ -247,7 +247,7 @@ namespace urchin {
 
     void RenderTarget::updateCommandBuffers(const std::vector<VkClearValue>& clearValues) {
         ScopeProfiler sp(Profiler::graphic(), "upCmdBuffers");
-        if(!needCommandBuffersRefresh()) {
+        if (!needCommandBuffersRefresh()) {
             return;
         }
 
@@ -278,7 +278,7 @@ namespace urchin {
 
             vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
             for (auto &renderer : renderers) {
-                if(!renderer.expired()) {
+                if (!renderer.expired()) {
                     renderer.lock()->updateCommandBuffer(commandBuffers[i], i);
                 }
             }

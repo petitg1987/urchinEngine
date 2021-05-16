@@ -14,7 +14,7 @@ namespace urchin {
     }
 
     AlterableBufferHandler::~AlterableBufferHandler() {
-        if(isInitialized) {
+        if (isInitialized) {
             Logger::instance()->logWarning("Alterable buffer handler not cleanup before destruction");
             cleanup();
         }
@@ -59,7 +59,7 @@ namespace urchin {
 
         bool newBuffersCreated;
 
-        if(isStaticBuffer) {
+        if (isStaticBuffer) {
             vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
 
             assert(buffers.size() == 1);
@@ -76,7 +76,7 @@ namespace urchin {
     VkBuffer AlterableBufferHandler::getBuffer(std::size_t framebufferIndex) const {
         assert(isInitialized);
 
-        if(isStaticBuffer) {
+        if (isStaticBuffer) {
             assert(buffers.size() == 1);
             return buffers[0].getBuffer();
         }
@@ -89,10 +89,10 @@ namespace urchin {
         cleanupBuffers();
 
         buffers.resize(numFramebuffer);
-        for(auto& buffer : buffers) {
+        for (auto& buffer : buffers) {
             buffer.initialize(bufferType, dataSize);
 
-            if(dataPtr != nullptr) {
+            if (dataPtr != nullptr) {
                 buffer.updateData(dataSize, dataPtr);
             }
 

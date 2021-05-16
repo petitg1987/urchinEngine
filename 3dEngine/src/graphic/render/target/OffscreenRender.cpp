@@ -15,7 +15,7 @@ namespace urchin {
     }
 
     OffscreenRender::~OffscreenRender() {
-        if(isInitialized) {
+        if (isInitialized) {
             Logger::instance()->logWarning("Offscreen render not cleanup before destruction: " + getName());
             OffscreenRender::cleanup();
         }
@@ -97,7 +97,7 @@ namespace urchin {
         }
         VkClearValue clearColor{};
         clearColor.color = {{0.0f, 0.0f, 0.0f, 1.0f}};
-        for(std::size_t i = 0; i < textures.size(); ++i) {
+        for (std::size_t i = 0; i < textures.size(); ++i) {
             clearValues.emplace_back(clearColor);
         }
     }
@@ -114,7 +114,7 @@ namespace urchin {
         }
 
         std::vector<VkAttachmentReference> colorAttachmentRefs;
-        for(const auto& texture : textures) {
+        for (const auto& texture : textures) {
             attachments.emplace_back(buildAttachment(texture->getVkFormat(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL));
             VkAttachmentReference colorAttachmentRef{};
             colorAttachmentRef.attachment = attachmentIndex++;
@@ -130,7 +130,7 @@ namespace urchin {
         if (hasDepthAttachment()) {
             attachments.emplace_back(depthTexture->getImageView());
         }
-        for(const auto& texture : textures) {
+        for (const auto& texture : textures) {
             attachments.emplace_back(texture->getImageView());
         }
 
@@ -155,7 +155,7 @@ namespace urchin {
     void OffscreenRender::render() {
         ScopeProfiler sp(Profiler::graphic(), "offRender");
 
-        if(!hasRenderer()) {
+        if (!hasRenderer()) {
             return;
         }
 

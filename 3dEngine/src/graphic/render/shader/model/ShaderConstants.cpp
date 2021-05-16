@@ -24,7 +24,7 @@ namespace urchin {
 
     std::size_t ShaderConstants::sumVariablesSize() const {
         std::size_t dataSize = 0;
-        for(auto& variableSize : variablesSize) {
+        for (auto& variableSize : variablesSize) {
             dataSize += variableSize;
         }
         return dataSize;

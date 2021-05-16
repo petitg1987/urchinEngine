@@ -110,7 +110,7 @@ namespace urchin {
 
     void DataContainer::newDataAck(std::size_t nbFramebuffer) {
         newDataTotalUpdate++;
-        if(nbFramebuffer == newDataTotalUpdate) {
+        if (nbFramebuffer == newDataTotalUpdate) {
             newDataTotalUpdate = 0;
             newData = false;
         }

@@ -7,7 +7,7 @@ namespace urchin {
     Shader::Shader(std::string shaderName, const std::vector<std::pair<Shader::ShaderType, std::vector<char>>>& shaderSources, std::unique_ptr<ShaderConstants> shaderConstants) :
             shaderName(std::move(shaderName)),
             shaderConstants(std::move(shaderConstants)) {
-        for(const auto& shaderSource : shaderSources) {
+        for (const auto& shaderSource : shaderSources) {
             auto shaderStageData = std::make_unique<ShaderStageData>();
 
             fillShaderModule(shaderStageData, shaderSource.second);
@@ -19,7 +19,7 @@ namespace urchin {
 
     Shader::~Shader() {
         auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
-        for(auto& shaderStageData : shaderStagesData) {
+        for (auto& shaderStageData : shaderStagesData) {
             vkDestroyShaderModule(logicalDevice, shaderStageData->shaderModule, nullptr);
         }
     }
@@ -28,7 +28,7 @@ namespace urchin {
         std::vector<VkPipelineShaderStageCreateInfo> shaderStages;
         shaderStages.reserve(shaderStagesData.size());
 
-        for(auto& shaderStageData : shaderStagesData) {
+        for (auto& shaderStageData : shaderStagesData) {
             shaderStages.emplace_back(shaderStageData->shaderStageCreateInfo);
         }
 
@@ -57,7 +57,7 @@ namespace urchin {
         shaderStageData->shaderStageCreateInfo.pName = "main";
         shaderStageData->shaderStageCreateInfo.pSpecializationInfo = nullptr;
 
-        if(shaderConstants) {
+        if (shaderConstants) {
             shaderStageData->specializationMapEntries.reserve(shaderConstants->getVariablesSize().size());
             uint32_t constantId = 0;
             uint32_t variableOffset = 0;

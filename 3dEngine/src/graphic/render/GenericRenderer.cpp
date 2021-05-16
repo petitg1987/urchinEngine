@@ -1,3 +1,5 @@
+#include <libs/vma/vk_mem_alloc.h>
+
 #include "GenericRenderer.h"
 #include "graphic/helper/ObjectNamingHelper.h"
 #include "graphic/setup/GraphicService.h"
@@ -29,12 +31,12 @@ namespace urchin {
             graphicsPipeline(nullptr),
             descriptorPool(nullptr),
             drawCommandDirty(false) {
-        if(depthOperationsEnabled && !renderTarget->hasDepthAttachment()) {
+        if (depthOperationsEnabled && !renderTarget->hasDepthAttachment()) {
             throw std::runtime_error("Depth operations are enabled but there is no depth attachment on the render target");
         }
 
-        for(auto& uniformTextureReaderArray : uniformTextureReaders) {
-            for(auto& uniformTextureReader : uniformTextureReaderArray) {
+        for (auto& uniformTextureReaderArray : uniformTextureReaders) {
+            for (auto& uniformTextureReader : uniformTextureReaderArray) {
                 uniformTextureReader->initialize();
             }
         }
@@ -103,7 +105,7 @@ namespace urchin {
         uint32_t shaderUniformBinding = 0;
         std::vector<VkDescriptorSetLayoutBinding> bindings;
 
-        for(auto& uniformSingleData : uniformData) {
+        for (auto& uniformSingleData : uniformData) {
             std::ignore = uniformSingleData;
             VkDescriptorSetLayoutBinding uboLayoutBinding{};
             uboLayoutBinding.binding = shaderUniformBinding++;
@@ -114,7 +116,7 @@ namespace urchin {
             bindings.emplace_back(uboLayoutBinding);
         }
 
-        for(auto& uniformTextureReader : uniformTextureReaders) {
+        for (auto& uniformTextureReader : uniformTextureReaders) {
             VkDescriptorSetLayoutBinding samplerLayoutBinding{};
             samplerLayoutBinding.binding = shaderUniformBinding++;
             samplerLayoutBinding.descriptorCount = (uint32_t)uniformTextureReader.size();
@@ -146,7 +148,7 @@ namespace urchin {
         //vertex input stage
         std::vector<VkVertexInputBindingDescription> bindingDescriptions;
         std::vector<VkVertexInputAttributeDescription> attributeDescriptions;
-        for(uint32_t i = 0; i < data.size(); ++i) {
+        for (uint32_t i = 0; i < data.size(); ++i) {
             VkVertexInputBindingDescription bindingDescription{};
             bindingDescription.binding = i;
             bindingDescription.stride = (uint32_t)data[i].getDataSize();
@@ -229,7 +231,7 @@ namespace urchin {
 
         //color blending
         std::vector<VkPipelineColorBlendAttachmentState> colorBlendAttachments;
-        for(std::size_t i = 0; i < renderTarget->getNumColorAttachment(); ++i) {
+        for (std::size_t i = 0; i < renderTarget->getNumColorAttachment(); ++i) {
             VkPipelineColorBlendAttachmentState colorBlendAttachment{};
             colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
             colorBlendAttachment.blendEnable = transparencyEnabled ? VK_TRUE : VK_FALSE;
@@ -319,7 +321,7 @@ namespace urchin {
     }
 
     void GenericRenderer::destroyVertexBuffers() {
-        for(auto& vertexBuffer : vertexBuffers) {
+        for (auto& vertexBuffer : vertexBuffers) {
             vertexBuffer.cleanup();
         }
         vertexBuffers.clear();
@@ -355,10 +357,14 @@ namespace urchin {
         auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
 
         std::array<VkDescriptorPoolSize, 2> poolSizes{};
+
         int uboDescriptorCount = std::max(1, (int)renderTarget->getNumFramebuffer() * (int)uniformData.size());
         poolSizes[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
         poolSizes[0].descriptorCount = (uint32_t)uboDescriptorCount;
-        int textureDescriptorCount = std::max(1, (int)renderTarget->getNumFramebuffer() * (int)uniformTextureReaders.size());
+
+        int uniformTexReadersCount = 0;
+        std::for_each(uniformTextureReaders.begin(), uniformTextureReaders.end(), [&] (auto& r){uniformTexReadersCount += (int)r.size();});
+        int textureDescriptorCount = std::max(1, (int)renderTarget->getNumFramebuffer() * uniformTexReadersCount);
         poolSizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
         poolSizes[1].descriptorCount = (uint32_t)textureDescriptorCount;
 
@@ -402,14 +408,14 @@ namespace urchin {
 
             //uniform buffer objects
             std::vector<VkDescriptorBufferInfo> bufferInfos;
-            for(std::size_t uniformDataIndex = 0; uniformDataIndex < uniformData.size(); ++uniformDataIndex) {
+            for (std::size_t uniformDataIndex = 0; uniformDataIndex < uniformData.size(); ++uniformDataIndex) {
                 VkDescriptorBufferInfo bufferInfo{};
                 bufferInfo.buffer = uniformsBuffers[uniformDataIndex].getBuffer(frameIndex);
                 bufferInfo.offset = 0;
                 bufferInfo.range = VK_WHOLE_SIZE;
                 bufferInfos.emplace_back(bufferInfo);
             }
-            for(auto& bufferInfo : bufferInfos) {
+            for (auto& bufferInfo : bufferInfos) {
                 VkWriteDescriptorSet uniformDescriptorWrites{};
                 uniformDescriptorWrites.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
                 uniformDescriptorWrites.dstSet = descriptorSets[frameIndex];
@@ -423,9 +429,9 @@ namespace urchin {
 
             //textures
             std::vector<std::vector<VkDescriptorImageInfo>> imageInfos;
-            for(auto& uniformTextureReaderArray : uniformTextureReaders) {
+            for (auto& uniformTextureReaderArray : uniformTextureReaders) {
                 std::vector<VkDescriptorImageInfo> imageInfosArray;
-                for(auto& uniformTextureReader : uniformTextureReaderArray) {
+                for (auto& uniformTextureReader : uniformTextureReaderArray) {
                     VkDescriptorImageInfo imageInfo{};
                     imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
                     imageInfo.imageView = uniformTextureReader->getTexture()->getImageView();
@@ -434,7 +440,7 @@ namespace urchin {
                 }
                 imageInfos.emplace_back(imageInfosArray);
             }
-            for(auto& imageInfo : imageInfos) {
+            for (auto& imageInfo : imageInfos) {
                 VkWriteDescriptorSet textureDescriptorWrites{};
                 textureDescriptorWrites.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
                 textureDescriptorWrites.dstSet = descriptorSets[frameIndex];
@@ -490,12 +496,14 @@ namespace urchin {
     const std::shared_ptr<TextureReader>& GenericRenderer::getUniformTextureReader(std::size_t uniformTexPosition) const {
         assert(uniformTextureReaders.size() > uniformTexPosition);
         assert(uniformTextureReaders[uniformTexPosition].size() == 1);
+
         return getUniformTextureReaderArray(uniformTexPosition)[0];
     }
 
     const std::shared_ptr<TextureReader>& GenericRenderer::getUniformTextureReader(std::size_t uniformTexPosition, std::size_t textureIndex) const {
         assert(uniformTextureReaders.size() > uniformTexPosition);
         assert(uniformTextureReaders[uniformTexPosition].size() > textureIndex);
+
         return getUniformTextureReaderArray(uniformTexPosition)[textureIndex];
     }
 
@@ -551,7 +559,7 @@ namespace urchin {
 
         vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1, &descriptorSets[frameIndex], 0, nullptr);
         vkCmdBindVertexBuffers(commandBuffer, 0, (uint32_t)data.size(), rawVertexBuffers.data(), offsets.data());
-        if(indices && indexBuffer.getBuffer(frameIndex)) {
+        if (indices && indexBuffer.getBuffer(frameIndex)) {
             vkCmdBindIndexBuffer(commandBuffer, indexBuffer.getBuffer(frameIndex), 0, VK_INDEX_TYPE_UINT32);
             vkCmdDrawIndexed(commandBuffer, (uint32_t)indices->getIndicesCount(), 1, 0, 0, 0);
         } else {

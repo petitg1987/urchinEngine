@@ -43,7 +43,7 @@ namespace urchin {
 
     void ShaderDataContainer::newDataAck(std::size_t nbFramebuffer) {
         newDataTotalUpdate++;
-        if(nbFramebuffer == newDataTotalUpdate) {
+        if (nbFramebuffer == newDataTotalUpdate) {
             newDataTotalUpdate = 0;
             newData = false;
         }

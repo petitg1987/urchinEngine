@@ -82,7 +82,7 @@ namespace urchin {
      *   - N=16 for an array (important: the array elements are rounded up to 16 bytes. Therefore, an array of float (4 bytes) in C++ won't match an array of float in the shader.)
      */
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addUniformData(std::size_t dataSize, const void* dataPtr) {
-        if(!uniformTextureReaders.empty()) {
+        if (!uniformTextureReaders.empty()) {
             throw std::runtime_error("Adding uniform data after uniform texture is discouraged. Uniform binding ID start first with all data and then with all textures.");
         }
         uniformData.emplace_back(ShaderDataContainer(dataSize, dataPtr));

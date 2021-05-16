@@ -20,7 +20,7 @@ namespace urchin {
     }
 
     BufferHandler::~BufferHandler() {
-        if(isInitialized) {
+        if (isInitialized) {
             Logger::instance()->logWarning("Buffer handler not cleanup before destruction");
             cleanup();
         }
@@ -75,12 +75,12 @@ namespace urchin {
 
         this->dataSize = dataSize;
 
-        if(bufferKind == BufferKind::STATIC) {
+        if (bufferKind == BufferKind::STATIC) {
             bufferKind = BufferKind::DYNAMIC;
             recreateBuffer(dataPtr);
             newBufferCreated = true;
         } else {
-            if(dataSizeAltered) {
+            if (dataSizeAltered) {
                 recreateBuffer(dataPtr);
                 newBufferCreated = true;
             } else {
@@ -135,11 +135,11 @@ namespace urchin {
     void BufferHandler::deleteBuffer() {
         auto allocator = GraphicService::instance()->getAllocator();
 
-        if(buffer != nullptr) {
+        if (buffer != nullptr) {
             vmaDestroyBuffer(allocator, buffer, nullptr);
             buffer = nullptr;
         }
-        if(bufferMemory != nullptr) {
+        if (bufferMemory != nullptr) {
             vmaFreeMemory(allocator, bufferMemory);
             bufferMemory = nullptr;
         }

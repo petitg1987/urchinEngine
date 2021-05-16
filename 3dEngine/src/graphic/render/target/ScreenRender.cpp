@@ -19,7 +19,7 @@ namespace urchin {
     }
 
     ScreenRender::~ScreenRender() {
-        if(isInitialized) {
+        if (isInitialized) {
             Logger::instance()->logWarning("Screen render not cleanup before destruction");
             ScreenRender::cleanup();
         }
@@ -44,7 +44,7 @@ namespace urchin {
     }
 
     void ScreenRender::cleanup() {
-        if(isInitialized) {
+        if (isInitialized) {
             vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
 
             cleanupRenderers();
@@ -193,7 +193,7 @@ namespace urchin {
     void ScreenRender::render() {
         ScopeProfiler sp(Profiler::graphic(), "screenRender");
 
-        if(!hasRenderer()) {
+        if (!hasRenderer()) {
             return;
         }
 
@@ -208,7 +208,7 @@ namespace urchin {
         if (resultAcquireImage == VK_ERROR_OUT_OF_DATE_KHR) {
             onResize();
             return;
-        } else if(resultAcquireImage != VK_SUCCESS && resultAcquireImage != VK_SUBOPTIMAL_KHR /*Continue with sub optimal image because already acquired */) {
+        } else if (resultAcquireImage != VK_SUCCESS && resultAcquireImage != VK_SUBOPTIMAL_KHR /*Continue with sub optimal image because already acquired */) {
             throw std::runtime_error("Failed to acquire swap chain image with error code: " + std::to_string(resultAcquireImage));
         }
 
