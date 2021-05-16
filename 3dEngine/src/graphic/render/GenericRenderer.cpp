@@ -473,7 +473,6 @@ namespace urchin {
 
     void GenericRenderer::updateData(std::size_t dataIndex, DataContainer&& dataContainer) {
         assert(data.size() > dataIndex);
-        assert(data[dataIndex].getDataSize() == dataContainer.getDataSize());
 
         data[dataIndex] = std::move(dataContainer);
     }
@@ -522,7 +521,8 @@ namespace urchin {
         //update data (vertex & vertex attributes)
         for (std::size_t dataIndex = 0; dataIndex < data.size(); ++dataIndex) {
             if (data[dataIndex].hasNewData()) {
-                drawCommandDirty |= vertexBuffers[dataIndex].updateData(frameIndex, data[dataIndex].getData());
+                auto& dataContainer = data[dataIndex];
+                drawCommandDirty |= vertexBuffers[dataIndex].updateData(frameIndex, dataContainer.getBufferSize(), dataContainer.getData());
                 data[dataIndex].newDataAck(renderTarget->getNumFramebuffer());
             }
         }
@@ -530,7 +530,8 @@ namespace urchin {
         //update shader uniforms
         for (std::size_t uniformDataIndex = 0; uniformDataIndex < uniformData.size(); ++uniformDataIndex) {
             if (uniformData[uniformDataIndex].hasNewData()) {
-                drawCommandDirty |= uniformsBuffers[uniformDataIndex].updateData(frameIndex, uniformData[uniformDataIndex].getData());
+                auto& dataContainer = uniformData[uniformDataIndex];
+                drawCommandDirty |= uniformsBuffers[uniformDataIndex].updateData(frameIndex, dataContainer.getDataSize(), dataContainer.getData());
                 uniformData[uniformDataIndex].newDataAck(renderTarget->getNumFramebuffer());
             }
         }

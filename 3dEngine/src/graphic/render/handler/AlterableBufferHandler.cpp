@@ -53,7 +53,7 @@ namespace urchin {
         buffers.clear();
     }
 
-    bool AlterableBufferHandler::updateData(std::size_t framebufferIndex, const void* dataPtr) {
+    bool AlterableBufferHandler::updateData(std::size_t framebufferIndex, std::size_t dataSize, const void* dataPtr) {
         assert(isInitialized);
         assert(dataPtr != nullptr);
 
@@ -63,12 +63,11 @@ namespace urchin {
             vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
 
             assert(buffers.size() == 1);
-            std::size_t dataSize = buffers[0].getDataSize();
             createFramebufferBuffers(dataSize, dataPtr);
             newBuffersCreated = true;
         } else {
             assert(buffers.size() > framebufferIndex);
-            newBuffersCreated = buffers[framebufferIndex].updateData(dataPtr);
+            newBuffersCreated = buffers[framebufferIndex].updateData(dataSize, dataPtr);
         }
 
         return newBuffersCreated;
@@ -94,7 +93,7 @@ namespace urchin {
             buffer.initialize(bufferType, dataSize);
 
             if(dataPtr != nullptr) {
-                buffer.updateData(dataPtr);
+                buffer.updateData(dataSize, dataPtr);
             }
 
             assert(buffer.getBufferKind() == BufferHandler::DYNAMIC);

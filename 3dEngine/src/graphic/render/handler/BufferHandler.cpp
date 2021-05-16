@@ -38,7 +38,7 @@ namespace urchin {
             bufferKind = BufferKind::DYNAMIC;
         }
 
-        createOrUpdateBuffer(dataPtr);
+        recreateBuffer(dataPtr);
 
         isInitialized = true;
     }
@@ -66,24 +66,32 @@ namespace urchin {
         return bufferKind;
     }
 
-    bool BufferHandler::updateData(const void *dataPtr) {
+    bool BufferHandler::updateData(std::size_t dataSize, const void *dataPtr) {
         assert(isInitialized);
         assert(dataPtr != nullptr);
 
+        bool dataSizeAltered = this->dataSize != dataSize;
         bool newBufferCreated = false;
+
+        this->dataSize = dataSize;
 
         if(bufferKind == BufferKind::STATIC) {
             bufferKind = BufferKind::DYNAMIC;
-            createOrUpdateBuffer(dataPtr);
+            recreateBuffer(dataPtr);
             newBufferCreated = true;
         } else {
-            updateBuffer(dataPtr);
+            if(dataSizeAltered) {
+                recreateBuffer(dataPtr);
+                newBufferCreated = true;
+            } else {
+                updateBuffer(dataPtr);
+            }
         }
 
         return newBufferCreated;
     }
 
-    void BufferHandler::createOrUpdateBuffer(const void *dataPtr) {
+    void BufferHandler::recreateBuffer(const void *dataPtr) {
         auto allocator = GraphicService::instance()->getAllocator();
         auto bufferSize = static_cast<VkDeviceSize>(dataSize);
 

@@ -30,10 +30,10 @@ namespace urchin {
             std::size_t getDataSize() const;
             BufferKind getBufferKind() const;
 
-            bool updateData(const void *);
+            bool updateData(std::size_t, const void *);
 
         private:
-            void createOrUpdateBuffer(const void *);
+            void recreateBuffer(const void *);
             void deleteBuffer();
             static void copyBuffer(VkBuffer, VkBuffer, VkDeviceSize);
             void updateBuffer(const void *);

@@ -21,7 +21,7 @@ namespace urchin {
             void initialize(BufferHandler::BufferType, std::size_t, std::size_t, const void* dataPtr = nullptr);
             void cleanup();
 
-            bool updateData(std::size_t, const void*);
+            bool updateData(std::size_t, std::size_t, const void*);
 
             VkBuffer getBuffer(std::size_t) const;
 
