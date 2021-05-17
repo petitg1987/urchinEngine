@@ -17,6 +17,7 @@ namespace urchin {
             viewProperties(),
             mouseX(0),
             mouseY(0) {
+        GraphicService::enableUniqueSurface();
         setSurfaceType(QSurface::VulkanSurface);
 
         QObject::connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_X), parent), SIGNAL(activated()), this, SLOT(onCtrlXPressed()));
@@ -26,6 +27,7 @@ namespace urchin {
 
     SceneDisplayerWindow::~SceneDisplayerWindow() {
         delete sceneDisplayer;
+        GraphicService::destroySurface();
     }
 
     void SceneDisplayerWindow::exposeEvent(QExposeEvent *) {
@@ -65,6 +67,11 @@ namespace urchin {
         setVulkanInstance(&vulkanInstance);
     }
 
+    void SceneDisplayerWindow::clearVkInstance() {
+        vulkanInstance.destroy();
+        setVulkanInstance(nullptr);
+    }
+
     void SceneDisplayerWindow::loadMap(SceneController* sceneController, const std::string& mapFilename, const std::string& relativeWorkingDirectory) {
         closeMap();
         statusBarController.applyState(StatusBarState::MAP_LOADED);
@@ -85,7 +92,7 @@ namespace urchin {
 
     void SceneDisplayerWindow::closeMap() {
         statusBarController.clearState();
-        vulkanInstance.destroy();
+        clearVkInstance();
 
         delete sceneDisplayer;
         sceneDisplayer = nullptr;

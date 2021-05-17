@@ -51,6 +51,7 @@ namespace urchin {
             void addObserverObjectMoveController(Observer*, int);
 
         private:
+            void clearVkInstance();
             void updateSceneDisplayerViewProperties();
 
             QWidget* parent;

@@ -20,10 +20,13 @@ namespace urchin {
         public:
             friend class Singleton<GraphicService>;
 
+            static void enableUniqueSurface();
+            static void destroySurface();
+
             void initialize(const std::vector<std::string>&, const std::unique_ptr<SurfaceCreator>&, std::unique_ptr<FramebufferSizeRetriever>);
 
             const std::unique_ptr<FramebufferSizeRetriever>& getFramebufferSizeRetriever() const;
-            VkSurfaceKHR getSurface() const;
+            static VkSurfaceKHR getSurface();
             DeviceHandler getDevices() const;
             QueueHandler getQueues() const;
             VkCommandPool getAllocateCommandPool() const;
@@ -40,12 +43,13 @@ namespace urchin {
             void createAllocateCommandPool();
             void createAllocator();
 
+            static bool useUniqueSurface;
+            static VkInstance vkInstance;
+            static VkSurfaceKHR surface;
+
             std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever;
             bool apiGraphicInitialized;
-
             const uint32_t vulkanVersion;
-            VkInstance vkInstance;
-            VkSurfaceKHR surface;
             ValidationLayer validationLayer;
             DeviceHandler deviceHandler;
             QueueHandler queueHandler;

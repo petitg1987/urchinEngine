@@ -8,11 +8,14 @@ using namespace urchin;
 
 namespace urchin {
 
+    //static
+    bool GraphicService::useUniqueSurface = false;
+    VkInstance GraphicService::vkInstance = nullptr;
+    VkSurfaceKHR GraphicService::surface = nullptr;
+
     GraphicService::GraphicService() :
             apiGraphicInitialized(false),
             vulkanVersion(VK_API_VERSION_1_1), //must be aligned with glslc target environment
-            vkInstance(nullptr),
-            surface(nullptr),
             allocateCommandPool(nullptr),
             allocator(nullptr) {
 
@@ -23,8 +26,26 @@ namespace urchin {
         vkDestroyCommandPool(getDevices().getLogicalDevice(), allocateCommandPool, nullptr);
         deviceHandler.cleanup();
         validationLayer.cleanup();
+        if (!useUniqueSurface) {
+            destroySurface();
+        }
+    }
+
+    /**
+     * Some Windows manager libraries do not support well the recreation of a Vulkan surface.
+     * Therefore, this feature allows to reuse the same surface (and his associated instance) even after the destruction of this service.
+     * When this feature is enable, the 'destroySurface' method must be explicitly called.
+     */
+    void GraphicService::enableUniqueSurface() {
+        useUniqueSurface = true;
+    }
+
+    void GraphicService::destroySurface() {
         vkDestroySurfaceKHR(vkInstance, surface, nullptr);
+        surface = nullptr;
+
         vkDestroyInstance(vkInstance, nullptr);
+        vkInstance = nullptr;
     }
 
     void GraphicService::initialize(const std::vector<std::string>& windowRequiredExtensions, const std::unique_ptr<SurfaceCreator>& surfaceCreator, std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever) {
@@ -32,7 +53,9 @@ namespace urchin {
 
         createInstance(windowRequiredExtensions);
         validationLayer.initializeDebugMessenger(vkInstance);
-        surface = surfaceCreator->createSurface(vkInstance);
+        if (!surface) {
+            surface = surfaceCreator->createSurface(vkInstance);
+        }
         deviceHandler.initializeDevices(vkInstance, surface);
         queueHandler.initializeQueueFamilies(deviceHandler.getPhysicalDevice(), surface);
         queueHandler.initializeQueues(deviceHandler.getLogicalDevice());
@@ -43,6 +66,10 @@ namespace urchin {
     }
 
     void GraphicService::createInstance(const std::vector<std::string>& windowRequiredExtensions) {
+        if (vkInstance) {
+            return;
+        }
+
         VkApplicationInfo applicationInfo{};
         applicationInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
         applicationInfo.pApplicationName = "VulkanApp-ff268de9-d92a-47b4-b6b0-8df93853565f";
@@ -75,7 +102,7 @@ namespace urchin {
         return framebufferSizeRetriever;
     }
 
-    VkSurfaceKHR GraphicService::getSurface() const {
+    VkSurfaceKHR GraphicService::getSurface() {
         assert(surface);
         return surface;
     }

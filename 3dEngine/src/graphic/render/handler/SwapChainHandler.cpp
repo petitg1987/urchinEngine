@@ -28,7 +28,6 @@ namespace urchin {
         assert(!isInitialized);
         auto physicalDevice = GraphicService::instance()->getDevices().getPhysicalDevice();
         auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
-        auto surface = GraphicService::instance()->getSurface();
 
         SwapChainSupportDetails swapChainSupport = querySwapChainSupport(physicalDevice);
 
@@ -42,7 +41,7 @@ namespace urchin {
 
         VkSwapchainCreateInfoKHR createInfo{};
         createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-        createInfo.surface = surface;
+        createInfo.surface = GraphicService::getSurface();
         createInfo.minImageCount = imageCount;
         createInfo.imageFormat = surfaceFormat.format;
         createInfo.imageColorSpace = surfaceFormat.colorSpace;
@@ -113,24 +112,21 @@ namespace urchin {
 
     SwapChainSupportDetails SwapChainHandler::querySwapChainSupport(VkPhysicalDevice physicalDevice) {
         SwapChainSupportDetails details;
-
-        auto surface = GraphicService::instance()->getSurface();
-
-        vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface, &details.capabilities);
+        vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, GraphicService::getSurface(), &details.capabilities);
 
         uint32_t formatCount;
-        vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, surface, &formatCount, nullptr);
+        vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, GraphicService::getSurface(), &formatCount, nullptr);
         if (formatCount != 0) {
             assert(formatCount < 9999); //format count contains wrong value when xcb library is linked statically (bug ?)
             details.formats.resize(formatCount);
-            vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, surface, &formatCount, details.formats.data());
+            vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, GraphicService::getSurface(), &formatCount, details.formats.data());
         }
 
         uint32_t presentModeCount;
-        vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, nullptr);
+        vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, GraphicService::getSurface(), &presentModeCount, nullptr);
         if (presentModeCount != 0) {
             details.presentModes.resize(presentModeCount);
-            vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, details.presentModes.data());
+            vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, GraphicService::getSurface(), &presentModeCount, details.presentModes.data());
         }
 
         return details;
