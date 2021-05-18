@@ -9,10 +9,11 @@
 
 namespace urchin {
 
-    SceneDisplayerWindow::SceneDisplayerWindow(QWidget* parent, StatusBarController statusBarController, std::string mapEditorPath) :
-            parent(parent),
-            statusBarController(std::move(statusBarController)),
+    SceneDisplayerWindow::SceneDisplayerWindow(QWidget* parent, const std::unique_ptr<StatusBarController>& statusBarController, std::string mapEditorPath) :
+            statusBarController(statusBarController),
             mapEditorPath(std::move(mapEditorPath)),
+            sceneWindowController(std::make_unique<SceneWindowController>(this)),
+            mouseController(std::make_unique<MouseController>(this)),
             sceneDisplayer(nullptr),
             viewProperties(),
             mouseX(0),
@@ -49,7 +50,7 @@ namespace urchin {
                 }
                 break;
             case QEvent::Leave: //mouse leaves widget
-                if (sceneDisplayer && !geometry().contains(mapFromGlobal(QCursor::pos()))) { //TODO test it for Y axis
+                if (sceneDisplayer && sceneDisplayer->getObjectMoveController() && !geometry().contains(mapFromGlobal(QCursor::pos()))) { //TODO test it for Y axis
                     sceneDisplayer->getObjectMoveController()->onMouseOut();
                 }
                 break;
@@ -74,28 +75,36 @@ namespace urchin {
 
     void SceneDisplayerWindow::loadMap(SceneController* sceneController, const std::string& mapFilename, const std::string& relativeWorkingDirectory) {
         closeMap();
-        statusBarController.applyState(StatusBarState::MAP_LOADED);
+        statusBarController->applyState(StatusBarState::MAP_LOADED);
 
-        auto sceneWindowController = std::make_unique<SceneWindowController>(this);
-        sceneDisplayer = new SceneDisplayer(std::move(sceneWindowController), sceneController, MouseController(this), statusBarController);
+        sceneDisplayer = new SceneDisplayer(sceneWindowController, sceneController, mouseController, statusBarController);
         sceneDisplayer->loadMap(mapEditorPath, mapFilename, relativeWorkingDirectory);
         sceneDisplayer->resize((unsigned int)geometry().width(), (unsigned int)geometry().height());
         sceneController->setup(sceneDisplayer->getMapHandler());
         updateSceneDisplayerViewProperties();
     }
 
+    void SceneDisplayerWindow::loadEmptyScene() {
+        sceneDisplayer = new SceneDisplayer(sceneWindowController, nullptr, mouseController, statusBarController);
+        sceneDisplayer->loadEmptyScene(mapEditorPath);
+        sceneDisplayer->resize((unsigned int)geometry().width(), (unsigned int)geometry().height());
+    }
+
     void SceneDisplayerWindow::saveState(const std::string& mapFilename) const {
-        if (sceneDisplayer) {
+        if (sceneDisplayer && sceneDisplayer->getCamera()) {
             sceneDisplayer->getCamera()->saveCameraState(mapFilename);
         }
     }
 
     void SceneDisplayerWindow::closeMap() {
-        statusBarController.clearState();
+        statusBarController->clearState();
         clearVkInstance();
 
-        delete sceneDisplayer;
-        sceneDisplayer = nullptr;
+        if (sceneDisplayer) {
+            delete sceneDisplayer;
+            sceneDisplayer = nullptr;
+            loadEmptyScene();
+        }
     }
 
     void SceneDisplayerWindow::setViewProperties(SceneDisplayer::ViewProperties viewProperty, bool value) {
@@ -136,11 +145,11 @@ namespace urchin {
     }
 
     void SceneDisplayerWindow::render() {
-        if (sceneDisplayer) {
-            sceneDisplayer->paint();
-        } else {
-            //TODO clean screen (e.g.: glClear(GL_COLOR_BUFFER_BIT);)
+        if (!sceneDisplayer) {
+            loadEmptyScene();
         }
+
+        sceneDisplayer->paint();
 
         requestUpdate();
     }
@@ -189,7 +198,7 @@ namespace urchin {
     void SceneDisplayerWindow::mouseReleaseEvent(QMouseEvent* event) {
         if (sceneDisplayer) {
             if (event->button() == Qt::LeftButton) {
-                bool propagateEvent = sceneDisplayer->getObjectMoveController()->onMouseLeftButton();
+                bool propagateEvent = sceneDisplayer->getObjectMoveController() == nullptr || sceneDisplayer->getObjectMoveController()->onMouseLeftButton();
                 if (propagateEvent) {
                     propagateEvent = onMouseClickBodyPickup();
                     if (propagateEvent) {
@@ -208,7 +217,7 @@ namespace urchin {
 
         if (sceneDisplayer) {
             bool propagateEvent = sceneDisplayer->getSceneManager()->onMouseMove(mouseX, mouseY);
-            if (propagateEvent) {
+            if (propagateEvent && sceneDisplayer->getObjectMoveController()) {
                 sceneDisplayer->getObjectMoveController()->onMouseMove(mouseX, mouseY);
             }
         }
@@ -217,21 +226,23 @@ namespace urchin {
     bool SceneDisplayerWindow::onMouseClickBodyPickup() {
         bool propagateEvent = true;
 
-        Camera* camera = sceneDisplayer->getSceneManager()->getActiveRenderer3d()->getCamera();
-        Ray<float> pickingRay = CameraSpaceService(camera).screenPointToRay(Point2<float>((float)mouseX, (float)mouseY), PICKING_RAY_LENGTH);
-        std::shared_ptr<const RayTestResult> rayTestResult = sceneDisplayer->getPhysicsWorld()->rayTest(pickingRay);
+        if (sceneDisplayer->getSceneManager()->getActiveRenderer3d()) {
+            Camera *camera = sceneDisplayer->getSceneManager()->getActiveRenderer3d()->getCamera();
+            Ray<float> pickingRay = CameraSpaceService(camera).screenPointToRay(Point2<float>((float) mouseX, (float) mouseY), PICKING_RAY_LENGTH);
+            std::shared_ptr<const RayTestResult> rayTestResult = sceneDisplayer->getPhysicsWorld()->rayTest(pickingRay);
 
-        while (!rayTestResult->isResultReady()) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
-        }
-        const ccd_set& pickedObjects = rayTestResult->getResults();
-        if (!pickedObjects.empty()) {
-            lastPickedBodyId = (*rayTestResult->getResults().begin())->getBody2()->getId();
-            notifyObservers(this, BODY_PICKED);
-            propagateEvent = false;
-        } else {
-            lastPickedBodyId = "";
-            notifyObservers(this, BODY_PICKED);
+            while (!rayTestResult->isResultReady()) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            }
+            const ccd_set &pickedObjects = rayTestResult->getResults();
+            if (!pickedObjects.empty()) {
+                lastPickedBodyId = (*rayTestResult->getResults().begin())->getBody2()->getId();
+                notifyObservers(this, BODY_PICKED);
+                propagateEvent = false;
+            } else {
+                lastPickedBodyId = "";
+                notifyObservers(this, BODY_PICKED);
+            }
         }
 
         return propagateEvent;
@@ -247,19 +258,19 @@ namespace urchin {
     }
 
     void SceneDisplayerWindow::onCtrlXPressed() {
-        if (sceneDisplayer) {
+        if (sceneDisplayer && sceneDisplayer->getObjectMoveController()) {
             sceneDisplayer->getObjectMoveController()->onCtrlXYZ(0);
         }
     }
 
     void SceneDisplayerWindow::onCtrlYPressed() {
-        if (sceneDisplayer) {
+        if (sceneDisplayer && sceneDisplayer->getObjectMoveController()) {
             sceneDisplayer->getObjectMoveController()->onCtrlXYZ(1);
         }
     }
 
     void SceneDisplayerWindow::onCtrlZPressed() {
-        if (sceneDisplayer) {
+        if (sceneDisplayer && sceneDisplayer->getObjectMoveController()) {
             sceneDisplayer->getObjectMoveController()->onCtrlXYZ(2);
         }
     }

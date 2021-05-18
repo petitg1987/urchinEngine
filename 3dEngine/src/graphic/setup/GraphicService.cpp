@@ -41,11 +41,15 @@ namespace urchin {
     }
 
     void GraphicService::destroySurface() {
-        vkDestroySurfaceKHR(vkInstance, surface, nullptr);
-        surface = nullptr;
+        if (surface) {
+            vkDestroySurfaceKHR(vkInstance, surface, nullptr);
+            surface = nullptr;
+        }
 
-        vkDestroyInstance(vkInstance, nullptr);
-        vkInstance = nullptr;
+        if (vkInstance) {
+            vkDestroyInstance(vkInstance, nullptr);
+            vkInstance = nullptr;
+        }
     }
 
     void GraphicService::initialize(const std::vector<std::string>& windowRequiredExtensions, const std::unique_ptr<SurfaceCreator>& surfaceCreator, std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever) {

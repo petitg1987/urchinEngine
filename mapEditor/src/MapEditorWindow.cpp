@@ -20,7 +20,7 @@
 namespace urchin {
 
     MapEditorWindow::MapEditorWindow(std::string mapEditorPath) :
-            statusBarController(StatusBarController(this)),
+            statusBarController(std::make_unique<StatusBarController>(this)),
             saveAction(nullptr),
             saveAsAction(nullptr),
             closeAction(nullptr),
@@ -38,7 +38,7 @@ namespace urchin {
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
 
         setupMenu();
-        statusBarController.clearState();
+        statusBarController->clearState();
 
         setupSceneDisplayerWidget(centralWidget, horizontalLayout);
         setupSceneControllerWidget(centralWidget, horizontalLayout);
@@ -298,11 +298,11 @@ namespace urchin {
             sceneDisplayerWindow->closeMap();
             scenePanelWidget->closeMap();
 
-            updateMapFilename("");
-            updateInterfaceState();
-
             delete sceneController;
             sceneController = nullptr;
+
+            updateMapFilename("");
+            updateInterfaceState();
 
             canProceed = true;
         }
@@ -310,7 +310,7 @@ namespace urchin {
         return canProceed;
     }
 
-    void MapEditorWindow::executeExitAction() {
+    void MapEditorWindow::executeExitAction() { //TODO check memory leak on vulkan object
         if (executeCloseAction()) {
             QApplication::quit();
         }

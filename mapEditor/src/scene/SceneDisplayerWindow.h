@@ -17,7 +17,7 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            SceneDisplayerWindow(QWidget*, StatusBarController, std::string);
+            SceneDisplayerWindow(QWidget*, const std::unique_ptr<StatusBarController>&, std::string);
             ~SceneDisplayerWindow() override;
 
             enum NotificationType {
@@ -29,6 +29,7 @@ namespace urchin {
             void setupVkInstance(VkInstance);
 
             void loadMap(SceneController*, const std::string&, const std::string&);
+            void loadEmptyScene();
             void saveState(const std::string&) const;
             void closeMap();
 
@@ -54,11 +55,12 @@ namespace urchin {
             void clearVkInstance();
             void updateSceneDisplayerViewProperties();
 
-            QWidget* parent;
             QVulkanInstance vulkanInstance;
-            StatusBarController statusBarController;
+            const std::unique_ptr<StatusBarController>& statusBarController;
             std::string mapEditorPath;
 
+            std::unique_ptr<SceneWindowController> sceneWindowController;
+            std::unique_ptr<MouseController> mouseController;
             SceneDisplayer* sceneDisplayer;
             bool viewProperties[SceneDisplayer::LAST_VIEW_PROPERTIES];
 

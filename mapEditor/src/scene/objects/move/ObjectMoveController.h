@@ -14,7 +14,7 @@ namespace urchin {
 
     class ObjectMoveController : public Observable {
         public:
-            ObjectMoveController(SceneManager*, SceneController*, MouseController, StatusBarController);
+            ObjectMoveController(SceneManager*, SceneController*, const std::unique_ptr<MouseController>&, const std::unique_ptr<StatusBarController>&);
 
             enum NotificationType {
                 OBJECT_MOVED
@@ -44,8 +44,8 @@ namespace urchin {
             ObjectMoveAxisDisplayer objectMoveAxisDisplayer;
             SceneManager* sceneManager;
             SceneController* sceneController;
-            MouseController mouseController;
-            StatusBarController statusBarController;
+            const std::unique_ptr<MouseController>& mouseController;
+            const std::unique_ptr<StatusBarController>& statusBarController;
 
             const SceneObject* selectedSceneObject;
             int selectedAxis;

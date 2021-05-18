@@ -34,10 +34,11 @@ namespace urchin {
                 LAST_VIEW_PROPERTIES
             };
 
-            SceneDisplayer(std::unique_ptr<SceneWindowController>, SceneController*, const MouseController&, StatusBarController);
+            SceneDisplayer(const std::unique_ptr<SceneWindowController>&, SceneController*, const std::unique_ptr<MouseController>&, const std::unique_ptr<StatusBarController>&);
             ~SceneDisplayer();
 
             void loadMap(const std::string&, const std::string&, const std::string&);
+            void loadEmptyScene(const std::string&);
 
             void setViewProperties(SceneDisplayer::ViewProperties, bool);
             void setHighlightSceneObject(const SceneObject*);
@@ -65,10 +66,10 @@ namespace urchin {
             void refreshNavMeshModel();
 
             bool isInitialized;
-            std::unique_ptr<SceneWindowController> windowController;
+            const std::unique_ptr<SceneWindowController>& windowController;
             SceneController* sceneController;
-            MouseController mouseController;
-            StatusBarController statusBarController;
+            const std::unique_ptr<MouseController>& mouseController;
+            const std::unique_ptr<StatusBarController>& statusBarController;
 
             //3d
             SceneManager* sceneManager;

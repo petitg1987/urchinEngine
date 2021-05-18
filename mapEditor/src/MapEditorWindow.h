@@ -40,7 +40,7 @@ namespace urchin {
             void notify(Observable*, int) override;
             void handleCompoundShapeSelectionChange(Observable*, int);
 
-            StatusBarController statusBarController;
+            std::unique_ptr<StatusBarController> statusBarController;
 
             QAction* saveAction;
             QAction* saveAsAction;
