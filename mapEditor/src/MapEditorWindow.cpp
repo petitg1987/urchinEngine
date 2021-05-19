@@ -310,7 +310,7 @@ namespace urchin {
         return canProceed;
     }
 
-    void MapEditorWindow::executeExitAction() { //TODO check memory leak on vulkan object
+    void MapEditorWindow::executeExitAction() {
         if (executeCloseAction()) {
             QApplication::quit();
         }

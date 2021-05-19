@@ -100,11 +100,8 @@ namespace urchin {
         statusBarController->clearState();
         clearVkInstance();
 
-        if (sceneDisplayer) {
-            delete sceneDisplayer;
-            sceneDisplayer = nullptr;
-            loadEmptyScene();
-        }
+        delete sceneDisplayer;
+        sceneDisplayer = nullptr;
     }
 
     void SceneDisplayerWindow::setViewProperties(SceneDisplayer::ViewProperties viewProperty, bool value) {
