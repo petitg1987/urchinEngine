@@ -50,7 +50,7 @@ namespace urchin {
                 }
                 break;
             case QEvent::Leave: //mouse leaves widget
-                if (sceneDisplayer && sceneDisplayer->getObjectMoveController() && !geometry().contains(mapFromGlobal(QCursor::pos()))) { //TODO test it for Y axis
+                if (sceneDisplayer && sceneDisplayer->getObjectMoveController() && !geometry().contains(mapFromGlobal(QCursor::pos()))) {
                     sceneDisplayer->getObjectMoveController()->onMouseOut();
                 }
                 break;

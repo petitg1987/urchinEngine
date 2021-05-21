@@ -14,13 +14,13 @@ namespace urchin {
         cleanCurrentDisplay();
 
         GeometryModel* xLine = createAxisModel(position, selectedAxis, 0);
-        xLine->setColor(1.0, 0.0, 0.0, selectedAxis == 0 ? 1.0f : 0.5f);
+        xLine->setColor(1.0f, 0.0f, 0.0f, selectedAxis == 0 ? 1.0f : 0.5f);
 
         GeometryModel* yLine = createAxisModel(position, selectedAxis, 1);
-        yLine->setColor(0.0, 1.0, 0.0, selectedAxis == 1 ? 1.0f : 0.5f);
+        yLine->setColor(0.0f, 1.0f, 0.0f, selectedAxis == 1 ? 1.0f : 0.5f);
 
         GeometryModel* zLine = createAxisModel(position, selectedAxis, 2);
-        zLine->setColor(0.0, 0.0, 1.0, selectedAxis == 2 ? 1.0f : 0.5f);
+        zLine->setColor(0.0f, 0.0f, 1.0f, selectedAxis == 2 ? 1.0f : 0.5f);
 
         for (auto& objectMoveAxisModel : objectMoveAxisModels) {
             sceneManager->getActiveRenderer3d()->getGeometryManager()->addGeometry(objectMoveAxisModel);
@@ -46,7 +46,7 @@ namespace urchin {
         LineSegment3D<float> axeLineSegment(startPoint, endPoint);
         GeometryModel* axisModel = new LinesModel(axeLineSegment);
         axisModel->setLineWidth(axisIndex == selectedAxis ? 2.0f : 1.0f);
-        axisModel->enableTransparency();
+        axisModel->enableTransparency(); //TODO fix black line
         objectMoveAxisModels.push_back(axisModel);
 
         return axisModel;

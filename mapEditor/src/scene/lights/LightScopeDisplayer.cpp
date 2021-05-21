@@ -19,8 +19,8 @@ namespace urchin {
         if (sceneLight) {
             const Light* light = sceneLight->getLight();
 
-            if (const auto* omnidirectionLight = dynamic_cast<const OmnidirectionalLight*>(light)) {
-                auto* geometryModel = new SphereModel(omnidirectionLight->getSphereScope(), 25);
+            if (const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight*>(light)) {
+                auto* geometryModel = new SphereModel(omnidirectionalLight->getSphereScope(), 25);
                 lightScopeModels.push_back(geometryModel);
             }
 
