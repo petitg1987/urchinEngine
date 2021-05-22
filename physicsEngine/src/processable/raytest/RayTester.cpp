@@ -1,12 +1,10 @@
 #include "collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h"
 #include "processable/raytest/RayTester.h"
 
-#include <utility>
-
 namespace urchin {
 
     RayTester::RayTester(Ray<float> ray) :
-            ray(std::move(ray)),
+            ray(ray),
             rayTestResult(std::make_shared<RayTestResult>()),
             collisionWorld(nullptr) {
 

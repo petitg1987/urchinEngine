@@ -14,21 +14,25 @@ namespace urchin {
             delete body;
         }
 
-        for (auto& body : newBodies) {
-            delete body;
+        for (auto& bodyToRefresh : bodiesToRefresh) {
+            if (bodyToRefresh.updateType == BodyRefresh::ADD) {
+                delete bodyToRefresh.body;
+            }
         }
     }
 
     void BodyManager::addBody(AbstractBody* body) {
         std::lock_guard<std::mutex> lock(bodiesMutex);
 
-        newBodies.push_back(body);
+        BodyRefresh bodyUpdate{body, BodyRefresh::ADD};
+        bodiesToRefresh.emplace_back(bodyUpdate);
     }
 
     void BodyManager::removeBody(AbstractBody* body) {
         std::lock_guard<std::mutex> lock(bodiesMutex);
 
-        bodiesToDelete.push_back(body);
+        BodyRefresh bodyUpdate{body, BodyRefresh::REMOVE};
+        bodiesToRefresh.emplace_back(bodyUpdate);
     }
 
     AbstractBody* BodyManager::getLastUpdatedBody() const {
@@ -46,28 +50,25 @@ namespace urchin {
         ScopeProfiler sp(Profiler::physics(), "setupWorkBodies");
         std::lock_guard<std::mutex> lock(bodiesMutex);
 
-        //delete bodies
-        for (const auto bodyToDelete: bodiesToDelete) {
-            auto itFind = std::find(bodies.begin(), bodies.end(), bodyToDelete);
-            if (itFind != bodies.end()) {
-                bodies.erase(itFind);
+        for (const auto& bodyToRefresh: bodiesToRefresh) {
+            if (bodyToRefresh.updateType == BodyRefresh::ADD) {
+                bodies.emplace_back(bodyToRefresh.body);
+                bodyToRefresh.body->setPhysicsThreadId(std::this_thread::get_id());
 
-                lastUpdatedBody = bodyToDelete;
-                notifyObservers(this, REMOVE_BODY);
+                lastUpdatedBody = bodyToRefresh.body;
+                notifyObservers(this, ADD_BODY);
+            } else if (bodyToRefresh.updateType == BodyRefresh::REMOVE) {
+                auto itFind = std::find(bodies.begin(), bodies.end(), bodyToRefresh.body);
+                if (itFind != bodies.end()) {
+                    bodies.erase(itFind);
 
-                delete bodyToDelete;
+                    lastUpdatedBody = bodyToRefresh.body;
+                    notifyObservers(this, REMOVE_BODY);
+
+                    delete bodyToRefresh.body;
+                }
             }
         }
-        bodiesToDelete.clear();
-
-        //add new bodies
-        bodies.insert(bodies.end(), newBodies.begin(), newBodies.end());
-        for (const auto newBody : newBodies) {
-            newBody->setPhysicsThreadId(std::this_thread::get_id());
-
-            lastUpdatedBody = newBody;
-            notifyObservers(this, ADD_BODY);
-        }
-        newBodies.clear();
+        bodiesToRefresh.clear();
     }
 }

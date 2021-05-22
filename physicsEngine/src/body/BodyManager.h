@@ -7,6 +7,14 @@
 
 namespace urchin {
 
+    struct BodyRefresh {
+        AbstractBody* body;
+        enum {
+            ADD,
+            REMOVE
+        } updateType;
+    };
+
     /**
     * A bodies manager allowing to manage bodies modifications coming from two different thread. Indeed, the user
     * can add/remove/update bodies from thread 1 while physics engine update the same bodies on thread 2.
@@ -32,9 +40,7 @@ namespace urchin {
         private:
             mutable std::mutex bodiesMutex;
             std::vector<AbstractBody*> bodies;
-
-            std::vector<AbstractBody*> newBodies;
-            std::vector<AbstractBody*> bodiesToDelete;
+            std::vector<BodyRefresh> bodiesToRefresh;
 
             AbstractBody* lastUpdatedBody;
     };

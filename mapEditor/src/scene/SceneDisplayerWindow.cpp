@@ -220,7 +220,7 @@ namespace urchin {
         }
     }
 
-    bool SceneDisplayerWindow::onMouseClickBodyPickup() { //TODO not working after body moved
+    bool SceneDisplayerWindow::onMouseClickBodyPickup() {
         bool propagateEvent = true;
 
         if (sceneDisplayer->getSceneManager()->getActiveRenderer3d()) {

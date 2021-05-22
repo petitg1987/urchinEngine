@@ -21,6 +21,7 @@
 #include "physics/shape/ShapeToAABBoxTest.h"
 #include "physics/shape/ShapeToConvexObjectTest.h"
 #include "physics/object/SupportPointTest.h"
+#include "physics/body/BodyManagerTest.h"
 #include "physics/body/InertiaCalculationTest.h"
 #include "physics/collision/broadphase/aabbtree/BodyAABBTreeTest.h"
 #include "physics/collision/narrowphase/algorithm/gjk/GJKBoxTest.h"
@@ -86,6 +87,7 @@ void addPhysicsUnitTests(CppUnit::TextUi::TestRunner& runner) {
     runner.addTest(SupportPointTest::suite());
 
     //body
+    runner.addTest(BodyManagerTest::suite());
     runner.addTest(InertiaCalculationTest::suite());
 
     //broad phase
