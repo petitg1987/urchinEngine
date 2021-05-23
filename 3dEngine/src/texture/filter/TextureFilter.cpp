@@ -110,7 +110,6 @@ namespace urchin {
 
         if (textureType == TextureType::ARRAY) {
             if (layersToUpdate != 0) {
-                //TODO if all layers are not updated: we should ensure color attachment is not clear (see  colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR)
                 textureRenderer->updateUniformData(0, &layersToUpdate);
                 offscreenRenderTarget->render();
             }
