@@ -21,6 +21,7 @@ namespace urchin {
             ~SceneManager();
 
             //scene properties
+            void updateVerticalSync(bool);
             void onResize(unsigned int, unsigned int);
             unsigned int getSceneWidth() const;
             unsigned int getSceneHeight() const;

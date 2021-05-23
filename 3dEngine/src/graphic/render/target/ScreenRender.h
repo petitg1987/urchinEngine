@@ -11,11 +11,13 @@ namespace urchin {
 
     class ScreenRender : public RenderTarget {
         public:
-            ScreenRender(std::string, DepthAttachmentType, bool);
+            ScreenRender(std::string, DepthAttachmentType);
             ~ScreenRender() override;
 
             void initialize() override;
             void cleanup() override;
+
+            void updateVerticalSync(bool);
             void onResize();
 
             unsigned int getWidth() const override;

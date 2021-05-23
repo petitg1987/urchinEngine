@@ -13,7 +13,7 @@ namespace urchin {
     SceneManager::SceneManager(const std::vector<std::string>& windowRequiredExtensions, const std::unique_ptr<SurfaceCreator>& surfaceCreator, std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever) :
             sceneWidth(500),
             sceneHeight(500),
-            screenRenderTarget(std::make_shared<ScreenRender>("screen", RenderTarget::NO_DEPTH_ATTACHMENT, false)), //TODO use last param correctly
+            screenRenderTarget(std::make_shared<ScreenRender>("screen", RenderTarget::NO_DEPTH_ATTACHMENT)),
             activeRenderers(),
             previousFps(),
             fps(START_FPS),
@@ -45,6 +45,10 @@ namespace urchin {
         }
 
         Profiler::graphic()->log();
+    }
+
+    void SceneManager::updateVerticalSync(bool verticalSyncEnabled) {
+        screenRenderTarget->updateVerticalSync(verticalSyncEnabled);
     }
 
     void SceneManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
