@@ -516,11 +516,9 @@ namespace urchin {
 
         if (isAntiAliasingActivated) {
             offscreenLightingRenderTarget->render();
+        } else {
+            lightingRenderer->enableRenderer();
         }
-
-        //TODO strange ?:
-        lightingRenderer->getRenderTarget()->disableAllRenderers();
-        lightingRenderer->enableRenderer();
     }
 
     void Renderer3d::renderDebugFramebuffers() {
