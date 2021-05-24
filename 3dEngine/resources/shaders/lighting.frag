@@ -105,6 +105,13 @@ float computeShadowContribution(int shadowLightIndex, float depthValue, vec4 pos
             if (shadowCoord.s <= 1.0f && shadowCoord.s >= 0.0f && shadowCoord.t <= 1.0f && shadowCoord.t >= 0.0f) {
                 vec2 moments = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, i)).rg;
                 shadowContribution = computePercentLit(shadowCoord.z, moments, NdotL);
+
+                //DEBUG: shadow without variance shadow map feature:
+                /* shadowContribution = 1.0f;
+                float sDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, i)).r;
+                if (shadowCoord.z - 0.01f > sDepth) {
+                    shadowContribution = 0.0f;
+                } */
             }
 
             break;
@@ -186,7 +193,7 @@ void main() {
     fragColor = addFog(fragColor, position);
 
     //DEBUG: add color to shadow map splits
-/*    const float colorValue = 0.25f;
+    /* const float colorValue = 0.25f;
     vec4 splitColors[5] = vec4[](
         vec4(colorValue, 0.0, 0.0, 1.0), vec4(0.0, colorValue, 0.0, 1.0), vec4(0.0, 0.0, colorValue, 1.0),
         vec4(colorValue, 0.0, colorValue, 1.0), vec4(colorValue, colorValue, 0.0, 1.0));
@@ -195,5 +202,5 @@ void main() {
             fragColor += splitColors[i % 5];
             break;
         }
-    }*/
+    } */
 }
