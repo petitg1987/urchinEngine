@@ -76,7 +76,7 @@ namespace urchin {
 
     void AntiAliasingManager::applyAntiAliasing() {
         if (renderer) {
-            renderer->addOnRenderTarget();
+            renderer->enableRenderer();
         }
     }
 

@@ -386,7 +386,7 @@ namespace urchin {
                 if (grassQuadtreeBox && camera->getFrustum().cutFrustum(grassProperties.displayDistance).collideWithAABBox(*grassQuadtreeBox)) {
                     if (grassQuadtree->isLeaf()) {
                         grassQuadtree->getRenderer()->updateUniformData(0, &positioningData);
-                        grassQuadtree->getRenderer()->addOnRenderTarget();
+                        grassQuadtree->getRenderer()->enableRenderer();
                     } else {
                         for (const auto* child : grassQuadtree->getChildren()) {
                             grassQuadtrees.push_back(child);

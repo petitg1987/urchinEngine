@@ -86,7 +86,7 @@ namespace urchin {
                 customModelShaderVariable->loadCustomShaderVariables(meshRenderer);
             }
 
-            meshRenderer->addOnRenderTarget();
+            meshRenderer->enableRenderer();
             meshIndex++;
         }
     }

@@ -173,7 +173,7 @@ namespace urchin {
         assert(isInitialized);
 
         terrainRenderer->updateUniformData(0, &camera->getViewMatrix());
-        terrainRenderer->addOnRenderTarget();
+        terrainRenderer->enableRenderer();
 
         if (grass) {
             grass->prepareRendering(camera, dt);

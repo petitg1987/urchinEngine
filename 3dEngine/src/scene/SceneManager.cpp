@@ -218,7 +218,7 @@ namespace urchin {
         float dt = getDeltaTime();
 
         //renderer
-        screenRenderTarget->clearRenderers();
+        screenRenderTarget->disableAllRenderers();
         for (auto& activeRenderer : activeRenderers) {
             if (activeRenderer) {
                 activeRenderer->prepareRendering(dt);

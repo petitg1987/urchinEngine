@@ -267,7 +267,7 @@ namespace urchin {
             positioningData.sumTimeStep += dt;
 
             waterRenderer->updateUniformData(0, &positioningData);
-            waterRenderer->addOnRenderTarget();
+            waterRenderer->enableRenderer();
         }
     }
 }

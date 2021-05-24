@@ -2,6 +2,7 @@
 #define URCHINENGINE_RENDERTARGET_H
 
 #include <vector>
+#include <forward_list>
 #include <vulkan/vulkan.h>
 
 #include "UrchinCommon.h"
@@ -38,8 +39,9 @@ namespace urchin {
             const std::shared_ptr<Texture>& getDepthTexture() const;
 
             void addRenderer(const std::shared_ptr<GenericRenderer>&);
-            void removeRenderer(const std::shared_ptr<GenericRenderer>&);
-            void clearRenderers();
+            void notifyRendererEnabled(GenericRenderer*);
+            void notifyRendererDisabled(GenericRenderer*);
+            void disableAllRenderers();
 
             virtual void render() = 0;
 
@@ -77,7 +79,7 @@ namespace urchin {
             std::vector<VkFramebuffer> framebuffers;
             VkCommandPool commandPool;
 
-            std::vector<std::weak_ptr<GenericRenderer>> renderers; //use weak_ptr to avoid cyclic reference with GenericRenderer
+            std::list<std::weak_ptr<GenericRenderer>> renderers; //use weak_ptr to avoid cyclic reference with GenericRenderer
             bool renderersDirty;
     };
 

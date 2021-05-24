@@ -154,7 +154,7 @@ namespace urchin {
 
     std::shared_ptr<GenericRenderer> GenericRendererBuilder::build() {
         auto renderer = std::make_shared<GenericRenderer>(this);
-        renderer->addOnRenderTarget();
+        renderTarget->addRenderer(renderer);
 
         return renderer;
     }

@@ -34,8 +34,9 @@ namespace urchin {
             const std::shared_ptr<RenderTarget> &getRenderTarget() const;
             bool isDrawCommandDirty() const;
 
-            void addOnRenderTarget();
-            void removeFromRenderTarget();
+            bool isEnabled() const;
+            void enableRenderer();
+            void disableRenderer();
 
             void updateData(std::size_t, const std::vector<Point2<float>>&);
             void updateData(std::size_t, const std::vector<Point3<float>>&);
@@ -75,6 +76,7 @@ namespace urchin {
             void updateData(std::size_t, DataContainer&&);
 
             bool isInitialized;
+            bool bIsEnabled;
 
             std::string name;
             std::shared_ptr<RenderTarget> renderTarget;

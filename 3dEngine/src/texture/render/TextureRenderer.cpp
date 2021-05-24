@@ -198,7 +198,7 @@ namespace urchin {
             throw std::runtime_error("Texture displayer must be initialized before prepare rendering.");
         }
 
-        renderer->addOnRenderTarget();
+        renderer->enableRenderer();
     }
 
 }

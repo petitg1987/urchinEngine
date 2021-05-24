@@ -455,7 +455,7 @@ namespace urchin {
         }
 
         //deferred scene (depth, color, normal, ambient)
-        deferredRenderTarget->clearRenderers();
+        deferredRenderTarget->disableAllRenderers();
         skyManager->prepareRendering(camera->getViewMatrix(), camera->getPosition());
         modelSetDisplayer->prepareRendering(camera->getViewMatrix());
         terrainManager->prepareRendering(camera, dt);
@@ -518,8 +518,9 @@ namespace urchin {
             offscreenLightingRenderTarget->render();
         }
 
-        lightingRenderer->getRenderTarget()->clearRenderers();
-        lightingRenderer->addOnRenderTarget();
+        //TODO strange ?:
+        lightingRenderer->getRenderTarget()->disableAllRenderers();
+        lightingRenderer->enableRenderer();
     }
 
     void Renderer3d::renderDebugFramebuffers() {

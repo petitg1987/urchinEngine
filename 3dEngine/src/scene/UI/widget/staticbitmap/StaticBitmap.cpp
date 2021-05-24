@@ -43,7 +43,7 @@ namespace urchin {
 
     void StaticBitmap::prepareWidgetRendering(float) {
         updateTranslateVector(bitmapRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
-        bitmapRenderer->addOnRenderTarget();
+        bitmapRenderer->enableRenderer();
     }
 
 }

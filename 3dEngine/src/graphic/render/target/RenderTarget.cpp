@@ -53,48 +53,76 @@ namespace urchin {
         renderersDirty = true;
     }
 
-    void RenderTarget::removeRenderer(const std::shared_ptr<GenericRenderer>& renderer) {
-        renderers.erase(
-                std::remove_if(renderers.begin(), renderers.end(), [&](const std::weak_ptr<GenericRenderer>& ptr){return ptr.lock().get() == renderer.get();}),
-                renderers.end());
+    void RenderTarget::notifyRendererEnabled(GenericRenderer* genericRenderer) {
+        if(!genericRenderer->isEnabled()) {
+            assert(false);
+        }
+
+        //move generic renderer at the end of the renderers list
+        for(auto it = renderers.begin(); it != renderers.end(); ++it) {
+            if (!it->expired() && it->lock().get() == genericRenderer) {
+                renderers.push_back(*it);
+                renderers.erase(it);
+                break;
+            }
+        }
+
         renderersDirty = true;
     }
 
-    void RenderTarget::clearRenderers() {
-        renderers.clear();
+    void RenderTarget::notifyRendererDisabled(GenericRenderer* genericRenderer) {
+        if(genericRenderer->isEnabled()) {
+            assert(false);
+        }
+
         renderersDirty = true;
+    }
+
+    void RenderTarget::disableAllRenderers() {
+        refreshWeakRenderers();
+
+        for (auto& renderer: renderers) {
+            if (!renderer.expired() && renderer.lock()->isEnabled()) {
+                renderer.lock()->disableRenderer();
+            }
+        }
     }
 
     void RenderTarget::refreshWeakRenderers() {
         std::size_t renderersCount = renderers.size();
-        renderers.erase(
-                std::remove_if(renderers.begin(), renderers.end(), [](const std::weak_ptr<GenericRenderer>& ptr){return ptr.lock() == nullptr;}),
-                renderers.end());
+        const auto& rendererIsExpired = [](const std::weak_ptr<GenericRenderer>& ptr){return ptr.expired();};
+        renderers.erase(std::remove_if(renderers.begin(), renderers.end(), rendererIsExpired),renderers.end());
         renderersDirty = renderersCount != renderers.size();
     }
 
     bool RenderTarget::needCommandBuffersRefresh() {
         refreshWeakRenderers();
-        return renderersDirty || std::any_of(renderers.begin(), renderers.end(), [](const auto& renderer){return renderer.lock()->isDrawCommandDirty();});
+
+        const auto& rendererHasDrawCmdDirty = [](const auto& renderer){
+            return renderer.lock()->isEnabled() && renderer.lock()->isDrawCommandDirty();
+        };
+        return renderersDirty || std::any_of(renderers.begin(), renderers.end(), rendererHasDrawCmdDirty);
     }
 
     void RenderTarget::initializeRenderers() {
-        refreshWeakRenderers();
         for (auto& renderer: renderers) {
-            renderer.lock()->initialize();
+            if (!renderer.expired()) {
+                renderer.lock()->initialize();
+            }
         }
     }
 
     void RenderTarget::cleanupRenderers() {
-        refreshWeakRenderers();
         for (auto& renderer: renderers) {
-            renderer.lock()->cleanup();
+            if (!renderer.expired()) {
+                renderer.lock()->cleanup();
+            }
         }
     }
 
     bool RenderTarget::hasRenderer() {
-        refreshWeakRenderers();
-        return !renderers.empty();
+        const auto& rendererIsEnabled = [](const auto& renderer){return !renderer.expired() && renderer.lock()->isEnabled();};
+        return std::any_of(renderers.begin(), renderers.end(), rendererIsEnabled);
     }
 
     VkAttachmentDescription RenderTarget::buildDepthAttachment(VkImageLayout finalLayout) const {
@@ -239,7 +267,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "upShaderData");
 
         for (auto &renderer : renderers) {
-            if (!renderer.expired()) {
+            if (!renderer.expired() && renderer.lock()->isEnabled()) {
                 renderer.lock()->updateGraphicData(frameIndex);
             }
         }
@@ -278,7 +306,7 @@ namespace urchin {
 
             vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
             for (auto &renderer : renderers) {
-                if (!renderer.expired()) {
+                if (!renderer.expired() && renderer.lock()->isEnabled()) {
                     renderer.lock()->updateCommandBuffer(commandBuffers[i], i);
                 }
             }

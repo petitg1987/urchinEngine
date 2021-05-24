@@ -244,7 +244,7 @@ namespace urchin {
 
     void Text::prepareWidgetRendering(float) {
         updateTranslateVector(textRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
-        textRenderer->addOnRenderTarget();
+        textRenderer->enableRenderer();
     }
 
 }

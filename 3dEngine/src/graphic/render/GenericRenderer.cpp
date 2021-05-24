@@ -13,6 +13,7 @@ namespace urchin {
 
     GenericRenderer::GenericRenderer(const GenericRendererBuilder* rendererBuilder) :
             isInitialized(false),
+            bIsEnabled(true),
             name(rendererBuilder->getName()),
             renderTarget(rendererBuilder->getRenderTarget()),
             shader(rendererBuilder->getShader()),
@@ -91,12 +92,20 @@ namespace urchin {
         return drawCommandDirty;
     }
 
-    void GenericRenderer::addOnRenderTarget() {
-        renderTarget->addRenderer(shared_from_this());
+    bool GenericRenderer::isEnabled() const {
+        return bIsEnabled;
     }
 
-    void GenericRenderer::removeFromRenderTarget() {
-        renderTarget->removeRenderer(shared_from_this());
+    void GenericRenderer::enableRenderer() {
+        assert(!bIsEnabled);
+        bIsEnabled = true;
+        renderTarget->notifyRendererEnabled(this);
+    }
+
+    void GenericRenderer::disableRenderer() {
+        assert(bIsEnabled);
+        bIsEnabled = false;
+        renderTarget->notifyRendererDisabled(this);
     }
 
     void GenericRenderer::createDescriptorSetLayout() {
