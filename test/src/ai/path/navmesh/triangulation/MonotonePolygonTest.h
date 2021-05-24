@@ -16,7 +16,8 @@ class MonotonePolygonTest : public CppUnit::TestFixture {
         void twoRegularVertex();
         void splitAndMergeVertex();
 
-        void polygonOneHole();
+        void polygonOneHole1();
+        void polygonOneHole2();
         void polygonTwoHoles1();
         void polygonTwoHoles2();
         void polygonTwoHoles3();
