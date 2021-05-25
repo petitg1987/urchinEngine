@@ -71,7 +71,7 @@ namespace urchin {
     }
 
     void RenderTarget::notifyRendererDisabled(GenericRenderer* genericRenderer) {
-        if(genericRenderer->isEnabled()) {
+        if (genericRenderer->isEnabled()) {
             assert(false);
         }
 
@@ -92,7 +92,7 @@ namespace urchin {
         std::size_t renderersCount = renderers.size();
         const auto& rendererIsExpired = [](const std::weak_ptr<GenericRenderer>& ptr){return ptr.expired();};
         renderers.erase(std::remove_if(renderers.begin(), renderers.end(), rendererIsExpired),renderers.end());
-        renderersDirty = renderersCount != renderers.size();
+        renderersDirty = renderersDirty || renderersCount != renderers.size();
     }
 
     bool RenderTarget::needCommandBuffersRefresh() {
