@@ -18,6 +18,7 @@ namespace urchin {
 
             bool hasNewData() const;
             void newDataAck(std::size_t);
+            void resetNewDataFlag();
 
         private:
             std::size_t dataSize;

@@ -62,13 +62,13 @@ namespace urchin {
         createDescriptorSets();
 
         isInitialized = true;
-        drawCommandDirty = true;
     }
 
     void GenericRenderer::cleanup() {
         if (isInitialized) {
             vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
 
+            renewAllData();
             destroyDescriptorSetsAndPool();
             destroyUniformBuffers();
             destroyIndexBuffer();
@@ -469,6 +469,16 @@ namespace urchin {
 
     void GenericRenderer::destroyDescriptorSetsAndPool() {
         vkDestroyDescriptorPool(GraphicService::instance()->getDevices().getLogicalDevice(), descriptorPool, nullptr);
+    }
+
+    void GenericRenderer::renewAllData() {
+        for (auto& dataIndex : data) {
+            dataIndex.resetNewDataFlag();
+        }
+
+        for (auto& uniformDataIndex : uniformData) {
+            uniformDataIndex.resetNewDataFlag();
+        }
     }
 
     void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point2<float>>& dataPtr) {

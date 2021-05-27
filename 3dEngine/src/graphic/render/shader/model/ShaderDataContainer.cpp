@@ -49,4 +49,9 @@ namespace urchin {
         }
     }
 
+    void ShaderDataContainer::resetNewDataFlag() {
+        newDataTotalUpdate = 0;
+        newData = true;
+    }
+
 }

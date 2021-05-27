@@ -115,4 +115,9 @@ namespace urchin {
             newData = false;
         }
     }
+
+    void DataContainer::resetNewDataFlag() {
+        newDataTotalUpdate = 0;
+        newData = true;
+    }
 }
