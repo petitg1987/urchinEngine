@@ -12,6 +12,7 @@ namespace urchin {
     Texture::Texture(TextureType textureType, unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const std::vector<const void*>& dataPtr) :
             isInitialized(false),
             mipLevels(1),
+            clearColorEnabled(false),
             writableTexture(false),
             textureType(textureType),
             width(width),
@@ -70,18 +71,26 @@ namespace urchin {
 
     void Texture::enableMipmap() {
         assert(!isInitialized);
-
         mipLevels = (uint32_t)(std::floor(std::log2(std::max(width, height)))) + 1;
+    }
+
+    void Texture::enableClearColor(const Vector4<float>& clearColor) {
+        assert(!isInitialized);
+        clearColorEnabled = true;
+        this->clearColor = clearColor;
     }
 
     void Texture::enableTextureWriting() {
         assert(!isInitialized);
-
         writableTexture = true;
     }
 
     void Texture::initialize() {
         if(!isInitialized) {
+            if (clearColorEnabled && !writableTexture) {
+                throw std::runtime_error("Clear color requested but texture is not marked as writable");
+            }
+
             VkImageViewType imageViewType;
             if (textureType == TextureType::DEFAULT) {
                 imageViewType = VK_IMAGE_VIEW_TYPE_2D;
@@ -135,8 +144,16 @@ namespace urchin {
         return mipLevels > 1;
     }
 
+    bool Texture::hasClearColorEnabled() const {
+        return clearColorEnabled;
+    }
+
     uint32_t Texture::getMipLevels() const {
         return mipLevels;
+    }
+
+    const Vector4<float>& Texture::getClearColor() const {
+        return clearColor;
     }
 
     VkImageView Texture::getImageView() const {

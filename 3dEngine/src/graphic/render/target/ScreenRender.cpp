@@ -102,6 +102,7 @@ namespace urchin {
             clearDepth.depthStencil = {1.0f, 0};
             clearValues.emplace_back(clearDepth);
         }
+
         VkClearValue clearColor{};
         clearColor.color = {{0.0f, 0.0f, 0.0f, 1.0f}};
         clearValues.emplace_back(clearColor);
@@ -134,7 +135,7 @@ namespace urchin {
         }
 
         std::vector<VkAttachmentReference> colorAttachmentRefs;
-        attachments.emplace_back(buildAttachment(swapChainHandler.getImageFormat(), VK_IMAGE_LAYOUT_PRESENT_SRC_KHR));
+        attachments.emplace_back(buildAttachment(swapChainHandler.getImageFormat(), false, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR));
         VkAttachmentReference colorAttachmentRef{};
         colorAttachmentRef.attachment = attachmentIndex;
         colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;

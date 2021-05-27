@@ -138,11 +138,11 @@ namespace urchin {
         return depthAttachment;
     }
 
-    VkAttachmentDescription RenderTarget::buildAttachment(VkFormat format, VkImageLayout finalLayout) {
+    VkAttachmentDescription RenderTarget::buildAttachment(VkFormat format, bool clearColorOnLoad, VkImageLayout finalLayout) {
         VkAttachmentDescription colorAttachment{};
         colorAttachment.format = format;
         colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
-        colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE; //don't clear color attachment at load //TODO clear or not ?
+        colorAttachment.loadOp = clearColorOnLoad ? VK_ATTACHMENT_LOAD_OP_CLEAR : VK_ATTACHMENT_LOAD_OP_DONT_CARE;
         colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
         colorAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
         colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
@@ -304,7 +304,7 @@ namespace urchin {
 
             renderPassInfo.framebuffer = framebuffers[i];
 
-            DebugLabelHelper::beginDebugRegion(commandBuffers[i], name, Vector4<float>(0.0f , 1.0f, 0.0f, 1.0f));
+            DebugLabelHelper::beginDebugRegion(commandBuffers[i], name, Vector4<float>(0.9f, 1.0f, 0.8f, 1.0f));
             vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
             for (auto &renderer : renderers) {
                 if (!renderer.expired() && renderer.lock()->isEnabled()) {

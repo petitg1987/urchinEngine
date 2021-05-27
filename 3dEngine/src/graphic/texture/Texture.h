@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <vulkan/vulkan.h>
+#include "UrchinCommon.h"
 
 #include "graphic/texture/model/TextureType.h"
 #include "graphic/texture/model/TextureFormat.h"
@@ -23,6 +24,7 @@ namespace urchin {
             static std::shared_ptr<Texture> buildEmptyArrayRg();
 
             void enableMipmap();
+            void enableClearColor(const Vector4<float>&);
             void enableTextureWriting();
 
             void initialize();
@@ -32,7 +34,10 @@ namespace urchin {
             unsigned int getHeight() const;
             unsigned int getLayer() const;
             bool hasMipmap() const;
+            bool hasClearColorEnabled() const;
+
             uint32_t getMipLevels() const;
+            const Vector4<float>& getClearColor() const;
             VkImageView getImageView() const;
             VkFormat getVkFormat() const;
 
@@ -54,7 +59,10 @@ namespace urchin {
             bool isInitialized;
 
             uint32_t mipLevels;
+            bool clearColorEnabled;
+            Vector4<float> clearColor;
             bool writableTexture;
+
             TextureType textureType;
             unsigned int width, height, layer;
             std::size_t nbImages;

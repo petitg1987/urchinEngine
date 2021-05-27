@@ -95,9 +95,11 @@ namespace urchin {
             clearDepth.depthStencil = {1.0f, 0};
             clearValues.emplace_back(clearDepth);
         }
-        VkClearValue clearColor{};
-        clearColor.color = {{0.0f, 0.0f, 0.0f, 1.0f}};
-        for (std::size_t i = 0; i < textures.size(); ++i) {
+
+        for (auto& texture : textures) {
+            Vector4<float> colorValue = texture->getClearColor();
+            VkClearValue clearColor{};
+            clearColor.color = {{colorValue[0], colorValue[1], colorValue[2], colorValue[3]}};
             clearValues.emplace_back(clearColor);
         }
     }
@@ -115,7 +117,7 @@ namespace urchin {
 
         std::vector<VkAttachmentReference> colorAttachmentRefs;
         for (const auto& texture : textures) {
-            attachments.emplace_back(buildAttachment(texture->getVkFormat(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL));
+            attachments.emplace_back(buildAttachment(texture->getVkFormat(), texture->hasClearColorEnabled(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL));
             VkAttachmentReference colorAttachmentRef{};
             colorAttachmentRef.attachment = attachmentIndex++;
             colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
