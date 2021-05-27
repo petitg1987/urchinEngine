@@ -77,7 +77,7 @@ float linearStep(float min, float max, float v) {
       return clamp((v - min) / (max - min), 0.0f, 1.0f);
 }
 
-float computePercentLit(float shadowMapZ, vec2 moments, float NdotL) {
+float computeBrightnessPercentage(float shadowMapZ, vec2 moments, float NdotL) {
     float tanAcosNdotL = sqrt(1.0f - NdotL * NdotL) / NdotL; //=tan(acos(NdotL))
     float bias = max(SHADOW_MAP_BIAS * tanAcosNdotL, 0.00001);
     float shadowMapZBias = shadowMapZ - bias;
@@ -92,8 +92,8 @@ float computePercentLit(float shadowMapZ, vec2 moments, float NdotL) {
     return max(isInHardShadow, pMax);
 }
 
-float computeShadowContribution(int shadowLightIndex, float depthValue, vec4 position, float NdotL) {
-    float shadowContribution = 1.0f;
+float computeBrightnessPercentage(int shadowLightIndex, float depthValue, vec4 position, float NdotL) {
+    float brightnessPercentage = 1.0f; //1.0 = no shadow
 
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
         if (depthValue < shadowMap.depthSplitDistance[i]) {
@@ -104,13 +104,13 @@ float computeShadowContribution(int shadowLightIndex, float depthValue, vec4 pos
             //model has produceShadow flag to true ?
             if (shadowCoord.s <= 1.0f && shadowCoord.s >= 0.0f && shadowCoord.t <= 1.0f && shadowCoord.t >= 0.0f) {
                 vec2 moments = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, i)).rg;
-                shadowContribution = computePercentLit(shadowCoord.z, moments, NdotL);
+                brightnessPercentage = computeBrightnessPercentage(shadowCoord.z, moments, NdotL);
 
                 //DEBUG: shadow without variance shadow map feature:
-                /* shadowContribution = 1.0f;
+                /*brightnessPercentage = 1.0f;
                 float sDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, i)).r;
-                if (shadowCoord.z - 0.01f > sDepth) {
-                    shadowContribution = 0.0f;
+                if (shadowCoord.z - 0.001f > sDepth) {
+                    brightnessPercentage = 0.0f;
                 } */
             }
 
@@ -118,7 +118,7 @@ float computeShadowContribution(int shadowLightIndex, float depthValue, vec4 pos
         }
     }
 
-    return shadowContribution;
+    return brightnessPercentage;
 }
 
 vec4 addFog(vec4 baseColor, vec4 position) {
@@ -178,13 +178,13 @@ void main() {
             float NdotL = max(dot(normal, vertexToLightNormalized), 0.0f);
             vec4 ambient = vec4(lights.lightsInfo[lightIndex].lightAmbient, 0.0f) * modelAmbient;
 
-            float percentLit = 1.0f;
+            float brightnessPercentage = 1.0f; //1.0 = no shadow
             if (visualOption.hasShadow && lights.lightsInfo[lightIndex].produceShadow) {
-                percentLit = computeShadowContribution(shadowLightIndex, depthValue, position, NdotL);
+                brightnessPercentage = computeBrightnessPercentage(shadowLightIndex, depthValue, position, NdotL);
                 shadowLightIndex++;
             }
 
-            fragColor += lightAttenuation * (percentLit * (diffuse * NdotL) + ambient);
+            fragColor += lightAttenuation * (brightnessPercentage * (diffuse * NdotL) + ambient);
         } else {
             break; //no more light
         }
