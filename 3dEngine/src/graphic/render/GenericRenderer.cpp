@@ -53,6 +53,7 @@ namespace urchin {
     void GenericRenderer::initialize() {
         assert(!isInitialized);
 
+        renewAllData();
         createDescriptorSetLayout();
         createGraphicsPipeline();
         createVertexBuffers();
@@ -68,7 +69,6 @@ namespace urchin {
         if (isInitialized) {
             vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
 
-            renewAllData();
             destroyDescriptorSetsAndPool();
             destroyUniformBuffers();
             destroyIndexBuffer();
