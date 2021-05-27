@@ -193,7 +193,7 @@ namespace urchin {
 
         //add shadow map filter
         if (blurShadow != BlurShadow::NO_BLUR) {
-            std::unique_ptr<TextureFilter> verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(shadowMapTexture)
+            std::unique_ptr<TextureFilter> verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>("shadow map - vertical gaussian blur filter", shadowMapTexture)
                     ->textureSize(shadowMapResolution, shadowMapResolution)
                     ->textureType(TextureType::ARRAY)
                     ->textureNumberLayer(nbShadowMaps)
@@ -202,7 +202,7 @@ namespace urchin {
                     ->blurSize((unsigned int)blurShadow)
                     ->build();
 
-            std::unique_ptr<TextureFilter> horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(verticalBlurFilter->getTexture())
+            std::unique_ptr<TextureFilter> horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>("shadow map - horizontal gaussian blur filter", verticalBlurFilter->getTexture())
                     ->textureSize(shadowMapResolution, shadowMapResolution)
                     ->textureType(TextureType::ARRAY)
                     ->textureNumberLayer(nbShadowMaps)
@@ -214,7 +214,7 @@ namespace urchin {
             newLightShadowMap->addTextureFilter(std::move(verticalBlurFilter));
             newLightShadowMap->addTextureFilter(std::move(horizontalBlurFilter));
         } else { //null filter necessary because it allows to store cached shadow map in a texture which is not cleared.
-            std::unique_ptr<TextureFilter> nullFilter = std::make_unique<DownSampleFilterBuilder>(shadowMapTexture)
+            std::unique_ptr<TextureFilter> nullFilter = std::make_unique<DownSampleFilterBuilder>("shadow map - cache null filter", shadowMapTexture)
                     ->textureSize(shadowMapResolution, shadowMapResolution)
                     ->textureType(TextureType::ARRAY)
                     ->textureNumberLayer(nbShadowMaps)

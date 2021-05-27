@@ -2,14 +2,14 @@
 
 namespace urchin {
 
-    DownSampleFilterBuilder::DownSampleFilterBuilder(const std::shared_ptr<Texture>& sourceTexture) :
-            TextureFilterBuilder(sourceTexture) {
+    DownSampleFilterBuilder::DownSampleFilterBuilder(std::string name, const std::shared_ptr<Texture>& sourceTexture) :
+            TextureFilterBuilder(std::move(name), sourceTexture) {
 
     }
 
     std::unique_ptr<TextureFilter> DownSampleFilterBuilder::build() {
         std::unique_ptr<TextureFilter> textureFilter = std::make_unique<DownSampleFilter>(this);
-        textureFilter->initialize("down sample filter");
+        textureFilter->initialize();
         return textureFilter;
     }
 

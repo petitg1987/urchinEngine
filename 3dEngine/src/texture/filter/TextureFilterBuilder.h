@@ -15,8 +15,10 @@ namespace urchin {
 
     template<typename T> class TextureFilterBuilder {
         public:
-            explicit TextureFilterBuilder(const std::shared_ptr<Texture>&);
+            explicit TextureFilterBuilder(std::string, const std::shared_ptr<Texture>&);
             virtual ~TextureFilterBuilder() = default;
+
+            const std::string& getName() const;
 
             const std::shared_ptr<Texture>& getSourceTexture() const;
 
@@ -37,6 +39,9 @@ namespace urchin {
 
         private:
             T* _this();
+
+            //general
+            std::string name;
 
             //source texture
             const std::shared_ptr<Texture> sourceTexture;

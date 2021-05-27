@@ -1,6 +1,6 @@
 #include "Shader.h"
 #include "graphic/setup/GraphicService.h"
-#include "graphic/helper/ObjectNamingHelper.h"
+#include "graphic/helper/DebugLabelHelper.h"
 
 namespace urchin {
 
@@ -46,7 +46,7 @@ namespace urchin {
             throw std::runtime_error("Failed to create shader module with error code: " + std::to_string(result));
         }
 
-        ObjectNamingHelper::nameObject(ObjectNamingHelper::SHADER, shaderStageData->shaderModule, shaderName);
+        DebugLabelHelper::nameObject(DebugLabelHelper::SHADER, shaderStageData->shaderModule, shaderName);
     }
 
     void Shader::fillPipelineShaderStage(const std::unique_ptr<ShaderStageData>& shaderStageData, ShaderType shaderType) const {

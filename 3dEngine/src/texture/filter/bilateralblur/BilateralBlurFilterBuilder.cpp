@@ -2,8 +2,8 @@
 
 namespace urchin {
 
-    BilateralBlurFilterBuilder::BilateralBlurFilterBuilder(const std::shared_ptr<Texture>& sourceTexture) :
-            TextureFilterBuilder(sourceTexture),
+    BilateralBlurFilterBuilder::BilateralBlurFilterBuilder(std::string name, const std::shared_ptr<Texture>& sourceTexture) :
+            TextureFilterBuilder(std::move(name), sourceTexture),
             pBlurDirection(BlurDirection::HORIZONTAL_BLUR),
             pBlurSize(3), //3x3 blur
             pBlurSharpness(40.0) {
@@ -60,7 +60,7 @@ namespace urchin {
             throw std::invalid_argument("Unknown blur direction type: " + std::to_string(pBlurDirection));
         }
 
-        textureFilter->initialize("bilateral blur filter");
+        textureFilter->initialize();
 
         return textureFilter;
     }

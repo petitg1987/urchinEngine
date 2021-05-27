@@ -19,7 +19,7 @@ namespace urchin {
             template<class BUILDER> explicit TextureFilter(const TextureFilterBuilder<BUILDER>*);
             virtual ~TextureFilter();
 
-            void initialize(const std::string&);
+            void initialize();
 
             const std::shared_ptr<Texture>& getTexture() const;
 
@@ -40,11 +40,12 @@ namespace urchin {
             const std::shared_ptr<GenericRenderer>& getTextureRenderer() const;
 
         private:
-            void initializeTexture(const std::string&);
-            void initializeDisplay(const std::string&);
+            void initializeTexture();
+            void initializeDisplay();
 
             static constexpr unsigned int TEXTURE_LAYER_SHADER_LIMIT = 10; //must be equals to 'TEXTURE_LAYER_SHADER_LIMIT' in texFilter shaders
             bool isInitialized;
+            std::string name;
 
             //source texture
             std::shared_ptr<Texture> sourceTexture;

@@ -3,7 +3,7 @@
 
 #include "RenderTarget.h"
 #include "graphic/setup/GraphicService.h"
-#include "graphic/helper/ObjectNamingHelper.h"
+#include "graphic/helper/DebugLabelHelper.h"
 #include "graphic/helper/ImageHelper.h"
 #include "graphic/render/GenericRenderer.h"
 
@@ -142,7 +142,7 @@ namespace urchin {
         VkAttachmentDescription colorAttachment{};
         colorAttachment.format = format;
         colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
-        colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE; //don't clear color attachment at load
+        colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE; //don't clear color attachment at load //TODO clear or not ?
         colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
         colorAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
         colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
@@ -182,7 +182,7 @@ namespace urchin {
             throw std::runtime_error("Failed to create render pass with error code: " + std::to_string(result));
         }
 
-        ObjectNamingHelper::nameObject(ObjectNamingHelper::RENDER_PASS, renderPass, name);
+        DebugLabelHelper::nameObject(DebugLabelHelper::RENDER_PASS, renderPass, name);
     }
 
     void RenderTarget::destroyRenderPass() {
@@ -304,6 +304,7 @@ namespace urchin {
 
             renderPassInfo.framebuffer = framebuffers[i];
 
+            DebugLabelHelper::beginDebugRegion(commandBuffers[i], name, Vector4<float>(0.0f , 1.0f, 0.0f, 1.0f));
             vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
             for (auto &renderer : renderers) {
                 if (!renderer.expired() && renderer.lock()->isEnabled()) {
@@ -311,6 +312,7 @@ namespace urchin {
                 }
             }
             vkCmdEndRenderPass(commandBuffers[i]);
+            DebugLabelHelper::endDebugRegion(commandBuffers[i]);
 
             VkResult resultEndCommandBuffer = vkEndCommandBuffer(commandBuffers[i]);
             if (resultEndCommandBuffer != VK_SUCCESS) {

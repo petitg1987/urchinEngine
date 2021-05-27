@@ -1,4 +1,5 @@
-template<class T> TextureFilterBuilder<T>::TextureFilterBuilder(const std::shared_ptr<Texture>& sourceTexture) :
+template<class T> TextureFilterBuilder<T>::TextureFilterBuilder(std::string name, const std::shared_ptr<Texture>& sourceTexture) :
+        name(std::move(name)),
         sourceTexture(sourceTexture),
         textureWidth(1024),
         textureHeight(1024),
@@ -6,6 +7,10 @@ template<class T> TextureFilterBuilder<T>::TextureFilterBuilder(const std::share
         pTextureNumberLayer(1),
         pTextureFormat(TextureFormat::RGBA_8_INT) {
 
+}
+
+template<class T> const std::string& TextureFilterBuilder<T>::getName() const {
+    return name;
 }
 
 template<class T> const std::shared_ptr<Texture>& TextureFilterBuilder<T>::getSourceTexture() const {

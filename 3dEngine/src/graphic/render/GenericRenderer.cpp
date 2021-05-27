@@ -1,7 +1,7 @@
 #include <libs/vma/vk_mem_alloc.h>
 
 #include "GenericRenderer.h"
-#include "graphic/helper/ObjectNamingHelper.h"
+#include "graphic/helper/DebugLabelHelper.h"
 #include "graphic/setup/GraphicService.h"
 #include "graphic/render/GenericRendererBuilder.h"
 #include "graphic/render/model/DataContainer.h"
@@ -296,7 +296,7 @@ namespace urchin {
             throw std::runtime_error("Failed to create graphics pipeline with error code: " + std::to_string(pipelinesResult));
         }
 
-        ObjectNamingHelper::nameObject(ObjectNamingHelper::PIPELINE, graphicsPipeline, name);
+        DebugLabelHelper::nameObject(DebugLabelHelper::PIPELINE, graphicsPipeline, name);
     }
 
     void GenericRenderer::destroyGraphicsPipeline() {

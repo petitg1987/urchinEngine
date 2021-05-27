@@ -111,7 +111,7 @@ namespace urchin {
         offscreenRenderTarget->initialize();
 
         if (isBlurActivated) {
-            verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>(ambientOcclusionTexture)
+            verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>("ambient occlusion - vertical bilateral blur filter", ambientOcclusionTexture)
                     ->textureSize(textureSizeX, textureSizeY)
                     ->textureType(TextureType::DEFAULT)
                     ->textureFormat(TextureFormat::GRAYSCALE_16_FLOAT)
@@ -121,7 +121,7 @@ namespace urchin {
                     ->blurSharpness(blurSharpness)
                     ->buildBilateralBlur();
 
-            horizontalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>(verticalBlurFilter->getTexture())
+            horizontalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>("ambient occlusion - horizontal bilateral blur filter", verticalBlurFilter->getTexture())
                     ->textureSize(textureSizeX, textureSizeY)
                     ->textureType(TextureType::DEFAULT)
                     ->textureFormat(TextureFormat::GRAYSCALE_16_FLOAT)
