@@ -24,8 +24,7 @@ layout(std140, set = 0, binding = 3) uniform Projection {
 layout(binding = 6) uniform sampler2D grassMaskTex;
 
 layout(points) in;
-layout(triangle_strip) out;
-layout(max_vertices = 12) out;
+layout(triangle_strip, max_vertices = 12) out;
 
 layout(location = 0) in vec3 normal[];
 
@@ -48,13 +47,13 @@ mat3 rotationMatrix(vec3 axis, float angle) {
 }
 
 float randZeroOne(in vec2 seed) {
-    return fract(sin(dot(seed, vec2(PHI, PI)))*SRT);
+    return fract(sin(dot(seed, vec2(PHI, PI))) * SRT);
 }
 
 int randomInt(int min, int max, vec3 seed) {
     vec2 seed2d = vec2(seed.x, seed.y + seed.z);
     float fRandomFloat = randZeroOne(seed2d);
-    return int(round(float(min)+fRandomFloat*float(max-min)));
+    return int(round(float(min) + fRandomFloat * float(max - min)));
 }
 
 void main() {
