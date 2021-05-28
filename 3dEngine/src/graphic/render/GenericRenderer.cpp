@@ -53,7 +53,7 @@ namespace urchin {
     void GenericRenderer::initialize() {
         assert(!isInitialized);
 
-        renewAllData();
+        resetNewDataFlag();
         createDescriptorSetLayout();
         createGraphicsPipeline();
         createVertexBuffers();
@@ -471,13 +471,13 @@ namespace urchin {
         vkDestroyDescriptorPool(GraphicService::instance()->getDevices().getLogicalDevice(), descriptorPool, nullptr);
     }
 
-    void GenericRenderer::renewAllData() {
-        for (auto& dataIndex : data) {
-            dataIndex.resetNewDataFlag();
+    void GenericRenderer::resetNewDataFlag() {
+        for (auto& singleData : data) {
+            singleData.resetNewDataFlag();
         }
 
-        for (auto& uniformDataIndex : uniformData) {
-            uniformDataIndex.resetNewDataFlag();
+        for (auto& singleUniformData : uniformData) {
+            singleUniformData.resetNewDataFlag();
         }
     }
 
