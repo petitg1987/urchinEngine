@@ -67,7 +67,7 @@ namespace urchin {
                 alignas(4) float exponentialAttenuation;
                 alignas(16) Point3<float> lightAmbient;
             };
-            LightsData* lightsData;
+            std::vector<LightsData> lightsData;
             Point4<float> globalAmbientColor;
     };
 

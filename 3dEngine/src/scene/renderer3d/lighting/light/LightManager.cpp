@@ -17,7 +17,6 @@ namespace urchin {
             renderTarget(std::move(renderTarget)),
             lightOctreeManager(new OctreeManager<Light>(DEFAULT_OCTREE_MIN_SIZE)),
             lastUpdatedLight(nullptr),
-            lightsData(nullptr),
             globalAmbientColor(Point4<float>(0.0f, 0.0f, 0.0f, 0.0f)) {
         if(maxLights > LIGHTS_SHADER_LIMIT) {
             throw std::invalid_argument("Maximum lights value is limited to " + std::to_string(LIGHTS_SHADER_LIMIT));
@@ -34,16 +33,16 @@ namespace urchin {
         }
 
         delete lightOctreeManager;
-        delete[] lightsData;
     }
 
     void LightManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
-        delete[] lightsData;
         std::size_t lightsDataSize = maxLights;
-        lightsData = new LightsData[lightsDataSize];
+
+        LightsData emptyLightData{};
+        lightsData.resize(lightsDataSize, emptyLightData);
 
         lightingRendererBuilder
-                ->addUniformData(lightsDataSize * sizeof(LightsData), lightsData) //binding 2
+                ->addUniformData(lightsDataSize * sizeof(LightsData), lightsData.data()) //binding 2
                 ->addUniformData(sizeof(globalAmbientColor), &globalAmbientColor); //binding 3
     }
 
@@ -162,7 +161,7 @@ namespace urchin {
             }
         }
 
-        lightingRenderer->updateUniformData(2, lightsData);
+        lightingRenderer->updateUniformData(2, lightsData.data());
         lightingRenderer->updateUniformData(3, &globalAmbientColor);
     }
 
