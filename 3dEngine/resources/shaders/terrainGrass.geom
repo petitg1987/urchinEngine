@@ -67,7 +67,6 @@ void main() {
     }
 
     mat4 mProjectionView = projection.mProjection * positioningData.mView;
-    grassNormal = normal[0];
 
     float grassYShift = 0.0f;
     float grassCameraDistance = distance(grassCenterPosition, positioningData.cameraPosition);
@@ -108,6 +107,7 @@ void main() {
         localTopLeft.y += grassProperties.height + grassYShift;
         gl_Position = mProjectionView * vec4(localTopLeft, 1.0f);
         vertexTexCoordinates = vec2(startTexX, 0.0);
+        grassNormal = normal[0];
         EmitVertex();
 
         //bottom left
@@ -115,6 +115,7 @@ void main() {
         localBottomLeft.y += grassYShift;
         gl_Position = mProjectionView * vec4(localBottomLeft, 1.0f);
         vertexTexCoordinates = vec2(startTexX, 1.0);
+        grassNormal = normal[0];
         EmitVertex();
 
         //top right
@@ -122,6 +123,7 @@ void main() {
         localTopRight.y += grassProperties.height + grassYShift;
         gl_Position = mProjectionView * vec4(localTopRight, 1.0f);
         vertexTexCoordinates = vec2(endTexX, 0.0);
+        grassNormal = normal[0];
         EmitVertex();
 
         //bottom right
@@ -129,6 +131,7 @@ void main() {
         localBottomRight.y += grassYShift;
         gl_Position = mProjectionView * vec4(localBottomRight, 1.0f);
         vertexTexCoordinates = vec2(endTexX, 1.0);
+        grassNormal = normal[0];
         EmitVertex();
 
         EndPrimitive();
