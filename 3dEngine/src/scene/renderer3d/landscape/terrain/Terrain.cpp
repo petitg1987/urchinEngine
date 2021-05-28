@@ -47,7 +47,9 @@ namespace urchin {
         assert(renderTarget);
         this->mesh = mesh;
 
-        std::vector<Point2<float>> dummyTextureCoordinates = {Point2<float>(0.0, 0.0)};
+        std::vector<Point2<float>> dummyTextureCoordinates;
+        dummyTextureCoordinates.resize(mesh->getVertices().size(), Point2<float>(0.0f, 0.0f));
+
         Matrix4<float> viewMatrix;
         Vector2<float> materialsStRepeat = materials->getStRepeat();
 

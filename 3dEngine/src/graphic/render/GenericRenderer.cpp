@@ -498,13 +498,11 @@ namespace urchin {
 
     void GenericRenderer::updateData(std::size_t dataIndex, DataContainer&& dataContainer) {
         assert(data.size() > dataIndex);
-
         data[dataIndex] = std::move(dataContainer);
     }
 
     void GenericRenderer::updateUniformData(std::size_t uniformDataIndex, const void* dataPtr) {
         assert(uniformData.size() > uniformDataIndex);
-
         uniformData[uniformDataIndex].updateData(dataPtr);
     }
 
@@ -515,14 +513,12 @@ namespace urchin {
     const std::shared_ptr<TextureReader>& GenericRenderer::getUniformTextureReader(std::size_t uniformTexPosition) const {
         assert(uniformTextureReaders.size() > uniformTexPosition);
         assert(uniformTextureReaders[uniformTexPosition].size() == 1);
-
         return getUniformTextureReaderArray(uniformTexPosition)[0];
     }
 
     const std::shared_ptr<TextureReader>& GenericRenderer::getUniformTextureReader(std::size_t uniformTexPosition, std::size_t textureIndex) const {
         assert(uniformTextureReaders.size() > uniformTexPosition);
         assert(uniformTextureReaders[uniformTexPosition].size() > textureIndex);
-
         return getUniformTextureReaderArray(uniformTexPosition)[textureIndex];
     }
 
@@ -540,12 +536,17 @@ namespace urchin {
 
     const std::vector<std::shared_ptr<TextureReader>>& GenericRenderer::getUniformTextureReaderArray(std::size_t textureIndex) const {
         assert(uniformTextureReaders.size() > textureIndex);
-
         return uniformTextureReaders[textureIndex];
     }
 
     void GenericRenderer::updateGraphicData(uint32_t frameIndex) {
         //update data (vertex & vertex attributes)
+        #ifndef NDEBUG
+            std::size_t dataCount = data[0].getDataCount();
+            for (std::size_t dataIndex = 1; dataIndex < data.size(); ++dataIndex) {
+                assert(indices || dataCount == data[dataIndex].getDataCount());
+            }
+        #endif
         for (std::size_t dataIndex = 0; dataIndex < data.size(); ++dataIndex) {
             if (data[dataIndex].hasNewData()) {
                 auto& dataContainer = data[dataIndex];
@@ -582,11 +583,7 @@ namespace urchin {
             vkCmdBindIndexBuffer(commandBuffer, indexBuffer.getBuffer(frameIndex), 0, VK_INDEX_TYPE_UINT32);
             vkCmdDrawIndexed(commandBuffer, (uint32_t)indices->getIndicesCount(), 1, 0, 0, 0);
         } else {
-            uint32_t vertexCount = 0;
-            for (auto& singleData : data) {
-                vertexCount += (uint32_t)singleData.getDataCount();
-            }
-
+            auto vertexCount = (uint32_t)data[0].getDataCount();
             vkCmdDraw(commandBuffer, vertexCount, 1, 0, 0);
         }
 

@@ -2,6 +2,7 @@
 #define URCHINENGINE_GENERICRENDERERBUILDER_H
 
 #include <memory>
+#include "UrchinCommon.h"
 
 #include "graphic/render/model/ShapeType.h"
 #include "graphic/render/model/PolygonMode.h"

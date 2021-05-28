@@ -38,16 +38,19 @@ namespace urchin {
     }
 
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addData(const std::vector<Point2<float>>& dataPtr) {
+        assert(data.empty() || dataPtr.size() == data[0].getDataCount());
         data.emplace_back(DataContainer(DataType::FLOAT, DataDimension::TWO_DIMENSION, dataPtr.size(), dataPtr.data()));
         return shared_from_this();
     }
 
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addData(const std::vector<Point3<float>>& dataPtr) {
+        assert(data.empty() || dataPtr.size() == data[0].getDataCount());
         data.emplace_back(DataContainer(DataType::FLOAT, DataDimension::THREE_DIMENSION, dataPtr.size(), dataPtr.data()));
         return shared_from_this();
     }
 
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addData(const std::vector<Vector3<float>>& dataPtr) {
+        assert(data.empty() || dataPtr.size() == data[0].getDataCount());
         data.emplace_back(DataContainer(DataType::FLOAT, DataDimension::THREE_DIMENSION, dataPtr.size(), dataPtr.data()));
         return shared_from_this();
     }
