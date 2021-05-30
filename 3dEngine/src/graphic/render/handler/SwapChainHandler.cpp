@@ -142,15 +142,17 @@ namespace urchin {
     }
 
     VkPresentModeKHR SwapChainHandler::chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes, bool verticalSyncEnabled) {
-        if (verticalSyncEnabled) {
+        if (!verticalSyncEnabled) {
             for (const auto& availablePresentMode : availablePresentModes) {
-                if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR) {
+                if (availablePresentMode == VK_PRESENT_MODE_IMMEDIATE_KHR) {
                     return availablePresentMode;
                 }
             }
-            return VK_PRESENT_MODE_FIFO_KHR;
         }
-        return VK_PRESENT_MODE_IMMEDIATE_KHR;
+
+        //FIFO mode is guaranteed to be always available.
+        //MAILBOX mode could be used for triple buffering when available in 'availablePresentModes' but it seems to cause artifacts on some Intel graphics cards.
+        return VK_PRESENT_MODE_FIFO_KHR;
     }
 
     VkExtent2D SwapChainHandler::chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities) {
