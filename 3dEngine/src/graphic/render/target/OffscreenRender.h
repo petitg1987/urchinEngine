@@ -34,7 +34,6 @@ namespace urchin {
             void createSyncObjects();
             void destroySyncObjects();
 
-            static void waitQueueIdle();
             void waitCommandBuffersIdle() const override;
 
             bool isInitialized;

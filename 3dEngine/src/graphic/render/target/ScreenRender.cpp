@@ -210,7 +210,7 @@ namespace urchin {
         static size_t currentFrameIndex = 0;
         auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
 
-        //fence to wait completion of vkQueueSubmit of the frame 'currentFrameIndex'
+        //fence (CPU-GPU sync) to wait completion of vkQueueSubmit for the frame 'currentFrameIndex'
         vkWaitForFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex], VK_TRUE, UINT64_MAX);
 
         uint32_t vkImageIndex;
@@ -218,49 +218,54 @@ namespace urchin {
         if (resultAcquireImage == VK_ERROR_OUT_OF_DATE_KHR) {
             onResize();
             return;
-        } else if (resultAcquireImage != VK_SUCCESS && resultAcquireImage != VK_SUBOPTIMAL_KHR /*Continue with sub optimal image because already acquired */) {
+        } else if (resultAcquireImage != VK_SUCCESS && resultAcquireImage != VK_SUBOPTIMAL_KHR /* Continue with sub optimal image because already acquired */) {
             throw std::runtime_error("Failed to acquire swap chain image with error code: " + std::to_string(resultAcquireImage));
         }
 
         updateGraphicData(vkImageIndex);
         updateCommandBuffers(clearValues);
 
-        //fence to wait if a previous frame is using this image (can happen when MAX_CONCURRENT_FRAMES > swap chain images size)
         if (imagesFences[vkImageIndex] != VK_NULL_HANDLE) {
+            //Fence (CPU-GPU sync) to wait if a previous frame is using this image. Useful in 2 cases:
+            // 1) MAX_CONCURRENT_FRAMES > swapChainHandler.getSwapChainImages().size()
+            // 2) Acquired images from swap chain are returned out-of-order
             vkWaitForFences(logicalDevice, 1, &imagesFences[vkImageIndex], VK_TRUE, UINT64_MAX);
         }
         imagesFences[vkImageIndex] = commandBufferFences[currentFrameIndex]; //mark the image as now being in use by this frame
 
-        VkSemaphore waitSemaphores[] = {imageAvailableSemaphores[currentFrameIndex]};
-        VkSemaphore signalSemaphores[] = {renderFinishedSemaphores[currentFrameIndex]};
-        VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
+        VkSemaphore queueSubmitWaitSemaphores[] = {
+                imageAvailableSemaphores[currentFrameIndex] //semaphores (GPU-GPU sync) to wait image available before executing command buffers
+        };
+        VkPipelineStageFlags queueSubmitWaitStages[] = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
+        VkSemaphore queuePresentWaitSemaphores[] = {
+                renderFinishedSemaphores[currentFrameIndex] //semaphores (GPU-GPU sync) to wait command buffers execution before present the image
+        };
         VkSubmitInfo submitInfo{};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
         submitInfo.waitSemaphoreCount = 1;
-        submitInfo.pWaitSemaphores = waitSemaphores;
-        submitInfo.pWaitDstStageMask = waitStages;
+        submitInfo.pWaitSemaphores = queueSubmitWaitSemaphores;
+        submitInfo.pWaitDstStageMask = queueSubmitWaitStages;
         submitInfo.commandBufferCount = 1;
         submitInfo.pCommandBuffers = &commandBuffers[vkImageIndex];
         submitInfo.signalSemaphoreCount = 1;
-        submitInfo.pSignalSemaphores = signalSemaphores;
+        submitInfo.pSignalSemaphores = queuePresentWaitSemaphores;
 
-        vkResetFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex]); //ensure fences are reset just before use them
-        VkResult result = vkQueueSubmit(GraphicService::instance()->getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFences[currentFrameIndex]); //vkQueueSubmit is executed when vkAcquireNextImageKHR is complete (thanks to 'waitSemaphores')
+        vkResetFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex]);
+        VkResult result = vkQueueSubmit(GraphicService::instance()->getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFences[currentFrameIndex]);
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to submit draw command buffer with error code: " + std::to_string(result));
         }
 
+        VkSwapchainKHR swapChains[] = {swapChainHandler.getSwapChain()};
         VkPresentInfoKHR presentInfo{};
         presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
         presentInfo.waitSemaphoreCount = 1;
-        presentInfo.pWaitSemaphores = signalSemaphores;
-        VkSwapchainKHR swapChains[] = {swapChainHandler.getSwapChain()};
+        presentInfo.pWaitSemaphores = queuePresentWaitSemaphores;
         presentInfo.swapchainCount = 1;
         presentInfo.pSwapchains = swapChains;
         presentInfo.pImageIndices = &vkImageIndex;
         presentInfo.pResults = nullptr;
 
-        //vkQueuePresentKHR is executed when vkQueueSubmit is complete (thanks to 'signalSemaphores')
         VkResult queuePresentResult = vkQueuePresentKHR(GraphicService::instance()->getQueues().getPresentationQueue(), &presentInfo);
         if (queuePresentResult == VK_ERROR_OUT_OF_DATE_KHR || queuePresentResult == VK_SUBOPTIMAL_KHR) {
             onResize();

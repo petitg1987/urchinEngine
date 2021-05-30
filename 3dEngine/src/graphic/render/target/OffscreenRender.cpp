@@ -162,7 +162,9 @@ namespace urchin {
         }
 
         auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
-        vkWaitForFences(logicalDevice, 1, &commandBufferFence, VK_TRUE, UINT64_MAX); //TODO: check Sasha deferred.cpp, draw()
+
+        //fence (CPU-GPU sync) to wait completion of vkQueueSubmit
+        vkWaitForFences(logicalDevice, 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
 
         updateGraphicData(0);
         updateCommandBuffers(clearValues);
@@ -170,11 +172,11 @@ namespace urchin {
         VkSubmitInfo submitInfo{};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
         submitInfo.waitSemaphoreCount = 0;
-        submitInfo.pWaitSemaphores = nullptr; //TODO use it for AO ?
-        submitInfo.pWaitDstStageMask = nullptr;
+        submitInfo.pWaitSemaphores = nullptr; //TODO check Sasha deferred.cpp, draw()
+        submitInfo.pWaitDstStageMask = nullptr; //TODO check Sasha deferred.cpp, draw()
         submitInfo.commandBufferCount = 1;
         submitInfo.pCommandBuffers = &commandBuffers[0];
-        submitInfo.signalSemaphoreCount = 0;
+        submitInfo.signalSemaphoreCount = 0; //TODO check Sasha deferred.cpp, draw()
         submitInfo.pSignalSemaphores = nullptr;
 
         vkResetFences(logicalDevice, 1, &commandBufferFence); //ensure fence is reset just before use it
@@ -182,19 +184,10 @@ namespace urchin {
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to submit draw command buffer with error code: " + std::to_string(result));
         }
-
-        //waitCommandBuffersIdle(); //TODO: check Sasha deferred.cpp, draw()
-        //waitQueueIdle();
-    }
-
-    void OffscreenRender::waitQueueIdle() {
-        ScopeProfiler sp(Profiler::graphic(), "waitQueueIdle");
-
-        vkQueueWaitIdle(GraphicService::instance()->getQueues().getGraphicsQueue()); //TODO improve perf for this line
     }
 
     void OffscreenRender::waitCommandBuffersIdle() const {
-        //vkWaitForFences(GraphicService::instance()->getDevices().getLogicalDevice(), 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
+        vkWaitForFences(GraphicService::instance()->getDevices().getLogicalDevice(), 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
     }
 
 }
