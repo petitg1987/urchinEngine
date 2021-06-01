@@ -25,7 +25,7 @@ namespace urchin {
             std::size_t getNumFramebuffer() const override;
             std::size_t getNumColorAttachment() const override;
 
-            VkSemaphore getQueueSubmitSignalSemaphore() const;
+            VkSemaphore retrieveQueueSubmitSemaphoreAndFlagUsed();
 
             void render() override;
 
@@ -43,8 +43,8 @@ namespace urchin {
             std::vector<VkClearValue> clearValues;
             std::vector<std::shared_ptr<Texture>> textures;
 
-            mutable VkSemaphore queueSubmitSignalSemaphore;
-            mutable bool isUsed; //TODO rename, etc
+            VkSemaphore queueSubmitSemaphore;
+            bool queueSubmitSemaphoreUsable;
             VkFence commandBufferFence;
     };
 

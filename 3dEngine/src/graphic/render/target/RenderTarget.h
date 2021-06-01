@@ -64,7 +64,7 @@ namespace urchin {
             void createCommandPool();
             void destroyCommandBuffersAndPool();
 
-            const std::set<OffscreenRender*>& getRenderDependencies() const;
+            const std::vector<OffscreenRender*>& getRenderDependencies() const;
             void configureWaitSemaphore(VkSubmitInfo&, VkSemaphore) const;
 
             virtual void waitCommandBuffersIdle() const = 0;
@@ -83,7 +83,7 @@ namespace urchin {
             std::vector<VkFramebuffer> framebuffers;
             VkCommandPool commandPool;
 
-            mutable std::set<OffscreenRender*> renderDependencies;
+            mutable std::vector<OffscreenRender*> renderDependencies;
             mutable std::vector<VkSemaphore> queueSubmitWaitSemaphores;
             mutable std::vector<VkPipelineStageFlags> queueSubmitWaitStages;
 

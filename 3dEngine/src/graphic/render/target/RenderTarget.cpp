@@ -264,23 +264,23 @@ namespace urchin {
         vkDestroyCommandPool(GraphicService::instance()->getDevices().getLogicalDevice(), commandPool, nullptr);
     }
 
-    const std::set<OffscreenRender*>& RenderTarget::getRenderDependencies() const {
+    const std::vector<OffscreenRender*>& RenderTarget::getRenderDependencies() const {
         renderDependencies.clear();
-
         for (auto& renderer : renderers) {
             if (!renderer.expired() && renderer.lock()->isEnabled()) {
                 const auto& renderTextureWriter = renderer.lock()->getTexturesWriter();
-                if (!renderTextureWriter.empty()) {
-                    renderDependencies.insert(renderTextureWriter.begin(), renderTextureWriter.end()); //TODO avoid dynamic allocation
-                }
+                renderDependencies.insert(renderDependencies.end(), renderTextureWriter.begin(), renderTextureWriter.end());
             }
         }
+
+        sort(renderDependencies.begin(), renderDependencies.end() );
+        renderDependencies.erase(unique(renderDependencies.begin(), renderDependencies.end()), renderDependencies.end());
 
         return renderDependencies;
     }
 
     void RenderTarget::configureWaitSemaphore(VkSubmitInfo& submitInfo, VkSemaphore additionalCustomSemaphore) const {
-        const std::set<OffscreenRender*>& renderDependencies = getRenderDependencies();
+        const std::vector<OffscreenRender*>& renderDependencies = getRenderDependencies();
 
         queueSubmitWaitSemaphores.clear();
         queueSubmitWaitStages.clear();
@@ -291,9 +291,9 @@ namespace urchin {
         }
 
         for(auto& renderDependency : renderDependencies) {
-            VkSemaphore queueSubmitSignalSemaphore = renderDependency->getQueueSubmitSignalSemaphore();
-            if (queueSubmitSignalSemaphore) {
-                queueSubmitWaitSemaphores.emplace_back(queueSubmitSignalSemaphore);
+            VkSemaphore queueSubmitSemaphore = renderDependency->retrieveQueueSubmitSemaphoreAndFlagUsed();
+            if (queueSubmitSemaphore) {
+                queueSubmitWaitSemaphores.emplace_back(queueSubmitSemaphore);
                 queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT);
             }
         }

@@ -10,8 +10,8 @@ namespace urchin {
     OffscreenRender::OffscreenRender(std::string name, DepthAttachmentType depthAttachmentType) :
             RenderTarget(std::move(name), depthAttachmentType),
             isInitialized(false),
-            queueSubmitSignalSemaphore(nullptr),
-            isUsed(false),
+            queueSubmitSemaphore(nullptr),
+            queueSubmitSemaphoreUsable(false),
             commandBufferFence(nullptr) {
 
     }
@@ -152,7 +152,7 @@ namespace urchin {
 
         VkSemaphoreCreateInfo semaphoreInfo{};
         semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-        VkResult semaphoreResult = vkCreateSemaphore(GraphicService::instance()->getDevices().getLogicalDevice(), &semaphoreInfo, nullptr, &queueSubmitSignalSemaphore);
+        VkResult semaphoreResult = vkCreateSemaphore(GraphicService::instance()->getDevices().getLogicalDevice(), &semaphoreInfo, nullptr, &queueSubmitSemaphore);
         if (semaphoreResult != VK_SUCCESS) {
             throw std::runtime_error("Failed to create semaphore with error code: " + std::to_string(semaphoreResult));
         }
@@ -161,15 +161,21 @@ namespace urchin {
     void OffscreenRender::destroySyncObjects() {
         vkDestroyFence(GraphicService::instance()->getDevices().getLogicalDevice(), commandBufferFence, nullptr);
 
-        vkDestroySemaphore(GraphicService::instance()->getDevices().getLogicalDevice(), queueSubmitSignalSemaphore, nullptr);
+        vkDestroySemaphore(GraphicService::instance()->getDevices().getLogicalDevice(), queueSubmitSemaphore, nullptr);
     }
 
-    VkSemaphore OffscreenRender::getQueueSubmitSignalSemaphore() const {
-        if(isUsed) { //TODO review
-            return nullptr;
+    VkSemaphore OffscreenRender::retrieveQueueSubmitSemaphoreAndFlagUsed() {
+        if(queueSubmitSemaphoreUsable) {
+            //Once the queue submit semaphore has been used as a wait semaphore, it cannot be re-used in the same rendering pass.
+            //Examples:
+            // 1) The 'deferred - first pass' pass is required for the 'ambient occlusion' pass and for the 'deferred - second pass' pass but the semaphore can be used only once. Therefore, the 'ambient occlusion' pass is the only pass which can wait for the 'deferred - first pass' pass.
+            // 2) The 'shadow map' pass is required for the 'deferred - second pass' but the semaphore can be used only once. Therefore, when shadow map is cached, the wait can be done only on the first frame where the shadow map has been written in the cache.
+            queueSubmitSemaphoreUsable = false;
+
+            return queueSubmitSemaphore;
         }
-        isUsed = true;
-        return queueSubmitSignalSemaphore;
+
+        return nullptr;
     }
 
     void OffscreenRender::render() {
@@ -187,9 +193,7 @@ namespace urchin {
         updateGraphicData(0);
         updateCommandBuffers(clearValues);
 
-        isUsed = false; //TODO move it
-
-        VkSemaphore signalSemaphores[] = {queueSubmitSignalSemaphore};
+        VkSemaphore signalSemaphores[] = {queueSubmitSemaphore};
         VkSubmitInfo submitInfo{};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
         configureWaitSemaphore(submitInfo, nullptr);
@@ -203,6 +207,8 @@ namespace urchin {
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to submit draw command buffer with error code: " + std::to_string(result));
         }
+
+        queueSubmitSemaphoreUsable = true;
     }
 
     void OffscreenRender::waitCommandBuffersIdle() const {
