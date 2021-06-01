@@ -14,6 +14,7 @@ namespace urchin {
             mipLevels(1),
             clearColorEnabled(false),
             writableTexture(false),
+            textureWriter(nullptr),
             textureType(textureType),
             width(width),
             height(height),
@@ -80,9 +81,10 @@ namespace urchin {
         this->clearColor = clearColor;
     }
 
-    void Texture::enableTextureWriting() {
+    void Texture::enableTextureWriting(OffscreenRender* textureWriter) {
         assert(!isInitialized);
-        writableTexture = true;
+        this->writableTexture = true;
+        this->textureWriter = textureWriter;
     }
 
     void Texture::initialize() {
@@ -154,6 +156,10 @@ namespace urchin {
 
     const Vector4<float>& Texture::getClearColor() const {
         return clearColor;
+    }
+
+    OffscreenRender* Texture::getTextureWriter() const {
+        return textureWriter;
     }
 
     VkImageView Texture::getImageView() const {

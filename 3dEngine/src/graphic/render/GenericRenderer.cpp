@@ -531,12 +531,27 @@ namespace urchin {
         textureReader->initialize();
         uniformTextureReaders[uniformTexPosition][textureIndex] = textureReader;
 
-        updateDescriptorSets(); //TODO update only updated ?
+        updateDescriptorSets();
     }
 
     const std::vector<std::shared_ptr<TextureReader>>& GenericRenderer::getUniformTextureReaderArray(std::size_t textureIndex) const {
         assert(uniformTextureReaders.size() > textureIndex);
         return uniformTextureReaders[textureIndex];
+    }
+
+    const std::vector<OffscreenRender*>& GenericRenderer::getTexturesWriter() const {
+        texturesWriter.clear();
+
+        for (auto& uniformTextureReaderArray : uniformTextureReaders) {
+            for (auto& uniformTextureReader : uniformTextureReaderArray) {
+                auto textureWriter = uniformTextureReader->getTexture()->getTextureWriter();
+                if (textureWriter) {
+                    texturesWriter.emplace_back(textureWriter);
+                }
+            }
+        }
+
+        return texturesWriter;
     }
 
     void GenericRenderer::updateGraphicData(uint32_t frameIndex) {

@@ -13,6 +13,8 @@ VK_DEFINE_HANDLE(VmaAllocation)
 
 namespace urchin {
 
+    class OffscreenRender;
+
     class Texture {
         public:
             ~Texture();
@@ -25,7 +27,7 @@ namespace urchin {
 
             void enableMipmap();
             void enableClearColor(const Vector4<float>&);
-            void enableTextureWriting();
+            void enableTextureWriting(OffscreenRender*);
 
             void initialize();
 
@@ -38,6 +40,7 @@ namespace urchin {
 
             uint32_t getMipLevels() const;
             const Vector4<float>& getClearColor() const;
+            OffscreenRender* getTextureWriter() const;
             VkImageView getImageView() const;
             VkFormat getVkFormat() const;
 
@@ -62,6 +65,7 @@ namespace urchin {
             bool clearColorEnabled;
             Vector4<float> clearColor;
             bool writableTexture;
+            OffscreenRender* textureWriter;
 
             TextureType textureType;
             unsigned int width, height, layer;

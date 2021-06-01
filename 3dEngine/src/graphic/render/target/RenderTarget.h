@@ -11,6 +11,7 @@
 namespace urchin {
 
     class GenericRenderer;
+    class OffscreenRender;
 
     class RenderTarget {
         public:
@@ -63,6 +64,9 @@ namespace urchin {
             void createCommandPool();
             void destroyCommandBuffersAndPool();
 
+            const std::set<OffscreenRender*>& getRenderDependencies() const;
+            void configureWaitSemaphore(VkSubmitInfo&, VkSemaphore) const;
+
             virtual void waitCommandBuffersIdle() const = 0;
             void updateGraphicData(uint32_t);
             void updateCommandBuffers(const std::vector<VkClearValue>&);
@@ -78,6 +82,10 @@ namespace urchin {
             VkRenderPass renderPass;
             std::vector<VkFramebuffer> framebuffers;
             VkCommandPool commandPool;
+
+            mutable std::set<OffscreenRender*> renderDependencies;
+            mutable std::vector<VkSemaphore> queueSubmitWaitSemaphores;
+            mutable std::vector<VkPipelineStageFlags> queueSubmitWaitStages;
 
             std::list<std::weak_ptr<GenericRenderer>> renderers; //use weak_ptr to avoid cyclic reference with GenericRenderer
             bool renderersDirty;

@@ -10,6 +10,8 @@ namespace urchin {
     OffscreenRender::OffscreenRender(std::string name, DepthAttachmentType depthAttachmentType) :
             RenderTarget(std::move(name), depthAttachmentType),
             isInitialized(false),
+            queueSubmitSignalSemaphore(nullptr),
+            isUsed(false),
             commandBufferFence(nullptr) {
 
     }
@@ -24,7 +26,7 @@ namespace urchin {
     void OffscreenRender::addTexture(const std::shared_ptr<Texture>& texture) {
         assert(!isInitialized);
 
-        texture->enableTextureWriting();
+        texture->enableTextureWriting(this);
         texture->initialize();
         textures.push_back(texture);
     }
@@ -143,15 +145,31 @@ namespace urchin {
         VkFenceCreateInfo fenceInfo{};
         fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
         fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
-
         VkResult fenceResult = vkCreateFence(GraphicService::instance()->getDevices().getLogicalDevice(), &fenceInfo, nullptr, &commandBufferFence);
         if (fenceResult != VK_SUCCESS) {
             throw std::runtime_error("Failed to create fences with error code: " + std::to_string(fenceResult));
+        }
+
+        VkSemaphoreCreateInfo semaphoreInfo{};
+        semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+        VkResult semaphoreResult = vkCreateSemaphore(GraphicService::instance()->getDevices().getLogicalDevice(), &semaphoreInfo, nullptr, &queueSubmitSignalSemaphore);
+        if (semaphoreResult != VK_SUCCESS) {
+            throw std::runtime_error("Failed to create semaphore with error code: " + std::to_string(semaphoreResult));
         }
     }
 
     void OffscreenRender::destroySyncObjects() {
         vkDestroyFence(GraphicService::instance()->getDevices().getLogicalDevice(), commandBufferFence, nullptr);
+
+        vkDestroySemaphore(GraphicService::instance()->getDevices().getLogicalDevice(), queueSubmitSignalSemaphore, nullptr);
+    }
+
+    VkSemaphore OffscreenRender::getQueueSubmitSignalSemaphore() const {
+        if(isUsed) { //TODO review
+            return nullptr;
+        }
+        isUsed = true;
+        return queueSubmitSignalSemaphore;
     }
 
     void OffscreenRender::render() {
@@ -169,17 +187,18 @@ namespace urchin {
         updateGraphicData(0);
         updateCommandBuffers(clearValues);
 
+        isUsed = false; //TODO move it
+
+        VkSemaphore signalSemaphores[] = {queueSubmitSignalSemaphore};
         VkSubmitInfo submitInfo{};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        submitInfo.waitSemaphoreCount = 0;
-        submitInfo.pWaitSemaphores = nullptr; //TODO check Sasha deferred.cpp, draw()
-        submitInfo.pWaitDstStageMask = nullptr; //TODO check Sasha deferred.cpp, draw()
+        configureWaitSemaphore(submitInfo, nullptr);
         submitInfo.commandBufferCount = 1;
         submitInfo.pCommandBuffers = &commandBuffers[0];
-        submitInfo.signalSemaphoreCount = 0; //TODO check Sasha deferred.cpp, draw()
-        submitInfo.pSignalSemaphores = nullptr;
+        submitInfo.signalSemaphoreCount = 1;
+        submitInfo.pSignalSemaphores = signalSemaphores;
 
-        vkResetFences(logicalDevice, 1, &commandBufferFence); //ensure fence is reset just before use it
+        vkResetFences(logicalDevice, 1, &commandBufferFence);
         VkResult result = vkQueueSubmit(GraphicService::instance()->getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFence);
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to submit draw command buffer with error code: " + std::to_string(result));

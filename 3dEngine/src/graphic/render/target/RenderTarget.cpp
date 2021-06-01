@@ -6,6 +6,7 @@
 #include "graphic/helper/DebugLabelHelper.h"
 #include "graphic/helper/ImageHelper.h"
 #include "graphic/render/GenericRenderer.h"
+#include "graphic/render/target/OffscreenRender.h"
 
 namespace urchin {
 
@@ -261,6 +262,45 @@ namespace urchin {
 
     void RenderTarget::destroyCommandBuffersAndPool() {
         vkDestroyCommandPool(GraphicService::instance()->getDevices().getLogicalDevice(), commandPool, nullptr);
+    }
+
+    const std::set<OffscreenRender*>& RenderTarget::getRenderDependencies() const {
+        renderDependencies.clear();
+
+        for (auto& renderer : renderers) {
+            if (!renderer.expired() && renderer.lock()->isEnabled()) {
+                const auto& renderTextureWriter = renderer.lock()->getTexturesWriter();
+                if (!renderTextureWriter.empty()) {
+                    renderDependencies.insert(renderTextureWriter.begin(), renderTextureWriter.end()); //TODO avoid dynamic allocation
+                }
+            }
+        }
+
+        return renderDependencies;
+    }
+
+    void RenderTarget::configureWaitSemaphore(VkSubmitInfo& submitInfo, VkSemaphore additionalCustomSemaphore) const {
+        const std::set<OffscreenRender*>& renderDependencies = getRenderDependencies();
+
+        queueSubmitWaitSemaphores.clear();
+        queueSubmitWaitStages.clear();
+
+        if (additionalCustomSemaphore) {
+            queueSubmitWaitSemaphores.emplace_back(additionalCustomSemaphore);
+            queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT);
+        }
+
+        for(auto& renderDependency : renderDependencies) {
+            VkSemaphore queueSubmitSignalSemaphore = renderDependency->getQueueSubmitSignalSemaphore();
+            if (queueSubmitSignalSemaphore) {
+                queueSubmitWaitSemaphores.emplace_back(queueSubmitSignalSemaphore);
+                queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT);
+            }
+        }
+
+        submitInfo.waitSemaphoreCount = (uint32_t)queueSubmitWaitSemaphores.size();
+        submitInfo.pWaitSemaphores = queueSubmitWaitSemaphores.data();
+        submitInfo.pWaitDstStageMask = queueSubmitWaitStages.data();
     }
 
     void RenderTarget::updateGraphicData(uint32_t frameIndex) {

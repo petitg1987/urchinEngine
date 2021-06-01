@@ -174,12 +174,12 @@ namespace urchin {
         for (std::size_t i = 0; i < MAX_CONCURRENT_FRAMES; i++) {
             VkResult imageAvailableSemaphoreResult = vkCreateSemaphore(logicalDevice, &semaphoreInfo, nullptr, &imageAvailableSemaphores[i]);
             if (imageAvailableSemaphoreResult != VK_SUCCESS) {
-                throw std::runtime_error("Failed to create image available semaphores with error code: " + std::to_string(imageAvailableSemaphoreResult));
+                throw std::runtime_error("Failed to create image available semaphore with error code: " + std::to_string(imageAvailableSemaphoreResult));
             }
 
             VkResult renderFinishedSemaphoreResult = vkCreateSemaphore(logicalDevice, &semaphoreInfo, nullptr, &renderFinishedSemaphores[i]);
             if (renderFinishedSemaphoreResult != VK_SUCCESS) {
-                throw std::runtime_error("Failed to create render finished semaphores with error code: " + std::to_string(renderFinishedSemaphoreResult));
+                throw std::runtime_error("Failed to create render finished semaphore with error code: " + std::to_string(renderFinishedSemaphoreResult));
             }
 
             VkResult fenceResult = vkCreateFence(logicalDevice, &fenceInfo, nullptr, &commandBufferFences[i]);
@@ -233,18 +233,10 @@ namespace urchin {
         }
         imagesFences[vkImageIndex] = commandBufferFences[currentFrameIndex]; //mark the image as now being in use by this frame
 
-        VkSemaphore queueSubmitWaitSemaphores[] = {
-                imageAvailableSemaphores[currentFrameIndex] //semaphores (GPU-GPU sync) to wait image available before executing command buffers
-        };
-        VkPipelineStageFlags queueSubmitWaitStages[] = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
-        VkSemaphore queuePresentWaitSemaphores[] = {
-                renderFinishedSemaphores[currentFrameIndex] //semaphores (GPU-GPU sync) to wait command buffers execution before present the image
-        };
+        VkSemaphore queuePresentWaitSemaphores[] = {renderFinishedSemaphores[currentFrameIndex] /* semaphores (GPU-GPU sync) to wait command buffers execution before present the image */};
         VkSubmitInfo submitInfo{};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        submitInfo.waitSemaphoreCount = 1;
-        submitInfo.pWaitSemaphores = queueSubmitWaitSemaphores;
-        submitInfo.pWaitDstStageMask = queueSubmitWaitStages;
+        configureWaitSemaphore(submitInfo, imageAvailableSemaphores[currentFrameIndex] /* semaphores (GPU-GPU sync) to wait image available before executing command buffers */);
         submitInfo.commandBufferCount = 1;
         submitInfo.pCommandBuffers = &commandBuffers[vkImageIndex];
         submitInfo.signalSemaphoreCount = 1;
