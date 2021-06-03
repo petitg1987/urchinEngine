@@ -19,7 +19,7 @@ namespace urchin {
                 HIGH
             };
 
-            struct AntiAliasingConfig {
+            struct Config {
                 Quality quality = DEFAULT_AA_QUALITY;
             };
 
@@ -28,7 +28,8 @@ namespace urchin {
             void onTextureUpdate(const std::shared_ptr<Texture>&);
             void onResize(unsigned int, unsigned int);
 
-            void updateConfiguration(const AntiAliasingConfig&);
+            void updateConfig(const Config&);
+            const Config& getConfig() const;
 
             void applyAntiAliasing();
 
@@ -53,7 +54,7 @@ namespace urchin {
 
             //properties
             std::shared_ptr<RenderTarget> renderTarget;
-            AntiAliasingConfig config;
+            Config config;
 
             //display
             std::shared_ptr<Shader> fxaaShader;

@@ -28,7 +28,7 @@ namespace urchin {
                 HALF_SIZE = 1
             };
 
-            struct AmbientOcclusionConfig {
+            struct Config {
                 AOTextureSize textureSize = DEFAULT_TEXTURE_SIZE;
                 unsigned int kernelSamples = DEFAULT_KERNEL_SAMPLES;
                 float radius = DEFAULT_RADIUS; //scope radius in units
@@ -49,7 +49,8 @@ namespace urchin {
             void onResize(unsigned int, unsigned int);
             void onCameraProjectionUpdate(const Camera*);
 
-            void updateConfiguration(const AmbientOcclusionConfig&);
+            void updateConfig(const Config&);
+            const Config& getConfig() const;
 
             const std::shared_ptr<Texture>& getAmbientOcclusionTexture() const;
 
@@ -67,7 +68,7 @@ namespace urchin {
                 float bias;
             };
 
-            void checkConfiguration() const;
+            void checkConfig() const;
 
             void createOrUpdateAO();
             void createOrUpdateAOShader();
@@ -85,7 +86,7 @@ namespace urchin {
             float nearPlane, farPlane;
 
             //config
-            AmbientOcclusionConfig config;
+            Config config;
             unsigned int textureSizeX, textureSizeY;
 
             //frame buffer object

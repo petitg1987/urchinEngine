@@ -82,7 +82,7 @@ namespace urchin {
         return shadowMapBias;
     }
 
-    void ShadowManager::updateConfiguration(const ShadowConfig& config) {
+    void ShadowManager::updateConfig(const Config& config) {
         if(this->config.nbShadowMaps != config.nbShadowMaps ||
                 this->config.shadowMapResolution != config.shadowMapResolution ||
                 this->config.viewingShadowDistance != config.viewingShadowDistance ||
@@ -90,7 +90,7 @@ namespace urchin {
             bool nbShadowMapUpdated = this->config.nbShadowMaps != config.nbShadowMaps;
 
             this->config = config;
-            checkConfiguration();
+            checkConfig();
 
             updateShadowLights();
             if (nbShadowMapUpdated) {
@@ -99,28 +99,16 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::checkConfiguration() const {
+    const ShadowManager::Config& ShadowManager::getConfig() const {
+        return config;
+    }
+
+    void ShadowManager::checkConfig() const {
         if (config.nbShadowMaps <= 1) { //note: shadow maps texture array with depth = 1 generate error in GLSL texture() function
             throw std::invalid_argument("Number of shadow maps must be greater than one. Value: " + std::to_string(config.nbShadowMaps));
         } else if (config.nbShadowMaps > SHADOW_MAPS_SHADER_LIMIT) {
             throw std::invalid_argument("Number of shadow maps must be lower than " + std::to_string(SHADOW_MAPS_SHADER_LIMIT) + ". Value: " + std::to_string(config.nbShadowMaps));
         }
-    }
-
-    unsigned int ShadowManager::getShadowMapResolution() const {
-        return config.shadowMapResolution;
-    }
-
-    unsigned int ShadowManager::getNumberShadowMaps() const {
-        return config.nbShadowMaps;
-    }
-
-    float ShadowManager::getViewingShadowDistance() const {
-        return config.viewingShadowDistance;
-    }
-
-    ShadowManager::BlurShadow ShadowManager::getBlurShadow() const {
-        return config.blurShadow;
     }
 
     const std::vector<Frustum<float>>& ShadowManager::getSplitFrustums() const {

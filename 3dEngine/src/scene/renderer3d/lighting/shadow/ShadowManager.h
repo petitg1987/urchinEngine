@@ -37,7 +37,7 @@ namespace urchin {
                 NUMBER_SHADOW_MAPS_UPDATE
             };
 
-            struct ShadowConfig {
+            struct Config {
                 unsigned int nbShadowMaps = DEFAULT_NUMBER_SHADOW_MAPS;
                 unsigned int shadowMapResolution = DEFAULT_SHADOW_MAP_RESOLUTION;
                 float viewingShadowDistance = DEFAULT_VIEWING_SHADOW_DISTANCE;
@@ -54,11 +54,8 @@ namespace urchin {
             unsigned int getMaxShadowLights() const;
             float getShadowMapBias() const;
 
-            void updateConfiguration(const ShadowConfig&);
-            unsigned int getShadowMapResolution() const;
-            unsigned int getNumberShadowMaps() const;
-            float getViewingShadowDistance() const;
-            BlurShadow getBlurShadow() const;
+            void updateConfig(const Config&);
+            const Config& getConfig() const;
 
             const std::vector<Frustum<float>>& getSplitFrustums() const;
             const LightShadowMap& getLightShadowMap(const Light*) const;
@@ -82,11 +79,11 @@ namespace urchin {
             void splitFrustum(const Frustum<float>&);
 
             //shadow map quality
-            void checkConfiguration() const;
+            void checkConfig() const;
             static constexpr uint32_t SHADOW_MAPS_SHADER_LIMIT = 7; //must be equals to 'NUMBER_SHADOW_MAPS' in lighting shader
             const float shadowMapBias;
             const float percentageUniformSplit; //percentage of uniform split against the logarithmic split to split frustum
-            ShadowConfig config;
+            Config config;
 
             //scene information
             LightManager* lightManager;

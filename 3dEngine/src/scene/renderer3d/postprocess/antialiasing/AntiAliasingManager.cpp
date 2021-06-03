@@ -66,12 +66,16 @@ namespace urchin {
         }
     }
 
-    void AntiAliasingManager::updateConfiguration(const AntiAliasingConfig& config) {
+    void AntiAliasingManager::updateConfig(const Config& config) {
         if(this->config.quality != config.quality) {
             this->config = config;
 
             loadFxaaShader();
         }
+    }
+
+    const AntiAliasingManager::Config& AntiAliasingManager::getConfig() const {
+        return config;
     }
 
     void AntiAliasingManager::applyAntiAliasing() {

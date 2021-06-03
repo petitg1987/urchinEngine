@@ -85,7 +85,7 @@ namespace urchin {
         LightingShaderConst lightingConstData{};
         lightingConstData.maxLights = lightManager->getMaxLights();
         lightingConstData.maxShadowLights = shadowManager->getMaxShadowLights();
-        lightingConstData.numberShadowMaps = shadowManager->getNumberShadowMaps();
+        lightingConstData.numberShadowMaps = shadowManager->getConfig().nbShadowMaps;
         lightingConstData.shadowMapBias = shadowManager->getShadowMapBias();
         std::vector<std::size_t> variablesSize = {
             sizeof(LightingShaderConst::maxLights),

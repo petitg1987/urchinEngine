@@ -35,12 +35,16 @@ namespace urchin {
         }
     }
 
-    void TerrainManager::updateConfiguration(const TerrainConfig& config) {
+    void TerrainManager::updateConfig(const Config& config) {
         if (this->config.grassDisplayDistance != config.grassDisplayDistance) {
             this->config = config;
 
             updateAllTerrainConfig();
         }
+    }
+
+    const TerrainManager::Config& TerrainManager::getConfig() const {
+        return config;
     }
 
     void TerrainManager::updateAllTerrainConfig() {

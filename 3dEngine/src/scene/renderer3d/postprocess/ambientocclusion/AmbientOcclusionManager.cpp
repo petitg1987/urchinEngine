@@ -197,7 +197,7 @@ namespace urchin {
         createOrUpdateAO();
     }
 
-    void AmbientOcclusionManager::updateConfiguration(const AmbientOcclusionConfig& config) {
+    void AmbientOcclusionManager::updateConfig(const Config& config) {
         if(this->config.textureSize != config.textureSize ||
                 this->config.kernelSamples != config.kernelSamples ||
                 this->config.radius != config.radius ||
@@ -213,7 +213,7 @@ namespace urchin {
             bool updateTextures = this->config.noiseTextureSize != config.noiseTextureSize;
 
             this->config = config;
-            checkConfiguration();
+            checkConfig();
 
             createOrUpdateAO();
             if (updateShader) {
@@ -225,7 +225,11 @@ namespace urchin {
         }
     }
 
-    void AmbientOcclusionManager::checkConfiguration() const {
+    const AmbientOcclusionManager::Config& AmbientOcclusionManager::getConfig() const {
+        return config;
+    }
+
+    void AmbientOcclusionManager::checkConfig() const {
         if(config.kernelSamples > KERNEL_SAMPLES_SHADER_LIMIT) {
             throw std::invalid_argument("Kernel samples value is limited to " + std::to_string(KERNEL_SAMPLES_SHADER_LIMIT) + ". Value: " + std::to_string(config.kernelSamples));
         }

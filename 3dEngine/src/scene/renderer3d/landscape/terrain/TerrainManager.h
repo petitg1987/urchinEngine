@@ -13,7 +13,7 @@ namespace urchin {
 
     class TerrainManager {
         public:
-            struct TerrainConfig {
+            struct Config {
                 float grassDisplayDistance = DEFAULT_GRASS_DISPLAY_DISTANCE;
             };
 
@@ -24,7 +24,8 @@ namespace urchin {
             void addTerrain(Terrain*);
             void removeTerrain(Terrain*);
 
-            void updateConfiguration(const TerrainConfig&);
+            void updateConfig(const Config&);
+            const Config& getConfig() const;
 
             void prepareRendering(const Camera*, float) const;
 
@@ -38,7 +39,7 @@ namespace urchin {
 
             Matrix4<float> projectionMatrix;
 
-            TerrainConfig config;
+            Config config;
     };
 
 }
