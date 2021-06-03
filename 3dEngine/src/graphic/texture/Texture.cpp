@@ -29,7 +29,7 @@ namespace urchin {
                 auto imageDataCharPtr = static_cast<const uint8_t*>(imageDataPtr);
                 this->dataPtr.emplace_back(std::vector<uint8_t>(imageDataCharPtr, imageDataCharPtr + getImageSize()));
             } else {
-                this->dataPtr.emplace_back(std::vector<uint8_t>(getImageSize(), 0));
+                this->dataPtr.emplace_back(std::vector<uint8_t>(0));
             }
         }
     }
@@ -198,7 +198,7 @@ namespace urchin {
         {
             for(unsigned int imageIndex = 0; imageIndex < dataPtr.size(); ++imageIndex) {
                 void *dataDestinationI = static_cast<uint8_t *>(dataDestination) + (imageIndex * getImageSize());
-                memcpy(dataDestinationI, dataPtr[imageIndex].data(), getImageSize());
+                memcpy(dataDestinationI, dataPtr[imageIndex].data(), dataPtr[imageIndex].size());
             }
         }
         vmaUnmapMemory(allocator, stagingBufferMemory);
