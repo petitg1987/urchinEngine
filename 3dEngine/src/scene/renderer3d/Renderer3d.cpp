@@ -155,10 +155,12 @@ namespace urchin {
     }
 
     void Renderer3d::activateShadow(bool isShadowActivated) {
-        visualOption.isShadowActivated = isShadowActivated;
+        if (visualOption.isShadowActivated != isShadowActivated) {
+            visualOption.isShadowActivated = isShadowActivated;
 
-        createOrUpdateLightingShader();
-        shadowManager->forceUpdateAllShadowMaps();
+            createOrUpdateLightingShader();
+            shadowManager->forceUpdateAllShadowMaps();
+        }
     }
 
     AmbientOcclusionManager* Renderer3d::getAmbientOcclusionManager() const {
@@ -166,9 +168,11 @@ namespace urchin {
     }
 
     void Renderer3d::activateAmbientOcclusion(bool isAmbientOcclusionActivated) {
-        visualOption.isAmbientOcclusionActivated = isAmbientOcclusionActivated;
+        if (visualOption.isAmbientOcclusionActivated != isAmbientOcclusionActivated) {
+            visualOption.isAmbientOcclusionActivated = isAmbientOcclusionActivated;
 
-        createOrUpdateLightingShader();
+            createOrUpdateLightingShader();
+        }
     }
 
     AntiAliasingManager* Renderer3d::getAntiAliasingManager() const {
@@ -176,8 +180,10 @@ namespace urchin {
     }
 
     void Renderer3d::activateAntiAliasing(bool isAntiAliasingActivated) {
-        this->isAntiAliasingActivated = isAntiAliasingActivated;
-        refreshRenderer();
+        if (this->isAntiAliasingActivated != isAntiAliasingActivated) {
+            this->isAntiAliasingActivated = isAntiAliasingActivated;
+            refreshRenderer();
+        }
     }
 
     void Renderer3d::setCamera(Camera* camera) {
