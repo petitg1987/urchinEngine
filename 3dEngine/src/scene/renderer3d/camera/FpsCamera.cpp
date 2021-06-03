@@ -1,4 +1,4 @@
-#include "FpsCamera.h"
+#include <scene/renderer3d/camera/FpsCamera.h>
 
 #define DEFAULT_KEY_FRONT 'Z'
 #define DEFAULT_KEY_BACK 'S'

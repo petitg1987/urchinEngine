@@ -1,4 +1,4 @@
-#include "FrameStyleHelper.h"
+#include <widget/style/FrameStyleHelper.h>
 
 namespace urchin {
 

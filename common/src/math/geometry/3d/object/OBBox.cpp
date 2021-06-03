@@ -3,7 +3,7 @@
 #include <cmath>
 #include <stdexcept>
 
-#include "OBBox.h"
+#include <math/geometry/3d/object/OBBox.h>
 #include <math/algebra/point/Point4.h>
 
 namespace urchin {

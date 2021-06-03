@@ -1,6 +1,6 @@
 #include <algorithm>
 
-#include "WaterManager.h"
+#include <scene/renderer3d/landscape/water/WaterManager.h>
 
 namespace urchin {
 

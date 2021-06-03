@@ -1,4 +1,4 @@
-#include "CapsuleShape.h"
+#include <math/geometry/3d/shape/CapsuleShape.h>
 #include <math/geometry/3d/object/Capsule.h>
 
 namespace urchin {

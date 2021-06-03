@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <utility>
 
-#include "LightShadowMap.h"
+#include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
 #include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
 #include <scene/renderer3d/lighting/shadow/display/ShadowModelShaderVariable.h>
 

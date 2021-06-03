@@ -5,7 +5,7 @@
 #include <QtWidgets/QFileDialog>
 #include <UrchinCommon.h>
 
-#include "NewObjectDialog.h"
+#include <panel/objects/dialog/NewObjectDialog.h>
 #include <widget/style/LabelStyleHelper.h>
 #include <widget/style/ButtonStyleHelper.h>
 

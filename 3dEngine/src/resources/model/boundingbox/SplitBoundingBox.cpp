@@ -1,4 +1,4 @@
-#include "SplitBoundingBox.h"
+#include <resources/model/boundingbox/SplitBoundingBox.h>
 
 namespace urchin {
 

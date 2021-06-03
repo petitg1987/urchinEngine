@@ -3,7 +3,7 @@
 #include <memory>
 #include <thread>
 
-#include "Profiler.h"
+#include <profiler/Profiler.h>
 #include <config/ConfigService.h>
 #include <logger/FileLogger.h>
 

@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <utility>
 
-#include "ScreenRender.h"
+#include <graphic/render/target/ScreenRender.h>
 #include <graphic/setup/GraphicService.h>
 #include <graphic/helper/ImageHelper.h>
 #include <graphic/render/GenericRenderer.h>

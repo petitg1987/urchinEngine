@@ -1,4 +1,4 @@
-#include "AICharacter.h"
+#include <character/AICharacter.h>
 
 #define CHARACTER_MAX_ACCELERATION 1.388889f //take 1 sec go from 0km/h to 5km/h
 

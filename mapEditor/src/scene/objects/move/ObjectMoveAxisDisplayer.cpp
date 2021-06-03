@@ -1,4 +1,4 @@
-#include "ObjectMoveAxisDisplayer.h"
+#include <scene/objects/move/ObjectMoveAxisDisplayer.h>
 
 namespace urchin {
     ObjectMoveAxisDisplayer::ObjectMoveAxisDisplayer(SceneManager* sceneManager) :

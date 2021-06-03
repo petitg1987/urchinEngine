@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <stdexcept>
 
-#include "ModelSetDisplayer.h"
+#include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>
 
 namespace urchin {

@@ -5,7 +5,7 @@
 #include <QtWidgets/QFileDialog>
 
 #include <UrchinCommon.h>
-#include "NewSoundDialog.h"
+#include <panel/sounds/dialog/NewSoundDialog.h>
 #include <widget/style/LabelStyleHelper.h>
 #include <widget/style/ButtonStyleHelper.h>
 

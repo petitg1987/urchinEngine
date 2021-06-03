@@ -1,6 +1,6 @@
 #include <algorithm>
 
-#include "ConvexHullShape3D.h"
+#include <math/geometry/3d/shape/ConvexHullShape3D.h>
 #include <math/geometry/3d/util/ResizeConvexHull3DService.h>
 #include <math/geometry/3d/object/ConvexHull3D.h>
 #include <math/algebra/point/Point4.h>

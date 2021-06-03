@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "LightManager.h"
+#include <scene/renderer3d/lighting/light/LightManager.h>
 #include <scene/renderer3d/lighting/light/sun/SunLight.h>
 #include <scene/renderer3d/lighting/light/omnidirectional/OmnidirectionalLight.h>
 #include <scene/renderer3d/util/OctreeRenderer.h>

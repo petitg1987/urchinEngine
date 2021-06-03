@@ -4,7 +4,7 @@
 #include <QMessageBox>
 #include <QSignalMapper>
 
-#include "TerrainPanelWidget.h"
+#include <panel/terrains/TerrainPanelWidget.h>
 #include <widget/style/GroupBoxStyleHelper.h>
 #include <widget/style/SpinBoxStyleHelper.h>
 #include <widget/style/ButtonStyleHelper.h>

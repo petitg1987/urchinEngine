@@ -1,4 +1,4 @@
-#include "SVGShape.h"
+#include <io/svg/shape/SVGShape.h>
 
 namespace urchin {
 

@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <utility>
 
-#include "BodyShapeWidget.h"
+#include <panel/objects/bodyshape/BodyShapeWidget.h>
 
 namespace urchin {
 

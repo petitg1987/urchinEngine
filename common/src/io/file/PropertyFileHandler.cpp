@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <utility>
 
-#include "PropertyFileHandler.h"
+#include <io/file/PropertyFileHandler.h>
 #include <io/file/FileReader.h>
 #include <util/StringUtil.h>
 

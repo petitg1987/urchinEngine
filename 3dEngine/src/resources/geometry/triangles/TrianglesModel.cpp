@@ -1,6 +1,6 @@
 #include <utility>
 
-#include "TrianglesModel.h"
+#include <resources/geometry/triangles/TrianglesModel.h>
 
 namespace urchin {
 

@@ -1,4 +1,4 @@
-#include "GJKResultNoCollide.h"
+#include <collision/narrowphase/algorithm/gjk/result/GJKResultNoCollide.h>
 
 namespace urchin {
 

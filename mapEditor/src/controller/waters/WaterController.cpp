@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "WaterController.h"
+#include <controller/waters/WaterController.h>
 
 namespace urchin {
     WaterController::WaterController() :

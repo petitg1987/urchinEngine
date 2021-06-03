@@ -1,6 +1,6 @@
 #include <UrchinCommon.h>
 
-#include "GraphicService.h"
+#include <graphic/setup/GraphicService.h>
 #define VMA_IMPLEMENTATION
 #include <libs/vma/vk_mem_alloc.h>
 #include <graphic/setup/handler/QueueHandler.h>

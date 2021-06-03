@@ -1,7 +1,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QHBoxLayout>
 
-#include "SoundSphereShapeWidget.h"
+#include <panel/sounds/soundshape/SoundSphereShapeWidget.h>
 #include <widget/style/SpinBoxStyleHelper.h>
 
 namespace urchin {

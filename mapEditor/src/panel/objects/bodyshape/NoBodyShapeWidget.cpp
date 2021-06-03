@@ -1,6 +1,6 @@
 #include <QtWidgets/QLabel>
 
-#include "NoBodyShapeWidget.h"
+#include <panel/objects/bodyshape/NoBodyShapeWidget.h>
 
 namespace urchin {
 

@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "SceneController.h"
+#include <controller/SceneController.h>
 
 namespace urchin {
 

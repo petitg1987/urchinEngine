@@ -1,4 +1,4 @@
-#include "CylinderShape.h"
+#include <math/geometry/3d/shape/CylinderShape.h>
 #include <math/geometry/3d/object/Cylinder.h>
 
 namespace urchin {

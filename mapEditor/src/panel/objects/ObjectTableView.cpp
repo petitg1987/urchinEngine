@@ -1,7 +1,7 @@
 #include <QHeaderView>
 #include <QVariant>
 
-#include "ObjectTableView.h"
+#include <panel/objects/ObjectTableView.h>
 
 namespace urchin {
 

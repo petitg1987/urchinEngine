@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <stdexcept>
 
-#include "SoundManager.h"
+#include <SoundManager.h>
 
 namespace urchin {
 

@@ -2,8 +2,8 @@
 #include <QMessageBox>
 #include <unistd.h>
 
-#include "SceneDisplayer.h"
-#include "SceneWindowController.h"
+#include <scene/SceneDisplayer.h>
+#include <scene/SceneWindowController.h>
 
 namespace urchin {
 

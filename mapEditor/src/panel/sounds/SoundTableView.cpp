@@ -1,7 +1,7 @@
 #include <QHeaderView>
 #include <QVariant>
 
-#include "SoundTableView.h"
+#include <panel/sounds/SoundTableView.h>
 
 namespace urchin {
 

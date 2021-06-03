@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "BodyShapeWidgetRetriever.h"
+#include <panel/objects/bodyshape/BodyShapeWidgetRetriever.h>
 #include <panel/objects/bodyshape/BodyShapeWidget.h>
 #include <panel/objects/bodyshape/NoBodyShapeWidget.h>
 #include <panel/objects/bodyshape/BodySphereShapeWidget.h>

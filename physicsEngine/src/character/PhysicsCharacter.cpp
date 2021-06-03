@@ -1,7 +1,7 @@
 #include <cmath>
 #include <utility>
 
-#include "PhysicsCharacter.h"
+#include <character/PhysicsCharacter.h>
 
 #define DEFAULT_JUMP_SPEED 5.0f
 #define DEFAULT_MAX_SLOPE (MathValue::PI_FLOAT / 4.0f) //45 degrees

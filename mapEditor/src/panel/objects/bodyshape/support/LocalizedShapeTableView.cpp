@@ -1,7 +1,7 @@
 #include <QHeaderView>
 #include <QVariant>
 
-#include "LocalizedShapeTableView.h"
+#include <panel/objects/bodyshape/support/LocalizedShapeTableView.h>
 #include <panel/objects/bodyshape/BodyShapeWidget.h>
 #include <panel/objects/bodyshape/BodyShapeWidgetRetriever.h>
 

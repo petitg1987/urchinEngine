@@ -1,6 +1,6 @@
 #include <libs/vma/vk_mem_alloc.h>
 
-#include "GenericRenderer.h"
+#include <graphic/render/GenericRenderer.h>
 #include <graphic/helper/DebugLabelHelper.h>
 #include <graphic/setup/GraphicService.h>
 #include <graphic/render/GenericRendererBuilder.h>

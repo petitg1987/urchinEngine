@@ -1,13 +1,3 @@
-#include "MapEditorWindow.h"
-#include <widget/dialog/NewDialog.h>
-#include <widget/dialog/NotSavedDialog.h>
-#include <panel/objects/ObjectTableView.h>
-#include <panel/objects/bodyshape/BodyCompoundShapeWidget.h>
-#include <panel/objects/bodyshape/support/LocalizedShapeTableView.h>
-#include <panel/lights/LightTableView.h>
-#include <panel/sounds/SoundTableView.h>
-#include "StateSaveHelper.h"
-
 #include <stdexcept>
 #include <QApplication>
 #include <QMenuBar>
@@ -16,6 +6,16 @@
 #include <QtWidgets/QFileDialog>
 #include <utility>
 #include <QtCore/QStandardPaths>
+
+#include <MapEditorWindow.h>
+#include <widget/dialog/NewDialog.h>
+#include <widget/dialog/NotSavedDialog.h>
+#include <panel/objects/ObjectTableView.h>
+#include <panel/objects/bodyshape/BodyCompoundShapeWidget.h>
+#include <panel/objects/bodyshape/support/LocalizedShapeTableView.h>
+#include <panel/lights/LightTableView.h>
+#include <panel/sounds/SoundTableView.h>
+#include <StateSaveHelper.h>
 
 namespace urchin {
 

@@ -1,7 +1,7 @@
 #include <AL/alc.h>
 #include <stdexcept>
 
-#include "DeviceManager.h"
+#include <device/DeviceManager.h>
 
 namespace urchin {
 

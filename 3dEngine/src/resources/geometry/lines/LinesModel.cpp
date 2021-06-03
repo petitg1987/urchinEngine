@@ -1,6 +1,6 @@
 #include <utility>
 
-#include "LinesModel.h"
+#include <resources/geometry/lines/LinesModel.h>
 
 namespace urchin {
 

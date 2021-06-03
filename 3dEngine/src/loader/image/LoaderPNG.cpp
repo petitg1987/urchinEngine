@@ -1,7 +1,7 @@
 #include <bitset>
 #include <UrchinCommon.h>
 
-#include "LoaderPNG.h"
+#include <loader/image/LoaderPNG.h>
 
 namespace urchin {
     LoaderPNG::LoaderPNG() :

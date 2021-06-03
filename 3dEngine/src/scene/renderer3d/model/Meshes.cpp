@@ -1,4 +1,4 @@
-#include "Meshes.h"
+#include <scene/renderer3d/model/Meshes.h>
 
 namespace urchin {
 

@@ -2,7 +2,7 @@
 #include <sstream>
 #include <cassert>
 
-#include "Plane.h"
+#include <math/geometry/3d/Plane.h>
 
 namespace urchin {
 

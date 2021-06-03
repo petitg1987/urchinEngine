@@ -1,6 +1,6 @@
 #include <cstring>
 
-#include "ShaderDataContainer.h"
+#include <graphic/render/shader/model/ShaderDataContainer.h>
 
 namespace urchin {
 

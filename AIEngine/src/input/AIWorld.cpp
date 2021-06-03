@@ -1,6 +1,6 @@
 #include <algorithm>
 
-#include "AIWorld.h"
+#include <input/AIWorld.h>
 
 namespace urchin {
 

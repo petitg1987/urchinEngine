@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <cassert>
 
-#include "RenderTarget.h"
+#include <graphic/render/target/RenderTarget.h>
 #include <graphic/setup/GraphicService.h>
 #include <graphic/helper/DebugLabelHelper.h>
 #include <graphic/helper/ImageHelper.h>

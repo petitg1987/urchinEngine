@@ -1,7 +1,7 @@
 #include <QCursor>
 
-#include "SceneFreeCamera.h"
-#include "StateSaveHelper.h"
+#include <scene/SceneFreeCamera.h>
+#include <StateSaveHelper.h>
 
 namespace urchin {
 

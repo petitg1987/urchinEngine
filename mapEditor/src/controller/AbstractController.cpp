@@ -1,4 +1,4 @@
-#include "AbstractController.h"
+#include <controller/AbstractController.h>
 
 namespace urchin {
     AbstractController::AbstractController() :

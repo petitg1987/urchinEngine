@@ -1,6 +1,6 @@
 #include <utility>
 
-#include "Polytope.h"
+#include <path/navmesh/polytope/Polytope.h>
 #include <path/navmesh/polytope/PolytopePlaneSurface.h>
 #include <path/navmesh/polytope/PolytopeTerrainSurface.h>
 

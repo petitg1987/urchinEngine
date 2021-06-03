@@ -3,7 +3,7 @@
 #include <UrchinCommon.h>
 #include <UrchinAIEngine.h>
 
-#include "PolygonsSubtractionTest.h"
+#include <ai/path/navmesh/csg/PolygonsSubtractionTest.h>
 #include <AssertHelper.h>
 using namespace urchin;
 

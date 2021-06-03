@@ -1,4 +1,4 @@
-#include "ConeShape.h"
+#include <math/geometry/3d/shape/ConeShape.h>
 #include <math/geometry/3d/object/Cone.h>
 
 namespace urchin {

@@ -1,6 +1,6 @@
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "StringUtilTest.h"
+#include <common/util/StringUtilTest.h>
 #include <AssertHelper.h>
 using namespace urchin;
 

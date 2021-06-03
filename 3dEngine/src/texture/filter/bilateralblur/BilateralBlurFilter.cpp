@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "BilateralBlurFilter.h"
+#include <texture/filter/bilateralblur/BilateralBlurFilter.h>
 #include <texture/filter/bilateralblur/BilateralBlurFilterBuilder.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>
 #include <graphic/render/GenericRendererBuilder.h>

@@ -3,7 +3,7 @@
 #include <QtWidgets/QFileDialog>
 #include <QMessageBox>
 
-#include "WaterPanelWidget.h"
+#include <panel/waters/WaterPanelWidget.h>
 #include <widget/style/GroupBoxStyleHelper.h>
 #include <widget/style/SpinBoxStyleHelper.h>
 #include <widget/style/ButtonStyleHelper.h>

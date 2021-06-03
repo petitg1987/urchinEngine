@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <utility>
 
-#include "AbstractBody.h"
+#include <body/model/AbstractBody.h>
 #include <collision/broadphase/PairContainer.h>
 
 namespace urchin {

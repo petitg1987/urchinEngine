@@ -1,6 +1,6 @@
 #include <cassert>
 
-#include "Texture.h"
+#include <graphic/texture/Texture.h>
 #include <libs/vma/vk_mem_alloc.h>
 #include <graphic/setup/GraphicService.h>
 #include <graphic/helper/BufferHelper.h>

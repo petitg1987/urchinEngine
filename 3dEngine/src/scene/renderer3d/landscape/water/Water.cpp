@@ -1,4 +1,4 @@
-#include "Water.h"
+#include <scene/renderer3d/landscape/water/Water.h>
 #include <resources/MediaManager.h>
 #include <graphic/render/GenericRendererBuilder.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>

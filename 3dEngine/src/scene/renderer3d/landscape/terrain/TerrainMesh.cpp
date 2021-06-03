@@ -2,7 +2,7 @@
 #include <functional>
 #include <fstream>
 
-#include "TerrainMesh.h"
+#include <scene/renderer3d/landscape/terrain/TerrainMesh.h>
 #include <resources/MediaManager.h>
 #include <graphic/render/GenericRenderer.h>
 

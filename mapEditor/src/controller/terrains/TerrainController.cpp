@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "TerrainController.h"
+#include <controller/terrains/TerrainController.h>
 
 namespace urchin {
     TerrainController::TerrainController() :

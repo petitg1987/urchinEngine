@@ -1,7 +1,7 @@
 #include <cassert>
 #include <limits>
 
-#include "AABBox.h"
+#include <math/geometry/3d/object/AABBox.h>
 
 namespace urchin {
 

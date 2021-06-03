@@ -1,4 +1,4 @@
-#include "Tetrahedron.h"
+#include <math/geometry/3d/object/Tetrahedron.h>
 #include <math/geometry/3d/object/Triangle3D.h>
 #include <math/algebra/matrix/Matrix4.h>
 

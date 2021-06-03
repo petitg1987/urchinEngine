@@ -1,7 +1,7 @@
 #include <cmath>
 #include <limits>
 
-#include "Cone.h"
+#include <math/geometry/3d/object/Cone.h>
 
 namespace urchin {
 

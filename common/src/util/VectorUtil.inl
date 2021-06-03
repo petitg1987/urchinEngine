@@ -1,6 +1,3 @@
-
-#include "VectorUtil.h"
-
 /**
  * Similar to std::vector.erase() but doesn't keep vector order and is more faster.
  */

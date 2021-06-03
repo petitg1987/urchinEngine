@@ -1,4 +1,4 @@
-#include "StatusBarController.h"
+#include <widget/controller/statusbar/StatusBarController.h>
 #include <QtWidgets/QStatusBar>
 
 namespace urchin {

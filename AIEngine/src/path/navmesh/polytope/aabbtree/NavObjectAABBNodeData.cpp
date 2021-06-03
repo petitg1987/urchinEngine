@@ -1,4 +1,4 @@
-#include "NavObjectAABBNodeData.h"
+#include <path/navmesh/polytope/aabbtree/NavObjectAABBNodeData.h>
 
 namespace urchin {
 

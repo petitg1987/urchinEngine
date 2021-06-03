@@ -1,4 +1,4 @@
-#include "SVGExporter.h"
+#include <io/svg/SVGExporter.h>
 
 #include <utility>
 

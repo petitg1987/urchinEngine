@@ -1,4 +1,4 @@
-#include "MonotonePolygon.h"
+#include <path/navmesh/triangulation/MonotonePolygon.h>
 
 namespace urchin {
 

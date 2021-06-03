@@ -1,6 +1,6 @@
 #include <algorithm>
 
-#include "PathfindingAStar.h"
+#include <path/pathfinding/PathfindingAStar.h>
 #include <path/pathfinding/PathPortal.h>
 #include <path/pathfinding/FunnelAlgorithm.h>
 

@@ -1,6 +1,6 @@
 #include <QHeaderView>
 
-#include "LightTableView.h"
+#include <panel/lights/LightTableView.h>
 
 namespace urchin {
 

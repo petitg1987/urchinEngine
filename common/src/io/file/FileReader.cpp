@@ -1,6 +1,6 @@
 #include <sstream>
 
-#include "FileReader.h"
+#include <io/file/FileReader.h>
 
 namespace urchin {
 

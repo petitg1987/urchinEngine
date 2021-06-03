@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <cassert>
 
-#include "BoxShape.h"
+#include <math/geometry/3d/shape/BoxShape.h>
 #include <math/geometry/3d/object/OBBox.h>
 
 namespace urchin {

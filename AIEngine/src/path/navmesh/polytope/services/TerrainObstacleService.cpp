@@ -3,7 +3,7 @@
 #include <stack>
 #include <algorithm>
 
-#include "TerrainObstacleService.h"
+#include <path/navmesh/polytope/services/TerrainObstacleService.h>
 
 namespace urchin {
     TerrainObstacleService::TerrainObstacleService(std::string terrainName, const Point3<float>& position, std::vector<Point3<float>> localVertices,

@@ -1,4 +1,4 @@
-#include "NavMeshAgent.h"
+#include <path/navmesh/model/output/NavMeshAgent.h>
 
 #define DEFAULT_AGENT_HEIGHT 1.8f
 #define DEFAULT_AGENT_RADIUS 0.25f

@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "LightController.h"
+#include <controller/lights/LightController.h>
 
 namespace urchin {
 

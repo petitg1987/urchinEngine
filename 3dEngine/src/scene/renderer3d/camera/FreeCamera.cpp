@@ -1,6 +1,6 @@
 #include <UrchinCommon.h>
 
-#include "FreeCamera.h"
+#include <scene/renderer3d/camera/FreeCamera.h>
 #include <scene/InputDeviceKey.h>
 
 #define DEFAULT_KEY_FRONT 'Z'

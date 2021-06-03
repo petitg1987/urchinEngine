@@ -1,6 +1,6 @@
 #include <utility>
 
-#include "AIObject.h"
+#include <input/AIObject.h>
 #include <input/AIEntity.h>
 
 namespace urchin {

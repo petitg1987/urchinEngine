@@ -2,7 +2,7 @@
 #include <cassert>
 #include <algorithm>
 
-#include "CollisionHeightfieldShape.h"
+#include <shape/CollisionHeightfieldShape.h>
 
 namespace urchin {
 

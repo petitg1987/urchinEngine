@@ -1,4 +1,4 @@
-#include "DebugLabelHelper.h"
+#include <graphic/helper/DebugLabelHelper.h>
 #include <graphic/setup/GraphicService.h>
 
 namespace urchin {

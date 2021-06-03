@@ -5,7 +5,7 @@
 
 #include <graphic/setup/handler/QueueHandler.h>
 #include <graphic/setup/GraphicService.h>
-#include "SwapChainHandler.h"
+#include <graphic/render/handler/SwapChainHandler.h>
 
 namespace urchin {
 

@@ -1,4 +1,4 @@
-#include "TriangleShape3D.h"
+#include <math/geometry/3d/shape/TriangleShape3D.h>
 #include <math/geometry/3d/object/Triangle3D.h>
 #include <math/algebra/point/Point4.h>
 

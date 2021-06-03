@@ -1,4 +1,4 @@
-#include "ButtonStyleHelper.h"
+#include <widget/style/ButtonStyleHelper.h>
 
 namespace urchin {
 

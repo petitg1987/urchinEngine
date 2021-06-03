@@ -1,7 +1,7 @@
 #include <cstring>
 #include <cstdlib>
 
-#include "IndexContainer.h"
+#include <graphic/render/model/IndexContainer.h>
 
 namespace urchin {
 

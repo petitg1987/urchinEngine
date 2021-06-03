@@ -3,7 +3,7 @@
 #include <UrchinCommon.h>
 #include <UrchinAIEngine.h>
 
-#include "MonotonePolygonTest.h"
+#include <ai/path/navmesh/triangulation/MonotonePolygonTest.h>
 #include <AssertHelper.h>
 using namespace urchin;
 

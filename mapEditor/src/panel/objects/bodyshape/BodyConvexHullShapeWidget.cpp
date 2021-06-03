@@ -2,7 +2,7 @@
 #include <QVariant>
 #include <QHeaderView>
 
-#include "BodyConvexHullShapeWidget.h"
+#include <panel/objects/bodyshape/BodyConvexHullShapeWidget.h>
 #include <widget/style/LabelStyleHelper.h>
 #include <widget/style/ButtonStyleHelper.h>
 #include <panel/objects/bodyshape/support/SpinBoxDelegate.h>

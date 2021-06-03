@@ -1,6 +1,6 @@
 #include <utility>
 
-#include "CSGPolygonPath.h"
+#include <path/navmesh/csg/CSGPolygonPath.h>
 
 namespace urchin {
 

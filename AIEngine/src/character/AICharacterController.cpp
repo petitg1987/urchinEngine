@@ -1,4 +1,4 @@
-#include "AICharacterController.h"
+#include <character/AICharacterController.h>
 
 #define CHANGE_PATH_POINT_DISTANCE 0.4f
 

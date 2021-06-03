@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "TerrainMaterial.h"
+#include <scene/renderer3d/landscape/terrain/TerrainMaterial.h>
 #include <resources/MediaManager.h>
 
 namespace urchin {

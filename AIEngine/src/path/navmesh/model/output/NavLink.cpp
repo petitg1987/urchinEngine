@@ -1,4 +1,4 @@
-#include "NavLink.h"
+#include <path/navmesh/model/output/NavLink.h>
 #include <path/navmesh/model/output/NavPolygon.h>
 #include <path/navmesh/model/output/NavTriangle.h>
 

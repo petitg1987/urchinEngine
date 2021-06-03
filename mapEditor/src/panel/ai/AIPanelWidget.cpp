@@ -2,7 +2,7 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
 
-#include "AIPanelWidget.h"
+#include <panel/ai/AIPanelWidget.h>
 #include <widget/style/GroupBoxStyleHelper.h>
 #include <widget/style/SpinBoxStyleHelper.h>
 

@@ -1,4 +1,4 @@
-#include "PathRequest.h"
+#include <path/PathRequest.h>
 
 namespace urchin {
     PathRequest::PathRequest(const Point3<float>& startPoint, const Point3<float>& endPoint) :

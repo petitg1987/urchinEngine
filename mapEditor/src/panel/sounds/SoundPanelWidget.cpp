@@ -1,6 +1,6 @@
 #include <QtWidgets/QHBoxLayout>
 
-#include "SoundPanelWidget.h"
+#include <panel/sounds/SoundPanelWidget.h>
 #include <widget/style/GroupBoxStyleHelper.h>
 #include <widget/style/SpinBoxStyleHelper.h>
 #include <widget/style/ButtonStyleHelper.h>

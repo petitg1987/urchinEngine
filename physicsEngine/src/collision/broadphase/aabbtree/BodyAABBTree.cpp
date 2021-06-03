@@ -1,6 +1,6 @@
 #include <limits>
 
-#include "BodyAABBTree.h"
+#include <collision/broadphase/aabbtree/BodyAABBTree.h>
 #include <collision/broadphase/VectorPairContainer.h>
 
 namespace urchin {

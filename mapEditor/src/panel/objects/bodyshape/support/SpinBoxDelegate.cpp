@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <QtWidgets/QDoubleSpinBox>
 
-#include "SpinBoxDelegate.h"
+#include <panel/objects/bodyshape/support/SpinBoxDelegate.h>
 #include <widget/style/SpinBoxStyleHelper.h>
 
 namespace urchin {

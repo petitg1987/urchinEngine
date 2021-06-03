@@ -2,7 +2,7 @@
 #include <limits>
 #include <utility>
 
-#include "SVGPolygon.h"
+#include <io/svg/shape/SVGPolygon.h>
 
 namespace urchin {
     SVGPolygon::SVGPolygon(std::vector<Point2<float>> polygonPoints, SVGColor color, float opacity) :

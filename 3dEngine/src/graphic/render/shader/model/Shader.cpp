@@ -1,4 +1,4 @@
-#include "Shader.h"
+#include <graphic/render/shader/model/Shader.h>
 #include <graphic/setup/GraphicService.h>
 #include <graphic/helper/DebugLabelHelper.h>
 

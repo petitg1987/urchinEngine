@@ -1,4 +1,4 @@
-#include "ConvexHull3D.h"
+#include <math/geometry/3d/object/ConvexHull3D.h>
 #include <math/geometry/3d/util/ResizeConvexHull3DService.h>
 
 namespace urchin {

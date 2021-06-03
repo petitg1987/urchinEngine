@@ -1,6 +1,6 @@
 #include <QtWidgets/QLabel>
 
-#include "BodyConeShapeWidget.h"
+#include <panel/objects/bodyshape/BodyConeShapeWidget.h>
 #include <widget/style/SpinBoxStyleHelper.h>
 
 namespace urchin {

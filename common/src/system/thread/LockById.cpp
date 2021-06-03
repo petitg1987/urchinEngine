@@ -1,6 +1,6 @@
 #include <utility>
 
-#include "LockById.h"
+#include <system/thread/LockById.h>
 
 namespace urchin {
 

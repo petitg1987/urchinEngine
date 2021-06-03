@@ -1,4 +1,4 @@
-#include "ModelProduceShadowFilter.h"
+#include <scene/renderer3d/lighting/shadow/filter/ModelProduceShadowFilter.h>
 
 namespace urchin {
 

@@ -2,7 +2,7 @@
 #include <sstream>
 #include <UrchinCommon.h>
 
-#include "GJKContinuousCollisionAlgorithm.h"
+#include <collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h>
 #include <collision/narrowphase/algorithm/util/AlgorithmResultAllocator.h>
 #include <collision/narrowphase/algorithm/util/Simplex.h>
 

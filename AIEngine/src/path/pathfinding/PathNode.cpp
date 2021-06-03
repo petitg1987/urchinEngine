@@ -1,7 +1,7 @@
 #include <cassert>
 #include <utility>
 
-#include "PathNode.h"
+#include <path/pathfinding/PathNode.h>
 
 namespace urchin {
     PathNode::PathNode(std::shared_ptr<NavTriangle> navTriangle, float gScore, float hScore) :

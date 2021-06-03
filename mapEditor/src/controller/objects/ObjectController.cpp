@@ -1,8 +1,8 @@
 #include <stdexcept>
 #include <memory>
-#include "Urchin3dEngine.h"
+#include <controller/objects/ObjectController.h>
 
-#include "ObjectController.h"
+#include <controller/objects/ObjectController.h>
 #include <panel/objects/bodyshape/support/DefaultBodyShapeCreator.h>
 
 namespace urchin {

@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <utility>
 
-#include "TextureRenderer.h"
+#include <texture/render/TextureRenderer.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>
 #include <graphic/render/GenericRendererBuilder.h>
 

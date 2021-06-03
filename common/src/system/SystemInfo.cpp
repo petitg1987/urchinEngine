@@ -14,7 +14,7 @@
     #include <util/TypeConverter.h>
 #endif
 
-#include "SystemInfo.h"
+#include <system/SystemInfo.h>
 #include <util/StringUtil.h>
 #include <util/FileUtil.h>
 

@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <UrchinCommon.h>
 
-#include "GaussianBlurFilter.h"
+#include <texture/filter/gaussianblur/GaussianBlurFilter.h>
 #include <texture/filter/gaussianblur/GaussianBlurFilterBuilder.h>
 #include <graphic/render/GenericRendererBuilder.h>
 

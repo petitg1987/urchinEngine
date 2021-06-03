@@ -1,4 +1,4 @@
-#include "LineSegment3D.h"
+#include <math/geometry/3d/object/LineSegment3D.h>
 
 namespace urchin {
 

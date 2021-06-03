@@ -1,4 +1,4 @@
-#include "TextureReader.h"
+#include <graphic/texture/TextureReader.h>
 
 namespace urchin {
 

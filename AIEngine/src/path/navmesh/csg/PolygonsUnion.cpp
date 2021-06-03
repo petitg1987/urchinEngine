@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "PolygonsUnion.h"
+#include <path/navmesh/csg/PolygonsUnion.h>
 
 namespace urchin {
 

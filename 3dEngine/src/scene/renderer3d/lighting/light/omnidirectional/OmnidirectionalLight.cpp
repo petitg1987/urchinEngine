@@ -2,7 +2,7 @@
 #include <cmath>
 #include <limits>
 
-#include "OmnidirectionalLight.h"
+#include <scene/renderer3d/lighting/light/omnidirectional/OmnidirectionalLight.h>
 
 namespace urchin {
 

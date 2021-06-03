@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "Model.h"
+#include <scene/renderer3d/model/Model.h>
 #include <resources/MediaManager.h>
 #include <resources/geometry/aabbox/AABBoxModel.h>
 

@@ -2,7 +2,7 @@
 #include <cppunit/TestCaller.h>
 #include <UrchinCommon.h>
 
-#include "TriangulationTest.h"
+#include <ai/path/navmesh/triangulation/TriangulationTest.h>
 #include <AssertHelper.h>
 using namespace urchin;
 

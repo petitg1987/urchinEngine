@@ -1,4 +1,4 @@
-#include "EagerPropertyLoader.h"
+#include <utils/property/EagerPropertyLoader.h>
 
 namespace urchin {
     EagerPropertyLoader::EagerPropertyLoader() :

@@ -2,7 +2,7 @@
 #include <memory>
 #include <stdexcept>
 
-#include "CommandExecutor.h"
+#include <system/CommandExecutor.h>
 #include <util/StringUtil.h>
 
 namespace urchin {

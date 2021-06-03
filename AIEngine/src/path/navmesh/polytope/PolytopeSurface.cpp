@@ -1,6 +1,6 @@
 #include <limits>
 
-#include "PolytopeSurface.h"
+#include <path/navmesh/polytope/PolytopeSurface.h>
 #include <path/navmesh/polytope/Polytope.h>
 
 namespace urchin {

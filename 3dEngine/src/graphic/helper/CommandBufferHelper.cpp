@@ -1,4 +1,4 @@
-#include "CommandBufferHelper.h"
+#include <graphic/helper/CommandBufferHelper.h>
 #include <graphic/setup/GraphicService.h>
 
 namespace urchin {

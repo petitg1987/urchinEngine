@@ -1,6 +1,6 @@
 #include <utility>
 
-#include "AIEntity.h"
+#include <input/AIEntity.h>
 #include <path/navmesh/model/NavObject.h>
 
 namespace urchin {

@@ -2,7 +2,7 @@
 #include <cppunit/TestCaller.h>
 #include <UrchinCommon.h>
 
-#include "EdgeLinkDetectionTest.h"
+#include <ai/path/navmesh/jump/EdgeLinkDetectionTest.h>
 #include <AssertHelper.h>
 using namespace urchin;
 

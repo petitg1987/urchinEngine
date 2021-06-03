@@ -1,6 +1,6 @@
 #include <QtWidgets/QHBoxLayout>
 
-#include "LightPanelWidget.h"
+#include <panel/lights/LightPanelWidget.h>
 #include <widget/style/GroupBoxStyleHelper.h>
 #include <widget/style/SpinBoxStyleHelper.h>
 #include <widget/style/ButtonStyleHelper.h>

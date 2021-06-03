@@ -1,4 +1,4 @@
-#include "SkyController.h"
+#include <controller/sky/SkyController.h>
 
 namespace urchin {
     SkyController::SkyController() :

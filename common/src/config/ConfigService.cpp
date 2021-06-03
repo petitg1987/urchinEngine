@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "ConfigService.h"
+#include <config/ConfigService.h>
 #include <config/FileSystem.h>
 #include <io/file/PropertyFileHandler.h>
 #include <util/TypeConverter.h>

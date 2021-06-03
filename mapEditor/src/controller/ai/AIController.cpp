@@ -1,7 +1,7 @@
 #include <memory>
-#include "UrchinAIEngine.h"
+#include <controller/ai/AIController.h>
 
-#include "AIController.h"
+#include <controller/ai/AIController.h>
 
 namespace urchin {
 

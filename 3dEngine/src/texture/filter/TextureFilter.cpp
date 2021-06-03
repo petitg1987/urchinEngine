@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "TextureFilter.h"
+#include <texture/filter/TextureFilter.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>
 #include <graphic/render/GenericRendererBuilder.h>
 

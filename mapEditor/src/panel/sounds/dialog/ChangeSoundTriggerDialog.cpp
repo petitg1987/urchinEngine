@@ -2,7 +2,7 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QVariant>
 
-#include "ChangeSoundTriggerDialog.h"
+#include <panel/sounds/dialog/ChangeSoundTriggerDialog.h>
 
 namespace urchin {
 

@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <QtWidgets/QGroupBox>
 
-#include "BodyCompoundShapeWidget.h"
+#include <panel/objects/bodyshape/BodyCompoundShapeWidget.h>
 #include <widget/style/LabelStyleHelper.h>
 #include <widget/style/GroupBoxStyleHelper.h>
 #include <widget/style/SpinBoxStyleHelper.h>

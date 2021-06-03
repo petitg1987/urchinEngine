@@ -5,7 +5,7 @@
 #include <QtWidgets/QFileDialog>
 #include <UrchinCommon.h>
 
-#include "NewTerrainDialog.h"
+#include <panel/terrains/dialog/NewTerrainDialog.h>
 #include <widget/style/LabelStyleHelper.h>
 #include <widget/style/ButtonStyleHelper.h>
 

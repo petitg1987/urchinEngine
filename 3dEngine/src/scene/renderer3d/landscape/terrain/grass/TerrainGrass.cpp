@@ -4,7 +4,7 @@
 #include <thread>
 #include <functional>
 
-#include "TerrainGrass.h"
+#include <scene/renderer3d/landscape/terrain/grass/TerrainGrass.h>
 #include <resources/MediaManager.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>
 #include <graphic/render/GenericRendererBuilder.h>

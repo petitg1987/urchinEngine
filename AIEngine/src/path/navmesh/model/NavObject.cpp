@@ -1,4 +1,4 @@
-#include "NavObject.h"
+#include <path/navmesh/model/NavObject.h>
 
 namespace urchin {
 

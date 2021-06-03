@@ -1,7 +1,7 @@
 #include <cmath>
 #include <cassert>
 
-#include "EdgeLinkResult.h"
+#include <path/navmesh/link/EdgeLinkResult.h>
 
 namespace urchin {
 

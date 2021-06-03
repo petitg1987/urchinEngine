@@ -1,4 +1,4 @@
-#include "Mesh.h"
+#include <scene/renderer3d/model/Mesh.h>
 #include <resources/model/MeshService.h>
 #include <graphic/render/GenericRendererBuilder.h>
 

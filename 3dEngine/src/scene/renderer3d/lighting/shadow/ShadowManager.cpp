@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <string>
 
-#include "ShadowManager.h"
+#include <scene/renderer3d/lighting/shadow/ShadowManager.h>
 #include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
 #include <texture/filter/TextureFilter.h>
 #include <texture/filter/gaussianblur/GaussianBlurFilterBuilder.h>

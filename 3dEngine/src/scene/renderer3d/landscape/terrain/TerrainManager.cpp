@@ -1,6 +1,6 @@
 #include <algorithm>
 
-#include "TerrainManager.h"
+#include <scene/renderer3d/landscape/terrain/TerrainManager.h>
 
 
 

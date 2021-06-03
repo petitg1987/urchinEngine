@@ -1,6 +1,6 @@
 #include <QHeaderView>
 
-#include "TerrainTableView.h"
+#include <panel/terrains/TerrainTableView.h>
 
 namespace urchin {
     TerrainTableView::TerrainTableView(QWidget* parent) :

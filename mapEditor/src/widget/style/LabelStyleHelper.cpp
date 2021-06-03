@@ -1,4 +1,4 @@
-#include "LabelStyleHelper.h"
+#include <widget/style/LabelStyleHelper.h>
 
 namespace urchin {
 

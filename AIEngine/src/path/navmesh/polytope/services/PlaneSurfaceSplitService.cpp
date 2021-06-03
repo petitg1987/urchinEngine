@@ -1,4 +1,4 @@
-#include "PlaneSurfaceSplitService.h"
+#include <path/navmesh/polytope/services/PlaneSurfaceSplitService.h>
 
 namespace urchin {
     PlaneSurfaceSplitService::PlaneSurfaceSplitService(float surfaceMaxSize) :

@@ -1,4 +1,4 @@
-#include "CSGPolygon.h"
+#include <path/navmesh/csg/CSGPolygon.h>
 
 namespace urchin {
 

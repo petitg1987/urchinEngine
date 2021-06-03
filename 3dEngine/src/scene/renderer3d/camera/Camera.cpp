@@ -1,6 +1,6 @@
 #include <limits>
 
-#include "Camera.h"
+#include <scene/renderer3d/camera/Camera.h>
 
 namespace urchin {
 

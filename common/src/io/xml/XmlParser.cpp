@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "XmlParser.h"
+#include <io/xml/XmlParser.h>
 #include <config/FileSystem.h>
 
 namespace urchin {

@@ -1,6 +1,6 @@
 #include <string>
 
-#include "SceneManager.h"
+#include <scene/SceneManager.h>
 #include <graphic/render/target/RenderTarget.h>
 
 #define START_FPS 1000.0f //high number of FPS to avoid pass through the ground at startup

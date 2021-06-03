@@ -1,4 +1,4 @@
-#include "FogManager.h"
+#include <scene/renderer3d/landscape/fog/FogManager.h>
 
 namespace urchin {
 

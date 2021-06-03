@@ -1,6 +1,6 @@
 #include <utility>
 
-#include "AIShape.h"
+#include <input/AIShape.h>
 
 namespace urchin {
 

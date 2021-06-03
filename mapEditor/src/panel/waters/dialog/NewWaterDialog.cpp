@@ -3,7 +3,7 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
 
-#include "NewWaterDialog.h"
+#include <panel/waters/dialog/NewWaterDialog.h>
 #include <widget/style/LabelStyleHelper.h>
 
 namespace urchin {

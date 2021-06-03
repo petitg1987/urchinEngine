@@ -1,4 +1,4 @@
-#include "SphereShape.h"
+#include <math/geometry/3d/shape/SphereShape.h>
 #include <math/geometry/3d/object/Sphere.h>
 
 namespace urchin {

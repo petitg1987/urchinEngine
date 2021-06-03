@@ -2,7 +2,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLabel>
 
-#include "NotSavedDialog.h"
+#include <widget/dialog/NotSavedDialog.h>
 
 namespace urchin {
 

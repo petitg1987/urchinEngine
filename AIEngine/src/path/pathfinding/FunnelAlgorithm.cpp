@@ -1,7 +1,7 @@
 #include <cassert>
 #include <utility>
 
-#include "FunnelAlgorithm.h"
+#include <path/pathfinding/FunnelAlgorithm.h>
 #include <path/navmesh/model/output/NavPolygon.h>
 
 namespace urchin {

@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <UrchinCommon.h>
 
-#include "AIManager.h"
+#include <AIManager.h>
 #include <path/pathfinding/PathfindingAStar.h>
 
 namespace urchin {

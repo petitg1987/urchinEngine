@@ -1,6 +1,6 @@
 #include <cmath>
 
-#include "EdgeLinkDetection.h"
+#include <path/navmesh/link/EdgeLinkDetection.h>
 
 namespace urchin {
     EdgeLinkDetection::EdgeLinkDetection(float jumpMaxLength) :

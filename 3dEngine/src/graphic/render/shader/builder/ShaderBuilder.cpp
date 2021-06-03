@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <fstream>
 
-#include "ShaderBuilder.h"
+#include <graphic/render/shader/builder/ShaderBuilder.h>
 #include <graphic/render/shader/config/ShaderConfig.h>
 
 namespace urchin {

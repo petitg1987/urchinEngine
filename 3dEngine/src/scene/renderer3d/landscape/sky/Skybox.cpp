@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "Skybox.h"
+#include <scene/renderer3d/landscape/sky/Skybox.h>
 #include <resources/MediaManager.h>
 #include <graphic/render/GenericRendererBuilder.h>
 #include <graphic/texture/Texture.h>

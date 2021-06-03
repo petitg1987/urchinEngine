@@ -1,6 +1,6 @@
 #include <algorithm>
 
-#include "AlgorithmResultAllocator.h"
+#include <collision/narrowphase/algorithm/util/AlgorithmResultAllocator.h>
 
 namespace urchin {
 

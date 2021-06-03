@@ -1,4 +1,4 @@
-#include "SceneWindowController.h"
+#include <scene/SceneWindowController.h>
 
 namespace urchin {
 

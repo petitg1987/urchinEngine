@@ -1,4 +1,4 @@
-#include "SVGLine.h"
+#include <io/svg/shape/SVGLine.h>
 
 namespace urchin {
     SVGLine::SVGLine(const LineSegment2D<float>& line, SVGColor color, float opacity) :

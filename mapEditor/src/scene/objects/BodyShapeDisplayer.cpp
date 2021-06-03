@@ -1,9 +1,9 @@
 #include <memory>
 #include <stdexcept>
 #include <UrchinCommon.h>
-#include "UrchinPhysicsEngine.h"
+#include <scene/objects/BodyShapeDisplayer.h>
 
-#include "BodyShapeDisplayer.h"
+#include <scene/objects/BodyShapeDisplayer.h>
 
 namespace urchin {
 

@@ -1,7 +1,7 @@
 #include <cassert>
 #include <UrchinCommon.h>
 
-#include "PolytopeBuilder.h"
+#include <path/navmesh/polytope/PolytopeBuilder.h>
 #include <path/navmesh/polytope/PolytopePlaneSurface.h>
 #include <path/navmesh/polytope/PolytopeTerrainSurface.h>
 #include <path/navmesh/polytope/services/TerrainObstacleService.h>

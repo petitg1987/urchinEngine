@@ -1,6 +1,6 @@
 #include <cassert>
 
-#include "IndexedTriangle2D.h"
+#include <math/geometry/2d/IndexedTriangle2D.h>
 
 namespace urchin {
 

@@ -1,4 +1,4 @@
-#include "ScopeProfiler.h"
+#include <profiler/ScopeProfiler.h>
 
 namespace urchin {
     ScopeProfiler::ScopeProfiler(const std::unique_ptr<Profiler>& profiler, const std::string& nodeName) :

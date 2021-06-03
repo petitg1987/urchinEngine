@@ -1,7 +1,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QHBoxLayout>
 
-#include "SoundBoxShapeWidget.h"
+#include <panel/sounds/soundshape/SoundBoxShapeWidget.h>
 #include <widget/style/SpinBoxStyleHelper.h>
 #include <widget/style/ComboBoxStyleHelper.h>
 

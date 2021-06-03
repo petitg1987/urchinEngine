@@ -1,6 +1,6 @@
 #include <cassert>
 
-#include "MapSerializer.h"
+#include <io/map/MapSerializer.h>
 #include <util/StringUtil.h>
 
 namespace urchin {

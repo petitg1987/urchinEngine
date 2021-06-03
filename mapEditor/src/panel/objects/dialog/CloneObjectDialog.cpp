@@ -3,7 +3,7 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
 
-#include "CloneObjectDialog.h"
+#include <panel/objects/dialog/CloneObjectDialog.h>
 #include <widget/style/LabelStyleHelper.h>
 
 namespace urchin {

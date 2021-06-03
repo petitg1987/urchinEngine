@@ -1,4 +1,4 @@
-#include "SVGCircle.h"
+#include <io/svg/shape/SVGCircle.h>
 
 namespace urchin {
     SVGCircle::SVGCircle(const Point2<float>& center, float radius, SVGColor color, float opacity) :

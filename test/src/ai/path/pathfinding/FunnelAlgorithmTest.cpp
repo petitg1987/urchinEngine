@@ -3,7 +3,7 @@
 #include <UrchinCommon.h>
 #include <UrchinAIEngine.h>
 
-#include "FunnelAlgorithmTest.h"
+#include <ai/path/pathfinding/FunnelAlgorithmTest.h>
 #include <AssertHelper.h>
 using namespace urchin;
 

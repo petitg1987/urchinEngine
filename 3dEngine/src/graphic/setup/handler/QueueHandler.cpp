@@ -1,7 +1,7 @@
 #include <vector>
 #include <cassert>
 
-#include "QueueHandler.h"
+#include <graphic/setup/handler/QueueHandler.h>
 
 namespace urchin {
 

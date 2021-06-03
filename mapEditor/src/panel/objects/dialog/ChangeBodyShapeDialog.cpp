@@ -2,7 +2,7 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QVariant>
 
-#include "ChangeBodyShapeDialog.h"
+#include <panel/objects/dialog/ChangeBodyShapeDialog.h>
 #include <panel/objects/bodyshape/BodyShapeWidget.h>
 
 namespace urchin {

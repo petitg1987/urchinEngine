@@ -1,7 +1,7 @@
 #include <cmath>
 #include <algorithm>
 
-#include "Frustum.h"
+#include <math/geometry/3d/object/Frustum.h>
 #include <math/geometry/3d/Line3D.h>
 #include <math/algebra/point/Point4.h>
 #include <math/algebra/MathValue.h>

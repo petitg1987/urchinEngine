@@ -2,7 +2,7 @@
 #include <cppunit/TestCaller.h>
 #include <UrchinCommon.h>
 
-#include "SystemInfoTest.h"
+#include <common/system/SystemInfoTest.h>
 #include <AssertHelper.h>
 using namespace urchin;
 

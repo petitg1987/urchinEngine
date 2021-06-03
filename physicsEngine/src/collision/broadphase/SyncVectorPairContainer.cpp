@@ -1,4 +1,4 @@
-#include "SyncVectorPairContainer.h"
+#include <collision/broadphase/SyncVectorPairContainer.h>
 
 namespace urchin {
 

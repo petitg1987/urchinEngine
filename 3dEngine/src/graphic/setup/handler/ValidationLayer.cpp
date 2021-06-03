@@ -1,6 +1,6 @@
 #include <UrchinCommon.h>
 
-#include "ValidationLayer.h"
+#include <graphic/setup/handler/ValidationLayer.h>
 using namespace urchin;
 
 namespace urchin {

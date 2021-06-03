@@ -1,6 +1,6 @@
 #include <vector>
 
-#include "ConcaveAnyCollisionAlgorithm.h"
+#include <collision/narrowphase/algorithm/ConcaveAnyCollisionAlgorithm.h>
 #include <shape/CollisionTriangleShape.h>
 #include <shape/CollisionConcaveShape.h>
 

@@ -1,4 +1,4 @@
-#include "StatusBarStateData.h"
+#include <widget/controller/statusbar/StatusBarStateData.h>
 
 namespace urchin {
     StatusBarStateData::StatusBarStateData(const std::vector<std::string>& labels, StatusBarState previousState) :

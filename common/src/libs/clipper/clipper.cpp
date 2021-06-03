@@ -42,7 +42,7 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "clipper.h"
+#include <libs/clipper/clipper.h>
 #include <cmath>
 #include <vector>
 #include <algorithm>

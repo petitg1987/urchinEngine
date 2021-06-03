@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "SunLight.h"
+#include <scene/renderer3d/lighting/light/sun/SunLight.h>
 
 namespace urchin {
 

@@ -1,4 +1,4 @@
-#include "PathPoint.h"
+#include <path/PathPoint.h>
 
 namespace urchin {
 

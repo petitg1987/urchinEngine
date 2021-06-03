@@ -1,6 +1,6 @@
 #include <algorithm>
 
-#include "PolygonsSubtraction.h"
+#include <path/navmesh/csg/PolygonsSubtraction.h>
 #include <path/navmesh/csg/CSGPolygonPath.h>
 
 namespace urchin {

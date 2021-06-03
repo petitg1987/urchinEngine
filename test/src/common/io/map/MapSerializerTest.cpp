@@ -1,6 +1,6 @@
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "MapSerializerTest.h"
+#include <common/io/map/MapSerializerTest.h>
 #include <AssertHelper.h>
 using namespace urchin;
 

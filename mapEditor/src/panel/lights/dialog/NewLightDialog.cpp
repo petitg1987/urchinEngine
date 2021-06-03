@@ -5,7 +5,7 @@
 #include <QVariant>
 
 #include <UrchinCommon.h>
-#include "NewLightDialog.h"
+#include <panel/lights/dialog/NewLightDialog.h>
 #include <widget/style/LabelStyleHelper.h>
 
 namespace urchin {

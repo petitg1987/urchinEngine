@@ -3,7 +3,7 @@
 #include <UrchinCommon.h>
 #include <UrchinAIEngine.h>
 
-#include "TerrainObstacleServiceTest.h"
+#include <ai/path/navmesh/polytope/services/TerrainObstacleServiceTest.h>
 #include <AssertHelper.h>
 using namespace urchin;
 

@@ -2,7 +2,7 @@
 #include <cppunit/TestCaller.h>
 #include <UrchinCommon.h>
 
-#include "FileUtilTest.h"
+#include <common/util/FileUtilTest.h>
 #include <AssertHelper.h>
 using namespace urchin;
 

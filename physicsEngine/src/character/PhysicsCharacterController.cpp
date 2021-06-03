@@ -2,7 +2,7 @@
 #include <limits>
 #include <cmath>
 
-#include "PhysicsCharacterController.h"
+#include <character/PhysicsCharacterController.h>
 #include <collision/ManifoldContactPoint.h>
 #include <PhysicsWorld.h>
 

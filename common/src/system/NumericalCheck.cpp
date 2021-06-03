@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "NumericalCheck.h"
+#include <system/NumericalCheck.h>
 
 namespace urchin {
 

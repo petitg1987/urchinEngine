@@ -1,7 +1,7 @@
 #include <limits>
 #include <algorithm>
 
-#include "ResizeConvexHull3DService.h"
+#include <math/geometry/3d/util/ResizeConvexHull3DService.h>
 #include <math/geometry/3d/IndexedTriangle3D.h>
 
 namespace urchin {

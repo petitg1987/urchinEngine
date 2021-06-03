@@ -1,4 +1,4 @@
-#include "TerrainSplitService.h"
+#include <path/navmesh/polytope/services/TerrainSplitService.h>
 
 namespace urchin {
     TerrainSplitService::TerrainSplitService(float terrainMaxSize) :

@@ -1,4 +1,4 @@
-#include "SkyManager.h"
+#include <scene/renderer3d/landscape/sky/SkyManager.h>
 
 namespace urchin {
     SkyManager::SkyManager(std::shared_ptr<RenderTarget> renderTarget) :

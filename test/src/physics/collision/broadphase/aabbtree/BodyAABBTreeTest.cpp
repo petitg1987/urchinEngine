@@ -3,7 +3,7 @@
 #include <UrchinPhysicsEngine.h>
 
 #include <AssertHelper.h>
-#include "BodyAABBTreeTest.h"
+#include <physics/collision/broadphase/aabbtree/BodyAABBTreeTest.h>
 using namespace urchin;
 
 void BodyAABBTreeTest::twoBodiesPairedAndRemove() {

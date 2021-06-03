@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <utility>
 
-#include "ProfilerNode.h"
+#include <profiler/ProfilerNode.h>
 
 namespace urchin {
     ProfilerNode::ProfilerNode(std::string name, ProfilerNode* parent) :

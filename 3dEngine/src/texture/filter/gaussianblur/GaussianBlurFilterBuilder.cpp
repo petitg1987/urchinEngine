@@ -1,4 +1,4 @@
-#include "GaussianBlurFilterBuilder.h"
+#include <texture/filter/gaussianblur/GaussianBlurFilterBuilder.h>
 
 namespace urchin {
 

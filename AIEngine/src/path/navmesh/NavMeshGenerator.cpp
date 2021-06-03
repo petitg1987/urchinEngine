@@ -3,7 +3,7 @@
 #include <string>
 #include <numeric>
 
-#include "NavMeshGenerator.h"
+#include <path/navmesh/NavMeshGenerator.h>
 #include <input/AIObject.h>
 #include <input/AITerrain.h>
 #include <path/navmesh/polytope/PolytopePlaneSurface.h>

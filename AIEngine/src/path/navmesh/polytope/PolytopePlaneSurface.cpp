@@ -1,6 +1,6 @@
 #include <algorithm>
 
-#include "PolytopePlaneSurface.h"
+#include <path/navmesh/polytope/PolytopePlaneSurface.h>
 
 namespace urchin {
 

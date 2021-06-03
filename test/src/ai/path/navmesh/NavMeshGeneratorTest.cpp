@@ -3,7 +3,7 @@
 #include <memory>
 #include <UrchinCommon.h>
 
-#include "NavMeshGeneratorTest.h"
+#include <ai/path/navmesh/NavMeshGeneratorTest.h>
 #include <AssertHelper.h>
 using namespace urchin;
 

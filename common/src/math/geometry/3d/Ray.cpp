@@ -1,4 +1,4 @@
-#include "Ray.h"
+#include <math/geometry/3d/Ray.h>
 
 namespace urchin {
 

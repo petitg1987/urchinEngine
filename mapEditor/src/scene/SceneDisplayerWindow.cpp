@@ -1,8 +1,8 @@
 #include <utility>
 #include <QtWidgets/QShortcut>
 
-#include "SceneDisplayerWindow.h"
-#include "SceneWindowController.h"
+#include <scene/SceneDisplayerWindow.h>
+#include <scene/SceneWindowController.h>
 #include <widget/controller/mouse/MouseController.h>
 
 #define PICKING_RAY_LENGTH 100.0f

@@ -1,6 +1,6 @@
 #include <cassert>
 
-#include "NavLinkConstraint.h"
+#include <path/navmesh/model/output/NavLinkConstraint.h>
 
 namespace urchin {
     NavLinkConstraint::NavLinkConstraint(float sourceEdgeLinkStartRange, float sourceEdgeLinkEndRange, std::size_t targetEdgeIndex) :

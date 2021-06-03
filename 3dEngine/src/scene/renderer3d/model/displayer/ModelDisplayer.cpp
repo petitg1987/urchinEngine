@@ -1,6 +1,6 @@
 #include <memory>
 
-#include "ModelDisplayer.h"
+#include <scene/renderer3d/model/displayer/ModelDisplayer.h>
 #include <graphic/render/GenericRendererBuilder.h>
 
 namespace urchin {
