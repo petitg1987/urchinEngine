@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_AISHAPE_H
 #define URCHINENGINE_AISHAPE_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 namespace urchin {
 

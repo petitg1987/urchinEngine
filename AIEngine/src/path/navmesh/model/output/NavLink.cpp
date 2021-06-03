@@ -1,7 +1,6 @@
 #include "NavLink.h"
-
-#include "path/navmesh/model/output/NavPolygon.h"
-#include "path/navmesh/model/output/NavTriangle.h"
+#include <path/navmesh/model/output/NavPolygon.h>
+#include <path/navmesh/model/output/NavTriangle.h>
 
 namespace urchin {
     NavLink::NavLink(NavLinkType linkType, std::size_t sourceEdgeIndex, const std::shared_ptr<NavTriangle>& targetTriangle, NavLinkConstraint* linkConstraint) :

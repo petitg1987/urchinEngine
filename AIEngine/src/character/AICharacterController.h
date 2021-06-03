@@ -3,10 +3,10 @@
 
 #include <memory>
 
-#include "AIManager.h"
-#include "character/AICharacter.h"
-#include "character/AICharacterEventHandler.h"
-#include "path/PathRequest.h"
+#include <AIManager.h>
+#include <character/AICharacter.h>
+#include <character/AICharacterEventHandler.h>
+#include <path/PathRequest.h>
 
 namespace urchin {
 

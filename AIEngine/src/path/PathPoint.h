@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_PATHPOINT_H
 #define URCHINENGINE_PATHPOINT_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 namespace urchin {
 

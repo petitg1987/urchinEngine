@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 namespace urchin {
 

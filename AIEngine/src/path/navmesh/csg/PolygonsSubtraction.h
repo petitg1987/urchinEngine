@@ -4,9 +4,9 @@
 #include <vector>
 #include <map>
 #include <string>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "CSGPolygon.h"
+#include <path/navmesh/csg/CSGPolygon.h>
 
 namespace urchin {
 

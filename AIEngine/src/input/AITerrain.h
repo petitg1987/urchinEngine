@@ -2,9 +2,9 @@
 #define URCHINENGINE_AITERRAIN_H
 
 #include <vector>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "input/AIEntity.h"
+#include <input/AIEntity.h>
 
 namespace urchin {
 

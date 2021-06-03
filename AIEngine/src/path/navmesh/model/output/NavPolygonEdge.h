@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_NAVPOLYGONEDGE_H
 #define URCHINENGINE_NAVPOLYGONEDGE_H
 
-#include "path/navmesh/model/output/NavTriangle.h"
+#include <path/navmesh/model/output/NavTriangle.h>
 
 #include <memory>
 

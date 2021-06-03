@@ -3,9 +3,9 @@
 
 #include <vector>
 #include <initializer_list>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "path/navmesh/polytope/PolytopeSurface.h"
+#include <path/navmesh/polytope/PolytopeSurface.h>
 
 namespace urchin {
 

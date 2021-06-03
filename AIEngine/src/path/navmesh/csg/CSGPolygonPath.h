@@ -1,8 +1,8 @@
 #ifndef URCHINENGINE_CSGPOLYGONPATH_H
 #define URCHINENGINE_CSGPOLYGONPATH_H
 
-#include "path/navmesh/csg/CSGPolygon.h"
-#include "UrchinCommon.h"
+#include <path/navmesh/csg/CSGPolygon.h>
+#include <UrchinCommon.h>
 
 namespace urchin {
 

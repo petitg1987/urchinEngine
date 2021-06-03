@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_AICHARACTER_H
 #define URCHINENGINE_AICHARACTER_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 namespace urchin {
 

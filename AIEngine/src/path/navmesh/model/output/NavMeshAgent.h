@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_NAVMESHAGENT_H
 #define URCHINENGINE_NAVMESHAGENT_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 namespace urchin {
 

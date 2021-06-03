@@ -2,10 +2,10 @@
 #define URCHINENGINE_POLYGONSUNION_H
 
 #include <vector>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "CSGPolygon.h"
-#include "path/navmesh/csg/CSGPolygonPath.h"
+#include <path/navmesh/csg/CSGPolygon.h>
+#include <path/navmesh/csg/CSGPolygonPath.h>
 
 namespace urchin {
 

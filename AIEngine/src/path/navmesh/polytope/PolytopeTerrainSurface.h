@@ -3,8 +3,8 @@
 
 #include <memory>
 
-#include "UrchinCommon.h"
-#include "path/navmesh/polytope/PolytopeSurface.h"
+#include <UrchinCommon.h>
+#include <path/navmesh/polytope/PolytopeSurface.h>
 
 namespace urchin {
 

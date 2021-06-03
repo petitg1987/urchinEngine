@@ -6,9 +6,9 @@
 #include <mutex>
 #include <atomic>
 
-#include "UrchinCommon.h"
-#include "input/AIEntity.h"
-#include "input/AIShape.h"
+#include <UrchinCommon.h>
+#include <input/AIEntity.h>
+#include <input/AIShape.h>
 
 namespace urchin {
 

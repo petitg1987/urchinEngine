@@ -1,8 +1,8 @@
 #include <algorithm>
 
 #include "PathfindingAStar.h"
-#include "path/pathfinding/PathPortal.h"
-#include "path/pathfinding/FunnelAlgorithm.h"
+#include <path/pathfinding/PathPortal.h>
+#include <path/pathfinding/FunnelAlgorithm.h>
 
 namespace urchin {
 

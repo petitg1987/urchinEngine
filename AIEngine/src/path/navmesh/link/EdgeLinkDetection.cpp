@@ -1,4 +1,5 @@
 #include <cmath>
+
 #include "EdgeLinkDetection.h"
 
 namespace urchin {

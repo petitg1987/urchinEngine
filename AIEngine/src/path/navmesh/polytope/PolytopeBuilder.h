@@ -3,15 +3,15 @@
 
 #include <iostream>
 #include <memory>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "input/AIObject.h"
-#include "input/AITerrain.h"
-#include "path/navmesh/polytope/Polytope.h"
-#include "path/navmesh/polytope/PolytopeSurface.h"
-#include "path/navmesh/polytope/services/TerrainSplitService.h"
-#include "path/navmesh/polytope//services/PlaneSurfaceSplitService.h"
-#include "path/navmesh/model/output/NavMeshAgent.h"
+#include <input/AIObject.h>
+#include <input/AITerrain.h>
+#include <path/navmesh/polytope/Polytope.h>
+#include <path/navmesh/polytope/PolytopeSurface.h>
+#include <path/navmesh/polytope/services/TerrainSplitService.h>
+#include <path/navmesh/polytope//services/PlaneSurfaceSplitService.h>
+#include <path/navmesh/model/output/NavMeshAgent.h>
 
 namespace urchin {
 

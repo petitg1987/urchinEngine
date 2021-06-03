@@ -1,8 +1,8 @@
 #include <utility>
 
 #include "Polytope.h"
-#include "path/navmesh/polytope/PolytopePlaneSurface.h"
-#include "path/navmesh/polytope/PolytopeTerrainSurface.h"
+#include <path/navmesh/polytope/PolytopePlaneSurface.h>
+#include <path/navmesh/polytope/PolytopeTerrainSurface.h>
 
 namespace urchin {
 

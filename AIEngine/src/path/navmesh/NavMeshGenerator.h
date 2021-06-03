@@ -6,17 +6,17 @@
 #include <mutex>
 #include <atomic>
 #include <set>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "input/AIWorld.h"
-#include "path/navmesh/model/NavObject.h"
-#include "path/navmesh/model/output/NavMeshAgent.h"
-#include "path/navmesh/model/output/NavMesh.h"
-#include "path/navmesh/model/output/NavPolygon.h"
-#include "path/navmesh/polytope/Polytope.h"
-#include "path/navmesh/polytope/PolytopeSurface.h"
-#include "path/navmesh/csg/CSGPolygon.h"
-#include "path/navmesh/triangulation/TriangulationAlgorithm.h"
+#include <input/AIWorld.h>
+#include <path/navmesh/model/NavObject.h>
+#include <path/navmesh/model/output/NavMeshAgent.h>
+#include <path/navmesh/model/output/NavMesh.h>
+#include <path/navmesh/model/output/NavPolygon.h>
+#include <path/navmesh/polytope/Polytope.h>
+#include <path/navmesh/polytope/PolytopeSurface.h>
+#include <path/navmesh/csg/CSGPolygon.h>
+#include <path/navmesh/triangulation/TriangulationAlgorithm.h>
 
 namespace urchin {
 

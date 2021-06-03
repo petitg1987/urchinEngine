@@ -2,9 +2,9 @@
 #define URCHINENGINE_TERRAINSPLITSERVICE_H
 
 #include <vector>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "input/AITerrain.h"
+#include <input/AITerrain.h>
 
 namespace urchin {
 

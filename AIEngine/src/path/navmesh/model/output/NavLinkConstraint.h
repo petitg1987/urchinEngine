@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_NAVLINKCONSTRAINT_H
 #define URCHINENGINE_NAVLINKCONSTRAINT_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 namespace urchin {
 

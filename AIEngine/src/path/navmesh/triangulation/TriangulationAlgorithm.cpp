@@ -3,7 +3,7 @@
 #include <algorithm>
 
 #include "TriangulationAlgorithm.h"
-#include "path/navmesh/triangulation/MonotonePolygonAlgorithm.h"
+#include <path/navmesh/triangulation/MonotonePolygonAlgorithm.h>
 
 namespace urchin {
 

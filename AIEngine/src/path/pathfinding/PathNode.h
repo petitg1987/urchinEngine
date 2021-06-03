@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "path/navmesh/model/output/NavTriangle.h"
+#include <path/navmesh/model/output/NavTriangle.h>
 
 namespace urchin {
 

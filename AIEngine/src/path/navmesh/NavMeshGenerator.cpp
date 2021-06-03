@@ -4,14 +4,14 @@
 #include <numeric>
 
 #include "NavMeshGenerator.h"
-#include "input/AIObject.h"
-#include "input/AITerrain.h"
-#include "path/navmesh/polytope/PolytopePlaneSurface.h"
-#include "path/navmesh/polytope/PolytopeBuilder.h"
-#include "path/navmesh/polytope/aabbtree/NavObjectAABBNodeData.h"
-#include "path/navmesh/csg/PolygonsUnion.h"
-#include "path/navmesh/csg/PolygonsSubtraction.h"
-#include "path/navmesh/link/EdgeLinkDetection.h"
+#include <input/AIObject.h>
+#include <input/AITerrain.h>
+#include <path/navmesh/polytope/PolytopePlaneSurface.h>
+#include <path/navmesh/polytope/PolytopeBuilder.h>
+#include <path/navmesh/polytope/aabbtree/NavObjectAABBNodeData.h>
+#include <path/navmesh/csg/PolygonsUnion.h>
+#include <path/navmesh/csg/PolygonsSubtraction.h>
+#include <path/navmesh/link/EdgeLinkDetection.h>
 
 #define OBSTACLE_REDUCE_SIZE 0.0002f
 

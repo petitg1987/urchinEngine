@@ -4,7 +4,7 @@
 #include <string>
 #include <mutex>
 #include <atomic>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 namespace urchin {
 

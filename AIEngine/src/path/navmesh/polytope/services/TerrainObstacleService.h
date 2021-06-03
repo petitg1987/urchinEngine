@@ -1,9 +1,9 @@
 #ifndef URCHINENGINE_TERRAINOBSTACLESERVICE_H
 #define URCHINENGINE_TERRAINOBSTACLESERVICE_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "path/navmesh/csg/CSGPolygon.h"
+#include <path/navmesh/csg/CSGPolygon.h>
 
 namespace urchin {
 

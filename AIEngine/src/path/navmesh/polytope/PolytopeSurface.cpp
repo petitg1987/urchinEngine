@@ -1,7 +1,7 @@
 #include <limits>
 
 #include "PolytopeSurface.h"
-#include "Polytope.h"
+#include <path/navmesh/polytope/Polytope.h>
 
 namespace urchin {
     PolytopeSurface::PolytopeSurface() :

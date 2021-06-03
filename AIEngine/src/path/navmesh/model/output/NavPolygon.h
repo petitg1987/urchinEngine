@@ -2,11 +2,11 @@
 #define URCHINENGINE_NAVPOLYGON_H
 
 #include <vector>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "path/navmesh/model/output/NavTriangle.h"
-#include "path/navmesh/model/output/NavPolygonEdge.h"
-#include "path/navmesh/model/output/topography/NavTopography.h"
+#include <path/navmesh/model/output/NavTriangle.h>
+#include <path/navmesh/model/output/NavPolygonEdge.h>
+#include <path/navmesh/model/output/topography/NavTopography.h>
 
 namespace urchin {
 

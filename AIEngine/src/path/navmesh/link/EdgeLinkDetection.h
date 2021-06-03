@@ -1,9 +1,9 @@
 #ifndef URCHINENGINE_EDGELINKDETECTION_H
 #define URCHINENGINE_EDGELINKDETECTION_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "path/navmesh/link/EdgeLinkResult.h"
+#include <path/navmesh/link/EdgeLinkResult.h>
 
 namespace urchin {
 

@@ -5,9 +5,9 @@
 #include <vector>
 #include <map>
 
-#include "path/navmesh/polytope/Polytope.h"
-#include "path/navmesh/polytope/PolytopeSurface.h"
-#include "path/navmesh/model/output/NavPolygon.h"
+#include <path/navmesh/polytope/Polytope.h>
+#include <path/navmesh/polytope/PolytopeSurface.h>
+#include <path/navmesh/model/output/NavPolygon.h>
 
 namespace urchin {
 

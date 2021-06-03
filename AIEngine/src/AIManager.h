@@ -5,13 +5,13 @@
 #include <atomic>
 #include <thread>
 #include <mutex>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "input/AIWorld.h"
-#include "input/AIEntity.h"
-#include "path/PathRequest.h"
-#include "path/navmesh/NavMeshGenerator.h"
-#include "path/navmesh/model/output/NavMesh.h"
+#include <input/AIWorld.h>
+#include <input/AIEntity.h>
+#include <path/PathRequest.h>
+#include <path/navmesh/NavMeshGenerator.h>
+#include <path/navmesh/model/output/NavMesh.h>
 
 namespace urchin {
 

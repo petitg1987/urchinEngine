@@ -4,10 +4,10 @@
 #include <vector>
 #include <sstream>
 #include <memory>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "path/navmesh/polytope/PolytopeSurface.h"
-#include "path/navmesh/model/output/NavMeshAgent.h"
+#include <path/navmesh/polytope/PolytopeSurface.h>
+#include <path/navmesh/model/output/NavMeshAgent.h>
 
 namespace urchin {
 
