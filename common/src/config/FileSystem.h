@@ -3,7 +3,7 @@
 
 #include <list>
 
-#include "pattern/singleton/Singleton.h"
+#include <pattern/singleton/Singleton.h>
 
 namespace urchin {
 

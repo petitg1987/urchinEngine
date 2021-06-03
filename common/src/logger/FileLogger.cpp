@@ -4,8 +4,8 @@
 #include <ctime>
 
 #include "FileLogger.h"
-#include "util/FileUtil.h"
-#include "util/UserAuthorityException.h"
+#include <util/FileUtil.h>
+#include <util/UserAuthorityException.h>
 
 namespace urchin {
 

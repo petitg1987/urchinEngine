@@ -3,9 +3,9 @@
 #include <stdexcept>
 #include <utility>
 
-#include "io/file/PropertyFileHandler.h"
-#include "io/file/FileReader.h"
-#include "util/StringUtil.h"
+#include "PropertyFileHandler.h"
+#include <io/file/FileReader.h>
+#include <util/StringUtil.h>
 
 namespace urchin {
 

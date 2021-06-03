@@ -1,8 +1,8 @@
 #include <ctime>
 #include <stdexcept>
 
-#include "logger/Logger.h"
-#include "logger/FileLogger.h"
+#include <logger/Logger.h>
+#include <logger/FileLogger.h>
 
 namespace urchin {
 

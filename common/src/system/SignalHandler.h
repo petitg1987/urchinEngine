@@ -5,7 +5,7 @@
 #include <csignal>
 #include <memory>
 
-#include "pattern/singleton/Singleton.h"
+#include <pattern/singleton/Singleton.h>
 
 #ifdef _WIN32
     struct _EXCEPTION_POINTERS;

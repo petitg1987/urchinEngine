@@ -1,9 +1,9 @@
 #ifndef URCHINENGINE_AABBTREE_H
 #define URCHINENGINE_AABBTREE_H
 
-#include "partitioning/aabbtree/AABBNode.h"
-#include "partitioning/aabbtree/AABBNodeData.h"
-#include "math/geometry/3d/Ray.h"
+#include <partitioning/aabbtree/AABBNode.h>
+#include <partitioning/aabbtree/AABBNodeData.h>
+#include <math/geometry/3d/Ray.h>
 
 #define BOUNDARIES_MARGIN_PERCENTAGE 0.3f
 

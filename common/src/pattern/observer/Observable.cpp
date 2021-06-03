@@ -1,4 +1,4 @@
-#include "pattern/observer/Observable.h"
+#include <pattern/observer/Observable.h>
 
 namespace urchin {
 

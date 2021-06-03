@@ -4,8 +4,8 @@
 #include <typeinfo>
 #include <iostream>
 
-#include "pattern/singleton/SingletonManager.h"
-#include "pattern/singleton/SingletonInterface.h"
+#include <pattern/singleton/SingletonManager.h>
+#include <pattern/singleton/SingletonInterface.h>
 
 namespace urchin {
 

@@ -1,4 +1,4 @@
-#include "math/trigonometry/AngleConverter.h"
+#include "AngleConverter.h"
 
 namespace urchin {
 

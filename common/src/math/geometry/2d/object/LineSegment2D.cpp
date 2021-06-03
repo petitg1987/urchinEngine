@@ -1,8 +1,8 @@
 #include <cmath>
 #include <cassert>
 
-#include "math/geometry/2d/object/LineSegment2D.h"
-#include "math/algorithm/MathFunction.h"
+#include <math/geometry/2d/object/LineSegment2D.h>
+#include <math/algorithm/MathFunction.h>
 
 namespace urchin {
 

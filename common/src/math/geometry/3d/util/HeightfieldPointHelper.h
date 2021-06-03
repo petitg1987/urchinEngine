@@ -3,9 +3,9 @@
 
 #include <vector>
 
-#include "math/algebra/point/Point2.h"
-#include "math/algebra/point/Point3.h"
-#include "math/geometry/2d/object/LineSegment2D.h"
+#include <math/algebra/point/Point2.h>
+#include <math/algebra/point/Point3.h>
+#include <math/geometry/2d/object/LineSegment2D.h>
 
 namespace urchin {
 

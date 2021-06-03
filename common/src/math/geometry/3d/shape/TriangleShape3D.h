@@ -3,8 +3,8 @@
 
 #include <memory>
 
-#include "math/geometry/3d/shape/ConvexShape3D.h"
-#include "math/algebra/point/Point3.h"
+#include <math/geometry/3d/shape/ConvexShape3D.h>
+#include <math/algebra/point/Point3.h>
 
 namespace urchin {
 

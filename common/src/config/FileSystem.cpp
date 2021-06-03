@@ -1,6 +1,6 @@
-#include "config/FileSystem.h"
-#include "system/SystemInfo.h"
-#include "util/FileUtil.h"
+#include "FileSystem.h"
+#include <system/SystemInfo.h>
+#include <util/FileUtil.h>
 
 namespace urchin {
 

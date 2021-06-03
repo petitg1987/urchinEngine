@@ -4,8 +4,8 @@
 #include <memory>
 #include <vector>
 
-#include "math/geometry/2d/shape/ConvexHullShape2D.h"
-#include "math/geometry/2d/object/ConvexHull2D.h"
+#include <math/geometry/2d/shape/ConvexHullShape2D.h>
+#include <math/geometry/2d/object/ConvexHull2D.h>
 
 namespace urchin {
 

@@ -3,9 +3,9 @@
 
 #include <vector>
 
-#include "math/geometry/2d/shape/ConvexHullShape2D.h"
-#include "math/geometry/2d/object/ConvexObject2D.h"
-#include "math/algebra/point/Point2.h"
+#include <math/geometry/2d/shape/ConvexHullShape2D.h>
+#include <math/geometry/2d/object/ConvexObject2D.h>
+#include <math/algebra/point/Point2.h>
 
 namespace urchin {
 

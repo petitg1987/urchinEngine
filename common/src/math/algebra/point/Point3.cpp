@@ -1,4 +1,4 @@
-#include "math/algebra/point/Point3.h"
+#include <math/algebra/point/Point3.h>
 
 namespace urchin {
 

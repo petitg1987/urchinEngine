@@ -4,7 +4,7 @@
 #include <string>
 #include <limits>
 
-#include "logger/Logger.h"
+#include <logger/Logger.h>
 
 namespace urchin {
 

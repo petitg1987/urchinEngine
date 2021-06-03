@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_ACCEPTALLFILTER_H
 #define URCHINENGINE_ACCEPTALLFILTER_H
 
-#include "OctreeableFilter.h"
+#include <partitioning//octree//filter/OctreeableFilter.h>
 
 namespace urchin {
 

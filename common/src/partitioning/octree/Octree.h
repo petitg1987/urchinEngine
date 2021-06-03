@@ -6,9 +6,9 @@
 #include <memory>
 #include <algorithm>
 
-#include "util/VectorUtil.h"
-#include "math/geometry/3d/object/AABBox.h"
-#include "partitioning/octree/filter/OctreeableFilter.h"
+#include <util/VectorUtil.h>
+#include <math/geometry/3d/object/AABBox.h>
+#include <partitioning/octree/filter/OctreeableFilter.h>
 
 namespace urchin {
 

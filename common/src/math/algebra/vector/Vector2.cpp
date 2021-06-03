@@ -1,4 +1,4 @@
-#include "math/algebra/vector/Vector2.h"
+#include <math/algebra/vector/Vector2.h>
 
 namespace urchin {
 

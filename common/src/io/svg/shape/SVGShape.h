@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "math/geometry/2d/object/Rectangle.h"
+#include <math/geometry/2d/object/Rectangle.h>
 
 namespace urchin {
 

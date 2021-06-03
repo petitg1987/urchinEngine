@@ -5,10 +5,10 @@
 #include <map>
 #include <vector>
 
-#include "math/geometry/3d/shape/ConvexHullShape3D.h"
-#include "math/geometry/3d/object/ConvexHull3D.h"
-#include "math/geometry/3d/Plane.h"
-#include "math/algebra/point/Point3.h"
+#include <math/geometry/3d/shape/ConvexHullShape3D.h>
+#include <math/geometry/3d/object/ConvexHull3D.h>
+#include <math/geometry/3d/Plane.h>
+#include <math/algebra/point/Point3.h>
 
 namespace urchin {
 

@@ -1,8 +1,8 @@
 #ifndef URCHINENGINE_CONVEXOBJECT2D_H
 #define URCHINENGINE_CONVEXOBJECT2D_H
 
-#include "math/algebra/point/Point2.h"
-#include "math/algebra/vector/Vector2.h"
+#include <math/algebra/point/Point2.h>
+#include <math/algebra/vector/Vector2.h>
 
 namespace urchin {
 

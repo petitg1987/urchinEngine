@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 
-#include "pattern/singleton/Singleton.h"
+#include <pattern/singleton/Singleton.h>
 
 namespace urchin {
 

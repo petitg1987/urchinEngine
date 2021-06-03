@@ -4,8 +4,8 @@
 #include <sys/stat.h>
 
 #include "FileUtil.h"
-#include "util/StringUtil.h"
-#include "util/UserAuthorityException.h"
+#include <util/StringUtil.h>
+#include <util/UserAuthorityException.h>
 
 namespace urchin {
 

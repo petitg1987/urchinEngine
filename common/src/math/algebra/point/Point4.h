@@ -4,11 +4,11 @@
 #include <iostream>
 #include <cmath>
 
-#include "math/algebra/point/Point2.h"
-#include "math/algebra/point/Point3.h"
-#include "math/algebra/vector/Vector3.h"
-#include "math/algebra/vector/Vector4.h"
-#include "math/algebra/matrix/Matrix4.h"
+#include <math/algebra/point/Point2.h>
+#include <math/algebra/point/Point3.h>
+#include <math/algebra/vector/Vector3.h>
+#include <math/algebra/vector/Vector4.h>
+#include <math/algebra/matrix/Matrix4.h>
 
 namespace urchin {
 

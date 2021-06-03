@@ -2,7 +2,7 @@
 #include <cassert>
 
 #include "HeightfieldPointHelper.h"
-#include "math/algorithm/MathFunction.h"
+#include <math/algorithm/MathFunction.h>
 
 namespace urchin {
 

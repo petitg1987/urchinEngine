@@ -1,8 +1,8 @@
 #ifndef URCHINENGINE_RAY_H
 #define URCHINENGINE_RAY_H
 
-#include "math/algebra/point/Point3.h"
-#include "math/algebra/vector/Vector3.h"
+#include <math/algebra/point/Point3.h>
+#include <math/algebra/vector/Vector3.h>
 
 namespace urchin {
 

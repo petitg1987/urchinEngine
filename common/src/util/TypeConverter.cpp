@@ -2,9 +2,9 @@
 #include <limits>
 #include <cmath>
 
-#include "util/TypeConverter.h"
-#include "util/StringUtil.h"
-#include "logger/Logger.h"
+#include <util/TypeConverter.h>
+#include <util/StringUtil.h>
+#include <logger/Logger.h>
 
 namespace urchin {
 

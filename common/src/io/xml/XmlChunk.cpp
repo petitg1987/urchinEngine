@@ -1,7 +1,7 @@
 #include <stdexcept>
 
 #include "XmlChunk.h"
-#include "util/TypeConverter.h"
+#include <util/TypeConverter.h>
 
 namespace urchin {
 

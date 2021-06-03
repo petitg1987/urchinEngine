@@ -1,5 +1,5 @@
 #include "DebugCheck.h"
-#include "config/ConfigService.h"
+#include <config/ConfigService.h>
 
 namespace urchin {
 

@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <stdexcept>
 
-#include "util/StringUtil.h"
+#include <util/StringUtil.h>
 
 namespace urchin {
 

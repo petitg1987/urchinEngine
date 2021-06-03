@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_ANGLECONVERTER_H
 #define URCHINENGINE_ANGLECONVERTER_H
 
-#include "math/algebra/MathValue.h"
+#include <math/algebra/MathValue.h>
 
 namespace urchin {
 

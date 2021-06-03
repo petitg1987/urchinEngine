@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_LINE2D_H
 #define URCHINENGINE_LINE2D_H
 
-#include "math/algebra/point/Point2.h"
+#include <math/algebra/point/Point2.h>
 
 namespace urchin {
 

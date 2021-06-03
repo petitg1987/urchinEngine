@@ -2,9 +2,9 @@
 #include <cmath>
 #include <stdexcept>
 
-#include "math/algebra/Quaternion.h"
-#include "math/algebra/MathValue.h"
-#include "math/algorithm/MathFunction.h"
+#include <math/algebra/Quaternion.h>
+#include <math/algebra/MathValue.h>
+#include <math/algorithm/MathFunction.h>
 
 namespace urchin {
 

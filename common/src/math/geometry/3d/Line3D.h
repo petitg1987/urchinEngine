@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_LINE3D_H
 #define URCHINENGINE_LINE3D_H
 
-#include "math/algebra/point/Point3.h"
+#include <math/algebra/point/Point3.h>
 
 namespace urchin {
 

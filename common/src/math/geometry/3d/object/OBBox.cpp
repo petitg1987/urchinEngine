@@ -4,7 +4,7 @@
 #include <stdexcept>
 
 #include "OBBox.h"
-#include "math/algebra/point/Point4.h"
+#include <math/algebra/point/Point4.h>
 
 namespace urchin {
 

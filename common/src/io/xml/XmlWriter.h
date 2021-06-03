@@ -4,9 +4,9 @@
 #include <string>
 #include <memory>
 
-#include "libs/tinyxml/tinyxml.h"
-#include "io/xml/XmlAttribute.h"
-#include "io/xml/XmlChunk.h"
+#include <libs/tinyxml/tinyxml.h>
+#include <io/xml/XmlAttribute.h>
+#include <io/xml/XmlChunk.h>
 
 namespace urchin {
 

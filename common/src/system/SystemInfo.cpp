@@ -10,13 +10,13 @@
     #include <sys/utsname.h>
     #include <sys/sysinfo.h>
     #include <zconf.h>
-    #include "system/CommandExecutor.h"
-    #include "util/TypeConverter.h"
+    #include <system/CommandExecutor.h>
+    #include <util/TypeConverter.h>
 #endif
 
 #include "SystemInfo.h"
-#include "util/StringUtil.h"
-#include "util/FileUtil.h"
+#include <util/StringUtil.h>
+#include <util/FileUtil.h>
 
 namespace urchin {
 

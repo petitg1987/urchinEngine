@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 
-#include "pattern/singleton/SingletonInterface.h"
+#include <pattern/singleton/SingletonInterface.h>
 
 #ifdef DWIN
     #ifdef __cplusplus

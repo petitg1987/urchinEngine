@@ -2,8 +2,8 @@
 #include <cmath>
 
 #include "ConvexHullShape2D.h"
-#include "math/geometry/2d/util/ResizeConvexHull2DService.h"
-#include "math/geometry/2d/Line2D.h"
+#include <math/geometry/2d/util/ResizeConvexHull2DService.h>
+#include <math/geometry/2d/Line2D.h>
 
 namespace urchin {
 

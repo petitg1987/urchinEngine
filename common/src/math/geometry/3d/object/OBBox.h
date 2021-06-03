@@ -4,14 +4,14 @@
 #include <sstream>
 #include <vector>
 
-#include "math/geometry/3d/object/ConvexObject3D.h"
-#include "math/geometry/3d/object/AABBox.h"
-#include "math/geometry/3d/object/Sphere.h"
-#include "math/geometry/3d/shape/BoxShape.h"
-#include "math/algebra/matrix/Matrix4.h"
-#include "math/algebra/point/Point3.h"
-#include "math/algebra/vector/Vector3.h"
-#include "math/algebra/Quaternion.h"
+#include <math/geometry/3d/object/ConvexObject3D.h>
+#include <math/geometry/3d/object/AABBox.h>
+#include <math/geometry/3d/object/Sphere.h>
+#include <math/geometry/3d/shape/BoxShape.h>
+#include <math/algebra/matrix/Matrix4.h>
+#include <math/algebra/point/Point3.h>
+#include <math/algebra/vector/Vector3.h>
+#include <math/algebra/Quaternion.h>
 
 namespace urchin {
 

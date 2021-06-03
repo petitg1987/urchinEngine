@@ -4,8 +4,8 @@
 #include <vector>
 #include <memory>
 
-#include "math/geometry/2d/shape/ConvexShape2D.h"
-#include "math/algebra/point/Point2.h"
+#include <math/geometry/2d/shape/ConvexShape2D.h>
+#include <math/algebra/point/Point2.h>
 
 namespace urchin {
 

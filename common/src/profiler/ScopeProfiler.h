@@ -4,7 +4,7 @@
 #include <string>
 #include <memory>
 
-#include "profiler/Profiler.h"
+#include <profiler/Profiler.h>
 
 namespace urchin {
 

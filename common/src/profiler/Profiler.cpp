@@ -4,8 +4,8 @@
 #include <thread>
 
 #include "Profiler.h"
-#include "config/ConfigService.h"
-#include "logger/FileLogger.h"
+#include <config/ConfigService.h>
+#include <logger/FileLogger.h>
 
 namespace urchin {
 

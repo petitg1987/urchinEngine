@@ -1,4 +1,4 @@
-#include "math/algebra/matrix/Matrix4.h"
+#include <math/algebra/matrix/Matrix4.h>
 
 namespace urchin {
 

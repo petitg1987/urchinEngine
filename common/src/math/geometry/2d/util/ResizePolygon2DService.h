@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "math/algebra/point/Point2.h"
+#include <math/algebra/point/Point2.h>
 
 namespace urchin {
 

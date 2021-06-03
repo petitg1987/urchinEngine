@@ -1,10 +1,10 @@
 #ifndef URCHINENGINE_LINESEGMENT2D_H
 #define URCHINENGINE_LINESEGMENT2D_H
 
-#include "math/geometry/2d/object/ConvexObject2D.h"
-#include "math/geometry/2d/Line2D.h"
-#include "math/algebra/point/Point2.h"
-#include "math/algebra/vector/Vector2.h"
+#include <math/geometry/2d/object/ConvexObject2D.h>
+#include <math/geometry/2d/Line2D.h>
+#include <math/algebra/point/Point2.h>
+#include <math/algebra/vector/Vector2.h>
 
 namespace urchin {
 

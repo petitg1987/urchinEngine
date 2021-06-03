@@ -4,7 +4,7 @@
 #include <unordered_set>
 #include <map>
 
-#include "pattern/observer/Observer.h"
+#include <pattern/observer/Observer.h>
 
 namespace urchin {
 

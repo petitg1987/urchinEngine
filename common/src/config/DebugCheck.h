@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_DEBUGCHECK_H
 #define URCHINENGINE_DEBUGCHECK_H
 
-#include "pattern/singleton/Singleton.h"
+#include <pattern/singleton/Singleton.h>
 
 namespace urchin {
 

@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include "io/svg/shape/SVGShape.h"
-#include "math/geometry/2d/object/LineSegment2D.h"
+#include <io/svg/shape/SVGShape.h>
+#include <math/geometry/2d/object/LineSegment2D.h>
 
 namespace urchin {
 
