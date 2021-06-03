@@ -2,10 +2,10 @@
 #define URCHINENGINE_ANIMATION_H
 
 #include <vector>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "resources/model/ConstAnimation.h"
-#include "Meshes.h"
+#include <resources/model/ConstAnimation.h>
+#include <scene/renderer3d/model/Meshes.h>
 
 namespace urchin {
 

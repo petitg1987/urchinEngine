@@ -1,8 +1,8 @@
 #include <stdexcept>
 #include <memory>
 
-#include "scene/UI/UISkinService.h"
-#include "resources/MediaManager.h"
+#include <scene/UI/UISkinService.h>
+#include <resources/MediaManager.h>
 
 namespace urchin {
 

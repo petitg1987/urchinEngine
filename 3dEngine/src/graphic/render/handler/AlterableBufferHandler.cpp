@@ -1,7 +1,7 @@
 #include <cassert>
 
 #include "AlterableBufferHandler.h"
-#include "graphic/setup/GraphicService.h"
+#include <graphic/setup/GraphicService.h>
 
 namespace urchin {
 

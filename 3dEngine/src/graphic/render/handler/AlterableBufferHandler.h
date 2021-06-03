@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include "graphic/render/handler/BufferHandler.h"
-#include "graphic/render/model/DataContainer.h"
+#include <graphic/render/handler/BufferHandler.h>
+#include <graphic/render/model/DataContainer.h>
 
 namespace urchin {
 

@@ -1,6 +1,6 @@
 #include <utility>
 
-#include "resources/geometry/aabbox/AABBoxModel.h"
+#include <resources/geometry/aabbox/AABBoxModel.h>
 
 namespace urchin {
 

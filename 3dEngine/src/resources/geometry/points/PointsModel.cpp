@@ -1,6 +1,6 @@
 #include <utility>
 
-#include "resources/geometry/points/PointsModel.h"
+#include <resources/geometry/points/PointsModel.h>
 
 namespace urchin {
 

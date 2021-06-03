@@ -1,10 +1,10 @@
 #include <locale>
 #include <memory>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "loader/material/LoaderMTR.h"
-#include "resources/MediaManager.h"
-#include "resources/image/Image.h"
+#include <loader/material/LoaderMTR.h>
+#include <resources/MediaManager.h>
+#include <resources/image/Image.h>
 
 namespace urchin {
 

@@ -2,9 +2,9 @@
 #include <limits>
 #include <utility>
 
-#include "resources/model/ConstMesh.h"
-#include "resources/model/MeshService.h"
-#include "resources/MediaManager.h"
+#include <resources/model/ConstMesh.h>
+#include <resources/model/MeshService.h>
+#include <resources/MediaManager.h>
 
 namespace urchin {
 

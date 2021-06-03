@@ -1,6 +1,6 @@
 #include <utility>
 
-#include "resources/geometry/obbox/OBBoxModel.h"
+#include <resources/geometry/obbox/OBBoxModel.h>
 
 namespace urchin {
 

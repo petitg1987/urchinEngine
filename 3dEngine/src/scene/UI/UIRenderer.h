@@ -2,12 +2,12 @@
 #define URCHINENGINE_UIRENDERER_H
 
 #include <set>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "graphic/render/shader/model/Shader.h"
-#include "graphic/render/target/RenderTarget.h"
-#include "scene/Renderer.h"
-#include "scene/UI/widget/Widget.h"
+#include <graphic/render/shader/model/Shader.h>
+#include <graphic/render/target/RenderTarget.h>
+#include <scene/Renderer.h>
+#include <scene/UI/widget/Widget.h>
 
 namespace urchin {
 

@@ -1,6 +1,6 @@
 #include "Mesh.h"
-#include "resources/model/MeshService.h"
-#include "graphic/render/GenericRendererBuilder.h"
+#include <resources/model/MeshService.h>
+#include <graphic/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

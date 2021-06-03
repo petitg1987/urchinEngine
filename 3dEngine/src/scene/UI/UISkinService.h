@@ -3,9 +3,9 @@
 
 #include <map>
 #include <memory>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "resources/image/Image.h"
+#include <resources/image/Image.h>
 
 namespace urchin {
 

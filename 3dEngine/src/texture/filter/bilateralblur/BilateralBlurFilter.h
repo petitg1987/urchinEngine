@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 
-#include "texture/filter/TextureFilter.h"
+#include <texture/filter/TextureFilter.h>
 
 namespace urchin {
 

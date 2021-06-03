@@ -4,15 +4,15 @@
 #include <map>
 #include <string>
 #include <stdexcept>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "resources/ResourceManager.h"
-#include "resources/model/ConstMeshes.h"
-#include "resources/model/ConstAnimation.h"
-#include "resources/image/Image.h"
-#include "resources/material/Material.h"
-#include "resources/font/Font.h"
-#include "loader/Loader.h"
+#include <resources/ResourceManager.h>
+#include <resources/model/ConstMeshes.h>
+#include <resources/model/ConstAnimation.h>
+#include <resources/image/Image.h>
+#include <resources/material/Material.h>
+#include <resources/font/Font.h>
+#include <loader/Loader.h>
 
 namespace urchin {
 

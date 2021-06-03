@@ -1,6 +1,6 @@
 #include "LightSplitShadowMap.h"
-#include "scene/renderer3d/lighting/shadow/light/LightShadowMap.h"
-#include "scene/renderer3d/lighting/shadow/filter/ModelProduceShadowFilter.h"
+#include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
+#include <scene/renderer3d/lighting/shadow/filter/ModelProduceShadowFilter.h>
 
 namespace urchin {
 

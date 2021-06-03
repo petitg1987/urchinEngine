@@ -4,13 +4,13 @@
 #include <vector>
 #include <set>
 #include <memory>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "graphic/render/target/OffscreenRender.h"
-#include "scene/renderer3d/lighting/light/Light.h"
-#include "scene/renderer3d/model/Model.h"
-#include "scene/renderer3d/model/displayer/ModelSetDisplayer.h"
-#include "texture/filter/TextureFilter.h"
+#include <graphic/render/target/OffscreenRender.h>
+#include <scene/renderer3d/lighting/light/Light.h>
+#include <scene/renderer3d/model/Model.h>
+#include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
+#include <texture/filter/TextureFilter.h>
 
 namespace urchin {
 

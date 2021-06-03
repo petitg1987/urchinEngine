@@ -1,9 +1,9 @@
 #ifndef URCHINENGINE_SUNLIGHT_H
 #define URCHINENGINE_SUNLIGHT_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "scene/renderer3d/lighting/light/Light.h"
+#include <scene/renderer3d/lighting/light/Light.h>
 
 namespace urchin {
 

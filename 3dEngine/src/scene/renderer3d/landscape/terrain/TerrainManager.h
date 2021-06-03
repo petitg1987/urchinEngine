@@ -1,11 +1,11 @@
 #ifndef URCHINENGINE_TERRAINMANAGER_H
 #define URCHINENGINE_TERRAINMANAGER_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "graphic/render/target/RenderTarget.h"
-#include "scene/renderer3d/camera/Camera.h"
-#include "scene/renderer3d/landscape/terrain/Terrain.h"
+#include <graphic/render/target/RenderTarget.h>
+#include <scene/renderer3d/camera/Camera.h>
+#include <scene/renderer3d/landscape/terrain/Terrain.h>
 
 #define DEFAULT_GRASS_DISPLAY_DISTANCE 100
 

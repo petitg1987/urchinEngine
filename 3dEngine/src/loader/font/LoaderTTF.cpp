@@ -1,10 +1,10 @@
 #include <stdexcept>
 #include <ft2build.h>
 #include FT_FREETYPE_H
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "loader/font/LoaderTTF.h"
-#include "resources/image/Image.h"
+#include <loader/font/LoaderTTF.h>
+#include <resources/image/Image.h>
 
 #define WIDTH_BETWEEN_LETTERS 2u
 #define WIDTH_BETWEEN_LINES_RATE 1.9f

@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_FREECAMERA_H
 #define URCHINENGINE_FREECAMERA_H
 
-#include "Camera.h"
+#include <scene/renderer3d/camera/Camera.h>
 
 namespace urchin {
 

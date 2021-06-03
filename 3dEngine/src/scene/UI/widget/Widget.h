@@ -3,14 +3,14 @@
 
 #include <vector>
 #include <memory>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "scene/UI/widget/Position.h"
-#include "scene/UI/widget/Size.h"
-#include "scene/UI/UISkinService.h"
-#include "scene/UI/EventListener.h"
-#include "graphic/render/target/RenderTarget.h"
-#include "graphic/render/GenericRendererBuilder.h"
+#include <scene/UI/widget/Position.h>
+#include <scene/UI/widget/Size.h>
+#include <scene/UI/UISkinService.h>
+#include <scene/UI/EventListener.h>
+#include <graphic/render/target/RenderTarget.h>
+#include <graphic/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

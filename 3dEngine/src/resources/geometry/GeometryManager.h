@@ -2,11 +2,11 @@
 #define URCHINENGINE_GEOMETRYMANAGER_H
 
 #include <vector>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "graphic/render/target/RenderTarget.h"
-#include "resources/geometry/GeometryModel.h"
-#include "scene/renderer3d/camera/Camera.h"
+#include <graphic/render/target/RenderTarget.h>
+#include <resources/geometry/GeometryModel.h>
+#include <scene/renderer3d/camera/Camera.h>
 
 namespace urchin {
 

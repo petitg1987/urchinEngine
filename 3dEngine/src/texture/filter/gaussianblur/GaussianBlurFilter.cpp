@@ -1,11 +1,11 @@
 #include <algorithm>
 #include <numeric>
 #include <stdexcept>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 #include "GaussianBlurFilter.h"
-#include "texture/filter/gaussianblur/GaussianBlurFilterBuilder.h"
-#include "graphic/render/GenericRendererBuilder.h"
+#include <texture/filter/gaussianblur/GaussianBlurFilterBuilder.h>
+#include <graphic/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

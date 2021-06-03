@@ -1,8 +1,8 @@
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "graphic/setup/handler/DeviceHandler.h"
-#include "graphic/setup/handler/QueueHandler.h"
-#include "graphic/render/handler/SwapChainHandler.h"
+#include <graphic/setup/handler/DeviceHandler.h>
+#include <graphic/setup/handler/QueueHandler.h>
+#include <graphic/render/handler/SwapChainHandler.h>
 using namespace urchin;
 
 namespace urchin {

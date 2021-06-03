@@ -1,9 +1,9 @@
 #ifndef URCHINENGINE_CAMERASPACESERVICE_H
 #define URCHINENGINE_CAMERASPACESERVICE_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "scene/renderer3d/camera/Camera.h"
+#include <scene/renderer3d/camera/Camera.h>
 
 namespace urchin {
 

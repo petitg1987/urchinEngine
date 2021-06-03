@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_LENGTH_H
 #define URCHINENGINE_LENGTH_H
 
-#include "scene/UI/widget/LengthType.h"
+#include <scene/UI/widget/LengthType.h>
 
 namespace urchin {
 

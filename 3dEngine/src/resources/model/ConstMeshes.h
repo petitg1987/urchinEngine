@@ -3,10 +3,10 @@
 
 #include <vector>
 #include <string>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "resources/model/ConstMesh.h"
-#include "resources/Resource.h"
+#include <resources/model/ConstMesh.h>
+#include <resources/Resource.h>
 
 namespace urchin {
 

@@ -2,7 +2,7 @@
 #define URCHINENGINE_CONFIG_H
 
 #include <string>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 namespace urchin {
 

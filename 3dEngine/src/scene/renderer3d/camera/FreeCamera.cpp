@@ -1,7 +1,7 @@
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 #include "FreeCamera.h"
-#include "scene/InputDeviceKey.h"
+#include <scene/InputDeviceKey.h>
 
 #define DEFAULT_KEY_FRONT 'Z'
 #define DEFAULT_KEY_BACK 'S'

@@ -2,11 +2,11 @@
 #define URCHINENGINE_TEXTURERENDERER_H
 
 #include <memory>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "graphic/render/shader/model/Shader.h"
-#include "graphic/render/GenericRenderer.h"
-#include "graphic/render/target/RenderTarget.h"
+#include <graphic/render/shader/model/Shader.h>
+#include <graphic/render/GenericRenderer.h>
+#include <graphic/render/target/RenderTarget.h>
 
 namespace urchin {
 

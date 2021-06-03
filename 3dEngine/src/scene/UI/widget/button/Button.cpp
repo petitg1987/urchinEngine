@@ -1,9 +1,9 @@
 #include <utility>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "scene/UI/widget/button/Button.h"
-#include "scene/UI/UISkinService.h"
-#include "graphic/render/GenericRendererBuilder.h"
+#include <scene/UI/widget/button/Button.h>
+#include <scene/UI/UISkinService.h>
+#include <graphic/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

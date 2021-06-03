@@ -1,6 +1,6 @@
 #include "Terrain.h"
-#include "graphic/render/shader/builder/ShaderBuilder.h"
-#include "graphic/render/GenericRendererBuilder.h"
+#include <graphic/render/shader/builder/ShaderBuilder.h>
+#include <graphic/render/GenericRendererBuilder.h>
 
 #define DEFAULT_AMBIENT 0.3f
 

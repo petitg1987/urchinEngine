@@ -1,12 +1,12 @@
 #ifndef URCHINENGINE_AMBIENTOCCLUSIONMANAGER_H
 #define URCHINENGINE_AMBIENTOCCLUSIONMANAGER_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "graphic/render/shader/model/Shader.h"
-#include "scene/renderer3d/camera/Camera.h"
-#include "graphic/render/GenericRenderer.h"
-#include "texture/filter/bilateralblur/BilateralBlurFilter.h"
+#include <graphic/render/shader/model/Shader.h>
+#include <scene/renderer3d/camera/Camera.h>
+#include <graphic/render/GenericRenderer.h>
+#include <texture/filter/bilateralblur/BilateralBlurFilter.h>
 
 #define DEFAULT_TEXTURE_SIZE AOTextureSize::HALF_SIZE
 #define DEFAULT_KERNEL_SAMPLES 32

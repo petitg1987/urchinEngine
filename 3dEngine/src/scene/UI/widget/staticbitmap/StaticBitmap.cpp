@@ -1,8 +1,8 @@
 #include <utility>
 
-#include "scene/UI/widget/staticbitmap/StaticBitmap.h"
-#include "resources/MediaManager.h"
-#include "graphic/render/GenericRendererBuilder.h"
+#include <scene/UI/widget/staticbitmap/StaticBitmap.h>
+#include <resources/MediaManager.h>
+#include <graphic/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

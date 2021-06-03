@@ -2,8 +2,8 @@
 #include <utility>
 
 #include "LightShadowMap.h"
-#include "scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h"
-#include "scene/renderer3d/lighting/shadow/display/ShadowModelShaderVariable.h"
+#include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
+#include <scene/renderer3d/lighting/shadow/display/ShadowModelShaderVariable.h>
 
 namespace urchin {
 

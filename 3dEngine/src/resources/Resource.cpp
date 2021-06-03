@@ -1,5 +1,5 @@
-#include "resources/Resource.h"
-#include "resources/ResourceManager.h"
+#include <resources/Resource.h>
+#include <resources/ResourceManager.h>
 
 namespace urchin {
 

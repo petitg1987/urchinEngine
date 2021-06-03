@@ -1,6 +1,6 @@
 #include "Shader.h"
-#include "graphic/setup/GraphicService.h"
-#include "graphic/helper/DebugLabelHelper.h"
+#include <graphic/setup/GraphicService.h>
+#include <graphic/helper/DebugLabelHelper.h>
 
 namespace urchin {
 

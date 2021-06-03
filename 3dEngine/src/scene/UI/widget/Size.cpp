@@ -1,4 +1,4 @@
-#include "scene/UI/widget/Size.h"
+#include <scene/UI/widget/Size.h>
 
 namespace urchin {
 

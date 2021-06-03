@@ -1,7 +1,7 @@
 #include <stdexcept>
 
 #include "MemoryHelper.h"
-#include "graphic/setup/GraphicService.h"
+#include <graphic/setup/GraphicService.h>
 
 namespace urchin {
 

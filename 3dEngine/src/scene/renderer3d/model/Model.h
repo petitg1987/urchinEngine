@@ -4,13 +4,13 @@
 #include <string>
 #include <map>
 #include <vector>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "Meshes.h"
-#include "Animation.h"
-#include "resources/model/ConstMeshes.h"
-#include "resources/model/ConstAnimation.h"
-#include "graphic/render/target/RenderTarget.h"
+#include <scene/renderer3d/model/Meshes.h>
+#include <scene/renderer3d/model/Animation.h>
+#include <resources/model/ConstMeshes.h>
+#include <resources/model/ConstAnimation.h>
+#include <graphic/render/target/RenderTarget.h>
 
 namespace urchin {
 

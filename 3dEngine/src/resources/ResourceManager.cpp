@@ -1,7 +1,7 @@
 #include <sstream>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "resources/ResourceManager.h"
+#include <resources/ResourceManager.h>
 
 namespace urchin {
 

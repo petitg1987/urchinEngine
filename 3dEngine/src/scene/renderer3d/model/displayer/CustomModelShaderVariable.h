@@ -1,12 +1,12 @@
 #ifndef URCHINENGINE_CUSTOMMODELUNIFORM_H
 #define URCHINENGINE_CUSTOMMODELUNIFORM_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "scene/renderer3d/model/Model.h"
-#include "graphic/render/GenericRenderer.h"
-#include "graphic/render/GenericRendererBuilder.h"
-#include "graphic/render/shader/model/Shader.h"
+#include <scene/renderer3d/model/Model.h>
+#include <graphic/render/GenericRenderer.h>
+#include <graphic/render/GenericRendererBuilder.h>
+#include <graphic/render/shader/model/Shader.h>
 
 namespace urchin {
 

@@ -3,8 +3,8 @@
 #include <stdexcept>
 #include <algorithm>
 
-#include "graphic/setup/handler/QueueHandler.h"
-#include "graphic/setup/GraphicService.h"
+#include <graphic/setup/handler/QueueHandler.h>
+#include <graphic/setup/GraphicService.h>
 #include "SwapChainHandler.h"
 
 namespace urchin {

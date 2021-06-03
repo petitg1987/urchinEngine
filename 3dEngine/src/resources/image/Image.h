@@ -4,9 +4,9 @@
 #include <vector>
 #include <memory>
 
-#include "resources/Resource.h"
-#include "graphic/texture/model/TextureFormat.h"
-#include "graphic/texture/Texture.h"
+#include <resources/Resource.h>
+#include <graphic/texture/model/TextureFormat.h>
+#include <graphic/texture/Texture.h>
 
 namespace urchin {
 

@@ -1,9 +1,9 @@
 #include <stdexcept>
 
 #include "LightManager.h"
-#include "scene/renderer3d/lighting/light/sun/SunLight.h"
-#include "scene/renderer3d/lighting/light/omnidirectional/OmnidirectionalLight.h"
-#include "scene/renderer3d/util/OctreeRenderer.h"
+#include <scene/renderer3d/lighting/light/sun/SunLight.h>
+#include <scene/renderer3d/lighting/light/omnidirectional/OmnidirectionalLight.h>
+#include <scene/renderer3d/util/OctreeRenderer.h>
 
 #define DEFAULT_OCTREE_MIN_SIZE 50.0f
 

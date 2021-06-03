@@ -1,10 +1,10 @@
 #ifndef URCHINENGINE_OCTREERENDERER_H
 #define URCHINENGINE_OCTREERENDERER_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "resources/geometry/aabbox/AABBoxModel.h"
-#include "graphic/render/target/RenderTarget.h"
+#include <resources/geometry/aabbox/AABBoxModel.h>
+#include <graphic/render/target/RenderTarget.h>
 
 namespace urchin {
 

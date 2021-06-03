@@ -2,17 +2,17 @@
 #define URCHINENGINE_GENERICRENDERERBUILDER_H
 
 #include <memory>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "graphic/render/model/ShapeType.h"
-#include "graphic/render/model/PolygonMode.h"
-#include "graphic/render/model/DataContainer.h"
-#include "graphic/render/model/IndexContainer.h"
-#include "graphic/render/target/RenderTarget.h"
-#include "graphic/render/shader/model/Shader.h"
-#include "graphic/render/shader/model/ShaderDataContainer.h"
-#include "graphic/texture/TextureReader.h"
-#include "graphic/render/GenericRenderer.h"
+#include <graphic/render/model/ShapeType.h>
+#include <graphic/render/model/PolygonMode.h>
+#include <graphic/render/model/DataContainer.h>
+#include <graphic/render/model/IndexContainer.h>
+#include <graphic/render/target/RenderTarget.h>
+#include <graphic/render/shader/model/Shader.h>
+#include <graphic/render/shader/model/ShaderDataContainer.h>
+#include <graphic/texture/TextureReader.h>
+#include <graphic/render/GenericRenderer.h>
 
 namespace urchin {
 

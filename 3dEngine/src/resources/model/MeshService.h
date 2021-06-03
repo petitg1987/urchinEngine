@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_MESHSERVICE_H
 #define URCHINENGINE_MESHSERVICE_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 namespace urchin {
     class ConstMesh;

@@ -1,11 +1,11 @@
 #ifndef URCHINENGINE_GEOMETRYMODEL_H
 #define URCHINENGINE_GEOMETRYMODEL_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "graphic/render/shader/model/Shader.h"
-#include "graphic/render/target/RenderTarget.h"
-#include "graphic/render/GenericRenderer.h"
+#include <graphic/render/shader/model/Shader.h>
+#include <graphic/render/target/RenderTarget.h>
+#include <graphic/render/GenericRenderer.h>
 
 namespace urchin {
 

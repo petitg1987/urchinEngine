@@ -5,11 +5,11 @@
 #include <memory>
 #include <stdexcept>
 
-#include "TextureFilter.h"
-#include "graphic/texture/model/TextureType.h"
-#include "texture/filter/downsample/DownSampleFilter.h"
-#include "texture/filter/gaussianblur/GaussianBlurFilter.h"
-#include "texture/filter/bilateralblur/BilateralBlurFilter.h"
+#include <texture/filter/TextureFilter.h>
+#include <texture/filter/downsample/DownSampleFilter.h>
+#include <texture/filter/gaussianblur/GaussianBlurFilter.h>
+#include <texture/filter/bilateralblur/BilateralBlurFilter.h>
+#include <graphic/texture/model/TextureType.h>
 
 namespace urchin {
 

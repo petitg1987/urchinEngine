@@ -1,8 +1,8 @@
 #include <algorithm>
 #include <utility>
 
-#include "scene/UI/widget/Widget.h"
-#include "scene/InputDeviceKey.h"
+#include <scene/UI/widget/Widget.h>
+#include <scene/InputDeviceKey.h>
 
 namespace urchin {
 

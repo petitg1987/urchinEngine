@@ -1,12 +1,12 @@
 #ifndef URCHINENGINE_SHADOWMODELUNIFORM_H
 #define URCHINENGINE_SHADOWMODELUNIFORM_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "scene/renderer3d/lighting/shadow/light/LightShadowMap.h"
-#include "scene/renderer3d/model/Model.h"
-#include "scene/renderer3d/model/displayer/CustomModelShaderVariable.h"
-#include "graphic/render/shader/model/Shader.h"
+#include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
+#include <scene/renderer3d/model/Model.h>
+#include <scene/renderer3d/model/displayer/CustomModelShaderVariable.h>
+#include <graphic/render/shader/model/Shader.h>
 
 namespace urchin {
 

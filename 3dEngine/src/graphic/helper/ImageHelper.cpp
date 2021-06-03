@@ -1,7 +1,7 @@
 #include "ImageHelper.h"
-#include "libs/vma/vk_mem_alloc.h"
-#include "graphic/setup/GraphicService.h"
-#include "graphic/helper/MemoryHelper.h"
+#include <libs/vma/vk_mem_alloc.h>
+#include <graphic/setup/GraphicService.h>
+#include <graphic/helper/MemoryHelper.h>
 
 namespace urchin {
 

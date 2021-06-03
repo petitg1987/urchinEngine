@@ -1,11 +1,11 @@
 #include <memory>
 #include <utility>
 
-#include "scene/UI/widget/text/Text.h"
-#include "scene/UI/widget/Size.h"
-#include "scene/UI/UISkinService.h"
-#include "resources//MediaManager.h"
-#include "graphic/render/GenericRendererBuilder.h"
+#include <scene/UI/widget/text/Text.h>
+#include <scene/UI/widget/Size.h>
+#include <scene/UI/UISkinService.h>
+#include <resources//MediaManager.h>
+#include <graphic/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

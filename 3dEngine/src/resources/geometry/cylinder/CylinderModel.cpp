@@ -1,7 +1,7 @@
 #include <cmath>
 #include <utility>
 
-#include "resources/geometry/cylinder/CylinderModel.h"
+#include <resources/geometry/cylinder/CylinderModel.h>
 
 namespace urchin {
 

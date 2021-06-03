@@ -1,16 +1,16 @@
 #ifndef URCHINENGINE_GRAPHICSERVICE_H
 #define URCHINENGINE_GRAPHICSERVICE_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 #include <memory>
 #include <vulkan/vulkan.h>
 
-#include "graphic/setup/spi/SurfaceCreator.h"
-#include "graphic/setup/spi/FramebufferSizeRetriever.h"
-#include "graphic/setup/handler/ValidationLayer.h"
-#include "graphic/setup/handler/DeviceHandler.h"
-#include "graphic/setup/handler/QueueHandler.h"
-#include "graphic/render/handler/SwapChainHandler.h"
+#include <graphic/setup/spi/SurfaceCreator.h>
+#include <graphic/setup/spi/FramebufferSizeRetriever.h>
+#include <graphic/setup/handler/ValidationLayer.h>
+#include <graphic/setup/handler/DeviceHandler.h>
+#include <graphic/setup/handler/QueueHandler.h>
+#include <graphic/render/handler/SwapChainHandler.h>
 
 VK_DEFINE_HANDLE(VmaAllocator)
 

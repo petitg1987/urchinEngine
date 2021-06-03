@@ -4,15 +4,15 @@
 #include <vector>
 #include <map>
 #include <memory>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "scene/renderer3d/lighting/shadow/light/LightShadowMap.h"
-#include "scene/renderer3d/lighting/shadow/display/ShadowModelShaderVariable.h"
-#include "scene/renderer3d/lighting/light/Light.h"
-#include "scene/renderer3d/lighting/light/LightManager.h"
-#include "scene/renderer3d/model/Model.h"
-#include "scene/renderer3d/camera/Camera.h"
-#include "graphic/render/shader/model/Shader.h"
+#include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
+#include <scene/renderer3d/lighting/shadow/display/ShadowModelShaderVariable.h>
+#include <scene/renderer3d/lighting/light/Light.h>
+#include <scene/renderer3d/lighting/light/LightManager.h>
+#include <scene/renderer3d/model/Model.h>
+#include <scene/renderer3d/camera/Camera.h>
+#include <graphic/render/shader/model/Shader.h>
 
 #define DEFAULT_NUMBER_SHADOW_MAPS 5
 #define DEFAULT_SHADOW_MAP_RESOLUTION 1024

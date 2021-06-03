@@ -1,8 +1,8 @@
 #include <stdexcept>
 
 #include "TextureFilter.h"
-#include "graphic/render/shader/builder/ShaderBuilder.h"
-#include "graphic/render/GenericRendererBuilder.h"
+#include <graphic/render/shader/builder/ShaderBuilder.h>
+#include <graphic/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

@@ -1,10 +1,10 @@
-#include "resources/MediaManager.h"
-#include "loader/image/LoaderTGA.h"
-#include "loader/image/LoaderPNG.h"
-#include "loader/model/LoaderUrchinMesh.h"
-#include "loader/model/LoaderUrchinAnim.h"
-#include "loader/material/LoaderMTR.h"
-#include "loader/font/LoaderTTF.h"
+#include <resources/MediaManager.h>
+#include <loader/image/LoaderTGA.h>
+#include <loader/image/LoaderPNG.h>
+#include <loader/model/LoaderUrchinMesh.h>
+#include <loader/model/LoaderUrchinAnim.h>
+#include <loader/material/LoaderMTR.h>
+#include <loader/font/LoaderTTF.h>
 
 namespace urchin {
 

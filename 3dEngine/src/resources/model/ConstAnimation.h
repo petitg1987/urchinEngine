@@ -1,10 +1,10 @@
 #ifndef URCHINENGINE_CONSTANIMATION_H
 #define URCHINENGINE_CONSTANIMATION_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "resources/Resource.h"
-#include "resources/model/ConstMesh.h"
+#include <resources/Resource.h>
+#include <resources/model/ConstMesh.h>
 
 namespace urchin {
 

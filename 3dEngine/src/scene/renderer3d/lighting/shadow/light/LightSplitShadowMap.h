@@ -1,10 +1,10 @@
 #ifndef URCHINENGINE_LIGHTSPLITSHADOWMAP_H
 #define URCHINENGINE_LIGHTSPLITSHADOWMAP_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "scene/renderer3d/lighting/shadow/light/LightShadowMap.h"
-#include "scene/renderer3d/model/Model.h"
+#include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
+#include <scene/renderer3d/model/Model.h>
 
 namespace urchin {
 

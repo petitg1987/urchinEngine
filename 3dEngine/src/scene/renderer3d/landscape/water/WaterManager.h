@@ -1,12 +1,12 @@
 #ifndef URCHINENGINE_WATERMANAGER_H
 #define URCHINENGINE_WATERMANAGER_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "graphic/render/target/RenderTarget.h"
-#include "scene/renderer3d/camera/Camera.h"
-#include "scene/renderer3d/landscape/water/Water.h"
-#include "scene/renderer3d/landscape/fog/FogManager.h"
+#include <graphic/render/target/RenderTarget.h>
+#include <scene/renderer3d/camera/Camera.h>
+#include <scene/renderer3d/landscape/water/Water.h>
+#include <scene/renderer3d/landscape/fog/FogManager.h>
 
 namespace urchin {
 

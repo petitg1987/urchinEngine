@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include "resources/Resource.h"
-#include "resources/image/Image.h"
+#include <resources/Resource.h>
+#include <resources/image/Image.h>
 
 namespace urchin {
 

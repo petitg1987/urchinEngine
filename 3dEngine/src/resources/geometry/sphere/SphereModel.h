@@ -1,9 +1,9 @@
 #ifndef URCHINENGINE_SPHEREMODEL_H
 #define URCHINENGINE_SPHEREMODEL_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "resources/geometry/GeometryModel.h"
+#include <resources/geometry/GeometryModel.h>
 
 namespace urchin {
 

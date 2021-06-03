@@ -3,8 +3,8 @@
 
 #include <vulkan/vulkan.h>
 
-#include "graphic/render/target/RenderTarget.h"
-#include "graphic/texture/Texture.h"
+#include <graphic/render/target/RenderTarget.h>
+#include <graphic/texture/Texture.h>
 
 namespace urchin {
 

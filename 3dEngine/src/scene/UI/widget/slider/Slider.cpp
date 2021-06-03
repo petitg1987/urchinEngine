@@ -1,8 +1,8 @@
 #include <stdexcept>
 #include <utility>
 
-#include "scene/UI/widget/slider/Slider.h"
-#include "scene/UI/UISkinService.h"
+#include <scene/UI/widget/slider/Slider.h>
+#include <scene/UI/UISkinService.h>
 
 #define TIME_BEFORE_AUTO_CLICK 0.3
 #define TIME_BEFORE_AUTO_NEXT_CLICK 0.09

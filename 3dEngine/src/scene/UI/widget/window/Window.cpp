@@ -1,10 +1,10 @@
 #include <memory>
 #include <utility>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "scene/UI/widget/window/Window.h"
-#include "scene/InputDeviceKey.h"
-#include "graphic/render/GenericRendererBuilder.h"
+#include <scene/UI/widget/window/Window.h>
+#include <scene/InputDeviceKey.h>
+#include <graphic/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

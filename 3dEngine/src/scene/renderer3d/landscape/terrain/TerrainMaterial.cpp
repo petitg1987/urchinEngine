@@ -1,7 +1,7 @@
 #include <stdexcept>
 
 #include "TerrainMaterial.h"
-#include "resources/MediaManager.h"
+#include <resources/MediaManager.h>
 
 namespace urchin {
 

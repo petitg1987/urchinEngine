@@ -1,9 +1,9 @@
 #ifndef URCHINENGINE_SKYMANAGER_H
 #define URCHINENGINE_SKYMANAGER_H
 
-#include "graphic/render/target/RenderTarget.h"
-#include "scene/renderer3d/camera/Camera.h"
-#include "scene/renderer3d/landscape/sky/Skybox.h"
+#include <graphic/render/target/RenderTarget.h>
+#include <scene/renderer3d/camera/Camera.h>
+#include <scene/renderer3d/landscape/sky/Skybox.h>
 
 namespace urchin {
 

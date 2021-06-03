@@ -3,8 +3,8 @@
 
 #include <memory>
 
-#include "graphic/texture/Texture.h"
-#include "graphic/texture/model/TextureParam.h"
+#include <graphic/texture/Texture.h>
+#include <graphic/texture/model/TextureParam.h>
 
 namespace urchin {
 

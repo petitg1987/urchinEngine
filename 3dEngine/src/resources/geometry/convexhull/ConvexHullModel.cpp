@@ -1,6 +1,6 @@
 #include <utility>
 
-#include "resources/geometry/convexhull/ConvexHullModel.h"
+#include <resources/geometry/convexhull/ConvexHullModel.h>
 
 namespace urchin {
 

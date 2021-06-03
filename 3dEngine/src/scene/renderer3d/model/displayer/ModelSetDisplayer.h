@@ -4,15 +4,15 @@
 #include <vector>
 #include <map>
 #include <string>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "CustomModelShaderVariable.h"
-#include "graphic/render/shader/model/Shader.h"
-#include "graphic/render/target/RenderTarget.h"
-#include "scene/renderer3d/model/Model.h"
-#include "scene/renderer3d/model/displayer/DisplayMode.h"
-#include "scene/renderer3d/camera/Camera.h"
-#include "ModelDisplayer.h"
+#include <graphic/render/shader/model/Shader.h>
+#include <graphic/render/target/RenderTarget.h>
+#include <scene/renderer3d/model/Model.h>
+#include <scene/renderer3d/model/displayer/DisplayMode.h>
+#include <scene/renderer3d/model/displayer/ModelDisplayer.h>
+#include <scene/renderer3d/model/displayer/CustomModelShaderVariable.h>
+#include <scene/renderer3d/camera/Camera.h>
 
 namespace urchin {
 

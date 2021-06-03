@@ -1,9 +1,9 @@
 #ifndef URCHINENGINE_MODELPRODUCESHADOWFILTER
 #define URCHINENGINE_MODELPRODUCESHADOWFILTER
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "scene/renderer3d/model/Model.h"
+#include <scene/renderer3d/model/Model.h>
 
 namespace urchin {
 

@@ -1,9 +1,9 @@
 #include <utility>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "scene/UI/widget/textbox/TextBox.h"
-#include "scene/InputDeviceKey.h"
-#include "graphic/render/GenericRendererBuilder.h"
+#include <scene/UI/widget/textbox/TextBox.h>
+#include <scene/InputDeviceKey.h>
+#include <graphic/render/GenericRendererBuilder.h>
 
 #define LETTER_SHIFT 5 //When the text box is full of text, we shift all letters to left
 #define LETTER_AND_CURSOR_SHIFT 2 //Define space between the letters and cursor

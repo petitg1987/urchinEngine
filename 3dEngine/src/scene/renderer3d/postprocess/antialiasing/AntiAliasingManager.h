@@ -3,9 +3,9 @@
 
 #include <memory>
 
-#include "graphic/render/shader/model/Shader.h"
-#include "graphic/render/GenericRenderer.h"
-#include "graphic/render/target/RenderTarget.h"
+#include <graphic/render/shader/model/Shader.h>
+#include <graphic/render/GenericRenderer.h>
+#include <graphic/render/target/RenderTarget.h>
 
 #define DEFAULT_AA_QUALITY AntiAliasingManager::Quality::HIGH
 

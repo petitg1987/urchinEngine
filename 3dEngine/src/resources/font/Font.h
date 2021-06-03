@@ -1,10 +1,10 @@
 #ifndef URCHINENGINE_FONT_H
 #define URCHINENGINE_FONT_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "resources/Resource.h"
-#include "resources/image/Image.h"
+#include <resources/Resource.h>
+#include <resources/image/Image.h>
 
 namespace urchin {
 

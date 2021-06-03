@@ -4,8 +4,8 @@
 #include <vector>
 #include <vulkan/vulkan.h>
 
-#include "graphic/render/target/RenderTarget.h"
-#include "graphic/render/handler/SwapChainHandler.h"
+#include <graphic/render/target/RenderTarget.h>
+#include <graphic/render/handler/SwapChainHandler.h>
 
 namespace urchin {
 

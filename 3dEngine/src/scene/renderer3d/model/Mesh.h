@@ -1,12 +1,12 @@
 #ifndef URCHINENGINE_MESH_H
 #define URCHINENGINE_MESH_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "resources/model/ConstMesh.h"
-#include "resources/geometry/points/PointsModel.h"
-#include "graphic/render/GenericRenderer.h"
-#include "graphic/render/target/RenderTarget.h"
+#include <resources/model/ConstMesh.h>
+#include <resources/geometry/points/PointsModel.h>
+#include <graphic/render/GenericRenderer.h>
+#include <graphic/render/target/RenderTarget.h>
 
 namespace urchin {
 

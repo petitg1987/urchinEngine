@@ -2,11 +2,11 @@
 #include <cassert>
 
 #include "RenderTarget.h"
-#include "graphic/setup/GraphicService.h"
-#include "graphic/helper/DebugLabelHelper.h"
-#include "graphic/helper/ImageHelper.h"
-#include "graphic/render/GenericRenderer.h"
-#include "graphic/render/target/OffscreenRender.h"
+#include <graphic/setup/GraphicService.h>
+#include <graphic/helper/DebugLabelHelper.h>
+#include <graphic/helper/ImageHelper.h>
+#include <graphic/render/GenericRenderer.h>
+#include <graphic/render/target/OffscreenRender.h>
 
 namespace urchin {
 

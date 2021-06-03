@@ -2,9 +2,9 @@
 #include <utility>
 
 #include "ScreenRender.h"
-#include "graphic/setup/GraphicService.h"
-#include "graphic/helper/ImageHelper.h"
-#include "graphic/render/GenericRenderer.h"
+#include <graphic/setup/GraphicService.h>
+#include <graphic/helper/ImageHelper.h>
+#include <graphic/render/GenericRenderer.h>
 
 namespace urchin {
 

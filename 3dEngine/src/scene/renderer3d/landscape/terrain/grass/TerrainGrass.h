@@ -3,13 +3,13 @@
 
 #include <string>
 #include <vector>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "graphic/render/shader/model/Shader.h"
-#include "graphic/render/target/RenderTarget.h"
-#include "scene/renderer3d/landscape/terrain/grass/TerrainGrassQuadtree.h"
-#include "scene/renderer3d/landscape/terrain/TerrainMesh.h"
-#include "scene/renderer3d/camera/Camera.h"
+#include <graphic/render/shader/model/Shader.h>
+#include <graphic/render/target/RenderTarget.h>
+#include <scene/renderer3d/landscape/terrain/grass/TerrainGrassQuadtree.h>
+#include <scene/renderer3d/landscape/terrain/TerrainMesh.h>
+#include <scene/renderer3d/camera/Camera.h>
 
 namespace urchin {
 

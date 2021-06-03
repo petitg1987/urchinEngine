@@ -4,15 +4,15 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "graphic/render/shader/model/Shader.h"
-#include "graphic/render/target/RenderTarget.h"
-#include "scene/renderer3d/landscape/terrain/TerrainMaterial.h"
-#include "scene/renderer3d/landscape/terrain/TerrainMesh.h"
-#include "scene/renderer3d/landscape/terrain/grass/TerrainGrass.h"
-#include "scene/renderer3d/camera/Camera.h"
-#include "resources/image/Image.h"
+#include <graphic/render/shader/model/Shader.h>
+#include <graphic/render/target/RenderTarget.h>
+#include <scene/renderer3d/landscape/terrain/TerrainMaterial.h>
+#include <scene/renderer3d/landscape/terrain/TerrainMesh.h>
+#include <scene/renderer3d/landscape/terrain/grass/TerrainGrass.h>
+#include <scene/renderer3d/camera/Camera.h>
+#include <resources/image/Image.h>
 
 namespace urchin {
 

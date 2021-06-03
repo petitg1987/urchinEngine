@@ -4,12 +4,12 @@
 #include <chrono>
 #include <vector>
 #include <array>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "renderer3d/Renderer3d.h"
-#include "scene/UI/UIRenderer.h"
-#include "graphic/setup/GraphicService.h"
-#include "graphic/render/target/ScreenRender.h"
+#include <scene/renderer3d/Renderer3d.h>
+#include <scene/UI/UIRenderer.h>
+#include <graphic/setup/GraphicService.h>
+#include <graphic/render/target/ScreenRender.h>
 
 #define NUM_RENDERER 2
 

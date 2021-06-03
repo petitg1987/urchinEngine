@@ -4,9 +4,9 @@
 #include <random>
 
 #include "AmbientOcclusionManager.h"
-#include "graphic/render/shader/builder/ShaderBuilder.h"
-#include "graphic/render/GenericRendererBuilder.h"
-#include "texture/filter/bilateralblur/BilateralBlurFilterBuilder.h"
+#include <graphic/render/shader/builder/ShaderBuilder.h>
+#include <graphic/render/GenericRendererBuilder.h>
+#include <texture/filter/bilateralblur/BilateralBlurFilterBuilder.h>
 
 namespace urchin {
 

@@ -2,9 +2,9 @@
 #define URCHINENGINE_TERRAINMESH_H
 
 #include <vector>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "resources/image/Image.h"
+#include <resources/image/Image.h>
 
 namespace urchin {
 

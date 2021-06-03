@@ -1,8 +1,8 @@
 #include <limits>
 #include <utility>
 
-#include "resources/model/ConstMeshes.h"
-#include "resources/model/boundingbox/SplitBoundingBox.h"
+#include <resources/model/ConstMeshes.h>
+#include <resources/model/boundingbox/SplitBoundingBox.h>
 
 namespace urchin {
 

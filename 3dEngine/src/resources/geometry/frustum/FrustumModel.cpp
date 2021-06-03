@@ -1,6 +1,6 @@
 #include <utility>
 
-#include "resources/geometry/frustum/FrustumModel.h"
+#include <resources/geometry/frustum/FrustumModel.h>
 
 namespace urchin {
 

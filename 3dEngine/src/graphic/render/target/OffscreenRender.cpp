@@ -1,9 +1,9 @@
 #include "OffscreenRender.h"
 
 #include <utility>
-#include "graphic/helper/ImageHelper.h"
-#include "graphic/setup/GraphicService.h"
-#include "graphic/render/GenericRenderer.h"
+#include <graphic/helper/ImageHelper.h>
+#include <graphic/setup/GraphicService.h>
+#include <graphic/render/GenericRenderer.h>
 
 namespace urchin {
 

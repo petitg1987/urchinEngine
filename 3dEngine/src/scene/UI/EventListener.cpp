@@ -1,5 +1,5 @@
-#include "scene/UI/EventListener.h"
-#include "scene/UI/widget/Widget.h"
+#include <scene/UI/EventListener.h>
+#include <scene/UI/widget/Widget.h>
 
 namespace urchin {
 

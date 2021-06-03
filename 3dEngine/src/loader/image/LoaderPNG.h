@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include "resources/image/Image.h"
-#include "loader/Loader.h"
+#include <resources/image/Image.h>
+#include <loader/Loader.h>
 
 namespace urchin {
 

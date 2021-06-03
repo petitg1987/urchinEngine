@@ -5,11 +5,11 @@
 #include <memory>
 #include <vector>
 
-#include "scene/UI/widget/Widget.h"
-#include "scene/UI/widget/Position.h"
-#include "scene/UI/widget/Size.h"
-#include "scene/UI/widget/text/Text.h"
-#include "scene/UI/EventListener.h"
+#include <scene/UI/widget/Widget.h>
+#include <scene/UI/widget/Position.h>
+#include <scene/UI/widget/Size.h>
+#include <scene/UI/widget/text/Text.h>
+#include <scene/UI/EventListener.h>
 namespace urchin {
 
     class Slider : public Widget {

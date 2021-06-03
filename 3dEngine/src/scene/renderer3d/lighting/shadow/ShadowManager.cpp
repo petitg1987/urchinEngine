@@ -3,12 +3,12 @@
 #include <string>
 
 #include "ShadowManager.h"
-#include "scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h"
-#include "texture/filter/TextureFilter.h"
-#include "texture/filter/gaussianblur/GaussianBlurFilterBuilder.h"
-#include "texture/filter/downsample/DownSampleFilterBuilder.h"
-#include "graphic/render/shader/builder/ShaderBuilder.h"
-#include "graphic/render/target/OffscreenRender.h"
+#include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
+#include <texture/filter/TextureFilter.h>
+#include <texture/filter/gaussianblur/GaussianBlurFilterBuilder.h>
+#include <texture/filter/downsample/DownSampleFilterBuilder.h>
+#include <graphic/render/shader/builder/ShaderBuilder.h>
+#include <graphic/render/target/OffscreenRender.h>
 
 namespace urchin {
 

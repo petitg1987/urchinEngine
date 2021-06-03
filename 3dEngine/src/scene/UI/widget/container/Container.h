@@ -1,8 +1,8 @@
 #ifndef URCHINENGINE_CONTAINER_H
 #define URCHINENGINE_CONTAINER_H
 
-#include "scene/UI/widget/Widget.h"
-#include "scene/UI/widget/Position.h"
+#include <scene/UI/widget/Widget.h>
+#include <scene/UI/widget/Position.h>
 
 namespace urchin {
 

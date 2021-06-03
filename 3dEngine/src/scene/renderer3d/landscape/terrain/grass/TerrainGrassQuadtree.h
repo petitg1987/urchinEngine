@@ -3,9 +3,9 @@
 
 #include <vector>
 #include <mutex>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "graphic/render/GenericRenderer.h"
+#include <graphic/render/GenericRenderer.h>
 
 namespace urchin {
 

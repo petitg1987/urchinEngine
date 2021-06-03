@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_CAMERA_H
 #define URCHINENGINE_CAMERA_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 #define DEFAULT_MAX_ROTATION_X 0.995f
 #define DEFAULT_MOUSE_SENSITIVITY 0.006f

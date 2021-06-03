@@ -4,8 +4,8 @@
 #include <cstdlib>
 #include <vulkan/vulkan.h>
 
-#include "graphic/render/model/DataType.h"
-#include "graphic/render/model/DataDimension.h"
+#include <graphic/render/model/DataType.h>
+#include <graphic/render/model/DataDimension.h>
 
 namespace urchin {
 

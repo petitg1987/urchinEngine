@@ -1,8 +1,8 @@
 #include <locale>
 #include <stdexcept>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "loader/model/LoaderUrchinMesh.h"
+#include <loader/model/LoaderUrchinMesh.h>
 
 namespace urchin {
 

@@ -1,8 +1,8 @@
 #include <map>
 
-#include "scene/renderer3d/postprocess/antialiasing/AntiAliasingManager.h"
-#include "graphic/render/shader/builder/ShaderBuilder.h"
-#include "graphic/render/GenericRendererBuilder.h"
+#include <scene/renderer3d/postprocess/antialiasing/AntiAliasingManager.h>
+#include <graphic/render/shader/builder/ShaderBuilder.h>
+#include <graphic/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

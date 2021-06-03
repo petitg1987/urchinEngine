@@ -6,9 +6,9 @@
 #include <map>
 #include <vector>
 
-#include "graphic/render/shader/model/Shader.h"
-#include "graphic/render/GenericRenderer.h"
-#include "graphic/render/target/OffscreenRender.h"
+#include <graphic/render/shader/model/Shader.h>
+#include <graphic/render/GenericRenderer.h>
+#include <graphic/render/target/OffscreenRender.h>
 
 namespace urchin {
 

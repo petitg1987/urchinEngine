@@ -1,10 +1,10 @@
 #include <libs/vma/vk_mem_alloc.h>
 
 #include "GenericRenderer.h"
-#include "graphic/helper/DebugLabelHelper.h"
-#include "graphic/setup/GraphicService.h"
-#include "graphic/render/GenericRendererBuilder.h"
-#include "graphic/render/model/DataContainer.h"
+#include <graphic/helper/DebugLabelHelper.h>
+#include <graphic/setup/GraphicService.h>
+#include <graphic/render/GenericRendererBuilder.h>
+#include <graphic/render/model/DataContainer.h>
 
 namespace urchin {
 

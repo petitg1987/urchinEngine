@@ -1,9 +1,9 @@
 #ifndef URCHINENGINE_FRUSTUMMODEL_H
 #define URCHINENGINE_FRUSTUMMODEL_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "resources/geometry/GeometryModel.h"
+#include <resources/geometry/GeometryModel.h>
 
 namespace urchin {
 

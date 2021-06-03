@@ -2,7 +2,7 @@
 #include <fstream>
 
 #include "ShaderBuilder.h"
-#include "graphic/render/shader/config/ShaderConfig.h"
+#include <graphic/render/shader/config/ShaderConfig.h>
 
 namespace urchin {
 

@@ -1,10 +1,10 @@
 #include <stdexcept>
 
 #include "Skybox.h"
-#include "resources/MediaManager.h"
-#include "graphic/render/GenericRendererBuilder.h"
-#include "graphic/texture/Texture.h"
-#include "graphic/render/shader/builder/ShaderBuilder.h"
+#include <resources/MediaManager.h>
+#include <graphic/render/GenericRendererBuilder.h>
+#include <graphic/texture/Texture.h>
+#include <graphic/render/shader/builder/ShaderBuilder.h>
 
 namespace urchin {
     /**

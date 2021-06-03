@@ -3,8 +3,8 @@
 #include <fstream>
 
 #include "TerrainMesh.h"
-#include "resources/MediaManager.h"
-#include "graphic/render/GenericRenderer.h"
+#include <resources/MediaManager.h>
+#include <graphic/render/GenericRenderer.h>
 
 #define FRL_FILE_EXTENSION ".frl" //Extension for FRL files (Fast Resource Loading)
 #define TERRAIN_HASH_SIZE 32

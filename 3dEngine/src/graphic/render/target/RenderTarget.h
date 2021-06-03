@@ -5,8 +5,8 @@
 #include <forward_list>
 #include <vulkan/vulkan.h>
 
-#include "UrchinCommon.h"
-#include "graphic/texture/Texture.h"
+#include <UrchinCommon.h>
+#include <graphic/texture/Texture.h>
 
 namespace urchin {
 

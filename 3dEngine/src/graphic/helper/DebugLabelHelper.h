@@ -3,7 +3,7 @@
 
 #include <vulkan/vulkan.h>
 #include <string>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 namespace urchin {
 

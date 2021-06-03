@@ -1,11 +1,11 @@
 #include <algorithm>
 #include <utility>
 
-#include "scene/UI/UIRenderer.h"
-#include "resources/MediaManager.h"
-#include "resources/font/Font.h"
-#include "texture/render/TextureRenderer.h"
-#include "graphic/render/shader/builder/ShaderBuilder.h"
+#include <scene/UI/UIRenderer.h>
+#include <resources/MediaManager.h>
+#include <resources/font/Font.h>
+#include <texture/render/TextureRenderer.h>
+#include <graphic/render/shader/builder/ShaderBuilder.h>
 
 namespace urchin {
 

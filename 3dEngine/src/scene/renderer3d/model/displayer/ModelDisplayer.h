@@ -1,11 +1,11 @@
 #ifndef URCHINENGINE_MODELDISPLAYER_H
 #define URCHINENGINE_MODELDISPLAYER_H
 
-#include "scene/renderer3d/model/Model.h"
-#include "scene/renderer3d/model/displayer/DisplayMode.h"
-#include "scene/renderer3d/camera/Camera.h"
-#include "resources/geometry/aabbox/AABBoxModel.h"
-#include "CustomModelShaderVariable.h"
+#include <scene/renderer3d/model/Model.h>
+#include <scene/renderer3d/model/displayer/DisplayMode.h>
+#include <scene/renderer3d/camera/Camera.h>
+#include <resources/geometry/aabbox/AABBoxModel.h>
+#include <scene/renderer3d/model/displayer/CustomModelShaderVariable.h>
 
 namespace urchin {
 

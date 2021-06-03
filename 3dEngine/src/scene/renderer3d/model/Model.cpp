@@ -1,8 +1,8 @@
 #include <stdexcept>
 
 #include "Model.h"
-#include "resources/MediaManager.h"
-#include "resources/geometry/aabbox/AABBoxModel.h"
+#include <resources/MediaManager.h>
+#include <resources/geometry/aabbox/AABBoxModel.h>
 
 namespace urchin {
 
