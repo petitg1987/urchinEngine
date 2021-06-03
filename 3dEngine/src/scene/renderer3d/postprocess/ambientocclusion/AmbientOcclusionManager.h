@@ -8,6 +8,17 @@
 #include "graphic/render/GenericRenderer.h"
 #include "texture/filter/bilateralblur/BilateralBlurFilter.h"
 
+#define DEFAULT_TEXTURE_SIZE AOTextureSize::HALF_SIZE
+#define DEFAULT_KERNEL_SAMPLES 32
+#define DEFAULT_RADIUS 0.35f
+#define DEFAULT_AO_STRENGTH 0.10f
+#define DEFAULT_DEPTH_START_ATTENUATION 0.995f
+#define DEFAULT_DEPTH_END_ATTENUATION 0.997f
+#define DEFAULT_NOISE_TEXTURE_SIZE 4
+#define DEFAULT_BIAS 0.15f
+#define DEFAULT_BLUR_SIZE 7
+#define DEFAULT_BLUR_SHARPNESS 40.0f
+
 namespace urchin {
 
     class AmbientOcclusionManager {
@@ -17,6 +28,20 @@ namespace urchin {
                 HALF_SIZE = 1
             };
 
+            struct AmbientOcclusionConfig {
+                AOTextureSize textureSize = DEFAULT_TEXTURE_SIZE;
+                unsigned int kernelSamples = DEFAULT_KERNEL_SAMPLES;
+                float radius = DEFAULT_RADIUS; //scope radius in units
+                float ambientOcclusionStrength = DEFAULT_AO_STRENGTH;
+                float depthStartAttenuation = DEFAULT_DEPTH_START_ATTENUATION;
+                float depthEndAttenuation = DEFAULT_DEPTH_END_ATTENUATION;
+                unsigned int noiseTextureSize = DEFAULT_NOISE_TEXTURE_SIZE;
+                float bias = DEFAULT_BIAS;
+                bool isBlurActivated = true;
+                unsigned int blurSize = DEFAULT_BLUR_SIZE;
+                float blurSharpness = DEFAULT_BLUR_SHARPNESS;
+            };
+
             AmbientOcclusionManager();
             ~AmbientOcclusionManager();
 
@@ -24,17 +49,7 @@ namespace urchin {
             void onResize(unsigned int, unsigned int);
             void onCameraProjectionUpdate(const Camera*);
 
-            void setTextureSize(AOTextureSize);
-            void setKernelSamples(unsigned int);
-            void setRadius(float);
-            void setAmbientOcclusionStrength(float);
-            void setDistanceAttenuation(float, float);
-            void setNoiseTextureSize(unsigned int);
-            void setBias(float);
-            void setBlurSize(unsigned int);
-            void setBlurSharpness(float);
-
-            void activateBlur(bool);
+            void updateConfiguration(const AmbientOcclusionConfig&);
 
             const std::shared_ptr<Texture>& getAmbientOcclusionTexture() const;
 
@@ -52,6 +67,8 @@ namespace urchin {
                 float bias;
             };
 
+            void checkConfiguration() const;
+
             void createOrUpdateAO();
             void createOrUpdateAOShader();
             void createOrUpdateAOTexture();
@@ -60,24 +77,16 @@ namespace urchin {
             void generateNoiseTexture();
             void exportSVG(const std::string&, const std::vector<Vector4<float>>&) const;
 
-            int retrieveTextureSizeFactor();
+            int retrieveTextureSizeFactor() const;
 
             static const unsigned int KERNEL_SAMPLES_SHADER_LIMIT;
 
             //scene information
             float nearPlane, farPlane;
 
-            //tweak
-            AOTextureSize textureSize;
+            //config
+            AmbientOcclusionConfig config;
             unsigned int textureSizeX, textureSizeY;
-            unsigned int kernelSamples;
-            float radius;
-            float ambientOcclusionStrength;
-            float depthStartAttenuation, depthEndAttenuation;
-            unsigned int noiseTextureSize;
-            float bias;
-            unsigned int blurSize;
-            float blurSharpness;
 
             //frame buffer object
             std::shared_ptr<OffscreenRender> offscreenRenderTarget;
@@ -101,7 +110,6 @@ namespace urchin {
 
             std::unique_ptr<BilateralBlurFilter> verticalBlurFilter;
             std::unique_ptr<BilateralBlurFilter> horizontalBlurFilter;
-            bool isBlurActivated;
     };
 
 }

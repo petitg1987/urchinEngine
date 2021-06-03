@@ -8,17 +8,6 @@
 #include "graphic/render/GenericRendererBuilder.h"
 #include "texture/filter/bilateralblur/BilateralBlurFilterBuilder.h"
 
-#define DEFAULT_TEXTURE_SIZE AOTextureSize::HALF_SIZE
-#define DEFAULT_KERNEL_SAMPLES 32
-#define DEFAULT_RADIUS 0.35f
-#define DEFAULT_AO_STRENGTH 0.10f
-#define DEFAULT_DEPTH_START_ATTENUATION 0.995f
-#define DEFAULT_DEPTH_END_ATTENUATION 0.997f
-#define DEFAULT_NOISE_TEXTURE_SIZE 4
-#define DEFAULT_BIAS 0.15f
-#define DEFAULT_BLUR_SIZE 7
-#define DEFAULT_BLUR_SHARPNESS 40.0f
-
 namespace urchin {
 
     //debug parameters
@@ -31,24 +20,14 @@ namespace urchin {
             nearPlane(0.0f),
             farPlane(0.0f),
 
-            textureSize(DEFAULT_TEXTURE_SIZE),
+            config({}),
             textureSizeX(0),
             textureSizeY(0),
-            kernelSamples(DEFAULT_KERNEL_SAMPLES),
-            radius(DEFAULT_RADIUS),
-            ambientOcclusionStrength(DEFAULT_AO_STRENGTH),
-            depthStartAttenuation(DEFAULT_DEPTH_START_ATTENUATION),
-            depthEndAttenuation(DEFAULT_DEPTH_END_ATTENUATION),
-            noiseTextureSize(DEFAULT_NOISE_TEXTURE_SIZE),
-            bias(DEFAULT_BIAS),
-            blurSize(DEFAULT_BLUR_SIZE),
-            blurSharpness(DEFAULT_BLUR_SHARPNESS),
 
             positioningData({}),
 
             verticalBlurFilter(nullptr),
-            horizontalBlurFilter(nullptr),
-            isBlurActivated(true) {
+            horizontalBlurFilter(nullptr) {
 
     }
 
@@ -83,7 +62,8 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::createOrUpdateAOShader() {
-        AmbientOcclusionShaderConst aoConstData{kernelSamples, radius, ambientOcclusionStrength, depthStartAttenuation, depthEndAttenuation, noiseTextureSize, bias};
+        AmbientOcclusionShaderConst aoConstData{config.kernelSamples, config.radius, config.ambientOcclusionStrength, config.depthStartAttenuation,
+                                                config.depthEndAttenuation, config.noiseTextureSize, config.bias};
         std::vector<std::size_t> variablesSize = {
             sizeof(AmbientOcclusionShaderConst::kernelSamples),
             sizeof(AmbientOcclusionShaderConst::radius),
@@ -110,15 +90,15 @@ namespace urchin {
         offscreenRenderTarget->addTexture(ambientOcclusionTexture);
         offscreenRenderTarget->initialize();
 
-        if (isBlurActivated) {
+        if (config.isBlurActivated) {
             verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>("ambient occlusion - vertical bilateral blur filter", ambientOcclusionTexture)
                     ->textureSize(textureSizeX, textureSizeY)
                     ->textureType(TextureType::DEFAULT)
                     ->textureFormat(TextureFormat::GRAYSCALE_16_FLOAT)
                     ->depthTexture(depthTexture)
                     ->blurDirection(BilateralBlurFilterBuilder::VERTICAL_BLUR)
-                    ->blurSize(blurSize)
-                    ->blurSharpness(blurSharpness)
+                    ->blurSize(config.blurSize)
+                    ->blurSharpness(config.blurSharpness)
                     ->buildBilateralBlur();
 
             horizontalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>("ambient occlusion - horizontal bilateral blur filter", verticalBlurFilter->getTexture())
@@ -127,8 +107,8 @@ namespace urchin {
                     ->textureFormat(TextureFormat::GRAYSCALE_16_FLOAT)
                     ->depthTexture(depthTexture)
                     ->blurDirection(BilateralBlurFilterBuilder::HORIZONTAL_BLUR)
-                    ->blurSize(blurSize)
-                    ->blurSharpness(blurSharpness)
+                    ->blurSize(config.blurSize)
+                    ->blurSharpness(config.blurSharpness)
                     ->buildBilateralBlur();
 
             verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
@@ -165,8 +145,8 @@ namespace urchin {
         std::uniform_real_distribution<float> randomFloats(0.0f, 1.0f);
         std::default_random_engine generator(seed);
 
-        ssaoKernel.resize(kernelSamples);
-        for (unsigned int i = 0; i < kernelSamples; ++i) {
+        ssaoKernel.resize(config.kernelSamples);
+        for (unsigned int i = 0; i < config.kernelSamples; ++i) {
             Vector4<float> sample(
                     randomFloats(generator) * 2.0f - 1.0f,
                     randomFloats(generator) * 2.0f - 1.0f,
@@ -174,7 +154,7 @@ namespace urchin {
                     0.0f /* not used but necessary for shader data alignment on 16 bytes for arrays */);
             sample = sample.normalize();
 
-            float scale = (float)i / (float)kernelSamples;
+            float scale = (float)i / (float)config.kernelSamples;
             scale = MathFunction::lerp<float>(0.1f, 1.0f, scale * scale); //use square function to bring most of sample closer to center
             sample *= scale;
             ssaoKernel[i] = sample;
@@ -191,19 +171,19 @@ namespace urchin {
         std::default_random_engine generator(seed);
 
         std::vector<uint8_t> ssaoNoise;
-        ssaoNoise.reserve(noiseTextureSize * noiseTextureSize * 4);
-        for (unsigned int i = 0; i < noiseTextureSize * noiseTextureSize; i++) {
+        ssaoNoise.reserve(config.noiseTextureSize * config.noiseTextureSize * 4);
+        for (unsigned int i = 0; i < config.noiseTextureSize * config.noiseTextureSize; i++) {
             ssaoNoise.emplace_back((uint8_t)(randomFloats(generator))); //x
             ssaoNoise.emplace_back((uint8_t)(randomFloats(generator))); //y
             ssaoNoise.emplace_back(0); //z
             ssaoNoise.emplace_back(255); //w (not used)
         }
-        noiseTexture = Texture::build(noiseTextureSize, noiseTextureSize, TextureFormat::RGBA_8_INT, &ssaoNoise[0]);
+        noiseTexture = Texture::build(config.noiseTextureSize, config.noiseTextureSize, TextureFormat::RGBA_8_INT, &ssaoNoise[0]);
     }
 
     void AmbientOcclusionManager::exportSVG(const std::string& filename, const std::vector<Vector4<float>>& ssaoKernel) const {
         SVGExporter svgExporter(filename);
-        svgExporter.addShape(new SVGCircle(Point2<float>(0.0, 0.0), radius, SVGPolygon::BLUE));
+        svgExporter.addShape(new SVGCircle(Point2<float>(0.0, 0.0), config.radius, SVGPolygon::BLUE));
         for (const auto& kernel : ssaoKernel) {
             svgExporter.addShape(new SVGCircle(Point2<float>(kernel.X, kernel.Y), 0.001f, SVGPolygon::LIME));
         }
@@ -217,86 +197,52 @@ namespace urchin {
         createOrUpdateAO();
     }
 
-    void AmbientOcclusionManager::setTextureSize(AOTextureSize textureSize) {
-        this->textureSize = textureSize;
+    void AmbientOcclusionManager::updateConfiguration(const AmbientOcclusionConfig& config) {
+        if(this->config.textureSize != config.textureSize ||
+                this->config.kernelSamples != config.kernelSamples ||
+                this->config.radius != config.radius ||
+                this->config.ambientOcclusionStrength != config.ambientOcclusionStrength ||
+                this->config.depthStartAttenuation != config.depthStartAttenuation ||
+                this->config.depthEndAttenuation != config.depthEndAttenuation ||
+                this->config.noiseTextureSize != config.noiseTextureSize ||
+                this->config.bias != config.bias ||
+                this->config.isBlurActivated != config.isBlurActivated ||
+                this->config.blurSize != config.blurSize ||
+                this->config.blurSharpness != config.blurSharpness) {
+            bool updateShader = this->config.depthStartAttenuation != config.depthStartAttenuation || this->config.depthEndAttenuation != config.depthEndAttenuation;
+            bool updateTextures = this->config.noiseTextureSize != config.noiseTextureSize;
 
-        createOrUpdateAO();
-    }
+            this->config = config;
+            checkConfiguration();
 
-    void AmbientOcclusionManager::setKernelSamples(unsigned int kernelSamples) {
-        if(kernelSamples > KERNEL_SAMPLES_SHADER_LIMIT) {
-            throw std::invalid_argument("Kernel samples value is limited to " + std::to_string(KERNEL_SAMPLES_SHADER_LIMIT) + ". Value: " + std::to_string(kernelSamples));
+            createOrUpdateAO();
+            if (updateShader) {
+                createOrUpdateAOShader();
+            }
+            if (updateTextures) {
+                onTexturesUpdate(depthTexture, normalAndAmbientTexture);
+            }
         }
-        this->kernelSamples = kernelSamples;
-
-        createOrUpdateAO();
     }
 
-    /**
-     * @param radius Scope radius in units.
-     * Example: if 1.0f represents one meter, a radius of 0.5f will represent of radius of 50 centimeters.
-     */
-    void AmbientOcclusionManager::setRadius(float radius) {
-        this->radius = radius;
-
-        createOrUpdateAO();
+    void AmbientOcclusionManager::checkConfiguration() const {
+        if(config.kernelSamples > KERNEL_SAMPLES_SHADER_LIMIT) {
+            throw std::invalid_argument("Kernel samples value is limited to " + std::to_string(KERNEL_SAMPLES_SHADER_LIMIT) + ". Value: " + std::to_string(config.kernelSamples));
+        }
     }
 
-    void AmbientOcclusionManager::setAmbientOcclusionStrength(float ambientOcclusionStrength) {
-        this->ambientOcclusionStrength = ambientOcclusionStrength;
-
-        createOrUpdateAO();
-    }
-
-    void AmbientOcclusionManager::setDistanceAttenuation(float depthStartAttenuation, float depthEndAttenuation) {
-        this->depthStartAttenuation = depthStartAttenuation;
-        this->depthEndAttenuation = depthEndAttenuation;
-
-        createOrUpdateAOShader();
-    }
-
-    void AmbientOcclusionManager::setNoiseTextureSize(unsigned int noiseTextureSize) {
-        this->noiseTextureSize = noiseTextureSize;
-
-        onTexturesUpdate(depthTexture, normalAndAmbientTexture);
-    }
-
-    void AmbientOcclusionManager::setBias(float bias) {
-        this->bias = bias;
-
-        createOrUpdateAO();
-    }
-
-    void AmbientOcclusionManager::setBlurSize(unsigned int blurSize) {
-        this->blurSize = blurSize;
-
-        createOrUpdateAO();
-    }
-
-    void AmbientOcclusionManager::setBlurSharpness(float blurSharpness) {
-        this->blurSharpness = blurSharpness;
-
-        createOrUpdateAO();
-    }
-
-    void AmbientOcclusionManager::activateBlur(bool isBlurActivated) {
-        this->isBlurActivated = isBlurActivated;
-
-        createOrUpdateAO();
-    }
-
-    int AmbientOcclusionManager::retrieveTextureSizeFactor() {
-        if (textureSize == AOTextureSize::FULL_SIZE) {
+    int AmbientOcclusionManager::retrieveTextureSizeFactor() const {
+        if (config.textureSize == AOTextureSize::FULL_SIZE) {
             return 1;
-        }else if (textureSize == AOTextureSize::HALF_SIZE) {
+        }else if (config.textureSize == AOTextureSize::HALF_SIZE) {
             return 2;
         }
 
-        throw std::invalid_argument("Unknown texture size value: " + std::to_string(textureSize));
+        throw std::invalid_argument("Unknown texture size value: " + std::to_string(config.textureSize));
     }
 
     const std::shared_ptr<Texture>& AmbientOcclusionManager::getAmbientOcclusionTexture() const {
-        if (isBlurActivated) {
+        if (config.isBlurActivated) {
             return horizontalBlurFilter->getTexture();
         }
 
@@ -313,7 +259,7 @@ namespace urchin {
 
         offscreenRenderTarget->render();
 
-        if (isBlurActivated) {
+        if (config.isBlurActivated) {
             verticalBlurFilter->applyFilter();
             horizontalBlurFilter->applyFilter();
         }

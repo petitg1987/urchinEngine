@@ -14,6 +14,11 @@
 #include "scene/renderer3d/camera/Camera.h"
 #include "graphic/render/shader/model/Shader.h"
 
+#define DEFAULT_NUMBER_SHADOW_MAPS 5
+#define DEFAULT_SHADOW_MAP_RESOLUTION 1024
+#define DEFAULT_VIEWING_SHADOW_DISTANCE 75.0
+#define DEFAULT_BLUR_SHADOW BlurShadow::MEDIUM
+
 namespace urchin {
 
     /**
@@ -32,6 +37,13 @@ namespace urchin {
                 NUMBER_SHADOW_MAPS_UPDATE
             };
 
+            struct ShadowConfig {
+                unsigned int nbShadowMaps = DEFAULT_NUMBER_SHADOW_MAPS;
+                unsigned int shadowMapResolution = DEFAULT_SHADOW_MAP_RESOLUTION;
+                float viewingShadowDistance = DEFAULT_VIEWING_SHADOW_DISTANCE;
+                BlurShadow blurShadow = DEFAULT_BLUR_SHADOW;
+            };
+
             ShadowManager(LightManager*, OctreeManager<Model>*);
             ~ShadowManager() override;
 
@@ -42,13 +54,10 @@ namespace urchin {
             unsigned int getMaxShadowLights() const;
             float getShadowMapBias() const;
 
-            void setShadowMapResolution(unsigned int);
+            void updateConfiguration(const ShadowConfig&);
             unsigned int getShadowMapResolution() const;
-            void setNumberShadowMaps(unsigned int);
             unsigned int getNumberShadowMaps() const;
-            void setViewingShadowDistance(float);
             float getViewingShadowDistance() const;
-            void setBlurShadow(BlurShadow);
             BlurShadow getBlurShadow() const;
 
             const std::vector<Frustum<float>>& getSplitFrustums() const;
@@ -73,13 +82,11 @@ namespace urchin {
             void splitFrustum(const Frustum<float>&);
 
             //shadow map quality
+            void checkConfiguration() const;
             static constexpr uint32_t SHADOW_MAPS_SHADER_LIMIT = 7; //must be equals to 'NUMBER_SHADOW_MAPS' in lighting shader
             const float shadowMapBias;
             const float percentageUniformSplit; //percentage of uniform split against the logarithmic split to split frustum
-            unsigned int shadowMapResolution;
-            unsigned int nbShadowMaps;
-            float viewingShadowDistance;
-            BlurShadow blurShadow;
+            ShadowConfig config;
 
             //scene information
             LightManager* lightManager;
@@ -97,7 +104,6 @@ namespace urchin {
             //shadow lights information
             Matrix4<float>* lightProjectionViewMatrices;
     };
-
 }
 
 #endif

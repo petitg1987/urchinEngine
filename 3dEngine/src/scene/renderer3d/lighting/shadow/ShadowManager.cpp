@@ -10,20 +10,12 @@
 #include "graphic/render/shader/builder/ShaderBuilder.h"
 #include "graphic/render/target/OffscreenRender.h"
 
-#define DEFAULT_NUMBER_SHADOW_MAPS 5
-#define DEFAULT_SHADOW_MAP_RESOLUTION 1024
-#define DEFAULT_VIEWING_SHADOW_DISTANCE 75.0
-#define DEFAULT_BLUR_SHADOW BlurShadow::MEDIUM
-
 namespace urchin {
 
     ShadowManager::ShadowManager(LightManager* lightManager, OctreeManager<Model>* modelOctreeManager) :
             shadowMapBias(ConfigService::instance()->getFloatValue("shadow.shadowMapBias")),
             percentageUniformSplit(ConfigService::instance()->getFloatValue("shadow.frustumUniformSplitAgainstLogSplit")),
-            shadowMapResolution(DEFAULT_SHADOW_MAP_RESOLUTION),
-            nbShadowMaps(DEFAULT_NUMBER_SHADOW_MAPS),
-            viewingShadowDistance(DEFAULT_VIEWING_SHADOW_DISTANCE),
-            blurShadow(DEFAULT_BLUR_SHADOW),
+            config({}),
             lightManager(lightManager),
             modelOctreeManager(modelOctreeManager),
             bForceUpdateAllShadowMaps(false),
@@ -42,12 +34,12 @@ namespace urchin {
 
     void ShadowManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
         delete[] lightProjectionViewMatrices;
-        std::size_t mLightProjectionViewSize = getMaxShadowLights() * nbShadowMaps;
+        std::size_t mLightProjectionViewSize = getMaxShadowLights() * config.nbShadowMaps;
         lightProjectionViewMatrices = new Matrix4<float>[mLightProjectionViewSize]{};
 
         lightingRendererBuilder
                 ->addUniformData(mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices) //binding 4
-                ->addUniformData(nbShadowMaps * sizeof(float) * 4, depthSplitDistance); //binding 5
+                ->addUniformData(config.nbShadowMaps * sizeof(float) * 4, depthSplitDistance); //binding 5
     }
 
     void ShadowManager::onCameraProjectionUpdate(const Camera* camera) {
@@ -90,50 +82,45 @@ namespace urchin {
         return shadowMapBias;
     }
 
-    void ShadowManager::setShadowMapResolution(unsigned int shadowMapResolution) {
-        this->shadowMapResolution = shadowMapResolution;
+    void ShadowManager::updateConfiguration(const ShadowConfig& config) {
+        if(this->config.nbShadowMaps != config.nbShadowMaps ||
+                this->config.shadowMapResolution != config.shadowMapResolution ||
+                this->config.viewingShadowDistance != config.viewingShadowDistance ||
+                this->config.blurShadow != config.blurShadow) {
+            bool nbShadowMapUpdated = this->config.nbShadowMaps != config.nbShadowMaps;
 
-        updateShadowLights();
+            this->config = config;
+            checkConfiguration();
+
+            updateShadowLights();
+            if (nbShadowMapUpdated) {
+                notifyObservers(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
+            }
+        }
+    }
+
+    void ShadowManager::checkConfiguration() const {
+        if (config.nbShadowMaps <= 1) { //note: shadow maps texture array with depth = 1 generate error in GLSL texture() function
+            throw std::invalid_argument("Number of shadow maps must be greater than one. Value: " + std::to_string(config.nbShadowMaps));
+        } else if (config.nbShadowMaps > SHADOW_MAPS_SHADER_LIMIT) {
+            throw std::invalid_argument("Number of shadow maps must be lower than " + std::to_string(SHADOW_MAPS_SHADER_LIMIT) + ". Value: " + std::to_string(config.nbShadowMaps));
+        }
     }
 
     unsigned int ShadowManager::getShadowMapResolution() const {
-        return shadowMapResolution;
-    }
-
-    void ShadowManager::setNumberShadowMaps(unsigned int nbShadowMaps) {
-        if (nbShadowMaps <= 1) { //note: shadow maps texture array with depth = 1 generate error in GLSL texture() function
-            throw std::invalid_argument("Number of shadow maps must be greater than one. Value: " + std::to_string(nbShadowMaps));
-        } else if (nbShadowMaps > SHADOW_MAPS_SHADER_LIMIT) {
-            throw std::invalid_argument("Number of shadow maps must be lower than " + std::to_string(SHADOW_MAPS_SHADER_LIMIT) + ". Value: " + std::to_string(nbShadowMaps));
-        }
-
-        this->nbShadowMaps = nbShadowMaps;
-
-        updateShadowLights();
-        notifyObservers(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
+        return config.shadowMapResolution;
     }
 
     unsigned int ShadowManager::getNumberShadowMaps() const {
-        return nbShadowMaps;
-    }
-
-    void ShadowManager::setViewingShadowDistance(float viewingShadowDistance) {
-        this->viewingShadowDistance = viewingShadowDistance;
-
-        updateShadowLights();
+        return config.nbShadowMaps;
     }
 
     float ShadowManager::getViewingShadowDistance() const {
-        return viewingShadowDistance;
-    }
-
-    void ShadowManager::setBlurShadow(ShadowManager::BlurShadow blurShadow) {
-        this->blurShadow = blurShadow;
-        updateShadowLights();
+        return config.viewingShadowDistance;
     }
 
     ShadowManager::BlurShadow ShadowManager::getBlurShadow() const {
-        return blurShadow;
+        return config.blurShadow;
     }
 
     const std::vector<Frustum<float>>& ShadowManager::getSplitFrustums() const {
@@ -181,7 +168,7 @@ namespace urchin {
     }
 
     void ShadowManager::addShadowLight(const Light* light) {
-        auto shadowMapTexture = Texture::buildArray(shadowMapResolution, shadowMapResolution, nbShadowMaps, TextureFormat::RG_32_FLOAT, nullptr);
+        auto shadowMapTexture = Texture::buildArray(config.shadowMapResolution, config.shadowMapResolution, config.nbShadowMaps, TextureFormat::RG_32_FLOAT, nullptr);
         //The shadow map must be cleared with the farthest depth value (1.0f).
         //Indeed, the shadow map is read with some imprecision and unwritten pixel could be fetched and would lead to artifact on world borders.
         shadowMapTexture->enableClearColor(Vector4<float>(1.0f, 1.0f, -1.0f, -1.0f));
@@ -189,38 +176,38 @@ namespace urchin {
         auto shadowMapRenderTarget = std::make_unique<OffscreenRender>("shadow map", RenderTarget::WRITE_ONLY_DEPTH_ATTACHMENT);
         shadowMapRenderTarget->addTexture(shadowMapTexture);
 
-        auto* newLightShadowMap = new LightShadowMap(light, modelOctreeManager, viewingShadowDistance, shadowMapTexture, nbShadowMaps, std::move(shadowMapRenderTarget));
-        for (unsigned int i = 0; i < nbShadowMaps; ++i) {
+        auto* newLightShadowMap = new LightShadowMap(light, modelOctreeManager, config.viewingShadowDistance, shadowMapTexture, config.nbShadowMaps, std::move(shadowMapRenderTarget));
+        for (unsigned int i = 0; i < config.nbShadowMaps; ++i) {
             newLightShadowMap->addLightSplitShadowMap();
         }
 
         //add shadow map filter
-        if (blurShadow != BlurShadow::NO_BLUR) {
+        if (config.blurShadow != BlurShadow::NO_BLUR) {
             std::unique_ptr<TextureFilter> verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>("shadow map - vertical gaussian blur filter", shadowMapTexture)
-                    ->textureSize(shadowMapResolution, shadowMapResolution)
+                    ->textureSize(config.shadowMapResolution, config.shadowMapResolution)
                     ->textureType(TextureType::ARRAY)
-                    ->textureNumberLayer(nbShadowMaps)
+                    ->textureNumberLayer(config.nbShadowMaps)
                     ->textureFormat(TextureFormat::RG_32_FLOAT)
                     ->blurDirection(GaussianBlurFilterBuilder::VERTICAL_BLUR)
-                    ->blurSize((unsigned int)blurShadow)
+                    ->blurSize((unsigned int)config.blurShadow)
                     ->build();
 
             std::unique_ptr<TextureFilter> horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>("shadow map - horizontal gaussian blur filter", verticalBlurFilter->getTexture())
-                    ->textureSize(shadowMapResolution, shadowMapResolution)
+                    ->textureSize(config.shadowMapResolution, config.shadowMapResolution)
                     ->textureType(TextureType::ARRAY)
-                    ->textureNumberLayer(nbShadowMaps)
+                    ->textureNumberLayer(config.nbShadowMaps)
                     ->textureFormat(TextureFormat::RG_32_FLOAT)
                     ->blurDirection(GaussianBlurFilterBuilder::HORIZONTAL_BLUR)
-                    ->blurSize((unsigned int)blurShadow)
+                    ->blurSize((unsigned int)config.blurShadow)
                     ->build();
 
             newLightShadowMap->addTextureFilter(std::move(verticalBlurFilter));
             newLightShadowMap->addTextureFilter(std::move(horizontalBlurFilter));
         } else { //null filter necessary because it allows to store cached shadow map in a texture which is not cleared.
             std::unique_ptr<TextureFilter> nullFilter = std::make_unique<DownSampleFilterBuilder>("shadow map - cache null filter", shadowMapTexture)
-                    ->textureSize(shadowMapResolution, shadowMapResolution)
+                    ->textureSize(config.shadowMapResolution, config.shadowMapResolution)
                     ->textureType(TextureType::ARRAY)
-                    ->textureNumberLayer(nbShadowMaps)
+                    ->textureNumberLayer(config.nbShadowMaps)
                     ->textureFormat(TextureFormat::RG_32_FLOAT)
                     ->build();
 
@@ -274,9 +261,9 @@ namespace urchin {
 
         float nearDistance = frustum.computeNearDistance();
         float previousSplitDistance = nearDistance;
-        for (unsigned int i = 1; i <= nbShadowMaps; ++i) {
-            float uniformSplit = nearDistance + (viewingShadowDistance - nearDistance) * ((float)i / (float)nbShadowMaps);
-            float logarithmicSplit = nearDistance * std::pow(viewingShadowDistance / nearDistance, (float)i / (float)nbShadowMaps);
+        for (unsigned int i = 1; i <= config.nbShadowMaps; ++i) {
+            float uniformSplit = nearDistance + (config.viewingShadowDistance - nearDistance) * ((float)i / (float)config.nbShadowMaps);
+            float logarithmicSplit = nearDistance * std::pow(config.viewingShadowDistance / nearDistance, (float)i / (float)config.nbShadowMaps);
 
             float splitDistance = (percentageUniformSplit * uniformSplit) + ((1.0f - percentageUniformSplit) * logarithmicSplit);
 
@@ -322,7 +309,7 @@ namespace urchin {
             }
         }
 
-        for (unsigned int shadowMapIndex = 0; shadowMapIndex < nbShadowMaps; ++shadowMapIndex) {
+        for (unsigned int shadowMapIndex = 0; shadowMapIndex < config.nbShadowMaps; ++shadowMapIndex) {
             float currSplitDistance = splitDistances[shadowMapIndex];
             depthSplitDistance[shadowMapIndex * 4] = ((projectionMatrix(2, 2) * -currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance));
         }

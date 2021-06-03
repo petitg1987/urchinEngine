@@ -2,12 +2,12 @@
 
 #include "TerrainManager.h"
 
-#define DEFAULT_GRASS_DISPLAY_DISTANCE 100
+
 
 namespace urchin {
     TerrainManager::TerrainManager(std::shared_ptr<RenderTarget> renderTarget) :
             renderTarget(std::move(renderTarget)),
-            grassDisplayDistance(DEFAULT_GRASS_DISPLAY_DISTANCE) {
+            config({}) {
 
     }
 
@@ -24,7 +24,7 @@ namespace urchin {
 
             terrain->initialize(renderTarget);
             terrain->onCameraProjectionUpdate(projectionMatrix);
-            updateWithConfig();
+            updateTerrainConfig(terrain);
         }
     }
 
@@ -35,16 +35,22 @@ namespace urchin {
         }
     }
 
-    void TerrainManager::setGrassDisplayDistance(float grassDisplayDistance) {
-        this->grassDisplayDistance = grassDisplayDistance;
+    void TerrainManager::updateConfiguration(const TerrainConfig& config) {
+        if (this->config.grassDisplayDistance != config.grassDisplayDistance) {
+            this->config = config;
 
-        updateWithConfig();
+            updateAllTerrainConfig();
+        }
     }
 
-    void TerrainManager::updateWithConfig() {
+    void TerrainManager::updateAllTerrainConfig() {
         for (const auto terrain : terrains) {
-            terrain->getGrass()->setGrassDisplayDistance(grassDisplayDistance);
+            updateTerrainConfig(terrain);
         }
+    }
+
+    void TerrainManager::updateTerrainConfig(Terrain* terrain) const {
+        terrain->getGrass()->setGrassDisplayDistance(config.grassDisplayDistance);
     }
 
     void TerrainManager::prepareRendering(const Camera* camera, float dt) const {

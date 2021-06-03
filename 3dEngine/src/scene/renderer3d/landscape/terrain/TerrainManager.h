@@ -7,10 +7,16 @@
 #include "scene/renderer3d/camera/Camera.h"
 #include "scene/renderer3d/landscape/terrain/Terrain.h"
 
+#define DEFAULT_GRASS_DISPLAY_DISTANCE 100
+
 namespace urchin {
 
     class TerrainManager {
         public:
+            struct TerrainConfig {
+                float grassDisplayDistance = DEFAULT_GRASS_DISPLAY_DISTANCE;
+            };
+
             explicit TerrainManager(std::shared_ptr<RenderTarget>);
 
             void onCameraProjectionUpdate(const Camera*);
@@ -18,12 +24,13 @@ namespace urchin {
             void addTerrain(Terrain*);
             void removeTerrain(Terrain*);
 
-            void setGrassDisplayDistance(float);
+            void updateConfiguration(const TerrainConfig&);
 
             void prepareRendering(const Camera*, float) const;
 
         private:
-            void updateWithConfig();
+            void updateAllTerrainConfig();
+            void updateTerrainConfig(Terrain*) const;
 
             std::shared_ptr<RenderTarget> renderTarget;
 
@@ -31,7 +38,7 @@ namespace urchin {
 
             Matrix4<float> projectionMatrix;
 
-            float grassDisplayDistance;
+            TerrainConfig config;
     };
 
 }

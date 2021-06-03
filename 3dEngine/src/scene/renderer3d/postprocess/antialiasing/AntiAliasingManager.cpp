@@ -4,23 +4,21 @@
 #include "graphic/render/shader/builder/ShaderBuilder.h"
 #include "graphic/render/GenericRendererBuilder.h"
 
-#define DEFAULT_AA_QUALITY AntiAliasingManager::Quality::HIGH
-
 namespace urchin {
 
     AntiAliasingManager::AntiAliasingManager(std::shared_ptr<RenderTarget> renderTarget) :
             renderTarget(std::move(renderTarget)),
-            quality(DEFAULT_AA_QUALITY) {
+            config({}) {
         loadFxaaShader();
     }
 
     void AntiAliasingManager::loadFxaaShader() {
         AntiAliasingShaderConst antiAliasingShaderConst = {};
-        if (quality == LOW) {
+        if (config.quality == LOW) {
             antiAliasingShaderConst = {6, 1.0f, 1.5f, 2.0f, 2.0f, 4.0f, 12.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f};
-        } else if (quality == MEDIUM) {
+        } else if (config.quality == MEDIUM) {
             antiAliasingShaderConst = {8, 1.0f, 1.5f, 2.0f, 2.0f, 2.0f, 2.0f, 4.0f, 8.0f, -1.0f, -1.0f, -1.0f, -1.0f};
-        } else if (quality == HIGH) {
+        } else if (config.quality == HIGH) {
             antiAliasingShaderConst = {12, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.5f, 2.0f, 2.0f, 2.0f, 2.0f, 4.0f, 8.0f};
         }
 
@@ -68,10 +66,12 @@ namespace urchin {
         }
     }
 
-    void AntiAliasingManager::setQuality(Quality quality) {
-        this->quality = quality;
+    void AntiAliasingManager::updateConfiguration(const AntiAliasingConfig& config) {
+        if(this->config.quality != config.quality) {
+            this->config = config;
 
-        loadFxaaShader();
+            loadFxaaShader();
+        }
     }
 
     void AntiAliasingManager::applyAntiAliasing() {
