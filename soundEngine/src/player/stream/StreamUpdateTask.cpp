@@ -1,4 +1,4 @@
-#include "player/stream/StreamUpdateTask.h"
+#include <player/stream/StreamUpdateTask.h>
 
 namespace urchin {
 

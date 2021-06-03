@@ -1,4 +1,4 @@
-#include "sound/ambient/AmbientSound.h"
+#include <sound/ambient/AmbientSound.h>
 
 namespace urchin {
 

@@ -1,9 +1,9 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 #include "SystemInfoTest.h"
-#include "AssertHelper.h"
+#include <AssertHelper.h>
 using namespace urchin;
 
 void SystemInfoTest::retrieveOsInfo() {

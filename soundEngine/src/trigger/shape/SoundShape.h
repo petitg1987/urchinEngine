@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_SOUNDSHAPE_H
 #define URCHINENGINE_SOUNDSHAPE_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 namespace urchin {
 

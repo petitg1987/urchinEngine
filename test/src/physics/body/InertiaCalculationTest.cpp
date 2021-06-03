@@ -1,10 +1,10 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
-#include "UrchinCommon.h"
-#include "UrchinPhysicsEngine.h"
+#include <UrchinCommon.h>
+#include <UrchinPhysicsEngine.h>
 
-#include "AssertHelper.h"
-#include "physics/body/InertiaCalculationTest.h"
+#include <AssertHelper.h>
+#include <physics/body/InertiaCalculationTest.h>
 using namespace urchin;
 
 void InertiaCalculationTest::boxInertiaCalculation() {

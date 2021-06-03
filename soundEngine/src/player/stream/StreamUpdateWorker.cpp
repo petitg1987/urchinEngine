@@ -1,9 +1,9 @@
 #include <AL/al.h>
 #include <thread>
 #include <iostream>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "player/stream/StreamUpdateWorker.h"
+#include <player/stream/StreamUpdateWorker.h>
 
 namespace urchin {
 

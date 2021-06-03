@@ -2,9 +2,9 @@
 #define URCHINENGINE_POINTSOUND_H
 
 #include <string>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "sound/Sound.h"
+#include <sound/Sound.h>
 
 namespace urchin {
 

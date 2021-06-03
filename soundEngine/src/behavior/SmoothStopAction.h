@@ -2,9 +2,9 @@
 #define URCHINENGINE_SMOOTHSTOPACTION_H
 
 #include <chrono>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "behavior/SoundBehavior.h"
+#include <behavior/SoundBehavior.h>
 
 namespace urchin {
 

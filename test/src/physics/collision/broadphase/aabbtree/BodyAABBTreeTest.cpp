@@ -1,8 +1,8 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
-#include "UrchinPhysicsEngine.h"
+#include <UrchinPhysicsEngine.h>
 
-#include "AssertHelper.h"
+#include <AssertHelper.h>
 #include "BodyAABBTreeTest.h"
 using namespace urchin;
 

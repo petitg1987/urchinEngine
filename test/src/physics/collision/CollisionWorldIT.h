@@ -3,7 +3,7 @@
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
-#include "UrchinPhysicsEngine.h"
+#include <UrchinPhysicsEngine.h>
 
 class CollisionWorldIT : public CppUnit::TestFixture {
     public:

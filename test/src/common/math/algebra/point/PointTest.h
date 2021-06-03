@@ -3,7 +3,7 @@
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 class PointTest : public CppUnit::TestFixture {
     public:

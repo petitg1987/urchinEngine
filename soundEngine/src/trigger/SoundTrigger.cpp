@@ -1,4 +1,4 @@
-#include "trigger/SoundTrigger.h"
+#include <trigger/SoundTrigger.h>
 
 namespace urchin {
 

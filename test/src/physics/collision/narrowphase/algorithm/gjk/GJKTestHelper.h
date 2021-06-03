@@ -2,8 +2,8 @@
 #define URCHINENGINE_GJKTESTHELPER_H
 
 #include <memory>
-#include "UrchinCommon.h"
-#include "UrchinPhysicsEngine.h"
+#include <UrchinCommon.h>
+#include <UrchinPhysicsEngine.h>
 using namespace urchin;
 
 class GJKTestHelper {

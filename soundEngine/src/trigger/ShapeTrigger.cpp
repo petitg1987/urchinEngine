@@ -1,4 +1,4 @@
-#include "trigger/ShapeTrigger.h"
+#include <trigger/ShapeTrigger.h>
 
 namespace urchin {
 

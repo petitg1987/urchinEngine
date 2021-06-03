@@ -1,4 +1,4 @@
-#include "player/stream/StreamChunk.h"
+#include <player/stream/StreamChunk.h>
 
 namespace urchin {
 

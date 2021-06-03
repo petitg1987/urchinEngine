@@ -4,9 +4,9 @@
 #include <string>
 #include <iostream>
 
-#include "player/AudioPlayer.h"
-#include "player/stream/StreamUpdateWorker.h"
-#include "sound/Sound.h"
+#include <player/AudioPlayer.h>
+#include <player/stream/StreamUpdateWorker.h>
+#include <sound/Sound.h>
 
 namespace urchin {
 

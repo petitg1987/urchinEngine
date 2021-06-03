@@ -1,4 +1,4 @@
-#include "player/AudioPlayer.h"
+#include <player/AudioPlayer.h>
 
 namespace urchin {
 

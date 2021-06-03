@@ -2,10 +2,10 @@
 #include <cppunit/TestCaller.h>
 #include <vector>
 #include <memory>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "common/math/geometry/ResizeConvexHull3DTest.h"
-#include "AssertHelper.h"
+#include <common/math/geometry/ResizeConvexHull3DTest.h>
+#include <AssertHelper.h>
 using namespace urchin;
 
 void ResizeConvexHull3DTest::reduceBox() {

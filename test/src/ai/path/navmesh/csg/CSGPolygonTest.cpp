@@ -1,10 +1,10 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
-#include "UrchinCommon.h"
-#include "UrchinAIEngine.h"
+#include <UrchinCommon.h>
+#include <UrchinAIEngine.h>
 
 #include "CSGPolygonTest.h"
-#include "AssertHelper.h"
+#include <AssertHelper.h>
 using namespace urchin;
 
 void CSGPolygonTest::simplifySquare() {

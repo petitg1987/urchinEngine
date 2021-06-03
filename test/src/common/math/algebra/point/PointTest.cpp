@@ -1,7 +1,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "common/math/algebra/point/PointTest.h"
-#include "AssertHelper.h"
+#include <common/math/algebra/point/PointTest.h>
+#include <AssertHelper.h>
 
 void PointTest::triviallyCopyable() {
     AssertHelper::assertTrue( std::is_trivially_copyable<Point2<float>>::value);

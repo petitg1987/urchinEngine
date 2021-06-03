@@ -1,8 +1,8 @@
 #include <cppunit/extensions/HelperMacros.h>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "common/math/geometry/LineSegment2DCollisionTest.h"
-#include "AssertHelper.h"
+#include <common/math/geometry/LineSegment2DCollisionTest.h>
+#include <AssertHelper.h>
 using namespace urchin;
 
 void LineSegment2DCollisionTest::noIntersection() {

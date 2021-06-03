@@ -1,7 +1,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "common/math/geometry/AABBoxCollisionTest.h"
-#include "AssertHelper.h"
+#include <common/math/geometry/AABBoxCollisionTest.h>
+#include <AssertHelper.h>
 using namespace urchin;
 
 void AABBoxCollisionTest::rayRightToBox() {

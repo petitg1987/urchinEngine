@@ -5,7 +5,7 @@
 #include <cppunit/Test.h>
 #include <vector>
 
-#include "UrchinPhysicsEngine.h"
+#include <UrchinPhysicsEngine.h>
 
 class IslandContainerTest : public CppUnit::TestFixture {
     public:

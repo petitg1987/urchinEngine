@@ -5,7 +5,7 @@
 #include <cppunit/Test.h>
 #include <memory>
 
-#include "UrchinAIEngine.h"
+#include <UrchinAIEngine.h>
 
 class NavMeshGeneratorTest : public CppUnit::TestFixture {
     public:

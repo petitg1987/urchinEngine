@@ -1,10 +1,10 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 #include <vector>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "common/math/geometry/ResizePolygon2DServiceTest.h"
-#include "AssertHelper.h"
+#include <common/math/geometry/ResizePolygon2DServiceTest.h>
+#include <AssertHelper.h>
 using namespace urchin;
 
 void ResizePolygon2DServiceTest::reduceTriangle() {

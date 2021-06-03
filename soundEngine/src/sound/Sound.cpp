@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <AL/alc.h>
 
-#include "sound/Sound.h"
+#include <sound/Sound.h>
 
 namespace urchin {
 

@@ -1,10 +1,10 @@
 #ifndef URCHINENGINE_SOUNDTRIGGER_H
 #define URCHINENGINE_SOUNDTRIGGER_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "behavior/SoundBehavior.h"
-#include "behavior/SmoothStopAction.h"
+#include <behavior/SoundBehavior.h>
+#include <behavior/SmoothStopAction.h>
 
 namespace urchin {
 

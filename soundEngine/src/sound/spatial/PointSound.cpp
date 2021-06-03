@@ -1,4 +1,4 @@
-#include "sound/spatial/PointSound.h"
+#include <sound/spatial/PointSound.h>
 
 #define DEFAULT_INAUDIBLE_DISTANCE 10.0
 

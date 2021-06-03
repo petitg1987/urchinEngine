@@ -2,13 +2,13 @@
 #define URCHINENGINE_AUDIOCONTROLLER_H
 
 #include <vector>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "sound/Sound.h"
-#include "trigger/SoundTrigger.h"
-#include "behavior/SmoothStopAction.h"
-#include "player/AudioPlayer.h"
-#include "player/stream/StreamUpdateWorker.h"
+#include <sound/Sound.h>
+#include <trigger/SoundTrigger.h>
+#include <behavior/SmoothStopAction.h>
+#include <player/AudioPlayer.h>
+#include <player/stream/StreamUpdateWorker.h>
 
 namespace urchin {
 

@@ -1,7 +1,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 
 #include "MapSerializerTest.h"
-#include "AssertHelper.h"
+#include <AssertHelper.h>
 using namespace urchin;
 
 void MapSerializerTest::emptyMap() {

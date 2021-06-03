@@ -1,8 +1,8 @@
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "common/math/algebra/QuaternionTest.h"
-#include "math/algebra/MathValue.h"
-#include "AssertHelper.h"
+#include <common/math/algebra/QuaternionTest.h>
+#include <math/algebra/MathValue.h>
+#include <AssertHelper.h>
 using namespace urchin;
 
 void QuaternionTest::multiplyAxisAngleQuaternions9And45() {

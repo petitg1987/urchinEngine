@@ -3,9 +3,9 @@
 
 #include <AL/al.h>
 
-#include "sound/Sound.h"
-#include "player/filereader/SoundFileReader.h"
-#include "player/stream/StreamChunk.h"
+#include <sound/Sound.h>
+#include <player/filereader/SoundFileReader.h>
+#include <player/stream/StreamChunk.h>
 
 namespace urchin {
 

@@ -1,9 +1,9 @@
 #ifndef URCHINENGINE_SOUNDBOX_H
 #define URCHINENGINE_SOUNDBOX_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "trigger/shape/SoundShape.h"
+#include <trigger/shape/SoundShape.h>
 
 namespace urchin {
 

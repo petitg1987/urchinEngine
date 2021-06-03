@@ -2,7 +2,7 @@
 #include <iomanip>
 #include <algorithm>
 
-#include "AssertHelper.h"
+#include <AssertHelper.h>
 using namespace urchin;
 
 void AssertHelper::assertTrue(bool b, const std::string& msg) {

@@ -1,12 +1,12 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 #include <memory>
-#include "UrchinCommon.h"
-#include "UrchinPhysicsEngine.h"
+#include <UrchinCommon.h>
+#include <UrchinPhysicsEngine.h>
 
-#include "AssertHelper.h"
-#include "physics/collision/narrowphase/algorithm/gjk/GJKSphereTest.h"
-#include "physics/collision/narrowphase/algorithm/gjk/GJKTestHelper.h"
+#include <AssertHelper.h>
+#include <physics/collision/narrowphase/algorithm/gjk/GJKSphereTest.h>
+#include <physics/collision/narrowphase/algorithm/gjk/GJKTestHelper.h>
 using namespace urchin;
 
 void GJKSphereTest::identicalSphere() {

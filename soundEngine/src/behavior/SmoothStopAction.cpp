@@ -1,6 +1,6 @@
 #include <cassert>
 
-#include "behavior/SmoothStopAction.h"
+#include <behavior/SmoothStopAction.h>
 
 namespace urchin {
 

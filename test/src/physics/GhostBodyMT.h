@@ -4,8 +4,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 #include <memory>
-
-#include "UrchinPhysicsEngine.h"
+#include <UrchinPhysicsEngine.h>
 
 class GhostBodyMT : public CppUnit::TestFixture {
     public:

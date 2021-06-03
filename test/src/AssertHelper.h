@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_ASSERTHELPER_H
 #define URCHINENGINE_ASSERTHELPER_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 using namespace urchin;
 
 class AssertHelper {

@@ -3,13 +3,13 @@
 
 #include <vector>
 #include <thread>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "AudioController.h"
-#include "device/DeviceManager.h"
-#include "sound/Sound.h"
-#include "trigger/SoundTrigger.h"
-#include "player/stream/StreamUpdateWorker.h"
+#include <AudioController.h>
+#include <device/DeviceManager.h>
+#include <sound/Sound.h>
+#include <trigger/SoundTrigger.h>
+#include <player/stream/StreamUpdateWorker.h>
 
 namespace urchin {
 

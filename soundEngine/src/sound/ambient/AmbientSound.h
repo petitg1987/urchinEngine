@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "sound/Sound.h"
+#include <sound/Sound.h>
 
 namespace urchin {
 

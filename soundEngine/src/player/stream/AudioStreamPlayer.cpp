@@ -1,6 +1,6 @@
 #include <AL/al.h>
 
-#include "player/stream/AudioStreamPlayer.h"
+#include <player/stream/AudioStreamPlayer.h>
 
 namespace urchin {
 

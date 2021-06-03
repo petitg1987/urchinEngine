@@ -1,12 +1,12 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 #include <memory>
-#include "UrchinCommon.h"
-#include "UrchinPhysicsEngine.h"
+#include <UrchinCommon.h>
+#include <UrchinPhysicsEngine.h>
 
-#include "AssertHelper.h"
-#include "physics/collision/narrowphase/algorithm/epa/EPASphereTest.h"
-#include "physics/collision/narrowphase/algorithm/epa/EPATestHelper.h"
+#include <AssertHelper.h>
+#include <physics/collision/narrowphase/algorithm/epa/EPASphereTest.h>
+#include <physics/collision/narrowphase/algorithm/epa/EPATestHelper.h>
 using namespace urchin;
 
 void EPASphereTest::identicalSphere() {

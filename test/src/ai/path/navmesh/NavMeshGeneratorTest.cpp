@@ -1,10 +1,10 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 #include <memory>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 #include "NavMeshGeneratorTest.h"
-#include "AssertHelper.h"
+#include <AssertHelper.h>
 using namespace urchin;
 
 void NavMeshGeneratorTest::holeOnWalkableFace() {

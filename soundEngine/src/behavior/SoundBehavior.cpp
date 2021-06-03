@@ -1,4 +1,4 @@
-#include "behavior/SoundBehavior.h"
+#include <behavior/SoundBehavior.h>
 
 #define DEFAULT_VOLUME_DECREASE_PERCENTAGE_ON_STOP 0.5f
 

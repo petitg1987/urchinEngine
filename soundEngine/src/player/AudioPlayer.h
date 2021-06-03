@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_AUDIOPLAYER_H
 #define URCHINENGINE_AUDIOPLAYER_H
 
-#include "sound/Sound.h"
+#include <sound/Sound.h>
 
 namespace urchin {
 

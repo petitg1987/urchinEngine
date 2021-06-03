@@ -1,10 +1,10 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
-#include "UrchinCommon.h"
-#include "UrchinPhysicsEngine.h"
+#include <UrchinCommon.h>
+#include <UrchinPhysicsEngine.h>
 
-#include "AssertHelper.h"
-#include "physics/shape/ShapeToConvexObjectTest.h"
+#include <AssertHelper.h>
+#include <physics/shape/ShapeToConvexObjectTest.h>
 using namespace urchin;
 
 void ShapeToConvexObjectTest::boxConversion() {

@@ -2,7 +2,7 @@
 #include <cppunit/TestCaller.h>
 
 #include "LightSplitShadowMapTest.h"
-#include "AssertHelper.h"
+#include <AssertHelper.h>
 using namespace urchin;
 
 void LightSplitShadowMapTest::modelsInFrustumSplit() {

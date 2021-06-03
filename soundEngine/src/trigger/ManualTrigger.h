@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_MANUALTRIGGER_H
 #define URCHINENGINE_MANUALTRIGGER_H
 
-#include "trigger/SoundTrigger.h"
+#include <trigger/SoundTrigger.h>
 
 namespace urchin {
 
