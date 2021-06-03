@@ -4,7 +4,7 @@
 #include <QtWidgets/QFileDialog>
 
 #include "NewWaterDialog.h"
-#include "widget/style/LabelStyleHelper.h"
+#include <widget/style/LabelStyleHelper.h>
 
 namespace urchin {
     NewWaterDialog::NewWaterDialog(QWidget* parent, const WaterController* waterController) :

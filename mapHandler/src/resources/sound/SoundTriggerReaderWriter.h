@@ -4,8 +4,8 @@
 #include <memory>
 #include <string>
 
-#include "UrchinCommon.h"
-#include "UrchinSoundEngine.h"
+#include <UrchinCommon.h>
+#include <UrchinSoundEngine.h>
 
 namespace urchin {
 

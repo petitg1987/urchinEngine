@@ -2,9 +2,9 @@
 #include <AIManager.h>
 
 #include "SceneObject.h"
-#include "resources/object/ModelReaderWriter.h"
-#include "resources/object/RigidBodyReaderWriter.h"
-#include "resources/common/AIEntityBuilder.h"
+#include <resources/object/ModelReaderWriter.h>
+#include <resources/object/RigidBodyReaderWriter.h>
+#include <resources/common/AIEntityBuilder.h>
 
 namespace urchin {
 

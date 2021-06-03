@@ -2,8 +2,8 @@
 #define URCHINENGINE_COLLISIONSHAPEREADERWRITER_H
 
 #include <memory>
-#include "UrchinCommon.h"
-#include "UrchinPhysicsEngine.h"
+#include <UrchinCommon.h>
+#include <UrchinPhysicsEngine.h>
 
 namespace urchin {
 

@@ -5,9 +5,9 @@
 #include <memory>
 #include <QtWidgets/QDoubleSpinBox>
 
-#include "UrchinCommon.h"
-#include "UrchinSoundEngine.h"
-#include "panel/sounds/soundshape/SoundShapeWidget.h"
+#include <UrchinCommon.h>
+#include <UrchinSoundEngine.h>
+#include <panel/sounds/soundshape/SoundShapeWidget.h>
 
 namespace urchin {
 

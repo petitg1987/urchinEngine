@@ -3,7 +3,7 @@
 
 #include "SceneDisplayerWindow.h"
 #include "SceneWindowController.h"
-#include "widget/controller/mouse/MouseController.h"
+#include <widget/controller/mouse/MouseController.h>
 
 #define PICKING_RAY_LENGTH 100.0f
 

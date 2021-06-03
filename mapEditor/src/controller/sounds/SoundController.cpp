@@ -1,7 +1,7 @@
 #include <stdexcept>
 
 #include "SoundController.h"
-#include "panel/sounds/soundshape/support/DefaultSoundShapeCreator.h"
+#include <panel/sounds/soundshape/support/DefaultSoundShapeCreator.h>
 
 namespace urchin {
 

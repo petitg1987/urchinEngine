@@ -6,9 +6,9 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QGridLayout>
 
-#include "UrchinCommon.h"
-#include "UrchinMapHandler.h"
-#include "UrchinPhysicsEngine.h"
+#include <UrchinCommon.h>
+#include <UrchinMapHandler.h>
+#include <UrchinPhysicsEngine.h>
 
 namespace urchin {
 

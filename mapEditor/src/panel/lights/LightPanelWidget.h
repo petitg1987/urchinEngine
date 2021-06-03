@@ -10,9 +10,9 @@
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QLabel>
 
-#include "UrchinCommon.h"
-#include "controller/lights/LightController.h"
-#include "panel/lights/LightTableView.h"
+#include <UrchinCommon.h>
+#include <controller/lights/LightController.h>
+#include <panel/lights/LightTableView.h>
 
 namespace urchin {
 

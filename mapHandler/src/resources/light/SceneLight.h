@@ -2,7 +2,7 @@
 #define URCHINENGINE_SCENELIGHT_H
 
 #include <string>
-#include "Urchin3dEngine.h"
+#include <Urchin3dEngine.h>
 
 namespace urchin {
 

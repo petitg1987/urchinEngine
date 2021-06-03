@@ -2,11 +2,11 @@
 #define URCHINENGINE_LIGHTCONTROLLER_H
 
 #include <list>
-#include "UrchinCommon.h"
-#include "UrchinMapHandler.h"
-#include "Urchin3dEngine.h"
+#include <UrchinCommon.h>
+#include <UrchinMapHandler.h>
+#include <Urchin3dEngine.h>
 
-#include "controller/AbstractController.h"
+#include <controller/AbstractController.h>
 
 namespace urchin {
 

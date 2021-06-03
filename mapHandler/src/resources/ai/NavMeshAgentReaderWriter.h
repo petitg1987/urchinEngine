@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "UrchinAIEngine.h"
+#include <UrchinAIEngine.h>
 
 namespace urchin {
 

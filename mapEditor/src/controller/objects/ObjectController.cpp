@@ -3,7 +3,7 @@
 #include "Urchin3dEngine.h"
 
 #include "ObjectController.h"
-#include "panel/objects/bodyshape/support/DefaultBodyShapeCreator.h"
+#include <panel/objects/bodyshape/support/DefaultBodyShapeCreator.h>
 
 namespace urchin {
 

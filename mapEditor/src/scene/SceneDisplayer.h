@@ -3,20 +3,20 @@
 
 #include <vector>
 #include <QWidget>
-#include "UrchinCommon.h"
-#include "UrchinPhysicsEngine.h"
-#include "Urchin3dEngine.h"
-#include "UrchinSoundEngine.h"
-#include "UrchinMapHandler.h"
+#include <UrchinCommon.h>
+#include <UrchinPhysicsEngine.h>
+#include <Urchin3dEngine.h>
+#include <UrchinSoundEngine.h>
+#include <UrchinMapHandler.h>
 
-#include "widget/controller/mouse/MouseController.h"
-#include "widget/controller/statusbar/StatusBarController.h"
-#include "controller/SceneController.h"
-#include "scene/SceneFreeCamera.h"
-#include "scene/objects/BodyShapeDisplayer.h"
-#include "scene/objects/move/ObjectMoveController.h"
-#include "scene/lights/LightScopeDisplayer.h"
-#include "scene/sounds/SoundTriggerDisplayer.h"
+#include <widget/controller/mouse/MouseController.h>
+#include <widget/controller/statusbar/StatusBarController.h>
+#include <controller/SceneController.h>
+#include <scene/SceneFreeCamera.h>
+#include <scene/objects/BodyShapeDisplayer.h>
+#include <scene/objects/move/ObjectMoveController.h>
+#include <scene/lights/LightScopeDisplayer.h>
+#include <scene/sounds/SoundTriggerDisplayer.h>
 
 namespace urchin {
 

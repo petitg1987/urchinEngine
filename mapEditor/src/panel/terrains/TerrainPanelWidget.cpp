@@ -5,10 +5,10 @@
 #include <QSignalMapper>
 
 #include "TerrainPanelWidget.h"
-#include "widget/style/GroupBoxStyleHelper.h"
-#include "widget/style/SpinBoxStyleHelper.h"
-#include "widget/style/ButtonStyleHelper.h"
-#include "panel/terrains/dialog/NewTerrainDialog.h"
+#include <widget/style/GroupBoxStyleHelper.h>
+#include <widget/style/SpinBoxStyleHelper.h>
+#include <widget/style/ButtonStyleHelper.h>
+#include <panel/terrains/dialog/NewTerrainDialog.h>
 
 namespace urchin {
     QString TerrainPanelWidget::preferredMaskMapPath = QString();

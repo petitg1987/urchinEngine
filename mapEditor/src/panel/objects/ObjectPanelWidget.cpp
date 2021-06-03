@@ -1,17 +1,17 @@
 #include <QtWidgets/QHBoxLayout>
 
 #include "ObjectPanelWidget.h"
-#include "widget/style/GroupBoxStyleHelper.h"
-#include "widget/style/SpinBoxStyleHelper.h"
-#include "widget/style/ButtonStyleHelper.h"
-#include "widget/style/ComboBoxStyleHelper.h"
-#include "widget/style/FrameStyleHelper.h"
-#include "panel/objects/dialog/NewObjectDialog.h"
-#include "panel/objects/dialog/CloneObjectDialog.h"
-#include "panel/objects/dialog/ChangeBodyShapeDialog.h"
-#include "panel/objects/bodyshape/BodyShapeWidgetRetriever.h"
-#include "scene/SceneDisplayerWindow.h"
-#include "scene/objects/move/ObjectMoveController.h"
+#include <widget/style/GroupBoxStyleHelper.h>
+#include <widget/style/SpinBoxStyleHelper.h>
+#include <widget/style/ButtonStyleHelper.h>
+#include <widget/style/ComboBoxStyleHelper.h>
+#include <widget/style/FrameStyleHelper.h>
+#include <panel/objects/dialog/NewObjectDialog.h>
+#include <panel/objects/dialog/CloneObjectDialog.h>
+#include <panel/objects/dialog/ChangeBodyShapeDialog.h>
+#include <panel/objects/bodyshape/BodyShapeWidgetRetriever.h>
+#include <scene/SceneDisplayerWindow.h>
+#include <scene/objects/move/ObjectMoveController.h>
 
 namespace urchin {
 

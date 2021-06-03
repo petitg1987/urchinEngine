@@ -1,7 +1,7 @@
 #include <stdexcept>
 
 #include "SceneLight.h"
-#include "resources/light/LightReaderWriter.h"
+#include <resources/light/LightReaderWriter.h>
 
 namespace urchin {
 

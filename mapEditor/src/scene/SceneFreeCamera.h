@@ -2,10 +2,10 @@
 #define URCHINENGINE_SCENEFREECAMERA_H
 
 #include <QWidget>
-#include "UrchinCommon.h"
-#include "Urchin3dEngine.h"
+#include <UrchinCommon.h>
+#include <Urchin3dEngine.h>
 
-#include "widget/controller/mouse/MouseController.h"
+#include <widget/controller/mouse/MouseController.h>
 
 namespace urchin {
 

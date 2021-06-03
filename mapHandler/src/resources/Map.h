@@ -5,19 +5,19 @@
 #include <list>
 #include <utility>
 
-#include "UrchinCommon.h"
-#include "Urchin3dEngine.h"
-#include "UrchinSoundEngine.h"
-#include "UrchinAIEngine.h"
-#include "load/LoadCallback.h"
-#include "resources/object/SceneObject.h"
-#include "resources/light/SceneLight.h"
-#include "resources/terrain/SceneTerrain.h"
-#include "resources/water/SceneWater.h"
-#include "resources/sky/SceneSky.h"
-#include "resources/sound/SceneSound.h"
-#include "resources/ai/SceneAI.h"
-#include "resources/common/SceneEntity.h"
+#include <UrchinCommon.h>
+#include <Urchin3dEngine.h>
+#include <UrchinSoundEngine.h>
+#include <UrchinAIEngine.h>
+#include <load/LoadCallback.h>
+#include <resources/object/SceneObject.h>
+#include <resources/light/SceneLight.h>
+#include <resources/terrain/SceneTerrain.h>
+#include <resources/water/SceneWater.h>
+#include <resources/sky/SceneSky.h>
+#include <resources/sound/SceneSound.h>
+#include <resources/ai/SceneAI.h>
+#include <resources/common/SceneEntity.h>
 
 namespace urchin {
 

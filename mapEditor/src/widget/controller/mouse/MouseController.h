@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_MOUSECONTROLLER_H
 #define URCHINENGINE_MOUSECONTROLLER_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 #include <QtWidgets/QWidget>
 
 namespace urchin {

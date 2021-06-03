@@ -4,9 +4,9 @@
 #include <memory>
 #include <QWidget>
 
-#include "UrchinPhysicsEngine.h"
-#include "UrchinMapHandler.h"
-#include "panel/objects/bodyshape/BodyShapeWidget.h"
+#include <UrchinPhysicsEngine.h>
+#include <UrchinMapHandler.h>
+#include <panel/objects/bodyshape/BodyShapeWidget.h>
 
 namespace urchin {
 

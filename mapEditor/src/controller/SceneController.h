@@ -3,14 +3,14 @@
 
 #include <list>
 
-#include "UrchinMapHandler.h"
-#include "controller/objects/ObjectController.h"
-#include "controller/lights/LightController.h"
-#include "controller/terrains/TerrainController.h"
-#include "controller/waters/WaterController.h"
-#include "controller/sky/SkyController.h"
-#include "controller/sounds/SoundController.h"
-#include "controller/ai/AIController.h"
+#include <UrchinMapHandler.h>
+#include <controller/objects/ObjectController.h>
+#include <controller/lights/LightController.h>
+#include <controller/terrains/TerrainController.h>
+#include <controller/waters/WaterController.h>
+#include <controller/sky/SkyController.h>
+#include <controller/sounds/SoundController.h>
+#include <controller/ai/AIController.h>
 
 namespace urchin {
 

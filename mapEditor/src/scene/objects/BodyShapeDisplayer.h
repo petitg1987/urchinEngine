@@ -1,8 +1,8 @@
 #ifndef URCHINENGINE_BODYSHAPEDISPLAYER_H
 #define URCHINENGINE_BODYSHAPEDISPLAYER_H
 
-#include "Urchin3dEngine.h"
-#include "UrchinMapHandler.h"
+#include <Urchin3dEngine.h>
+#include <UrchinMapHandler.h>
 
 namespace urchin {
 

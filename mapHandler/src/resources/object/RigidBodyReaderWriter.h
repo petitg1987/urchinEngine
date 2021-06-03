@@ -4,8 +4,8 @@
 #include <memory>
 #include <string>
 
-#include "UrchinCommon.h"
-#include "UrchinPhysicsEngine.h"
+#include <UrchinCommon.h>
+#include <UrchinPhysicsEngine.h>
 
 namespace urchin {
 

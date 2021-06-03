@@ -1,13 +1,13 @@
 #include <stdexcept>
 
 #include "CollisionShapeReaderWriterRetriever.h"
-#include "resources/object/bodyshape/CollisionSphereReaderWriter.h"
-#include "resources/object/bodyshape/CollisionCapsuleReaderWriter.h"
-#include "resources/object/bodyshape/CollisionCylinderReaderWriter.h"
-#include "resources/object/bodyshape/CollisionConeReaderWriter.h"
-#include "resources/object/bodyshape/CollisionBoxReaderWriter.h"
-#include "resources/object/bodyshape/CollisionConvexHullReaderWriter.h"
-#include "resources/object/bodyshape/CollisionCompoundShapeReaderWriter.h"
+#include <resources/object/bodyshape/CollisionSphereReaderWriter.h>
+#include <resources/object/bodyshape/CollisionCapsuleReaderWriter.h>
+#include <resources/object/bodyshape/CollisionCylinderReaderWriter.h>
+#include <resources/object/bodyshape/CollisionConeReaderWriter.h>
+#include <resources/object/bodyshape/CollisionBoxReaderWriter.h>
+#include <resources/object/bodyshape/CollisionConvexHullReaderWriter.h>
+#include <resources/object/bodyshape/CollisionCompoundShapeReaderWriter.h>
 
 namespace urchin {
 

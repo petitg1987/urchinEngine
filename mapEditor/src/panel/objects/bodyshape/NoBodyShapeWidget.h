@@ -5,8 +5,8 @@
 #include <memory>
 #include <QtWidgets/QDoubleSpinBox>
 
-#include "UrchinPhysicsEngine.h"
-#include "panel/objects/bodyshape/BodyShapeWidget.h"
+#include <UrchinPhysicsEngine.h>
+#include <panel/objects/bodyshape/BodyShapeWidget.h>
 
 namespace urchin {
 

@@ -5,13 +5,13 @@
 #include <map>
 #include <memory>
 
-#include "UrchinCommon.h"
-#include "Urchin3dEngine.h"
-#include "UrchinSoundEngine.h"
-#include "UrchinAIEngine.h"
-#include "resources/Map.h"
-#include "load/LoadCallback.h"
-#include "load/NullLoadCallback.h"
+#include <UrchinCommon.h>
+#include <Urchin3dEngine.h>
+#include <UrchinSoundEngine.h>
+#include <UrchinAIEngine.h>
+#include <resources/Map.h>
+#include <load/LoadCallback.h>
+#include <load/NullLoadCallback.h>
 
 namespace urchin {
 

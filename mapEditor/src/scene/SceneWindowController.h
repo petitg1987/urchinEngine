@@ -5,7 +5,7 @@
 #include <memory>
 #include <QVulkanInstance>
 
-#include "SceneDisplayerWindow.h"
+#include <scene/SceneDisplayerWindow.h>
 
 namespace urchin {
 

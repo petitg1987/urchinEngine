@@ -2,8 +2,8 @@
 #include <QVariant>
 
 #include "LocalizedShapeTableView.h"
-#include "panel/objects/bodyshape/BodyShapeWidget.h"
-#include "panel/objects/bodyshape/BodyShapeWidgetRetriever.h"
+#include <panel/objects/bodyshape/BodyShapeWidget.h>
+#include <panel/objects/bodyshape/BodyShapeWidgetRetriever.h>
 
 namespace urchin {
 

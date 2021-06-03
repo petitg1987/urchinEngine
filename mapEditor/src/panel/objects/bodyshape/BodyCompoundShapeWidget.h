@@ -10,10 +10,10 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QGridLayout>
 
-#include "UrchinCommon.h"
-#include "UrchinPhysicsEngine.h"
-#include "panel/objects/bodyshape/BodyShapeWidget.h"
-#include "panel/objects/bodyshape/support/LocalizedShapeTableView.h"
+#include <UrchinCommon.h>
+#include <UrchinPhysicsEngine.h>
+#include <panel/objects/bodyshape/BodyShapeWidget.h>
+#include <panel/objects/bodyshape/support/LocalizedShapeTableView.h>
 
 namespace urchin {
 

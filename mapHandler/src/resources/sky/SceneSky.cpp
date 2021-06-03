@@ -1,5 +1,5 @@
 #include "SceneSky.h"
-#include "resources/sky/SkyboxReaderWriter.h"
+#include <resources/sky/SkyboxReaderWriter.h>
 
 namespace urchin {
     SceneSky::SceneSky(Renderer3d* renderer3d) :

@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-#include "Urchin3dEngine.h"
+#include <Urchin3dEngine.h>
 
 namespace urchin {
 

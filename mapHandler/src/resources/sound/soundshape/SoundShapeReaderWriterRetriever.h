@@ -3,8 +3,8 @@
 
 #include <memory>
 
-#include "UrchinSoundEngine.h"
-#include "resources/sound/soundshape/SoundShapeReaderWriter.h"
+#include <UrchinSoundEngine.h>
+#include <resources/sound/soundshape/SoundShapeReaderWriter.h>
 
 namespace urchin {
 

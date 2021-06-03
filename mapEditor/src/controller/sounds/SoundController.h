@@ -2,11 +2,11 @@
 #define URCHINENGINE_SOUNDCONTROLLER_H
 
 #include <list>
-#include "UrchinCommon.h"
-#include "UrchinMapHandler.h"
-#include "UrchinSoundEngine.h"
+#include <UrchinCommon.h>
+#include <UrchinMapHandler.h>
+#include <UrchinSoundEngine.h>
 
-#include "controller/AbstractController.h"
+#include <controller/AbstractController.h>
 
 namespace urchin {
 

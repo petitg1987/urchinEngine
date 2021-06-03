@@ -1,10 +1,10 @@
 #ifndef URCHINENGINE_SKYCONTROLLER_H
 #define URCHINENGINE_SKYCONTROLLER_H
 
-#include "UrchinCommon.h"
-#include "UrchinMapHandler.h"
+#include <UrchinCommon.h>
+#include <UrchinMapHandler.h>
 
-#include "controller/AbstractController.h"
+#include <controller/AbstractController.h>
 
 namespace urchin {
 

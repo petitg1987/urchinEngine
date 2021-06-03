@@ -2,14 +2,14 @@
 #include <QtWidgets/QGroupBox>
 
 #include "BodyCompoundShapeWidget.h"
-#include "widget/style/LabelStyleHelper.h"
-#include "widget/style/GroupBoxStyleHelper.h"
-#include "widget/style/SpinBoxStyleHelper.h"
-#include "widget/style/ButtonStyleHelper.h"
-#include "widget/style/ComboBoxStyleHelper.h"
-#include "panel/objects/dialog/ChangeBodyShapeDialog.h"
-#include "panel/objects/bodyshape/BodyShapeWidgetRetriever.h"
-#include "panel/objects/bodyshape/support/DefaultBodyShapeCreator.h"
+#include <widget/style/LabelStyleHelper.h>
+#include <widget/style/GroupBoxStyleHelper.h>
+#include <widget/style/SpinBoxStyleHelper.h>
+#include <widget/style/ButtonStyleHelper.h>
+#include <widget/style/ComboBoxStyleHelper.h>
+#include <panel/objects/dialog/ChangeBodyShapeDialog.h>
+#include <panel/objects/bodyshape/BodyShapeWidgetRetriever.h>
+#include <panel/objects/bodyshape/support/DefaultBodyShapeCreator.h>
 
 namespace urchin {
 

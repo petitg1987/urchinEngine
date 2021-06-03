@@ -1,8 +1,8 @@
 #include <stdexcept>
 
 #include "SceneSound.h"
-#include "resources/sound/SoundReaderWriter.h"
-#include "resources/sound/SoundTriggerReaderWriter.h"
+#include <resources/sound/SoundReaderWriter.h>
+#include <resources/sound/SoundTriggerReaderWriter.h>
 
 namespace urchin {
 

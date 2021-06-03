@@ -4,10 +4,10 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 #include "NewSoundDialog.h"
-#include "widget/style/LabelStyleHelper.h"
-#include "widget/style/ButtonStyleHelper.h"
+#include <widget/style/LabelStyleHelper.h>
+#include <widget/style/ButtonStyleHelper.h>
 
 namespace urchin {
 

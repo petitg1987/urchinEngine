@@ -1,6 +1,6 @@
 #include "SoundTriggerReaderWriter.h"
-#include "resources/sound/soundshape/SoundShapeReaderWriterRetriever.h"
-#include "resources/sound/soundshape/SoundShapeReaderWriter.h"
+#include <resources/sound/soundshape/SoundShapeReaderWriterRetriever.h>
+#include <resources/sound/soundshape/SoundShapeReaderWriter.h>
 
 namespace urchin {
 

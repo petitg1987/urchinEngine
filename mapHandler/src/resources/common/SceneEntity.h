@@ -1,8 +1,8 @@
 #ifndef URCHINENGINE_SCENEENTITY_H
 #define URCHINENGINE_SCENEENTITY_H
 
-#include "Urchin3dEngine.h"
-#include "UrchinPhysicsEngine.h"
+#include <Urchin3dEngine.h>
+#include <UrchinPhysicsEngine.h>
 
 namespace urchin {
 

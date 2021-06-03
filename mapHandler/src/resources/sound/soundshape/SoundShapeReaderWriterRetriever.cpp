@@ -1,8 +1,8 @@
 #include <stdexcept>
 
 #include "SoundShapeReaderWriterRetriever.h"
-#include "resources/sound/soundshape/SoundSphereReaderWriter.h"
-#include "resources/sound/soundshape/SoundBoxReaderWriter.h"
+#include <resources/sound/soundshape/SoundSphereReaderWriter.h>
+#include <resources/sound/soundshape/SoundBoxReaderWriter.h>
 
 namespace urchin {
 

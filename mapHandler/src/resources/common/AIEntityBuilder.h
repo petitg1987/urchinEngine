@@ -2,8 +2,8 @@
 #define URCHINENGINE_AIOBJECTBUILDER_H
 
 #include <memory>
-#include "UrchinPhysicsEngine.h"
-#include "UrchinAIEngine.h"
+#include <UrchinPhysicsEngine.h>
+#include <UrchinAIEngine.h>
 
 namespace urchin {
 

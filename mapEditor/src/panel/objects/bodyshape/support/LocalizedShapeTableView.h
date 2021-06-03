@@ -7,9 +7,9 @@
 #include <QtWidgets/QTableView>
 #include <QStandardItemModel>
 
-#include "UrchinCommon.h"
-#include "UrchinMapHandler.h"
-#include "controller/SceneController.h"
+#include <UrchinCommon.h>
+#include <UrchinMapHandler.h>
+#include <controller/SceneController.h>
 
 Q_DECLARE_METATYPE(const urchin::LocalizedCollisionShape*)
 

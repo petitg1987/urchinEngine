@@ -1,5 +1,5 @@
-#include "BufferHelper.h"
 #include <libs/vma/vk_mem_alloc.h>
+#include <graphic/helper/BufferHelper.h>
 #include <graphic/setup/GraphicService.h>
 
 namespace urchin {

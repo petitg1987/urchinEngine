@@ -7,8 +7,8 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QLabel>
 
-#include "UrchinMapHandler.h"
-#include "controller/objects/ObjectController.h"
+#include <UrchinMapHandler.h>
+#include <controller/objects/ObjectController.h>
 
 namespace urchin {
 

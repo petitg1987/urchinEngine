@@ -13,11 +13,11 @@
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QTabWidget>
 
-#include "UrchinCommon.h"
-#include "UrchinPhysicsEngine.h"
-#include "controller/objects/ObjectController.h"
-#include "panel/objects/ObjectTableView.h"
-#include "panel/objects/bodyshape/BodyShapeWidget.h"
+#include <UrchinCommon.h>
+#include <UrchinPhysicsEngine.h>
+#include <controller/objects/ObjectController.h>
+#include <panel/objects/ObjectTableView.h>
+#include <panel/objects/bodyshape/BodyShapeWidget.h>
 
 namespace urchin {
 

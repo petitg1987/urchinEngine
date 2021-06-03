@@ -5,11 +5,11 @@
 #include <QKeyEvent>
 #include <QWindow>
 #include <QVulkanInstance>
+#include <UrchinCommon.h>
 
-#include "UrchinCommon.h"
-#include "SceneDisplayer.h"
-#include "src/controller/SceneController.h"
-#include "widget/controller/statusbar/StatusBarController.h"
+#include <scene/SceneDisplayer.h>
+#include <controller/SceneController.h>
+#include <widget/controller/statusbar/StatusBarController.h>
 
 namespace urchin {
 

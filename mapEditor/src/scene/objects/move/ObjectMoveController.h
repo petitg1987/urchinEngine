@@ -1,14 +1,14 @@
 #ifndef URCHINENGINE_OBJECTMOVECONTROLLER_H
 #define URCHINENGINE_OBJECTMOVECONTROLLER_H
 
-#include "UrchinCommon.h"
-#include "Urchin3dEngine.h"
-#include "UrchinMapHandler.h"
+#include <UrchinCommon.h>
+#include <Urchin3dEngine.h>
+#include <UrchinMapHandler.h>
 
-#include "controller/SceneController.h"
-#include "scene/objects/move/ObjectMoveAxisDisplayer.h"
-#include "widget/controller/statusbar/StatusBarController.h"
-#include "widget/controller/mouse/MouseController.h"
+#include <controller/SceneController.h>
+#include <scene/objects/move/ObjectMoveAxisDisplayer.h>
+#include <widget/controller/statusbar/StatusBarController.h>
+#include <widget/controller/mouse/MouseController.h>
 
 namespace urchin {
 

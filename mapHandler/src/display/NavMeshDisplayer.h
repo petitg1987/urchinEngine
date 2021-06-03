@@ -2,9 +2,9 @@
 #define URCHINENGINE_NAVMESHDISPLAYER_H
 
 #include <vector>
-#include "UrchinCommon.h"
-#include "Urchin3dEngine.h"
-#include "UrchinAIEngine.h"
+#include <UrchinCommon.h>
+#include <Urchin3dEngine.h>
+#include <UrchinAIEngine.h>
 
 namespace urchin {
 

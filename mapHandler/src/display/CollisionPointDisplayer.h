@@ -2,9 +2,9 @@
 #define URCHINENGINE_PHYSICSCOLLISIONDISPLAYER_H
 
 #include <vector>
-#include "UrchinCommon.h"
-#include "Urchin3dEngine.h"
-#include "UrchinPhysicsEngine.h"
+#include <UrchinCommon.h>
+#include <Urchin3dEngine.h>
+#include <UrchinPhysicsEngine.h>
 
 namespace urchin {
 

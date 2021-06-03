@@ -1,14 +1,14 @@
 #include <QtWidgets/QHBoxLayout>
 
 #include "SoundPanelWidget.h"
-#include "widget/style/GroupBoxStyleHelper.h"
-#include "widget/style/SpinBoxStyleHelper.h"
-#include "widget/style/ButtonStyleHelper.h"
-#include "widget/style/FrameStyleHelper.h"
-#include "panel/sounds/dialog/NewSoundDialog.h"
-#include "panel/sounds/dialog/ChangeSoundTriggerDialog.h"
-#include "panel/sounds/dialog/ChangeSoundShapeDialog.h"
-#include "panel/sounds/soundshape/SoundShapeWidgetRetriever.h"
+#include <widget/style/GroupBoxStyleHelper.h>
+#include <widget/style/SpinBoxStyleHelper.h>
+#include <widget/style/ButtonStyleHelper.h>
+#include <widget/style/FrameStyleHelper.h>
+#include <panel/sounds/dialog/NewSoundDialog.h>
+#include <panel/sounds/dialog/ChangeSoundTriggerDialog.h>
+#include <panel/sounds/dialog/ChangeSoundShapeDialog.h>
+#include <panel/sounds/soundshape/SoundShapeWidgetRetriever.h>
 
 namespace urchin {
 

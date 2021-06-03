@@ -6,9 +6,9 @@
 #include <QMainWindow>
 #include <QtWidgets/QHBoxLayout>
 
-#include "scene/SceneDisplayer.h"
-#include "scene/SceneDisplayerWindow.h"
-#include "panel/ScenePanelWidget.h"
+#include <scene/SceneDisplayer.h>
+#include <scene/SceneDisplayerWindow.h>
+#include <panel/ScenePanelWidget.h>
 
 namespace urchin {
 

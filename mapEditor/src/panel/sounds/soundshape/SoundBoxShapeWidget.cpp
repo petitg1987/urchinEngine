@@ -2,8 +2,8 @@
 #include <QtWidgets/QHBoxLayout>
 
 #include "SoundBoxShapeWidget.h"
-#include "widget/style/SpinBoxStyleHelper.h"
-#include "widget/style/ComboBoxStyleHelper.h"
+#include <widget/style/SpinBoxStyleHelper.h>
+#include <widget/style/ComboBoxStyleHelper.h>
 
 namespace urchin {
 

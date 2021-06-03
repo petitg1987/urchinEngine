@@ -1,10 +1,10 @@
 #include <QtWidgets/QHBoxLayout>
 
 #include "LightPanelWidget.h"
-#include "widget/style/GroupBoxStyleHelper.h"
-#include "widget/style/SpinBoxStyleHelper.h"
-#include "widget/style/ButtonStyleHelper.h"
-#include "panel/lights/dialog/NewLightDialog.h"
+#include <widget/style/GroupBoxStyleHelper.h>
+#include <widget/style/SpinBoxStyleHelper.h>
+#include <widget/style/ButtonStyleHelper.h>
+#include <panel/lights/dialog/NewLightDialog.h>
 
 namespace urchin {
 

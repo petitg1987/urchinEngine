@@ -4,9 +4,9 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QVariant>
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 #include "NewLightDialog.h"
-#include "widget/style/LabelStyleHelper.h"
+#include <widget/style/LabelStyleHelper.h>
 
 namespace urchin {
     NewLightDialog::NewLightDialog(QWidget* parent, const LightController* lightController) :

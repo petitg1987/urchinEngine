@@ -4,7 +4,7 @@
 #include <QtWidgets/QFileDialog>
 
 #include "CloneObjectDialog.h"
-#include "widget/style/LabelStyleHelper.h"
+#include <widget/style/LabelStyleHelper.h>
 
 namespace urchin {
     CloneObjectDialog::CloneObjectDialog(QWidget* parent, const ObjectController* objectController) :

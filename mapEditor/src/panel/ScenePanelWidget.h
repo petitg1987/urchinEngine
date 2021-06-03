@@ -4,16 +4,16 @@
 #include <string>
 #include <QtWidgets/QTabWidget>
 
-#include "UrchinCommon.h"
-#include "UrchinMapHandler.h"
-#include "controller/SceneController.h"
-#include "panel/objects/ObjectPanelWidget.h"
-#include "panel/lights/LightPanelWidget.h"
-#include "panel/terrains/TerrainPanelWidget.h"
-#include "panel/waters/WaterPanelWidget.h"
-#include "panel/sky/SkyPanelWidget.h"
-#include "panel/sounds/SoundPanelWidget.h"
-#include "panel/ai/AIPanelWidget.h"
+#include <UrchinCommon.h>
+#include <UrchinMapHandler.h>
+#include <controller/SceneController.h>
+#include <panel/objects/ObjectPanelWidget.h>
+#include <panel/lights/LightPanelWidget.h>
+#include <panel/terrains/TerrainPanelWidget.h>
+#include <panel/waters/WaterPanelWidget.h>
+#include <panel/sky/SkyPanelWidget.h>
+#include <panel/sounds/SoundPanelWidget.h>
+#include <panel/ai/AIPanelWidget.h>
 
 namespace urchin {
 

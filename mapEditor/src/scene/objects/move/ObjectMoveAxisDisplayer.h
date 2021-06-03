@@ -1,11 +1,11 @@
 #ifndef URCHINENGINE_OBJECTMOVEAXISDISPLAYER_H
 #define URCHINENGINE_OBJECTMOVEAXISDISPLAYER_H
 
-#include "Urchin3dEngine.h"
-#include "UrchinMapHandler.h"
+#include <Urchin3dEngine.h>
+#include <UrchinMapHandler.h>
 
-#include "controller/SceneController.h"
-#include "widget/controller/statusbar/StatusBarController.h"
+#include <controller/SceneController.h>
+#include <widget/controller/statusbar/StatusBarController.h>
 
 namespace urchin {
 

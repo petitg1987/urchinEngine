@@ -1,8 +1,8 @@
 #include <stdexcept>
 
 #include "SceneTerrain.h"
-#include "resources/terrain/TerrainReaderWriter.h"
-#include "resources/common/AIEntityBuilder.h"
+#include <resources/terrain/TerrainReaderWriter.h>
+#include <resources/common/AIEntityBuilder.h>
 
 namespace urchin {
     SceneTerrain::SceneTerrain() :

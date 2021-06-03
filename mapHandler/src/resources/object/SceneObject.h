@@ -2,11 +2,11 @@
 #define URCHINENGINE_SCENEOBJECT_H
 
 #include <string>
-#include "Urchin3dEngine.h"
-#include "UrchinPhysicsEngine.h"
-#include "UrchinAIEngine.h"
+#include <Urchin3dEngine.h>
+#include <UrchinPhysicsEngine.h>
+#include <UrchinAIEngine.h>
 
-#include "resources/common/SceneEntity.h"
+#include <resources/common/SceneEntity.h>
 
 namespace urchin {
 

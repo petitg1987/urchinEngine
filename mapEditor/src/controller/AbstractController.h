@@ -1,8 +1,8 @@
 #ifndef URCHINENGINE_ABSTRACTCONTROLLER_H
 #define URCHINENGINE_ABSTRACTCONTROLLER_H
 
-#include "UrchinCommon.h"
-#include "UrchinMapHandler.h"
+#include <UrchinCommon.h>
+#include <UrchinMapHandler.h>
 
 namespace urchin {
 

@@ -4,10 +4,10 @@
 #include <QMessageBox>
 
 #include "WaterPanelWidget.h"
-#include "widget/style/GroupBoxStyleHelper.h"
-#include "widget/style/SpinBoxStyleHelper.h"
-#include "widget/style/ButtonStyleHelper.h"
-#include "panel/waters/dialog/NewWaterDialog.h"
+#include <widget/style/GroupBoxStyleHelper.h>
+#include <widget/style/SpinBoxStyleHelper.h>
+#include <widget/style/ButtonStyleHelper.h>
+#include <panel/waters/dialog/NewWaterDialog.h>
 
 namespace urchin {
     QString WaterPanelWidget::preferredNormalTexturePath = QString();

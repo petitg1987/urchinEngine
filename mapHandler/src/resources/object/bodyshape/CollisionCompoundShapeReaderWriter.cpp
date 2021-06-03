@@ -2,7 +2,7 @@
 
 #include "CollisionCompoundShapeReaderWriter.h"
 #include "CollisionShapeReaderWriterRetriever.h"
-#include "resources/common/OrientationReaderWriter.h"
+#include <resources/common/OrientationReaderWriter.h>
 
 namespace urchin {
 

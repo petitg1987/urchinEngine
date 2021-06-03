@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <string>
-#include "widget/controller/statusbar/StatusBarState.h"
+#include <widget/controller/statusbar/StatusBarState.h>
 
 namespace urchin {
 

@@ -2,9 +2,9 @@
 #define URCHINENGINE_SCENEWATER_H
 
 #include <string>
-#include "Urchin3dEngine.h"
+#include <Urchin3dEngine.h>
 
-#include "resources/common/SceneEntity.h"
+#include <resources/common/SceneEntity.h>
 
 namespace urchin {
 

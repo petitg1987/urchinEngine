@@ -2,11 +2,11 @@
 #define URCHINENGINE_OBJECTCONTROLLER_H
 
 #include <list>
-#include "UrchinCommon.h"
-#include "UrchinPhysicsEngine.h"
-#include "UrchinMapHandler.h"
+#include <UrchinCommon.h>
+#include <UrchinPhysicsEngine.h>
+#include <UrchinMapHandler.h>
 
-#include "controller/AbstractController.h"
+#include <controller/AbstractController.h>
 
 namespace urchin {
 

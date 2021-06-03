@@ -9,10 +9,10 @@
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "controller/waters/WaterController.h"
-#include "panel/waters/WaterTableView.h"
+#include <controller/waters/WaterController.h>
+#include <panel/waters/WaterTableView.h>
 
 namespace urchin {
 

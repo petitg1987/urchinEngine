@@ -1,9 +1,9 @@
 #ifndef URCHINENGINE_SOUNDTRIGGERDISPLAYER_H
 #define URCHINENGINE_SOUNDTRIGGERDISPLAYER_H
 
-#include "Urchin3dEngine.h"
-#include "UrchinSoundEngine.h"
-#include "UrchinMapHandler.h"
+#include <Urchin3dEngine.h>
+#include <UrchinSoundEngine.h>
+#include <UrchinMapHandler.h>
 
 namespace urchin {
 

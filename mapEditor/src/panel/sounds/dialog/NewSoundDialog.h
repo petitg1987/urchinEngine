@@ -7,8 +7,8 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QComboBox>
 
-#include "UrchinMapHandler.h"
-#include "controller/sounds/SoundController.h"
+#include <UrchinMapHandler.h>
+#include <controller/sounds/SoundController.h>
 
 namespace urchin {
 

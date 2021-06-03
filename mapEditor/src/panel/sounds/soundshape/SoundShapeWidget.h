@@ -6,9 +6,9 @@
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QGridLayout>
 
-#include "UrchinCommon.h"
-#include "UrchinMapHandler.h"
-#include "UrchinSoundEngine.h"
+#include <UrchinCommon.h>
+#include <UrchinMapHandler.h>
+#include <UrchinSoundEngine.h>
 
 namespace urchin {
 

@@ -1,7 +1,7 @@
-#include "StateSaveHelper.h"
-
 #include <QApplication>
 #include <QtCore/QStandardPaths>
+
+#include "StateSaveHelper.h"
 
 namespace urchin {
 

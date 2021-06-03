@@ -2,7 +2,7 @@
 #define URCHINENGINE_COLLISIONSHAPEREADERWRITERRETRIEVER_H
 
 #include <memory>
-#include "UrchinPhysicsEngine.h"
+#include <UrchinPhysicsEngine.h>
 
 #include "CollisionShapeReaderWriter.h"
 

@@ -1,6 +1,6 @@
 #include <memory>
 #include <stdexcept>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 #include "UrchinPhysicsEngine.h"
 
 #include "BodyShapeDisplayer.h"

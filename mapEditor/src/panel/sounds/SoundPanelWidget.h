@@ -11,10 +11,10 @@
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QLabel>
 
-#include "UrchinCommon.h"
-#include "controller/sounds/SoundController.h"
-#include "panel/sounds/SoundTableView.h"
-#include "panel/sounds/soundshape/SoundShapeWidget.h"
+#include <UrchinCommon.h>
+#include <controller/sounds/SoundController.h>
+#include <panel/sounds/SoundTableView.h>
+#include <panel/sounds/soundshape/SoundShapeWidget.h>
 
 namespace urchin {
 
