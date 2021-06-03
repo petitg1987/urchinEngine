@@ -2,8 +2,8 @@
 #include <iostream>
 #include <chrono>
 
-#include "HttpRequest.h"
-#include "RequestException.h"
+#include <request/HttpRequest.h>
+#include <request/RequestException.h>
 
 namespace urchin {
     static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {

@@ -1,12 +1,12 @@
 #include <stdexcept>
 #include <algorithm>
 
-#include "collision/narrowphase/algorithm/CollisionAlgorithmSelector.h"
-#include "collision/narrowphase/algorithm/SphereSphereCollisionAlgorithm.h"
-#include "collision/narrowphase/algorithm/SphereBoxCollisionAlgorithm.h"
-#include "collision/narrowphase/algorithm/ConvexConvexCollisionAlgorithm.h"
-#include "collision/narrowphase/algorithm/CompoundAnyCollisionAlgorithm.h"
-#include "collision/narrowphase/algorithm/ConcaveAnyCollisionAlgorithm.h"
+#include <collision/narrowphase/algorithm/CollisionAlgorithmSelector.h>
+#include <collision/narrowphase/algorithm/SphereSphereCollisionAlgorithm.h>
+#include <collision/narrowphase/algorithm/SphereBoxCollisionAlgorithm.h>
+#include <collision/narrowphase/algorithm/ConvexConvexCollisionAlgorithm.h>
+#include <collision/narrowphase/algorithm/CompoundAnyCollisionAlgorithm.h>
+#include <collision/narrowphase/algorithm/ConcaveAnyCollisionAlgorithm.h>
 
 namespace urchin {
 

@@ -1,11 +1,11 @@
 #ifndef URCHINENGINE_COMPOUNDANYCOLLISIONALGORITHM_H
 #define URCHINENGINE_COMPOUNDANYCOLLISIONALGORITHM_H
 
-#include "collision/narrowphase/algorithm/CollisionAlgorithm.h"
-#include "collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h"
-#include "collision/narrowphase/algorithm/CollisionAlgorithmSelector.h"
-#include "collision/ManifoldResult.h"
-#include "collision/narrowphase/CollisionObjectWrapper.h"
+#include <collision/narrowphase/algorithm/CollisionAlgorithm.h>
+#include <collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h>
+#include <collision/narrowphase/algorithm/CollisionAlgorithmSelector.h>
+#include <collision/ManifoldResult.h>
+#include <collision/narrowphase/CollisionObjectWrapper.h>
 
 namespace urchin {
 

@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "processable/raytest/RayTestResult.h"
+#include <processable/raytest/RayTestResult.h>
 
 namespace urchin {
 

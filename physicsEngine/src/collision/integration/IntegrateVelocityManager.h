@@ -1,11 +1,11 @@
 #ifndef URCHINENGINE_INTEGRATEVELOCITYMANAGER_H
 #define URCHINENGINE_INTEGRATEVELOCITYMANAGER_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 #include <vector>
 
-#include "body/BodyManager.h"
-#include "collision/OverlappingPair.h"
+#include <body/BodyManager.h>
+#include <collision/OverlappingPair.h>
 
 namespace urchin {
 

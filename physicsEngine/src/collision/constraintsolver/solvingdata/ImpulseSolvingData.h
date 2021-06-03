@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_IMPULSESOLVINGDATA_H
 #define URCHINENGINE_IMPULSESOLVINGDATA_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 namespace urchin {
 

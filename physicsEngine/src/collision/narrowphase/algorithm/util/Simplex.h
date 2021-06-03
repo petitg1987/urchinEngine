@@ -2,7 +2,7 @@
 #define URCHINENGINE_SIMPLEX_H
 
 #include <vector>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 namespace urchin {
 

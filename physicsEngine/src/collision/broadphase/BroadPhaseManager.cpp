@@ -1,5 +1,5 @@
-#include "collision/broadphase/BroadPhaseManager.h"
-#include "collision/broadphase/aabbtree/AABBTreeAlgorithm.h"
+#include <collision/broadphase/BroadPhaseManager.h>
+#include <collision/broadphase/aabbtree/AABBTreeAlgorithm.h>
 
 namespace urchin {
 

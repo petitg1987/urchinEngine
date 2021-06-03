@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_EPATRIANGLEDATA_H
 #define URCHINENGINE_EPATRIANGLEDATA_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 namespace urchin {
 

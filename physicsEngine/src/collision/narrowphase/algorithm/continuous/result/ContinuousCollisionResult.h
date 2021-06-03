@@ -3,11 +3,11 @@
 
 #include <set>
 #include <memory>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "body/model/AbstractBody.h"
-#include "collision/narrowphase/algorithm/util/AlgorithmResult.h"
-#include "collision/narrowphase/algorithm/util/AlgorithmResultDeleter.h"
+#include <body/model/AbstractBody.h>
+#include <collision/narrowphase/algorithm/util/AlgorithmResult.h>
+#include <collision/narrowphase/algorithm/util/AlgorithmResultDeleter.h>
 
 namespace urchin {
 

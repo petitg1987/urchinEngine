@@ -5,9 +5,9 @@
 #include <map>
 #include <vector>
 #include <memory>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "object/CollisionConvexObject3D.h"
+#include <object/CollisionConvexObject3D.h>
 
 namespace urchin {
 

@@ -1,7 +1,7 @@
-#include "object/CollisionTriangleObject.h"
-#include "collision/narrowphase/algorithm/util/AlgorithmResultAllocator.h"
-#include "collision/narrowphase/algorithm/epa/EPAAlgorithm.h"
-#include "utils/property/EagerPropertyLoader.h"
+#include <object/CollisionTriangleObject.h>
+#include <collision/narrowphase/algorithm/util/AlgorithmResultAllocator.h>
+#include <collision/narrowphase/algorithm/epa/EPAAlgorithm.h>
+#include <utils/property/EagerPropertyLoader.h>
 
 namespace urchin {
 

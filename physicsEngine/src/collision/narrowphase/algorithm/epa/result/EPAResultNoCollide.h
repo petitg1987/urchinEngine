@@ -2,9 +2,9 @@
 #define URCHINENGINE_EPARESULTNOCOLLIDE_H
 
 #include <stdexcept>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "EPAResult.h"
+#include <collision/narrowphase/algorithm/epa/result/EPAResult.h>
 
 namespace urchin {
 

@@ -1,13 +1,13 @@
 #ifndef URCHINENGINE_CONSTRAINTSOLVING_H
 #define URCHINENGINE_CONSTRAINTSOLVING_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "body/model/RigidBody.h"
-#include "collision/ManifoldContactPoint.h"
-#include "collision/constraintsolver/solvingdata/CommonSolvingData.h"
-#include "collision/constraintsolver/solvingdata/ImpulseSolvingData.h"
-#include "collision/constraintsolver/solvingdata/AccumulatedSolvingData.h"
+#include <body/model/RigidBody.h>
+#include <collision/ManifoldContactPoint.h>
+#include <collision/constraintsolver/solvingdata/CommonSolvingData.h>
+#include <collision/constraintsolver/solvingdata/ImpulseSolvingData.h>
+#include <collision/constraintsolver/solvingdata/AccumulatedSolvingData.h>
 
 namespace urchin {
 

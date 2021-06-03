@@ -3,15 +3,15 @@
 
 #include <vector>
 #include <map>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "collision/constraintsolver/ConstraintSolving.h"
-#include "collision/constraintsolver/solvingdata/CommonSolvingData.h"
-#include "collision/constraintsolver/solvingdata/ImpulseSolvingData.h"
-#include "body/BodyManager.h"
-#include "collision/ManifoldResult.h"
-#include "utils/pool/FixedSizePool.h"
-#include "body/model/RigidBody.h"
+#include <collision/constraintsolver/ConstraintSolving.h>
+#include <collision/constraintsolver/solvingdata/CommonSolvingData.h>
+#include <collision/constraintsolver/solvingdata/ImpulseSolvingData.h>
+#include <body/BodyManager.h>
+#include <collision/ManifoldResult.h>
+#include <utils/pool/FixedSizePool.h>
+#include <body/model/RigidBody.h>
 
 namespace urchin {
 

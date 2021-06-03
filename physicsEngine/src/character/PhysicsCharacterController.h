@@ -5,10 +5,10 @@
 #include <mutex>
 #include <atomic>
 
-#include "PhysicsCharacter.h"
-#include "body/model/GhostBody.h"
-#include "processable/Processable.h"
-#include "collision/ManifoldResult.h"
+#include <character/PhysicsCharacter.h>
+#include <body/model/GhostBody.h>
+#include <processable/Processable.h>
+#include <collision/ManifoldResult.h>
 
 #define RECOVER_PENETRATION_SUB_STEPS 4 //number of steps to recover character from penetration
 #define MIN_WALK_SPEED_PERCENTAGE 0.75f

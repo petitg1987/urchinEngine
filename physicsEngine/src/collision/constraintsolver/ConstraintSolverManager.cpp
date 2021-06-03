@@ -1,4 +1,4 @@
-#include "collision/constraintsolver/ConstraintSolverManager.h"
+#include <collision/constraintsolver/ConstraintSolverManager.h>
 
 namespace urchin {
 

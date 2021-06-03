@@ -1,7 +1,7 @@
 #include <cassert>
 
-#include "collision/ManifoldResult.h"
-#include "utils/property/EagerPropertyLoader.h"
+#include <collision/ManifoldResult.h>
+#include <utils/property/EagerPropertyLoader.h>
 
 namespace urchin {
 

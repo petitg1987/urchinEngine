@@ -1,5 +1,5 @@
-#include "collision/narrowphase/algorithm/CollisionAlgorithm.h"
-#include "collision/narrowphase/algorithm/CollisionAlgorithmSelector.h"
+#include <collision/narrowphase/algorithm/CollisionAlgorithm.h>
+#include <collision/narrowphase/algorithm/CollisionAlgorithmSelector.h>
 
 namespace urchin {
 

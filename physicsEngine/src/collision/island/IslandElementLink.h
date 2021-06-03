@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_ISLANDELEMENTLINK_H
 #define URCHINENGINE_ISLANDELEMENTLINK_H
 
-#include "collision/island/IslandElement.h"
+#include <collision/island/IslandElement.h>
 
 namespace urchin {
 

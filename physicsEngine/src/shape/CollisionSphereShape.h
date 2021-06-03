@@ -3,11 +3,11 @@
 
 #include <memory>
 #include <vector>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "shape/CollisionShape3D.h"
-#include "object/CollisionConvexObject3D.h"
-#include "utils/math/PhysicsTransform.h"
+#include <shape/CollisionShape3D.h>
+#include <object/CollisionConvexObject3D.h>
+#include <utils/math/PhysicsTransform.h>
 
 namespace urchin {
 

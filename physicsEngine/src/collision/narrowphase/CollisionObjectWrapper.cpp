@@ -1,4 +1,4 @@
-#include "collision/narrowphase/CollisionObjectWrapper.h"
+#include <collision/narrowphase/CollisionObjectWrapper.h>
 
 namespace urchin {
 

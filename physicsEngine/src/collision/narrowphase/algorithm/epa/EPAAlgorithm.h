@@ -8,16 +8,16 @@
 #include <stdexcept>
 #include <cassert>
 #include <memory>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "object/CollisionConvexObject3D.h"
-#include "collision/narrowphase/algorithm/epa/EPATriangleData.h"
-#include "collision/narrowphase/algorithm/epa/result/EPAResult.h"
-#include "collision/narrowphase/algorithm/epa/result/EPAResultCollide.h"
-#include "collision/narrowphase/algorithm/epa/result/EPAResultNoCollide.h"
-#include "collision/narrowphase/algorithm/epa/result/EPAResultInvalid.h"
-#include "collision/narrowphase/algorithm/gjk/result/GJKResult.h"
-#include "collision/narrowphase/algorithm/util/AlgorithmResultDeleter.h"
+#include <object/CollisionConvexObject3D.h>
+#include <collision/narrowphase/algorithm/epa/EPATriangleData.h>
+#include <collision/narrowphase/algorithm/epa/result/EPAResult.h>
+#include <collision/narrowphase/algorithm/epa/result/EPAResultCollide.h>
+#include <collision/narrowphase/algorithm/epa/result/EPAResultNoCollide.h>
+#include <collision/narrowphase/algorithm/epa/result/EPAResultInvalid.h>
+#include <collision/narrowphase/algorithm/gjk/result/GJKResult.h>
+#include <collision/narrowphase/algorithm/util/AlgorithmResultDeleter.h>
 
 namespace urchin {
 

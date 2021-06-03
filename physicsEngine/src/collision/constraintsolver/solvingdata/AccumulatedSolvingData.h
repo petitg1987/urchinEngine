@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_ACCUMULATEDSOLVINGDATA_H
 #define URCHINENGINE_ACCUMULATEDSOLVINGDATA_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 namespace urchin {
 

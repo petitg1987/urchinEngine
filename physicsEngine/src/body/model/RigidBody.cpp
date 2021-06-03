@@ -3,7 +3,7 @@
 #include <thread>
 
 #include "RigidBody.h"
-#include "body/InertiaCalculation.h"
+#include <body/InertiaCalculation.h>
 
 namespace urchin {
 

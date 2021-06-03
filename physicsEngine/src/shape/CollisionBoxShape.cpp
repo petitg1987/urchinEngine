@@ -1,8 +1,8 @@
 #include <cmath>
 #include <utility>
 
-#include "shape/CollisionBoxShape.h"
-#include "object/CollisionBoxObject.h"
+#include <shape/CollisionBoxShape.h>
+#include <object/CollisionBoxObject.h>
 
 namespace urchin {
 

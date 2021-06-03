@@ -1,10 +1,10 @@
 #ifndef URCHINENGINE_COLLISIONOBJECTWRAPPER_H
 #define URCHINENGINE_COLLISIONOBJECTWRAPPER_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "shape/CollisionShape3D.h"
-#include "utils/math/PhysicsTransform.h"
+#include <shape/CollisionShape3D.h>
+#include <utils/math/PhysicsTransform.h>
 
 namespace urchin {
 

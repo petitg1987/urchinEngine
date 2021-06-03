@@ -4,20 +4,20 @@
 #include <memory>
 #include <vector>
 #include <mutex>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "collision/ManifoldResult.h"
-#include "collision/OverlappingPair.h"
-#include "collision/narrowphase/algorithm/CollisionAlgorithm.h"
-#include "collision/narrowphase/algorithm/CollisionAlgorithmSelector.h"
-#include "collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h"
-#include "collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h"
-#include "collision/broadphase/BroadPhaseManager.h"
-#include "body/BodyManager.h"
-#include "body/model/AbstractBody.h"
-#include "body/model/GhostBody.h"
-#include "object/TemporalObject.h"
-#include "shape/CollisionTriangleShape.h"
+#include <collision/ManifoldResult.h>
+#include <collision/OverlappingPair.h>
+#include <collision/narrowphase/algorithm/CollisionAlgorithm.h>
+#include <collision/narrowphase/algorithm/CollisionAlgorithmSelector.h>
+#include <collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h>
+#include <collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h>
+#include <collision/broadphase/BroadPhaseManager.h>
+#include <body/BodyManager.h>
+#include <body/model/AbstractBody.h>
+#include <body/model/GhostBody.h>
+#include <object/TemporalObject.h>
+#include <shape/CollisionTriangleShape.h>
 
 namespace urchin {
     class NarrowPhaseManager {

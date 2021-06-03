@@ -3,8 +3,8 @@
 
 #include <memory>
 
-#include "body/model/AbstractBody.h"
-#include "collision/narrowphase/algorithm/CollisionAlgorithm.h"
+#include <body/model/AbstractBody.h>
+#include <collision/narrowphase/algorithm/CollisionAlgorithm.h>
 
 namespace urchin {
 

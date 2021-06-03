@@ -1,10 +1,10 @@
-#include "collision/narrowphase/NarrowPhaseManager.h"
-#include "shape/CollisionShape3D.h"
-#include "shape/CollisionSphereShape.h"
-#include "shape/CollisionCompoundShape.h"
-#include "shape/CollisionConcaveShape.h"
-#include "body/model/RigidBody.h"
-#include "object/TemporalObject.h"
+#include <collision/narrowphase/NarrowPhaseManager.h>
+#include <shape/CollisionShape3D.h>
+#include <shape/CollisionSphereShape.h>
+#include <shape/CollisionCompoundShape.h>
+#include <shape/CollisionConcaveShape.h>
+#include <body/model/RigidBody.h>
+#include <object/TemporalObject.h>
 
 namespace urchin {
 

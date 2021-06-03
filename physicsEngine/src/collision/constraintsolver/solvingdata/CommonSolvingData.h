@@ -1,9 +1,9 @@
 #ifndef URCHINENGINE_COMMONSOLVINGDATA_H
 #define URCHINENGINE_COMMONSOLVINGDATA_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "body/model/RigidBody.h"
+#include <body/model/RigidBody.h>
 
 namespace urchin {
 

@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <cassert>
 
-#include "collision/narrowphase/algorithm/util/Simplex.h"
+#include <collision/narrowphase/algorithm/util/Simplex.h>
 
 namespace urchin {
 

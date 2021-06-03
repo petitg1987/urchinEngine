@@ -1,12 +1,12 @@
 #ifndef URCHINENGINE_AABBTREEALGORITHM_H
 #define URCHINENGINE_AABBTREEALGORITHM_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "body/model/AbstractBody.h"
-#include "collision/OverlappingPair.h"
-#include "collision/broadphase/BroadPhaseAlgorithm.h"
-#include "collision/broadphase/aabbtree/BodyAABBTree.h"
+#include <body/model/AbstractBody.h>
+#include <collision/OverlappingPair.h>
+#include <collision/broadphase/BroadPhaseAlgorithm.h>
+#include <collision/broadphase/aabbtree/BodyAABBTree.h>
 
 namespace urchin {
 

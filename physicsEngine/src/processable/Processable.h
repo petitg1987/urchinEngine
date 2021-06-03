@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_PROCESSABLE_H
 #define URCHINENGINE_PROCESSABLE_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 namespace urchin {
 

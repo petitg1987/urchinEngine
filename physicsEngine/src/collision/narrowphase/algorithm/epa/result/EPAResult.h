@@ -1,9 +1,9 @@
 #ifndef URCHINENGINE_EPARESULT_H
 #define URCHINENGINE_EPARESULT_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "collision/narrowphase/algorithm/util/AlgorithmResult.h"
+#include <collision/narrowphase/algorithm/util/AlgorithmResult.h>
 
 namespace urchin {
 

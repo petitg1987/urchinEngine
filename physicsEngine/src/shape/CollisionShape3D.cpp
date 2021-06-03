@@ -1,9 +1,9 @@
 #include <sstream>
 #include <algorithm>
 
-#include "shape/CollisionShape3D.h"
-#include "utils/property/EagerPropertyLoader.h"
-#include "object/pool/CollisionConvexObjectPool.h"
+#include <shape/CollisionShape3D.h>
+#include <utils/property/EagerPropertyLoader.h>
+#include <object/pool/CollisionConvexObjectPool.h>
 
 namespace urchin {
 

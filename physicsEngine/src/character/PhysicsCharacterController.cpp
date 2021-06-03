@@ -3,7 +3,7 @@
 #include <cmath>
 
 #include "PhysicsCharacterController.h"
-#include "collision/ManifoldContactPoint.h"
+#include <collision/ManifoldContactPoint.h>
 #include "PhysicsWorld.h"
 
 #define MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND 0.15f

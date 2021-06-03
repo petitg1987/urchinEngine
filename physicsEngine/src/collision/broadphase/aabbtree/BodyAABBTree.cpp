@@ -1,7 +1,7 @@
 #include <limits>
 
 #include "BodyAABBTree.h"
-#include "collision/broadphase/VectorPairContainer.h"
+#include <collision/broadphase/VectorPairContainer.h>
 
 namespace urchin {
     BodyAABBTree::BodyAABBTree() :

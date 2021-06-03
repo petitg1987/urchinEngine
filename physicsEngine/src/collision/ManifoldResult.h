@@ -1,10 +1,10 @@
 #ifndef URCHINENGINE_MANIFOLDRESULT_H
 #define URCHINENGINE_MANIFOLDRESULT_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "collision/ManifoldContactPoint.h"
-#include "body/model/AbstractBody.h"
+#include <collision/ManifoldContactPoint.h>
+#include <body/model/AbstractBody.h>
 
 #define MAX_PERSISTENT_POINTS 4
 

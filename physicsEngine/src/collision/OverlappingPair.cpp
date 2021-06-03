@@ -1,6 +1,6 @@
 #include <utility>
 
-#include "collision/OverlappingPair.h"
+#include <collision/OverlappingPair.h>
 
 namespace urchin {
 

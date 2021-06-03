@@ -2,7 +2,7 @@
 #define URCHINENGINE_COLLISIONCONVEXOBJECT3D_H
 
 #include <string>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 namespace urchin {
 

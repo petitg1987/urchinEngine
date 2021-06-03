@@ -1,5 +1,5 @@
-#include "collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h"
-#include "processable/raytest/RayTester.h"
+#include <collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h>
+#include <processable/raytest/RayTester.h>
 
 namespace urchin {
 

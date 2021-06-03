@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_BODYMOMENTUM_H
 #define URCHINENGINE_BODYMOMENTUM_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 namespace urchin {
 

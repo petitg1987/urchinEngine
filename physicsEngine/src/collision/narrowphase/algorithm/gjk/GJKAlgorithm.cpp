@@ -2,9 +2,9 @@
 #include <cmath>
 #include <sstream>
 
-#include "collision/narrowphase/algorithm/util/AlgorithmResultAllocator.h"
-#include "collision/narrowphase/algorithm/gjk/GJKAlgorithm.h"
-#include "utils/property/EagerPropertyLoader.h"
+#include <collision/narrowphase/algorithm/util/AlgorithmResultAllocator.h>
+#include <collision/narrowphase/algorithm/gjk/GJKAlgorithm.h>
+#include <utils/property/EagerPropertyLoader.h>
 
 namespace urchin {
 

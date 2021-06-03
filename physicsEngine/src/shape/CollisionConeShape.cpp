@@ -1,5 +1,5 @@
-#include "shape/CollisionConeShape.h"
-#include "object/CollisionConeObject.h"
+#include <shape/CollisionConeShape.h>
+#include <object/CollisionConeObject.h>
 
 namespace urchin {
 

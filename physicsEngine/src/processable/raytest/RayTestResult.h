@@ -4,7 +4,7 @@
 #include <atomic>
 #include <memory>
 
-#include "collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h"
+#include <collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h>
 
 namespace urchin {
 

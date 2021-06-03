@@ -6,14 +6,14 @@
 #include <memory>
 #include <thread>
 #include <mutex>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "body/model/AbstractBody.h"
-#include "body/BodyManager.h"
-#include "collision/CollisionWorld.h"
-#include "processable/Processable.h"
-#include "processable/raytest/RayTestResult.h"
-#include "visualizer/CollisionVisualizer.h"
+#include <body/model/AbstractBody.h>
+#include <body/BodyManager.h>
+#include <collision/CollisionWorld.h>
+#include <processable/Processable.h>
+#include <processable/raytest/RayTestResult.h>
+#include <visualizer/CollisionVisualizer.h>
 
 namespace urchin {
 

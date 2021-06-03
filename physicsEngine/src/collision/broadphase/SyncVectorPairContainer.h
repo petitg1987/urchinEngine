@@ -3,7 +3,7 @@
 
 #include <mutex>
 
-#include "collision/broadphase/VectorPairContainer.h"
+#include <collision/broadphase/VectorPairContainer.h>
 
 namespace urchin {
 

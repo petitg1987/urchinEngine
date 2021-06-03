@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_EAGERPROPERTYLOADER_H
 #define URCHINENGINE_EAGERPROPERTYLOADER_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 namespace urchin {
 

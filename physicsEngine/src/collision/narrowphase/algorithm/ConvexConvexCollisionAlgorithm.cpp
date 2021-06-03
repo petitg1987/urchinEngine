@@ -1,7 +1,7 @@
 #include <memory>
 
-#include "collision/narrowphase/algorithm/ConvexConvexCollisionAlgorithm.h"
-#include "object/CollisionConvexObject3D.h"
+#include <collision/narrowphase/algorithm/ConvexConvexCollisionAlgorithm.h>
+#include <object/CollisionConvexObject3D.h>
 
 namespace urchin {
 

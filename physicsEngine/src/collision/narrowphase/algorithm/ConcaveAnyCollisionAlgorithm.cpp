@@ -1,8 +1,8 @@
 #include <vector>
 
 #include "ConcaveAnyCollisionAlgorithm.h"
-#include "shape/CollisionTriangleShape.h"
-#include "shape/CollisionConcaveShape.h"
+#include <shape/CollisionTriangleShape.h>
+#include <shape/CollisionConcaveShape.h>
 
 namespace urchin {
 

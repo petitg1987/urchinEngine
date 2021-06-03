@@ -2,11 +2,11 @@
 #define URCHINENGINE_BROADPHASEALGORITHM_H
 
 #include <vector>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "body/model/AbstractBody.h"
-#include "collision/OverlappingPair.h"
-#include "collision/broadphase/PairContainer.h"
+#include <body/model/AbstractBody.h>
+#include <collision/OverlappingPair.h>
+#include <collision/broadphase/PairContainer.h>
 
 namespace urchin {
 

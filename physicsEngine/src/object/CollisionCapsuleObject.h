@@ -2,9 +2,9 @@
 #define URCHINENGINE_COLLISIONCAPSULEOBJECT_H
 
 #include <string>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "object/CollisionConvexObject3D.h"
+#include <object/CollisionConvexObject3D.h>
 
 namespace urchin {
 

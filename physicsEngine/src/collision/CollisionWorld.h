@@ -1,16 +1,16 @@
 #ifndef URCHINENGINE_COLLISIONWORLD_H
 #define URCHINENGINE_COLLISIONWORLD_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "body/BodyManager.h"
-#include "collision/ManifoldResult.h"
-#include "collision/broadphase/BroadPhaseManager.h"
-#include "collision/narrowphase/NarrowPhaseManager.h"
-#include "collision/integration/IntegrateVelocityManager.h"
-#include "collision/constraintsolver/ConstraintSolverManager.h"
-#include "collision/island/IslandManager.h"
-#include "collision/integration/IntegrateTransformManager.h"
+#include <body/BodyManager.h>
+#include <collision/ManifoldResult.h>
+#include <collision/broadphase/BroadPhaseManager.h>
+#include <collision/narrowphase/NarrowPhaseManager.h>
+#include <collision/integration/IntegrateVelocityManager.h>
+#include <collision/constraintsolver/ConstraintSolverManager.h>
+#include <collision/island/IslandManager.h>
+#include <collision/integration/IntegrateTransformManager.h>
 
 namespace urchin {
 

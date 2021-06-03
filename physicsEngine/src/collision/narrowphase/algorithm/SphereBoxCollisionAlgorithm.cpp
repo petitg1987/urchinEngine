@@ -1,8 +1,8 @@
 #include <limits>
 
-#include "collision/narrowphase/algorithm/SphereBoxCollisionAlgorithm.h"
-#include "shape/CollisionSphereShape.h"
-#include "shape/CollisionBoxShape.h"
+#include <collision/narrowphase/algorithm/SphereBoxCollisionAlgorithm.h>
+#include <shape/CollisionSphereShape.h>
+#include <shape/CollisionBoxShape.h>
 
 namespace urchin {
 

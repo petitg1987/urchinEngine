@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include "collision/OverlappingPair.h"
-#include "PairContainer.h"
+#include <collision/OverlappingPair.h>
+#include <collision/broadphase/PairContainer.h>
 
 namespace urchin {
 

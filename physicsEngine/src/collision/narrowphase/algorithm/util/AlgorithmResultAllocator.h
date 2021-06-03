@@ -1,19 +1,19 @@
 #ifndef URCHINENGINE_ALGORITHMRESULTALLOCATOR_H
 #define URCHINENGINE_ALGORITHMRESULTALLOCATOR_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "utils/pool/SyncFixedSizePool.h"
-#include "body/model/AbstractBody.h"
-#include "collision/narrowphase/algorithm/util/AlgorithmResult.h"
-#include "collision/narrowphase/algorithm/util/AlgorithmResultDeleter.h"
-#include "collision/narrowphase/algorithm/gjk/result/GJKResultCollide.h"
-#include "collision/narrowphase/algorithm/gjk/result/GJKResultInvalid.h"
-#include "collision/narrowphase/algorithm/gjk/result/GJKResultNoCollide.h"
-#include "collision/narrowphase/algorithm/epa/result/EPAResultCollide.h"
-#include "collision/narrowphase/algorithm/epa/result/EPAResultInvalid.h"
-#include "collision/narrowphase/algorithm/epa/result/EPAResultNoCollide.h"
-#include "collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h"
+#include <utils/pool/SyncFixedSizePool.h>
+#include <body/model/AbstractBody.h>
+#include <collision/narrowphase/algorithm/util/AlgorithmResult.h>
+#include <collision/narrowphase/algorithm/util/AlgorithmResultDeleter.h>
+#include <collision/narrowphase/algorithm/gjk/result/GJKResultCollide.h>
+#include <collision/narrowphase/algorithm/gjk/result/GJKResultInvalid.h>
+#include <collision/narrowphase/algorithm/gjk/result/GJKResultNoCollide.h>
+#include <collision/narrowphase/algorithm/epa/result/EPAResultCollide.h>
+#include <collision/narrowphase/algorithm/epa/result/EPAResultInvalid.h>
+#include <collision/narrowphase/algorithm/epa/result/EPAResultNoCollide.h>
+#include <collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h>
 
 namespace urchin {
 

@@ -1,7 +1,7 @@
 #include <vector>
 
-#include "collision/CollisionWorld.h"
-#include "collision/OverlappingPair.h"
+#include <collision/CollisionWorld.h>
+#include <collision/OverlappingPair.h>
 
 namespace urchin {
 

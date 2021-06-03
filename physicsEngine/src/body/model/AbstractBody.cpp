@@ -2,7 +2,7 @@
 #include <utility>
 
 #include "AbstractBody.h"
-#include "collision/broadphase/PairContainer.h"
+#include <collision/broadphase/PairContainer.h>
 
 namespace urchin {
 

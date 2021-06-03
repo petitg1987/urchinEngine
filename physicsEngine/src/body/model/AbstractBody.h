@@ -6,10 +6,10 @@
 #include <atomic>
 #include <mutex>
 #include <thread>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "collision/island/IslandElement.h"
-#include "shape/CollisionShape3D.h"
+#include <collision/island/IslandElement.h>
+#include <shape/CollisionShape3D.h>
 
 namespace urchin {
 

@@ -2,7 +2,7 @@
 #include <algorithm>
 
 #include "PhysicsWorld.h"
-#include "processable/raytest/RayTester.h"
+#include <processable/raytest/RayTester.h>
 
 #define DEFAULT_GRAVITY Vector3<float>(0.0f, -9.81f, 0.0f)
 

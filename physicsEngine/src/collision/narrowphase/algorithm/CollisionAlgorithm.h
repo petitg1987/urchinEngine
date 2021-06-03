@@ -1,8 +1,8 @@
 #ifndef URCHINENGINE_COLLISIONALGORITHM_H
 #define URCHINENGINE_COLLISIONALGORITHM_H
 
-#include "collision/ManifoldResult.h"
-#include "collision/narrowphase/CollisionObjectWrapper.h"
+#include <collision/ManifoldResult.h>
+#include <collision/narrowphase/CollisionObjectWrapper.h>
 
 namespace urchin {
 

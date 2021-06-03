@@ -1,8 +1,8 @@
 #include <memory>
 
-#include "collision/integration/IntegrateTransformManager.h"
-#include "shape/CollisionSphereShape.h"
-#include "object/TemporalObject.h"
+#include <collision/integration/IntegrateTransformManager.h>
+#include <shape/CollisionSphereShape.h>
+#include <object/TemporalObject.h>
 
 #define MAX_LINEAR_VELOCITY_FACTOR 0.95f
 

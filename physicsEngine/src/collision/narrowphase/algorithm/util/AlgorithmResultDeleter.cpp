@@ -1,5 +1,5 @@
 #include "AlgorithmResultDeleter.h"
-#include "collision/narrowphase/algorithm/util/AlgorithmResultAllocator.h"
+#include <collision/narrowphase/algorithm/util/AlgorithmResultAllocator.h>
 
 namespace urchin {
 

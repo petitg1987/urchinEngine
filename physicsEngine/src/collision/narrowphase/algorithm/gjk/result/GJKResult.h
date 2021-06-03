@@ -1,10 +1,10 @@
 #ifndef URCHINENGINE_GJKRESULT_H
 #define URCHINENGINE_GJKRESULT_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "collision/narrowphase/algorithm/util/Simplex.h"
-#include "collision/narrowphase/algorithm/util/AlgorithmResult.h"
+#include <collision/narrowphase/algorithm/util/Simplex.h>
+#include <collision/narrowphase/algorithm/util/AlgorithmResult.h>
 
 namespace urchin {
 

@@ -2,10 +2,10 @@
 #define URCHINENGINE_GJKRESULTINVALID_H
 
 #include <stdexcept>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "GJKResult.h"
-#include "collision/narrowphase/algorithm/util/Simplex.h"
+#include <collision/narrowphase/algorithm/gjk/result/GJKResult.h>
+#include <collision/narrowphase/algorithm/util/Simplex.h>
 
 namespace urchin {
 

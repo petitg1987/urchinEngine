@@ -4,7 +4,7 @@
 #include <cassert>
 #include <sstream>
 #include <string>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
 namespace urchin {
 

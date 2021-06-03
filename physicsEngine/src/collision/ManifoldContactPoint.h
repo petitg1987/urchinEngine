@@ -1,9 +1,9 @@
 #ifndef URCHINENGINE_MANIFOLDCONTACTPOINT_H
 #define URCHINENGINE_MANIFOLDCONTACTPOINT_H
 
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "constraintsolver/solvingdata/AccumulatedSolvingData.h"
+#include <collision/constraintsolver/solvingdata/AccumulatedSolvingData.h>
 
 namespace urchin {
 

@@ -2,13 +2,13 @@
 #define URCHINENGINE_BROADPHASEMANAGER_H
 
 #include <vector>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "collision/broadphase/BroadPhaseAlgorithm.h"
-#include "collision/broadphase/PairContainer.h"
-#include "collision/OverlappingPair.h"
-#include "body/model/AbstractBody.h"
-#include "body/BodyManager.h"
+#include <collision/broadphase/BroadPhaseAlgorithm.h>
+#include <collision/broadphase/PairContainer.h>
+#include <collision/OverlappingPair.h>
+#include <body/model/AbstractBody.h>
+#include <body/BodyManager.h>
 
 namespace urchin {
 

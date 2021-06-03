@@ -1,10 +1,10 @@
 #ifndef URCHINENGINE_INTEGRATETRANSFORMMANAGER_H
 #define URCHINENGINE_INTEGRATETRANSFORMMANAGER_H
 
-#include "body/BodyManager.h"
-#include "body/model/RigidBody.h"
-#include "collision/broadphase/BroadPhaseManager.h"
-#include "collision/narrowphase/NarrowPhaseManager.h"
+#include <body/BodyManager.h>
+#include <body/model/RigidBody.h>
+#include <collision/broadphase/BroadPhaseManager.h>
+#include <collision/narrowphase/NarrowPhaseManager.h>
 
 namespace urchin {
 

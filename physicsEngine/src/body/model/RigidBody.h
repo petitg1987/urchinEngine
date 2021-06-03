@@ -3,10 +3,10 @@
 
 #include <string>
 #include <memory>
-#include "UrchinCommon.h"
+#include <UrchinCommon.h>
 
-#include "AbstractBody.h"
-#include "body/BodyMomentum.h"
+#include <body/model/AbstractBody.h>
+#include <body/BodyMomentum.h>
 
 namespace urchin {
 
