@@ -278,11 +278,11 @@ namespace urchin {
         file.close();
     }
 
-    void TerrainMesh::writeVersion(std::ofstream& file, unsigned int version) {
+    void TerrainMesh::writeVersion(std::ofstream& file, unsigned int version) const {
         file.write(reinterpret_cast<char*>(&version), sizeof(version));
     }
 
-    void TerrainMesh::writeHash(std::ofstream& file, const std::string& hash) {
+    void TerrainMesh::writeHash(std::ofstream& file, const std::string& hash) const {
         file.write(hash.c_str(), (int)(hash.size() * sizeof(char)));
     }
 
@@ -299,13 +299,13 @@ namespace urchin {
         file.close();
     }
 
-    unsigned int TerrainMesh::readVersion(std::ifstream& file) {
+    unsigned int TerrainMesh::readVersion(std::ifstream& file) const {
         unsigned int version;
         file.read(reinterpret_cast<char*>(&version), sizeof(version));
         return version;
     }
 
-    std::string TerrainMesh::readHash(std::ifstream& file) {
+    std::string TerrainMesh::readHash(std::ifstream& file) const {
         char hash[TERRAIN_HASH_SIZE];
         file.read(&hash[0], sizeof(hash));
         return std::string(hash, TERRAIN_HASH_SIZE);

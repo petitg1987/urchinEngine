@@ -202,7 +202,7 @@ namespace urchin {
     /**
      * Return box points. Points are in the following order: NTR, FTR, NBR, FBR, NTL, FTL, NBL, FBL
      */
-    std::vector<Point3<float>> PolytopeBuilder::createExpandedPoints(const std::vector<Point3<float>>& sortedPoints, const std::shared_ptr<NavMeshAgent>& navMeshAgent) {
+    std::vector<Point3<float>> PolytopeBuilder::createExpandedPoints(const std::vector<Point3<float>>& sortedPoints, const std::shared_ptr<NavMeshAgent>& navMeshAgent) const {
         std::vector<Plane<float>> sortedExpandedPlanes = createExpandedBoxPlanes(sortedPoints, navMeshAgent);
         return expandBoxPoints(sortedExpandedPlanes);
     }
@@ -212,7 +212,7 @@ namespace urchin {
      * @param sortedPoints Points in the following order: NTR, FTR, NBR, FBR, NTL, FTL, NBL, FBL
      * @return Expanded planes in the following order: right, left, top, bottom, front, back
      */
-    std::vector<Plane<float>> PolytopeBuilder::createExpandedBoxPlanes(const std::vector<Point3<float>>& sortedPoints, const std::shared_ptr<NavMeshAgent>& navMeshAgent) {
+    std::vector<Plane<float>> PolytopeBuilder::createExpandedBoxPlanes(const std::vector<Point3<float>>& sortedPoints, const std::shared_ptr<NavMeshAgent>& navMeshAgent) const {
         std::vector<Plane<float>> expandedPlanes;
         expandedPlanes.reserve(6);
 
@@ -223,7 +223,7 @@ namespace urchin {
         return expandedPlanes;
     }
 
-    Plane<float> PolytopeBuilder::createExpandedPlane(const Point3<float>& p1, const Point3<float>& p2, const Point3<float>& p3, const std::shared_ptr<NavMeshAgent>& navMeshAgent) {
+    Plane<float> PolytopeBuilder::createExpandedPlane(const Point3<float>& p1, const Point3<float>& p2, const Point3<float>& p3, const std::shared_ptr<NavMeshAgent>& navMeshAgent) const {
         Plane<float> plane(p1, p2, p3);
 
         float expandDistance = navMeshAgent->computeExpandDistance(plane.getNormal());
@@ -232,7 +232,7 @@ namespace urchin {
         return plane;
     }
 
-    std::vector<Point3<float>> PolytopeBuilder::expandBoxPoints(const std::vector<Plane<float>>& sortedExpandedPlanes) {
+    std::vector<Point3<float>> PolytopeBuilder::expandBoxPoints(const std::vector<Plane<float>>& sortedExpandedPlanes) const {
         std::vector<Point3<float>> expandedPoints;
         expandedPoints.reserve(8);
 

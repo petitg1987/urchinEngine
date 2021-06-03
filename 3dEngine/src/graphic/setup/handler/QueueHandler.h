@@ -21,8 +21,8 @@ namespace urchin {
             VkQueue getPresentationQueue() const;
 
         private:
-            static bool isGraphicsQueueFamily(VkQueueFamilyProperties);
-            static bool isPresentationQueueFamily(uint32_t, VkPhysicalDevice, VkSurfaceKHR);
+            bool isGraphicsQueueFamily(VkQueueFamilyProperties) const;
+            bool isPresentationQueueFamily(uint32_t, VkPhysicalDevice, VkSurfaceKHR) const;
 
             bool queueFamiliesInitialized;
             std::optional<uint32_t> graphicsQueueFamily;

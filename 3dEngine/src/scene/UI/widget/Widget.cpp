@@ -67,7 +67,7 @@ namespace urchin {
                 ->addUniformData(sizeof(translateVector), &translateVector); //binding 1
     }
 
-    void Widget::updateTranslateVector(const std::shared_ptr<GenericRenderer>& renderer, const Vector2<int>& translateVector) {
+    void Widget::updateTranslateVector(const std::shared_ptr<GenericRenderer>& renderer, const Vector2<int>& translateVector) const {
         renderer->updateUniformData(1, &translateVector);
     }
 

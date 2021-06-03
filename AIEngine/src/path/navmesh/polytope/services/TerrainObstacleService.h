@@ -22,7 +22,7 @@ namespace urchin {
 
         private:
             bool isWalkableSquare(unsigned int, float) const;
-            static float computeTriangleSlope(const Point3<float>&, const Point3<float>&, const Point3<float>&);
+            float computeTriangleSlope(const Point3<float>&, const Point3<float>&, const Point3<float>&) const;
 
             std::vector<unsigned int> findAllInaccessibleNeighbors(unsigned int, float) const;
             std::vector<unsigned int> retrieveNeighbors(unsigned int) const;

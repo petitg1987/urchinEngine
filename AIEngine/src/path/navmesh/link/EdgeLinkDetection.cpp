@@ -124,7 +124,7 @@ namespace urchin {
     }
 
     bool EdgeLinkDetection::isProperJumpDirection(const LineSegment3D<float>& startJumpEdge, const LineSegment3D<float>& endJumpEdge,
-                                                  const Point3<float>& jumpStartPoint, const Point3<float>& jumpEndPoint) {
+                                                  const Point3<float>& jumpStartPoint, const Point3<float>& jumpEndPoint) const {
         constexpr float jumpFoV = 0.17364817766f; //FoV of 80° = cos((MathValue::PI_FLOAT / 180.0f) * 80.0f)
         Vector2<float> normalizedJumpVectorXZ = jumpStartPoint.toPoint2XZ().vector(jumpEndPoint.toPoint2XZ()).normalize();
 

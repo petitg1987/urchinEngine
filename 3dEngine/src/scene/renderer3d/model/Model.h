@@ -49,7 +49,7 @@ namespace urchin {
             void updateAnimation(float);
 
         private:
-            static const AABBox<float> &getDefaultModelLocalAABBox();
+            const AABBox<float> &getDefaultModelLocalAABBox() const;
             void initialize(const std::string&);
             void onMoving(const Transform<float>&);
 

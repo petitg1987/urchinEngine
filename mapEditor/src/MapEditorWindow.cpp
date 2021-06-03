@@ -50,7 +50,7 @@ namespace urchin {
         delete sceneController;
     }
 
-    QString MapEditorWindow::getBaseWindowTitle() {
+    QString MapEditorWindow::getBaseWindowTitle() const {
         return QString::fromStdString("Urchin - Map Editor");
     }
 
@@ -176,12 +176,12 @@ namespace urchin {
         sceneDisplayerWindow->addObserver(scenePanelWidget->getObjectPanelWidget(), SceneDisplayerWindow::BODY_PICKED);
     }
 
-    QString MapEditorWindow::getPreferredMapPath() {
+    QString MapEditorWindow::getPreferredMapPath() const {
         std::string savedPreferredMapPath = StateSaveHelper::instance()->retrieveState("preferred.map.path", "./");
         return QString::fromStdString(savedPreferredMapPath);
     }
 
-    void MapEditorWindow::savePreferredMapPath(const std::string& preferredMapPath) {
+    void MapEditorWindow::savePreferredMapPath(const std::string& preferredMapPath) const {
         StateSaveHelper::instance()->saveState("preferred.map.path", preferredMapPath);
     }
 

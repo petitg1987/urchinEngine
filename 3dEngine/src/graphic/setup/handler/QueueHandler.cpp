@@ -53,11 +53,11 @@ namespace urchin {
         queueFamiliesInitialized = true;
     }
 
-    bool QueueHandler::isGraphicsQueueFamily(VkQueueFamilyProperties queueFamily) {
+    bool QueueHandler::isGraphicsQueueFamily(VkQueueFamilyProperties queueFamily) const {
         return queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT;
     }
 
-    bool QueueHandler::isPresentationQueueFamily(uint32_t queueFamilyIndex, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface) {
+    bool QueueHandler::isPresentationQueueFamily(uint32_t queueFamilyIndex, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface) const {
         VkBool32 presentationSupport = false;
         vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, queueFamilyIndex, surface, &presentationSupport);
         return presentationSupport;

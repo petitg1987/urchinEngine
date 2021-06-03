@@ -140,7 +140,7 @@ namespace urchin {
         return PhysicalDeviceSuitability(physicalDeviceToCheck, score);
     }
 
-    bool DeviceHandler::checkPhysicalDeviceExtensionSupport(VkPhysicalDevice physicalDeviceToCheck, const char* extensionName) {
+    bool DeviceHandler::checkPhysicalDeviceExtensionSupport(VkPhysicalDevice physicalDeviceToCheck, const char* extensionName) const {
         uint32_t extensionCount;
         vkEnumerateDeviceExtensionProperties(physicalDeviceToCheck, nullptr, &extensionCount, nullptr);
 

@@ -47,8 +47,8 @@ namespace urchin {
             void determineNeighbors(std::vector<std::shared_ptr<NavTriangle>>&, const MonotonePolygon&);
             void determineNeighborsInsideMonotone(std::vector<std::shared_ptr<NavTriangle>>&);
             void determineNeighborsBetweenMonotones(std::vector<std::shared_ptr<NavTriangle>>&, const MonotonePolygon&);
-            static bool areSameEdge(const std::shared_ptr<NavTriangle>&, std::size_t, std::size_t, const std::shared_ptr<NavTriangle>&, std::size_t, std::size_t);
-            static uint_fast64_t computeEdgeId(std::size_t, std::size_t);
+            bool areSameEdge(const std::shared_ptr<NavTriangle>&, std::size_t, std::size_t, const std::shared_ptr<NavTriangle>&, std::size_t, std::size_t) const;
+            uint_fast64_t computeEdgeId(std::size_t, std::size_t) const;
 
             void logInputData(const std::string&) const;
             void logOutputData(const std::string&, const std::vector<std::shared_ptr<NavTriangle>>&, Logger::CriticalityLevel) const;

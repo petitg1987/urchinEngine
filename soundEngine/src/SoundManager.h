@@ -34,7 +34,7 @@ namespace urchin {
             void process();
 
         private:
-            static void deleteAudioController(AudioController*);
+            void deleteAudioController(AudioController*) const;
 
             std::vector<AudioController*> audioControllers;
 

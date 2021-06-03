@@ -22,7 +22,7 @@ namespace urchin {
         return sharedEdges.find(computeEdgeId(edgeStartIndex, edgeEndIndex)) != sharedEdges.end();
     }
 
-    uint_fast64_t MonotonePolygon::computeEdgeId(std::size_t edgeStartIndex, std::size_t edgeEndIndex) {
+    uint_fast64_t MonotonePolygon::computeEdgeId(std::size_t edgeStartIndex, std::size_t edgeEndIndex) const {
         auto edgeId = (uint_fast64_t)std::min(edgeStartIndex, edgeEndIndex);
         edgeId = edgeId << 32u;
         return edgeId + std::max(edgeStartIndex, edgeEndIndex);

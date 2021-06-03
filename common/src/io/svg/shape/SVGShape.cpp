@@ -21,7 +21,7 @@ namespace urchin {
                "opacity:" + std::to_string(opacity);
     }
 
-    std::string SVGShape::toColorString(SVGColor color) {
+    std::string SVGShape::toColorString(SVGColor color) const {
         switch(color) {
             case SVGColor::BLACK:
                 return "black";

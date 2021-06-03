@@ -35,7 +35,7 @@ namespace urchin {
         private:
             void recreateBuffer(const void *);
             void deleteBuffer();
-            static void copyBuffer(VkBuffer, VkBuffer, VkDeviceSize);
+            void copyBuffer(VkBuffer, VkBuffer, VkDeviceSize) const;
             void updateBuffer(const void *);
 
             bool isInitialized;

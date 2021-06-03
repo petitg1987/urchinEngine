@@ -33,10 +33,10 @@ namespace urchin {
             std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string&, Cylinder<float>*, const std::shared_ptr<NavMeshAgent>&) const;
             std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string&, Sphere<float>*, const std::shared_ptr<NavMeshAgent>&) const;
 
-            static std::vector<Point3<float>> createExpandedPoints(const std::vector<Point3<float>>&, const std::shared_ptr<NavMeshAgent>&);
-            static std::vector<Plane<float>> createExpandedBoxPlanes(const std::vector<Point3<float>>&, const std::shared_ptr<NavMeshAgent>&);
-            static Plane<float> createExpandedPlane(const Point3<float>&, const Point3<float>&, const Point3<float>&, const std::shared_ptr<NavMeshAgent>&);
-            static std::vector<Point3<float>> expandBoxPoints(const std::vector<Plane<float>>&);
+            std::vector<Point3<float>> createExpandedPoints(const std::vector<Point3<float>>&, const std::shared_ptr<NavMeshAgent>&) const;
+            std::vector<Plane<float>> createExpandedBoxPlanes(const std::vector<Point3<float>>&, const std::shared_ptr<NavMeshAgent>&) const;
+            Plane<float> createExpandedPlane(const Point3<float>&, const Point3<float>&, const Point3<float>&, const std::shared_ptr<NavMeshAgent>&) const;
+            std::vector<Point3<float>> expandBoxPoints(const std::vector<Plane<float>>&) const;
 
             std::vector<std::shared_ptr<PolytopeSurface>> createExpandedPolytopeSurfaces(const std::vector<Point3<float>>&,
                     const std::vector<Point3<float>>&, const std::shared_ptr<NavMeshAgent>&) const;

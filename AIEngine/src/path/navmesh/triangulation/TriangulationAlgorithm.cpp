@@ -290,12 +290,12 @@ namespace urchin {
     }
 
     bool TriangulationAlgorithm::areSameEdge(const std::shared_ptr<NavTriangle>& triangle1, std::size_t tri1Point1, std::size_t tri1Point2,
-                                             const std::shared_ptr<NavTriangle>& triangle2, std::size_t tri2Point1, std::size_t tri2Point2) {
+                                             const std::shared_ptr<NavTriangle>& triangle2, std::size_t tri2Point1, std::size_t tri2Point2) const {
         return (triangle1->getIndex(tri1Point1) == triangle2->getIndex(tri2Point1) && triangle1->getIndex(tri1Point2) == triangle2->getIndex(tri2Point2))
                || (triangle1->getIndex(tri1Point1) == triangle2->getIndex(tri2Point2) && triangle1->getIndex(tri1Point2) == triangle2->getIndex(tri2Point1));
     }
 
-    uint_fast64_t TriangulationAlgorithm::computeEdgeId(std::size_t edgeStartIndex, std::size_t edgeEndIndex) {
+    uint_fast64_t TriangulationAlgorithm::computeEdgeId(std::size_t edgeStartIndex, std::size_t edgeEndIndex) const {
         auto edgeId = (uint_fast64_t)std::min(edgeStartIndex, edgeEndIndex);
         edgeId = edgeId << 32u;
         return edgeId + std::max(edgeStartIndex, edgeEndIndex);

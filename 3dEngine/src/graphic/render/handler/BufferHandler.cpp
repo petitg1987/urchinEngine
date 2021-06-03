@@ -145,7 +145,7 @@ namespace urchin {
         }
     }
 
-    void BufferHandler::copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size) {
+    void BufferHandler::copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size) const {
         VkCommandBuffer commandBuffer = CommandBufferHelper::beginSingleTimeCommands();
         {
             VkBufferCopy copyRegion{};

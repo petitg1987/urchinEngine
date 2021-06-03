@@ -51,7 +51,7 @@ namespace urchin {
         return pointInsideShape(point, stopTriggerBox);
     }
 
-    bool SoundBox::pointInsideShape(const Point3<float>& point, const OBBox<float>& box) {
+    bool SoundBox::pointInsideShape(const Point3<float>& point, const OBBox<float>& box) const {
         Vector3<float> localPointTranslation = box.getCenterOfMass().vector(point);
 
         return std::fabs(localPointTranslation.dotProduct(box.getAxis(0))) <= box.getHalfSize(0) &&

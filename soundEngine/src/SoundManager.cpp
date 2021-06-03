@@ -112,7 +112,7 @@ namespace urchin {
         process(Point3<float>(0.0f, 0.0f, 0.0f));
     }
 
-    void SoundManager::deleteAudioController(AudioController* audioController) {
+    void SoundManager::deleteAudioController(AudioController* audioController) const {
         delete audioController;
     }
 }

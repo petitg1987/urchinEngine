@@ -18,7 +18,7 @@ namespace urchin {
 
         private:
             void buildIslands(const std::vector<ManifoldResult>&);
-            static unsigned int computeNumberElements(const std::vector<IslandElementLink>&, unsigned int);
+            unsigned int computeNumberElements(const std::vector<IslandElementLink>&, unsigned int) const;
             bool isBodyMoving(const RigidBody*) const;
 
             void printIslands(const std::vector<IslandElementLink>&);

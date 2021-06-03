@@ -60,7 +60,7 @@ namespace urchin {
         return std::min(triangle1Slope, triangle2Slope) >= maxSlopeDotProduct;
     }
 
-    float TerrainObstacleService::computeTriangleSlope(const Point3<float>& p0, const Point3<float>& p1, const Point3<float>& p2) {
+    float TerrainObstacleService::computeTriangleSlope(const Point3<float>& p0, const Point3<float>& p1, const Point3<float>& p2) const {
         Vector3<float> v1 = p0.vector(p2);
         Vector3<float> v2 = p1.vector(p0);
         Vector3<float> normal = v1.crossProduct(v2).normalize();

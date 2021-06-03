@@ -34,7 +34,7 @@ namespace urchin {
         private:
             VkPhysicalDevice findPhysicalDevice(VkInstance instance);
             PhysicalDeviceSuitability retrievePhysicalDeviceSuitability(VkPhysicalDevice);
-            static bool checkPhysicalDeviceExtensionSupport(VkPhysicalDevice, const char*);
+            bool checkPhysicalDeviceExtensionSupport(VkPhysicalDevice, const char*) const;
 
             VkDevice createLogicalDevice();
 

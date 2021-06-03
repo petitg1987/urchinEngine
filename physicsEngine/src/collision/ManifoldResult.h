@@ -36,7 +36,7 @@ namespace urchin {
             int getNearestPointIndex(const Point3<float>&) const;
             unsigned int computeBestInsertionIndex(const Point3<float>&) const;
             unsigned int getDeepestPointIndex() const;
-            static float computeArea(const Point3<float>&, const Point3<float>&, const Point3<float>&, const Point3<float>&);
+            float computeArea(const Point3<float>&, const Point3<float>&, const Point3<float>&, const Point3<float>&) const;
             void removeContactPoint(unsigned int);
 
             AbstractBody* body1;

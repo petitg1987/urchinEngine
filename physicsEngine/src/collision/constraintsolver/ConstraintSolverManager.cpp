@@ -192,7 +192,7 @@ namespace urchin {
         applyImpulse(constraintSolving->getBody1(), constraintSolving->getBody2(), commonSolvingData, tangentImpulseVector);
     }
 
-    void ConstraintSolverManager::applyImpulse(RigidBody* body1, RigidBody* body2, const CommonSolvingData& commonData, const Vector3<float>& impulseVector) {
+    void ConstraintSolverManager::applyImpulse(RigidBody* body1, RigidBody* body2, const CommonSolvingData& commonData, const Vector3<float>& impulseVector) const {
         body1->setVelocity(body1->getLinearVelocity() - (impulseVector * body1->getInvMass() * body1->getLinearFactor()),
                            body1->getAngularVelocity() - (commonData.invInertia1 * commonData.r1.crossProduct(impulseVector * body1->getLinearFactor()) * body1->getAngularFactor()));
 
@@ -203,7 +203,7 @@ namespace urchin {
     /**
      * @return Relative velocity at the contact point
      */
-    Vector3<float> ConstraintSolverManager::computeRelativeVelocity(const CommonSolvingData& commonData) {
+    Vector3<float> ConstraintSolverManager::computeRelativeVelocity(const CommonSolvingData& commonData) const {
         const Vector3<float> vp1 = commonData.body1->getLinearVelocity() + commonData.body1->getAngularVelocity().crossProduct(commonData.r1);
         const Vector3<float> vp2 = commonData.body2->getLinearVelocity() + commonData.body2->getAngularVelocity().crossProduct(commonData.r2);
 
@@ -225,7 +225,7 @@ namespace urchin {
         return tangentVelocity / tangentVelocityLength;
     }
 
-    void ConstraintSolverManager::logCommonData(const std::string& message, const CommonSolvingData& commonData) {
+    void ConstraintSolverManager::logCommonData(const std::string& message, const CommonSolvingData& commonData) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 

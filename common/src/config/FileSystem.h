@@ -21,7 +21,7 @@ namespace urchin {
             FileSystem();
             ~FileSystem() override = default;
 
-            static std::string getEngineDirectoryName();
+            std::string getEngineDirectoryName() const;
 
             std::string resourcesDirectory;
 

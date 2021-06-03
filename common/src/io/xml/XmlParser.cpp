@@ -94,7 +94,7 @@ namespace urchin {
         return chunks[0];
     }
 
-    std::string XmlParser::getChunkDescription(const std::string& chunkName, const XmlAttribute& attribute) {
+    std::string XmlParser::getChunkDescription(const std::string& chunkName, const XmlAttribute& attribute) const {
         if (attribute.getAttributeName().empty()) {
             return chunkName;
         } else {

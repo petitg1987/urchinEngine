@@ -35,7 +35,7 @@ namespace urchin {
             std::string cutText(const std::string&);
             void refreshFont();
             unsigned int retrieveFontHeight(const std::shared_ptr<XmlChunk>&) const;
-            static LengthType toLengthType(const std::string&);
+            LengthType toLengthType(const std::string&) const;
             void cleanFont();
             void refreshCoordinates();
             void refreshRenderer();

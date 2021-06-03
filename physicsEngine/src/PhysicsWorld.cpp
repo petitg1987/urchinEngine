@@ -235,7 +235,7 @@ namespace urchin {
      * @param dt Delta of time between two simulation steps
      * @param gravity Gravity expressed in units/s^2
      */
-    void PhysicsWorld::setupProcessables(const std::vector<std::shared_ptr<Processable>>& processables, float dt, const Vector3<float>& gravity) {
+    void PhysicsWorld::setupProcessables(const std::vector<std::shared_ptr<Processable>>& processables, float dt, const Vector3<float>& gravity) const {
         ScopeProfiler sp(Profiler::physics(), "stpProcessable");
 
         for (const auto& processable : processables) {
@@ -247,7 +247,7 @@ namespace urchin {
      * @param dt Delta of time between two simulation steps
      * @param gravity Gravity expressed in units/s^2
      */
-    void PhysicsWorld::executeProcessables(const std::vector<std::shared_ptr<Processable>>& processables, float dt, const Vector3<float>& gravity) {
+    void PhysicsWorld::executeProcessables(const std::vector<std::shared_ptr<Processable>>& processables, float dt, const Vector3<float>& gravity) const {
         ScopeProfiler sp(Profiler::physics(), "execProcessable");
 
         for (const auto& processable : processables) {

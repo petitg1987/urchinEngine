@@ -149,7 +149,7 @@ namespace urchin {
         throw std::runtime_error("Unknown font height type: " + std::to_string(fontHeightType));
     }
 
-    LengthType Text::toLengthType(const std::string& lengthTypeString) {
+    LengthType Text::toLengthType(const std::string& lengthTypeString) const {
         if (StringUtil::insensitiveEquals(lengthTypeString, "pixel")) {
             return LengthType::PIXEL;
         } else if (StringUtil::insensitiveEquals(lengthTypeString, "percentage")) {

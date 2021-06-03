@@ -197,7 +197,7 @@ namespace urchin {
         throw std::domain_error("Stream chunk with buffer id " + std::to_string(bufferId) + " not found (" + task->getSoundFilename() + ")");
     }
 
-    void StreamUpdateWorker::clearQueue(StreamUpdateTask* task) {
+    void StreamUpdateWorker::clearQueue(StreamUpdateTask* task) const {
         ALint nbQueues;
         alGetSourcei(task->getSourceId(), AL_BUFFERS_QUEUED, &nbQueues);
 
