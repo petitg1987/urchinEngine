@@ -29,7 +29,8 @@ namespace urchin {
                 auto imageDataCharPtr = static_cast<const uint8_t*>(imageDataPtr);
                 this->dataPtr.emplace_back(std::vector<uint8_t>(imageDataCharPtr, imageDataCharPtr + getImageSize()));
             } else {
-                this->dataPtr.emplace_back(std::vector<uint8_t>(0));
+                std::vector<uint8_t> emptyData(0);
+                this->dataPtr.emplace_back(emptyData);
             }
         }
     }
