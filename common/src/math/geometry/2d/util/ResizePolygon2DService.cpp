@@ -8,7 +8,7 @@ namespace urchin {
      * Positive distance will extend polygon if points are sorted in CCW order.
      */
     template<class T> void ResizePolygon2DService<T>::resizePolygon(std::vector<Point2<T>>& polygonPoints, T distance) {
-        Point2<T> previousPoint = polygonPoints[polygonPoints.size()-1];
+        Point2<T> previousPoint = polygonPoints[polygonPoints.size() - 1];
         for (std::size_t i = 0; i < polygonPoints.size(); i++) {
             std::size_t nextI = (i + 1) % polygonPoints.size();
 

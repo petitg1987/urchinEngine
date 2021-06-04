@@ -15,8 +15,6 @@
 #include <path/navmesh/model/output/NavPolygonEdge.h>
 #include <path/navmesh/model/output/NavTriangle.h>
 #include <path/navmesh/model/output/NavLink.h>
-#include <path/navmesh/triangulation/MonotonePolygonAlgorithm.h>
-#include <path/navmesh/triangulation/MonotonePolygon.h>
 #include <path/navmesh/triangulation/TriangulationAlgorithm.h>
 #include <path/navmesh/csg/PolygonsUnion.h>
 #include <path/navmesh/csg/PolygonsSubtraction.h>

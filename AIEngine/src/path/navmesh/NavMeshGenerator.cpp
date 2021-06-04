@@ -4,14 +4,14 @@
 #include <numeric>
 
 #include <path/navmesh/NavMeshGenerator.h>
-#include <input/AIObject.h>
-#include <input/AITerrain.h>
 #include <path/navmesh/polytope/PolytopePlaneSurface.h>
 #include <path/navmesh/polytope/PolytopeBuilder.h>
 #include <path/navmesh/polytope/aabbtree/NavObjectAABBNodeData.h>
 #include <path/navmesh/csg/PolygonsUnion.h>
 #include <path/navmesh/csg/PolygonsSubtraction.h>
 #include <path/navmesh/link/EdgeLinkDetection.h>
+#include <input/AIObject.h>
+#include <input/AITerrain.h>
 
 #define OBSTACLE_REDUCE_SIZE 0.0002f
 
@@ -301,7 +301,7 @@ namespace urchin {
 
                     if (obstacleInsideWalkable) {
                         //slightly reduce the obstacle to prevent it from touching others obstacles or the walkable face (not supported by triangulation)
-                        obstaclePolygon.expand(-OBSTACLE_REDUCE_SIZE);
+                        obstaclePolygon.expand(-OBSTACLE_REDUCE_SIZE); //TODO useless ?
                         obstaclesInsideWalkablePolygon.emplace_back(obstaclePolygon);
                         break;
                     }
@@ -314,38 +314,35 @@ namespace urchin {
         ScopeProfiler sp(Profiler::ai(), "createNavPoly");
 
         navPolygonName = "<" + walkablePolygon.getName() + ">";
-        std::vector<Point2<float>> walkablePolygonPoints = walkablePolygon.getCwPoints();
-        std::reverse(walkablePolygonPoints.begin(), walkablePolygonPoints.end()); //CW to CCW
-        TriangulationAlgorithm triangulation(std::move(walkablePolygonPoints), walkablePolygon.getName());
-
+        std::vector<std::vector<Point2<float>>> polygonPoints;
+        polygonPoints.reserve(walkablePolygon.getCwPoints().size() + obstaclesInsideWalkablePolygon.size());
+        polygonPoints.emplace_back(walkablePolygon.getCwPoints());
         for (const auto& obstacleInsideWalkablePolygon : obstaclesInsideWalkablePolygon) {
             if (uniqueWalkableSurface || walkablePolygon.pointInsideOrOnPolygon(obstacleInsideWalkablePolygon.getCwPoints()[0])) { //obstacle fully inside walkable polygon
-                triangulation.addHolePoints(obstacleInsideWalkablePolygon.getCwPoints(), obstacleInsideWalkablePolygon.getName());
+                polygonPoints.emplace_back(obstacleInsideWalkablePolygon.getCwPoints());
                 navPolygonName += " - <" + obstacleInsideWalkablePolygon.getName() + ">";
             }
         }
 
-        std::vector<Point3<float>> points = elevateTriangulatedPoints(triangulation, walkableSurface);
-        std::shared_ptr<NavPolygon> navPolygon = std::make_shared<NavPolygon>(navPolygonName, std::move(points), walkableSurface->getNavTopography());
+        std::vector<Point3<float>> elevatedPoints = elevateTriangulatedPoints(polygonPoints, walkableSurface);
+        auto navPolygon = std::make_shared<NavPolygon>(navPolygonName, std::move(elevatedPoints), walkableSurface->getNavTopography());
+        TriangulationAlgorithm triangulation(std::move(polygonPoints));
         navPolygon->addTriangles(triangulation.triangulate(), navPolygon);
 
         return navPolygon;
     }
 
-    std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const TriangulationAlgorithm& triangulation, const std::shared_ptr<PolytopeSurface>& walkableSurface) const {
+    std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const std::vector<std::vector<Point2<float>>>& polygonPoints, const std::shared_ptr<PolytopeSurface>& walkableSurface) const {
         ScopeProfiler sp(Profiler::ai(), "elevateTriPoint");
 
         std::vector<Point3<float>> elevatedPoints;
-        elevatedPoints.reserve(triangulation.getAllPointsSize());
+        std::size_t polygonPointsCount = 0;
+        std::for_each(polygonPoints.begin(), polygonPoints.end(),[&polygonPointsCount](const std::vector<Point2<float>>& vec) {polygonPointsCount += vec.size();});
+        elevatedPoints.reserve(polygonPointsCount);
 
-        for (const auto& walkablePoint : triangulation.getPolygonPoints()) {
-            elevatedPoints.push_back(walkableSurface->computeRealPoint(walkablePoint, navMeshAgent));
-        }
-
-        for (std::size_t holeIndex = 0; holeIndex < triangulation.getHolesSize(); ++holeIndex) {
-            const std::vector<Point2<float>>& holePoints = triangulation.getHolePoints(holeIndex);
-            for (const auto& holePoint : holePoints) {
-                elevatedPoints.push_back(walkableSurface->computeRealPoint(holePoint, navMeshAgent));
+        for (const auto& polygonComponent : polygonPoints) {
+            for(const auto& polygonPoint : polygonComponent) {
+                elevatedPoints.push_back(walkableSurface->computeRealPoint(polygonPoint, navMeshAgent));
             }
         }
 

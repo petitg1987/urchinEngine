@@ -31,8 +31,6 @@ namespace urchin {
         pathRequests.clear();
 
         delete navMeshGenerator;
-
-        Profiler::ai()->log();
     }
 
     NavMeshGenerator* AIManager::getNavMeshGenerator() const {
@@ -131,6 +129,8 @@ namespace urchin {
                     frameStartTime = frameEndTime;
                 }
             }
+
+            Profiler::ai()->log(); //log for AI thread
         } catch (std::exception& e) {
             Logger::instance()->logError("Error cause AI thread crash: exception reported to main thread");
             aiThreadExceptionPtr = std::current_exception();
