@@ -18,8 +18,7 @@ class TriangulationTest : public CppUnit::TestFixture {
         void cavityTriangulation1();
         void cavityTriangulation2();
 
-        void twoMonotonePolygons();
-        void threeMonotonePolygons();
+        void holeInTriangle();
 
     private:
         void assertUniqueLink(const std::shared_ptr<urchin::NavTriangle>&, std::size_t, const std::shared_ptr<urchin::NavTriangle>&);

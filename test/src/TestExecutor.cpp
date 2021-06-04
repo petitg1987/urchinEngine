@@ -38,7 +38,6 @@
 #include <ai/path/navmesh/csg/CSGPolygonTest.h>
 #include <ai/path/navmesh/csg/PolygonsUnionTest.h>
 #include <ai/path/navmesh/csg/PolygonsSubtractionTest.h>
-#include <ai/path/navmesh/triangulation/MonotonePolygonTest.h>
 #include <ai/path/navmesh/triangulation/TriangulationTest.h>
 #include <ai/path/navmesh/polytope/services/TerrainObstacleServiceTest.h>
 #include <ai/path/navmesh/jump/EdgeLinkDetectionTest.h>
@@ -122,7 +121,6 @@ void addAiUnitTests(CppUnit::TextUi::TestRunner& runner) {
     runner.addTest(CSGPolygonTest::suite());
     runner.addTest(PolygonsUnionTest::suite());
     runner.addTest(PolygonsSubtractionTest::suite());
-    runner.addTest(MonotonePolygonTest::suite());
     runner.addTest(TriangulationTest::suite());
     runner.addTest(TerrainObstacleServiceTest::suite());
     runner.addTest(EdgeLinkDetectionTest::suite());
