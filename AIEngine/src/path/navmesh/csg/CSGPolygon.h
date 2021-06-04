@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CSGPOLYGON_H
-#define URCHINENGINE_CSGPOLYGON_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -41,5 +40,3 @@ namespace urchin {
     template<class T> std::ostream& operator <<(std::ostream&, const CSGPolygon<T>&);
 
 }
-
-#endif

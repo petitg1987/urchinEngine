@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SVGCIRCLE_H
-#define URCHINENGINE_SVGCIRCLE_H
+#pragma once
 
 #include <string>
 
@@ -20,5 +19,3 @@ namespace urchin {
     };
 
 }
-
-#endif

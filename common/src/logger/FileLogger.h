@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_FILELOGGER_H
-#define URCHINENGINE_FILELOGGER_H
+#pragma once
 
 #include <string>
 #include <limits>
@@ -26,5 +25,3 @@ namespace urchin {
     };
 
 }
-
-#endif

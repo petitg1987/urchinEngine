@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_DATACONTAINER_H
-#define URCHINENGINE_DATACONTAINER_H
+#pragma once
 
 #include <cstdlib>
 #include <vulkan/vulkan.h>
@@ -42,5 +41,3 @@ namespace urchin {
     };
 
 }
-
-#endif

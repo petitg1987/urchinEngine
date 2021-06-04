@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_AUDIOPLAYER_H
-#define URCHINENGINE_AUDIOPLAYER_H
+#pragma once
 
 #include <sound/Sound.h>
 
@@ -26,5 +25,3 @@ namespace urchin {
     };
 
 }
-
-#endif

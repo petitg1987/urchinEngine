@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_ISLANDELEMENT_H
-#define URCHINENGINE_ISLANDELEMENT_H
+#pragma once
 
 namespace urchin {
 
@@ -22,5 +21,3 @@ namespace urchin {
     };
 
 }
-
-#endif

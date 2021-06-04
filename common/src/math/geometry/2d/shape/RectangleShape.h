@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_RECTANGLESHAPE_H
-#define URCHINENGINE_RECTANGLESHAPE_H
+#pragma once
 
 #include <math/geometry/2d/shape/ConvexShape2D.h>
 #include <math/algebra/vector/Vector2.h>
@@ -20,5 +19,3 @@ namespace urchin {
     };
 
 }
-
-#endif

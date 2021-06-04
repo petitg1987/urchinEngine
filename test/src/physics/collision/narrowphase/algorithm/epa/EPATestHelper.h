@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_EPATESTHELPER_H
-#define URCHINENGINE_EPATESTHELPER_H
+#pragma once
 
 #include <memory>
 #include <UrchinCommon.h>
@@ -14,5 +13,3 @@ class EPATestHelper {
         EPATestHelper() = default;
         ~EPATestHelper() = default;
 };
-
-#endif

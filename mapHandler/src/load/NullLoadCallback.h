@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_NULLCALLBACK_H
-#define URCHINENGINE_NULLCALLBACK_H
+#pragma once
 
 #include "LoadCallback.h"
 
@@ -11,5 +10,3 @@ namespace urchin {
     };
 
 }
-
-#endif

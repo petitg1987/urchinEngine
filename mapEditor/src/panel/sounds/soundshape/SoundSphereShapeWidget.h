@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SOUNDSPHERESHAPEWIDGET_H
-#define URCHINENGINE_SOUNDSPHERESHAPEWIDGET_H
+#pragma once
 
 #include <string>
 #include <memory>
@@ -32,5 +31,3 @@ namespace urchin {
     };
 
 }
-
-#endif

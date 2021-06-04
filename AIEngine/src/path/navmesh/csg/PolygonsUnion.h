@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_POLYGONSUNION_H
-#define URCHINENGINE_POLYGONSUNION_H
+#pragma once
 
 #include <vector>
 #include <UrchinCommon.h>
@@ -29,5 +28,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SHADOWMANAGER_H
-#define URCHINENGINE_SHADOWMANAGER_H
+#pragma once
 
 #include <vector>
 #include <map>
@@ -102,5 +101,3 @@ namespace urchin {
             Matrix4<float>* lightProjectionViewMatrices;
     };
 }
-
-#endif

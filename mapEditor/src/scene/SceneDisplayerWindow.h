@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SCENEDISPLAYERWINDOW_H
-#define URCHINENGINE_SCENEDISPLAYERWINDOW_H
+#pragma once
 
 #include <string>
 #include <QKeyEvent>
@@ -74,5 +73,3 @@ namespace urchin {
     };
 
 }
-
-#endif

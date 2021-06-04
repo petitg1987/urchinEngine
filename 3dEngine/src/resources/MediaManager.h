@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_MEDIAMANAGER_H
-#define URCHINENGINE_MEDIAMANAGER_H
+#pragma once
 
 #include <map>
 #include <string>
@@ -35,5 +34,3 @@ namespace urchin {
     #include "MediaManager.inl"
 
 }
-
-#endif

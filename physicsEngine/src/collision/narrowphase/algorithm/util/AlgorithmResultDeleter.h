@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_ALGORITHMRESULTDELETER_H
-#define URCHINENGINE_ALGORITHMRESULTDELETER_H
+#pragma once
 
 #include <utils/pool/FixedSizePool.h>
 #include <collision/narrowphase/algorithm/util/AlgorithmResult.h>
@@ -12,5 +11,3 @@ namespace urchin {
     };
 
 }
-
-#endif

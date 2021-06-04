@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_AABBOX_H
-#define URCHINENGINE_AABBOX_H
+#pragma once
 
 #include <vector>
 #include <limits>
@@ -69,5 +68,3 @@ namespace urchin {
     template<class T> std::ostream& operator <<(std::ostream&, const AABBox<T>&);
 
 }
-
- #endif

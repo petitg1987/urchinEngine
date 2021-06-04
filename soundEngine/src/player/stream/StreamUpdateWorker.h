@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_STREAMUPDATEWORKER_H
-#define URCHINENGINE_STREAMUPDATEWORKER_H
+#pragma once
 
 #include <vector>
 #include <atomic>
@@ -48,5 +47,3 @@ namespace urchin {
     };
 
 }
-
-#endif

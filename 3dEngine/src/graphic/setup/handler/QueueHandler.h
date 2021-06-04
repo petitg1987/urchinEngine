@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_QUEUEHANDLER_H
-#define URCHINENGINE_QUEUEHANDLER_H
+#pragma once
 
 #include <vulkan/vulkan.h>
 #include <optional>
@@ -36,5 +35,3 @@ namespace urchin {
     };
 
 }
-
-#endif

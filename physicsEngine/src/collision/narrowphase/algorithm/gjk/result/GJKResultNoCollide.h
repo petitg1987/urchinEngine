@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_GJKRESULTNOCOLLIDE_H
-#define URCHINENGINE_GJKRESULTNOCOLLIDE_H
+#pragma once
 
 #include <stdexcept>
 #include <UrchinCommon.h>
@@ -32,5 +31,3 @@ namespace urchin {
     };
 
 }
-
-#endif

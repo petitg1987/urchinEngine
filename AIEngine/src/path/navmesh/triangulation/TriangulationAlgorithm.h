@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TRIANGULATIONALGORITHM_H
-#define URCHINENGINE_TRIANGULATIONALGORITHM_H
+#pragma once
 
 #include <vector>
 #include <map>
@@ -36,5 +35,3 @@ namespace urchin {
     };
 
 }
-
-#endif

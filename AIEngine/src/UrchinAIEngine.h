@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_URCHINAIENGINE_H
-#define URCHINENGINE_URCHINAIENGINE_H
+#pragma once
 
 #include <AIManager.h>
 
@@ -30,5 +29,3 @@
 #include <character/AICharacter.h>
 #include <character/AICharacterController.h>
 #include <character/AICharacterEventHandler.h>
-
-#endif

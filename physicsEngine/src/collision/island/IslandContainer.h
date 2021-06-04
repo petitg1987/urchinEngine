@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_ISLANDCONTAINER_H
-#define URCHINENGINE_ISLANDCONTAINER_H
+#pragma once
 
 #include <vector>
 
@@ -31,5 +30,3 @@ namespace urchin {
     };
 
 }
-
-#endif

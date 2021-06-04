@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TERRAINGRASSQUADTREE_H
-#define URCHINENGINE_TERRAINGRASSQUADTREE_H
+#pragma once
 
 #include <vector>
 #include <mutex>
@@ -40,5 +39,3 @@ namespace urchin {
     };
 
 }
-
-#endif

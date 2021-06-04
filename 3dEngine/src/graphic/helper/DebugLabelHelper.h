@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_DEBUGLABELHELPER_H
-#define URCHINENGINE_DEBUGLABELHELPER_H
+#pragma once
 
 #include <vulkan/vulkan.h>
 #include <string>
@@ -25,5 +24,3 @@ namespace urchin {
     };
 
 }
-
-#endif

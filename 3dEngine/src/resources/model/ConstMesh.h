@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CONSTMESH_H
-#define URCHINENGINE_CONSTMESH_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -76,5 +75,3 @@ namespace urchin {
             std::vector<Vector3<float>> baseTangents;
     };
 }
-
-#endif

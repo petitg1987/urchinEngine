@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_WATERPANELWIDGET_H
-#define URCHINENGINE_WATERPANELWIDGET_H
+#pragma once
 
 #include <string>
 #include <QtWidgets/QVBoxLayout>
@@ -87,5 +86,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_GJKBOXTEST_H
-#define URCHINENGINE_GJKBOXTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -20,5 +19,3 @@ class GJKBoxTest : public CppUnit::TestFixture {
         void separateOBBoxAABBox();
         void overlapOBBoxAABBox();
 };
-
-#endif

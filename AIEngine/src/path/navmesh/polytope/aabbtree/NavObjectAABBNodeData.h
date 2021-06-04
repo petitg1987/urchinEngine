@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_POLYTOPEAABBNODEDATA_H
-#define URCHINENGINE_POLYTOPEAABBNODEDATA_H
+#pragma once
 
 #include <UrchinCommon.h>
 #include <path/navmesh/model/NavObject.h>
@@ -18,5 +17,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_AIOBJECTBUILDER_H
-#define URCHINENGINE_AIOBJECTBUILDER_H
+#pragma once
 
 #include <memory>
 #include <UrchinPhysicsEngine.h>
@@ -19,5 +18,3 @@ namespace urchin {
     };
 
 }
-
-#endif

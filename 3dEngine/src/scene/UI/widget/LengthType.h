@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LENGTHTYPE_H
-#define URCHINENGINE_LENGTHTYPE_H
+#pragma once
 
 namespace urchin {
 
@@ -9,5 +8,3 @@ namespace urchin {
     };
 
 }
-
-#endif

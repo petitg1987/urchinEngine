@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_WINDOW_H
-#define URCHINENGINE_WINDOW_H
+#pragma once
 
 #include <string>
 #include <memory>
@@ -16,7 +15,6 @@ namespace urchin {
     class Window : public Widget {
         public:
             Window(Widget*, Position, Size, std::string, std::string);
-            Window(Position, Size, std::string, std::string);
 
         protected:
             void createOrUpdateWidget() override;
@@ -46,5 +44,3 @@ namespace urchin {
     };
 
 }
-
-#endif

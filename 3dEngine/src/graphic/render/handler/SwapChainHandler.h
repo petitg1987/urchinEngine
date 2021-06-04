@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SWAPCHAINHANDLER_H
-#define URCHINENGINE_SWAPCHAINHANDLER_H
+#pragma once
 
 #include <vector>
 #include <memory>
@@ -42,5 +41,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CONVERTER_H
-#define URCHINENGINE_CONVERTER_H
+#pragma once
 
 #include <math/algebra/point/Point2.h>
 #include <math/algebra/point/Point3.h>
@@ -44,5 +43,3 @@ namespace urchin {
     };
 
 }
-
-#endif

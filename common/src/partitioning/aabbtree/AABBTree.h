@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_AABBTREE_H
-#define URCHINENGINE_AABBTREE_H
+#pragma once
 
 #include <partitioning/aabbtree/AABBNode.h>
 #include <partitioning/aabbtree/AABBNodeData.h>
@@ -51,5 +50,3 @@ namespace urchin {
     #include "AABBTree.inl"
 
 }
-
-#endif

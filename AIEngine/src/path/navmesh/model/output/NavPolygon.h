@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_NAVPOLYGON_H
-#define URCHINENGINE_NAVPOLYGON_H
+#pragma once
 
 #include <vector>
 #include <UrchinCommon.h>
@@ -40,5 +39,3 @@ namespace urchin {
     };
 
 }
-
-#endif

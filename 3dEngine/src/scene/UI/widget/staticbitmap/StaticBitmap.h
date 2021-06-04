@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_STATICBITMAP_H
-#define URCHINENGINE_STATICBITMAP_H
+#pragma once
 
 #include <string>
 #include <memory>
@@ -15,7 +14,6 @@ namespace urchin {
     class StaticBitmap : public Widget {
         public:
             StaticBitmap(Widget*, Position, Size, std::string);
-            StaticBitmap(Position, Size, std::string);
 
         protected:
             void createOrUpdateWidget() override;
@@ -31,5 +29,3 @@ namespace urchin {
     };
 
 }
-
-#endif

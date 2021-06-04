@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TERRAINOBSTACLESERVICETEST_H
-#define URCHINENGINE_TERRAINOBSTACLESERVICETEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -13,5 +12,3 @@ class TerrainObstacleServiceTest : public CppUnit::TestFixture {
         void twoSquaresSamePoint();
         void squaresInUForm();
 };
-
-#endif

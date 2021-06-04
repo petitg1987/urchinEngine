@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_MAPEDITORWINDOW_H
-#define URCHINENGINE_MAPEDITORWINDOW_H
+#pragma once
 
 #include <string>
 #include <map>
@@ -67,5 +66,3 @@ namespace urchin {
     };
 
 }
-
-#endif

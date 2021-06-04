@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_PATHPORTAL_H
-#define URCHINENGINE_PATHPORTAL_H
+#pragma once
 
 #include <UrchinCommon.h>
 #include <path/pathfinding/PathNode.h>
@@ -32,5 +31,3 @@ namespace urchin {
     };
 
 }
-
-#endif

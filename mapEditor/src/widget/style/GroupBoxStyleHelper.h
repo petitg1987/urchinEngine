@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_GROUPBOXSTYLEHELPER_H
-#define URCHINENGINE_GROUPBOXSTYLEHELPER_H
+#pragma once
 
 #include <QtWidgets/QGroupBox>
 
@@ -13,5 +12,3 @@ namespace urchin {
     };
 
 }
-
-#endif

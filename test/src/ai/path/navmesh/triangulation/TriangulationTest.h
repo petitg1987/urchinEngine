@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TRIANGULATIONTEST_H
-#define URCHINENGINE_TRIANGULATIONTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -24,5 +23,3 @@ class TriangulationTest : public CppUnit::TestFixture {
         void assertUniqueLink(const std::shared_ptr<urchin::NavTriangle>&, std::size_t, const std::shared_ptr<urchin::NavTriangle>&);
         void assertLink(const std::shared_ptr<urchin::NavLink>&, std::size_t, const std::shared_ptr<urchin::NavTriangle>&);
 };
-
-#endif

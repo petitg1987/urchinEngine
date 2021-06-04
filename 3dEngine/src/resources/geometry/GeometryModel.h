@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_GEOMETRYMODEL_H
-#define URCHINENGINE_GEOMETRYMODEL_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -66,5 +65,3 @@ namespace urchin {
     };
 
 }
-
-#endif

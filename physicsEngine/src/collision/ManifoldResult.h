@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_MANIFOLDRESULT_H
-#define URCHINENGINE_MANIFOLDRESULT_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -48,5 +47,3 @@ namespace urchin {
     };
 
 }
-
-#endif

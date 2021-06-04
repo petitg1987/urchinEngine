@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_MATRIX4_H
-#define URCHINENGINE_MATRIX4_H
+#pragma once
 
 #include <iostream>
 #include <cmath>
@@ -70,5 +69,3 @@ namespace urchin {
     template<class T> std::ostream& operator <<(std::ostream&, const Matrix4<T>&);
 
 }
-
-#endif

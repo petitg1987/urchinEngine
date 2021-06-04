@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_OCTREE_H
-#define URCHINENGINE_OCTREE_H
+#pragma once
 
 #include <vector>
 #include <limits>
@@ -41,5 +40,3 @@ namespace urchin {
     #include "Octree.inl"
 
 }
-
-#endif

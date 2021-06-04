@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_COLLISIONTRIANGLEOBJECT_H
-#define URCHINENGINE_COLLISIONTRIANGLEOBJECT_H
+#pragma once
 
 #include <string>
 #include <UrchinCommon.h>
@@ -25,5 +24,3 @@ namespace urchin {
     };
 
 }
-
-#endif

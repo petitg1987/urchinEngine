@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_UISKINSERVICE_H
-#define URCHINENGINE_UISKINSERVICE_H
+#pragma once
 
 #include <map>
 #include <memory>
@@ -32,5 +31,3 @@ namespace urchin {
             std::unique_ptr<XmlParser> xmlSkin;
     };
 }
-
-#endif

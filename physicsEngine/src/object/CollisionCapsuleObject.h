@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_COLLISIONCAPSULEOBJECT_H
-#define URCHINENGINE_COLLISIONCAPSULEOBJECT_H
+#pragma once
 
 #include <string>
 #include <UrchinCommon.h>
@@ -30,5 +29,3 @@ namespace urchin {
     };
 
 }
-
-#endif

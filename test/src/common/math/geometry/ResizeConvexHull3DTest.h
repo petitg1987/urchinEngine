@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_RESIZECONVEXHULL3DTEST_H
-#define URCHINENGINE_RESIZECONVEXHULL3DTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -13,5 +12,3 @@ class ResizeConvexHull3DTest : public CppUnit::TestFixture {
         void nullExpandTetrahedron();
         void expandTetrahedron();
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SORTPOINTSTEST_H
-#define URCHINENGINE_SORTPOINTSTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -15,5 +14,3 @@ class SortPointsTest : public CppUnit::TestFixture {
         void fourPointsCounterClockwiseZNormal();
         void fourPointsCounterClockwiseYNormal();
 };
-
-#endif

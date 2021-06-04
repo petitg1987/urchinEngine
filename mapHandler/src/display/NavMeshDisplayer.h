@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_NAVMESHDISPLAYER_H
-#define URCHINENGINE_NAVMESHDISPLAYER_H
+#pragma once
 
 #include <vector>
 #include <UrchinCommon.h>
@@ -28,5 +27,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_COLLISIONCOMPOUNDSHAPE_H
-#define URCHINENGINE_COLLISIONCOMPOUNDSHAPE_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -46,5 +45,3 @@ namespace urchin {
     };
 
 }
-
-#endif

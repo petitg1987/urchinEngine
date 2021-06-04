@@ -19,9 +19,12 @@ namespace urchin {
         refreshTextAndWidgetSize();
     }
 
-    Text::Text(Position position, std::string nameSkin, std::string text) :
-            Text(nullptr, position, std::move(nameSkin), std::move(text)) {
+    Text* Text::newText(Widget* parent, Position position, std::string nameSkin, std::string text) {
+        return new Text(parent, position, std::move(nameSkin), std::move(text));
+    }
 
+    Text* Text::newTranslatableText(Widget* parent, Position position, std::string nameSkin, std::string textKey) {
+        return new Text(parent, position, std::move(nameSkin), std::move(textKey)); //TODO review...
     }
 
     Text::~Text() {

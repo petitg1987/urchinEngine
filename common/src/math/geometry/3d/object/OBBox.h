@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_OBBOX_H
-#define URCHINENGINE_OBBOX_H
+#pragma once
 
 #include <sstream>
 #include <vector>
@@ -57,5 +56,3 @@ namespace urchin {
     template<class T> std::ostream& operator <<(std::ostream&, const OBBox<T>&);
 
 }
-
- #endif

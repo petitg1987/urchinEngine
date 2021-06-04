@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_EVENTLISTENER_H
-#define URCHINENGINE_EVENTLISTENER_H
+#pragma once
 
 namespace urchin {
 
@@ -16,5 +15,3 @@ namespace urchin {
     };
 
 }
-
-#endif

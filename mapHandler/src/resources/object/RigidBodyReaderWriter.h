@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_RIGIDBODYREADERWRITER_H
-#define URCHINENGINE_RIGIDBODYREADERWRITER_H
+#pragma once
 
 #include <memory>
 #include <string>
@@ -31,5 +30,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_AIENTITY_H
-#define URCHINENGINE_AIENTITY_H
+#pragma once
 
 #include <string>
 #include <mutex>
@@ -46,5 +45,3 @@ namespace urchin {
     };
 
 }
-
-#endif

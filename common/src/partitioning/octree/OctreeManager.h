@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_OCTREEMANAGER_H
-#define URCHINENGINE_OCTREEMANAGER_H
+#pragma once
 
 #include <limits>
 #include <stdexcept>
@@ -56,5 +55,3 @@ namespace urchin {
     #include "OctreeManager.inl"
 
 }
-
-#endif

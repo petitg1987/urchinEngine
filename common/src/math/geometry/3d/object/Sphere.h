@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SPHERE_H
-#define URCHINENGINE_SPHERE_H
+#pragma once
 
 #include <math/geometry/3d/object/ConvexObject3D.h>
 #include <math/geometry/3d/shape/SphereShape.h>
@@ -26,5 +25,3 @@ namespace urchin {
     };
 
 }
-
- #endif

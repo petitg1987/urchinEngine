@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_INTEGRATETRANSFORMMANAGER_H
-#define URCHINENGINE_INTEGRATETRANSFORMMANAGER_H
+#pragma once
 
 #include <body/BodyManager.h>
 #include <body/model/RigidBody.h>
@@ -26,5 +25,3 @@ namespace urchin {
     };
 
 }
-
-#endif

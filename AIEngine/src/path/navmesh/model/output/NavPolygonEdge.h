@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_NAVPOLYGONEDGE_H
-#define URCHINENGINE_NAVPOLYGONEDGE_H
+#pragma once
 
 #include <path/navmesh/model/output/NavTriangle.h>
 
@@ -13,5 +12,3 @@ namespace urchin {
     };
 
 }
-
-#endif

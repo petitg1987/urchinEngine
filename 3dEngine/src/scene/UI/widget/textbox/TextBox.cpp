@@ -24,11 +24,6 @@ namespace urchin {
 
     }
 
-    TextBox::TextBox(Position position, Size size, std::string nameSkin) :
-            TextBox(nullptr, position, size, std::move(nameSkin)) {
-
-    }
-
     void TextBox::createOrUpdateWidget() {
         //skin information
         std::shared_ptr<XmlChunk> textBoxChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textBox", XmlAttribute("nameSkin", nameSkin));
@@ -41,7 +36,7 @@ namespace urchin {
 
         std::shared_ptr<XmlChunk> textSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), textBoxChunk);
         delete text;
-        text = new Text(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), "");
+        text = Text::newText(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), "");
         text->setPosition(Position(0.0f, ((float)getHeight() - (float)text->getHeight()) / 2.0f, LengthType::PIXEL));
         maxWidthText = (unsigned int)((int)getWidth() - (widgetOutline.leftWidth + widgetOutline.rightWidth));
 

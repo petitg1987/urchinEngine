@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_POLYGONSSUBTRACTION_H
-#define URCHINENGINE_POLYGONSSUBTRACTION_H
+#pragma once
 
 #include <vector>
 #include <map>
@@ -25,5 +24,3 @@ namespace urchin {
     };
 
 }
-
-#endif

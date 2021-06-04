@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CONVEXOBJECT3D_H
-#define URCHINENGINE_CONVEXOBJECT3D_H
+#pragma once
 
 #include <stdexcept>
 
@@ -23,5 +22,3 @@ namespace urchin {
     };
 
 }
-
-#endif

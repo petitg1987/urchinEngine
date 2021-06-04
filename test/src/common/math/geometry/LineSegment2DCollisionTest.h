@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LINESEGMENT2DCOLLISIONTEST_H
-#define URCHINENGINE_LINESEGMENT2DCOLLISIONTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -26,5 +25,3 @@ class LineSegment2DCollisionTest : public CppUnit::TestFixture {
         void collinearLinesFullIntersectionSameDirection();
         void collinearLinesFullIntersectionOppositeDirection();
 };
-
-#endif

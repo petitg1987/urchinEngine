@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_OBJECTCONTROLLER_H
-#define URCHINENGINE_OBJECTCONTROLLER_H
+#pragma once
 
 #include <list>
 #include <UrchinCommon.h>
@@ -35,5 +34,3 @@ namespace urchin {
     };
 
 }
-
-#endif

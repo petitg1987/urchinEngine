@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_BODYAABBTREE_H
-#define URCHINENGINE_BODYAABBTREE_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -43,5 +42,3 @@ namespace urchin {
     };
 
 }
-
-#endif

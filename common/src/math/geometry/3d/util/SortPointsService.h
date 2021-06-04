@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SORTPOINTSSERVICE_H
-#define URCHINENGINE_SORTPOINTSSERVICE_H
+#pragma once
 
 #include <vector>
 
@@ -20,5 +19,3 @@ namespace urchin {
     };
 
 }
-
-#endif

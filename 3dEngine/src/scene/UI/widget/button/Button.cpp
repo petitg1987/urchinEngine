@@ -15,11 +15,6 @@ namespace urchin {
 
     }
 
-    Button::Button(Position position, Size size, std::string nameSkin, std::string buttonText) :
-            Button(nullptr, position, size, std::move(nameSkin), std::move(buttonText)) {
-
-    }
-
     void Button::createOrUpdateWidget() {
         //skin information
         std::shared_ptr<XmlChunk> buttonChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "button", XmlAttribute("nameSkin", nameSkin));
@@ -36,7 +31,7 @@ namespace urchin {
         if (!buttonText.empty()) {
             std::shared_ptr<XmlChunk> textSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), buttonChunk);
             delete text;
-            text = new Text(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), buttonText);
+            text = Text::newTranslatableText(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), buttonText);
             text->setPosition(Position(((float)getWidth() - (float)text->getWidth()) / 2.0f, ((float)getHeight() - (float)text->getHeight()) / 2.0f, LengthType::PIXEL));
         }
 

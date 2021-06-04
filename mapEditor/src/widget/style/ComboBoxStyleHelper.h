@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_COMBOBOXSTYLEHELPER_H
-#define URCHINENGINE_COMBOBOXSTYLEHELPER_H
+#pragma once
 
 #include <QtWidgets/QComboBox>
 
@@ -27,5 +26,3 @@ namespace urchin {
     };
 
 }
-
-#endif

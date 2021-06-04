@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_COLLISIONCONVEXHULLREADERWRITER_H
-#define URCHINENGINE_COLLISIONCONVEXHULLREADERWRITER_H
+#pragma once
 
 #include <memory>
 #include <UrchinCommon.h>
@@ -22,5 +21,3 @@ namespace urchin {
     };
 
 }
-
-#endif

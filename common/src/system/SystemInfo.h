@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SYSTEMINFO_H
-#define URCHINENGINE_SYSTEMINFO_H
+#pragma once
 
 #include <string>
 
@@ -27,5 +26,3 @@ namespace urchin {
     };
 
 }
-
-#endif

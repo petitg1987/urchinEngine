@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_OVERLAPPINGPAIR_H
-#define URCHINENGINE_OVERLAPPINGPAIR_H
+#pragma once
 
 #include <memory>
 
@@ -36,5 +35,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TEMPORALOBJECT_H
-#define URCHINENGINE_TEMPORALOBJECT_H
+#pragma once
 
 #include <shape/CollisionShape3D.h>
 #include <utils/math/PhysicsTransform.h>
@@ -27,5 +26,3 @@ namespace urchin {
     };
 
 }
-
-#endif

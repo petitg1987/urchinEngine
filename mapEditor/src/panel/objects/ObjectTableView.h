@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_OBJECTTABLEVIEW_H
-#define URCHINENGINE_OBJECTTABLEVIEW_H
+#pragma once
 
 #include <QtWidgets/QTableView>
 #include <QStandardItemModel>
@@ -38,5 +37,3 @@ namespace urchin {
     };
 
 }
-
-#endif

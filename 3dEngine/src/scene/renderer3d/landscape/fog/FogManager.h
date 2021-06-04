@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_FOGMANAGER_H
-#define URCHINENGINE_FOGMANAGER_H
+#pragma once
 
 #include <stack>
 #include <memory>
@@ -35,5 +34,3 @@ namespace urchin {
     };
 
 }
-
-#endif

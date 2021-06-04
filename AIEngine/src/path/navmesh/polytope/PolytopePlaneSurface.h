@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_POLYTOPEPLANESURFACE_H
-#define URCHINENGINE_POLYTOPEPLANESURFACE_H
+#pragma once
 
 #include <vector>
 #include <initializer_list>
@@ -44,5 +43,3 @@ namespace urchin {
     };
 
 }
-
-#endif

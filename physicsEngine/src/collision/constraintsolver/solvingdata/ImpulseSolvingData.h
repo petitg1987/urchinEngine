@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_IMPULSESOLVINGDATA_H
-#define URCHINENGINE_IMPULSESOLVINGDATA_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -17,5 +16,3 @@ namespace urchin {
     };
 
 }
-
-#endif

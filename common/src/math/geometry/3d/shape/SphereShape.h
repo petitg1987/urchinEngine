@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SPHERESHAPE_H
-#define URCHINENGINE_SPHERESHAPE_H
+#pragma once
 
 #include <memory>
 
@@ -21,5 +20,3 @@ namespace urchin {
     };
 
 }
-
- #endif

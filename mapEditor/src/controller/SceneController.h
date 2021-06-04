@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SCENECONTROLLER_H
-#define URCHINENGINE_SCENECONTROLLER_H
+#pragma once
 
 #include <list>
 
@@ -49,5 +48,3 @@ namespace urchin {
     };
 
 }
-
-#endif

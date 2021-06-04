@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_NAVLINK_H
-#define URCHINENGINE_NAVLINK_H
+#pragma once
 
 #include <memory>
 
@@ -45,5 +44,3 @@ namespace urchin {
     };
 
 }
-
-#endif

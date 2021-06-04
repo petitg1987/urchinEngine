@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_AIPANELWIDGET_H
-#define URCHINENGINE_AIPANELWIDGET_H
+#pragma once
 
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QPushButton>
@@ -38,5 +37,3 @@ namespace urchin {
     };
 
 }
-
-#endif

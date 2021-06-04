@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_XMLATTRIBUTE_H
-#define URCHINENGINE_XMLATTRIBUTE_H
+#pragma once
 
 #include <string>
 
@@ -23,5 +22,3 @@ namespace urchin {
     };
 
 }
-
-#endif

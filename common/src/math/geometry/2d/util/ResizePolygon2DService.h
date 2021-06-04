@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_RESIZEPOLYGON2DSERVICE_H
-#define URCHINENGINE_RESIZEPOLYGON2DSERVICE_H
+#pragma once
 
 #include <vector>
 
@@ -15,5 +14,3 @@ namespace urchin {
     };
 
 }
-
-#endif

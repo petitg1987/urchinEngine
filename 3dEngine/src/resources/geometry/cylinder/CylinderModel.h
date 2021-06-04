@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CYLINDERMODEL_H
-#define URCHINENGINE_CYLINDERMODEL_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -23,5 +22,3 @@ namespace urchin {
     };
 
 }
-
-#endif

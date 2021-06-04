@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_ANTIALIASINGMANAGER_H
-#define URCHINENGINE_ANTIALIASINGMANAGER_H
+#pragma once
 
 #include <memory>
 
@@ -63,5 +62,3 @@ namespace urchin {
     };
 
 }
-
-#endif

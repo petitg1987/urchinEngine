@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_STREAMCHUNK_H
-#define URCHINENGINE_STREAMCHUNK_H
+#pragma once
 
 #include <AL/al.h>
 #include <AL/alc.h>
@@ -20,5 +19,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_PHYSICSCHARACTER_H
-#define URCHINENGINE_PHYSICSCHARACTER_H
+#pragma once
 
 #include <mutex>
 
@@ -40,5 +39,3 @@ namespace urchin {
     };
 
 }
-
-#endif

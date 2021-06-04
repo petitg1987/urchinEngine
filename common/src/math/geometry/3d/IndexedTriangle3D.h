@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_INDEXEDTRIANGLE3D_H
-#define URCHINENGINE_INDEXEDTRIANGLE3D_H
+#pragma once
 
 #include <vector>
 #include <map>
@@ -24,5 +23,3 @@ namespace urchin {
     };
 
 }
-
-#endif

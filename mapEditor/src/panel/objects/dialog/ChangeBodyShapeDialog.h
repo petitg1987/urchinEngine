@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CHANGEBODYSHAPEDIALOG_H
-#define URCHINENGINE_CHANGEBODYSHAPEDIALOG_H
+#pragma once
 
 #include <list>
 #include <QtWidgets/QGridLayout>
@@ -34,5 +33,3 @@ namespace urchin {
     };
 
 }
-
-#endif

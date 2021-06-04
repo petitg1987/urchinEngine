@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_ANIMATION_H
-#define URCHINENGINE_ANIMATION_H
+#pragma once
 
 #include <vector>
 #include <UrchinCommon.h>
@@ -37,5 +36,3 @@ namespace urchin {
     };
 
 }
-
-#endif

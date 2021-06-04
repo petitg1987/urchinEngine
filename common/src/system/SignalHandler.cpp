@@ -1,5 +1,3 @@
-#include <system/SignalHandler.h>
-
 #include <iostream>
 #include <cassert>
 #ifdef _WIN32
@@ -13,6 +11,7 @@
     #include <system/CommandExecutor.h>
 #endif
 
+#include <system/SignalHandler.h>
 #include <util/FileUtil.h>
 #include <util/StringUtil.h>
 #include <logger/Logger.h>

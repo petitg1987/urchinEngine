@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_NAVMESHAGENT_H
-#define URCHINENGINE_NAVMESHAGENT_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -32,5 +31,3 @@ namespace urchin {
     };
 
 }
-
-#endif

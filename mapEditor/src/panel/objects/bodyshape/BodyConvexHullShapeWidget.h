@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_BODYCONVEXHULLSHAPEWIDGET_H
-#define URCHINENGINE_BODYCONVEXHULLSHAPEWIDGET_H
+#pragma once
 
 #include <string>
 #include <memory>
@@ -43,5 +42,3 @@ namespace urchin {
     };
 
 }
-
-#endif

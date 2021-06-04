@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SOUNDTRIGGERDISPLAYER_H
-#define URCHINENGINE_SOUNDTRIGGERDISPLAYER_H
+#pragma once
 
 #include <Urchin3dEngine.h>
 #include <UrchinSoundEngine.h>
@@ -27,5 +26,3 @@ namespace urchin {
     };
 
 }
-
-#endif

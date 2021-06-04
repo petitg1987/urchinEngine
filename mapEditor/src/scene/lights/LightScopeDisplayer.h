@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LIGHTSCOPEDISPLAYER_H
-#define URCHINENGINE_LIGHTSCOPEDISPLAYER_H
+#pragma once
 
 #include <Urchin3dEngine.h>
 #include <UrchinMapHandler.h>
@@ -21,5 +20,3 @@ namespace urchin {
     };
 
 }
-
-#endif

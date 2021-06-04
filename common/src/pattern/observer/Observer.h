@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_OBSERVER_H
-#define URCHINENGINE_OBSERVER_H
+#pragma once
 
 namespace urchin {
     class Observable;
@@ -12,5 +11,3 @@ namespace urchin {
     };
 
 }
-
-#endif

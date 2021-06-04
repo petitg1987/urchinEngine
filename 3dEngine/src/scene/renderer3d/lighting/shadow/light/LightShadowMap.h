@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LIGHTSHADOWMAP_H
-#define URCHINENGINE_LIGHTSHADOWMAP_H
+#pragma once
 
 #include <vector>
 #include <set>
@@ -66,5 +65,3 @@ namespace urchin {
     };
 
 }
-
-#endif

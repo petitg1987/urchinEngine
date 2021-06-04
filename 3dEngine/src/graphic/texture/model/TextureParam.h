@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TEXTUREPARAM_H
-#define URCHINENGINE_TEXTUREPARAM_H
+#pragma once
 
 #include <vulkan/vulkan.h>
 
@@ -52,5 +51,3 @@ namespace urchin {
     };
 
 }
-
-#endif

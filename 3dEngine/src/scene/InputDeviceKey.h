@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_INPUTDEVICEKEY_H
-#define URCHINENGINE_INPUTDEVICEKEY_H
+#pragma once
 
 namespace urchin {
 
@@ -14,5 +13,3 @@ namespace urchin {
     };
 
 }
-
-#endif

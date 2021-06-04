@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_DOWNSAMPLEFILTERBUILDER_H
-#define URCHINENGINE_DOWNSAMPLEFILTERBUILDER_H
+#pragma once
 
 #include <texture/filter/TextureFilterBuilder.h>
 
@@ -15,5 +14,3 @@ namespace urchin {
     };
 
 }
-
-#endif

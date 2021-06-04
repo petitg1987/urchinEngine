@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TEXTBOX_H
-#define URCHINENGINE_TEXTBOX_H
+#pragma once
 
 #include <string>
 #include <memory>
@@ -15,7 +14,6 @@ namespace urchin {
     class TextBox : public Widget {
         public:
             TextBox(Widget*, Position, Size, std::string );
-            TextBox(Position, Size, std::string);
 
             std::string getText();
 
@@ -57,5 +55,3 @@ namespace urchin {
     };
 
 }
-
-#endif

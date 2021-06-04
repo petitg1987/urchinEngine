@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_STATESAVEHELPER_H
-#define URCHINENGINE_STATESAVEHELPER_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -22,5 +21,3 @@ namespace urchin {
     };
 
 }
-
-#endif

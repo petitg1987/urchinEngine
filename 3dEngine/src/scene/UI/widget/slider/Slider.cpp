@@ -36,11 +36,6 @@ namespace urchin {
         rightButtonString = rightButtonTextChunk->getStringValue();
     }
 
-    Slider::Slider(Position position, Size size, std::string nameSkin, const std::vector<std::string>& values) :
-            Slider(nullptr, position, size, std::move(nameSkin), values) {
-
-    }
-
     void Slider::createOrUpdateWidget() {
         //clear
         delete leftButton;
@@ -51,13 +46,13 @@ namespace urchin {
         valuesText.clear();
 
         //buttons
-        leftButton = new Text(this, Position(0, 0, LengthType::PIXEL), buttonsTextSkin, leftButtonString);
+        leftButton = Text::newText(this, Position(0, 0, LengthType::PIXEL), buttonsTextSkin, leftButtonString);
         leftButton->addEventListener(std::make_shared<ButtonSliderEventListener>(this, true));
         if (leftButtonEventListener) {
             this->leftButton->addEventListener(leftButtonEventListener);
         }
 
-        rightButton = new Text(this, Position(0, 0, LengthType::PIXEL), buttonsTextSkin, rightButtonString);
+        rightButton = Text::newText(this, Position(0, 0, LengthType::PIXEL), buttonsTextSkin, rightButtonString);
         rightButton->setPosition(Position((float)getWidth() - (float)rightButton->getWidth(), 0.0f, LengthType::PIXEL));
         rightButton->addEventListener(std::make_shared<ButtonSliderEventListener>(this, false));
         if (rightButtonEventListener) {
@@ -67,7 +62,7 @@ namespace urchin {
         //values
         valuesText.resize(values.size());
         for (std::size_t i = 0; i < values.size(); ++i) {
-            auto* valueText = new Text(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[i]);
+            auto* valueText = Text::newTranslatableText(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[i]);
             valueText->setPosition(Position(((float)getWidth() - (float)valueText->getWidth()) / 2.0f, 0.0f, LengthType::PIXEL));
             valueText->setIsVisible(false);
 

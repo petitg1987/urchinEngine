@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_COLLISIONCONVEXHULLOBJECT_H
-#define URCHINENGINE_COLLISIONCONVEXHULLOBJECT_H
+#pragma once
 
 #include <string>
 #include <map>
@@ -30,5 +29,3 @@ namespace urchin {
     };
 
 }
-
-#endif

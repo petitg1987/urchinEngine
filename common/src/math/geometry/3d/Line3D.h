@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LINE3D_H
-#define URCHINENGINE_LINE3D_H
+#pragma once
 
 #include <math/algebra/point/Point3.h>
 
@@ -25,5 +24,3 @@ namespace urchin {
     template<class T> std::ostream& operator <<(std::ostream&, const Line3D<T>&);
 
 }
-
-#endif

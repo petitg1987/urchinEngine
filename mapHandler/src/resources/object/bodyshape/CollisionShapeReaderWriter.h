@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_COLLISIONSHAPEREADERWRITER_H
-#define URCHINENGINE_COLLISIONSHAPEREADERWRITER_H
+#pragma once
 
 #include <memory>
 #include <UrchinCommon.h>
@@ -28,5 +27,3 @@ namespace urchin {
     };
 
 }
-
-#endif

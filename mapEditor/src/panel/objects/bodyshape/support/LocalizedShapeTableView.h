@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LOCALIZEDSHAPETABLEVIEW_H
-#define URCHINENGINE_LOCALIZEDSHAPETABLEVIEW_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -45,5 +44,3 @@ namespace urchin {
     };
 
 }
-
-#endif

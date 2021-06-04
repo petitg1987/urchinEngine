@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CONVEXHULLSHAPE3D_H
-#define URCHINENGINE_CONVEXHULLSHAPE3D_H
+#pragma once
 
 #include <vector>
 #include <map>
@@ -55,5 +54,3 @@ namespace urchin {
     template<class T> std::ostream& operator <<(std::ostream&, const ConvexHullShape3D<T>&);
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SINGLETONMANAGER_H
-#define URCHINENGINE_SINGLETONMANAGER_H
+#pragma once
 
 #include <string>
 #include <map>
@@ -44,6 +43,4 @@ namespace urchin {
     #ifdef __cplusplus
         }
     #endif
-#endif
-
 #endif

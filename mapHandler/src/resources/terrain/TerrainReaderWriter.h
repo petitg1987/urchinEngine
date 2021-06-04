@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TERRAINREADERWRITER_H
-#define URCHINENGINE_TERRAINREADERWRITER_H
+#pragma once
 
 #include <memory>
 
@@ -51,5 +50,3 @@ namespace urchin {
     };
 
 }
-
-#endif

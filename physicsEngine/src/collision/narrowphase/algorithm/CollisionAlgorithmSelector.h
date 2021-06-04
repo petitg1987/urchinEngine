@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_COLLISIONALGORITHMSELECTOR_H
-#define URCHINENGINE_COLLISIONALGORITHMSELECTOR_H
+#pragma once
 
 #include <memory>
 
@@ -40,5 +39,3 @@ namespace urchin {
     };
 
 }
-
-#endif

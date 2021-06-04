@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_GHOSTBODY_H
-#define URCHINENGINE_GHOSTBODY_H
+#pragma once
 
 #include <string>
 
@@ -28,5 +27,3 @@ namespace urchin {
     };
 
 }
-
-#endif

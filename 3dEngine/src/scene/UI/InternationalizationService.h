@@ -1,0 +1,7 @@
+namespace urchin {
+
+    class InternationalizationService {
+
+    };
+
+}

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CONVEXSHAPE2D_H
-#define URCHINENGINE_CONVEXSHAPE2D_H
+#pragma once
 
 namespace urchin {
 
@@ -13,5 +12,3 @@ namespace urchin {
     };
 
 }
-
-#endif

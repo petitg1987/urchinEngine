@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_AABBOXCOLLISIONTEST_H
-#define URCHINENGINE_AABBOXCOLLISIONTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -21,5 +20,3 @@ class AABBoxCollisionTest : public CppUnit::TestFixture {
 
         void rayInsideToXPlane();
 };
-
-#endif

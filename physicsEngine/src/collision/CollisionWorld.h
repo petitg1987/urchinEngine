@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_COLLISIONWORLD_H
-#define URCHINENGINE_COLLISIONWORLD_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -47,5 +46,3 @@ namespace urchin {
     };
 
 }
-
-#endif

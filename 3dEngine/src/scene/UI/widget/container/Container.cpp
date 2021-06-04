@@ -7,11 +7,6 @@ namespace urchin {
 
     }
 
-    Container::Container(Position position) :
-            Container(nullptr, position) {
-
-    }
-
     void Container::createOrUpdateWidget() {
 
     }

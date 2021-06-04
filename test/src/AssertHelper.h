@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_ASSERTHELPER_H
-#define URCHINENGINE_ASSERTHELPER_H
+#pragma once
 
 #include <UrchinCommon.h>
 using namespace urchin;
@@ -37,5 +36,3 @@ class AssertHelper {
 
         static std::string floatToString(float);
 };
-
-#endif

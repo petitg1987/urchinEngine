@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_NAVOUTPUTCOPY_H
-#define URCHINENGINE_NAVOUTPUTCOPY_H
+#pragma once
 
 #include <memory>
 #include <path/navmesh/model/output//NavPolygon.h>
@@ -12,5 +11,3 @@ namespace urchin {
     };
 
 }
-
-#endif

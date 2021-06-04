@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SHADER_H
-#define URCHINENGINE_SHADER_H
+#pragma once
 
 #include <vector>
 #include <string>
@@ -44,5 +43,3 @@ namespace urchin {
     };
 
 }
-
-#endif

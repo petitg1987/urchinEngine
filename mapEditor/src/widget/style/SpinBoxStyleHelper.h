@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SPINBOXSTYLEHELPER_H
-#define URCHINENGINE_SPINBOXSTYLEHELPER_H
+#pragma once
 
 #include <QtWidgets/QDoubleSpinBox>
 
@@ -17,5 +16,3 @@ namespace urchin {
     };
 
 }
-
-#endif

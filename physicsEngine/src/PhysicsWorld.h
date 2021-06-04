@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_PHYSICSWORLD_H
-#define URCHINENGINE_PHYSICSWORLD_H
+#pragma once
 
 #include <vector>
 #include <atomic>
@@ -74,5 +73,3 @@ namespace urchin {
     };
 
 }
-
-#endif

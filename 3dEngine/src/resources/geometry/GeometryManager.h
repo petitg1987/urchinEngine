@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_GEOMETRYMANAGER_H
-#define URCHINENGINE_GEOMETRYMANAGER_H
+#pragma once
 
 #include <vector>
 #include <UrchinCommon.h>
@@ -30,5 +29,3 @@ namespace urchin {
     };
 
 }
-
-#endif

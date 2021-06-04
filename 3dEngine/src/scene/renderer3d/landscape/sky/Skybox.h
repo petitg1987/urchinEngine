@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SKYBOX_H
-#define URCHINENGINE_SKYBOX_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -47,5 +46,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_STATUSBARCONTROLLER_H
-#define URCHINENGINE_STATUSBARCONTROLLER_H
+#pragma once
 
 #include <memory>
 #include <QMainWindow>
@@ -32,5 +31,3 @@ namespace urchin {
     };
 
 }
-
-#endif

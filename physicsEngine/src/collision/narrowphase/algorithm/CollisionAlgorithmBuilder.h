@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_COLLISIONALGORITHMBUILDER_H
-#define URCHINENGINE_COLLISIONALGORITHMBUILDER_H
+#pragma once
 
 #include <collision/narrowphase/algorithm/CollisionAlgorithm.h>
 #include <collision/narrowphase/CollisionObjectWrapper.h>
@@ -20,5 +19,3 @@ namespace urchin {
     };
 
 }
-
-#endif

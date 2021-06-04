@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_EPARESULTCOLLIDE_H
-#define URCHINENGINE_EPARESULTCOLLIDE_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -26,5 +25,3 @@ namespace urchin {
     };
 
 }
-
-#endif

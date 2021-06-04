@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_FRUSTUM_H
-#define URCHINENGINE_FRUSTUM_H
+#pragma once
 
 #include <vector>
 
@@ -74,5 +73,3 @@ namespace urchin {
     template<class T> std::ostream& operator <<(std::ostream&, const Frustum<T>&);
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_FPSCAMERA_H
-#define URCHINENGINE_FPSCAMERA_H
+#pragma once
 
 #include <scene/renderer3d/camera/Camera.h>
 
@@ -30,5 +29,3 @@ namespace urchin {
     };
 
 }
-
-#endif

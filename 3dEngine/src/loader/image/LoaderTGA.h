@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LOADERTGA_H
-#define URCHINENGINE_LOADERTGA_H
+#pragma once
 
 #include <string>
 
@@ -61,5 +60,3 @@ namespace urchin {
     };
 
 }
-
-#endif

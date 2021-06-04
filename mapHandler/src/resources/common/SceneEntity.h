@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SCENEENTITY_H
-#define URCHINENGINE_SCENEENTITY_H
+#pragma once
 
 #include <Urchin3dEngine.h>
 #include <UrchinPhysicsEngine.h>
@@ -18,5 +17,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CONFIGSERVICE_H
-#define URCHINENGINE_CONFIGSERVICE_H
+#pragma once
 
 #include <string>
 #include <map>
@@ -35,5 +34,3 @@ namespace urchin {
             std::map<std::string, unsigned int> unsignedIntProperties;
     };
 }
-
-#endif

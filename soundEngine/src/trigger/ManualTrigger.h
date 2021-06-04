@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_MANUALTRIGGER_H
-#define URCHINENGINE_MANUALTRIGGER_H
+#pragma once
 
 #include <trigger/SoundTrigger.h>
 
@@ -35,5 +34,3 @@ namespace urchin {
     };
 
 }
-
-#endif

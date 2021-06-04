@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_PROPERTYFILEHANDLER_H
-#define URCHINENGINE_PROPERTYFILEHANDLER_H
+#pragma once
 
 #include <string>
 #include <map>
@@ -18,5 +17,3 @@ namespace urchin {
     };
 
 }
-
-#endif

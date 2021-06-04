@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_EPAALGORITHM_H
-#define URCHINENGINE_EPAALGORITHM_H
+#pragma once
 
 #include <vector>
 #include <limits>
@@ -44,5 +43,3 @@ namespace urchin {
     };
 
 }
-
-#endif

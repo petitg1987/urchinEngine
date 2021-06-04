@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SCOPEPROFILER_H
-#define URCHINENGINE_SCOPEPROFILER_H
+#pragma once
 
 #include <string>
 #include <memory>
@@ -19,5 +18,3 @@ namespace urchin {
     };
 
 }
-
-#endif

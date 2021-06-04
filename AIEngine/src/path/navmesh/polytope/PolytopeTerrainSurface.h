@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_POLYTOPETERRAINSURFACE_H
-#define URCHINENGINE_POLYTOPETERRAINSURFACE_H
+#pragma once
 
 #include <memory>
 
@@ -50,5 +49,3 @@ namespace urchin {
     };
 
 }
-
-#endif

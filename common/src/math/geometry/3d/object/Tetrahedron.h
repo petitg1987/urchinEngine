@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TETRAHEDRON_H
-#define URCHINENGINE_TETRAHEDRON_H
+#pragma once
 
 #include <limits>
 
@@ -28,5 +27,3 @@ namespace urchin {
     };
 
 }
-
-#endif

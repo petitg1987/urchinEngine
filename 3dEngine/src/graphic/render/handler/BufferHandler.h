@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_BUFFERHANDLER_H
-#define URCHINENGINE_BUFFERHANDLER_H
+#pragma once
 
 #include <cstdlib>
 #include <vulkan/vulkan.h>
@@ -51,5 +50,3 @@ namespace urchin {
     };
 
 }
-
-#endif

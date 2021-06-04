@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_GRAPHICSERVICE_H
-#define URCHINENGINE_GRAPHICSERVICE_H
+#pragma once
 
 #include <UrchinCommon.h>
 #include <memory>
@@ -58,5 +57,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_QUATERNIONTEST_H
-#define URCHINENGINE_QUATERNIONTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -37,5 +36,3 @@ class QuaternionTest : public CppUnit::TestFixture {
 
         void toAxisAngle90();
 };
-
-#endif

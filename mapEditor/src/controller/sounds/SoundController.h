@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SOUNDCONTROLLER_H
-#define URCHINENGINE_SOUNDCONTROLLER_H
+#pragma once
 
 #include <list>
 #include <UrchinCommon.h>
@@ -31,5 +30,3 @@ namespace urchin {
     };
 
 }
-
-#endif

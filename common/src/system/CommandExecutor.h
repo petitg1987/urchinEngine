@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_COMMANDEXECUTOR_H
-#define URCHINENGINE_COMMANDEXECUTOR_H
+#pragma once
 
 #include <string>
 
@@ -13,5 +12,3 @@ namespace urchin {
     };
 
 }
-
-#endif

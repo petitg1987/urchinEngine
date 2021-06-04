@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_WIDGET_H
-#define URCHINENGINE_WIDGET_H
+#pragma once
 
 #include <vector>
 #include <memory>
@@ -108,5 +107,3 @@ namespace urchin {
     };
 
 }
-
-#endif

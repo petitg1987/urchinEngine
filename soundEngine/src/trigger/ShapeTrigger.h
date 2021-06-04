@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SHAPETRIGGER_H
-#define URCHINENGINE_SHAPETRIGGER_H
+#pragma once
 
 #include <trigger/SoundTrigger.h>
 #include <trigger/shape/SoundShape.h>
@@ -30,5 +29,3 @@ namespace urchin {
     };
 
 }
-
-#endif

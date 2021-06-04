@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SHADERDATACONTAINER_H
-#define URCHINENGINE_SHADERDATACONTAINER_H
+#pragma once
 
 #include <cstdlib>
 #include <cstdint>
@@ -29,5 +28,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CHANGESOUNDTRIGGERDIALOG_H
-#define URCHINENGINE_CHANGESOUNDTRIGGERDIALOG_H
+#pragma once
 
 #include <list>
 #include <QtWidgets/QGridLayout>
@@ -35,5 +34,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_MAPSERIALIZERTEST_H
-#define URCHINENGINE_MAPSERIALIZERTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -13,5 +12,3 @@ class MapSerializerTest : public CppUnit::TestFixture {
         void simpleMap();
         void trickyMapValues();
 };
-
-#endif

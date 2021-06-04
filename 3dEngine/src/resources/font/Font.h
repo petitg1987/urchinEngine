@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_FONT_H
-#define URCHINENGINE_FONT_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -41,5 +40,3 @@ namespace urchin {
     };
 
 }
-
-#endif

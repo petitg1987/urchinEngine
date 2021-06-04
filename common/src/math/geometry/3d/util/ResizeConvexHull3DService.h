@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_RESIZECONVEXHULL3DSERVICE_H
-#define URCHINENGINE_RESIZECONVEXHULL3DSERVICE_H
+#pragma once
 
 #include <memory>
 #include <map>
@@ -29,5 +28,3 @@ namespace urchin {
     };
 
 }
-
-#endif

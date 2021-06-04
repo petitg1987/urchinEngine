@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TEXTURE_H
-#define URCHINENGINE_TEXTURE_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -79,5 +78,3 @@ namespace urchin {
     };
 
 }
-
-#endif

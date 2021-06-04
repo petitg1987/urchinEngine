@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LOGGER_H
-#define URCHINENGINE_LOGGER_H
+#pragma once
 
 #include <string>
 #include <sstream>
@@ -46,5 +45,3 @@ namespace urchin {
     };
 
 }
-
-#endif

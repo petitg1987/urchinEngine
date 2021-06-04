@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TERRAINMESH_H
-#define URCHINENGINE_TERRAINMESH_H
+#pragma once
 
 #include <vector>
 #include <UrchinCommon.h>
@@ -59,5 +58,3 @@ namespace urchin {
     };
 
 }
-
-#endif

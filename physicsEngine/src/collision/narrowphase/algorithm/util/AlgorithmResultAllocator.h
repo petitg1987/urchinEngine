@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_ALGORITHMRESULTALLOCATOR_H
-#define URCHINENGINE_ALGORITHMRESULTALLOCATOR_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -41,5 +40,3 @@ namespace urchin {
     };
 
 }
-
-#endif

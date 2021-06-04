@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_ISLANDCONTAINERTEST_H
-#define URCHINENGINE_ISLANDCONTAINERTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -26,5 +25,3 @@ class TestBody : public urchin::IslandElement {
     private:
         unsigned int id;
 };
-
-#endif

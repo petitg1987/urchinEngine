@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SOUND_H
-#define URCHINENGINE_SOUND_H
+#pragma once
 
 #include <string>
 #include <AL/al.h>
@@ -36,5 +35,3 @@ namespace urchin {
     };
 
 }
-
-#endif

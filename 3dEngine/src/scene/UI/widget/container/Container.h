@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CONTAINER_H
-#define URCHINENGINE_CONTAINER_H
+#pragma once
 
 #include <scene/UI/widget/Widget.h>
 #include <scene/UI/widget/Position.h>
@@ -12,7 +11,6 @@ namespace urchin {
     class Container : public Widget {
         public:
             Container(Widget*, Position);
-            explicit Container(Position);
             ~Container() override = default;
 
         protected:
@@ -21,5 +19,3 @@ namespace urchin {
     };
 
 }
-
-#endif

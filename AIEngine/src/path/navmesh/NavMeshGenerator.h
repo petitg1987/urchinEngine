@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_NAVMESHGENERATOR_H
-#define URCHINENGINE_NAVMESHGENERATOR_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -77,5 +76,3 @@ namespace urchin {
     };
 
 }
-
-#endif

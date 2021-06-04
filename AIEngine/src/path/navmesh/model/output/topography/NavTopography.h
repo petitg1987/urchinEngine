@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_NAVTOPOGRAPHY_H
-#define URCHINENGINE_NAVTOPOGRAPHY_H
+#pragma once
 
 #include <vector>
 #include <UrchinCommon.h>
@@ -15,5 +14,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_NAVTERRAINTOPOGRAPHY_H
-#define URCHINENGINE_NAVTERRAINTOPOGRAPHY_H
+#pragma once
 
 #include <path/navmesh/model/output/topography/NavTopography.h>
 
@@ -17,5 +16,3 @@ namespace urchin {
     };
 
 }
-
-#endif

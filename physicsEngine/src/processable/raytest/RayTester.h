@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_RAYTESTER_H
-#define URCHINENGINE_RAYTESTER_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -30,5 +29,3 @@ namespace urchin {
     };
 
 }
-
-#endif

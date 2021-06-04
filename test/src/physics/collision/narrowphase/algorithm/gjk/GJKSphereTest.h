@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_GJKSPHERETEST_H
-#define URCHINENGINE_GJKSPHERETEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -12,5 +11,3 @@ class GJKSphereTest : public CppUnit::TestFixture {
         void separateSphere();
         void overlapSphere();
 };
-
-#endif

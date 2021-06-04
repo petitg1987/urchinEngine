@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_INDEXCONTAINER_H
-#define URCHINENGINE_INDEXCONTAINER_H
+#pragma once
 
 #include <cstdint>
 
@@ -26,5 +25,3 @@ namespace urchin {
     };
 
 }
-
-#endif

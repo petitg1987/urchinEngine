@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SCENEWATER_H
-#define URCHINENGINE_SCENEWATER_H
+#pragma once
 
 #include <string>
 #include <Urchin3dEngine.h>
@@ -37,5 +36,3 @@ namespace urchin {
     };
 
 }
-
-#endif

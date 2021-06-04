@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_VECTORPAIRCONTAINER_H
-#define URCHINENGINE_VECTORPAIRCONTAINER_H
+#pragma once
 
 #include <vector>
 
@@ -29,5 +28,3 @@ namespace urchin {
     };
 
 }
-
-#endif

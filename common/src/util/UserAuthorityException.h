@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_USERAUTHORITYEXCEPTION_H
-#define URCHINENGINE_USERAUTHORITYEXCEPTION_H
+#pragma once
 
 #include <string>
 #include <stdexcept>
@@ -19,5 +18,3 @@ namespace urchin {
     };
 
 }
-
-#endif

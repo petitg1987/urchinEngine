@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_UIRENDERER_H
-#define URCHINENGINE_UIRENDERER_H
+#pragma once
 
 #include <set>
 #include <UrchinCommon.h>
@@ -40,5 +39,3 @@ namespace urchin {
     };
 
 }
-
-#endif

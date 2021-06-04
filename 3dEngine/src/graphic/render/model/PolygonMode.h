@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_POLYGONMODE_H
-#define URCHINENGINE_POLYGONMODE_H
+#pragma once
 
 namespace urchin {
 
@@ -9,5 +8,3 @@ namespace urchin {
     };
 
 }
-
-#endif

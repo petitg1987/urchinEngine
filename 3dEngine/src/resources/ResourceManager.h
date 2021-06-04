@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_RESOURCEMANAGER_H
-#define URCHINENGINE_RESOURCEMANAGER_H
+#pragma once
 
 #include <map>
 #include <string>
@@ -27,5 +26,3 @@ namespace urchin {
     #include "ResourceManager.inl"
 
 }
-
-#endif

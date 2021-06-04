@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_GJKCONTINUOUSCOLLISIONALGORITHM_H
-#define URCHINENGINE_GJKCONTINUOUSCOLLISIONALGORITHM_H
+#pragma once
 
 #include <memory>
 
@@ -31,5 +30,3 @@ namespace urchin {
     };
 
 }
-
-#endif

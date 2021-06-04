@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_COLLISIONSHAPEREADERWRITERRETRIEVER_H
-#define URCHINENGINE_COLLISIONSHAPEREADERWRITERRETRIEVER_H
+#pragma once
 
 #include <memory>
 #include <UrchinPhysicsEngine.h>
@@ -20,5 +19,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_GENERICRENDERERBUILDER_H
-#define URCHINENGINE_GENERICRENDERERBUILDER_H
+#pragma once
 
 #include <memory>
 #include <UrchinCommon.h>
@@ -76,5 +75,3 @@ namespace urchin {
     };
 
 }
-
-#endif

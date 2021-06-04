@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SHAPETOAABBOXTEST_H
-#define URCHINENGINE_SHAPETOAABBOXTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -12,5 +11,3 @@ class ShapeToAABBoxTest : public CppUnit::TestFixture {
         void coneConversion();
         void convexHullConversion();
 };
-
-#endif

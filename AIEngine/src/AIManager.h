@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_AIMANAGER_H
-#define URCHINENGINE_AIMANAGER_H
+#pragma once
 
 #include <vector>
 #include <atomic>
@@ -55,5 +54,3 @@ namespace urchin {
     };
 
 }
-
-#endif

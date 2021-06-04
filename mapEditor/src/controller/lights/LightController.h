@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LIGHTCONTROLLER_H
-#define URCHINENGINE_LIGHTCONTROLLER_H
+#pragma once
 
 #include <list>
 #include <UrchinCommon.h>
@@ -27,5 +26,3 @@ namespace urchin {
     };
 
 }
-
-#endif

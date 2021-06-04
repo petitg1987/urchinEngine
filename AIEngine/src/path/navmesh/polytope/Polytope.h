@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_POLYTOPE_H
-#define URCHINENGINE_POLYTOPE_H
+#pragma once
 
 #include <vector>
 #include <sstream>
@@ -46,5 +45,3 @@ namespace urchin {
     std::ostream& operator <<(std::ostream&, const Polytope&);
 
 }
-
-#endif

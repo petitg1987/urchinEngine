@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TEXTUREFILTERBUILDER_H
-#define URCHINENGINE_TEXTUREFILTERBUILDER_H
+#pragma once
 
 #include <string>
 #include <memory>
@@ -56,5 +55,3 @@ namespace urchin {
     #include "TextureFilterBuilder.inl"
 
 }
-
-#endif

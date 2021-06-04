@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_AMBIENTSOUND_H
-#define URCHINENGINE_AMBIENTSOUND_H
+#pragma once
 
 #include <string>
 
@@ -18,5 +17,3 @@ namespace urchin {
     };
 
 }
-
-#endif

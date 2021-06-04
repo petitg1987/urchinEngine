@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_OBJECTPANELWIDGET_H
-#define URCHINENGINE_OBJECTPANELWIDGET_H
+#pragma once
 
 #include <string>
 #include <memory>
@@ -114,5 +113,3 @@ namespace urchin {
     };
 
 }
-
-#endif

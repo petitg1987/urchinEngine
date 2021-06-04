@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_AIWORLD_H
-#define URCHINENGINE_AIWORLD_H
+#pragma once
 
 #include <vector>
 
@@ -25,5 +24,3 @@ namespace urchin {
     };
 
 }
-
-#endif

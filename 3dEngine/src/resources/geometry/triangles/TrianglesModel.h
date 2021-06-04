@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TRIANGLESMODEL_H
-#define URCHINENGINE_TRIANGLESMODEL_H
+#pragma once
 
 #include <vector>
 #include <UrchinCommon.h>
@@ -23,5 +22,3 @@ namespace urchin {
     };
 
 }
-
-#endif

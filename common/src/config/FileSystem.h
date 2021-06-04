@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_FILESYSTEM_H
-#define URCHINENGINE_FILESYSTEM_H
+#pragma once
 
 #include <list>
 
@@ -30,5 +29,3 @@ namespace urchin {
     };
 
 }
-
-#endif

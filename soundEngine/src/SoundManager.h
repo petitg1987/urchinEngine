@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SOUNDMANAGER_H
-#define URCHINENGINE_SOUNDMANAGER_H
+#pragma once
 
 #include <vector>
 #include <thread>
@@ -44,5 +43,3 @@ namespace urchin {
     };
 
 }
-
-#endif

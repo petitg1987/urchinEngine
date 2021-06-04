@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SOUNDSHAPEWIDGETRETRIEVER_H
-#define URCHINENGINE_SOUNDSHAPEWIDGETRETRIEVER_H
+#pragma once
 
 #include <memory>
 #include <QWidget>
@@ -22,5 +21,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_ORIENTATIONREADERWRITER_H
-#define URCHINENGINE_ORIENTATIONREADERWRITER_H
+#pragma once
 
 #include <memory>
 #include <string>
@@ -20,5 +19,3 @@ namespace urchin {
     };
 
 }
-
-#endif

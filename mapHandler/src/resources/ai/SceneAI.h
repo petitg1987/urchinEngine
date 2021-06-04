@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SCENEAI_H
-#define URCHINENGINE_SCENEAI_H
+#pragma once
 
 #include <memory>
 
@@ -27,5 +26,3 @@ namespace urchin {
     };
 
 }
-
-#endif

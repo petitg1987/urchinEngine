@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SKYBOXREADERWRITER_H
-#define URCHINENGINE_SKYBOXREADERWRITER_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -21,5 +20,3 @@ namespace urchin {
     };
 
 }
-
-#endif

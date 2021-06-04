@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_ISLANDELEMENTLINK_H
-#define URCHINENGINE_ISLANDELEMENTLINK_H
+#pragma once
 
 #include <collision/island/IslandElement.h>
 
@@ -22,5 +21,3 @@ namespace urchin {
     };
 
 }
-
-#endif

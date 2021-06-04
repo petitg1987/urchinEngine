@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CONVEXSHAPE3D_H
-#define URCHINENGINE_CONVEXSHAPE3D_H
+#pragma once
 
 #include <memory>
 
@@ -21,5 +20,3 @@ namespace urchin {
     };
 
 }
-
-#endif

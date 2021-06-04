@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_OBBOXMODEL_H
-#define URCHINENGINE_OBBOXMODEL_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -22,5 +21,3 @@ namespace urchin {
     };
 
 }
-
-#endif

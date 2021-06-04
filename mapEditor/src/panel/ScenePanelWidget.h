@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SCENEPANELWIDGET_H
-#define URCHINENGINE_SCENEPANELWIDGET_H
+#pragma once
 
 #include <string>
 #include <QtWidgets/QTabWidget>
@@ -66,5 +65,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_BODYSPHERESHAPEWIDGET_H
-#define URCHINENGINE_BODYSPHERESHAPEWIDGET_H
+#pragma once
 
 #include <string>
 #include <memory>
@@ -29,5 +28,3 @@ namespace urchin {
     };
 
 }
-
-#endif

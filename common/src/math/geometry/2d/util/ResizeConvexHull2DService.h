@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_RESIZECONVEXHULL2DSERVICE_H
-#define URCHINENGINE_RESIZECONVEXHULL2DSERVICE_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -18,5 +17,3 @@ namespace urchin {
     };
 
 }
-
-#endif

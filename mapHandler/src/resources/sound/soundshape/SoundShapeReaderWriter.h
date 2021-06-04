@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SOUNDSHAPEREADERWRITER_H
-#define URCHINENGINE_SOUNDSHAPEREADERWRITER_H
+#pragma once
 
 #include <memory>
 
@@ -24,5 +23,3 @@ namespace urchin {
     };
 
 }
-
-#endif

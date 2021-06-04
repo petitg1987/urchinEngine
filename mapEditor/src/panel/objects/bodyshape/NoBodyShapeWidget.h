@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_NOBODYSHAPEWIDGET_H
-#define URCHINENGINE_NOBODYSHAPEWIDGET_H
+#pragma once
 
 #include <string>
 #include <memory>
@@ -25,5 +24,3 @@ namespace urchin {
     };
 
 }
-
-#endif

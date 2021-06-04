@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_QUATERNION_H
-#define URCHINENGINE_QUATERNION_H
+#pragma once
 
 #include <iostream>
 
@@ -83,5 +82,3 @@ namespace urchin {
     template<class T> std::ostream& operator <<(std::ostream&, const Quaternion<T>&);
 
 }
-
-#endif

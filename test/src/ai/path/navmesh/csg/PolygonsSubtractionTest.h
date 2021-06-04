@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_POLYGONSSUBTRACTIONTEST_H
-#define URCHINENGINE_POLYGONSSUBTRACTIONTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -36,5 +35,3 @@ class PolygonsSubtractionTest : public CppUnit::TestFixture {
         void polygonsSubtractionCorner3();
         void polygonsSubtractionCorner4();
 };
-
-#endif

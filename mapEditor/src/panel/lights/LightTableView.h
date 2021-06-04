@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LIGHTTABLEVIEW_H
-#define URCHINENGINE_LIGHTTABLEVIEW_H
+#pragma once
 
 #include <QtWidgets/QTableView>
 #include <QStandardItemModel>
@@ -36,5 +35,3 @@ namespace urchin {
     };
 
 }
-
-#endif

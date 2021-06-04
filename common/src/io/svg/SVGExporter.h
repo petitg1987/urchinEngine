@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SVGEXPORTER_H
-#define URCHINENGINE_SVGEXPORTER_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -29,5 +28,3 @@ namespace urchin {
     };
 
 }
-
-#endif

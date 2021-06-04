@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SCENESKY_H
-#define URCHINENGINE_SCENESKY_H
+#pragma once
 
 #include <Urchin3dEngine.h>
 
@@ -22,5 +21,3 @@ namespace urchin {
     };
 
 }
-
-#endif

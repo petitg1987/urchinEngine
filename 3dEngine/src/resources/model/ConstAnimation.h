@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CONSTANIMATION_H
-#define URCHINENGINE_CONSTANIMATION_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -43,5 +42,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_MAPSERIALIZER_H
-#define URCHINENGINE_MAPSERIALIZER_H
+#pragma once
 
 #include <string>
 #include <map>
@@ -22,5 +21,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SPINBOXDELEGATE_H
-#define URCHINENGINE_SPINBOXDELEGATE_H
+#pragma once
 
 #include <string>
 #include <memory>
@@ -34,5 +33,3 @@ namespace urchin {
     };
 
 }
-
-#endif

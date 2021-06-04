@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LIGHTSPLITSHADOWMAPTEST_H
-#define URCHINENGINE_LIGHTSPLITSHADOWMAPTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -19,5 +18,3 @@ class LightSplitShadowMapTest : public CppUnit::TestFixture {
         std::unique_ptr<urchin::OctreeManager<urchin::Model>> buildModelOctreeManager(const std::vector<urchin::Point3<float>> &);
         void cleanOctreeManager(const std::unique_ptr<urchin::OctreeManager<urchin::Model>>&);
 };
-
-#endif

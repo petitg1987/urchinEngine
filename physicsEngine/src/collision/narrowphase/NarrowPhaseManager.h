@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_NARROWPHASEMANAGER_H
-#define URCHINENGINE_NARROWPHASEMANAGER_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -51,5 +50,3 @@ namespace urchin {
     };
 
 }
-
-#endif

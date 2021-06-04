@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SCENEMANAGER_H
-#define URCHINENGINE_SCENEMANAGER_H
+#pragma once
 
 #include <chrono>
 #include <vector>
@@ -72,5 +71,3 @@ namespace urchin {
     };
 
 }
-
-#endif

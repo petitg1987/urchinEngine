@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_MLOADCALLBACK_H
-#define URCHINENGINE_MLOADCALLBACK_H
+#pragma once
 
 namespace urchin {
 
@@ -19,5 +18,3 @@ namespace urchin {
     };
 
 }
-
-#endif

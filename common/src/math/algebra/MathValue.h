@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_MATHVALUE_H
-#define URCHINENGINE_MATHVALUE_H
+#pragma once
 
 namespace urchin {
 
@@ -10,5 +9,3 @@ namespace urchin {
     };
 
 }
-
-#endif

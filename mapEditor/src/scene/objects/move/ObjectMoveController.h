@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_OBJECTMOVECONTROLLER_H
-#define URCHINENGINE_OBJECTMOVECONTROLLER_H
+#pragma once
 
 #include <UrchinCommon.h>
 #include <Urchin3dEngine.h>
@@ -56,5 +55,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_XMLPARSER_H
-#define URCHINENGINE_XMLPARSER_H
+#pragma once
 
 #include <string>
 #include <memory>
@@ -32,5 +31,3 @@ namespace urchin {
     };
 
 }
-
-#endif

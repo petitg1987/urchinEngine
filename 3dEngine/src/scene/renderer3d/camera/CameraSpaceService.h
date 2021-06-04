@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CAMERASPACESERVICE_H
-#define URCHINENGINE_CAMERASPACESERVICE_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -19,5 +18,3 @@ namespace urchin {
     };
 
 }
-
-#endif

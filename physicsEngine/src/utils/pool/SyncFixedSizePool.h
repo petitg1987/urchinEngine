@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SYNCFIXEDSIZEPOOL_H
-#define URCHINENGINE_SYNCFIXEDSIZEPOOL_H
+#pragma once
 
 #include <mutex>
 
@@ -22,5 +21,3 @@ namespace urchin {
     #include "SyncFixedSizePool.inl"
 
 }
-
-#endif

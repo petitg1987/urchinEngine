@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_COLLISIONTRIANGLESHAPE_H
-#define URCHINENGINE_COLLISIONTRIANGLESHAPE_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -41,5 +40,3 @@ namespace urchin {
     };
 
 }
-
-#endif

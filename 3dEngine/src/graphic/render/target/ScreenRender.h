@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SCREENRENDER_H
-#define URCHINENGINE_SCREENRENDER_H
+#pragma once
 
 #include <vector>
 #include <vulkan/vulkan.h>
@@ -54,5 +53,3 @@ namespace urchin {
     };
 
 }
-
-#endif

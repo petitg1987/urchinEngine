@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_FUNNELALGORITHM_H
-#define URCHINENGINE_FUNNELALGORITHM_H
+#pragma once
 
 #include <vector>
 #include <utility>
@@ -32,5 +31,3 @@ namespace urchin {
     };
 
 }
-
-#endif

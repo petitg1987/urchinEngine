@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_GENERICRENDERER_H
-#define URCHINENGINE_GENERICRENDERER_H
+#pragma once
 
 #include <vector>
 #include <vulkan/vulkan.h>
@@ -110,5 +109,3 @@ namespace urchin {
     };
 
 }
-
-#endif

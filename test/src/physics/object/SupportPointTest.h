@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SUPPORTPOINTTEST_H
-#define URCHINENGINE_SUPPORTPOINTTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -15,5 +14,3 @@ class SupportPointTest : public CppUnit::TestFixture {
         void coneSupportPoint();
         void convexHullSupportPoint();
 };
-
-#endif

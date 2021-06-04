@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_DEFAULTBODYSHAPECREATOR_H
-#define URCHINENGINE_DEFAULTBODYSHAPECREATOR_H
+#pragma once
 
 #include <memory>
 
@@ -22,5 +21,3 @@ namespace urchin {
     };
 
 }
-
-#endif

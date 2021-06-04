@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SCENEFREECAMERA_H
-#define URCHINENGINE_SCENEFREECAMERA_H
+#pragma once
 
 #include <QWidget>
 #include <UrchinCommon.h>
@@ -26,5 +25,3 @@ namespace urchin {
     };
 
 }
-
-#endif

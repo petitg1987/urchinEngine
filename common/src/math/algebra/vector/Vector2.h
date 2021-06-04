@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_VECTOR2_H
-#define URCHINENGINE_VECTOR2_H
+#pragma once
 
 #include <iostream>
 #include <cmath>
@@ -59,5 +58,3 @@ namespace urchin {
     template<class T> std::ostream& operator <<(std::ostream&, const Vector2<T>&);
 
 }
-
-#endif

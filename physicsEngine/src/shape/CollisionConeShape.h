@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_COLLISIONCONESHAPE_H
-#define URCHINENGINE_COLLISIONCONESHAPE_H
+#pragma once
 
 #include <memory>
 #include <UrchinCommon.h>
@@ -41,5 +40,3 @@ namespace urchin {
     };
 
 }
-
-#endif

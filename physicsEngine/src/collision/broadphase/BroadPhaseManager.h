@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_BROADPHASEMANAGER_H
-#define URCHINENGINE_BROADPHASEMANAGER_H
+#pragma once
 
 #include <vector>
 #include <UrchinCommon.h>
@@ -43,5 +42,3 @@ namespace urchin {
     };
 
 }
-
-#endif

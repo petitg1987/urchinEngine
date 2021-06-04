@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TERRAINGRASS_H
-#define URCHINENGINE_TERRAINGRASS_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -100,5 +99,3 @@ namespace urchin {
     };
 
 }
-
-#endif

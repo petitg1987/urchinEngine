@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_INERTIACALCULATION_H
-#define URCHINENGINE_INERTIACALCULATION_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -17,5 +16,3 @@ namespace urchin {
     };
 
 }
-
-#endif

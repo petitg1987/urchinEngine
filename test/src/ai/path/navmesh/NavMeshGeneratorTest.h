@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_NAVMESHGENERATORTEST_H
-#define URCHINENGINE_NAVMESHGENERATORTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -25,5 +24,3 @@ class NavMeshGeneratorTest : public CppUnit::TestFixture {
         unsigned int countPolygonLinks(const std::shared_ptr<urchin::NavPolygon>&, const std::shared_ptr<urchin::NavPolygon>&);
         std::shared_ptr<urchin::NavMeshAgent> buildNavMeshAgent();
 };
-
-#endif

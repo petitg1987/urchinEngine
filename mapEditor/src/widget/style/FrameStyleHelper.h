@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_FRAMESTYLEHELPER_H
-#define URCHINENGINE_FRAMESTYLEHELPER_H
+#pragma once
 
 #include <QtWidgets/QFrame>
 
@@ -13,5 +12,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_GJKCONVEXHULLTEST_H
-#define URCHINENGINE_GJKCONVEXHULLTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -17,5 +16,3 @@ class GJKConvexHullTest : public CppUnit::TestFixture {
         void separateHexagon();
         void cornerInsideHexagon();
 };
-
-#endif

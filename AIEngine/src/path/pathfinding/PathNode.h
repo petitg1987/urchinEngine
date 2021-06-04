@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_PATHNODE_H
-#define URCHINENGINE_PATHNODE_H
+#pragma once
 
 #include <memory>
 
@@ -42,5 +41,3 @@ namespace urchin {
     };
 
 }
-
-#endif

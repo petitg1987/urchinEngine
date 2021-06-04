@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LOADER_H
-#define URCHINENGINE_LOADER_H
+#pragma once
 
 #include <string>
 #include <stdexcept>
@@ -24,5 +23,3 @@ namespace urchin {
     #include "Loader.inl"
 
 }
-
-#endif

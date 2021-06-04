@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_ABSTRACTCONTROLLER_H
-#define URCHINENGINE_ABSTRACTCONTROLLER_H
+#pragma once
 
 #include <UrchinCommon.h>
 #include <UrchinMapHandler.h>
@@ -31,5 +30,3 @@ namespace urchin {
     };
 
 }
-
-#endif

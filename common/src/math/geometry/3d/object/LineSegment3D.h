@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LINESEGMENT3D_H
-#define URCHINENGINE_LINESEGMENT3D_H
+#pragma once
 
 #include <cmath>
 #include <vector>
@@ -34,5 +33,3 @@ namespace urchin {
     template<class T> std::ostream& operator <<(std::ostream&, const LineSegment3D<T>&);
 
 }
-
-#endif

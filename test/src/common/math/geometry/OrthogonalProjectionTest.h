@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_ORTHOGONALPROJECTIONTEST_H
-#define URCHINENGINE_ORTHOGONALPROJECTIONTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -14,5 +13,3 @@ class OrthogonalProjectionTest : public CppUnit::TestFixture {
 
         void orthogonalProjectionPlane();
 };
-
-#endif

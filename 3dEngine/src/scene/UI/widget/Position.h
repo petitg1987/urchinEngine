@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_WIDGETPOSITION_H
-#define URCHINENGINE_WIDGETPOSITION_H
+#pragma once
 
 #include <scene/UI/widget/LengthType.h>
 #include <scene/UI/widget/Length.h>
@@ -23,5 +22,3 @@ namespace urchin {
     };
 
 }
-
-#endif

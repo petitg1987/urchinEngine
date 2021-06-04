@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TERRAINPANELWIDGET_H
-#define URCHINENGINE_TERRAINPANELWIDGET_H
+#pragma once
 
 #include <string>
 #include <QtWidgets/QVBoxLayout>
@@ -104,5 +103,3 @@ namespace urchin {
     };
 
 }
-
-#endif

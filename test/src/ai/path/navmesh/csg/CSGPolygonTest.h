@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CSGPOLYGONTEST_H
-#define URCHINENGINE_CSGPOLYGONTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -20,5 +19,3 @@ class CSGPolygonTest : public CppUnit::TestFixture {
         void simplifyCorridorWithClosePoints();
         void simplifyFlatAngleAndNearPoints();
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_BODYMOMENTUM_H
-#define URCHINENGINE_BODYMOMENTUM_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -25,5 +24,3 @@ namespace urchin {
     };
 
 }
-
-#endif

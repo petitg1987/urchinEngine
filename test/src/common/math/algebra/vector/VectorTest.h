@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_VECTORTEST_H
-#define URCHINENGINE_VECTORTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -12,5 +11,3 @@ class VectorTest : public CppUnit::TestFixture {
         void triviallyCopyable();
 
 };
-
-#endif

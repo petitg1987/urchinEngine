@@ -86,7 +86,7 @@ namespace urchin {
 
         sceneManager = new SceneManager(SceneWindowController::windowRequiredExtensions(), windowController->getSurfaceCreator(), windowController->getFramebufferSizeRetriever());
         sceneManager->newUIRenderer(true);
-        sceneManager->getActiveUIRenderer()->addWidget(new StaticBitmap(Position(0.0f, 0.0f, LengthType::PIXEL), Size(100.0f, 100.0f, LengthType::PERCENTAGE), "resources/emptyScene.tga"));
+        sceneManager->getActiveUIRenderer()->addWidget(new StaticBitmap(nullptr, Position(0.0f, 0.0f, LengthType::PIXEL), Size(100.0f, 100.0f, LengthType::PERCENTAGE), "resources/emptyScene.tga"));
 
         isInitialized = true;
     }

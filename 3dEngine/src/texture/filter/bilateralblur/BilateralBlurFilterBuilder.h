@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_BILATERALBLURFILTERBUILDER_H
-#define URCHINENGINE_BILATERALBLURFILTERBUILDER_H
+#pragma once
 
 #include <texture/filter/TextureFilterBuilder.h>
 
@@ -37,5 +36,3 @@ namespace urchin {
     };
 
 }
-
-#endif

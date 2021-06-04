@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_POLYTOPEBUILDER_H
-#define URCHINENGINE_POLYTOPEBUILDER_H
+#pragma once
 
 #include <iostream>
 #include <memory>
@@ -49,5 +48,3 @@ namespace urchin {
     };
 
 }
-
-#endif

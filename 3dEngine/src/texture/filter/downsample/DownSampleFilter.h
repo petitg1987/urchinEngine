@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_DOWNSAMPLEFILTER_H
-#define URCHINENGINE_DOWNSAMPLEFILTER_H
+#pragma once
 
 #include <string>
 #include <map>
@@ -21,5 +20,3 @@ namespace urchin {
     };
 
 }
-
-#endif

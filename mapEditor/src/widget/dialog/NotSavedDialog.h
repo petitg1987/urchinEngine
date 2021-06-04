@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_NOTSAVEDDIALOG_H
-#define URCHINENGINE_NOTSAVEDDIALOG_H
+#pragma once
 
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDialogButtonBox>
@@ -23,5 +22,3 @@ namespace urchin {
     };
 
 }
-
-#endif

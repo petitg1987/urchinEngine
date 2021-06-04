@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SPLITBOUNDINGBOX_H
-#define URCHINENGINE_SPLITBOUNDINGBOX_H
+#pragma once
 
 #include <vector>
 #include <UrchinCommon.h>
@@ -17,5 +16,3 @@ namespace urchin {
     };
 
 }
-
-#endif

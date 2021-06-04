@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_BODYMANAGER_H
-#define URCHINENGINE_BODYMANAGER_H
+#pragma once
 
 #include <mutex>
 
@@ -46,5 +45,3 @@ namespace urchin {
     };
 
 }
-
-#endif

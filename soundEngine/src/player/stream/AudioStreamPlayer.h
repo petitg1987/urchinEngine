@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_AUDIOSTREAMPLAYER_H
-#define URCHINENGINE_AUDIOSTREAMPLAYER_H
+#pragma once
 
 #include <string>
 #include <iostream>
@@ -30,5 +29,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SMOOTHSTOPACTION_H
-#define URCHINENGINE_SMOOTHSTOPACTION_H
+#pragma once
 
 #include <chrono>
 #include <UrchinCommon.h>
@@ -31,5 +30,3 @@ namespace urchin {
     };
 
 }
-
-#endif

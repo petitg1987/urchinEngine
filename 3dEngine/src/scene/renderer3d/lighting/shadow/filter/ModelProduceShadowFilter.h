@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_MODELPRODUCESHADOWFILTER
-#define URCHINENGINE_MODELPRODUCESHADOWFILTER
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -14,5 +13,3 @@ namespace urchin {
             bool isAccepted(const Model*, const ConvexObject3D<float>&) const override;
     };
 }
-
-#endif

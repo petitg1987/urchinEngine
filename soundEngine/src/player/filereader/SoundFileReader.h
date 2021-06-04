@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SOUNDFILEREADER_H
-#define URCHINENGINE_SOUNDFILEREADER_H
+#pragma once
 
 #include <sndfile.h>
 #include <string>
@@ -37,5 +36,3 @@ namespace urchin {
     };
 
 }
-
-#endif

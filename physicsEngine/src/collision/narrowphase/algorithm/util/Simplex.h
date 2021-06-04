@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SIMPLEX_H
-#define URCHINENGINE_SIMPLEX_H
+#pragma once
 
 #include <vector>
 #include <UrchinCommon.h>
@@ -42,5 +41,3 @@ namespace urchin {
     template<class T> std::ostream& operator <<(std::ostream&, const Simplex<T>&);
 
 }
-
-#endif

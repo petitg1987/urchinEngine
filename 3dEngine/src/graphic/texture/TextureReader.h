@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TEXTUREREADER_H
-#define URCHINENGINE_TEXTUREREADER_H
+#pragma once
 
 #include <memory>
 
@@ -31,5 +30,3 @@ namespace urchin {
     };
 
 }
-
-#endif

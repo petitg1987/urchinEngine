@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CAPSULE_H
-#define URCHINENGINE_CAPSULE_H
+#pragma once
 
 #include <iostream>
 
@@ -36,5 +35,3 @@ namespace urchin {
     template<class T> std::ostream& operator <<(std::ostream&, const Capsule<T>&);
 
 }
-
- #endif

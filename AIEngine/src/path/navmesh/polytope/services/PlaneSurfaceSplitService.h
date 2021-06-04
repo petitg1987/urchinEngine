@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_PLANESURFACESPLITSERVICE_H
-#define URCHINENGINE_PLANESURFACESPLITSERVICE_H
+#pragma once
 
 #include <vector>
 #include <UrchinCommon.h>
@@ -21,5 +20,3 @@ namespace urchin {
     };
 
 }
-
-#endif

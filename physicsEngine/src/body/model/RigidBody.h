@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_RIGIDBODY_H
-#define URCHINENGINE_RIGIDBODY_H
+#pragma once
 
 #include <string>
 #include <memory>
@@ -72,5 +71,3 @@ namespace urchin {
     };
 
 }
-
-#endif

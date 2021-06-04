@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_GJKRESULT_H
-#define URCHINENGINE_GJKRESULT_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -23,5 +22,3 @@ namespace urchin {
     };
 
 }
-
-#endif

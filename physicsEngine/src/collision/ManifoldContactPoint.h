@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_MANIFOLDCONTACTPOINT_H
-#define URCHINENGINE_MANIFOLDCONTACTPOINT_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -36,5 +35,3 @@ namespace urchin {
     };
 
 }
-
-#endif

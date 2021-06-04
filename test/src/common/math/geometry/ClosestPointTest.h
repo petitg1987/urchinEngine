@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_VORONOIREGIONTEST_H
-#define URCHINENGINE_VORONOIREGIONTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -15,5 +14,3 @@ class ClosestPointTest : public CppUnit::TestFixture {
 
         void closestPointTetrahedron();
 };
-
-#endif

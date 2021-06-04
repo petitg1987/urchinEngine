@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_RAYTESTRESULT_H
-#define URCHINENGINE_RAYTESTRESULT_H
+#pragma once
 
 #include <atomic>
 #include <memory>
@@ -31,5 +30,3 @@ namespace urchin {
     };
 
 }
-
-#endif

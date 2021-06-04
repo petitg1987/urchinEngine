@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SIGNALHANDLER_H
-#define URCHINENGINE_SIGNALHANDLER_H
+#pragma once
 
 #include <string>
 #include <csignal>
@@ -51,5 +50,3 @@ namespace urchin {
     };
 
 }
-
-#endif

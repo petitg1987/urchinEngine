@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_PATHFINDINGASTARTEST_H
-#define URCHINENGINE_PATHFINDINGASTARTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -20,5 +19,3 @@ class PathfindingAStarTest : public CppUnit::TestFixture {
         std::vector<urchin::PathPoint> pathWithJump(urchin::NavLinkConstraint*);
 };
 
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SKYCONTROLLER_H
-#define URCHINENGINE_SKYCONTROLLER_H
+#pragma once
 
 #include <UrchinCommon.h>
 #include <UrchinMapHandler.h>
@@ -21,5 +20,3 @@ namespace urchin {
     };
 
 }
-
-#endif

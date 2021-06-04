@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_WATERREADERWRITER_H
-#define URCHINENGINE_WATERREADERWRITER_H
+#pragma once
 
 #include <memory>
 
@@ -39,5 +38,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_DISPLAYMODE_H
-#define URCHINENGINE_DISPLAYMODE_H
+#pragma once
 
 namespace urchin {
 
@@ -17,5 +16,3 @@ namespace urchin {
     };
 
 }
-
-#endif

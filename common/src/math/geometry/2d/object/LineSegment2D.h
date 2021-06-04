@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LINESEGMENT2D_H
-#define URCHINENGINE_LINESEGMENT2D_H
+#pragma once
 
 #include <math/geometry/2d/object/ConvexObject2D.h>
 #include <math/geometry/2d/Line2D.h>
@@ -38,5 +37,3 @@ namespace urchin {
     template<class T> std::ostream& operator <<(std::ostream&, const LineSegment2D<T>&);
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_URCHINPHYSICSENGINE_H
-#define URCHINENGINE_URCHINPHYSICSENGINE_H
+#pragma once
 
 #include <PhysicsWorld.h>
 
@@ -45,5 +44,3 @@
 #include <character/PhysicsCharacter.h>
 
 #include <visualizer/CollisionVisualizer.h>
-
-#endif

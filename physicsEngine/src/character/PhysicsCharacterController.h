@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_PHYSICSCHARATERCONTROLLER_H
-#define URCHINENGINE_PHYSICSCHARATERCONTROLLER_H
+#pragma once
 
 #include <memory>
 #include <mutex>
@@ -81,5 +80,3 @@ namespace urchin {
     };
 
 }
-
-#endif

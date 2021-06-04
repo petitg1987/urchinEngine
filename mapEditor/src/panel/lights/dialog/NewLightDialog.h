@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_NEWLIGHTDIALOG_H
-#define URCHINENGINE_NEWLIGHTDIALOG_H
+#pragma once
 
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QDialog>
@@ -45,5 +44,3 @@ namespace urchin {
     };
 
 }
-
-#endif

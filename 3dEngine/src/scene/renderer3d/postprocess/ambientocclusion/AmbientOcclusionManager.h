@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_AMBIENTOCCLUSIONMANAGER_H
-#define URCHINENGINE_AMBIENTOCCLUSIONMANAGER_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -114,5 +113,3 @@ namespace urchin {
     };
 
 }
-
-#endif

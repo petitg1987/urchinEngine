@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_WATER_H
-#define URCHINENGINE_WATER_H
+#pragma once
 
 #include <UrchinCommon.h>
 #include <memory>
@@ -101,5 +100,3 @@ namespace urchin {
     };
 
 }
-
-#endif

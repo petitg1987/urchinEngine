@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_STATUSBARSTATEDATA_H
-#define URCHINENGINE_STATUSBARSTATEDATA_H
+#pragma once
 
 #include <vector>
 #include <string>
@@ -20,5 +19,3 @@ namespace urchin {
     };
 
 }
-
-#endif

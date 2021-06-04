@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CONVEXHULL2D_H
-#define URCHINENGINE_CONVEXHULL2D_H
+#pragma once
 
 #include <vector>
 
@@ -32,5 +31,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_BUTTON_H
-#define URCHINENGINE_BUTTON_H
+#pragma once
 
 #include <string>
 #include <memory>
@@ -16,7 +15,6 @@ namespace urchin {
     class Button : public Widget {
         public:
             Button(Widget*, Position, Size, std::string, std::string);
-            Button(Position, Size, std::string, std::string);
             ~Button() override = default;
 
         protected:
@@ -43,5 +41,3 @@ namespace urchin {
     };
 
 }
-
-#endif

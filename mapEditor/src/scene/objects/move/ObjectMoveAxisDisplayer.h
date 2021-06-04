@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_OBJECTMOVEAXISDISPLAYER_H
-#define URCHINENGINE_OBJECTMOVEAXISDISPLAYER_H
+#pragma once
 
 #include <Urchin3dEngine.h>
 #include <UrchinMapHandler.h>
@@ -25,5 +24,3 @@ namespace urchin {
     };
 
 }
-
-#endif

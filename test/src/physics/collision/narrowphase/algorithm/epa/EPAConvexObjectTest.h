@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_EPACONVEXOBJECTTEST_H
-#define URCHINENGINE_EPACONVEXOBJECTTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -12,5 +11,3 @@ class EPAConvexObjectTest : public CppUnit::TestFixture {
         void overlapCapsuleAndTriangle();
         void overlapTriangleAndCapsule();
 };
-
-#endif

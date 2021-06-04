@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LIGHTPANELWIDGET_H
-#define URCHINENGINE_LIGHTPANELWIDGET_H
+#pragma once
 
 #include <string>
 #include <QtWidgets/QVBoxLayout>
@@ -75,5 +74,3 @@ namespace urchin {
     };
 
 }
-
-#endif

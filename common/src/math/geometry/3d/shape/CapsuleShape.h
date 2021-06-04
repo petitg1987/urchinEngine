@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CAPSULESHAPE_H
-#define URCHINENGINE_CAPSULESHAPE_H
+#pragma once
 
 #include <memory>
 
@@ -33,5 +32,3 @@ namespace urchin {
     };
 
 }
-
- #endif

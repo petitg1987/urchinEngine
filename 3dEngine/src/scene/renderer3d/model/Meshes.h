@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_MESHES_H
-#define URCHINENGINE_MESHES_H
+#pragma once
 
 #include <vector>
 #include <UrchinCommon.h>
@@ -34,5 +33,3 @@ namespace urchin {
     };
 
 }
-
-#endif

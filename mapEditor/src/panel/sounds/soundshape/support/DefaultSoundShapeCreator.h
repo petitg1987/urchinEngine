@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_DEFAULTSOUNDSHAPECREATOR_H
-#define URCHINENGINE_DEFAULTSOUNDSHAPECREATOR_H
+#pragma once
 
 #include <memory>
 
@@ -20,5 +19,3 @@ namespace urchin {
     };
 
 }
-
-#endif

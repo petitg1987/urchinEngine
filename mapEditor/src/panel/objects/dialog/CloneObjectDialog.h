@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CLONEOBJECTDIALOG_H
-#define URCHINENGINE_CLONEOBJECTDIALOG_H
+#pragma once
 
 #include <list>
 #include <QtWidgets/QGridLayout>
@@ -39,5 +38,3 @@ namespace urchin {
     };
 
 }
-
-#endif

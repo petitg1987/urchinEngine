@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_FRAMEBUFFERSIZERETRIEVER_H
-#define URCHINENGINE_FRAMEBUFFERSIZERETRIEVER_H
+#pragma once
 
 namespace urchin {
 
@@ -15,5 +14,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TEXT_H
-#define URCHINENGINE_TEXT_H
+#pragma once
 
 #include <string>
 #include <memory>
@@ -14,8 +13,8 @@ namespace urchin {
 
     class Text : public Widget {
         public:
-            Text(Widget*, Position, std::string, std::string);
-            Text(Position, std::string, std::string);
+            static Text* newText(Widget*, Position, std::string, std::string);
+            static Text* newTranslatableText(Widget*, Position, std::string, std::string);
             ~Text() override;
 
             void setMaxWidth(Length);
@@ -29,6 +28,8 @@ namespace urchin {
             void prepareWidgetRendering(float) override;
 
         private:
+            Text(Widget*, Position, std::string, std::string);
+
             unsigned int getMaxWidth();
 
             void refreshTextAndWidgetSize();
@@ -57,5 +58,3 @@ namespace urchin {
     };
 
 }
-
-#endif

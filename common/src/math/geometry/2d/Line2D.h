@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LINE2D_H
-#define URCHINENGINE_LINE2D_H
+#pragma once
 
 #include <math/algebra/point/Point2.h>
 
@@ -30,5 +29,3 @@ namespace urchin {
     template<class T> std::ostream& operator <<(std::ostream&, const Line2D<T>&);
 
 }
-
-#endif

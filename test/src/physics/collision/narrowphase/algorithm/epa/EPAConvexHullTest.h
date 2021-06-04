@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_EPACONVEXHULLTEST_H
-#define URCHINENGINE_EPACONVEXHULLTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -15,5 +14,3 @@ class EPAConvexHullTest : public CppUnit::TestFixture {
 
         void cornerInsideHexagon();
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_URCHINCOMMON_H
-#define URCHINENGINE_URCHINCOMMON_H
+#pragma once
 
 #include <libs/clipper/clipper.h>
 #include <libs/earcut/earcut.h>
@@ -106,5 +105,3 @@
 #include <util/TypeConverter.h>
 #include <util/UserAuthorityException.h>
 #include <util/VectorUtil.h>
-
-#endif

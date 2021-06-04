@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_PHYSICSCOLLISIONDISPLAYER_H
-#define URCHINENGINE_PHYSICSCOLLISIONDISPLAYER_H
+#pragma once
 
 #include <vector>
 #include <UrchinCommon.h>
@@ -24,5 +23,3 @@ namespace urchin {
     };
 
 }
-
-#endif

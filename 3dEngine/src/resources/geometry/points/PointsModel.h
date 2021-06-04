@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_POINTSMODEL_H
-#define URCHINENGINE_POINTSMODEL_H
+#pragma once
 
 #include <vector>
 #include <UrchinCommon.h>
@@ -24,5 +23,3 @@ namespace urchin {
     };
 
 }
-
-#endif

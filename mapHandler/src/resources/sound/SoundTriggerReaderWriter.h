@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SOUNDTRIGGERREADERWRITER_H
-#define URCHINENGINE_SOUNDTRIGGERREADERWRITER_H
+#pragma once
 
 #include <memory>
 #include <string>
@@ -41,5 +40,3 @@ namespace urchin {
     };
 
 }
-
-#endif

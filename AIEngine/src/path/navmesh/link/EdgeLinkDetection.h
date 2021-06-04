@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_EDGELINKDETECTION_H
-#define URCHINENGINE_EDGELINKDETECTION_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -29,5 +28,3 @@ namespace urchin {
     };
 
 }
-
-#endif

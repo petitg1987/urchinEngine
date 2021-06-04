@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_NAVLINKCONSTRAINT_H
-#define URCHINENGINE_NAVLINKCONSTRAINT_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -24,5 +23,3 @@ namespace urchin {
     };
 
 }
-
-#endif

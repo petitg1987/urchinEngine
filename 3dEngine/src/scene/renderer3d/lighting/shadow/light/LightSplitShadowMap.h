@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LIGHTSPLITSHADOWMAP_H
-#define URCHINENGINE_LIGHTSPLITSHADOWMAP_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -42,7 +41,3 @@ namespace urchin {
     };
 
 }
-
-#endif
-
-

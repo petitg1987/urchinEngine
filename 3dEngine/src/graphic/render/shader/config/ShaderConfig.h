@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CONFIG_H
-#define URCHINENGINE_CONFIG_H
+#pragma once
 
 #include <string>
 #include <UrchinCommon.h>
@@ -23,5 +22,3 @@ namespace urchin {
     };
 
 }
-
-#endif

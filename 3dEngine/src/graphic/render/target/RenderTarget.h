@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_RENDERTARGET_H
-#define URCHINENGINE_RENDERTARGET_H
+#pragma once
 
 #include <vector>
 #include <forward_list>
@@ -92,5 +91,3 @@ namespace urchin {
     };
 
 }
-
-#endif

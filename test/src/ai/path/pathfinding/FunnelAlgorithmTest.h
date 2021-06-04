@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_FUNNELALGORITHMTEST_H
-#define URCHINENGINE_FUNNELALGORITHMTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -15,5 +14,3 @@ class FunnelAlgorithmTest : public CppUnit::TestFixture {
         void cornerPath3();
         void cornerPath4();
 };
-
-#endif

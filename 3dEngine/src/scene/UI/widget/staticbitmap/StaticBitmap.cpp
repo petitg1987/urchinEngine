@@ -13,11 +13,6 @@ namespace urchin {
 
     }
 
-    StaticBitmap::StaticBitmap(Position position, Size size, std::string filename) :
-            StaticBitmap(nullptr, position, size, std::move(filename)) {
-
-    }
-
     void StaticBitmap::createOrUpdateWidget() {
         //loads the texture
         auto* img = MediaManager::instance()->getMedia<Image>(filename);

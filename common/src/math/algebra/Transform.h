@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TRANSFORM_H
-#define URCHINENGINE_TRANSFORM_H
+#pragma once
 
 #include <math/algebra/Quaternion.h>
 #include <math/algebra/point/Point3.h>
@@ -41,5 +40,3 @@ namespace urchin {
     };
 
 }
-
-#endif

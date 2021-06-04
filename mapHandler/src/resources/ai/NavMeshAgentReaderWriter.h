@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_NAVMESHAGENTREADERWRITER_H
-#define URCHINENGINE_NAVMESHAGENTREADERWRITER_H
+#pragma once
 
 #include <memory>
 
@@ -20,5 +19,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_HTTPREQUEST_H
-#define URCHINENGINE_HTTPREQUEST_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -28,5 +27,3 @@ namespace urchin {
     };
 
 }
-
-#endif

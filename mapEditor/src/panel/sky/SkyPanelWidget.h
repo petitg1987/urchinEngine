@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SKYPANELWIDGET_H
-#define URCHINENGINE_SKYPANELWIDGET_H
+#pragma once
 
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QVBoxLayout>
@@ -64,5 +63,3 @@ namespace urchin {
     };
 
 }
-
-#endif

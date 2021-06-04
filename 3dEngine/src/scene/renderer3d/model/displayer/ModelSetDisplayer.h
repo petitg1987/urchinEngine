@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_MODELSETDISPLAYER_H
-#define URCHINENGINE_MODELSETDISPLAYER_H
+#pragma once
 
 #include <vector>
 #include <map>
@@ -56,5 +55,3 @@ namespace urchin {
     };
 
 }
-
-#endif

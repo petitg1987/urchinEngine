@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TERRAINOBSTACLESERVICE_H
-#define URCHINENGINE_TERRAINOBSTACLESERVICE_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -42,5 +41,3 @@ namespace urchin {
     };
 
 }
-
-#endif

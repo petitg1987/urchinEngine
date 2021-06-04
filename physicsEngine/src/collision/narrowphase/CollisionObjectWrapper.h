@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_COLLISIONOBJECTWRAPPER_H
-#define URCHINENGINE_COLLISIONOBJECTWRAPPER_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -24,5 +23,3 @@ namespace urchin {
     };
 
 }
-
-#endif

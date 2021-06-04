@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SCENEDISPLAYER_H
-#define URCHINENGINE_SCENEDISPLAYER_H
+#pragma once
 
 #include <vector>
 #include <QWidget>
@@ -100,5 +99,3 @@ namespace urchin {
     };
 
 }
-
-#endif

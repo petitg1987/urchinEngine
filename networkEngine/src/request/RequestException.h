@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_REQUESTEXCEPTION_H
-#define URCHINENGINE_REQUESTEXCEPTION_H
+#pragma once
 
 #include <exception>
 #include <string>
@@ -17,5 +16,3 @@ namespace urchin {
     };
 
 }
-
-#endif

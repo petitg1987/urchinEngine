@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LOADERURCHINMESH_H
-#define URCHINENGINE_LOADERURCHINMESH_H
+#pragma once
 
 #include <string>
 
@@ -16,5 +15,3 @@ namespace urchin {
     };
 
 }
-
-#endif

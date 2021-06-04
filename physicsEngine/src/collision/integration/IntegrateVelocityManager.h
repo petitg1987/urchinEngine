@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_INTEGRATEVELOCITYMANAGER_H
-#define URCHINENGINE_INTEGRATEVELOCITYMANAGER_H
+#pragma once
 
 #include <UrchinCommon.h>
 #include <vector>
@@ -26,5 +25,3 @@ namespace urchin {
     };
 
 }
-
-#endif

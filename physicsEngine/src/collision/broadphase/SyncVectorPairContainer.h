@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SYNCVECTORPAIRCONTAINER_H
-#define URCHINENGINE_SYNCVECTORPAIRCONTAINER_H
+#pragma once
 
 #include <mutex>
 
@@ -26,5 +25,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_ASTART_H
-#define URCHINENGINE_ASTART_H
+#pragma once
 
 #include <vector>
 #include <memory>
@@ -45,5 +44,3 @@ namespace urchin {
     };
 
 }
-
-#endif

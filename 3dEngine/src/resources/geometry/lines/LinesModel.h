@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LINESMODEL_H
-#define URCHINENGINE_LINESMODEL_H
+#pragma once
 
 #include <vector>
 #include <UrchinCommon.h>
@@ -26,5 +25,3 @@ namespace urchin {
     };
 
 }
-
-#endif

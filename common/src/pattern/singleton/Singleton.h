@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SINGLETON_H
-#define URCHINENGINE_SINGLETON_H
+#pragma once
 
 #include <typeinfo>
 #include <iostream>
@@ -27,5 +26,3 @@ namespace urchin {
     #include "Singleton.inl"
 
 }
-
-#endif

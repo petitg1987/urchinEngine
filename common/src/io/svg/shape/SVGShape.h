@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SVGSHAPE_H
-#define URCHINENGINE_SVGSHAPE_H
+#pragma once
 
 #include <string>
 
@@ -38,5 +37,3 @@ namespace urchin {
     };
 
 }
-
-#endif

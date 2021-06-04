@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_COLLISIONWORLDIT_H
-#define URCHINENGINE_COLLISIONWORLDIT_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -20,5 +19,3 @@ class CollisionWorldIT : public CppUnit::TestFixture {
     private:
         std::unique_ptr<urchin::BodyManager> buildWorld(const urchin::Point3<float>&) const;
 };
-
-#endif

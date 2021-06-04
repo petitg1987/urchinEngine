@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_PASCALTRIANGLE_H
-#define URCHINENGINE_PASCALTRIANGLE_H
+#pragma once
 
 #include <vector>
 
@@ -13,5 +12,3 @@ namespace urchin {
     };
 
 }
-
-#endif

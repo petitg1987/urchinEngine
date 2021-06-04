@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LABELSTYLEHELPER_H
-#define URCHINENGINE_LABELSTYLEHELPER_H
+#pragma once
 
 #include <string>
 #include <QtWidgets/QLabel>
@@ -15,5 +14,3 @@ namespace urchin {
     };
 
 }
-
-#endif

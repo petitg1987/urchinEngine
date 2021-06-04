@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_WATERTABLEVIEW_H
-#define URCHINENGINE_WATERTABLEVIEW_H
+#pragma once
 
 #include <QtWidgets/QTableView>
 #include <QStandardItemModel>
@@ -36,5 +35,3 @@ namespace urchin {
     };
 
 }
-
-#endif

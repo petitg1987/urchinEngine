@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_PATHREQUEST_H
-#define URCHINENGINE_PATHREQUEST_H
+#pragma once
 
 #include <atomic>
 #include <mutex>
@@ -30,5 +29,3 @@ namespace urchin {
     };
 
 }
-
-#endif

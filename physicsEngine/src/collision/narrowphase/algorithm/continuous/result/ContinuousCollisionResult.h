@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CONTINUOUSCOLLISIONRESULT_H
-#define URCHINENGINE_CONTINUOUSCOLLISIONRESULT_H
+#pragma once
 
 #include <set>
 #include <memory>
@@ -37,5 +36,3 @@ namespace urchin {
     typedef std::set<std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter>, ContinuousCollisionResultComparator<float>> ccd_set;
 
 }
-
-#endif

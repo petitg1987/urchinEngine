@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SCOPELOCKBYID_H
-#define URCHINENGINE_SCOPELOCKBYID_H
+#pragma once
 
 #include <memory>
 
@@ -18,5 +17,3 @@ namespace urchin {
     };
 
 }
-
-#endif

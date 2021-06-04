@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_FILEREADER_H
-#define URCHINENGINE_FILEREADER_H
+#pragma once
 
 #include <string>
 #include <fstream>
@@ -17,5 +16,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_PROFILERNODE_H
-#define URCHINENGINE_PROFILERNODE_H
+#pragma once
 
 #include <chrono>
 #include <string>
@@ -40,5 +39,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_FILEUTILTEST_H
-#define URCHINENGINE_FILEUTILTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -18,5 +17,3 @@ class FileUtilTest : public CppUnit::TestFixture {
         void simplifyDirectoryPathWindows();
 
 };
-
-#endif

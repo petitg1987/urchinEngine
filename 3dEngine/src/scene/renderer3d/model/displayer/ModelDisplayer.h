@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_MODELDISPLAYER_H
-#define URCHINENGINE_MODELDISPLAYER_H
+#pragma once
 
 #include <scene/renderer3d/model/Model.h>
 #include <scene/renderer3d/model/displayer/DisplayMode.h>
@@ -40,5 +39,3 @@ namespace urchin {
     };
 
 }
-
-#endif

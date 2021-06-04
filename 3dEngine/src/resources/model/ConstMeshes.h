@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CONSTMESHES_H
-#define URCHINENGINE_CONSTMESHES_H
+#pragma once
 
 #include <vector>
 #include <string>
@@ -36,5 +35,3 @@ namespace urchin {
     };
 
 }
-
-#endif

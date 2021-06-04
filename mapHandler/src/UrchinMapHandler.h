@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_URCHINMAPHANDLER_H
-#define URCHINENGINE_URCHINMAPHANDLER_H
+#pragma once
 
 #include "MapHandler.h"
 
@@ -13,5 +12,3 @@
 
 #include <display/NavMeshDisplayer.h>
 #include <display/CollisionPointDisplayer.h>
-
-#endif

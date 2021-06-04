@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_OBSERVABLE_H
-#define URCHINENGINE_OBSERVABLE_H
+#pragma once
 
 #include <unordered_set>
 #include <map>
@@ -22,5 +21,3 @@ namespace urchin {
     };
 
 }
-
-#endif

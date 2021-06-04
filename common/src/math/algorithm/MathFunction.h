@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_MATHFUNCTION_H
-#define URCHINENGINE_MATHFUNCTION_H
+#pragma once
 
 #include <limits>
 
@@ -29,5 +28,3 @@ namespace urchin {
     };
 
 }
-
-#endif

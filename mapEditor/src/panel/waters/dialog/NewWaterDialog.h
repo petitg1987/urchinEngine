@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_NEWWATERDIALOG_H
-#define URCHINENGINE_NEWWATERDIALOG_H
+#pragma once
 
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QDialog>
@@ -38,5 +37,3 @@ namespace urchin {
     };
 
 }
-
-#endif

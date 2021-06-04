@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SLIDER_H
-#define URCHINENGINE_SLIDER_H
+#pragma once
 
 #include <string>
 #include <memory>
@@ -15,7 +14,6 @@ namespace urchin {
     class Slider : public Widget {
         public:
             Slider(Widget*, Position, Size, std::string, const std::vector<std::string>&);
-            Slider(Position, Size, std::string, const std::vector<std::string>&);
 
             unsigned int getSelectedIndex() const;
             void setSelectedIndex(unsigned int);
@@ -56,5 +54,3 @@ namespace urchin {
     };
 
 }
-
-#endif

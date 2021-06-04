@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_STREAMUPDATETASK_H
-#define URCHINENGINE_STREAMUPDATETASK_H
+#pragma once
 
 #include <AL/al.h>
 
@@ -36,5 +35,3 @@ namespace urchin {
     };
 
 }
-
-#endif

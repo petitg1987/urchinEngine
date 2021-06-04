@@ -1,4 +1,1 @@
-#ifndef URCHINENGINE_MAIN_H
-#define URCHINENGINE_MAIN_H
-
-#endif
+#pragma once

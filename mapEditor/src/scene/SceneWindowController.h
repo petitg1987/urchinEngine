@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SCENEWINDOWCONTROLLER_H
-#define URCHINENGINE_SCENEWINDOWCONTROLLER_H
+#pragma once
 
 #include <vector>
 #include <memory>
@@ -36,5 +35,3 @@ namespace urchin {
     };
 
 }
-
-#endif

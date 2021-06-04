@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_FIXEDSIZEPOOL_H
-#define URCHINENGINE_FIXEDSIZEPOOL_H
+#pragma once
 
 #include <cassert>
 #include <sstream>
@@ -37,5 +36,3 @@ namespace urchin {
     #include "FixedSizePool.inl"
 
 }
-
-#endif

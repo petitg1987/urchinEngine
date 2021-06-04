@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_VALIDATIONLAYER_H
-#define URCHINENGINE_VALIDATIONLAYER_H
+#pragma once
 
 #include <vulkan/vulkan.h>
 
@@ -40,5 +39,3 @@ namespace urchin {
     };
 
 }
-
-#endif

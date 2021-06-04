@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_RENDERER3D_H
-#define URCHINENGINE_RENDERER3D_H
+#pragma once
 
 #include <string>
 #include <memory>
@@ -151,5 +150,3 @@ namespace urchin {
     };
 
 }
-
-#endif

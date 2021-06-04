@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CONSTRAINTSOLVERMANAGER_H
-#define URCHINENGINE_CONSTRAINTSOLVERMANAGER_H
+#pragma once
 
 #include <vector>
 #include <map>
@@ -48,5 +47,3 @@ namespace urchin {
     };
 
 }
-
-#endif

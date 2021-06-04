@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_BODYAABBTREETEST_H
-#define URCHINENGINE_BODYAABBTREETEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -20,5 +19,3 @@ class BodyAABBTreeTest : public CppUnit::TestFixture {
     private:
         void oneBodyWithAlternativePairAndRemove(bool);
 };
-
-#endif

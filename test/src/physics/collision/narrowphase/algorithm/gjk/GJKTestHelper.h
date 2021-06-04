@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_GJKTESTHELPER_H
-#define URCHINENGINE_GJKTESTHELPER_H
+#pragma once
 
 #include <memory>
 #include <UrchinCommon.h>
@@ -14,5 +13,3 @@ class GJKTestHelper {
         GJKTestHelper() = default;
         ~GJKTestHelper() = default;
 };
-
-#endif

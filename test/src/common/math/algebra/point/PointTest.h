@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_POINTTEST_H
-#define URCHINENGINE_POINTTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -12,5 +11,3 @@ class PointTest : public CppUnit::TestFixture {
         void triviallyCopyable();
 
 };
-
-#endif

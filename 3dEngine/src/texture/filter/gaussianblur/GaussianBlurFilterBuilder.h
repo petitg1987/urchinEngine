@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_GAUSSIANBLURFILTERBUILDER_H
-#define URCHINENGINE_GAUSSIANBLURFILTERBUILDER_H
+#pragma once
 
 #include <texture/filter/TextureFilterBuilder.h>
 
@@ -29,5 +28,3 @@ namespace urchin {
     };
 
 }
-
-#endif

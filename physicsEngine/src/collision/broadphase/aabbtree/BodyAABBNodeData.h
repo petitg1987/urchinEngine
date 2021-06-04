@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_BODYAABBNODEDATA_H
-#define URCHINENGINE_BODYAABBNODEDATA_H
+#pragma once
 
 #include <set>
 #include <UrchinCommon.h>
@@ -32,5 +31,3 @@ namespace urchin {
     };
 
 }
-
-#endif

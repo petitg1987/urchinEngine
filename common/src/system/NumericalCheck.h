@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_NUMERICALCHECK_H
-#define URCHINENGINE_NUMERICALCHECK_H
+#pragma once
 
 namespace urchin {
 
@@ -11,5 +10,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_COLLISIONVISUALIZER_H
-#define URCHINENGINE_COLLISIONVISUALIZER_H
+#pragma once
 
 #include <vector>
 #include <mutex>
@@ -31,5 +30,3 @@ namespace urchin {
     };
 
 }
-
-#endif

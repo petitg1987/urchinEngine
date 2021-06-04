@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LOCKBYID_H
-#define URCHINENGINE_LOCKBYID_H
+#pragma once
 
 #include <map>
 #include <mutex>
@@ -28,5 +27,3 @@ namespace urchin {
     };
 
 }
-
-#endif

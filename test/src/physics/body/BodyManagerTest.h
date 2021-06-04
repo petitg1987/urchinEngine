@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_BODYMANAGERTEST_H
-#define URCHINENGINE_BODYMANAGERTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -10,5 +9,3 @@ class BodyManagerTest : public CppUnit::TestFixture {
 
         void addAndRemoveBody();
 };
-
-#endif

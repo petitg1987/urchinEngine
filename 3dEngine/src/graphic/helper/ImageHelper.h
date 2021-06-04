@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_IMAGEHELPER_H
-#define URCHINENGINE_IMAGEHELPER_H
+#pragma once
 
 #include <vulkan/vulkan.h>
 
@@ -18,5 +17,3 @@ namespace urchin {
     };
 
 }
-
-#endif

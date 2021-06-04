@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_XMLCHUNK_H
-#define URCHINENGINE_XMLCHUNK_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -75,5 +74,3 @@ namespace urchin {
     };
 
 }
-
-#endif

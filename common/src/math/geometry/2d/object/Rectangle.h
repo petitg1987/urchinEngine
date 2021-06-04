@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_RECTANGLE_H
-#define URCHINENGINE_RECTANGLE_H
+#pragma once
 
 #include <math/geometry/2d/object/ConvexObject2D.h>
 #include <math/algebra/point/Point2.h>
@@ -31,5 +30,3 @@ namespace urchin {
     };
 
 }
-
-#endif

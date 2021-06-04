@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_URCHIN3DENGINE_H
-#define URCHINENGINE_URCHIN3DENGINE_H
+#pragma once
 
 #include <scene/SceneManager.h>
 #include <scene/InputDeviceKey.h>
@@ -46,5 +45,3 @@
 #include <resources/geometry/triangles/TrianglesModel.h>
 #include <resources/geometry/sphere/SphereModel.h>
 #include <resources/geometry/convexhull/ConvexHullModel.h>
-
-#endif

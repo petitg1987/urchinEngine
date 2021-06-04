@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_STRINGUTILTEST_H
-#define URCHINENGINE_STRINGUTILTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -12,5 +11,3 @@ class StringUtilTest : public CppUnit::TestFixture {
         void splitString();
         void splitEmptyString();
 };
-
-#endif

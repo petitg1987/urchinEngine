@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_URCHINSOUNDENGINE_H
-#define URCHINENGINE_URCHINSOUNDENGINE_H
+#pragma once
 
 #include <SoundManager.h>
 
@@ -15,5 +14,3 @@
 #include <trigger/shape/SoundShape.h>
 #include <trigger/shape/SoundBox.h>
 #include <trigger/shape/SoundSphere.h>
-
-#endif

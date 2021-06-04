@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_AABBNODEDATA_H
-#define URCHINENGINE_AABBNODEDATA_H
+#pragma once
 
 #include <string>
 
@@ -27,5 +26,3 @@ namespace urchin {
     #include "AABBNodeData.inl"
 
 }
-
-#endif

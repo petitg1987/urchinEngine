@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_EPATRIANGLEDATA_H
-#define URCHINENGINE_EPATRIANGLEDATA_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -23,5 +22,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_STRINGUTIL_H
-#define URCHINENGINE_STRINGUTIL_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -26,5 +25,3 @@ namespace urchin {
     };
 
 }
-
-#endif

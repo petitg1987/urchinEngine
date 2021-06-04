@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_OFFSCREENRENDER_H
-#define URCHINENGINE_OFFSCREENRENDER_H
+#pragma once
 
 #include <vulkan/vulkan.h>
 
@@ -49,5 +48,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_AABBNODE_H
-#define URCHINENGINE_AABBNODE_H
+#pragma once
 
 #include <partitioning/aabbtree/AABBNodeData.h>
 #include <math/geometry/3d/object/AABBox.h>
@@ -47,5 +46,3 @@ namespace urchin {
     #include "AABBNode.inl"
 
 }
-
-#endif

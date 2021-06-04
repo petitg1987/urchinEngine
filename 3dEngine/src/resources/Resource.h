@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_RESOURCE_H
-#define URCHINENGINE_RESOURCE_H
+#pragma once
 
 #include <string>
 
@@ -27,5 +26,3 @@ namespace urchin {
     };
 
 }
-
-#endif

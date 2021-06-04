@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_ACCEPTALLFILTER_H
-#define URCHINENGINE_ACCEPTALLFILTER_H
+#pragma once
 
 #include <partitioning//octree//filter/OctreeableFilter.h>
 
@@ -15,5 +14,3 @@ namespace urchin {
     #include "AcceptAllFilter.inl"
 
 }
-
-#endif

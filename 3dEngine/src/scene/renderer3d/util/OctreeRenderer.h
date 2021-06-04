@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_OCTREERENDERER_H
-#define URCHINENGINE_OCTREERENDERER_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -16,5 +15,3 @@ namespace urchin {
     #include "OctreeRenderer.inl"
 
 }
-
-#endif

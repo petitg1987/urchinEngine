@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_AIOBJECT_H
-#define URCHINENGINE_AIOBJECT_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -26,5 +25,3 @@ namespace urchin {
     };
 
 }
-
-#endif

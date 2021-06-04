@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_OCTREEABLE_H
-#define URCHINENGINE_OCTREEABLE_H
+#pragma once
 
 #include <vector>
 #include <stdexcept>
@@ -51,5 +50,3 @@ namespace urchin {
     #include "Octreeable.inl"
 
 }
-
-#endif

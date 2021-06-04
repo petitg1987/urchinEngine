@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SOUNDBEHAVIOR_H
-#define URCHINENGINE_SOUNDBEHAVIOR_H
+#pragma once
 
 namespace urchin {
 
@@ -31,5 +30,3 @@ namespace urchin {
     };
 
 }
-
-#endif

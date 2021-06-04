@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_AICHARACTERCONTROLLER_H
-#define URCHINENGINE_AICHARACTERCONTROLLER_H
+#pragma once
 
 #include <memory>
 
@@ -45,5 +44,3 @@ namespace urchin {
     };
 
 }
-
-#endif

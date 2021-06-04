@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_POINT2_H
-#define URCHINENGINE_POINT2_H
+#pragma once
 
 #include <iostream>
 #include <cmath>
@@ -64,5 +63,3 @@ namespace urchin {
     template<class T> std::ostream& operator <<(std::ostream&, const Point2<T>&);
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SKYMANAGER_H
-#define URCHINENGINE_SKYMANAGER_H
+#pragma once
 
 #include <graphic/render/target/RenderTarget.h>
 #include <scene/renderer3d/camera/Camera.h>
@@ -26,5 +25,3 @@ namespace urchin {
     };
 
 }
-
-#endif

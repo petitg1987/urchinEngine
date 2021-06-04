@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_VECTORUTIL_H
-#define URCHINENGINE_VECTORUTIL_H
+#pragma once
 
 #include <vector>
 
@@ -16,5 +15,3 @@ namespace urchin {
     #include "VectorUtil.inl"
 
 }
-
-#endif

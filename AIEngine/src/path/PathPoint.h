@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_PATHPOINT_H
-#define URCHINENGINE_PATHPOINT_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -18,5 +17,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_COLLISIONCONVEXOBJECTPOOL_H
-#define URCHINENGINE_COLLISIONCONVEXOBJECTPOOL_H
+#pragma once
 
 #include <UrchinCommon.h>
 #include <utils/pool/SyncFixedSizePool.h>
@@ -24,5 +23,3 @@ namespace urchin {
     };
 
 }
-
-#endif

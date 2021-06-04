@@ -1,7 +1,4 @@
-#ifndef URCHINENGINE_NETWORKENGINE_H
-#define URCHINENGINE_NETWORKENGINE_H
+#pragma once
 
 #include <request/HttpRequest.h>
 #include <request/RequestException.h>
-
-#endif

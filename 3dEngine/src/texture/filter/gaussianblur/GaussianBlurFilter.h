@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_GAUSSIANBLURFILTER_H
-#define URCHINENGINE_GAUSSIANBLURFILTER_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -47,5 +46,3 @@ namespace urchin {
     };
 
 }
-
-#endif

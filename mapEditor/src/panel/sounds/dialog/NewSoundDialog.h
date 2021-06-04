@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_NEWSOUNDDIALOG_H
-#define URCHINENGINE_NEWSOUNDDIALOG_H
+#pragma once
 
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QDialog>
@@ -53,5 +52,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_RESIZEPOLYGON2DSERVICETEST_H
-#define URCHINENGINE_RESIZEPOLYGON2DSERVICETEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -10,5 +9,3 @@ class ResizePolygon2DServiceTest : public CppUnit::TestFixture {
 
         void reduceTriangle();
 };
-
-#endif

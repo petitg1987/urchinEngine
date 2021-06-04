@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_ABSTRACTBODY_H
-#define URCHINENGINE_ABSTRACTBODY_H
+#pragma once
 
 #include <string>
 #include <memory>
@@ -88,5 +87,3 @@ namespace urchin {
     };
 
 }
-
-#endif

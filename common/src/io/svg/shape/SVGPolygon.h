@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SVGPOLYGON_H
-#define URCHINENGINE_SVGPOLYGON_H
+#pragma once
 
 #include <vector>
 #include <string>
@@ -21,5 +20,3 @@ namespace urchin {
     };
 
 }
-
-#endif

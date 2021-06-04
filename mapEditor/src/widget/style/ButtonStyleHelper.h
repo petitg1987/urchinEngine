@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_BUTTONSTYLEHELPER_H
-#define URCHINENGINE_BUTTONSTYLEHELPER_H
+#pragma once
 
 #include <QtWidgets/QPushButton>
 
@@ -13,5 +12,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_EDGELINKDETECTIONTEST_H
-#define URCHINENGINE_EDGELINKDETECTIONTEST_H
+#pragma once
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
@@ -29,5 +28,3 @@ class EdgeLinkDetectionTest: public CppUnit::TestFixture {
         void testCrossEdges();
 
 };
-
-#endif

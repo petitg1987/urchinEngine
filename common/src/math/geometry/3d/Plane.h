@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_PLANE_H
-#define URCHINENGINE_PLANE_H
+#pragma once
 
 #include <math/geometry/3d/Line3D.h>
 #include <math/algebra/point/Point3.h>
@@ -44,5 +43,3 @@ namespace urchin {
     template<class T> std::ostream& operator <<(std::ostream&, const Plane<T>&);
 
 }
-
-#endif

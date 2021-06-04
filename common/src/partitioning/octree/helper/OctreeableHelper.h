@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_OCTREEABLEHELPER_H
-#define URCHINENGINE_OCTREEABLEHELPER_H
+#pragma once
 
 #include <vector>
 
@@ -16,5 +15,3 @@ namespace urchin {
     #include "OctreeableHelper.inl"
 
 }
-
-#endif

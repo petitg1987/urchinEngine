@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TRIANGLE3D_H
-#define URCHINENGINE_TRIANGLE3D_H
+#pragma once
 
 #include <math/geometry/3d/object/ConvexObject3D.h>
 #include <math/geometry/3d/shape/TriangleShape3D.h>
@@ -25,5 +24,3 @@ namespace urchin {
     };
 
 }
-
-#endif

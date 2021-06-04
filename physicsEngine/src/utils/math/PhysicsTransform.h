@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_PHYSICSTRANSFORM_H
-#define URCHINENGINE_PHYSICSTRANSFORM_H
+#pragma once
 
 #include <UrchinCommon.h>
 
@@ -42,5 +41,3 @@ namespace urchin {
     std::ostream& operator <<(std::ostream&, const PhysicsTransform&);
 
 }
-
-#endif

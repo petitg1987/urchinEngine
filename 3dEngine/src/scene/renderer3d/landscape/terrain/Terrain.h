@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TERRAIN_H
-#define URCHINENGINE_TERRAIN_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -63,5 +62,3 @@ namespace urchin {
     };
 
 }
-
-#endif

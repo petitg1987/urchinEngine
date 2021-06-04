@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_TRIANGLESHAPE3D_H
-#define URCHINENGINE_TRIANGLESHAPE3D_H
+#pragma once
 
 #include <memory>
 
@@ -23,5 +22,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SOUNDBOXREADERWRITER_H
-#define URCHINENGINE_SOUNDBOXREADERWRITER_H
+#pragma once
 
 #include <memory>
 
@@ -26,5 +25,3 @@ namespace urchin {
     };
 
 }
-
-#endif

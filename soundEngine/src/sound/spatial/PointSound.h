@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_POINTSOUND_H
-#define URCHINENGINE_POINTSOUND_H
+#pragma once
 
 #include <string>
 #include <UrchinCommon.h>
@@ -33,5 +32,3 @@ namespace urchin {
     };
 
 }
-
-#endif

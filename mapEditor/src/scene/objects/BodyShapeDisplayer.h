@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_BODYSHAPEDISPLAYER_H
-#define URCHINENGINE_BODYSHAPEDISPLAYER_H
+#pragma once
 
 #include <Urchin3dEngine.h>
 #include <UrchinMapHandler.h>
@@ -35,5 +34,3 @@ namespace urchin {
     };
 
 }
-
-#endif

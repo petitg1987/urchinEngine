@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_CONE_H
-#define URCHINENGINE_CONE_H
+#pragma once
 
 #include <cmath>
 
@@ -36,5 +35,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_LIGHTREADERWRITER_H
-#define URCHINENGINE_LIGHTREADERWRITER_H
+#pragma once
 
 #include <memory>
 
@@ -39,5 +38,3 @@ namespace urchin {
     };
 
 }
-
-#endif

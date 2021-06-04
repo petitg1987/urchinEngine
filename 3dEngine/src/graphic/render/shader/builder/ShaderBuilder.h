@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SHADERBUILDER_H
-#define URCHINENGINE_SHADERBUILDER_H
+#pragma once
 
 #include <memory>
 #include <map>
@@ -20,5 +19,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_GJKALGORITHM_H
-#define URCHINENGINE_GJKALGORITHM_H
+#pragma once
 
 #include <memory>
 #include <UrchinCommon.h>
@@ -30,5 +29,3 @@ namespace urchin {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef URCHINENGINE_SOUNDPANELWIDGET_H
-#define URCHINENGINE_SOUNDPANELWIDGET_H
+#pragma once
 
 #include <string>
 #include <QtWidgets/QVBoxLayout>
@@ -101,5 +100,3 @@ namespace urchin {
     };
 
 }
-
-#endif
