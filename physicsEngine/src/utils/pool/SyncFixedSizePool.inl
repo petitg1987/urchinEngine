@@ -9,8 +9,8 @@ template<class BaseType> void* SyncFixedSizePool<BaseType>::allocate(unsigned in
     return FixedSizePool<BaseType>::allocate(size);
 }
 
-template<class BaseType> void SyncFixedSizePool<BaseType>::free(BaseType* ptr) {
+template<class BaseType> void SyncFixedSizePool<BaseType>::deallocate(BaseType* ptr) {
     std::lock_guard<std::mutex> lock(mutex);
 
-    FixedSizePool<BaseType>::free(ptr);
+    FixedSizePool<BaseType>::deallocate(ptr);
 }

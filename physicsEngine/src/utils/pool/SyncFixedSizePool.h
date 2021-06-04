@@ -12,8 +12,8 @@ namespace urchin {
             SyncFixedSizePool(const std::string&, unsigned int, unsigned int);
             ~SyncFixedSizePool() = default;
 
-            void* allocate(unsigned int);
-            void free(BaseType*);
+            void* allocate(unsigned int) override;
+            void deallocate(BaseType*) override;
 
         private:
             std::mutex mutex;

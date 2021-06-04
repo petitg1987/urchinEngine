@@ -39,8 +39,11 @@ namespace urchin {
         dataType = src.dataType;
         dataDimension = src.dataDimension;
         dataCount = src.dataCount;
+
+        free(ptr);
         ptr = src.ptr;
         src.ptr = nullptr;
+
         newData = src.newData;
         newDataTotalUpdate = src.newDataTotalUpdate;
 

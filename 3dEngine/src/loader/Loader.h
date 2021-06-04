@@ -7,12 +7,15 @@
 namespace urchin {
 
     class LoaderInterface {
-
+        public:
+            LoaderInterface() = default;
+            virtual ~LoaderInterface() = default;
     };
 
     template<class T> class Loader : public LoaderInterface {
         public:
-            virtual ~Loader();
+            Loader() = default;
+            ~Loader() override;
 
             virtual T* loadFromFile(const std::string&, const std::map<std::string, std::string>&);
             virtual void saveToFile(const T*, const std::string&);

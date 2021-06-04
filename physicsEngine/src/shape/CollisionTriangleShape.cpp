@@ -25,7 +25,7 @@ namespace urchin {
 
     CollisionTriangleShape::~CollisionTriangleShape() {
         if (triangleShapesPool) {
-            triangleShapesPool->free(triangleShape);
+            triangleShapesPool->deallocate(triangleShape);
         } else {
             delete triangleShape;
         }

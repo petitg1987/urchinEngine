@@ -18,7 +18,7 @@ namespace urchin {
             virtual ~FixedSizePool();
 
             virtual void* allocate(unsigned int);
-            virtual void free(BaseType*);
+            virtual void deallocate(BaseType*);
 
         private:
             void logPoolIsFull();

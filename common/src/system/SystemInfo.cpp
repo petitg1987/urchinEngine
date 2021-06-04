@@ -100,10 +100,12 @@ namespace urchin {
         return graphicsCardNamesList;
     }
 
+    __attribute__((no_sanitize_address))
     std::string SystemInfo::systemHash() {
         return retrieveCpuHash() + "-" + std::to_string(std::hash<std::string>{}(retrieveGraphicsCardNames()));
     }
 
+    __attribute__((no_sanitize_address))
     std::string SystemInfo::retrieveCpuHash() {
         #ifdef _WIN32
             int cpuInfo[4] = {0, 0, 0, 0};

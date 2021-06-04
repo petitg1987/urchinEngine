@@ -13,7 +13,7 @@ namespace urchin {
 
     ConstraintSolverManager::~ConstraintSolverManager() {
         for (auto& constraintSolving : constraintsSolving) {
-            constraintSolvingPool->free(constraintSolving);
+            constraintSolvingPool->deallocate(constraintSolving);
         }
 
         delete constraintSolvingPool;
@@ -40,7 +40,7 @@ namespace urchin {
 
         //clear constraints solving
         for (auto& constraintSolving : constraintsSolving) {
-            constraintSolvingPool->free(constraintSolving);
+            constraintSolvingPool->deallocate(constraintSolving);
         }
         constraintsSolving.clear();
 
