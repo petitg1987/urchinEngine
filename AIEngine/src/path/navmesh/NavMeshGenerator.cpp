@@ -13,8 +13,6 @@
 #include <input/AIObject.h>
 #include <input/AITerrain.h>
 
-#define OBSTACLE_REDUCE_SIZE 0.0002f
-
 namespace urchin {
 
     //debug parameters
@@ -300,8 +298,6 @@ namespace urchin {
                     }
 
                     if (obstacleInsideWalkable) {
-                        //slightly reduce the obstacle to prevent it from touching others obstacles or the walkable face (not supported by triangulation)
-                        obstaclePolygon.expand(-OBSTACLE_REDUCE_SIZE); //TODO useless ?
                         obstaclesInsideWalkablePolygon.emplace_back(obstaclePolygon);
                         break;
                     }
