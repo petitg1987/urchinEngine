@@ -39,7 +39,7 @@ namespace urchin {
 
     void Text::createOrUpdateWidget() {
         if(isTranslatableText()) {
-            getI18nService()->add(this); //TODO could be added more than once time !
+            getI18nService()->add(this);
         }
 
         refreshFont();

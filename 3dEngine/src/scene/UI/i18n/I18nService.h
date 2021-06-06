@@ -20,7 +20,7 @@ namespace urchin {
 
         private:
             std::string language;
-            std::vector<TranslatableText*> translatableTexts;
+            std::set<TranslatableText*> translatableTexts;
             TextTranslator textTranslator;
     };
 

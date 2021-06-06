@@ -11,7 +11,19 @@ namespace urchin {
             std::string translate(const std::string&, const std::string&);
 
         private:
-            std::string textDirectoryName;
+            void checkMissingTranslation() const;
+            void logMissingTranslation(const std::string&, const std::string&) const;
+
+            void loadLanguageTexts(const std::string&);
+            std::map<std::string, std::string> retrieveLanguageTexts(const std::string&) const;
+
+            const std::string mainLanguage;
+            const std::string filePrefix;
+            const std::string filePostfix;
+            std::string textFilesDirectoryName;
+
+            std::string loadedLanguage;
+            std::map<std::string, std::string> loadedLanguageTexts;
     };
 
 }

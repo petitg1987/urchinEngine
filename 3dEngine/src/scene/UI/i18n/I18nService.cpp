@@ -2,17 +2,19 @@
 
 #include <scene/UI/i18n/I18nService.h>
 
-#define DEFAULT_LANGUAGE "en"
-
 namespace urchin {
 
     I18nService::I18nService() :
-            language(DEFAULT_LANGUAGE) {
+            language("en") {
 
     }
 
     void I18nService::changeLanguage(std::string language) {
         this->language = std::move(language);
+
+        for(auto translatableText : translatableTexts) {
+            translatableText->refreshTranslatableText();
+        }
     }
 
     const std::string& I18nService::getLanguage() const {
@@ -20,13 +22,12 @@ namespace urchin {
     }
 
     void I18nService::add(TranslatableText* translatableText) {
-        translatableTexts.emplace_back(translatableText);
+        translatableTexts.insert(translatableText);
         translatableText->refreshTranslatableText();
     }
 
     void I18nService::remove(TranslatableText* translatableText) {
-        auto itFind = find(translatableTexts.begin(), translatableTexts.end(), translatableText);
-        VectorUtil::erase(translatableTexts, itFind);
+        translatableTexts.erase(translatableText);
     }
 
     std::string I18nService::translate(const std::string& textKey) {
