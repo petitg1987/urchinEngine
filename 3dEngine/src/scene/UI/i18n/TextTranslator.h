@@ -17,11 +17,11 @@ namespace urchin {
             void loadLanguageTexts(const std::string&);
             std::map<std::string, std::string> retrieveLanguageTexts(const std::string&) const;
 
-            const std::string mainLanguage;
-            const std::string filePrefix;
-            const std::string filePostfix;
-            std::string textFilesDirectoryName;
+            const std::string MAIN_LANGUAGE;
+            const std::string FILE_PREFIX;
+            const std::string FILE_POSTFIX;
 
+            std::string textFilesDirectoryName;
             std::string loadedLanguage;
             std::map<std::string, std::string> loadedLanguageTexts;
     };

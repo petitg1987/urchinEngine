@@ -6,20 +6,20 @@
 namespace urchin {
 
     TextTranslator::TextTranslator() :
-            mainLanguage("en"),
-            filePrefix("text_") ,
-            filePostfix(".properties") {
+            MAIN_LANGUAGE("en"),
+            FILE_PREFIX("text_") ,
+            FILE_POSTFIX(".properties") {
         textFilesDirectoryName = FileSystem::instance()->getResourcesDirectory() + ConfigService::instance()->getStringValue("ui.textLocation");
         checkMissingTranslation();
     }
 
     void TextTranslator::checkMissingTranslation() const {
-        auto mainLanguageTexts = retrieveLanguageTexts(mainLanguage);
+        auto mainLanguageTexts = retrieveLanguageTexts(MAIN_LANGUAGE);
         for (const auto& dir : std::filesystem::directory_iterator(textFilesDirectoryName)) {
             std::string filename = dir.path().filename().u8string();
-            if (dir.is_regular_file() && filename.size() == filePrefix.size() + 2 + filePostfix.size()) {
-                std::string language = filename.substr(filePrefix.size(), 2);
-                if(language != mainLanguage) {
+            if (dir.is_regular_file() && filename.size() == FILE_PREFIX.size() + 2 + FILE_POSTFIX.size()) {
+                std::string language = filename.substr(FILE_PREFIX.size(), 2);
+                if(language != MAIN_LANGUAGE) {
                     auto languageTexts = retrieveLanguageTexts(language);
 
                     std::map<std::string, std::string> textsDiff;
@@ -62,7 +62,7 @@ namespace urchin {
     }
 
     std::map<std::string, std::string> TextTranslator::retrieveLanguageTexts(const std::string& language) const {
-        return PropertyFileHandler(textFilesDirectoryName + filePrefix + language + filePostfix).loadPropertyFile();
+        return PropertyFileHandler(textFilesDirectoryName + FILE_PREFIX + language + FILE_POSTFIX).loadPropertyFile();
     }
 
 }

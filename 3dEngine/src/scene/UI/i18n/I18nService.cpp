@@ -5,7 +5,8 @@
 namespace urchin {
 
     I18nService::I18nService() :
-            language("en") {
+            DEFAULT_LANGUAGE("en"),
+            language(DEFAULT_LANGUAGE) {
 
     }
 

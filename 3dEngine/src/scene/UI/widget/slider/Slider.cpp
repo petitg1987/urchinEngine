@@ -77,7 +77,6 @@ namespace urchin {
             } else {
                 valueText = Text::newText(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[i]);
             }
-            valueText->setPosition(Position(((float)getWidth() - (float)valueText->getWidth()) / 2.0f, 0.0f, LengthType::PIXEL));
             valueText->setIsVisible(false);
 
             valuesText[i] = valueText;
@@ -113,6 +112,9 @@ namespace urchin {
     }
 
     void Slider::prepareWidgetRendering(float dt) {
+        //update the position because the text size could be changed by the UI language change
+        valuesText[selectedIndex]->setPosition(Position(((float)getWidth() - (float)valuesText[selectedIndex]->getWidth()) / 2.0f, 0.0f, LengthType::PIXEL));
+
         if (leftButton->getWidgetState() == Widget::WidgetStates::CLICKING) {
             timeInClickingState += dt;
             timeSinceLastChange += dt;
