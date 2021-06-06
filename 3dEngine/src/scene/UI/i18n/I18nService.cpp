@@ -2,7 +2,7 @@
 
 #include <scene/UI/i18n/I18nService.h>
 
-#define DEFAULT_LANGUAGE "EN"
+#define DEFAULT_LANGUAGE "en"
 
 namespace urchin {
 
