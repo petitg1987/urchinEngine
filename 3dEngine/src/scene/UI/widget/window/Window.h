@@ -27,7 +27,7 @@ namespace urchin {
 
             //properties
             const std::string nameSkin;
-            const std::string stringTitle;
+            const std::string titleKey;
 
             //state
             int mousePositionX, mousePositionY;

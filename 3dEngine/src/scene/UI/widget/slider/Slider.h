@@ -13,7 +13,8 @@ namespace urchin {
 
     class Slider : public Widget {
         public:
-            Slider(Widget*, Position, Size, std::string, const std::vector<std::string>&);
+            static Slider* newSlider(Widget*, Position, Size, std::string, const std::vector<std::string>&);
+            static Slider* newTranslatableSlider(Widget*, Position, Size, std::string, const std::vector<std::string>&);
 
             unsigned int getSelectedIndex() const;
             void setSelectedIndex(unsigned int);
@@ -26,9 +27,12 @@ namespace urchin {
             void prepareWidgetRendering(float) override;
 
         private:
+            Slider(Widget*, Position, Size, std::string, const std::vector<std::string>&, bool);
+
             std::string buttonsTextSkin, valuesTextSkin;
             std::string leftButtonString, rightButtonString;
             const std::vector<std::string> values;
+            bool translatableValues;
             unsigned int selectedIndex;
 
             //visual

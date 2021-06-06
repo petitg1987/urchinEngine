@@ -8,10 +8,10 @@
 
 namespace urchin {
 
-    Window::Window(Widget* parent, Position position, Size size, std::string nameSkin, std::string stringTitle) :
+    Window::Window(Widget* parent, Position position, Size size, std::string nameSkin, std::string titleKey) :
             Widget(parent, position, size),
             nameSkin(std::move(nameSkin)),
-            stringTitle(std::move(stringTitle)), //TODO rename titleTextKey
+            titleKey(std::move(titleKey)),
             mousePositionX(0),
             mousePositionY(0),
             state(DEFAULT),
@@ -28,10 +28,10 @@ namespace urchin {
         texWindow = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinChunk, &widgetOutline);
 
         //creates font for title
-        if (!stringTitle.empty()) {
+        if (!titleKey.empty()) {
             std::shared_ptr<XmlChunk> textSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), windowChunk);
             delete title;
-            title = Text::newTranslatableText(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), stringTitle);
+            title = Text::newTranslatableText(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), titleKey);
             title->setPosition(Position(0.0f, -((float)widgetOutline.topWidth + (float)title->getHeight()) / 2.0f, LengthType::PIXEL));
         }
 

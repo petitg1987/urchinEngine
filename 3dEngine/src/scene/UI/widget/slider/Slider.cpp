@@ -9,16 +9,25 @@
 
 namespace urchin {
 
-    Slider::Slider(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& values) :
+    Slider* Slider::newSlider(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& texts) {
+        return new Slider(parent, position, size, std::move(nameSkin), texts, false);
+    }
+
+    Slider* Slider::newTranslatableSlider(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& textKeys) {
+        return new Slider(parent, position, size, std::move(nameSkin), textKeys, true);
+    }
+
+    Slider::Slider(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& values, bool translatableValues) :
             Widget(parent, position, size),
-            values(values), //TODO rename values key + create constructor for values
+            values(values),
+            translatableValues(translatableValues),
             selectedIndex(0),
             leftButton(nullptr),
             rightButton(nullptr),
             timeInClickingState(0.0f),
             timeSinceLastChange(0.0f) {
         if (values.empty()) {
-            throw std::runtime_error("At least one value must be provided to slider.");
+            throw std::runtime_error("At least one value/key must be provided to slider.");
         }
 
         std::shared_ptr<XmlChunk> sliderChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "slider", XmlAttribute("nameSkin", std::move(nameSkin)));
@@ -62,7 +71,12 @@ namespace urchin {
         //values
         valuesText.resize(values.size());
         for (std::size_t i = 0; i < values.size(); ++i) {
-            auto* valueText = Text::newTranslatableText(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[i]);
+            Text* valueText;
+            if (translatableValues) {
+                valueText = Text::newTranslatableText(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[i]);
+            } else {
+                valueText = Text::newText(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[i]);
+            }
             valueText->setPosition(Position(((float)getWidth() - (float)valueText->getWidth()) / 2.0f, 0.0f, LengthType::PIXEL));
             valueText->setIsVisible(false);
 
