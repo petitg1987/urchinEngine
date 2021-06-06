@@ -9,22 +9,28 @@
 
 namespace urchin {
 
-    Text::Text(Widget* parent, Position position, std::string nameSkin, std::string text) :
+    Text::Text(Widget* parent, Position position, std::string nameSkin, std::string textOrKey, bool translatable) :
             Widget(parent, position, Size(0, 0, LengthType::PIXEL)),
             nameSkin(std::move(nameSkin)),
-            text(std::move(text)),
             maxWidth(100.0f, LengthType::PERCENTAGE),
             font(nullptr) {
+        if(translatable) {
+            textKey = std::move(textOrKey);
+            text = "@TO_TRANSLATE@";
+        } else {
+            text = std::move(textOrKey);
+        }
+
         refreshFont();
         refreshTextAndWidgetSize();
     }
 
     Text* Text::newText(Widget* parent, Position position, std::string nameSkin, std::string text) {
-        return new Text(parent, position, std::move(nameSkin), std::move(text));
+        return new Text(parent, position, std::move(nameSkin), std::move(text), false);
     }
 
     Text* Text::newTranslatableText(Widget* parent, Position position, std::string nameSkin, std::string textKey) {
-        return new Text(parent, position, std::move(nameSkin), std::move(textKey)); //TODO review...
+        return new Text(parent, position, std::move(nameSkin), std::move(textKey), true);
     }
 
     Text::~Text() {
@@ -32,9 +38,17 @@ namespace urchin {
     }
 
     void Text::createOrUpdateWidget() {
+        if(isTranslatableText()) {
+            getI18nService()->add(this); //TODO could be added more than once time !
+        }
+
         refreshFont();
         refreshTextAndWidgetSize();
         refreshRenderer();
+    }
+
+    void Text::refreshTranslatableText() {
+        text = getI18nService()->translate(textKey.value());
     }
 
     void Text::setMaxWidth(Length maxWidth) {
@@ -56,6 +70,10 @@ namespace urchin {
 
         refreshTextAndWidgetSize();
         refreshRendererData();
+    }
+
+    bool Text::isTranslatableText() const {
+        return textKey.has_value();
     }
 
     const std::string& Text::getText() const {
@@ -146,10 +164,10 @@ namespace urchin {
 
         if (fontHeightType == LengthType::PIXEL) {
             return (unsigned int)fontHeight;
-        } else if (fontHeightType == LengthType::PERCENTAGE) {
+        } else {
+            assert(fontHeightType == LengthType::PERCENTAGE);
             return (unsigned int)(fontHeight / 100.0f * (float)getSceneHeight());
         }
-        throw std::runtime_error("Unknown font height type: " + std::to_string(fontHeightType));
     }
 
     LengthType Text::toLengthType(const std::string& lengthTypeString) const {

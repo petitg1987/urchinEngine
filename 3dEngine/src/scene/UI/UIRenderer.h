@@ -36,6 +36,8 @@ namespace urchin {
 
             Matrix4<float> mProjection;
             std::shared_ptr<Shader> uiShader;
+
+            std::unique_ptr<I18nService> i18nService;
     };
 
 }

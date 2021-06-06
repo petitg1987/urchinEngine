@@ -1,7 +1,0 @@
-namespace urchin {
-
-    class InternationalizationService {
-
-    };
-
-}

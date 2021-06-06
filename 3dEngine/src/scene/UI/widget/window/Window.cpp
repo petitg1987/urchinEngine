@@ -11,7 +11,7 @@ namespace urchin {
     Window::Window(Widget* parent, Position position, Size size, std::string nameSkin, std::string stringTitle) :
             Widget(parent, position, size),
             nameSkin(std::move(nameSkin)),
-            stringTitle(std::move(stringTitle)),
+            stringTitle(std::move(stringTitle)), //TODO rename titleTextKey
             mousePositionX(0),
             mousePositionY(0),
             state(DEFAULT),

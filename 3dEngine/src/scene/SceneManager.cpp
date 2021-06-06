@@ -4,8 +4,6 @@
 #include <graphic/render/target/RenderTarget.h>
 
 #define START_FPS 1000.0f //high number of FPS to avoid pass through the ground at startup
-#define RENDERER_3D 0
-#define UI_RENDERER 1
 #define REFRESH_RATE_FPS 0.35f
 
 namespace urchin {
@@ -14,7 +12,8 @@ namespace urchin {
             sceneWidth(500),
             sceneHeight(500),
             screenRenderTarget(std::make_shared<ScreenRender>("screen", RenderTarget::NO_DEPTH_ATTACHMENT)),
-            activeRenderers(),
+            activeRenderer3d(nullptr),
+            activeUiRenderers(nullptr),
             previousFps(),
             fps(START_FPS),
             fpsForDisplay(START_FPS) {
@@ -27,11 +26,6 @@ namespace urchin {
         previousFps.fill(START_FPS);
         indexFps = (unsigned int)previousFps.size();
         previousTime = std::chrono::high_resolution_clock::now();
-
-        //renderer
-        for (auto& activeRenderer : activeRenderers) {
-            activeRenderer = nullptr;
-        }
     }
 
     SceneManager::~SceneManager() {
@@ -59,8 +53,8 @@ namespace urchin {
 
             //renderer
             screenRenderTarget->onResize();
-            for (auto& activeRenderer : activeRenderers) {
-                if (activeRenderer) {
+            for(auto* activeRenderer : std::initializer_list<Renderer*>{activeRenderer3d, activeUiRenderers}) {
+                if(activeRenderer) {
                     activeRenderer->onResize(sceneWidth, sceneHeight);
                 }
             }
@@ -117,19 +111,19 @@ namespace urchin {
     }
 
     void SceneManager::enableRenderer3d(Renderer3d* renderer3d) {
-        if (activeRenderers[RENDERER_3D] && activeRenderers[RENDERER_3D] != renderer3d) {
-            activeRenderers[RENDERER_3D]->onDisable();
+        if (activeRenderer3d && activeRenderer3d != renderer3d) {
+            activeRenderer3d->onDisable();
         }
 
-        activeRenderers[RENDERER_3D] = renderer3d;
+        activeRenderer3d = renderer3d;
         if (renderer3d) {
             renderer3d->onResize(sceneWidth, sceneHeight);
         }
     }
 
     void SceneManager::removeRenderer3d(Renderer3d* renderer3d) {
-        if (activeRenderers[RENDERER_3D] == renderer3d) {
-            activeRenderers[RENDERER_3D] = nullptr;
+        if (activeRenderer3d == renderer3d) {
+            activeRenderer3d = nullptr;
         }
 
         renderers3d.erase(std::remove(renderers3d.begin(), renderers3d.end(), renderer3d), renderers3d.end());
@@ -137,7 +131,7 @@ namespace urchin {
     }
 
     Renderer3d* SceneManager::getActiveRenderer3d() const {
-        return dynamic_cast<Renderer3d*>(activeRenderers[RENDERER_3D]);
+        return activeRenderer3d;
     }
 
     UIRenderer* SceneManager::newUIRenderer(bool enable) {
@@ -151,19 +145,19 @@ namespace urchin {
     }
 
     void SceneManager::enableUIRenderer(UIRenderer* uiRenderer) {
-        if (activeRenderers[UI_RENDERER] && activeRenderers[UI_RENDERER] != uiRenderer) {
-            activeRenderers[UI_RENDERER]->onDisable();
+        if (activeUiRenderers && activeUiRenderers != uiRenderer) {
+            activeUiRenderers->onDisable();
         }
 
-        activeRenderers[UI_RENDERER] = uiRenderer;
+        activeUiRenderers = uiRenderer;
         if (uiRenderer) {
             uiRenderer->onResize(sceneWidth, sceneHeight);
         }
     }
 
     void SceneManager::removeUIRenderer(UIRenderer* uiRenderer) {
-        if (activeRenderers[UI_RENDERER] == uiRenderer) {
-            activeRenderers[UI_RENDERER] = nullptr;
+        if (activeUiRenderers == uiRenderer) {
+            activeUiRenderers = nullptr;
         }
 
         uiRenderers.erase(std::remove(uiRenderers.begin(), uiRenderers.end(), uiRenderer), uiRenderers.end());
@@ -171,12 +165,12 @@ namespace urchin {
     }
 
     UIRenderer* SceneManager::getActiveUIRenderer() const {
-        return dynamic_cast<UIRenderer*>(activeRenderers[UI_RENDERER]);
+        return dynamic_cast<UIRenderer*>(activeUiRenderers);
     }
 
     bool SceneManager::onKeyPress(unsigned int key) {
-        for (int i = NUM_RENDERER - 1; i >= 0; --i) {
-            if (activeRenderers[i] && !activeRenderers[i]->onKeyPress(key)) {
+        for(auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
+            if (activeRenderer && !activeRenderer->onKeyPress(key)) {
                 return false;
             }
         }
@@ -184,8 +178,8 @@ namespace urchin {
     }
 
     bool SceneManager::onKeyRelease(unsigned int key) {
-        for (int i = NUM_RENDERER - 1; i >= 0; --i) {
-            if (activeRenderers[i] && !activeRenderers[i]->onKeyRelease(key)) {
+        for(auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
+            if (activeRenderer && !activeRenderer->onKeyRelease(key)) {
                 return false;
             }
         }
@@ -193,8 +187,8 @@ namespace urchin {
     }
 
     bool SceneManager::onChar(unsigned int character) {
-        for (int i = NUM_RENDERER - 1; i >= 0; --i) {
-            if (activeRenderers[i] && !activeRenderers[i]->onChar(character)) {
+        for(auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
+            if (activeRenderer && !activeRenderer->onChar(character)) {
                 return false;
             }
         }
@@ -202,8 +196,8 @@ namespace urchin {
     }
 
     bool SceneManager::onMouseMove(int mouseX, int mouseY) {
-        for (int i = NUM_RENDERER - 1; i >= 0; --i) {
-            if (activeRenderers[i] && !activeRenderers[i]->onMouseMove(mouseX, mouseY)) {
+        for(auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
+            if (activeRenderer && !activeRenderer->onMouseMove(mouseX, mouseY)) {
                 return false;
             }
         }
@@ -219,8 +213,8 @@ namespace urchin {
 
         //renderer
         screenRenderTarget->disableAllRenderers();
-        for (auto& activeRenderer : activeRenderers) {
-            if (activeRenderer) {
+        for(auto* activeRenderer : std::initializer_list<Renderer*>{activeRenderer3d, activeUiRenderers}) {
+            if(activeRenderer) {
                 activeRenderer->prepareRendering(dt);
             }
         }

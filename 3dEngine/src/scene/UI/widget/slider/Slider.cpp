@@ -11,7 +11,7 @@ namespace urchin {
 
     Slider::Slider(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& values) :
             Widget(parent, position, size),
-            values(values),
+            values(values), //TODO rename values key + create constructor for values
             selectedIndex(0),
             leftButton(nullptr),
             rightButton(nullptr),

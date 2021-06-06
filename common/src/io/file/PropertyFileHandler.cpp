@@ -28,19 +28,22 @@ namespace urchin {
 
         do
         {
-            std::string buffer;
-            FileReader::nextLine(file, buffer);
+            std::string line;
+            FileReader::nextLine(file, line);
 
-            std::istringstream iss(buffer);
-            iss >> propertyName;
-
-            if (buffer.length() == 0 || propertyName[0] == '#') { //empty or commented line
+            std::string::size_type equalPosition = line.find('=');
+            if (equalPosition == std::string::npos) {
                 continue;
             }
 
-            iss >> equalSign;
-            std::getline(iss, propertyValue);
-            StringUtil::ltrim(propertyValue);
+            propertyName = line.substr(0, equalPosition);
+            StringUtil::trim(propertyName);
+
+            propertyValue = line.substr(equalPosition + 1);
+            StringUtil::trim(propertyValue);
+            if (propertyValue.size() > 1 && propertyValue[0] == '"' && propertyValue[propertyValue.size() - 1] == '"') { //quoted string value
+                propertyValue = propertyValue.substr(1, propertyValue.size() - 2);
+            }
 
             properties[propertyName] = propertyValue;
         }while (!file.eof());

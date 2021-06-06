@@ -10,8 +10,6 @@
 #include <graphic/setup/GraphicService.h>
 #include <graphic/render/target/ScreenRender.h>
 
-#define NUM_RENDERER 2
-
 namespace urchin {
 
     class SceneManager {
@@ -59,8 +57,9 @@ namespace urchin {
             //renderer
             std::shared_ptr<ScreenRender> screenRenderTarget;
             std::vector<Renderer3d*> renderers3d;
+            Renderer3d* activeRenderer3d;
             std::vector<UIRenderer*> uiRenderers;
-            Renderer *activeRenderers[NUM_RENDERER];
+            UIRenderer* activeUiRenderers;
 
             //fps
             std::chrono::high_resolution_clock::time_point previousTime;

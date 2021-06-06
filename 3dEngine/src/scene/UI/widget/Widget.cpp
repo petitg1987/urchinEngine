@@ -10,6 +10,7 @@ namespace urchin {
             sceneWidth(parent ? parent->getSceneWidth() : 0),
             sceneHeight(parent ? parent->getSceneHeight() : 0),
             parent(parent),
+            i18nService(nullptr),
             widgetState(Widget::DEFAULT),
             position(position),
             size(size),
@@ -18,7 +19,7 @@ namespace urchin {
             mouseY(0) {
         if (parent) {
             parent->children.emplace_back(this);
-            initialize(parent->getRenderTarget(), parent->shader);
+            initialize(parent->getRenderTarget(), parent->shader, parent->i18nService);
         }
     }
 
@@ -36,12 +37,13 @@ namespace urchin {
         eventListeners.clear();
     }
 
-    void Widget::initialize(std::shared_ptr<RenderTarget> renderTarget, std::shared_ptr<Shader> shader) {
+    void Widget::initialize(std::shared_ptr<RenderTarget> renderTarget, std::shared_ptr<Shader> shader, I18nService* i18nService) {
         this->renderTarget = std::move(renderTarget);
         this->shader = std::move(shader);
+        this->i18nService = i18nService;
 
         for (auto& child : children) {
-            child->initialize(renderTarget, shader);
+            child->initialize(renderTarget, shader, i18nService);
         }
     }
 
@@ -84,12 +86,12 @@ namespace urchin {
         return sceneHeight;
     }
 
-    const std::vector<Widget*>& Widget::getChildren() const {
-        return children;
-    }
-
     Widget* Widget::getParent() const {
         return parent;
+    }
+
+    const std::vector<Widget*>& Widget::getChildren() const {
+        return children;
     }
 
     void Widget::addEventListener(const std::shared_ptr<EventListener>& eventListener) {
@@ -345,6 +347,10 @@ namespace urchin {
                 eventListener->onFocusLost(this);
             }
         }
+    }
+
+    I18nService* Widget::getI18nService() const {
+        return i18nService;
     }
 
     void Widget::prepareRendering(float dt) {

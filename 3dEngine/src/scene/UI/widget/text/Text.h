@@ -6,12 +6,13 @@
 #include <scene/UI/widget/Widget.h>
 #include <scene/UI/widget/Position.h>
 #include <scene/UI/widget/Length.h>
+#include <scene/UI/i18n/TranslatableText.h>
 #include <resources/font/Font.h>
 #include <graphic/render/GenericRenderer.h>
 
 namespace urchin {
 
-    class Text : public Widget {
+    class Text : public Widget, public TranslatableText {
         public:
             static Text* newText(Widget*, Position, std::string, std::string);
             static Text* newTranslatableText(Widget*, Position, std::string, std::string);
@@ -20,15 +21,18 @@ namespace urchin {
             void setMaxWidth(Length);
             void updateText(const std::string&);
 
+            bool isTranslatableText() const;
             const std::string& getText() const;
             const Font* getFont();
 
         protected:
             void createOrUpdateWidget() override;
+            void refreshTranslatableText() override;
+
             void prepareWidgetRendering(float) override;
 
         private:
-            Text(Widget*, Position, std::string, std::string);
+            Text(Widget*, Position, std::string, std::string, bool);
 
             unsigned int getMaxWidth();
 
@@ -45,6 +49,7 @@ namespace urchin {
             //properties
             std::string nameSkin;
             std::string text;
+            std::optional<std::string> textKey;
             Length maxWidth;
 
             //data

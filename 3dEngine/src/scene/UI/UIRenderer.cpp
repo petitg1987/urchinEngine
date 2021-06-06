@@ -15,7 +15,8 @@ namespace urchin {
     UIRenderer::UIRenderer(std::shared_ptr<RenderTarget> renderTarget) :
             renderTarget(std::move(renderTarget)),
             sceneWidth(0),
-            sceneHeight(0) {
+            sceneHeight(0),
+            i18nService(std::make_unique<I18nService>()){
         uiShader = ShaderBuilder::createShader("ui.vert.spv", "", "ui.frag.spv", std::unique_ptr<ShaderConstants>());
     }
 
@@ -108,7 +109,7 @@ namespace urchin {
         }
         widgets.push_back(widget);
 
-        widget->initialize(renderTarget, uiShader);
+        widget->initialize(renderTarget, uiShader, i18nService.get());
         widget->addObserver(this, Widget::SET_IN_FOREGROUND);
     }
 
