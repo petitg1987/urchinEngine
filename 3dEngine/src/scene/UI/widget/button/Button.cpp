@@ -32,7 +32,6 @@ namespace urchin {
             std::shared_ptr<XmlChunk> textSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), buttonChunk);
             delete text;
             text = Text::newTranslatableText(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), buttonText);
-            text->setPosition(Position(((float)getWidth() - (float)text->getWidth()) / 2.0f, ((float)getHeight() - (float)text->getHeight()) / 2.0f, LengthType::PIXEL));
         }
 
         //visual
@@ -77,6 +76,11 @@ namespace urchin {
     }
 
     void Button::prepareWidgetRendering(float) {
+        if (text) {
+            //update the text position because the text size is updated when the UI language is changed
+            text->setPosition(Position(((float)getWidth() - (float)text->getWidth()) / 2.0f, ((float)getHeight() - (float)text->getHeight()) / 2.0f, LengthType::PIXEL));
+        }
+
         updateTranslateVector(buttonRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
         buttonRenderer->enableRenderer();
     }

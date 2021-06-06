@@ -112,9 +112,6 @@ namespace urchin {
     }
 
     void Slider::prepareWidgetRendering(float dt) {
-        //update the position because the text size could be changed by the UI language change
-        valuesText[selectedIndex]->setPosition(Position(((float)getWidth() - (float)valuesText[selectedIndex]->getWidth()) / 2.0f, 0.0f, LengthType::PIXEL));
-
         if (leftButton->getWidgetState() == Widget::WidgetStates::CLICKING) {
             timeInClickingState += dt;
             timeSinceLastChange += dt;
@@ -135,6 +132,9 @@ namespace urchin {
             timeInClickingState = 0.0f;
             timeSinceLastChange = 0.0f;
         }
+
+        //update the text position because the text size is updated when the UI language is changed
+        valuesText[selectedIndex]->setPosition(Position(((float)getWidth() - (float)valuesText[selectedIndex]->getWidth()) / 2.0f, 0.0f, LengthType::PIXEL));
     }
 
     Slider::ButtonSliderEventListener::ButtonSliderEventListener(Slider* slider, bool isLeftButton) :
