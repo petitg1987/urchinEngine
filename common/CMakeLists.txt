@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 if (WIN32)
     set(IMAGE_HLP_LIB imagehlp)
 else()
-    set(LINK_OPT -rdynamic dl) #necessary for SignalHandler to work correctly
+    set(LINK_OPT -rdynamic Xrandr dl) #dl: necessary for SignalHandler to work correctly
 endif()
 
 add_definitions(-ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror)

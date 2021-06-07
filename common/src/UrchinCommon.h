@@ -99,6 +99,7 @@
 #include <system/SystemInfo.h>
 #include <system/thread/LockById.h>
 #include <system/thread/ScopeLockById.h>
+#include <system/monitor/MonitorResolutionService.h>
 
 #include <util/FileUtil.h>
 #include <util/StringUtil.h>
