@@ -26,8 +26,7 @@ namespace urchin {
             throw std::invalid_argument("Unable to open file: " + propertiesFilePath);
         }
 
-        do
-        {
+        do {
             std::string line;
             FileReader::nextLine(file, line);
 

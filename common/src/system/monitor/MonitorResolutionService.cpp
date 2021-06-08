@@ -51,6 +51,7 @@ namespace urchin {
 
     void MonitorResolutionService::filterOutMonitorResolutions() {
         std::vector<MonitorResolution> filteredResolutions;
+        filteredResolutions.reserve(20); //estimated memory size
 
         for (auto& resolution : resolutions) {
             bool validResolution = !filterOutLowResolutions || resolution.getHeight() > LOW_RESOLUTION_HEIGHT;
@@ -98,6 +99,7 @@ namespace urchin {
 
     std::vector<MonitorResolution> MonitorResolutionService::getSupportedResolutions(const std::string& aspectRatio) const {
         std::vector<MonitorResolution> aspectRatioResolutions;
+        aspectRatioResolutions.reserve(10); //estimated memory size
 
         for (auto& resolution : resolutions) {
             if(resolution.retrieveAspectRatio() == aspectRatio) {
