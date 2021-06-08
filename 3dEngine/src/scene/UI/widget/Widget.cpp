@@ -24,10 +24,7 @@ namespace urchin {
     }
 
     Widget::~Widget() {
-        std::vector<Widget*> childrenCopied(children);
-        for (auto& child : childrenCopied) {
-            delete child;
-        }
+        deleteChildren();
 
         if (parent) {
             auto it = std::find(parent->children.begin(), parent->children.end(), this);
@@ -92,6 +89,13 @@ namespace urchin {
 
     const std::vector<Widget*>& Widget::getChildren() const {
         return children;
+    }
+
+    void Widget::deleteChildren() {
+        std::vector<Widget*> childrenCopied(children);
+        for (auto& child : childrenCopied) {
+            delete child;
+        }
     }
 
     void Widget::addEventListener(const std::shared_ptr<EventListener>& eventListener) {

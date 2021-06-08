@@ -37,9 +37,9 @@ namespace urchin {
         extensions.emplace_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
 
         std::vector<std::string> requiredExtensions;
-        for(auto& extension : extensions) {
+        for (auto& extension : extensions) {
             bool extensionSupported = false;
-            for(auto& supportedExtension : QVulkanInstance().supportedExtensions()) {
+            for (auto& supportedExtension : QVulkanInstance().supportedExtensions()) {
                 if(extension == std::string(supportedExtension.name.constData())) {
                     extensionSupported = true;
                     break;

@@ -105,7 +105,7 @@ namespace urchin {
         vkGetPhysicalDeviceFeatures(physicalDeviceToCheck, &deviceFeatures);
 
         //check required features
-        for(const auto& requiredFeature : physicalDeviceRequiredFeatures) {
+        for (const auto& requiredFeature : physicalDeviceRequiredFeatures) {
             auto isFeatureAvailable = *reinterpret_cast<VkBool32*>(((char *)&deviceFeatures) + requiredFeature.offset);
             if(!isFeatureAvailable) {
                 return PhysicalDeviceSuitability(physicalDeviceToCheck, "missing " + requiredFeature.featureDescription + " support");
@@ -113,7 +113,7 @@ namespace urchin {
         }
 
         //check required extensions
-        for(const auto &requiredExtension : physicalDeviceRequiredExtensions) {
+        for (const auto &requiredExtension : physicalDeviceRequiredExtensions) {
             if (!checkPhysicalDeviceExtensionSupport(physicalDeviceToCheck, requiredExtension.first)) {
                 return PhysicalDeviceSuitability(physicalDeviceToCheck, "missing " + requiredExtension.second + " support");
             }
@@ -175,7 +175,7 @@ namespace urchin {
         }
 
         VkPhysicalDeviceFeatures deviceFeatures{};
-        for(const auto& requiredFeature : physicalDeviceRequiredFeatures) {
+        for (const auto& requiredFeature : physicalDeviceRequiredFeatures) {
             *reinterpret_cast<VkBool32*>(((char *)&deviceFeatures) + requiredFeature.offset) = true;
         }
 

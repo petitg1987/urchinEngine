@@ -337,7 +337,7 @@ namespace urchin {
         elevatedPoints.reserve(polygonPointsCount);
 
         for (const auto& polygonComponent : polygonPoints) {
-            for(const auto& polygonPoint : polygonComponent) {
+            for (const auto& polygonPoint : polygonComponent) {
                 elevatedPoints.push_back(walkableSurface->computeRealPoint(polygonPoint, navMeshAgent));
             }
         }

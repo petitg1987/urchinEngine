@@ -34,6 +34,7 @@ namespace urchin {
 
             Widget* getParent() const;
             const std::vector<Widget*>& getChildren() const;
+            void deleteChildren();
 
             void addEventListener(const std::shared_ptr<EventListener>&);
             const std::vector<std::shared_ptr<EventListener>>& getEventListeners() const;
