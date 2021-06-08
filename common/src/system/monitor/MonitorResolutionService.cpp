@@ -18,7 +18,6 @@ namespace urchin {
             filterOutLowResolutions(filterOutLowResolutions),
             filterOutLowFrequencies(filterOutLowFrequencies) {
         loadMonitorResolutions();
-        loadMonitorAspectRatios();
     }
 
     void MonitorResolutionService::loadMonitorResolutions() {
@@ -65,7 +64,7 @@ namespace urchin {
         this->resolutions = filteredResolutions;
     }
 
-    bool MonitorResolutionService::isHighestFrequency(MonitorResolution monitorResolution) const {
+    bool MonitorResolutionService::isHighestFrequency(const MonitorResolution& monitorResolution) const {
         return std::all_of(resolutions.begin(), resolutions.end(), [&monitorResolution](const auto& res){
             return res.getWidth() != monitorResolution.getWidth() || res.getHeight() != monitorResolution.getHeight() || res.getFrequency() <= monitorResolution.getFrequency();
         });
@@ -84,34 +83,42 @@ namespace urchin {
         });
     }
 
-    void MonitorResolutionService::loadMonitorAspectRatios() {
-        assert(!resolutions.empty());
-        std::set<std::string> uniqueAspectRatios;
-        for(auto& resolution : resolutions) {
-            uniqueAspectRatios.insert(resolution.retrieveAspectRatio());
-        }
-        std::copy(uniqueAspectRatios.begin(), uniqueAspectRatios.end(), std::back_inserter(aspectRatios));
-    }
-
     const std::vector<MonitorResolution>& MonitorResolutionService::getSupportedResolutions() const {
         return resolutions;
     }
 
-    std::vector<MonitorResolution> MonitorResolutionService::getSupportedResolutions(const std::string& aspectRatio) const {
-        std::vector<MonitorResolution> aspectRatioResolutions;
-        aspectRatioResolutions.reserve(10); //estimated memory size
-
-        for (auto& resolution : resolutions) {
-            if(resolution.retrieveAspectRatio() == aspectRatio) {
-                aspectRatioResolutions.emplace_back(resolution);
+    unsigned int MonitorResolutionService::findClosestResolutionIndex(const std::string& monitorResolutionId) const {
+        for(unsigned int i = 0; i < resolutions.size(); ++i) {
+            if(resolutions[i].getId() == monitorResolutionId) {
+                return i;
             }
         }
 
-        return aspectRatioResolutions;
+        //resolution not found, cause: user changed of monitor or user modified manually the configuration file
+        return findClosestResolutionIndex(MonitorResolution(monitorResolutionId));
     }
 
-    const std::vector<std::string>& MonitorResolutionService::getSupportedAspectRatios() const {
-        return aspectRatios;
+    unsigned int MonitorResolutionService::findClosestResolutionIndex(const MonitorResolution& monitorResolution) const {
+        constexpr float MONITOR_SIZE_WEIGHT = 2.0f;
+        unsigned int closestResolutionIndex = 0;
+        float bestScore = 0.0f;
+
+        for(unsigned int i = 0; i < resolutions.size(); ++i) {
+            float widthScore = std::min((float)resolutions[i].getWidth(), (float)monitorResolution.getWidth()) /
+                    std::max((float)resolutions[i].getWidth(), (float)monitorResolution.getWidth());
+            float heightScore = std::min((float)resolutions[i].getHeight(), (float)monitorResolution.getHeight()) /
+                    std::max((float)resolutions[i].getHeight(), (float)monitorResolution.getHeight());
+            float frequencyScore = std::min((float)resolutions[i].getFrequency(), (float)monitorResolution.getFrequency()) /
+                    std::max((float)resolutions[i].getFrequency(), (float)monitorResolution.getFrequency());
+            float score = widthScore * MONITOR_SIZE_WEIGHT + heightScore * MONITOR_SIZE_WEIGHT + frequencyScore;
+
+            if(score > bestScore) {
+                bestScore = score;
+                closestResolutionIndex = i;
+            }
+        }
+
+        return closestResolutionIndex;
     }
 
 }

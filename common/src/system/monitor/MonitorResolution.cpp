@@ -1,15 +1,52 @@
 #include <iomanip>
 #include <sstream>
+#include <vector>
 
+#include <util/StringUtil.h>
+#include <util/TypeConverter.h>
+#include <logger/Logger.h>
 #include <system/monitor/MonitorResolution.h>
 
 namespace urchin {
 
     MonitorResolution::MonitorResolution(unsigned int width, unsigned int height, unsigned int frequency) :
+            ID_DELIMITER('_'),
             width(width),
             height(height),
             frequency(frequency) {
 
+    }
+
+    MonitorResolution::MonitorResolution(const std::string& id) :
+            MonitorResolution(1920, 1080, 60) {
+        std::vector<std::string> resolutionParts;
+        StringUtil::split(id, ID_DELIMITER, resolutionParts);
+        if (resolutionParts.size() == 3) {
+            width = TypeConverter::toUnsignedInt(resolutionParts[0]);
+            height = TypeConverter::toUnsignedInt(resolutionParts[1]);
+            frequency = TypeConverter::toUnsignedInt(resolutionParts[2]);
+        } else {
+            Logger::instance()->logError("Wrongly structured monitor resolution id: " + id);
+        }
+    }
+
+    MonitorResolution::MonitorResolution(const MonitorResolution& monitorResolution) :
+            ID_DELIMITER(monitorResolution.ID_DELIMITER),
+            width(monitorResolution.getWidth()),
+            height(monitorResolution.getHeight()),
+            frequency(monitorResolution.getFrequency()) {
+
+    }
+
+    MonitorResolution& MonitorResolution::operator=(const MonitorResolution& monitorResolution) {
+        this->width = monitorResolution.getWidth();
+        this->height = monitorResolution.getHeight();
+        this->frequency = monitorResolution.getFrequency();
+        return *this;
+    }
+
+    std::string MonitorResolution::getId() const {
+        return std::to_string(width) + ID_DELIMITER + std::to_string(height) + ID_DELIMITER + std::to_string(frequency);
     }
 
     unsigned int MonitorResolution::getWidth() const {
@@ -26,11 +63,9 @@ namespace urchin {
 
     std::string MonitorResolution::userDisplay(bool displayFrequency) const {
         std::string strResolution = std::to_string(width) + "x" + std::to_string(height) + " (" + retrieveAspectRatio() + ")";
-
         if(displayFrequency) {
             strResolution += " @ " + std::to_string(frequency) + "Hz";
         }
-
         return strResolution;
     }
 
