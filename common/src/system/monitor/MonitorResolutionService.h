@@ -19,7 +19,7 @@ namespace urchin {
             void loadMonitorResolutions();
             void filterOutMonitorResolutions();
             bool isHighestFrequency(const MonitorResolution&) const;
-            void sortResolutions();
+            void sortUniqueResolutions();
 
             const unsigned int LOW_RESOLUTION_HEIGHT;
             bool filterOutLowResolutions;

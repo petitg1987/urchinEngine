@@ -9,6 +9,9 @@ namespace urchin {
             MonitorResolution(unsigned int width, unsigned int, unsigned int);
             static MonitorResolution buildFromId(const std::string&);
 
+            bool operator ==(const MonitorResolution&) const;
+            bool operator !=(const MonitorResolution&) const;
+
             std::string getId() const;
 
             unsigned int getWidth() const;

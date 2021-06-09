@@ -29,6 +29,14 @@ namespace urchin {
         return MonitorResolution(TypeConverter::toUnsignedInt(resolutionParts[0]),TypeConverter::toUnsignedInt(resolutionParts[1]),TypeConverter::toUnsignedInt(resolutionParts[2]));
     }
 
+    bool MonitorResolution::operator ==(const MonitorResolution& monitorResolution) const {
+        return monitorResolution.width == width && monitorResolution.height == height && monitorResolution.frequency == frequency;
+    }
+
+    bool MonitorResolution::operator !=(const MonitorResolution& monitorResolution) const {
+        return !(this->operator==(monitorResolution));
+    }
+
     std::string MonitorResolution::getId() const {
         return std::to_string(width) + ID_DELIMITER + std::to_string(height) + ID_DELIMITER + std::to_string(frequency);
     }

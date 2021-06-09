@@ -45,7 +45,7 @@ namespace urchin {
         #endif
 
         filterOutMonitorResolutions();
-        sortResolutions();
+        sortUniqueResolutions();
     }
 
     void MonitorResolutionService::filterOutMonitorResolutions() {
@@ -70,17 +70,19 @@ namespace urchin {
         });
     }
 
-    void MonitorResolutionService::sortResolutions() {
+    void MonitorResolutionService::sortUniqueResolutions() {
         assert(!resolutions.empty());
         sort(resolutions.begin(), resolutions.end(), [](const MonitorResolution& lhs, const MonitorResolution& rhs) {
             if(lhs.getWidth() == rhs.getWidth()) {
                 if(lhs.getHeight() == rhs.getHeight()) {
-                    return lhs.getFrequency() > rhs.getFrequency();
+                    return lhs.getFrequency() < rhs.getFrequency();
                 }
-                return lhs.getHeight() > rhs.getHeight();
+                return lhs.getHeight() < rhs.getHeight();
             }
-            return lhs.getWidth() > rhs.getWidth();
+            return lhs.getWidth() < rhs.getWidth();
         });
+
+        resolutions.erase(unique(resolutions.begin(), resolutions.end()), resolutions.end());
     }
 
     const std::vector<MonitorResolution>& MonitorResolutionService::getSupportedResolutions() const {
