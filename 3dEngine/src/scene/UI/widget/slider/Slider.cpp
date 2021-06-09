@@ -5,7 +5,7 @@
 #include <scene/UI/UISkinService.h>
 
 #define TIME_BEFORE_AUTO_CLICK 0.3
-#define TIME_BEFORE_AUTO_NEXT_CLICK 0.09
+#define TIME_BEFORE_AUTO_NEXT_CLICK 0.15
 
 namespace urchin {
 
@@ -21,6 +21,7 @@ namespace urchin {
             Widget(parent, position, size),
             values(values),
             translatableValues(translatableValues),
+            loopOnValuesEnabled(true),
             selectedIndex(0),
             leftButton(nullptr),
             rightButton(nullptr),
@@ -56,14 +57,14 @@ namespace urchin {
 
         //buttons
         leftButton = Text::newText(this, Position(0, 0, LengthType::PIXEL), buttonsTextSkin, leftButtonString);
-        leftButton->addEventListener(std::make_shared<ButtonSliderEventListener>(this, true));
+        leftButton->addEventListener(std::make_shared<ButtonSliderEventListener>(this, true, loopOnValuesEnabled));
         if (leftButtonEventListener) {
             this->leftButton->addEventListener(leftButtonEventListener);
         }
 
         rightButton = Text::newText(this, Position(0, 0, LengthType::PIXEL), buttonsTextSkin, rightButtonString);
         rightButton->setPosition(Position((float)getWidth() - (float)rightButton->getWidth(), 0.0f, LengthType::PIXEL));
-        rightButton->addEventListener(std::make_shared<ButtonSliderEventListener>(this, false));
+        rightButton->addEventListener(std::make_shared<ButtonSliderEventListener>(this, false, loopOnValuesEnabled));
         if (rightButtonEventListener) {
             this->rightButton->addEventListener(rightButtonEventListener);
         }
@@ -82,6 +83,10 @@ namespace urchin {
             valuesText[i] = valueText;
         }
         valuesText[selectedIndex]->setIsVisible(true);
+    }
+
+    void Slider::allowLoopOnValues(bool loopOnValuesEnabled) {
+        this->loopOnValuesEnabled = loopOnValuesEnabled;
     }
 
     unsigned int Slider::getSelectedIndex() const {
@@ -116,16 +121,26 @@ namespace urchin {
             timeInClickingState += dt;
             timeSinceLastChange += dt;
 
-            if (timeInClickingState > TIME_BEFORE_AUTO_CLICK && timeSinceLastChange > TIME_BEFORE_AUTO_NEXT_CLICK && getSelectedIndex() > 0) {
-                setSelectedIndex(getSelectedIndex() - 1);
+            if (timeInClickingState > TIME_BEFORE_AUTO_CLICK && timeSinceLastChange > TIME_BEFORE_AUTO_NEXT_CLICK &&
+                    (getSelectedIndex() > 0 || loopOnValuesEnabled)) {
+                if(getSelectedIndex() == 0) {
+                    setSelectedIndex((unsigned int)values.size() - 1);
+                } else {
+                    setSelectedIndex(getSelectedIndex() - 1);
+                }
                 timeSinceLastChange = 0.0f;
             }
         } else if (rightButton->getWidgetState() == Widget::WidgetStates::CLICKING) {
             timeInClickingState += dt;
             timeSinceLastChange += dt;
 
-            if (timeInClickingState > TIME_BEFORE_AUTO_CLICK && timeSinceLastChange > TIME_BEFORE_AUTO_NEXT_CLICK && getSelectedIndex() + 1 < values.size()) {
-                setSelectedIndex(getSelectedIndex() + 1);
+            if (timeInClickingState > TIME_BEFORE_AUTO_CLICK && timeSinceLastChange > TIME_BEFORE_AUTO_NEXT_CLICK &&
+                    (getSelectedIndex() + 1 < values.size() || loopOnValuesEnabled)) {
+                if (getSelectedIndex() == (values.size() - 1)) {
+                    setSelectedIndex(0);
+                } else {
+                    setSelectedIndex(getSelectedIndex() + 1);
+                }
                 timeSinceLastChange = 0.0f;
             }
         } else {
@@ -137,23 +152,32 @@ namespace urchin {
         valuesText[selectedIndex]->setPosition(Position(((float)getWidth() - (float)valuesText[selectedIndex]->getWidth()) / 2.0f, 0.0f, LengthType::PIXEL));
     }
 
-    Slider::ButtonSliderEventListener::ButtonSliderEventListener(Slider* slider, bool isLeftButton) :
+    Slider::ButtonSliderEventListener::ButtonSliderEventListener(Slider* slider, bool isLeftButton, bool loopOnValuesEnabled) :
             slider(slider),
-            isLeftButton(isLeftButton) {
+            isLeftButton(isLeftButton),
+            loopOnValuesEnabled(loopOnValuesEnabled) {
 
     }
 
     void Slider::ButtonSliderEventListener::onClickRelease(Widget*) {
         if (isLeftButton) {
-            if (slider->selectedIndex > 0) {
+            if (slider->selectedIndex > 0 || loopOnValuesEnabled) {
                 slider->valuesText[slider->selectedIndex]->setIsVisible(false);
-                slider->selectedIndex--;
+                if (slider->selectedIndex == 0) {
+                    slider->selectedIndex = (unsigned int)slider->valuesText.size() - 1;
+                } else {
+                    slider->selectedIndex--;
+                }
                 slider->valuesText[slider->selectedIndex]->setIsVisible(true);
             }
         } else {
-            if (slider->selectedIndex + 1 < slider->valuesText.size()) {
+            if (slider->selectedIndex < (slider->valuesText.size() - 1) || loopOnValuesEnabled) {
                 slider->valuesText[slider->selectedIndex]->setIsVisible(false);
-                slider->selectedIndex++;
+                if (slider->selectedIndex == (slider->valuesText.size() - 1)) {
+                    slider->selectedIndex = 0;
+                } else {
+                    slider->selectedIndex++;
+                }
                 slider->valuesText[slider->selectedIndex]->setIsVisible(true);
             }
         }

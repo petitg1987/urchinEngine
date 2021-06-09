@@ -16,6 +16,8 @@ namespace urchin {
             static Slider* newSlider(Widget*, Position, Size, std::string, const std::vector<std::string>&);
             static Slider* newTranslatableSlider(Widget*, Position, Size, std::string, const std::vector<std::string>&);
 
+            void allowLoopOnValues(bool);
+
             unsigned int getSelectedIndex() const;
             void setSelectedIndex(unsigned int);
 
@@ -33,6 +35,7 @@ namespace urchin {
             std::string leftButtonString, rightButtonString;
             const std::vector<std::string> values;
             bool translatableValues;
+            bool loopOnValuesEnabled;
             unsigned int selectedIndex;
 
             //visual
@@ -48,12 +51,13 @@ namespace urchin {
 
             class ButtonSliderEventListener : public EventListener {
                 public:
-                    ButtonSliderEventListener(Slider*, bool);
+                    ButtonSliderEventListener(Slider*, bool, bool);
                     void onClickRelease(Widget*) override;
 
                 private:
                     Slider* slider;
                     bool isLeftButton;
+                    bool loopOnValuesEnabled;
             };
     };
 
