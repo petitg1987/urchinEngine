@@ -6,10 +6,8 @@ namespace urchin {
 
     class MonitorResolution {
         public:
-            MonitorResolution(unsigned int, unsigned int, unsigned int);
-            explicit MonitorResolution(const std::string&);
-            MonitorResolution(const MonitorResolution&);
-            MonitorResolution& operator=(const MonitorResolution&);
+            MonitorResolution(unsigned int width, unsigned int, unsigned int);
+            static MonitorResolution buildFromId(const std::string&);
 
             std::string getId() const;
 
@@ -21,7 +19,7 @@ namespace urchin {
             std::string retrieveAspectRatio() const;
 
         private:
-            const char ID_DELIMITER;
+            static const char ID_DELIMITER;
 
             unsigned int width;
             unsigned int height;

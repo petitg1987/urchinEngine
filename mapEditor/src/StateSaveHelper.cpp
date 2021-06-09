@@ -20,11 +20,7 @@ namespace urchin {
 
     std::string StateSaveHelper::retrieveState(const std::string& stateId, const std::string& defaultValue) const {
         std::map<std::string, std::string> properties = propertyFileHandler->loadPropertyFile();
-        const auto& it = properties.find(stateId);
-        if (it != properties.end()) {
-            return it->second;
-        }
-        return defaultValue;
+        return MapUtil::getWithDefault(properties, stateId, defaultValue);
     }
 
 

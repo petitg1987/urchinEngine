@@ -9,40 +9,24 @@
 
 namespace urchin {
 
+    //static
+    const char MonitorResolution::ID_DELIMITER = '_';
+
     MonitorResolution::MonitorResolution(unsigned int width, unsigned int height, unsigned int frequency) :
-            ID_DELIMITER('_'),
             width(width),
             height(height),
             frequency(frequency) {
 
     }
 
-    MonitorResolution::MonitorResolution(const std::string& id) :
-            MonitorResolution(1920, 1080, 60) {
+    MonitorResolution MonitorResolution::buildFromId(const std::string& id) {
         std::vector<std::string> resolutionParts;
         StringUtil::split(id, ID_DELIMITER, resolutionParts);
-        if (resolutionParts.size() == 3) {
-            width = TypeConverter::toUnsignedInt(resolutionParts[0]);
-            height = TypeConverter::toUnsignedInt(resolutionParts[1]);
-            frequency = TypeConverter::toUnsignedInt(resolutionParts[2]);
-        } else {
+        if (resolutionParts.size() != 3) {
             Logger::instance()->logError("Wrongly structured monitor resolution id: " + id);
+            return MonitorResolution(1920, 1080, 60);
         }
-    }
-
-    MonitorResolution::MonitorResolution(const MonitorResolution& monitorResolution) :
-            ID_DELIMITER(monitorResolution.ID_DELIMITER),
-            width(monitorResolution.getWidth()),
-            height(monitorResolution.getHeight()),
-            frequency(monitorResolution.getFrequency()) {
-
-    }
-
-    MonitorResolution& MonitorResolution::operator=(const MonitorResolution& monitorResolution) {
-        this->width = monitorResolution.getWidth();
-        this->height = monitorResolution.getHeight();
-        this->frequency = monitorResolution.getFrequency();
-        return *this;
+        return MonitorResolution(TypeConverter::toUnsignedInt(resolutionParts[0]),TypeConverter::toUnsignedInt(resolutionParts[1]),TypeConverter::toUnsignedInt(resolutionParts[2]));
     }
 
     std::string MonitorResolution::getId() const {

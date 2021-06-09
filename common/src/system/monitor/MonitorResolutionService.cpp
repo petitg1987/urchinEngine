@@ -95,7 +95,7 @@ namespace urchin {
         }
 
         //resolution not found, cause: user changed of monitor or user modified manually the configuration file
-        return findClosestResolutionIndex(MonitorResolution(monitorResolutionId));
+        return findClosestResolutionIndex(MonitorResolution::buildFromId(monitorResolutionId));
     }
 
     unsigned int MonitorResolutionService::findClosestResolutionIndex(const MonitorResolution& monitorResolution) const {
