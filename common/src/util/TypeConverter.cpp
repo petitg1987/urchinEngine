@@ -66,6 +66,14 @@ namespace urchin {
         return str[0];
     }
 
+    bool TypeConverter::isBool(const std::string& str) {
+        return str.size() == 1 && isInt(str);
+    }
+
+    bool TypeConverter::toBool(const std::string& str) {
+        return str[0] != 0;
+    }
+
     long long TypeConverter::toLongLong(float value, float scale) {
         const float minValue = (float)std::numeric_limits<long long>::min() / scale;
         const float maxValue = (float)std::numeric_limits<long long>::max() / scale;

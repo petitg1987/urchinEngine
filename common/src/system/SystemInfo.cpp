@@ -200,5 +200,27 @@ namespace urchin {
         return std::string(charValue);
     }
 
+    SystemInfo::KeyboardLayout SystemInfo::keyboardLayout() {
+        #ifdef _WIN32
+            HKL keyboardLayout = GetKeyboardLayout(0);
+            return KeyboardLayout::DEFAULT; //TODO complete
+        #else
+            const std::string LAYOUT_LABEL = "layout:";
+            std::string xKeyboardInfo = CommandExecutor::execute("setxkbmap -query");
+            std::size_t layoutBeginLocation = xKeyboardInfo.find(LAYOUT_LABEL);
+            if (layoutBeginLocation != std::string::npos) {
+                layoutBeginLocation += LAYOUT_LABEL.size();
+                std::size_t layoutEndLocation = xKeyboardInfo.find('\n', layoutBeginLocation);
+                if (layoutEndLocation != std::string::npos) {
+                    std::string layout = xKeyboardInfo.substr(layoutBeginLocation, layoutEndLocation - layoutBeginLocation);
+                    StringUtil::trim(layout);
+                    if(StringUtil::insensitiveEquals(layout, "fr") || StringUtil::insensitiveEquals(layout, "be")) {
+                        return KeyboardLayout::AZERTY;
+                    }
+                }
+            }
+            return KeyboardLayout::DEFAULT;
+        #endif
+    }
 
 }

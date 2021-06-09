@@ -6,6 +6,11 @@ namespace urchin {
 
     class SystemInfo {
         public:
+            enum KeyboardLayout {
+                DEFAULT,
+                AZERTY
+            };
+
             SystemInfo() = delete;
 
             static std::string retrieveOsInfo();
@@ -18,6 +23,8 @@ namespace urchin {
             static std::string homeDirectory();
             static std::string userDataDirectory();
             static std::string executableDirectory();
+
+            static KeyboardLayout keyboardLayout();
 
         private:
             static std::string retrieveCpuHash();
