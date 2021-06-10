@@ -25,6 +25,7 @@ namespace urchin {
             static std::string executableDirectory();
 
             static KeyboardLayout keyboardLayout();
+            static std::string userLanguage();
 
         private:
             static std::string retrieveCpuHash();

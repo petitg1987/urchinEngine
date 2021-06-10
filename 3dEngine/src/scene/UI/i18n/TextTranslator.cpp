@@ -6,43 +6,49 @@
 namespace urchin {
 
     TextTranslator::TextTranslator() :
-            MAIN_LANGUAGE("en"),
             FILE_PREFIX("text_") ,
             FILE_POSTFIX(".properties") {
         std::string uiTextLocation = ConfigService::instance()->getStringValue("ui.textLocation");
         if (!uiTextLocation.empty()) {
             textFilesDirectoryName = FileSystem::instance()->getResourcesDirectory() + ConfigService::instance()->getStringValue("ui.textLocation");
-            checkMissingTranslation();
+            loadAvailableLanguages();
         }
     }
 
-    void TextTranslator::checkMissingTranslation() const {
-        auto mainLanguageTexts = retrieveLanguageTexts(MAIN_LANGUAGE);
+    void TextTranslator::loadAvailableLanguages() {
         for (const auto& dir : std::filesystem::directory_iterator(textFilesDirectoryName)) {
             std::string filename = dir.path().filename().u8string();
-            if (dir.is_regular_file() && filename.size() == FILE_PREFIX.size() + 2 + FILE_POSTFIX.size()) {
-                std::string language = filename.substr(FILE_PREFIX.size(), 2);
-                if(language != MAIN_LANGUAGE) {
-                    auto languageTexts = retrieveLanguageTexts(language);
+            if (dir.is_regular_file() && filename.size() > FILE_PREFIX.size() + FILE_POSTFIX.size()) {
+                std::size_t endLanguagePosition = filename.find(FILE_POSTFIX);
+                std::string language = filename.substr(FILE_PREFIX.size(), endLanguagePosition - FILE_PREFIX.size());
+                availableLanguages.emplace_back(language);
+            }
+        }
+        checkMissingTranslation();
+    }
 
-                    std::map<std::string, std::string> textsDiff;
-                    std::set_difference(mainLanguageTexts.begin(), mainLanguageTexts.end(), languageTexts.begin(), languageTexts.end(), std::inserter(textsDiff, textsDiff.begin()));
+    void TextTranslator::checkMissingTranslation() const {
+        for(unsigned int i = 0; i < availableLanguages.size(); ++i) {
+            std::string firstLanguage = availableLanguages[i];
+            auto firstLanguageTexts = retrieveLanguageTexts(firstLanguage);
 
-                    if (!textsDiff.empty()) {
-                        logMissingTranslation(language, textsDiff.begin()->first);
-                        break;
-                    }
-                }
+            std::string secondLanguage = availableLanguages[(i + 1) % availableLanguages.size()];
+            auto secondLanguageTexts = retrieveLanguageTexts(secondLanguage);
+
+            std::map<std::string, std::string> textsDiff;
+            std::set_difference(firstLanguageTexts.begin(), firstLanguageTexts.end(),
+                                secondLanguageTexts.begin(), secondLanguageTexts.end(),
+                                std::inserter(textsDiff, textsDiff.begin()));
+
+            if (!textsDiff.empty()) {
+                logMissingTranslation(secondLanguage, textsDiff.begin()->first);
+                break;
             }
         }
     }
 
-    void TextTranslator::logMissingTranslation(const std::string& language, const std::string& textKey) const {
-        static bool missingTranslationLogged = false;
-        if (!missingTranslationLogged) {
-            Logger::instance()->logWarning("Translation in '" + language + "' not found for text key '" + textKey + "'");
-            missingTranslationLogged = true;
-        }
+    const std::vector<std::string>& TextTranslator::getAvailableLanguages() const {
+        return availableLanguages;
     }
 
     std::string TextTranslator::translate(const std::string& language, const std::string& textKey) {
@@ -59,13 +65,34 @@ namespace urchin {
 
     void TextTranslator::loadLanguageTexts(const std::string& language) {
         if (language != loadedLanguage) {
-            loadedLanguageTexts = retrieveLanguageTexts(language);
+            if (std::count(availableLanguages.begin(), availableLanguages.end(), language)) {
+                loadedLanguageTexts = retrieveLanguageTexts(language);
+            } else {
+                loadedLanguageTexts.clear();
+                logMissingLanguage(language);
+            }
             loadedLanguage = language;
         }
     }
 
     std::map<std::string, std::string> TextTranslator::retrieveLanguageTexts(const std::string& language) const {
         return PropertyFileHandler(textFilesDirectoryName + FILE_PREFIX + language + FILE_POSTFIX).loadPropertyFile();
+    }
+
+    void TextTranslator::logMissingLanguage(const std::string& language) const {
+        static bool missingLanguageLogged = false;
+        if (!missingLanguageLogged) {
+            Logger::instance()->logError("Translated texts for language '" + language + "' not found");
+            missingLanguageLogged = true;
+        }
+    }
+
+    void TextTranslator::logMissingTranslation(const std::string& language, const std::string& textKey) const {
+        static bool missingTranslationLogged = false;
+        if (!missingTranslationLogged) {
+            Logger::instance()->logError("Translation in '" + language + "' not found for text key '" + textKey + "'");
+            missingTranslationLogged = true;
+        }
     }
 
 }
