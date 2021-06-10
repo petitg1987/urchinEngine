@@ -23,7 +23,7 @@ namespace urchin {
 
             std::string language;
             std::set<TranslatableText*> translatableTexts;
-            TextTranslator textTranslator;
+            std::unique_ptr<TextTranslator> textTranslator;
     };
 
 }

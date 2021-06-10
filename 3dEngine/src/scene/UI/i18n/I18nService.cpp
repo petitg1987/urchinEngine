@@ -6,8 +6,9 @@ namespace urchin {
 
     I18nService::I18nService() :
             DEFAULT_LANGUAGE("en"),
-            language(DEFAULT_LANGUAGE) {
-
+            language(DEFAULT_LANGUAGE),
+            textTranslator(std::make_unique<TextTranslator>()) {
+        textTranslator->checkMissingTranslation();
     }
 
     void I18nService::changeLanguage(std::string language) {
@@ -32,7 +33,7 @@ namespace urchin {
     }
 
     void I18nService::refreshTranslation(TranslatableText* translatableText) {
-        std::string translatedText = textTranslator.translate(language, translatableText->getTextKey());
+        std::string translatedText = textTranslator->translate(language, translatableText->getTextKey());
         translatableText->updateText(translatedText);
     }
 

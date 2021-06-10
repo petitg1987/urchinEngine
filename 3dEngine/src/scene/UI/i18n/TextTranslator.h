@@ -8,13 +8,13 @@ namespace urchin {
         public:
             TextTranslator();
 
-            const std::vector<std::string>& getAvailableLanguages() const;
+            void checkMissingTranslation() const;
 
+            const std::vector<std::string>& getAvailableLanguages() const;
             std::string translate(const std::string&, const std::string&);
 
         private:
             void loadAvailableLanguages();
-            void checkMissingTranslation() const;
 
             void loadLanguageTexts(const std::string&);
             std::map<std::string, std::string> retrieveLanguageTexts(const std::string&) const;

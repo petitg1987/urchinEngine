@@ -30,6 +30,7 @@
 #include <scene/UI/widget/text/Text.h>
 #include <scene/UI/widget/textbox/TextBox.h>
 #include <scene/UI/widget/slider/Slider.h>
+#include <scene/UI/i18n/TextTranslator.h>
 
 #include <graphic/render/shader/config/ShaderConfig.h>
 

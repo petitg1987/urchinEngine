@@ -230,12 +230,16 @@ namespace urchin {
     }
 
     std::string SystemInfo::userLanguage() {
-        std::string userLocale = std::locale("").name();
-        std::size_t pos = userLocale.find('_');
-        if (pos == std::string::npos) {
+        try {
+            std::string userLocale = std::locale("").name();
+            std::size_t pos = userLocale.find('_');
+            if (pos == std::string::npos) {
+                return "";
+            }
+            return userLocale.substr(0, pos);
+        } catch (std::runtime_error& e) {
             return "";
         }
-        return userLocale.substr(0, pos);
     }
 
 }

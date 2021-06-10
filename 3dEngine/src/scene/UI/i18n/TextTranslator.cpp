@@ -9,6 +9,7 @@ namespace urchin {
             FILE_PREFIX("text_") ,
             FILE_POSTFIX(".properties") {
         std::string uiTextLocation = ConfigService::instance()->getStringValue("ui.textLocation");
+
         if (!uiTextLocation.empty()) {
             textFilesDirectoryName = FileSystem::instance()->getResourcesDirectory() + ConfigService::instance()->getStringValue("ui.textLocation");
             loadAvailableLanguages();
@@ -24,7 +25,6 @@ namespace urchin {
                 availableLanguages.emplace_back(language);
             }
         }
-        checkMissingTranslation();
     }
 
     void TextTranslator::checkMissingTranslation() const {
