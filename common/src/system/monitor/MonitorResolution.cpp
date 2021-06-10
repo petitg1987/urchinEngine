@@ -68,6 +68,7 @@ namespace urchin {
         constexpr float RATIO_16_10 = 16.0f / 10.0f;
         constexpr float RATIO_32_9 = 32.0f / 9.0f;
         constexpr float RATIO_5_4 = 5.0f / 4.0f;
+        constexpr float RATIO_5_3 = 5.0f / 3.0f;
         constexpr float RATIO_3_2 = 3.0f / 2.0f;
         constexpr float RATIO_3_1 = 3.0f / 1.0f;
         constexpr float RATIO_1_1 = 1.0f / 1.0f;
@@ -84,6 +85,8 @@ namespace urchin {
             return "32:9";
         } else if (ratio > RATIO_5_4 - EPSILON && ratio < RATIO_5_4 + EPSILON) {
             return "5:4";
+        } else if (ratio > RATIO_5_3 - EPSILON && ratio < RATIO_5_3 + EPSILON) {
+            return "5:3";
         } else if (ratio > RATIO_3_2 - EPSILON && ratio < RATIO_3_2 + EPSILON) {
             return "3:2";
         } else if (ratio > RATIO_3_1 - EPSILON && ratio < RATIO_3_1 + EPSILON) {
