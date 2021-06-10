@@ -53,7 +53,7 @@ namespace urchin {
         keysLabelMap[Control::Key::TAB] = "Tab";
         keysLabelMap[Control::Key::BACKSPACE] = "Backspace";
         keysLabelMap[Control::Key::INSERT] = "Insert";
-        keysLabelMap[Control::Key::DELETE] = "Delete";
+        keysLabelMap[Control::Key::DEL] = "Delete";
         keysLabelMap[Control::Key::HOME] = "Home";
         keysLabelMap[Control::Key::END] = "End";
         keysLabelMap[Control::Key::PAGE_UP] = "Page Up";

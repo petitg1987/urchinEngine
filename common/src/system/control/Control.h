@@ -104,7 +104,7 @@ namespace urchin {
                 TAB,
                 BACKSPACE,
                 INSERT,
-                DELETE,
+                DEL,
                 HOME,
                 END,
                 PAGE_UP,
