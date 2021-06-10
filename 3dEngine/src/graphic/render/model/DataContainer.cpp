@@ -9,18 +9,18 @@ namespace urchin {
             dataType(dataType),
             dataDimension(dataDimension),
             dataCount(dataCount),
-            newData(true),
-            newDataTotalUpdate(0) {
+            newData({}) {
         this->ptr = malloc(getBufferSize());
         std::memcpy(this->ptr, ptr, getBufferSize());
+
+        resetNewDataFlag();
     }
 
     DataContainer::DataContainer(const DataContainer& src) :
             dataType(src.dataType),
             dataDimension(src.dataDimension),
             dataCount(src.dataCount),
-            newData(src.newData),
-            newDataTotalUpdate(src.newDataTotalUpdate) {
+            newData(src.newData) {
         this->ptr = malloc(getBufferSize());
         std::memcpy(this->ptr, src.ptr, getBufferSize());
     }
@@ -30,8 +30,7 @@ namespace urchin {
             dataDimension(src.dataDimension),
             dataCount(src.dataCount),
             ptr(src.ptr),
-            newData(src.newData),
-            newDataTotalUpdate(src.newDataTotalUpdate) {
+            newData(src.newData) {
         src.ptr = nullptr;
     }
 
@@ -45,7 +44,6 @@ namespace urchin {
         src.ptr = nullptr;
 
         newData = src.newData;
-        newDataTotalUpdate = src.newDataTotalUpdate;
 
         return *this;
     }
@@ -107,20 +105,19 @@ namespace urchin {
         throw std::runtime_error("Unknown data dimension: " + std::to_string(dataDimension));
     }
 
-    bool DataContainer::hasNewData() const {
-        return newData;
+    bool DataContainer::hasNewData(uint32_t frameIndex) const {
+        if(frameIndex >= MAX_FRAMES) {
+            throw std::runtime_error("Number of frames higher than expected: " + std::to_string(frameIndex));
+        }
+
+        return newData[frameIndex];
     }
 
-    void DataContainer::newDataAck(std::size_t nbFramebuffer) {
-        newDataTotalUpdate++;
-        if (nbFramebuffer == newDataTotalUpdate) {
-            newDataTotalUpdate = 0;
-            newData = false;
-        }
+    void DataContainer::newDataAck(uint32_t frameIndex) {
+        newData[frameIndex] = false;
     }
 
     void DataContainer::resetNewDataFlag() {
-        newDataTotalUpdate = 0;
-        newData = true;
+        std::fill(newData.begin(), newData.end(), true);
     }
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdlib>
+#include <array>
 #include <vulkan/vulkan.h>
 
 #include <graphic/render/model/DataType.h>
@@ -23,8 +24,8 @@ namespace urchin {
 
             VkFormat getVulkanFormat() const;
 
-            bool hasNewData() const;
-            void newDataAck(std::size_t);
+            bool hasNewData(uint32_t frameIndex) const;
+            void newDataAck(uint32_t frameIndex);
             void resetNewDataFlag();
 
         private:
@@ -36,8 +37,8 @@ namespace urchin {
             std::size_t dataCount;
             void* ptr;
 
-            bool newData;
-            uint32_t newDataTotalUpdate;
+            static constexpr uint32_t MAX_FRAMES = 6;
+            std::array<bool, MAX_FRAMES> newData;
     };
 
 }

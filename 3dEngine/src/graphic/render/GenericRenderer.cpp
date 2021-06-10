@@ -563,19 +563,19 @@ namespace urchin {
             }
         #endif
         for (std::size_t dataIndex = 0; dataIndex < data.size(); ++dataIndex) {
-            if (data[dataIndex].hasNewData()) {
+            if (data[dataIndex].hasNewData(frameIndex)) {
                 auto& dataContainer = data[dataIndex];
                 drawCommandDirty |= vertexBuffers[dataIndex].updateData(frameIndex, dataContainer.getBufferSize(), dataContainer.getData());
-                data[dataIndex].newDataAck(renderTarget->getNumFramebuffer());
+                data[dataIndex].newDataAck(frameIndex);
             }
         }
 
         //update shader uniforms
         for (std::size_t uniformDataIndex = 0; uniformDataIndex < uniformData.size(); ++uniformDataIndex) {
-            if (uniformData[uniformDataIndex].hasNewData()) {
+            if (uniformData[uniformDataIndex].hasNewData(frameIndex)) {
                 auto& dataContainer = uniformData[uniformDataIndex];
                 drawCommandDirty |= uniformsBuffers[uniformDataIndex].updateData(frameIndex, dataContainer.getDataSize(), dataContainer.getData());
-                uniformData[uniformDataIndex].newDataAck(renderTarget->getNumFramebuffer());
+                uniformData[uniformDataIndex].newDataAck(frameIndex);
             }
         }
     }

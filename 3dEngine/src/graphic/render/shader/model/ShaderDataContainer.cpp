@@ -1,21 +1,22 @@
 #include <cstring>
 
 #include <graphic/render/shader/model/ShaderDataContainer.h>
+#include <graphic/setup/GraphicService.h>
 
 namespace urchin {
 
     ShaderDataContainer::ShaderDataContainer(std::size_t dataSize, const void* ptr) :
             dataSize(dataSize),
-            newData(true),
-            newDataTotalUpdate(0) {
+            newData({}) {
         this->ptr = malloc(dataSize);
         std::memcpy(this->ptr, ptr, dataSize);
+
+        resetNewDataFlag();
     }
 
     ShaderDataContainer::ShaderDataContainer(const ShaderDataContainer& src) :
             dataSize(src.dataSize),
-            newData(src.newData),
-            newDataTotalUpdate(src.newDataTotalUpdate) {
+            newData(src.newData) {
         this->ptr = malloc(dataSize);
         std::memcpy(this->ptr, src.ptr, dataSize);
     }
@@ -26,7 +27,7 @@ namespace urchin {
 
     void ShaderDataContainer::updateData(const void* newDataPtr) {
         std::memcpy(this->ptr, newDataPtr, dataSize);
-        newData = true;
+        resetNewDataFlag();
     }
 
     std::size_t ShaderDataContainer::getDataSize() const {
@@ -37,21 +38,20 @@ namespace urchin {
         return ptr;
     }
 
-    bool ShaderDataContainer::hasNewData() const {
-        return newData;
+    bool ShaderDataContainer::hasNewData(uint32_t frameIndex) const {
+        if(frameIndex >= MAX_FRAMES) {
+            throw std::runtime_error("Number of frames higher than expected: " + std::to_string(frameIndex));
+        }
+
+        return newData[frameIndex];
     }
 
-    void ShaderDataContainer::newDataAck(std::size_t nbFramebuffer) {
-        newDataTotalUpdate++;
-        if (nbFramebuffer == newDataTotalUpdate) {
-            newDataTotalUpdate = 0;
-            newData = false;
-        }
+    void ShaderDataContainer::newDataAck(uint32_t frameIndex) {
+        newData[frameIndex] = false;
     }
 
     void ShaderDataContainer::resetNewDataFlag() {
-        newDataTotalUpdate = 0;
-        newData = true;
+        std::fill(newData.begin(), newData.end(), true);
     }
 
 }

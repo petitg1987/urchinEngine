@@ -2,6 +2,7 @@
 
 #include <cstdlib>
 #include <cstdint>
+#include <array>
 
 namespace urchin {
 
@@ -15,16 +16,16 @@ namespace urchin {
             void* getData() const;
             std::size_t getDataSize() const;
 
-            bool hasNewData() const;
-            void newDataAck(std::size_t);
+            bool hasNewData(uint32_t) const;
+            void newDataAck(uint32_t);
             void resetNewDataFlag();
 
         private:
             std::size_t dataSize;
             void* ptr;
 
-            bool newData;
-            uint32_t newDataTotalUpdate;
+            static constexpr uint32_t MAX_FRAMES = 6;
+            std::array<bool, MAX_FRAMES> newData;
     };
 
 }
