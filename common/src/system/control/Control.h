@@ -85,6 +85,7 @@ namespace urchin {
                 LEFT_BRACKET,
                 RIGHT_BRACKET,
                 PERIOD,
+                GRAVE_ACCENT,
                 ESCAPE,
                 SPACE,
                 CTRL_LEFT,
