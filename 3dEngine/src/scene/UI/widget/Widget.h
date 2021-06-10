@@ -66,8 +66,7 @@ namespace urchin {
             virtual bool onMouseMoveEvent(int, int);
             int getMouseX() const;
             int getMouseY() const;
-            virtual void reset();
-            void onDisable();
+            virtual void onResetState();
 
             void prepareRendering(float);
 
@@ -89,7 +88,7 @@ namespace urchin {
             void handleWidgetKeyDown(unsigned int);
             void handleWidgetKeyUp(unsigned int);
             void handleWidgetMouseMove(int, int);
-            void handleDisable();
+            void handleWidgetReset();
 
             std::shared_ptr<RenderTarget> renderTarget;
             std::shared_ptr<Shader> shader;

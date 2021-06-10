@@ -49,10 +49,10 @@ namespace urchin {
                 widgets.erase(it);
                 widgets.push_back(widget);
 
-                //reset the other widgets
+                //reset the others widgets
                 for (long i = (long)widgets.size() - 2; i >= 0; --i) {
                     if (widgets[(std::size_t)i]->isVisible()) {
-                        widgets[(std::size_t)i]->reset();
+                        widgets[(std::size_t)i]->onResetState();
                     }
                 }
             }
@@ -61,7 +61,7 @@ namespace urchin {
 
     bool UIRenderer::onKeyPress(unsigned int key) {
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
-            if (widgets[(std::size_t)i]->isVisible() && !widgets[(std::size_t)i]->onKeyPress(key)) {
+            if (!widgets[(std::size_t)i]->onKeyPress(key)) {
                 return false;
             }
         }
@@ -70,7 +70,7 @@ namespace urchin {
 
     bool UIRenderer::onKeyRelease(unsigned int key) {
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
-            if (widgets[(std::size_t)i]->isVisible() && !widgets[(std::size_t)i]->onKeyRelease(key)) {
+            if (!widgets[(std::size_t)i]->onKeyRelease(key)) {
                 return false;
             }
         }
@@ -79,7 +79,7 @@ namespace urchin {
 
     bool UIRenderer::onChar(unsigned int character) {
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
-            if (widgets[(std::size_t)i]->isVisible() && !widgets[(std::size_t)i]->onChar(character)) {
+            if (!widgets[(std::size_t)i]->onChar(character)) {
                 return false;
             }
         }
@@ -88,7 +88,7 @@ namespace urchin {
 
     bool UIRenderer::onMouseMove(int mouseX, int mouseY) {
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
-            if (widgets[(std::size_t)i]->isVisible() && !widgets[(std::size_t)i]->onMouseMove(mouseX, mouseY)) {
+            if (!widgets[(std::size_t)i]->onMouseMove(mouseX, mouseY)) {
                 return false;
             }
         }
@@ -98,7 +98,7 @@ namespace urchin {
     void UIRenderer::onDisable() {
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
             if (widgets[(std::size_t)i]->isVisible()) {
-                widgets[(std::size_t)i]->onDisable();
+                widgets[(std::size_t)i]->onResetState();
             }
         }
     }

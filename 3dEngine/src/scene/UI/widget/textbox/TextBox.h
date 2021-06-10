@@ -24,7 +24,7 @@ namespace urchin {
         private:
             bool onKeyPressEvent(unsigned int) override;
             bool onCharEvent(unsigned int) override;
-            void reset() override;
+            void onResetState() override;
 
             void refreshText(unsigned int);
             void computeCursorPosition();
@@ -43,9 +43,9 @@ namespace urchin {
             float cursorBlink;
 
             //state
-            enum textboxStates {
+            enum TextBoxStates {
                 ACTIVE,
-                UNACTIVE
+                INACTIVE
             } state;
 
             //visual

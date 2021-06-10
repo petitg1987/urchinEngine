@@ -183,6 +183,9 @@ namespace urchin {
     }
 
     void Widget::setIsVisible(bool isVisible) {
+        if (!isVisible) {
+            onResetState();
+        }
         this->bIsVisible = isVisible;
     }
 
@@ -191,16 +194,17 @@ namespace urchin {
     }
 
     bool Widget::onKeyPress(unsigned int key) {
-        handleWidgetKeyDown(key);
+        bool propagateEvent = true;
+        if (isVisible()) {
+            handleWidgetKeyDown(key);
+            propagateEvent = onKeyPressEvent(key);
 
-        bool propagateEvent = onKeyPressEvent(key);
-
-        for (auto& child : children) {
-            if (child->isVisible() && !child->onKeyPress(key)) {
-                return false;
+            for (auto &child : children) {
+                if (!child->onKeyPress(key)) {
+                    return false;
+                }
             }
         }
-
         return propagateEvent;
     }
 
@@ -221,13 +225,15 @@ namespace urchin {
     }
 
     bool Widget::onKeyRelease(unsigned int key) {
-        handleWidgetKeyUp(key);
+        bool propagateEvent = true;
+        if (isVisible()) {
+            handleWidgetKeyUp(key);
+            propagateEvent = onKeyReleaseEvent(key);
 
-        bool propagateEvent = onKeyReleaseEvent(key);
-
-        for (auto& child : children) {
-            if (child->isVisible() && !child->onKeyRelease(key)) {
-                return false;
+            for (auto &child : children) {
+                if (!child->onKeyRelease(key)) {
+                    return false;
+                }
             }
         }
         return propagateEvent;
@@ -256,16 +262,17 @@ namespace urchin {
     }
 
     bool Widget::onChar(unsigned int character) {
-        if (!onCharEvent(character)) {
-            return false;
-        }
+        bool propagateEvent = true;
+        if (isVisible()) {
+            propagateEvent = onCharEvent(character);
 
-        for (auto& child : children) {
-            if (child->isVisible() && !child->onChar(character)) {
-                return false;
+            for (auto &child : children) {
+                if (!child->onChar(character)) {
+                    return false;
+                }
             }
         }
-        return true;
+        return propagateEvent;
     }
 
     bool Widget::onCharEvent(unsigned int) {
@@ -276,12 +283,12 @@ namespace urchin {
         this->mouseX = mouseX;
         this->mouseY = mouseY;
 
-        handleWidgetMouseMove(mouseX, mouseY);
+        bool propagateEvent = true;
+        if (isVisible()) {
+            handleWidgetMouseMove(mouseX, mouseY);
+            propagateEvent = onMouseMoveEvent(mouseX, mouseY);
 
-        bool propagateEvent = onMouseMoveEvent(mouseX, mouseY);
-
-        for (auto& child : children) {
-            if (child->isVisible()) {
+            for (auto &child : children) {
                 if (!child->onMouseMove(mouseX, mouseY)) {
                     return false;
                 }
@@ -319,25 +326,17 @@ namespace urchin {
         return mouseY;
     }
 
-    void Widget::reset() {
+    void Widget::onResetState() {
+        handleWidgetReset();
+
         for (auto& child : children) {
             if (child->isVisible()) {
-                child->reset();
+                child->onResetState();
             }
         }
     }
 
-    void Widget::onDisable() {
-        handleDisable();
-
-        for (auto& child : children) {
-            if (child->isVisible()) {
-                child->onDisable();
-            }
-        }
-    }
-
-    void Widget::handleDisable() {
+    void Widget::handleWidgetReset() {
         if (widgetState == CLICKING) {
             widgetState = FOCUS;
             for (std::shared_ptr<EventListener>& eventListener : eventListeners) {

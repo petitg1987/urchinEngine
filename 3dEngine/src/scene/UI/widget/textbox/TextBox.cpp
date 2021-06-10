@@ -20,7 +20,7 @@ namespace urchin {
             cursorIndex(0),
             cursorPosition(0),
             cursorBlink(0.0f),
-            state(UNACTIVE) {
+            state(INACTIVE) {
 
     }
 
@@ -90,7 +90,7 @@ namespace urchin {
                 int localMouseX = getMouseX() - text->getGlobalPositionX();
                 computeCursorIndex(localMouseX);
             } else {
-                state = UNACTIVE;
+                state = INACTIVE;
                 textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::buildNearest()));
             }
         } else if (state == ACTIVE) {
@@ -132,11 +132,11 @@ namespace urchin {
         return true;
     }
 
-    void TextBox::reset() {
-        state = UNACTIVE;
+    void TextBox::onResetState() {
+        state = INACTIVE;
         textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::buildNearest()));
 
-        Widget::reset();
+        Widget::onResetState();
     }
 
     void TextBox::refreshText(unsigned int newCursorIndex) {
