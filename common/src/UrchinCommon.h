@@ -100,6 +100,7 @@
 #include <system/thread/LockById.h>
 #include <system/thread/ScopeLockById.h>
 #include <system/monitor/MonitorResolutionService.h>
+#include <system/control/Control.h>
 
 #include <util/FileUtil.h>
 #include <util/StringUtil.h>
