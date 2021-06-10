@@ -16,9 +16,9 @@ namespace urchin {
             void add(TranslatableText*);
             void remove(TranslatableText*);
 
-            std::string translate(const std::string&);
-
         private:
+            void refreshTranslation(TranslatableText*);
+
             const std::string DEFAULT_LANGUAGE;
 
             std::string language;

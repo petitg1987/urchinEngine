@@ -47,10 +47,6 @@ namespace urchin {
         refreshRenderer();
     }
 
-    void Text::refreshTranslatableText() {
-        text = getI18nService()->translate(textKey.value());
-    }
-
     void Text::setMaxWidth(Length maxWidth) {
         this->maxWidth = maxWidth;
 
@@ -78,6 +74,13 @@ namespace urchin {
 
     const std::string& Text::getText() const {
         return text;
+    }
+
+    const std::string& Text::getTextKey() const {
+        if (!isTranslatableText()) {
+            throw std::runtime_error("Text key requested on a no translatable text: " + text);
+        }
+        return textKey.value();
     }
 
     const Font* Text::getFont() {

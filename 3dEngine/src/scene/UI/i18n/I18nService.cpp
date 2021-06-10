@@ -14,7 +14,7 @@ namespace urchin {
         this->language = std::move(language);
 
         for(auto translatableText : translatableTexts) {
-            translatableText->refreshTranslatableText();
+            refreshTranslation(translatableText);
         }
     }
 
@@ -24,15 +24,16 @@ namespace urchin {
 
     void I18nService::add(TranslatableText* translatableText) {
         translatableTexts.insert(translatableText);
-        translatableText->refreshTranslatableText();
+        refreshTranslation(translatableText);
     }
 
     void I18nService::remove(TranslatableText* translatableText) {
         translatableTexts.erase(translatableText);
     }
 
-    std::string I18nService::translate(const std::string& textKey) {
-        return textTranslator.translate(language, textKey);
+    void I18nService::refreshTranslation(TranslatableText* translatableText) {
+        std::string translatedText = textTranslator.translate(language, translatableText->getTextKey());
+        translatableText->updateText(translatedText);
     }
 
 }

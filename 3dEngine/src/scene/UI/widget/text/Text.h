@@ -19,7 +19,7 @@ namespace urchin {
             ~Text() override;
 
             void setMaxWidth(Length);
-            void updateText(const std::string&);
+            void updateText(const std::string&) override;
 
             bool isTranslatableText() const;
             const std::string& getText() const;
@@ -27,7 +27,7 @@ namespace urchin {
 
         protected:
             void createOrUpdateWidget() override;
-            void refreshTranslatableText() override;
+            const std::string& getTextKey() const override;
 
             void prepareWidgetRendering(float) override;
 
