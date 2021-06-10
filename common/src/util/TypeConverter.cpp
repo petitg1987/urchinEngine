@@ -71,7 +71,7 @@ namespace urchin {
     }
 
     bool TypeConverter::toBool(const std::string& str) {
-        return str[0] != 0;
+        return str[0] != '0';
     }
 
     long long TypeConverter::toLongLong(float value, float scale) {
