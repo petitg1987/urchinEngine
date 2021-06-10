@@ -51,9 +51,7 @@ namespace urchin {
 
                 //reset the others widgets
                 for (long i = (long)widgets.size() - 2; i >= 0; --i) {
-                    if (widgets[(std::size_t)i]->isVisible()) {
-                        widgets[(std::size_t)i]->onResetState();
-                    }
+                    widgets[(std::size_t)i]->onResetState();
                 }
             }
         }

@@ -327,10 +327,10 @@ namespace urchin {
     }
 
     void Widget::onResetState() {
-        handleWidgetReset();
+        if (isVisible()) {
+            handleWidgetReset();
 
-        for (auto& child : children) {
-            if (child->isVisible()) {
+            for (auto &child : children) {
                 child->onResetState();
             }
         }
