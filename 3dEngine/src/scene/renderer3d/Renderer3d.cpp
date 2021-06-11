@@ -267,7 +267,7 @@ namespace urchin {
         return true;
     }
 
-    bool Renderer3d::onChar(unsigned int) {
+    bool Renderer3d::onChar(char32_t) {
         //nothing to do
         return true;
     }

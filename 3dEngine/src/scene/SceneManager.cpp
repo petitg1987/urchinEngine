@@ -186,9 +186,9 @@ namespace urchin {
         return true;
     }
 
-    bool SceneManager::onChar(unsigned int character) {
+    bool SceneManager::onChar(char32_t unicodeCharacter) {
         for(auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
-            if (activeRenderer && !activeRenderer->onChar(character)) {
+            if (activeRenderer && !activeRenderer->onChar(unicodeCharacter)) {
                 return false;
             }
         }

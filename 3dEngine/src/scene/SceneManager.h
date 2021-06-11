@@ -42,7 +42,7 @@ namespace urchin {
             //events
             bool onKeyPress(unsigned int);
             bool onKeyRelease(unsigned int);
-            bool onChar(unsigned int);
+            bool onChar(char32_t);
             bool onMouseMove(int, int);
 
             //scene

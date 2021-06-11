@@ -261,13 +261,13 @@ namespace urchin {
         }
     }
 
-    bool Widget::onChar(unsigned int character) {
+    bool Widget::onChar(char32_t unicodeCharacter) {
         bool propagateEvent = true;
         if (isVisible()) {
-            propagateEvent = onCharEvent(character);
+            propagateEvent = onCharEvent(unicodeCharacter);
 
             for (auto &child : children) {
-                if (!child->onChar(character)) {
+                if (!child->onChar(unicodeCharacter)) {
                     return false;
                 }
             }
@@ -275,7 +275,7 @@ namespace urchin {
         return propagateEvent;
     }
 
-    bool Widget::onCharEvent(unsigned int) {
+    bool Widget::onCharEvent(char32_t) {
         return true;
     }
 

@@ -23,7 +23,7 @@ namespace urchin {
 
         private:
             bool onKeyPressEvent(unsigned int) override;
-            bool onCharEvent(unsigned int) override;
+            bool onCharEvent(char32_t) override;
             void onResetState() override;
 
             void refreshText(unsigned int);
@@ -35,7 +35,7 @@ namespace urchin {
 
             //display information
             Text* text; //text of the text box (widget)
-            std::string allText; //text of the text box (string)
+            std::u32string allText; //text of the text box (string)
             unsigned int maxWidthText; //maximum length of text can be displayed
             unsigned int startTextIndex; //index of the first letter to display
             unsigned int cursorIndex; //index of the cursor

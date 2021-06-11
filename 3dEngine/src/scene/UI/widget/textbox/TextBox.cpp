@@ -1,4 +1,5 @@
 #include <utility>
+#include <codecvt>
 #include <UrchinCommon.h>
 
 #include <scene/UI/widget/textbox/TextBox.h>
@@ -77,7 +78,7 @@ namespace urchin {
     }
 
     std::string TextBox::getText() {
-        return allText;
+        return std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.to_bytes(allText);
     }
 
     bool TextBox::onKeyPressEvent(unsigned int key) {
@@ -100,14 +101,14 @@ namespace urchin {
                 refreshText(cursorIndex + 1);
             } else if (key == InputDeviceKey::BACKSPACE) {
                 if (cursorIndex > 0) {
-                    std::string tmpRight = allText.substr((unsigned long)cursorIndex, allText.length()-cursorIndex);
+                    std::u32string tmpRight = allText.substr((unsigned long)cursorIndex, allText.length()-cursorIndex);
                     allText = allText.substr(0, (unsigned long)(cursorIndex - 1L));
                     allText.append(tmpRight);
                     refreshText(cursorIndex - 1);
                 }
             } else if (key == InputDeviceKey::DELETE_KEY) {
                 if (allText.length() > 0 && cursorIndex < allText.length()) {
-                    std::string tmpRight = allText.substr((unsigned long)(cursorIndex + 1L), allText.length()-cursorIndex);
+                    std::u32string tmpRight = allText.substr((unsigned long)(cursorIndex + 1L), allText.length()-cursorIndex);
                     allText = allText.substr(0, (unsigned long)cursorIndex);
                     allText.append(tmpRight);
                     refreshText(cursorIndex);
@@ -118,15 +119,13 @@ namespace urchin {
         return true;
     }
 
-    bool TextBox::onCharEvent(unsigned int character) {
+    bool TextBox::onCharEvent(char32_t unicodeCharacter) {
         if (state == ACTIVE) {
-            if (character < 256 && character > 30 && character != 127) {
-                std::string tmpRight = allText.substr((unsigned long)cursorIndex, allText.length()-cursorIndex);
-                allText = allText.substr(0, (unsigned long)cursorIndex);
-                allText.append(1, static_cast<char>(character));
-                allText.append(tmpRight);
-                refreshText(cursorIndex + 1);
-            }
+            std::u32string tmpRight = allText.substr((unsigned long)cursorIndex, allText.length()-cursorIndex);
+            allText = allText.substr(0, (unsigned long)cursorIndex);
+            allText.append(1, unicodeCharacter);
+            allText.append(tmpRight);
+            refreshText(cursorIndex + 1);
             return false;
         }
         return true;
@@ -160,13 +159,14 @@ namespace urchin {
         unsigned int widthText = 0;
         unsigned int endTextIndex = startTextIndex;
         for (; endTextIndex < allText.length(); ++endTextIndex) {
-            auto letter = static_cast<unsigned char>(allText[endTextIndex]);
-            widthText += font->getGlyph(letter).width + font->getSpaceBetweenLetters();
+            char32_t textLetter = allText[endTextIndex];
+            widthText += font->getGlyph(textLetter).width + font->getSpaceBetweenLetters();
             if (widthText > maxWidthText) {
                 break;
             }
         }
-        text->updateText(allText.substr((unsigned long)startTextIndex, (unsigned long)(endTextIndex - startTextIndex)));
+        std::u32string textToDisplay = allText.substr((unsigned long)startTextIndex, (unsigned long)(endTextIndex - startTextIndex));
+        text->updateText(std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.to_bytes(textToDisplay));
     }
 
     void TextBox::computeCursorPosition() {
@@ -174,8 +174,8 @@ namespace urchin {
         cursorPosition = 0;
 
         for (unsigned int i = startTextIndex; i < cursorIndex; ++i) {
-            auto letter = static_cast<unsigned char>(allText[i]);
-            cursorPosition += font->getGlyph(letter).width + font->getSpaceBetweenLetters();
+            char32_t textLetter = allText[i];
+            cursorPosition += font->getGlyph(textLetter).width + font->getSpaceBetweenLetters();
         }
 
         if (cursorPosition > 0) {
@@ -191,13 +191,13 @@ namespace urchin {
         float widthText = 0.0f;
 
         for (cursorIndex = startTextIndex; cursorIndex < allText.length(); ++cursorIndex) {
-            auto letter = static_cast<unsigned char>(allText[cursorIndex]);
-            widthText += (float)font->getGlyph(letter).width / 2.0f;
+            char32_t textLetter = allText[cursorIndex];
+            widthText += (float)font->getGlyph(textLetter).width / 2.0f;
             if (widthText > (float)approximateCursorPosition) {
                 break;
             }
 
-            widthText += (float)font->getGlyph(letter).width / 2.0f + (float)font->getSpaceBetweenLetters();
+            widthText += (float)font->getGlyph(textLetter).width / 2.0f + (float)font->getSpaceBetweenLetters();
         }
 
         //compute the correct cursor position

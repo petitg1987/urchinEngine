@@ -60,8 +60,8 @@ namespace urchin {
             virtual bool onKeyPressEvent(unsigned int);
             bool onKeyRelease(unsigned int);
             virtual bool onKeyReleaseEvent(unsigned int);
-            bool onChar(unsigned int);
-            virtual bool onCharEvent(unsigned int);
+            bool onChar(char32_t);
+            virtual bool onCharEvent(char32_t);
             bool onMouseMove(int, int);
             virtual bool onMouseMoveEvent(int, int);
             int getMouseX() const;

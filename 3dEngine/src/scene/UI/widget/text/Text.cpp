@@ -98,7 +98,7 @@ namespace urchin {
         for (auto& textLine : cutTextLines) { //each line
             float offsetX = 0.0f;
             for (char32_t textLetter : textLine) { //each letter
-                auto letterWidth = (float)font->getGlyph(textLetter).width; //TODO could be out of range
+                auto letterWidth = (float)font->getGlyph(textLetter).width;
                 offsetX += letterWidth + spaceBetweenLetters;
             }
             width = std::max(width, offsetX - spaceBetweenLetters);
@@ -131,7 +131,7 @@ namespace urchin {
                 lengthFromLastSpace = 0;
             }
 
-            unsigned int letterLength = font->getGlyph(textLetter).width + font->getSpaceBetweenLetters(); //TODO could be out of range
+            unsigned int letterLength = font->getGlyph(textLetter).width + font->getSpaceBetweenLetters();
 
             if (getMaxWidth() != 0 && lineLength + letterLength >= getMaxWidth()) { //cut too long line
                 if((int)lastSpaceIndex - (int)startLineIndex > 0) { //cut line at last space found
@@ -207,7 +207,7 @@ namespace urchin {
 
         for (auto& textLine : cutTextLines) { //each line
             float offsetX = 0.0f;
-            for (char32_t textLetter : textLine) { //each letter //TODO could be out of range
+            for (char32_t textLetter : textLine) { //each letter
                 auto letterShift = (float)font->getGlyph(textLetter).shift;
                 auto letterWidth = (float)font->getGlyph(textLetter).width;
                 auto letterHeight = (float)font->getGlyph(textLetter).height;
