@@ -151,7 +151,7 @@ namespace urchin {
         if (cursorPosition > maxWidthText) {
             startTextIndex = (startTextIndex <= allText.length()) ? startTextIndex + LETTER_SHIFT : (unsigned int)allText.length();
         } else if (cursorIndex <= startTextIndex) {
-            startTextIndex = (startTextIndex > 0) ? startTextIndex-LETTER_SHIFT : 0;
+            startTextIndex = (startTextIndex > 0) ? startTextIndex - LETTER_SHIFT : 0;
         }
         computeCursorPosition();
 

@@ -10,7 +10,7 @@
 #define WIDTH_BETWEEN_LINES_RATE 1.9f
 #define WIDTH_SPACE_RATE 0.4f
 #define NUM_COLORS 4u
-#define NUM_LETTERS 256u
+#define NUM_LETTERS 256u //unicode range 0000-007F (Basic Latin) + 0080-00FF (Latin-1 Supplement)
 #define NUM_LETTERS_BY_LINE 16u
 
 namespace urchin {

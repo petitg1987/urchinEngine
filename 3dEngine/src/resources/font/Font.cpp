@@ -26,8 +26,8 @@ namespace urchin {
         return fontColor;
     }
 
-    const Glyph& Font::getGlyph(unsigned char character) const {
-        return glyph[(unsigned int)character];
+    const Glyph& Font::getGlyph(char32_t unicodeCodepoint) const {
+        return glyph[unicodeCodepoint];
     }
 
     const std::shared_ptr<Texture>& Font::getTexture() const {

@@ -37,7 +37,7 @@ namespace urchin {
             unsigned int getMaxWidth();
 
             void refreshTextAndWidgetSize();
-            std::string cutText(const std::string&);
+            void cutText();
             void refreshFont();
             unsigned int retrieveFontHeight(const std::shared_ptr<XmlChunk>&) const;
             LengthType toLengthType(const std::string&) const;
@@ -53,7 +53,7 @@ namespace urchin {
             Length maxWidth;
 
             //data
-            std::vector<std::string> cutTextLines;
+            std::vector<std::u32string> cutTextLines;
             Font* font;
 
             //visual

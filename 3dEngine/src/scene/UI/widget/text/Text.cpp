@@ -1,5 +1,6 @@
 #include <memory>
 #include <utility>
+#include <codecvt>
 
 #include <scene/UI/widget/text/Text.h>
 #include <scene/UI/widget/Size.h>
@@ -89,64 +90,69 @@ namespace urchin {
 
     void Text::refreshTextAndWidgetSize() {
         //cut the text if needed
-        std::size_t numLetters = 0;
-        std::stringstream cutTextStream(cutText(text));
-        std::string item;
-        cutTextLines.clear();
-        while (std::getline(cutTextStream, item, '\n')) {
-            cutTextLines.push_back(item);
-            numLetters += item.size();
-        }
+        cutText();
 
+        //compute widget size
         float width = 0.0f;
         auto spaceBetweenLetters = (float)font->getSpaceBetweenLetters();
-
-        for (auto& cutTextLine : cutTextLines) { //each lines
+        for (auto& textLine : cutTextLines) { //each line
             float offsetX = 0.0f;
-            for (char charLetter : cutTextLine) { //each letters
-                auto letter = static_cast<unsigned char>(charLetter);
-                auto letterWidth = (float)font->getGlyph(letter).width;
-
+            for (char32_t textLetter : textLine) { //each letter
+                auto letterWidth = (float)font->getGlyph(textLetter).width; //TODO could be out of range
                 offsetX += letterWidth + spaceBetweenLetters;
             }
             width = std::max(width, offsetX - spaceBetweenLetters);
         }
-
         std::size_t numberOfLines = cutTextLines.empty() ? 1 : cutTextLines.size();
         std::size_t numberOfInterLines = cutTextLines.empty() ? 0 : cutTextLines.size() - 1;
         auto textHeight = (float)(numberOfLines * font->getHeight() + numberOfInterLines * font->getSpaceBetweenLines());
         setSize(Size(width, textHeight, LengthType::PIXEL));
     }
 
-    std::string Text::cutText(const std::string& constText) {
-        std::string text(constText);
+    void Text::cutText() {
+        cutTextLines.clear();
+        std::u32string u32Text = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(text);
 
+        std::size_t startLineIndex = 0;
+        std::size_t lastSpaceIndex = 0;
         unsigned int lineLength = 0;
-        unsigned int indexLastSpace = 0;
         unsigned int lengthFromLastSpace = 0;
 
-        for (unsigned int numLetter = 0; text[numLetter] != 0; numLetter++) { //each letters
-            auto letter = static_cast<unsigned char>(text[numLetter]);
+        for (std::size_t letterIndex = 0; letterIndex < u32Text.length(); letterIndex++) { //each letters
+            char32_t textLetter = u32Text[letterIndex];
 
-            if (letter == '\n') {
+            if (textLetter == '\n') {
+                cutTextLines.emplace_back(u32Text.substr(startLineIndex, letterIndex - startLineIndex));
+                startLineIndex = letterIndex + 1;
                 lineLength = 0;
                 lengthFromLastSpace = 0;
-            } else if (letter == ' ') {
-                indexLastSpace = numLetter;
+            } else if (textLetter == ' ') {
+                lastSpaceIndex = letterIndex;
                 lengthFromLastSpace = 0;
             }
 
-            unsigned int lengthLetter = font->getGlyph(letter).width + font->getSpaceBetweenLetters();
-            if (lineLength + lengthLetter >= getMaxWidth()) { //cut line
-                text[indexLastSpace] = '\n';
-                lineLength = lengthFromLastSpace;
+            unsigned int letterLength = font->getGlyph(textLetter).width + font->getSpaceBetweenLetters(); //TODO could be out of range
+
+            if (getMaxWidth() != 0 && lineLength + letterLength >= getMaxWidth()) { //cut too long line
+                if((int)lastSpaceIndex - (int)startLineIndex > 0) { //cut line at last space found
+                    cutTextLines.push_back(u32Text.substr(startLineIndex, lastSpaceIndex - startLineIndex));
+                    startLineIndex = lastSpaceIndex + 1;
+                    lineLength = lengthFromLastSpace;
+                } else if((int)letterIndex - (int)startLineIndex > 0) { //cut line at the middle of a word
+                    cutTextLines.push_back(u32Text.substr(startLineIndex, letterIndex - startLineIndex));
+                    startLineIndex = letterIndex;
+                    lineLength = letterLength;
+                    lengthFromLastSpace = letterLength;
+                }
             } else {
-                lineLength += lengthLetter;
-                lengthFromLastSpace += lengthLetter;
+                lineLength += letterLength;
+                lengthFromLastSpace += letterLength;
             }
         }
 
-        return text;
+        if((int)u32Text.length() - (int)startLineIndex > 0) {
+            cutTextLines.emplace_back(u32Text.substr(startLineIndex, u32Text.length() - startLineIndex));
+        }
     }
 
     void Text::refreshFont() {
@@ -199,13 +205,12 @@ namespace urchin {
         auto spaceBetweenLetters = (float)font->getSpaceBetweenLetters();
         auto spaceBetweenLines = (float)font->getSpaceBetweenLines();
 
-        for (auto& cutTextLine : cutTextLines) { //each lines
+        for (auto& textLine : cutTextLines) { //each line
             float offsetX = 0.0f;
-            for (char charLetter : cutTextLine) { //each letters
-                auto letter = static_cast<unsigned char>(charLetter);
-                auto letterShift = (float)font->getGlyph(letter).shift;
-                auto letterWidth = (float)font->getGlyph(letter).width;
-                auto letterHeight = (float)font->getGlyph(letter).height;
+            for (char32_t textLetter : textLine) { //each letter //TODO could be out of range
+                auto letterShift = (float)font->getGlyph(textLetter).shift;
+                auto letterWidth = (float)font->getGlyph(textLetter).width;
+                auto letterHeight = (float)font->getGlyph(textLetter).height;
                 auto letterOffsetY = offsetY - letterShift;
 
                 vertexCoord.emplace_back(Point2<float>(offsetX, letterOffsetY));
@@ -216,8 +221,8 @@ namespace urchin {
                 vertexCoord.emplace_back(Point2<float>(letterWidth + offsetX, letterHeight + letterOffsetY));
                 vertexCoord.emplace_back(Point2<float>(offsetX, letterHeight + letterOffsetY));
 
-                float sMin = (float)(letter % 16) / 16.0f;
-                float tMin = (float)(letter >> 4u) / 16.0f;
+                float sMin = (float)(textLetter % 16) / 16.0f;
+                float tMin = (float)(textLetter >> 4u) / 16.0f;
                 float sMax = sMin + (letterWidth / (float)font->getDimensionTexture());
                 float tMax = tMin + (letterHeight / (float)font->getDimensionTexture());
 
