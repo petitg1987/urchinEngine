@@ -4,7 +4,6 @@
 #include <scene/UI/UIRenderer.h>
 #include <resources/MediaManager.h>
 #include <resources/font/Font.h>
-#include <texture/render/TextureRenderer.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>
 
 namespace urchin {
@@ -14,8 +13,6 @@ namespace urchin {
 
     UIRenderer::UIRenderer(std::shared_ptr<RenderTarget> renderTarget) :
             renderTarget(std::move(renderTarget)),
-            sceneWidth(0),
-            sceneHeight(0),
             i18nService(std::make_unique<I18nService>()){
         uiShader = ShaderBuilder::createShader("ui.vert.spv", "", "ui.frag.spv", std::unique_ptr<ShaderConstants>());
     }
@@ -27,9 +24,6 @@ namespace urchin {
     }
 
     void UIRenderer::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
-        this->sceneWidth = sceneWidth;
-        this->sceneHeight = sceneHeight;
-
         //orthogonal matrix with origin at top left screen
         mProjection.setValues(2.0f / (float)sceneWidth, 0.0f, -1.0f, 0.0f,
             0.0f, 2.0f / (float)sceneHeight, -1.0f, 0.0f,
@@ -39,6 +33,19 @@ namespace urchin {
         //widgets resize
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
             widgets[(std::size_t)i]->onResize(sceneWidth, sceneHeight, mProjection);
+        }
+
+        //debug
+        if (DEBUG_DISPLAY_FONT_TEXTURE) {
+            Font* font = MediaManager::instance()->getMedia<Font>("UI/font.ttf", {{"fontSize", "16"}, {"fontColor", "1.0 1.0 1.0"}});
+
+            auto textureDisplayer = std::make_unique<TextureRenderer>(font->getTexture(), TextureRenderer::DEFAULT_VALUE);
+            textureDisplayer->setPosition(TextureRenderer::USER_DEFINED_X, TextureRenderer::USER_DEFINED_Y);
+            textureDisplayer->setSize(20.0f, (float)font->getDimensionTexture() + 20.0f, 20.0f, (float)font->getDimensionTexture() + 20.0f);
+            textureDisplayer->enableTransparency();
+            textureDisplayer->initialize("[DEBUG] font texture", renderTarget, sceneWidth, sceneHeight, -1.0f, -1.0f);
+            debugFont = std::move(textureDisplayer);
+            font->release();
         }
     }
 
@@ -126,17 +133,8 @@ namespace urchin {
             }
         }
 
-        if (DEBUG_DISPLAY_FONT_TEXTURE) {
-            Font* font = MediaManager::instance()->getMedia<Font>("UI/font/font.ttf", {{"fontSize", "16"}, {"fontColor", "1.0 1.0 1.0"}});
-
-            TextureRenderer textureDisplayer(font->getTexture(), TextureRenderer::DEFAULT_VALUE);
-            textureDisplayer.setPosition(TextureRenderer::USER_DEFINED_X, TextureRenderer::USER_DEFINED_Y);
-            textureDisplayer.setSize(20.0f, (float)font->getDimensionTexture() + 20.0f, 20.0f, (float)font->getDimensionTexture() + 20.0f);
-            textureDisplayer.enableTransparency();
-            textureDisplayer.initialize("[DEBUG] font texture", renderTarget, sceneWidth, sceneHeight, -1.0f, -1.0f);
-            textureDisplayer.prepareRendering();
-            font->release();
-        }
+        //debug
+        debugFont->prepareRendering();
     }
 
 }

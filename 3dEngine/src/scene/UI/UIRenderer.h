@@ -7,6 +7,7 @@
 #include <graphic/render/target/RenderTarget.h>
 #include <scene/Renderer.h>
 #include <scene/UI/widget/Widget.h>
+#include <texture/render/TextureRenderer.h>
 
 namespace urchin {
 
@@ -31,13 +32,14 @@ namespace urchin {
 
         private:
             std::shared_ptr<RenderTarget> renderTarget;
-            unsigned int sceneWidth, sceneHeight;
             std::vector<Widget*> widgets;
 
             Matrix4<float> mProjection;
             std::shared_ptr<Shader> uiShader;
 
             std::unique_ptr<I18nService> i18nService;
+
+            std::unique_ptr<TextureRenderer> debugFont;
     };
 
 }
