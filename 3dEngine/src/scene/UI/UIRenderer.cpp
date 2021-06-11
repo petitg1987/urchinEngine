@@ -37,7 +37,7 @@ namespace urchin {
 
         //debug
         if (DEBUG_DISPLAY_FONT_TEXTURE) {
-            Font* font = MediaManager::instance()->getMedia<Font>("UI/font.ttf", {{"fontSize", "16"}, {"fontColor", "1.0 1.0 1.0"}});
+            Font* font = MediaManager::instance()->getMedia<Font>("UI/fontText.ttf", {{"fontSize", "16"}, {"fontColor", "1.0 1.0 1.0"}});
 
             auto textureDisplayer = std::make_unique<TextureRenderer>(font->getTexture(), TextureRenderer::DEFAULT_VALUE);
             textureDisplayer->setPosition(TextureRenderer::USER_DEFINED_X, TextureRenderer::USER_DEFINED_Y);
@@ -134,7 +134,9 @@ namespace urchin {
         }
 
         //debug
-        debugFont->prepareRendering();
+        if (debugFont) {
+            debugFont->prepareRendering();
+        }
     }
 
 }
