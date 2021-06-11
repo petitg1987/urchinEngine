@@ -218,7 +218,7 @@ namespace urchin {
             if (widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
                 widgetState = CLICKING;
                 for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
-                    eventListener->onClick(this);
+                    eventListener->onMouseLeftClick(this);
                 }
             }
         }
@@ -250,7 +250,7 @@ namespace urchin {
                 if (widgetState == CLICKING) {
                     widgetState = FOCUS;
                     for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
-                        eventListener->onClickRelease(this);
+                        eventListener->onMouseLeftClickRelease(this);
                     }
                 } else {
                     widgetState = FOCUS;
@@ -340,7 +340,7 @@ namespace urchin {
         if (widgetState == CLICKING) {
             widgetState = FOCUS;
             for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
-                eventListener->onClickRelease(this);
+                eventListener->onMouseLeftClickRelease(this);
             }
         }
 

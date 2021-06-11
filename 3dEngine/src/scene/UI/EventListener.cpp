@@ -3,11 +3,11 @@
 
 namespace urchin {
 
-    void EventListener::onClick(Widget*) {
+    void EventListener::onMouseLeftClick(Widget*) {
 
     }
 
-    void EventListener::onClickRelease(Widget*) {
+    void EventListener::onMouseLeftClickRelease(Widget*) {
 
     }
 

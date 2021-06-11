@@ -159,7 +159,7 @@ namespace urchin {
 
     }
 
-    void Slider::ButtonSliderEventListener::onClickRelease(Widget*) {
+    void Slider::ButtonSliderEventListener::onMouseLeftClickRelease(Widget*) {
         if (isLeftButton) {
             if (slider->selectedIndex > 0 || loopOnValuesEnabled) {
                 slider->valuesText[slider->selectedIndex]->setIsVisible(false);
