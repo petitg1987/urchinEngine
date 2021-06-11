@@ -78,11 +78,10 @@ namespace urchin {
             unsigned int getSceneHeight() const;
             virtual void createOrUpdateWidget() = 0;
 
-            I18nService* getI18nService() const;
-
             virtual void prepareWidgetRendering(float) = 0;
 
             WidgetOutline widgetOutline;
+            I18nService* i18nService;
 
         private:
             void handleWidgetKeyDown(unsigned int);
@@ -99,7 +98,6 @@ namespace urchin {
             std::vector<Widget*> children;
 
             std::vector<std::shared_ptr<EventListener>> eventListeners;
-            I18nService* i18nService;
             WidgetStates widgetState;
 
             Position position;

@@ -83,7 +83,7 @@ namespace urchin {
         refreshWeakRenderers();
 
         for (auto& renderer: renderers) {
-            if (!renderer.expired() && renderer.lock()->isEnabled()) {
+            if (renderer.lock()->isEnabled()) {
                 renderer.lock()->disableRenderer();
             }
         }

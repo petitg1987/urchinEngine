@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    class I18nService {
+    class I18nService { //TODO wrong folder ?
         public:
             I18nService();
 

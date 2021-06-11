@@ -35,14 +35,11 @@ namespace urchin {
             std::string secondLanguage = availableLanguages[(i + 1) % availableLanguages.size()];
             auto secondLanguageTexts = retrieveLanguageTexts(secondLanguage);
 
-            std::map<std::string, std::string> textsDiff;
-            std::set_difference(firstLanguageTexts.begin(), firstLanguageTexts.end(),
-                                secondLanguageTexts.begin(), secondLanguageTexts.end(),
-                                std::inserter(textsDiff, textsDiff.begin()));
-
-            if (!textsDiff.empty()) {
-                logMissingTranslation(secondLanguage, textsDiff.begin()->first);
-                break;
+            for(auto& firstLanguageText : firstLanguageTexts) {
+                if(secondLanguageTexts.find(firstLanguageText.first) == secondLanguageTexts.end()) {
+                    logMissingTranslation(secondLanguage, firstLanguageText.first);
+                    break;
+                }
             }
         }
     }

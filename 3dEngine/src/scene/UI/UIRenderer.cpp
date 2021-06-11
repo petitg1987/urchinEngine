@@ -11,9 +11,9 @@ namespace urchin {
     //debug parameters
     bool DEBUG_DISPLAY_FONT_TEXTURE = false;
 
-    UIRenderer::UIRenderer(std::shared_ptr<RenderTarget> renderTarget) :
+    UIRenderer::UIRenderer(std::shared_ptr<RenderTarget> renderTarget, const std::unique_ptr<I18nService>& i18nService) :
             renderTarget(std::move(renderTarget)),
-            i18nService(std::make_unique<I18nService>()){
+            i18nService(i18nService.get()){
         uiShader = ShaderBuilder::createShader("ui.vert.spv", "", "ui.frag.spv", std::unique_ptr<ShaderConstants>());
     }
 
@@ -108,9 +108,7 @@ namespace urchin {
 
     void UIRenderer::onDisable() {
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
-            if (widgets[(std::size_t)i]->isVisible()) {
-                widgets[(std::size_t)i]->onResetState();
-            }
+            widgets[(std::size_t)i]->onResetState();
         }
     }
 
@@ -120,7 +118,7 @@ namespace urchin {
         }
         widgets.push_back(widget);
 
-        widget->initialize(renderTarget, uiShader, i18nService.get());
+        widget->initialize(renderTarget, uiShader, i18nService);
         widget->addObserver(this, Widget::SET_IN_FOREGROUND);
     }
 
@@ -134,9 +132,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "uiPreRendering");
 
         for (auto& widget : widgets) {
-            if (widget->isVisible()) {
-                widget->prepareRendering(dt);
-            }
+            widget->prepareRendering(dt);
         }
 
         //debug

@@ -13,7 +13,7 @@ namespace urchin {
 
     class UIRenderer : public Renderer, public Observer {
         public:
-            explicit UIRenderer(std::shared_ptr<RenderTarget>);
+            explicit UIRenderer(std::shared_ptr<RenderTarget>, const std::unique_ptr<I18nService>&);
             ~UIRenderer() override;
 
             void onResize(unsigned int, unsigned int) override;
@@ -32,12 +32,11 @@ namespace urchin {
 
         private:
             std::shared_ptr<RenderTarget> renderTarget;
+            I18nService* i18nService;
             std::vector<Widget*> widgets;
 
             Matrix4<float> mProjection;
             std::shared_ptr<Shader> uiShader;
-
-            std::unique_ptr<I18nService> i18nService;
 
             std::unique_ptr<TextureRenderer> debugFont;
     };

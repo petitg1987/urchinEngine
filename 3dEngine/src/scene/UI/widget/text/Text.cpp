@@ -36,16 +36,20 @@ namespace urchin {
 
     Text::~Text() {
         cleanFont();
+
+        if(isTranslatableText()) {
+            i18nService->remove(this);
+        }
     }
 
     void Text::createOrUpdateWidget() {
-        if(isTranslatableText()) {
-            getI18nService()->add(this);
-        }
-
         refreshFont();
         refreshTextAndWidgetSize();
         refreshRenderer();
+
+        if(isTranslatableText()) {
+            i18nService->add(this);
+        }
     }
 
     void Text::setMaxWidth(Length maxWidth) {

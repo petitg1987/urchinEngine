@@ -11,12 +11,13 @@ namespace urchin {
     SceneManager::SceneManager(const std::vector<std::string>& windowRequiredExtensions, const std::unique_ptr<SurfaceCreator>& surfaceCreator, std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever) :
             sceneWidth(500),
             sceneHeight(500),
-            screenRenderTarget(std::make_shared<ScreenRender>("screen", RenderTarget::NO_DEPTH_ATTACHMENT)),
-            activeRenderer3d(nullptr),
-            activeUiRenderers(nullptr),
+            i18nService(std::make_unique<I18nService>()),
             previousFps(),
             fps(START_FPS),
-            fpsForDisplay(START_FPS) {
+            fpsForDisplay(START_FPS),
+            screenRenderTarget(std::make_shared<ScreenRender>("screen", RenderTarget::NO_DEPTH_ATTACHMENT)),
+            activeRenderer3d(nullptr),
+            activeUiRenderers(nullptr) {
         //initialize
         SignalHandler::instance()->initialize();
         GraphicService::instance()->initialize(windowRequiredExtensions, surfaceCreator, std::move(framebufferSizeRetriever));
@@ -67,6 +68,10 @@ namespace urchin {
 
     unsigned int SceneManager::getSceneHeight() const {
         return sceneHeight;
+    }
+
+    const std::unique_ptr<I18nService>& SceneManager::getI18nService() const {
+        return i18nService;
     }
 
     float SceneManager::getFps() const {
@@ -135,7 +140,7 @@ namespace urchin {
     }
 
     UIRenderer* SceneManager::newUIRenderer(bool enable) {
-        auto* uiRenderer = new UIRenderer(screenRenderTarget);
+        auto* uiRenderer = new UIRenderer(screenRenderTarget, i18nService);
         uiRenderers.push_back(uiRenderer);
 
         if (enable) {

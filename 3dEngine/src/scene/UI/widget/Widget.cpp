@@ -7,10 +7,10 @@
 namespace urchin {
 
     Widget::Widget(Widget* parent, Position position, Size size) :
+            i18nService(nullptr),
             sceneWidth(parent ? parent->getSceneWidth() : 0),
             sceneHeight(parent ? parent->getSceneHeight() : 0),
             parent(parent),
-            i18nService(nullptr),
             widgetState(Widget::DEFAULT),
             position(position),
             size(size),
@@ -352,15 +352,11 @@ namespace urchin {
         }
     }
 
-    I18nService* Widget::getI18nService() const {
-        return i18nService;
-    }
-
     void Widget::prepareRendering(float dt) {
-        prepareWidgetRendering(dt);
+        if (isVisible()) {
+            prepareWidgetRendering(dt);
 
-        for (auto& child : children) {
-            if (child->isVisible()) {
+            for (auto &child : children) {
                 child->prepareRendering(dt);
             }
         }
