@@ -1,7 +1,7 @@
 #include <filesystem>
 #include <UrchinCommon.h>
 
-#include <scene/UI/i18n/TextTranslator.h>
+#include <i18n/TextTranslator.h>
 
 namespace urchin {
 

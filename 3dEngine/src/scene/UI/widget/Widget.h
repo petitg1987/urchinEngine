@@ -8,7 +8,7 @@
 #include <scene/UI/widget/Size.h>
 #include <scene/UI/UISkinService.h>
 #include <scene/UI/EventListener.h>
-#include <scene/UI/i18n/I18nService.h>
+#include <i18n/I18nService.h>
 #include <graphic/render/target/RenderTarget.h>
 #include <graphic/render/GenericRendererBuilder.h>
 

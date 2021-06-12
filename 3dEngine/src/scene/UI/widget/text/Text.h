@@ -6,7 +6,7 @@
 #include <scene/UI/widget/Widget.h>
 #include <scene/UI/widget/Position.h>
 #include <scene/UI/widget/Length.h>
-#include <scene/UI/i18n/TranslatableText.h>
+#include <i18n/TranslatableText.h>
 #include <resources/font/Font.h>
 #include <graphic/render/GenericRenderer.h>
 

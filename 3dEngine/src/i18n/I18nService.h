@@ -1,12 +1,12 @@
 #include <string>
 #include <vector>
 
-#include <scene/UI/i18n/TranslatableText.h>
-#include <scene/UI/i18n/TextTranslator.h>
+#include <i18n/TranslatableText.h>
+#include <i18n/TextTranslator.h>
 
 namespace urchin {
 
-    class I18nService { //TODO wrong folder ?
+    class I18nService {
         public:
             I18nService();
 

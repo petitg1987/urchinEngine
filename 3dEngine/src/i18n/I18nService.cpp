@@ -1,6 +1,6 @@
 #include <UrchinCommon.h>
 
-#include <scene/UI/i18n/I18nService.h>
+#include <i18n/I18nService.h>
 
 namespace urchin {
 
