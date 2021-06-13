@@ -2,31 +2,19 @@
 
 namespace urchin {
 
-    class SoundBehavior {
+    class SoundBehavior { //TODO simplify (remove class, remove soundBehavior tag in mapEditor + visual)
         public:
             enum PlayBehavior {
                 PLAY_ONCE,
                 PLAY_LOOP
             };
 
-            enum StopBehavior {
-                INSTANT_STOP,
-                SMOOTH_STOP
-            };
-
-            SoundBehavior(PlayBehavior, StopBehavior);
-            SoundBehavior(PlayBehavior, StopBehavior, float);
+            explicit SoundBehavior(PlayBehavior);
 
             PlayBehavior getPlayBehavior() const;
-            StopBehavior getStopBehavior() const;
-
-            float getVolumeDecreasePercentageOnStop() const;
 
         private:
             PlayBehavior playBehavior;
-            StopBehavior stopBehavior;
-
-            float volumeDecreasePercentageOnStop;
     };
 
 }

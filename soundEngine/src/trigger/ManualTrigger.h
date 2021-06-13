@@ -26,7 +26,6 @@ namespace urchin {
                 PLAY,
                 PLAY_LOOP,
                 STOP,
-                SMOOTH_STOP,
                 PAUSE
             };
 

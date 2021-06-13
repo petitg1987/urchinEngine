@@ -23,11 +23,7 @@ namespace urchin {
     }
 
     void ManualTrigger::stop() {
-        if (getSoundBehavior().getStopBehavior() == SoundBehavior::SMOOTH_STOP) {
-            manualTriggerValue = ManualTriggerValue::SMOOTH_STOP;
-        } else {
-            manualTriggerValue = ManualTriggerValue::STOP;
-        }
+        manualTriggerValue = ManualTriggerValue::STOP;
     }
 
     void ManualTrigger::pause() {
@@ -43,8 +39,6 @@ namespace urchin {
             result = SoundTrigger::PLAY_LOOP;
         } else if (manualTriggerValue == ManualTriggerValue::STOP) {
             result = SoundTrigger::STOP;
-        } else if (manualTriggerValue == ManualTriggerValue::SMOOTH_STOP) {
-            result = SoundTrigger::SMOOTH_STOP;
         } else if (manualTriggerValue == ManualTriggerValue::PAUSE) {
             result = SoundTrigger::PAUSE;
         } else if (manualTriggerValue == ManualTriggerValue::NO_TRIGGER) {

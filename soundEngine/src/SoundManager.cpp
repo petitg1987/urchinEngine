@@ -96,6 +96,7 @@ namespace urchin {
 
     void SoundManager::process(const Point3<float>& listenerPosition) {
         alListener3f(AL_POSITION, listenerPosition.X, listenerPosition.Y, listenerPosition.Z);
+        alListenerf(AL_GAIN, 1.0f); //TODO master volume !
 
         for (auto& audioController : audioControllers) {
             audioController->process(listenerPosition);

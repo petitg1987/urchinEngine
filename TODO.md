@@ -15,7 +15,6 @@
   * **OPTIMIZATION** (`minor`): Update descriptor sets (GenericRenderer.updateDescriptorSets) with updated values only
   * **OPTIMIZATION** (`medium`): Check secondary command buffers usage for better performance
   * **OPTIMIZATION** (`medium`): Use same pipeline (vkCmdBindPipeline) in models displayer instead of one by model
-
 * Model
   * **OPTIMIZATION** (`major`): Use instantiation mechanism when identical models are displayed several times in the scene
   * **OPTIMIZATION** (`medium`): Regroup draw calls / shaders when possible
@@ -100,6 +99,8 @@
 * Sound trigger
   * **NEW FEATURE** (`medium`): Support convex hull sound shape
   * **NEW FEATURE** (`major`): Support portal IN and portal OUT to trigger sound
+* Listener    
+  * **NEW FEATURE** (`major`): Define an orientation and a velocity to the listener
 
 # Map editor
 * Render

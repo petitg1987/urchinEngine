@@ -23,8 +23,6 @@ namespace urchin {
         //XML tags
         #define SOUND_BEHAVIOR_TAG "soundBehavior"
         #define PLAY_BEHAVIOR_TAG "playBehavior"
-        #define STOP_BEHAVIOR_TAG "stopBehavior"
-        #define VOLUME_DECREASE_PERCENTAGE_ON_STOP_TAG "volumeDecreasePercentageOnStop"
         #define SOUND_SHAPE_TAG "soundShape"
 
         public:

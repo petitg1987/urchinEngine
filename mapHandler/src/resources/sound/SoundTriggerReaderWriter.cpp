@@ -61,23 +61,7 @@ namespace urchin {
             throw std::invalid_argument("Unknown play behavior read from map: " + playBehaviorChunk->getStringValue());
         }
 
-        std::shared_ptr<XmlChunk> stopBehaviorChunk = xmlParser.getUniqueChunk(true, STOP_BEHAVIOR_TAG, XmlAttribute(), soundBehaviorChunk);
-        SoundBehavior::StopBehavior stopBehavior;
-        if (stopBehaviorChunk->getStringValue() == INSTANT_STOP_VALUE) {
-            stopBehavior = SoundBehavior::INSTANT_STOP;
-        } else if (stopBehaviorChunk->getStringValue() == SMOOTH_STOP_VALUE) {
-            stopBehavior = SoundBehavior::SMOOTH_STOP;
-        } else {
-            throw std::invalid_argument("Unknown stop behavior read from map: " + stopBehaviorChunk->getStringValue());
-        }
-
-        std::shared_ptr<XmlChunk> volumeDecreasePercentageOnStopChunk = xmlParser.getUniqueChunk(false, VOLUME_DECREASE_PERCENTAGE_ON_STOP_TAG, XmlAttribute(), soundBehaviorChunk);
-        if (!volumeDecreasePercentageOnStopChunk) {
-            return {playBehavior, stopBehavior};
-        }
-
-        float volumeDecreasePercentageOnStop = volumeDecreasePercentageOnStopChunk->getFloatValue();
-        return {playBehavior, stopBehavior, volumeDecreasePercentageOnStop};
+        return SoundBehavior(playBehavior);
     }
 
     void SoundTriggerReaderWriter::buildChunkFrom(const std::shared_ptr<XmlChunk>& soundBehaviorChunk, const SoundBehavior& soundBehavior, XmlWriter& xmlWriter) {
@@ -89,18 +73,6 @@ namespace urchin {
         } else {
             throw std::invalid_argument("Unknown play behavior to write in map: " + std::to_string(soundBehavior.getPlayBehavior()));
         }
-
-        std::shared_ptr<XmlChunk> stopBehaviorChunk = xmlWriter.createChunk(STOP_BEHAVIOR_TAG, XmlAttribute(), soundBehaviorChunk);
-        if (soundBehavior.getStopBehavior() == SoundBehavior::INSTANT_STOP) {
-            stopBehaviorChunk->setStringValue(INSTANT_STOP_VALUE);
-        } else if (soundBehavior.getStopBehavior() == SoundBehavior::SMOOTH_STOP) {
-            stopBehaviorChunk->setStringValue(SMOOTH_STOP_VALUE);
-        } else {
-            throw std::invalid_argument("Unknown stop behavior to write in map: " + std::to_string(soundBehavior.getStopBehavior()));
-        }
-
-        std::shared_ptr<XmlChunk> volumeDecreasePercentageOnStopChunk = xmlWriter.createChunk(VOLUME_DECREASE_PERCENTAGE_ON_STOP_TAG, XmlAttribute(), soundBehaviorChunk);
-        volumeDecreasePercentageOnStopChunk->setFloatValue(soundBehavior.getVolumeDecreasePercentageOnStop());
     }
 
 }

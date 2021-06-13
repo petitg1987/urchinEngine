@@ -32,7 +32,7 @@ Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
 * Sound Engine:
   * Ambience sound and 3D sound
   * Streaming
-  * Sound trigger in function of character position
+  * Sound trigger based on character position
 
 * IA Engine:
   * Automatic navigation mesh generator

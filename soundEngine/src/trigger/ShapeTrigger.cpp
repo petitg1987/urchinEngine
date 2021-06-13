@@ -27,7 +27,7 @@ namespace urchin {
         }
         if (isPlaying && !soundShape->pointInsideStopShape(listenerPosition)) {
             isPlaying = false;
-            return getStopTriggerValue();
+            return SoundTrigger::STOP;
         }
 
         return SoundTrigger::NO_TRIGGER;
@@ -43,14 +43,6 @@ namespace urchin {
         }
 
         return SoundTrigger::PLAY;
-    }
-
-    SoundTrigger::TriggerResultValue ShapeTrigger::getStopTriggerValue() {
-        if (getSoundBehavior().getStopBehavior() == SoundBehavior::SMOOTH_STOP) {
-            return SoundTrigger::SMOOTH_STOP;
-        }
-
-        return SoundTrigger::STOP;
     }
 
 }

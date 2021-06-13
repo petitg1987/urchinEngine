@@ -3,7 +3,6 @@
 #include <UrchinCommon.h>
 
 #include <behavior/SoundBehavior.h>
-#include <behavior/SmoothStopAction.h>
 
 namespace urchin {
 
@@ -20,7 +19,6 @@ namespace urchin {
                 PLAY,
                 PLAY_LOOP,
                 STOP,
-                SMOOTH_STOP,
                 PAUSE
             };
 

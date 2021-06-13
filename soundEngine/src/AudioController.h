@@ -5,7 +5,6 @@
 
 #include <sound/Sound.h>
 #include <trigger/SoundTrigger.h>
-#include <behavior/SmoothStopAction.h>
 #include <player/AudioPlayer.h>
 #include <player/stream/StreamUpdateWorker.h>
 
@@ -30,11 +29,9 @@ namespace urchin {
 
         private:
             void processTriggerValue(SoundTrigger::TriggerResultValue);
-            void processSmoothStopTriggerValue(SoundTrigger::TriggerResultValue);
 
             Sound* sound;
             SoundTrigger* soundTrigger;
-            SmoothStopAction* smoothStopAction;
 
             SoundTrigger::TriggerResultValue triggerValue;
 
