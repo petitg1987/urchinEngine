@@ -6,9 +6,10 @@
 
 namespace urchin {
 
-    Sound::Sound(std::string filename) :
+    Sound::Sound(std::string filename, SoundCategory category) :
             sourceId(0),
             filename(std::move(filename)),
+            category(category),
             initialVolume(1.0f),
             volumePercentageChange(1.0f) {
         if (!alcGetCurrentContext()) {
@@ -33,6 +34,10 @@ namespace urchin {
 
     const std::string& Sound::getFilename() const {
         return filename;
+    }
+
+    Sound::SoundCategory Sound::getSoundCategory() const {
+        return category;
     }
 
     /**

@@ -64,6 +64,7 @@ namespace urchin {
             //sound general properties
             QDoubleSpinBox* initialVolume;
             QLabel* soundType;
+            QLabel* soundCategory;
 
             //sound specific properties
             QDoubleSpinBox* positionX;

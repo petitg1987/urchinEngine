@@ -11,10 +11,13 @@ namespace urchin {
     class SoundReaderWriter {
         //XML attributes
         #define TYPE_ATTR "type"
+        #define CATEGORY_ATTR "category"
 
         //XML value
         #define SPATIAL_VALUE "SPATIAL"
         #define GLOBAL_VALUE "GLOBAL"
+        #define MUSIC_VALUE "MUSIC"
+        #define EFFECTS_VALUE "EFFECTS"
 
         //XML tags
         #define FILENAME_TAG "filename"

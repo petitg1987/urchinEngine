@@ -20,7 +20,7 @@ namespace urchin {
             void addSound(Sound*, SoundTrigger*);
             void removeSound(const Sound*);
             void changeSoundTrigger(const Sound*, SoundTrigger*);
-            void setupSoundsVolume(Sound::SoundType, float); //TODO use SoundCategory instead of SoundType
+            void setupSoundsVolume(Sound::SoundCategory, float);
 
             void setMasterVolume(float);
             float getMasterVolume() const;
@@ -34,8 +34,10 @@ namespace urchin {
 
         private:
             void deleteAudioController(AudioController*) const;
+            void adjustSoundVolume(Sound*);
 
             std::vector<AudioController*> audioControllers;
+            std::map<Sound::SoundCategory, float> soundVolumes;
 
             //stream chunk updater thread
             StreamUpdateWorker* streamUpdateWorker;

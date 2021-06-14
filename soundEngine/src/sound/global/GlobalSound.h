@@ -11,7 +11,7 @@ namespace urchin {
      */
     class GlobalSound : public Sound {
         public:
-            explicit GlobalSound(std::string);
+            GlobalSound(std::string, SoundCategory);
 
             Sound::SoundType getSoundType() const override;
     };

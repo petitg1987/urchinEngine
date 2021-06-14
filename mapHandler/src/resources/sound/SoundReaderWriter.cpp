@@ -20,20 +20,30 @@ namespace urchin {
         std::shared_ptr<XmlChunk> filenameChunk = xmlParser.getUniqueChunk(true, FILENAME_TAG, XmlAttribute(), soundChunk);
         std::string filename = filenameChunk->getStringValue();
 
+        std::string soundCategory = soundChunk->getAttributeValue(CATEGORY_ATTR);
+        Sound::SoundCategory category;
+        if (soundCategory == MUSIC_VALUE) {
+            category = Sound::SoundCategory::MUSIC;
+        } else if (soundCategory == EFFECTS_VALUE) {
+            category = Sound::SoundCategory::EFFECTS;
+        } else {
+            throw std::invalid_argument("Unknown sound category read from map: " + soundCategory);
+        }
+
         std::string soundType = soundChunk->getAttributeValue(TYPE_ATTR);
         if (soundType == SPATIAL_VALUE) {
             std::shared_ptr<XmlChunk> positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), soundChunk);
-            auto* spatialSound = new SpatialSound(filename, positionChunk->getPoint3Value());
+            auto* spatialSound = new SpatialSound(filename, category, positionChunk->getPoint3Value());
 
             std::shared_ptr<XmlChunk> inaudibleDistanceChunk = xmlParser.getUniqueChunk(true, INAUDIBLE_DISTANCE_TAG, XmlAttribute(), soundChunk);
             spatialSound->setInaudibleDistance(inaudibleDistanceChunk->getFloatValue());
 
             return spatialSound;
         } else if (soundType == GLOBAL_VALUE) {
-            return new GlobalSound(filename);
+            return new GlobalSound(filename, category);
+        } else {
+            throw std::invalid_argument("Unknown sound type read from map: " + soundType);
         }
-
-        throw std::invalid_argument("Unknown sound type read from map: " + soundType);
     }
 
     void SoundReaderWriter::buildChunkFrom(const std::shared_ptr<XmlChunk>& soundChunk, const Sound* sound, XmlWriter& xmlWriter) {
@@ -53,6 +63,14 @@ namespace urchin {
             soundChunk->setAttribute(XmlAttribute(TYPE_ATTR, GLOBAL_VALUE));
         } else {
             throw std::invalid_argument("Unknown sound type to write in map: " + std::to_string(sound->getSoundType()));
+        }
+
+        if (sound->getSoundCategory() == Sound::SoundCategory::MUSIC) {
+            soundChunk->setAttribute(XmlAttribute(CATEGORY_ATTR, MUSIC_VALUE));
+        } else if (sound->getSoundCategory() == Sound::SoundCategory::EFFECTS) {
+            soundChunk->setAttribute(XmlAttribute(CATEGORY_ATTR, EFFECTS_VALUE));
+        } else {
+            throw std::invalid_argument("Unknown sound category to write in map: " + std::to_string(sound->getSoundCategory()));
         }
     }
 

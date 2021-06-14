@@ -24,6 +24,7 @@ namespace urchin {
             disableSoundEvent(false),
             initialVolume(nullptr),
             soundType(nullptr),
+            soundCategory(nullptr),
             positionX(nullptr), positionY(nullptr), positionZ(nullptr), inaudibleDistance(nullptr),
             playBehavior(nullptr),
             soundTriggerType(nullptr),
@@ -96,9 +97,13 @@ namespace urchin {
 
         auto *soundTypeLabel= new QLabel("Sound Type:");
         generalPropertiesLayout->addWidget(soundTypeLabel, 1, 0);
-
         soundType = new QLabel();
         generalPropertiesLayout->addWidget(soundType, 1, 1);
+
+        auto *soundCategoryLabel= new QLabel("Sound Category:");
+        generalPropertiesLayout->addWidget(soundCategoryLabel, 2, 0);
+        soundCategory = new QLabel();
+        generalPropertiesLayout->addWidget(soundCategory, 2, 1);
     }
 
     void SoundPanelWidget::setupSpecificSpatialSoundBox(QVBoxLayout* soundPropertiesLayout) {
@@ -250,6 +255,14 @@ namespace urchin {
             setupSpatialSoundDataFrom(dynamic_cast<const SpatialSound*>(sound));
         } else {
             throw std::invalid_argument("Impossible to setup specific sound data for sound of type: " + std::to_string(sound->getSoundType()));
+        }
+
+        if (sound->getSoundCategory() == Sound::SoundCategory::MUSIC) {
+            soundCategory->setText(MUSIC_SOUND_LABEL);
+        } else if (sound->getSoundCategory() == Sound::SoundCategory::EFFECTS) {
+            soundCategory->setText(EFFECTS_SOUND_LABEL);
+        } else {
+            throw std::invalid_argument("Impossible to setup specific sound data for sound of category: " + std::to_string(sound->getSoundCategory()));
         }
 
         //sound trigger

@@ -13,16 +13,17 @@ namespace urchin {
             };
 
             enum SoundCategory {
-                MUSIC,
-                EFFECT
+                MUSIC, //ambient music in game or in the menus
+                EFFECTS //game effects (wind, explosion, radio playing music...), UI feedbacks
             };
 
-            explicit Sound(std::string);
+            explicit Sound(std::string, SoundCategory);
             virtual ~Sound();
 
             virtual SoundType getSoundType() const = 0;
             ALuint getSourceId() const;
             const std::string& getFilename() const;
+            SoundCategory getSoundCategory() const;
 
             bool isStopped() const;
             bool isPaused() const;
@@ -36,8 +37,9 @@ namespace urchin {
             void applyVolume() const;
 
             ALuint sourceId;
-
             std::string filename;
+            SoundCategory category;
+
             float initialVolume;
             float volumePercentageChange;
     };

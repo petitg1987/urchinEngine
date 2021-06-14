@@ -31,6 +31,8 @@ namespace urchin {
 
     void SoundManager::addSound(Sound* sound, SoundTrigger* soundTrigger) {
         if (sound && soundTrigger) {
+            adjustSoundVolume(sound);
+
             auto* audioController = new AudioController(sound, soundTrigger, streamUpdateWorker);
             audioControllers.push_back(audioController);
         }
@@ -41,7 +43,6 @@ namespace urchin {
             if ((*it)->getSound() == sound) {
                 deleteAudioController(*it);
                 audioControllers.erase(it);
-
                 break;
             }
         }
@@ -51,17 +52,26 @@ namespace urchin {
         for (auto& audioController : audioControllers) {
             if (audioController->getSound() == sound) {
                 audioController->changeSoundTrigger(newSoundTrigger);
-
                 break;
             }
         }
     }
 
-    void SoundManager::setupSoundsVolume(Sound::SoundType soundType, float volumePercentageChange) {
+    void SoundManager::setupSoundsVolume(Sound::SoundCategory soundCategory, float volumePercentageChange) {
+        soundVolumes[soundCategory] = volumePercentageChange;
+
+        //apply volume on existing sounds:
         for (auto& audioController : audioControllers) {
-            if(audioController->getSound()->getSoundType() == soundType) {
+            if (audioController->getSound()->getSoundCategory() == soundCategory) {
                 audioController->getSound()->changeVolume(volumePercentageChange);
             }
+        }
+    }
+
+    void SoundManager::adjustSoundVolume(Sound* sound) {
+        auto itVolume = soundVolumes.find(sound->getSoundCategory());
+        if (itVolume != soundVolumes.end()) {
+            sound->changeVolume(itVolume->second);
         }
     }
 

@@ -22,6 +22,8 @@ namespace urchin {
             soundFilenameText(nullptr),
             soundTypeLabel(nullptr),
             soundTypeComboBox(nullptr),
+            soundCategoryLabel(nullptr),
+            soundCategoryComboBox(nullptr),
             sceneSound(nullptr) {
         this->setWindowTitle("New Sound");
         this->resize(530, 160);
@@ -33,6 +35,7 @@ namespace urchin {
         setupNameFields(mainLayout);
         setupSoundFilenameFields(mainLayout);
         setupSoundTypeFields(mainLayout);
+        setupSoundCategoryFields(mainLayout);
 
         auto* buttonBox = new QDialogButtonBox();
         mainLayout->addWidget(buttonBox, 4, 0, 1, 3, Qt::AlignRight);
@@ -79,6 +82,17 @@ namespace urchin {
         soundTypeComboBox->addItem(SPATIAL_SOUND_LABEL, QVariant(Sound::SoundType::SPATIAL));
     }
 
+    void NewSoundDialog::setupSoundCategoryFields(QGridLayout* mainLayout) {
+        soundCategoryLabel = new QLabel("Sound Category:");
+        mainLayout->addWidget(soundCategoryLabel, 3, 0);
+
+        soundCategoryComboBox = new QComboBox();
+        mainLayout->addWidget(soundCategoryComboBox, 3, 1);
+        soundCategoryComboBox->setFixedWidth(150);
+        soundCategoryComboBox->addItem(MUSIC_SOUND_LABEL, QVariant(Sound::SoundCategory::MUSIC));
+        soundCategoryComboBox->addItem(EFFECTS_SOUND_LABEL, QVariant(Sound::SoundCategory::EFFECTS));
+    }
+
     void NewSoundDialog::updateSoundName() {
         QString soundName = soundNameText->text();
         if (!soundName.isEmpty()) {
@@ -95,14 +109,17 @@ namespace urchin {
             std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
             std::string relativeSoundFilename = FileUtil::getRelativePath(resourcesDirectory, soundFilename);
 
-            QVariant variant = soundTypeComboBox->currentData();
-            auto soundType = static_cast<Sound::SoundType>(variant.toInt());
+            QVariant soundTypeVariant = soundTypeComboBox->currentData();
+            auto soundType = static_cast<Sound::SoundType>(soundTypeVariant.toInt());
+
+            QVariant soundCategoryVariant = soundCategoryComboBox->currentData();
+            auto soundCategory = static_cast<Sound::SoundCategory>(soundCategoryVariant.toInt());
 
             Sound *sound;
             if (soundType == Sound::GLOBAL) {
-                sound = new GlobalSound(relativeSoundFilename);
+                sound = new GlobalSound(relativeSoundFilename, soundCategory);
             } else if (soundType == Sound::SPATIAL) {
-                sound = new SpatialSound(relativeSoundFilename, Point3<float>(0.0, 0.0, 0.0));
+                sound = new SpatialSound(relativeSoundFilename, soundCategory, Point3<float>(0.0, 0.0, 0.0));
             } else {
                 throw std::invalid_argument("Unknown the sound type to create a new sound: " + std::to_string(soundType));
             }

@@ -17,6 +17,9 @@ namespace urchin {
         #define GLOBAL_SOUND_LABEL "Global"
         #define SPATIAL_SOUND_LABEL "Spatial"
 
+        #define MUSIC_SOUND_LABEL "Music"
+        #define EFFECTS_SOUND_LABEL "Effect"
+
         public:
             NewSoundDialog(QWidget*, const SoundController*);
 
@@ -26,6 +29,7 @@ namespace urchin {
             void setupNameFields(QGridLayout*);
             void setupSoundFilenameFields(QGridLayout*);
             void setupSoundTypeFields(QGridLayout*);
+            void setupSoundCategoryFields(QGridLayout*);
 
             void updateSoundName();
             int buildSceneSound(int);
@@ -41,6 +45,8 @@ namespace urchin {
             QLineEdit* soundFilenameText;
             QLabel* soundTypeLabel;
             QComboBox* soundTypeComboBox;
+            QLabel* soundCategoryLabel;
+            QComboBox* soundCategoryComboBox;
 
             std::string soundName;
             std::string soundFilename;

@@ -6,21 +6,19 @@
 
 namespace urchin {
 
-    SpatialSound::SpatialSound(std::string filename, const Point3<float>& position) :
-            Sound(std::move(filename)),
-            position(position),
-            inaudibleDistance(DEFAULT_INAUDIBLE_DISTANCE) {
-        initializeSource();
-    }
-
     /**
      * @param inaudibleDistance Define distance at which the sound become inaudible
      */
-    SpatialSound::SpatialSound(std::string filename, const Point3<float>& position, float inaudibleDistance) :
-        Sound(std::move(filename)),
-        position(position),
-        inaudibleDistance(inaudibleDistance) {
+    SpatialSound::SpatialSound(std::string filename, SoundCategory category, const Point3<float>& position, float inaudibleDistance) :
+            Sound(std::move(filename), category),
+            position(position),
+            inaudibleDistance(inaudibleDistance) {
         initializeSource();
+    }
+
+    SpatialSound::SpatialSound(std::string filename, SoundCategory category, const Point3<float>& position) :
+            SpatialSound(std::move(filename), category, position, DEFAULT_INAUDIBLE_DISTANCE) {
+
     }
 
     void SpatialSound::initializeSource() {
