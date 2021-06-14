@@ -83,7 +83,7 @@ namespace urchin {
         streamUpdateWorkerStopper.store(true, std::memory_order_relaxed);
     }
 
-    void StreamUpdateWorker::controlExecution() {
+    void StreamUpdateWorker::checkNoExceptionRaised() {
         if (soundThreadExceptionPtr) {
             std::rethrow_exception(soundThreadExceptionPtr);
         }

@@ -22,7 +22,7 @@ namespace urchin {
 
             void start();
             void interrupt();
-            void controlExecution();
+            void checkNoExceptionRaised();
 
         private:
             bool continueExecution();

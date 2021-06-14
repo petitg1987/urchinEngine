@@ -383,9 +383,9 @@ namespace urchin {
     }
 
     void Map::refreshMap() {
-        physicsWorld->controlExecution();
-        aiManager->controlExecution();
-        soundManager->controlExecution();
+        physicsWorld->checkNoExceptionRaised();
+        aiManager->checkNoExceptionRaised();
+        soundManager->checkNoExceptionRaised();
 
         refreshEntities();
         refreshSound();

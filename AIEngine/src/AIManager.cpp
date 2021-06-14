@@ -104,7 +104,7 @@ namespace urchin {
     /**
      * Check if thread has been stopped by an exception and rethrow exception on main thread
      */
-    void AIManager::controlExecution() {
+    void AIManager::checkNoExceptionRaised() {
         if (aiThreadExceptionPtr) {
             std::rethrow_exception(aiThreadExceptionPtr);
         }

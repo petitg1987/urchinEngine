@@ -32,7 +32,7 @@ namespace urchin {
             void unpause();
             bool isPaused() const;
             void interrupt();
-            void controlExecution();
+            void checkNoExceptionRaised();
 
         private:
             void startAIUpdate();

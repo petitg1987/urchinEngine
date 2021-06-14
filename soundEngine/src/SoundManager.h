@@ -27,7 +27,7 @@ namespace urchin {
             void pause();
             void unpause();
 
-            void controlExecution();
+            void checkNoExceptionRaised();
 
             void process(const Point3<float>&);
             void process();

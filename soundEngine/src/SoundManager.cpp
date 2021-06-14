@@ -90,11 +90,16 @@ namespace urchin {
         }
     }
 
-    void SoundManager::controlExecution() {
-        streamUpdateWorker->controlExecution();
+    /**
+     * Check if thread has been stopped by an exception and rethrow exception on main thread
+     */
+    void SoundManager::checkNoExceptionRaised() {
+        streamUpdateWorker->checkNoExceptionRaised();
     }
 
     void SoundManager::process(const Point3<float>& listenerPosition) {
+        ScopeProfiler sp(Profiler::sound(), "soundMgrProc");
+
         alListener3f(AL_POSITION, listenerPosition.X, listenerPosition.Y, listenerPosition.Z);
         alListenerf(AL_GAIN, 1.0f); //TODO master volume !
 
@@ -109,8 +114,6 @@ namespace urchin {
     }
 
     void SoundManager::process() {
-        ScopeProfiler sp(Profiler::sound(), "soundMgrProc");
-
         process(Point3<float>(0.0f, 0.0f, 0.0f));
     }
 
