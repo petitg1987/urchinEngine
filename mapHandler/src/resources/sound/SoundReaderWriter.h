@@ -13,8 +13,8 @@ namespace urchin {
         #define TYPE_ATTR "type"
 
         //XML value
-        #define POINT_VALUE "POINT"
-        #define AMBIENT_VALUE "AMBIENT"
+        #define SPATIAL_VALUE "SPATIAL"
+        #define GLOBAL_VALUE "GLOBAL"
 
         //XML tags
         #define FILENAME_TAG "filename"

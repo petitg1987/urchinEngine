@@ -75,8 +75,8 @@ namespace urchin {
         soundTypeComboBox = new QComboBox();
         mainLayout->addWidget(soundTypeComboBox, 2, 1);
         soundTypeComboBox->setFixedWidth(150);
-        soundTypeComboBox->addItem(AMBIENT_SOUND_LABEL, QVariant(Sound::SoundType::AMBIENT));
-        soundTypeComboBox->addItem(POINT_SOUND_LABEL, QVariant(Sound::SoundType::POINT));
+        soundTypeComboBox->addItem(GLOBAL_SOUND_LABEL, QVariant(Sound::SoundType::GLOBAL));
+        soundTypeComboBox->addItem(SPATIAL_SOUND_LABEL, QVariant(Sound::SoundType::SPATIAL));
     }
 
     void NewSoundDialog::updateSoundName() {
@@ -99,10 +99,10 @@ namespace urchin {
             auto soundType = static_cast<Sound::SoundType>(variant.toInt());
 
             Sound *sound;
-            if (soundType == Sound::AMBIENT) {
-                sound = new AmbientSound(relativeSoundFilename);
-            } else if (soundType == Sound::POINT) {
-                sound = new PointSound(relativeSoundFilename, Point3<float>(0.0, 0.0, 0.0));
+            if (soundType == Sound::GLOBAL) {
+                sound = new GlobalSound(relativeSoundFilename);
+            } else if (soundType == Sound::SPATIAL) {
+                sound = new SpatialSound(relativeSoundFilename, Point3<float>(0.0, 0.0, 0.0));
             } else {
                 throw std::invalid_argument("Unknown the sound type to create a new sound: " + std::to_string(soundType));
             }

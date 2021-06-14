@@ -8,8 +8,8 @@ namespace urchin {
     class Sound {
         public:
             enum SoundType {
-                POINT,
-                AMBIENT
+                SPATIAL,
+                GLOBAL
             };
 
             explicit Sound(std::string);

@@ -7,11 +7,11 @@
 namespace urchin {
 
     /**
-     * Ambient sound (unattenuated)
+     * Non-spatialized sound. Useful for music, UI feedback, etc.
      */
-    class AmbientSound : public Sound {
+    class GlobalSound : public Sound {
         public:
-            explicit AmbientSound(std::string);
+            explicit GlobalSound(std::string);
 
             Sound::SoundType getSoundType() const override;
     };

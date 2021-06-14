@@ -71,10 +71,10 @@ namespace urchin {
         return sceneSound;
     }
 
-    const SceneSound* SoundController::updateScenePointSoundProperties(const SceneSound* constSceneSound, const Point3<float>& position,
+    const SceneSound* SoundController::updateSceneSpatialSoundProperties(const SceneSound* constSceneSound, const Point3<float>& position,
             float inaudibleDistance) {
         SceneSound* sceneSound = findSceneSound(constSceneSound);
-        auto* pointSound = dynamic_cast<PointSound*>(sceneSound->getSound());
+        auto* pointSound = dynamic_cast<SpatialSound*>(sceneSound->getSound());
 
         pointSound->setPosition(position);
         pointSound->setInaudibleDistance(inaudibleDistance);

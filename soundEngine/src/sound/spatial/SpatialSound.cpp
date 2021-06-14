@@ -1,12 +1,12 @@
 #include <utility>
 
-#include <sound/spatial/PointSound.h>
+#include <sound/spatial/SpatialSound.h>
 
 #define DEFAULT_INAUDIBLE_DISTANCE 10.0
 
 namespace urchin {
 
-    PointSound::PointSound(std::string filename, const Point3<float>& position) :
+    SpatialSound::SpatialSound(std::string filename, const Point3<float>& position) :
             Sound(std::move(filename)),
             position(position),
             inaudibleDistance(DEFAULT_INAUDIBLE_DISTANCE) {
@@ -16,14 +16,14 @@ namespace urchin {
     /**
      * @param inaudibleDistance Define distance at which the sound become inaudible
      */
-    PointSound::PointSound(std::string filename, const Point3<float>& position, float inaudibleDistance) :
+    SpatialSound::SpatialSound(std::string filename, const Point3<float>& position, float inaudibleDistance) :
         Sound(std::move(filename)),
         position(position),
         inaudibleDistance(inaudibleDistance) {
         initializeSource();
     }
 
-    void PointSound::initializeSource() {
+    void SpatialSound::initializeSource() {
         alSourcei(getSourceId(), AL_SOURCE_RELATIVE, false);
         alSource3f(getSourceId(), AL_POSITION, position.X, position.Y, position.Z);
 
@@ -32,23 +32,23 @@ namespace urchin {
         alSourcef(getSourceId(), AL_ROLLOFF_FACTOR, 1.0);
     }
 
-    Sound::SoundType PointSound::getSoundType() const {
-        return Sound::POINT;
+    Sound::SoundType SpatialSound::getSoundType() const {
+        return Sound::SPATIAL;
     }
 
-    void PointSound::setPosition(const Point3<float>& position) {
+    void SpatialSound::setPosition(const Point3<float>& position) {
         this->position = position;
         alSource3f(getSourceId(), AL_POSITION, position.X, position.Y, position.Z);
     }
 
-    Point3<float> PointSound::getPosition() const {
+    Point3<float> SpatialSound::getPosition() const {
         return position;
     }
 
     /**
      * @param inaudibleDistance Inaudible distance of the sound
      */
-    void PointSound::setInaudibleDistance(float inaudibleDistance) {
+    void SpatialSound::setInaudibleDistance(float inaudibleDistance) {
         this->inaudibleDistance = inaudibleDistance;
         alSourcef(getSourceId(), AL_MAX_DISTANCE, inaudibleDistance);
     }
@@ -56,7 +56,7 @@ namespace urchin {
     /**
      * @return Distance at which the sound become inaudible
      */
-    float PointSound::getInaudibleDistance() const {
+    float SpatialSound::getInaudibleDistance() const {
         return inaudibleDistance;
     }
 

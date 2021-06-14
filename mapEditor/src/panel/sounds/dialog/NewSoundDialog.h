@@ -14,8 +14,8 @@ namespace urchin {
     class NewSoundDialog : public QDialog {
         Q_OBJECT
 
-        #define AMBIENT_SOUND_LABEL "Ambient"
-        #define POINT_SOUND_LABEL "Point"
+        #define GLOBAL_SOUND_LABEL "Global"
+        #define SPATIAL_SOUND_LABEL "Spatial"
 
         public:
             NewSoundDialog(QWidget*, const SoundController*);

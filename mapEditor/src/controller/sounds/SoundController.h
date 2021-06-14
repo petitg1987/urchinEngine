@@ -21,7 +21,7 @@ namespace urchin {
             void changeSoundShape(const SceneSound*, SoundShape::ShapeType);
 
             const SceneSound* updateSceneSoundGeneralProperties(const SceneSound*, float);
-            const SceneSound* updateScenePointSoundProperties(const SceneSound*, const Point3<float>&, float);
+            const SceneSound* updateSceneSpatialSoundProperties(const SceneSound*, const Point3<float>&, float);
             const SceneSound* updateSceneSoundTriggerGeneralProperties(const SceneSound*, SoundTrigger::PlayBehavior);
             const SceneSound* updateSceneSoundShape(const SceneSound*, const SoundShape*);
 

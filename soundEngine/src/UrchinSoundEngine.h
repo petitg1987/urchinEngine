@@ -3,8 +3,8 @@
 #include <SoundManager.h>
 
 #include <sound/Sound.h>
-#include <sound/ambient/AmbientSound.h>
-#include <sound/spatial/PointSound.h>
+#include <sound/global/GlobalSound.h>
+#include <sound/spatial/SpatialSound.h>
 
 #include <trigger/SoundTrigger.h>
 #include <trigger/ManualTrigger.h>

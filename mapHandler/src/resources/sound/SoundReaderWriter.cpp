@@ -21,16 +21,16 @@ namespace urchin {
         std::string filename = filenameChunk->getStringValue();
 
         std::string soundType = soundChunk->getAttributeValue(TYPE_ATTR);
-        if (soundType == POINT_VALUE) {
+        if (soundType == SPATIAL_VALUE) {
             std::shared_ptr<XmlChunk> positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), soundChunk);
-            auto* pointSound = new PointSound(filename, positionChunk->getPoint3Value());
+            auto* spatialSound = new SpatialSound(filename, positionChunk->getPoint3Value());
 
             std::shared_ptr<XmlChunk> inaudibleDistanceChunk = xmlParser.getUniqueChunk(true, INAUDIBLE_DISTANCE_TAG, XmlAttribute(), soundChunk);
-            pointSound->setInaudibleDistance(inaudibleDistanceChunk->getFloatValue());
+            spatialSound->setInaudibleDistance(inaudibleDistanceChunk->getFloatValue());
 
-            return pointSound;
-        } else if (soundType == AMBIENT_VALUE) {
-            return new AmbientSound(filename);
+            return spatialSound;
+        } else if (soundType == GLOBAL_VALUE) {
+            return new GlobalSound(filename);
         }
 
         throw std::invalid_argument("Unknown sound type read from map: " + soundType);
@@ -40,17 +40,17 @@ namespace urchin {
         std::shared_ptr<XmlChunk> filenameChunk = xmlWriter.createChunk(FILENAME_TAG, XmlAttribute(), soundChunk);
         filenameChunk->setStringValue(sound->getFilename());
 
-        if (sound->getSoundType() == Sound::POINT) {
-            const auto* pointSound = dynamic_cast<const PointSound*>(sound);
-            soundChunk->setAttribute(XmlAttribute(TYPE_ATTR, POINT_VALUE));
+        if (sound->getSoundType() == Sound::SPATIAL) {
+            const auto* spatialSound = dynamic_cast<const SpatialSound*>(sound);
+            soundChunk->setAttribute(XmlAttribute(TYPE_ATTR, SPATIAL_VALUE));
 
             std::shared_ptr<XmlChunk> positionChunk = xmlWriter.createChunk(POSITION_TAG, XmlAttribute(), soundChunk);
-            positionChunk->setPoint3Value(pointSound->getPosition());
+            positionChunk->setPoint3Value(spatialSound->getPosition());
 
             std::shared_ptr<XmlChunk> inaudibleDistanceChunk = xmlWriter.createChunk(INAUDIBLE_DISTANCE_TAG, XmlAttribute(), soundChunk);
-            inaudibleDistanceChunk->setFloatValue(pointSound->getInaudibleDistance());
-        } else if (sound->getSoundType() == Sound::AMBIENT) {
-            soundChunk->setAttribute(XmlAttribute(TYPE_ATTR, AMBIENT_VALUE));
+            inaudibleDistanceChunk->setFloatValue(spatialSound->getInaudibleDistance());
+        } else if (sound->getSoundType() == Sound::GLOBAL) {
+            soundChunk->setAttribute(XmlAttribute(TYPE_ATTR, GLOBAL_VALUE));
         } else {
             throw std::invalid_argument("Unknown sound type to write in map: " + std::to_string(sound->getSoundType()));
         }

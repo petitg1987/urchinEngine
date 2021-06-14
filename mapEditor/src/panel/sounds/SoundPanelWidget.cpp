@@ -20,7 +20,7 @@ namespace urchin {
             soundPropertiesGroupBox(nullptr),
             soundTriggerGroupBox(nullptr),
             specificTriggerShapeGroupBox(nullptr),
-            specificPointSoundGroupBox(nullptr),
+            specificSpatialSoundGroupBox(nullptr),
             disableSoundEvent(false),
             initialVolume(nullptr),
             soundType(nullptr),
@@ -64,7 +64,7 @@ namespace urchin {
 
         auto* soundPropertiesLayout = new QVBoxLayout(soundPropertiesGroupBox);
         setupSoundGeneralPropertiesBox(soundPropertiesLayout);
-        setupSpecificPointSoundBox(soundPropertiesLayout);
+        setupSpecificSpatialSoundBox(soundPropertiesLayout);
 
         soundTriggerGroupBox = new QGroupBox("Sound Trigger");
         mainLayout->addWidget(soundTriggerGroupBox);
@@ -101,20 +101,20 @@ namespace urchin {
         generalPropertiesLayout->addWidget(soundType, 1, 1);
     }
 
-    void SoundPanelWidget::setupSpecificPointSoundBox(QVBoxLayout* soundPropertiesLayout) {
-        specificPointSoundGroupBox = new QGroupBox("Point Sound");
-        soundPropertiesLayout->addWidget(specificPointSoundGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(specificPointSoundGroupBox);
-        specificPointSoundGroupBox->hide();
+    void SoundPanelWidget::setupSpecificSpatialSoundBox(QVBoxLayout* soundPropertiesLayout) {
+        specificSpatialSoundGroupBox = new QGroupBox("Spatial Sound");
+        soundPropertiesLayout->addWidget(specificSpatialSoundGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(specificSpatialSoundGroupBox);
+        specificSpatialSoundGroupBox->hide();
 
-        auto* pointSoundLayout = new QGridLayout(specificPointSoundGroupBox);
-        pointSoundLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
+        auto* spatialSoundLayout = new QGridLayout(specificSpatialSoundGroupBox);
+        spatialSoundLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
         auto *positionLabel= new QLabel("Position:");
-        pointSoundLayout->addWidget(positionLabel, 0, 0);
+        spatialSoundLayout->addWidget(positionLabel, 0, 0);
 
         auto* positionLayout = new QHBoxLayout();
-        pointSoundLayout->addLayout(positionLayout, 0, 1);
+        spatialSoundLayout->addLayout(positionLayout, 0, 1);
         positionX = new QDoubleSpinBox();
         positionLayout->addWidget(positionX);
         SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
@@ -129,10 +129,10 @@ namespace urchin {
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
 
         auto *inaudibleDistanceLabel= new QLabel("Inaudible\nDistance:");
-        pointSoundLayout->addWidget(inaudibleDistanceLabel, 1, 0);
+        spatialSoundLayout->addWidget(inaudibleDistanceLabel, 1, 0);
 
         inaudibleDistance = new QDoubleSpinBox();
-        pointSoundLayout->addWidget(inaudibleDistance, 1, 1);
+        spatialSoundLayout->addWidget(inaudibleDistance, 1, 1);
         SpinBoxStyleHelper::applyDefaultStyleOn(inaudibleDistance);
         inaudibleDistance->setMinimum(0.0);
         connect(inaudibleDistance, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
@@ -244,10 +244,10 @@ namespace urchin {
 
         this->initialVolume->setValue(sound->getInitialVolume());
 
-        if (sound->getSoundType() == Sound::SoundType::AMBIENT) {
-            setupAmbientSoundDataFrom();
-        } else if (sound->getSoundType() == Sound::SoundType::POINT) {
-            setupPointSoundDataFrom(dynamic_cast<const PointSound*>(sound));
+        if (sound->getSoundType() == Sound::SoundType::GLOBAL) {
+            setupGlobalSoundDataFrom();
+        } else if (sound->getSoundType() == Sound::SoundType::SPATIAL) {
+            setupSpatialSoundDataFrom(dynamic_cast<const SpatialSound*>(sound));
         } else {
             throw std::invalid_argument("Impossible to setup specific sound data for sound of type: " + std::to_string(sound->getSoundType()));
         }
@@ -267,22 +267,22 @@ namespace urchin {
         disableSoundEvent = false;
     }
 
-    void SoundPanelWidget::setupAmbientSoundDataFrom() {
-        specificPointSoundGroupBox->hide();
+    void SoundPanelWidget::setupGlobalSoundDataFrom() {
+        specificSpatialSoundGroupBox->hide();
 
-        soundType->setText(AMBIENT_SOUND_LABEL);
+        soundType->setText(GLOBAL_SOUND_LABEL);
     }
 
-    void SoundPanelWidget::setupPointSoundDataFrom(const PointSound* pointSound) {
-        specificPointSoundGroupBox->show();
+    void SoundPanelWidget::setupSpatialSoundDataFrom(const SpatialSound* spatialSound) {
+        specificSpatialSoundGroupBox->show();
 
-        soundType->setText(POINT_SOUND_LABEL);
+        soundType->setText(SPATIAL_SOUND_LABEL);
 
-        this->positionX->setValue(pointSound->getPosition().X);
-        this->positionY->setValue(pointSound->getPosition().Y);
-        this->positionZ->setValue(pointSound->getPosition().Z);
+        this->positionX->setValue(spatialSound->getPosition().X);
+        this->positionY->setValue(spatialSound->getPosition().Y);
+        this->positionZ->setValue(spatialSound->getPosition().Z);
 
-        this->inaudibleDistance->setValue(pointSound->getInaudibleDistance());
+        this->inaudibleDistance->setValue(spatialSound->getInaudibleDistance());
     }
 
     void SoundPanelWidget::setupPlayBehaviorDataFrom(const SoundTrigger* soundTrigger) {
@@ -357,13 +357,13 @@ namespace urchin {
             const SceneSound* sceneSound = soundTableView->getSelectedSceneSound();
             const Sound* sound = sceneSound->getSound();
 
-            if (sound->getSoundType() == Sound::AMBIENT) {
+            if (sound->getSoundType() == Sound::GLOBAL) {
                 //nothing to update
-            } else if (sound->getSoundType() == Sound::POINT) {
+            } else if (sound->getSoundType() == Sound::SPATIAL) {
                 Point3<float> position((float)positionX->value(), (float)positionY->value(), (float)positionY->value());
                 auto inaudibleDistance = (float)this->inaudibleDistance->value();
 
-                soundController->updateScenePointSoundProperties(sceneSound, position, inaudibleDistance);
+                soundController->updateSceneSpatialSoundProperties(sceneSound, position, inaudibleDistance);
             } else {
                 throw std::invalid_argument("Unknown sound type to update specific properties: " + std::to_string(sound->getSoundType()));
             }
