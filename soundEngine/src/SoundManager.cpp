@@ -57,7 +57,7 @@ namespace urchin {
         }
     }
 
-    void SoundManager::changeSoundsVolume(Sound::SoundType soundType, float volumePercentageChange) {
+    void SoundManager::setupSoundsVolume(Sound::SoundType soundType, float volumePercentageChange) {
         for (auto& audioController : audioControllers) {
             if(audioController->getSound()->getSoundType() == soundType) {
                 audioController->getSound()->changeVolume(volumePercentageChange);

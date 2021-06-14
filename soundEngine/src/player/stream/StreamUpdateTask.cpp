@@ -6,10 +6,10 @@ namespace urchin {
      * @param streamChunks Stream chunks (uninitialized)
      */
     StreamUpdateTask::StreamUpdateTask(const Sound* sound, StreamChunk* streamChunks, bool playLoop) :
-        sound(sound),
-        soundFileReader(new SoundFileReader(sound->getFilename())),
-        playLoop(playLoop),
-        streamChunks(streamChunks) {
+            sound(sound),
+            soundFileReader(new SoundFileReader(sound->getFilename())),
+            playLoop(playLoop),
+            streamChunks(streamChunks) {
 
     }
 

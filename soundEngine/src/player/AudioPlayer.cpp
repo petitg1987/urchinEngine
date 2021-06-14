@@ -3,7 +3,7 @@
 namespace urchin {
 
     AudioPlayer::AudioPlayer(const Sound* sound) :
-        sound(sound) {
+            sound(sound) {
 
     }
 

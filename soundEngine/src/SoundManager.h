@@ -20,7 +20,7 @@ namespace urchin {
             void addSound(Sound*, SoundTrigger*);
             void removeSound(const Sound*);
             void changeSoundTrigger(const Sound*, SoundTrigger*);
-            void changeSoundsVolume(Sound::SoundType, float); //TODO use SoundCategory instead of SoundType
+            void setupSoundsVolume(Sound::SoundType, float); //TODO use SoundCategory instead of SoundType
 
             void setMasterVolume(float);
             float getMasterVolume() const;

@@ -12,6 +12,11 @@ namespace urchin {
                 GLOBAL
             };
 
+            enum SoundCategory {
+                MUSIC,
+                EFFECT
+            };
+
             explicit Sound(std::string);
             virtual ~Sound();
 
