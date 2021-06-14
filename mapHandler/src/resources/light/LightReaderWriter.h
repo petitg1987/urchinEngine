@@ -30,10 +30,10 @@ namespace urchin {
             static Light* buildLightFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
             static void buildChunkFrom(const std::shared_ptr<XmlChunk>&, const Light*, XmlWriter&);
 
-            static void loadPropertiesOn(Light*, const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            static void loadPropertiesFrom(Light*, const std::shared_ptr<XmlChunk>&, const XmlParser&);
             static void writePropertiesOn(const std::shared_ptr<XmlChunk>&, const Light*, XmlWriter&);
 
-            static void loadFlagsOn(Light*, const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            static void loadFlagsFrom(Light*, const std::shared_ptr<XmlChunk>&, const XmlParser&);
             static void writeFlagsOn(const std::shared_ptr<XmlChunk>&, const Light*, XmlWriter&);
     };
 

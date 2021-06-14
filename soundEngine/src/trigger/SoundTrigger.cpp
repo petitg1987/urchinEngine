@@ -2,13 +2,18 @@
 
 namespace urchin {
 
-    SoundTrigger::SoundTrigger(const SoundBehavior& soundBehavior) :
-        soundBehavior(soundBehavior) {
+    SoundTrigger::SoundTrigger(TriggerType triggerType, PlayBehavior playBehavior) :
+            triggerType(triggerType),
+            playBehavior(playBehavior) {
 
     }
 
-    const SoundBehavior& SoundTrigger::getSoundBehavior() const {
-        return soundBehavior;
+    SoundTrigger::TriggerType SoundTrigger::getTriggerType() const {
+        return triggerType;
+    }
+
+    SoundTrigger::PlayBehavior SoundTrigger::getPlayBehavior() const {
+        return playBehavior;
     }
 
 }

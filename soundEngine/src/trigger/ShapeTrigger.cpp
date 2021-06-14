@@ -5,10 +5,10 @@ namespace urchin {
     /**
      * @param soundShape Delimited shape which trigger the sound play
      */
-    ShapeTrigger::ShapeTrigger(const SoundBehavior& soundBehavior, const SoundShape* soundShape) :
-        SoundTrigger(soundBehavior),
-        soundShape(soundShape),
-        isPlaying(false) {
+    ShapeTrigger::ShapeTrigger(PlayBehavior playBehavior, const SoundShape* soundShape) :
+            SoundTrigger(SoundTrigger::SHAPE_TRIGGER, playBehavior),
+            soundShape(soundShape),
+            isPlaying(false) {
 
     }
 
@@ -16,18 +16,17 @@ namespace urchin {
         delete soundShape;
     }
 
-    SoundTrigger::TriggerType ShapeTrigger::getTriggerType() const {
-        return SoundTrigger::SHAPE_TRIGGER;
-    }
-
     SoundTrigger::TriggerResultValue ShapeTrigger::evaluateTrigger(const Point3<float>& listenerPosition) {
         if (!isPlaying && soundShape->pointInsidePlayShape(listenerPosition)) {
             isPlaying = true;
-            return getPlayTriggerValue();
+            if (getPlayBehavior() == SoundTrigger::PLAY_LOOP) {
+                return SoundTrigger::PLAYING_LOOP;
+            }
+            return SoundTrigger::PLAYING;
         }
         if (isPlaying && !soundShape->pointInsideStopShape(listenerPosition)) {
             isPlaying = false;
-            return SoundTrigger::STOP;
+            return SoundTrigger::STOPPED;
         }
 
         return SoundTrigger::NO_TRIGGER;
@@ -35,14 +34,6 @@ namespace urchin {
 
     const SoundShape* ShapeTrigger::getSoundShape() const {
         return soundShape;
-    }
-
-    SoundTrigger::TriggerResultValue ShapeTrigger::getPlayTriggerValue() {
-        if (getSoundBehavior().getPlayBehavior() == SoundBehavior::PLAY_LOOP) {
-            return SoundTrigger::PLAY_LOOP;
-        }
-
-        return SoundTrigger::PLAY;
     }
 
 }

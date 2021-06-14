@@ -22,8 +22,6 @@ namespace urchin {
 
         #define PLAY_ONCE_LABEL "Play once"
         #define PLAY_LOOP_LABEL "Play loop"
-        #define INSTANT_STOP_LABEL "Instant Stop"
-        #define SMOOTH_STOP_LABEL "Smooth Stop"
 
         public:
             SoundPanelWidget();
@@ -37,14 +35,14 @@ namespace urchin {
         private:
             void setupSoundGeneralPropertiesBox(QVBoxLayout*);
             void setupSpecificPointSoundBox(QVBoxLayout*);
-            void setupSoundBehaviorPropertiesBox(QVBoxLayout*);
+            void setupSoundTriggerGeneralPropertiesBox(QVBoxLayout*);
             void setupSpecificTriggerShapeBox(QVBoxLayout*);
 
             void notify(Observable*, int) override;
             void setupSoundDataFrom(const SceneSound*);
             void setupAmbientSoundDataFrom();
             void setupPointSoundDataFrom(const PointSound*);
-            void setupSoundBehaviorDataFrom(const SoundTrigger*);
+            void setupPlayBehaviorDataFrom(const SoundTrigger*);
             void setupManualTriggerDataFrom();
             void setupShapeTriggerDataFrom(const SceneSound*);
 
@@ -73,10 +71,8 @@ namespace urchin {
             QDoubleSpinBox* positionZ;
             QDoubleSpinBox* inaudibleDistance;
 
-            //sound behavior
+            //sound trigger
             QComboBox* playBehavior;
-            QComboBox* stopBehavior;
-            QDoubleSpinBox* volumeDecreasePercentageOnStop;
             QLabel* soundTriggerType;
 
             //sound trigger specific properties
@@ -92,7 +88,7 @@ namespace urchin {
 
             void updateSoundGeneralProperties();
             void updateSoundSpecificProperties();
-            void updateSoundBehaviorProperties();
+            void updateSoundTriggerProperties();
 
             void showChangeSoundTriggerDialog();
             void showChangeSoundShapeDialog();

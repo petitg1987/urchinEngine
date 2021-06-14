@@ -3,7 +3,7 @@
 namespace urchin {
 
     SoundShape::SoundShape(float margin) :
-        margin(margin) {
+            margin(margin) {
 
     }
 

@@ -2,8 +2,6 @@
 
 #include <UrchinCommon.h>
 
-#include <behavior/SoundBehavior.h>
-
 namespace urchin {
 
     class SoundTrigger {
@@ -13,26 +11,30 @@ namespace urchin {
                 SHAPE_TRIGGER
             };
 
-            enum TriggerResultValue {
-                NO_TRIGGER,
-
-                PLAY,
-                PLAY_LOOP,
-                STOP,
-                PAUSE
+            enum PlayBehavior {
+                PLAY_ONCE,
+                PLAY_LOOP
             };
 
-            explicit SoundTrigger(const SoundBehavior&);
+            enum TriggerResultValue {
+                NO_TRIGGER,
+                PLAYING,
+                PLAYING_LOOP,
+                STOPPED,
+                PAUSED
+            };
+
+            SoundTrigger(TriggerType, PlayBehavior);
             virtual ~SoundTrigger() = default;
 
-            virtual TriggerType getTriggerType() const = 0;
+            TriggerType getTriggerType() const;
+            PlayBehavior getPlayBehavior() const;
 
             virtual TriggerResultValue evaluateTrigger(const Point3<float>&) = 0;
 
-            const SoundBehavior& getSoundBehavior() const;
-
         private:
-            SoundBehavior soundBehavior;
+            TriggerType triggerType;
+            PlayBehavior playBehavior;
     };
 
 }

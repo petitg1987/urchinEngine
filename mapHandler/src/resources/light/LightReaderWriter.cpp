@@ -5,8 +5,8 @@ namespace urchin {
     Light* LightReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& lightChunk, const XmlParser& xmlParser) {
         Light* light = buildLightFrom(lightChunk, xmlParser);
 
-        loadPropertiesOn(light, lightChunk, xmlParser);
-        loadFlagsOn(light, lightChunk, xmlParser);
+        loadPropertiesFrom(light, lightChunk, xmlParser);
+        loadFlagsFrom(light, lightChunk, xmlParser);
 
         return light;
     }
@@ -58,7 +58,7 @@ namespace urchin {
         }
     }
 
-    void LightReaderWriter::loadPropertiesOn(Light* light, const std::shared_ptr<XmlChunk>& lightChunk, const XmlParser& xmlParser) {
+    void LightReaderWriter::loadPropertiesFrom(Light* light, const std::shared_ptr<XmlChunk>& lightChunk, const XmlParser& xmlParser) {
         std::shared_ptr<XmlChunk> ambientColorChunk = xmlParser.getUniqueChunk(true, AMBIENT_COLOR_TAG, XmlAttribute(), lightChunk);
         light->setAmbientColor(ambientColorChunk->getPoint3Value());
     }
@@ -68,7 +68,7 @@ namespace urchin {
         ambientColorChunk->setPoint3Value(light->getAmbientColor());
     }
 
-    void LightReaderWriter::loadFlagsOn(Light* light, const std::shared_ptr<XmlChunk>& lightChunk, const XmlParser& xmlParser) {
+    void LightReaderWriter::loadFlagsFrom(Light* light, const std::shared_ptr<XmlChunk>& lightChunk, const XmlParser& xmlParser) {
         std::shared_ptr<XmlChunk> produceShadowChunk = xmlParser.getUniqueChunk(true, PRODUCE_SHADOW_TAG, XmlAttribute(), lightChunk);
         light->setProduceShadow(produceShadowChunk->getBoolValue());
     }

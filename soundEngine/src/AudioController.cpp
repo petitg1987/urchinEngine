@@ -9,7 +9,7 @@ namespace urchin {
     AudioController::AudioController(Sound* sound, SoundTrigger* soundTrigger, StreamUpdateWorker* streamUpdateWorker) :
             sound(sound),
             soundTrigger(soundTrigger),
-            triggerValue(SoundTrigger::STOP),
+            triggerValue(SoundTrigger::STOPPED),
             audioPlayer(new AudioStreamPlayer(sound, streamUpdateWorker)),
             isPaused(false) {
 
@@ -33,10 +33,9 @@ namespace urchin {
 
     void AudioController::changeSoundTrigger(SoundTrigger* newSoundTrigger) {
         audioPlayer->stop();
-        triggerValue = SoundTrigger::STOP;
+        triggerValue = SoundTrigger::STOPPED;
 
         delete soundTrigger;
-
         soundTrigger = newSoundTrigger;
     }
 
@@ -57,8 +56,8 @@ namespace urchin {
     }
 
     void AudioController::process(const Point3<float>& listenerPosition) {
-        if (triggerValue != SoundTrigger::STOP && sound->isStopped()) {
-            triggerValue = SoundTrigger::STOP;
+        if (triggerValue != SoundTrigger::STOPPED && sound->isStopped()) {
+            triggerValue = SoundTrigger::STOPPED;
         }
 
         SoundTrigger::TriggerResultValue oldTriggerValue = triggerValue;
@@ -72,13 +71,13 @@ namespace urchin {
 
     void AudioController::processTriggerValue(SoundTrigger::TriggerResultValue oldTriggerValue) {
         if (triggerValue != oldTriggerValue) {
-            if (triggerValue == SoundTrigger::PLAY) {
+            if (triggerValue == SoundTrigger::PLAYING) {
                 audioPlayer->play();
-            } else if (triggerValue == SoundTrigger::PLAY_LOOP) {
+            } else if (triggerValue == SoundTrigger::PLAYING_LOOP) {
                 audioPlayer->playLoop();
-            } else if (triggerValue == SoundTrigger::STOP) {
+            } else if (triggerValue == SoundTrigger::STOPPED) {
                 audioPlayer->stop();
-            } else if (triggerValue == SoundTrigger::PAUSE) {
+            } else if (triggerValue == SoundTrigger::PAUSED) {
                 audioPlayer->pause();
             }
         }

@@ -107,7 +107,7 @@ namespace urchin {
                 throw std::invalid_argument("Unknown the sound type to create a new sound: " + std::to_string(soundType));
             }
 
-            SoundTrigger* soundTrigger = new ManualTrigger(SoundBehavior(SoundBehavior::PLAY_ONCE, SoundBehavior::INSTANT_STOP));
+            SoundTrigger* soundTrigger = new ManualTrigger(SoundTrigger::PLAY_ONCE);
 
             sceneSound->setSoundElements(sound, soundTrigger);
         } catch (std::exception& e) {

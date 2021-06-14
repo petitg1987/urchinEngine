@@ -17,11 +17,8 @@ namespace urchin {
         #define SHAPE_VALUE "SHAPE"
         #define PLAY_ONCE_VALUE "PLAY_ONCE"
         #define PLAY_LOOP_VALUE "PLAY_LOOP"
-        #define INSTANT_STOP_VALUE "INSTANT_STOP"
-        #define SMOOTH_STOP_VALUE "SMOOTH_STOP"
 
         //XML tags
-        #define SOUND_BEHAVIOR_TAG "soundBehavior"
         #define PLAY_BEHAVIOR_TAG "playBehavior"
         #define SOUND_SHAPE_TAG "soundShape"
 
@@ -33,8 +30,8 @@ namespace urchin {
             static SoundTrigger* buildSoundTriggerFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
             static void buildChunkFrom(const std::shared_ptr<XmlChunk>&, const SoundTrigger*, XmlWriter&);
 
-            static SoundBehavior buildSoundBehaviorFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
-            static void buildChunkFrom(const std::shared_ptr<XmlChunk>&, const SoundBehavior&, XmlWriter&);
+            static SoundTrigger::PlayBehavior loadPlayBehaviorFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
+            static void writePlayBehaviorFrom(const std::shared_ptr<XmlChunk>&, SoundTrigger::PlayBehavior, XmlWriter&);
     };
 
 }

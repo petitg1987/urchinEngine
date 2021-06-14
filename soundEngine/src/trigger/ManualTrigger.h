@@ -9,9 +9,7 @@ namespace urchin {
     */
     class ManualTrigger : public SoundTrigger {
         public:
-            explicit ManualTrigger(const SoundBehavior&);
-
-            SoundTrigger::TriggerType getTriggerType() const override;
+            explicit ManualTrigger(PlayBehavior);
 
             void play();
             void stop();

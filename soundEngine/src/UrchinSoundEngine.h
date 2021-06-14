@@ -6,8 +6,6 @@
 #include <sound/ambient/AmbientSound.h>
 #include <sound/spatial/PointSound.h>
 
-#include <behavior/SoundBehavior.h>
-
 #include <trigger/SoundTrigger.h>
 #include <trigger/ManualTrigger.h>
 #include <trigger/ShapeTrigger.h>

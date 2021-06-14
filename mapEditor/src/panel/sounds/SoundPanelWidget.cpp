@@ -25,8 +25,7 @@ namespace urchin {
             volume(nullptr),
             soundType(nullptr),
             positionX(nullptr), positionY(nullptr), positionZ(nullptr), inaudibleDistance(nullptr),
-            playBehavior(nullptr), stopBehavior(nullptr),
-            volumeDecreasePercentageOnStop(nullptr),
+            playBehavior(nullptr),
             soundTriggerType(nullptr),
             triggerShapeLayout(nullptr),
             changeSoundTriggerTypeButton(nullptr),
@@ -74,7 +73,7 @@ namespace urchin {
         soundTriggerGroupBox->hide();
 
         auto* soundTriggerLayout = new QVBoxLayout(soundTriggerGroupBox);
-        setupSoundBehaviorPropertiesBox(soundTriggerLayout);
+        setupSoundTriggerGeneralPropertiesBox(soundTriggerLayout);
         setupSpecificTriggerShapeBox(soundTriggerLayout);
     }
 
@@ -86,7 +85,7 @@ namespace urchin {
         auto* generalPropertiesLayout = new QGridLayout(generalGroupBox);
         generalPropertiesLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-        auto *volumeLabel= new QLabel("Volume:");
+        auto* volumeLabel= new QLabel("Volume:");
         generalPropertiesLayout->addWidget(volumeLabel, 0, 0);
 
         volume = new QDoubleSpinBox();
@@ -139,48 +138,31 @@ namespace urchin {
         connect(inaudibleDistance, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
     }
 
-    void SoundPanelWidget::setupSoundBehaviorPropertiesBox(QVBoxLayout* soundTriggerLayout) {
-        auto* soundBehaviorGroupBox = new QGroupBox("Sound Behavior");
-        soundTriggerLayout->addWidget(soundBehaviorGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(soundBehaviorGroupBox);
+    void SoundPanelWidget::setupSoundTriggerGeneralPropertiesBox(QVBoxLayout* soundTriggerLayout) {
+        auto* generalGroupBox = new QGroupBox("General");
+        soundTriggerLayout->addWidget(generalGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(generalGroupBox);
 
-        auto* behaviorLayout = new QGridLayout(soundBehaviorGroupBox);
-        behaviorLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
+        auto* generalLayout = new QGridLayout(generalGroupBox);
+        generalLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
         auto *playBehaviorLabel= new QLabel("Play Behavior:");
-        behaviorLayout->addWidget(playBehaviorLabel, 0, 0);
+        generalLayout->addWidget(playBehaviorLabel, 0, 0);
 
         playBehavior = new QComboBox();
-        behaviorLayout->addWidget(playBehavior, 0, 1, 1, 3);
-        playBehavior->addItem(PLAY_ONCE_LABEL, QVariant(SoundBehavior::PLAY_ONCE));
-        playBehavior->addItem(PLAY_LOOP_LABEL, QVariant(SoundBehavior::PLAY_LOOP));
-        connect(playBehavior, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSoundBehaviorProperties()));
-
-        auto *stopBehaviorLabel= new QLabel("Stop Behavior:");
-        behaviorLayout->addWidget(stopBehaviorLabel, 1, 0);
-
-        stopBehavior = new QComboBox();
-        behaviorLayout->addWidget(stopBehavior, 1, 1, 1, 3);
-        stopBehavior->addItem(INSTANT_STOP_LABEL, QVariant(SoundBehavior::INSTANT_STOP));
-        stopBehavior->addItem(SMOOTH_STOP_LABEL, QVariant(SoundBehavior::SMOOTH_STOP));
-        connect(stopBehavior, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSoundBehaviorProperties()));
-
-        auto *volumeDecreasePercentageOnStopLabel= new QLabel("Vol. Decrease (%)\nper second:");
-        behaviorLayout->addWidget(volumeDecreasePercentageOnStopLabel, 2, 0);
-
-        volumeDecreasePercentageOnStop = new QDoubleSpinBox();
-        behaviorLayout->addWidget(volumeDecreasePercentageOnStop, 2, 1, 1, 3);
-        SpinBoxStyleHelper::applyPercentageStyleOn(volumeDecreasePercentageOnStop);
-        connect(volumeDecreasePercentageOnStop, SIGNAL(valueChanged(double)), this, SLOT(updateSoundBehaviorProperties()));
+        generalLayout->addWidget(playBehavior, 0, 1, 1, 3);
+        playBehavior->addItem(PLAY_ONCE_LABEL, QVariant(SoundTrigger::PLAY_ONCE));
+        playBehavior->addItem(PLAY_LOOP_LABEL, QVariant(SoundTrigger::PLAY_LOOP));
+        connect(playBehavior, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSoundTriggerProperties()));
 
         auto *soundTriggerTypeLabel= new QLabel("Trigger:");
-        behaviorLayout->addWidget(soundTriggerTypeLabel, 3, 0);
+        generalLayout->addWidget(soundTriggerTypeLabel, 3, 0);
 
         soundTriggerType = new QLabel();
-        behaviorLayout->addWidget(soundTriggerType, 3, 1);
+        generalLayout->addWidget(soundTriggerType, 3, 1);
 
         changeSoundTriggerTypeButton = new QPushButton("Change");
-        behaviorLayout->addWidget(changeSoundTriggerTypeButton, 3, 2);
+        generalLayout->addWidget(changeSoundTriggerTypeButton, 3, 2);
         ButtonStyleHelper::applyNormalStyle(changeSoundTriggerTypeButton);
         connect(changeSoundTriggerTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundTriggerDialog()));
     }
@@ -272,8 +254,7 @@ namespace urchin {
 
         //sound trigger
         const SoundTrigger* soundTrigger = sceneSound->getSoundTrigger();
-
-        setupSoundBehaviorDataFrom(soundTrigger);
+        setupPlayBehaviorDataFrom(soundTrigger);
 
         if (soundTrigger->getTriggerType() == SoundTrigger::TriggerType::MANUAL_TRIGGER) {
             setupManualTriggerDataFrom();
@@ -304,20 +285,11 @@ namespace urchin {
         this->inaudibleDistance->setValue(pointSound->getInaudibleDistance());
     }
 
-    void SoundPanelWidget::setupSoundBehaviorDataFrom(const SoundTrigger* soundTrigger) {
-        const SoundBehavior& soundBehavior = soundTrigger->getSoundBehavior();
-
-        int playBehaviorIndex = playBehavior->findData(soundBehavior.getPlayBehavior());
+    void SoundPanelWidget::setupPlayBehaviorDataFrom(const SoundTrigger* soundTrigger) {
+        int playBehaviorIndex = playBehavior->findData(soundTrigger->getPlayBehavior());
         if (playBehaviorIndex != -1) {
             playBehavior->setCurrentIndex(playBehaviorIndex);
         }
-
-        int stopBehaviorIndex = stopBehavior->findData(soundBehavior.getStopBehavior());
-        if (stopBehaviorIndex != -1) {
-            stopBehavior->setCurrentIndex(stopBehaviorIndex);
-        }
-
-        this->volumeDecreasePercentageOnStop->setValue(soundBehavior.getVolumeDecreasePercentageOnStop() * 100.0);
     }
 
     void SoundPanelWidget::setupManualTriggerDataFrom() {
@@ -398,19 +370,14 @@ namespace urchin {
         }
     }
 
-    void SoundPanelWidget::updateSoundBehaviorProperties() {
+    void SoundPanelWidget::updateSoundTriggerProperties() {
         if (!disableSoundEvent) {
             const SceneSound* sceneSound = soundTableView->getSelectedSceneSound();
 
             QVariant playVariant = playBehavior->currentData();
-            auto playBehavior = static_cast<SoundBehavior::PlayBehavior>(playVariant.toInt());
+            auto playBehavior = static_cast<SoundTrigger::PlayBehavior>(playVariant.toInt());
 
-            QVariant stopVariant = stopBehavior->currentData();
-            auto stopBehavior = static_cast<SoundBehavior::StopBehavior>(stopVariant.toInt());
-
-            float volumeDecreasePercentageOnStop = (float)this->volumeDecreasePercentageOnStop->value() / 100.0f;
-
-            soundController->updateSceneSoundBehaviorProperties(sceneSound, playBehavior, stopBehavior, volumeDecreasePercentageOnStop);
+            soundController->updateSceneSoundTriggerGeneralProperties(sceneSound, playBehavior);
         }
     }
 

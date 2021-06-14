@@ -4,18 +4,14 @@
 
 namespace urchin {
 
-    ManualTrigger::ManualTrigger(const SoundBehavior& soundBehavior) :
-        SoundTrigger(soundBehavior),
-        manualTriggerValue(ManualTriggerValue::STOP) {
+    ManualTrigger::ManualTrigger(PlayBehavior playBehavior) :
+            SoundTrigger(SoundTrigger::MANUAL_TRIGGER, playBehavior),
+            manualTriggerValue(ManualTriggerValue::STOP) {
 
-    }
-
-    SoundTrigger::TriggerType ManualTrigger::getTriggerType() const {
-        return SoundTrigger::MANUAL_TRIGGER;
     }
 
     void ManualTrigger::play() {
-        if (getSoundBehavior().getPlayBehavior() == SoundBehavior::PLAY_LOOP) {
+        if (getPlayBehavior() == SoundTrigger::PLAY_LOOP) {
             manualTriggerValue = ManualTriggerValue::PLAY_LOOP;
         } else {
             manualTriggerValue = ManualTriggerValue::PLAY;
@@ -34,13 +30,13 @@ namespace urchin {
         SoundTrigger::TriggerResultValue result;
 
         if (manualTriggerValue == ManualTriggerValue::PLAY) {
-            result = SoundTrigger::PLAY;
+            result = SoundTrigger::PLAYING;
         } else if (manualTriggerValue == ManualTriggerValue::PLAY_LOOP) {
-            result = SoundTrigger::PLAY_LOOP;
+            result = SoundTrigger::PLAYING_LOOP;
         } else if (manualTriggerValue == ManualTriggerValue::STOP) {
-            result = SoundTrigger::STOP;
+            result = SoundTrigger::STOPPED;
         } else if (manualTriggerValue == ManualTriggerValue::PAUSE) {
-            result = SoundTrigger::PAUSE;
+            result = SoundTrigger::PAUSED;
         } else if (manualTriggerValue == ManualTriggerValue::NO_TRIGGER) {
             result = SoundTrigger::NO_TRIGGER;
         } else {
