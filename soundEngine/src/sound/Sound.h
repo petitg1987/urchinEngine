@@ -12,7 +12,7 @@ namespace urchin {
                 AMBIENT
             };
 
-            explicit Sound(std::string );
+            explicit Sound(std::string);
             virtual ~Sound();
 
             virtual SoundType getSoundType() const = 0;
@@ -23,15 +23,18 @@ namespace urchin {
             bool isPaused() const;
             bool isPlaying() const;
 
-            void setVolume(float);
-            void setVolumeChange(float);
-            float getVolume() const;
+            void setInitialVolume(float);
+            float getInitialVolume() const;
+            void changeVolume(float);
 
         private:
+            void applyVolume() const;
+
             ALuint sourceId;
 
             std::string filename;
-            float volume;
+            float initialVolume;
+            float volumePercentageChange;
     };
 
 }

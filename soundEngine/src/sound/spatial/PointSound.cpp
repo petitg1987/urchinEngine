@@ -1,21 +1,23 @@
+#include <utility>
+
 #include <sound/spatial/PointSound.h>
 
 #define DEFAULT_INAUDIBLE_DISTANCE 10.0
 
 namespace urchin {
 
-    PointSound::PointSound(const std::string& filename, const Point3<float>& position) :
-        Sound(filename),
-        position(position),
-        inaudibleDistance(DEFAULT_INAUDIBLE_DISTANCE) {
+    PointSound::PointSound(std::string filename, const Point3<float>& position) :
+            Sound(std::move(filename)),
+            position(position),
+            inaudibleDistance(DEFAULT_INAUDIBLE_DISTANCE) {
         initializeSource();
     }
 
     /**
      * @param inaudibleDistance Define distance at which the sound become inaudible
      */
-    PointSound::PointSound(const std::string& filename, const Point3<float>& position, float inaudibleDistance) :
-        Sound(filename),
+    PointSound::PointSound(std::string filename, const Point3<float>& position, float inaudibleDistance) :
+        Sound(std::move(filename)),
         position(position),
         inaudibleDistance(inaudibleDistance) {
         initializeSource();

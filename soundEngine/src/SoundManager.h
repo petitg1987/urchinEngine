@@ -20,15 +20,15 @@ namespace urchin {
             void addSound(Sound*, SoundTrigger*);
             void removeSound(const Sound*);
             void changeSoundTrigger(const Sound*, SoundTrigger*);
+            void changeSoundsVolume(Sound::SoundType, float);
 
-            std::vector<const SoundTrigger*> getSoundTriggers() const;
-            SoundTrigger* retrieveSoundTriggerFor(const Sound*) const;
+            void setMasterVolume(float);
+            float getMasterVolume() const;
 
             void pause();
             void unpause();
 
             void checkNoExceptionRaised();
-
             void process(const Point3<float>&);
             void process();
 

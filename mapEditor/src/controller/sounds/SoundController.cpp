@@ -62,10 +62,10 @@ namespace urchin {
         markModified();
     }
 
-    const SceneSound* SoundController::updateSceneSoundGeneralProperties(const SceneSound* constSceneSound, float volume) {
+    const SceneSound* SoundController::updateSceneSoundGeneralProperties(const SceneSound* constSceneSound, float initialVolume) {
         SceneSound* sceneSound = findSceneSound(constSceneSound);
 
-        sceneSound->getSound()->setVolume(volume);
+        sceneSound->getSound()->setInitialVolume(initialVolume);
 
         markModified();
         return sceneSound;

@@ -23,7 +23,7 @@ namespace urchin {
         delete soundTrigger;
     }
 
-    const Sound* AudioController::getSound() const {
+    Sound* AudioController::getSound() const {
         return sound;
     }
 

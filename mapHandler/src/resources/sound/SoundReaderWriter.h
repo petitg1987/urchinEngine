@@ -18,7 +18,7 @@ namespace urchin {
 
         //XML tags
         #define FILENAME_TAG "filename"
-        #define VOLUME_TAG "volume"
+        #define INITIAL_VOLUME_TAG "initialVolume"
         #define POSITION_TAG "position"
         #define INAUDIBLE_DISTANCE_TAG "inaudibleDistance"
 

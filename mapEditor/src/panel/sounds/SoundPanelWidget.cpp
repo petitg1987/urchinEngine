@@ -22,7 +22,7 @@ namespace urchin {
             specificTriggerShapeGroupBox(nullptr),
             specificPointSoundGroupBox(nullptr),
             disableSoundEvent(false),
-            volume(nullptr),
+            initialVolume(nullptr),
             soundType(nullptr),
             positionX(nullptr), positionY(nullptr), positionZ(nullptr), inaudibleDistance(nullptr),
             playBehavior(nullptr),
@@ -85,14 +85,14 @@ namespace urchin {
         auto* generalPropertiesLayout = new QGridLayout(generalGroupBox);
         generalPropertiesLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-        auto* volumeLabel= new QLabel("Volume:");
-        generalPropertiesLayout->addWidget(volumeLabel, 0, 0);
+        auto* initialVolumeLabel= new QLabel("Initial volume:");
+        generalPropertiesLayout->addWidget(initialVolumeLabel, 0, 0);
 
-        volume = new QDoubleSpinBox();
-        generalPropertiesLayout->addWidget(volume, 0, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(volume);
-        volume->setMinimum(0.0);
-        connect(volume, SIGNAL(valueChanged(double)), this, SLOT(updateSoundGeneralProperties()));
+        initialVolume = new QDoubleSpinBox();
+        generalPropertiesLayout->addWidget(initialVolume, 0, 1);
+        SpinBoxStyleHelper::applyDefaultStyleOn(initialVolume);
+        initialVolume->setMinimum(0.0);
+        connect(initialVolume, SIGNAL(valueChanged(double)), this, SLOT(updateSoundGeneralProperties()));
 
         auto *soundTypeLabel= new QLabel("Sound Type:");
         generalPropertiesLayout->addWidget(soundTypeLabel, 1, 0);
@@ -242,7 +242,7 @@ namespace urchin {
         //sound
         const Sound* sound = sceneSound->getSound();
 
-        this->volume->setValue(sound->getVolume());
+        this->initialVolume->setValue(sound->getInitialVolume());
 
         if (sound->getSoundType() == Sound::SoundType::AMBIENT) {
             setupAmbientSoundDataFrom();
@@ -346,9 +346,9 @@ namespace urchin {
         if (!disableSoundEvent) {
             const SceneSound* sceneSound = soundTableView->getSelectedSceneSound();
 
-            auto volume = (float)this->volume->value();
+            auto initialVolume = (float)this->initialVolume->value();
 
-            soundController->updateSceneSoundGeneralProperties(sceneSound, volume);
+            soundController->updateSceneSoundGeneralProperties(sceneSound, initialVolume);
         }
     }
 

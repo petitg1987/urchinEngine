@@ -57,13 +57,13 @@ namespace urchin {
     }
 
     void SoundReaderWriter::loadPropertiesOn(Sound* sound, const std::shared_ptr<XmlChunk>& soundChunk, const XmlParser& xmlParser) {
-        std::shared_ptr<XmlChunk> volumeChunk = xmlParser.getUniqueChunk(true, VOLUME_TAG, XmlAttribute(), soundChunk);
-        sound->setVolume(volumeChunk->getFloatValue());
+        std::shared_ptr<XmlChunk> initialVolumeChunk = xmlParser.getUniqueChunk(true, INITIAL_VOLUME_TAG, XmlAttribute(), soundChunk);
+        sound->setInitialVolume(initialVolumeChunk->getFloatValue());
     }
 
     void SoundReaderWriter::writePropertiesOn(const std::shared_ptr<XmlChunk>& soundChunk, const Sound* sound, XmlWriter& xmlWriter) {
-        std::shared_ptr<XmlChunk> volumeChunk = xmlWriter.createChunk(VOLUME_TAG, XmlAttribute(), soundChunk);
-        volumeChunk->setFloatValue(sound->getVolume());
+        std::shared_ptr<XmlChunk> initialVolumeChunk = xmlWriter.createChunk(INITIAL_VOLUME_TAG, XmlAttribute(), soundChunk);
+        initialVolumeChunk->setFloatValue(sound->getInitialVolume());
     }
 
 }

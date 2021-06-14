@@ -57,25 +57,25 @@ namespace urchin {
         }
     }
 
-    std::vector<const SoundTrigger*> SoundManager::getSoundTriggers() const {
-        std::vector<const SoundTrigger*> triggers;
-        triggers.reserve(audioControllers.size());
-
-        for (const auto& audioController : audioControllers) {
-            triggers.emplace_back(audioController->getSoundTrigger());
-        }
-
-        return triggers;
-    }
-
-    SoundTrigger* SoundManager::retrieveSoundTriggerFor(const Sound* sound) const {
-        for (const auto& audioController : audioControllers) {
-            if (audioController->getSound() == sound) {
-                return audioController->getSoundTrigger();
+    void SoundManager::changeSoundsVolume(Sound::SoundType soundType, float volumePercentageChange) {
+        for (auto& audioController : audioControllers) {
+            if(audioController->getSound()->getSoundType() == soundType) {
+                audioController->getSound()->changeVolume(volumePercentageChange);
             }
         }
+    }
 
-        throw std::invalid_argument("Impossible to find a sound trigger for the sound.");
+    /**
+     * @param masterVolume to set (0.0 for minimum volume, 1.0 for original volume). Note that volume can be higher to 1.0.
+     */
+    void SoundManager::setMasterVolume(float masterVolume) {
+        alListenerf(AL_GAIN, masterVolume);
+    }
+
+    float SoundManager::getMasterVolume() const {
+        float masterVolume = 0.0f;
+        alGetListenerf(AL_GAIN, &masterVolume);
+        return masterVolume;
     }
 
     void SoundManager::pause() {
@@ -101,7 +101,6 @@ namespace urchin {
         ScopeProfiler sp(Profiler::sound(), "soundMgrProc");
 
         alListener3f(AL_POSITION, listenerPosition.X, listenerPosition.Y, listenerPosition.Z);
-        alListenerf(AL_GAIN, 1.0f); //TODO master volume !
 
         for (auto& audioController : audioControllers) {
             audioController->process(listenerPosition);
