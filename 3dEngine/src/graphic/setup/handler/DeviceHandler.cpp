@@ -136,7 +136,7 @@ namespace urchin {
         if (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU) { //discrete GPU have better performance
             score += 10000;
         }
-        score += deviceProperties.limits.maxImageDimension2D; //indicator of the device performance/quality
+        score += (int)deviceProperties.limits.maxImageDimension2D; //indicator of the device performance/quality
         return PhysicalDeviceSuitability(physicalDeviceToCheck, score);
     }
 

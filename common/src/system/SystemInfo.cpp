@@ -202,17 +202,17 @@ namespace urchin {
 
     SystemInfo::KeyboardLayout SystemInfo::keyboardLayout() {
         #ifdef _WIN32
-        CHAR layoutIdChar[KL_NAMELENGTH];
-        GetKeyboardLayoutNameA(layoutIdChar);
-        std::string layoutId(layoutIdChar);
-        //layout ID list: https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/windows-language-pack-default-values
-        if (StringUtil::insensitiveEquals(layoutId, "0000080c") || StringUtil::insensitiveEquals(layoutId, "0001080c") || StringUtil::insensitiveEquals(layoutId, "0000040c")) {
-            return KeyboardLayout::AZERTY;
-        }
-        return KeyboardLayout::DEFAULT;
+            CHAR layoutIdChar[KL_NAMELENGTH];
+            GetKeyboardLayoutNameA(layoutIdChar);
+            std::string layoutId(layoutIdChar);
+            //layout ID list: https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/windows-language-pack-default-values
+            if (StringUtil::insensitiveEquals(layoutId, "0000080c") || StringUtil::insensitiveEquals(layoutId, "0001080c") || StringUtil::insensitiveEquals(layoutId, "0000040c")) {
+                return KeyboardLayout::AZERTY;
+            }
+            return KeyboardLayout::DEFAULT;
         #else
             const std::string LAYOUT_LABEL = "layout:";
-            std::string xKeyboardInfo = CommandExecutor::execute("setxkbmap -query");
+            std::string xKeyboardInfo = CommandExecutor::execute("setxkbmap -query"); //only work with X11
             std::size_t layoutBeginLocation = xKeyboardInfo.find(LAYOUT_LABEL);
             if (layoutBeginLocation != std::string::npos) {
                 layoutBeginLocation += LAYOUT_LABEL.size();
