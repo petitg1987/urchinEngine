@@ -10,6 +10,7 @@ namespace urchin {
         public:
             CheckBox(Widget*, Position, Size, std::string);
 
+            void setChecked(bool);
             bool isChecked() const;
 
         protected:
@@ -18,6 +19,7 @@ namespace urchin {
 
         private:
             std::shared_ptr<Texture> loadTexture(const std::shared_ptr<XmlChunk>&, const std::string&) const;
+            void refreshTexture();
             bool onKeyReleaseEvent(unsigned int) override;
 
             //properties

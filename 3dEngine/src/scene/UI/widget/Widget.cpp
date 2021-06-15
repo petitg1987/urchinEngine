@@ -196,8 +196,14 @@ namespace urchin {
     bool Widget::onKeyPress(unsigned int key) {
         bool propagateEvent = true;
         if (isVisible()) {
-            handleWidgetKeyDown(key);
+            bool widgetStateUpdated = handleWidgetKeyDown(key);
             propagateEvent = onKeyPressEvent(key);
+
+            if (widgetStateUpdated && widgetState == Widget::CLICKING) {
+                for (auto& eventListener : eventListeners) {
+                    eventListener->onMouseLeftClick(this);
+                }
+            }
 
             for (auto &child : children) {
                 if (!child->onKeyPress(key)) {
@@ -212,23 +218,29 @@ namespace urchin {
         return true;
     }
 
-    void Widget::handleWidgetKeyDown(unsigned int key) {
+    bool Widget::handleWidgetKeyDown(unsigned int key) {
+        bool widgetStateUpdated = false;
         if (key == InputDeviceKey::MOUSE_LEFT) {
             Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
             if (widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
                 widgetState = CLICKING;
-                for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
-                    eventListener->onMouseLeftClick(this);
-                }
+                widgetStateUpdated = true;
             }
         }
+        return widgetStateUpdated;
     }
 
     bool Widget::onKeyRelease(unsigned int key) {
         bool propagateEvent = true;
         if (isVisible()) {
-            handleWidgetKeyUp(key);
+            bool widgetStateUpdated = handleWidgetKeyUp(key);
             propagateEvent = onKeyReleaseEvent(key);
+
+            if (widgetStateUpdated && widgetState == Widget::FOCUS) {
+                for (auto& eventListener : eventListeners) {
+                    eventListener->onMouseLeftClickRelease(this);
+                }
+            }
 
             for (auto &child : children) {
                 if (!child->onKeyRelease(key)) {
@@ -243,22 +255,21 @@ namespace urchin {
         return true;
     }
 
-    void Widget::handleWidgetKeyUp(unsigned int key) {
+    bool Widget::handleWidgetKeyUp(unsigned int key) {
+        bool widgetStateUpdated = false;
         if (key == InputDeviceKey::MOUSE_LEFT) {
             Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
             if (widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
                 if (widgetState == CLICKING) {
                     widgetState = FOCUS;
-                    for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
-                        eventListener->onMouseLeftClickRelease(this);
-                    }
-                } else {
-                    widgetState = FOCUS;
+                    widgetStateUpdated = true;
                 }
             } else {
                 widgetState = DEFAULT;
+                widgetStateUpdated = true;
             }
         }
+        return widgetStateUpdated;
     }
 
     bool Widget::onChar(char32_t unicodeCharacter) {
@@ -285,8 +296,18 @@ namespace urchin {
 
         bool propagateEvent = true;
         if (isVisible()) {
-            handleWidgetMouseMove(mouseX, mouseY);
+            bool widgetStateUpdated = handleWidgetMouseMove(mouseX, mouseY);
             propagateEvent = onMouseMoveEvent(mouseX, mouseY);
+
+            if (widgetStateUpdated && widgetState == Widget::FOCUS) {
+                for (auto& eventListener : eventListeners) {
+                    eventListener->onFocus(this);
+                }
+            } else if (widgetStateUpdated && widgetState == Widget::DEFAULT) {
+                for (auto& eventListener : eventListeners) {
+                    eventListener->onFocusLost(this);
+                }
+            }
 
             for (auto &child : children) {
                 if (!child->onMouseMove(mouseX, mouseY)) {
@@ -301,21 +322,19 @@ namespace urchin {
         return true;
     }
 
-    void Widget::handleWidgetMouseMove(int mouseX, int mouseY) {
+    bool Widget::handleWidgetMouseMove(int mouseX, int mouseY) {
+        bool widgetStateUpdated = false;
         Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
         if (widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
             if (widgetState == DEFAULT) {
                 widgetState = FOCUS;
-                for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
-                    eventListener->onFocus(this);
-                }
+                widgetStateUpdated = true;
             }
         } else if (widgetState == FOCUS) {
             widgetState = DEFAULT;
-            for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
-                eventListener->onFocusLost(this);
-            }
+            widgetStateUpdated = true;
         }
+        return widgetStateUpdated;
     }
 
     int Widget::getMouseX() const {

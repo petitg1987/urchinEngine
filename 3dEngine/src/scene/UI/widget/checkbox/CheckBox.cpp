@@ -27,7 +27,7 @@ namespace urchin {
         checkBoxRenderer = setupUiRenderer("check box", ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformTextureReader(TextureReader::build(texUnchecked, TextureParam::buildNearest())) //binding 3
+                ->addUniformTextureReader(TextureReader::build(isChecked() ? texChecked : texUnchecked, TextureParam::buildNearest())) //binding 3
                 ->build();
     }
 
@@ -40,18 +40,30 @@ namespace urchin {
         return tex;
     }
 
+    void CheckBox::setChecked(bool isChecked) {
+        this->bIsChecked = isChecked;
+        refreshTexture();
+    }
+
     bool CheckBox::isChecked() const {
         return bIsChecked;
     }
 
-    bool CheckBox::onKeyReleaseEvent(unsigned int) {
-        if (getWidgetState() == FOCUS) {
+    void CheckBox::refreshTexture() {
+        if(checkBoxRenderer) {
             if (bIsChecked) {
                 checkBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texUnchecked, TextureParam::buildNearest()));
             } else {
                 checkBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texChecked, TextureParam::buildNearest()));
             }
+        }
+    }
+
+    bool CheckBox::onKeyReleaseEvent(unsigned int) {
+        if (getWidgetState() == FOCUS) {
+            refreshTexture();
             bIsChecked = !bIsChecked;
+            return false;
         }
         return true;
     }

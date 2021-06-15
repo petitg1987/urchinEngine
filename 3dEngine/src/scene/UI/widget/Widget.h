@@ -84,9 +84,9 @@ namespace urchin {
             I18nService* i18nService;
 
         private:
-            void handleWidgetKeyDown(unsigned int);
-            void handleWidgetKeyUp(unsigned int);
-            void handleWidgetMouseMove(int, int);
+            bool handleWidgetKeyDown(unsigned int);
+            bool handleWidgetKeyUp(unsigned int);
+            bool handleWidgetMouseMove(int, int);
             void handleWidgetReset();
 
             std::shared_ptr<RenderTarget> renderTarget;
