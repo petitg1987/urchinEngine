@@ -218,11 +218,6 @@ namespace urchin {
                 oldMouseY = (unsigned int)mouseY;
                 return true;
             }
-
-            if(invertYAxis) {
-                mouseY = ((int)sceneHeight - mouseY) - 1; //TODO not working for urchinEngineTest !
-            }
-
             if ((unsigned int)mouseX == middleScreenX && (unsigned int)mouseY == middleScreenY) {
                 return false;
             }
@@ -234,6 +229,9 @@ namespace urchin {
             Vector2<float> mouseDirection;
             mouseDirection.X = (float)((int)middleScreenX - mouseX) * mouseSensitivity;
             mouseDirection.Y = (float)((int)middleScreenY - mouseY) * mouseSensitivity;
+            if (invertYAxis) {
+                mouseDirection.Y = - mouseDirection.Y;
+            }
 
             //do not rotate up/down more than "maxRotationX" percent
             float currentRotationX = view.Y + mouseDirection.Y;
