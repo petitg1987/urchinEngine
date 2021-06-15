@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include <scene/UI/widget/Position.h>
 
 namespace urchin {
@@ -5,7 +7,9 @@ namespace urchin {
     Position::Position(float positionX, LengthType positionTypeX, float positionY, LengthType positionTypeY) :
             positionX(Length(positionX, positionTypeX)),
             positionY(Length(positionY, positionTypeY)) {
-
+        if (positionTypeX == LengthType::RELATIVE || positionTypeY == LengthType::RELATIVE) {
+            throw std::invalid_argument("Relative lengths for position are not implemented");
+        }
     }
 
     Position::Position(float positionX, float positionY, LengthType positionType) :

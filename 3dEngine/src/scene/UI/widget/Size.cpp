@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include <scene/UI/widget/Size.h>
 
 namespace urchin {
@@ -5,7 +7,9 @@ namespace urchin {
     Size::Size(float width, LengthType widthSizeType, float height, LengthType heightSizeType) :
             width(Length(width, widthSizeType)),
             height(Length(height, heightSizeType)) {
-
+        if (widthSizeType == LengthType::RELATIVE && heightSizeType == LengthType::RELATIVE) {
+            throw std::invalid_argument("Both length can not be relative to each other");
+        }
     }
 
     Size::Size(float width, float height, LengthType sizeType) :
