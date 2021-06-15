@@ -220,7 +220,7 @@ namespace urchin {
                 if (layoutEndLocation != std::string::npos) {
                     std::string layout = xKeyboardInfo.substr(layoutBeginLocation, layoutEndLocation - layoutBeginLocation);
                     StringUtil::trim(layout);
-                    if(StringUtil::insensitiveEquals(layout, "fr") || StringUtil::insensitiveEquals(layout, "be")) {
+                    if (StringUtil::insensitiveEquals(layout, "fr") || StringUtil::insensitiveEquals(layout, "be")) {
                         return KeyboardLayout::AZERTY;
                     }
                 }
