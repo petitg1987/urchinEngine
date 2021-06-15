@@ -16,7 +16,7 @@ namespace urchin {
             maxWidth(100.0f, LengthType::PERCENTAGE),
             font(nullptr) {
         if(translatable) {
-            textKey = std::move(textOrKey);
+            labelKey = std::move(textOrKey);
             text = "@TO_TRANSLATE@";
         } else {
             text = std::move(textOrKey);
@@ -37,7 +37,7 @@ namespace urchin {
     Text::~Text() {
         cleanFont();
 
-        if(isTranslatableText()) {
+        if(isTranslatableLabel()) {
             i18nService->remove(this);
         }
     }
@@ -47,7 +47,7 @@ namespace urchin {
         refreshTextAndWidgetSize();
         refreshRenderer();
 
-        if(isTranslatableText()) {
+        if(isTranslatableLabel()) {
             i18nService->add(this);
         }
     }
@@ -73,19 +73,23 @@ namespace urchin {
         refreshRendererData();
     }
 
-    bool Text::isTranslatableText() const {
-        return textKey.has_value();
+    bool Text::isTranslatableLabel() const {
+        return labelKey.has_value();
     }
 
     const std::string& Text::getText() const {
         return text;
     }
 
-    const std::string& Text::getTextKey() const {
-        if (!isTranslatableText()) {
-            throw std::runtime_error("Text key requested on a no translatable text: " + text);
+    const std::string& Text::getLabelKey() const {
+        if (!isTranslatableLabel()) {
+            throw std::runtime_error("Label key requested on a no translatable label: " + text);
         }
-        return textKey.value();
+        return labelKey.value();
+    }
+
+    void Text::updateLabel(const std::string& label) {
+        updateText(label);
     }
 
     const Font* Text::getFont() {

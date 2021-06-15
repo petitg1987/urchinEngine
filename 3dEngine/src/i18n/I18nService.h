@@ -1,8 +1,8 @@
 #include <string>
 #include <vector>
 
-#include <i18n/TranslatableText.h>
-#include <i18n/TextTranslator.h>
+#include <i18n/TranslatableLabel.h>
+#include <i18n/LabelTranslator.h>
 
 namespace urchin {
 
@@ -13,17 +13,17 @@ namespace urchin {
             void changeLanguage(std::string);
             const std::string& getLanguage() const;
 
-            void add(TranslatableText*);
-            void remove(TranslatableText*);
+            void add(TranslatableLabel*);
+            void remove(TranslatableLabel*);
 
         private:
-            void refreshTranslation(TranslatableText*);
+            void refreshTranslation(TranslatableLabel*);
 
             const std::string DEFAULT_LANGUAGE;
 
             std::string language;
-            std::set<TranslatableText*> translatableTexts;
-            std::unique_ptr<TextTranslator> textTranslator;
+            std::set<TranslatableLabel*> translatableLabels;
+            std::unique_ptr<LabelTranslator> labelTranslator;
     };
 
 }

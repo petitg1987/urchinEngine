@@ -4,9 +4,9 @@
 
 namespace urchin {
 
-    class TextTranslator {
+    class LabelTranslator {
         public:
-            TextTranslator();
+            LabelTranslator();
 
             void checkMissingTranslation() const;
 
@@ -16,19 +16,19 @@ namespace urchin {
         private:
             void loadAvailableLanguages();
 
-            void loadLanguageTexts(const std::string&);
-            std::map<std::string, std::string> retrieveLanguageTexts(const std::string&) const;
+            void loadLanguageLabels(const std::string&);
+            std::map<std::string, std::string> retrieveLanguageLabels(const std::string&) const;
             void logMissingLanguage(const std::string&) const;
             void logMissingTranslation(const std::string&, const std::string&) const;
 
             const std::string FILE_PREFIX;
             const std::string FILE_POSTFIX;
 
-            std::string textFilesDirectoryName;
+            std::string labelsFilesDirectoryName;
             std::vector<std::string> availableLanguages;
 
             std::string loadedLanguage;
-            std::map<std::string, std::string> loadedLanguageTexts;
+            std::map<std::string, std::string> loadedLanguageLabels;
     };
 
 }

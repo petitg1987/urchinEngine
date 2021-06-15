@@ -21,6 +21,7 @@ namespace urchin {
 
         std::shared_ptr<XmlChunk> skinDefaultChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "default"), buttonChunk);
         texInfoDefault = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinDefaultChunk);
+        currentTexture = texInfoDefault;
 
         std::shared_ptr<XmlChunk> skinFocusChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "focus"), buttonChunk);
         texInfoOnFocus = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinFocusChunk);
@@ -46,32 +47,37 @@ namespace urchin {
         buttonRenderer = setupUiRenderer("button", ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformTextureReader(TextureReader::build(texInfoDefault, TextureParam::buildNearest())) //binding 2
+                ->addUniformTextureReader(TextureReader::build(currentTexture, TextureParam::buildNearest())) //binding 2
                 ->build();
     }
 
-    const std::shared_ptr<Texture>& Button::getTexture() {
+    void Button::refreshTexture() {
+        auto oldTexture = currentTexture;
         if (getWidgetState() == FOCUS) {
-            return texInfoOnFocus;
+            currentTexture = texInfoOnFocus;
         } else if (getWidgetState() == CLICKING) {
-            return texInfoOnClick;
+            currentTexture = texInfoOnClick;
+        } else {
+            currentTexture = texInfoDefault;
         }
 
-        return texInfoDefault;
+        if(currentTexture != oldTexture) {
+            buttonRenderer->updateUniformTextureReader(0, TextureReader::build(currentTexture, TextureParam::buildNearest()));
+        }
     }
 
     bool Button::onKeyPressEvent(unsigned int) {
-        buttonRenderer->updateUniformTextureReader(0, TextureReader::build(getTexture(), TextureParam::buildNearest()));
+        refreshTexture();
         return true;
     }
 
     bool Button::onKeyReleaseEvent(unsigned int) {
-        buttonRenderer->updateUniformTextureReader(0, TextureReader::build(getTexture(), TextureParam::buildNearest()));
+        refreshTexture();
         return true;
     }
 
     bool Button::onMouseMoveEvent(int, int) {
-        buttonRenderer->updateUniformTextureReader(0, TextureReader::build(getTexture(), TextureParam::buildNearest())); //TODO update only if changed + check other event/widget
+        refreshTexture();
         return true;
     }
 

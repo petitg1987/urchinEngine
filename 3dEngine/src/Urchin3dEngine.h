@@ -32,7 +32,7 @@
 #include <scene/UI/widget/slider/Slider.h>
 #include <scene/UI/widget/checkbox/CheckBox.h>
 
-#include <i18n/TextTranslator.h>
+#include <i18n/LabelTranslator.h>
 
 #include <graphic/render/shader/config/ShaderConfig.h>
 

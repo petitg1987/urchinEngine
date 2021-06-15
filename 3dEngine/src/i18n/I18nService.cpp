@@ -7,15 +7,15 @@ namespace urchin {
     I18nService::I18nService() :
             DEFAULT_LANGUAGE("en"),
             language(DEFAULT_LANGUAGE),
-            textTranslator(std::make_unique<TextTranslator>()) {
-        textTranslator->checkMissingTranslation();
+            labelTranslator(std::make_unique<LabelTranslator>()) {
+        labelTranslator->checkMissingTranslation();
     }
 
     void I18nService::changeLanguage(std::string language) {
         this->language = std::move(language);
 
-        for(auto translatableText : translatableTexts) {
-            refreshTranslation(translatableText);
+        for(auto translatableLabel : translatableLabels) {
+            refreshTranslation(translatableLabel);
         }
     }
 
@@ -23,18 +23,18 @@ namespace urchin {
         return language;
     }
 
-    void I18nService::add(TranslatableText* translatableText) {
-        translatableTexts.insert(translatableText);
-        refreshTranslation(translatableText);
+    void I18nService::add(TranslatableLabel* translatableLabel) {
+        translatableLabels.insert(translatableLabel);
+        refreshTranslation(translatableLabel);
     }
 
-    void I18nService::remove(TranslatableText* translatableText) {
-        translatableTexts.erase(translatableText);
+    void I18nService::remove(TranslatableLabel* translatableLabel) {
+        translatableLabels.erase(translatableLabel);
     }
 
-    void I18nService::refreshTranslation(TranslatableText* translatableText) {
-        std::string translatedText = textTranslator->translate(language, translatableText->getTextKey());
-        translatableText->updateText(translatedText);
+    void I18nService::refreshTranslation(TranslatableLabel* translatableLabel) {
+        std::string translatedLabel = labelTranslator->translate(language, translatableLabel->getLabelKey());
+        translatableLabel->updateLabel(translatedLabel);
     }
 
 }

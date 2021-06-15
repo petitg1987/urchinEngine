@@ -22,7 +22,7 @@ namespace urchin {
             void prepareWidgetRendering(float) override;
 
         private:
-            const std::shared_ptr<Texture>& getTexture();
+            void refreshTexture();
 
             bool onKeyPressEvent(unsigned int) override;
             bool onKeyReleaseEvent(unsigned int) override;
@@ -36,7 +36,7 @@ namespace urchin {
             const std::string buttonText;
 
             //visual
-            std::shared_ptr<Texture> texInfoDefault, texInfoOnFocus, texInfoOnClick;
+            std::shared_ptr<Texture> currentTexture, texInfoDefault, texInfoOnFocus, texInfoOnClick;
             std::shared_ptr<GenericRenderer> buttonRenderer;
     };
 
