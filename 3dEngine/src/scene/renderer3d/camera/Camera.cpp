@@ -22,6 +22,7 @@ namespace urchin {
             distance(0.0f),
             bUseMouse(false),
             mouseSensitivity(DEFAULT_MOUSE_SENSITIVITY),
+            invertYAxis(false),
             sceneWidth(0),
             sceneHeight(0),
             middleScreenX(0),
@@ -77,6 +78,10 @@ namespace urchin {
 
     void Camera::setMouseSensitivity(float mouseSensitivity) {
         this->mouseSensitivity = mouseSensitivity;
+    }
+
+    void Camera::setInvertYAxis(bool invertYAxis) {
+        this->invertYAxis = invertYAxis;
     }
 
     /**
@@ -207,11 +212,17 @@ namespace urchin {
 
     bool Camera::onMouseMove(int mouseX, int mouseY) {
         if (mouseX > 0 || mouseY > 0) {
+
             if (!bUseMouse) {
                 oldMouseX = (unsigned int)mouseX;
                 oldMouseY = (unsigned int)mouseY;
                 return true;
             }
+
+            if(invertYAxis) {
+                mouseY = ((int)sceneHeight - mouseY) - 1; //TODO not working for urchinEngineTest !
+            }
+
             if ((unsigned int)mouseX == middleScreenX && (unsigned int)mouseY == middleScreenY) {
                 return false;
             }
@@ -226,16 +237,16 @@ namespace urchin {
 
             //do not rotate up/down more than "maxRotationX" percent
             float currentRotationX = view.Y + mouseDirection.Y;
-            if (currentRotationX > 0.0 && currentRotationX > maxRotationX) {
+            if (currentRotationX > 0.0f && currentRotationX > maxRotationX) {
                 mouseDirection.Y -= (currentRotationX - maxRotationX);
-            } else if (currentRotationX < 0.0 && currentRotationX < -maxRotationX) {
+            } else if (currentRotationX < 0.0f && currentRotationX < -maxRotationX) {
                 mouseDirection.Y -= (currentRotationX + maxRotationX);
             }
 
             //rotate around the y and x axis
             Vector3<float> localXAxis = up.crossProduct(view).normalize();
             rotate(Quaternion<float>(localXAxis, -mouseDirection.Y));
-            rotate(Quaternion<float>(Vector3<float>(0.0, 1.0, 0.0), mouseDirection.X));
+            rotate(Quaternion<float>(Vector3<float>(0.0f, 1.0f, 0.0f), mouseDirection.X));
 
             updateViewMatrix();
 

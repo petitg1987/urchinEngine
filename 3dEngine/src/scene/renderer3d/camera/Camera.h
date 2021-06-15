@@ -18,6 +18,7 @@ namespace urchin {
             void useMouseToMoveCamera(bool);
             bool isUseMouseToMoveCamera() const;
             void setMouseSensitivity(float);
+            void setInvertYAxis(bool);
             void setDistance(float);
             void setMaxRotationX(float);
 
@@ -66,6 +67,7 @@ namespace urchin {
 
             bool bUseMouse; //true if the cursor is used to move the camera
             float mouseSensitivity;
+            bool invertYAxis;
             unsigned int sceneWidth, sceneHeight;
             unsigned int middleScreenX, middleScreenY;
             unsigned int oldMouseX, oldMouseY;
