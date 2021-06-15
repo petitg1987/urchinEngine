@@ -71,7 +71,7 @@ namespace urchin {
     }
 
     bool Button::onMouseMoveEvent(int, int) {
-        buttonRenderer->updateUniformTextureReader(0, TextureReader::build(getTexture(), TextureParam::buildNearest()));
+        buttonRenderer->updateUniformTextureReader(0, TextureReader::build(getTexture(), TextureParam::buildNearest())); //TODO update only if changed + check other event/widget
         return true;
     }
 

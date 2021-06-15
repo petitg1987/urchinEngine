@@ -13,7 +13,7 @@ namespace urchin {
 
     class TextBox : public Widget {
         public:
-            TextBox(Widget*, Position, Size, std::string );
+            TextBox(Widget*, Position, Size, std::string);
 
             std::string getText();
 
