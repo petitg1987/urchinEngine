@@ -1,4 +1,6 @@
 #include <scene/UI/widget/slider/Slider.h>
+#include <scene/UI/widget/staticbitmap/StaticBitmap.h>
+#include <resources/MediaManager.h>
 
 namespace urchin {
 
@@ -11,7 +13,8 @@ namespace urchin {
             nameSkin(std::move(nameSkin)),
             values(values),
             selectedIndex(0),
-            currentValueText(nullptr) {
+            currentValueText(nullptr),
+            cursorImage(nullptr) {
         if (values.size() < 2) {
             throw std::runtime_error("At least two values must be provided to slider.");
         }
@@ -24,9 +27,46 @@ namespace urchin {
         std::shared_ptr<XmlChunk> valuesTextSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "valuesTextSkin", XmlAttribute(), sliderChunk);
         std::string valuesTextSkin = valuesTextSkinChunk->getStringValue();
 
-        //values
-        currentValueText = Text::newText(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[selectedIndex]);
-        //TODO center text
+        std::shared_ptr<XmlChunk> cursorImageElem = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "imageCursor", XmlAttribute(), sliderChunk);
+        std::string cursorImageFilename = cursorImageElem->getStringValue();
+
+        //clear children
+        delete currentValueText;
+        delete cursorImage;
+
+        //values and textures
+        currentValueText = Text::newText(this, Position(getSize().getWidth(), 0, LengthType::PIXEL), valuesTextSkin, values[selectedIndex]); //TODO center text + review position X
+
+        texSliderLine = loadTexture(sliderChunk, "imageLine");
+        auto imageCursor = loadTexture(sliderChunk, "imageCursor");
+        float cursorImageWidth = ((float)getHeight() / (float)imageCursor->getHeight()) * (float)imageCursor->getWidth();
+        imageCursor.reset();
+        cursorImage = new StaticBitmap(this, Position(0, 0, LengthType::PIXEL), Size((float)cursorImageWidth, (float)getHeight(), LengthType::PIXEL), cursorImageFilename);
+
+        //visual
+        std::vector<Point2<float>> vertexCoord = {
+                Point2<float>(0.0f, 0.0f), Point2<float>((float)getWidth(), 0.0f), Point2<float>((float)getWidth(), (float)getHeight()),
+                Point2<float>(0.0f, 0.0f), Point2<float>((float)getWidth(), (float)getHeight()), Point2<float>(0.0f, (float)getHeight())
+        };
+        std::vector<Point2<float>> textureCoord = {
+                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
+                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
+        };
+        sliderRenderer = setupUiRenderer("slider", ShapeType::TRIANGLE)
+                ->addData(vertexCoord)
+                ->addData(textureCoord)
+                ->addUniformTextureReader(TextureReader::build(texSliderLine, TextureParam::buildLinear())) //binding 3
+                ->enableTransparency()
+                ->build();
+    }
+
+    std::shared_ptr<Texture> Slider::loadTexture(const std::shared_ptr<XmlChunk>& sliderChunk, const std::string& chunkName) const {
+        std::shared_ptr<XmlChunk> imageElem = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, chunkName, XmlAttribute(), sliderChunk);
+
+        auto* img = MediaManager::instance()->getMedia<Image>(imageElem->getStringValue());
+        auto tex = img->createTexture(false);
+        img->release();
+        return tex;
     }
 
     unsigned int Slider::getSelectedIndex() const {
@@ -45,8 +85,14 @@ namespace urchin {
         this->selectedIndex = index;
     }
 
-    void Slider::prepareWidgetRendering(float) {
+    bool Slider::onKeyReleaseEvent(unsigned int) {
+        cursorImage->setPosition(Position((float)cursorImage->getPositionX() + 2.0f, (float)cursorImage->getPositionY(), LengthType::PIXEL));
+        return false;
+    }
 
+    void Slider::prepareWidgetRendering(float) {
+        updateTranslateVector(sliderRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
+        sliderRenderer->enableRenderer();
     }
 
 }

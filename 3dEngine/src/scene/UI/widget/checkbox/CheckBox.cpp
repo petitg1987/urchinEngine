@@ -28,13 +28,14 @@ namespace urchin {
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformTextureReader(TextureReader::build(isChecked() ? texChecked : texUnchecked, TextureParam::buildLinear())) //binding 3
+                ->enableTransparency()
                 ->build();
     }
 
     std::shared_ptr<Texture> CheckBox::loadTexture(const std::shared_ptr<XmlChunk>& checkBoxChunk, const std::string& chunkName) const {
-        std::shared_ptr<XmlChunk> imageEnableElem = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, chunkName, XmlAttribute(), checkBoxChunk);
+        std::shared_ptr<XmlChunk> imageElem = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, chunkName, XmlAttribute(), checkBoxChunk);
 
-        auto* img = MediaManager::instance()->getMedia<Image>(imageEnableElem->getStringValue());
+        auto* img = MediaManager::instance()->getMedia<Image>(imageElem->getStringValue());
         auto tex = img->createTexture(false);
         img->release();
         return tex;

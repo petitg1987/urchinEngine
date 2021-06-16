@@ -49,7 +49,7 @@ namespace urchin {
         std::shared_ptr<XmlChunk> rightButtonTextChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "rightButtonText", XmlAttribute(), sequenceChunk);
         std::string rightButtonString = rightButtonTextChunk->getStringValue();
 
-        //clear
+        //clear children
         delete leftButton;
         delete rightButton;
         for (auto valueText : valuesText) {
