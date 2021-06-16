@@ -175,25 +175,13 @@ namespace urchin {
     }
 
     unsigned int Text::retrieveFontHeight(const std::shared_ptr<XmlChunk>& textChunk) const {
-        std::shared_ptr<XmlChunk> fontHeightChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "height", XmlAttribute(), textChunk);
-        float fontHeight = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "value", XmlAttribute(), fontHeightChunk)->getFloatValue();
-        LengthType fontHeightType = toLengthType(UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "type", XmlAttribute(), fontHeightChunk)->getStringValue());
-
-        if (fontHeightType == LengthType::PIXEL) {
-            return (unsigned int)fontHeight;
-        } else {
-            assert(fontHeightType == LengthType::PERCENTAGE);
-            return (unsigned int)(fontHeight / 100.0f * (float)getSceneHeight());
+        Length fontHeight = UISkinService::instance()->loadLength(textChunk, "height");
+        if (fontHeight.getType() == LengthType::PIXEL) {
+            return (unsigned int)fontHeight.getValue();
+        } else if (fontHeight.getType() == LengthType::PERCENTAGE) {
+            return (unsigned int)(fontHeight.getValue() / 100.0f * (float)getSceneHeight());
         }
-    }
-
-    LengthType Text::toLengthType(const std::string& lengthTypeString) const {
-        if (StringUtil::insensitiveEquals(lengthTypeString, "pixel")) {
-            return LengthType::PIXEL;
-        } else if (StringUtil::insensitiveEquals(lengthTypeString, "percentage")) {
-            return LengthType::PERCENTAGE;
-        }
-        throw std::runtime_error("Unknown length type: " + lengthTypeString);
+        throw std::runtime_error("Unknown length tpe for font height: " + std::to_string(fontHeight.getType()));
     }
 
     void Text::cleanFont() {

@@ -2,6 +2,7 @@
 #include <memory>
 
 #include <scene/UI/UISkinService.h>
+#include <scene/UI/widget/LengthType.h>
 #include <resources/MediaManager.h>
 
 namespace urchin {
@@ -118,6 +119,20 @@ namespace urchin {
 
         rawWidgetImage->release();
         return widgetTexture;
+    }
+
+    Length UISkinService::loadLength(const std::shared_ptr<XmlChunk>& mainChunk, const std::string& lengthName) const {
+        std::shared_ptr<XmlChunk> fontHeightChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, lengthName, XmlAttribute(), mainChunk);
+
+        float length = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "value", XmlAttribute(), fontHeightChunk)->getFloatValue();
+
+        const std::string& lengthTypeString = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "type", XmlAttribute(), fontHeightChunk)->getStringValue();
+        if (StringUtil::insensitiveEquals(lengthTypeString, "pixel")) {
+            return Length(length, LengthType::PIXEL);
+        } else if (StringUtil::insensitiveEquals(lengthTypeString, "percentage")) {
+            return Length(length, LengthType::PERCENTAGE);
+        }
+        throw std::runtime_error("Unknown length type: " + lengthTypeString);
     }
 
     const std::unique_ptr<XmlParser>& UISkinService::getXmlSkin() const {

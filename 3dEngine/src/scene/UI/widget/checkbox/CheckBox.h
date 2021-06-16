@@ -8,7 +8,7 @@ namespace urchin {
 
     class CheckBox : public Widget {
         public:
-            CheckBox(Widget*, Position, Size, std::string);
+            CheckBox(Widget*, Position, Size, const std::string&);
 
             void setChecked(bool);
             bool isChecked() const;
