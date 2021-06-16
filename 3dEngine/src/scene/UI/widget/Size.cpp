@@ -7,7 +7,7 @@ namespace urchin {
     Size::Size(float width, LengthType widthSizeType, float height, LengthType heightSizeType) :
             width(Length(width, widthSizeType)),
             height(Length(height, heightSizeType)) {
-        if (widthSizeType == LengthType::RELATIVE && heightSizeType == LengthType::RELATIVE) {
+        if (widthSizeType == LengthType::RELATIVE_LENGTH && heightSizeType == LengthType::RELATIVE_LENGTH) {
             throw std::invalid_argument("Both length can not be relative to each other");
         }
     }

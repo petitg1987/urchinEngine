@@ -171,7 +171,7 @@ namespace urchin {
     unsigned int Widget::getWidth() const {
         if (size.getWidthSizeType() == LengthType::PERCENTAGE) {
             return (unsigned int)(size.getWidth() / 100.0f * (float)sceneWidth);
-        } else if (size.getWidthSizeType() == LengthType::RELATIVE) {
+        } else if (size.getWidthSizeType() == LengthType::RELATIVE_LENGTH) {
             float relativeMultiplyFactor = size.getWidth();
             return (unsigned int)((float)getHeight() * relativeMultiplyFactor);
         }
@@ -181,7 +181,7 @@ namespace urchin {
     unsigned int Widget::getHeight() const {
         if (size.getHeightSizeType() == LengthType::PERCENTAGE) {
             return (unsigned int)(size.getHeight() / 100.0f * (float)sceneHeight);
-        } else if (size.getHeightSizeType() == LengthType::RELATIVE) {
+        } else if (size.getHeightSizeType() == LengthType::RELATIVE_LENGTH) {
             float relativeMultiplyFactor = size.getHeight();
             return (unsigned int)((float)getWidth() * relativeMultiplyFactor);
         }

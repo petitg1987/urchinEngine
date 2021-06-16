@@ -1,5 +1,6 @@
 #include <functional>
 #include <stdexcept>
+#include <locale>
 #ifdef _WIN32
     #include <windows.h>
     #include <cstdio>

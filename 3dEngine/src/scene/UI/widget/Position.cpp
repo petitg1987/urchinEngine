@@ -7,7 +7,7 @@ namespace urchin {
     Position::Position(float positionX, LengthType positionTypeX, float positionY, LengthType positionTypeY) :
             positionX(Length(positionX, positionTypeX)),
             positionY(Length(positionY, positionTypeY)) {
-        if (positionTypeX == LengthType::RELATIVE || positionTypeY == LengthType::RELATIVE) {
+        if (positionTypeX == LengthType::RELATIVE_LENGTH || positionTypeY == LengthType::RELATIVE_LENGTH) {
             throw std::invalid_argument("Relative lengths for position are not implemented");
         }
     }
