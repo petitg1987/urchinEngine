@@ -24,10 +24,10 @@ namespace urchin {
             translatableValues(translatableValues),
             loopOnValuesEnabled(true),
             selectedIndex(0),
-            leftButton(nullptr),
-            rightButton(nullptr),
             timeInClickingState(0.0f),
-            timeSinceLastChange(0.0f) {
+            timeSinceLastChange(0.0f),
+            leftButton(nullptr),
+            rightButton(nullptr) {
         if (values.empty()) {
             throw std::runtime_error("At least one value/key must be provided to sequence.");
         }

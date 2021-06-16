@@ -30,10 +30,17 @@ namespace urchin {
 
             std::shared_ptr<Texture> loadTexture(const std::shared_ptr<XmlChunk>&, const std::string&) const;
 
-            //properties
+            //display information
+            const float TEXT_SHIFT_LENGTH;
             const std::string nameSkin;
             const std::vector<std::string> values;
             unsigned int selectedIndex;
+
+            //state
+            enum TextBoxStates {
+                DEFAULT,
+                CURSOR_SELECTED,
+            } state;
 
             //visual
             Text* currentValueText;

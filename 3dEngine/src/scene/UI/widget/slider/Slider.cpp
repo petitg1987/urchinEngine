@@ -10,6 +10,7 @@ namespace urchin {
 
     Slider::Slider(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& values) :
             Widget(parent, position, size),
+            TEXT_SHIFT_LENGTH(10.0f),
             nameSkin(std::move(nameSkin)),
             values(values),
             selectedIndex(0),
@@ -21,6 +22,10 @@ namespace urchin {
     }
 
     void Slider::createOrUpdateWidget() {
+        //clear children
+        delete currentValueText;
+        delete cursorImage;
+
         //skin information
         std::shared_ptr<XmlChunk> sliderChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "slider", XmlAttribute("nameSkin", nameSkin));
 
@@ -30,12 +35,9 @@ namespace urchin {
         std::shared_ptr<XmlChunk> cursorImageElem = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "imageCursor", XmlAttribute(), sliderChunk);
         std::string cursorImageFilename = cursorImageElem->getStringValue();
 
-        //clear children
-        delete currentValueText;
-        delete cursorImage;
-
-        //values and textures
-        currentValueText = Text::newText(this, Position(getSize().getWidth(), 0, LengthType::PIXEL), valuesTextSkin, values[selectedIndex]); //TODO center text + review position X
+        currentValueText = Text::newText(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[selectedIndex]);
+        float textYPosition = (getSize().getHeight() - currentValueText->getSize().getHeight()) / 2.0f;
+        currentValueText->setPosition(Position(getSize().getWidth() + TEXT_SHIFT_LENGTH, textYPosition, LengthType::PIXEL));
 
         texSliderLine = loadTexture(sliderChunk, "imageLine");
         auto imageCursor = loadTexture(sliderChunk, "imageCursor");
@@ -85,8 +87,13 @@ namespace urchin {
         this->selectedIndex = index;
     }
 
-    bool Slider::onKeyReleaseEvent(unsigned int) {
-        cursorImage->setPosition(Position((float)cursorImage->getPositionX() + 2.0f, (float)cursorImage->getPositionY(), LengthType::PIXEL));
+    bool Slider::onKeyReleaseEvent(unsigned int) { //TODO improve
+        float maxYPosition = std::ceil(getSize().getWidth() - cursorImage->getSize().getWidth());
+        float newYPosition = (float)cursorImage->getPositionX() + 1.0f;
+        if(newYPosition > maxYPosition) {
+            newYPosition = maxYPosition;
+        }
+        cursorImage->setPosition(Position(newYPosition, (float)cursorImage->getPositionY(), LengthType::PIXEL));
         return false;
     }
 

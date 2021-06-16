@@ -31,17 +31,12 @@ namespace urchin {
         private:
             Sequence(Widget*, Position, Size, std::string, const std::vector<std::string>&, bool);
 
-            //properties
+            //display information
             const std::string nameSkin;
             const std::vector<std::string> values;
             bool translatableValues;
             bool loopOnValuesEnabled;
             unsigned int selectedIndex;
-
-            //visual
-            Text* leftButton;
-            Text* rightButton;
-            std::vector<Text*> valuesText;
 
             std::shared_ptr<EventListener> leftButtonEventListener;
             std::shared_ptr<EventListener> rightButtonEventListener;
@@ -59,6 +54,11 @@ namespace urchin {
                     bool isLeftButton;
                     bool loopOnValuesEnabled;
             };
+
+            //visual
+            Text* leftButton;
+            Text* rightButton;
+            std::vector<Text*> valuesText;
     };
 
 }
