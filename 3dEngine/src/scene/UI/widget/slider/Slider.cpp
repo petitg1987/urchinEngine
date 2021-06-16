@@ -38,8 +38,8 @@ namespace urchin {
         std::string cursorImageFilename = cursorImageElem->getStringValue();
 
         currentValueText = Text::newText(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[selectedIndex]);
-        float textYPosition = (getSize().getHeight() - currentValueText->getSize().getHeight()) / 2.0f;
-        currentValueText->setPosition(Position(getSize().getWidth() + TEXT_SHIFT_LENGTH, textYPosition, LengthType::PIXEL));
+        float textYPosition = (float)(getHeight() - currentValueText->getHeight()) / 2.0f;
+        currentValueText->setPosition(Position((float)getWidth() + TEXT_SHIFT_LENGTH, textYPosition, LengthType::PIXEL));
 
         texSliderLine = loadTexture(sliderChunk, "imageLine");
         auto imageCursor = loadTexture(sliderChunk, "imageCursor");
@@ -107,14 +107,26 @@ namespace urchin {
         return true;
     }
 
-    bool Slider::onMouseMoveEvent(int, int) { //TODO improve
+    bool Slider::onMouseMoveEvent(int mouseX, int) {
         if (state == CURSOR_SELECTED) {
-            float maxYPosition = std::ceil(getSize().getWidth() - cursorImage->getSize().getWidth());
-            float newYPosition = (float)cursorImage->getPositionX() + 1.0f;
-            if(newYPosition > maxYPosition) {
-                newYPosition = maxYPosition;
-            }
-            cursorImage->setPosition(Position(newYPosition, (float)cursorImage->getPositionY(), LengthType::PIXEL));
+            float sliderCursorHalfSize = (float)cursorImage->getWidth() / 2.0f;
+            float sliderCursorMinXPosition = sliderCursorHalfSize;
+            float sliderCursorMaxXPosition = ((float)getWidth() - (float)sliderCursorHalfSize);
+
+            //move cursor
+            float relativeMouseX = (float)mouseX - (float)getGlobalPositionX();
+            float sliderCursorCenterXPosition = MathFunction::clamp(relativeMouseX, sliderCursorMinXPosition, sliderCursorMaxXPosition) - sliderCursorMinXPosition;
+            cursorImage->setPosition(Position((float)sliderCursorCenterXPosition, (float)cursorImage->getPositionY(), LengthType::PIXEL));
+
+            //compute index
+            float sliderCursorCurrentPosition = (float)cursorImage->getPositionX() + sliderCursorHalfSize;
+            float valuePercentage = 1.0f - ((sliderCursorMaxXPosition - sliderCursorCurrentPosition) / (sliderCursorMaxXPosition - sliderCursorMinXPosition));
+            selectedIndex = MathFunction::floorToUInt((float)values.size() * valuePercentage);
+            selectedIndex = MathFunction::clamp(selectedIndex, 0u, (unsigned int)values.size() - 1u);
+
+            //update text
+            currentValueText->updateText(values[selectedIndex]);
+
             return false;
         }
         return true;
