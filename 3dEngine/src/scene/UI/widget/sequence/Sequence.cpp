@@ -19,6 +19,7 @@ namespace urchin {
 
     Sequence::Sequence(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& values, bool translatableValues) :
             Widget(parent, position, size),
+            nameSkin(std::move(nameSkin)),
             values(values),
             translatableValues(translatableValues),
             loopOnValuesEnabled(true),
@@ -30,23 +31,24 @@ namespace urchin {
         if (values.empty()) {
             throw std::runtime_error("At least one value/key must be provided to sequence.");
         }
-
-        std::shared_ptr<XmlChunk> sequenceChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "sequence", XmlAttribute("nameSkin", std::move(nameSkin)));
-
-        std::shared_ptr<XmlChunk> buttonsTextSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "buttonsTextSkin", XmlAttribute(), sequenceChunk);
-        buttonsTextSkin = buttonsTextSkinChunk->getStringValue();
-
-        std::shared_ptr<XmlChunk> valuesTextSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "valuesTextSkin", XmlAttribute(), sequenceChunk);
-        valuesTextSkin = valuesTextSkinChunk->getStringValue();
-
-        std::shared_ptr<XmlChunk> leftButtonTextChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "leftButtonText", XmlAttribute(), sequenceChunk);
-        leftButtonString = leftButtonTextChunk->getStringValue();
-
-        std::shared_ptr<XmlChunk> rightButtonTextChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "rightButtonText", XmlAttribute(), sequenceChunk);
-        rightButtonString = rightButtonTextChunk->getStringValue();
     }
 
     void Sequence::createOrUpdateWidget() {
+        //skin information
+        std::shared_ptr<XmlChunk> sequenceChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "sequence", XmlAttribute("nameSkin", nameSkin));
+
+        std::shared_ptr<XmlChunk> buttonsTextSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "buttonsTextSkin", XmlAttribute(), sequenceChunk);
+        std::string buttonsTextSkin = buttonsTextSkinChunk->getStringValue();
+
+        std::shared_ptr<XmlChunk> valuesTextSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "valuesTextSkin", XmlAttribute(), sequenceChunk);
+        std::string valuesTextSkin = valuesTextSkinChunk->getStringValue();
+
+        std::shared_ptr<XmlChunk> leftButtonTextChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "leftButtonText", XmlAttribute(), sequenceChunk);
+        std::string leftButtonString = leftButtonTextChunk->getStringValue();
+
+        std::shared_ptr<XmlChunk> rightButtonTextChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "rightButtonText", XmlAttribute(), sequenceChunk);
+        std::string rightButtonString = rightButtonTextChunk->getStringValue();
+
         //clear
         delete leftButton;
         delete rightButton;
@@ -95,7 +97,7 @@ namespace urchin {
 
     void Sequence::setSelectedIndex(unsigned int index) {
         if (index >= values.size()) {
-            throw std::out_of_range("Index is out of range: " + std::to_string(index) + ". Maximum index allowed: " + std::to_string(values.size()-1));
+            throw std::out_of_range("Index is out of range: " + std::to_string(index) + ". Maximum index allowed: " + std::to_string(values.size() - 1));
         }
 
         if (!valuesText.empty()) {

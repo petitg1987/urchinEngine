@@ -2,15 +2,20 @@
 #include <resources/MediaManager.h>
 
 namespace urchin {
-    CheckBox::CheckBox(Widget* parent, Position position, Size size, const std::string& nameSkin) :
+    CheckBox::CheckBox(Widget* parent, Position position, Size size, std::string nameSkin) :
             Widget(parent, position, size),
+            nameSkin(std::move(nameSkin)),
             bIsChecked(false) {
-        std::shared_ptr<XmlChunk> checkBoxChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "checkBox", XmlAttribute("nameSkin", nameSkin));
-        texChecked = loadTexture(checkBoxChunk, "imageChecked");
-        texUnchecked = loadTexture(checkBoxChunk, "imageUnchecked");
+
     }
 
     void CheckBox::createOrUpdateWidget() {
+        //skin information
+        std::shared_ptr<XmlChunk> checkBoxChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "checkBox", XmlAttribute("nameSkin", nameSkin));
+        texChecked = loadTexture(checkBoxChunk, "imageChecked");
+        texUnchecked = loadTexture(checkBoxChunk, "imageUnchecked");
+
+        //visual
         std::vector<Point2<float>> vertexCoord = {
                 Point2<float>(0.0f, 0.0f), Point2<float>((float)getWidth(), 0.0f), Point2<float>((float)getWidth(), (float)getHeight()),
                 Point2<float>(0.0f, 0.0f), Point2<float>((float)getWidth(), (float)getHeight()), Point2<float>(0.0f, (float)getHeight())

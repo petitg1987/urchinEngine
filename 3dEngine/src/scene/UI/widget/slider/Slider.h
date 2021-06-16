@@ -15,6 +15,9 @@ namespace urchin {
         public:
             static Slider* newSlider(Widget*, Position, Size, std::string, const std::vector<std::string>&);
 
+            unsigned int getSelectedIndex() const;
+            void setSelectedIndex(unsigned int);
+
         protected:
             void createOrUpdateWidget() override;
             void prepareWidgetRendering(float) override;
@@ -22,8 +25,13 @@ namespace urchin {
         private:
             Slider(Widget*, Position, Size, std::string, const std::vector<std::string>&);
 
+            //properties
+            const std::string nameSkin;
             const std::vector<std::string> values;
             unsigned int selectedIndex;
+
+            //visual
+            Text* currentValueText;
     };
 
 }

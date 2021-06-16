@@ -31,8 +31,8 @@ namespace urchin {
         private:
             Sequence(Widget*, Position, Size, std::string, const std::vector<std::string>&, bool);
 
-            std::string buttonsTextSkin, valuesTextSkin;
-            std::string leftButtonString, rightButtonString;
+            //properties
+            const std::string nameSkin;
             const std::vector<std::string> values;
             bool translatableValues;
             bool loopOnValuesEnabled;

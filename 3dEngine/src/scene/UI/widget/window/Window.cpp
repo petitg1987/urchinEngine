@@ -20,14 +20,12 @@ namespace urchin {
     }
 
     void Window::createOrUpdateWidget() {
-        //load the skin
+        //skin information
         std::shared_ptr<XmlChunk> windowChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "window", XmlAttribute("nameSkin", nameSkin));
 
-        //creates the texture
         std::shared_ptr<XmlChunk> skinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute(), windowChunk);
         texWindow = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinChunk, &widgetOutline);
 
-        //creates font for title
         if (!titleKey.empty()) {
             std::shared_ptr<XmlChunk> textSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), windowChunk);
             delete title;
