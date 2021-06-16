@@ -1,5 +1,6 @@
 #include <scene/UI/widget/slider/Slider.h>
 #include <scene/UI/widget/staticbitmap/StaticBitmap.h>
+#include <scene/InputDeviceKey.h>
 #include <resources/MediaManager.h>
 
 namespace urchin {
@@ -14,6 +15,7 @@ namespace urchin {
             nameSkin(std::move(nameSkin)),
             values(values),
             selectedIndex(0),
+            state(DEFAULT),
             currentValueText(nullptr),
             cursorImage(nullptr) {
         if (values.size() < 2) {
@@ -87,14 +89,35 @@ namespace urchin {
         this->selectedIndex = index;
     }
 
-    bool Slider::onKeyReleaseEvent(unsigned int) { //TODO improve
-        float maxYPosition = std::ceil(getSize().getWidth() - cursorImage->getSize().getWidth());
-        float newYPosition = (float)cursorImage->getPositionX() + 1.0f;
-        if(newYPosition > maxYPosition) {
-            newYPosition = maxYPosition;
+    bool Slider::onKeyPressEvent(unsigned int key) {
+        if (key == InputDeviceKey::MOUSE_LEFT) {
+            Rectangle<int> cursorRectangle(Point2<int>(cursorImage->getGlobalPositionX(), cursorImage->getGlobalPositionY()),
+                    Point2<int>(cursorImage->getGlobalPositionX() + (int)cursorImage->getWidth(), cursorImage->getGlobalPositionY() + (int)cursorImage->getHeight()));
+            if (cursorRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+                state = CURSOR_SELECTED;
+            }
         }
-        cursorImage->setPosition(Position(newYPosition, (float)cursorImage->getPositionY(), LengthType::PIXEL));
-        return false;
+        return true;
+    }
+
+    bool Slider::onKeyReleaseEvent(unsigned int key) {
+        if (key == InputDeviceKey::MOUSE_LEFT) {
+            state = DEFAULT;
+        }
+        return true;
+    }
+
+    bool Slider::onMouseMoveEvent(int, int) { //TODO improve
+        if (state == CURSOR_SELECTED) {
+            float maxYPosition = std::ceil(getSize().getWidth() - cursorImage->getSize().getWidth());
+            float newYPosition = (float)cursorImage->getPositionX() + 1.0f;
+            if(newYPosition > maxYPosition) {
+                newYPosition = maxYPosition;
+            }
+            cursorImage->setPosition(Position(newYPosition, (float)cursorImage->getPositionY(), LengthType::PIXEL));
+            return false;
+        }
+        return true;
     }
 
     void Slider::prepareWidgetRendering(float) {
