@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <utility>
 
-#include <scene/UI/widget/slider/Slider.h>
+#include <scene/UI/widget/sequence/Sequence.h>
 #include <scene/UI/UISkinService.h>
 
 #define TIME_BEFORE_AUTO_CLICK 0.3
@@ -9,15 +9,15 @@
 
 namespace urchin {
 
-    Slider* Slider::newSlider(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& texts) {
-        return new Slider(parent, position, size, std::move(nameSkin), texts, false);
+    Sequence* Sequence::newSequence(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& texts) {
+        return new Sequence(parent, position, size, std::move(nameSkin), texts, false);
     }
 
-    Slider* Slider::newTranslatableSlider(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& textKeys) {
-        return new Slider(parent, position, size, std::move(nameSkin), textKeys, true);
+    Sequence* Sequence::newTranslatableSequence(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& textKeys) {
+        return new Sequence(parent, position, size, std::move(nameSkin), textKeys, true);
     }
 
-    Slider::Slider(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& values, bool translatableValues) :
+    Sequence::Sequence(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& values, bool translatableValues) :
             Widget(parent, position, size),
             values(values),
             translatableValues(translatableValues),
@@ -28,25 +28,25 @@ namespace urchin {
             timeInClickingState(0.0f),
             timeSinceLastChange(0.0f) {
         if (values.empty()) {
-            throw std::runtime_error("At least one value/key must be provided to slider.");
+            throw std::runtime_error("At least one value/key must be provided to sequence.");
         }
 
-        std::shared_ptr<XmlChunk> sliderChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "slider", XmlAttribute("nameSkin", std::move(nameSkin)));
+        std::shared_ptr<XmlChunk> sequenceChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "sequence", XmlAttribute("nameSkin", std::move(nameSkin)));
 
-        std::shared_ptr<XmlChunk> buttonsTextSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "buttonsTextSkin", XmlAttribute(), sliderChunk);
+        std::shared_ptr<XmlChunk> buttonsTextSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "buttonsTextSkin", XmlAttribute(), sequenceChunk);
         buttonsTextSkin = buttonsTextSkinChunk->getStringValue();
 
-        std::shared_ptr<XmlChunk> valuesTextSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "valuesTextSkin", XmlAttribute(), sliderChunk);
+        std::shared_ptr<XmlChunk> valuesTextSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "valuesTextSkin", XmlAttribute(), sequenceChunk);
         valuesTextSkin = valuesTextSkinChunk->getStringValue();
 
-        std::shared_ptr<XmlChunk> leftButtonTextChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "leftButtonText", XmlAttribute(), sliderChunk);
+        std::shared_ptr<XmlChunk> leftButtonTextChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "leftButtonText", XmlAttribute(), sequenceChunk);
         leftButtonString = leftButtonTextChunk->getStringValue();
 
-        std::shared_ptr<XmlChunk> rightButtonTextChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "rightButtonText", XmlAttribute(), sliderChunk);
+        std::shared_ptr<XmlChunk> rightButtonTextChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "rightButtonText", XmlAttribute(), sequenceChunk);
         rightButtonString = rightButtonTextChunk->getStringValue();
     }
 
-    void Slider::createOrUpdateWidget() {
+    void Sequence::createOrUpdateWidget() {
         //clear
         delete leftButton;
         delete rightButton;
@@ -57,14 +57,14 @@ namespace urchin {
 
         //buttons
         leftButton = Text::newText(this, Position(0, 0, LengthType::PIXEL), buttonsTextSkin, leftButtonString);
-        leftButton->addEventListener(std::make_shared<ButtonSliderEventListener>(this, true, loopOnValuesEnabled));
+        leftButton->addEventListener(std::make_shared<ButtonSequenceEventListener>(this, true, loopOnValuesEnabled));
         if (leftButtonEventListener) {
             this->leftButton->addEventListener(leftButtonEventListener);
         }
 
         rightButton = Text::newText(this, Position(0, 0, LengthType::PIXEL), buttonsTextSkin, rightButtonString);
         rightButton->setPosition(Position((float)getWidth() - (float)rightButton->getWidth(), 0.0f, LengthType::PIXEL));
-        rightButton->addEventListener(std::make_shared<ButtonSliderEventListener>(this, false, loopOnValuesEnabled));
+        rightButton->addEventListener(std::make_shared<ButtonSequenceEventListener>(this, false, loopOnValuesEnabled));
         if (rightButtonEventListener) {
             this->rightButton->addEventListener(rightButtonEventListener);
         }
@@ -85,15 +85,15 @@ namespace urchin {
         valuesText[selectedIndex]->setIsVisible(true);
     }
 
-    void Slider::allowLoopOnValues(bool loopOnValuesEnabled) {
+    void Sequence::allowLoopOnValues(bool loopOnValuesEnabled) {
         this->loopOnValuesEnabled = loopOnValuesEnabled;
     }
 
-    unsigned int Slider::getSelectedIndex() const {
+    unsigned int Sequence::getSelectedIndex() const {
         return selectedIndex;
     }
 
-    void Slider::setSelectedIndex(unsigned int index) {
+    void Sequence::setSelectedIndex(unsigned int index) {
         if (index >= values.size()) {
             throw std::out_of_range("Index is out of range: " + std::to_string(index) + ". Maximum index allowed: " + std::to_string(values.size()-1));
         }
@@ -106,17 +106,17 @@ namespace urchin {
         this->selectedIndex = index;
     }
 
-    void Slider::setLeftButtonEventListener(const std::shared_ptr<EventListener>& leftButtonEventListener) {
+    void Sequence::setLeftButtonEventListener(const std::shared_ptr<EventListener>& leftButtonEventListener) {
         this->leftButtonEventListener = leftButtonEventListener;
         createOrUpdateWidget();
     }
 
-    void Slider::setRightButtonEventListener(const std::shared_ptr<EventListener>& rightButtonEventListener) {
+    void Sequence::setRightButtonEventListener(const std::shared_ptr<EventListener>& rightButtonEventListener) {
         this->rightButtonEventListener = rightButtonEventListener;
         createOrUpdateWidget();
     }
 
-    void Slider::prepareWidgetRendering(float dt) {
+    void Sequence::prepareWidgetRendering(float dt) {
         if (leftButton->getWidgetState() == Widget::WidgetStates::CLICKING) {
             timeInClickingState += dt;
             timeSinceLastChange += dt;
@@ -152,33 +152,33 @@ namespace urchin {
         valuesText[selectedIndex]->setPosition(Position(((float)getWidth() - (float)valuesText[selectedIndex]->getWidth()) / 2.0f, 0.0f, LengthType::PIXEL));
     }
 
-    Slider::ButtonSliderEventListener::ButtonSliderEventListener(Slider* slider, bool isLeftButton, bool loopOnValuesEnabled) :
-            slider(slider),
+    Sequence::ButtonSequenceEventListener::ButtonSequenceEventListener(Sequence* sequence, bool isLeftButton, bool loopOnValuesEnabled) :
+            sequence(sequence),
             isLeftButton(isLeftButton),
             loopOnValuesEnabled(loopOnValuesEnabled) {
 
     }
 
-    void Slider::ButtonSliderEventListener::onMouseLeftClickRelease(Widget*) {
+    void Sequence::ButtonSequenceEventListener::onMouseLeftClickRelease(Widget*) {
         if (isLeftButton) {
-            if (slider->selectedIndex > 0 || loopOnValuesEnabled) {
-                slider->valuesText[slider->selectedIndex]->setIsVisible(false);
-                if (slider->selectedIndex == 0) {
-                    slider->selectedIndex = (unsigned int)slider->valuesText.size() - 1;
+            if (sequence->selectedIndex > 0 || loopOnValuesEnabled) {
+                sequence->valuesText[sequence->selectedIndex]->setIsVisible(false);
+                if (sequence->selectedIndex == 0) {
+                    sequence->selectedIndex = (unsigned int)sequence->valuesText.size() - 1;
                 } else {
-                    slider->selectedIndex--;
+                    sequence->selectedIndex--;
                 }
-                slider->valuesText[slider->selectedIndex]->setIsVisible(true);
+                sequence->valuesText[sequence->selectedIndex]->setIsVisible(true);
             }
         } else {
-            if (slider->selectedIndex < (slider->valuesText.size() - 1) || loopOnValuesEnabled) {
-                slider->valuesText[slider->selectedIndex]->setIsVisible(false);
-                if (slider->selectedIndex == (slider->valuesText.size() - 1)) {
-                    slider->selectedIndex = 0;
+            if (sequence->selectedIndex < (sequence->valuesText.size() - 1) || loopOnValuesEnabled) {
+                sequence->valuesText[sequence->selectedIndex]->setIsVisible(false);
+                if (sequence->selectedIndex == (sequence->valuesText.size() - 1)) {
+                    sequence->selectedIndex = 0;
                 } else {
-                    slider->selectedIndex++;
+                    sequence->selectedIndex++;
                 }
-                slider->valuesText[slider->selectedIndex]->setIsVisible(true);
+                sequence->valuesText[sequence->selectedIndex]->setIsVisible(true);
             }
         }
     }

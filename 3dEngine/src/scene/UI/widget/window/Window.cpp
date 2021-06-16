@@ -47,7 +47,7 @@ namespace urchin {
         windowRenderer = setupUiRenderer("window", ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformTextureReader(TextureReader::build(texWindow, TextureParam::buildNearest())) //binding 2
+                ->addUniformTextureReader(TextureReader::build(texWindow, TextureParam::buildLinear())) //binding 2
                 ->build();
     }
 

@@ -29,7 +29,7 @@
 #include <scene/UI/widget/staticbitmap/StaticBitmap.h>
 #include <scene/UI/widget/text/Text.h>
 #include <scene/UI/widget/textbox/TextBox.h>
-#include <scene/UI/widget/slider/Slider.h>
+#include <scene/UI/widget/sequence/Sequence.h>
 #include <scene/UI/widget/checkbox/CheckBox.h>
 
 #include <i18n/LabelTranslator.h>

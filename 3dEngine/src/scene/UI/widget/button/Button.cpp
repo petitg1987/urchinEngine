@@ -47,7 +47,7 @@ namespace urchin {
         buttonRenderer = setupUiRenderer("button", ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformTextureReader(TextureReader::build(currentTexture, TextureParam::buildNearest())) //binding 2
+                ->addUniformTextureReader(TextureReader::build(currentTexture, TextureParam::buildLinear())) //binding 2
                 ->build();
     }
 
@@ -62,7 +62,7 @@ namespace urchin {
         }
 
         if(currentTexture != oldTexture) {
-            buttonRenderer->updateUniformTextureReader(0, TextureReader::build(currentTexture, TextureParam::buildNearest()));
+            buttonRenderer->updateUniformTextureReader(0, TextureReader::build(currentTexture, TextureParam::buildLinear()));
         }
     }
 

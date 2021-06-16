@@ -13,7 +13,7 @@ Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
   * Ambient occlusion (SSAO+)
   * Anti-aliasing (FXAA)
   * Space partitioning (octree)
-  * UI 2D: button, window, text (TTF), text input, bitmap, slider
+  * UI 2D: button, window, text (TTF), text input, bitmap, sequence
   * Skybox
   * Fog
 

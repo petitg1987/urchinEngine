@@ -11,10 +11,10 @@
 #include <scene/UI/EventListener.h>
 namespace urchin {
 
-    class Slider : public Widget {
+    class Sequence : public Widget {
         public:
-            static Slider* newSlider(Widget*, Position, Size, std::string, const std::vector<std::string>&);
-            static Slider* newTranslatableSlider(Widget*, Position, Size, std::string, const std::vector<std::string>&);
+            static Sequence* newSequence(Widget*, Position, Size, std::string, const std::vector<std::string>&);
+            static Sequence* newTranslatableSequence(Widget*, Position, Size, std::string, const std::vector<std::string>&);
 
             void allowLoopOnValues(bool);
 
@@ -29,7 +29,7 @@ namespace urchin {
             void prepareWidgetRendering(float) override;
 
         private:
-            Slider(Widget*, Position, Size, std::string, const std::vector<std::string>&, bool);
+            Sequence(Widget*, Position, Size, std::string, const std::vector<std::string>&, bool);
 
             std::string buttonsTextSkin, valuesTextSkin;
             std::string leftButtonString, rightButtonString;
@@ -49,13 +49,13 @@ namespace urchin {
             float timeInClickingState;
             float timeSinceLastChange;
 
-            class ButtonSliderEventListener : public EventListener {
+            class ButtonSequenceEventListener : public EventListener {
                 public:
-                    ButtonSliderEventListener(Slider*, bool, bool);
+                    ButtonSequenceEventListener(Sequence*, bool, bool);
                     void onMouseLeftClickRelease(Widget*) override;
 
                 private:
-                    Slider* slider;
+                    Sequence* sequence;
                     bool isLeftButton;
                     bool loopOnValuesEnabled;
             };
