@@ -97,6 +97,13 @@ namespace urchin {
                     Point2<int>(cursorImage->getGlobalPositionX() + (int)cursorImage->getWidth(), cursorImage->getGlobalPositionY() + (int)cursorImage->getHeight()));
             if (cursorRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = CURSOR_SELECTED;
+            } else {
+                Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
+                                               Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
+                if (widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+                    updateSliderValue(getMouseX());
+                    state = CURSOR_SELECTED;
+                }
             }
         }
         return true;
@@ -111,34 +118,37 @@ namespace urchin {
 
     bool Slider::onMouseMoveEvent(int mouseX, int) {
         if (state == CURSOR_SELECTED) {
-            float sliderCursorHalfSize = (float)cursorImage->getWidth() / 2.0f;
-            float sliderCursorMinXPosition = sliderCursorHalfSize;
-            float sliderCursorMaxXPosition = ((float)getWidth() - (float)sliderCursorHalfSize);
-
-            //compute index
-            unsigned int oldSelectedIndex = selectedIndex;
-            float relativeMouseX = (float)mouseX - (float)getGlobalPositionX();
-            float sliderCursorXPosition = MathFunction::clamp(relativeMouseX, sliderCursorMinXPosition, sliderCursorMaxXPosition);
-            float valuePercentage = 1.0f - ((sliderCursorMaxXPosition - sliderCursorXPosition) / (sliderCursorMaxXPosition - sliderCursorMinXPosition));
-            selectedIndex = MathFunction::floorToUInt((float)values.size() * valuePercentage);
-            selectedIndex = MathFunction::clamp(selectedIndex, 0u, (unsigned int)values.size() - 1u);
-
-            //move cursor
-            moveSliderCursor();
-
-            //update text
-            currentValueText->updateText(values[selectedIndex]);
-
-            //event
-            if (oldSelectedIndex != selectedIndex) {
-                for (auto& eventListener : getEventListeners()) {
-                    eventListener->onValueChange(this);
-                }
-            }
-
+            updateSliderValue(mouseX);
             return false;
         }
         return true;
+    }
+
+    void Slider::updateSliderValue(int mouseX) {
+        float sliderCursorHalfSize = (float)cursorImage->getWidth() / 2.0f;
+        float sliderCursorMinXPosition = sliderCursorHalfSize;
+        float sliderCursorMaxXPosition = ((float)getWidth() - (float)sliderCursorHalfSize);
+
+        //compute index
+        unsigned int oldSelectedIndex = selectedIndex;
+        float relativeMouseX = (float)mouseX - (float)getGlobalPositionX();
+        float sliderCursorXPosition = MathFunction::clamp(relativeMouseX, sliderCursorMinXPosition, sliderCursorMaxXPosition);
+        float valuePercentage = 1.0f - ((sliderCursorMaxXPosition - sliderCursorXPosition) / (sliderCursorMaxXPosition - sliderCursorMinXPosition));
+        selectedIndex = MathFunction::floorToUInt((float)values.size() * valuePercentage);
+        selectedIndex = MathFunction::clamp(selectedIndex, 0u, (unsigned int)values.size() - 1u);
+
+        //move cursor
+        moveSliderCursor();
+
+        //update text
+        currentValueText->updateText(values[selectedIndex]);
+
+        //event
+        if (oldSelectedIndex != selectedIndex) {
+            for (auto& eventListener : getEventListeners()) {
+                eventListener->onValueChange(this);
+            }
+        }
     }
 
     void Slider::moveSliderCursor() {
@@ -147,8 +157,8 @@ namespace urchin {
         float sliderCursorMaxXPosition = ((float)getWidth() - (float)sliderCursorHalfSize);
 
         float sliderCursorPositionPercentage = (float)selectedIndex / ((float)values.size() - 1.0f);
-        float sliderCursorXPosition = (sliderCursorPositionPercentage * (sliderCursorMaxXPosition - sliderCursorMinXPosition) + sliderCursorMinXPosition);
-        cursorImage->setPosition(Position((float)sliderCursorXPosition - sliderCursorHalfSize, (float)cursorImage->getPositionY(), LengthType::PIXEL));
+        float sliderCursorXPosition = sliderCursorPositionPercentage * (sliderCursorMaxXPosition - sliderCursorMinXPosition);
+        cursorImage->setPosition(Position((float)sliderCursorXPosition, (float)cursorImage->getPositionY(), LengthType::PIXEL));
     }
 
     void Slider::prepareWidgetRendering(float) {
