@@ -4,9 +4,6 @@
 #include <scene/UI/widget/sequence/Sequence.h>
 #include <scene/UI/UISkinService.h>
 
-#define TIME_BEFORE_AUTO_CLICK 0.3
-#define TIME_BEFORE_AUTO_NEXT_CLICK 0.15
-
 namespace urchin {
 
     Sequence* Sequence::newSequence(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& texts) {
@@ -24,8 +21,6 @@ namespace urchin {
             translatableValues(translatableValues),
             loopOnValuesEnabled(true),
             selectedIndex(0),
-            timeInClickingState(0.0f),
-            timeSinceLastChange(0.0f),
             leftButton(nullptr),
             rightButton(nullptr) {
         if (values.empty()) {
@@ -118,38 +113,8 @@ namespace urchin {
         createOrUpdateWidget();
     }
 
-    void Sequence::prepareWidgetRendering(float dt) {
-        if (leftButton->getWidgetState() == Widget::WidgetStates::CLICKING) {
-            timeInClickingState += dt;
-            timeSinceLastChange += dt;
-
-            if (timeInClickingState > TIME_BEFORE_AUTO_CLICK && timeSinceLastChange > TIME_BEFORE_AUTO_NEXT_CLICK &&
-                    (getSelectedIndex() > 0 || loopOnValuesEnabled)) {
-                if(getSelectedIndex() == 0) {
-                    setSelectedIndex((unsigned int)values.size() - 1);
-                } else {
-                    setSelectedIndex(getSelectedIndex() - 1);
-                }
-                timeSinceLastChange = 0.0f;
-            }
-        } else if (rightButton->getWidgetState() == Widget::WidgetStates::CLICKING) {
-            timeInClickingState += dt;
-            timeSinceLastChange += dt;
-
-            if (timeInClickingState > TIME_BEFORE_AUTO_CLICK && timeSinceLastChange > TIME_BEFORE_AUTO_NEXT_CLICK &&
-                    (getSelectedIndex() + 1 < values.size() || loopOnValuesEnabled)) {
-                if (getSelectedIndex() == (values.size() - 1)) {
-                    setSelectedIndex(0);
-                } else {
-                    setSelectedIndex(getSelectedIndex() + 1);
-                }
-                timeSinceLastChange = 0.0f;
-            }
-        } else {
-            timeInClickingState = 0.0f;
-            timeSinceLastChange = 0.0f;
-        }
-
+    void Sequence::prepareWidgetRendering(float) {
+        //TODO check if better to move it in createOrUpdateWidget() and call this method
         //update the text position because the text size is updated when the UI language is changed
         valuesText[selectedIndex]->setPosition(Position(((float)getWidth() - (float)valuesText[selectedIndex]->getWidth()) / 2.0f, 0.0f, LengthType::PIXEL));
     }
@@ -162,6 +127,8 @@ namespace urchin {
     }
 
     void Sequence::ButtonSequenceEventListener::onMouseLeftClickRelease(Widget*) {
+        unsigned int oldSelectedIndex = sequence->selectedIndex;
+
         if (isLeftButton) {
             if (sequence->selectedIndex > 0 || loopOnValuesEnabled) {
                 sequence->valuesText[sequence->selectedIndex]->setIsVisible(false);
@@ -181,6 +148,12 @@ namespace urchin {
                     sequence->selectedIndex++;
                 }
                 sequence->valuesText[sequence->selectedIndex]->setIsVisible(true);
+            }
+        }
+
+        if (oldSelectedIndex != sequence->selectedIndex) {
+            for (auto& eventListener : sequence->getEventListeners()) {
+                eventListener->onValueChange(sequence);
             }
         }
     }

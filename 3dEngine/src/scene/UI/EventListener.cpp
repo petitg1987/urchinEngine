@@ -19,4 +19,8 @@ namespace urchin {
 
     }
 
+    void EventListener::onValueChange(Widget*) {
+
+    }
+
 }

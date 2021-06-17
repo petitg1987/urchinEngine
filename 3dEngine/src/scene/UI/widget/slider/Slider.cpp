@@ -119,6 +119,7 @@ namespace urchin {
             cursorImage->setPosition(Position((float)sliderCursorCenterXPosition, (float)cursorImage->getPositionY(), LengthType::PIXEL));
 
             //compute index
+            unsigned int oldSelectedIndex = selectedIndex;
             float sliderCursorCurrentPosition = (float)cursorImage->getPositionX() + sliderCursorHalfSize;
             float valuePercentage = 1.0f - ((sliderCursorMaxXPosition - sliderCursorCurrentPosition) / (sliderCursorMaxXPosition - sliderCursorMinXPosition));
             selectedIndex = MathFunction::floorToUInt((float)values.size() * valuePercentage);
@@ -126,6 +127,13 @@ namespace urchin {
 
             //update text
             currentValueText->updateText(values[selectedIndex]);
+
+            //event
+            if (oldSelectedIndex != selectedIndex) {
+                for (auto& eventListener : getEventListeners()) {
+                    eventListener->onValueChange(this);
+                }
+            }
 
             return false;
         }

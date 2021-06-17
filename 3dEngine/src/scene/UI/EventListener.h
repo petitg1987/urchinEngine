@@ -13,6 +13,8 @@ namespace urchin {
 
             virtual void onFocus(Widget*);
             virtual void onFocusLost(Widget*);
+
+            virtual void onValueChange(Widget*);
     };
 
 }

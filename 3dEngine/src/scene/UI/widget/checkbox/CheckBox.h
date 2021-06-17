@@ -21,6 +21,7 @@ namespace urchin {
             std::shared_ptr<Texture> loadTexture(const std::shared_ptr<XmlChunk>&, const std::string&) const;
             void refreshTexture();
             bool onKeyReleaseEvent(unsigned int) override;
+            void switchValue();
 
             //properties
             const std::string nameSkin;

@@ -26,7 +26,7 @@ namespace urchin {
             bool onCharEvent(char32_t) override;
             void onResetState() override;
 
-            void refreshText(unsigned int);
+            void refreshText(unsigned int, bool);
             void computeCursorPosition();
             void computeCursorIndex(int);
 

@@ -40,10 +40,6 @@ namespace urchin {
 
             std::shared_ptr<EventListener> leftButtonEventListener;
             std::shared_ptr<EventListener> rightButtonEventListener;
-
-            float timeInClickingState;
-            float timeSinceLastChange;
-
             class ButtonSequenceEventListener : public EventListener {
                 public:
                     ButtonSequenceEventListener(Sequence*, bool, bool);

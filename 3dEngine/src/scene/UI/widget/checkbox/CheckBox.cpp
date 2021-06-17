@@ -63,10 +63,18 @@ namespace urchin {
     bool CheckBox::onKeyReleaseEvent(unsigned int) {
         if (getWidgetState() == FOCUS) {
             refreshTexture();
-            bIsChecked = !bIsChecked;
+            switchValue();
             return false;
         }
         return true;
+    }
+
+    void CheckBox::switchValue() {
+        bIsChecked = !bIsChecked;
+
+        for (auto& eventListener : getEventListeners()) {
+            eventListener->onValueChange(this);
+        }
     }
 
     void CheckBox::prepareWidgetRendering(float) {
