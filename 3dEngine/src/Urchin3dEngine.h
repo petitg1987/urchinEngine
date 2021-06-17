@@ -21,17 +21,17 @@
 #include <scene/renderer3d/landscape/terrain/grass/TerrainGrass.h>
 #include <scene/renderer3d/landscape/water/Water.h>
 
-#include <scene/UI/EventListener.h>
-#include <scene/UI/UIRenderer.h>
-#include <scene/UI/widget/container/Container.h>
-#include <scene/UI/widget/window/Window.h>
-#include <scene/UI/widget/button/Button.h>
-#include <scene/UI/widget/staticbitmap/StaticBitmap.h>
-#include <scene/UI/widget/text/Text.h>
-#include <scene/UI/widget/textbox/TextBox.h>
-#include <scene/UI/widget/sequence/Sequence.h>
-#include <scene/UI/widget/slider/Slider.h>
-#include <scene/UI/widget/checkbox/CheckBox.h>
+#include <scene/ui/EventListener.h>
+#include <scene/ui/UIRenderer.h>
+#include <scene/ui/widget/container/Container.h>
+#include <scene/ui/widget/window/Window.h>
+#include <scene/ui/widget/button/Button.h>
+#include <scene/ui/widget/staticbitmap/StaticBitmap.h>
+#include <scene/ui/widget/text/Text.h>
+#include <scene/ui/widget/textbox/TextBox.h>
+#include <scene/ui/widget/sequence/Sequence.h>
+#include <scene/ui/widget/slider/Slider.h>
+#include <scene/ui/widget/checkbox/CheckBox.h>
 
 #include <i18n/LabelTranslator.h>
 

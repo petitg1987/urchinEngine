@@ -6,7 +6,7 @@
 #include <UrchinCommon.h>
 
 #include <scene/renderer3d/Renderer3d.h>
-#include <scene/UI/UIRenderer.h>
+#include <scene/ui/UIRenderer.h>
 #include <graphic/setup/GraphicService.h>
 #include <graphic/render/target/ScreenRender.h>
 
