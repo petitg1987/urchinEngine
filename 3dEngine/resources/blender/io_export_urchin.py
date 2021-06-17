@@ -479,33 +479,34 @@ def saveUrchin(settings) :
     bpy.ops.object.mode_set(mode='OBJECT')
 
     scale = settings.scale
-    currArmature = 0
 
+    #COMMON (MESH & ANIMATION) EXPORT
+    currArmature = 0
     skeleton = Skeleton()
     bpy.context.scene.frame_set(bpy.context.scene.frame_start)
+
+    def treatBone(b, wMatrix, parent=None) :
+        print("[INFO] Processing bone: " + b.name)
+        if parent and not b.parent.name == parent.name :
+            return  # only catch direct children
+        mat = mathutils.Matrix(wMatrix) @ mathutils.Matrix(b.matrix_local)
+        bone = Bone(skeleton, parent, b.name, mat)
+        if b.children :
+            for child in b.children :
+                treatBone(child, wMatrix, bone)
+
     for obj in bpy.context.selected_objects :
-        if obj.type == 'ARMATURE' :
-            currArmature = obj
-            wMatrix = obj.matrix_world
-
-            def treatBone(b, parent=None) :
-                print("[INFO] Processing bone: " + b.name)
-                if parent and not b.parent.name == parent.name :
-                    return  # only catch direct children
-
-                mat = mathutils.Matrix(wMatrix) @ mathutils.Matrix(b.matrix_local)
-                bone = Bone(skeleton, parent, b.name, mat)
-
-                if b.children :
-                    for child in b.children :
-                        treatBone(child, bone)
-
-            print("[INFO] Processing armature: " + currArmature.name)
-            for b in currArmature.data.bones :
-                if not b.parent :  # only treat root bones
-                    treatBone(b)
-
-            break  # only pull one skeleton out
+        if (obj.type == 'MESH') and (len(obj.data.vertices.values()) > 0) :
+            currArmature = obj.find_armature()
+            if (currArmature) :
+                wMatrix = currArmature.matrix_world
+                print("[INFO] Processing armature: " + currArmature.name)
+                for b in currArmature.data.bones :
+                    if not b.parent :  # only treat root bones
+                        treatBone(b, wMatrix)
+            else :
+                print("[ERROR]: Armature not found on object: " + obj.name)
+            break;
 
     # MESH EXPORT
     meshes = []
@@ -631,18 +632,13 @@ def saveUrchin(settings) :
 
     # ANIMATION EXPORT
     animations = {}
-
     armatureAction = currArmature.animation_data.action
     rangeStart = 0
     rangeEnd = 0
     if armatureAction :
         animation = animations[armatureAction.name] = UrchinAnimation(skeleton)
 
-        # bpy.context.scene.update()
-        armature = bpy.context.active_object
-        action = armature.animation_data.action
-
-        frameMin, frameMax = action.frame_range
+        frameMin, frameMax = armatureAction.frame_range
         print("[INFO] Frame start: " + str(frameMin))
         print("[INFO] Frame end: " + str(frameMax))
         rangeStart = int(frameMin)
