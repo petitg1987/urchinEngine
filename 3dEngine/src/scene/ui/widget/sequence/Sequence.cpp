@@ -69,15 +69,12 @@ namespace urchin {
         //values
         valuesText.resize(values.size());
         for (std::size_t i = 0; i < values.size(); ++i) {
-            Text* valueText;
             if (translatableValues) {
-                valueText = Text::newTranslatableText(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[i]);
+                valuesText[i] = Text::newTranslatableText(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[i]);
             } else {
-                valueText = Text::newText(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[i]);
+                valuesText[i] = Text::newText(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[i]);
             }
-            valueText->setIsVisible(false);
-
-            valuesText[i] = valueText;
+            valuesText[i]->setIsVisible(false);
         }
         valuesText[selectedIndex]->setIsVisible(true);
     }
@@ -114,7 +111,6 @@ namespace urchin {
     }
 
     void Sequence::prepareWidgetRendering(float) {
-        //TODO check if better to move it in createOrUpdateWidget() and call this method
         //update the text position because the text size is updated when the UI language is changed
         valuesText[selectedIndex]->setPosition(Position(((float)getWidth() - (float)valuesText[selectedIndex]->getWidth()) / 2.0f, 0.0f, LengthType::PIXEL));
     }

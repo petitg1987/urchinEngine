@@ -46,6 +46,7 @@ namespace urchin {
         float cursorImageWidth = ((float)getHeight() / (float)imageCursor->getHeight()) * (float)imageCursor->getWidth();
         imageCursor.reset();
         cursorImage = new StaticBitmap(this, Position(0, 0, LengthType::PIXEL), Size((float)cursorImageWidth, (float)getHeight(), LengthType::PIXEL), cursorImageFilename);
+        moveSliderCursor();
 
         //visual
         std::vector<Point2<float>> vertexCoord = {
@@ -82,11 +83,12 @@ namespace urchin {
             throw std::out_of_range("Index is out of range: " + std::to_string(index) + ". Maximum index allowed: " + std::to_string(values.size() - 1));
         }
 
-        if (currentValueText) {
-            currentValueText->updateText(values[index]);
-        }
-
         this->selectedIndex = index;
+
+        if (currentValueText) {
+            currentValueText->updateText(values[selectedIndex]);
+            moveSliderCursor();
+        }
     }
 
     bool Slider::onKeyPressEvent(unsigned int key) {
@@ -113,17 +115,16 @@ namespace urchin {
             float sliderCursorMinXPosition = sliderCursorHalfSize;
             float sliderCursorMaxXPosition = ((float)getWidth() - (float)sliderCursorHalfSize);
 
-            //move cursor
-            float relativeMouseX = (float)mouseX - (float)getGlobalPositionX();
-            float sliderCursorCenterXPosition = MathFunction::clamp(relativeMouseX, sliderCursorMinXPosition, sliderCursorMaxXPosition) - sliderCursorMinXPosition;
-            cursorImage->setPosition(Position((float)sliderCursorCenterXPosition, (float)cursorImage->getPositionY(), LengthType::PIXEL));
-
             //compute index
             unsigned int oldSelectedIndex = selectedIndex;
-            float sliderCursorCurrentPosition = (float)cursorImage->getPositionX() + sliderCursorHalfSize;
-            float valuePercentage = 1.0f - ((sliderCursorMaxXPosition - sliderCursorCurrentPosition) / (sliderCursorMaxXPosition - sliderCursorMinXPosition));
+            float relativeMouseX = (float)mouseX - (float)getGlobalPositionX();
+            float sliderCursorXPosition = MathFunction::clamp(relativeMouseX, sliderCursorMinXPosition, sliderCursorMaxXPosition);
+            float valuePercentage = 1.0f - ((sliderCursorMaxXPosition - sliderCursorXPosition) / (sliderCursorMaxXPosition - sliderCursorMinXPosition));
             selectedIndex = MathFunction::floorToUInt((float)values.size() * valuePercentage);
             selectedIndex = MathFunction::clamp(selectedIndex, 0u, (unsigned int)values.size() - 1u);
+
+            //move cursor
+            moveSliderCursor();
 
             //update text
             currentValueText->updateText(values[selectedIndex]);
@@ -138,6 +139,16 @@ namespace urchin {
             return false;
         }
         return true;
+    }
+
+    void Slider::moveSliderCursor() {
+        float sliderCursorHalfSize = (float)cursorImage->getWidth() / 2.0f;
+        float sliderCursorMinXPosition = sliderCursorHalfSize;
+        float sliderCursorMaxXPosition = ((float)getWidth() - (float)sliderCursorHalfSize);
+
+        float sliderCursorPositionPercentage = (float)selectedIndex / ((float)values.size() - 1.0f);
+        float sliderCursorXPosition = (sliderCursorPositionPercentage * (sliderCursorMaxXPosition - sliderCursorMinXPosition) + sliderCursorMinXPosition);
+        cursorImage->setPosition(Position((float)sliderCursorXPosition - sliderCursorHalfSize, (float)cursorImage->getPositionY(), LengthType::PIXEL));
     }
 
     void Slider::prepareWidgetRendering(float) {

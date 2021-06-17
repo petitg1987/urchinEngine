@@ -12,7 +12,7 @@
 
 namespace urchin {
 
-    class Slider : public Widget {
+    class Slider : public Widget { //TODO handle mouse click on slider line
         public:
             static Slider* newSlider(Widget*, Position, Size, std::string, const std::vector<std::string>&);
 
@@ -31,6 +31,7 @@ namespace urchin {
             Slider(Widget*, Position, Size, std::string, const std::vector<std::string>&);
 
             std::shared_ptr<Texture> loadTexture(const std::shared_ptr<XmlChunk>&, const std::string&) const;
+            void moveSliderCursor();
 
             //display information
             const float TEXT_SHIFT_LENGTH;
