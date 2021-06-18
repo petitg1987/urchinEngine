@@ -3,5 +3,10 @@
 set -e
 cd "$(dirname "$0")"
 
-cp ./io_export_urchin.py /home/greg/.config/blender/2.83/scripts/addons/
+blenderVersion=$(blender --version | grep -oP '\d.\d+')
+targetPath="$HOME/.config/blender/$blenderVersion/scripts/addons/"
+
+cp "./io_export_urchin.py" "$targetPath"
+
+echo "Script deploy into: $targetPath"
 echo "Press F3 in Blender, search for 'reload' and select 'Reload Scripts'"
