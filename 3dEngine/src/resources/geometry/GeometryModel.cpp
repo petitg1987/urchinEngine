@@ -114,7 +114,9 @@ namespace urchin {
         positioningData.viewModelMatrix = viewMatrix * modelMatrix;
         renderer->updateUniformData(0, &positioningData);
         renderer->updateUniformData(1, &color);
-        renderer->enableRenderer();
+        if (!renderer->isEnabled()) { //renderer could be already enabled if 'initialize' method is called after 'renderTarget->disableAllRenderers()'
+            renderer->enableRenderer();
+        }
     }
 
 }
