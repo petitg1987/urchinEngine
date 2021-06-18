@@ -114,7 +114,7 @@ namespace urchin {
         positioningData.viewModelMatrix = viewMatrix * modelMatrix;
         renderer->updateUniformData(0, &positioningData);
         renderer->updateUniformData(1, &color);
-        //renderer->enableRenderer();
+        renderer->enableRenderer();
     }
 
 }
