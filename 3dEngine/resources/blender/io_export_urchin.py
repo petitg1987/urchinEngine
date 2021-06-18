@@ -631,51 +631,6 @@ def saveUrchin(settings) :
                         print("[ERROR] Found face with invalid material")
             print("[INFO] Created vertices: A " + str(createVertexA) + ", B " + str(createVertexB) + ", C " + str(createVertexC))
 
-    # ANIMATION EXPORT
-    animations = {}
-    armatureAction = currArmature.animation_data.action
-    rangeStart = 0
-    rangeEnd = 0
-    if armatureAction :
-        animation = animations[armatureAction.name] = UrchinAnimation(skeleton)
-
-        frameMin, frameMax = armatureAction.frame_range
-        print("[INFO] Frame start: " + str(frameMin))
-        print("[INFO] Frame end: " + str(frameMax))
-        rangeStart = int(frameMin)
-        rangeEnd = int(frameMax)
-
-        currentTime = rangeStart
-        while currentTime <= rangeEnd :
-            bpy.context.scene.frame_set(currentTime)
-            time = (currentTime - 1.0) / 24.0
-            pose = currArmature.pose
-
-            for boneName in currArmature.data.bones.keys() :
-                poseBoneMat = mathutils.Matrix(pose.bones[boneName].matrix)
-
-                try :
-                    bone = bones[boneName]
-                except :
-                    print("[ERROR] Found a posebone animating a bone that is not part of the exported armature: " + boneName)
-                    continue
-                if bone.parent :
-                    parentPoseMat = mathutils.Matrix(pose.bones[bone.parent.name].matrix)
-                    parentPoseMat.invert()
-                    poseBoneMat = parentPoseMat @ poseBoneMat
-                else :
-                    poseBoneMat = currArmature.matrix_world @ poseBoneMat
-                loc = [poseBoneMat.col[3][0],
-                       poseBoneMat.col[3][1],
-                       poseBoneMat.col[3][2],
-                       ]
-                rot = poseBoneMat.to_quaternion()
-                rot.normalize()
-                rot = [rot.w, rot.x, rot.y, rot.z]
-
-                animation.addKeyForBone(bone.id, time, loc, rot)
-            currentTime += 1
-
     if (settings.exportMode == "mesh & anim" or settings.exportMode == "mesh only") :
         urchinMeshFilename = settings.savePath + ".urchinMesh"
 
@@ -695,9 +650,55 @@ def saveUrchin(settings) :
         file.close()
         print("[INFO] Saved mesh to " + urchinMeshFilename)
 
+    # ANIMATION EXPORT
     if (settings.exportMode == "mesh & anim" or settings.exportMode == "anim only") :
-        urchinAnimFilename = settings.savePath + ".urchinAnim"
+        animations = {}
+        rangeStart = 0
+        rangeEnd = 0
+        if (currArmature.animation_data and currArmature.animation_data.action) :
+            armatureAction = currArmature.animation_data.action
+            animation = animations[armatureAction.name] = UrchinAnimation(skeleton)
 
+            frameMin, frameMax = armatureAction.frame_range
+            print("[INFO] Frame start: " + str(frameMin))
+            print("[INFO] Frame end: " + str(frameMax))
+            rangeStart = int(frameMin)
+            rangeEnd = int(frameMax)
+
+            currentTime = rangeStart
+            while currentTime <= rangeEnd :
+                bpy.context.scene.frame_set(currentTime)
+                time = (currentTime - 1.0) / 24.0
+                pose = currArmature.pose
+
+                for boneName in currArmature.data.bones.keys() :
+                    poseBoneMat = mathutils.Matrix(pose.bones[boneName].matrix)
+
+                    try :
+                        bone = bones[boneName]
+                    except :
+                        print("[ERROR] Found a posebone animating a bone that is not part of the exported armature: " + boneName)
+                        continue
+                    if bone.parent :
+                        parentPoseMat = mathutils.Matrix(pose.bones[bone.parent.name].matrix)
+                        parentPoseMat.invert()
+                        poseBoneMat = parentPoseMat @ poseBoneMat
+                    else :
+                        poseBoneMat = currArmature.matrix_world @ poseBoneMat
+                    loc = [poseBoneMat.col[3][0],
+                           poseBoneMat.col[3][1],
+                           poseBoneMat.col[3][2],
+                           ]
+                    rot = poseBoneMat.to_quaternion()
+                    rot.normalize()
+                    rot = [rot.w, rot.x, rot.y, rot.z]
+
+                    animation.addKeyForBone(bone.id, time, loc, rot)
+                currentTime += 1
+        else:
+            print("[WARNING] Animation data missing.")
+
+        urchinAnimFilename = settings.savePath + ".urchinAnim"
         if len(animations) > 0 :
             anim = animations.popitem()[1]
             try :
