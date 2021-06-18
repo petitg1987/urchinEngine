@@ -41,7 +41,7 @@ namespace urchin {
             iss.clear(); iss.str(buffer);
             iss >> bone->name >> bone->parent >> sdata >> bone->pos.X >> bone->pos.Y >> bone->pos.Z >> sdata >> sdata >> bone->orient.X >> bone->orient.Y >> bone->orient.Z;
             bone->orient.computeW();
-            bone->name = bone->name.substr(1, bone->name.length()-2); //remove quot
+            bone->name = bone->name.substr(1, bone->name.length() - 2); //remove quote
         }
         FileReader::nextLine(file, buffer); //buffer = "}"
 
@@ -54,7 +54,7 @@ namespace urchin {
             FileReader::nextLine(file, buffer);
             iss.clear(); iss.str(buffer);
             iss >> sdata >> materialFilename;
-            materialFilename = materialFilename.substr(1, materialFilename.length()-2); //remove quot
+            materialFilename = materialFilename.substr(1, materialFilename.length()-2); //remove quote
 
             //numVertices
             unsigned int numVertices = 0;

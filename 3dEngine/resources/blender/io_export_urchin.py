@@ -450,14 +450,15 @@ def getMinMax(listOfPoints) :
     return (min, max)
 
 
-def generateBoundingBox(objects, urchinAnimation, frameRange) :
+def generateBoundingBox(urchinAnimation, frameRange) :
+    print("[INFO] Generating animation bounding box")
     scene = bpy.context.scene
     context = scene.render
     for i in range(frameRange[0], frameRange[1] + 1) :
         corners = []
         scene.frame_set(i)
 
-        for obj in objects :
+        for obj in bpy.context.selected_objects :
             if obj is not None and obj.type == 'MESH' and obj.data.polygons :
                 (lx, ly, lz) = obj.location
                 bbox = obj.bound_box
@@ -703,15 +704,8 @@ def saveUrchin(settings) :
                 file = open(urchinAnimFilename, 'w')
             except IOError :
                 print("[ERROR] IOError to write in: " + urchinAnimFilename)
-            objects = []
-            for subMesh in meshes[0].subMeshes :
-                if len(subMesh.weights) > 0 :
-                    obj = None
-                    for sob in bpy.context.selected_objects :
-                        if sob and sob.type == 'MESH' and sob.name == subMesh.name :
-                            obj = sob
-                    objects.append(obj)
-            generateBoundingBox(objects, anim, [rangeStart, rangeEnd])
+
+            generateBoundingBox(anim, [rangeStart, rangeEnd])
             buffer = anim.toUrchinAnim()
             file.write(buffer)
             file.close()
