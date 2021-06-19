@@ -14,13 +14,13 @@ namespace urchin {
         cleanCurrentDisplay();
 
         GeometryModel* xLine = createAxisModel(position, selectedAxis, 0);
-        xLine->setColor(1.0f, 0.0f, 0.0f, selectedAxis == 0 ? 1.0f : 0.65f);
+        xLine->setColor(1.0f, 0.0f, 0.0f);
 
         GeometryModel* yLine = createAxisModel(position, selectedAxis, 1);
-        yLine->setColor(0.0f, 1.0f, 0.0f, selectedAxis == 1 ? 1.0f : 0.65f);
+        yLine->setColor(0.0f, 1.0f, 0.0f);
 
         GeometryModel* zLine = createAxisModel(position, selectedAxis, 2);
-        zLine->setColor(0.0f, 0.0f, 1.0f, selectedAxis == 2 ? 1.0f : 0.65f);
+        zLine->setColor(0.0f, 0.0f, 1.0f);
 
         for (auto& objectMoveAxisModel : objectMoveAxisModels) {
             sceneManager->getActiveRenderer3d()->getGeometryManager()->addGeometry(objectMoveAxisModel);
@@ -38,15 +38,13 @@ namespace urchin {
 
     GeometryModel* ObjectMoveAxisDisplayer::createAxisModel(const Point3<float>& position, unsigned int selectedAxis, std::size_t axisIndex) {
         Point3<float> startPoint = position;
-        startPoint[axisIndex] -= 500.0f;
-
         Point3<float> endPoint = position;
-        endPoint[axisIndex] += 500.0f;
+        endPoint[axisIndex] += 0.4f;
 
         LineSegment3D<float> axeLineSegment(startPoint, endPoint);
         GeometryModel* axisModel = new LinesModel(axeLineSegment);
-        axisModel->setLineWidth(axisIndex == selectedAxis ? 2.0f : 1.0f);
-        axisModel->enableTransparency();
+        axisModel->setLineWidth(axisIndex == selectedAxis ? 3.0f : 1.0f);
+        axisModel->setAlwaysVisible(true);
         objectMoveAxisModels.push_back(axisModel);
 
         return axisModel;
