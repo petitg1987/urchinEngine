@@ -449,6 +449,19 @@ def getMinMax(listOfPoints) :
             if listOfPoints[i][2] < min[2] : min[2] = listOfPoints[i][2]
     return (min, max)
 
+def objects_to_export() :
+    objects_list = []
+    for obj in bpy.context.selected_objects :
+        if (obj is not None) and (obj.type == 'MESH') and (len(obj.data.vertices.values()) > 0) :
+            objects_list.append(obj)
+
+    if len(objects_list) == 0 :
+        for obj in bpy.context.visible_objects :
+            if (obj is not None) and (obj.type == 'MESH') and (len(obj.data.vertices.values()) > 0) :
+                objects_list.append(obj)
+
+    return objects_list;
+
 
 def generateBoundingBox(urchinAnimation, frameRange) :
     print("[INFO] Generating animation bounding box")
@@ -458,8 +471,8 @@ def generateBoundingBox(urchinAnimation, frameRange) :
         corners = []
         scene.frame_set(i)
 
-        for obj in bpy.context.selected_objects :
-            if obj is not None and obj.type == 'MESH' and obj.data.polygons :
+        for obj in objects_to_export() :
+            if obj.data.polygons :
                 (lx, ly, lz) = obj.location
                 bbox = obj.bound_box
 
@@ -481,7 +494,7 @@ def saveUrchin(settings) :
 
     scale = settings.scale
 
-    #COMMON (MESH & ANIMATION) EXPORT
+    #COMMON EXPORT
     currArmature = 0
     skeleton = Skeleton()
     bpy.context.scene.frame_set(bpy.context.scene.frame_start)
@@ -496,140 +509,137 @@ def saveUrchin(settings) :
             for child in b.children :
                 treatBone(child, wMatrix, bone)
 
-    for obj in bpy.context.selected_objects :
-        if (obj.type == 'MESH') and (len(obj.data.vertices.values()) > 0) :
-            currArmature = obj.find_armature()
-            if (currArmature) :
-                wMatrix = currArmature.matrix_world
-                print("[INFO] Processing armature: " + currArmature.name)
-                for b in currArmature.data.bones :
-                    if not b.parent :  # only treat root bones
-                        treatBone(b, wMatrix)
-            else :
-                print("[ERROR]: Armature not found on object: " + obj.name)
-            break;
+    for obj in objects_to_export() :
+        currArmature = obj.find_armature()
+        if (currArmature) :
+            wMatrix = currArmature.matrix_world
+            print("[INFO] Processing armature: " + currArmature.name)
+            for b in currArmature.data.bones :
+                if not b.parent :  # only treat root bones
+                    treatBone(b, wMatrix)
+        else :
+            print("[ERROR]: Armature not found on object: " + obj.name)
+        break;
 
     # MESH EXPORT
     meshes = []
-    for obj in bpy.context.selected_objects :
-        if (obj.type == 'MESH') and (len(obj.data.vertices.values()) > 0) :
+    for obj in objects_to_export() :
+        # Get the evaluate object => object where modifiers (triangulation...) are applied.
+        # More details: https://docs.blender.org/api/blender2.8/bpy.types.Depsgraph.html
+        depsgraph = bpy.context.evaluated_depsgraph_get()
+        object_eval = obj.evaluated_get(depsgraph)
+        modifiedMesh = object_eval.to_mesh()
 
-            # Get the evaluate object => object where modifiers (triangulation...) are applied.
-            # More details: https://docs.blender.org/api/blender2.8/bpy.types.Depsgraph.html
-            depsgraph = bpy.context.evaluated_depsgraph_get()
-            object_eval = obj.evaluated_get(depsgraph)
-            modifiedMesh = object_eval.to_mesh()
+        mesh = Mesh(modifiedMesh.name)
+        print("[INFO] Processing mesh: " + modifiedMesh.name)
+        meshes.append(mesh)
 
-            mesh = Mesh(modifiedMesh.name)
-            print("[INFO] Processing mesh: " + modifiedMesh.name)
-            meshes.append(mesh)
+        numTris = 0
+        numWeights = 0
+        for f in modifiedMesh.polygons :
+            numTris += len(f.vertices) - 2
+        for v in modifiedMesh.vertices :
+            numWeights += len(v.groups)
 
-            numTris = 0
-            numWeights = 0
-            for f in modifiedMesh.polygons :
-                numTris += len(f.vertices) - 2
-            for v in modifiedMesh.vertices :
-                numWeights += len(v.groups)
+        wMatrix = obj.matrix_world
+        verts = modifiedMesh.vertices
 
-            wMatrix = obj.matrix_world
-            verts = modifiedMesh.vertices
+        faces = []
+        for f in modifiedMesh.polygons :
+            faces.append(f)
 
-            faces = []
-            for f in modifiedMesh.polygons :
-                faces.append(f)
+        createVertexA = 0  # normal vertex
+        createVertexB = 0  # cloned because flat face
+        createVertexC = 0  # cloned because different texture coord
 
-            createVertexA = 0  # normal vertex
-            createVertexB = 0  # cloned because flat face
-            createVertexC = 0  # cloned because different texture coord
+        while faces :
+            materialIndex = faces[0].material_index
+            material = Material(modifiedMesh.materials[0].name)
 
-            while faces :
-                materialIndex = faces[0].material_index
-                material = Material(modifiedMesh.materials[0].name)
+            subMesh = SubMesh(mesh, material)
+            vertices = {}
+            for face in faces[:] :
+                if len(face.vertices) < 3 :
+                    faces.remove(face)
+                elif face.vertices[0] == face.vertices[1] :
+                    faces.remove(face)
+                elif face.vertices[0] == face.vertices[2] :
+                    faces.remove(face)
+                elif face.vertices[1] == face.vertices[2] :
+                    faces.remove(face)
+                elif face.material_index == materialIndex :
+                    faces.remove(face)
 
-                subMesh = SubMesh(mesh, material)
-                vertices = {}
-                for face in faces[:] :
-                    if len(face.vertices) < 3 :
-                        faces.remove(face)
-                    elif face.vertices[0] == face.vertices[1] :
-                        faces.remove(face)
-                    elif face.vertices[0] == face.vertices[2] :
-                        faces.remove(face)
-                    elif face.vertices[1] == face.vertices[2] :
-                        faces.remove(face)
-                    elif face.material_index == materialIndex :
-                        faces.remove(face)
+                    if not face.use_smooth :
+                        p1 = verts[face.vertices[0]].co
+                        p2 = verts[face.vertices[1]].co
+                        p3 = verts[face.vertices[2]].co
 
-                        if not face.use_smooth :
-                            p1 = verts[face.vertices[0]].co
-                            p2 = verts[face.vertices[1]].co
-                            p3 = verts[face.vertices[2]].co
+                    faceVertices = []
+                    for i in range(len(face.vertices)) :
+                        vertex = False
+                        if face.vertices[i] in vertices :
+                            vertex = vertices[face.vertices[i]]
 
-                        faceVertices = []
-                        for i in range(len(face.vertices)) :
-                            vertex = False
-                            if face.vertices[i] in vertices :
-                                vertex = vertices[face.vertices[i]]
+                        if not vertex :  # found unique vertex, add to list
+                            coord = pointByMatrix(verts[face.vertices[i]].co, wMatrix)
 
-                            if not vertex :  # found unique vertex, add to list
-                                coord = pointByMatrix(verts[face.vertices[i]].co, wMatrix)
+                            vertex = Vertex(subMesh, coord)
+                            if face.use_smooth :  # smooth face can share vertex, not flat face
+                                vertices[face.vertices[i]] = vertex
+                            createVertexA += 1
 
-                                vertex = Vertex(subMesh, coord)
-                                if face.use_smooth :  # smooth face can share vertex, not flat face
-                                    vertices[face.vertices[i]] = vertex
-                                createVertexA += 1
+                            influences = []
+                            for j in range(len(modifiedMesh.vertices[face.vertices[i]].groups)) :
+                                inf = [obj.vertex_groups[modifiedMesh.vertices[face.vertices[i]].groups[j].group].name, modifiedMesh.vertices[face.vertices[i]].groups[j].weight]
+                                influences.append(inf)
 
-                                influences = []
-                                for j in range(len(modifiedMesh.vertices[face.vertices[i]].groups)) :
-                                    inf = [obj.vertex_groups[modifiedMesh.vertices[face.vertices[i]].groups[j].group].name, modifiedMesh.vertices[face.vertices[i]].groups[j].weight]
-                                    influences.append(inf)
+                            if not influences :
+                                print("[ERROR] There is a vertex without bone attachment in mesh: " + mesh.name)
+                            sum = 0.0
+                            for bone_name, weight in influences :
+                                sum += weight
 
-                                if not influences :
-                                    print("[ERROR] There is a vertex without bone attachment in mesh: " + mesh.name)
-                                sum = 0.0
-                                for bone_name, weight in influences :
-                                    sum += weight
+                            for bone_name, weight in influences :
+                                if sum != 0 :
+                                    try :
+                                        vertex.influences.append(Influence(bones[bone_name], weight / sum))
+                                    except :
+                                        continue
+                                else :  # we have a vertex that is probably not skinned. export anyway
+                                    try :
+                                        vertex.influences.append(Influence(bones[bone_name], weight))
+                                    except :
+                                        continue
 
-                                for bone_name, weight in influences :
-                                    if sum != 0 :
-                                        try :
-                                            vertex.influences.append(Influence(bones[bone_name], weight / sum))
-                                        except :
-                                            continue
-                                    else :  # we have a vertex that is probably not skinned. export anyway
-                                        try :
-                                            vertex.influences.append(Influence(bones[bone_name], weight))
-                                        except :
-                                            continue
+                        elif not face.use_smooth :
+                            vertex = Vertex(subMesh, vertex.coord, vertex, CloneReason.FLAT_FACE)
+                            createVertexB += 1
 
-                            elif not face.use_smooth :
-                                vertex = Vertex(subMesh, vertex.coord, vertex, CloneReason.FLAT_FACE)
-                                createVertexB += 1
-
-                            active_uv_layer = modifiedMesh.uv_layers.active
-                            if active_uv_layer is not None and len(active_uv_layer.data) > 0 :
-                                uv_layer_data = active_uv_layer.data
-                                uv = [uv_layer_data[face.loop_start + i].uv[0], uv_layer_data[face.loop_start + i].uv[1]]
-                                uv[1] = 1.0 - uv[1]
-                                if not vertex.textureCoord :
+                        active_uv_layer = modifiedMesh.uv_layers.active
+                        if active_uv_layer is not None and len(active_uv_layer.data) > 0 :
+                            uv_layer_data = active_uv_layer.data
+                            uv = [uv_layer_data[face.loop_start + i].uv[0], uv_layer_data[face.loop_start + i].uv[1]]
+                            uv[1] = 1.0 - uv[1]
+                            if not vertex.textureCoord :
+                                vertex.textureCoord = TextureCoordinate(*uv)
+                            elif (vertex.textureCoord.u != uv[0]) or (vertex.textureCoord.v != uv[1]) :
+                                for clone in vertex.clones :
+                                    if (clone.textureCoord.u == uv[0]) and (clone.textureCoord.v == uv[1]) :
+                                        vertex = clone
+                                        break
+                                else :  # clone vertex because different texture coord
+                                    vertex = Vertex(subMesh, vertex.coord, vertex, CloneReason.DIFFERENT_TEXTURE_COORD)
                                     vertex.textureCoord = TextureCoordinate(*uv)
-                                elif (vertex.textureCoord.u != uv[0]) or (vertex.textureCoord.v != uv[1]) :
-                                    for clone in vertex.clones :
-                                        if (clone.textureCoord.u == uv[0]) and (clone.textureCoord.v == uv[1]) :
-                                            vertex = clone
-                                            break
-                                    else :  # clone vertex because different texture coord
-                                        vertex = Vertex(subMesh, vertex.coord, vertex, CloneReason.DIFFERENT_TEXTURE_COORD)
-                                        vertex.textureCoord = TextureCoordinate(*uv)
-                                        createVertexC += 1
+                                    createVertexC += 1
 
-                            faceVertices.append(vertex)
+                        faceVertices.append(vertex)
 
-                        for i in range(1, len(face.vertices) - 1) :  # split faces with more than 3 vertices
-                            Face(subMesh, faceVertices[0], faceVertices[i], faceVertices[i + 1])
-                    else :
-                        print("[ERROR] Found face with invalid material")
-            print("[INFO] Created vertices: A " + str(createVertexA) + ", B " + str(createVertexB) + ", C " + str(createVertexC))
+                    for i in range(1, len(face.vertices) - 1) :  # split faces with more than 3 vertices
+                        Face(subMesh, faceVertices[0], faceVertices[i], faceVertices[i + 1])
+                else :
+                    print("[ERROR] Found face with invalid material")
+        print("[INFO] Created vertices: A " + str(createVertexA) + ", B " + str(createVertexB) + ", C " + str(createVertexC))
 
     if (settings.exportMode == "mesh & anim" or settings.exportMode == "mesh only") :
         urchinMeshFilename = settings.savePath + ".urchinMesh"
