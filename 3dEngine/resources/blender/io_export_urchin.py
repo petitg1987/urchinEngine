@@ -382,7 +382,7 @@ class UrchinAnimation:
             buf = buf + "\t( %f %f %f ) ( %f %f %f )\n" % b
         buf = buf + "}\n\n"
 
-        buf = buf + "base_frame {\n"
+        buf = buf + "baseFrame {\n"
         for b in self.base_frame:
             buf = buf + "\t( %f %f %f ) ( %f %f %f )\n" % b
         buf = buf + "}\n\n"
