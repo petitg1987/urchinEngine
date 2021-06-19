@@ -692,7 +692,7 @@ def save_urchin(settings):
 
 
 # ---------------------------------------------------------------------------
-# UI
+# EXPORT UI
 # ---------------------------------------------------------------------------
 class ExportUrchin(bpy.types.Operator):
     """Export Urchin Engine (.urchinMesh .urchinAnim)"""
@@ -717,27 +717,79 @@ class ExportUrchin(bpy.types.Operator):
         context.window_manager.fileselect_add(self)
         return {"RUNNING_MODAL"}
 
-
-def menu_func(self, context):
+def export_menu_func(self, context):
     default_path = os.path.splitext(bpy.data.filepath)[0]
     self.layout.operator(ExportUrchin.bl_idname, text="Urchin Engine (.urchinMesh .urchinAnim)", icon='BLENDER').filepath = default_path
 
+# ---------------------------------------------------------------------------
+# URCHIN MENU
+# ---------------------------------------------------------------------------
+class AdjustMeshOrigin(bpy.types.Operator):
+    """Adjust Mesh Origin: move all the meshes origins to the center of the global bounding box"""
+    bl_idname = "object.adjust_mesh_origin"
+    bl_label = "[Urchin] Adjust Mesh Origin"
+    bl_options = {'REGISTER', 'UNDO'}
 
+    def execute(self, context):
+        # Move the 3D cursor to the center of the global bounding box
+        bpy.ops.object.select_by_type(type='MESH')
+        bpy.ops.object.duplicate_move()
+        bpy.ops.object.join()
+        bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='BOUNDS')
+        bpy.ops.view3d.snap_cursor_to_selected()
+        bpy.ops.object.delete() # Delete the duplicate meshes
+
+        # Move all meshes origin to 3D cursor
+        bpy.ops.object.select_by_type(type='MESH')
+        bpy.ops.object.origin_set(type='ORIGIN_CURSOR')
+
+        return {'FINISHED'}
+
+
+class MoveMeshToArmatureOrigin(bpy.types.Operator):
+    """Move Mesh To Armature Origin: move all the meshes to the armature origin"""
+    bl_idname = "object.move_mesh_armature_origin"
+    bl_label = "[Urchin] Move Mesh to Armature Origin"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        # Move the 3D cursor to the armature origin
+        bpy.ops.object.select_by_type(type='ARMATURE')
+        bpy.ops.view3d.snap_cursor_to_selected()
+
+        # Move object origin to 3D cursor
+        bpy.ops.object.select_by_type(type='MESH')
+        bpy.ops.view3d.snap_selected_to_cursor()
+        return {'FINISHED'}
+
+def object_menu_func(self, context):
+    self.layout.separator()
+    self.layout.operator(AdjustMeshOrigin.bl_idname)
+    self.layout.operator(MoveMeshToArmatureOrigin.bl_idname)
+
+
+# ---------------------------------------------------------------------------
+# ADDONS
+# ---------------------------------------------------------------------------
 classes = (
     ExportUrchin,
+    AdjustMeshOrigin,
+    MoveMeshToArmatureOrigin
 )
 
 
 def register():
     for cls in classes:
         bpy.utils.register_class(cls)
-    bpy.types.TOPBAR_MT_file_export.append(menu_func)
+    bpy.types.TOPBAR_MT_file_export.append(export_menu_func)
+    bpy.types.VIEW3D_MT_object.append(object_menu_func)
 
 
 def unregister():
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)
-    bpy.types.TOPBAR_MT_file_export.remove(menu_func)
+    bpy.types.TOPBAR_MT_file_export.remove(export_menu_func)
+    bpy.types.VIEW3D_MT_object.remove(object_menu_func)
 
 
 if __name__ == "__main__":
