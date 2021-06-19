@@ -731,10 +731,15 @@ class AdjustMeshOrigin(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        # Move the 3D cursor to the center of the global bounding box
+        # Apply transform
         bpy.ops.object.select_by_type(type='MESH')
+        bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)
+
+        # Move the 3D cursor to the center of the global bounding box
         bpy.ops.object.duplicate_move()
-        bpy.ops.object.join()
+        if len(bpy.context.selected_objects) > 1:
+            bpy.context.view_layer.objects.active = bpy.context.selected_objects[0] # Active one random mesh otherwise 'join()' method is not working
+            bpy.ops.object.join()
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='BOUNDS')
         bpy.ops.view3d.snap_cursor_to_selected()
         bpy.ops.object.delete() # Delete the duplicate meshes
@@ -742,17 +747,22 @@ class AdjustMeshOrigin(bpy.types.Operator):
         # Move all meshes origin to 3D cursor
         bpy.ops.object.select_by_type(type='MESH')
         bpy.ops.object.origin_set(type='ORIGIN_CURSOR')
+        bpy.context.view_layer.objects.active = bpy.context.selected_objects[0] # Active one random mesh otherwise some Blender scripts fail
 
         return {'FINISHED'}
 
 
-class MoveMeshToArmatureOrigin(bpy.types.Operator):
-    """Move Mesh To Armature Origin: move all the meshes to the armature origin"""
-    bl_idname = "object.move_mesh_armature_origin"
-    bl_label = "[Urchin] Move Mesh to Armature Origin"
+class MoveMeshToArmature(bpy.types.Operator):
+    """Move Mesh To Armature: move all the meshes to the armature origin"""
+    bl_idname = "object.move_mesh_to_armature"
+    bl_label = "[Urchin] Move Mesh to Armature"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
+        # Apply transform
+        bpy.ops.object.select_by_type(type='MESH')
+        bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)
+
         # Move the 3D cursor to the armature origin
         bpy.ops.object.select_by_type(type='ARMATURE')
         bpy.ops.view3d.snap_cursor_to_selected()
@@ -760,12 +770,14 @@ class MoveMeshToArmatureOrigin(bpy.types.Operator):
         # Move object origin to 3D cursor
         bpy.ops.object.select_by_type(type='MESH')
         bpy.ops.view3d.snap_selected_to_cursor()
+        bpy.context.view_layer.objects.active = bpy.context.selected_objects[0] # Active one random mesh otherwise some Blender scripts fail
+
         return {'FINISHED'}
 
 def object_menu_func(self, context):
     self.layout.separator()
     self.layout.operator(AdjustMeshOrigin.bl_idname)
-    self.layout.operator(MoveMeshToArmatureOrigin.bl_idname)
+    self.layout.operator(MoveMeshToArmature.bl_idname)
 
 
 # ---------------------------------------------------------------------------
@@ -774,7 +786,7 @@ def object_menu_func(self, context):
 classes = (
     ExportUrchin,
     AdjustMeshOrigin,
-    MoveMeshToArmatureOrigin
+    MoveMeshToArmature
 )
 
 
