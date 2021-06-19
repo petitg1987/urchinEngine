@@ -51,6 +51,11 @@ def matrix_invert(m):
     ])
     return r
 
+# ---------------------------------------------------------------------------
+# GLOBAL VARIABLES
+# ---------------------------------------------------------------------------
+bones = {}
+reporter = None
 
 # ---------------------------------------------------------------------------
 # MESH DATA OBJECTS
@@ -127,7 +132,7 @@ class SubMesh:
                         return
                     if (not face.vertex3 == face2.vertex1) and (not face.vertex3 == face2.vertex2) and (not face.vertex3 == face2.vertex3):
                         return
-                    print('[WARNING] Double face: %s %s' % (face, face2))
+                    reporter.report({'WARNING'}, "Double face detected: " + str(face) + " " + str(face2))
 
     def to_urchin_mesh(self):
         self.generate_weights()
@@ -266,9 +271,6 @@ class Skeleton:
             buf = buf + bone.to_urchin_mesh()
         buf = buf + "}\n\n"
         return buf
-
-
-bones = {}
 
 
 class Bone:
@@ -491,7 +493,7 @@ def save_urchin(settings):
                 if not b.parent:  # only treat root bones
                     treat_bone(skeleton, b, w_matrix)
         else:
-            print("[ERROR]: Armature not found on object: " + obj.name)
+            reporter.report({'ERROR'}, "Armature not found on object: " + obj.name)
         break
 
     # MESH EXPORT
@@ -562,7 +564,7 @@ def save_urchin(settings):
                                 influences.append(inf)
 
                             if not influences:
-                                print("[ERROR] There is a vertex without bone attachment in mesh: " + mesh.name)
+                                reporter.report({'WARNING'}, "There is a vertex without bone attachment in mesh: " + mesh.name)
                             sum = 0.0
                             for bone_name, weight in influences:
                                 sum += weight
@@ -605,7 +607,7 @@ def save_urchin(settings):
                     for i in range(1, len(face.vertices) - 1):  # split faces with more than 3 vertices
                         Face(sub_mesh, face_vertices[0], face_vertices[i], face_vertices[i + 1])
                 else:
-                    print("[ERROR] Found face with invalid material")
+                    reporter.report({'ERROR'}, "Found face with invalid material on object: " + obj.name)
         print("[INFO] Created vertices: A " + str(create_vertex_a) + ", B " + str(create_vertex_b) + ", C " + str(create_vertex_c))
 
     if settings.export_mode == "mesh & anim" or settings.export_mode == "mesh only":
@@ -624,7 +626,7 @@ def save_urchin(settings):
             file.close()
             print("[INFO] Saved mesh to " + urchin_mesh_filename)
         except IOError:
-            print("[ERROR] IOError to write in: " + urchin_mesh_filename)
+            reporter.report({'ERROR'}, "IOError to write in: " + urchin_mesh_filename)
 
     # ANIMATION EXPORT
     if settings.export_mode == "mesh & anim" or settings.export_mode == "anim only":
@@ -652,7 +654,7 @@ def save_urchin(settings):
                     try:
                         bone = bones[bone_name]
                     except:
-                        print("[ERROR] Found a posebone animating a bone that is not part of the exported armature: " + bone_name)
+                        reporter.report({'ERROR'}, "Found a posebone animating a bone that is not part of the exported armature: " + bone_name)
                         continue
                     if bone.parent:
                         parent_pose_mat = mathutils.Matrix(pose.bones[bone.parent.name].matrix)
@@ -671,7 +673,7 @@ def save_urchin(settings):
                     animation.add_key_for_bone(bone.id, loc, rot)
                 current_time += 1
         else:
-            print("[WARNING] Animation data missing.")
+            reporter.report({'ERROR'}, "Animation data missing.")
 
         urchin_anim_filename = settings.save_path + ".urchinAnim"
         if len(animations) > 0:
@@ -684,9 +686,9 @@ def save_urchin(settings):
                 file.close()
                 print("[INFO] Saved anim to " + urchin_anim_filename)
             except IOError:
-                print("[ERROR] IOError to write in: " + urchin_anim_filename)
+                reporter.report({'ERROR'}, "IOError to write in: " + urchin_anim_filename)
         else:
-            print("[WARNING] No urchinAnim file generated.")
+            reporter.report({'ERROR'}, "No urchinAnim file generated.")
 
 
 # ---------------------------------------------------------------------------
@@ -705,6 +707,8 @@ class ExportUrchin(bpy.types.Operator):
     export_mode: bpy.props.EnumProperty(name="Exports", items=export_modes, description="Choose export mode", default='mesh only')
 
     def execute(self, context):
+        global reporter
+        reporter = self
         settings = UrchinSettings(save_path=self.properties.filepath, export_mode=self.properties.export_mode)
         save_urchin(settings)
         return {'FINISHED'}
