@@ -483,7 +483,6 @@ def save_urchin(settings):
     curr_armature = 0
     skeleton = Skeleton()
     for obj in objects_to_export():
-        bpy.ops.object.transform_apply(location=True, rotation=True, scale=True, properties=False)
         curr_armature = obj.find_armature()
         if curr_armature:
             w_matrix = curr_armature.matrix_world
