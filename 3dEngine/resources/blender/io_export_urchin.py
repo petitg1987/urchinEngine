@@ -411,6 +411,17 @@ class UrchinSettings:
         self.export_mode = export_mode
 
 
+def treat_bone(skeleton, b, w_matrix, parent=None):
+    print("[INFO] Processing bone: " + b.name)
+    if parent and not b.parent.name == parent.name:
+        return  # only catch direct children
+    mat = mathutils.Matrix(w_matrix) @ mathutils.Matrix(b.matrix_local)
+    new_bone = Bone(skeleton, parent, b.name, mat)
+    if b.children:
+        for child in b.children:
+            treat_bone(skeleton, child, w_matrix, new_bone)
+
+
 def get_min_max(list_of_points):
     if len(list_of_points) == 0:
         return [0, 0, 0], [0, 0, 0]
@@ -468,28 +479,18 @@ def save_urchin(settings):
     bpy.ops.object.mode_set(mode='OBJECT')
 
     # COMMON EXPORT
+    bpy.context.scene.frame_set(bpy.context.scene.frame_start)
     curr_armature = 0
     skeleton = Skeleton()
-    bpy.context.scene.frame_set(bpy.context.scene.frame_start)
-
-    def treat_bone(b, w_matrix, parent=None):
-        print("[INFO] Processing bone: " + b.name)
-        if parent and not b.parent.name == parent.name:
-            return  # only catch direct children
-        mat = mathutils.Matrix(w_matrix) @ mathutils.Matrix(b.matrix_local)
-        new_bone = Bone(skeleton, parent, b.name, mat)
-        if b.children:
-            for child in b.children:
-                treat_bone(child, w_matrix, new_bone)
-
     for obj in objects_to_export():
+        bpy.ops.object.transform_apply(location=True, rotation=True, scale=True, properties=False)
         curr_armature = obj.find_armature()
         if curr_armature:
             w_matrix = curr_armature.matrix_world
             print("[INFO] Processing armature: " + curr_armature.name)
             for b in curr_armature.data.bones:
                 if not b.parent:  # only treat root bones
-                    treat_bone(b, w_matrix)
+                    treat_bone(skeleton, b, w_matrix)
         else:
             print("[ERROR]: Armature not found on object: " + obj.name)
         break
