@@ -767,8 +767,6 @@ class AdjustArmatureOrigin(bpy.types.Operator):
         bpy.ops.object.select_by_type(type='ARMATURE')
         bpy.ops.view3d.snap_selected_to_cursor()
 
-        # TODO move back the meshes if they are impacted
-
         return {'FINISHED'}
 
 def object_menu_func(self, context):
