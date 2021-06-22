@@ -6,11 +6,11 @@
 #include <collision/ManifoldContactPoint.h>
 #include <PhysicsWorld.h>
 
-#define MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND 0.15f
-
 namespace urchin {
 
     PhysicsCharacterController::PhysicsCharacterController(const std::shared_ptr<PhysicsCharacter>& physicsCharacter, PhysicsWorld* physicsWorld) :
+        MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND(0.2f),
+        RECOVER_FACTOR({0.4f, 0.7f, 0.9f, 1.0f}),
         timeKeepMoveInAir(ConfigService::instance()->getFloatValue("character.timeKeepMoveInAir")),
         percentageControlInAir(ConfigService::instance()->getFloatValue("character.percentageControlInAir")),
         maxDepthToRecover(ConfigService::instance()->getFloatValue("character.maxDepthToRecover")),
@@ -142,7 +142,7 @@ namespace urchin {
         resetSignificantContactValues();
 
         PhysicsTransform characterTransform = ghostBody->getTransform();
-        for (unsigned int subStepIndex = 0; subStepIndex < RECOVER_PENETRATION_SUB_STEPS; ++subStepIndex) {
+        for (unsigned int subStepIndex = 0; subStepIndex < RECOVER_FACTOR.size(); ++subStepIndex) {
             manifoldResults.clear();
             physicsWorld->getCollisionWorld()->getNarrowPhaseManager()->processGhostBody(ghostBody, manifoldResults);
 
@@ -154,7 +154,7 @@ namespace urchin {
 
                     if (depth < maxDepthToRecover) {
                         Vector3<float> normal =  manifoldContactPoint.getNormalFromObject2() * sign;
-                        Vector3<float> moveVector = normal * depth * recoverFactors[subStepIndex];
+                        Vector3<float> moveVector = normal * depth * RECOVER_FACTOR[subStepIndex];
 
                         characterTransform.setPosition(characterTransform.getPosition().translate(moveVector));
                         ghostBody->setTransform(characterTransform);
@@ -200,7 +200,7 @@ namespace urchin {
         numberOfHit = significantContactValues.numberOfHit;
         isOnGround = numberOfHit > 0 && std::acos(significantContactValues.maxDotProductUpNormalAxis) < physicsCharacter->getMaxSlopeInRadian();
         hitRoof = numberOfHit > 0 && std::acos(significantContactValues.maxDotProductDownNormalAxis) < physicsCharacter->getMaxSlopeInRadian();
-        timeInTheAir = isOnGround ? 0.0f : timeInTheAir+dt;
+        timeInTheAir = isOnGround ? 0.0f : timeInTheAir + dt;
     }
 
     /**

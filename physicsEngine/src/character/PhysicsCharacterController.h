@@ -9,7 +9,6 @@
 #include <processable/Processable.h>
 #include <collision/ManifoldResult.h>
 
-#define RECOVER_PENETRATION_SUB_STEPS 4 //number of steps to recover character from penetration
 #define MIN_WALK_SPEED_PERCENTAGE 0.75f
 #define MAX_WALK_SPEED_PERCENTAGE 1.25f
 
@@ -51,7 +50,8 @@ namespace urchin {
 
             float computeSlope();
 
-            const float recoverFactors[RECOVER_PENETRATION_SUB_STEPS] = {0.4f, 0.7f, 0.9f, 1.0f};
+            const float MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND;
+            const std::array<float, 4> RECOVER_FACTOR;
             const float timeKeepMoveInAir;
             const float percentageControlInAir;
             const float maxDepthToRecover;
