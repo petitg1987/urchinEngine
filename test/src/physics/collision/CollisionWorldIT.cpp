@@ -20,11 +20,26 @@ void CollisionWorldIT::fallOnPlane() {
     AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it doesn't move");
 }
 
+void CollisionWorldIT::ccdFallOnPlane() {
+    auto bodyManager = buildWorld(Point3<float>(0.0f, 5.0f, 0.0f));
+    auto collisionWorld = std::make_unique<CollisionWorld>(bodyManager.get());
+
+    //1. apply extreme down force
+    collisionWorld->process(1.0f / 1000.0f, Vector3<float>(0.0f, 0.0f, 0.0f));
+    auto* cubeBody = dynamic_cast<RigidBody*>(bodyManager->getBodies()[1]);
+    cubeBody->applyCentralMomentum(Vector3<float>(0.0f, -100000.0f, 0.0f));
+
+    //2. process 1 second of process
+    collisionWorld->process(1.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
+
+    AssertHelper::assertFloatEquals(cubeBody->getTransform().getPosition().Y, 0.5f, 0.1f);
+}
+
 void CollisionWorldIT::fallForever() {
     if (!Logger::instance()->retrieveContent(std::numeric_limits<unsigned long>::max()).empty()) {
         throw std::runtime_error("Log file must be emptied before start this test.");
     }
-    auto bodyManager = buildWorld(Point3<float>(1100.0f, 5.0f, 0.0f));
+    auto bodyManager = buildWorld(Point3<float>(60.0f, 5.0f, 0.0f));
     auto collisionWorld = std::make_unique<CollisionWorld>(bodyManager.get());
 
     for (std::size_t i = 0; i < 250; ++i) {
@@ -116,7 +131,7 @@ void CollisionWorldIT::changeMass() {
 std::unique_ptr<BodyManager> CollisionWorldIT::buildWorld(const Point3<float>& cubePosition) const {
     auto bodyManager = std::make_unique<BodyManager>();
 
-    std::shared_ptr<CollisionBoxShape> groundShape = std::make_shared<CollisionBoxShape>(Vector3<float>(1000.0f, 0.5f, 1000.0f));
+    std::shared_ptr<CollisionBoxShape> groundShape = std::make_shared<CollisionBoxShape>(Vector3<float>(50.0f, 0.5f, 50.0f));
     auto* groundBody = new RigidBody("ground", PhysicsTransform(Point3<float>(0.0f, -0.5f, 0.0f), Quaternion<float>()), groundShape);
     bodyManager->addBody(groundBody);
 
@@ -132,6 +147,7 @@ CppUnit::Test* CollisionWorldIT::suite() {
     auto* suite = new CppUnit::TestSuite("CollisionWorldIT");
 
     suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("fallOnPlane", &CollisionWorldIT::fallOnPlane));
+    suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("ccdFallOnPlane", &CollisionWorldIT::ccdFallOnPlane));
     suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("fallForever", &CollisionWorldIT::fallForever));
 
     suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("changePositionOnInactiveBody", &CollisionWorldIT::changePositionOnInactiveBody));

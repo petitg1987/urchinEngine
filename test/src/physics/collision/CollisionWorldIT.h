@@ -9,6 +9,7 @@ class CollisionWorldIT : public CppUnit::TestFixture {
         static CppUnit::Test* suite();
 
         void fallOnPlane();
+        void ccdFallOnPlane();
         void fallForever();
 
         void changePositionOnInactiveBody();
