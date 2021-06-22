@@ -8,8 +8,8 @@ class CollisionWorldIT : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 
-        void fallOnPlane();
-        void ccdFallOnPlane();
+        void fallOnGround();
+        void ccdPushOnGround();
         void fallForever();
 
         void changePositionOnInactiveBody();

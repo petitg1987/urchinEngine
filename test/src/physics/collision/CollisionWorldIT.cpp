@@ -7,7 +7,7 @@
 #include <AssertHelper.h>
 using namespace urchin;
 
-void CollisionWorldIT::fallOnPlane() {
+void CollisionWorldIT::fallOnGround() {
     auto bodyManager = buildWorld(Point3<float>(0.0f, 5.0f, 0.0f));
     auto collisionWorld = std::make_unique<CollisionWorld>(bodyManager.get());
 
@@ -20,19 +20,24 @@ void CollisionWorldIT::fallOnPlane() {
     AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it doesn't move");
 }
 
-void CollisionWorldIT::ccdFallOnPlane() {
+void CollisionWorldIT::ccdPushOnGround() {
     auto bodyManager = buildWorld(Point3<float>(0.0f, 5.0f, 0.0f));
     auto collisionWorld = std::make_unique<CollisionWorld>(bodyManager.get());
 
     //1. apply extreme down force
-    collisionWorld->process(1.0f / 1000.0f, Vector3<float>(0.0f, 0.0f, 0.0f));
+    collisionWorld->process(0.0f, Vector3<float>(0.0f, 0.0f, 0.0f));
     auto* cubeBody = dynamic_cast<RigidBody*>(bodyManager->getBodies()[1]);
-    cubeBody->applyCentralMomentum(Vector3<float>(0.0f, -100000.0f, 0.0f));
+    cubeBody->applyCentralMomentum(Vector3<float>(0.0f, -1000.0f, 0.0f));
+    cubeBody->setLinearFactor(Vector3<float>(0.0f, 1.0f, 0.0f)); //avoid cube to go on outside world border
+    cubeBody->setAngularFactor(Vector3<float>(0.0f, 0.0f, 0.0f)); //avoid cube to go on outside world border
 
-    //2. process 1 second of process
-    collisionWorld->process(1.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
-
+    //2. execute physics process
+    for (std::size_t i = 0; i < 500; ++i) {
+        collisionWorld->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
+        AssertHelper::assertTrue(cubeBody->getTransform().getPosition().Y > 0.4f); //ensure narrow phase predictive contact point work correctly to avoid penetration
+    }
     AssertHelper::assertFloatEquals(cubeBody->getTransform().getPosition().Y, 0.5f, 0.1f);
+    AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it doesn't move");
 }
 
 void CollisionWorldIT::fallForever() {
@@ -146,8 +151,8 @@ std::unique_ptr<BodyManager> CollisionWorldIT::buildWorld(const Point3<float>& c
 CppUnit::Test* CollisionWorldIT::suite() {
     auto* suite = new CppUnit::TestSuite("CollisionWorldIT");
 
-    suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("fallOnPlane", &CollisionWorldIT::fallOnPlane));
-    suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("ccdFallOnPlane", &CollisionWorldIT::ccdFallOnPlane));
+    suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("fallOnGround", &CollisionWorldIT::fallOnGround));
+    suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("ccdPushOnGround", &CollisionWorldIT::ccdPushOnGround));
     suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("fallForever", &CollisionWorldIT::fallForever));
 
     suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("changePositionOnInactiveBody", &CollisionWorldIT::changePositionOnInactiveBody));
