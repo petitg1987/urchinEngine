@@ -49,8 +49,8 @@ void CollisionWorldIT::ccdBounceOnGroundAndRoof() {
     cubeBody->setRestitution(0.9f); //ensure cube bouncing well
 
     //Execute physics process:
-    //  - The constraint solver computes a linear velocity in Y of +700.0 (based on predictive contact point) as an answer to the big collision.
-    //  - The integrate transform is smart enough to not apply directly the linear velocity and make the cube going through roof. Instead, it adjusts/reduces the linear velocity before apply it.
+    //  - The constraint solver computes a linear velocity in Y of +700.0 (based on predictive contact point) as an answer to the big collision on the ground.
+    //  - The integrate transform should be smart enough to not apply directly the linear velocity and make the cube going through roof. Instead, it should adjust/reduce the linear velocity before apply it.
     collisionWorld->process(1.0f / 30.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
 
     AssertHelper::assertTrue(cubeBody->getTransform().getPosition().Y < 10.0f);
