@@ -10,6 +10,7 @@ class CollisionWorldIT : public CppUnit::TestFixture {
 
         void fallOnGround();
         void ccdPushOnGround();
+        void ccdBounceOnGroundAndRoof();
         void fallForever();
 
         void changePositionOnInactiveBody();
