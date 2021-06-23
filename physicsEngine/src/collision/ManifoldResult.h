@@ -36,12 +36,12 @@ namespace urchin {
             unsigned int computeBestInsertionIndex(const Point3<float>&) const;
             unsigned int getDeepestPointIndex() const;
             float computeArea(const Point3<float>&, const Point3<float>&, const Point3<float>&, const Point3<float>&) const;
-            void removeContactPoint(unsigned int);
+            void removeContactPoint(std::size_t);
 
             AbstractBody* body1;
             AbstractBody* body2;
 
-            ManifoldContactPoint contactPoints[MAX_PERSISTENT_POINTS];
+            std::array<ManifoldContactPoint, MAX_PERSISTENT_POINTS> contactPoints;
             unsigned int nbContactPoint;
             const float contactBreakingThreshold;
     };

@@ -76,7 +76,7 @@ namespace urchin {
         //1. if similar point exist in manifold result: replace it
         int nearestPointIndex = getNearestPointIndex(localPointOnObject2);
         if (nearestPointIndex >= 0) { //replace existing point
-            contactPoints[nearestPointIndex] = ManifoldContactPoint(normalFromObject2, pointOnObject1, pointOnObject2,
+            contactPoints[(std::size_t)nearestPointIndex] = ManifoldContactPoint(normalFromObject2, pointOnObject1, pointOnObject2,
                     localPointOnObject1, localPointOnObject2, depth, isPredictive);
             return;
         }
@@ -106,13 +106,13 @@ namespace urchin {
         }
 
         for (auto i = (int)nbContactPoint - 1; i >= 0; --i) { //loop from last to first in order to be able to remove contact points
-            if (contactPoints[i].getDepth() > contactBreakingThreshold) {
-                removeContactPoint((unsigned int)i);
+            if (contactPoints[(std::size_t)i].getDepth() > contactBreakingThreshold) {
+                removeContactPoint((std::size_t)i);
             } else {
-                Point3<float> projectedPointOnObject2 = contactPoints[i].getPointOnObject1().translate(-(contactPoints[i].getNormalFromObject2() * contactPoints[i].getDepth()));
-                Vector3<float> projectedDifference = projectedPointOnObject2.vector(contactPoints[i].getPointOnObject2());
+                Point3<float> projectedPointOnObject2 = contactPoints[(std::size_t)i].getPointOnObject1().translate(-(contactPoints[(std::size_t)i].getNormalFromObject2() * contactPoints[(std::size_t)i].getDepth()));
+                Vector3<float> projectedDifference = projectedPointOnObject2.vector(contactPoints[(std::size_t)i].getPointOnObject2());
                 if (projectedDifference.squareLength() > contactBreakingThreshold * contactBreakingThreshold) {
-                    removeContactPoint((unsigned int)i);
+                    removeContactPoint((std::size_t)i);
                 }
             }
         }
@@ -147,10 +147,8 @@ namespace urchin {
         assert(nbContactPoint == MAX_PERSISTENT_POINTS);
 
         unsigned int deepestIndex = getDeepestPointIndex();
-        float areas[MAX_PERSISTENT_POINTS]; //areas[X] contains area formed by all points except point 'contactPoints[X]'
-        for (float& area : areas) {
-            area = 0.0f;
-        }
+        std::array<float, MAX_PERSISTENT_POINTS> areas = {};
+        std::fill(areas.begin(), areas.end(), 0.0f);
 
         //compute areas
         if (deepestIndex != 0) {
@@ -217,9 +215,9 @@ namespace urchin {
         return std::max(std::max(p1p0CrossP3p2.squareLength(), p2p0CrossP3p1.squareLength()), p3p0CrossP2p1.squareLength());
     }
 
-    void ManifoldResult::removeContactPoint(unsigned int index) {
-        unsigned int lastUsedIndex = getNumContactPoints() - 1;
-        if (index != lastUsedIndex) {//copy the last contact point on the one we remove
+    void ManifoldResult::removeContactPoint(std::size_t index) {
+        std::size_t lastUsedIndex = getNumContactPoints() - 1;
+        if (index != lastUsedIndex) { //copy the last contact point on the one we remove
             contactPoints[index] = contactPoints[lastUsedIndex];
         }
 
