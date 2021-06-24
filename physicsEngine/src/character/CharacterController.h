@@ -10,9 +10,6 @@
 #include <processable/Processable.h>
 #include <collision/ManifoldResult.h>
 
-#define MIN_WALK_SPEED_PERCENTAGE 0.75f
-#define MAX_WALK_SPEED_PERCENTAGE 1.25f
-
 namespace urchin {
 
     struct SignificantContactValues {
@@ -52,6 +49,8 @@ namespace urchin {
             float computeSlope();
 
             static const float MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND;
+            static const float MIN_WALK_SPEED_PERCENTAGE;
+            static const float MAX_WALK_SPEED_PERCENTAGE;
             static const std::array<float, 4> RECOVER_FACTOR;
             const float maxDepthToRecover;
 

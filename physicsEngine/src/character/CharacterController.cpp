@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include <character/CharacterController.h>
+#include <shape/CollisionCapsuleShape.h>
 #include <collision/ManifoldContactPoint.h>
 #include <PhysicsWorld.h>
 
@@ -10,25 +11,37 @@ namespace urchin {
 
     //static
     const float CharacterController::MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND = 0.2f;
+    const float CharacterController::MIN_WALK_SPEED_PERCENTAGE = 0.75f;
+    const float CharacterController::MAX_WALK_SPEED_PERCENTAGE = 1.25f;
     const std::array<float, 4> CharacterController::RECOVER_FACTOR = {0.4f, 0.7f, 0.9f, 1.0f};
 
     CharacterController::CharacterController(std::shared_ptr<PhysicsCharacter> physicsCharacter, CharacterControllerConfig config, PhysicsWorld* physicsWorld) :
-        maxDepthToRecover(ConfigService::instance()->getFloatValue("character.maxDepthToRecover")),
-        physicsCharacter(std::move(physicsCharacter)),
-        config(config),
-        physicsWorld(physicsWorld),
-        ghostBody(new GhostBody(this->physicsCharacter->getName(), this->physicsCharacter->getTransform(), this->physicsCharacter->getShape())),
-        verticalSpeed(0.0f),
-        makeJump(false),
-        initialOrientation(this->physicsCharacter->getTransform().getOrientation()),
-        numberOfHit(0),
-        isOnGround(false),
-        hitRoof(false),
-        timeInTheAir(0.0f),
-        jumping(false),
-        slopeInPercentage(0.0f) {
+            maxDepthToRecover(ConfigService::instance()->getFloatValue("character.maxDepthToRecover")),
+            physicsCharacter(std::move(physicsCharacter)),
+            config(config),
+            physicsWorld(physicsWorld),
+            ghostBody(nullptr),
+            verticalSpeed(0.0f),
+            makeJump(false),
+            initialOrientation(this->physicsCharacter->getTransform().getOrientation()),
+            numberOfHit(0),
+            isOnGround(false),
+            hitRoof(false),
+            timeInTheAir(0.0f),
+            jumping(false),
+            slopeInPercentage(0.0f) {
         if (!physicsWorld) {
             throw std::runtime_error("Physics world cannot be null for character controller.");
+        }
+
+        auto ghostBodyCapsuleShape = std::dynamic_pointer_cast<const CollisionCapsuleShape>(this->physicsCharacter->getShape());
+        if (ghostBodyCapsuleShape) {
+            float radius = ghostBodyCapsuleShape->getRadius(); //TODO adapt to max speed
+            float height = ghostBodyCapsuleShape->getCylinderHeight() + (2.0f * radius);
+            auto resizedCharacterShape = std::make_shared<const CollisionCapsuleShape>(radius, height - (2.0f * radius), ghostBodyCapsuleShape->getCapsuleOrientation());
+            ghostBody = new GhostBody(this->physicsCharacter->getName(), this->physicsCharacter->getTransform(), resizedCharacterShape);
+        } else {
+            throw std::runtime_error("Unimplemented shape type for character controller: " + std::to_string(this->physicsCharacter->getShape()->getShapeType()));
         }
 
         ghostBody->setIsActive(true); //always active for get better reactivity
@@ -41,13 +54,11 @@ namespace urchin {
 
     void CharacterController::setMomentum(const Vector3<float>& momentum) {
         std::lock_guard<std::mutex> lock(characterMutex);
-
         this->velocity = (momentum / physicsCharacter->getMass());
     }
 
     Vector3<float> CharacterController::getVelocity() const {
         std::lock_guard<std::mutex> lock(characterMutex);
-
         return velocity;
     }
 
@@ -93,7 +104,7 @@ namespace urchin {
 
         //apply user move
         Point3<float> targetPosition = previousBodyTransform.getPosition();
-        Vector3<float> velocity = getVelocity();
+        Vector3<float> velocity = getVelocity(); //TODO clamp velocity based on maximum horizontal speed
         if (isOnGround) {
             float slopeSpeedDecrease = 1.0f - (slopeInPercentage / config.getMaxSlopeInPercentage());
             slopeSpeedDecrease = MathFunction::clamp(slopeSpeedDecrease, MIN_WALK_SPEED_PERCENTAGE, MAX_WALK_SPEED_PERCENTAGE);
@@ -139,16 +150,9 @@ namespace urchin {
     }
 
     void CharacterController::recoverFromPenetration(float dt) {
-        PhysicsTransform characterTransform = ghostBody->getTransform();
-
-        float ccdMotionThreshold = ghostBody->getCcdMotionThreshold();
-        float motion = characterTransform.getPosition().vector(previousBodyTransform.getPosition()).length();
-        if (motion > ccdMotionThreshold) {
-            std::cout<<"CCD required"<<std::endl;
-        }
-
         resetSignificantContactValues();
 
+        PhysicsTransform characterTransform = ghostBody->getTransform();
         for (unsigned int subStepIndex = 0; subStepIndex < RECOVER_FACTOR.size(); ++subStepIndex) {
             manifoldResults.clear();
             physicsWorld->getCollisionWorld()->getNarrowPhaseManager()->processGhostBody(ghostBody, manifoldResults);
@@ -224,7 +228,6 @@ namespace urchin {
         }
 
         float rise = bodyPosition.Y - previousBodyTransform.getPosition().Y;
-
         return rise / run;
     }
 }
