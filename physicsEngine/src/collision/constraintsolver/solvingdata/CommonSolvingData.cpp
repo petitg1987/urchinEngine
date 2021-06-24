@@ -5,7 +5,7 @@ namespace urchin {
     CommonSolvingData::CommonSolvingData() :
             body1(nullptr),
             body2(nullptr),
-            depth(0.0) {
+            depth(0.0f) {
 
     }
 

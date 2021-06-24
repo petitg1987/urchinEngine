@@ -168,8 +168,8 @@ CppUnit::Test* CollisionWorldIT::suite() {
     auto* suite = new CppUnit::TestSuite("CollisionWorldIT");
 
     suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("fallOnGround", &CollisionWorldIT::fallOnGround));
-    suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("ccdBounceOnGroundAndRoof", &CollisionWorldIT::ccdBounceOnGroundAndRoof));
     suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("ccdPushOnGround", &CollisionWorldIT::ccdPushOnGround));
+    suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("ccdBounceOnGroundAndRoof", &CollisionWorldIT::ccdBounceOnGroundAndRoof));
     suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("fallForever", &CollisionWorldIT::fallForever));
 
     suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("changePositionOnInactiveBody", &CollisionWorldIT::changePositionOnInactiveBody));

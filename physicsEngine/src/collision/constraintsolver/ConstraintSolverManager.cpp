@@ -48,7 +48,7 @@ namespace urchin {
         for (auto& manifoldResult : manifoldResults) {
             for (unsigned int j = 0; j < manifoldResult.getNumContactPoints(); ++j) {
                 ManifoldContactPoint& contact = manifoldResult.getManifoldContactPoint(j);
-                if (contact.getDepth() > 0.0 && !contact.isPredictive()) {
+                if (contact.getDepth() > 0.0f && !contact.isPredictive()) {
                     continue;
                 }
 
@@ -121,7 +121,7 @@ namespace urchin {
                 commonData.invInertia2 * (commonData.r2.crossProduct(commonData.contactNormal)).crossProduct(commonData.r2)
                 ).dotProduct(commonData.contactNormal);
 
-        if (impulseSolvingData.normalImpulseDenominator == 0.0) {
+        if (impulseSolvingData.normalImpulseDenominator == 0.0f) {
             logCommonData("Invalid normal impulse denominator", commonData);
         }
 
@@ -130,7 +130,7 @@ namespace urchin {
                 commonData.invInertia2 * (commonData.r2.crossProduct(commonData.contactTangent)).crossProduct(commonData.r2)
                 ).dotProduct(commonData.contactTangent);
 
-        if (impulseSolvingData.tangentImpulseDenominator == 0.0) {
+        if (impulseSolvingData.tangentImpulseDenominator == 0.0f) {
             logCommonData("Invalid tangent impulse denominator", commonData);
         }
 
