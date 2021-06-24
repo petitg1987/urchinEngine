@@ -5,6 +5,7 @@
 #include <atomic>
 
 #include <character/PhysicsCharacter.h>
+#include <character/CharacterControllerConfig.h>
 #include <body/model/GhostBody.h>
 #include <processable/Processable.h>
 #include <collision/ManifoldResult.h>
@@ -27,10 +28,10 @@ namespace urchin {
     /**
     * Character controller: allow to move a character in a world
     */
-    class PhysicsCharacterController {
+    class CharacterController {
         public:
-            PhysicsCharacterController(const std::shared_ptr<PhysicsCharacter>&, PhysicsWorld*);
-            ~PhysicsCharacterController();
+            CharacterController(std::shared_ptr<PhysicsCharacter>, CharacterControllerConfig, PhysicsWorld*);
+            ~CharacterController();
 
             void setMomentum(const Vector3<float>&);
             void jump();
@@ -50,14 +51,12 @@ namespace urchin {
 
             float computeSlope();
 
-            const float MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND;
-            const std::array<float, 4> RECOVER_FACTOR;
-            const float timeKeepMoveInAir;
-            const float percentageControlInAir;
+            static const float MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND;
+            static const std::array<float, 4> RECOVER_FACTOR;
             const float maxDepthToRecover;
-            const float maxVerticalSpeed;
 
             std::shared_ptr<PhysicsCharacter> physicsCharacter;
+            CharacterControllerConfig config;
             PhysicsWorld* physicsWorld;
             std::vector<ManifoldResult> manifoldResults;
             mutable std::mutex characterMutex;
@@ -68,7 +67,7 @@ namespace urchin {
             std::atomic_bool makeJump;
 
             SignificantContactValues significantContactValues;
-            Point3<float> previousBodyPosition;
+            PhysicsTransform previousBodyTransform;
             Quaternion<float> initialOrientation;
             Vector3<float> lastVelocity;
             unsigned int numberOfHit; //number of contact point touching the character

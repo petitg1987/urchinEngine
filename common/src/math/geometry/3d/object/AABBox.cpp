@@ -218,11 +218,11 @@ namespace urchin {
     }
 
     template<class T> AABBox<T> AABBox<T>::enlarge(const Vector3<T>& minAdditionalSize, const Vector3<T>& maxAdditionalSize) const {
-        return AABBox<T>(getMin()-Point3<T>(minAdditionalSize), getMax()+Point3<T>(maxAdditionalSize));
+        return AABBox<T>(getMin() - Point3<T>(minAdditionalSize), getMax() + Point3<T>(maxAdditionalSize));
     }
 
     template<class T> AABBox<T> AABBox<T>::enlarge(T minAdditionalSize, T maxAdditionalSize) const {
-        return AABBox<T>(getMin()-Point3<T>(minAdditionalSize, minAdditionalSize, minAdditionalSize), getMax()+Point3<T>(maxAdditionalSize, maxAdditionalSize, maxAdditionalSize));
+        return AABBox<T>(getMin() - Point3<T>(minAdditionalSize, minAdditionalSize, minAdditionalSize), getMax() + Point3<T>(maxAdditionalSize, maxAdditionalSize, maxAdditionalSize));
     }
 
     template<class T> bool AABBox<T>::collideWithPoint(const Point3<T>& point) const {
@@ -244,10 +244,10 @@ namespace urchin {
      */
     template<class T> bool AABBox<T>::collideWithRay(const Ray<T>& ray) const {
         T lengthToMinPlane = ((*this)[ray.getDirectionSign(0)].X - ray.getOrigin().X) * ray.getInverseDirection().X;
-        T lengthToMaxPlane = ((*this)[1-ray.getDirectionSign(0)].X - ray.getOrigin().X) * ray.getInverseDirection().X;
+        T lengthToMaxPlane = ((*this)[1 - ray.getDirectionSign(0)].X - ray.getOrigin().X) * ray.getInverseDirection().X;
 
         T lengthToMinYPlane = ((*this)[ray.getDirectionSign(1)].Y - ray.getOrigin().Y) * ray.getInverseDirection().Y;
-        T lengthToMaxYPlane = ((*this)[1-ray.getDirectionSign(1)].Y - ray.getOrigin().Y) * ray.getInverseDirection().Y;
+        T lengthToMaxYPlane = ((*this)[1 - ray.getDirectionSign(1)].Y - ray.getOrigin().Y) * ray.getInverseDirection().Y;
 
 
         if (lengthToMinPlane > lengthToMaxYPlane || lengthToMinYPlane > lengthToMaxPlane) {
@@ -262,7 +262,7 @@ namespace urchin {
         }
 
         T lengthToMinZPlane = ((*this)[ray.getDirectionSign(2)].Z - ray.getOrigin().Z) * ray.getInverseDirection().Z;
-        T lengthToMaxZPlane = ((*this)[1-ray.getDirectionSign(2)].Z - ray.getOrigin().Z) * ray.getInverseDirection().Z;
+        T lengthToMaxZPlane = ((*this)[1 - ray.getDirectionSign(2)].Z - ray.getOrigin().Z) * ray.getInverseDirection().Z;
 
         if (lengthToMinPlane > lengthToMaxZPlane || lengthToMinZPlane > lengthToMaxPlane) {
             return false;

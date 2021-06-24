@@ -13,7 +13,7 @@ void GhostBodyMT::processGhostBody() {
     std::shared_ptr<CollisionCapsuleShape> characterShape = std::make_shared<CollisionCapsuleShape>(0.5f, 1.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y);
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
     auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, characterShape, PhysicsTransform(Point3<float>(2.4f, 5.0f, 2.4f), Quaternion<float>()));
-    auto characterController = PhysicsCharacterController(character, physicsWorld.get());
+    auto characterController = CharacterController(character, CharacterControllerConfig(), physicsWorld.get());
 
     std::thread physicsEngineThread = std::thread([&physicsWorld]() {
         for (std::size_t i = 0; i < 500; ++i) {
