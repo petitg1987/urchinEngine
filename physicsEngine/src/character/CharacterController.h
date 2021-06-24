@@ -38,9 +38,6 @@ namespace urchin {
         private:
             void setup(float);
 
-            Vector3<float> getVelocity() const;
-            bool needJumpAndResetFlag();
-
             void recoverFromPenetration(float);
             void resetSignificantContactValues();
             void saveSignificantContactValues(const Vector3<float>&);
@@ -53,17 +50,17 @@ namespace urchin {
             static const float MAX_WALK_SPEED_PERCENTAGE;
             static const std::array<float, 4> RECOVER_FACTOR;
             const float maxDepthToRecover;
+            const float minUpdateFrequency;
 
             std::shared_ptr<PhysicsCharacter> physicsCharacter;
             CharacterControllerConfig config;
             PhysicsWorld* physicsWorld;
             std::vector<ManifoldResult> manifoldResults;
-            mutable std::mutex characterMutex;
             GhostBody* ghostBody;
             float verticalSpeed;
 
             Vector3<float> velocity;
-            std::atomic_bool makeJump;
+            bool makeJump;
 
             SignificantContactValues significantContactValues;
             PhysicsTransform previousBodyTransform;

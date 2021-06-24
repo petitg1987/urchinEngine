@@ -17,6 +17,7 @@ namespace urchin {
 
     CharacterController::CharacterController(std::shared_ptr<PhysicsCharacter> physicsCharacter, CharacterControllerConfig config, PhysicsWorld* physicsWorld) :
             maxDepthToRecover(ConfigService::instance()->getFloatValue("character.maxDepthToRecover")),
+            minUpdateFrequency(ConfigService::instance()->getFloatValue("character.minUpdateFrequency")),
             physicsCharacter(std::move(physicsCharacter)),
             config(config),
             physicsWorld(physicsWorld),
@@ -34,11 +35,14 @@ namespace urchin {
             throw std::runtime_error("Physics world cannot be null for character controller.");
         }
 
-        auto ghostBodyCapsuleShape = std::dynamic_pointer_cast<const CollisionCapsuleShape>(this->physicsCharacter->getShape());
-        if (ghostBodyCapsuleShape) {
-            float radius = ghostBodyCapsuleShape->getRadius(); //TODO adapt to max speed
-            float height = ghostBodyCapsuleShape->getCylinderHeight() + (2.0f * radius);
-            auto resizedCharacterShape = std::make_shared<const CollisionCapsuleShape>(radius, height - (2.0f * radius), ghostBodyCapsuleShape->getCapsuleOrientation());
+        auto ghostBodyCapsule = std::dynamic_pointer_cast<const CollisionCapsuleShape>(this->physicsCharacter->getShape());
+        if (ghostBodyCapsule) {
+            float radius = ghostBodyCapsule->getRadius();
+            float updatedRadius = std::max(radius, config.getMaxHorizontalSpeed() / minUpdateFrequency);
+            float height = ghostBodyCapsule->getCylinderHeight() + (2.0f * radius);
+            float updatedHeight = std::max(height, (config.getMaxVerticalSpeed() / minUpdateFrequency) * 2.0f);
+
+            auto resizedCharacterShape = std::make_shared<const CollisionCapsuleShape>(updatedRadius, updatedHeight - (2.0f * updatedRadius), ghostBodyCapsule->getCapsuleOrientation());
             ghostBody = new GhostBody(this->physicsCharacter->getName(), this->physicsCharacter->getTransform(), resizedCharacterShape);
         } else {
             throw std::runtime_error("Unimplemented shape type for character controller: " + std::to_string(this->physicsCharacter->getShape()->getShapeType()));
@@ -53,21 +57,11 @@ namespace urchin {
     }
 
     void CharacterController::setMomentum(const Vector3<float>& momentum) {
-        std::lock_guard<std::mutex> lock(characterMutex);
         this->velocity = (momentum / physicsCharacter->getMass());
     }
 
-    Vector3<float> CharacterController::getVelocity() const {
-        std::lock_guard<std::mutex> lock(characterMutex);
-        return velocity;
-    }
-
     void CharacterController::jump() {
-        makeJump.store(true, std::memory_order_relaxed);
-    }
-
-    bool CharacterController::needJumpAndResetFlag() {
-        return makeJump.exchange(false, std::memory_order_relaxed);
+        makeJump = true;
     }
 
     /**
@@ -104,7 +98,7 @@ namespace urchin {
 
         //apply user move
         Point3<float> targetPosition = previousBodyTransform.getPosition();
-        Vector3<float> velocity = getVelocity(); //TODO clamp velocity based on maximum horizontal speed
+        //TODO clamp velocity based on maximum horizontal speed
         if (isOnGround) {
             float slopeSpeedDecrease = 1.0f - (slopeInPercentage / config.getMaxSlopeInPercentage());
             slopeSpeedDecrease = MathFunction::clamp(slopeSpeedDecrease, MIN_WALK_SPEED_PERCENTAGE, MAX_WALK_SPEED_PERCENTAGE);
@@ -120,11 +114,14 @@ namespace urchin {
         }
 
         //jump
-        bool closeToTheGround = timeInTheAir < MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND;
-        if (needJumpAndResetFlag() && closeToTheGround && !jumping) {
-            verticalSpeed += config.getJumpSpeed();
-            isOnGround = false;
-            jumping = true;
+        if(makeJump) {
+            makeJump = false;
+            bool closeToTheGround = timeInTheAir < MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND;
+            if (closeToTheGround && !jumping) {
+                verticalSpeed += config.getJumpSpeed();
+                isOnGround = false;
+                jumping = true;
+            }
         } else if (isOnGround && jumping) {
             jumping = false;
         }

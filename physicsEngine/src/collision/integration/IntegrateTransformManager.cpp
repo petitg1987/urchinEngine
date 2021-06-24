@@ -4,9 +4,10 @@
 #include <shape/CollisionSphereShape.h>
 #include <object/TemporalObject.h>
 
-#define MAX_LINEAR_VELOCITY_FACTOR 0.95f
-
 namespace urchin {
+
+    //static
+    const float IntegrateTransformManager::MAX_LINEAR_VELOCITY_FACTOR = 0.95f;
 
     IntegrateTransformManager::IntegrateTransformManager(const BodyManager* bodyManager,
             const BroadPhaseManager* broadPhaseManager, const NarrowPhaseManager* narrowPhaseManager) :

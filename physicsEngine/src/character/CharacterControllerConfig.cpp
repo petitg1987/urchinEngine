@@ -10,7 +10,7 @@ namespace urchin {
             maxSlopeInPercentage(0.0f),
             timeKeepMoveInAir(2.5f),
             percentageControlInAir(0.4f),
-            maxVerticalSpeed(55.0f),
+            maxVerticalSpeed(30.0f), //human falling maximum speed is 55 m/s but we use 30 m/s to improve performance of CCD
             maxHorizontalSpeed(15.0f) {
         setMaxSlopeInRadian(MathValue::PI_FLOAT / 4.0f); //45 degrees
     }
