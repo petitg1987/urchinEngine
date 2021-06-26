@@ -11,8 +11,6 @@ namespace urchin {
 
     //static
     const float CharacterController::MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND = 0.2f;
-    const float CharacterController::MIN_WALK_SPEED_PERCENTAGE = 0.75f;
-    const float CharacterController::MAX_WALK_SPEED_PERCENTAGE = 1.25f;
     const std::array<float, 4> CharacterController::RECOVER_FACTOR = {0.4f, 0.7f, 0.9f, 1.0f};
 
     CharacterController::CharacterController(std::shared_ptr<PhysicsCharacter> physicsCharacter, CharacterControllerConfig config, PhysicsWorld* physicsWorld) :
@@ -47,15 +45,15 @@ namespace urchin {
         physicsWorld->getCollisionWorld()->getBroadPhaseManager()->removeBodyAsync(ghostBody);
     }
 
-    void CharacterController::setMomentum(const Vector3<float>& momentum) {
-        velocity = (momentum / physicsCharacter->getMass());
+    void CharacterController::setVelocity(const Vector3<float>& velocity) {
+        this->velocity = velocity;
 
         //clamp velocity to max horizontal speed
-        Vector2<float> horizontalVelocity(velocity.X, velocity.Z);
+        Vector2<float> horizontalVelocity = velocity.xz();
         float velocityLength = horizontalVelocity.length();
         if(velocityLength > config.getMaxHorizontalSpeed()) {
             horizontalVelocity = (horizontalVelocity / velocityLength) * config.getMaxHorizontalSpeed();
-            velocity = Vector3(horizontalVelocity.X, velocity.Y, horizontalVelocity.Y);
+            this->velocity = Vector3(horizontalVelocity.X, velocity.Y, horizontalVelocity.Y);
         }
     }
 
@@ -101,7 +99,7 @@ namespace urchin {
             float radius = ghostBodyCapsule->getRadius();
             float height = ghostBodyCapsule->getCylinderHeight() + (2.0f * radius);
 
-            float ccdRadius = std::max(radius, config.getMaxHorizontalSpeed() / minUpdateFrequency);
+            float ccdRadius = std::max(radius, (config.getMaxHorizontalSpeed()) / minUpdateFrequency);
             float ccdHeight = std::max(height, (config.getMaxVerticalSpeed() / minUpdateFrequency) * 2.0f);
             float ccdCylinderHeight = std::max(0.01f, ccdHeight - (2.0f * ccdRadius));
             ccdGhostBodyShape = std::make_shared<const CollisionCapsuleShape>(ccdRadius, ccdCylinderHeight, ghostBodyCapsule->getCapsuleOrientation());
@@ -116,12 +114,12 @@ namespace urchin {
         //save values
         previousBodyPosition = ghostBody->getTransform().getPosition();
 
-        //apply user move
+        //user velocity
         Point3<float> targetPosition = previousBodyPosition;
         if (isOnGround) {
-            float slopeSpeedDecrease = 1.0f - (slopeInPercentage / config.getMaxSlopeInPercentage());
-            slopeSpeedDecrease = MathFunction::clamp(slopeSpeedDecrease, MIN_WALK_SPEED_PERCENTAGE, MAX_WALK_SPEED_PERCENTAGE);
-            targetPosition = targetPosition.translate(velocity * dt * slopeSpeedDecrease);
+            float slopeSpeedVariation = 1.0f - (slopeInPercentage / config.getMaxSlopeInPercentage());
+            slopeSpeedVariation = MathFunction::clamp(slopeSpeedVariation, 1.0f - config.getMaxSlopeSpeedVariation(), 1.0f + config.getMaxSlopeSpeedVariation());
+            targetPosition = targetPosition.translate(velocity * dt * slopeSpeedVariation);
         } else if (timeInTheAir < config.getTimeKeepMoveInAir()) {
             float momentumSpeedDecrease = 1.0f - (timeInTheAir / config.getTimeKeepMoveInAir());
             Vector3<float> walkDirectionInAir = velocity * (1.0f - config.getPercentageControlInAir()) + velocity * config.getPercentageControlInAir();
@@ -141,7 +139,7 @@ namespace urchin {
             jumping = false;
         }
 
-        //compute gravity velocity
+        //gravity velocity
         if (!isOnGround || numberOfHit > 1) {
             verticalSpeed -= (-physicsWorld->getGravity().Y) * dt;
             if (verticalSpeed < -config.getMaxVerticalSpeed()) {
@@ -178,14 +176,14 @@ namespace urchin {
         }
         endCCD:
 
-        //compute and apply orientation
+        //orientation
         Quaternion<float> newOrientation = initialOrientation;
         if (!MathFunction::isZero(velocity.squareLength(), 0.001f)) {
             Quaternion<float> orientation = Quaternion<float>(velocity.normalize()).normalize();
             newOrientation = orientation * initialOrientation;
         }
 
-        //apply transform on body
+        //apply transform on bodies
         ghostBody->setTransform(PhysicsTransform(targetPosition, newOrientation));
         ccdGhostBody->setTransform(PhysicsTransform(targetPosition, newOrientation));
     }

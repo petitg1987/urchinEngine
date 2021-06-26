@@ -13,10 +13,9 @@ namespace urchin {
 
             float retrieveMaxVelocityInMs() const;
             float retrieveMaxForce() const;
-            float retrieveMaxMomentum() const;
 
-            void updateMomentum(const Vector3<float>&);
-            const Vector3<float>& getMomentum() const;
+            void updateVelocity(const Vector3<float>&);
+            const Vector3<float>& getVelocity() const;
 
             void updatePosition(const Point3<float>&);
             const Point3<float>& getPosition() const;
@@ -24,7 +23,7 @@ namespace urchin {
         private:
             float mass;
             float maxVelocityInKmH;
-            Vector3<float> momentum;
+            Vector3<float> velocity;
             Point3<float> position;
     };
 

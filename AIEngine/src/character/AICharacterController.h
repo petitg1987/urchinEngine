@@ -28,14 +28,14 @@ namespace urchin {
             Point2<float> retrieveNextTarget() const;
             Point2<float> retrieveCharacterPosition() const;
 
-            void computeSteeringMomentum(const Point2<float>&);
-            void applyMomentum();
+            void computeSteeringVelocity(const Point2<float>&);
+            void applyVelocity();
             
             std::shared_ptr<AICharacter> character;
             AIManager* aiManager;
             std::shared_ptr<AICharacterEventHandler> eventHandler;
 
-            Vector2<float> steeringMomentum;
+            Vector2<float> steeringVelocity;
 
             std::shared_ptr<PathRequest> pathRequest;
             std::vector<PathPoint> pathPoints;

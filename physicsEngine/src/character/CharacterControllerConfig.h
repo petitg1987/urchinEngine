@@ -12,6 +12,8 @@ namespace urchin {
             void setMaxSlopeInRadian(float);
             float getMaxSlopeInRadian() const;
             float getMaxSlopeInPercentage() const;
+            void setMaxSlopeSpeedVariation(float);
+            float getMaxSlopeSpeedVariation() const;
 
             void setTimeKeepMoveInAir(float);
             float getTimeKeepMoveInAir() const;
@@ -27,6 +29,7 @@ namespace urchin {
             float jumpSpeed;
 
             float maxSlopeInRadian, maxSlopeInPercentage;
+            float maxSlopeSpeedVariation;
 
             float timeKeepMoveInAir; //in second
             float percentageControlInAir;

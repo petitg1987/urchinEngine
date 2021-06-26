@@ -33,7 +33,7 @@ namespace urchin {
         pathRequest = std::shared_ptr<PathRequest>(nullptr);
         pathPoints.clear();
 
-        character->updateMomentum(Vector3<float>(0.0f, 0.0f, 0.0f));
+        character->updateVelocity(Vector3<float>(0.0f, 0.0f, 0.0f));
     }
 
     std::shared_ptr<const PathRequest> AICharacterController::getPathRequest() const {
@@ -68,8 +68,8 @@ namespace urchin {
             nextTarget = retrieveNextTarget();
         }
 
-        computeSteeringMomentum(nextTarget);
-        applyMomentum();
+        computeSteeringVelocity(nextTarget);
+        applyVelocity();
     }
 
     Point2<float> AICharacterController::retrieveNextTarget() const {
@@ -80,20 +80,19 @@ namespace urchin {
         return character->getPosition().toPoint2XZ();
     }
 
-    void AICharacterController::computeSteeringMomentum(const Point2<float>& target) {
+    void AICharacterController::computeSteeringVelocity(const Point2<float>& target) {
         Vector2<float> desiredVelocity = retrieveCharacterPosition().vector(target).normalize() * character->retrieveMaxVelocityInMs();
-        Vector2<float> desiredMomentum = desiredVelocity * character->getMass();
 
-        steeringMomentum = desiredMomentum - character->getMomentum().xz();
-        steeringMomentum = steeringMomentum.truncate(character->retrieveMaxMomentum());
+        steeringVelocity = desiredVelocity - character->getVelocity().xz();
+        steeringVelocity = steeringVelocity.truncate(character->retrieveMaxVelocityInMs());
     }
 
-    void AICharacterController::applyMomentum() {
-        Vector3<float> steeringMomentum3D(steeringMomentum.X, 0.0f, steeringMomentum.Y);
-        Vector3<float> updatedMomentum = character->getMomentum() + steeringMomentum3D;
-        updatedMomentum = updatedMomentum.truncate(character->retrieveMaxMomentum());
+    void AICharacterController::applyVelocity() {
+        Vector3<float> steeringVelocity3D(steeringVelocity.X, 0.0f, steeringVelocity.Y);
+        Vector3<float> updatedVelocity = character->getVelocity() + steeringVelocity3D;
+        updatedVelocity = updatedVelocity.truncate(character->retrieveMaxVelocityInMs());
 
-        character->updateMomentum(updatedMomentum);
+        character->updateVelocity(updatedVelocity);
     }
 
 }

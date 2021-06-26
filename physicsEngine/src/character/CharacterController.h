@@ -30,7 +30,7 @@ namespace urchin {
             CharacterController(std::shared_ptr<PhysicsCharacter>, CharacterControllerConfig, PhysicsWorld*);
             ~CharacterController();
 
-            void setMomentum(const Vector3<float>&);
+            void setVelocity(const Vector3<float>&);
             void jump();
 
             void update(float);
@@ -47,8 +47,6 @@ namespace urchin {
             float computeSlope();
 
             static const float MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND;
-            static const float MIN_WALK_SPEED_PERCENTAGE;
-            static const float MAX_WALK_SPEED_PERCENTAGE;
             static const std::array<float, 4> RECOVER_FACTOR;
             const float ccdMotionThresholdFactor;
             const float maxDepthToRecover;
