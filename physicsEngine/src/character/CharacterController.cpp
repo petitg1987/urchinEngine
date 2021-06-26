@@ -16,12 +16,14 @@ namespace urchin {
     const std::array<float, 4> CharacterController::RECOVER_FACTOR = {0.4f, 0.7f, 0.9f, 1.0f};
 
     CharacterController::CharacterController(std::shared_ptr<PhysicsCharacter> physicsCharacter, CharacterControllerConfig config, PhysicsWorld* physicsWorld) :
+            ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")) ,
             maxDepthToRecover(ConfigService::instance()->getFloatValue("character.maxDepthToRecover")),
             minUpdateFrequency(ConfigService::instance()->getFloatValue("character.minUpdateFrequency")),
             physicsCharacter(std::move(physicsCharacter)),
             config(config),
             physicsWorld(physicsWorld),
             ghostBody(nullptr),
+            ccdGhostBody(nullptr),
             verticalSpeed(0.0f),
             makeJump(false),
             initialOrientation(this->physicsCharacter->getTransform().getOrientation()),
@@ -35,25 +37,7 @@ namespace urchin {
             throw std::runtime_error("Physics world cannot be null for character controller.");
         }
 
-        //TODO review
-        auto ghostBodyCapsule = std::dynamic_pointer_cast<const CollisionCapsuleShape>(this->physicsCharacter->getShape()); //TODO check if EPA algo is executed when character move
-        if (ghostBodyCapsule) {
-            float radius = ghostBodyCapsule->getRadius();
-            float height = ghostBodyCapsule->getCylinderHeight() + (2.0f * radius);
-
-            float updatedRadius = std::max(radius, config.getMaxHorizontalSpeed() / minUpdateFrequency);
-            float updatedHeight = std::max(height, (config.getMaxVerticalSpeed() / minUpdateFrequency) * 2.0f);
-            float updatedCylinderHeight = std::max(0.01f, updatedHeight - (2.0f * updatedRadius));
-            auto resizedCharacterShape = std::make_shared<const CollisionCapsuleShape>(updatedRadius, updatedCylinderHeight, ghostBodyCapsule->getCapsuleOrientation());
-
-            ghostBody = new GhostBody(this->physicsCharacter->getName(), this->physicsCharacter->getTransform(), this->physicsCharacter->getShape());
-            ccdGhostBody = new GhostBody(this->physicsCharacter->getName() + "_ccd", this->physicsCharacter->getTransform(), resizedCharacterShape);
-        } else {
-            throw std::runtime_error("Unimplemented shape type for character controller: " + std::to_string(this->physicsCharacter->getShape()->getShapeType()));
-        }
-
-        ghostBody->setIsActive(true); //always active for get better reactivity
-        ccdGhostBody->setIsActive(true); //TODO always active for get better reactivity
+        createBodies();
         physicsWorld->getCollisionWorld()->getBroadPhaseManager()->addBodyAsync(ghostBody);
         physicsWorld->getCollisionWorld()->getBroadPhaseManager()->addBodyAsync(ccdGhostBody);
     }
@@ -99,12 +83,33 @@ namespace urchin {
         }
     }
 
+    void CharacterController::createBodies() {
+        ghostBody = new GhostBody(this->physicsCharacter->getName(), this->physicsCharacter->getTransform(), this->physicsCharacter->getShape());
+        ghostBody->setIsActive(true); //always active for get better reactivity
+
+        auto ghostBodyCapsule = std::dynamic_pointer_cast<const CollisionCapsuleShape>(this->physicsCharacter->getShape());
+        std::shared_ptr<const CollisionShape3D> ccdGhostBodyShape;
+        if (ghostBodyCapsule) {
+            float radius = ghostBodyCapsule->getRadius();
+            float height = ghostBodyCapsule->getCylinderHeight() + (2.0f * radius);
+
+            float ccdRadius = std::max(radius, config.getMaxHorizontalSpeed() / minUpdateFrequency);
+            float ccdHeight = std::max(height, (config.getMaxVerticalSpeed() / minUpdateFrequency) * 2.0f);
+            float ccdCylinderHeight = std::max(0.01f, ccdHeight - (2.0f * ccdRadius));
+            ccdGhostBodyShape = std::make_shared<const CollisionCapsuleShape>(ccdRadius, ccdCylinderHeight, ghostBodyCapsule->getCapsuleOrientation());
+        } else {
+            throw std::runtime_error("Unimplemented shape type for character controller: " + std::to_string(this->physicsCharacter->getShape()->getShapeType()));
+        }
+        ccdGhostBody = new GhostBody(this->physicsCharacter->getName() + "_ccd", this->physicsCharacter->getTransform(), ccdGhostBodyShape);
+        ccdGhostBody->setIsActive(true); //TODO always active for get better reactivity
+    }
+
     void CharacterController::setup(float dt) {
         //save values
-        previousBodyTransform = ghostBody->getTransform();
+        previousBodyPosition = ghostBody->getTransform().getPosition();
 
         //apply user move
-        Point3<float> targetPosition = previousBodyTransform.getPosition();
+        Point3<float> targetPosition = previousBodyPosition;
         //TODO clamp velocity based on maximum horizontal speed
         if (isOnGround) {
             float slopeSpeedDecrease = 1.0f - (slopeInPercentage / config.getMaxSlopeInPercentage());
@@ -139,36 +144,32 @@ namespace urchin {
         targetPosition.Y += verticalSpeed * dt;
 
         //CCD
-        //TODO review naming + opti
-        Vector3<float> moveVector = previousBodyTransform.getPosition().vector(targetPosition);
+        Vector3<float> moveVector = previousBodyPosition.vector(targetPosition);
         if (moveVector.length() > ghostBody->getCcdMotionThreshold()) {
             manifoldResults.clear();
             physicsWorld->getCollisionWorld()->getNarrowPhaseManager()->processGhostBody(ccdGhostBody, manifoldResults);
             for (const auto& manifoldResult : manifoldResults) {
                 for (unsigned int i = 0; i < manifoldResult.getNumContactPoints(); ++i) {
-                    const ManifoldContactPoint& manifoldContactPoint = manifoldResult.getManifoldContactPoint(i);
+                    const ManifoldContactPoint& contactPoint = manifoldResult.getManifoldContactPoint(i);
 
-                    Vector3<float> contactNormal = manifoldContactPoint.getNormalFromObject2();
-                    Point3<float> contactPoint = manifoldContactPoint.getPointOnObject1();
-                    if(manifoldResult.getBody1() == ccdGhostBody) {
-                        contactPoint = manifoldContactPoint.getPointOnObject2();
-                        contactNormal = -manifoldContactPoint.getNormalFromObject2();
-                    }
+                    Vector3<float> contactNormal = (manifoldResult.getBody1() == ccdGhostBody) ? -contactPoint.getNormalFromObject2() : contactPoint.getNormalFromObject2();
+                    Point3<float> obstacleContactPoint = (manifoldResult.getBody1() == ccdGhostBody) ? contactPoint.getPointOnObject2() : contactPoint.getPointOnObject1();
+                    float motionAppliedOnObstacle = moveVector.dotProduct(contactNormal);
+                    float motionToPassThroughObstacle = previousBodyPosition.vector(obstacleContactPoint).length();
 
-                    float dirProportion = moveVector.normalize().dotProduct(contactNormal);
-                    if(moveVector.length() * dirProportion > previousBodyTransform.getPosition().vector(contactPoint).length() * 0.8f) { //TODO update security factor
-                        float forceAppliedOnObstacle = moveVector.dotProduct(contactNormal);
-                        Vector3<float> obstacleReactionForce = (-contactNormal) * forceAppliedOnObstacle;
-                        Vector3<float> newMove = moveVector + obstacleReactionForce;
-                        targetPosition = previousBodyTransform.getPosition().translate(newMove);
+                    if(motionAppliedOnObstacle > motionToPassThroughObstacle * ccdMotionThresholdFactor) {
+                        Vector3<float> obstacleReactionMotion = (-contactNormal) * motionAppliedOnObstacle;
+                        moveVector += obstacleReactionMotion;
+                        targetPosition = previousBodyPosition.translate(moveVector);
 
-                        static int count = 0;
-                        std::cout<<"CCD ("<<count++<<"): " <<manifoldResult.getBody1()->getId()<<" vs. "<<manifoldResult.getBody2()->getId()<<std::endl;
-                        //TODO: break or continue and review algo ?
+                        if (moveVector.length() < ghostBody->getCcdMotionThreshold()) {
+                            goto endCCD;
+                        }
                     }
                 }
             }
         }
+        endCCD:
 
         //compute and apply orientation
         Quaternion<float> newOrientation = initialOrientation;
@@ -255,13 +256,13 @@ namespace urchin {
     float CharacterController::computeSlope() {
         Point3<float> bodyPosition = ghostBody->getTransform().getPosition();
         Point2<float> p1 = Point2<float>(bodyPosition.X, bodyPosition.Z);
-        Point2<float> p2 = Point2<float>(previousBodyTransform.getPosition().X, previousBodyTransform.getPosition().Z);
+        Point2<float> p2 = Point2<float>(previousBodyPosition.X, previousBodyPosition.Z);
         float run = p1.vector(p2).length();
         if (run == 0.0f) {
             return 0.0f;
         }
 
-        float rise = bodyPosition.Y - previousBodyTransform.getPosition().Y;
+        float rise = bodyPosition.Y - previousBodyPosition.Y;
         return rise / run;
     }
 }

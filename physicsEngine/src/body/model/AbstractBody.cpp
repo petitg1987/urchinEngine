@@ -55,7 +55,7 @@ namespace urchin {
 
         //shape check and data
         shape->checkInnerMarginQuality(id);
-        ccdMotionThreshold = (shape->getMinDistanceToCenter() * 2.0f) * ccdMotionThresholdFactor;
+        ccdMotionThreshold = shape->getMinDistanceToCenter() * ccdMotionThresholdFactor;
 
         //body description data
         this->restitution = restitution;

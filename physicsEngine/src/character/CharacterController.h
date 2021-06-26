@@ -36,6 +36,7 @@ namespace urchin {
             void update(float);
 
         private:
+            void createBodies();
             void setup(float);
 
             void recoverFromPenetration(float);
@@ -49,6 +50,7 @@ namespace urchin {
             static const float MIN_WALK_SPEED_PERCENTAGE;
             static const float MAX_WALK_SPEED_PERCENTAGE;
             static const std::array<float, 4> RECOVER_FACTOR;
+            const float ccdMotionThresholdFactor;
             const float maxDepthToRecover;
             const float minUpdateFrequency;
 
@@ -64,7 +66,7 @@ namespace urchin {
             bool makeJump;
 
             SignificantContactValues significantContactValues;
-            PhysicsTransform previousBodyTransform;
+            Point3<float> previousBodyPosition;
             Quaternion<float> initialOrientation;
             unsigned int numberOfHit; //number of contact point touching the character
             bool isOnGround; //character is on the ground
