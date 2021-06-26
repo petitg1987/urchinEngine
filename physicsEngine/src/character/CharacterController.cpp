@@ -48,7 +48,15 @@ namespace urchin {
     }
 
     void CharacterController::setMomentum(const Vector3<float>& momentum) {
-        this->velocity = (momentum / physicsCharacter->getMass());
+        velocity = (momentum / physicsCharacter->getMass());
+
+        //clamp velocity to max horizontal speed
+        Vector2<float> horizontalVelocity(velocity.X, velocity.Z);
+        float velocityLength = horizontalVelocity.length();
+        if(velocityLength > config.getMaxHorizontalSpeed()) {
+            horizontalVelocity = (horizontalVelocity / velocityLength) * config.getMaxHorizontalSpeed();
+            velocity = Vector3(horizontalVelocity.X, velocity.Y, horizontalVelocity.Y);
+        }
     }
 
     void CharacterController::jump() {
@@ -101,7 +109,7 @@ namespace urchin {
             throw std::runtime_error("Unimplemented shape type for character controller: " + std::to_string(this->physicsCharacter->getShape()->getShapeType()));
         }
         ccdGhostBody = new GhostBody(this->physicsCharacter->getName() + "_ccd", this->physicsCharacter->getTransform(), ccdGhostBodyShape);
-        ccdGhostBody->setIsActive(true); //TODO always active for get better reactivity
+        ccdGhostBody->setIsActive(true);
     }
 
     void CharacterController::setup(float dt) {
@@ -110,7 +118,6 @@ namespace urchin {
 
         //apply user move
         Point3<float> targetPosition = previousBodyPosition;
-        //TODO clamp velocity based on maximum horizontal speed
         if (isOnGround) {
             float slopeSpeedDecrease = 1.0f - (slopeInPercentage / config.getMaxSlopeInPercentage());
             slopeSpeedDecrease = MathFunction::clamp(slopeSpeedDecrease, MIN_WALK_SPEED_PERCENTAGE, MAX_WALK_SPEED_PERCENTAGE);
