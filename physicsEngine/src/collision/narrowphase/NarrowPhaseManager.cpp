@@ -41,9 +41,7 @@ namespace urchin {
         std::vector<OverlappingPair> overlappingPairs = ghostBody->getPairContainer()->retrieveCopyOverlappingPairs();
 
         for (auto& overlappingPair : overlappingPairs) {
-            if(!overlappingPair.getBody1()->isGhostBody() || !overlappingPair.getBody2()->isGhostBody()) { //TODO filter in BroadPhase ?
-                processOverlappingPair(&overlappingPair, manifoldResults);
-            }
+            processOverlappingPair(&overlappingPair, manifoldResults);
         }
     }
 

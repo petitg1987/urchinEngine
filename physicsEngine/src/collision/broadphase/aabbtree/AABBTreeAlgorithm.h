@@ -14,7 +14,7 @@ namespace urchin {
             AABBTreeAlgorithm();
             ~AABBTreeAlgorithm() override;
 
-            void addBody(AbstractBody*, PairContainer*) override;
+            void addBody(AbstractBody*) override;
             void removeBody(AbstractBody*) override;
             void updateBodies() override;
 

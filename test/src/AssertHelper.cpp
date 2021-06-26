@@ -13,6 +13,10 @@ void AssertHelper::assertTrue(bool b, const std::string& msg) {
     }
 }
 
+void AssertHelper::assertObject(void* object, void* expectedObject) {
+    CPPUNIT_ASSERT_MESSAGE("Assert fail. Objects are different", object == expectedObject);
+}
+
 void AssertHelper::assertString(const std::string& value, const std::string& expected) {
     CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + value + ", expected: " + expected, value == expected);
 }

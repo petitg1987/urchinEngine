@@ -12,8 +12,8 @@ void BodyAABBTreeTest::twoBodiesPairedAndRemove() {
     auto bodyA = std::make_unique<RigidBody>("bodyA", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
     auto bodyB = std::make_unique<RigidBody>("bodyB", PhysicsTransform(Point3<float>(1.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
     BodyAABBTree bodyAabbTree;
-    bodyAabbTree.addBody(bodyA.get(), nullptr);
-    bodyAabbTree.addBody(bodyB.get(), nullptr);
+    bodyAabbTree.addBody(bodyA.get());
+    bodyAabbTree.addBody(bodyB.get());
     auto* bodyANodeData = dynamic_cast<BodyAABBNodeData*>(bodyAabbTree.getNodeData(bodyA.get()));
 
     AssertHelper::assertUnsignedInt(bodyAabbTree.getOverlappingPairs().size(), 1);
@@ -31,28 +31,28 @@ void BodyAABBTreeTest::twoBodiesNotPaired() {
     auto bodyA = std::make_unique<RigidBody>("bodyA", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
     auto bodyB = std::make_unique<RigidBody>("bodyB", PhysicsTransform(Point3<float>(10.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
     BodyAABBTree bodyAabbTree;
-    bodyAabbTree.addBody(bodyA.get(), nullptr);
-    bodyAabbTree.addBody(bodyB.get(), nullptr);
+    bodyAabbTree.addBody(bodyA.get());
+    bodyAabbTree.addBody(bodyB.get());
 
     AssertHelper::assertUnsignedInt(bodyAabbTree.getOverlappingPairs().size(), 0);
 }
 
-void BodyAABBTreeTest::oneBodyWithAlternativePairAndRemoveIt() {
-    oneBodyWithAlternativePairAndRemove(true);
+void BodyAABBTreeTest::oneGhostBodyAndRemoveIt() {
+    oneGhostBodyAndRemove(true);
 }
 
-void BodyAABBTreeTest::oneBodyWithAlternativePairAndRemoveOther() {
-    oneBodyWithAlternativePairAndRemove(false);
+void BodyAABBTreeTest::oneGhostBodyAndRemoveOther() {
+    oneGhostBodyAndRemove(false);
 }
 
-void BodyAABBTreeTest::oneBodyWithAlternativePairAndRemove(bool removeBodyHavingAlternativePair) {
+void BodyAABBTreeTest::oneGhostBodyAndRemove(bool removeGhostBody) {
     //add bodies test:
     std::shared_ptr<CollisionBoxShape> cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
     auto bodyA = std::make_unique<RigidBody>("bodyA", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
     auto bodyB = std::make_unique<GhostBody>("bodyB", PhysicsTransform(Point3<float>(1.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
     BodyAABBTree bodyAabbTree;
-    bodyAabbTree.addBody(bodyA.get(), nullptr);
-    bodyAabbTree.addBody(bodyB.get(), bodyB->getPairContainer());
+    bodyAabbTree.addBody(bodyA.get());
+    bodyAabbTree.addBody(bodyB.get());
     auto* bodyANodeData = dynamic_cast<BodyAABBNodeData*>(bodyAabbTree.getNodeData(bodyA.get()));
     auto* bodyBNodeData = dynamic_cast<BodyAABBNodeData*>(bodyAabbTree.getNodeData(bodyB.get()));
 
@@ -65,7 +65,7 @@ void BodyAABBTreeTest::oneBodyWithAlternativePairAndRemove(bool removeBodyHaving
     AssertHelper::assertUnsignedInt(bodyBNodeData->getOwnerPairContainers().size(), 0);
 
     //remove a body test:
-    if (removeBodyHavingAlternativePair) {
+    if (removeGhostBody) {
         bodyAabbTree.removeBody(bodyB.get());
         AssertHelper::assertUnsignedInt(bodyB->getPairContainer()->retrieveCopyOverlappingPairs().size(), 0);
         AssertHelper::assertUnsignedInt(bodyANodeData->getOwnerPairContainers().size(), 0);
@@ -75,23 +75,19 @@ void BodyAABBTreeTest::oneBodyWithAlternativePairAndRemove(bool removeBodyHaving
     }
 }
 
-void BodyAABBTreeTest::twoBodiesWithAlternativePair() {
+void BodyAABBTreeTest::twoGhostBodies() {
     std::shared_ptr<CollisionBoxShape> cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
     auto bodyA = std::make_unique<GhostBody>("bodyA", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
     auto bodyB = std::make_unique<GhostBody>("bodyB", PhysicsTransform(Point3<float>(1.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
     BodyAABBTree bodyAabbTree;
-    bodyAabbTree.addBody(bodyA.get(), bodyA->getPairContainer());
-    bodyAabbTree.addBody(bodyB.get(), bodyB->getPairContainer());
+    bodyAabbTree.addBody(bodyA.get());
+    bodyAabbTree.addBody(bodyB.get());
 
     AssertHelper::assertUnsignedInt(bodyAabbTree.getOverlappingPairs().size(), 0);
     std::vector<OverlappingPair> bodyAPairs = bodyA->getPairContainer()->retrieveCopyOverlappingPairs();
-    AssertHelper::assertUnsignedInt(bodyAPairs.size(), 1);
-    AssertHelper::assertString(bodyAPairs[0].getBody1()->getId(), "bodyB");
-    AssertHelper::assertString(bodyAPairs[0].getBody2()->getId(), "bodyA");
+    AssertHelper::assertUnsignedInt(bodyAPairs.size(), 0); //ghost bodies do not see each other
     std::vector<OverlappingPair> bodyBPairs = bodyB->getPairContainer()->retrieveCopyOverlappingPairs();
-    AssertHelper::assertUnsignedInt(bodyBPairs.size(), 1);
-    AssertHelper::assertString(bodyBPairs[0].getBody1()->getId(), "bodyB");
-    AssertHelper::assertString(bodyBPairs[0].getBody2()->getId(), "bodyA");
+    AssertHelper::assertUnsignedInt(bodyBPairs.size(), 0); //ghost bodies do not see each other
 }
 
 void BodyAABBTreeTest::threeBodiesPairedAndRemove() {
@@ -101,13 +97,15 @@ void BodyAABBTreeTest::threeBodiesPairedAndRemove() {
     auto bodyB = std::make_unique<GhostBody>("bodyB", PhysicsTransform(Point3<float>(1.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
     auto bodyC = std::make_unique<GhostBody>("bodyC", PhysicsTransform(Point3<float>(0.0f, 1.0f, 0.0f), Quaternion<float>()), cubeShape);
     BodyAABBTree bodyAabbTree;
-    bodyAabbTree.addBody(bodyA.get(), nullptr);
-    bodyAabbTree.addBody(bodyB.get(), bodyB->getPairContainer());
-    bodyAabbTree.addBody(bodyC.get(), bodyC->getPairContainer());
+    bodyAabbTree.addBody(bodyA.get());
+    bodyAabbTree.addBody(bodyB.get());
+    bodyAabbTree.addBody(bodyC.get());
 
     AssertHelper::assertUnsignedInt(bodyAabbTree.getOverlappingPairs().size(), 0);
-    AssertHelper::assertUnsignedInt(bodyB->getPairContainer()->retrieveCopyOverlappingPairs().size(), 2);
-    AssertHelper::assertUnsignedInt(bodyC->getPairContainer()->retrieveCopyOverlappingPairs().size(), 2);
+    AssertHelper::assertUnsignedInt(bodyB->getPairContainer()->retrieveCopyOverlappingPairs().size(), 1);
+    AssertHelper::assertObject(bodyB->getPairContainer()->retrieveCopyOverlappingPairs()[0].getBody2(), bodyA.get());
+    AssertHelper::assertUnsignedInt(bodyC->getPairContainer()->retrieveCopyOverlappingPairs().size(), 1);
+    AssertHelper::assertObject(bodyC->getPairContainer()->retrieveCopyOverlappingPairs()[0].getBody2(), bodyA.get());
 
     //remove a body test:
     bodyAabbTree.removeBody(bodyB.get());
@@ -127,9 +125,9 @@ CppUnit::Test* BodyAABBTreeTest::suite() {
     suite->addTest(new CppUnit::TestCaller<BodyAABBTreeTest>("twoBodiesPairedAndRemove", &BodyAABBTreeTest::twoBodiesPairedAndRemove));
     suite->addTest(new CppUnit::TestCaller<BodyAABBTreeTest>("twoBodiesNotPaired", &BodyAABBTreeTest::twoBodiesNotPaired));
 
-    suite->addTest(new CppUnit::TestCaller<BodyAABBTreeTest>("oneBodyWithAlternativePairAndRemoveIt", &BodyAABBTreeTest::oneBodyWithAlternativePairAndRemoveIt));
-    suite->addTest(new CppUnit::TestCaller<BodyAABBTreeTest>("oneBodyWithAlternativePairAndRemoveOther", &BodyAABBTreeTest::oneBodyWithAlternativePairAndRemoveOther));
-    suite->addTest(new CppUnit::TestCaller<BodyAABBTreeTest>("twoBodiesWithAlternativePair", &BodyAABBTreeTest::twoBodiesWithAlternativePair));
+    suite->addTest(new CppUnit::TestCaller<BodyAABBTreeTest>("oneGhostBodyAndRemoveIt", &BodyAABBTreeTest::oneGhostBodyAndRemoveIt));
+    suite->addTest(new CppUnit::TestCaller<BodyAABBTreeTest>("oneGhostBodyAndRemoveOther", &BodyAABBTreeTest::oneGhostBodyAndRemoveOther));
+    suite->addTest(new CppUnit::TestCaller<BodyAABBTreeTest>("twoGhostBodies", &BodyAABBTreeTest::twoGhostBodies));
 
     suite->addTest(new CppUnit::TestCaller<BodyAABBTreeTest>("threeBodiesPairedAndRemove", &BodyAABBTreeTest::threeBodiesPairedAndRemove));
 

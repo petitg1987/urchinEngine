@@ -12,8 +12,8 @@ namespace urchin {
         delete tree;
     }
 
-    void AABBTreeAlgorithm::addBody(AbstractBody* body, PairContainer* alternativePairContainer) {
-        tree->addBody(body, alternativePairContainer);
+    void AABBTreeAlgorithm::addBody(AbstractBody* body) {
+        tree->addBody(body);
     }
 
     void AABBTreeAlgorithm::removeBody(AbstractBody* body) {

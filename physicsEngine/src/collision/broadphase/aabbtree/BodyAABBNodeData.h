@@ -10,7 +10,7 @@ namespace urchin {
 
     class BodyAABBNodeData : public AABBNodeData<AbstractBody*> {
         public:
-            BodyAABBNodeData(AbstractBody*, PairContainer*);
+            explicit BodyAABBNodeData(AbstractBody*);
 
             AABBNodeData<AbstractBody*>* clone() const override;
 
@@ -18,15 +18,15 @@ namespace urchin {
             AABBox<float> retrieveObjectAABBox() const override;
             bool isObjectMoving() const override;
 
-            bool hasAlternativePairContainer() const;
-            PairContainer* getAlternativePairContainer() const;
+            bool isGhostBody() const;
+            PairContainer* getBodyPairContainer() const;
 
             void addOwnerPairContainer(PairContainer*);
             void removeOwnerPairContainer(PairContainer*);
             std::set<PairContainer*> getOwnerPairContainers() const;
 
         private:
-            PairContainer* alternativePairContainer;
+            PairContainer* bodyPairContainer;
             std::set<PairContainer*> ownerPairContainers;
     };
 

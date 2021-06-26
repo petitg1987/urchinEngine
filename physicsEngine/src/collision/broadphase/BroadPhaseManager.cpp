@@ -35,7 +35,7 @@ namespace urchin {
     }
 
     void BroadPhaseManager::addBody(AbstractBody* body) {
-        broadPhaseAlgorithm->addBody(body, body->getPairContainer());
+        broadPhaseAlgorithm->addBody(body);
     }
 
     /**

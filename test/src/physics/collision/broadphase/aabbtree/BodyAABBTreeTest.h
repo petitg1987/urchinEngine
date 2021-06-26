@@ -10,12 +10,12 @@ class BodyAABBTreeTest : public CppUnit::TestFixture {
          void twoBodiesPairedAndRemove();
          void twoBodiesNotPaired();
 
-         void oneBodyWithAlternativePairAndRemoveIt();
-         void oneBodyWithAlternativePairAndRemoveOther();
-         void twoBodiesWithAlternativePair();
+         void oneGhostBodyAndRemoveIt();
+         void oneGhostBodyAndRemoveOther();
+         void twoGhostBodies();
 
          void threeBodiesPairedAndRemove();
 
     private:
-        void oneBodyWithAlternativePairAndRemove(bool);
+        void oneGhostBodyAndRemove(bool);
 };

@@ -2,14 +2,14 @@
 
 namespace urchin {
 
-    BodyAABBNodeData::BodyAABBNodeData(AbstractBody* body, PairContainer* alternativePairContainer) :
-        AABBNodeData(body),
-        alternativePairContainer(alternativePairContainer) {
+    BodyAABBNodeData::BodyAABBNodeData(AbstractBody* body) :
+            AABBNodeData(body),
+            bodyPairContainer(body->getPairContainer()) {
 
     }
 
     AABBNodeData<AbstractBody*>* BodyAABBNodeData::clone() const {
-        return new BodyAABBNodeData(getNodeObject(), alternativePairContainer);
+        return new BodyAABBNodeData(getNodeObject());
     }
 
     const std::string& BodyAABBNodeData::getObjectId() const {
@@ -24,12 +24,12 @@ namespace urchin {
         return getNodeObject()->isActive();
     }
 
-    bool BodyAABBNodeData::hasAlternativePairContainer() const {
-        return alternativePairContainer != nullptr;
+    bool BodyAABBNodeData::isGhostBody() const {
+        return getNodeObject()->isGhostBody();
     }
 
-    PairContainer* BodyAABBNodeData::getAlternativePairContainer() const {
-        return alternativePairContainer;
+    PairContainer* BodyAABBNodeData::getBodyPairContainer() const {
+        return bodyPairContainer;
     }
 
     void BodyAABBNodeData::addOwnerPairContainer(PairContainer* ownerPairContainer) {

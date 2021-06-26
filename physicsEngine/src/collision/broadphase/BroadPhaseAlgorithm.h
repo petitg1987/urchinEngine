@@ -13,7 +13,7 @@ namespace urchin {
         public:
             virtual ~BroadPhaseAlgorithm() = default;
 
-            virtual void addBody(AbstractBody*, PairContainer*) = 0;
+            virtual void addBody(AbstractBody*) = 0;
             virtual void removeBody(AbstractBody*) = 0;
             virtual void updateBodies() = 0;
 
