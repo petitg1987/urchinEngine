@@ -11,6 +11,7 @@ namespace urchin {
 
     //static
     const float CharacterController::MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND = 0.2f;
+    const float CharacterController::SAVE_RESPAWN_TRANSFORM_TIME = 10.0f; //10 seconds
     const std::array<float, 4> CharacterController::RECOVER_FACTOR = {0.4f, 0.7f, 0.9f, 1.0f};
 
     CharacterController::CharacterController(std::shared_ptr<PhysicsCharacter> physicsCharacter, CharacterControllerConfig config, PhysicsWorld* physicsWorld) :
@@ -24,6 +25,8 @@ namespace urchin {
             ccdGhostBody(nullptr),
             verticalSpeed(0.0f),
             makeJump(false),
+            significantContactValues({}),
+            respawnValues({}),
             initialOrientation(this->physicsCharacter->getTransform().getOrientation()),
             numberOfHit(0),
             isOnGround(false),
@@ -38,6 +41,7 @@ namespace urchin {
         createBodies();
         physicsWorld->getCollisionWorld()->getBroadPhaseManager()->addBodyAsync(ghostBody);
         physicsWorld->getCollisionWorld()->getBroadPhaseManager()->addBodyAsync(ccdGhostBody);
+        respawnValues.nextRespawnTransform = ghostBody->getTransform();
     }
 
     CharacterController::~CharacterController() {
@@ -67,9 +71,9 @@ namespace urchin {
     void CharacterController::update(float dt) {
         ScopeProfiler sp(Profiler::physics(), "charactCtrlExec");
 
-        if (!ghostBody->isStatic()) {
-            //setup values
-            setup(dt);
+        if (ghostBody->isActive() && ccdGhostBody->isActive()) {
+            //update body transform
+            updateBodiesTransform(dt);
 
             //recover from penetration
             recoverFromPenetration(dt);
@@ -83,10 +87,12 @@ namespace urchin {
             if (hitRoof) {
                 verticalSpeed = 0.0f;
             }
-
-            //set new transform on character
-            physicsCharacter->updateTransform(ghostBody->getTransform());
+        } else {
+            respawnBodies();
         }
+
+        //set new transform on character
+        physicsCharacter->updateTransform(ghostBody->getTransform());
     }
 
     void CharacterController::createBodies() {
@@ -111,7 +117,7 @@ namespace urchin {
         ccdGhostBody->setIsActive(true);
     }
 
-    void CharacterController::setup(float dt) {
+    void CharacterController::updateBodiesTransform(float dt) {
         //save values
         previousBodyPosition = ghostBody->getTransform().getPosition();
 
@@ -182,6 +188,14 @@ namespace urchin {
         if (!MathFunction::isZero(velocity.squareLength(), 0.001f)) {
             Quaternion<float> orientation = Quaternion<float>(velocity.normalize()).normalize();
             newOrientation = orientation * initialOrientation;
+        }
+
+        //save respawn transform
+        respawnValues.timeElapse += dt;
+        if (respawnValues.timeElapse > SAVE_RESPAWN_TRANSFORM_TIME) {
+            respawnValues.respawnTransform = respawnValues.nextRespawnTransform;
+            respawnValues.nextRespawnTransform = PhysicsTransform(targetPosition, newOrientation);
+            respawnValues.timeElapse = 0.0f;
         }
 
         //apply transform on bodies
@@ -261,8 +275,8 @@ namespace urchin {
      */
     float CharacterController::computeSlope() {
         Point3<float> bodyPosition = ghostBody->getTransform().getPosition();
-        Point2<float> p1 = Point2<float>(bodyPosition.X, bodyPosition.Z);
-        Point2<float> p2 = Point2<float>(previousBodyPosition.X, previousBodyPosition.Z);
+        Point2<float> p1 = bodyPosition.toPoint2XZ();
+        Point2<float> p2 = previousBodyPosition.toPoint2XZ();
         float run = p1.vector(p2).length();
         if (run == 0.0f) {
             return 0.0f;
@@ -270,5 +284,16 @@ namespace urchin {
 
         float rise = bodyPosition.Y - previousBodyPosition.Y;
         return rise / run;
+    }
+
+    void CharacterController::respawnBodies() {
+        respawnValues.timeElapse = 0.0f;
+        respawnValues.nextRespawnTransform = respawnValues.respawnTransform;
+
+        ghostBody->setTransform(respawnValues.respawnTransform);
+        ghostBody->setIsActive(true);
+
+        ccdGhostBody->setTransform(respawnValues.respawnTransform);
+        ccdGhostBody->setIsActive(true);
     }
 }

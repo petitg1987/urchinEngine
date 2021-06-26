@@ -22,6 +22,12 @@ namespace urchin {
         Vector3<float> mostDownVerticalNormal;
     };
 
+    struct RespawnValues {
+        PhysicsTransform respawnTransform;
+        PhysicsTransform nextRespawnTransform;
+        float timeElapse;
+    };
+
     /**
     * Character controller: allow to move a character in a world
     */
@@ -37,16 +43,17 @@ namespace urchin {
 
         private:
             void createBodies();
-            void setup(float);
 
+            void updateBodiesTransform(float);
             void recoverFromPenetration(float);
             void resetSignificantContactValues();
             void saveSignificantContactValues(const Vector3<float>&);
             void computeSignificantContactValues(float);
-
             float computeSlope();
+            void respawnBodies();
 
             static const float MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND;
+            static const float SAVE_RESPAWN_TRANSFORM_TIME;
             static const std::array<float, 4> RECOVER_FACTOR;
             const float ccdMotionThresholdFactor;
             const float maxDepthToRecover;
@@ -64,6 +71,7 @@ namespace urchin {
             bool makeJump;
 
             SignificantContactValues significantContactValues;
+            RespawnValues respawnValues;
             Point3<float> previousBodyPosition;
             Quaternion<float> initialOrientation;
             unsigned int numberOfHit; //number of contact point touching the character
