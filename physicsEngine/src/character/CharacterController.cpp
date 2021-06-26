@@ -98,8 +98,9 @@ namespace urchin {
         if (ghostBodyCapsule) {
             float radius = ghostBodyCapsule->getRadius();
             float height = ghostBodyCapsule->getCylinderHeight() + (2.0f * radius);
+            float maximumCharacterSpeed = config.getMaxHorizontalSpeed() * (1.0f + config.getMaxSlopeSpeedVariation());
 
-            float ccdRadius = std::max(radius, (config.getMaxHorizontalSpeed()) / minUpdateFrequency);
+            float ccdRadius = std::max(radius, maximumCharacterSpeed / minUpdateFrequency);
             float ccdHeight = std::max(height, (config.getMaxVerticalSpeed() / minUpdateFrequency) * 2.0f);
             float ccdCylinderHeight = std::max(0.01f, ccdHeight - (2.0f * ccdRadius));
             ccdGhostBodyShape = std::make_shared<const CollisionCapsuleShape>(ccdRadius, ccdCylinderHeight, ghostBodyCapsule->getCapsuleOrientation());
