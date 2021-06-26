@@ -5,7 +5,7 @@
 namespace urchin {
 
     template<class T> Tetrahedron<T>::Tetrahedron(const Point3<T>& a, const Point3<T>& b, const Point3<T>& c, const Point3<T>& d):
-        a(a), b(b), c(c), d(d) {
+            a(a), b(b), c(c), d(d) {
 
     }
 

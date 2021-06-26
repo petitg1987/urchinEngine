@@ -6,13 +6,14 @@
 namespace urchin {
 
     template<class T> EPAAlgorithm<T>::EPAAlgorithm() :
-        maxIteration(EagerPropertyLoader::instance()->getNarrowPhaseEpaMaxIteration()),
-        terminationTolerance(EagerPropertyLoader::instance()->getNarrowPhaseEpaTerminationTolerance()) {
+            maxIteration(EagerPropertyLoader::instance()->getNarrowPhaseEpaMaxIteration()),
+            terminationTolerance(EagerPropertyLoader::instance()->getNarrowPhaseEpaTerminationTolerance()) {
 
     }
 
     template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> EPAAlgorithm<T>::processEPA(const CollisionConvexObject3D& convexObject1, const CollisionConvexObject3D& convexObject2,
             const GJKResult<T>& gjkResult) const {
+        ScopeProfiler sp(Profiler::physics(), "processEPA");
         assert(gjkResult.isCollide());
 
         //handle sub triangle cases
@@ -73,7 +74,7 @@ namespace urchin {
             const Point3<T> minkowskiDiffPoint = supportPointNormal - supportPointMinusNormal;
 
             upperBoundPenDepth = std::min(upperBoundPenDepth, std::abs(minkowskiDiffPoint.toVector().dotProduct(normal)));
-            bool closeEnough = upperBoundPenDepth <= (1.0+terminationTolerance) * distanceToOrigin;
+            bool closeEnough = upperBoundPenDepth <= (1.0 + terminationTolerance) * distanceToOrigin;
 
             if (!closeEnough) { //polytope can be extended in direction of normal: add a new point
                 std::vector<std::size_t> removedTriangleIndices;

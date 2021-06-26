@@ -28,30 +28,30 @@ namespace urchin {
     }
 
     template<class T> Vector3<T> Vector3<T>::normalize() const {
-        const T norm = std::sqrt(X*X + Y*Y + Z*Z);
+        const T norm = std::sqrt(X * X + Y * Y + Z * Z);
         if (norm > 0.0) {
-            return Vector3<T>(X/norm, Y/norm, Z/norm);
+            return Vector3<T>(X / norm, Y / norm, Z / norm);
         }
 
         return Vector3<T>(X, Y, Z);
     }
 
     template<class T> T Vector3<T>::length() const {
-        return std::sqrt(X*X + Y*Y + Z*Z);
+        return std::sqrt(X * X + Y * Y + Z * Z);
     }
 
     template<class T> T Vector3<T>::squareLength() const {
-        return (X*X + Y*Y + Z*Z);
+        return (X * X + Y * Y + Z * Z);
     }
 
     template<class T> T Vector3<T>::dotProduct(const Vector3<T>& v) const {
-        return (X*v.X + Y*v.Y + Z*v.Z);
+        return (X * v.X + Y * v.Y + Z * v.Z);
     }
 
     template<class T> Vector3<T> Vector3<T>::crossProduct(const Vector3<T>& v) const {
-        return Vector3<T>(Y*v.Z - Z*v.Y,
-                          Z*v.X - X*v.Z,
-                          X*v.Y - Y*v.X);
+        return Vector3<T>(Y * v.Z - Z * v.Y,
+                          Z * v.X - X * v.Z,
+                          X * v.Y - Y * v.X);
     }
 
     template<class T> Vector3<T> Vector3<T>::truncate(T maxLength) const {

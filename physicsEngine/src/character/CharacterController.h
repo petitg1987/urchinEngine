@@ -57,6 +57,7 @@ namespace urchin {
             PhysicsWorld* physicsWorld;
             std::vector<ManifoldResult> manifoldResults;
             GhostBody* ghostBody;
+            GhostBody* ccdGhostBody;
             float verticalSpeed;
 
             Vector3<float> velocity;
@@ -65,7 +66,6 @@ namespace urchin {
             SignificantContactValues significantContactValues;
             PhysicsTransform previousBodyTransform;
             Quaternion<float> initialOrientation;
-            Vector3<float> lastVelocity;
             unsigned int numberOfHit; //number of contact point touching the character
             bool isOnGround; //character is on the ground
             bool hitRoof; //character has hit the roof

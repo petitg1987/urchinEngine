@@ -65,7 +65,7 @@ namespace urchin {
         Vector3<float> v2 = p1.vector(p0);
         Vector3<float> normal = v1.crossProduct(v2).normalize();
 
-        Vector3<float> upVector(0.0, 1.0, 0.0);
+        Vector3<float> upVector(0.0f, 1.0f, 0.0f);
         return normal.dotProduct(upVector);
     }
 

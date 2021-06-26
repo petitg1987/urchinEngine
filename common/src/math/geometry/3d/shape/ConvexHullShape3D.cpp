@@ -11,8 +11,8 @@ namespace urchin {
      * @param points Points used to construct the convex hull shape. Points inside the convex hull shape are accepted but will unused.
      */
     template<class T> ConvexHullShape3D<T>::ConvexHullShape3D(const std::vector<Point3<T>>& points) :
-        nextPointIndex(0),
-        nextTriangleIndex(0) {
+            nextPointIndex(0),
+            nextTriangleIndex(0) {
         //build tetrahedron
         std::set<std::size_t> pointsToExclude = buildTetrahedron(points);
 

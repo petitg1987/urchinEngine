@@ -161,7 +161,7 @@ namespace urchin {
         } else if (normalizedUp.Y > normalizedLookAt.Z) {
             T sqrtValue = std::sqrt((((T)1.0 + normalizedUp.Y) - right.X) - normalizedLookAt.Z);
             T halfOverSqrt = (T)0.5 / sqrtValue;
-            X = (normalizedUp.X+ right.Y) * halfOverSqrt;
+            X = (normalizedUp.X + right.Y) * halfOverSqrt;
             Y = (T)0.5 * sqrtValue;
             Z = (normalizedLookAt.Y + normalizedUp.Z) * halfOverSqrt;
             W = (normalizedLookAt.X - right.Z) * halfOverSqrt;
@@ -176,7 +176,7 @@ namespace urchin {
     }
 
     template<class T> void Quaternion<T>::computeW() {
-        const T t = 1.0f - (X*X) - (Y*Y) - (Z*Z);
+        const T t = 1.0f - (X * X) - (Y * Y) - (Z * Z);
 
         if (t < 0.0f) {
             W = 0.0f;
@@ -186,15 +186,15 @@ namespace urchin {
     }
 
     template<class T> void Quaternion<T>::setIdentity() {
-        X = Y = Z = 0.0f;
-        W = 1.0f;
+        X = Y = Z = 0.0;
+        W = 1.0;
     }
 
     template<class T> Quaternion<T> Quaternion<T>::normalize() const {
         const T normValue = norm();
 
         //checks for bogus norm, to protect against divide by zero
-        if (normValue > 0.0f) {
+        if (normValue > 0.0) {
             return Quaternion<T>(X / normValue, Y / normValue, Z / normValue, W / normValue);
         }
 

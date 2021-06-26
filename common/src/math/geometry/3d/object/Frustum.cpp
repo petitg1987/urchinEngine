@@ -9,7 +9,7 @@
 namespace urchin {
 
     template<class T> Frustum<T>::Frustum() {
-        buildFrustum(90.0f, 1.0f, 0.01f, 1.0f);
+        buildFrustum(90.0, 1.0, 0.01f, 1.0);
     }
 
     /**

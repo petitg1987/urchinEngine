@@ -35,24 +35,31 @@ namespace urchin {
             throw std::runtime_error("Physics world cannot be null for character controller.");
         }
 
-        auto ghostBodyCapsule = std::dynamic_pointer_cast<const CollisionCapsuleShape>(this->physicsCharacter->getShape());
+        //TODO review
+        auto ghostBodyCapsule = std::dynamic_pointer_cast<const CollisionCapsuleShape>(this->physicsCharacter->getShape()); //TODO check if EPA algo is executed when character move
         if (ghostBodyCapsule) {
             float radius = ghostBodyCapsule->getRadius();
-            float updatedRadius = std::max(radius, config.getMaxHorizontalSpeed() / minUpdateFrequency);
             float height = ghostBodyCapsule->getCylinderHeight() + (2.0f * radius);
-            float updatedHeight = std::max(height, (config.getMaxVerticalSpeed() / minUpdateFrequency) * 2.0f);
 
-            auto resizedCharacterShape = std::make_shared<const CollisionCapsuleShape>(updatedRadius, updatedHeight - (2.0f * updatedRadius), ghostBodyCapsule->getCapsuleOrientation());
-            ghostBody = new GhostBody(this->physicsCharacter->getName(), this->physicsCharacter->getTransform(), resizedCharacterShape);
+            float updatedRadius = std::max(radius, config.getMaxHorizontalSpeed() / minUpdateFrequency);
+            float updatedHeight = std::max(height, (config.getMaxVerticalSpeed() / minUpdateFrequency) * 2.0f);
+            float updatedCylinderHeight = std::max(0.01f, updatedHeight - (2.0f * updatedRadius));
+            auto resizedCharacterShape = std::make_shared<const CollisionCapsuleShape>(updatedRadius, updatedCylinderHeight, ghostBodyCapsule->getCapsuleOrientation());
+
+            ghostBody = new GhostBody(this->physicsCharacter->getName(), this->physicsCharacter->getTransform(), this->physicsCharacter->getShape());
+            ccdGhostBody = new GhostBody(this->physicsCharacter->getName() + "_ccd", this->physicsCharacter->getTransform(), resizedCharacterShape);
         } else {
             throw std::runtime_error("Unimplemented shape type for character controller: " + std::to_string(this->physicsCharacter->getShape()->getShapeType()));
         }
 
         ghostBody->setIsActive(true); //always active for get better reactivity
+        ccdGhostBody->setIsActive(true); //TODO always active for get better reactivity
         physicsWorld->getCollisionWorld()->getBroadPhaseManager()->addBodyAsync(ghostBody);
+        physicsWorld->getCollisionWorld()->getBroadPhaseManager()->addBodyAsync(ccdGhostBody);
     }
 
     CharacterController::~CharacterController() {
+        physicsWorld->getCollisionWorld()->getBroadPhaseManager()->removeBodyAsync(ccdGhostBody);
         physicsWorld->getCollisionWorld()->getBroadPhaseManager()->removeBodyAsync(ghostBody);
     }
 
@@ -103,14 +110,10 @@ namespace urchin {
             float slopeSpeedDecrease = 1.0f - (slopeInPercentage / config.getMaxSlopeInPercentage());
             slopeSpeedDecrease = MathFunction::clamp(slopeSpeedDecrease, MIN_WALK_SPEED_PERCENTAGE, MAX_WALK_SPEED_PERCENTAGE);
             targetPosition = targetPosition.translate(velocity * dt * slopeSpeedDecrease);
-
-            lastVelocity = velocity;
         } else if (timeInTheAir < config.getTimeKeepMoveInAir()) {
             float momentumSpeedDecrease = 1.0f - (timeInTheAir / config.getTimeKeepMoveInAir());
             Vector3<float> walkDirectionInAir = velocity * (1.0f - config.getPercentageControlInAir()) + velocity * config.getPercentageControlInAir();
             targetPosition = targetPosition.translate(walkDirectionInAir * dt * momentumSpeedDecrease);
-        } else {
-            lastVelocity.setNull();
         }
 
         //jump
@@ -133,6 +136,39 @@ namespace urchin {
                 verticalSpeed = -config.getMaxVerticalSpeed();
             }
         }
+        targetPosition.Y += verticalSpeed * dt;
+
+        //CCD
+        //TODO review naming + opti
+        Vector3<float> moveVector = previousBodyTransform.getPosition().vector(targetPosition);
+        if (moveVector.length() > ghostBody->getCcdMotionThreshold()) {
+            manifoldResults.clear();
+            physicsWorld->getCollisionWorld()->getNarrowPhaseManager()->processGhostBody(ccdGhostBody, manifoldResults);
+            for (const auto& manifoldResult : manifoldResults) {
+                for (unsigned int i = 0; i < manifoldResult.getNumContactPoints(); ++i) {
+                    const ManifoldContactPoint& manifoldContactPoint = manifoldResult.getManifoldContactPoint(i);
+
+                    Vector3<float> contactNormal = manifoldContactPoint.getNormalFromObject2();
+                    Point3<float> contactPoint = manifoldContactPoint.getPointOnObject1();
+                    if(manifoldResult.getBody1() == ccdGhostBody) {
+                        contactPoint = manifoldContactPoint.getPointOnObject2();
+                        contactNormal = -manifoldContactPoint.getNormalFromObject2();
+                    }
+
+                    float dirProportion = moveVector.normalize().dotProduct(contactNormal);
+                    if(moveVector.length() * dirProportion > previousBodyTransform.getPosition().vector(contactPoint).length() * 0.8f) { //TODO update security factor
+                        float forceAppliedOnObstacle = moveVector.dotProduct(contactNormal);
+                        Vector3<float> obstacleReactionForce = (-contactNormal) * forceAppliedOnObstacle;
+                        Vector3<float> newMove = moveVector + obstacleReactionForce;
+                        targetPosition = previousBodyTransform.getPosition().translate(newMove);
+
+                        static int count = 0;
+                        std::cout<<"CCD ("<<count++<<"): " <<manifoldResult.getBody1()->getId()<<" vs. "<<manifoldResult.getBody2()->getId()<<std::endl;
+                        //TODO: break or continue and review algo ?
+                    }
+                }
+            }
+        }
 
         //compute and apply orientation
         Quaternion<float> newOrientation = initialOrientation;
@@ -141,9 +177,9 @@ namespace urchin {
             newOrientation = orientation * initialOrientation;
         }
 
-        //apply data on body
-        targetPosition.Y += verticalSpeed * dt;
+        //apply transform on body
         ghostBody->setTransform(PhysicsTransform(targetPosition, newOrientation));
+        ccdGhostBody->setTransform(PhysicsTransform(targetPosition, newOrientation));
     }
 
     void CharacterController::recoverFromPenetration(float dt) {
@@ -166,6 +202,7 @@ namespace urchin {
 
                         characterTransform.setPosition(characterTransform.getPosition().translate(moveVector));
                         ghostBody->setTransform(characterTransform);
+                        ccdGhostBody->setTransform(characterTransform);
 
                         if (subStepIndex == 0) {
                             saveSignificantContactValues(normal);

@@ -4,10 +4,10 @@ namespace urchin {
 
     template<class T> ContinuousCollisionResult<T>::ContinuousCollisionResult(AbstractBody* body2, const Vector3<T>& normalFromObject2,
             const Point3<T>& hitPointOnObject2, T timeToHit) :
-        body2(body2),
-        normalFromObject2(normalFromObject2),
-        hitPointOnObject2(hitPointOnObject2),
-        timeToHit(timeToHit) {
+            body2(body2),
+            normalFromObject2(normalFromObject2),
+            hitPointOnObject2(hitPointOnObject2),
+            timeToHit(timeToHit) {
 
     }
 

@@ -9,8 +9,8 @@
 namespace urchin {
 
     template<class T> GJKAlgorithm<T>::GJKAlgorithm() :
-        maxIteration(EagerPropertyLoader::instance()->getNarrowPhaseGjkMaxIteration()),
-        terminationTolerance(EagerPropertyLoader::instance()->getNarrowPhaseGjkTerminationTolerance()) {
+            maxIteration(EagerPropertyLoader::instance()->getNarrowPhaseGjkMaxIteration()),
+            terminationTolerance(EagerPropertyLoader::instance()->getNarrowPhaseGjkTerminationTolerance()) {
 
     }
 
@@ -19,6 +19,8 @@ namespace urchin {
     */
     template<class T> std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> GJKAlgorithm<T>::processGJK(const CollisionConvexObject3D& convexObject1,
             const CollisionConvexObject3D& convexObject2, bool includeMargin) const {
+        ScopeProfiler sp(Profiler::physics(), "processGJK");
+
         //get point which belongs to the outline of the shape (Minkowski difference)
         Vector3<T> initialDirection = Vector3<T>(1.0, 0.0, 0.0);
         Point3<T> initialSupportPointA = convexObject1.getSupportPoint(initialDirection.template cast<float>(), includeMargin).template cast<T>();

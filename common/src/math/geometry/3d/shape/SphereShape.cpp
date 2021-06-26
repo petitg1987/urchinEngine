@@ -1,11 +1,13 @@
+#include <cassert>
+
 #include <math/geometry/3d/shape/SphereShape.h>
 #include <math/geometry/3d/object/Sphere.h>
 
 namespace urchin {
 
     template<class T> SphereShape<T>::SphereShape(T radius) :
-        radius(radius) {
-
+            radius(radius) {
+        assert(radius >= 0.0f);
     }
 
     template<class T> T SphereShape<T>::getRadius() const {

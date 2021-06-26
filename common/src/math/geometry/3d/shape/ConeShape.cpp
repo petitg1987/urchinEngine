@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include <math/geometry/3d/shape/ConeShape.h>
 #include <math/geometry/3d/object/Cone.h>
 
@@ -7,7 +9,8 @@ namespace urchin {
             radius(radius),
             height(height),
             coneOrientation(coneOrientation) {
-
+        assert(radius >= 0.0f);
+        assert(height >= 0.0f);
     }
 
     template<class T> T ConeShape<T>::getRadius() const {

@@ -14,8 +14,7 @@ namespace urchin {
         axis[2] = Vector3<T>(0.0, 0.0, 0.0);
     }
 
-    template<class T> Cone<T>::Cone(T radius, T height, typename ConeShape<T>::ConeOrientation coneOrientation,
-            const Point3<T>& centerOfMass, const Quaternion<T>& orientation) :
+    template<class T> Cone<T>::Cone(T radius, T height, typename ConeShape<T>::ConeOrientation coneOrientation, const Point3<T>& centerOfMass, const Quaternion<T>& orientation) :
             coneShape(ConeShape<T>(radius, height, coneOrientation)),
             centerOfMass(centerOfMass),
             orientation(orientation),

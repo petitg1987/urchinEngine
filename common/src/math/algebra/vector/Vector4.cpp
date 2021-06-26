@@ -29,25 +29,25 @@ namespace urchin {
     }
 
     template<class T> Vector4<T> Vector4<T>::normalize() const {
-        const T norm = std::sqrt(X*X + Y*Y + Z*Z + W*W);
+        const T norm = std::sqrt(X * X + Y * Y + Z * Z + W * W);
 
         if (norm > 0.0) {
-            return Vector4<T>(X/norm, Y/norm, Z/norm, W/norm);
+            return Vector4<T>(X / norm, Y / norm, Z / norm, W / norm);
         }
 
         return Vector4<T>(X, Y, Z, W);
     }
 
     template<class T> T Vector4<T>::length() const {
-        return std::sqrt(X*X + Y*Y + Z*Z + W*W);
+        return std::sqrt(X * X + Y * Y + Z * Z + W * W);
     }
 
     template<class T> T Vector4<T>::squareLength() const {
-        return (X*X + Y*Y + Z*Z + W*W);
+        return (X * X + Y * Y + Z * Z + W * W);
     }
 
     template<class T> T Vector4<T>::dotProduct(const Vector4<T>& v) const {
-        return (X*v.X + Y*v.Y + Z*v.Z + W*v.W);
+        return (X * v.X + Y * v.Y + Z * v.Z + W * v.W);
     }
 
     template<class T> Vector3<T> Vector4<T>::xyz() const {

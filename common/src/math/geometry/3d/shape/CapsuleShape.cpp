@@ -1,13 +1,16 @@
+#include <cassert>
+
 #include <math/geometry/3d/shape/CapsuleShape.h>
 #include <math/geometry/3d/object/Capsule.h>
 
 namespace urchin {
 
     template<class T> CapsuleShape<T>::CapsuleShape(T radius, T cylinderHeight, CapsuleOrientation capsuleOrientation) :
-        radius(radius),
-        cylinderHeight(cylinderHeight),
-        capsuleOrientation(capsuleOrientation) {
-
+            radius(radius),
+            cylinderHeight(cylinderHeight),
+            capsuleOrientation(capsuleOrientation) {
+        assert(radius >= 0.0f);
+        assert(cylinderHeight >= 0.0f);
     }
 
     template<class T> T CapsuleShape<T>::getRadius() const {

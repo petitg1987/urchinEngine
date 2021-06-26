@@ -1,13 +1,16 @@
+#include <cassert>
+
 #include <math/geometry/3d/shape/CylinderShape.h>
 #include <math/geometry/3d/object/Cylinder.h>
 
 namespace urchin {
 
     template<class T> CylinderShape<T>::CylinderShape(T radius, T height, CylinderOrientation cylinderOrientation) :
-        radius(radius),
-        height(height),
-        cylinderOrientation(cylinderOrientation) {
-
+            radius(radius),
+            height(height),
+            cylinderOrientation(cylinderOrientation) {
+        assert(radius >= 0.0f);
+        assert(height >= 0.0f);
     }
 
     template<class T> T CylinderShape<T>::getRadius() const {

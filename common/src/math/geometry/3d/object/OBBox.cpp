@@ -9,33 +9,33 @@
 namespace urchin {
 
     template<class T> OBBox<T>::OBBox():
-        boxShape(BoxShape<T>(Vector3<T>(0.0, 0.0, 0.0))),
-        centerOfMass(Point3<T>(0.0, 0.0, 0.0)) {
+            boxShape(BoxShape<T>(Vector3<T>(0.0, 0.0, 0.0))),
+            centerOfMass(Point3<T>(0.0, 0.0, 0.0)) {
         axis[0] = Vector3<T>(0.0, 0.0, 0.0);
         axis[1] = Vector3<T>(0.0, 0.0, 0.0);
         axis[2] = Vector3<T>(0.0, 0.0, 0.0);
     }
 
     template<class T> OBBox<T>::OBBox(const Vector3<T>& halfSizes, const Point3<T>& centerOfMass, const Quaternion<T>& orientation):
-        boxShape(BoxShape<T>(halfSizes)),
-        centerOfMass(centerOfMass),
-        orientation(orientation) {
+            boxShape(BoxShape<T>(halfSizes)),
+            centerOfMass(centerOfMass),
+            orientation(orientation) {
         axis[0] = orientation.rotatePoint(Point3<T>(1.0, 0.0, 0.0)).toVector();
         axis[1] = orientation.rotatePoint(Point3<T>(0.0, 1.0, 0.0)).toVector();
         axis[2] = orientation.rotatePoint(Point3<T>(0.0, 0.0, 1.0)).toVector();
     }
 
     template<class T> OBBox<T>::OBBox(const AABBox<T>& aabb) :
-        boxShape(BoxShape<T>(Vector3<T>((aabb.getMax().X - aabb.getMin().X) / (T)2.0, (aabb.getMax().Y - aabb.getMin().Y) / (T)2.0, (aabb.getMax().Z - aabb.getMin().Z) / (T)2.0))),
-        centerOfMass((aabb.getMin() + aabb.getMax()) / (T)2.0) {
+            boxShape(BoxShape<T>(Vector3<T>((aabb.getMax().X - aabb.getMin().X) / (T)2.0, (aabb.getMax().Y - aabb.getMin().Y) / (T)2.0, (aabb.getMax().Z - aabb.getMin().Z) / (T)2.0))),
+            centerOfMass((aabb.getMin() + aabb.getMax()) / (T)2.0) {
         axis[0] = Vector3<T>(1.0, 0.0, 0.0);
         axis[1] = Vector3<T>(0.0, 1.0, 0.0);
         axis[2] = Vector3<T>(0.0, 0.0, 1.0);
     }
 
     template<class T> OBBox<T>::OBBox(const Sphere<T>& sphere) :
-        boxShape(BoxShape<T>(Vector3<T>(sphere.getRadius(), sphere.getRadius(), sphere.getRadius()))),
-        centerOfMass(sphere.getCenterOfMass()) {
+            boxShape(BoxShape<T>(Vector3<T>(sphere.getRadius(), sphere.getRadius(), sphere.getRadius()))),
+            centerOfMass(sphere.getCenterOfMass()) {
         axis[0] = Vector3<T>(1.0, 0.0, 0.0);
         axis[1] = Vector3<T>(0.0, 1.0, 0.0);
         axis[2] = Vector3<T>(0.0, 0.0, 1.0);

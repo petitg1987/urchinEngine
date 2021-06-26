@@ -3,18 +3,17 @@
 namespace urchin {
 
     template<class T> Cylinder<T>::Cylinder():
-        cylinderShape(CylinderShape<T>(0.0, 0.0, CylinderShape<T>::CYLINDER_X)),
-        centerOfMass(Point3<T>(0.0, 0.0, 0.0)) {
+            cylinderShape(CylinderShape<T>(0.0, 0.0, CylinderShape<T>::CYLINDER_X)),
+            centerOfMass(Point3<T>(0.0, 0.0, 0.0)) {
         axis[0] = Vector3<T>(0.0, 0.0, 0.0);
         axis[1] = Vector3<T>(0.0, 0.0, 0.0);
         axis[2] = Vector3<T>(0.0, 0.0, 0.0);
     }
 
-    template<class T> Cylinder<T>::Cylinder(T radius, T height, typename CylinderShape<T>::CylinderOrientation cylinderOrientation,
-            const Point3<T>& centerOfMass, const Quaternion<T>& orientation) :
-        cylinderShape(CylinderShape<T>(radius, height, cylinderOrientation)),
-        centerOfMass(centerOfMass),
-        orientation(orientation) {
+    template<class T> Cylinder<T>::Cylinder(T radius, T height, typename CylinderShape<T>::CylinderOrientation cylinderOrientation, const Point3<T>& centerOfMass, const Quaternion<T>& orientation) :
+            cylinderShape(CylinderShape<T>(radius, height, cylinderOrientation)),
+            centerOfMass(centerOfMass),
+            orientation(orientation) {
         axis[0] = orientation.rotatePoint(Point3<T>(1.0, 0.0, 0.0)).toVector();
         axis[1] = orientation.rotatePoint(Point3<T>(0.0, 1.0, 0.0)).toVector();
         axis[2] = orientation.rotatePoint(Point3<T>(0.0, 0.0, 1.0)).toVector();
@@ -59,11 +58,11 @@ namespace urchin {
             projectedDirectionOnCircle = projectedDirectionOnCircle.normalize();
         }
 
-        Point3<T> cirlcePosition1 = centerOfMass.translate(axis[getCylinderOrientation()] * (T)(getHeight() / (T)2.0));
-        Point3<T> supportPoint1 = cirlcePosition1.translate(projectedDirectionOnCircle * getRadius());
+        Point3<T> circlePosition1 = centerOfMass.translate(axis[getCylinderOrientation()] * (T)(getHeight() / (T)2.0));
+        Point3<T> supportPoint1 = circlePosition1.translate(projectedDirectionOnCircle * getRadius());
 
-        Point3<T> cirlcePosition2 = centerOfMass.translate(axis[getCylinderOrientation()] * (T)(-getHeight() / (T)2.0));
-        Point3<T> supportPoint2 = cirlcePosition2.translate(projectedDirectionOnCircle * getRadius());
+        Point3<T> circlePosition2 = centerOfMass.translate(axis[getCylinderOrientation()] * (T)(-getHeight() / (T)2.0));
+        Point3<T> supportPoint2 = circlePosition2.translate(projectedDirectionOnCircle * getRadius());
 
         if (normalizedDirection.dotProduct(centerOfMass.vector(supportPoint1).normalize()) > normalizedDirection.dotProduct(centerOfMass.vector(supportPoint2).normalize())) {
             return supportPoint1;

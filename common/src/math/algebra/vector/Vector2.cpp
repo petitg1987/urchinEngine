@@ -22,29 +22,29 @@ namespace urchin {
     }
 
     template<class T> Vector2<T> Vector2<T>::normalize() const {
-        const T norm = (T)std::sqrt(X*X + Y*Y);
+        const T norm = (T)std::sqrt(X * X + Y * Y);
 
         if (norm > (T)0.0) {
-            return Vector2<T>(X/norm, Y/norm);
+            return Vector2<T>(X / norm, Y / norm);
         }
 
         return Vector2<T>(X, Y);
     }
 
     template<class T> T Vector2<T>::length() const {
-        return (T)std::sqrt(X*X + Y*Y);
+        return (T)std::sqrt(X * X + Y * Y);
     }
 
     template<class T> T Vector2<T>::squareLength() const {
-        return (X*X + Y*Y);
+        return (X * X + Y * Y);
     }
 
     template<class T> T Vector2<T>::dotProduct(const Vector2<T>& v) const {
-        return (X*v.X + Y*v.Y);
+        return (X * v.X + Y * v.Y);
     }
 
     template<class T> T Vector2<T>::crossProduct(const Vector2<T>& v) const {
-        return (X*v.Y - Y*v.X);
+        return (X * v.Y - Y * v.X);
     }
 
     template<class T> Vector2<T> Vector2<T>::truncate(T maxLength) const {

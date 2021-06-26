@@ -3,18 +3,17 @@
 namespace urchin {
 
     template<class T> Capsule<T>::Capsule():
-        capsuleShape(CapsuleShape<T>(0.0, 0.0, CapsuleShape<T>::CAPSULE_X)),
-        centerOfMass(Point3<T>(0.0, 0.0, 0.0)) {
+            capsuleShape(CapsuleShape<T>(0.0, 0.0, CapsuleShape<T>::CAPSULE_X)),
+            centerOfMass(Point3<T>(0.0, 0.0, 0.0)) {
         axis[0] = Vector3<T>(0.0, 0.0, 0.0);
         axis[1] = Vector3<T>(0.0, 0.0, 0.0);
         axis[2] = Vector3<T>(0.0, 0.0, 0.0);
     }
 
-    template<class T> Capsule<T>::Capsule(T radius, T cylinderHeight, typename CapsuleShape<T>::CapsuleOrientation capsuleOrientation,
-            const Point3<T>& centerOfMass, const Quaternion<T>& orientation) :
-        capsuleShape(CapsuleShape<T>(radius, cylinderHeight, capsuleOrientation)),
-        centerOfMass(centerOfMass),
-        orientation(orientation) {
+    template<class T> Capsule<T>::Capsule(T radius, T cylinderHeight, typename CapsuleShape<T>::CapsuleOrientation capsuleOrientation, const Point3<T>& centerOfMass, const Quaternion<T>& orientation) :
+            capsuleShape(CapsuleShape<T>(radius, cylinderHeight, capsuleOrientation)),
+            centerOfMass(centerOfMass),
+            orientation(orientation) {
         axis[0] = orientation.rotatePoint(Point3<T>(1.0, 0.0, 0.0)).toVector();
         axis[1] = orientation.rotatePoint(Point3<T>(0.0, 1.0, 0.0)).toVector();
         axis[2] = orientation.rotatePoint(Point3<T>(0.0, 0.0, 1.0)).toVector();

@@ -3,7 +3,7 @@
 namespace urchin {
 
     template<class T> Triangle3D<T>::Triangle3D(const Point3<T>* points):
-        triangleShape(TriangleShape3D<T>(points)) {
+            triangleShape(TriangleShape3D<T>(points)) {
 
     }
 
