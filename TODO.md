@@ -70,7 +70,7 @@
   * **OPTIMIZATION** (`medium`): When compute A* G score: avoid to execute funnel algorithm from start each time
   * **OPTIMIZATION** (`medium`): When search start and end triangles: use AABBox Tree algorithm
   * **NEW FEATURE** (`major`): Implement steering behaviour (see <https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-collision-avoidance--gamedev-7777>)
-  * **NEW FEATURE** (`critical`): AICharacterController should refresh path points each time the path request is updated 
+  * **NEW FEATURE** (`major`): AICharacterController should refresh path points each time the path request is updated 
 
 # Network engine
 * Requests
@@ -90,8 +90,6 @@
 * Constraints solver
   * **BUG** (`medium`): A restitution of 1.0 introduce new force in the system. Example: a superball bounces more and more higher at each collision
 * Character
-  * **BUG** (`critical`): On slow system, the character can go through the ground at the application start
-  * **BUG** (`major`): User jump actions sometimes ignored when character moves on a terrain
   * **NEW FEATURE** (`medium`): Handle stair for character controller
   * **NEW FEATURE** (`medium`): Apply impulse on objects hit by character or falling on the character
 
