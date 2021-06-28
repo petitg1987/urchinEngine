@@ -54,7 +54,7 @@ namespace urchin {
         unsigned int newSceneWidth, newSceneHeight;
         framebufferSizeRetriever->getFramebufferSizeInPixel(newSceneWidth, newSceneHeight);
 
-        if(sceneWidth != newSceneWidth || sceneHeight != newSceneHeight) {
+        if((newSceneWidth > 1 && newSceneHeight > 1) && (sceneWidth != newSceneWidth || sceneHeight != newSceneHeight)) {
             //scene properties
             this->sceneWidth = newSceneWidth;
             this->sceneHeight = newSceneHeight;
