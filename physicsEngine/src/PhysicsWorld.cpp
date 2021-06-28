@@ -202,7 +202,7 @@ namespace urchin {
         return !physicsSimulationStopper.load(std::memory_order_relaxed);
     }
 
-    void PhysicsWorld::processPhysicsUpdate(float frameTimeStep) {
+    void PhysicsWorld::processPhysicsUpdate(float dt) {
         ScopeProfiler sp(Profiler::physics(), "procPhysicsUp");
 
         //copy for local thread
@@ -223,11 +223,11 @@ namespace urchin {
 
         //physics execution
         if (!paused) {
-            setupProcessables(copiedProcessables, frameTimeStep, gravity);
+            setupProcessables(copiedProcessables, dt, gravity);
 
-            collisionWorld->process(frameTimeStep, gravity);
+            collisionWorld->process(dt, gravity);
 
-            executeProcessables(copiedProcessables, frameTimeStep, gravity);
+            executeProcessables(copiedProcessables, dt, gravity);
         }
     }
 
