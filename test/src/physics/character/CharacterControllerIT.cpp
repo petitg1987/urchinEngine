@@ -75,18 +75,18 @@ void CharacterControllerIT::ccdMovingCharacter() {
     constructWall(physicsWorld);
     std::shared_ptr<CollisionCapsuleShape> characterShape = std::make_shared<CollisionCapsuleShape>(0.1f, 0.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y); //use small character to favor CCD
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
-    auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, characterShape, PhysicsTransform(Point3<float>(0.0f, 1.0f, 0.0f), Quaternion<float>()));
+    auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, characterShape, PhysicsTransform(Point3<float>(0.0f, 0.35f, 0.0f), Quaternion<float>()));
     auto characterController = CharacterController(character, CharacterControllerConfig(), physicsWorld.get());
     characterController.setVelocity(Vector3<float>(0.0f, 0.0f, -15.0f));
 
     std::thread physicsEngineThread = std::thread([&physicsWorld]() {
-        for (std::size_t i = 0; i < 300; ++i) {
+        for (std::size_t i = 0; i < 100; ++i) {
             physicsWorld->getCollisionWorld()->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
             std::this_thread::sleep_for(std::chrono::microseconds(250));
         }
     });
     std::thread mainThread = std::thread([&characterController]() {
-        for (std::size_t i = 0; i < 300; ++i) {
+        for (std::size_t i = 0; i < 100; ++i) {
             characterController.update(1.0f / 60.0f);
             std::this_thread::sleep_for(std::chrono::microseconds(250));
         }
@@ -95,7 +95,7 @@ void CharacterControllerIT::ccdMovingCharacter() {
     mainThread.join();
 
     AssertHelper::assertFloatEquals(character->getTransform().getPosition().Y, characterHeight / 2.0f, 0.01);
-    AssertHelper::assertFloatEquals(character->getTransform().getPosition().Z, -9.75f, 0.01);
+    AssertHelper::assertFloatEquals(character->getTransform().getPosition().Z, -9.75f, 0.1);
 }
 
 void CharacterControllerIT::constructGround(const std::unique_ptr<PhysicsWorld>& physicsWorld) {
