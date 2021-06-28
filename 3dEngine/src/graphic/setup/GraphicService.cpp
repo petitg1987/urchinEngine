@@ -14,6 +14,7 @@ namespace urchin {
     VkSurfaceKHR GraphicService::surface = nullptr;
 
     GraphicService::GraphicService() :
+            framebufferSizeRetriever(nullptr),
             apiGraphicInitialized(false),
             vulkanVersion(VK_API_VERSION_1_1), //must be aligned with glslc target environment
             allocateCommandPool(nullptr),
@@ -52,8 +53,8 @@ namespace urchin {
         }
     }
 
-    void GraphicService::initialize(const std::vector<std::string>& windowRequiredExtensions, const std::unique_ptr<SurfaceCreator>& surfaceCreator, std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever) {
-        this->framebufferSizeRetriever = std::move(framebufferSizeRetriever);
+    void GraphicService::initialize(const std::vector<std::string>& windowRequiredExtensions, const std::unique_ptr<SurfaceCreator>& surfaceCreator, FramebufferSizeRetriever *framebufferSizeRetriever) {
+        this->framebufferSizeRetriever = framebufferSizeRetriever;
 
         createInstance(windowRequiredExtensions);
         validationLayer.initializeDebugMessenger(vkInstance);
@@ -102,7 +103,7 @@ namespace urchin {
         }
     }
 
-    const std::unique_ptr<FramebufferSizeRetriever>& GraphicService::getFramebufferSizeRetriever() const {
+    const FramebufferSizeRetriever* GraphicService::getFramebufferSizeRetriever() const {
         return framebufferSizeRetriever;
     }
 

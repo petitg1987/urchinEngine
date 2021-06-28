@@ -12,6 +12,7 @@ namespace urchin {
             Camera(float, float, float);
             virtual ~Camera() = default;
 
+            void initialize(unsigned int, unsigned int);
             void onResize(unsigned int, unsigned int);
 
             void resetMousePosition();
@@ -52,6 +53,7 @@ namespace urchin {
             virtual void moveMouse(unsigned int, unsigned int) = 0;
 
         private:
+            void initializeOrUpdate(unsigned int, unsigned int);
             void updateViewMatrix();
 
             Matrix4<float> mView, mProjection;

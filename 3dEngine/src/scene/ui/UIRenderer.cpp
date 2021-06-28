@@ -24,15 +24,9 @@ namespace urchin {
     }
 
     void UIRenderer::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
-        //orthogonal matrix with origin at top left screen
-        mProjection.setValues(2.0f / (float)sceneWidth, 0.0f, -1.0f, 0.0f,
-            0.0f, 2.0f / (float)sceneHeight, -1.0f, 0.0f,
-            0.0f, 0.0f, 1.0f, 0.0f,
-            0.0f, 0.0f, 0.0f, 1.0f);
-
         //widgets resize
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
-            widgets[(std::size_t)i]->onResize(sceneWidth, sceneHeight, mProjection);
+            widgets[(std::size_t)i]->onResize(sceneWidth, sceneHeight);
         }
 
         //debug

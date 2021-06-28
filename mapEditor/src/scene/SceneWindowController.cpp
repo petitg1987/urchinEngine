@@ -15,10 +15,10 @@ namespace urchin {
             window(window) {
     }
 
-    void QtFramebufferSizeRetriever::getFramebufferSizeInPixel(int& widthInPixel, int& heightInPixel) const {
+    void QtFramebufferSizeRetriever::getFramebufferSizeInPixel(unsigned int& widthInPixel, unsigned int& heightInPixel) const {
         QSize windowSize = window->size() * window->devicePixelRatio();
-        widthInPixel = windowSize.width();
-        heightInPixel = windowSize.height();
+        widthInPixel = (unsigned int)windowSize.width();
+        heightInPixel = (unsigned int)windowSize.height();
     }
 
     SceneWindowController::SceneWindowController(SceneDisplayerWindow* window) :

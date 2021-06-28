@@ -21,6 +21,9 @@ namespace urchin {
         if (values.size() < 2) {
             throw std::runtime_error("At least two values must be provided to slider.");
         }
+        if(parent) {
+            Slider::createOrUpdateWidget();
+        }
     }
 
     void Slider::createOrUpdateWidget() {

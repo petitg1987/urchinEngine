@@ -158,7 +158,7 @@ namespace urchin {
         if (capabilities.currentExtent.width != UINT32_MAX) {
             return capabilities.currentExtent;
         } else {
-            int widthInPixel, heightInPixel;
+            unsigned int widthInPixel, heightInPixel;
             GraphicService::instance()->getFramebufferSizeRetriever()->getFramebufferSizeInPixel(widthInPixel, heightInPixel);
 
             VkExtent2D actualExtent = {(uint32_t)widthInPixel, (uint32_t)heightInPixel};

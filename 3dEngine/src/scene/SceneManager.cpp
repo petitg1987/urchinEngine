@@ -9,8 +9,9 @@
 namespace urchin {
 
     SceneManager::SceneManager(const std::vector<std::string>& windowRequiredExtensions, const std::unique_ptr<SurfaceCreator>& surfaceCreator, std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever) :
-            sceneWidth(500),
-            sceneHeight(500),
+            framebufferSizeRetriever(std::move(framebufferSizeRetriever)),
+            sceneWidth(0),
+            sceneHeight(0),
             i18nService(std::make_unique<I18nService>()),
             previousFps(),
             fps(START_FPS),
@@ -18,9 +19,12 @@ namespace urchin {
             screenRenderTarget(std::make_shared<ScreenRender>("screen", RenderTarget::NO_DEPTH_ATTACHMENT)),
             activeRenderer3d(nullptr),
             activeUiRenderers(nullptr) {
+        //scene properties
+        this->framebufferSizeRetriever->getFramebufferSizeInPixel(sceneWidth, sceneHeight);
+
         //initialize
         SignalHandler::instance()->initialize();
-        GraphicService::instance()->initialize(windowRequiredExtensions, surfaceCreator, std::move(framebufferSizeRetriever));
+        GraphicService::instance()->initialize(windowRequiredExtensions, surfaceCreator, this->framebufferSizeRetriever.get());
         screenRenderTarget->initialize();
 
         //initialize fps
@@ -46,19 +50,17 @@ namespace urchin {
         screenRenderTarget->updateVerticalSync(verticalSyncEnabled);
     }
 
-    void SceneManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
-        if (sceneWidth != 0 && sceneHeight != 0) {
-            //scene properties
-            this->sceneWidth = sceneWidth;
-            this->sceneHeight = sceneHeight;
+    void SceneManager::onResize() {
+        //scene properties
+        framebufferSizeRetriever->getFramebufferSizeInPixel(sceneWidth, sceneHeight);
 
-            //renderer
-            screenRenderTarget->onResize();
-            for(auto* activeRenderer : std::initializer_list<Renderer*>{activeRenderer3d, activeUiRenderers}) {
-                if(activeRenderer) {
-                    activeRenderer->onResize(sceneWidth, sceneHeight);
-                }
-            }
+        //renderer
+        screenRenderTarget->onResize();
+        for(auto* renderer3d : renderers3d) {
+            renderer3d->onResize(sceneWidth, sceneHeight);
+        }
+        for(auto* uiRenderer : uiRenderers) {
+            uiRenderer->onResize(sceneWidth, sceneHeight);
         }
     }
 
@@ -107,6 +109,7 @@ namespace urchin {
 
     Renderer3d* SceneManager::newRenderer3d(bool enable) {
         auto* renderer3d = new Renderer3d(screenRenderTarget);
+        renderer3d->onResize(sceneWidth, sceneHeight);
         renderers3d.push_back(renderer3d);
 
         if (enable) {
@@ -121,9 +124,6 @@ namespace urchin {
         }
 
         activeRenderer3d = renderer3d;
-        if (renderer3d) {
-            renderer3d->onResize(sceneWidth, sceneHeight);
-        }
     }
 
     void SceneManager::removeRenderer3d(Renderer3d* renderer3d) {
@@ -141,6 +141,7 @@ namespace urchin {
 
     UIRenderer* SceneManager::newUIRenderer(bool enable) {
         auto* uiRenderer = new UIRenderer(screenRenderTarget, i18nService);
+        uiRenderer->onResize(sceneWidth, sceneHeight);
         uiRenderers.push_back(uiRenderer);
 
         if (enable) {
@@ -155,9 +156,6 @@ namespace urchin {
         }
 
         activeUiRenderers = uiRenderer;
-        if (uiRenderer) {
-            uiRenderer->onResize(sceneWidth, sceneHeight);
-        }
     }
 
     void SceneManager::removeUIRenderer(UIRenderer* uiRenderer) {

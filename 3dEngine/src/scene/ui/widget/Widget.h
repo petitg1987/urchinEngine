@@ -29,8 +29,8 @@ namespace urchin {
                 FOCUS
             };
 
-            void initialize(std::shared_ptr<RenderTarget>, std::shared_ptr<Shader>, I18nService*);
-            void onResize(unsigned int, unsigned int, const Matrix4<float>&);
+            void initialize(const std::shared_ptr<RenderTarget>&, const std::shared_ptr<Shader>&, I18nService*, bool createWidget = true);
+            void onResize(unsigned int, unsigned int);
 
             Widget* getParent() const;
             const std::vector<Widget*>& getChildren() const;
@@ -92,7 +92,6 @@ namespace urchin {
             std::shared_ptr<RenderTarget> renderTarget;
             std::shared_ptr<Shader> shader;
             unsigned int sceneWidth, sceneHeight;
-            Matrix4<float> projectionMatrix;
 
             Widget* parent;
             std::vector<Widget*> children;

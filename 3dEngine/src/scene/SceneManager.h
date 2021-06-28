@@ -19,7 +19,7 @@ namespace urchin {
 
             //scene properties
             void updateVerticalSync(bool);
-            void onResize(unsigned int, unsigned int);
+            void onResize();
             unsigned int getSceneWidth() const;
             unsigned int getSceneHeight() const;
             const std::unique_ptr<I18nService>& getI18nService() const;
@@ -53,6 +53,7 @@ namespace urchin {
             void computeFps();
 
             //scene properties
+            std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever;
             unsigned int sceneWidth, sceneHeight;
             std::unique_ptr<I18nService> i18nService;
 

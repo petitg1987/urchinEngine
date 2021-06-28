@@ -24,6 +24,9 @@ namespace urchin {
 
         refreshFont();
         refreshTextAndWidgetSize();
+        if(parent) {
+            Text::createOrUpdateWidget();
+        }
     }
 
     Text* Text::newText(Widget* parent, Position position, std::string nameSkin, std::string text) {

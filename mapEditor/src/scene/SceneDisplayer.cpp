@@ -218,7 +218,7 @@ namespace urchin {
 
     void SceneDisplayer::resize(unsigned int width, unsigned int height) {
         if (isInitialized) {
-            sceneManager->onResize(width, height);
+            sceneManager->onResize();
             if (objectMoveController) {
                 objectMoveController->onResize(width, height);
             }

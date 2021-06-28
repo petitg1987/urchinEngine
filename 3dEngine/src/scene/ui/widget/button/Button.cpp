@@ -12,7 +12,9 @@ namespace urchin {
             nameSkin(std::move(nameSkin)),
             text(nullptr),
             buttonText(std::move(buttonText)) {
-
+        if(parent) {
+            Button::createOrUpdateWidget();
+        }
     }
 
     void Button::createOrUpdateWidget() {

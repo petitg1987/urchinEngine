@@ -193,6 +193,7 @@ namespace urchin {
 
         this->camera = camera;
         if (camera) {
+            camera->initialize(sceneWidth, sceneHeight);
             onCameraProjectionUpdate();
         }
     }

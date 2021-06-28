@@ -22,9 +22,9 @@ namespace urchin {
             static void enableUniqueSurface();
             static void destroySurface();
 
-            void initialize(const std::vector<std::string>&, const std::unique_ptr<SurfaceCreator>&, std::unique_ptr<FramebufferSizeRetriever>);
+            void initialize(const std::vector<std::string>&, const std::unique_ptr<SurfaceCreator>&, FramebufferSizeRetriever*);
 
-            const std::unique_ptr<FramebufferSizeRetriever>& getFramebufferSizeRetriever() const;
+            const FramebufferSizeRetriever* getFramebufferSizeRetriever() const;
             static VkSurfaceKHR getSurface();
             DeviceHandler getDevices() const;
             QueueHandler getQueues() const;
@@ -46,7 +46,7 @@ namespace urchin {
             static VkInstance vkInstance;
             static VkSurfaceKHR surface;
 
-            std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever;
+            FramebufferSizeRetriever* framebufferSizeRetriever;
             bool apiGraphicInitialized;
             const uint32_t vulkanVersion;
             ValidationLayer validationLayer;

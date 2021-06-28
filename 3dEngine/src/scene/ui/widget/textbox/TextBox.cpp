@@ -22,7 +22,9 @@ namespace urchin {
             cursorPosition(0),
             cursorBlink(0.0f),
             state(INACTIVE) {
-
+        if(parent) {
+            TextBox::createOrUpdateWidget();
+        }
     }
 
     void TextBox::createOrUpdateWidget() {

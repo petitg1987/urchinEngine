@@ -44,9 +44,9 @@ namespace urchin {
                 break;
             case QEvent::Resize:
                 if (sceneDisplayer) {
-                    int width = 0, height = 0;
+                    unsigned int width = 0, height = 0;
                     SceneWindowController(this).getFramebufferSizeRetriever()->getFramebufferSizeInPixel(width, height);
-                    sceneDisplayer->resize((unsigned int)width, (unsigned int)height);
+                    sceneDisplayer->resize(width, height);
                 }
                 break;
             case QEvent::Leave: //mouse leaves widget

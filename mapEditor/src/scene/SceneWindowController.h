@@ -17,7 +17,7 @@ namespace urchin {
 
     struct QtFramebufferSizeRetriever : public urchin::FramebufferSizeRetriever {
         explicit QtFramebufferSizeRetriever(SceneDisplayerWindow*);
-        void getFramebufferSizeInPixel(int&, int&) const override;
+        void getFramebufferSizeInPixel(unsigned int&, unsigned int&) const override;
 
         SceneDisplayerWindow *window;
     };

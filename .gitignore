@@ -1,6 +1,12 @@
+#Idea
 .idea/workspace.xml
+
+#Target build
 .build/
+
+
 mapEditor/save/*.frl
 mapEditor/save/states.properties
 mapEditor/urchinMapEditor
+mapEditor/core
 test/testExecutor

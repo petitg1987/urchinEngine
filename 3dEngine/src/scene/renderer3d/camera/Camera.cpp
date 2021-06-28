@@ -32,7 +32,15 @@ namespace urchin {
 
     }
 
+    void Camera::initialize(unsigned int sceneWidth, unsigned int sceneHeight) {
+        initializeOrUpdate(sceneWidth, sceneHeight);
+    }
+
     void Camera::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
+        initializeOrUpdate(sceneWidth, sceneHeight);
+    }
+
+    void Camera::initializeOrUpdate(unsigned int sceneWidth, unsigned int sceneHeight) {
         this->sceneWidth = sceneWidth;
         this->sceneHeight = sceneHeight;
         this->middleScreenX = sceneWidth / 2;
@@ -44,10 +52,10 @@ namespace urchin {
         float fov = 1.0f / std::tan((angle * MathValue::PI_FLOAT) / 360.0f);
         float ratio = (float)sceneWidth / (float)sceneHeight;
         mProjection.setValues(
-            fov/ratio, 0.0f, 0.0f, 0.0f,
-            0.0f, -fov, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.5f * ((farPlane + nearPlane) / (nearPlane - farPlane)) - 0.5f, (farPlane * nearPlane) / (nearPlane - farPlane),
-            0.0f, 0.0f, -1.0f, 0.0f);
+                fov/ratio, 0.0f, 0.0f, 0.0f,
+                0.0f, -fov, 0.0f, 0.0f,
+                0.0f, 0.0f, 0.5f * ((farPlane + nearPlane) / (nearPlane - farPlane)) - 0.5f, (farPlane * nearPlane) / (nearPlane - farPlane),
+                0.0f, 0.0f, -1.0f, 0.0f);
 
         //frustum
         baseFrustum.buildFrustum(angle, ratio, nearPlane, farPlane);

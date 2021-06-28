@@ -6,7 +6,9 @@ namespace urchin {
             Widget(parent, position, size),
             nameSkin(std::move(nameSkin)),
             bIsChecked(false) {
-
+        if(parent) {
+            CheckBox::createOrUpdateWidget();
+        }
     }
 
     void CheckBox::createOrUpdateWidget() {

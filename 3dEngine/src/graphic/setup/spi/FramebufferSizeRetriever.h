@@ -10,7 +10,7 @@ namespace urchin {
              * @param widthInPixel [out] return width in pixel (<> screen coordinate)
              * @param heightInPixel [out] return height in pixel (<> screen coordinate)
              */
-            virtual void getFramebufferSizeInPixel(int& widthInPixel, int& heightInPixel) const = 0;
+            virtual void getFramebufferSizeInPixel(unsigned int& widthInPixel, unsigned int& heightInPixel) const = 0;
     };
 
 }

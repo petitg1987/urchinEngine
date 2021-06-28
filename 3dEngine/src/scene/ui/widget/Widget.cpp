@@ -19,7 +19,7 @@ namespace urchin {
             mouseY(0) {
         if (parent) {
             parent->children.emplace_back(this);
-            initialize(parent->getRenderTarget(), parent->shader, parent->i18nService);
+            initialize(parent->getRenderTarget(), parent->shader, parent->i18nService, false /*cannot call virtual method in constructor*/);
         }
     }
 
@@ -34,30 +34,41 @@ namespace urchin {
         eventListeners.clear();
     }
 
-    void Widget::initialize(std::shared_ptr<RenderTarget> renderTarget, std::shared_ptr<Shader> shader, I18nService* i18nService) {
-        this->renderTarget = std::move(renderTarget);
-        this->shader = std::move(shader);
+    void Widget::initialize(const std::shared_ptr<RenderTarget>& renderTarget, const std::shared_ptr<Shader>& shader, I18nService* i18nService, bool createWidget) {
+        this->sceneWidth = renderTarget->getWidth();
+        this->sceneHeight = renderTarget->getHeight();
+
+        this->renderTarget = renderTarget;
+        this->shader = shader;
         this->i18nService = i18nService;
 
+        if(createWidget) {
+            createOrUpdateWidget();
+        }
+
         for (auto& child : children) {
-            child->initialize(renderTarget, shader, i18nService);
+            child->initialize(renderTarget, shader, i18nService, createWidget);
         }
     }
 
-    void Widget::onResize(unsigned int sceneWidth, unsigned int sceneHeight, const Matrix4<float>& projectionMatrix) {
+    void Widget::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         this->sceneWidth = sceneWidth;
         this->sceneHeight = sceneHeight;
-        this->projectionMatrix = projectionMatrix;
-
         createOrUpdateWidget();
 
         for (auto& child : children) {
-            child->onResize(sceneWidth, sceneHeight, projectionMatrix);
+            child->onResize(sceneWidth, sceneHeight);
         }
     }
 
     std::shared_ptr<GenericRendererBuilder> Widget::setupUiRenderer(const std::string& name, ShapeType shapeType) const {
         assert(shader);
+
+        //orthogonal matrix with origin at top left screen
+        Matrix4<float> projectionMatrix(2.0f / (float)sceneWidth, 0.0f, -1.0f, 0.0f,
+                              0.0f, 2.0f / (float)sceneHeight, -1.0f, 0.0f,
+                              0.0f, 0.0f, 1.0f, 0.0f,
+                              0.0f, 0.0f, 0.0f, 1.0f);
 
         Vector2<int> translateVector(0, 0);
 
