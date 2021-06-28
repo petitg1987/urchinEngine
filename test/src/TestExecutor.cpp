@@ -34,7 +34,8 @@
 #include <physics/collision/narrowphase/algorithm/epa/EPAConvexObjectTest.h>
 #include <physics/collision/island/IslandContainerTest.h>
 #include <physics/collision/CollisionWorldIT.h>
-#include <physics/GhostBodyMT.h>
+#include <physics/character/CharacterControllerIT.h>
+#include <physics/character/CharacterControllerMT.h>
 #include <ai/path/navmesh/csg/CSGPolygonTest.h>
 #include <ai/path/navmesh/csg/PolygonsUnionTest.h>
 #include <ai/path/navmesh/csg/PolygonsSubtractionTest.h>
@@ -109,11 +110,14 @@ void addPhysicsUnitTests(CppUnit::TextUi::TestRunner& runner) {
 void addPhysicsIntegrationTests(CppUnit::TextUi::TestRunner& runner) {
     //collision world
     runner.addTest(CollisionWorldIT::suite());
+
+    //character
+    runner.addTest(CharacterControllerIT::suite());
 }
 
 void addPhysicsMonkeyTests(CppUnit::TextUi::TestRunner& runner) {
-    //ghost body
-    runner.addTest(GhostBodyMT::suite());
+    //character
+    runner.addTest(CharacterControllerMT::suite());
 }
 
 void addAiUnitTests(CppUnit::TextUi::TestRunner& runner) {

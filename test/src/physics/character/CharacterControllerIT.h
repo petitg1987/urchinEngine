@@ -5,11 +5,12 @@
 #include <memory>
 #include <UrchinPhysicsEngine.h>
 
-class GhostBodyMT : public CppUnit::TestFixture {
+class CharacterControllerIT : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 
-        void processGhostBody();
+        void fallingCharacterOnObjects();
+        void ccdFallingCharacter();
 
     private:
         void constructGround(const std::unique_ptr<urchin::PhysicsWorld>&);

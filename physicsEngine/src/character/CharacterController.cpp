@@ -160,28 +160,29 @@ namespace urchin {
         if (moveVector.length() > ghostBody->getCcdMotionThreshold()) {
             manifoldResults.clear();
             physicsWorld->getCollisionWorld()->getNarrowPhaseManager()->processGhostBody(ccdGhostBody, manifoldResults);
-            for (const auto& manifoldResult : manifoldResults) {
-                for (unsigned int i = 0; i < manifoldResult.getNumContactPoints(); ++i) {
-                    const ManifoldContactPoint& contactPoint = manifoldResult.getManifoldContactPoint(i);
+            bool ccdRequired = true;
+            for (std::size_t i = 0; i < manifoldResults.size() && ccdRequired; ++i) {
+                const ManifoldResult& manifoldResult = manifoldResults[i];
+                for (unsigned int pointIndex = 0; pointIndex < manifoldResult.getNumContactPoints(); ++pointIndex) {
+                    const ManifoldContactPoint& contactPoint = manifoldResult.getManifoldContactPoint(pointIndex);
 
                     Vector3<float> contactNormal = (manifoldResult.getBody1() == ccdGhostBody) ? -contactPoint.getNormalFromObject2() : contactPoint.getNormalFromObject2();
                     Point3<float> obstacleContactPoint = (manifoldResult.getBody1() == ccdGhostBody) ? contactPoint.getPointOnObject2() : contactPoint.getPointOnObject1();
                     float motionAppliedOnObstacle = moveVector.dotProduct(contactNormal);
                     float motionToPassThroughObstacle = previousBodyPosition.vector(obstacleContactPoint).length();
 
-                    if(motionAppliedOnObstacle > motionToPassThroughObstacle * ccdMotionThresholdFactor) {
+                    if (motionAppliedOnObstacle > motionToPassThroughObstacle * ccdMotionThresholdFactor) {
                         Vector3<float> obstacleReactionMotion = (-contactNormal) * motionAppliedOnObstacle;
                         moveVector += obstacleReactionMotion;
                         targetPosition = previousBodyPosition.translate(moveVector);
 
                         if (moveVector.length() < ghostBody->getCcdMotionThreshold()) {
-                            goto endCCD;
+                            ccdRequired = false;
                         }
                     }
                 }
             }
         }
-        endCCD:
 
         //orientation
         Quaternion<float> newOrientation = initialOrientation;

@@ -1,16 +1,16 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 
-#include <physics/GhostBodyMT.h>
+#include <physics/character/CharacterControllerIT.h>
 #include <AssertHelper.h>
 using namespace urchin;
 
-void GhostBodyMT::processGhostBody() {
+void CharacterControllerIT::fallingCharacterOnObjects() {
     auto physicsWorld = std::make_unique<PhysicsWorld>();
     constructGround(physicsWorld);
     float cubeHeight = 0.5f;
     auto cubes = constructCubes(physicsWorld, cubeHeight);
-    std::shared_ptr<CollisionCapsuleShape> characterShape = std::make_shared<CollisionCapsuleShape>(0.5f, 1.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y);
+    std::shared_ptr<CollisionCapsuleShape> characterShape = std::make_shared<CollisionCapsuleShape>(0.25f, 1.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y);
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
     auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, characterShape, PhysicsTransform(Point3<float>(2.4f, 5.0f, 2.4f), Quaternion<float>()));
     auto characterController = CharacterController(character, CharacterControllerConfig(), physicsWorld.get());
@@ -43,7 +43,34 @@ void GhostBodyMT::processGhostBody() {
     AssertHelper::assertTrue(posY > minPosY && posY < maxPosY,"Character must be on the ground or above one or two cubes. Position Y: " + std::to_string(posY));
 }
 
-void GhostBodyMT::constructGround(const std::unique_ptr<PhysicsWorld>& physicsWorld) {
+void CharacterControllerIT::ccdFallingCharacter() {
+    auto physicsWorld = std::make_unique<PhysicsWorld>();
+    constructGround(physicsWorld);
+    std::shared_ptr<CollisionCapsuleShape> characterShape = std::make_shared<CollisionCapsuleShape>(0.1f, 0.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y); //use small character to favor CCD
+    float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
+    auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, characterShape, PhysicsTransform(Point3<float>(2.4f, 50.0f, 2.4f), Quaternion<float>()));
+    auto characterController = CharacterController(character, CharacterControllerConfig(), physicsWorld.get());
+
+    std::thread physicsEngineThread = std::thread([&physicsWorld]() {
+        for (std::size_t i = 0; i < 250; ++i) {
+            physicsWorld->getCollisionWorld()->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
+            std::this_thread::sleep_for(std::chrono::microseconds(250));
+        }
+    });
+    std::thread mainThread = std::thread([&characterController]() {
+        for (std::size_t i = 0; i < 250; ++i) {
+            characterController.update(1.0f / 35.0f); //simulate slow update to favor CCD
+            std::this_thread::sleep_for(std::chrono::microseconds(250));
+        }
+    });
+    physicsEngineThread.join();
+    mainThread.join();
+
+    float posY = character->getTransform().getPosition().Y;
+    AssertHelper::assertFloatEquals(posY, characterHeight / 2.0f, 0.01);
+}
+
+void CharacterControllerIT::constructGround(const std::unique_ptr<PhysicsWorld>& physicsWorld) {
     std::vector<Point3<float>> groundPoints = {
             Point3<float>(-100.0f, 0.0f, -100.0f), Point3<float>(100.0f, 0.0f, -100.0f),
             Point3<float>(-100.0f, 0.0f, 100.0f), Point3<float>(100.0f, 0.0f, 100.0f)
@@ -53,7 +80,7 @@ void GhostBodyMT::constructGround(const std::unique_ptr<PhysicsWorld>& physicsWo
     physicsWorld->getBodyManager()->addBody(groundBody);
 }
 
-std::vector<RigidBody*> GhostBodyMT::constructCubes(const std::unique_ptr<PhysicsWorld>& physicsWorld, float cubeHeight) {
+std::vector<RigidBody*> CharacterControllerIT::constructCubes(const std::unique_ptr<PhysicsWorld>& physicsWorld, float cubeHeight) {
     std::vector<RigidBody*> cubes;
     for (unsigned int x = 0; x < 5; x++) {
         float xValue = (float)x * 1.1f; //min: 0, max: 4.8
@@ -71,12 +98,11 @@ std::vector<RigidBody*> GhostBodyMT::constructCubes(const std::unique_ptr<Physic
     return cubes;
 }
 
-CppUnit::Test* GhostBodyMT::suite() {
-    auto* suite = new CppUnit::TestSuite("GhostBodyMT");
+CppUnit::Test* CharacterControllerIT::suite() {
+    auto* suite = new CppUnit::TestSuite("CharacterControllerIT");
 
-    for (unsigned int i = 0; i < 50; ++i) {
-        suite->addTest(new CppUnit::TestCaller<GhostBodyMT>("processGhostBody_" + std::to_string(i), &GhostBodyMT::processGhostBody));
-    }
+    suite->addTest(new CppUnit::TestCaller<CharacterControllerIT>("fallingCharacterOnObjects", &CharacterControllerIT::fallingCharacterOnObjects));
+    suite->addTest(new CppUnit::TestCaller<CharacterControllerIT>("ccdFallingCharacter", &CharacterControllerIT::ccdFallingCharacter));
 
     return suite;
 }
