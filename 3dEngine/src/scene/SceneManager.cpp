@@ -51,16 +51,22 @@ namespace urchin {
     }
 
     void SceneManager::onResize() {
-        //scene properties
-        framebufferSizeRetriever->getFramebufferSizeInPixel(sceneWidth, sceneHeight);
+        unsigned int newSceneWidth, newSceneHeight;
+        framebufferSizeRetriever->getFramebufferSizeInPixel(newSceneWidth, newSceneHeight);
 
-        //renderer
-        screenRenderTarget->onResize();
-        for(auto* renderer3d : renderers3d) {
-            renderer3d->onResize(sceneWidth, sceneHeight);
-        }
-        for(auto* uiRenderer : uiRenderers) {
-            uiRenderer->onResize(sceneWidth, sceneHeight);
+        if(sceneWidth != newSceneWidth || sceneHeight != newSceneHeight) {
+            //scene properties
+            this->sceneWidth = newSceneWidth;
+            this->sceneHeight = newSceneHeight;
+
+            //renderer
+            screenRenderTarget->onResize();
+            for (auto *renderer3d : renderers3d) {
+                renderer3d->onResize(sceneWidth, sceneHeight);
+            }
+            for (auto *uiRenderer : uiRenderers) {
+                uiRenderer->onResize(sceneWidth, sceneHeight);
+            }
         }
     }
 
