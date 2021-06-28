@@ -48,7 +48,7 @@ void CharacterControllerIT::ccdFallingCharacter() {
     constructGround(physicsWorld);
     std::shared_ptr<CollisionCapsuleShape> characterShape = std::make_shared<CollisionCapsuleShape>(0.1f, 0.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y); //use small character to favor CCD
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
-    auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, characterShape, PhysicsTransform(Point3<float>(2.4f, 50.0f, 2.4f), Quaternion<float>()));
+    auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, characterShape, PhysicsTransform(Point3<float>(0.0f, 50.0f, 0.0f), Quaternion<float>()));
     auto characterController = CharacterController(character, CharacterControllerConfig(), physicsWorld.get());
 
     std::thread physicsEngineThread = std::thread([&physicsWorld]() {
@@ -66,8 +66,36 @@ void CharacterControllerIT::ccdFallingCharacter() {
     physicsEngineThread.join();
     mainThread.join();
 
-    float posY = character->getTransform().getPosition().Y;
-    AssertHelper::assertFloatEquals(posY, characterHeight / 2.0f, 0.01);
+    AssertHelper::assertFloatEquals(character->getTransform().getPosition().Y, characterHeight / 2.0f, 0.01);
+}
+
+void CharacterControllerIT::ccdMovingCharacter() {
+    auto physicsWorld = std::make_unique<PhysicsWorld>();
+    constructGround(physicsWorld);
+    constructWall(physicsWorld);
+    std::shared_ptr<CollisionCapsuleShape> characterShape = std::make_shared<CollisionCapsuleShape>(0.1f, 0.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y); //use small character to favor CCD
+    float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
+    auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, characterShape, PhysicsTransform(Point3<float>(0.0f, 1.0f, 0.0f), Quaternion<float>()));
+    auto characterController = CharacterController(character, CharacterControllerConfig(), physicsWorld.get());
+    characterController.setVelocity(Vector3<float>(0.0f, 0.0f, -15.0f));
+
+    std::thread physicsEngineThread = std::thread([&physicsWorld]() {
+        for (std::size_t i = 0; i < 300; ++i) {
+            physicsWorld->getCollisionWorld()->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
+            std::this_thread::sleep_for(std::chrono::microseconds(250));
+        }
+    });
+    std::thread mainThread = std::thread([&characterController]() {
+        for (std::size_t i = 0; i < 300; ++i) {
+            characterController.update(1.0f / 60.0f);
+            std::this_thread::sleep_for(std::chrono::microseconds(250));
+        }
+    });
+    physicsEngineThread.join();
+    mainThread.join();
+
+    AssertHelper::assertFloatEquals(character->getTransform().getPosition().Y, characterHeight / 2.0f, 0.01);
+    AssertHelper::assertFloatEquals(character->getTransform().getPosition().Z, -9.75f, 0.01);
 }
 
 void CharacterControllerIT::constructGround(const std::unique_ptr<PhysicsWorld>& physicsWorld) {
@@ -78,6 +106,12 @@ void CharacterControllerIT::constructGround(const std::unique_ptr<PhysicsWorld>&
     std::shared_ptr<CollisionHeightfieldShape> groundShape = std::make_shared<CollisionHeightfieldShape>(groundPoints, 2, 2);
     auto* groundBody = new RigidBody("ground", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), groundShape);
     physicsWorld->getBodyManager()->addBody(groundBody);
+}
+
+void CharacterControllerIT::constructWall(const std::unique_ptr<PhysicsWorld>& physicsWorld) {
+    std::shared_ptr<CollisionBoxShape> wallShape = std::make_shared<CollisionBoxShape>(Vector3<float>(100.0f, 100.0f, 0.15f));
+    auto* wallBody = new RigidBody("wall", PhysicsTransform(Point3<float>(0.0f, 0.0f, -10.0f), Quaternion<float>()), wallShape);
+    physicsWorld->getBodyManager()->addBody(wallBody);
 }
 
 std::vector<RigidBody*> CharacterControllerIT::constructCubes(const std::unique_ptr<PhysicsWorld>& physicsWorld, float cubeHeight) {
@@ -103,6 +137,7 @@ CppUnit::Test* CharacterControllerIT::suite() {
 
     suite->addTest(new CppUnit::TestCaller<CharacterControllerIT>("fallingCharacterOnObjects", &CharacterControllerIT::fallingCharacterOnObjects));
     suite->addTest(new CppUnit::TestCaller<CharacterControllerIT>("ccdFallingCharacter", &CharacterControllerIT::ccdFallingCharacter));
+    suite->addTest(new CppUnit::TestCaller<CharacterControllerIT>("ccdMovingCharacter", &CharacterControllerIT::ccdMovingCharacter));
 
     return suite;
 }

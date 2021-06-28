@@ -11,8 +11,10 @@ class CharacterControllerIT : public CppUnit::TestFixture {
 
         void fallingCharacterOnObjects();
         void ccdFallingCharacter();
+        void ccdMovingCharacter();
 
     private:
         void constructGround(const std::unique_ptr<urchin::PhysicsWorld>&);
+        void constructWall(const std::unique_ptr<urchin::PhysicsWorld>&);
         std::vector<urchin::RigidBody*> constructCubes(const std::unique_ptr<urchin::PhysicsWorld>&, float);
 };

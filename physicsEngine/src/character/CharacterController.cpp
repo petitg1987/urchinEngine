@@ -157,10 +157,11 @@ namespace urchin {
 
         //CCD
         Vector3<float> moveVector = previousBodyPosition.vector(targetPosition);
-        if (moveVector.length() > ghostBody->getCcdMotionThreshold()) {
+        bool ccdRequired = moveVector.length() > ghostBody->getCcdMotionThreshold();
+        if (ccdRequired) {
             manifoldResults.clear();
             physicsWorld->getCollisionWorld()->getNarrowPhaseManager()->processGhostBody(ccdGhostBody, manifoldResults);
-            bool ccdRequired = true;
+
             for (std::size_t i = 0; i < manifoldResults.size() && ccdRequired; ++i) {
                 const ManifoldResult& manifoldResult = manifoldResults[i];
                 for (unsigned int pointIndex = 0; pointIndex < manifoldResult.getNumContactPoints(); ++pointIndex) {
@@ -176,9 +177,7 @@ namespace urchin {
                         moveVector += obstacleReactionMotion;
                         targetPosition = previousBodyPosition.translate(moveVector);
 
-                        if (moveVector.length() < ghostBody->getCcdMotionThreshold()) {
-                            ccdRequired = false;
-                        }
+                        ccdRequired = moveVector.length() > ghostBody->getCcdMotionThreshold();
                     }
                 }
             }
