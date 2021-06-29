@@ -21,7 +21,7 @@ namespace urchin {
             maxRotationX(0.995f),
             distance(0.0f),
             bUseMouse(false),
-            mouseSensitivity(0.006f),
+            mouseSensitivity(DEFAULT_MOUSE_SENSITIVITY),
             invertYAxis(false),
             sceneWidth(0),
             sceneHeight(0),

@@ -6,6 +6,8 @@ namespace urchin {
 
     class Camera {
         public:
+            static constexpr float DEFAULT_MOUSE_SENSITIVITY = 0.006f;
+
             Camera(float, float, float);
             virtual ~Camera() = default;
 
