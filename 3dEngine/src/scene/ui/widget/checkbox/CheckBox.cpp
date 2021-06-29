@@ -55,16 +55,15 @@ namespace urchin {
     void CheckBox::refreshTexture() {
         if(checkBoxRenderer) {
             if (bIsChecked) {
-                checkBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texUnchecked, TextureParam::buildLinear()));
-            } else {
                 checkBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texChecked, TextureParam::buildLinear()));
+            } else {
+                checkBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texUnchecked, TextureParam::buildLinear()));
             }
         }
     }
 
     bool CheckBox::onKeyReleaseEvent(unsigned int) {
         if (getWidgetState() == FOCUS) {
-            refreshTexture();
             switchValue();
             return false;
         }
@@ -72,7 +71,7 @@ namespace urchin {
     }
 
     void CheckBox::switchValue() {
-        bIsChecked = !bIsChecked;
+        setChecked(!bIsChecked);
 
         for (auto& eventListener : getEventListeners()) {
             eventListener->onValueChange(this);
