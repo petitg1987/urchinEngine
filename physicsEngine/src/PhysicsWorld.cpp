@@ -4,8 +4,6 @@
 #include <PhysicsWorld.h>
 #include <processable/raytest/RayTester.h>
 
-#define DEFAULT_GRAVITY Vector3<float>(0.0f, -9.81f, 0.0f)
-
 namespace urchin {
 
     //static
@@ -14,7 +12,7 @@ namespace urchin {
     PhysicsWorld::PhysicsWorld() :
             physicsSimulationThread(nullptr),
             physicsSimulationStopper(false),
-            gravity(DEFAULT_GRAVITY),
+            gravity(Vector3<float>(0.0f, -9.81f, 0.0f)),
             timeStep(0.0f),
             paused(true),
             bodyManager(new BodyManager()),
@@ -176,7 +174,7 @@ namespace urchin {
 
                 auto frameEndTime = std::chrono::steady_clock::now();
                 auto deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
-                if (deltaTimeInUs < 200) { //small dt on Windows are imprecise: wait one milli second more to get a more precise value
+                if (deltaTimeInUs < 200) { //small delta time on Windows is imprecise: wait one millisecond more to get a more precise value
                     std::this_thread::sleep_for(std::chrono::milliseconds(1));
                     frameEndTime = std::chrono::steady_clock::now();
                     deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
@@ -185,7 +183,6 @@ namespace urchin {
                 remainingTime = (timeStep + additionalTimeStep) - (float)((double)deltaTimeInUs / 1000000.0);
                 if (remainingTime >= 0.0f) {
                     std::this_thread::sleep_for(std::chrono::milliseconds((int)(remainingTime * 1000.0f)));
-
                     remainingTime = 0.0f;
                     frameStartTime = std::chrono::steady_clock::now();
                 } else {
