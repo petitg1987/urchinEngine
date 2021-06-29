@@ -1,6 +1,5 @@
 #include <iostream>
 #include <algorithm>
-#include <set>
 #include <cassert>
 #ifdef _WIN32
     #include <windows.h>
@@ -25,7 +24,7 @@ namespace urchin {
             DWORD iModeNum = 0;
             DEVMODE dmi{};
             dmi.dmSize = sizeof(dmi);
-            while (EnumDisplaySettings(NULL, iModeNum++, &dmi) != 0) {
+            while (EnumDisplaySettings(nullptr, iModeNum++, &dmi) != 0) {
                 resolutions.emplace_back(MonitorResolution((unsigned int)dmi.dmPelsWidth, (unsigned int)dmi.dmPelsHeight, (unsigned int)dmi.dmDisplayFrequency));
             }
         #else
