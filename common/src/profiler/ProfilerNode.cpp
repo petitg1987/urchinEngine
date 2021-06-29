@@ -52,7 +52,7 @@ namespace urchin {
 
     void ProfilerNode::startTimer() {
         if (!isStarted()) { //not recursive call
-            startTime = std::chrono::high_resolution_clock::now();
+            startTime = std::chrono::steady_clock::now();
         }
 
         startCount++;
@@ -65,7 +65,7 @@ namespace urchin {
 
         bool isStopped = false;
         if (startCount == 1) {
-            auto endTime = std::chrono::high_resolution_clock::now();
+            auto endTime = std::chrono::steady_clock::now();
             double durationMs = static_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count();
 
             times.push_back(durationMs);

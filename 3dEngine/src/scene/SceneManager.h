@@ -52,15 +52,17 @@ namespace urchin {
         private:
             void computeFps();
 
+            static float STARTUP_FPS;
+            static float FPS_REFRESH_TIME_IN_MS;
+            static float DISPLAY_FPS_REFRESH_TIME_IN_MS;
+
             //scene properties
             std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever;
             unsigned int sceneWidth, sceneHeight;
             std::unique_ptr<I18nService> i18nService;
 
             //fps
-            std::chrono::high_resolution_clock::time_point previousTime;
-            unsigned int indexFps;
-            std::array<float, 3> previousFps;
+            std::chrono::steady_clock::time_point previousTime;
             float fps;
             unsigned int fpsForDisplay;
 

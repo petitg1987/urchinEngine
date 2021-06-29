@@ -34,7 +34,7 @@ namespace urchin {
             std::vector<ProfilerNode*> children;
 
             unsigned int startCount;
-            std::chrono::time_point<std::chrono::high_resolution_clock> startTime;
+            std::chrono::steady_clock::time_point startTime;
             std::vector<double> times;
     };
 

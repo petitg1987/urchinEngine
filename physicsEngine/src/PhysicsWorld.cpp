@@ -162,7 +162,7 @@ namespace urchin {
         try {
             float remainingTime = 0.0f;
             float maxAdditionalTimeStep = timeStep * 0.5f;
-            auto frameStartTime = std::chrono::high_resolution_clock::now();
+            auto frameStartTime = std::chrono::steady_clock::now();
 
             while (continueExecution()) {
                 float additionalTimeStep = std::abs(remainingTime);
@@ -174,15 +174,15 @@ namespace urchin {
 
                 processPhysicsUpdate(timeStep + additionalTimeStep);
 
-                auto frameEndTime = std::chrono::high_resolution_clock::now();
+                auto frameEndTime = std::chrono::steady_clock::now();
                 auto diffTimeMicroSeconds = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
-                remainingTime = (timeStep + additionalTimeStep) - (float)((double)diffTimeMicroSeconds / 1000000.0);
 
+                remainingTime = (timeStep + additionalTimeStep) - (float)((double)diffTimeMicroSeconds / 1000000.0);
                 if (remainingTime >= 0.0f) {
                     std::this_thread::sleep_for(std::chrono::milliseconds((int)(remainingTime * 1000.0f)));
 
                     remainingTime = 0.0f;
-                    frameStartTime = std::chrono::high_resolution_clock::now();
+                    frameStartTime = std::chrono::steady_clock::now();
                 } else {
                     frameStartTime = frameEndTime;
                 }
