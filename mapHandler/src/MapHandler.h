@@ -18,12 +18,6 @@ namespace urchin {
     * A map handler for 3d objects, physics, sounds...
     */
     class MapHandler {
-        //XML tags
-        #define SCENE_TAG "scene"
-
-        //XML attributes
-        #define WORKING_DIR_ATTR "relativeWorkingDirectory"
-
         public:
             MapHandler(Renderer3d*, PhysicsWorld*, SoundManager*, AIManager*);
             ~MapHandler();
@@ -42,6 +36,9 @@ namespace urchin {
             void unpause();
 
         private:
+            static constexpr char SCENE_TAG[] = "scene";
+            static constexpr char WORKING_DIR_ATTR[] = "relativeWorkingDirectory";
+
             std::string relativeWorkingDirectory;
             Map* map;
     };

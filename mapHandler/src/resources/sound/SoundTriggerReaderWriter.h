@@ -9,19 +9,6 @@
 namespace urchin {
 
     class SoundTriggerReaderWriter {
-        //XML attributes
-        #define TYPE_ATTR "type"
-
-        //XML value
-        #define MANUAL_VALUE "MANUAL"
-        #define SHAPE_VALUE "SHAPE"
-        #define PLAY_ONCE_VALUE "PLAY_ONCE"
-        #define PLAY_LOOP_VALUE "PLAY_LOOP"
-
-        //XML tags
-        #define PLAY_BEHAVIOR_TAG "playBehavior"
-        #define SOUND_SHAPE_TAG "soundShape"
-
         public:
             static SoundTrigger* loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
             static void writeOn(const std::shared_ptr<XmlChunk>&, const SoundTrigger*, XmlWriter&);
@@ -32,6 +19,14 @@ namespace urchin {
 
             static SoundTrigger::PlayBehavior loadPlayBehaviorFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
             static void writePlayBehaviorFrom(const std::shared_ptr<XmlChunk>&, SoundTrigger::PlayBehavior, XmlWriter&);
+
+            static constexpr char TYPE_ATTR[] = "type";
+            static constexpr char MANUAL_VALUE[] = "MANUAL";
+            static constexpr char SHAPE_VALUE[] = "SHAPE";
+            static constexpr char PLAY_ONCE_VALUE[] = "PLAY_ONCE";
+            static constexpr char PLAY_LOOP_VALUE[] = "PLAY_LOOP";
+            static constexpr char PLAY_BEHAVIOR_TAG[] = "playBehavior";
+            static constexpr char SOUND_SHAPE_TAG[] = "soundShape";
     };
 
 }

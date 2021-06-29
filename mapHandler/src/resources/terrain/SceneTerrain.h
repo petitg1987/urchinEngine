@@ -11,7 +11,7 @@ namespace urchin {
 
     class SceneTerrain : public SceneEntity {
         //XML attributes
-        #define NAME_ATTR "name"
+        static constexpr char NAME_ATTR[] = "name";
 
         public:
             friend class Map;

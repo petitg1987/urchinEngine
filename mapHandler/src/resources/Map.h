@@ -24,20 +24,6 @@ namespace urchin {
     * Represent a map loaded in memory
     */
     class Map {
-        //XML tags
-        #define OBJECTS_TAG "objects"
-        #define OBJECT_TAG "object"
-        #define LIGHTS_TAG "lights"
-        #define LIGHT_TAG "light"
-        #define TERRAINS_TAG "terrains"
-        #define TERRAIN_TAG "terrain"
-        #define WATERS_TAG "waters"
-        #define WATER_TAG "water"
-        #define SKY_TAG "sky"
-        #define SOUND_ELEMENTS_TAG "soundElements"
-        #define SOUND_ELEMENT_TAG "soundElement"
-        #define AI_ELEMENTS_TAG "aiElements"
-
         public:
             friend class MapHandler;
 
@@ -101,6 +87,19 @@ namespace urchin {
 
             void refreshEntities();
             void refreshSound();
+
+            static constexpr char OBJECTS_TAG[] = "objects";
+            static constexpr char OBJECT_TAG[] = "object";
+            static constexpr char LIGHTS_TAG[] = "lights";
+            static constexpr char LIGHT_TAG[] = "light";
+            static constexpr char TERRAINS_TAG[] = "terrains";
+            static constexpr char TERRAIN_TAG[] = "terrain";
+            static constexpr char WATERS_TAG[] = "waters";
+            static constexpr char WATER_TAG[] = "water";
+            static constexpr char SKY_TAG[] = "sky";
+            static constexpr char SOUND_ELEMENTS_TAG[] = "soundElements";
+            static constexpr char SOUND_ELEMENT_TAG[] = "soundElement";
+            static constexpr char AI_ELEMENTS_TAG[] = "aiElements";
 
             Renderer3d* renderer3d;
             PhysicsWorld* physicsWorld;

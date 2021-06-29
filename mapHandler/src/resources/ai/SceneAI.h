@@ -7,9 +7,6 @@
 namespace urchin {
 
     class SceneAI {
-        //XML tags
-        #define NAV_MESH_AGENT_TAG "navMeshAgent"
-
         public:
             friend class Map;
 
@@ -21,6 +18,8 @@ namespace urchin {
         private:
             void loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
             void writeOn(const std::shared_ptr<XmlChunk>&, XmlWriter&) const;
+
+            static constexpr char NAV_MESH_AGENT_TAG[] = "navMeshAgent";
 
             AIManager* aiManager;
     };

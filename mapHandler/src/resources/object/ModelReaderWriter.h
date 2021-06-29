@@ -9,17 +9,6 @@
 namespace urchin {
 
     class ModelReaderWriter {
-        //XML tags
-        #define MESH_TAG "mesh"
-        #define FILENAME_TAG "filename"
-        #define ANIMATIONS_TAG "animations"
-        #define ANIMATION_TAG "animation"
-        #define NAME_TAG "name"
-        #define TRANSFORM_TAG "transform"
-        #define POSITION_TAG "position"
-        #define SCALE_TAG "scale"
-        #define PRODUCE_SHADOW_TAG "produceShadow"
-
         public:
             static Model* loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
             static void writeOn(const std::shared_ptr<XmlChunk>&, const Model*, XmlWriter&);
@@ -33,6 +22,16 @@ namespace urchin {
 
             static void loadFlagsOn(Model*, const std::shared_ptr<XmlChunk>&, const XmlParser&);
             static void writeFlagsOn(const std::shared_ptr<XmlChunk>&, const Model*, XmlWriter&);
+
+            static constexpr char MESH_TAG[] = "mesh";
+            static constexpr char FILENAME_TAG[] = "filename";
+            static constexpr char ANIMATIONS_TAG[] = "animations";
+            static constexpr char ANIMATION_TAG[] = "animation";
+            static constexpr char NAME_TAG[] = "name";
+            static constexpr char TRANSFORM_TAG[] = "transform";
+            static constexpr char POSITION_TAG[] = "position";
+            static constexpr char SCALE_TAG[] = "scale";
+            static constexpr char PRODUCE_SHADOW_TAG[] = "produceShadow";
     };
 
 }

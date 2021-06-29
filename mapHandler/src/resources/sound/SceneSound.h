@@ -9,13 +9,6 @@ namespace urchin {
     * Represent a sound and sound trigger on the scene
     */
     class SceneSound {
-        //XML attributes
-        #define NAME_ATTR "name"
-
-        //XML tags
-        #define SOUND_TAG "sound"
-        #define SOUND_TRIGGER_TAG "soundTrigger"
-
         public:
             friend class Map;
 
@@ -35,6 +28,10 @@ namespace urchin {
         private:
             void loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
             void writeOn(const std::shared_ptr<XmlChunk>&, XmlWriter&) const;
+
+            static constexpr char NAME_ATTR[] = "name";
+            static constexpr char SOUND_TAG[] = "sound";
+            static constexpr char SOUND_TRIGGER_TAG[] = "soundTrigger";
 
             SoundManager* soundManager;
 

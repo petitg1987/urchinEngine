@@ -10,9 +10,9 @@ namespace urchin {
 
     class SoundSphereReaderWriter : public SoundShapeReaderWriter {
         //XML tags
-        #define POSITION_TAG "position"
-        #define RADIUS_TAG "radius"
-        #define MARGIN_TAG "margin"
+        static constexpr char POSITION_TAG[] = "position";
+        static constexpr char RADIUS_TAG[] = "radius";
+        static constexpr char MARGIN_TAG[] = "margin";
 
         public:
             ~SoundSphereReaderWriter() override = default;

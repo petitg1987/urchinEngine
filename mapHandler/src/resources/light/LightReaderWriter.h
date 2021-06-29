@@ -8,20 +8,6 @@
 namespace urchin {
 
     class LightReaderWriter {
-        //XML attributes
-        #define TYPE_ATTR "type"
-
-        //XML value
-        #define OMNIDIRECTIONAL_VALUE "OMNIDIRECTIONAL"
-        #define SUN_VALUE "SUN"
-
-        //XML tags
-        #define DIRECTION_TAG "direction"
-        #define POSITION_TAG "position"
-        #define AMBIENT_COLOR_TAG "ambientColor"
-        #define EXPONENTIAL_ATTENUATION_TAG "exponentialAttenuation"
-        #define PRODUCE_SHADOW_TAG "produceShadow"
-
         public:
             static Light* loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
             static void writeOn(const std::shared_ptr<XmlChunk>&, const Light*, XmlWriter&);
@@ -35,6 +21,15 @@ namespace urchin {
 
             static void loadFlagsFrom(Light*, const std::shared_ptr<XmlChunk>&, const XmlParser&);
             static void writeFlagsOn(const std::shared_ptr<XmlChunk>&, const Light*, XmlWriter&);
+
+            static constexpr char TYPE_ATTR[] = "type";
+            static constexpr char OMNIDIRECTIONAL_VALUE[] = "OMNIDIRECTIONAL";
+            static constexpr char SUN_VALUE[] = "SUN";
+            static constexpr char DIRECTION_TAG[] = "direction";
+            static constexpr char POSITION_TAG[] = "position";
+            static constexpr char AMBIENT_COLOR_TAG[] = "ambientColor";
+            static constexpr char EXPONENTIAL_ATTENUATION_TAG[] = "exponentialAttenuation";
+            static constexpr char PRODUCE_SHADOW_TAG[] = "produceShadow";
     };
 
 }

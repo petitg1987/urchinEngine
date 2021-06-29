@@ -9,9 +9,6 @@ namespace urchin {
     * Represent a light on the scene
     */
     class SceneLight {
-        //XML attributes
-        #define NAME_ATTR "name"
-
         public:
             friend class Map;
 
@@ -29,6 +26,8 @@ namespace urchin {
         private:
             void loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
             void writeOn(const std::shared_ptr<XmlChunk>&, XmlWriter&) const;
+
+            static constexpr char NAME_ATTR[] = "name";
 
             LightManager* lightManager;
 

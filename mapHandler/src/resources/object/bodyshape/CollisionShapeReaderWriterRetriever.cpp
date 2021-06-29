@@ -12,20 +12,20 @@
 namespace urchin {
 
     std::shared_ptr<CollisionShapeReaderWriter> CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(const std::shared_ptr<XmlChunk>& shapeChunk) {
-        std::string shapeType = shapeChunk->getAttributeValue(TYPE_ATTR);
-        if (shapeType == SPHERE_VALUE) {
+        std::string shapeType = shapeChunk->getAttributeValue(CollisionShapeReaderWriter::TYPE_ATTR);
+        if (shapeType == CollisionShapeReaderWriter::SPHERE_VALUE) {
             return std::make_shared<CollisionSphereReaderWriter>();
-        } else if (shapeType == CAPSULE_VALUE) {
+        } else if (shapeType == CollisionShapeReaderWriter::CAPSULE_VALUE) {
             return std::make_shared<CollisionCapsuleReaderWriter>();
-        } else if (shapeType == CYLINDER_VALUE) {
+        } else if (shapeType == CollisionShapeReaderWriter::CYLINDER_VALUE) {
             return std::make_shared<CollisionCylinderReaderWriter>();
-        } else if (shapeType == CONE_VALUE) {
+        } else if (shapeType == CollisionShapeReaderWriter::CONE_VALUE) {
             return std::make_shared<CollisionConeReaderWriter>();
-        } else if (shapeType == BOX_VALUE) {
+        } else if (shapeType == CollisionShapeReaderWriter::BOX_VALUE) {
             return std::make_shared<CollisionBoxReaderWriter>();
-        } else if (shapeType == CONVEX_HULL_VALUE) {
+        } else if (shapeType == CollisionShapeReaderWriter::CONVEX_HULL_VALUE) {
             return std::make_shared<CollisionConvexHullReaderWriter>();
-        } else if (shapeType == COMPOUND_SHAPE_VALUE) {
+        } else if (shapeType == CollisionShapeReaderWriter::COMPOUND_SHAPE_VALUE) {
             return std::make_shared<CollisionCompoundShapeReaderWriter>();
         }
 

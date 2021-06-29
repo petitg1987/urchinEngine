@@ -8,14 +8,11 @@
 namespace urchin {
 
     class SoundShapeReaderWriter {
-        //XML attributes
-        #define TYPE_ATTR "type"
-
-        //XML value
-        #define SPHERE_VALUE "SPHERE"
-        #define BOX_VALUE "BOX"
-
         public:
+            static constexpr char TYPE_ATTR[] = "type";
+            static constexpr char SPHERE_VALUE[] = "SPHERE";
+            static constexpr char BOX_VALUE[] = "BOX";
+
             virtual ~SoundShapeReaderWriter() = default;
 
             virtual SoundShape* loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const = 0;

@@ -13,13 +13,6 @@ namespace urchin {
     * Represent an object on the scene (3d model and physics)
     */
     class SceneObject : public SceneEntity {
-        //XML tags
-        #define MODEL_TAG "model"
-        #define PHYSICS_TAG "physics"
-
-        //XML attributes
-        #define NAME_ATTR "name"
-
         public:
             friend class Map;
 
@@ -50,6 +43,10 @@ namespace urchin {
 
             void deleteRigidBody();
             void deleteAIObjects();
+
+            static constexpr char MODEL_TAG[] = "model";
+            static constexpr char PHYSICS_TAG[] = "physics";
+            static constexpr char NAME_ATTR[] = "name";
 
             Renderer3d* renderer3d;
             PhysicsWorld* physicsWorld;

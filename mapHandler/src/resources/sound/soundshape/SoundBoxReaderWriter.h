@@ -10,12 +10,12 @@ namespace urchin {
 
     class SoundBoxReaderWriter : public SoundShapeReaderWriter {
         //XML tags
-        #define POSITION_TAG "position"
-        #define HALF_SIZES_TAG "halfSizes"
-        #define ORIENTATION_TAG "orientation"
-        #define MARGIN_TAG "margin"
-        #define AXIS_TAG "axis"
-        #define ANGLE_TAG "angle"
+        static constexpr char POSITION_TAG[] = "position";
+        static constexpr char HALF_SIZES_TAG[] = "halfSizes";
+        static constexpr char ORIENTATION_TAG[] = "orientation";
+        static constexpr char MARGIN_TAG[] = "margin";
+        static constexpr char AXIS_TAG[] = "axis";
+        static constexpr char ANGLE_TAG[] = "angle";
 
         public:
             ~SoundBoxReaderWriter() override = default;

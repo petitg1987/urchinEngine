@@ -9,21 +9,19 @@
 namespace urchin {
 
     class CollisionCylinderReaderWriter : public CollisionShapeReaderWriter {
-        //XML tags
-        #define ORIENTATION_TAG "orientation"
-        #define RADIUS_TAG "radius"
-        #define HEIGHT_TAG "height"
-
-        //XML value
-        #define X_VALUE "X"
-        #define Y_VALUE "Y"
-        #define Z_VALUE "Z"
-
         public:
             ~CollisionCylinderReaderWriter() override = default;
 
             CollisionShape3D* loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const override;
             void writeOn(const std::shared_ptr<XmlChunk>&, const std::shared_ptr<const CollisionShape3D>&, XmlWriter&) const override;
+
+        private:
+            static constexpr char ORIENTATION_TAG[] = "orientation";
+            static constexpr char RADIUS_TAG[] = "radius";
+            static constexpr char HEIGHT_TAG[] = "height";
+            static constexpr char X_VALUE[] = "X";
+            static constexpr char Y_VALUE[] = "Y";
+            static constexpr char Z_VALUE[] = "Z";
     };
 
 }

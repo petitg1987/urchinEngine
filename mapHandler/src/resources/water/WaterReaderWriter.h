@@ -8,20 +8,6 @@
 namespace urchin {
 
     class WaterReaderWriter {
-            //XML tags
-            #define CENTER_POSITION_TAG "centerPosition"
-            #define X_SIZE_TAG "xSize"
-            #define Z_SIZE_TAG "zSize"
-            #define WATER_COLOR_TAG "waterColor"
-            #define NORMAL_FILENAME_TAG "normalFilename"
-            #define DUDV_MAP_FILENAME_TAG "dudvMapFilename"
-            #define WAVE_SPEED_TAG "waveSpeed"
-            #define WAVE_STRENGTH_TAG "waveStrength"
-            #define S_REPEAT_TAG "sRepeat"
-            #define T_REPEAT_TAG "tRepeat"
-            #define DENSITY_TAG "density"
-            #define GRADIENT_TAG "gradient"
-
         public:
             Water* loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&) const;
             void writeOn(const std::shared_ptr<XmlChunk>&, const Water*, XmlWriter&) const;
@@ -35,6 +21,19 @@ namespace urchin {
 
             static void loadUnderWaterProperties(Water*, const std::shared_ptr<XmlChunk>&, const XmlParser&);
             static void writeUnderWaterPropertiesOn(const std::shared_ptr<XmlChunk>&, const Water*, XmlWriter&);
+
+            static constexpr char CENTER_POSITION_TAG[] = "centerPosition";
+            static constexpr char X_SIZE_TAG[] = "xSize";
+            static constexpr char Z_SIZE_TAG[] = "zSize";
+            static constexpr char WATER_COLOR_TAG[] = "waterColor";
+            static constexpr char NORMAL_FILENAME_TAG[] = "normalFilename";
+            static constexpr char DUDV_MAP_FILENAME_TAG[] = "dudvMapFilename";
+            static constexpr char WAVE_SPEED_TAG[] = "waveSpeed";
+            static constexpr char WAVE_STRENGTH_TAG[] = "waveStrength";
+            static constexpr char S_REPEAT_TAG[] = "sRepeat";
+            static constexpr char T_REPEAT_TAG[] = "tRepeat";
+            static constexpr char DENSITY_TAG[] = "density";
+            static constexpr char GRADIENT_TAG[] = "gradient";
     };
 
 }

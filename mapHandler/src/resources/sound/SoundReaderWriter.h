@@ -9,22 +9,6 @@
 namespace urchin {
 
     class SoundReaderWriter {
-        //XML attributes
-        #define TYPE_ATTR "type"
-        #define CATEGORY_ATTR "category"
-
-        //XML value
-        #define SPATIAL_VALUE "SPATIAL"
-        #define GLOBAL_VALUE "GLOBAL"
-        #define MUSIC_VALUE "MUSIC"
-        #define EFFECTS_VALUE "EFFECTS"
-
-        //XML tags
-        #define FILENAME_TAG "filename"
-        #define INITIAL_VOLUME_TAG "initialVolume"
-        #define POSITION_TAG "position"
-        #define INAUDIBLE_DISTANCE_TAG "inaudibleDistance"
-
         public:
             static Sound* loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
             static void writeOn(const std::shared_ptr<XmlChunk>&, const Sound*, XmlWriter&);
@@ -35,6 +19,17 @@ namespace urchin {
 
             static void loadPropertiesOn(Sound*, const std::shared_ptr<XmlChunk>&, const XmlParser&);
             static void writePropertiesOn(const std::shared_ptr<XmlChunk>&, const Sound*, XmlWriter&);
+
+            static constexpr char TYPE_ATTR[] = "type";
+            static constexpr char CATEGORY_ATTR[] = "category";
+            static constexpr char SPATIAL_VALUE[] = "SPATIAL";
+            static constexpr char GLOBAL_VALUE[] = "GLOBAL";
+            static constexpr char MUSIC_VALUE[] = "MUSIC";
+            static constexpr char EFFECTS_VALUE[] = "EFFECTS";
+            static constexpr char FILENAME_TAG[] = "filename";
+            static constexpr char INITIAL_VOLUME_TAG[] = "initialVolume";
+            static constexpr char POSITION_TAG[] = "position";
+            static constexpr char INAUDIBLE_DISTANCE_TAG[] = "inaudibleDistance";
     };
 
 }

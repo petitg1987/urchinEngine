@@ -8,15 +8,15 @@
 namespace urchin {
 
     class SkyboxReaderWriter {
-        //XML tags
-        #define SKYBOX_TAG "skybox"
-        #define TEXTURES_TAG "textures"
-        #define FILENAME_TAG "filename"
-        #define OFFSET_Y_TAG "offsetY"
-
         public:
             static std::unique_ptr<Skybox> loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
             static void writeOn(const std::shared_ptr<XmlChunk>&, const std::unique_ptr<Skybox>&, XmlWriter&);
+
+        private:
+            static constexpr char SKYBOX_TAG[] = "skybox";
+            static constexpr char TEXTURES_TAG[] = "textures";
+            static constexpr char FILENAME_TAG[] = "filename";
+            static constexpr char OFFSET_Y_TAG[] = "offsetY";
     };
 
 }

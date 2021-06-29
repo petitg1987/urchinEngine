@@ -9,13 +9,6 @@
 namespace urchin {
 
     class CollisionCompoundShapeReaderWriter : public CollisionShapeReaderWriter {
-        //XML tags
-        #define LOCALIZED_SHAPES "localizedShapes"
-        #define LOCALIZED_SHAPE "localizedShape"
-        #define TRANSFORM_TAG "transform"
-        #define POSITION_TAG "position"
-        #define COMPOUND_SHAPE_TAG "shape"
-
         public:
             ~CollisionCompoundShapeReaderWriter() override = default;
 
@@ -26,6 +19,11 @@ namespace urchin {
             static void loadTransformOn(const std::shared_ptr<LocalizedCollisionShape>&, const std::shared_ptr<XmlChunk>&, const XmlParser&);
             static void writeTransformOn(const std::shared_ptr<XmlChunk>&, const std::shared_ptr<const LocalizedCollisionShape>&, XmlWriter&);
 
+            static constexpr char LOCALIZED_SHAPES[] = "localizedShapes";
+            static constexpr char LOCALIZED_SHAPE[] = "localizedShape";
+            static constexpr char TRANSFORM_TAG[] = "transform";
+            static constexpr char POSITION_TAG[] = "position";
+            static constexpr char COMPOUND_SHAPE_TAG[] = "shape";
     };
 
 }
