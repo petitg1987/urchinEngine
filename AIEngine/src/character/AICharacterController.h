@@ -30,7 +30,9 @@ namespace urchin {
 
             void computeSteeringVelocity(const Point2<float>&);
             void applyVelocity();
-            
+
+            static const float CHANGE_PATH_POINT_DISTANCE;
+
             std::shared_ptr<AICharacter> character;
             AIManager* aiManager;
             std::shared_ptr<AICharacterEventHandler> eventHandler;

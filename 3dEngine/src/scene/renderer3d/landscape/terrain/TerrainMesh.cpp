@@ -6,11 +6,13 @@
 #include <resources/MediaManager.h>
 #include <graphic/render/GenericRenderer.h>
 
-#define FRL_FILE_EXTENSION ".frl" //Extension for FRL files (Fast Resource Loading)
-#define TERRAIN_HASH_SIZE 32
-#define TERRAIN_FRL_FILE_VERSION 1
+
 
 namespace urchin {
+
+    //static
+    constexpr unsigned int TerrainMesh::TERRAIN_HASH_SIZE = 32;
+    constexpr unsigned int TerrainMesh::TERRAIN_FRL_FILE_VERSION = 1;
 
     TerrainMesh::TerrainMesh(const std::string& heightFilename, float xzScale, float yScale) :
             heightFilename(heightFilename),
@@ -31,7 +33,7 @@ namespace urchin {
         std::string terrainFrlFilePath = FileSystem::instance()->getEngineUserCacheDirectory()
                 + FileUtil::getFileNameNoExtension(terrainFilePath)
                 + "_" + std::to_string(std::hash<std::string>{}(terrainFilePath))
-                + FRL_FILE_EXTENSION;
+                + ".frl"; //extension for FRL files (Fast Resource Loading)
         std::ifstream terrainFrlFile;
         terrainFrlFile.open(terrainFrlFilePath, std::ios::in | std::ios::binary);
 

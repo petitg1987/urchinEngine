@@ -6,11 +6,12 @@
 #include <scene/InputDeviceKey.h>
 #include <graphic/render/GenericRendererBuilder.h>
 
-#define LETTER_SHIFT 5 //When the text box is full of text, we shift all letters to left
-#define LETTER_AND_CURSOR_SHIFT 2 //Define space between the letters and cursor
-#define CURSOR_BLINK_SPEED 1.75f
-
 namespace urchin {
+
+    //static
+    constexpr unsigned int TextBox::LETTER_SHIFT = 5; //when the text box is full of text, we shift all letters to left
+    constexpr unsigned int TextBox::LETTER_AND_CURSOR_SHIFT = 2; //define space between the letters and cursor
+    constexpr float TextBox::CURSOR_BLINK_SPEED = 1.75f;
 
     TextBox::TextBox(Widget* parent, Position position, Size size, std::string nameSkin) :
             Widget(parent, position, size),

@@ -10,9 +10,7 @@ namespace urchin {
 
             float getMass() const;
             float getMaxVelocityInKmH() const;
-
             float retrieveMaxVelocityInMs() const;
-            float retrieveMaxForce() const;
 
             void updateVelocity(const Vector3<float>&);
             const Vector3<float>& getVelocity() const;

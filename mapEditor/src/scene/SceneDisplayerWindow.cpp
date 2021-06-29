@@ -5,8 +5,6 @@
 #include <scene/SceneWindowController.h>
 #include <widget/controller/mouse/MouseController.h>
 
-#define PICKING_RAY_LENGTH 100.0f
-
 namespace urchin {
 
     SceneDisplayerWindow::SceneDisplayerWindow(QWidget* parent, const std::unique_ptr<StatusBarController>& statusBarController, std::string mapEditorPath) :
@@ -224,6 +222,7 @@ namespace urchin {
         bool propagateEvent = true;
 
         if (sceneDisplayer->getSceneManager()->getActiveRenderer3d()) {
+            constexpr float PICKING_RAY_LENGTH = 100.0f;
             Camera *camera = sceneDisplayer->getSceneManager()->getActiveRenderer3d()->getCamera();
             Ray<float> pickingRay = CameraSpaceService(camera).screenPointToRay(Point2<float>((float) mouseX, (float) mouseY), PICKING_RAY_LENGTH);
             std::shared_ptr<const RayTestResult> rayTestResult = sceneDisplayer->getPhysicsWorld()->rayTest(pickingRay);

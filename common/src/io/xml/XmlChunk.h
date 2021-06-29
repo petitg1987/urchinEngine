@@ -14,13 +14,7 @@
 
 namespace urchin {
 
-    /**
-    * Represents a XML chunk
-    */
     class XmlChunk {
-        #define BOOL_FALSE "false"
-        #define BOOL_TRUE "true"
-
         public:
             friend class XmlParser;
             friend class XmlWriter;

@@ -4,6 +4,10 @@
 #include <collision/broadphase/VectorPairContainer.h>
 
 namespace urchin {
+
+    //static
+    constexpr float BodyAABBTree::BOUNDARIES_MARGIN_PERCENTAGE = 0.3f;
+
     BodyAABBTree::BodyAABBTree() :
             AABBTree<AbstractBody*>(ConfigService::instance()->getFloatValue("broadPhase.aabbTreeFatMargin")),
             defaultPairContainer(new VectorPairContainer()),

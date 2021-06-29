@@ -9,14 +9,6 @@
 #include <graphic/render/shader/builder/ShaderBuilder.h>
 #include <graphic/render/GenericRendererBuilder.h>
 
-#define DEFAULT_NUM_GRASS_IN_TEX 1
-#define DEFAULT_GRASS_DISPLAY_DISTANCE 100.0f
-#define DEFAULT_GRASS_HEIGHT 1.0f
-#define DEFAULT_GRASS_LENGTH 1.0f
-#define DEFAULT_GRASS_QUANTITY 0.1f
-#define DEFAULT_WIND_DIRECTION Vector3<float>(1.0f, 0.0f, 0.0f)
-#define DEFAULT_WIND_STRENGTH 1.0f
-
 namespace urchin {
 
     TerrainGrass::TerrainGrass(const std::string& grassTextureFilename) :
@@ -37,13 +29,13 @@ namespace urchin {
 
         setGrassTexture(grassTextureFilename);
         setMaskTexture("");
-        setNumGrassInTexture(DEFAULT_NUM_GRASS_IN_TEX);
-        setGrassDisplayDistance(DEFAULT_GRASS_DISPLAY_DISTANCE);
-        setGrassHeight(DEFAULT_GRASS_HEIGHT);
-        setGrassLength(DEFAULT_GRASS_LENGTH);
-        setGrassQuantity(DEFAULT_GRASS_QUANTITY);
-        setWindDirection(DEFAULT_WIND_DIRECTION);
-        setWindStrength(DEFAULT_WIND_STRENGTH);
+        setNumGrassInTexture(1);
+        setGrassDisplayDistance(100.0f);
+        setGrassHeight(1.0f);
+        setGrassLength(1.0f);
+        setGrassQuantity(0.1f);
+        setWindDirection(Vector3<float>(1.0f, 0.0f, 0.0f));
+        setWindStrength(1.0f);
     }
 
     TerrainGrass::~TerrainGrass() {

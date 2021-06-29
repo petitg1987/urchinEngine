@@ -13,11 +13,6 @@
 #include <scene/renderer3d/camera/Camera.h>
 #include <graphic/render/shader/model/Shader.h>
 
-#define DEFAULT_NUMBER_SHADOW_MAPS 5
-#define DEFAULT_SHADOW_MAP_RESOLUTION 1024
-#define DEFAULT_VIEWING_SHADOW_DISTANCE 75.0
-#define DEFAULT_BLUR_SHADOW BlurShadow::MEDIUM
-
 namespace urchin {
 
     /**
@@ -37,10 +32,10 @@ namespace urchin {
             };
 
             struct Config {
-                unsigned int nbShadowMaps = DEFAULT_NUMBER_SHADOW_MAPS;
-                unsigned int shadowMapResolution = DEFAULT_SHADOW_MAP_RESOLUTION;
-                float viewingShadowDistance = DEFAULT_VIEWING_SHADOW_DISTANCE;
-                BlurShadow blurShadow = DEFAULT_BLUR_SHADOW;
+                unsigned int nbShadowMaps = 5;
+                unsigned int shadowMapResolution = 1024;
+                float viewingShadowDistance = 75.0;
+                BlurShadow blurShadow = BlurShadow::MEDIUM;
             };
 
             ShadowManager(LightManager*, OctreeManager<Model>*);

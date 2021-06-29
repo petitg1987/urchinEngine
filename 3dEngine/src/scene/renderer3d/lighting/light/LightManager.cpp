@@ -5,8 +5,6 @@
 #include <scene/renderer3d/lighting/light/omnidirectional/OmnidirectionalLight.h>
 #include <scene/renderer3d/util/OctreeRenderer.h>
 
-#define DEFAULT_OCTREE_MIN_SIZE 50.0f
-
 namespace urchin {
 
     //static
@@ -15,7 +13,7 @@ namespace urchin {
     LightManager::LightManager(std::shared_ptr<RenderTarget> renderTarget) :
             maxLights(ConfigService::instance()->getUnsignedIntValue("light.maxLights")),
             renderTarget(std::move(renderTarget)),
-            lightOctreeManager(new OctreeManager<Light>(DEFAULT_OCTREE_MIN_SIZE)),
+            lightOctreeManager(new OctreeManager<Light>(50.0f)),
             lastUpdatedLight(nullptr),
             globalAmbientColor(Point4<float>(0.0f, 0.0f, 0.0f, 0.0f)) {
         if(maxLights > LIGHTS_SHADER_LIMIT) {

@@ -7,17 +7,6 @@
 #include <graphic/render/GenericRenderer.h>
 #include <texture/filter/bilateralblur/BilateralBlurFilter.h>
 
-#define DEFAULT_TEXTURE_SIZE AOTextureSize::HALF_SIZE
-#define DEFAULT_KERNEL_SAMPLES 32
-#define DEFAULT_RADIUS 0.35f
-#define DEFAULT_AO_STRENGTH 0.10f
-#define DEFAULT_DEPTH_START_ATTENUATION 0.995f
-#define DEFAULT_DEPTH_END_ATTENUATION 0.997f
-#define DEFAULT_NOISE_TEXTURE_SIZE 4
-#define DEFAULT_BIAS 0.15f
-#define DEFAULT_BLUR_SIZE 7
-#define DEFAULT_BLUR_SHARPNESS 40.0f
-
 namespace urchin {
 
     class AmbientOcclusionManager {
@@ -28,17 +17,17 @@ namespace urchin {
             };
 
             struct Config {
-                AOTextureSize textureSize = DEFAULT_TEXTURE_SIZE;
-                unsigned int kernelSamples = DEFAULT_KERNEL_SAMPLES;
-                float radius = DEFAULT_RADIUS; //scope radius in units
-                float ambientOcclusionStrength = DEFAULT_AO_STRENGTH;
-                float depthStartAttenuation = DEFAULT_DEPTH_START_ATTENUATION;
-                float depthEndAttenuation = DEFAULT_DEPTH_END_ATTENUATION;
-                unsigned int noiseTextureSize = DEFAULT_NOISE_TEXTURE_SIZE;
-                float bias = DEFAULT_BIAS;
+                AOTextureSize textureSize = AOTextureSize::HALF_SIZE;
+                unsigned int kernelSamples = 32;
+                float radius = 0.35f; //scope radius in units
+                float ambientOcclusionStrength = 0.10f;
+                float depthStartAttenuation = 0.995f;
+                float depthEndAttenuation = 0.997f;
+                unsigned int noiseTextureSize = 4;
+                float bias = 0.15f;
                 bool isBlurActivated = true;
-                unsigned int blurSize = DEFAULT_BLUR_SIZE;
-                float blurSharpness = DEFAULT_BLUR_SHARPNESS;
+                unsigned int blurSize = 7;
+                float blurSharpness = 40.0f;
             };
 
             AmbientOcclusionManager();

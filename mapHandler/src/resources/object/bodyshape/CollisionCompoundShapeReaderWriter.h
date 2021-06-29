@@ -14,7 +14,7 @@ namespace urchin {
         #define LOCALIZED_SHAPE "localizedShape"
         #define TRANSFORM_TAG "transform"
         #define POSITION_TAG "position"
-        #define SHAPE "shape"
+        #define COMPOUND_SHAPE_TAG "shape"
 
         public:
             ~CollisionCompoundShapeReaderWriter() override = default;

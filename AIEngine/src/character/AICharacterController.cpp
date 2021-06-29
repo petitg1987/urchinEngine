@@ -1,8 +1,9 @@
 #include <character/AICharacterController.h>
 
-#define CHANGE_PATH_POINT_DISTANCE 0.4f
-
 namespace urchin {
+
+    //static
+    constexpr float AICharacterController::CHANGE_PATH_POINT_DISTANCE = 0.4f;
 
     AICharacterController::AICharacterController(std::shared_ptr<AICharacter> character, AIManager* aiManager) :
             character(std::move(character)),

@@ -2,8 +2,6 @@
 #include <graphic/render/shader/builder/ShaderBuilder.h>
 #include <graphic/render/GenericRendererBuilder.h>
 
-#define DEFAULT_AMBIENT 0.3f
-
 namespace urchin {
 
     /**
@@ -18,7 +16,7 @@ namespace urchin {
         terrainShader = ShaderBuilder::createShader("terrain.vert.spv", "", "terrain.frag.spv", std::unique_ptr<ShaderConstants>());
 
         setPosition(position);
-        setAmbient(DEFAULT_AMBIENT);
+        setAmbient(0.3f);
     }
 
     void Terrain::initialize(std::shared_ptr<RenderTarget> renderTarget) {

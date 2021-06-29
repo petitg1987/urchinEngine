@@ -2,8 +2,6 @@
 
 #include <sound/spatial/SpatialSound.h>
 
-#define DEFAULT_INAUDIBLE_DISTANCE 10.0
-
 namespace urchin {
 
     /**
@@ -17,7 +15,7 @@ namespace urchin {
     }
 
     SpatialSound::SpatialSound(std::string filename, SoundCategory category, const Point3<float>& position) :
-            SpatialSound(std::move(filename), category, position, DEFAULT_INAUDIBLE_DISTANCE) {
+            SpatialSound(std::move(filename), category, position, 10.0f) {
 
     }
 

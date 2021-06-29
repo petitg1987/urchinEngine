@@ -35,6 +35,8 @@ namespace urchin {
             void computeWorldBoundary();
             void controlBoundaries(AABBNode<AbstractBody*>*) const;
 
+            static const float BOUNDARIES_MARGIN_PERCENTAGE;
+
             PairContainer* defaultPairContainer;
 
             bool inInitializationPhase;

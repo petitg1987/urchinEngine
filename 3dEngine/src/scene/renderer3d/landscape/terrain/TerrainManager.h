@@ -6,14 +6,12 @@
 #include <scene/renderer3d/camera/Camera.h>
 #include <scene/renderer3d/landscape/terrain/Terrain.h>
 
-#define DEFAULT_GRASS_DISPLAY_DISTANCE 100
-
 namespace urchin {
 
     class TerrainManager {
         public:
             struct Config {
-                float grassDisplayDistance = DEFAULT_GRASS_DISPLAY_DISTANCE;
+                float grassDisplayDistance = 100;
             };
 
             explicit TerrainManager(std::shared_ptr<RenderTarget>);

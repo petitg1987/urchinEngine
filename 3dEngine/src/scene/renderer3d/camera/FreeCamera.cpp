@@ -3,13 +3,6 @@
 #include <scene/renderer3d/camera/FreeCamera.h>
 #include <scene/InputDeviceKey.h>
 
-#define DEFAULT_KEY_FRONT 'Z'
-#define DEFAULT_KEY_BACK 'S'
-#define DEFAULT_KEY_LEFT 'Q'
-#define DEFAULT_KEY_RIGHT 'D'
-#define DEFAULT_SPEED 10.0
-#define DEFAULT_ROTATE_SPEED 2.0
-
 namespace urchin {
 
     /**
@@ -17,16 +10,16 @@ namespace urchin {
     */
     FreeCamera::FreeCamera(float angle, float nearPlane, float farPlane) :
             Camera(angle, nearPlane, farPlane),
-            keyFront(DEFAULT_KEY_FRONT),
-            keyBack(DEFAULT_KEY_BACK),
-            keyLeft(DEFAULT_KEY_LEFT),
-            keyRight(DEFAULT_KEY_RIGHT),
+            keyFront('Z'),
+            keyBack('S'),
+            keyLeft('Q'),
+            keyRight('D'),
             isKeyFrontPressed(false),
             isKeyBackPressed(false),
             isKeyLeftPressed(false),
             isKeyRightPressed(false),
-            speed(DEFAULT_SPEED),
-            rotateSpeed(DEFAULT_ROTATE_SPEED) {
+            speed(10.0f),
+            rotateSpeed(2.0f) {
 
     }
 

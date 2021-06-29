@@ -44,6 +44,9 @@ namespace urchin {
             unsigned int readVersion(std::ifstream&) const;
             std::string readHash(std::ifstream&) const;
 
+            static const unsigned int TERRAIN_HASH_SIZE;
+            static const unsigned int TERRAIN_FRL_FILE_VERSION;
+
             std::string heightFilename;
             float xzScale;
             float yScale;

@@ -6,8 +6,6 @@
 #include <graphic/render/GenericRenderer.h>
 #include <graphic/render/target/RenderTarget.h>
 
-#define DEFAULT_AA_QUALITY AntiAliasingManager::Quality::HIGH
-
 namespace urchin {
 
     class AntiAliasingManager {
@@ -19,7 +17,7 @@ namespace urchin {
             };
 
             struct Config {
-                Quality quality = DEFAULT_AA_QUALITY;
+                Quality quality = AntiAliasingManager::Quality::HIGH;
             };
 
             explicit AntiAliasingManager(std::shared_ptr<RenderTarget>);

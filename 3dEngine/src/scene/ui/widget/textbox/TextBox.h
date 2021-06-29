@@ -31,6 +31,9 @@ namespace urchin {
             void computeCursorIndex(int);
 
             //properties
+            static const unsigned int LETTER_SHIFT;
+            static const unsigned int LETTER_AND_CURSOR_SHIFT;
+            static const float CURSOR_BLINK_SPEED;
             const std::string nameSkin;
 
             //display information

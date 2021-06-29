@@ -6,8 +6,6 @@
 #include <graphic/render/shader/builder/ShaderBuilder.h>
 #include <scene/renderer3d/util/OctreeRenderer.h>
 
-#define DEFAULT_OCTREE_MIN_SIZE 20.0f
-
 namespace urchin {
 
     //debug parameters
@@ -32,7 +30,7 @@ namespace urchin {
             //deferred rendering
             deferredRenderTarget(std::make_shared<OffscreenRender>("deferred rendering - first pass", RenderTarget::READ_WRITE_DEPTH_ATTACHMENT)),
             modelSetDisplayer(new ModelSetDisplayer(DisplayMode::DEFAULT_MODE)),
-            modelOctreeManager(new OctreeManager<Model>(DEFAULT_OCTREE_MIN_SIZE)),
+            modelOctreeManager(new OctreeManager<Model>(20.0f)),
             fogManager(new FogManager()),
             terrainManager(new TerrainManager(deferredRenderTarget)),
             waterManager(new WaterManager(deferredRenderTarget)),

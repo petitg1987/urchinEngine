@@ -6,16 +6,12 @@
 #include <loader/font/LoaderTTF.h>
 #include <resources/image/Image.h>
 
-#define WIDTH_BETWEEN_LETTERS 2u
-#define WIDTH_BETWEEN_LINES_RATE 1.9f
-#define WIDTH_SPACE_RATE 0.4f
-#define NUM_COLORS 4u
-#define NUM_LETTERS 256u //unicode range 0000-007F (Basic Latin) + 0080-00FF (Latin-1 Supplement)
-#define NUM_LETTERS_BY_LINE 16u
-
 namespace urchin {
 
     Font* LoaderTTF::loadFromFile(const std::string& ttfFilename, const std::map<std::string, std::string>& params) {
+        constexpr unsigned int NUM_LETTERS = 256u; //unicode range 0000-007F (Basic Latin) + 0080-00FF (Latin-1 Supplement)
+        constexpr unsigned int NUM_LETTERS_BY_LINE = 16u;
+
         std::locale::global(std::locale("C")); //for float
 
         assert(params.find("fontSize") != params.end());
@@ -103,9 +99,9 @@ namespace urchin {
         for (int i = 'A'; i < 'Z'; i++) {
             height = std::max(height, glyph[i].height);
         }
-        auto spaceBetweenLines = (unsigned int)((float)height * WIDTH_BETWEEN_LINES_RATE);
-        auto spaceBetweenLetters = (unsigned int)WIDTH_BETWEEN_LETTERS;
-        glyph[(int)' '].width = (unsigned int)((float)glyph[(int)'A'].width * WIDTH_SPACE_RATE);
+        auto spaceBetweenLines = (unsigned int)((float)height * 1.9f);
+        auto spaceBetweenLetters = (unsigned int)2u;
+        glyph[(int)' '].width = (unsigned int)((float)glyph[(int)'A'].width * 0.4f);
 
         //dimension of letters and texture
         unsigned int dimensionLetters = 0;
@@ -120,6 +116,7 @@ namespace urchin {
         unsigned int dimensionTexture = dimensionLetters * NUM_LETTERS_BY_LINE;
 
         //texture creation
+        constexpr unsigned int NUM_COLORS = 4u;
         std::vector<unsigned char> texels(dimensionTexture*dimensionTexture*NUM_COLORS, 0);
         for (unsigned int i = 0, c = 0; i < dimensionTexture; i += dimensionLetters) {
             for (unsigned int j = 0; j < dimensionTexture; j += dimensionLetters, c++) {

@@ -72,9 +72,9 @@ namespace urchin {
 
     bool XmlChunk::getBoolValue() const {
         std::string value = getStringValue();
-        if (value == BOOL_FALSE) {
+        if (value == "false") {
             return false;
-        } else if (value == BOOL_TRUE) {
+        } else if (value == "true") {
             return true;
         }
 
@@ -83,9 +83,9 @@ namespace urchin {
 
     void XmlChunk::setBoolValue(bool value) {
         if (value) {
-            setStringValue(BOOL_TRUE);
+            setStringValue("true");
         } else {
-            setStringValue(BOOL_FALSE);
+            setStringValue("false");
         }
     }
 

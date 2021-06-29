@@ -3,17 +3,6 @@
 #include <graphic/render/GenericRendererBuilder.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>
 
-#define DEFAULT_CENTER_POSITION Point3<float>(0.0f, 0.0f, 0.0f)
-#define DEFAULT_SIZE 1000.0f
-#define DEFAULT_WATER_COLOR Vector3<float>(0.08f, 0.22f, 0.29f)
-#define DEFAULT_NORMAL_TEXTURE ""
-#define DEFAULT_DUDV_MAP ""
-#define DEFAULT_WAVE_SPEED 0.08f
-#define DEFAULT_WAVE_STRENGTH 0.04f
-#define DEFAULT_REPEAT 1.0f
-#define DEFAULT_DENSITY 2.0f
-#define DEFAULT_GRADIENT 0.5f
-
 namespace urchin {
 
     Water::Water() :
@@ -32,22 +21,22 @@ namespace urchin {
         dudvMap = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({0, 255, 0, 255})).createTexture(false);
 
         //general properties
-        setCenterPosition(DEFAULT_CENTER_POSITION);
-        setXSize(DEFAULT_SIZE);
-        setZSize(DEFAULT_SIZE);
+        setCenterPosition(Point3<float>(0.0f, 0.0f, 0.0f));
+        setXSize(1000.0f);
+        setZSize(1000.0f);
 
         //surface properties
-        setWaterColor(DEFAULT_WATER_COLOR);
-        setNormalTexture(DEFAULT_NORMAL_TEXTURE);
-        setDudvMap(DEFAULT_DUDV_MAP);
-        setWaveSpeed(DEFAULT_WAVE_SPEED);
-        setWaveStrength(DEFAULT_WAVE_STRENGTH);
-        setSRepeat(DEFAULT_REPEAT);
-        setTRepeat(DEFAULT_REPEAT);
+        setWaterColor(Vector3<float>(0.08f, 0.22f, 0.29f));
+        setNormalTexture("");
+        setDudvMap("");
+        setWaveSpeed(0.08f);
+        setWaveStrength(0.04f);
+        setSRepeat(1.0f);
+        setTRepeat(1.0f);
 
         //under water properties
-        setDensity(DEFAULT_DENSITY);
-        setGradient(DEFAULT_GRADIENT);
+        setDensity(2.0f);
+        setGradient(0.5f);
     }
 
     void Water::initialize(std::shared_ptr<RenderTarget> renderTarget) {

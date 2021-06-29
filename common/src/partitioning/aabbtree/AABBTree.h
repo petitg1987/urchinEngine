@@ -4,8 +4,6 @@
 #include <partitioning/aabbtree/AABBNodeData.h>
 #include <math/geometry/3d/Ray.h>
 
-#define BOUNDARIES_MARGIN_PERCENTAGE 0.3f
-
 namespace urchin {
 
     template<class OBJ> class AABBTree {

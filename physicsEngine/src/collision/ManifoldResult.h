@@ -5,8 +5,6 @@
 #include <collision/ManifoldContactPoint.h>
 #include <body/model/AbstractBody.h>
 
-#define MAX_PERSISTENT_POINTS 4
-
 namespace urchin {
 
     /**
@@ -37,6 +35,8 @@ namespace urchin {
             unsigned int getDeepestPointIndex() const;
             float computeArea(const Point3<float>&, const Point3<float>&, const Point3<float>&, const Point3<float>&) const;
             void removeContactPoint(std::size_t);
+
+            static constexpr std::size_t MAX_PERSISTENT_POINTS = 4;
 
             AbstractBody* body1;
             AbstractBody* body2;
