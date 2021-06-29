@@ -258,9 +258,9 @@ namespace urchin {
         }
 
         if (sound->getSoundCategory() == Sound::SoundCategory::MUSIC) {
-            soundCategory->setText(MUSIC_SOUND_LABEL);
+            soundCategory->setText(NewSoundDialog::MUSIC_SOUND_LABEL);
         } else if (sound->getSoundCategory() == Sound::SoundCategory::EFFECTS) {
-            soundCategory->setText(EFFECTS_SOUND_LABEL);
+            soundCategory->setText(NewSoundDialog::EFFECTS_SOUND_LABEL);
         } else {
             throw std::invalid_argument("Impossible to setup specific sound data for sound of category: " + std::to_string(sound->getSoundCategory()));
         }
@@ -283,13 +283,13 @@ namespace urchin {
     void SoundPanelWidget::setupGlobalSoundDataFrom() {
         specificSpatialSoundGroupBox->hide();
 
-        soundType->setText(GLOBAL_SOUND_LABEL);
+        soundType->setText(NewSoundDialog::GLOBAL_SOUND_LABEL);
     }
 
     void SoundPanelWidget::setupSpatialSoundDataFrom(const SpatialSound* spatialSound) {
         specificSpatialSoundGroupBox->show();
 
-        soundType->setText(SPATIAL_SOUND_LABEL);
+        soundType->setText(NewSoundDialog::SPATIAL_SOUND_LABEL);
 
         this->positionX->setValue(spatialSound->getPosition().X);
         this->positionY->setValue(spatialSound->getPosition().Y);
@@ -307,12 +307,12 @@ namespace urchin {
 
     void SoundPanelWidget::setupManualTriggerDataFrom() {
         specificTriggerShapeGroupBox->hide();
-        soundTriggerType->setText(MANUAL_TRIGGER_LABEL);
+        soundTriggerType->setText(ChangeSoundTriggerDialog::MANUAL_TRIGGER_LABEL);
     }
 
     void SoundPanelWidget::setupShapeTriggerDataFrom(const SceneSound* sceneSound) {
         specificTriggerShapeGroupBox->show();
-        soundTriggerType->setText(SHAPE_TRIGGER_LABEL);
+        soundTriggerType->setText(ChangeSoundTriggerDialog::SHAPE_TRIGGER_LABEL);
 
         const auto* shapeTrigger = dynamic_cast<const ShapeTrigger*>(sceneSound->getSoundTrigger());
         const SoundShape* soundShape = shapeTrigger->getSoundShape();

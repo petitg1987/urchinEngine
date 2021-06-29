@@ -14,10 +14,10 @@ namespace urchin {
     class SoundShapeWidget : public QWidget {
         Q_OBJECT
 
-        #define SPHERE_SHAPE_LABEL "Sphere"
-        #define BOX_SHAPE_LABEL "Box"
-
         public:
+            static constexpr char SPHERE_SHAPE_LABEL[] = "Sphere";
+            static constexpr char BOX_SHAPE_LABEL[] = "Box";
+
             explicit SoundShapeWidget(const SceneSound*);
             ~SoundShapeWidget() override = default;
 

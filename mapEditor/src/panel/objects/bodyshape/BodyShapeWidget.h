@@ -14,15 +14,15 @@ namespace urchin {
     class BodyShapeWidget : public QWidget {
         Q_OBJECT
 
-        #define SPHERE_SHAPE_LABEL "Sphere"
-        #define BOX_SHAPE_LABEL "Box"
-        #define CAPSULE_SHAPE_LABEL "Capsule"
-        #define CYLINDER_SHAPE_LABEL "Cylinder"
-        #define CONE_SHAPE_LABEL "Cone"
-        #define CONVEX_HULL_SHAPE_LABEL "Convex Hull"
-        #define COMPOUND_SHAPE_LABEL "Compound Shape"
-
         public:
+            static constexpr char SPHERE_SHAPE_LABEL[] = "Sphere";
+            static constexpr char BOX_SHAPE_LABEL[] = "Box";
+            static constexpr char CAPSULE_SHAPE_LABEL[] = "Capsule";
+            static constexpr char CYLINDER_SHAPE_LABEL[] = "Cylinder";
+            static constexpr char CONE_SHAPE_LABEL[] = "Cone";
+            static constexpr char CONVEX_HULL_SHAPE_LABEL[] = "Convex Hull";
+            static constexpr char COMPOUND_SHAPE_LABEL[] = "Compound Shape";
+
             explicit BodyShapeWidget(const SceneObject*);
             ~BodyShapeWidget() override = default;
 

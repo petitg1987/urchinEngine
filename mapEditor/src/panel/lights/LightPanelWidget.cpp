@@ -228,7 +228,7 @@ namespace urchin {
         specificOmnidirectionalLightGroupBox->show();
         specificSunLightGroupBox->hide();
 
-        lightType->setText(OMNIDIRECTIONAL_LIGHT_LABEL);
+        lightType->setText(NewLightDialog::OMNIDIRECTIONAL_LIGHT_LABEL);
 
         this->positionX->setValue(light->getPosition().X);
         this->positionY->setValue(light->getPosition().Y);
@@ -241,7 +241,7 @@ namespace urchin {
         specificSunLightGroupBox->show();
         specificOmnidirectionalLightGroupBox->hide();
 
-        lightType->setText(SUN_LIGHT_LABEL);
+        lightType->setText(NewLightDialog::SUN_LIGHT_LABEL);
 
         this->directionX->setValue(light->getDirections()[0].X);
         this->directionY->setValue(light->getDirections()[0].Y);

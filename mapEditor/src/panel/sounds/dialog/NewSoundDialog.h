@@ -14,13 +14,12 @@ namespace urchin {
     class NewSoundDialog : public QDialog {
         Q_OBJECT
 
-        #define GLOBAL_SOUND_LABEL "Global"
-        #define SPATIAL_SOUND_LABEL "Spatial"
-
-        #define MUSIC_SOUND_LABEL "Music"
-        #define EFFECTS_SOUND_LABEL "Effect"
-
         public:
+            static constexpr char GLOBAL_SOUND_LABEL[] = "Global";
+            static constexpr char SPATIAL_SOUND_LABEL[] = "Spatial";
+            static constexpr char MUSIC_SOUND_LABEL[] = "Music";
+            static constexpr char EFFECTS_SOUND_LABEL[] = "Effect";
+
             NewSoundDialog(QWidget*, const SoundController*);
 
             SceneSound* getSceneSound() const;

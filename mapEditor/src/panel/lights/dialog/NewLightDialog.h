@@ -14,10 +14,10 @@ namespace urchin {
     class NewLightDialog : public QDialog {
         Q_OBJECT
 
-        #define SUN_LIGHT_LABEL "Sun"
-        #define OMNIDIRECTIONAL_LIGHT_LABEL "Omnidirectional"
-
         public:
+            static constexpr char SUN_LIGHT_LABEL[] = "Sun";
+            static constexpr char OMNIDIRECTIONAL_LIGHT_LABEL[] = "Omnidirectional";
+
             NewLightDialog(QWidget*, const LightController*);
 
             SceneLight* getSceneLight() const;

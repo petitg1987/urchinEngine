@@ -38,14 +38,14 @@ namespace urchin {
         bodyShapeTypeComboBox = new QComboBox();
         mainLayout->addWidget(bodyShapeTypeComboBox, 0, 1);
         bodyShapeTypeComboBox->setFixedWidth(150);
-        bodyShapeTypeComboBox->addItem(SPHERE_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::SPHERE_SHAPE));
-        bodyShapeTypeComboBox->addItem(BOX_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::BOX_SHAPE));
-        bodyShapeTypeComboBox->addItem(CAPSULE_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::CAPSULE_SHAPE));
-        bodyShapeTypeComboBox->addItem(CYLINDER_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::CYLINDER_SHAPE));
-        bodyShapeTypeComboBox->addItem(CONE_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::CONE_SHAPE));
-        bodyShapeTypeComboBox->addItem(CONVEX_HULL_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE));
+        bodyShapeTypeComboBox->addItem(BodyShapeWidget::SPHERE_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::SPHERE_SHAPE));
+        bodyShapeTypeComboBox->addItem(BodyShapeWidget::BOX_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::BOX_SHAPE));
+        bodyShapeTypeComboBox->addItem(BodyShapeWidget::CAPSULE_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::CAPSULE_SHAPE));
+        bodyShapeTypeComboBox->addItem(BodyShapeWidget::CYLINDER_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::CYLINDER_SHAPE));
+        bodyShapeTypeComboBox->addItem(BodyShapeWidget::CONE_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::CONE_SHAPE));
+        bodyShapeTypeComboBox->addItem(BodyShapeWidget::CONVEX_HULL_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE));
         if (!excludeCompoundShape) {
-            bodyShapeTypeComboBox->addItem(COMPOUND_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::COMPOUND_SHAPE));
+            bodyShapeTypeComboBox->addItem(BodyShapeWidget::COMPOUND_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::COMPOUND_SHAPE));
         }
     }
 

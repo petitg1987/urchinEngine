@@ -37,8 +37,8 @@ namespace urchin {
         soundShapeTypeComboBox = new QComboBox();
         mainLayout->addWidget(soundShapeTypeComboBox, 0, 1);
         soundShapeTypeComboBox->setFixedWidth(150);
-        soundShapeTypeComboBox->addItem(SPHERE_SHAPE_LABEL, QVariant(SoundShape::ShapeType::SPHERE_SHAPE));
-        soundShapeTypeComboBox->addItem(BOX_SHAPE_LABEL, QVariant(SoundShape::ShapeType::BOX_SHAPE));
+        soundShapeTypeComboBox->addItem(SoundShapeWidget::SPHERE_SHAPE_LABEL, QVariant(SoundShape::ShapeType::SPHERE_SHAPE));
+        soundShapeTypeComboBox->addItem(SoundShapeWidget::BOX_SHAPE_LABEL, QVariant(SoundShape::ShapeType::BOX_SHAPE));
     }
 
     void ChangeSoundShapeDialog::done(int r) {

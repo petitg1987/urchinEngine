@@ -20,10 +20,10 @@ namespace urchin {
     class SoundPanelWidget : public QWidget, public Observer {
         Q_OBJECT
 
-        #define PLAY_ONCE_LABEL "Play once"
-        #define PLAY_LOOP_LABEL "Play loop"
-
         public:
+            static constexpr char PLAY_ONCE_LABEL[] = "Play once";
+            static constexpr char PLAY_LOOP_LABEL[] = "Play loop";
+
             SoundPanelWidget();
             ~SoundPanelWidget() override = default;
 
