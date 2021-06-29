@@ -1,5 +1,7 @@
 #include <stdexcept>
 #include <utility>
+#include <chrono>
+#include <thread>
 
 #include <graphic/render/target/ScreenRender.h>
 #include <graphic/setup/GraphicService.h>
@@ -63,8 +65,13 @@ namespace urchin {
     }
 
     void ScreenRender::onResize() {
-        cleanup();
-        initialize();
+        unsigned int sceneWidth, sceneHeight;
+        GraphicService::instance()->getFramebufferSizeRetriever()->getFramebufferSizeInPixel(sceneWidth, sceneHeight);
+
+        if(sceneWidth > 1 && sceneHeight > 1) { //size is generally invalid when window is minimized on Windows
+            cleanup();
+            initialize();
+        }
     }
 
     void ScreenRender::updateVerticalSync(bool verticalSyncEnabled) {
