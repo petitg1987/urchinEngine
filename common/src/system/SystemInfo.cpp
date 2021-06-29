@@ -166,7 +166,7 @@ namespace urchin {
             if (!userDataDirectory.empty()) {
                 return userDataDirectory + "\\";
             }
-            return homeDirectory() + R"(\AppData\Local\)";
+            return homeDirectory() + R"(AppData\Local\)";
         #else
             return homeDirectory();
         #endif

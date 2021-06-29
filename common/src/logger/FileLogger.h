@@ -16,7 +16,7 @@ namespace urchin {
             std::string retrieveContent(unsigned long) const override;
             std::string retrieveTarget() const override;
             void purge() const override;
-            void archive() const override;
+            std::string archive() const override;
 
         private:
             void write(const std::string&) override;
