@@ -17,6 +17,7 @@ namespace urchin {
             static Sequence* newTranslatableSequence(Widget*, Position, Size, std::string, const std::vector<std::string>&);
 
             void allowLoopOnValues(bool);
+            bool isLoopOnValuesAllowed() const;
 
             unsigned int getSelectedIndex() const;
             void setSelectedIndex(unsigned int);
@@ -42,13 +43,12 @@ namespace urchin {
             std::shared_ptr<EventListener> rightButtonEventListener;
             class ButtonSequenceEventListener : public EventListener {
                 public:
-                    ButtonSequenceEventListener(Sequence*, bool, bool);
+                    ButtonSequenceEventListener(Sequence*, bool);
                     void onMouseLeftClickRelease(Widget*) override;
 
                 private:
                     Sequence* sequence;
                     bool isLeftButton;
-                    bool loopOnValuesEnabled;
             };
 
             //visual

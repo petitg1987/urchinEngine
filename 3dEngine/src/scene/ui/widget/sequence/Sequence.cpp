@@ -57,14 +57,14 @@ namespace urchin {
 
         //buttons
         leftButton = Text::newText(this, Position(0, 0, LengthType::PIXEL), buttonsTextSkin, leftButtonString);
-        leftButton->addEventListener(std::make_shared<ButtonSequenceEventListener>(this, true, loopOnValuesEnabled));
+        leftButton->addEventListener(std::make_shared<ButtonSequenceEventListener>(this, true));
         if (leftButtonEventListener) {
             this->leftButton->addEventListener(leftButtonEventListener);
         }
 
         rightButton = Text::newText(this, Position(0, 0, LengthType::PIXEL), buttonsTextSkin, rightButtonString);
         rightButton->setPosition(Position((float)getWidth() - (float)rightButton->getWidth(), 0.0f, LengthType::PIXEL));
-        rightButton->addEventListener(std::make_shared<ButtonSequenceEventListener>(this, false, loopOnValuesEnabled));
+        rightButton->addEventListener(std::make_shared<ButtonSequenceEventListener>(this, false));
         if (rightButtonEventListener) {
             this->rightButton->addEventListener(rightButtonEventListener);
         }
@@ -84,6 +84,10 @@ namespace urchin {
 
     void Sequence::allowLoopOnValues(bool loopOnValuesEnabled) {
         this->loopOnValuesEnabled = loopOnValuesEnabled;
+    }
+
+    bool Sequence::isLoopOnValuesAllowed() const {
+        return this->loopOnValuesEnabled;
     }
 
     unsigned int Sequence::getSelectedIndex() const {
@@ -118,10 +122,9 @@ namespace urchin {
         valuesText[selectedIndex]->setPosition(Position(((float)getWidth() - (float)valuesText[selectedIndex]->getWidth()) / 2.0f, 0.0f, LengthType::PIXEL));
     }
 
-    Sequence::ButtonSequenceEventListener::ButtonSequenceEventListener(Sequence* sequence, bool isLeftButton, bool loopOnValuesEnabled) :
+    Sequence::ButtonSequenceEventListener::ButtonSequenceEventListener(Sequence* sequence, bool isLeftButton) :
             sequence(sequence),
-            isLeftButton(isLeftButton),
-            loopOnValuesEnabled(loopOnValuesEnabled) {
+            isLeftButton(isLeftButton) {
 
     }
 
@@ -129,7 +132,7 @@ namespace urchin {
         unsigned int oldSelectedIndex = sequence->selectedIndex;
 
         if (isLeftButton) {
-            if (sequence->selectedIndex > 0 || loopOnValuesEnabled) {
+            if (sequence->selectedIndex > 0 || sequence->isLoopOnValuesAllowed()) {
                 sequence->valuesText[sequence->selectedIndex]->setIsVisible(false);
                 if (sequence->selectedIndex == 0) {
                     sequence->selectedIndex = (unsigned int)sequence->valuesText.size() - 1;
@@ -139,7 +142,7 @@ namespace urchin {
                 sequence->valuesText[sequence->selectedIndex]->setIsVisible(true);
             }
         } else {
-            if (sequence->selectedIndex < (sequence->valuesText.size() - 1) || loopOnValuesEnabled) {
+            if (sequence->selectedIndex < (sequence->valuesText.size() - 1) || sequence->isLoopOnValuesAllowed()) {
                 sequence->valuesText[sequence->selectedIndex]->setIsVisible(false);
                 if (sequence->selectedIndex == (sequence->valuesText.size() - 1)) {
                     sequence->selectedIndex = 0;
