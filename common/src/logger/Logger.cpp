@@ -61,7 +61,7 @@ namespace urchin {
         char timeBuffer[64];
         time_t now = time(nullptr);
         {
-            std::lock_guard<std::mutex> lock(localtimeMutex);
+            std::lock_guard<std::mutex> lock(localtimeMutex); //mutex for not thread safe localtime function
             tm timeStruct = *localtime(&now);
             strftime(timeBuffer, sizeof(timeBuffer), "[%Y-%m-%d %X]", &timeStruct);
         }
