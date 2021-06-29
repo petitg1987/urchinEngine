@@ -84,7 +84,7 @@ namespace urchin {
         std::string fileName = getFileName(filePath);
         std::string extension = getFileExtension(filePath);
 
-        return fileName.substr(0, fileName.size() -1 - extension.size());
+        return fileName.substr(0, fileName.size() - 1 - extension.size());
     }
 
     std::string FileUtil::getDirectory(const std::string& filePath) {
@@ -93,7 +93,7 @@ namespace urchin {
             return "./";
         }
 
-        return filePath.substr(0, found+1);
+        return filePath.substr(0, found + 1);
     }
 
     /**
@@ -107,7 +107,7 @@ namespace urchin {
 
         //remove common directories from path
         unsigned int commonMaxIndex;
-        for (commonMaxIndex = 0; commonMaxIndex < simplifiedReferenceDirectory.size() && commonMaxIndex<path.size(); ++commonMaxIndex) {
+        for (commonMaxIndex = 0; commonMaxIndex < simplifiedReferenceDirectory.size() && commonMaxIndex < path.size(); ++commonMaxIndex) {
             if (simplifiedReferenceDirectory[commonMaxIndex] != path[commonMaxIndex]) {
                 break;
             }

@@ -4,6 +4,7 @@
 #include <sstream>
 #include <memory>
 #include <iostream>
+#include <mutex>
 
 namespace urchin {
 
@@ -35,13 +36,14 @@ namespace urchin {
 
         private:
             static const std::unique_ptr<Logger>& defaultInstance();
-            static std::string prefix(CriticalityLevel);
-            static std::string getCriticalityString(CriticalityLevel);
+            std::string prefix(CriticalityLevel);
+            std::string getCriticalityString(CriticalityLevel);
 
             virtual void write(const std::string&) = 0;
 
             bool bHasFailure;
             static std::unique_ptr<Logger> customInstance;
+            std::mutex localtimeMutex;
     };
 
 }

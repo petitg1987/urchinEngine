@@ -58,13 +58,15 @@ namespace urchin {
      * @return Prefix composed of date/time and criticality
      */
     std::string Logger::prefix(CriticalityLevel criticalityLevel) {
+        char timeBuffer[64];
         time_t now = time(nullptr);
-        struct tm timeStruct = {};
-        localtime_r(&now, &timeStruct);
-        char buffer[64];
-        strftime(buffer, sizeof(buffer), "[%Y-%m-%d %X]", &timeStruct);
+        {
+            std::lock_guard<std::mutex> lock(localtimeMutex);
+            tm timeStruct = *localtime(&now);
+            strftime(timeBuffer, sizeof(timeBuffer), "[%Y-%m-%d %X]", &timeStruct);
+        }
 
-        std::string result(buffer);
+        std::string result(timeBuffer);
         result += " (" + getCriticalityString(criticalityLevel) + ") ";
         return result;
     }
