@@ -118,9 +118,14 @@ namespace urchin {
                 processAIUpdate();
 
                 auto frameEndTime = std::chrono::steady_clock::now();
-                auto diffTimeMicroSeconds = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
+                auto deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
+                if (deltaTimeInUs < 200) { //small dt on Windows are imprecise: wait one milli second more to get a more precise value
+                    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                    frameEndTime = std::chrono::steady_clock::now();
+                    deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
+                }
 
-                float remainingTime = timeStep - (float)((double)diffTimeMicroSeconds / 1000000.0f);
+                float remainingTime = timeStep - (float)((double)deltaTimeInUs / 1000000.0f);
                 if (remainingTime >= 0.0f) {
                     std::this_thread::sleep_for(std::chrono::milliseconds((int)(remainingTime * 1000.0f)));
 

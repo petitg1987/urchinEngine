@@ -104,12 +104,12 @@ namespace urchin {
             previousTime = std::chrono::steady_clock::now();
         }
         auto currentTime = std::chrono::steady_clock::now();
-        auto timeIntervalInUs = (double)std::chrono::duration_cast<std::chrono::microseconds>(currentTime - previousTime).count();
+        auto deltaTimeInUs = (double)std::chrono::duration_cast<std::chrono::microseconds>(currentTime - previousTime).count();
 
         static int frameCount = 0;
         frameCount++;
-        if (timeIntervalInUs / 1000.0 > FPS_REFRESH_TIME_IN_MS) {
-            fps = (float)(1000000.0 / timeIntervalInUs) * (float)frameCount;
+        if (deltaTimeInUs / 1000.0 > FPS_REFRESH_TIME_IN_MS) {
+            fps = (float)(1000000.0 / deltaTimeInUs) * (float)frameCount;
             previousTime = currentTime;
             frameCount = 0;
         }
