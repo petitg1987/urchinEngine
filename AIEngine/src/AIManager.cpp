@@ -38,6 +38,7 @@ namespace urchin {
     }
 
     void AIManager::addEntity(const std::shared_ptr<AIEntity>& aiEntity) {
+        Logger::instance()->logInfo("Add new AI entity: " + aiEntity->getName());
         aiWorld.addEntity(aiEntity);
     }
 

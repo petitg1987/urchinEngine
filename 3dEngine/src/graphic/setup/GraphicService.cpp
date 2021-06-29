@@ -75,6 +75,8 @@ namespace urchin {
             return;
         }
 
+        Logger::instance()->logInfo("Create Vulkan instance");
+
         VkApplicationInfo applicationInfo{};
         applicationInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
         applicationInfo.pApplicationName = "VulkanApp-ff268de9-d92a-47b4-b6b0-8df93853565f";

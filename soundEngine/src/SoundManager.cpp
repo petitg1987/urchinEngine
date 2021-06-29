@@ -31,6 +31,7 @@ namespace urchin {
 
     void SoundManager::addSound(Sound* sound, SoundTrigger* soundTrigger) {
         if (sound && soundTrigger) {
+            Logger::instance()->logInfo("Add new sound: " + sound->getFilename());
             adjustSoundVolume(sound);
 
             auto* audioController = new AudioController(sound, soundTrigger, streamUpdateWorker);

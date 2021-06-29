@@ -176,6 +176,7 @@ int main(int argc, char *argv[]) {
     std::cout << "Start running tests (unit: "<< hasUnitTests << ", integration: " << hasIntegrationTests << ", monkey: " << hasMonkeyTests << ")" << std::endl;
     runner.run();
 
+    urchin::Logger::instance()->purge();
     urchin::SingletonManager::destroyAllSingletons();
     return 0;
 }

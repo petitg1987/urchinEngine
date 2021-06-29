@@ -34,5 +34,9 @@ int main(int argc, char *argv[]) {
     window->setVisible(true);
     window->showMaximized();
 
-    return QApplication::exec();
+    int mainResult = QApplication::exec();
+    if (mainResult == 0) {
+        Logger::instance()->purge();
+    }
+    return mainResult;
 }

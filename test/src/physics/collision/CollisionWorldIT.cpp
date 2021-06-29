@@ -57,9 +57,7 @@ void CollisionWorldIT::ccdBounceOnGroundAndRoof() {
 }
 
 void CollisionWorldIT::fallForever() {
-    if (!Logger::instance()->retrieveContent(std::numeric_limits<unsigned long>::max()).empty()) {
-        throw std::runtime_error("Log file must be emptied before start this test.");
-    }
+    Logger::instance()->purge(); //Log file must be emptied before start this test
     auto bodyManager = buildWorld(Point3<float>(60.0f, 5.0f, 0.0f));
     auto collisionWorld = std::make_unique<CollisionWorld>(bodyManager.get());
 

@@ -29,6 +29,7 @@ namespace urchin {
     }
 
     void MapHandler::loadMapFromFile(const std::string& filename, LoadCallback& loadCallback) {
+        Logger::instance()->logInfo("Load map: " + filename);
         XmlParser xmlParser(filename);
 
         relativeWorkingDirectory = xmlParser.getRootChunk()->getAttributeValue(WORKING_DIR_ATTR);

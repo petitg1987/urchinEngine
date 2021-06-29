@@ -1,6 +1,7 @@
 #include <utility>
 #include <iostream>
 #include <chrono>
+#include "UrchinCommon.h"
 
 #include <request/HttpRequest.h>
 #include <request/RequestException.h>
@@ -64,6 +65,8 @@ namespace urchin {
     }
 
     std::string HttpRequest::executeRequest(const std::string& url, const std::vector<std::string>& headers) const {
+        Logger::instance()->logInfo("Execute request on: " + url);
+
         struct curl_slist* curlHttpHeaders = {};
         for (auto& header : headers) {
             curlHttpHeaders = curl_slist_append(curlHttpHeaders, header.c_str());

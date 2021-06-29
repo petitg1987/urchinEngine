@@ -1,6 +1,5 @@
 #include <stdexcept>
 #include <utility>
-#include <chrono>
 #include <thread>
 
 #include <graphic/render/target/ScreenRender.h>

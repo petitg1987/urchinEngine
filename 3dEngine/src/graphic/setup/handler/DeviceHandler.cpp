@@ -72,6 +72,8 @@ namespace urchin {
      * Returns the most suitable physical device (=graphic card) to run the engine
      */
     VkPhysicalDevice DeviceHandler::findPhysicalDevice(VkInstance instance) {
+        Logger::instance()->logInfo("Find Vulkan physical device");
+
         uint32_t deviceCount = 0;
         vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
         if (deviceCount == 0) {
@@ -88,7 +90,7 @@ namespace urchin {
         }
 
         auto bestPhysicalDevice = physicalDeviceCandidates.rbegin();
-        if(bestPhysicalDevice->first == -1) {
+        if (bestPhysicalDevice->first == -1) {
             assert(bestPhysicalDevice->second.missingRequisiteDescription.has_value());
             std::string noDeviceFoundReason = bestPhysicalDevice->second.missingRequisiteDescription.value();
             throw UserAuthorityException("Failed to find a suitable graphic card: " + noDeviceFoundReason, "Make sure your graphic card matches the minimum requirement");
@@ -157,6 +159,8 @@ namespace urchin {
     }
 
     VkDevice DeviceHandler::createLogicalDevice() {
+        Logger::instance()->logInfo("Create Vulkan logical device");
+
         QueueHandler queueFamilyHandler;
         queueFamilyHandler.initializeQueueFamilies(physicalDevice, surface);
 
