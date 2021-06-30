@@ -11,6 +11,8 @@ namespace urchin {
         private:
             DeviceManager();
             ~DeviceManager() override;
+
+            std::vector<std::string> retrieveDevices() const;
     };
 
 }

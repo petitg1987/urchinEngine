@@ -11,6 +11,14 @@ namespace urchin {
     DeviceManager::DeviceManager() {
         ALCdevice* device = alcOpenDevice(nullptr);
         if (!device) {
+            auto devices = retrieveDevices();
+            if(!devices.empty()) {
+                std::string firstDevice = devices[0];
+                Logger::instance()->logInfo("No default audio device found. Use the first audio device: " + firstDevice);
+                device = alcOpenDevice(firstDevice.c_str());
+            }
+        }
+        if(!device) {
             throw std::runtime_error("Impossible to found sound device.");
         }
 
@@ -40,4 +48,15 @@ namespace urchin {
         alcCloseDevice(device);
     }
 
+    std::vector<std::string> DeviceManager::retrieveDevices() const {
+        std::vector<std::string> devices;
+        const ALCchar* devicesList = alcGetString(nullptr, ALC_DEVICE_SPECIFIER);
+        if (devicesList) {
+            while (strlen(devicesList) > 0) {
+                devices.emplace_back(devicesList);
+                devicesList += strlen(devicesList) + 1;
+            }
+        }
+        return devices;
+    }
 }
