@@ -5,21 +5,22 @@ Game engine library in C++17: 3D, Physics, Sound, Network, IA, Map Editor
 Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
 
 * 3D Engine:
-  * Skeleton animate 3d models
-  * Texture manager: TGA & PNG, anisotropy, mip-maps, normal mapping
-  * Dynamic shadow (cached parallel split shadow maps, variance shadow map, blur)
-  * Dynamic lighting with deferred shading: omni-directional & directional
+  * Graphic API: Vulkan
+  * 3D models with skeleton animation & Blender exporter
+  * Materials: diffuse, normal mapping, ambient color, anisotropy, mip-maps
+  * Dynamic shadow: cached parallel split shadow maps, variance shadow map, blur
+  * Dynamic lighting with deferred shading: omni-directional, directional
   * Terrain multi-layered and grass
   * Ambient occlusion (SSAO+)
   * Anti-aliasing (FXAA)
-  * Space partitioning (octree)
-  * UI 2D: button, window, text (TTF), text input, bitmap, sequence
+  * Space partitioning: octree
+  * UI: text, button, window, text input, bitmap, sequence, checkbox, slider
   * Skybox
   * Fog
 
 * Physics Engine:
   * Supported shapes: sphere, box, cylinder, capsule, cone, convex hull, compound shape, terrain
-  * Supported body: rigid body
+  * Body types: rigid body, ghost body
   * Algorithms:
     * Broad phase: AABBox Tree
     * Narrow phase: sphere-sphere, sphere-box, GJK/EPA, concave-convex
@@ -30,8 +31,8 @@ Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
   * Character controller
 
 * Sound Engine:
-  * Ambience sound and 3D sound
-  * Streaming
+  * Supported formats: ogg, flac
+  * Spatial sound and global sound
   * Sound trigger based on character position
 
 * IA Engine:
