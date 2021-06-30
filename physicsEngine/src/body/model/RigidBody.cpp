@@ -100,33 +100,28 @@ namespace urchin {
      */
     void RigidBody::setVelocity(const Vector3<float>& linearVelocity, const Vector3<float>& angularVelocity) {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         this->linearVelocity = linearVelocity;
         this->angularVelocity = angularVelocity;
     }
 
     Vector3<float> RigidBody::getLinearVelocity() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         return linearVelocity;
     }
 
     Vector3<float> RigidBody::getAngularVelocity() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         return angularVelocity;
     }
 
     void RigidBody::applyCentralMomentum(const Vector3<float>& momentum) {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         bodyMomentum.addMomentum(momentum);
         refreshBodyActiveState();
     }
 
     void RigidBody::applyMomentum(const Vector3<float>& momentum, const Point3<float>& pos) {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         bodyMomentum.addMomentum(momentum); //apply central force
         bodyMomentum.addTorqueMomentum(pos.toVector().crossProduct(momentum)); //apply torque
         refreshBodyActiveState();
@@ -134,7 +129,6 @@ namespace urchin {
 
     void RigidBody::applyTorqueMomentum(const Vector3<float>& torqueMomentum) {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         bodyMomentum.addTorqueMomentum(torqueMomentum);
         refreshBodyActiveState();
     }
@@ -144,7 +138,6 @@ namespace urchin {
      */
     BodyMomentum RigidBody::getMomentumAndReset() {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         BodyMomentum result(bodyMomentum);
         bodyMomentum.reset();
         return result;
@@ -152,14 +145,12 @@ namespace urchin {
 
     void RigidBody::setMass(float mass) {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         this->mass = mass;
         refreshMassProperties();
     }
 
     float RigidBody::getMass() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         return mass;
     }
 
@@ -171,13 +162,11 @@ namespace urchin {
 
     Vector3<float> RigidBody::getLocalInertia() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         return localInertia;
     }
 
     Matrix3<float> RigidBody::getInvWorldInertia() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         return invWorldInertia;
     }
 
@@ -187,29 +176,25 @@ namespace urchin {
      * Damping can be used to imitate air resistance.
      */
     void RigidBody::setDamping(float linearDamping, float angularDamping) {
-        std::lock_guard<std::mutex> lock(bodyMutex);
-
         if (linearDamping < 0.0 || linearDamping > 1.0) {
             throw std::domain_error("Wrong linear damping value.");
         }
-
         if (angularDamping < 0.0 || angularDamping > 1.0) {
             throw std::domain_error("Wrong angular damping value.");
         }
 
+        std::lock_guard<std::mutex> lock(bodyMutex);
         this->linearDamping = linearDamping;
         this->angularDamping = angularDamping;
     }
 
     float RigidBody::getLinearDamping() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         return linearDamping;
     }
 
     float RigidBody::getAngularDamping() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         return angularDamping;
     }
 
@@ -218,7 +203,6 @@ namespace urchin {
      */
     void RigidBody::setLinearFactor(const Vector3<float>& linearFactor) {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         this->linearFactor = linearFactor;
     }
 
@@ -227,7 +211,6 @@ namespace urchin {
      */
     Vector3<float> RigidBody::getLinearFactor() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         return linearFactor;
     }
 
@@ -236,7 +219,6 @@ namespace urchin {
      */
     void RigidBody::setAngularFactor(const Vector3<float>& angularFactor) {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         this->angularFactor = angularFactor;
     }
 
@@ -245,7 +227,6 @@ namespace urchin {
      */
     Vector3<float> RigidBody::getAngularFactor() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         return angularFactor;
     }
 

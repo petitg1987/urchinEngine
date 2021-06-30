@@ -99,7 +99,7 @@ namespace urchin {
      * Interrupt the thread
      */
     void AIManager::interrupt() {
-        aiSimulationStopper.store(true, std::memory_order_relaxed);
+        aiSimulationStopper.store(true, std::memory_order_release);
     }
 
     /**
@@ -146,7 +146,7 @@ namespace urchin {
      * @return True if thread execution is not interrupted
     */
     bool AIManager::continueExecution() {
-        return !aiSimulationStopper.load(std::memory_order_relaxed);
+        return !aiSimulationStopper.load(std::memory_order_acquire);
     }
 
     void AIManager::processAIUpdate() {

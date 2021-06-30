@@ -14,7 +14,7 @@ namespace urchin {
 
         this->rayTestResults.merge(rayTestResults);
 
-        resultReady.store(true, std::memory_order_relaxed);
+        resultReady.store(true, std::memory_order_release);
     }
 
     /**
@@ -22,11 +22,11 @@ namespace urchin {
      * as the physics engine work in separate thread.
      */
     bool RayTestResult::isResultReady() const {
-        return resultReady.load(std::memory_order_relaxed);
+        return resultReady.load(std::memory_order_acquire);
     }
 
     bool RayTestResult::hasHit() const {
-        if (!resultReady.load(std::memory_order_relaxed)) {
+        if (!resultReady.load(std::memory_order_acquire)) {
             throw std::runtime_error("Ray test callback result is not ready.");
         }
 
@@ -34,7 +34,7 @@ namespace urchin {
     }
 
     const std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter>& RayTestResult::getNearestResult() const {
-        if (!resultReady.load(std::memory_order_relaxed)) {
+        if (!resultReady.load(std::memory_order_acquire)) {
             throw std::runtime_error("Ray test callback result is not ready.");
         }
 
@@ -44,7 +44,7 @@ namespace urchin {
     }
 
     const ccd_set& RayTestResult::getResults() const {
-        if (!resultReady.load(std::memory_order_relaxed)) {
+        if (!resultReady.load(std::memory_order_acquire)) {
             throw std::runtime_error("Ray test callback result is not ready.");
         }
 

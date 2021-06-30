@@ -4,10 +4,10 @@
 #include <path/navmesh/model/NavObject.h>
 
 namespace urchin {
-    AIEntity::AIEntity(std::string name, Transform<float> transform, bool bIsObstacleCandidate) :
+    AIEntity::AIEntity(std::string name, const Transform<float>& transform, bool bIsObstacleCandidate) :
             bToRebuild(true),
             name(std::move(name)),
-            transform(std::move(transform)),
+            transform(transform),
             bIsObstacleCandidate(bIsObstacleCandidate) {
 
     }
@@ -18,15 +18,15 @@ namespace urchin {
             this->transform = Transform<float>(position, orientation, 1.0);
         }
 
-        this->bToRebuild.store(true, std::memory_order_relaxed);
+        this->bToRebuild.store(true, std::memory_order_release);
     }
 
     bool AIEntity::isToRebuild() const {
-        return bToRebuild.load(std::memory_order_relaxed);
+        return bToRebuild.load(std::memory_order_acquire);
     }
 
     void AIEntity::markRebuilt() {
-        this->bToRebuild.store(false, std::memory_order_relaxed);
+        this->bToRebuild.store(false, std::memory_order_release);
     }
 
     const std::string& AIEntity::getName() const {

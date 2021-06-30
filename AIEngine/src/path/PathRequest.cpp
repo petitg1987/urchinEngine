@@ -23,7 +23,7 @@ namespace urchin {
             this->path = path;
         }
 
-        bIsPathReady.store(true, std::memory_order_relaxed);
+        bIsPathReady.store(true, std::memory_order_release);
     }
 
     std::vector<PathPoint> PathRequest::getPath() const {
@@ -33,6 +33,6 @@ namespace urchin {
     }
 
     bool PathRequest::isPathReady() const {
-        return bIsPathReady.load(std::memory_order_relaxed);
+        return bIsPathReady.load(std::memory_order_acquire);
     }
 }

@@ -80,7 +80,7 @@ namespace urchin {
       * Interrupt the thread
       */
     void StreamUpdateWorker::interrupt() {
-        streamUpdateWorkerStopper.store(true, std::memory_order_relaxed);
+        streamUpdateWorkerStopper.store(true, std::memory_order_release);
     }
 
     void StreamUpdateWorker::checkNoExceptionRaised() {
@@ -118,7 +118,7 @@ namespace urchin {
      * @return True if thread execution is not interrupted
      */
     bool StreamUpdateWorker::continueExecution() {
-        return !streamUpdateWorkerStopper.load(std::memory_order_relaxed);
+        return !streamUpdateWorkerStopper.load(std::memory_order_acquire);
     }
 
     bool StreamUpdateWorker::processTask(StreamUpdateTask* task) {

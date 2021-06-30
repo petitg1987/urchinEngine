@@ -144,7 +144,7 @@ namespace urchin {
      * Interrupt the thread
      */
     void PhysicsWorld::interrupt() {
-        physicsSimulationStopper.store(true, std::memory_order_relaxed);
+        physicsSimulationStopper.store(true, std::memory_order_release);
     }
 
     /**
@@ -201,7 +201,7 @@ namespace urchin {
      * @return True if thread execution is not interrupted
      */
     bool PhysicsWorld::continueExecution() {
-        return !physicsSimulationStopper.load(std::memory_order_relaxed);
+        return !physicsSimulationStopper.load(std::memory_order_acquire);
     }
 
     void PhysicsWorld::processPhysicsUpdate(float dt) {

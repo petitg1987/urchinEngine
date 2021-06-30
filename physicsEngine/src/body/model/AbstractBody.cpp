@@ -50,8 +50,8 @@ namespace urchin {
 
     void AbstractBody::initialize(float restitution, float friction, float rollingFriction) {
         //technical data
-        bIsStatic.store(true, std::memory_order_relaxed);
-        bIsActive.store(false, std::memory_order_relaxed);
+        bIsStatic.store(true, std::memory_order_release);
+        bIsActive.store(false, std::memory_order_release);
 
         //shape check and data
         shape->checkInnerMarginQuality(id);
@@ -65,13 +65,11 @@ namespace urchin {
 
     void AbstractBody::setTransform(const PhysicsTransform& transform) {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         this->transform = transform;
     }
 
     PhysicsTransform AbstractBody::getTransform() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         return transform;
     }
 
@@ -97,7 +95,6 @@ namespace urchin {
 
     void AbstractBody::setRestitution(float restitution) {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         this->restitution = restitution;
     }
 
@@ -106,13 +103,11 @@ namespace urchin {
      */
     float AbstractBody::getRestitution() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         return restitution;
     }
 
     void AbstractBody::setFriction(float friction) {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         this->friction = friction;
     }
 
@@ -121,13 +116,11 @@ namespace urchin {
      */
     float AbstractBody::getFriction() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         return friction;
     }
 
     void AbstractBody::setRollingFriction(float rollingFriction) {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         this->rollingFriction = rollingFriction;
     }
 
@@ -136,13 +129,11 @@ namespace urchin {
      */
     float AbstractBody::getRollingFriction() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         return rollingFriction;
     }
 
     void AbstractBody::setCcdMotionThreshold(float ccdMotionThreshold) {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         this->ccdMotionThreshold = ccdMotionThreshold;
     }
 
@@ -152,7 +143,6 @@ namespace urchin {
      */
     float AbstractBody::getCcdMotionThreshold() const {
         std::lock_guard<std::mutex> lock(bodyMutex);
-
         return ccdMotionThreshold;
     }
 
@@ -165,14 +155,14 @@ namespace urchin {
     }
 
     void AbstractBody::setIsStatic(bool bIsStatic) {
-        this->bIsStatic.store(bIsStatic, std::memory_order_relaxed);
+        this->bIsStatic.store(bIsStatic, std::memory_order_release);
     }
 
     /**
      * @return Body static state (static body cannot be affected by the physics world)
      */
     bool AbstractBody::isStatic() const {
-        return bDisableAllBodies || bIsStatic.load(std::memory_order_relaxed);
+        return bDisableAllBodies || bIsStatic.load(std::memory_order_acquire);
     }
 
     /**
@@ -181,14 +171,14 @@ namespace urchin {
      */
     void AbstractBody::setIsActive(bool bIsActive) {
         assert(!(bIsActive && bIsStatic)); //an active body cannot be static
-        this->bIsActive.store(bIsActive, std::memory_order_relaxed);
+        this->bIsActive.store(bIsActive, std::memory_order_release);
     }
 
     /**
      * @return Body active state (active body has velocity and/or one of body in the same island is active)
      */
     bool AbstractBody::isActive() const {
-        return !bDisableAllBodies && bIsActive.load(std::memory_order_relaxed);
+        return !bDisableAllBodies && bIsActive.load(std::memory_order_acquire);
     }
 
     bool AbstractBody::isGhostBody() const {

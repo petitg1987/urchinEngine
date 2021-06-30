@@ -32,7 +32,7 @@ namespace urchin {
         std::lock_guard<std::mutex> lock(navMeshMutex);
 
         this->navMeshAgent = std::move(navMeshAgent);
-        this->needFullRefresh.store(true, std::memory_order_relaxed);
+        this->needFullRefresh.store(true, std::memory_order_release);
 
         float navigationObjectsJumpMargin = this->navMeshAgent->getJumpDistance() / 2.0f;
         float navigationObjectsMargin = std::max(navigationObjectsJumpMargin, ConfigService::instance()->getFloatValue("navMesh.polytopeAabbTreeFatMargin"));
@@ -79,7 +79,7 @@ namespace urchin {
             removeNavObject(aiObjectToRemove);
         }
 
-        bool refreshAllEntities = needFullRefresh.exchange(false, std::memory_order_relaxed);
+        bool refreshAllEntities = needFullRefresh.exchange(false, std::memory_order_release);
         for (auto& aiEntity : aiWorld.getEntities()) {
             if (aiEntity->isToRebuild() || refreshAllEntities) {
                 removeNavObject(aiEntity);
