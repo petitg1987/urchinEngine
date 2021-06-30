@@ -120,7 +120,7 @@ namespace urchin {
 
                 auto frameEndTime = std::chrono::steady_clock::now();
                 auto deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
-                if (deltaTimeInUs < 200) { //small delta time on Windows is imprecise: wait two milliseconds more to get a more precise value
+                if (deltaTimeInUs < 250) { //small delta time on Windows is imprecise: wait two milliseconds more to get a more precise value
                     std::this_thread::sleep_for(std::chrono::milliseconds(2));
                     frameEndTime = std::chrono::steady_clock::now();
                     deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
