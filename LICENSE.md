@@ -21,7 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-# External Libraries Licenses
+# Third-Party Libraries Licenses
 - OpenAL-Soft (https://openal-soft.org): LGPL => https://github.com/kcat/openal-soft/blob/master/COPYING
 - FreeType (https://www.freetype.org): FreeType License
 - Ogg (https://github.com/gcp/libogg): BSD License
