@@ -31,7 +31,7 @@ Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
   * Character controller
 
 * Sound Engine:
-  * Supported formats: ogg, flac
+  * Supported formats: ogg
   * Spatial sound and global sound
   * Sound trigger based on character position
 

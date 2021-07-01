@@ -1,8 +1,9 @@
 #pragma once
 
-#include <sndfile.h>
 #include <string>
 #include <vector>
+#include <fstream>
+#include <vorbis/vorbisfile.h>
 
 namespace urchin {
 
@@ -16,10 +17,10 @@ namespace urchin {
                 STEREO_16
             };
 
-            explicit SoundFileReader(const std::string&);
+            explicit SoundFileReader(std::string);
             ~SoundFileReader();
 
-            void readNextChunk(std::vector<short>&, unsigned int&, bool);
+            void readNextChunk(std::vector<int16_t>&, unsigned int&, bool);
 
             SoundFormat getFormat() const;
             unsigned int getNumberOfSamples() const;
@@ -28,11 +29,15 @@ namespace urchin {
             float getSoundDuration() const;
 
         private:
-            SNDFILE* file;
-            bool bEndOfFileReached;
+            void closeSoundFile();
+            void logReadChunkError(const std::string&);
 
-            SF_INFO fileInfos;
+            const std::string filename;
+            std::ifstream stream;
             SoundFormat format;
+
+            mutable OggVorbis_File vorbisFile;
+            vorbis_info* vorbisInfo;
     };
 
 }

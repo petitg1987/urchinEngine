@@ -1,6 +1,6 @@
 # Environment setup 
 ## Linux
-* Install libraries from Ubuntu package: `sudo apt install qt5-default qtbase5-dev libglew-dev libopenal-dev libsndfile1-dev libfreetype6-dev libcppunit-dev`
+* Install libraries from Ubuntu package: `sudo apt install qt5-default qtbase5-dev libglew-dev libopenal-dev libogg-dev libvorbis-dev libfreetype6-dev libcppunit-dev`
 * Install Vulkan library:
   ```
   wget -qO - http://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo apt-key add -
