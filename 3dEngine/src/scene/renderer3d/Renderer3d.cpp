@@ -243,7 +243,7 @@ namespace urchin {
 
     void Renderer3d::unpause() {
         if (camera) {
-            camera->resetMousePosition();
+            camera->resetPreviousMousePosition();
         }
 
         paused = false;
@@ -272,7 +272,7 @@ namespace urchin {
         return true;
     }
 
-    bool Renderer3d::onMouseMove(int mouseX, int mouseY) {
+    bool Renderer3d::onMouseMove(double mouseX, double mouseY) {
         if (!paused && camera) {
             return camera->onMouseMove(mouseX, mouseY);
         }

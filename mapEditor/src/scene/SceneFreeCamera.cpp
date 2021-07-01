@@ -10,12 +10,10 @@ namespace urchin {
 
     SceneFreeCamera::SceneFreeCamera(float angle, float nearPlane, float farPlane, const std::unique_ptr<MouseController>& mouseController) :
             FreeCamera(angle, nearPlane, farPlane),
+            mouseXBeforeMove(0),
+            mouseYBeforeMove(0),
             mouseController(mouseController) {
 
-    }
-
-    void SceneFreeCamera::moveMouse(unsigned int x, unsigned int y) {
-        mouseController->moveMouse(x, y);
     }
 
     void SceneFreeCamera::loadCameraState(const std::string& mapFilename) {
@@ -42,6 +40,18 @@ namespace urchin {
         cameraPositionByMap[mapFilename] = serializedCamera;
 
         StateSaveHelper::instance()->saveState("camera.position", MapSerializer::serialize(cameraPositionByMap));
+    }
+
+    bool SceneFreeCamera::onMouseMove(double mouseX, double mouseY) {
+        bool propagateEvent = Camera::onMouseMove(mouseX, mouseY);
+        if (isUseMouseToMoveCamera()) {
+            mouseController->moveMouse((int)mouseXBeforeMove, (int)mouseYBeforeMove);
+            resetPreviousMousePosition(mouseXBeforeMove, mouseYBeforeMove);
+        } else {
+            mouseXBeforeMove = mouseX;
+            mouseYBeforeMove = mouseY;
+        }
+        return propagateEvent;
     }
 
 }

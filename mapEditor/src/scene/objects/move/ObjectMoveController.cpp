@@ -72,19 +72,19 @@ namespace urchin {
     }
 
     bool ObjectMoveController::adjustMousePosition() {
-        Point2<unsigned int> mousePosition = mouseController->getMousePosition();
-        Point2<unsigned int> newMousePosition = mousePosition;
+        Point2<int> mousePosition = mouseController->getMousePosition();
+        Point2<int> newMousePosition = mousePosition;
 
-        if (mousePosition.X >= sceneWidth) {
+        if (mousePosition.X >= (int)sceneWidth) {
             newMousePosition.X = 1;
         } else if (mousePosition.X <= 0) {
-            newMousePosition.X = sceneWidth - 1;
+            newMousePosition.X = (int)sceneWidth - 1;
         }
 
-        if (mousePosition.Y >= sceneHeight) {
+        if (mousePosition.Y >= (int)sceneHeight) {
             newMousePosition.Y = 1;
         } else if (mousePosition.Y <= 0) {
-            newMousePosition.Y = sceneHeight - 1;
+            newMousePosition.Y = (int)sceneHeight - 1;
         }
 
         if (mousePosition != newMousePosition) {

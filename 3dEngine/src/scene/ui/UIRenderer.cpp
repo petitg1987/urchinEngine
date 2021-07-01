@@ -91,9 +91,9 @@ namespace urchin {
         return true;
     }
 
-    bool UIRenderer::onMouseMove(int mouseX, int mouseY) {
+    bool UIRenderer::onMouseMove(double mouseX, double mouseY) {
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
-            if (!widgets[(std::size_t)i]->onMouseMove(mouseX, mouseY)) {
+            if (!widgets[(std::size_t)i]->onMouseMove((int)mouseX, (int)mouseY)) {
                 return false;
             }
         }

@@ -22,7 +22,7 @@ namespace urchin {
             bool onKeyPress(unsigned int) override;
             bool onKeyRelease(unsigned int) override;
             bool onChar(char32_t) override;
-            bool onMouseMove(int, int) override;
+            bool onMouseMove(double, double) override;
             void onDisable() override;
 
             void addWidget(Widget*);

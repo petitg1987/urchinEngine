@@ -13,14 +13,15 @@ namespace urchin {
             SceneFreeCamera(float, float, float, const std::unique_ptr<MouseController>&);
             ~SceneFreeCamera() override = default;
 
-            void moveMouse(unsigned int, unsigned int) override;
-
             void loadCameraState(const std::string&);
             void saveCameraState(const std::string&) const;
+
+            bool onMouseMove(double, double) override;
 
         private:
             static const char DATA_DELIMITER;
 
+            double mouseXBeforeMove, mouseYBeforeMove;
             const std::unique_ptr<MouseController>& mouseController;
     };
 

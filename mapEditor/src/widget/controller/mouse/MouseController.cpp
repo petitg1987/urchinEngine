@@ -8,12 +8,12 @@ namespace urchin {
 
     }
 
-    void MouseController::moveMouse(unsigned int x, unsigned int y) {
-        QCursor::setPos(widget->mapToGlobal(QPoint((int)x, (int)y)));
+    void MouseController::moveMouse(int x, int y) {
+        QCursor::setPos(widget->mapToGlobal(QPoint(x, y)));
     }
 
-    Point2<unsigned int> MouseController::getMousePosition() const {
+    Point2<int> MouseController::getMousePosition() const {
         QPoint mousePosition = widget->mapFromGlobal(QCursor::pos());
-        return Point2<unsigned int>((unsigned int)mousePosition.x(), (unsigned int)mousePosition.y());
+        return Point2<int>(mousePosition.x(), mousePosition.y());
     }
 }

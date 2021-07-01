@@ -6,18 +6,16 @@ namespace urchin {
 
     class Camera {
         public:
-            static constexpr float DEFAULT_MOUSE_SENSITIVITY = 0.006f;
-
             Camera(float, float, float);
             virtual ~Camera() = default;
 
             void initialize(unsigned int, unsigned int);
             void onResize(unsigned int, unsigned int);
 
-            void resetMousePosition();
+            void resetPreviousMousePosition(double previousMouseX = std::numeric_limits<double>::max(), double previousMouseY = std::numeric_limits<double>::max());
             void useMouseToMoveCamera(bool);
             bool isUseMouseToMoveCamera() const;
-            void setMouseSensitivity(float);
+            void setMouseSensitivityPercentage(float);
             void setInvertYAxis(bool);
             void setDistance(float);
             void setMaxRotationX(float);
@@ -46,15 +44,13 @@ namespace urchin {
             virtual bool onKeyRelease(unsigned int);
             virtual void updateCameraView(float) = 0;
 
-            bool onMouseMove(int, int);
-
-        protected:
-            virtual void moveMouse(unsigned int, unsigned int) = 0;
+            virtual bool onMouseMove(double, double);
 
         private:
             void initializeOrUpdate(unsigned int, unsigned int);
             void updateViewMatrix();
 
+            const float MOUSE_SENSITIVITY_FACTOR;
             Matrix4<float> mView, mProjection;
 
             float angle, nearPlane, farPlane;
@@ -67,11 +63,10 @@ namespace urchin {
             float distance; //distance between the camera and the rotation point (0 : first person camera | >0 : third person camera)
 
             bool bUseMouse; //true if the cursor is used to move the camera
-            float mouseSensitivity;
+            float mouseSensitivityPercentage;
             bool invertYAxis;
             unsigned int sceneWidth, sceneHeight;
-            unsigned int middleScreenX, middleScreenY;
-            unsigned int oldMouseX, oldMouseY;
+            double previousMouseX, previousMouseY;
     };
 
 }

@@ -8,6 +8,7 @@ namespace urchin {
     * @param angle Angle of the field of view (fovy)
     */
     Camera::Camera(float angle, float nearPlane, float farPlane) :
+            MOUSE_SENSITIVITY_FACTOR(ConfigService::instance()->getFloatValue("camera.mouseSensitivityFactor")),
             mView(Matrix4<float>()),
             mProjection(Matrix4<float>()),
             angle(angle),
@@ -21,15 +22,13 @@ namespace urchin {
             maxRotationX(0.995f),
             distance(0.0f),
             bUseMouse(false),
-            mouseSensitivity(DEFAULT_MOUSE_SENSITIVITY),
+            mouseSensitivityPercentage(1.0f),
             invertYAxis(false),
             sceneWidth(0),
             sceneHeight(0),
-            middleScreenX(0),
-            middleScreenY(0),
-            oldMouseX(0),
-            oldMouseY(0) {
-
+            previousMouseX(0.0),
+            previousMouseY(0.0) {
+        resetPreviousMousePosition();
     }
 
     void Camera::initialize(unsigned int sceneWidth, unsigned int sceneHeight) {
@@ -43,10 +42,6 @@ namespace urchin {
     void Camera::initializeOrUpdate(unsigned int sceneWidth, unsigned int sceneHeight) {
         this->sceneWidth = sceneWidth;
         this->sceneHeight = sceneHeight;
-        this->middleScreenX = sceneWidth / 2;
-        this->middleScreenY = sceneHeight / 2;
-
-        resetMousePosition();
 
         //projection matrix
         float fov = 1.0f / std::tan((angle * MathValue::PI_FLOAT) / 360.0f);
@@ -62,21 +57,18 @@ namespace urchin {
         frustum = baseFrustum * mView.inverse();
     }
 
-    void Camera::resetMousePosition() {
+    void Camera::resetPreviousMousePosition(double previousMouseX, double previousMouseY) {
         if (bUseMouse) {
-            moveMouse(middleScreenX, middleScreenY);
+            this->previousMouseX = previousMouseX;
+            this->previousMouseY = previousMouseY;
         }
     }
 
     void Camera::useMouseToMoveCamera(bool use) {
         bUseMouse = use;
 
-        if (use) {
-            if (middleScreenX != 0 || middleScreenY != 0) {
-                resetMousePosition();
-            }
-        } else {
-            moveMouse(oldMouseX, oldMouseY);
+        if(bUseMouse) {
+            resetPreviousMousePosition();
         }
     }
 
@@ -84,8 +76,8 @@ namespace urchin {
         return bUseMouse;
     }
 
-    void Camera::setMouseSensitivity(float mouseSensitivity) {
-        this->mouseSensitivity = mouseSensitivity;
+    void Camera::setMouseSensitivityPercentage(float mouseSensitivityPercentage) {
+        this->mouseSensitivityPercentage = mouseSensitivityPercentage;
     }
 
     void Camera::setInvertYAxis(bool invertYAxis) {
@@ -218,25 +210,19 @@ namespace urchin {
         return true;
     }
 
-    bool Camera::onMouseMove(int mouseX, int mouseY) {
-        if (mouseX > 0 || mouseY > 0) {
-
-            if (!bUseMouse) {
-                oldMouseX = (unsigned int)mouseX;
-                oldMouseY = (unsigned int)mouseY;
-                return true;
-            }
-            if ((unsigned int)mouseX == middleScreenX && (unsigned int)mouseY == middleScreenY) {
+    bool Camera::onMouseMove(double mouseX, double mouseY) {
+        if (bUseMouse) {
+            if (previousMouseX == std::numeric_limits<double>::max() && previousMouseY == std::numeric_limits<double>::max()) {
+                previousMouseX = mouseX;
+                previousMouseY = mouseY;
+                return false;
+            } else if (mouseX == previousMouseX && mouseY == previousMouseY) {
                 return false;
             }
 
-            //move the mouse back to the middle of the screen
-            resetMousePosition();
-
-            //vector that describes mousePosition - center
             Vector2<float> mouseDirection;
-            mouseDirection.X = (float)((int)middleScreenX - mouseX) * mouseSensitivity;
-            mouseDirection.Y = (float)((int)middleScreenY - mouseY) * mouseSensitivity;
+            mouseDirection.X = (float)(previousMouseX - mouseX) * MOUSE_SENSITIVITY_FACTOR * mouseSensitivityPercentage;
+            mouseDirection.Y = (float)(previousMouseY - mouseY) * MOUSE_SENSITIVITY_FACTOR * mouseSensitivityPercentage;
             if (invertYAxis) {
                 mouseDirection.Y = - mouseDirection.Y;
             }
@@ -256,9 +242,11 @@ namespace urchin {
 
             updateViewMatrix();
 
+            previousMouseX = mouseX;
+            previousMouseY = mouseY;
+
             return false;
         }
-
         return true;
     }
 
