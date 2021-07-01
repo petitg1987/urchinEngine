@@ -1,3 +1,4 @@
+# Urchin Engine License
 The MIT License (MIT)
 
 Copyright (c) 2016 petitg1987
@@ -19,3 +20,11 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+# External Libraries Licenses
+- OpenAL-Soft (https://openal-soft.org): LGPL => https://github.com/kcat/openal-soft/blob/master/COPYING
+- FreeType (https://www.freetype.org): FreeType License
+- Ogg (https://github.com/gcp/libogg): BSD License
+- Vorbis (https://xiph.org/vorbis): BSD License
+- Curl (https://curl.se/libcurl): MIT License
+- Vulkan (https://www.vulkan.org): Apache 2.0 License
