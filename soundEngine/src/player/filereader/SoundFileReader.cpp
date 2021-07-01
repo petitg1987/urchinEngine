@@ -4,34 +4,6 @@
 
 #include <player/filereader/SoundFileReader.h>
 
-size_t read(void* buffer, size_t elementSize, size_t elementCount, void* dataSource) {
-    assert(elementSize == 1);
-
-    std::ifstream& stream = *static_cast<std::ifstream*>(dataSource);
-    stream.read(static_cast<char*>(buffer), static_cast<long>(elementCount));
-    const std::streamsize bytesRead = stream.gcount();
-    stream.clear(); // In case we read past EOF
-    return static_cast<size_t>(bytesRead);
-}
-
-int seek(void* dataSource, ogg_int64_t offset, int origin) {
-    static const std::vector<std::ios_base::seekdir> seekDirections{
-            std::ios_base::beg, std::ios_base::cur, std::ios_base::end
-    };
-
-    std::ifstream& stream = *static_cast<std::ifstream*>(dataSource);
-    stream.seekg(offset, seekDirections.at(static_cast<unsigned long>(origin)));
-    stream.clear(); // In case we seeked to EOF
-    return 0;
-}
-
-long tell(void* dataSource) {
-    std::ifstream& stream = *static_cast<std::ifstream*>(dataSource);
-    const auto position = stream.tellg();
-    assert(position >= 0);
-    return static_cast<long>(position);
-}
-
 namespace urchin {
 
     SoundFileReader::SoundFileReader(std::string filename) :
@@ -44,7 +16,7 @@ namespace urchin {
             throw std::invalid_argument("Impossible to open sound file " + this->filename);
         }
 
-        const ov_callbacks callbacks = {read, seek, nullptr, tell};
+        const ov_callbacks callbacks = {SoundFileReader::read, SoundFileReader::seek, nullptr, SoundFileReader::tell};
         int loadStatus = ov_open_callbacks(&stream, &vorbisFile, nullptr, 0, callbacks);
         if (loadStatus < 0) {
             throw std::invalid_argument("Impossible to load sound file " + this->filename + ": " + std::to_string(loadStatus));
@@ -64,16 +36,6 @@ namespace urchin {
 
     SoundFileReader::~SoundFileReader() {
         closeSoundFile();
-    }
-
-    void SoundFileReader::closeSoundFile() {
-        if (vorbisFile.datasource) {
-            ov_clear(&vorbisFile);
-            vorbisFile.datasource = nullptr;
-        }
-        if (stream.is_open()) {
-            stream.close();
-        }
     }
 
     /**
@@ -102,6 +64,42 @@ namespace urchin {
             } else {
                 logReadChunkError("Impossible to read chunk from sound file " + filename + ": " + std::to_string(bytesRead));
             }
+        }
+    }
+
+    std::size_t SoundFileReader::read(void* buffer, std::size_t elementSize, std::size_t elementCount, void* dataSource) {
+        if(elementSize != 1) {
+            throw std::runtime_error("Unsupported read from sound file with element size of: " + std::to_string(elementSize));
+        }
+        std::ifstream& stream = *static_cast<std::ifstream*>(dataSource);
+        stream.read(static_cast<char*>(buffer), (long)elementCount);
+        const std::streamsize bytesRead = stream.gcount();
+        stream.clear(); //in case we read past EOF
+        return (std::size_t)bytesRead;
+    }
+
+    int SoundFileReader::seek(void* dataSource, ogg_int64_t offset, int origin) {
+        static const std::vector<std::ios_base::seekdir> seekDirections = {std::ios_base::beg, std::ios_base::cur, std::ios_base::end};
+        std::ifstream& stream = *static_cast<std::ifstream*>(dataSource);
+        stream.seekg(offset, seekDirections.at((unsigned long)origin));
+        stream.clear(); //in case we seeked to EOF
+        return 0;
+    }
+
+    long SoundFileReader::tell(void* dataSource) {
+        std::ifstream& stream = *static_cast<std::ifstream*>(dataSource);
+        const auto position = stream.tellg();
+        assert(position >= 0);
+        return (long)position;
+    }
+
+    void SoundFileReader::closeSoundFile() {
+        if (vorbisFile.datasource) {
+            ov_clear(&vorbisFile);
+            vorbisFile.datasource = nullptr;
+        }
+        if (stream.is_open()) {
+            stream.close();
         }
     }
 

@@ -51,10 +51,8 @@
   * Copy lib & include respectively in "C:\msys64\mingw64\lib" and in "C:\msys64\mingw64\x86_64-w64-mingw32\include"
   * *Info*: vuklan-1.dll can be downloaded on https://fr.dll-files.com/vulkan-1.dll.html
   * *Info*: Don't uninstall Vulkan SDK application because it is required for validation layer  
-* Install sndfile library:
-  * Download: http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28-w64.zip
-  * Copy lib & include respectively in "C:\msys64\mingw64\lib" & "C:\msys64\mingw64\x86_64-w64-mingw32\include"
-  * *Info*: libsndfile-1.dll is in "bin\" folder
+* Install Vorbis library:
+  * Execute: `Pacman -S mingw-w64-x86_64-libvorbis mingw-w64-x86_64-libogg`
 * Install curl library (custom static library only for HTTP/HTTPS protocols):
   ```
   Pacman -S unzip openssl-devel

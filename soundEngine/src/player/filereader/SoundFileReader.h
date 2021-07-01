@@ -29,6 +29,10 @@ namespace urchin {
             float getSoundDuration() const;
 
         private:
+            static std::size_t read(void*, std::size_t, std::size_t, void*);
+            static int seek(void*, ogg_int64_t, int);
+            static long tell(void*);
+
             void closeSoundFile();
             void logReadChunkError(const std::string&);
 

@@ -7,11 +7,11 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(Threads REQUIRED)
 if (WIN32)
     set(OPENAL_LIB openal32)
-    SET(VORBIS_LIB ogg.a)
+    SET(VORBIS_LIB vorbisfile.a vorbis.a ogg.a)
 else()
     set(LINK_OPT -rdynamic) #necessary for SignalHandler to work correctly
     set(OPENAL_LIB openal)
-    SET(VORBIS_LIB vorbisfile.a vorbis.a ogg)
+    SET(VORBIS_LIB vorbisfile.a vorbis.a ogg.a)
 endif()
 
 add_definitions(-ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror)
