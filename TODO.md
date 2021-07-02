@@ -18,6 +18,7 @@
 * Model
   * **OPTIMIZATION** (`major`): Use instantiation mechanism when identical models are displayed several times in the scene
   * **OPTIMIZATION** (`medium`): Regroup draw calls / shaders when possible
+  * **NEW FEATURE** (`medium`): Animation blending
   * **OPTIMIZATION** (`minor`): Clean ModelDisplayer in ModelSetDisplayer for models not displayed for a long time
   * **NEW FEATURE** (`minor`): Use reverse depth for far distant view (see <https://outerra.blogspot.com/2012/11/maximizing-depth-buffer-range-and.html>)
   * **OPTIMIZATION** (`medium`): Models LOD
