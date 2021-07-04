@@ -762,9 +762,12 @@ class AdjustArmatureOrigin(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
+        #Apply transform
+        bpy.ops.object.select_by_type(type='ARMATURE')
+        bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)
+
         # Move armature to world origin (0, 0, 0)
         bpy.ops.view3d.snap_cursor_to_center()
-        bpy.ops.object.select_by_type(type='ARMATURE')
         bpy.ops.view3d.snap_selected_to_cursor()
 
         return {'FINISHED'}
