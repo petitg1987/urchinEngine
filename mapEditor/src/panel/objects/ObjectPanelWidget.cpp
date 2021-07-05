@@ -167,7 +167,7 @@ namespace urchin {
         scale = new QDoubleSpinBox();
         transformLayout->addWidget(scale, 3, 1);
         SpinBoxStyleHelper::applyDefaultStyleOn(scale);
-        scale->setMinimum(0.0);
+        scale->setMinimum(0.01);
         connect(scale, SIGNAL(valueChanged(double)), this, SLOT(updateObjectScale()));
     }
 
