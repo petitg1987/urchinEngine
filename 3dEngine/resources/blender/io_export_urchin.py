@@ -440,18 +440,35 @@ def get_min_max(list_of_points):
     return min, max
 
 
-def objects_to_export():
-    objects_list = []
+def get_meshes_to_export():
+    meshes_to_export = []
     for obj in bpy.context.selected_objects:
         if (obj is not None) and (obj.type == 'MESH') and (len(obj.data.vertices.values()) > 0):
-            objects_list.append(obj)
+            meshes_to_export.append(obj)
 
-    if len(objects_list) == 0:
+    if len(meshes_to_export) == 0:
         for obj in bpy.context.visible_objects:
             if (obj is not None) and (obj.type == 'MESH') and (len(obj.data.vertices.values()) > 0):
-                objects_list.append(obj)
+                meshes_to_export.append(obj)
 
-    return objects_list
+    return meshes_to_export
+
+
+def find_armature(meshes_to_export):
+    armature_found = None
+    for mesh_to_export in meshes_to_export:
+        mesh_armature = mesh_to_export.find_armature()
+        if mesh_armature:
+            if armature_found is None:
+                armature_found = mesh_armature
+            elif armature_found != mesh_armature:
+                reporter.report({'ERROR'}, "Two different armatures found on meshes to export")
+                return None
+        else:
+            reporter.report({'ERROR'}, "Armature not found on object: " + mesh_to_export.name)
+            return None
+
+    return armature_found;
 
 
 def generate_bounding_box(urchin_animation, frame_range):
@@ -461,9 +478,9 @@ def generate_bounding_box(urchin_animation, frame_range):
         corners = []
         scene.frame_set(i)
 
-        for obj in objects_to_export():
-            if obj.data.polygons:
-                bbox = obj.bound_box
+        for mesh_to_export in get_meshes_to_export():
+            if mesh_to_export.data.polygons:
+                bbox = mesh_to_export.bound_box
 
                 matrix = [[1.0, 0.0, 0.0, 0.0],
                           [0.0, 1.0, 0.0, 0.0],
@@ -476,34 +493,37 @@ def generate_bounding_box(urchin_animation, frame_range):
         urchin_animation.bounds.append((min[0], min[1], min[2], max[0], max[1], max[2]))
 
 
-def save_urchin(settings):
+def export_urchin(settings):
     print("[INFO] Exporting selected objects...")
-    bpy.ops.object.mode_set(mode='OBJECT')
 
-    # COMMON EXPORT
+    bpy.ops.object.mode_set(mode='OBJECT')
     bpy.context.scene.frame_set(bpy.context.scene.frame_start)
-    curr_armature = 0
+
+    try:
+        export_all(settings)
+    finally:
+        print("TODO....")
+
+
+def export_all(settings):
+    # COMMON EXPORT
     skeleton = Skeleton()
-    for obj in objects_to_export():
-        curr_armature = obj.find_armature()
-        if curr_armature:
-            w_matrix = curr_armature.matrix_world
-            print("[INFO] Processing armature: " + curr_armature.name)
-            for b in curr_armature.data.bones:
-                if not b.parent:  # only treat root bones
-                    treat_bone(skeleton, b, w_matrix)
-        else:
-            reporter.report({'ERROR'}, "Armature not found on object: " + obj.name)
-        break
+    curr_armature = find_armature(get_meshes_to_export())
+    if curr_armature and curr_armature is not None:
+        w_matrix = curr_armature.matrix_world
+        print("[INFO] Processing armature: " + curr_armature.name)
+        for b in curr_armature.data.bones:
+            if not b.parent:  # only treat root bones
+                treat_bone(skeleton, b, w_matrix)
 
     # MESH EXPORT
     meshes = []
-    for obj in objects_to_export():
+    for mesh_to_export in get_meshes_to_export():
         # Get the evaluate object => object where modifiers (triangulation...) are applied.
         # More details: https://docs.blender.org/api/blender2.8/bpy.types.Depsgraph.html
         deps_graph = bpy.context.evaluated_depsgraph_get()
-        object_eval = obj.evaluated_get(deps_graph)
-        modified_mesh = object_eval.to_mesh()
+        mesh_eval = mesh_to_export.evaluated_get(deps_graph)
+        modified_mesh = mesh_eval.to_mesh()
 
         mesh = Mesh(modified_mesh.name)
         print("[INFO] Processing mesh: " + modified_mesh.name)
@@ -516,7 +536,7 @@ def save_urchin(settings):
         for v in modified_mesh.vertices:
             num_weights += len(v.groups)
 
-        w_matrix = obj.matrix_world
+        w_matrix = mesh_to_export.matrix_world
         verts = modified_mesh.vertices
 
         faces = []
@@ -526,6 +546,10 @@ def save_urchin(settings):
         create_vertex_a = 0  # normal vertex
         create_vertex_b = 0  # cloned because flat face
         create_vertex_c = 0  # cloned because different texture coord
+
+        if len(modified_mesh.materials) == 0:
+            reporter.report({'ERROR'}, "Missing material on: " + mesh_to_export.name)
+            break;
 
         while faces:
             material_index = faces[0].material_index
@@ -560,7 +584,7 @@ def save_urchin(settings):
 
                             influences = []
                             for j in range(len(modified_mesh.vertices[face.vertices[i]].groups)):
-                                inf = [obj.vertex_groups[modified_mesh.vertices[face.vertices[i]].groups[j].group].name, modified_mesh.vertices[face.vertices[i]].groups[j].weight]
+                                inf = [mesh_to_export.vertex_groups[modified_mesh.vertices[face.vertices[i]].groups[j].group].name, modified_mesh.vertices[face.vertices[i]].groups[j].weight]
                                 influences.append(inf)
 
                             if not influences:
@@ -607,7 +631,7 @@ def save_urchin(settings):
                     for i in range(1, len(face.vertices) - 1):  # split faces with more than 3 vertices
                         Face(sub_mesh, face_vertices[0], face_vertices[i], face_vertices[i + 1])
                 else:
-                    reporter.report({'ERROR'}, "Found face with invalid material on object: " + obj.name)
+                    reporter.report({'ERROR'}, "Found face with invalid material on mesh: " + mesh_to_export.name)
         print("[INFO] Created vertices: A " + str(create_vertex_a) + ", B " + str(create_vertex_b) + ", C " + str(create_vertex_c))
 
     if settings.export_mode == "mesh & anim" or settings.export_mode == "mesh only":
@@ -710,7 +734,7 @@ class ExportUrchin(bpy.types.Operator):
         global reporter
         reporter = self
         settings = UrchinSettings(save_path=self.properties.filepath, export_mode=self.properties.export_mode)
-        save_urchin(settings)
+        export_urchin(settings)
         return {'FINISHED'}
 
     def invoke(self, context, event):
