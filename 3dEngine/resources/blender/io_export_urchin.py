@@ -493,6 +493,31 @@ def generate_bounding_box(urchin_animation, frame_range):
         urchin_animation.bounds.append((min[0], min[1], min[2], max[0], max[1], max[2]))
 
 
+def rotate_axis(obj_to_rotate, rotate_angle, rotate_axis):
+    #Save selected and active objects
+    saved_selected_objects = bpy.context.selected_objects
+    saved_active_object = bpy.context.view_layer.objects.active
+
+    #Select object to rotate
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.context.view_layer.objects.active = obj_to_rotate
+    obj_to_rotate.select_set(True)
+
+    #Rotate
+    bpy.ops.transform.rotate(value=math.radians(rotate_angle), orient_axis=rotate_axis, orient_type='GLOBAL')
+
+    #Apply rotation
+    for child in bpy.context.object.children:
+        child.select_set(True)
+    bpy.ops.object.transform_apply(location=True, rotation=True, scale=False)
+
+    #Restore selected and active objects
+    bpy.ops.object.select_all(action='DESELECT')
+    for selected_object in saved_selected_objects:
+        selected_object.select_set(True)
+    bpy.context.view_layer.objects.active = saved_active_object
+
+
 def export_urchin(settings):
     print("[INFO] Exporting selected objects...")
 
@@ -500,9 +525,11 @@ def export_urchin(settings):
     bpy.context.scene.frame_set(bpy.context.scene.frame_start)
 
     try:
+        armature = find_armature(get_meshes_to_export())
+        rotate_axis(armature, -90, 'X')
         export_all(settings)
     finally:
-        print("TODO....")
+        rotate_axis(armature, 90, 'X')
 
 
 def export_all(settings):
@@ -635,7 +662,9 @@ def export_all(settings):
         print("[INFO] Created vertices: A " + str(create_vertex_a) + ", B " + str(create_vertex_b) + ", C " + str(create_vertex_c))
 
     if settings.export_mode == "mesh & anim" or settings.export_mode == "mesh only":
-        urchin_mesh_filename = settings.save_path + ".urchinMesh"
+        urchin_mesh_filename = settings.save_path
+        if not urchin_mesh_filename.endswith(".urchinMesh"):
+            urchin_mesh_filename += ".urchinMesh"
 
         if len(meshes) > 1:  # save all submeshes in the first mesh
             for mesh in range(1, len(meshes)):
@@ -761,7 +790,7 @@ class AdjustMeshOrigin(bpy.types.Operator):
     def execute(self, context):
         # Apply transform
         selectAllMeshes()
-        bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)
+        bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
 
         # Move the 3D cursor to the center of the global bounding box
         bpy.ops.object.duplicate_move()
@@ -788,7 +817,7 @@ class AdjustArmatureOrigin(bpy.types.Operator):
     def execute(self, context):
         #Apply transform
         bpy.ops.object.select_by_type(type='ARMATURE')
-        bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)
+        bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
 
         # Move armature to world origin (0, 0, 0)
         bpy.ops.view3d.snap_cursor_to_center()
