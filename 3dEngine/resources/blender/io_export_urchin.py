@@ -509,7 +509,7 @@ def rotate_axis(obj_to_rotate, rotate_angle, rotate_axis):
     #Apply rotation
     for child in bpy.context.object.children:
         child.select_set(True)
-    bpy.ops.object.transform_apply(location=True, rotation=True, scale=False)
+    bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
 
     #Restore selected and active objects
     bpy.ops.object.select_all(action='DESELECT')
