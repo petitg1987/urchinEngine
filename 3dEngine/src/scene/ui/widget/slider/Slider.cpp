@@ -42,7 +42,7 @@ namespace urchin {
 
         currentValueText = Text::newText(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[selectedIndex]);
         float textYPosition = (float)(getHeight() - currentValueText->getHeight()) / 2.0f;
-        currentValueText->setPosition(Position((float)getWidth() + TEXT_SHIFT_LENGTH, textYPosition, LengthType::PIXEL));
+        currentValueText->updatePosition(Position((float)getWidth() + TEXT_SHIFT_LENGTH, textYPosition, LengthType::PIXEL));
 
         texSliderLine = loadTexture(sliderChunk, "imageLine");
         auto imageCursor = loadTexture(sliderChunk, "imageCursor");
@@ -161,7 +161,7 @@ namespace urchin {
 
         float sliderCursorPositionPercentage = (float)selectedIndex / ((float)values.size() - 1.0f);
         float sliderCursorXPosition = sliderCursorPositionPercentage * (sliderCursorMaxXPosition - sliderCursorMinXPosition);
-        cursorImage->setPosition(Position((float)sliderCursorXPosition, (float)cursorImage->getPositionY(), LengthType::PIXEL));
+        cursorImage->updatePosition(Position((float)sliderCursorXPosition, (float)cursorImage->getPositionY(), LengthType::PIXEL));
     }
 
     void Slider::prepareWidgetRendering(float) {

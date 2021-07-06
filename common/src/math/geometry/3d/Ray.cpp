@@ -33,7 +33,7 @@ namespace urchin {
     }
 
     template<class T> Point3<T> Ray<T>::computeTo() const {
-        return origin.translate(direction*length);
+        return origin.translate(direction * length);
     }
 
     template<class T> const Vector3<T> &Ray<T>::getDirection() const {

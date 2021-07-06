@@ -1,5 +1,6 @@
 #include <cmath>
 #include <algorithm>
+#include <cassert>
 
 #include <math/geometry/3d/object/Frustum.h>
 #include <math/geometry/3d/Line3D.h>
@@ -148,7 +149,8 @@ namespace urchin {
         Point3<T> p2((frustumPoints[FTR] + frustumPoints[FBR]) / (T)2.0);
         Point3<T> p3((frustumPoints[NTR] + frustumPoints[NBR]) / (T)2.0);
         Plane<T> middlePlane(p1, p2, p3);
-        position = middlePlane.intersectPoint(sideLine);
+        bool hasIntersection = false;
+        position = middlePlane.intersectPoint(sideLine, hasIntersection);
     }
 
     template<class T> const Point3<T> *Frustum<T>::getFrustumPoints() const {

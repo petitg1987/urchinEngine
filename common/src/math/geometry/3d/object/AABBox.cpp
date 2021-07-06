@@ -162,12 +162,12 @@ namespace urchin {
     template<class T> Matrix4<T> AABBox<T>::toProjectionMatrix() const {
         T tx = -((max.X + min.X) / (max.X - min.X));
         T ty = ((max.Y + min.Y) / (max.Y - min.Y));
-        T tz = 0.5f - 0.5f * ((-min.Z - max.Z) / (-min.Z + max.Z));
+        T tz = (T)0.5 - (T)0.5 * ((-min.Z - max.Z) / (-min.Z + max.Z));
 
         return Matrix4<T>(
-            2.0f / (max.X - min.X), 0.0, 0.0, tx,
-            0.0, -2.0f / (max.Y - min.Y), 0.0, ty,
-            0.0, 0.0, -1.0f / (-min.Z + max.Z), tz,
+                (T)2.0 / (max.X - min.X), 0.0, 0.0, tx,
+            0.0, (T)-2.0 / (max.Y - min.Y), 0.0, ty,
+            0.0, 0.0, (T)-1.0 / (-min.Z + max.Z), tz,
             0.0, 0.0, 0.0, 1.0);
     }
 
@@ -315,7 +315,7 @@ namespace urchin {
 
         Point3<T> translation(m(0,3), m(1,3), m(2,3));
 
-        return AABBox<T>(minX+minY+minZ+translation, maxX+maxY+maxZ+translation);
+        return AABBox<T>(minX + minY + minZ + translation, maxX + maxY + maxZ + translation);
     }
 
     template<class T> AABBox<T> operator *(const AABBox<T>& aabb, const Matrix4<T>& m) {

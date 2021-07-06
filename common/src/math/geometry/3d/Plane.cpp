@@ -136,12 +136,18 @@ namespace urchin {
         return p.translate(-distanceFromPlane*normal);
     }
 
-    template<class T> Point3<T> Plane<T>::intersectPoint(const Line3D<T>& line) const {
+    template<class T> Point3<T> Plane<T>::intersectPoint(const Line3D<T>& line, bool& hasIntersection) const {
         Point3<T> planePoint = Point3<T>(normal * -d);
         Vector3<T> lineVector = line.getA().vector(line.getB());
 
+        T tDenominator = normal.dotProduct(lineVector);
+        if (tDenominator == 0.0) {
+            hasIntersection = false;
+            return Point3<T>(std::numeric_limits<T>::max(), std::numeric_limits<T>::max(), std::numeric_limits<T>::max());
+        }
         Vector3<T> lineAToPlanePoint = line.getA().vector(planePoint);
-        T t = normal.dotProduct(lineAToPlanePoint) / normal.dotProduct(lineVector);
+        T t = normal.dotProduct(lineAToPlanePoint) / tDenominator;
+        hasIntersection = true;
         return line.getA().translate(t * lineVector);
     }
 

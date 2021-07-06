@@ -121,7 +121,7 @@ namespace urchin {
         return widgetState;
     }
 
-    void Widget::setPosition(Position position) {
+    void Widget::updatePosition(Position position) {
         this->position = position;
     }
 
@@ -169,6 +169,11 @@ namespace urchin {
         }
 
         return parent->getGlobalPositionY() + parent->getOutline().topWidth + getPositionY();
+    }
+
+    void Widget::updateSize(Size size) {
+        setSize(size);
+        createOrUpdateWidget();
     }
 
     void Widget::setSize(Size size) {

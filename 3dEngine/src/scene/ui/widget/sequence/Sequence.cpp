@@ -63,7 +63,7 @@ namespace urchin {
         }
 
         rightButton = Text::newText(this, Position(0, 0, LengthType::PIXEL), buttonsTextSkin, rightButtonString);
-        rightButton->setPosition(Position((float)getWidth() - (float)rightButton->getWidth(), 0.0f, LengthType::PIXEL));
+        rightButton->updatePosition(Position((float)getWidth() - (float)rightButton->getWidth(), 0.0f, LengthType::PIXEL));
         rightButton->addEventListener(std::make_shared<ButtonSequenceEventListener>(this, false));
         if (rightButtonEventListener) {
             this->rightButton->addEventListener(rightButtonEventListener);
@@ -119,7 +119,7 @@ namespace urchin {
 
     void Sequence::prepareWidgetRendering(float) {
         //update the text position because the text size is updated when the UI language is changed
-        valuesText[selectedIndex]->setPosition(Position(((float)getWidth() - (float)valuesText[selectedIndex]->getWidth()) / 2.0f, 0.0f, LengthType::PIXEL));
+        valuesText[selectedIndex]->updatePosition(Position(((float)getWidth() - (float)valuesText[selectedIndex]->getWidth()) / 2.0f, 0.0f, LengthType::PIXEL));
     }
 
     Sequence::ButtonSequenceEventListener::ButtonSequenceEventListener(Sequence* sequence, bool isLeftButton) :

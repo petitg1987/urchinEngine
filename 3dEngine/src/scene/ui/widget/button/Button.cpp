@@ -86,7 +86,7 @@ namespace urchin {
     void Button::prepareWidgetRendering(float) {
         if (text) {
             //update the text position because the text size is updated when the UI language is changed
-            text->setPosition(Position(((float)getWidth() - (float)text->getWidth()) / 2.0f, ((float)getHeight() - (float)text->getHeight()) / 2.0f, LengthType::PIXEL));
+            text->updatePosition(Position(((float)getWidth() - (float)text->getWidth()) / 2.0f, ((float)getHeight() - (float)text->getHeight()) / 2.0f, LengthType::PIXEL));
         }
 
         updateTranslateVector(buttonRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));

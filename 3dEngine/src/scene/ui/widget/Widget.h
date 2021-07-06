@@ -40,7 +40,7 @@ namespace urchin {
             const std::vector<std::shared_ptr<EventListener>>& getEventListeners() const;
             WidgetStates getWidgetState() const;
 
-            void setPosition(Position);
+            void updatePosition(Position);
             Position getPosition() const;
             int getPositionX() const;
             int getPositionY() const;
@@ -48,7 +48,7 @@ namespace urchin {
             int getGlobalPositionX() const;
             int getGlobalPositionY() const;
 
-            void setSize(Size);
+            void updateSize(Size);
             Size getSize() const;
             unsigned int getWidth() const;
             unsigned int getHeight() const;
@@ -77,6 +77,8 @@ namespace urchin {
             unsigned int getSceneWidth() const;
             unsigned int getSceneHeight() const;
             virtual void createOrUpdateWidget() = 0;
+
+            void setSize(Size);
 
             virtual void prepareWidgetRendering(float) = 0;
 

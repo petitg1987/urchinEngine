@@ -33,7 +33,7 @@ namespace urchin {
             T horizontalDistance(const Point3<T>&) const;
             Point3<T> orthogonalProjection(const Point3<T>&) const;
 
-            Point3<T> intersectPoint(const Line3D<T>&) const;
+            Point3<T> intersectPoint(const Line3D<T>&, bool&) const;
 
         private:
             Vector3<T> normal; //plane normal normalized
