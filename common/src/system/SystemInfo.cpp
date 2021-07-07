@@ -207,7 +207,10 @@ namespace urchin {
             GetKeyboardLayoutNameA(layoutIdChar);
             std::string layoutId(layoutIdChar);
             //layout ID list: https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/windows-language-pack-default-values
-            if (StringUtil::insensitiveEquals(layoutId, "0000080c") || StringUtil::insensitiveEquals(layoutId, "0001080c") || StringUtil::insensitiveEquals(layoutId, "0000040c")) {
+            if (StringUtil::insensitiveEquals(layoutId, "0000080c") /* Belgian French */ ||
+                    StringUtil::insensitiveEquals(layoutId, "00000813") /* Belgian (Period) */ ||
+                    StringUtil::insensitiveEquals(layoutId, "0001080c") /* Belgian (Comma) */ ||
+                    StringUtil::insensitiveEquals(layoutId, "0000040c") /* French */) {
                 return KeyboardLayout::AZERTY;
             }
             return KeyboardLayout::DEFAULT;
