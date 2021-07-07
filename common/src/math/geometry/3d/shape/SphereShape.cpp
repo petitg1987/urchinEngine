@@ -19,7 +19,7 @@ namespace urchin {
     }
 
     template<class T> std::unique_ptr<ConvexObject3D<T>> SphereShape<T>::toConvexObject(const Transform<T>& transform) const {
-        return std::make_unique<Sphere<T>>(radius*transform.getScale(), transform.getPosition());
+        return std::make_unique<Sphere<T>>(radius * transform.getScale(), transform.getPosition());
     }
 
     //explicit template

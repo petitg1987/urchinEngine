@@ -113,7 +113,7 @@ namespace urchin {
                                   MathFunction::roundDivision<T>(startPointsCrossR * s.Y, rCrossS));
             return other.getA().translate(vTranslate);
         }
-        return other.getA().translate((startPointsCrossR*s) / rCrossS);
+        return other.getA().translate((startPointsCrossR * s) / rCrossS);
     }
 
     template<class T> std::ostream& operator <<(std::ostream& stream, const Line2D<T>& l) {

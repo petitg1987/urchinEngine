@@ -59,7 +59,7 @@ template<class BaseType> void* FixedSizePool<BaseType>::allocate(unsigned int si
  * @param ptr Pointer to free
  */
 template<class BaseType> void FixedSizePool<BaseType>::deallocate(BaseType* ptr) {
-    if ((reinterpret_cast<unsigned char*>(ptr) >= pool && reinterpret_cast<unsigned char*>(ptr) < pool + maxElementSize*maxElements)) { //ptr is in the pool
+    if ((reinterpret_cast<unsigned char*>(ptr) >= pool && reinterpret_cast<unsigned char*>(ptr) < pool + maxElementSize * maxElements)) { //ptr is in the pool
         ptr->~BaseType();
 
         *(void**)ptr = firstFree;

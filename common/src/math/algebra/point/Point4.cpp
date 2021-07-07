@@ -44,11 +44,11 @@ namespace urchin {
     }
 
     template<class T> T Point4<T>::distance(const Point4<T>& p) const {
-        return std::sqrt(((X-p.X)*(X-p.X)) + ((Y-p.Y)*(Y-p.Y)) + ((Z-p.Z)*(Z-p.Z)) + ((W-p.W)*(W-p.W)));
+        return std::sqrt(((X - p.X) * (X - p.X)) + ((Y - p.Y) * (Y - p.Y)) + ((Z - p.Z) * (Z - p.Z)) + ((W - p.W) * (W - p.W)));
     }
 
     template<class T> T Point4<T>::squareDistance(const Point4<T>& p) const {
-        return (T)(((X-p.X)*(X-p.X)) + ((Y-p.Y)*(Y-p.Y)) + ((Z-p.Z)*(Z-p.Z)) + ((W-p.W)*(W-p.W)));
+        return (T)(((X - p.X) * (X - p.X)) + ((Y - p.Y) * (Y - p.Y)) + ((Z - p.Z) * (Z - p.Z)) + ((W - p.W) * (W - p.W)));
     }
 
     template<class T> Vector4<T> Point4<T>::vector(const Point4<T>& target) const {
@@ -63,12 +63,12 @@ namespace urchin {
     }
 
     template<class T> Point4<T> Point4<T>::translate(const Vector4<T>& v) const {
-        return Point4<T>(X+v.X, Y+v.Y, Z+v.Z, W+v.W);
+        return Point4<T>(X + v.X, Y + v.Y, Z + v.Z, W + v.W);
     }
 
     template<class T> Point4<T> Point4<T>::divideByW() const {
         if (W != 0.0) {
-            return Point4<T>(X/W, Y/W, Z/W, 1);
+            return Point4<T>(X / W, Y / W, Z / W, 1);
         }
 
         return *this;
@@ -76,7 +76,7 @@ namespace urchin {
 
     template<class T> Point3<T> Point4<T>::toPoint3() const {
         if (W != 0.0) {
-            return Point3<T>(X/W, Y/W, Z/W);
+            return Point3<T>(X / W, Y / W, Z / W);
         }
 
         return Point3<T>(X, Y, Z);

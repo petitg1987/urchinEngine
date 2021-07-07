@@ -35,18 +35,18 @@ namespace urchin {
             bool islandLinkedToStaticElement = false;
             bool islandBodiesCanSleep = true;
             for (unsigned int j = 0; j < nbElements; ++j) { //loop on elements of the island
-                auto* body = dynamic_cast<RigidBody*>(islandElementsLink[startElementIndex+j].element);
+                auto* body = dynamic_cast<RigidBody*>(islandElementsLink[startElementIndex + j].element);
                 if (isBodyMoving(body)) {
                     islandBodiesCanSleep = false;
                     break;
                 }
 
-                islandLinkedToStaticElement = islandLinkedToStaticElement || islandElementsLink[startElementIndex+j].linkedToStaticElement;
+                islandLinkedToStaticElement = islandLinkedToStaticElement || islandElementsLink[startElementIndex + j].linkedToStaticElement;
             }
             islandBodiesCanSleep = islandBodiesCanSleep && islandLinkedToStaticElement; //one element of the island must be in contact with a static element to sleep the island
 
             for (unsigned int j = 0; j < nbElements; ++j) { //loop on elements of the island
-                auto* body = dynamic_cast<RigidBody*>(islandElementsLink[startElementIndex+j].element);
+                auto* body = dynamic_cast<RigidBody*>(islandElementsLink[startElementIndex + j].element);
                 bool bodyActiveState = !islandBodiesCanSleep;
                 if (body->isActive() != bodyActiveState) {
                     body->setIsActive(bodyActiveState);
@@ -116,7 +116,7 @@ namespace urchin {
             std::cout << "Island " << islandId << ":" << std::endl;
 
             for (unsigned int j = 0; j < nbElements; ++j) { //loop on elements of the island
-                auto* body = dynamic_cast<RigidBody*>(islandElementsLink[startElementIndex+j].element);
+                auto* body = dynamic_cast<RigidBody*>(islandElementsLink[startElementIndex + j].element);
                 std::cout << "  - Body: " << body->getId() << " (moving: " << isBodyMoving(body) << ", active: " << body->isActive() << ")" << std::endl;
             }
 

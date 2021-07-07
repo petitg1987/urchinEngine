@@ -5,6 +5,7 @@
 #include <object/CollisionConeObject.h>
 #include <object/CollisionConvexHullObject.h>
 #include <object/CollisionCylinderObject.h>
+#include <object/CollisionSphereObject.h>
 #include <object/CollisionTriangleObject.h>
 
 namespace urchin {
@@ -16,7 +17,7 @@ namespace urchin {
             sizeof(CollisionConeObject),
             sizeof(CollisionConvexHullObject),
             sizeof(CollisionCylinderObject),
-            sizeof(CollisionCylinderObject),
+            sizeof(CollisionSphereObject),
             sizeof(CollisionTriangleObject)
         });
         unsigned int objectsPoolSize = ConfigService::instance()->getUnsignedIntValue("collisionObject.poolSize");

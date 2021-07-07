@@ -72,7 +72,7 @@ namespace urchin {
         }
 
         //check if P is in voronoi region of edge AB
-        T vc = abDotAp*acDotBp - abDotBp*acDotAp;
+        T vc = abDotAp * acDotBp - abDotBp * acDotAp;
         if (vc <= (T)0.0 && abDotAp >= (T)0.0 && abDotBp <= (T)0.0) {
             T v = abDotAp / (abDotAp - abDotBp);
 
@@ -94,7 +94,7 @@ namespace urchin {
         }
 
         //check if P is in voronoi region of edge AC
-        T vb = abDotCp*acDotAp - abDotAp*acDotCp;
+        T vb = abDotCp * acDotAp - abDotAp * acDotCp;
         if (vb <= (T)0.0 && acDotAp >= (T)0.0 && acDotCp <= (T)0.0) {
             T w = acDotAp / (acDotAp - acDotCp);
 
@@ -105,7 +105,7 @@ namespace urchin {
         }
 
         //check if P is in voronoi region of BC
-        T va = abDotBp*acDotCp - abDotCp*acDotBp;
+        T va = abDotBp * acDotCp - abDotCp * acDotBp;
         if (va <= (T)0.0 && (acDotBp - abDotBp) >= (T)0.0 && (abDotCp - acDotCp) >= (T)0.0) {
             T w = (acDotBp - abDotBp) / ((acDotBp - abDotBp) + (abDotCp - acDotCp));
 

@@ -105,12 +105,12 @@ namespace urchin {
      */
     template<class T> T Plane<T>::distance(const Point3<T>& p) const { //see http://fr.wikipedia.org/wiki/Distance_d%27un_point_%C3%A0_un_plan
 
-        //division by sqrt(a*a+b*b+c*c) is useless because normal is normalized and so result is 1.0.
-        return normal.X*p.X + normal.Y*p.Y + normal.Z*p.Z + d;
+        //division by sqrt(a * a + b * b + c * c) is useless because normal is normalized and so result is 1.0.
+        return normal.X * p.X + normal.Y * p.Y + normal.Z * p.Z + d;
     }
 
     template<class T> T Plane<T>::distance(const Point4<T>& p) const {
-        return normal.X*p.X + normal.Y*p.Y + normal.Z*p.Z + d*p.W;
+        return normal.X * p.X + normal.Y * p.Y + normal.Z * p.Z + d * p.W;
     }
 
     /**
@@ -133,7 +133,7 @@ namespace urchin {
         Point3<T> planePoint = Point3<T>(normal * -d);
         Vector3<T> planePointToP = planePoint.vector(p);
         T distanceFromPlane = planePointToP.dotProduct(normal);
-        return p.translate(-distanceFromPlane*normal);
+        return p.translate(-distanceFromPlane * normal);
     }
 
     template<class T> Point3<T> Plane<T>::intersectPoint(const Line3D<T>& line, bool& hasIntersection) const {

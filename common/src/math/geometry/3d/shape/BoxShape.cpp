@@ -77,7 +77,7 @@ namespace urchin {
     }
 
     template<class T> std::unique_ptr<ConvexObject3D<T>> BoxShape<T>::toConvexObject(const Transform<T>& transform) const {
-        return std::make_unique<OBBox<T>>(halfSizes*transform.getScale(), transform.getPosition(), transform.getOrientation());
+        return std::make_unique<OBBox<T>>(halfSizes * transform.getScale(), transform.getPosition(), transform.getOrientation());
     }
 
     //explicit template

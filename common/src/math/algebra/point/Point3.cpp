@@ -38,11 +38,11 @@ namespace urchin {
     }
 
     template<class T> T Point3<T>::distance(const Point3<T>& p) const {
-        return std::sqrt(((X-p.X)*(X-p.X)) + ((Y-p.Y)*(Y-p.Y)) + ((Z-p.Z)*(Z-p.Z)));
+        return std::sqrt(((X - p.X) * (X - p.X)) + ((Y - p.Y) * (Y - p.Y)) + ((Z - p.Z) * (Z - p.Z)));
     }
 
     template<class T> T Point3<T>::squareDistance(const Point3<T>& p) const {
-        return (T)(((X-p.X)*(X-p.X)) + ((Y-p.Y)*(Y-p.Y)) + ((Z-p.Z)*(Z-p.Z)));
+        return (T)(((X - p.X) * (X - p.X)) + ((Y - p.Y) * (Y - p.Y)) + ((Z - p.Z) * (Z - p.Z)));
     }
 
     template<class T> Vector3<T> Point3<T>::vector(const Point3<T>& target) const {
@@ -57,12 +57,12 @@ namespace urchin {
     }
 
     template<class T> Point3<T> Point3<T>::translate(const Vector3<T>& v) const {
-        return Point3<T>(X+v.X, Y+v.Y, Z+v.Z);
+        return Point3<T>(X + v.X, Y + v.Y, Z + v.Z);
     }
 
     template<class T> Point3<T> Point3<T>::divideByZ() const {
         if (Z != 0.0) {
-            return Point3<T>(X/Z, Y/Z, 1);
+            return Point3<T>(X / Z, Y / Z, 1);
         }
 
         return *this;

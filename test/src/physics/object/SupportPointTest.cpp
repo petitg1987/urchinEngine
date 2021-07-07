@@ -74,8 +74,8 @@ void SupportPointTest::convexHullSupportPoint() {
             Point3<float>(-0.3f, 1.0f, -1.0f), Point3<float>(0.2f, 0.0f, -1.0f), Point3<float>(-0.3f, -1.0f, -1.0f), Point3<float>(-0.8f, 0.0f, -1.0f)
     };
 
-    std::vector<Point3<float>> obbPointsWithMargin(obbPointsWithMarginTab, obbPointsWithMarginTab+sizeof(obbPointsWithMarginTab)/sizeof(Point3<float>));
-    std::vector<Point3<float>> obbPointsWithoutMargin(obbPointsWithoutMarginTab, obbPointsWithoutMarginTab+sizeof(obbPointsWithoutMarginTab)/sizeof(Point3<float>));
+    std::vector<Point3<float>> obbPointsWithMargin(obbPointsWithMarginTab, obbPointsWithMarginTab + sizeof(obbPointsWithMarginTab) / sizeof(Point3<float>));
+    std::vector<Point3<float>> obbPointsWithoutMargin(obbPointsWithoutMarginTab, obbPointsWithoutMarginTab + sizeof(obbPointsWithoutMarginTab) / sizeof(Point3<float>));
     CollisionConvexHullObject convexHullObject(0.04f, obbPointsWithMargin, obbPointsWithoutMargin);
 
     AssertHelper::assertPoint3FloatEquals(convexHullObject.getSupportPoint(Vector3<float>(1.0f, 0.0f, -0.1f), false), Point3<float>(0.2f, 0.0f, -1.0f));

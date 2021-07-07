@@ -168,7 +168,7 @@ namespace urchin {
                                       MathFunction::roundDivision<T>(thisToOtherCrossR * r.Y, rCrossS));
                 return a.translate(vTranslate);
             }
-            return a.translate((thisToOtherCrossR*r)/rCrossS);
+            return a.translate((thisToOtherCrossR * r) / rCrossS);
         }
 
         //no intersection

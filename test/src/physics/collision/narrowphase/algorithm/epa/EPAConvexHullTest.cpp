@@ -36,13 +36,13 @@ void EPAConvexHullTest::cornerInsideBox() {
             Point3<float>(0.0f, 1.0f, 0.0f), Point3<float>(1.0f, 1.0f, 0.0f), Point3<float>(1.0f, -1.0f, 0.0f), Point3<float>(0.0f, -1.0f, 0.0f),
             Point3<float>(0.0f, 1.0f, -1.0f), Point3<float>(1.0f, 1.0f, -1.0f), Point3<float>(1.0f, -1.0f, -1.0f), Point3<float>(0.0f, -1.0f, -1.0f)
     };
-    std::vector<Point3<float>> aabbPoints(aabbPointsTab, aabbPointsTab+sizeof(aabbPointsTab)/sizeof(Point3<float>));
+    std::vector<Point3<float>> aabbPoints(aabbPointsTab, aabbPointsTab + sizeof(aabbPointsTab) / sizeof(Point3<float>));
 
     Point3<float> obbPointsTab[] = {
             Point3<float>(-0.3f, 1.0f, 0.0f), Point3<float>(0.2f, 0.0f, 0.0f), Point3<float>(-0.3f, -1.0f, 0.0f), Point3<float>(-0.8f, 0.0f, 0.0f),
             Point3<float>(-0.3f, 1.0f, -1.0f), Point3<float>(0.2f, 0.0f, -1.0f), Point3<float>(-0.3f, -1.0f, -1.0f), Point3<float>(-0.8f, 0.0f, -1.0f)
     };
-    std::vector<Point3<float>> obbPoints(obbPointsTab, obbPointsTab+sizeof(obbPointsTab)/sizeof(Point3<float>));
+    std::vector<Point3<float>> obbPoints(obbPointsTab, obbPointsTab + sizeof(obbPointsTab) / sizeof(Point3<float>));
 
     CollisionConvexHullObject ch1(0.0f, aabbPoints, aabbPoints);
     CollisionConvexHullObject ch2(0.0f, obbPoints, obbPoints);

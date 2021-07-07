@@ -195,7 +195,7 @@ namespace urchin {
             //create three vectors around 'lineDirection' separate of 120 degrees
             const T sin60 = (T)0.86602540378; //sin(pi/3)
             const T cos60 = 0.5; //cos(pi/3)
-            const Quaternion<T> rotationQuaternion(lineDirection.X*sin60, lineDirection.Y*sin60, lineDirection.Z*sin60, cos60);
+            const Quaternion<T> rotationQuaternion(lineDirection.X * sin60, lineDirection.Y * sin60, lineDirection.Z * sin60, cos60);
             const Matrix3<T> rotationMatrix = rotationQuaternion.toMatrix3();
 
             const Vector3<T> v1 = lineDirection.crossProduct(Vector3<T>(minAxis == 0 ? 1.0 : 0.0, minAxis == 1 ? 1.0 : 0.0, minAxis == 2 ? 1.0 : 0.0));

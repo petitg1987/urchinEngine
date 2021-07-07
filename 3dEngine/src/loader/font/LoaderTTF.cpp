@@ -117,7 +117,7 @@ namespace urchin {
 
         //texture creation
         constexpr unsigned int NUM_COLORS = 4u;
-        std::vector<unsigned char> texels(dimensionTexture*dimensionTexture*NUM_COLORS, 0);
+        std::vector<unsigned char> texels(dimensionTexture * dimensionTexture * NUM_COLORS, 0);
         for (unsigned int i = 0, c = 0; i < dimensionTexture; i += dimensionLetters) {
             for (unsigned int j = 0; j < dimensionTexture; j += dimensionLetters, c++) {
                 for (unsigned int yy = 0, m = 0; yy < glyph[c].height; yy++) {

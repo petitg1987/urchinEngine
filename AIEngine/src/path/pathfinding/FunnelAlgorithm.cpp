@@ -54,11 +54,11 @@ namespace urchin {
             Vector3<float> currentSide = apex.vector(getPortalPoint(updateSide, sideIndex));
             Vector3<float> newSide = apex.vector(getPortalPoint(updateSide, currentIndex));
 
-            float crossProductY = currentSide.Z*newSide.X - currentSide.X*newSide.Z;
+            float crossProductY = currentSide.Z * newSide.X - currentSide.X * newSide.Z;
             if ((updateSide == FunnelSide::LEFT && crossProductY <= 0.0) || (updateSide == FunnelSide::RIGHT && crossProductY >= 0.0)) { //funnel not enlarged
                 Vector3<float> currentOtherSide = apex.vector(getPortalPoint(otherSide, otherSideIndex));
 
-                crossProductY = currentOtherSide.Z*newSide.X - currentOtherSide.X*newSide.Z;
+                crossProductY = currentOtherSide.Z * newSide.X - currentOtherSide.X * newSide.Z;
                 if ((updateSide == FunnelSide::LEFT && crossProductY >= 0.0) || (updateSide == FunnelSide::RIGHT && crossProductY <= 0.0)) { //no cross with other side
                     updateSideIndex(updateSide, currentIndex);
                 } else { //cross with other side: add new point

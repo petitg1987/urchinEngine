@@ -7,7 +7,7 @@ namespace urchin {
 
     class CollisionConvexObject3D;
 
-    class CollisionConvexObjectPool : public Singleton<CollisionConvexObjectPool> {
+    class CollisionConvexObjectPool : public Singleton<CollisionConvexObjectPool> { //TODO several instances could be created by 2 different threads !
         public:
             friend class Singleton<CollisionConvexObjectPool>;
 

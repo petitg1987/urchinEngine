@@ -3,17 +3,17 @@
 namespace urchin {
 
     template<class T> Point2<T>::Point2() :
-        X(0), Y(0) {
+            X(0), Y(0) {
 
     }
 
     template<class T> Point2<T>::Point2(T Xu, T Yu) :
-        X(Xu), Y(Yu) {
+            X(Xu), Y(Yu) {
 
     }
 
     template<class T> Point2<T>::Point2(const Vector2<T>& vector) :
-        X(vector.X), Y(vector.Y) {
+            X(vector.X), Y(vector.Y) {
 
     }
 
@@ -31,7 +31,7 @@ namespace urchin {
     }
 
     template<class T> T Point2<T>::squareDistance(const Point2<T>& p) const {
-        return (T)(((X-p.X)*(X-p.X)) + ((Y-p.Y)*(Y-p.Y)));
+        return (T)(((X - p.X) * (X - p.X)) + ((Y - p.Y) * (Y - p.Y)));
     }
 
     template<class T> Vector2<T> Point2<T>::vector(const Point2<T>& target) const {
@@ -46,7 +46,7 @@ namespace urchin {
     }
 
     template<class T> Point2<T> Point2<T>::translate(const Vector2<T>& v) const {
-        return Point2<T>(X+v.X, Y+v.Y);
+        return Point2<T>(X + v.X, Y + v.Y);
     }
 
     template<class T> Point2<T> Point2<T>::operator +() const {

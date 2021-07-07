@@ -42,13 +42,13 @@ namespace urchin {
             widgetOutline->rightWidth = (int)right;
         }
 
-        //creates the image width*height
+        //creates the image width * height
         unsigned int componentsCount = rawWidgetImage->retrieveComponentsCount(); //shortcut
         std::vector<unsigned char> texels(height * width * componentsCount, 0);
 
         unsigned int widthMinusRight = (unsigned int)std::max(0, (int)width - (int)right);
         unsigned int heightMinusBottom = (unsigned int)std::max(0, (int)height - (int)bottom);
-        unsigned int leftMultiplyInternalFormat = std::min(width, left*componentsCount);
+        unsigned int leftMultiplyInternalFormat = std::min(width, left * componentsCount);
         unsigned int topAdjusted = std::min(height, top);
 
         //copy corner top left
@@ -60,7 +60,7 @@ namespace urchin {
 
         //copy top
         for (unsigned int i = 0; i < topAdjusted; ++i) {
-            for (unsigned int j = left * componentsCount, k = 0; j < widthMinusRight*componentsCount; ++j, ++k) {
+            for (unsigned int j = left * componentsCount, k = 0; j < widthMinusRight * componentsCount; ++j, ++k) {
                 texels[i * width * componentsCount + j] = rawWidgetImage->getTexels()[i * rawWidgetImage->getWidth() * componentsCount + k % ((rawWidgetImage->getWidth() - (right + left)) * componentsCount) + left * componentsCount];
             }
         }
@@ -74,7 +74,7 @@ namespace urchin {
 
         //copy right
         for (unsigned int i = top, k = 0; i < heightMinusBottom; ++i, ++k) {
-            for (unsigned int j = widthMinusRight * componentsCount, l = (rawWidgetImage->getWidth() - right) * componentsCount; j < width*componentsCount; ++j, ++l) {
+            for (unsigned int j = widthMinusRight * componentsCount, l = (rawWidgetImage->getWidth() - right) * componentsCount; j < width * componentsCount; ++j, ++l) {
                 texels[i * width * componentsCount + j] = rawWidgetImage->getTexels()[(k % (rawWidgetImage->getHeight() - (top + bottom)) + top) * rawWidgetImage->getWidth() * componentsCount + l];
             }
         }

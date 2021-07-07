@@ -381,7 +381,7 @@ namespace urchin {
         unsigned char packetHeader;
         unsigned int ptrIndex = 0;
 
-        while (ptrIndex < width*height) {
+        while (ptrIndex < width * height) {
             //reads first byte
             packetHeader = data[j++];
             unsigned int size = 1 + (packetHeader & 0x7fu);
@@ -396,7 +396,7 @@ namespace urchin {
             } else {
                 //non run-length packet
                 for (unsigned int i = 0; i < size; ++i) {
-                    texels[ptrIndex+i] = data[j+i];
+                    texels[ptrIndex + i] = data[j + i];
                 }
 
                 ptrIndex += size;
