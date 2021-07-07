@@ -66,7 +66,7 @@ void CharacterControllerIT::ccdFallingCharacter() {
     physicsEngineThread.join();
     mainThread.join();
 
-    AssertHelper::assertFloatEquals(character->getTransform().getPosition().Y, characterHeight / 2.0f, 0.01);
+    AssertHelper::assertFloatEquals(character->getTransform().getPosition().Y, characterHeight / 2.0f, 0.01f);
 }
 
 void CharacterControllerIT::ccdMovingCharacter() {
@@ -94,8 +94,8 @@ void CharacterControllerIT::ccdMovingCharacter() {
     physicsEngineThread.join();
     mainThread.join();
 
-    AssertHelper::assertFloatEquals(character->getTransform().getPosition().Y, characterHeight / 2.0f, 0.01);
-    AssertHelper::assertFloatEquals(character->getTransform().getPosition().Z, -9.75f, 0.1);
+    AssertHelper::assertFloatEquals(character->getTransform().getPosition().Y, characterHeight / 2.0f, 0.01f);
+    AssertHelper::assertFloatEquals(character->getTransform().getPosition().Z, -9.75f, 0.1f);
 }
 
 void CharacterControllerIT::constructGround(const std::unique_ptr<PhysicsWorld>& physicsWorld) {

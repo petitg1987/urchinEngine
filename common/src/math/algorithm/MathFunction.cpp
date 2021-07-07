@@ -40,12 +40,16 @@ namespace urchin {
         return result;
     }
 
+    bool MathFunction::isEqual(float value1, float value2, float tolerance) {
+        return value1 >= value2 - tolerance && value1 <= value2 + tolerance;
+    }
+
     bool MathFunction::isZero(float value, float tolerance) {
-        return value > 0.0f - tolerance && value < 0.0f + tolerance;
+        return isEqual(value, 0.0f, tolerance);
     }
 
     bool MathFunction::isOne(float value, float tolerance) {
-        return value > 1.0f - tolerance && value < 1.0f + tolerance;
+        return isEqual(value, 1.0f, tolerance);
     }
 
     int MathFunction::roundToInt(float value) {

@@ -15,6 +15,7 @@ namespace urchin {
             static unsigned int powerOfTwo(unsigned int);
             static int pow(int, unsigned int);
 
+            static bool isEqual(float, float, float tolerance = std::numeric_limits<float>::epsilon());
             static bool isZero(float, float tolerance = std::numeric_limits<float>::epsilon());
             static bool isOne(float, float tolerance = std::numeric_limits<float>::epsilon());
 

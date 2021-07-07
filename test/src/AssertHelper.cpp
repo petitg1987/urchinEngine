@@ -54,15 +54,15 @@ void AssertHelper::assert3Sizes(const std::size_t* value, std::size_t*&& expecte
     delete[] expected;
 }
 
-void AssertHelper::assertFloatEquals(float value, float expected, double epsilon) {
+void AssertHelper::assertFloatEquals(float value, float expected, float epsilon) {
     CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + floatToString(value) + ", expected: " + floatToString(expected),
-            (value - epsilon) < expected && (value + epsilon) > expected);
+                           MathFunction::isEqual(value, expected, epsilon));
 }
 
-void AssertHelper::assertPoint2FloatEquals(const Point2<float>& value, const Point2<float>& expected, double epsilon) {
+void AssertHelper::assertPoint2FloatEquals(const Point2<float>& value, const Point2<float>& expected, float epsilon) {
     for (std::size_t i = 0; i < 2; ++i) {
         CPPUNIT_ASSERT_MESSAGE("Assert fail on axis: " + std::to_string(i) + ". Value: " + floatToString(value[i]) + ", expected: " + floatToString(expected[i]),
-                (value[i] - epsilon) < expected[i] && (value[i] + epsilon) > expected[i]);
+                               MathFunction::isEqual(value[i], expected[i], epsilon));
     }
 }
 
@@ -78,7 +78,7 @@ void AssertHelper::assertPoint2LongLongEquals(const Point2<long long>& value, co
     }
 }
 
-void AssertHelper::assertPoints2FloatEquals(const std::vector<Point2<float>>& points, const std::vector<Point2<float>>& expectedPoints, double epsilon) {
+void AssertHelper::assertPoints2FloatEquals(const std::vector<Point2<float>>& points, const std::vector<Point2<float>>& expectedPoints, float epsilon) {
     AssertHelper::assertUnsignedInt(points.size(), expectedPoints.size());
 
     for (std::size_t i = 0; i < points.size(); ++i) {
@@ -94,21 +94,21 @@ void AssertHelper::assertPoints2LongLongEquals(const std::vector<Point2<long lon
     }
 }
 
-void AssertHelper::assertPoint3FloatEquals(const Point3<float>& value, const Point3<float>& expected, double epsilon) {
+void AssertHelper::assertPoint3FloatEquals(const Point3<float>& value, const Point3<float>& expected, float epsilon) {
     for (std::size_t i = 0; i < 3; ++i) {
         CPPUNIT_ASSERT_MESSAGE("Assert fail on axis: " + std::to_string(i) + ". Value: " + floatToString(value[i]) + ", expected: " + floatToString(expected[i]),
-                               (value[i] - epsilon) < expected[i] && (value[i] + epsilon) > expected[i]);
+                               MathFunction::isEqual(value[i], expected[i], epsilon));
     }
 }
 
-void AssertHelper::assertVector3FloatEquals(const Vector3<float>& value, const Vector3<float>& expected, double epsilon) {
+void AssertHelper::assertVector3FloatEquals(const Vector3<float>& value, const Vector3<float>& expected, float epsilon) {
     for (std::size_t i = 0; i < 3; ++i) {
         CPPUNIT_ASSERT_MESSAGE("Assert fail on axis: " + std::to_string(i) + ". Value: " + floatToString(value[i]) + ", expected: " + floatToString(expected[i]),
-                (value[i] - epsilon) < expected[i] && (value[i] + epsilon) > expected[i]);
+                               MathFunction::isEqual(value[i], expected[i], epsilon));
     }
 }
 
-void AssertHelper::assertQuaternionFloatEquals(const Quaternion<float>& value, const Quaternion<float>& expected, double epsilon) {
+void AssertHelper::assertQuaternionFloatEquals(const Quaternion<float>& value, const Quaternion<float>& expected, float epsilon) {
     Quaternion<float> qTest1(value);
     if ((value.W < 0.0 && expected.W > 0.0) || (value.W > 0.0 && expected.W < 0.0)) {
         qTest1.X = -qTest1.X;
@@ -119,11 +119,11 @@ void AssertHelper::assertQuaternionFloatEquals(const Quaternion<float>& value, c
 
     for (unsigned int i = 0; i < 4; ++i) {
         CPPUNIT_ASSERT_MESSAGE("Assert fail on axis: " + std::to_string(i) + ". Value: " + floatToString(qTest1[i]) + ", expected: " + floatToString(expected[i]),
-                (qTest1[i] - epsilon) < expected[i] && (qTest1[i] + epsilon) > expected[i]);
+                               MathFunction::isEqual(qTest1[i], expected[i], epsilon));
     }
 }
 
-void AssertHelper::assertPolygonFloatEquals(std::vector<Point2<float>> orientedPoints, const std::vector<Point2<float>>& orientedExpectedPoints, double epsilon) {
+void AssertHelper::assertPolygonFloatEquals(std::vector<Point2<float>> orientedPoints, const std::vector<Point2<float>>& orientedExpectedPoints, float epsilon) {
     AssertHelper::assertUnsignedInt(orientedPoints.size(), orientedExpectedPoints.size());
 
     for (std::size_t i = 0; i < orientedPoints.size(); ++i) {
