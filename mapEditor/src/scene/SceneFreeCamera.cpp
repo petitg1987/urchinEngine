@@ -10,8 +10,8 @@ namespace urchin {
 
     SceneFreeCamera::SceneFreeCamera(float angle, float nearPlane, float farPlane, const std::unique_ptr<MouseController>& mouseController) :
             FreeCamera(angle, nearPlane, farPlane),
-            mouseXBeforeMove(0),
-            mouseYBeforeMove(0),
+            mouseXBeforeMove(0.0),
+            mouseYBeforeMove(0.0),
             mouseController(mouseController) {
 
     }
