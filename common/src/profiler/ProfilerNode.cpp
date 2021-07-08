@@ -94,7 +94,7 @@ namespace urchin {
             levelOneTotalTime = computeTotalTimes();
         }
 
-        if (level > 0) {
+        if (level > 0 && getNbValidTimes() > 0) {
             double totalTime = computeTotalTimes();
             double averageTime = totalTime / getNbValidTimes();
             double percentageTime = (totalTime / levelOneTotalTime) * 100.0;

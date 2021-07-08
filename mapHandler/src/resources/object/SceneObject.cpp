@@ -110,11 +110,10 @@ namespace urchin {
         return rigidBody;
     }
 
-    void SceneObject::moveTo(const Transform<float>& newTransform) {
-        model->setPosition(newTransform.getPosition());
-        model->setOrientation(newTransform.getOrientation());
+    void SceneObject::moveTo(const Point3<float>& position, const Quaternion<float>& orientation) {
+        model->setTransform(Transform(position, orientation, model->getTransform().getScale()));
         if (aiObject) {
-            aiObject->updateTransform(newTransform.getPosition(), newTransform.getOrientation());
+            aiObject->updateTransform(position, orientation);
         }
     }
 

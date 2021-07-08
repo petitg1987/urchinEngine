@@ -92,9 +92,9 @@ namespace urchin {
         return rigidBody;
     }
 
-    void SceneTerrain::moveTo(const Transform<float>& newTransform) {
-        terrain->setPosition(newTransform.getPosition());
-        aiTerrain->updateTransform(newTransform.getPosition(), newTransform.getOrientation());
+    void SceneTerrain::moveTo(const Point3<float>& position, const Quaternion<float>& orientation) {
+        terrain->setPosition(position);
+        aiTerrain->updateTransform(position, orientation);
     }
 
     void SceneTerrain::setupInteractiveBody(RigidBody* rigidBody) {

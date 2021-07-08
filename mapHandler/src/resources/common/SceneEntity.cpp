@@ -5,7 +5,8 @@ namespace urchin {
         RigidBody* rigidBody = getRigidBody();
         if (rigidBody) {
             if (rigidBody->isActive() || rigidBody->getManuallyMovedAndReset()) {
-                moveTo(rigidBody->getTransform().toTransform());
+                PhysicsTransform physicsTransform = rigidBody->getTransform();
+                moveTo(physicsTransform.getPosition(), physicsTransform.getOrientation());
             }
         }
     }

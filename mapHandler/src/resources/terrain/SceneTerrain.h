@@ -17,7 +17,7 @@ namespace urchin {
             friend class Map;
 
             SceneTerrain();
-            ~SceneTerrain();
+            ~SceneTerrain() override;
 
             void setTerrainManagers(Renderer3d*, PhysicsWorld*, AIManager*);
 
@@ -30,7 +30,7 @@ namespace urchin {
             RigidBody* getRigidBody() const override;
 
         protected:
-            void moveTo(const Transform<float>&) override;
+            void moveTo(const Point3<float>&, const Quaternion<float>&) override;
 
         private:
             void loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
