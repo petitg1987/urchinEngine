@@ -6,12 +6,12 @@ namespace urchin {
      * @param separatingDistance Separating distance of two objects. In case of collision, the distance is zero.
      */
     template<class T> GJKResultNoCollide<T>::GJKResultNoCollide(T separatingDistance, const Simplex<T>& simplex) :
-        GJKResult<T>(),
-        separatingDistance(separatingDistance),
-        simplex(simplex) {
+            GJKResult<T>(),
+            separatingDistance(separatingDistance),
+            simplex(simplex) {
         simplex.computeClosestPoints(closestPointA, closestPointB);
 
-        if (DebugCheck::instance()->additionalChecksEnable()) {
+        if (DebugCheck::additionalChecksEnable()) {
             const T distanceDelta = closestPointA.vector(closestPointB).length() - separatingDistance;
             if (!MathFunction::isZero((float)distanceDelta, 0.01f)) {
                 logInputData("Incoherent separating distance (" + std::to_string(separatingDistance) + ") with simplex", simplex);

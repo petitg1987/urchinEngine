@@ -96,7 +96,7 @@
   * Use assert (`assert(...)`) for methods which could be wrongly used by the engine developer
     * *Note:* surround assert with `#ifndef NDEBUG`/`#endif` when condition has bad performance
   * Use logger (`Logger::instance()->logError(...)`) when the result of an algorithm is not the one excepted
-    * *Note:* surround logger call with `if (DebugCheck::instance()->additionalChecksEnable()) {`/`}` when condition has bad performance
+    * *Note:* surround logger call with `if (DebugCheck::additionalChecksEnable()) {`/`}` when condition has bad performance
 * Verify when `new` operator is called:
   * Use following source code and add a debug point:
       ```

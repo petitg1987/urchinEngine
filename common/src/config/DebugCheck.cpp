@@ -3,12 +3,8 @@
 
 namespace urchin {
 
-    DebugCheck::DebugCheck() :
-            isAdditionalCheckEnable(ConfigService::instance()->getBoolValue("checks.additionalChecksEnable")) {
-
-    }
-
-    bool DebugCheck::additionalChecksEnable() const {
+    bool DebugCheck::additionalChecksEnable() {
+        static bool isAdditionalCheckEnable = ConfigService::instance()->getBoolValue("checks.additionalChecksEnable");
         return isAdditionalCheckEnable;
     }
 

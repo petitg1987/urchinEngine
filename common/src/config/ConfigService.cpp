@@ -7,11 +7,6 @@
 
 namespace urchin {
 
-    ConfigService::ConfigService() :
-            Singleton<ConfigService>() {
-
-    }
-
     void ConfigService::loadProperties(const std::string& propertiesFile, const std::map<std::string, std::string>& placeholders) {
         loadProperties(propertiesFile, FileSystem::instance()->getResourcesDirectory(), placeholders);
     }

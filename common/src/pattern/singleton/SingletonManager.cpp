@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include <pattern/singleton/SingletonManager.h>
 
 namespace urchin {
@@ -14,6 +16,9 @@ namespace urchin {
     }
 
     void SingletonManager::addSingleton(const std::string& name, SingletonInterface* ptr) {
+        #ifndef NDEBUG
+            assert(singletons.find(name) == singletons.end());
+        #endif
         singletons[name] = ptr;
     }
 

@@ -16,9 +16,9 @@
 
 namespace urchin {
 
-    class AlgorithmResultAllocator : public Singleton<AlgorithmResultAllocator> {
+    class AlgorithmResultAllocator : public ThreadSafeSingleton<AlgorithmResultAllocator> {
         public:
-            friend class Singleton<AlgorithmResultAllocator>;
+            friend class ThreadSafeSingleton<AlgorithmResultAllocator>;
 
             SyncFixedSizePool<AlgorithmResult>* getAlgorithmResultPool() const;
 

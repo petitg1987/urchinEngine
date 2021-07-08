@@ -3,16 +3,16 @@
 #include <string>
 #include <map>
 
-#include <pattern/singleton/Singleton.h>
+#include <pattern/singleton/ThreadSafeSingleton.h>
 
 namespace urchin {
 
     /**
     * Service to handle configuration properties files
     */
-    class ConfigService : public Singleton<ConfigService> {
+    class ConfigService : public ThreadSafeSingleton<ConfigService> {
         public:
-            friend class Singleton<ConfigService>;
+            friend class ThreadSafeSingleton<ConfigService>;
 
             void loadProperties(const std::string&, const std::map<std::string, std::string> &placeholder={});
             void loadProperties(const std::string&, const std::string&, const std::map<std::string, std::string> &placeholders={});
@@ -26,7 +26,7 @@ namespace urchin {
             bool getBoolValue(const std::string&) const;
 
         private:
-            ConfigService();
+            ConfigService() = default;
             ~ConfigService() override = default;
 
             std::map<std::string, std::string> properties;

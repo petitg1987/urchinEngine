@@ -3,8 +3,8 @@
 namespace urchin {
 
     template<class T> GJKResultCollide<T>::GJKResultCollide(const Simplex<T>& simplex) :
-        GJKResult<T>(),
-        simplex(simplex) {
+            GJKResult<T>(),
+            simplex(simplex) {
 
     }
 

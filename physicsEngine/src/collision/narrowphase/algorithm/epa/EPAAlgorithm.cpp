@@ -115,7 +115,7 @@ namespace urchin {
         const Point3<T> contactPointB = closestTriangleData.getBarycentric(0) * supportPointsB[pointIndex1] + closestTriangleData.getBarycentric(1) * supportPointsB[pointIndex2]
                 + closestTriangleData.getBarycentric(2) * supportPointsB[pointIndex3];
 
-        if (DebugCheck::instance()->additionalChecksEnable()) {
+        if (DebugCheck::additionalChecksEnable()) {
             const T distanceDelta = contactPointA.vector(contactPointB).length() - distanceToOrigin;
             if (!MathFunction::isZero((float)distanceDelta, 0.1f)) {
                 logInputData("Incoherent EPA distances", convexObject1, convexObject2, gjkResult);

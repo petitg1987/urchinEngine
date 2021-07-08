@@ -88,6 +88,7 @@
 #include <pattern/observer/Observable.h>
 #include <pattern/observer/Observer.h>
 #include <pattern/singleton/Singleton.h>
+#include <pattern/singleton/ThreadSafeSingleton.h>
 #include <pattern/singleton/SingletonManager.h>
 #include <pattern/singleton/SingletonInterface.h>
 

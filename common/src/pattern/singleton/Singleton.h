@@ -2,6 +2,8 @@
 
 #include <typeinfo>
 #include <iostream>
+#include <thread>
+#include <map>
 
 #include <pattern/singleton/SingletonManager.h>
 #include <pattern/singleton/SingletonInterface.h>
@@ -9,7 +11,7 @@
 namespace urchin {
 
     /**
-    * Allows to create a singleton class (no thread-safe)
+    * Base class for singleton (no thread-safe)
     */
     template<class T> class Singleton : public SingletonInterface {
         public:
@@ -17,7 +19,7 @@ namespace urchin {
             ~Singleton() override;
 
         protected:
-            Singleton();
+            Singleton() = default;
 
         private:
             static T* objectT;

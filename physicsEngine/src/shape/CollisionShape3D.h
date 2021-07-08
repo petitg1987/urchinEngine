@@ -10,6 +10,7 @@
 #include <object/CollisionConvexObject3D.h>
 #include <utils/pool/FixedSizePool.h>
 #include <object/pool/ObjectDeleter.h>
+#include <object/pool/CollisionConvexObjectPool.h>
 
 namespace urchin {
 

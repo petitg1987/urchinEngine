@@ -1,20 +1,12 @@
 #pragma once
 
-#include <pattern/singleton/Singleton.h>
-
 namespace urchin {
 
-    class DebugCheck : public Singleton<DebugCheck> {
+    class DebugCheck {
         public:
-            friend class Singleton<DebugCheck>;
+            DebugCheck() = delete;
 
-            bool additionalChecksEnable() const;
-
-        private:
-            DebugCheck();
-            ~DebugCheck() override = default;
-
-            bool isAdditionalCheckEnable;
+            static bool additionalChecksEnable();
     };
 
 }
