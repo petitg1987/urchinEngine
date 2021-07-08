@@ -1,33 +1,16 @@
 #pragma once
 
-#include <UrchinCommon.h>
-
 namespace urchin {
 
-    class EagerPropertyLoader : public Singleton<EagerPropertyLoader> {
+    class EagerPropertyLoader {
         public:
-            friend class Singleton<EagerPropertyLoader>;
+            static float getCollisionShapeInnerMargin();
 
-            float getCollisionShapeInnerMargin() const;
-
-            unsigned int getNarrowPhaseGjkMaxIteration() const;
-            float getNarrowPhaseGjkTerminationTolerance() const;
-            unsigned int getNarrowPhaseEpaMaxIteration() const;
-            float getNarrowPhaseEpaTerminationTolerance() const;
-            float getNarrowPhaseContactBreakingThreshold() const;
-
-        private:
-            EagerPropertyLoader();
-            ~EagerPropertyLoader() override = default;
-
-            float collisionShapeInnerMargin;
-
-            unsigned int narrowPhaseGjkMaxIteration;
-            float narrowPhaseGjkTerminationTolerance;
-            unsigned int narrowPhaseEpaMaxIteration;
-            float narrowPhaseEpaTerminationTolerance;
-            float narrowPhaseContactBreakingThreshold;
-
+            static unsigned int getNarrowPhaseGjkMaxIteration();
+            static float getNarrowPhaseGjkTerminationTolerance();
+            static unsigned int getNarrowPhaseEpaMaxIteration();
+            static float getNarrowPhaseEpaTerminationTolerance();
+            static float getNarrowPhaseContactBreakingThreshold();
     };
 
 }

@@ -1,38 +1,36 @@
+#include <UrchinCommon.h>
+
 #include <utils/property/EagerPropertyLoader.h>
 
 namespace urchin {
-    EagerPropertyLoader::EagerPropertyLoader() :
-        Singleton<EagerPropertyLoader>() {
-        collisionShapeInnerMargin = ConfigService::instance()->getFloatValue("collisionShape.innerMargin");
 
-        narrowPhaseGjkMaxIteration = ConfigService::instance()->getUnsignedIntValue("narrowPhase.gjkMaxIteration");
-        narrowPhaseGjkTerminationTolerance = ConfigService::instance()->getFloatValue("narrowPhase.gjkTerminationTolerance");
-        narrowPhaseEpaMaxIteration = ConfigService::instance()->getUnsignedIntValue("narrowPhase.epaMaxIteration");
-        narrowPhaseEpaTerminationTolerance = ConfigService::instance()->getFloatValue("narrowPhase.epaTerminationTolerance");
-        narrowPhaseContactBreakingThreshold = ConfigService::instance()->getFloatValue("narrowPhase.contactBreakingThreshold");
-    }
-
-    float EagerPropertyLoader::getCollisionShapeInnerMargin() const {
+    float EagerPropertyLoader::getCollisionShapeInnerMargin() {
+        static float collisionShapeInnerMargin = ConfigService::instance()->getFloatValue("collisionShape.innerMargin");
         return collisionShapeInnerMargin;
     }
 
-    unsigned int EagerPropertyLoader::getNarrowPhaseGjkMaxIteration() const {
+    unsigned int EagerPropertyLoader::getNarrowPhaseGjkMaxIteration() {
+        static unsigned int narrowPhaseGjkMaxIteration = ConfigService::instance()->getUnsignedIntValue("narrowPhase.gjkMaxIteration");
         return narrowPhaseGjkMaxIteration;
     }
 
-    float EagerPropertyLoader::getNarrowPhaseGjkTerminationTolerance() const {
+    float EagerPropertyLoader::getNarrowPhaseGjkTerminationTolerance() {
+        static float narrowPhaseGjkTerminationTolerance = ConfigService::instance()->getFloatValue("narrowPhase.gjkTerminationTolerance");
         return narrowPhaseGjkTerminationTolerance;
     }
 
-    unsigned int EagerPropertyLoader::getNarrowPhaseEpaMaxIteration() const {
+    unsigned int EagerPropertyLoader::getNarrowPhaseEpaMaxIteration() {
+        static unsigned int narrowPhaseEpaMaxIteration = ConfigService::instance()->getUnsignedIntValue("narrowPhase.epaMaxIteration");
         return narrowPhaseEpaMaxIteration;
     }
 
-    float EagerPropertyLoader::getNarrowPhaseEpaTerminationTolerance() const {
+    float EagerPropertyLoader::getNarrowPhaseEpaTerminationTolerance() {
+        static float narrowPhaseEpaTerminationTolerance = ConfigService::instance()->getFloatValue("narrowPhase.epaTerminationTolerance");
         return narrowPhaseEpaTerminationTolerance;
     }
 
-    float EagerPropertyLoader::getNarrowPhaseContactBreakingThreshold() const {
+    float EagerPropertyLoader::getNarrowPhaseContactBreakingThreshold() {
+        static float narrowPhaseContactBreakingThreshold = ConfigService::instance()->getFloatValue("narrowPhase.contactBreakingThreshold");
         return narrowPhaseContactBreakingThreshold;
     }
 

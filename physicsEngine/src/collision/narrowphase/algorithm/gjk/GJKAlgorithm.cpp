@@ -9,8 +9,8 @@
 namespace urchin {
 
     template<class T> GJKAlgorithm<T>::GJKAlgorithm() :
-            maxIteration(EagerPropertyLoader::instance()->getNarrowPhaseGjkMaxIteration()),
-            terminationTolerance(EagerPropertyLoader::instance()->getNarrowPhaseGjkTerminationTolerance()) {
+            maxIteration(EagerPropertyLoader::getNarrowPhaseGjkMaxIteration()),
+            terminationTolerance(EagerPropertyLoader::getNarrowPhaseGjkTerminationTolerance()) {
 
     }
 

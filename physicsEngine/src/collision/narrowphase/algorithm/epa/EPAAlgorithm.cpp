@@ -6,8 +6,8 @@
 namespace urchin {
 
     template<class T> EPAAlgorithm<T>::EPAAlgorithm() :
-            maxIteration(EagerPropertyLoader::instance()->getNarrowPhaseEpaMaxIteration()),
-            terminationTolerance(EagerPropertyLoader::instance()->getNarrowPhaseEpaTerminationTolerance()) {
+            maxIteration(EagerPropertyLoader::getNarrowPhaseEpaMaxIteration()),
+            terminationTolerance(EagerPropertyLoader::getNarrowPhaseEpaTerminationTolerance()) {
 
     }
 

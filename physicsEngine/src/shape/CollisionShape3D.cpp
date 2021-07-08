@@ -8,7 +8,7 @@
 namespace urchin {
 
     CollisionShape3D::CollisionShape3D() :
-            innerMargin(EagerPropertyLoader::instance()->getCollisionShapeInnerMargin()),
+            innerMargin(EagerPropertyLoader::getCollisionShapeInnerMargin()),
             initialInnerMargin(innerMargin) {
 
     }

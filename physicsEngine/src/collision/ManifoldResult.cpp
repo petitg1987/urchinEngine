@@ -9,7 +9,7 @@ namespace urchin {
             body1(body1),
             body2(body2),
             nbContactPoint(0),
-            contactBreakingThreshold(EagerPropertyLoader::instance()->getNarrowPhaseContactBreakingThreshold()) {
+            contactBreakingThreshold(EagerPropertyLoader::getNarrowPhaseContactBreakingThreshold()) {
 
     }
 

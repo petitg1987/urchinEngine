@@ -5,7 +5,8 @@
 namespace urchin {
     
     void ObjectDeleter::operator()(CollisionConvexObject3D *const collisionAlgorithm) {
-        CollisionConvexObjectPool::instance()->getObjectsPool()->deallocate(collisionAlgorithm);
+        static CollisionConvexObjectPool* convexObjectPool = CollisionConvexObjectPool::instance(); //static to retrieve thread safe instance only once
+        convexObjectPool->getObjectsPool()->deallocate(collisionAlgorithm);
     }
 
 }
