@@ -17,7 +17,7 @@ namespace urchin {
     }
 
     AABBox<float> BodyAABBNodeData::retrieveObjectAABBox() const {
-        return getNodeObject()->getShape()->toAABBox(getNodeObject()->getTransform());
+        return getNodeObject()->getShape().toAABBox(getNodeObject()->getTransform());
     }
 
     bool BodyAABBNodeData::isObjectMoving() const {

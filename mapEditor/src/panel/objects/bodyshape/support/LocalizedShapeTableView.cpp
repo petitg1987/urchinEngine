@@ -27,14 +27,13 @@ namespace urchin {
         return this->currentIndex().row() != -1;
     }
 
-    std::shared_ptr<const LocalizedCollisionShape> LocalizedShapeTableView::getSelectedLocalizedShape() const {
+    const LocalizedCollisionShape* LocalizedShapeTableView::getSelectedLocalizedShape() const {
         if (hasLocalizedShapeSelected()) {
             QModelIndex selectedIndex = this->currentIndex();
 
-            const auto* selectLocalizedShape = selectedIndex.data(Qt::UserRole + 1).value<const LocalizedCollisionShape*>();
-            return localizedShapesMap.at(selectLocalizedShape);
+            return selectedIndex.data(Qt::UserRole + 1).value<const LocalizedCollisionShape*>();
         }
-        return std::shared_ptr<const LocalizedCollisionShape>(nullptr);
+        return nullptr;
     }
 
     std::vector<std::shared_ptr<const LocalizedCollisionShape>> LocalizedShapeTableView::getLocalizedShapes() const {

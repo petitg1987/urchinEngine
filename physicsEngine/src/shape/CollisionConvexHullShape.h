@@ -22,7 +22,7 @@ namespace urchin {
             const ConvexShape3D<float>* getSingleShape() const override;
             std::vector<Point3<float>> getPoints() const;
 
-            std::shared_ptr<CollisionShape3D> scale(float) const override;
+            std::unique_ptr<CollisionShape3D> scale(float) const override;
 
             AABBox<float> toAABBox(const PhysicsTransform&) const override;
             std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> toConvexObject(const PhysicsTransform&) const override;

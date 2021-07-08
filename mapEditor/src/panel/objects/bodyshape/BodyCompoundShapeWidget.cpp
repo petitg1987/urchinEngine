@@ -56,21 +56,21 @@ namespace urchin {
         return localizedShapeTableView;
     }
 
-    void BodyCompoundShapeWidget::doSetupShapePropertiesFrom(const std::shared_ptr<const CollisionShape3D>& shape) {
-        const auto& compoundShape = std::dynamic_pointer_cast<const CollisionCompoundShape>(shape);
+    void BodyCompoundShapeWidget::doSetupShapePropertiesFrom(const CollisionShape3D& shape) {
+        const auto& compoundShape = dynamic_cast<const CollisionCompoundShape&>(shape);
 
-        const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape->getLocalizedShapes();
+        const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape.getLocalizedShapes();
         for (const auto& localizedShape : localizedShapes) {
             localizedShapeTableView->addLocalizedShape(localizedShape);
         }
         localizedShapeTableView->selectLocalizedShape(0);
     }
 
-    std::shared_ptr<const CollisionShape3D> BodyCompoundShapeWidget::createBodyShape() const {
+    std::unique_ptr<const CollisionShape3D> BodyCompoundShapeWidget::createBodyShape() const {
         try {
             LabelStyleHelper::applyNormalStyle(shapesLabel);
             std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedCollisionShapes = localizedShapeTableView->getLocalizedShapes();
-            return std::make_shared<const CollisionCompoundShape>(localizedCollisionShapes);
+            return std::make_unique<const CollisionCompoundShape>(std::move(localizedCollisionShapes));
         } catch (std::invalid_argument& e) {
             LabelStyleHelper::applyErrorStyle(shapesLabel, std::string(e.what()));
             return DefaultBodyShapeCreator(getSceneObject()).createDefaultBodyShape(CollisionShape3D::ShapeType::COMPOUND_SHAPE);
@@ -81,7 +81,7 @@ namespace urchin {
         if (auto* localizedShapeTableView = dynamic_cast<LocalizedShapeTableView*>(observable)) {
             if (notificationType == LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED) {
                 if (localizedShapeTableView->hasLocalizedShapeSelected()) {
-                    std::shared_ptr<const LocalizedCollisionShape> localizedShape = localizedShapeTableView->getSelectedLocalizedShape();
+                    const LocalizedCollisionShape* localizedShape = localizedShapeTableView->getSelectedLocalizedShape();
 
                     delete localizedShapeDetails;
                     localizedShapeDetails = new QWidget();
@@ -100,7 +100,7 @@ namespace urchin {
         }
     }
 
-    void BodyCompoundShapeWidget::setupTransformBox(QVBoxLayout* localizedShapeLayout, const std::shared_ptr<const LocalizedCollisionShape>& localizedShape) {
+    void BodyCompoundShapeWidget::setupTransformBox(QVBoxLayout* localizedShapeLayout, const LocalizedCollisionShape* localizedShape) {
         auto* transformGroupBox = new QGroupBox("Transform");
         localizedShapeLayout->addWidget(transformGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(transformGroupBox);
@@ -169,7 +169,7 @@ namespace urchin {
         connect(eulerAxis2, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
     }
 
-    void BodyCompoundShapeWidget::setupShapeBox(QVBoxLayout* localizedShapeLayout, const std::shared_ptr<const LocalizedCollisionShape>& localizedShape) {
+    void BodyCompoundShapeWidget::setupShapeBox(QVBoxLayout* localizedShapeLayout, const LocalizedCollisionShape* localizedShape) {
         auto* shapeGroupBox = new QGroupBox("Shape");
         localizedShapeLayout->addWidget(shapeGroupBox);
         GroupBoxStyleHelper::applyNormalStyle(shapeGroupBox);
@@ -179,13 +179,13 @@ namespace urchin {
         bodyShapeWidget = BodyShapeWidgetRetriever(getSceneObject()).createBodyShapeWidget(localizedShape->shape->getShapeType());
         shapeLayout->addWidget(bodyShapeWidget, 0, 0);
         bodyShapeWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        bodyShapeWidget->setupShapePropertiesFrom(localizedShape->shape);
-        connect(bodyShapeWidget, SIGNAL(bodyShapeChange(std::shared_ptr<const CollisionShape3D>)), this, SLOT(updateSelectedLocalizedShape()));
+        bodyShapeWidget->setupShapePropertiesFrom(*localizedShape->shape);
+        connect(bodyShapeWidget, SIGNAL(bodyShapeChange(std::unique_ptr<const CollisionShape3D>&)), this, SLOT(updateSelectedLocalizedShape()));
     }
 
     void BodyCompoundShapeWidget::updateLocalizedShapeOrientationType() {
         if (!disableShapeEvent) {
-            std::shared_ptr<const LocalizedCollisionShape> localizedShape = localizedShapeTableView->getSelectedLocalizedShape();
+            const LocalizedCollisionShape* localizedShape = localizedShapeTableView->getSelectedLocalizedShape();
 
             QVariant variant = orientationType->currentData();
             auto newRotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
@@ -208,7 +208,7 @@ namespace urchin {
             std::shared_ptr<LocalizedCollisionShape> localizedShape = std::make_shared<LocalizedCollisionShape>();
 
             localizedShape->position = localizedShapeTableView->getSelectedLocalizedShape()->position;
-            localizedShape->shape = bodyShapeWidget->retrieveShape();
+            localizedShape->shape = bodyShapeWidget->moveShape();
 
             Vector3<float> eulerAngle(
                     AngleConverter<float>::toRadian((float)eulerAxis0->value()),
@@ -233,7 +233,7 @@ namespace urchin {
 
         if (changeBodyShapeDialog.result() == QDialog::Accepted) {
             CollisionShape3D::ShapeType shapeType = changeBodyShapeDialog.getShapeType();
-            std::shared_ptr<const CollisionShape3D> defaultNewShape = DefaultBodyShapeCreator(getSceneObject()).createDefaultBodyShape(shapeType);
+            std::unique_ptr<const CollisionShape3D> defaultNewShape = DefaultBodyShapeCreator(getSceneObject()).createDefaultBodyShape(shapeType);
 
             std::size_t nextPosition = 0;
             for (std::size_t i = 0; i < localizedShapeTableView->getLocalizedShapes().size(); ++i) {
@@ -244,7 +244,7 @@ namespace urchin {
 
             std::shared_ptr<LocalizedCollisionShape> localizedShape = std::make_shared<LocalizedCollisionShape>();
             localizedShape->position = nextPosition;
-            localizedShape->shape = defaultNewShape;
+            localizedShape->shape = std::move(defaultNewShape);
             localizedShape->transform = PhysicsTransform();
 
             int rowId = localizedShapeTableView->addLocalizedShape(localizedShape);

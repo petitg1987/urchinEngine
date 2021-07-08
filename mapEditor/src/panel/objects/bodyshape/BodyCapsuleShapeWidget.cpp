@@ -40,22 +40,22 @@ namespace urchin {
         return CAPSULE_SHAPE_LABEL;
     }
 
-    void BodyCapsuleShapeWidget::doSetupShapePropertiesFrom(const std::shared_ptr<const CollisionShape3D>& shape) {
-        const auto& capsuleShape = std::dynamic_pointer_cast<const CollisionCapsuleShape>(shape);
+    void BodyCapsuleShapeWidget::doSetupShapePropertiesFrom(const CollisionShape3D& shape) {
+        const auto& capsuleShape = dynamic_cast<const CollisionCapsuleShape&>(shape);
 
-        radius->setValue(capsuleShape->getRadius());
-        cylinderHeight->setValue(capsuleShape->getCylinderHeight());
+        radius->setValue(capsuleShape.getRadius());
+        cylinderHeight->setValue(capsuleShape.getCylinderHeight());
 
-        int index = orientation->findData(capsuleShape->getCapsuleOrientation());
+        int index = orientation->findData(capsuleShape.getCapsuleOrientation());
         if (index != -1) {
             orientation->setCurrentIndex(index);
         }
     }
 
-    std::shared_ptr<const CollisionShape3D> BodyCapsuleShapeWidget::createBodyShape() const {
+    std::unique_ptr<const CollisionShape3D> BodyCapsuleShapeWidget::createBodyShape() const {
         QVariant variant = orientation->currentData();
         auto orientation = static_cast<CapsuleShape<float>::CapsuleOrientation>(variant.toInt());
 
-        return std::make_shared<const CollisionCapsuleShape>(radius->value(), cylinderHeight->value(), orientation);
+        return std::make_unique<const CollisionCapsuleShape>(radius->value(), cylinderHeight->value(), orientation);
     }
 }

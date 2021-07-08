@@ -27,13 +27,13 @@ namespace urchin {
         return new CollisionCapsuleShape(radius, cylinderHeight, orientation);
     }
 
-    void CollisionCapsuleReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& shapeChunk, const std::shared_ptr<const CollisionShape3D>& collisionShape, XmlWriter& xmlWriter) const {
+    void CollisionCapsuleReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& shapeChunk, const CollisionShape3D& collisionShape, XmlWriter& xmlWriter) const {
         shapeChunk->setAttribute(XmlAttribute(TYPE_ATTR, CAPSULE_VALUE));
 
-        const auto& capsuleShape = std::dynamic_pointer_cast<const CollisionCapsuleShape>(collisionShape);
+        const auto& capsuleShape = dynamic_cast<const CollisionCapsuleShape&>(collisionShape);
 
         std::shared_ptr<XmlChunk> orientationChunk = xmlWriter.createChunk(ORIENTATION_TAG, XmlAttribute(), shapeChunk);
-        CapsuleShape<float>::CapsuleOrientation orientationValue = capsuleShape->getCapsuleOrientation();
+        CapsuleShape<float>::CapsuleOrientation orientationValue = capsuleShape.getCapsuleOrientation();
         if (orientationValue == CapsuleShape<float>::CapsuleOrientation::CAPSULE_X) {
             orientationChunk->setStringValue(X_VALUE);
         } else if (orientationValue == CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y) {
@@ -45,10 +45,10 @@ namespace urchin {
         }
 
         std::shared_ptr<XmlChunk> radiusChunk = xmlWriter.createChunk(RADIUS_TAG, XmlAttribute(), shapeChunk);
-        radiusChunk->setFloatValue(capsuleShape->getRadius());
+        radiusChunk->setFloatValue(capsuleShape.getRadius());
 
         std::shared_ptr<XmlChunk> cylinderHeightChunk = xmlWriter.createChunk(CYLINDER_HEIGHT_TAG, XmlAttribute(), shapeChunk);
-        cylinderHeightChunk->setFloatValue(capsuleShape->getCylinderHeight());
+        cylinderHeightChunk->setFloatValue(capsuleShape.getCylinderHeight());
     }
 
 }

@@ -32,8 +32,8 @@ namespace urchin {
         throw std::invalid_argument("Unknown shape type: " + shapeType);
     }
 
-    std::shared_ptr<CollisionShapeReaderWriter> CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(const std::shared_ptr<const CollisionShape3D>& collisionShape) {
-        CollisionShape3D::ShapeType shapeType = collisionShape->getShapeType();
+    std::shared_ptr<CollisionShapeReaderWriter> CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(const CollisionShape3D& collisionShape) {
+        CollisionShape3D::ShapeType shapeType = collisionShape.getShapeType();
         if (shapeType == CollisionShape3D::SPHERE_SHAPE) {
             return std::make_shared<CollisionSphereReaderWriter>();
         } else if (shapeType == CollisionShape3D::CAPSULE_SHAPE) {

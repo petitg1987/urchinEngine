@@ -48,10 +48,10 @@ namespace urchin {
 
         setTerrain(TerrainReaderWriter().loadFrom(chunk, xmlParser));
 
-        auto collisionTerrainShape = std::make_shared<urchin::CollisionHeightfieldShape>(terrain->getMesh()->getVertices(),
+        auto collisionTerrainShape = std::make_unique<urchin::CollisionHeightfieldShape>(terrain->getMesh()->getVertices(),
                                                                                          terrain->getMesh()->getXSize(),
                                                                                          terrain->getMesh()->getZSize());
-        auto* terrainRigidBody = new RigidBody(this->name, PhysicsTransform(terrain->getPosition()), collisionTerrainShape);
+        auto* terrainRigidBody = new RigidBody(this->name, PhysicsTransform(terrain->getPosition()), std::move(collisionTerrainShape));
         setupInteractiveBody(terrainRigidBody);
     }
 

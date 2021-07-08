@@ -50,7 +50,7 @@ namespace urchin {
             bool isCompound() const;
             virtual const ConvexShape3D<float>* getSingleShape() const = 0;
 
-            virtual std::shared_ptr<CollisionShape3D> scale(float) const = 0;
+            virtual std::unique_ptr<CollisionShape3D> scale(float) const = 0;
 
             virtual AABBox<float> toAABBox(const PhysicsTransform&) const = 0;
             virtual std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> toConvexObject(const PhysicsTransform&) const = 0;

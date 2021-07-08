@@ -63,8 +63,8 @@ namespace urchin {
 
             std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = retrieveCollisionAlgorithm(overlappingPair);
 
-            CollisionObjectWrapper collisionObject1(*body1->getShape(), body1->getTransform());
-            CollisionObjectWrapper collisionObject2(*body2->getShape(), body2->getTransform());
+            CollisionObjectWrapper collisionObject1(body1->getShape(), body1->getTransform());
+            CollisionObjectWrapper collisionObject2(body2->getShape(), body2->getTransform());
             collisionAlgorithm->processCollisionAlgorithm(collisionObject1, collisionObject2, true);
 
             if (collisionAlgorithm->getConstManifoldResult().getNumContactPoints() != 0) {
@@ -79,7 +79,7 @@ namespace urchin {
             AbstractBody* body1 = overlappingPair->getBody1();
             AbstractBody* body2 = overlappingPair->getBody2();
 
-            collisionAlgorithm = collisionAlgorithmSelector->createCollisionAlgorithm(body1, body1->getShape().get(), body2, body2->getShape().get());
+            collisionAlgorithm = collisionAlgorithmSelector->createCollisionAlgorithm(body1, body1->getShape(), body2, body2->getShape());
 
             overlappingPair->setCollisionAlgorithm(collisionAlgorithm);
         }
@@ -114,18 +114,18 @@ namespace urchin {
             ccd_set ccdResults;
 
             const auto& bodyShape = body->getShape();
-            if (bodyShape->isCompound()) {
-                const auto& compoundShape = std::dynamic_pointer_cast<const CollisionCompoundShape>(bodyShape);
-                const std::vector<std::shared_ptr<const LocalizedCollisionShape>> & localizedShapes = compoundShape->getLocalizedShapes();
+            if (bodyShape.isCompound()) {
+                const auto& compoundShape = dynamic_cast<const CollisionCompoundShape&>(bodyShape);
+                const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape.getLocalizedShapes();
                 for (const auto& localizedShape : localizedShapes) {
-                    TemporalObject temporalObject(localizedShape->shape.get(), from * localizedShape->transform, to * localizedShape->transform);
+                    TemporalObject temporalObject(*localizedShape->shape, from * localizedShape->transform, to * localizedShape->transform);
                     ccdResults.merge(continuousCollisionTest(temporalObject, bodiesAABBoxHitBody));
                 }
-            } else if (bodyShape->isConvex()) {
-                TemporalObject temporalObject(body->getShape().get(), from, to);
+            } else if (bodyShape.isConvex()) {
+                TemporalObject temporalObject(body->getShape(), from, to);
                 ccdResults = continuousCollisionTest(temporalObject, bodiesAABBoxHitBody);
             } else {
-                throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape->getShapeType()));
+                throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape.getShapeType()));
             }
 
             if (!ccdResults.empty()) {
@@ -155,40 +155,40 @@ namespace urchin {
             ScopeLockById lockBody(bodiesMutex, bodyAABBoxHit->getObjectId());
 
             const auto& bodyShape = bodyAABBoxHit->getShape();
-            if (bodyShape->isCompound()) {
-                const auto& compoundShape = std::dynamic_pointer_cast<const CollisionCompoundShape>(bodyShape);
-                const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape->getLocalizedShapes();
+            if (bodyShape.isCompound()) {
+                const auto& compoundShape = dynamic_cast<const CollisionCompoundShape&>(bodyShape);
+                const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape.getLocalizedShapes();
                 for (const auto& localizedShape : localizedShapes) {
                     PhysicsTransform fromToObject2 = bodyAABBoxHit->getTransform() * localizedShape->transform;
-                    TemporalObject temporalObject2(localizedShape->shape.get(), fromToObject2, fromToObject2);
+                    TemporalObject temporalObject2(*localizedShape->shape, fromToObject2, fromToObject2);
 
                     continuousCollisionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
                 }
-            } else if (bodyShape->isConvex()) {
+            } else if (bodyShape.isConvex()) {
                 PhysicsTransform fromToObject2 = bodyAABBoxHit->getTransform();
-                TemporalObject temporalObject2(bodyShape.get(), fromToObject2, fromToObject2);
+                TemporalObject temporalObject2(bodyShape, fromToObject2, fromToObject2);
 
                 continuousCollisionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
-            } else if (bodyShape->isConcave()) {
-                const auto& concaveShape = std::dynamic_pointer_cast<const CollisionConcaveShape>(bodyShape);
+            } else if (bodyShape.isConcave()) {
+                const auto& concaveShape = dynamic_cast<const CollisionConcaveShape&>(bodyShape);
 
                 PhysicsTransform inverseTransformObject2 = bodyAABBoxHit->getTransform().inverse();
-                AABBox<float> fromAABBoxLocalToObject1 = temporalObject1.getShape()->toAABBox(inverseTransformObject2 * temporalObject1.getFrom());
-                AABBox<float> toAABBoxLocalToObject1 = temporalObject1.getShape()->toAABBox(inverseTransformObject2 * temporalObject1.getTo());
+                AABBox<float> fromAABBoxLocalToObject1 = temporalObject1.getShape().toAABBox(inverseTransformObject2 * temporalObject1.getFrom());
+                AABBox<float> toAABBoxLocalToObject1 = temporalObject1.getShape().toAABBox(inverseTransformObject2 * temporalObject1.getTo());
 
                 if (temporalObject1.isRay()) {
                     LineSegment3D<float> ray(fromAABBoxLocalToObject1.getMin(), toAABBoxLocalToObject1.getMin());
-                    const std::vector<CollisionTriangleShape>& triangles = concaveShape->findTrianglesHitByRay(ray);
+                    const std::vector<CollisionTriangleShape>& triangles = concaveShape.findTrianglesHitByRay(ray);
 
                     trianglesContinuousCollisionTest(triangles, temporalObject1, bodyAABBoxHit, continuousCollisionResults);
                 } else {
                     AABBox<float> temporalAABBoxLocalToObject1 = fromAABBoxLocalToObject1.merge(toAABBoxLocalToObject1);
-                    const std::vector<CollisionTriangleShape>& triangles = concaveShape->findTrianglesInAABBox(temporalAABBoxLocalToObject1);
+                    const std::vector<CollisionTriangleShape>& triangles = concaveShape.findTrianglesInAABBox(temporalAABBoxLocalToObject1);
 
                     trianglesContinuousCollisionTest(triangles, temporalObject1, bodyAABBoxHit, continuousCollisionResults);
                 }
             } else {
-                throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape->getShapeType()));
+                throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape.getShapeType()));
             }
         }
 
@@ -202,7 +202,7 @@ namespace urchin {
                                                               AbstractBody* body2, ccd_set& continuousCollisionResults) const {
         for (const auto& triangle : triangles) {
             PhysicsTransform fromToObject2 = body2->getTransform();
-            TemporalObject temporalObject2(&triangle, fromToObject2, fromToObject2);
+            TemporalObject temporalObject2(triangle, fromToObject2, fromToObject2);
 
             continuousCollisionTest(temporalObject1, temporalObject2, body2, continuousCollisionResults);
         }
@@ -225,7 +225,7 @@ namespace urchin {
         CollisionSphereShape pointShape(0.0f);
         PhysicsTransform from = PhysicsTransform(ray.getOrigin());
         PhysicsTransform to = PhysicsTransform(ray.computeTo());
-        TemporalObject rayCastObject(&pointShape, from, to);
+        TemporalObject rayCastObject(pointShape, from, to);
 
         return continuousCollisionTest(rayCastObject, bodiesAABBoxHitRay);
     }

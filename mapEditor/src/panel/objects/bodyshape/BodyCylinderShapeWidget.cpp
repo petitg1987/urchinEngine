@@ -40,22 +40,22 @@ namespace urchin {
         return CYLINDER_SHAPE_LABEL;
     }
 
-    void BodyCylinderShapeWidget::doSetupShapePropertiesFrom(const std::shared_ptr<const CollisionShape3D>& shape) {
-        const auto& cylinderShape = std::dynamic_pointer_cast<const CollisionCylinderShape>(shape);
+    void BodyCylinderShapeWidget::doSetupShapePropertiesFrom(const CollisionShape3D& shape) {
+        const auto& cylinderShape = dynamic_cast<const CollisionCylinderShape&>(shape);
 
-        radius->setValue(cylinderShape->getRadius());
-        height->setValue(cylinderShape->getHeight());
+        radius->setValue(cylinderShape.getRadius());
+        height->setValue(cylinderShape.getHeight());
 
-        int index = orientation->findData(cylinderShape->getCylinderOrientation());
+        int index = orientation->findData(cylinderShape.getCylinderOrientation());
         if (index != -1) {
             orientation->setCurrentIndex(index);
         }
     }
 
-    std::shared_ptr<const CollisionShape3D> BodyCylinderShapeWidget::createBodyShape() const {
+    std::unique_ptr<const CollisionShape3D> BodyCylinderShapeWidget::createBodyShape() const {
         QVariant variant = orientation->currentData();
         auto orientation = static_cast<CylinderShape<float>::CylinderOrientation>(variant.toInt());
 
-        return std::make_shared<const CollisionCylinderShape>(radius->value(), height->value(), orientation);
+        return std::make_unique<const CollisionCylinderShape>(radius->value(), height->value(), orientation);
     }
 }

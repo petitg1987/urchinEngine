@@ -54,19 +54,19 @@ namespace urchin {
         return CONVEX_HULL_SHAPE_LABEL;
     }
 
-    void BodyConvexHullShapeWidget::doSetupShapePropertiesFrom(const std::shared_ptr<const CollisionShape3D>& shape) {
-        const auto& convexHullShape = std::dynamic_pointer_cast<const CollisionConvexHullShape>(shape);
+    void BodyConvexHullShapeWidget::doSetupShapePropertiesFrom(const CollisionShape3D& shape) {
+        const auto& convexHullShape = dynamic_cast<const CollisionConvexHullShape&>(shape);
 
-        const std::vector<Point3<float>>& points = convexHullShape->getPoints();
+        const std::vector<Point3<float>>& points = convexHullShape.getPoints();
         for (const auto& point : points) {
             addPoint(point);
         }
     }
 
-    std::shared_ptr<const CollisionShape3D> BodyConvexHullShapeWidget::createBodyShape() const {
+    std::unique_ptr<const CollisionShape3D> BodyConvexHullShapeWidget::createBodyShape() const {
         try {
             LabelStyleHelper::applyNormalStyle(pointsLabel);
-            auto scaledShape = std::make_shared<const CollisionConvexHullShape>(getPoints());
+            auto scaledShape = std::make_unique<const CollisionConvexHullShape>(getPoints());
 
             //test construction of original shape because can throw an exception due to imprecision of float
             float invScale = 1.0f / getSceneObject()->getModel()->getTransform().getScale();

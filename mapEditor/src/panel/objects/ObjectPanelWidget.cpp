@@ -12,6 +12,7 @@
 #include <panel/objects/bodyshape/BodyShapeWidgetRetriever.h>
 #include <scene/SceneDisplayerWindow.h>
 #include <scene/objects/move/ObjectMoveController.h>
+#include <panel/objects/bodyshape/NoBodyShapeWidget.h>
 
 namespace urchin {
 
@@ -443,7 +444,7 @@ namespace urchin {
     void ObjectPanelWidget::setupObjectPhysicsDataFrom(const SceneObject* sceneObject) {
         disableObjectEvent = true;
         const RigidBody* rigidBody = sceneObject->getRigidBody();
-        std::shared_ptr<const CollisionShape3D> bodyShape(nullptr);
+        BodyShapeWidget* bodyShapeWidget;
         if (rigidBody) {
             hasRigidBody->setChecked(true);
             tabPhysicsRigidBody->show();
@@ -463,31 +464,41 @@ namespace urchin {
             angularFactorY->setValue(rigidBody->getAngularFactor().Y);
             angularFactorZ->setValue(rigidBody->getAngularFactor().Z);
 
-            bodyShape = rigidBody->getShape();
+            bodyShapeWidget = createBodyShapeWidget(rigidBody->getShape(), sceneObject);
+            bodyShapeWidget->setupShapePropertiesFrom(rigidBody->getShape());
         } else {
             hasRigidBody->setChecked(false);
             tabPhysicsRigidBody->hide();
+
+            bodyShapeWidget = createNoBodyShapeWidget(sceneObject);
         }
 
-        BodyShapeWidget* bodyShapeWidget = createBodyShapeWidget(bodyShape, sceneObject);
-        bodyShapeWidget->setupShapePropertiesFrom(bodyShape);
 
         shapeTypeValueLabel->setText(QString::fromStdString(bodyShapeWidget->getBodyShapeName()));
         disableObjectEvent = false;
     }
 
-    BodyShapeWidget* ObjectPanelWidget::createBodyShapeWidget(const std::shared_ptr<const CollisionShape3D>& shape, const SceneObject* sceneObject) {
+    BodyShapeWidget* ObjectPanelWidget::createBodyShapeWidget(const CollisionShape3D& shape, const SceneObject* sceneObject) {
         delete bodyShapeWidget;
+        bodyShapeWidget = BodyShapeWidgetRetriever(sceneObject).createBodyShapeWidget(shape.getShapeType());
+        setupBodyShapeWidget();
+        return bodyShapeWidget;
+    }
 
-        bodyShapeWidget = BodyShapeWidgetRetriever(sceneObject).createBodyShapeWidget(shape);
+    BodyShapeWidget* ObjectPanelWidget::createNoBodyShapeWidget(const SceneObject* sceneObject) {
+        delete bodyShapeWidget;
+        bodyShapeWidget = new NoBodyShapeWidget(sceneObject);
+        setupBodyShapeWidget();
+        return bodyShapeWidget;
+    }
+
+    void ObjectPanelWidget::setupBodyShapeWidget() {
         physicsShapeLayout->addWidget(bodyShapeWidget);
         bodyShapeWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         bodyShapeWidget->show();
-        connect(bodyShapeWidget, SIGNAL(bodyShapeChange(std::shared_ptr<const CollisionShape3D>)), this, SLOT(bodyShapeChanged(std::shared_ptr<const CollisionShape3D>)));
+        connect(bodyShapeWidget, SIGNAL(bodyShapeChange(std::unique_ptr<const CollisionShape3D>&)), this, SLOT(bodyShapeChanged(std::unique_ptr<const CollisionShape3D>&)));
 
         notifyObservers(this, NotificationType::OBJECT_BODY_SHAPE_WIDGET_CREATED);
-
-        return bodyShapeWidget;
     }
 
     void ObjectPanelWidget::showAddObjectDialog() {
@@ -573,7 +584,7 @@ namespace urchin {
 
             const SceneObject* sceneObject = objectTableView->getSelectedSceneObject();
             if (sceneObject->getRigidBody()) {
-                const std::shared_ptr<const CollisionShape3D>& updatedCollisionShape = sceneObject->getRigidBody()->getShape();
+                const CollisionShape3D& updatedCollisionShape = sceneObject->getRigidBody()->getShape();
                 BodyShapeWidget* bodyShapeWidget = createBodyShapeWidget(updatedCollisionShape, sceneObject);
                 bodyShapeWidget->setupShapePropertiesFrom(updatedCollisionShape);
             }
@@ -630,10 +641,10 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::bodyShapeChanged(const std::shared_ptr<const CollisionShape3D>& shape) {
+    void ObjectPanelWidget::bodyShapeChanged(std::unique_ptr<const CollisionShape3D>& shape) {
         if (!disableObjectEvent) {
             const SceneObject* sceneObject = objectTableView->getSelectedSceneObject();
-            objectController->updateSceneObjectPhysicsShape(sceneObject, shape);
+            objectController->updateSceneObjectPhysicsShape(sceneObject, std::move(shape));
         }
     }
 

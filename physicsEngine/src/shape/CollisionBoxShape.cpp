@@ -44,8 +44,8 @@ namespace urchin {
         return boxShape->getHalfSizes();
     }
 
-    std::shared_ptr<CollisionShape3D> CollisionBoxShape::scale(float scale) const {
-        return std::make_shared<CollisionBoxShape>(boxShape->getHalfSizes() * scale);
+    std::unique_ptr<CollisionShape3D> CollisionBoxShape::scale(float scale) const {
+        return std::make_unique<CollisionBoxShape>(boxShape->getHalfSizes() * scale);
     }
 
     AABBox<float> CollisionBoxShape::toAABBox(const PhysicsTransform& physicsTransform) const {

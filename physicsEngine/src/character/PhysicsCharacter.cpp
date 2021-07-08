@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    PhysicsCharacter::PhysicsCharacter(std::string name, float mass, std::shared_ptr<const CollisionShape3D> shape, const PhysicsTransform& transform) :
+    PhysicsCharacter::PhysicsCharacter(std::string name, float mass, std::unique_ptr<const CollisionShape3D> shape, const PhysicsTransform& transform) :
             name(std::move(name)),
             mass(mass),
             shape(std::move(shape)),
@@ -20,8 +20,8 @@ namespace urchin {
         return mass;
     }
 
-    const std::shared_ptr<const CollisionShape3D>& PhysicsCharacter::getShape() const {
-        return shape;
+    std::unique_ptr<const CollisionShape3D> PhysicsCharacter::moveShape() {
+        return std::move(shape);
     }
 
     void PhysicsCharacter::updateTransform(const PhysicsTransform& transform) {

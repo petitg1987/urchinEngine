@@ -11,7 +11,7 @@ namespace urchin {
 
     class RigidBody : public AbstractBody {
         public:
-            RigidBody(const std::string&, const PhysicsTransform&, const std::shared_ptr<const CollisionShape3D>&);
+            RigidBody(const std::string&, const PhysicsTransform&, std::unique_ptr<const CollisionShape3D>);
             RigidBody(const RigidBody&);
             ~RigidBody() override = default;
 

@@ -33,17 +33,17 @@ namespace urchin {
         return BOX_SHAPE_LABEL;
     }
 
-    void BodyBoxShapeWidget::doSetupShapePropertiesFrom(const std::shared_ptr<const CollisionShape3D>& shape) {
-        const auto& boxShape = std::dynamic_pointer_cast<const CollisionBoxShape>(shape);
+    void BodyBoxShapeWidget::doSetupShapePropertiesFrom(const CollisionShape3D& shape) {
+        const auto& boxShape = dynamic_cast<const CollisionBoxShape&>(shape);
 
-        const Vector3<float>& halfSizes = boxShape->getHalfSizes();
+        const Vector3<float>& halfSizes = boxShape.getHalfSizes();
         halfSizeX->setValue(halfSizes.X);
         halfSizeY->setValue(halfSizes.Y);
         halfSizeZ->setValue(halfSizes.Z);
     }
 
-    std::shared_ptr<const CollisionShape3D> BodyBoxShapeWidget::createBodyShape() const {
+    std::unique_ptr<const CollisionShape3D> BodyBoxShapeWidget::createBodyShape() const {
         Vector3<float> halfSizes((float)halfSizeX->value(), (float)halfSizeY->value(), (float)halfSizeZ->value());
-        return std::make_shared<const CollisionBoxShape>(halfSizes);
+        return std::make_unique<const CollisionBoxShape>(halfSizes);
     }
 }

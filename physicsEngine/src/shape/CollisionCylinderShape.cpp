@@ -46,8 +46,8 @@ namespace urchin {
         return cylinderShape->getCylinderOrientation();
     }
 
-    std::shared_ptr<CollisionShape3D> CollisionCylinderShape::scale(float scale) const {
-        return std::make_shared<CollisionCylinderShape>(cylinderShape->getRadius() * scale,
+    std::unique_ptr<CollisionShape3D> CollisionCylinderShape::scale(float scale) const {
+        return std::make_unique<CollisionCylinderShape>(cylinderShape->getRadius() * scale,
                 cylinderShape->getHeight() * scale, cylinderShape->getCylinderOrientation());
     }
 

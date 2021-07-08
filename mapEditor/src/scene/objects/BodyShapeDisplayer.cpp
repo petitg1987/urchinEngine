@@ -1,7 +1,6 @@
 #include <memory>
 #include <stdexcept>
 #include <UrchinCommon.h>
-#include <scene/objects/BodyShapeDisplayer.h>
 
 #include <scene/objects/BodyShapeDisplayer.h>
 
@@ -9,7 +8,8 @@ namespace urchin {
 
     BodyShapeDisplayer::BodyShapeDisplayer(SceneManager* sceneManager) :
         sceneManager(sceneManager),
-        selectedSceneObject(nullptr) {
+        selectedSceneObject(nullptr),
+        selectedCompoundShapeComponent(nullptr) {
 
     }
 
@@ -21,8 +21,8 @@ namespace urchin {
         this->selectedSceneObject = selectedSceneObject;
     }
 
-    void BodyShapeDisplayer::setSelectedCompoundShapeComponent(std::shared_ptr<const LocalizedCollisionShape> selectedCompoundShapeComponent) {
-        this->selectedCompoundShapeComponent = std::move(selectedCompoundShapeComponent);
+    void BodyShapeDisplayer::setSelectedCompoundShapeComponent(const LocalizedCollisionShape* selectedCompoundShapeComponent) {
+        this->selectedCompoundShapeComponent = selectedCompoundShapeComponent;
     }
 
     void BodyShapeDisplayer::displayBodyShape() {
@@ -30,18 +30,18 @@ namespace urchin {
 
         if (selectedSceneObject && selectedSceneObject->getRigidBody()) {
             const Transform<float>& modelTransform = selectedSceneObject->getModel()->getTransform();
-            const std::shared_ptr<const CollisionShape3D>& bodyShape = selectedSceneObject->getRigidBody()->getShape();
+            const CollisionShape3D& bodyShape = selectedSceneObject->getRigidBody()->getShape();
 
-            if (bodyShape->isConcave()) {
+            if (bodyShape.isConcave()) {
                 PhysicsTransform transform(modelTransform.getPosition(), modelTransform.getOrientation());
-                AABBox<float> heightfieldAABBox = bodyShape->toAABBox(transform);
+                AABBox<float> heightfieldAABBox = bodyShape.toAABBox(transform);
 
                 GeometryModel* geometryModel = new AABBoxModel(heightfieldAABBox);
                 geometryModel->setColor(0.0, 1.0, 0.0);
                 bodyShapeModels.push_back(geometryModel);
-            } else if (bodyShape->isCompound()) {
-                const auto* compoundShape = dynamic_cast<const CollisionCompoundShape*>(bodyShape.get());
-                const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape->getLocalizedShapes();
+            } else if (bodyShape.isCompound()) {
+                const auto& compoundShape = dynamic_cast<const CollisionCompoundShape&>(bodyShape);
+                const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape.getLocalizedShapes();
                 for (const auto& localizedShape : localizedShapes) {
                     PhysicsTransform transform = PhysicsTransform(modelTransform.getPosition(), modelTransform.getOrientation()) * localizedShape->transform;
                     std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> bodyObject = localizedShape->shape->toConvexObject(transform);
@@ -56,15 +56,15 @@ namespace urchin {
 
                     bodyShapeModels.push_back(geometryModel);
                 }
-            } else if (bodyShape->isConvex()) {
+            } else if (bodyShape.isConvex()) {
                 PhysicsTransform transform(modelTransform.getPosition(), modelTransform.getOrientation());
-                std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> bodyObject = bodyShape->toConvexObject(transform);
+                std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> bodyObject = bodyShape.toConvexObject(transform);
 
-                GeometryModel* geometryModel = retrieveSingleGeometry(bodyShape->getShapeType(), bodyObject);
+                GeometryModel* geometryModel = retrieveSingleGeometry(bodyShape.getShapeType(), bodyObject);
                 geometryModel->setColor(0.0f, 1.0f, 0.0f);
                 bodyShapeModels.push_back(geometryModel);
             } else {
-                throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape->getShapeType()));
+                throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape.getShapeType()));
             }
 
             for (auto& bodyShapeModel : bodyShapeModels) {

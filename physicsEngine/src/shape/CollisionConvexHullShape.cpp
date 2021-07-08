@@ -82,7 +82,7 @@ namespace urchin {
         return convexHullShape->getPoints();
     }
 
-    std::shared_ptr<CollisionShape3D> CollisionConvexHullShape::scale(float scale) const {
+    std::unique_ptr<CollisionShape3D> CollisionConvexHullShape::scale(float scale) const {
         const std::vector<Point3<float>>& convexHullPoints = convexHullShape->getPoints();
 
         std::vector<Point3<float>> newPoints;
@@ -92,7 +92,7 @@ namespace urchin {
             newPoints.push_back(convexHullPoint * scale);
         }
 
-        return std::make_shared<CollisionConvexHullShape>(newPoints);
+        return std::make_unique<CollisionConvexHullShape>(newPoints);
     }
 
     AABBox<float> CollisionConvexHullShape::toAABBox(const PhysicsTransform& physicsTransform) const {

@@ -45,8 +45,8 @@ namespace urchin {
         return capsuleShape->getCapsuleOrientation();
     }
 
-    std::shared_ptr<CollisionShape3D> CollisionCapsuleShape::scale(float scale) const {
-        return std::make_shared<CollisionCapsuleShape>(capsuleShape->getRadius() * scale,
+    std::unique_ptr<CollisionShape3D> CollisionCapsuleShape::scale(float scale) const {
+        return std::make_unique<CollisionCapsuleShape>(capsuleShape->getRadius() * scale,
                 capsuleShape->getCylinderHeight() * scale, capsuleShape->getCapsuleOrientation());
     }
 

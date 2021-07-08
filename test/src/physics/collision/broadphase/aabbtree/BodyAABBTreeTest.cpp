@@ -8,9 +8,10 @@ using namespace urchin;
 
 void BodyAABBTreeTest::twoBodiesPairedAndRemove() {
     //add bodies test:
-    std::shared_ptr<CollisionBoxShape> cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
-    auto bodyA = std::make_unique<RigidBody>("bodyA", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
-    auto bodyB = std::make_unique<RigidBody>("bodyB", PhysicsTransform(Point3<float>(1.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
+    std::unique_ptr<CollisionBoxShape> cubeShapeA = std::make_unique<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
+    auto bodyA = std::make_unique<RigidBody>("bodyA", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), std::move(cubeShapeA));
+    std::unique_ptr<CollisionBoxShape> cubeShapeB = std::make_unique<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
+    auto bodyB = std::make_unique<RigidBody>("bodyB", PhysicsTransform(Point3<float>(1.0f, 0.0f, 0.0f), Quaternion<float>()), std::move(cubeShapeB));
     BodyAABBTree bodyAabbTree;
     bodyAabbTree.addBody(bodyA.get());
     bodyAabbTree.addBody(bodyB.get());
@@ -27,9 +28,10 @@ void BodyAABBTreeTest::twoBodiesPairedAndRemove() {
 }
 
 void BodyAABBTreeTest::twoBodiesNotPaired() {
-    std::shared_ptr<CollisionBoxShape> cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
-    auto bodyA = std::make_unique<RigidBody>("bodyA", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
-    auto bodyB = std::make_unique<RigidBody>("bodyB", PhysicsTransform(Point3<float>(10.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
+    std::unique_ptr<CollisionBoxShape> cubeShapeA = std::make_unique<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
+    auto bodyA = std::make_unique<RigidBody>("bodyA", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), std::move(cubeShapeA));
+    std::unique_ptr<CollisionBoxShape> cubeShapeB = std::make_unique<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
+    auto bodyB = std::make_unique<RigidBody>("bodyB", PhysicsTransform(Point3<float>(10.0f, 0.0f, 0.0f), Quaternion<float>()), std::move(cubeShapeB));
     BodyAABBTree bodyAabbTree;
     bodyAabbTree.addBody(bodyA.get());
     bodyAabbTree.addBody(bodyB.get());
@@ -47,9 +49,10 @@ void BodyAABBTreeTest::oneGhostBodyAndRemoveOther() {
 
 void BodyAABBTreeTest::oneGhostBodyAndRemove(bool removeGhostBody) {
     //add bodies test:
-    std::shared_ptr<CollisionBoxShape> cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
-    auto bodyA = std::make_unique<RigidBody>("bodyA", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
-    auto bodyB = std::make_unique<GhostBody>("bodyB", PhysicsTransform(Point3<float>(1.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
+    std::unique_ptr<CollisionBoxShape> cubeShapeA = std::make_unique<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
+    auto bodyA = std::make_unique<RigidBody>("bodyA", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), std::move(cubeShapeA));
+    std::unique_ptr<CollisionBoxShape> cubeShapeB = std::make_unique<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
+    auto bodyB = std::make_unique<GhostBody>("bodyB", PhysicsTransform(Point3<float>(1.0f, 0.0f, 0.0f), Quaternion<float>()), std::move(cubeShapeB));
     BodyAABBTree bodyAabbTree;
     bodyAabbTree.addBody(bodyA.get());
     bodyAabbTree.addBody(bodyB.get());
@@ -76,9 +79,10 @@ void BodyAABBTreeTest::oneGhostBodyAndRemove(bool removeGhostBody) {
 }
 
 void BodyAABBTreeTest::twoGhostBodies() {
-    std::shared_ptr<CollisionBoxShape> cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
-    auto bodyA = std::make_unique<GhostBody>("bodyA", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
-    auto bodyB = std::make_unique<GhostBody>("bodyB", PhysicsTransform(Point3<float>(1.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
+    std::unique_ptr<CollisionBoxShape> cubeShapeA = std::make_unique<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
+    auto bodyA = std::make_unique<GhostBody>("bodyA", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), std::move(cubeShapeA));
+    std::unique_ptr<CollisionBoxShape> cubeShapeB = std::make_unique<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
+    auto bodyB = std::make_unique<GhostBody>("bodyB", PhysicsTransform(Point3<float>(1.0f, 0.0f, 0.0f), Quaternion<float>()), std::move(cubeShapeB));
     BodyAABBTree bodyAabbTree;
     bodyAabbTree.addBody(bodyA.get());
     bodyAabbTree.addBody(bodyB.get());
@@ -92,10 +96,12 @@ void BodyAABBTreeTest::twoGhostBodies() {
 
 void BodyAABBTreeTest::threeBodiesPairedAndRemove() {
     //add bodies test:
-    std::shared_ptr<CollisionBoxShape> cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
-    auto bodyA = std::make_unique<RigidBody>("bodyA", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
-    auto bodyB = std::make_unique<GhostBody>("bodyB", PhysicsTransform(Point3<float>(1.0f, 0.0f, 0.0f), Quaternion<float>()), cubeShape);
-    auto bodyC = std::make_unique<GhostBody>("bodyC", PhysicsTransform(Point3<float>(0.0f, 1.0f, 0.0f), Quaternion<float>()), cubeShape);
+    std::unique_ptr<CollisionBoxShape> cubeShapeA = std::make_unique<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
+    auto bodyA = std::make_unique<RigidBody>("bodyA", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), std::move(cubeShapeA));
+    std::unique_ptr<CollisionBoxShape> cubeShapeB = std::make_unique<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
+    auto bodyB = std::make_unique<GhostBody>("bodyB", PhysicsTransform(Point3<float>(1.0f, 0.0f, 0.0f), Quaternion<float>()), std::move(cubeShapeB));
+    std::unique_ptr<CollisionBoxShape> cubeShapeC = std::make_unique<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
+    auto bodyC = std::make_unique<GhostBody>("bodyC", PhysicsTransform(Point3<float>(0.0f, 1.0f, 0.0f), Quaternion<float>()), std::move(cubeShapeC));
     BodyAABBTree bodyAabbTree;
     bodyAabbTree.addBody(bodyA.get());
     bodyAabbTree.addBody(bodyB.get());

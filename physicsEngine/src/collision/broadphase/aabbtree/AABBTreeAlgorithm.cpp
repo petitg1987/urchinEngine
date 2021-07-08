@@ -42,7 +42,7 @@ namespace urchin {
         bodiesAABBoxHitBody.reserve(15);
 
         Ray<float> ray(from.getPosition(), to.getPosition());
-        float bodyBoundingSphereRadius = body->getShape()->getMaxDistanceToCenter();
+        float bodyBoundingSphereRadius = body->getShape().getMaxDistanceToCenter();
 
         tree->enlargedRayQuery(ray, bodyBoundingSphereRadius, body, bodiesAABBoxHitBody);
 

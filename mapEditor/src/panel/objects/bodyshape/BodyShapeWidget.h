@@ -28,12 +28,12 @@ namespace urchin {
 
             const SceneObject* getSceneObject() const;
             virtual std::string getBodyShapeName() const = 0;
-            std::shared_ptr<const CollisionShape3D> retrieveShape();
+            std::unique_ptr<const CollisionShape3D> moveShape();
 
-            void setupShapePropertiesFrom(const std::shared_ptr<const CollisionShape3D>&);
+            void setupShapePropertiesFrom(const CollisionShape3D&);
 
         signals:
-            void bodyShapeChange(std::shared_ptr<const CollisionShape3D>);
+            void bodyShapeChange(std::unique_ptr<const CollisionShape3D>&);
 
         public slots:
             void updateBodyShape();
@@ -42,13 +42,13 @@ namespace urchin {
             QGridLayout* mainLayout;
             bool disableShapeEvent;
 
-            virtual void doSetupShapePropertiesFrom(const std::shared_ptr<const CollisionShape3D>&) = 0;
-            virtual std::shared_ptr<const CollisionShape3D> createBodyShape() const = 0;
+            virtual void doSetupShapePropertiesFrom(const CollisionShape3D&) = 0;
+            virtual std::unique_ptr<const CollisionShape3D> createBodyShape() const = 0;
 
         private:
             const SceneObject* sceneObject;
 
-            std::shared_ptr<const CollisionShape3D> shape;
+            std::unique_ptr<const CollisionShape3D> shape;
     };
 
 }

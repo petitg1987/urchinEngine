@@ -9,13 +9,13 @@ namespace urchin {
 
     class PhysicsCharacter {
         public:
-            PhysicsCharacter(std::string, float, std::shared_ptr<const CollisionShape3D>, const PhysicsTransform&);
+            PhysicsCharacter(std::string, float, std::unique_ptr<const CollisionShape3D>, const PhysicsTransform&);
 
             const std::string& getName() const;
 
             float getMass() const;
 
-            const std::shared_ptr<const CollisionShape3D>& getShape() const;
+            std::unique_ptr<const CollisionShape3D> moveShape();
 
             void updateTransform(const PhysicsTransform&);
             const PhysicsTransform& getTransform() const;
@@ -23,7 +23,7 @@ namespace urchin {
         private:
             std::string name;
             float mass;
-            std::shared_ptr<const CollisionShape3D> shape;
+            std::unique_ptr<const CollisionShape3D> shape;
             PhysicsTransform transform;
     };
 

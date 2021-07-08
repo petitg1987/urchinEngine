@@ -33,8 +33,8 @@ namespace urchin {
         return sphereShape->getRadius();
     }
 
-    std::shared_ptr<CollisionShape3D> CollisionSphereShape::scale(float scale) const {
-        return std::make_shared<CollisionSphereShape>(sphereShape->getRadius() * scale);
+    std::unique_ptr<CollisionShape3D> CollisionSphereShape::scale(float scale) const {
+        return std::make_unique<CollisionSphereShape>(sphereShape->getRadius() * scale);
     }
 
     AABBox<float> CollisionSphereShape::toAABBox(const PhysicsTransform& physicsTransform) const {

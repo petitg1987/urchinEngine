@@ -27,16 +27,16 @@ namespace urchin {
             LocalizedShapeTableView* getLocalizedShapeTableView() const;
 
         protected:
-            void doSetupShapePropertiesFrom(const std::shared_ptr<const CollisionShape3D>&) override;
-            std::shared_ptr<const CollisionShape3D> createBodyShape() const override;
+            void doSetupShapePropertiesFrom(const CollisionShape3D&) override;
+            std::unique_ptr<const CollisionShape3D> createBodyShape() const override;
 
         private:
             void notify(Observable*, int) override;
 
-            void setupTransformBox(QVBoxLayout*, const std::shared_ptr<const LocalizedCollisionShape>&);
+            void setupTransformBox(QVBoxLayout*, const LocalizedCollisionShape*);
             void setupPosition(QGridLayout*, const Point3<float>&);
             void setupOrientation(QGridLayout*, const Quaternion<float>&);
-            void setupShapeBox(QVBoxLayout*, const std::shared_ptr<const LocalizedCollisionShape>&);
+            void setupShapeBox(QVBoxLayout*, const LocalizedCollisionShape*);
 
             QLabel* shapesLabel;
             LocalizedShapeTableView* localizedShapeTableView;

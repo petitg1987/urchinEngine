@@ -25,7 +25,7 @@ namespace urchin {
             };
 
             bool hasLocalizedShapeSelected() const;
-            std::shared_ptr<const LocalizedCollisionShape> getSelectedLocalizedShape() const;
+            const LocalizedCollisionShape* getSelectedLocalizedShape() const;
             std::vector<std::shared_ptr<const LocalizedCollisionShape>> getLocalizedShapes() const;
             void updateSelectedLocalizedShape(const std::shared_ptr<const LocalizedCollisionShape>&);
 

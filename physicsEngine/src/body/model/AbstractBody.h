@@ -16,7 +16,7 @@ namespace urchin {
 
     class AbstractBody : public IslandElement {
         public:
-            AbstractBody(std::string, const PhysicsTransform&, std::shared_ptr<const CollisionShape3D>);
+            AbstractBody(std::string, const PhysicsTransform&, std::unique_ptr<const CollisionShape3D>);
             AbstractBody(const AbstractBody&);
             ~AbstractBody() override = default;
 
@@ -26,7 +26,7 @@ namespace urchin {
             PhysicsTransform getTransform() const;
             bool getManuallyMovedAndReset();
 
-            const std::shared_ptr<const CollisionShape3D>& getShape() const;
+            const CollisionShape3D& getShape() const;
 
             void setId(const std::string&);
             const std::string& getId() const;
@@ -70,7 +70,7 @@ namespace urchin {
         private:
             //body description data
             std::string id;
-            std::shared_ptr<const CollisionShape3D> shape;
+            std::unique_ptr<const CollisionShape3D> shape;
             float restitution;
             float friction;
             float rollingFriction;

@@ -96,24 +96,25 @@ namespace urchin {
     }
 
     void CharacterController::createBodies() {
-        ghostBody = new GhostBody(this->physicsCharacter->getName(), this->physicsCharacter->getTransform(), this->physicsCharacter->getShape());
+        ghostBody = new GhostBody(physicsCharacter->getName(), physicsCharacter->getTransform(), physicsCharacter->moveShape());
         ghostBody->setIsActive(true); //always active for get better reactivity
 
-        auto ghostBodyCapsule = std::dynamic_pointer_cast<const CollisionCapsuleShape>(this->physicsCharacter->getShape());
-        std::shared_ptr<const CollisionShape3D> ccdGhostBodyShape;
-        if (ghostBodyCapsule) {
-            float radius = ghostBodyCapsule->getRadius();
-            float height = ghostBodyCapsule->getCylinderHeight() + (2.0f * radius);
+        std::unique_ptr<const CollisionShape3D> ccdGhostBodyShape;
+        try {
+            auto& ghostBodyCapsule = dynamic_cast<const CollisionCapsuleShape&>(ghostBody->getShape());
+
+            float radius = ghostBodyCapsule.getRadius();
+            float height = ghostBodyCapsule.getCylinderHeight() + (2.0f * radius);
             float maximumCharacterSpeed = config.getMaxHorizontalSpeed() * (1.0f + config.getMaxSlopeSpeedVariation());
 
             float ccdRadius = std::max(radius, maximumCharacterSpeed / minUpdateFrequency);
             float ccdHeight = std::max(height, (config.getMaxVerticalSpeed() / minUpdateFrequency) * 2.0f);
             float ccdCylinderHeight = std::max(0.01f, ccdHeight - (2.0f * ccdRadius));
-            ccdGhostBodyShape = std::make_shared<const CollisionCapsuleShape>(ccdRadius, ccdCylinderHeight, ghostBodyCapsule->getCapsuleOrientation());
-        } else {
-            throw std::runtime_error("Unimplemented shape type for character controller: " + std::to_string(this->physicsCharacter->getShape()->getShapeType()));
+            ccdGhostBodyShape = std::make_unique<const CollisionCapsuleShape>(ccdRadius, ccdCylinderHeight, ghostBodyCapsule.getCapsuleOrientation());
+        } catch (const std::bad_cast& e) {
+            throw std::runtime_error("Unimplemented shape type for character controller: " + std::to_string(ghostBody->getShape().getShapeType()));
         }
-        ccdGhostBody = new GhostBody(this->physicsCharacter->getName() + "_ccd", this->physicsCharacter->getTransform(), ccdGhostBodyShape);
+        ccdGhostBody = new GhostBody(this->physicsCharacter->getName() + "_ccd", this->physicsCharacter->getTransform(), std::move(ccdGhostBodyShape));
         ccdGhostBody->setIsActive(true);
     }
 

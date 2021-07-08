@@ -2,15 +2,15 @@
 
 namespace urchin {
 
-    TemporalObject::TemporalObject(const CollisionShape3D* shape, const PhysicsTransform& from, const PhysicsTransform& to) :
+    TemporalObject::TemporalObject(const CollisionShape3D& shape, const PhysicsTransform& from, const PhysicsTransform& to) :
         shape(shape),
-        localObject(shape->toConvexObject(PhysicsTransform())),
+        localObject(shape.toConvexObject(PhysicsTransform())),
         from(from),
         to(to) {
 
     }
 
-    const CollisionShape3D* TemporalObject::getShape() const {
+    const CollisionShape3D& TemporalObject::getShape() const {
         return shape;
     }
 
@@ -27,7 +27,7 @@ namespace urchin {
     }
 
     bool TemporalObject::isRay() const {
-        return shape->getShapeType() == CollisionShape3D::ShapeType::SPHERE_SHAPE && MathFunction::isZero(shape->getInnerMargin());
+        return shape.getShapeType() == CollisionShape3D::ShapeType::SPHERE_SHAPE && MathFunction::isZero(shape.getInnerMargin());
     }
 
 }

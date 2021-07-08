@@ -2,7 +2,6 @@
 
 #include <panel/objects/bodyshape/BodyShapeWidgetRetriever.h>
 #include <panel/objects/bodyshape/BodyShapeWidget.h>
-#include <panel/objects/bodyshape/NoBodyShapeWidget.h>
 #include <panel/objects/bodyshape/BodySphereShapeWidget.h>
 #include <panel/objects/bodyshape/BodyBoxShapeWidget.h>
 #include <panel/objects/bodyshape/BodyCapsuleShapeWidget.h>
@@ -16,14 +15,6 @@ namespace urchin {
     BodyShapeWidgetRetriever::BodyShapeWidgetRetriever(const SceneObject* sceneObject) :
             sceneObject(sceneObject) {
 
-    }
-
-    BodyShapeWidget* BodyShapeWidgetRetriever::createBodyShapeWidget(const std::shared_ptr<const CollisionShape3D>& shape) {
-        if (shape) {
-            return createBodyShapeWidget(shape->getShapeType());
-        }
-
-        return new NoBodyShapeWidget(sceneObject);
     }
 
     BodyShapeWidget* BodyShapeWidgetRetriever::createBodyShapeWidget(CollisionShape3D::ShapeType shapeType) {

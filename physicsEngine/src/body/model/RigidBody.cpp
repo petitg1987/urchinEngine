@@ -7,8 +7,8 @@
 
 namespace urchin {
 
-    RigidBody::RigidBody(const std::string& id, const PhysicsTransform& transform, const std::shared_ptr<const CollisionShape3D>& shape) :
-            AbstractBody(id, transform, shape),
+    RigidBody::RigidBody(const std::string& id, const PhysicsTransform& transform, std::unique_ptr<const CollisionShape3D> shape) :
+            AbstractBody(id, transform, std::move(shape)),
             mass(0.0f),
             invMass(0.0f),
             linearDamping(0.0f),
@@ -63,7 +63,7 @@ namespace urchin {
     }
 
     void RigidBody::refreshInertia() {
-        this->localInertia = getShape()->computeLocalInertia(mass);
+        this->localInertia = getShape().computeLocalInertia(mass);
         this->invLocalInertia = Vector3<float>(MathFunction::isZero(localInertia.X) ? 0.0f : 1.0f / localInertia.X,
                                                MathFunction::isZero(localInertia.Y) ? 0.0f : 1.0f / localInertia.Y,
                                                MathFunction::isZero(localInertia.Z) ? 0.0f : 1.0f / localInertia.Z);

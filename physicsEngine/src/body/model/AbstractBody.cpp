@@ -10,7 +10,7 @@ namespace urchin {
     uint_fast32_t AbstractBody::nextObjectId = 0;
     bool AbstractBody::bDisableAllBodies = false;
 
-    AbstractBody::AbstractBody(std::string id, const PhysicsTransform& transform, std::shared_ptr<const CollisionShape3D> shape) :
+    AbstractBody::AbstractBody(std::string id, const PhysicsTransform& transform, std::unique_ptr<const CollisionShape3D> shape) :
             ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
             transform(transform),
             isManuallyMoved(false),
@@ -32,7 +32,7 @@ namespace urchin {
             transform(abstractBody.getTransform()),
             isManuallyMoved(false),
             id(abstractBody.getId()),
-            shape(std::shared_ptr<const CollisionShape3D>(abstractBody.getShape()->clone())),
+            shape(std::unique_ptr<const CollisionShape3D>(abstractBody.getShape().clone())),
             restitution(0.0f),
             friction(0.0f),
             rollingFriction(0.0f),
@@ -81,8 +81,8 @@ namespace urchin {
         return false;
     }
 
-    const std::shared_ptr<const CollisionShape3D>& AbstractBody::getShape() const {
-        return shape;
+    const CollisionShape3D& AbstractBody::getShape() const {
+        return *shape;
     }
 
     void AbstractBody::setId(const std::string& id) {

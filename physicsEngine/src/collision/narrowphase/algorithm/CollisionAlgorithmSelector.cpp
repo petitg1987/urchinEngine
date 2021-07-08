@@ -105,19 +105,19 @@ namespace urchin {
      * @param shape1 Shape or partial shape composing the body 1
      * @param shape2 Shape or partial shape composing the body 2
      */
-    std::shared_ptr<CollisionAlgorithm> CollisionAlgorithmSelector::createCollisionAlgorithm(AbstractBody* body1, const CollisionShape3D* shape1,
-                                                                                             AbstractBody* body2, const CollisionShape3D* shape2) const {
-        CollisionAlgorithmBuilder* collisionAlgorithmBuilder = collisionAlgorithmBuilderMatrix[shape1->getShapeType()][shape2->getShapeType()];
+    std::shared_ptr<CollisionAlgorithm> CollisionAlgorithmSelector::createCollisionAlgorithm(AbstractBody* body1, const CollisionShape3D& shape1,
+                                                                                             AbstractBody* body2, const CollisionShape3D& shape2) const {
+        CollisionAlgorithmBuilder* collisionAlgorithmBuilder = collisionAlgorithmBuilderMatrix[shape1.getShapeType()][shape2.getShapeType()];
         const std::vector<CollisionShape3D::ShapeType>& firstExpectedShapeType = collisionAlgorithmBuilder->getFirstExpectedShapeType();
 
         CollisionAlgorithm *collisionAlgorithmPtr;
-        if (std::find(firstExpectedShapeType.begin(), firstExpectedShapeType.end(), shape1->getShapeType()) != firstExpectedShapeType.end()) {
+        if (std::find(firstExpectedShapeType.begin(), firstExpectedShapeType.end(), shape1.getShapeType()) != firstExpectedShapeType.end()) {
             collisionAlgorithmPtr = collisionAlgorithmBuilder->createCollisionAlgorithm(false, ManifoldResult(body1, body2), algorithmPool);
-        } else if (std::find(firstExpectedShapeType.begin(), firstExpectedShapeType.end(), shape2->getShapeType()) != firstExpectedShapeType.end()) { //objects must be swap to match algorithm shape types
+        } else if (std::find(firstExpectedShapeType.begin(), firstExpectedShapeType.end(), shape2.getShapeType()) != firstExpectedShapeType.end()) { //objects must be swap to match algorithm shape types
             collisionAlgorithmPtr = collisionAlgorithmBuilder->createCollisionAlgorithm(true, ManifoldResult(body2, body1), algorithmPool);
         } else {
-            throw std::runtime_error("Impossible to initialize collision algorithm for shape types: " + std::to_string(shape1->getShapeType())
-                                     + " and " + std::to_string(shape2->getShapeType()));
+            throw std::runtime_error("Impossible to initialize collision algorithm for shape types: " + std::to_string(shape1.getShapeType())
+                                     + " and " + std::to_string(shape2.getShapeType()));
         }
 
         std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = std::shared_ptr<CollisionAlgorithm>(collisionAlgorithmPtr, AlgorithmDeleter(algorithmPool));

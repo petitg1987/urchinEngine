@@ -1,6 +1,5 @@
 #include <stdexcept>
 #include <memory>
-#include <controller/objects/ObjectController.h>
 
 #include <controller/objects/ObjectController.h>
 #include <panel/objects/bodyshape/support/DefaultBodyShapeCreator.h>
@@ -69,16 +68,15 @@ namespace urchin {
         PhysicsTransform physicsTransform(modelTransform.getPosition(), modelTransform.getOrientation());
         auto bodyShape = DefaultBodyShapeCreator(constSceneObject).createDefaultBodyShape(CollisionShape3D::ShapeType::BOX_SHAPE);
 
-        auto* rigidBody = new RigidBody(bodyId, physicsTransform, bodyShape);
+        auto* rigidBody = new RigidBody(bodyId, physicsTransform, std::move(bodyShape));
         sceneObject->setupInteractiveBody(rigidBody);
 
         markModified();
     }
 
     void ObjectController::changeBodyShape(const SceneObject* constSceneObject, CollisionShape3D::ShapeType shapeType) {
-        std::shared_ptr<const CollisionShape3D> newCollisionShape = DefaultBodyShapeCreator(constSceneObject).createDefaultBodyShape(shapeType);
-
-        updateSceneObjectPhysicsShape(constSceneObject, newCollisionShape);
+        std::unique_ptr<const CollisionShape3D> newCollisionShape = DefaultBodyShapeCreator(constSceneObject).createDefaultBodyShape(shapeType);
+        updateSceneObjectPhysicsShape(constSceneObject, std::move(newCollisionShape));
     }
 
     void ObjectController::removeBody(const SceneObject* constSceneObject) {
@@ -97,10 +95,10 @@ namespace urchin {
 
         if (sceneObject->getRigidBody()) {
             float scaleRatio = transform.getScale() / oldTransform.getScale();
-            std::shared_ptr<const CollisionShape3D> collisionShape = sceneObject->getRigidBody()->getShape();
-            auto scaledCollisionShape = collisionShape->scale(scaleRatio);
+            const CollisionShape3D& collisionShape = sceneObject->getRigidBody()->getShape();
+            auto scaledCollisionShape = collisionShape.scale(scaleRatio);
 
-            updateSceneObjectPhysicsShape(sceneObject, scaledCollisionShape);
+            updateSceneObjectPhysicsShape(sceneObject, std::move(scaledCollisionShape));
         }
 
         markModified();
@@ -137,7 +135,7 @@ namespace urchin {
         return sceneObject;
     }
 
-    const SceneObject* ObjectController::updateSceneObjectPhysicsShape(const SceneObject* constSceneObject, const std::shared_ptr<const CollisionShape3D>& newCollisionShape) {
+    const SceneObject* ObjectController::updateSceneObjectPhysicsShape(const SceneObject* constSceneObject, std::unique_ptr<const CollisionShape3D> newCollisionShape) {
         SceneObject* sceneObject = findSceneObject(constSceneObject);
         RigidBody* rigidBody = sceneObject->getRigidBody();
 
@@ -145,7 +143,7 @@ namespace urchin {
         Transform<float> modelTransform = constSceneObject->getModel()->getTransform();
         PhysicsTransform physicsTransform(modelTransform.getPosition(), modelTransform.getOrientation());
 
-        auto* newRigidBody = new RigidBody(bodyId, physicsTransform, newCollisionShape);
+        auto* newRigidBody = new RigidBody(bodyId, physicsTransform, std::move(newCollisionShape));
         newRigidBody->setMass(rigidBody->getMass());
         newRigidBody->setRestitution(rigidBody->getRestitution());
         newRigidBody->setFriction(rigidBody->getFriction());

@@ -46,8 +46,8 @@ namespace urchin {
         return coneShape->getConeOrientation();
     }
 
-    std::shared_ptr<CollisionShape3D> CollisionConeShape::scale(float scale) const {
-        return std::make_shared<CollisionConeShape>(coneShape->getRadius() * scale,
+    std::unique_ptr<CollisionShape3D> CollisionConeShape::scale(float scale) const {
+        return std::make_unique<CollisionConeShape>(coneShape->getRadius() * scale,
                 coneShape->getHeight() * scale, coneShape->getConeOrientation());
     }
 

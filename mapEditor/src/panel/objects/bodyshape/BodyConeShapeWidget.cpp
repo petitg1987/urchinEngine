@@ -43,23 +43,23 @@ namespace urchin {
         return CONE_SHAPE_LABEL;
     }
 
-    void BodyConeShapeWidget::doSetupShapePropertiesFrom(const std::shared_ptr<const CollisionShape3D>& shape) {
-        const auto& coneShape = std::dynamic_pointer_cast<const CollisionConeShape>(shape);
+    void BodyConeShapeWidget::doSetupShapePropertiesFrom(const CollisionShape3D& shape) {
+        const auto& coneShape = dynamic_cast<const CollisionConeShape&>(shape);
 
-        radius->setValue(coneShape->getRadius());
-        height->setValue(coneShape->getHeight());
+        radius->setValue(coneShape.getRadius());
+        height->setValue(coneShape.getHeight());
 
-        int index = orientation->findData(coneShape->getConeOrientation());
+        int index = orientation->findData(coneShape.getConeOrientation());
         if (index != -1) {
             orientation->setCurrentIndex(index);
         }
     }
 
-    std::shared_ptr<const CollisionShape3D> BodyConeShapeWidget::createBodyShape() const {
+    std::unique_ptr<const CollisionShape3D> BodyConeShapeWidget::createBodyShape() const {
         QVariant variant = orientation->currentData();
         auto orientation = static_cast<ConeShape<float>::ConeOrientation>(variant.toInt());
 
-        return std::make_shared<const CollisionConeShape>(radius->value(), height->value(), orientation);
+        return std::make_unique<const CollisionConeShape>(radius->value(), height->value(), orientation);
     }
 
 }

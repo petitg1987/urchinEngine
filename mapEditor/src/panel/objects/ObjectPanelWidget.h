@@ -53,7 +53,9 @@ namespace urchin {
             void setupObjectDataFrom(const SceneObject*);
             void setupObjectPhysicsDataFrom(const SceneObject*);
 
-            BodyShapeWidget* createBodyShapeWidget(const std::shared_ptr<const CollisionShape3D>&, const SceneObject*);
+            BodyShapeWidget* createBodyShapeWidget(const CollisionShape3D&, const SceneObject*);
+            BodyShapeWidget* createNoBodyShapeWidget(const SceneObject*);
+            void setupBodyShapeWidget();
 
             ObjectController* objectController;
 
@@ -109,7 +111,7 @@ namespace urchin {
             void showChangeBodyShapeDialog();
             void rigidBodyToggled(int);
             void updateObjectPhysicsProperties();
-            void bodyShapeChanged(const std::shared_ptr<const CollisionShape3D>&);
+            void bodyShapeChanged(std::unique_ptr<const CollisionShape3D>&);
     };
 
 }

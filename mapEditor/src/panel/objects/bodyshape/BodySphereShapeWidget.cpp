@@ -21,13 +21,13 @@ namespace urchin {
         return SPHERE_SHAPE_LABEL;
     }
 
-    void BodySphereShapeWidget::doSetupShapePropertiesFrom(const std::shared_ptr<const CollisionShape3D>& shape) {
-        const auto& sphereShape = std::dynamic_pointer_cast<const CollisionSphereShape>(shape);
+    void BodySphereShapeWidget::doSetupShapePropertiesFrom(const CollisionShape3D& shape) {
+        const auto& sphereShape = dynamic_cast<const CollisionSphereShape&>(shape);
 
-        radius->setValue(sphereShape->getRadius());
+        radius->setValue(sphereShape.getRadius());
     }
 
-    std::shared_ptr<const CollisionShape3D> BodySphereShapeWidget::createBodyShape() const {
-        return std::make_shared<const CollisionSphereShape>(radius->value());
+    std::unique_ptr<const CollisionShape3D> BodySphereShapeWidget::createBodyShape() const {
+        return std::make_unique<const CollisionSphereShape>(radius->value());
     }
 }

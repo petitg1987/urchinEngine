@@ -19,14 +19,14 @@ namespace urchin {
         return sceneObject;
     }
 
-    std::shared_ptr<const CollisionShape3D> BodyShapeWidget::retrieveShape() {
+    std::unique_ptr<const CollisionShape3D> BodyShapeWidget::moveShape() {
         if (!shape) {
             shape = createBodyShape();
         }
-        return shape;
+        return std::move(shape);
     }
 
-    void BodyShapeWidget::setupShapePropertiesFrom(const std::shared_ptr<const CollisionShape3D>& shape) {
+    void BodyShapeWidget::setupShapePropertiesFrom(const CollisionShape3D& shape) {
         disableShapeEvent = true;
         doSetupShapePropertiesFrom(shape);
         disableShapeEvent = false;
@@ -35,7 +35,6 @@ namespace urchin {
     void BodyShapeWidget::updateBodyShape() {
         if (!disableShapeEvent) {
             shape = createBodyShape();
-
             emit bodyShapeChange(shape);
         }
     }

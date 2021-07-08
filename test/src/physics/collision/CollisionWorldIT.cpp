@@ -40,8 +40,8 @@ void CollisionWorldIT::ccdPushOnGround() {
 
 void CollisionWorldIT::ccdBounceOnGroundAndRoof() {
     auto bodyManager = buildWorld(Point3<float>(0.0f, 5.0f, 0.0f));
-    std::shared_ptr<CollisionBoxShape> roofShape = std::make_shared<CollisionBoxShape>(Vector3<float>(50.0f, 0.5f, 50.0f));
-    bodyManager->addBody(new RigidBody("roof", PhysicsTransform(Point3<float>(0.0f, 10.0f, 0.0f), Quaternion<float>()), roofShape));
+    std::unique_ptr<CollisionBoxShape> roofShape = std::make_unique<CollisionBoxShape>(Vector3<float>(50.0f, 0.5f, 50.0f));
+    bodyManager->addBody(new RigidBody("roof", PhysicsTransform(Point3<float>(0.0f, 10.0f, 0.0f), Quaternion<float>()), std::move(roofShape)));
     auto collisionWorld = std::make_unique<CollisionWorld>(bodyManager.get());
     collisionWorld->process(1.0f / 1000.0f, Vector3<float>(0.0f, 0.0f, 0.0f));
     auto* cubeBody = dynamic_cast<RigidBody*>(bodyManager->getBodies()[1]);
@@ -150,12 +150,12 @@ void CollisionWorldIT::changeMass() {
 std::unique_ptr<BodyManager> CollisionWorldIT::buildWorld(const Point3<float>& cubePosition) const {
     auto bodyManager = std::make_unique<BodyManager>();
 
-    std::shared_ptr<CollisionBoxShape> groundShape = std::make_shared<CollisionBoxShape>(Vector3<float>(50.0f, 0.5f, 50.0f));
-    auto* groundBody = new RigidBody("ground", PhysicsTransform(Point3<float>(0.0f, -0.5f, 0.0f), Quaternion<float>()), groundShape);
+    std::unique_ptr<CollisionBoxShape> groundShape = std::make_unique<CollisionBoxShape>(Vector3<float>(50.0f, 0.5f, 50.0f));
+    auto* groundBody = new RigidBody("ground", PhysicsTransform(Point3<float>(0.0f, -0.5f, 0.0f), Quaternion<float>()), std::move(groundShape));
     bodyManager->addBody(groundBody);
 
-    std::shared_ptr<CollisionBoxShape> cubeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
-    auto* cubeBody = new RigidBody("cube", PhysicsTransform(cubePosition, Quaternion<float>()), cubeShape);
+    std::unique_ptr<CollisionBoxShape> cubeShape = std::make_unique<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
+    auto* cubeBody = new RigidBody("cube", PhysicsTransform(cubePosition, Quaternion<float>()), std::move(cubeShape));
     cubeBody->setMass(10.0f);
     bodyManager->addBody(cubeBody);
 

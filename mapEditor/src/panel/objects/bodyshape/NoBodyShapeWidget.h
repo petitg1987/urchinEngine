@@ -19,8 +19,8 @@ namespace urchin {
             std::string getBodyShapeName() const override;
 
         protected:
-            void doSetupShapePropertiesFrom(const std::shared_ptr<const CollisionShape3D>&) override;
-            std::shared_ptr<const CollisionShape3D> createBodyShape() const override;
+            void doSetupShapePropertiesFrom(const CollisionShape3D&) override;
+            std::unique_ptr<const CollisionShape3D> createBodyShape() const override;
     };
 
 }

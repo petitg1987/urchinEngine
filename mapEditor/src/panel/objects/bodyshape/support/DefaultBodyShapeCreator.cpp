@@ -7,7 +7,7 @@ namespace urchin {
 
     }
 
-    std::shared_ptr<const CollisionShape3D> DefaultBodyShapeCreator::createDefaultBodyShape(CollisionShape3D::ShapeType shapeType) const {
+    std::unique_ptr<const CollisionShape3D> DefaultBodyShapeCreator::createDefaultBodyShape(CollisionShape3D::ShapeType shapeType) const {
         CollisionShape3D *shape;
         const AABBox<float>& modelAABBox = sceneObject->getModel()->getLocalAABBox();
 
@@ -38,17 +38,17 @@ namespace urchin {
 
             std::shared_ptr<LocalizedCollisionShape> boxLocalizedShape = std::make_shared<LocalizedCollisionShape>();
             boxLocalizedShape->position = 0;
-            boxLocalizedShape->shape = std::make_shared<const CollisionBoxShape>(modelAABBox.getHalfSizes());
+            boxLocalizedShape->shape = std::make_unique<const CollisionBoxShape>(modelAABBox.getHalfSizes());
             boxLocalizedShape->transform = PhysicsTransform();
-            localizedCollisionShapes.push_back(boxLocalizedShape);
+            localizedCollisionShapes.push_back(std::move(boxLocalizedShape));
 
-            shape = new CollisionCompoundShape(localizedCollisionShapes);
+            shape = new CollisionCompoundShape(std::move(localizedCollisionShapes));
         } else {
             throw std::invalid_argument("Unknown shape type to create default body shape: " + std::to_string(shapeType));
         }
 
         float scale = sceneObject->getModel()->getTransform().getScale();
-        std::shared_ptr<const CollisionShape3D> scaledShape = shape->scale(scale);
+        std::unique_ptr<const CollisionShape3D> scaledShape = shape->scale(scale);
         delete shape;
 
         return scaledShape;

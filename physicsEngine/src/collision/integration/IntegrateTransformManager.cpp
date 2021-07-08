@@ -1,5 +1,3 @@
-#include <memory>
-
 #include <collision/integration/IntegrateTransformManager.h>
 #include <shape/CollisionSphereShape.h>
 #include <object/TemporalObject.h>
@@ -44,8 +42,8 @@ namespace urchin {
 
         std::vector<AbstractBody*> bodiesAABBoxHitBody = broadPhaseManager->bodyTest(body, from, to);
         if (!bodiesAABBoxHitBody.empty()) {
-            auto bodyEncompassedSphereShape = std::make_shared<CollisionSphereShape>(body->getShape()->getMinDistanceToCenter());
-            TemporalObject temporalObject(bodyEncompassedSphereShape.get(), from, to);
+            CollisionSphereShape bodyEncompassedSphereShape(body->getShape().getMinDistanceToCenter());
+            TemporalObject temporalObject(bodyEncompassedSphereShape, from, to);
             ccd_set ccdResults = narrowPhaseManager->continuousCollisionTest(temporalObject, bodiesAABBoxHitBody);
 
             if (!ccdResults.empty()) {
