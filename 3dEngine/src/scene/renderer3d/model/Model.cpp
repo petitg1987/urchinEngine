@@ -2,7 +2,6 @@
 
 #include <scene/renderer3d/model/Model.h>
 #include <resources/MediaManager.h>
-#include <resources/geometry/aabbox/AABBoxModel.h>
 
 namespace urchin {
 
@@ -171,19 +170,25 @@ namespace urchin {
         }
     }
 
-    void Model::setPosition(const Point3<float>& p) {
-        transform.setPosition(p);
-        onMoving(transform);
+    void Model::setPosition(const Point3<float>& position) {
+        if (position != transform.getPosition()) {
+            transform.setPosition(position);
+            onMoving(transform);
+        }
     }
 
-    void Model::setOrientation(const Quaternion<float>& q) {
-        transform.setOrientation(q);
-        onMoving(transform);
+    void Model::setOrientation(const Quaternion<float>& orientation) {
+        if (orientation != transform.getOrientation()) {
+            transform.setOrientation(orientation);
+            onMoving(transform);
+        }
     }
 
     void Model::setScale(float scale) {
-        transform.setScale(scale);
-        onMoving(transform);
+        if (scale != transform.getScale()) {
+            transform.setScale(scale);
+            onMoving(transform);
+        }
     }
 
     void Model::setTransform(const Transform<float>& transform) {
