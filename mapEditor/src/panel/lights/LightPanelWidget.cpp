@@ -64,7 +64,7 @@ namespace urchin {
 
         auto* generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
 
-        auto *ambientLabel= new QLabel("Ambient:");
+        auto* ambientLabel= new QLabel("Ambient:");
         generalPropertiesLayout->addWidget(ambientLabel, 0, 0);
 
         auto* ambientLayout = new QHBoxLayout();
@@ -92,7 +92,7 @@ namespace urchin {
         generalPropertiesLayout->addWidget(produceShadowCheckBox, 1, 0, 1, 2);
         connect(produceShadowCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateLightGeneralProperties()));
 
-        auto *lightTypeLabel= new QLabel("Light Type:");
+        auto* lightTypeLabel= new QLabel("Light Type:");
         generalPropertiesLayout->addWidget(lightTypeLabel, 2, 0);
 
         lightType = new QLabel();
@@ -108,7 +108,7 @@ namespace urchin {
 
         auto* omniLightLayout = new QGridLayout(specificOmnidirectionalLightGroupBox);
 
-        auto *positionLabel= new QLabel("Position:");
+        auto* positionLabel= new QLabel("Position:");
         omniLightLayout->addWidget(positionLabel, 0, 0);
 
         auto* positionLayout = new QHBoxLayout();
@@ -126,7 +126,7 @@ namespace urchin {
         SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
-        auto *attenuationLabel= new QLabel("Expo. Att.:");
+        auto* attenuationLabel= new QLabel("Expo. Att.:");
         omniLightLayout->addWidget(attenuationLabel, 1, 0);
 
         attenuation = new QDoubleSpinBox();
@@ -146,7 +146,7 @@ namespace urchin {
 
         auto* sunLightLayout = new QGridLayout(specificSunLightGroupBox);
 
-        auto *directionLabel= new QLabel("Direction:");
+        auto* directionLabel= new QLabel("Direction:");
         sunLightLayout->addWidget(directionLabel, 0, 0);
 
         auto* directionLayout = new QHBoxLayout();

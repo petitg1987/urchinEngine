@@ -95,12 +95,12 @@ namespace urchin {
         initialVolume->setMinimum(0.0);
         connect(initialVolume, SIGNAL(valueChanged(double)), this, SLOT(updateSoundGeneralProperties()));
 
-        auto *soundTypeLabel= new QLabel("Sound Type:");
+        auto* soundTypeLabel= new QLabel("Sound Type:");
         generalPropertiesLayout->addWidget(soundTypeLabel, 1, 0);
         soundType = new QLabel();
         generalPropertiesLayout->addWidget(soundType, 1, 1);
 
-        auto *soundCategoryLabel= new QLabel("Sound Category:");
+        auto* soundCategoryLabel= new QLabel("Sound Category:");
         generalPropertiesLayout->addWidget(soundCategoryLabel, 2, 0);
         soundCategory = new QLabel();
         generalPropertiesLayout->addWidget(soundCategory, 2, 1);
@@ -115,7 +115,7 @@ namespace urchin {
         auto* spatialSoundLayout = new QGridLayout(specificSpatialSoundGroupBox);
         spatialSoundLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-        auto *positionLabel= new QLabel("Position:");
+        auto* positionLabel= new QLabel("Position:");
         spatialSoundLayout->addWidget(positionLabel, 0, 0);
 
         auto* positionLayout = new QHBoxLayout();
@@ -133,7 +133,7 @@ namespace urchin {
         SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
 
-        auto *inaudibleDistanceLabel= new QLabel("Inaudible\nDistance:");
+        auto* inaudibleDistanceLabel= new QLabel("Inaudible\nDistance:");
         spatialSoundLayout->addWidget(inaudibleDistanceLabel, 1, 0);
 
         inaudibleDistance = new QDoubleSpinBox();
@@ -151,7 +151,7 @@ namespace urchin {
         auto* generalLayout = new QGridLayout(generalGroupBox);
         generalLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-        auto *playBehaviorLabel= new QLabel("Play Behavior:");
+        auto* playBehaviorLabel= new QLabel("Play Behavior:");
         generalLayout->addWidget(playBehaviorLabel, 0, 0);
 
         playBehavior = new QComboBox();
@@ -160,7 +160,7 @@ namespace urchin {
         playBehavior->addItem(PLAY_LOOP_LABEL, QVariant(SoundTrigger::PLAY_LOOP));
         connect(playBehavior, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSoundTriggerProperties()));
 
-        auto *soundTriggerTypeLabel= new QLabel("Trigger:");
+        auto* soundTriggerTypeLabel= new QLabel("Trigger:");
         generalLayout->addWidget(soundTriggerTypeLabel, 3, 0);
 
         soundTriggerType = new QLabel();
@@ -185,7 +185,7 @@ namespace urchin {
         shapeTypeLayout->setSpacing(15);
         triggerShapeLayout->addLayout(shapeTypeLayout);
 
-        auto *soundShapeTypeLabel= new QLabel("Shape:");
+        auto* soundShapeTypeLabel= new QLabel("Shape:");
         shapeTypeLayout->addWidget(soundShapeTypeLabel);
 
         soundShapeType = new QLabel();

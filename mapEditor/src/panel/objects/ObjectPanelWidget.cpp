@@ -112,7 +112,7 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::setupPosition(QGridLayout* transformLayout) {
-        auto *positionLabel= new QLabel("Position:");
+        auto* positionLabel= new QLabel("Position:");
         transformLayout->addWidget(positionLabel, 0, 0);
 
         auto* positionLayout = new QHBoxLayout();

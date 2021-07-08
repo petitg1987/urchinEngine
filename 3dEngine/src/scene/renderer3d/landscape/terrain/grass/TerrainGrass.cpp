@@ -232,7 +232,7 @@ namespace urchin {
                 if (grassQuadtree->isLeaf() && grassQuadtree->getRenderer()) {
                     renderers.emplace_back(grassQuadtree->getRenderer());
                 } else {
-                    for (const auto *child : grassQuadtree->getChildren()) {
+                    for (const auto* child : grassQuadtree->getChildren()) {
                         grassQuadtrees.push_back(child);
                     }
                 }

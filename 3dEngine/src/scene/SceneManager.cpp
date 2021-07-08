@@ -60,10 +60,10 @@ namespace urchin {
 
             //renderer
             screenRenderTarget->onResize();
-            for (auto *renderer3d : renderers3d) {
+            for (auto* renderer3d : renderers3d) {
                 renderer3d->onResize(sceneWidth, sceneHeight);
             }
-            for (auto *uiRenderer : uiRenderers) {
+            for (auto* uiRenderer : uiRenderers) {
                 uiRenderer->onResize(sceneWidth, sceneHeight);
             }
         }

@@ -112,7 +112,7 @@ namespace urchin {
     }
 
     void BodyCompoundShapeWidget::setupPosition(QGridLayout* transformLayout, const Point3<float>& position) {
-        auto *positionLabel= new QLabel("Position:");
+        auto* positionLabel= new QLabel("Position:");
         transformLayout->addWidget(positionLabel, 0, 0);
 
         auto* positionLayout = new QHBoxLayout();

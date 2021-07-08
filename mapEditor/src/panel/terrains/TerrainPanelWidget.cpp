@@ -75,7 +75,7 @@ namespace urchin {
 
         auto* generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
 
-        auto *positionLabel= new QLabel("Position:");
+        auto* positionLabel= new QLabel("Position:");
         generalPropertiesLayout->addWidget(positionLabel, 0, 0);
 
         auto* positionLayout = new QHBoxLayout();
@@ -93,7 +93,7 @@ namespace urchin {
         SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGeneralProperties()));
 
-        auto *ambientLabel= new QLabel("Ambient:");
+        auto* ambientLabel= new QLabel("Ambient:");
         generalPropertiesLayout->addWidget(ambientLabel, 1, 0);
 
         ambient = new QDoubleSpinBox();
@@ -113,7 +113,7 @@ namespace urchin {
 
         auto* meshLayout = new QGridLayout(meshGroupBox);
 
-        auto *xzScaleLabel= new QLabel("XZ scale:");
+        auto* xzScaleLabel= new QLabel("XZ scale:");
         meshLayout->addWidget(xzScaleLabel, 0, 0);
 
         xzScale = new QDoubleSpinBox();
@@ -123,7 +123,7 @@ namespace urchin {
         xzScale->setSingleStep(0.05);
         connect(xzScale, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMesh()));
 
-        auto *yScaleLabel= new QLabel("Y scale:");
+        auto* yScaleLabel= new QLabel("Y scale:");
         meshLayout->addWidget(yScaleLabel, 1, 0);
 
         yScale = new QDoubleSpinBox();
@@ -143,7 +143,7 @@ namespace urchin {
 
         auto* materialLayout = new QGridLayout(materialGroupBox);
 
-        auto *repeatLabel= new QLabel("Repeat:");
+        auto* repeatLabel= new QLabel("Repeat:");
         materialLayout->addWidget(repeatLabel, 0, 0);
 
         sRepeat = new QDoubleSpinBox();
@@ -160,7 +160,7 @@ namespace urchin {
         tRepeat->setSingleStep(1.0);
         connect(tRepeat, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
 
-        auto *maskMapLabel= new QLabel("Mask map:");
+        auto* maskMapLabel= new QLabel("Mask map:");
         materialLayout->addWidget(maskMapLabel, 1, 0);
 
         maskMapFilenameText = new QLineEdit();
@@ -182,7 +182,7 @@ namespace urchin {
         materialFilenameTexts.resize(TerrainMaterials::MAX_MATERIAL);
         for (unsigned int i = 0; i < TerrainMaterials::MAX_MATERIAL; ++i) {
             std::string materialLabelStr = "Material " + std::to_string(i + 1) +":";
-            auto *materialLabel= new QLabel(materialLabelStr.c_str());
+            auto* materialLabel= new QLabel(materialLabelStr.c_str());
             materialLayout->addWidget(materialLabel, 2 + (int)i, 0);
 
             materialFilenameTexts[i] = new QLineEdit();
@@ -218,7 +218,7 @@ namespace urchin {
 
         auto* grassLayout = new QGridLayout(grassGroupBox);
 
-        auto *textureLabel= new QLabel("Texture:");
+        auto* textureLabel= new QLabel("Texture:");
         grassLayout->addWidget(textureLabel, 1, 0);
 
         grassTextureFilenameText = new QLineEdit();
@@ -237,7 +237,7 @@ namespace urchin {
         clearTextureFileButton->setFixedWidth(22);
         connect(clearTextureFileButton, SIGNAL(clicked()), this, SLOT(clearGrassTextureFilename()));
 
-        auto *maskLabel= new QLabel("Mask:");
+        auto* maskLabel= new QLabel("Mask:");
         grassLayout->addWidget(maskLabel, 2, 0);
 
         grassMaskFilenameText = new QLineEdit();
@@ -256,7 +256,7 @@ namespace urchin {
         clearMaskFileButton->setFixedWidth(22);
         connect(clearMaskFileButton, SIGNAL(clicked()), this, SLOT(clearGrassMaskFilename()));
 
-        auto *numGrassInTexLabel= new QLabel("Num grass in tex:");
+        auto* numGrassInTexLabel= new QLabel("Num grass in tex:");
         grassLayout->addWidget(numGrassInTexLabel, 3, 0);
 
         numGrassInTex = new QSpinBox();
@@ -266,7 +266,7 @@ namespace urchin {
         numGrassInTex->setSingleStep(1);
         connect(numGrassInTex, SIGNAL(valueChanged(int)), this, SLOT(updateTerrainGrass()));
 
-        auto *grassQuantityLabel= new QLabel("Grass quantity:");
+        auto* grassQuantityLabel= new QLabel("Grass quantity:");
         grassLayout->addWidget(grassQuantityLabel, 4, 0);
 
         grassQuantity = new QDoubleSpinBox();
@@ -276,7 +276,7 @@ namespace urchin {
         grassQuantity->setSingleStep(0.1);
         connect(grassQuantity, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
 
-        auto *grassHeightLabel= new QLabel("Height/length:");
+        auto* grassHeightLabel= new QLabel("Height/length:");
         grassLayout->addWidget(grassHeightLabel, 5, 0);
 
         grassHeight = new QDoubleSpinBox();
@@ -293,7 +293,7 @@ namespace urchin {
         grassLength->setSingleStep(0.05);
         connect(grassLength, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
 
-        auto *windDirectionLabel= new QLabel("Wind direction:");
+        auto* windDirectionLabel= new QLabel("Wind direction:");
         grassLayout->addWidget(windDirectionLabel, 6, 0);
 
         windDirectionX = new QDoubleSpinBox();
@@ -309,7 +309,7 @@ namespace urchin {
         SpinBoxStyleHelper::applyDefaultStyleOn(windDirectionZ);
         connect(windDirectionZ, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
 
-        auto *windStrengthLabel= new QLabel("Wind strength:");
+        auto* windStrengthLabel= new QLabel("Wind strength:");
         grassLayout->addWidget(windStrengthLabel, 7, 0);
 
         windStrength = new QDoubleSpinBox();

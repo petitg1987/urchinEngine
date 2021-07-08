@@ -55,7 +55,7 @@ namespace urchin {
         FileReader::nextLine(file, buffer); //buffer = "}"
 
         //bounds
-        auto **bboxes = new AABBox<float>*[numFrames];
+        auto** bboxes = new AABBox<float>*[numFrames];
         FileReader::nextLine(file, buffer); //buffer = "bounds {"
         for (unsigned int i = 0; i < numFrames; i++) {
             FileReader::nextLine(file, buffer);
@@ -79,7 +79,7 @@ namespace urchin {
         FileReader::nextLine(file, buffer); //buffer = "}"
 
         //frames
-        auto **skeletonFrames = new Bone*[numFrames];
+        auto** skeletonFrames = new Bone*[numFrames];
         auto* animFrameData = new float[numAnimatedComponents];
         for (unsigned int frameIndex = 0; frameIndex < numFrames; ++frameIndex) {
             skeletonFrames[frameIndex] = new Bone[numBones];

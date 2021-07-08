@@ -94,7 +94,7 @@ namespace urchin {
     }
 
     QHBoxLayout* SkyPanelWidget::createFilenameInputText(QGridLayout* skyboxLayout, int row, const QString& text, QLineEdit **skyboxFilenameText) {
-        auto *skyboxFilenameLabel= new QLabel(text);
+        auto* skyboxFilenameLabel= new QLabel(text);
         skyboxLayout->addWidget(skyboxFilenameLabel, row, 0);
 
         auto* skyboxFilenameLayout = new QHBoxLayout();
