@@ -117,9 +117,11 @@ namespace urchin {
     }
 
     void UIRenderer::removeWidget(Widget* widget) {
-        auto it = std::find(widgets.begin(), widgets.end(), widget);
-        delete widget;
-        widgets.erase(it);
+        if (widget) {
+            auto it = std::find(widgets.begin(), widgets.end(), widget);
+            delete widget;
+            widgets.erase(it);
+        }
     }
 
     void UIRenderer::prepareRendering(float dt) {

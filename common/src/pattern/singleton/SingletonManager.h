@@ -25,8 +25,7 @@ namespace urchin {
      */
     class DLL_EXPORT SingletonManager {
         public:
-            static void* getSingleton(const std::string&);
-            static void addSingleton(const std::string&, SingletonInterface*);
+            static void registerSingleton(const std::string&, SingletonInterface*);
 
             static void destroyAllSingletons();
 

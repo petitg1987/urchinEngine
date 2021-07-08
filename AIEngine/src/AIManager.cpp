@@ -79,19 +79,16 @@ namespace urchin {
 
     void AIManager::pause() {
         std::lock_guard<std::mutex> lock(mutex);
-
         paused = true;
     }
 
     void AIManager::unpause() {
         std::lock_guard<std::mutex> lock(mutex);
-
         paused = false;
     }
 
     bool AIManager::isPaused() const {
         std::lock_guard<std::mutex> lock(mutex);
-
         return paused;
     }
 

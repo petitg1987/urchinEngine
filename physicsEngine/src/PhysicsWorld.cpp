@@ -95,7 +95,6 @@ namespace urchin {
      */
     void PhysicsWorld::setGravity(const Vector3<float>& gravity) {
         std::lock_guard<std::mutex> lock(mutex);
-
         this->gravity = gravity;
     }
 
@@ -104,7 +103,6 @@ namespace urchin {
      */
     Vector3<float> PhysicsWorld::getGravity() const {
         std::lock_guard<std::mutex> lock(mutex);
-
         return gravity;
     }
 
@@ -124,19 +122,16 @@ namespace urchin {
 
     void PhysicsWorld::pause() {
         std::lock_guard<std::mutex> lock(mutex);
-
         paused = true;
     }
 
     void PhysicsWorld::unpause() {
         std::lock_guard<std::mutex> lock(mutex);
-
         paused = false;
     }
 
     bool PhysicsWorld::isPaused() const {
         std::lock_guard<std::mutex> lock(mutex);
-
         return paused;
     }
 
@@ -211,16 +206,16 @@ namespace urchin {
         bool paused;
         Vector3<float> gravity;
         copiedProcessables.clear();
+
         {
             std::lock_guard<std::mutex> lock(mutex);
-
             paused = this->paused;
-
-            gravity = this->gravity;
-
-            copiedProcessables = this->processables;
-            copiedProcessables.insert(copiedProcessables.end(), oneShotProcessables.begin(), oneShotProcessables.end());
-            oneShotProcessables.clear();
+            if (!paused) {
+                gravity = this->gravity;
+                copiedProcessables = this->processables;
+                copiedProcessables.insert(copiedProcessables.end(), oneShotProcessables.begin(), oneShotProcessables.end());
+                oneShotProcessables.clear();
+            }
         }
 
         //physics execution

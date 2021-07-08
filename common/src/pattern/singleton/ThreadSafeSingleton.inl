@@ -13,7 +13,7 @@ template<class T> T* ThreadSafeSingleton<T>::instance() {
         singletonInstance = objectT.load(std::memory_order_relaxed);
         if (!singletonInstance) {
             singletonInstance = new T;
-            SingletonManager::addSingleton(typeid(T).name(), singletonInstance);
+            SingletonManager::registerSingleton(typeid(T).name(), singletonInstance);
             objectT.store(singletonInstance, std::memory_order_release);
         }
     }
