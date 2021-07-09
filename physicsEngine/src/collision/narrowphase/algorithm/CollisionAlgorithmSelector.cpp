@@ -48,8 +48,8 @@ namespace urchin {
         initializeCompoundAlgorithm();
 
         //generic algorithm (convex hull vs. convex hull)
-        for (auto & builderMatrixLine : collisionAlgorithmBuilderMatrix) {
-            for (auto & builderMatrixColumn : builderMatrixLine) {
+        for (auto& builderMatrixLine : collisionAlgorithmBuilderMatrix) {
+            for (auto& builderMatrixColumn : builderMatrixLine) {
                 if (!builderMatrixColumn) {
                     builderMatrixColumn = new ConvexConvexCollisionAlgorithm::Builder();
                 }

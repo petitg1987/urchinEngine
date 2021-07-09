@@ -10,7 +10,7 @@ namespace urchin {
     std::exception_ptr PhysicsWorld::physicsThreadExceptionPtr = nullptr;
 
     PhysicsWorld::PhysicsWorld() :
-            physicsSimulationThread(nullptr),
+            physicsSimulationThread(std::unique_ptr<std::thread>(nullptr)),
             physicsSimulationStopper(false),
             gravity(Vector3<float>(0.0f, -9.81f, 0.0f)),
             timeStep(0.0f),
@@ -26,8 +26,6 @@ namespace urchin {
         if (physicsSimulationThread) {
             interrupt();
             physicsSimulationThread->join();
-
-            delete physicsSimulationThread;
         }
 
         copiedProcessables.clear();
@@ -110,7 +108,7 @@ namespace urchin {
 
         this->timeStep = timeStep;
 
-        physicsSimulationThread = new std::thread(&PhysicsWorld::startPhysicsUpdate, this);
+        physicsSimulationThread = std::make_unique<std::thread>(&PhysicsWorld::startPhysicsUpdate, this);
     }
 
     void PhysicsWorld::pause() {
