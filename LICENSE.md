@@ -28,3 +28,8 @@ SOFTWARE.
 - Vorbis (https://xiph.org/vorbis): BSD License
 - Curl (https://curl.se/libcurl): MIT License
 - Vulkan (https://www.vulkan.org): Apache 2.0 License
+- Vulkan Memory Allocator (https://gpuopen.com/vulkan-memory-allocator): MIT License
+- Clipper (http://www.angusj.com/delphi/clipper.php): Boost Software License => https://www.boost.org/LICENSE_1_0.txt
+- Earcut (https://github.com/mapbox/earcut.hpp): ISC License
+- LodePNG (https://github.com/lvandeve/lodepng): Zlib License
+- TinyXML (https://sourceforge.net/projects/tinyxml): Zlib License
