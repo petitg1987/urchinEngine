@@ -37,10 +37,10 @@ namespace urchin {
         return shape;
     }
 
-    void SoundShapeWidget::setupShapePropertiesFrom(const SoundShape* shape) {
+    void SoundShapeWidget::setupShapePropertiesFrom(const SoundShape& shape) {
         disableShapeEvent = true;
 
-        margin->setValue(shape->getMargin());
+        margin->setValue(shape.getMargin());
 
         doSetupShapePropertiesFrom(shape);
 

@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    SoundShape* SoundBoxReaderWriter::loadFrom(const DataChunk* shapeChunk, const DataParser& dataParser) const {
+    std::unique_ptr<SoundShape> SoundBoxReaderWriter::loadFrom(const DataChunk* shapeChunk, const DataParser& dataParser) const {
         auto halfSizesChunk = dataParser.getUniqueChunk(true, HALF_SIZES_TAG, DataAttribute(), shapeChunk);
         Vector3<float> halfSizes = halfSizesChunk->getVector3Value();
 
@@ -17,31 +17,31 @@ namespace urchin {
         auto marginChunk = dataParser.getUniqueChunk(true, MARGIN_TAG, DataAttribute(), shapeChunk);
         float margin = marginChunk->getFloatValue();
 
-        return new SoundBox(halfSizes, position, orientation, margin);
+        return std::make_unique<SoundBox>(halfSizes, position, orientation, margin);
     }
 
-    void SoundBoxReaderWriter::writeOn(DataChunk* shapeChunk, const SoundShape* soundShape, DataWriter& dataWriter) const {
+    void SoundBoxReaderWriter::writeOn(DataChunk* shapeChunk, const SoundShape& soundShape, DataWriter& dataWriter) const {
         shapeChunk->setAttribute(DataAttribute(TYPE_ATTR, BOX_VALUE));
 
-        const auto* boxShape = dynamic_cast<const SoundBox*>(soundShape);
+        const auto& boxShape = dynamic_cast<const SoundBox&>(soundShape);
 
         auto halfSizesChunk = dataWriter.createChunk(HALF_SIZES_TAG, DataAttribute(), shapeChunk);
-        halfSizesChunk->setVector3Value(boxShape->getHalfSizes());
+        halfSizesChunk->setVector3Value(boxShape.getHalfSizes());
 
         auto positionChunk = dataWriter.createChunk(POSITION_TAG, DataAttribute(), shapeChunk);
-        positionChunk->setPoint3Value(boxShape->getCenterPosition());
+        positionChunk->setPoint3Value(boxShape.getCenterPosition());
 
         auto orientationChunk = dataWriter.createChunk(ORIENTATION_TAG, DataAttribute(), shapeChunk);
         auto orientationAxisChunk = dataWriter.createChunk(AXIS_TAG, DataAttribute(), orientationChunk.get());
         auto orientationAngleChunk = dataWriter.createChunk(ANGLE_TAG, DataAttribute(), orientationChunk.get());
         Vector3<float> orientationAxis;
         float orientationAngle;
-        boxShape->getOrientation().toAxisAngle(orientationAxis, orientationAngle);
+        boxShape.getOrientation().toAxisAngle(orientationAxis, orientationAngle);
         orientationAxisChunk->setVector3Value(orientationAxis);
         orientationAngleChunk->setFloatValue(orientationAngle);
 
         auto marginChunk = dataWriter.createChunk(MARGIN_TAG, DataAttribute(), shapeChunk);
-        marginChunk->setFloatValue(boxShape->getMargin());
+        marginChunk->setFloatValue(boxShape.getMargin());
     }
 
 }

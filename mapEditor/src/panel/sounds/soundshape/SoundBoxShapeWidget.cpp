@@ -76,18 +76,18 @@ namespace urchin {
         return BOX_SHAPE_LABEL;
     }
 
-    void SoundBoxShapeWidget::doSetupShapePropertiesFrom(const SoundShape* shape) {
-        const auto* boxShape = dynamic_cast<const SoundBox*>(shape);
+    void SoundBoxShapeWidget::doSetupShapePropertiesFrom(const SoundShape& shape) {
+        const auto& boxShape = dynamic_cast<const SoundBox&>(shape);
 
-        positionX->setValue(boxShape->getCenterPosition().X);
-        positionY->setValue(boxShape->getCenterPosition().Y);
-        positionZ->setValue(boxShape->getCenterPosition().Z);
+        positionX->setValue(boxShape.getCenterPosition().X);
+        positionY->setValue(boxShape.getCenterPosition().Y);
+        positionZ->setValue(boxShape.getCenterPosition().Z);
 
-        halfSizeX->setValue(boxShape->getHalfSizes().X);
-        halfSizeY->setValue(boxShape->getHalfSizes().Y);
-        halfSizeZ->setValue(boxShape->getHalfSizes().Z);
+        halfSizeX->setValue(boxShape.getHalfSizes().X);
+        halfSizeY->setValue(boxShape.getHalfSizes().Y);
+        halfSizeZ->setValue(boxShape.getHalfSizes().Z);
 
-        Vector3<float> eulerAngle = boxShape->getOrientation().toEulerAngle(Quaternion<float>::RotationSequence::XYZ);
+        Vector3<float> eulerAngle = boxShape.getOrientation().toEulerAngle(Quaternion<float>::RotationSequence::XYZ);
         this->eulerAxis0->setValue(AngleConverter<double>::toDegree(eulerAngle[0]));
         this->eulerAxis1->setValue(AngleConverter<double>::toDegree(eulerAngle[1]));
         this->eulerAxis2->setValue(AngleConverter<double>::toDegree(eulerAngle[2]));

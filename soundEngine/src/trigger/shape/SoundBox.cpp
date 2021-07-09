@@ -59,8 +59,8 @@ namespace urchin {
                 std::fabs(localPointTranslation.dotProduct(box.getAxis(2))) <= box.getHalfSize(2);
     }
 
-    SoundShape* SoundBox::clone() const {
-        return new SoundBox(getHalfSizes(), getCenterPosition(), getOrientation(), getMargin());
+    std::unique_ptr<SoundShape> SoundBox::clone() const {
+        return std::make_unique<SoundBox>(getHalfSizes(), getCenterPosition(), getOrientation(), getMargin());
     }
 
 }

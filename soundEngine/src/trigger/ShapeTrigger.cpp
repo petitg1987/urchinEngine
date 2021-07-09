@@ -5,15 +5,11 @@ namespace urchin {
     /**
      * @param soundShape Delimited shape which trigger the sound play
      */
-    ShapeTrigger::ShapeTrigger(PlayBehavior playBehavior, const SoundShape* soundShape) :
+    ShapeTrigger::ShapeTrigger(PlayBehavior playBehavior, std::unique_ptr<const SoundShape> soundShape) :
             SoundTrigger(SoundTrigger::SHAPE_TRIGGER, playBehavior),
-            soundShape(soundShape),
+            soundShape(std::move(soundShape)),
             isPlaying(false) {
 
-    }
-
-    ShapeTrigger::~ShapeTrigger() {
-        delete soundShape;
     }
 
     SoundTrigger::TriggerResultValue ShapeTrigger::evaluateTrigger(const Point3<float>& listenerPosition) {
@@ -32,8 +28,8 @@ namespace urchin {
         return SoundTrigger::NO_TRIGGER;
     }
 
-    const SoundShape* ShapeTrigger::getSoundShape() const {
-        return soundShape;
+    const SoundShape& ShapeTrigger::getSoundShape() const {
+        return *soundShape;
     }
 
 }

@@ -20,7 +20,7 @@ namespace urchin {
             explicit SoundFileReader(std::string);
             ~SoundFileReader();
 
-            void readNextChunk(std::vector<int16_t>&, unsigned int&, bool);
+            void readNextChunk(std::vector<int16_t>&, unsigned int&, bool) const;
 
             SoundFormat getFormat() const;
             unsigned int getNumberOfSamples() const;
@@ -34,7 +34,7 @@ namespace urchin {
             static long tell(void*);
 
             void closeSoundFile();
-            void logReadChunkError(const std::string&);
+            void logReadChunkError(const std::string&) const;
 
             const std::string filename;
             std::ifstream stream;

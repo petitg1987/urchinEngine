@@ -161,17 +161,17 @@ namespace urchin {
         const StreamChunk& streamChunk = task->getStreamChunk(chunkId);
         auto size = static_cast<ALsizei>(streamChunk.numberOfSamples * sizeof(ALushort));
         if (size > 0) {
-            SoundFileReader::SoundFormat soundFormat = task->getSoundFileReader()->getFormat();
+            SoundFileReader::SoundFormat soundFormat = task->getSoundFileReader().getFormat();
             ALenum format;
             if (SoundFileReader::MONO_16 == soundFormat) {
                 format = AL_FORMAT_MONO16;
             } else if (SoundFileReader::STEREO_16 == soundFormat) {
                 format = AL_FORMAT_STEREO16;
             } else {
-                throw std::runtime_error("Unknown sound format: " + std::to_string(task->getSoundFileReader()->getFormat()));
+                throw std::runtime_error("Unknown sound format: " + std::to_string(task->getSoundFileReader().getFormat()));
             }
 
-            alBufferData(streamChunk.bufferId, format, &streamChunk.samples[0], size, (ALsizei)task->getSoundFileReader()->getSampleRate());
+            alBufferData(streamChunk.bufferId, format, &streamChunk.samples[0], size, (ALsizei)task->getSoundFileReader().getSampleRate());
             alSourceQueueBuffers(task->getSourceId(), 1, &streamChunk.bufferId);
         }
     }
@@ -181,10 +181,10 @@ namespace urchin {
      */
     void StreamUpdateWorker::fillChunk(StreamUpdateTask* task, unsigned int chunkId) const {
         StreamChunk& streamChunk = task->getStreamChunk(chunkId);
-        unsigned int bufferSize = task->getSoundFileReader()->getSampleRate() * task->getSoundFileReader()->getNumberOfChannels() * nbSecondByChunk;
+        unsigned int bufferSize = task->getSoundFileReader().getSampleRate() * task->getSoundFileReader().getNumberOfChannels() * nbSecondByChunk;
         streamChunk.samples.resize(bufferSize);
 
-        task->getSoundFileReader()->readNextChunk(streamChunk.samples, streamChunk.numberOfSamples, task->isPlayLoop());
+        task->getSoundFileReader().readNextChunk(streamChunk.samples, streamChunk.numberOfSamples, task->isPlayLoop());
     }
 
     unsigned int StreamUpdateWorker::retrieveChunkId(StreamUpdateTask* task, ALuint bufferId) const {

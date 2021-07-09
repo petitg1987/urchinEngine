@@ -46,7 +46,7 @@ namespace urchin {
             void setupManualTriggerDataFrom();
             void setupShapeTriggerDataFrom(const SceneSound*);
 
-            SoundShapeWidget* retrieveSoundShapeWidget(const SoundShape*, const SceneSound*);
+            SoundShapeWidget* retrieveSoundShapeWidget(const SoundShape&, const SceneSound*);
 
             SoundController* soundController;
 

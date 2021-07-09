@@ -35,7 +35,7 @@ namespace urchin {
 
             SoundTrigger::TriggerResultValue triggerValue;
 
-            AudioPlayer* audioPlayer;
+            std::unique_ptr<AudioPlayer> audioPlayer;
             bool isPaused;
     };
 

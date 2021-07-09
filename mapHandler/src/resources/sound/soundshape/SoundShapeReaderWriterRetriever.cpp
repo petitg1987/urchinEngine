@@ -17,8 +17,8 @@ namespace urchin {
         throw std::invalid_argument("Unknown shape type: " + shapeType);
     }
 
-    std::shared_ptr<SoundShapeReaderWriter> SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(const SoundShape* soundShape) {
-        SoundShape::ShapeType shapeType = soundShape->getShapeType();
+    std::shared_ptr<SoundShapeReaderWriter> SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(const SoundShape& soundShape) {
+        SoundShape::ShapeType shapeType = soundShape.getShapeType();
         if (shapeType == SoundShape::SPHERE_SHAPE) {
             return std::make_shared<SoundSphereReaderWriter>();
         } else if (shapeType == SoundShape::BOX_SHAPE) {

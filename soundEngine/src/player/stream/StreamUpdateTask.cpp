@@ -7,14 +7,10 @@ namespace urchin {
      */
     StreamUpdateTask::StreamUpdateTask(const Sound* sound, StreamChunk* streamChunks, bool playLoop) :
             sound(sound),
-            soundFileReader(new SoundFileReader(sound->getFilename())),
+            soundFileReader(std::make_unique<SoundFileReader>(sound->getFilename())),
             playLoop(playLoop),
             streamChunks(streamChunks) {
 
-    }
-
-    StreamUpdateTask::~StreamUpdateTask() {
-        delete soundFileReader;
     }
 
     ALuint StreamUpdateTask::getSourceId() const {
@@ -28,8 +24,8 @@ namespace urchin {
         return sound->isStopped();
     }
 
-    SoundFileReader* StreamUpdateTask::getSoundFileReader() {
-        return soundFileReader;
+    const SoundFileReader& StreamUpdateTask::getSoundFileReader() const {
+        return *soundFileReader;
     }
 
     bool StreamUpdateTask::isPlayLoop() const {

@@ -10,15 +10,14 @@ namespace urchin {
     */
     class ShapeTrigger : public SoundTrigger {
         public:
-            ShapeTrigger(PlayBehavior, const SoundShape*);
-            ~ShapeTrigger() override;
+            ShapeTrigger(PlayBehavior, std::unique_ptr<const SoundShape>);
 
             SoundTrigger::TriggerResultValue evaluateTrigger(const Point3<float>&) override;
 
-            const SoundShape* getSoundShape() const;
+            const SoundShape& getSoundShape() const;
 
         private:
-            const SoundShape* soundShape;
+            std::unique_ptr<const SoundShape> soundShape;
             bool isPlaying;
     };
 

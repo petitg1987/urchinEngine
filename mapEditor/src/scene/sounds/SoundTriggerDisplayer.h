@@ -14,10 +14,10 @@ namespace urchin {
             void displaySoundTriggerFor(const SceneSound*);
 
         private:
-            GeometryModel* retrieveGeometry(const SoundShape*);
+            GeometryModel* retrieveGeometry(const SoundShape&);
 
-            GeometryModel* retrieveSphereGeometry(const SoundShape*) const;
-            GeometryModel* retrieveBoxGeometry(const SoundShape*) const;
+            GeometryModel* retrieveSphereGeometry(const SoundShape&) const;
+            GeometryModel* retrieveBoxGeometry(const SoundShape&) const;
 
             void cleanCurrentDisplay();
 

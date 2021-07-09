@@ -40,14 +40,14 @@ namespace urchin {
         return SPHERE_SHAPE_LABEL;
     }
 
-    void SoundSphereShapeWidget::doSetupShapePropertiesFrom(const SoundShape* shape) {
-        const auto* sphereShape = dynamic_cast<const SoundSphere*>(shape);
+    void SoundSphereShapeWidget::doSetupShapePropertiesFrom(const SoundShape& shape) {
+        const auto& sphereShape = dynamic_cast<const SoundSphere&>(shape);
 
-        positionX->setValue(sphereShape->getPosition().X);
-        positionY->setValue(sphereShape->getPosition().Y);
-        positionZ->setValue(sphereShape->getPosition().Z);
+        positionX->setValue(sphereShape.getPosition().X);
+        positionY->setValue(sphereShape.getPosition().Y);
+        positionZ->setValue(sphereShape.getPosition().Z);
 
-        radius->setValue(sphereShape->getRadius());
+        radius->setValue(sphereShape.getRadius());
     }
 
     const SoundShape* SoundSphereShapeWidget::createSoundShape() const {

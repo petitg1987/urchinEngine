@@ -44,7 +44,7 @@ namespace urchin {
      * @param numSamplesRead [out] Number of samples read
      * @return True when all samples are read. In case of play loop, the result is always false.
      */
-    void SoundFileReader::readNextChunk(std::vector<int16_t>& buffer, unsigned int& numSamplesRead, bool playLoop) {
+    void SoundFileReader::readNextChunk(std::vector<int16_t>& buffer, unsigned int& numSamplesRead, bool playLoop) const {
         numSamplesRead = 0;
         while (numSamplesRead < buffer.size()) {
             int bytesToRead = (int)(buffer.size() - numSamplesRead) * (int)sizeof(int16_t);
@@ -103,7 +103,7 @@ namespace urchin {
         }
     }
 
-    void SoundFileReader::logReadChunkError(const std::string& errorMessage) {
+    void SoundFileReader::logReadChunkError(const std::string& errorMessage) const {
         static bool errorLogged = false;
         if (!errorLogged) {
             Logger::instance()->logError(errorMessage);

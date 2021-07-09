@@ -21,7 +21,7 @@ namespace urchin {
             std::string getSoundShapeName() const override;
 
         protected:
-            void doSetupShapePropertiesFrom(const SoundShape*) override;
+            void doSetupShapePropertiesFrom(const SoundShape&) override;
             const SoundShape* createSoundShape() const override;
 
         private:

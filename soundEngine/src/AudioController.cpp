@@ -10,14 +10,13 @@ namespace urchin {
             sound(sound),
             soundTrigger(soundTrigger),
             triggerValue(SoundTrigger::STOPPED),
-            audioPlayer(new AudioStreamPlayer(sound, streamUpdateWorker)),
+            audioPlayer(std::make_unique<AudioStreamPlayer>(sound, streamUpdateWorker)),
             isPaused(false) {
 
     }
 
     AudioController::~AudioController() {
         audioPlayer->stop();
-        delete audioPlayer;
 
         delete sound;
         delete soundTrigger;

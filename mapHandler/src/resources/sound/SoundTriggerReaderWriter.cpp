@@ -23,9 +23,9 @@ namespace urchin {
         } else if (soundTriggerType == SHAPE_VALUE) {
             auto soundShapeChunk = dataParser.getUniqueChunk(true, SOUND_SHAPE_TAG, DataAttribute(), soundTriggerChunk);
             std::shared_ptr<SoundShapeReaderWriter> soundShapeReaderWriter = SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(soundShapeChunk.get());
-            SoundShape* soundShape = soundShapeReaderWriter->loadFrom(soundShapeChunk.get(), dataParser);
+            auto soundShape = soundShapeReaderWriter->loadFrom(soundShapeChunk.get(), dataParser);
 
-            return new ShapeTrigger(playBehavior, soundShape);
+            return new ShapeTrigger(playBehavior, std::move(soundShape));
         }
 
         throw std::invalid_argument("Unknown sound trigger type read from map: " + soundTriggerType);

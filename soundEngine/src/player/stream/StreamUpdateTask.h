@@ -1,6 +1,7 @@
 #pragma once
 
 #include <AL/al.h>
+#include <memory>
 
 #include <sound/Sound.h>
 #include <player/filereader/SoundFileReader.h>
@@ -14,11 +15,10 @@ namespace urchin {
     class StreamUpdateTask {
         public:
             StreamUpdateTask(const Sound*, StreamChunk*, bool);
-            ~StreamUpdateTask();
 
             ALuint getSourceId() const;
             bool isSourceStopped() const;
-            SoundFileReader* getSoundFileReader();
+            const SoundFileReader& getSoundFileReader() const;
             bool isPlayLoop() const;
 
             std::string getSoundFilename() const;
@@ -28,7 +28,7 @@ namespace urchin {
 
         private:
             const Sound* sound;
-            SoundFileReader* soundFileReader;
+            std::unique_ptr<SoundFileReader> soundFileReader;
             bool playLoop;
 
             StreamChunk* streamChunks;

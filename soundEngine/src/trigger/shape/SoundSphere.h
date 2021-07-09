@@ -24,7 +24,7 @@ namespace urchin {
             bool pointInsidePlayShape(const Point3<float>&) const override;
             bool pointInsideStopShape(const Point3<float>&) const override;
 
-            SoundShape* clone() const override;
+            std::unique_ptr<SoundShape> clone() const override;
 
         private:
             const Sphere<float> playTriggerSphere;

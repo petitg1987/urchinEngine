@@ -40,8 +40,8 @@ namespace urchin {
         return stopTriggerSphere.collideWithPoint(point);
     }
 
-    SoundShape* SoundSphere::clone() const {
-        return new SoundSphere(getRadius(), getPosition(), getMargin());
+    std::unique_ptr<SoundShape> SoundSphere::clone() const {
+        return std::make_unique<SoundSphere>(getRadius(), getPosition(), getMargin());
     }
 
 }

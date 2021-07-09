@@ -39,8 +39,8 @@ namespace urchin {
         if (triggerType == SoundTrigger::MANUAL_TRIGGER) {
             newSoundTrigger = new ManualTrigger(soundTrigger->getPlayBehavior());
         } else if (triggerType == SoundTrigger::SHAPE_TRIGGER) {
-            const SoundShape* newDefaultShape = DefaultSoundShapeCreator(constSceneSound).createDefaultSoundShape(SoundShape::SPHERE_SHAPE);
-            newSoundTrigger = new ShapeTrigger(soundTrigger->getPlayBehavior(), newDefaultShape);
+            auto newDefaultShape = DefaultSoundShapeCreator(constSceneSound).createDefaultSoundShape(SoundShape::SPHERE_SHAPE);
+            newSoundTrigger = new ShapeTrigger(soundTrigger->getPlayBehavior(), std::move(newDefaultShape));
         } else {
             throw std::invalid_argument("Impossible to change of trigger type: " + std::to_string(triggerType));
         }
@@ -54,8 +54,8 @@ namespace urchin {
         SceneSound* sceneSound = findSceneSound(constSceneSound);
         SoundTrigger* soundTrigger = sceneSound->getSoundTrigger();
 
-        const SoundShape* newShape = DefaultSoundShapeCreator(constSceneSound).createDefaultSoundShape(shapeType);
-        SoundTrigger* newSoundTrigger = new ShapeTrigger(soundTrigger->getPlayBehavior(), newShape);
+        auto newShape = DefaultSoundShapeCreator(constSceneSound).createDefaultSoundShape(shapeType);
+        SoundTrigger* newSoundTrigger = new ShapeTrigger(soundTrigger->getPlayBehavior(), std::move(newShape));
 
         sceneSound->changeSoundTrigger(newSoundTrigger);
 
@@ -92,8 +92,8 @@ namespace urchin {
             newSoundTrigger = new ManualTrigger(playBehavior);
         } else if (soundTrigger->getTriggerType() == SoundTrigger::SHAPE_TRIGGER) {
             auto* shapeTrigger = dynamic_cast<ShapeTrigger*>(soundTrigger);
-            SoundShape* clonedShape = shapeTrigger->getSoundShape()->clone();
-            newSoundTrigger = new ShapeTrigger(playBehavior, clonedShape);
+            auto clonedShape = shapeTrigger->getSoundShape().clone();
+            newSoundTrigger = new ShapeTrigger(playBehavior, std::move(clonedShape));
         } else {
             throw std::invalid_argument("Impossible to update sound trigger because unknown trigger type: " + std::to_string(soundTrigger->getTriggerType()));
         }
@@ -104,11 +104,11 @@ namespace urchin {
         return sceneSound;
     }
 
-    const SceneSound* SoundController::updateSceneSoundShape(const SceneSound* constSceneSound, const SoundShape* newSoundShape) {
+    const SceneSound* SoundController::updateSceneSoundShape(const SceneSound* constSceneSound, std::unique_ptr<const SoundShape> newSoundShape) {
         SceneSound* sceneSound = findSceneSound(constSceneSound);
         auto* shapeTrigger = dynamic_cast<ShapeTrigger*>(sceneSound->getSoundTrigger());
 
-        auto* newShapeTrigger = new ShapeTrigger(shapeTrigger->getPlayBehavior(), newSoundShape);
+        auto* newShapeTrigger = new ShapeTrigger(shapeTrigger->getPlayBehavior(), std::move(newSoundShape));
         sceneSound->changeSoundTrigger(newShapeTrigger);
 
         markModified();
