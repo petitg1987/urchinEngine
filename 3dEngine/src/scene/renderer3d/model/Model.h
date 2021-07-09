@@ -55,7 +55,7 @@ namespace urchin {
             std::vector<AABBox<float>> defaultModelAABBoxes;
 
             //meshes
-            Meshes* meshes;
+            std::unique_ptr<Meshes> meshes;
 
             //animations
             std::map<std::string, Animation*> animations;

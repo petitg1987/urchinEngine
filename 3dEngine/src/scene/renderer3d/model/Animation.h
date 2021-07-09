@@ -10,7 +10,7 @@ namespace urchin {
 
     class Animation {
         public:
-            Animation(ConstAnimation*, Meshes*);
+            Animation(ConstAnimation*, Meshes&);
             ~Animation();
 
             const std::vector<Bone>& getSkeleton() const;
@@ -27,7 +27,7 @@ namespace urchin {
 
         private:
             mutable ConstAnimation* constAnimation;
-            Meshes* meshes;
+            Meshes& meshes;
 
             AnimationInformation animationInformation;
             std::vector<Bone> skeleton;

@@ -7,7 +7,7 @@ namespace urchin {
 
     Model::Model(const std::string& meshFilename) :
             defaultModelAABBoxes({Model::getDefaultModelLocalAABBox()}),
-            meshes(nullptr),
+            meshes(std::unique_ptr<Meshes>(nullptr)),
             currAnimation(nullptr),
             stopAnimationAtLastFrame(false),
             bIsProduceShadow(true) {
@@ -16,7 +16,7 @@ namespace urchin {
 
     Model::Model(const Model& model) : Octreeable(model),
             defaultModelAABBoxes({Model::getDefaultModelLocalAABBox()}),
-            meshes(nullptr),
+            meshes(std::unique_ptr<Meshes>(nullptr)),
             currAnimation(nullptr),
             stopAnimationAtLastFrame(false),
             bIsProduceShadow(true) {
@@ -28,8 +28,6 @@ namespace urchin {
     }
 
     Model::~Model() {
-        delete meshes;
-
         for (auto& animation : animations) {
             delete animation.second;
         }
@@ -43,7 +41,7 @@ namespace urchin {
     void Model::initialize(const std::string& meshFilename) {
         if (!meshFilename.empty()) {
             auto* constMeshes = MediaManager::instance()->getMedia<ConstMeshes>(meshFilename);
-            meshes = new Meshes(constMeshes);
+            meshes = std::make_unique<Meshes>(constMeshes);
             meshes->onMoving(transform);
         }
     }
@@ -55,7 +53,7 @@ namespace urchin {
 
         //load and add the anim to the std::map
         auto* constAnimation = MediaManager::instance()->getMedia<ConstAnimation>(filename);
-        animations[name] = new Animation(constAnimation, meshes);
+        animations[name] = new Animation(constAnimation, *meshes);
         animations[name]->onMoving(transform);
 
         //both files must have the same number of bones
@@ -113,7 +111,7 @@ namespace urchin {
     }
 
     const Meshes* Model::getMeshes() const {
-        return meshes;
+        return meshes.get();
     }
 
     const ConstMeshes* Model::getConstMeshes() const {

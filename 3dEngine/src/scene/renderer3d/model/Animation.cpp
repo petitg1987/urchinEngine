@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    Animation::Animation(ConstAnimation* constAnimation, Meshes* meshes) :
+    Animation::Animation(ConstAnimation* constAnimation, Meshes& meshes) :
             constAnimation(constAnimation),
             meshes(meshes),
             animationInformation() {
@@ -89,8 +89,8 @@ namespace urchin {
         }
 
         //update the vertex and normals
-        for (unsigned m = 0; m < meshes->getNumberMeshes(); ++m) {
-            meshes->getMesh(m).update(skeleton);
+        for (unsigned m = 0; m < meshes.getNumberMeshes(); ++m) {
+            meshes.getMesh(m).update(skeleton);
         }
     }
 
