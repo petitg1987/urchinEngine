@@ -24,8 +24,8 @@ namespace urchin {
             std::size_t getIndex(std::size_t) const;
 
             void addStandardLink(std::size_t, const std::shared_ptr<NavTriangle>&);
-            void addJoinPolygonsLink(std::size_t, const std::shared_ptr<NavTriangle>&, NavLinkConstraint*);
-            void addJumpLink(std::size_t, const std::shared_ptr<NavTriangle>&, NavLinkConstraint*);
+            void addJoinPolygonsLink(std::size_t, const std::shared_ptr<NavTriangle>&, std::unique_ptr<NavLinkConstraint>);
+            void addJumpLink(std::size_t, const std::shared_ptr<NavTriangle>&, std::unique_ptr<NavLinkConstraint>);
             void addLink(const std::shared_ptr<NavLink>&);
             void removeLinksTo(const std::shared_ptr<NavPolygon>&);
             std::vector<std::shared_ptr<NavLink>> getLinks() const;

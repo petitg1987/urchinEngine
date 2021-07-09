@@ -2,6 +2,7 @@
 
 #include <unordered_set>
 #include <map>
+#include <memory>
 
 #include <pattern/observer/Observer.h>
 
@@ -17,7 +18,7 @@ namespace urchin {
             void notifyObservers(Observable*, int);
 
         private:
-            mutable std::map<int, std::unordered_set<Observer*>*> mapObservers;
+            mutable std::map<int, std::unique_ptr<std::unordered_set<Observer*>>> mapObservers;
     };
 
 }

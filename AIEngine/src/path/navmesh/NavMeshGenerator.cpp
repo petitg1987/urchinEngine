@@ -390,11 +390,11 @@ namespace urchin {
 
                 EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(sourceEdge, targetEdge);
                 if (edgeLinkResult.hasEdgesLink()) {
-                    auto* navLinkConstraint = new NavLinkConstraint(edgeLinkResult.getLinkStartRange(), edgeLinkResult.getLinkEndRange(), targetExternalEdge.edgeIndex);
+                    auto navLinkConstraint = std::make_unique<NavLinkConstraint>(edgeLinkResult.getLinkStartRange(), edgeLinkResult.getLinkEndRange(), targetExternalEdge.edgeIndex);
                     if (edgeLinkResult.isJumpLink()) {
-                        sourceExternalEdge.triangle->addJumpLink(sourceExternalEdge.edgeIndex, targetExternalEdge.triangle, navLinkConstraint);
+                        sourceExternalEdge.triangle->addJumpLink(sourceExternalEdge.edgeIndex, targetExternalEdge.triangle, std::move(navLinkConstraint));
                     } else {
-                        sourceExternalEdge.triangle->addJoinPolygonsLink(sourceExternalEdge.edgeIndex, targetExternalEdge.triangle, navLinkConstraint);
+                        sourceExternalEdge.triangle->addJoinPolygonsLink(sourceExternalEdge.edgeIndex, targetExternalEdge.triangle, std::move(navLinkConstraint));
                     }
                 }
             }

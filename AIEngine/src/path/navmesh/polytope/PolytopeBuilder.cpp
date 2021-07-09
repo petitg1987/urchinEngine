@@ -30,14 +30,9 @@ namespace urchin {
     };
 
     PolytopeBuilder::PolytopeBuilder() :
-            planeSurfaceSplitService(new PlaneSurfaceSplitService(ConfigService::instance()->getFloatValue("navMesh.polytopeMaxSize"))),
-            terrainSplitService(new TerrainSplitService(ConfigService::instance()->getFloatValue("navMesh.polytopeMaxSize"))) {
+            planeSurfaceSplitService(std::make_unique<PlaneSurfaceSplitService>(ConfigService::instance()->getFloatValue("navMesh.polytopeMaxSize"))),
+            terrainSplitService(std::make_unique<TerrainSplitService>(ConfigService::instance()->getFloatValue("navMesh.polytopeMaxSize"))) {
 
-    }
-
-    PolytopeBuilder::~PolytopeBuilder() {
-        delete terrainSplitService;
-        delete planeSurfaceSplitService;
     }
 
     std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytopes(const std::shared_ptr<AIObject>& aiObject, const std::shared_ptr<NavMeshAgent>& navMeshAgent) {

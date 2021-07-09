@@ -68,12 +68,12 @@ namespace urchin {
         addLink(NavLink::newStandardLink(sourceEdgeIndex, targetTriangle));
     }
 
-    void NavTriangle::addJoinPolygonsLink(std::size_t sourceEdgeIndex, const std::shared_ptr<NavTriangle>& targetTriangle, NavLinkConstraint* linkConstraint) {
-        addLink(NavLink::newJoinPolygonsLink(sourceEdgeIndex, targetTriangle, linkConstraint));
+    void NavTriangle::addJoinPolygonsLink(std::size_t sourceEdgeIndex, const std::shared_ptr<NavTriangle>& targetTriangle, std::unique_ptr<NavLinkConstraint> linkConstraint) {
+        addLink(NavLink::newJoinPolygonsLink(sourceEdgeIndex, targetTriangle, std::move(linkConstraint)));
     }
 
-    void NavTriangle::addJumpLink(std::size_t sourceEdgeIndex, const std::shared_ptr<NavTriangle>& targetTriangle, NavLinkConstraint* linkConstraint) {
-        addLink(NavLink::newJumpLink(sourceEdgeIndex, targetTriangle, linkConstraint));
+    void NavTriangle::addJumpLink(std::size_t sourceEdgeIndex, const std::shared_ptr<NavTriangle>& targetTriangle, std::unique_ptr<NavLinkConstraint> linkConstraint) {
+        addLink(NavLink::newJumpLink(sourceEdgeIndex, targetTriangle, std::move(linkConstraint)));
     }
 
     void NavTriangle::addLink(const std::shared_ptr<NavLink>& navLink) {

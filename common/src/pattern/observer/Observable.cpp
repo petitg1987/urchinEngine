@@ -3,18 +3,15 @@
 namespace urchin {
 
     Observable::~Observable() {
-        for (auto& mapObserver : mapObservers) {
-            delete mapObserver.second;
-        }
         mapObservers.clear();
     }
 
     void Observable::addObserver(Observer* observer, int notificationType) const {
         auto it = mapObservers.find(notificationType);
         if (it == mapObservers.end()) {
-            auto* observers = new std::unordered_set<Observer*>();
+            auto observers = std::make_unique<std::unordered_set<Observer*>>();
             observers->insert(observer);
-            mapObservers[notificationType] = observers;
+            mapObservers[notificationType] = std::move(observers);
         } else {
             it->second->insert(observer);
         }
@@ -23,7 +20,7 @@ namespace urchin {
     void Observable::removeObserver(Observer* observer, int notificationType) const {
         auto it = mapObservers.find(notificationType);
         if (it != mapObservers.end()) {
-            std::unordered_set<Observer*>* observers = it->second;
+            const std::unique_ptr<std::unordered_set<Observer*>>& observers = it->second;
             observers->erase(observer);
         }
     }

@@ -23,7 +23,6 @@ namespace urchin {
 
         private:
             PolytopeBuilder();
-            ~PolytopeBuilder() override;
 
             std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string&, OBBox<float>*, const std::shared_ptr<NavMeshAgent>&) const;
             std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string&, Capsule<float>*, const std::shared_ptr<NavMeshAgent>&) const;
@@ -43,8 +42,8 @@ namespace urchin {
             static const unsigned int POINT_INDEX_TO_PLANES[][4];
             static const unsigned int PLANE_INDEX_TO_POINTS[][3];
 
-            PlaneSurfaceSplitService* planeSurfaceSplitService;
-            TerrainSplitService* terrainSplitService;
+            std::unique_ptr<PlaneSurfaceSplitService> planeSurfaceSplitService;
+            std::unique_ptr<TerrainSplitService> terrainSplitService;
     };
 
 }
