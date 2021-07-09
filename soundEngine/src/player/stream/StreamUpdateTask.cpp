@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include <player/stream/StreamUpdateTask.h>
 
 namespace urchin {
@@ -5,12 +7,11 @@ namespace urchin {
     /**
      * @param streamChunks Stream chunks (uninitialized)
      */
-    StreamUpdateTask::StreamUpdateTask(const Sound* sound, StreamChunk* streamChunks, bool playLoop) :
+    StreamUpdateTask::StreamUpdateTask(const Sound* sound, unsigned int nbStreamChunks, bool playLoop) :
             sound(sound),
             soundFileReader(std::make_unique<SoundFileReader>(sound->getFilename())),
-            playLoop(playLoop),
-            streamChunks(streamChunks) {
-
+            playLoop(playLoop) {
+        this->streamChunks.resize(nbStreamChunks, {});
     }
 
     ALuint StreamUpdateTask::getSourceId() const {
@@ -37,11 +38,8 @@ namespace urchin {
     }
 
     StreamChunk& StreamUpdateTask::getStreamChunk(unsigned int chunkId) {
+        assert(chunkId < streamChunks.size());
         return streamChunks[chunkId];
-    }
-
-    StreamChunk* StreamUpdateTask::getStreamChunks() {
-        return streamChunks;
     }
 
 }

@@ -33,7 +33,7 @@ namespace urchin {
      * @param sound Sound used to fill the queue
      */
     void StreamUpdateWorker::addTask(const Sound* sound, bool playLoop) {
-        auto task = std::make_unique<StreamUpdateTask>(sound, new StreamChunk[nbChunkBuffer], playLoop);
+        auto task = std::make_unique<StreamUpdateTask>(sound, nbChunkBuffer, playLoop);
 
         //create buffers/chunks
         std::vector<ALuint> bufferId(nbChunkBuffer);
@@ -146,8 +146,6 @@ namespace urchin {
         for (unsigned int i = 0; i < nbChunkBuffer; ++i) {
             alDeleteBuffers(1, &task.getStreamChunk(i).bufferId);
         }
-
-        delete[] task.getStreamChunks();
     }
 
     /**

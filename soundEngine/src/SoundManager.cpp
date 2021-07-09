@@ -17,9 +17,7 @@ namespace urchin {
     }
 
     SoundManager::~SoundManager() {
-        for (auto* audioController : audioControllers) {
-            deleteAudioController(audioController);
-        }
+        audioControllers.clear();
 
         streamUpdateWorker->interrupt();
         streamUpdateWorkerThread->join();
@@ -32,15 +30,14 @@ namespace urchin {
             Logger::instance()->logInfo("Add new sound: " + sound->getFilename());
             adjustSoundVolume(sound);
 
-            auto* audioController = new AudioController(sound, soundTrigger, *streamUpdateWorker);
-            audioControllers.push_back(audioController);
+            auto audioController = std::make_unique<AudioController>(sound, soundTrigger, *streamUpdateWorker);
+            audioControllers.push_back(std::move(audioController));
         }
     }
 
     void SoundManager::removeSound(const Sound* sound) {
         for (auto it = audioControllers.begin(); it != audioControllers.end(); ++it) {
             if ((*it)->getSound() == sound) {
-                deleteAudioController(*it);
                 audioControllers.erase(it);
                 break;
             }
@@ -125,7 +122,4 @@ namespace urchin {
         process(Point3<float>(0.0f, 0.0f, 0.0f));
     }
 
-    void SoundManager::deleteAudioController(AudioController* audioController) const {
-        delete audioController;
-    }
 }

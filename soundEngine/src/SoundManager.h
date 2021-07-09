@@ -34,10 +34,9 @@ namespace urchin {
             void process();
 
         private:
-            void deleteAudioController(AudioController*) const;
             void adjustSoundVolume(Sound*);
 
-            std::vector<AudioController*> audioControllers;
+            std::vector<std::unique_ptr<AudioController>> audioControllers;
             std::map<Sound::SoundCategory, float> soundVolumes;
 
             //stream chunk updater thread

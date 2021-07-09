@@ -14,7 +14,7 @@ namespace urchin {
     */
     class StreamUpdateTask {
         public:
-            StreamUpdateTask(const Sound*, StreamChunk*, bool);
+            StreamUpdateTask(const Sound*, unsigned int, bool);
 
             ALuint getSourceId() const;
             bool isSourceStopped() const;
@@ -24,14 +24,13 @@ namespace urchin {
             std::string getSoundFilename() const;
 
             StreamChunk& getStreamChunk(unsigned int);
-            StreamChunk* getStreamChunks();
 
         private:
             const Sound* sound;
             std::unique_ptr<SoundFileReader> soundFileReader;
             bool playLoop;
 
-            StreamChunk* streamChunks;
+            std::vector<StreamChunk> streamChunks;
     };
 
 }
