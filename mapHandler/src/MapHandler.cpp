@@ -30,10 +30,10 @@ namespace urchin {
 
     void MapHandler::loadMapFromFile(const std::string& filename, LoadCallback& loadCallback) {
         Logger::instance()->logInfo("Load map: " + filename);
-        DataParser xmlParser(filename);
+        DataParser dataParser(filename);
 
-        relativeWorkingDirectory = xmlParser.getRootChunk()->getAttributeValue(WORKING_DIR_ATTR);
-        map->loadFrom(xmlParser.getRootChunk().get(), xmlParser, loadCallback);
+        relativeWorkingDirectory = dataParser.getRootChunk()->getAttributeValue(WORKING_DIR_ATTR);
+        map->loadFrom(dataParser.getRootChunk().get(), dataParser, loadCallback);
     }
 
     void MapHandler::writeMapOnFile(const std::string& filename) const {
@@ -50,8 +50,8 @@ namespace urchin {
      * @return Working directory relative to the map file
      */
     std::string MapHandler::getRelativeWorkingDirectory(const std::string& filename) {
-        DataParser xmlParser(filename, "");
-        return xmlParser.getRootChunk()->getAttributeValue(WORKING_DIR_ATTR);
+        DataParser dataParser(filename, "");
+        return dataParser.getRootChunk()->getAttributeValue(WORKING_DIR_ATTR);
     }
 
     /**

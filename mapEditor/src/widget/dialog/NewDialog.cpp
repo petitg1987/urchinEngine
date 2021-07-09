@@ -39,7 +39,7 @@ namespace urchin {
     }
 
     void NewDialog::setupNameFields(QGridLayout* mainLayout) {
-        mapNameLabel = new QLabel("Name (*.xml):");
+        mapNameLabel = new QLabel("Name (*.uda):");
         mainLayout->addWidget(mapNameLabel, 0, 0);
 
         mapNameText = new QLineEdit();
@@ -100,8 +100,8 @@ namespace urchin {
         if (!mapFilename.isEmpty()) {
             this->mapFilename = mapFilename.toUtf8().constData();
             std::string fileExtension = FileUtil::getFileExtension(this->mapFilename);
-            if (!StringUtil::insensitiveEquals(fileExtension, ".xml")) {
-                this->mapFilename += ".xml";
+            if (!StringUtil::insensitiveEquals(fileExtension, ".uda")) {
+                this->mapFilename += ".uda";
             }
         }
     }

@@ -7,9 +7,9 @@
 
 namespace urchin {
 
-    class LoaderMTR : public Loader<Material> {
+    class LoaderMaterial : public Loader<Material> {
         public:
-            ~LoaderMTR() override = default;
+            ~LoaderMaterial() override = default;
 
             Material* loadFromFile(const std::string&, const std::map<std::string, std::string>&) override;
     };

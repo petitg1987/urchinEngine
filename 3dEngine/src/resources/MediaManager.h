@@ -22,7 +22,7 @@ namespace urchin {
         public:
             friend class Singleton<MediaManager>;
 
-            template<class T> T* getMedia(const std::string&, const std::map<std::string, std::string>& param = {});
+            template<class T> T* getMedia(const std::string&, const std::map<std::string, std::string>& = {}, const std::string& = "");
 
         private:
             MediaManager();

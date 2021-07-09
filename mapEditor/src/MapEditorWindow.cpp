@@ -242,7 +242,7 @@ namespace urchin {
 
     void MapEditorWindow::showOpenDialog() {
         if (checkCurrentMapSaved()) {
-            QString filename = QFileDialog::getOpenFileName(this, tr("Open file"), getPreferredMapPath(), "XML file (*.xml)", nullptr, QFileDialog::DontUseNativeDialog);
+            QString filename = QFileDialog::getOpenFileName(this, tr("Open file"), getPreferredMapPath(), "UDA file (*.uda)", nullptr, QFileDialog::DontUseNativeDialog);
             if (!filename.isNull()) {
                 std::string mapFilename = filename.toUtf8().constData();
                 std::string relativeWorkingDirectory = MapHandler::getRelativeWorkingDirectory(mapFilename);
@@ -274,12 +274,12 @@ namespace urchin {
     }
 
     void MapEditorWindow::showSaveAsDialog() {
-        QString filename = QFileDialog::getSaveFileName(this, tr("Save file"), getPreferredMapPath(), "XML file (*.xml)", nullptr, QFileDialog::DontUseNativeDialog);
+        QString filename = QFileDialog::getSaveFileName(this, tr("Save file"), getPreferredMapPath(), "UDA file (*.uda)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
             std::string filenameString = filename.toUtf8().constData();
             std::string fileExtension = FileUtil::getFileExtension(filenameString);
-            if (!StringUtil::insensitiveEquals(fileExtension, ".xml")) {
-                filenameString += ".xml";
+            if (!StringUtil::insensitiveEquals(fileExtension, ".uda")) {
+                filenameString += ".uda";
             }
 
             sceneDisplayerWindow->saveState(filenameString);

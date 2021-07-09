@@ -501,7 +501,7 @@ namespace urchin {
 
         std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
         QString directory = preferredMaterialPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredMaterialPath;
-        QString filename = QFileDialog::getOpenFileName(this, tr("Open material file"), directory, "Material file (*.mtr)", nullptr, QFileDialog::DontUseNativeDialog);
+        QString filename = QFileDialog::getOpenFileName(this, tr("Open material file"), directory, "Material file (*.uda)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
             std::string mtrFilenamePath = filename.toUtf8().constData();
             std::string relativeMtrFilenamePath = FileUtil::getRelativePath(resourcesDirectory, mtrFilenamePath);
