@@ -22,8 +22,9 @@ namespace urchin {
 
     StreamUpdateWorker::~StreamUpdateWorker() {
         for (auto& task : tasks) {
-            deleteTask(task);
+            deleteTask(*task);
         }
+        tasks.clear();
     }
 
     /**
@@ -32,7 +33,7 @@ namespace urchin {
      * @param sound Sound used to fill the queue
      */
     void StreamUpdateWorker::addTask(const Sound* sound, bool playLoop) {
-        auto* task = new StreamUpdateTask(sound, new StreamChunk[nbChunkBuffer], playLoop);
+        auto task = std::make_unique<StreamUpdateTask>(sound, new StreamChunk[nbChunkBuffer], playLoop);
 
         //create buffers/chunks
         std::vector<ALuint> bufferId(nbChunkBuffer);
@@ -43,7 +44,7 @@ namespace urchin {
 
         //initialize buffers/chunks
         for (unsigned int i = 0; i < nbChunkBuffer; ++i) {
-            fillAndPushChunk(task, i);
+            fillAndPushChunk(*task, i);
         }
 
         #ifndef NDEBUG
@@ -51,7 +52,7 @@ namespace urchin {
         #endif
 
         std::lock_guard<std::mutex> lock(tasksMutex);
-        tasks.push_back(task);
+        tasks.push_back(std::move(task));
     }
 
     bool StreamUpdateWorker::isTaskExist(const Sound* sound) const {
@@ -67,7 +68,7 @@ namespace urchin {
 
         for (auto it = tasks.begin(); it != tasks.end(); ++it) {
             if ((*it)->getSourceId() == sound->getSourceId()) {
-                deleteTask(*it);
+                deleteTask(*(*it));
                 tasks.erase(it);
 
                 break;
@@ -95,9 +96,9 @@ namespace urchin {
                     std::lock_guard<std::mutex> lock(tasksMutex);
 
                     for (auto it = tasks.begin(); it != tasks.end();) {
-                        bool taskFinished = processTask(*it);
+                        bool taskFinished = processTask(*(*it));
                         if (taskFinished) {
-                            deleteTask(*it);
+                            deleteTask(*(*it));
                             it = tasks.erase(it);
                         } else {
                             ++it;
@@ -120,89 +121,88 @@ namespace urchin {
         return !streamUpdateWorkerStopper.load(std::memory_order_acquire);
     }
 
-    bool StreamUpdateWorker::processTask(StreamUpdateTask* task) {
+    bool StreamUpdateWorker::processTask(StreamUpdateTask& task) {
         ALint chunkProcessed = 0;
-        alGetSourcei(task->getSourceId(), AL_BUFFERS_PROCESSED, &chunkProcessed);
+        alGetSourcei(task.getSourceId(), AL_BUFFERS_PROCESSED, &chunkProcessed);
 
         for (int i = 0; i < chunkProcessed; ++i) {
             //pop the first unused buffer from the queue
             ALuint bufferId;
-            alSourceUnqueueBuffers(task->getSourceId(), 1, &bufferId);
+            alSourceUnqueueBuffers(task.getSourceId(), 1, &bufferId);
 
             unsigned int chunkId = retrieveChunkId(task, bufferId);
             fillAndPushChunk(task, chunkId);
         }
 
         ALint nbQueues = 0;
-        alGetSourcei(task->getSourceId(), AL_BUFFERS_QUEUED, &nbQueues);
+        alGetSourcei(task.getSourceId(), AL_BUFFERS_QUEUED, &nbQueues);
         return nbQueues == 0; //task terminated ?
     }
 
-    void StreamUpdateWorker::deleteTask(StreamUpdateTask* task) {
+    void StreamUpdateWorker::deleteTask(StreamUpdateTask& task) {
         clearQueue(task);
-        alSourcei(task->getSourceId(), AL_BUFFER, 0);
+        alSourcei(task.getSourceId(), AL_BUFFER, 0);
 
         for (unsigned int i = 0; i < nbChunkBuffer; ++i) {
-            alDeleteBuffers(1, &task->getStreamChunk(i).bufferId);
+            alDeleteBuffers(1, &task.getStreamChunk(i).bufferId);
         }
 
-        delete[] task->getStreamChunks();
-        delete task;
+        delete[] task.getStreamChunks();
     }
 
     /**
      * Fill chunk and push it in the queue of buffers
      * @param task Task currently executed
      */
-    void StreamUpdateWorker::fillAndPushChunk(StreamUpdateTask* task, unsigned int chunkId) {
+    void StreamUpdateWorker::fillAndPushChunk(StreamUpdateTask& task, unsigned int chunkId) {
         fillChunk(task, chunkId);
 
-        const StreamChunk& streamChunk = task->getStreamChunk(chunkId);
+        const StreamChunk& streamChunk = task.getStreamChunk(chunkId);
         auto size = static_cast<ALsizei>(streamChunk.numberOfSamples * sizeof(ALushort));
         if (size > 0) {
-            SoundFileReader::SoundFormat soundFormat = task->getSoundFileReader().getFormat();
+            SoundFileReader::SoundFormat soundFormat = task.getSoundFileReader().getFormat();
             ALenum format;
             if (SoundFileReader::MONO_16 == soundFormat) {
                 format = AL_FORMAT_MONO16;
             } else if (SoundFileReader::STEREO_16 == soundFormat) {
                 format = AL_FORMAT_STEREO16;
             } else {
-                throw std::runtime_error("Unknown sound format: " + std::to_string(task->getSoundFileReader().getFormat()));
+                throw std::runtime_error("Unknown sound format: " + std::to_string(task.getSoundFileReader().getFormat()));
             }
 
-            alBufferData(streamChunk.bufferId, format, &streamChunk.samples[0], size, (ALsizei)task->getSoundFileReader().getSampleRate());
-            alSourceQueueBuffers(task->getSourceId(), 1, &streamChunk.bufferId);
+            alBufferData(streamChunk.bufferId, format, &streamChunk.samples[0], size, (ALsizei)task.getSoundFileReader().getSampleRate());
+            alSourceQueueBuffers(task.getSourceId(), 1, &streamChunk.bufferId);
         }
     }
 
     /**
      * @param task Task currently executed
      */
-    void StreamUpdateWorker::fillChunk(StreamUpdateTask* task, unsigned int chunkId) const {
-        StreamChunk& streamChunk = task->getStreamChunk(chunkId);
-        unsigned int bufferSize = task->getSoundFileReader().getSampleRate() * task->getSoundFileReader().getNumberOfChannels() * nbSecondByChunk;
+    void StreamUpdateWorker::fillChunk(StreamUpdateTask& task, unsigned int chunkId) const {
+        StreamChunk& streamChunk = task.getStreamChunk(chunkId);
+        unsigned int bufferSize = task.getSoundFileReader().getSampleRate() * task.getSoundFileReader().getNumberOfChannels() * nbSecondByChunk;
         streamChunk.samples.resize(bufferSize);
 
-        task->getSoundFileReader().readNextChunk(streamChunk.samples, streamChunk.numberOfSamples, task->isPlayLoop());
+        task.getSoundFileReader().readNextChunk(streamChunk.samples, streamChunk.numberOfSamples, task.isPlayLoop());
     }
 
-    unsigned int StreamUpdateWorker::retrieveChunkId(StreamUpdateTask* task, ALuint bufferId) const {
+    unsigned int StreamUpdateWorker::retrieveChunkId(StreamUpdateTask& task, ALuint bufferId) const {
         for (unsigned int i = 0; i < nbChunkBuffer; ++i) {
-            if (task->getStreamChunk(i).bufferId == bufferId) {
+            if (task.getStreamChunk(i).bufferId == bufferId) {
                 return i;
             }
         }
 
-        throw std::domain_error("Stream chunk with buffer id " + std::to_string(bufferId) + " not found (" + task->getSoundFilename() + ")");
+        throw std::domain_error("Stream chunk with buffer id " + std::to_string(bufferId) + " not found (" + task.getSoundFilename() + ")");
     }
 
-    void StreamUpdateWorker::clearQueue(StreamUpdateTask* task) const {
+    void StreamUpdateWorker::clearQueue(StreamUpdateTask& task) const {
         ALint nbQueues;
-        alGetSourcei(task->getSourceId(), AL_BUFFERS_QUEUED, &nbQueues);
+        alGetSourcei(task.getSourceId(), AL_BUFFERS_QUEUED, &nbQueues);
 
         ALuint buffer;
         for (ALint i = 0; i < nbQueues; ++i) {
-            alSourceUnqueueBuffers(task->getSourceId(), 1, &buffer);
+            alSourceUnqueueBuffers(task.getSourceId(), 1, &buffer);
         }
     }
 
