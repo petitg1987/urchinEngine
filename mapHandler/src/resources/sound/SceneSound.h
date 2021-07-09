@@ -26,8 +26,8 @@ namespace urchin {
             void changeSoundTrigger(SoundTrigger*);
 
         private:
-            void loadFrom(const XmlChunk*, const DataParser&);
-            void writeOn(XmlChunk*, DataWriter&) const;
+            void loadFrom(const DataChunk*, const DataParser&);
+            void writeOn(DataChunk*, DataWriter&) const;
 
             static constexpr char NAME_ATTR[] = "name";
             static constexpr char SOUND_TAG[] = "sound";

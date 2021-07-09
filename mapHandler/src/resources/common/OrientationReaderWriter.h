@@ -9,8 +9,8 @@ namespace urchin {
 
     class OrientationReaderWriter {
         public:
-            static Quaternion<float> loadOrientation(const XmlChunk*, const DataParser&);
-            static void writeOrientation(const XmlChunk*, const Quaternion<float>&, DataWriter&);
+            static Quaternion<float> loadOrientation(const DataChunk*, const DataParser&);
+            static void writeOrientation(const DataChunk*, const Quaternion<float>&, DataWriter&);
 
         private:
             static constexpr char ORIENTATION_TAG[] = "orientation";

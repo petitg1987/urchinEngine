@@ -30,7 +30,7 @@ namespace urchin {
         }
     }
 
-    void SceneSound::loadFrom(const XmlChunk* chunk, const DataParser& dataParser) {
+    void SceneSound::loadFrom(const DataChunk* chunk, const DataParser& dataParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
         auto soundChunk = dataParser.getUniqueChunk(true, SOUND_TAG, DataAttribute(), chunk);
@@ -39,7 +39,7 @@ namespace urchin {
         setSoundElements(SoundReaderWriter::loadFrom(soundChunk.get(), dataParser), SoundTriggerReaderWriter::loadFrom(soundTriggerChunk.get(), dataParser));
     }
 
-    void SceneSound::writeOn(XmlChunk* chunk, DataWriter& dataWriter) const {
+    void SceneSound::writeOn(DataChunk* chunk, DataWriter& dataWriter) const {
         chunk->setAttribute(DataAttribute(NAME_ATTR, this->name));
 
         auto soundChunk = dataWriter.createChunk(SOUND_TAG, DataAttribute(), chunk);

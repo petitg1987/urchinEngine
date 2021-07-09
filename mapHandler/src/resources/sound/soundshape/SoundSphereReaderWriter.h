@@ -17,8 +17,8 @@ namespace urchin {
         public:
             ~SoundSphereReaderWriter() override = default;
 
-            SoundShape* loadFrom(const XmlChunk*, const DataParser&) const override;
-            void writeOn(XmlChunk*, const SoundShape*, DataWriter&) const override;
+            SoundShape* loadFrom(const DataChunk*, const DataParser&) const override;
+            void writeOn(DataChunk*, const SoundShape*, DataWriter&) const override;
     };
 
 }

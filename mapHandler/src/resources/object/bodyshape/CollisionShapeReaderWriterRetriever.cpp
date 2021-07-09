@@ -11,7 +11,7 @@
 
 namespace urchin {
 
-    std::shared_ptr<CollisionShapeReaderWriter> CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(const XmlChunk* shapeChunk) {
+    std::shared_ptr<CollisionShapeReaderWriter> CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(const DataChunk* shapeChunk) {
         std::string shapeType = shapeChunk->getAttributeValue(CollisionShapeReaderWriter::TYPE_ATTR);
         if (shapeType == CollisionShapeReaderWriter::SPHERE_VALUE) {
             return std::make_shared<CollisionSphereReaderWriter>();

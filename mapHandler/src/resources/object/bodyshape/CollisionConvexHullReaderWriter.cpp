@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    CollisionShape3D* CollisionConvexHullReaderWriter::loadFrom(const XmlChunk* shapeChunk, const DataParser& dataParser) const {
+    CollisionShape3D* CollisionConvexHullReaderWriter::loadFrom(const DataChunk* shapeChunk, const DataParser& dataParser) const {
         auto pointsListChunk = dataParser.getUniqueChunk(true, POINTS_TAG, DataAttribute(), shapeChunk);
         auto pointsChunk = dataParser.getChunks(POINT_TAG, DataAttribute(), pointsListChunk.get());
 
@@ -17,7 +17,7 @@ namespace urchin {
         return new CollisionConvexHullShape(points);
     }
 
-    void CollisionConvexHullReaderWriter::writeOn(XmlChunk* shapeChunk, const CollisionShape3D& collisionShape, DataWriter& dataWriter) const {
+    void CollisionConvexHullReaderWriter::writeOn(DataChunk* shapeChunk, const CollisionShape3D& collisionShape, DataWriter& dataWriter) const {
         shapeChunk->setAttribute(DataAttribute(TYPE_ATTR, CONVEX_HULL_VALUE));
 
         const auto& convexHullShape = dynamic_cast<const CollisionConvexHullShape&>(collisionShape);

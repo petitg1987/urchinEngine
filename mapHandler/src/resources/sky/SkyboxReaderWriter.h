@@ -9,8 +9,8 @@ namespace urchin {
 
     class SkyboxReaderWriter {
         public:
-            static std::unique_ptr<Skybox> loadFrom(const XmlChunk*, const DataParser&);
-            static void writeOn(XmlChunk*, const std::unique_ptr<Skybox>&, DataWriter&);
+            static std::unique_ptr<Skybox> loadFrom(const DataChunk*, const DataParser&);
+            static void writeOn(DataChunk*, const std::unique_ptr<Skybox>&, DataWriter&);
 
         private:
             static constexpr char SKYBOX_TAG[] = "skybox";

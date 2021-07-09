@@ -35,18 +35,18 @@ namespace urchin {
         static constexpr char WIND_STRENGTH_TAG[] = "windStrength";
 
         public:
-            Terrain* loadFrom(const XmlChunk*, const DataParser&) const;
-            void writeOn(XmlChunk*, const Terrain*, DataWriter&) const;
+            Terrain* loadFrom(const DataChunk*, const DataParser&) const;
+            void writeOn(DataChunk*, const Terrain*, DataWriter&) const;
 
         private:
-            Terrain* buildTerrainFrom(const XmlChunk*, const DataParser&) const;
-            void buildChunkFrom(const XmlChunk*, const Terrain*, DataWriter&) const;
+            Terrain* buildTerrainFrom(const DataChunk*, const DataParser&) const;
+            void buildChunkFrom(const DataChunk*, const Terrain*, DataWriter&) const;
 
-            void loadPropertiesOn(Terrain*, const XmlChunk*, const DataParser&) const;
-            void writePropertiesOn(const XmlChunk*, const Terrain*, DataWriter&) const;
+            void loadPropertiesOn(Terrain*, const DataChunk*, const DataParser&) const;
+            void writePropertiesOn(const DataChunk*, const Terrain*, DataWriter&) const;
 
-            void loadGrassOn(Terrain*, const XmlChunk*, const DataParser&) const;
-            void writeGrassOn(const XmlChunk*, const Terrain*, DataWriter&) const;
+            void loadGrassOn(Terrain*, const DataChunk*, const DataParser&) const;
+            void writeGrassOn(const DataChunk*, const Terrain*, DataWriter&) const;
     };
 
 }

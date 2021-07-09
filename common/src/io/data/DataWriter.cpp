@@ -16,14 +16,7 @@ namespace urchin {
         delete doc;
     }
 
-    /**
-     * Create a XML chunk according to the parameters (info: <parent><chunkName attributeName="attributeValue">value</chunkName></parent>)
-     * @param chunkName Name of the tag XML
-     * @param attribute Name and value of the attribute
-     * @param parent Name of the tag parent of "chunkName"
-     * @return XML chunk according to the parameters
-     */
-    std::unique_ptr<XmlChunk> DataWriter::createChunk(const std::string& chunkName, const DataAttribute& attribute, const XmlChunk* parent) {
+    std::unique_ptr<DataChunk> DataWriter::createChunk(const std::string& chunkName, const DataAttribute& attribute, const DataChunk* parent) {
         auto* chunk = new TiXmlElement(chunkName);
 
         if (!attribute.getAttributeName().empty()) {
@@ -36,7 +29,7 @@ namespace urchin {
             doc->LinkEndChild(chunk);
         }
 
-        return std::unique_ptr<XmlChunk>(new XmlChunk(chunk));
+        return std::unique_ptr<DataChunk>(new DataChunk(chunk));
     }
 
     void DataWriter::saveInFile() {

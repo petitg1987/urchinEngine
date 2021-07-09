@@ -1,7 +1,7 @@
 #include "WaterReaderWriter.h"
 
 namespace urchin {
-    Water* WaterReaderWriter::loadFrom(const XmlChunk* waterChunk, const DataParser& dataParser) const {
+    Water* WaterReaderWriter::loadFrom(const DataChunk* waterChunk, const DataParser& dataParser) const {
         auto* water = new Water();
         loadGeneralPropertiesOn(water, waterChunk, dataParser);
         loadWaterSurfaceProperties(water, waterChunk, dataParser);
@@ -10,13 +10,13 @@ namespace urchin {
         return water;
     }
 
-    void WaterReaderWriter::writeOn(XmlChunk* waterChunk, const Water* water, DataWriter& dataWriter) const {
+    void WaterReaderWriter::writeOn(DataChunk* waterChunk, const Water* water, DataWriter& dataWriter) const {
         writeGeneralPropertiesOn(waterChunk, water, dataWriter);
         writeWaterSurfacePropertiesOn(waterChunk, water, dataWriter);
         writeUnderWaterPropertiesOn(waterChunk, water, dataWriter);
     }
 
-    void WaterReaderWriter::loadGeneralPropertiesOn(Water* water, const XmlChunk* waterChunk, const DataParser& dataParser) {
+    void WaterReaderWriter::loadGeneralPropertiesOn(Water* water, const DataChunk* waterChunk, const DataParser& dataParser) {
         auto centerPositionChunk = dataParser.getUniqueChunk(true, CENTER_POSITION_TAG, DataAttribute(), waterChunk);
         water->setCenterPosition(centerPositionChunk->getPoint3Value());
 
@@ -27,7 +27,7 @@ namespace urchin {
         water->setZSize(zSizeChunk->getFloatValue());
     }
 
-    void WaterReaderWriter::writeGeneralPropertiesOn(XmlChunk* waterChunk, const Water* water, DataWriter& dataWriter) {
+    void WaterReaderWriter::writeGeneralPropertiesOn(DataChunk* waterChunk, const Water* water, DataWriter& dataWriter) {
         auto centerPositionChunk = dataWriter.createChunk(CENTER_POSITION_TAG, DataAttribute(), waterChunk);
         centerPositionChunk->setPoint3Value(water->getCenterPosition());
 
@@ -38,7 +38,7 @@ namespace urchin {
         zSizeChunk->setFloatValue(water->getZSize());
     }
 
-    void WaterReaderWriter::loadWaterSurfaceProperties(Water* water, const XmlChunk* waterChunk, const DataParser& dataParser) {
+    void WaterReaderWriter::loadWaterSurfaceProperties(Water* water, const DataChunk* waterChunk, const DataParser& dataParser) {
         auto waterColorChunk = dataParser.getUniqueChunk(true, WATER_COLOR_TAG, DataAttribute(), waterChunk);
         water->setWaterColor(waterColorChunk->getVector3Value());
 
@@ -61,7 +61,7 @@ namespace urchin {
         water->setTRepeat(tRepeatChunk->getFloatValue());
     }
 
-    void WaterReaderWriter::writeWaterSurfacePropertiesOn(XmlChunk* waterChunk, const Water* water, DataWriter& dataWriter) {
+    void WaterReaderWriter::writeWaterSurfacePropertiesOn(DataChunk* waterChunk, const Water* water, DataWriter& dataWriter) {
         auto waterColorChunk = dataWriter.createChunk(WATER_COLOR_TAG, DataAttribute(), waterChunk);
         waterColorChunk->setVector3Value(water->getWaterColor());
 
@@ -84,7 +84,7 @@ namespace urchin {
         tRepeatChunk->setFloatValue(water->getTRepeat());
     }
 
-    void WaterReaderWriter::loadUnderWaterProperties(Water* water, const XmlChunk* waterChunk, const DataParser& dataParser) {
+    void WaterReaderWriter::loadUnderWaterProperties(Water* water, const DataChunk* waterChunk, const DataParser& dataParser) {
         auto densityChunk = dataParser.getUniqueChunk(true, DENSITY_TAG, DataAttribute(), waterChunk);
         water->setDensity(densityChunk->getFloatValue());
 
@@ -92,7 +92,7 @@ namespace urchin {
         water->setGradient(gradientChunk->getFloatValue());
     }
 
-    void WaterReaderWriter::writeUnderWaterPropertiesOn(XmlChunk* waterChunk, const Water* water, DataWriter& dataWriter) {
+    void WaterReaderWriter::writeUnderWaterPropertiesOn(DataChunk* waterChunk, const Water* water, DataWriter& dataWriter) {
         auto densityChunk = dataWriter.createChunk(DENSITY_TAG, DataAttribute(), waterChunk);
         densityChunk->setFloatValue(water->getDensity());
 

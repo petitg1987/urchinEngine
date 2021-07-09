@@ -12,8 +12,8 @@ namespace urchin {
         public:
             ~CollisionConeReaderWriter() override = default;
 
-            CollisionShape3D* loadFrom(const XmlChunk*, const DataParser&) const override;
-            void writeOn(XmlChunk*, const CollisionShape3D&, DataWriter&) const override;
+            CollisionShape3D* loadFrom(const DataChunk*, const DataParser&) const override;
+            void writeOn(DataChunk*, const CollisionShape3D&, DataWriter&) const override;
 
         private:
             static constexpr char ORIENTATION_TAG[] = "orientation";

@@ -15,8 +15,8 @@ namespace urchin {
 
             virtual ~SoundShapeReaderWriter() = default;
 
-            virtual SoundShape* loadFrom(const XmlChunk*, const DataParser&) const = 0;
-            virtual void writeOn(XmlChunk*, const SoundShape*, DataWriter&) const = 0;
+            virtual SoundShape* loadFrom(const DataChunk*, const DataParser&) const = 0;
+            virtual void writeOn(DataChunk*, const SoundShape*, DataWriter&) const = 0;
     };
 
 }

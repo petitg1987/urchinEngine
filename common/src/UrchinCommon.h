@@ -18,7 +18,7 @@
 #include <io/data/DataParser.h>
 #include <io/data/DataWriter.h>
 #include <io/data/DataAttribute.h>
-#include <io/data/XmlChunk.h>
+#include <io/data/DataChunk.h>
 
 #include <logger/Logger.h>
 #include <logger/FileLogger.h>

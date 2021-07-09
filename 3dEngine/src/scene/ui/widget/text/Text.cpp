@@ -177,7 +177,7 @@ namespace urchin {
         font = MediaManager::instance()->getMedia<Font>(ttfFilename, fontParams);
     }
 
-    unsigned int Text::retrieveFontHeight(const XmlChunk* textChunk) const {
+    unsigned int Text::retrieveFontHeight(const DataChunk* textChunk) const {
         Length fontHeight = UISkinService::instance()->loadLength(textChunk, "height");
         if (fontHeight.getType() == LengthType::PIXEL) {
             return (unsigned int)fontHeight.getValue();

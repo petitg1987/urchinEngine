@@ -14,7 +14,7 @@
 
 namespace urchin {
 
-    class XmlChunk {
+    class DataChunk {
         public:
             friend class DataParser;
             friend class DataWriter;
@@ -59,8 +59,8 @@ namespace urchin {
             void setVector4Value(const Vector4<float>&);
 
         private:
-            explicit XmlChunk(TiXmlElement*);
-            explicit XmlChunk(const TiXmlElement*);
+            explicit DataChunk(TiXmlElement*);
+            explicit DataChunk(const TiXmlElement*);
 
             TiXmlElement* getChunk() const;
 

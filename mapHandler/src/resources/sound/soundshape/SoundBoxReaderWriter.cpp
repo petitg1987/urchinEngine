@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    SoundShape* SoundBoxReaderWriter::loadFrom(const XmlChunk* shapeChunk, const DataParser& dataParser) const {
+    SoundShape* SoundBoxReaderWriter::loadFrom(const DataChunk* shapeChunk, const DataParser& dataParser) const {
         auto halfSizesChunk = dataParser.getUniqueChunk(true, HALF_SIZES_TAG, DataAttribute(), shapeChunk);
         Vector3<float> halfSizes = halfSizesChunk->getVector3Value();
 
@@ -20,7 +20,7 @@ namespace urchin {
         return new SoundBox(halfSizes, position, orientation, margin);
     }
 
-    void SoundBoxReaderWriter::writeOn(XmlChunk* shapeChunk, const SoundShape* soundShape, DataWriter& dataWriter) const {
+    void SoundBoxReaderWriter::writeOn(DataChunk* shapeChunk, const SoundShape* soundShape, DataWriter& dataWriter) const {
         shapeChunk->setAttribute(DataAttribute(TYPE_ATTR, BOX_VALUE));
 
         const auto* boxShape = dynamic_cast<const SoundBox*>(soundShape);

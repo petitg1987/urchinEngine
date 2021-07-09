@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    std::shared_ptr<SoundShapeReaderWriter> SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(const XmlChunk* shapeChunk) {
+    std::shared_ptr<SoundShapeReaderWriter> SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(const DataChunk* shapeChunk) {
         std::string shapeType = shapeChunk->getAttributeValue(SoundShapeReaderWriter::TYPE_ATTR);
         if (shapeType == SoundShapeReaderWriter::SPHERE_VALUE) {
             return std::make_shared<SoundSphereReaderWriter>();

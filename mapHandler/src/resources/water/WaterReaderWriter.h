@@ -9,18 +9,18 @@ namespace urchin {
 
     class WaterReaderWriter {
         public:
-            Water* loadFrom(const XmlChunk*, const DataParser&) const;
-            void writeOn(XmlChunk*, const Water*, DataWriter&) const;
+            Water* loadFrom(const DataChunk*, const DataParser&) const;
+            void writeOn(DataChunk*, const Water*, DataWriter&) const;
 
         private:
-            static void loadGeneralPropertiesOn(Water*, const XmlChunk*, const DataParser&);
-            static void writeGeneralPropertiesOn(XmlChunk*, const Water*, DataWriter&);
+            static void loadGeneralPropertiesOn(Water*, const DataChunk*, const DataParser&);
+            static void writeGeneralPropertiesOn(DataChunk*, const Water*, DataWriter&);
 
-            static void loadWaterSurfaceProperties(Water*, const XmlChunk*, const DataParser&);
-            static void writeWaterSurfacePropertiesOn(XmlChunk*, const Water*, DataWriter&);
+            static void loadWaterSurfaceProperties(Water*, const DataChunk*, const DataParser&);
+            static void writeWaterSurfacePropertiesOn(DataChunk*, const Water*, DataWriter&);
 
-            static void loadUnderWaterProperties(Water*, const XmlChunk*, const DataParser&);
-            static void writeUnderWaterPropertiesOn(XmlChunk*, const Water*, DataWriter&);
+            static void loadUnderWaterProperties(Water*, const DataChunk*, const DataParser&);
+            static void writeUnderWaterPropertiesOn(DataChunk*, const Water*, DataWriter&);
 
             static constexpr char CENTER_POSITION_TAG[] = "centerPosition";
             static constexpr char X_SIZE_TAG[] = "xSize";

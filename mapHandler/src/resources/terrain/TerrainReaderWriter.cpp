@@ -1,7 +1,7 @@
 #include "TerrainReaderWriter.h"
 
 namespace urchin {
-    Terrain* TerrainReaderWriter::loadFrom(const XmlChunk* terrainChunk, const DataParser& dataParser) const {
+    Terrain* TerrainReaderWriter::loadFrom(const DataChunk* terrainChunk, const DataParser& dataParser) const {
         Terrain* terrain = buildTerrainFrom(terrainChunk, dataParser);
 
         loadPropertiesOn(terrain, terrainChunk, dataParser);
@@ -10,14 +10,14 @@ namespace urchin {
         return terrain;
     }
 
-    void TerrainReaderWriter::writeOn(XmlChunk* terrainChunk, const Terrain* terrain, DataWriter& dataWriter) const {
+    void TerrainReaderWriter::writeOn(DataChunk* terrainChunk, const Terrain* terrain, DataWriter& dataWriter) const {
         buildChunkFrom(terrainChunk, terrain, dataWriter);
 
         writePropertiesOn(terrainChunk, terrain, dataWriter);
         writeGrassOn(terrainChunk, terrain, dataWriter);
     }
 
-    Terrain* TerrainReaderWriter::buildTerrainFrom(const XmlChunk* terrainChunk, const DataParser& dataParser) const {
+    Terrain* TerrainReaderWriter::buildTerrainFrom(const DataChunk* terrainChunk, const DataParser& dataParser) const {
         auto meshChunk = dataParser.getUniqueChunk(true, MESH_TAG, DataAttribute(), terrainChunk);
         auto heightFilenameChunk = dataParser.getUniqueChunk(true, HEIGHT_FILENAME_TAG, DataAttribute(), meshChunk.get());
         auto xzScaleChunk = dataParser.getUniqueChunk(true, XZ_SCALE_TAG, DataAttribute(), meshChunk.get());
@@ -45,7 +45,7 @@ namespace urchin {
         return new Terrain(terrainMesh, std::move(terrainMaterial), positionChunk->getPoint3Value());
     }
 
-    void TerrainReaderWriter::buildChunkFrom(const XmlChunk* terrainChunk, const Terrain* terrain, DataWriter& dataWriter) const {
+    void TerrainReaderWriter::buildChunkFrom(const DataChunk* terrainChunk, const Terrain* terrain, DataWriter& dataWriter) const {
         auto meshChunk = dataWriter.createChunk(MESH_TAG, DataAttribute(), terrainChunk);
         auto heightFilenameChunk = dataWriter.createChunk(HEIGHT_FILENAME_TAG, DataAttribute(), meshChunk.get());
         heightFilenameChunk->setStringValue(terrain->getMesh()->getHeightFilename());
@@ -75,17 +75,17 @@ namespace urchin {
         positionChunk->setPoint3Value(terrain->getPosition());
     }
 
-    void TerrainReaderWriter::loadPropertiesOn(Terrain* terrain, const XmlChunk* terrainChunk, const DataParser& dataParser) const {
+    void TerrainReaderWriter::loadPropertiesOn(Terrain* terrain, const DataChunk* terrainChunk, const DataParser& dataParser) const {
         auto ambientChunk = dataParser.getUniqueChunk(true, AMBIENT_TAG, DataAttribute(), terrainChunk);
         terrain->setAmbient(ambientChunk->getFloatValue());
     }
 
-    void TerrainReaderWriter::writePropertiesOn(const XmlChunk* terrainChunk, const Terrain* terrain, DataWriter& dataWriter) const {
+    void TerrainReaderWriter::writePropertiesOn(const DataChunk* terrainChunk, const Terrain* terrain, DataWriter& dataWriter) const {
         auto ambientChunk = dataWriter.createChunk(AMBIENT_TAG, DataAttribute(), terrainChunk);
         ambientChunk->setFloatValue(terrain->getAmbient());
     }
 
-    void TerrainReaderWriter::loadGrassOn(Terrain* terrain, const XmlChunk* terrainChunk, const DataParser& dataParser) const {
+    void TerrainReaderWriter::loadGrassOn(Terrain* terrain, const DataChunk* terrainChunk, const DataParser& dataParser) const {
         auto grassChunk = dataParser.getUniqueChunk(false, GRASS_TAG, DataAttribute(), terrainChunk);
         if (grassChunk) {
             auto grassTextureFilenameChunk = dataParser.getUniqueChunk(true, GRASS_TEXTURE_FILENAME_TAG, DataAttribute(), grassChunk.get());
@@ -114,7 +114,7 @@ namespace urchin {
         }
     }
 
-    void TerrainReaderWriter::writeGrassOn(const XmlChunk* terrainChunk, const Terrain* terrain, DataWriter& dataWriter) const {
+    void TerrainReaderWriter::writeGrassOn(const DataChunk* terrainChunk, const Terrain* terrain, DataWriter& dataWriter) const {
         if (terrain->getGrass()) {
             auto grassChunk = dataWriter.createChunk(GRASS_TAG, DataAttribute(), terrainChunk);
 

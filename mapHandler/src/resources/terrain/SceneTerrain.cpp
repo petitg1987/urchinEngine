@@ -43,7 +43,7 @@ namespace urchin {
         }
     }
 
-    void SceneTerrain::loadFrom(const XmlChunk* chunk, const DataParser& dataParser) {
+    void SceneTerrain::loadFrom(const DataChunk* chunk, const DataParser& dataParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
         setTerrain(TerrainReaderWriter().loadFrom(chunk, dataParser));
@@ -55,7 +55,7 @@ namespace urchin {
         setupInteractiveBody(terrainRigidBody);
     }
 
-    void SceneTerrain::writeOn(XmlChunk* chunk, DataWriter& dataWriter) const {
+    void SceneTerrain::writeOn(DataChunk* chunk, DataWriter& dataWriter) const {
         chunk->setAttribute(DataAttribute(NAME_ATTR, this->name));
 
         TerrainReaderWriter().writeOn(chunk, terrain, dataWriter);

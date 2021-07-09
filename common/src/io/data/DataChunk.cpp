@@ -1,36 +1,36 @@
 #include <stdexcept>
 
-#include <io/data/XmlChunk.h>
+#include <io/data/DataChunk.h>
 #include <util/TypeConverter.h>
 
 namespace urchin {
 
-    XmlChunk::XmlChunk(TiXmlElement* chunk) :
+    DataChunk::DataChunk(TiXmlElement* chunk) :
             chunk(chunk) {
 
     }
 
-    XmlChunk::XmlChunk(const TiXmlElement* chunk) :
-            XmlChunk(const_cast<TiXmlElement*>(chunk)) {
+    DataChunk::DataChunk(const TiXmlElement* chunk) :
+            DataChunk(const_cast<TiXmlElement*>(chunk)) {
 
     }
 
-    TiXmlElement* XmlChunk::getChunk() const {
+    TiXmlElement* DataChunk::getChunk() const {
         return chunk;
     }
 
     /**
      * @return Attribute value if exist otherwise an empty string
      */
-    std::string XmlChunk::getAttributeValue(const std::string& attributeName) const {
+    std::string DataChunk::getAttributeValue(const std::string& attributeName) const {
         return *chunk->ToElement()->Attribute(attributeName);
     }
 
-    void XmlChunk::setAttribute(const DataAttribute& attribute) {
+    void DataChunk::setAttribute(const DataAttribute& attribute) {
         chunk->SetAttribute(attribute.getAttributeName(), attribute.getAttributeValue());
     }
 
-    std::string XmlChunk::getStringValue() const {
+    std::string DataChunk::getStringValue() const {
         if (!chunk->FirstChild()) {
             return "";
         } else if (chunk->FirstChild()->Type() == TiXmlNode::TEXT) {
@@ -40,37 +40,37 @@ namespace urchin {
         throw std::domain_error("Impossible to find a value on chunk: " + chunk->ValueStr());
     }
 
-    void XmlChunk::setStringValue(const std::string& value) {
+    void DataChunk::setStringValue(const std::string& value) {
         chunk->LinkEndChild(new TiXmlText(value));
     }
 
-    int XmlChunk::getIntValue() const {
+    int DataChunk::getIntValue() const {
         return TypeConverter::toInt(getStringValue());
     }
 
-    void XmlChunk::setIntValue(int value) {
+    void DataChunk::setIntValue(int value) {
         setStringValue(std::to_string(value));
     }
 
-    unsigned int XmlChunk::getUnsignedIntValue() const {
+    unsigned int DataChunk::getUnsignedIntValue() const {
         return TypeConverter::toUnsignedInt(getStringValue());
     }
 
-    void XmlChunk::setUnsignedIntValue(unsigned int value) {
+    void DataChunk::setUnsignedIntValue(unsigned int value) {
         setStringValue(std::to_string(value));
     }
 
-    float XmlChunk::getFloatValue() const {
+    float DataChunk::getFloatValue() const {
         return TypeConverter::toFloat(getStringValue());
     }
 
-    void XmlChunk::setFloatValue(float value) {
+    void DataChunk::setFloatValue(float value) {
         std::locale::global(std::locale("C")); //for float
 
         setStringValue(std::to_string(value));
     }
 
-    bool XmlChunk::getBoolValue() const {
+    bool DataChunk::getBoolValue() const {
         std::string value = getStringValue();
         if (value == "false") {
             return false;
@@ -81,7 +81,7 @@ namespace urchin {
         throw std::domain_error("Impossible to convert " + value + " into a boolean");
     }
 
-    void XmlChunk::setBoolValue(bool value) {
+    void DataChunk::setBoolValue(bool value) {
         if (value) {
             setStringValue("true");
         } else {
@@ -89,70 +89,70 @@ namespace urchin {
         }
     }
 
-    char XmlChunk::getCharValue() const {
+    char DataChunk::getCharValue() const {
         return TypeConverter::toChar(getStringValue());
     }
 
-    void XmlChunk::setCharValue(char value) {
+    void DataChunk::setCharValue(char value) {
         setStringValue(std::to_string(value));
     }
 
-    Point2<float> XmlChunk::getPoint2Value() const {
+    Point2<float> DataChunk::getPoint2Value() const {
         return TypeConverter::toPoint2(getStringValue());
     }
 
-    void XmlChunk::setPoint2Value(const Point2<float>& value) {
+    void DataChunk::setPoint2Value(const Point2<float>& value) {
         std::locale::global(std::locale("C")); //for float
 
         setStringValue(std::to_string(value.X) + TypeConverter::FLOAT_DELIMITER + std::to_string(value.Y));
     }
 
-    Point3<float> XmlChunk::getPoint3Value() const {
+    Point3<float> DataChunk::getPoint3Value() const {
         return TypeConverter::toPoint3(getStringValue());
     }
 
-    void XmlChunk::setPoint3Value(const Point3<float>& value) {
+    void DataChunk::setPoint3Value(const Point3<float>& value) {
         std::locale::global(std::locale("C")); //for float
 
         setStringValue(std::to_string(value.X) + TypeConverter::FLOAT_DELIMITER + std::to_string(value.Y) + TypeConverter::FLOAT_DELIMITER + std::to_string(value.Z));
     }
 
-    Point4<float> XmlChunk::getPoint4Value() const {
+    Point4<float> DataChunk::getPoint4Value() const {
         return TypeConverter::toPoint4(getStringValue());
     }
 
-    void XmlChunk::setPoint4Value(const Point4<float>& value) {
+    void DataChunk::setPoint4Value(const Point4<float>& value) {
         std::locale::global(std::locale("C")); //for float
 
         setStringValue(std::to_string(value.X) + TypeConverter::FLOAT_DELIMITER + std::to_string(value.Y) + TypeConverter::FLOAT_DELIMITER + std::to_string(value.Z)
             + TypeConverter::FLOAT_DELIMITER + std::to_string(value.W));
     }
 
-    Vector2<float> XmlChunk::getVector2Value() const {
+    Vector2<float> DataChunk::getVector2Value() const {
         return TypeConverter::toVector2(getStringValue());
     }
 
-    void XmlChunk::setVector2Value(const Vector2<float>& value) {
+    void DataChunk::setVector2Value(const Vector2<float>& value) {
         std::locale::global(std::locale("C")); //for float
 
         setStringValue(std::to_string(value.X) + TypeConverter::FLOAT_DELIMITER + std::to_string(value.Y));
     }
 
-    Vector3<float> XmlChunk::getVector3Value() const {
+    Vector3<float> DataChunk::getVector3Value() const {
         return TypeConverter::toVector3(getStringValue());
     }
 
-    void XmlChunk::setVector3Value(const Vector3<float>& value) {
+    void DataChunk::setVector3Value(const Vector3<float>& value) {
         std::locale::global(std::locale("C")); //for float
 
         setStringValue(std::to_string(value.X) + TypeConverter::FLOAT_DELIMITER + std::to_string(value.Y) + TypeConverter::FLOAT_DELIMITER + std::to_string(value.Z));
     }
 
-    Vector4<float> XmlChunk::getVector4Value() const {
+    Vector4<float> DataChunk::getVector4Value() const {
         return TypeConverter::toVector4(getStringValue());
     }
 
-    void XmlChunk::setVector4Value(const Vector4<float>& value) {
+    void DataChunk::setVector4Value(const Vector4<float>& value) {
         std::locale::global(std::locale("C")); //for float
 
         setStringValue(std::to_string(value.X) + TypeConverter::FLOAT_DELIMITER + std::to_string(value.Y) + TypeConverter::FLOAT_DELIMITER + std::to_string(value.Z)

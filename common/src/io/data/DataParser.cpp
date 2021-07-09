@@ -22,24 +22,17 @@ namespace urchin {
         }
     }
 
-    std::unique_ptr<XmlChunk> DataParser::getRootChunk() const {
+    std::unique_ptr<DataChunk> DataParser::getRootChunk() const {
         const TiXmlNode* rootNode = doc->FirstChild()->NextSibling();
         if (rootNode->Type() == TiXmlNode::ELEMENT) {
-            return std::unique_ptr<XmlChunk>(new XmlChunk(doc->FirstChild()->NextSibling()->ToElement()));
+            return std::unique_ptr<DataChunk>(new DataChunk(doc->FirstChild()->NextSibling()->ToElement()));
         }
 
         throw std::invalid_argument("Impossible to get root element in file: " + filenamePath);
     }
 
-    /**
-     * Returns a XML chunks according to the parameters (info: <parent><chunkName attributeName="attributeValue">value</chunkName></parent>)
-     * @param chunkName Name of the tag XML
-     * @param attribute Name and value of the attribute
-     * @param parent Name of the tag parent of "chunkName"
-     * @return XML chunks according to the parameters
-     */
-    std::vector<std::unique_ptr<XmlChunk>> DataParser::getChunks(const std::string& chunkName, const DataAttribute& attribute, const XmlChunk* parent) const {
-        std::vector<std::unique_ptr<XmlChunk>> chunks;
+    std::vector<std::unique_ptr<DataChunk>> DataParser::getChunks(const std::string& chunkName, const DataAttribute& attribute, const DataChunk* parent) const {
+        std::vector<std::unique_ptr<DataChunk>> chunks;
 
         const TiXmlNode *firstChild;
         if (!parent) {
@@ -54,10 +47,10 @@ namespace urchin {
                 if (!attribute.getAttributeName().empty()) {
                     const std::string* attributeValue = pChild->ToElement()->Attribute(attribute.getAttributeName());
                     if (attributeValue && (*attributeValue) == attribute.getAttributeValue()) {
-                        chunks.push_back(std::unique_ptr<XmlChunk>(new XmlChunk(pChild->ToElement())));
+                        chunks.push_back(std::unique_ptr<DataChunk>(new DataChunk(pChild->ToElement())));
                     }
                 } else {
-                    chunks.push_back(std::unique_ptr<XmlChunk>(new XmlChunk(pChild->ToElement())));
+                    chunks.push_back(std::unique_ptr<DataChunk>(new DataChunk(pChild->ToElement())));
                 }
             }
         }
@@ -65,15 +58,7 @@ namespace urchin {
         return chunks;
     }
 
-    /**
-     * Returns a unique XML chunk according to the parameters (info: <parent><chunkName attributeName="attributeValue">value</chunkName></parent>)
-     * @param mandatory Chunk must exist otherwise an exception is throw
-     * @param chunkName Name of the tag XML
-     * @param attribute Name and value of the attribute
-     * @param parent Name of the tag parent of "chunkName"
-     * @return Unique XML chunk according to the parameters
-     */
-    std::unique_ptr<XmlChunk> DataParser::getUniqueChunk(bool mandatory, const std::string& chunkName, const DataAttribute& attribute, const XmlChunk* parent) const {
+    std::unique_ptr<DataChunk> DataParser::getUniqueChunk(bool mandatory, const std::string& chunkName, const DataAttribute& attribute, const DataChunk* parent) const {
         auto chunks = getChunks(chunkName, attribute, parent);
 
         if (chunks.size() > 1) {
@@ -83,7 +68,7 @@ namespace urchin {
                 throw std::invalid_argument("The tag " + getChunkDescription(chunkName, attribute) + " wasn't found in file " + filenamePath + ".");
             }
 
-            return std::unique_ptr<XmlChunk>(nullptr);
+            return std::unique_ptr<DataChunk>(nullptr);
         }
 
         return std::move(chunks[0]);

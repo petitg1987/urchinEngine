@@ -17,21 +17,21 @@ namespace urchin {
         skinReader = std::make_unique<DataParser>(skinFilename);
     }
 
-    std::shared_ptr<Texture> UISkinService::createWidgetTexture(unsigned int width, unsigned int height, const XmlChunk* skinXmlChunk, WidgetOutline* widgetOutline) const {
+    std::shared_ptr<Texture> UISkinService::createWidgetTexture(unsigned int width, unsigned int height, const DataChunk* skinChunk, WidgetOutline* widgetOutline) const {
         //skin information
-        auto widgetImageElem = getSkinReader()->getUniqueChunk(true, "image", DataAttribute(), skinXmlChunk);
+        auto widgetImageElem = getSkinReader()->getUniqueChunk(true, "image", DataAttribute(), skinChunk);
         auto* rawWidgetImage = MediaManager::instance()->getMedia<Image>(widgetImageElem->getStringValue());
 
-        auto topElem = getSkinReader()->getUniqueChunk(true, "part", DataAttribute("zone", "top"), skinXmlChunk);
+        auto topElem = getSkinReader()->getUniqueChunk(true, "part", DataAttribute("zone", "top"), skinChunk);
         unsigned int top = topElem->getUnsignedIntValue();
 
-        auto bottomElem = getSkinReader()->getUniqueChunk(true, "part", DataAttribute("zone", "bottom"), skinXmlChunk);
+        auto bottomElem = getSkinReader()->getUniqueChunk(true, "part", DataAttribute("zone", "bottom"), skinChunk);
         unsigned int bottom = bottomElem->getUnsignedIntValue();
 
-        auto leftElem = getSkinReader()->getUniqueChunk(true, "part", DataAttribute("zone", "left"), skinXmlChunk);
+        auto leftElem = getSkinReader()->getUniqueChunk(true, "part", DataAttribute("zone", "left"), skinChunk);
         unsigned int left = leftElem->getUnsignedIntValue();
 
-        auto rightElem = getSkinReader()->getUniqueChunk(true, "part", DataAttribute("zone", "right"), skinXmlChunk);
+        auto rightElem = getSkinReader()->getUniqueChunk(true, "part", DataAttribute("zone", "right"), skinChunk);
         unsigned int right = rightElem->getUnsignedIntValue();
 
         //copy the information into the outline
@@ -121,7 +121,7 @@ namespace urchin {
         return widgetTexture;
     }
 
-    Length UISkinService::loadLength(const XmlChunk* mainChunk, const std::string& lengthName) const {
+    Length UISkinService::loadLength(const DataChunk* mainChunk, const std::string& lengthName) const {
         auto fontHeightChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, lengthName, DataAttribute(), mainChunk);
 
         float length = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "value", DataAttribute(), fontHeightChunk.get())->getFloatValue();

@@ -27,13 +27,13 @@ namespace urchin {
         renderer3d->getWaterManager()->addWater(water);
     }
 
-    void SceneWater::loadFrom(const XmlChunk* chunk, const DataParser& dataParser) {
+    void SceneWater::loadFrom(const DataChunk* chunk, const DataParser& dataParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
         setWater(WaterReaderWriter().loadFrom(chunk, dataParser));
     }
 
-    void SceneWater::writeOn(XmlChunk* chunk, DataWriter& dataWriter) const {
+    void SceneWater::writeOn(DataChunk* chunk, DataWriter& dataWriter) const {
         chunk->setAttribute(DataAttribute(NAME_ATTR, this->name));
 
         WaterReaderWriter().writeOn(chunk, water, dataWriter);

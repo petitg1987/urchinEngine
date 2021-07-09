@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    RigidBody* RigidBodyReaderWriter::loadFrom(const XmlChunk* physicsChunk, const std::string& id,
+    RigidBody* RigidBodyReaderWriter::loadFrom(const DataChunk* physicsChunk, const std::string& id,
             const Transform<float>& modelTransform, const DataParser& dataParser) {
         auto shapeChunk = dataParser.getUniqueChunk(true, SHAPE_TAG, DataAttribute(), physicsChunk);
         std::shared_ptr<CollisionShapeReaderWriter> shapeReaderWriter = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeChunk.get());
@@ -16,7 +16,7 @@ namespace urchin {
         return rigidBody;
     }
 
-    void RigidBodyReaderWriter::writeOn(XmlChunk* physicsChunk, const RigidBody* rigidBody, DataWriter& dataWriter) {
+    void RigidBodyReaderWriter::writeOn(DataChunk* physicsChunk, const RigidBody* rigidBody, DataWriter& dataWriter) {
         auto shapeChunk = dataWriter.createChunk(SHAPE_TAG, DataAttribute(), physicsChunk);
         std::shared_ptr<CollisionShapeReaderWriter> shapeReaderWriter = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(rigidBody->getShape());
 
@@ -24,7 +24,7 @@ namespace urchin {
         writeBodyPropertiesOn(physicsChunk, rigidBody, dataWriter);
     }
 
-    void RigidBodyReaderWriter::loadBodyPropertiesOn(RigidBody* rigidBody, const XmlChunk* physicsChunk, const DataParser& dataParser) {
+    void RigidBodyReaderWriter::loadBodyPropertiesOn(RigidBody* rigidBody, const DataChunk* physicsChunk, const DataParser& dataParser) {
         auto massChunk = dataParser.getUniqueChunk(true, MASS_TAG, DataAttribute(), physicsChunk);
         float bodyMass = massChunk->getFloatValue();
         rigidBody->setMass(bodyMass);
@@ -49,7 +49,7 @@ namespace urchin {
         rigidBody->setAngularFactor(angularFactorChunk->getVector3Value());
     }
 
-    void RigidBodyReaderWriter::writeBodyPropertiesOn(const XmlChunk* physicsChunk, const RigidBody* rigidBody, DataWriter& dataWriter) {
+    void RigidBodyReaderWriter::writeBodyPropertiesOn(const DataChunk* physicsChunk, const RigidBody* rigidBody, DataWriter& dataWriter) {
         auto massChunk = dataWriter.createChunk(MASS_TAG, DataAttribute(), physicsChunk);
         massChunk->setFloatValue(rigidBody->getMass());
 

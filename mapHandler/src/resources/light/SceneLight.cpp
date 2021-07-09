@@ -28,13 +28,13 @@ namespace urchin {
         lightManager->addLight(light);
     }
 
-    void SceneLight::loadFrom(const XmlChunk* chunk, const DataParser& dataParser) {
+    void SceneLight::loadFrom(const DataChunk* chunk, const DataParser& dataParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
         setLight(LightReaderWriter::loadFrom(chunk, dataParser));
     }
 
-    void SceneLight::writeOn(XmlChunk* chunk, DataWriter& dataWriter) const {
+    void SceneLight::writeOn(DataChunk* chunk, DataWriter& dataWriter) const {
         chunk->setAttribute(DataAttribute(NAME_ATTR, this->name));
 
         LightReaderWriter::writeOn(chunk, light, dataWriter);

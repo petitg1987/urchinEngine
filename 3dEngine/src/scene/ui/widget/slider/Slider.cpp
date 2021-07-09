@@ -68,7 +68,7 @@ namespace urchin {
                 ->build();
     }
 
-    std::shared_ptr<Texture> Slider::loadTexture(const XmlChunk* sliderChunk, const std::string& chunkName) const {
+    std::shared_ptr<Texture> Slider::loadTexture(const DataChunk* sliderChunk, const std::string& chunkName) const {
         auto imageElem = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, chunkName, DataAttribute(), sliderChunk);
 
         auto* img = MediaManager::instance()->getMedia<Image>(imageElem->getStringValue());
