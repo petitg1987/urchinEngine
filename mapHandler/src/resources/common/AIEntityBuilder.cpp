@@ -8,13 +8,13 @@ namespace urchin {
         assert(MathFunction::isOne(transform.getScale(), 0.01f));
 
         if (shape.isConvex()) {
-            auto singleShape = std::make_shared<AIShape>(shape.getSingleShape());
+            auto singleShape = std::make_shared<AIShape>(shape.getSingleShape().clone());
             return std::make_shared<AIObject>(name, transform, true, singleShape);
         } else if (shape.isCompound()) {
             std::vector<std::shared_ptr<AIShape>> aiShapes;
             const auto& scaledCompoundShape = dynamic_cast<const CollisionCompoundShape&>(shape);
             for (const auto& scaledLocalizedShape : scaledCompoundShape.getLocalizedShapes()) {
-                aiShapes.push_back(std::make_shared<AIShape>(scaledLocalizedShape->shape->getSingleShape(), scaledLocalizedShape->transform.toTransform()));
+                aiShapes.push_back(std::make_shared<AIShape>(scaledLocalizedShape->shape->getSingleShape().clone(), scaledLocalizedShape->transform.toTransform()));
             }
 
             return std::make_shared<AIObject>(name, transform, true, aiShapes);

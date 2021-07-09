@@ -22,7 +22,7 @@ namespace urchin {
 
             T computeHeight() const;
 
-            ConvexShape3D<T>* clone() const override;
+            std::unique_ptr<ConvexShape3D<T>> clone() const override;
             std::unique_ptr<ConvexObject3D<T>> toConvexObject(const Transform<T>&) const override;
 
         private:

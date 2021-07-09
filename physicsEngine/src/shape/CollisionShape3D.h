@@ -48,7 +48,7 @@ namespace urchin {
             bool isConvex() const;
             bool isConcave() const;
             bool isCompound() const;
-            virtual const ConvexShape3D<float>* getSingleShape() const = 0;
+            virtual const ConvexShape3D<float>& getSingleShape() const = 0;
 
             virtual std::unique_ptr<CollisionShape3D> scale(float) const = 0;
 

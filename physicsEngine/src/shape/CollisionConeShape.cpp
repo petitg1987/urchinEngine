@@ -5,17 +5,13 @@ namespace urchin {
 
     CollisionConeShape::CollisionConeShape(float radius, float height, ConeShape<float>::ConeOrientation coneOrientation) :
             CollisionShape3D(),
-            coneShape(new ConeShape<float>(radius, height, coneOrientation)) {
+            coneShape(std::make_unique<ConeShape<float>>(radius, height, coneOrientation)) {
         computeSafeMargin();
     }
 
     CollisionConeShape::CollisionConeShape(CollisionConeShape&& collisionConeShape) noexcept :
             CollisionShape3D(collisionConeShape),
             coneShape(std::exchange(collisionConeShape.coneShape, nullptr)) {
-    }
-
-    CollisionConeShape::~CollisionConeShape() {
-        delete coneShape;
     }
 
     void CollisionConeShape::computeSafeMargin() {
@@ -30,8 +26,8 @@ namespace urchin {
         return CollisionShape3D::CONE_SHAPE;
     }
 
-    const ConvexShape3D<float>* CollisionConeShape::getSingleShape() const {
-        return coneShape;
+    const ConvexShape3D<float>& CollisionConeShape::getSingleShape() const {
+        return *coneShape;
     }
 
     float CollisionConeShape::getRadius() const {

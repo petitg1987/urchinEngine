@@ -21,7 +21,7 @@ namespace urchin {
             ~CollisionTriangleShape() override;
 
             CollisionShape3D::ShapeType getShapeType() const override;
-            const ConvexShape3D<float>* getSingleShape() const override;
+            const ConvexShape3D<float>& getSingleShape() const override;
 
             std::unique_ptr<CollisionShape3D> scale(float) const override;
 
@@ -35,7 +35,7 @@ namespace urchin {
             std::unique_ptr<CollisionShape3D> clone() const override;
 
         private:
-            TriangleShape3D<float>* triangleShape; //shape including margin
+            std::unique_ptr<TriangleShape3D<float>> triangleShape; //shape including margin
             FixedSizePool<TriangleShape3D<float>>* triangleShapesPool;
     };
 

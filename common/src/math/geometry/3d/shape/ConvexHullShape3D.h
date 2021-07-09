@@ -33,7 +33,7 @@ namespace urchin {
             Point3<T> getSupportPoint(const Vector3<T>&) const;
 
             std::unique_ptr<ConvexHullShape3D<T>> resize(T) const;
-            ConvexShape3D<T>* clone() const override;
+            std::unique_ptr<ConvexShape3D<T>> clone() const override;
             std::unique_ptr<ConvexObject3D<T>> toConvexObject(const Transform<T>&) const override;
 
         private:

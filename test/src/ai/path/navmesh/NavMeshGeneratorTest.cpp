@@ -8,9 +8,9 @@
 using namespace urchin;
 
 void NavMeshGeneratorTest::holeOnWalkableFace() {
-    auto walkableShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(2.0f, 0.01f, 2.0f)).get());
+    auto walkableShape = std::make_shared<AIShape>(std::make_unique<BoxShape<float>>(Vector3<float>(2.0f, 0.01f, 2.0f)));
     auto walkableFaceObject = std::make_shared<AIObject>("walkableFace", Transform<float>(Point3<float>(0.0f, 0.0f, 0.0f)), true, walkableShape);
-    auto holeShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(1.0f, 0.01f, 1.0f)).get());
+    auto holeShape = std::make_shared<AIShape>(std::make_unique<BoxShape<float>>(Vector3<float>(1.0f, 0.01f, 1.0f)));
     auto holeObject = std::make_shared<AIObject>("hole", Transform<float>(Point3<float>(0.0f, 1.0f, 0.0f)), true, holeShape);
     AIWorld aiWorld;
     aiWorld.addEntity(walkableFaceObject);
@@ -30,9 +30,9 @@ void NavMeshGeneratorTest::holeOnWalkableFace() {
 }
 
 void NavMeshGeneratorTest::holeOnWalkableFaceEdge() {
-    auto walkableShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(2.0f, 0.01f, 2.0f)).get());
+    auto walkableShape = std::make_shared<AIShape>(std::make_unique<BoxShape<float>>(Vector3<float>(2.0f, 0.01f, 2.0f)));
     auto walkableFaceObject = std::make_shared<AIObject>("walkableFace", Transform<float>(Point3<float>(0.0f, 0.0f, 0.0f)), true, walkableShape);
-    auto holeShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(1.0f, 0.01f, 1.0f)).get());
+    auto holeShape = std::make_shared<AIShape>(std::make_unique<BoxShape<float>>(Vector3<float>(1.0f, 0.01f, 1.0f)));
     auto holeObject = std::make_shared<AIObject>("hole", Transform<float>(Point3<float>(-1.0f, 1.0f, -1.0f)), true, holeShape);
     AIWorld aiWorld;
     aiWorld.addEntity(walkableFaceObject);
@@ -52,9 +52,9 @@ void NavMeshGeneratorTest::holeOnWalkableFaceEdge() {
 }
 
 void NavMeshGeneratorTest::holeOverlapOnWalkableFace() {
-    auto walkableShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(2.0f, 0.01f, 2.0f)).get());
+    auto walkableShape = std::make_shared<AIShape>(std::make_unique<BoxShape<float>>(Vector3<float>(2.0f, 0.01f, 2.0f)));
     auto walkableFaceObject = std::make_shared<AIObject>("walkableFace", Transform<float>(Point3<float>(0.0f, 0.0f, 0.0f)), true, walkableShape);
-    auto holeShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(1.0f, 0.01f, 1.0f)).get());
+    auto holeShape = std::make_shared<AIShape>(std::make_unique<BoxShape<float>>(Vector3<float>(1.0f, 0.01f, 1.0f)));
     auto holeObject = std::make_shared<AIObject>("hole", Transform<float>(Point3<float>(-2.0f, 1.0f, -2.0f)), true, holeShape);
     AIWorld aiWorld;
     aiWorld.addEntity(walkableFaceObject);
@@ -84,11 +84,11 @@ void NavMeshGeneratorTest::holeOverlapOnWalkableFace() {
 }
 
 void NavMeshGeneratorTest::holeAndCrossingHoleOnWalkableFace() {
-    auto walkableShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(2.0f, 0.01f, 2.0f)).get());
+    auto walkableShape = std::make_shared<AIShape>(std::make_unique<BoxShape<float>>(Vector3<float>(2.0f, 0.01f, 2.0f)));
     auto walkableFaceObject = std::make_shared<AIObject>("walkableFace", Transform<float>(Point3<float>(0.0f, 0.0f, 0.0f)), true, walkableShape);
-    auto holeShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(0.5f, 0.01f, 0.5f)).get());
+    auto holeShape = std::make_shared<AIShape>(std::make_unique<BoxShape<float>>(Vector3<float>(0.5f, 0.01f, 0.5f)));
     auto holeObject = std::make_shared<AIObject>("hole", Transform<float>(Point3<float>(-0.5f, 1.0f, -0.5f)), true, holeShape);
-    auto crossingHoleShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(0.5f, 0.01f, 3.0f)).get());
+    auto crossingHoleShape = std::make_shared<AIShape>(std::make_unique<BoxShape<float>>(Vector3<float>(0.5f, 0.01f, 3.0f)));
     auto crossingHoleObject = std::make_shared<AIObject>("crossingHole", Transform<float>(Point3<float>(1.0f, 1.0f, 0.0f)), true, crossingHoleShape);
 
     AIWorld aiWorld;
@@ -114,10 +114,10 @@ void NavMeshGeneratorTest::holeAndCrossingHoleOnWalkableFace() {
 }
 
 void NavMeshGeneratorTest::moveHoleOnWalkableFace() {
-    auto walkableShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(2.0f, 0.01f, 2.0f)).get());
+    auto walkableShape = std::make_shared<AIShape>(std::make_unique<BoxShape<float>>(Vector3<float>(2.0f, 0.01f, 2.0f)));
     auto walkableFaceObjectLeft = std::make_shared<AIObject>("walkableFaceLeft", Transform<float>(Point3<float>(0.0f, 0.0f, 0.0f)), false, walkableShape);
     auto walkableFaceObjectRight = std::make_shared<AIObject>("walkableFaceRight", Transform<float>(Point3<float>(5.0f, 0.0f, 0.0f)), false, walkableShape);
-    auto holeShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(1.0f, 0.01f, 1.0f)).get());
+    auto holeShape = std::make_shared<AIShape>(std::make_unique<BoxShape<float>>(Vector3<float>(1.0f, 0.01f, 1.0f)));
     auto holeObject = std::make_shared<AIObject>("hole", Transform<float>(Point3<float>(0.0f, 1.0f, 0.0f)), true, holeShape);
     AIWorld aiWorld;
     aiWorld.addEntity(walkableFaceObjectLeft);
@@ -144,9 +144,9 @@ void NavMeshGeneratorTest::moveHoleOnWalkableFace() {
 }
 
 void NavMeshGeneratorTest::removeHoleFromWalkableFace() {
-    auto walkableShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(2.0f, 0.01f, 2.0f)).get());
+    auto walkableShape = std::make_shared<AIShape>(std::make_unique<BoxShape<float>>(Vector3<float>(2.0f, 0.01f, 2.0f)));
     auto walkableFaceObject = std::make_shared<AIObject>("walkableFace", Transform<float>(Point3<float>(0.0f, 0.0f, 0.0f)), true, walkableShape);
-    auto holeShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(1.0f, 0.01f, 1.0f)).get());
+    auto holeShape = std::make_shared<AIShape>(std::make_unique<BoxShape<float>>(Vector3<float>(1.0f, 0.01f, 1.0f)));
     auto holeObject = std::make_shared<AIObject>("hole", Transform<float>(Point3<float>(0.0f, 1.0f, 0.0f)), true, holeShape);
     AIWorld aiWorld;
     aiWorld.addEntity(walkableFaceObject);
@@ -169,7 +169,7 @@ void NavMeshGeneratorTest::removeHoleFromWalkableFace() {
 }
 
 void NavMeshGeneratorTest::linksRecreatedAfterMove() {
-    auto cubeShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(0.5f, 0.5f, 0.5f)).get());
+    auto cubeShape = std::make_shared<AIShape>(std::make_unique<BoxShape<float>>(Vector3<float>(0.5f, 0.5f, 0.5f)));
     auto cube1Moving = std::make_shared<AIObject>("cube1", Transform<float>(Point3<float>(0.5f, 1.5f, 0.0f)), false, cubeShape);
     auto cube2AffectedByMove = std::make_shared<AIObject>("cube2", Transform<float>(Point3<float>(0.0f, 0.0f, 0.0f)), false, cubeShape);
     auto cube3WitLinkToCube2 = std::make_shared<AIObject>("cube3", Transform<float>(Point3<float>(-2.0f, 0.0f, 0.0f)), false, cubeShape);

@@ -8,7 +8,7 @@ namespace urchin {
     */
     CollisionSphereShape::CollisionSphereShape(float innerMargin) :
             CollisionShape3D(innerMargin),
-            sphereShape(new SphereShape<float>(innerMargin)) {
+            sphereShape(std::make_unique<SphereShape<float>>(innerMargin)) {
 
     }
 
@@ -17,16 +17,12 @@ namespace urchin {
             sphereShape(std::exchange(collisionSphereShape.sphereShape, nullptr)) {
     }
 
-    CollisionSphereShape::~CollisionSphereShape() {
-        delete sphereShape;
-    }
-
     CollisionShape3D::ShapeType CollisionSphereShape::getShapeType() const {
         return CollisionShape3D::SPHERE_SHAPE;
     }
 
-    const ConvexShape3D<float>* CollisionSphereShape::getSingleShape() const {
-        return sphereShape;
+    const ConvexShape3D<float>& CollisionSphereShape::getSingleShape() const {
+        return *sphereShape;
     }
 
     float CollisionSphereShape::getRadius() const {

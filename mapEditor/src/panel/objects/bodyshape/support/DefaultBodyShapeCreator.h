@@ -15,7 +15,7 @@ namespace urchin {
             std::unique_ptr<const CollisionShape3D> createDefaultBodyShape(CollisionShape3D::ShapeType) const;
 
         private:
-            ConvexHullShape3D<float>* buildConvexHullShape(const Model*) const;
+            std::unique_ptr<ConvexHullShape3D<float>> buildConvexHullShape(const Model*) const;
 
             const SceneObject* sceneObject;
     };

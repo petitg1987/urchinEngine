@@ -14,10 +14,10 @@ namespace urchin {
             CollisionConeShape(float, float, ConeShape<float>::ConeOrientation);
             CollisionConeShape(CollisionConeShape&&) noexcept;
             CollisionConeShape(const CollisionConeShape&) = delete;
-            ~CollisionConeShape() override;
+            ~CollisionConeShape() override = default;
 
             CollisionShape3D::ShapeType getShapeType() const override;
-            const ConvexShape3D<float>* getSingleShape() const override;
+            const ConvexShape3D<float>& getSingleShape() const override;
             float getRadius() const;
             float getHeight() const;
             ConeShape<float>::ConeOrientation getConeOrientation() const;
@@ -36,7 +36,7 @@ namespace urchin {
         private:
             void computeSafeMargin();
 
-            ConeShape<float>* coneShape; //shape including margin
+            std::unique_ptr<ConeShape<float>> coneShape; //shape including margin
     };
 
 }

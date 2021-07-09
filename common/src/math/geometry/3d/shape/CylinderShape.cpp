@@ -25,8 +25,8 @@ namespace urchin {
         return cylinderOrientation;
     }
 
-    template<class T> ConvexShape3D<T> *CylinderShape<T>::clone() const {
-        return new CylinderShape<T>(*this);
+    template<class T> std::unique_ptr<ConvexShape3D<T>> CylinderShape<T>::clone() const {
+        return std::make_unique<CylinderShape<T>>(*this);
     }
 
     template<class T> std::unique_ptr<ConvexObject3D<T>> CylinderShape<T>::toConvexObject(const Transform<T>& transform) const {

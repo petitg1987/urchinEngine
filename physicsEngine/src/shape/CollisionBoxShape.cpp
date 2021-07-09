@@ -8,17 +8,13 @@ namespace urchin {
 
     CollisionBoxShape::CollisionBoxShape(const Vector3<float>& halfSizes) :
             CollisionShape3D(),
-            boxShape(new BoxShape<float>(halfSizes)) {
+            boxShape(std::make_unique<BoxShape<float>>(halfSizes)) {
         computeSafeMargin();
     }
 
     CollisionBoxShape::CollisionBoxShape(CollisionBoxShape&& collisionBoxShape) noexcept :
             CollisionShape3D(collisionBoxShape),
             boxShape(std::exchange(collisionBoxShape.boxShape, nullptr)) {
-    }
-
-    CollisionBoxShape::~CollisionBoxShape() {
-        delete boxShape;
     }
 
     void CollisionBoxShape::computeSafeMargin() {
@@ -32,8 +28,8 @@ namespace urchin {
         return CollisionShape3D::BOX_SHAPE;
     }
 
-    const ConvexShape3D<float>* CollisionBoxShape::getSingleShape() const {
-        return boxShape;
+    const ConvexShape3D<float>& CollisionBoxShape::getSingleShape() const {
+        return *boxShape;
     }
 
     float CollisionBoxShape::getHalfSize(unsigned int index) const {

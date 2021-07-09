@@ -13,13 +13,13 @@ namespace urchin {
     class CollisionConvexHullShape : public CollisionShape3D {
         public:
             explicit CollisionConvexHullShape(const std::vector<Point3<float>>&);
-            explicit CollisionConvexHullShape(ConvexHullShape3D<float>*);
+            explicit CollisionConvexHullShape(std::unique_ptr<ConvexHullShape3D<float>>);
             CollisionConvexHullShape(CollisionConvexHullShape&&) noexcept;
             CollisionConvexHullShape(const CollisionConvexHullShape&) = delete;
             ~CollisionConvexHullShape() override;
 
             CollisionShape3D::ShapeType getShapeType() const override;
-            const ConvexShape3D<float>* getSingleShape() const override;
+            const ConvexShape3D<float>& getSingleShape() const override;
             std::vector<Point3<float>> getPoints() const;
 
             std::unique_ptr<CollisionShape3D> scale(float) const override;
@@ -38,7 +38,7 @@ namespace urchin {
             void initializeConvexHullReduced();
             void initializeDistances();
 
-            ConvexHullShape3D<float>* convexHullShape; //shape including margin
+            std::unique_ptr<ConvexHullShape3D<float>> convexHullShape; //shape including margin
             std::unique_ptr<ConvexHullShape3D<float>> convexHullShapeReduced; //shape where margin has been subtracted
 
             float minDistanceToCenter;

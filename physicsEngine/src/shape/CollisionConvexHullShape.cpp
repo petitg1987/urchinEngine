@@ -16,15 +16,15 @@ namespace urchin {
     */
     CollisionConvexHullShape::CollisionConvexHullShape(const std::vector<Point3<float>>& points) :
             CollisionShape3D(),
-            convexHullShape(new ConvexHullShape3D<float>(points)),
+            convexHullShape(std::make_unique<ConvexHullShape3D<float>>(points)),
             minDistanceToCenter(0.0f),
             maxDistanceToCenter(0.0f) {
         initialize();
     }
 
-    CollisionConvexHullShape::CollisionConvexHullShape(ConvexHullShape3D<float>* convexHullShape) :
+    CollisionConvexHullShape::CollisionConvexHullShape(std::unique_ptr<ConvexHullShape3D<float>> convexHullShape) :
             CollisionShape3D(),
-            convexHullShape(convexHullShape),
+            convexHullShape(std::move(convexHullShape)),
             minDistanceToCenter(0.0f),
             maxDistanceToCenter(0.0f) {
         initialize();
@@ -40,8 +40,6 @@ namespace urchin {
     }
 
     CollisionConvexHullShape::~CollisionConvexHullShape() {
-        delete convexHullShape;
-
         aabboxCache.erase(this);
         transformCache.erase(this);
     }
@@ -71,8 +69,8 @@ namespace urchin {
         return CollisionShape3D::CONVEX_HULL_SHAPE;
     }
 
-    const ConvexShape3D<float>* CollisionConvexHullShape::getSingleShape() const {
-        return convexHullShape;
+    const ConvexShape3D<float>& CollisionConvexHullShape::getSingleShape() const {
+        return *convexHullShape;
     }
 
     /**

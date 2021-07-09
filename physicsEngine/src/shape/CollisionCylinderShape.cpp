@@ -14,10 +14,6 @@ namespace urchin {
             cylinderShape(std::exchange(collisionCylinderShape.cylinderShape, nullptr)) {
     }
 
-    CollisionCylinderShape::~CollisionCylinderShape() {
-        delete cylinderShape;
-    }
-
     void CollisionCylinderShape::computeSafeMargin() {
         float minAxis = std::min(getRadius(), getHeight() / 2.0f);
         float maximumMarginPercentage = ConfigService::instance()->getFloatValue("collisionShape.maximumMarginPercentage");
@@ -30,8 +26,8 @@ namespace urchin {
         return CollisionShape3D::CYLINDER_SHAPE;
     }
 
-    const ConvexShape3D<float>* CollisionCylinderShape::getSingleShape() const {
-        return cylinderShape;
+    const ConvexShape3D<float>& CollisionCylinderShape::getSingleShape() const {
+        return *cylinderShape;
     }
 
     float CollisionCylinderShape::getRadius() const {

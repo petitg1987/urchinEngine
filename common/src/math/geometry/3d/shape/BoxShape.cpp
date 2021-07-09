@@ -72,8 +72,8 @@ namespace urchin {
         return halfSizes.X * halfSizes.Y * halfSizes.Z * (T)8.0;
     }
 
-    template<class T> ConvexShape3D<T> *BoxShape<T>::clone() const {
-        return new BoxShape<T>(*this);
+    template<class T> std::unique_ptr<ConvexShape3D<T>> BoxShape<T>::clone() const {
+        return std::make_unique<BoxShape<T>>(*this);
     }
 
     template<class T> std::unique_ptr<ConvexObject3D<T>> BoxShape<T>::toConvexObject(const Transform<T>& transform) const {

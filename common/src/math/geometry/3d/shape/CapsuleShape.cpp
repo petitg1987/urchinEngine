@@ -29,8 +29,8 @@ namespace urchin {
         return cylinderHeight + (T)2.0 * radius;
     }
 
-    template<class T> ConvexShape3D<T> *CapsuleShape<T>::clone() const {
-        return new CapsuleShape<T>(*this);
+    template<class T> std::unique_ptr<ConvexShape3D<T>> CapsuleShape<T>::clone() const {
+        return std::make_unique<CapsuleShape<T>>(*this);
     }
 
     template<class T> std::unique_ptr<ConvexObject3D<T>> CapsuleShape<T>::toConvexObject(const Transform<T>& transform) const {

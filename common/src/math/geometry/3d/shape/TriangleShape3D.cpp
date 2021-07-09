@@ -20,8 +20,8 @@ namespace urchin {
         return points;
     }
 
-    template<class T> ConvexShape3D<T> *TriangleShape3D<T>::clone() const {
-        return new TriangleShape3D<T>(*this);
+    template<class T> std::unique_ptr<ConvexShape3D<T>> TriangleShape3D<T>::clone() const {
+        return std::make_unique<TriangleShape3D<T>>(*this);
     }
 
     template<class T> std::unique_ptr<ConvexObject3D<T>> TriangleShape3D<T>::toConvexObject(const Transform<T>& transform) const {

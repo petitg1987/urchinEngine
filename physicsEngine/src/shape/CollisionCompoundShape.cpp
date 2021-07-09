@@ -32,7 +32,7 @@ namespace urchin {
         return CollisionShape3D::COMPOUND_SHAPE;
     }
 
-    const ConvexShape3D<float>* CollisionCompoundShape::getSingleShape() const {
+    const ConvexShape3D<float>& CollisionCompoundShape::getSingleShape() const {
         throw std::runtime_error("Impossible to retrieve single convex shape for compound shape");
     }
 

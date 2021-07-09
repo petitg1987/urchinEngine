@@ -5,17 +5,13 @@ namespace urchin {
 
     CollisionCapsuleShape::CollisionCapsuleShape(float radius, float cylinderHeight, CapsuleShape<float>::CapsuleOrientation capsuleOrientation) :
             CollisionShape3D(),
-            capsuleShape(new CapsuleShape<float>(radius, cylinderHeight, capsuleOrientation)) {
+            capsuleShape(std::make_unique<CapsuleShape<float>>(radius, cylinderHeight, capsuleOrientation)) {
         computeSafeMargin();
     }
 
     CollisionCapsuleShape::CollisionCapsuleShape(CollisionCapsuleShape&& collisionCapsuleShape) noexcept :
             CollisionShape3D(collisionCapsuleShape),
             capsuleShape(std::exchange(collisionCapsuleShape.capsuleShape, nullptr)) {
-    }
-
-    CollisionCapsuleShape::~CollisionCapsuleShape() {
-        delete capsuleShape;
     }
 
     void CollisionCapsuleShape::computeSafeMargin() {
@@ -29,8 +25,8 @@ namespace urchin {
         return CollisionShape3D::CAPSULE_SHAPE;
     }
 
-    const ConvexShape3D<float>* CollisionCapsuleShape::getSingleShape() const {
-        return capsuleShape;
+    const ConvexShape3D<float>& CollisionCapsuleShape::getSingleShape() const {
+        return *capsuleShape;
     }
 
     float CollisionCapsuleShape::getRadius() const {

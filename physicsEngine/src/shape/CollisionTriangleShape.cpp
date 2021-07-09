@@ -5,14 +5,14 @@ namespace urchin {
 
     CollisionTriangleShape::CollisionTriangleShape(const Point3<float>* points) :
             CollisionShape3D(),
-            triangleShape(new TriangleShape3D<float>(points)),
+            triangleShape(std::make_unique<TriangleShape3D<float>>(points)),
             triangleShapesPool(nullptr) {
         refreshInnerMargin(0.0f); //no margin for triangle
     }
 
     CollisionTriangleShape::CollisionTriangleShape(TriangleShape3D<float>* triangleShape, FixedSizePool<TriangleShape3D<float>>* triangleShapesPool) :
             CollisionShape3D(),
-            triangleShape(triangleShape),
+            triangleShape(std::unique_ptr<TriangleShape3D<float>>(triangleShape)),
             triangleShapesPool(triangleShapesPool) {
         refreshInnerMargin(0.0f); //no margin for triangle
     }
@@ -25,9 +25,7 @@ namespace urchin {
 
     CollisionTriangleShape::~CollisionTriangleShape() {
         if (triangleShapesPool) {
-            triangleShapesPool->deallocate(triangleShape);
-        } else {
-            delete triangleShape;
+            triangleShapesPool->deallocate(triangleShape.release());
         }
     }
 
@@ -35,8 +33,8 @@ namespace urchin {
         return CollisionShape3D::TRIANGLE_SHAPE;
     }
 
-    const ConvexShape3D<float>* CollisionTriangleShape::getSingleShape() const {
-        return triangleShape;
+    const ConvexShape3D<float>& CollisionTriangleShape::getSingleShape() const {
+        return *triangleShape;
     }
 
     std::unique_ptr<CollisionShape3D> CollisionTriangleShape::scale(float) const {

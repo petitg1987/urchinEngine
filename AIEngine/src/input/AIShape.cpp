@@ -1,28 +1,22 @@
-#include <utility>
-
 #include <input/AIShape.h>
 
 namespace urchin {
 
-    AIShape::AIShape(const ConvexShape3D<float>* shape) :
-        shape(shape->clone()),
+    AIShape::AIShape(std::unique_ptr<ConvexShape3D<float>> shape) :
+        shape(std::move(shape)),
         bHasLocalTransform(false) {
 
     }
 
-    AIShape::AIShape(const ConvexShape3D<float>* shape, Transform<float> localTransform) :
-        shape(shape->clone()),
+    AIShape::AIShape(std::unique_ptr<ConvexShape3D<float>> shape, const Transform<float>& localTransform) :
+        shape(std::move(shape)),
         bHasLocalTransform(true),
-        localTransform(std::move(localTransform)) {
+        localTransform(localTransform) {
 
     }
 
-    AIShape::~AIShape() {
-        delete shape;
-    }
-
-    const ConvexShape3D<float>* AIShape::getShape() const {
-        return shape;
+    const ConvexShape3D<float>& AIShape::getShape() const {
+        return *shape;
     }
 
     bool AIShape::hasLocalTransform() const {
