@@ -27,12 +27,12 @@ namespace urchin {
         return new CollisionCylinderShape(radius, height, orientation);
     }
 
-    void CollisionCylinderReaderWriter::writeOn(XmlChunk* shapeChunk, const CollisionShape3D& collisionShape, XmlWriter& xmlWriter) const {
+    void CollisionCylinderReaderWriter::writeOn(XmlChunk* shapeChunk, const CollisionShape3D& collisionShape, DataWriter& dataWriter) const {
         shapeChunk->setAttribute(DataAttribute(TYPE_ATTR, CYLINDER_VALUE));
 
         const auto& cylinderShape = dynamic_cast<const CollisionCylinderShape&>(collisionShape);
 
-        auto orientationChunk = xmlWriter.createChunk(ORIENTATION_TAG, DataAttribute(), shapeChunk);
+        auto orientationChunk = dataWriter.createChunk(ORIENTATION_TAG, DataAttribute(), shapeChunk);
         CylinderShape<float>::CylinderOrientation orientationValue = cylinderShape.getCylinderOrientation();
         if (orientationValue == CylinderShape<float>::CylinderOrientation::CYLINDER_X) {
             orientationChunk->setStringValue(X_VALUE);
@@ -44,10 +44,10 @@ namespace urchin {
             throw std::invalid_argument("Cylinder orientation type unknown: " + std::to_string(orientationValue));
         }
 
-        auto radiusChunk = xmlWriter.createChunk(RADIUS_TAG, DataAttribute(), shapeChunk);
+        auto radiusChunk = dataWriter.createChunk(RADIUS_TAG, DataAttribute(), shapeChunk);
         radiusChunk->setFloatValue(cylinderShape.getRadius());
 
-        auto heightChunk = xmlWriter.createChunk(HEIGHT_TAG, DataAttribute(), shapeChunk);
+        auto heightChunk = dataWriter.createChunk(HEIGHT_TAG, DataAttribute(), shapeChunk);
         heightChunk->setFloatValue(cylinderShape.getHeight());
     }
 

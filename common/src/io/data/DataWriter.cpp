@@ -1,18 +1,18 @@
 #include <stdexcept>
 
-#include <io/data/XmlWriter.h>
+#include <io/data/DataWriter.h>
 #include <config/FileSystem.h>
 
 namespace urchin {
 
-    XmlWriter::XmlWriter(const std::string& filename) :
+    DataWriter::DataWriter(const std::string& filename) :
             doc(new TiXmlDocument()),
             filenamePath(FileSystem::instance()->getResourcesDirectory() + filename) {
         auto* decl = new TiXmlDeclaration("1.0", "", "");
         doc->LinkEndChild(decl);
     }
 
-    XmlWriter::~XmlWriter() {
+    DataWriter::~DataWriter() {
         delete doc;
     }
 
@@ -23,7 +23,7 @@ namespace urchin {
      * @param parent Name of the tag parent of "chunkName"
      * @return XML chunk according to the parameters
      */
-    std::unique_ptr<XmlChunk> XmlWriter::createChunk(const std::string& chunkName, const DataAttribute& attribute, const XmlChunk* parent) {
+    std::unique_ptr<XmlChunk> DataWriter::createChunk(const std::string& chunkName, const DataAttribute& attribute, const XmlChunk* parent) {
         auto* chunk = new TiXmlElement(chunkName);
 
         if (!attribute.getAttributeName().empty()) {
@@ -39,7 +39,7 @@ namespace urchin {
         return std::unique_ptr<XmlChunk>(new XmlChunk(chunk));
     }
 
-    void XmlWriter::saveInFile() {
+    void DataWriter::saveInFile() {
         if (!doc->SaveFile(filenamePath)) {
             throw std::invalid_argument("Cannot save the file " + filenamePath + ".");
         }

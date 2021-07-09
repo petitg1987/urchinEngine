@@ -10,17 +10,17 @@ namespace urchin {
     class LightReaderWriter {
         public:
             static Light* loadFrom(const XmlChunk*, const DataParser&);
-            static void writeOn(XmlChunk*, const Light*, XmlWriter&);
+            static void writeOn(XmlChunk*, const Light*, DataWriter&);
 
         private:
             static Light* buildLightFrom(const XmlChunk*, const DataParser&);
-            static void buildChunkFrom(XmlChunk*, const Light*, XmlWriter&);
+            static void buildChunkFrom(XmlChunk*, const Light*, DataWriter&);
 
             static void loadPropertiesFrom(Light*, const XmlChunk*, const DataParser&);
-            static void writePropertiesOn(const XmlChunk*, const Light*, XmlWriter&);
+            static void writePropertiesOn(const XmlChunk*, const Light*, DataWriter&);
 
             static void loadFlagsFrom(Light*, const XmlChunk*, const DataParser&);
-            static void writeFlagsOn(const XmlChunk*, const Light*, XmlWriter&);
+            static void writeFlagsOn(const XmlChunk*, const Light*, DataWriter&);
 
             static constexpr char TYPE_ATTR[] = "type";
             static constexpr char OMNIDIRECTIONAL_VALUE[] = "OMNIDIRECTIONAL";

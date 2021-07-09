@@ -62,15 +62,15 @@ namespace urchin {
         }
     }
 
-    void SceneObject::writeOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
+    void SceneObject::writeOn(XmlChunk* chunk, DataWriter& dataWriter) const {
         chunk->setAttribute(DataAttribute(NAME_ATTR, this->name));
 
-        auto modelChunk = xmlWriter.createChunk(MODEL_TAG, DataAttribute(), chunk);
-        ModelReaderWriter::writeOn(modelChunk.get(), model, xmlWriter);
+        auto modelChunk = dataWriter.createChunk(MODEL_TAG, DataAttribute(), chunk);
+        ModelReaderWriter::writeOn(modelChunk.get(), model, dataWriter);
 
         if (rigidBody) {
-            auto physicsChunk = xmlWriter.createChunk(PHYSICS_TAG, DataAttribute(), chunk);
-            RigidBodyReaderWriter::writeOn(physicsChunk.get(), rigidBody, xmlWriter);
+            auto physicsChunk = dataWriter.createChunk(PHYSICS_TAG, DataAttribute(), chunk);
+            RigidBodyReaderWriter::writeOn(physicsChunk.get(), rigidBody, dataWriter);
         }
     }
 

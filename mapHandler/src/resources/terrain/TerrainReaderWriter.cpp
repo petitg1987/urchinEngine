@@ -10,11 +10,11 @@ namespace urchin {
         return terrain;
     }
 
-    void TerrainReaderWriter::writeOn(XmlChunk* terrainChunk, const Terrain* terrain, XmlWriter& xmlWriter) const {
-        buildChunkFrom(terrainChunk, terrain, xmlWriter);
+    void TerrainReaderWriter::writeOn(XmlChunk* terrainChunk, const Terrain* terrain, DataWriter& dataWriter) const {
+        buildChunkFrom(terrainChunk, terrain, dataWriter);
 
-        writePropertiesOn(terrainChunk, terrain, xmlWriter);
-        writeGrassOn(terrainChunk, terrain, xmlWriter);
+        writePropertiesOn(terrainChunk, terrain, dataWriter);
+        writeGrassOn(terrainChunk, terrain, dataWriter);
     }
 
     Terrain* TerrainReaderWriter::buildTerrainFrom(const XmlChunk* terrainChunk, const DataParser& dataParser) const {
@@ -45,33 +45,33 @@ namespace urchin {
         return new Terrain(terrainMesh, std::move(terrainMaterial), positionChunk->getPoint3Value());
     }
 
-    void TerrainReaderWriter::buildChunkFrom(const XmlChunk* terrainChunk, const Terrain* terrain, XmlWriter& xmlWriter) const {
-        auto meshChunk = xmlWriter.createChunk(MESH_TAG, DataAttribute(), terrainChunk);
-        auto heightFilenameChunk = xmlWriter.createChunk(HEIGHT_FILENAME_TAG, DataAttribute(), meshChunk.get());
+    void TerrainReaderWriter::buildChunkFrom(const XmlChunk* terrainChunk, const Terrain* terrain, DataWriter& dataWriter) const {
+        auto meshChunk = dataWriter.createChunk(MESH_TAG, DataAttribute(), terrainChunk);
+        auto heightFilenameChunk = dataWriter.createChunk(HEIGHT_FILENAME_TAG, DataAttribute(), meshChunk.get());
         heightFilenameChunk->setStringValue(terrain->getMesh()->getHeightFilename());
-        auto xzScaleChunk = xmlWriter.createChunk(XZ_SCALE_TAG, DataAttribute(), meshChunk.get());
+        auto xzScaleChunk = dataWriter.createChunk(XZ_SCALE_TAG, DataAttribute(), meshChunk.get());
         xzScaleChunk->setFloatValue(terrain->getMesh()->getXZScale());
-        auto yScaleChunk = xmlWriter.createChunk(Y_SCALE_TAG, DataAttribute(), meshChunk.get());
+        auto yScaleChunk = dataWriter.createChunk(Y_SCALE_TAG, DataAttribute(), meshChunk.get());
         yScaleChunk->setFloatValue(terrain->getMesh()->getYScale());
 
-        auto materialChunk = xmlWriter.createChunk(MATERIAL_TAG, DataAttribute(), terrainChunk);
-        auto maskMapFilenameChunk = xmlWriter.createChunk(MASK_MAP_FILENAME, DataAttribute(), materialChunk.get());
+        auto materialChunk = dataWriter.createChunk(MATERIAL_TAG, DataAttribute(), terrainChunk);
+        auto maskMapFilenameChunk = dataWriter.createChunk(MASK_MAP_FILENAME, DataAttribute(), materialChunk.get());
         maskMapFilenameChunk->setStringValue(terrain->getMaterials()->getMaskMapFilename());
-        auto sRepeatChunk = xmlWriter.createChunk(S_REPEAT_TAG, DataAttribute(), materialChunk.get());
+        auto sRepeatChunk = dataWriter.createChunk(S_REPEAT_TAG, DataAttribute(), materialChunk.get());
         sRepeatChunk->setFloatValue(terrain->getMaterials()->getStRepeat().X);
-        auto tRepeatChunk = xmlWriter.createChunk(T_REPEAT_TAG, DataAttribute(), materialChunk.get());
+        auto tRepeatChunk = dataWriter.createChunk(T_REPEAT_TAG, DataAttribute(), materialChunk.get());
         tRepeatChunk->setFloatValue(terrain->getMaterials()->getStRepeat().Y);
-        auto materialFilenamesChunk = xmlWriter.createChunk(MATERIAL_FILENAMES, DataAttribute(), materialChunk.get());
+        auto materialFilenamesChunk = dataWriter.createChunk(MATERIAL_FILENAMES, DataAttribute(), materialChunk.get());
         unsigned int i = 0;
         for (const Material* material : terrain->getMaterials()->getMaterials()) {
             if (material != nullptr) {
-                auto materialFilenameChunk = xmlWriter.createChunk(MATERIAL_FILENAME, DataAttribute(INDEX_ATTR, std::to_string(i)), materialFilenamesChunk.get());
+                auto materialFilenameChunk = dataWriter.createChunk(MATERIAL_FILENAME, DataAttribute(INDEX_ATTR, std::to_string(i)), materialFilenamesChunk.get());
                 materialFilenameChunk->setStringValue(material->getName());
             }
             ++i;
         }
 
-        auto positionChunk = xmlWriter.createChunk(POSITION_TAG, DataAttribute(), terrainChunk);
+        auto positionChunk = dataWriter.createChunk(POSITION_TAG, DataAttribute(), terrainChunk);
         positionChunk->setPoint3Value(terrain->getPosition());
     }
 
@@ -80,8 +80,8 @@ namespace urchin {
         terrain->setAmbient(ambientChunk->getFloatValue());
     }
 
-    void TerrainReaderWriter::writePropertiesOn(const XmlChunk* terrainChunk, const Terrain* terrain, XmlWriter& xmlWriter) const {
-        auto ambientChunk = xmlWriter.createChunk(AMBIENT_TAG, DataAttribute(), terrainChunk);
+    void TerrainReaderWriter::writePropertiesOn(const XmlChunk* terrainChunk, const Terrain* terrain, DataWriter& dataWriter) const {
+        auto ambientChunk = dataWriter.createChunk(AMBIENT_TAG, DataAttribute(), terrainChunk);
         ambientChunk->setFloatValue(terrain->getAmbient());
     }
 
@@ -114,32 +114,32 @@ namespace urchin {
         }
     }
 
-    void TerrainReaderWriter::writeGrassOn(const XmlChunk* terrainChunk, const Terrain* terrain, XmlWriter& xmlWriter) const {
+    void TerrainReaderWriter::writeGrassOn(const XmlChunk* terrainChunk, const Terrain* terrain, DataWriter& dataWriter) const {
         if (terrain->getGrass()) {
-            auto grassChunk = xmlWriter.createChunk(GRASS_TAG, DataAttribute(), terrainChunk);
+            auto grassChunk = dataWriter.createChunk(GRASS_TAG, DataAttribute(), terrainChunk);
 
-            auto grassTextureFilenameChunk = xmlWriter.createChunk(GRASS_TEXTURE_FILENAME_TAG, DataAttribute(), grassChunk.get());
+            auto grassTextureFilenameChunk = dataWriter.createChunk(GRASS_TEXTURE_FILENAME_TAG, DataAttribute(), grassChunk.get());
             grassTextureFilenameChunk->setStringValue(terrain->getGrass()->getGrassTexture());
 
-            auto grassMaskFilenameChunk = xmlWriter.createChunk(GRASS_MASK_FILENAME_TAG, DataAttribute(), grassChunk.get());
+            auto grassMaskFilenameChunk = dataWriter.createChunk(GRASS_MASK_FILENAME_TAG, DataAttribute(), grassChunk.get());
             grassMaskFilenameChunk->setStringValue(terrain->getGrass()->getMaskTexture());
 
-            auto numGrassInTexChunk = xmlWriter.createChunk(NUM_GRASS_IN_TEX_TAG, DataAttribute(), grassChunk.get());
+            auto numGrassInTexChunk = dataWriter.createChunk(NUM_GRASS_IN_TEX_TAG, DataAttribute(), grassChunk.get());
             numGrassInTexChunk->setUnsignedIntValue(terrain->getGrass()->getNumGrassInTexture());
 
-            auto grassHeightChunk = xmlWriter.createChunk(GRASS_HEIGHT_TAG, DataAttribute(), grassChunk.get());
+            auto grassHeightChunk = dataWriter.createChunk(GRASS_HEIGHT_TAG, DataAttribute(), grassChunk.get());
             grassHeightChunk->setFloatValue(terrain->getGrass()->getGrassHeight());
 
-            auto grassLengthChunk = xmlWriter.createChunk(GRASS_LENGTH_TAG, DataAttribute(), grassChunk.get());
+            auto grassLengthChunk = dataWriter.createChunk(GRASS_LENGTH_TAG, DataAttribute(), grassChunk.get());
             grassLengthChunk->setFloatValue(terrain->getGrass()->getGrassLength());
 
-            auto grassQuantityChunk = xmlWriter.createChunk(GRASS_QUANTITY_TAG, DataAttribute(), grassChunk.get());
+            auto grassQuantityChunk = dataWriter.createChunk(GRASS_QUANTITY_TAG, DataAttribute(), grassChunk.get());
             grassQuantityChunk->setFloatValue(terrain->getGrass()->getGrassQuantity());
 
-            auto windDirectionChunk = xmlWriter.createChunk(WIND_DIRECTION_TAG, DataAttribute(), grassChunk.get());
+            auto windDirectionChunk = dataWriter.createChunk(WIND_DIRECTION_TAG, DataAttribute(), grassChunk.get());
             windDirectionChunk->setVector3Value(terrain->getGrass()->getWindDirection());
 
-            auto windStrengthChunk = xmlWriter.createChunk(WIND_STRENGTH_TAG, DataAttribute(), grassChunk.get());
+            auto windStrengthChunk = dataWriter.createChunk(WIND_STRENGTH_TAG, DataAttribute(), grassChunk.get());
             windStrengthChunk->setFloatValue(terrain->getGrass()->getWindStrength());
         }
     }

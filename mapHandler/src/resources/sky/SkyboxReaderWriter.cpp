@@ -25,17 +25,17 @@ namespace urchin {
         return skybox;
     }
 
-    void SkyboxReaderWriter::writeOn(XmlChunk* skyChunk, const std::unique_ptr<Skybox>& skybox, XmlWriter& xmlWriter) {
+    void SkyboxReaderWriter::writeOn(XmlChunk* skyChunk, const std::unique_ptr<Skybox>& skybox, DataWriter& dataWriter) {
         if (skybox != nullptr) {
-            auto skyboxChunk = xmlWriter.createChunk(SKYBOX_TAG, DataAttribute(), skyChunk);
+            auto skyboxChunk = dataWriter.createChunk(SKYBOX_TAG, DataAttribute(), skyChunk);
 
-            auto texturesChunk = xmlWriter.createChunk(TEXTURES_TAG, DataAttribute(), skyboxChunk.get());
+            auto texturesChunk = dataWriter.createChunk(TEXTURES_TAG, DataAttribute(), skyboxChunk.get());
             for (const auto& filename : skybox->getFilenames()) {
-                auto filenameChunk = xmlWriter.createChunk(FILENAME_TAG, DataAttribute(), texturesChunk.get());
+                auto filenameChunk = dataWriter.createChunk(FILENAME_TAG, DataAttribute(), texturesChunk.get());
                 filenameChunk->setStringValue(filename);
             }
 
-            auto offsetYChunk = xmlWriter.createChunk(OFFSET_Y_TAG, DataAttribute(), skyboxChunk.get());
+            auto offsetYChunk = dataWriter.createChunk(OFFSET_Y_TAG, DataAttribute(), skyboxChunk.get());
             offsetYChunk->setFloatValue(skybox->getOffsetY());
         }
     }

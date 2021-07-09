@@ -18,14 +18,14 @@ namespace urchin {
         return navMeshAgent;
     }
 
-    void NavMeshAgentReaderWriter::writeOn(XmlChunk* navMeshAgentChunk, const std::shared_ptr<const NavMeshAgent>& navMeshAgent, XmlWriter& xmlWriter) {
-        auto agentHeightChunk = xmlWriter.createChunk(AGENT_HEIGHT_TAG, DataAttribute(), navMeshAgentChunk);
+    void NavMeshAgentReaderWriter::writeOn(XmlChunk* navMeshAgentChunk, const std::shared_ptr<const NavMeshAgent>& navMeshAgent, DataWriter& dataWriter) {
+        auto agentHeightChunk = dataWriter.createChunk(AGENT_HEIGHT_TAG, DataAttribute(), navMeshAgentChunk);
         agentHeightChunk->setFloatValue(navMeshAgent->getAgentHeight());
-        auto agentRadiusChunk = xmlWriter.createChunk(AGENT_RADIUS_TAG, DataAttribute(), navMeshAgentChunk);
+        auto agentRadiusChunk = dataWriter.createChunk(AGENT_RADIUS_TAG, DataAttribute(), navMeshAgentChunk);
         agentRadiusChunk->setFloatValue(navMeshAgent->getAgentRadius());
-        auto maxSlopeInRadianChunk = xmlWriter.createChunk(MAX_SLOPE_IN_RADIAN_TAG, DataAttribute(), navMeshAgentChunk);
+        auto maxSlopeInRadianChunk = dataWriter.createChunk(MAX_SLOPE_IN_RADIAN_TAG, DataAttribute(), navMeshAgentChunk);
         maxSlopeInRadianChunk->setFloatValue(navMeshAgent->getMaxSlope());
-        auto jumpDistanceChunk = xmlWriter.createChunk(JUMP_DISTANCE_TAG, DataAttribute(), navMeshAgentChunk);
+        auto jumpDistanceChunk = dataWriter.createChunk(JUMP_DISTANCE_TAG, DataAttribute(), navMeshAgentChunk);
         jumpDistanceChunk->setFloatValue(navMeshAgent->getJumpDistance());
     }
 }

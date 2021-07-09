@@ -28,20 +28,20 @@ namespace urchin {
         return new CollisionCompoundShape(std::move(compoundShapes));
     }
 
-    void CollisionCompoundShapeReaderWriter::writeOn(XmlChunk* mainShapeChunk, const CollisionShape3D& mainCollisionShape, XmlWriter& xmlWriter) const {
+    void CollisionCompoundShapeReaderWriter::writeOn(XmlChunk* mainShapeChunk, const CollisionShape3D& mainCollisionShape, DataWriter& dataWriter) const {
         mainShapeChunk->setAttribute(DataAttribute(TYPE_ATTR, COMPOUND_SHAPE_VALUE));
 
         const auto& compoundShape = dynamic_cast<const CollisionCompoundShape&>(mainCollisionShape);
 
-        auto localizedShapesListChunk = xmlWriter.createChunk(LOCALIZED_SHAPES, DataAttribute(), mainShapeChunk);
+        auto localizedShapesListChunk = dataWriter.createChunk(LOCALIZED_SHAPES, DataAttribute(), mainShapeChunk);
         const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape.getLocalizedShapes();
         for (const auto& localizedShape : localizedShapes) {
-            auto localizedShapeChunk = xmlWriter.createChunk(LOCALIZED_SHAPE, DataAttribute(), localizedShapesListChunk.get());
+            auto localizedShapeChunk = dataWriter.createChunk(LOCALIZED_SHAPE, DataAttribute(), localizedShapesListChunk.get());
 
-            writeTransformOn(localizedShapeChunk.get(), *localizedShape, xmlWriter);
+            writeTransformOn(localizedShapeChunk.get(), *localizedShape, dataWriter);
 
-            auto shapeChunk = xmlWriter.createChunk(COMPOUND_SHAPE_TAG, DataAttribute(), localizedShapeChunk.get());
-            CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(*localizedShape->shape)->writeOn(shapeChunk.get(), *localizedShape->shape, xmlWriter);
+            auto shapeChunk = dataWriter.createChunk(COMPOUND_SHAPE_TAG, DataAttribute(), localizedShapeChunk.get());
+            CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(*localizedShape->shape)->writeOn(shapeChunk.get(), *localizedShape->shape, dataWriter);
         }
     }
 
@@ -56,13 +56,13 @@ namespace urchin {
         localizedShape.transform = PhysicsTransform(position, orientation);
     }
 
-    void CollisionCompoundShapeReaderWriter::writeTransformOn(const XmlChunk* localizedShapeChunk, const LocalizedCollisionShape& localizedShape, XmlWriter& xmlWriter) {
-        auto transformChunk = xmlWriter.createChunk(TRANSFORM_TAG, DataAttribute(), localizedShapeChunk);
+    void CollisionCompoundShapeReaderWriter::writeTransformOn(const XmlChunk* localizedShapeChunk, const LocalizedCollisionShape& localizedShape, DataWriter& dataWriter) {
+        auto transformChunk = dataWriter.createChunk(TRANSFORM_TAG, DataAttribute(), localizedShapeChunk);
 
-        auto positionChunk = xmlWriter.createChunk(POSITION_TAG, DataAttribute(), transformChunk.get());
+        auto positionChunk = dataWriter.createChunk(POSITION_TAG, DataAttribute(), transformChunk.get());
         positionChunk->setPoint3Value(localizedShape.transform.getPosition());
 
-        OrientationReaderWriter::writeOrientation(transformChunk.get(), localizedShape.transform.getOrientation(), xmlWriter);
+        OrientationReaderWriter::writeOrientation(transformChunk.get(), localizedShape.transform.getOrientation(), dataWriter);
     }
 
 }

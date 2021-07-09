@@ -10,8 +10,8 @@ namespace urchin {
         return soundTrigger;
     }
 
-    void SoundTriggerReaderWriter::writeOn(XmlChunk* soundTriggerChunk, const SoundTrigger* soundTrigger, XmlWriter& xmlWriter) {
-        buildChunkFrom(soundTriggerChunk, soundTrigger, xmlWriter);
+    void SoundTriggerReaderWriter::writeOn(XmlChunk* soundTriggerChunk, const SoundTrigger* soundTrigger, DataWriter& dataWriter) {
+        buildChunkFrom(soundTriggerChunk, soundTrigger, dataWriter);
     }
 
     SoundTrigger* SoundTriggerReaderWriter::buildSoundTriggerFrom(const XmlChunk* soundTriggerChunk, const DataParser& dataParser) {
@@ -31,21 +31,21 @@ namespace urchin {
         throw std::invalid_argument("Unknown sound trigger type read from map: " + soundTriggerType);
     }
 
-    void SoundTriggerReaderWriter::buildChunkFrom(XmlChunk* soundTriggerChunk, const SoundTrigger* soundTrigger, XmlWriter& xmlWriter) {
+    void SoundTriggerReaderWriter::buildChunkFrom(XmlChunk* soundTriggerChunk, const SoundTrigger* soundTrigger, DataWriter& dataWriter) {
         if (soundTrigger->getTriggerType() == SoundTrigger::MANUAL_TRIGGER) {
             soundTriggerChunk->setAttribute(DataAttribute(TYPE_ATTR, MANUAL_VALUE));
         } else if (soundTrigger->getTriggerType() == SoundTrigger::SHAPE_TRIGGER) {
             const auto* shapeTrigger = dynamic_cast<const ShapeTrigger*>(soundTrigger);
             soundTriggerChunk->setAttribute(DataAttribute(TYPE_ATTR, SHAPE_VALUE));
 
-            auto soundShapeChunk = xmlWriter.createChunk(SOUND_SHAPE_TAG, DataAttribute(), soundTriggerChunk);
+            auto soundShapeChunk = dataWriter.createChunk(SOUND_SHAPE_TAG, DataAttribute(), soundTriggerChunk);
             std::shared_ptr<SoundShapeReaderWriter> soundShapeReaderWriter = SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeTrigger->getSoundShape());
-            soundShapeReaderWriter->writeOn(soundShapeChunk.get(), shapeTrigger->getSoundShape(), xmlWriter);
+            soundShapeReaderWriter->writeOn(soundShapeChunk.get(), shapeTrigger->getSoundShape(), dataWriter);
         } else {
             throw std::invalid_argument("Unknown sound trigger type to write in map: " + std::to_string(soundTrigger->getTriggerType()));
         }
 
-        writePlayBehaviorFrom(soundTriggerChunk, soundTrigger->getPlayBehavior(), xmlWriter);
+        writePlayBehaviorFrom(soundTriggerChunk, soundTrigger->getPlayBehavior(), dataWriter);
     }
 
     SoundTrigger::PlayBehavior SoundTriggerReaderWriter::loadPlayBehaviorFrom(const XmlChunk* soundTriggerChunk, const DataParser& dataParser) {
@@ -58,8 +58,8 @@ namespace urchin {
         throw std::invalid_argument("Unknown play behavior read from map: " + playBehaviorChunk->getStringValue());
     }
 
-    void SoundTriggerReaderWriter::writePlayBehaviorFrom(const XmlChunk* soundTriggerChunk, SoundTrigger::PlayBehavior playBehavior, XmlWriter& xmlWriter) {
-        auto playBehaviorChunk = xmlWriter.createChunk(PLAY_BEHAVIOR_TAG, DataAttribute(), soundTriggerChunk);
+    void SoundTriggerReaderWriter::writePlayBehaviorFrom(const XmlChunk* soundTriggerChunk, SoundTrigger::PlayBehavior playBehavior, DataWriter& dataWriter) {
+        auto playBehaviorChunk = dataWriter.createChunk(PLAY_BEHAVIOR_TAG, DataAttribute(), soundTriggerChunk);
         if (playBehavior == SoundTrigger::PLAY_ONCE) {
             playBehaviorChunk->setStringValue(PLAY_ONCE_VALUE);
         } else if (playBehavior == SoundTrigger::PLAY_LOOP) {

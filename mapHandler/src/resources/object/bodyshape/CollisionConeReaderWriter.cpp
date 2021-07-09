@@ -33,12 +33,12 @@ namespace urchin {
         return new CollisionConeShape(radius, height, orientation);
     }
 
-    void CollisionConeReaderWriter::writeOn(XmlChunk* shapeChunk, const CollisionShape3D& collisionShape, XmlWriter& xmlWriter) const {
+    void CollisionConeReaderWriter::writeOn(XmlChunk* shapeChunk, const CollisionShape3D& collisionShape, DataWriter& dataWriter) const {
         shapeChunk->setAttribute(DataAttribute(TYPE_ATTR, CONE_VALUE));
 
         const auto& coneShape = dynamic_cast<const CollisionConeShape&>(collisionShape);
 
-        auto orientationChunk = xmlWriter.createChunk(ORIENTATION_TAG, DataAttribute(), shapeChunk);
+        auto orientationChunk = dataWriter.createChunk(ORIENTATION_TAG, DataAttribute(), shapeChunk);
         ConeShape<float>::ConeOrientation orientationValue = coneShape.getConeOrientation();
         if (orientationValue == ConeShape<float>::ConeOrientation::CONE_X_POSITIVE) {
             orientationChunk->setStringValue(X_POSITIVE_VALUE);
@@ -56,10 +56,10 @@ namespace urchin {
             throw std::invalid_argument("Cone orientation type unknown: " + std::to_string(orientationValue));
         }
 
-        auto radiusChunk = xmlWriter.createChunk(RADIUS_TAG, DataAttribute(), shapeChunk);
+        auto radiusChunk = dataWriter.createChunk(RADIUS_TAG, DataAttribute(), shapeChunk);
         radiusChunk->setFloatValue(coneShape.getRadius());
 
-        auto heightChunk = xmlWriter.createChunk(HEIGHT_TAG, DataAttribute(), shapeChunk);
+        auto heightChunk = dataWriter.createChunk(HEIGHT_TAG, DataAttribute(), shapeChunk);
         heightChunk->setFloatValue(coneShape.getHeight());
     }
 

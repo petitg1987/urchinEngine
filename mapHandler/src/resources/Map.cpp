@@ -143,71 +143,71 @@ namespace urchin {
         sceneAI->loadFrom(aiElementsListChunk.get(), dataParser);
     }
 
-    void Map::writeOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
-        writeSceneObjectsOn(chunk, xmlWriter);
-        writeSceneLightsOn(chunk, xmlWriter);
-        writeSceneTerrainsOn(chunk, xmlWriter);
-        writeSceneWatersOn(chunk, xmlWriter);
-        writeSceneSkyOn(chunk, xmlWriter);
-        writeSceneSoundsOn(chunk, xmlWriter);
-        writeSceneAIOn(chunk, xmlWriter);
+    void Map::writeOn(XmlChunk* chunk, DataWriter& dataWriter) const {
+        writeSceneObjectsOn(chunk, dataWriter);
+        writeSceneLightsOn(chunk, dataWriter);
+        writeSceneTerrainsOn(chunk, dataWriter);
+        writeSceneWatersOn(chunk, dataWriter);
+        writeSceneSkyOn(chunk, dataWriter);
+        writeSceneSoundsOn(chunk, dataWriter);
+        writeSceneAIOn(chunk, dataWriter);
     }
 
-    void Map::writeSceneObjectsOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
-        auto objectsListChunk = xmlWriter.createChunk(OBJECTS_TAG, DataAttribute(), chunk);
+    void Map::writeSceneObjectsOn(XmlChunk* chunk, DataWriter& dataWriter) const {
+        auto objectsListChunk = dataWriter.createChunk(OBJECTS_TAG, DataAttribute(), chunk);
 
         for (auto sceneObject : sceneObjects) {
-            auto objectsChunk = xmlWriter.createChunk(OBJECT_TAG, DataAttribute(), objectsListChunk.get());
-            sceneObject->writeOn(objectsChunk.get(), xmlWriter);
+            auto objectsChunk = dataWriter.createChunk(OBJECT_TAG, DataAttribute(), objectsListChunk.get());
+            sceneObject->writeOn(objectsChunk.get(), dataWriter);
         }
     }
 
-    void Map::writeSceneLightsOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
-        auto lightsListChunk = xmlWriter.createChunk(LIGHTS_TAG, DataAttribute(), chunk);
+    void Map::writeSceneLightsOn(XmlChunk* chunk, DataWriter& dataWriter) const {
+        auto lightsListChunk = dataWriter.createChunk(LIGHTS_TAG, DataAttribute(), chunk);
 
         for (auto sceneLight : sceneLights) {
-            auto lightsChunk = xmlWriter.createChunk(LIGHT_TAG, DataAttribute(), lightsListChunk.get());
-            sceneLight->writeOn(lightsChunk.get(), xmlWriter);
+            auto lightsChunk = dataWriter.createChunk(LIGHT_TAG, DataAttribute(), lightsListChunk.get());
+            sceneLight->writeOn(lightsChunk.get(), dataWriter);
         }
     }
 
-    void Map::writeSceneTerrainsOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
-        auto terrainsListChunk = xmlWriter.createChunk(TERRAINS_TAG, DataAttribute(), chunk);
+    void Map::writeSceneTerrainsOn(XmlChunk* chunk, DataWriter& dataWriter) const {
+        auto terrainsListChunk = dataWriter.createChunk(TERRAINS_TAG, DataAttribute(), chunk);
 
         for (auto sceneTerrain : sceneTerrains) {
-            auto terrainsChunk = xmlWriter.createChunk(TERRAIN_TAG, DataAttribute(), terrainsListChunk.get());
-            sceneTerrain->writeOn(terrainsChunk.get(), xmlWriter);
+            auto terrainsChunk = dataWriter.createChunk(TERRAIN_TAG, DataAttribute(), terrainsListChunk.get());
+            sceneTerrain->writeOn(terrainsChunk.get(), dataWriter);
         }
     }
 
-    void Map::writeSceneWatersOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
-        auto watersListChunk = xmlWriter.createChunk(WATERS_TAG, DataAttribute(), chunk);
+    void Map::writeSceneWatersOn(XmlChunk* chunk, DataWriter& dataWriter) const {
+        auto watersListChunk = dataWriter.createChunk(WATERS_TAG, DataAttribute(), chunk);
 
         for (auto sceneWater : sceneWaters) {
-            auto watersChunk = xmlWriter.createChunk(WATER_TAG, DataAttribute(), watersListChunk.get());
-            sceneWater->writeOn(watersChunk.get(), xmlWriter);
+            auto watersChunk = dataWriter.createChunk(WATER_TAG, DataAttribute(), watersListChunk.get());
+            sceneWater->writeOn(watersChunk.get(), dataWriter);
         }
     }
 
-    void Map::writeSceneSkyOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
-        auto skyChunk = xmlWriter.createChunk(SKY_TAG, DataAttribute(), chunk);
+    void Map::writeSceneSkyOn(XmlChunk* chunk, DataWriter& dataWriter) const {
+        auto skyChunk = dataWriter.createChunk(SKY_TAG, DataAttribute(), chunk);
 
-        sceneSky->writeOn(skyChunk.get(), xmlWriter);
+        sceneSky->writeOn(skyChunk.get(), dataWriter);
     }
 
-    void Map::writeSceneSoundsOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
-        auto soundElementsListChunk = xmlWriter.createChunk(SOUND_ELEMENTS_TAG, DataAttribute(), chunk);
+    void Map::writeSceneSoundsOn(XmlChunk* chunk, DataWriter& dataWriter) const {
+        auto soundElementsListChunk = dataWriter.createChunk(SOUND_ELEMENTS_TAG, DataAttribute(), chunk);
 
         for (auto sceneSound : sceneSounds) {
-            auto soundElementsChunk = xmlWriter.createChunk(SOUND_ELEMENT_TAG, DataAttribute(), soundElementsListChunk.get());
-            sceneSound->writeOn(soundElementsChunk.get(), xmlWriter);
+            auto soundElementsChunk = dataWriter.createChunk(SOUND_ELEMENT_TAG, DataAttribute(), soundElementsListChunk.get());
+            sceneSound->writeOn(soundElementsChunk.get(), dataWriter);
         }
     }
 
-    void Map::writeSceneAIOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
-        auto aiElementsListChunk = xmlWriter.createChunk(AI_ELEMENTS_TAG, DataAttribute(), chunk);
+    void Map::writeSceneAIOn(XmlChunk* chunk, DataWriter& dataWriter) const {
+        auto aiElementsListChunk = dataWriter.createChunk(AI_ELEMENTS_TAG, DataAttribute(), chunk);
 
-        sceneAI->writeOn(aiElementsListChunk.get(), xmlWriter);
+        sceneAI->writeOn(aiElementsListChunk.get(), dataWriter);
     }
 
     const std::list<SceneObject*>& Map::getSceneObjects() const {

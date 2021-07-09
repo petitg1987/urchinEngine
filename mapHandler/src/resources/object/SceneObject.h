@@ -36,7 +36,7 @@ namespace urchin {
 
         private:
             void loadFrom(const XmlChunk*, const DataParser&);
-            void writeOn(XmlChunk*, XmlWriter&) const;
+            void writeOn(XmlChunk*, DataWriter&) const;
 
             void setupRigidBody(RigidBody*);
             void setupAIObject();

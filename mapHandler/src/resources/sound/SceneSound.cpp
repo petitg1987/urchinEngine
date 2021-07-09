@@ -39,14 +39,14 @@ namespace urchin {
         setSoundElements(SoundReaderWriter::loadFrom(soundChunk.get(), dataParser), SoundTriggerReaderWriter::loadFrom(soundTriggerChunk.get(), dataParser));
     }
 
-    void SceneSound::writeOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
+    void SceneSound::writeOn(XmlChunk* chunk, DataWriter& dataWriter) const {
         chunk->setAttribute(DataAttribute(NAME_ATTR, this->name));
 
-        auto soundChunk = xmlWriter.createChunk(SOUND_TAG, DataAttribute(), chunk);
-        auto soundTriggerChunk = xmlWriter.createChunk(SOUND_TRIGGER_TAG, DataAttribute(), chunk);
+        auto soundChunk = dataWriter.createChunk(SOUND_TAG, DataAttribute(), chunk);
+        auto soundTriggerChunk = dataWriter.createChunk(SOUND_TRIGGER_TAG, DataAttribute(), chunk);
 
-        SoundReaderWriter::writeOn(soundChunk.get(), sound, xmlWriter);
-        SoundTriggerReaderWriter::writeOn(soundTriggerChunk.get(), soundTrigger, xmlWriter);
+        SoundReaderWriter::writeOn(soundChunk.get(), sound, dataWriter);
+        SoundTriggerReaderWriter::writeOn(soundTriggerChunk.get(), soundTrigger, dataWriter);
     }
 
     std::string SceneSound::getName() const {

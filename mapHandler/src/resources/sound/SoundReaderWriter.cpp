@@ -10,10 +10,10 @@ namespace urchin {
         return sound;
     }
 
-    void SoundReaderWriter::writeOn(XmlChunk* soundChunk, const Sound* sound, XmlWriter& xmlWriter) {
-        buildChunkFrom(soundChunk, sound, xmlWriter);
+    void SoundReaderWriter::writeOn(XmlChunk* soundChunk, const Sound* sound, DataWriter& dataWriter) {
+        buildChunkFrom(soundChunk, sound, dataWriter);
 
-        writePropertiesOn(soundChunk, sound, xmlWriter);
+        writePropertiesOn(soundChunk, sound, dataWriter);
     }
 
     Sound* SoundReaderWriter::buildSoundFrom(const XmlChunk* soundChunk, const DataParser& dataParser) {
@@ -46,18 +46,18 @@ namespace urchin {
         }
     }
 
-    void SoundReaderWriter::buildChunkFrom(XmlChunk* soundChunk, const Sound* sound, XmlWriter& xmlWriter) {
-        auto filenameChunk = xmlWriter.createChunk(FILENAME_TAG, DataAttribute(), soundChunk);
+    void SoundReaderWriter::buildChunkFrom(XmlChunk* soundChunk, const Sound* sound, DataWriter& dataWriter) {
+        auto filenameChunk = dataWriter.createChunk(FILENAME_TAG, DataAttribute(), soundChunk);
         filenameChunk->setStringValue(sound->getFilename());
 
         if (sound->getSoundType() == Sound::SPATIAL) {
             const auto* spatialSound = dynamic_cast<const SpatialSound*>(sound);
             soundChunk->setAttribute(DataAttribute(TYPE_ATTR, SPATIAL_VALUE));
 
-            auto positionChunk = xmlWriter.createChunk(POSITION_TAG, DataAttribute(), soundChunk);
+            auto positionChunk = dataWriter.createChunk(POSITION_TAG, DataAttribute(), soundChunk);
             positionChunk->setPoint3Value(spatialSound->getPosition());
 
-            auto inaudibleDistanceChunk = xmlWriter.createChunk(INAUDIBLE_DISTANCE_TAG, DataAttribute(), soundChunk);
+            auto inaudibleDistanceChunk = dataWriter.createChunk(INAUDIBLE_DISTANCE_TAG, DataAttribute(), soundChunk);
             inaudibleDistanceChunk->setFloatValue(spatialSound->getInaudibleDistance());
         } else if (sound->getSoundType() == Sound::GLOBAL) {
             soundChunk->setAttribute(DataAttribute(TYPE_ATTR, GLOBAL_VALUE));
@@ -79,8 +79,8 @@ namespace urchin {
         sound->setInitialVolume(initialVolumeChunk->getFloatValue());
     }
 
-    void SoundReaderWriter::writePropertiesOn(const XmlChunk* soundChunk, const Sound* sound, XmlWriter& xmlWriter) {
-        auto initialVolumeChunk = xmlWriter.createChunk(INITIAL_VOLUME_TAG, DataAttribute(), soundChunk);
+    void SoundReaderWriter::writePropertiesOn(const XmlChunk* soundChunk, const Sound* sound, DataWriter& dataWriter) {
+        auto initialVolumeChunk = dataWriter.createChunk(INITIAL_VOLUME_TAG, DataAttribute(), soundChunk);
         initialVolumeChunk->setFloatValue(sound->getInitialVolume());
     }
 

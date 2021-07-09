@@ -22,10 +22,10 @@ namespace urchin {
         changeNavMeshAgent(NavMeshAgentReaderWriter::loadFrom(navMeshAgentChunk.get(), dataParser));
     }
 
-    void SceneAI::writeOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
-        auto navMeshAgentChunk = xmlWriter.createChunk(NAV_MESH_AGENT_TAG, DataAttribute(), chunk);
+    void SceneAI::writeOn(XmlChunk* chunk, DataWriter& dataWriter) const {
+        auto navMeshAgentChunk = dataWriter.createChunk(NAV_MESH_AGENT_TAG, DataAttribute(), chunk);
 
-        NavMeshAgentReaderWriter::writeOn(navMeshAgentChunk.get(), getNavMeshAgent(), xmlWriter);
+        NavMeshAgentReaderWriter::writeOn(navMeshAgentChunk.get(), getNavMeshAgent(), dataWriter);
     }
 
 }

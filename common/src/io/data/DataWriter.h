@@ -9,10 +9,10 @@
 
 namespace urchin {
 
-    class XmlWriter {
+    class DataWriter {
         public:
-            explicit XmlWriter(const std::string&);
-            ~XmlWriter();
+            explicit DataWriter(const std::string&);
+            ~DataWriter();
 
             std::unique_ptr<XmlChunk> createChunk(const std::string&, const DataAttribute & = DataAttribute(), const XmlChunk* parent = nullptr);
             void saveInFile();

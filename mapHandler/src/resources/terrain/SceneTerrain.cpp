@@ -55,10 +55,10 @@ namespace urchin {
         setupInteractiveBody(terrainRigidBody);
     }
 
-    void SceneTerrain::writeOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
+    void SceneTerrain::writeOn(XmlChunk* chunk, DataWriter& dataWriter) const {
         chunk->setAttribute(DataAttribute(NAME_ATTR, this->name));
 
-        TerrainReaderWriter().writeOn(chunk, terrain, xmlWriter);
+        TerrainReaderWriter().writeOn(chunk, terrain, dataWriter);
     }
 
     std::string SceneTerrain::getName() const {

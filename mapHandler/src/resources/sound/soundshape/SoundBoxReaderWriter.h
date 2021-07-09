@@ -21,7 +21,7 @@ namespace urchin {
             ~SoundBoxReaderWriter() override = default;
 
             SoundShape* loadFrom(const XmlChunk*, const DataParser&) const override;
-            void writeOn(XmlChunk*, const SoundShape*, XmlWriter&) const override;
+            void writeOn(XmlChunk*, const SoundShape*, DataWriter&) const override;
     };
 
 }

@@ -20,27 +20,27 @@ namespace urchin {
         return new SoundBox(halfSizes, position, orientation, margin);
     }
 
-    void SoundBoxReaderWriter::writeOn(XmlChunk* shapeChunk, const SoundShape* soundShape, XmlWriter& xmlWriter) const {
+    void SoundBoxReaderWriter::writeOn(XmlChunk* shapeChunk, const SoundShape* soundShape, DataWriter& dataWriter) const {
         shapeChunk->setAttribute(DataAttribute(TYPE_ATTR, BOX_VALUE));
 
         const auto* boxShape = dynamic_cast<const SoundBox*>(soundShape);
 
-        auto halfSizesChunk = xmlWriter.createChunk(HALF_SIZES_TAG, DataAttribute(), shapeChunk);
+        auto halfSizesChunk = dataWriter.createChunk(HALF_SIZES_TAG, DataAttribute(), shapeChunk);
         halfSizesChunk->setVector3Value(boxShape->getHalfSizes());
 
-        auto positionChunk = xmlWriter.createChunk(POSITION_TAG, DataAttribute(), shapeChunk);
+        auto positionChunk = dataWriter.createChunk(POSITION_TAG, DataAttribute(), shapeChunk);
         positionChunk->setPoint3Value(boxShape->getCenterPosition());
 
-        auto orientationChunk = xmlWriter.createChunk(ORIENTATION_TAG, DataAttribute(), shapeChunk);
-        auto orientationAxisChunk = xmlWriter.createChunk(AXIS_TAG, DataAttribute(), orientationChunk.get());
-        auto orientationAngleChunk = xmlWriter.createChunk(ANGLE_TAG, DataAttribute(), orientationChunk.get());
+        auto orientationChunk = dataWriter.createChunk(ORIENTATION_TAG, DataAttribute(), shapeChunk);
+        auto orientationAxisChunk = dataWriter.createChunk(AXIS_TAG, DataAttribute(), orientationChunk.get());
+        auto orientationAngleChunk = dataWriter.createChunk(ANGLE_TAG, DataAttribute(), orientationChunk.get());
         Vector3<float> orientationAxis;
         float orientationAngle;
         boxShape->getOrientation().toAxisAngle(orientationAxis, orientationAngle);
         orientationAxisChunk->setVector3Value(orientationAxis);
         orientationAngleChunk->setFloatValue(orientationAngle);
 
-        auto marginChunk = xmlWriter.createChunk(MARGIN_TAG, DataAttribute(), shapeChunk);
+        auto marginChunk = dataWriter.createChunk(MARGIN_TAG, DataAttribute(), shapeChunk);
         marginChunk->setFloatValue(boxShape->getMargin());
     }
 

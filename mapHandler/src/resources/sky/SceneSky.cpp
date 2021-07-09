@@ -19,7 +19,7 @@ namespace urchin {
         changeSkybox(SkyboxReaderWriter::loadFrom(chunk, dataParser));
     }
 
-    void SceneSky::writeOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
-        SkyboxReaderWriter::writeOn(chunk, getSkybox(), xmlWriter);
+    void SceneSky::writeOn(XmlChunk* chunk, DataWriter& dataWriter) const {
+        SkyboxReaderWriter::writeOn(chunk, getSkybox(), dataWriter);
     }
 }

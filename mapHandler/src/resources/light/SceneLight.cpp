@@ -34,10 +34,10 @@ namespace urchin {
         setLight(LightReaderWriter::loadFrom(chunk, dataParser));
     }
 
-    void SceneLight::writeOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
+    void SceneLight::writeOn(XmlChunk* chunk, DataWriter& dataWriter) const {
         chunk->setAttribute(DataAttribute(NAME_ATTR, this->name));
 
-        LightReaderWriter::writeOn(chunk, light, xmlWriter);
+        LightReaderWriter::writeOn(chunk, light, dataWriter);
     }
 
     std::string SceneLight::getName() const {

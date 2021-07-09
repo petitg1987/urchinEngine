@@ -37,12 +37,12 @@ namespace urchin {
     }
 
     void MapHandler::writeMapOnFile(const std::string& filename) const {
-        XmlWriter xmlWriter(filename);
+        DataWriter dataWriter(filename);
 
-        auto rootChunk = xmlWriter.createChunk(SCENE_TAG, DataAttribute(WORKING_DIR_ATTR, relativeWorkingDirectory));
-        map->writeOn(rootChunk.get(), xmlWriter);
+        auto rootChunk = dataWriter.createChunk(SCENE_TAG, DataAttribute(WORKING_DIR_ATTR, relativeWorkingDirectory));
+        map->writeOn(rootChunk.get(), dataWriter);
 
-        xmlWriter.saveInFile();
+        dataWriter.saveInFile();
     }
 
     /**

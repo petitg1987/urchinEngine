@@ -33,10 +33,10 @@ namespace urchin {
         setWater(WaterReaderWriter().loadFrom(chunk, dataParser));
     }
 
-    void SceneWater::writeOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
+    void SceneWater::writeOn(XmlChunk* chunk, DataWriter& dataWriter) const {
         chunk->setAttribute(DataAttribute(NAME_ATTR, this->name));
 
-        WaterReaderWriter().writeOn(chunk, water, xmlWriter);
+        WaterReaderWriter().writeOn(chunk, water, dataWriter);
     }
 
     std::string SceneWater::getName() const {

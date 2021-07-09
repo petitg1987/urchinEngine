@@ -76,14 +76,14 @@ namespace urchin {
             void loadSceneSoundsFrom(const XmlChunk*, const DataParser&);
             void loadSceneAIFrom(const XmlChunk*, const DataParser&);
 
-            void writeOn(XmlChunk*, XmlWriter&) const;
-            void writeSceneObjectsOn(XmlChunk*, XmlWriter&) const;
-            void writeSceneLightsOn(XmlChunk*, XmlWriter&) const;
-            void writeSceneTerrainsOn(XmlChunk*, XmlWriter&) const;
-            void writeSceneWatersOn(XmlChunk*, XmlWriter&) const;
-            void writeSceneSkyOn(XmlChunk*, XmlWriter&) const;
-            void writeSceneSoundsOn(XmlChunk*, XmlWriter&) const;
-            void writeSceneAIOn(XmlChunk*, XmlWriter&) const;
+            void writeOn(XmlChunk*, DataWriter&) const;
+            void writeSceneObjectsOn(XmlChunk*, DataWriter&) const;
+            void writeSceneLightsOn(XmlChunk*, DataWriter&) const;
+            void writeSceneTerrainsOn(XmlChunk*, DataWriter&) const;
+            void writeSceneWatersOn(XmlChunk*, DataWriter&) const;
+            void writeSceneSkyOn(XmlChunk*, DataWriter&) const;
+            void writeSceneSoundsOn(XmlChunk*, DataWriter&) const;
+            void writeSceneAIOn(XmlChunk*, DataWriter&) const;
 
             void refreshEntities();
             void refreshSound();

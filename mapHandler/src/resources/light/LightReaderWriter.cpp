@@ -11,11 +11,11 @@ namespace urchin {
         return light;
     }
 
-    void LightReaderWriter::writeOn(XmlChunk* lightChunk, const Light* light, XmlWriter& xmlWriter) {
-        buildChunkFrom(lightChunk, light, xmlWriter);
+    void LightReaderWriter::writeOn(XmlChunk* lightChunk, const Light* light, DataWriter& dataWriter) {
+        buildChunkFrom(lightChunk, light, dataWriter);
 
-        writePropertiesOn(lightChunk, light, xmlWriter);
-        writeFlagsOn(lightChunk, light, xmlWriter);
+        writePropertiesOn(lightChunk, light, dataWriter);
+        writeFlagsOn(lightChunk, light, dataWriter);
     }
 
     Light* LightReaderWriter::buildLightFrom(const XmlChunk* lightChunk, const DataParser& dataParser) {
@@ -37,21 +37,21 @@ namespace urchin {
         throw std::invalid_argument("Unknown light type read from map: " + lightType);
     }
 
-    void LightReaderWriter::buildChunkFrom(XmlChunk* lightChunk, const Light* light, XmlWriter& xmlWriter) {
+    void LightReaderWriter::buildChunkFrom(XmlChunk* lightChunk, const Light* light, DataWriter& dataWriter) {
         if (light->getLightType() == Light::OMNIDIRECTIONAL) {
             const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight*>(light);
             lightChunk->setAttribute(DataAttribute(TYPE_ATTR, OMNIDIRECTIONAL_VALUE));
 
-            auto positionChunk = xmlWriter.createChunk(POSITION_TAG, DataAttribute(), lightChunk);
+            auto positionChunk = dataWriter.createChunk(POSITION_TAG, DataAttribute(), lightChunk);
             positionChunk->setPoint3Value(omnidirectionalLight->getPosition());
 
-            auto exponentialAttenuationChunk = xmlWriter.createChunk(EXPONENTIAL_ATTENUATION_TAG, DataAttribute(), lightChunk);
+            auto exponentialAttenuationChunk = dataWriter.createChunk(EXPONENTIAL_ATTENUATION_TAG, DataAttribute(), lightChunk);
             exponentialAttenuationChunk->setFloatValue(omnidirectionalLight->getExponentialAttenuation());
         } else if (light->getLightType() == Light::SUN) {
             const auto* sunLight = dynamic_cast<const SunLight*>(light);
             lightChunk->setAttribute(DataAttribute(TYPE_ATTR, SUN_VALUE));
 
-            auto directionChunk = xmlWriter.createChunk(DIRECTION_TAG, DataAttribute(), lightChunk);
+            auto directionChunk = dataWriter.createChunk(DIRECTION_TAG, DataAttribute(), lightChunk);
             directionChunk->setVector3Value(sunLight->getDirections()[0]);
         } else {
             throw std::invalid_argument("Unknown light type to write in map: " + std::to_string(light->getLightType()));
@@ -63,8 +63,8 @@ namespace urchin {
         light->setAmbientColor(ambientColorChunk->getPoint3Value());
     }
 
-    void LightReaderWriter::writePropertiesOn(const XmlChunk* lightChunk, const Light* light, XmlWriter& xmlWriter) {
-        auto ambientColorChunk = xmlWriter.createChunk(AMBIENT_COLOR_TAG, DataAttribute(), lightChunk);
+    void LightReaderWriter::writePropertiesOn(const XmlChunk* lightChunk, const Light* light, DataWriter& dataWriter) {
+        auto ambientColorChunk = dataWriter.createChunk(AMBIENT_COLOR_TAG, DataAttribute(), lightChunk);
         ambientColorChunk->setPoint3Value(light->getAmbientColor());
     }
 
@@ -73,8 +73,8 @@ namespace urchin {
         light->setProduceShadow(produceShadowChunk->getBoolValue());
     }
 
-    void LightReaderWriter::writeFlagsOn(const XmlChunk* lightChunk, const Light* light, XmlWriter& xmlWriter) {
-        auto produceShadowChunk = xmlWriter.createChunk(PRODUCE_SHADOW_TAG, DataAttribute(), lightChunk);
+    void LightReaderWriter::writeFlagsOn(const XmlChunk* lightChunk, const Light* light, DataWriter& dataWriter) {
+        auto produceShadowChunk = dataWriter.createChunk(PRODUCE_SHADOW_TAG, DataAttribute(), lightChunk);
         produceShadowChunk->setBoolValue(light->isProduceShadow());
     }
 

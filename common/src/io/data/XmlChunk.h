@@ -17,7 +17,7 @@ namespace urchin {
     class XmlChunk {
         public:
             friend class DataParser;
-            friend class XmlWriter;
+            friend class DataWriter;
 
             std::string getAttributeValue(const std::string&) const;
             void setAttribute(const DataAttribute&);

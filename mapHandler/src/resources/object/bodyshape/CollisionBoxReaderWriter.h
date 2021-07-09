@@ -13,7 +13,7 @@ namespace urchin {
             ~CollisionBoxReaderWriter() override = default;
 
             CollisionShape3D* loadFrom(const XmlChunk*, const DataParser&) const override;
-            void writeOn(XmlChunk*, const CollisionShape3D&, XmlWriter&) const override;
+            void writeOn(XmlChunk*, const CollisionShape3D&, DataWriter&) const override;
 
         private:
             static constexpr char HALF_SIZE_TAG[] = "halfSize";

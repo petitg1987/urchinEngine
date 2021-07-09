@@ -9,12 +9,12 @@ namespace urchin {
         return new CollisionBoxShape(halfSize);
     }
 
-    void CollisionBoxReaderWriter::writeOn(XmlChunk* shapeChunk, const CollisionShape3D& collisionShape, XmlWriter& xmlWriter) const {
+    void CollisionBoxReaderWriter::writeOn(XmlChunk* shapeChunk, const CollisionShape3D& collisionShape, DataWriter& dataWriter) const {
         shapeChunk->setAttribute(DataAttribute(TYPE_ATTR, BOX_VALUE));
 
         const auto& boxShape = dynamic_cast<const CollisionBoxShape&>(collisionShape);
 
-        auto halfSizeChunk = xmlWriter.createChunk(HALF_SIZE_TAG, DataAttribute(), shapeChunk);
+        auto halfSizeChunk = dataWriter.createChunk(HALF_SIZE_TAG, DataAttribute(), shapeChunk);
         halfSizeChunk->setVector3Value(boxShape.getHalfSizes());
     }
 
