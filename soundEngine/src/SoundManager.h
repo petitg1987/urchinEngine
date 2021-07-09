@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <thread>
+#include <memory>
 #include <UrchinCommon.h>
 
 #include <AudioController.h>
@@ -40,8 +41,8 @@ namespace urchin {
             std::map<Sound::SoundCategory, float> soundVolumes;
 
             //stream chunk updater thread
-            StreamUpdateWorker* streamUpdateWorker;
-            std::thread *streamUpdateWorkerThread;
+            std::unique_ptr<StreamUpdateWorker> streamUpdateWorker;
+            std::unique_ptr<std::thread> streamUpdateWorkerThread;
     };
 
 }

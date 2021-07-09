@@ -30,7 +30,7 @@ namespace urchin {
             format = SoundFormat::STEREO_16;
         } else {
             closeSoundFile();
-            throw std::domain_error("Unsupported channels: " + std::to_string(getNumberOfChannels()) + ".");
+            throw std::domain_error("Unsupported channels: " + std::to_string(getNumberOfChannels()));
         }
     }
 

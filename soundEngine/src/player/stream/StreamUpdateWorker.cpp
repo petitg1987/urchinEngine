@@ -35,15 +35,14 @@ namespace urchin {
         auto* task = new StreamUpdateTask(sound, new StreamChunk[nbChunkBuffer], playLoop);
 
         //create buffers/chunks
-        auto* bufferId = new ALuint[nbChunkBuffer];
-        alGenBuffers((int)nbChunkBuffer, bufferId);
+        std::vector<ALuint> bufferId(nbChunkBuffer);
+        alGenBuffers((int)nbChunkBuffer, bufferId.data());
         for (unsigned int i = 0; i < nbChunkBuffer; ++i) {
             task->getStreamChunk(i).bufferId = bufferId[i];
         }
-        delete[] bufferId;
 
         //initialize buffers/chunks
-        for (unsigned int i  = 0; i < nbChunkBuffer; ++i) {
+        for (unsigned int i = 0; i < nbChunkBuffer; ++i) {
             fillAndPushChunk(task, i);
         }
 

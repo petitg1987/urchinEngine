@@ -6,7 +6,7 @@ namespace urchin {
     /**
      * @param soundTrigger Trigger used to play the sound
      */
-    AudioController::AudioController(Sound* sound, SoundTrigger* soundTrigger, StreamUpdateWorker* streamUpdateWorker) :
+    AudioController::AudioController(Sound* sound, SoundTrigger* soundTrigger, StreamUpdateWorker& streamUpdateWorker) :
             sound(sound),
             soundTrigger(soundTrigger),
             triggerValue(SoundTrigger::STOPPED),

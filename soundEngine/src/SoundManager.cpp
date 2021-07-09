@@ -7,8 +7,8 @@
 namespace urchin {
 
     SoundManager::SoundManager() :
-            streamUpdateWorker(new StreamUpdateWorker()),
-            streamUpdateWorkerThread(new std::thread(&StreamUpdateWorker::start, streamUpdateWorker)) {
+            streamUpdateWorker(std::make_unique<StreamUpdateWorker>()),
+            streamUpdateWorkerThread(std::make_unique<std::thread>(&StreamUpdateWorker::start, streamUpdateWorker.get())) {
         SignalHandler::instance()->initialize();
 
         DeviceManager::instance();
@@ -23,8 +23,6 @@ namespace urchin {
 
         streamUpdateWorker->interrupt();
         streamUpdateWorkerThread->join();
-        delete streamUpdateWorkerThread;
-        delete streamUpdateWorker;
 
         Profiler::sound()->log();
     }
@@ -34,7 +32,7 @@ namespace urchin {
             Logger::instance()->logInfo("Add new sound: " + sound->getFilename());
             adjustSoundVolume(sound);
 
-            auto* audioController = new AudioController(sound, soundTrigger, streamUpdateWorker);
+            auto* audioController = new AudioController(sound, soundTrigger, *streamUpdateWorker);
             audioControllers.push_back(audioController);
         }
     }

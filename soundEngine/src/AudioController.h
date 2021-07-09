@@ -15,7 +15,7 @@ namespace urchin {
     */
     class AudioController {
         public:
-            AudioController(Sound*, SoundTrigger*, StreamUpdateWorker*);
+            AudioController(Sound*, SoundTrigger*, StreamUpdateWorker&);
             ~AudioController();
 
             Sound* getSound() const;
