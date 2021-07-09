@@ -6,9 +6,9 @@
 
 namespace urchin {
 
-    CollisionShape3D* CollisionCompoundShapeReaderWriter::loadFrom(const XmlChunk* mainShapeChunk, const XmlParser& xmlParser) const {
-        auto localizedShapesListChunk = xmlParser.getUniqueChunk(true, LOCALIZED_SHAPES, DataAttribute(), mainShapeChunk);
-        auto localizedShapesChunk = xmlParser.getChunks(LOCALIZED_SHAPE, DataAttribute(), localizedShapesListChunk.get());
+    CollisionShape3D* CollisionCompoundShapeReaderWriter::loadFrom(const XmlChunk* mainShapeChunk, const DataParser& dataParser) const {
+        auto localizedShapesListChunk = dataParser.getUniqueChunk(true, LOCALIZED_SHAPES, DataAttribute(), mainShapeChunk);
+        auto localizedShapesChunk = dataParser.getChunks(LOCALIZED_SHAPE, DataAttribute(), localizedShapesListChunk.get());
 
         std::vector<std::shared_ptr<const LocalizedCollisionShape>> compoundShapes;
         for (std::size_t i = 0; i < localizedShapesChunk.size(); ++i) {
@@ -16,10 +16,10 @@ namespace urchin {
 
             localizedShape->position = i;
 
-            loadTransformOn(*localizedShape, localizedShapesChunk[i].get(), xmlParser);
+            loadTransformOn(*localizedShape, localizedShapesChunk[i].get(), dataParser);
 
-            auto shapeChunk = xmlParser.getUniqueChunk(true, COMPOUND_SHAPE_TAG, DataAttribute(), localizedShapesChunk[i].get());
-            CollisionShape3D* embeddedCollisionShape = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeChunk.get())->loadFrom(shapeChunk.get(), xmlParser);
+            auto shapeChunk = dataParser.getUniqueChunk(true, COMPOUND_SHAPE_TAG, DataAttribute(), localizedShapesChunk[i].get());
+            CollisionShape3D* embeddedCollisionShape = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeChunk.get())->loadFrom(shapeChunk.get(), dataParser);
             localizedShape->shape = std::unique_ptr<CollisionShape3D>(embeddedCollisionShape);
 
             compoundShapes.push_back(std::move(localizedShape));
@@ -45,13 +45,13 @@ namespace urchin {
         }
     }
 
-    void CollisionCompoundShapeReaderWriter::loadTransformOn(LocalizedCollisionShape& localizedShape, const XmlChunk* localizedShapeChunk, const XmlParser& xmlParser) {
-        auto transformChunk = xmlParser.getUniqueChunk(true, TRANSFORM_TAG, DataAttribute(), localizedShapeChunk);
+    void CollisionCompoundShapeReaderWriter::loadTransformOn(LocalizedCollisionShape& localizedShape, const XmlChunk* localizedShapeChunk, const DataParser& dataParser) {
+        auto transformChunk = dataParser.getUniqueChunk(true, TRANSFORM_TAG, DataAttribute(), localizedShapeChunk);
 
-        auto positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, DataAttribute(), transformChunk.get());
+        auto positionChunk = dataParser.getUniqueChunk(true, POSITION_TAG, DataAttribute(), transformChunk.get());
         Point3<float> position = positionChunk->getPoint3Value();
 
-        Quaternion<float> orientation = OrientationReaderWriter::loadOrientation(transformChunk.get(), xmlParser);
+        Quaternion<float> orientation = OrientationReaderWriter::loadOrientation(transformChunk.get(), dataParser);
 
         localizedShape.transform = PhysicsTransform(position, orientation);
     }

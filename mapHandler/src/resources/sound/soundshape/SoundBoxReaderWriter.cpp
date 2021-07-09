@@ -2,19 +2,19 @@
 
 namespace urchin {
 
-    SoundShape* SoundBoxReaderWriter::loadFrom(const XmlChunk* shapeChunk, const XmlParser& xmlParser) const {
-        auto halfSizesChunk = xmlParser.getUniqueChunk(true, HALF_SIZES_TAG, DataAttribute(), shapeChunk);
+    SoundShape* SoundBoxReaderWriter::loadFrom(const XmlChunk* shapeChunk, const DataParser& dataParser) const {
+        auto halfSizesChunk = dataParser.getUniqueChunk(true, HALF_SIZES_TAG, DataAttribute(), shapeChunk);
         Vector3<float> halfSizes = halfSizesChunk->getVector3Value();
 
-        auto positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, DataAttribute(), shapeChunk);
+        auto positionChunk = dataParser.getUniqueChunk(true, POSITION_TAG, DataAttribute(), shapeChunk);
         Point3<float> position = positionChunk->getPoint3Value();
 
-        auto orientationChunk = xmlParser.getUniqueChunk(true, ORIENTATION_TAG, DataAttribute(), shapeChunk);
-        auto orientationAxisChunk = xmlParser.getUniqueChunk(true, AXIS_TAG, DataAttribute(), orientationChunk.get());
-        auto orientationAngleChunk = xmlParser.getUniqueChunk(true, ANGLE_TAG, DataAttribute(), orientationChunk.get());
+        auto orientationChunk = dataParser.getUniqueChunk(true, ORIENTATION_TAG, DataAttribute(), shapeChunk);
+        auto orientationAxisChunk = dataParser.getUniqueChunk(true, AXIS_TAG, DataAttribute(), orientationChunk.get());
+        auto orientationAngleChunk = dataParser.getUniqueChunk(true, ANGLE_TAG, DataAttribute(), orientationChunk.get());
         Quaternion<float> orientation(orientationAxisChunk->getVector3Value(), orientationAngleChunk->getFloatValue());
 
-        auto marginChunk = xmlParser.getUniqueChunk(true, MARGIN_TAG, DataAttribute(), shapeChunk);
+        auto marginChunk = dataParser.getUniqueChunk(true, MARGIN_TAG, DataAttribute(), shapeChunk);
         float margin = marginChunk->getFloatValue();
 
         return new SoundBox(halfSizes, position, orientation, margin);

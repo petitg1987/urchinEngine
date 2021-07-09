@@ -67,14 +67,14 @@ namespace urchin {
             void unpause();
 
         private:
-            void loadFrom(const XmlChunk*, const XmlParser&, LoadCallback&);
-            void loadSceneObjectsFrom(const XmlChunk*, const XmlParser&);
-            void loadSceneLightsFrom(const XmlChunk*, const XmlParser&);
-            void loadSceneTerrainFrom(const XmlChunk*, const XmlParser&);
-            void loadSceneWaterFrom(const XmlChunk*, const XmlParser&);
-            void loadSceneSkyFrom(const XmlChunk*, const XmlParser&);
-            void loadSceneSoundsFrom(const XmlChunk*, const XmlParser&);
-            void loadSceneAIFrom(const XmlChunk*, const XmlParser&);
+            void loadFrom(const XmlChunk*, const DataParser&, LoadCallback&);
+            void loadSceneObjectsFrom(const XmlChunk*, const DataParser&);
+            void loadSceneLightsFrom(const XmlChunk*, const DataParser&);
+            void loadSceneTerrainFrom(const XmlChunk*, const DataParser&);
+            void loadSceneWaterFrom(const XmlChunk*, const DataParser&);
+            void loadSceneSkyFrom(const XmlChunk*, const DataParser&);
+            void loadSceneSoundsFrom(const XmlChunk*, const DataParser&);
+            void loadSceneAIFrom(const XmlChunk*, const DataParser&);
 
             void writeOn(XmlChunk*, XmlWriter&) const;
             void writeSceneObjectsOn(XmlChunk*, XmlWriter&) const;

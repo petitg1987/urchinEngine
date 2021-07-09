@@ -2,11 +2,11 @@
 
 namespace urchin {
 
-    Light* LightReaderWriter::loadFrom(const XmlChunk* lightChunk, const XmlParser& xmlParser) {
-        Light* light = buildLightFrom(lightChunk, xmlParser);
+    Light* LightReaderWriter::loadFrom(const XmlChunk* lightChunk, const DataParser& dataParser) {
+        Light* light = buildLightFrom(lightChunk, dataParser);
 
-        loadPropertiesFrom(light, lightChunk, xmlParser);
-        loadFlagsFrom(light, lightChunk, xmlParser);
+        loadPropertiesFrom(light, lightChunk, dataParser);
+        loadFlagsFrom(light, lightChunk, dataParser);
 
         return light;
     }
@@ -18,18 +18,18 @@ namespace urchin {
         writeFlagsOn(lightChunk, light, xmlWriter);
     }
 
-    Light* LightReaderWriter::buildLightFrom(const XmlChunk* lightChunk, const XmlParser& xmlParser) {
+    Light* LightReaderWriter::buildLightFrom(const XmlChunk* lightChunk, const DataParser& dataParser) {
         std::string lightType = lightChunk->getAttributeValue(TYPE_ATTR);
         if (lightType == OMNIDIRECTIONAL_VALUE) {
-            auto positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, DataAttribute(), lightChunk);
+            auto positionChunk = dataParser.getUniqueChunk(true, POSITION_TAG, DataAttribute(), lightChunk);
             auto* omnidirectional = new OmnidirectionalLight(positionChunk->getPoint3Value());
 
-            auto exponentialAttenuationChunk = xmlParser.getUniqueChunk(true, EXPONENTIAL_ATTENUATION_TAG, DataAttribute(), lightChunk);
+            auto exponentialAttenuationChunk = dataParser.getUniqueChunk(true, EXPONENTIAL_ATTENUATION_TAG, DataAttribute(), lightChunk);
             omnidirectional->setAttenuation(exponentialAttenuationChunk->getFloatValue());
 
             return omnidirectional;
         } else if (lightType == SUN_VALUE) {
-            auto directionChunk = xmlParser.getUniqueChunk(true, DIRECTION_TAG, DataAttribute(), lightChunk);
+            auto directionChunk = dataParser.getUniqueChunk(true, DIRECTION_TAG, DataAttribute(), lightChunk);
 
             return new SunLight(directionChunk->getVector3Value());
         }
@@ -58,8 +58,8 @@ namespace urchin {
         }
     }
 
-    void LightReaderWriter::loadPropertiesFrom(Light* light, const XmlChunk* lightChunk, const XmlParser& xmlParser) {
-        auto ambientColorChunk = xmlParser.getUniqueChunk(true, AMBIENT_COLOR_TAG, DataAttribute(), lightChunk);
+    void LightReaderWriter::loadPropertiesFrom(Light* light, const XmlChunk* lightChunk, const DataParser& dataParser) {
+        auto ambientColorChunk = dataParser.getUniqueChunk(true, AMBIENT_COLOR_TAG, DataAttribute(), lightChunk);
         light->setAmbientColor(ambientColorChunk->getPoint3Value());
     }
 
@@ -68,8 +68,8 @@ namespace urchin {
         ambientColorChunk->setPoint3Value(light->getAmbientColor());
     }
 
-    void LightReaderWriter::loadFlagsFrom(Light* light, const XmlChunk* lightChunk, const XmlParser& xmlParser) {
-        auto produceShadowChunk = xmlParser.getUniqueChunk(true, PRODUCE_SHADOW_TAG, DataAttribute(), lightChunk);
+    void LightReaderWriter::loadFlagsFrom(Light* light, const XmlChunk* lightChunk, const DataParser& dataParser) {
+        auto produceShadowChunk = dataParser.getUniqueChunk(true, PRODUCE_SHADOW_TAG, DataAttribute(), lightChunk);
         light->setProduceShadow(produceShadowChunk->getBoolValue());
     }
 

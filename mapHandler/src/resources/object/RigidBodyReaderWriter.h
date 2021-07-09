@@ -10,11 +10,11 @@ namespace urchin {
 
     class RigidBodyReaderWriter {
         public:
-            static RigidBody* loadFrom(const XmlChunk*, const std::string&, const Transform<float>&, const XmlParser&);
+            static RigidBody* loadFrom(const XmlChunk*, const std::string&, const Transform<float>&, const DataParser&);
             static void writeOn(XmlChunk*, const RigidBody*, XmlWriter&);
 
         private:
-            static void loadBodyPropertiesOn(RigidBody*, const XmlChunk*, const XmlParser&);
+            static void loadBodyPropertiesOn(RigidBody*, const XmlChunk*, const DataParser&);
             static void writeBodyPropertiesOn(const XmlChunk*, const RigidBody*, XmlWriter&);
 
             static constexpr char SHAPE_TAG[] = "shape";

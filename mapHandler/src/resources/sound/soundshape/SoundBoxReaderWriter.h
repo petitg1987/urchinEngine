@@ -20,7 +20,7 @@ namespace urchin {
         public:
             ~SoundBoxReaderWriter() override = default;
 
-            SoundShape* loadFrom(const XmlChunk*, const XmlParser&) const override;
+            SoundShape* loadFrom(const XmlChunk*, const DataParser&) const override;
             void writeOn(XmlChunk*, const SoundShape*, XmlWriter&) const override;
     };
 

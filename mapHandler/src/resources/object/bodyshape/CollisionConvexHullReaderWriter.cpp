@@ -4,9 +4,9 @@
 
 namespace urchin {
 
-    CollisionShape3D* CollisionConvexHullReaderWriter::loadFrom(const XmlChunk* shapeChunk, const XmlParser& xmlParser) const {
-        auto pointsListChunk = xmlParser.getUniqueChunk(true, POINTS_TAG, DataAttribute(), shapeChunk);
-        auto pointsChunk = xmlParser.getChunks(POINT_TAG, DataAttribute(), pointsListChunk.get());
+    CollisionShape3D* CollisionConvexHullReaderWriter::loadFrom(const XmlChunk* shapeChunk, const DataParser& dataParser) const {
+        auto pointsListChunk = dataParser.getUniqueChunk(true, POINTS_TAG, DataAttribute(), shapeChunk);
+        auto pointsChunk = dataParser.getChunks(POINT_TAG, DataAttribute(), pointsListChunk.get());
 
         std::vector<Point3<float>> points;
         points.reserve(pointsChunk.size());

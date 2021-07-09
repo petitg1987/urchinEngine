@@ -9,17 +9,17 @@ namespace urchin {
 
     class WaterReaderWriter {
         public:
-            Water* loadFrom(const XmlChunk*, const XmlParser&) const;
+            Water* loadFrom(const XmlChunk*, const DataParser&) const;
             void writeOn(XmlChunk*, const Water*, XmlWriter&) const;
 
         private:
-            static void loadGeneralPropertiesOn(Water*, const XmlChunk*, const XmlParser&);
+            static void loadGeneralPropertiesOn(Water*, const XmlChunk*, const DataParser&);
             static void writeGeneralPropertiesOn(XmlChunk*, const Water*, XmlWriter&);
 
-            static void loadWaterSurfaceProperties(Water*, const XmlChunk*, const XmlParser&);
+            static void loadWaterSurfaceProperties(Water*, const XmlChunk*, const DataParser&);
             static void writeWaterSurfacePropertiesOn(XmlChunk*, const Water*, XmlWriter&);
 
-            static void loadUnderWaterProperties(Water*, const XmlChunk*, const XmlParser&);
+            static void loadUnderWaterProperties(Water*, const XmlChunk*, const DataParser&);
             static void writeUnderWaterPropertiesOn(XmlChunk*, const Water*, XmlWriter&);
 
             static constexpr char CENTER_POSITION_TAG[] = "centerPosition";

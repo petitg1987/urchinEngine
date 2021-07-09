@@ -40,7 +40,7 @@ namespace urchin {
         }
     }
 
-    void Map::loadFrom(const XmlChunk* rootChunk, const XmlParser& xmlParser, LoadCallback& loadCallback) {
+    void Map::loadFrom(const XmlChunk* rootChunk, const DataParser& dataParser, LoadCallback& loadCallback) {
         if (renderer3d && !renderer3d->isPaused()) { //to avoid move camera before being able to see the map
             throw std::runtime_error("Renderer 3d should be paused while loading map.");
         }
@@ -53,94 +53,94 @@ namespace urchin {
             throw std::runtime_error("AI manager should be paused while loading map.");
         }
 
-        loadSceneObjectsFrom(rootChunk, xmlParser);
+        loadSceneObjectsFrom(rootChunk, dataParser);
         loadCallback.execute(LoadCallback::OBJECTS);
 
-        loadSceneLightsFrom(rootChunk, xmlParser);
+        loadSceneLightsFrom(rootChunk, dataParser);
         loadCallback.execute(LoadCallback::LIGHTS);
 
-        loadSceneTerrainFrom(rootChunk, xmlParser);
-        loadSceneWaterFrom(rootChunk, xmlParser);
-        loadSceneSkyFrom(rootChunk, xmlParser);
+        loadSceneTerrainFrom(rootChunk, dataParser);
+        loadSceneWaterFrom(rootChunk, dataParser);
+        loadSceneSkyFrom(rootChunk, dataParser);
         loadCallback.execute(LoadCallback::LANDSCAPE);
 
-        loadSceneSoundsFrom(rootChunk, xmlParser);
+        loadSceneSoundsFrom(rootChunk, dataParser);
         loadCallback.execute(LoadCallback::SOUNDS);
 
-        loadSceneAIFrom(rootChunk, xmlParser);
+        loadSceneAIFrom(rootChunk, dataParser);
         loadCallback.execute(LoadCallback::AI);
     }
 
-    void Map::loadSceneObjectsFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
-        auto objectsListChunk = xmlParser.getUniqueChunk(true, OBJECTS_TAG, DataAttribute(), chunk);
-        auto objectsChunk = xmlParser.getChunks(OBJECT_TAG, DataAttribute(), objectsListChunk.get());
+    void Map::loadSceneObjectsFrom(const XmlChunk* chunk, const DataParser& dataParser) {
+        auto objectsListChunk = dataParser.getUniqueChunk(true, OBJECTS_TAG, DataAttribute(), chunk);
+        auto objectsChunk = dataParser.getChunks(OBJECT_TAG, DataAttribute(), objectsListChunk.get());
 
         for (const auto& objectChunk : objectsChunk) {
             auto* sceneObject = new SceneObject();
-            sceneObject->loadFrom(objectChunk.get(), xmlParser);
+            sceneObject->loadFrom(objectChunk.get(), dataParser);
 
             addSceneObject(sceneObject);
         }
     }
 
-    void Map::loadSceneLightsFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
-        auto lightsListChunk = xmlParser.getUniqueChunk(true, LIGHTS_TAG, DataAttribute(), chunk);
-        auto lightsChunk = xmlParser.getChunks(LIGHT_TAG, DataAttribute(), lightsListChunk.get());
+    void Map::loadSceneLightsFrom(const XmlChunk* chunk, const DataParser& dataParser) {
+        auto lightsListChunk = dataParser.getUniqueChunk(true, LIGHTS_TAG, DataAttribute(), chunk);
+        auto lightsChunk = dataParser.getChunks(LIGHT_TAG, DataAttribute(), lightsListChunk.get());
 
         for (const auto& lightChunk : lightsChunk) {
             auto* sceneLight = new SceneLight();
-            sceneLight->loadFrom(lightChunk.get(), xmlParser);
+            sceneLight->loadFrom(lightChunk.get(), dataParser);
 
             addSceneLight(sceneLight);
         }
     }
 
-    void Map::loadSceneTerrainFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
-        auto terrainsListChunk = xmlParser.getUniqueChunk(true, TERRAINS_TAG, DataAttribute(), chunk);
-        auto terrainsChunk = xmlParser.getChunks(TERRAIN_TAG, DataAttribute(), terrainsListChunk.get());
+    void Map::loadSceneTerrainFrom(const XmlChunk* chunk, const DataParser& dataParser) {
+        auto terrainsListChunk = dataParser.getUniqueChunk(true, TERRAINS_TAG, DataAttribute(), chunk);
+        auto terrainsChunk = dataParser.getChunks(TERRAIN_TAG, DataAttribute(), terrainsListChunk.get());
 
         for (const auto& terrainChunk : terrainsChunk) {
             auto* sceneTerrain = new SceneTerrain();
-            sceneTerrain->loadFrom(terrainChunk.get(), xmlParser);
+            sceneTerrain->loadFrom(terrainChunk.get(), dataParser);
 
             addSceneTerrain(sceneTerrain);
         }
     }
 
-    void Map::loadSceneWaterFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
-        auto watersListChunk = xmlParser.getUniqueChunk(true, WATERS_TAG, DataAttribute(), chunk);
-        auto watersChunk = xmlParser.getChunks(WATER_TAG, DataAttribute(), watersListChunk.get());
+    void Map::loadSceneWaterFrom(const XmlChunk* chunk, const DataParser& dataParser) {
+        auto watersListChunk = dataParser.getUniqueChunk(true, WATERS_TAG, DataAttribute(), chunk);
+        auto watersChunk = dataParser.getChunks(WATER_TAG, DataAttribute(), watersListChunk.get());
 
         for (const auto& waterChunk : watersChunk) {
             auto* sceneWater = new SceneWater();
-            sceneWater->loadFrom(waterChunk.get(), xmlParser);
+            sceneWater->loadFrom(waterChunk.get(), dataParser);
 
             addSceneWater(sceneWater);
         }
     }
 
-    void Map::loadSceneSkyFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
-        auto skyChunk = xmlParser.getUniqueChunk(true, SKY_TAG, DataAttribute(), chunk);
+    void Map::loadSceneSkyFrom(const XmlChunk* chunk, const DataParser& dataParser) {
+        auto skyChunk = dataParser.getUniqueChunk(true, SKY_TAG, DataAttribute(), chunk);
 
-        sceneSky->loadFrom(skyChunk.get(), xmlParser);
+        sceneSky->loadFrom(skyChunk.get(), dataParser);
     }
 
-    void Map::loadSceneSoundsFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
-        auto soundElementsListChunk = xmlParser.getUniqueChunk(true, SOUND_ELEMENTS_TAG, DataAttribute(), chunk);
-        auto soundElementsChunk = xmlParser.getChunks(SOUND_ELEMENT_TAG, DataAttribute(), soundElementsListChunk.get());
+    void Map::loadSceneSoundsFrom(const XmlChunk* chunk, const DataParser& dataParser) {
+        auto soundElementsListChunk = dataParser.getUniqueChunk(true, SOUND_ELEMENTS_TAG, DataAttribute(), chunk);
+        auto soundElementsChunk = dataParser.getChunks(SOUND_ELEMENT_TAG, DataAttribute(), soundElementsListChunk.get());
 
         for (const auto& soundElementChunk : soundElementsChunk) {
             auto* sceneSound = new SceneSound();
-            sceneSound->loadFrom(soundElementChunk.get(), xmlParser);
+            sceneSound->loadFrom(soundElementChunk.get(), dataParser);
 
             addSceneSound(sceneSound);
         }
     }
 
-    void Map::loadSceneAIFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
-        auto aiElementsListChunk = xmlParser.getUniqueChunk(true, AI_ELEMENTS_TAG, DataAttribute(), chunk);
+    void Map::loadSceneAIFrom(const XmlChunk* chunk, const DataParser& dataParser) {
+        auto aiElementsListChunk = dataParser.getUniqueChunk(true, AI_ELEMENTS_TAG, DataAttribute(), chunk);
 
-        sceneAI->loadFrom(aiElementsListChunk.get(), xmlParser);
+        sceneAI->loadFrom(aiElementsListChunk.get(), dataParser);
     }
 
     void Map::writeOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {

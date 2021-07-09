@@ -2,10 +2,10 @@
 
 namespace urchin {
 
-    Sound* SoundReaderWriter::loadFrom(const XmlChunk* soundChunk, const XmlParser& xmlParser) {
-        Sound* sound = buildSoundFrom(soundChunk, xmlParser);
+    Sound* SoundReaderWriter::loadFrom(const XmlChunk* soundChunk, const DataParser& dataParser) {
+        Sound* sound = buildSoundFrom(soundChunk, dataParser);
 
-        loadPropertiesOn(sound, soundChunk, xmlParser);
+        loadPropertiesOn(sound, soundChunk, dataParser);
 
         return sound;
     }
@@ -16,8 +16,8 @@ namespace urchin {
         writePropertiesOn(soundChunk, sound, xmlWriter);
     }
 
-    Sound* SoundReaderWriter::buildSoundFrom(const XmlChunk* soundChunk, const XmlParser& xmlParser) {
-        auto filenameChunk = xmlParser.getUniqueChunk(true, FILENAME_TAG, DataAttribute(), soundChunk);
+    Sound* SoundReaderWriter::buildSoundFrom(const XmlChunk* soundChunk, const DataParser& dataParser) {
+        auto filenameChunk = dataParser.getUniqueChunk(true, FILENAME_TAG, DataAttribute(), soundChunk);
         std::string filename = filenameChunk->getStringValue();
 
         std::string soundCategory = soundChunk->getAttributeValue(CATEGORY_ATTR);
@@ -32,10 +32,10 @@ namespace urchin {
 
         std::string soundType = soundChunk->getAttributeValue(TYPE_ATTR);
         if (soundType == SPATIAL_VALUE) {
-            auto positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, DataAttribute(), soundChunk);
+            auto positionChunk = dataParser.getUniqueChunk(true, POSITION_TAG, DataAttribute(), soundChunk);
             auto* spatialSound = new SpatialSound(filename, category, positionChunk->getPoint3Value());
 
-            auto inaudibleDistanceChunk = xmlParser.getUniqueChunk(true, INAUDIBLE_DISTANCE_TAG, DataAttribute(), soundChunk);
+            auto inaudibleDistanceChunk = dataParser.getUniqueChunk(true, INAUDIBLE_DISTANCE_TAG, DataAttribute(), soundChunk);
             spatialSound->setInaudibleDistance(inaudibleDistanceChunk->getFloatValue());
 
             return spatialSound;
@@ -74,8 +74,8 @@ namespace urchin {
         }
     }
 
-    void SoundReaderWriter::loadPropertiesOn(Sound* sound, const XmlChunk* soundChunk, const XmlParser& xmlParser) {
-        auto initialVolumeChunk = xmlParser.getUniqueChunk(true, INITIAL_VOLUME_TAG, DataAttribute(), soundChunk);
+    void SoundReaderWriter::loadPropertiesOn(Sound* sound, const XmlChunk* soundChunk, const DataParser& dataParser) {
+        auto initialVolumeChunk = dataParser.getUniqueChunk(true, INITIAL_VOLUME_TAG, DataAttribute(), soundChunk);
         sound->setInitialVolume(initialVolumeChunk->getFloatValue());
     }
 

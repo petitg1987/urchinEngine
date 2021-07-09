@@ -47,18 +47,18 @@ namespace urchin {
         }
     }
 
-    void SceneObject::loadFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
+    void SceneObject::loadFrom(const XmlChunk* chunk, const DataParser& dataParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
-        auto modelChunk = xmlParser.getUniqueChunk(true, MODEL_TAG, DataAttribute(), chunk);
-        setModel(ModelReaderWriter::loadFrom(modelChunk.get(), xmlParser));
+        auto modelChunk = dataParser.getUniqueChunk(true, MODEL_TAG, DataAttribute(), chunk);
+        setModel(ModelReaderWriter::loadFrom(modelChunk.get(), dataParser));
 
-        auto physicsChunk = xmlParser.getUniqueChunk(false, PHYSICS_TAG, DataAttribute(), chunk);
+        auto physicsChunk = dataParser.getUniqueChunk(false, PHYSICS_TAG, DataAttribute(), chunk);
         if (physicsChunk != nullptr) {
             std::string rigidBodyId = this->name;
             const Transform<float>& modelTransform = this->model->getTransform();
 
-            setupInteractiveBody(RigidBodyReaderWriter::loadFrom(physicsChunk.get(), rigidBodyId, modelTransform, xmlParser));
+            setupInteractiveBody(RigidBodyReaderWriter::loadFrom(physicsChunk.get(), rigidBodyId, modelTransform, dataParser));
         }
     }
 

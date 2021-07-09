@@ -12,7 +12,7 @@ namespace urchin {
         public:
             ~CollisionCylinderReaderWriter() override = default;
 
-            CollisionShape3D* loadFrom(const XmlChunk*, const XmlParser&) const override;
+            CollisionShape3D* loadFrom(const XmlChunk*, const DataParser&) const override;
             void writeOn(XmlChunk*, const CollisionShape3D&, XmlWriter&) const override;
 
         private:

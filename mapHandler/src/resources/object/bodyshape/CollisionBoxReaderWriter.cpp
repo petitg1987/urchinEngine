@@ -2,8 +2,8 @@
 
 namespace urchin {
 
-    CollisionShape3D* CollisionBoxReaderWriter::loadFrom(const XmlChunk* shapeChunk, const XmlParser& xmlParser) const {
-        auto halfSizeChunk = xmlParser.getUniqueChunk(true, HALF_SIZE_TAG, DataAttribute(), shapeChunk);
+    CollisionShape3D* CollisionBoxReaderWriter::loadFrom(const XmlChunk* shapeChunk, const DataParser& dataParser) const {
+        auto halfSizeChunk = dataParser.getUniqueChunk(true, HALF_SIZE_TAG, DataAttribute(), shapeChunk);
         Vector3<float> halfSize = halfSizeChunk->getVector3Value();
 
         return new CollisionBoxShape(halfSize);

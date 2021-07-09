@@ -1,14 +1,14 @@
 #include "NavMeshAgentReaderWriter.h"
 
 namespace urchin {
-    std::shared_ptr<NavMeshAgent> NavMeshAgentReaderWriter::loadFrom(const XmlChunk* navMeshAgentChunk, const XmlParser& xmlParser) {
-        auto agentHeightChunk = xmlParser.getUniqueChunk(true, AGENT_HEIGHT_TAG, DataAttribute(), navMeshAgentChunk);
+    std::shared_ptr<NavMeshAgent> NavMeshAgentReaderWriter::loadFrom(const XmlChunk* navMeshAgentChunk, const DataParser& dataParser) {
+        auto agentHeightChunk = dataParser.getUniqueChunk(true, AGENT_HEIGHT_TAG, DataAttribute(), navMeshAgentChunk);
         float agentHeight = agentHeightChunk->getFloatValue();
-        auto agentRadiusChunk = xmlParser.getUniqueChunk(true, AGENT_RADIUS_TAG, DataAttribute(), navMeshAgentChunk);
+        auto agentRadiusChunk = dataParser.getUniqueChunk(true, AGENT_RADIUS_TAG, DataAttribute(), navMeshAgentChunk);
         float agentRadius = agentRadiusChunk->getFloatValue();
-        auto maxSlopeInRadianChunk = xmlParser.getUniqueChunk(true, MAX_SLOPE_IN_RADIAN_TAG, DataAttribute(), navMeshAgentChunk);
+        auto maxSlopeInRadianChunk = dataParser.getUniqueChunk(true, MAX_SLOPE_IN_RADIAN_TAG, DataAttribute(), navMeshAgentChunk);
         float maxSlopeInRadian = maxSlopeInRadianChunk->getFloatValue();
-        auto jumpDistanceChunk = xmlParser.getUniqueChunk(true, JUMP_DISTANCE_TAG, DataAttribute(), navMeshAgentChunk);
+        auto jumpDistanceChunk = dataParser.getUniqueChunk(true, JUMP_DISTANCE_TAG, DataAttribute(), navMeshAgentChunk);
         float jumpDistance = jumpDistanceChunk->getFloatValue();
 
         std::shared_ptr<NavMeshAgent> navMeshAgent = std::make_shared<NavMeshAgent>(NavMeshAgent(agentHeight, agentRadius));

@@ -23,7 +23,7 @@ namespace urchin {
             void setWater(Water*);
 
         private:
-            void loadFrom(const XmlChunk*, const XmlParser&);
+            void loadFrom(const XmlChunk*, const DataParser&);
             void writeOn(XmlChunk*, XmlWriter&) const;
 
             static constexpr char NAME_ATTR[] = "name";

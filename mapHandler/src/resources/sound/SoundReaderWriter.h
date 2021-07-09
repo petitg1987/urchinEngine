@@ -10,14 +10,14 @@ namespace urchin {
 
     class SoundReaderWriter {
         public:
-            static Sound* loadFrom(const XmlChunk*, const XmlParser&);
+            static Sound* loadFrom(const XmlChunk*, const DataParser&);
             static void writeOn(XmlChunk*, const Sound*, XmlWriter&);
 
         private:
-            static Sound* buildSoundFrom(const XmlChunk*, const XmlParser&);
+            static Sound* buildSoundFrom(const XmlChunk*, const DataParser&);
             static void buildChunkFrom(XmlChunk*, const Sound*, XmlWriter&);
 
-            static void loadPropertiesOn(Sound*, const XmlChunk*, const XmlParser&);
+            static void loadPropertiesOn(Sound*, const XmlChunk*, const DataParser&);
             static void writePropertiesOn(const XmlChunk*, const Sound*, XmlWriter&);
 
             static constexpr char TYPE_ATTR[] = "type";

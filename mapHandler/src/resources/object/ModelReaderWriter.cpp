@@ -5,14 +5,14 @@
 
 namespace urchin {
 
-    Model* ModelReaderWriter::loadFrom(const XmlChunk* modelChunk, const XmlParser& xmlParser) {
-        auto meshChunk = xmlParser.getUniqueChunk(true, MESH_TAG, DataAttribute(), modelChunk);
-        auto meshFilenameChunk = xmlParser.getUniqueChunk(true, FILENAME_TAG, DataAttribute(), meshChunk.get());
+    Model* ModelReaderWriter::loadFrom(const XmlChunk* modelChunk, const DataParser& dataParser) {
+        auto meshChunk = dataParser.getUniqueChunk(true, MESH_TAG, DataAttribute(), modelChunk);
+        auto meshFilenameChunk = dataParser.getUniqueChunk(true, FILENAME_TAG, DataAttribute(), meshChunk.get());
 
         auto* model = new Model(meshFilenameChunk->getStringValue());
-        loadAnimationsOn(model, modelChunk, xmlParser);
-        loadTransformOn(model, modelChunk, xmlParser);
-        loadFlagsOn(model, modelChunk, xmlParser);
+        loadAnimationsOn(model, modelChunk, dataParser);
+        loadTransformOn(model, modelChunk, dataParser);
+        loadFlagsOn(model, modelChunk, dataParser);
 
         return model;
     }
@@ -29,13 +29,13 @@ namespace urchin {
         writeFlagsOn(modelChunk, model, xmlWriter);
     }
 
-    void ModelReaderWriter::loadAnimationsOn(Model* model, const XmlChunk* modelChunk, const XmlParser& xmlParser) {
-        auto animationsListChunk = xmlParser.getUniqueChunk(false, ANIMATIONS_TAG, DataAttribute(), modelChunk);
+    void ModelReaderWriter::loadAnimationsOn(Model* model, const XmlChunk* modelChunk, const DataParser& dataParser) {
+        auto animationsListChunk = dataParser.getUniqueChunk(false, ANIMATIONS_TAG, DataAttribute(), modelChunk);
         if (animationsListChunk) {
-            auto animationsChunk = xmlParser.getChunks(ANIMATION_TAG, DataAttribute(), animationsListChunk.get());
+            auto animationsChunk = dataParser.getChunks(ANIMATION_TAG, DataAttribute(), animationsListChunk.get());
             for (const auto& animationChunk : animationsChunk) {
-                auto animationNameChunk = xmlParser.getUniqueChunk(true, NAME_TAG, DataAttribute(), animationChunk.get());
-                auto animationFilenameChunk = xmlParser.getUniqueChunk(true, FILENAME_TAG, DataAttribute(), animationChunk.get());
+                auto animationNameChunk = dataParser.getUniqueChunk(true, NAME_TAG, DataAttribute(), animationChunk.get());
+                auto animationFilenameChunk = dataParser.getUniqueChunk(true, FILENAME_TAG, DataAttribute(), animationChunk.get());
 
                 model->loadAnimation(animationNameChunk->getStringValue(), animationFilenameChunk->getStringValue());
             }
@@ -58,15 +58,15 @@ namespace urchin {
         }
     }
 
-    void ModelReaderWriter::loadTransformOn(Model* model, const XmlChunk* modelChunk, const XmlParser& xmlParser) {
-        auto transformChunk = xmlParser.getUniqueChunk(true, TRANSFORM_TAG, DataAttribute(), modelChunk);
+    void ModelReaderWriter::loadTransformOn(Model* model, const XmlChunk* modelChunk, const DataParser& dataParser) {
+        auto transformChunk = dataParser.getUniqueChunk(true, TRANSFORM_TAG, DataAttribute(), modelChunk);
 
-        auto positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, DataAttribute(), transformChunk.get());
+        auto positionChunk = dataParser.getUniqueChunk(true, POSITION_TAG, DataAttribute(), transformChunk.get());
         Point3<float> position = positionChunk->getPoint3Value();
 
-        Quaternion<float> orientation = OrientationReaderWriter::loadOrientation(transformChunk.get(), xmlParser);
+        Quaternion<float> orientation = OrientationReaderWriter::loadOrientation(transformChunk.get(), dataParser);
 
-        auto scaleChunk = xmlParser.getUniqueChunk(false, SCALE_TAG, DataAttribute(), transformChunk.get());
+        auto scaleChunk = dataParser.getUniqueChunk(false, SCALE_TAG, DataAttribute(), transformChunk.get());
         float scale = 1.0f;
         if (scaleChunk) {
             scale = scaleChunk->getFloatValue();
@@ -87,8 +87,8 @@ namespace urchin {
         scaleChunk->setFloatValue(model->getTransform().getScale());
     }
 
-    void ModelReaderWriter::loadFlagsOn(Model* model, const XmlChunk* modelChunk, const XmlParser& xmlParser) {
-        auto produceShadowChunk = xmlParser.getUniqueChunk(false, PRODUCE_SHADOW_TAG, DataAttribute(), modelChunk);
+    void ModelReaderWriter::loadFlagsOn(Model* model, const XmlChunk* modelChunk, const DataParser& dataParser) {
+        auto produceShadowChunk = dataParser.getUniqueChunk(false, PRODUCE_SHADOW_TAG, DataAttribute(), modelChunk);
         if (produceShadowChunk) {
             model->setProduceShadow(produceShadowChunk->getBoolValue());
         } else {

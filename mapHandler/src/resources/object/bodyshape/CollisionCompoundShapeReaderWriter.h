@@ -12,11 +12,11 @@ namespace urchin {
         public:
             ~CollisionCompoundShapeReaderWriter() override = default;
 
-            CollisionShape3D* loadFrom(const XmlChunk*, const XmlParser&) const override;
+            CollisionShape3D* loadFrom(const XmlChunk*, const DataParser&) const override;
             void writeOn(XmlChunk*, const CollisionShape3D&, XmlWriter&) const override;
 
         private:
-            static void loadTransformOn(LocalizedCollisionShape&, const XmlChunk*, const XmlParser&);
+            static void loadTransformOn(LocalizedCollisionShape&, const XmlChunk*, const DataParser&);
             static void writeTransformOn(const XmlChunk*, const LocalizedCollisionShape&, XmlWriter&);
 
             static constexpr char LOCALIZED_SHAPES[] = "localizedShapes";

@@ -14,7 +14,7 @@ namespace urchin {
     }
 
     void UISkinService::setSkin(const std::string& skinFilename) {
-        skinReader = std::make_unique<XmlParser>(skinFilename);
+        skinReader = std::make_unique<DataParser>(skinFilename);
     }
 
     std::shared_ptr<Texture> UISkinService::createWidgetTexture(unsigned int width, unsigned int height, const XmlChunk* skinXmlChunk, WidgetOutline* widgetOutline) const {
@@ -135,7 +135,7 @@ namespace urchin {
         throw std::runtime_error("Unknown length type: " + lengthTypeString);
     }
 
-    const std::unique_ptr<XmlParser>& UISkinService::getSkinReader() const {
+    const std::unique_ptr<DataParser>& UISkinService::getSkinReader() const {
         if (!skinReader) {
             throw std::runtime_error("UI skin is not initialized");
         }

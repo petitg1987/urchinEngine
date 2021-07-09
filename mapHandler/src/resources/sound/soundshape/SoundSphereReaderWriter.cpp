@@ -2,14 +2,14 @@
 
 namespace urchin {
 
-    SoundShape* SoundSphereReaderWriter::loadFrom(const XmlChunk* shapeChunk, const XmlParser& xmlParser) const {
-        auto radiusChunk = xmlParser.getUniqueChunk(true, RADIUS_TAG, DataAttribute(), shapeChunk);
+    SoundShape* SoundSphereReaderWriter::loadFrom(const XmlChunk* shapeChunk, const DataParser& dataParser) const {
+        auto radiusChunk = dataParser.getUniqueChunk(true, RADIUS_TAG, DataAttribute(), shapeChunk);
         float radius = radiusChunk->getFloatValue();
 
-        auto positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, DataAttribute(), shapeChunk);
+        auto positionChunk = dataParser.getUniqueChunk(true, POSITION_TAG, DataAttribute(), shapeChunk);
         Point3<float> position = positionChunk->getPoint3Value();
 
-        auto marginChunk = xmlParser.getUniqueChunk(true, MARGIN_TAG, DataAttribute(), shapeChunk);
+        auto marginChunk = dataParser.getUniqueChunk(true, MARGIN_TAG, DataAttribute(), shapeChunk);
         float margin = marginChunk->getFloatValue();
 
         return new SoundSphere(radius, position, margin);

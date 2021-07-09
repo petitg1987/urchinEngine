@@ -35,7 +35,7 @@ namespace urchin {
             void moveTo(const Point3<float>&, const Quaternion<float>&) override;
 
         private:
-            void loadFrom(const XmlChunk*, const XmlParser&);
+            void loadFrom(const XmlChunk*, const DataParser&);
             void writeOn(XmlChunk*, XmlWriter&) const;
 
             void setupRigidBody(RigidBody*);

@@ -2,8 +2,8 @@
 
 namespace urchin {
 
-    CollisionShape3D* CollisionSphereReaderWriter::loadFrom(const XmlChunk* shapeChunk, const XmlParser& xmlParser) const {
-        auto radiusChunk = xmlParser.getUniqueChunk(true, RADIUS_TAG, DataAttribute(), shapeChunk);
+    CollisionShape3D* CollisionSphereReaderWriter::loadFrom(const XmlChunk* shapeChunk, const DataParser& dataParser) const {
+        auto radiusChunk = dataParser.getUniqueChunk(true, RADIUS_TAG, DataAttribute(), shapeChunk);
         float radius = radiusChunk->getFloatValue();
 
         return new CollisionSphereShape(radius);

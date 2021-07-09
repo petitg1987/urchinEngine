@@ -1,33 +1,28 @@
 #include <stdexcept>
 
-#include <io/data/XmlParser.h>
+#include <io/data/DataParser.h>
 #include <config/FileSystem.h>
 
 namespace urchin {
 
-    XmlParser::XmlParser(const std::string& filename) :
-        XmlParser(filename, FileSystem::instance()->getResourcesDirectory()) {
+    DataParser::DataParser(const std::string& filename) :
+            DataParser(filename, FileSystem::instance()->getResourcesDirectory()) {
 
     }
 
     /**
      * @param workingDirectory Override the default working directory
      */
-    XmlParser::XmlParser(const std::string& filename, const std::string& workingDirectory) : doc() {
+    DataParser::DataParser(const std::string& filename, const std::string& workingDirectory) {
         this->filenamePath = workingDirectory + filename;
-        this->doc = new TiXmlDocument(filenamePath.c_str());
+        this->doc = std::make_unique<TiXmlDocument>(filenamePath.c_str());
 
         if (!doc->LoadFile()) {
-            delete doc;
             throw std::invalid_argument("Cannot open or load the file " + filenamePath + ".");
         }
     }
 
-    XmlParser::~XmlParser() {
-        delete doc;
-    }
-
-    std::unique_ptr<XmlChunk> XmlParser::getRootChunk() const {
+    std::unique_ptr<XmlChunk> DataParser::getRootChunk() const {
         const TiXmlNode* rootNode = doc->FirstChild()->NextSibling();
         if (rootNode->Type() == TiXmlNode::ELEMENT) {
             return std::unique_ptr<XmlChunk>(new XmlChunk(doc->FirstChild()->NextSibling()->ToElement()));
@@ -43,7 +38,7 @@ namespace urchin {
      * @param parent Name of the tag parent of "chunkName"
      * @return XML chunks according to the parameters
      */
-    std::vector<std::unique_ptr<XmlChunk>> XmlParser::getChunks(const std::string& chunkName, const DataAttribute& attribute, const XmlChunk* parent) const {
+    std::vector<std::unique_ptr<XmlChunk>> DataParser::getChunks(const std::string& chunkName, const DataAttribute& attribute, const XmlChunk* parent) const {
         std::vector<std::unique_ptr<XmlChunk>> chunks;
 
         const TiXmlNode *firstChild;
@@ -78,7 +73,7 @@ namespace urchin {
      * @param parent Name of the tag parent of "chunkName"
      * @return Unique XML chunk according to the parameters
      */
-    std::unique_ptr<XmlChunk> XmlParser::getUniqueChunk(bool mandatory, const std::string& chunkName, const DataAttribute& attribute, const XmlChunk* parent) const {
+    std::unique_ptr<XmlChunk> DataParser::getUniqueChunk(bool mandatory, const std::string& chunkName, const DataAttribute& attribute, const XmlChunk* parent) const {
         auto chunks = getChunks(chunkName, attribute, parent);
 
         if (chunks.size() > 1) {
@@ -94,7 +89,7 @@ namespace urchin {
         return std::move(chunks[0]);
     }
 
-    std::string XmlParser::getChunkDescription(const std::string& chunkName, const DataAttribute& attribute) const {
+    std::string DataParser::getChunkDescription(const std::string& chunkName, const DataAttribute& attribute) const {
         if (attribute.getAttributeName().empty()) {
             return chunkName;
         } else {

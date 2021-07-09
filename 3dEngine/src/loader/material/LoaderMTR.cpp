@@ -11,7 +11,7 @@ namespace urchin {
     Material* LoaderMTR::loadFromFile(const std::string& filename, const std::map<std::string, std::string>&) {
         std::locale::global(std::locale("C")); //for float
 
-        XmlParser parserXml(filename);
+        DataParser parserXml(filename);
 
         //textures data
         bool repeatableTextures = false;

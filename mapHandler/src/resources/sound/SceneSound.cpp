@@ -30,13 +30,13 @@ namespace urchin {
         }
     }
 
-    void SceneSound::loadFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
+    void SceneSound::loadFrom(const XmlChunk* chunk, const DataParser& dataParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
-        auto soundChunk = xmlParser.getUniqueChunk(true, SOUND_TAG, DataAttribute(), chunk);
-        auto soundTriggerChunk = xmlParser.getUniqueChunk(true, SOUND_TRIGGER_TAG, DataAttribute(), chunk);
+        auto soundChunk = dataParser.getUniqueChunk(true, SOUND_TAG, DataAttribute(), chunk);
+        auto soundTriggerChunk = dataParser.getUniqueChunk(true, SOUND_TRIGGER_TAG, DataAttribute(), chunk);
 
-        setSoundElements(SoundReaderWriter::loadFrom(soundChunk.get(), xmlParser), SoundTriggerReaderWriter::loadFrom(soundTriggerChunk.get(), xmlParser));
+        setSoundElements(SoundReaderWriter::loadFrom(soundChunk.get(), dataParser), SoundTriggerReaderWriter::loadFrom(soundTriggerChunk.get(), dataParser));
     }
 
     void SceneSound::writeOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {

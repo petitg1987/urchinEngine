@@ -1,11 +1,11 @@
 #include "WaterReaderWriter.h"
 
 namespace urchin {
-    Water* WaterReaderWriter::loadFrom(const XmlChunk* waterChunk, const XmlParser& xmlParser) const {
+    Water* WaterReaderWriter::loadFrom(const XmlChunk* waterChunk, const DataParser& dataParser) const {
         auto* water = new Water();
-        loadGeneralPropertiesOn(water, waterChunk, xmlParser);
-        loadWaterSurfaceProperties(water, waterChunk, xmlParser);
-        loadUnderWaterProperties(water, waterChunk, xmlParser);
+        loadGeneralPropertiesOn(water, waterChunk, dataParser);
+        loadWaterSurfaceProperties(water, waterChunk, dataParser);
+        loadUnderWaterProperties(water, waterChunk, dataParser);
 
         return water;
     }
@@ -16,14 +16,14 @@ namespace urchin {
         writeUnderWaterPropertiesOn(waterChunk, water, xmlWriter);
     }
 
-    void WaterReaderWriter::loadGeneralPropertiesOn(Water* water, const XmlChunk* waterChunk, const XmlParser& xmlParser) {
-        auto centerPositionChunk = xmlParser.getUniqueChunk(true, CENTER_POSITION_TAG, DataAttribute(), waterChunk);
+    void WaterReaderWriter::loadGeneralPropertiesOn(Water* water, const XmlChunk* waterChunk, const DataParser& dataParser) {
+        auto centerPositionChunk = dataParser.getUniqueChunk(true, CENTER_POSITION_TAG, DataAttribute(), waterChunk);
         water->setCenterPosition(centerPositionChunk->getPoint3Value());
 
-        auto xSizeChunk = xmlParser.getUniqueChunk(true, X_SIZE_TAG, DataAttribute(), waterChunk);
+        auto xSizeChunk = dataParser.getUniqueChunk(true, X_SIZE_TAG, DataAttribute(), waterChunk);
         water->setXSize(xSizeChunk->getFloatValue());
 
-        auto zSizeChunk = xmlParser.getUniqueChunk(true, Z_SIZE_TAG, DataAttribute(), waterChunk);
+        auto zSizeChunk = dataParser.getUniqueChunk(true, Z_SIZE_TAG, DataAttribute(), waterChunk);
         water->setZSize(zSizeChunk->getFloatValue());
     }
 
@@ -38,26 +38,26 @@ namespace urchin {
         zSizeChunk->setFloatValue(water->getZSize());
     }
 
-    void WaterReaderWriter::loadWaterSurfaceProperties(Water* water, const XmlChunk* waterChunk, const XmlParser& xmlParser) {
-        auto waterColorChunk = xmlParser.getUniqueChunk(true, WATER_COLOR_TAG, DataAttribute(), waterChunk);
+    void WaterReaderWriter::loadWaterSurfaceProperties(Water* water, const XmlChunk* waterChunk, const DataParser& dataParser) {
+        auto waterColorChunk = dataParser.getUniqueChunk(true, WATER_COLOR_TAG, DataAttribute(), waterChunk);
         water->setWaterColor(waterColorChunk->getVector3Value());
 
-        auto normalFilenameChunk = xmlParser.getUniqueChunk(true, NORMAL_FILENAME_TAG, DataAttribute(), waterChunk);
+        auto normalFilenameChunk = dataParser.getUniqueChunk(true, NORMAL_FILENAME_TAG, DataAttribute(), waterChunk);
         water->setNormalTexture(normalFilenameChunk->getStringValue());
 
-        auto dudvMapFilenameChunk = xmlParser.getUniqueChunk(true, DUDV_MAP_FILENAME_TAG, DataAttribute(), waterChunk);
+        auto dudvMapFilenameChunk = dataParser.getUniqueChunk(true, DUDV_MAP_FILENAME_TAG, DataAttribute(), waterChunk);
         water->setDudvMap(dudvMapFilenameChunk->getStringValue());
 
-        auto waveSpeedChunk = xmlParser.getUniqueChunk(true, WAVE_SPEED_TAG, DataAttribute(), waterChunk);
+        auto waveSpeedChunk = dataParser.getUniqueChunk(true, WAVE_SPEED_TAG, DataAttribute(), waterChunk);
         water->setWaveSpeed(waveSpeedChunk->getFloatValue());
 
-        auto waveStrengthChunk = xmlParser.getUniqueChunk(true, WAVE_STRENGTH_TAG, DataAttribute(), waterChunk);
+        auto waveStrengthChunk = dataParser.getUniqueChunk(true, WAVE_STRENGTH_TAG, DataAttribute(), waterChunk);
         water->setWaveStrength(waveStrengthChunk->getFloatValue());
 
-        auto sRepeatChunk = xmlParser.getUniqueChunk(true, S_REPEAT_TAG, DataAttribute(), waterChunk);
+        auto sRepeatChunk = dataParser.getUniqueChunk(true, S_REPEAT_TAG, DataAttribute(), waterChunk);
         water->setSRepeat(sRepeatChunk->getFloatValue());
 
-        auto tRepeatChunk = xmlParser.getUniqueChunk(true, T_REPEAT_TAG, DataAttribute(), waterChunk);
+        auto tRepeatChunk = dataParser.getUniqueChunk(true, T_REPEAT_TAG, DataAttribute(), waterChunk);
         water->setTRepeat(tRepeatChunk->getFloatValue());
     }
 
@@ -84,11 +84,11 @@ namespace urchin {
         tRepeatChunk->setFloatValue(water->getTRepeat());
     }
 
-    void WaterReaderWriter::loadUnderWaterProperties(Water* water, const XmlChunk* waterChunk, const XmlParser& xmlParser) {
-        auto densityChunk = xmlParser.getUniqueChunk(true, DENSITY_TAG, DataAttribute(), waterChunk);
+    void WaterReaderWriter::loadUnderWaterProperties(Water* water, const XmlChunk* waterChunk, const DataParser& dataParser) {
+        auto densityChunk = dataParser.getUniqueChunk(true, DENSITY_TAG, DataAttribute(), waterChunk);
         water->setDensity(densityChunk->getFloatValue());
 
-        auto gradientChunk = xmlParser.getUniqueChunk(true, GRADIENT_TAG, DataAttribute(), waterChunk);
+        auto gradientChunk = dataParser.getUniqueChunk(true, GRADIENT_TAG, DataAttribute(), waterChunk);
         water->setGradient(gradientChunk->getFloatValue());
     }
 

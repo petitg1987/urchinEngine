@@ -43,10 +43,10 @@ namespace urchin {
         }
     }
 
-    void SceneTerrain::loadFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
+    void SceneTerrain::loadFrom(const XmlChunk* chunk, const DataParser& dataParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
-        setTerrain(TerrainReaderWriter().loadFrom(chunk, xmlParser));
+        setTerrain(TerrainReaderWriter().loadFrom(chunk, dataParser));
 
         auto collisionTerrainShape = std::make_unique<urchin::CollisionHeightfieldShape>(terrain->getMesh()->getVertices(),
                                                                                          terrain->getMesh()->getXSize(),

@@ -15,7 +15,7 @@
 #include <io/svg/shape/SVGLine.h>
 #include <io/svg/shape/SVGCircle.h>
 #include <io/map/MapSerializer.h>
-#include <io/data/XmlParser.h>
+#include <io/data/DataParser.h>
 #include <io/data/XmlWriter.h>
 #include <io/data/DataAttribute.h>
 #include <io/data/XmlChunk.h>
