@@ -33,14 +33,14 @@ namespace urchin {
         XmlParser xmlParser(filename);
 
         relativeWorkingDirectory = xmlParser.getRootChunk()->getAttributeValue(WORKING_DIR_ATTR);
-        map->loadFrom(xmlParser.getRootChunk(), xmlParser, loadCallback);
+        map->loadFrom(xmlParser.getRootChunk().get(), xmlParser, loadCallback);
     }
 
     void MapHandler::writeMapOnFile(const std::string& filename) const {
         XmlWriter xmlWriter(filename);
 
-        std::shared_ptr<XmlChunk> rootChunk = xmlWriter.createChunk(SCENE_TAG, XmlAttribute(WORKING_DIR_ATTR, relativeWorkingDirectory));
-        map->writeOn(rootChunk, xmlWriter);
+        auto rootChunk = xmlWriter.createChunk(SCENE_TAG, XmlAttribute(WORKING_DIR_ATTR, relativeWorkingDirectory));
+        map->writeOn(rootChunk.get(), xmlWriter);
 
         xmlWriter.saveInFile();
     }

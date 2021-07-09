@@ -27,10 +27,10 @@ namespace urchin {
         delete doc;
     }
 
-    std::shared_ptr<XmlChunk> XmlParser::getRootChunk() const {
+    std::unique_ptr<XmlChunk> XmlParser::getRootChunk() const {
         const TiXmlNode* rootNode = doc->FirstChild()->NextSibling();
         if (rootNode->Type() == TiXmlNode::ELEMENT) {
-            return std::make_shared<XmlChunk>(doc->FirstChild()->NextSibling()->ToElement());
+            return std::unique_ptr<XmlChunk>(new XmlChunk(doc->FirstChild()->NextSibling()->ToElement()));
         }
 
         throw std::invalid_argument("Impossible to get root element in file: " + filenamePath);
@@ -43,8 +43,8 @@ namespace urchin {
      * @param parent Name of the tag parent of "chunkName"
      * @return XML chunks according to the parameters
      */
-    std::vector<std::shared_ptr<XmlChunk>> XmlParser::getChunks(const std::string& chunkName, const XmlAttribute& attribute, const std::shared_ptr<XmlChunk>& parent) const {
-        std::vector<std::shared_ptr<XmlChunk>> chunks;
+    std::vector<std::unique_ptr<XmlChunk>> XmlParser::getChunks(const std::string& chunkName, const XmlAttribute& attribute, const XmlChunk* parent) const {
+        std::vector<std::unique_ptr<XmlChunk>> chunks;
 
         const TiXmlNode *firstChild;
         if (!parent) {
@@ -59,10 +59,10 @@ namespace urchin {
                 if (!attribute.getAttributeName().empty()) {
                     const std::string* attributeValue = pChild->ToElement()->Attribute(attribute.getAttributeName());
                     if (attributeValue && (*attributeValue) == attribute.getAttributeValue()) {
-                        chunks.push_back(std::make_shared<XmlChunk>(pChild->ToElement()));
+                        chunks.push_back(std::unique_ptr<XmlChunk>(new XmlChunk(pChild->ToElement())));
                     }
                 } else {
-                    chunks.push_back(std::make_shared<XmlChunk>(pChild->ToElement()));
+                    chunks.push_back(std::unique_ptr<XmlChunk>(new XmlChunk(pChild->ToElement())));
                 }
             }
         }
@@ -78,8 +78,8 @@ namespace urchin {
      * @param parent Name of the tag parent of "chunkName"
      * @return Unique XML chunk according to the parameters
      */
-    std::shared_ptr<XmlChunk> XmlParser::getUniqueChunk(bool mandatory, const std::string& chunkName, const XmlAttribute& attribute, const std::shared_ptr<XmlChunk>& parent) const {
-        std::vector<std::shared_ptr<XmlChunk>> chunks = getChunks(chunkName, attribute, parent);
+    std::unique_ptr<XmlChunk> XmlParser::getUniqueChunk(bool mandatory, const std::string& chunkName, const XmlAttribute& attribute, const XmlChunk* parent) const {
+        auto chunks = getChunks(chunkName, attribute, parent);
 
         if (chunks.size() > 1) {
             throw std::invalid_argument("More than one tag found for " + getChunkDescription(chunkName, attribute) + ".");
@@ -88,10 +88,10 @@ namespace urchin {
                 throw std::invalid_argument("The tag " + getChunkDescription(chunkName, attribute) + " wasn't found in file " + filenamePath + ".");
             }
 
-            return std::shared_ptr<XmlChunk>(nullptr);
+            return std::unique_ptr<XmlChunk>(nullptr);
         }
 
-        return chunks[0];
+        return std::move(chunks[0]);
     }
 
     std::string XmlParser::getChunkDescription(const std::string& chunkName, const XmlAttribute& attribute) const {

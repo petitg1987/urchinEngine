@@ -47,30 +47,30 @@ namespace urchin {
         }
     }
 
-    void SceneObject::loadFrom(const std::shared_ptr<XmlChunk>& chunk, const XmlParser& xmlParser) {
+    void SceneObject::loadFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
-        std::shared_ptr<XmlChunk> modelChunk = xmlParser.getUniqueChunk(true, MODEL_TAG, XmlAttribute(), chunk);
-        setModel(ModelReaderWriter::loadFrom(modelChunk, xmlParser));
+        auto modelChunk = xmlParser.getUniqueChunk(true, MODEL_TAG, XmlAttribute(), chunk);
+        setModel(ModelReaderWriter::loadFrom(modelChunk.get(), xmlParser));
 
-        std::shared_ptr<XmlChunk> physicsChunk = xmlParser.getUniqueChunk(false, PHYSICS_TAG, XmlAttribute(), chunk);
+        auto physicsChunk = xmlParser.getUniqueChunk(false, PHYSICS_TAG, XmlAttribute(), chunk);
         if (physicsChunk != nullptr) {
             std::string rigidBodyId = this->name;
             const Transform<float>& modelTransform = this->model->getTransform();
 
-            setupInteractiveBody(RigidBodyReaderWriter::loadFrom(physicsChunk, rigidBodyId, modelTransform, xmlParser));
+            setupInteractiveBody(RigidBodyReaderWriter::loadFrom(physicsChunk.get(), rigidBodyId, modelTransform, xmlParser));
         }
     }
 
-    void SceneObject::writeOn(const std::shared_ptr<XmlChunk>& chunk, XmlWriter& xmlWriter) const {
+    void SceneObject::writeOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
         chunk->setAttribute(XmlAttribute(NAME_ATTR, this->name));
 
-        std::shared_ptr<XmlChunk> modelChunk = xmlWriter.createChunk(MODEL_TAG, XmlAttribute(), chunk);
-        ModelReaderWriter::writeOn(modelChunk, model, xmlWriter);
+        auto modelChunk = xmlWriter.createChunk(MODEL_TAG, XmlAttribute(), chunk);
+        ModelReaderWriter::writeOn(modelChunk.get(), model, xmlWriter);
 
         if (rigidBody) {
-            std::shared_ptr<XmlChunk> physicsChunk = xmlWriter.createChunk(PHYSICS_TAG, XmlAttribute(), chunk);
-            RigidBodyReaderWriter::writeOn(physicsChunk, rigidBody, xmlWriter);
+            auto physicsChunk = xmlWriter.createChunk(PHYSICS_TAG, XmlAttribute(), chunk);
+            RigidBodyReaderWriter::writeOn(physicsChunk.get(), rigidBody, xmlWriter);
         }
     }
 

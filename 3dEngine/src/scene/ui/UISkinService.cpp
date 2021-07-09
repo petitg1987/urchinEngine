@@ -17,21 +17,21 @@ namespace urchin {
         xmlSkin = std::make_unique<XmlParser>(skinFilename);
     }
 
-    std::shared_ptr<Texture> UISkinService::createWidgetTexture(unsigned int width, unsigned int height, const std::shared_ptr<XmlChunk>& skinXmlChunk, WidgetOutline* widgetOutline) const {
+    std::shared_ptr<Texture> UISkinService::createWidgetTexture(unsigned int width, unsigned int height, const XmlChunk* skinXmlChunk, WidgetOutline* widgetOutline) const {
         //skin information
-        std::shared_ptr<XmlChunk> widgetImageElem = getXmlSkin()->getUniqueChunk(true, "image", XmlAttribute(), skinXmlChunk);
+        auto widgetImageElem = getXmlSkin()->getUniqueChunk(true, "image", XmlAttribute(), skinXmlChunk);
         auto* rawWidgetImage = MediaManager::instance()->getMedia<Image>(widgetImageElem->getStringValue());
 
-        std::shared_ptr<XmlChunk> topElem(getXmlSkin()->getUniqueChunk(true, "part", XmlAttribute("zone", "top"), skinXmlChunk));
+        auto topElem = getXmlSkin()->getUniqueChunk(true, "part", XmlAttribute("zone", "top"), skinXmlChunk);
         unsigned int top = topElem->getUnsignedIntValue();
 
-        std::shared_ptr<XmlChunk> bottomElem(getXmlSkin()->getUniqueChunk(true, "part", XmlAttribute("zone", "bottom"), skinXmlChunk));
+        auto bottomElem = getXmlSkin()->getUniqueChunk(true, "part", XmlAttribute("zone", "bottom"), skinXmlChunk);
         unsigned int bottom = bottomElem->getUnsignedIntValue();
 
-        std::shared_ptr<XmlChunk> leftElem(getXmlSkin()->getUniqueChunk(true, "part", XmlAttribute("zone", "left"), skinXmlChunk));
+        auto leftElem = getXmlSkin()->getUniqueChunk(true, "part", XmlAttribute("zone", "left"), skinXmlChunk);
         unsigned int left = leftElem->getUnsignedIntValue();
 
-        std::shared_ptr<XmlChunk> rightElem(getXmlSkin()->getUniqueChunk(true, "part", XmlAttribute("zone", "right"), skinXmlChunk));
+        auto rightElem = getXmlSkin()->getUniqueChunk(true, "part", XmlAttribute("zone", "right"), skinXmlChunk);
         unsigned int right = rightElem->getUnsignedIntValue();
 
         //copy the information into the outline
@@ -121,12 +121,12 @@ namespace urchin {
         return widgetTexture;
     }
 
-    Length UISkinService::loadLength(const std::shared_ptr<XmlChunk>& mainChunk, const std::string& lengthName) const {
-        std::shared_ptr<XmlChunk> fontHeightChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, lengthName, XmlAttribute(), mainChunk);
+    Length UISkinService::loadLength(const XmlChunk* mainChunk, const std::string& lengthName) const {
+        auto fontHeightChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, lengthName, XmlAttribute(), mainChunk);
 
-        float length = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "value", XmlAttribute(), fontHeightChunk)->getFloatValue();
+        float length = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "value", XmlAttribute(), fontHeightChunk.get())->getFloatValue();
 
-        const std::string& lengthTypeString = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "type", XmlAttribute(), fontHeightChunk)->getStringValue();
+        const std::string& lengthTypeString = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "type", XmlAttribute(), fontHeightChunk.get())->getStringValue();
         if (StringUtil::insensitiveEquals(lengthTypeString, "pixel")) {
             return Length(length, LengthType::PIXEL);
         } else if (StringUtil::insensitiveEquals(lengthTypeString, "percentage")) {
@@ -135,7 +135,7 @@ namespace urchin {
         throw std::runtime_error("Unknown length type: " + lengthTypeString);
     }
 
-    const std::unique_ptr<XmlParser>& UISkinService::getXmlSkin() const {
+    const std::unique_ptr<XmlParser>& UISkinService::getXmlSkin() const { //TODO rename !
         if (!xmlSkin) {
             throw std::runtime_error("UI skin is not initialized");
         }

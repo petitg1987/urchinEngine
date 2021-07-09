@@ -41,7 +41,7 @@ namespace urchin {
             void refreshTextAndWidgetSize();
             void cutText();
             void refreshFont();
-            unsigned int retrieveFontHeight(const std::shared_ptr<XmlChunk>&) const;
+            unsigned int retrieveFontHeight(const XmlChunk*) const;
             void cleanFont();
             void refreshCoordinates();
             void refreshRenderer();

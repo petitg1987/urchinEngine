@@ -8,8 +8,8 @@ namespace urchin {
 
     class NavMeshAgentReaderWriter {
         public:
-            static std::shared_ptr<NavMeshAgent> loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
-            static void writeOn(const std::shared_ptr<XmlChunk>&, const std::shared_ptr<const NavMeshAgent>&, XmlWriter&);
+            static std::shared_ptr<NavMeshAgent> loadFrom(const XmlChunk*, const XmlParser&);
+            static void writeOn(XmlChunk*, const std::shared_ptr<const NavMeshAgent>&, XmlWriter&);
 
         private:
             static constexpr char AGENT_HEIGHT_TAG[] = "agentHeight";

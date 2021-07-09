@@ -22,8 +22,8 @@ namespace urchin {
 
             void setSkin(const std::string&);
 
-            std::shared_ptr<Texture> createWidgetTexture(unsigned int, unsigned int, const std::shared_ptr<XmlChunk>&, WidgetOutline* widgetOutline = nullptr) const;
-            Length loadLength(const std::shared_ptr<XmlChunk>&, const std::string&) const;
+            std::shared_ptr<Texture> createWidgetTexture(unsigned int, unsigned int, const XmlChunk*, WidgetOutline* widgetOutline = nullptr) const;
+            Length loadLength(const XmlChunk*, const std::string&) const;
 
             const std::unique_ptr<XmlParser>& getXmlSkin() const;
 

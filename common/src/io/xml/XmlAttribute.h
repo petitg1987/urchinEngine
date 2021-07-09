@@ -4,9 +4,6 @@
 
 namespace urchin {
 
-    /**
-     * Represents a XML attribute
-     */
     class XmlAttribute {
         public:
             XmlAttribute() = default;

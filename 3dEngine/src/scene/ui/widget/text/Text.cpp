@@ -167,17 +167,17 @@ namespace urchin {
     }
 
     void Text::refreshFont() {
-        std::shared_ptr<XmlChunk> textChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "text", XmlAttribute("nameSkin", nameSkin));
-        std::string ttfFilename = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "font", XmlAttribute(), textChunk)->getStringValue();
-        std::string fontColor = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "color", XmlAttribute(), textChunk)->getStringValue();
-        unsigned int fontHeight = retrieveFontHeight(textChunk);
+        auto textChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "text", XmlAttribute("nameSkin", nameSkin));
+        std::string ttfFilename = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "font", XmlAttribute(), textChunk.get())->getStringValue();
+        std::string fontColor = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "color", XmlAttribute(), textChunk.get())->getStringValue();
+        unsigned int fontHeight = retrieveFontHeight(textChunk.get());
 
         cleanFont();
         std::map<std::string, std::string> fontParams = {{"fontSize", std::to_string(fontHeight)}, {"fontColor", fontColor}};
         font = MediaManager::instance()->getMedia<Font>(ttfFilename, fontParams);
     }
 
-    unsigned int Text::retrieveFontHeight(const std::shared_ptr<XmlChunk>& textChunk) const {
+    unsigned int Text::retrieveFontHeight(const XmlChunk* textChunk) const {
         Length fontHeight = UISkinService::instance()->loadLength(textChunk, "height");
         if (fontHeight.getType() == LengthType::PIXEL) {
             return (unsigned int)fontHeight.getValue();

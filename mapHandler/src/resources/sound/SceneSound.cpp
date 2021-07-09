@@ -30,24 +30,23 @@ namespace urchin {
         }
     }
 
-    void SceneSound::loadFrom(const std::shared_ptr<XmlChunk>& chunk, const XmlParser& xmlParser) {
+    void SceneSound::loadFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
-        std::shared_ptr<XmlChunk> soundChunk = xmlParser.getUniqueChunk(true, SOUND_TAG, XmlAttribute(), chunk);
-        std::shared_ptr<XmlChunk> soundTriggerChunk = xmlParser.getUniqueChunk(true, SOUND_TRIGGER_TAG, XmlAttribute(), chunk);
+        auto soundChunk = xmlParser.getUniqueChunk(true, SOUND_TAG, XmlAttribute(), chunk);
+        auto soundTriggerChunk = xmlParser.getUniqueChunk(true, SOUND_TRIGGER_TAG, XmlAttribute(), chunk);
 
-        setSoundElements(SoundReaderWriter::loadFrom(soundChunk, xmlParser),
-                SoundTriggerReaderWriter::loadFrom(soundTriggerChunk, xmlParser));
+        setSoundElements(SoundReaderWriter::loadFrom(soundChunk.get(), xmlParser), SoundTriggerReaderWriter::loadFrom(soundTriggerChunk.get(), xmlParser));
     }
 
-    void SceneSound::writeOn(const std::shared_ptr<XmlChunk>& chunk, XmlWriter& xmlWriter) const {
+    void SceneSound::writeOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
         chunk->setAttribute(XmlAttribute(NAME_ATTR, this->name));
 
-        std::shared_ptr<XmlChunk> soundChunk = xmlWriter.createChunk(SOUND_TAG, XmlAttribute(), chunk);
-        std::shared_ptr<XmlChunk> soundTriggerChunk = xmlWriter.createChunk(SOUND_TRIGGER_TAG, XmlAttribute(), chunk);
+        auto soundChunk = xmlWriter.createChunk(SOUND_TAG, XmlAttribute(), chunk);
+        auto soundTriggerChunk = xmlWriter.createChunk(SOUND_TRIGGER_TAG, XmlAttribute(), chunk);
 
-        SoundReaderWriter::writeOn(soundChunk, sound, xmlWriter);
-        SoundTriggerReaderWriter::writeOn(soundTriggerChunk, soundTrigger, xmlWriter);
+        SoundReaderWriter::writeOn(soundChunk.get(), sound, xmlWriter);
+        SoundTriggerReaderWriter::writeOn(soundTriggerChunk.get(), soundTrigger, xmlWriter);
     }
 
     std::string SceneSound::getName() const {

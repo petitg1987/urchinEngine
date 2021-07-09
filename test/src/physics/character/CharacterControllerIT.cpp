@@ -17,7 +17,7 @@ void CharacterControllerIT::fallingCharacterOnObjects() {
 
     std::thread physicsEngineThread = std::thread([&physicsWorld]() {
         for (std::size_t i = 0; i < 500; ++i) {
-            physicsWorld->getCollisionWorld()->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
+            physicsWorld->getCollisionWorld().process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
             std::this_thread::sleep_for(std::chrono::microseconds(250));
         }
     });
@@ -53,7 +53,7 @@ void CharacterControllerIT::ccdFallingCharacter() {
 
     std::thread physicsEngineThread = std::thread([&physicsWorld]() {
         for (std::size_t i = 0; i < 250; ++i) {
-            physicsWorld->getCollisionWorld()->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
+            physicsWorld->getCollisionWorld().process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
             std::this_thread::sleep_for(std::chrono::microseconds(250));
         }
     });
@@ -81,7 +81,7 @@ void CharacterControllerIT::ccdMovingCharacter() {
 
     std::thread physicsEngineThread = std::thread([&physicsWorld]() {
         for (std::size_t i = 0; i < 100; ++i) {
-            physicsWorld->getCollisionWorld()->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
+            physicsWorld->getCollisionWorld().process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
             std::this_thread::sleep_for(std::chrono::microseconds(250));
         }
     });

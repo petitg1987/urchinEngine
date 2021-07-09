@@ -32,20 +32,20 @@ namespace urchin {
         delete cursorImage;
 
         //skin information
-        std::shared_ptr<XmlChunk> sliderChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "slider", XmlAttribute("nameSkin", nameSkin));
+        auto sliderChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "slider", XmlAttribute("nameSkin", nameSkin));
 
-        std::shared_ptr<XmlChunk> valuesTextSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "valuesTextSkin", XmlAttribute(), sliderChunk);
+        auto valuesTextSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "valuesTextSkin", XmlAttribute(), sliderChunk.get());
         std::string valuesTextSkin = valuesTextSkinChunk->getStringValue();
 
-        std::shared_ptr<XmlChunk> cursorImageElem = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "imageCursor", XmlAttribute(), sliderChunk);
+        auto cursorImageElem = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "imageCursor", XmlAttribute(), sliderChunk.get());
         std::string cursorImageFilename = cursorImageElem->getStringValue();
 
         currentValueText = Text::newText(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[selectedIndex]);
         float textYPosition = (float)(getHeight() - currentValueText->getHeight()) / 2.0f;
         currentValueText->updatePosition(Position((float)getWidth() + TEXT_SHIFT_LENGTH, textYPosition, LengthType::PIXEL));
 
-        texSliderLine = loadTexture(sliderChunk, "imageLine");
-        auto imageCursor = loadTexture(sliderChunk, "imageCursor");
+        texSliderLine = loadTexture(sliderChunk.get(), "imageLine");
+        auto imageCursor = loadTexture(sliderChunk.get(), "imageCursor");
         float cursorImageWidth = ((float)getHeight() / (float)imageCursor->getHeight()) * (float)imageCursor->getWidth();
         imageCursor.reset();
         cursorImage = new StaticBitmap(this, Position(0, 0, LengthType::PIXEL), Size((float)cursorImageWidth, (float)getHeight(), LengthType::PIXEL), cursorImageFilename);
@@ -68,8 +68,8 @@ namespace urchin {
                 ->build();
     }
 
-    std::shared_ptr<Texture> Slider::loadTexture(const std::shared_ptr<XmlChunk>& sliderChunk, const std::string& chunkName) const {
-        std::shared_ptr<XmlChunk> imageElem = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, chunkName, XmlAttribute(), sliderChunk);
+    std::shared_ptr<Texture> Slider::loadTexture(const XmlChunk* sliderChunk, const std::string& chunkName) const {
+        auto imageElem = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, chunkName, XmlAttribute(), sliderChunk);
 
         auto* img = MediaManager::instance()->getMedia<Image>(imageElem->getStringValue());
         auto tex = img->createTexture(false);

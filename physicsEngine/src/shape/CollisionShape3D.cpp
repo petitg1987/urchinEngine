@@ -42,8 +42,7 @@ namespace urchin {
     }
 
     FixedSizePool<CollisionConvexObject3D>* CollisionShape3D::getObjectsPool() {
-        static CollisionConvexObjectPool* convexObjectPool = CollisionConvexObjectPool::instance(); //static to retrieve thread safe instance only once
-        return convexObjectPool->getObjectsPool();
+        return CollisionConvexObjectPool::instance()->getObjectsPool();
     }
 
     void CollisionShape3D::refreshInnerMargin(float maximumInnerMargin) {

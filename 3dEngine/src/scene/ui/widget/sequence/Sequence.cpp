@@ -33,18 +33,18 @@ namespace urchin {
 
     void Sequence::createOrUpdateWidget() {
         //skin information
-        std::shared_ptr<XmlChunk> sequenceChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "sequence", XmlAttribute("nameSkin", nameSkin));
+        auto sequenceChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "sequence", XmlAttribute("nameSkin", nameSkin));
 
-        std::shared_ptr<XmlChunk> buttonsTextSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "buttonsTextSkin", XmlAttribute(), sequenceChunk);
+        auto buttonsTextSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "buttonsTextSkin", XmlAttribute(), sequenceChunk.get());
         std::string buttonsTextSkin = buttonsTextSkinChunk->getStringValue();
 
-        std::shared_ptr<XmlChunk> valuesTextSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "valuesTextSkin", XmlAttribute(), sequenceChunk);
+        auto valuesTextSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "valuesTextSkin", XmlAttribute(), sequenceChunk.get());
         std::string valuesTextSkin = valuesTextSkinChunk->getStringValue();
 
-        std::shared_ptr<XmlChunk> leftButtonTextChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "leftButtonText", XmlAttribute(), sequenceChunk);
+        auto leftButtonTextChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "leftButtonText", XmlAttribute(), sequenceChunk.get());
         std::string leftButtonString = leftButtonTextChunk->getStringValue();
 
-        std::shared_ptr<XmlChunk> rightButtonTextChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "rightButtonText", XmlAttribute(), sequenceChunk);
+        auto rightButtonTextChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "rightButtonText", XmlAttribute(), sequenceChunk.get());
         std::string rightButtonString = rightButtonTextChunk->getStringValue();
 
         //clear children

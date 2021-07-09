@@ -9,15 +9,12 @@
 
 namespace urchin {
 
-    /**
-    * XML writer
-    */
     class XmlWriter {
         public:
             explicit XmlWriter(const std::string&);
             ~XmlWriter();
 
-            std::shared_ptr<XmlChunk> createChunk(const std::string&, const XmlAttribute & = XmlAttribute(), const std::shared_ptr<XmlChunk> &parent = std::shared_ptr<XmlChunk>());
+            std::unique_ptr<XmlChunk> createChunk(const std::string&, const XmlAttribute & = XmlAttribute(), const XmlChunk* parent = nullptr);
             void saveInFile();
 
         private:

@@ -10,15 +10,15 @@ namespace urchin {
 
     class SoundReaderWriter {
         public:
-            static Sound* loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
-            static void writeOn(const std::shared_ptr<XmlChunk>&, const Sound*, XmlWriter&);
+            static Sound* loadFrom(const XmlChunk*, const XmlParser&);
+            static void writeOn(XmlChunk*, const Sound*, XmlWriter&);
 
         private:
-            static Sound* buildSoundFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
-            static void buildChunkFrom(const std::shared_ptr<XmlChunk>&, const Sound*, XmlWriter&);
+            static Sound* buildSoundFrom(const XmlChunk*, const XmlParser&);
+            static void buildChunkFrom(XmlChunk*, const Sound*, XmlWriter&);
 
-            static void loadPropertiesOn(Sound*, const std::shared_ptr<XmlChunk>&, const XmlParser&);
-            static void writePropertiesOn(const std::shared_ptr<XmlChunk>&, const Sound*, XmlWriter&);
+            static void loadPropertiesOn(Sound*, const XmlChunk*, const XmlParser&);
+            static void writePropertiesOn(const XmlChunk*, const Sound*, XmlWriter&);
 
             static constexpr char TYPE_ATTR[] = "type";
             static constexpr char CATEGORY_ATTR[] = "category";

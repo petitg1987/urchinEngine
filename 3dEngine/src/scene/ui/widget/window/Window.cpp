@@ -23,13 +23,13 @@ namespace urchin {
 
     void Window::createOrUpdateWidget() {
         //skin information
-        std::shared_ptr<XmlChunk> windowChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "window", XmlAttribute("nameSkin", nameSkin));
+        auto windowChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "window", XmlAttribute("nameSkin", nameSkin));
 
-        std::shared_ptr<XmlChunk> skinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute(), windowChunk);
-        texWindow = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinChunk, &widgetOutline);
+        auto skinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute(), windowChunk.get());
+        texWindow = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinChunk.get(), &widgetOutline);
 
         if (!titleKey.empty()) {
-            std::shared_ptr<XmlChunk> textSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), windowChunk);
+            auto textSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), windowChunk.get());
             delete title;
             title = Text::newTranslatableText(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), titleKey);
             title->updatePosition(Position(0.0f, -((float)widgetOutline.topWidth + (float)title->getHeight()) / 2.0f, LengthType::PIXEL));

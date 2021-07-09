@@ -14,7 +14,7 @@ namespace urchin {
         public:
             CollisionShapeReaderWriterRetriever() = delete;
 
-            static std::shared_ptr<CollisionShapeReaderWriter> retrieveShapeReaderWriter(const std::shared_ptr<XmlChunk>&);
+            static std::shared_ptr<CollisionShapeReaderWriter> retrieveShapeReaderWriter(const XmlChunk*);
             static std::shared_ptr<CollisionShapeReaderWriter> retrieveShapeReaderWriter(const CollisionShape3D&);
     };
 

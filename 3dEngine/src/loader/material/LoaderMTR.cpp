@@ -15,16 +15,16 @@ namespace urchin {
 
         //textures data
         bool repeatableTextures = false;
-        std::shared_ptr<XmlChunk> repeatTexture(parserXml.getUniqueChunk(false, "repeatTexture"));
+        auto repeatTexture = parserXml.getUniqueChunk(false, "repeatTexture");
         if (repeatTexture) {
             repeatableTextures = repeatTexture->getBoolValue();
         }
 
         //diffuse data
         std::shared_ptr<Texture> diffuseTexture;
-        std::shared_ptr<XmlChunk> diffuse(parserXml.getUniqueChunk(false, "diffuse"));
+        auto diffuse = parserXml.getUniqueChunk(false, "diffuse");
         if (diffuse) {
-            std::shared_ptr<XmlChunk> diffuseTextureElem(parserXml.getUniqueChunk(true, "texture", XmlAttribute(), diffuse));
+            auto diffuseTextureElem = parserXml.getUniqueChunk(true, "texture", XmlAttribute(), diffuse.get());
             auto* diffuseImage = MediaManager::instance()->getMedia<Image>(diffuseTextureElem->getStringValue());
             diffuseTexture = diffuseImage->createTexture(true);
             diffuseImage->release();
@@ -32,9 +32,9 @@ namespace urchin {
 
         //normal data
         std::shared_ptr<Texture> normalTexture;
-        std::shared_ptr<XmlChunk> normal(parserXml.getUniqueChunk(false, "normal"));
+        auto normal = parserXml.getUniqueChunk(false, "normal");
         if (normal) {
-            std::shared_ptr<XmlChunk> normalTextureElem(parserXml.getUniqueChunk(true, "texture", XmlAttribute(), normal));
+            auto normalTextureElem = parserXml.getUniqueChunk(true, "texture", XmlAttribute(), normal.get());
             auto* normalImage = MediaManager::instance()->getMedia<Image>(normalTextureElem->getStringValue());
             normalTexture = normalImage->createTexture(true);
             normalImage->release();
@@ -42,9 +42,9 @@ namespace urchin {
 
         //ambient data
         float fAmbientFactor = 0.0;
-        std::shared_ptr<XmlChunk> ambient(parserXml.getUniqueChunk(false, "ambient"));
+        auto ambient = parserXml.getUniqueChunk(false, "ambient");
         if (ambient) {
-            std::shared_ptr<XmlChunk> ambientFactor(parserXml.getUniqueChunk(true, "factor", XmlAttribute(), ambient));
+            auto ambientFactor = parserXml.getUniqueChunk(true, "factor", XmlAttribute(), ambient.get());
             fAmbientFactor = TypeConverter::toFloat(ambientFactor->getStringValue());
         }
 

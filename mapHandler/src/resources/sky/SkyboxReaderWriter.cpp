@@ -1,15 +1,15 @@
 #include "SkyboxReaderWriter.h"
 
 namespace urchin {
-    std::unique_ptr<Skybox> SkyboxReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& skyChunk, const XmlParser& xmlParser) {
+    std::unique_ptr<Skybox> SkyboxReaderWriter::loadFrom(const XmlChunk* skyChunk, const XmlParser& xmlParser) {
         std::unique_ptr<Skybox> skybox(nullptr);
 
-        std::shared_ptr<XmlChunk> skyboxChunk = xmlParser.getUniqueChunk(false, SKYBOX_TAG, XmlAttribute(), skyChunk);
+        auto skyboxChunk = xmlParser.getUniqueChunk(false, SKYBOX_TAG, XmlAttribute(), skyChunk);
         if (skyboxChunk != nullptr) {
             std::vector<std::string> filenames;
             filenames.reserve(6);
-            std::shared_ptr<XmlChunk> texturesChunk = xmlParser.getUniqueChunk(true, TEXTURES_TAG, XmlAttribute(), skyboxChunk);
-            std::vector<std::shared_ptr<XmlChunk>> filenameListChunk = xmlParser.getChunks(FILENAME_TAG, XmlAttribute(), texturesChunk);
+            auto texturesChunk = xmlParser.getUniqueChunk(true, TEXTURES_TAG, XmlAttribute(), skyboxChunk.get());
+            auto filenameListChunk = xmlParser.getChunks(FILENAME_TAG, XmlAttribute(), texturesChunk.get());
             if (filenameListChunk.size() != 6) {
                 throw std::runtime_error("Invalid number of skybox filenames found: " + std::to_string(filenameListChunk.size()));
             }
@@ -17,7 +17,7 @@ namespace urchin {
                 filenames.emplace_back(filenameChunk->getStringValue());
             }
 
-            std::shared_ptr<XmlChunk> offsetYChunk = xmlParser.getUniqueChunk(true, OFFSET_Y_TAG, XmlAttribute(), skyboxChunk);
+            auto offsetYChunk = xmlParser.getUniqueChunk(true, OFFSET_Y_TAG, XmlAttribute(), skyboxChunk.get());
 
             skybox = std::make_unique<Skybox>(filenames);
             skybox->setOffsetY(offsetYChunk->getFloatValue());
@@ -25,17 +25,17 @@ namespace urchin {
         return skybox;
     }
 
-    void SkyboxReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& skyChunk, const std::unique_ptr<Skybox>& skybox, XmlWriter& xmlWriter) {
+    void SkyboxReaderWriter::writeOn(XmlChunk* skyChunk, const std::unique_ptr<Skybox>& skybox, XmlWriter& xmlWriter) {
         if (skybox != nullptr) {
-            std::shared_ptr<XmlChunk> skyboxChunk = xmlWriter.createChunk(SKYBOX_TAG, XmlAttribute(), skyChunk);
+            auto skyboxChunk = xmlWriter.createChunk(SKYBOX_TAG, XmlAttribute(), skyChunk);
 
-            std::shared_ptr<XmlChunk> texturesChunk = xmlWriter.createChunk(TEXTURES_TAG, XmlAttribute(), skyboxChunk);
+            auto texturesChunk = xmlWriter.createChunk(TEXTURES_TAG, XmlAttribute(), skyboxChunk.get());
             for (const auto& filename : skybox->getFilenames()) {
-                std::shared_ptr<XmlChunk> filenameChunk = xmlWriter.createChunk(FILENAME_TAG, XmlAttribute(), texturesChunk);
+                auto filenameChunk = xmlWriter.createChunk(FILENAME_TAG, XmlAttribute(), texturesChunk.get());
                 filenameChunk->setStringValue(filename);
             }
 
-            std::shared_ptr<XmlChunk> offsetYChunk = xmlWriter.createChunk(OFFSET_Y_TAG, XmlAttribute(), skyboxChunk);
+            auto offsetYChunk = xmlWriter.createChunk(OFFSET_Y_TAG, XmlAttribute(), skyboxChunk.get());
             offsetYChunk->setFloatValue(skybox->getOffsetY());
         }
     }

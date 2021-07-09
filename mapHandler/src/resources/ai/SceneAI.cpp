@@ -16,16 +16,16 @@ namespace urchin {
         aiManager->getNavMeshGenerator()->setNavMeshAgent(navMeshAgent);
     }
 
-    void SceneAI::loadFrom(const std::shared_ptr<XmlChunk>& chunk, const XmlParser& xmlParser) {
-        std::shared_ptr<XmlChunk> navMeshAgentChunk = xmlParser.getUniqueChunk(true, NAV_MESH_AGENT_TAG, XmlAttribute(), chunk);
+    void SceneAI::loadFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
+        auto navMeshAgentChunk = xmlParser.getUniqueChunk(true, NAV_MESH_AGENT_TAG, XmlAttribute(), chunk);
 
-        changeNavMeshAgent(NavMeshAgentReaderWriter::loadFrom(navMeshAgentChunk, xmlParser));
+        changeNavMeshAgent(NavMeshAgentReaderWriter::loadFrom(navMeshAgentChunk.get(), xmlParser));
     }
 
-    void SceneAI::writeOn(const std::shared_ptr<XmlChunk>& chunk, XmlWriter& xmlWriter) const {
-        std::shared_ptr<XmlChunk> navMeshAgentChunk = xmlWriter.createChunk(NAV_MESH_AGENT_TAG, XmlAttribute(), chunk);
+    void SceneAI::writeOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
+        auto navMeshAgentChunk = xmlWriter.createChunk(NAV_MESH_AGENT_TAG, XmlAttribute(), chunk);
 
-        NavMeshAgentReaderWriter::writeOn(navMeshAgentChunk, getNavMeshAgent(), xmlWriter);
+        NavMeshAgentReaderWriter::writeOn(navMeshAgentChunk.get(), getNavMeshAgent(), xmlWriter);
     }
 
 }

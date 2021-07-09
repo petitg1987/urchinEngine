@@ -6,9 +6,9 @@
 
 namespace urchin {
 
-    CollisionShape3D* CollisionCompoundShapeReaderWriter::loadFrom(const std::shared_ptr<XmlChunk>& mainShapeChunk, const XmlParser& xmlParser) const {
-        std::shared_ptr<XmlChunk> localizedShapesListChunk = xmlParser.getUniqueChunk(true, LOCALIZED_SHAPES, XmlAttribute(), mainShapeChunk);
-        std::vector<std::shared_ptr<XmlChunk>> localizedShapesChunk = xmlParser.getChunks(LOCALIZED_SHAPE, XmlAttribute(), localizedShapesListChunk);
+    CollisionShape3D* CollisionCompoundShapeReaderWriter::loadFrom(const XmlChunk* mainShapeChunk, const XmlParser& xmlParser) const {
+        auto localizedShapesListChunk = xmlParser.getUniqueChunk(true, LOCALIZED_SHAPES, XmlAttribute(), mainShapeChunk);
+        auto localizedShapesChunk = xmlParser.getChunks(LOCALIZED_SHAPE, XmlAttribute(), localizedShapesListChunk.get());
 
         std::vector<std::shared_ptr<const LocalizedCollisionShape>> compoundShapes;
         for (std::size_t i = 0; i < localizedShapesChunk.size(); ++i) {
@@ -16,10 +16,10 @@ namespace urchin {
 
             localizedShape->position = i;
 
-            loadTransformOn(*localizedShape, localizedShapesChunk[i], xmlParser);
+            loadTransformOn(*localizedShape, localizedShapesChunk[i].get(), xmlParser);
 
-            std::shared_ptr<XmlChunk> shapeChunk = xmlParser.getUniqueChunk(true, COMPOUND_SHAPE_TAG, XmlAttribute(), localizedShapesChunk[i]);
-            CollisionShape3D* embeddedCollisionShape = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeChunk)->loadFrom(shapeChunk, xmlParser);
+            auto shapeChunk = xmlParser.getUniqueChunk(true, COMPOUND_SHAPE_TAG, XmlAttribute(), localizedShapesChunk[i].get());
+            CollisionShape3D* embeddedCollisionShape = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeChunk.get())->loadFrom(shapeChunk.get(), xmlParser);
             localizedShape->shape = std::unique_ptr<CollisionShape3D>(embeddedCollisionShape);
 
             compoundShapes.push_back(std::move(localizedShape));
@@ -28,41 +28,41 @@ namespace urchin {
         return new CollisionCompoundShape(std::move(compoundShapes));
     }
 
-    void CollisionCompoundShapeReaderWriter::writeOn(const std::shared_ptr<XmlChunk>& mainShapeChunk, const CollisionShape3D& mainCollisionShape, XmlWriter& xmlWriter) const {
+    void CollisionCompoundShapeReaderWriter::writeOn(XmlChunk* mainShapeChunk, const CollisionShape3D& mainCollisionShape, XmlWriter& xmlWriter) const {
         mainShapeChunk->setAttribute(XmlAttribute(TYPE_ATTR, COMPOUND_SHAPE_VALUE));
 
         const auto& compoundShape = dynamic_cast<const CollisionCompoundShape&>(mainCollisionShape);
 
-        std::shared_ptr<XmlChunk> localizedShapesListChunk = xmlWriter.createChunk(LOCALIZED_SHAPES, XmlAttribute(), mainShapeChunk);
+        auto localizedShapesListChunk = xmlWriter.createChunk(LOCALIZED_SHAPES, XmlAttribute(), mainShapeChunk);
         const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape.getLocalizedShapes();
         for (const auto& localizedShape : localizedShapes) {
-            std::shared_ptr<XmlChunk> localizedShapeChunk = xmlWriter.createChunk(LOCALIZED_SHAPE, XmlAttribute(), localizedShapesListChunk);
+            auto localizedShapeChunk = xmlWriter.createChunk(LOCALIZED_SHAPE, XmlAttribute(), localizedShapesListChunk.get());
 
-            writeTransformOn(localizedShapeChunk, *localizedShape, xmlWriter);
+            writeTransformOn(localizedShapeChunk.get(), *localizedShape, xmlWriter);
 
-            std::shared_ptr<XmlChunk> shapeChunk = xmlWriter.createChunk(COMPOUND_SHAPE_TAG, XmlAttribute(), localizedShapeChunk);
-            CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(*localizedShape->shape)->writeOn(shapeChunk, *localizedShape->shape, xmlWriter);
+            auto shapeChunk = xmlWriter.createChunk(COMPOUND_SHAPE_TAG, XmlAttribute(), localizedShapeChunk.get());
+            CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(*localizedShape->shape)->writeOn(shapeChunk.get(), *localizedShape->shape, xmlWriter);
         }
     }
 
-    void CollisionCompoundShapeReaderWriter::loadTransformOn(LocalizedCollisionShape& localizedShape, const std::shared_ptr<XmlChunk>& localizedShapeChunk, const XmlParser& xmlParser) {
-        std::shared_ptr<XmlChunk> transformChunk = xmlParser.getUniqueChunk(true, TRANSFORM_TAG, XmlAttribute(), localizedShapeChunk);
+    void CollisionCompoundShapeReaderWriter::loadTransformOn(LocalizedCollisionShape& localizedShape, const XmlChunk* localizedShapeChunk, const XmlParser& xmlParser) {
+        auto transformChunk = xmlParser.getUniqueChunk(true, TRANSFORM_TAG, XmlAttribute(), localizedShapeChunk);
 
-        std::shared_ptr<XmlChunk> positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), transformChunk);
+        auto positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), transformChunk.get());
         Point3<float> position = positionChunk->getPoint3Value();
 
-        Quaternion<float> orientation = OrientationReaderWriter::loadOrientation(transformChunk, xmlParser);
+        Quaternion<float> orientation = OrientationReaderWriter::loadOrientation(transformChunk.get(), xmlParser);
 
         localizedShape.transform = PhysicsTransform(position, orientation);
     }
 
-    void CollisionCompoundShapeReaderWriter::writeTransformOn(const std::shared_ptr<XmlChunk>& localizedShapeChunk, const LocalizedCollisionShape& localizedShape, XmlWriter& xmlWriter) {
-        std::shared_ptr<XmlChunk> transformChunk = xmlWriter.createChunk(TRANSFORM_TAG, XmlAttribute(), localizedShapeChunk);
+    void CollisionCompoundShapeReaderWriter::writeTransformOn(const XmlChunk* localizedShapeChunk, const LocalizedCollisionShape& localizedShape, XmlWriter& xmlWriter) {
+        auto transformChunk = xmlWriter.createChunk(TRANSFORM_TAG, XmlAttribute(), localizedShapeChunk);
 
-        std::shared_ptr<XmlChunk> positionChunk = xmlWriter.createChunk(POSITION_TAG, XmlAttribute(), transformChunk);
+        auto positionChunk = xmlWriter.createChunk(POSITION_TAG, XmlAttribute(), transformChunk.get());
         positionChunk->setPoint3Value(localizedShape.transform.getPosition());
 
-        OrientationReaderWriter::writeOrientation(transformChunk, localizedShape.transform.getOrientation(), xmlWriter);
+        OrientationReaderWriter::writeOrientation(transformChunk.get(), localizedShape.transform.getOrientation(), xmlWriter);
     }
 
 }

@@ -13,9 +13,9 @@ namespace urchin {
 
     void CheckBox::createOrUpdateWidget() {
         //skin information
-        std::shared_ptr<XmlChunk> checkBoxChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "checkBox", XmlAttribute("nameSkin", nameSkin));
-        texChecked = loadTexture(checkBoxChunk, "imageChecked");
-        texUnchecked = loadTexture(checkBoxChunk, "imageUnchecked");
+        auto checkBoxChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "checkBox", XmlAttribute("nameSkin", nameSkin));
+        texChecked = loadTexture(checkBoxChunk.get(), "imageChecked");
+        texUnchecked = loadTexture(checkBoxChunk.get(), "imageUnchecked");
 
         //visual
         std::vector<Point2<float>> vertexCoord = {
@@ -34,8 +34,8 @@ namespace urchin {
                 ->build();
     }
 
-    std::shared_ptr<Texture> CheckBox::loadTexture(const std::shared_ptr<XmlChunk>& checkBoxChunk, const std::string& chunkName) const {
-        std::shared_ptr<XmlChunk> imageElem = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, chunkName, XmlAttribute(), checkBoxChunk);
+    std::shared_ptr<Texture> CheckBox::loadTexture(const XmlChunk* checkBoxChunk, const std::string& chunkName) const {
+        auto imageElem = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, chunkName, XmlAttribute(), checkBoxChunk);
 
         auto* img = MediaManager::instance()->getMedia<Image>(imageElem->getStringValue());
         auto tex = img->createTexture(false);

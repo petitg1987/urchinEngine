@@ -14,8 +14,8 @@ namespace urchin {
             void changeSkybox(std::unique_ptr<Skybox>);
 
         private:
-            void loadFrom(const std::shared_ptr<XmlChunk>&, const XmlParser&);
-            void writeOn(const std::shared_ptr<XmlChunk>&, XmlWriter&) const;
+            void loadFrom(const XmlChunk*, const XmlParser&);
+            void writeOn(XmlChunk*, XmlWriter&) const;
 
             Renderer3d* renderer3d;
     };
