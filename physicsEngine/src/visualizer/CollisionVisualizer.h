@@ -15,7 +15,7 @@ namespace urchin {
     */
     class CollisionVisualizer : public Observer {
         public:
-            explicit CollisionVisualizer(CollisionWorld*);
+            explicit CollisionVisualizer(CollisionWorld&);
             ~CollisionVisualizer() override;
 
             void notify(Observable*, int) override;
@@ -23,7 +23,7 @@ namespace urchin {
             std::vector<ManifoldResult> getManifoldResults() const;
 
         private:
-            CollisionWorld* collisionWorld;
+            CollisionWorld& collisionWorld;
             mutable std::mutex visualizerDataMutex;
 
             std::vector<ManifoldResult> manifoldResults;

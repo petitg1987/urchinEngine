@@ -2,13 +2,13 @@
 
 namespace urchin {
 
-    CollisionVisualizer::CollisionVisualizer(CollisionWorld* collisionWorld) :
-        collisionWorld(collisionWorld) {
-        collisionWorld->addObserver(this, CollisionWorld::COLLISION_RESULT_UPDATED);
+    CollisionVisualizer::CollisionVisualizer(CollisionWorld& collisionWorld) :
+            collisionWorld(collisionWorld) {
+        collisionWorld.addObserver(this, CollisionWorld::COLLISION_RESULT_UPDATED);
     }
 
     CollisionVisualizer::~CollisionVisualizer() {
-        collisionWorld->removeObserver(this, CollisionWorld::COLLISION_RESULT_UPDATED);
+        collisionWorld.removeObserver(this, CollisionWorld::COLLISION_RESULT_UPDATED);
     }
 
     void CollisionVisualizer::notify(Observable* observable, int notificationType) {

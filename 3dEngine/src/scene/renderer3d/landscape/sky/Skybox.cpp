@@ -13,22 +13,22 @@ namespace urchin {
     Skybox::Skybox(const std::vector<std::string>& filenames) :
             isInitialized(false),
             filenames(filenames),
-            offsetY(0.0) {
+            skyboxImages({nullptr}),
+            offsetY(0.0f) {
         if (filenames.size() != 6) {
             throw std::invalid_argument("There is no 6 skybox filenames.");
         }
 
         //create the textures
-        skyboxImages = new Image*[6];
         unsigned int skyboxSize = 1;
-        for (std::size_t i = 0; i < 6; ++i) {
+        for (std::size_t i = 0; i < skyboxImages.size(); ++i) {
             if (!filenames[i].empty()) {
                 skyboxImages[i] = MediaManager::instance()->getMedia<Image>(filenames[i]);
                 skyboxSize = skyboxImages[i]->getWidth();
             }
         }
 
-        for (std::size_t i = 0; i < 6; ++i) {
+        for (std::size_t i = 0; i < skyboxImages.size(); ++i) {
             if (filenames[i].empty()) {
                 std::vector<unsigned char> defaultTexPixels;
                 defaultTexPixels.reserve(skyboxSize * skyboxSize * 4);
@@ -135,13 +135,12 @@ namespace urchin {
     }
 
     void Skybox::clearSkyboxImages() {
-        if (skyboxImages != nullptr) {
-            for (std::size_t i = 0; i < 6; i++) {
+        for (std::size_t i = 0; i < 6; i++) {
+            if (skyboxImages[i] != nullptr) {
                 skyboxImages[i]->release();
             }
-            delete[] skyboxImages;
         }
-        skyboxImages = nullptr;
+        skyboxImages = {nullptr};
     }
 
     void Skybox::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) const {

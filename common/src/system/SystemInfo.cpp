@@ -173,20 +173,17 @@ namespace urchin {
     }
 
     std::string SystemInfo::executableDirectory() {
-        unsigned int pathBufferSize = 2048;
+        constexpr unsigned int PATH_BUFFER_SIZE = 2048;
+        std::array<char, PATH_BUFFER_SIZE> buffer = {};
 
         #ifdef _WIN32
-            char* buffer = new char[pathBufferSize];
-            GetModuleFileName(nullptr, buffer, pathBufferSize);
-            std::string executablePath(buffer);
-            delete[] buffer;
+            GetModuleFileName(nullptr, buffer.data(), buffer.size());
+            std::string executablePath(buffer.data());
             return FileUtil::getDirectory(executablePath);
         #else
-            char* buffer = new char[pathBufferSize];
-            ssize_t readSize = readlink("/proc/self/exe", buffer, pathBufferSize);
+            ssize_t readSize = readlink("/proc/self/exe", buffer.data(), buffer.size());
             if (readSize > 0) {
-                std::string executablePath(buffer, (unsigned long)readSize);
-                delete[] buffer;
+                std::string executablePath(buffer.data(), (unsigned long)readSize);
                 return FileUtil::getDirectory(executablePath);
             }
             throw std::runtime_error("Cannot read /proc/self/exe on Linux system.");

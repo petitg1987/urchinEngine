@@ -3,10 +3,10 @@
 
 namespace urchin {
 
-    RayTester::RayTester(Ray<float> ray) :
+    RayTester::RayTester(const PhysicsWorld* physicsWorld, Ray<float> ray) :
+            collisionWorld(physicsWorld->getCollisionWorld()),
             ray(ray),
-            rayTestResult(std::make_shared<RayTestResult>()),
-            collisionWorld(nullptr) {
+            rayTestResult(std::make_shared<RayTestResult>()) {
 
     }
 
@@ -14,17 +14,13 @@ namespace urchin {
         return rayTestResult;
     }
 
-    void RayTester::initialize(PhysicsWorld* physicsWorld) {
-        collisionWorld = physicsWorld->getCollisionWorld();
-    }
-
     void RayTester::setup(float, const Vector3<float>&) {
         //nothing to do
     }
 
     void RayTester::execute(float, const Vector3<float>&) {
-        std::vector<AbstractBody*> bodiesAABBoxHitRay = collisionWorld->getBroadPhaseManager()->rayTest(ray);
-        ccd_set rayCastResults = collisionWorld->getNarrowPhaseManager()->rayTest(ray, bodiesAABBoxHitRay);
+        std::vector<AbstractBody*> bodiesAABBoxHitRay = collisionWorld.getBroadPhaseManager()->rayTest(ray);
+        ccd_set rayCastResults = collisionWorld.getNarrowPhaseManager()->rayTest(ray, bodiesAABBoxHitRay);
 
         rayTestResult->addResults(rayCastResults);
     }

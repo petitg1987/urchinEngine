@@ -7,16 +7,11 @@ namespace urchin {
             numMeshes(constMeshes->getNumberConstMeshes()) {
         //create mesh
         for (unsigned int m = 0;  m < numMeshes; m++) {
-            auto* mesh = new Mesh(constMeshes->getConstMesh(m));
-            meshes.push_back(mesh);
+            meshes.push_back(std::make_unique<Mesh>(constMeshes->getConstMesh(m)));
         }
     }
 
     Meshes::~Meshes() {
-        for (unsigned int i = 0; i < numMeshes; i++) {
-            delete meshes[i];
-        }
-
         constMeshes->release();
     }
 
@@ -24,8 +19,8 @@ namespace urchin {
         return numMeshes;
     }
 
-    Mesh* Meshes::getMesh(unsigned int index) const {
-        return meshes[index];
+    Mesh& Meshes::getMesh(unsigned int index) const {
+        return *meshes[index];
     }
 
     const AABBox<float>& Meshes::getGlobalAABBox() const {

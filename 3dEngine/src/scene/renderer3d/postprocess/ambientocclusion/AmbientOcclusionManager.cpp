@@ -183,9 +183,9 @@ namespace urchin {
 
     void AmbientOcclusionManager::exportSVG(const std::string& filename, const std::vector<Vector4<float>>& ssaoKernel) const {
         SVGExporter svgExporter(filename);
-        svgExporter.addShape(new SVGCircle(Point2<float>(0.0, 0.0), config.radius, SVGPolygon::BLUE));
+        svgExporter.addShape(std::make_unique<SVGCircle>(Point2<float>(0.0, 0.0), config.radius, SVGPolygon::BLUE));
         for (const auto& kernel : ssaoKernel) {
-            svgExporter.addShape(new SVGCircle(Point2<float>(kernel.X, kernel.Y), 0.001f, SVGPolygon::LIME));
+            svgExporter.addShape(std::make_unique<SVGCircle>(Point2<float>(kernel.X, kernel.Y), 0.001f, SVGPolygon::LIME));
         }
         svgExporter.generateSVG(100);
     }

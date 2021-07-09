@@ -4,18 +4,12 @@
 
 namespace urchin {
     SVGExporter::SVGExporter(std::string filename) :
-        filename(std::move(filename)) {
+            filename(std::move(filename)) {
 
     }
 
-    SVGExporter::~SVGExporter() {
-        for (const SVGShape* shape : shapes) {
-           delete shape;
-        }
-    }
-
-    void SVGExporter::addShape(const SVGShape* shape) {
-        shapes.push_back(shape);
+    void SVGExporter::addShape(std::unique_ptr<SVGShape> shape) {
+        shapes.push_back(std::move(shape));
     }
 
     void SVGExporter::generateSVG(int zoomPercentage) const {
@@ -42,7 +36,7 @@ namespace urchin {
         }
 
         Rectangle<float> viewBox = shapes[0]->computeRectangle();
-        for (const auto shape : shapes) {
+        for (const auto& shape : shapes) {
             viewBox = viewBox.merge(shape->computeRectangle());
         }
 

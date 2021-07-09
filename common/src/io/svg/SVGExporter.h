@@ -13,9 +13,8 @@ namespace urchin {
     class SVGExporter {
         public:
             explicit SVGExporter(std::string);
-            ~SVGExporter();
 
-            void addShape(const SVGShape*);
+            void addShape(std::unique_ptr<SVGShape>);
 
             void generateSVG(int zoomPercentage = 100) const;
 
@@ -24,7 +23,7 @@ namespace urchin {
             void addShapes(std::ofstream&) const;
 
             std::string filename;
-            std::vector<const SVGShape*> shapes;
+            std::vector<std::unique_ptr<SVGShape>> shapes;
     };
 
 }

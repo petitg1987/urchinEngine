@@ -12,6 +12,8 @@
 
 namespace urchin {
 
+    class PhysicsWorld;
+
     struct SignificantContactValues {
         unsigned int numberOfHit;
 

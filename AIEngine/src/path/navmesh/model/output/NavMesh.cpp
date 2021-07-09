@@ -47,9 +47,9 @@ namespace urchin {
                 trianglePoints.emplace_back(Point2<float>(p2.X, -p2.Z));
                 trianglePoints.emplace_back(Point2<float>(p3.X, -p3.Z));
 
-                auto* svgPolygon = new SVGPolygon(trianglePoints, SVGPolygon::LIME, 0.5f);
+                auto svgPolygon = std::make_unique<SVGPolygon>(trianglePoints, SVGPolygon::LIME, 0.5f);
                 svgPolygon->setStroke(SVGPolygon::RED, 0.05f);
-                svgExporter.addShape(svgPolygon);
+                svgExporter.addShape(std::move(svgPolygon));
             }
         }
 
@@ -60,9 +60,9 @@ namespace urchin {
                     Point3<float> lineP2 = link->getTargetTriangle()->getCenterPoint();
                     LineSegment2D<float> line(Point2<float>(lineP1.X, -lineP1.Z), Point2<float>(lineP2.X, -lineP2.Z));
 
-                    auto* svgLine = new SVGLine(line, SVGPolygon::BLUE, 0.5f);
+                    auto svgLine = std::make_unique<SVGLine>(line, SVGPolygon::BLUE, 0.5f);
                     svgLine->setStroke(SVGPolygon::BLUE, 0.05f);
-                    svgExporter.addShape(svgLine);
+                    svgExporter.addShape(std::move(svgLine));
                 }
             }
         }

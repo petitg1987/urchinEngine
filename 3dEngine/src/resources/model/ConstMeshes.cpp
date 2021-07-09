@@ -35,7 +35,7 @@ namespace urchin {
                 }
             }
         }
-        originalBBox = new AABBox<float>(min, max);
+        originalBBox = std::make_unique<AABBox<float>>(min, max);
         originalSplitBBoxes = SplitBoundingBox().split(*originalBBox);
     }
 
@@ -43,8 +43,6 @@ namespace urchin {
         for (auto& constMesh : constMeshes) {
             delete constMesh;
         }
-
-        delete originalBBox;
     }
 
     const std::string& ConstMeshes::getMeshFilename() const {

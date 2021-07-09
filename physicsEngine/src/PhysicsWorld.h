@@ -22,7 +22,7 @@ namespace urchin {
             ~PhysicsWorld();
 
             BodyManager* getBodyManager() const;
-            CollisionWorld* getCollisionWorld() const;
+            CollisionWorld& getCollisionWorld() const;
 
             void addBody(AbstractBody*);
             void removeBody(AbstractBody*);
@@ -43,7 +43,7 @@ namespace urchin {
             void checkNoExceptionRaised();
 
             void createCollisionVisualizer();
-            const CollisionVisualizer* getCollisionVisualizer() const;
+            const CollisionVisualizer& getCollisionVisualizer() const;
 
         private:
             void startPhysicsUpdate();
@@ -63,13 +63,13 @@ namespace urchin {
             bool paused;
 
             BodyManager* bodyManager;
-            CollisionWorld* collisionWorld;
+            std::unique_ptr<CollisionWorld> collisionWorld;
 
             std::vector<std::shared_ptr<Processable>> processables;
-            std::vector<std::shared_ptr<Processable>> oneShotProcessables;
+            std::vector<std::unique_ptr<Processable>> oneShotProcessables;
             std::vector<std::shared_ptr<Processable>> copiedProcessables;
 
-            CollisionVisualizer* collisionVisualizer;
+            std::unique_ptr<CollisionVisualizer> collisionVisualizer;
     };
 
 }

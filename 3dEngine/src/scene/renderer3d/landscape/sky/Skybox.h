@@ -33,7 +33,7 @@ namespace urchin {
             bool isInitialized;
 
             std::vector<std::string> filenames;
-            Image **skyboxImages;
+            std::array<Image*, 6> skyboxImages;
 
             float offsetY;
             Matrix4<float> translationMatrix;

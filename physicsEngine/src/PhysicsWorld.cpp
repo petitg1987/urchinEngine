@@ -16,8 +16,8 @@ namespace urchin {
             timeStep(0.0f),
             paused(true),
             bodyManager(new BodyManager()),
-            collisionWorld(new CollisionWorld(bodyManager)),
-            collisionVisualizer(nullptr) {
+            collisionWorld(std::make_unique<CollisionWorld>(bodyManager)),
+            collisionVisualizer(std::unique_ptr<CollisionVisualizer>(nullptr)) {
         NumericalCheck::perform();
         SignalHandler::instance()->initialize();
     }
@@ -34,9 +34,6 @@ namespace urchin {
         processables.clear();
         oneShotProcessables.clear();
 
-        delete collisionVisualizer;
-
-        delete collisionWorld;
         delete bodyManager;
 
         Profiler::physics()->log(); //log for main (not physics) thread
@@ -46,8 +43,8 @@ namespace urchin {
         return bodyManager;
     }
 
-    CollisionWorld* PhysicsWorld::getCollisionWorld() const {
-        return collisionWorld;
+    CollisionWorld& PhysicsWorld::getCollisionWorld() const {
+        return *collisionWorld;
     }
 
     void PhysicsWorld::addBody(AbstractBody* body) {
@@ -64,9 +61,6 @@ namespace urchin {
 
     void PhysicsWorld::addProcessable(const std::shared_ptr<Processable>& processable) {
         std::lock_guard<std::mutex> lock(mutex);
-
-        processable->initialize(this);
-
         processables.push_back(processable);
     }
 
@@ -82,12 +76,11 @@ namespace urchin {
     std::shared_ptr<const RayTestResult> PhysicsWorld::rayTest(const Ray<float>& ray) {
         std::lock_guard<std::mutex> lock(mutex);
 
-        std::shared_ptr<RayTester> rayTester = std::make_shared<RayTester>(ray);
-        rayTester->initialize(this);
+        auto rayTester = std::make_unique<RayTester>(this, ray);
+        std::shared_ptr<const RayTestResult> rayTestResult = rayTester->getRayTestResult();
+        oneShotProcessables.push_back(std::move(rayTester));
 
-        oneShotProcessables.push_back(rayTester);
-
-        return rayTester->getRayTestResult();
+        return rayTestResult;
     }
 
     /**
@@ -213,7 +206,10 @@ namespace urchin {
             if (!paused) {
                 gravity = this->gravity;
                 copiedProcessables = this->processables;
-                copiedProcessables.insert(copiedProcessables.end(), oneShotProcessables.begin(), oneShotProcessables.end());
+                copiedProcessables.reserve(copiedProcessables.size() + oneShotProcessables.size());
+                for (auto& oneShotProcessable : oneShotProcessables) {
+                    copiedProcessables.push_back(std::move(oneShotProcessable));
+                }
                 oneShotProcessables.clear();
             }
         }
@@ -254,16 +250,16 @@ namespace urchin {
 
     void PhysicsWorld::createCollisionVisualizer() {
         if (!collisionVisualizer) {
-            collisionVisualizer = new CollisionVisualizer(collisionWorld);
+            collisionVisualizer = std::make_unique<CollisionVisualizer>(getCollisionWorld());
         }
     }
 
-    const CollisionVisualizer* PhysicsWorld::getCollisionVisualizer() const {
+    const CollisionVisualizer& PhysicsWorld::getCollisionVisualizer() const {
         if (!collisionVisualizer) {
             throw std::runtime_error("Impossible to get collision visualizer because not created.");
         }
 
-        return collisionVisualizer;
+        return *collisionVisualizer;
     }
 
 }

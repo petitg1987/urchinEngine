@@ -14,7 +14,7 @@ namespace urchin {
             ~Meshes();
 
             unsigned int getNumberMeshes() const;
-            Mesh* getMesh(unsigned int) const;
+            Mesh& getMesh(unsigned int) const;
             const AABBox<float>& getGlobalAABBox() const;
             const std::vector<AABBox<float>>& getGlobalSplitAABBoxes() const;
             const AABBox<float>& getGlobalLocalAABBox() const;
@@ -27,7 +27,7 @@ namespace urchin {
             mutable ConstMeshes* constMeshes;
             unsigned int numMeshes;
 
-            std::vector<Mesh*> meshes;
+            std::vector<std::unique_ptr<Mesh>> meshes;
             AABBox<float> globalBBox; //bounding box transformed by the transformation of the model
             std::vector<AABBox<float>> globalSplitBBoxes;
     };

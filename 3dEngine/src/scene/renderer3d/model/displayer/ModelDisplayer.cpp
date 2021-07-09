@@ -59,11 +59,11 @@ namespace urchin {
             if (notificationType == Model::MESH_UPDATED) {
                 unsigned int meshIndex = 0;
                 for (auto& meshRenderer : meshRenderers) {
-                    const Mesh* mesh = model->getMeshes()->getMesh(meshIndex);
-                    meshRenderer->updateData(0, mesh->getVertices());
+                    const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
+                    meshRenderer->updateData(0, mesh.getVertices());
                     if (displayMode == DEFAULT_MODE) {
-                        meshRenderer->updateData(2, mesh->getNormals());
-                        meshRenderer->updateData(3, mesh->getTangents());
+                        meshRenderer->updateData(2, mesh.getNormals());
+                        meshRenderer->updateData(3, mesh.getTangents());
                     }
 
                     meshIndex++;
@@ -102,7 +102,7 @@ namespace urchin {
         if (model->getMeshes()) {
             for (unsigned int m = 0; m < model->getMeshes()->getNumberMeshes(); ++m) {
                 Matrix4<float> modelViewMatrix = viewMatrix * model->getTransform().getTransformMatrix();
-                model->getMeshes()->getMesh(m)->drawBaseBones(renderTarget, projectionMatrix, modelViewMatrix);
+                model->getMeshes()->getMesh(m).drawBaseBones(renderTarget, projectionMatrix, modelViewMatrix);
             }
         }
     }

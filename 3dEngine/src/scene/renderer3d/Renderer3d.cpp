@@ -29,7 +29,7 @@ namespace urchin {
 
             //deferred rendering
             deferredRenderTarget(std::make_shared<OffscreenRender>("deferred rendering - first pass", RenderTarget::READ_WRITE_DEPTH_ATTACHMENT)),
-            modelSetDisplayer(new ModelSetDisplayer(DisplayMode::DEFAULT_MODE)),
+            modelSetDisplayer(std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE)),
             modelOctreeManager(new OctreeManager<Model>(20.0f)),
             fogManager(new FogManager()),
             terrainManager(new TerrainManager(deferredRenderTarget)),
@@ -59,7 +59,7 @@ namespace urchin {
 
     Renderer3d::~Renderer3d() {
         //models
-        delete modelSetDisplayer;
+        modelSetDisplayer.reset(nullptr);
         for (auto* allOctreeableModel : modelOctreeManager->getAllOctreeables()) {
             delete allOctreeableModel;
         }
