@@ -35,7 +35,7 @@ namespace urchin {
     }
 
     void SceneLight::writeOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
-        chunk->setAttribute(XmlAttribute(NAME_ATTR, this->name));
+        chunk->setAttribute(DataAttribute(NAME_ATTR, this->name));
 
         LightReaderWriter::writeOn(chunk, light, xmlWriter);
     }

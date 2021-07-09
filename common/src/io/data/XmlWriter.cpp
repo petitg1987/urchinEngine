@@ -23,7 +23,7 @@ namespace urchin {
      * @param parent Name of the tag parent of "chunkName"
      * @return XML chunk according to the parameters
      */
-    std::unique_ptr<XmlChunk> XmlWriter::createChunk(const std::string& chunkName, const XmlAttribute& attribute, const XmlChunk* parent) {
+    std::unique_ptr<XmlChunk> XmlWriter::createChunk(const std::string& chunkName, const DataAttribute& attribute, const XmlChunk* parent) {
         auto* chunk = new TiXmlElement(chunkName);
 
         if (!attribute.getAttributeName().empty()) {

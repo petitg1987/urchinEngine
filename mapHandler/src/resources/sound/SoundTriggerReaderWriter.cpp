@@ -21,7 +21,7 @@ namespace urchin {
         if (soundTriggerType == MANUAL_VALUE) {
             return new ManualTrigger(playBehavior);
         } else if (soundTriggerType == SHAPE_VALUE) {
-            auto soundShapeChunk = xmlParser.getUniqueChunk(true, SOUND_SHAPE_TAG, XmlAttribute(), soundTriggerChunk);
+            auto soundShapeChunk = xmlParser.getUniqueChunk(true, SOUND_SHAPE_TAG, DataAttribute(), soundTriggerChunk);
             std::shared_ptr<SoundShapeReaderWriter> soundShapeReaderWriter = SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(soundShapeChunk.get());
             SoundShape* soundShape = soundShapeReaderWriter->loadFrom(soundShapeChunk.get(), xmlParser);
 
@@ -33,12 +33,12 @@ namespace urchin {
 
     void SoundTriggerReaderWriter::buildChunkFrom(XmlChunk* soundTriggerChunk, const SoundTrigger* soundTrigger, XmlWriter& xmlWriter) {
         if (soundTrigger->getTriggerType() == SoundTrigger::MANUAL_TRIGGER) {
-            soundTriggerChunk->setAttribute(XmlAttribute(TYPE_ATTR, MANUAL_VALUE));
+            soundTriggerChunk->setAttribute(DataAttribute(TYPE_ATTR, MANUAL_VALUE));
         } else if (soundTrigger->getTriggerType() == SoundTrigger::SHAPE_TRIGGER) {
             const auto* shapeTrigger = dynamic_cast<const ShapeTrigger*>(soundTrigger);
-            soundTriggerChunk->setAttribute(XmlAttribute(TYPE_ATTR, SHAPE_VALUE));
+            soundTriggerChunk->setAttribute(DataAttribute(TYPE_ATTR, SHAPE_VALUE));
 
-            auto soundShapeChunk = xmlWriter.createChunk(SOUND_SHAPE_TAG, XmlAttribute(), soundTriggerChunk);
+            auto soundShapeChunk = xmlWriter.createChunk(SOUND_SHAPE_TAG, DataAttribute(), soundTriggerChunk);
             std::shared_ptr<SoundShapeReaderWriter> soundShapeReaderWriter = SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeTrigger->getSoundShape());
             soundShapeReaderWriter->writeOn(soundShapeChunk.get(), shapeTrigger->getSoundShape(), xmlWriter);
         } else {
@@ -49,7 +49,7 @@ namespace urchin {
     }
 
     SoundTrigger::PlayBehavior SoundTriggerReaderWriter::loadPlayBehaviorFrom(const XmlChunk* soundTriggerChunk, const XmlParser& xmlParser) {
-        auto playBehaviorChunk = xmlParser.getUniqueChunk(true, PLAY_BEHAVIOR_TAG, XmlAttribute(), soundTriggerChunk);
+        auto playBehaviorChunk = xmlParser.getUniqueChunk(true, PLAY_BEHAVIOR_TAG, DataAttribute(), soundTriggerChunk);
         if (playBehaviorChunk->getStringValue() == PLAY_ONCE_VALUE) {
             return SoundTrigger::PLAY_ONCE;
         } else if (playBehaviorChunk->getStringValue() == PLAY_LOOP_VALUE) {
@@ -59,7 +59,7 @@ namespace urchin {
     }
 
     void SoundTriggerReaderWriter::writePlayBehaviorFrom(const XmlChunk* soundTriggerChunk, SoundTrigger::PlayBehavior playBehavior, XmlWriter& xmlWriter) {
-        auto playBehaviorChunk = xmlWriter.createChunk(PLAY_BEHAVIOR_TAG, XmlAttribute(), soundTriggerChunk);
+        auto playBehaviorChunk = xmlWriter.createChunk(PLAY_BEHAVIOR_TAG, DataAttribute(), soundTriggerChunk);
         if (playBehavior == SoundTrigger::PLAY_ONCE) {
             playBehaviorChunk->setStringValue(PLAY_ONCE_VALUE);
         } else if (playBehavior == SoundTrigger::PLAY_LOOP) {

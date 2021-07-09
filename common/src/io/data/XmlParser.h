@@ -5,7 +5,7 @@
 #include <vector>
 
 #include <libs/tinyxml/tinyxml.h>
-#include <io/data/XmlAttribute.h>
+#include <io/data/DataAttribute.h>
 #include <io/data/XmlChunk.h>
 
 namespace urchin {
@@ -17,11 +17,11 @@ namespace urchin {
             ~XmlParser();
 
             std::unique_ptr<XmlChunk> getRootChunk() const;
-            std::vector<std::unique_ptr<XmlChunk>> getChunks(const std::string&, const XmlAttribute & = XmlAttribute(), const XmlChunk *parent = nullptr) const;
-            std::unique_ptr<XmlChunk> getUniqueChunk(bool, const std::string&, const XmlAttribute & = XmlAttribute(), const XmlChunk *parent = nullptr) const;
+            std::vector<std::unique_ptr<XmlChunk>> getChunks(const std::string&, const DataAttribute & = DataAttribute(), const XmlChunk *parent = nullptr) const;
+            std::unique_ptr<XmlChunk> getUniqueChunk(bool, const std::string&, const DataAttribute & = DataAttribute(), const XmlChunk *parent = nullptr) const;
 
         private:
-            std::string getChunkDescription(const std::string&, const XmlAttribute&) const;
+            std::string getChunkDescription(const std::string&, const DataAttribute&) const;
 
             TiXmlDocument* doc;
             std::string filenamePath;

@@ -4,10 +4,10 @@
 
 namespace urchin {
 
-    class XmlAttribute {
+    class DataAttribute {
         public:
-            XmlAttribute() = default;
-            XmlAttribute(std::string , std::string );
+            DataAttribute() = default;
+            DataAttribute(std::string , std::string );
 
             const std::string& getAttributeName() const;
             const std::string& getAttributeValue() const;

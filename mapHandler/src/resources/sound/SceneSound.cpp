@@ -33,17 +33,17 @@ namespace urchin {
     void SceneSound::loadFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
-        auto soundChunk = xmlParser.getUniqueChunk(true, SOUND_TAG, XmlAttribute(), chunk);
-        auto soundTriggerChunk = xmlParser.getUniqueChunk(true, SOUND_TRIGGER_TAG, XmlAttribute(), chunk);
+        auto soundChunk = xmlParser.getUniqueChunk(true, SOUND_TAG, DataAttribute(), chunk);
+        auto soundTriggerChunk = xmlParser.getUniqueChunk(true, SOUND_TRIGGER_TAG, DataAttribute(), chunk);
 
         setSoundElements(SoundReaderWriter::loadFrom(soundChunk.get(), xmlParser), SoundTriggerReaderWriter::loadFrom(soundTriggerChunk.get(), xmlParser));
     }
 
     void SceneSound::writeOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
-        chunk->setAttribute(XmlAttribute(NAME_ATTR, this->name));
+        chunk->setAttribute(DataAttribute(NAME_ATTR, this->name));
 
-        auto soundChunk = xmlWriter.createChunk(SOUND_TAG, XmlAttribute(), chunk);
-        auto soundTriggerChunk = xmlWriter.createChunk(SOUND_TRIGGER_TAG, XmlAttribute(), chunk);
+        auto soundChunk = xmlWriter.createChunk(SOUND_TAG, DataAttribute(), chunk);
+        auto soundTriggerChunk = xmlWriter.createChunk(SOUND_TRIGGER_TAG, DataAttribute(), chunk);
 
         SoundReaderWriter::writeOn(soundChunk.get(), sound, xmlWriter);
         SoundTriggerReaderWriter::writeOn(soundTriggerChunk.get(), soundTrigger, xmlWriter);

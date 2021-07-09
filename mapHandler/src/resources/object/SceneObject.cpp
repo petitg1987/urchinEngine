@@ -50,10 +50,10 @@ namespace urchin {
     void SceneObject::loadFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
-        auto modelChunk = xmlParser.getUniqueChunk(true, MODEL_TAG, XmlAttribute(), chunk);
+        auto modelChunk = xmlParser.getUniqueChunk(true, MODEL_TAG, DataAttribute(), chunk);
         setModel(ModelReaderWriter::loadFrom(modelChunk.get(), xmlParser));
 
-        auto physicsChunk = xmlParser.getUniqueChunk(false, PHYSICS_TAG, XmlAttribute(), chunk);
+        auto physicsChunk = xmlParser.getUniqueChunk(false, PHYSICS_TAG, DataAttribute(), chunk);
         if (physicsChunk != nullptr) {
             std::string rigidBodyId = this->name;
             const Transform<float>& modelTransform = this->model->getTransform();
@@ -63,13 +63,13 @@ namespace urchin {
     }
 
     void SceneObject::writeOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
-        chunk->setAttribute(XmlAttribute(NAME_ATTR, this->name));
+        chunk->setAttribute(DataAttribute(NAME_ATTR, this->name));
 
-        auto modelChunk = xmlWriter.createChunk(MODEL_TAG, XmlAttribute(), chunk);
+        auto modelChunk = xmlWriter.createChunk(MODEL_TAG, DataAttribute(), chunk);
         ModelReaderWriter::writeOn(modelChunk.get(), model, xmlWriter);
 
         if (rigidBody) {
-            auto physicsChunk = xmlWriter.createChunk(PHYSICS_TAG, XmlAttribute(), chunk);
+            auto physicsChunk = xmlWriter.createChunk(PHYSICS_TAG, DataAttribute(), chunk);
             RigidBodyReaderWriter::writeOn(physicsChunk.get(), rigidBody, xmlWriter);
         }
     }

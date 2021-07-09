@@ -3,44 +3,44 @@
 namespace urchin {
 
     SoundShape* SoundBoxReaderWriter::loadFrom(const XmlChunk* shapeChunk, const XmlParser& xmlParser) const {
-        auto halfSizesChunk = xmlParser.getUniqueChunk(true, HALF_SIZES_TAG, XmlAttribute(), shapeChunk);
+        auto halfSizesChunk = xmlParser.getUniqueChunk(true, HALF_SIZES_TAG, DataAttribute(), shapeChunk);
         Vector3<float> halfSizes = halfSizesChunk->getVector3Value();
 
-        auto positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), shapeChunk);
+        auto positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, DataAttribute(), shapeChunk);
         Point3<float> position = positionChunk->getPoint3Value();
 
-        auto orientationChunk = xmlParser.getUniqueChunk(true, ORIENTATION_TAG, XmlAttribute(), shapeChunk);
-        auto orientationAxisChunk = xmlParser.getUniqueChunk(true, AXIS_TAG, XmlAttribute(), orientationChunk.get());
-        auto orientationAngleChunk = xmlParser.getUniqueChunk(true, ANGLE_TAG, XmlAttribute(), orientationChunk.get());
+        auto orientationChunk = xmlParser.getUniqueChunk(true, ORIENTATION_TAG, DataAttribute(), shapeChunk);
+        auto orientationAxisChunk = xmlParser.getUniqueChunk(true, AXIS_TAG, DataAttribute(), orientationChunk.get());
+        auto orientationAngleChunk = xmlParser.getUniqueChunk(true, ANGLE_TAG, DataAttribute(), orientationChunk.get());
         Quaternion<float> orientation(orientationAxisChunk->getVector3Value(), orientationAngleChunk->getFloatValue());
 
-        auto marginChunk = xmlParser.getUniqueChunk(true, MARGIN_TAG, XmlAttribute(), shapeChunk);
+        auto marginChunk = xmlParser.getUniqueChunk(true, MARGIN_TAG, DataAttribute(), shapeChunk);
         float margin = marginChunk->getFloatValue();
 
         return new SoundBox(halfSizes, position, orientation, margin);
     }
 
     void SoundBoxReaderWriter::writeOn(XmlChunk* shapeChunk, const SoundShape* soundShape, XmlWriter& xmlWriter) const {
-        shapeChunk->setAttribute(XmlAttribute(TYPE_ATTR, BOX_VALUE));
+        shapeChunk->setAttribute(DataAttribute(TYPE_ATTR, BOX_VALUE));
 
         const auto* boxShape = dynamic_cast<const SoundBox*>(soundShape);
 
-        auto halfSizesChunk = xmlWriter.createChunk(HALF_SIZES_TAG, XmlAttribute(), shapeChunk);
+        auto halfSizesChunk = xmlWriter.createChunk(HALF_SIZES_TAG, DataAttribute(), shapeChunk);
         halfSizesChunk->setVector3Value(boxShape->getHalfSizes());
 
-        auto positionChunk = xmlWriter.createChunk(POSITION_TAG, XmlAttribute(), shapeChunk);
+        auto positionChunk = xmlWriter.createChunk(POSITION_TAG, DataAttribute(), shapeChunk);
         positionChunk->setPoint3Value(boxShape->getCenterPosition());
 
-        auto orientationChunk = xmlWriter.createChunk(ORIENTATION_TAG, XmlAttribute(), shapeChunk);
-        auto orientationAxisChunk = xmlWriter.createChunk(AXIS_TAG, XmlAttribute(), orientationChunk.get());
-        auto orientationAngleChunk = xmlWriter.createChunk(ANGLE_TAG, XmlAttribute(), orientationChunk.get());
+        auto orientationChunk = xmlWriter.createChunk(ORIENTATION_TAG, DataAttribute(), shapeChunk);
+        auto orientationAxisChunk = xmlWriter.createChunk(AXIS_TAG, DataAttribute(), orientationChunk.get());
+        auto orientationAngleChunk = xmlWriter.createChunk(ANGLE_TAG, DataAttribute(), orientationChunk.get());
         Vector3<float> orientationAxis;
         float orientationAngle;
         boxShape->getOrientation().toAxisAngle(orientationAxis, orientationAngle);
         orientationAxisChunk->setVector3Value(orientationAxis);
         orientationAngleChunk->setFloatValue(orientationAngle);
 
-        auto marginChunk = xmlWriter.createChunk(MARGIN_TAG, XmlAttribute(), shapeChunk);
+        auto marginChunk = xmlWriter.createChunk(MARGIN_TAG, DataAttribute(), shapeChunk);
         marginChunk->setFloatValue(boxShape->getMargin());
     }
 

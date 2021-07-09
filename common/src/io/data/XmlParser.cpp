@@ -43,7 +43,7 @@ namespace urchin {
      * @param parent Name of the tag parent of "chunkName"
      * @return XML chunks according to the parameters
      */
-    std::vector<std::unique_ptr<XmlChunk>> XmlParser::getChunks(const std::string& chunkName, const XmlAttribute& attribute, const XmlChunk* parent) const {
+    std::vector<std::unique_ptr<XmlChunk>> XmlParser::getChunks(const std::string& chunkName, const DataAttribute& attribute, const XmlChunk* parent) const {
         std::vector<std::unique_ptr<XmlChunk>> chunks;
 
         const TiXmlNode *firstChild;
@@ -78,7 +78,7 @@ namespace urchin {
      * @param parent Name of the tag parent of "chunkName"
      * @return Unique XML chunk according to the parameters
      */
-    std::unique_ptr<XmlChunk> XmlParser::getUniqueChunk(bool mandatory, const std::string& chunkName, const XmlAttribute& attribute, const XmlChunk* parent) const {
+    std::unique_ptr<XmlChunk> XmlParser::getUniqueChunk(bool mandatory, const std::string& chunkName, const DataAttribute& attribute, const XmlChunk* parent) const {
         auto chunks = getChunks(chunkName, attribute, parent);
 
         if (chunks.size() > 1) {
@@ -94,7 +94,7 @@ namespace urchin {
         return std::move(chunks[0]);
     }
 
-    std::string XmlParser::getChunkDescription(const std::string& chunkName, const XmlAttribute& attribute) const {
+    std::string XmlParser::getChunkDescription(const std::string& chunkName, const DataAttribute& attribute) const {
         if (attribute.getAttributeName().empty()) {
             return chunkName;
         } else {

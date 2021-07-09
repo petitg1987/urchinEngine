@@ -17,13 +17,13 @@ namespace urchin {
     }
 
     void SceneAI::loadFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
-        auto navMeshAgentChunk = xmlParser.getUniqueChunk(true, NAV_MESH_AGENT_TAG, XmlAttribute(), chunk);
+        auto navMeshAgentChunk = xmlParser.getUniqueChunk(true, NAV_MESH_AGENT_TAG, DataAttribute(), chunk);
 
         changeNavMeshAgent(NavMeshAgentReaderWriter::loadFrom(navMeshAgentChunk.get(), xmlParser));
     }
 
     void SceneAI::writeOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
-        auto navMeshAgentChunk = xmlWriter.createChunk(NAV_MESH_AGENT_TAG, XmlAttribute(), chunk);
+        auto navMeshAgentChunk = xmlWriter.createChunk(NAV_MESH_AGENT_TAG, DataAttribute(), chunk);
 
         NavMeshAgentReaderWriter::writeOn(navMeshAgentChunk.get(), getNavMeshAgent(), xmlWriter);
     }

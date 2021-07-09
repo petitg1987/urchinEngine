@@ -72,8 +72,8 @@ namespace urchin {
     }
 
     void Map::loadSceneObjectsFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
-        auto objectsListChunk = xmlParser.getUniqueChunk(true, OBJECTS_TAG, XmlAttribute(), chunk);
-        auto objectsChunk = xmlParser.getChunks(OBJECT_TAG, XmlAttribute(), objectsListChunk.get());
+        auto objectsListChunk = xmlParser.getUniqueChunk(true, OBJECTS_TAG, DataAttribute(), chunk);
+        auto objectsChunk = xmlParser.getChunks(OBJECT_TAG, DataAttribute(), objectsListChunk.get());
 
         for (const auto& objectChunk : objectsChunk) {
             auto* sceneObject = new SceneObject();
@@ -84,8 +84,8 @@ namespace urchin {
     }
 
     void Map::loadSceneLightsFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
-        auto lightsListChunk = xmlParser.getUniqueChunk(true, LIGHTS_TAG, XmlAttribute(), chunk);
-        auto lightsChunk = xmlParser.getChunks(LIGHT_TAG, XmlAttribute(), lightsListChunk.get());
+        auto lightsListChunk = xmlParser.getUniqueChunk(true, LIGHTS_TAG, DataAttribute(), chunk);
+        auto lightsChunk = xmlParser.getChunks(LIGHT_TAG, DataAttribute(), lightsListChunk.get());
 
         for (const auto& lightChunk : lightsChunk) {
             auto* sceneLight = new SceneLight();
@@ -96,8 +96,8 @@ namespace urchin {
     }
 
     void Map::loadSceneTerrainFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
-        auto terrainsListChunk = xmlParser.getUniqueChunk(true, TERRAINS_TAG, XmlAttribute(), chunk);
-        auto terrainsChunk = xmlParser.getChunks(TERRAIN_TAG, XmlAttribute(), terrainsListChunk.get());
+        auto terrainsListChunk = xmlParser.getUniqueChunk(true, TERRAINS_TAG, DataAttribute(), chunk);
+        auto terrainsChunk = xmlParser.getChunks(TERRAIN_TAG, DataAttribute(), terrainsListChunk.get());
 
         for (const auto& terrainChunk : terrainsChunk) {
             auto* sceneTerrain = new SceneTerrain();
@@ -108,8 +108,8 @@ namespace urchin {
     }
 
     void Map::loadSceneWaterFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
-        auto watersListChunk = xmlParser.getUniqueChunk(true, WATERS_TAG, XmlAttribute(), chunk);
-        auto watersChunk = xmlParser.getChunks(WATER_TAG, XmlAttribute(), watersListChunk.get());
+        auto watersListChunk = xmlParser.getUniqueChunk(true, WATERS_TAG, DataAttribute(), chunk);
+        auto watersChunk = xmlParser.getChunks(WATER_TAG, DataAttribute(), watersListChunk.get());
 
         for (const auto& waterChunk : watersChunk) {
             auto* sceneWater = new SceneWater();
@@ -120,14 +120,14 @@ namespace urchin {
     }
 
     void Map::loadSceneSkyFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
-        auto skyChunk = xmlParser.getUniqueChunk(true, SKY_TAG, XmlAttribute(), chunk);
+        auto skyChunk = xmlParser.getUniqueChunk(true, SKY_TAG, DataAttribute(), chunk);
 
         sceneSky->loadFrom(skyChunk.get(), xmlParser);
     }
 
     void Map::loadSceneSoundsFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
-        auto soundElementsListChunk = xmlParser.getUniqueChunk(true, SOUND_ELEMENTS_TAG, XmlAttribute(), chunk);
-        auto soundElementsChunk = xmlParser.getChunks(SOUND_ELEMENT_TAG, XmlAttribute(), soundElementsListChunk.get());
+        auto soundElementsListChunk = xmlParser.getUniqueChunk(true, SOUND_ELEMENTS_TAG, DataAttribute(), chunk);
+        auto soundElementsChunk = xmlParser.getChunks(SOUND_ELEMENT_TAG, DataAttribute(), soundElementsListChunk.get());
 
         for (const auto& soundElementChunk : soundElementsChunk) {
             auto* sceneSound = new SceneSound();
@@ -138,7 +138,7 @@ namespace urchin {
     }
 
     void Map::loadSceneAIFrom(const XmlChunk* chunk, const XmlParser& xmlParser) {
-        auto aiElementsListChunk = xmlParser.getUniqueChunk(true, AI_ELEMENTS_TAG, XmlAttribute(), chunk);
+        auto aiElementsListChunk = xmlParser.getUniqueChunk(true, AI_ELEMENTS_TAG, DataAttribute(), chunk);
 
         sceneAI->loadFrom(aiElementsListChunk.get(), xmlParser);
     }
@@ -154,58 +154,58 @@ namespace urchin {
     }
 
     void Map::writeSceneObjectsOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
-        auto objectsListChunk = xmlWriter.createChunk(OBJECTS_TAG, XmlAttribute(), chunk);
+        auto objectsListChunk = xmlWriter.createChunk(OBJECTS_TAG, DataAttribute(), chunk);
 
         for (auto sceneObject : sceneObjects) {
-            auto objectsChunk = xmlWriter.createChunk(OBJECT_TAG, XmlAttribute(), objectsListChunk.get());
+            auto objectsChunk = xmlWriter.createChunk(OBJECT_TAG, DataAttribute(), objectsListChunk.get());
             sceneObject->writeOn(objectsChunk.get(), xmlWriter);
         }
     }
 
     void Map::writeSceneLightsOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
-        auto lightsListChunk = xmlWriter.createChunk(LIGHTS_TAG, XmlAttribute(), chunk);
+        auto lightsListChunk = xmlWriter.createChunk(LIGHTS_TAG, DataAttribute(), chunk);
 
         for (auto sceneLight : sceneLights) {
-            auto lightsChunk = xmlWriter.createChunk(LIGHT_TAG, XmlAttribute(), lightsListChunk.get());
+            auto lightsChunk = xmlWriter.createChunk(LIGHT_TAG, DataAttribute(), lightsListChunk.get());
             sceneLight->writeOn(lightsChunk.get(), xmlWriter);
         }
     }
 
     void Map::writeSceneTerrainsOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
-        auto terrainsListChunk = xmlWriter.createChunk(TERRAINS_TAG, XmlAttribute(), chunk);
+        auto terrainsListChunk = xmlWriter.createChunk(TERRAINS_TAG, DataAttribute(), chunk);
 
         for (auto sceneTerrain : sceneTerrains) {
-            auto terrainsChunk = xmlWriter.createChunk(TERRAIN_TAG, XmlAttribute(), terrainsListChunk.get());
+            auto terrainsChunk = xmlWriter.createChunk(TERRAIN_TAG, DataAttribute(), terrainsListChunk.get());
             sceneTerrain->writeOn(terrainsChunk.get(), xmlWriter);
         }
     }
 
     void Map::writeSceneWatersOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
-        auto watersListChunk = xmlWriter.createChunk(WATERS_TAG, XmlAttribute(), chunk);
+        auto watersListChunk = xmlWriter.createChunk(WATERS_TAG, DataAttribute(), chunk);
 
         for (auto sceneWater : sceneWaters) {
-            auto watersChunk = xmlWriter.createChunk(WATER_TAG, XmlAttribute(), watersListChunk.get());
+            auto watersChunk = xmlWriter.createChunk(WATER_TAG, DataAttribute(), watersListChunk.get());
             sceneWater->writeOn(watersChunk.get(), xmlWriter);
         }
     }
 
     void Map::writeSceneSkyOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
-        auto skyChunk = xmlWriter.createChunk(SKY_TAG, XmlAttribute(), chunk);
+        auto skyChunk = xmlWriter.createChunk(SKY_TAG, DataAttribute(), chunk);
 
         sceneSky->writeOn(skyChunk.get(), xmlWriter);
     }
 
     void Map::writeSceneSoundsOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
-        auto soundElementsListChunk = xmlWriter.createChunk(SOUND_ELEMENTS_TAG, XmlAttribute(), chunk);
+        auto soundElementsListChunk = xmlWriter.createChunk(SOUND_ELEMENTS_TAG, DataAttribute(), chunk);
 
         for (auto sceneSound : sceneSounds) {
-            auto soundElementsChunk = xmlWriter.createChunk(SOUND_ELEMENT_TAG, XmlAttribute(), soundElementsListChunk.get());
+            auto soundElementsChunk = xmlWriter.createChunk(SOUND_ELEMENT_TAG, DataAttribute(), soundElementsListChunk.get());
             sceneSound->writeOn(soundElementsChunk.get(), xmlWriter);
         }
     }
 
     void Map::writeSceneAIOn(XmlChunk* chunk, XmlWriter& xmlWriter) const {
-        auto aiElementsListChunk = xmlWriter.createChunk(AI_ELEMENTS_TAG, XmlAttribute(), chunk);
+        auto aiElementsListChunk = xmlWriter.createChunk(AI_ELEMENTS_TAG, DataAttribute(), chunk);
 
         sceneAI->writeOn(aiElementsListChunk.get(), xmlWriter);
     }

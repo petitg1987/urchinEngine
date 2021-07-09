@@ -4,7 +4,7 @@
 #include <memory>
 
 #include <libs/tinyxml/tinyxml.h>
-#include <io/data/XmlAttribute.h>
+#include <io/data/DataAttribute.h>
 #include <io/data/XmlChunk.h>
 
 namespace urchin {
@@ -14,7 +14,7 @@ namespace urchin {
             explicit XmlWriter(const std::string&);
             ~XmlWriter();
 
-            std::unique_ptr<XmlChunk> createChunk(const std::string&, const XmlAttribute & = XmlAttribute(), const XmlChunk* parent = nullptr);
+            std::unique_ptr<XmlChunk> createChunk(const std::string&, const DataAttribute & = DataAttribute(), const XmlChunk* parent = nullptr);
             void saveInFile();
 
         private:

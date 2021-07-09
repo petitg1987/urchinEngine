@@ -26,7 +26,7 @@ namespace urchin {
         return *chunk->ToElement()->Attribute(attributeName);
     }
 
-    void XmlChunk::setAttribute(const XmlAttribute& attribute) {
+    void XmlChunk::setAttribute(const DataAttribute& attribute) {
         chunk->SetAttribute(attribute.getAttributeName(), attribute.getAttributeValue());
     }
 

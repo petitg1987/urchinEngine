@@ -17,7 +17,7 @@
 #include <io/map/MapSerializer.h>
 #include <io/data/XmlParser.h>
 #include <io/data/XmlWriter.h>
-#include <io/data/XmlAttribute.h>
+#include <io/data/DataAttribute.h>
 #include <io/data/XmlChunk.h>
 
 #include <logger/Logger.h>

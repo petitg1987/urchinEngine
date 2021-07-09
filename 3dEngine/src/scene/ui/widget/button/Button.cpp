@@ -19,20 +19,20 @@ namespace urchin {
 
     void Button::createOrUpdateWidget() {
         //skin information
-        auto buttonChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "button", XmlAttribute("nameSkin", nameSkin));
+        auto buttonChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "button", DataAttribute("nameSkin", nameSkin));
 
-        auto skinDefaultChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "skin", XmlAttribute("type", "default"), buttonChunk.get());
+        auto skinDefaultChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "skin", DataAttribute("type", "default"), buttonChunk.get());
         texInfoDefault = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinDefaultChunk.get());
         currentTexture = texInfoDefault;
 
-        auto skinFocusChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "skin", XmlAttribute("type", "focus"), buttonChunk.get());
+        auto skinFocusChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "skin", DataAttribute("type", "focus"), buttonChunk.get());
         texInfoOnFocus = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinFocusChunk.get());
 
-        auto skinClickChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "skin", XmlAttribute("type", "click"), buttonChunk.get());
+        auto skinClickChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "skin", DataAttribute("type", "click"), buttonChunk.get());
         texInfoOnClick = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinClickChunk.get());
 
         if (!buttonText.empty()) {
-            auto textSkinChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "textSkin", XmlAttribute(), buttonChunk.get());
+            auto textSkinChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "textSkin", DataAttribute(), buttonChunk.get());
             delete text;
             text = Text::newTranslatableText(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), buttonText);
         }

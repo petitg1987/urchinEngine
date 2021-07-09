@@ -4,7 +4,7 @@
 #include <vector>
 
 #include <libs/tinyxml/tinyxml.h>
-#include <io/data/XmlAttribute.h>
+#include <io/data/DataAttribute.h>
 #include <math/algebra/point/Point2.h>
 #include <math/algebra/point/Point3.h>
 #include <math/algebra/point/Point4.h>
@@ -20,7 +20,7 @@ namespace urchin {
             friend class XmlWriter;
 
             std::string getAttributeValue(const std::string&) const;
-            void setAttribute(const XmlAttribute&);
+            void setAttribute(const DataAttribute&);
 
             std::string getStringValue() const;
             void setStringValue(const std::string&);

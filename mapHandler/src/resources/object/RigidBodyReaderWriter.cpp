@@ -6,7 +6,7 @@ namespace urchin {
 
     RigidBody* RigidBodyReaderWriter::loadFrom(const XmlChunk* physicsChunk, const std::string& id,
             const Transform<float>& modelTransform, const XmlParser& xmlParser) {
-        auto shapeChunk = xmlParser.getUniqueChunk(true, SHAPE_TAG, XmlAttribute(), physicsChunk);
+        auto shapeChunk = xmlParser.getUniqueChunk(true, SHAPE_TAG, DataAttribute(), physicsChunk);
         std::shared_ptr<CollisionShapeReaderWriter> shapeReaderWriter = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeChunk.get());
         auto bodyShape = std::unique_ptr<CollisionShape3D>(shapeReaderWriter->loadFrom(shapeChunk.get(), xmlParser));
 
@@ -17,7 +17,7 @@ namespace urchin {
     }
 
     void RigidBodyReaderWriter::writeOn(XmlChunk* physicsChunk, const RigidBody* rigidBody, XmlWriter& xmlWriter) {
-        auto shapeChunk = xmlWriter.createChunk(SHAPE_TAG, XmlAttribute(), physicsChunk);
+        auto shapeChunk = xmlWriter.createChunk(SHAPE_TAG, DataAttribute(), physicsChunk);
         std::shared_ptr<CollisionShapeReaderWriter> shapeReaderWriter = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(rigidBody->getShape());
 
         shapeReaderWriter->writeOn(shapeChunk.get(), rigidBody->getShape(), xmlWriter);
@@ -25,53 +25,53 @@ namespace urchin {
     }
 
     void RigidBodyReaderWriter::loadBodyPropertiesOn(RigidBody* rigidBody, const XmlChunk* physicsChunk, const XmlParser& xmlParser) {
-        auto massChunk = xmlParser.getUniqueChunk(true, MASS_TAG, XmlAttribute(), physicsChunk);
+        auto massChunk = xmlParser.getUniqueChunk(true, MASS_TAG, DataAttribute(), physicsChunk);
         float bodyMass = massChunk->getFloatValue();
         rigidBody->setMass(bodyMass);
 
-        auto restitutionChunk = xmlParser.getUniqueChunk(true, RESTITUTION_TAG, XmlAttribute(), physicsChunk);
+        auto restitutionChunk = xmlParser.getUniqueChunk(true, RESTITUTION_TAG, DataAttribute(), physicsChunk);
         rigidBody->setRestitution(restitutionChunk->getFloatValue());
 
-        auto frictionChunk = xmlParser.getUniqueChunk(true, FRICTION_TAG, XmlAttribute(), physicsChunk);
+        auto frictionChunk = xmlParser.getUniqueChunk(true, FRICTION_TAG, DataAttribute(), physicsChunk);
         rigidBody->setFriction(frictionChunk->getFloatValue());
 
-        auto rollingFrictionChunk = xmlParser.getUniqueChunk(true, ROLLING_FRICTION_TAG, XmlAttribute(), physicsChunk);
+        auto rollingFrictionChunk = xmlParser.getUniqueChunk(true, ROLLING_FRICTION_TAG, DataAttribute(), physicsChunk);
         rigidBody->setRollingFriction(rollingFrictionChunk->getFloatValue());
 
-        auto linearDampingChunk = xmlParser.getUniqueChunk(true, LINEAR_DAMPING_TAG, XmlAttribute(), physicsChunk);
-        auto angularDampingChunk = xmlParser.getUniqueChunk(true, ANGULAR_DAMPING_TAG, XmlAttribute(), physicsChunk);
+        auto linearDampingChunk = xmlParser.getUniqueChunk(true, LINEAR_DAMPING_TAG, DataAttribute(), physicsChunk);
+        auto angularDampingChunk = xmlParser.getUniqueChunk(true, ANGULAR_DAMPING_TAG, DataAttribute(), physicsChunk);
         rigidBody->setDamping(linearDampingChunk->getFloatValue(), angularDampingChunk->getFloatValue());
 
-        auto linearFactorChunk = xmlParser.getUniqueChunk(true, LINEAR_FACTOR_TAG, XmlAttribute(), physicsChunk);
+        auto linearFactorChunk = xmlParser.getUniqueChunk(true, LINEAR_FACTOR_TAG, DataAttribute(), physicsChunk);
         rigidBody->setLinearFactor(linearFactorChunk->getVector3Value());
 
-        auto angularFactorChunk = xmlParser.getUniqueChunk(true, ANGULAR_FACTOR_TAG, XmlAttribute(), physicsChunk);
+        auto angularFactorChunk = xmlParser.getUniqueChunk(true, ANGULAR_FACTOR_TAG, DataAttribute(), physicsChunk);
         rigidBody->setAngularFactor(angularFactorChunk->getVector3Value());
     }
 
     void RigidBodyReaderWriter::writeBodyPropertiesOn(const XmlChunk* physicsChunk, const RigidBody* rigidBody, XmlWriter& xmlWriter) {
-        auto massChunk = xmlWriter.createChunk(MASS_TAG, XmlAttribute(), physicsChunk);
+        auto massChunk = xmlWriter.createChunk(MASS_TAG, DataAttribute(), physicsChunk);
         massChunk->setFloatValue(rigidBody->getMass());
 
-        auto restitutionChunk = xmlWriter.createChunk(RESTITUTION_TAG, XmlAttribute(), physicsChunk);
+        auto restitutionChunk = xmlWriter.createChunk(RESTITUTION_TAG, DataAttribute(), physicsChunk);
         restitutionChunk->setFloatValue(rigidBody->getRestitution());
 
-        auto frictionChunk = xmlWriter.createChunk(FRICTION_TAG, XmlAttribute(), physicsChunk);
+        auto frictionChunk = xmlWriter.createChunk(FRICTION_TAG, DataAttribute(), physicsChunk);
         frictionChunk->setFloatValue(rigidBody->getFriction());
 
-        auto rollingFrictionChunk = xmlWriter.createChunk(ROLLING_FRICTION_TAG, XmlAttribute(), physicsChunk);
+        auto rollingFrictionChunk = xmlWriter.createChunk(ROLLING_FRICTION_TAG, DataAttribute(), physicsChunk);
         rollingFrictionChunk->setFloatValue(rigidBody->getRollingFriction());
 
-        auto linearDampingChunk = xmlWriter.createChunk(LINEAR_DAMPING_TAG, XmlAttribute(), physicsChunk);
+        auto linearDampingChunk = xmlWriter.createChunk(LINEAR_DAMPING_TAG, DataAttribute(), physicsChunk);
         linearDampingChunk->setFloatValue(rigidBody->getLinearDamping());
 
-        auto angularDampingChunk = xmlWriter.createChunk(ANGULAR_DAMPING_TAG, XmlAttribute(), physicsChunk);
+        auto angularDampingChunk = xmlWriter.createChunk(ANGULAR_DAMPING_TAG, DataAttribute(), physicsChunk);
         angularDampingChunk->setFloatValue(rigidBody->getAngularDamping());
 
-        auto linearFactorChunk = xmlWriter.createChunk(LINEAR_FACTOR_TAG, XmlAttribute(), physicsChunk);
+        auto linearFactorChunk = xmlWriter.createChunk(LINEAR_FACTOR_TAG, DataAttribute(), physicsChunk);
         linearFactorChunk->setVector3Value(rigidBody->getLinearFactor());
 
-        auto angularFactorChunk = xmlWriter.createChunk(ANGULAR_FACTOR_TAG, XmlAttribute(), physicsChunk);
+        auto angularFactorChunk = xmlWriter.createChunk(ANGULAR_FACTOR_TAG, DataAttribute(), physicsChunk);
         angularFactorChunk->setVector3Value(rigidBody->getAngularFactor());
     }
 }
