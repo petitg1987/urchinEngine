@@ -14,7 +14,7 @@ namespace urchin {
             aiSimulationStopper(false),
             timeStep(0),
             paused(true),
-            navMeshGenerator(new NavMeshGenerator()) {
+            navMeshGenerator(std::make_unique<NavMeshGenerator>()) {
         NumericalCheck::perform();
         SignalHandler::instance()->initialize();
     }
@@ -29,12 +29,10 @@ namespace urchin {
 
         copiedPathRequests.clear();
         pathRequests.clear();
-
-        delete navMeshGenerator;
     }
 
-    NavMeshGenerator* AIManager::getNavMeshGenerator() const {
-        return navMeshGenerator;
+    NavMeshGenerator& AIManager::getNavMeshGenerator() const {
+        return *navMeshGenerator;
     }
 
     void AIManager::addEntity(const std::shared_ptr<AIEntity>& aiEntity) {

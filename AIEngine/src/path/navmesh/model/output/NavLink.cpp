@@ -40,7 +40,6 @@ namespace urchin {
 
     std::shared_ptr<NavTriangle> NavLink::getTargetTriangle() const {
         assert(!targetTriangle.expired());
-
         return targetTriangle.lock();
     }
 

@@ -9,11 +9,11 @@ namespace urchin {
     }
 
     std::shared_ptr<NavMeshAgent> SceneAI::getNavMeshAgent() const {
-        return aiManager->getNavMeshGenerator()->getNavMeshAgent();
+        return aiManager->getNavMeshGenerator().getNavMeshAgent();
     }
 
     void SceneAI::changeNavMeshAgent(const std::shared_ptr<NavMeshAgent>& navMeshAgent) {
-        aiManager->getNavMeshGenerator()->setNavMeshAgent(navMeshAgent);
+        aiManager->getNavMeshGenerator().setNavMeshAgent(navMeshAgent);
     }
 
     void SceneAI::loadFrom(const DataChunk* chunk, const DataParser& dataParser) {

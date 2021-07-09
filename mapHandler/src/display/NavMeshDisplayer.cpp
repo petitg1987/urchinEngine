@@ -14,7 +14,7 @@ namespace urchin {
     }
 
     void NavMeshDisplayer::display() {
-        NavMesh navMesh = aiManager->getNavMeshGenerator()->copyLastGeneratedNavMesh();
+        NavMesh navMesh = aiManager->getNavMeshGenerator().copyLastGeneratedNavMesh();
 
         if (loadedNavMeshId != navMesh.getUpdateId()) {
             clearDisplay();
