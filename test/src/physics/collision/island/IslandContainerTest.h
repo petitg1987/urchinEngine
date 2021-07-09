@@ -17,8 +17,7 @@ class IslandContainerTest : public CppUnit::TestFixture {
 
 class TestBody : public urchin::IslandElement {
     public:
-        bool isActive() const override
-        {
+        bool isActive() const override {
             return true;
         }
 
