@@ -5,8 +5,8 @@
 #include <vector>
 
 #include <libs/tinyxml/tinyxml.h>
-#include <io/xml/XmlAttribute.h>
-#include <io/xml/XmlChunk.h>
+#include <io/data/XmlAttribute.h>
+#include <io/data/XmlChunk.h>
 
 namespace urchin {
 

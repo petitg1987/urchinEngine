@@ -4,7 +4,7 @@
 #include <vector>
 
 #include <libs/tinyxml/tinyxml.h>
-#include <io/xml/XmlAttribute.h>
+#include <io/data/XmlAttribute.h>
 #include <math/algebra/point/Point2.h>
 #include <math/algebra/point/Point3.h>
 #include <math/algebra/point/Point4.h>

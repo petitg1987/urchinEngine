@@ -25,11 +25,11 @@ namespace urchin {
             std::shared_ptr<Texture> createWidgetTexture(unsigned int, unsigned int, const XmlChunk*, WidgetOutline* widgetOutline = nullptr) const;
             Length loadLength(const XmlChunk*, const std::string&) const;
 
-            const std::unique_ptr<XmlParser>& getXmlSkin() const;
+            const std::unique_ptr<XmlParser>& getSkinReader() const;
 
         private:
             UISkinService();
 
-            std::unique_ptr<XmlParser> xmlSkin;
+            std::unique_ptr<XmlParser> skinReader;
     };
 }

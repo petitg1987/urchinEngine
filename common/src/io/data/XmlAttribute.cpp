@@ -1,12 +1,11 @@
-#include <io/xml/XmlAttribute.h>
-
+#include <io/data/XmlAttribute.h>
 #include <utility>
 
 namespace urchin {
 
     XmlAttribute::XmlAttribute(std::string attributeName, std::string attributeValue) :
-        attributeName(std::move(attributeName)),
-        attributeValue(std::move(attributeValue)) {
+            attributeName(std::move(attributeName)),
+            attributeValue(std::move(attributeValue)) {
 
     }
 

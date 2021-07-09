@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include <io/xml/XmlWriter.h>
+#include <io/data/XmlWriter.h>
 #include <config/FileSystem.h>
 
 namespace urchin {

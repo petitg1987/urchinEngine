@@ -30,15 +30,15 @@ namespace urchin {
 
     void TextBox::createOrUpdateWidget() {
         //skin information
-        auto textBoxChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textBox", XmlAttribute("nameSkin", nameSkin));
+        auto textBoxChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "textBox", XmlAttribute("nameSkin", nameSkin));
 
-        auto skinChunkDefault = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "default"), textBoxChunk.get());
+        auto skinChunkDefault = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "skin", XmlAttribute("type", "default"), textBoxChunk.get());
         texTextBoxDefault = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinChunkDefault.get(), &widgetOutline);
 
-        auto skinChunkFocus = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "focus"), textBoxChunk.get());
+        auto skinChunkFocus = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "skin", XmlAttribute("type", "focus"), textBoxChunk.get());
         texTextBoxFocus = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinChunkFocus.get());
 
-        auto textSkinChunk = UISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), textBoxChunk.get());
+        auto textSkinChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "textSkin", XmlAttribute(), textBoxChunk.get());
         delete text;
         text = Text::newText(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), "");
         text->updatePosition(Position(0.0f, ((float)getHeight() - (float)text->getHeight()) / 2.0f, LengthType::PIXEL));
