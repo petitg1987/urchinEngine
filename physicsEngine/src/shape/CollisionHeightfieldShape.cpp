@@ -113,8 +113,8 @@ namespace urchin {
         return 0.0f;
     }
 
-    CollisionShape3D* CollisionHeightfieldShape::clone() const {
-        return new CollisionHeightfieldShape(vertices, xLength, zLength);
+    std::unique_ptr<CollisionShape3D> CollisionHeightfieldShape::clone() const {
+        return std::make_unique<CollisionHeightfieldShape>(vertices, xLength, zLength);
     }
 
     const std::vector<CollisionTriangleShape>& CollisionHeightfieldShape::findTrianglesInAABBox(const AABBox<float>& checkAABBox) const {

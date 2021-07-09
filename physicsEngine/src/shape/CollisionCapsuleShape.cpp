@@ -97,8 +97,8 @@ namespace urchin {
         return capsuleShape->getRadius();
     }
 
-    CollisionShape3D* CollisionCapsuleShape::clone() const {
-        return new CollisionCapsuleShape(capsuleShape->getRadius(), capsuleShape->getCylinderHeight(), capsuleShape->getCapsuleOrientation());
+    std::unique_ptr<CollisionShape3D> CollisionCapsuleShape::clone() const {
+        return std::make_unique<CollisionCapsuleShape>(capsuleShape->getRadius(), capsuleShape->getCylinderHeight(), capsuleShape->getCapsuleOrientation());
     }
 
 }

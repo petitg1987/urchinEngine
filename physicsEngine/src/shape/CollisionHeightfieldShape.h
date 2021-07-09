@@ -33,7 +33,7 @@ namespace urchin {
             float getMaxDistanceToCenter() const override;
             float getMinDistanceToCenter() const override;
 
-            CollisionShape3D* clone() const override;
+            std::unique_ptr<CollisionShape3D> clone() const override;
 
             const std::vector<CollisionTriangleShape>& findTrianglesInAABBox(const AABBox<float>&) const override;
             const std::vector<CollisionTriangleShape>& findTrianglesHitByRay(const LineSegment3D<float>&) const override;

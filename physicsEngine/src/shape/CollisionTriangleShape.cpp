@@ -70,8 +70,8 @@ namespace urchin {
         return 0.0f;
     }
 
-    CollisionShape3D* CollisionTriangleShape::clone() const {
-        return new CollisionTriangleShape(triangleShape->getPoints());
+    std::unique_ptr<CollisionShape3D> CollisionTriangleShape::clone() const {
+        return std::make_unique<CollisionTriangleShape>(triangleShape->getPoints());
     }
 
 }

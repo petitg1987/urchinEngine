@@ -94,8 +94,8 @@ namespace urchin {
         return std::min(cylinderShape->getHeight() / 2.0f, cylinderShape->getRadius());
     }
 
-    CollisionShape3D* CollisionCylinderShape::clone() const {
-        return new CollisionCylinderShape(cylinderShape->getRadius(), cylinderShape->getHeight(), cylinderShape->getCylinderOrientation());
+    std::unique_ptr<CollisionShape3D> CollisionCylinderShape::clone() const {
+        return std::make_unique<CollisionCylinderShape>(cylinderShape->getRadius(), cylinderShape->getHeight(), cylinderShape->getCylinderOrientation());
     }
 
 }

@@ -32,7 +32,7 @@ namespace urchin {
             transform(abstractBody.getTransform()),
             isManuallyMoved(false),
             id(abstractBody.getId()),
-            shape(std::unique_ptr<const CollisionShape3D>(abstractBody.getShape().clone())),
+            shape(abstractBody.getShape().clone()),
             restitution(0.0f),
             friction(0.0f),
             rollingFriction(0.0f),

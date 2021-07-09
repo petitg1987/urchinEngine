@@ -90,8 +90,8 @@ namespace urchin {
         return boxShape->getMinHalfSize();
     }
 
-    CollisionShape3D* CollisionBoxShape::clone() const {
-        return new CollisionBoxShape(boxShape->getHalfSizes());
+    std::unique_ptr<CollisionShape3D> CollisionBoxShape::clone() const {
+        return std::make_unique<CollisionBoxShape>(boxShape->getHalfSizes());
     }
 
 }

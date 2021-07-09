@@ -61,7 +61,7 @@ namespace urchin {
 
             void checkInnerMarginQuality(const std::string&) const;
 
-            virtual CollisionShape3D* clone() const = 0;
+            virtual std::unique_ptr<CollisionShape3D> clone() const = 0;
 
         protected:
             static FixedSizePool<CollisionConvexObject3D>* getObjectsPool();
