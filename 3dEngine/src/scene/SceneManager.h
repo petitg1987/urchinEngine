@@ -30,12 +30,12 @@ namespace urchin {
             float getDeltaTime() const;
 
             //renderer
-            Renderer3d* newRenderer3d(bool);
+            Renderer3d& newRenderer3d(bool);
             void enableRenderer3d(Renderer3d*);
             void removeRenderer3d(Renderer3d*);
             Renderer3d* getActiveRenderer3d() const;
 
-            UIRenderer* newUIRenderer(bool);
+            UIRenderer& newUIRenderer(bool);
             void enableUIRenderer(UIRenderer*);
             void removeUIRenderer(UIRenderer*);
             UIRenderer* getActiveUIRenderer() const;
@@ -68,9 +68,9 @@ namespace urchin {
 
             //renderer
             std::shared_ptr<ScreenRender> screenRenderTarget;
-            std::vector<Renderer3d*> renderers3d;
+            std::vector<std::unique_ptr<Renderer3d>> renderers3d;
             Renderer3d* activeRenderer3d;
-            std::vector<UIRenderer*> uiRenderers;
+            std::vector<std::unique_ptr<UIRenderer>> uiRenderers;
             UIRenderer* activeUiRenderers;
     };
 

@@ -32,14 +32,6 @@ namespace urchin {
 
     SceneManager::~SceneManager() {
         screenRenderTarget->cleanup();
-
-        for (auto& renderer3d : renderers3d) {
-            delete renderer3d;
-        }
-        for (auto& uiRenderer : uiRenderers) {
-            delete uiRenderer;
-        }
-
         Profiler::graphic()->log();
     }
 
@@ -60,10 +52,10 @@ namespace urchin {
 
             //renderer
             screenRenderTarget->onResize();
-            for (auto* renderer3d : renderers3d) {
+            for (auto& renderer3d : renderers3d) {
                 renderer3d->onResize(sceneWidth, sceneHeight);
             }
-            for (auto* uiRenderer : uiRenderers) {
+            for (auto& uiRenderer : uiRenderers) {
                 uiRenderer->onResize(sceneWidth, sceneHeight);
             }
         }
@@ -117,15 +109,16 @@ namespace urchin {
         }
     }
 
-    Renderer3d* SceneManager::newRenderer3d(bool enable) {
-        auto* renderer3d = new Renderer3d(screenRenderTarget);
-        renderer3d->onResize(sceneWidth, sceneHeight);
-        renderers3d.push_back(renderer3d);
+    Renderer3d& SceneManager::newRenderer3d(bool enable) {
+        auto renderer3d = std::make_unique<Renderer3d>(screenRenderTarget);
+        renderer3d->onResize(sceneWidth, sceneHeight); //TODO remove ?
 
         if (enable) {
-            enableRenderer3d(renderer3d);
+            enableRenderer3d(renderer3d.get());
         }
-        return renderer3d;
+
+        renderers3d.push_back(std::move(renderer3d));
+        return *renderers3d.back();
     }
 
     void SceneManager::enableRenderer3d(Renderer3d* renderer3d) {
@@ -141,23 +134,23 @@ namespace urchin {
             activeRenderer3d = nullptr;
         }
 
-        renderers3d.erase(std::remove(renderers3d.begin(), renderers3d.end(), renderer3d), renderers3d.end());
-        delete renderer3d;
+        renderers3d.erase(std::remove_if(renderers3d.begin(), renderers3d.end(), [&](auto& p){return renderer3d == p.get();}), renderers3d.end());
     }
 
     Renderer3d* SceneManager::getActiveRenderer3d() const {
         return activeRenderer3d;
     }
 
-    UIRenderer* SceneManager::newUIRenderer(bool enable) {
-        auto* uiRenderer = new UIRenderer(screenRenderTarget, i18nService);
-        uiRenderer->onResize(sceneWidth, sceneHeight);
-        uiRenderers.push_back(uiRenderer);
+    UIRenderer& SceneManager::newUIRenderer(bool enable) {
+        auto uiRenderer = std::make_unique<UIRenderer>(screenRenderTarget, i18nService);
+        uiRenderer->onResize(sceneWidth, sceneHeight); //TODO remove ?
 
         if (enable) {
-            enableUIRenderer(uiRenderer);
+            enableUIRenderer(uiRenderer.get());
         }
-        return uiRenderer;
+
+        uiRenderers.push_back(std::move(uiRenderer));
+        return *uiRenderers.back();
     }
 
     void SceneManager::enableUIRenderer(UIRenderer* uiRenderer) {
@@ -173,12 +166,11 @@ namespace urchin {
             activeUiRenderers = nullptr;
         }
 
-        uiRenderers.erase(std::remove(uiRenderers.begin(), uiRenderers.end(), uiRenderer), uiRenderers.end());
-        delete uiRenderer;
+        uiRenderers.erase(std::remove_if(uiRenderers.begin(), uiRenderers.end(), [&](auto& p){return uiRenderer == p.get();}), uiRenderers.end());
     }
 
     UIRenderer* SceneManager::getActiveUIRenderer() const {
-        return dynamic_cast<UIRenderer*>(activeUiRenderers);
+        return activeUiRenderers;
     }
 
     bool SceneManager::onKeyPress(unsigned int key) {
