@@ -16,7 +16,7 @@ namespace urchin {
             CollisionHeightfieldShape(std::vector<Point3<float>>, unsigned int, unsigned int);
             CollisionHeightfieldShape(CollisionHeightfieldShape&&) = delete;
             CollisionHeightfieldShape(const CollisionHeightfieldShape&) = delete;
-            ~CollisionHeightfieldShape() override = default;
+            ~CollisionHeightfieldShape() override;
 
             CollisionShape3D::ShapeType getShapeType() const override;
             const ConvexShape3D<float>& getSingleShape() const override;

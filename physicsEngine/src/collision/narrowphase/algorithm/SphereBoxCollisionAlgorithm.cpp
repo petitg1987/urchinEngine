@@ -6,8 +6,8 @@
 
 namespace urchin {
 
-    SphereBoxCollisionAlgorithm::SphereBoxCollisionAlgorithm(bool objectSwapped, ManifoldResult&& result) :
-            CollisionAlgorithm(objectSwapped, std::move(result)) {
+    SphereBoxCollisionAlgorithm::SphereBoxCollisionAlgorithm(bool objectSwapped, const ManifoldResult& result) :
+            CollisionAlgorithm(objectSwapped, result) {
 
     }
 
@@ -75,9 +75,9 @@ namespace urchin {
         }
     }
 
-    CollisionAlgorithm* SphereBoxCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, ManifoldResult&& result, FixedSizePool<CollisionAlgorithm>& algorithmPool) const {
+    CollisionAlgorithm* SphereBoxCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, const ManifoldResult& result, FixedSizePool<CollisionAlgorithm>& algorithmPool) const {
         void* memPtr = algorithmPool.allocate(sizeof(SphereBoxCollisionAlgorithm));
-        return new(memPtr) SphereBoxCollisionAlgorithm(objectSwapped, std::move(result));
+        return new(memPtr) SphereBoxCollisionAlgorithm(objectSwapped, result);
     }
 
     const std::vector<CollisionShape3D::ShapeType>& SphereBoxCollisionAlgorithm::Builder::getFirstExpectedShapeType() const {

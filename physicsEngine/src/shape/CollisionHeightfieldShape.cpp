@@ -18,6 +18,10 @@ namespace urchin {
         triangleShapesPool = std::make_unique<FixedSizePool<TriangleShape3D<float>>>("triangleShapesPool", sizeof(TriangleShape3D<float>), trianglesShapePoolSize);
     }
 
+    CollisionHeightfieldShape::~CollisionHeightfieldShape() {
+        trianglesInAABBox.clear();
+    }
+
     std::unique_ptr<BoxShape<float>> CollisionHeightfieldShape::buildLocalAABBox() const {
         Point3<float> min(vertices[0].X, std::numeric_limits<float>::max(), vertices[0].Z);
         Point3<float> max(vertices[xLength - 1].X, -std::numeric_limits<float>::max(), vertices[vertices.size() - 1].Z);

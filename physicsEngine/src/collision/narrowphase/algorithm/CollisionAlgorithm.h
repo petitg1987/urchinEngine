@@ -9,7 +9,7 @@ namespace urchin {
 
     class CollisionAlgorithm {
         public:
-            CollisionAlgorithm(bool, ManifoldResult&&);
+            CollisionAlgorithm(bool, const ManifoldResult&);
             virtual ~CollisionAlgorithm() = default;
 
             void setupCollisionAlgorithmSelector(const CollisionAlgorithmSelector*);

@@ -3,7 +3,7 @@
 
 namespace urchin {
 
-    CollisionAlgorithm::CollisionAlgorithm(bool objectSwapped, ManifoldResult&& manifoldResult) :
+    CollisionAlgorithm::CollisionAlgorithm(bool objectSwapped, const ManifoldResult& manifoldResult) :
             objectSwapped(objectSwapped),
             manifoldResult(manifoldResult),
             collisionAlgorithmSelector(nullptr) {
