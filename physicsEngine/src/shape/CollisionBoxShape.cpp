@@ -62,7 +62,7 @@ namespace urchin {
 
         Vector3<float> halfSizeSubtractMargin = boxShape->getHalfSizes() - Vector3<float>(getInnerMargin(), getInnerMargin(), getInnerMargin());
 
-        void* memPtr = getObjectsPool()->allocate(sizeof(CollisionBoxObject));
+        void* memPtr = getObjectsPool().allocate(sizeof(CollisionBoxObject));
         auto* collisionObjectPtr = new (memPtr) CollisionBoxObject(getInnerMargin(), halfSizeSubtractMargin, position, orientation);
         return std::unique_ptr<CollisionBoxObject, ObjectDeleter>(collisionObjectPtr);
     }

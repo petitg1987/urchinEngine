@@ -127,7 +127,7 @@ namespace urchin {
         Transform<float> transform = physicsTransform.toTransform();
         auto convexHullWithMargin = std::shared_ptr<ConvexHull3D<float>>(dynamic_cast<ConvexHull3D<float>*>(convexHullShape->toConvexObject(transform).release()));
 
-        void* memPtr = getObjectsPool()->allocate(sizeof(CollisionConvexHullObject));
+        void* memPtr = getObjectsPool().allocate(sizeof(CollisionConvexHullObject));
 
         if (!convexHullShapeReduced) { //impossible to compute convex hull without margin => use convex hull with margin and set a margin of 0.0
             assert(getInnerMargin() == 0.0f);

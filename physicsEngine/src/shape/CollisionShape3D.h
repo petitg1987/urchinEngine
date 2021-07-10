@@ -64,7 +64,7 @@ namespace urchin {
             virtual std::unique_ptr<CollisionShape3D> clone() const = 0;
 
         protected:
-            static FixedSizePool<CollisionConvexObject3D>* getObjectsPool();
+            static FixedSizePool<CollisionConvexObject3D>& getObjectsPool();
             void refreshInnerMargin(float);
 
         private:

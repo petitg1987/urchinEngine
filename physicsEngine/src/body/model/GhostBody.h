@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
 #include <body/model/AbstractBody.h>
 
@@ -12,7 +13,7 @@ namespace urchin {
     class GhostBody : public AbstractBody {
         public:
             GhostBody(const std::string&, const PhysicsTransform&, std::unique_ptr<const CollisionShape3D>);
-            ~GhostBody() override;
+            ~GhostBody() override = default;
 
             static GhostBody* upCast(AbstractBody*);
             static const GhostBody* upCast(const AbstractBody*);
@@ -22,8 +23,7 @@ namespace urchin {
             bool isGhostBody() const override;
 
         private:
-            PairContainer* pairContainer;
-
+            std::unique_ptr<PairContainer> pairContainer;
     };
 
 }

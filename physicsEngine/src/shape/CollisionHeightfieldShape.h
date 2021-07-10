@@ -16,7 +16,7 @@ namespace urchin {
             CollisionHeightfieldShape(std::vector<Point3<float>>, unsigned int, unsigned int);
             CollisionHeightfieldShape(CollisionHeightfieldShape&&) = delete;
             CollisionHeightfieldShape(const CollisionHeightfieldShape&) = delete;
-            ~CollisionHeightfieldShape() override;
+            ~CollisionHeightfieldShape() override = default;
 
             CollisionShape3D::ShapeType getShapeType() const override;
             const ConvexShape3D<float>& getSingleShape() const override;
@@ -56,7 +56,7 @@ namespace urchin {
             std::unique_ptr<BoxShape<float>> localAABBox;
             
             mutable std::vector<CollisionTriangleShape> trianglesInAABBox;
-            FixedSizePool<TriangleShape3D<float>>* triangleShapesPool;
+            std::unique_ptr<FixedSizePool<TriangleShape3D<float>>> triangleShapesPool;
     };
 
 }

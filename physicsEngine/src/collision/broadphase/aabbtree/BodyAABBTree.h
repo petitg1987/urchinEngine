@@ -13,7 +13,7 @@ namespace urchin {
     class BodyAABBTree : public AABBTree<AbstractBody*> {
         public:
             BodyAABBTree();
-            ~BodyAABBTree() override;
+            ~BodyAABBTree() override = default;
 
             void addBody(AbstractBody*);
             void postAddObjectCallback(AABBNode<AbstractBody*>*) override;
@@ -37,7 +37,7 @@ namespace urchin {
 
             static const float BOUNDARIES_MARGIN_PERCENTAGE;
 
-            PairContainer* defaultPairContainer;
+            std::unique_ptr<PairContainer> defaultPairContainer;
 
             bool inInitializationPhase;
             float minYBoundary;

@@ -8,15 +8,13 @@ namespace urchin {
             useWarmStarting(ConfigService::instance()->getBoolValue("constraintSolver.useWarmStarting")),
             restitutionVelocityThreshold(ConfigService::instance()->getFloatValue("constraintSolver.restitutionVelocityThreshold")) {
         unsigned int constraintSolvingPoolSize = ConfigService::instance()->getUnsignedIntValue("constraintSolver.constraintSolvingPoolSize");
-        constraintSolvingPool = new FixedSizePool<ConstraintSolving>("constraintSolvingPool", sizeof(ConstraintSolving), constraintSolvingPoolSize);
+        constraintSolvingPool = std::make_unique<FixedSizePool<ConstraintSolving>>("constraintSolvingPool", sizeof(ConstraintSolving), constraintSolvingPoolSize);
     }
 
     ConstraintSolverManager::~ConstraintSolverManager() {
         for (auto& constraintSolving : constraintsSolving) {
             constraintSolvingPool->deallocate(constraintSolving);
         }
-
-        delete constraintSolvingPool;
     }
 
     /**

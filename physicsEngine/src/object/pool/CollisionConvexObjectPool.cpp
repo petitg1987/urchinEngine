@@ -23,15 +23,11 @@ namespace urchin {
         unsigned int objectsPoolSize = ConfigService::instance()->getUnsignedIntValue("collisionObject.poolSize");
 
         //pool is synchronized because elements are created in narrow phase (= synchronized phase called by different threads) and deleted by different threads outside the narrow phase
-        objectsPool = new SyncFixedSizePool<CollisionConvexObject3D>("collisionConvexObjectsPool", maxElementSize, objectsPoolSize);
+        objectsPool = std::make_unique<SyncFixedSizePool<CollisionConvexObject3D>>("collisionConvexObjectsPool", maxElementSize, objectsPoolSize);
     }
 
-    CollisionConvexObjectPool::~CollisionConvexObjectPool() {
-        delete objectsPool;
-    }
-
-    SyncFixedSizePool<CollisionConvexObject3D>* CollisionConvexObjectPool::getObjectsPool() {
-        return objectsPool;
+    SyncFixedSizePool<CollisionConvexObject3D>& CollisionConvexObjectPool::getObjectsPool() {
+        return *objectsPool;
     }
 
     unsigned int CollisionConvexObjectPool::maxObjectSize(const std::vector<unsigned int>& objectsSize) const {

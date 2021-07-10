@@ -10,14 +10,10 @@ namespace urchin {
 
     BodyAABBTree::BodyAABBTree() :
             AABBTree<AbstractBody*>(ConfigService::instance()->getFloatValue("broadPhase.aabbTreeFatMargin")),
-            defaultPairContainer(new VectorPairContainer()),
+            defaultPairContainer(std::make_unique<VectorPairContainer>()),
             inInitializationPhase(true),
             minYBoundary(std::numeric_limits<float>::max()) {
 
-    }
-
-    BodyAABBTree::~BodyAABBTree() {
-        delete defaultPairContainer;
     }
 
     void BodyAABBTree::addBody(AbstractBody* body) {

@@ -10,10 +10,10 @@ namespace urchin {
         refreshInnerMargin(0.0f); //no margin for triangle
     }
 
-    CollisionTriangleShape::CollisionTriangleShape(TriangleShape3D<float>* triangleShape, FixedSizePool<TriangleShape3D<float>>* triangleShapesPool) :
+    CollisionTriangleShape::CollisionTriangleShape(TriangleShape3D<float>* triangleShape, FixedSizePool<TriangleShape3D<float>>& triangleShapesPool) :
             CollisionShape3D(),
             triangleShape(std::unique_ptr<TriangleShape3D<float>>(triangleShape)),
-            triangleShapesPool(triangleShapesPool) {
+            triangleShapesPool(&triangleShapesPool) {
         refreshInnerMargin(0.0f); //no margin for triangle
     }
 
@@ -48,7 +48,7 @@ namespace urchin {
     std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionTriangleShape::toConvexObject(const PhysicsTransform& physicsTransform) const {
         assert(getInnerMargin() == 0.0f);
 
-        void* memPtr = getObjectsPool()->allocate(sizeof(CollisionTriangleObject));
+        void* memPtr = getObjectsPool().allocate(sizeof(CollisionTriangleObject));
         auto* collisionObjectPtr = new (memPtr) CollisionTriangleObject(getInnerMargin(),
                 physicsTransform.transform(triangleShape->getPoints()[0]),
                 physicsTransform.transform(triangleShape->getPoints()[1]),

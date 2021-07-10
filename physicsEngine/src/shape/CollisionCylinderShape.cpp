@@ -68,7 +68,7 @@ namespace urchin {
         float reducedRadius = getRadius() - getInnerMargin();
         float reducedHeight = getHeight() - (2.0f * getInnerMargin());
 
-        void* memPtr = getObjectsPool()->allocate(sizeof(CollisionCylinderObject));
+        void* memPtr = getObjectsPool().allocate(sizeof(CollisionCylinderObject));
         auto* collisionObjectPtr = new (memPtr) CollisionCylinderObject(getInnerMargin(), reducedRadius, reducedHeight, getCylinderOrientation(), position, orientation);
         return std::unique_ptr<CollisionCylinderObject, ObjectDeleter>(collisionObjectPtr);
     }

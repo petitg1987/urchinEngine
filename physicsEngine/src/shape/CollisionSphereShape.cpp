@@ -42,7 +42,7 @@ namespace urchin {
     std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionSphereShape::toConvexObject(const PhysicsTransform& physicsTransform) const {
         const Point3<float>& position = physicsTransform.getPosition();
 
-        void* memPtr = getObjectsPool()->allocate(sizeof(CollisionSphereObject));
+        void* memPtr = getObjectsPool().allocate(sizeof(CollisionSphereObject));
         auto* collisionObjectPtr = new (memPtr) CollisionSphereObject(getInnerMargin(), position);
         return std::unique_ptr<CollisionSphereObject, ObjectDeleter>(collisionObjectPtr);
     }

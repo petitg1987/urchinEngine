@@ -12,14 +12,14 @@ namespace urchin {
             friend class ThreadSafeSingleton<CollisionConvexObjectPool>;
 
             CollisionConvexObjectPool();
-            ~CollisionConvexObjectPool() override;
+            ~CollisionConvexObjectPool() override = default;
 
-            SyncFixedSizePool<CollisionConvexObject3D>* getObjectsPool();
+            SyncFixedSizePool<CollisionConvexObject3D>& getObjectsPool();
 
         private:
             unsigned int maxObjectSize(const std::vector<unsigned int>&) const;
 
-            SyncFixedSizePool<CollisionConvexObject3D>* objectsPool;
+            std::unique_ptr<SyncFixedSizePool<CollisionConvexObject3D>> objectsPool;
     };
 
 }

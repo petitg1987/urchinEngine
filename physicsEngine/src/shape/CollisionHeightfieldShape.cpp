@@ -15,12 +15,7 @@ namespace urchin {
         localAABBox = buildLocalAABBox();
 
         unsigned int trianglesShapePoolSize = ConfigService::instance()->getUnsignedIntValue("collisionShape.heightfieldTrianglesPoolSize");
-        triangleShapesPool = new FixedSizePool<TriangleShape3D<float>>("triangleShapesPool", sizeof(TriangleShape3D<float>), trianglesShapePoolSize);
-    }
-
-    CollisionHeightfieldShape::~CollisionHeightfieldShape() {
-        trianglesInAABBox.clear();
-        delete triangleShapesPool;
+        triangleShapesPool = std::make_unique<FixedSizePool<TriangleShape3D<float>>>("triangleShapesPool", sizeof(TriangleShape3D<float>), trianglesShapePoolSize);
     }
 
     std::unique_ptr<BoxShape<float>> CollisionHeightfieldShape::buildLocalAABBox() const {
@@ -221,7 +216,7 @@ namespace urchin {
 
     void CollisionHeightfieldShape::createCollisionTriangleShape(const Point3<float>& p1, const Point3<float>& p2, const Point3<float>& p3) const {
         void* shapeMemPtr = triangleShapesPool->allocate(sizeof(TriangleShape3D<float>));
-        trianglesInAABBox.emplace_back(CollisionTriangleShape(new (shapeMemPtr) TriangleShape3D<float>(p1, p2, p3), triangleShapesPool));
+        trianglesInAABBox.emplace_back(CollisionTriangleShape(new (shapeMemPtr) TriangleShape3D<float>(p1, p2, p3), *triangleShapesPool));
     }
 
 }
