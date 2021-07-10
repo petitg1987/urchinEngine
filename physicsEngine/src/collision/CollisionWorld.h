@@ -19,14 +19,14 @@ namespace urchin {
     class CollisionWorld : public Observable {
         public:
             explicit CollisionWorld(BodyManager*);
-            ~CollisionWorld() override;
+            ~CollisionWorld() override = default;
 
             enum NotificationType {
                 COLLISION_RESULT_UPDATED
             };
 
-            BroadPhaseManager* getBroadPhaseManager() const;
-            NarrowPhaseManager* getNarrowPhaseManager() const;
+            BroadPhaseManager& getBroadPhaseManager() const;
+            NarrowPhaseManager& getNarrowPhaseManager() const;
 
             void process(float, const Vector3<float>&);
 
@@ -35,12 +35,12 @@ namespace urchin {
         private:
             BodyManager* bodyManager;
 
-            BroadPhaseManager* broadPhaseManager;
-            NarrowPhaseManager* narrowPhaseManager;
-            IntegrateVelocityManager* integrateVelocityManager;
-            ConstraintSolverManager* constraintSolverManager;
-            IslandManager* islandManager;
-            IntegrateTransformManager* integrateTransformManager;
+            std::unique_ptr<BroadPhaseManager> broadPhaseManager;
+            std::unique_ptr<NarrowPhaseManager> narrowPhaseManager;
+            std::unique_ptr<IntegrateVelocityManager> integrateVelocityManager;
+            std::unique_ptr<ConstraintSolverManager> constraintSolverManager;
+            std::unique_ptr<IslandManager> islandManager;
+            std::unique_ptr<IntegrateTransformManager> integrateTransformManager;
 
             std::vector<ManifoldResult> manifoldResults;
     };

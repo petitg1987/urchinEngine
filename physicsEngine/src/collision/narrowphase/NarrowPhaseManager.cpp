@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    NarrowPhaseManager::NarrowPhaseManager(const BodyManager* bodyManager, const BroadPhaseManager* broadPhaseManager) :
+    NarrowPhaseManager::NarrowPhaseManager(const BodyManager* bodyManager, const BroadPhaseManager& broadPhaseManager) :
             bodyManager(bodyManager),
             broadPhaseManager(broadPhaseManager),
             collisionAlgorithmSelector(new CollisionAlgorithmSelector()),
@@ -109,7 +109,7 @@ namespace urchin {
     }
 
     void NarrowPhaseManager::handleContinuousCollision(AbstractBody* body, const PhysicsTransform& from, const PhysicsTransform& to, std::vector<ManifoldResult>& manifoldResults) {
-        std::vector<AbstractBody*> bodiesAABBoxHitBody = broadPhaseManager->bodyTest(body, from, to);
+        std::vector<AbstractBody*> bodiesAABBoxHitBody = broadPhaseManager.bodyTest(body, from, to);
         if (!bodiesAABBoxHitBody.empty()) {
             ccd_set ccdResults;
 

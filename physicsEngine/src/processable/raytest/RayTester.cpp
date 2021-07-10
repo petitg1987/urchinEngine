@@ -19,8 +19,8 @@ namespace urchin {
     }
 
     void RayTester::execute(float, const Vector3<float>&) {
-        std::vector<AbstractBody*> bodiesAABBoxHitRay = collisionWorld.getBroadPhaseManager()->rayTest(ray);
-        ccd_set rayCastResults = collisionWorld.getNarrowPhaseManager()->rayTest(ray, bodiesAABBoxHitRay);
+        std::vector<AbstractBody*> bodiesAABBoxHitRay = collisionWorld.getBroadPhaseManager().rayTest(ray);
+        ccd_set rayCastResults = collisionWorld.getNarrowPhaseManager().rayTest(ray, bodiesAABBoxHitRay);
 
         rayTestResult->addResults(rayCastResults);
     }

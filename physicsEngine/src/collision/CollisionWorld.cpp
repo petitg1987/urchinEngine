@@ -7,30 +7,21 @@ namespace urchin {
 
     CollisionWorld::CollisionWorld(BodyManager* bodyManager) :
             bodyManager(bodyManager),
-            broadPhaseManager(new BroadPhaseManager(bodyManager)),
-            narrowPhaseManager(new NarrowPhaseManager(bodyManager, broadPhaseManager)),
-            integrateVelocityManager(new IntegrateVelocityManager(bodyManager)),
-            constraintSolverManager(new ConstraintSolverManager()),
-            islandManager(new IslandManager(bodyManager)),
-            integrateTransformManager(new IntegrateTransformManager(bodyManager, broadPhaseManager, narrowPhaseManager)) {
+            broadPhaseManager(std::make_unique<BroadPhaseManager>(bodyManager)),
+            narrowPhaseManager(std::make_unique<NarrowPhaseManager>(bodyManager, getBroadPhaseManager())),
+            integrateVelocityManager(std::make_unique<IntegrateVelocityManager>(bodyManager)),
+            constraintSolverManager(std::make_unique<ConstraintSolverManager>()),
+            islandManager(std::make_unique<IslandManager>(bodyManager)),
+            integrateTransformManager(std::make_unique<IntegrateTransformManager>(bodyManager, getBroadPhaseManager(), getNarrowPhaseManager())) {
 
     }
 
-    CollisionWorld::~CollisionWorld() {
-        delete broadPhaseManager;
-        delete narrowPhaseManager;
-        delete integrateVelocityManager;
-        delete constraintSolverManager;
-        delete islandManager;
-        delete integrateTransformManager;
+    BroadPhaseManager& CollisionWorld::getBroadPhaseManager() const {
+        return *broadPhaseManager;
     }
 
-    BroadPhaseManager* CollisionWorld::getBroadPhaseManager() const {
-        return broadPhaseManager;
-    }
-
-    NarrowPhaseManager* CollisionWorld::getNarrowPhaseManager() const {
-        return narrowPhaseManager;
+    NarrowPhaseManager& CollisionWorld::getNarrowPhaseManager() const {
+        return *narrowPhaseManager;
     }
 
     /**

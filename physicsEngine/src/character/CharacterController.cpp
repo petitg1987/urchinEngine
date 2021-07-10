@@ -39,14 +39,14 @@ namespace urchin {
         }
 
         createBodies();
-        physicsWorld->getCollisionWorld().getBroadPhaseManager()->addBodyAsync(ghostBody);
-        physicsWorld->getCollisionWorld().getBroadPhaseManager()->addBodyAsync(ccdGhostBody);
+        physicsWorld->getCollisionWorld().getBroadPhaseManager().addBodyAsync(ghostBody);
+        physicsWorld->getCollisionWorld().getBroadPhaseManager().addBodyAsync(ccdGhostBody);
         respawnValues.nextRespawnTransform = ghostBody->getTransform();
     }
 
     CharacterController::~CharacterController() {
-        physicsWorld->getCollisionWorld().getBroadPhaseManager()->removeBodyAsync(ccdGhostBody);
-        physicsWorld->getCollisionWorld().getBroadPhaseManager()->removeBodyAsync(ghostBody);
+        physicsWorld->getCollisionWorld().getBroadPhaseManager().removeBodyAsync(ccdGhostBody);
+        physicsWorld->getCollisionWorld().getBroadPhaseManager().removeBodyAsync(ghostBody);
     }
 
     void CharacterController::setVelocity(const Vector3<float>& velocity) {
@@ -161,7 +161,7 @@ namespace urchin {
         bool ccdRequired = moveVector.length() > ghostBody->getCcdMotionThreshold();
         if (ccdRequired) {
             manifoldResults.clear();
-            physicsWorld->getCollisionWorld().getNarrowPhaseManager()->processGhostBody(ccdGhostBody, manifoldResults);
+            physicsWorld->getCollisionWorld().getNarrowPhaseManager().processGhostBody(ccdGhostBody, manifoldResults);
 
             for (std::size_t i = 0; i < manifoldResults.size() && ccdRequired; ++i) {
                 const ManifoldResult& manifoldResult = manifoldResults[i];
@@ -210,7 +210,7 @@ namespace urchin {
         PhysicsTransform characterTransform = ghostBody->getTransform();
         for (unsigned int subStepIndex = 0; subStepIndex < RECOVER_FACTOR.size(); ++subStepIndex) {
             manifoldResults.clear();
-            physicsWorld->getCollisionWorld().getNarrowPhaseManager()->processGhostBody(ghostBody, manifoldResults);
+            physicsWorld->getCollisionWorld().getNarrowPhaseManager().processGhostBody(ghostBody, manifoldResults);
 
             for (const auto& manifoldResult : manifoldResults) {
                 float sign = manifoldResult.getBody1() == ghostBody ? -1.0f : 1.0f;
