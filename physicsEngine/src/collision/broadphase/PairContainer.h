@@ -16,7 +16,7 @@ namespace urchin {
             virtual void removeOverlappingPair(AbstractBody*, AbstractBody*) = 0;
             virtual void removeOverlappingPairs(AbstractBody*) = 0;
 
-            virtual const std::vector<OverlappingPair*>& getOverlappingPairs() const = 0;
+            virtual const std::vector<std::unique_ptr<OverlappingPair>>& getOverlappingPairs() const = 0;
             virtual std::vector<OverlappingPair> retrieveCopyOverlappingPairs() const = 0;
     };
 

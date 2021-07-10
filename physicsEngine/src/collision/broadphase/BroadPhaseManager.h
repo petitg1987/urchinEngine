@@ -24,7 +24,7 @@ namespace urchin {
             void addBodyAsync(AbstractBody*);
             void removeBodyAsync(AbstractBody*);
 
-            const std::vector<OverlappingPair*>& computeOverlappingPairs();
+            const std::vector<std::unique_ptr<OverlappingPair>>& computeOverlappingPairs();
 
             std::vector<AbstractBody*> rayTest(const Ray<float>&) const;
             std::vector<AbstractBody*> bodyTest(AbstractBody*, const PhysicsTransform&, const PhysicsTransform&) const;

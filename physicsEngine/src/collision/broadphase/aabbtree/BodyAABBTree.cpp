@@ -48,7 +48,7 @@ namespace urchin {
         controlBoundaries(nodeToUpdate);
     }
 
-    const std::vector<OverlappingPair*>& BodyAABBTree::getOverlappingPairs() const {
+    const std::vector<std::unique_ptr<OverlappingPair>>& BodyAABBTree::getOverlappingPairs() const {
         return defaultPairContainer->getOverlappingPairs();
     }
 

@@ -21,7 +21,7 @@ namespace urchin {
      * @param overlappingPairs Pairs of bodies potentially colliding
      * @param manifoldResults [OUT] Collision constraints
      */
-    void NarrowPhaseManager::process(float dt, const std::vector<OverlappingPair*>& overlappingPairs, std::vector<ManifoldResult>& manifoldResults) {
+    void NarrowPhaseManager::process(float dt, const std::vector<std::unique_ptr<OverlappingPair>>& overlappingPairs, std::vector<ManifoldResult>& manifoldResults) {
         ScopeProfiler sp(Profiler::physics(), "narrowPhase");
 
         processOverlappingPairs(overlappingPairs, manifoldResults);
@@ -37,21 +37,21 @@ namespace urchin {
         std::vector<OverlappingPair> overlappingPairs = ghostBody->getPairContainer()->retrieveCopyOverlappingPairs();
 
         for (auto& overlappingPair : overlappingPairs) {
-            processOverlappingPair(&overlappingPair, manifoldResults);
-        }
-    }
-
-    void NarrowPhaseManager::processOverlappingPairs(const std::vector<OverlappingPair*>& overlappingPairs, std::vector<ManifoldResult>& manifoldResults) {
-        ScopeProfiler sp(Profiler::physics(), "procOverlapPair");
-
-        for (const auto& overlappingPair : overlappingPairs) {
             processOverlappingPair(overlappingPair, manifoldResults);
         }
     }
 
-    void NarrowPhaseManager::processOverlappingPair(OverlappingPair* overlappingPair, std::vector<ManifoldResult>& manifoldResults) {
-        AbstractBody* body1 = overlappingPair->getBody1();
-        AbstractBody* body2 = overlappingPair->getBody2();
+    void NarrowPhaseManager::processOverlappingPairs(const std::vector<std::unique_ptr<OverlappingPair>>& overlappingPairs, std::vector<ManifoldResult>& manifoldResults) {
+        ScopeProfiler sp(Profiler::physics(), "procOverlapPair");
+
+        for (const auto& overlappingPair : overlappingPairs) {
+            processOverlappingPair(*overlappingPair, manifoldResults);
+        }
+    }
+
+    void NarrowPhaseManager::processOverlappingPair(OverlappingPair& overlappingPair, std::vector<ManifoldResult>& manifoldResults) {
+        AbstractBody* body1 = overlappingPair.getBody1();
+        AbstractBody* body2 = overlappingPair.getBody2();
 
         if (body1->isActive() || body2->isActive()) {
             ScopeLockById lockBody1(bodiesMutex, body1->getObjectId());
@@ -69,15 +69,15 @@ namespace urchin {
         }
     }
 
-    std::shared_ptr<CollisionAlgorithm> NarrowPhaseManager::retrieveCollisionAlgorithm(OverlappingPair* overlappingPair) {
-        std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = overlappingPair->getCollisionAlgorithm();
+    std::shared_ptr<CollisionAlgorithm> NarrowPhaseManager::retrieveCollisionAlgorithm(OverlappingPair& overlappingPair) {
+        std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = overlappingPair.getCollisionAlgorithm();
         if (!collisionAlgorithm) {
-            AbstractBody* body1 = overlappingPair->getBody1();
-            AbstractBody* body2 = overlappingPair->getBody2();
+            AbstractBody* body1 = overlappingPair.getBody1();
+            AbstractBody* body2 = overlappingPair.getBody2();
 
             collisionAlgorithm = collisionAlgorithmSelector->createCollisionAlgorithm(body1, body1->getShape(), body2, body2->getShape());
 
-            overlappingPair->setCollisionAlgorithm(collisionAlgorithm);
+            overlappingPair.setCollisionAlgorithm(collisionAlgorithm);
         }
 
         return collisionAlgorithm;

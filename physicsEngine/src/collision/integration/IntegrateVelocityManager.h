@@ -15,11 +15,11 @@ namespace urchin {
         public:
             explicit IntegrateVelocityManager(const BodyManager&);
 
-            void integrateVelocity(float, const std::vector<OverlappingPair*>&, const Vector3<float>&);
+            void integrateVelocity(float, const std::vector<std::unique_ptr<OverlappingPair>>&, const Vector3<float>&);
 
         private:
             void applyGravityForce(const Vector3<float>&, float);
-            void applyRollingFrictionResistanceForce(float , const std::vector<OverlappingPair*>&);
+            void applyRollingFrictionResistanceForce(float , const std::vector<std::unique_ptr<OverlappingPair>>&);
 
             const BodyManager& bodyManager;
     };

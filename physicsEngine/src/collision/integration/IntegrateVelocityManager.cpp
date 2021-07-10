@@ -13,7 +13,7 @@ namespace urchin {
      * @param manifoldResults Constraints to solve
      * @param gravity Gravity expressed in units/s^2
      */
-    void IntegrateVelocityManager::integrateVelocity(float dt, const std::vector<OverlappingPair*>& overlappingPairs, const Vector3<float>& gravity) {
+    void IntegrateVelocityManager::integrateVelocity(float dt, const std::vector<std::unique_ptr<OverlappingPair>>& overlappingPairs, const Vector3<float>& gravity) {
         //apply internal forces
         applyGravityForce(gravity, dt);
         applyRollingFrictionResistanceForce(dt, overlappingPairs);
@@ -45,7 +45,7 @@ namespace urchin {
         }
     }
 
-    void IntegrateVelocityManager::applyRollingFrictionResistanceForce(float dt, const std::vector<OverlappingPair*>& overlappingPairs) {
+    void IntegrateVelocityManager::applyRollingFrictionResistanceForce(float dt, const std::vector<std::unique_ptr<OverlappingPair>>& overlappingPairs) {
         for (const auto& overlappingPair : overlappingPairs) {
             float rollingFriction = std::max(overlappingPair->getBody1()->getRollingFriction(), overlappingPair->getBody2()->getRollingFriction());
 

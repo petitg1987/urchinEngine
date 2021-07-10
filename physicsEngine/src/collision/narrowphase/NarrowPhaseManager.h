@@ -23,16 +23,16 @@ namespace urchin {
         public:
             NarrowPhaseManager(const BodyManager&, const BroadPhaseManager&);
 
-            void process(float, const std::vector<OverlappingPair*>&, std::vector<ManifoldResult>&);
+            void process(float, const std::vector<std::unique_ptr<OverlappingPair>>&, std::vector<ManifoldResult>&);
             void processGhostBody(GhostBody*, std::vector<ManifoldResult>&);
 
             ccd_set continuousCollisionTest(const TemporalObject&,  const std::vector<AbstractBody*>&) const;
             ccd_set rayTest(const Ray<float>&, const std::vector<AbstractBody*>&) const;
 
         private:
-            void processOverlappingPairs(const std::vector<OverlappingPair*>&, std::vector<ManifoldResult>&);
-            void processOverlappingPair(OverlappingPair*, std::vector<ManifoldResult>&);
-            std::shared_ptr<CollisionAlgorithm> retrieveCollisionAlgorithm(OverlappingPair*);
+            void processOverlappingPairs(const std::vector<std::unique_ptr<OverlappingPair>>&, std::vector<ManifoldResult>&);
+            void processOverlappingPair(OverlappingPair&, std::vector<ManifoldResult>&);
+            std::shared_ptr<CollisionAlgorithm> retrieveCollisionAlgorithm(OverlappingPair&);
 
             void processPredictiveContacts(float, std::vector<ManifoldResult>&);
             void handleContinuousCollision(AbstractBody*, const PhysicsTransform&, const PhysicsTransform&, std::vector<ManifoldResult>&);

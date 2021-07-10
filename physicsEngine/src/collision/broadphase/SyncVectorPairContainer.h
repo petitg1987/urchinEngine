@@ -17,7 +17,7 @@ namespace urchin {
             void removeOverlappingPair(AbstractBody*, AbstractBody*) override;
             void removeOverlappingPairs(AbstractBody*) override;
 
-            const std::vector<OverlappingPair*>& getOverlappingPairs() const override;
+            const std::vector<std::unique_ptr<OverlappingPair>>& getOverlappingPairs() const override;
             std::vector<OverlappingPair> retrieveCopyOverlappingPairs() const override;
 
         private:

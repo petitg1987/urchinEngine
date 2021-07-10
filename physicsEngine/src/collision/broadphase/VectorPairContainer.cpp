@@ -4,12 +4,6 @@
 
 namespace urchin {
 
-    VectorPairContainer::~VectorPairContainer() {
-        for (auto& overlappingPair : overlappingPairs) {
-            delete overlappingPair;
-        }
-    }
-
     void VectorPairContainer::addOverlappingPair(AbstractBody* body1, AbstractBody* body2) {
         uint_fast64_t bodiesId = OverlappingPair::computeBodiesId(body1, body2);
 
@@ -22,7 +16,7 @@ namespace urchin {
         }
 
         if (!found) { //pair doesn't exist: we create it
-            overlappingPairs.push_back(new OverlappingPair(body1, body2, bodiesId));
+            overlappingPairs.push_back(std::make_unique<OverlappingPair>(body1, body2, bodiesId));
         }
     }
 
@@ -30,7 +24,6 @@ namespace urchin {
         uint_fast64_t bodiesId = OverlappingPair::computeBodiesId(body1, body2);
         for (auto it = overlappingPairs.begin(); it != overlappingPairs.end(); ++it) {
             if ((*it)->getBodiesId() == bodiesId) {
-                delete *it;
                 VectorUtil::erase(overlappingPairs, it);
                 break;
             }
@@ -40,18 +33,16 @@ namespace urchin {
     void VectorPairContainer::removeOverlappingPairs(AbstractBody* body) {
         auto it = overlappingPairs.begin();
         while (it != overlappingPairs.end()) {
-            OverlappingPair* pair = *it;
-
+            auto& pair = *it;
             if (pair->getBody1() == body || pair->getBody2() == body) {
                 it = overlappingPairs.erase(it);
-                delete pair;
             } else {
                 ++it;
             }
         }
     }
 
-    const std::vector<OverlappingPair*>& VectorPairContainer::getOverlappingPairs() const {
+    const std::vector<std::unique_ptr<OverlappingPair>>& VectorPairContainer::getOverlappingPairs() const {
         return overlappingPairs;
     }
 

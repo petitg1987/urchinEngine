@@ -66,7 +66,7 @@ namespace urchin {
         bodiesToRemove.clear();
     }
 
-    const std::vector<OverlappingPair*>& BroadPhaseManager::computeOverlappingPairs() {
+    const std::vector<std::unique_ptr<OverlappingPair>>& BroadPhaseManager::computeOverlappingPairs() {
         ScopeProfiler sp(Profiler::physics(), "coOverlapPair");
 
         synchronizeBodies();

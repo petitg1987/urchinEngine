@@ -24,7 +24,7 @@ namespace urchin {
             void updateBodies();
             void preUpdateObjectCallback(AABBNode<AbstractBody*>*) override;
 
-            const std::vector<OverlappingPair*>& getOverlappingPairs() const;
+            const std::vector<std::unique_ptr<OverlappingPair>>& getOverlappingPairs() const;
 
         private:
             void computeOverlappingPairsFor(AABBNode<AbstractBody*>*);

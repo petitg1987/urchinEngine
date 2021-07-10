@@ -17,7 +17,7 @@ namespace urchin {
             virtual void removeBody(AbstractBody*) = 0;
             virtual void updateBodies() = 0;
 
-            virtual const std::vector<OverlappingPair*>& getOverlappingPairs() const = 0;
+            virtual const std::vector<std::unique_ptr<OverlappingPair>>& getOverlappingPairs() const = 0;
 
             virtual std::vector<AbstractBody*> rayTest(const Ray<float>&) const = 0;
             virtual std::vector<AbstractBody*> bodyTest(AbstractBody*, const PhysicsTransform&, const PhysicsTransform&) const = 0;

@@ -18,7 +18,7 @@ namespace urchin {
             void removeBody(AbstractBody*) override;
             void updateBodies() override;
 
-            const std::vector<OverlappingPair*>& getOverlappingPairs() const override;
+            const std::vector<std::unique_ptr<OverlappingPair>>& getOverlappingPairs() const override;
 
             std::vector<AbstractBody*> rayTest(const Ray<float>&) const override;
             std::vector<AbstractBody*> bodyTest(AbstractBody*, const PhysicsTransform&, const PhysicsTransform&) const override;
