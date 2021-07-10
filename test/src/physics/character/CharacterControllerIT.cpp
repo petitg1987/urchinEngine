@@ -105,13 +105,13 @@ void CharacterControllerIT::constructGround(const std::unique_ptr<PhysicsWorld>&
     };
     std::unique_ptr<CollisionHeightfieldShape> groundShape = std::make_unique<CollisionHeightfieldShape>(groundPoints, 2, 2);
     auto* groundBody = new RigidBody("ground", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), std::move(groundShape));
-    physicsWorld->getBodyManager()->addBody(groundBody);
+    physicsWorld->getBodyManager().addBody(groundBody);
 }
 
 void CharacterControllerIT::constructWall(const std::unique_ptr<PhysicsWorld>& physicsWorld) {
     std::unique_ptr<CollisionBoxShape> wallShape = std::make_unique<CollisionBoxShape>(Vector3<float>(100.0f, 100.0f, 0.15f));
     auto* wallBody = new RigidBody("wall", PhysicsTransform(Point3<float>(0.0f, 0.0f, -10.0f), Quaternion<float>()), std::move(wallShape));
-    physicsWorld->getBodyManager()->addBody(wallBody);
+    physicsWorld->getBodyManager().addBody(wallBody);
 }
 
 std::vector<RigidBody*> CharacterControllerIT::constructCubes(const std::unique_ptr<PhysicsWorld>& physicsWorld, float cubeHeight) {
@@ -125,7 +125,7 @@ std::vector<RigidBody*> CharacterControllerIT::constructCubes(const std::unique_
             auto* cubeBody = new RigidBody(bodyName, PhysicsTransform(Point3<float>(xValue, 10.0f, zValue), Quaternion<float>()), std::move(cubeShape));
             cubeBody->setMass(10.0f); //non-static
 
-            physicsWorld->getBodyManager()->addBody(cubeBody);
+            physicsWorld->getBodyManager().addBody(cubeBody);
             cubes.emplace_back(cubeBody);
         }
     }

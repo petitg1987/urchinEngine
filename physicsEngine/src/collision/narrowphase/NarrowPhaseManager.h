@@ -22,7 +22,6 @@ namespace urchin {
     class NarrowPhaseManager {
         public:
             NarrowPhaseManager(const BodyManager&, const BroadPhaseManager&);
-            ~NarrowPhaseManager();
 
             void process(float, const std::vector<OverlappingPair*>&, std::vector<ManifoldResult>&);
             void processGhostBody(GhostBody*, std::vector<ManifoldResult>&);
@@ -43,7 +42,7 @@ namespace urchin {
             const BodyManager& bodyManager;
             const BroadPhaseManager& broadPhaseManager;
 
-            CollisionAlgorithmSelector *const collisionAlgorithmSelector;
+            std::unique_ptr<CollisionAlgorithmSelector> collisionAlgorithmSelector;
             const GJKContinuousCollisionAlgorithm<double, float> gjkContinuousCollisionAlgorithm;
 
             std::shared_ptr<LockById> bodiesMutex;

@@ -11,7 +11,7 @@
 namespace urchin {
 
     CollisionAlgorithmSelector::CollisionAlgorithmSelector() :
-            algorithmPool(nullptr),
+            algorithmPool(std::unique_ptr<SyncFixedSizePool<CollisionAlgorithm>>(nullptr)),
             collisionAlgorithmBuilderMatrix() {
         initializeCollisionAlgorithmBuilderMatrix();
         for (unsigned int i = 0; i < CollisionShape3D::SHAPE_MAX; ++i) {
@@ -27,8 +27,6 @@ namespace urchin {
     }
 
     CollisionAlgorithmSelector::~CollisionAlgorithmSelector() {
-        delete algorithmPool;
-
         deleteCollisionAlgorithmBuilderMatrix();
     }
 
@@ -98,7 +96,7 @@ namespace urchin {
         unsigned int algorithmPoolSize = ConfigService::instance()->getUnsignedIntValue("narrowPhase.algorithmPoolSize");
 
         //pool is synchronized because elements are created in narrow phase (= synchronized phase called by different threads) and deleted by different threads outside the narrow phase
-        algorithmPool = new SyncFixedSizePool<CollisionAlgorithm>("algorithmPool", maxElementSize, algorithmPoolSize);
+        algorithmPool = std::make_unique<SyncFixedSizePool<CollisionAlgorithm>>("algorithmPool", maxElementSize, algorithmPoolSize);
     }
 
     /**
@@ -112,9 +110,9 @@ namespace urchin {
 
         CollisionAlgorithm *collisionAlgorithmPtr;
         if (std::find(firstExpectedShapeType.begin(), firstExpectedShapeType.end(), shape1.getShapeType()) != firstExpectedShapeType.end()) {
-            collisionAlgorithmPtr = collisionAlgorithmBuilder->createCollisionAlgorithm(false, ManifoldResult(body1, body2), algorithmPool);
+            collisionAlgorithmPtr = collisionAlgorithmBuilder->createCollisionAlgorithm(false, ManifoldResult(body1, body2), *algorithmPool);
         } else if (std::find(firstExpectedShapeType.begin(), firstExpectedShapeType.end(), shape2.getShapeType()) != firstExpectedShapeType.end()) { //objects must be swap to match algorithm shape types
-            collisionAlgorithmPtr = collisionAlgorithmBuilder->createCollisionAlgorithm(true, ManifoldResult(body2, body1), algorithmPool);
+            collisionAlgorithmPtr = collisionAlgorithmBuilder->createCollisionAlgorithm(true, ManifoldResult(body2, body1), *algorithmPool);
         } else {
             throw std::runtime_error("Impossible to initialize collision algorithm for shape types: " + std::to_string(shape1.getShapeType())
                                      + " and " + std::to_string(shape2.getShapeType()));
@@ -125,8 +123,8 @@ namespace urchin {
         return collisionAlgorithm;
     }
 
-    CollisionAlgorithmSelector::AlgorithmDeleter::AlgorithmDeleter(FixedSizePool<CollisionAlgorithm> *const algorithmPool) :
-        algorithmPool(algorithmPool) {
+    CollisionAlgorithmSelector::AlgorithmDeleter::AlgorithmDeleter(std::shared_ptr<FixedSizePool<CollisionAlgorithm>> algorithmPool) :
+            algorithmPool(std::move(algorithmPool)) {
 
     }
 

@@ -52,7 +52,7 @@ namespace urchin {
                     body->setIsActive(bodyActiveState);
 
                     if (bodyActiveState) {
-                        body->setVelocity(Vector3<float>(0.0, 0.0, 0.0), Vector3<float>(0.0, 0.0, 0.0));
+                        body->setVelocity(Vector3<float>(0.0f, 0.0f, 0.0f), Vector3<float>(0.0f, 0.0f, 0.0f));
                     }
                 }
             }

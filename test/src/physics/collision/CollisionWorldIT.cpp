@@ -9,7 +9,7 @@ using namespace urchin;
 
 void CollisionWorldIT::fallOnGround() {
     auto bodyManager = buildWorld(Point3<float>(0.0f, 5.0f, 0.0f));
-    auto collisionWorld = std::make_unique<CollisionWorld>(bodyManager.get());
+    auto collisionWorld = std::make_unique<CollisionWorld>(*bodyManager);
 
     for (std::size_t i = 0; i < 250; ++i) {
         collisionWorld->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
@@ -22,7 +22,7 @@ void CollisionWorldIT::fallOnGround() {
 
 void CollisionWorldIT::ccdPushOnGround() {
     auto bodyManager = buildWorld(Point3<float>(0.0f, 5.0f, 0.0f));
-    auto collisionWorld = std::make_unique<CollisionWorld>(bodyManager.get());
+    auto collisionWorld = std::make_unique<CollisionWorld>(*bodyManager);
     collisionWorld->process(1.0f / 1000.0f, Vector3<float>(0.0f, 0.0f, 0.0f));
     auto* cubeBody = dynamic_cast<RigidBody*>(bodyManager->getBodies()[1]);
     cubeBody->applyCentralMomentum(Vector3<float>(0.0f, -1000.0f, 0.0f)); //apply extreme down force
@@ -42,7 +42,7 @@ void CollisionWorldIT::ccdBounceOnGroundAndRoof() {
     auto bodyManager = buildWorld(Point3<float>(0.0f, 5.0f, 0.0f));
     std::unique_ptr<CollisionBoxShape> roofShape = std::make_unique<CollisionBoxShape>(Vector3<float>(50.0f, 0.5f, 50.0f));
     bodyManager->addBody(new RigidBody("roof", PhysicsTransform(Point3<float>(0.0f, 10.0f, 0.0f), Quaternion<float>()), std::move(roofShape)));
-    auto collisionWorld = std::make_unique<CollisionWorld>(bodyManager.get());
+    auto collisionWorld = std::make_unique<CollisionWorld>(*bodyManager);
     collisionWorld->process(1.0f / 1000.0f, Vector3<float>(0.0f, 0.0f, 0.0f));
     auto* cubeBody = dynamic_cast<RigidBody*>(bodyManager->getBodies()[1]);
     cubeBody->applyCentralMomentum(Vector3<float>(0.0f, -10000.0f, 0.0f)); //apply extreme down force
@@ -59,7 +59,7 @@ void CollisionWorldIT::ccdBounceOnGroundAndRoof() {
 void CollisionWorldIT::fallForever() {
     Logger::instance()->purge(); //Log file must be emptied before start this test
     auto bodyManager = buildWorld(Point3<float>(60.0f, 5.0f, 0.0f));
-    auto collisionWorld = std::make_unique<CollisionWorld>(bodyManager.get());
+    auto collisionWorld = std::make_unique<CollisionWorld>(*bodyManager);
 
     for (std::size_t i = 0; i < 250; ++i) {
         collisionWorld->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
@@ -75,7 +75,7 @@ void CollisionWorldIT::fallForever() {
 
 void CollisionWorldIT::changePositionOnInactiveBody() {
     auto bodyManager = buildWorld(Point3<float>(0.0f, 0.5f, 0.0f));
-    auto collisionWorld = std::make_unique<CollisionWorld>(bodyManager.get());
+    auto collisionWorld = std::make_unique<CollisionWorld>(*bodyManager);
 
     //1. make sure body is inactive on the ground
     for (std::size_t i = 0; i < 25; ++i) {
@@ -100,7 +100,7 @@ void CollisionWorldIT::changePositionOnInactiveBody() {
 
 void CollisionWorldIT::changeMomentumOnInactiveBody() {
     auto bodyManager = buildWorld(Point3<float>(0.0f, 0.5f, 0.0f));
-    auto collisionWorld = std::make_unique<CollisionWorld>(bodyManager.get());
+    auto collisionWorld = std::make_unique<CollisionWorld>(*bodyManager);
 
     //1. make sure body is inactive on the ground
     for (std::size_t i = 0; i < 25; ++i) {
@@ -122,7 +122,7 @@ void CollisionWorldIT::changeMomentumOnInactiveBody() {
 
 void CollisionWorldIT::changeMass() {
     auto bodyManager = buildWorld(Point3<float>(0.0f, 10.0f, 0.0f));
-    auto collisionWorld = std::make_unique<CollisionWorld>(bodyManager.get());
+    auto collisionWorld = std::make_unique<CollisionWorld>(*bodyManager);
 
     //1. make sure cube fall
     for (std::size_t i = 0; i < 5; ++i) {

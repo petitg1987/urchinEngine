@@ -217,7 +217,7 @@ namespace urchin {
 
     void Renderer3d::addModel(Model* model) {
         if (model) {
-            Logger::instance()->logInfo("Add new 3D model: " + model->getConstMeshes()->getName());
+            Logger::instance()->logInfo("Add 3D model: " + model->getConstMeshes()->getName());
             modelOctreeManager->addOctreeable(model);
         }
     }

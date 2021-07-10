@@ -27,14 +27,14 @@ namespace urchin {
 
             class AlgorithmDeleter {
                 public:
-                    explicit AlgorithmDeleter(FixedSizePool<CollisionAlgorithm>*);
+                    explicit AlgorithmDeleter(std::shared_ptr<FixedSizePool<CollisionAlgorithm>>);
                     void operator()(CollisionAlgorithm*);
 
                 private:
-                    FixedSizePool<CollisionAlgorithm> *const algorithmPool;
+                    std::shared_ptr<FixedSizePool<CollisionAlgorithm>> algorithmPool;
             };
 
-            SyncFixedSizePool<CollisionAlgorithm>* algorithmPool;
+            std::shared_ptr<SyncFixedSizePool<CollisionAlgorithm>> algorithmPool;
             CollisionAlgorithmBuilder *collisionAlgorithmBuilderMatrix[CollisionShape3D::SHAPE_MAX][CollisionShape3D::SHAPE_MAX];
     };
 

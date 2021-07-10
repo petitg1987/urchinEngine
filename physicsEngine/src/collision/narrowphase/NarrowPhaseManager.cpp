@@ -11,13 +11,9 @@ namespace urchin {
     NarrowPhaseManager::NarrowPhaseManager(const BodyManager& bodyManager, const BroadPhaseManager& broadPhaseManager) :
             bodyManager(bodyManager),
             broadPhaseManager(broadPhaseManager),
-            collisionAlgorithmSelector(new CollisionAlgorithmSelector()),
+            collisionAlgorithmSelector(std::make_unique<CollisionAlgorithmSelector>()),
             bodiesMutex(LockById::getInstance("narrowPhaseBodyIds")) {
 
-    }
-
-    NarrowPhaseManager::~NarrowPhaseManager() {
-        delete collisionAlgorithmSelector;
     }
 
     /**
