@@ -111,8 +111,6 @@ namespace urchin {
 
     Renderer3d& SceneManager::newRenderer3d(bool enable) {
         auto renderer3d = std::make_unique<Renderer3d>(screenRenderTarget);
-        renderer3d->onResize(sceneWidth, sceneHeight); //TODO remove ?
-
         if (enable) {
             enableRenderer3d(renderer3d.get());
         }
@@ -143,8 +141,6 @@ namespace urchin {
 
     UIRenderer& SceneManager::newUIRenderer(bool enable) {
         auto uiRenderer = std::make_unique<UIRenderer>(screenRenderTarget, i18nService);
-        uiRenderer->onResize(sceneWidth, sceneHeight); //TODO remove ?
-
         if (enable) {
             enableUIRenderer(uiRenderer.get());
         }

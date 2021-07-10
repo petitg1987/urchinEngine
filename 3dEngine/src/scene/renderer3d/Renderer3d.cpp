@@ -22,8 +22,8 @@ namespace urchin {
 
     Renderer3d::Renderer3d(std::shared_ptr<RenderTarget> finalRenderTarget) :
             finalRenderTarget(std::move(finalRenderTarget)),
-            sceneWidth(500),
-            sceneHeight(500),
+            sceneWidth(this->finalRenderTarget->getWidth()),
+            sceneHeight(this->finalRenderTarget->getHeight()),
             paused(true),
             camera(nullptr),
 
