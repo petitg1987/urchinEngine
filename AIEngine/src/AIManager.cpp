@@ -44,7 +44,6 @@ namespace urchin {
 
     void AIManager::addPathRequest(const std::shared_ptr<PathRequest>& pathRequest) {
         std::lock_guard<std::mutex> lock(mutex);
-
         pathRequests.push_back(pathRequest);
     }
 
