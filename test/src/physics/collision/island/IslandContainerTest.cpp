@@ -62,21 +62,23 @@ void IslandContainerTest::mergeAllIslands() {
  * We should have two distinct islands.
  */
 void IslandContainerTest::createTwoSeparateIslands() {
-    TestBody* bodies[] = {new TestBody(), new TestBody(), new TestBody(), new TestBody()};
-    std::vector<IslandElement*> bodiesVector(bodies, bodies + (sizeof(bodies) / sizeof(TestBody*)));
+    std::array<std::unique_ptr<TestBody>, 4> bodies = {std::make_unique<TestBody>(), std::make_unique<TestBody>(), std::make_unique<TestBody>(), std::make_unique<TestBody>()};
+    std::vector<IslandElement*> bodiesPtr;
+    bodiesPtr.reserve(bodies.size());
+    for (auto& body : bodies) {
+        bodiesPtr.emplace_back(body.get());
+    }
 
     IslandContainer islandContainer;
-    islandContainer.reset(bodiesVector);
-    islandContainer.mergeIsland(bodies[0], bodies[3]); //body 0 is in contact with body 3
-    islandContainer.mergeIsland(bodies[2], bodies[1]); //body 2 is in contact with body 1
+    islandContainer.reset(bodiesPtr);
+    islandContainer.mergeIsland(bodies[0].get(), bodies[3].get()); //body 0 is in contact with body 3
+    islandContainer.mergeIsland(bodies[2].get(), bodies[1].get()); //body 2 is in contact with body 1
     const std::vector<IslandElementLink>& islandElementsLink = islandContainer.retrieveSortedIslandElements();
 
     AssertHelper::assertUnsignedInt(islandElementsLink.size(), 4);
     AssertHelper::assertUnsignedInt(islandElementsLink[0].islandIdRef, islandElementsLink[1].islandIdRef);
     AssertHelper::assertUnsignedInt(islandElementsLink[2].islandIdRef, islandElementsLink[3].islandIdRef);
     AssertHelper::assertTrue(islandElementsLink[0].islandIdRef != islandElementsLink[2].islandIdRef);
-
-    delete bodies[0]; delete bodies[1]; delete bodies[2]; delete bodies[3];
 }
 
 CppUnit::Test* IslandContainerTest::suite() {
