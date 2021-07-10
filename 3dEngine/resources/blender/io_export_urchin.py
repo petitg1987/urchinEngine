@@ -799,7 +799,7 @@ class AdjustMeshOrigin(bpy.types.Operator):
             bpy.ops.object.join()
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='BOUNDS')
         bpy.ops.view3d.snap_cursor_to_selected()
-        bpy.ops.object.delete() # Delete the duplicate meshes
+        bpy.ops.object.delete() # Remove the duplicate meshes
 
         # Move all meshes origin to 3D cursor
         selectAllMeshes()

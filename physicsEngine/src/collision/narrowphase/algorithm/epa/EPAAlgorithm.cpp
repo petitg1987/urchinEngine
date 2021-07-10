@@ -47,7 +47,7 @@ namespace urchin {
 
         ConvexHullShape3D<T> convexHullShape(convexHullPoints, indexedTriangles);
         for (auto it = indexedTriangles.begin(); it != indexedTriangles.end(); ++it) {
-            trianglesData.insert(std::pair<std::size_t, EPATriangleData<T>>(it->first, createTriangleData(convexHullShape, it->first)));
+            trianglesData.emplace(it->first, createTriangleData(convexHullShape, it->first));
         }
 
         //4. find closest plane of extended polytope
@@ -86,7 +86,7 @@ namespace urchin {
                 //compute new triangles data
                 const std::vector<std::size_t>& newTriangleIndices = convexHullShape.getConvexHullPoints().at(index).triangleIndices;
                 for (std::size_t newTriangleIndex : newTriangleIndices) {
-                    trianglesData.insert(std::pair<std::size_t, EPATriangleData<T>>(newTriangleIndex, createTriangleData(convexHullShape, newTriangleIndex)));
+                    trianglesData.emplace(newTriangleIndex, createTriangleData(convexHullShape, newTriangleIndex));
                 }
 
                 //remove triangle data not used anymore
@@ -318,12 +318,12 @@ namespace urchin {
             T dotProductTolerance = (std::nextafter(trianglePointToOutsidePointLength, std::numeric_limits<T>::max()) - trianglePointToOutsidePointLength);
 
             if (dotProduct < -dotProductTolerance) {
-                indexedTriangles.insert(std::pair<std::size_t, IndexedTriangle3D<T>>(i, IndexedTriangle3D<T>(indices[i])));
+                indexedTriangles.emplace(i, IndexedTriangle3D<T>(indices[i]));
                 for (std::size_t pointI = 0; pointI < 3; ++pointI) {
                     convexHullPoints.at(indices[i][pointI]).triangleIndices.push_back(i);
                 }
             } else if (dotProduct > dotProductTolerance) {
-                indexedTriangles.insert(std::pair<std::size_t, IndexedTriangle3D<T>>(i, IndexedTriangle3D<T>(revIndices[i])));
+                indexedTriangles.emplace(i, IndexedTriangle3D<T>(revIndices[i]));
                 for (std::size_t pointI = 0; pointI < 3; ++pointI) {
                     convexHullPoints.at(revIndices[i][pointI]).triangleIndices.push_back(i);
                 }

@@ -41,7 +41,7 @@ namespace urchin {
     void CollisionWorld::process(float dt, const Vector3<float>& gravity) {
         ScopeProfiler sp(Profiler::physics(), "colWorldProc");
 
-        //refresh bodies: add new bodies, delete bodies...
+        //refresh bodies: add new bodies, remove bodies...
         bodyManager->refreshBodies();
 
         //broad phase: determine pairs of bodies potentially colliding based on their AABBox

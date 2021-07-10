@@ -124,7 +124,7 @@ namespace urchin {
     std::map<std::string, const ConstAnimation*> Model::getAnimations() const {
         std::map<std::string, const ConstAnimation*> constConstAnimations;
         for (const auto& animation : animations) {
-            constConstAnimations.insert(std::pair<std::string, const ConstAnimation*>(animation.first, animation.second->getConstAnimation()));
+            constConstAnimations.emplace(animation.first, animation.second->getConstAnimation());
         }
         return constConstAnimations;
     }

@@ -184,7 +184,7 @@ namespace urchin {
     template<class T> void ConvexHullShape3D<T>::addTriangle(const IndexedTriangle3D<T>& indexedTriangle) {
         //add indexed triangles to triangles map
         std::size_t triangleIndex = nextTriangleIndex++;
-        indexedTriangles.insert(std::pair<std::size_t, IndexedTriangle3D<T>>(triangleIndex, indexedTriangle));
+        indexedTriangles.emplace(triangleIndex, indexedTriangle);
 
         //add triangles reference on points
         for (std::size_t i = 0; i < 3; i++) {
@@ -257,8 +257,8 @@ namespace urchin {
 
         std::size_t triangleIndex1 = nextTriangleIndex++;
         std::size_t triangleIndex2 = nextTriangleIndex++;
-        indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(triangleIndex1, IndexedTriangle3D<T>(0, 1, 2)));
-        indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(triangleIndex2, IndexedTriangle3D<T>(0, 2, 1)));
+        indexedTriangles.emplace(triangleIndex1, IndexedTriangle3D<T>(0, 1, 2));
+        indexedTriangles.emplace(triangleIndex2, IndexedTriangle3D<T>(0, 2, 1));
         for (auto& it : this->points) {
             it.second.triangleIndices.push_back(triangleIndex1);
             it.second.triangleIndices.push_back(triangleIndex2);

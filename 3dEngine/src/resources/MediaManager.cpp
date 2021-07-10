@@ -9,21 +9,16 @@
 namespace urchin {
 
     MediaManager::MediaManager() {
-        loadersRegistry.insert(std::pair<std::string, LoaderInterface*>("tga", new LoaderTGA));
-        loadersRegistry.insert(std::pair<std::string, LoaderInterface*>("png", new LoaderPNG));
+        loadersRegistry.emplace("tga", std::make_unique<LoaderTGA>());
+        loadersRegistry.emplace("tga", std::make_unique<LoaderTGA>());
+        loadersRegistry.emplace("png", std::make_unique<LoaderPNG>());
 
-        loadersRegistry.insert(std::pair<std::string, LoaderInterface*>("urchinMesh", new LoaderUrchinMesh));
-        loadersRegistry.insert(std::pair<std::string, LoaderInterface*>("urchinAnim", new LoaderUrchinAnim));
+        loadersRegistry.emplace("urchinMesh", std::make_unique<LoaderUrchinMesh>());
+        loadersRegistry.emplace("urchinAnim", std::make_unique<LoaderUrchinAnim>());
 
-        loadersRegistry.insert(std::pair<std::string, LoaderInterface*>("material", new LoaderMaterial));
+        loadersRegistry.emplace("material", std::make_unique<LoaderMaterial>());
 
-        loadersRegistry.insert(std::pair<std::string, LoaderInterface*>("ttf", new LoaderTTF));
-    }
-
-    MediaManager::~MediaManager() {
-        for (const auto& loaderRegistry : loadersRegistry) {
-            delete loaderRegistry.second;
-        }
+        loadersRegistry.emplace("ttf", std::make_unique<LoaderTTF>());
     }
 
 }

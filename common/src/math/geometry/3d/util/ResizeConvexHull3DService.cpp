@@ -41,7 +41,7 @@ namespace urchin {
                 ConvexHullPoint<T> convexHullPoint;
                 convexHullPoint.point = newPoint;
                 convexHullPoint.triangleIndices = itPoint.second.triangleIndices;
-                newConvexHullPoints.insert(std::pair<std::size_t, ConvexHullPoint<T>>(itPoint.first, convexHullPoint));
+                newConvexHullPoints.emplace(itPoint.first, convexHullPoint);
             } else { //useless point found on convex hull (could be removed from convex hull without impact)
                 containUselessPoints = true;
             }
@@ -74,7 +74,7 @@ namespace urchin {
             const Point3<T>& point2 = convexHull.getConvexHullPoints().at(indexedTriangle.getIndex(1)).point;
             const Point3<T>& point3 = convexHull.getConvexHullPoints().at(indexedTriangle.getIndex(2)).point;
 
-            planes.insert(std::pair<std::size_t, Plane<T>>(itTriangles.first, Plane<T>(point1, point2, point3))); //plane is built with normal outside convex hull
+            planes.emplace(itTriangles.first, Plane<T>(point1, point2, point3)); //plane is built with normal outside convex hull
         }
 
         return planes;

@@ -40,7 +40,7 @@ template<class TOctreeable> Octree<TOctreeable>::~Octree() {
             octreeable->removeRefOctree(this);
         }
     } else {
-        //delete children
+        //remove children
         for (auto& child : children) {
             delete child;
         }

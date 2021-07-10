@@ -19,7 +19,7 @@ namespace urchin {
         }
 
         auto lockById = std::make_shared<LockById>(instanceName);
-        instances.insert(std::pair<std::string, std::shared_ptr<LockById>>(instanceName, lockById));
+        instances.emplace(instanceName, lockById);
         return lockById;
     }
 

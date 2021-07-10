@@ -20,7 +20,7 @@ template<class T> T* MediaManager::getMedia(const std::string& filename, const s
         throw std::runtime_error("There isn't loader for this type of file, filename: " + filename + ".");
     }
 
-    Loader<T>* loader = static_cast<Loader<T>*>(it->second);
+    auto loader = static_cast<Loader<T>*>(it->second.get());
     resource = loader->loadFromFile(filename, params);
 
     ResourceManager::instance()->addResource(resourceId, filename, resource);

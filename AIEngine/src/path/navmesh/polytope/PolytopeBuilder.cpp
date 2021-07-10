@@ -145,7 +145,7 @@ namespace urchin {
             const Point3<float>& point1 = convexHull->getConvexHullPoints().at(itTriangles.second.getIndex(0)).point;
             const Point3<float>& point2 = convexHull->getConvexHullPoints().at(itTriangles.second.getIndex(1)).point;
             const Point3<float>& point3 = convexHull->getConvexHullPoints().at(itTriangles.second.getIndex(2)).point;
-            expandedPlanes.insert(std::pair<std::size_t, Plane<float>>(itTriangles.first, createExpandedPlane(point1, point2, point3, navMeshAgent)));
+            expandedPlanes.emplace(itTriangles.first, createExpandedPlane(point1, point2, point3, navMeshAgent));
         }
 
         std::unique_ptr<ConvexHull3D<float>> expandedConvexHull = ResizeConvexHull3DService<float>::resizeConvexHull(*convexHull, expandedPlanes);
