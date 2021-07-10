@@ -17,49 +17,45 @@ namespace urchin {
         unsigned int algorithmPoolSize = ConfigService::instance()->getUnsignedIntValue("narrowPhase.algorithmPoolSize");
 
         //pool is synchronized because elements could be created/deleted by different threads as narrow phase can be called by different threads
-        algorithmResultPool = new SyncFixedSizePool<AlgorithmResult>("algorithmResultPool", maxElementSize, algorithmPoolSize);
+        algorithmResultPool = std::make_unique<SyncFixedSizePool<AlgorithmResult>>("algorithmResultPool", maxElementSize, algorithmPoolSize);
     }
 
-    AlgorithmResultAllocator::~AlgorithmResultAllocator() {
-        delete algorithmResultPool;
-    }
-
-    SyncFixedSizePool<AlgorithmResult>* AlgorithmResultAllocator::getAlgorithmResultPool() const {
-        return algorithmResultPool;
+    SyncFixedSizePool<AlgorithmResult>& AlgorithmResultAllocator::getAlgorithmResultPool() const {
+        return *algorithmResultPool;
     }
 
     template<class T> std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> AlgorithmResultAllocator::newGJKResultCollide(const Simplex<T>& simplex) {
-        void* memPtr = AlgorithmResultAllocator::instance()->getAlgorithmResultPool()->allocate(sizeof(GJKResultCollide<T>));
+        void* memPtr = AlgorithmResultAllocator::instance()->getAlgorithmResultPool().allocate(sizeof(GJKResultCollide<T>));
         return std::unique_ptr<GJKResultCollide<T>, AlgorithmResultDeleter>(new(memPtr) GJKResultCollide<T>(simplex), AlgorithmResultDeleter());
     }
 
     template<class T> std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> AlgorithmResultAllocator::newGJKResultInvalid() {
-        void* memPtr = AlgorithmResultAllocator::instance()->getAlgorithmResultPool()->allocate(sizeof(GJKResultInvalid<T>));
+        void* memPtr = AlgorithmResultAllocator::instance()->getAlgorithmResultPool().allocate(sizeof(GJKResultInvalid<T>));
         return std::unique_ptr<GJKResultInvalid<T>, AlgorithmResultDeleter>(new(memPtr) GJKResultInvalid<T>(), AlgorithmResultDeleter());
     }
 
     template<class T> std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> AlgorithmResultAllocator::newGJKResultNoCollide(T separatingDistance, const Simplex<T>& simplex) {
-        void* memPtr = AlgorithmResultAllocator::instance()->getAlgorithmResultPool()->allocate(sizeof(GJKResultNoCollide<T>));
+        void* memPtr = AlgorithmResultAllocator::instance()->getAlgorithmResultPool().allocate(sizeof(GJKResultNoCollide<T>));
         return std::unique_ptr<GJKResultNoCollide<T>, AlgorithmResultDeleter>(new(memPtr) GJKResultNoCollide<T>(separatingDistance, simplex), AlgorithmResultDeleter());
     }
 
     template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> AlgorithmResultAllocator::newEPAResultCollide(const Point3<T>& contactPointA, const Point3<T>& contactPointB, const Vector3<T>& normal, T depth) {
-        void* memPtr = AlgorithmResultAllocator::instance()->getAlgorithmResultPool()->allocate(sizeof(EPAResultCollide<T>));
+        void* memPtr = AlgorithmResultAllocator::instance()->getAlgorithmResultPool().allocate(sizeof(EPAResultCollide<T>));
         return std::unique_ptr<EPAResultCollide<T>, AlgorithmResultDeleter>(new(memPtr) EPAResultCollide<T>(contactPointA, contactPointB, normal, depth), AlgorithmResultDeleter());
     }
 
     template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> AlgorithmResultAllocator::newEPAResultInvalid() {
-        void* memPtr = AlgorithmResultAllocator::instance()->getAlgorithmResultPool()->allocate(sizeof(EPAResultInvalid<T>));
+        void* memPtr = AlgorithmResultAllocator::instance()->getAlgorithmResultPool().allocate(sizeof(EPAResultInvalid<T>));
         return std::unique_ptr<EPAResultInvalid<T>, AlgorithmResultDeleter>(new(memPtr) EPAResultInvalid<T>(), AlgorithmResultDeleter());
     }
 
     template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> AlgorithmResultAllocator::newEPAResultNoCollide() {
-        void* memPtr = AlgorithmResultAllocator::instance()->getAlgorithmResultPool()->allocate(sizeof(EPAResultNoCollide<T>));
+        void* memPtr = AlgorithmResultAllocator::instance()->getAlgorithmResultPool().allocate(sizeof(EPAResultNoCollide<T>));
         return std::unique_ptr<EPAResultNoCollide<T>, AlgorithmResultDeleter>(new(memPtr) EPAResultNoCollide<T>(), AlgorithmResultDeleter());
     }
 
     template<class T> std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter> AlgorithmResultAllocator::newContinuousCollisionResult(AbstractBody* body2, const Vector3<T>& normalFromObject2, const Point3<T>& hitPointOnObject2, T timeToHit) {
-        void* memPtr = AlgorithmResultAllocator::instance()->getAlgorithmResultPool()->allocate(sizeof(ContinuousCollisionResult<T>));
+        void* memPtr = AlgorithmResultAllocator::instance()->getAlgorithmResultPool().allocate(sizeof(ContinuousCollisionResult<T>));
         return std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter>(new(memPtr) ContinuousCollisionResult<T>(body2, normalFromObject2, hitPointOnObject2, timeToHit), AlgorithmResultDeleter());
     }
 

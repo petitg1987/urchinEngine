@@ -21,7 +21,7 @@ namespace urchin {
             PhysicsWorld();
             ~PhysicsWorld();
 
-            BodyManager* getBodyManager() const;
+            BodyManager& getBodyManager() const;
             CollisionWorld& getCollisionWorld() const;
 
             void addBody(AbstractBody*);
@@ -62,7 +62,7 @@ namespace urchin {
             float timeStep;
             bool paused;
 
-            BodyManager* bodyManager;
+            std::unique_ptr<BodyManager> bodyManager;
             std::unique_ptr<CollisionWorld> collisionWorld;
 
             std::vector<std::shared_ptr<Processable>> processables;

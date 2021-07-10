@@ -20,7 +20,7 @@ namespace urchin {
         public:
             friend class ThreadSafeSingleton<AlgorithmResultAllocator>;
 
-            SyncFixedSizePool<AlgorithmResult>* getAlgorithmResultPool() const;
+            SyncFixedSizePool<AlgorithmResult>& getAlgorithmResultPool() const;
 
             template<class T> std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> newGJKResultCollide(const Simplex<T>&);
             template<class T> std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> newGJKResultInvalid();
@@ -34,9 +34,9 @@ namespace urchin {
 
         private:
             AlgorithmResultAllocator();
-            ~AlgorithmResultAllocator() override;
+            ~AlgorithmResultAllocator() override = default;
 
-            SyncFixedSizePool<AlgorithmResult>* algorithmResultPool;
+            std::unique_ptr<SyncFixedSizePool<AlgorithmResult>> algorithmResultPool;
     };
 
 }

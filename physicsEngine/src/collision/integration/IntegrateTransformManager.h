@@ -12,7 +12,7 @@ namespace urchin {
     */
     class IntegrateTransformManager {
         public:
-            IntegrateTransformManager(const BodyManager*, const BroadPhaseManager&, const NarrowPhaseManager&);
+            IntegrateTransformManager(const BodyManager&, const BroadPhaseManager&, const NarrowPhaseManager&);
 
             void integrateTransform(float);
 
@@ -21,7 +21,7 @@ namespace urchin {
 
             static const float MAX_LINEAR_VELOCITY_FACTOR;
 
-            const BodyManager* bodyManager;
+            const BodyManager& bodyManager;
             const BroadPhaseManager& broadPhaseManager;
             const NarrowPhaseManager& narrowPhaseManager;
     };

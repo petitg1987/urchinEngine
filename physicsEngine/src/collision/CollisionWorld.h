@@ -18,7 +18,7 @@ namespace urchin {
     */
     class CollisionWorld : public Observable {
         public:
-            explicit CollisionWorld(BodyManager*);
+            explicit CollisionWorld(BodyManager&);
             ~CollisionWorld() override = default;
 
             enum NotificationType {
@@ -33,7 +33,7 @@ namespace urchin {
             const std::vector<ManifoldResult>& getLastUpdatedManifoldResults();
 
         private:
-            BodyManager* bodyManager;
+            BodyManager& bodyManager;
 
             std::unique_ptr<BroadPhaseManager> broadPhaseManager;
             std::unique_ptr<NarrowPhaseManager> narrowPhaseManager;

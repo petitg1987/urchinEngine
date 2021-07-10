@@ -21,7 +21,7 @@
 namespace urchin {
     class NarrowPhaseManager {
         public:
-            NarrowPhaseManager(const BodyManager*, const BroadPhaseManager&);
+            NarrowPhaseManager(const BodyManager&, const BroadPhaseManager&);
             ~NarrowPhaseManager();
 
             void process(float, const std::vector<OverlappingPair*>&, std::vector<ManifoldResult>&);
@@ -40,7 +40,7 @@ namespace urchin {
             void trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape>&, const TemporalObject&, AbstractBody*, ccd_set&) const;
             void continuousCollisionTest(const TemporalObject&, const TemporalObject&, AbstractBody*, ccd_set&) const;
 
-            const BodyManager* bodyManager;
+            const BodyManager& bodyManager;
             const BroadPhaseManager& broadPhaseManager;
 
             CollisionAlgorithmSelector *const collisionAlgorithmSelector;

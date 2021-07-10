@@ -4,7 +4,7 @@
 namespace urchin {
 
     void AlgorithmResultDeleter::operator()(AlgorithmResult *const collisionResultAlgorithm) {
-        AlgorithmResultAllocator::instance()->getAlgorithmResultPool()->deallocate(collisionResultAlgorithm);
+        AlgorithmResultAllocator::instance()->getAlgorithmResultPool().deallocate(collisionResultAlgorithm);
     }
 
 }

@@ -5,7 +5,7 @@ namespace urchin {
     //debug parameters
     bool DEBUG_PRINT_ISLANDS = false;
 
-    IslandManager::IslandManager(const BodyManager* bodyManager) :
+    IslandManager::IslandManager(const BodyManager& bodyManager) :
         bodyManager(bodyManager),
         squaredLinearSleepingThreshold(ConfigService::instance()->getFloatValue("island.linearSleepingThreshold") * ConfigService::instance()->getFloatValue("island.linearSleepingThreshold")),
         squaredAngularSleepingThreshold(ConfigService::instance()->getFloatValue("island.angularSleepingThreshold") * ConfigService::instance()->getFloatValue("island.angularSleepingThreshold")) {
@@ -64,7 +64,7 @@ namespace urchin {
     void IslandManager::buildIslands(const std::vector<ManifoldResult>& manifoldResults) {
         //1. create an island for each body
         islandElements.clear();
-        for (auto body : bodyManager->getBodies()) {
+        for (auto body : bodyManager.getBodies()) {
             if (!body->isStatic()) {
                 islandElements.push_back(body);
             }

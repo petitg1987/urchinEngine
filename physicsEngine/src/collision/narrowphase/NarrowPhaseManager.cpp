@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    NarrowPhaseManager::NarrowPhaseManager(const BodyManager* bodyManager, const BroadPhaseManager& broadPhaseManager) :
+    NarrowPhaseManager::NarrowPhaseManager(const BodyManager& bodyManager, const BroadPhaseManager& broadPhaseManager) :
             bodyManager(bodyManager),
             broadPhaseManager(broadPhaseManager),
             collisionAlgorithmSelector(new CollisionAlgorithmSelector()),
@@ -90,7 +90,7 @@ namespace urchin {
     void NarrowPhaseManager::processPredictiveContacts(float dt, std::vector<ManifoldResult>& manifoldResults) {
         ScopeProfiler sp(Profiler::physics(), "proPrediContact");
 
-        for (auto workBody : bodyManager->getBodies()) {
+        for (auto workBody : bodyManager.getBodies()) {
             RigidBody* body = RigidBody::upCast(workBody);
             if (body && body->isActive()) {
                 ScopeLockById lockBody(bodiesMutex, body->getObjectId());

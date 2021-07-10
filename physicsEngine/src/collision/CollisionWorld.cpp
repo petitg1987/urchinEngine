@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    CollisionWorld::CollisionWorld(BodyManager* bodyManager) :
+    CollisionWorld::CollisionWorld(BodyManager& bodyManager) :
             bodyManager(bodyManager),
             broadPhaseManager(std::make_unique<BroadPhaseManager>(bodyManager)),
             narrowPhaseManager(std::make_unique<NarrowPhaseManager>(bodyManager, getBroadPhaseManager())),
@@ -33,7 +33,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::physics(), "colWorldProc");
 
         //refresh bodies: add new bodies, remove bodies...
-        bodyManager->refreshBodies();
+        bodyManager.refreshBodies();
 
         //broad phase: determine pairs of bodies potentially colliding based on their AABBox
         const std::vector<OverlappingPair*>& overlappingPairs = broadPhaseManager->computeOverlappingPairs();

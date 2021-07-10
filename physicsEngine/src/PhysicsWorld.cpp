@@ -15,8 +15,8 @@ namespace urchin {
             gravity(Vector3<float>(0.0f, -9.81f, 0.0f)),
             timeStep(0.0f),
             paused(true),
-            bodyManager(new BodyManager()),
-            collisionWorld(std::make_unique<CollisionWorld>(bodyManager)),
+            bodyManager(std::make_unique<BodyManager>()),
+            collisionWorld(std::make_unique<CollisionWorld>(getBodyManager())),
             collisionVisualizer(std::unique_ptr<CollisionVisualizer>(nullptr)) {
         NumericalCheck::perform();
         SignalHandler::instance()->initialize();
@@ -32,13 +32,11 @@ namespace urchin {
         processables.clear();
         oneShotProcessables.clear();
 
-        delete bodyManager;
-
         Profiler::physics()->log(); //log for main (not physics) thread
     }
 
-    BodyManager* PhysicsWorld::getBodyManager() const {
-        return bodyManager;
+    BodyManager& PhysicsWorld::getBodyManager() const {
+        return *bodyManager;
     }
 
     CollisionWorld& PhysicsWorld::getCollisionWorld() const {

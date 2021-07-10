@@ -11,7 +11,7 @@ namespace urchin {
 
     class IslandManager {
         public:
-            explicit IslandManager(const BodyManager*);
+            explicit IslandManager(const BodyManager&);
 
             void refreshBodyActiveState(const std::vector<ManifoldResult>&);
 
@@ -22,7 +22,7 @@ namespace urchin {
 
             void printIslands(const std::vector<IslandElementLink>&);
 
-            const BodyManager* bodyManager;
+            const BodyManager& bodyManager;
             std::vector<IslandElement*> islandElements;
             IslandContainer islandContainer;
 

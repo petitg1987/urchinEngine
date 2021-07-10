@@ -7,8 +7,8 @@ namespace urchin {
     //static
     const float IntegrateTransformManager::MAX_LINEAR_VELOCITY_FACTOR = 0.95f;
 
-    IntegrateTransformManager::IntegrateTransformManager(const BodyManager* bodyManager,
-            const BroadPhaseManager& broadPhaseManager, const NarrowPhaseManager& narrowPhaseManager) :
+    IntegrateTransformManager::IntegrateTransformManager(const BodyManager& bodyManager, const BroadPhaseManager& broadPhaseManager,
+                                                         const NarrowPhaseManager& narrowPhaseManager) :
             bodyManager(bodyManager),
             broadPhaseManager(broadPhaseManager),
             narrowPhaseManager(narrowPhaseManager) {
@@ -19,7 +19,7 @@ namespace urchin {
      * @param dt Delta of time between two simulation steps
      */
     void IntegrateTransformManager::integrateTransform(float dt) {
-        for (auto abstractBody : bodyManager->getBodies()) {
+        for (auto abstractBody : bodyManager.getBodies()) {
             RigidBody* body = RigidBody::upCast(abstractBody);
             if (body && body->isActive()) {
                 PhysicsTransform currentTransform = body->getTransform();
