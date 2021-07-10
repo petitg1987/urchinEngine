@@ -105,7 +105,6 @@ namespace urchin {
         }
 
         this->timeStep = timeStep;
-
         physicsSimulationThread = std::make_unique<std::thread>(&PhysicsWorld::startPhysicsUpdate, this);
     }
 

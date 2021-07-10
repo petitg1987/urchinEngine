@@ -23,8 +23,6 @@ namespace urchin {
         if (aiSimulationThread) {
             interrupt();
             aiSimulationThread->join();
-
-            delete aiSimulationThread;
         }
 
         copiedPathRequests.clear();
@@ -71,8 +69,7 @@ namespace urchin {
         }
 
         this->timeStep = timeStep;
-
-        aiSimulationThread = new std::thread(&AIManager::startAIUpdate, this);
+        aiSimulationThread = std::make_unique<std::thread>(&AIManager::startAIUpdate, this);
     }
 
     void AIManager::pause() {

@@ -39,7 +39,7 @@ namespace urchin {
             bool continueExecution();
             void processAIUpdate();
 
-            std::thread *aiSimulationThread;
+            std::unique_ptr<std::thread> aiSimulationThread;
             std::atomic_bool aiSimulationStopper;
             static std::exception_ptr aiThreadExceptionPtr;
 
