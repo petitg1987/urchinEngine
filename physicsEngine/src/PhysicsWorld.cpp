@@ -32,6 +32,8 @@ namespace urchin {
         processables.clear();
         oneShotProcessables.clear();
 
+        bodyManager.reset(nullptr);
+
         Profiler::physics()->log(); //log for main (not physics) thread
     }
 

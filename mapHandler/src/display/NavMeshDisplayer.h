@@ -9,7 +9,7 @@ namespace urchin {
 
     class NavMeshDisplayer {
         public:
-            NavMeshDisplayer(AIManager*, Renderer3d*);
+            NavMeshDisplayer(AIManager&, Renderer3d&);
             ~NavMeshDisplayer();
 
             void display();
@@ -19,8 +19,8 @@ namespace urchin {
             std::vector<Point3<float>> toDisplayPoints(const std::vector<Point3<float>>&, float) const;
             void addNavMeshModel(GeometryModel*, PolygonMode, const Vector3<float>&);
 
-            AIManager* aiManager;
-            Renderer3d* renderer3d;
+            AIManager& aiManager;
+            Renderer3d& renderer3d;
 
             std::vector<GeometryModel*> navMeshModels;
             unsigned int loadedNavMeshId;

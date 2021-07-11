@@ -11,7 +11,7 @@ namespace urchin {
 
     class AICharacterController {
         public:
-            AICharacterController(std::shared_ptr<AICharacter> , AIManager*);
+            AICharacterController(std::shared_ptr<AICharacter>, AIManager&);
 
             void setupEventHandler(const std::shared_ptr<AICharacterEventHandler>&);
 
@@ -34,7 +34,7 @@ namespace urchin {
             static const float CHANGE_PATH_POINT_DISTANCE;
 
             std::shared_ptr<AICharacter> character;
-            AIManager* aiManager;
+            AIManager& aiManager;
             std::shared_ptr<AICharacterEventHandler> eventHandler;
 
             Vector2<float> steeringVelocity;

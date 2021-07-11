@@ -5,7 +5,7 @@
 namespace urchin {
 
     BodyManager::BodyManager() :
-        lastUpdatedBody(nullptr) {
+            lastUpdatedBody(nullptr) {
 
     }
 

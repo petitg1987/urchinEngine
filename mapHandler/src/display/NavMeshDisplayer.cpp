@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    NavMeshDisplayer::NavMeshDisplayer(AIManager* aiManager, Renderer3d* renderer3d) :
+    NavMeshDisplayer::NavMeshDisplayer(AIManager& aiManager, Renderer3d& renderer3d) :
         aiManager(aiManager),
         renderer3d(renderer3d),
         loadedNavMeshId(std::numeric_limits<unsigned int>::max()) {
@@ -14,7 +14,7 @@ namespace urchin {
     }
 
     void NavMeshDisplayer::display() {
-        NavMesh navMesh = aiManager->getNavMeshGenerator().copyLastGeneratedNavMesh();
+        NavMesh navMesh = aiManager.getNavMeshGenerator().copyLastGeneratedNavMesh();
 
         if (loadedNavMeshId != navMesh.getUpdateId()) {
             clearDisplay();
@@ -65,7 +65,7 @@ namespace urchin {
 
     void NavMeshDisplayer::clearDisplay() {
         for (auto navMeshModel : navMeshModels) {
-            renderer3d->getGeometryManager().removeGeometry(navMeshModel);
+            renderer3d.getGeometryManager().removeGeometry(navMeshModel);
             delete navMeshModel;
         }
         navMeshModels.clear();
@@ -88,6 +88,6 @@ namespace urchin {
         model->setColor(color.X, color.Y, color.Z, 0.5f);
         model->setPolygonMode(polygonMode);
         navMeshModels.push_back(model);
-        renderer3d->getGeometryManager().addGeometry(model);
+        renderer3d.getGeometryManager().addGeometry(model);
     }
 }

@@ -5,7 +5,7 @@ namespace urchin {
     //static
     constexpr float AICharacterController::CHANGE_PATH_POINT_DISTANCE = 0.4f;
 
-    AICharacterController::AICharacterController(std::shared_ptr<AICharacter> character, AIManager* aiManager) :
+    AICharacterController::AICharacterController(std::shared_ptr<AICharacter> character, AIManager& aiManager) :
             character(std::move(character)),
             aiManager(aiManager),
             eventHandler(nullptr),
@@ -20,7 +20,7 @@ namespace urchin {
     void AICharacterController::moveTo(const Point3<float>& seekTarget) {
         stopMoving();
         pathRequest = std::make_shared<PathRequest>(character->getPosition(), seekTarget);
-        aiManager->addPathRequest(pathRequest);
+        aiManager.addPathRequest(pathRequest);
     }
 
     void AICharacterController::stopMoving() {
@@ -30,7 +30,7 @@ namespace urchin {
 
         nextPathPointIndex = 0;
 
-        aiManager->removePathRequest(pathRequest);
+        aiManager.removePathRequest(pathRequest);
         pathRequest = std::shared_ptr<PathRequest>(nullptr);
         pathPoints.clear();
 
