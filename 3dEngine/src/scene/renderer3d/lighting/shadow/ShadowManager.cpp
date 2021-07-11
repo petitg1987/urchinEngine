@@ -12,7 +12,7 @@
 
 namespace urchin {
 
-    ShadowManager::ShadowManager(LightManager* lightManager, OctreeManager<Model>* modelOctreeManager) :
+    ShadowManager::ShadowManager(LightManager& lightManager, OctreeManager<Model>* modelOctreeManager) :
             shadowMapBias(ConfigService::instance()->getFloatValue("shadow.shadowMapBias")),
             percentageUniformSplit(ConfigService::instance()->getFloatValue("shadow.frustumUniformSplitAgainstLogSplit")),
             config({}),
@@ -20,8 +20,8 @@ namespace urchin {
             modelOctreeManager(modelOctreeManager),
             bForceUpdateAllShadowMaps(false),
             lightProjectionViewMatrices(nullptr) {
-        lightManager->addObserver(this, LightManager::ADD_LIGHT);
-        lightManager->addObserver(this, LightManager::REMOVE_LIGHT);
+        lightManager.addObserver(this, LightManager::ADD_LIGHT);
+        lightManager.addObserver(this, LightManager::REMOVE_LIGHT);
     }
 
     ShadowManager::~ShadowManager() {
@@ -51,7 +51,7 @@ namespace urchin {
 
     void ShadowManager::notify(Observable* observable, int notificationType) {
         if (dynamic_cast<LightManager*>(observable)) {
-            Light* light = lightManager->getLastUpdatedLight();
+            Light* light = lightManager.getLastUpdatedLight();
             if (notificationType == LightManager::ADD_LIGHT) {
                 light->addObserver(this, Light::PRODUCE_SHADOW);
                 if (light->isProduceShadow()) {
@@ -75,7 +75,7 @@ namespace urchin {
     }
 
     unsigned int ShadowManager::getMaxShadowLights() const {
-        return lightManager->getMaxLights();
+        return lightManager.getMaxLights();
     }
 
     float ShadowManager::getShadowMapBias() const {
@@ -277,7 +277,7 @@ namespace urchin {
 
     void ShadowManager::loadShadowMaps(GenericRenderer& lightingRenderer, std::size_t shadowMapTexUnit) {
         std::size_t shadowLightIndex = 0;
-        for (auto* visibleLight : lightManager->getVisibleLights()) {
+        for (auto* visibleLight : lightManager.getVisibleLights()) {
             if (visibleLight->isProduceShadow()) {
                 assert(shadowLightIndex < getMaxShadowLights());
                 const LightShadowMap* lightShadowMap = lightShadowMaps.find(visibleLight)->second;

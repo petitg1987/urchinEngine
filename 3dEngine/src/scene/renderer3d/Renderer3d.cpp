@@ -36,9 +36,9 @@ namespace urchin {
             waterManager(std::make_unique<WaterManager>(*deferredRenderTarget)),
             skyManager(std::make_unique<SkyManager>(*deferredRenderTarget)),
             geometryManager(std::make_unique<GeometryManager>(*deferredRenderTarget)),
-            lightManager(new LightManager(*deferredRenderTarget)),
-            ambientOcclusionManager(new AmbientOcclusionManager()),
-            shadowManager(new ShadowManager(lightManager, modelOctreeManager)),
+            lightManager(std::make_unique<LightManager>(*deferredRenderTarget)),
+            ambientOcclusionManager(std::make_unique<AmbientOcclusionManager>()),
+            shadowManager(std::make_unique<ShadowManager>(*lightManager, modelOctreeManager)),
 
             //lighting pass rendering
             offscreenLightingRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - second pass", RenderTarget::NO_DEPTH_ATTACHMENT)),
@@ -66,12 +66,7 @@ namespace urchin {
 
         offscreenLightingRenderTarget->cleanup();
         deferredRenderTarget->cleanup();
-        delete shadowManager;
         delete modelOctreeManager;
-        delete lightManager;
-        delete ambientOcclusionManager;
-
-        delete antiAliasingManager;
     }
 
     void Renderer3d::createOrUpdateLightingShader() {
@@ -139,12 +134,12 @@ namespace urchin {
         return *geometryManager;
     }
 
-    LightManager* Renderer3d::getLightManager() const {
-        return lightManager;
+    LightManager& Renderer3d::getLightManager() const {
+        return *lightManager;
     }
 
-    ShadowManager* Renderer3d::getShadowManager() const {
-        return shadowManager;
+    ShadowManager& Renderer3d::getShadowManager() const {
+        return *shadowManager;
     }
 
     void Renderer3d::activateShadow(bool isShadowActivated) {
@@ -156,8 +151,8 @@ namespace urchin {
         }
     }
 
-    AmbientOcclusionManager* Renderer3d::getAmbientOcclusionManager() const {
-        return ambientOcclusionManager;
+    AmbientOcclusionManager& Renderer3d::getAmbientOcclusionManager() const {
+        return *ambientOcclusionManager;
     }
 
     void Renderer3d::activateAmbientOcclusion(bool isAmbientOcclusionActivated) {
@@ -168,8 +163,8 @@ namespace urchin {
         }
     }
 
-    AntiAliasingManager* Renderer3d::getAntiAliasingManager() const {
-        return antiAliasingManager;
+    AntiAliasingManager& Renderer3d::getAntiAliasingManager() const {
+        return *antiAliasingManager;
     }
 
     void Renderer3d::activateAntiAliasing(bool isAntiAliasingActivated) {

@@ -15,17 +15,13 @@ namespace urchin {
         lightManager->removeLight(light);
     }
 
-    void SceneLight::setLightManager(LightManager* lightManager) {
+    void SceneLight::setLightManager(LightManager& lightManager) {
         if (this->lightManager) {
             throw std::invalid_argument("Cannot add the scene light on two different light managers.");
         }
-        if (!lightManager) {
-            throw std::invalid_argument("Cannot specify a null light manager for a scene light.");
-        }
 
-        this->lightManager = lightManager;
-
-        lightManager->addLight(light);
+        this->lightManager = &lightManager;
+        lightManager.addLight(light);
     }
 
     void SceneLight::loadFrom(const DataChunk* chunk, const DataParser& dataParser) {

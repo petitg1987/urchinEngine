@@ -50,15 +50,15 @@ namespace urchin {
 
             GeometryManager& getGeometryManager() const;
 
-            LightManager* getLightManager() const;
+            LightManager& getLightManager() const;
 
-            ShadowManager* getShadowManager() const;
+            ShadowManager& getShadowManager() const;
             void activateShadow(bool);
 
-            AmbientOcclusionManager* getAmbientOcclusionManager() const;
+            AmbientOcclusionManager& getAmbientOcclusionManager() const;
             void activateAmbientOcclusion(bool);
 
-            AntiAliasingManager* getAntiAliasingManager() const;
+            AntiAliasingManager& getAntiAliasingManager() const;
             void activateAntiAliasing(bool);
 
             //camera
@@ -125,9 +125,9 @@ namespace urchin {
             std::unique_ptr<WaterManager> waterManager;
             std::unique_ptr<SkyManager> skyManager;
             std::unique_ptr<GeometryManager> geometryManager;
-            LightManager* lightManager;
-            AmbientOcclusionManager* ambientOcclusionManager;
-            ShadowManager* shadowManager;
+            std::unique_ptr<LightManager> lightManager;
+            std::unique_ptr<AmbientOcclusionManager> ambientOcclusionManager;
+            std::unique_ptr<ShadowManager> shadowManager;
 
             std::shared_ptr<Texture> diffuseTexture, normalAndAmbientTexture, lightingPassTexture;
 
@@ -143,7 +143,7 @@ namespace urchin {
                 alignas(4) bool isShadowActivated;
                 alignas(4) bool isAmbientOcclusionActivated;
             } visualOption;
-            AntiAliasingManager* antiAliasingManager;
+            std::unique_ptr<AntiAliasingManager> antiAliasingManager;
             bool isAntiAliasingActivated;
 
             std::vector<std::unique_ptr<TextureRenderer>> debugFramebuffers;
