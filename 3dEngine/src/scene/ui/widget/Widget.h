@@ -36,8 +36,8 @@ namespace urchin {
             const std::vector<Widget*>& getChildren() const;
             void deleteChildren();
 
-            void addEventListener(const std::shared_ptr<EventListener>&);
-            const std::vector<std::shared_ptr<EventListener>>& getEventListeners() const;
+            void addEventListener(std::unique_ptr<EventListener>);
+            const std::vector<std::unique_ptr<EventListener>>& getEventListeners() const;
             WidgetStates getWidgetState() const;
 
             void updatePosition(Position);
@@ -98,7 +98,7 @@ namespace urchin {
             Widget* parent;
             std::vector<Widget*> children;
 
-            std::vector<std::shared_ptr<EventListener>> eventListeners;
+            std::vector<std::unique_ptr<EventListener>> eventListeners;
             WidgetStates widgetState;
 
             Position position;

@@ -111,11 +111,11 @@ namespace urchin {
         }
     }
 
-    void Widget::addEventListener(const std::shared_ptr<EventListener>& eventListener) {
-        this->eventListeners.push_back(eventListener);
+    void Widget::addEventListener(std::unique_ptr<EventListener> eventListener) {
+        this->eventListeners.push_back(std::move(eventListener));
     }
 
-    const std::vector<std::shared_ptr<EventListener>>& Widget::getEventListeners() const {
+    const std::vector<std::unique_ptr<EventListener>>& Widget::getEventListeners() const {
         return eventListeners;
     }
 
@@ -382,14 +382,14 @@ namespace urchin {
     void Widget::handleWidgetReset() {
         if (widgetState == CLICKING) {
             widgetState = FOCUS;
-            for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
+            for (auto& eventListener : eventListeners) {
                 eventListener->onMouseLeftClickRelease(this);
             }
         }
 
         if (widgetState == FOCUS) {
             widgetState = DEFAULT;
-            for (std::shared_ptr<EventListener>& eventListener : eventListeners) {
+            for (auto& eventListener : eventListeners) {
                 eventListener->onFocusLost(this);
             }
         }
