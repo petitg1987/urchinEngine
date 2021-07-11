@@ -49,8 +49,8 @@ namespace urchin {
             void readTGAGray8bitsRLE();
 
             //temporary attributes
-            unsigned char* colorMap;
-            unsigned char* data;
+            std::vector<unsigned char> colorMap;
+            std::vector<unsigned char> data;
 
             //attributes for Image
             unsigned int width, height;

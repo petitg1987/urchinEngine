@@ -13,7 +13,7 @@ void CharacterControllerIT::fallingCharacterOnObjects() {
     std::unique_ptr<CollisionCapsuleShape> characterShape = std::make_unique<CollisionCapsuleShape>(0.25f, 1.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y);
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
     auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3<float>(2.4f, 5.0f, 2.4f), Quaternion<float>()));
-    auto characterController = CharacterController(character, CharacterControllerConfig(), physicsWorld.get());
+    auto characterController = CharacterController(character, CharacterControllerConfig(), *physicsWorld);
 
     std::thread physicsEngineThread = std::thread([&physicsWorld]() {
         for (std::size_t i = 0; i < 500; ++i) {
@@ -49,7 +49,7 @@ void CharacterControllerIT::ccdFallingCharacter() {
     std::unique_ptr<CollisionCapsuleShape> characterShape = std::make_unique<CollisionCapsuleShape>(0.1f, 0.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y); //use small character to favor CCD
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
     auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3<float>(0.0f, 50.0f, 0.0f), Quaternion<float>()));
-    auto characterController = CharacterController(character, CharacterControllerConfig(), physicsWorld.get());
+    auto characterController = CharacterController(character, CharacterControllerConfig(), *physicsWorld);
 
     std::thread physicsEngineThread = std::thread([&physicsWorld]() {
         for (std::size_t i = 0; i < 250; ++i) {
@@ -76,7 +76,7 @@ void CharacterControllerIT::ccdMovingCharacter() {
     std::unique_ptr<CollisionCapsuleShape> characterShape = std::make_unique<CollisionCapsuleShape>(0.1f, 0.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y); //use small character to favor CCD
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
     auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3<float>(0.0f, 0.35f, 0.0f), Quaternion<float>()));
-    auto characterController = CharacterController(character, CharacterControllerConfig(), physicsWorld.get());
+    auto characterController = CharacterController(character, CharacterControllerConfig(), *physicsWorld);
     characterController.setVelocity(Vector3<float>(0.0f, 0.0f, -15.0f));
 
     std::thread physicsEngineThread = std::thread([&physicsWorld]() {

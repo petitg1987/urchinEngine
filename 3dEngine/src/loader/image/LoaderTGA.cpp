@@ -7,8 +7,6 @@
 namespace urchin {
 
     LoaderTGA::LoaderTGA() : Loader<Image>(),
-            colorMap(nullptr),
-            data(nullptr),
             width(0),
             height(0),
             componentsCount(0),
@@ -36,14 +34,14 @@ namespace urchin {
 
         //extracts color map (color map is stored in BGR format)
         if (header.colormapType) {
-            colorMap = new unsigned char[(std::size_t)(header.cmLength * (header.cmSize >> 3u))];
-            file.read((char*)colorMap, header.cmLength * (header.cmSize >> 3u));
+            colorMap.resize((std::size_t)header.cmLength * (std::size_t)(header.cmSize >> 3u), 0);
+            file.read((char*)colorMap.data(), header.cmLength * (header.cmSize >> 3u));
         }
 
         //memory allocation for rough pixel data
         long lengthData = length - (long)file.tellg();
-        data = new unsigned char[(unsigned long)lengthData];
-        file.read((char*)data, lengthData);
+        data.resize((std::size_t)lengthData);
+        file.read((char*)data.data(), lengthData);
 
         //memory allocation for pixel data
         getImageInfo(header);
@@ -118,18 +116,9 @@ namespace urchin {
                 break;
 
             default:
-                if (header.colormapType) {
-                    delete[] colorMap;
-                }
-                delete[] data;
                 //image type is not correct
                 throw std::runtime_error("Unknown TGA image type, filename: " + filenamePath + ".");
         }
-
-        if (header.colormapType) {
-            delete[] colorMap;
-        }
-        delete[] data;
 
         unsigned int origin = ((unsigned int)header.imageDescriptor & 0x20u) >> 5u; //0: origin bottom, 1: origin top
         bool addAlphaChannel = componentsCount == 3 && format == Image::IMAGE_RGBA;
@@ -243,7 +232,7 @@ namespace urchin {
     }
 
     void LoaderTGA::readTGA8bitsRLE() {
-        int j = 0;
+        std::size_t j = 0;
         unsigned char color;
         unsigned char packetHeader;
         unsigned int ptrIndex = 0;
@@ -276,7 +265,7 @@ namespace urchin {
     }
 
     void LoaderTGA::readTGA16bitsRLE() {
-        int j = 0;
+        std::size_t j = 0;
         unsigned short color;
         unsigned char packetHeader;
         unsigned int ptrIndex = 0;
@@ -310,7 +299,7 @@ namespace urchin {
     }
 
     void LoaderTGA::readTGA24bitsRLE() {
-        int j = 0;
+        std::size_t j = 0;
         unsigned char *rgb;
         unsigned char packetHeader;
         unsigned int ptrIndex = 0;
@@ -342,7 +331,7 @@ namespace urchin {
     }
 
     void LoaderTGA::readTGA32bitsRLE() {
-        int j = 0;
+        std::size_t j = 0;
         unsigned char *rgba;
         unsigned char packetHeader;
         unsigned int ptrIndex = 0;
