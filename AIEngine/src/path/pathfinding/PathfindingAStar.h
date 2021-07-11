@@ -31,13 +31,13 @@ namespace urchin {
             float computeGScore(const std::shared_ptr<PathNode>&, const std::shared_ptr<NavLink>&, const Point3<float>&) const;
             float computeHScore(const std::shared_ptr<NavTriangle>&, const Point3<float>&) const;
 
-            std::vector<std::shared_ptr<PathPortal>> determinePath(const std::shared_ptr<PathNode>&, const Point3<float>&, const Point3<float>&) const;
-            LineSegment3D<float> rearrangePortal(const LineSegment3D<float>&, const std::vector<std::shared_ptr<PathPortal>>&) const;
+            std::vector<std::unique_ptr<PathPortal>> determinePath(const std::shared_ptr<PathNode>&, const Point3<float>&, const Point3<float>&) const;
+            LineSegment3D<float> rearrangePortal(const LineSegment3D<float>&, const std::vector<std::unique_ptr<PathPortal>>&) const;
             Point3<float> middlePoint(const LineSegment3D<float>&) const;
 
-            std::vector<PathPoint> pathPortalsToPathPoints(std::vector<std::shared_ptr<PathPortal>>&, bool) const;
-            void addMissingTransitionPoints(std::vector<std::shared_ptr<PathPortal>>&) const;
-            Point3<float> computeTransitionPoint(const std::shared_ptr<PathPortal>&, const Point3<float>&) const;
+            std::vector<PathPoint> pathPortalsToPathPoints(std::vector<std::unique_ptr<PathPortal>>&, bool) const;
+            void addMissingTransitionPoints(std::vector<std::unique_ptr<PathPortal>>&) const;
+            Point3<float> computeTransitionPoint(const PathPortal&, const Point3<float>&) const;
 
             const float jumpAdditionalCost;
             std::shared_ptr<NavMesh> navMesh;
