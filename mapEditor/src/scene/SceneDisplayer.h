@@ -47,7 +47,7 @@ namespace urchin {
             void paint();
             void resize(unsigned int, unsigned int);
 
-            SceneManager* getSceneManager() const;
+            SceneManager& getSceneManager() const;
             SceneFreeCamera* getCamera() const;
             PhysicsWorld& getPhysicsWorld() const;
             MapHandler& getMapHandler() const;
@@ -71,7 +71,7 @@ namespace urchin {
             const std::unique_ptr<StatusBarController>& statusBarController;
 
             //3d
-            SceneManager* sceneManager;
+            std::unique_ptr<SceneManager> sceneManager;
             SceneFreeCamera* camera;
             std::unique_ptr<BodyShapeDisplayer> bodyShapeDisplayer;
             std::unique_ptr<ObjectMoveController> objectMoveController;

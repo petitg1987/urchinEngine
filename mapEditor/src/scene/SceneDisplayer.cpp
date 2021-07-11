@@ -16,7 +16,7 @@ namespace urchin {
         sceneController(sceneController),
         mouseController(mouseController),
         statusBarController(statusBarController),
-        sceneManager(nullptr),
+        sceneManager(std::unique_ptr<SceneManager>(nullptr)),
         camera(nullptr),
         bodyShapeDisplayer(std::unique_ptr<BodyShapeDisplayer>(nullptr)),
         objectMoveController(std::unique_ptr<ObjectMoveController>(nullptr)),
@@ -45,7 +45,7 @@ namespace urchin {
         lightScopeDisplayer.reset(nullptr);
         soundTriggerDisplayer.reset(nullptr);
         delete camera;
-        delete sceneManager;
+        sceneManager.reset(nullptr);
 
         SingletonManager::destroyAllSingletons();
     }
@@ -80,7 +80,7 @@ namespace urchin {
     void SceneDisplayer::loadEmptyScene(const std::string& mapEditorPath) {
         initializeEngineResources(mapEditorPath);
 
-        sceneManager = new SceneManager(SceneWindowController::windowRequiredExtensions(), windowController->getSurfaceCreator(), windowController->getFramebufferSizeRetriever());
+        sceneManager = std::make_unique<SceneManager>(SceneWindowController::windowRequiredExtensions(), windowController->getSurfaceCreator(), windowController->getFramebufferSizeRetriever());
         sceneManager->newUIRenderer(true);
         sceneManager->getActiveUIRenderer()->addWidget(new StaticBitmap(nullptr, Position(0.0f, 0.0f, LengthType::PIXEL), Size(100.0f, 100.0f, LengthType::PERCENTAGE), "resources/emptyScene.tga"));
 
@@ -100,7 +100,7 @@ namespace urchin {
         }
 
         //3d
-        sceneManager = new SceneManager(SceneWindowController::windowRequiredExtensions(), windowController->getSurfaceCreator(), windowController->getFramebufferSizeRetriever());
+        sceneManager = std::make_unique<SceneManager>(SceneWindowController::windowRequiredExtensions(), windowController->getSurfaceCreator(), windowController->getFramebufferSizeRetriever());
         camera = new SceneFreeCamera(50.0f, 0.1f, 2000.0f, mouseController);
         camera->setSpeed(45.0f, 2.0f);
         camera->loadCameraState(mapFilename);
@@ -108,10 +108,10 @@ namespace urchin {
         sceneManager->getActiveRenderer3d()->setCamera(camera);
         sceneManager->getActiveRenderer3d()->getLightManager().setGlobalAmbientColor(Point4<float>(0.05f, 0.05f, 0.05f, 0.0f));
 
-        bodyShapeDisplayer = std::make_unique<BodyShapeDisplayer>(sceneManager);
-        objectMoveController = std::make_unique<ObjectMoveController>(sceneManager, sceneController, mouseController, statusBarController);
-        lightScopeDisplayer = std::make_unique<LightScopeDisplayer>(sceneManager);
-        soundTriggerDisplayer = std::make_unique<SoundTriggerDisplayer>(sceneManager);
+        bodyShapeDisplayer = std::make_unique<BodyShapeDisplayer>(*sceneManager);
+        objectMoveController = std::make_unique<ObjectMoveController>(*sceneManager, sceneController, mouseController, statusBarController);
+        lightScopeDisplayer = std::make_unique<LightScopeDisplayer>(*sceneManager);
+        soundTriggerDisplayer = std::make_unique<SoundTriggerDisplayer>(*sceneManager);
 
         //physics
         physicsWorld = std::make_unique<PhysicsWorld>();
@@ -221,8 +221,9 @@ namespace urchin {
         }
     }
 
-    SceneManager* SceneDisplayer::getSceneManager() const {
-        return sceneManager;
+    SceneManager& SceneDisplayer::getSceneManager() const {
+        assert(sceneManager);
+        return *sceneManager;
     }
 
     SceneFreeCamera* SceneDisplayer::getCamera() const {
@@ -230,10 +231,12 @@ namespace urchin {
     }
 
     PhysicsWorld& SceneDisplayer::getPhysicsWorld() const {
+        assert(physicsWorld);
         return *physicsWorld;
     }
 
     MapHandler& SceneDisplayer::getMapHandler() const {
+        assert(mapHandler);
         return *mapHandler;
     }
 

@@ -4,8 +4,8 @@
 
 namespace urchin {
 
-    SoundTriggerDisplayer::SoundTriggerDisplayer(SceneManager* sceneManager) :
-        sceneManager(sceneManager) {
+    SoundTriggerDisplayer::SoundTriggerDisplayer(SceneManager& sceneManager) :
+            sceneManager(sceneManager) {
 
     }
 
@@ -27,7 +27,7 @@ namespace urchin {
 
             for (auto& soundTriggerModel : soundTriggerModels) {
                 soundTriggerModel->setColor(0.0f, 1.0f, 1.0f);
-                sceneManager->getActiveRenderer3d()->getGeometryManager().addGeometry(soundTriggerModel);
+                sceneManager.getActiveRenderer3d()->getGeometryManager().addGeometry(soundTriggerModel);
             }
         }
     }
@@ -55,7 +55,7 @@ namespace urchin {
 
     void SoundTriggerDisplayer::cleanCurrentDisplay() {
         for (auto& soundTriggerModel : soundTriggerModels) {
-            sceneManager->getActiveRenderer3d()->getGeometryManager().removeGeometry(soundTriggerModel);
+            sceneManager.getActiveRenderer3d()->getGeometryManager().removeGeometry(soundTriggerModel);
             delete soundTriggerModel;
         }
 
