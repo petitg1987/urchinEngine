@@ -18,7 +18,7 @@ namespace urchin {
         buildOutlineCwPoints();
         buildAABBox();
 
-        heightfieldPointHelper = std::make_shared<HeightfieldPointHelper<float>>(this->localVertices, this->xLength);
+        heightfieldPointHelper = std::make_unique<HeightfieldPointHelper<float>>(this->localVertices, this->xLength);
     }
 
     void PolytopeTerrainSurface::buildOutlineCwPoints() {

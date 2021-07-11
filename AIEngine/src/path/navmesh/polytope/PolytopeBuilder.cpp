@@ -77,8 +77,8 @@ namespace urchin {
         std::vector<std::unique_ptr<Polytope>> expandedPolytopes;
 
         auto terrainMaxWalkableSlope = AngleConverter<float>::toRadian(ConfigService::instance()->getFloatValue("navMesh.terrainMaxWalkableSlopeInDegree"));
-        auto heightfieldPointHelper = std::make_shared<const HeightfieldPointHelper<float>>(aiTerrain->getLocalVertices(), aiTerrain->getXLength());
-        auto terrainNavTopography = std::make_shared<NavTerrainTopography>(heightfieldPointHelper, aiTerrain->getTransform().getPosition());
+        auto heightfieldPointHelper = std::make_unique<const HeightfieldPointHelper<float>>(aiTerrain->getLocalVertices(), aiTerrain->getXLength());
+        auto terrainNavTopography = std::make_shared<NavTerrainTopography>(std::move(heightfieldPointHelper), aiTerrain->getTransform().getPosition());
 
         Vector3<float> approximateNormal(0.0, 1.0, 0.0); //use approximate normal for all terrain surface instead of normal by vertex to speed up the computation
         Vector3<float> expandShiftVector = approximateNormal * navMeshAgent->computeExpandDistance(approximateNormal);
@@ -96,7 +96,7 @@ namespace urchin {
             std::vector<CSGPolygon<float>> selfObstacles = terrainObstacleService.computeSelfObstacles(terrainMaxWalkableSlope);
 
             auto terrainSurface = std::make_shared<PolytopeTerrainSurface>(terrainSplit.position, terrainSplit.localVertices, terrainSplit.xLength, terrainSplit.zLength,
-                    approximateNormal, selfObstacles, terrainNavTopography);
+                    approximateNormal, selfObstacles, std::move(terrainNavTopography));
             terrainSurface->setWalkableCandidate(true);
             std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces;
             expandedSurfaces.emplace_back(std::move(terrainSurface));

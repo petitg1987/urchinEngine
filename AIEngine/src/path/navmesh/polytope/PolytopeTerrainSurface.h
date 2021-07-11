@@ -42,7 +42,7 @@ namespace urchin {
             std::vector<Point2<float>> outlineCwPoints;
             std::vector<CSGPolygon<float>> selfObstacles;
 
-            std::shared_ptr<HeightfieldPointHelper<float>> heightfieldPointHelper;
+            std::unique_ptr<HeightfieldPointHelper<float>> heightfieldPointHelper;
             std::shared_ptr<const NavTopography> navTopography;
 
             AABBox<float> aabbox;
