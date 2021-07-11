@@ -11,9 +11,9 @@ namespace urchin {
         public:
             AIController();
 
-            const SceneAI* getSceneAI() const;
+            const SceneAI& getSceneAI() const;
 
-            const SceneAI* updateSceneAI(std::unique_ptr<NavMeshAgent>);
+            const SceneAI& updateSceneAI(std::unique_ptr<NavMeshAgent>);
     };
 
 }

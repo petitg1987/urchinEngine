@@ -35,19 +35,15 @@ namespace urchin {
     }
 
     SceneDisplayer::~SceneDisplayer() {
-        delete mapHandler;
-
-        delete soundManager;
-
-        delete aiManager;
-
-        delete physicsWorld;
+        mapHandler.reset(nullptr);
+        soundManager.reset(nullptr);
+        aiManager.reset(nullptr);
+        physicsWorld.reset(nullptr);
 
         delete bodyShapeDisplayer;
         delete objectMoveController;
         delete lightScopeDisplayer;
         delete soundTriggerDisplayer;
-        delete navMeshDisplayer;
         delete camera;
         delete sceneManager;
 
@@ -62,7 +58,7 @@ namespace urchin {
 
             initializeScene(mapFilename);
 
-            mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), physicsWorld, soundManager, aiManager);
+            mapHandler = std::make_unique<MapHandler>(sceneManager->getActiveRenderer3d(), physicsWorld.get(), soundManager.get(), aiManager.get());
             mapHandler->setRelativeWorkingDirectory(relativeWorkingDirectory);
             std::string relativeMapFilename = FileUtil::getRelativePath(mapResourcesDirectory, mapFilename);
             std::ifstream streamMapFile(FileSystem::instance()->getResourcesDirectory() + relativeMapFilename);
@@ -118,17 +114,17 @@ namespace urchin {
         soundTriggerDisplayer = new SoundTriggerDisplayer(sceneManager);
 
         //physics
-        physicsWorld = new PhysicsWorld();
+        physicsWorld = std::make_unique<PhysicsWorld>();
         AbstractBody::disableAllBodies(true);
         physicsWorld->setUp(1.0f / 50.0f);
 
         //AI
-        aiManager = new AIManager();
+        aiManager = std::make_unique<AIManager>();
         aiManager->setUp(1.0f / 4.0f);
-        navMeshDisplayer = new NavMeshDisplayer(aiManager, sceneManager->getActiveRenderer3d());
+        navMeshDisplayer = std::make_unique<NavMeshDisplayer>(*aiManager, *sceneManager->getActiveRenderer3d());
 
         //sound
-        soundManager = new SoundManager();
+        soundManager = std::make_unique<SoundManager>();
     }
 
     void SceneDisplayer::setViewProperties(SceneDisplayer::ViewProperties viewProperty, bool value) {
@@ -233,12 +229,12 @@ namespace urchin {
         return camera;
     }
 
-    PhysicsWorld* SceneDisplayer::getPhysicsWorld() const {
-        return physicsWorld;
+    PhysicsWorld& SceneDisplayer::getPhysicsWorld() const {
+        return *physicsWorld;
     }
 
-    MapHandler* SceneDisplayer::getMapHandler() const {
-        return mapHandler;
+    MapHandler& SceneDisplayer::getMapHandler() const {
+        return *mapHandler;
     }
 
     BodyShapeDisplayer* SceneDisplayer::getBodyShapeDisplayer() const {

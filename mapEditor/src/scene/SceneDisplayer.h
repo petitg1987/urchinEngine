@@ -49,8 +49,8 @@ namespace urchin {
 
             SceneManager* getSceneManager() const;
             SceneFreeCamera* getCamera() const;
-            PhysicsWorld* getPhysicsWorld() const;
-            MapHandler* getMapHandler() const;
+            PhysicsWorld& getPhysicsWorld() const;
+            MapHandler& getMapHandler() const;
 
             BodyShapeDisplayer* getBodyShapeDisplayer() const;
             ObjectMoveController* getObjectMoveController() const;
@@ -79,17 +79,17 @@ namespace urchin {
             SoundTriggerDisplayer* soundTriggerDisplayer;
 
             //physics
-            PhysicsWorld* physicsWorld;
+            std::unique_ptr<PhysicsWorld> physicsWorld;
 
             //AI
-            AIManager* aiManager;
-            NavMeshDisplayer* navMeshDisplayer;
+            std::unique_ptr<AIManager> aiManager;
+            std::unique_ptr<NavMeshDisplayer> navMeshDisplayer;
 
             //sound
-            SoundManager* soundManager;
+            std::unique_ptr<SoundManager> soundManager;
 
             //map handler
-            MapHandler* mapHandler;
+            std::unique_ptr<MapHandler> mapHandler;
 
             //scene specifics
             bool viewProperties[LAST_VIEW_PROPERTIES];

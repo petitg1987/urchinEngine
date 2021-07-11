@@ -6,36 +6,32 @@ namespace urchin {
     /**
      * @param soundTrigger Trigger used to play the sound
      */
-    AudioController::AudioController(Sound* sound, SoundTrigger* soundTrigger, StreamUpdateWorker& streamUpdateWorker) :
-            sound(sound),
-            soundTrigger(soundTrigger),
+    AudioController::AudioController(std::shared_ptr<Sound> sound, std::shared_ptr<SoundTrigger> soundTrigger, StreamUpdateWorker& streamUpdateWorker) :
+            sound(std::move(sound)),
+            soundTrigger(std::move(soundTrigger)),
             triggerValue(SoundTrigger::STOPPED),
-            audioPlayer(std::make_unique<AudioStreamPlayer>(sound, streamUpdateWorker)),
+            audioPlayer(std::make_unique<AudioStreamPlayer>(*this->sound, streamUpdateWorker)),
             isPaused(false) {
 
     }
 
     AudioController::~AudioController() {
         audioPlayer->stop();
-
-        delete sound;
-        delete soundTrigger;
     }
 
-    Sound* AudioController::getSound() const {
-        return sound;
+    Sound& AudioController::getSound() const {
+        return *sound;
     }
 
-    SoundTrigger* AudioController::getSoundTrigger() const {
-        return soundTrigger;
+    SoundTrigger& AudioController::getSoundTrigger() const {
+        return *soundTrigger;
     }
 
-    void AudioController::changeSoundTrigger(SoundTrigger* newSoundTrigger) {
+    void AudioController::changeSoundTrigger(std::shared_ptr<SoundTrigger> newSoundTrigger) {
         audioPlayer->stop();
         triggerValue = SoundTrigger::STOPPED;
 
-        delete soundTrigger;
-        soundTrigger = newSoundTrigger;
+        soundTrigger = std::move(newSoundTrigger);
     }
 
     void AudioController::pause() {

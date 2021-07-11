@@ -19,13 +19,14 @@ namespace urchin {
         if (sceneSound) {
             const SoundTrigger* soundTrigger = sceneSound->getSoundTrigger();
 
-            if (const auto* shapeTrigger = dynamic_cast<const ShapeTrigger*>(soundTrigger)) {
+            if(soundTrigger->getTriggerType() == ShapeTrigger::TriggerType::SHAPE_TRIGGER) {
+                const auto& shapeTrigger = dynamic_cast<const ShapeTrigger*>(soundTrigger);
                 GeometryModel* geometryModel = retrieveGeometry(shapeTrigger->getSoundShape());
                 soundTriggerModels.push_back(geometryModel);
             }
 
             for (auto& soundTriggerModel : soundTriggerModels) {
-                soundTriggerModel->setColor(0.0, 1.0, 1.0);
+                soundTriggerModel->setColor(0.0f, 1.0f, 1.0f);
                 sceneManager->getActiveRenderer3d()->getGeometryManager().addGeometry(soundTriggerModel);
             }
         }

@@ -15,12 +15,12 @@ namespace urchin {
     */
     class AudioController {
         public:
-            AudioController(Sound*, SoundTrigger*, StreamUpdateWorker&);
+            AudioController(std::shared_ptr<Sound>, std::shared_ptr<SoundTrigger>, StreamUpdateWorker&);
             ~AudioController();
 
-            Sound* getSound() const;
-            SoundTrigger* getSoundTrigger() const;
-            void changeSoundTrigger(SoundTrigger*);
+            Sound& getSound() const;
+            SoundTrigger& getSoundTrigger() const;
+            void changeSoundTrigger(std::shared_ptr<SoundTrigger>);
 
             void pause();
             void unpause();
@@ -30,8 +30,8 @@ namespace urchin {
         private:
             void processTriggerValue(SoundTrigger::TriggerResultValue);
 
-            Sound* sound;
-            SoundTrigger* soundTrigger;
+            std::shared_ptr<Sound> sound;
+            std::shared_ptr<SoundTrigger> soundTrigger;
 
             SoundTrigger::TriggerResultValue triggerValue;
 

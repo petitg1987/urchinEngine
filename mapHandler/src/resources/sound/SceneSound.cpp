@@ -8,17 +8,14 @@ namespace urchin {
 
     SceneSound::SceneSound() :
             soundManager(nullptr),
-            sound(nullptr),
-            soundTrigger(nullptr) {
+            sound(std::shared_ptr<Sound>(nullptr)),
+            soundTrigger(std::shared_ptr<SoundTrigger>(nullptr)) {
 
     }
 
     SceneSound::~SceneSound() {
         if (soundManager) {
-            soundManager->removeSound(sound);
-        } else {
-            delete this->sound;
-            delete this->soundTrigger;
+            soundManager->removeSound(*sound);
         }
     }
 
@@ -45,8 +42,8 @@ namespace urchin {
         auto soundChunk = dataWriter.createChunk(SOUND_TAG, DataAttribute(), chunk);
         auto soundTriggerChunk = dataWriter.createChunk(SOUND_TRIGGER_TAG, DataAttribute(), chunk);
 
-        SoundReaderWriter::writeOn(soundChunk.get(), sound, dataWriter);
-        SoundTriggerReaderWriter::writeOn(soundTriggerChunk.get(), soundTrigger, dataWriter);
+        SoundReaderWriter::writeOn(soundChunk.get(), *sound, dataWriter);
+        SoundTriggerReaderWriter::writeOn(soundTriggerChunk.get(), *soundTrigger, dataWriter);
     }
 
     std::string SceneSound::getName() const {
@@ -58,14 +55,14 @@ namespace urchin {
     }
 
     Sound* SceneSound::getSound() const {
-        return sound;
+        return sound.get();
     }
 
     SoundTrigger* SceneSound::getSoundTrigger() const {
-        return soundTrigger;
+        return soundTrigger.get();
     }
 
-    void SceneSound::setSoundElements(Sound* sound, SoundTrigger* soundTrigger) {
+    void SceneSound::setSoundElements(const std::shared_ptr<Sound>& sound, const std::shared_ptr<SoundTrigger>& soundTrigger) {
         if (!sound) {
             throw std::invalid_argument("Cannot set a null sound on scene sound.");
         } else if (!soundTrigger) {
@@ -73,18 +70,15 @@ namespace urchin {
         }
 
         if (soundManager) {
-            soundManager->removeSound(this->sound);
+            soundManager->removeSound(*this->sound);
             soundManager->addSound(sound, soundTrigger);
-        } else {
-            delete this->sound;
-            delete this->soundTrigger;
         }
 
         this->sound = sound;
         this->soundTrigger = soundTrigger;
     }
 
-    void SceneSound::changeSoundTrigger(SoundTrigger* newSoundTrigger) {
+    void SceneSound::changeSoundTrigger(const std::shared_ptr<SoundTrigger>& newSoundTrigger) {
         if (!sound) {
             throw std::invalid_argument("Cannot change sound trigger without having a sound on scene sound.");
         }
@@ -93,9 +87,7 @@ namespace urchin {
         }
 
         if (soundManager) {
-            soundManager->changeSoundTrigger(sound, newSoundTrigger);
-        } else {
-            delete this->soundTrigger;
+            soundManager->changeSoundTrigger(*sound, newSoundTrigger);
         }
 
         this->soundTrigger = newSoundTrigger;

@@ -25,7 +25,7 @@ namespace urchin {
     void AIPanelWidget::load(AIController* aiController) {
         this->aiController = aiController;
 
-        const NavMeshAgent* navMeshAgent = aiController->getSceneAI()->getNavMeshAgent();
+        const NavMeshAgent* navMeshAgent = aiController->getSceneAI().getNavMeshAgent();
         setupNavMeshAgentDataFrom(navMeshAgent);
     }
 

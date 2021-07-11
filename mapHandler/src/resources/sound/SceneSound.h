@@ -22,8 +22,8 @@ namespace urchin {
 
             Sound* getSound() const;
             SoundTrigger* getSoundTrigger() const;
-            void setSoundElements(Sound*, SoundTrigger*);
-            void changeSoundTrigger(SoundTrigger*);
+            void setSoundElements(const std::shared_ptr<Sound>&, const std::shared_ptr<SoundTrigger>&);
+            void changeSoundTrigger(const std::shared_ptr<SoundTrigger>&);
 
         private:
             void loadFrom(const DataChunk*, const DataParser&);
@@ -36,9 +36,8 @@ namespace urchin {
             SoundManager* soundManager;
 
             std::string name;
-            Sound* sound;
-            SoundTrigger* soundTrigger;
-
+            std::shared_ptr<Sound> sound;
+            std::shared_ptr<SoundTrigger> soundTrigger;
     };
 
 }

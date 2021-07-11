@@ -6,11 +6,11 @@ namespace urchin {
 
     }
 
-    const SceneSky* SkyController::getSceneSky() const {
+    const SceneSky& SkyController::getSceneSky() const {
         return getMapHandler()->getMap()->getSceneSky();
     }
 
-    const SceneSky* SkyController::updateSceneSky(const std::vector<std::string>& skyboxFilenames, float offsetY) {
+    const SceneSky& SkyController::updateSceneSky(const std::vector<std::string>& skyboxFilenames, float offsetY) {
         std::unique_ptr<Skybox> updatedSkybox(nullptr);
         if (!isSkyboxFilenamesAllEmpty(skyboxFilenames)) {
             updatedSkybox = std::make_unique<Skybox>(skyboxFilenames);

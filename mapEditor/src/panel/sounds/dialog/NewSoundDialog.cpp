@@ -115,16 +115,16 @@ namespace urchin {
             QVariant soundCategoryVariant = soundCategoryComboBox->currentData();
             auto soundCategory = static_cast<Sound::SoundCategory>(soundCategoryVariant.toInt());
 
-            Sound *sound;
+            std::shared_ptr<Sound> sound;
             if (soundType == Sound::GLOBAL) {
-                sound = new GlobalSound(relativeSoundFilename, soundCategory);
+                sound = std::make_shared<GlobalSound>(relativeSoundFilename, soundCategory);
             } else if (soundType == Sound::SPATIAL) {
-                sound = new SpatialSound(relativeSoundFilename, soundCategory, Point3<float>(0.0, 0.0, 0.0));
+                sound = std::make_shared<SpatialSound>(relativeSoundFilename, soundCategory, Point3<float>(0.0, 0.0, 0.0));
             } else {
                 throw std::invalid_argument("Unknown the sound type to create a new sound: " + std::to_string(soundType));
             }
 
-            SoundTrigger* soundTrigger = new ManualTrigger(SoundTrigger::PLAY_ONCE);
+            auto soundTrigger = std::make_shared<ManualTrigger>(SoundTrigger::PLAY_ONCE);
 
             sceneSound->setSoundElements(sound, soundTrigger);
         } catch (std::exception& e) {

@@ -78,7 +78,7 @@ namespace urchin {
         sceneDisplayer = new SceneDisplayer(sceneWindowController, sceneController, mouseController, statusBarController);
         sceneDisplayer->loadMap(mapEditorPath, mapFilename, relativeWorkingDirectory);
         sceneDisplayer->resize((unsigned int)geometry().width(), (unsigned int)geometry().height());
-        sceneController->setup(sceneDisplayer->getMapHandler());
+        sceneController->setup(&sceneDisplayer->getMapHandler());
         updateSceneDisplayerViewProperties();
     }
 
@@ -225,7 +225,7 @@ namespace urchin {
             constexpr float PICKING_RAY_LENGTH = 100.0f;
             Camera *camera = sceneDisplayer->getSceneManager()->getActiveRenderer3d()->getCamera();
             Ray<float> pickingRay = CameraSpaceService(camera).screenPointToRay(Point2<float>((float) mouseX, (float) mouseY), PICKING_RAY_LENGTH);
-            std::shared_ptr<const RayTestResult> rayTestResult = sceneDisplayer->getPhysicsWorld()->rayTest(pickingRay);
+            std::shared_ptr<const RayTestResult> rayTestResult = sceneDisplayer->getPhysicsWorld().rayTest(pickingRay);
 
             while (!rayTestResult->isResultReady()) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(50));

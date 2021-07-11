@@ -25,29 +25,29 @@ namespace urchin {
         Profiler::sound()->log();
     }
 
-    void SoundManager::addSound(Sound* sound, SoundTrigger* soundTrigger) {
+    void SoundManager::addSound(std::shared_ptr<Sound> sound, std::shared_ptr<SoundTrigger> soundTrigger) {
         if (sound && soundTrigger) {
             Logger::instance()->logInfo("Add sound: " + sound->getFilename());
-            adjustSoundVolume(sound);
+            adjustSoundVolume(*sound);
 
-            auto audioController = std::make_unique<AudioController>(sound, soundTrigger, *streamUpdateWorker);
+            auto audioController = std::make_unique<AudioController>(std::move(sound), std::move(soundTrigger), *streamUpdateWorker);
             audioControllers.push_back(std::move(audioController));
         }
     }
 
-    void SoundManager::removeSound(const Sound* sound) {
+    void SoundManager::removeSound(const Sound& sound) {
         for (auto it = audioControllers.begin(); it != audioControllers.end(); ++it) {
-            if ((*it)->getSound() == sound) {
+            if (&(*it)->getSound() == &sound) {
                 audioControllers.erase(it);
                 break;
             }
         }
     }
 
-    void SoundManager::changeSoundTrigger(const Sound* sound, SoundTrigger* newSoundTrigger) {
+    void SoundManager::changeSoundTrigger(const Sound& sound, std::shared_ptr<SoundTrigger> newSoundTrigger) {
         for (auto& audioController : audioControllers) {
-            if (audioController->getSound() == sound) {
-                audioController->changeSoundTrigger(newSoundTrigger);
+            if (&audioController->getSound() == &sound) {
+                audioController->changeSoundTrigger(std::move(newSoundTrigger));
                 break;
             }
         }
@@ -58,16 +58,16 @@ namespace urchin {
 
         //apply volume on existing sounds:
         for (auto& audioController : audioControllers) {
-            if (audioController->getSound()->getSoundCategory() == soundCategory) {
-                audioController->getSound()->changeVolume(volumePercentageChange);
+            if (audioController->getSound().getSoundCategory() == soundCategory) {
+                audioController->getSound().changeVolume(volumePercentageChange);
             }
         }
     }
 
-    void SoundManager::adjustSoundVolume(Sound* sound) {
-        auto itVolume = soundVolumes.find(sound->getSoundCategory());
+    void SoundManager::adjustSoundVolume(Sound& sound) {
+        auto itVolume = soundVolumes.find(sound.getSoundCategory());
         if (itVolume != soundVolumes.end()) {
-            sound->changeVolume(itVolume->second);
+            sound.changeVolume(itVolume->second);
         }
     }
 

@@ -32,7 +32,7 @@ namespace urchin {
      * Task will be automatically removed when finished.
      * @param sound Sound used to fill the queue
      */
-    void StreamUpdateWorker::addTask(const Sound* sound, bool playLoop) {
+    void StreamUpdateWorker::addTask(const Sound& sound, bool playLoop) {
         auto task = std::make_unique<StreamUpdateTask>(sound, nbChunkBuffer, playLoop);
 
         //create buffers/chunks
@@ -55,19 +55,19 @@ namespace urchin {
         tasks.push_back(std::move(task));
     }
 
-    bool StreamUpdateWorker::isTaskExist(const Sound* sound) const {
+    bool StreamUpdateWorker::isTaskExist(const Sound& sound) const {
         std::lock_guard<std::mutex> lock(tasksMutex);
 
         return std::any_of(tasks.begin(), tasks.end(), [&sound](const auto& task) {
-            return task->getSourceId() == sound->getSourceId();
+            return task->getSourceId() == sound.getSourceId();
         });
     }
 
-    void StreamUpdateWorker::removeTask(const Sound* sound) {
+    void StreamUpdateWorker::removeTask(const Sound& sound) {
         std::lock_guard<std::mutex> lock(tasksMutex);
 
         for (auto it = tasks.begin(); it != tasks.end(); ++it) {
-            if ((*it)->getSourceId() == sound->getSourceId()) {
+            if ((*it)->getSourceId() == sound.getSourceId()) {
                 deleteTask(*(*it));
                 tasks.erase(it);
 

@@ -10,12 +10,12 @@ namespace urchin {
 
     class SoundTriggerReaderWriter {
         public:
-            static SoundTrigger* loadFrom(const DataChunk*, const DataParser&);
-            static void writeOn(DataChunk*, const SoundTrigger*, DataWriter&);
+            static std::unique_ptr<SoundTrigger> loadFrom(const DataChunk*, const DataParser&);
+            static void writeOn(DataChunk*, const SoundTrigger&, DataWriter&);
 
         private:
-            static SoundTrigger* buildSoundTriggerFrom(const DataChunk*, const DataParser&);
-            static void buildChunkFrom(DataChunk*, const SoundTrigger*, DataWriter&);
+            static std::unique_ptr<SoundTrigger> buildSoundTriggerFrom(const DataChunk*, const DataParser&);
+            static void buildChunkFrom(DataChunk*, const SoundTrigger&, DataWriter&);
 
             static SoundTrigger::PlayBehavior loadPlayBehaviorFrom(const DataChunk*, const DataParser&);
             static void writePlayBehaviorFrom(const DataChunk*, SoundTrigger::PlayBehavior, DataWriter&);

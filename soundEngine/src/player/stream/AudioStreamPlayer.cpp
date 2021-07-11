@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    AudioStreamPlayer::AudioStreamPlayer(const Sound* sound, StreamUpdateWorker& streamUpdateWorker) :
+    AudioStreamPlayer::AudioStreamPlayer(const Sound& sound, StreamUpdateWorker& streamUpdateWorker) :
             AudioPlayer(sound),
             streamUpdateWorker(streamUpdateWorker) {
 
@@ -23,17 +23,17 @@ namespace urchin {
     }
 
     void AudioStreamPlayer::pause() {
-        alSourcePause(getSound()->getSourceId());
+        alSourcePause(getSound().getSourceId());
     }
 
     bool AudioStreamPlayer::isPaused() {
         ALint state;
-        alGetSourcei(getSound()->getSourceId(), AL_SOURCE_STATE, &state);
+        alGetSourcei(getSound().getSourceId(), AL_SOURCE_STATE, &state);
         return state == AL_PAUSED;
     }
 
     void AudioStreamPlayer::stop() {
-        alSourceStop(getSound()->getSourceId());
+        alSourceStop(getSound().getSourceId());
 
         streamUpdateWorker.removeTask(getSound());
     }
@@ -43,7 +43,7 @@ namespace urchin {
             streamUpdateWorker.addTask(getSound(), playLoop);
         }
 
-        alSourcePlay(getSound()->getSourceId());
+        alSourcePlay(getSound().getSourceId());
     }
 
 }

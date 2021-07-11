@@ -18,9 +18,9 @@ namespace urchin {
             SoundManager();
             ~SoundManager();
 
-            void addSound(Sound*, SoundTrigger*);
-            void removeSound(const Sound*);
-            void changeSoundTrigger(const Sound*, SoundTrigger*);
+            void addSound(std::shared_ptr<Sound>, std::shared_ptr<SoundTrigger>);
+            void removeSound(const Sound&);
+            void changeSoundTrigger(const Sound&, std::shared_ptr<SoundTrigger>);
             void setupSoundsVolume(Sound::SoundCategory, float);
 
             void setMasterVolume(float);
@@ -34,7 +34,7 @@ namespace urchin {
             void process();
 
         private:
-            void adjustSoundVolume(Sound*);
+            void adjustSoundVolume(Sound&);
 
             std::vector<std::unique_ptr<AudioController>> audioControllers;
             std::map<Sound::SoundCategory, float> soundVolumes;
