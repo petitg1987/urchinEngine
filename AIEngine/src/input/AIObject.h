@@ -13,15 +13,15 @@ namespace urchin {
 
     class AIObject : public AIEntity {
         public:
-            AIObject(std::string, const Transform<float>&, bool, const std::shared_ptr<AIShape>&);
-            AIObject(std::string, const Transform<float>&, bool, std::vector<std::shared_ptr<AIShape>>);
+            AIObject(std::string, const Transform<float>&, bool, std::unique_ptr<AIShape>);
+            AIObject(std::string, const Transform<float>&, bool, std::vector<std::unique_ptr<AIShape>>);
 
             AIEntity::AIEntityType getType() const override;
 
-            const std::vector<std::shared_ptr<AIShape>>& getShapes() const;
+            const std::vector<std::unique_ptr<AIShape>>& getShapes() const;
 
         private:
-            std::vector<std::shared_ptr<AIShape>> shapes;
+            std::vector<std::unique_ptr<AIShape>> shapes;
     };
 
 }

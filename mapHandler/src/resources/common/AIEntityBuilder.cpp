@@ -8,16 +8,16 @@ namespace urchin {
         assert(MathFunction::isOne(transform.getScale(), 0.01f));
 
         if (shape.isConvex()) {
-            auto singleShape = std::make_shared<AIShape>(shape.getSingleShape().clone());
-            return std::make_shared<AIObject>(name, transform, true, singleShape);
+            auto singleShape = std::make_unique<AIShape>(shape.getSingleShape().clone());
+            return std::make_shared<AIObject>(name, transform, true, std::move(singleShape));
         } else if (shape.isCompound()) {
-            std::vector<std::shared_ptr<AIShape>> aiShapes;
+            std::vector<std::unique_ptr<AIShape>> aiShapes;
             const auto& scaledCompoundShape = dynamic_cast<const CollisionCompoundShape&>(shape);
             for (const auto& scaledLocalizedShape : scaledCompoundShape.getLocalizedShapes()) {
-                aiShapes.push_back(std::make_shared<AIShape>(scaledLocalizedShape->shape->getSingleShape().clone(), scaledLocalizedShape->transform.toTransform()));
+                aiShapes.push_back(std::make_unique<AIShape>(scaledLocalizedShape->shape->getSingleShape().clone(), scaledLocalizedShape->transform.toTransform()));
             }
 
-            return std::make_shared<AIObject>(name, transform, true, aiShapes);
+            return std::make_shared<AIObject>(name, transform, true, std::move(aiShapes));
         }
 
         throw std::invalid_argument("Unknown shape type category: " + std::to_string(shape.getShapeType()));
