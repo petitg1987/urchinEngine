@@ -17,11 +17,11 @@ namespace urchin {
 
     class GenericRendererBuilder : public std::enable_shared_from_this<GenericRendererBuilder> {
         public:
-            static std::shared_ptr<GenericRendererBuilder> create(std::string, RenderTarget&, std::shared_ptr<Shader>, ShapeType);
+            static std::shared_ptr<GenericRendererBuilder> create(std::string, RenderTarget&, const Shader&, ShapeType);
 
             const std::string& getName() const;
             RenderTarget& getRenderTarget() const;
-            const std::shared_ptr<Shader>& getShader() const;
+            const Shader& getShader() const;
             ShapeType getShapeType() const;
 
             std::shared_ptr<GenericRendererBuilder> addData(const std::vector<Point2<float>>&);
@@ -55,11 +55,11 @@ namespace urchin {
             std::shared_ptr<GenericRenderer> build();
 
         private:
-            GenericRendererBuilder(std::string, RenderTarget&, std::shared_ptr<Shader>, ShapeType);
+            GenericRendererBuilder(std::string, RenderTarget&, const Shader&, ShapeType);
 
             std::string name;
             RenderTarget& renderTarget;
-            std::shared_ptr<Shader> shader;
+            const Shader& shader;
             ShapeType shapeType;
 
             std::vector<DataContainer> data;

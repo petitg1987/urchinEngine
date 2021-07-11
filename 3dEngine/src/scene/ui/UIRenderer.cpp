@@ -112,7 +112,7 @@ namespace urchin {
         }
         widgets.push_back(widget);
 
-        widget->initialize(renderTarget, uiShader, i18nService);
+        widget->initialize(renderTarget, *uiShader, i18nService);
         widget->addObserver(this, Widget::SET_IN_FOREGROUND);
     }
 

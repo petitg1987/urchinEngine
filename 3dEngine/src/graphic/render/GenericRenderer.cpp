@@ -152,7 +152,7 @@ namespace urchin {
 
     void GenericRenderer::createGraphicsPipeline() {
         auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
-        auto shaderStages = shader->getShaderStages();
+        auto shaderStages = shader.getShaderStages();
 
         //vertex input stage
         std::vector<VkVertexInputBindingDescription> bindingDescriptions;

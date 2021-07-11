@@ -81,7 +81,7 @@ namespace urchin {
 
             std::string name;
             RenderTarget& renderTarget;
-            std::shared_ptr<Shader> shader;
+            const Shader& shader;
             ShapeType shapeType;
 
             std::vector<DataContainer> data;

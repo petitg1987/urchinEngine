@@ -35,7 +35,7 @@ namespace urchin {
             unsigned int getTextureHeight() const;
             unsigned int getTextureLayer() const;
 
-            const std::shared_ptr<Shader>& getTextureFilterShader() const;
+            const Shader& getTextureFilterShader() const;
             const std::shared_ptr<GenericRenderer>& getTextureRenderer() const;
 
         private:
@@ -55,11 +55,11 @@ namespace urchin {
             unsigned int textureNumberLayer;
             TextureFormat textureFormat;
 
-            std::shared_ptr<OffscreenRender> offscreenRenderTarget;
+            std::unique_ptr<OffscreenRender> offscreenRenderTarget;
             std::shared_ptr<Texture> texture;
 
             std::shared_ptr<GenericRenderer> textureRenderer;
-            std::shared_ptr<Shader> textureFilterShader;
+            std::unique_ptr<Shader> textureFilterShader;
     };
 
     #include "TextureFilter.inl"

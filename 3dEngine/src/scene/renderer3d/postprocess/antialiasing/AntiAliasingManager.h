@@ -54,7 +54,7 @@ namespace urchin {
             Config config;
 
             //display
-            std::shared_ptr<Shader> fxaaShader;
+            std::unique_ptr<Shader> fxaaShader;
             Point2<float> invSceneSize;
             std::shared_ptr<GenericRenderer> renderer;
     };

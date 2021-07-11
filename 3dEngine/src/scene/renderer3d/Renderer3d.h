@@ -134,7 +134,7 @@ namespace urchin {
             //lighting pass rendering
             std::unique_ptr<OffscreenRender> offscreenLightingRenderTarget;
             std::shared_ptr<GenericRenderer> lightingRenderer;
-            std::shared_ptr<Shader> lightingShader;
+            std::unique_ptr<Shader> lightingShader;
             struct {
                 alignas(16) Matrix4<float> inverseProjectionViewMatrix;
                 alignas(16) Point3<float> viewPosition;

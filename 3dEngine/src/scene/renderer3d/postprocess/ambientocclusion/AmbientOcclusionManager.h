@@ -82,7 +82,7 @@ namespace urchin {
             std::shared_ptr<Texture> ambientOcclusionTexture;
 
             //ambient occlusion shader
-            std::shared_ptr<Shader> ambientOcclusionShader;
+            std::unique_ptr<Shader> ambientOcclusionShader;
             std::shared_ptr<Texture> noiseTexture;
             struct {
                 alignas(16) Matrix4<float> inverseProjectionViewMatrix;

@@ -203,7 +203,7 @@ namespace urchin {
     void TerrainGrass::createRenderers(const std::vector<TerrainGrassQuadtree*>& leafGrassPatches) {
         if (grassTexture && renderTarget) {
             for (auto* grassQuadtree : leafGrassPatches) {
-                auto renderer = GenericRendererBuilder::create("grass", *renderTarget, terrainGrassShader, ShapeType::POINT)
+                auto renderer = GenericRendererBuilder::create("grass", *renderTarget, *terrainGrassShader, ShapeType::POINT)
                         ->enableDepthOperations()
                         ->disableCullFace()
                         ->addData(grassQuadtree->getGrassVertices())

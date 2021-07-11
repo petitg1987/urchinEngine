@@ -29,7 +29,7 @@ namespace urchin {
                 FOCUS
             };
 
-            void initialize(RenderTarget&, const std::shared_ptr<Shader>&, I18nService*, bool createWidget = true);
+            void initialize(RenderTarget&, const Shader&, I18nService*, bool createWidget = true);
             void onResize(unsigned int, unsigned int);
 
             Widget* getParent() const;
@@ -92,7 +92,7 @@ namespace urchin {
             void handleWidgetReset();
 
             RenderTarget* renderTarget;
-            std::shared_ptr<Shader> shader;
+            const Shader* shader;
             unsigned int sceneWidth, sceneHeight;
 
             Widget* parent;

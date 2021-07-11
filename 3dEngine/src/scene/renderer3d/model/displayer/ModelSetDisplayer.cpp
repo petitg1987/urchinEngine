@@ -74,7 +74,7 @@ namespace urchin {
         for (auto model : models) {
             const auto& itModel = modelsDisplayer.find(model);
             if (itModel == modelsDisplayer.end()) {
-                auto modelDisplayer = std::make_unique<ModelDisplayer>(model, projectionMatrix, displayMode, *renderTarget, modelShader, customModelShaderVariable);
+                auto modelDisplayer = std::make_unique<ModelDisplayer>(model, projectionMatrix, displayMode, *renderTarget, *modelShader, customModelShaderVariable);
                 modelsDisplayer.emplace(std::make_pair(model, std::move(modelDisplayer)));
             }
         }

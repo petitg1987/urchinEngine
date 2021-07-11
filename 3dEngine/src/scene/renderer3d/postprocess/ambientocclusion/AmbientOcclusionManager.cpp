@@ -129,7 +129,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        renderer = GenericRendererBuilder::create("ambient occlusion", *offscreenRenderTarget, ambientOcclusionShader, ShapeType::TRIANGLE)
+        renderer = GenericRendererBuilder::create("ambient occlusion", *offscreenRenderTarget, *ambientOcclusionShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(sizeof(positioningData), &positioningData) //binding 0

@@ -67,7 +67,7 @@ namespace urchin {
             TextureRenderer::ColorType colorType;
             std::shared_ptr<GenericRenderer> renderer;
 
-            std::shared_ptr<Shader> displayTextureShader;
+            std::unique_ptr<Shader> displayTextureShader;
             struct {
                 alignas(4) float colorIntensity;
                 alignas(4) float cameraNearPlane;

@@ -35,7 +35,7 @@ namespace urchin {
             I18nService* i18nService;
             std::vector<Widget*> widgets;
 
-            std::shared_ptr<Shader> uiShader;
+            std::unique_ptr<Shader> uiShader;
 
             std::unique_ptr<TextureRenderer> debugFont;
     };

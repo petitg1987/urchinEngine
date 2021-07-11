@@ -51,7 +51,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        renderer = GenericRendererBuilder::create("anti aliasing", renderTarget, fxaaShader, ShapeType::TRIANGLE)
+        renderer = GenericRendererBuilder::create("anti aliasing", renderTarget, *fxaaShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(sizeof(invSceneSize), &invSceneSize) //binding 0

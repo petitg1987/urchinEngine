@@ -8,6 +8,7 @@ namespace urchin {
     Widget::Widget(Widget* parent, Position position, Size size) :
             i18nService(nullptr),
             renderTarget(nullptr),
+            shader(nullptr),
             sceneWidth(parent ? parent->getSceneWidth() : 0),
             sceneHeight(parent ? parent->getSceneHeight() : 0),
             parent(parent),
@@ -18,9 +19,9 @@ namespace urchin {
             mouseX(0),
             mouseY(0) {
         if (parent) {
-            parent->children.emplace_back(this);
             assert(parent->renderTarget);
-            initialize(*parent->renderTarget, parent->shader, parent->i18nService, false /*cannot call virtual method in constructor*/);
+            parent->children.emplace_back(this);
+            initialize(*parent->renderTarget, *parent->shader, parent->i18nService, false /*cannot call virtual method in constructor*/);
         }
     }
 
@@ -35,12 +36,12 @@ namespace urchin {
         eventListeners.clear();
     }
 
-    void Widget::initialize(RenderTarget& renderTarget, const std::shared_ptr<Shader>& shader, I18nService* i18nService, bool createWidget) {
+    void Widget::initialize(RenderTarget& renderTarget, const Shader& shader, I18nService* i18nService, bool createWidget) {
         this->sceneWidth = renderTarget.getWidth();
         this->sceneHeight = renderTarget.getHeight();
 
         this->renderTarget = &renderTarget;
-        this->shader = shader;
+        this->shader = &shader;
         this->i18nService = i18nService;
 
         if(createWidget) {
@@ -74,7 +75,7 @@ namespace urchin {
 
         Vector2<int> translateVector(0, 0);
 
-        return GenericRendererBuilder::create(name, *renderTarget, shader, shapeType)
+        return GenericRendererBuilder::create(name, *renderTarget, *shader, shapeType)
                 ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
                 ->addUniformData(sizeof(translateVector), &translateVector); //binding 1
     }

@@ -44,7 +44,7 @@ namespace urchin {
             std::unique_ptr<ShaderConstants> shaderConstants;
 
             DisplayMode displayMode;
-            std::shared_ptr<Shader> modelShader;
+            std::unique_ptr<Shader> modelShader;
             Matrix4<float> projectionMatrix;
 
             CustomModelShaderVariable* customModelShaderVariable;

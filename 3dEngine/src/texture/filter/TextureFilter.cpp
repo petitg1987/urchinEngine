@@ -58,7 +58,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
         int layersToUpdate = 0;
-        auto textureRendererBuilder = GenericRendererBuilder::create(name, *offscreenRenderTarget, textureFilterShader, ShapeType::TRIANGLE)
+        auto textureRendererBuilder = GenericRendererBuilder::create(name, *offscreenRenderTarget, *textureFilterShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(sizeof(layersToUpdate), &layersToUpdate); //binding 0
@@ -92,8 +92,9 @@ namespace urchin {
         return textureNumberLayer;
     }
 
-    const std::shared_ptr<Shader>& TextureFilter::getTextureFilterShader() const {
-        return textureFilterShader;
+    const Shader& TextureFilter::getTextureFilterShader() const {
+        assert(textureFilterShader);
+        return *textureFilterShader;
     }
 
     const std::shared_ptr<GenericRenderer>& TextureFilter::getTextureRenderer() const {

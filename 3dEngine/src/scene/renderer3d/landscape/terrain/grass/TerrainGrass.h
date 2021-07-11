@@ -67,7 +67,7 @@ namespace urchin {
             bool bIsInitialized;
             RenderTarget* renderTarget;
 
-            std::shared_ptr<Shader> terrainGrassShader;
+            std::unique_ptr<Shader> terrainGrassShader;
             struct {
                 alignas(16) Matrix4<float> viewMatrix;
                 alignas(16) Point3<float> cameraPosition;

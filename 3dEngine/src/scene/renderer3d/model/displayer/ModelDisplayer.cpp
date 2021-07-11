@@ -6,11 +6,11 @@
 namespace urchin {
 
     ModelDisplayer::ModelDisplayer(Model *model, const Matrix4<float>& projectionMatrix, DisplayMode displayMode, RenderTarget& renderTarget,
-                                   std::shared_ptr<Shader> shader, CustomModelShaderVariable* customModelShaderVariable) :
+                                   const Shader& shader, CustomModelShaderVariable* customModelShaderVariable) :
             model(model),
             displayMode(displayMode),
             renderTarget(renderTarget),
-            shader(std::move(shader)),
+            shader(shader),
             customModelShaderVariable(customModelShaderVariable) {
 
         for (auto& constMesh : model->getConstMeshes()->getConstMeshes()) {

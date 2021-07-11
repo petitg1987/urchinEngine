@@ -121,7 +121,7 @@ namespace urchin {
         };
 
         Matrix4<float> projectionMatrix, viewMatrix;
-        skyboxRenderer = GenericRendererBuilder::create("skybox", renderTarget, skyboxShader, ShapeType::TRIANGLE)
+        skyboxRenderer = GenericRendererBuilder::create("skybox", renderTarget, *skyboxShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 0

@@ -71,7 +71,7 @@ namespace urchin {
             bool isInitialized;
 
             RenderTarget* renderTarget;
-            std::shared_ptr<Shader> waterShader;
+            std::unique_ptr<Shader> waterShader;
             struct {
                 alignas(16) Matrix4<float> viewMatrix;
                 alignas(4) float sumTimeStep;

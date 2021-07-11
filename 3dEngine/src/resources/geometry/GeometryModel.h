@@ -48,7 +48,7 @@ namespace urchin {
             RenderTarget* renderTarget;
             std::shared_ptr<GenericRenderer> renderer;
 
-            std::shared_ptr<Shader> shader;
+            std::unique_ptr<Shader> shader;
             mutable struct {
                 alignas(16) Matrix4<float> projectionMatrix;
                 alignas(16) Matrix4<float> viewModelMatrix;

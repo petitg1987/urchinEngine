@@ -161,7 +161,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        auto rendererBuilder = GenericRendererBuilder::create(name, renderTarget, displayTextureShader, ShapeType::TRIANGLE)
+        auto rendererBuilder = GenericRendererBuilder::create(name, renderTarget, *displayTextureShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(sizeof(mProjection), &mProjection) //binding 0

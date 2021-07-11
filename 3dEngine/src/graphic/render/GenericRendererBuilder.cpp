@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    GenericRendererBuilder::GenericRendererBuilder(std::string name, RenderTarget& renderTarget, std::shared_ptr<Shader> shader, ShapeType shapeType) :
+    GenericRendererBuilder::GenericRendererBuilder(std::string name, RenderTarget& renderTarget, const Shader& shader, ShapeType shapeType) :
             name(std::move(name)),
             renderTarget(renderTarget),
             shader(std::move(shader)),
@@ -17,8 +17,8 @@ namespace urchin {
 
     }
 
-    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::create(std::string name, RenderTarget& renderTarget, std::shared_ptr<Shader> shader, ShapeType shapeType) {
-        return std::shared_ptr<GenericRendererBuilder>(new GenericRendererBuilder(std::move(name), renderTarget, std::move(shader), shapeType));
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::create(std::string name, RenderTarget& renderTarget, const Shader& shader, ShapeType shapeType) {
+        return std::shared_ptr<GenericRendererBuilder>(new GenericRendererBuilder(std::move(name), renderTarget, shader, shapeType));
     }
 
     const std::string& GenericRendererBuilder::getName() const {
@@ -29,7 +29,7 @@ namespace urchin {
         return renderTarget;
     }
 
-    const std::shared_ptr<Shader>& GenericRendererBuilder::getShader() const {
+    const Shader& GenericRendererBuilder::getShader() const {
         return shader;
     }
 
