@@ -8,11 +8,11 @@ namespace urchin {
     }
 
     const std::unique_ptr<Skybox>& SceneSky::getSkybox() const {
-        return renderer3d->getSkyManager()->getSkybox();
+        return renderer3d->getSkyManager().getSkybox();
     }
 
     void SceneSky::changeSkybox(std::unique_ptr<Skybox> skybox) {
-        renderer3d->getSkyManager()->setSkybox(std::move(skybox));
+        renderer3d->getSkyManager().setSkybox(std::move(skybox));
     }
 
     void SceneSky::loadFrom(const DataChunk* chunk, const DataParser& dataParser) {

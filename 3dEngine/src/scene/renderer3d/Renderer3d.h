@@ -40,15 +40,15 @@ namespace urchin {
             //managers
             OctreeManager<Model>* getModelOctreeManager() const;
 
-            FogManager* getFogManager() const;
+            FogManager& getFogManager() const;
 
-            TerrainManager* getTerrainManager() const;
+            TerrainManager& getTerrainManager() const;
 
-            WaterManager* getWaterManager() const;
+            WaterManager& getWaterManager() const;
 
-            SkyManager* getSkyManager() const;
+            SkyManager& getSkyManager() const;
 
-            GeometryManager* getGeometryManager() const;
+            GeometryManager& getGeometryManager() const;
 
             LightManager* getLightManager() const;
 
@@ -120,11 +120,11 @@ namespace urchin {
             std::unique_ptr<AABBoxModel> debugModelOctree;
             std::vector<Model*> modelsInFrustum;
 
-            FogManager* fogManager;
-            TerrainManager* terrainManager;
-            WaterManager* waterManager;
-            SkyManager* skyManager;
-            GeometryManager* geometryManager;
+            std::unique_ptr<FogManager> fogManager;
+            std::unique_ptr<TerrainManager> terrainManager;
+            std::unique_ptr<WaterManager> waterManager;
+            std::unique_ptr<SkyManager> skyManager;
+            std::unique_ptr<GeometryManager> geometryManager;
             LightManager* lightManager;
             AmbientOcclusionManager* ambientOcclusionManager;
             ShadowManager* shadowManager;

@@ -68,7 +68,7 @@ namespace urchin {
             }
 
             for (auto& bodyShapeModel : bodyShapeModels) {
-                sceneManager->getActiveRenderer3d()->getGeometryManager()->addGeometry(bodyShapeModel);
+                sceneManager->getActiveRenderer3d()->getGeometryManager().addGeometry(bodyShapeModel);
             }
         }
     }
@@ -133,7 +133,7 @@ namespace urchin {
 
     void BodyShapeDisplayer::clearDisplay() {
         for (auto& bodyShapeModel : bodyShapeModels) {
-            sceneManager->getActiveRenderer3d()->getGeometryManager()->removeGeometry(bodyShapeModel);
+            sceneManager->getActiveRenderer3d()->getGeometryManager().removeGeometry(bodyShapeModel);
             delete bodyShapeModel;
         }
 

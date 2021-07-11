@@ -31,11 +31,11 @@ namespace urchin {
             deferredRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - first pass", RenderTarget::READ_WRITE_DEPTH_ATTACHMENT)),
             modelSetDisplayer(std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE)),
             modelOctreeManager(new OctreeManager<Model>(20.0f)),
-            fogManager(new FogManager()),
-            terrainManager(new TerrainManager(*deferredRenderTarget)),
-            waterManager(new WaterManager(*deferredRenderTarget)),
-            skyManager(new SkyManager(*deferredRenderTarget)),
-            geometryManager(new GeometryManager(*deferredRenderTarget)),
+            fogManager(std::make_unique<FogManager>()),
+            terrainManager(std::make_unique<TerrainManager>(*deferredRenderTarget)),
+            waterManager(std::make_unique<WaterManager>(*deferredRenderTarget)),
+            skyManager(std::make_unique<SkyManager>(*deferredRenderTarget)),
+            geometryManager(std::make_unique<GeometryManager>(*deferredRenderTarget)),
             lightManager(new LightManager(*deferredRenderTarget)),
             ambientOcclusionManager(new AmbientOcclusionManager()),
             shadowManager(new ShadowManager(lightManager, modelOctreeManager)),
@@ -66,11 +66,6 @@ namespace urchin {
 
         offscreenLightingRenderTarget->cleanup();
         deferredRenderTarget->cleanup();
-        delete skyManager;
-        delete waterManager;
-        delete terrainManager;
-        delete fogManager;
-        delete geometryManager;
         delete shadowManager;
         delete modelOctreeManager;
         delete lightManager;
@@ -124,24 +119,24 @@ namespace urchin {
         return modelOctreeManager;
     }
 
-    FogManager* Renderer3d::getFogManager() const {
-        return fogManager;
+    FogManager& Renderer3d::getFogManager() const {
+        return *fogManager;
     }
 
-    TerrainManager* Renderer3d::getTerrainManager() const {
-        return terrainManager;
+    TerrainManager& Renderer3d::getTerrainManager() const {
+        return *terrainManager;
     }
 
-    WaterManager* Renderer3d::getWaterManager() const {
-        return waterManager;
+    WaterManager& Renderer3d::getWaterManager() const {
+        return *waterManager;
     }
 
-    SkyManager* Renderer3d::getSkyManager() const {
-        return skyManager;
+    SkyManager& Renderer3d::getSkyManager() const {
+        return *skyManager;
     }
 
-    GeometryManager* Renderer3d::getGeometryManager() const {
-        return geometryManager;
+    GeometryManager& Renderer3d::getGeometryManager() const {
+        return *geometryManager;
     }
 
     LightManager* Renderer3d::getLightManager() const {
@@ -463,7 +458,7 @@ namespace urchin {
         skyManager->prepareRendering(camera->getViewMatrix(), camera->getPosition());
         modelSetDisplayer->prepareRendering(camera->getViewMatrix());
         terrainManager->prepareRendering(camera, dt);
-        waterManager->prepareRendering(camera, fogManager, dt);
+        waterManager->prepareRendering(camera, fogManager.get(), dt);
         geometryManager->prepareRendering(camera->getViewMatrix());
         renderDebugSceneData();
         deferredRenderTarget->render();

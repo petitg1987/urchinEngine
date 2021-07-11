@@ -22,14 +22,14 @@ namespace urchin {
 
                 auto* sphereModel = new SphereModel(Sphere<float>(0.05f, contactPoint.getPointOnObject2()), 7);
                 contactPointModels.push_back(sphereModel);
-                renderer3d->getGeometryManager()->addGeometry(sphereModel);
+                renderer3d->getGeometryManager().addGeometry(sphereModel);
             }
         }
     }
 
     void CollisionPointDisplayer::clearDisplay() {
         for (auto contactPointModel : contactPointModels) {
-            renderer3d->getGeometryManager()->removeGeometry(contactPointModel);
+            renderer3d->getGeometryManager().removeGeometry(contactPointModel);
             delete contactPointModel;
         }
         contactPointModels.clear();

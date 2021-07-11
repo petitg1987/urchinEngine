@@ -11,7 +11,7 @@ namespace urchin {
     }
 
     SceneWater::~SceneWater() {
-        renderer3d->getWaterManager()->removeWater(water);
+        renderer3d->getWaterManager().removeWater(water);
     }
 
     void SceneWater::setWaterManagers(Renderer3d* renderer3d) {
@@ -24,7 +24,7 @@ namespace urchin {
 
         this->renderer3d = renderer3d;
 
-        renderer3d->getWaterManager()->addWater(water);
+        renderer3d->getWaterManager().addWater(water);
     }
 
     void SceneWater::loadFrom(const DataChunk* chunk, const DataParser& dataParser) {
@@ -57,8 +57,8 @@ namespace urchin {
         }
 
         if (renderer3d) {
-            renderer3d->getWaterManager()->removeWater(this->water);
-            renderer3d->getWaterManager()->addWater(water);
+            renderer3d->getWaterManager().removeWater(this->water);
+            renderer3d->getWaterManager().addWater(water);
         } else {
             delete this->water;
         }
