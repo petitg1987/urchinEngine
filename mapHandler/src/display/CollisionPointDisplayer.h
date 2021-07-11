@@ -9,14 +9,14 @@ namespace urchin {
 
     class CollisionPointDisplayer {
         public:
-            CollisionPointDisplayer(PhysicsWorld*, Renderer3d*);
+            CollisionPointDisplayer(PhysicsWorld&, Renderer3d*);
             ~CollisionPointDisplayer();
 
             void display();
             void clearDisplay();
 
         private:
-            PhysicsWorld* physicsWorld;
+            PhysicsWorld& physicsWorld;
             Renderer3d* renderer3d;
 
             std::vector<GeometryModel*> contactPointModels;

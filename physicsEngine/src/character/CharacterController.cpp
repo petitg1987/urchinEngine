@@ -14,7 +14,7 @@ namespace urchin {
     const float CharacterController::SAVE_RESPAWN_TRANSFORM_TIME = 10.0f; //10 seconds
     const std::array<float, 4> CharacterController::RECOVER_FACTOR = {0.4f, 0.7f, 0.9f, 1.0f};
 
-    CharacterController::CharacterController(std::shared_ptr<PhysicsCharacter> physicsCharacter, CharacterControllerConfig config, PhysicsWorld* physicsWorld) :
+    CharacterController::CharacterController(std::shared_ptr<PhysicsCharacter> physicsCharacter, CharacterControllerConfig config, PhysicsWorld& physicsWorld) :
             ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")) ,
             maxDepthToRecover(ConfigService::instance()->getFloatValue("character.maxDepthToRecover")),
             minUpdateFrequency(ConfigService::instance()->getFloatValue("character.minUpdateFrequency")),
@@ -34,19 +34,15 @@ namespace urchin {
             timeInTheAir(0.0f),
             jumping(false),
             slopeInPercentage(0.0f) {
-        if (!physicsWorld) {
-            throw std::runtime_error("Physics world cannot be null for character controller.");
-        }
-
         createBodies();
-        physicsWorld->getCollisionWorld().getBroadPhaseManager().addBodyAsync(ghostBody);
-        physicsWorld->getCollisionWorld().getBroadPhaseManager().addBodyAsync(ccdGhostBody);
+        physicsWorld.getCollisionWorld().getBroadPhaseManager().addBodyAsync(ghostBody);
+        physicsWorld.getCollisionWorld().getBroadPhaseManager().addBodyAsync(ccdGhostBody);
         respawnValues.nextRespawnTransform = ghostBody->getTransform();
     }
 
     CharacterController::~CharacterController() {
-        physicsWorld->getCollisionWorld().getBroadPhaseManager().removeBodyAsync(ccdGhostBody);
-        physicsWorld->getCollisionWorld().getBroadPhaseManager().removeBodyAsync(ghostBody);
+        physicsWorld.getCollisionWorld().getBroadPhaseManager().removeBodyAsync(ccdGhostBody);
+        physicsWorld.getCollisionWorld().getBroadPhaseManager().removeBodyAsync(ghostBody);
     }
 
     void CharacterController::setVelocity(const Vector3<float>& velocity) {
@@ -149,7 +145,7 @@ namespace urchin {
 
         //gravity velocity
         if (!isOnGround || numberOfHit > 1) {
-            verticalSpeed -= (-physicsWorld->getGravity().Y) * dt;
+            verticalSpeed -= (-physicsWorld.getGravity().Y) * dt;
             if (verticalSpeed < -config.getMaxVerticalSpeed()) {
                 verticalSpeed = -config.getMaxVerticalSpeed();
             }
@@ -161,7 +157,7 @@ namespace urchin {
         bool ccdRequired = moveVector.length() > ghostBody->getCcdMotionThreshold();
         if (ccdRequired) {
             manifoldResults.clear();
-            physicsWorld->getCollisionWorld().getNarrowPhaseManager().processGhostBody(ccdGhostBody, manifoldResults);
+            physicsWorld.getCollisionWorld().getNarrowPhaseManager().processGhostBody(ccdGhostBody, manifoldResults);
 
             for (std::size_t i = 0; i < manifoldResults.size() && ccdRequired; ++i) {
                 const ManifoldResult& manifoldResult = manifoldResults[i];
@@ -210,7 +206,7 @@ namespace urchin {
         PhysicsTransform characterTransform = ghostBody->getTransform();
         for (unsigned int subStepIndex = 0; subStepIndex < RECOVER_FACTOR.size(); ++subStepIndex) {
             manifoldResults.clear();
-            physicsWorld->getCollisionWorld().getNarrowPhaseManager().processGhostBody(ghostBody, manifoldResults);
+            physicsWorld.getCollisionWorld().getNarrowPhaseManager().processGhostBody(ghostBody, manifoldResults);
 
             for (const auto& manifoldResult : manifoldResults) {
                 float sign = manifoldResult.getBody1() == ghostBody ? -1.0f : 1.0f;

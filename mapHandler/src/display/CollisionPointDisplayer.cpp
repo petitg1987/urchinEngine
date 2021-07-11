@@ -2,10 +2,10 @@
 
 namespace urchin {
 
-    CollisionPointDisplayer::CollisionPointDisplayer(PhysicsWorld* physicsWorld, Renderer3d* renderer3d) :
+    CollisionPointDisplayer::CollisionPointDisplayer(PhysicsWorld& physicsWorld, Renderer3d* renderer3d) :
             physicsWorld(physicsWorld),
             renderer3d(renderer3d) {
-        physicsWorld->createCollisionVisualizer();
+        physicsWorld.createCollisionVisualizer();
     }
 
     CollisionPointDisplayer::~CollisionPointDisplayer() {
@@ -15,7 +15,7 @@ namespace urchin {
     void CollisionPointDisplayer::display() {
         clearDisplay();
         
-        std::vector<ManifoldResult> manifoldResults = physicsWorld->getCollisionVisualizer().getManifoldResults();
+        std::vector<ManifoldResult> manifoldResults = physicsWorld.getCollisionVisualizer().getManifoldResults();
         for (auto manifoldResult : manifoldResults) {
             for (unsigned int j = 0; j < manifoldResult.getNumContactPoints(); ++j) {
                 ManifoldContactPoint contactPoint = manifoldResult.getManifoldContactPoint(j);
