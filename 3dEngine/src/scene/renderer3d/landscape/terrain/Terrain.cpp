@@ -7,10 +7,10 @@ namespace urchin {
     /**
      * @param position Terrain position. Position is centered on XZ axis and Y value represents a point without elevation.
      */
-    Terrain::Terrain(std::shared_ptr<TerrainMesh>& mesh, std::unique_ptr<TerrainMaterials> materials, const Point3<float>& position) :
+    Terrain::Terrain(std::unique_ptr<TerrainMesh> mesh, std::unique_ptr<TerrainMaterials> materials, const Point3<float>& position) :
             isInitialized(false),
             renderTarget(nullptr),
-            mesh(mesh),
+            mesh(std::move(mesh)),
             materials(std::move(materials)),
             grass(std::make_unique<TerrainGrass>("")),
             ambient(0.0f) {
@@ -26,7 +26,7 @@ namespace urchin {
 
         grass->initialize(renderTarget);
 
-        setMesh(mesh);
+        setMesh(std::move(mesh));
         setMaterials(std::move(materials));
 
         refreshGrassMesh();
@@ -42,22 +42,22 @@ namespace urchin {
         grass->onCameraProjectionUpdate(projectionMatrix);
     }
 
-    void Terrain::setMesh(const std::shared_ptr<TerrainMesh>& mesh) {
+    void Terrain::setMesh(std::unique_ptr<TerrainMesh> mesh) {
         assert(renderTarget);
-        this->mesh = mesh;
+        this->mesh = std::move(mesh);
 
         std::vector<Point2<float>> dummyTextureCoordinates;
-        dummyTextureCoordinates.resize(mesh->getVertices().size(), Point2<float>(0.0f, 0.0f));
+        dummyTextureCoordinates.resize(this->mesh->getVertices().size(), Point2<float>(0.0f, 0.0f));
 
         Matrix4<float> viewMatrix;
         Vector2<float> materialsStRepeat = materials->getStRepeat();
 
         auto terrainRendererBuilder = GenericRendererBuilder::create("terrain", *renderTarget, *terrainShader, ShapeType::TRIANGLE_STRIP)
                 ->enableDepthOperations()
-                ->addData(mesh->getVertices())
-                ->addData(mesh->getNormals())
+                ->addData(this->mesh->getVertices())
+                ->addData(this->mesh->getNormals())
                 ->addData(dummyTextureCoordinates)
-                ->indices(mesh->getIndices())
+                ->indices(this->mesh->getIndices())
                 ->addUniformData(sizeof(viewMatrix), &viewMatrix) //binding 0
                 ->addUniformData(sizeof(positioningData), &positioningData) //binding 1
                 ->addUniformData(sizeof(materialsStRepeat), &materialsStRepeat) //binding 2
@@ -114,7 +114,7 @@ namespace urchin {
 
     void Terrain::refreshGrassMesh() {
         if (grass->isInitialized()) {
-            grass->refreshWith(mesh, positioningData.position);
+            grass->refreshWith(mesh.get(), positioningData.position);
         }
     }
 

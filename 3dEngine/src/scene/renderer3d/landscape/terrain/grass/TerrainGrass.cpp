@@ -21,6 +21,7 @@ namespace urchin {
             grassProperties({}),
             terrainPositioningData({}),
             ambient(0.5f),
+            mesh(nullptr),
             mainGrassQuadtree(nullptr),
             grassQuantity(0.0f) {
         float grassAlphaTest = ConfigService::instance()->getFloatValue("terrain.grassAlphaTest");
@@ -63,8 +64,9 @@ namespace urchin {
         }
     }
 
-    void TerrainGrass::refreshWith(const std::shared_ptr<TerrainMesh>& mesh, const Point3<float>& terrainPosition) {
+    void TerrainGrass::refreshWith(const TerrainMesh* mesh, const Point3<float>& terrainPosition) {
         assert(bIsInitialized);
+        assert(mesh);
         generateGrass(mesh, terrainPosition);
 
         terrainPositioningData.minPoint = mesh->getVertices()[0];
@@ -84,7 +86,7 @@ namespace urchin {
         }
     }
 
-    void TerrainGrass::generateGrass(const std::shared_ptr<TerrainMesh>& mesh, const Point3<float>& terrainPosition) {
+    void TerrainGrass::generateGrass(const TerrainMesh* mesh, const Point3<float>& terrainPosition) {
         const unsigned int NUM_THREADS = std::max(2u, std::thread::hardware_concurrency());
 
         if (mesh) {

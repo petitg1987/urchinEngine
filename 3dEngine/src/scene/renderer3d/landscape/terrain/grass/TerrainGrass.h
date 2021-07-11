@@ -21,7 +21,7 @@ namespace urchin {
             bool isInitialized() const;
             void onCameraProjectionUpdate(const Matrix4<float>&);
 
-            void refreshWith(const std::shared_ptr<TerrainMesh>&, const Point3<float>&);
+            void refreshWith(const TerrainMesh*, const Point3<float>&);
             void refreshWith(float);
 
             const std::string& getGrassTexture() const;
@@ -54,7 +54,7 @@ namespace urchin {
             void prepareRendering(const Camera*, float);
 
         private:
-            void generateGrass(const std::shared_ptr<TerrainMesh>&, const Point3<float>&);
+            void generateGrass(const TerrainMesh*, const Point3<float>&);
             unsigned int retrieveVertexIndex(const Point2<float>&) const;
             void buildGrassQuadtree(const std::vector<TerrainGrassQuadtree*>&, unsigned int, unsigned int);
             void createRenderers(const std::vector<TerrainGrassQuadtree*>&);
@@ -88,7 +88,7 @@ namespace urchin {
             Matrix4<float> projectionMatrix;
             float ambient;
 
-            std::shared_ptr<TerrainMesh> mesh;
+            const TerrainMesh* mesh;
             Point3<float> terrainPosition;
 
             std::shared_ptr<Texture> grassTexture, grassMaskTexture;

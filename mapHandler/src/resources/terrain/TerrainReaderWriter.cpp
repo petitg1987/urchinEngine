@@ -22,7 +22,7 @@ namespace urchin {
         auto heightFilenameChunk = dataParser.getUniqueChunk(true, HEIGHT_FILENAME_TAG, DataAttribute(), meshChunk.get());
         auto xzScaleChunk = dataParser.getUniqueChunk(true, XZ_SCALE_TAG, DataAttribute(), meshChunk.get());
         auto yScaleChunk = dataParser.getUniqueChunk(true, Y_SCALE_TAG, DataAttribute(), meshChunk.get());
-        auto terrainMesh = std::make_shared<TerrainMesh>(heightFilenameChunk->getStringValue(), xzScaleChunk->getFloatValue(), yScaleChunk->getFloatValue());
+        auto terrainMesh = std::make_unique<TerrainMesh>(heightFilenameChunk->getStringValue(), xzScaleChunk->getFloatValue(), yScaleChunk->getFloatValue());
 
         auto materialChunk = dataParser.getUniqueChunk(true, MATERIAL_TAG, DataAttribute(), terrainChunk);
         auto maskMapFilenameChunk = dataParser.getUniqueChunk(true, MASK_MAP_FILENAME, DataAttribute(), materialChunk.get());
@@ -42,7 +42,7 @@ namespace urchin {
 
         auto positionChunk = dataParser.getUniqueChunk(true, POSITION_TAG, DataAttribute(), terrainChunk);
 
-        return new Terrain(terrainMesh, std::move(terrainMaterial), positionChunk->getPoint3Value());
+        return new Terrain(std::move(terrainMesh), std::move(terrainMaterial), positionChunk->getPoint3Value());
     }
 
     void TerrainReaderWriter::buildChunkFrom(const DataChunk* terrainChunk, const Terrain* terrain, DataWriter& dataWriter) const {

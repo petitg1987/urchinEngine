@@ -49,8 +49,8 @@ namespace urchin {
         SceneTerrain* sceneTerrain = findSceneTerrain(constSceneTerrain);
         Terrain* terrain = sceneTerrain->getTerrain();
 
-        auto terrainMesh = std::make_shared<TerrainMesh>(terrain->getMesh()->getHeightFilename(), xzScale, yScale);
-        terrain->setMesh(terrainMesh);
+        auto terrainMesh = std::make_unique<TerrainMesh>(terrain->getMesh()->getHeightFilename(), xzScale, yScale);
+        terrain->setMesh(std::move(terrainMesh));
 
         markModified();
         return sceneTerrain;

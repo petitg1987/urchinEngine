@@ -17,12 +17,12 @@ namespace urchin {
 
     class Terrain {
         public:
-            Terrain(std::shared_ptr<TerrainMesh>&, std::unique_ptr<TerrainMaterials>, const Point3<float>&);
+            Terrain(std::unique_ptr<TerrainMesh>, std::unique_ptr<TerrainMaterials>, const Point3<float>&);
 
             void initialize(RenderTarget&);
             void onCameraProjectionUpdate(const Matrix4<float>&);
 
-            void setMesh(const std::shared_ptr<TerrainMesh>&);
+            void setMesh(std::unique_ptr<TerrainMesh>);
             const TerrainMesh* getMesh() const;
             void setMaterials(std::unique_ptr<TerrainMaterials>);
             const TerrainMaterials* getMaterials() const;
@@ -54,7 +54,7 @@ namespace urchin {
                 alignas(16) Point3<float> position;
             } positioningData;
 
-            std::shared_ptr<TerrainMesh> mesh;
+            std::unique_ptr<TerrainMesh> mesh;
             std::unique_ptr<TerrainMaterials> materials;
             std::unique_ptr<TerrainGrass> grass;
 
