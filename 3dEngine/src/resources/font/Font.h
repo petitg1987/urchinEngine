@@ -16,8 +16,11 @@ namespace urchin {
 
     class Font : public Resource {
         public:
-            Font(unsigned int, const Vector3<float>&, std::shared_ptr<Texture>, Glyph*, unsigned int, unsigned int, unsigned int);
-            ~Font() override;
+            constexpr static unsigned int NUM_LETTERS = 256u; //unicode range 0000-007F (Basic Latin) + 0080-00FF (Latin-1 Supplement)
+            constexpr static unsigned int NUM_LETTERS_BY_LINE = 16u;
+
+            Font(unsigned int, const Vector3<float>&, std::shared_ptr<Texture>, std::array<Glyph, NUM_LETTERS>, unsigned int, unsigned int, unsigned int);
+            ~Font() override = default;
 
             unsigned int getFontSize() const;
             Vector3<float> getFontColor() const;
@@ -35,7 +38,7 @@ namespace urchin {
 
             std::shared_ptr<Texture> alphabetTexture;
 
-            Glyph* glyph;
+            std::array<Glyph, NUM_LETTERS> glyph;
             unsigned int spaceBetweenLetters, spaceBetweenLines, height;
     };
 

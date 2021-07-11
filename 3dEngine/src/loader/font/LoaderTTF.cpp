@@ -9,9 +9,6 @@
 namespace urchin {
 
     Font* LoaderTTF::loadFromFile(const std::string& ttfFilename, const std::map<std::string, std::string>& params) {
-        constexpr unsigned int NUM_LETTERS = 256u; //unicode range 0000-007F (Basic Latin) + 0080-00FF (Latin-1 Supplement)
-        constexpr unsigned int NUM_LETTERS_BY_LINE = 16u;
-
         std::locale::global(std::locale("C")); //for float
 
         assert(params.find("fontSize") != params.end());
@@ -41,40 +38,31 @@ namespace urchin {
         }
 
         //filled the struct_glyph
-        auto* glyph = new Glyph[NUM_LETTERS];
-
+        std::array<Glyph, Font::NUM_LETTERS> glyph{};
         FT_UInt glyphIndex = FT_Get_Char_Index(face, 65);
         if (FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT)) {
             FT_Done_Face(face);
             FT_Done_FreeType(library);
-            delete[] glyph;
-
             throw std::runtime_error("Error with the loading of the glyph, filename: " + fileFontPath + ".");
         }
         if (FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL)) {
             FT_Done_Face(face);
             FT_Done_FreeType(library);
-            delete[] glyph;
-
             throw std::runtime_error("Error of render with the glyph, filename: " + fileFontPath + ".");
         }
         int bitmapTopA = face->glyph->bitmap_top;
 
-        for (std::size_t i = 0; i < NUM_LETTERS;i++) {
+        for (std::size_t i = 0; i < Font::NUM_LETTERS;i++) {
             glyphIndex = FT_Get_Char_Index(face, static_cast<FT_ULong>(i));
             if (FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT)) {
                 FT_Done_Face(face);
                 FT_Done_FreeType(library);
-                delete[] glyph;
-
                 throw std::runtime_error("Error with the loading of the glyph, filename: " + fileFontPath + ".");
             }
 
             if (FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL)) {
                 FT_Done_Face(face);
                 FT_Done_FreeType(library);
-                delete[] glyph;
-
                 throw std::runtime_error("Error of render with the glyph, filename: " + fileFontPath + ".");
             }
 
@@ -97,7 +85,7 @@ namespace urchin {
         //compute space between lines, space between letters and height of letters
         unsigned int height = 0;
         for (int i = 'A'; i < 'Z'; i++) {
-            height = std::max(height, glyph[i].height);
+            height = std::max(height, glyph[(std::size_t)i].height);
         }
         auto spaceBetweenLines = (unsigned int)((float)height * 1.9f);
         auto spaceBetweenLetters = (unsigned int)2u;
@@ -105,7 +93,7 @@ namespace urchin {
 
         //dimension of letters and texture
         unsigned int dimensionLetters = 0;
-        for (unsigned int i = 0; i < NUM_LETTERS; ++i) { //seek the largest letter
+        for (unsigned int i = 0; i < Font::NUM_LETTERS; ++i) { //seek the largest letter
             if (glyph[i].width > dimensionLetters) {
                 dimensionLetters = glyph[i].width;
             }
@@ -113,7 +101,7 @@ namespace urchin {
                 dimensionLetters = glyph[i].height;
             }
         }
-        unsigned int dimensionTexture = dimensionLetters * NUM_LETTERS_BY_LINE;
+        unsigned int dimensionTexture = dimensionLetters * Font::NUM_LETTERS_BY_LINE;
 
         //texture creation
         constexpr unsigned int NUM_COLORS = 4u;
@@ -135,7 +123,7 @@ namespace urchin {
         auto alphabetTexture = Image(dimensionTexture, dimensionTexture, Image::IMAGE_RGBA, std::move(texels)).createTexture(false);
 
         //clears buffers of letters
-        for (std::size_t i = 0; i < NUM_LETTERS; i++) {
+        for (std::size_t i = 0; i < Font::NUM_LETTERS; i++) {
             delete[] glyph[i].buf;
             glyph[i].buf = nullptr;
         }

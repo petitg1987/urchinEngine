@@ -12,13 +12,12 @@ namespace urchin {
     class DataWriter {
         public:
             explicit DataWriter(const std::string&);
-            ~DataWriter();
 
             std::unique_ptr<DataChunk> createChunk(const std::string&, const DataAttribute & = DataAttribute(), const DataChunk* parent = nullptr);
             void saveInFile();
 
         private:
-            TiXmlDocument* doc;
+            std::unique_ptr<TiXmlDocument> doc;
             std::string filenamePath;
     };
 

@@ -6,14 +6,10 @@
 namespace urchin {
 
     DataWriter::DataWriter(const std::string& filename) :
-            doc(new TiXmlDocument()),
+            doc(std::make_unique<TiXmlDocument>()),
             filenamePath(FileSystem::instance()->getResourcesDirectory() + filename) {
         auto* decl = new TiXmlDeclaration("1.0", "", "");
         doc->LinkEndChild(decl);
-    }
-
-    DataWriter::~DataWriter() {
-        delete doc;
     }
 
     std::unique_ptr<DataChunk> DataWriter::createChunk(const std::string& chunkName, const DataAttribute& attribute, const DataChunk* parent) {

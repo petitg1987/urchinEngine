@@ -11,11 +11,11 @@ class AssertHelper {
 
         static void assertString(const std::string&, const std::string&);
         static void assertInt(int, int);
-        static void assert3Ints(const int*, const int *&&);
+        static void assert3Ints(const int*, std::array<int, 3>);
         static void assertUnsignedInt(unsigned int, unsigned int);
         static void assertUnsignedInt(std::size_t, std::size_t);
-        static void assert3UnsignedInts(const unsigned int*, unsigned int *&&);
-        static void assert3Sizes(const std::size_t*, std::size_t *&&);
+        static void assert3UnsignedInts(const unsigned int*, std::array<unsigned int, 3>);
+        static void assert3Sizes(const std::size_t*, std::array<std::size_t, 3>);
         static void assertFloatEquals(float, float, float epsilon = 0.001f);
 
         static void assertPoint2FloatEquals(const Point2<float>&, const Point2<float>&, float epsilon = 0.001f);
