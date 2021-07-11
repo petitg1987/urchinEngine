@@ -18,10 +18,10 @@ namespace urchin {
         statusBarController(statusBarController),
         sceneManager(nullptr),
         camera(nullptr),
-        bodyShapeDisplayer(nullptr),
-        objectMoveController(nullptr),
-        lightScopeDisplayer(nullptr),
-        soundTriggerDisplayer(nullptr),
+        bodyShapeDisplayer(std::unique_ptr<BodyShapeDisplayer>(nullptr)),
+        objectMoveController(std::unique_ptr<ObjectMoveController>(nullptr)),
+        lightScopeDisplayer(std::unique_ptr<LightScopeDisplayer>(nullptr)),
+        soundTriggerDisplayer(std::unique_ptr<SoundTriggerDisplayer>(nullptr)),
         physicsWorld(nullptr),
         aiManager(nullptr),
         navMeshDisplayer(nullptr),
@@ -40,10 +40,10 @@ namespace urchin {
         aiManager.reset(nullptr);
         physicsWorld.reset(nullptr);
 
-        delete bodyShapeDisplayer;
-        delete objectMoveController;
-        delete lightScopeDisplayer;
-        delete soundTriggerDisplayer;
+        bodyShapeDisplayer.reset(nullptr);
+        objectMoveController.reset(nullptr);
+        lightScopeDisplayer.reset(nullptr);
+        soundTriggerDisplayer.reset(nullptr);
         delete camera;
         delete sceneManager;
 
@@ -108,10 +108,10 @@ namespace urchin {
         sceneManager->getActiveRenderer3d()->setCamera(camera);
         sceneManager->getActiveRenderer3d()->getLightManager().setGlobalAmbientColor(Point4<float>(0.05f, 0.05f, 0.05f, 0.0f));
 
-        bodyShapeDisplayer = new BodyShapeDisplayer(sceneManager);
-        objectMoveController = new ObjectMoveController(sceneManager, sceneController, mouseController, statusBarController);
-        lightScopeDisplayer = new LightScopeDisplayer(sceneManager);
-        soundTriggerDisplayer = new SoundTriggerDisplayer(sceneManager);
+        bodyShapeDisplayer = std::make_unique<BodyShapeDisplayer>(sceneManager);
+        objectMoveController = std::make_unique<ObjectMoveController>(sceneManager, sceneController, mouseController, statusBarController);
+        lightScopeDisplayer = std::make_unique<LightScopeDisplayer>(sceneManager);
+        soundTriggerDisplayer = std::make_unique<SoundTriggerDisplayer>(sceneManager);
 
         //physics
         physicsWorld = std::make_unique<PhysicsWorld>();
@@ -238,11 +238,11 @@ namespace urchin {
     }
 
     BodyShapeDisplayer* SceneDisplayer::getBodyShapeDisplayer() const {
-        return bodyShapeDisplayer;
+        return bodyShapeDisplayer.get();
     }
 
     ObjectMoveController* SceneDisplayer::getObjectMoveController() const {
-        return objectMoveController;
+        return objectMoveController.get();
     }
 
 }

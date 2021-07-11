@@ -73,10 +73,10 @@ namespace urchin {
             //3d
             SceneManager* sceneManager;
             SceneFreeCamera* camera;
-            BodyShapeDisplayer* bodyShapeDisplayer;
-            ObjectMoveController* objectMoveController;
-            LightScopeDisplayer* lightScopeDisplayer;
-            SoundTriggerDisplayer* soundTriggerDisplayer;
+            std::unique_ptr<BodyShapeDisplayer> bodyShapeDisplayer;
+            std::unique_ptr<ObjectMoveController> objectMoveController;
+            std::unique_ptr<LightScopeDisplayer> lightScopeDisplayer;
+            std::unique_ptr<SoundTriggerDisplayer> soundTriggerDisplayer;
 
             //physics
             std::unique_ptr<PhysicsWorld> physicsWorld;
