@@ -29,7 +29,7 @@ namespace urchin {
                 FOCUS
             };
 
-            void initialize(const std::shared_ptr<RenderTarget>&, const std::shared_ptr<Shader>&, I18nService*, bool createWidget = true);
+            void initialize(RenderTarget&, const std::shared_ptr<Shader>&, I18nService*, bool createWidget = true);
             void onResize(unsigned int, unsigned int);
 
             Widget* getParent() const;
@@ -73,7 +73,7 @@ namespace urchin {
         protected:
             std::shared_ptr<GenericRendererBuilder> setupUiRenderer(const std::string&, ShapeType) const;
             void updateTranslateVector(const std::shared_ptr<GenericRenderer>&, const Vector2<int>&) const;
-            const std::shared_ptr<RenderTarget>& getRenderTarget() const;
+            const RenderTarget& getRenderTarget() const;
             unsigned int getSceneWidth() const;
             unsigned int getSceneHeight() const;
             virtual void createOrUpdateWidget() = 0;
@@ -91,7 +91,7 @@ namespace urchin {
             bool handleWidgetMouseMove(int, int);
             void handleWidgetReset();
 
-            std::shared_ptr<RenderTarget> renderTarget;
+            RenderTarget* renderTarget;
             std::shared_ptr<Shader> shader;
             unsigned int sceneWidth, sceneHeight;
 

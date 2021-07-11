@@ -18,10 +18,11 @@ namespace urchin {
         modelsDisplayer.clear();
     }
 
-    void ModelSetDisplayer::initialize(std::shared_ptr<RenderTarget> renderTarget) {
+    void ModelSetDisplayer::initialize(RenderTarget& renderTarget) {
         if (isInitialized) {
             throw std::runtime_error("Model displayer is already initialized.");
         }
+        this->renderTarget = &renderTarget;
 
         if (displayMode == DEFAULT_MODE) {
             //shader creation
@@ -40,8 +41,6 @@ namespace urchin {
         } else {
             throw std::invalid_argument("Unknown display mode: " + std::to_string(displayMode));
         }
-
-        this->renderTarget = std::move(renderTarget);
 
         isInitialized = true;
     }
@@ -71,10 +70,11 @@ namespace urchin {
     }
 
     void ModelSetDisplayer::setModels(const std::vector<Model*>& models) {
+        assert(renderTarget);
         for (auto model : models) {
             const auto& itModel = modelsDisplayer.find(model);
             if (itModel == modelsDisplayer.end()) {
-                auto modelDisplayer = std::make_unique<ModelDisplayer>(model, projectionMatrix, displayMode, renderTarget, modelShader, customModelShaderVariable);
+                auto modelDisplayer = std::make_unique<ModelDisplayer>(model, projectionMatrix, displayMode, *renderTarget, modelShader, customModelShaderVariable);
                 modelsDisplayer.emplace(std::make_pair(model, std::move(modelDisplayer)));
             }
         }

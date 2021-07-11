@@ -9,6 +9,7 @@ namespace urchin {
      */
     Terrain::Terrain(std::shared_ptr<TerrainMesh>& mesh, std::unique_ptr<TerrainMaterials> materials, const Point3<float>& position) :
             isInitialized(false),
+            renderTarget(nullptr),
             mesh(mesh),
             materials(std::move(materials)),
             grass(std::make_unique<TerrainGrass>("")),
@@ -19,11 +20,11 @@ namespace urchin {
         setAmbient(0.3f);
     }
 
-    void Terrain::initialize(std::shared_ptr<RenderTarget> renderTarget) {
+    void Terrain::initialize(RenderTarget& renderTarget) {
         assert(!isInitialized);
-        this->renderTarget = std::move(renderTarget);
+        this->renderTarget = &renderTarget;
 
-        grass->initialize(this->renderTarget);
+        grass->initialize(renderTarget);
 
         setMesh(mesh);
         setMaterials(std::move(materials));
@@ -51,7 +52,7 @@ namespace urchin {
         Matrix4<float> viewMatrix;
         Vector2<float> materialsStRepeat = materials->getStRepeat();
 
-        auto terrainRendererBuilder = GenericRendererBuilder::create("terrain", renderTarget, terrainShader, ShapeType::TRIANGLE_STRIP)
+        auto terrainRendererBuilder = GenericRendererBuilder::create("terrain", *renderTarget, terrainShader, ShapeType::TRIANGLE_STRIP)
                 ->enableDepthOperations()
                 ->addData(mesh->getVertices())
                 ->addData(mesh->getNormals())

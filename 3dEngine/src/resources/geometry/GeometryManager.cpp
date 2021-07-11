@@ -4,8 +4,8 @@
 
 namespace urchin {
 
-    GeometryManager::GeometryManager( std::shared_ptr<RenderTarget> renderTarget) :
-            renderTarget(std::move(renderTarget)) {
+    GeometryManager::GeometryManager(RenderTarget &renderTarget) :
+            renderTarget(renderTarget) {
 
     }
 

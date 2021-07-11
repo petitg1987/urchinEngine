@@ -6,6 +6,7 @@ namespace urchin {
 
     GeometryModel::GeometryModel() :
             isInitialized(false),
+            renderTarget(nullptr),
             color(Vector4<float>(0.0f, 1.0f, 0.0f, 1.0f)),
             polygonMode(WIREFRAME),
             lineWidth(2.0f),
@@ -14,8 +15,8 @@ namespace urchin {
             alwaysVisible(false) {
     }
 
-    void GeometryModel::initialize(const std::shared_ptr<RenderTarget>& renderTarget) {
-        this->renderTarget = renderTarget;
+    void GeometryModel::initialize(RenderTarget& renderTarget) {
+        this->renderTarget = &renderTarget;
 
         modelMatrix = retrieveModelMatrix();
         refreshRenderer();
@@ -34,7 +35,7 @@ namespace urchin {
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &pointSize);
         shader = ShaderBuilder::createShader("displayGeometry.vert.spv", "", "displayGeometry.frag.spv", std::move(shaderConstants));
 
-        auto rendererBuilder = GenericRendererBuilder::create("geometry model", renderTarget, shader, getShapeType())
+        auto rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, shader, getShapeType())
                 ->addData(vertexArray)
                 ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
                 ->addUniformData(sizeof(color), &color) //binding 1
@@ -57,8 +58,8 @@ namespace urchin {
         positioningData.projectionMatrix = projectionMatrix;
     }
 
-    const std::shared_ptr<RenderTarget>& GeometryModel::getRenderTarget() const {
-        return renderTarget;
+    const RenderTarget& GeometryModel::getRenderTarget() const {
+        return *renderTarget;
     }
 
     Vector4<float> GeometryModel::getColor() const {

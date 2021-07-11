@@ -23,7 +23,7 @@ namespace urchin {
                 MOVE_ABOVE_WATER
             };
 
-            void initialize(std::shared_ptr<RenderTarget>);
+            void initialize(RenderTarget&);
             void onCameraProjectionUpdate(const Matrix4<float>&);
 
             void setCenterPosition(const Point3<float>&);
@@ -70,7 +70,7 @@ namespace urchin {
 
             bool isInitialized;
 
-            std::shared_ptr<RenderTarget> renderTarget;
+            RenderTarget* renderTarget;
             std::shared_ptr<Shader> waterShader;
             struct {
                 alignas(16) Matrix4<float> viewMatrix;

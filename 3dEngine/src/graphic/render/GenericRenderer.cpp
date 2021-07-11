@@ -32,7 +32,7 @@ namespace urchin {
             graphicsPipeline(nullptr),
             descriptorPool(nullptr),
             drawCommandDirty(false) {
-        if (depthOperationsEnabled && !renderTarget->hasDepthAttachment()) {
+        if (depthOperationsEnabled && !renderTarget.hasDepthAttachment()) {
             throw std::runtime_error("Depth operations are enabled but there is no depth attachment on the render target");
         }
 
@@ -84,7 +84,7 @@ namespace urchin {
         return name;
     }
 
-    const std::shared_ptr<RenderTarget> &GenericRenderer::getRenderTarget() const {
+    const RenderTarget& GenericRenderer::getRenderTarget() const {
         return renderTarget;
     }
 
@@ -99,13 +99,13 @@ namespace urchin {
     void GenericRenderer::enableRenderer() {
         assert(!bIsEnabled);
         bIsEnabled = true;
-        renderTarget->notifyRendererEnabled(this);
+        renderTarget.notifyRendererEnabled(this);
     }
 
     void GenericRenderer::disableRenderer() {
         assert(bIsEnabled);
         bIsEnabled = false;
-        renderTarget->notifyRendererDisabled(this);
+        renderTarget.notifyRendererDisabled(this);
     }
 
     void GenericRenderer::createDescriptorSetLayout() {
@@ -189,11 +189,11 @@ namespace urchin {
         VkViewport viewport{};
         viewport.x = 0.0f;
         viewport.y = 0.0f;
-        viewport.width = (float)renderTarget->getWidth();
-        viewport.height = (float)renderTarget->getHeight();
+        viewport.width = (float)renderTarget.getWidth();
+        viewport.height = (float)renderTarget.getHeight();
         viewport.minDepth = 0.0f;
         viewport.maxDepth = 1.0f;
-        VkRect2D scissor = {{0, 0}, {renderTarget->getWidth(), renderTarget->getHeight()}};
+        VkRect2D scissor = {{0, 0}, {renderTarget.getWidth(), renderTarget.getHeight()}};
         VkPipelineViewportStateCreateInfo viewportState{};
         viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
         viewportState.viewportCount = 1;
@@ -240,7 +240,7 @@ namespace urchin {
 
         //color blending
         std::vector<VkPipelineColorBlendAttachmentState> colorBlendAttachments;
-        for (std::size_t i = 0; i < renderTarget->getNumColorAttachment(); ++i) {
+        for (std::size_t i = 0; i < renderTarget.getNumColorAttachment(); ++i) {
             VkPipelineColorBlendAttachmentState colorBlendAttachment{};
             colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
             colorBlendAttachment.blendEnable = transparencyEnabled ? VK_TRUE : VK_FALSE;
@@ -286,7 +286,7 @@ namespace urchin {
         pipelineInfo.pColorBlendState = &colorBlending;
         pipelineInfo.pDynamicState = nullptr;
         pipelineInfo.layout = pipelineLayout;
-        pipelineInfo.renderPass = renderTarget->getRenderPass();
+        pipelineInfo.renderPass = renderTarget.getRenderPass();
         pipelineInfo.subpass = 0; //index to sub-pass
         pipelineInfo.basePipelineHandle = VK_NULL_HANDLE; //can be used to switch optimally between similar pipeline
         pipelineInfo.basePipelineIndex = -1;
@@ -325,7 +325,7 @@ namespace urchin {
         vertexBuffers.resize(data.size());
         for (std::size_t dataIndex = 0; dataIndex < data.size(); ++dataIndex) {
             const DataContainer& dataContainer = data[dataIndex];
-            vertexBuffers[dataIndex].initialize(BufferHandler::VERTEX, renderTarget->getNumFramebuffer(), dataContainer.getBufferSize(), dataContainer.getData());
+            vertexBuffers[dataIndex].initialize(BufferHandler::VERTEX, renderTarget.getNumFramebuffer(), dataContainer.getBufferSize(), dataContainer.getData());
         }
     }
 
@@ -338,7 +338,7 @@ namespace urchin {
 
     void GenericRenderer::createIndexBuffer() {
         if (indices) {
-            indexBuffer.initialize(BufferHandler::INDEX, renderTarget->getNumFramebuffer(), indices->getBufferSize(), indices->getIndices());
+            indexBuffer.initialize(BufferHandler::INDEX, renderTarget.getNumFramebuffer(), indices->getBufferSize(), indices->getIndices());
         }
     }
 
@@ -351,7 +351,7 @@ namespace urchin {
     void GenericRenderer::createUniformBuffers() {
         uniformsBuffers.resize(uniformData.size());
         for (std::size_t dataIndex = 0; dataIndex < uniformData.size(); ++dataIndex) {
-            uniformsBuffers[dataIndex].initialize(BufferHandler::UNIFORM, renderTarget->getNumFramebuffer(), uniformData[dataIndex].getDataSize());
+            uniformsBuffers[dataIndex].initialize(BufferHandler::UNIFORM, renderTarget.getNumFramebuffer(), uniformData[dataIndex].getDataSize());
         }
     }
 
@@ -367,13 +367,13 @@ namespace urchin {
 
         std::array<VkDescriptorPoolSize, 2> poolSizes{};
 
-        int uboDescriptorCount = std::max(1, (int)renderTarget->getNumFramebuffer() * (int)uniformData.size());
+        int uboDescriptorCount = std::max(1, (int)renderTarget.getNumFramebuffer() * (int)uniformData.size());
         poolSizes[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
         poolSizes[0].descriptorCount = (uint32_t)uboDescriptorCount;
 
         int uniformTexReadersCount = 0;
         std::for_each(uniformTextureReaders.begin(), uniformTextureReaders.end(), [&] (auto& r){uniformTexReadersCount += (int)r.size();});
-        int textureDescriptorCount = std::max(1, (int)renderTarget->getNumFramebuffer() * uniformTexReadersCount);
+        int textureDescriptorCount = std::max(1, (int)renderTarget.getNumFramebuffer() * uniformTexReadersCount);
         poolSizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
         poolSizes[1].descriptorCount = (uint32_t)textureDescriptorCount;
 
@@ -381,7 +381,7 @@ namespace urchin {
         poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
         poolInfo.poolSizeCount = (uint32_t)poolSizes.size();
         poolInfo.pPoolSizes = poolSizes.data();
-        poolInfo.maxSets = (uint32_t)renderTarget->getNumFramebuffer();
+        poolInfo.maxSets = (uint32_t)renderTarget.getNumFramebuffer();
 
         VkResult result = vkCreateDescriptorPool(logicalDevice, &poolInfo, nullptr, &descriptorPool);
         if (result != VK_SUCCESS) {
@@ -392,14 +392,14 @@ namespace urchin {
     void GenericRenderer::createDescriptorSets() {
         auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
 
-        std::vector<VkDescriptorSetLayout> layouts(renderTarget->getNumFramebuffer(), descriptorSetLayout);
+        std::vector<VkDescriptorSetLayout> layouts(renderTarget.getNumFramebuffer(), descriptorSetLayout);
         VkDescriptorSetAllocateInfo allocInfo{};
         allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
         allocInfo.descriptorPool = descriptorPool;
-        allocInfo.descriptorSetCount = (uint32_t)renderTarget->getNumFramebuffer();
+        allocInfo.descriptorSetCount = (uint32_t)renderTarget.getNumFramebuffer();
         allocInfo.pSetLayouts = layouts.data();
 
-        descriptorSets.resize(renderTarget->getNumFramebuffer());
+        descriptorSets.resize(renderTarget.getNumFramebuffer());
         VkResult result = vkAllocateDescriptorSets(logicalDevice, &allocInfo, descriptorSets.data());
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to allocate descriptor sets with error code: " + std::to_string(result));
@@ -411,7 +411,7 @@ namespace urchin {
     void GenericRenderer::updateDescriptorSets() {
         auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
 
-        for (std::size_t frameIndex = 0; frameIndex < renderTarget->getNumFramebuffer(); frameIndex++) {
+        for (std::size_t frameIndex = 0; frameIndex < renderTarget.getNumFramebuffer(); frameIndex++) {
             std::vector<VkWriteDescriptorSet> descriptorWrites;
             uint32_t shaderUniformBinding = 0;
 

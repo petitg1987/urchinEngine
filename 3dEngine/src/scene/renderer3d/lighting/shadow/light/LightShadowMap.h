@@ -53,7 +53,7 @@ namespace urchin {
             float viewingShadowDistance;
             unsigned int nbShadowMaps;
 
-            std::shared_ptr<OffscreenRender> renderTarget; //target containing shadow map(s)
+            std::unique_ptr<OffscreenRender> renderTarget; //target containing shadow map(s)
             ModelSetDisplayer* shadowModelSetDisplayer;
             ShadowModelShaderVariable* shadowModelShaderVariable;
             std::shared_ptr<Texture> shadowMapTexture; //shadow map texture (variance shadow map)

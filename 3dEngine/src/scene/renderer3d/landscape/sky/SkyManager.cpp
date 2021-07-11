@@ -1,8 +1,8 @@
 #include <scene/renderer3d/landscape/sky/SkyManager.h>
 
 namespace urchin {
-    SkyManager::SkyManager(std::shared_ptr<RenderTarget> renderTarget) :
-            renderTarget(std::move(renderTarget)),
+    SkyManager::SkyManager(RenderTarget& renderTarget) :
+            renderTarget(renderTarget),
             skybox(nullptr) {
 
     }

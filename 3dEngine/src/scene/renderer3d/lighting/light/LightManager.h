@@ -13,7 +13,7 @@ namespace urchin {
 
     class LightManager : public Observable {
         public:
-            explicit LightManager(std::shared_ptr<RenderTarget>);
+            explicit LightManager(RenderTarget&);
             ~LightManager() override;
 
             enum NotificationType {
@@ -47,7 +47,7 @@ namespace urchin {
             static const unsigned int LIGHTS_SHADER_LIMIT;
 
             const unsigned int maxLights; //maximum of lights authorized to affect the scene in the same time
-            std::shared_ptr<RenderTarget> renderTarget;
+            RenderTarget& renderTarget;
 
             //lights container
             std::vector<Light*> sunLights;

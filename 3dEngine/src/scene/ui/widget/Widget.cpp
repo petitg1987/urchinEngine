@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <utility>
 
 #include <scene/ui/widget/Widget.h>
 #include <scene/InputDeviceKey.h>
@@ -8,6 +7,7 @@ namespace urchin {
 
     Widget::Widget(Widget* parent, Position position, Size size) :
             i18nService(nullptr),
+            renderTarget(nullptr),
             sceneWidth(parent ? parent->getSceneWidth() : 0),
             sceneHeight(parent ? parent->getSceneHeight() : 0),
             parent(parent),
@@ -19,7 +19,8 @@ namespace urchin {
             mouseY(0) {
         if (parent) {
             parent->children.emplace_back(this);
-            initialize(parent->getRenderTarget(), parent->shader, parent->i18nService, false /*cannot call virtual method in constructor*/);
+            assert(parent->renderTarget);
+            initialize(*parent->renderTarget, parent->shader, parent->i18nService, false /*cannot call virtual method in constructor*/);
         }
     }
 
@@ -34,11 +35,11 @@ namespace urchin {
         eventListeners.clear();
     }
 
-    void Widget::initialize(const std::shared_ptr<RenderTarget>& renderTarget, const std::shared_ptr<Shader>& shader, I18nService* i18nService, bool createWidget) {
-        this->sceneWidth = renderTarget->getWidth();
-        this->sceneHeight = renderTarget->getHeight();
+    void Widget::initialize(RenderTarget& renderTarget, const std::shared_ptr<Shader>& shader, I18nService* i18nService, bool createWidget) {
+        this->sceneWidth = renderTarget.getWidth();
+        this->sceneHeight = renderTarget.getHeight();
 
-        this->renderTarget = renderTarget;
+        this->renderTarget = &renderTarget;
         this->shader = shader;
         this->i18nService = i18nService;
 
@@ -63,6 +64,7 @@ namespace urchin {
 
     std::shared_ptr<GenericRendererBuilder> Widget::setupUiRenderer(const std::string& name, ShapeType shapeType) const {
         assert(shader);
+        assert(renderTarget);
 
         //orthogonal matrix with origin at top left screen
         Matrix4<float> projectionMatrix(2.0f / (float)sceneWidth, 0.0f, -1.0f, 0.0f,
@@ -72,7 +74,7 @@ namespace urchin {
 
         Vector2<int> translateVector(0, 0);
 
-        return GenericRendererBuilder::create(name, getRenderTarget(), shader, shapeType)
+        return GenericRendererBuilder::create(name, *renderTarget, shader, shapeType)
                 ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
                 ->addUniformData(sizeof(translateVector), &translateVector); //binding 1
     }
@@ -81,9 +83,9 @@ namespace urchin {
         renderer->updateUniformData(1, &translateVector);
     }
 
-    const std::shared_ptr<RenderTarget>& Widget::getRenderTarget() const {
+    const RenderTarget& Widget::getRenderTarget() const {
         assert(renderTarget);
-        return renderTarget;
+        return *renderTarget;
     }
 
     unsigned int Widget::getSceneWidth() const {

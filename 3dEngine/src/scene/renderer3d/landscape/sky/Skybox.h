@@ -18,7 +18,7 @@ namespace urchin {
             explicit Skybox(const std::vector<std::string>&);
             ~Skybox();
 
-            void initialize(std::shared_ptr<RenderTarget>);
+            void initialize(RenderTarget&);
             void onCameraProjectionUpdate(const Matrix4<float>&) const;
 
             float getOffsetY() const;
@@ -39,9 +39,7 @@ namespace urchin {
             Matrix4<float> translationMatrix;
 
             //visual
-            std::shared_ptr<RenderTarget> renderTarget;
             std::shared_ptr<GenericRenderer> skyboxRenderer;
-
             std::shared_ptr<Shader> skyboxShader;
     };
 

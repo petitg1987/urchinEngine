@@ -11,8 +11,8 @@ namespace urchin {
     //debug parameters
     bool DEBUG_DISPLAY_FONT_TEXTURE = false;
 
-    UIRenderer::UIRenderer(std::shared_ptr<RenderTarget> renderTarget, const std::unique_ptr<I18nService>& i18nService) :
-            renderTarget(std::move(renderTarget)),
+    UIRenderer::UIRenderer(RenderTarget& renderTarget, const std::unique_ptr<I18nService>& i18nService) :
+            renderTarget(renderTarget),
             i18nService(i18nService.get()) {
         uiShader = ShaderBuilder::createShader("ui.vert.spv", "", "ui.frag.spv", std::unique_ptr<ShaderConstants>());
     }

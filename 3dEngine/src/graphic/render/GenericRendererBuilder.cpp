@@ -4,9 +4,9 @@
 
 namespace urchin {
 
-    GenericRendererBuilder::GenericRendererBuilder(std::string name, std::shared_ptr<RenderTarget> renderTarget, std::shared_ptr<Shader> shader, ShapeType shapeType) :
+    GenericRendererBuilder::GenericRendererBuilder(std::string name, RenderTarget& renderTarget, std::shared_ptr<Shader> shader, ShapeType shapeType) :
             name(std::move(name)),
-            renderTarget(std::move(renderTarget)),
+            renderTarget(renderTarget),
             shader(std::move(shader)),
             shapeType(shapeType),
             transparencyEnabled(false),
@@ -17,15 +17,15 @@ namespace urchin {
 
     }
 
-    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::create(std::string name, std::shared_ptr<RenderTarget> renderTarget, std::shared_ptr<Shader> shader, ShapeType shapeType) {
-        return std::shared_ptr<GenericRendererBuilder>(new GenericRendererBuilder(std::move(name), std::move(renderTarget), std::move(shader), shapeType));
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::create(std::string name, RenderTarget& renderTarget, std::shared_ptr<Shader> shader, ShapeType shapeType) {
+        return std::shared_ptr<GenericRendererBuilder>(new GenericRendererBuilder(std::move(name), renderTarget, std::move(shader), shapeType));
     }
 
     const std::string& GenericRendererBuilder::getName() const {
         return name;
     }
 
-    const std::shared_ptr<RenderTarget>& GenericRendererBuilder::getRenderTarget() const {
+    RenderTarget& GenericRendererBuilder::getRenderTarget() const {
         return renderTarget;
     }
 
@@ -157,7 +157,7 @@ namespace urchin {
 
     std::shared_ptr<GenericRenderer> GenericRendererBuilder::build() {
         auto renderer = std::make_shared<GenericRenderer>(this);
-        renderTarget->addRenderer(renderer);
+        renderTarget.addRenderer(renderer);
 
         return renderer;
     }

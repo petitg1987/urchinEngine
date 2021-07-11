@@ -13,10 +13,10 @@ namespace urchin {
             GeometryModel();
             virtual ~GeometryModel() = default;
 
-            void initialize(const std::shared_ptr<RenderTarget>&);
+            void initialize(RenderTarget&);
             void onCameraProjectionUpdate(const Matrix4<float>&);
 
-            const std::shared_ptr<RenderTarget>& getRenderTarget() const;
+            const RenderTarget& getRenderTarget() const;
 
             Vector4<float> getColor() const;
             void setColor(float, float, float, float alpha = 1.0f);
@@ -45,7 +45,7 @@ namespace urchin {
         private:
             bool isInitialized;
 
-            std::shared_ptr<RenderTarget> renderTarget;
+            RenderTarget* renderTarget;
             std::shared_ptr<GenericRenderer> renderer;
 
             std::shared_ptr<Shader> shader;

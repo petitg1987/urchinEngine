@@ -10,7 +10,7 @@ namespace urchin {
 
     class ModelDisplayer : public Observer {
         public:
-            ModelDisplayer(Model *, const Matrix4<float>&, DisplayMode, std::shared_ptr<RenderTarget>, std::shared_ptr<Shader>, CustomModelShaderVariable*);
+            ModelDisplayer(Model *, const Matrix4<float>&, DisplayMode, RenderTarget&, std::shared_ptr<Shader>, CustomModelShaderVariable*);
             ~ModelDisplayer() override;
 
             void notify(Observable*, int) override;
@@ -24,7 +24,7 @@ namespace urchin {
         private:
             Model *model;
             DisplayMode displayMode;
-            std::shared_ptr<RenderTarget> renderTarget;
+            RenderTarget& renderTarget;
             std::shared_ptr<Shader> shader;
             mutable struct {
                 alignas(16) Matrix4<float> viewMatrix;

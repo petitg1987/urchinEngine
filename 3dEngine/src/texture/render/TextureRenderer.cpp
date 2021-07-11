@@ -85,7 +85,7 @@ namespace urchin {
         this->transparencyEnabled = true;
     }
 
-    void TextureRenderer::initialize(const std::string& name, const std::shared_ptr<RenderTarget> &renderTarget, unsigned int sceneWidth, unsigned int sceneHeight,
+    void TextureRenderer::initialize(const std::string& name, RenderTarget& renderTarget, unsigned int sceneWidth, unsigned int sceneHeight,
                                      float nearPlane, float farPlane) {
         if (isInitialized) {
             throw std::runtime_error("Texture displayer cannot be initialized twice.");

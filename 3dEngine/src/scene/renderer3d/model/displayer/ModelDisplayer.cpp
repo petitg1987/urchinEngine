@@ -5,17 +5,17 @@
 
 namespace urchin {
 
-    ModelDisplayer::ModelDisplayer(Model *model, const Matrix4<float>& projectionMatrix, DisplayMode displayMode, std::shared_ptr<RenderTarget> renderTarget,
+    ModelDisplayer::ModelDisplayer(Model *model, const Matrix4<float>& projectionMatrix, DisplayMode displayMode, RenderTarget& renderTarget,
                                    std::shared_ptr<Shader> shader, CustomModelShaderVariable* customModelShaderVariable) :
             model(model),
             displayMode(displayMode),
-            renderTarget(std::move(renderTarget)),
+            renderTarget(renderTarget),
             shader(std::move(shader)),
             customModelShaderVariable(customModelShaderVariable) {
 
         for (auto& constMesh : model->getConstMeshes()->getConstMeshes()) {
             auto meshName = model->getMeshes()->getConstMeshes()->getName();
-            auto meshRendererBuilder = GenericRendererBuilder::create("mesh - " + meshName, this->renderTarget, this->shader, ShapeType::TRIANGLE)
+            auto meshRendererBuilder = GenericRendererBuilder::create("mesh - " + meshName, renderTarget, this->shader, ShapeType::TRIANGLE)
                 ->enableDepthOperations()
                 ->addData(constMesh->getBaseVertices())
                 ->indices(constMesh->getTrianglesIndices())

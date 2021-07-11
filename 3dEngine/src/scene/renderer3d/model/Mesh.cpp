@@ -27,7 +27,7 @@ namespace urchin {
         return tangents;
     }
 
-    void Mesh::drawBaseBones(const std::shared_ptr<RenderTarget>& renderTarget, const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) {
+    void Mesh::drawBaseBones(RenderTarget& renderTarget, const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) {
         std::vector<Point3<float>> bonePositions;
         for (const auto& bone : constMesh->getBaseSkeleton()) {
             bonePositions.push_back(bone.pos);

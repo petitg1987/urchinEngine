@@ -14,7 +14,7 @@ namespace urchin {
                 float grassDisplayDistance = 100;
             };
 
-            explicit TerrainManager(std::shared_ptr<RenderTarget>);
+            explicit TerrainManager(RenderTarget&);
 
             void onCameraProjectionUpdate(const Camera*);
 
@@ -30,7 +30,7 @@ namespace urchin {
             void updateAllTerrainConfig();
             void updateTerrainConfig(Terrain*) const;
 
-            std::shared_ptr<RenderTarget> renderTarget;
+            RenderTarget& renderTarget;
 
             std::vector<Terrain*> terrains;
 

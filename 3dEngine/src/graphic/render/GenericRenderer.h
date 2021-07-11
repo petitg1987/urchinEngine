@@ -29,8 +29,8 @@ namespace urchin {
             explicit GenericRenderer(const GenericRendererBuilder*);
             ~GenericRenderer();
 
-            const std::string &getName() const;
-            const std::shared_ptr<RenderTarget> &getRenderTarget() const;
+            const std::string& getName() const;
+            const RenderTarget& getRenderTarget() const;
             bool isDrawCommandDirty() const;
 
             bool isEnabled() const;
@@ -80,7 +80,7 @@ namespace urchin {
             bool bIsEnabled;
 
             std::string name;
-            std::shared_ptr<RenderTarget> renderTarget;
+            RenderTarget& renderTarget;
             std::shared_ptr<Shader> shader;
             ShapeType shapeType;
 

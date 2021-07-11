@@ -19,7 +19,7 @@ namespace urchin {
             const std::vector<Vector3<float>>& getNormals() const;
             const std::vector<Vector3<float>>& getTangents() const;
 
-            void drawBaseBones(const std::shared_ptr<RenderTarget>&, const Matrix4<float>&, const Matrix4<float>&);
+            void drawBaseBones(RenderTarget&, const Matrix4<float>&, const Matrix4<float>&);
 
         private:
             const ConstMesh *const constMesh;

@@ -20,7 +20,7 @@ namespace urchin {
                 Quality quality = AntiAliasingManager::Quality::HIGH;
             };
 
-            explicit AntiAliasingManager(std::shared_ptr<RenderTarget>);
+            explicit AntiAliasingManager(RenderTarget&);
 
             void onTextureUpdate(const std::shared_ptr<Texture>&);
             void onResize(unsigned int, unsigned int);
@@ -50,7 +50,7 @@ namespace urchin {
             void loadFxaaShader();
 
             //properties
-            std::shared_ptr<RenderTarget> renderTarget;
+            RenderTarget& renderTarget;
             Config config;
 
             //display

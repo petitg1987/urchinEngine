@@ -5,8 +5,8 @@
 
 
 namespace urchin {
-    TerrainManager::TerrainManager(std::shared_ptr<RenderTarget> renderTarget) :
-            renderTarget(std::move(renderTarget)),
+    TerrainManager::TerrainManager(RenderTarget& renderTarget) :
+            renderTarget(renderTarget),
             config({}) {
 
     }

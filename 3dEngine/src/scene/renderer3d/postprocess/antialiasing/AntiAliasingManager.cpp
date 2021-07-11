@@ -6,8 +6,8 @@
 
 namespace urchin {
 
-    AntiAliasingManager::AntiAliasingManager(std::shared_ptr<RenderTarget> renderTarget) :
-            renderTarget(std::move(renderTarget)),
+    AntiAliasingManager::AntiAliasingManager(RenderTarget& renderTarget) :
+            renderTarget(renderTarget),
             config({}) {
         loadFxaaShader();
     }

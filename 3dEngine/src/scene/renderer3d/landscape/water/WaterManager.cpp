@@ -4,8 +4,9 @@
 
 namespace urchin {
 
-    WaterManager::WaterManager(std::shared_ptr<RenderTarget> renderTarget) :
-            renderTarget(std::move(renderTarget)) {
+    WaterManager::WaterManager(RenderTarget& renderTarget) :
+            renderTarget(renderTarget) {
+
     }
 
     void WaterManager::onCameraProjectionUpdate(const Camera* camera) {

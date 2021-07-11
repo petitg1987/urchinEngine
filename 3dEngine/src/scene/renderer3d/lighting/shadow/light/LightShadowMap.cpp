@@ -95,13 +95,14 @@ namespace urchin {
     }
 
     void LightShadowMap::createOrUpdateShadowModelSetDisplayer(unsigned int nbShadowMaps) {
+        assert(renderTarget);
         std::vector<std::size_t> variablesDescriptions = {sizeof(nbShadowMaps)};
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesDescriptions, &nbShadowMaps);
 
         delete shadowModelSetDisplayer;
         shadowModelSetDisplayer = new ModelSetDisplayer(DisplayMode::DEPTH_ONLY_MODE);
         shadowModelSetDisplayer->setCustomShader("modelShadowMap.geom.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
-        shadowModelSetDisplayer->initialize(renderTarget);
+        shadowModelSetDisplayer->initialize(*renderTarget);
 
         delete shadowModelShaderVariable;
         shadowModelShaderVariable = new ShadowModelShaderVariable(this);

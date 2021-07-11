@@ -38,6 +38,7 @@ namespace urchin {
     }
 
     void TextureFilter::initializeDisplay() {
+        assert(offscreenRenderTarget);
         std::unique_ptr<ShaderConstants> shaderConstants = buildShaderConstants();
 
         if (textureType == TextureType::ARRAY) {
@@ -57,7 +58,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
         int layersToUpdate = 0;
-        auto textureRendererBuilder = GenericRendererBuilder::create(name, offscreenRenderTarget, textureFilterShader, ShapeType::TRIANGLE)
+        auto textureRendererBuilder = GenericRendererBuilder::create(name, *offscreenRenderTarget, textureFilterShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(sizeof(layersToUpdate), &layersToUpdate); //binding 0

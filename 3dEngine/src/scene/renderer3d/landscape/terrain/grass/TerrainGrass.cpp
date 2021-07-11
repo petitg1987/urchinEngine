@@ -16,6 +16,7 @@ namespace urchin {
             grassPatchSize(ConfigService::instance()->getFloatValue("terrain.grassPatchSize")),
             grassQuadtreeDepth(ConfigService::instance()->getUnsignedIntValue("terrain.grassQuadtreeDepth")),
             bIsInitialized(false),
+            renderTarget(nullptr),
             positioningData({}),
             grassProperties({}),
             terrainPositioningData({}),
@@ -42,10 +43,10 @@ namespace urchin {
         delete mainGrassQuadtree;
     }
 
-    void TerrainGrass::initialize(std::shared_ptr<RenderTarget> renderTarget) {
+    void TerrainGrass::initialize(RenderTarget& renderTarget) {
         assert(!bIsInitialized);
 
-        this->renderTarget = std::move(renderTarget);
+        this->renderTarget = &renderTarget;
 
         bIsInitialized = true;
     }
@@ -200,9 +201,9 @@ namespace urchin {
     }
 
     void TerrainGrass::createRenderers(const std::vector<TerrainGrassQuadtree*>& leafGrassPatches) {
-        if (grassTexture) {
+        if (grassTexture && renderTarget) {
             for (auto* grassQuadtree : leafGrassPatches) {
-                auto renderer = GenericRendererBuilder::create("grass", renderTarget, terrainGrassShader, ShapeType::POINT)
+                auto renderer = GenericRendererBuilder::create("grass", *renderTarget, terrainGrassShader, ShapeType::POINT)
                         ->enableDepthOperations()
                         ->disableCullFace()
                         ->addData(grassQuadtree->getGrassVertices())

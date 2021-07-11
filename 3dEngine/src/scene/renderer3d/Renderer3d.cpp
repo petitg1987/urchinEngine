@@ -20,35 +20,35 @@ namespace urchin {
     bool DEBUG_DISPLAY_MODEL_BASE_BONES = false;
     bool DEBUG_DISPLAY_LIGHTS_OCTREE = false;
 
-    Renderer3d::Renderer3d(std::shared_ptr<RenderTarget> finalRenderTarget) :
-            finalRenderTarget(std::move(finalRenderTarget)),
-            sceneWidth(this->finalRenderTarget->getWidth()),
-            sceneHeight(this->finalRenderTarget->getHeight()),
+    Renderer3d::Renderer3d(RenderTarget& finalRenderTarget) :
+            finalRenderTarget(finalRenderTarget),
+            sceneWidth(finalRenderTarget.getWidth()),
+            sceneHeight(finalRenderTarget.getHeight()),
             paused(true),
             camera(nullptr),
 
             //deferred rendering
-            deferredRenderTarget(std::make_shared<OffscreenRender>("deferred rendering - first pass", RenderTarget::READ_WRITE_DEPTH_ATTACHMENT)),
+            deferredRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - first pass", RenderTarget::READ_WRITE_DEPTH_ATTACHMENT)),
             modelSetDisplayer(std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE)),
             modelOctreeManager(new OctreeManager<Model>(20.0f)),
             fogManager(new FogManager()),
-            terrainManager(new TerrainManager(deferredRenderTarget)),
-            waterManager(new WaterManager(deferredRenderTarget)),
-            skyManager(new SkyManager(deferredRenderTarget)),
-            geometryManager(new GeometryManager(deferredRenderTarget)),
-            lightManager(new LightManager(deferredRenderTarget)),
+            terrainManager(new TerrainManager(*deferredRenderTarget)),
+            waterManager(new WaterManager(*deferredRenderTarget)),
+            skyManager(new SkyManager(*deferredRenderTarget)),
+            geometryManager(new GeometryManager(*deferredRenderTarget)),
+            lightManager(new LightManager(*deferredRenderTarget)),
             ambientOcclusionManager(new AmbientOcclusionManager()),
             shadowManager(new ShadowManager(lightManager, modelOctreeManager)),
 
             //lighting pass rendering
-            offscreenLightingRenderTarget(std::make_shared<OffscreenRender>("deferred rendering - second pass", RenderTarget::NO_DEPTH_ATTACHMENT)),
+            offscreenLightingRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - second pass", RenderTarget::NO_DEPTH_ATTACHMENT)),
             positioningData({}),
             visualOption({}),
-            antiAliasingManager(new AntiAliasingManager(this->finalRenderTarget)),
+            antiAliasingManager(new AntiAliasingManager(finalRenderTarget)),
             isAntiAliasingActivated(true) {
 
         //deferred rendering
-        modelSetDisplayer->initialize(deferredRenderTarget);
+        modelSetDisplayer->initialize(*deferredRenderTarget);
         shadowManager->addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
 
         //lighting pass rendering
@@ -311,16 +311,14 @@ namespace urchin {
         deferredRenderTarget->initialize();
 
         //lighting pass rendering
-        std::shared_ptr<RenderTarget> lightingRenderTarget;
+        RenderTarget* lightingRenderTarget = &finalRenderTarget;
         if (isAntiAliasingActivated) {
             lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
             offscreenLightingRenderTarget->resetTextures();
             offscreenLightingRenderTarget->addTexture(lightingPassTexture);
             offscreenLightingRenderTarget->initialize();
 
-            lightingRenderTarget = offscreenLightingRenderTarget;
-        } else {
-            lightingRenderTarget = finalRenderTarget;
+            lightingRenderTarget = offscreenLightingRenderTarget.get();
         }
 
         std::vector<Point2<float>> vertexCoord = {
@@ -332,7 +330,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
 
-        auto lightingRendererBuilder = GenericRendererBuilder::create("deferred rendering - second pass", lightingRenderTarget, lightingShader, ShapeType::TRIANGLE)
+        auto lightingRendererBuilder = GenericRendererBuilder::create("deferred rendering - second pass", *lightingRenderTarget, lightingShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
@@ -478,7 +476,7 @@ namespace urchin {
 
     void Renderer3d::renderDebugSceneData() {
         if (DEBUG_DISPLAY_MODELS_OCTREE) {
-            debugModelOctree = OctreeRenderer::createOctreeModel(modelOctreeManager, deferredRenderTarget, camera->getProjectionMatrix());
+            debugModelOctree = OctreeRenderer::createOctreeModel(modelOctreeManager, *deferredRenderTarget, camera->getProjectionMatrix());
             debugModelOctree->prepareRendering(camera->getViewMatrix());
         }
 

@@ -44,7 +44,7 @@ namespace urchin {
 
     void RenderTarget::addRenderer(const std::shared_ptr<GenericRenderer>& renderer) {
         #ifndef NDEBUG
-            assert(renderer->getRenderTarget().get() == this);
+            assert(&renderer->getRenderTarget() == this);
             for (auto& r : renderers) {
                 assert(r.lock() != renderer);
             }

@@ -23,7 +23,7 @@ namespace urchin {
             explicit ModelSetDisplayer(DisplayMode displayMode);
             ~ModelSetDisplayer();
 
-            void initialize(std::shared_ptr<RenderTarget>);
+            void initialize(RenderTarget&);
             void onCameraProjectionUpdate(const Camera*);
 
             void setCustomShader(const std::string&, const std::string&, std::unique_ptr<ShaderConstants>);
@@ -49,7 +49,7 @@ namespace urchin {
 
             CustomModelShaderVariable* customModelShaderVariable;
 
-            std::shared_ptr<RenderTarget> renderTarget;
+            RenderTarget* renderTarget;
             std::vector<Model*> models;
             std::unordered_map<Model*, std::unique_ptr<ModelDisplayer>> modelsDisplayer;
     };

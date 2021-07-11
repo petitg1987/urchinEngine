@@ -7,6 +7,7 @@ namespace urchin {
 
     Water::Water() :
             isInitialized(false),
+            renderTarget(nullptr),
             positioningData({}),
             waterProperties({}),
             xSize(0.0f),
@@ -39,8 +40,8 @@ namespace urchin {
         setGradient(0.5f);
     }
 
-    void Water::initialize(std::shared_ptr<RenderTarget> renderTarget) {
-        this->renderTarget = std::move(renderTarget);
+    void Water::initialize(RenderTarget& renderTarget) {
+        this->renderTarget = &renderTarget;
 
         updateRenderer();
 
@@ -68,7 +69,7 @@ namespace urchin {
                     Point2<float>(0.0f, 0.0f), Point2<float>(sRepeat, 0.0f), Point2<float>(sRepeat, tRepeat),
                     Point2<float>(0.0f, 0.0f), Point2<float>(sRepeat, tRepeat), Point2<float>(0.0f, tRepeat)
             };
-            waterRenderer = GenericRendererBuilder::create("water", renderTarget, waterShader, ShapeType::TRIANGLE)
+            waterRenderer = GenericRendererBuilder::create("water", *renderTarget, waterShader, ShapeType::TRIANGLE)
                     ->enableDepthOperations()
                     ->addData(vertexCoord)
                     ->addData(textureCoord)

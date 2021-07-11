@@ -18,7 +18,7 @@ namespace urchin {
             previousTime(),
             fps(STARTUP_FPS),
             fpsForDisplay((unsigned int)STARTUP_FPS),
-            screenRenderTarget(std::make_shared<ScreenRender>("screen", RenderTarget::NO_DEPTH_ATTACHMENT)),
+            screenRenderTarget(std::make_unique<ScreenRender>("screen", RenderTarget::NO_DEPTH_ATTACHMENT)),
             activeRenderer3d(nullptr),
             activeUiRenderers(nullptr) {
         //scene properties
@@ -110,7 +110,7 @@ namespace urchin {
     }
 
     Renderer3d& SceneManager::newRenderer3d(bool enable) {
-        auto renderer3d = std::make_unique<Renderer3d>(screenRenderTarget);
+        auto renderer3d = std::make_unique<Renderer3d>(*screenRenderTarget);
         if (enable) {
             enableRenderer3d(renderer3d.get());
         }
@@ -138,7 +138,7 @@ namespace urchin {
     }
 
     UIRenderer& SceneManager::newUIRenderer(bool enable) {
-        auto uiRenderer = std::make_unique<UIRenderer>(screenRenderTarget, i18nService);
+        auto uiRenderer = std::make_unique<UIRenderer>(*screenRenderTarget, i18nService);
         if (enable) {
             enableUIRenderer(uiRenderer.get());
         }
