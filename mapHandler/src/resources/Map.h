@@ -50,7 +50,7 @@ namespace urchin {
             void addSceneWater(SceneWater*);
             void removeSceneWater(SceneWater*);
 
-            const SceneSky* getSceneSky() const;
+            const SceneSky& getSceneSky() const;
             void updateSceneSky(std::unique_ptr<Skybox> skybox);
 
             const std::list<SceneSound*>& getSceneSounds() const;
@@ -58,7 +58,7 @@ namespace urchin {
             void addSceneSound(SceneSound*);
             void removeSceneSound(SceneSound*);
 
-            const SceneAI* getSceneAI() const;
+            const SceneAI& getSceneAI() const;
             void updateSceneAI(std::unique_ptr<NavMeshAgent>);
 
             void refreshMap();
@@ -110,9 +110,9 @@ namespace urchin {
             std::list<SceneLight*> sceneLights;
             std::list<SceneTerrain*> sceneTerrains;
             std::list<SceneWater*> sceneWaters;
-            SceneSky* sceneSky;
+            std::unique_ptr<SceneSky> sceneSky;
             std::list<SceneSound*> sceneSounds;
-            SceneAI* sceneAI;
+            std::unique_ptr<SceneAI> sceneAI;
     };
 
 }

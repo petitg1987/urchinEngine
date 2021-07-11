@@ -10,15 +10,12 @@ namespace urchin {
             physicsWorld(physicsWorld),
             soundManager(soundManager),
             aiManager(aiManager),
-            sceneSky(new SceneSky(renderer3d)),
-            sceneAI(new SceneAI(aiManager)) {
+            sceneSky(std::make_unique<SceneSky>(renderer3d)),
+            sceneAI(std::make_unique<SceneAI>(aiManager)) {
 
     }
 
     Map::~Map() {
-        delete sceneAI;
-        delete sceneSky;
-
         for (SceneObject* sceneObject : sceneObjects) {
             delete sceneObject;
         }
@@ -306,8 +303,8 @@ namespace urchin {
         delete sceneWater;
     }
 
-    const SceneSky* Map::getSceneSky() const {
-        return sceneSky;
+    const SceneSky& Map::getSceneSky() const {
+        return *sceneSky;
     }
 
     void Map::updateSceneSky(std::unique_ptr<Skybox> skybox) {
@@ -338,8 +335,8 @@ namespace urchin {
         delete sceneSound;
     }
 
-    const SceneAI* Map::getSceneAI() const {
-        return sceneAI;
+    const SceneAI& Map::getSceneAI() const {
+        return *sceneAI;
     }
 
     void Map::updateSceneAI(std::unique_ptr<NavMeshAgent> navMeshAgent) {
