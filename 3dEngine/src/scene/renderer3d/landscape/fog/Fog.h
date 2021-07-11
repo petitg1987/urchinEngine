@@ -11,7 +11,7 @@ namespace urchin {
 
             float getDensity() const;
             float getGradient() const;
-            const Vector3<float>& getColor();
+            const Vector3<float>& getColor() const;
             float getMaxHeight() const;
 
         private:

@@ -87,7 +87,7 @@ namespace urchin {
     }
 
     void Water::buildUnderwaterFog() {
-        underwaterFog = std::make_shared<Fog>(density, gradient, waterProperties.color, centerPosition.Y);
+        underwaterFog = std::make_unique<Fog>(density, gradient, waterProperties.color, centerPosition.Y);
     }
 
     void Water::setCenterPosition(const Point3<float>& centerPosition) {
@@ -243,12 +243,12 @@ namespace urchin {
     void Water::prepareRendering(const Camera* camera, FogManager* fogManager, float dt) {
         assert(isInitialized);
         if (camera->getPosition().Y < centerPosition.Y && waterRectangle->collideWithPoint(Point2<float>(camera->getPosition().X, camera->getPosition().Z))) {
-            if (fogManager->getActiveFog() != underwaterFog) {
-                fogManager->pushFog(underwaterFog);
+            if (fogManager->getActiveFog() != underwaterFog.get()) {
+                fogManager->pushFog(underwaterFog.get());
                 notifyObservers(this, NotificationType::MOVE_UNDER_WATER);
             }
         } else {
-            if (fogManager->getActiveFog() == underwaterFog) {
+            if (fogManager->getActiveFog() == underwaterFog.get()) {
                 fogManager->popFog();
                 notifyObservers(this, NotificationType::MOVE_ABOVE_WATER);
             }

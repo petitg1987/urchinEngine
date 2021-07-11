@@ -14,16 +14,16 @@ namespace urchin {
         public:
             FogManager();
 
-            void pushFog(const std::shared_ptr<Fog>&);
+            void pushFog(const Fog*);
             void popFog();
-            std::shared_ptr<const Fog> getActiveFog() const;
+            const Fog* getActiveFog() const;
 
             void setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>&);
 
             void loadFog(const std::shared_ptr<GenericRenderer>&);
 
         private:
-            std::stack<std::shared_ptr<Fog>> fogs;
+            std::stack<const Fog*> fogs;
             struct {
                 alignas(4) bool hasFog;
                 alignas(4) float density;

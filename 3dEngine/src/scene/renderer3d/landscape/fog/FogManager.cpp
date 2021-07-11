@@ -3,11 +3,11 @@
 namespace urchin {
 
     FogManager::FogManager() :
-        fogData({}) {
+            fogData({}) {
 
     }
 
-    void FogManager::pushFog(const std::shared_ptr<Fog>& fog) {
+    void FogManager::pushFog(const Fog* fog) {
         fogs.push(fog);
     }
 
@@ -17,7 +17,7 @@ namespace urchin {
         }
     }
 
-    std::shared_ptr<const Fog> FogManager::getActiveFog() const {
+    const Fog* FogManager::getActiveFog() const {
         if (fogs.empty()) {
             return nullptr;
         }

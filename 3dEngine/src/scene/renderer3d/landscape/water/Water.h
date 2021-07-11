@@ -93,7 +93,7 @@ namespace urchin {
 
             float density;
             float gradient;
-            std::shared_ptr<Fog> underwaterFog;
+            std::unique_ptr<Fog> underwaterFog;
 
             std::shared_ptr<GenericRenderer> waterRenderer;
 
