@@ -43,7 +43,7 @@ namespace urchin {
             const std::shared_ptr<Texture>& getAmbientOcclusionTexture() const;
 
             void updateAOTexture(const Camera*);
-            void loadAOTexture(const std::shared_ptr<GenericRenderer>&, std::size_t) const;
+            void loadAOTexture(GenericRenderer&, std::size_t) const;
 
         private:
             struct AmbientOcclusionShaderConst {
@@ -78,7 +78,7 @@ namespace urchin {
             unsigned int textureSizeX, textureSizeY;
 
             //frame buffer object
-            std::shared_ptr<OffscreenRender> offscreenRenderTarget;
+            std::unique_ptr<OffscreenRender> offscreenRenderTarget;
             std::shared_ptr<Texture> ambientOcclusionTexture;
 
             //ambient occlusion shader
@@ -95,7 +95,7 @@ namespace urchin {
             //visual data
             std::shared_ptr<Texture> depthTexture;
             std::shared_ptr<Texture> normalAndAmbientTexture;
-            std::shared_ptr<GenericRenderer> renderer;
+            std::unique_ptr<GenericRenderer> renderer;
 
             std::unique_ptr<BilateralBlurFilter> verticalBlurFilter;
             std::unique_ptr<BilateralBlurFilter> horizontalBlurFilter;

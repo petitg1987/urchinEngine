@@ -15,12 +15,12 @@ namespace urchin {
         }
     }
 
-    void TerrainGrassQuadtree::setRenderer(const std::shared_ptr<GenericRenderer>& renderer) {
-        this->renderer = renderer;
+    void TerrainGrassQuadtree::setRenderer(std::unique_ptr<GenericRenderer> renderer) {
+        this->renderer = std::move(renderer);
     }
 
-    const std::shared_ptr<GenericRenderer>& TerrainGrassQuadtree::getRenderer() const {
-        return renderer;
+    GenericRenderer* TerrainGrassQuadtree::getRenderer() const {
+        return renderer.get();
     }
 
     bool TerrainGrassQuadtree::isLeaf() const {

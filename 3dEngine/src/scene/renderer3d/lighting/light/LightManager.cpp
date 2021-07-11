@@ -131,7 +131,7 @@ namespace urchin {
         sort(visibleLights.begin(), visibleLights.end(), std::greater<>());
     }
 
-    void LightManager::loadVisibleLights(const std::shared_ptr<GenericRenderer>& lightingRenderer) {
+    void LightManager::loadVisibleLights(GenericRenderer& lightingRenderer) {
         const std::vector<Light*>& lights = getVisibleLights();
 
         for (unsigned int i = 0; i < maxLights; ++i) {
@@ -159,8 +159,8 @@ namespace urchin {
             }
         }
 
-        lightingRenderer->updateUniformData(2, lightsData.data());
-        lightingRenderer->updateUniformData(3, &globalAmbientColor);
+        lightingRenderer.updateUniformData(2, lightsData.data());
+        lightingRenderer.updateUniformData(3, &globalAmbientColor);
     }
 
     void LightManager::postUpdateVisibleLights() {

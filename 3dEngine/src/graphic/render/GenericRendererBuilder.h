@@ -52,7 +52,7 @@ namespace urchin {
             std::shared_ptr<GenericRendererBuilder> lineWidth(float);
             float getLineWidth() const;
 
-            std::shared_ptr<GenericRenderer> build();
+            std::unique_ptr<GenericRenderer> build();
 
         private:
             GenericRendererBuilder(std::string, RenderTarget&, const Shader&, ShapeType);

@@ -108,7 +108,7 @@ namespace urchin {
     }
 
     void Window::prepareWidgetRendering(float) {
-        updateTranslateVector(windowRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
+        updateTranslateVector(windowRenderer.get(), Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
         windowRenderer->enableRenderer();
     }
 

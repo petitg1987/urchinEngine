@@ -60,7 +60,7 @@ namespace urchin {
             //visual
             std::vector<Point2<float>> vertexCoord;
             std::vector<Point2<float>> textureCoord;
-            std::shared_ptr<GenericRenderer> textRenderer;
+            std::unique_ptr<GenericRenderer> textRenderer;
     };
 
 }

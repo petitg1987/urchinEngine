@@ -217,13 +217,13 @@ namespace urchin {
 
     void TextBox::prepareWidgetRendering(float dt) {
         //text box
-        updateTranslateVector(textBoxRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
+        updateTranslateVector(textBoxRenderer.get(), Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
         textBoxRenderer->enableRenderer();
 
         //cursor
         cursorBlink += dt * CURSOR_BLINK_SPEED;
         if (state == ACTIVE && ((int)cursorBlink % 2) > 0) {
-            updateTranslateVector(cursorRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()) + Vector2<int>((int)cursorPosition, 0));
+            updateTranslateVector(cursorRenderer.get(), Vector2<int>(getGlobalPositionX(), getGlobalPositionY()) + Vector2<int>((int)cursorPosition, 0));
             cursorRenderer->enableRenderer();
         }
     }

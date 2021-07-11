@@ -54,7 +54,7 @@ namespace urchin {
             //visual
             std::shared_ptr<Texture> texTextBoxDefault, texTextBoxFocus;
             std::shared_ptr<Texture> texCursorDiffuse;
-            std::shared_ptr<GenericRenderer> textBoxRenderer, cursorRenderer;
+            std::unique_ptr<GenericRenderer> textBoxRenderer, cursorRenderer;
     };
 
 }

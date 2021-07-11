@@ -50,7 +50,7 @@ namespace urchin {
             Text* currentValueText;
             StaticBitmap *cursorImage;
             std::shared_ptr<Texture> texSliderLine;
-            std::shared_ptr<GenericRenderer> sliderRenderer;
+            std::unique_ptr<GenericRenderer> sliderRenderer;
     };
 
 }

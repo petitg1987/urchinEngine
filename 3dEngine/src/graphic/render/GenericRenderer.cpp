@@ -48,6 +48,7 @@ namespace urchin {
     GenericRenderer::~GenericRenderer() {
         cleanup();
         uniformTextureReaders.clear();
+        renderTarget.removeRenderer(this);
     }
 
     void GenericRenderer::initialize() {

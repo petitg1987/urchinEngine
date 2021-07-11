@@ -31,7 +31,7 @@ namespace urchin {
 
             //visual
             std::shared_ptr<Texture> texChecked, texUnchecked;
-            std::shared_ptr<GenericRenderer> checkBoxRenderer;
+            std::unique_ptr<GenericRenderer> checkBoxRenderer;
     };
 
 }

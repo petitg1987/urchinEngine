@@ -504,18 +504,18 @@ namespace urchin {
         positioningData.viewPosition = camera->getPosition();
         lightingRenderer->updateUniformData(0, &positioningData);
 
-        lightManager->loadVisibleLights(lightingRenderer);
+        lightManager->loadVisibleLights(*lightingRenderer);
 
-        fogManager->loadFog(lightingRenderer);
+        fogManager->loadFog(*lightingRenderer);
 
         if (visualOption.isAmbientOcclusionActivated) {
             std::size_t ambientOcclusionTexUnit = 3;
-            ambientOcclusionManager->loadAOTexture(lightingRenderer, ambientOcclusionTexUnit);
+            ambientOcclusionManager->loadAOTexture(*lightingRenderer, ambientOcclusionTexUnit);
         }
 
         if (visualOption.isShadowActivated) {
             std::size_t shadowMapTexUnit = 4;
-            shadowManager->loadShadowMaps(lightingRenderer, shadowMapTexUnit);
+            shadowManager->loadShadowMaps(*lightingRenderer, shadowMapTexUnit);
         }
 
         if (isAntiAliasingActivated) {

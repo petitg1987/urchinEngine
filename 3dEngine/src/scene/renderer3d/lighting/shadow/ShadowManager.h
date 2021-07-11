@@ -60,7 +60,7 @@ namespace urchin {
 
             void forceUpdateAllShadowMaps();
             void updateShadowMaps();
-            void loadShadowMaps(const std::shared_ptr<GenericRenderer>&, std::size_t);
+            void loadShadowMaps(GenericRenderer&, std::size_t);
 
         private:
             //light handling

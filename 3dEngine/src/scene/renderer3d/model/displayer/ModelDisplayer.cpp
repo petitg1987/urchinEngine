@@ -83,7 +83,7 @@ namespace urchin {
             meshRenderer->updateUniformData(1, &meshData);
 
             if (customModelShaderVariable) {
-                customModelShaderVariable->loadCustomShaderVariables(meshRenderer);
+                customModelShaderVariable->loadCustomShaderVariables(*meshRenderer);
             }
 
             meshRenderer->enableRenderer();

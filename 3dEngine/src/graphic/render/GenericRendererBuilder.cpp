@@ -155,9 +155,9 @@ namespace urchin {
         return pLineWidth;
     }
 
-    std::shared_ptr<GenericRenderer> GenericRendererBuilder::build() {
-        auto renderer = std::make_shared<GenericRenderer>(this);
-        renderTarget.addRenderer(renderer);
+    std::unique_ptr<GenericRenderer> GenericRendererBuilder::build() {
+        auto renderer = std::make_unique<GenericRenderer>(this);
+        renderTarget.addRenderer(renderer.get());
 
         return renderer;
     }

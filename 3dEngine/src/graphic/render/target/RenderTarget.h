@@ -38,7 +38,8 @@ namespace urchin {
             bool isReadableDepthAttachment() const;
             const std::shared_ptr<Texture>& getDepthTexture() const;
 
-            void addRenderer(const std::shared_ptr<GenericRenderer>&);
+            void addRenderer(GenericRenderer*);
+            void removeRenderer(const GenericRenderer*);
             void notifyRendererEnabled(GenericRenderer*);
             void notifyRendererDisabled(GenericRenderer*);
             void disableAllRenderers();
@@ -46,7 +47,6 @@ namespace urchin {
             virtual void render() = 0;
 
         protected:
-            void refreshWeakRenderers();
             void initializeRenderers();
             void cleanupRenderers();
             bool hasRenderer();
@@ -86,7 +86,7 @@ namespace urchin {
             mutable std::vector<VkSemaphore> queueSubmitWaitSemaphores;
             mutable std::vector<VkPipelineStageFlags> queueSubmitWaitStages;
 
-            std::list<std::weak_ptr<GenericRenderer>> renderers; //use weak_ptr to avoid cyclic reference with GenericRenderer
+            std::list<GenericRenderer*> renderers;
             bool renderersDirty;
     };
 

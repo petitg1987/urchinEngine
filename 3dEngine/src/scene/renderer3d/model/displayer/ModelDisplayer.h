@@ -34,7 +34,7 @@ namespace urchin {
             } meshData;
             CustomModelShaderVariable* customModelShaderVariable;
 
-            std::vector<std::shared_ptr<GenericRenderer>> meshRenderers;
+            std::vector<std::unique_ptr<GenericRenderer>> meshRenderers;
             std::unique_ptr<AABBoxModel> aabboxModel;
     };
 

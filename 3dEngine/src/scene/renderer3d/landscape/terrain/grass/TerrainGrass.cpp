@@ -58,7 +58,7 @@ namespace urchin {
     void TerrainGrass::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
 
-        for(auto& renderer: getAllRenderers()) {
+        for(auto* renderer: getAllRenderers()) {
             renderer->updateUniformData(3, &projectionMatrix);
         }
     }
@@ -70,7 +70,7 @@ namespace urchin {
         terrainPositioningData.minPoint = mesh->getVertices()[0];
         terrainPositioningData.maxPoint = mesh->getVertices()[mesh->getXSize() * mesh->getZSize() - 1];
 
-        for(auto& renderer: getAllRenderers()) {
+        for(auto* renderer: getAllRenderers()) {
             renderer->updateUniformData(2, &terrainPositioningData);
         }
     }
@@ -79,7 +79,7 @@ namespace urchin {
         assert(bIsInitialized);
         this->ambient = ambient;
 
-        for(auto& renderer: getAllRenderers()) {
+        for(auto* renderer: getAllRenderers()) {
             renderer->updateUniformData(4, &ambient);
         }
     }
@@ -217,13 +217,13 @@ namespace urchin {
                         ->addUniformTextureReader(TextureReader::build(grassMaskTexture, TextureParam::buildLinear())) //binding 6
                         ->build();
 
-                grassQuadtree->setRenderer(renderer);
+                grassQuadtree->setRenderer(std::move(renderer));
             }
         }
     }
 
-    std::vector<std::shared_ptr<GenericRenderer>> TerrainGrass::getAllRenderers() const {
-        std::vector<std::shared_ptr<GenericRenderer>> renderers;
+    std::vector<GenericRenderer*> TerrainGrass::getAllRenderers() const {
+        std::vector<GenericRenderer*> renderers;
 
         if (mainGrassQuadtree != nullptr) {
             grassQuadtrees.clear();
@@ -284,7 +284,7 @@ namespace urchin {
         assert(grassDisplayDistance != 0.0f);
         grassProperties.displayDistance = grassDisplayDistance;
 
-        for(auto& renderer: getAllRenderers()) {
+        for(auto* renderer: getAllRenderers()) {
             renderer->updateUniformData(1, &grassProperties);
         }
     }
@@ -296,7 +296,7 @@ namespace urchin {
     void TerrainGrass::setGrassHeight(float grassHeight) {
         grassProperties.height = grassHeight;
 
-        for(auto& renderer: getAllRenderers()) {
+        for(auto* renderer: getAllRenderers()) {
             renderer->updateUniformData(1, &grassProperties);
         }
     }
@@ -308,7 +308,7 @@ namespace urchin {
     void TerrainGrass::setGrassLength(float grassLength) {
         grassProperties.length = grassLength;
 
-        for(auto& renderer: getAllRenderers()) {
+        for(auto* renderer: getAllRenderers()) {
             renderer->updateUniformData(1, &grassProperties);
         }
     }
@@ -320,7 +320,7 @@ namespace urchin {
     void TerrainGrass::setNumGrassInTexture(unsigned int numGrassInTex) {
         grassProperties.numGrassInTex = (int)numGrassInTex;
 
-        for(auto& renderer: getAllRenderers()) {
+        for(auto* renderer: getAllRenderers()) {
             renderer->updateUniformData(1, &grassProperties);
         }
     }
@@ -342,7 +342,7 @@ namespace urchin {
     void TerrainGrass::setWindDirection(const Vector3<float>& windDirection) {
         grassProperties.windDirection = windDirection.normalize();
 
-        for(auto& renderer: getAllRenderers()) {
+        for(auto* renderer: getAllRenderers()) {
             renderer->updateUniformData(1, &grassProperties);
         }
     }
@@ -354,7 +354,7 @@ namespace urchin {
     void TerrainGrass::setWindStrength(float windStrength) {
         grassProperties.windStrength = windStrength;
 
-        for(auto& renderer: getAllRenderers()) {
+        for(auto* renderer: getAllRenderers()) {
             renderer->updateUniformData(1, &grassProperties);
         }
     }

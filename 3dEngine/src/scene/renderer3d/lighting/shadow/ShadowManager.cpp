@@ -275,15 +275,15 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::loadShadowMaps(const std::shared_ptr<GenericRenderer>& lightingRenderer, std::size_t shadowMapTexUnit) {
+    void ShadowManager::loadShadowMaps(GenericRenderer& lightingRenderer, std::size_t shadowMapTexUnit) {
         std::size_t shadowLightIndex = 0;
         for (auto* visibleLight : lightManager->getVisibleLights()) {
             if (visibleLight->isProduceShadow()) {
                 assert(shadowLightIndex < getMaxShadowLights());
                 const LightShadowMap* lightShadowMap = lightShadowMaps.find(visibleLight)->second;
 
-                if (lightingRenderer->getUniformTextureReader(shadowMapTexUnit, shadowLightIndex)->getTexture() != lightShadowMap->getFilteredShadowMapTexture()) {
-                    lightingRenderer->updateUniformTextureReaderArray(shadowMapTexUnit, shadowLightIndex, TextureReader::build(lightShadowMap->getFilteredShadowMapTexture(), TextureParam::buildLinear()));
+                if (lightingRenderer.getUniformTextureReader(shadowMapTexUnit, shadowLightIndex)->getTexture() != lightShadowMap->getFilteredShadowMapTexture()) {
+                    lightingRenderer.updateUniformTextureReaderArray(shadowMapTexUnit, shadowLightIndex, TextureReader::build(lightShadowMap->getFilteredShadowMapTexture(), TextureParam::buildLinear()));
                 }
 
                 unsigned int shadowMapIndex = 0;
@@ -302,8 +302,8 @@ namespace urchin {
             depthSplitDistance[shadowMapIndex * 4] = ((projectionMatrix(2, 2) * -currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance));
         }
 
-        lightingRenderer->updateUniformData(4, lightProjectionViewMatrices);
-        lightingRenderer->updateUniformData(5, depthSplitDistance);
+        lightingRenderer.updateUniformData(4, lightProjectionViewMatrices);
+        lightingRenderer.updateUniformData(5, depthSplitDistance);
     }
 
 }

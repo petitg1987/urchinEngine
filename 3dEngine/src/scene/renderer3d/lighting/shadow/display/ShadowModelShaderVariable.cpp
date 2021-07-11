@@ -19,11 +19,11 @@ namespace urchin {
                 ->addUniformData(sizeof(layerToUpdate), &layerToUpdate); //binding 3
     }
 
-    void ShadowModelShaderVariable::loadCustomShaderVariables(const std::shared_ptr<GenericRenderer>& meshRenderer) {
+    void ShadowModelShaderVariable::loadCustomShaderVariables(GenericRenderer& meshRenderer) {
         refreshShaderVariables();
 
-        meshRenderer->updateUniformData(2, &projectionMatrices[0]);
-        meshRenderer->updateUniformData(3, &layerToUpdate);
+        meshRenderer.updateUniformData(2, &projectionMatrices[0]);
+        meshRenderer.updateUniformData(3, &layerToUpdate);
     }
 
     void ShadowModelShaderVariable::refreshShaderVariables() {

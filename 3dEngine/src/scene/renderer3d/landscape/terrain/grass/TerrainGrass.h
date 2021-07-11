@@ -58,7 +58,7 @@ namespace urchin {
             unsigned int retrieveVertexIndex(const Point2<float>&) const;
             void buildGrassQuadtree(const std::vector<TerrainGrassQuadtree*>&, unsigned int, unsigned int);
             void createRenderers(const std::vector<TerrainGrassQuadtree*>&);
-            std::vector<std::shared_ptr<GenericRenderer>> getAllRenderers() const;
+            std::vector<GenericRenderer*> getAllRenderers() const;
 
             const float grassPositionRandomPercentage;
             const float grassPatchSize;

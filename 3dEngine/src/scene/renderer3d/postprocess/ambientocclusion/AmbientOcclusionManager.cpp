@@ -270,9 +270,9 @@ namespace urchin {
         }
     }
 
-    void AmbientOcclusionManager::loadAOTexture(const std::shared_ptr<GenericRenderer>& lightingRenderer, std::size_t aoTextureUnit) const {
-        if (lightingRenderer->getUniformTextureReader(aoTextureUnit)->getTexture() != getAmbientOcclusionTexture()) {
-            lightingRenderer->updateUniformTextureReader(aoTextureUnit, TextureReader::build(getAmbientOcclusionTexture(), TextureParam::buildLinear()));
+    void AmbientOcclusionManager::loadAOTexture(GenericRenderer& lightingRenderer, std::size_t aoTextureUnit) const {
+        if (lightingRenderer.getUniformTextureReader(aoTextureUnit)->getTexture() != getAmbientOcclusionTexture()) {
+            lightingRenderer.updateUniformTextureReader(aoTextureUnit, TextureReader::build(getAmbientOcclusionTexture(), TextureParam::buildLinear()));
         }
     }
 

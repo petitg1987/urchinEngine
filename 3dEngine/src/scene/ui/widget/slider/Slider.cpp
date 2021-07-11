@@ -165,7 +165,7 @@ namespace urchin {
     }
 
     void Slider::prepareWidgetRendering(float) {
-        updateTranslateVector(sliderRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
+        updateTranslateVector(sliderRenderer.get(), Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
         sliderRenderer->enableRenderer();
     }
 

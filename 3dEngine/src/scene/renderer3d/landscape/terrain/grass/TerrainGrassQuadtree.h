@@ -14,8 +14,8 @@ namespace urchin {
             explicit TerrainGrassQuadtree(std::vector<TerrainGrassQuadtree*> );
             ~TerrainGrassQuadtree();
 
-            void setRenderer(const std::shared_ptr<GenericRenderer>&);
-            const std::shared_ptr<GenericRenderer>& getRenderer() const;
+            void setRenderer(std::unique_ptr<GenericRenderer>);
+            GenericRenderer* getRenderer() const;
 
             bool isLeaf() const;
             const std::unique_ptr<AABBox<float>>& getBox() const;
@@ -28,7 +28,7 @@ namespace urchin {
             const std::vector<Vector3<float>>& getGrassNormals() const;
 
         private:
-            std::shared_ptr<GenericRenderer> renderer;
+            std::unique_ptr<GenericRenderer> renderer;
 
             std::mutex mutexAddVertex;
             std::vector<TerrainGrassQuadtree*> children;

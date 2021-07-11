@@ -79,7 +79,7 @@ namespace urchin {
     }
 
     void CheckBox::prepareWidgetRendering(float) {
-        updateTranslateVector(checkBoxRenderer, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
+        updateTranslateVector(checkBoxRenderer.get(), Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
         checkBoxRenderer->enableRenderer();
     }
 }

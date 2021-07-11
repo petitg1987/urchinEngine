@@ -97,8 +97,8 @@ namespace urchin {
         return *textureFilterShader;
     }
 
-    const std::shared_ptr<GenericRenderer>& TextureFilter::getTextureRenderer() const {
-        return textureRenderer;
+    GenericRenderer& TextureFilter::getTextureRenderer() const {
+        return *textureRenderer;
     }
 
     /**

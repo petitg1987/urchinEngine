@@ -39,7 +39,7 @@ namespace urchin {
             Matrix4<float> translationMatrix;
 
             //visual
-            std::shared_ptr<GenericRenderer> skyboxRenderer;
+            std::unique_ptr<GenericRenderer> skyboxRenderer;
             std::unique_ptr<Shader> skyboxShader;
     };
 
