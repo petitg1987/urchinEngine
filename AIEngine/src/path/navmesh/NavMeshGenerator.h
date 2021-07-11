@@ -23,8 +23,8 @@ namespace urchin {
         public:
             NavMeshGenerator();
 
-            void setNavMeshAgent(std::shared_ptr<NavMeshAgent>);
-            const std::shared_ptr<NavMeshAgent>& getNavMeshAgent() const;
+            void setNavMeshAgent(std::unique_ptr<NavMeshAgent>);
+            const NavMeshAgent* getNavMeshAgent() const;
 
             std::shared_ptr<NavMesh> generate(AIWorld&);
             NavMesh copyLastGeneratedNavMesh() const;
@@ -55,7 +55,7 @@ namespace urchin {
             const float polygonMergePointsDistanceThreshold;
 
             mutable std::mutex navMeshMutex;
-            std::shared_ptr<NavMeshAgent> navMeshAgent;
+            std::unique_ptr<NavMeshAgent> navMeshAgent;
             std::shared_ptr<NavMesh> navMesh;
             std::atomic_bool needFullRefresh;
 

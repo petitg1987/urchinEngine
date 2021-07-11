@@ -77,12 +77,12 @@ namespace urchin {
     /**
       * Return point on un-expanded surface
       */
-    Point3<float> PolytopePlaneSurface::computeRealPoint(const Point2<float>& point, const std::shared_ptr<NavMeshAgent>& agent) const {
+    Point3<float> PolytopePlaneSurface::computeRealPoint(const Point2<float>& point, const NavMeshAgent& agent) const {
         Point3<float> pointOnExpandedSurface(point.X, 0.0, -point.Y);
         float shortestFaceDistance = normal.dotProduct(pointOnExpandedSurface.vector(ccwPoints[0]));
         pointOnExpandedSurface.Y += shortestFaceDistance / normal.Y;
 
-        float reduceDistance = - agent->computeExpandDistance(normal);
+        float reduceDistance = - agent.computeExpandDistance(normal);
         return pointOnExpandedSurface.translate(normal * reduceDistance);
     }
 

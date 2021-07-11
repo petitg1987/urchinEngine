@@ -21,7 +21,7 @@ namespace urchin {
         private:
             void setupNavMeshAgentBox(QVBoxLayout*);
 
-            void setupNavMeshAgentDataFrom(const std::shared_ptr<NavMeshAgent>&);
+            void setupNavMeshAgentDataFrom(const NavMeshAgent*);
 
             AIController* aiController;
 

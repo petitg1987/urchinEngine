@@ -78,10 +78,10 @@ namespace urchin {
     /**
      * Return point on un-expanded surface
      */
-    Point3<float> PolytopeTerrainSurface::computeRealPoint(const Point2<float>& point, const std::shared_ptr<NavMeshAgent>& agent) const {
+    Point3<float> PolytopeTerrainSurface::computeRealPoint(const Point2<float>& point, const NavMeshAgent& agent) const {
         Point3<float> expandedPoint = retrieveGlobalVertex(point);
 
-        float reduceDistance = - agent->computeExpandDistance(approximateNormal);
+        float reduceDistance = - agent.computeExpandDistance(approximateNormal);
         return expandedPoint.translate(approximateNormal * reduceDistance);
     }
 

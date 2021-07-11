@@ -1,7 +1,7 @@
 #include "NavMeshAgentReaderWriter.h"
 
 namespace urchin {
-    std::shared_ptr<NavMeshAgent> NavMeshAgentReaderWriter::loadFrom(const DataChunk* navMeshAgentChunk, const DataParser& dataParser) {
+    std::unique_ptr<NavMeshAgent> NavMeshAgentReaderWriter::loadFrom(const DataChunk* navMeshAgentChunk, const DataParser& dataParser) {
         auto agentHeightChunk = dataParser.getUniqueChunk(true, AGENT_HEIGHT_TAG, DataAttribute(), navMeshAgentChunk);
         float agentHeight = agentHeightChunk->getFloatValue();
         auto agentRadiusChunk = dataParser.getUniqueChunk(true, AGENT_RADIUS_TAG, DataAttribute(), navMeshAgentChunk);
@@ -11,14 +11,14 @@ namespace urchin {
         auto jumpDistanceChunk = dataParser.getUniqueChunk(true, JUMP_DISTANCE_TAG, DataAttribute(), navMeshAgentChunk);
         float jumpDistance = jumpDistanceChunk->getFloatValue();
 
-        std::shared_ptr<NavMeshAgent> navMeshAgent = std::make_shared<NavMeshAgent>(NavMeshAgent(agentHeight, agentRadius));
+        std::unique_ptr<NavMeshAgent> navMeshAgent = std::make_unique<NavMeshAgent>(NavMeshAgent(agentHeight, agentRadius));
         navMeshAgent->setMaxSlope(maxSlopeInRadian);
         navMeshAgent->setJumpDistance(jumpDistance);
 
         return navMeshAgent;
     }
 
-    void NavMeshAgentReaderWriter::writeOn(DataChunk* navMeshAgentChunk, const std::shared_ptr<const NavMeshAgent>& navMeshAgent, DataWriter& dataWriter) {
+    void NavMeshAgentReaderWriter::writeOn(DataChunk* navMeshAgentChunk, const NavMeshAgent* navMeshAgent, DataWriter& dataWriter) {
         auto agentHeightChunk = dataWriter.createChunk(AGENT_HEIGHT_TAG, DataAttribute(), navMeshAgentChunk);
         agentHeightChunk->setFloatValue(navMeshAgent->getAgentHeight());
         auto agentRadiusChunk = dataWriter.createChunk(AGENT_RADIUS_TAG, DataAttribute(), navMeshAgentChunk);

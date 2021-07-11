@@ -21,14 +21,14 @@ namespace urchin {
     NavMeshGenerator::NavMeshGenerator() :
             polygonMinDotProductThreshold(std::cos(AngleConverter<float>::toRadian(ConfigService::instance()->getFloatValue("navMesh.polygonRemoveAngleThresholdInDegree")))),
             polygonMergePointsDistanceThreshold(ConfigService::instance()->getFloatValue("navMesh.polygonMergePointsDistanceThreshold")),
-            navMeshAgent(std::make_shared<NavMeshAgent>()),
+            navMeshAgent(std::make_unique<NavMeshAgent>()),
             navMesh(std::make_shared<NavMesh>()),
             needFullRefresh(false),
             navigationObjects(AABBTree<std::shared_ptr<NavObject>>(ConfigService::instance()->getFloatValue("navMesh.polytopeAabbTreeFatMargin"))) {
 
     }
 
-    void NavMeshGenerator::setNavMeshAgent(std::shared_ptr<NavMeshAgent> navMeshAgent) {
+    void NavMeshGenerator::setNavMeshAgent(std::unique_ptr<NavMeshAgent> navMeshAgent) {
         std::lock_guard<std::mutex> lock(navMeshMutex);
 
         this->navMeshAgent = std::move(navMeshAgent);
@@ -39,8 +39,8 @@ namespace urchin {
         this->navigationObjects.updateFatMargin(navigationObjectsMargin);
     }
 
-    const std::shared_ptr<NavMeshAgent>& NavMeshGenerator::getNavMeshAgent() const {
-        return navMeshAgent;
+    const NavMeshAgent* NavMeshGenerator::getNavMeshAgent() const {
+        return navMeshAgent.get();
     }
 
     NavMesh NavMeshGenerator::copyLastGeneratedNavMesh() const {
@@ -70,6 +70,7 @@ namespace urchin {
     }
 
     void NavMeshGenerator::updateExpandedPolytopes(AIWorld& aiWorld) {
+        assert(navMeshAgent);
         ScopeProfiler sp(Profiler::ai(), "upExpandPoly");
 
         newOrMovingNavObjectsToRefresh.clear();
@@ -87,13 +88,13 @@ namespace urchin {
 
                 if (aiEntity->getType() == AIEntity::OBJECT) {
                     auto aiObject = std::dynamic_pointer_cast<AIObject>(aiEntity);
-                    std::vector<std::unique_ptr<Polytope>> objectExpandedPolytopes = PolytopeBuilder::instance()->buildExpandedPolytopes(aiObject, navMeshAgent);
+                    std::vector<std::unique_ptr<Polytope>> objectExpandedPolytopes = PolytopeBuilder::instance()->buildExpandedPolytopes(aiObject, *navMeshAgent);
                     for (auto& objectExpandedPolytope : objectExpandedPolytopes) {
                         addNavObject(aiObject, std::move(objectExpandedPolytope));
                     }
                 } else if (aiEntity->getType() == AIEntity::TERRAIN) {
                     auto aiTerrain = std::dynamic_pointer_cast<AITerrain>(aiEntity);
-                    std::vector<std::unique_ptr<Polytope>> terrainExpandedPolytopes = PolytopeBuilder::instance()->buildExpandedPolytope(aiTerrain, navMeshAgent);
+                    std::vector<std::unique_ptr<Polytope>> terrainExpandedPolytopes = PolytopeBuilder::instance()->buildExpandedPolytope(aiTerrain, *navMeshAgent);
                     for (auto& terrainExpandedPolytope : terrainExpandedPolytopes) {
                         addNavObject(aiTerrain, std::move(terrainExpandedPolytope));
                     }
@@ -339,7 +340,7 @@ namespace urchin {
 
         for (const auto& polygonComponent : polygonPoints) {
             for (const auto& polygonPoint : polygonComponent) {
-                elevatedPoints.push_back(walkableSurface->computeRealPoint(polygonPoint, navMeshAgent));
+                elevatedPoints.push_back(walkableSurface->computeRealPoint(polygonPoint, *navMeshAgent));
             }
         }
 

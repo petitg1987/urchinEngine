@@ -35,7 +35,7 @@ namespace urchin {
 
     }
 
-    std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytopes(const std::shared_ptr<AIObject>& aiObject, const std::shared_ptr<NavMeshAgent>& navMeshAgent) {
+    std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytopes(const std::shared_ptr<AIObject>& aiObject, const NavMeshAgent& navMeshAgent) {
         std::vector<std::unique_ptr<Polytope>> expandedPolytopes;
 
         unsigned int aiShapeIndex = 0;
@@ -68,7 +68,7 @@ namespace urchin {
         return expandedPolytopes;
     }
 
-    std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytope(const std::shared_ptr<AITerrain>& aiTerrain, const std::shared_ptr<NavMeshAgent>& navMeshAgent) {
+    std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytope(const std::shared_ptr<AITerrain>& aiTerrain, const NavMeshAgent& navMeshAgent) {
         #ifndef NDEBUG
             assert(MathFunction::isOne(aiTerrain->getTransform().getScale()));
             assert(MathFunction::isOne(aiTerrain->getTransform().getOrientationMatrix().determinant()));
@@ -80,8 +80,8 @@ namespace urchin {
         auto heightfieldPointHelper = std::make_unique<const HeightfieldPointHelper<float>>(aiTerrain->getLocalVertices(), aiTerrain->getXLength());
         auto terrainNavTopography = std::make_shared<NavTerrainTopography>(std::move(heightfieldPointHelper), aiTerrain->getTransform().getPosition());
 
-        Vector3<float> approximateNormal(0.0, 1.0, 0.0); //use approximate normal for all terrain surface instead of normal by vertex to speed up the computation
-        Vector3<float> expandShiftVector = approximateNormal * navMeshAgent->computeExpandDistance(approximateNormal);
+        Vector3<float> approximateNormal(0.0f, 1.0f, 0.0f); //use approximate normal for all terrain surface instead of normal by vertex to speed up the computation
+        Vector3<float> expandShiftVector = approximateNormal * navMeshAgent.computeExpandDistance(approximateNormal);
         std::vector<Point3<float>> expandedLocalVertices;
         expandedLocalVertices.reserve(aiTerrain->getLocalVertices().size());
         for (const auto& localVertex : aiTerrain->getLocalVertices()) {
@@ -110,14 +110,14 @@ namespace urchin {
         return expandedPolytopes;
     }
 
-    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, OBBox<float>* box, const std::shared_ptr<NavMeshAgent>& navMeshAgent) const {
+    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, OBBox<float>* box, const NavMeshAgent& navMeshAgent) const {
         std::vector<Point3<float>> sortedOriginalPoints = box->getPoints();
         std::vector<Point3<float>> sortedExpandedPoints = createExpandedPoints(sortedOriginalPoints, navMeshAgent);
         std::vector<std::shared_ptr<PolytopeSurface>> expandedPolytopeSurfaces = createExpandedPolytopeSurfaces(sortedOriginalPoints, sortedExpandedPoints, navMeshAgent);
         return std::make_unique<Polytope>(name, expandedPolytopeSurfaces);
     }
 
-    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, Capsule<float>* capsule, const std::shared_ptr<NavMeshAgent>& navMeshAgent) const {
+    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, Capsule<float>* capsule, const NavMeshAgent& navMeshAgent) const {
         Vector3<float> boxHalfSizes(capsule->getRadius(), capsule->getRadius(), capsule->getRadius());
         boxHalfSizes[capsule->getCapsuleOrientation()] += capsule->getCylinderHeight() / 2.0f;
 
@@ -128,7 +128,7 @@ namespace urchin {
         return polytope;
     }
 
-    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, Cone<float>* cone, const std::shared_ptr<NavMeshAgent>& navMeshAgent) const {
+    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, Cone<float>* cone, const NavMeshAgent& navMeshAgent) const {
         Vector3<float> boxHalfSizes(cone->getRadius(), cone->getRadius(), cone->getRadius());
         boxHalfSizes[cone->getConeOrientation() / 2] = cone->getHeight() / 2.0f;
 
@@ -139,7 +139,7 @@ namespace urchin {
         return polytope;
     }
 
-    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, ConvexHull3D<float>* convexHull, const std::shared_ptr<NavMeshAgent>& navMeshAgent) const {
+    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, ConvexHull3D<float>* convexHull, const NavMeshAgent& navMeshAgent) const {
         std::map<std::size_t, Plane<float>> expandedPlanes;
         for (const auto& itTriangles : convexHull->getIndexedTriangles()) {
             const Point3<float>& point1 = convexHull->getConvexHullPoints().at(itTriangles.second.getIndex(0)).point;
@@ -169,7 +169,7 @@ namespace urchin {
         return polytope;
     }
 
-    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, Cylinder<float>* cylinder, const std::shared_ptr<NavMeshAgent>& navMeshAgent) const {
+    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, Cylinder<float>* cylinder, const NavMeshAgent& navMeshAgent) const {
         Vector3<float> boxHalfSizes(cylinder->getRadius(), cylinder->getRadius(), cylinder->getRadius());
         boxHalfSizes[cylinder->getCylinderOrientation()] = cylinder->getHeight() / 2.0f;
 
@@ -186,7 +186,7 @@ namespace urchin {
         return std::make_unique<Polytope>(name, expandedSurfaces);
     }
 
-    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, Sphere<float>* sphere, const std::shared_ptr<NavMeshAgent>& navMeshAgent) const {
+    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, Sphere<float>* sphere, const NavMeshAgent& navMeshAgent) const {
         OBBox<float> sphereBox(*sphere);
         std::unique_ptr<Polytope> polytope = createExpandedPolytopeFor(name, &sphereBox, navMeshAgent);
         polytope->setWalkableCandidate(false);
@@ -197,7 +197,7 @@ namespace urchin {
     /**
      * Return box points. Points are in the following order: NTR, FTR, NBR, FBR, NTL, FTL, NBL, FBL
      */
-    std::vector<Point3<float>> PolytopeBuilder::createExpandedPoints(const std::vector<Point3<float>>& sortedPoints, const std::shared_ptr<NavMeshAgent>& navMeshAgent) const {
+    std::vector<Point3<float>> PolytopeBuilder::createExpandedPoints(const std::vector<Point3<float>>& sortedPoints, const NavMeshAgent& navMeshAgent) const {
         std::vector<Plane<float>> sortedExpandedPlanes = createExpandedBoxPlanes(sortedPoints, navMeshAgent);
         return expandBoxPoints(sortedExpandedPlanes);
     }
@@ -207,7 +207,7 @@ namespace urchin {
      * @param sortedPoints Points in the following order: NTR, FTR, NBR, FBR, NTL, FTL, NBL, FBL
      * @return Expanded planes in the following order: right, left, top, bottom, front, back
      */
-    std::vector<Plane<float>> PolytopeBuilder::createExpandedBoxPlanes(const std::vector<Point3<float>>& sortedPoints, const std::shared_ptr<NavMeshAgent>& navMeshAgent) const {
+    std::vector<Plane<float>> PolytopeBuilder::createExpandedBoxPlanes(const std::vector<Point3<float>>& sortedPoints, const NavMeshAgent& navMeshAgent) const {
         std::vector<Plane<float>> expandedPlanes;
         expandedPlanes.reserve(6);
 
@@ -218,10 +218,10 @@ namespace urchin {
         return expandedPlanes;
     }
 
-    Plane<float> PolytopeBuilder::createExpandedPlane(const Point3<float>& p1, const Point3<float>& p2, const Point3<float>& p3, const std::shared_ptr<NavMeshAgent>& navMeshAgent) const {
+    Plane<float> PolytopeBuilder::createExpandedPlane(const Point3<float>& p1, const Point3<float>& p2, const Point3<float>& p3, const NavMeshAgent& navMeshAgent) const {
         Plane<float> plane(p1, p2, p3);
 
-        float expandDistance = navMeshAgent->computeExpandDistance(plane.getNormal());
+        float expandDistance = navMeshAgent.computeExpandDistance(plane.getNormal());
         plane.setDistanceToOrigin(plane.getDistanceToOrigin() - expandDistance);
 
         return plane;
@@ -257,7 +257,7 @@ namespace urchin {
      * @param sortedExpandedPoints Expanded points in the following order: NTR, FTR, NBR, FBR, NTL, FTL, NBL, FBL
      */
     std::vector<std::shared_ptr<PolytopeSurface>> PolytopeBuilder::createExpandedPolytopeSurfaces(const std::vector<Point3<float>>& sortedOriginalPoints,
-            const std::vector<Point3<float>>& sortedExpandedPoints, const std::shared_ptr<NavMeshAgent>& navMeshAgent) const {
+            const std::vector<Point3<float>>& sortedExpandedPoints, const NavMeshAgent& navMeshAgent) const {
         std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces;
         expandedSurfaces.reserve(6);
 
@@ -270,13 +270,13 @@ namespace urchin {
             Vector3<float> normal = v1.crossProduct(v2).normalize();
 
             float angleToHorizontalInRadian = std::acos(normal.dotProduct(Vector3<float>(0.0, 1.0, 0.0)));
-            bool isSlopeWalkable = std::fabs(angleToHorizontalInRadian) < navMeshAgent->getMaxSlope();
+            bool isSlopeWalkable = std::fabs(angleToHorizontalInRadian) < navMeshAgent.getMaxSlope();
 
             surfacePoints.clear();
 
             if (isSlopeWalkable) { //walkable surfaces are not expanded on XZ axis to avoid character to walk outside the walkable surface
 
-                Vector3<float> shiftVector = normal * navMeshAgent->computeExpandDistance(normal);
+                Vector3<float> shiftVector = normal * navMeshAgent.computeExpandDistance(normal);
                 for (unsigned int i = 0; i < 4; ++i) {
                     surfacePoints.push_back(sortedOriginalPoints[pointIndex[i]].translate(shiftVector));
                 }

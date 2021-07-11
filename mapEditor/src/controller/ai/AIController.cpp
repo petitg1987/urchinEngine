@@ -14,8 +14,8 @@ namespace urchin {
         return getMapHandler()->getMap()->getSceneAI();
     }
 
-    const SceneAI* AIController::updateSceneAI(const std::shared_ptr<NavMeshAgent>& navMeshAgent) {
-        getMapHandler()->getMap()->updateSceneAI(navMeshAgent);
+    const SceneAI* AIController::updateSceneAI(std::unique_ptr<NavMeshAgent> navMeshAgent) {
+        getMapHandler()->getMap()->updateSceneAI(std::move(navMeshAgent));
 
         markModified();
         return getMapHandler()->getMap()->getSceneAI();

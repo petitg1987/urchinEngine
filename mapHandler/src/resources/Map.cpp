@@ -342,8 +342,8 @@ namespace urchin {
         return sceneAI;
     }
 
-    void Map::updateSceneAI(const std::shared_ptr<NavMeshAgent>& navMeshAgent) {
-        sceneAI->changeNavMeshAgent(navMeshAgent);
+    void Map::updateSceneAI(std::unique_ptr<NavMeshAgent> navMeshAgent) {
+        sceneAI->changeNavMeshAgent(std::move(navMeshAgent));
     }
 
     void Map::pause() {
