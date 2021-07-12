@@ -14,6 +14,8 @@ namespace urchin {
 
     class SignalReceptor {
         public:
+            virtual ~SignalReceptor() = default;
+
             virtual void onSignalReceived(unsigned long) = 0;
     };
 
