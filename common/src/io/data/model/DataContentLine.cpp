@@ -13,12 +13,12 @@ namespace urchin {
 
     }
 
-    std::unique_ptr<DataContentLine> DataContentLine::fromRawContentLine(const std::string& lineContent, DataContentLine* parent, const std::string& filename) {
-        std::string wrongFormatError = "Line content (" + lineContent +") has wrong format in file: " + filename;
+    std::unique_ptr<DataContentLine> DataContentLine::fromRawContentLine(const std::string& rawContentLine, DataContentLine* parent, const std::string& filename) {
+        std::string wrongFormatError = "Content line (" + rawContentLine +") has wrong format in file: " + filename;
 
         static std::regex parseLineRegex("^" + std::string(NAME_REGEX) + " ?" + std::string(ATTRIBUTES_REGEX) + ": ?" + std::string(VALUE_REGEX) + "$");
         std::smatch matches;
-        if (!std::regex_search(lineContent, matches, parseLineRegex) || matches.size() != 4) {
+        if (!std::regex_search(rawContentLine, matches, parseLineRegex) || matches.size() != 4) {
             throw std::runtime_error(wrongFormatError);
         }
 

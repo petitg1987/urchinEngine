@@ -32,25 +32,25 @@ namespace urchin {
         DataContentLine* currentNode = nullptr;
         unsigned int currentNodeIndentLevel = 0;
         while (true) {
-            std::string lineContent;
+            std::string rawContentLine;
 
-            FileReader::nextLine(file, lineContent);
-            if (lineContent.empty()) {
+            FileReader::nextLine(file, rawContentLine);
+            if (rawContentLine.empty()) {
                 break;
             }
 
-            unsigned int indentLevel = computeIndentLevel(lineContent);
+            unsigned int indentLevel = computeIndentLevel(rawContentLine);
             if (indentLevel == 0) {
                 if (root) {
-                    throw std::runtime_error("Line content (" + lineContent +") has wrong indentation in the file: " + filenamePath);
+                    throw std::runtime_error("Content line (" + rawContentLine +") has wrong indentation in the file: " + filenamePath);
                 }
-                root = DataContentLine::fromRawContentLine(lineContent, nullptr, filenamePath);
+                root = DataContentLine::fromRawContentLine(rawContentLine, nullptr, filenamePath);
                 currentNode = root.get();
                 currentNodeIndentLevel = 0;
             } else {
-                StringUtil::ltrim(lineContent);
+                StringUtil::ltrim(rawContentLine);
                 if (indentLevel - 1 == currentNodeIndentLevel) {
-                    auto newNode = DataContentLine::fromRawContentLine(lineContent, currentNode, filenamePath);
+                    auto newNode = DataContentLine::fromRawContentLine(rawContentLine, currentNode, filenamePath);
                     currentNode = &currentNode->addChild(std::move(newNode));
                     currentNodeIndentLevel = indentLevel;
                 } else if (indentLevel <= currentNodeIndentLevel) {
@@ -58,11 +58,11 @@ namespace urchin {
                     for (unsigned int i = 0; i < currentNodeIndentLevel - indentLevel; ++i) {
                         parentNode = parentNode->getParent();
                     }
-                    auto newNode = DataContentLine::fromRawContentLine(lineContent, parentNode, filenamePath);
+                    auto newNode = DataContentLine::fromRawContentLine(rawContentLine, parentNode, filenamePath);
                     currentNode = &parentNode->addChild(std::move(newNode));
                     currentNodeIndentLevel = indentLevel;
                 } else {
-                    throw std::runtime_error("Line content (" + lineContent +") has wrong indentation in the file: " + filenamePath);
+                    throw std::runtime_error("Content line (" + rawContentLine +") has wrong indentation in the file: " + filenamePath);
                 }
             }
         }
