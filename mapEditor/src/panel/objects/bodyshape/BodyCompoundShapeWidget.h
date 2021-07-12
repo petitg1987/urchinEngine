@@ -43,7 +43,7 @@ namespace urchin {
             QPushButton* addShapeButton;
             QPushButton* removeShapeButton;
 
-            QWidget* localizedShapeDetails;
+            std::unique_ptr<QWidget> localizedShapeDetails;
             QDoubleSpinBox* positionX;
             QDoubleSpinBox* positionY;
             QDoubleSpinBox* positionZ;

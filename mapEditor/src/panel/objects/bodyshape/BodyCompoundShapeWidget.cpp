@@ -37,7 +37,7 @@ namespace urchin {
         ButtonStyleHelper::applyNormalStyle(removeShapeButton);
         connect(removeShapeButton, SIGNAL(clicked()), this, SLOT(removeSelectedLocalizedShape()));
 
-        localizedShapeDetails = nullptr;
+        localizedShapeDetails.reset(nullptr);
         positionX = nullptr;
         positionY = nullptr;
         positionZ = nullptr;
@@ -83,18 +83,16 @@ namespace urchin {
                 if (localizedShapeTableView->hasLocalizedShapeSelected()) {
                     const LocalizedCollisionShape* localizedShape = localizedShapeTableView->getSelectedLocalizedShape();
 
-                    delete localizedShapeDetails;
-                    localizedShapeDetails = new QWidget();
-                    mainLayout->addWidget(localizedShapeDetails, 3, 0);
+                    localizedShapeDetails = std::make_unique<QWidget>();
+                    mainLayout->addWidget(localizedShapeDetails.get(), 3, 0);
 
-                    auto* localizedShapeLayout = new QVBoxLayout(localizedShapeDetails);
+                    auto* localizedShapeLayout = new QVBoxLayout(localizedShapeDetails.get());
                     setupTransformBox(localizedShapeLayout, localizedShape);
                     setupShapeBox(localizedShapeLayout, localizedShape);
 
                     localizedShapeDetails->show();
                 } else {
-                    delete localizedShapeDetails;
-                    localizedShapeDetails = nullptr;
+                    localizedShapeDetails.reset(nullptr);
                 }
             }
         }
