@@ -12,8 +12,9 @@ template<class T> T* ThreadSafeSingleton<T>::instance() {
         std::lock_guard<std::mutex> lock(mutexInstanceCreation);
         singletonInstance = objectT.load(std::memory_order_relaxed);
         if (!singletonInstance) {
-            singletonInstance = new T;
-            SingletonManager::registerSingleton(typeid(T).name(), singletonInstance);
+            auto newObjectT = std::unique_ptr<T>(new T);
+            singletonInstance = newObjectT.get();
+            SingletonManager::registerSingleton(typeid(T).name(), std::move(newObjectT));
             objectT.store(singletonInstance, std::memory_order_release);
         }
     }

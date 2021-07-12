@@ -19,6 +19,8 @@ namespace urchin {
         public:
             friend class Singleton<GraphicService>;
 
+            ~GraphicService() override;
+
             static void enableUniqueSurface();
             static void destroySurface();
 
@@ -35,7 +37,6 @@ namespace urchin {
 
         private:
             GraphicService();
-            ~GraphicService() override;
 
             void createInstance(const std::vector<std::string>&);
 

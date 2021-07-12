@@ -12,13 +12,14 @@ namespace urchin {
         public:
             friend class Singleton<ResourceManager>;
 
+            ~ResourceManager() override;
+
             template<class T> T* getResource(const std::string&) const;
             void addResource(const std::string&, const std::string&, Resource*);
             void removeResource(const std::string&);
 
         private:
             ResourceManager();
-            ~ResourceManager() override;
 
             std::map<std::string, Resource*> mResources;
     };

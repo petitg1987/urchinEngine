@@ -15,7 +15,6 @@ namespace urchin {
 
         private:
             ShaderConfig();
-            ~ShaderConfig() override = default;
 
             std::string shadersParentDirectory;
             std::string shadersDirectoryName;

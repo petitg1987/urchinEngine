@@ -34,7 +34,6 @@ namespace urchin {
 
         private:
             AlgorithmResultAllocator();
-            ~AlgorithmResultAllocator() override = default;
 
             std::unique_ptr<SyncFixedSizePool<AlgorithmResult>> algorithmResultPool;
     };

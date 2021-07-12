@@ -36,7 +36,6 @@ namespace urchin {
 
         private:
             SignalHandler();
-            ~SignalHandler() override = default;
 
             void setupSignalHandler();
             #ifdef _WIN32

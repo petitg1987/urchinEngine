@@ -8,9 +8,10 @@ namespace urchin {
         public:
             friend class Singleton<DeviceManager>;
 
+            ~DeviceManager() override;
+
         private:
             DeviceManager();
-            ~DeviceManager() override;
     };
 
 }

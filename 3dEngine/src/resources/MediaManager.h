@@ -26,7 +26,6 @@ namespace urchin {
 
         private:
             MediaManager();
-            ~MediaManager() override = default;
 
             std::map<std::string, std::unique_ptr<LoaderInterface>> loadersRegistry;
     };

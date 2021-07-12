@@ -16,7 +16,6 @@ namespace urchin {
 
         private:
             PolygonsUnion() = default;
-            ~PolygonsUnion() override = default;
 
             const std::vector<CSGPolygonPath>& unionTwoPolygonPaths(const CSGPolygonPath&, const CSGPolygonPath&) const;
 

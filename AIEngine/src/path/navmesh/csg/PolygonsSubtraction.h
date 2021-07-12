@@ -18,7 +18,6 @@ namespace urchin {
 
         private:
             PolygonsSubtraction() = default;
-            ~PolygonsSubtraction() override = default;
 
             mutable std::vector<CSGPolygon<T>> subtractedPolygons;
     };

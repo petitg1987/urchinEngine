@@ -27,7 +27,6 @@ namespace urchin {
 
         private:
             ConfigService() = default;
-            ~ConfigService() override = default;
 
             std::map<std::string, std::string> properties;
             std::map<std::string, float> floatProperties;

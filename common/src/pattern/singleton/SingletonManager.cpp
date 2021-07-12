@@ -5,19 +5,16 @@
 namespace urchin {
 
     //static
-    std::map<std::string, SingletonInterface*> SingletonManager::singletons;
+    std::map<std::string, std::unique_ptr<SingletonInterface>> SingletonManager::singletons;
 
-    void SingletonManager::registerSingleton(const std::string& name, SingletonInterface* ptr) {
+    void SingletonManager::registerSingleton(const std::string& name, std::unique_ptr<SingletonInterface> ptr) {
         #ifndef NDEBUG
             assert(singletons.find(name) == singletons.end());
         #endif
-        singletons[name] = ptr;
+        singletons.emplace(name, std::move(ptr));
     }
 
     void SingletonManager::destroyAllSingletons() {
-        for (auto& singleton : singletons) {
-            delete singleton.second;
-        }
         singletons.clear();
     }
 

@@ -2,6 +2,7 @@
 
 #include <string>
 #include <map>
+#include <memory>
 
 #include <pattern/singleton/SingletonInterface.h>
 
@@ -25,7 +26,7 @@ namespace urchin {
      */
     class DLL_EXPORT SingletonManager {
         public:
-            static void registerSingleton(const std::string&, SingletonInterface*);
+            static void registerSingleton(const std::string&, std::unique_ptr<SingletonInterface>);
 
             static void destroyAllSingletons();
 
@@ -33,7 +34,7 @@ namespace urchin {
             SingletonManager() = default;
             ~SingletonManager() = default;
 
-            static std::map<std::string, SingletonInterface*> singletons;
+            static std::map<std::string, std::unique_ptr<SingletonInterface>> singletons;
     };
 
 }

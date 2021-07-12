@@ -7,8 +7,9 @@ template<class T> Singleton<T>::~Singleton() {
 
 template<class T> T* Singleton<T>::instance() {
     if (!objectT) {
-        objectT = new T;
-        SingletonManager::registerSingleton(typeid(T).name(), objectT);
+        auto newObjectT = std::unique_ptr<T>(new T);
+        objectT = newObjectT.get();
+        SingletonManager::registerSingleton(typeid(T).name(), std::move(newObjectT));
     }
 
     return objectT;
