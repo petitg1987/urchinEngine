@@ -1,4 +1,3 @@
-#include <regex>
 #include <iostream>
 
 #include <io/data/model/DataContentLine.h>
@@ -15,17 +14,11 @@ namespace urchin {
     }
 
     std::unique_ptr<DataContentLine> DataContentLine::fromRawContentLine(const std::string& lineContent, DataContentLine* parent, const std::string& filename) {
-        std::string nameRegex = "([a-zA-Z]+)";
-        std::string attributesRegex = "\\(?(.*?)\\)?";
-        std::string valueRegex = "\"?(.*?)\"?";
-        std::regex lineRegex(nameRegex + " ?" + attributesRegex + ": ?" + valueRegex + "$"); //TODO use static
         std::string wrongFormatError = "Line content (" + lineContent +") has wrong format in file: " + filename;
 
+        static std::regex parseLineRegex("^" + std::string(NAME_REGEX) + " ?" + std::string(ATTRIBUTES_REGEX) + ": ?" + std::string(VALUE_REGEX) + "$");
         std::smatch matches;
-        if (!std::regex_search(lineContent, matches, lineRegex)) {
-            throw std::runtime_error(wrongFormatError);
-        }
-        if (matches.size() != 4) {
+        if (!std::regex_search(lineContent, matches, parseLineRegex) || matches.size() != 4) {
             throw std::runtime_error(wrongFormatError);
         }
 
@@ -58,8 +51,9 @@ namespace urchin {
         return children;
     }
 
-    void DataContentLine::addChild(std::unique_ptr<DataContentLine> child) {
+    DataContentLine& DataContentLine::addChild(std::unique_ptr<DataContentLine> child) {
         children.push_back(std::move(child));
+        return *children.back();
     }
 
     const std::string& DataContentLine::getName() const {

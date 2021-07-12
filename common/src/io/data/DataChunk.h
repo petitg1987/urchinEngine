@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 
-#include <libs/tinyxml/tinyxml.h>
 #include <io/data/model/DataContentLine.h>
 #include <io/data/DataAttribute.h>
 #include <math/algebra/point/Point2.h>
@@ -62,8 +61,6 @@ namespace urchin {
         private:
             explicit DataChunk(DataContentLine&);
             explicit DataChunk(const DataContentLine&);
-
-            DataContentLine& getChunk() const;
 
             DataContentLine& chunk;
     };

@@ -1,11 +1,14 @@
 #include <stdexcept>
-#include <fstream>
 
 #include <io/data/DataParser.h>
 #include <io/file/FileReader.h>
 #include <config/FileSystem.h>
+#include <util/StringUtil.h>
 
 namespace urchin {
+
+    //static
+    const unsigned int DataParser::INDENT_SPACES = 2;
 
     DataParser::DataParser(const std::string& filename) :
             DataParser(filename, FileSystem::instance()->getResourcesDirectory()) {
@@ -16,18 +19,21 @@ namespace urchin {
      * @param workingDirectory Override the default working directory
      */
     DataParser::DataParser(const std::string& filename, const std::string& workingDirectory) {
-        this->filenamePath = workingDirectory + filename;
+        filenamePath = workingDirectory + filename;
 
         std::ifstream file(filenamePath, std::ios::in);
         if (!file.is_open()) {
             throw std::invalid_argument("Unable to open file: " + filenamePath);
         }
+        loadFile(file);
+    }
 
-        //TODO extract in method
+    void DataParser::loadFile(std::ifstream& file) {
         DataContentLine* currentNode = nullptr;
         unsigned int currentNodeIndentLevel = 0;
         while (true) {
             std::string lineContent;
+
             FileReader::nextLine(file, lineContent);
             if (lineContent.empty()) {
                 break;
@@ -35,17 +41,17 @@ namespace urchin {
 
             unsigned int indentLevel = computeIndentLevel(lineContent);
             if (indentLevel == 0) {
-                assert(!root);
+                if (root) {
+                    throw std::runtime_error("Line content (" + lineContent +") has wrong indentation in the file: " + filenamePath);
+                }
                 root = DataContentLine::fromRawContentLine(lineContent, nullptr, filenamePath);
                 currentNode = root.get();
                 currentNodeIndentLevel = 0;
             } else {
+                StringUtil::ltrim(lineContent);
                 if (indentLevel - 1 == currentNodeIndentLevel) {
                     auto newNode = DataContentLine::fromRawContentLine(lineContent, currentNode, filenamePath);
-                    auto* newNodePtr = newNode.get();
-                    currentNode->addChild(std::move(newNode));
-
-                    currentNode = newNodePtr;
+                    currentNode = &currentNode->addChild(std::move(newNode));
                     currentNodeIndentLevel = indentLevel;
                 } else if (indentLevel <= currentNodeIndentLevel) {
                     auto parentNode = currentNode->getParent();
@@ -53,13 +59,10 @@ namespace urchin {
                         parentNode = parentNode->getParent();
                     }
                     auto newNode = DataContentLine::fromRawContentLine(lineContent, parentNode, filenamePath);
-                    auto* newNodePtr = newNode.get();
-                    parentNode->addChild(std::move(newNode));
-
-                    currentNode = newNodePtr;
+                    currentNode = &parentNode->addChild(std::move(newNode));
                     currentNodeIndentLevel = indentLevel;
                 } else {
-                    throw std::runtime_error("Line content (" + lineContent +") with wrong indentation in file: " + filenamePath);
+                    throw std::runtime_error("Line content (" + lineContent +") has wrong indentation in the file: " + filenamePath);
                 }
             }
         }
@@ -68,15 +71,15 @@ namespace urchin {
     unsigned int DataParser::computeIndentLevel(const std::string& lineContent) {
         unsigned int numberSpaces = 0;
         for (const char& c : lineContent) {
-            if (c != ' ') {
+            if (!std::isspace(c)) {
                 break;
             }
             numberSpaces++;
         }
-        if (numberSpaces % 2 != 0) {
+        if (numberSpaces % INDENT_SPACES != 0) {
             throw std::runtime_error("Line content (" + lineContent +") with wrong indentation in file: " + filenamePath);
         }
-        return numberSpaces / 2;
+        return numberSpaces / INDENT_SPACES;
     }
 
     std::unique_ptr<DataChunk> DataParser::getRootChunk() const {
@@ -90,7 +93,7 @@ namespace urchin {
         if (!parent) {
             dataContentLine = root.get();
         } else {
-            dataContentLine = &parent->getChunk();
+            dataContentLine = &parent->chunk;
         }
 
         //seek the good chunk
@@ -114,10 +117,10 @@ namespace urchin {
         auto chunks = getChunks(chunkName, attribute, parent);
 
         if (chunks.size() > 1) {
-            throw std::invalid_argument("More than one chunk found for " + getChunkDescription(chunkName, attribute) + ".");
+            throw std::invalid_argument("More than one chunk found for " + getChunkDescription(chunkName, attribute));
         } else if (chunks.empty()) {
             if (mandatory) {
-                throw std::invalid_argument("The chunk " + getChunkDescription(chunkName, attribute) + " wasn't found in file " + filenamePath + ".");
+                throw std::invalid_argument("The chunk " + getChunkDescription(chunkName, attribute) + " was not found in file " + filenamePath);
             }
             return std::unique_ptr<DataChunk>(nullptr);
         }

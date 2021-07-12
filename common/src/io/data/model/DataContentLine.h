@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 #include <map>
+#include <regex>
 
 #include <io/data/model/DataContentLine.h>
 
@@ -17,7 +18,7 @@ namespace urchin {
 
             DataContentLine* getParent() const;
 
-            void addChild(std::unique_ptr<DataContentLine>);
+            DataContentLine& addChild(std::unique_ptr<DataContentLine>);
             const std::vector<std::unique_ptr<DataContentLine>>& getChildren() const;
 
             const std::string& getName() const;
@@ -25,6 +26,10 @@ namespace urchin {
             const std::map<std::string, std::string>& getAttributes() const;
 
         private:
+            static constexpr char NAME_REGEX[] = "([a-zA-Z]+)";
+            static constexpr char ATTRIBUTES_REGEX[] = "\\(?(.*?)\\)?";
+            static constexpr char VALUE_REGEX[] = "\"?(.*?)\"?";
+
             std::string name;
             std::string value;
             std::map<std::string, std::string> attributes;

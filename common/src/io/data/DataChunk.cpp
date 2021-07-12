@@ -15,13 +15,6 @@ namespace urchin {
 
     }
 
-    DataContentLine& DataChunk::getChunk() const {
-        return chunk;
-    }
-
-    /**
-     * @return Attribute value if exist otherwise an empty string
-     */
     std::string DataChunk::getAttributeValue(const std::string& attributeName) const {
         const auto& attributes = chunk.getAttributes();
         auto itFind = attributes.find(attributeName);

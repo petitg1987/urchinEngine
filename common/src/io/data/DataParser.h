@@ -3,8 +3,8 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <fstream>
 
-#include <libs/tinyxml/tinyxml.h>
 #include <io/data/DataAttribute.h>
 #include <io/data/DataChunk.h>
 #include <io/data/model/DataContentLine.h>
@@ -21,9 +21,12 @@ namespace urchin {
             std::unique_ptr<DataChunk> getUniqueChunk(bool, const std::string&, const DataAttribute& = DataAttribute(), const DataChunk* parent = nullptr) const;
 
         private:
+            void loadFile(std::ifstream&);
             unsigned int computeIndentLevel(const std::string&);
 
             std::string getChunkDescription(const std::string&, const DataAttribute&) const;
+
+            static const unsigned int INDENT_SPACES;
 
             std::unique_ptr<DataContentLine> root;
             std::string filenamePath;
