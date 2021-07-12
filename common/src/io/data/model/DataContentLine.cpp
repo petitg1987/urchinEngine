@@ -17,15 +17,16 @@ namespace urchin {
     std::unique_ptr<DataContentLine> DataContentLine::fromRawContentLine(const std::string& lineContent, DataContentLine* parent, const std::string& filename) {
         std::string nameRegex = "([a-zA-Z]+)";
         std::string attributesRegex = "\\(?(.*?)\\)?";
-        std::string valueRegex = "\"?(.*)\"?";
-        std::regex lineRegex(nameRegex + " ?" + attributesRegex + ": ?" + valueRegex + "$");
+        std::string valueRegex = "\"?(.*?)\"?";
+        std::regex lineRegex(nameRegex + " ?" + attributesRegex + ": ?" + valueRegex + "$"); //TODO use static
+        std::string wrongFormatError = "Line content (" + lineContent +") has wrong format in file: " + filename;
 
         std::smatch matches;
         if (!std::regex_search(lineContent, matches, lineRegex)) {
-            throw std::runtime_error("Line content (" + lineContent +") has wrong format in file: " + filename);
+            throw std::runtime_error(wrongFormatError);
         }
         if (matches.size() != 4) {
-            throw std::runtime_error("Line content (" + lineContent +") has wrong format in file: " + filename);
+            throw std::runtime_error(wrongFormatError);
         }
 
         std::string name = matches[1].str();
@@ -41,7 +42,7 @@ namespace urchin {
                 std::vector<std::string> attributeComponents;
                 StringUtil::split(attribute, '=', attributeComponents);
                 if(attributeComponents.size() != 2) {
-                    throw std::runtime_error("Line content (" + lineContent +") has wrong format in file: " + filename);
+                    throw std::runtime_error(wrongFormatError);
                 }
                 attributes.emplace(attributeComponents[0], attributeComponents[1]);
             }

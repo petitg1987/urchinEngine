@@ -24,10 +24,10 @@ namespace urchin {
         }
 
         //TODO extract in method
-        std::string lineContent;
         DataContentLine* currentNode = nullptr;
         unsigned int currentNodeIndentLevel = 0;
         while (true) {
+            std::string lineContent;
             FileReader::nextLine(file, lineContent);
             if (lineContent.empty()) {
                 break;
