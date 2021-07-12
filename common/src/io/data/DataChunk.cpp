@@ -22,8 +22,8 @@ namespace urchin {
     /**
      * @return Attribute value if exist otherwise an empty string
      */
-    std::string DataChunk::getAttributeValue(const std::string& attributeName) const {
-        return *chunk->ToElement()->Attribute(attributeName);
+    std::string DataChunk::getAttributeValue(const std::string& /*attributeName*/) const {
+        return ""; //TODO ...
     }
 
     void DataChunk::setAttribute(const DataAttribute& attribute) {
@@ -31,13 +31,9 @@ namespace urchin {
     }
 
     std::string DataChunk::getStringValue() const {
-        if (!chunk->FirstChild()) {
-            return "";
-        } else if (chunk->FirstChild()->Type() == TiXmlNode::TEXT) {
-            return chunk->FirstChild()->ToText()->Value();
-        }
+        return ""; //TODO ...
 
-        throw std::domain_error("Impossible to find a value on chunk: " + chunk->ValueStr());
+        //throw std::domain_error("Impossible to find a value on chunk: " + chunk->ValueStr());
     }
 
     void DataChunk::setStringValue(const std::string& value) {

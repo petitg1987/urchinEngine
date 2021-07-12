@@ -1,6 +1,8 @@
 #include <stdexcept>
+#include <fstream>
 
 #include <io/data/DataParser.h>
+#include <io/file/FileReader.h>
 #include <config/FileSystem.h>
 
 namespace urchin {
@@ -15,45 +17,77 @@ namespace urchin {
      */
     DataParser::DataParser(const std::string& filename, const std::string& workingDirectory) {
         this->filenamePath = workingDirectory + filename;
-        this->doc = std::make_unique<TiXmlDocument>(filenamePath.c_str());
 
-        if (!doc->LoadFile()) {
-            throw std::invalid_argument("Cannot open or load the file " + filenamePath + ".");
-        }
-    }
-
-    std::unique_ptr<DataChunk> DataParser::getRootChunk() const {
-        const TiXmlNode* rootNode = doc->FirstChild()->NextSibling();
-        if (rootNode->Type() == TiXmlNode::ELEMENT) {
-            return std::unique_ptr<DataChunk>(new DataChunk(doc->FirstChild()->NextSibling()->ToElement()));
+        std::ifstream file(filenamePath, std::ios::in);
+        if (!file.is_open()) {
+            throw std::invalid_argument("Unable to open file: " + filenamePath);
         }
 
-        throw std::invalid_argument("Impossible to get root element in file: " + filenamePath);
-    }
+        std::string lineContent;
+        DataContentLine* currentNode = nullptr;
+        unsigned int currentNodeIndentLevel = 0;
+        while (true) {
+            FileReader::nextLine(file, lineContent);
+            if (lineContent.empty()) {
+                break;
+            }
 
-    std::vector<std::unique_ptr<DataChunk>> DataParser::getChunks(const std::string& chunkName, const DataAttribute& attribute, const DataChunk* parent) const {
-        std::vector<std::unique_ptr<DataChunk>> chunks;
+            unsigned int indentLevel = computeIndentLevel(lineContent);
+            if (indentLevel == 0) {
+                assert(!root);
+                root = std::make_unique<DataContentLine>(lineContent, nullptr);
+                currentNode = root.get();
+                currentNodeIndentLevel = 0;
+            } else {
+                if (indentLevel - 1 == currentNodeIndentLevel) {
+                    auto newNode = std::make_unique<DataContentLine>(lineContent, currentNode);
+                    auto* newNodePtr = newNode.get();
+                    currentNode->addChild(std::move(newNode));
 
-        const TiXmlNode *firstChild;
-        if (!parent) {
-            firstChild = doc->FirstChild()->NextSibling()->FirstChild();
-        } else {
-            firstChild = parent->getChunk()->FirstChild();
-        }
-
-        //seek the good chunk
-        for (const TiXmlNode *pChild = firstChild; pChild != nullptr; pChild = pChild->NextSibling()) {
-            if (pChild->Type() == TiXmlNode::ELEMENT && pChild->Value() == chunkName) {
-                if (!attribute.getAttributeName().empty()) {
-                    const std::string* attributeValue = pChild->ToElement()->Attribute(attribute.getAttributeName());
-                    if (attributeValue && (*attributeValue) == attribute.getAttributeValue()) {
-                        chunks.push_back(std::unique_ptr<DataChunk>(new DataChunk(pChild->ToElement())));
+                    currentNode = newNodePtr;
+                    currentNodeIndentLevel = indentLevel;
+                } else if (indentLevel <= currentNodeIndentLevel) {
+                    unsigned int diffLevel = currentNodeIndentLevel - indentLevel;
+                    auto parentNode = currentNode->getParent();
+                    for(unsigned int i = 0; i < diffLevel; ++i) {
+                        parentNode = parentNode->getParent();
                     }
+                    auto newNode = std::make_unique<DataContentLine>(lineContent, parentNode);
+                    auto* newNodePtr = newNode.get();
+                    parentNode->addChild(std::move(newNode));
+
+                    currentNode = newNodePtr;
+                    currentNodeIndentLevel = indentLevel;
                 } else {
-                    chunks.push_back(std::unique_ptr<DataChunk>(new DataChunk(pChild->ToElement())));
+                    throw std::runtime_error("Line content (" + lineContent +") with wrong indentation in file: " + filenamePath);
                 }
             }
         }
+    }
+
+    unsigned int DataParser::computeIndentLevel(const std::string& lineContent) {
+        unsigned int numberSpaces = 0;
+        for (const char& c : lineContent) {
+            if (c != ' ') {
+                break;
+            }
+            numberSpaces++;
+        }
+        if (numberSpaces % 2 != 0) {
+            throw std::runtime_error("Line content (" + lineContent +") with wrong indentation in file: " + filenamePath);
+        }
+        return numberSpaces / 2;
+    }
+
+    std::unique_ptr<DataChunk> DataParser::getRootChunk() const {
+        //TODO ...
+        throw std::invalid_argument("Impossible to get root element in file: " + filenamePath);
+    }
+
+    std::vector<std::unique_ptr<DataChunk>> DataParser::getChunks(const std::string& /*chunkName*/, const DataAttribute& /*attribute*/, const DataChunk* /*parent*/) const {
+        std::vector<std::unique_ptr<DataChunk>> chunks;
+
+        //TODO ...
 
         return chunks;
     }

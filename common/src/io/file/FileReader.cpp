@@ -5,15 +5,14 @@
 namespace urchin {
 
     void FileReader::nextLine(std::ifstream& file, std::string& buffer) {
-        do
-        {
+        do {
             std::getline(file, buffer);
 
             //remove '\r'
             if (buffer.length() > 0 && buffer[buffer.length() - 1] == '\r') {
                 buffer.resize(buffer.length() - 1);
             }
-        }while (buffer.length() == 0 && !file.eof());
+        } while (buffer.length() == 0 && !file.eof());
     }
 
     std::string FileReader::readFile(const std::string& filename) {
