@@ -14,7 +14,6 @@ namespace urchin {
             viewingShadowDistance(viewingShadowDistance),
             nbShadowMaps(nbShadowMaps),
             renderTarget(std::move(renderTarget)),
-            shadowModelSetDisplayer(nullptr),
             shadowModelShaderVariable(nullptr),
             shadowMapTexture(std::move(shadowMapTexture)) {
         if (this->renderTarget) { //only false for unit tests
@@ -32,11 +31,6 @@ namespace urchin {
             renderTarget->cleanup();
         }
 
-        for (auto& lightSplitShadowMap : lightSplitShadowMaps) {
-            delete lightSplitShadowMap;
-        }
-
-        delete shadowModelSetDisplayer;
         delete shadowModelShaderVariable;
     }
 
@@ -99,8 +93,7 @@ namespace urchin {
         std::vector<std::size_t> variablesDescriptions = {sizeof(nbShadowMaps)};
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesDescriptions, &nbShadowMaps);
 
-        delete shadowModelSetDisplayer;
-        shadowModelSetDisplayer = new ModelSetDisplayer(DisplayMode::DEPTH_ONLY_MODE);
+        shadowModelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEPTH_ONLY_MODE);
         shadowModelSetDisplayer->setCustomShader("modelShadowMap.geom.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
         shadowModelSetDisplayer->initialize(*renderTarget);
 
@@ -112,16 +105,15 @@ namespace urchin {
     /**
      * First split to add must be the split nearest to the eye.
      */
-    LightSplitShadowMap* LightShadowMap::addLightSplitShadowMap() {
-        auto* lightSplitShadowMap = new LightSplitShadowMap(this);
-        lightSplitShadowMaps.emplace_back(lightSplitShadowMap);
-        return lightSplitShadowMap;
+    LightSplitShadowMap& LightShadowMap::addLightSplitShadowMap() {
+        lightSplitShadowMaps.push_back(std::make_unique<LightSplitShadowMap>(this));
+        return *lightSplitShadowMaps.back();
     }
 
     /**
      * @return Light split shadow maps. First split in the vector is the split nearest to the eye.
      */
-    const std::vector<LightSplitShadowMap*>& LightShadowMap::getLightSplitShadowMaps() const {
+    const std::vector<std::unique_ptr<LightSplitShadowMap>>& LightShadowMap::getLightSplitShadowMaps() const {
         return lightSplitShadowMaps;
     }
 

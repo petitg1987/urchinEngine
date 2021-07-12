@@ -10,7 +10,6 @@ namespace urchin {
     class OmnidirectionalLight : public Light {
         public:
             explicit OmnidirectionalLight(const Point3<float>&);
-            ~OmnidirectionalLight() override;
 
             //general methods
             void setPosition(const Point3<float>&);
@@ -36,8 +35,8 @@ namespace urchin {
             //attenuation properties
             const float attenuationNoEffect; //defines when the attenuation of a light has no light effect on objects
             float exponentialAttenuation;
-            Sphere<float>* sphereScope;
-            AABBox<float>* bboxScope;
+            std::unique_ptr<Sphere<float>> sphereScope;
+            std::unique_ptr<AABBox<float>> bboxScope;
 
     };
 

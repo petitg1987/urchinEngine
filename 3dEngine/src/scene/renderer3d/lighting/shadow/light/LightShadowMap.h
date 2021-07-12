@@ -29,8 +29,8 @@ namespace urchin {
             unsigned int getNumberShadowMaps() const;
             const std::shared_ptr<Texture>& getShadowMapTexture() const;
 
-            LightSplitShadowMap* addLightSplitShadowMap();
-            const std::vector<LightSplitShadowMap*>& getLightSplitShadowMaps() const;
+            LightSplitShadowMap& addLightSplitShadowMap();
+            const std::vector<std::unique_ptr<LightSplitShadowMap>>& getLightSplitShadowMaps() const;
 
             void addTextureFilter(std::unique_ptr<TextureFilter>);
             void applyTextureFilters() const;
@@ -54,13 +54,13 @@ namespace urchin {
             unsigned int nbShadowMaps;
 
             std::unique_ptr<OffscreenRender> renderTarget; //target containing shadow map(s)
-            ModelSetDisplayer* shadowModelSetDisplayer;
+            std::unique_ptr<ModelSetDisplayer> shadowModelSetDisplayer;
             ShadowModelShaderVariable* shadowModelShaderVariable;
             std::shared_ptr<Texture> shadowMapTexture; //shadow map texture (variance shadow map)
             std::vector<std::unique_ptr<const TextureFilter>> textureFilters; //shadow map filters
 
             Matrix4<float> lightViewMatrix;
-            std::vector<LightSplitShadowMap*> lightSplitShadowMaps;
+            std::vector<std::unique_ptr<LightSplitShadowMap>> lightSplitShadowMaps;
             mutable std::vector<Model*> models;
     };
 

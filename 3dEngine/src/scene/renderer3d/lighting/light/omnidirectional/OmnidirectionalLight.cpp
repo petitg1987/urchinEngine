@@ -23,11 +23,6 @@ namespace urchin {
         computeScope();
     }
 
-    OmnidirectionalLight::~OmnidirectionalLight() {
-        delete sphereScope;
-        delete bboxScope;
-    }
-
     void OmnidirectionalLight::setPosition(const Point3<float>& position) {
         this->position = position;
 
@@ -70,10 +65,12 @@ namespace urchin {
     }
 
     const AABBox<float>& OmnidirectionalLight::getAABBoxScope() const {
+        assert(bboxScope);
         return *bboxScope;
     }
 
     const Sphere<float>& OmnidirectionalLight::getSphereScope() const {
+        assert(sphereScope);
         return *sphereScope;
     }
 
@@ -81,12 +78,9 @@ namespace urchin {
      * Computes the sphere scope representing light affectation zone
      */
     void OmnidirectionalLight::computeScope() {
-        delete sphereScope;
-        delete bboxScope;
-
         float radius = -std::log(attenuationNoEffect) / getExponentialAttenuation();
-        sphereScope = new Sphere<float>(radius, getPosition());
-        bboxScope = new AABBox<float>(getPosition()-radius, getPosition()+radius);
+        sphereScope = std::make_unique<Sphere<float>>(radius, getPosition());
+        bboxScope = std::make_unique<AABBox<float>>(getPosition()-radius, getPosition()+radius);
 
         notifyOctreeableMove();
     }

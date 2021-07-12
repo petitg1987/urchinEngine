@@ -15,13 +15,13 @@ void LightSplitShadowMapTest::modelsInFrustumSplit() {
     auto lightSplitShadowMap = lightShadowMap->addLightSplitShadowMap();
 
     Frustum<float> frustumSplit(90.0f, 1.0f, 0.01f, 100.0f);
-    lightSplitShadowMap->update(frustumSplit, false);
+    lightSplitShadowMap.update(frustumSplit, false);
 
-    AssertHelper::assertUnsignedInt(lightSplitShadowMap->getModels().size(), 2);
-    AssertHelper::assertPoint3FloatEquals(lightSplitShadowMap->getShadowCasterReceiverBox().getMin(),
+    AssertHelper::assertUnsignedInt(lightSplitShadowMap.getModels().size(), 2);
+    AssertHelper::assertPoint3FloatEquals(lightSplitShadowMap.getShadowCasterReceiverBox().getMin(),
                                           Point3<float>(-10.5f, 1.5f, -101.0f) - LightSplitShadowMap::LIGHT_BOX_MARGIN,
                                           std::numeric_limits<float>::epsilon());
-    AssertHelper::assertPoint3FloatEquals(lightSplitShadowMap->getShadowCasterReceiverBox().getMax(),
+    AssertHelper::assertPoint3FloatEquals(lightSplitShadowMap.getShadowCasterReceiverBox().getMax(),
                                           Point3<float>(-2.5f, 2.5f, -1.5f) + LightSplitShadowMap::LIGHT_BOX_MARGIN,
                                           std::numeric_limits<float>::epsilon());
     cleanOctreeManager(modelOctreeManager);
@@ -38,13 +38,13 @@ void LightSplitShadowMapTest::modelsOutsideFrustumSplit() {
     auto lightSplitShadowMap = lightShadowMap->addLightSplitShadowMap();
 
     Frustum<float> frustumSplit(90.0f, 1.0f, 0.01f, 100.0f);
-    lightSplitShadowMap->update(frustumSplit, false);
+    lightSplitShadowMap.update(frustumSplit, false);
 
-    AssertHelper::assertUnsignedInt(lightSplitShadowMap->getModels().size(), 0);
-    AssertHelper::assertPoint3FloatEquals(lightSplitShadowMap->getShadowCasterReceiverBox().getMin(),
+    AssertHelper::assertUnsignedInt(lightSplitShadowMap.getModels().size(), 0);
+    AssertHelper::assertPoint3FloatEquals(lightSplitShadowMap.getShadowCasterReceiverBox().getMin(),
                                           Point3<float>(0.0f, 0.0f, 0.0f) - LightSplitShadowMap::LIGHT_BOX_MARGIN,
                                           std::numeric_limits<float>::epsilon());
-    AssertHelper::assertPoint3FloatEquals(lightSplitShadowMap->getShadowCasterReceiverBox().getMax(),
+    AssertHelper::assertPoint3FloatEquals(lightSplitShadowMap.getShadowCasterReceiverBox().getMax(),
                                           Point3<float>(0.0f, 0.0f, 0.0f) + LightSplitShadowMap::LIGHT_BOX_MARGIN,
                                           std::numeric_limits<float>::epsilon());
     cleanOctreeManager(modelOctreeManager);
@@ -59,13 +59,13 @@ void LightSplitShadowMapTest::modelOutsideFrustumProducingShadow() {
     auto lightSplitShadowMap = lightShadowMap->addLightSplitShadowMap();
 
     Frustum<float> frustumSplit(90.0f, 1.0f, 0.01f, 100.0f);
-    lightSplitShadowMap->update(frustumSplit, false);
+    lightSplitShadowMap.update(frustumSplit, false);
 
-    AssertHelper::assertUnsignedInt(lightSplitShadowMap->getModels().size(), 1);
-    AssertHelper::assertPoint3FloatEquals(lightSplitShadowMap->getShadowCasterReceiverBox().getMin(),
+    AssertHelper::assertUnsignedInt(lightSplitShadowMap.getModels().size(), 1);
+    AssertHelper::assertPoint3FloatEquals(lightSplitShadowMap.getShadowCasterReceiverBox().getMin(),
                                           Point3<float>(-3.5f, 1.5f, -101.0f) - LightSplitShadowMap::LIGHT_BOX_MARGIN,
                                           std::numeric_limits<float>::epsilon());
-    AssertHelper::assertPoint3FloatEquals(lightSplitShadowMap->getShadowCasterReceiverBox().getMax(),
+    AssertHelper::assertPoint3FloatEquals(lightSplitShadowMap.getShadowCasterReceiverBox().getMax(),
                                           Point3<float>(-2.5f, 2.5f, 249.5f) + LightSplitShadowMap::LIGHT_BOX_MARGIN,
                                           std::numeric_limits<float>::epsilon());
     cleanOctreeManager(modelOctreeManager);

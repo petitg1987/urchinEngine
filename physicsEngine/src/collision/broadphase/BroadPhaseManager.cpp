@@ -4,7 +4,7 @@
 namespace urchin {
 
     BroadPhaseManager::BroadPhaseManager(BodyManager& bodyManager) :
-            broadPhaseAlgorithm(new AABBTreeAlgorithm()) {
+            broadPhaseAlgorithm(std::make_unique<AABBTreeAlgorithm>()) {
 
         bodyManager.addObserver(this, BodyManager::ADD_BODY);
         bodyManager.addObserver(this, BodyManager::REMOVE_BODY);
@@ -12,7 +12,6 @@ namespace urchin {
 
     BroadPhaseManager::~BroadPhaseManager() {
         synchronizeBodies();
-        delete broadPhaseAlgorithm;
     }
 
     void BroadPhaseManager::notify(Observable* observable, int notificationType) {
