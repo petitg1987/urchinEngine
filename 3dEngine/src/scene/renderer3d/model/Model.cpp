@@ -7,7 +7,6 @@ namespace urchin {
 
     Model::Model(const std::string& meshFilename) :
             defaultModelAABBoxes({Model::getDefaultModelLocalAABBox()}),
-            meshes(std::unique_ptr<Meshes>(nullptr)),
             currAnimation(nullptr),
             stopAnimationAtLastFrame(false),
             bIsProduceShadow(true) {

@@ -39,7 +39,7 @@ namespace urchin {
             };
 
             ShadowManager(LightManager&, OctreeManager<Model>*);
-            ~ShadowManager() override;
+            ~ShadowManager() override = default;
 
             void setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>&);
             void onCameraProjectionUpdate(const Camera*);
@@ -69,7 +69,7 @@ namespace urchin {
             void updateShadowLights();
 
             //splits handling
-            void updateLightSplitsShadowMap(LightShadowMap*);
+            void updateLightSplitsShadowMap(const LightShadowMap&);
             void splitFrustum(const Frustum<float>&);
 
             //shadow map quality
@@ -88,11 +88,11 @@ namespace urchin {
             //shadow information
             std::vector<float> splitDistances;
             std::vector<Frustum<float>> splitFrustums;
-            std::map<const Light*, LightShadowMap*> lightShadowMaps;
+            std::map<const Light*, std::unique_ptr<LightShadowMap>> lightShadowMaps;
             bool bForceUpdateAllShadowMaps;
             float depthSplitDistance[SHADOW_MAPS_SHADER_LIMIT * 4]{}; //multiply by 4 because only 1 float over 4 are transferred to the shader due to memory alignment
 
             //shadow lights information
-            Matrix4<float>* lightProjectionViewMatrices;
+            std::vector<Matrix4<float>> lightProjectionViewMatrices;
     };
 }

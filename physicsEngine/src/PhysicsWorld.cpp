@@ -16,8 +16,7 @@ namespace urchin {
             timeStep(0.0f),
             paused(true),
             bodyManager(std::make_unique<BodyManager>()),
-            collisionWorld(std::make_unique<CollisionWorld>(getBodyManager())),
-            collisionVisualizer(std::unique_ptr<CollisionVisualizer>(nullptr)) {
+            collisionWorld(std::make_unique<CollisionWorld>(getBodyManager())) {
         NumericalCheck::perform();
         SignalHandler::instance()->initialize();
     }

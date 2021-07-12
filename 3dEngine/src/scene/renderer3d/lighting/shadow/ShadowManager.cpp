@@ -18,27 +18,17 @@ namespace urchin {
             config({}),
             lightManager(lightManager),
             modelOctreeManager(modelOctreeManager),
-            bForceUpdateAllShadowMaps(false),
-            lightProjectionViewMatrices(nullptr) {
+            bForceUpdateAllShadowMaps(false) {
         lightManager.addObserver(this, LightManager::ADD_LIGHT);
         lightManager.addObserver(this, LightManager::REMOVE_LIGHT);
     }
 
-    ShadowManager::~ShadowManager() {
-        for (auto& lightShadowMap : lightShadowMaps) {
-            delete lightShadowMap.second;
-        }
-
-        delete[] lightProjectionViewMatrices;
-    }
-
     void ShadowManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
-        delete[] lightProjectionViewMatrices;
         std::size_t mLightProjectionViewSize = getMaxShadowLights() * config.nbShadowMaps;
-        lightProjectionViewMatrices = new Matrix4<float>[mLightProjectionViewSize]{};
+        lightProjectionViewMatrices.resize(mLightProjectionViewSize, Matrix4<float>{});
 
         lightingRendererBuilder
-                ->addUniformData(mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices) //binding 4
+                ->addUniformData(mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices.data()) //binding 4
                 ->addUniformData(config.nbShadowMaps * sizeof(float) * 4, depthSplitDistance); //binding 5
     }
 
@@ -121,16 +111,15 @@ namespace urchin {
             throw std::runtime_error("No light shadow map found for this light.");
         }
 
-        const LightShadowMap* lightShadowMap = it->second;
-        return *lightShadowMap;
+        return *it->second;
     }
 
     void ShadowManager::updateVisibleModels(const Frustum<float>& frustum) {
         ScopeProfiler sp(Profiler::graphic(), "upVisibleModel");
 
         splitFrustum(frustum);
-        for (auto& lightShadowMap : lightShadowMaps) {
-            updateLightSplitsShadowMap(lightShadowMap.second);
+        for (const auto& lightShadowMap : lightShadowMaps) {
+            updateLightSplitsShadowMap(*lightShadowMap.second);
         }
 
         //store all visible models from all lights
@@ -164,7 +153,7 @@ namespace urchin {
         auto shadowMapRenderTarget = std::make_unique<OffscreenRender>("shadow map", RenderTarget::WRITE_ONLY_DEPTH_ATTACHMENT);
         shadowMapRenderTarget->addTexture(shadowMapTexture);
 
-        auto* newLightShadowMap = new LightShadowMap(light, modelOctreeManager, config.viewingShadowDistance, shadowMapTexture, config.nbShadowMaps, std::move(shadowMapRenderTarget));
+        auto newLightShadowMap = std::make_unique<LightShadowMap>(light, modelOctreeManager, config.viewingShadowDistance, shadowMapTexture, config.nbShadowMaps, std::move(shadowMapRenderTarget));
         for (unsigned int i = 0; i < config.nbShadowMaps; ++i) {
             newLightShadowMap->addLightSplitShadowMap();
         }
@@ -202,11 +191,10 @@ namespace urchin {
             newLightShadowMap->addTextureFilter(std::move(nullFilter));
         }
 
-        lightShadowMaps[light] = newLightShadowMap;
+        lightShadowMaps[light] = std::move(newLightShadowMap);
     }
 
     void ShadowManager::removeShadowLight(const Light* light) {
-        delete lightShadowMaps[light];
         lightShadowMaps.erase(light);
     }
 
@@ -226,12 +214,12 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::updateLightSplitsShadowMap(LightShadowMap* lightShadowMap) {
+    void ShadowManager::updateLightSplitsShadowMap(const LightShadowMap& lightShadowMap) {
         ScopeProfiler sp(Profiler::graphic(), "upFrustumShadow");
 
-        if (lightShadowMap->getLight()->hasParallelBeams()) { //sun light
+        if (lightShadowMap.getLight()->hasParallelBeams()) { //sun light
             unsigned int i = 0;
-            for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
+            for (const auto& lightSplitShadowMap : lightShadowMap.getLightSplitShadowMaps()) {
                 lightSplitShadowMap->update(splitFrustums[i++], bForceUpdateAllShadowMaps);
             }
         } else {
@@ -280,7 +268,7 @@ namespace urchin {
         for (auto* visibleLight : lightManager.getVisibleLights()) {
             if (visibleLight->isProduceShadow()) {
                 assert(shadowLightIndex < getMaxShadowLights());
-                const LightShadowMap* lightShadowMap = lightShadowMaps.find(visibleLight)->second;
+                const auto& lightShadowMap = lightShadowMaps.find(visibleLight)->second;
 
                 if (lightingRenderer.getUniformTextureReader(shadowMapTexUnit, shadowLightIndex)->getTexture() != lightShadowMap->getFilteredShadowMapTexture()) {
                     lightingRenderer.updateUniformTextureReaderArray(shadowMapTexUnit, shadowLightIndex, TextureReader::build(lightShadowMap->getFilteredShadowMapTexture(), TextureParam::buildLinear()));
@@ -302,7 +290,7 @@ namespace urchin {
             depthSplitDistance[shadowMapIndex * 4] = ((projectionMatrix(2, 2) * -currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance));
         }
 
-        lightingRenderer.updateUniformData(4, lightProjectionViewMatrices);
+        lightingRenderer.updateUniformData(4, lightProjectionViewMatrices.data());
         lightingRenderer.updateUniformData(5, depthSplitDistance);
     }
 
