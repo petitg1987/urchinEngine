@@ -14,7 +14,6 @@ namespace urchin {
             viewingShadowDistance(viewingShadowDistance),
             nbShadowMaps(nbShadowMaps),
             renderTarget(std::move(renderTarget)),
-            shadowModelShaderVariable(nullptr),
             shadowMapTexture(std::move(shadowMapTexture)) {
         if (this->renderTarget) { //only false for unit tests
             this->renderTarget->initialize();
@@ -30,8 +29,6 @@ namespace urchin {
         if (renderTarget) {
             renderTarget->cleanup();
         }
-
-        delete shadowModelShaderVariable;
     }
 
     void LightShadowMap::updateLightViewMatrix() {
@@ -96,10 +93,7 @@ namespace urchin {
         shadowModelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEPTH_ONLY_MODE);
         shadowModelSetDisplayer->setCustomShader("modelShadowMap.geom.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
         shadowModelSetDisplayer->initialize(*renderTarget);
-
-        delete shadowModelShaderVariable;
-        shadowModelShaderVariable = new ShadowModelShaderVariable(this);
-        shadowModelSetDisplayer->setCustomModelShaderVariable(shadowModelShaderVariable);
+        shadowModelSetDisplayer->setCustomModelShaderVariable(std::make_unique<ShadowModelShaderVariable>(this));
     }
 
     /**

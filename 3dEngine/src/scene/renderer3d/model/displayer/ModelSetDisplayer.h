@@ -27,7 +27,7 @@ namespace urchin {
             void onCameraProjectionUpdate(const Camera*);
 
             void setCustomShader(const std::string&, const std::string&, std::unique_ptr<ShaderConstants>);
-            void setCustomModelShaderVariable(CustomModelShaderVariable*);
+            void setCustomModelShaderVariable(std::unique_ptr<CustomModelShaderVariable>);
 
             void setModels(const std::vector<Model*>&);
             void removeModel(Model*);
@@ -47,7 +47,7 @@ namespace urchin {
             std::unique_ptr<Shader> modelShader;
             Matrix4<float> projectionMatrix;
 
-            CustomModelShaderVariable* customModelShaderVariable;
+            std::unique_ptr<CustomModelShaderVariable> customModelShaderVariable;
 
             RenderTarget* renderTarget;
             std::vector<Model*> models;
