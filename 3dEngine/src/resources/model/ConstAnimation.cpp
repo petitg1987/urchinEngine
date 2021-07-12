@@ -5,15 +5,13 @@
 
 namespace urchin {
 
-    ConstAnimation::ConstAnimation(std::string animationFilename, unsigned int numFrames, unsigned int numBones,
-            unsigned int frameRate, const Bone*const* skeletonFrames, const AABBox<float>*const* bboxes) :
+    ConstAnimation::ConstAnimation(std::string animationFilename, unsigned int numFrames, unsigned int numBones, unsigned int frameRate,
+                                   std::vector<std::vector<Bone>> skeletonFrames, std::vector<std::unique_ptr<AABBox<float>>> bboxes) :
             animationFilename(std::move(animationFilename)),
-            numFrames(numFrames),
             numBones(numBones),
             frameRate(frameRate),
-            skeletonFrames(skeletonFrames),
-            bboxes(bboxes) {
-        //determines the bounding box
+            skeletonFrames(std::move(skeletonFrames)) {
+        //determines the bounding box (bboxes: bounding boxes of each animation frames (not transformed))
         originalGlobalBBox = AABBox<float>(bboxes[0]->getMin(), bboxes[0]->getMax());
         for (unsigned int i = 0; i < numFrames; ++i) {
             originalGlobalBBox = originalGlobalBBox.merge(*bboxes[i]);
@@ -21,22 +19,12 @@ namespace urchin {
         originalGlobalSplitBBoxes = SplitBoundingBox().split(originalGlobalBBox);
     }
 
-    ConstAnimation::~ConstAnimation() {
-        for (unsigned int i = 0; i < numFrames; i++) {
-            delete[] skeletonFrames[i];
-            delete bboxes[i];
-        }
-
-        delete[] skeletonFrames;
-        delete[] bboxes;
-    }
-
     const std::string& ConstAnimation::getAnimationFilename() const {
         return animationFilename;
     }
 
     unsigned int ConstAnimation::getNumberFrames() const {
-        return numFrames;
+        return (unsigned int)skeletonFrames.size();
     }
 
     unsigned int ConstAnimation::getNumberBones() const {

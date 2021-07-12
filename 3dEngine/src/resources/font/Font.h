@@ -11,7 +11,7 @@ namespace urchin {
         unsigned int width;
         unsigned int height;
         int shift;
-        unsigned char* buf;
+        std::vector<unsigned char> buf;
     };
 
     class Font : public Resource {

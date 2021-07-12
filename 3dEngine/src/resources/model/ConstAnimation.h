@@ -20,8 +20,8 @@ namespace urchin {
      */
     class ConstAnimation : public Resource {
         public:
-            ConstAnimation(std::string , unsigned int, unsigned int, unsigned int, const Bone*const*, const AABBox<float>*const*);
-            ~ConstAnimation() override;
+            ConstAnimation(std::string , unsigned int, unsigned int, unsigned int, std::vector<std::vector<Bone>>, std::vector<std::unique_ptr<AABBox<float>>>);
+            ~ConstAnimation() override = default;
 
             const std::string& getAnimationFilename() const;
             unsigned int getNumberFrames() const;
@@ -34,9 +34,8 @@ namespace urchin {
 
         private:
             std::string animationFilename;
-            const unsigned int numFrames, numBones, frameRate;
-            const Bone *const *const skeletonFrames;
-            const AABBox<float> *const *const bboxes; //bounding boxes of each animation frames (not transformed)
+            const unsigned int numBones, frameRate;
+            std::vector<std::vector<Bone>> skeletonFrames;
             AABBox<float> originalGlobalBBox; //original global bounding box (not transformed)
             std::vector<AABBox<float>> originalGlobalSplitBBoxes;
     };

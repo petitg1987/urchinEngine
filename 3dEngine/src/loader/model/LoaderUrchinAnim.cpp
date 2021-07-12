@@ -44,18 +44,18 @@ namespace urchin {
         iss >> sdata >> numAnimatedComponents;
 
         //hierarchy
-        auto* boneInfos = new BoneInfo[numBones];
+        std::vector<BoneInfo> boneInfos(numBones);
         FileReader::nextLine(file, buffer); //buffer = "hierarchy {"
-        for (unsigned int i = 0; i < numBones; i++) {
+        for (auto& boneInfo : boneInfos) {
             FileReader::nextLine(file, buffer);
             iss.clear(); iss.str(buffer);
-            iss >> boneInfos[i].name >> boneInfos[i].parent >> boneInfos[i].flags >>boneInfos[i].startIndex;
-            boneInfos[i].name = boneInfos[i].name.substr(1, boneInfos[i].name.length() - 2); //remove quote
+            iss >> boneInfo.name >> boneInfo.parent >> boneInfo.flags >>boneInfo.startIndex;
+            boneInfo.name = boneInfo.name.substr(1, boneInfo.name.length() - 2); //remove quote
         }
         FileReader::nextLine(file, buffer); //buffer = "}"
 
         //bounds
-        auto** bboxes = new AABBox<float>*[numFrames];
+        std::vector<std::unique_ptr<AABBox<float>>> bboxes(numFrames);
         FileReader::nextLine(file, buffer); //buffer = "bounds {"
         for (unsigned int i = 0; i < numFrames; i++) {
             FileReader::nextLine(file, buffer);
@@ -63,73 +63,67 @@ namespace urchin {
 
             Point3<float> min, max;
             iss >> sdata >> min.X >> min.Y >> min.Z >> sdata >> sdata >> max.X >> max.Y >> max.Z;
-            bboxes[i] = new AABBox<float>(min, max);
+            bboxes[i] = std::make_unique<AABBox<float>>(min, max);
         }
         FileReader::nextLine(file, buffer); //buffer = "}"
 
         //baseframe
-        auto* baseFrame = new BaseFrameBone[numBones];
+        std::vector<BaseFrameBone> baseFrame(numBones);
         FileReader::nextLine(file, buffer); //buffer = "baseframe {"
-        for (unsigned int i = 0; i < numBones; i++) {
+        for (auto & bf : baseFrame) {
             FileReader::nextLine(file, buffer);
             iss.clear(); iss.str(buffer);
-            iss >> sdata >> baseFrame[i].pos.X >> baseFrame[i].pos.Y >> baseFrame[i].pos.Z >> sdata >> sdata >>baseFrame[i].orient.X >> baseFrame[i].orient.Y >> baseFrame[i].orient.Z;
-            baseFrame[i].orient.computeW();
+            iss >> sdata >> bf.pos.X >> bf.pos.Y >> bf.pos.Z >> sdata >> sdata >> bf.orient.X >> bf.orient.Y >> bf.orient.Z;
+            bf.orient.computeW();
         }
         FileReader::nextLine(file, buffer); //buffer = "}"
 
         //frames
-        auto** skeletonFrames = new Bone*[numFrames];
-        auto* animFrameData = new float[numAnimatedComponents];
+        std::vector<std::vector<Bone>> skeletonFrames(numFrames);
+        std::vector<float> animFrameData(numAnimatedComponents);
         for (unsigned int frameIndex = 0; frameIndex < numFrames; ++frameIndex) {
-            skeletonFrames[frameIndex] = new Bone[numBones];
+            skeletonFrames[frameIndex].resize(numBones);
 
             FileReader::nextLine(file, buffer); // buffer = "frame ? {"
-            for (unsigned int j = 0; j < numAnimatedComponents; j++) {
-                file >> animFrameData[j];
+            for (float& afd : animFrameData) {
+                file >> afd;
             }
 
             //build frame skeleton from the collected data
             for (unsigned int i = 0; i < numBones; ++i) {
                 const BaseFrameBone* baseBone = &baseFrame[i];
-                int j = 0;
+                std::size_t j = 0;
 
                 Point3<float> animatedPos = baseBone->pos;
                 Quaternion<float> animatedOrient = baseBone->orient;
 
-                if ((boneInfos[i].flags) & 1u) //Tx
-                {
-                    animatedPos.X = animFrameData[boneInfos[i].startIndex + j];
+                if ((boneInfos[i].flags) & 1u) { //Tx
+                    animatedPos.X = animFrameData[(std::size_t)boneInfos[i].startIndex + j];
                     ++j;
                 }
 
-                if ((boneInfos[i].flags) & 2u) //Ty
-                {
-                    animatedPos.Y = animFrameData[boneInfos[i].startIndex + j];
+                if ((boneInfos[i].flags) & 2u) { //Ty
+                    animatedPos.Y = animFrameData[(std::size_t)boneInfos[i].startIndex + j];
                     ++j;
                 }
 
-                if ((boneInfos[i].flags) & 4u) //Tz
-                {
-                    animatedPos.Z = animFrameData[boneInfos[i].startIndex + j];
+                if ((boneInfos[i].flags) & 4u) { //Tz
+                    animatedPos.Z = animFrameData[(std::size_t)boneInfos[i].startIndex + j];
                     ++j;
                 }
 
-                if ((boneInfos[i].flags) & 8u) //Qx
-                {
-                    animatedOrient.X = animFrameData[boneInfos[i].startIndex + j];
+                if ((boneInfos[i].flags) & 8u) { //Qx
+                    animatedOrient.X = animFrameData[(std::size_t)boneInfos[i].startIndex + j];
                     ++j;
                 }
 
-                if ((boneInfos[i].flags) & 16u) //Qy
-                {
-                    animatedOrient.Y = animFrameData[boneInfos[i].startIndex + j];
+                if ((boneInfos[i].flags) & 16u) { //Qy
+                    animatedOrient.Y = animFrameData[(std::size_t)boneInfos[i].startIndex + j];
                     ++j;
                 }
 
-                if ((boneInfos[i].flags) & 32u) //Qz
-                {
-                    animatedOrient.Z = animFrameData[boneInfos[i].startIndex + j];
+                if ((boneInfos[i].flags) & 32u) { //Qz
+                    animatedOrient.Z = animFrameData[(std::size_t)boneInfos[i].startIndex + j];
                 }
 
                 //computes orient quaternion's w value
@@ -147,7 +141,7 @@ namespace urchin {
                     thisBone->pos = animatedPos;
                     thisBone->orient = animatedOrient;
                 } else {
-                    Bone* parentBone = &skeletonFrames[frameIndex][parent];
+                    Bone* parentBone = &skeletonFrames[frameIndex][(std::size_t)parent];
 
                     //adds positions
                     Point3<float> rpos = parentBone->orient.rotatePoint(animatedPos); //rotated position
@@ -163,11 +157,7 @@ namespace urchin {
             FileReader::nextLine(file, buffer); //buferf = "}"
         }
 
-        delete[] boneInfos;
-        delete[] baseFrame;
-        delete[] animFrameData;
-
         file.close();
-        return (new ConstAnimation(filename, numFrames, numBones, frameRate, skeletonFrames, bboxes));
+        return (new ConstAnimation(filename, numFrames, numBones, frameRate, skeletonFrames, std::move(bboxes)));
     }
 }

@@ -69,10 +69,10 @@ namespace urchin {
             glyph[i].shift = face->glyph->bitmap_top - bitmapTopA;
             glyph[i].width = face->glyph->bitmap.width;
             glyph[i].height = face->glyph->bitmap.rows;
-            glyph[i].buf = nullptr;
+            glyph[i].buf.clear();
 
             if (glyph[i].width > 0 && glyph[i].height > 0) {
-                glyph[i].buf = new unsigned char[glyph[i].width * glyph[i].height];
+                glyph[i].buf.resize(glyph[i].width * glyph[i].height);
                 for (unsigned int j = 0; j < (glyph[i].width * glyph[i].height); j++) {
                     glyph[i].buf[j] = face->glyph->bitmap.buffer[j];
                 }
@@ -124,8 +124,7 @@ namespace urchin {
 
         //clears buffers of letters
         for (std::size_t i = 0; i < Font::NUM_LETTERS; i++) {
-            delete[] glyph[i].buf;
-            glyph[i].buf = nullptr;
+            glyph[i].buf.clear();
         }
 
         return new Font(fontSize, fontColor, alphabetTexture, glyph, spaceBetweenLetters, spaceBetweenLines, height);
