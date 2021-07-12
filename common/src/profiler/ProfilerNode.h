@@ -9,15 +9,13 @@ namespace urchin {
     class ProfilerNode {
         public:
             ProfilerNode(std::string, ProfilerNode*);
-            ~ProfilerNode();
 
             const std::string& getName() const;
 
             ProfilerNode* getParent() const;
 
-            std::vector<ProfilerNode*> getChildren() const;
             ProfilerNode* findChildren(const std::string&) const;
-            void addChild(ProfilerNode*);
+            void addChild(std::unique_ptr<ProfilerNode>);
 
             bool isStarted() const;
             void startTimer();
@@ -31,7 +29,7 @@ namespace urchin {
 
             std::string name;
             ProfilerNode* parent;
-            std::vector<ProfilerNode*> children;
+            std::vector<std::unique_ptr<ProfilerNode>> children;
 
             unsigned int startCount;
             std::chrono::steady_clock::time_point startTime;

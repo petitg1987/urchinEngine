@@ -14,12 +14,6 @@ namespace urchin {
 
     }
 
-    ProfilerNode::~ProfilerNode() {
-        for (ProfilerNode* child : children) {
-            delete child;
-        }
-    }
-
     const std::string& ProfilerNode::getName() const {
         return name;
     }
@@ -28,22 +22,18 @@ namespace urchin {
         return parent;
     }
 
-    std::vector<ProfilerNode*> ProfilerNode::getChildren() const {
-        return children;
-    }
-
     ProfilerNode* ProfilerNode::findChildren(const std::string& name) const {
         for (const auto& child : children) {
             if (child->getName() == name) {
-                return child;
+                return child.get();
             }
         }
 
         return nullptr;
     }
 
-    void ProfilerNode::addChild(ProfilerNode* child) {
-        children.push_back(child);
+    void ProfilerNode::addChild(std::unique_ptr<ProfilerNode> child) {
+        children.push_back(std::move(child));
     }
 
     bool ProfilerNode::isStarted() const {

@@ -46,8 +46,9 @@ namespace urchin {
             } else {
                 ProfilerNode* profilerNode = currentNode->findChildren(nodeName);
                 if (profilerNode == nullptr) {
-                    profilerNode = new ProfilerNode(nodeName, currentNode);
-                    currentNode->addChild(profilerNode);
+                    auto newProfilerNode = std::make_unique<ProfilerNode>(nodeName, currentNode);
+                    profilerNode = newProfilerNode.get();
+                    currentNode->addChild(std::move(newProfilerNode));
                 }
 
                 profilerNode->startTimer();
