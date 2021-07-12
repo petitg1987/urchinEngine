@@ -15,20 +15,19 @@ namespace urchin {
      */
     class ConstMeshes : public Resource {
         public:
-            ConstMeshes(std::string , const std::vector<const ConstMesh*>&);
-            ~ConstMeshes() override;
+            ConstMeshes(std::string, std::vector<std::unique_ptr<const ConstMesh>>);
 
             const std::string& getMeshFilename() const;
             unsigned int getNumberConstMeshes() const;
-            const ConstMesh* getConstMesh(unsigned int) const;
-            const std::vector<const ConstMesh*>& getConstMeshes() const;
+            const ConstMesh& getConstMesh(unsigned int) const;
+            const std::vector<std::unique_ptr<const ConstMesh>>& getConstMeshes() const;
 
             const AABBox<float>& getOriginalAABBox() const;
             const std::vector<AABBox<float>>& getOriginalSplitAABBoxes() const;
 
         private:
             std::string meshFilename;
-            std::vector<const ConstMesh*> constMeshes;
+            std::vector<std::unique_ptr<const ConstMesh>> constMeshes;
 
             std::unique_ptr<AABBox<float>> originalBBox; //bounding box (not transformed)
             std::vector<AABBox<float>> originalSplitBBoxes;

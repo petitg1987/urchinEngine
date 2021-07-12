@@ -6,13 +6,13 @@
 
 namespace urchin {
 
-    ConstMeshes::ConstMeshes(std::string meshFilename, const std::vector<const ConstMesh*>& constMeshes) :
+    ConstMeshes::ConstMeshes(std::string meshFilename, std::vector<std::unique_ptr<const ConstMesh>> constMeshes) :
             meshFilename(std::move(meshFilename)),
-            constMeshes(constMeshes) {
+            constMeshes(std::move(constMeshes)) {
         //determines the bounding box
         Point3<float> min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
         Point3<float> max(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
-        for (auto constMesh : constMeshes) {
+        for (auto& constMesh : this->constMeshes) {
             for (unsigned int i = 0; i < constMesh->getNumberVertices(); i++) {
                 if (min.X > constMesh->getBaseVertices()[i].X) {
                     min.X = constMesh->getBaseVertices()[i].X;
@@ -39,12 +39,6 @@ namespace urchin {
         originalSplitBBoxes = SplitBoundingBox().split(*originalBBox);
     }
 
-    ConstMeshes::~ConstMeshes() {
-        for (auto& constMesh : constMeshes) {
-            delete constMesh;
-        }
-    }
-
     const std::string& ConstMeshes::getMeshFilename() const {
         return meshFilename;
     }
@@ -53,11 +47,11 @@ namespace urchin {
         return (unsigned int)constMeshes.size();
     }
 
-    const ConstMesh* ConstMeshes::getConstMesh(unsigned int index) const {
-        return constMeshes[index];
+    const ConstMesh& ConstMeshes::getConstMesh(unsigned int index) const {
+        return *constMeshes[index];
     }
 
-    const std::vector<const ConstMesh*>& ConstMeshes::getConstMeshes() const {
+    const std::vector<std::unique_ptr<const ConstMesh>>& ConstMeshes::getConstMeshes() const {
         return constMeshes;
     }
 

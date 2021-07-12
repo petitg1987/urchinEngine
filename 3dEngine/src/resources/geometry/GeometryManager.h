@@ -12,7 +12,6 @@ namespace urchin {
     class GeometryManager {
         public:
             explicit GeometryManager(RenderTarget&);
-            virtual ~GeometryManager() = default;
 
             void addGeometry(GeometryModel*);
             void removeGeometry(GeometryModel*);

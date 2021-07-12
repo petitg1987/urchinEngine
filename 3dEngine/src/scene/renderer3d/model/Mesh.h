@@ -11,7 +11,7 @@ namespace urchin {
 
     class Mesh {
         public:
-            explicit Mesh(const ConstMesh*);
+            explicit Mesh(const ConstMesh&);
 
             void update(const std::vector<Bone>&);
 
@@ -22,7 +22,7 @@ namespace urchin {
             void drawBaseBones(RenderTarget&, const Matrix4<float>&, const Matrix4<float>&);
 
         private:
-            const ConstMesh *const constMesh;
+            const ConstMesh& constMesh;
 
             std::vector<Point3<float>> vertices;
             std::vector<Vector3<float>> normals;

@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    Mesh::Mesh(const ConstMesh* constMesh) :
+    Mesh::Mesh(const ConstMesh& constMesh) :
             constMesh(constMesh) {
 
     }
@@ -29,7 +29,7 @@ namespace urchin {
 
     void Mesh::drawBaseBones(RenderTarget& renderTarget, const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) {
         std::vector<Point3<float>> bonePositions;
-        for (const auto& bone : constMesh->getBaseSkeleton()) {
+        for (const auto& bone : constMesh.getBaseSkeleton()) {
             bonePositions.push_back(bone.pos);
         }
 

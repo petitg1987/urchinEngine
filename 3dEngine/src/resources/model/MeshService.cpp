@@ -8,15 +8,15 @@ namespace urchin {
     /**
      * @param vertices [out] Computed vertices based on the skeleton
      */
-    void MeshService::computeVertices(const ConstMesh *const constMesh, const std::vector<Bone>& skeleton, std::vector<Point3<float>>& vertices) {
+    void MeshService::computeVertices(const ConstMesh& constMesh, const std::vector<Bone>& skeleton, std::vector<Point3<float>>& vertices) {
         //setup vertices
-        vertices.resize(constMesh->getNumberVertices());
-        for (unsigned int i = 0; i < constMesh->getNumberVertices(); ++i) {
+        vertices.resize(constMesh.getNumberVertices());
+        for (unsigned int i = 0; i < constMesh.getNumberVertices(); ++i) {
             vertices[i].setNull();
 
             //calculate final vertex to draw with weights
-            for (int j = 0; j < constMesh->getStructVertex(i).weightCount; ++j) {
-                const Weight* weight = &constMesh->getWeight((unsigned int)(constMesh->getStructVertex(i).weightStart + j));
+            for (int j = 0; j < constMesh.getStructVertex(i).weightCount; ++j) {
+                const Weight* weight = &constMesh.getWeight((unsigned int)(constMesh.getStructVertex(i).weightStart + j));
                 const Bone& bone = skeleton[(std::size_t)weight->bone];
 
                 //calculate transformed vertex for this weight
@@ -34,19 +34,19 @@ namespace urchin {
      * @param normals [out] Computed weighted normals for vertices
      * @param tangents [out] Computed tangents for vertices
      */
-    void MeshService::computeNormalsAndTangents(const ConstMesh *const constMesh, const std::vector<Point3<float>>& vertices, std::vector<Vector3<float>>& normals,
+    void MeshService::computeNormalsAndTangents(const ConstMesh& constMesh, const std::vector<Point3<float>>& vertices, std::vector<Vector3<float>>& normals,
                                                 std::vector<Vector3<float>>& tangents) {
         //compute weighted normals
         static std::vector<Vector3<float>> vertexNormals;
         vertexNormals.clear();
-        vertexNormals.resize(constMesh->getNumberVertices(), Vector3<float>(0.0f, 0.0f, 0.0f));
+        vertexNormals.resize(constMesh.getNumberVertices(), Vector3<float>(0.0f, 0.0f, 0.0f));
 
-        std::size_t numTrianglesIndices = constMesh->getTrianglesIndices().size();
+        std::size_t numTrianglesIndices = constMesh.getTrianglesIndices().size();
         assert(numTrianglesIndices % 3 == 0);
         for (std::size_t triIndices = 0; triIndices < numTrianglesIndices; triIndices += 3) {
-            unsigned int triIndex1 = constMesh->getTrianglesIndices()[triIndices + 0];
-            unsigned int triIndex2 = constMesh->getTrianglesIndices()[triIndices + 1];
-            unsigned int triIndex3 = constMesh->getTrianglesIndices()[triIndices + 2];
+            unsigned int triIndex1 = constMesh.getTrianglesIndices()[triIndices + 0];
+            unsigned int triIndex2 = constMesh.getTrianglesIndices()[triIndices + 1];
+            unsigned int triIndex3 = constMesh.getTrianglesIndices()[triIndices + 2];
 
             Vector3<float> weightedNormal1 = computeWeightedVertexNormal(triIndex1, triIndex2, triIndex3, vertices);
             Vector3<float> weightedNormal2 = computeWeightedVertexNormal(triIndex2, triIndex3, triIndex1, vertices);
@@ -58,18 +58,18 @@ namespace urchin {
         }
 
         //sum weighted normals of same vertex
-        normals.resize(constMesh->getNumberVertices());
-        for (unsigned int vertexIndex = 0; vertexIndex < constMesh->getNumberVertices(); ++vertexIndex) {
+        normals.resize(constMesh.getNumberVertices());
+        for (unsigned int vertexIndex = 0; vertexIndex < constMesh.getNumberVertices(); ++vertexIndex) {
             normals[vertexIndex].setNull();
 
-            unsigned int linkedVerticesGroupId = constMesh->getStructVertex(vertexIndex).linkedVerticesGroupId;
-            for (unsigned int linkedVertex : constMesh->getLinkedVertices(linkedVerticesGroupId)) {
+            unsigned int linkedVerticesGroupId = constMesh.getStructVertex(vertexIndex).linkedVerticesGroupId;
+            for (unsigned int linkedVertex : constMesh.getLinkedVertices(linkedVerticesGroupId)) {
                 normals[vertexIndex] += vertexNormals[linkedVertex];
             }
         }
 
-        tangents.resize(constMesh->getNumberVertices());
-        for (unsigned int vertexIndex = 0; vertexIndex < constMesh->getNumberVertices(); ++vertexIndex) {
+        tangents.resize(constMesh.getNumberVertices());
+        for (unsigned int vertexIndex = 0; vertexIndex < constMesh.getNumberVertices(); ++vertexIndex) {
             //normal normalization
             normals[vertexIndex] = normals[vertexIndex].normalize();
 

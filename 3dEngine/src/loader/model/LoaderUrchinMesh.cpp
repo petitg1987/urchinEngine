@@ -46,7 +46,7 @@ namespace urchin {
         FileReader::nextLine(file, buffer); //buffer = "}"
 
         //mesh
-        std::vector<const ConstMesh*> constMeshes;
+        std::vector<std::unique_ptr<const ConstMesh>> constMeshes;
         for (unsigned int ii = 0; ii < numMeshes; ii++) {
             //material
             std::string materialFilename;
@@ -101,12 +101,12 @@ namespace urchin {
             }
             FileReader::nextLine(file, buffer); //buffer= "}"
 
-            constMeshes.push_back(new ConstMesh(materialFilename, vertices, textureCoordinates, trianglesIndices, weights, baseSkeleton));
+            constMeshes.push_back(std::make_unique<ConstMesh>(materialFilename, vertices, textureCoordinates, trianglesIndices, weights, baseSkeleton));
         }
 
         file.close();
 
-        return new ConstMeshes(filename, constMeshes);
+        return new ConstMeshes(filename, std::move(constMeshes));
     }
 
 }
