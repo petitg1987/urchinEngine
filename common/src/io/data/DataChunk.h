@@ -20,7 +20,7 @@ namespace urchin {
             friend class DataWriter;
 
             std::string getAttributeValue(const std::string&) const;
-            void setAttribute(const DataAttribute&);
+            void addAttribute(const DataAttribute&);
 
             std::string getStringValue() const;
             void setStringValue(const std::string&);

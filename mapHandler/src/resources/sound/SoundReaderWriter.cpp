@@ -52,7 +52,7 @@ namespace urchin {
 
         if (sound.getSoundType() == Sound::SPATIAL) {
             const auto& spatialSound = dynamic_cast<const SpatialSound&>(sound);
-            soundChunk->setAttribute(DataAttribute(TYPE_ATTR, SPATIAL_VALUE));
+            soundChunk->addAttribute(DataAttribute(TYPE_ATTR, SPATIAL_VALUE));
 
             auto positionChunk = dataWriter.createChunk(POSITION_TAG, DataAttribute(), soundChunk);
             positionChunk->setPoint3Value(spatialSound.getPosition());
@@ -60,15 +60,15 @@ namespace urchin {
             auto inaudibleDistanceChunk = dataWriter.createChunk(INAUDIBLE_DISTANCE_TAG, DataAttribute(), soundChunk);
             inaudibleDistanceChunk->setFloatValue(spatialSound.getInaudibleDistance());
         } else if (sound.getSoundType() == Sound::GLOBAL) {
-            soundChunk->setAttribute(DataAttribute(TYPE_ATTR, GLOBAL_VALUE));
+            soundChunk->addAttribute(DataAttribute(TYPE_ATTR, GLOBAL_VALUE));
         } else {
             throw std::invalid_argument("Unknown sound type to write in map: " + std::to_string(sound.getSoundType()));
         }
 
         if (sound.getSoundCategory() == Sound::SoundCategory::MUSIC) {
-            soundChunk->setAttribute(DataAttribute(CATEGORY_ATTR, MUSIC_VALUE));
+            soundChunk->addAttribute(DataAttribute(CATEGORY_ATTR, MUSIC_VALUE));
         } else if (sound.getSoundCategory() == Sound::SoundCategory::EFFECTS) {
-            soundChunk->setAttribute(DataAttribute(CATEGORY_ATTR, EFFECTS_VALUE));
+            soundChunk->addAttribute(DataAttribute(CATEGORY_ATTR, EFFECTS_VALUE));
         } else {
             throw std::invalid_argument("Unknown sound category to write in map: " + std::to_string(sound.getSoundCategory()));
         }

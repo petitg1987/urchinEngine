@@ -35,7 +35,7 @@ namespace urchin {
     }
 
     void SceneSound::writeOn(DataChunk* chunk, DataWriter& dataWriter) const {
-        chunk->setAttribute(DataAttribute(NAME_ATTR, this->name));
+        chunk->addAttribute(DataAttribute(NAME_ATTR, this->name));
 
         auto soundChunk = dataWriter.createChunk(SOUND_TAG, DataAttribute(), chunk);
         auto soundTriggerChunk = dataWriter.createChunk(SOUND_TRIGGER_TAG, DataAttribute(), chunk);

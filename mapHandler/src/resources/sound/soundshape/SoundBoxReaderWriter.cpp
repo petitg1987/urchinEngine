@@ -21,7 +21,7 @@ namespace urchin {
     }
 
     void SoundBoxReaderWriter::writeOn(DataChunk* shapeChunk, const SoundShape& soundShape, DataWriter& dataWriter) const {
-        shapeChunk->setAttribute(DataAttribute(TYPE_ATTR, BOX_VALUE));
+        shapeChunk->addAttribute(DataAttribute(TYPE_ATTR, BOX_VALUE));
 
         const auto& boxShape = dynamic_cast<const SoundBox&>(soundShape);
 

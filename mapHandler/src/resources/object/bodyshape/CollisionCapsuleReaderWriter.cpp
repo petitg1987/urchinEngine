@@ -28,7 +28,7 @@ namespace urchin {
     }
 
     void CollisionCapsuleReaderWriter::writeOn(DataChunk* shapeChunk, const CollisionShape3D& collisionShape, DataWriter& dataWriter) const {
-        shapeChunk->setAttribute(DataAttribute(TYPE_ATTR, CAPSULE_VALUE));
+        shapeChunk->addAttribute(DataAttribute(TYPE_ATTR, CAPSULE_VALUE));
 
         const auto& capsuleShape = dynamic_cast<const CollisionCapsuleShape&>(collisionShape);
 

@@ -34,7 +34,7 @@ namespace urchin {
     }
 
     void CollisionConeReaderWriter::writeOn(DataChunk* shapeChunk, const CollisionShape3D& collisionShape, DataWriter& dataWriter) const {
-        shapeChunk->setAttribute(DataAttribute(TYPE_ATTR, CONE_VALUE));
+        shapeChunk->addAttribute(DataAttribute(TYPE_ATTR, CONE_VALUE));
 
         const auto& coneShape = dynamic_cast<const CollisionConeShape&>(collisionShape);
 

@@ -40,7 +40,7 @@ namespace urchin {
     void LightReaderWriter::buildChunkFrom(DataChunk* lightChunk, const Light* light, DataWriter& dataWriter) {
         if (light->getLightType() == Light::OMNIDIRECTIONAL) {
             const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight*>(light);
-            lightChunk->setAttribute(DataAttribute(TYPE_ATTR, OMNIDIRECTIONAL_VALUE));
+            lightChunk->addAttribute(DataAttribute(TYPE_ATTR, OMNIDIRECTIONAL_VALUE));
 
             auto positionChunk = dataWriter.createChunk(POSITION_TAG, DataAttribute(), lightChunk);
             positionChunk->setPoint3Value(omnidirectionalLight->getPosition());
@@ -49,7 +49,7 @@ namespace urchin {
             exponentialAttenuationChunk->setFloatValue(omnidirectionalLight->getExponentialAttenuation());
         } else if (light->getLightType() == Light::SUN) {
             const auto* sunLight = dynamic_cast<const SunLight*>(light);
-            lightChunk->setAttribute(DataAttribute(TYPE_ATTR, SUN_VALUE));
+            lightChunk->addAttribute(DataAttribute(TYPE_ATTR, SUN_VALUE));
 
             auto directionChunk = dataWriter.createChunk(DIRECTION_TAG, DataAttribute(), lightChunk);
             directionChunk->setVector3Value(sunLight->getDirections()[0]);

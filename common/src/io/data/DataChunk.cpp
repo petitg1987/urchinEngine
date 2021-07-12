@@ -24,16 +24,16 @@ namespace urchin {
         return "";
     }
 
-    void DataChunk::setAttribute(const DataAttribute& /*attribute*/) {
-        //TODO chunk->SetAttribute(attribute.getAttributeName(), attribute.getAttributeValue());
+    void DataChunk::addAttribute(const DataAttribute& attribute) {
+        chunk.addAttribute(attribute.getAttributeName(), attribute.getAttributeValue());
     }
 
     std::string DataChunk::getStringValue() const {
         return chunk.getValue();
     }
 
-    void DataChunk::setStringValue(const std::string& /*value*/) {
-        //TODO chunk->LinkEndChild(new TiXmlText(value));
+    void DataChunk::setStringValue(const std::string& value) {
+        chunk.setValue(value);
     }
 
     int DataChunk::getIntValue() const {

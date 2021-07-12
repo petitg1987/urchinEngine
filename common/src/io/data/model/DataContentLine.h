@@ -14,7 +14,9 @@ namespace urchin {
     class DataContentLine {
         public:
             DataContentLine(std::string, std::string, std::map<std::string, std::string>, DataContentLine*);
+
             static std::unique_ptr<DataContentLine> fromRawContentLine(const std::string&, DataContentLine*, const std::string&);
+            static std::string toRawContentLine(DataContentLine&);
 
             DataContentLine* getParent() const;
 
@@ -22,13 +24,20 @@ namespace urchin {
             const std::vector<std::unique_ptr<DataContentLine>>& getChildren() const;
 
             const std::string& getName() const;
+
+            void setValue(const std::string &);
             const std::string& getValue() const;
+
+            void addAttribute(const std::string&, const std::string&);
             const std::map<std::string, std::string>& getAttributes() const;
 
         private:
             static constexpr char NAME_REGEX[] = "([a-zA-Z]+)";
             static constexpr char ATTRIBUTES_REGEX[] = "\\(?(.*?)\\)?";
             static constexpr char VALUE_REGEX[] = "\"?(.*?)\"?";
+
+            static constexpr char ATTRIBUTES_SEPARATOR = ';';
+            static constexpr char ATTRIBUTES_ASSIGN = '=';
 
             std::string name;
             std::string value;

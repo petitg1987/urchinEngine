@@ -3,7 +3,6 @@
 #include <string>
 #include <memory>
 
-#include <libs/tinyxml/tinyxml.h>
 #include <io/data/DataAttribute.h>
 #include <io/data/DataChunk.h>
 
@@ -17,7 +16,7 @@ namespace urchin {
             void saveInFile();
 
         private:
-            std::unique_ptr<TiXmlDocument> doc;
+            std::unique_ptr<DataContentLine> root;
             std::string filenamePath;
     };
 

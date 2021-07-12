@@ -10,7 +10,7 @@ namespace urchin {
     }
 
     void CollisionSphereReaderWriter::writeOn(DataChunk* shapeChunk, const CollisionShape3D& collisionShape, DataWriter& dataWriter) const {
-        shapeChunk->setAttribute(DataAttribute(TYPE_ATTR, SPHERE_VALUE));
+        shapeChunk->addAttribute(DataAttribute(TYPE_ATTR, SPHERE_VALUE));
 
         const auto& sphereShape = dynamic_cast<const CollisionSphereShape&>(collisionShape);
 

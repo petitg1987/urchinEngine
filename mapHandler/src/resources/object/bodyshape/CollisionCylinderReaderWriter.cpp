@@ -28,7 +28,7 @@ namespace urchin {
     }
 
     void CollisionCylinderReaderWriter::writeOn(DataChunk* shapeChunk, const CollisionShape3D& collisionShape, DataWriter& dataWriter) const {
-        shapeChunk->setAttribute(DataAttribute(TYPE_ATTR, CYLINDER_VALUE));
+        shapeChunk->addAttribute(DataAttribute(TYPE_ATTR, CYLINDER_VALUE));
 
         const auto& cylinderShape = dynamic_cast<const CollisionCylinderShape&>(collisionShape);
 

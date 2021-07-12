@@ -18,7 +18,7 @@ namespace urchin {
     }
 
     void CollisionConvexHullReaderWriter::writeOn(DataChunk* shapeChunk, const CollisionShape3D& collisionShape, DataWriter& dataWriter) const {
-        shapeChunk->setAttribute(DataAttribute(TYPE_ATTR, CONVEX_HULL_VALUE));
+        shapeChunk->addAttribute(DataAttribute(TYPE_ATTR, CONVEX_HULL_VALUE));
 
         const auto& convexHullShape = dynamic_cast<const CollisionConvexHullShape&>(collisionShape);
 

@@ -96,7 +96,7 @@ namespace urchin {
             dataContentLine = &parent->chunk;
         }
 
-        //seek the good chunk
+        //seek the correct chunks
         for (auto& child : dataContentLine->getChildren()) {
             if (child->getName() == chunkName) {
                 if (!attribute.getAttributeName().empty()) {

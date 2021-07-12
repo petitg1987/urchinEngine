@@ -29,18 +29,41 @@ namespace urchin {
         std::string attributesString = matches[2].str();
         if (!attributesString.empty()) {
             std::vector<std::string> attributesVector;
-            StringUtil::split(attributesString, ';', attributesVector);
+            StringUtil::split(attributesString, ATTRIBUTES_SEPARATOR, attributesVector);
 
             for (auto &attribute: attributesVector) {
                 std::vector<std::string> attributeComponents;
-                StringUtil::split(attribute, '=', attributeComponents);
-                if(attributeComponents.size() != 2) {
+                StringUtil::split(attribute, ATTRIBUTES_ASSIGN, attributeComponents);
+                if (attributeComponents.size() != 2) {
                     throw std::runtime_error(wrongFormatError);
                 }
                 attributes.emplace(attributeComponents[0], attributeComponents[1]);
             }
         }
         return std::make_unique<DataContentLine>(name, value, attributes, parent);
+    }
+
+    std::string DataContentLine::toRawContentLine(DataContentLine& dataContentLine) {
+        std::string rawAttributes;
+        if (!dataContentLine.getAttributes().empty()) {
+            rawAttributes.append(" (");
+            for (const auto& [key, value] : dataContentLine.getAttributes()) {
+                if (!rawAttributes.empty()) {
+                    rawAttributes += ATTRIBUTES_SEPARATOR;
+                }
+                rawAttributes.append(key);
+                rawAttributes += ATTRIBUTES_ASSIGN;
+                rawAttributes.append(value);
+            }
+            rawAttributes.append(")");
+        }
+
+        std::string rawValue;
+        if (!dataContentLine.getValue().empty()) {
+            rawValue = " \"" + dataContentLine.getValue() + "\"";
+        }
+
+        return dataContentLine.getName() + rawAttributes + ":" + rawValue;
     }
 
     DataContentLine* DataContentLine::getParent() const {
@@ -60,8 +83,16 @@ namespace urchin {
         return name;
     }
 
+    void DataContentLine::setValue(const std::string &value) {
+        this->value = value;
+    }
+
     const std::string& DataContentLine::getValue() const {
         return value;
+    }
+
+    void DataContentLine::addAttribute(const std::string& key, const std::string& value) {
+        attributes.emplace(key, value);
     }
 
     const std::map<std::string, std::string>& DataContentLine::getAttributes() const {

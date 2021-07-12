@@ -16,7 +16,7 @@ namespace urchin {
     }
 
     void SoundSphereReaderWriter::writeOn(DataChunk* shapeChunk, const SoundShape& soundShape, DataWriter& dataWriter) const {
-        shapeChunk->setAttribute(DataAttribute(TYPE_ATTR, SPHERE_VALUE));
+        shapeChunk->addAttribute(DataAttribute(TYPE_ATTR, SPHERE_VALUE));
 
         const auto& sphereShape = dynamic_cast<const SoundSphere&>(soundShape);
 

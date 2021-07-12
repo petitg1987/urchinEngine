@@ -33,10 +33,10 @@ namespace urchin {
 
     void SoundTriggerReaderWriter::buildChunkFrom(DataChunk* soundTriggerChunk, const SoundTrigger& soundTrigger, DataWriter& dataWriter) {
         if (soundTrigger.getTriggerType() == SoundTrigger::MANUAL_TRIGGER) {
-            soundTriggerChunk->setAttribute(DataAttribute(TYPE_ATTR, MANUAL_VALUE));
+            soundTriggerChunk->addAttribute(DataAttribute(TYPE_ATTR, MANUAL_VALUE));
         } else if (soundTrigger.getTriggerType() == SoundTrigger::SHAPE_TRIGGER) {
             const auto& shapeTrigger = dynamic_cast<const ShapeTrigger&>(soundTrigger);
-            soundTriggerChunk->setAttribute(DataAttribute(TYPE_ATTR, SHAPE_VALUE));
+            soundTriggerChunk->addAttribute(DataAttribute(TYPE_ATTR, SHAPE_VALUE));
 
             auto soundShapeChunk = dataWriter.createChunk(SOUND_SHAPE_TAG, DataAttribute(), soundTriggerChunk);
             std::unique_ptr<SoundShapeReaderWriter> soundShapeReaderWriter = SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeTrigger.getSoundShape());

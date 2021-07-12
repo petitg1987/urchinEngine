@@ -29,7 +29,7 @@ namespace urchin {
     }
 
     void CollisionCompoundShapeReaderWriter::writeOn(DataChunk* mainShapeChunk, const CollisionShape3D& mainCollisionShape, DataWriter& dataWriter) const {
-        mainShapeChunk->setAttribute(DataAttribute(TYPE_ATTR, COMPOUND_SHAPE_VALUE));
+        mainShapeChunk->addAttribute(DataAttribute(TYPE_ATTR, COMPOUND_SHAPE_VALUE));
 
         const auto& compoundShape = dynamic_cast<const CollisionCompoundShape&>(mainCollisionShape);
 

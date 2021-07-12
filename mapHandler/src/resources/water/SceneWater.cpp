@@ -34,7 +34,7 @@ namespace urchin {
     }
 
     void SceneWater::writeOn(DataChunk* chunk, DataWriter& dataWriter) const {
-        chunk->setAttribute(DataAttribute(NAME_ATTR, this->name));
+        chunk->addAttribute(DataAttribute(NAME_ATTR, this->name));
 
         WaterReaderWriter().writeOn(chunk, water, dataWriter);
     }

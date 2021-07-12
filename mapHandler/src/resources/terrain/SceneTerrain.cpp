@@ -56,7 +56,7 @@ namespace urchin {
     }
 
     void SceneTerrain::writeOn(DataChunk* chunk, DataWriter& dataWriter) const {
-        chunk->setAttribute(DataAttribute(NAME_ATTR, this->name));
+        chunk->addAttribute(DataAttribute(NAME_ATTR, this->name));
 
         TerrainReaderWriter().writeOn(chunk, terrain, dataWriter);
     }
