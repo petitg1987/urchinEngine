@@ -12,20 +12,20 @@ namespace urchin {
         doc->LinkEndChild(decl);
     }
 
-    std::unique_ptr<DataChunk> DataWriter::createChunk(const std::string& chunkName, const DataAttribute& attribute, const DataChunk* parent) {
+    std::unique_ptr<DataChunk> DataWriter::createChunk(const std::string& chunkName, const DataAttribute& attribute, const DataChunk* /*parent*/) {
         auto* chunk = new TiXmlElement(chunkName);
 
         if (!attribute.getAttributeName().empty()) {
             chunk->SetAttribute(attribute.getAttributeName(), attribute.getAttributeValue());
         }
 
-        if (parent) {
-            parent->getChunk()->LinkEndChild(chunk);
-        } else {
-            doc->LinkEndChild(chunk);
-        }
+//        if (parent) {
+//            parent->getChunk()->LinkEndChild(chunk);
+//        } else {
+//            doc->LinkEndChild(chunk);
+//        }
 
-        return std::unique_ptr<DataChunk>(new DataChunk(chunk));
+        return std::unique_ptr<DataChunk>(nullptr/*new DataChunk(chunk)*/);
     }
 
     void DataWriter::saveInFile() {

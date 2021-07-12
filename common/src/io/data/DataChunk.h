@@ -4,6 +4,7 @@
 #include <vector>
 
 #include <libs/tinyxml/tinyxml.h>
+#include <io/data/model/DataContentLine.h>
 #include <io/data/DataAttribute.h>
 #include <math/algebra/point/Point2.h>
 #include <math/algebra/point/Point3.h>
@@ -59,12 +60,12 @@ namespace urchin {
             void setVector4Value(const Vector4<float>&);
 
         private:
-            explicit DataChunk(TiXmlElement*);
-            explicit DataChunk(const TiXmlElement*);
+            explicit DataChunk(DataContentLine&);
+            explicit DataChunk(const DataContentLine&);
 
-            TiXmlElement* getChunk() const;
+            DataContentLine& getChunk() const;
 
-            TiXmlElement* chunk;
+            DataContentLine& chunk;
     };
 
 }

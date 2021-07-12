@@ -5,39 +5,46 @@
 
 namespace urchin {
 
-    DataChunk::DataChunk(TiXmlElement* chunk) :
+    DataChunk::DataChunk(DataContentLine& chunk) :
             chunk(chunk) {
 
     }
 
-    DataChunk::DataChunk(const TiXmlElement* chunk) :
-            DataChunk(const_cast<TiXmlElement*>(chunk)) {
+    DataChunk::DataChunk(const DataContentLine& chunk) :
+            DataChunk(const_cast<DataContentLine&>(chunk)) {
 
     }
 
-    TiXmlElement* DataChunk::getChunk() const {
+    DataContentLine& DataChunk::getChunk() const {
         return chunk;
     }
 
     /**
      * @return Attribute value if exist otherwise an empty string
      */
-    std::string DataChunk::getAttributeValue(const std::string& /*attributeName*/) const {
-        return ""; //TODO ...
+    std::string DataChunk::getAttributeValue(const std::string& attributeName) const {
+        const auto& attributes = chunk.getAttributes();
+        auto itFind = attributes.find(attributeName);
+        if (itFind != attributes.end()) {
+            return itFind->second;
+        }
+        return "";
     }
 
-    void DataChunk::setAttribute(const DataAttribute& attribute) {
-        chunk->SetAttribute(attribute.getAttributeName(), attribute.getAttributeValue());
+    void DataChunk::setAttribute(const DataAttribute& /*attribute*/) {
+        //TODO chunk->SetAttribute(attribute.getAttributeName(), attribute.getAttributeValue());
     }
 
     std::string DataChunk::getStringValue() const {
-        return ""; //TODO ...
-
-        //throw std::domain_error("Impossible to find a value on chunk: " + chunk->ValueStr());
+        std::string value = chunk.getValue();
+        if(value.empty()) { //TODO diff between null & empty ! Use optional !
+            throw std::domain_error("Impossible to find a value on chunk: " + chunk.getName());
+        }
+        return value;
     }
 
-    void DataChunk::setStringValue(const std::string& value) {
-        chunk->LinkEndChild(new TiXmlText(value));
+    void DataChunk::setStringValue(const std::string& /*value*/) {
+        //TODO chunk->LinkEndChild(new TiXmlText(value));
     }
 
     int DataChunk::getIntValue() const {

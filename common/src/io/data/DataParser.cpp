@@ -23,6 +23,7 @@ namespace urchin {
             throw std::invalid_argument("Unable to open file: " + filenamePath);
         }
 
+        //TODO extract in method
         std::string lineContent;
         DataContentLine* currentNode = nullptr;
         unsigned int currentNodeIndentLevel = 0;
@@ -35,24 +36,23 @@ namespace urchin {
             unsigned int indentLevel = computeIndentLevel(lineContent);
             if (indentLevel == 0) {
                 assert(!root);
-                root = std::make_unique<DataContentLine>(lineContent, nullptr);
+                root = DataContentLine::fromRawContentLine(lineContent, nullptr, filenamePath);
                 currentNode = root.get();
                 currentNodeIndentLevel = 0;
             } else {
                 if (indentLevel - 1 == currentNodeIndentLevel) {
-                    auto newNode = std::make_unique<DataContentLine>(lineContent, currentNode);
+                    auto newNode = DataContentLine::fromRawContentLine(lineContent, currentNode, filenamePath);
                     auto* newNodePtr = newNode.get();
                     currentNode->addChild(std::move(newNode));
 
                     currentNode = newNodePtr;
                     currentNodeIndentLevel = indentLevel;
                 } else if (indentLevel <= currentNodeIndentLevel) {
-                    unsigned int diffLevel = currentNodeIndentLevel - indentLevel;
                     auto parentNode = currentNode->getParent();
-                    for(unsigned int i = 0; i < diffLevel; ++i) {
+                    for (unsigned int i = 0; i < currentNodeIndentLevel - indentLevel; ++i) {
                         parentNode = parentNode->getParent();
                     }
-                    auto newNode = std::make_unique<DataContentLine>(lineContent, parentNode);
+                    auto newNode = DataContentLine::fromRawContentLine(lineContent, parentNode, filenamePath);
                     auto* newNodePtr = newNode.get();
                     parentNode->addChild(std::move(newNode));
 
@@ -80,14 +80,32 @@ namespace urchin {
     }
 
     std::unique_ptr<DataChunk> DataParser::getRootChunk() const {
-        //TODO ...
-        throw std::invalid_argument("Impossible to get root element in file: " + filenamePath);
+        return std::unique_ptr<DataChunk>(new DataChunk(*root));
     }
 
-    std::vector<std::unique_ptr<DataChunk>> DataParser::getChunks(const std::string& /*chunkName*/, const DataAttribute& /*attribute*/, const DataChunk* /*parent*/) const {
+    std::vector<std::unique_ptr<DataChunk>> DataParser::getChunks(const std::string& chunkName, const DataAttribute& attribute, const DataChunk* parent) const {
         std::vector<std::unique_ptr<DataChunk>> chunks;
 
-        //TODO ...
+        const DataContentLine *dataContentLine;
+        if (!parent) {
+            dataContentLine = root.get();
+        } else {
+            dataContentLine = &parent->getChunk();
+        }
+
+        //seek the good chunk
+        for (auto& child : dataContentLine->getChildren()) {
+            if (child->getName() == chunkName) {
+                if (!attribute.getAttributeName().empty()) {
+                    std::string attributeValue = child->getAttributes().at(attribute.getAttributeName());
+                    if (attributeValue == attribute.getAttributeValue()) {
+                        chunks.push_back(std::unique_ptr<DataChunk>(new DataChunk(*child)));
+                    }
+                } else {
+                    chunks.push_back(std::unique_ptr<DataChunk>(new DataChunk(*child)));
+                }
+            }
+        }
 
         return chunks;
     }
@@ -96,15 +114,13 @@ namespace urchin {
         auto chunks = getChunks(chunkName, attribute, parent);
 
         if (chunks.size() > 1) {
-            throw std::invalid_argument("More than one tag found for " + getChunkDescription(chunkName, attribute) + ".");
+            throw std::invalid_argument("More than one chunk found for " + getChunkDescription(chunkName, attribute) + ".");
         } else if (chunks.empty()) {
             if (mandatory) {
-                throw std::invalid_argument("The tag " + getChunkDescription(chunkName, attribute) + " wasn't found in file " + filenamePath + ".");
+                throw std::invalid_argument("The chunk " + getChunkDescription(chunkName, attribute) + " wasn't found in file " + filenamePath + ".");
             }
-
             return std::unique_ptr<DataChunk>(nullptr);
         }
-
         return std::move(chunks[0]);
     }
 
