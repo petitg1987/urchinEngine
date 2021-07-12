@@ -31,7 +31,7 @@ namespace urchin {
     std::string DataChunk::getStringValue() const {
         std::string value = chunk.getValue();
         if(value.empty()) { //TODO diff between null & empty ! Use optional !
-            throw std::domain_error("Impossible to find a value on chunk: " + chunk.getName());
+            return ""; //throw std::domain_error("Impossible to find a value on chunk: " + chunk.getName());
         }
         return value;
     }
