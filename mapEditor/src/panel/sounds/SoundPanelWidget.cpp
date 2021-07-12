@@ -207,10 +207,10 @@ namespace urchin {
         return soundTableView;
     }
 
-    void SoundPanelWidget::load(SoundController* soundController) {
-        this->soundController = soundController;
+    void SoundPanelWidget::load(SoundController& soundController) {
+        this->soundController = &soundController;
 
-        std::list<const SceneSound*> sceneSounds = soundController->getSceneSounds();
+        std::list<const SceneSound*> sceneSounds = this->soundController->getSceneSounds();
         for (auto& sceneSound : sceneSounds) {
             soundTableView->addSound(sceneSound);
         }

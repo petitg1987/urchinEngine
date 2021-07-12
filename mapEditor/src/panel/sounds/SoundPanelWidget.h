@@ -29,7 +29,7 @@ namespace urchin {
 
             SoundTableView* getSoundTableView() const;
 
-            void load(SoundController*);
+            void load(SoundController&);
             void unload();
 
         private:

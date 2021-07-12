@@ -16,7 +16,7 @@ namespace urchin {
             SkyPanelWidget();
             ~SkyPanelWidget() override = default;
 
-            void load(SkyController*);
+            void load(SkyController&);
             void unload();
 
         private:

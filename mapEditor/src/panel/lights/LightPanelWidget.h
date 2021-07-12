@@ -24,7 +24,7 @@ namespace urchin {
 
             LightTableView* getLightTableView() const;
 
-            void load(LightController*);
+            void load(LightController&);
             void unload();
 
         private:

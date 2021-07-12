@@ -29,10 +29,10 @@ namespace urchin {
         setupSkyboxBox(mainLayout);
     }
 
-    void SkyPanelWidget::load(SkyController* skyController) {
-        this->skyController = skyController;
+    void SkyPanelWidget::load(SkyController& skyController) {
+        this->skyController = &skyController;
 
-        auto& skybox = skyController->getSceneSky().getSkybox();
+        auto& skybox = this->skyController->getSceneSky().getSkybox();
         setupSkyDataFrom(skybox);
     }
 

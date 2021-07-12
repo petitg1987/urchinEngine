@@ -250,10 +250,10 @@ namespace urchin {
         return waterTableView;
     }
 
-    void WaterPanelWidget::load(WaterController* waterController) {
-        this->waterController = waterController;
+    void WaterPanelWidget::load(WaterController& waterController) {
+        this->waterController = &waterController;
 
-        std::list<const SceneWater*> sceneWaters = waterController->getSceneWaters();
+        std::list<const SceneWater*> sceneWaters = this->waterController->getSceneWaters();
         for (auto& sceneWater : sceneWaters) {
             waterTableView->addWater(sceneWater);
         }

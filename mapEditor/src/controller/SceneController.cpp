@@ -6,32 +6,26 @@ namespace urchin {
 
     SceneController::SceneController() :
             AbstractController() {
-        objectController = new ObjectController();
-        subControllers.emplace_back(objectController);
+        objectController = std::make_unique<ObjectController>();
+        subControllers.emplace_back(objectController.get());
 
-        lightController = new LightController();
-        subControllers.emplace_back(lightController);
+        lightController = std::make_unique<LightController>();
+        subControllers.emplace_back(lightController.get());
 
-        terrainController = new TerrainController();
-        subControllers.emplace_back(terrainController);
+        terrainController = std::make_unique<TerrainController>();
+        subControllers.emplace_back(terrainController.get());
 
-        waterController = new WaterController();
-        subControllers.emplace_back(waterController);
+        waterController = std::make_unique<WaterController>();
+        subControllers.emplace_back(waterController.get());
 
-        skyController = new SkyController();
-        subControllers.emplace_back(skyController);
+        skyController = std::make_unique<SkyController>();
+        subControllers.emplace_back(skyController.get());
 
-        soundController = new SoundController();
-        subControllers.emplace_back(soundController);
+        soundController = std::make_unique<SoundController>();
+        subControllers.emplace_back(soundController.get());
 
-        aiController = new AIController();
-        subControllers.emplace_back(aiController);
-    }
-
-    SceneController::~SceneController() {
-        for (const auto& subController: subControllers) {
-            delete subController;
-        }
+        aiController = std::make_unique<AIController>();
+        subControllers.emplace_back(aiController.get());
     }
 
     void SceneController::setup(MapHandler* mapHandler) {
@@ -83,32 +77,32 @@ namespace urchin {
         resetModified();
     }
 
-    ObjectController* SceneController::getObjectController() {
-        return objectController;
+    ObjectController& SceneController::getObjectController() {
+        return *objectController;
     }
 
-    LightController* SceneController::getLightController() {
-        return lightController;
+    LightController& SceneController::getLightController() {
+        return *lightController;
     }
 
-    TerrainController* SceneController::getTerrainController() {
-        return terrainController;
+    TerrainController& SceneController::getTerrainController() {
+        return *terrainController;
     }
 
-    WaterController* SceneController::getWaterController() {
-        return waterController;
+    WaterController& SceneController::getWaterController() {
+        return *waterController;
     }
 
-    SkyController* SceneController::getSkyController() {
-        return skyController;
+    SkyController& SceneController::getSkyController() {
+        return *skyController;
     }
 
-    SoundController* SceneController::getSoundController() {
-        return soundController;
+    SoundController& SceneController::getSoundController() {
+        return *soundController;
     }
 
-    AIController* SceneController::getAIController() {
-        return aiController;
+    AIController& SceneController::getAIController() {
+        return *aiController;
     }
 
 }

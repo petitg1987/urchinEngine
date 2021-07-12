@@ -135,7 +135,11 @@ namespace urchin {
     void Skybox::clearSkyboxImages() {
         for (std::size_t i = 0; i < 6; i++) {
             if (skyboxImages[i] != nullptr) {
-                skyboxImages[i]->release();
+                if (!skyboxImages[i]->getName().empty()) { //resource created with ResourceManager
+                    skyboxImages[i]->release();
+                } else {
+                    delete skyboxImages[i];
+                }
             }
         }
         skyboxImages = {nullptr};

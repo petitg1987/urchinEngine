@@ -126,7 +126,7 @@ namespace urchin {
         Transform<float> transform = selectedSceneObject->getModel()->getTransform();
         transform.setPosition(newPosition);
 
-        sceneController->getObjectController()->updateSceneObjectTransform(selectedSceneObject, transform);
+        sceneController->getObjectController().updateSceneObjectTransform(selectedSceneObject, transform);
         notifyObservers(this, NotificationType::OBJECT_MOVED);
     }
 

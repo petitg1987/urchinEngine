@@ -16,7 +16,6 @@ namespace urchin {
     class SceneController : public AbstractController {
         public:
             SceneController();
-            ~SceneController() override;
 
             void setup(MapHandler*) override;
             void addObserverOnAllControllers(Observer*, int);
@@ -27,24 +26,24 @@ namespace urchin {
 
             void saveMapOnFile(const std::string&);
 
-            ObjectController* getObjectController();
-            LightController* getLightController();
-            TerrainController* getTerrainController();
-            WaterController* getWaterController();
-            SkyController* getSkyController();
-            SoundController* getSoundController();
-            AIController* getAIController();
+            ObjectController& getObjectController();
+            LightController& getLightController();
+            TerrainController& getTerrainController();
+            WaterController& getWaterController();
+            SkyController& getSkyController();
+            SoundController& getSoundController();
+            AIController& getAIController();
 
         private:
             std::vector<AbstractController*> subControllers;
 
-            ObjectController* objectController;
-            LightController* lightController;
-            TerrainController* terrainController;
-            WaterController* waterController;
-            SkyController* skyController;
-            SoundController* soundController;
-            AIController* aiController;
+            std::unique_ptr<ObjectController> objectController;
+            std::unique_ptr<LightController> lightController;
+            std::unique_ptr<TerrainController> terrainController;
+            std::unique_ptr<WaterController> waterController;
+            std::unique_ptr<SkyController> skyController;
+            std::unique_ptr<SoundController> soundController;
+            std::unique_ptr<AIController> aiController;
     };
 
 }

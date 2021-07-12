@@ -368,10 +368,10 @@ namespace urchin {
         bodyShapeWidget = nullptr;
     }
 
-    void ObjectPanelWidget::load(ObjectController* objectController) {
-        this->objectController = objectController;
+    void ObjectPanelWidget::load(ObjectController& objectController) {
+        this->objectController = &objectController;
 
-        std::list<const SceneObject*> sceneObjects = objectController->getSceneObjects();
+        std::list<const SceneObject*> sceneObjects = this->objectController->getSceneObjects();
         for (auto& sceneObject : sceneObjects) {
             objectTableView->addObject(sceneObject);
         }

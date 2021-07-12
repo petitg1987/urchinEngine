@@ -323,10 +323,10 @@ namespace urchin {
         return terrainTableView;
     }
 
-    void TerrainPanelWidget::load(TerrainController* terrainController) {
-        this->terrainController = terrainController;
+    void TerrainPanelWidget::load(TerrainController& terrainController) {
+        this->terrainController = &terrainController;
 
-        std::list<const SceneTerrain*> sceneTerrains = terrainController->getSceneTerrains();
+        std::list<const SceneTerrain*> sceneTerrains = this->terrainController->getSceneTerrains();
         for (auto& sceneTerrain : sceneTerrains) {
             terrainTableView->addTerrain(sceneTerrain);
         }

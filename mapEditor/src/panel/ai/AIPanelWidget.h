@@ -15,7 +15,7 @@ namespace urchin {
             AIPanelWidget();
             ~AIPanelWidget() override = default;
 
-            void load(AIController*);
+            void load(AIController&);
             void unload();
 
         private:

@@ -25,7 +25,7 @@ namespace urchin {
 
             TerrainTableView* getTerrainTableView() const;
 
-            void load(TerrainController*);
+            void load(TerrainController&);
             void unload();
 
         private:

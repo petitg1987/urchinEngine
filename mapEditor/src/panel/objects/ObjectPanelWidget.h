@@ -34,7 +34,7 @@ namespace urchin {
             ObjectTableView* getObjectTableView() const;
             BodyShapeWidget* getBodyShapeWidget() const;
 
-            void load(ObjectController*);
+            void load(ObjectController&);
             void unload();
 
         private:

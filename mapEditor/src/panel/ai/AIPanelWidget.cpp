@@ -22,10 +22,10 @@ namespace urchin {
         setupNavMeshAgentBox(mainLayout);
     }
 
-    void AIPanelWidget::load(AIController* aiController) {
-        this->aiController = aiController;
+    void AIPanelWidget::load(AIController& aiController) {
+        this->aiController = &aiController;
 
-        const NavMeshAgent* navMeshAgent = aiController->getSceneAI().getNavMeshAgent();
+        const NavMeshAgent* navMeshAgent = this->aiController->getSceneAI().getNavMeshAgent();
         setupNavMeshAgentDataFrom(navMeshAgent);
     }
 

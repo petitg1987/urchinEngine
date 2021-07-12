@@ -169,10 +169,10 @@ namespace urchin {
         return lightTableView;
     }
 
-    void LightPanelWidget::load(LightController* lightController) {
-        this->lightController = lightController;
+    void LightPanelWidget::load(LightController& lightController) {
+        this->lightController = &lightController;
 
-        std::list<const SceneLight*> sceneLights = lightController->getSceneLights();
+        std::list<const SceneLight*> sceneLights = this->lightController->getSceneLights();
         for (auto& sceneLight : sceneLights) {
             lightTableView->addLight(sceneLight);
         }

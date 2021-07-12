@@ -24,7 +24,7 @@ namespace urchin {
 
             WaterTableView* getWaterTableView() const;
 
-            void load(WaterController*);
+            void load(WaterController&);
             void unload();
 
         private:
