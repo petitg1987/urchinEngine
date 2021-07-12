@@ -70,7 +70,7 @@ namespace urchin {
         //baseframe
         std::vector<BaseFrameBone> baseFrame(numBones);
         FileReader::nextLine(file, buffer); //buffer = "baseframe {"
-        for (auto & bf : baseFrame) {
+        for (auto& bf : baseFrame) {
             FileReader::nextLine(file, buffer);
             iss.clear(); iss.str(buffer);
             iss >> sdata >> bf.pos.X >> bf.pos.Y >> bf.pos.Z >> sdata >> sdata >> bf.orient.X >> bf.orient.Y >> bf.orient.Z;

@@ -302,7 +302,7 @@ namespace urchin {
     void RenderTarget::updateGraphicData(uint32_t frameIndex) {
         ScopeProfiler sp(Profiler::graphic(), "upShaderData");
 
-        for (auto &renderer : renderers) {
+        for (auto& renderer : renderers) {
             if (renderer->isEnabled()) {
                 renderer->updateGraphicData(frameIndex);
             }
@@ -342,7 +342,7 @@ namespace urchin {
 
             DebugLabelHelper::beginDebugRegion(commandBuffers[i], name, Vector4<float>(0.9f, 1.0f, 0.8f, 1.0f));
             vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
-            for (auto &renderer : renderers) {
+            for (auto& renderer : renderers) {
                 if (renderer->isEnabled()) {
                     renderer->updateCommandBuffer(commandBuffers[i], i);
                 }

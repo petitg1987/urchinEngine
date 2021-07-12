@@ -28,7 +28,7 @@ namespace urchin {
 
         if (dataPtr != nullptr) {
             buffers.resize(1);
-            for (auto &buffer : buffers) {
+            for (auto& buffer : buffers) {
                 buffer.initialize(bufferType, dataSize, dataPtr);
             }
         } else {
@@ -47,7 +47,7 @@ namespace urchin {
     }
 
     void AlterableBufferHandler::cleanupBuffers() {
-        for (auto &buffer : buffers) {
+        for (auto& buffer : buffers) {
             buffer.cleanup();
         }
         buffers.clear();

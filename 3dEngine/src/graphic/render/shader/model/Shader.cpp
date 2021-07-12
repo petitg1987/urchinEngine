@@ -61,7 +61,7 @@ namespace urchin {
             shaderStageData->specializationMapEntries.reserve(shaderConstants->getVariablesSize().size());
             uint32_t constantId = 0;
             uint32_t variableOffset = 0;
-            for (auto &variableSize : shaderConstants->getVariablesSize()) {
+            for (auto& variableSize : shaderConstants->getVariablesSize()) {
                 shaderStageData->specializationMapEntries.emplace_back(createSpecializationMapEntry(constantId++, variableOffset, variableSize));
                 variableOffset += (uint32_t)variableSize;
             }

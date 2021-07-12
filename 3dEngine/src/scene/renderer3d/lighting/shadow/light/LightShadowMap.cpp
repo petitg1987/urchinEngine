@@ -153,7 +153,7 @@ namespace urchin {
 
     const std::vector<Model*>& LightShadowMap::retrieveModels() const {
         models.clear();
-        for (auto &lightSplitShadowMap : lightSplitShadowMaps) {
+        for (auto& lightSplitShadowMap : lightSplitShadowMaps) {
             if (lightSplitShadowMap->needShadowMapUpdate()) {
                 const std::vector<Model*>& frustumSplitModels = lightSplitShadowMap->getModels();
                 OctreeableHelper<Model>::merge(models, frustumSplitModels);

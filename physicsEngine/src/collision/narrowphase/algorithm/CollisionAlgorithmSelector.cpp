@@ -32,8 +32,8 @@ namespace urchin {
 
     void CollisionAlgorithmSelector::initializeCollisionAlgorithmBuilderMatrix() {
         //initialize matrix with nullptr collision algorithm builder
-        for (auto & builderMatrixLine : collisionAlgorithmBuilderMatrix) {
-            for (auto & builderMatrixColumn : builderMatrixLine) {
+        for (auto& builderMatrixLine : collisionAlgorithmBuilderMatrix) {
+            for (auto& builderMatrixColumn : builderMatrixLine) {
                 builderMatrixColumn = nullptr;
             }
         }
@@ -79,8 +79,8 @@ namespace urchin {
     }
 
     void CollisionAlgorithmSelector::deleteCollisionAlgorithmBuilderMatrix() {
-        for (auto & builderMatrixLine : collisionAlgorithmBuilderMatrix) {
-            for (auto & builderMatrixColumn : builderMatrixLine) {
+        for (auto& builderMatrixLine : collisionAlgorithmBuilderMatrix) {
+            for (auto& builderMatrixColumn : builderMatrixLine) {
                 delete builderMatrixColumn;
             }
         }

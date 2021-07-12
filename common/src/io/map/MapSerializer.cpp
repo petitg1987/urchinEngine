@@ -10,7 +10,7 @@ namespace urchin {
 
     std::string MapSerializer::serialize(const std::map<std::string, std::string>& map) {
         std::string mapString;
-        for (const auto &[key, value] : map) {
+        for (const auto& [key, value] : map) {
             mapString += escape(key) + DELIMITER + escape(value) + DELIMITER;
         }
         if (!map.empty()) {

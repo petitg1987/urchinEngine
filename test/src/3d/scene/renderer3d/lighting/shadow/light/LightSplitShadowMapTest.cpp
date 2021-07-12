@@ -84,7 +84,7 @@ std::unique_ptr<OctreeManager<Model>> LightSplitShadowMapTest::buildModelOctreeM
 }
 
 void LightSplitShadowMapTest::cleanOctreeManager(const std::unique_ptr<OctreeManager<Model>>& modelOctreeManager) {
-    for (auto &model : modelOctreeManager->getAllOctreeables()) {
+    for (auto& model : modelOctreeManager->getAllOctreeables()) {
         delete model;
     }
 }

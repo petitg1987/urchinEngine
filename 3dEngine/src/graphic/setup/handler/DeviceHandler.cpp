@@ -115,7 +115,7 @@ namespace urchin {
         }
 
         //check required extensions
-        for (const auto &requiredExtension : physicalDeviceRequiredExtensions) {
+        for (const auto& requiredExtension : physicalDeviceRequiredExtensions) {
             if (!checkPhysicalDeviceExtensionSupport(physicalDeviceToCheck, requiredExtension.first)) {
                 return PhysicalDeviceSuitability(physicalDeviceToCheck, "missing " + requiredExtension.second + " support");
             }

@@ -230,7 +230,7 @@ namespace urchin {
                 }
             }
 
-            for (auto &child : children) {
+            for (auto& child : children) {
                 if (!child->onKeyPress(key)) {
                     return false;
                 }
@@ -267,7 +267,7 @@ namespace urchin {
                 }
             }
 
-            for (auto &child : children) {
+            for (auto& child : children) {
                 if (!child->onKeyRelease(key)) {
                     return false;
                 }
@@ -302,7 +302,7 @@ namespace urchin {
         if (isVisible()) {
             propagateEvent = onCharEvent(unicodeCharacter);
 
-            for (auto &child : children) {
+            for (auto& child : children) {
                 if (!child->onChar(unicodeCharacter)) {
                     return false;
                 }
@@ -334,7 +334,7 @@ namespace urchin {
                 }
             }
 
-            for (auto &child : children) {
+            for (auto& child : children) {
                 if (!child->onMouseMove(mouseX, mouseY)) {
                     return false;
                 }
@@ -374,7 +374,7 @@ namespace urchin {
         if (isVisible()) {
             handleWidgetReset();
 
-            for (auto &child : children) {
+            for (auto& child : children) {
                 child->onResetState();
             }
         }
@@ -400,7 +400,7 @@ namespace urchin {
         if (isVisible()) {
             prepareWidgetRendering(dt);
 
-            for (auto &child : children) {
+            for (auto& child : children) {
                 child->prepareRendering(dt);
             }
         }

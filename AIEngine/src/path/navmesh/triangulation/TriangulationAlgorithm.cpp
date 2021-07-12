@@ -68,7 +68,7 @@ namespace urchin {
                 std::size_t edgeIndex2 = (i + 1) % 3;
                 uint_fast64_t edgeId = computeEdgeId(navTriangle->getIndex(edgeIndex1), navTriangle->getIndex(edgeIndex2));
 
-                for (auto &neighborTriangle : edgeToTriangles.find(edgeId)->second) {
+                for (auto& neighborTriangle : edgeToTriangles.find(edgeId)->second) {
                     if (neighborTriangle != navTriangle) {
                         navTriangle->addLink(NavLink::newStandardLink(i, neighborTriangle));
                     }
