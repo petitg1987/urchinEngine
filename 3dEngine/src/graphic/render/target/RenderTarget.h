@@ -21,7 +21,7 @@ namespace urchin {
             };
 
             explicit RenderTarget(std::string, DepthAttachmentType);
-            virtual ~RenderTarget() = default;
+            virtual ~RenderTarget();
 
             virtual void initialize() = 0;
             virtual void cleanup() = 0;

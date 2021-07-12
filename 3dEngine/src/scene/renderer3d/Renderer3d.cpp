@@ -54,7 +54,7 @@ namespace urchin {
         //lighting pass rendering
         visualOption.isShadowActivated = true;
         visualOption.isAmbientOcclusionActivated = true;
-        createOrUpdateLightingShader();
+        createOrUpdateLightingPass();
     }
 
     Renderer3d::~Renderer3d() {
@@ -69,25 +69,6 @@ namespace urchin {
         delete modelOctreeManager;
     }
 
-    void Renderer3d::createOrUpdateLightingShader() {
-        LightingShaderConst lightingConstData{};
-        lightingConstData.maxLights = lightManager->getMaxLights();
-        lightingConstData.maxShadowLights = shadowManager->getMaxShadowLights();
-        lightingConstData.numberShadowMaps = shadowManager->getConfig().nbShadowMaps;
-        lightingConstData.shadowMapBias = shadowManager->getShadowMapBias();
-        std::vector<std::size_t> variablesSize = {
-            sizeof(LightingShaderConst::maxLights),
-            sizeof(LightingShaderConst::maxShadowLights),
-            sizeof(LightingShaderConst::numberShadowMaps),
-            sizeof(LightingShaderConst::shadowMapBias)
-        };
-        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &lightingConstData);
-
-        lightingShader = ShaderBuilder::createShader("lighting.vert.spv", "", "lighting.frag.spv", std::move(shaderConstants));
-
-        refreshRenderer();
-    }
-
     void Renderer3d::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         //scene properties
         this->sceneWidth = sceneWidth;
@@ -99,13 +80,13 @@ namespace urchin {
             onCameraProjectionUpdate();
         }
 
-        refreshRenderer();
+        createOrUpdateLightingPass();
     }
 
     void Renderer3d::notify(Observable* observable, int notificationType) {
         if (dynamic_cast<ShadowManager*>(observable)) {
             if (notificationType == ShadowManager::NUMBER_SHADOW_MAPS_UPDATE) {
-                createOrUpdateLightingShader();
+                createOrUpdateLightingPass();
             }
         }
     }
@@ -146,7 +127,7 @@ namespace urchin {
         if (visualOption.isShadowActivated != isShadowActivated) {
             visualOption.isShadowActivated = isShadowActivated;
 
-            createOrUpdateLightingShader();
+            createOrUpdateLightingPass();
             shadowManager->forceUpdateAllShadowMaps();
         }
     }
@@ -159,7 +140,7 @@ namespace urchin {
         if (visualOption.isAmbientOcclusionActivated != isAmbientOcclusionActivated) {
             visualOption.isAmbientOcclusionActivated = isAmbientOcclusionActivated;
 
-            createOrUpdateLightingShader();
+            createOrUpdateLightingPass();
         }
     }
 
@@ -170,7 +151,7 @@ namespace urchin {
     void Renderer3d::activateAntiAliasing(bool isAntiAliasingActivated) {
         if (this->isAntiAliasingActivated != isAntiAliasingActivated) {
             this->isAntiAliasingActivated = isAntiAliasingActivated;
-            refreshRenderer();
+            createOrUpdateLightingPass();
         }
     }
 
@@ -291,7 +272,7 @@ namespace urchin {
         postUpdateScene();
     }
 
-    void Renderer3d::refreshRenderer() {
+    void Renderer3d::createOrUpdateLightingPass() {
         //deferred rendering
         diffuseTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
         normalAndAmbientTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
@@ -310,6 +291,8 @@ namespace urchin {
 
             lightingRenderTarget = offscreenLightingRenderTarget.get();
         }
+
+        createOrUpdateLightingShader();
 
         std::vector<Point2<float>> vertexCoord = {
                 Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(1.0f, 1.0f),
@@ -350,6 +333,23 @@ namespace urchin {
         }
 
         setupDebugFramebuffers();
+    }
+
+    void Renderer3d::createOrUpdateLightingShader() {
+        LightingShaderConst lightingConstData{};
+        lightingConstData.maxLights = lightManager->getMaxLights();
+        lightingConstData.maxShadowLights = shadowManager->getMaxShadowLights();
+        lightingConstData.numberShadowMaps = shadowManager->getConfig().nbShadowMaps;
+        lightingConstData.shadowMapBias = shadowManager->getShadowMapBias();
+        std::vector<std::size_t> variablesSize = {
+                sizeof(LightingShaderConst::maxLights),
+                sizeof(LightingShaderConst::maxShadowLights),
+                sizeof(LightingShaderConst::numberShadowMaps),
+                sizeof(LightingShaderConst::shadowMapBias)
+        };
+        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &lightingConstData);
+
+        lightingShader = ShaderBuilder::createShader("lighting.vert.spv", "", "lighting.frag.spv", std::move(shaderConstants));
     }
 
     void Renderer3d::setupDebugFramebuffers() {

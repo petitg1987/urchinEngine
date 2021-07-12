@@ -91,14 +91,14 @@ namespace urchin {
                 float shadowMapBias;
             };
 
-            void createOrUpdateLightingShader();
             void onCameraProjectionUpdate();
 
             //model
             void updateModelsInFrustum();
 
             //scene
-            void refreshRenderer();
+            void createOrUpdateLightingPass();
+            void createOrUpdateLightingShader();
             void setupDebugFramebuffers();
             void updateScene(float);
             void deferredRendering(float);

@@ -19,6 +19,12 @@ namespace urchin {
         Logger::instance()->logInfo("Create render target: " + this->name);
     }
 
+    RenderTarget::~RenderTarget() {
+        //Renderers must be destroyed before its render target.
+        //Indeed, the renderers destructor will fail to unlink render target and the renderer.
+        assert(renderers.empty());
+    }
+
     std::string RenderTarget::getName() const {
         return name;
     }

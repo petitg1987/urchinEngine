@@ -59,9 +59,9 @@ namespace urchin {
             void checkConfig() const;
 
             void createOrUpdateAO();
-            void createOrUpdateAOShader();
             void createOrUpdateAOTexture();
             void createOrUpdateRenderer();
+            void createOrUpdateAOShader();
             void generateKernelSamples();
             void generateNoiseTexture();
             void exportSVG(const std::string&, const std::vector<Vector4<float>>&) const;

@@ -55,27 +55,9 @@ namespace urchin {
             generateKernelSamples();
             generateNoiseTexture();
 
-            createOrUpdateAOShader();
             createOrUpdateAOTexture();
             createOrUpdateRenderer();
         }
-    }
-
-    void AmbientOcclusionManager::createOrUpdateAOShader() {
-        AmbientOcclusionShaderConst aoConstData{config.kernelSamples, config.radius, config.ambientOcclusionStrength, config.depthStartAttenuation,
-                                                config.depthEndAttenuation, config.noiseTextureSize, config.bias};
-        std::vector<std::size_t> variablesSize = {
-            sizeof(AmbientOcclusionShaderConst::kernelSamples),
-            sizeof(AmbientOcclusionShaderConst::radius),
-            sizeof(AmbientOcclusionShaderConst::ambientOcclusionStrength),
-            sizeof(AmbientOcclusionShaderConst::depthStartAttenuation),
-            sizeof(AmbientOcclusionShaderConst::depthEndAttenuation),
-            sizeof(AmbientOcclusionShaderConst::noiseTextureSize),
-            sizeof(AmbientOcclusionShaderConst::bias)
-        };
-        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &aoConstData);
-
-        ambientOcclusionShader = ShaderBuilder::createShader("ambientOcclusion.vert.spv", "", "ambientOcclusion.frag.spv", std::move(shaderConstants));
     }
 
     void AmbientOcclusionManager::createOrUpdateAOTexture() {
@@ -84,9 +66,10 @@ namespace urchin {
         ambientOcclusionTexture = Texture::build(textureSizeX, textureSizeY, TextureFormat::GRAYSCALE_16_FLOAT, nullptr);
 
         if (offscreenRenderTarget) {
-            offscreenRenderTarget->cleanup();
+            offscreenRenderTarget->resetTextures();
+        } else {
+            offscreenRenderTarget = std::make_unique<OffscreenRender>("ambient occlusion", RenderTarget::NO_DEPTH_ATTACHMENT);
         }
-        offscreenRenderTarget = std::make_unique<OffscreenRender>("ambient occlusion", RenderTarget::NO_DEPTH_ATTACHMENT);
         offscreenRenderTarget->addTexture(ambientOcclusionTexture);
         offscreenRenderTarget->initialize();
 
@@ -121,6 +104,9 @@ namespace urchin {
 
     void AmbientOcclusionManager::createOrUpdateRenderer() {
         assert(offscreenRenderTarget);
+
+        createOrUpdateAOShader();
+
         std::vector<Point2<float>> vertexCoord = {
                 Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(-1.0f, 1.0f)
@@ -139,6 +125,23 @@ namespace urchin {
                 ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 4
                 ->addUniformTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest())) //binding 5
                 ->build();
+    }
+
+    void AmbientOcclusionManager::createOrUpdateAOShader() {
+        AmbientOcclusionShaderConst aoConstData{config.kernelSamples, config.radius, config.ambientOcclusionStrength, config.depthStartAttenuation,
+                                                config.depthEndAttenuation, config.noiseTextureSize, config.bias};
+        std::vector<std::size_t> variablesSize = {
+                sizeof(AmbientOcclusionShaderConst::kernelSamples),
+                sizeof(AmbientOcclusionShaderConst::radius),
+                sizeof(AmbientOcclusionShaderConst::ambientOcclusionStrength),
+                sizeof(AmbientOcclusionShaderConst::depthStartAttenuation),
+                sizeof(AmbientOcclusionShaderConst::depthEndAttenuation),
+                sizeof(AmbientOcclusionShaderConst::noiseTextureSize),
+                sizeof(AmbientOcclusionShaderConst::bias)
+        };
+        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &aoConstData);
+
+        ambientOcclusionShader = ShaderBuilder::createShader("ambientOcclusion.vert.spv", "", "ambientOcclusion.frag.spv", std::move(shaderConstants));
     }
 
     void AmbientOcclusionManager::generateKernelSamples() {
@@ -210,19 +213,11 @@ namespace urchin {
                 this->config.isBlurActivated != config.isBlurActivated ||
                 this->config.blurSize != config.blurSize ||
                 this->config.blurSharpness != config.blurSharpness) {
-            bool updateShader = this->config.depthStartAttenuation != config.depthStartAttenuation || this->config.depthEndAttenuation != config.depthEndAttenuation;
-            bool updateTextures = this->config.noiseTextureSize != config.noiseTextureSize;
 
             this->config = config;
             checkConfig();
 
             createOrUpdateAO();
-            if (updateShader) {
-                createOrUpdateAOShader();
-            }
-            if (updateTextures) {
-                onTexturesUpdate(depthTexture, normalAndAmbientTexture);
-            }
         }
     }
 
