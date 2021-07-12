@@ -11,7 +11,6 @@ namespace urchin {
     class Profiler {
         public:
             explicit Profiler(const std::string&);
-            ~Profiler();
 
             static const std::unique_ptr<Profiler>& graphic();
             static const std::unique_ptr<Profiler>& physics();
@@ -27,7 +26,7 @@ namespace urchin {
             bool isEnable;
             std::string instanceName;
 
-            ProfilerNode* profilerRoot;
+            std::unique_ptr<ProfilerNode> profilerRoot;
             ProfilerNode* currentNode;
     };
 

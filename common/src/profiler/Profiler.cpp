@@ -12,13 +12,9 @@ namespace urchin {
     Profiler::Profiler(const std::string& instanceName) :
             isEnable(ConfigService::instance()->getBoolValue("profiler." + instanceName + "Enable")),
             instanceName(instanceName),
-            profilerRoot(new ProfilerNode("root", nullptr)),
-            currentNode(profilerRoot) {
+            profilerRoot(std::make_unique<ProfilerNode>("root", nullptr)),
+            currentNode(profilerRoot.get()) {
 
-    }
-
-    Profiler::~Profiler() {
-        delete profilerRoot;
     }
 
     const std::unique_ptr<Profiler>& Profiler::graphic() {
@@ -80,7 +76,7 @@ namespace urchin {
 
     void Profiler::log() {
         if (isEnable) {
-            if (currentNode != profilerRoot) {
+            if (currentNode != profilerRoot.get()) {
                 throw std::runtime_error("Current node must be the root node to perform print. Current node: " + currentNode->getName());
             }
 
