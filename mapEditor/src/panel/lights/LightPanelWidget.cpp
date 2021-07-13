@@ -196,6 +196,8 @@ namespace urchin {
                 } else {
                     removeLightButton->setEnabled(false);
                     generalPropertiesGroupBox->hide();
+                    specificSunLightGroupBox->hide();
+                    specificOmnidirectionalLightGroupBox->hide();
                 }
             }
         }

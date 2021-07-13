@@ -5,7 +5,7 @@
 namespace urchin {
 
     LightTableView::LightTableView(QWidget* parent) :
-        QTableView(parent) {
+            QTableView(parent) {
         lightsListModel = new QStandardItemModel(0, 1, this);
         lightsListModel->setHorizontalHeaderItem(0, new QStandardItem("Light Name"));
         QTableView::setModel(lightsListModel);
