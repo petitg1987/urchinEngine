@@ -12,14 +12,13 @@ namespace urchin {
             renderer3d(nullptr),
             physicsWorld(nullptr),
             aiManager(nullptr),
-            model(nullptr),
             rigidBody(nullptr),
             aiObject(nullptr) {
 
     }
 
     SceneObject::~SceneObject() {
-        renderer3d->removeModel(model);
+        renderer3d->removeModel(model.get());
         deleteRigidBody();
         deleteAIObjects();
     }
@@ -66,7 +65,7 @@ namespace urchin {
         chunk.addAttribute(UdaAttribute(NAME_ATTR, this->name));
 
         auto& modelChunk = udaWriter.createChunk(MODEL_TAG, UdaAttribute(), &chunk);
-        ModelReaderWriter::writeOn(modelChunk, model, udaWriter);
+        ModelReaderWriter::writeOn(modelChunk, *model, udaWriter);
 
         if (rigidBody) {
             auto& physicsChunk = udaWriter.createChunk(PHYSICS_TAG, UdaAttribute(), &chunk);
@@ -83,19 +82,17 @@ namespace urchin {
     }
 
     Model* SceneObject::getModel() const {
-        return model;
+        return model.get();
     }
 
-    void SceneObject::setModel(Model* model) {
+    void SceneObject::setModel(const std::shared_ptr<Model>& model) {
         if (!model) {
             throw std::invalid_argument("Cannot set a null model on scene object.");
         }
 
         if (renderer3d) {
-            renderer3d->removeModel(this->model);
+            renderer3d->removeModel(this->model.get());
             renderer3d->addModel(model);
-        } else {
-            delete this->model;
         }
 
         this->model = model;

@@ -39,25 +39,16 @@ namespace urchin {
 
             //managers
             OctreeManager<Model>& getModelOctreeManager() const;
-
             FogManager& getFogManager() const;
-
             TerrainManager& getTerrainManager() const;
-
             WaterManager& getWaterManager() const;
-
             SkyManager& getSkyManager() const;
-
             GeometryManager& getGeometryManager() const;
-
             LightManager& getLightManager() const;
-
             ShadowManager& getShadowManager() const;
             void activateShadow(bool);
-
             AmbientOcclusionManager& getAmbientOcclusionManager() const;
             void activateAmbientOcclusion(bool);
-
             AntiAliasingManager& getAntiAliasingManager() const;
             void activateAntiAliasing(bool);
 
@@ -66,9 +57,8 @@ namespace urchin {
             Camera* getCamera() const;
 
             //models
-            void addModel(Model*);
+            void addModel(std::shared_ptr<Model>);
             void removeModel(Model*);
-            bool isModelExist(Model*);
 
             //events
             bool isPaused() const;

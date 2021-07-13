@@ -14,7 +14,6 @@ namespace urchin {
     class LightManager : public Observable {
         public:
             explicit LightManager(RenderTarget&);
-            ~LightManager() override;
 
             enum NotificationType {
                 ADD_LIGHT, //A light has been added
@@ -26,9 +25,9 @@ namespace urchin {
             Light* getLastUpdatedLight();
 
             unsigned int getMaxLights() const;
-            const std::vector<Light*>& getSunLights() const;
+            const std::vector<std::shared_ptr<Light>>& getSunLights() const;
             const std::vector<Light*>& getVisibleLights() const;
-            void addLight(Light*);
+            void addLight(std::shared_ptr<Light>);
             void removeLight(Light*);
 
             void setGlobalAmbientColor(const Point4<float>&);
@@ -50,7 +49,7 @@ namespace urchin {
             RenderTarget& renderTarget;
 
             //lights container
-            std::vector<Light*> sunLights;
+            std::vector<std::shared_ptr<Light>> sunLights;
             std::unique_ptr<OctreeManager<Light>> lightOctreeManager; //all lights except sun lights
             std::unique_ptr<AABBoxModel> debugLightOctree;
             std::vector<Light*> lightsInFrustum;

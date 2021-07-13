@@ -3,6 +3,7 @@
 #include <limits>
 #include <stdexcept>
 #include <vector>
+#include <memory>
 
 #include <partitioning/octree/Octree.h>
 #include <profiler/ScopeProfiler.h>
@@ -24,8 +25,8 @@ namespace urchin {
 
             void notify(Observable*, int) override;
 
-            void addOctreeable(TOctreeable*);
-            void removeOctreeable(TOctreeable*);
+            void addOctreeable(std::shared_ptr<TOctreeable>);
+            std::shared_ptr<TOctreeable> removeOctreeable(TOctreeable*);
 
             void updateMinSize(float);
             void refreshOctreeables();
@@ -34,13 +35,13 @@ namespace urchin {
             const Octree<TOctreeable>& getMainOctree() const;
             std::vector<const Octree<TOctreeable>*> getAllLeafOctrees() const;
 
-            std::vector<TOctreeable*> getAllOctreeables() const;
+            std::vector<std::shared_ptr<TOctreeable>> getAllOctreeables() const;
             void getOctreeablesIn(const ConvexObject3D<float>&, std::vector<TOctreeable*>&) const;
             void getOctreeablesIn(const ConvexObject3D<float>&, std::vector<TOctreeable*>&, const OctreeableFilter<TOctreeable>&) const;
 
         private:
-            void buildOctree(std::vector<TOctreeable*>&);
-            bool resizeOctree(TOctreeable*);
+            void buildOctree(std::vector<std::shared_ptr<TOctreeable>>&);
+            bool resizeOctree(std::shared_ptr<TOctreeable>);
 
             float overflowSize;
             float minSize;

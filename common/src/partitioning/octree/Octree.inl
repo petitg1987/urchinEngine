@@ -59,27 +59,31 @@ template<class TOctreeable> const std::vector<Octree<TOctreeable>*> &Octree<TOct
     return children;
 }
 
-template<class TOctreeable> const std::vector<TOctreeable*> &Octree<TOctreeable>::getOctreeables() const {
+template<class TOctreeable> const std::vector<std::shared_ptr<TOctreeable>> &Octree<TOctreeable>::getOctreeables() const {
     return octreeables;
 }
 
-template<class TOctreeable> void Octree<TOctreeable>::addOctreeable(TOctreeable* octreeable, bool addRef) {
+template<class TOctreeable> void Octree<TOctreeable>::addOctreeable(std::shared_ptr<TOctreeable> octreeable, bool addRef) {
     assert(bIsLeaf);
 
-    octreeables.push_back(octreeable);
+    TOctreeable* octreeablePtr = octreeable.get();
+    octreeables.push_back(std::move(octreeable));
     if (addRef) {
-        octreeable->addRefOctree(this);
+        octreeablePtr->addRefOctree(this);
     }
 }
 
-template<class TOctreeable> void Octree<TOctreeable>::removeOctreeable(TOctreeable* octreeable, bool removeRef) {
+template<class TOctreeable> std::shared_ptr<TOctreeable> Octree<TOctreeable>::removeOctreeable(TOctreeable* octreeable, bool removeRef) {
     assert(bIsLeaf);
 
-    auto it = std::find(octreeables.begin(), octreeables.end(), octreeable);
+    auto it = std::find_if(octreeables.begin(), octreeables.end(), [&octreeable](const auto& o){return o.get() == octreeable;});
     if (it != octreeables.end()) {
+        std::shared_ptr<TOctreeable> removedOctreeable = *it; //keep a copy before remove the octreeable
         VectorUtil::erase(octreeables, it);
         if (removeRef) {
             octreeable->removeRefOctree(this);
         }
+        return removedOctreeable;
     }
+    return std::shared_ptr<TOctreeable>(nullptr);
 }

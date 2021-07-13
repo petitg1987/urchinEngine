@@ -25,7 +25,7 @@ namespace urchin {
             void setName(const std::string&);
 
             Model* getModel() const;
-            void setModel(Model*);
+            void setModel(const std::shared_ptr<Model>&);
 
             void setupInteractiveBody(RigidBody*);
 
@@ -53,7 +53,7 @@ namespace urchin {
             AIManager* aiManager;
 
             std::string name;
-            Model* model;
+            std::shared_ptr<Model> model;
             RigidBody* rigidBody;
             std::shared_ptr<AIObject> aiObject;
     };

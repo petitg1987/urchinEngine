@@ -59,9 +59,7 @@ namespace urchin {
     Renderer3d::~Renderer3d() {
         //models
         modelSetDisplayer.reset(nullptr);
-        for (auto* allOctreeableModel : modelOctreeManager->getAllOctreeables()) {
-            delete allOctreeableModel;
-        }
+        modelOctreeManager.reset(nullptr);
 
         offscreenLightingRenderTarget->cleanup();
         deferredRenderTarget->cleanup();
@@ -184,26 +182,19 @@ namespace urchin {
         return camera.get();
     }
 
-    void Renderer3d::addModel(Model* model) {
+    void Renderer3d::addModel(std::shared_ptr<Model> model) {
         if (model) {
             Logger::instance()->logInfo("Add 3D model: " + model->getConstMeshes()->getName());
-            modelOctreeManager->addOctreeable(model);
+            modelOctreeManager->addOctreeable(std::move(model));
         }
     }
 
-    void Renderer3d::removeModel(Model* model) {
+    void Renderer3d::removeModel(Model* model) { //TODO return ref...
         if (model) {
             shadowManager->removeModel(model);
             modelSetDisplayer->removeModel(model);
-
             modelOctreeManager->removeOctreeable(model);
-            delete model;
         }
-    }
-
-    bool Renderer3d::isModelExist(Model* model) {
-        std::vector<Model*> allOctreeables = modelOctreeManager->getAllOctreeables();
-        return std::find(allOctreeables.begin(), allOctreeables.end(), model) != allOctreeables.end();
     }
 
     void Renderer3d::pause() {
@@ -384,9 +375,9 @@ namespace urchin {
             }
 
             if (DEBUG_DISPLAY_SHADOW_MAP_BUFFER) {
-                const Light *firstLight = lightManager->getSunLights()[0]; //choose light
+                const std::shared_ptr<Light> firstLight = lightManager->getSunLights()[0]; //choose light
                 const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps - 1]
-                auto textureRenderer = std::make_unique<TextureRenderer>(shadowManager->getLightShadowMap(firstLight).getShadowMapTexture(), shadowMapNumber, TextureRenderer::DEFAULT_VALUE);
+                auto textureRenderer = std::make_unique<TextureRenderer>(shadowManager->getLightShadowMap(firstLight.get()).getShadowMapTexture(), shadowMapNumber, TextureRenderer::DEFAULT_VALUE);
                 textureRenderer->setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
                 textureRenderer->initialize("[DEBUG] shadow map", finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
                 debugFramebuffers.emplace_back(std::move(textureRenderer));

@@ -10,14 +10,14 @@ template<class TOctreeable> OctreeManager<TOctreeable>::OctreeManager(float minS
 
     overflowSize += 0.001f; //add offset to avoid rounding problem when overflow size is 0.0f.
 
-    std::vector<TOctreeable*> emptyOctreeable;
+    std::vector<std::shared_ptr<TOctreeable>> emptyOctreeable;
     buildOctree(emptyOctreeable);
 }
 
 template<class TOctreeable> OctreeManager<TOctreeable>::~OctreeManager() {
     if (mainOctree) {
         for (const auto& octreeable : getAllOctreeables()) {
-            removeOctreeable(octreeable);
+            removeOctreeable(octreeable.get());
         }
 
         delete mainOctree;
@@ -33,7 +33,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::notify(Observable* 
     }
 }
 
-template<class TOctreeable> void OctreeManager<TOctreeable>::buildOctree(std::vector<TOctreeable*>& octreeables) {
+template<class TOctreeable> void OctreeManager<TOctreeable>::buildOctree(std::vector<std::shared_ptr<TOctreeable>>& octreeables) {
     if (!octreeables.empty()) {
         Point3<float> minScene(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
         Point3<float> maxScene(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
@@ -86,7 +86,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::buildOctree(std::ve
     notifyObservers(this, OCTREE_BUILT);
 }
 
-template<class TOctreeable> void OctreeManager<TOctreeable>::addOctreeable(TOctreeable* octreeable) {
+template<class TOctreeable> void OctreeManager<TOctreeable>::addOctreeable(std::shared_ptr<TOctreeable> octreeable) {
     bool resized = resizeOctree(octreeable);
     if (!resized) {
         browseNodes.clear();
@@ -107,16 +107,18 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::addOctreeable(TOctr
     octreeable->addObserver(this, TOctreeable::MOVE);
 }
 
-template<class TOctreeable> void OctreeManager<TOctreeable>::removeOctreeable(TOctreeable* octreeable) {
+template<class TOctreeable> std::shared_ptr<TOctreeable> OctreeManager<TOctreeable>::removeOctreeable(TOctreeable* octreeable) { //TODO rename TOctreeable in T
     //keep size in variable because we remove references during looping
     int refOctreeSize = (int)octreeable->getRefOctree().size();
 
     //remove from end to start: more faster for a vector
+    std::shared_ptr<TOctreeable> removedOctreeable(nullptr);
     for (int i = refOctreeSize - 1; i >= 0; --i) {
-        octreeable->getRefOctree()[(std::size_t)i]->removeOctreeable(octreeable, true);
+        removedOctreeable = octreeable->getRefOctree()[(std::size_t)i]->removeOctreeable(octreeable, true);
     }
 
     octreeable->removeObserver(this, TOctreeable::MOVE);
+    return removedOctreeable;
 }
 
 template<class TOctreeable> void OctreeManager<TOctreeable>::updateMinSize(float minSize) {
@@ -138,11 +140,13 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::refreshOctreeables(
     if (mainOctree) {
         movingOctreeables.erase(std::unique(movingOctreeables.begin(), movingOctreeables.end() ), movingOctreeables.end());
 
+        std::vector<std::shared_ptr<TOctreeable>> removedOctreeables;
+        removedOctreeables.reserve(movingOctreeables.size());
         for (auto& movingOctreeable : movingOctreeables) {
-            removeOctreeable(movingOctreeable);
+            removedOctreeables.push_back(removeOctreeable(movingOctreeable));
         }
 
-        for (auto& movingOctreeable : movingOctreeables) {
+        for (auto& movingOctreeable : removedOctreeables) {
             addOctreeable(movingOctreeable);
         }
     }
@@ -184,8 +188,8 @@ template<class TOctreeable> std::vector<const Octree<TOctreeable>*> OctreeManage
     return leafOctrees;
 }
 
-template<class TOctreeable> std::vector<TOctreeable*> OctreeManager<TOctreeable>::getAllOctreeables() const {
-    std::vector<TOctreeable*> allOctreeables;
+template<class TOctreeable> std::vector<std::shared_ptr<TOctreeable>> OctreeManager<TOctreeable>::getAllOctreeables() const {
+    std::vector<std::shared_ptr<TOctreeable>> allOctreeables;
 
     if (mainOctree) {
         browseNodes.clear();
@@ -195,11 +199,11 @@ template<class TOctreeable> std::vector<TOctreeable*> OctreeManager<TOctreeable>
 
             if (octree->isLeaf()) {
                 for (std::size_t octreeableI = 0; octreeableI < octree->getOctreeables().size(); octreeableI++) {
-                    TOctreeable* octreeable = octree->getOctreeables()[octreeableI];
+                    std::shared_ptr<TOctreeable> octreeable = octree->getOctreeables()[octreeableI];
 
                     if (!octreeable->isProcessed()) {
                         octreeable->setProcessed(true);
-                        allOctreeables.emplace_back(octreeable);
+                        allOctreeables.emplace_back(std::move(octreeable));
                     }
                 }
             } else {
@@ -208,7 +212,7 @@ template<class TOctreeable> std::vector<TOctreeable*> OctreeManager<TOctreeable>
         }
     }
 
-    std::for_each(allOctreeables.begin(), allOctreeables.end(), [](TOctreeable* o){o->setProcessed(false);});
+    std::for_each(allOctreeables.begin(), allOctreeables.end(), [](const std::shared_ptr<TOctreeable>& o){o->setProcessed(false);});
 
     return allOctreeables;
 }
@@ -230,11 +234,11 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(co
         if (convexObject.collideWithAABBox(octree->getAABBox())) {
             if (octree->isLeaf()) {
                 for (std::size_t octreeableI = 0; octreeableI < octree->getOctreeables().size(); octreeableI++) {
-                    TOctreeable* octreeable = octree->getOctreeables()[octreeableI];
+                    std::shared_ptr<TOctreeable> octreeable = octree->getOctreeables()[octreeableI];
 
-                    if (octreeable->isVisible() && !octreeable->isProcessed() && filter.isAccepted(octreeable, convexObject)) {
+                    if (octreeable->isVisible() && !octreeable->isProcessed() && filter.isAccepted(octreeable.get(), convexObject)) {
                         octreeable->setProcessed(true);
-                        visibleOctreeables.push_back(octreeable);
+                        visibleOctreeables.push_back(octreeable.get());
                     }
                 }
             } else {
@@ -246,7 +250,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(co
     std::for_each(visibleOctreeables.begin(), visibleOctreeables.end(), [](TOctreeable* o){o->setProcessed(false);});
 }
 
-template<class TOctreeable> bool OctreeManager<TOctreeable>::resizeOctree(TOctreeable* newOctreeable) {
+template<class TOctreeable> bool OctreeManager<TOctreeable>::resizeOctree(std::shared_ptr<TOctreeable> newOctreeable) {
     if (mainOctree) {
         //need to resize ?
         const Point3<float>& minOctree = mainOctree->getAABBox().getMin();
@@ -261,8 +265,8 @@ template<class TOctreeable> bool OctreeManager<TOctreeable>::resizeOctree(TOctre
     }
 
     //gets all octreeables from the current octree
-    std::vector<TOctreeable*> allOctreeables = getAllOctreeables();
-    allOctreeables.emplace_back(newOctreeable);
+    std::vector<std::shared_ptr<TOctreeable>> allOctreeables = getAllOctreeables();
+    allOctreeables.emplace_back(std::move(newOctreeable));
 
     //rebuild the octree
     buildOctree(allOctreeables);

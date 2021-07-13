@@ -6,13 +6,12 @@
 namespace urchin {
 
     SceneLight::SceneLight() :
-            lightManager(nullptr),
-            light(nullptr) {
+            lightManager(nullptr) {
 
     }
 
     SceneLight::~SceneLight() {
-        lightManager->removeLight(light);
+        lightManager->removeLight(light.get());
     }
 
     void SceneLight::setLightManager(LightManager& lightManager) {
@@ -33,7 +32,7 @@ namespace urchin {
     void SceneLight::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
         chunk.addAttribute(UdaAttribute(NAME_ATTR, this->name));
 
-        LightReaderWriter::writeOn(chunk, light, udaWriter);
+        LightReaderWriter::writeOn(chunk, *light, udaWriter);
     }
 
     std::string SceneLight::getName() const {
@@ -45,19 +44,17 @@ namespace urchin {
     }
 
     Light* SceneLight::getLight() const {
-        return light;
+        return light.get();
     }
 
-    void SceneLight::setLight(Light* light) {
+    void SceneLight::setLight(const std::shared_ptr<Light>& light) {
         if (!light) {
             throw std::invalid_argument("Cannot set a null light on scene light.");
         }
 
         if (lightManager) {
-            lightManager->removeLight(this->light);
+            lightManager->removeLight(this->light.get());
             lightManager->addLight(light);
-        } else {
-            delete this->light;
         }
 
         this->light = light;

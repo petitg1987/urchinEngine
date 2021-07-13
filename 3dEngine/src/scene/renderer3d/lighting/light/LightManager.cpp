@@ -21,16 +21,6 @@ namespace urchin {
         }
     }
 
-    LightManager::~LightManager() {
-        std::vector<Light*> allOctreeableLights = lightOctreeManager->getAllOctreeables();
-        for (auto allOctreeableLight : allOctreeableLights) {
-            delete allOctreeableLight;
-        }
-        for (auto& sunLight : sunLights) {
-            delete sunLight;
-        }
-    }
-
     void LightManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
         std::size_t lightsDataSize = maxLights;
 
@@ -62,7 +52,7 @@ namespace urchin {
         return maxLights;
     }
 
-    const std::vector<Light*>& LightManager::getSunLights() const {
+    const std::vector<std::shared_ptr<Light>>& LightManager::getSunLights() const {
         return sunLights;
     }
 
@@ -70,30 +60,28 @@ namespace urchin {
         return visibleLights;
     }
 
-    void LightManager::addLight(Light* light) {
+    void LightManager::addLight(std::shared_ptr<Light> light) {
         if (light) {
+            Light* lightPtr = light.get();
             if (light->hasParallelBeams()) {
-                sunLights.push_back(light);
+                sunLights.push_back(std::move(light));
             } else {
-                lightOctreeManager->addOctreeable(light);
+                lightOctreeManager->addOctreeable(std::move(light));
             }
 
-            onLightEvent(light, LightManager::ADD_LIGHT);
+            onLightEvent(lightPtr, LightManager::ADD_LIGHT);
         }
     }
 
-    void LightManager::removeLight(Light* light) {
+    void LightManager::removeLight(Light* light) { //TODO return ptr
         if (light) {
             if (light->hasParallelBeams()) {
-                auto it = std::find(sunLights.begin(), sunLights.end(), light);
+                auto it = std::find_if(sunLights.begin(), sunLights.end(), [&light](const auto& o){return o.get() == light;});
                 sunLights.erase(it);
             } else {
                 lightOctreeManager->removeOctreeable(light);
             }
-
-            onLightEvent(light, LightManager::REMOVE_LIGHT);
-
-            delete light;
+            onLightEvent(light, LightManager::REMOVE_LIGHT); //TODO shared_ptr could be destroyed !
         }
     }
 
@@ -113,7 +101,9 @@ namespace urchin {
         lightOctreeManager->getOctreeablesIn(frustum, lightsInFrustum);
 
         visibleLights.clear();
-        visibleLights = sunLights;
+        for(auto& sunLight : sunLights) {
+            visibleLights.push_back(sunLight.get());
+        }
         visibleLights.insert(visibleLights.end(), lightsInFrustum.begin(), lightsInFrustum.end());
 
         if (visibleLights.size() > maxLights) {

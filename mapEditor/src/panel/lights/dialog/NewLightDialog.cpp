@@ -71,11 +71,11 @@ namespace urchin {
         QVariant variant = lightTypeComboBox->currentData();
         auto lightType = static_cast<Light::LightType>(variant.toInt());
 
-        Light *light;
+        std::shared_ptr<Light> light;
         if (lightType == Light::OMNIDIRECTIONAL) {
-            light = new OmnidirectionalLight(Point3<float>(0.0, 0.0, 0.0));
+            light = std::make_shared<OmnidirectionalLight>(Point3<float>(0.0f, 0.0f, 0.0f));
         } else if (lightType == Light::SUN) {
-            light = new SunLight(Vector3<float>(1.0, -1.0, 0.0));
+            light = std::make_shared<SunLight>(Vector3<float>(1.0f, -1.0f, 0.0f));
         } else {
             throw std::invalid_argument("Unknown the light type to create a new light: " + std::to_string(lightType));
         }

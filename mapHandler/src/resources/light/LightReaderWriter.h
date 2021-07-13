@@ -9,18 +9,18 @@ namespace urchin {
 
     class LightReaderWriter {
         public:
-            static Light* loadFrom(const UdaChunk*, const UdaParser&);
-            static void writeOn(UdaChunk&, const Light*, UdaWriter&);
+            static std::shared_ptr<Light> loadFrom(const UdaChunk*, const UdaParser&);
+            static void writeOn(UdaChunk&, const Light&, UdaWriter&);
 
         private:
-            static Light* buildLightFrom(const UdaChunk*, const UdaParser&);
-            static void buildChunkFrom(UdaChunk&, const Light*, UdaWriter&);
+            static std::shared_ptr<Light> buildLightFrom(const UdaChunk*, const UdaParser&);
+            static void buildChunkFrom(UdaChunk&, const Light&, UdaWriter&);
 
-            static void loadPropertiesFrom(Light*, const UdaChunk*, const UdaParser&);
-            static void writePropertiesOn(UdaChunk&, const Light*, UdaWriter&);
+            static void loadPropertiesFrom(Light&, const UdaChunk*, const UdaParser&);
+            static void writePropertiesOn(UdaChunk&, const Light&, UdaWriter&);
 
-            static void loadFlagsFrom(Light*, const UdaChunk*, const UdaParser&);
-            static void writeFlagsOn(UdaChunk&, const Light*, UdaWriter&);
+            static void loadFlagsFrom(Light&, const UdaChunk*, const UdaParser&);
+            static void writeFlagsOn(UdaChunk&, const Light&, UdaWriter&);
 
             static constexpr char TYPE_ATTR[] = "type";
             static constexpr char OMNIDIRECTIONAL_VALUE[] = "OMNIDIRECTIONAL";

@@ -21,7 +21,7 @@ namespace urchin {
             void setName(const std::string&);
 
             Light* getLight() const;
-            void setLight(Light*);
+            void setLight(const std::shared_ptr<Light>&);
 
         private:
             void loadFrom(const UdaChunk*, const UdaParser&);
@@ -32,7 +32,7 @@ namespace urchin {
             LightManager* lightManager;
 
             std::string name;
-            Light* light;
+            std::shared_ptr<Light> light;
     };
 
 }
