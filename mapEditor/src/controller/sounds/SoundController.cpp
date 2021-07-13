@@ -11,7 +11,7 @@ namespace urchin {
     }
 
     std::list<const SceneSound*> SoundController::getSceneSounds() const {
-        const auto& sceneSounds = getMapHandler()->getMap()->getSceneSounds();
+        const auto& sceneSounds = getMapHandler()->getMap().getSceneSounds();
         std::list<const SceneSound*> constSceneSounds;
         for(auto& sceneSound : sceneSounds) {
             constSceneSounds.emplace_back(sceneSound.get());
@@ -21,14 +21,14 @@ namespace urchin {
     }
 
     void SoundController::addSceneSound(std::unique_ptr<SceneSound> sceneSound) {
-        getMapHandler()->getMap()->addSceneSound(std::move(sceneSound));
+        getMapHandler()->getMap().addSceneSound(std::move(sceneSound));
 
         markModified();
     }
 
     void SoundController::removeSceneSound(const SceneSound& constSceneSound) {
         SceneSound& sceneSound = findSceneSound(constSceneSound);
-        getMapHandler()->getMap()->removeSceneSound(sceneSound);
+        getMapHandler()->getMap().removeSceneSound(sceneSound);
 
         markModified();
     }
@@ -118,7 +118,7 @@ namespace urchin {
     }
 
     SceneSound& SoundController::findSceneSound(const SceneSound& constSceneSound) {
-        const auto& sceneSounds = getMapHandler()->getMap()->getSceneSounds();
+        const auto& sceneSounds = getMapHandler()->getMap().getSceneSounds();
         auto it = std::find_if(sceneSounds.begin(), sceneSounds.end(), [&constSceneSound](const auto& o){return o.get() == &constSceneSound;});
 
         if (it != sceneSounds.end()) {

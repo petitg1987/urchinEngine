@@ -9,7 +9,7 @@ namespace urchin {
     }
 
     std::list<const SceneTerrain*> TerrainController::getSceneTerrains() const {
-        const auto& sceneTerrains = getMapHandler()->getMap()->getSceneTerrains();
+        const auto& sceneTerrains = getMapHandler()->getMap().getSceneTerrains();
         std::list<const SceneTerrain*> constSceneTerrains;
         for(auto& sceneTerrain : sceneTerrains) {
             constSceneTerrains.emplace_back(sceneTerrain.get());
@@ -19,14 +19,14 @@ namespace urchin {
     }
 
     void TerrainController::addSceneTerrain(std::unique_ptr<SceneTerrain> sceneTerrain) {
-        getMapHandler()->getMap()->addSceneTerrain(std::move(sceneTerrain));
+        getMapHandler()->getMap().addSceneTerrain(std::move(sceneTerrain));
 
         markModified();
     }
 
     void TerrainController::removeSceneTerrain(const SceneTerrain& constSceneTerrain) {
         SceneTerrain& sceneTerrain = findSceneTerrain(constSceneTerrain);
-        getMapHandler()->getMap()->removeSceneTerrain(sceneTerrain);
+        getMapHandler()->getMap().removeSceneTerrain(sceneTerrain);
 
         markModified();
     }
@@ -93,7 +93,7 @@ namespace urchin {
     }
 
     SceneTerrain& TerrainController::findSceneTerrain(const SceneTerrain& constSceneTerrain) {
-        const auto& sceneTerrains = getMapHandler()->getMap()->getSceneTerrains();
+        const auto& sceneTerrains = getMapHandler()->getMap().getSceneTerrains();
         auto it = std::find_if(sceneTerrains.begin(), sceneTerrains.end(), [&constSceneTerrain](const auto& o){return o.get() == &constSceneTerrain;});
 
         if (it != sceneTerrains.end()) {

@@ -21,11 +21,7 @@ namespace urchin {
             throw std::invalid_argument("AI manager cannot be null in map handler");
         }
 
-        map = new Map(renderer3d, physicsWorld, soundManager, aiManager);
-    }
-
-    MapHandler::~MapHandler() {
-        delete map;
+        map = std::make_unique<Map>(renderer3d, physicsWorld, soundManager, aiManager);
     }
 
     void MapHandler::loadMapFromFile(const std::string& filename, LoadCallback& loadCallback) {
@@ -72,8 +68,8 @@ namespace urchin {
         map->refreshMap();
     }
 
-    Map* MapHandler::getMap() const {
-        return map;
+    Map& MapHandler::getMap() const {
+        return *map;
     }
 
     void MapHandler::pause() {

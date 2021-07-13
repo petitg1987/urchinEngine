@@ -9,7 +9,7 @@ namespace urchin {
     }
 
     std::list<const SceneWater*> WaterController::getSceneWaters() const {
-        const auto& sceneWaters = getMapHandler()->getMap()->getSceneWaters();
+        const auto& sceneWaters = getMapHandler()->getMap().getSceneWaters();
         std::list<const SceneWater*> constSceneWaters;
         for(auto& sceneWater : sceneWaters) {
             constSceneWaters.emplace_back(sceneWater.get());
@@ -19,14 +19,14 @@ namespace urchin {
     }
 
     void WaterController::addSceneWater(std::unique_ptr<SceneWater> sceneWater) {
-        getMapHandler()->getMap()->addSceneWater(std::move(sceneWater));
+        getMapHandler()->getMap().addSceneWater(std::move(sceneWater));
 
         markModified();
     }
 
     void WaterController::removeSceneWater(const SceneWater& constSceneWater) {
         SceneWater& sceneWater = findSceneWater(constSceneWater);
-        getMapHandler()->getMap()->removeSceneWater(sceneWater);
+        getMapHandler()->getMap().removeSceneWater(sceneWater);
 
         markModified();
     }
@@ -72,7 +72,7 @@ namespace urchin {
     }
 
     SceneWater& WaterController::findSceneWater(const SceneWater& constSceneWater) {
-        const auto& sceneWaters = getMapHandler()->getMap()->getSceneWaters();
+        const auto& sceneWaters = getMapHandler()->getMap().getSceneWaters();
         auto it = std::find_if(sceneWaters.begin(), sceneWaters.end(), [&constSceneWater](const auto& o){return o.get() == &constSceneWater;});
 
         if (it != sceneWaters.end()) {

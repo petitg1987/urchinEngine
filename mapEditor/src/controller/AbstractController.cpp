@@ -7,7 +7,6 @@ namespace urchin {
 
     }
 
-
     void AbstractController::setup(MapHandler* mapHandler) {
         this->mapHandler = mapHandler;
     }

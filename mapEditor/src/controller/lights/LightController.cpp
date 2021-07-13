@@ -10,7 +10,7 @@ namespace urchin {
     }
 
     std::list<const SceneLight*> LightController::getSceneLights() const {
-        const auto& sceneLights = getMapHandler()->getMap()->getSceneLights();
+        const auto& sceneLights = getMapHandler()->getMap().getSceneLights();
         std::list<const SceneLight*> constSceneLights;
         for(auto& sceneLight : sceneLights) {
             constSceneLights.emplace_back(sceneLight.get());
@@ -20,14 +20,14 @@ namespace urchin {
     }
 
     void LightController::addSceneLight(std::unique_ptr<SceneLight> sceneLight) {
-        getMapHandler()->getMap()->addSceneLight(std::move(sceneLight));
+        getMapHandler()->getMap().addSceneLight(std::move(sceneLight));
 
         markModified();
     }
 
     void LightController::removeSceneLight(const SceneLight& constSceneLight) {
         SceneLight& sceneLight = findSceneLight(constSceneLight);
-        getMapHandler()->getMap()->removeSceneLight(sceneLight);
+        getMapHandler()->getMap().removeSceneLight(sceneLight);
 
         markModified();
     }
@@ -69,7 +69,7 @@ namespace urchin {
     }
 
     SceneLight& LightController::findSceneLight(const SceneLight& constSceneLight) {
-        const auto& sceneLights = getMapHandler()->getMap()->getSceneLights();
+        const auto& sceneLights = getMapHandler()->getMap().getSceneLights();
         auto it = std::find_if(sceneLights.begin(), sceneLights.end(), [&constSceneLight](const auto& o){return o.get() == &constSceneLight;});
 
         if (it != sceneLights.end()) {

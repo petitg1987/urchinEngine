@@ -20,7 +20,6 @@ namespace urchin {
     class MapHandler {
         public:
             MapHandler(Renderer3d*, PhysicsWorld*, SoundManager*, AIManager*);
-            ~MapHandler();
 
             void loadMapFromFile(const std::string&, LoadCallback&);
             void writeMapOnFile(const std::string&) const;
@@ -30,7 +29,7 @@ namespace urchin {
             void setRelativeWorkingDirectory(const std::string&);
 
             void refreshMap();
-            Map* getMap() const;
+            Map& getMap() const;
 
             void pause();
             void unpause();
@@ -40,7 +39,7 @@ namespace urchin {
             static constexpr char WORKING_DIR_ATTR[] = "relativeWorkingDirectory";
 
             std::string relativeWorkingDirectory;
-            Map* map;
+            std::unique_ptr<Map> map;
     };
 
 }

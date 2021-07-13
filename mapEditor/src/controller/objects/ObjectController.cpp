@@ -12,7 +12,7 @@ namespace urchin {
     }
 
     std::list<const SceneObject*> ObjectController::getSceneObjects() const {
-        const auto& sceneObjects = getMapHandler()->getMap()->getSceneObjects();
+        const auto& sceneObjects = getMapHandler()->getMap().getSceneObjects();
         std::list<const SceneObject*> constSceneObjects;
         for(auto& sceneObject : sceneObjects) {
             constSceneObjects.emplace_back(sceneObject.get());
@@ -32,14 +32,14 @@ namespace urchin {
     }
 
     void ObjectController::addSceneObject(std::unique_ptr<SceneObject> sceneObject) {
-        getMapHandler()->getMap()->addSceneObject(std::move(sceneObject));
+        getMapHandler()->getMap().addSceneObject(std::move(sceneObject));
 
         markModified();
     }
 
     void ObjectController::removeSceneObject(const SceneObject& constSceneObject) {
         SceneObject& sceneObject = findSceneObject(constSceneObject);
-        getMapHandler()->getMap()->removeSceneObject(sceneObject);
+        getMapHandler()->getMap().removeSceneObject(sceneObject);
 
         markModified();
     }
@@ -161,7 +161,7 @@ namespace urchin {
     }
 
     SceneObject& ObjectController::findSceneObject(const SceneObject& constSceneObject) {
-        const auto& sceneObjects = getMapHandler()->getMap()->getSceneObjects();
+        const auto& sceneObjects = getMapHandler()->getMap().getSceneObjects();
         auto it = std::find_if(sceneObjects.begin(), sceneObjects.end(), [&constSceneObject](const auto& o){return o.get() == &constSceneObject;});
 
         if (it != sceneObjects.end()) {
