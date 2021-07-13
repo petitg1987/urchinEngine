@@ -64,8 +64,8 @@ namespace urchin {
 
         private:
             //light handling
-            void addShadowLight(const Light*);
-            void removeShadowLight(const Light*);
+            void addShadowLight(const Light&);
+            void removeShadowLight(const Light&);
             void updateShadowLights();
 
             //splits handling

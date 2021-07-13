@@ -132,7 +132,7 @@ namespace urchin {
         attenuation = new QDoubleSpinBox();
         omniLightLayout->addWidget(attenuation, 1, 1);
         SpinBoxStyleHelper::applyDefaultStyleOn(attenuation);
-        attenuation->setMinimum(0.00001);
+        attenuation->setMinimum(0.01);
         attenuation->setSingleStep(0.05);
         connect(attenuation, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
     }

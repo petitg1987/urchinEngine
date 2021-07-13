@@ -20,6 +20,9 @@ namespace urchin {
     bool DEBUG_DISPLAY_MODEL_BASE_BONES = false;
     bool DEBUG_DISPLAY_LIGHTS_OCTREE = false;
 
+    //static
+    constexpr float Renderer3d::MODELS_OCTREE_MIN_SIZE = 20.0f;
+
     Renderer3d::Renderer3d(RenderTarget& finalRenderTarget) :
             finalRenderTarget(finalRenderTarget),
             sceneWidth(finalRenderTarget.getWidth()),
@@ -29,7 +32,7 @@ namespace urchin {
             //deferred rendering
             deferredRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - first pass", RenderTarget::READ_WRITE_DEPTH_ATTACHMENT)),
             modelSetDisplayer(std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE)),
-            modelOctreeManager(std::make_unique<OctreeManager<Model>>(20.0f)),
+            modelOctreeManager(std::make_unique<OctreeManager<Model>>(MODELS_OCTREE_MIN_SIZE)),
             fogManager(std::make_unique<FogManager>()),
             terrainManager(std::make_unique<TerrainManager>(*deferredRenderTarget)),
             waterManager(std::make_unique<WaterManager>(*deferredRenderTarget)),

@@ -97,6 +97,8 @@ namespace urchin {
             void renderDebugFramebuffers();
             void postUpdateScene();
 
+            static const float MODELS_OCTREE_MIN_SIZE;
+
             //scene properties
             RenderTarget& finalRenderTarget;
             unsigned int sceneWidth, sceneHeight;

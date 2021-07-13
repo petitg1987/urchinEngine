@@ -9,11 +9,12 @@ namespace urchin {
 
     //static
     constexpr unsigned int LightManager::LIGHTS_SHADER_LIMIT = 15; //must be equals to 'MAX_LIGHTS'/'MAX_VERTICES' in lighting/modelShadowMap shaders
+    constexpr float LightManager::LIGHTS_OCTREE_MIN_SIZE = 50.0f;
 
     LightManager::LightManager(RenderTarget& renderTarget) :
             maxLights(ConfigService::instance()->getUnsignedIntValue("light.maxLights")),
             renderTarget(renderTarget),
-            lightOctreeManager(std::make_unique<OctreeManager<Light>>(50.0f)),
+            lightOctreeManager(std::make_unique<OctreeManager<Light>>(LIGHTS_OCTREE_MIN_SIZE)),
             lastUpdatedLight(nullptr),
             globalAmbientColor(Point4<float>(0.0f, 0.0f, 0.0f, 0.0f)) {
         if (maxLights > LIGHTS_SHADER_LIMIT) {

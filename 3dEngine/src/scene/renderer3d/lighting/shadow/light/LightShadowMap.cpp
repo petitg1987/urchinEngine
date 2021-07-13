@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    LightShadowMap::LightShadowMap(const Light* light, const OctreeManager<Model>& modelOctreeManager, float viewingShadowDistance, std::shared_ptr<Texture> shadowMapTexture,
+    LightShadowMap::LightShadowMap(const Light& light, const OctreeManager<Model>& modelOctreeManager, float viewingShadowDistance, std::shared_ptr<Texture> shadowMapTexture,
                                    unsigned int nbShadowMaps, std::unique_ptr<OffscreenRender> renderTarget) :
             light(light),
             modelOctreeManager(modelOctreeManager),
@@ -20,20 +20,19 @@ namespace urchin {
             createOrUpdateShadowModelSetDisplayer(nbShadowMaps);
         }
         updateLightViewMatrix();
-        light->addObserver(this, Light::LIGHT_MOVE);
+        light.addObserver(this, Light::LIGHT_MOVE);
     }
 
     LightShadowMap::~LightShadowMap() {
-        light->removeObserver(this, Light::LIGHT_MOVE);
-
+        light.removeObserver(this, Light::LIGHT_MOVE);
         if (renderTarget) {
             renderTarget->cleanup();
         }
     }
 
     void LightShadowMap::updateLightViewMatrix() {
-        if (light->hasParallelBeams()) { //sun light
-            Vector3<float> lightDirection = light->getDirections()[0];
+        if (light.hasParallelBeams()) { //sun light
+            Vector3<float> lightDirection = light.getDirections()[0];
 
             const Vector3<float>& f = lightDirection.normalize();
             const Vector3<float>& s = f.crossProduct(Vector3<float>(0.0f, 1.0f, 0.0f)).normalize();
@@ -62,7 +61,7 @@ namespace urchin {
         }
     }
 
-    const Light* LightShadowMap::getLight() const {
+    const Light& LightShadowMap::getLight() const {
         return light;
     }
 

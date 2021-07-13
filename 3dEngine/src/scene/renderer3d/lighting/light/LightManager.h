@@ -44,6 +44,7 @@ namespace urchin {
             void logMaxLightsReach();
 
             static const unsigned int LIGHTS_SHADER_LIMIT;
+            static const float LIGHTS_OCTREE_MIN_SIZE;
 
             const unsigned int maxLights; //maximum of lights authorized to affect the scene in the same time
             RenderTarget& renderTarget;

@@ -11,7 +11,7 @@ void LightSplitShadowMapTest::modelsInFrustumSplit() {
         Point3<float>(1.0f, 2.0f, -10.0f)
     });
     auto light = std::make_unique<SunLight>(Vector3<float>(1.0f, 0.0f, 0.0f));
-    auto lightShadowMap = std::make_unique<LightShadowMap>(light.get(), modelOctreeManager.get(), 300.0f, nullptr, 3, nullptr);
+    auto lightShadowMap = std::make_unique<LightShadowMap>(*light, *modelOctreeManager, 300.0f, nullptr, 3, nullptr);
     auto lightSplitShadowMap = lightShadowMap->addLightSplitShadowMap();
 
     Frustum<float> frustumSplit(90.0f, 1.0f, 0.01f, 100.0f);
@@ -24,7 +24,6 @@ void LightSplitShadowMapTest::modelsInFrustumSplit() {
     AssertHelper::assertPoint3FloatEquals(lightSplitShadowMap.getShadowCasterReceiverBox().getMax(),
                                           Point3<float>(-2.5f, 2.5f, -1.5f) + LightSplitShadowMap::LIGHT_BOX_MARGIN,
                                           std::numeric_limits<float>::epsilon());
-    cleanOctreeManager(modelOctreeManager);
 }
 
 void LightSplitShadowMapTest::modelsOutsideFrustumSplit() {
@@ -34,7 +33,7 @@ void LightSplitShadowMapTest::modelsOutsideFrustumSplit() {
         Point3<float>(500.0f, 2.0f, -3.0f), //model not visible and in the wrong direction to produce shadow in the frustum split
     });
     auto light = std::make_unique<SunLight>(Vector3<float>(1.0f, 0.0f, 0.0f));
-    auto lightShadowMap = std::make_unique<LightShadowMap>(light.get(), modelOctreeManager.get(), 300.0f, nullptr, 3, nullptr);
+    auto lightShadowMap = std::make_unique<LightShadowMap>(*light, *modelOctreeManager, 300.0f, nullptr, 3, nullptr);
     auto lightSplitShadowMap = lightShadowMap->addLightSplitShadowMap();
 
     Frustum<float> frustumSplit(90.0f, 1.0f, 0.01f, 100.0f);
@@ -47,7 +46,6 @@ void LightSplitShadowMapTest::modelsOutsideFrustumSplit() {
     AssertHelper::assertPoint3FloatEquals(lightSplitShadowMap.getShadowCasterReceiverBox().getMax(),
                                           Point3<float>(0.0f, 0.0f, 0.0f) + LightSplitShadowMap::LIGHT_BOX_MARGIN,
                                           std::numeric_limits<float>::epsilon());
-    cleanOctreeManager(modelOctreeManager);
 }
 
 void LightSplitShadowMapTest::modelOutsideFrustumProducingShadow() {
@@ -55,7 +53,7 @@ void LightSplitShadowMapTest::modelOutsideFrustumProducingShadow() {
         Point3<float>(-250.0f, 2.0f, -3.0f), //model not visible but produces shadow in the frustum split
     });
     auto light = std::make_unique<SunLight>(Vector3<float>(1.0f, 0.0f, 0.0f));
-    auto lightShadowMap = std::make_unique<LightShadowMap>(light.get(), modelOctreeManager.get(), 300.0f, nullptr, 3, nullptr);
+    auto lightShadowMap = std::make_unique<LightShadowMap>(*light, *modelOctreeManager, 300.0f, nullptr, 3, nullptr);
     auto lightSplitShadowMap = lightShadowMap->addLightSplitShadowMap();
 
     Frustum<float> frustumSplit(90.0f, 1.0f, 0.01f, 100.0f);
@@ -68,25 +66,18 @@ void LightSplitShadowMapTest::modelOutsideFrustumProducingShadow() {
     AssertHelper::assertPoint3FloatEquals(lightSplitShadowMap.getShadowCasterReceiverBox().getMax(),
                                           Point3<float>(-2.5f, 2.5f, 249.5f) + LightSplitShadowMap::LIGHT_BOX_MARGIN,
                                           std::numeric_limits<float>::epsilon());
-    cleanOctreeManager(modelOctreeManager);
 }
 
 std::unique_ptr<OctreeManager<Model>> LightSplitShadowMapTest::buildModelOctreeManager(const std::vector<Point3<float>> &modelPositions) {
     auto modelOctreeManager = std::make_unique<OctreeManager<Model>>(10.0f);
 
     for (const auto& modelPosition : modelPositions) {
-        auto model = new Model(""); //default model size: 1.0 x 1.0 x 1.0
+        auto model = std::make_shared<Model>(""); //default model size: 1.0 x 1.0 x 1.0
         model->setPosition(modelPosition);
         modelOctreeManager->addOctreeable(model);
     }
 
     return modelOctreeManager;
-}
-
-void LightSplitShadowMapTest::cleanOctreeManager(const std::unique_ptr<OctreeManager<Model>>& modelOctreeManager) {
-    for (auto& model : modelOctreeManager->getAllOctreeables()) {
-        delete model;
-    }
 }
 
 CppUnit::Test* LightSplitShadowMapTest::suite() {
