@@ -14,13 +14,13 @@ namespace urchin {
     QString NewObjectDialog::preferredMeshPath = QString();
 
     NewObjectDialog::NewObjectDialog(QWidget* parent, const ObjectController* objectController) :
-        QDialog(parent),
-        objectController(objectController),
-        objectNameLabel(nullptr),
-        objectNameText(nullptr),
-        meshFilenameLabel(nullptr),
-        meshFilenameText(nullptr),
-        sceneObject(nullptr) {
+            QDialog(parent),
+            objectController(objectController),
+            objectNameLabel(nullptr),
+            objectNameText(nullptr),
+            meshFilenameLabel(nullptr),
+            meshFilenameText(nullptr),
+            sceneObject(nullptr) {
         this->setWindowTitle("New Object");
         this->resize(530, 130);
         this->setFixedSize(this->width(),this->height());
@@ -74,7 +74,7 @@ namespace urchin {
 
     int NewObjectDialog::buildSceneObject(int result) {
         try {
-            sceneObject = new SceneObject();
+            sceneObject = std::make_unique<SceneObject>();
 
             sceneObject->setName(objectName);
 
@@ -87,8 +87,6 @@ namespace urchin {
             sceneObject->setModel(model);
         } catch (std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());
-            delete sceneObject;
-
             return QDialog::Rejected;
         }
 
@@ -96,8 +94,8 @@ namespace urchin {
     }
 
 
-    SceneObject* NewObjectDialog::getSceneObject() const {
-        return sceneObject;
+    std::unique_ptr<SceneObject> NewObjectDialog::moveSceneObject() {
+        return std::move(sceneObject);
     }
 
     void NewObjectDialog::showMeshFilenameDialog() {

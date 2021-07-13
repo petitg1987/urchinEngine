@@ -17,7 +17,7 @@ namespace urchin {
         public:
             NewObjectDialog(QWidget*, const ObjectController*);
 
-            SceneObject* getSceneObject() const;
+            std::unique_ptr<SceneObject> moveSceneObject();
 
         private:
             void setupNameFields(QGridLayout*);
@@ -38,7 +38,7 @@ namespace urchin {
 
             std::string objectName;
             std::string meshFilename;
-            SceneObject* sceneObject;
+            std::unique_ptr<SceneObject> sceneObject;
             static QString preferredMeshPath;
 
         private slots:

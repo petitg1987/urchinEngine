@@ -53,18 +53,18 @@ namespace urchin {
         return nullptr;
     }
 
-    int ObjectTableView::addObject(const SceneObject* sceneObject) {
-        auto* itemObjectName = new QStandardItem(QString::fromStdString(sceneObject->getName()));
-        itemObjectName->setData(QVariant::fromValue(sceneObject), Qt::UserRole + 1);
+    int ObjectTableView::addObject(const SceneObject& sceneObject) {
+        auto* itemObjectName = new QStandardItem(QString::fromStdString(sceneObject.getName()));
+        itemObjectName->setData(QVariant::fromValue(&sceneObject), Qt::UserRole + 1);
         itemObjectName->setEditable(false);
 
         std::string pathFileName;
-        if (sceneObject->getModel()->getConstMeshes()) {
-            pathFileName = sceneObject->getModel()->getConstMeshes()->getMeshFilename();
+        if (sceneObject.getModel()->getConstMeshes()) {
+            pathFileName = sceneObject.getModel()->getConstMeshes()->getMeshFilename();
         }
         auto* itemMeshFile = new QStandardItem(QString::fromStdString(FileUtil::getFileName(pathFileName)));
         itemMeshFile->setToolTip(QString::fromStdString(pathFileName));
-        itemMeshFile->setData(QVariant::fromValue(sceneObject), Qt::UserRole + 1);
+        itemMeshFile->setData(QVariant::fromValue(&sceneObject), Qt::UserRole + 1);
         itemMeshFile->setEditable(false);
 
         int nextRow = objectsListModel->rowCount();

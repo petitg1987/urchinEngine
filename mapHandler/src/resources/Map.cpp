@@ -16,10 +16,6 @@ namespace urchin {
     }
 
     Map::~Map() {
-        for (SceneObject* sceneObject : sceneObjects) {
-            delete sceneObject;
-        }
-
         for (SceneLight* sceneLight : sceneLights) {
             delete sceneLight;
         }
@@ -73,10 +69,10 @@ namespace urchin {
         auto objectsChunk = udaParser.getChunks(OBJECT_TAG, UdaAttribute(), objectsListChunk);
 
         for (const auto& objectChunk : objectsChunk) {
-            auto* sceneObject = new SceneObject();
+            auto sceneObject = std::make_unique<SceneObject>();
             sceneObject->loadFrom(objectChunk, udaParser);
 
-            addSceneObject(sceneObject);
+            addSceneObject(std::move(sceneObject));
         }
     }
 
@@ -153,7 +149,7 @@ namespace urchin {
     void Map::writeSceneObjectsOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
         auto& objectsListChunk = udaWriter.createChunk(OBJECTS_TAG, UdaAttribute(), &chunk);
 
-        for (auto sceneObject : sceneObjects) {
+        for (auto& sceneObject : sceneObjects) {
             auto& objectsChunk = udaWriter.createChunk(OBJECT_TAG, UdaAttribute(), &objectsListChunk);
             sceneObject->writeOn(objectsChunk, udaWriter);
         }
@@ -207,28 +203,27 @@ namespace urchin {
         sceneAI->writeOn(aiElementsListChunk, udaWriter);
     }
 
-    const std::list<SceneObject*>& Map::getSceneObjects() const {
+    const std::list<std::unique_ptr<SceneObject>>& Map::getSceneObjects() const {
         return sceneObjects;
     }
 
-    SceneObject* Map::getSceneObject(const std::string& name) const {
-        for (auto sceneObject : sceneObjects) {
+    SceneObject& Map::getSceneObject(const std::string& name) const {
+        for (auto& sceneObject : sceneObjects) {
             if (sceneObject->getName() == name) {
-                return sceneObject;
+                return *sceneObject;
             }
         }
 
         throw std::invalid_argument("Impossible to find a scene object having name: " + name);
     }
 
-    void Map::addSceneObject(SceneObject* sceneObject) {
+    void Map::addSceneObject(std::unique_ptr<SceneObject> sceneObject) {
         sceneObject->setObjectManagers(renderer3d, physicsWorld, aiManager);
-        sceneObjects.push_back(sceneObject);
+        sceneObjects.push_back(std::move(sceneObject));
     }
 
-    void Map::removeSceneObject(SceneObject* sceneObject) {
-        sceneObjects.remove(sceneObject);
-        delete sceneObject;
+    void Map::removeSceneObject(SceneObject& sceneObject) {
+        sceneObjects.remove_if([&sceneObject](const auto& o){return o.get()==&sceneObject;});
     }
 
     const std::list<SceneLight*>& Map::getSceneLights() const {
@@ -389,7 +384,7 @@ namespace urchin {
     }
 
     void Map::refreshEntities() {
-        for (SceneObject* sceneObject : sceneObjects) {
+        for (auto& sceneObject : sceneObjects) {
             sceneObject->refresh();
         }
 

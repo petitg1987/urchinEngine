@@ -49,20 +49,18 @@ namespace urchin {
 
     int CloneObjectDialog::buildSceneObject(int result) {
         try {
-            sceneObject = new SceneObject();
+            sceneObject = std::make_unique<SceneObject>();
             sceneObject->setName(objectName);
         } catch (std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());
-            delete sceneObject;
-
             return QDialog::Rejected;
         }
 
         return result;
     }
 
-    SceneObject* CloneObjectDialog::getSceneObject() const {
-        return sceneObject;
+    std::unique_ptr<SceneObject> CloneObjectDialog::moveSceneObject() {
+        return std::move(sceneObject);
     }
 
     void CloneObjectDialog::done(int r) {

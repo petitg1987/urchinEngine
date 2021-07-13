@@ -12,9 +12,11 @@ namespace urchin {
     }
 
     std::list<const SceneObject*> ObjectController::getSceneObjects() const {
-        const std::list<SceneObject*>& sceneObjects = getMapHandler()->getMap()->getSceneObjects();
+        const auto& sceneObjects = getMapHandler()->getMap()->getSceneObjects();
         std::list<const SceneObject*> constSceneObjects;
-        constSceneObjects.insert(constSceneObjects.begin(), sceneObjects.begin(), sceneObjects.end());
+        for(auto& sceneObject : sceneObjects) {
+            constSceneObjects.emplace_back(sceneObject.get());
+        }
 
         return constSceneObjects;
     }
@@ -29,27 +31,27 @@ namespace urchin {
         return nullptr;
     }
 
-    void ObjectController::addSceneObject(SceneObject* sceneObject) {
-        getMapHandler()->getMap()->addSceneObject(sceneObject);
+    void ObjectController::addSceneObject(std::unique_ptr<SceneObject> sceneObject) {
+        getMapHandler()->getMap()->addSceneObject(std::move(sceneObject));
 
         markModified();
     }
 
-    void ObjectController::removeSceneObject(const SceneObject* constSceneObject) {
-        SceneObject* sceneObject = findSceneObject(constSceneObject);
+    void ObjectController::removeSceneObject(const SceneObject& constSceneObject) {
+        SceneObject& sceneObject = findSceneObject(constSceneObject);
         getMapHandler()->getMap()->removeSceneObject(sceneObject);
 
         markModified();
     }
 
-    void ObjectController::cloneSceneObject(SceneObject* newSceneObject, const SceneObject* toCloneSceneObject) {
-        Model* toCloneModel = toCloneSceneObject->getModel();
+    void ObjectController::cloneSceneObject(std::unique_ptr<SceneObject> newSceneObject, const SceneObject& toCloneSceneObject) {
+        Model* toCloneModel = toCloneSceneObject.getModel();
         auto* model = new Model(*toCloneModel);
         Point3<float> shiftPosition(0.5f, 0.0f, 0.0f);
         model->setPosition(model->getTransform().getPosition() + shiftPosition);
         newSceneObject->setModel(model);
 
-        RigidBody* toCloneRigidBody = toCloneSceneObject->getRigidBody();
+        RigidBody* toCloneRigidBody = toCloneSceneObject.getRigidBody();
         if (toCloneRigidBody) {
             auto* rigidBody = new RigidBody(*toCloneRigidBody);
             rigidBody->setId(newSceneObject->getName());
@@ -57,45 +59,45 @@ namespace urchin {
             newSceneObject->setupInteractiveBody(rigidBody);
         }
 
-        addSceneObject(newSceneObject);
+        addSceneObject(std::move(newSceneObject));
     }
 
-    void ObjectController::createDefaultBody(const SceneObject* constSceneObject) {
-        SceneObject* sceneObject = findSceneObject(constSceneObject);
+    void ObjectController::createDefaultBody(const SceneObject& constSceneObject) {
+        SceneObject& sceneObject = findSceneObject(constSceneObject);
 
-        std::string bodyId = constSceneObject->getName();
-        Transform<float> modelTransform = constSceneObject->getModel()->getTransform();
+        const std::string& bodyId = constSceneObject.getName();
+        Transform<float> modelTransform = constSceneObject.getModel()->getTransform();
         PhysicsTransform physicsTransform(modelTransform.getPosition(), modelTransform.getOrientation());
         auto bodyShape = DefaultBodyShapeCreator(constSceneObject).createDefaultBodyShape(CollisionShape3D::ShapeType::BOX_SHAPE);
 
         auto* rigidBody = new RigidBody(bodyId, physicsTransform, std::move(bodyShape));
-        sceneObject->setupInteractiveBody(rigidBody);
+        sceneObject.setupInteractiveBody(rigidBody);
 
         markModified();
     }
 
-    void ObjectController::changeBodyShape(const SceneObject* constSceneObject, CollisionShape3D::ShapeType shapeType) {
+    void ObjectController::changeBodyShape(const SceneObject& constSceneObject, CollisionShape3D::ShapeType shapeType) {
         std::unique_ptr<const CollisionShape3D> newCollisionShape = DefaultBodyShapeCreator(constSceneObject).createDefaultBodyShape(shapeType);
         updateSceneObjectPhysicsShape(constSceneObject, std::move(newCollisionShape));
     }
 
-    void ObjectController::removeBody(const SceneObject* constSceneObject) {
-        SceneObject* sceneObject = findSceneObject(constSceneObject);
-        sceneObject->setupInteractiveBody(nullptr);
+    void ObjectController::removeBody(const SceneObject& constSceneObject) {
+        SceneObject& sceneObject = findSceneObject(constSceneObject);
+        sceneObject.setupInteractiveBody(nullptr);
 
         markModified();
     }
 
-    const SceneObject* ObjectController::updateSceneObjectTransform(const SceneObject* constSceneObject, const Transform<float>& transform) {
-        SceneObject* sceneObject = findSceneObject(constSceneObject);
-        Model* model = sceneObject->getModel();
+    const SceneObject& ObjectController::updateSceneObjectTransform(const SceneObject& constSceneObject, const Transform<float>& transform) {
+        SceneObject& sceneObject = findSceneObject(constSceneObject);
+        Model* model = sceneObject.getModel();
 
         Transform<float> oldTransform = model->getTransform();
         model->setTransform(transform);
 
-        if (sceneObject->getRigidBody()) {
+        if (sceneObject.getRigidBody()) {
             float scaleRatio = transform.getScale() / oldTransform.getScale();
-            const CollisionShape3D& collisionShape = sceneObject->getRigidBody()->getShape();
+            const CollisionShape3D& collisionShape = sceneObject.getRigidBody()->getShape();
             auto scaledCollisionShape = collisionShape.scale(scaleRatio);
 
             updateSceneObjectPhysicsShape(sceneObject, std::move(scaledCollisionShape));
@@ -105,9 +107,9 @@ namespace urchin {
         return sceneObject;
     }
 
-    const SceneObject* ObjectController::updateSceneObjectFlags(const SceneObject* constSceneObject, bool produceShadow) {
-        SceneObject* sceneObject = findSceneObject(constSceneObject);
-        Model* model = sceneObject->getModel();
+    const SceneObject& ObjectController::updateSceneObjectFlags(const SceneObject& constSceneObject, bool produceShadow) {
+        SceneObject& sceneObject = findSceneObject(constSceneObject);
+        Model* model = sceneObject.getModel();
 
         model->setProduceShadow(produceShadow);
 
@@ -115,11 +117,11 @@ namespace urchin {
         return sceneObject;
     }
 
-    const SceneObject* ObjectController::updateSceneObjectPhysicsProperties(const SceneObject* constSceneObject, float mass, float restitution,
+    const SceneObject& ObjectController::updateSceneObjectPhysicsProperties(const SceneObject& constSceneObject, float mass, float restitution,
             float friction, float rollingFriction, float linearDamping, float angularDamping, const Vector3<float>& linearFactor,
             const Vector3<float>& angularFactor) {
-        SceneObject* sceneObject = findSceneObject(constSceneObject);
-        RigidBody* rigidBody = sceneObject->getRigidBody();
+        SceneObject& sceneObject = findSceneObject(constSceneObject);
+        RigidBody* rigidBody = sceneObject.getRigidBody();
 
         rigidBody->setMass(mass);
         rigidBody->setRestitution(restitution);
@@ -135,12 +137,12 @@ namespace urchin {
         return sceneObject;
     }
 
-    const SceneObject* ObjectController::updateSceneObjectPhysicsShape(const SceneObject* constSceneObject, std::unique_ptr<const CollisionShape3D> newCollisionShape) {
-        SceneObject* sceneObject = findSceneObject(constSceneObject);
-        RigidBody* rigidBody = sceneObject->getRigidBody();
+    const SceneObject& ObjectController::updateSceneObjectPhysicsShape(const SceneObject& constSceneObject, std::unique_ptr<const CollisionShape3D> newCollisionShape) {
+        SceneObject& sceneObject = findSceneObject(constSceneObject);
+        RigidBody* rigidBody = sceneObject.getRigidBody();
 
-        std::string bodyId = constSceneObject->getName();
-        Transform<float> modelTransform = constSceneObject->getModel()->getTransform();
+        const std::string& bodyId = constSceneObject.getName();
+        Transform<float> modelTransform = constSceneObject.getModel()->getTransform();
         PhysicsTransform physicsTransform(modelTransform.getPosition(), modelTransform.getOrientation());
 
         auto* newRigidBody = new RigidBody(bodyId, physicsTransform, std::move(newCollisionShape));
@@ -152,21 +154,21 @@ namespace urchin {
         newRigidBody->setLinearFactor(rigidBody->getLinearFactor());
         newRigidBody->setAngularFactor(rigidBody->getAngularFactor());
 
-        sceneObject->setupInteractiveBody(newRigidBody);
+        sceneObject.setupInteractiveBody(newRigidBody);
 
         markModified();
         return sceneObject;
     }
 
-    SceneObject* ObjectController::findSceneObject(const SceneObject* constSceneObject) {
-        const std::list<SceneObject*>& sceneObjects = getMapHandler()->getMap()->getSceneObjects();
-        auto it = std::find(sceneObjects.begin(), sceneObjects.end(), constSceneObject);
+    SceneObject& ObjectController::findSceneObject(const SceneObject& constSceneObject) {
+        const auto& sceneObjects = getMapHandler()->getMap()->getSceneObjects();
+        auto it = std::find_if(sceneObjects.begin(), sceneObjects.end(), [&constSceneObject](const auto& o){return o.get() == &constSceneObject;});
 
         if (it != sceneObjects.end()) {
-            return *it;
+            return *(*it);
         }
 
-        throw std::invalid_argument("Impossible to find scene object: " + constSceneObject->getName());
+        throw std::invalid_argument("Impossible to find scene object: " + constSceneObject.getName());
     }
 
 }

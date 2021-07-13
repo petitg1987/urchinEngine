@@ -50,11 +50,11 @@ namespace urchin {
             void setupPhysicsShapeBox(QVBoxLayout*);
 
             void notify(Observable*, int) override;
-            void setupObjectDataFrom(const SceneObject*);
-            void setupObjectPhysicsDataFrom(const SceneObject*);
+            void setupObjectDataFrom(const SceneObject&);
+            void setupObjectPhysicsDataFrom(const SceneObject&);
 
-            BodyShapeWidget* createBodyShapeWidget(const CollisionShape3D&, const SceneObject*);
-            BodyShapeWidget* createNoBodyShapeWidget(const SceneObject*);
+            BodyShapeWidget* createBodyShapeWidget(const CollisionShape3D&, const SceneObject&);
+            BodyShapeWidget* createNoBodyShapeWidget(const SceneObject&);
             void setupBodyShapeWidget();
 
             ObjectController* objectController;

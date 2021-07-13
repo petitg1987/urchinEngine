@@ -26,7 +26,7 @@ namespace urchin {
 
             int getSceneObjectRow(const SceneObject*) const;
 
-            int addObject(const SceneObject*);
+            int addObject(const SceneObject&);
             bool removeSelectedObject();
             void removeAllObjects();
 

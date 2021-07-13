@@ -30,10 +30,10 @@ namespace urchin {
             Map(Renderer3d*, PhysicsWorld*, SoundManager*, AIManager*);
             ~Map();
 
-            const std::list<SceneObject*>& getSceneObjects() const;
-            SceneObject* getSceneObject(const std::string&) const;
-            void addSceneObject(SceneObject*);
-            void removeSceneObject(SceneObject*);
+            const std::list<std::unique_ptr<SceneObject>>& getSceneObjects() const;
+            SceneObject& getSceneObject(const std::string&) const;
+            void addSceneObject(std::unique_ptr<SceneObject>);
+            void removeSceneObject(SceneObject&);
 
             const std::list<SceneLight*>& getSceneLights() const;
             SceneLight* getSceneLight(const std::string&) const;
@@ -106,7 +106,7 @@ namespace urchin {
             SoundManager* soundManager;
             AIManager* aiManager;
 
-            std::list<SceneObject*> sceneObjects;
+            std::list<std::unique_ptr<SceneObject>> sceneObjects;
             std::list<SceneLight*> sceneLights;
             std::list<SceneTerrain*> sceneTerrains;
             std::list<SceneWater*> sceneWaters;
