@@ -1,4 +1,6 @@
+#include <memory>
 #include <stdexcept>
+#include <stack>
 
 #include <io/data/DataWriter.h>
 #include <config/FileSystem.h>
@@ -10,22 +12,21 @@ namespace urchin {
 
     }
 
-    std::unique_ptr<DataChunk> DataWriter::createChunk(const std::string& chunkName, const DataAttribute& attribute, const DataChunk* parent) {
+    DataChunk& DataWriter::createChunk(const std::string& chunkName, const DataAttribute& attribute, DataChunk* parent) {
         std::map<std::string, std::string> attributes;
         if (!attribute.getAttributeName().empty()) {
             attributes.emplace(attribute.getAttributeName(), attribute.getAttributeValue());
         }
 
-        DataContentLine* nodeParent = parent ? &parent->chunk : nullptr;
-        auto newNode = std::make_unique<DataContentLine>(chunkName, "", attributes, nodeParent);
-        auto& newNodeRef = *newNode;
+        auto newNode = std::make_unique<DataChunk>(chunkName, "", attributes, parent);
+        auto newNodePtr = newNode.get();
         if (!parent) {
             root = std::move(newNode);
         } else {
-            parent->chunk.addChild(std::move(newNode));
+            parent->addChild(std::move(newNode));
         }
 
-        return std::unique_ptr<DataChunk>(new DataChunk(newNodeRef));
+        return *newNodePtr;
     }
 
     void DataWriter::saveInFile() {
@@ -35,16 +36,16 @@ namespace urchin {
             throw std::invalid_argument("Unable to open file: " + filenamePath);
         }
 
-        std::stack<DataContentLine*> stack;
+        std::stack<DataChunk*> stack;
         stack.push(root.get());
         while (!stack.empty()) {
-            DataContentLine* node = stack.top();
+            DataChunk* node = stack.top();
             stack.pop();
 
             unsigned int indentLevel = computeIndentLevel(*node);
             std::string indent(indentLevel * DataChunk::INDENT_SPACES, ' ');
 
-            file << indent << DataContentLine::toRawContentLine(*node) << std::endl;
+            file << indent << buildRawContentLine(*node) << std::endl;
 
             const auto& children = node->getChildren();
             for (auto it = children.rbegin(); it != children.rend(); ++it) {
@@ -55,14 +56,38 @@ namespace urchin {
         file.close();
     }
 
-    unsigned int DataWriter::computeIndentLevel(const DataContentLine& dataContentLine) const {
+    unsigned int DataWriter::computeIndentLevel(const DataChunk& dataChunk) const {
         unsigned int indentLevel = 0;
-        auto* parentNode = dataContentLine.getParent();
+        auto* parentNode = dataChunk.getParent();
         while (parentNode != nullptr) {
             parentNode = parentNode->getParent();
             indentLevel++;
         }
         return indentLevel;
+    }
+
+    std::string DataWriter::buildRawContentLine(const DataChunk& dataChunk) const {
+        std::string rawAttributes;
+        if (!dataChunk.getAttributes().empty()) {
+            rawAttributes.append(" (");
+            auto& attributes = dataChunk.getAttributes();
+            for (auto it = attributes.begin(); it != attributes.end(); ++it) {
+                if (it != attributes.begin()) {
+                    rawAttributes += DataChunk::ATTRIBUTES_SEPARATOR;
+                }
+                rawAttributes.append(it->first);
+                rawAttributes += DataChunk::ATTRIBUTES_ASSIGN;
+                rawAttributes.append(it->second);
+            }
+            rawAttributes.append(")");
+        }
+
+        std::string rawValue;
+        if (!dataChunk.getStringValue().empty()) {
+            rawValue = " \"" + dataChunk.getStringValue() + "\"";
+        }
+
+        return dataChunk.getName() + rawAttributes + ":" + rawValue;
     }
 
 }

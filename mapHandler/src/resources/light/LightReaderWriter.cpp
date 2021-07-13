@@ -11,7 +11,7 @@ namespace urchin {
         return light;
     }
 
-    void LightReaderWriter::writeOn(DataChunk* lightChunk, const Light* light, DataWriter& dataWriter) {
+    void LightReaderWriter::writeOn(DataChunk& lightChunk, const Light* light, DataWriter& dataWriter) {
         buildChunkFrom(lightChunk, light, dataWriter);
 
         writePropertiesOn(lightChunk, light, dataWriter);
@@ -37,22 +37,22 @@ namespace urchin {
         throw std::invalid_argument("Unknown light type read from map: " + lightType);
     }
 
-    void LightReaderWriter::buildChunkFrom(DataChunk* lightChunk, const Light* light, DataWriter& dataWriter) {
+    void LightReaderWriter::buildChunkFrom(DataChunk& lightChunk, const Light* light, DataWriter& dataWriter) {
         if (light->getLightType() == Light::OMNIDIRECTIONAL) {
             const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight*>(light);
-            lightChunk->addAttribute(DataAttribute(TYPE_ATTR, OMNIDIRECTIONAL_VALUE));
+            lightChunk.addAttribute(DataAttribute(TYPE_ATTR, OMNIDIRECTIONAL_VALUE));
 
-            auto positionChunk = dataWriter.createChunk(POSITION_TAG, DataAttribute(), lightChunk);
-            positionChunk->setPoint3Value(omnidirectionalLight->getPosition());
+            auto& positionChunk = dataWriter.createChunk(POSITION_TAG, DataAttribute(), &lightChunk);
+            positionChunk.setPoint3Value(omnidirectionalLight->getPosition());
 
-            auto exponentialAttenuationChunk = dataWriter.createChunk(EXPONENTIAL_ATTENUATION_TAG, DataAttribute(), lightChunk);
-            exponentialAttenuationChunk->setFloatValue(omnidirectionalLight->getExponentialAttenuation());
+            auto& exponentialAttenuationChunk = dataWriter.createChunk(EXPONENTIAL_ATTENUATION_TAG, DataAttribute(), &lightChunk);
+            exponentialAttenuationChunk.setFloatValue(omnidirectionalLight->getExponentialAttenuation());
         } else if (light->getLightType() == Light::SUN) {
             const auto* sunLight = dynamic_cast<const SunLight*>(light);
-            lightChunk->addAttribute(DataAttribute(TYPE_ATTR, SUN_VALUE));
+            lightChunk.addAttribute(DataAttribute(TYPE_ATTR, SUN_VALUE));
 
-            auto directionChunk = dataWriter.createChunk(DIRECTION_TAG, DataAttribute(), lightChunk);
-            directionChunk->setVector3Value(sunLight->getDirections()[0]);
+            auto& directionChunk = dataWriter.createChunk(DIRECTION_TAG, DataAttribute(), &lightChunk);
+            directionChunk.setVector3Value(sunLight->getDirections()[0]);
         } else {
             throw std::invalid_argument("Unknown light type to write in map: " + std::to_string(light->getLightType()));
         }
@@ -63,9 +63,9 @@ namespace urchin {
         light->setAmbientColor(ambientColorChunk->getPoint3Value());
     }
 
-    void LightReaderWriter::writePropertiesOn(const DataChunk* lightChunk, const Light* light, DataWriter& dataWriter) {
-        auto ambientColorChunk = dataWriter.createChunk(AMBIENT_COLOR_TAG, DataAttribute(), lightChunk);
-        ambientColorChunk->setPoint3Value(light->getAmbientColor());
+    void LightReaderWriter::writePropertiesOn(DataChunk& lightChunk, const Light* light, DataWriter& dataWriter) {
+        auto& ambientColorChunk = dataWriter.createChunk(AMBIENT_COLOR_TAG, DataAttribute(), &lightChunk);
+        ambientColorChunk.setPoint3Value(light->getAmbientColor());
     }
 
     void LightReaderWriter::loadFlagsFrom(Light* light, const DataChunk* lightChunk, const DataParser& dataParser) {
@@ -73,9 +73,9 @@ namespace urchin {
         light->setProduceShadow(produceShadowChunk->getBoolValue());
     }
 
-    void LightReaderWriter::writeFlagsOn(const DataChunk* lightChunk, const Light* light, DataWriter& dataWriter) {
-        auto produceShadowChunk = dataWriter.createChunk(PRODUCE_SHADOW_TAG, DataAttribute(), lightChunk);
-        produceShadowChunk->setBoolValue(light->isProduceShadow());
+    void LightReaderWriter::writeFlagsOn(DataChunk& lightChunk, const Light* light, DataWriter& dataWriter) {
+        auto& produceShadowChunk = dataWriter.createChunk(PRODUCE_SHADOW_TAG, DataAttribute(), &lightChunk);
+        produceShadowChunk.setBoolValue(light->isProduceShadow());
     }
 
 }

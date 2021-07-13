@@ -27,28 +27,28 @@ namespace urchin {
         return new CollisionCapsuleShape(radius, cylinderHeight, orientation);
     }
 
-    void CollisionCapsuleReaderWriter::writeOn(DataChunk* shapeChunk, const CollisionShape3D& collisionShape, DataWriter& dataWriter) const {
-        shapeChunk->addAttribute(DataAttribute(TYPE_ATTR, CAPSULE_VALUE));
+    void CollisionCapsuleReaderWriter::writeOn(DataChunk& shapeChunk, const CollisionShape3D& collisionShape, DataWriter& dataWriter) const {
+        shapeChunk.addAttribute(DataAttribute(TYPE_ATTR, CAPSULE_VALUE));
 
         const auto& capsuleShape = dynamic_cast<const CollisionCapsuleShape&>(collisionShape);
 
-        auto orientationChunk = dataWriter.createChunk(ORIENTATION_TAG, DataAttribute(), shapeChunk);
+        auto& orientationChunk = dataWriter.createChunk(ORIENTATION_TAG, DataAttribute(), &shapeChunk);
         CapsuleShape<float>::CapsuleOrientation orientationValue = capsuleShape.getCapsuleOrientation();
         if (orientationValue == CapsuleShape<float>::CapsuleOrientation::CAPSULE_X) {
-            orientationChunk->setStringValue(X_VALUE);
+            orientationChunk.setStringValue(X_VALUE);
         } else if (orientationValue == CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y) {
-            orientationChunk->setStringValue(Y_VALUE);
+            orientationChunk.setStringValue(Y_VALUE);
         } else if (orientationValue == CapsuleShape<float>::CapsuleOrientation::CAPSULE_Z) {
-            orientationChunk->setStringValue(Z_VALUE);
+            orientationChunk.setStringValue(Z_VALUE);
         } else {
             throw std::invalid_argument("Capsule orientation type unknown: " + std::to_string(orientationValue));
         }
 
-        auto radiusChunk = dataWriter.createChunk(RADIUS_TAG, DataAttribute(), shapeChunk);
-        radiusChunk->setFloatValue(capsuleShape.getRadius());
+        auto& radiusChunk = dataWriter.createChunk(RADIUS_TAG, DataAttribute(), &shapeChunk);
+        radiusChunk.setFloatValue(capsuleShape.getRadius());
 
-        auto cylinderHeightChunk = dataWriter.createChunk(CYLINDER_HEIGHT_TAG, DataAttribute(), shapeChunk);
-        cylinderHeightChunk->setFloatValue(capsuleShape.getCylinderHeight());
+        auto& cylinderHeightChunk = dataWriter.createChunk(CYLINDER_HEIGHT_TAG, DataAttribute(), &shapeChunk);
+        cylinderHeightChunk.setFloatValue(capsuleShape.getCylinderHeight());
     }
 
 }

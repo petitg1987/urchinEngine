@@ -168,9 +168,9 @@ namespace urchin {
 
     void Text::refreshFont() {
         auto textChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "text", DataAttribute("nameSkin", nameSkin));
-        std::string ttfFilename = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "font", DataAttribute(), textChunk.get())->getStringValue();
-        std::string fontColor = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "color", DataAttribute(), textChunk.get())->getStringValue();
-        unsigned int fontHeight = retrieveFontHeight(textChunk.get());
+        std::string ttfFilename = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "font", DataAttribute(), textChunk)->getStringValue();
+        std::string fontColor = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "color", DataAttribute(), textChunk)->getStringValue();
+        unsigned int fontHeight = retrieveFontHeight(textChunk);
 
         cleanFont();
         std::map<std::string, std::string> fontParams = {{"fontSize", std::to_string(fontHeight)}, {"fontColor", fontColor}};

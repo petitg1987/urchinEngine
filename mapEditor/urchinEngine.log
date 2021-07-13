@@ -1,0 +1,25 @@
+[2021-07-13 11:45:27] (II) Create render target: screen
+[2021-07-13 11:45:27] (II) Create Vulkan instance
+[2021-07-13 11:45:27] (II) Find Vulkan physical device
+[2021-07-13 11:45:27] (II) Create Vulkan logical device
+[2021-07-13 11:45:27] (II) Resize scene to 1534x989
+[2021-07-13 11:45:30] (II) Create render target: screen
+[2021-07-13 11:45:30] (II) Find Vulkan physical device
+[2021-07-13 11:45:30] (II) Create Vulkan logical device
+[2021-07-13 11:45:30] (II) Create render target: deferred rendering - first pass
+[2021-07-13 11:45:30] (II) Create render target: deferred rendering - second pass
+[2021-07-13 11:45:30] (II) Create render target: ambient occlusion
+[2021-07-13 11:45:30] (II) Create render target: ambient occlusion - vertical bilateral blur filter
+[2021-07-13 11:45:30] (II) Create render target: ambient occlusion - horizontal bilateral blur filter
+[2021-07-13 11:45:30] (II) Create render target: ambient occlusion - vertical bilateral blur filter
+[2021-07-13 11:45:30] (II) Create render target: ambient occlusion - horizontal bilateral blur filter
+[2021-07-13 11:45:30] (II) Load map: map.uda
+[2021-07-13 11:45:30] (II) Add 3D model: models/ground.urchinMesh
+[2021-07-13 11:45:30] (II) Add new AI entity: #ground
+[2021-07-13 11:45:31] (II) Add 3D model: models/block.urchinMesh
+[2021-07-13 11:45:31] (II) Add new AI entity: #block
+[2021-07-13 11:45:31] (II) Create render target: shadow map
+[2021-07-13 11:45:31] (II) Create render target: shadow map - vertical gaussian blur filter
+[2021-07-13 11:45:31] (II) Create render target: shadow map - horizontal gaussian blur filter
+[2021-07-13 11:45:31] (II) Add physical body: ground
+[2021-07-13 11:45:31] (II) Add physical body: block

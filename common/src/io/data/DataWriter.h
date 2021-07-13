@@ -13,14 +13,15 @@ namespace urchin {
         public:
             explicit DataWriter(const std::string&);
 
-            std::unique_ptr<DataChunk> createChunk(const std::string&, const DataAttribute & = DataAttribute(), const DataChunk* parent = nullptr);
+            DataChunk& createChunk(const std::string&, const DataAttribute & = DataAttribute(), DataChunk* parent = nullptr);
             void saveInFile();
 
         private:
-            unsigned int computeIndentLevel(const DataContentLine&) const;
+            unsigned int computeIndentLevel(const DataChunk&) const;
+            std::string buildRawContentLine(const DataChunk&) const;
 
             std::string filenamePath;
-            std::unique_ptr<DataContentLine> root;
+            std::unique_ptr<DataChunk> root;
     };
 
 }

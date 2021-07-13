@@ -36,17 +36,17 @@ namespace urchin {
 
         public:
             Terrain* loadFrom(const DataChunk*, const DataParser&) const;
-            void writeOn(DataChunk*, const Terrain*, DataWriter&) const;
+            void writeOn(DataChunk&, const Terrain*, DataWriter&) const;
 
         private:
             Terrain* buildTerrainFrom(const DataChunk*, const DataParser&) const;
-            void buildChunkFrom(const DataChunk*, const Terrain*, DataWriter&) const;
+            void buildChunkFrom(DataChunk&, const Terrain*, DataWriter&) const;
 
             void loadPropertiesOn(Terrain*, const DataChunk*, const DataParser&) const;
-            void writePropertiesOn(const DataChunk*, const Terrain*, DataWriter&) const;
+            void writePropertiesOn(DataChunk&, const Terrain*, DataWriter&) const;
 
             void loadGrassOn(Terrain*, const DataChunk*, const DataParser&) const;
-            void writeGrassOn(const DataChunk*, const Terrain*, DataWriter&) const;
+            void writeGrassOn(DataChunk&, const Terrain*, DataWriter&) const;
     };
 
 }

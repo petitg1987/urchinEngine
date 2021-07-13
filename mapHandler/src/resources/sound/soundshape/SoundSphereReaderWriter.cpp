@@ -15,19 +15,19 @@ namespace urchin {
         return std::make_unique<SoundSphere>(radius, position, margin);
     }
 
-    void SoundSphereReaderWriter::writeOn(DataChunk* shapeChunk, const SoundShape& soundShape, DataWriter& dataWriter) const {
-        shapeChunk->addAttribute(DataAttribute(TYPE_ATTR, SPHERE_VALUE));
+    void SoundSphereReaderWriter::writeOn(DataChunk& shapeChunk, const SoundShape& soundShape, DataWriter& dataWriter) const {
+        shapeChunk.addAttribute(DataAttribute(TYPE_ATTR, SPHERE_VALUE));
 
         const auto& sphereShape = dynamic_cast<const SoundSphere&>(soundShape);
 
-        auto radiusChunk = dataWriter.createChunk(RADIUS_TAG, DataAttribute(), shapeChunk);
-        radiusChunk->setFloatValue(sphereShape.getRadius());
+        auto& radiusChunk = dataWriter.createChunk(RADIUS_TAG, DataAttribute(), &shapeChunk);
+        radiusChunk.setFloatValue(sphereShape.getRadius());
 
-        auto positionChunk = dataWriter.createChunk(POSITION_TAG, DataAttribute(), shapeChunk);
-        positionChunk->setPoint3Value(sphereShape.getPosition());
+        auto& positionChunk = dataWriter.createChunk(POSITION_TAG, DataAttribute(), &shapeChunk);
+        positionChunk.setPoint3Value(sphereShape.getPosition());
 
-        auto marginChunk = dataWriter.createChunk(MARGIN_TAG, DataAttribute(), shapeChunk);
-        marginChunk->setFloatValue(sphereShape.getMargin());
+        auto& marginChunk = dataWriter.createChunk(MARGIN_TAG, DataAttribute(), &shapeChunk);
+        marginChunk.setFloatValue(sphereShape.getMargin());
     }
 
 }

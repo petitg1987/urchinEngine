@@ -1,4 +1,6 @@
+#include <memory>
 #include <stdexcept>
+#include <regex>
 
 #include <io/data/DataParser.h>
 #include <io/file/FileReader.h>
@@ -25,8 +27,54 @@ namespace urchin {
         loadFile(file);
     }
 
+    DataChunk* DataParser::getRootChunk() const {
+        return root.get();
+    }
+
+    std::vector<DataChunk*> DataParser::getChunks(const std::string& chunkName, const DataAttribute& attribute, const DataChunk* parent) const {
+        std::vector<DataChunk*> chunks;
+        const DataChunk *dataChunk = parent ? parent : root.get();
+
+        for (auto& child : dataChunk->getChildren()) {
+            if (child->getName() == chunkName) {
+                if (!attribute.getAttributeName().empty()) {
+                    std::string attributeValue = child->getAttributeValue(attribute.getAttributeName());
+                    if (attributeValue == attribute.getAttributeValue()) {
+                        chunks.push_back(child.get());
+                    }
+                } else {
+                    chunks.push_back(child.get());
+                }
+            }
+        }
+
+        return chunks;
+    }
+
+    DataChunk* DataParser::getUniqueChunk(bool mandatory, const std::string& chunkName, const DataAttribute& attribute, const DataChunk* parent) const {
+        auto chunks = getChunks(chunkName, attribute, parent);
+
+        if (chunks.size() > 1) {
+            throw std::invalid_argument("More than one chunk found for " + getChunkDescription(chunkName, attribute));
+        } else if (chunks.empty()) {
+            if (mandatory) {
+                throw std::invalid_argument("The chunk " + getChunkDescription(chunkName, attribute) + " was not found in file " + filenamePath);
+            }
+            return nullptr;
+        }
+        return chunks[0];
+    }
+
+    std::string DataParser::getChunkDescription(const std::string& chunkName, const DataAttribute& attribute) const {
+        if (attribute.getAttributeName().empty()) {
+            return chunkName;
+        } else {
+            return chunkName + " with the attribute " + attribute.getAttributeName() + "=\"" + attribute.getAttributeValue() + "\"";
+        }
+    }
+
     void DataParser::loadFile(std::ifstream& file) {
-        DataContentLine* currentNode = nullptr;
+        DataChunk* currentNode = nullptr;
         unsigned int currentNodeIndentLevel = 0;
         while (true) {
             std::string rawContentLine;
@@ -41,13 +89,13 @@ namespace urchin {
                 if (root) {
                     throw std::runtime_error("Content line (" + rawContentLine +") has wrong indentation in the file: " + filenamePath);
                 }
-                root = DataContentLine::fromRawContentLine(rawContentLine, nullptr, filenamePath);
+                root = buildChunk(rawContentLine, nullptr);
                 currentNode = root.get();
                 currentNodeIndentLevel = 0;
             } else {
                 StringUtil::ltrim(rawContentLine);
                 if (indentLevel - 1 == currentNodeIndentLevel) {
-                    auto newNode = DataContentLine::fromRawContentLine(rawContentLine, currentNode, filenamePath);
+                    auto newNode = buildChunk(rawContentLine, currentNode);
                     currentNode = &currentNode->addChild(std::move(newNode));
                     currentNodeIndentLevel = indentLevel;
                 } else if (indentLevel <= currentNodeIndentLevel) {
@@ -55,7 +103,7 @@ namespace urchin {
                     for (unsigned int i = 0; i < currentNodeIndentLevel - indentLevel; ++i) {
                         parentNode = parentNode->getParent();
                     }
-                    auto newNode = DataContentLine::fromRawContentLine(rawContentLine, parentNode, filenamePath);
+                    auto newNode = buildChunk(rawContentLine, parentNode);
                     currentNode = &parentNode->addChild(std::move(newNode));
                     currentNodeIndentLevel = indentLevel;
                 } else {
@@ -79,57 +127,34 @@ namespace urchin {
         return numberSpaces / DataChunk::INDENT_SPACES;
     }
 
-    std::unique_ptr<DataChunk> DataParser::getRootChunk() const {
-        return std::unique_ptr<DataChunk>(new DataChunk(*root));
-    }
+    std::unique_ptr<DataChunk> DataParser::buildChunk(const std::string& rawContentLine, DataChunk* parent) const {
+        std::string wrongFormatError = "Content line (" + rawContentLine +") has wrong format in file: " + filenamePath;
 
-    std::vector<std::unique_ptr<DataChunk>> DataParser::getChunks(const std::string& chunkName, const DataAttribute& attribute, const DataChunk* parent) const {
-        std::vector<std::unique_ptr<DataChunk>> chunks;
-
-        const DataContentLine *dataContentLine;
-        if (!parent) {
-            dataContentLine = root.get();
-        } else {
-            dataContentLine = &parent->chunk;
+        static std::regex parseLineRegex("^" + std::string(NAME_REGEX) + " ?" + std::string(ATTRIBUTES_REGEX) + ": ?" + std::string(VALUE_REGEX) + "$");
+        std::smatch matches;
+        if (!std::regex_search(rawContentLine, matches, parseLineRegex) || matches.size() != 4) {
+            throw std::runtime_error(wrongFormatError);
         }
 
-        //seek the correct chunks
-        for (auto& child : dataContentLine->getChildren()) {
-            if (child->getName() == chunkName) {
-                if (!attribute.getAttributeName().empty()) {
-                    std::string attributeValue = child->getAttributes().at(attribute.getAttributeName());
-                    if (attributeValue == attribute.getAttributeValue()) {
-                        chunks.push_back(std::unique_ptr<DataChunk>(new DataChunk(*child)));
-                    }
-                } else {
-                    chunks.push_back(std::unique_ptr<DataChunk>(new DataChunk(*child)));
+        std::string name = matches[1].str();
+        std::string value = matches[3].str();
+        std::map<std::string, std::string> attributes;
+
+        std::string attributesString = matches[2].str();
+        if (!attributesString.empty()) {
+            std::vector<std::string> attributesVector;
+            StringUtil::split(attributesString, DataChunk::ATTRIBUTES_SEPARATOR, attributesVector);
+
+            for (auto &attribute: attributesVector) {
+                std::vector<std::string> attributeComponents;
+                StringUtil::split(attribute, DataChunk::ATTRIBUTES_ASSIGN, attributeComponents);
+                if (attributeComponents.size() != 2) {
+                    throw std::runtime_error(wrongFormatError);
                 }
+                attributes.emplace(attributeComponents[0], attributeComponents[1]);
             }
         }
-
-        return chunks;
-    }
-
-    std::unique_ptr<DataChunk> DataParser::getUniqueChunk(bool mandatory, const std::string& chunkName, const DataAttribute& attribute, const DataChunk* parent) const {
-        auto chunks = getChunks(chunkName, attribute, parent);
-
-        if (chunks.size() > 1) {
-            throw std::invalid_argument("More than one chunk found for " + getChunkDescription(chunkName, attribute));
-        } else if (chunks.empty()) {
-            if (mandatory) {
-                throw std::invalid_argument("The chunk " + getChunkDescription(chunkName, attribute) + " was not found in file " + filenamePath);
-            }
-            return std::unique_ptr<DataChunk>(nullptr);
-        }
-        return std::move(chunks[0]);
-    }
-
-    std::string DataParser::getChunkDescription(const std::string& chunkName, const DataAttribute& attribute) const {
-        if (attribute.getAttributeName().empty()) {
-            return chunkName;
-        } else {
-            return chunkName + " with the attribute " + attribute.getAttributeName() + "=\"" + attribute.getAttributeValue() + "\"";
-        }
+        return std::make_unique<DataChunk>(name, value, attributes, parent);
     }
 
 }

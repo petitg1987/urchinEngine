@@ -2,8 +2,8 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
-#include <io/data/model/DataContentLine.h>
 #include <io/data/DataAttribute.h>
 #include <math/algebra/point/Point2.h>
 #include <math/algebra/point/Point3.h>
@@ -16,13 +16,21 @@ namespace urchin {
 
     class DataChunk {
         public:
-            friend class DataParser;
-            friend class DataWriter;
-
             static const unsigned int INDENT_SPACES;
+            static const char ATTRIBUTES_SEPARATOR;
+            static const char ATTRIBUTES_ASSIGN;
 
+            DataChunk(std::string, std::string, std::map<std::string, std::string>, DataChunk*);
+
+            const std::string& getName() const;
+
+            const std::map<std::string, std::string>& getAttributes() const;
             std::string getAttributeValue(const std::string&) const;
             void addAttribute(const DataAttribute&);
+
+            DataChunk* getParent() const;
+            DataChunk& addChild(std::unique_ptr<DataChunk>);
+            const std::vector<std::unique_ptr<DataChunk>>& getChildren() const;
 
             std::string getStringValue() const;
             void setStringValue(const std::string&);
@@ -61,10 +69,12 @@ namespace urchin {
             void setVector4Value(const Vector4<float>&);
 
         private:
-            explicit DataChunk(DataContentLine&);
-            explicit DataChunk(const DataContentLine&);
+            std::string name;
+            std::string value;
+            std::map<std::string, std::string> attributes;
 
-            DataContentLine& chunk;
+            DataChunk* parent;
+            std::vector<std::unique_ptr<DataChunk>> children;
     };
 
 }

@@ -124,9 +124,9 @@ namespace urchin {
     Length UISkinService::loadLength(const DataChunk* mainChunk, const std::string& lengthName) const {
         auto fontHeightChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, lengthName, DataAttribute(), mainChunk);
 
-        float length = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "value", DataAttribute(), fontHeightChunk.get())->getFloatValue();
+        float length = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "value", DataAttribute(), fontHeightChunk)->getFloatValue();
 
-        const std::string& lengthTypeString = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "type", DataAttribute(), fontHeightChunk.get())->getStringValue();
+        const std::string& lengthTypeString = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "type", DataAttribute(), fontHeightChunk)->getStringValue();
         if (StringUtil::insensitiveEquals(lengthTypeString, "pixel")) {
             return Length(length, LengthType::PIXEL);
         } else if (StringUtil::insensitiveEquals(lengthTypeString, "percentage")) {

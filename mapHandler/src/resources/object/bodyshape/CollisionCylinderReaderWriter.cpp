@@ -27,28 +27,28 @@ namespace urchin {
         return new CollisionCylinderShape(radius, height, orientation);
     }
 
-    void CollisionCylinderReaderWriter::writeOn(DataChunk* shapeChunk, const CollisionShape3D& collisionShape, DataWriter& dataWriter) const {
-        shapeChunk->addAttribute(DataAttribute(TYPE_ATTR, CYLINDER_VALUE));
+    void CollisionCylinderReaderWriter::writeOn(DataChunk& shapeChunk, const CollisionShape3D& collisionShape, DataWriter& dataWriter) const {
+        shapeChunk.addAttribute(DataAttribute(TYPE_ATTR, CYLINDER_VALUE));
 
         const auto& cylinderShape = dynamic_cast<const CollisionCylinderShape&>(collisionShape);
 
-        auto orientationChunk = dataWriter.createChunk(ORIENTATION_TAG, DataAttribute(), shapeChunk);
+        auto& orientationChunk = dataWriter.createChunk(ORIENTATION_TAG, DataAttribute(), &shapeChunk);
         CylinderShape<float>::CylinderOrientation orientationValue = cylinderShape.getCylinderOrientation();
         if (orientationValue == CylinderShape<float>::CylinderOrientation::CYLINDER_X) {
-            orientationChunk->setStringValue(X_VALUE);
+            orientationChunk.setStringValue(X_VALUE);
         } else if (orientationValue == CylinderShape<float>::CylinderOrientation::CYLINDER_Y) {
-            orientationChunk->setStringValue(Y_VALUE);
+            orientationChunk.setStringValue(Y_VALUE);
         } else if (orientationValue == CylinderShape<float>::CylinderOrientation::CYLINDER_Z) {
-            orientationChunk->setStringValue(Z_VALUE);
+            orientationChunk.setStringValue(Z_VALUE);
         } else {
             throw std::invalid_argument("Cylinder orientation type unknown: " + std::to_string(orientationValue));
         }
 
-        auto radiusChunk = dataWriter.createChunk(RADIUS_TAG, DataAttribute(), shapeChunk);
-        radiusChunk->setFloatValue(cylinderShape.getRadius());
+        auto& radiusChunk = dataWriter.createChunk(RADIUS_TAG, DataAttribute(), &shapeChunk);
+        radiusChunk.setFloatValue(cylinderShape.getRadius());
 
-        auto heightChunk = dataWriter.createChunk(HEIGHT_TAG, DataAttribute(), shapeChunk);
-        heightChunk->setFloatValue(cylinderShape.getHeight());
+        auto& heightChunk = dataWriter.createChunk(HEIGHT_TAG, DataAttribute(), &shapeChunk);
+        heightChunk.setFloatValue(cylinderShape.getHeight());
     }
 
 }

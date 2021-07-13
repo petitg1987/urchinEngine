@@ -34,18 +34,18 @@ namespace urchin {
         //skin information
         auto sliderChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "slider", DataAttribute("nameSkin", nameSkin));
 
-        auto valuesTextSkinChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "valuesTextSkin", DataAttribute(), sliderChunk.get());
+        auto valuesTextSkinChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "valuesTextSkin", DataAttribute(), sliderChunk);
         std::string valuesTextSkin = valuesTextSkinChunk->getStringValue();
 
-        auto cursorImageElem = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "imageCursor", DataAttribute(), sliderChunk.get());
+        auto cursorImageElem = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "imageCursor", DataAttribute(), sliderChunk);
         std::string cursorImageFilename = cursorImageElem->getStringValue();
 
         currentValueText = Text::newText(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[selectedIndex]);
         float textYPosition = (float)(getHeight() - currentValueText->getHeight()) / 2.0f;
         currentValueText->updatePosition(Position((float)getWidth() + TEXT_SHIFT_LENGTH, textYPosition, LengthType::PIXEL));
 
-        texSliderLine = loadTexture(sliderChunk.get(), "imageLine");
-        auto imageCursor = loadTexture(sliderChunk.get(), "imageCursor");
+        texSliderLine = loadTexture(sliderChunk, "imageLine");
+        auto imageCursor = loadTexture(sliderChunk, "imageCursor");
         float cursorImageWidth = ((float)getHeight() / (float)imageCursor->getHeight()) * (float)imageCursor->getWidth();
         imageCursor.reset();
         cursorImage = new StaticBitmap(this, Position(0, 0, LengthType::PIXEL), Size((float)cursorImageWidth, (float)getHeight(), LengthType::PIXEL), cursorImageFilename);

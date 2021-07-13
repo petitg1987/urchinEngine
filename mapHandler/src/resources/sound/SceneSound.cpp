@@ -31,17 +31,17 @@ namespace urchin {
         auto soundChunk = dataParser.getUniqueChunk(true, SOUND_TAG, DataAttribute(), chunk);
         auto soundTriggerChunk = dataParser.getUniqueChunk(true, SOUND_TRIGGER_TAG, DataAttribute(), chunk);
 
-        setSoundElements(SoundReaderWriter::loadFrom(soundChunk.get(), dataParser), SoundTriggerReaderWriter::loadFrom(soundTriggerChunk.get(), dataParser));
+        setSoundElements(SoundReaderWriter::loadFrom(soundChunk, dataParser), SoundTriggerReaderWriter::loadFrom(soundTriggerChunk, dataParser));
     }
 
-    void SceneSound::writeOn(DataChunk* chunk, DataWriter& dataWriter) const {
-        chunk->addAttribute(DataAttribute(NAME_ATTR, this->name));
+    void SceneSound::writeOn(DataChunk& chunk, DataWriter& dataWriter) const {
+        chunk.addAttribute(DataAttribute(NAME_ATTR, this->name));
 
-        auto soundChunk = dataWriter.createChunk(SOUND_TAG, DataAttribute(), chunk);
-        auto soundTriggerChunk = dataWriter.createChunk(SOUND_TRIGGER_TAG, DataAttribute(), chunk);
+        auto& soundChunk = dataWriter.createChunk(SOUND_TAG, DataAttribute(), &chunk);
+        auto& soundTriggerChunk = dataWriter.createChunk(SOUND_TRIGGER_TAG, DataAttribute(), &chunk);
 
-        SoundReaderWriter::writeOn(soundChunk.get(), *sound, dataWriter);
-        SoundTriggerReaderWriter::writeOn(soundTriggerChunk.get(), *soundTrigger, dataWriter);
+        SoundReaderWriter::writeOn(soundChunk, *sound, dataWriter);
+        SoundTriggerReaderWriter::writeOn(soundTriggerChunk, *soundTrigger, dataWriter);
     }
 
     std::string SceneSound::getName() const {

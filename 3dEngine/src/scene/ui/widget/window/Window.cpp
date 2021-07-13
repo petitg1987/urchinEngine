@@ -25,11 +25,11 @@ namespace urchin {
         //skin information
         auto windowChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "window", DataAttribute("nameSkin", nameSkin));
 
-        auto skinChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "skin", DataAttribute(), windowChunk.get());
-        texWindow = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinChunk.get(), &widgetOutline);
+        auto skinChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "skin", DataAttribute(), windowChunk);
+        texWindow = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinChunk, &widgetOutline);
 
         if (!titleKey.empty()) {
-            auto textSkinChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "textSkin", DataAttribute(), windowChunk.get());
+            auto textSkinChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "textSkin", DataAttribute(), windowChunk);
             delete title;
             title = Text::newTranslatableText(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), titleKey);
             title->updatePosition(Position(0.0f, -((float)widgetOutline.topWidth + (float)title->getHeight()) / 2.0f, LengthType::PIXEL));

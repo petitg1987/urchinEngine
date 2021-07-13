@@ -33,34 +33,34 @@ namespace urchin {
         return new CollisionConeShape(radius, height, orientation);
     }
 
-    void CollisionConeReaderWriter::writeOn(DataChunk* shapeChunk, const CollisionShape3D& collisionShape, DataWriter& dataWriter) const {
-        shapeChunk->addAttribute(DataAttribute(TYPE_ATTR, CONE_VALUE));
+    void CollisionConeReaderWriter::writeOn(DataChunk& shapeChunk, const CollisionShape3D& collisionShape, DataWriter& dataWriter) const {
+        shapeChunk.addAttribute(DataAttribute(TYPE_ATTR, CONE_VALUE));
 
         const auto& coneShape = dynamic_cast<const CollisionConeShape&>(collisionShape);
 
-        auto orientationChunk = dataWriter.createChunk(ORIENTATION_TAG, DataAttribute(), shapeChunk);
+        auto& orientationChunk = dataWriter.createChunk(ORIENTATION_TAG, DataAttribute(), &shapeChunk);
         ConeShape<float>::ConeOrientation orientationValue = coneShape.getConeOrientation();
         if (orientationValue == ConeShape<float>::ConeOrientation::CONE_X_POSITIVE) {
-            orientationChunk->setStringValue(X_POSITIVE_VALUE);
+            orientationChunk.setStringValue(X_POSITIVE_VALUE);
         } else if (orientationValue == ConeShape<float>::ConeOrientation::CONE_X_NEGATIVE) {
-            orientationChunk->setStringValue(X_NEGATIVE_VALUE);
+            orientationChunk.setStringValue(X_NEGATIVE_VALUE);
         } else if (orientationValue == ConeShape<float>::ConeOrientation::CONE_Y_POSITIVE) {
-            orientationChunk->setStringValue(Y_POSITIVE_VALUE);
+            orientationChunk.setStringValue(Y_POSITIVE_VALUE);
         } else if (orientationValue == ConeShape<float>::ConeOrientation::CONE_Y_NEGATIVE) {
-            orientationChunk->setStringValue(Y_NEGATIVE_VALUE);
+            orientationChunk.setStringValue(Y_NEGATIVE_VALUE);
         } else if (orientationValue == ConeShape<float>::ConeOrientation::CONE_Z_POSITIVE) {
-            orientationChunk->setStringValue(Z_POSITIVE_VALUE);
+            orientationChunk.setStringValue(Z_POSITIVE_VALUE);
         } else if (orientationValue == ConeShape<float>::ConeOrientation::CONE_Z_NEGATIVE) {
-            orientationChunk->setStringValue(Z_NEGATIVE_VALUE);
+            orientationChunk.setStringValue(Z_NEGATIVE_VALUE);
         } else {
             throw std::invalid_argument("Cone orientation type unknown: " + std::to_string(orientationValue));
         }
 
-        auto radiusChunk = dataWriter.createChunk(RADIUS_TAG, DataAttribute(), shapeChunk);
-        radiusChunk->setFloatValue(coneShape.getRadius());
+        auto& radiusChunk = dataWriter.createChunk(RADIUS_TAG, DataAttribute(), &shapeChunk);
+        radiusChunk.setFloatValue(coneShape.getRadius());
 
-        auto heightChunk = dataWriter.createChunk(HEIGHT_TAG, DataAttribute(), shapeChunk);
-        heightChunk->setFloatValue(coneShape.getHeight());
+        auto& heightChunk = dataWriter.createChunk(HEIGHT_TAG, DataAttribute(), &shapeChunk);
+        heightChunk.setFloatValue(coneShape.getHeight());
     }
 
 }

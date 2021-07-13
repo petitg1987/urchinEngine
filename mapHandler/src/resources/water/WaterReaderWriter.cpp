@@ -10,7 +10,7 @@ namespace urchin {
         return water;
     }
 
-    void WaterReaderWriter::writeOn(DataChunk* waterChunk, const Water* water, DataWriter& dataWriter) const {
+    void WaterReaderWriter::writeOn(DataChunk& waterChunk, const Water* water, DataWriter& dataWriter) const {
         writeGeneralPropertiesOn(waterChunk, water, dataWriter);
         writeWaterSurfacePropertiesOn(waterChunk, water, dataWriter);
         writeUnderWaterPropertiesOn(waterChunk, water, dataWriter);
@@ -27,15 +27,15 @@ namespace urchin {
         water->setZSize(zSizeChunk->getFloatValue());
     }
 
-    void WaterReaderWriter::writeGeneralPropertiesOn(DataChunk* waterChunk, const Water* water, DataWriter& dataWriter) {
-        auto centerPositionChunk = dataWriter.createChunk(CENTER_POSITION_TAG, DataAttribute(), waterChunk);
-        centerPositionChunk->setPoint3Value(water->getCenterPosition());
+    void WaterReaderWriter::writeGeneralPropertiesOn(DataChunk& waterChunk, const Water* water, DataWriter& dataWriter) {
+        auto& centerPositionChunk = dataWriter.createChunk(CENTER_POSITION_TAG, DataAttribute(), &waterChunk);
+        centerPositionChunk.setPoint3Value(water->getCenterPosition());
 
-        auto xSizeChunk = dataWriter.createChunk(X_SIZE_TAG, DataAttribute(), waterChunk);
-        xSizeChunk->setFloatValue(water->getXSize());
+        auto& xSizeChunk = dataWriter.createChunk(X_SIZE_TAG, DataAttribute(), &waterChunk);
+        xSizeChunk.setFloatValue(water->getXSize());
 
-        auto zSizeChunk = dataWriter.createChunk(Z_SIZE_TAG, DataAttribute(), waterChunk);
-        zSizeChunk->setFloatValue(water->getZSize());
+        auto& zSizeChunk = dataWriter.createChunk(Z_SIZE_TAG, DataAttribute(), &waterChunk);
+        zSizeChunk.setFloatValue(water->getZSize());
     }
 
     void WaterReaderWriter::loadWaterSurfaceProperties(Water* water, const DataChunk* waterChunk, const DataParser& dataParser) {
@@ -61,27 +61,27 @@ namespace urchin {
         water->setTRepeat(tRepeatChunk->getFloatValue());
     }
 
-    void WaterReaderWriter::writeWaterSurfacePropertiesOn(DataChunk* waterChunk, const Water* water, DataWriter& dataWriter) {
-        auto waterColorChunk = dataWriter.createChunk(WATER_COLOR_TAG, DataAttribute(), waterChunk);
-        waterColorChunk->setVector3Value(water->getWaterColor());
+    void WaterReaderWriter::writeWaterSurfacePropertiesOn(DataChunk& waterChunk, const Water* water, DataWriter& dataWriter) {
+        auto& waterColorChunk = dataWriter.createChunk(WATER_COLOR_TAG, DataAttribute(), &waterChunk);
+        waterColorChunk.setVector3Value(water->getWaterColor());
 
-        auto normalFilenameChunk = dataWriter.createChunk(NORMAL_FILENAME_TAG, DataAttribute(), waterChunk);
-        normalFilenameChunk->setStringValue(water->getNormalFilename());
+        auto& normalFilenameChunk = dataWriter.createChunk(NORMAL_FILENAME_TAG, DataAttribute(), &waterChunk);
+        normalFilenameChunk.setStringValue(water->getNormalFilename());
 
-        auto dudvMapFilenameChunk = dataWriter.createChunk(DUDV_MAP_FILENAME_TAG, DataAttribute(), waterChunk);
-        dudvMapFilenameChunk->setStringValue(water->getDudvFilename());
+        auto& dudvMapFilenameChunk = dataWriter.createChunk(DUDV_MAP_FILENAME_TAG, DataAttribute(), &waterChunk);
+        dudvMapFilenameChunk.setStringValue(water->getDudvFilename());
 
-        auto waveSpeedChunk = dataWriter.createChunk(WAVE_SPEED_TAG, DataAttribute(), waterChunk);
-        waveSpeedChunk->setFloatValue(water->getWaveSpeed());
+        auto& waveSpeedChunk = dataWriter.createChunk(WAVE_SPEED_TAG, DataAttribute(), &waterChunk);
+        waveSpeedChunk.setFloatValue(water->getWaveSpeed());
 
-        auto waveStrengthChunk = dataWriter.createChunk(WAVE_STRENGTH_TAG, DataAttribute(), waterChunk);
-        waveStrengthChunk->setFloatValue(water->getWaveStrength());
+        auto& waveStrengthChunk = dataWriter.createChunk(WAVE_STRENGTH_TAG, DataAttribute(), &waterChunk);
+        waveStrengthChunk.setFloatValue(water->getWaveStrength());
 
-        auto sRepeatChunk = dataWriter.createChunk(S_REPEAT_TAG, DataAttribute(), waterChunk);
-        sRepeatChunk->setFloatValue(water->getSRepeat());
+        auto& sRepeatChunk = dataWriter.createChunk(S_REPEAT_TAG, DataAttribute(), &waterChunk);
+        sRepeatChunk.setFloatValue(water->getSRepeat());
 
-        auto tRepeatChunk = dataWriter.createChunk(T_REPEAT_TAG, DataAttribute(), waterChunk);
-        tRepeatChunk->setFloatValue(water->getTRepeat());
+        auto& tRepeatChunk = dataWriter.createChunk(T_REPEAT_TAG, DataAttribute(), &waterChunk);
+        tRepeatChunk.setFloatValue(water->getTRepeat());
     }
 
     void WaterReaderWriter::loadUnderWaterProperties(Water* water, const DataChunk* waterChunk, const DataParser& dataParser) {
@@ -92,12 +92,12 @@ namespace urchin {
         water->setGradient(gradientChunk->getFloatValue());
     }
 
-    void WaterReaderWriter::writeUnderWaterPropertiesOn(DataChunk* waterChunk, const Water* water, DataWriter& dataWriter) {
-        auto densityChunk = dataWriter.createChunk(DENSITY_TAG, DataAttribute(), waterChunk);
-        densityChunk->setFloatValue(water->getDensity());
+    void WaterReaderWriter::writeUnderWaterPropertiesOn(DataChunk& waterChunk, const Water* water, DataWriter& dataWriter) {
+        auto& densityChunk = dataWriter.createChunk(DENSITY_TAG, DataAttribute(), &waterChunk);
+        densityChunk.setFloatValue(water->getDensity());
 
-        auto gradientChunk = dataWriter.createChunk(GRADIENT_TAG, DataAttribute(), waterChunk);
-        gradientChunk->setFloatValue(water->getGradient());
+        auto& gradientChunk = dataWriter.createChunk(GRADIENT_TAG, DataAttribute(), &waterChunk);
+        gradientChunk.setFloatValue(water->getGradient());
     }
 
 }

@@ -17,7 +17,7 @@ namespace urchin {
 
         private:
             void loadFrom(const DataChunk*, const DataParser&);
-            void writeOn(DataChunk*, DataWriter&) const;
+            void writeOn(DataChunk&, DataWriter&) const;
 
             static constexpr char NAV_MESH_AGENT_TAG[] = "navMeshAgent";
 

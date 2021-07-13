@@ -7,19 +7,26 @@ namespace urchin {
 
     //static
     const unsigned int DataChunk::INDENT_SPACES = 2;
+    const char DataChunk::ATTRIBUTES_SEPARATOR = ';';
+    const char DataChunk::ATTRIBUTES_ASSIGN = '=';
 
-    DataChunk::DataChunk(DataContentLine& chunk) :
-            chunk(chunk) {
+    DataChunk::DataChunk(std::string name, std::string value, std::map<std::string, std::string> attributes, DataChunk* parent):
+            name(std::move(name)),
+            value(std::move(value)),
+            attributes(std::move(attributes)),
+            parent(parent) {
 
     }
 
-    DataChunk::DataChunk(const DataContentLine& chunk) :
-            DataChunk(const_cast<DataContentLine&>(chunk)) {
+    const std::string& DataChunk::getName() const {
+        return name;
+    }
 
+    const std::map<std::string, std::string>& DataChunk::getAttributes() const {
+        return attributes;
     }
 
     std::string DataChunk::getAttributeValue(const std::string& attributeName) const {
-        const auto& attributes = chunk.getAttributes();
         auto itFind = attributes.find(attributeName);
         if (itFind != attributes.end()) {
             return itFind->second;
@@ -28,15 +35,28 @@ namespace urchin {
     }
 
     void DataChunk::addAttribute(const DataAttribute& attribute) {
-        chunk.addAttribute(attribute.getAttributeName(), attribute.getAttributeValue());
+        attributes.emplace(attribute.getAttributeName(), attribute.getAttributeValue());
+    }
+
+    DataChunk* DataChunk::getParent() const {
+        return parent;
+    }
+
+    DataChunk& DataChunk::addChild(std::unique_ptr<DataChunk> child) {
+        children.push_back(std::move(child));
+        return *children.back();
+    }
+
+    const std::vector<std::unique_ptr<DataChunk>>& DataChunk::getChildren() const {
+        return children;
     }
 
     std::string DataChunk::getStringValue() const {
-        return chunk.getValue();
+        return value;
     }
 
     void DataChunk::setStringValue(const std::string& value) {
-        chunk.setValue(value);
+        this->value = value;
     }
 
     int DataChunk::getIntValue() const {

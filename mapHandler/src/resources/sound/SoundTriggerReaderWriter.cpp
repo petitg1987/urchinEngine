@@ -10,7 +10,7 @@ namespace urchin {
         return soundTrigger;
     }
 
-    void SoundTriggerReaderWriter::writeOn(DataChunk* soundTriggerChunk, const SoundTrigger& soundTrigger, DataWriter& dataWriter) {
+    void SoundTriggerReaderWriter::writeOn(DataChunk& soundTriggerChunk, const SoundTrigger& soundTrigger, DataWriter& dataWriter) {
         buildChunkFrom(soundTriggerChunk, soundTrigger, dataWriter);
     }
 
@@ -22,8 +22,8 @@ namespace urchin {
             return std::make_unique<ManualTrigger>(playBehavior);
         } else if (soundTriggerType == SHAPE_VALUE) {
             auto soundShapeChunk = dataParser.getUniqueChunk(true, SOUND_SHAPE_TAG, DataAttribute(), soundTriggerChunk);
-            std::unique_ptr<SoundShapeReaderWriter> soundShapeReaderWriter = SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(soundShapeChunk.get());
-            auto soundShape = soundShapeReaderWriter->loadFrom(soundShapeChunk.get(), dataParser);
+            std::unique_ptr<SoundShapeReaderWriter> soundShapeReaderWriter = SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(soundShapeChunk);
+            auto soundShape = soundShapeReaderWriter->loadFrom(soundShapeChunk, dataParser);
 
             return std::make_unique<ShapeTrigger>(playBehavior, std::move(soundShape));
         }
@@ -31,16 +31,16 @@ namespace urchin {
         throw std::invalid_argument("Unknown sound trigger type read from map: " + soundTriggerType);
     }
 
-    void SoundTriggerReaderWriter::buildChunkFrom(DataChunk* soundTriggerChunk, const SoundTrigger& soundTrigger, DataWriter& dataWriter) {
+    void SoundTriggerReaderWriter::buildChunkFrom(DataChunk& soundTriggerChunk, const SoundTrigger& soundTrigger, DataWriter& dataWriter) {
         if (soundTrigger.getTriggerType() == SoundTrigger::MANUAL_TRIGGER) {
-            soundTriggerChunk->addAttribute(DataAttribute(TYPE_ATTR, MANUAL_VALUE));
+            soundTriggerChunk.addAttribute(DataAttribute(TYPE_ATTR, MANUAL_VALUE));
         } else if (soundTrigger.getTriggerType() == SoundTrigger::SHAPE_TRIGGER) {
             const auto& shapeTrigger = dynamic_cast<const ShapeTrigger&>(soundTrigger);
-            soundTriggerChunk->addAttribute(DataAttribute(TYPE_ATTR, SHAPE_VALUE));
+            soundTriggerChunk.addAttribute(DataAttribute(TYPE_ATTR, SHAPE_VALUE));
 
-            auto soundShapeChunk = dataWriter.createChunk(SOUND_SHAPE_TAG, DataAttribute(), soundTriggerChunk);
+            auto& soundShapeChunk = dataWriter.createChunk(SOUND_SHAPE_TAG, DataAttribute(), &soundTriggerChunk);
             std::unique_ptr<SoundShapeReaderWriter> soundShapeReaderWriter = SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeTrigger.getSoundShape());
-            soundShapeReaderWriter->writeOn(soundShapeChunk.get(), shapeTrigger.getSoundShape(), dataWriter);
+            soundShapeReaderWriter->writeOn(soundShapeChunk, shapeTrigger.getSoundShape(), dataWriter);
         } else {
             throw std::invalid_argument("Unknown sound trigger type to write in map: " + std::to_string(soundTrigger.getTriggerType()));
         }
@@ -58,12 +58,12 @@ namespace urchin {
         throw std::invalid_argument("Unknown play behavior read from map: " + playBehaviorChunk->getStringValue());
     }
 
-    void SoundTriggerReaderWriter::writePlayBehaviorFrom(const DataChunk* soundTriggerChunk, SoundTrigger::PlayBehavior playBehavior, DataWriter& dataWriter) {
-        auto playBehaviorChunk = dataWriter.createChunk(PLAY_BEHAVIOR_TAG, DataAttribute(), soundTriggerChunk);
+    void SoundTriggerReaderWriter::writePlayBehaviorFrom(DataChunk& soundTriggerChunk, SoundTrigger::PlayBehavior playBehavior, DataWriter& dataWriter) {
+        auto& playBehaviorChunk = dataWriter.createChunk(PLAY_BEHAVIOR_TAG, DataAttribute(), &soundTriggerChunk);
         if (playBehavior == SoundTrigger::PLAY_ONCE) {
-            playBehaviorChunk->setStringValue(PLAY_ONCE_VALUE);
+            playBehaviorChunk.setStringValue(PLAY_ONCE_VALUE);
         } else if (playBehavior == SoundTrigger::PLAY_LOOP) {
-            playBehaviorChunk->setStringValue(PLAY_LOOP_VALUE);
+            playBehaviorChunk.setStringValue(PLAY_LOOP_VALUE);
         } else {
             throw std::invalid_argument("Unknown play behavior to write in map: " + std::to_string(playBehavior));
         }

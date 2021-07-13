@@ -14,8 +14,8 @@ namespace urchin {
     void CheckBox::createOrUpdateWidget() {
         //skin information
         auto checkBoxChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "checkBox", DataAttribute("nameSkin", nameSkin));
-        texChecked = loadTexture(checkBoxChunk.get(), "imageChecked");
-        texUnchecked = loadTexture(checkBoxChunk.get(), "imageUnchecked");
+        texChecked = loadTexture(checkBoxChunk, "imageChecked");
+        texUnchecked = loadTexture(checkBoxChunk, "imageUnchecked");
 
         //visual
         std::vector<Point2<float>> vertexCoord = {
