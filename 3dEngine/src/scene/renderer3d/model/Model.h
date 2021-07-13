@@ -21,7 +21,6 @@ namespace urchin {
 
             explicit Model(const std::string&);
             Model(const Model&);
-            ~Model() override;
 
             void loadAnimation(const std::string&, const std::string&);
             void animate(const std::string&);
@@ -58,7 +57,7 @@ namespace urchin {
             std::unique_ptr<Meshes> meshes;
 
             //animations
-            std::map<std::string, Animation*> animations;
+            std::map<std::string, std::unique_ptr<Animation>> animations;
             Animation* currAnimation;
             bool stopAnimationAtLastFrame;
 

@@ -26,12 +26,6 @@ namespace urchin {
         setProduceShadow(model.isProduceShadow());
     }
 
-    Model::~Model() {
-        for (auto& animation : animations) {
-            delete animation.second;
-        }
-    }
-
     const AABBox<float> &Model::getDefaultModelLocalAABBox() const {
         static AABBox<float> defaultModelLocalAABBox = AABBox<float>(Point3<float>(-0.5f, -0.5f, -0.5f), Point3<float>(0.5f, 0.5f, 0.5f));
         return defaultModelLocalAABBox;
@@ -52,7 +46,7 @@ namespace urchin {
 
         //load and add the anim to the std::map
         auto* constAnimation = MediaManager::instance()->getMedia<ConstAnimation>(filename);
-        animations[name] = new Animation(constAnimation, *meshes);
+        animations[name] = std::make_unique<Animation>(constAnimation, *meshes);
         animations[name]->onMoving(transform);
 
         //both files must have the same number of bones
@@ -75,7 +69,7 @@ namespace urchin {
     }
 
     void Model::animate(const std::string& animationName) {
-        currAnimation = animations.at(animationName);
+        currAnimation = animations.at(animationName).get();
 
         onMoving(transform);
     }
