@@ -104,7 +104,7 @@ namespace urchin {
         sceneManager->getActiveRenderer3d()->getLightManager().setGlobalAmbientColor(Point4<float>(0.05f, 0.05f, 0.05f, 0.0f));
 
         bodyShapeDisplayer = std::make_unique<BodyShapeDisplayer>(*sceneManager);
-        objectMoveController = std::make_unique<ObjectMoveController>(*sceneManager, sceneController, mouseController, statusBarController);
+        objectMoveController = std::make_unique<ObjectMoveController>(*sceneManager, *sceneController, mouseController, statusBarController);
         lightScopeDisplayer = std::make_unique<LightScopeDisplayer>(*sceneManager);
         soundTriggerDisplayer = std::make_unique<SoundTriggerDisplayer>(*sceneManager);
 

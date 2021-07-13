@@ -44,7 +44,7 @@ namespace urchin {
             SoundPanelWidget* getSoundPanelWidget() const;
             AIPanelWidget* getAIPanelWidget() const;
 
-            SceneController* loadMap(SceneController*);
+            SceneController& loadMap(SceneController&);
             void closeMap();
 
             TabName getTabSelected() const;

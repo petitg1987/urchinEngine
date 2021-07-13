@@ -15,8 +15,7 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            explicit MapEditorWindow(std::string );
-            ~MapEditorWindow() override;
+            explicit MapEditorWindow(std::string);
 
         protected:
             void closeEvent(QCloseEvent*) override;
@@ -49,7 +48,7 @@ namespace urchin {
             std::string mapEditorPath;
             std::string mapFilename;
 
-            SceneController* sceneController;
+            std::unique_ptr<SceneController> sceneController;
             SceneDisplayerWindow* sceneDisplayerWindow;
             ScenePanelWidget* scenePanelWidget;
 

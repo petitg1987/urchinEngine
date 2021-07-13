@@ -46,10 +46,6 @@ namespace urchin {
         this->setCentralWidget(centralWidget);
     }
 
-    MapEditorWindow::~MapEditorWindow() {
-        delete sceneController;
-    }
-
     QString MapEditorWindow::getBaseWindowTitle() const {
         return QString::fromStdString("Urchin - Map Editor");
     }
@@ -252,10 +248,10 @@ namespace urchin {
     }
 
     void MapEditorWindow::loadMap(const std::string& mapFilename, const std::string& relativeWorkingDirectory) {
-        sceneController = new SceneController();
+        sceneController = std::make_unique<SceneController>();
 
-        sceneDisplayerWindow->loadMap(sceneController, mapFilename, relativeWorkingDirectory);
-        scenePanelWidget->loadMap(sceneController);
+        sceneDisplayerWindow->loadMap(*sceneController, mapFilename, relativeWorkingDirectory);
+        scenePanelWidget->loadMap(*sceneController);
 
         sceneController->addObserverOnAllControllers(this, AbstractController::CHANGES_DONE);
         sceneDisplayerWindow->addObserverObjectMoveController(scenePanelWidget->getObjectPanelWidget(), ObjectMoveController::OBJECT_MOVED);
@@ -298,8 +294,7 @@ namespace urchin {
             sceneDisplayerWindow->closeMap();
             scenePanelWidget->closeMap();
 
-            delete sceneController;
-            sceneController = nullptr;
+            sceneController.reset(nullptr);
 
             updateMapFilename("");
             updateInterfaceState();

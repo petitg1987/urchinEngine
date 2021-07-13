@@ -71,14 +71,14 @@ namespace urchin {
         setVulkanInstance(nullptr);
     }
 
-    void SceneDisplayerWindow::loadMap(SceneController* sceneController, const std::string& mapFilename, const std::string& relativeWorkingDirectory) {
+    void SceneDisplayerWindow::loadMap(SceneController& sceneController, const std::string& mapFilename, const std::string& relativeWorkingDirectory) {
         closeMap();
         statusBarController->applyState(StatusBarState::MAP_LOADED);
 
-        sceneDisplayer = new SceneDisplayer(sceneWindowController, sceneController, mouseController, statusBarController);
+        sceneDisplayer = new SceneDisplayer(sceneWindowController, &sceneController, mouseController, statusBarController);
         sceneDisplayer->loadMap(mapEditorPath, mapFilename, relativeWorkingDirectory);
         sceneDisplayer->resize((unsigned int)geometry().width(), (unsigned int)geometry().height());
-        sceneController->setup(&sceneDisplayer->getMapHandler());
+        sceneController.setup(&sceneDisplayer->getMapHandler());
         updateSceneDisplayerViewProperties();
     }
 

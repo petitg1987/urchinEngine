@@ -1,7 +1,7 @@
 #include <scene/objects/move/ObjectMoveController.h>
 
 namespace urchin {
-    ObjectMoveController::ObjectMoveController(SceneManager& sceneManager, SceneController* sceneController,
+    ObjectMoveController::ObjectMoveController(SceneManager& sceneManager, SceneController& sceneController,
                                                const std::unique_ptr<MouseController>& mouseController,
                                                const std::unique_ptr<StatusBarController>& statusBarController) :
             sceneWidth(0),
@@ -126,7 +126,7 @@ namespace urchin {
         Transform<float> transform = selectedSceneObject->getModel()->getTransform();
         transform.setPosition(newPosition);
 
-        sceneController->getObjectController().updateSceneObjectTransform(*selectedSceneObject, transform);
+        sceneController.getObjectController().updateSceneObjectTransform(*selectedSceneObject, transform);
         notifyObservers(this, NotificationType::OBJECT_MOVED);
     }
 

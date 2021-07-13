@@ -27,7 +27,7 @@ namespace urchin {
             bool event(QEvent *) override;
             void setupVkInstance(VkInstance);
 
-            void loadMap(SceneController*, const std::string&, const std::string&);
+            void loadMap(SceneController&, const std::string&, const std::string&);
             void loadEmptyScene();
             void saveState(const std::string&) const;
             void closeMap();
